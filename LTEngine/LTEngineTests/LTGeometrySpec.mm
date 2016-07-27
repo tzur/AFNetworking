@@ -610,6 +610,83 @@ context(@"relationship point and line/edge", ^{
         expect(LTDistanceFromEdge(a, b, point)).to.beCloseToWithin(3.640054944640259, kEpsilon);
       });
     });
+    
+    context(@"closest point on polyline from point", ^{
+      __block CGPoints polyline;
+      
+      beforeEach(^{
+        polyline = CGPoints({CGPointMake(0, 0), CGPointMake(0, 1), CGPointMake(1, 1)});
+      });
+
+      it(@"should correctly compute the closest point from a point on the polyline points", ^{
+        for(const CGPoint point : polyline) {
+          expect(LTPointOnPolylineNearestToPoint(polyline, point)).to.equal(point);
+        }
+      });
+
+      it(@"should correctly compute the closest point from a point on the polyline edges", ^{
+        CGPoints pointsOnEdges({
+          0.5 * (polyline[0] + polyline[1]),
+          0.25 * polyline[1] + 0.75 * polyline[2]
+        });
+        
+        for(const CGPoint point : pointsOnEdges) {
+          expect(LTPointOnPolylineNearestToPoint(polyline, point)).to.equal(point);
+        }
+      });
+      
+      it(@"should correctly compute the closest point from a point on the polyline edges", ^{
+        std::vector<CGPointPair> testPoints;
+        testPoints.push_back({CGPointMake(2, 2), CGPointMake(1, 1)});
+        testPoints.push_back({CGPointMake(0.5, 3), CGPointMake(0.5, 1)});
+        testPoints.push_back({CGPointMake(-1, 3), CGPointMake(0, 1)});
+        testPoints.push_back({CGPointMake(-5, -1), CGPointMake(0, 0)});
+        testPoints.push_back({CGPointMake(5, -1), CGPointMake(1, 1)});
+
+        for(CGPointPair points : testPoints) {
+          expect(LTPointOnPolylineNearestToPoint(polyline, points.first)).to.equal(points.second);
+        }
+      });
+    });
+    
+    context(@"distance of point from polyline", ^{
+      __block CGPoints polyline;
+      
+      beforeEach(^{
+        polyline = CGPoints({CGPointMake(0, 0), CGPointMake(0, 1), CGPointMake(1, 1)});
+      });
+      
+      it(@"should compute the distance of the points of a polyline from the polyline itself", ^{
+        for(const CGPoint point : polyline) {
+          expect(LTDistanceFromPolyLine(polyline, point)).to.equal(0.0);
+        }
+      });
+      
+      it(@"should compute the distance of points on a polyline's edges from the polyline itself", ^{
+        CGPoints pointsOnEdges({
+          0.5 * (polyline[0] + polyline[1]),
+          0.25 * polyline[1] + 0.75 * polyline[2]
+        });
+        
+        for(const CGPoint point : pointsOnEdges) {
+          expect(LTDistanceFromPolyLine(polyline, point)).to.equal(0.0);
+        }
+      });
+      
+      it(@"should compute the distance of points from a polyline", ^{
+        std::vector<CGPointPair> testPoints;
+        testPoints.push_back({CGPointMake(2, 2), CGPointMake(1, 1)});
+        testPoints.push_back({CGPointMake(0.5, 3), CGPointMake(0.5, 1)});
+        testPoints.push_back({CGPointMake(-1, 3), CGPointMake(0, 1)});
+        testPoints.push_back({CGPointMake(-5, -1), CGPointMake(0, 0)});
+        testPoints.push_back({CGPointMake(5, -1), CGPointMake(1, 1)});
+        
+        for(CGPointPair points : testPoints) {
+          CGFloat expected = CGPointDistance(points.first, points.second);
+          expect(LTDistanceFromPolyLine(polyline, points.first)).to.equal(expected);
+        }
+      });
+    });
   });
 });
 

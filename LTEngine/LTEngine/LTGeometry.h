@@ -100,3 +100,9 @@ CGFloat LTDistanceFromLine(CGPoint pointOnLine, CGPoint anotherPointOnLine, CGPo
 
 /// Returns the distance of the given \c point from the edge (\c p0, \c p1).
 CGFloat LTDistanceFromEdge(CGPoint p0, CGPoint p1, CGPoint point);
+
+/// Returns the point on the given \c polyline with the smallest distance to the given \c point.
+CGPoint LTPointOnPolylineNearestToPoint(const CGPoints &polyline, CGPoint point);
+
+/// Return the distance of the given \c point from the given \c polyline.
+CGFloat LTDistanceFromPolyLine(const CGPoints &polyline, CGPoint point);
