@@ -13,8 +13,8 @@ LTEnumDeclare(NSUInteger, LTCompressionFormat,
 /// Category providing properties for an \c LTCompressionFormat enum value.
 @interface LTCompressionFormat (Properties)
 
-/// File extention for the compression format.
-@property (readonly, nonatomic) NSString *fileExtention;
+/// File extension for the compression format.
+@property (readonly, nonatomic) NSString *fileExtension;
 
 /// Mime type for the compression format.
 @property (readonly, nonatomic) NSString *mimeType;
