@@ -12,6 +12,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Lock used to enforce registering of requests only within a change block.
 @property (nonatomic) BOOL inChangeBlock;
 
+/// Asset requested to be created by the manager.
+@property (readonly, nonatomic) NSMutableArray *assetsCreated;
+
 /// Asset requested to be deleted by the manager.
 @property (readonly, nonatomic) NSMutableArray *assetsDeleted;
 
@@ -36,6 +39,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)init {
   if (self = [super init]) {
+    _assetsCreated = [NSMutableArray array];
     _assetsDeleted = [NSMutableArray array];
     _assetCollectionsDeleted = [NSMutableArray array];
     _collectionListsDeleted = [NSMutableArray array];
@@ -46,6 +50,10 @@ NS_ASSUME_NONNULL_BEGIN
     self.success = YES;
   }
   return self;
+}
+
+- (NSArray *)assetCreationRequests {
+  return [self.assetsCreated copy];
 }
 
 - (NSArray *)assetDeleteRequests {
@@ -75,6 +83,17 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 #pragma mark PTNPhotoKitChangeManager
 #pragma mark -
+
+#pragma mark -
+#pragma mark Creation
+#pragma mark -
+
+- (void)createAssetFromImageAtFileURL:(NSURL *)fileURL {
+  LTAssert(!self.inChangeBlock, @"Attempting to create image at file URL %@ not within a change "
+           "block", fileURL);
+  
+  [self.assetsCreated addObject:fileURL];
+}
 
 #pragma mark -
 #pragma mark Deletion
