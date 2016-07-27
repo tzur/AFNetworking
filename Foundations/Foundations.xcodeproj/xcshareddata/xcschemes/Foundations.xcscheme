@@ -29,8 +29,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "65CEFBB11D3BF72800402230"
-               BuildableName = "FoundationsTestHost.app"
-               BlueprintName = "FoundationsTestHost"
+               BuildableName = "TestHost.app"
+               BlueprintName = "TestHost"
                ReferencedContainer = "container:FoundationsTestHost.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>

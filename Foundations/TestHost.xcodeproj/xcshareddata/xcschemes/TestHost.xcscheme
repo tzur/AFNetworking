@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "65CEFBB11D3BF72800402230"
-               BuildableName = "FoundationsTestHost.app"
-               BlueprintName = "FoundationsTestHost"
-               ReferencedContainer = "container:FoundationsTestHost.xcodeproj">
+               BuildableName = "TestHost.app"
+               BlueprintName = "TestHost"
+               ReferencedContainer = "container:TestHost.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -46,9 +46,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "65CEFBB11D3BF72800402230"
-            BuildableName = "FoundationsTestHost.app"
-            BlueprintName = "FoundationsTestHost"
-            ReferencedContainer = "container:FoundationsTestHost.xcodeproj">
+            BuildableName = "TestHost.app"
+            BlueprintName = "TestHost"
+            ReferencedContainer = "container:TestHost.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -64,9 +64,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "65CEFBB11D3BF72800402230"
-            BuildableName = "FoundationsTestHost.app"
-            BlueprintName = "FoundationsTestHost"
-            ReferencedContainer = "container:FoundationsTestHost.xcodeproj">
+            BuildableName = "TestHost.app"
+            BlueprintName = "TestHost"
+            ReferencedContainer = "container:TestHost.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </ProfileAction>

@@ -35,6 +35,6 @@
       location = "group:../Wireframes/Wireframes.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:FoundationsTestHost.xcodeproj">
+      location = "group:TestHost.xcodeproj">
    </FileRef>
 </Workspace>

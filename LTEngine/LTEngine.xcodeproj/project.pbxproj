@@ -1361,17 +1361,17 @@
 		};
 		6564ACCF1D48CA1C00EFF887 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 656155BC1D464B4B009E701C /* FoundationsTestHost.xcodeproj */;
+			containerPortal = 656155BC1D464B4B009E701C /* TestHost.xcodeproj */;
 			proxyType = 1;
 			remoteGlobalIDString = 65CEFBB11D3BF72800402230;
-			remoteInfo = FoundationsTestHost;
+			remoteInfo = TestHost;
 		};
 		65BAF37B1D480218009BBB6F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 656155BC1D464B4B009E701C /* FoundationsTestHost.xcodeproj */;
+			containerPortal = 656155BC1D464B4B009E701C /* TestHost.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 65BAF1821D47FAFE009BBB6F;
-			remoteInfo = FoundationsTestHost;
+			remoteInfo = TestHost;
 		};
 		8B0B9A4A1CA6C10B00ED2334 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -2387,7 +2387,7 @@
 		656155A01D4649F9009E701C /* Specta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Specta.xcodeproj; path = ../../third_party/Specta/Specta/Specta.xcodeproj; sourceTree = "<group>"; };
 		656155B51D464A12009E701C /* Objection-iOS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = "Objection-iOS.framework"; path = "../third_party/objection/Objection-iOS.framework"; sourceTree = "<group>"; };
 		656155B71D464A28009E701C /* opencv2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = opencv2.framework; path = ../third_party/opencv/opencv2.framework; sourceTree = "<group>"; };
-		656155BC1D464B4B009E701C /* FoundationsTestHost.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FoundationsTestHost.xcodeproj; path = ../../Foundations/FoundationsTestHost.xcodeproj; sourceTree = "<group>"; };
+		656155BC1D464B4B009E701C /* TestHost.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TestHost.xcodeproj; path = ../../Foundations/TestHost.xcodeproj; sourceTree = "<group>"; };
 		658788A51AC196F4007EDF71 /* LTSeparableImageProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTSeparableImageProcessorSpec.mm; sourceTree = "<group>"; };
 		6A4444711B4AC5E200B9C710 /* LTFboPoolSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTFboPoolSpec.mm; sourceTree = "<group>"; };
 		6AB548BE1C81F99700672127 /* LTCVPixelBufferExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTCVPixelBufferExtensions.h; sourceTree = "<group>"; };
@@ -4029,7 +4029,7 @@
 		656155BD1D464B4B009E701C /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				65BAF37C1D480218009BBB6F /* FoundationsTestHost.app */,
+				65BAF37C1D480218009BBB6F /* TestHost.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -5052,7 +5052,7 @@
 			children = (
 				656155701D4649E2009E701C /* Expecta.xcodeproj */,
 				8B16CAA61BB0670A002FB750 /* extobjc.xcodeproj */,
-				656155BC1D464B4B009E701C /* FoundationsTestHost.xcodeproj */,
+				656155BC1D464B4B009E701C /* TestHost.xcodeproj */,
 				8B9D3FDD18913076001A964D /* Half */,
 				8B16C9671BAEABD6002FB750 /* LTKit.xcodeproj */,
 				8B0B99091CA6BA1300ED2334 /* Mantle.xcodeproj */,
@@ -5639,7 +5639,7 @@
 				},
 				{
 					ProductGroup = 656155BD1D464B4B009E701C /* Products */;
-					ProjectRef = 656155BC1D464B4B009E701C /* FoundationsTestHost.xcodeproj */;
+					ProjectRef = 656155BC1D464B4B009E701C /* TestHost.xcodeproj */;
 				},
 				{
 					ProductGroup = 8B368DDD1CA6942A003E34CF /* Products */;
@@ -5816,10 +5816,10 @@
 			remoteRef = 656155B31D4649F9009E701C /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		65BAF37C1D480218009BBB6F /* FoundationsTestHost.app */ = {
+		65BAF37C1D480218009BBB6F /* TestHost.app */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.application;
-			path = FoundationsTestHost.app;
+			path = TestHost.app;
 			remoteRef = 65BAF37B1D480218009BBB6F /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
@@ -6933,7 +6933,7 @@
 /* Begin PBXTargetDependency section */
 		6564ACD01D48CA1C00EFF887 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			name = FoundationsTestHost;
+			name = TestHost;
 			targetProxy = 6564ACCF1D48CA1C00EFF887 /* PBXContainerItemProxy */;
 		};
 		8B3DEBFB18296B6100EA0C1A /* PBXTargetDependency */ = {
@@ -6965,7 +6965,7 @@
 			baseConfigurationReference = 8B6B4FAD1BDFA41700662235 /* Debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/FoundationsTestHost.app/FoundationsTestHost";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/TestHost.app/TestHost";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";

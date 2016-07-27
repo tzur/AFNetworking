@@ -180,10 +180,10 @@
 		};
 		65BAF3531D48020C009BBB6F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 65B6E5731D46419100D503C0 /* FoundationsTestHost.xcodeproj */;
+			containerPortal = 65B6E5731D46419100D503C0 /* TestHost.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 65BAF1821D47FAFE009BBB6F;
-			remoteInfo = FoundationsTestHost;
+			remoteInfo = TestHost;
 		};
 		65BDFC121D0EC56D00C86D36 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -362,10 +362,10 @@
 		};
 		65F24C211D48C9CB00AB7787 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 65B6E5731D46419100D503C0 /* FoundationsTestHost.xcodeproj */;
+			containerPortal = 65B6E5731D46419100D503C0 /* TestHost.xcodeproj */;
 			proxyType = 1;
 			remoteGlobalIDString = 65CEFBB11D3BF72800402230;
-			remoteInfo = FoundationsTestHost;
+			remoteInfo = TestHost;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -407,7 +407,7 @@
 		65A6943A1D0821B9001DE328 /* FBRHTTPSessionSecurityPolicy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBRHTTPSessionSecurityPolicy.h; sourceTree = "<group>"; };
 		65A6943D1D082E46001DE328 /* FBRHTTPSessionRequestMarshalling.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBRHTTPSessionRequestMarshalling.h; sourceTree = "<group>"; };
 		65AE67501D0461350083D1CE /* libFiber.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libFiber.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		65B6E5731D46419100D503C0 /* FoundationsTestHost.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FoundationsTestHost.xcodeproj; path = ../Foundations/FoundationsTestHost.xcodeproj; sourceTree = "<group>"; };
+		65B6E5731D46419100D503C0 /* TestHost.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TestHost.xcodeproj; path = ../Foundations/TestHost.xcodeproj; sourceTree = "<group>"; };
 		65B7F16D1D186531005810C9 /* FBRHTTPSessionRequestMarshalling.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FBRHTTPSessionRequestMarshalling.mm; sourceTree = "<group>"; };
 		65B7F18C1D186966005810C9 /* FBRHTTPSessionRequestMarshallingSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FBRHTTPSessionRequestMarshallingSpec.mm; sourceTree = "<group>"; };
 		65BDFC031D0EC56D00C86D36 /* extobjc.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = extobjc.xcodeproj; path = ../third_party/libextobjc/extobjc.xcodeproj; sourceTree = "<group>"; };
@@ -643,7 +643,7 @@
 		65B6E5741D46419100D503C0 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				65BAF3541D48020C009BBB6F /* FoundationsTestHost.app */,
+				65BAF3541D48020C009BBB6F /* TestHost.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -752,7 +752,7 @@
 				65A693D91D0593D5001DE328 /* AFNetworking.xcodeproj */,
 				65C62B951D0476F6000FCE99 /* Expecta.xcodeproj */,
 				65BDFC031D0EC56D00C86D36 /* extobjc.xcodeproj */,
-				65B6E5731D46419100D503C0 /* FoundationsTestHost.xcodeproj */,
+				65B6E5731D46419100D503C0 /* TestHost.xcodeproj */,
 				65C62BDA1D047727000FCE99 /* LLReactiveMatchers */,
 				65A6940C1D05999B001DE328 /* LTKit.xcodeproj */,
 				65C62BB01D0476FE000FCE99 /* OCMock.xcodeproj */,
@@ -985,7 +985,7 @@
 				},
 				{
 					ProductGroup = 65B6E5741D46419100D503C0 /* Products */;
-					ProjectRef = 65B6E5731D46419100D503C0 /* FoundationsTestHost.xcodeproj */;
+					ProjectRef = 65B6E5731D46419100D503C0 /* TestHost.xcodeproj */;
 				},
 				{
 					ProductGroup = 65A6940D1D05999B001DE328 /* Products */;
@@ -1104,10 +1104,10 @@
 			remoteRef = 65A694171D05999B001DE328 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		65BAF3541D48020C009BBB6F /* FoundationsTestHost.app */ = {
+		65BAF3541D48020C009BBB6F /* TestHost.app */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.application;
-			path = FoundationsTestHost.app;
+			path = TestHost.app;
 			remoteRef = 65BAF3531D48020C009BBB6F /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
@@ -1370,7 +1370,7 @@
 		};
 		65F24C221D48C9CB00AB7787 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			name = FoundationsTestHost;
+			name = TestHost;
 			targetProxy = 65F24C211D48C9CB00AB7787 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -1439,7 +1439,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 65C62B721D046B22000FCE99 /* Application.xcconfig */;
 			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/FoundationsTestHost.app/FoundationsTestHost";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/TestHost.app/TestHost";
 				CLANG_ANALYZER_NONNULL = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
