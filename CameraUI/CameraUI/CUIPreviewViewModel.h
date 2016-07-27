@@ -3,18 +3,26 @@
 
 #import "CUIGridViewModel.h"
 
-@protocol CAMExposureDevice, CAMFocusDevice, CAMPreviewLayerDevice, CAMVideoDevice, CAMZoomDevice;
+#import <Camera/CAMExposureDevice.h>
+#import <Camera/CAMFocusDevice.h>
+#import <Camera/CAMPreviewLayerDevice.h>
+#import <Camera/CAMVideoDevice.h>
+#import <Camera/CAMZoomDevice.h>
 
 NS_ASSUME_NONNULL_BEGIN
+
+/// Camera device suitable for \c CUIPreviewViewModel.
+@protocol CUIPreviewDevice <CAMExposureDevice, CAMFocusDevice, CAMPreviewLayerDevice,
+    CAMVideoDevice, CAMZoomDevice>
+@end
 
 /// ViewModel for CUIPreviewViewController. Provides a live preview, controls focus and zoom.
 @interface CUIPreviewViewModel : NSObject <CUIGridContainer>
 
 - (instancetype)init NS_UNAVAILABLE;
 
-/// Initializes the preview view model with the given camera device.
-- (instancetype)initWithDevice:(id<CAMExposureDevice, CAMFocusDevice, CAMPreviewLayerDevice,
-    CAMVideoDevice, CAMZoomDevice>)cameraDevice NS_DESIGNATED_INITIALIZER;
+/// Initializes with the given \c device.
+- (instancetype)initWithDevice:(id<CUIPreviewDevice>)device NS_DESIGNATED_INITIALIZER;
 
 /// Called by the view controller when the preview view was tapped.
 - (void)previewTapped:(UITapGestureRecognizer *)gestureRecognizer;
@@ -29,13 +37,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly, nonatomic) CALayer *previewLayer;
 
 /// Hot signal that sends \c RACUnits whenever the "capturing" animation should be performed.
-/// This signal sends its events on an arbitrary thread, completes when the receiver is deallocated
-/// and never errs.
 @property (readonly, nonatomic) RACSignal *animateCapture;
 
 /// Hot signal that sends \c CUIFocusIconMode marking how and where the focus icon should be shown.
-/// This signal sends its events on an arbitrary thread, completes when the receiver is deallocated
-/// and never errs.
 @property (readonly, nonatomic) RACSignal *focusModeAndPosition;
 
 /// \c YES when the device supports focus and tap-to-focus gesture should be enabled.

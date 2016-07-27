@@ -3,9 +3,10 @@
 
 #import "CUIPreviewViewModel.h"
 
-#import <Camera/CAMDevicePreset.h>
-
 #import "CUIFocusIconMode.h"
+
+@interface CAMDeviceStub () <CUIPreviewDevice>
+@end
 
 SpecBegin(CUIPreviewViewModel)
 
@@ -16,9 +17,9 @@ __block CALayer *deviceLayer;
 
 beforeEach(^{
   deviceStub = [[CAMDeviceStub alloc] init];
-  deviceLayer = [[CALayer alloc] init];
+  deviceLayer = [CALayer layer];
   deviceStub.previewLayer = deviceLayer;
-  subjectAreaChanged = [[RACSubject alloc] init];
+  subjectAreaChanged = [RACSubject subject];
   deviceStub.subjectAreaChanged = subjectAreaChanged;
   previewViewModel = [[CUIPreviewViewModel alloc] initWithDevice:deviceStub];
 });
@@ -163,7 +164,6 @@ context(@"focus", ^{
   __block RACSubject *singleExposureSignal;
   __block RACSubject *continuousFocusSignal;
   __block RACSubject *continuousExposureSignal;
-  __block LLSignalTestRecorder *recorder;
   __block CUIFocusIconMode *focusAction;
   __block id tapMock;
 
@@ -181,7 +181,6 @@ context(@"focus", ^{
     deviceStub.setContinuousFocusPointSignal = continuousFocusSignal;
     deviceStub.setContinuousExposurePointSignal = continuousExposureSignal;
     centerPoint = [deviceStub previewLayerPointFromDevicePoint:kDeviceCenterPoint];
-    recorder = [previewViewModel.focusModeAndPosition testRecorder];
     focusAction = [CUIFocusIconMode indefiniteFocusAtPosition:centerPoint];
   });
 
@@ -349,9 +348,11 @@ context(@"focus", ^{
     static CUIFocusIconMode * const kDefiniteFocusAtTapPoint2 =
         [CUIFocusIconMode definiteFocusAtPosition:kTapPoint2];
 
+    __block LLSignalTestRecorder *recorder;
     __block id tapMock2;
 
     beforeEach(^{
+      recorder = [previewViewModel.focusModeAndPosition testRecorder];
       tapMock2 = OCMClassMock([UITapGestureRecognizer class]);
       OCMStub([(UITapGestureRecognizer *)tapMock2 locationInView:OCMOCK_ANY]).andReturn(kTapPoint2);
     });
@@ -405,7 +406,6 @@ context(@"focus", ^{
     });
 
     it(@"should send focus position when single focuse changed twice", ^{
-      LLSignalTestRecorder *recorder = [previewViewModel.focusModeAndPosition testRecorder];
       expect(recorder).to.sendValues(@[]);
       [previewViewModel previewTapped:tapMock];
       expect(recorder).to.sendValues(@[kDefiniteFocusAtTapPoint]);
@@ -422,7 +422,6 @@ context(@"focus", ^{
     });
 
     it(@"should send focus position when a second focus starts before the first finished", ^{
-      LLSignalTestRecorder *recorder = [previewViewModel.focusModeAndPosition testRecorder];
       expect(recorder).to.sendValues(@[]);
       [previewViewModel previewTapped:tapMock];
       expect(recorder).to.sendValues(@[kDefiniteFocusAtTapPoint]);
