@@ -19,6 +19,9 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithDrawers:(NSArray<id<CUIShootButtonDrawer>> *)drawers
     NS_DESIGNATED_INITIALIZER;
 
+/// \c alpha value to use while the button is highlighted.
+@property (nonatomic) CGFloat highlightedAlpha;
+
 /// Progress of the shooting (e.g. progress of the timer before next frame capture). The values
 /// must be in the range [0, 1].
 @property (nonatomic) CGFloat progress;

@@ -29,14 +29,18 @@ NS_ASSUME_NONNULL_BEGIN
   }
 }
 
-- (void)setEnabled:(BOOL)enabled {
-  [super setEnabled:enabled];
-  [self setNeedsDisplay];
+- (void)setHighlightedAlpha:(CGFloat)highlightedAlpha {
+  _highlightedAlpha = highlightedAlpha;
+  [self updateAlpha];
 }
 
 - (void)setHighlighted:(BOOL)highlighted {
   [super setHighlighted:highlighted];
-  [self setNeedsDisplay];
+  [self updateAlpha];
+}
+
+- (void)updateAlpha {
+  self.alpha = self.highlighted ? self.highlightedAlpha : 1;
 }
 
 - (void)setProgress:(CGFloat)progress {
