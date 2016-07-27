@@ -419,6 +419,7 @@ context(@"collection view", ^{
   });
 
   it(@"should correctly set background color", ^{
+    expect(collectionView.backgroundColor).to.equal([UIColor clearColor]);
     viewController.backgroundColor = [UIColor redColor];
     expect(collectionView.backgroundColor).to.equal([UIColor redColor]);
   });
@@ -432,6 +433,13 @@ context(@"collection view", ^{
     UIView *view = [[UIView alloc] initWithFrame:CGRectZero];
     viewController.backgroundView = view;
     expect([view isDescendantOfView:viewController.view]).to.beTruthy();
+
+    [viewController.view layoutIfNeeded];
+    expect(view.frame).to.equal(viewController.view.frame);
+
+    viewController.view.frame = CGRectMake(0, 0, 25, 25);
+    [viewController.view layoutIfNeeded];
+    expect(view.frame).to.equal(viewController.view.frame);
   });
 
   it(@"should correctly get background view", ^{

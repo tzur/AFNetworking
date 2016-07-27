@@ -114,7 +114,7 @@ typedef NS_ENUM(NSUInteger, PTUCollectionViewScrollPosition) {
 /// behind the collection view, which is the default behavior.
 @property (strong, nonatomic, nullable) UIView *backgroundView;
 
-/// Background color of the receiver's collection view.
+/// Background color of the receiver's collection view, initial value is clear.
 @property (strong, nonatomic) UIColor *backgroundColor;
 
 /// View to display when the receiver's current \c PTUDataSource has no data, but did not err. The
