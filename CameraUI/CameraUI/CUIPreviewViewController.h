@@ -7,7 +7,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// View controller that displays a live preview and handles tap and pinch gestures.
 ///
-/// The live preview has the following accessibility identifier: "LivePreview".
+/// The internal views have the following accessibility identifiers: "LayerView", "SignalView".
 @interface CUIPreviewViewController : UIViewController
 
 - (instancetype)init NS_UNAVAILABLE;
