@@ -89,7 +89,6 @@
 		F9660E691D09A8F300669EB0 /* CUISingleChoiceMenuViewModelSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = F9660E671D09A8F300669EB0 /* CUISingleChoiceMenuViewModelSpec.mm */; };
 		F9660E8A1D09A90A00669EB0 /* CUISingleChoiceMenuViewModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = F9660E861D09A90A00669EB0 /* CUISingleChoiceMenuViewModel.mm */; };
 		F9660E8B1D09A90A00669EB0 /* CUISingleChoiceMenuView.mm in Sources */ = {isa = PBXBuildFile; fileRef = F9660E891D09A90A00669EB0 /* CUISingleChoiceMenuView.mm */; };
-		F99540C31D054B94004C54D4 /* CUIOvalButton.mm in Sources */ = {isa = PBXBuildFile; fileRef = F99540C11D054B94004C54D4 /* CUIOvalButton.mm */; };
 		F99542581D058EB0004C54D4 /* CUIIconWithTitleCellSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = F99542571D058EB0004C54D4 /* CUIIconWithTitleCellSpec.mm */; };
 		F9A684261D1BE0F100E0F319 /* CUIGridView.mm in Sources */ = {isa = PBXBuildFile; fileRef = F9A684251D1BE0F100E0F319 /* CUIGridView.mm */; };
 		F9A684591D1FB95000E0F319 /* CUILayerView.mm in Sources */ = {isa = PBXBuildFile; fileRef = F9A684571D1FB95000E0F319 /* CUILayerView.mm */; };
@@ -102,7 +101,6 @@
 		F9CDB5D41D2D12A300B11D82 /* UIViewController+LifecycleSignals.mm in Sources */ = {isa = PBXBuildFile; fileRef = F9CDB5D21D2D12A300B11D82 /* UIViewController+LifecycleSignals.mm */; };
 		F9CDB5F61D2D220900B11D82 /* RACSignal+CameraUISpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = F9CDB5F51D2D220900B11D82 /* RACSignal+CameraUISpec.mm */; };
 		F9CDB5F81D2D221E00B11D82 /* UIViewController+LifecycleSignalsSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = F9CDB5F71D2D221E00B11D82 /* UIViewController+LifecycleSignalsSpec.mm */; };
-		F9D0D1AF1D06B5F40033A4A5 /* CUIOvalButtonSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = F9D0D1AE1D06B5F40033A4A5 /* CUIOvalButtonSpec.mm */; };
 		F9D0D2281D06BACB0033A4A5 /* WFFakePaintCodeModule.m in Sources */ = {isa = PBXBuildFile; fileRef = F9D0D2271D06BACB0033A4A5 /* WFFakePaintCodeModule.m */; };
 		F9D4FE791D043FBD00CE9A54 /* CUIFocusView.mm in Sources */ = {isa = PBXBuildFile; fileRef = F9D4FE781D043FBD00CE9A54 /* CUIFocusView.mm */; };
 		F9E1E9801D117E0B007B5F6F /* CUISelectableMenuItemViewModelSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = F965CD7F1CF4791000005627 /* CUISelectableMenuItemViewModelSpec.mm */; };
@@ -600,8 +598,6 @@
 		F9660E871D09A90A00669EB0 /* CUISingleChoiceMenuView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUISingleChoiceMenuView.h; sourceTree = "<group>"; };
 		F9660E881D09A90A00669EB0 /* CUISingleChoiceMenuViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUISingleChoiceMenuViewModel.h; sourceTree = "<group>"; };
 		F9660E891D09A90A00669EB0 /* CUISingleChoiceMenuView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUISingleChoiceMenuView.mm; sourceTree = "<group>"; };
-		F99540C11D054B94004C54D4 /* CUIOvalButton.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUIOvalButton.mm; sourceTree = "<group>"; };
-		F99540C21D054B94004C54D4 /* CUIOvalButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUIOvalButton.h; sourceTree = "<group>"; };
 		F99542571D058EB0004C54D4 /* CUIIconWithTitleCellSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUIIconWithTitleCellSpec.mm; sourceTree = "<group>"; };
 		F9A684241D1BE0F100E0F319 /* CUIGridView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUIGridView.h; sourceTree = "<group>"; };
 		F9A684251D1BE0F100E0F319 /* CUIGridView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUIGridView.mm; sourceTree = "<group>"; };
@@ -621,7 +617,6 @@
 		F9CDB5D21D2D12A300B11D82 /* UIViewController+LifecycleSignals.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIViewController+LifecycleSignals.mm"; sourceTree = "<group>"; };
 		F9CDB5F51D2D220900B11D82 /* RACSignal+CameraUISpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "RACSignal+CameraUISpec.mm"; sourceTree = "<group>"; };
 		F9CDB5F71D2D221E00B11D82 /* UIViewController+LifecycleSignalsSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIViewController+LifecycleSignalsSpec.mm"; sourceTree = "<group>"; };
-		F9D0D1AE1D06B5F40033A4A5 /* CUIOvalButtonSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUIOvalButtonSpec.mm; sourceTree = "<group>"; };
 		F9D0D2261D06BACB0033A4A5 /* WFFakePaintCodeModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WFFakePaintCodeModule.h; path = ../../Wireframes/WireframesTests/WFFakePaintCodeModule.h; sourceTree = "<group>"; };
 		F9D0D2271D06BACB0033A4A5 /* WFFakePaintCodeModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WFFakePaintCodeModule.m; path = ../../Wireframes/WireframesTests/WFFakePaintCodeModule.m; sourceTree = "<group>"; };
 		F9D4FE771D043FBD00CE9A54 /* CUIFocusView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUIFocusView.h; sourceTree = "<group>"; };
@@ -959,8 +954,6 @@
 				F9A684251D1BE0F100E0F319 /* CUIGridView.mm */,
 				F9A684581D1FB95000E0F319 /* CUILayerView.h */,
 				F9A684571D1FB95000E0F319 /* CUILayerView.mm */,
-				F99540C21D054B94004C54D4 /* CUIOvalButton.h */,
-				F99540C11D054B94004C54D4 /* CUIOvalButton.mm */,
 				F9262E531D23A91A00CA60E7 /* CUIPreviewViewController.h */,
 				F9262E541D23A91A00CA60E7 /* CUIPreviewViewController.mm */,
 				F9262E551D23A91A00CA60E7 /* CUIPreviewViewModel.h */,
@@ -1029,7 +1022,6 @@
 			children = (
 				F925C2D01D37B31E00C95F46 /* CUIFocusIconModeSpec.mm */,
 				F9A684781D1FF45200E0F319 /* CUILayerViewSpec.mm */,
-				F9D0D1AE1D06B5F40033A4A5 /* CUIOvalButtonSpec.mm */,
 				83AE3F111D48948A00F51B89 /* CUIPreviewViewControllerSpec.mm */,
 				F9E72E881D2BD9B5000E12C1 /* CUIPreviewViewModelSpec.mm */,
 			);
@@ -1685,7 +1677,6 @@
 				F9CD3BF91CECBC3700190169 /* CUISharedTheme.mm in Sources */,
 				F9660E8A1D09A90A00669EB0 /* CUISingleChoiceMenuViewModel.mm in Sources */,
 				F925C2AC1D378BC100C95F46 /* CUIFocusIconMode.mm in Sources */,
-				F99540C31D054B94004C54D4 /* CUIOvalButton.mm in Sources */,
 				F9A685361D211AF100E0F319 /* CUIMenuItemsDataSource.mm in Sources */,
 				BE0D7A7E1CF49705009899F9 /* CUIMenuItemTextButton.m in Sources */,
 				BEE3E2C01D33DB670061D805 /* CUIShootButtonDrawer.mm in Sources */,
@@ -1747,7 +1738,6 @@
 				BEEE6D3B1D21385D00579F5D /* EXPMatchers+sendError.m in Sources */,
 				83AE3F351D48955400F51B89 /* UIView+Retrieval.m in Sources */,
 				BEEE6D2E1D21385D00579F5D /* EXPExpect+LLReactiveMatchersExtensions.m in Sources */,
-				F9D0D1AF1D06B5F40033A4A5 /* CUIOvalButtonSpec.mm in Sources */,
 				F9660E681D09A8F300669EB0 /* CUISingleChoiceMenuViewSpec.mm in Sources */,
 				F9B088A21D2127C500EB1E76 /* CUIMenuItemsDataSourceSpec.mm in Sources */,
 			);
