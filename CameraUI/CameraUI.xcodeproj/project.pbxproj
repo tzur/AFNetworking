@@ -109,20 +109,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		650619F71D46388F003D45B1 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 650619F31D46388F003D45B1 /* FoundationsTestHost.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 65CEFBB21D3BF72800402230;
-			remoteInfo = Foundations;
-		};
-		650619F91D4638BC003D45B1 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 650619F31D46388F003D45B1 /* FoundationsTestHost.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 65CEFBB11D3BF72800402230;
-			remoteInfo = Foundations;
-		};
 		65061A021D463932003D45B1 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 650619FD1D463932003D45B1 /* LTKit.xcodeproj */;
@@ -192,6 +178,20 @@
 			proxyType = 2;
 			remoteGlobalIDString = D0CFB60F128A8EEE006DC377;
 			remoteInfo = "iOS Tests";
+		};
+		65B005A91D48C8950011883A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 650619F31D46388F003D45B1 /* FoundationsTestHost.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 65CEFBB11D3BF72800402230;
+			remoteInfo = FoundationsTestHost;
+		};
+		65BAF3011D4801EB009BBB6F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 650619F31D46388F003D45B1 /* FoundationsTestHost.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 65BAF1821D47FAFE009BBB6F;
+			remoteInfo = FoundationsTestHost;
 		};
 		83B729011CD8D2080090C0BF /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -682,7 +682,7 @@
 		650619F41D46388F003D45B1 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				650619F81D46388F003D45B1 /* Foundations.app */,
+				65BAF3021D4801EB009BBB6F /* FoundationsTestHost.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1235,8 +1235,8 @@
 			buildRules = (
 			);
 			dependencies = (
-				650619FA1D4638BC003D45B1 /* PBXTargetDependency */,
 				83B729021CD8D2080090C0BF /* PBXTargetDependency */,
+				65B005AA1D48C8950011883A /* PBXTargetDependency */,
 			);
 			name = CameraUITests;
 			productName = CameraUITests;
@@ -1330,13 +1330,6 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		650619F81D46388F003D45B1 /* Foundations.app */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.application;
-			path = Foundations.app;
-			remoteRef = 650619F71D46388F003D45B1 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		65061A031D463932003D45B1 /* libLTKit.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -1405,6 +1398,13 @@
 			fileType = wrapper.cfbundle;
 			path = "iOS Tests.octest";
 			remoteRef = 65061A231D463954003D45B1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		65BAF3021D4801EB009BBB6F /* FoundationsTestHost.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = FoundationsTestHost.app;
+			remoteRef = 65BAF3011D4801EB009BBB6F /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		83B729691CD8D6830090C0BF /* ReactiveCocoa.framework */ = {
@@ -1746,10 +1746,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		650619FA1D4638BC003D45B1 /* PBXTargetDependency */ = {
+		65B005AA1D48C8950011883A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			name = Foundations;
-			targetProxy = 650619F91D4638BC003D45B1 /* PBXContainerItemProxy */;
+			name = FoundationsTestHost;
+			targetProxy = 65B005A91D48C8950011883A /* PBXContainerItemProxy */;
 		};
 		83B729021CD8D2080090C0BF /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -1899,7 +1899,7 @@
 		83B729041CD8D2080090C0BF /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Foundations.app/Foundations";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/FoundationsTestHost.app/FoundationsTestHost";
 				GCC_PREFIX_HEADER = "CameraUITests/CameraUITests-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",

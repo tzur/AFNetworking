@@ -46,7 +46,6 @@
 		656210741D377D1200E12FAF /* BZRValidatricksReceiptModelSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 656210731D377D1200E12FAF /* BZRValidatricksReceiptModelSpec.mm */; };
 		657FAFA21CEF2DA500111BD0 /* Mantle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6529F83D1CEB608B00FBABFE /* Mantle.framework */; };
 		6580F0741CEB2E8D007EABDD /* BZRReceiptValidationResponse.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6580F0731CEB2E8D007EABDD /* BZRReceiptValidationResponse.mm */; };
-		6581E86B1D3B9F5800B26E1A /* Bazaar.h in Headers */ = {isa = PBXBuildFile; fileRef = 65FA329B1CE2185E00901304 /* Bazaar.h */; };
 		6581E86C1D3B9F6100B26E1A /* BZRReceiptEnvironment.h in Headers */ = {isa = PBXBuildFile; fileRef = 6584CE861CF467A2002C6F86 /* BZRReceiptEnvironment.h */; };
 		6581E86D1D3B9F6400B26E1A /* BZRReceiptModel.h in Headers */ = {isa = PBXBuildFile; fileRef = 6506094A1CEDE5F60012202D /* BZRReceiptModel.h */; };
 		6581E86E1D3B9F6700B26E1A /* BZRReceiptValidationError.h in Headers */ = {isa = PBXBuildFile; fileRef = 6529F8501CEB61A800FBABFE /* BZRReceiptValidationError.h */; };
@@ -289,19 +288,12 @@
 			remoteGlobalIDString = 817EB1621BD765130047E85A;
 			remoteInfo = "OCMock tvOS";
 		};
-		656469801D46463B006BD7DE /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 656469671D46463B006BD7DE /* FoundationsTestHost.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 65CEFBB21D3BF72800402230;
-			remoteInfo = Foundations;
-		};
-		656469971D46464D006BD7DE /* PBXContainerItemProxy */ = {
+		654B9FA41D48C85D00F7609B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 656469671D46463B006BD7DE /* FoundationsTestHost.xcodeproj */;
 			proxyType = 1;
 			remoteGlobalIDString = 65CEFBB11D3BF72800402230;
-			remoteInfo = Foundations;
+			remoteInfo = FoundationsTestHost;
 		};
 		65743EAB1D32456A00A17D11 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -358,6 +350,13 @@
 			proxyType = 2;
 			remoteGlobalIDString = 8B3DEBF418296B6100EA0C1A;
 			remoteInfo = LTKitTests;
+		};
+		65BAF2A51D480190009BBB6F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 656469671D46463B006BD7DE /* FoundationsTestHost.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 65BAF1821D47FAFE009BBB6F;
+			remoteInfo = FoundationsTestHost;
 		};
 		65D91BB21D39A482000D6A3B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -514,7 +513,6 @@
 		65F03B6A1CFC3E0C008B1847 /* BZRModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRModel.h; sourceTree = "<group>"; };
 		65F03B6B1CFC3E0C008B1847 /* BZRModel.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRModel.mm; sourceTree = "<group>"; };
 		65FA32981CE2185D00901304 /* libBazaar.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libBazaar.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		65FA329B1CE2185E00901304 /* Bazaar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Bazaar.h; sourceTree = "<group>"; };
 		B97E6C1E1D40F36A00C02863 /* BZRInAppStoreManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRInAppStoreManager.h; sourceTree = "<group>"; };
 		B97E6C221D40F44800C02863 /* BZRProductContentProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRProductContentProvider.h; sourceTree = "<group>"; };
 		B97E6C231D40F44800C02863 /* BZRProductsProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRProductsProvider.h; sourceTree = "<group>"; };
@@ -803,7 +801,7 @@
 		656469681D46463B006BD7DE /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				656469811D46463B006BD7DE /* Foundations.app */,
+				65BAF2A61D480190009BBB6F /* FoundationsTestHost.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -950,7 +948,6 @@
 			isa = PBXGroup;
 			children = (
 				B97E6BF31D40F2C900C02863 /* Product Management */,
-				65FA329B1CE2185E00901304 /* Bazaar.h */,
 				6580F0701CEB2D97007EABDD /* Receipt Validation */,
 				65743E801D3242FF00A17D11 /* Store Kit */,
 				6599B4291CFA444200525BB7 /* Utils */,
@@ -977,7 +974,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6581E86B1D3B9F5800B26E1A /* Bazaar.h in Headers */,
 				B97E6C251D40F44800C02863 /* BZRProductsProvider.h in Headers */,
 				6581E8731D3B9FB300B26E1A /* BZRModel.h in Headers */,
 				6581E86C1D3B9F6100B26E1A /* BZRReceiptEnvironment.h in Headers */,
@@ -1010,8 +1006,8 @@
 			buildRules = (
 			);
 			dependencies = (
-				656469981D46464D006BD7DE /* PBXTargetDependency */,
 				654B1F111CE22030001F36FA /* PBXTargetDependency */,
+				654B9FA51D48C85D00F7609B /* PBXTargetDependency */,
 			);
 			name = BazaarTests;
 			productName = BazaarTests;
@@ -1310,13 +1306,6 @@
 			remoteRef = 654B1F611CE22299001F36FA /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		656469811D46463B006BD7DE /* Foundations.app */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.application;
-			path = Foundations.app;
-			remoteRef = 656469801D46463B006BD7DE /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		65743EAC1D32456A00A17D11 /* ReactiveCocoa.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
@@ -1371,6 +1360,13 @@
 			fileType = wrapper.cfbundle;
 			path = LTKitTests.xctest;
 			remoteRef = 6599B4041CFA346C00525BB7 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		65BAF2A61D480190009BBB6F /* FoundationsTestHost.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = FoundationsTestHost.app;
+			remoteRef = 65BAF2A51D480190009BBB6F /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		65D91BB31D39A482000D6A3B /* AFNetworking.framework */ = {
@@ -1507,10 +1503,10 @@
 			target = 65FA32971CE2185D00901304 /* Bazaar */;
 			targetProxy = 654B1F101CE22030001F36FA /* PBXContainerItemProxy */;
 		};
-		656469981D46464D006BD7DE /* PBXTargetDependency */ = {
+		654B9FA51D48C85D00F7609B /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			name = Foundations;
-			targetProxy = 656469971D46464D006BD7DE /* PBXContainerItemProxy */;
+			name = FoundationsTestHost;
+			targetProxy = 654B9FA41D48C85D00F7609B /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1518,7 +1514,7 @@
 		654B1F131CE22030001F36FA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Foundations.app/Foundations";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/FoundationsTestHost.app/FoundationsTestHost";
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";

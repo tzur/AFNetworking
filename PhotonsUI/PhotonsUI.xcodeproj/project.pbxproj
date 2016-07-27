@@ -123,26 +123,26 @@
 			remoteGlobalIDString = D0CFB60F128A8EEE006DC377;
 			remoteInfo = "iOS Tests";
 		};
-		650BB3381D465359008648A3 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 650BB3341D465359008648A3 /* FoundationsTestHost.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 65CEFBB21D3BF72800402230;
-			remoteInfo = Foundations;
-		};
-		650BB33A1D465372008648A3 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 650BB3341D465359008648A3 /* FoundationsTestHost.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 65CEFBB11D3BF72800402230;
-			remoteInfo = Foundations;
-		};
 		652F75121D3D029500EF9256 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 848EFF731C591B3A001D8368 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 84FF72E81C8EED6D00D1DA9F;
 			remoteInfo = PhotonsUI;
+		};
+		65BAF3E31D48023C009BBB6F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 650BB3341D465359008648A3 /* FoundationsTestHost.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 65BAF1821D47FAFE009BBB6F;
+			remoteInfo = FoundationsTestHost;
+		};
+		65E7AA7A1D48DAEB00830B35 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 650BB3341D465359008648A3 /* FoundationsTestHost.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 65CEFBB11D3BF72800402230;
+			remoteInfo = FoundationsTestHost;
 		};
 		848EFFDE1C591BFF001D8368 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -550,7 +550,7 @@
 		650BB3351D465359008648A3 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				650BB3391D465359008648A3 /* Foundations.app */,
+				65BAF3E41D48023C009BBB6F /* FoundationsTestHost.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -936,7 +936,7 @@
 			);
 			dependencies = (
 				652F75131D3D029500EF9256 /* PBXTargetDependency */,
-				650BB33B1D465372008648A3 /* PBXTargetDependency */,
+				65E7AA7B1D48DAEB00830B35 /* PBXTargetDependency */,
 			);
 			name = PhotonsUITests;
 			productName = PhotonsUITests;
@@ -1078,11 +1078,11 @@
 			remoteRef = 650BB3321D46533E008648A3 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		650BB3391D465359008648A3 /* Foundations.app */ = {
+		65BAF3E41D48023C009BBB6F /* FoundationsTestHost.app */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.application;
-			path = Foundations.app;
-			remoteRef = 650BB3381D465359008648A3 /* PBXContainerItemProxy */;
+			path = FoundationsTestHost.app;
+			remoteRef = 65BAF3E31D48023C009BBB6F /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		848EFFDF1C591BFF001D8368 /* libPhotons.a */ = {
@@ -1372,15 +1372,15 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		650BB33B1D465372008648A3 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = Foundations;
-			targetProxy = 650BB33A1D465372008648A3 /* PBXContainerItemProxy */;
-		};
 		652F75131D3D029500EF9256 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 84FF72E81C8EED6D00D1DA9F /* PhotonsUI */;
 			targetProxy = 652F75121D3D029500EF9256 /* PBXContainerItemProxy */;
+		};
+		65E7AA7B1D48DAEB00830B35 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = FoundationsTestHost;
+			targetProxy = 65E7AA7A1D48DAEB00830B35 /* PBXContainerItemProxy */;
 		};
 		84FF72F31C8EED9300D1DA9F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -1394,7 +1394,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 848EFFB51C591B91001D8368 /* Application.xcconfig */;
 			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Foundations.app/Foundations";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/FoundationsTestHost.app/FoundationsTestHost";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "PhotonsUITests/PhotonsUITests-Prefix.pch";
 				HEADER_SEARCH_PATHS = (

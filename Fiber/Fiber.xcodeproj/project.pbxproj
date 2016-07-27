@@ -178,19 +178,12 @@
 			remoteGlobalIDString = 8B3DEBF418296B6100EA0C1A;
 			remoteInfo = LTKitTests;
 		};
-		65B6E5771D46419100D503C0 /* PBXContainerItemProxy */ = {
+		65BAF3531D48020C009BBB6F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 65B6E5731D46419100D503C0 /* FoundationsTestHost.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = 65CEFBB21D3BF72800402230;
-			remoteInfo = Foundations;
-		};
-		65B6E5791D46419D00D503C0 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 65B6E5731D46419100D503C0 /* FoundationsTestHost.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 65CEFBB11D3BF72800402230;
-			remoteInfo = Foundations;
+			remoteGlobalIDString = 65BAF1821D47FAFE009BBB6F;
+			remoteInfo = FoundationsTestHost;
 		};
 		65BDFC121D0EC56D00C86D36 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -366,6 +359,13 @@
 			proxyType = 2;
 			remoteGlobalIDString = E917140919DF07D700921712;
 			remoteInfo = "libSpecta-iOS";
+		};
+		65F24C211D48C9CB00AB7787 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 65B6E5731D46419100D503C0 /* FoundationsTestHost.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 65CEFBB11D3BF72800402230;
+			remoteInfo = FoundationsTestHost;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -643,7 +643,7 @@
 		65B6E5741D46419100D503C0 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				65B6E5781D46419100D503C0 /* Foundations.app */,
+				65BAF3541D48020C009BBB6F /* FoundationsTestHost.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -936,7 +936,7 @@
 			);
 			dependencies = (
 				65C62B8D1D0474D5000FCE99 /* PBXTargetDependency */,
-				65B6E57A1D46419D00D503C0 /* PBXTargetDependency */,
+				65F24C221D48C9CB00AB7787 /* PBXTargetDependency */,
 			);
 			name = FiberTests;
 			productName = FiberTests;
@@ -1104,11 +1104,11 @@
 			remoteRef = 65A694171D05999B001DE328 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		65B6E5781D46419100D503C0 /* Foundations.app */ = {
+		65BAF3541D48020C009BBB6F /* FoundationsTestHost.app */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.application;
-			path = Foundations.app;
-			remoteRef = 65B6E5771D46419100D503C0 /* PBXContainerItemProxy */;
+			path = FoundationsTestHost.app;
+			remoteRef = 65BAF3531D48020C009BBB6F /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		65BDFC131D0EC56D00C86D36 /* libextobjc_OSX.a */ = {
@@ -1363,15 +1363,15 @@
 			name = "AFNetworking iOS";
 			targetProxy = 659F3B621D2438160097F3D0 /* PBXContainerItemProxy */;
 		};
-		65B6E57A1D46419D00D503C0 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = Foundations;
-			targetProxy = 65B6E5791D46419D00D503C0 /* PBXContainerItemProxy */;
-		};
 		65C62B8D1D0474D5000FCE99 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 65AE674F1D0461350083D1CE /* Fiber */;
 			targetProxy = 65C62B8C1D0474D5000FCE99 /* PBXContainerItemProxy */;
+		};
+		65F24C221D48C9CB00AB7787 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = FoundationsTestHost;
+			targetProxy = 65F24C211D48C9CB00AB7787 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1439,7 +1439,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 65C62B721D046B22000FCE99 /* Application.xcconfig */;
 			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Foundations.app/Foundations";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/FoundationsTestHost.app/FoundationsTestHost";
 				CLANG_ANALYZER_NONNULL = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",

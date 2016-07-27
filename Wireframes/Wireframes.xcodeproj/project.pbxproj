@@ -108,19 +108,19 @@
 			remoteGlobalIDString = D0CFB60F128A8EEE006DC377;
 			remoteInfo = "iOS Tests";
 		};
-		65322E111D4654BB002D5F17 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 65322E0D1D4654BB002D5F17 /* FoundationsTestHost.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 65CEFBB21D3BF72800402230;
-			remoteInfo = Foundations;
-		};
-		65322E131D4654D6002D5F17 /* PBXContainerItemProxy */ = {
+		658B0F4C1D48DB3000258DCC /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 65322E0D1D4654BB002D5F17 /* FoundationsTestHost.xcodeproj */;
 			proxyType = 1;
 			remoteGlobalIDString = 65CEFBB11D3BF72800402230;
-			remoteInfo = Foundations;
+			remoteInfo = FoundationsTestHost;
+		};
+		65BAF4071D480245009BBB6F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 65322E0D1D4654BB002D5F17 /* FoundationsTestHost.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 65BAF1821D47FAFE009BBB6F;
+			remoteInfo = FoundationsTestHost;
 		};
 		6AD130471CC4FCAF003A5857 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -513,7 +513,7 @@
 		65322E0E1D4654BB002D5F17 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				65322E121D4654BB002D5F17 /* Foundations.app */,
+				65BAF4081D480245009BBB6F /* FoundationsTestHost.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -958,7 +958,7 @@
 			);
 			dependencies = (
 				8B283E771CBA814100B745AE /* PBXTargetDependency */,
-				65322E141D4654D6002D5F17 /* PBXTargetDependency */,
+				658B0F4D1D48DB3000258DCC /* PBXTargetDependency */,
 			);
 			name = WireframesTests;
 			productName = WireframesTests;
@@ -1059,11 +1059,11 @@
 			remoteRef = 65322E091D465479002D5F17 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		65322E121D4654BB002D5F17 /* Foundations.app */ = {
+		65BAF4081D480245009BBB6F /* FoundationsTestHost.app */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.application;
-			path = Foundations.app;
-			remoteRef = 65322E111D4654BB002D5F17 /* PBXContainerItemProxy */;
+			path = FoundationsTestHost.app;
+			remoteRef = 65BAF4071D480245009BBB6F /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		6AD130481CC4FCAF003A5857 /* ReactiveCocoa.framework */ = {
@@ -1340,10 +1340,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		65322E141D4654D6002D5F17 /* PBXTargetDependency */ = {
+		658B0F4D1D48DB3000258DCC /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			name = Foundations;
-			targetProxy = 65322E131D4654D6002D5F17 /* PBXContainerItemProxy */;
+			name = FoundationsTestHost;
+			targetProxy = 658B0F4C1D48DB3000258DCC /* PBXContainerItemProxy */;
 		};
 		6AD130641CC4FE8E003A5857 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -1489,7 +1489,7 @@
 		8B283E791CBA814100B745AE /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Foundations.app/Foundations";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/FoundationsTestHost.app/FoundationsTestHost";
 				GCC_PREFIX_HEADER = "WireframesTests/WireframesTests-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
