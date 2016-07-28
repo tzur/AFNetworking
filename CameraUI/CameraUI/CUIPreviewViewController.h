@@ -1,13 +1,13 @@
 // Copyright (c) 2016 Lightricks. All rights reserved.
 // Created by Lior Bar.
 
-@class CUIPreviewViewModel;
+@protocol CUIPreviewViewModel;
 
 NS_ASSUME_NONNULL_BEGIN
 
 /// View controller that displays a live preview and handles tap and pinch gestures.
 ///
-/// The live preview has the following accessibility identifier: "LivePreview".
+/// The internal views have the following accessibility identifiers: "LayerView", "SignalView".
 @interface CUIPreviewViewController : UIViewController
 
 - (instancetype)init NS_UNAVAILABLE;
@@ -18,7 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
                          bundle:(nullable NSBundle *)bundle NS_UNAVAILABLE;
 
 /// Initializes the preview with the given view model.
-- (instancetype)initWithViewModel:(CUIPreviewViewModel *)viewModel NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithViewModel:(id<CUIPreviewViewModel>)viewModel NS_DESIGNATED_INITIALIZER;
 
 @end
 

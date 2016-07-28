@@ -3,6 +3,10 @@
 
 #import "CUIPreviewViewController.h"
 
+#import <LTEngine/LTContentView.h>
+#import <LTEngine/LTGLContext.h>
+#import <LTEngine/LTTexture.h>
+
 #import "CUIFocusIconMode.h"
 #import "CUIFocusView.h"
 #import "CUIGridView.h"
@@ -16,10 +20,13 @@ NS_ASSUME_NONNULL_BEGIN
 @interface CUIPreviewViewController ()
 
 /// View model to determine the properties displayed by this view controller.
-@property (readonly, nonatomic) CUIPreviewViewModel *viewModel;
+@property (readonly, nonatomic) id<CUIPreviewViewModel> viewModel;
+
+/// View for attaching gesture recognizers.
+@property (readonly, nonatomic) UIView *gestureView;
 
 /// View showing the preview image.
-@property (readonly, nonatomic) CUILayerView *previewView;
+@property (strong, nonatomic) UIView *previewView;
 
 /// View used for blurring the \c previewView.
 @property (readonly, nonatomic) UIVisualEffectView *blurView;
@@ -40,60 +47,104 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation CUIPreviewViewController
 
-- (instancetype)initWithViewModel:(CUIPreviewViewModel *)viewModel {
+- (instancetype)initWithViewModel:(id<CUIPreviewViewModel>)viewModel {
   if (self = [super initWithNibName:nil bundle:nil]) {
     _viewModel = viewModel;
   }
   return self;
 }
 
-- (void)viewDidLayoutSubviews {
-  [super viewDidLayoutSubviews];
-
-  self.previewView.frame = self.view.bounds;
-  self.gridView.frame = self.view.bounds;
-  self.blurView.frame = self.view.bounds;
-}
-
 - (void)viewDidLoad {
   [super viewDidLoad];
 
-  self.view.accessibilityIdentifier = @"LivePreview";
-  [self setupPreviewView:self.viewModel.previewLayer];
+  [self setupPreviewView];
+  [self setupGestureView];
+  [self setupBlurView];
   [self setupFocusView];
   [self setupGridView];
   [self setupCaptureAnimation];
 }
 
 #pragma mark -
-#pragma mark Preview view
+#pragma mark Gestures
 #pragma mark -
 
-- (void)setupPreviewView:(CALayer *)previewLayer {
-  _previewView = [[CUILayerView alloc] initWithLayer:previewLayer];
-  [self.view addSubview:self.previewView];
+- (void)setupGestureView {
+  _gestureView = [[UIView alloc] initWithFrame:CGRectZero];
+
+  [self.view addSubview:self.gestureView];
+  [self.gestureView mas_makeConstraints:^(MASConstraintMaker *make) {
+    make.edges.equalTo(self.view);
+  }];
 
   _tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self.viewModel
                                                                   action:@selector(previewTapped:)];
-  [self.previewView addGestureRecognizer:self.tapGestureRecognizer];
+  [self.gestureView addGestureRecognizer:self.tapGestureRecognizer];
   RAC(self.tapGestureRecognizer, enabled, @NO) = RACObserve(self, viewModel.tapEnabled);
 
   _pinchGestureRecognizer = [[UIPinchGestureRecognizer alloc]
       initWithTarget:self.viewModel action:@selector(previewPinched:)];
-  [self.previewView addGestureRecognizer:self.pinchGestureRecognizer];
+  [self.gestureView addGestureRecognizer:self.pinchGestureRecognizer];
   RAC(self.pinchGestureRecognizer, enabled, @NO) = RACObserve(self, viewModel.pinchEnabled);
-
-  [self setupBlurView];
-}
-
-- (void)setupGridView {
-  _gridView = [CUIGridView whiteGrid];
-  RAC(self.gridView, hidden, @YES) = RACObserve(self, viewModel.gridHidden);
-  [self.view addSubview:self.gridView];
 }
 
 #pragma mark -
-#pragma mark Focus view
+#pragma mark Preview
+#pragma mark -
+
+- (void)setupPreviewView {
+  if (self.viewModel.usePreviewLayer) {
+    [self setupPreviewLayerView];
+  } else {
+    [self setupPreviewSignalView];
+  }
+}
+
+- (void)setupPreviewLayerView {
+  self.previewView = [[CUILayerView alloc] initWithLayer:self.viewModel.previewLayer];
+  self.previewView.accessibilityIdentifier = @"LayerView";
+}
+
+- (void)setupPreviewSignalView {
+  LTContentView *contentView = [[LTContentView alloc] initWithContext:[LTGLContext currentContext]];
+  contentView.accessibilityIdentifier = @"SignalView";
+
+  [[self.viewModel.previewSignal
+      takeUntil:[self rac_willDeallocSignal]]
+      subscribeNext:^(LTTexture *texture) {
+        [contentView replaceContentWith:texture];
+        [contentView setNeedsDisplayContent];
+      }];
+
+  self.previewView = contentView;
+}
+
+- (void)setPreviewView:(UIView *)previewView {
+  _previewView = previewView;
+
+  [self.view addSubview:previewView];
+  [previewView mas_makeConstraints:^(MASConstraintMaker *make) {
+    make.edges.equalTo(self.view);
+  }];
+}
+
+#pragma mark -
+#pragma mark Grid
+#pragma mark -
+
+- (void)setupGridView {
+  _gridView = [CUIGridView whiteGrid];
+
+  RAC(self.gridView, hidden, @YES) = RACObserve(self, viewModel.gridHidden);
+
+  [self.view addSubview:self.gridView];
+  [self.gridView mas_makeConstraints:^(MASConstraintMaker *make) {
+    make.edges.equalTo(self.view);
+  }];
+}
+
+#pragma mark -
+#pragma mark Focus
 #pragma mark -
 
 - (void)setupFocusView {
@@ -112,25 +163,24 @@ NS_ASSUME_NONNULL_BEGIN
   self.focusView.outlineColor = [[UIColor blackColor] colorWithAlphaComponent:0.25];
   self.focusView.alpha = 0;
   self.focusView.userInteractionEnabled = NO;
+
   [self.view addSubview:self.focusView];
 
   @weakify(self);
-  [[self.viewModel.focusModeAndPosition
-      deliverOnMainThread]
-      subscribeNext:^(CUIFocusIconMode *focusIconAction) {
-        @strongify(self);
-        switch (focusIconAction.mode) {
-          case CUIFocusIconDisplayModeDefinite:
-            [self showFocusIconAt:[focusIconAction.position CGPointValue]];
-            break;
-          case CUIFocusIconDisplayModeHidden:
-            [self hideFocusIcon];
-            break;
-          case CUIFocusIconDisplayModeIndefinite:
-            [self showIndefiniteFocusIconAt:[focusIconAction.position CGPointValue]];
-            break;
-        }
-      }];
+  [self.viewModel.focusModeAndPosition subscribeNext:^(CUIFocusIconMode *focusIconAction) {
+    @strongify(self);
+    switch (focusIconAction.mode) {
+      case CUIFocusIconDisplayModeDefinite:
+        [self showFocusIconAt:[focusIconAction.position CGPointValue]];
+        break;
+      case CUIFocusIconDisplayModeHidden:
+        [self hideFocusIcon];
+        break;
+      case CUIFocusIconDisplayModeIndefinite:
+        [self showIndefiniteFocusIconAt:[focusIconAction.position CGPointValue]];
+        break;
+    }
+  }];
 }
 
 - (void)showFocusIconAt:(CGPoint)position {
@@ -180,16 +230,20 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 #pragma mark -
-#pragma mark Blur view
+#pragma mark Blur
 #pragma mark -
 
 - (void)setupBlurView {
   UIBlurEffect *effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
   _blurView = [[UIVisualEffectView alloc] initWithEffect:effect];
+
   self.blurView.userInteractionEnabled = NO;
-  self.blurView.hidden = YES;
+  RAC(self.blurView, hidden) = [[RACSignal return:@YES] concat:[self cui_isVisible]];
+
   [self.view addSubview:self.blurView];
-  RAC(self.blurView, hidden) = [self cui_isVisible];
+  [self.blurView mas_makeConstraints:^(MASConstraintMaker *make) {
+    make.edges.equalTo(self.view);
+  }];
 }
 
 #pragma mark -
@@ -198,12 +252,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)setupCaptureAnimation {
   @weakify(self);
-  [[self.viewModel.animateCapture
-      deliverOnMainThread]
-      subscribeNext:^(id) {
-        @strongify(self);
-        [self animateImageCapture];
-      }];
+  [self.viewModel.animateCapture subscribeNext:^(id) {
+    @strongify(self);
+    [self animateImageCapture];
+  }];
 }
 
 - (void)animateImageCapture {

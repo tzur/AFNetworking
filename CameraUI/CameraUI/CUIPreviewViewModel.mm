@@ -3,22 +3,14 @@
 
 #import "CUIPreviewViewModel.h"
 
-#import <Camera/CAMExposureDevice.h>
-#import <Camera/CAMFocusDevice.h>
-#import <Camera/CAMPreviewLayerDevice.h>
-#import <Camera/CAMVideoDevice.h>
-#import <Camera/CAMZoomDevice.h>
-
 #import "CUIFocusIconMode.h"
-#import "RACSignal+CameraUI.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface CUIPreviewViewModel ()
 
 /// Camera device model.
-@property (readonly, nonatomic) id<CAMExposureDevice, CAMFocusDevice, CAMPreviewLayerDevice,
-    CAMVideoDevice, CAMZoomDevice> cameraDevice;
+@property (readonly, nonatomic) id<CUIPreviewDevice> device;
 
 /// \c YES when pinch-to-zoom gesture should be enabled.
 @property (readwrite, nonatomic) BOOL pinchEnabled;
@@ -30,30 +22,50 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation CUIPreviewViewModel
 
+@synthesize usePreviewLayer = _usePreviewLayer;
+@synthesize previewLayer = _previewLayer;
+@synthesize previewSignal = _previewSignal;
+@synthesize animateCapture = _animateCapture;
+@synthesize focusModeAndPosition = _focusModeAndPosition;
+@synthesize tapEnabled = _tapEnabled;
+@synthesize pinchEnabled = _pinchEnabled;
 @synthesize gridHidden = _gridHidden;
 
 static const CGFloat kMaxZoom = 4.0;
 
-- (instancetype)initWithDevice:(id<CAMExposureDevice, CAMFocusDevice, CAMPreviewLayerDevice,
-    CAMVideoDevice, CAMZoomDevice>)cameraDevice {
+- (instancetype)initWithDevice:(id<CUIPreviewDevice>)device {
+  return [self initWithDevice:device previewSignal:nil];
+}
+
+- (instancetype)initWithDevice:(id<CUIPreviewDevice>)device
+                 previewSignal:(nullable RACSignal *)signal {
   if (self = [super init]) {
-    _cameraDevice = cameraDevice;
-    [self setupCameraProperties];
-    [self setupPreview];
+    _device = device;
+    _usePreviewLayer = signal == nil;
+    _previewLayer = self.usePreviewLayer ? device.previewLayer : nil;
+    _previewSignal = self.usePreviewLayer ? nil : signal;
+    [self setupZoom];
     [self setupFocus];
     [self setupCaptureAnimation];
+    _gridHidden = YES;
   }
   return self;
 }
 
-- (void)setupCameraProperties {
-  _tapEnabled = YES;
-  RAC(self, pinchEnabled, @NO) = RACObserve(self, cameraDevice.hasZoom);
+- (void)setupZoom {
+  RAC(self, pinchEnabled, @NO) = RACObserve(self, device.hasZoom);
 }
 
-- (void)setupPreview {
-  _previewLayer = self.cameraDevice.previewLayer;
-  self.gridHidden = YES;
+- (void)setupFocus {
+  _tapEnabled = YES;
+
+  _focusModeSubject = [[RACSubject alloc] init];
+
+  _focusModeAndPosition = [[self.focusModeSubject
+      distinctUntilChanged]
+      takeUntil:[self rac_willDeallocSignal]];
+
+  [self setupSubjectAreaChangedSignal];
 }
 
 - (void)setupCaptureAnimation {
@@ -78,33 +90,25 @@ static const CGFloat kMaxZoom = 4.0;
 }
 
 - (void)zoomByFactor:(CGFloat)factor {
-  CGFloat newZoom = self.cameraDevice.zoomFactor * factor;
-  CGFloat maxZoom = std::min(kMaxZoom, self.cameraDevice.maxZoomFactor);
-  CGFloat finalZoom = std::clamp(newZoom, self.cameraDevice.minZoomFactor, maxZoom);
-  [self activateSignal:[self.cameraDevice setZoom:finalZoom]];
+  CGFloat newZoom = self.device.zoomFactor * factor;
+  CGFloat maxZoom = std::min(kMaxZoom, self.device.maxZoomFactor);
+  CGFloat finalZoom = std::clamp(newZoom, self.device.minZoomFactor, maxZoom);
+  [self activateSignal:[self.device setZoom:finalZoom]];
 }
 
 #pragma mark -
 #pragma mark Focus
 #pragma mark -
 
-- (void)setupFocus {
-  _focusModeSubject = [[RACSubject alloc] init];
-  [self setupSubjectAreaChangedSignal];
-  _focusModeAndPosition = [[self.focusModeSubject
-      distinctUntilChanged]
-      takeUntil:[self rac_willDeallocSignal]];
-}
-
 - (void)setupSubjectAreaChangedSignal {
   @weakify(self);
-  [self.cameraDevice.subjectAreaChanged
+  [self.device.subjectAreaChanged
       subscribeNext:^(id) {
         @strongify(self);
         CGPoint devicePoint = CGPointMake(0.5, 0.5);
-        [self activateSignal:[self.cameraDevice setContinuousFocusPoint:devicePoint]];
-        [self activateSignal:[self.cameraDevice setContinuousExposurePoint:devicePoint]];
-        CGPoint viewPoint = [self.cameraDevice previewLayerPointFromDevicePoint:devicePoint];
+        [self activateSignal:[self.device setContinuousFocusPoint:devicePoint]];
+        [self activateSignal:[self.device setContinuousExposurePoint:devicePoint]];
+        CGPoint viewPoint = [self.device previewLayerPointFromDevicePoint:devicePoint];
         [self.focusModeSubject sendNext:[CUIFocusIconMode indefiniteFocusAtPosition:viewPoint]];
       }];
 }
@@ -116,9 +120,9 @@ static const CGFloat kMaxZoom = 4.0;
   CGPoint viewPoint = [gestureRecognizer locationInView:gestureRecognizer.view];
   [self.focusModeSubject sendNext:[CUIFocusIconMode definiteFocusAtPosition:viewPoint]];
 
-  CGPoint devicePoint = [self.cameraDevice devicePointFromPreviewLayerPoint:viewPoint];
-  RACSignal *setFocus = [self.cameraDevice setSingleFocusPoint:devicePoint];
-  RACSignal *setExposure = [self.cameraDevice setSingleExposurePoint:devicePoint];
+  CGPoint devicePoint = [self.device devicePointFromPreviewLayerPoint:viewPoint];
+  RACSignal *setFocus = [self.device setSingleFocusPoint:devicePoint];
+  RACSignal *setExposure = [self.device setSingleExposurePoint:devicePoint];
   @weakify(self);
   [[RACSignal zip:@[setFocus, setExposure]] subscribeNext:^(id) {
     @strongify(self);

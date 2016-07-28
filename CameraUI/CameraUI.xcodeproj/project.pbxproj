@@ -18,6 +18,7 @@
 		836374061D3FBA9000C8D09D /* CUITimerModeViewModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 836374051D3FBA9000C8D09D /* CUITimerModeViewModel.mm */; };
 		836374091D3FBA9F00C8D09D /* CUITimerMenuViewModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 836374081D3FBA9F00C8D09D /* CUITimerMenuViewModel.mm */; };
 		8363740C1D3FBAAF00C8D09D /* CUIGridViewModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8363740B1D3FBAAF00C8D09D /* CUIGridViewModel.mm */; };
+		838E9F0A1D493F55000B75E9 /* LTSpectaOpenGLContextHook.mm in Sources */ = {isa = PBXBuildFile; fileRef = 838E9F091D493F55000B75E9 /* LTSpectaOpenGLContextHook.mm */; };
 		83AE3F121D48948A00F51B89 /* CUIPreviewViewControllerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 83AE3F111D48948A00F51B89 /* CUIPreviewViewControllerSpec.mm */; };
 		83AE3F351D48955400F51B89 /* UIView+Retrieval.m in Sources */ = {isa = PBXBuildFile; fileRef = 83AE3F341D48955400F51B89 /* UIView+Retrieval.m */; };
 		83B729001CD8D2080090C0BF /* libCameraUI.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 83B728EB1CD8D1090090C0BF /* libCameraUI.a */; };
@@ -469,6 +470,7 @@
 		836374081D3FBA9F00C8D09D /* CUITimerMenuViewModel.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUITimerMenuViewModel.mm; sourceTree = "<group>"; };
 		8363740A1D3FBAAF00C8D09D /* CUIGridViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUIGridViewModel.h; sourceTree = "<group>"; };
 		8363740B1D3FBAAF00C8D09D /* CUIGridViewModel.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUIGridViewModel.mm; sourceTree = "<group>"; };
+		838E9F091D493F55000B75E9 /* LTSpectaOpenGLContextHook.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = LTSpectaOpenGLContextHook.mm; path = ../../LTEngine/LTEngineTests/LTSpectaOpenGLContextHook.mm; sourceTree = "<group>"; };
 		83AE3F111D48948A00F51B89 /* CUIPreviewViewControllerSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUIPreviewViewControllerSpec.mm; sourceTree = "<group>"; };
 		83AE3F331D48955400F51B89 /* UIView+Retrieval.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIView+Retrieval.h"; path = "../../Wireframes/WireframesTests/UIView+Retrieval.h"; sourceTree = "<group>"; };
 		83AE3F341D48955400F51B89 /* UIView+Retrieval.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIView+Retrieval.m"; path = "../../Wireframes/WireframesTests/UIView+Retrieval.m"; sourceTree = "<group>"; };
@@ -580,11 +582,8 @@
 		F95418891CFC55E800C6BE2E /* CUIMenuItemModel.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUIMenuItemModel.mm; sourceTree = "<group>"; };
 		F954188B1CFC56DD00C6BE2E /* CUIMenuItemModelSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUIMenuItemModelSpec.mm; sourceTree = "<group>"; };
 		F965C9BF1CF316E100005627 /* Objection-iOS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = "Objection-iOS.framework"; path = "../third_party/objection/Objection-iOS.framework"; sourceTree = "<group>"; };
-		F965C9DE1CF317A100005627 /* LTSpectaObjectionHook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LTSpectaObjectionHook.h; path = ../../LTEngine/LTEngineTests/LTSpectaObjectionHook.h; sourceTree = "<group>"; };
 		F965C9DF1CF317A100005627 /* LTSpectaObjectionHook.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = LTSpectaObjectionHook.mm; path = ../../LTEngine/LTEngineTests/LTSpectaObjectionHook.mm; sourceTree = "<group>"; };
-		F965C9E11CF317D800005627 /* LTTestModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LTTestModule.h; path = ../../LTEngine/LTEngineTests/LTTestModule.h; sourceTree = "<group>"; };
 		F965C9E21CF317D800005627 /* LTTestModule.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = LTTestModule.mm; path = ../../LTEngine/LTEngineTests/LTTestModule.mm; sourceTree = "<group>"; };
-		F965C9E41CF317F800005627 /* LTObjectionModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LTObjectionModule.h; path = ../../LTEngine/LTEngineTests/LTObjectionModule.h; sourceTree = "<group>"; };
 		F965C9E51CF317F800005627 /* LTObjectionModule.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = LTObjectionModule.mm; path = ../../LTEngine/LTEngineTests/LTObjectionModule.mm; sourceTree = "<group>"; };
 		F965C9EC1CF318CE00005627 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		F965CD5D1CF478F100005627 /* CUIIconWithTitleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUIIconWithTitleCell.h; sourceTree = "<group>"; };
@@ -1173,11 +1172,9 @@
 		F965C9DD1CF3178C00005627 /* LTEngineTests */ = {
 			isa = PBXGroup;
 			children = (
-				F965C9E41CF317F800005627 /* LTObjectionModule.h */,
 				F965C9E51CF317F800005627 /* LTObjectionModule.mm */,
-				F965C9DE1CF317A100005627 /* LTSpectaObjectionHook.h */,
 				F965C9DF1CF317A100005627 /* LTSpectaObjectionHook.mm */,
-				F965C9E11CF317D800005627 /* LTTestModule.h */,
+				838E9F091D493F55000B75E9 /* LTSpectaOpenGLContextHook.mm */,
 				F965C9E21CF317D800005627 /* LTTestModule.mm */,
 			);
 			name = LTEngineTests;
@@ -1285,10 +1282,6 @@
 					ProjectRef = 65061A161D463954003D45B1 /* extobjc.xcodeproj */;
 				},
 				{
-					ProductGroup = 650619F41D46388F003D45B1 /* Products */;
-					ProjectRef = 650619F31D46388F003D45B1 /* TestHost.xcodeproj */;
-				},
-				{
 					ProductGroup = 83B731B71CDB928A0090C0BF /* Products */;
 					ProjectRef = 83B731B61CDB928A0090C0BF /* LTEngine.xcodeproj */;
 				},
@@ -1315,6 +1308,10 @@
 				{
 					ProductGroup = 83B729711CD8D6890090C0BF /* Products */;
 					ProjectRef = 83B729701CD8D6890090C0BF /* Specta.xcodeproj */;
+				},
+				{
+					ProductGroup = 650619F41D46388F003D45B1 /* Products */;
+					ProjectRef = 650619F31D46388F003D45B1 /* TestHost.xcodeproj */;
 				},
 				{
 					ProductGroup = F9F42B011CF47E610050877E /* Products */;
@@ -1715,6 +1712,7 @@
 				BE1D01091D203656008FA64F /* CUIDropDownViewSpec.mm in Sources */,
 				BECFD6901D23AD6600361F3D /* CUIFlashModeViewModelSpec.mm in Sources */,
 				BE97558F1D0077E10081A766 /* CUIMenuItemIconButtonSpec.mm in Sources */,
+				838E9F0A1D493F55000B75E9 /* LTSpectaOpenGLContextHook.mm in Sources */,
 				F9660E691D09A8F300669EB0 /* CUISingleChoiceMenuViewModelSpec.mm in Sources */,
 				BE0D7A9F1CF4978F009899F9 /* CUIMenuItemTextButtonSpec.mm in Sources */,
 				BE0D7A9E1CF4978F009899F9 /* CUISimpleMenuItemViewModel.m in Sources */,

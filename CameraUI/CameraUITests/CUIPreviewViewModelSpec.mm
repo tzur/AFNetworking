@@ -3,28 +3,53 @@
 
 #import "CUIPreviewViewModel.h"
 
-#import <Camera/CAMDevicePreset.h>
-
 #import "CUIFocusIconMode.h"
+
+@interface CAMDeviceStub () <CUIPreviewDevice>
+@end
 
 SpecBegin(CUIPreviewViewModel)
 
 __block CAMDeviceStub *deviceStub;
+__block RACSubject *previewSignal;
 __block CUIPreviewViewModel *previewViewModel;
 __block RACSubject *subjectAreaChanged;
 __block CALayer *deviceLayer;
 
 beforeEach(^{
   deviceStub = [[CAMDeviceStub alloc] init];
-  deviceLayer = [[CALayer alloc] init];
+  previewSignal = [RACSubject subject];
+  deviceLayer = [CALayer layer];
   deviceStub.previewLayer = deviceLayer;
-  subjectAreaChanged = [[RACSubject alloc] init];
+  subjectAreaChanged = [RACSubject subject];
   deviceStub.subjectAreaChanged = subjectAreaChanged;
-  previewViewModel = [[CUIPreviewViewModel alloc] initWithDevice:deviceStub];
+  previewViewModel = [[CUIPreviewViewModel alloc] initWithDevice:deviceStub
+                                                   previewSignal:previewSignal];
 });
 
-it(@"should return device layer", ^{
-  expect(previewViewModel.previewLayer).to.equal(deviceLayer);
+context(@"preview properties initialization", ^{
+  it(@"should initialize correctly without signal", ^{
+    CUIPreviewViewModel *viewModel = [[CUIPreviewViewModel alloc] initWithDevice:deviceStub];
+    expect(viewModel.usePreviewLayer).to.beTruthy();
+    expect(viewModel.previewLayer).to.equal(deviceLayer);
+    expect(viewModel.previewSignal).to.beNil();
+  });
+
+  it(@"should initialize correctly with nil signal", ^{
+    CUIPreviewViewModel *viewModel = [[CUIPreviewViewModel alloc] initWithDevice:deviceStub
+                                                                   previewSignal:nil];
+    expect(viewModel.usePreviewLayer).to.beTruthy();
+    expect(viewModel.previewLayer).to.equal(deviceLayer);
+    expect(viewModel.previewSignal).to.beNil();
+  });
+
+  it(@"should initialize correctly with signal", ^{
+    CUIPreviewViewModel *viewModel = [[CUIPreviewViewModel alloc] initWithDevice:deviceStub
+                                                                   previewSignal:previewSignal];
+    expect(viewModel.usePreviewLayer).to.beFalsy();
+    expect(viewModel.previewLayer).to.beNil();
+    expect(viewModel.previewSignal).to.equal(previewSignal);
+  });
 });
 
 it(@"should have grid hidden set to YES", ^{
@@ -163,7 +188,6 @@ context(@"focus", ^{
   __block RACSubject *singleExposureSignal;
   __block RACSubject *continuousFocusSignal;
   __block RACSubject *continuousExposureSignal;
-  __block LLSignalTestRecorder *recorder;
   __block CUIFocusIconMode *focusAction;
   __block id tapMock;
 
@@ -181,7 +205,6 @@ context(@"focus", ^{
     deviceStub.setContinuousFocusPointSignal = continuousFocusSignal;
     deviceStub.setContinuousExposurePointSignal = continuousExposureSignal;
     centerPoint = [deviceStub previewLayerPointFromDevicePoint:kDeviceCenterPoint];
-    recorder = [previewViewModel.focusModeAndPosition testRecorder];
     focusAction = [CUIFocusIconMode indefiniteFocusAtPosition:centerPoint];
   });
 
@@ -349,9 +372,11 @@ context(@"focus", ^{
     static CUIFocusIconMode * const kDefiniteFocusAtTapPoint2 =
         [CUIFocusIconMode definiteFocusAtPosition:kTapPoint2];
 
+    __block LLSignalTestRecorder *recorder;
     __block id tapMock2;
 
     beforeEach(^{
+      recorder = [previewViewModel.focusModeAndPosition testRecorder];
       tapMock2 = OCMClassMock([UITapGestureRecognizer class]);
       OCMStub([(UITapGestureRecognizer *)tapMock2 locationInView:OCMOCK_ANY]).andReturn(kTapPoint2);
     });
@@ -405,7 +430,6 @@ context(@"focus", ^{
     });
 
     it(@"should send focus position when single focuse changed twice", ^{
-      LLSignalTestRecorder *recorder = [previewViewModel.focusModeAndPosition testRecorder];
       expect(recorder).to.sendValues(@[]);
       [previewViewModel previewTapped:tapMock];
       expect(recorder).to.sendValues(@[kDefiniteFocusAtTapPoint]);
@@ -422,7 +446,6 @@ context(@"focus", ^{
     });
 
     it(@"should send focus position when a second focus starts before the first finished", ^{
-      LLSignalTestRecorder *recorder = [previewViewModel.focusModeAndPosition testRecorder];
       expect(recorder).to.sendValues(@[]);
       [previewViewModel previewTapped:tapMock];
       expect(recorder).to.sendValues(@[kDefiniteFocusAtTapPoint]);

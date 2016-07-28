@@ -3,18 +3,24 @@
 
 #import "CUIGridViewModel.h"
 
-@protocol CAMExposureDevice, CAMFocusDevice, CAMPreviewLayerDevice, CAMVideoDevice, CAMZoomDevice;
+#import <Camera/CAMExposureDevice.h>
+#import <Camera/CAMFocusDevice.h>
+#import <Camera/CAMPreviewLayerDevice.h>
+#import <Camera/CAMVideoDevice.h>
+#import <Camera/CAMZoomDevice.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
+/// Camera device suitable for \c CUIPreviewViewModel.
+@protocol CUIPreviewDevice <CAMExposureDevice, CAMFocusDevice, CAMPreviewLayerDevice,
+    CAMVideoDevice, CAMZoomDevice>
+@end
+
 /// ViewModel for CUIPreviewViewController. Provides a live preview, controls focus and zoom.
-@interface CUIPreviewViewModel : NSObject <CUIGridContainer>
-
-- (instancetype)init NS_UNAVAILABLE;
-
-/// Initializes the preview view model with the given camera device.
-- (instancetype)initWithDevice:(id<CAMExposureDevice, CAMFocusDevice, CAMPreviewLayerDevice,
-    CAMVideoDevice, CAMZoomDevice>)cameraDevice NS_DESIGNATED_INITIALIZER;
+///
+/// Live preview is provided via a signal of \c LTTextures (\c previewSignal), or via
+/// a layer (\c previewLayer) when the signal is \c nil.
+@protocol CUIPreviewViewModel <CUIGridContainer>
 
 /// Called by the view controller when the preview view was tapped.
 - (void)previewTapped:(UITapGestureRecognizer *)gestureRecognizer;
@@ -25,17 +31,32 @@ NS_ASSUME_NONNULL_BEGIN
 /// Activate capture animation.
 - (void)performCaptureAnimation;
 
-/// Preview layer.
-@property (readonly, nonatomic) CALayer *previewLayer;
+/// When \c YES, \c previewLayer should be used for the live preview, and is guaranteed to not
+/// be \c nil. When \c NO, \c previewSignal should be used, and is guaranteed to not be \c
+/// nil.
+///
+/// This property is guaranteed to not change after initialization and so does not need to be
+/// observed.
+@property (readonly, nonatomic) BOOL usePreviewLayer;
+
+/// Layer showing live preview from the camera. Guaranteed to not be \c nil when \c usePreviewLayer
+/// is \c YES. When it is \c nil, use \c previewSignal instead.
+///
+/// This property is guaranteed to not change after initialization and so does not need to be
+/// observed.
+@property (readonly, nonatomic, nullable) CALayer *previewLayer;
+
+/// Signal of \c LTTextures, showing live preview from the camera. Guaranteed to not be
+/// \c nil when \c usePreviewLayer is \c NO. When it is \c nil, use \c previewLayer instead.
+///
+/// This property is guaranteed to not change after initialization and so does not need to be
+/// observed.
+@property (readonly, nonatomic, nullable) RACSignal *previewSignal;
 
 /// Hot signal that sends \c RACUnits whenever the "capturing" animation should be performed.
-/// This signal sends its events on an arbitrary thread, completes when the receiver is deallocated
-/// and never errs.
 @property (readonly, nonatomic) RACSignal *animateCapture;
 
 /// Hot signal that sends \c CUIFocusIconMode marking how and where the focus icon should be shown.
-/// This signal sends its events on an arbitrary thread, completes when the receiver is deallocated
-/// and never errs.
 @property (readonly, nonatomic) RACSignal *focusModeAndPosition;
 
 /// \c YES when the device supports focus and tap-to-focus gesture should be enabled.
@@ -43,6 +64,24 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// \c YES when the device supports zoom and pinch-to-zoom gesture should be enabled.
 @property (readonly, nonatomic) BOOL pinchEnabled;
+
+@end
+
+/// Concrete implementation of \c id<CUIPreviewViewModel>.
+///
+/// The pinch-to-zoom gesture is always enabled, and tap-to-focus is enabled when the device is
+/// capable of focusing.
+@interface CUIPreviewViewModel : NSObject <CUIPreviewViewModel>
+
+- (instancetype)init NS_UNAVAILABLE;
+
+/// Initializes with the given \c device and \c nil preview signal.
+- (instancetype)initWithDevice:(id<CUIPreviewDevice>)device;
+
+/// Initializes with the given \c device and live preview signal. \c usePreviewLayer is set to
+/// \c YES if and only if \c signal is \c nil.
+- (instancetype)initWithDevice:(id<CUIPreviewDevice>)device
+                 previewSignal:(nullable RACSignal *)signal NS_DESIGNATED_INITIALIZER;
 
 @end
 
