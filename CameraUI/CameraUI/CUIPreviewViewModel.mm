@@ -30,6 +30,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation CUIPreviewViewModel
 
+@synthesize gridHidden = _gridHidden;
+
 static const CGFloat kMaxZoom = 4.0;
 
 - (instancetype)initWithDevice:(id<CAMExposureDevice, CAMFocusDevice, CAMPreviewLayerDevice,
