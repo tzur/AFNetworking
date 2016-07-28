@@ -56,6 +56,7 @@ static NSString * const kCellClassIdentifier = @"cellClass";
   self.collectionView.showsHorizontalScrollIndicator = NO;
   self.collectionView.showsVerticalScrollIndicator = NO;
   self.collectionView.delegate = self;
+  self.collectionView.backgroundColor = [UIColor clearColor];
   [self.collectionView registerClass:self.cellClass
           forCellWithReuseIdentifier:kCellClassIdentifier];
   [self setupViewModel];
