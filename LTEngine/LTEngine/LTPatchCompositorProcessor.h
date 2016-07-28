@@ -28,4 +28,15 @@
 @property (nonatomic) CGFloat sourceOpacity;
 LTPropertyDeclare(CGFloat, sourceOpacity, SourceOpacity);
 
+/// \c YES if the \c sourceRect should be used in a mirrored way. The mirroring is performed along
+/// the vertical line with <tt>x = 0.5</tt>, in texture coordinate space.
+@property (nonatomic) BOOL flip;
+LTPropertyDeclare(BOOL, flip, Flip);
+
+/// Interpolation factor used to compute the strength of source smoothing. If \c 1, a fully smoothed
+/// version of source is used, yielding a seamless patching effect. If \c 0, the source is used directly,
+/// without any smoothing. Default value is \c 1.
+@property (nonatomic) CGFloat smoothingAlpha;
+LTPropertyDeclare(CGFloat, smoothingAlpha, SmoothingAlpha);
+
 @end

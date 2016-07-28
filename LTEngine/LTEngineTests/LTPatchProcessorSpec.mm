@@ -92,6 +92,9 @@ context(@"initialization", ^{
     expect(processor.targetRect).to.equal([LTRotatedRect
                                            rect:CGRectFromOriginAndSize(CGPointZero, target.size)]);
     expect(processor.workingSize).to.equal(kWorkingSizes.front());
+    expect(processor.flip).to.equal(NO);
+    expect(processor.sourceOpacity).to.equal(1.0);
+    expect(processor.smoothingAlpha).to.equal(1.0);
   });
 });
 
@@ -164,14 +167,13 @@ context(@"processing", ^{
   });
 
   it(@"should consider mask when cloning", ^{
-    // Put constant values only where mask == 1, and random junk anywhere else.
     cv::Rect maskROI(0, 0, 8, 8);
     [mask mappedImageForWriting:^(cv::Mat *mapped, BOOL) {
       mapped->setTo(cv::Scalar::zeros());
       (*mapped)(maskROI).setTo(cv::Scalar::ones() * 255);
     }];
     [source mappedImageForWriting:^(cv::Mat *mapped, BOOL) {
-      cv::randu(*mapped, cv::Vec4b::zeros(), cv::Vec4b::ones() * 255);
+      mapped->setTo(cv::Vec4b(125, 125, 125, 125));
       (*mapped)(maskROI).setTo(cv::Vec4b(255, 0, 0, 255));
     }];
 
@@ -186,6 +188,60 @@ context(@"processing", ^{
     expected(roi) = cv::Vec4b(0, 0, 255, 255);
 
     expect($([output image])).to.beCloseToMat($(expected));
+  });
+  
+  it(@"should consider smoothing when cloning", ^{
+    cv::Rect maskROI(0, 0, 8, 8);
+    [mask mappedImageForWriting:^(cv::Mat *mapped, BOOL) {
+      mapped->setTo(cv::Scalar::zeros());
+      (*mapped)(maskROI).setTo(cv::Scalar::ones() * 255);
+    }];
+    [source mappedImageForWriting:^(cv::Mat *mapped, BOOL) {
+      mapped->setTo(cv::Vec4b(125, 125, 125, 125));
+      (*mapped)(maskROI).setTo(cv::Vec4b(255, 0, 0, 255));
+    }];
+    
+    mask.minFilterInterpolation = LTTextureInterpolationNearest;
+    mask.magFilterInterpolation = LTTextureInterpolationNearest;
+    
+    processor.smoothingAlpha = 0.5;
+    [processor process];
+    
+    cv::Mat4b expected = cv::Mat4b::zeros(kTargetSize.height, kTargetSize.width);
+    cv::Rect roi(processor.targetRect.rect.origin.x,
+                 processor.targetRect.rect.origin.y, kSourceSize.width, kSourceSize.height);
+    expected(roi) = cv::Vec4b(0, 0, 255, 255);
+    
+    expect($([output image])).to.beCloseToMat($(expected));
+  });
+  
+  it(@"should consider flip when cloning", ^{
+    cv::Mat4b sourceImage(kSourceSize.height, kSourceSize.width);
+    sourceImage.setTo(cv::Scalar(128, 128, 128, 255));
+    cv::Vec4b red(255, 0, 0, 255);
+    cv::Vec4b blue(0, 0, 255, 255);
+    sourceImage(cv::Rect(0, 0, 4, 8)) = red;
+    sourceImage(cv::Rect(4, 0, 4, 8)) = blue;
+    
+    [source load:sourceImage];
+    source.minFilterInterpolation = LTTextureInterpolationNearest;
+    source.magFilterInterpolation = LTTextureInterpolationNearest;
+    
+    processor.sourceRect = [LTRotatedRect rect:CGRectMake(0, 0, 8, 8)];
+    processor.flip = YES;
+    [processor process];
+    
+    cv::Mat outputMat = [output image];
+    
+    CGRect targetRect = processor.targetRect.rect;
+    CGPoint origin = targetRect.origin;
+    
+    cv::Vec4b outputLeftValue = outputMat.at<cv::Vec4b>(origin.y, origin.x);
+    cv::Vec4b outputRightValue = outputMat.at<cv::Vec4b>(origin.y,
+                                                         origin.x + targetRect.size.width  - 1);
+    
+    expect(outputRightValue == red).to.beTruthy();
+    expect(outputLeftValue == blue).to.beTruthy();
   });
 
   context(@"non-constant source", ^{

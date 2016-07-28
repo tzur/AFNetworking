@@ -3,6 +3,7 @@
 
 uniform highp mat4 modelview;
 uniform highp mat4 projection;
+uniform bool flipSourceTextureCoordinates;
 
 uniform highp mat3 texture;
 uniform highp mat3 targetTextureMat;
@@ -16,8 +17,13 @@ varying highp vec2 vBaseTexcoord;
 
 void main() {
   vec3 texcoord3 = vec3(texcoord.xy, 1.0);
-
-  vSourceTexcoord = (texture * texcoord3).xy;
+  vec3 flippedTexCoord = texcoord3;
+  
+  if (flipSourceTextureCoordinates) {
+    flippedTexCoord.x = 1.0 - flippedTexCoord.x;
+  }
+  
+  vSourceTexcoord = (texture * flippedTexCoord).xy;
   vTargetTexcoord = (targetTextureMat * texcoord3).xy;
   vBaseTexcoord = texcoord.xy;
 

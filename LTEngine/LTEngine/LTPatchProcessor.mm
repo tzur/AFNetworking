@@ -72,6 +72,15 @@
 @property (nonatomic) CGFloat sourceOpacity;
 LTPropertyDeclare(CGFloat, sourceOpacity, SourceOpacity);
 
+@property (nonatomic) BOOL flip;
+LTPropertyDeclare(CGFloat, flip, Flip);
+
+/// Modulates the source smoothing. Value of \c 1 means fully smoothed, which gives seamless
+/// patching effect. Value of \c 0 means pixels from the source are simply copied without any
+/// smoothing. Default value is \c 1.
+@property (nonatomic) CGFloat smoothingAlpha;
+LTPropertyDeclare(CGFloat, smoothingAlpha, SmoothingAlpha);
+
 @end
 
 @implementation LTInternalPatchProcessor
@@ -98,6 +107,7 @@ LTPropertyDeclare(CGFloat, sourceOpacity, SourceOpacity);
 - (void)setDefaultValues {
   self.sourceRect = [LTRotatedRect rect:CGRectFromSize(self.source.size)];
   self.targetRect = [LTRotatedRect rect:CGRectFromSize(self.source.size)];
+  self.flip = NO;
 }
 
 /// Size of the mask given the working size. This size will never be larger than \c workingSize, and
@@ -133,6 +143,7 @@ LTPropertyDeclare(CGFloat, sourceOpacity, SourceOpacity);
   self.compositor.sourceRect = self.sourceRect;
   self.compositor.targetRect = self.targetRect;
   self.compositor.sourceOpacity = self.sourceOpacity;
+  self.compositor.smoothingAlpha = self.smoothingAlpha;
 }
 
 - (void)process {
@@ -141,6 +152,8 @@ LTPropertyDeclare(CGFloat, sourceOpacity, SourceOpacity);
 }
 
 LTPropertyProxy(CGFloat, sourceOpacity, SourceOpacity, self.compositor);
+
+LTPropertyProxy(CGFloat, smoothingAlpha, SmoothingAlpha, self.compositor);
 
 - (void)setSourceRect:(LTRotatedRect *)sourceRect {
   _sourceRect = sourceRect;
@@ -152,6 +165,14 @@ LTPropertyProxy(CGFloat, sourceOpacity, SourceOpacity, self.compositor);
   _targetRect = targetRect;
   self.solver.targetRect = targetRect;
   self.compositor.targetRect = targetRect;
+}
+
+- (BOOL)flip {
+  return self.compositor.flip;
+}
+
+- (void)setFlip:(BOOL)flip {
+  self.compositor.flip = flip;
 }
 
 @end
@@ -248,7 +269,9 @@ LTPropertyProxy(CGFloat, sourceOpacity, SourceOpacity, self.compositor);
       @instanceKeypath(LTPatchProcessor, sourceRect),
       @instanceKeypath(LTPatchProcessor, targetRect),
       @instanceKeypath(LTPatchProcessor, workingSize),
-      @instanceKeypath(LTPatchProcessor, sourceOpacity)
+      @instanceKeypath(LTPatchProcessor, sourceOpacity),
+      @instanceKeypath(LTPatchCompositorProcessor, flip),
+      @instanceKeypath(LTPatchProcessor, smoothingAlpha)
     ]];
   });
 
@@ -287,6 +310,7 @@ LTPropertyProxy(CGFloat, sourceOpacity, SourceOpacity, self.compositor);
     [self.rectCopyProcessor process];
   }
   
+  NSLog(@"workingSize : %@",NSStringFromCGSize(self.workingSize));
   [self.workingSizeToProcessor[$(self.workingSize)] process];
 
   [self updateRectCopyProcessorRects];
@@ -326,6 +350,25 @@ LTPropertyWithoutSetter(CGFloat, sourceOpacity, SourceOpacity, 0, 1, 1);
 
   for (LTInternalPatchProcessor *processor in self.workingSizeToProcessor.allValues) {
     processor.sourceOpacity = sourceOpacity;
+  }
+}
+
+- (BOOL)flip {
+  return ((LTInternalPatchProcessor *)self.workingSizeToProcessor.allValues.firstObject).flip;
+}
+
+- (void)setFlip:(BOOL)flip {
+  for (LTInternalPatchProcessor *processor in self.workingSizeToProcessor.allValues) {
+    processor.flip = flip;
+  }
+}
+
+LTPropertyWithoutSetter(CGFloat, smoothingAlpha, SmoothingAlpha, 0, 1, 1);
+- (void)setSmoothingAlpha:(CGFloat)smoothingAlpha {
+  [self _verifyAndSetSmoothingAlpha:smoothingAlpha];
+  
+  for (LTInternalPatchProcessor *processor in self.workingSizeToProcessor.allValues) {
+    processor.smoothingAlpha = smoothingAlpha;
   }
 }
 

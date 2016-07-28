@@ -7,6 +7,7 @@ uniform lowp sampler2D membraneTexture;
 uniform lowp sampler2D maskTexture;
 
 uniform highp float sourceOpacity;
+uniform highp float smoothingAlpha;
 
 varying highp vec2 vSourceTexcoord;
 varying highp vec2 vTargetTexcoord;
@@ -18,5 +19,11 @@ void main() {
   lowp vec4 membrane = texture2D(membraneTexture, vBaseTexcoord);
   lowp vec4 mask = texture2D(maskTexture, vBaseTexcoord);
 
-  gl_FragColor = mix(target, source + membrane, mask.r * sourceOpacity);
+  highp float feathering = 1.0 - step(1.0, 1.0 - mask.r);
+  
+  if (smoothingAlpha > 0.0) {
+    feathering = 1.0 - smoothstep(1.0 - smoothingAlpha, 1.0, 1.0 - mask.r);
+  }
+  
+  gl_FragColor = vec4(mix(target.rgb, source.rgb + membrane.rgb, feathering * sourceOpacity), 1.0);
 }
