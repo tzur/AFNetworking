@@ -2028,6 +2028,7 @@
 		284ED12F1895668800414A8A /* LTCatmullRomInterpolantSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTCatmullRomInterpolantSpec.mm; sourceTree = "<group>"; };
 		284ED131189568AC00414A8A /* LTPolynomialInterpolantExamples.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTPolynomialInterpolantExamples.h; sourceTree = "<group>"; };
 		285660211B1761A800807A4F /* LTImageJPGCompressorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTImageJPGCompressorSpec.mm; sourceTree = "<group>"; };
+		28568E221D490F2800D7E27E /* LTShaderUnit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTShaderUnit.h; sourceTree = "<group>"; };
 		2856D2861A00E10B008FC29F /* PerspectiveOverflow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PerspectiveOverflow.png; path = Resources/PerspectiveOverflow.png; sourceTree = "<group>"; };
 		285A671219AE1C7000B2CE9E /* LTMeshBaseDrawer.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTMeshBaseDrawer.vsh; sourceTree = "<group>"; };
 		285A671919AE313400B2CE9E /* LTReshapeProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTReshapeProcessor.h; sourceTree = "<group>"; };
@@ -4886,6 +4887,7 @@
 				8BA3E13D182A606600FDD95A /* LTShader.mm */,
 				8B8E50E81861AA8900821829 /* LTShaderStorage.h */,
 				8B8E50E91861AA8900821829 /* LTShaderStorage.m */,
+				28568E221D490F2800D7E27E /* LTShaderUnit.h */,
 				8BA11ADF1831555100A5001D /* LTTexture.h */,
 				8BA11AE01831555100A5001D /* LTTexture.mm */,
 				8B9D3FE4189541F0001A964D /* LTTexture+Factory.h */,

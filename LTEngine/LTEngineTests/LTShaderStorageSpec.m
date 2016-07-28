@@ -5,6 +5,10 @@
 
 SpecBegin(LTShaderStorage)
 
+it(@"should conform to LTShaderUnit protocol", ^{
+  expect([ShaderVsh class]).to.conformTo(@protocol(LTShaderUnit));
+});
+
 it(@"should load shader contents with static call", ^{
   NSString *shader = [ShaderVsh source];
 
