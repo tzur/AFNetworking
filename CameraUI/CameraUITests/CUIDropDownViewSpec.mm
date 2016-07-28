@@ -5,6 +5,23 @@
 
 #import "CUIDropDownEntry.h"
 
+@interface CUIFakeDropDownEntry : NSObject <CUIDropDownEntry>
+@property (strong, nonatomic) UIView *mainBarItemView;
+@property (strong, nonatomic, nullable) UIView *submenuView;
+@property (strong, nonatomic, nullable) RACSignal *didTapSignal;
+@end
+
+@implementation CUIFakeDropDownEntry
+- (instancetype)init {
+  if (self = [super init]) {
+    self.mainBarItemView = [[UIView alloc] initWithFrame:CGRectZero];
+    self.submenuView = [[UIView alloc] initWithFrame:CGRectZero];
+    self.didTapSignal = [RACSubject subject];
+  }
+  return self;
+}
+@end
+
 SpecBegin(CUIDropDownView)
 
 __block CUIDropDownView *dropDown;
@@ -12,29 +29,49 @@ __block NSArray<id<CUIDropDownEntry>> *entries;
 
 beforeEach(^{
   entries = @[
-    OCMProtocolMock(@protocol(CUIDropDownEntry)),
-    OCMProtocolMock(@protocol(CUIDropDownEntry))
+    [[CUIFakeDropDownEntry alloc] init],
+    [[CUIFakeDropDownEntry alloc] init]
   ];
-  OCMStub([entries[0] mainBarItemView]).andReturn([[UIView alloc] initWithFrame:CGRectZero]);
-  OCMStub([entries[0] submenuView]).andReturn([[UIView alloc] initWithFrame:CGRectZero]);
-  OCMStub([entries[0] didTapSignal]).andReturn([[RACSubject alloc] init]);
-  OCMStub([entries[1] mainBarItemView]).andReturn([[UIView alloc] initWithFrame:CGRectZero]);
-  OCMStub([entries[1] submenuView]).andReturn([[UIView alloc] initWithFrame:CGRectZero]);
-  OCMStub([entries[1] didTapSignal]).andReturn([[RACSubject alloc] init]);
-  dropDown = [[CUIDropDownView alloc] initWithEntries:entries];
+  dropDown = [[CUIDropDownView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
+  dropDown.entries = entries;
 });
 
 context(@"initialization", ^{
-  it(@"should raise an exception when initialized with nil entries", ^{
-    NSArray<id<CUIDropDownEntry>> *entries = nil;
-    expect(^{
-      CUIDropDownView * __unused dropDown = [[CUIDropDownView alloc] initWithEntries:entries];
-    }).to.raise(NSInvalidArgumentException);
+  it(@"should init with empty entries", ^{
+    CUIDropDownView *dropDownView = [[CUIDropDownView alloc] initWithFrame:CGRectZero];
+    expect(dropDownView.entries).to.equal(@[]);
   });
 
   it(@"should set the hidden state of the submenuViews to YES", ^{
     expect(entries[0].submenuView.hidden).to.beTruthy();
     expect(entries[1].submenuView.hidden).to.beTruthy();
+  });
+});
+
+context(@"setting entries", ^{
+  it(@"should add entries to view hierarchy", ^{
+    expect(dropDown.entries).to.equal(entries);
+    expect(entries[0].mainBarItemView.superview).notTo.beNil();
+    expect(entries[1].mainBarItemView.superview).notTo.beNil();
+  });
+
+  it(@"should use new entries", ^{
+    expect(dropDown.entries).to.equal(entries);
+
+    NSArray<id<CUIDropDownEntry>> *otherEntries = @[
+      [[CUIFakeDropDownEntry alloc] init],
+      [[CUIFakeDropDownEntry alloc] init],
+      [[CUIFakeDropDownEntry alloc] init]
+    ];
+    dropDown.entries = otherEntries;
+    expect(dropDown.entries).to.equal(otherEntries);
+
+    expect(entries[0].mainBarItemView.superview).to.beNil();
+    expect(entries[1].mainBarItemView.superview).to.beNil();
+
+    expect(otherEntries[0].mainBarItemView.superview).notTo.beNil();
+    expect(otherEntries[1].mainBarItemView.superview).notTo.beNil();
+    expect(otherEntries[2].mainBarItemView.superview).notTo.beNil();
   });
 });
 
