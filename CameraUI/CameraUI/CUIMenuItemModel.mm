@@ -7,13 +7,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation CUIMenuItemModel
 
-- (instancetype)initWithLocalizedTitle:(NSString *)localizedTitle iconURL:(NSURL *)iconURL
-                                   key:(NSString *)key {
+- (instancetype)initWithLocalizedTitle:(nullable NSString *)localizedTitle
+                               iconURL:(nullable NSURL *)iconURL
+                                   key:(nullable NSString *)key {
   NSError *initError;
   NSDictionary *values = @{
-    @"localizedTitle": localizedTitle,
-    @"iconURL": iconURL,
-    @"key": key
+    @"localizedTitle": localizedTitle ?: [NSNull null],
+    @"iconURL": iconURL ?: [NSNull null],
+    @"key": key ?: [NSNull null]
   };
   self = [super initWithDictionary:values error:&initError];
   LTAssert(!initError, @"Error occurred during initialization: %@", initError);
