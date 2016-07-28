@@ -44,6 +44,8 @@
   self.sourceRect = [LTRotatedRect rect:CGRectFromOriginAndSize(CGPointZero, self.source.size)];
   self.targetRect = [LTRotatedRect rect:CGRectFromOriginAndSize(CGPointZero, self.target.size)];
   self.sourceOpacity = self.defaultSourceOpacity;
+  self.flip = NO;
+  self.smoothingAlpha = self.defaultSmoothingAlpha;
 }
 
 - (void)drawWithPlacement:(LTNextIterationPlacement *)placement {
@@ -62,6 +64,17 @@ LTPropertyWithoutSetter(CGFloat, sourceOpacity, SourceOpacity, 0, 1, 1);
 - (void)setSourceOpacity:(CGFloat)sourceOpacity {
   [self _verifyAndSetSourceOpacity:sourceOpacity];
   self[[LTPatchCompositorFsh sourceOpacity]] = @(sourceOpacity);
+}
+
+- (void)setFlip:(BOOL)flip {
+  _flip = flip;
+  self[[LTPatchCompositorVsh flipSourceTextureCoordinates]] = @(flip);
+}
+
+LTPropertyWithoutSetter(CGFloat, smoothingAlpha, SmoothingAlpha, 0, 1, 1);
+- (void)setSmoothingAlpha:(CGFloat)smoothingAlpha {
+  [self _verifyAndSetSmoothingAlpha:smoothingAlpha];
+  self[[LTPatchCompositorFsh smoothingAlpha]] = @(smoothingAlpha);
 }
 
 @end
