@@ -16,7 +16,9 @@ LTErrorCodesDeclare(BazaarErrorCodeProductID,
   /// Failure during products metadata fetching.
   BZRErrorCodeProductsMetadataFetchingFailed,
   /// Deserilization of a model instance from JSON dictionary has failed.
-  BZRErrorCodeModelJSONDeserializationFailed
+  BZRErrorCodeModelJSONDeserializationFailed,
+  /// Deserialization of a JSON object from raw data has failed.
+  BZRErrorCodeJSONDataDeserializationFailed
 );
 
 NS_ASSUME_NONNULL_END
