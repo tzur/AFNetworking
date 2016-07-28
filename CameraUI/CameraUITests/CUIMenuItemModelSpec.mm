@@ -33,4 +33,42 @@ context(@"menu item model", ^{
   });
 });
 
+context(@"menu item model with nil", ^{
+  it(@"should init correctly", ^{
+    CUIMenuItemModel *model = [[CUIMenuItemModel alloc] initWithLocalizedTitle:nil iconURL:nil
+                                                                           key:nil];
+    expect(model.localizedTitle).to.beNil();
+    expect(model.iconURL).to.beNil();
+    expect(model.key).to.beNil();
+  });
+
+  it(@"should deserialize correctly", ^{
+    NSDictionary *dict = @{
+      @"localizedTitle": [NSNull null],
+      @"iconURL":[NSNull null],
+      @"key": [NSNull null]
+    };
+    NSError *error;
+    CUIMenuItemModel *model = [MTLJSONAdapter modelOfClass:CUIMenuItemModel.class
+                                        fromJSONDictionary:dict error:&error];
+    expect(error).to.beNil();
+    expect(model).toNot.beNil();
+    expect(model.localizedTitle).to.beNil();
+    expect(model.iconURL).to.beNil();
+    expect(model.key).to.beNil();
+  });
+
+  it(@"should deserialize correctly", ^{
+    NSDictionary *dict = @{};
+    NSError *error;
+    CUIMenuItemModel *model = [MTLJSONAdapter modelOfClass:CUIMenuItemModel.class
+                                        fromJSONDictionary:dict error:&error];
+    expect(error).to.beNil();
+    expect(model).toNot.beNil();
+    expect(model.localizedTitle).to.beNil();
+    expect(model.iconURL).to.beNil();
+    expect(model.key).to.beNil();
+  });
+});
+
 SpecEnd

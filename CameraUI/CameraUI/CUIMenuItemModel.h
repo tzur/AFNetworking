@@ -10,17 +10,18 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)init NS_UNAVAILABLE;
 
 /// Initializes the menu item with the given values.
-- (instancetype)initWithLocalizedTitle:(NSString *)localizedTitle iconURL:(NSURL *)iconURL
-                                   key:(NSString *)key NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithLocalizedTitle:(nullable NSString *)localizedTitle
+                               iconURL:(nullable NSURL *)iconURL
+                                   key:(nullable NSString *)key NS_DESIGNATED_INITIALIZER;
 
 /// Title of the menu item.
-@property (readonly, nonatomic) NSString *localizedTitle;
+@property (readonly, nonatomic, nullable) NSString *localizedTitle;
 
 /// Icon URL for the menu item.
-@property (readonly, nonatomic) NSURL *iconURL;
+@property (readonly, nonatomic, nullable) NSURL *iconURL;
 
 /// Key of the menu item.
-@property (readonly, nonatomic) NSString *key;
+@property (readonly, nonatomic, nullable) NSString *key;
 
 @end
 
