@@ -19,7 +19,7 @@
 		6506094C1CEDE5F60012202D /* BZRReceiptModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6506094B1CEDE5F60012202D /* BZRReceiptModel.mm */; };
 		650D7D401D324AAD003CE646 /* SKProductsRequest+RACSignalSupport.mm in Sources */ = {isa = PBXBuildFile; fileRef = 650D7D3F1D324AAD003CE646 /* SKProductsRequest+RACSignalSupport.mm */; };
 		651A261A1D392B79001D418B /* BZRValidatricksReceiptValidator.mm in Sources */ = {isa = PBXBuildFile; fileRef = 651A26191D392B79001D418B /* BZRValidatricksReceiptValidator.mm */; };
-		6526DF161D413BBE0034DE01 /* NSFileManager+Bazaar.h in Headers */ = {isa = PBXBuildFile; fileRef = 6526DF141D413BBE0034DE01 /* NSFileManager+Bazaar.h */; };
+		6526DF0B1D41093C0034DE01 /* BZRFileArchiver.h in Headers */ = {isa = PBXBuildFile; fileRef = 6592A33B1D40EF2D00CC318D /* BZRFileArchiver.h */; };
 		6526DF171D413BBE0034DE01 /* NSFileManager+Bazaar.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6526DF151D413BBE0034DE01 /* NSFileManager+Bazaar.mm */; };
 		6527D6021D39411600A3AB29 /* FBRHTTPClient+Validatricks.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6527D6011D39411600A3AB29 /* FBRHTTPClient+Validatricks.mm */; };
 		6529F8521CEB61A800FBABFE /* BZRReceiptValidationError.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6529F8511CEB61A800FBABFE /* BZRReceiptValidationError.mm */; };
@@ -74,6 +74,13 @@
 		65F03B481CFC279E008B1847 /* BZRReceiptModelSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 65F03B471CFC279E008B1847 /* BZRReceiptModelSpec.mm */; };
 		65F03B681CFC2AC1008B1847 /* BZRModelSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 65F03B671CFC2AC1008B1847 /* BZRModelSpec.mm */; };
 		65F03B6C1CFC3E0C008B1847 /* BZRModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 65F03B6B1CFC3E0C008B1847 /* BZRModel.mm */; };
+		9FD3A75C1D3DF26100967F8D /* UICKeyChainStore+SecureStorage.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9FD3A75B1D3DF26100967F8D /* UICKeyChainStore+SecureStorage.mm */; };
+		9FE7D4F11D3F5D1000685F19 /* UICKeyChainStore+SecureStorageSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9FE7D4F01D3F5D1000685F19 /* UICKeyChainStore+SecureStorageSpec.mm */; };
+		9FE7D5A11D3F6B2C00685F19 /* BZRPurchase.h in Headers */ = {isa = PBXBuildFile; fileRef = 9FE7D59D1D3F6B2C00685F19 /* BZRPurchase.h */; };
+		9FE7D5A21D3F6B2C00685F19 /* BZRPurchase.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9FE7D59E1D3F6B2C00685F19 /* BZRPurchase.mm */; };
+		9FE7D5A31D3F6B2C00685F19 /* BZRPurchaseManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 9FE7D59F1D3F6B2C00685F19 /* BZRPurchaseManager.h */; };
+		9FE7D5A41D3F6B2C00685F19 /* BZRPurchaseManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9FE7D5A01D3F6B2C00685F19 /* BZRPurchaseManager.mm */; };
+		9FE7D5D01D3F6B4400685F19 /* BZRPurchaseManagerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9FE7D5CF1D3F6B4400685F19 /* BZRPurchaseManagerSpec.mm */; };
 		B97A86BC1D460FB0004390FC /* BZRProductSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = B97A86BB1D460FB0004390FC /* BZRProductSpec.mm */; };
 		B97A86FD1D46104D004390FC /* BZRLocalJsonProductsProviderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = B97A86FC1D46104D004390FC /* BZRLocalJsonProductsProviderSpec.mm */; };
 		B97A87011D461067004390FC /* BZRLocalJSONProductsProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = B97A86FF1D461067004390FC /* BZRLocalJSONProductsProvider.h */; };
@@ -92,16 +99,9 @@
 		B97E6CD31D41103200C02863 /* BZRProductPriceInfo.mm in Sources */ = {isa = PBXBuildFile; fileRef = B97E6CCD1D41103200C02863 /* BZRProductPriceInfo.mm */; };
 		B97E6F2D1D44B09B00C02863 /* BZRJSONProductsProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = B97E6F2C1D44B09B00C02863 /* BZRJSONProductsProvider.h */; };
 		B9E4242B1D4CB0C0004C4101 /* BZRInAppStoreManagerConfiguration.h in Headers */ = {isa = PBXBuildFile; fileRef = B9E4242A1D4CB0C0004C4101 /* BZRInAppStoreManagerConfiguration.h */; };
-		9FD3A75C1D3DF26100967F8D /* UICKeyChainStore+SecureStorage.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9FD3A75B1D3DF26100967F8D /* UICKeyChainStore+SecureStorage.mm */; };
-		9FE7D4F11D3F5D1000685F19 /* UICKeyChainStore+SecureStorageSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9FE7D4F01D3F5D1000685F19 /* UICKeyChainStore+SecureStorageSpec.mm */; };
 		FA1B88541D338A8600097AD0 /* BZRKeychainStorage.mm in Sources */ = {isa = PBXBuildFile; fileRef = FA1B88531D338A8600097AD0 /* BZRKeychainStorage.mm */; };
 		FA1B885D1D33B2BC00097AD0 /* BZRKeychainStorageSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = FA1B885C1D33B2BC00097AD0 /* BZRKeychainStorageSpec.mm */; };
 		FA3C38161D35265F004A2673 /* libUICKeyChainStore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FA8D434B1D3517CC006FF5DB /* libUICKeyChainStore.a */; };
-		9FE7D5A11D3F6B2C00685F19 /* BZRPurchase.h in Headers */ = {isa = PBXBuildFile; fileRef = 9FE7D59D1D3F6B2C00685F19 /* BZRPurchase.h */; };
-		9FE7D5A21D3F6B2C00685F19 /* BZRPurchase.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9FE7D59E1D3F6B2C00685F19 /* BZRPurchase.mm */; };
-		9FE7D5A31D3F6B2C00685F19 /* BZRPurchaseManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 9FE7D59F1D3F6B2C00685F19 /* BZRPurchaseManager.h */; };
-		9FE7D5A41D3F6B2C00685F19 /* BZRPurchaseManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9FE7D5A01D3F6B2C00685F19 /* BZRPurchaseManager.mm */; };
-		9FE7D5D01D3F6B4400685F19 /* BZRPurchaseManagerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9FE7D5CF1D3F6B4400685F19 /* BZRPurchaseManagerSpec.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -559,6 +559,7 @@
 		6584CE861CF467A2002C6F86 /* BZRReceiptEnvironment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRReceiptEnvironment.h; sourceTree = "<group>"; };
 		6584CE871CF467A2002C6F86 /* BZRReceiptEnvironment.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRReceiptEnvironment.mm; sourceTree = "<group>"; };
 		6584CE891CF476EC002C6F86 /* BZRReceiptValidationParametersSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRReceiptValidationParametersSpec.mm; sourceTree = "<group>"; };
+		6592A33B1D40EF2D00CC318D /* BZRFileArchiver.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BZRFileArchiver.h; sourceTree = "<group>"; };
 		6599B42E1CFA4AE100525BB7 /* BZRReceiptValidationResponseSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRReceiptValidationResponseSpec.mm; sourceTree = "<group>"; };
 		65C538B01D34EB68004C91D4 /* RACSignal+BazaarSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "RACSignal+BazaarSpec.mm"; sourceTree = "<group>"; };
 		65C538D51D34F521004C91D4 /* NSValueTransformer+Validatricks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSValueTransformer+Validatricks.h"; sourceTree = "<group>"; };
@@ -571,6 +572,15 @@
 		65F03B6A1CFC3E0C008B1847 /* BZRModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRModel.h; sourceTree = "<group>"; };
 		65F03B6B1CFC3E0C008B1847 /* BZRModel.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRModel.mm; sourceTree = "<group>"; };
 		65FA32981CE2185D00901304 /* libBazaar.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libBazaar.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		9FD3A7581D3D423500967F8D /* BZRKeychainHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BZRKeychainHandler.h; sourceTree = "<group>"; };
+		9FD3A75A1D3DF26100967F8D /* UICKeyChainStore+SecureStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UICKeyChainStore+SecureStorage.h"; sourceTree = "<group>"; };
+		9FD3A75B1D3DF26100967F8D /* UICKeyChainStore+SecureStorage.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UICKeyChainStore+SecureStorage.mm"; sourceTree = "<group>"; };
+		9FE7D4F01D3F5D1000685F19 /* UICKeyChainStore+SecureStorageSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UICKeyChainStore+SecureStorageSpec.mm"; sourceTree = "<group>"; };
+		9FE7D59D1D3F6B2C00685F19 /* BZRPurchase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRPurchase.h; sourceTree = "<group>"; };
+		9FE7D59E1D3F6B2C00685F19 /* BZRPurchase.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRPurchase.mm; sourceTree = "<group>"; };
+		9FE7D59F1D3F6B2C00685F19 /* BZRPurchaseManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRPurchaseManager.h; sourceTree = "<group>"; };
+		9FE7D5A01D3F6B2C00685F19 /* BZRPurchaseManager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRPurchaseManager.mm; sourceTree = "<group>"; };
+		9FE7D5CF1D3F6B4400685F19 /* BZRPurchaseManagerSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRPurchaseManagerSpec.mm; sourceTree = "<group>"; };
 		B97A86BB1D460FB0004390FC /* BZRProductSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRProductSpec.mm; sourceTree = "<group>"; };
 		B97A86FC1D46104D004390FC /* BZRLocalJsonProductsProviderSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRLocalJsonProductsProviderSpec.mm; sourceTree = "<group>"; };
 		B97A86FF1D461067004390FC /* BZRLocalJSONProductsProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRLocalJSONProductsProvider.h; sourceTree = "<group>"; };
@@ -589,19 +599,10 @@
 		B97E6CCD1D41103200C02863 /* BZRProductPriceInfo.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRProductPriceInfo.mm; sourceTree = "<group>"; };
 		B97E6F2C1D44B09B00C02863 /* BZRJSONProductsProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRJSONProductsProvider.h; sourceTree = "<group>"; };
 		B9E4242A1D4CB0C0004C4101 /* BZRInAppStoreManagerConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRInAppStoreManagerConfiguration.h; sourceTree = "<group>"; };
-		9FD3A7581D3D423500967F8D /* BZRKeychainHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BZRKeychainHandler.h; sourceTree = "<group>"; };
-		9FD3A75A1D3DF26100967F8D /* UICKeyChainStore+SecureStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UICKeyChainStore+SecureStorage.h"; sourceTree = "<group>"; };
-		9FD3A75B1D3DF26100967F8D /* UICKeyChainStore+SecureStorage.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UICKeyChainStore+SecureStorage.mm"; sourceTree = "<group>"; };
-		9FE7D4F01D3F5D1000685F19 /* UICKeyChainStore+SecureStorageSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UICKeyChainStore+SecureStorageSpec.mm"; sourceTree = "<group>"; };
 		FA1B88521D338A8600097AD0 /* BZRKeychainStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRKeychainStorage.h; sourceTree = "<group>"; };
 		FA1B88531D338A8600097AD0 /* BZRKeychainStorage.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRKeychainStorage.mm; sourceTree = "<group>"; };
 		FA1B885C1D33B2BC00097AD0 /* BZRKeychainStorageSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; lineEnding = 0; path = BZRKeychainStorageSpec.mm; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		FA8D43221D3517CC006FF5DB /* UICKeyChainStore.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = UICKeyChainStore.xcodeproj; path = ../third_party/UICKeyChainStore/Lib/UICKeyChainStore.xcodeproj; sourceTree = "<group>"; };
-		9FE7D59D1D3F6B2C00685F19 /* BZRPurchase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRPurchase.h; sourceTree = "<group>"; };
-		9FE7D59E1D3F6B2C00685F19 /* BZRPurchase.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRPurchase.mm; sourceTree = "<group>"; };
-		9FE7D59F1D3F6B2C00685F19 /* BZRPurchaseManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRPurchaseManager.h; sourceTree = "<group>"; };
-		9FE7D5A01D3F6B2C00685F19 /* BZRPurchaseManager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRPurchaseManager.mm; sourceTree = "<group>"; };
-		9FE7D5CF1D3F6B4400685F19 /* BZRPurchaseManagerSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRPurchaseManagerSpec.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -967,15 +968,32 @@
 			name = "Receipt Validation";
 			sourceTree = "<group>";
 		};
-		6599B4291CFA444200525BB7 /* Utils */ = {
+		6592A3391D40EEFE00CC318D /* Archiving */ = {
 			isa = PBXGroup;
 			children = (
-				65F03B6A1CFC3E0C008B1847 /* BZRModel.h */,
-				65F03B6B1CFC3E0C008B1847 /* BZRModel.mm */,
+				6592A33B1D40EF2D00CC318D /* BZRFileArchiver.h */,
+			);
+			name = Archiving;
+			sourceTree = "<group>";
+		};
+		6592A33A1D40EF0C00CC318D /* Errors */ = {
+			isa = PBXGroup;
+			children = (
 				65329ED21CFEEA190029CE4F /* NSError+Bazaar.h */,
 				65329ED31CFEEA190029CE4F /* NSError+Bazaar.mm */,
 				658355581D2F9D9F00B88A70 /* NSErrorCodes+Bazaar.h */,
 				658355591D2F9D9F00B88A70 /* NSErrorCodes+Bazaar.mm */,
+			);
+			name = Errors;
+			sourceTree = "<group>";
+		};
+		6599B4291CFA444200525BB7 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				6592A3391D40EEFE00CC318D /* Archiving */,
+				6592A33A1D40EF0C00CC318D /* Errors */,
+				65F03B6A1CFC3E0C008B1847 /* BZRModel.h */,
+				65F03B6B1CFC3E0C008B1847 /* BZRModel.mm */,
 				6502EFCC1D34D581000CD68B /* RACSignal+Bazaar.h */,
 				6502EFCD1D34D581000CD68B /* RACSignal+Bazaar.mm */,
 				6526DF141D413BBE0034DE01 /* NSFileManager+Bazaar.h */,
@@ -996,6 +1014,13 @@
 			name = Validatricks;
 			sourceTree = "<group>";
 		};
+		65D18A1C1D4FB1FE005987F9 /* Archiving */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Archiving;
+			sourceTree = "<group>";
+		};
 		65D91BA91D39A482000D6A3B /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -1013,6 +1038,7 @@
 		65F03B691CFC32CE008B1847 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				65D18A1C1D4FB1FE005987F9 /* Archiving */,
 				65F03B671CFC2AC1008B1847 /* BZRModelSpec.mm */,
 				65329ED51CFEF0190029CE4F /* NSError+BazaarSpec.mm */,
 				65C538B01D34EB68004C91D4 /* RACSignal+BazaarSpec.mm */,
@@ -1149,6 +1175,7 @@
 				6581E86C1D3B9F6100B26E1A /* BZRReceiptEnvironment.h in Headers */,
 				6581E86D1D3B9F6400B26E1A /* BZRReceiptModel.h in Headers */,
 				B97E6CD21D41103200C02863 /* BZRProductPriceInfo.h in Headers */,
+				6526DF0B1D41093C0034DE01 /* BZRFileArchiver.h in Headers */,
 				6581E86E1D3B9F6700B26E1A /* BZRReceiptValidationError.h in Headers */,
 				B97E6F2D1D44B09B00C02863 /* BZRJSONProductsProvider.h in Headers */,
 				6581E86F1D3B9F6C00B26E1A /* BZRReceiptValidationParameters.h in Headers */,
