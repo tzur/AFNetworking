@@ -17,6 +17,20 @@ NS_ASSUME_NONNULL_BEGIN
 /// \c RACTuple doesn't contain an item at the given \c index.
 - (RACSignal *)cui_unpack:(NSUInteger)index;
 
+/// Returns a signal that sends the results of applying binary logical AND operation on the last
+/// \c NSNumber values sent by the receiver and the given signal (similar behavior as
+/// \c combineLatest on both signals and applying \c RACSiganl's \c -and operator on the combined
+/// signal).
+///
+/// The returned signal errs when the receiver or the given signal err, and completes when both the
+/// receiver and the given sigal complete.
+///
+/// Raises an exception if the receiver or the given signal are carrying anything other than
+/// \c NSNumber.
+///
+/// @note This is similar to \c RACSiganl's \c -and operator, which can't compile in Objective-C++.
+- (RACSignal *)cui_and:(RACSignal *)other;
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -23,6 +23,22 @@ NS_ASSUME_NONNULL_BEGIN
   }] setNameWithFormat:@"[%@] -cui_unpack:%lu", self.name, (unsigned long)index];
 }
 
+- (RACSignal *)cui_and:(RACSignal *)other {
+  return [[RACSignal
+      combineLatest:@[
+        self,
+        other
+      ]
+      reduce:(id)^NSNumber *(NSNumber *left, NSNumber *right){
+        LTAssert([left isKindOfClass:NSNumber.class], @"-cui_and must only be called on a signal "
+                 "that sends NSNumbers. Instead, signal contains a non-NSNumber value: %@", left);
+        LTAssert([right isKindOfClass:NSNumber.class], @"-cui_and must only be given a signal that "
+                 "sends NSNumbers. Instead, signal contains a non-NSNumber value: %@", right);
+        return @(left.boolValue && right.boolValue);
+      }]
+      setNameWithFormat:@"[%@] -cui_and:%@", self.name, other];
+}
+
 @end
 
 NS_ASSUME_NONNULL_END
