@@ -1153,16 +1153,16 @@
 					ProjectRef = 8BB47146183B534000CA1681 /* extobjc.xcodeproj */;
 				},
 				{
-					ProductGroup = 65F0E4ED1D464F0F007EB32D /* Products */;
-					ProjectRef = 65F0E4EC1D464F0F007EB32D /* TestHost.xcodeproj */;
-				},
-				{
 					ProductGroup = 8B0B99391CA6BA8C00ED2334 /* Products */;
 					ProjectRef = 8B8A81E61BD65E4F0027B97D /* OCMock.xcodeproj */;
 				},
 				{
 					ProductGroup = 8B0B994D1CA6BA9300ED2334 /* Products */;
 					ProjectRef = 8B4D456F19C03AA8000B25F9 /* Specta.xcodeproj */;
+				},
+				{
+					ProductGroup = 65F0E4ED1D464F0F007EB32D /* Products */;
+					ProjectRef = 65F0E4EC1D464F0F007EB32D /* TestHost.xcodeproj */;
 				},
 			);
 			projectRoot = "";
