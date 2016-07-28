@@ -9,9 +9,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface CUIDropDownView ()
 
-/// List of \c CUIDropDownEntry that this view shows.
-@property (readonly, nonatomic) NSArray<id<CUIDropDownEntry>> *entries;
-
 /// \c UIStackView that arranges the entries' \c mainBarItemView horizontally.
 @property (readonly, nonatomic) UIStackView *stackView;
 
@@ -19,12 +16,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation CUIDropDownView
 
-- (instancetype)initWithEntries:(NSArray<id<CUIDropDownEntry>> *)entries {
-  LTParameterAssert(entries, @"entries is nil");
-  if (self = [super initWithFrame:CGRectZero]) {
-    _entries = entries;
+- (instancetype)initWithFrame:(CGRect)frame {
+  if (self = [super initWithFrame:frame]) {
+    _entries = @[];
     [self setupStackView];
-    [self setupEntries];
   }
   return self;
 }
@@ -38,6 +33,18 @@ NS_ASSUME_NONNULL_BEGIN
   self.stackView.alignment = UIStackViewAlignmentCenter;
   self.stackView.distribution = UIStackViewDistributionEqualSpacing;
   self.stackView.axis = UILayoutConstraintAxisHorizontal;
+}
+
+- (void)setEntries:(NSArray *)entries {
+  _entries = [entries copy];
+  [self removeEntries];
+  [self setupEntries];
+}
+
+- (void)removeEntries {
+  for (UIView *view in self.stackView.arrangedSubviews) {
+    [view removeFromSuperview];
+  }
 }
 
 - (void)setupEntries {

@@ -23,15 +23,11 @@ NS_ASSUME_NONNULL_BEGIN
 /// \c YES.
 @interface CUIDropDownView : UIView
 
-- (instancetype)init NS_UNAVAILABLE;
-- (instancetype)initWithFrame:(CGRect)frame NS_UNAVAILABLE;
-- (instancetype)initWithCoder:(NSCoder *)aDecoder NS_UNAVAILABLE;
-
-/// Initializes this object with the given \c entries.
+/// Array of \c CUIDropDownEntry objects that this view shows. Defaults to an empty array, meaning
+/// no buttons are displayed in the bar.
 ///
-/// The \c mainBarItemView views are ordered from left to right in this view according to the order
-/// in the given \c entries.
-- (instancetype)initWithEntries:(NSArray<id<CUIDropDownEntry>> *)entries;
+/// The \c mainBarItemView views are ordered from left to right according to the order here.
+@property (copy, nonatomic) NSArray<id<CUIDropDownEntry>> *entries;
 
 @end
 
