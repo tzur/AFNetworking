@@ -1,12 +1,14 @@
 // Copyright (c) 2016 Lightricks. All rights reserved.
 // Created by Lior Bar.
 
+#import "CUIGridViewModel.h"
+
 @protocol CAMExposureDevice, CAMFocusDevice, CAMPreviewLayerDevice, CAMVideoDevice, CAMZoomDevice;
 
 NS_ASSUME_NONNULL_BEGIN
 
 /// ViewModel for CUIPreviewViewController. Provides a live preview, controls focus and zoom.
-@interface CUIPreviewViewModel : NSObject
+@interface CUIPreviewViewModel : NSObject <CUIGridContainer>
 
 - (instancetype)init NS_UNAVAILABLE;
 
@@ -20,11 +22,11 @@ NS_ASSUME_NONNULL_BEGIN
 /// Called by the view controller when the preview view was pinched.
 - (void)previewPinched:(UIPinchGestureRecognizer *)gestureRecognizer;
 
-/// Preview layer.
-@property (readonly, nonatomic) CALayer *previewLayer;
-
 /// Activate capture animation.
 - (void)performCaptureAnimation;
+
+/// Preview layer.
+@property (readonly, nonatomic) CALayer *previewLayer;
 
 /// Hot signal that sends \c RACUnits whenever the "capturing" animation should be performed.
 /// This signal sends its events on an arbitrary thread, completes when the receiver is deallocated
@@ -41,9 +43,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// \c YES when the device supports zoom and pinch-to-zoom gesture should be enabled.
 @property (readonly, nonatomic) BOOL pinchEnabled;
-
-/// \c YES when the grid overlay view should be hidden. Defaults to \c YES.
-@property (nonatomic) BOOL gridHidden;
 
 @end
 
