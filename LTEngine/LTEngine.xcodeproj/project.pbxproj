@@ -5638,10 +5638,6 @@
 					ProjectRef = 8B16CAA61BB0670A002FB750 /* extobjc.xcodeproj */;
 				},
 				{
-					ProductGroup = 656155BD1D464B4B009E701C /* Products */;
-					ProjectRef = 656155BC1D464B4B009E701C /* TestHost.xcodeproj */;
-				},
-				{
 					ProductGroup = 8B368DDD1CA6942A003E34CF /* Products */;
 					ProjectRef = 8B16C9671BAEABD6002FB750 /* LTKit.xcodeproj */;
 				},
@@ -5664,6 +5660,10 @@
 				{
 					ProductGroup = 8B368FE71CA6B7A9003E34CF /* Products */;
 					ProjectRef = 8B16CAD01BB06797002FB750 /* Specta.xcodeproj */;
+				},
+				{
+					ProductGroup = 656155BD1D464B4B009E701C /* Products */;
+					ProjectRef = 656155BC1D464B4B009E701C /* TestHost.xcodeproj */;
 				},
 			);
 			projectRoot = "";
