@@ -1,7 +1,7 @@
 // Copyright (c) @YEAR@ Lightricks. All rights reserved.
 // Created by @SCRIPT_NAME@.
 
-@interface @SHADER_OBJC_NAME@ : NSObject
+@interface @SHADER_OBJC_NAME@ : NSObject <LTShaderUnit>
 
 #pragma mark -
 #pragma mark Source
