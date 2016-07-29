@@ -14,15 +14,25 @@
 			);
 			dependencies = (
 				65BAF4281D48B1C5009BBB6F /* PBXTargetDependency */,
+				654BA75B1D4BFEA4003DCC5F /* PBXTargetDependency */,
 				65BAF42A1D48B1C5009BBB6F /* PBXTargetDependency */,
+				654BA75D1D4BFEA4003DCC5F /* PBXTargetDependency */,
 				65BAF42C1D48B1C5009BBB6F /* PBXTargetDependency */,
+				654BA75F1D4BFEA4003DCC5F /* PBXTargetDependency */,
 				65BAF42E1D48B1C5009BBB6F /* PBXTargetDependency */,
+				654BA7611D4BFEA4003DCC5F /* PBXTargetDependency */,
 				65BAF4301D48B1C5009BBB6F /* PBXTargetDependency */,
+				654BA7631D4BFEA4003DCC5F /* PBXTargetDependency */,
 				65BAF4321D48B1C5009BBB6F /* PBXTargetDependency */,
+				654BA7651D4BFEA4003DCC5F /* PBXTargetDependency */,
 				65BAF4341D48B1C5009BBB6F /* PBXTargetDependency */,
+				654BA7671D4BFEA4003DCC5F /* PBXTargetDependency */,
 				65BAF4361D48B1C5009BBB6F /* PBXTargetDependency */,
+				654BA7691D4BFEA4003DCC5F /* PBXTargetDependency */,
 				65BAF4381D48B1C5009BBB6F /* PBXTargetDependency */,
+				654BA76B1D4BFEA4003DCC5F /* PBXTargetDependency */,
 				65BAF43A1D48B1C5009BBB6F /* PBXTargetDependency */,
+				654BA76D1D4BFEA4003DCC5F /* PBXTargetDependency */,
 			);
 			name = Foundations;
 			productName = Foundations;
@@ -30,6 +40,76 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXContainerItemProxy section */
+		654BA75A1D4BFEA4003DCC5F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 65BAF12B1D47F9C9009BBB6F /* LTEngine.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 8B3DEBF318296B6100EA0C1A;
+			remoteInfo = LTEngineTests;
+		};
+		654BA75C1D4BFEA4003DCC5F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 65BAF1371D47F9D2009BBB6F /* LTKit.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 8B3DEBF318296B6100EA0C1A;
+			remoteInfo = LTKitTests;
+		};
+		654BA75E1D4BFEA4003DCC5F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 65BAF0FE1D47F99B009BBB6F /* Bazaar.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 654B1F091CE22030001F36FA;
+			remoteInfo = BazaarTests;
+		};
+		654BA7601D4BFEA4003DCC5F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 65BAF1221D47F9B9009BBB6F /* Fiber.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 65C62B851D0474D4000FCE99;
+			remoteInfo = FiberTests;
+		};
+		654BA7621D4BFEA4003DCC5F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 65BAF1071D47F9A3009BBB6F /* Camera.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 83FF06F11CD7272F00383C6B;
+			remoteInfo = CameraTests;
+		};
+		654BA7641D4BFEA4003DCC5F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 65BAF1101D47F9A7009BBB6F /* CameraUI.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 83B728FA1CD8D2080090C0BF;
+			remoteInfo = CameraUITests;
+		};
+		654BA7661D4BFEA4003DCC5F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 65BAF1521D47F9EA009BBB6F /* Wireframes.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 8B283E6F1CBA814100B745AE;
+			remoteInfo = WireframesTests;
+		};
+		654BA7681D4BFEA4003DCC5F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 65BAF1191D47F9B3009BBB6F /* DaVinci.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 2501547F1D1AE92900420FA9;
+			remoteInfo = DaVinciTests;
+		};
+		654BA76A1D4BFEA4003DCC5F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 65BAF1401D47F9DC009BBB6F /* Photons.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 8B2FD0281AF9F79000757B1F;
+			remoteInfo = PhotonsTests;
+		};
+		654BA76C1D4BFEA4003DCC5F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 65BAF1491D47F9E1009BBB6F /* PhotonsUI.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 848E000C1C591DD1001D8368;
+			remoteInfo = PhotonsUITests;
+		};
 		65BAF1031D47F99C009BBB6F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 65BAF0FE1D47F99B009BBB6F /* Bazaar.xcodeproj */;
@@ -441,10 +521,6 @@
 					ProjectRef = 65BAF1221D47F9B9009BBB6F /* Fiber.xcodeproj */;
 				},
 				{
-					ProductGroup = 65BAF2BD1D4801B1009BBB6F /* Products */;
-					ProjectRef = 65BAF2BC1D4801B1009BBB6F /* TestHost.xcodeproj */;
-				},
-				{
 					ProductGroup = 65BAF12C1D47F9C9009BBB6F /* Products */;
 					ProjectRef = 65BAF12B1D47F9C9009BBB6F /* LTEngine.xcodeproj */;
 				},
@@ -459,6 +535,10 @@
 				{
 					ProductGroup = 65BAF14A1D47F9E1009BBB6F /* Products */;
 					ProjectRef = 65BAF1491D47F9E1009BBB6F /* PhotonsUI.xcodeproj */;
+				},
+				{
+					ProductGroup = 65BAF2BD1D4801B1009BBB6F /* Products */;
+					ProjectRef = 65BAF2BC1D4801B1009BBB6F /* TestHost.xcodeproj */;
 				},
 				{
 					ProductGroup = 65BAF1531D47F9EA009BBB6F /* Products */;
@@ -630,6 +710,56 @@
 /* End PBXReferenceProxy section */
 
 /* Begin PBXTargetDependency section */
+		654BA75B1D4BFEA4003DCC5F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = LTEngineTests;
+			targetProxy = 654BA75A1D4BFEA4003DCC5F /* PBXContainerItemProxy */;
+		};
+		654BA75D1D4BFEA4003DCC5F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = LTKitTests;
+			targetProxy = 654BA75C1D4BFEA4003DCC5F /* PBXContainerItemProxy */;
+		};
+		654BA75F1D4BFEA4003DCC5F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = BazaarTests;
+			targetProxy = 654BA75E1D4BFEA4003DCC5F /* PBXContainerItemProxy */;
+		};
+		654BA7611D4BFEA4003DCC5F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = FiberTests;
+			targetProxy = 654BA7601D4BFEA4003DCC5F /* PBXContainerItemProxy */;
+		};
+		654BA7631D4BFEA4003DCC5F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = CameraTests;
+			targetProxy = 654BA7621D4BFEA4003DCC5F /* PBXContainerItemProxy */;
+		};
+		654BA7651D4BFEA4003DCC5F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = CameraUITests;
+			targetProxy = 654BA7641D4BFEA4003DCC5F /* PBXContainerItemProxy */;
+		};
+		654BA7671D4BFEA4003DCC5F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = WireframesTests;
+			targetProxy = 654BA7661D4BFEA4003DCC5F /* PBXContainerItemProxy */;
+		};
+		654BA7691D4BFEA4003DCC5F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = DaVinciTests;
+			targetProxy = 654BA7681D4BFEA4003DCC5F /* PBXContainerItemProxy */;
+		};
+		654BA76B1D4BFEA4003DCC5F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = PhotonsTests;
+			targetProxy = 654BA76A1D4BFEA4003DCC5F /* PBXContainerItemProxy */;
+		};
+		654BA76D1D4BFEA4003DCC5F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = PhotonsUITests;
+			targetProxy = 654BA76C1D4BFEA4003DCC5F /* PBXContainerItemProxy */;
+		};
 		65BAF4281D48B1C5009BBB6F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = LTEngine;
