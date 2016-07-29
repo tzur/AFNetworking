@@ -34,20 +34,6 @@
                ReferencedContainer = "container:LTEngine.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "NO"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "8B8E51291868479100821829"
-               BuildableName = "LTEngineUser.app"
-               BlueprintName = "LTEngineUser"
-               ReferencedContainer = "container:LTEngineUser.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction

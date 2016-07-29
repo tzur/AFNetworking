@@ -20,20 +20,6 @@
                ReferencedContainer = "container:LTKit.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "8B8E51291868479100821829"
-               BuildableName = "LTKitUser.app"
-               BlueprintName = "LTKitUser"
-               ReferencedContainer = "container:LTKitUser.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
