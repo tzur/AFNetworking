@@ -3,7 +3,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class BZRProduct;
+@class BZRInAppStoreManagerConfiguration, BZRProduct;
 
 /// A unified interface for managing an in-application store.
 ///
@@ -22,10 +22,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)init NS_UNAVAILABLE;
 
-/// Initializes with \c applicationId, used to fetch the correct product list with, and with
-/// \c applicationUserId, used to restore the list of products purchased by the user.
-- (instancetype)initWithApplicationId:(NSString *)applicationId
-                    applicationUserId:(nullable NSString *)applicationUserId NS_DESIGNATED_INITIALIZER;
+/// Initializes with \c configuration, used to configure this class with configuration objects, and
+/// with \c applicationUserId, used to restore the list of products purchased by the user.
+- (instancetype)initWithConfiguration:(BZRInAppStoreManagerConfiguration *)configuration
+                    applicationUserId:(nullable NSString *)applicationUserId
+    NS_DESIGNATED_INITIALIZER;
 
 /// Fetches the list of available products for the application.
 ///
@@ -49,10 +50,10 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 /// Returns a signal that sends the list of products purchased by the user. Whenever the list
 /// changes the signal sends it. The signal completes when the class' instance is deallocated. The
-/// list of purchased products includes products that the user has acquired through subscription and
-/// are available on the device. The list might be outdated, for example if the user has made
-/// purchases on a another device. In order to update it, \c restorePurchasedProducts should be
-/// called. The signal doesn't err.
+/// list of purchased products also includes products that the user has acquired through
+/// subscription and are available on the device. The list might be outdated, for example if the
+/// user has made purchases on a another device. In order to update it, \c restorePurchasedProducts
+/// should be called. The signal doesn't err.
 ///
 /// @return <tt>RACSignal<NSArray<BZRProduct>></tt>
 - (RACSignal *)purchasedProducts;
@@ -61,8 +62,8 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 /// Returns a signal that sends the list of products with downloaded content. Whenever the list
 /// changes the signal sends it. The signal completes when the class' instance is deallocated.
-/// Products without content will be in the list as well. The signal errs if there was an error when
-/// trying to assemble the list.
+/// Products without content will be in the list as well. The signal errs if there was an error
+/// while trying to assemble the list.
 ///
 /// @return <tt>RACSignal<NSArray<BZRProduct>></tt>
 - (RACSignal *)productsWithDownloadedContent;
@@ -79,9 +80,10 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 /// Returns a signal that fetches the content. Before fetching, the signal checks whether the user
 /// is allowed to use the product. If the content already exists locally, the signal just returns an
-/// \c LTPath to that content. Otherwise, it fetches the content and sends an \c LTPath to the 
-/// content. The signal completes after sending a single \c LTPath. The signal errs if the user is
-/// not allowed to use the product, or if there was an error when fetching the content.
+/// \c LTPath to that content. Otherwise, it fetches the content and sends an \c LTPath to the
+/// content. The signal completes if there is no content to be downloaded, or after sending the path
+/// to it. The signal errs if the user is not allowed to use the product, or if there was an
+/// error while fetching the content.
 ///
 /// @return <tt>RACSignal<LTPath></tt>
 - (RACSignal *)fetchProductContent:(NSString *)productIdentifier;
@@ -100,7 +102,7 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 /// Returns a signal that sends a single \c NSNumber value boxing a \c BOOL value, the boxed value
 /// will be \c YES if the user is allowed to use the product, otherwise it will be \c NO. The signal
-/// completes after sending the value. The signal errs if there was an error when checking if the
+/// completes after sending the value. The signal errs if there was an error while checking if the
 /// product is available.
 ///
 /// @return <tt>RACSignal<NSNumber></tt>

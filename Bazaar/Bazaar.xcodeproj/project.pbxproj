@@ -88,6 +88,7 @@
 		B97E6CD21D41103200C02863 /* BZRProductPriceInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = B97E6CCC1D41103200C02863 /* BZRProductPriceInfo.h */; };
 		B97E6CD31D41103200C02863 /* BZRProductPriceInfo.mm in Sources */ = {isa = PBXBuildFile; fileRef = B97E6CCD1D41103200C02863 /* BZRProductPriceInfo.mm */; };
 		B97E6F2D1D44B09B00C02863 /* BZRJSONProductsProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = B97E6F2C1D44B09B00C02863 /* BZRJSONProductsProvider.h */; };
+		B9E4242B1D4CB0C0004C4101 /* BZRInAppStoreManagerConfiguration.h in Headers */ = {isa = PBXBuildFile; fileRef = B9E4242A1D4CB0C0004C4101 /* BZRInAppStoreManagerConfiguration.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -543,6 +544,7 @@
 		B97E6CCC1D41103200C02863 /* BZRProductPriceInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRProductPriceInfo.h; sourceTree = "<group>"; };
 		B97E6CCD1D41103200C02863 /* BZRProductPriceInfo.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRProductPriceInfo.mm; sourceTree = "<group>"; };
 		B97E6F2C1D44B09B00C02863 /* BZRJSONProductsProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRJSONProductsProvider.h; sourceTree = "<group>"; };
+		B9E4242A1D4CB0C0004C4101 /* BZRInAppStoreManagerConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRInAppStoreManagerConfiguration.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1016,6 +1018,7 @@
 		B97E6BF31D40F2C900C02863 /* Product Management */ = {
 			isa = PBXGroup;
 			children = (
+				B9E4242A1D4CB0C0004C4101 /* BZRInAppStoreManagerConfiguration.h */,
 				B97A86FE1D46105C004390FC /* Product Providers */,
 				B97E6CC81D41103200C02863 /* BZRProduct.h */,
 				B97E6CC91D41103200C02863 /* BZRProduct.mm */,
@@ -1055,6 +1058,7 @@
 				B97E6C201D40F36A00C02863 /* BZRInAppStoreManager.h in Headers */,
 				6581E8721D3B9F8000B26E1A /* BZRValidatricksReceiptValidator.h in Headers */,
 				6581E8741D3B9FB900B26E1A /* NSError+Bazaar.h in Headers */,
+				B9E4242B1D4CB0C0004C4101 /* BZRInAppStoreManagerConfiguration.h in Headers */,
 				6581E8751D3B9FBF00B26E1A /* NSErrorCodes+Bazaar.h in Headers */,
 				6581E8761D3B9FCE00B26E1A /* RACSignal+Bazaar.h in Headers */,
 			);
@@ -1145,10 +1149,6 @@
 					ProjectRef = 6583552A1D2F9D6B00B88A70 /* Fiber.xcodeproj */;
 				},
 				{
-					ProductGroup = 656469681D46463B006BD7DE /* Products */;
-					ProjectRef = 656469671D46463B006BD7DE /* TestHost.xcodeproj */;
-				},
-				{
 					ProductGroup = 6580F0761CEB319F007EABDD /* Products */;
 					ProjectRef = 6580F0751CEB319F007EABDD /* LTKit.xcodeproj */;
 				},
@@ -1167,6 +1167,10 @@
 				{
 					ProductGroup = 654B1F3A1CE2228C001F36FA /* Products */;
 					ProjectRef = 654B1F391CE2228C001F36FA /* Specta.xcodeproj */;
+				},
+				{
+					ProductGroup = 656469681D46463B006BD7DE /* Products */;
+					ProjectRef = 656469671D46463B006BD7DE /* TestHost.xcodeproj */;
 				},
 			);
 			projectRoot = "";
