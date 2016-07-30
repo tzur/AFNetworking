@@ -28,20 +28,6 @@
             buildForAnalyzing = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "65CEFBB11D3BF72800402230"
-               BuildableName = "TestHost.app"
-               BlueprintName = "TestHost"
-               ReferencedContainer = "container:FoundationsTestHost.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "NO"
-            buildForProfiling = "NO"
-            buildForArchiving = "NO"
-            buildForAnalyzing = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
                BlueprintIdentifier = "654B1F091CE22030001F36FA"
                BuildableName = "BazaarTests.xctest"
                BlueprintName = "BazaarTests"
