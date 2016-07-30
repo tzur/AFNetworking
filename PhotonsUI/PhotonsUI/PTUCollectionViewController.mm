@@ -110,6 +110,7 @@ NS_ASSUME_NONNULL_BEGIN
   self.collectionView.accessibilityIdentifier = @"CollectionView";
   self.collectionView.delegate = self;
   self.collectionView.allowsMultipleSelection = YES;
+  self.collectionView.backgroundColor = [UIColor clearColor];
 
   [self.view addSubview:self.collectionView];
   [self.collectionView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -263,9 +264,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)setBackgroundView:(nullable UIView *)backgroundView {
   [_backgroundView removeFromSuperview];
-  
+
   if (backgroundView) {
     [self.view insertSubview:backgroundView belowSubview:self.collectionView];
+    [backgroundView mas_makeConstraints:^(MASConstraintMaker *make) {
+      make.edges.equalTo(self.view);
+    }];
   }
   _backgroundView = backgroundView;
 }
