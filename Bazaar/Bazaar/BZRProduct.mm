@@ -64,7 +64,8 @@ LTEnumImplement(NSUInteger, BZRProductPurchaseStatus,
   dispatch_once(&onceToken, ^{
     nullablePropertyKeys = [NSSet setWithArray:@[
       @instanceKeypath(BZRProduct, descriptor),
-      @instanceKeypath(BZRProduct, priceInfo)
+      @instanceKeypath(BZRProduct, priceInfo),
+      @instanceKeypath(BZRProduct, purchaseStatus)
     ]];
   });
   

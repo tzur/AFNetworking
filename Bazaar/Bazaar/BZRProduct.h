@@ -16,9 +16,13 @@ LTEnumDeclare(NSUInteger, BZRProductType,
   BZRProductTypeNonRenewingSubscription
 );
 
+/// Possible values for the purchase status of a product.
 LTEnumDeclare(NSUInteger, BZRProductPurchaseStatus,
+  /// The product was not purchased.
   BZRProductPurchaseStatusNotPurchased,
+  /// The product was acquired while the user was a subscriber.
   BZRProductPurchaseStatusAcquiredViaSubscription,
+  /// The product was purchased while the user was not a subscriber.
   BZRProductPurchaseStatusPurchased
 );
 
@@ -38,10 +42,8 @@ LTEnumDeclare(NSUInteger, BZRProductPurchaseStatus,
 /// Holds the price and the locale of the product.
 @property (readonly, nonatomic, nullable) BZRProductPriceInfo *priceInfo;
 
-/// \c BZRProductPurchaseStatusNotPurchased if the product was not purchased,
-/// \c BZRProductPurchaseStatusAcquiredViaSubscription if it was acquired via subscription, and
-/// \c BZRProductPurchaseStatusPurchased if the product was purchased without subscription.
-@property (readonly, nonatomic) BZRProductPurchaseStatus *purchaseStatus;
+/// Holds the purchase status of the product.
+@property (readonly, nonatomic, nullable) BZRProductPurchaseStatus *purchaseStatus;
 
 @end
 

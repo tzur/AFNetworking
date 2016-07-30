@@ -9,9 +9,10 @@ context(@"initialization", ^{
   it(@"should correctly specifiy nullable properties", ^{
     NSSet<NSString *> *nullableProperties = [BZRProduct nullablePropertyKeys];
 
-    expect(nullableProperties.count).to.equal(2);
+    expect(nullableProperties.count).to.equal(3);
     expect(nullableProperties).to.contain(@instanceKeypath(BZRProduct, descriptor));
     expect(nullableProperties).to.contain(@instanceKeypath(BZRProduct, priceInfo));
+    expect(nullableProperties).to.contain(@instanceKeypath(BZRProduct, purchaseStatus));
   });
 });
 
