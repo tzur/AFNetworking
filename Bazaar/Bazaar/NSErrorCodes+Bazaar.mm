@@ -32,7 +32,11 @@ LTErrorCodesImplement(BazaarErrorCodeProductID,
   /// Archiving operation was cancelled.
   BZRErrorCodeArchivingCancelled,
   /// Archiving of an item, a file or a directory, has failed.
-  BZRErrorCodeItemArchivingFailed
+  BZRErrorCodeItemArchivingFailed,
+  /// Retrieval of file attributes has failed.
+  BZRErrorCodeFileAttributesRetrievalFailed,
+  /// Directory enumeration failed.
+  BZRErrorCodeDirectoryEnumrationFailed
 );
 
 NS_ASSUME_NONNULL_END
