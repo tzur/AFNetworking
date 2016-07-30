@@ -39,6 +39,15 @@ typedef id _Nonnull (^LTArrayReduceBlock)(id _Nonnull value, ObjectType object);
 /// @endcode
 - (id)lt_reduce:(LTArrayReduceBlock)block initial:(id)initialValue;
 
+/// Callback block used with \c lt_filter:.
+typedef BOOL (^LTArrayFilterBlock)(ObjectType _Nonnull object);
+
+/// Filters the array using the specified filter \c block.
+///
+/// Returns a filtered array containing all and only the items of the receiver that \c block has
+/// returned \c YES for.
+- (NSArray<ObjectType> *)lt_filter:(LTArrayFilterBlock)block;
+
 @end
 
 NS_ASSUME_NONNULL_END

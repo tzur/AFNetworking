@@ -27,6 +27,16 @@ NS_ASSUME_NONNULL_BEGIN
   return currentValue;
 }
 
+- (NSArray *)lt_filter:(LTArrayFilterBlock)block {
+  LTParameterAssert(block);
+
+  NSPredicate *predicate =
+      [NSPredicate predicateWithBlock:^BOOL(id object, NSDictionary<NSString *, id> *) {
+        return block(object);
+      }];
+  return [self filteredArrayUsingPredicate:predicate];
+}
+
 @end
 
 NS_ASSUME_NONNULL_END
