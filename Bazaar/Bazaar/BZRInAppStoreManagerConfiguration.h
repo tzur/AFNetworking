@@ -17,14 +17,16 @@ NS_ASSUME_NONNULL_BEGIN
 /// initialized with the given \c productsListJSONFilePath.
 ///
 /// \c bundleManager will be initialized with the default parameters as provided by
-/// \c -[BZRProductsBundleManager init].
+/// \c -[BZRProductBundleManager init].
 ///
 /// \c eligibilityVerifier will be initialized with the default initializer
 /// \c -[BZRProductEligibilityVerifier init].
 ///
-/// \c contentFetcher will be initialized with \c bundleManager and with the
-/// \c BZRProductContentProviderFactory as provided by
-/// \c -[BZRInAppProductPurchaser initWithBundleManager:].
+/// \c contentFetcher will be initialized with \c eligibilityVerifier, with a
+/// \c BZRContentPathProvider which will be initialized with \c bundleManager, with
+/// a \c BZRProductContentProviderFactory and with \c bundleManager as provided by 
+/// \c -[BZRInAppProductPurchaser initWithEligibilityVerifier:contentPathProvider:
+/// contentProviderFactory:bundleManager:].
 ///
 /// \c receiptValidator will be initialized with the default initializer of
 /// \c BZRValidatricksReceiptValidator as provided by \c -[BZRValidatricksReceiptValidator init].
@@ -34,7 +36,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) id<BZRProductsProvider> productsProvider;
 
 /// Manager used to extract, delete and find content directory with.
-@property (strong, nonatomic) BZRProductsBundleManager *bundleManager;
+@property (strong, nonatomic) BZRProductBundleManager *bundleManager;
 
 /// Verifier used to verify that a user is allowed to use a certain product.
 @property (strong, nonatomic) BZRProductEligibilityVerifier *eligibilityVerifier;
@@ -43,7 +45,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) BZRProductContentFetcher *contentFetcher;
 
 /// Validator used to validate a user's receipt.
-@property (strong, nonatomic) BZRReceiptValidator *receiptValidator;
+@property (strong, nonatomic) id<BZRReceiptValidator> receiptValidator;
 
 @end
 
