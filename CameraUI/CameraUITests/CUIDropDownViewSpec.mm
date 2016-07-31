@@ -99,4 +99,37 @@ it(@"should set the hidden state of a submenuView to YES after other entry is ta
   expect(entries[1].submenuView.hidden).will.beFalsy();
 });
 
+context(@"hideDropDownViews", ^{
+  it(@"should hide shown drop downs", ^{
+    [(RACSubject *)entries[0].didTapSignal
+        sendNext:RACTuplePack((id)entries[0], entries[0].mainBarItemView)];
+    expect(entries[0].submenuView.hidden).will.beFalsy();
+    expect(entries[1].submenuView.hidden).to.beTruthy();
+
+    [dropDown hideDropDownViews];
+    expect(entries[0].submenuView.hidden).to.beTruthy();
+    expect(entries[1].submenuView.hidden).to.beTruthy();
+
+    [dropDown hideDropDownViews];
+    expect(entries[0].submenuView.hidden).to.beTruthy();
+    expect(entries[1].submenuView.hidden).to.beTruthy();
+  });
+
+  it(@"should hide shown drop downs till next tap", ^{
+    [(RACSubject *)entries[1].didTapSignal
+        sendNext:RACTuplePack((id)entries[1], entries[1].mainBarItemView)];
+    expect(entries[0].submenuView.hidden).to.beTruthy();
+    expect(entries[1].submenuView.hidden).will.beFalsy();
+
+    [dropDown hideDropDownViews];
+    expect(entries[0].submenuView.hidden).to.beTruthy();
+    expect(entries[1].submenuView.hidden).to.beTruthy();
+
+    [(RACSubject *)entries[1].didTapSignal
+        sendNext:RACTuplePack((id)entries[1], entries[1].mainBarItemView)];
+    expect(entries[0].submenuView.hidden).to.beTruthy();
+    expect(entries[1].submenuView.hidden).will.beFalsy();
+  });
+});
+
 SpecEnd

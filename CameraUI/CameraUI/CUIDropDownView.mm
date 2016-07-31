@@ -35,6 +35,10 @@ NS_ASSUME_NONNULL_BEGIN
   self.stackView.axis = UILayoutConstraintAxisHorizontal;
 }
 
+- (void)hideDropDownViews {
+  [self updateSubmenusHiddenStateForTappedEntry:nil];
+}
+
 - (void)setEntries:(NSArray *)entries {
   _entries = [entries copy];
   [self removeEntries];
@@ -63,7 +67,7 @@ NS_ASSUME_NONNULL_BEGIN
   }
 }
 
-- (void)updateSubmenusHiddenStateForTappedEntry:(id<CUIDropDownEntry>)tappedEntry {
+- (void)updateSubmenusHiddenStateForTappedEntry:(nullable id<CUIDropDownEntry>)tappedEntry {
   for (id<CUIDropDownEntry> entry in self.entries) {
     entry.submenuView.hidden = (entry != tappedEntry) ? YES : !entry.submenuView.hidden;
   }
