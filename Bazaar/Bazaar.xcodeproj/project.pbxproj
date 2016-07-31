@@ -67,6 +67,7 @@
 		65BDA0081D33FF8000CC1F31 /* NSError+Bazaar.mm in Sources */ = {isa = PBXBuildFile; fileRef = 65329ED31CFEEA190029CE4F /* NSError+Bazaar.mm */; };
 		65C538B11D34EB68004C91D4 /* RACSignal+BazaarSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 65C538B01D34EB68004C91D4 /* RACSignal+BazaarSpec.mm */; };
 		65C538D71D34F521004C91D4 /* NSValueTransformer+Validatricks.mm in Sources */ = {isa = PBXBuildFile; fileRef = 65C538D61D34F521004C91D4 /* NSValueTransformer+Validatricks.mm */; };
+		65D189381D4E46B6005987F9 /* ZipArchive.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6526DF061D4108AA0034DE01 /* ZipArchive.framework */; };
 		65D67B921D53DBF400B647ED /* SKReceiptRefreshRequest+RACSignalSupport.h in Headers */ = {isa = PBXBuildFile; fileRef = 65D67B901D53DBF400B647ED /* SKReceiptRefreshRequest+RACSignalSupport.h */; };
 		65D91BA51D399EE6000D6A3B /* FBRHTTPClient+ValidatricksSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 65D91BA41D399EE6000D6A3B /* FBRHTTPClient+ValidatricksSpec.mm */; };
 		65D91BC01D39A48B000D6A3B /* AFNetworking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65D91BB31D39A482000D6A3B /* AFNetworking.framework */; };
@@ -114,6 +115,27 @@
 			proxyType = 1;
 			remoteGlobalIDString = D047260B19E49F82006002AA;
 			remoteInfo = "ReactiveCocoa-iOS";
+		};
+		6526DF051D4108AA0034DE01 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6526DF001D4108A90034DE01 /* ZipArchive.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = B423AE1A1C0DF76A0004A2F1;
+			remoteInfo = "ZipArchive-iOS";
+		};
+		6526DF071D4108AA0034DE01 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6526DF001D4108A90034DE01 /* ZipArchive.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = AFF75A241C37279600F450AC;
+			remoteInfo = "ZipArchive-Mac";
+		};
+		6526DF091D41091F0034DE01 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6526DF001D4108A90034DE01 /* ZipArchive.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = B423AE191C0DF76A0004A2F1;
+			remoteInfo = "ZipArchive-iOS";
 		};
 		6529F8381CEB608B00FBABFE /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -483,6 +505,7 @@
 		650D7D3F1D324AAD003CE646 /* SKProductsRequest+RACSignalSupport.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "SKProductsRequest+RACSignalSupport.mm"; sourceTree = "<group>"; };
 		651A26181D392B79001D418B /* BZRValidatricksReceiptValidator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRValidatricksReceiptValidator.h; sourceTree = "<group>"; };
 		651A26191D392B79001D418B /* BZRValidatricksReceiptValidator.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRValidatricksReceiptValidator.mm; sourceTree = "<group>"; };
+		6526DF001D4108A90034DE01 /* ZipArchive.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ZipArchive.xcodeproj; path = ../third_party/SSZipArchive/ZipArchive.xcodeproj; sourceTree = "<group>"; };
 		6526DF141D413BBE0034DE01 /* NSFileManager+Bazaar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSFileManager+Bazaar.h"; sourceTree = "<group>"; };
 		6526DF151D413BBE0034DE01 /* NSFileManager+Bazaar.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSFileManager+Bazaar.mm"; sourceTree = "<group>"; };
 		6527D6001D39411600A3AB29 /* FBRHTTPClient+Validatricks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "FBRHTTPClient+Validatricks.h"; sourceTree = "<group>"; };
@@ -620,6 +643,7 @@
 				65D91BC01D39A48B000D6A3B /* AFNetworking.framework in Frameworks */,
 				FA3C38161D35265F004A2673 /* libUICKeyChainStore.a in Frameworks */,
 				657FAFA21CEF2DA500111BD0 /* Mantle.framework in Frameworks */,
+				65D189381D4E46B6005987F9 /* ZipArchive.framework in Frameworks */,
 				6501C2471CE22D610061BD9E /* libBazaar.a in Frameworks */,
 				6501C2211CE22AD90061BD9E /* libExpecta.a in Frameworks */,
 				65D91BC11D39A490000D6A3B /* libFiber.a in Frameworks */,
@@ -671,6 +695,15 @@
 				65D67B911D53DBF400B647ED /* SKReceiptRefreshRequest+RACSignalSupport.mm */,
 			);
 			name = Internal;
+			sourceTree = "<group>";
+		};
+		6526DF011D4108A90034DE01 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				6526DF061D4108AA0034DE01 /* ZipArchive.framework */,
+				6526DF081D4108AA0034DE01 /* ZipArchive.framework */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		6529F8281CEB608B00FBABFE /* Products */ = {
@@ -858,6 +891,7 @@
 				654B1F4E1CE22299001F36FA /* OCMock.xcodeproj */,
 				65743EA41D32456A00A17D11 /* ReactiveCocoa.xcodeproj */,
 				654B1F391CE2228C001F36FA /* Specta.xcodeproj */,
+				6526DF001D4108A90034DE01 /* ZipArchive.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -1239,6 +1273,7 @@
 			dependencies = (
 				FA9F51DF1D354B8B00FE688D /* PBXTargetDependency */,
 				650D7D181D3245E8003CE646 /* PBXTargetDependency */,
+				6526DF0A1D41091F0034DE01 /* PBXTargetDependency */,
 			);
 			name = Bazaar;
 			productName = Bazaar;
@@ -1317,6 +1352,10 @@
 					ProductGroup = FA8D43231D3517CC006FF5DB /* Products */;
 					ProjectRef = FA8D43221D3517CC006FF5DB /* UICKeyChainStore.xcodeproj */;
 				},
+				{
+					ProductGroup = 6526DF011D4108A90034DE01 /* Products */;
+					ProjectRef = 6526DF001D4108A90034DE01 /* ZipArchive.xcodeproj */;
+				},
 			);
 			projectRoot = "";
 			targets = (
@@ -1327,6 +1366,20 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		6526DF061D4108AA0034DE01 /* ZipArchive.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = ZipArchive.framework;
+			remoteRef = 6526DF051D4108AA0034DE01 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		6526DF081D4108AA0034DE01 /* ZipArchive.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = ZipArchive.framework;
+			remoteRef = 6526DF071D4108AA0034DE01 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		6529F8391CEB608B00FBABFE /* Mantle.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
@@ -1755,6 +1808,11 @@
 			isa = PBXTargetDependency;
 			name = "ReactiveCocoa-iOS";
 			targetProxy = 650D7D171D3245E8003CE646 /* PBXContainerItemProxy */;
+		};
+		6526DF0A1D41091F0034DE01 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "ZipArchive-iOS";
+			targetProxy = 6526DF091D41091F0034DE01 /* PBXContainerItemProxy */;
 		};
 		654B1F111CE22030001F36FA /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
