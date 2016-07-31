@@ -23,6 +23,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// \c YES.
 @interface CUIDropDownView : UIView
 
+/// Hides the shown drop down views till next tap on their \c mainBarItemView parent view.
+- (void)hideDropDownViews;
+
 /// Array of \c CUIDropDownEntry objects that this view shows. Defaults to an empty array, meaning
 /// no buttons are displayed in the bar.
 ///
