@@ -18,7 +18,17 @@ LTErrorCodesDeclare(BazaarErrorCodeProductID,
   /// Deserilization of a model instance from JSON dictionary has failed.
   BZRErrorCodeModelJSONDeserializationFailed,
   /// Deserialization of a JSON object from raw data has failed.
-  BZRErrorCodeJSONDataDeserializationFailed
+  BZRErrorCodeJSONDataDeserializationFailed,
+  /// Invalid keychain arguments.
+  BZRErrorCodeKeychainStorageInvalidArguments,
+  /// Failure during keychain access.
+  BZRErrorCodeKeychainStorageAccessFailed,
+  /// Unexpected failure occured.
+  BZRErrorCodeKeychainStorageUnexpectedFailure,
+  /// Failure during data conversion.
+  BZRErrorCodeKeychainStorageConversionFailed,
+  /// Failure during data archiving.
+  BZRErrorCodeKeychainStorageArchivingError
 );
 
 NS_ASSUME_NONNULL_END
