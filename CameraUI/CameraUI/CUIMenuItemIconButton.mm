@@ -12,9 +12,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/// Margin between the boundary of the button to the boundary of the inner icon.
-static const CGFloat kCUIMenuItemIconButtonMargin = 7;
-
 @implementation CUIMenuItemIconButton
 
 @synthesize model = _model;
@@ -37,18 +34,13 @@ static const CGFloat kCUIMenuItemIconButtonMargin = 7;
 }
 
 - (void)setupImageViewModel {
-  RACSignal *imageSizeSignal = [[self wf_positiveSizeSignal]
-      map:^NSValue *(NSValue *size) {
-        CGSize iconSize = size.CGSizeValue - CGSizeMakeUniform(2 * kCUIMenuItemIconButtonMargin);
-        return [NSValue valueWithCGSize:iconSize];
-      }];
   RAC(self, wf_viewModel) = [[RACObserve(self, model.iconURL)
       map:^id<WFImageViewModel>(NSURL *url) {
         id<CUITheme> theme = [CUISharedTheme sharedTheme];
         return WFImageViewModel(url)
             .color(theme.iconColor)
             .highlightedColor(theme.iconHighlightedColor)
-            .sizeSignal(imageSizeSignal)
+            .sizeSignal(self.wf_positiveSizeSignal)
             .build();
       }]
       deliverOnMainThread];
