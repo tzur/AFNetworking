@@ -60,6 +60,10 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (NSUInteger)reversedIndex:(NSUInteger)index {
+  if (index == NSNotFound) {
+    return index;
+  }
+  
   return self.collection.count - index - 1;
 }
 

@@ -39,6 +39,20 @@ it(@"should correctly reverse objects for index subscript", ^{
   expect(reversedCollection[3]).to.equal(@1);
 });
 
+it(@"should correctly map NSNotFound", ^{
+  expect([reversedCollection indexOfObject:@5]).to.equal(NSNotFound);
+});
+
+it(@"should raise when given index is out of bounds", ^{
+  expect(^{
+    [reversedCollection objectAtIndex:4];
+  }).to.raise(NSRangeException);
+  
+  expect(^{
+    [reversedCollection objectAtIndex:-1];
+  }).to.raise(NSRangeException);
+});
+
 it(@"should correcly reverse first object", ^{
   expect(reversedCollection.firstObject).to.equal(@4);
 });
