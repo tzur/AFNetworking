@@ -57,6 +57,7 @@ __block RACSubject *subtitleSubject;
 beforeEach(^{
   image = [[UIImage alloc] init];
   imageCellView = [[PTUImageCellView alloc] initWithFrame:CGRectMake(0, 0, 40, 10)];
+  [imageCellView layoutIfNeeded];
   imageSubject = [RACSubject subject];
   titleSubject = [RACSubject subject];
   subtitleSubject = [RACSubject subject];
@@ -64,6 +65,18 @@ beforeEach(^{
                                                          titleSignal:titleSubject
                                                       subtitleSignal:subtitleSubject];
   imageCellView.viewModel = viewModel;
+});
+
+it(@"should not fetch images before initial layout", ^{
+  PTUImageCellView *cellView = [[PTUImageCellView alloc] initWithFrame:CGRectMake(0, 0, 40, 10)];
+  cellView.viewModel = viewModel;
+  
+  [imageSubject sendNext:image];
+  expect(cellView.image).to.beNil();
+
+  [cellView layoutIfNeeded];
+  [imageSubject sendNext:image];
+  expect(cellView.image).to.equal(image);
 });
 
 it(@"should update image according to view model", ^{
@@ -189,6 +202,7 @@ context(@"memory management", ^{
 
     @autoreleasepool {
       PTUImageCellView *cell = [[PTUImageCellView alloc] initWithFrame:CGRectMake(0, 0, 40, 10)];
+      [cell layoutIfNeeded];
       weakCell = cell;
 
       cell.viewModel = disposableViewModel;

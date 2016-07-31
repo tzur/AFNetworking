@@ -192,8 +192,7 @@ NS_ASSUME_NONNULL_BEGIN
         self.subtitleLabel.text = nil;
       }];
 
-  
-  if (!CGSizeEqualToSize(self.bounds.size, CGSizeZero)) {
+  if (!CGSizeEqualToSize(self.currentSize, CGSizeZero)) {
     [self replaceImageSignalBindingAndClearImageView];
   }
 }
