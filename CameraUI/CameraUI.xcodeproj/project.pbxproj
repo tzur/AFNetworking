@@ -86,10 +86,10 @@
 		F965C9ED1CF318CE00005627 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F965C9EC1CF318CE00005627 /* Accelerate.framework */; };
 		F965CD611CF478F100005627 /* CUIIconWithTitleCell.mm in Sources */ = {isa = PBXBuildFile; fileRef = F965CD5E1CF478F100005627 /* CUIIconWithTitleCell.mm */; };
 		F965CD621CF478F100005627 /* CUISelectableMenuItemViewModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = F965CD601CF478F100005627 /* CUISelectableMenuItemViewModel.mm */; };
-		F9660E681D09A8F300669EB0 /* CUISingleChoiceMenuViewSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = F9660E661D09A8F300669EB0 /* CUISingleChoiceMenuViewSpec.mm */; };
+		F9660E681D09A8F300669EB0 /* CUISingleChoiceMenuViewControllerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = F9660E661D09A8F300669EB0 /* CUISingleChoiceMenuViewControllerSpec.mm */; };
 		F9660E691D09A8F300669EB0 /* CUISingleChoiceMenuViewModelSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = F9660E671D09A8F300669EB0 /* CUISingleChoiceMenuViewModelSpec.mm */; };
 		F9660E8A1D09A90A00669EB0 /* CUISingleChoiceMenuViewModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = F9660E861D09A90A00669EB0 /* CUISingleChoiceMenuViewModel.mm */; };
-		F9660E8B1D09A90A00669EB0 /* CUISingleChoiceMenuView.mm in Sources */ = {isa = PBXBuildFile; fileRef = F9660E891D09A90A00669EB0 /* CUISingleChoiceMenuView.mm */; };
+		F9660E8B1D09A90A00669EB0 /* CUISingleChoiceMenuViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = F9660E891D09A90A00669EB0 /* CUISingleChoiceMenuViewController.mm */; };
 		F99542581D058EB0004C54D4 /* CUIIconWithTitleCellSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = F99542571D058EB0004C54D4 /* CUIIconWithTitleCellSpec.mm */; };
 		F9A684261D1BE0F100E0F319 /* CUIGridView.mm in Sources */ = {isa = PBXBuildFile; fileRef = F9A684251D1BE0F100E0F319 /* CUIGridView.mm */; };
 		F9A684591D1FB95000E0F319 /* CUILayerView.mm in Sources */ = {isa = PBXBuildFile; fileRef = F9A684571D1FB95000E0F319 /* CUILayerView.mm */; };
@@ -591,12 +591,12 @@
 		F965CD5F1CF478F100005627 /* CUISelectableMenuItemViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUISelectableMenuItemViewModel.h; sourceTree = "<group>"; };
 		F965CD601CF478F100005627 /* CUISelectableMenuItemViewModel.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUISelectableMenuItemViewModel.mm; sourceTree = "<group>"; };
 		F965CD7F1CF4791000005627 /* CUISelectableMenuItemViewModelSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUISelectableMenuItemViewModelSpec.mm; sourceTree = "<group>"; };
-		F9660E661D09A8F300669EB0 /* CUISingleChoiceMenuViewSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUISingleChoiceMenuViewSpec.mm; sourceTree = "<group>"; };
+		F9660E661D09A8F300669EB0 /* CUISingleChoiceMenuViewControllerSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUISingleChoiceMenuViewControllerSpec.mm; sourceTree = "<group>"; };
 		F9660E671D09A8F300669EB0 /* CUISingleChoiceMenuViewModelSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUISingleChoiceMenuViewModelSpec.mm; sourceTree = "<group>"; };
 		F9660E861D09A90A00669EB0 /* CUISingleChoiceMenuViewModel.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUISingleChoiceMenuViewModel.mm; sourceTree = "<group>"; };
-		F9660E871D09A90A00669EB0 /* CUISingleChoiceMenuView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUISingleChoiceMenuView.h; sourceTree = "<group>"; };
+		F9660E871D09A90A00669EB0 /* CUISingleChoiceMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUISingleChoiceMenuViewController.h; sourceTree = "<group>"; };
 		F9660E881D09A90A00669EB0 /* CUISingleChoiceMenuViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUISingleChoiceMenuViewModel.h; sourceTree = "<group>"; };
-		F9660E891D09A90A00669EB0 /* CUISingleChoiceMenuView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUISingleChoiceMenuView.mm; sourceTree = "<group>"; };
+		F9660E891D09A90A00669EB0 /* CUISingleChoiceMenuViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUISingleChoiceMenuViewController.mm; sourceTree = "<group>"; };
 		F99542571D058EB0004C54D4 /* CUIIconWithTitleCellSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUIIconWithTitleCellSpec.mm; sourceTree = "<group>"; };
 		F9A684241D1BE0F100E0F319 /* CUIGridView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUIGridView.h; sourceTree = "<group>"; };
 		F9A684251D1BE0F100E0F319 /* CUIGridView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUIGridView.mm; sourceTree = "<group>"; };
@@ -974,8 +974,8 @@
 				F9B97A3B1D095BE700B4E670 /* CUIMutableMenuItemView.h */,
 				F965CD5F1CF478F100005627 /* CUISelectableMenuItemViewModel.h */,
 				F965CD601CF478F100005627 /* CUISelectableMenuItemViewModel.mm */,
-				F9660E871D09A90A00669EB0 /* CUISingleChoiceMenuView.h */,
-				F9660E891D09A90A00669EB0 /* CUISingleChoiceMenuView.mm */,
+				F9660E871D09A90A00669EB0 /* CUISingleChoiceMenuViewController.h */,
+				F9660E891D09A90A00669EB0 /* CUISingleChoiceMenuViewController.mm */,
 				F9660E881D09A90A00669EB0 /* CUISingleChoiceMenuViewModel.h */,
 				F9660E861D09A90A00669EB0 /* CUISingleChoiceMenuViewModel.mm */,
 			);
@@ -1043,7 +1043,7 @@
 				F954188B1CFC56DD00C6BE2E /* CUIMenuItemModelSpec.mm */,
 				F9B088A11D2127C500EB1E76 /* CUIMenuItemsDataSourceSpec.mm */,
 				F965CD7F1CF4791000005627 /* CUISelectableMenuItemViewModelSpec.mm */,
-				F9660E661D09A8F300669EB0 /* CUISingleChoiceMenuViewSpec.mm */,
+				F9660E661D09A8F300669EB0 /* CUISingleChoiceMenuViewControllerSpec.mm */,
 				F9660E671D09A8F300669EB0 /* CUISingleChoiceMenuViewModelSpec.mm */,
 			);
 			name = "Modes Bar";
@@ -1656,7 +1656,7 @@
 				F9CDB5D31D2D12A300B11D82 /* RACSignal+CameraUI.mm in Sources */,
 				BE52379C1D3B952C00A4DD80 /* CUIFlipCameraViewModel.mm in Sources */,
 				F9A684591D1FB95000E0F319 /* CUILayerView.mm in Sources */,
-				F9660E8B1D09A90A00669EB0 /* CUISingleChoiceMenuView.mm in Sources */,
+				F9660E8B1D09A90A00669EB0 /* CUISingleChoiceMenuViewController.mm in Sources */,
 				836374091D3FBA9F00C8D09D /* CUITimerMenuViewModel.mm in Sources */,
 				F9D4FE791D043FBD00CE9A54 /* CUIFocusView.mm in Sources */,
 				F9CDB5D41D2D12A300B11D82 /* UIViewController+LifecycleSignals.mm in Sources */,
@@ -1736,7 +1736,7 @@
 				BEEE6D3B1D21385D00579F5D /* EXPMatchers+sendError.m in Sources */,
 				83AE3F351D48955400F51B89 /* UIView+Retrieval.m in Sources */,
 				BEEE6D2E1D21385D00579F5D /* EXPExpect+LLReactiveMatchersExtensions.m in Sources */,
-				F9660E681D09A8F300669EB0 /* CUISingleChoiceMenuViewSpec.mm in Sources */,
+				F9660E681D09A8F300669EB0 /* CUISingleChoiceMenuViewControllerSpec.mm in Sources */,
 				F9B088A21D2127C500EB1E76 /* CUIMenuItemsDataSourceSpec.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

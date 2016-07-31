@@ -1,14 +1,15 @@
 // Copyright (c) 2016 Lightricks. All rights reserved.
 // Created by Lior Bar.
 
-#import "CUISingleChoiceMenuView.h"
+#import "CUISingleChoiceMenuViewController.h"
 
 #import "CUIMenuItemsDataSource.h"
 #import "CUIMutableMenuItemView.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface CUISingleChoiceMenuView () <UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>
+@interface CUISingleChoiceMenuViewController () <UICollectionViewDelegate,
+    UICollectionViewDelegateFlowLayout>
 
 /// View model.
 @property (readonly, nonatomic) CUISingleChoiceMenuViewModel *menuViewModel;
@@ -25,7 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-@implementation CUISingleChoiceMenuView
+@implementation CUISingleChoiceMenuViewController
 
 static const CGFloat kDefaultItemsPerRow = 5.5;
 static NSString * const kCellClassIdentifier = @"cellClass";
@@ -34,10 +35,9 @@ static NSString * const kCellClassIdentifier = @"cellClass";
 #pragma mark Initialization
 #pragma mark -
 
-- (instancetype)initWithFrame:(CGRect)frame
-                menuViewModel:(CUISingleChoiceMenuViewModel *)menuViewModel
-                    cellClass:(Class)cellClass {
-  if (self = [super initWithFrame:frame]) {
+- (instancetype)initWithMenuViewModel:(CUISingleChoiceMenuViewModel *)menuViewModel
+                            cellClass:(Class)cellClass {
+  if (self = [super initWithNibName:nil bundle:nil]) {
     LTParameterAssert([cellClass isSubclassOfClass:[UICollectionViewCell class]],
         @"%@ is not a subclass of UICollectionViewCell", cellClass);
     LTParameterAssert([cellClass conformsToProtocol:@protocol(CUIMutableMenuItemView)],
@@ -45,9 +45,14 @@ static NSString * const kCellClassIdentifier = @"cellClass";
     _itemsPerRow = kDefaultItemsPerRow;
     _menuViewModel = menuViewModel;
     _cellClass = cellClass;
-    [self setupCollectionView];
   }
   return self;
+}
+
+- (void)viewDidLoad {
+  [super viewDidLoad];
+
+  [self setupCollectionView];
 }
 
 - (void)setupCollectionView {
@@ -61,19 +66,16 @@ static NSString * const kCellClassIdentifier = @"cellClass";
           forCellWithReuseIdentifier:kCellClassIdentifier];
   [self setupViewModel];
 
-  [self addSubview:self.collectionView];
+  [self.view addSubview:self.collectionView];
+  [self.collectionView mas_makeConstraints:^(MASConstraintMaker *make) {
+    make.edges.equalTo(self.view);
+  }];
 }
 
 - (void)setItemsPerRow:(CGFloat)itemsPerRow {
   LTParameterAssert(itemsPerRow > 0, @"itemsPerRow must be a strictly positive number");
   _itemsPerRow = itemsPerRow;
   [self.collectionView.collectionViewLayout invalidateLayout];
-}
-
-- (void)layoutSubviews {
-  [super layoutSubviews];
-
-  self.collectionView.frame = self.bounds;
 }
 
 - (UICollectionViewFlowLayout *)collectionLayout {
