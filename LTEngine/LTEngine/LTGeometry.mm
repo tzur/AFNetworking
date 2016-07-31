@@ -372,3 +372,27 @@ CGFloat LTDistanceFromLine(CGPoint pointOnLine, CGPoint anotherPointOnLine, CGPo
 CGFloat LTDistanceFromEdge(CGPoint p0, CGPoint p1, CGPoint point) {
   return CGPointDistance(point, LTPointOnEdgeClosestToPoint(p0, p1, point));
 }
+
+CGPoint LTPointOnPolylineNearestToPoint(const CGPoints &polyline, CGPoint point) {
+  CGPoint result;
+  CGFloat minDistance = CGFLOAT_MAX;
+  
+  for(CGPoints::size_type i = 0; i + 1 < polyline.size(); ++i) {
+    CGPoint p0 = polyline[i];
+    CGPoint p1 = polyline[i + 1];
+    
+    CGPoint closestPoint = p0 != p1 ? LTPointOnEdgeClosestToPoint(p0, p1, point) : p0;
+    CGFloat distance = CGPointDistance(closestPoint, point);
+    
+    if (distance < minDistance) {
+      result = closestPoint;
+      minDistance = distance;
+    }
+  }
+  
+  return result;
+}
+
+CGFloat LTDistanceFromPolyLine(const CGPoints &polyline, CGPoint point) {
+  return CGPointDistance(LTPointOnPolylineNearestToPoint(polyline, point), point);
+};
