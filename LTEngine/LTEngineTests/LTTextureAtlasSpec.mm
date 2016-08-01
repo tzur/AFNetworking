@@ -47,7 +47,7 @@ context(@"initialization", ^{
     }).to.raise(NSInvalidArgumentException);
 
     lt::unordered_map<NSString *, CGRect> zeroHeightAreas{{@"1", CGRectMake(0, 0, 1, 0)}};
-    
+
     expect(^{
       LTTextureAtlas __unused *textureAtlas =
           [[LTTextureAtlas alloc] initWithAtlasTexture:texture imageAreas:zeroHeightAreas];

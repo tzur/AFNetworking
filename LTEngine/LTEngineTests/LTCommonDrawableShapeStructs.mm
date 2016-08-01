@@ -36,7 +36,7 @@ context(@"adding vertices", ^{
     LTAddShadowVertex(vertex, &shadowVertices);
     expect(LTAreVerticesEqual(vertex, shadowVertices.front())).to.beFalsy();
     expect(shadowVertices.front().color).to.equal(LTVector4::zeros());
-    
+
     vertex.color = LTVector4::zeros();
     LTAddShadowVertex(vertex, &shadowVertices);
     expect(LTAreVerticesEqual(vertex, shadowVertices.back())).to.beTruthy();
@@ -53,7 +53,7 @@ context(@"adding vertices", ^{
     LTAddStrokeVertex(vertex, &strokeVertices);
     expect(LTAreVerticesEqual(vertex, strokeVertices.front())).to.beFalsy();
     expect(strokeVertices.front().shadowColor).to.equal(LTVector4::zeros());
-    
+
     vertex.shadowColor = LTVector4::zeros();
     LTAddStrokeVertex(vertex, &strokeVertices);
     expect(LTAreVerticesEqual(vertex, strokeVertices.back())).to.beTruthy();

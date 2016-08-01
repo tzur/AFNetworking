@@ -50,7 +50,7 @@ context(@"filtering", ^{
     point1.timestamp = point0.timestamp + kThreshold;
     expect([filter acceptNewPoint:point1 withOldPoint:point0]).to.beFalsy();
     expect([filter acceptNewPoint:point0 withOldPoint:point0]).to.beFalsy();
-    
+
     point1.timestamp = point0.timestamp + kThreshold - FLT_EPSILON;
     expect([filter acceptNewPoint:point1 withOldPoint:point0]).to.beFalsy();
     expect([filter acceptNewPoint:point0 withOldPoint:point0]).to.beFalsy();

@@ -38,7 +38,7 @@ context(@"metadata", ^{
   
   it(@"should complete after sending metadata", ^{
     LLSignalTestRecorder *recorder = [[provider fetchChangesetMetadata] testRecorder];
-    
+
     expect(recorder).will.sendValuesWithCount(1);
     expect(recorder).to.complete();
   });

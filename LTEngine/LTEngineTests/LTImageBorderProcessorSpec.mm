@@ -112,7 +112,7 @@ context(@"processing", ^{
     processor.frontTexture = frameTexture;
     processor.frontFlipHorizontal = YES;
     [processor process];
-    
+
     cv::Mat4b expected(2, 2);
     expected = cv::Vec4b(0, 0, 0, 255);
     expected(0, 1) = cv::Vec4b(255, 255, 255, 255);

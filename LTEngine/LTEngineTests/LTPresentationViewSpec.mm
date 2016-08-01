@@ -185,7 +185,7 @@ context(@"drawing", ^{
 
     // The expected result should be the bottom right pixel of the content all over the framebuffer.
     expectedOutput = inputContent(inputContent.rows - 1, inputContent.cols - 1);
-    
+
     [view drawToFbo:fbo];
     output = [outputTexture image];
     expect($(output)).to.equalMat($(expectedOutput));
@@ -294,11 +294,11 @@ context(@"drawing", ^{
       output = [outputTexture image];
       expect($(output)).to.beCloseToMat($(expectedOutput));
     };
-    
+
     it(@"should use linear interpolation on lower zoom levels", ^{
       testInterpolation(2, cv::INTER_LINEAR);
     });
-    
+
     it(@"should use nearest neighbor interpolation on higher zoom levels", ^{
       testInterpolation(4, cv::INTER_NEAREST);
     });
@@ -318,7 +318,7 @@ context(@"drawing", ^{
     newMat(cv::Rect(0, 0, newSize.width, newSize.height / 2)) = kRed;
     newMat(cv::Rect(0, newSize.height / 2, newSize.width, newSize.height / 2)) = kBlue;
     LTTexture *newTexture = [LTTexture textureWithImage:newMat];
-    
+
     [view replaceContentWith:newTexture];
 
     contentLocationProvider.contentSize = newSize;
@@ -418,11 +418,11 @@ context(@"draw delegate", ^{
       glClearColor(0, 1, 0, 1);
       glClear(GL_COLOR_BUFFER_BIT);
     }] presentationView:view drawOverlayAboveContentWithTransform:CGAffineTransformIdentity];
-    
+
     // The overlay should affect only the visible content rectangle (scissor box).
     expectedOutput = view.backgroundColor.lt_cvVector;
     expectedOutput(contentAreaInOutput) = kGreen;
-    
+
     [view drawToFbo:fbo];
     output = [outputTexture image];
     expect($(output)).to.beCloseToMat($(expectedOutput));
@@ -433,7 +433,7 @@ context(@"draw delegate", ^{
     altMat = kRed;
     LTTexture *altTexture = [LTTexture textureWithImage:altMat];
     OCMStub([mock alternativeTextureForView:view]).andReturn(altTexture);
-    
+
     expectedOutput = view.backgroundColor.lt_cvVector;
     expectedOutput(contentAreaInOutput) = kRed;
     [view drawToFbo:fbo];
@@ -443,12 +443,12 @@ context(@"draw delegate", ^{
   
   it(@"should use content texture if alternative content texture is nil", ^{
     OCMStub([mock alternativeTextureForView:view]);
-    
+
     expectedOutput = view.backgroundColor.lt_cvVector;
     cv::resize(inputContent, resizedContent, contentAreaInOutput.size(), 0, 0, cv::INTER_NEAREST);
     cv::flip(resizedContent, resizedContent, 0);
     resizedContent.copyTo(expectedOutput(contentAreaInOutput));
-    
+
     [view drawToFbo:fbo];
     output = [outputTexture image];
     expect($(output)).to.beCloseToMat($(expectedOutput));
@@ -459,7 +459,7 @@ context(@"draw delegate", ^{
     OCMExpect([mock presentationView:view drawProcessedContent:contentTexture
               withVisibleContentRect:kVisibleContentRect]);
     [view drawToFbo:fbo];
-    
+
     // When there's an alternative content texture, it should be provided instead.
     LTTexture *altTexture = [LTTexture textureWithImage:inputContent];
     OCMStub([mock alternativeTextureForView:view]).andReturn(altTexture);
@@ -481,7 +481,7 @@ context(@"draw delegate", ^{
       BOOL returnValue = YES;
       [invocation setReturnValue:&returnValue];
     }] presentationView:view drawProcessedContent:contentTexture withVisibleContentRect:CGRectZero];
-    
+
     expectedOutput = view.backgroundColor.lt_cvVector;
     expectedOutput(contentAreaInOutput) = kBlue;
     [view drawToFbo:fbo];
@@ -497,7 +497,7 @@ context(@"draw delegate", ^{
     cv::resize(inputContent, resizedContent, contentAreaInOutput.size(), 0, 0, cv::INTER_NEAREST);
     cv::flip(resizedContent, resizedContent, 0);
     resizedContent.copyTo(expectedOutput(contentAreaInOutput));
-    
+
     [view drawToFbo:fbo];
     output = [outputTexture image];
     expect($(output)).to.beCloseToMat($(expectedOutput));

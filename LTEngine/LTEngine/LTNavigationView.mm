@@ -411,7 +411,7 @@ static const NSUInteger kDefaultDoubleTapLevels = 3;
     }
     CGRect newVisibleContentRect = [self visibleContentRectFromLayers];
     BOOL updated = !CGRectEqualToRect(newVisibleContentRect, self.visibleContentRectInPoints);
-    
+
     // Instead of updating the content rect here (which will lead to a setNeedsDisplay and in some
     // scenarios hogs the display link, causing the scrollview to get stuck), post a notification on
     // the update. This will cause the setNeedsDisplay to happen elsewhere, and won't block the
@@ -421,24 +421,24 @@ static const NSUInteger kDefaultDoubleTapLevels = 3;
       [[NSNotificationCenter defaultCenter] postNotificationName:kScrollAnimationNotification
                                                           object:self];
     }
-    
+
     // If the scroll view is still dragging / zooming / decelerating / animating, the animation
     // should continue.
     if (self.scrollViewDragging || self.scrollViewZooming || self.scrollViewDecelerating) {
       return YES;
     }
-    
+
     // Safety precautions, to make sure we don't stop while the scrollview is in motion.
     if (self.scrollView.dragging || self.scrollView.zooming || self.scrollView.decelerating) {
       return YES;
     }
-    
+
     // Final precaution, in case the visible content rect was changed or if it the first frame of
     // the animation, give us at least one more loop call before stopping the animation.
     if (updated || animationFrames <= 1) {
       return YES;
     }
-    
+
     // The animation can stop now.
     return NO;
   }];

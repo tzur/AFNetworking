@@ -34,9 +34,9 @@ context(@"drawRect", ^{
     OCMStub([drawers[1] drawToButton:button]).andDo(^(id) {
       [calledDrawers addObject:drawers[1]];
     });
-    
+
     [button drawRect:CGRectZero];
-    
+
     expect(drawers).to.equal(calledDrawers);
   });
 });

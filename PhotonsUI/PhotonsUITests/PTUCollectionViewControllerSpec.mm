@@ -143,7 +143,7 @@ context(@"collection view", ^{
   it(@"should correctly apply initial configuration", ^{
     UICollectionViewFlowLayout *layout =
         (UICollectionViewFlowLayout *)collectionView.collectionViewLayout;
-    
+
     expect(layout.scrollDirection).to.equal(UICollectionViewScrollDirectionVertical);
     expect(layout.minimumInteritemSpacing).to.equal(@1);
     expect(layout.minimumLineSpacing).to.equal(@1);
@@ -161,16 +161,16 @@ context(@"collection view", ^{
         minimumItemSpacing:3 minimumLineSpacing:4
         scrollDirection:UICollectionViewScrollDirectionHorizontal
         showVerticalScrollIndicator:NO showHorizontalScrollIndicator:YES enablePaging:YES];
-    
+
     [viewController setConfiguration:configuration animated:NO];
-    
+
     UICollectionViewFlowLayout *layout =
         (UICollectionViewFlowLayout *)collectionView.collectionViewLayout;
-    
+
     expect(layout.scrollDirection).to.equal(UICollectionViewScrollDirectionHorizontal);
     expect(layout.minimumInteritemSpacing).to.equal(@3);
     expect(layout.minimumLineSpacing).to.equal(@4);
-    
+
     expect(collectionView.showsHorizontalScrollIndicator).to.beTruthy();
     expect(collectionView.showsVerticalScrollIndicator).to.beFalsy;
     expect(collectionView.pagingEnabled).to.beTruthy();
@@ -238,7 +238,7 @@ context(@"collection view", ^{
       [viewController selectItem:asset];
       expect([collectionView cellForItemAtIndexPath:indexPath].isSelected).to.beTruthy();
     });
-    
+
     it(@"should correctly deselect items", ^{
       dataSource.data = @[@[asset]];
       [collectionView reloadData];
@@ -251,7 +251,7 @@ context(@"collection view", ^{
       [viewController deselectItem:asset];
       expect([collectionView cellForItemAtIndexPath:indexPath].isSelected).to.beFalsy();
     });
-    
+
     it(@"should send values correctly when selecting items", ^{
       id<PTNDescriptor> otherAsset = PTNCreateAssetDescriptor(nil, @"foo", 0, nil, nil, 0);
       dataSource.data = @[@[asset, otherAsset]];
@@ -480,24 +480,24 @@ context(@"empty view", ^{
 
   it(@"should show the view when the collection is empty and data source did not err", ^{
     expect(!emptyView.isHidden || emptyView.alpha == 1).to.beTruthy();
-    
+
     dataSource.data = @[@[], @[]];
     expect(!emptyView.isHidden || emptyView.alpha == 1).to.beTruthy();
   });
   
   it(@"should bind new empty views and set them according to the current value", ^{
     UIView *newEmptyView = [[UIView alloc] init];
-    
+
     viewController.emptyView = newEmptyView;
     expect(!newEmptyView.isHidden || newEmptyView.alpha == 1).to.beTruthy();
-    
+
     dataSource.data = @[@[asset]];
     expect(newEmptyView.isHidden || newEmptyView.alpha == 0).to.beTruthy();
-    
+
     UIView *newerEmptyView = [[UIView alloc] init];
     viewController.emptyView = newerEmptyView;
     expect(newerEmptyView.isHidden || newerEmptyView.alpha == 0).to.beTruthy();
-    
+
     dataSource.data = @[@[]];
     expect(!newerEmptyView.isHidden || newerEmptyView.alpha == 1).to.beTruthy();
   });
@@ -521,17 +521,17 @@ context(@"error view", ^{
   
   it(@"should bind new error views and set them according to the current value", ^{
     UIView *newErrorView = [[UIView alloc] init];
-    
+
     viewController.emptyView = newErrorView;
     expect(!newErrorView.isHidden || newErrorView.alpha == 1).to.beTruthy();
-    
+
     dataSource.error = [NSError lt_errorWithCode:1337];
     expect(newErrorView.isHidden || newErrorView.alpha == 0).to.beTruthy();
-    
+
     UIView *newerErrorView = [[UIView alloc] init];
     viewController.emptyView = newerErrorView;
     expect(newerErrorView.isHidden || newerErrorView.alpha == 0).to.beTruthy();
-    
+
     dataSource.error = nil;
     expect(!newerErrorView.isHidden || newerErrorView.alpha == 1).to.beTruthy();
   });

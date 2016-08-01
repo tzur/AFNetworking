@@ -31,7 +31,7 @@ context(@"texture attachment", ^{
       expect(fbo.size).to.equal(texture.size);
       expect(fbo.pixelFormat).to.equal($(LTGLPixelFormatRGBA8Unorm));
     });
-    
+
     it(@"should init with half-float RGBA texture on capable devices", ^{
       [[[glContext stub] andReturnValue:@(YES)] canRenderToHalfFloatTextures];
 
@@ -44,7 +44,7 @@ context(@"texture attachment", ^{
       expect(fbo.size).to.equal(texture.size);
       expect(fbo.pixelFormat).to.equal($(LTGLPixelFormatRGBA16Float));
     });
-    
+
     it(@"should raise with half-float RGBA texture on incapable devices", ^{
       [[[glContext stub] andReturnValue:@(NO)] canRenderToHalfFloatTextures];
 
@@ -56,7 +56,7 @@ context(@"texture attachment", ^{
         __unused LTFbo *fbo = [[LTFbo alloc] initWithTexture:texture context:glContext];
       }).to.raise(kLTFboInvalidAttachmentException);
     });
-    
+
     it(@"should init with float RGBA texture on capable devices", ^{
       [[[glContext stub] andReturnValue:@(YES)] canRenderToFloatTextures];
 

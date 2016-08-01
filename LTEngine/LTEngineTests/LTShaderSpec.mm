@@ -15,13 +15,13 @@ SpecBegin(LTShader)
 context(@"shader compilation", ^{
   it(@"should compile vertex shader with an empty source", ^{
     LTShader *shader = [[LTShader alloc] initWithType:LTShaderTypeVertex andSource:@""];
-    
+
     expect(shader).notTo.beNil();
   });
   
   it(@"should compile fragment shader with an empty source", ^{
     LTShader *shader = [[LTShader alloc] initWithType:LTShaderTypeFragment andSource:@""];
-    
+
     expect(shader).notTo.beNil();
   });
   
@@ -42,14 +42,14 @@ context(@"shader compilation", ^{
   it(@"should compile basic vertex shader", ^{
     LTShader *shader = [[LTShader alloc] initWithType:LTShaderTypeVertex
                                             andSource:kBasicVertexSource];
-    
+
     expect(shader).notTo.beNil();
   });
   
   it(@"should compile basic fragment shader", ^{
     LTShader *shader = [[LTShader alloc] initWithType:LTShaderTypeFragment
                                             andSource:kBasicFragmentSource];
-    
+
     expect(shader).notTo.beNil();
   });
 });

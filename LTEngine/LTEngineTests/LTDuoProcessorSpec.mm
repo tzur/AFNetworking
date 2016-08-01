@@ -185,7 +185,7 @@ context(@"processing", ^{
     processor.redColor = LTVector4(0.6, 0.5, 0.2, 1.0);
     processor.blendMode = LTDuoBlendModeOverlay;
     [processor process];
-    
+
     cv::Mat image = LTLoadMat([self class], @"DuoBlueRed.png");
     expect($(output.image)).to.beCloseToMatWithin($(image), 1);
   });
@@ -196,7 +196,7 @@ context(@"processing", ^{
     processor.spread = -1.0;
     processor.angle = -M_PI_4 * 0.15;
     [processor process];
-    
+
     cv::Mat image = LTLoadMat([self class], @"DuoRed.png");
     expect($(output.image)).to.beCloseToMatWithin($(image), 1);
   });
@@ -207,7 +207,7 @@ context(@"processing", ^{
     processor.spread = -1.0;
     processor.angle = -M_PI_4 * 0.15;
     [processor process];
-    
+
     cv::Mat image = LTLoadMat([self class], @"DuoBlue.png");
     expect($(output.image)).to.beCloseToMatWithin($(image), 1);
   });

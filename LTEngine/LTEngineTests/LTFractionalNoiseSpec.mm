@@ -47,7 +47,7 @@ context(@"processing", ^{
     noise.verticalSeed = 0.0;
     noise.velocitySeed = 0.0;
     [noise process];
-    
+
     // Compare current output of the shader with the result that passed human visual inspection.
     // Important: this test may break upon introducing new architectures, since the test is
     // dependent on the round-off errors which may differ on a new architecture.

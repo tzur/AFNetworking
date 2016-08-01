@@ -77,7 +77,7 @@ context(@"drawing", ^{
     CGRect sourceRect = CGRectFromOriginAndSize(sourceOrigin, size);
     CGRect targetRect = CGRectFromOriginAndSize(targetOrigin, size);
     [drawer drawRect:targetRect inFramebuffer:fbo fromRect:sourceRect];
-    
+
     cv::Mat expected = LTLoadMat([self class], @"CircularPatchDrawerDefault.png");
     expect($(outputTexture.image)).to.equalMat($(expected));
   });
@@ -90,7 +90,7 @@ context(@"drawing", ^{
     CGRect targetRect = CGRectFromOriginAndSize(targetOrigin, size);
     drawer.rotation = M_PI_4;
     [drawer drawRect:targetRect inFramebuffer:fbo fromRect:sourceRect];
-    
+
     cv::Mat expected = LTLoadMat([self class], @"CircularPatchDrawerRotation.png");
     expect($(outputTexture.image)).to.equalMat($(expected));
   });
@@ -103,7 +103,7 @@ context(@"drawing", ^{
     CGRect targetRect = CGRectFromOriginAndSize(targetOrigin, size);
     drawer.alpha = 0.4;
     [drawer drawRect:targetRect inFramebuffer:fbo fromRect:sourceRect];
-    
+
     cv::Mat expected = LTLoadMat([self class], @"CircularPatchDrawerAlpha.png");
     expect($(outputTexture.image)).to.equalMat($(expected));
   });
@@ -116,7 +116,7 @@ context(@"drawing", ^{
     CGRect targetRect = CGRectFromOriginAndSize(targetOrigin, size);
     drawer.flip = YES;
     [drawer drawRect:targetRect inFramebuffer:fbo fromRect:sourceRect];
-    
+
     cv::Mat expected = LTLoadMat([self class], @"CircularPatchDrawerFlipped.png");
     expect($(outputTexture.image)).to.equalMat($(expected));
   });
@@ -159,7 +159,7 @@ context(@"drawing", ^{
     CGRect sourceRect = CGRectFromOriginAndSize(sourceOrigin, size);
     CGRect targetRect = CGRectFromOriginAndSize(targetOrigin, size);
     [drawer drawRect:targetRect inFramebuffer:fbo fromRect:sourceRect];
-    
+
     cv::Mat expected = LTLoadMat([self class], @"CircularPatchDrawerMirror.png");
     expect($(outputTexture.image)).to.equalMat($(expected));
   });
@@ -175,14 +175,14 @@ context(@"drawing", ^{
     drawer.membraneColors = colors;
     drawer.circularPatchMode = LTCircularPatchModePatch;
     [drawer drawRect:targetRect inFramebuffer:fbo fromRect:sourceRect];
-    
+
     cv::Mat expected = LTLoadMat([self class], @"CircularPatchDrawerPatch.png");
     expect($(outputTexture.image)).to.equalMat($(expected));
-    
+
     drawer.circularPatchMode = LTCircularPatchModeClone;
     [drawer drawRect:targetRect inFramebuffer:fbo fromRect:sourceRect];
     expect($(outputTexture.image)).to.equalMat($(expected));
-    
+
     drawer.circularPatchMode = LTCircularPatchModeHeal;
     [drawer drawRect:targetRect inFramebuffer:fbo fromRect:sourceRect];
     expected = LTLoadMat([self class], @"CircularPatchDrawerHeal.png");

@@ -218,7 +218,7 @@ typedef NSUInteger (^LTFastEnumeratorOperationBlock)(NSFastEnumerationState *sta
     }
 
     state->extra[kSourceIndexKey] = sourceIndex;
-    
+
     return count;
   };
 
@@ -272,9 +272,9 @@ typedef NSUInteger (^LTFastEnumeratorOperationBlock)(NSFastEnumerationState *sta
         state->extra[kSourceCurrentValuesKey] = 0;
       }
     }
-    
+
     state->extra[kSourceIndexKey] = sourceIndex;
-    
+
     return count;
   };
 

@@ -69,7 +69,7 @@ context(@"rendering", ^{
     processor.spread = -1.0;
     processor.intensity = 0.8;
     [processor process];
-    
+
     cv::Mat image = LTLoadMat([self class], @"TiltShiftRadial.png");
     expect($(output.image)).to.beCloseToMatWithin($(image), 1);
   });
@@ -81,7 +81,7 @@ context(@"rendering", ^{
     processor.intensity = 0.8;
     processor.invertMask = YES;
     [processor process];
-    
+
     cv::Mat image = LTLoadMat([self class], @"TiltShiftRadialInverse.png");
     processor.center = LTVector2(8, 8);
     processor.diameter = 8;
@@ -94,7 +94,7 @@ context(@"rendering", ^{
     processor.diameter = output.size.width / 4;
     processor.spread = -1;
     [processor process];
-    
+
     cv::Mat image = LTLoadMat([self class], @"TiltShiftDoubleLinear.png");
     expect($(output.image)).to.beCloseToMatWithin($(image), 1);
   });

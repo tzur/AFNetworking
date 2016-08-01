@@ -30,7 +30,7 @@ context(@"GLKMatrix2", ^{
     GLKMatrix2 a = {{1, 2, 3, 4}};
     GLKMatrix2 b = {{4, 3, 2, 1}};
     GLKMatrix2 c = {{1, 2, 3, 4}};
-    
+
     expect(a != b).to.beTruthy();
     expect(a != c).to.beFalsy();
   });
@@ -55,7 +55,7 @@ context(@"GLKMatrix2", ^{
   it(@"should multiply matrixs correctly", ^{
     GLKMatrix2 m1 = {{1, 2, 3, 4}};
     GLKMatrix2 m2 = {{5, 6, 7, 8}};
-    
+
     expect(GLKMatrix2Multiply(m1, m2) == GLKMatrix2Make(23, 34, 31, 46)).to.beTruthy();
   });
   
@@ -112,7 +112,7 @@ context(@"GLKMatrix3", ^{
     GLKMatrix3 a = {{1, 2, 3, 4, 5, 6, 7, 8, 9}};
     GLKMatrix3 b = {{9, 8, 7, 6, 5, 4, 3, 2, 1}};
     GLKMatrix3 c = {{1, 2, 3, 4, 5, 6, 7, 8, 9}};
-    
+
     expect(a != b).to.beTruthy();
     expect(a != c).to.beFalsy();
   });
@@ -132,19 +132,19 @@ context(@"GLKMatrix3", ^{
   it(@"should construct a correct matrix from affine transform", ^{
     CGAffineTransform transform = CGAffineTransformMake(1, 2, 3, 4, 5, 6);
     GLKMatrix3 result = GLKMatrix3WithTransform(transform);
-    
+
     GLKVector3 resultVector = GLKMatrix3MultiplyVector3(result, GLKVector3Make(5, 10, 1));
     CGPoint resultPoint = CGPointApplyAffineTransform(CGPointMake(5, 10), transform);
     expect(resultVector.x).to.equal(resultPoint.x);
     expect(resultVector.y).to.equal(resultPoint.y);
     expect(resultVector.z).to.equal(1);
-    
+
     resultVector = GLKMatrix3MultiplyVector3(result, GLKVector3Make(5, 1, 1));
     resultPoint = CGPointApplyAffineTransform(CGPointMake(5, 1), transform);
     expect(resultVector.x).to.equal(resultPoint.x);
     expect(resultVector.y).to.equal(resultPoint.y);
     expect(resultVector.z).to.equal(1);
-    
+
     resultVector = GLKMatrix3MultiplyVector3(result, GLKVector3Make(10, 10, 1));
     resultPoint = CGPointApplyAffineTransform(CGPointMake(10, 10), transform);
     expect(resultVector.x).to.equal(resultPoint.x);
@@ -167,7 +167,7 @@ context(@"GLKMatrix4", ^{
     GLKMatrix4 a = {{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16}};
     GLKMatrix4 b = {{16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1}};
     GLKMatrix4 c = {{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16}};
-    
+
     expect(a != b).to.beTruthy();
     expect(a != c).to.beFalsy();
   });
@@ -241,7 +241,7 @@ context(@"GLKVector3 operations", ^{
     expect(GLKVector3Make(1.1, 2, 3) <= GLKVector3Make(1, 2, 3)).to.beFalsy();
     expect(GLKVector3Make(1, 2.1, 3) <= GLKVector3Make(1, 2, 3)).to.beFalsy();
     expect(GLKVector3Make(1, 2, 3.1) <= GLKVector3Make(1, 2, 3)).to.beFalsy();
-    
+
     expect(GLKVector3Make(1, 2, 3) >= GLKVector3Make(1, 2, 3)).to.beTruthy();
     expect(GLKVector3Make(1, 2, 3) >= GLKVector3Make(1.1, 2, 3)).to.beFalsy();
     expect(GLKVector3Make(1, 2, 3) >= GLKVector3Make(1, 2.1, 3)).to.beFalsy();
@@ -327,7 +327,7 @@ context(@"GLKVector4 operations", ^{
     expect(GLKVector4Make(1, 2.1, 3, 4) <= GLKVector4Make(1, 2, 3, 4)).to.beFalsy();
     expect(GLKVector4Make(1, 2, 3.1, 4) <= GLKVector4Make(1, 2, 3, 4)).to.beFalsy();
     expect(GLKVector4Make(1, 2, 3, 4.1) <= GLKVector4Make(1, 2, 3, 4)).to.beFalsy();
-    
+
     expect(GLKVector4Make(1, 2, 3, 4) >= GLKVector4Make(1, 2, 3, 4)).to.beTruthy();
     expect(GLKVector4Make(1, 2, 3, 4) >= GLKVector4Make(1.1, 2, 3, 4)).to.beFalsy();
     expect(GLKVector4Make(1, 2, 3, 4) >= GLKVector4Make(1, 2.1, 3, 4)).to.beFalsy();
@@ -396,23 +396,23 @@ context(@"standard line equation", ^{
     expect(GLKLineEquation(CGPointZero, CGPointZero)).to.beCloseToGLKVector(GLKVector3Zero);
     expect(GLKLineEquation(p0, p0)).to.beCloseToGLKVector(GLKVector3Zero);
     expect(GLKLineEquation(p1, p1)).to.beCloseToGLKVector(GLKVector3Zero);
-    
+
     expect(GLKLineEquation(p0, p1)).to.beCloseToGLKVector(-GLKLineEquation(p1, p0));
     expect(GLKLineEquation(CGPointZero, p1)).to.beCloseToGLKVector(-GLKLineEquation(p1,
                                                                                     CGPointZero));
     expect(GLKLineEquation(p0, CGPointZero)).to.beCloseToGLKVector(-GLKLineEquation(CGPointZero,
                                                                                     p0));
-    
+
     GLKVector3 line = GLKLineEquation(p0, p1);
     expect(line).to.beCloseToGLKVector(GLKVector3Make(-0.5, -0.6, -1));
     expect(GLKVector3DotProduct(line, GLKVector3Make(p0.x, p0.y, 1))).to.equal(0);
     expect(GLKVector3DotProduct(line, GLKVector3Make(p1.x, p1.y, 1))).to.equal(0);
-    
+
     line = GLKLineEquation(CGPointZero, p0);
     expect(line).to.beCloseToGLKVector(GLKVector3Make(0, 2, 0));
     expect(GLKVector3DotProduct(line, GLKVector3Make(0, 0, 1))).to.equal(0);
     expect(GLKVector3DotProduct(line, GLKVector3Make(p0.x, p0.y, 1))).to.equal(0);
-    
+
     line = GLKLineEquation(CGPointZero, p1);
     expect(line).to.beCloseToGLKVector(GLKVector3Make(-5, -4, 0));
     expect(GLKVector3DotProduct(line, GLKVector3Make(0, 0, 1))).to.equal(0);
@@ -424,17 +424,17 @@ context(@"standard line equation", ^{
     CGPoint p1 = CGPointMake(4, -5);
     GLKVector2 v0 = GLKVector2FromCGPoint(p0);
     GLKVector2 v1 = GLKVector2FromCGPoint(p1);
-    
+
     expect(GLKLineEquation(GLKVector2Zero, GLKVector2Zero)).to.beCloseToGLKVector(GLKVector3Zero);
     expect(GLKLineEquation(v0, v0)).to.beCloseToGLKVector(GLKVector3Zero);
     expect(GLKLineEquation(v1, v1)).to.beCloseToGLKVector(GLKVector3Zero);
-    
+
     expect(GLKLineEquation(v0, v1)).to.beCloseToGLKVector(-GLKLineEquation(v1, v0));
     expect(GLKLineEquation(GLKVector2Zero, v1))
         .to.beCloseToGLKVector(-GLKLineEquation(v1, GLKVector2Zero));
     expect(GLKLineEquation(v0, GLKVector2Zero))
         .to.beCloseToGLKVector(-GLKLineEquation(GLKVector2Zero, v0));
-    
+
     expect(GLKLineEquation(v0, v1)).to.beCloseToGLKVector(GLKLineEquation(p0, p1));
     expect(GLKLineEquation(GLKVector2Zero, v0))
         .to.beCloseToGLKVector(GLKLineEquation(CGPointZero, p0));
@@ -456,7 +456,7 @@ context(@"colorspace conversion", ^{
         }
       }
     }
-    
+
     for (const auto rgba : pixels) {
       GLKVector4 hsva = GLKRGBA2HSVA(rgba);
       CGFloat h,s,v;

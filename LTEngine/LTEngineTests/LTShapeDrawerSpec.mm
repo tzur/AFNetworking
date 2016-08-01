@@ -85,7 +85,7 @@ context(@"shapes", ^{
       expect(drawer.shapes.count).to.equal(1);
       expect(drawer.shapes.firstObject).to.beIdenticalTo(shape);
     });
-    
+
     it(@"should move to point in the last added path", ^{
       id firstMock = [OCMockObject mockForClass:[LTShapeDrawerPathShape class]];
       id secondMock = [OCMockObject mockForClass:[LTShapeDrawerPathShape class]];
@@ -95,7 +95,7 @@ context(@"shapes", ^{
       [drawer moveToPoint:CGPointMake(1, 1)];
       OCMVerifyAll(secondMock);
     });
-    
+
     it(@"should add line to point in the last added path", ^{
       id firstMock = [OCMockObject mockForClass:[LTShapeDrawerPathShape class]];
       id secondMock = [OCMockObject mockForClass:[LTShapeDrawerPathShape class]];
@@ -116,7 +116,7 @@ context(@"shapes", ^{
       expect(drawer.shapes.count).to.equal(1);
       expect(drawer.shapes.firstObject).to.beIdenticalTo(shape);
     });
-    
+
     it(@"should fill triangle in the last added mesh", ^{
       id firstMock = [OCMockObject mockForClass:[LTShapeDrawerTriangularMeshShape class]];
       id secondMock = [OCMockObject mockForClass:[LTShapeDrawerTriangularMeshShape class]];
@@ -132,7 +132,7 @@ context(@"shapes", ^{
   context(@"elliptic shapes", ^{
     const CGSize kSize = CGSizeMake(1, 2);
     const CGFloat kRadius = 1;
-    
+
     it(@"should add ellipse", ^{
       LTRotatedRect *rect =
           [LTRotatedRect rectWithCenter:kTranslation size:kSize angle:kRotationAngle];
@@ -145,7 +145,7 @@ context(@"shapes", ^{
       expect(drawer.shapes.count).to.equal(1);
       expect(drawer.shapes.firstObject).to.beIdenticalTo(shape);
     });
-    
+
     it(@"should fill ellipse", ^{
       LTRotatedRect *rect =
           [LTRotatedRect rectWithCenter:kTranslation size:kSize angle:kRotationAngle];
@@ -158,7 +158,7 @@ context(@"shapes", ^{
       expect(drawer.shapes.count).to.equal(1);
       expect(drawer.shapes.firstObject).to.beIdenticalTo(shape);
     });
-    
+
     it(@"should add circle", ^{
       id shape = [drawer addCircleWithCenter:kTranslation radius:kRadius];
       expect(shape).to.beKindOf([LTShapeDrawerEllipticShape class]);
@@ -169,7 +169,7 @@ context(@"shapes", ^{
       expect(drawer.shapes.count).to.equal(1);
       expect(drawer.shapes.firstObject).to.beIdenticalTo(shape);
     });
-    
+
     it(@"should fill circle", ^{
       id shape = [drawer fillCircleWithCenter:kTranslation radius:kRadius];
       expect(shape).to.beKindOf([LTShapeDrawerEllipticShape class]);
@@ -190,7 +190,7 @@ context(@"shapes", ^{
       [drawer removeAllShapes];
       expect(drawer.shapes.count).to.equal(0);
     });
-    
+
     it(@"should remove specific shape", ^{
       id firstShape = [drawer addPathWithTranslation:kTranslation rotation:kRotationAngle];
       id secondShape = [drawer addPathWithTranslation:kTranslation rotation:kRotationAngle];
@@ -212,20 +212,20 @@ context(@"shapes", ^{
       [drawer removeShape:firstShape];
       expect(drawer.shapes.count).to.equal(1);
     });
-    
+
     it(@"should add a shape", ^{
       id mock = [OCMockObject niceMockForProtocol:@protocol(LTDrawableShape)];
       [drawer addShape:mock];
       expect(drawer.shapes.count).to.equal(1);
       expect(drawer.shapes.firstObject).to.equal(mock);
     });
-    
+
     it(@"should raise if trying to add non LTDrawableShape", ^{
       expect(^{
         [drawer addShape:[[NSObject alloc] init]];
       }).to.raise(NSInvalidArgumentException);
     });
-    
+
     it(@"should update translation of shape", ^{
       id firstShape = [drawer addPathWithTranslation:kTranslation rotation:kRotationAngle];
       id secondShape = [drawer addPathWithTranslation:kTranslation rotation:kRotationAngle];
@@ -235,7 +235,7 @@ context(@"shapes", ^{
       [drawer updateShape:secondShape setTranslation:CGPointZero];
       expect([(LTShapeDrawerPathShape *)secondShape translation]).to.equal(CGPointZero);
     });
-    
+
     it(@"should update rotation of shape", ^{
       id firstShape = [drawer addPathWithTranslation:kTranslation rotation:kRotationAngle];
       id secondShape = [drawer addPathWithTranslation:kTranslation rotation:kRotationAngle];
@@ -245,7 +245,7 @@ context(@"shapes", ^{
       [drawer updateShape:secondShape setRotation:0];
       expect([secondShape rotationAngle]).to.equal(0);
     });
-    
+
     it(@"should not update shape not in the queue", ^{
       id firstShape = [drawer addPathWithTranslation:kTranslation rotation:kRotationAngle];
       [drawer removeShape:firstShape];
@@ -269,7 +269,7 @@ context(@"drawing", ^{
   beforeEach(^{
     // Prepare drawer.
     drawer = [[LTShapeDrawer alloc] init];
-    
+
     // Prepare output framebuffer.
     output = [LTTexture byteRGBATextureWithSize:kOutputSize];
     fbo = [[LTFbo alloc] initWithTexture:output];
@@ -284,7 +284,7 @@ context(@"drawing", ^{
   context(@"call draw methods of shapes", ^{
     __block id firstMock;
     __block id secondMock;
-    
+
     beforeEach(^{
       firstMock = [OCMockObject niceMockForProtocol:@protocol(LTDrawableShape)];
       secondMock = [OCMockObject niceMockForProtocol:@protocol(LTDrawableShape)];
@@ -302,7 +302,7 @@ context(@"drawing", ^{
       OCMVerifyAll(firstMock);
       OCMVerifyAll(secondMock);
     });
-    
+
     it(@"should draw to bound framebuffer", ^{
       [(id<LTDrawableShape>)[firstMock expect] setOpacity:drawer.opacity];
       [(id<LTDrawableShape>)[secondMock expect] setOpacity:drawer.opacity];

@@ -127,7 +127,7 @@ context(@"effect", ^{
     for (NSUInteger i = 0; i < sourceRects.count; ++i) {
       expect(dynamicRects[i]).to.equal(sourceRects[i]);
     }
-    
+
     effect.minimumDiameter = 0.9;
     dynamicRects = [effect dynamicRectsFromRects:sourceRects];
     for (NSUInteger i = 0; i < sourceRects.count; ++i) {
@@ -183,7 +183,7 @@ context(@"effect", ^{
     for (NSUInteger i = 0; i < sourceRects.count; ++i) {
       expect(dynamicRects[i]).to.equal(sourceRects[i]);
     }
-    
+
     effect.minimumRoundness = 0.9;
     dynamicRects = [effect dynamicRectsFromRects:sourceRects];
     for (NSUInteger i = 0; i < sourceRects.count; ++i) {

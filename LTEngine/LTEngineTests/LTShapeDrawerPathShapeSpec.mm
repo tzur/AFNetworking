@@ -109,7 +109,7 @@ context(@"drawing", ^{
     output = [LTTexture byteRGBATextureWithSize:kOutputSize];
     fbo = [[LTFbo alloc] initWithTexture:output];
     [fbo clearWithColor:kBackground];
-    
+
     // Prepare shape drawer params.
     params = [[LTShapeDrawerParams alloc] init];
     params.lineWidth = 8;
@@ -125,7 +125,7 @@ context(@"drawing", ^{
   
   it(@"should draw a line from the initial point", ^{
     [shape addLineToPoint:kOutputCenter];
-    
+
     [fbo bindAndDraw:^{
       [shape drawInFramebufferWithSize:kOutputSize];
     }];
@@ -150,7 +150,7 @@ context(@"drawing", ^{
     [shape addLineToPoint:shape.currentPoint + CGSizeMake(0, kOutputSize.height / 2)];
     [shape addLineToPoint:shape.currentPoint + CGSizeMake(-kOutputSize.width / 2, 0)];
     [shape closePath];
-    
+
     [fbo bindAndDraw:^{
       [shape drawInFramebufferWithSize:kOutputSize];
     }];
@@ -164,13 +164,13 @@ context(@"drawing", ^{
     [shape addLineToPoint:shape.currentPoint + CGSizeMake(0, kOutputSize.height / 4)];
     [shape addLineToPoint:shape.currentPoint + CGSizeMake(-kOutputSize.width / 2, 0)];
     [shape closePath];
-    
+
     [shape moveToPoint:CGPointMake(kOutputSize.width / 4, kOutputSize.height)];
     [shape addLineToPoint:shape.currentPoint + CGSizeMake(kOutputSize.width / 2, 0)];
     [shape addLineToPoint:shape.currentPoint + CGSizeMake(0, -kOutputSize.height / 4)];
     [shape addLineToPoint:shape.currentPoint + CGSizeMake(-kOutputSize.width / 2, 0)];
     [shape closePath];
-    
+
     [fbo bindAndDraw:^{
       [shape drawInFramebufferWithSize:kOutputSize];
     }];
@@ -181,7 +181,7 @@ context(@"drawing", ^{
   it(@"should draw path with translation", ^{
     [shape addLineToPoint:shape.currentPoint + CGSizeMake(kOutputSize.width / 2, 0)];
     shape.translation = kOutputCenter;
-    
+
     [fbo bindAndDraw:^{
       [shape drawInFramebufferWithSize:kOutputSize];
     }];
@@ -192,7 +192,7 @@ context(@"drawing", ^{
   it(@"should draw a path with rotation", ^{
     [shape addLineToPoint:shape.currentPoint + CGSizeMake(kOutputSize.width / 2, 0)];
     shape.rotationAngle = M_PI / 6;
-    
+
     [fbo bindAndDraw:^{
       [shape drawInFramebufferWithSize:kOutputSize];
     }];

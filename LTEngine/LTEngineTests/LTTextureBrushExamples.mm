@@ -35,16 +35,16 @@ sharedExamplesFor(kLTTextureBrushExamples, ^(NSDictionary *data) {
     beforeEach(^{
       brush = [[brushClass alloc] init];
     });
-    
+
     afterEach(^{
       brush = nil;
     });
-    
+
     it(@"should have default properties", ^{
       expect(brush.premultipliedAlpha).to.beFalsy();
       expect(brush.spacing).to.equal(2);
     });
-    
+
     it(@"should set premultipliedAlpha", ^{
       BOOL oldValue = brush.premultipliedAlpha;
       brush.premultipliedAlpha = !oldValue;
@@ -58,13 +58,13 @@ sharedExamplesFor(kLTTextureBrushExamples, ^(NSDictionary *data) {
     __block LTTexture *output;
     __block LTFbo *fbo;
     __block LTPainterPoint *point;
-    
+
     const CGFloat kBaseBrushDiameter = 4;
     const CGFloat kTargetBrushDiameter = 4;
     const CGSize kBaseBrushSize = CGSizeMakeUniform(kBaseBrushDiameter);
     const CGSize kOutputSize = kBaseBrushSize;
     const CGPoint kOutputCenter = CGPointMake(kOutputSize.width / 2, kOutputSize.height / 2);
-    
+
     beforeEach(^{
       brush = [[brushClass alloc] init];
       brush.baseDiameter = kBaseBrushDiameter;
@@ -79,20 +79,20 @@ sharedExamplesFor(kLTTextureBrushExamples, ^(NSDictionary *data) {
       point = [[LTPainterPoint alloc] init];
       point.contentPosition = kOutputCenter;
     });
-    
+
     afterEach(^{
       fbo = nil;
       output = nil;
       brush = nil;
     });
-    
+
     it(@"should draw a point", ^{
       [brush startNewStrokeAtPoint:point];
       [brush drawPoint:point inFramebuffer:fbo];
       expected.setTo(cv::Vec4b(255, 255, 255, 255));
       expect($(output.image)).to.equalMat($(expected));
     });
-    
+
     context(@"texture brush properties", ^{
       it(@"should draw with replaced texture", ^{
         const CGSize kSize = CGSizeMakeUniform(kTargetBrushDiameter);
@@ -129,7 +129,7 @@ sharedExamplesFor(kLTTextureBrushExamples, ^(NSDictionary *data) {
         expect($(output.image)).to.equalMat($(expected));
       });
     });
-    
+
     context(@"brush properties related to the shader", ^{
       const CGFloat kWidth = kOutputSize.width / 2;
       const CGFloat kHeight = kOutputSize.height / 2;

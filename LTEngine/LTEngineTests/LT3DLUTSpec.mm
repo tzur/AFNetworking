@@ -63,7 +63,7 @@ context(@"LT3DLUTLatticeSize", ^{
 
     LT3DLUTLatticeSize size5{1, 1, 1};
     LT3DLUTLatticeSize size6{1, 1, 2};
-    
+
     expect(size5 != size6).to.beTruthy();
   });
 });
@@ -265,7 +265,7 @@ context(@"factory", ^{
       });
 
       it(@"should have a correct identity mat", ^{
-        cv::Mat identityLUTImage =  LTLoadMat([self class], @"LT3DLUTIdentity2x2x2.png");
+        cv::Mat identityLUTImage = LTLoadMat([self class], @"LT3DLUTIdentity2x2x2.png");
         expect($([identity packedMat])).to.beCloseToMat($(identityLUTImage));
       });
 

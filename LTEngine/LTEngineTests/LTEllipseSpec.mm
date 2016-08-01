@@ -33,7 +33,7 @@ context(@"initialization", ^{
 context(@"transformations", ^{
   it(@"should scale correctly", ^{
     lt::Ellipse scaledEllipse = ellipse.scaledBy(0.5, 2);
-    
+
     expect(scaledEllipse.majorAxisLength).to.equal(majorAxisLength * 0.5);
     expect(scaledEllipse.minorAxisLength).to.equal(minorAxisLength * 2);
     expect(scaledEllipse.center).to.equal(center);
@@ -42,7 +42,7 @@ context(@"transformations", ^{
   
   it(@"should rotate around center correctly", ^{
     lt::Ellipse rotatedEllipse = ellipse.rotatedBy(M_PI_2);
-    
+
     expect(rotatedEllipse.majorAxisLength).to.equal(majorAxisLength);
     expect(rotatedEllipse.minorAxisLength).to.equal(minorAxisLength);
     expect(rotatedEllipse.center).to.equal(center);
@@ -51,7 +51,7 @@ context(@"transformations", ^{
   
   it(@"should rotate around zero point correctly", ^{
     lt::Ellipse rotatedEllipse = ellipse.rotatedAroundPointBy(CGPointZero, M_PI_2);
-    
+
     expect(rotatedEllipse.majorAxisLength).to.equal(majorAxisLength);
     expect(rotatedEllipse.minorAxisLength).to.equal(minorAxisLength);
     expect(rotatedEllipse.center.x).to.beCloseToWithin(-30, kEpsilon);
@@ -74,7 +74,7 @@ context(@"point inclusion", ^{
   it(@"should correctly compute point inclusion", ^{
     CGFloat semiMinorAxis = minorAxisLength / 2;
     CGFloat semiMajorAxis = majorAxisLength / 2;
-    
+
     expect(ellipse.containsPoint(CGPointZero)).to.beFalsy();
     expect(ellipse.containsPoint(center)).to.beTruthy();
     expect(ellipse.containsPoint(CGPointMake(center.x + semiMinorAxis - kEpsilon, center.y)))

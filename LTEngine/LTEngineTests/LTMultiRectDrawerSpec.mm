@@ -24,7 +24,7 @@ sharedExamplesFor(kLTMultiRectDrawerExamples, ^(NSDictionary *data) {
     drawerClass = data[kLTMultiRectDrawerClass];
     LTGLContext *context = [[LTGLContext alloc] init];
     [LTGLContext setCurrentContext:context];
-    
+
     // Make sure that everything is properly drawn when face culling is enabled.
     context.faceCullingEnabled = YES;
   });
@@ -46,7 +46,7 @@ sharedExamplesFor(kLTMultiRectDrawerExamples, ^(NSDictionary *data) {
     image(cv::Rect(width, 0, width, height)).setTo(cv::Vec4b(0, 255, 0, 255));
     image(cv::Rect(0, height, width, height)).setTo(cv::Vec4b(0, 0, 255, 255));
     image(cv::Rect(width, height, width, height)).setTo(cv::Vec4b(255, 255, 0, 255));
-    
+
     texture = [LTTexture textureWithSize:inputSize pixelFormat:$(LTGLPixelFormatRGBA8Unorm)
                           allocateMemory:NO];
     [texture load:image];
@@ -63,7 +63,7 @@ sharedExamplesFor(kLTMultiRectDrawerExamples, ^(NSDictionary *data) {
     __block id<LTMultiRectDrawer> rectDrawer;
     __block LTTexture *output;
     __block LTFbo *fbo;
-    
+
     beforeEach(^{
       program = [[LTProgram alloc] initWithVertexSource:[PassthroughVsh source]
                                          fragmentSource:[PassthroughFsh source]];
@@ -73,7 +73,7 @@ sharedExamplesFor(kLTMultiRectDrawerExamples, ^(NSDictionary *data) {
       
       fbo = [[LTFbo alloc] initWithTexture:output];
     });
-    
+
     afterEach(^{
       fbo = nil;
       output = nil;

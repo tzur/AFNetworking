@@ -156,7 +156,7 @@ sharedExamplesFor(kLTTreeNodeExamples, ^(NSDictionary *data) {
       kLTTreeNodeEnumerationOrder: @(LTTreeTraversalOrderPreOrder),
       kLTTreeNodeEnumerationExpectedNumbers: @[@0, @1, @2, @3]
     });
-    
+
     itShouldBehaveLike(kLTTreeNodeEnumerationExamples, @{
       kLTTreeNodeEnumerationOrder: @(LTTreeTraversalOrderPostOrder),
       kLTTreeNodeEnumerationExpectedNumbers: @[@2, @1, @3, @0]

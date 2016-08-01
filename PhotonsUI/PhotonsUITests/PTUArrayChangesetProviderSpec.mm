@@ -34,7 +34,7 @@ context(@"initialization", ^{
 context(@"fetchChangeset", ^{
   it(@"should return a signal that sends the descriptors and completes", ^{
     LLSignalTestRecorder *recorder = [[provider fetchChangeset] testRecorder];
-    
+
     expect(recorder).to.sendValues(@[[[PTUChangeset alloc] initWithAfterDataModel:@[descriptors]]]);
     expect(recorder).to.complete;
   });
@@ -43,7 +43,7 @@ context(@"fetchChangeset", ^{
 context(@"fetchChangesetMetadata", ^{
   it(@"should return a signal that sends metadata with the changeset title and completes", ^{
     LLSignalTestRecorder *recorder = [[provider fetchChangesetMetadata] testRecorder];
-    
+
     PTUChangesetMetadata *metadate = [[PTUChangesetMetadata alloc] initWithTitle:kChangesetTitle
                                                                    sectionTitles:@{}];
     expect(recorder).to.sendValues(@[metadate]);

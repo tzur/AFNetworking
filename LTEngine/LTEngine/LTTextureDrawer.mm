@@ -43,11 +43,11 @@ NSString * const kLTSourceTextureUniform = @"sourceTexture";
                        isSubsetOfSet:program.uniforms], @"At least one of the given auxiliary "
                       "texture uniforms %@ doesn't exist in the given program",
                       [uniformToAuxiliaryTexture allKeys]);
-    
+
     self.uniformToTexture = [NSMutableDictionary dictionary];
     [self setSourceTexture:texture];
     [self setAuxiliaryTextures:uniformToAuxiliaryTexture];
-    
+
     self.program = program;
     self.context = [self createDrawingContext];
   }

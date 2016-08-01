@@ -84,7 +84,7 @@ context(@"synthetic rendering", ^{
   it(@"should process flatten correctly", ^{
     cv::Mat4b input(16, 16, cv::Vec4b(0, 128, 255, 255));
     cv::Mat4b output(16, 16, cv::Vec4b(79, 118, 143 ,255));
-    
+
     LTTexture *inputTexture = [LTTexture textureWithImage:input];
     LTTexture *outputTexture = [LTTexture textureWithPropertiesOf:inputTexture];
     LTClarityProcessor *processor = [[LTClarityProcessor alloc] initWithInput:inputTexture
@@ -97,7 +97,7 @@ context(@"synthetic rendering", ^{
   it(@"should process gain correctly", ^{
     cv::Mat4b input(16, 16, cv::Vec4b(0, 128, 255, 255));
     cv::Mat4b output(16, 16, cv::Vec4b(0, 223, 255 ,255));
-    
+
     LTTexture *inputTexture = [LTTexture textureWithImage:input];
     LTTexture *outputTexture = [LTTexture textureWithPropertiesOf:inputTexture];
     LTClarityProcessor *processor = [[LTClarityProcessor alloc] initWithInput:inputTexture
@@ -124,7 +124,7 @@ context(@"synthetic rendering", ^{
     cv::Mat4b input(16, 16, cv::Vec4b(0, 128, 255, 255));
     // round(dot((0, 128, 255), (0.299, 0.587, 0.114))) = 104
     cv::Mat4b output(16, 16, cv::Vec4b(104, 104, 104, 255));
-    
+
     LTTexture *inputTexture = [LTTexture textureWithImage:input];
     LTTexture *outputTexture = [LTTexture textureWithPropertiesOf:inputTexture];
     LTClarityProcessor *processor = [[LTClarityProcessor alloc] initWithInput:inputTexture
@@ -157,16 +157,16 @@ context(@"real world rendering", ^{
   
   it(@"should leave image unmodified on default parameters", ^{
     [processor process];
-    
+
     LTTexture *byteOutput = [LTTexture byteRGBATextureWithSize:output.size];
     [output cloneTo:byteOutput];
-    
+
     cv::Mat4b expected(output.size.height, output.size.width);
     cv::resize(LTLoadMat([self class], @"Lena128.png"), expected, expected.size(), 0, 0,
                cv::INTER_LINEAR);
     expect($(byteOutput.image)).to.beCloseToMatWithin($(expected), 1);
   });
-    
+
   sit(@"should apply clarity effect", ^{
     processor.sharpen = 0.5;
     processor.fineContrast = -0.2;
@@ -176,7 +176,7 @@ context(@"real world rendering", ^{
     processor.blackPointShift = -0.1;
     processor.saturation = -0.15;
     [processor process];
-    
+
     LTTexture *byteOutput = [LTTexture byteRGBATextureWithSize:output.size];
     [output cloneTo:byteOutput];
     cv::Mat image = LTLoadMat([self class], @"LenaClarity.png");

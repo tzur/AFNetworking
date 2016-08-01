@@ -49,7 +49,7 @@ context(@"enabled", ^{
   it(@"should match the device's canChangeCamera property", ^{
     device.canChangeCamera = NO;
     expect(flipViewModel.enabled).to.beFalsy();
-    
+
     device.canChangeCamera = YES;
     expect(flipViewModel.enabled).will.beTruthy();
   });
@@ -85,11 +85,11 @@ context(@"didTap", ^{
     device.activeCamera = $(CAMDeviceCameraBack);
     device.setCameraSignal = [RACSignal return:[RACUnit defaultUnit]];
     [device.setCameraSignal startCountingSubscriptions];
-    
+
     expect(device.setCameraSignal.subscriptionCount).to.equal(0);
     [flipViewModel didTap];
     expect(device.setCameraSignal.subscriptionCount).will.equal(1);
-    
+
     [device.setCameraSignal stopCountingSubscriptions];
   });
 

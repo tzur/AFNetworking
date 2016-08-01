@@ -216,7 +216,7 @@ context(@"memory management", ^{
 
       cell.viewModel = viewModel;
     }
-    
+
     expect(weakCell).to.beNil();
   });
 });

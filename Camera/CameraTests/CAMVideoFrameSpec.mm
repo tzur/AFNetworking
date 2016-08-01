@@ -169,7 +169,7 @@ context(@"BGRA", ^{
     __block CAMVideoFrameBGRA *sameFrame;
     __block CAMVideoFrameBGRA *otherFrame;
     __block CAMVideoFrameBGRA *otherTimingInfoFrame;
-    
+
     beforeEach(^{
       frame = [[CAMVideoFrameBGRA alloc] initWithBGRATexture:bgraTexture
                                             sampleTimingInfo:sampleTimingInfo];

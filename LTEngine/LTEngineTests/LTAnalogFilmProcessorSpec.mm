@@ -136,7 +136,7 @@ context(@"processing", ^{
     processor = [[LTAnalogFilmProcessor alloc] initWithInput:inputTexture output:outputTexture];
     processor.brightness = 1;
     [processor process];
-    
+
     expect($(outputTexture.image)).to.beCloseToMatWithin($(output), 2);
   });
   
@@ -144,7 +144,7 @@ context(@"processing", ^{
     cv::Mat4b output(2, 2, cv::Vec4b(0, 135, 255, 255));
     processor.contrast = 1;
     [processor process];
-    
+
     expect($(outputTexture.image)).to.beCloseToMatWithin($(output), 2);
   });
   
@@ -152,7 +152,7 @@ context(@"processing", ^{
     cv::Mat4b output(2, 2, cv::Vec4b(255, 255, 255, 255));
     processor.offset = 1;
     [processor process];
-    
+
     expect($(outputTexture.image)).to.beCloseToMatWithin($(output), 2);
   });
   
@@ -160,7 +160,7 @@ context(@"processing", ^{
     cv::Mat4b output(2, 2, cv::Vec4b(1, 255, 255, 255));
     processor.exposure = 1;
     [processor process];
-    
+
     expect($(outputTexture.image)).to.beCloseToMatWithin($(output), 2);
   });
   
@@ -168,23 +168,23 @@ context(@"processing", ^{
     cv::Mat4b output(2, 2, cv::Vec4b(105, 105, 105, 255));
     processor.saturation = -1;
     [processor process];
-    
+
     expect($(outputTexture.image)).to.beCloseToMatWithin($(output), 2);
   });
   
   it(@"should process structure correctly", ^{
     cv::Mat4b input(32, 32, cv::Vec4b(0, 0, 0, 255));
     input(0, 0) = cv::Vec4b(192, 192, 192, 255);
-    
+
     cv::Mat4b output(32, 32, cv::Vec4b(32, 32, 32, 255));
     output(0, 0) = cv::Vec4b(255, 255, 255, 255);
-    
+
     inputTexture = [LTTexture textureWithImage:input];
     outputTexture = [LTTexture textureWithPropertiesOf:inputTexture];
     processor = [[LTAnalogFilmProcessor alloc] initWithInput:inputTexture output:outputTexture];
     processor.structure = 1;
     [processor process];
-    
+
     expect($(outputTexture.image)).to.beCloseToMatWithin($(output), 2);
   });
   
@@ -193,7 +193,7 @@ context(@"processing", ^{
     processor.colorGradient = [LTColorGradient redToRedGradient];
     processor.colorGradientIntensity = 1.0;
     [processor process];
-    
+
     expect($(outputTexture.image)).to.beCloseToMatWithin($(output), 2);
   });
   
@@ -201,13 +201,13 @@ context(@"processing", ^{
     inputTexture = [LTTexture byteRGBATextureWithSize:CGSizeMake(2, 2)];
     [inputTexture clearWithColor:LTVector4(0.5, 0.5, 0.5, 1.0)];
     processor = [[LTAnalogFilmProcessor alloc] initWithInput:inputTexture output:outputTexture];
-    
+
     cv::Mat4b output(2, 2, cv::Vec4b(255, 255, 255, 255));
     [processor.grainTexture clearWithColor:LTVector4(1, 0, 0, 1)];
     processor.grainAmplitude = 1.0;
     processor.grainChannelMixer = LTVector3(1, 0, 0);
     [processor process];
-    
+
     expect($(outputTexture.image)).to.beCloseToMatWithin($(output), 2);
   });
   
@@ -219,7 +219,7 @@ context(@"processing", ^{
     processor.lightLeakIntensity = 1.0;
     processor.frameWidth = 1.0;
     [processor process];
-    
+
     cv::Mat4b output(2, 2, cv::Vec4b(112, 112, 112, 255));
     expect($(outputTexture.image)).to.beCloseToMatWithin($(output), 2);
   });
@@ -329,31 +329,31 @@ context(@"integration tests", ^{
     inputTexture = [LTTexture textureWithImage:LTLoadMat([self class], @"Lena128.png")];
     outputTexture = [LTTexture textureWithPropertiesOf:inputTexture];
     processor = [[LTAnalogFilmProcessor alloc] initWithInput:inputTexture output:outputTexture];
-    
+
     processor.brightness = -0.01;
     processor.contrast = -0.05;
     processor.offset = -0.01;
     processor.exposure = -0.01;
     processor.saturation = 0.1;
     processor.structure = 0.5;
-    
+
     processor.colorGradient = [LTColorGradient magentaYellowGradient];
     processor.colorGradientFade = 0.1;
     processor.colorGradientIntensity = 0.2;
-    
+
     LTTexture *grain = [LTTexture textureWithImage:LTLoadMat([self class], @"TonalGrain.png")];
     grain.wrap = LTTextureWrapRepeat;
     processor.grainTexture = grain;
     processor.grainChannelMixer = LTVector3(0.0, 0.5, 0.5);
     processor.grainAmplitude = 0.3;
-    
+
     processor.vignetteIntensity = 0.75;
     processor.vignetteSpread = 25;
     processor.vignetteCorner = 2;
     processor.vignetteTransition = 0.1;
 
     [processor process];
-    
+
     cv::Mat image = LTLoadMat([self class], @"Lena128AnalogProcessor.png");
     expect($([outputTexture image])).to.beCloseToMatWithin($(image), 4);
   });

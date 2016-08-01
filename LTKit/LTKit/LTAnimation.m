@@ -153,7 +153,7 @@ static LTAnimationManager *instance = nil;
       animation.animationTime += timeSinceLastFrame;
     }
     animation.lastFrameTime = [self.displayLink timestamp];
-    
+
     // Run the animation block. If the animation isn't animating, or has no block, or if NO is
     // returned when running the block, the animation is completed, and should be removed from the
     // list. Note that this actually runs the animation block.

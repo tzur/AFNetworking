@@ -17,27 +17,27 @@ NS_ASSUME_NONNULL_BEGIN
   switch (colorString.length) {
     case 3: // #RGB.
       alpha = 1.0f;
-      red   = [self wf_colorComponentFrom:colorString start:0 length:1];
+      red = [self wf_colorComponentFrom:colorString start:0 length:1];
       green = [self wf_colorComponentFrom:colorString start:1 length:1];
-      blue  = [self wf_colorComponentFrom:colorString start:2 length:1];
+      blue = [self wf_colorComponentFrom:colorString start:2 length:1];
       break;
     case 4: // #ARGB.
       alpha = [self wf_colorComponentFrom:colorString start:0 length:1];
-      red   = [self wf_colorComponentFrom:colorString start:1 length:1];
+      red = [self wf_colorComponentFrom:colorString start:1 length:1];
       green = [self wf_colorComponentFrom:colorString start:2 length:1];
-      blue  = [self wf_colorComponentFrom:colorString start:3 length:1];
+      blue = [self wf_colorComponentFrom:colorString start:3 length:1];
       break;
     case 6: // #RRGGBB.
       alpha = 1.0f;
-      red   = [self wf_colorComponentFrom:colorString start:0 length:2];
+      red = [self wf_colorComponentFrom:colorString start:0 length:2];
       green = [self wf_colorComponentFrom:colorString start:2 length:2];
-      blue  = [self wf_colorComponentFrom:colorString start:4 length:2];
+      blue = [self wf_colorComponentFrom:colorString start:4 length:2];
       break;
     case 8: // #AARRGGBB.
       alpha = [self wf_colorComponentFrom:colorString start:0 length:2];
-      red   = [self wf_colorComponentFrom:colorString start:2 length:2];
+      red = [self wf_colorComponentFrom:colorString start:2 length:2];
       green = [self wf_colorComponentFrom:colorString start:4 length:2];
-      blue  = [self wf_colorComponentFrom:colorString start:6 length:2];
+      blue = [self wf_colorComponentFrom:colorString start:6 length:2];
       break;
     default:
       LTParameterAssert(NO, @"Given color value '%@' is invalid. It should be a hex value in one "

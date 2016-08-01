@@ -26,7 +26,7 @@ afterAll(^{
 xcontext(@"animations", ^{
   it(@"running a single animation", ^{
     __block NSUInteger counter = 0;
-    
+
     [LTAnimation animationWithBlock:^BOOL(CFTimeInterval, CFTimeInterval) {
       ++counter;
       return YES;
@@ -39,7 +39,7 @@ xcontext(@"animations", ^{
     __block NSUInteger counter1 = 0;
     __block NSUInteger counter2 = 0;
     const NSUInteger targetFrames = (NSUInteger)(kTimeout * kTargetFps);
-    
+
     [LTAnimation animationWithBlock:^BOOL(CFTimeInterval, CFTimeInterval) {
       ++counter1;
       return (++counterCombined < 2 * targetFrames);
@@ -48,7 +48,7 @@ xcontext(@"animations", ^{
       ++counter2;
       return (++counterCombined < 2 * targetFrames);
     }];
-    
+
     expect(counter1).will.equal(targetFrames);
     expect(counter2).will.equal(targetFrames);
     expect(counterCombined).will.equal(2 * targetFrames);
@@ -60,7 +60,7 @@ xcontext(@"animations", ^{
       didExecute = YES;
       return YES;
     }];
-    
+
     [animation stopAnimation];
     expect([LTAnimation isAnyAnimationRunning]).will.beFalsy();
     usleep((useconds_t)(kTimeout * USEC_PER_SEC));

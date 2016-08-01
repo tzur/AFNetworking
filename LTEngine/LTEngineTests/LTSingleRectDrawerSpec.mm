@@ -24,7 +24,7 @@ sharedExamplesFor(kLTSingleRectDrawerExamples, ^(NSDictionary *data) {
     drawerClass = data[kLTSingleRectDrawerClass];
     LTGLContext *context = [[LTGLContext alloc] init];
     [LTGLContext setCurrentContext:context];
-    
+
     // Make sure that everything is properly drawn when face culling is enabled.
     context.faceCullingEnabled = YES;
   });
@@ -46,7 +46,7 @@ sharedExamplesFor(kLTSingleRectDrawerExamples, ^(NSDictionary *data) {
     image(cv::Rect(width, 0, width, height)).setTo(cv::Vec4b(0, 255, 0, 255));
     image(cv::Rect(0, height, width, height)).setTo(cv::Vec4b(0, 0, 255, 255));
     image(cv::Rect(width, height, width, height)).setTo(cv::Vec4b(255, 255, 0, 255));
-    
+
     texture = [LTTexture textureWithImage:image];
     texture.magFilterInterpolation = LTTextureInterpolationNearest;
     texture.minFilterInterpolation = LTTextureInterpolationNearest;
@@ -61,7 +61,7 @@ sharedExamplesFor(kLTSingleRectDrawerExamples, ^(NSDictionary *data) {
     __block id<LTSingleRectDrawer> rectDrawer;
     __block LTTexture *output;
     __block LTFbo *fbo;
-    
+
     beforeEach(^{
       program = [[LTProgram alloc] initWithVertexSource:[PassthroughVsh source]
                                          fragmentSource:[PassthroughFsh source]];
@@ -71,7 +71,7 @@ sharedExamplesFor(kLTSingleRectDrawerExamples, ^(NSDictionary *data) {
       
       fbo = [[LTFbo alloc] initWithTexture:output];
     });
-    
+
     afterEach(^{
       fbo = nil;
       output = nil;
@@ -147,7 +147,7 @@ sharedExamplesFor(kLTSingleRectDrawerExamples, ^(NSDictionary *data) {
         expect($(output.image)).to.equalMat($(expected));
       });
     });
-    
+
     /// Things are different when rendering to a screen framebuffer, since the output is actually
     /// different, tests were added to verify its correctness.
     context(@"screen framebuffer", ^{

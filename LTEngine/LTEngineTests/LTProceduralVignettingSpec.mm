@@ -21,7 +21,7 @@ beforeEach(^{
 });
 
 afterEach(^{
-  noise =  nil;
+  noise = nil;
   output = nil;
   processor = nil;
 });
@@ -88,7 +88,7 @@ context(@"processing", ^{
         [[LTProceduralVignetting alloc] initWithOutput:vignetteTexture];
     processor.corner = 2;
     [processor process];
-    
+
     LTTexture *precomputedVignette =
         [LTTexture textureWithImage:LTLoadMat([self class], @"RoundWideVignetting.png")];
     expect($(precomputedVignette.image)).to.beCloseToMat($(vignetteTexture.image));
@@ -100,7 +100,7 @@ context(@"processing", ^{
         [[LTProceduralVignetting alloc] initWithOutput:vignetteTexture];
     processor.corner = 16;
     [processor process];
-    
+
     LTTexture *precomputedVignette =
         [LTTexture textureWithImage:LTLoadMat([self class], @"StraightWideVignetting.png")];
     expect($(precomputedVignette.image)).to.beCloseToMat($(vignetteTexture.image));

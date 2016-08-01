@@ -118,19 +118,19 @@ context(@"effect", ^{
       [manyRects addObject:sourceRects[0]];
     }
     NSUInteger targetCount = manyRects.count * effect.count;
-    
+
     effect.countJitter = 0.5;
     scatteredRects = [effect scatteredRectsFromRects:manyRects];
     expect(scatteredRects.count).notTo.equal(targetCount);
     expect(scatteredRects.count).to.beInTheRangeOf(targetCount * (1 - effect.countJitter),
                                                    targetCount * (1 + effect.countJitter));
-    
+
     effect.countJitter = 1;
     scatteredRects = [effect scatteredRectsFromRects:manyRects];
     expect(scatteredRects.count).notTo.equal(targetCount);
     expect(scatteredRects.count).to.beInTheRangeOf(targetCount * (1 - effect.countJitter),
                                                    targetCount * (1 + effect.countJitter));
-    
+
     effect.countJitter = 0;
     scatteredRects = [effect scatteredRectsFromRects:manyRects];
     expect(scatteredRects.count).to.equal(targetCount);

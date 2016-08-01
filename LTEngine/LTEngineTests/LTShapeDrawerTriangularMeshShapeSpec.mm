@@ -99,19 +99,19 @@ context(@"drawing", ^{
     output = [LTTexture byteRGBATextureWithSize:kOutputSize];
     fbo = [[LTFbo alloc] initWithTexture:output];
     [fbo clearWithColor:kBackground];
-    
+
     // Prepare shape drawer params.
     params = [[LTShapeDrawerParams alloc] init];
     params.lineWidth = 8;
     params.shadowWidth = 8;
     shape = [[LTShapeDrawerTriangularMeshShape alloc] initWithParams:params];
-    
+
     // Prepare common triangles.
     CGSize size = kOutputSize / 4;
     triangle = CGTriangleMake(kOutputCenter,
                               kOutputCenter + CGSizeMake(-size.width, -size.height),
                               kOutputCenter + CGSizeMake(size.width, -size.height));
-    
+
     arrowLeftHalf = CGTriangleMake(CGPointZero, CGPointZero + CGSizeMake(0, -30),
                                    CGPointZero + CGSizeMake(-15, 15));
     arrowRightHalf = CGTriangleMake(CGPointZero, CGPointZero + CGSizeMake(0, -30),
@@ -126,7 +126,7 @@ context(@"drawing", ^{
   
   it(@"should fill a triangle", ^{
     [shape fillTriangle:triangle withShadowOnEdges:CGTriangleEdgeAll];
-    
+
     [fbo bindAndDraw:^{
       [shape drawInFramebufferWithSize:kOutputSize];
     }];
@@ -136,7 +136,7 @@ context(@"drawing", ^{
   
   it(@"should fill a triangle with shadows according to edge mask", ^{
     [shape fillTriangle:triangle withShadowOnEdges:CGTriangleEdgeBC];
-    
+
     [fbo bindAndDraw:^{
       [shape drawInFramebufferWithSize:kOutputSize];
     }];
@@ -164,7 +164,7 @@ context(@"drawing", ^{
     [shape fillTriangle:arrowLeftHalf withShadowOnEdges:CGTriangleEdgeBC | CGTriangleEdgeCA];
     [shape fillTriangle:arrowRightHalf withShadowOnEdges:CGTriangleEdgeBC | CGTriangleEdgeCA];
     shape.translation = kOutputCenter;
-    
+
     [fbo bindAndDraw:^{
       [shape drawInFramebufferWithSize:kOutputSize];
     }];
@@ -177,7 +177,7 @@ context(@"drawing", ^{
     [shape fillTriangle:arrowRightHalf withShadowOnEdges:CGTriangleEdgeNone];
     shape.rotationAngle = M_PI / 4;
     shape.translation = kOutputCenter;
-    
+
     [fbo bindAndDraw:^{
       [shape drawInFramebufferWithSize:kOutputSize];
     }];
@@ -190,7 +190,7 @@ context(@"drawing", ^{
     [shape fillTriangle:arrowRightHalf withShadowOnEdges:CGTriangleEdgeNone];
     shape.rotationAngle = M_PI / 4;
     shape.translation = kOutputCenter;
-    
+
     [fbo bindAndDrawOnScreen:^{
       [shape drawInFramebufferWithSize:fbo.size];
     }];

@@ -72,10 +72,10 @@
   [self.inputTexture executeAndPreserveParameters:^{
     self.inputTexture.minFilterInterpolation = LTTextureInterpolationNearest;
     self.inputTexture.magFilterInterpolation = LTTextureInterpolationNearest;
-    
+
     LTCropDrawerRect targetRect(CGRectFromSize(fbo.size));
     LTCropDrawerRect sourceRect = [self sourceRectangleForDrawer];
-    
+
     [self.drawer drawRect:targetRect inFramebuffer:fbo fromRect:sourceRect];
   }];
 }

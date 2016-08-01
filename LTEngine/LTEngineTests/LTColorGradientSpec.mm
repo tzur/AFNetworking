@@ -142,12 +142,12 @@ context(@"writing gradient values to mat", ^{
         initWithPosition:0.0 colorWithAlpha:LTVector4(0.0, 0.0, 0.0, 0.0)];
     LTColorGradientControlPoint *opaqueWhite = [[LTColorGradientControlPoint alloc]
         initWithPosition:1.0 colorWithAlpha:LTVector4(1.0, 1.0, 1.0, 1.0)];
-    
+
     NSArray *controlPoints = @[transparentBlack, opaqueWhite];
-    
+
     LTColorGradient *gradient = [[LTColorGradient alloc] initWithControlPoints:controlPoints];
     cv::Mat4b mat = [gradient matWithSamplingPoints:256];
-    
+
     cv::Mat image = LTLoadMat([self class], @"SemiTransparentBlack.png");
     expect($(mat)).to.beCloseToMatWithin($(image), 3);
   });

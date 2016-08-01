@@ -87,7 +87,7 @@ context(@"processing", ^{
     input = [LTTexture textureWithImage:cv::Mat4b(16, 16, cv::Vec4b(0, 0, 0, 255))];
     auxTexture = [LTTexture textureWithImage:cv::Mat4b(16, 16, cv::Vec4b(16, 0, 0, 255))];
     output = [LTTexture textureWithPropertiesOf:input];
-    
+
     NSDictionary *auxiliaryTextures = @{kAuxiliaryTextureName: auxTexture};
     LTProgram *program = [[LTProgram alloc] initWithVertexSource:[PassthroughVsh source]
                                                   fragmentSource:[AdderFsh source]];
@@ -105,7 +105,7 @@ context(@"processing", ^{
       cv::Scalar expected(144, 128, 128, 255);
       expect($([output image])).to.beCloseToScalar($(expected));
     });
-    
+
     it(@"should produce correct output twice", ^{
       [processor process];
       [processor process];
@@ -113,7 +113,7 @@ context(@"processing", ^{
       cv::Scalar expected(144, 128, 128, 255);
       expect($([output image])).to.beCloseToScalar($(expected));
     });
-    
+
   });
   
   context(@"subrect processing", ^{
@@ -124,7 +124,7 @@ context(@"processing", ^{
       image(cv::Rect(0, 0, 8, 8)).setTo(cv::Vec4b(0, 16, 0, 255));
       [auxTexture load:image];
     });
-    
+
     it(@"should process entire rect of output", ^{
       LTFbo *fbo = [[LTFbo alloc] initWithTexture:output];
       [fbo bindAndDraw:^{
@@ -136,7 +136,7 @@ context(@"processing", ^{
       
       expect($([output image])).to.beCloseToMat($(expected));
     });
-    
+
     it(@"should process subrect of the output", ^{
       input.magFilterInterpolation = LTTextureInterpolationNearest;
       auxTexture.magFilterInterpolation = LTTextureInterpolationNearest;
@@ -151,7 +151,7 @@ context(@"processing", ^{
       
       expect($([output image])).to.beCloseToMat($(expected));
     });
-    
+
     it(@"should process subrect when output is of different size", ^{
       input.magFilterInterpolation = LTTextureInterpolationNearest;
       auxTexture.magFilterInterpolation = LTTextureInterpolationNearest;
@@ -168,7 +168,7 @@ context(@"processing", ^{
       
       expect($([fboTexture image])).to.beCloseToMat($(expected));
     });
-    
+
     it(@"should process in rect", ^{
       [processor processInRect:CGRectMake(0, 0, 8, 8)];
       

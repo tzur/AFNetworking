@@ -19,7 +19,7 @@ context(@"initializers and factory methods", ^{
       expect(rotatedRect.angle).to.equal(kAngle);
       expect(rotatedRect.center).to.equal(kCenter);
     });
-    
+
     it(@"should initialize with center", ^{
       rotatedRect = [[LTRotatedRect alloc] initWithCenter:kCenter size:kRect.size angle:kAngle];
       expect(rotatedRect.rect).to.equal(kRect);
@@ -35,7 +35,7 @@ context(@"initializers and factory methods", ^{
       expect(rotatedRect.angle).to.equal(kAngle);
       expect(rotatedRect.center).to.equal(kCenter);
     });
-    
+
     it(@"should create rect from center", ^{
       rotatedRect = [LTRotatedRect rectWithCenter:kCenter size:kRect.size angle:kAngle];
       expect(rotatedRect.rect).to.equal(kRect);
@@ -52,7 +52,7 @@ context(@"initializers and factory methods", ^{
       expect(rotatedRect.angle).to.equal(kAngle);
       expect(rotatedRect.center).to.equal(CGPointMake(6, 7));
     });
-    
+
     it(@"should create square from center", ^{
       const CGFloat kLength = 3;
       rotatedRect = [LTRotatedRect squareWithCenter:kCenter length:kLength angle:kAngle];
@@ -77,7 +77,7 @@ context(@"properties", ^{
     const CGPoint expectedV1 = CGPointMake(4.9749, 3.6464);
     const CGPoint expectedV2 = CGPointMake(2.1464, 6.4749);
     const CGPoint expectedV3 = CGPointMake(0.0251, 4.3536);
-    
+
     expect(rotatedRect.v0.x).to.beCloseToWithin(expectedV0.x, kAcceptedDifference);
     expect(rotatedRect.v0.y).to.beCloseToWithin(expectedV0.y, kAcceptedDifference);
     expect(rotatedRect.v1.x).to.beCloseToWithin(expectedV1.x, kAcceptedDifference);

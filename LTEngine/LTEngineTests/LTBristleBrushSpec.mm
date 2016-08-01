@@ -45,7 +45,7 @@ context(@"properties", ^{
     NSUInteger newValue = 10;
     brush.bristles = newValue;
     expect(brush.bristles).to.equal(newValue);
-    
+
     expect(^{
       brush.bristles = brush.minBristles - 1;
     }).to.raise(NSInvalidArgumentException);
@@ -59,7 +59,7 @@ context(@"properties", ^{
     expect(brush.thickness).notTo.equal(newValue);
     brush.thickness = newValue;
     expect(brush.thickness).to.equal(newValue);
-    
+
     expect(^{
       brush.thickness = brush.minThickness - kEpsilon;
     }).to.raise(NSInvalidArgumentException);
@@ -93,10 +93,10 @@ context(@"drawing", ^{
     output = [LTTexture byteRGBATextureWithSize:kOutputSize];
     fbo = [[LTFbo alloc] initWithTexture:output];
     [fbo clearWithColor:kBackground];
-    
+
     expected.create(kOutputSize.height, kOutputSize.width);
     expected = LTLTVector4ToVec4b(kBackground);
-    
+
     point = [[LTPainterPoint alloc] init];
     point.contentPosition = kOutputCenter;
   });
@@ -156,20 +156,20 @@ context(@"drawing", ^{
 
   it(@"should update the brush texture according to the bristles property", ^{
     brush.thickness = 2.0;
-    
+
     brush.bristles = 2;
     [brush startNewStrokeAtPoint:point];
     [brush drawPoint:point inFramebuffer:fbo];
     expected = LTLoadMat([self class], @"BristleBrushBristles.2.png");
     expect($(output.image)).to.beCloseToMatWithin($(expected), 6);
-    
+
     brush.bristles = 4;
     [fbo clearWithColor:kBackground];
     [brush startNewStrokeAtPoint:point];
     [brush drawPoint:point inFramebuffer:fbo];
     expected = LTLoadMat([self class], @"BristleBrushBristles.4.png");
     expect($(output.image)).to.beCloseToMatWithin($(expected), 6);
-    
+
     brush.bristles = 20;
     [fbo clearWithColor:kBackground];
     [brush startNewStrokeAtPoint:point];
@@ -180,20 +180,20 @@ context(@"drawing", ^{
   
   it(@"should update the brush texture according to the thickness property", ^{
     brush.bristles = 2;
-    
+
     brush.thickness = 1.5;
     [brush startNewStrokeAtPoint:point];
     [brush drawPoint:point inFramebuffer:fbo];
     expected = LTLoadMat([self class], @"BristleBrushThickness.1.5.png");
     expect($(output.image)).to.beCloseToMatWithin($(expected), 6);
-    
+
     brush.thickness = 0.75;
     [fbo clearWithColor:kBackground];
     [brush startNewStrokeAtPoint:point];
     [brush drawPoint:point inFramebuffer:fbo];
     expected = LTLoadMat([self class], @"BristleBrushThickness.0.75.png");
     expect($(output.image)).to.beCloseToMatWithin($(expected), 6);
-    
+
     brush.thickness = 0.1;
     [fbo clearWithColor:kBackground];
     [brush startNewStrokeAtPoint:point];

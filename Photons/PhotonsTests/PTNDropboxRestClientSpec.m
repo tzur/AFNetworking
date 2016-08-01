@@ -433,7 +433,7 @@ context(@"thumbnail fetching", ^{
     RACDisposable *subscriber = [values subscribeNext:^(id __unused x) {}];
     expect([dbRestClient didRequestThumbnailAtPath:kDropboxPath size:thumbnailType.sizeName])
         .will.beTruthy();
-    
+
     [subscriber dispose];
     expect([dbRestClient didCancelRequestForThumbnailAtPath:kDropboxPath
         size:thumbnailType.sizeName]).will.beTruthy();

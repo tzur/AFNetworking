@@ -83,13 +83,13 @@ context(@"drawing", ^{
       expected.col(0) = kWhite;
       expected.col(expected.cols - 1) = kWhite;
     });
-    
+
     it(@"should draw a single pixel grid", ^{
       gridDrawer = [[LTGridDrawer alloc] initWithSize:CGSizeMake(1, 1)];
       [gridDrawer drawSubGridInRegion:CGRectMake(0, 0, 1, 1) inFramebuffer:fbo];
       expect(LTCompareMat(expected, output.image)).to.beTruthy();
     });
-    
+
     it(@"should draw the top left 1x1 subregion of a 2x2 pixel grid", ^{
       gridDrawer = [[LTGridDrawer alloc] initWithSize:CGSizeMake(2, 2)];
       [gridDrawer drawSubGridInRegion:CGRectMake(0, 0, 1, 1) inFramebuffer:fbo];
@@ -101,7 +101,7 @@ context(@"drawing", ^{
       [gridDrawer drawSubGridInRegion:CGRectMake(1, 1, 1, 1) inFramebuffer:fbo];
       expect(LTCompareMat(expected, output.image)).to.beTruthy();
     });
-    
+
     it(@"should draw a 1x1 centered subregion of a 2x2 pixel grid", ^{
       gridDrawer = [[LTGridDrawer alloc] initWithSize:CGSizeMake(2, 2)];
       [gridDrawer drawSubGridInRegion:CGRectMake(0.5, 0.5, 1, 1) inFramebuffer:fbo];
@@ -124,7 +124,7 @@ context(@"drawing", ^{
       expected = kWhite;
       expect(LTCompareMat(expected, output.image)).to.beTruthy();
     });
-    
+
     it(@"should draw a small subregion of a grid larger than the target framebuffer", ^{
       const CGFloat kRegionFactor = 10;
       CGSize regionSize = CGSizeMake(kFramebufferSize.width / kRegionFactor,
@@ -158,13 +158,13 @@ context(@"drawing", ^{
       expected.col(0) = kWhite;
       expected.col(expected.cols - 1) = kWhite;
     });
-    
+
     it(@"should draw on a framebuffer object", ^{
       gridDrawer = [[LTGridDrawer alloc] initWithSize:CGSizeMake(1, 1)];
       [gridDrawer drawSubGridInRegion:CGRectMake(0, 0, 1, 1) inFramebuffer:fbo];
       expect(LTCompareMat(expected, output.image)).to.beTruthy();
     });
-    
+
     it(@"should draw on a screen framebuffer", ^{
       gridDrawer = [[LTGridDrawer alloc] initWithSize:CGSizeMake(1, 1)];
       [fbo bindAndDrawOnScreen:^{
@@ -179,7 +179,7 @@ context(@"drawing", ^{
       [fbo clearWithColor:LTCVVec4bToLTVector4(kGray)];
       expected = kGray;
     });
-    
+
     it(@"should draw with a custom RGBA color", ^{
       cv::Vec4b rgba(10, 20, 30, 40);
       gridDrawer = [[LTGridDrawer alloc] initWithSize:CGSizeMake(1, 1)];
@@ -208,7 +208,7 @@ context(@"drawing", ^{
       LTBlendBorder(expected, kGray, kOpacity * rgba);
       expect(LTCompareMat(expected, output.image)).to.beTruthy();
     });
-    
+
     it(@"should draw with a custom width", ^{
       gridDrawer = [[LTGridDrawer alloc] initWithSize:CGSizeMake(1, 1)];
       gridDrawer.width = 3.0;

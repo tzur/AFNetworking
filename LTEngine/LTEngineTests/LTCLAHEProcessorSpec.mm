@@ -38,7 +38,7 @@ context(@"processing", ^{
     output = [LTTexture byteRedTextureWithSize:input.size];
     processor = [[LTCLAHEProcessor alloc] initWithInputTexture:input
                                                  outputTexture:output];
-    
+
     [processor process];
     cv::Mat image = LTLoadMat([self class], @"Lena128CLAHE.png");
     expect($(output.image)).to.beCloseToMat($(image));

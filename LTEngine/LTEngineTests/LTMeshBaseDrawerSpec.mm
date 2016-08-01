@@ -681,7 +681,7 @@ context(@"drawing on a custom mesh source rect", ^{
 
       expect($([output image])).to.equalMat($(expected));
     });
-    
+
     it(@"should draw with custom mesh texture", ^{
       [meshTexture mappedImageForWriting:^(cv::Mat *mapped, BOOL) {
         mapped->setTo(cv::Vec2hf(half(0)));

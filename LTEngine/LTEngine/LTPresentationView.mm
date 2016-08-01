@@ -290,10 +290,10 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
     // Set the scissor box to draw only inside the visible content rect.
     context.scissorTestEnabled = YES;
     context.scissorBox = [self scissorBoxForVisibleContentRect:visibleContentRect];
-    
+
     // Draw the content.
     [self drawContentForVisibleContentRect:visibleContentRect];
-    
+
     // Draw the checkerboard background to visualize transparent content pixels.
     [self drawTransparencyBackground];
 
@@ -317,7 +317,7 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
         [self.drawDelegate presentationView:self updateContentInRect:self.contentRectToUpdate];
       }
     }];
-    
+
     // Reset the rectToDraw.
     self.contentRectToUpdate = CGRectNull;
   }
@@ -342,7 +342,7 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
     context.blendEnabled = YES;
     context.blendFunc = kLTGLContextBlendFuncChecker;
     context.blendEquation = kLTGLContextBlendEquationDefault;
-    
+
     [self.backgroundDrawer drawRect:self.framebufferBounds
               inFramebufferWithSize:self.framebufferSize fromRect:self.framebufferBounds];
   }];
@@ -363,7 +363,7 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
       [self textureInterpolationForZoomScale:self.zoomScale];
   [textureToDraw executeAndPreserveParameters:^{
     textureToDraw.magFilterInterpolation = [self textureInterpolationForZoomScale:self.zoomScale];
-    
+
     [self.context executeAndPreserveState:^(LTGLContext *) {
       // If the draw delegate supports the drawProcessedContent mechanism, use it to draw.
       BOOL didDrawProcessedContent = NO;

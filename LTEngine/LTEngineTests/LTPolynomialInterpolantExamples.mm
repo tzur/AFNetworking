@@ -165,7 +165,7 @@ sharedExamplesFor(LTPolynomialInterpolantExamples, ^(NSDictionary *data) {
             [[interpolantClass alloc] initWithKeyFrames:keyFrames];
       }).notTo.raiseAny();
     });
-    
+
     it(@"should not initialize with fewer key frames than necessary", ^{
       expect(^{
         NSArray *keyFrames = LTArrayWithInstancesOfObject(keyObject, expectedKeyFrames - 1);
@@ -173,7 +173,7 @@ sharedExamplesFor(LTPolynomialInterpolantExamples, ^(NSDictionary *data) {
             [[interpolantClass alloc] initWithKeyFrames:keyFrames];
       }).to.raise(NSInvalidArgumentException);
     });
-    
+
     it(@"should not initialize with more key frames than necessary", ^{
       expect(^{
         NSArray *keyFrames = LTArrayWithInstancesOfObject(keyObject, expectedKeyFrames + 1);
@@ -186,7 +186,7 @@ sharedExamplesFor(LTPolynomialInterpolantExamples, ^(NSDictionary *data) {
   context(@"interpolation", ^{
     __block LTPolynomialInterpolant *interpolant;
     __block InterpolatedObject *interpolated;
-    
+
     beforeEach(^{
       NSArray *keyFrames = LTArrayWithInstancesOfObject(keyObject, expectedKeyFrames);
       interpolant = [[interpolantClass alloc] initWithKeyFrames:keyFrames];
@@ -197,7 +197,7 @@ sharedExamplesFor(LTPolynomialInterpolantExamples, ^(NSDictionary *data) {
       expect(range.location).to.beInTheRangeOf(0, expectedKeyFrames);
       expect(range.location + range.length).to.beInTheRangeOf(0, expectedKeyFrames);
     });
-    
+
     it(@"should not interpolate outside [0,1]", ^{
       expect(^{
         interpolated = [interpolant valueAtKey:-FLT_EPSILON];
@@ -206,7 +206,7 @@ sharedExamplesFor(LTPolynomialInterpolantExamples, ^(NSDictionary *data) {
         interpolated = [interpolant valueAtKey:1 + FLT_EPSILON];
       }).to.raise(NSInvalidArgumentException);
     });
-    
+
     it(@"should interpolate a single property", ^{
       CGFloat value = [interpolant valueOfPropertyNamed:@"floatToInterpolate" atKey:0.5];
       expect(value).to.equal(keyObject.floatToInterpolate);
@@ -234,27 +234,27 @@ sharedExamplesFor(LTPolynomialInterpolantExamples, ^(NSDictionary *data) {
         expect(value).to.equal(expectedValue);
       }
     });
-    
+
     it(@"should not interpolate undesired properties", ^{
       interpolated = [interpolant valueAtKey:0.5];
       expect(interpolated.propertyNotToInterpolate).to.equal(0);
     });
-    
+
     it(@"should interpolate float properties", ^{
       interpolated = [interpolant valueAtKey:0.5];
       expect(interpolated.floatToInterpolate).to.equal(keyObject.floatToInterpolate);
     });
-    
+
     it(@"should interpolate double properties", ^{
       interpolated = [interpolant valueAtKey:0.5];
       expect(interpolated.doubleToInterpolate).to.equal(keyObject.doubleToInterpolate);
     });
-    
+
     it(@"should interpolate complex properties using helper properties", ^{
       interpolated = [interpolant valueAtKey:0.5];
       expect(interpolated.pointToInterpolate).to.equal(keyObject.pointToInterpolate);
     });
-    
+
     it(@"should use the initWithInterpolatedProperties initializer if available", ^{
       InterpolatedObjectWithOptionalInitializer *keyObject =
           [[InterpolatedObjectWithOptionalInitializer alloc] init];

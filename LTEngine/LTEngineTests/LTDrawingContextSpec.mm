@@ -205,7 +205,7 @@ sharedExamplesFor(kLTDrawingContextExamples, ^(NSDictionary *contextInfo) {
         OCMVerifyAll(textureB);
       });
     });
-    
+
     context(@"draw elements with mode", ^{
       __block id indicesArray;
       

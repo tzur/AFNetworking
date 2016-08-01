@@ -33,7 +33,7 @@ context(@"initialization", ^{
                                                    distanceFromStart:-FLT_EPSILON
                                                       andInterpolant:interpolant];
     }).to.raise(NSInvalidArgumentException);
-    
+
     expect(^{
       segment = [[LTPainterStrokeSegment alloc] initWithSegmentIndex:1
                                                    distanceFromStart:1
@@ -62,7 +62,7 @@ context(@"points with interval", ^{
         [segment pointsWithInterval:-1 startingAtOffset:0];
       }).to.raise(NSInvalidArgumentException);
     });
-    
+
     it(@"should raise an exception for negative offset", ^{
       expect(^{
         [segment pointsWithInterval:FLT_EPSILON startingAtOffset:0];
@@ -85,15 +85,15 @@ context(@"points with interval", ^{
                                                    distanceFromStart:1
                                                       andInterpolant:interpolant];
     });
-    
+
     it(@"should return correct starting point", ^{
       expect(segment.startPoint.contentPosition).to.equal(CGPointMake(1, 1));
     });
-    
+
     it(@"should approximate length", ^{
       expect(segment.length).to.equal(0);
     });
-    
+
     it(@"should return the correct number of points", ^{
       NSArray *points = [segment pointsWithInterval:1 startingAtOffset:0];
       expect(points.count).to.equal(1);
@@ -102,7 +102,7 @@ context(@"points with interval", ^{
       points = [segment pointsWithInterval:FLT_EPSILON startingAtOffset:FLT_EPSILON];
       expect(points.count).to.equal(0);
     });
-    
+
     it(@"distance between points should be accurate", ^{
       NSArray *points = [segment pointsWithInterval:1 startingAtOffset:0];
       expect([points.firstObject distanceFromStart]).to.equal(segment.distanceFromStart);
@@ -112,7 +112,7 @@ context(@"points with interval", ^{
   context(@"linear segment", ^{
     __block LTPainterPoint *startPoint;
     __block LTPainterPoint *endPoint;
-    
+
     beforeEach(^{
       startPoint = [[LTPainterPoint alloc] init];
       endPoint = [[LTPainterPoint alloc] init];
@@ -123,7 +123,7 @@ context(@"points with interval", ^{
                                                    distanceFromStart:1
                                                       andInterpolant:interpolant];
     });
-    
+
     it(@"should return correct starting point", ^{
       expect(segment.startPoint.contentPosition).to.equal(startPoint.contentPosition);
     });
@@ -132,7 +132,7 @@ context(@"points with interval", ^{
       expect(segment.length).to.beCloseToWithin(CGPointDistance(startPoint.contentPosition,
                                                                 endPoint.contentPosition), 1);
     });
-    
+
     it(@"should return the correct number of points", ^{
       NSArray *points = [segment pointsWithInterval:M_SQRT2 - 1e-2 startingAtOffset:0];
       expect(points.count).to.equal(100);
@@ -141,7 +141,7 @@ context(@"points with interval", ^{
       points = [segment pointsWithInterval:M_SQRT2 - 1e-2 startingAtOffset:1];
       expect(points.count).to.equal(99);
     });
-    
+
     it(@"distance between points should be accurate", ^{
       NSArray *points = [segment pointsWithInterval:M_SQRT2 startingAtOffset:0];
       for (NSUInteger i = 1; i < points.count; ++i) {
@@ -173,7 +173,7 @@ context(@"points with interval", ^{
                                                    distanceFromStart:1
                                                       andInterpolant:interpolant];
     });
-    
+
     it(@"should return correct starting point", ^{
       expect(segment.startPoint.contentPosition).to.equal(CGPointMake(31, 58));
     });
@@ -181,14 +181,14 @@ context(@"points with interval", ^{
     it(@"should approximate length", ^{
       expect(segment.length).to.beCloseToWithin(37.5179, 1);
     });
-    
+
     it(@"should return the correct number of points", ^{
       NSArray *points = [segment pointsWithInterval:5 startingAtOffset:0];
       expect(points.count).to.equal(8);
       points = [segment pointsWithInterval:5 startingAtOffset:3];
       expect(points.count).to.equal(7);
     });
-    
+
     it(@"distance between points should be accurate", ^{
       NSArray *p = [segment pointsWithInterval:5 startingAtOffset:0];
       expect([p[0] contentPosition]).to.beCloseToPointWithin(CGPointMake(31.0000, 58.0000), 1e-1);
