@@ -228,7 +228,7 @@ context(@"small input", ^{
     cv::Mat4b expectedImage(image.clone());
     expectedImage(0, 0) = cv::Vec4b(0, 2, 0, 128);
     expectedImage(1, 1) = cv::Vec4b(1, 2, 0, 128);
-    
+
     expect($(image)).to.equalMat($(expectedImage));
   });
 

@@ -60,7 +60,7 @@ NS_ASSUME_NONNULL_BEGIN
     } else {
       [restClient loadMetadata:path];
     }
-    
+
     return nil;
   }];
 }
@@ -176,7 +176,7 @@ NS_ASSUME_NONNULL_BEGIN
       [subscriber sendError:[NSError lt_errorWithCode:PTNErrorCodeNotAuthorized]];
       return nil;
     }
-    
+
     NSString *localPath = [self.pathProvider localPathForThumbnailInPath:path size:type.size];
     DBRestClient *restClient = [self.restClientProvider ptn_restClient];
     restClient.delegate = self;

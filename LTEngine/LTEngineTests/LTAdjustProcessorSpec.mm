@@ -230,7 +230,7 @@ context(@"processing", ^{
   it(@"should process positive brightness and contrast correctly", ^{
     cv::Mat4b input(1, 1, cv::Vec4b(64, 64, 64, 255));
     cv::Mat4b output(1, 1, cv::Vec4b(101, 101, 101, 255));
-    
+
     LTTexture *inputTexture = [LTTexture textureWithImage:input];
     LTTexture *outputTexture = [LTTexture textureWithPropertiesOf:inputTexture];
     LTAdjustProcessor *adjust = [[LTAdjustProcessor alloc] initWithInput:inputTexture
@@ -244,7 +244,7 @@ context(@"processing", ^{
   it(@"should process negative contrast correctly", ^{
     cv::Mat4b input(1, 1, cv::Vec4b(192, 128, 64, 255));
     cv::Mat4b output(1, 1, cv::Vec4b(174, 134, 88, 255));
-    
+
     LTTexture *inputTexture = [LTTexture textureWithImage:input];
     LTTexture *outputTexture = [LTTexture textureWithPropertiesOf:inputTexture];
     LTAdjustProcessor *adjust = [[LTAdjustProcessor alloc] initWithInput:inputTexture
@@ -257,7 +257,7 @@ context(@"processing", ^{
   it(@"should process offset correctly", ^{
     cv::Mat4b input(1, 1, cv::Vec4b(0, 0, 0, 255));
     cv::Mat4b output(1, 1, cv::Vec4b(128, 128, 128, 255));
-    
+
     LTTexture *inputTexture = [LTTexture textureWithImage:input];
     LTTexture *outputTexture = [LTTexture textureWithPropertiesOf:inputTexture];
     LTAdjustProcessor *adjust = [[LTAdjustProcessor alloc] initWithInput:inputTexture
@@ -270,7 +270,7 @@ context(@"processing", ^{
   it(@"should process exposure correctly", ^{
     cv::Mat4b input(1, 1, cv::Vec4b(128, 128, 128, 255));
     cv::Mat4b output(1, 1, cv::Vec4b(255, 255, 255, 255));
-    
+
     LTTexture *inputTexture = [LTTexture textureWithImage:input];
     LTTexture *outputTexture = [LTTexture textureWithPropertiesOf:inputTexture];
     LTAdjustProcessor *adjust = [[LTAdjustProcessor alloc] initWithInput:inputTexture
@@ -283,7 +283,7 @@ context(@"processing", ^{
   it(@"should process black point correctly", ^{
     cv::Mat4b input(1, 1, cv::Vec4b(128, 192, 255, 255));
     cv::Mat4b output(1, 1, cv::Vec4b(0, 128, 255, 255));
-    
+
     LTTexture *inputTexture = [LTTexture textureWithImage:input];
     LTTexture *outputTexture = [LTTexture textureWithPropertiesOf:inputTexture];
     LTAdjustProcessor *adjust = [[LTAdjustProcessor alloc] initWithInput:inputTexture
@@ -296,7 +296,7 @@ context(@"processing", ^{
   it(@"should process white point correctly", ^{
     cv::Mat4b input(1, 1, cv::Vec4b(64, 64, 64, 255));
     cv::Mat4b output(1, 1, cv::Vec4b(127, 127, 127, 255));
-    
+
     LTTexture *inputTexture = [LTTexture textureWithImage:input];
     LTTexture *outputTexture = [LTTexture textureWithPropertiesOf:inputTexture];
     LTAdjustProcessor *adjust = [[LTAdjustProcessor alloc] initWithInput:inputTexture
@@ -309,7 +309,7 @@ context(@"processing", ^{
   it(@"should process curves correctly", ^{
     cv::Mat4b input(11, 11, cv::Vec4b(64, 64, 64, 255));
     cv::Mat4b output(11, 11, cv::Vec4b(1, 65, 129, 255));
-    
+
     std::vector<cv::Mat1b> rgbCurves = {cv::Mat1b(1, 256), cv::Mat1b(1, 256), cv::Mat1b(1, 256)};
     for (NSUInteger i = 0; i < 3; ++i) {
       rgbCurves[i].setTo(i * 64);
@@ -318,7 +318,7 @@ context(@"processing", ^{
     for (int i = 0; i < 256; ++i) {
       greyCurve(0, i) = std::clamp(i + 1, 0.0, 255);
     }
-    
+
     LTTexture *inputTexture = [LTTexture textureWithImage:input];
     LTTexture *outputTexture = [LTTexture textureWithPropertiesOf:inputTexture];
     LTAdjustProcessor *adjust = [[LTAdjustProcessor alloc] initWithInput:inputTexture
@@ -361,7 +361,7 @@ context(@"processing", ^{
     cv::Mat4b input(1, 1, cv::Vec4b(0, 128, 255, 255));
     // round(dot((0, 128, 255), (0.299, 0.587, 0.114))) = 104
     cv::Mat4b output(1, 1, cv::Vec4b(104, 104, 104, 255));
-    
+
     LTTexture *inputTexture = [LTTexture textureWithImage:input];
     LTTexture *outputTexture = [LTTexture textureWithPropertiesOf:inputTexture];
     LTAdjustProcessor *adjust = [[LTAdjustProcessor alloc] initWithInput:inputTexture
@@ -374,7 +374,7 @@ context(@"processing", ^{
   it(@"should process temperature correctly", ^{
     cv::Mat4b input(1, 1, cv::Vec4b(51, 77, 102, 255));
     cv::Mat4b output(1, 1, cv::Vec4b(64, 71, 83, 255));
-    
+
     LTTexture *inputTexture = [LTTexture textureWithImage:input];
     LTTexture *outputTexture = [LTTexture textureWithPropertiesOf:inputTexture];
     LTAdjustProcessor *adjust = [[LTAdjustProcessor alloc] initWithInput:inputTexture
@@ -387,7 +387,7 @@ context(@"processing", ^{
   it(@"should process tint correctly", ^{
     cv::Mat4b input(1, 1, cv::Vec4b(51, 77, 102, 255));
     cv::Mat4b output(1, 1, cv::Vec4b(61, 67, 128, 255));
-    
+
     LTTexture *inputTexture = [LTTexture textureWithImage:input];
     LTTexture *outputTexture = [LTTexture textureWithPropertiesOf:inputTexture];
     LTAdjustProcessor *adjust = [[LTAdjustProcessor alloc] initWithInput:inputTexture
@@ -402,7 +402,7 @@ context(@"processing", ^{
     // See lightricks-research/enlight/Adjust/runmeAdjustTonalityTest.m to reproduce this result.
     // Minor differences (~1-3 on 0-255 scale) are expected.
     cv::Mat4b output(1, 1, cv::Vec4b(195, 195, 195, 255));
-    
+
     LTTexture *inputTexture = [LTTexture textureWithImage:input];
     LTTexture *outputTexture = [LTTexture textureWithPropertiesOf:inputTexture];
     LTAdjustProcessor *adjust = [[LTAdjustProcessor alloc] initWithInput:inputTexture
@@ -420,7 +420,7 @@ context(@"processing", ^{
     // See lightricks-research/enlight/Adjust/runmeAdjustColorTest.m to reproduce this result.
     // Minor differences (~1-3 on 0-255 scale) are expected.
     cv::Mat4b output(1, 1, cv::Vec4b(57, 79, 71, 255));
-    
+
     LTTexture *inputTexture = [LTTexture textureWithImage:input];
     LTTexture *outputTexture = [LTTexture textureWithPropertiesOf:inputTexture];
     LTAdjustProcessor *adjust = [[LTAdjustProcessor alloc] initWithInput:inputTexture
@@ -478,7 +478,7 @@ context(@"processing", ^{
   sit(@"should create correct conversion of luminance, color, details and split-tone", ^{
     LTTexture *input = [LTTexture textureWithImage:LTLoadMat([self class], @"Meal.png")];
     LTTexture *output = [LTTexture textureWithPropertiesOf:input];
-    
+
     LTAdjustProcessor *adjust = [[LTAdjustProcessor alloc] initWithInput:input output:output];
 
     // Luminance.

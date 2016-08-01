@@ -174,7 +174,7 @@ context(@"album fetching", ^{
         ]);
       });
     });
-    
+
     context(@"thread transitions", ^{
       it(@"should not operate on the main thread", ^{
         RACSignal *values = [manager fetchAlbumWithURL:url];
@@ -619,7 +619,7 @@ context(@"image fetching", ^{
         return error.code == PTNErrorCodeAssetLoadingFailed && error.lt_underlyingError;
       });
     });
-    
+
     context(@"thread transitions", ^{
       it(@"should not operate on the main thread", ^{
         [imageManager serveAsset:asset withProgress:@[] image:image];
@@ -693,11 +693,11 @@ context(@"image fetching", ^{
   
   it(@"should error on non-PhotoKit asset", ^{
     id invalidAsset = OCMProtocolMock(@protocol(PTNDescriptor));
-    
+
     RACSignal *values = [manager fetchImageWithDescriptor:invalidAsset
                                          resizingStrategy:resizingStrategy
                                                   options:options];
-    
+
     expect(values).will.matchError(^BOOL(NSError *error) {
       return error.code == PTNErrorCodeInvalidDescriptor;
     });

@@ -87,7 +87,7 @@ NS_ASSUME_NONNULL_BEGIN
                       "which are <= 0", size.width, size.height);
     LTParameterAssert(maxMipmapLevel >= 0, @"Given maxMipmapLevel (%ld) is negative",
                       (long)maxMipmapLevel);
-    
+
     _pixelFormat = pixelFormat;
     _size = size;
     _maxMipmapLevel = maxMipmapLevel;

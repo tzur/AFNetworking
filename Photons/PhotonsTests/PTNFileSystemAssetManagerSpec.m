@@ -93,7 +93,7 @@ context(@"album fetching", ^{
         return error.code == PTNErrorCodeInvalidURL;
       });
     });
-    
+
     it(@"should error on non existing file", ^{
       NSURL *url = [NSURL ptn_fileSystemAlbumURLWithPath:PTNFileSystemPathFromString(@"bar")];
 

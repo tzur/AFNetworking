@@ -35,7 +35,7 @@ beforeEach(^{
 context(@"data fetching", ^{
   it(@"should map changeset without incremental changes", ^{
     PTNAlbumChangeset *changeset = [PTNAlbumChangeset changesetWithAfterAlbum:album];
-    
+
     OCMStub([assetManager fetchAlbumWithURL:url]).andReturn([RACSignal return:changeset]);
 
     expect([provider fetchChangeset]).to.sendValues(@[

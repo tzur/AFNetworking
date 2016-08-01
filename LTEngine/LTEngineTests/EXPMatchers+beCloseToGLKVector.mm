@@ -48,7 +48,7 @@ EXPMatcherImplementationBegin(_beCloseToGLKVectorWithin, (id expected, id length
         actualVector.push_back([(EXPDoubleTuple *)actual values][i]);
       }
     }
-    
+
     for (auto eIter = expectedVector.cbegin(), aIter = actualVector.cbegin();
          eIter != expectedVector.cend() && aIter != actualVector.cend(); ++eIter, ++aIter) {
       if (isnan(*eIter) != isnan(*aIter)) {
@@ -65,7 +65,7 @@ EXPMatcherImplementationBegin(_beCloseToGLKVectorWithin, (id expected, id length
     if (prerequisiteErrorMessage) {
       return prerequisiteErrorMessage;
     }
-    
+
     if (within) {
       return [NSString stringWithFormat:@"Expected (%@) to be close to (%@) within %@.",
               descriptionOf(actualVector), descriptionOf(expectedVector), within];
@@ -79,7 +79,7 @@ EXPMatcherImplementationBegin(_beCloseToGLKVectorWithin, (id expected, id length
     if (prerequisiteErrorMessage) {
       return prerequisiteErrorMessage;
     }
-    
+
     NSMutableArray *expectedArray = [NSMutableArray array];
     NSMutableArray *actualArray = [NSMutableArray array];
     for (double &value : expectedVector) {
@@ -88,7 +88,7 @@ EXPMatcherImplementationBegin(_beCloseToGLKVectorWithin, (id expected, id length
     for (double &value : actualVector) {
       [actualArray addObject:@(value)];
     }
-    
+
     if (within) {
       return [NSString stringWithFormat:@"Expected (%@) not to be close to (%@) within %@.",
               descriptionOf(actualVector), descriptionOf(expectedVector), within];

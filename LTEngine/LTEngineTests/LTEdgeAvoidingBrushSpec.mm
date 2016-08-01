@@ -41,7 +41,7 @@ context(@"properties", ^{
     expect(brush.sigma).notTo.equal(newValue);
     brush.sigma = newValue;
     expect(brush.sigma).to.equal(newValue);
-    
+
     expect(^{
       brush.sigma = brush.minSigma - kEpsilon;
     }).to.raise(NSInvalidArgumentException);
@@ -80,10 +80,10 @@ context(@"non-edge avoiding drawing", ^{
     output = [LTTexture byteRGBATextureWithSize:kOutputSize];
     fbo = [[LTFbo alloc] initWithTexture:output];
     [fbo clearWithColor:LTVector4::zeros()];
-    
+
     expected.create(kOutputSize.height, kOutputSize.width);
     expected = cv::Vec4b(0, 0, 0, 0);
-    
+
     point = [[LTPainterPoint alloc] init];
     point.contentPosition = kOutputCenter;
   });
@@ -159,7 +159,7 @@ context(@"non-edge avoiding drawing", ^{
         expect($(output.image)).to.beCloseToMat($(expected));
       });
     });
-    
+
     context(@"direct erasing mode", ^{
       beforeEach(^{
         [fbo clearWithColor:LTVector4::ones()];
@@ -210,7 +210,7 @@ context(@"non-edge avoiding drawing", ^{
         expect($(output.image)).to.beCloseToMat($(expected));
       });
     });
-    
+
     context(@"indirect erasing mode", ^{
       using half_float::half;
       
@@ -355,7 +355,7 @@ context(@"edge avoiding drawing", ^{
                                 kOutputSize.width / 2, kOutputSize.height / 2);
     inputMat(LTCVRectWithCGRect(similarSubrect)).setTo(255);
     inputTexture = [LTTexture textureWithImage:inputMat];
-    
+
     brush = [[LTEdgeAvoidingBrush alloc] init];
     brush.baseDiameter = kBaseBrushDiameter;
     brush.scale = kTargetBrushDiameter / kBaseBrushDiameter;
@@ -363,10 +363,10 @@ context(@"edge avoiding drawing", ^{
     output = [LTTexture byteRGBATextureWithSize:kOutputSize];
     fbo = [[LTFbo alloc] initWithTexture:output];
     [fbo clearWithColor:kBackgroundColor];
-    
+
     expected.create(kOutputSize.height, kOutputSize.width);
     expected = cv::Scalar(0);
-    
+
     point = [[LTPainterPoint alloc] init];
     point.contentPosition = kOutputCenter;
   });
@@ -386,7 +386,7 @@ context(@"edge avoiding drawing", ^{
     expected.colRange(0, kOutputSize.width / 4).setTo(0);
     expected.rowRange(kOutputSize.height * 0.75, kOutputSize.height).setTo(0);
     expected.colRange(kOutputSize.width * 0.75, kOutputSize.width).setTo(0);
-    
+
     [fbo clearWithColor:kBackgroundColor];
     brush.sigma = brush.minSigma;
     [brush startNewStrokeAtPoint:point];
@@ -402,7 +402,7 @@ context(@"edge avoiding drawing", ^{
     [roundBrush startNewStrokeAtPoint:point];
     [roundBrush drawPoint:point inFramebuffer:fbo];
     cv::Mat4b roundBrushOutput = output.image;
-    
+
     [fbo clearWithColor:kBackgroundColor];
     brush.inputTexture = nil;
     [brush startNewStrokeAtPoint:point];
@@ -415,7 +415,7 @@ context(@"edge avoiding drawing", ^{
     [brush startNewStrokeAtPoint:point];
     [brush drawPoint:point inFramebuffer:fbo];
     cv::Mat4b minSigma = output.image;
-    
+
     [fbo clearWithColor:kBackgroundColor];
     brush.sigma = 0.5;
     [brush startNewStrokeAtPoint:point];
@@ -424,13 +424,13 @@ context(@"edge avoiding drawing", ^{
     expect($(midSigma)).notTo.beCloseToMat($(minSigma));
     expect($(midSigma(LTCVRectWithCGRect(similarSubrect))))
         .to.beCloseToMat($(minSigma(LTCVRectWithCGRect(similarSubrect))));
-    
+
     [fbo clearWithColor:kBackgroundColor];
     brush.sigma = brush.maxSigma;
     [brush startNewStrokeAtPoint:point];
     [brush drawPoint:point inFramebuffer:fbo];
     cv::Mat4b maxSigma = output.image;
-    
+
     expect($(maxSigma)).notTo.beCloseToMat($(minSigma));
     expect($(maxSigma(LTCVRectWithCGRect(similarSubrect))))
         .to.beCloseToMat($(minSigma(LTCVRectWithCGRect(similarSubrect))));

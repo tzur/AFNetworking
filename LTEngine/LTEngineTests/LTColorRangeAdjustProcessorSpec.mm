@@ -178,7 +178,7 @@ context(@"processing", ^{
     cv::Mat4b expected(1, 1, cv::Vec4b(255, 170, 255, 255));
     processor.exposure = 1.0;
     [processor process];
-    
+
     expect($(output.image)).to.beCloseToMat($(expected));
   });
 
@@ -196,7 +196,7 @@ context(@"processing", ^{
     cv::Mat4b expected(1, 1, cv::Vec4b(121, 121, 121, 255));
     processor.saturation = -1.0;
     [processor process];
-    
+
     expect($(output.image)).to.beCloseToMat($(expected));
   });
   
@@ -204,7 +204,7 @@ context(@"processing", ^{
     cv::Mat4b expected(1, 1, cv::Vec4b(114, 159, 0, 255));
     processor.hue = 1.0;
     [processor process];
-    
+
     expect($(output.image)).to.beCloseToMat($(expected));
   });
 
@@ -271,7 +271,7 @@ context(@"masks", ^{
     processor.renderingMode = LTColorRangeRenderingModeMask;
 
     [processor process];
-    
+
     expect($(output.image)).to.beCloseToMat($(expected));
   });
   
@@ -280,7 +280,7 @@ context(@"masks", ^{
     processor.renderingMode = LTColorRangeRenderingModeMaskOverlay;
 
     [processor process];
-    
+
     expect($(output.image)).to.beCloseToMat($(expected));
   });
 

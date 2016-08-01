@@ -164,7 +164,7 @@ context(@"pre-divide", ^{
       cv::Mat4f mat1f(2, 2);
       LTPreDivideMat(&mat1f);
     }).to.raise(NSInvalidArgumentException);
-    
+
     expect(^{
       cv::Mat3b mat3b(2, 2);
       LTPreDivideMat(&mat3b);
@@ -213,10 +213,10 @@ context(@"load image", ^{
     cv::Mat matWithoutPreDivision = LTLoadMat([self class], @"SemiTransparentGray.png", NO);
     cv::Mat matWithPreDivision = LTLoadMat([self class], @"SemiTransparentGray.png", YES);
     expect($(matWithPreDivision)).notTo.equalMat($(matWithoutPreDivision));
-    
+
     cv::Mat expected = LTLoadMat([self class], @"SemiTransparentGray.png");
     expect($(matWithoutPreDivision)).to.equalMat($(expected));
-    
+
     LTPreDivideMat(&expected);
     expect($(matWithPreDivision)).to.equalMat($(expected));
   });
@@ -234,7 +234,7 @@ context(@"generate mat", ^{
     cv::Mat4b convertedRGB(kTargetSize.height, kTargetSize.width);
     LTConvertHalfFloat<half, uchar>(mat, &convertedGray, 255);
     cv::cvtColor(convertedGray, convertedRGB, CV_GRAY2RGBA);
-    
+
     cv::Mat expected = LTLoadMat([self class], @"GaussianSquare.png");
     expect($(convertedRGB)).to.beCloseToMat($(expected));
   });
@@ -245,12 +245,12 @@ context(@"generate mat", ^{
     expect(mat.rows).to.equal(kTargetSize.height);
     expect(mat.cols).to.equal(kTargetSize.width);
     expect(mat.type()).to.equal(CV_16U);
-    
+
     cv::Mat1b convertedGray(kTargetSize.height, kTargetSize.width);
     cv::Mat4b convertedRGB(kTargetSize.height, kTargetSize.width);
     LTConvertHalfFloat<half, uchar>(mat, &convertedGray, 255);
     cv::cvtColor(convertedGray, convertedRGB, CV_GRAY2RGBA);
-    
+
     cv::Mat expected = LTLoadMat([self class], @"GaussianAnisotropic.png");
     expect($(convertedRGB)).to.beCloseToMat($(expected));
   });

@@ -125,7 +125,7 @@ context(@"archiving", ^{
     mat.rowRange(0, 8).setTo(cv::Vec4f(0.25f, 0.5f, 0.75f, 1.0f));
     mat.rowRange(8, 16).setTo(cv::Vec4f(0.75f, 0.5f, 0.25f, 1.0f));
     texture = [LTTexture textureWithImage:mat];
-    
+
     result = [archiver archiveTexture:texture inPath:LTTemporaryPath(@"archive.mat") error:&error];
     expect(result).to.beTruthy();
     expect(error).to.beNil();

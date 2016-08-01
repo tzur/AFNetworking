@@ -120,7 +120,7 @@ context(@"compare to OpenCV 2d on real image", ^{
 
   it(@"should produce correct output for sigma equals 1.5 and a bigger kernel size", ^{
     const CGFloat kSigma = 1.5;
-    
+
     // Note: while the kernel fits 7 taps the OpenCV ruins alpha channel for some reason
     const NSUInteger kKernelSize = 9;
     LTGaussianFilterProcessor *filter =

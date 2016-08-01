@@ -29,7 +29,7 @@ context(@"designated initializer", ^{
     provider = [[PTUDataSourceProvider alloc] initWithChangesetProvider:changesetProvider
                                                   cellViewModelProvider:cellViewModelProvider
                                                               cellClass:[PTUImageCell class]];
-    
+
     collectionView = OCMClassMock([UICollectionView class]);
   });
   

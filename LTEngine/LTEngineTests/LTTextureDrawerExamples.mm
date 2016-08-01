@@ -116,7 +116,7 @@ sharedExamplesFor(kLTTextureDrawerExamples, ^(NSDictionary *data) {
     drawerClass = data[kLTTextureDrawerClass];
     LTGLContext *context = [[LTGLContext alloc] init];
     [LTGLContext setCurrentContext:context];
-    
+
     // Make sure that everything is properly drawn when face culling is enabled.
     context.faceCullingEnabled = YES;
   });
@@ -158,7 +158,7 @@ sharedExamplesFor(kLTTextureDrawerExamples, ^(NSDictionary *data) {
                                                     sourceTexture:texture];
       }).toNot.raiseAny();
     });
-    
+
     it(@"should not initialize with program with missing uniforms", ^{
       LTProgram *program = [[LTProgram alloc] initWithVertexSource:kMissingVertexSource
                                                     fragmentSource:[PassthroughFsh source]];
@@ -175,7 +175,7 @@ sharedExamplesFor(kLTTextureDrawerExamples, ^(NSDictionary *data) {
     __block id<LTTextureDrawer> drawer;
     __block LTTexture *output;
     __block LTFbo *fbo;
-    
+
     beforeEach(^{
       program = [[LTProgram alloc] initWithVertexSource:[PassthroughVsh source]
                                          fragmentSource:[PassthroughFsh source]];
@@ -185,14 +185,14 @@ sharedExamplesFor(kLTTextureDrawerExamples, ^(NSDictionary *data) {
       
       fbo = [[LTFbo alloc] initWithTexture:output];
     });
-    
+
     afterEach(^{
       fbo = nil;
       output = nil;
       drawer = nil;
       program = nil;
     });
-    
+
     context(@"framebuffer", ^{
       it(@"should draw to target texture of the same size", ^{
         [drawer drawRect:CGRectMake(0, 0, inputSize.width, inputSize.height) inFramebuffer:fbo
@@ -247,7 +247,7 @@ sharedExamplesFor(kLTTextureDrawerExamples, ^(NSDictionary *data) {
         expect(LTCompareMat(expected, output.image)).to.beTruthy();
       });
     });
-    
+
     context(@"screen framebuffer", ^{
       it(@"should draw subrect of input to entire output", ^{
         const CGRect subrect = CGRectMake(2 * inputSize.width / 16, 3 * inputSize.height / 16,
@@ -314,7 +314,7 @@ sharedExamplesFor(kLTTextureDrawerExamples, ^(NSDictionary *data) {
         expect(LTCompareMat(expected, output.image)).to.beTruthy();
       });
     });
-    
+
     context(@"source texture switching", ^{
       it(@"should switch source texture", ^{
         cv::Mat expected(inputSize.height, inputSize.width, CV_8UC4);
@@ -328,7 +328,7 @@ sharedExamplesFor(kLTTextureDrawerExamples, ^(NSDictionary *data) {
         
         expect(LTCompareMat(expected, output.image)).to.beTruthy();
       });
-    
+
       it(@"should raise when switching to nil source texture", ^{
         expect(^{
           [drawer setSourceTexture:nil];
@@ -343,7 +343,7 @@ sharedExamplesFor(kLTTextureDrawerExamples, ^(NSDictionary *data) {
     __block LTTexture *clearTexture;
     __block LTTexture *output;
     __block LTFbo *fbo;
-    
+
     beforeEach(^{
       program = [[LTProgram alloc] initWithVertexSource:[PassthroughVsh source]
                                          fragmentSource:kFragmentWithThreeSamplersSource];
@@ -355,14 +355,14 @@ sharedExamplesFor(kLTTextureDrawerExamples, ^(NSDictionary *data) {
       
       fbo = [[LTFbo alloc] initWithTexture:output];
     });
-    
+
     afterEach(^{
       fbo = nil;
       output = nil;
       drawer = nil;
       program = nil;
     });
-    
+
     it(@"should contain initial auxiliary texture", ^{
       expect(^{
         [drawer setAuxiliaryTexture:texture withName:@"anotherTexture"];
@@ -373,31 +373,31 @@ sharedExamplesFor(kLTTextureDrawerExamples, ^(NSDictionary *data) {
         expect(LTCompareMat([texture image], [output image])).to.beTruthy();
       });
     });
-    
+
     it(@"should set valid texture with correct name", ^{
       expect(^{
         [drawer setAuxiliaryTexture:texture withName:@"anotherTexture"];
       }).toNot.raiseAny();
     });
-    
+
     it(@"should raise when setting a nil texture", ^{
       expect(^{
         [drawer setAuxiliaryTexture:nil withName:@"anotherTexture"];
       }).to.raise(NSInvalidArgumentException);
     });
-    
+
     it(@"should raise when setting a nil name", ^{
       expect(^{
         [drawer setAuxiliaryTexture:texture withName:nil];
       }).to.raise(NSInvalidArgumentException);
     });
-    
+
     it(@"should raise when setting a non existing name", ^{
       expect(^{
         [drawer setAuxiliaryTexture:texture withName:@"foo"];
       }).to.raise(NSInvalidArgumentException);
     });
-    
+
     it(@"should draw multiple inputs correctly", ^{
       [drawer setAuxiliaryTexture:texture withName:@"anotherTexture"];
       [drawer setAuxiliaryTexture:clearTexture withName:@"otherTexture"];
@@ -414,7 +414,7 @@ sharedExamplesFor(kLTTextureDrawerExamples, ^(NSDictionary *data) {
     __block id<LTTextureDrawer> drawer;
     __block LTTexture *output;
     __block LTFbo *fbo;
-    
+
     beforeEach(^{
       program = [[LTProgram alloc] initWithVertexSource:[PassthroughVsh source]
                                          fragmentSource:kFragmentWithUniformSource];
@@ -424,14 +424,14 @@ sharedExamplesFor(kLTTextureDrawerExamples, ^(NSDictionary *data) {
       
       fbo = [[LTFbo alloc] initWithTexture:output];
     });
-    
+
     afterEach(^{
       fbo = nil;
       output = nil;
       drawer = nil;
       program = nil;
     });
-    
+
     it(@"should set and retrieve uniform", ^{
       LTVector4 outputColor = LTVector4(1, 0, 0, 1);
       NSValue *value = $(outputColor);
@@ -439,7 +439,7 @@ sharedExamplesFor(kLTTextureDrawerExamples, ^(NSDictionary *data) {
       
       expect(drawer[@"outputColor"]).to.equal(value);
     });
-    
+
     it(@"should draw given color to target", ^{
       LTVector4 outputColor = LTVector4(1, 0, 0, 1);
       drawer[@"outputColor"] = $(outputColor);

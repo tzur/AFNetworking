@@ -79,10 +79,10 @@ context(@"properties", ^{
     LTTexture *texture = [LTTexture byteRGBATextureWithSize:CGSizeMakeUniform(1)];
     effect.baseColorTexture = texture;
     expect(effect.baseColorTexture).to.beIdenticalTo(texture);
-    
+
     effect.baseColorTexture = nil;
     expect(effect.baseColorTexture).to.beNil();
-    
+
     expect(^{
       effect.baseColorTexture = [LTTexture byteRedTextureWithSize:CGSizeMakeUniform(1)];
     }).to.raise(NSInvalidArgumentException);
@@ -112,7 +112,7 @@ context(@"effect", ^{
                               size:CGSizeMakeUniform([random randomDouble])
                               angle:[random randomDoubleBetweenMin:0 max:2 * M_PI]]];
     }
-    
+
     baseHue = 0.75;
     baseSaturation = 0.5;
     baseBrightness = 0.5;
@@ -257,7 +257,7 @@ context(@"effect", ^{
     const CGFloat kGreenHue = 1.0 / 3;
     const CGFloat kBlueHue = 2.0 / 3;
     const CGFloat kYellowHue = 1.0 / 6;
-    
+
     effect.baseColorTexture = [LTTexture byteRGBATextureWithSize:CGSizeMakeUniform(2)];
     [effect.baseColorTexture mappedImageForWriting:^(cv::Mat *mapped, BOOL) {
       mapped->at<cv::Vec4b>(0,0) = [UIColor redColor].lt_cvVector;
@@ -265,7 +265,7 @@ context(@"effect", ^{
       mapped->at<cv::Vec4b>(1,0) = [UIColor blueColor].lt_cvVector;
       mapped->at<cv::Vec4b>(1,1) = [UIColor yellowColor].lt_cvVector;
     }];
-    
+
     colors = [effect colorsFromRects:sourceRects baseColor:baseColor];
     expect(colors.count).to.equal(sourceRects.count);
     for (NSUInteger i = 0; i < colors.count; ++i) {

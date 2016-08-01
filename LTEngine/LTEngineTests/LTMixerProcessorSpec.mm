@@ -198,7 +198,7 @@ context(@"blending", ^{
 
     cv::Mat4b expected(16, 16, backColor);
     expected(cv::Rect(0, 0, 8, 8)).setTo(cv::Vec4b(96, 64, 159, 255));
-    
+
     expect($([output image])).to.beCloseToMat($(expected));
   });
 

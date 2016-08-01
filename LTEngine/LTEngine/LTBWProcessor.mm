@@ -299,7 +299,7 @@ LTPropertyWithoutSetter(CGFloat, colorGradientIntensity, ColorGradientIntensity,
     cv::Mat4b colorCurve;
     cv::addWeighted(self.identityColorGradientMat, 1 - self.colorGradientIntensity,
                     self.colorGradientMat, self.colorGradientIntensity, 0, colorCurve);
-    
+
     cv::Mat mixIn[] = {colorCurve, toneCurve};
     int fromTo[] = {0, 0, 1, 1, 2, 2, 4, 3};
   

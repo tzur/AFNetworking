@@ -29,7 +29,7 @@ NS_ASSUME_NONNULL_BEGIN
                                             underlyingError:error]];
           }
         }];
-    
+
       return [RACDisposable disposableWithBlock:^{
         @strongify(manager);
         [manager stopDeviceMotionUpdates];

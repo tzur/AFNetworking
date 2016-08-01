@@ -58,10 +58,10 @@ context(@"processing", ^{
     [fbo bindAndDraw:^{
       [processor processToFramebufferWithSize:fbo.size outputRect:CGRectFromSize(fbo.size)];
     }];
-    
+
     cv::Mat4b expected(image.size.height, image.size.width, cv::Vec4b(160, 48, 24, 255));
     expected(cv::Rect(0, 0, 4, 4)) = cv::Vec4b(192, 32, 16, 255);
-    
+
     expect($(texture.image)).to.beCloseToMat($(expected));
   });
 });

@@ -41,7 +41,7 @@ static const void *kBindingDisposableKey = &kBindingDisposableKey;
   RACSubject *unbindTrigger = [RACSubject subject];
 
   RACSignal *image = [RACObserve(viewModel, image) takeUntil:unbindTrigger];
-  RACSignal *highlightedImage  = [RACObserve(viewModel, highlightedImage) takeUntil:unbindTrigger];
+  RACSignal *highlightedImage = [RACObserve(viewModel, highlightedImage) takeUntil:unbindTrigger];
 
   @weakify(self);
   RACDisposable *imagesDisposable = [[[RACSignal

@@ -121,7 +121,7 @@
     NSUInteger numVerticesInCurrentLevel = [self.model numOfVerticesInLevel:level];
     NSUInteger offsetOfCurrentLevel = [self.model firstVertexIndex:level];
     NSUInteger offsetOfUpperLevel = [self.model firstVertexIndex:level + 1];
-    
+
     for (NSUInteger i = 0; i < numVerticesInCurrentLevel; ++i) {
       LTVector4 leftParent = membraneColors[offsetOfUpperLevel + i * 2];
       LTVector4 centerParent = membraneColors[offsetOfUpperLevel + i * 2 + 1];
@@ -142,7 +142,7 @@ static const NSUInteger kInLevelAveragingCount = 5;
   for (NSUInteger level = self.model.numberOfVertexLevels - 2; level > 0; --level) {
     NSUInteger numVerticesInCurrentLevel = [self.model numOfVerticesInLevel:level];
     NSUInteger offsetOfCurrentLevel = [self.model firstVertexIndex:level];
-    
+
     for (NSUInteger j = 0; j < kInLevelAveragingCount; ++j) {
       LTVector4s averagedColor(numVerticesInCurrentLevel);
       for (NSUInteger i = 0; i < numVerticesInCurrentLevel; ++i) {
@@ -215,7 +215,7 @@ static const CGFloat kBoundaryAlpha = 0.1;
     t = 1 - std::clamp(t, 0, 1);
     CGFloat alpha = 3 * std::pow(t, 2) - 2 * std::pow(t, 3);
     alpha = alpha * (1 - kBoundaryAlpha) + kBoundaryAlpha;
-    
+
     NSUInteger startOfCurrentLevel = [self.model firstVertexIndex:level];
     NSUInteger verticesInLevel = [self.model numOfVerticesInLevel:level];
 

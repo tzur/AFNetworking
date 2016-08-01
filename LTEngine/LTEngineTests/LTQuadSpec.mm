@@ -1570,7 +1570,7 @@ context(@"equality", ^{
   it(@"should consider two quads equal if their non-permutated corners() are equal", ^{
     lt::Quad::Corners corners{{v0, v1, v2, v3}};
     expect(lt::Quad(corners) == lt::Quad(corners)).to.beTruthy();
-    
+
     lt::Quad::Corners permutatedCorners{{v1, v2, v3, v0}};
     expect(lt::Quad(corners) == lt::Quad(permutatedCorners)).to.beFalsy();
   });
@@ -1578,7 +1578,7 @@ context(@"equality", ^{
   it(@"should consider two quads inequal if their corners() are inequal", ^{
     lt::Quad::Corners corners{{v0, v1, v2, v3}};
     expect(lt::Quad(corners) != lt::Quad(corners)).to.beFalsy();
-    
+
     lt::Quad::Corners permutatedCorners{{v1, v2, v3, v0}};
     expect(lt::Quad(corners) != lt::Quad(permutatedCorners)).to.beTruthy();
   });

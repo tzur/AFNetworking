@@ -68,7 +68,7 @@ context(@"properties", ^{
       LTTexture *redTexture = [LTTexture byteRedTextureWithSize:kSize];
       brush.textures = @[redTexture];
     }).to.raise(NSInvalidArgumentException);
-    
+
     expect(^{
       LTTexture *rgTexture = [LTTexture textureWithSize:kSize pixelFormat:$(LTGLPixelFormatRG8Unorm)
                                          allocateMemory:YES];
@@ -81,7 +81,7 @@ context(@"properties", ^{
     expect(brush.sigma).notTo.equal(newValue);
     brush.sigma = newValue;
     expect(brush.sigma).to.equal(newValue);
-    
+
     expect(^{
       brush.sigma = brush.minSigma - kEpsilon;
     }).to.raise(NSInvalidArgumentException);
@@ -124,7 +124,7 @@ context(@"edge avoiding drawing", ^{
                                 kOutputSize.width / 2, kOutputSize.height / 2);
     inputMat(LTCVRectWithCGRect(similarSubrect)).setTo(255);
     inputTexture = [LTTexture textureWithImage:inputMat];
-    
+
     brush = [[LTEdgeAvoidingMultiTextureBrush alloc] init];
     brush.baseDiameter = kBaseBrushDiameter;
     brush.scale = kTargetBrushDiameter / kBaseBrushDiameter;
@@ -132,10 +132,10 @@ context(@"edge avoiding drawing", ^{
     output = [LTTexture byteRGBATextureWithSize:kOutputSize];
     fbo = [[LTFbo alloc] initWithTexture:output];
     [fbo clearWithColor:kBackgroundColor];
-    
+
     expected.create(kOutputSize.height, kOutputSize.width);
     expected = cv::Scalar(0);
-    
+
     point = [[LTPainterPoint alloc] init];
     point.contentPosition = kOutputCenter;
   });
@@ -166,7 +166,7 @@ context(@"edge avoiding drawing", ^{
     expected.colRange(0, kOutputSize.width / 4).setTo(0);
     expected.rowRange(kOutputSize.height * 0.75, kOutputSize.height).setTo(0);
     expected.colRange(kOutputSize.width * 0.75, kOutputSize.width).setTo(0);
-    
+
     [fbo clearWithColor:kBackgroundColor];
     brush.sigma = brush.minSigma;
     [brush startNewStrokeAtPoint:point];
@@ -189,7 +189,7 @@ context(@"edge avoiding drawing", ^{
     expected.setTo(cv::Vec4b(0, 0, 0, 255));
     expected(LTCVRectWithCGRect(similarSubrect)).setTo(cv::Vec4b(128, 128, 128, 255));
     expect($(output.image)).to.beCloseToMat($(expected));
-    
+
     expected.setTo(cv::Vec4b(128, 128, 128, 255));
     brush.sigma = 1.0;
     [brush startNewStrokeAtPoint:point];

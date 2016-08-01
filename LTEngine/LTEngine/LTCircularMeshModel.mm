@@ -45,7 +45,7 @@ static const NSUInteger kRootNodeRank = 8;
   for (NSUInteger i = 0; i < kRootNodeRank; ++i) {
     _vertices.push_back(LTVector2PolarMake(CGPointZero, currentRadius, theta));
     theta += deltaTheta;
-    
+
     // Create triangles of the first level. Because we're cyclic, the last vertex connects to the
     // first one.
     _indices.push_back(0);
@@ -96,7 +96,7 @@ static const NSUInteger kRootNodeRank = 8;
     _indices.push_back((uint)index);
     _indices.push_back((uint)(originalNumberOfVertices + i * 2));
     _indices.push_back((uint)(originalNumberOfVertices + i * 2 + 1));
-    
+
     // Second triangle: parent and two children.
     _indices.push_back((uint)(index));
     _indices.push_back((uint)(originalNumberOfVertices + i * 2 + 1));
@@ -106,7 +106,7 @@ static const NSUInteger kRootNodeRank = 8;
       // Cyclic.
       _indices.push_back((uint)(originalNumberOfVertices));
     }
-    
+
     // Third triangle: two parents and one children.
     _indices.push_back((uint)(index));
     if (index != originalNumberOfVertices - 1) {

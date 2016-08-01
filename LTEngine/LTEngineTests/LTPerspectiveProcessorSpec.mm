@@ -182,7 +182,7 @@ context(@"projection data", ^{
     inputTexture = [LTTexture textureWithImage:LTCheckerboard(kSize.height, kSize.width, 8)];
     outputTexture = [LTTexture byteRGBATextureWithSize:kSize];
     processor = [[LTPerspectiveProcessor alloc] initWithInput:inputTexture andOutput:outputTexture];
-    
+
     processor.horizontal = M_PI / 180 * 15;
     processor.vertical = M_PI / 180 * 15;
     processor.rotationAngle = -M_PI / 180 * 20;
@@ -226,14 +226,14 @@ context(@"projection data", ^{
   
   it(@"should return if point is inside the projected texture", ^{
     [processor process];
-    
+
     // Get the mask of pixels that were drawn from the projected texture.
     cv::Mat4b output = outputTexture.image;
     cv::Mat1b outputMask(output.rows, output.cols);
     std::transform(output.begin(), output.end(), outputMask.begin(), [](const cv::Vec4b &value) {
       return value[3] > 0 ? 255 : 0;
     });
-    
+
     // Get the mask of pixels that pointInTexture: returned YES for.
     cv::Mat1b pointsInTexture(output.rows, output.cols);
     for (int i = 0; i < output.rows; ++i) {
@@ -250,7 +250,7 @@ context(@"projection data", ^{
                    differences.begin(), [](const uchar &lhs, const uchar &rhs) {
       return (lhs != rhs) ? 255 : 0;
     });
-    
+
     expect(std::count(differences.begin(), differences.end(), 255)).to.beLessThan(4);
   });
 });

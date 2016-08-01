@@ -39,7 +39,7 @@ sharedExamplesFor(kLTBrushExamples, ^(NSDictionary *data) {
       LTBrush *brush = [[brushClass alloc] init];
       expect(brush.random).notTo.beNil();
     });
-    
+
     it(@"should initialize with a given random generator", ^{
       LTRandom *random = [[LTRandom alloc] init];
       LTBrush *brush = [[brushClass alloc] initWithRandom:random];
@@ -50,22 +50,22 @@ sharedExamplesFor(kLTBrushExamples, ^(NSDictionary *data) {
   context(@"properties", ^{
     const CGFloat kEpsilon = 1e-6;
     __block LTBrush *brush;
-    
+
     beforeEach(^{
       brush = [[brushClass alloc] init];
     });
-    
+
     afterEach(^{
       brush = nil;
     });
-    
+
     it(@"should set baseDiameter", ^{
       const NSUInteger newValue = 100;
       expect(brush.baseDiameter).notTo.equal(newValue);
       brush.baseDiameter = newValue;
       expect(brush.baseDiameter).to.equal(newValue);
     });
-    
+
     it(@"should set scale", ^{
       const CGFloat newValue = 0.5;
       expect(brush.scale).notTo.equal(newValue);
@@ -79,7 +79,7 @@ sharedExamplesFor(kLTBrushExamples, ^(NSDictionary *data) {
         brush.scale = brush.maxScale + kEpsilon;
       }).to.raise(NSInvalidArgumentException);
     });
-    
+
     it(@"should set angle, with cyclic wrapping", ^{
       const CGFloat newValue = 0.5;
       expect(brush.angle).notTo.equal(newValue);
@@ -93,7 +93,7 @@ sharedExamplesFor(kLTBrushExamples, ^(NSDictionary *data) {
       brush.angle = brush.maxAngle + kEpsilon;
       expect(brush.angle).to.beCloseToWithin(kEpsilon, 1e-4);
     });
-    
+
     it(@"should set spacing", ^{
       const CGFloat newValue = 0.5;
       expect(brush.spacing).notTo.equal(newValue);
@@ -107,7 +107,7 @@ sharedExamplesFor(kLTBrushExamples, ^(NSDictionary *data) {
         brush.spacing = brush.maxSpacing + kEpsilon;
       }).to.raise(NSInvalidArgumentException);
     });
-    
+
     it(@"should set opacity", ^{
       const CGFloat newValue = 0.5;
       expect(brush.opacity).notTo.equal(newValue);
@@ -121,7 +121,7 @@ sharedExamplesFor(kLTBrushExamples, ^(NSDictionary *data) {
         brush.opacity = brush.maxOpacity + kEpsilon;
       }).to.raise(NSInvalidArgumentException);
     });
-    
+
     it(@"should set flow", ^{
       const CGFloat newValue = 0.5;
       expect(brush.flow).notTo.equal(newValue);
@@ -135,7 +135,7 @@ sharedExamplesFor(kLTBrushExamples, ^(NSDictionary *data) {
         brush.flow = brush.maxFlow + kEpsilon;
       }).to.raise(NSInvalidArgumentException);
     });
-    
+
     it(@"should set intensity", ^{
       const LTVector4 newValue = LTVector4(0.3, 0.4, 0.5, 0.6);
       expect(brush.intensity).notTo.equal(newValue);
@@ -338,10 +338,10 @@ context(@"drawing", ^{
     output = [LTTexture byteRGBATextureWithSize:kOutputSize];
     fbo = [[LTFbo alloc] initWithTexture:output];
     [fbo clearWithColor:LTVector4(0, 0, 0, 1)];
-    
+
     expected.create(kOutputSize.height, kOutputSize.width);
     expected = cv::Vec4b(0, 0, 0, 255);
-    
+
     startPoint = [[LTPainterPoint alloc] init];
     endPoint = [[LTPainterPoint alloc] init];
     startPoint.contentPosition = CGPointMake(0, kOutputCenter.y);
@@ -458,7 +458,7 @@ context(@"drawing", ^{
     brush.spacing = 2;
     [brush drawStrokeSegment:segment fromPreviousPoint:nil
                inFramebuffer:fbo saveLastDrawnPointTo:nil];
-    
+
     for (int center = 0; center < expected.cols; center += 2 * kTargetBrushDiameter) {
       
       CGRect targetRect = CGRectCenteredAt(CGPointMake(center, kOutputCenter.y),

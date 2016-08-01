@@ -24,11 +24,11 @@ context(@"LTVector2", ^{
     LTVector2 v4(CGSizeMake(5, 6));
     expect(v4.x).to.equal(5);
     expect(v4.y).to.equal(6);
-    
+
     LTVector2 v5(LTVector2(7, 8));
     expect(v5.x).to.equal(7);
     expect(v5.y).to.equal(8);
-    
+
     LTVector2 v6(9);
     expect(v6.x).to.equal(9);
     expect(v6.y).to.equal(9);
@@ -53,7 +53,7 @@ context(@"LTVector2", ^{
   it(@"should cast to CGSize", ^{
     LTVector2 vector(1, 2);
     CGSize size(vector);
-    
+
     expect(size.width).to.equal(vector.x);
     expect(size.height).to.equal(vector.y);
   });
@@ -286,7 +286,7 @@ context(@"LTVector3", ^{
     expect(v1.x).to.equal(0);
     expect(v1.y).to.equal(0);
     expect(v1.z).to.equal(0);
-    
+
     LTVector3 v2(1);
     expect(v2.x).to.equal(1);
     expect(v2.y).to.equal(1);
@@ -498,7 +498,7 @@ context(@"LTVector3", ^{
       expect(std::isinf(vector.y) && vector.y > 0).to.beTruthy();
       expect(std::isinf(vector.z) && vector.z < 0).to.beTruthy();
     });
-    
+
     it(@"should return zero vector on invalid string", ^{
       expect(LTVector3FromString(@"(1.5, 2.5)")).to.equal(LTVector3());
       expect(LTVector3FromString(@"(1.5, 2.5, 3")).to.equal(LTVector3());
@@ -516,7 +516,7 @@ context(@"LTVector4", ^{
     expect(v1.y).to.equal(0);
     expect(v1.z).to.equal(0);
     expect(v1.w).to.equal(0);
-    
+
     LTVector4 v2(1);
     expect(v2.x).to.equal(1);
     expect(v2.y).to.equal(1);

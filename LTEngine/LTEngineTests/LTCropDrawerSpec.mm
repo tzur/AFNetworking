@@ -67,13 +67,13 @@ context(@"drawing", ^{
       targetRect = CGRectFromSize(fbo.size);
       sourceRect = CGRectFromSize(inputTexture.size);
     });
-    
+
     it(@"should draw", ^{
       [drawer drawRect:targetRect inFramebuffer:fbo fromRect:sourceRect];
       expected = inputTexture.image;
       expect($(outputTexture.image)).to.equalMat($(expected));
     });
-    
+
     it(@"should draw horizontally flipped source", ^{
       sourceRect = LTCropDrawerRect(sourceRect.topRight, sourceRect.topLeft,
                                     sourceRect.bottomRight, sourceRect.bottomLeft);
@@ -82,7 +82,7 @@ context(@"drawing", ^{
       cv::flip(expected, expected, 1);
       expect($(outputTexture.image)).to.equalMat($(expected));
     });
-    
+
     it(@"should draw vertically flipped source", ^{
       sourceRect = LTCropDrawerRect(sourceRect.bottomLeft, sourceRect.bottomRight,
                                     sourceRect.topLeft, sourceRect.topRight);
@@ -91,7 +91,7 @@ context(@"drawing", ^{
       cv::flip(expected, expected, 0);
       expect($(outputTexture.image)).to.equalMat($(expected));
     });
-    
+
     it(@"should draw rotated source", ^{
       sourceRect = LTCropDrawerRect(sourceRect.topRight, sourceRect.bottomRight,
                                     sourceRect.topLeft, sourceRect.bottomLeft);
@@ -113,13 +113,13 @@ context(@"drawing", ^{
       expected.create(outputTexture.size.height, outputTexture.size.height);
       expected.setTo(kBlack);
     });
-    
+
     it(@"should draw", ^{
       [drawer drawRect:targetRect inFramebuffer:fbo fromRect:sourceRect];
       expected.rowRange(0, expected.rows / 2).setTo(kRed);
       expect($(outputTexture.image)).to.equalMat($(expected));
     });
-    
+
     it(@"should draw horizontally flipped source", ^{
       sourceRect = LTCropDrawerRect(sourceRect.topRight, sourceRect.topLeft,
                                     sourceRect.bottomRight, sourceRect.bottomLeft);
@@ -127,7 +127,7 @@ context(@"drawing", ^{
       expected.rowRange(0, expected.rows / 2).setTo(kRed);
       expect($(outputTexture.image)).to.equalMat($(expected));
     });
-    
+
     it(@"should draw vertically flipped source", ^{
       sourceRect = LTCropDrawerRect(sourceRect.bottomLeft, sourceRect.bottomRight,
                                     sourceRect.topLeft, sourceRect.topRight);
@@ -135,7 +135,7 @@ context(@"drawing", ^{
       expected.rowRange(expected.rows / 2, expected.rows).setTo(kRed);
       expect($(outputTexture.image)).to.equalMat($(expected));
     });
-    
+
     it(@"should draw rotated source", ^{
       sourceRect = LTCropDrawerRect(sourceRect.topRight, sourceRect.bottomRight,
                                     sourceRect.topLeft, sourceRect.bottomLeft);
@@ -155,7 +155,7 @@ context(@"drawing", ^{
       [fbo clearWithColor:LTVector4::zeros()];
       expected.setTo(0);
     });
-    
+
     it(@"should draw", ^{
       [drawer drawRect:targetRect inFramebuffer:fbo fromRect:sourceRect];
       expected.colRange(0, expected.cols / 2).setTo(kBlack);
@@ -163,7 +163,7 @@ context(@"drawing", ^{
       expected(cv::Rect(expected.cols / 4, 0, expected.cols / 4, expected.rows / 2)).setTo(kBlue);
       expect($(outputTexture.image)).to.equalMat($(expected));
     });
-    
+
     it(@"should draw horizontally flipped source", ^{
       sourceRect = LTCropDrawerRect(sourceRect.topRight, sourceRect.topLeft,
                                     sourceRect.bottomRight, sourceRect.bottomLeft);
@@ -173,7 +173,7 @@ context(@"drawing", ^{
       expected(cv::Rect(expected.cols / 4, 0, expected.cols / 4, expected.rows / 2)).setTo(kRed);
       expect($(outputTexture.image)).to.equalMat($(expected));
     });
-    
+
     it(@"should draw vertically flipped source", ^{
       sourceRect = LTCropDrawerRect(sourceRect.bottomLeft, sourceRect.bottomRight,
                                     sourceRect.topLeft, sourceRect.topRight);
@@ -184,7 +184,7 @@ context(@"drawing", ^{
                         expected.cols / 4, expected.rows / 2)).setTo(kBlue);
       expect($(outputTexture.image)).to.equalMat($(expected));
     });
-    
+
     it(@"should draw rotated source", ^{
       sourceRect = LTCropDrawerRect(sourceRect.topRight, sourceRect.bottomRight,
                                     sourceRect.topLeft, sourceRect.bottomLeft);
@@ -207,14 +207,14 @@ context(@"drawing", ^{
       [fbo clearWithColor:LTVector4::zeros()];
       expected.setTo(0);
     });
-    
+
     it(@"should draw", ^{
       [drawer drawRect:targetRect inFramebuffer:fbo fromRect:sourceRect];
       expected(cv::Rect(0, 0, expected.cols / 2, expected.rows / 2)).setTo(kRed);
       expected(cv::Rect(expected.cols / 2, 0, expected.cols / 2, expected.rows / 2)).setTo(kBlue);
       expect($(outputTexture.image)).to.equalMat($(expected));
     });
-    
+
     it(@"should draw horizontally flipped source", ^{
       sourceRect = LTCropDrawerRect(sourceRect.topRight, sourceRect.topLeft,
                                     sourceRect.bottomRight, sourceRect.bottomLeft);
@@ -223,7 +223,7 @@ context(@"drawing", ^{
       expected(cv::Rect(expected.cols / 2, 0, expected.cols / 2, expected.rows / 2)).setTo(kRed);
       expect($(outputTexture.image)).to.equalMat($(expected));
     });
-    
+
     it(@"should draw vertically flipped source", ^{
       sourceRect = LTCropDrawerRect(sourceRect.bottomLeft, sourceRect.bottomRight,
                                     sourceRect.topLeft, sourceRect.topRight);
@@ -232,7 +232,7 @@ context(@"drawing", ^{
       expected(cv::Rect(expected.cols / 2, 0, expected.cols / 2, expected.rows / 2)).setTo(kBlue);
       expect($(outputTexture.image)).to.equalMat($(expected));
     });
-    
+
     it(@"should draw rotated source", ^{
       sourceRect = LTCropDrawerRect(sourceRect.topRight, sourceRect.bottomRight,
                                     sourceRect.topLeft, sourceRect.bottomLeft);
@@ -250,7 +250,7 @@ context(@"drawing", ^{
       targetRect = CGRectFromSize(fbo.size);
       sourceRect = CGRectFromSize(inputTexture.size);
     });
-    
+
     it(@"should draw to framebuffer", ^{
       [fbo bindAndDraw:^{
         [drawer drawRect:targetRect inFramebufferWithSize:fbo.size fromRect:sourceRect];
@@ -258,7 +258,7 @@ context(@"drawing", ^{
       }];
       expect($(outputTexture.image)).to.equalMat($(expected));
     });
-    
+
     it(@"should draw to screen", ^{
       [fbo bindAndDrawOnScreen:^{
         [drawer drawRect:targetRect inFramebufferWithSize:fbo.size fromRect:sourceRect];

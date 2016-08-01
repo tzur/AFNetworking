@@ -96,7 +96,7 @@ context(@"random", ^{
     for (NSUInteger i = 0; i < kNumberOfRolls; ++i) {
       first.push_back([random randomDouble]);
     }
-    
+
     [random reset];
 
     for (NSUInteger i = 0; i < kNumberOfRolls; ++i) {
@@ -156,7 +156,7 @@ context(@"random", ^{
       [first addObject:@([random randomUnsignedIntegerBelow:100])];
       [second addObject:@([otherRandom randomUnsignedIntegerBelow:100])];
     }
-    
+
     for (NSUInteger i = 0; i < kNumberOfRolls; ++i) {
       expect(first[i]).to.equal(second[i]);
     }

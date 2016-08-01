@@ -32,8 +32,8 @@ static BOOL LTDirectoryExists(NSString *relativePath) {
 
 static BOOL LTLinkExists(NSString *relativePath) {
   LTPath *path = LTPathMake(relativePath);
-  NSDictionary *attributes =  [[NSFileManager defaultManager]
-                               attributesOfItemAtPath:path.path error:nil];
+  NSDictionary *attributes = [[NSFileManager defaultManager]
+                              attributesOfItemAtPath:path.path error:nil];
 
   return ![attributes[NSFileType] isEqual:NSFileTypeDirectory] &&
          [attributes[NSFileReferenceCount] unsignedLongValue] > 1;
@@ -455,7 +455,7 @@ context(@"unarchiving", ^{
       expect(otherTexture.generationID).to.equal(texture.generationID);
       expect($(otherTexture.image)).to.equalMat($(mat));
     });
-    
+
     it(@"should return nil if archive does not exist", ^{
       texture = [archiver unarchiveTextureFromPath:LTPathMake(@"noArchive") error:&error];
       expect(texture).to.beNil();
@@ -536,7 +536,7 @@ context(@"unarchiving", ^{
       expect(image.size).to.equal(texture.size);
       expect($([[LTImage alloc] initWithImage:image].mat)).to.equalMat($(texture.image));
     });
-    
+
     it(@"should return nil if archive does not exist", ^{
       image = [archiver unarchiveImageFromPath:LTPathMake(@"noArchive") error:&error];
       expect(image).to.beNil();

@@ -28,7 +28,7 @@ NS_ASSUME_NONNULL_BEGIN
   LTParameterAssert(timerContainer);
   LTParameterAssert(timerModes);
   if (self = [super init]) {
-    _timerContainer  = timerContainer;
+    _timerContainer = timerContainer;
     _subitems = timerModes;
     _selected = NO;
     _hidden = NO;

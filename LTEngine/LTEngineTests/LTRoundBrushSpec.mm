@@ -33,15 +33,15 @@ sharedExamplesFor(kLTRoundBrushExamples, ^(NSDictionary *data) {
   context(@"properties", ^{
     const CGFloat kEpsilon = 1e-6;
     __block LTRoundBrush *brush;
-    
+
     beforeEach(^{
       brush = [[LTRoundBrush alloc] init];
     });
-    
+
     afterEach(^{
       brush = nil;
     });
-    
+
     it(@"should set hardness", ^{
       const CGFloat newValue = 0.5;
       expect(brush.hardness).notTo.equal(newValue);
@@ -113,10 +113,10 @@ context(@"drawing", ^{
     output = [LTTexture byteRGBATextureWithSize:kOutputSize];
     fbo = [[LTFbo alloc] initWithTexture:output];
     [fbo clearWithColor:LTVector4::zeros()];
-    
+
     expected.create(kOutputSize.height, kOutputSize.width);
     expected = cv::Vec4b(0, 0, 0, 0);
-    
+
     point = [[LTPainterPoint alloc] init];
     point.contentPosition = kOutputCenter;
   });
@@ -192,7 +192,7 @@ context(@"drawing", ^{
         expect($(output.image)).to.beCloseToMat($(expected));
       });
     });
-    
+
     context(@"direct erasing mode", ^{
       beforeEach(^{
         [fbo clearWithColor:LTVector4::ones()];
@@ -243,7 +243,7 @@ context(@"drawing", ^{
         expect($(output.image)).to.beCloseToMat($(expected));
       });
     });
-    
+
     context(@"indirect erasing mode", ^{
       using half_float::half;
       

@@ -46,17 +46,17 @@ void main() {
     highp vec2 edge1 = lineBounds + vec2(-0.5, 0.5);
     highp vec2 shadowEdge0 = edge0 - vec2(-1.0, 1.0);
     highp vec2 shadowEdge1 = shadowBounds + vec2(-0.5, 0.5);
-    
+
     highp vec2 offset = vec2(vOffset.y);
     highp vec2 colorFactors = smoothstep(edge1, edge0, offset);
     highp float colorFactor = colorFactors.x * colorFactors.y;
-    
+
     highp vec2 shadowFactors = smoothstep(shadowEdge1, shadowEdge0, offset);
     highp float shadowFactor = shadowFactors.x * shadowFactors.y;
     shadowFactor = 0.5 * shadowFactor * shadowFactor;
-    
+
     highp float colorStep = float(offset.x > lineBounds.x && offset.y < lineBounds.y);
-    
+
     highp vec4 color = vec4(vColor.rgb, vColor.a * colorFactor * colorStep);
     highp vec4 shadow = vec4(vShadowColor.rgb, vShadowColor.a * shadowFactor);
     src = mix(shadow, color, vec4(colorFactor));

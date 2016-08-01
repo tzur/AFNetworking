@@ -142,7 +142,7 @@ context(@"painting", ^{
     [painter clearWithColor:LTVector4(1, 1, 1, 1)];
     expected.setTo(kWhite);
     expect($(canvas.image)).to.equalMat($(expected));
-    
+
     [painter clearWithColor:LTVector4(0, 0, 0, 1)];
     expected.setTo(kBlack);
     expect($(canvas.image)).to.equalMat($(expected));
@@ -167,7 +167,7 @@ context(@"painting", ^{
   context(@"paint according to touch collector events", ^{
     __block id touchCollector;
     __block LTBrush *brush;
-    
+
     beforeEach(^{
       touchCollector = [OCMockObject niceMockForClass:[LTTouchCollector class]];
       brush = [[LTBrush alloc] init];
@@ -175,12 +175,12 @@ context(@"painting", ^{
       painter.brush = brush;
       [painter clearWithColor:LTVector4(0, 0, 0, 1)];
     });
-    
+
     afterEach(^{
       brush = nil;
       touchCollector = nil;
     });
-    
+
     it(@"should paint on tap", ^{
       [painter ltTouchCollector:touchCollector startedStrokeAt:LTPointAt(kCanvasSize / 2)];
       [painter ltTouchCollectorFinishedStroke:touchCollector cancelled:NO];
@@ -190,14 +190,14 @@ context(@"painting", ^{
       expect([painter.lastStroke.segments.firstObject contentPosition])
           .to.equal(painter.lastStroke.startingPoint.contentPosition);
     });
-    
+
     it(@"should not paint on cancelled tap", ^{
       [painter ltTouchCollector:touchCollector startedStrokeAt:LTPointAt(kCanvasSize / 2)];
       [painter ltTouchCollectorFinishedStroke:touchCollector cancelled:YES];
       expect($(canvas.image)).to.equalMat($(background));
       expect(painter.lastStroke.segments).to.beEmpty();
     });
-    
+
     it(@"should paint on gesture", ^{
       brush.spacing = 0.99;
       expect($(painter.strokeTexture.image)).to.equalMat($(clear));
@@ -215,7 +215,7 @@ context(@"painting", ^{
       expect($(canvas.image)).to.equalMat($(expected));
       expect(painter.lastStroke.segments.count).to.equal(1);
     });
-    
+
     it(@"should not paint on timer events when airbush property is NO", ^{
       [painter ltTouchCollector:touchCollector startedStrokeAt:LTPointAt(kCanvasSize / 2)];
       [painter ltTouchCollector:touchCollector collectedTimerTouch:LTPointAt(kCanvasSize / 2)];
@@ -223,7 +223,7 @@ context(@"painting", ^{
       expect($(canvas.image)).to.equalMat($(background));
       expect(painter.lastStroke.segments.count).to.equal(0);
     });
-    
+
     it(@"should paint on timer events in airbrush property is YES", ^{
       painter.airbrush = YES;
       [painter ltTouchCollector:touchCollector startedStrokeAt:LTPointAt(kCanvasSize / 2)];

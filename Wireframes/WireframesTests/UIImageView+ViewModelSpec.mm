@@ -71,7 +71,7 @@ context(@"image bindings", ^{
   it(@"should unbind image", ^{
     view.wf_viewModel = viewModel;
     view.wf_viewModel = nil;
-    
+
     viewModel.image = WFCreateBlankImage(1, 1);
     expect(view.image).to.beNil();
   });

@@ -47,7 +47,7 @@ sharedExamplesFor(kLTBrushEffectSubclassExamples, ^(NSDictionary *data) {
       effect = [[effectClass alloc] init];
       expect(effect.random).notTo.beNil();
     });
-    
+
     it(@"should initialize with a given random generator", ^{
       LTRandom *random = [[LTRandom alloc] init];
       effect = [[effectClass alloc] initWithRandom:random];
@@ -71,27 +71,27 @@ sharedExamplesFor(kLTBrushEffectLTBrushExamples, ^(NSDictionary *data) {
   
   context(@"properties", ^{
     __block LTBrush *brush;
-    
+
     beforeEach(^{
       brush = [[brushClass alloc] init];
     });
-    
+
     afterEach(^{
       brush = nil;
     });
-    
+
     it(@"should set scatter effect", ^{
       LTBrushScatterEffect *effect = [[LTBrushScatterEffect alloc] init];
       brush.scatterEffect = effect;
       expect(brush.scatterEffect).to.beIdenticalTo(effect);
     });
-    
+
     it(@"should set shapeDynamics effect", ^{
       LTBrushShapeDynamicsEffect *effect = [[LTBrushShapeDynamicsEffect alloc] init];
       brush.shapeDynamicsEffect = effect;
       expect(brush.shapeDynamicsEffect).to.beIdenticalTo(effect);
     });
-    
+
     it(@"should set colorDynamics effect", ^{
       LTBrushColorDynamicsEffect *effect = [[LTBrushColorDynamicsEffect alloc] init];
       brush.colorDynamicsEffect = effect;
@@ -107,13 +107,13 @@ sharedExamplesFor(kLTBrushEffectLTBrushExamples, ^(NSDictionary *data) {
     __block LTPolynomialInterpolant *interpolant;
     __block LTPainterPoint *point;
     __block LTPainterStrokeSegment *segment;
-    
+
     const CGFloat kBaseBrushDiameter = 100;
     const CGFloat kTargetBrushDiameter = 10;
     const CGSize kBaseBrushSize = CGSizeMakeUniform(kBaseBrushDiameter);
     const CGSize kOutputSize = 2 * kBaseBrushSize;
     const CGPoint kOutputCenter = CGPointMake(kOutputSize.width / 2, kOutputSize.height / 2);
-    
+
     beforeEach(^{
       brush = [[brushClass alloc] init];
       brush.baseDiameter = kBaseBrushDiameter;
@@ -135,7 +135,7 @@ sharedExamplesFor(kLTBrushEffectLTBrushExamples, ^(NSDictionary *data) {
       [brush startNewStrokeAtPoint:point];
       [brush.texture clearWithColor:LTVector4(1, 1, 1, 1)];
     });
-    
+
     afterEach(^{
       fbo = nil;
       output = nil;
@@ -167,7 +167,7 @@ sharedExamplesFor(kLTBrushEffectLTBrushExamples, ^(NSDictionary *data) {
         expect($(output.image)).to.beCloseToMat($(expected));
       });
     });
-    
+
     context(@"shapeDynamics effect", ^{
       const LTVector4 kBlack = LTVector4(0, 0, 0, 1);
       const CGRect targetRect = CGRectCenteredAt(kOutputCenter, kBaseBrushSize * brush.scale);
@@ -217,7 +217,7 @@ sharedExamplesFor(kLTBrushEffectLTBrushExamples, ^(NSDictionary *data) {
         expect(numBlack).to.beGreaterThan(0);
       });
     });
-    
+
     context(@"colorDynamics effect", ^{
       beforeEach(^{
         brush.colorDynamicsEffect = [[LTBrushColorDynamicsEffect alloc] init];

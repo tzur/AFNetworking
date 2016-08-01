@@ -108,7 +108,7 @@ sharedExamples(kLaplacianPyramidConstructionExamples, ^(NSDictionary *data) {
       LTLaplacianPyramidProcessor *pyramidProcessor = [[LTLaplacianPyramidProcessor alloc]
                                                        initWithInputTexture:input];
       [pyramidProcessor process];
-      NSArray<LTTexture *> *laplacianPyramid =  pyramidProcessor.outputLaplacianPyramid;
+      NSArray<LTTexture *> *laplacianPyramid = pyramidProcessor.outputLaplacianPyramid;
 
       cv::Mat1f inputFloat;
       LTConvertMat(inputImage, &inputFloat, CV_32F);

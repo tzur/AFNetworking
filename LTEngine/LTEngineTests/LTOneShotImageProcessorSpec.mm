@@ -59,7 +59,7 @@ context(@"intialization", ^{
     [fbo clearWithColor:LTVector4::zeros()];
     [processor.drawer drawRect:CGRectFromSize(fbo.size) inFramebuffer:fbo
                       fromRect:CGRectFromSize(input.size)];
-    
+
     cv::Mat4b expected(16, 16, cv::Vec4b(80, 64, 80, 255));
     expect($(output.image)).to.equalMat($(expected));
   });

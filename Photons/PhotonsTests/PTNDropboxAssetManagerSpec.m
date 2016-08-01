@@ -286,7 +286,7 @@ context(@"image fetching", ^{
     RACSignal *values = [manager fetchImageWithDescriptor:invalidAsset
                                          resizingStrategy:resizingStrategy
                                                   options:options];
-    
+
     expect(values).will.matchError(^BOOL(NSError *error) {
       return error.code == PTNErrorCodeInvalidDescriptor;
     });

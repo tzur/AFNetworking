@@ -52,7 +52,7 @@ context(@"LTGPUBlock", ^{
     LTGPUBlock(^{
       didExecute = YES;
     });
-    
+
     expect(didExecute).to.beTruthy();
   });
 

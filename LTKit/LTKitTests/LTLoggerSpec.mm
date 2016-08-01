@@ -26,7 +26,7 @@ beforeEach(^{
 context(@"log contents", ^{
   it(@"should contain log data", ^{
     logger.minimalLogLevel = LTLogLevelDebug;
-    
+
     NSString *message = @"Hey!";
     const char *file = "myFile.mm";
     int line = 1337;

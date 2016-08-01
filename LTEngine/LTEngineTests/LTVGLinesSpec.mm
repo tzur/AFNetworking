@@ -189,7 +189,7 @@ context(@"path", ^{
 context(@"glyph modification", ^{
   it(@"should create new lines by iterating over given glyphs", ^{
     __block NSUInteger count = 0;
-    
+
     NSArray *expectedObjects = @[glyph0, glyph1, glyph2];
 
     LTVGLines *result =

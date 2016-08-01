@@ -30,7 +30,7 @@ sharedExamplesFor(kLTArrayBufferInitializationExamples, ^(NSDictionary *dict) {
     NSData *data = dict[@"data"];
     NSData *otherData = [NSMutableData dataWithLength:data.length];
     [buffer setDataWithConcatenatedData:@[data, otherData]];
-    
+
     NSMutableData *concatenatedData = [data mutableCopy];
     [concatenatedData appendData:otherData];
     expect(buffer.size).to.equal(concatenatedData.length);
@@ -54,10 +54,10 @@ sharedExamplesFor(kLTArrayBufferModificationExamples, ^(NSDictionary *dict) {
     LTArrayBuffer *buffer = dict[@"buffer"];
     NSData *reversedData = dict[@"reversedData"];
     NSData *otherData = [NSMutableData dataWithLength:reversedData.length];
-    
+
     [buffer setDataWithConcatenatedData:@[dict[@"data"], otherData]];
     [buffer setDataWithConcatenatedData:@[otherData, reversedData]];
-    
+
     NSMutableData *concatenatedData = [otherData mutableCopy];
     [concatenatedData appendData:reversedData];
     expect(buffer.size).to.equal(concatenatedData.length);
@@ -79,10 +79,10 @@ sharedExamplesFor(kLTArrayBufferModificationExamples, ^(NSDictionary *dict) {
     LTArrayBuffer *buffer = dict[@"buffer"];
     NSData *data = dict[@"data"];
     NSData *otherData = dict[@"otherData"];
-    
+
     [buffer setData:data];
     [buffer setDataWithConcatenatedData:@[otherData, data]];
-    
+
     NSMutableData *concatenatedData = [otherData mutableCopy];
     [concatenatedData appendData:data];
     expect(buffer.size).to.equal(concatenatedData.length);

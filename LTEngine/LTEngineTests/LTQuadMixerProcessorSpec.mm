@@ -334,7 +334,7 @@ context(@"opacity", ^{
     cv::addWeighted(frontColor, 0.25, backColor, 0.75, 0, resultColor);
     cv::Mat4b expected(16, 16, backColor);
     expected(cv::Rect(0, 0, 8, 8)).setTo(resultColor);
-    
+
     expect($([output image])).to.beCloseToMat($(expected));
   });
 });

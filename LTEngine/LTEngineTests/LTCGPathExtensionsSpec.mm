@@ -289,7 +289,7 @@ context(@"creation", ^{
     smootheningRadius = 0.25;
 
     path = LTCGPathCreateWithControlPoints(inputData, smootheningRadius, !kClosed);
-    
+
     evaluation.points = points;
     evaluation.numberOfPointsToExpect = points.size();
     evaluation.numberOfClosedSubPathsToExpect = 0;

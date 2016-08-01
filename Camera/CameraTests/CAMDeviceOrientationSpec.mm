@@ -100,7 +100,7 @@ context(@"signal", ^{
   it(@"should send error if the CMMotionManager sends an error for device motion update", ^{
     LLSignalTestRecorder *recorder = [signal testRecorder];
     [manager sendError:kError];
-    
+
     expect(recorder).to.sendError([NSError lt_errorWithCode:CAMErrorCodeDeviceMotionUpdateError
                                             underlyingError:kError]);
   });
@@ -113,7 +113,7 @@ context(@"signal", ^{
       signal = [orientation deviceOrientationWithRefreshInterval:kTimeInterval];
       recorder = [signal testRecorder];
     }
-    
+
     expect(recorder).to.complete();
   });
 
@@ -121,7 +121,7 @@ context(@"signal", ^{
     LLSignalTestRecorder *recorder = [signal testRecorder];
     motion.gravity = kGravityPortrait;
     [manager updateDeviceMotion:motion];
-    
+
     expect(recorder).to.sendValues(@[@(UIInterfaceOrientationPortrait)]);
   });
 
@@ -129,7 +129,7 @@ context(@"signal", ^{
     LLSignalTestRecorder *recorder = [signal testRecorder];
     motion.gravity = kGravityPortraitUpsideDown;
     [manager updateDeviceMotion:motion];
-    
+
     expect(recorder).to.sendValues(@[@(UIInterfaceOrientationPortraitUpsideDown)]);
   });
 
@@ -137,7 +137,7 @@ context(@"signal", ^{
     LLSignalTestRecorder *recorder = [signal testRecorder];
     motion.gravity = kGravityLandscapeLeft;
     [manager updateDeviceMotion:motion];
-    
+
     expect(recorder).to.sendValues(@[@(UIInterfaceOrientationLandscapeLeft)]);
   });
 
@@ -146,7 +146,7 @@ context(@"signal", ^{
     LLSignalTestRecorder *recorder = [signal testRecorder];
     motion.gravity = kGravityLandscapeRight;
     [manager updateDeviceMotion:motion];
-    
+
     expect(recorder).to.sendValues(@[@(UIInterfaceOrientationLandscapeRight)]);
   });
 
@@ -156,7 +156,7 @@ context(@"signal", ^{
     [manager updateDeviceMotion:motion];
     [manager updateDeviceMotion:motion];
     [manager updateDeviceMotion:motion];
-    
+
     expect(recorder).to.sendValues(@[@(UIInterfaceOrientationPortrait)]);
   });
 
@@ -170,7 +170,7 @@ context(@"signal", ^{
     [manager updateDeviceMotion:motion];
     motion.gravity = kGravityLandscapeRight;
     [manager updateDeviceMotion:motion];
-    
+
     expect(recorder).to.sendValues(@[
       @(UIInterfaceOrientationPortrait),
       @(UIInterfaceOrientationPortraitUpsideDown),
@@ -187,7 +187,7 @@ context(@"signal", ^{
     [manager updateDeviceMotion:motion];
     motion.gravity = kGravityLandscapeLeft;
     [manager updateDeviceMotion:motion];
-    
+
     expect(recorder).to.sendValues(@[
       @(UIInterfaceOrientationPortrait),
       @(UIInterfaceOrientationLandscapeLeft)

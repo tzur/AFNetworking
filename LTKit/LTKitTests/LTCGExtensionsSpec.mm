@@ -299,35 +299,35 @@ context(@"fitting cgsizes", ^{
       outputSize = CGSizeAspectFill(inputSize, fillSize);
       expect(outputSize).to.equal(CGSizeMake(10, 5));
     });
-    
+
     it(@"should aspect fit by scaling down size by width", ^{
       CGSize inputSize = CGSizeMake(20, 10);
       CGSize fitSize = CGSizeMake(10, 7);
       CGSize outputSize = CGSizeAspectFit(inputSize, fitSize);
       expect(outputSize).to.equal(CGSizeMake(10, 5));
     });
-    
+
     it(@"should aspect fit by scaling down size by height", ^{
       CGSize inputSize = CGSizeMake(9, 21);
       CGSize fitSize = CGSizeMake(10, 7);
       CGSize outputSize = CGSizeAspectFit(inputSize, fitSize);
       expect(outputSize).to.equal(CGSizeMake(3, 7));
     });
-    
+
     it(@"should aspect fit by scaling up size", ^{
       CGSize inputSize = CGSizeMake(20, 10);
       CGSize fitSize = CGSizeMake(40, 40);
       CGSize outputSize = CGSizeAspectFit(inputSize, fitSize);
       expect(outputSize).to.equal(CGSizeMake(40, 20));
     });
-    
+
     it(@"should aspect fill by scaling down size by width", ^{
       CGSize inputSize = CGSizeMake(20, 10);
       CGSize fitSize = CGSizeMake(10, 2);
       CGSize outputSize = CGSizeAspectFill(inputSize, fitSize);
       expect(outputSize).to.equal(CGSizeMake(10, 5));
     });
-    
+
     it(@"should aspect fill by scaling down size by height", ^{
       CGSize inputSize = CGSizeMake(45, 21);
       CGSize fitSize = CGSizeMake(10, 7);
@@ -354,42 +354,42 @@ context(@"fitting cgsizes", ^{
       outputSize = CGSizeAspectFillWithoutRounding(inputSize, fillSize);
       expect(outputSize).to.beCloseToSizeWithin(CGSizeMake(10, 4.871795), kEpsilon);
     });
-    
+
     it(@"should aspect fit by scaling down size by width", ^{
       CGSize inputSize = CGSizeMake(19.5, 9.5);
       CGSize fitSize = CGSizeMake(10, 7);
       CGSize outputSize = CGSizeAspectFitWithoutRounding(inputSize, fitSize);
       expect(outputSize).to.beCloseToSizeWithin(CGSizeMake(10, 4.871795), kEpsilon);
     });
-    
+
     it(@"should aspect fit by scaling down size by height", ^{
       CGSize inputSize = CGSizeMake(8.5, 20.5);
       CGSize fitSize = CGSizeMake(10, 7);
       CGSize outputSize = CGSizeAspectFitWithoutRounding(inputSize, fitSize);
       expect(outputSize).to.beCloseToSizeWithin(CGSizeMake(2.902439, 7), kEpsilon);
     });
-    
+
     it(@"should aspect fit by scaling up size", ^{
       CGSize inputSize = CGSizeMake(19.5, 9.5);
       CGSize fitSize = CGSizeMake(40, 40);
       CGSize outputSize = CGSizeAspectFitWithoutRounding(inputSize, fitSize);
       expect(outputSize).to.beCloseToSizeWithin(CGSizeMake(40, 19.487181), kEpsilon);
     });
-    
+
     it(@"should aspect fill by scaling down size by width", ^{
       CGSize inputSize = CGSizeMake(19.5, 9.5);
       CGSize fitSize = CGSizeMake(10, 2);
       CGSize outputSize = CGSizeAspectFillWithoutRounding(inputSize, fitSize);
       expect(outputSize).to.beCloseToSizeWithin(CGSizeMake(10, 4.871795), kEpsilon);
     });
-    
+
     it(@"should aspect fill by scaling down size by height", ^{
       CGSize inputSize = CGSizeMake(44.5, 20.5);
       CGSize fitSize = CGSizeMake(10, 7);
       CGSize outputSize = CGSizeAspectFillWithoutRounding(inputSize, fitSize);
       expect(outputSize).to.beCloseToSizeWithin(CGSizeMake(15.195122, 7), kEpsilon);
     });
-    
+
     it(@"should aspect fill by scaling up size", ^{
       CGSize inputSize = CGSizeMake(19.5, 9.5);
       CGSize fitSize = CGSizeMake(40, 40);

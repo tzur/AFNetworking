@@ -58,7 +58,7 @@ context(@"drawer", ^{
         [[LTGPUImageProcessor alloc] initWithDrawer:drawer strategy:strategy
                                andAuxiliaryTextures:@{kTextureName: texture}];
     [processor process];
-    
+
     OCMVerifyAll(drawer);
   });
 
@@ -70,7 +70,7 @@ context(@"drawer", ^{
                                andAuxiliaryTextures:nil];
     [processor setAuxiliaryTexture:texture withName:kTextureName];
     [processor process];
-    
+
     expect(processor.auxiliaryTextures[kTextureName]).to.equal(texture);
   });
 

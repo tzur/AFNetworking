@@ -79,7 +79,7 @@ context(@"filtering according to content distance", ^{
     point1.contentPosition = CGPointMake(1, 1);
     expect([filter acceptNewPoint:point1 withOldPoint:point0]).to.beFalsy();
     expect([filter acceptNewPoint:point0 withOldPoint:point0]).to.beFalsy();
-    
+
     point1.contentPosition = CGPointMake(1 - FLT_EPSILON, 1 - FLT_EPSILON);
     expect([filter acceptNewPoint:point1 withOldPoint:point0]).to.beFalsy();
     expect([filter acceptNewPoint:point0 withOldPoint:point0]).to.beFalsy();

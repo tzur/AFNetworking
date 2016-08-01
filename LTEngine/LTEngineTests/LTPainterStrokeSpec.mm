@@ -75,11 +75,11 @@ context(@"adding points and segments", ^{
       stroke = [[LTPainterStroke alloc] initWithInterpolantFactory:factory
                                                      startingPoint:startingPoint];
     });
-    
+
     it(@"should add a segment immediately", ^{
       expect([stroke addSegmentTo:newPoint]).notTo.beNil();
     });
-    
+
     it(@"should return the correct segment", ^{
       LTPainterStrokeSegment *segment = [stroke addSegmentTo:newPoint];
       expect(segment.startPoint.contentPosition).to.equal(newPoint.contentPosition);
@@ -95,11 +95,11 @@ context(@"adding points and segments", ^{
       stroke = [[LTPainterStroke alloc] initWithInterpolantFactory:factory
                                                      startingPoint:startingPoint];
     });
-    
+
     it(@"should add a segment immediately", ^{
       expect([stroke addSegmentTo:newPoint]).notTo.beNil();
     });
-    
+
     it(@"should return the correct segment", ^{
       LTPainterStrokeSegment *segment = [stroke addSegmentTo:newPoint];
       expect(segment.startPoint.contentPosition).to.equal(startingPoint.contentPosition);
@@ -117,7 +117,7 @@ context(@"adding points and segments", ^{
   
   context(@"catmull-rom interpolation factory", ^{
     __block NSMutableArray *newPoints;
-    
+
     beforeEach(^{
       factory = [[LTCatmullRomInterpolantFactory alloc] init];
       stroke = [[LTPainterStroke alloc] initWithInterpolantFactory:factory
@@ -129,7 +129,7 @@ context(@"adding points and segments", ^{
         [newPoints[i] setZoomScale:1];
       }
     });
-    
+
     it(@"should return linear segment when there are not enough points", ^{
       expect([[stroke addSegmentTo:newPoints[0]] interpolant])
           .to.beKindOf([LTLinearInterpolant class]);
@@ -140,7 +140,7 @@ context(@"adding points and segments", ^{
           .to.beKindOf([LTCatmullRomInterpolant class]);
       expect(stroke.segments.count).to.equal(3);
     });
-    
+
     it(@"should return the correct segment (delay of 1 point)", ^{
       [stroke addSegmentTo:newPoints[0]];
       [stroke addSegmentTo:newPoints[1]];
@@ -167,7 +167,7 @@ context(@"adding points and segments", ^{
     p1.contentPosition = CGPointMake(1, 1);
     p2.contentPosition = CGPointMake(2, 2);
     p3.contentPosition = CGPointMake(3, 3);
-    
+
     stroke = [[LTPainterStroke alloc]
               initWithInterpolantFactory:[[LTLinearInterpolantFactory alloc] init]
               startingPoint:startingPoint];
@@ -175,12 +175,12 @@ context(@"adding points and segments", ^{
     [stroke addSegmentTo:p1];
     [stroke addPointAt:p2];
     [stroke addSegmentTo:p3];
-    
+
     expect(stroke.segments.count).to.equal(3);
     expect(stroke.segments[0]).to.beKindOf([LTPainterStrokeSegment class]);
     expect(stroke.segments[1]).to.beKindOf([LTPainterPoint class]);
     expect(stroke.segments[2]).to.beKindOf([LTPainterStrokeSegment class]);
-    
+
     expect([(LTPainterStrokeSegment *)stroke.segments[0]
                 startPoint].contentPosition).to.equal(startingPoint.contentPosition);
     expect([(LTPainterStrokeSegment *)stroke.segments[0]

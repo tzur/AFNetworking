@@ -34,7 +34,7 @@ NS_ASSUME_NONNULL_BEGIN
                                 error:(NSError *__autoreleasing *)error {
   if (self = [super init]) {
     self.path = path;
-    
+
     self.fd = open([path UTF8String], O_RDWR | O_CREAT, mode);
     if (self.fd < 0) {
       if (error) {

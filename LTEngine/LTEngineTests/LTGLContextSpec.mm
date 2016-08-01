@@ -24,7 +24,7 @@ sharedExamplesFor(@"having default opengl values", ^(NSDictionary *data) {
     expect(blendEquation.equationAlpha).to.equal(GL_FUNC_ADD);
 
     expect(context.scissorBox).to.equal(CGRectZero);
-    
+
     expect(context.scissorTestEnabled).to.beFalsy();
     expect(context.renderingToScreen).to.beFalsy();
     expect(context.blendEnabled).to.beFalsy();
@@ -192,10 +192,10 @@ context(@"context values", ^{
   it(@"should set scissor box", ^{
     const CGRect expected = CGRectMake(1, 2, 3, 4);
     context.scissorBox = expected;
-    
+
     CGRect actual = context.scissorBox;
     expect(actual).to.equal(expected);
-    
+
     GLint scissorBox[4];
     glGetIntegerv(GL_SCISSOR_BOX, scissorBox);
     CGRect scissorBoxRect = CGRectMake(scissorBox[0], scissorBox[1], scissorBox[2], scissorBox[3]);
@@ -251,7 +251,7 @@ context(@"context values", ^{
   
   it(@"should set front facing polygon direction", ^{
     context.clockwiseFrontFacingPolygons = YES;
-    
+
     expect(context.clockwiseFrontFacingPolygons).to.beTruthy();
     GLint frontFace;
     glGetIntegerv(GL_FRONT_FACE, &frontFace);

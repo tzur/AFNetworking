@@ -30,23 +30,23 @@ context(@"properties", ^{
     expect(processor.redSaturation).to.equal(0);
     expect(processor.redLuminance).to.equal(0);
     expect(processor.redHue).to.equal(0);
-    
+
     expect(processor.orangeSaturation).to.equal(0);
     expect(processor.orangeLuminance).to.equal(0);
     expect(processor.orangeHue).to.equal(0);
-    
+
     expect(processor.yellowSaturation).to.equal(0);
     expect(processor.yellowLuminance).to.equal(0);
     expect(processor.yellowHue).to.equal(0);
-    
+
     expect(processor.greenSaturation).to.equal(0);
     expect(processor.greenLuminance).to.equal(0);
     expect(processor.greenHue).to.equal(0);
-    
+
     expect(processor.cyanSaturation).to.equal(0);
     expect(processor.cyanLuminance).to.equal(0);
     expect(processor.cyanHue).to.equal(0);
-    
+
     expect(processor.blueSaturation).to.equal(0);
     expect(processor.blueLuminance).to.equal(0);
     expect(processor.blueHue).to.equal(0);
@@ -62,7 +62,7 @@ context(@"properties", ^{
     expect(^{
       processor.redHue = 1.1;
     }).to.raise(NSInvalidArgumentException);
-    
+
     expect(^{
       processor.orangeSaturation = -1.1;
     }).to.raise(NSInvalidArgumentException);
@@ -72,7 +72,7 @@ context(@"properties", ^{
     expect(^{
       processor.orangeHue = 1.1;
     }).to.raise(NSInvalidArgumentException);
-    
+
     expect(^{
       processor.yellowSaturation = -1.1;
     }).to.raise(NSInvalidArgumentException);
@@ -82,7 +82,7 @@ context(@"properties", ^{
     expect(^{
       processor.yellowHue = 1.1;
     }).to.raise(NSInvalidArgumentException);
-    
+
     expect(^{
       processor.greenSaturation = -1.1;
     }).to.raise(NSInvalidArgumentException);
@@ -92,7 +92,7 @@ context(@"properties", ^{
     expect(^{
       processor.greenHue = 1.1;
     }).to.raise(NSInvalidArgumentException);
-    
+
     expect(^{
       processor.cyanSaturation = -1.1;
     }).to.raise(NSInvalidArgumentException);
@@ -102,7 +102,7 @@ context(@"properties", ^{
     expect(^{
       processor.cyanHue = 1.1;
     }).to.raise(NSInvalidArgumentException);
-    
+
     expect(^{
       processor.blueSaturation = -1.1;
     }).to.raise(NSInvalidArgumentException);
@@ -147,12 +147,12 @@ context(@"processing", ^{
   sit(@"should reduce saturation of greens and blues and preserve their luminance", ^{
     LTTexture *input = [LTTexture textureWithImage:LTLoadMat([self class], @"Macbeth.jpg")];
     LTTexture *output = [LTTexture byteRGBATextureWithSize:std::round(input.size * 0.05)];
-    
+
     LTSelectiveAdjustProcessor *processor =
         [[LTSelectiveAdjustProcessor alloc] initWithInput:input output:output];
     processor.greenSaturation = -1.0;
     processor.blueSaturation = -1.0;
-    
+
     [processor process];
     cv::Mat image = LTLoadMat([self class], @"MacbethDesaturatedGreenAndBlue.png");
     expect($(output.image)).to.beCloseToMat($(image));
@@ -161,14 +161,14 @@ context(@"processing", ^{
   sit(@"should reduce saturation of reds and oranges and increase their luminance", ^{
     LTTexture *input = [LTTexture textureWithImage:LTLoadMat([self class], @"Macbeth.jpg")];
     LTTexture *output = [LTTexture byteRGBATextureWithSize:std::round(input.size * 0.05)];
-    
+
     LTSelectiveAdjustProcessor *processor =
         [[LTSelectiveAdjustProcessor alloc] initWithInput:input output:output];
     processor.redSaturation = -1.0;
     processor.orangeSaturation = -1.0;
     processor.redLuminance = 1.0;
     processor.orangeLuminance = 1.0;
-    
+
     [processor process];
     cv::Mat image = LTLoadMat([self class], @"MacbethSaturatedBrightenedRedAndOrange.png");
     expect($(output.image)).to.beCloseToMat($(image));
@@ -177,12 +177,12 @@ context(@"processing", ^{
   sit(@"should change the hues of reds and blues", ^{
     LTTexture *input = [LTTexture textureWithImage:LTLoadMat([self class], @"Macbeth.jpg")];
     LTTexture *output = [LTTexture byteRGBATextureWithSize:std::round(input.size * 0.05)];
-    
+
     LTSelectiveAdjustProcessor *processor =
         [[LTSelectiveAdjustProcessor alloc] initWithInput:input output:output];
     processor.redHue = 1.0;
     processor.blueHue = -1.0;
-    
+
     [processor process];
     cv::Mat image = LTLoadMat([self class], @"MacbethHueChangeRedsAndBlues.png");
     expect($(output.image)).to.beCloseToMat($(image));

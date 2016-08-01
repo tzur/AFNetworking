@@ -66,7 +66,7 @@ NS_ASSUME_NONNULL_BEGIN
     _cellClass = cellClass;
     self.dataModel = @[];
     self.sectionTitles = @{};
-    
+
     [self setupCollectionView:collectionView];
     [self bindMetadataSignal];
   }

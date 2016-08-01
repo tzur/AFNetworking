@@ -75,7 +75,7 @@ context(@"initialization", ^{
         [[CUIDropDownMenuItemsEntry alloc] initWithItem:model
                                    mainBarItemViewClass:itemViewClass
                                    submenuItemViewClass:itemViewClass];
-    
+
     expect(entry.submenuView).to.beNil();
   });
 });
@@ -83,22 +83,22 @@ context(@"initialization", ^{
 context(@"didTapSignal", ^{
   it(@"should send a RACTuple after the mainBarItemView is tapped", ^{
     LLSignalTestRecorder *recorder = [entry.didTapSignal testRecorder];
-    
+
     UIButton *button = (UIButton *)entry.mainBarItemView;
     [button sendActionsForControlEvents:UIControlEventTouchUpInside];
-    
+
     expect(recorder.values).to.equal(@[RACTuplePack(entry, button)]);
   });
 
   it(@"should send a RACTuple after the items in the submenuView are tapped", ^{
     LLSignalTestRecorder *recorder = [entry.didTapSignal testRecorder];
-    
+
     UIStackView *submenuView = (UIStackView *)entry.submenuView;
     UIButton *button0 = (UIButton *)submenuView.arrangedSubviews[0];
     [button0 sendActionsForControlEvents:UIControlEventTouchUpInside];
     UIButton *button1 = (UIButton *)submenuView.arrangedSubviews[1];
     [button1 sendActionsForControlEvents:UIControlEventTouchUpInside];
-    
+
     expect(recorder.values).to.equal(@[RACTuplePack(entry, button0), RACTuplePack(entry, button1)]);
   });
   

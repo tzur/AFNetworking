@@ -23,7 +23,7 @@ context(@"ptn_replayLastLazily", ^{
   
   it(@"should pass through all values sent after subscription", ^{
     LLSignalTestRecorder *recorder = [lastLazily testRecorder];
-    
+
     [subject sendNext:@1];
     [subject sendNext:@2];
     [subject sendNext:@3];
@@ -38,7 +38,7 @@ context(@"ptn_replayLastLazily", ^{
     [subject sendNext:@2];
     [subject sendNext:@3];
     LLSignalTestRecorder *recorder = [lastLazily testRecorder];
-    
+
     expect(recorder.values).to.equal(@[@3]);
   });
   
@@ -50,17 +50,17 @@ context(@"ptn_replayLastLazily", ^{
     [subject sendNext:@2];
     LLSignalTestRecorder *recorder = [lastLazily testRecorder];
     [subject sendNext:@3];
-    
+
     expect(recorder.values).to.equal(@[@2, @3]);
   });
   
   it(@"should continue to operate regularly after reaching zero subscribers", ^{
     RACDisposable *earlySubscriber = [lastLazily subscribeNext:^(id __unused x) {}];
-    
+
     [subject sendNext:@1];
     [subject sendNext:@2];
     [subject sendNext:@3];
-    
+
     expect(lastLazily).to.beSubscribedTo(1);
     [earlySubscriber dispose];
     LLSignalTestRecorder *recorder = [lastLazily testRecorder];
@@ -222,18 +222,18 @@ context(@"deserialize JSON operator", ^{
   it(@"should ignore incomplete progress values", ^{
     [subject sendNext:[[PTNProgress alloc] initWithProgress:@0.5]];
     [subject sendNext:[[PTNProgress alloc] initWithProgress:@1]];
-    
+
     expect(recorder).to.sendValuesWithCount(0);
   });
   
   it(@"should send the underlying image", ^{
     UIImage *image = [[UIImage alloc] init];
     OCMStub([asset fetchImage]).andReturn([RACSignal return:image]);
-    
+
     [subject sendNext:[[PTNProgress alloc] initWithProgress:@0.5]];
     [subject sendNext:[[PTNProgress alloc] initWithResult:asset]];
     [subject sendNext:[[PTNProgress alloc] initWithResult:asset]];
-    
+
     expect(recorder).to.sendValues(@[image, image]);
     expect(recorder).toNot.complete();
   });
@@ -246,7 +246,7 @@ context(@"deserialize JSON operator", ^{
   it(@"should complete when the underlying signal completes and the image signal completes", ^{
     UIImage *image = [[UIImage alloc] init];
     OCMStub([asset fetchImage]).andReturn([RACSignal return:image]);
-    
+
     [subject sendNext:[[PTNProgress alloc] initWithResult:asset]];
     expect(recorder).toNot.complete();
 
@@ -257,16 +257,16 @@ context(@"deserialize JSON operator", ^{
   it(@"should err if the underlying signal errs", ^{
     NSError *error = [NSError lt_errorWithCode:1337];
     [subject sendError:error];
-    
+
     expect(recorder).to.sendError(error);
   });
   
   it(@"should err if the image signal errs", ^{
     NSError *error = [NSError lt_errorWithCode:1337];
     OCMStub([asset fetchImage]).andReturn([RACSignal error:error]);
-    
+
     [subject sendNext:[[PTNProgress alloc] initWithResult:asset]];
-    
+
     expect(recorder).to.sendError(error);
   });
 });
@@ -289,7 +289,7 @@ context(@"ptn_skipProgress", ^{
   it(@"should ignore incomplete progress values", ^{
     [subject sendNext:[[PTNProgress alloc] initWithProgress:@0.5]];
     [subject sendNext:[[PTNProgress alloc] initWithProgress:@0.1]];
-    
+
     expect(recorder).to.sendValuesWithCount(0);
   });
   
@@ -299,7 +299,7 @@ context(@"ptn_skipProgress", ^{
     [subject sendNext:[[PTNProgress alloc] initWithProgress:@0.5]];
     [subject sendNext:[[PTNProgress alloc] initWithResult:asset]];
     [subject sendNext:[[PTNProgress alloc] initWithResult:asset]];
-    
+
     expect(recorder).to.sendValues(@[asset, asset]);
     expect(recorder).toNot.complete();
   });
@@ -312,7 +312,7 @@ context(@"ptn_skipProgress", ^{
   it(@"should err when the underlying signal errs", ^{
     NSError *error = [NSError lt_errorWithCode:1337];
     [subject sendError:error];
-    
+
     expect(recorder).to.sendError(error);
   });
 });

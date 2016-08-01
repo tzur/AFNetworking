@@ -109,7 +109,7 @@ sharedExamplesFor(kLTTextureExamples, ^(NSDictionary *contextInfo) {
         expect(currentTexture).to.equal(texture.name);
       });
     });
-    
+
     context(@"execution", ^{
       it(@"should execute a block", ^{
         __block BOOL didExecute = NO;

@@ -164,7 +164,7 @@ context(@"processing", ^{
       [processor process];
       expect($([output image])).to.equalMat($(input.image));
     });
-    
+
     it(@"should process with custom displacement", ^{
       [processor.meshDisplacementTexture mappedImageForWriting:^(cv::Mat *mapped, BOOL) {
         mapped->setTo(cv::Vec2hf(half(0)));
@@ -217,7 +217,7 @@ context(@"processing", ^{
 
       expect($([output image])).to.equalMat($(expected));
     });
-    
+
     it(@"should process with custom displacement", ^{
       [processor.meshDisplacementTexture mappedImageForWriting:^(cv::Mat *mapped, BOOL) {
         mapped->setTo(cv::Vec2hf(half(0)));

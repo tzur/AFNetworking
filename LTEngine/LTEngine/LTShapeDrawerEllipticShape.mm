@@ -101,7 +101,7 @@
       segment.v[i].color = self.params.strokeColor;
       segment.v[i].shadowColor = self.params.shadowColor;
     }
-    
+
     segment.src0.position = LTVector2(cos(i * step) * (radius.width - offset),
                                            sin(i * step) * (radius.height - offset));
     segment.src1.position = LTVector2(cos(i * step) * (radius.width + offset),
@@ -110,12 +110,12 @@
                                            sin((i + 1) * step) * (radius.height - offset));
     segment.dst1.position = LTVector2(cos((i + 1) * step) * (radius.width + offset),
                                            sin((i + 1) * step) * (radius.height + offset));
-    
+
     segment.src0.offset = LTVector2(0, -offset);
     segment.src1.offset = LTVector2(0, offset);
     segment.dst0.offset = LTVector2(0, -offset);
     segment.dst1.offset = LTVector2(0, offset);
-    
+
     LTAddSegment(segment, &self.strokeVertices, &self.shadowVertices);
   }
 }

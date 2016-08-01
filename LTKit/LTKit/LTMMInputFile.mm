@@ -35,7 +35,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithPath:(NSString *)path error:(NSError *__autoreleasing *)error {
   if (self = [super init]) {
     self.path = path;
-    
+
     self.fd = open([path UTF8String], O_RDONLY);
     if (self.fd < 0) {
       if (error) {

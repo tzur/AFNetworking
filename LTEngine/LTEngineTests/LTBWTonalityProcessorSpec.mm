@@ -96,13 +96,13 @@ context(@"processing", ^{
   it(@"should return the input black and white image whithout changes on default parameters", ^{
     LTTexture *deltaTexture = [LTTexture textureWithImage:LTCreateDeltaMat(CGSizeMake(3, 3))];
     LTTexture *deltaOutput = [LTTexture textureWithPropertiesOf:deltaTexture];
-    
+
     // Important: without nearest neighbor magnification filter the test will not pass on the
     // device (iPhone 5).
     // Our current conjecture is that floating point errors for a certain sizes of texture offset
     // the sampling point.
     deltaTexture.magFilterInterpolation = LTTextureInterpolationNearest;
-    
+
     LTBWTonalityProcessor *tone = [[LTBWTonalityProcessor alloc] initWithInput:deltaTexture
                                                                         output:deltaOutput];
     [tone process];
@@ -114,10 +114,10 @@ context(@"processing", ^{
     cv::Mat4b greenDelta(3, 3);
     greenDelta = cv::Vec4b(0, 0, 0, 255);
     greenDelta(1, 1) = cv::Vec4b(0, 255, 0, 255);
-    
+
     cv::Mat4b greenDeltaOutput(3, 3);
     greenDeltaOutput = cv::Vec4b(0, 0, 0, 255);
-    
+
     LTTexture *deltaTexture = [LTTexture textureWithImage:greenDelta];
     LTTexture *deltaOutput = [LTTexture textureWithPropertiesOf:deltaTexture];
     LTBWTonalityProcessor *tone = [[LTBWTonalityProcessor alloc] initWithInput:deltaTexture
@@ -133,7 +133,7 @@ context(@"processing", ^{
     cv::Mat4b output(1, 1, cv::Vec4b(192, 192, 192, 255));
     LTTexture *inputTexture = [LTTexture textureWithImage:input];
     LTTexture *outputTexture = [LTTexture textureWithPropertiesOf:inputTexture];
-    
+
     LTBWTonalityProcessor *tone = [[LTBWTonalityProcessor alloc] initWithInput:inputTexture
                                                                         output:outputTexture];
     tone.offset = 0.25;
@@ -144,7 +144,7 @@ context(@"processing", ^{
   sit(@"should create correct conversion", ^{
     LTTexture *lena = [LTTexture textureWithImage:LTLoadMat([self class], @"Lena128.png")];
     LTTexture *lenaOutput = [LTTexture textureWithPropertiesOf:lena];
-    
+
     LTBWTonalityProcessor *tone = [[LTBWTonalityProcessor alloc] initWithInput:lena
                                                                         output:lenaOutput];
     tone.exposure = -0.2;
@@ -155,7 +155,7 @@ context(@"processing", ^{
     tone.colorGradientTexture =
         [[LTColorGradient colderThanNeutralGradient] textureWithSamplingPoints:256];
     [tone process];
-    
+
     // Important: this test depends on the performance of other classes and processors, thus is
     // expected to fail once changes introduced to major rendering components, such as smoothing.
     cv::Mat image = LTLoadMat([self class], @"Lena128BWTonality.png");

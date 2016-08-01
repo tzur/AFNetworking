@@ -61,15 +61,15 @@ context(@"getting and setting uniforms and attributes", ^{
   beforeEach(^{
     program = [[LTProgram alloc] initWithVertexSource:kUniformTypesVertexSource
                                        fragmentSource:kBasicFragmentSource];
-    
+
     boolValue = @(YES);
     intValue = @(7);
     floatValue = @(1.f);
-    
+
     vec2 = $(LTVector2(1.f, 2.f));
     vec3 = $(LTVector3(1.f, 2.f, 3.f));
     vec4 = $(LTVector4(1.f, 2.f, 3.f, 4.f));
-    
+
     GLKMatrix2 m2;
     for (int i = 0; i < 4; ++i) {
       m2.m[i] = (float)i;
@@ -82,7 +82,7 @@ context(@"getting and setting uniforms and attributes", ^{
     for (int i = 0; i < 16; ++i) {
       m4.m[i] = (float)i;
     }
-    
+
     mat2 = $(m2);
     mat3 = $(m3);
     mat4 = $(m4);
@@ -123,7 +123,7 @@ context(@"getting and setting uniforms and attributes", ^{
         program[@"uBool"] = vec2;
       }).to.raise(NSInvalidArgumentException);
     });
-    
+
     it(@"should not set uniform integers with invalid values", ^{
       expect(^{
         program[@"uInt"] = floatValue;
@@ -133,7 +133,7 @@ context(@"getting and setting uniforms and attributes", ^{
         program[@"uInt"] = vec2;
       }).to.raise(NSInvalidArgumentException);
     });
-    
+
     it(@"should set uniform integers with small, medium sized and large values", ^{
       expect(^{
         program[@"uInt"] = @(INT_MIN);
@@ -171,7 +171,7 @@ context(@"getting and setting uniforms and attributes", ^{
         program[@"uInt"] = @(LONG_LONG_MAX);
       }).toNot.raise(NSInvalidArgumentException);
     });
-    
+
     it(@"should not set uniform samplers with invalid values", ^{
       expect(^{
         program[@"uSampler"] = floatValue;
@@ -181,13 +181,13 @@ context(@"getting and setting uniforms and attributes", ^{
         program[@"uSampler"] = vec2;
       }).to.raise(NSInvalidArgumentException);
     });
-    
+
     it(@"should not set uniform floats with invalid values", ^{
       expect(^{
         program[@"uFloat"] = vec2;
       }).to.raise(NSInvalidArgumentException);
     });
-    
+
     it(@"should not set uniform vector2's with invalid values", ^{
       expect(^{
         program[@"uVec2"] = floatValue;
@@ -201,7 +201,7 @@ context(@"getting and setting uniforms and attributes", ^{
         program[@"uVec2"] = mat3;
       }).to.raise(NSInvalidArgumentException);
     });
-    
+
     it(@"should not set uniform vector3's with invalid values", ^{
       expect(^{
         program[@"uVec3"] = floatValue;
@@ -215,7 +215,7 @@ context(@"getting and setting uniforms and attributes", ^{
         program[@"uVec3"] = mat3;
       }).to.raise(NSInvalidArgumentException);
     });
-    
+
     it(@"should not set uniform vector4's with invalid values", ^{
       expect(^{
         program[@"uVec4"] = floatValue;
@@ -229,7 +229,7 @@ context(@"getting and setting uniforms and attributes", ^{
         program[@"uVec4"] = mat3;
       }).to.raise(NSInvalidArgumentException);
     });
-    
+
     it(@"should not set uniform matrix2's with invalid values", ^{
       expect(^{
         program[@"uMat2"] = floatValue;
@@ -243,7 +243,7 @@ context(@"getting and setting uniforms and attributes", ^{
         program[@"uMat2"] = mat3;
       }).to.raise(NSInvalidArgumentException);
     });
-    
+
     it(@"should not set uniform matrix3's with invalid values", ^{
       expect(^{
         program[@"uMat3"] = floatValue;
@@ -257,7 +257,7 @@ context(@"getting and setting uniforms and attributes", ^{
         program[@"uMat3"] = mat2;
       }).to.raise(NSInvalidArgumentException);
     });
-    
+
     it(@"should not set uniform matrix4's with invalid values", ^{
       expect(^{
         program[@"uMat4"] = floatValue;
@@ -278,17 +278,17 @@ context(@"compiling shaders", ^{
   it(@"should compile matching uniform", ^{
     NSString *vertexSource = @"uniform highp mat4 myUniform; "
     "void main() { gl_Position = vec4(myUniform); }";
-    
+
     LTProgram *program = [[LTProgram alloc] initWithVertexSource:vertexSource
                                                   fragmentSource:kBasicFragmentSource];
-    
+
     expect(program).toNot.beNil();
   });
   
   it(@"should fail compiling matching varyings", ^{
     LTProgram *program = [[LTProgram alloc] initWithVertexSource:kComplexVertexSource
                                                   fragmentSource:kComplexFragmentSource];
-    
+
     expect(program).toNot.beNil();
   });
   
@@ -299,7 +299,7 @@ context(@"compiling shaders", ^{
     "void main() { myVarying = myAttr; gl_Position = vec4(myUniform); }";
     NSString *fragmentSource = @"varying highp vec2 myVaryingFoo; "
     "void main() { gl_FragColor = vec4(myVaryingFoo.x, myVaryingFoo.y, 0.0, 0.0); }";
-    
+
     expect(^{
       __unused LTProgram *program =
           [[LTProgram alloc] initWithVertexSource:vertexSource

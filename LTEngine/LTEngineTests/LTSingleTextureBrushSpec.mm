@@ -58,7 +58,7 @@ context(@"properties", ^{
                                           allocateMemory:YES];
       brush.texture = redTexture;
     }).to.raise(NSInvalidArgumentException);
-    
+
     expect(^{
       LTTexture *rgTexture = [LTTexture textureWithSize:kSize
                                             pixelFormat:$(LTGLPixelFormatRG8Unorm)

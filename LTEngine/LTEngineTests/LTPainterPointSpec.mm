@@ -69,7 +69,7 @@ context(@"properties", ^{
     CGFloat newValue = 1;
     point.timestamp = newValue;
     expect(point.timestamp).to.equal(newValue);
-    
+
     point.timestamp = -DBL_EPSILON;
     expect(point.timestamp).to.equal(0);
   });
@@ -90,7 +90,7 @@ context(@"properties", ^{
     CGFloat newValue = 2;
     point.zoomScale = newValue;
     expect(point.zoomScale).to.equal(newValue);
-    
+
     point.zoomScale = -FLT_EPSILON;
     expect(point.zoomScale).to.equal(0);
   });
@@ -99,7 +99,7 @@ context(@"properties", ^{
     CGFloat newValue = 2;
     point.touchRadius = newValue;
     expect(point.touchRadius).to.equal(newValue);
-    
+
     point.touchRadius = -FLT_EPSILON;
     expect(point.touchRadius).to.equal(0);
   });
@@ -108,7 +108,7 @@ context(@"properties", ^{
     CGFloat newValue = 2;
     point.touchRadiusTolerance = newValue;
     expect(point.touchRadiusTolerance).to.equal(newValue);
-    
+
     point.touchRadiusTolerance = -FLT_EPSILON;
     expect(point.touchRadiusTolerance).to.equal(0);
   });
@@ -117,7 +117,7 @@ context(@"properties", ^{
     CGFloat newValue = 1;
     point.distanceFromStart = newValue;
     expect(point.distanceFromStart).to.equal(newValue);
-    
+
     point.distanceFromStart = -FLT_EPSILON;
     expect(point.distanceFromStart).to.equal(0);
   });
@@ -126,7 +126,7 @@ context(@"properties", ^{
     CGFloat newValue = 1;
     point.diameter = newValue;
     expect(point.diameter).to.equal(newValue);
-    
+
     point.diameter = -FLT_EPSILON;
     expect(point.diameter).to.equal(0);
   });
