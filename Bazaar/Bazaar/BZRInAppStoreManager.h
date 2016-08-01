@@ -18,15 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 ///   - Managing products' content.
 ///
 ///   - Getting the user's subscription information.
-@interface BZRInAppStoreManager : NSObject
-
-- (instancetype)init NS_UNAVAILABLE;
-
-/// Initializes with \c configuration, used to configure this class with configuration objects, and
-/// with \c applicationUserId, used to restore the list of products purchased by the user.
-- (instancetype)initWithConfiguration:(BZRInAppStoreManagerConfiguration *)configuration
-                    applicationUserId:(nullable NSString *)applicationUserId
-    NS_DESIGNATED_INITIALIZER;
+@protocol BZRInAppStoreManager <NSObject>
 
 /// Fetches the list of available products for the application.
 ///
@@ -48,12 +40,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Provides the list of products that were purchased by the user.
 ///
-/// Returns a signal that sends the list of products purchased by the user. Whenever the list
-/// changes the signal sends it. The signal completes when the class' instance is deallocated. The
-/// list of purchased products also includes products that the user has acquired through
-/// subscription and are available on the device. The list might be outdated, for example if the
-/// user has made purchases on a another device. In order to update it, \c restorePurchasedProducts
-/// should be called. The signal doesn't err.
+/// Returns a signal that sends the list of products purchased by the user. This includes all the
+/// products that the user has purchased in the store on all devices, and products that the user
+/// acquired via subscription on this device. Whenever the list changes, the signal sends it. The
+/// signal completes when the class' instance is deallocated. The list might be outdated, for
+/// example if the user has made purchases on a another device. In order to update it,
+/// \c restorePurchasedProducts should be called. The signal doesn't err.
 ///
 /// @return <tt>RACSignal<NSArray<BZRProduct>></tt>
 - (RACSignal *)purchasedProducts;
@@ -62,8 +54,7 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 /// Returns a signal that sends the list of products with downloaded content. Whenever the list
 /// changes the signal sends it. The signal completes when the class' instance is deallocated.
-/// Products without content will be in the list as well. The signal errs if there was an error
-/// while trying to assemble the list.
+/// Products without content will be in the list as well. The signal doesn't err.
 ///
 /// @return <tt>RACSignal<NSArray<BZRProduct>></tt>
 - (RACSignal *)productsWithDownloadedContent;
@@ -115,6 +106,19 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 /// @return <tt>RACSignal<BZRReceiptSubscriptionInfo></tt>
 - (RACSignal *)fetchUserSubscriptionInfo;
+
+@end
+
+/// The default in-application store manager, configured with \c BZRInAppStoreManagerConfiguration.
+@interface BZRInAppStoreManager : NSObject<BZRInAppStoreManager>
+
+- (instancetype)init NS_UNAVAILABLE;
+
+/// Initializes with \c configuration, used to configure this class with configuration objects, and
+/// with \c applicationUserId, used to restore the list of products purchased by the user.
+- (instancetype)initWithConfiguration:(BZRInAppStoreManagerConfiguration *)configuration
+                    applicationUserId:(nullable NSString *)applicationUserId
+    NS_DESIGNATED_INITIALIZER;
 
 @end
 
