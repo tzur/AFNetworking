@@ -18,6 +18,7 @@
 		836374061D3FBA9000C8D09D /* CUITimerModeViewModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 836374051D3FBA9000C8D09D /* CUITimerModeViewModel.mm */; };
 		836374091D3FBA9F00C8D09D /* CUITimerMenuViewModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 836374081D3FBA9F00C8D09D /* CUITimerMenuViewModel.mm */; };
 		8363740C1D3FBAAF00C8D09D /* CUIGridViewModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8363740B1D3FBAAF00C8D09D /* CUIGridViewModel.mm */; };
+		837FBFC91D4F8929003B53BF /* WFLoggingImageProvider.mm in Sources */ = {isa = PBXBuildFile; fileRef = 837FBFC81D4F8929003B53BF /* WFLoggingImageProvider.mm */; };
 		838E9F0A1D493F55000B75E9 /* LTSpectaOpenGLContextHook.mm in Sources */ = {isa = PBXBuildFile; fileRef = 838E9F091D493F55000B75E9 /* LTSpectaOpenGLContextHook.mm */; };
 		83AE3F121D48948A00F51B89 /* CUIPreviewViewControllerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 83AE3F111D48948A00F51B89 /* CUIPreviewViewControllerSpec.mm */; };
 		83AE3F351D48955400F51B89 /* UIView+Retrieval.m in Sources */ = {isa = PBXBuildFile; fileRef = 83AE3F341D48955400F51B89 /* UIView+Retrieval.m */; };
@@ -470,6 +471,8 @@
 		836374081D3FBA9F00C8D09D /* CUITimerMenuViewModel.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUITimerMenuViewModel.mm; sourceTree = "<group>"; };
 		8363740A1D3FBAAF00C8D09D /* CUIGridViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUIGridViewModel.h; sourceTree = "<group>"; };
 		8363740B1D3FBAAF00C8D09D /* CUIGridViewModel.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUIGridViewModel.mm; sourceTree = "<group>"; };
+		837FBFC71D4F8929003B53BF /* WFLoggingImageProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WFLoggingImageProvider.h; path = ../../Wireframes/WireframesTests/WFLoggingImageProvider.h; sourceTree = "<group>"; };
+		837FBFC81D4F8929003B53BF /* WFLoggingImageProvider.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = WFLoggingImageProvider.mm; path = ../../Wireframes/WireframesTests/WFLoggingImageProvider.mm; sourceTree = "<group>"; };
 		838E9F091D493F55000B75E9 /* LTSpectaOpenGLContextHook.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = LTSpectaOpenGLContextHook.mm; path = ../../LTEngine/LTEngineTests/LTSpectaOpenGLContextHook.mm; sourceTree = "<group>"; };
 		83AE3F111D48948A00F51B89 /* CUIPreviewViewControllerSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUIPreviewViewControllerSpec.mm; sourceTree = "<group>"; };
 		83AE3F331D48955400F51B89 /* UIView+Retrieval.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIView+Retrieval.h"; path = "../../Wireframes/WireframesTests/UIView+Retrieval.h"; sourceTree = "<group>"; };
@@ -1187,6 +1190,8 @@
 				83AE3F341D48955400F51B89 /* UIView+Retrieval.m */,
 				F9D0D2261D06BACB0033A4A5 /* WFFakePaintCodeModule.h */,
 				F9D0D2271D06BACB0033A4A5 /* WFFakePaintCodeModule.m */,
+				837FBFC71D4F8929003B53BF /* WFLoggingImageProvider.h */,
+				837FBFC81D4F8929003B53BF /* WFLoggingImageProvider.mm */,
 			);
 			name = WireframesTests;
 			sourceTree = "<group>";
@@ -1696,6 +1701,7 @@
 				F965C9E31CF317D800005627 /* LTTestModule.mm in Sources */,
 				F9E72E891D2BD9B5000E12C1 /* CUIPreviewViewModelSpec.mm in Sources */,
 				BEEE6D361D21385D00579F5D /* EXPMatchers+error.m in Sources */,
+				837FBFC91D4F8929003B53BF /* WFLoggingImageProvider.mm in Sources */,
 				BEEE6D371D21385D00579F5D /* EXPMatchers+finish.m in Sources */,
 				BEEE6D321D21385D00579F5D /* LLReactiveMatchersMessageBuilder.m in Sources */,
 				BEEE6D331D21385D00579F5D /* EXPMatchers+beSubscribedTo.m in Sources */,
@@ -1901,13 +1907,13 @@
 				GCC_PREFIX_HEADER = "CameraUITests/CameraUITests-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
+					"$(SRCROOT)/../Camera/Camera",
 					"$(SRCROOT)/../LTEngine/LTEngine",
 					"$(SRCROOT)/../LTKit/LTKit",
+					"$(SRCROOT)/../Wireframes/Wireframes",
 					"$(SRCROOT)/../third_party/LLReactiveMatchers/**",
 					"$(SRCROOT)/../third_party/OCMock/Source",
 					"$(SRCROOT)/../third_party/Specta/Specta",
-					"$(SRCROOT)/../Camera",
-					"$(SRCROOT)/../Camera/Camera",
 				);
 				INFOPLIST_FILE = CameraUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -1923,13 +1929,13 @@
 				GCC_PREFIX_HEADER = "CameraUITests/CameraUITests-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
+					"$(SRCROOT)/../Camera/Camera",
 					"$(SRCROOT)/../LTEngine/LTEngine",
 					"$(SRCROOT)/../LTKit/LTKit",
+					"$(SRCROOT)/../Wireframes/Wireframes",
 					"$(SRCROOT)/../third_party/LLReactiveMatchers/**",
 					"$(SRCROOT)/../third_party/OCMock/Source",
 					"$(SRCROOT)/../third_party/Specta/Specta",
-					"$(SRCROOT)/../Camera",
-					"$(SRCROOT)/../Camera/Camera",
 				);
 				INFOPLIST_FILE = CameraUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";

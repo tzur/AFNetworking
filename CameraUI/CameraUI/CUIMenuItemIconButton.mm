@@ -34,8 +34,10 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)setupImageViewModel {
+  @weakify(self);
   RAC(self, wf_viewModel) = [[RACObserve(self, model.iconURL)
       map:^id<WFImageViewModel>(NSURL *url) {
+        @strongify(self);
         id<CUITheme> theme = [CUISharedTheme sharedTheme];
         return WFImageViewModel(url)
             .color(theme.iconColor)
