@@ -23,6 +23,8 @@
 @end
 
 @interface LTTestTouchEventDelegate : NSObject <LTTouchEventDelegate>
+@property (strong, nonatomic) LTVoidBlock block;
+@property (strong, nonatomic) LTVoidBlock blockExecutedUponManualTermination;
 @property (strong, nonatomic) NSMutableArray<LTTestTouchEventDelegateCall *> *calls;
 @property (strong, nonatomic) NSSet<NSNumber *> *idsOfCancelledSequences;
 @property (nonatomic) LTTouchEventSequenceState terminationState;
@@ -41,6 +43,9 @@
     touchEventSequenceState:(LTTouchEventSequenceState)state {
   [self storeEvents:events predictedEvents:predictedEvents
               state:state];
+  if (self.block) {
+    self.block();
+  }
 }
 
 - (void)receivedUpdatesOfTouchEvents:(LTTouchEvents __unused *)events {
@@ -48,6 +53,9 @@
 
 - (void)touchEventSequencesWithIDs:(NSSet<NSNumber *> *)sequenceIDs
                terminatedWithState:(LTTouchEventSequenceState)state {
+  if (self.blockExecutedUponManualTermination) {
+    self.blockExecutedUponManualTermination();
+  }
   self.idsOfCancelledSequences = sequenceIDs;
   self.terminationState = state;
 }
@@ -406,6 +414,124 @@ context(@"cancellation", ^{
     expect(delegate.calls).to.haveACountOf(0);
   });
 
+  it(@"should cancel inside delegate calls informing about start", ^{
+    __block LTVoidBlock block = ^{
+      [view cancelTouchEventSequences];
+    };
+
+    delegate.block = block;
+    [view touchesBegan:allTouches withEvent:eventMock];
+
+    expect(delegate.calls).to.haveACountOf(1);
+    expect(delegate.calls.firstObject.events.firstObject.timestamp).to.equal(0);
+    expect(delegate.idsOfCancelledSequences).to.haveACountOf(2);
+    expect(delegate.terminationState).to.equal(LTTouchEventSequenceStateCancellation);
+  });
+
+  it(@"should cancel inside delegate calls informing about a single touch sequence continuing", ^{
+    __block LTVoidBlock block = ^{
+      [view cancelTouchEventSequences];
+    };
+
+    [view touchesBegan:allTouches withEvent:eventMock];
+    [delegate.calls removeAllObjects];
+    delegate.block = block;
+    [view touchesMoved:[NSSet setWithArray:@[mainTouch]] withEvent:eventMock];
+
+    expect(delegate.calls).to.haveACountOf(1);
+    expect(delegate.calls.firstObject.events.firstObject.timestamp).to.equal(0);
+    expect(delegate.idsOfCancelledSequences).to.haveACountOf(2);
+    expect(delegate.idsOfCancelledSequences).to.contain(@0);
+    expect(delegate.idsOfCancelledSequences).to.contain(@1);
+    expect(delegate.terminationState).to.equal(LTTouchEventSequenceStateCancellation);
+  });
+
+  it(@"should cancel inside delegate calls informing about multiple touch sequences continuing", ^{
+    __block LTVoidBlock block = ^{
+      [view cancelTouchEventSequences];
+    };
+
+    [view touchesBegan:allTouches withEvent:eventMock];
+    [delegate.calls removeAllObjects];
+    delegate.block = block;
+    [view touchesMoved:allTouches withEvent:eventMock];
+
+    expect(delegate.calls).to.haveACountOf(1);
+    expect(delegate.calls.firstObject.events.firstObject.timestamp).to.equal(0);
+    expect(delegate.idsOfCancelledSequences).to.haveACountOf(2);
+    expect(delegate.idsOfCancelledSequences).to.contain(@0);
+    expect(delegate.idsOfCancelledSequences).to.contain(@1);
+    expect(delegate.terminationState).to.equal(LTTouchEventSequenceStateCancellation);
+  });
+
+  it(@"should allow cancellation requests inside delegate calls informing about termination", ^{
+    __block LTVoidBlock block = ^{
+      [view cancelTouchEventSequences];
+    };
+
+    [view touchesBegan:allTouches withEvent:eventMock];
+    [delegate.calls removeAllObjects];
+    delegate.block = block;
+    [view touchesEnded:[NSSet setWithArray:@[mainTouch]] withEvent:eventMock];
+
+    expect(delegate.calls).to.haveACountOf(1);
+    expect(delegate.calls.firstObject.events.firstObject.timestamp).to.equal(0);
+    expect(delegate.idsOfCancelledSequences).to.haveACountOf(1);
+    expect(delegate.terminationState).to.equal(LTTouchEventSequenceStateCancellation);
+  });
+
+  it(@"should allow cancellation requests inside delegate calls informing about cancellation", ^{
+    __block LTVoidBlock block = ^{
+      [view cancelTouchEventSequences];
+    };
+
+    [view touchesBegan:allTouches withEvent:eventMock];
+    [delegate.calls removeAllObjects];
+    delegate.block = block;
+    [view touchesCancelled:[NSSet setWithArray:@[mainTouch]] withEvent:eventMock];
+
+    expect(delegate.calls).to.haveACountOf(1);
+    expect(delegate.calls.firstObject.events.firstObject.timestamp).to.equal(0);
+    expect(delegate.idsOfCancelledSequences).to.haveACountOf(1);
+    expect(delegate.terminationState).to.equal(LTTouchEventSequenceStateCancellation);
+  });
+
+  it(@"should ignore cancellation requests except for the first one", ^{
+    [view touchesBegan:allTouches withEvent:eventMock];
+
+    // First cancellation request.
+    [view cancelTouchEventSequences];
+
+    expect(delegate.idsOfCancelledSequences).to.haveACountOf(2);
+    expect(delegate.idsOfCancelledSequences).to.contain(@0);
+    expect(delegate.idsOfCancelledSequences).to.contain(@1);
+    expect(delegate.terminationState).to.equal(LTTouchEventSequenceStateCancellation);
+
+    // Second cancellation request.
+    delegate.idsOfCancelledSequences = nil;
+    delegate.terminationState = LTTouchEventSequenceStateStart;
+
+    [view cancelTouchEventSequences];
+
+    expect(delegate.idsOfCancelledSequences).to.beNil();
+    expect(delegate.terminationState).to.equal(LTTouchEventSequenceStateStart);
+  });
+
+  it(@"should ignore nested cancellation requests except for the first one", ^{
+    [view touchesBegan:allTouches withEvent:eventMock];
+
+    delegate.blockExecutedUponManualTermination = ^{
+      [view cancelTouchEventSequences];
+    };
+
+    [view cancelTouchEventSequences];
+
+    expect(delegate.idsOfCancelledSequences).to.haveACountOf(2);
+    expect(delegate.idsOfCancelledSequences).to.contain(@0);
+    expect(delegate.idsOfCancelledSequences).to.contain(@1);
+    expect(delegate.terminationState).to.equal(LTTouchEventSequenceStateCancellation);
+  });
+
   it(@"should ignore cancellation requests if termination has already been reported", ^{
     [view touchesBegan:allTouches withEvent:eventMock];
     [delegate.calls removeAllObjects];
@@ -422,6 +548,43 @@ context(@"cancellation", ^{
     [view touchesCancelled:allTouches withEvent:eventMock];
     expect(delegate.calls).to.haveACountOf(2);
     [view cancelTouchEventSequences];
+    expect(delegate.idsOfCancelledSequences).to.beNil();
+    expect(delegate.terminationState).toNot.equal(LTTouchEventSequenceStateCancellation);
+  });
+
+  it(@"should ignore cancellation requests if termination has already been performed", ^{
+    __block NSUInteger numberOfCall = 0;
+    __block LTVoidBlock block = ^{
+      numberOfCall++;
+      if (numberOfCall == 2) {
+        [view cancelTouchEventSequences];
+      }
+    };
+
+    [view touchesBegan:allTouches withEvent:eventMock];
+    [delegate.calls removeAllObjects];
+    delegate.block = block;
+    [view touchesEnded:allTouches withEvent:eventMock];
+
+    expect(delegate.calls).to.haveACountOf(2);
+    expect(delegate.idsOfCancelledSequences).to.beNil();
+    expect(delegate.terminationState).toNot.equal(LTTouchEventSequenceStateCancellation);
+  });
+
+  it(@"should ignore cancellation requests if cancellation has already been performed", ^{
+    __block NSUInteger numberOfCall = 0;
+    __block LTVoidBlock block = ^{
+      if (numberOfCall == 2) {
+        [view cancelTouchEventSequences];
+      }
+    };
+
+    [view touchesBegan:allTouches withEvent:eventMock];
+    [delegate.calls removeAllObjects];
+    delegate.block = block;
+    [view touchesCancelled:allTouches withEvent:eventMock];
+
+    expect(delegate.calls).to.haveACountOf(2);
     expect(delegate.idsOfCancelledSequences).to.beNil();
     expect(delegate.terminationState).toNot.equal(LTTouchEventSequenceStateCancellation);
   });
