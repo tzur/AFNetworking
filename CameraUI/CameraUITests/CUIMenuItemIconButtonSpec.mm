@@ -3,12 +3,9 @@
 
 #import "CUIMenuItemIconButton.h"
 
-#import <WireframesTests/WFFakePaintCodeModule.h>
-
 #import "CUISimpleMenuItemViewModel.h"
 #import "CUISharedTheme.h"
-
-#import <Wireframes/UIButton+ViewModel.h>
+#import "WFLoggingImageProvider.h"
 
 SpecBegin(CUIMenuItemIconButton)
 
@@ -20,20 +17,26 @@ static NSURL * const kIconURL =
 __block CUIMenuItemIconButton *button;
 __block CUISimpleMenuItemViewModel *model;
 __block id themeMock;
+__block WFLoggingImageProvider *imageProvider;
 
 beforeEach(^{
   themeMock = LTMockProtocol(@protocol(CUITheme));
   OCMStub([themeMock iconColor]).andReturn(kIconColor);
   OCMStub([themeMock iconHighlightedColor]).andReturn(kIconHighlightedColor);
+
+  imageProvider = WFUseLoggingImageProvider();
+
   model = [[CUISimpleMenuItemViewModel alloc] init];
   model.iconURL = kIconURL;
+
   button = [[CUIMenuItemIconButton alloc] initWithModel:model];
 });
 
 it(@"should raise an exception when initialized with nil model", ^{
-  CUISimpleMenuItemViewModel *model = nil;
+  CUISimpleMenuItemViewModel *nilModel = nil;
   expect(^{
-    CUIMenuItemIconButton * __unused button = [[CUIMenuItemIconButton alloc] initWithModel:model];
+    CUIMenuItemIconButton * __unused iconButton =
+        [[CUIMenuItemIconButton alloc] initWithModel:nilModel];
   }).to.raise(NSInvalidArgumentException);
 });
 
@@ -49,6 +52,14 @@ it(@"should set its image according to the icon URL", ^{
   expect([button imageForState:UIControlStateNormal]).will.beNil();
   model.iconURL = kIconURL;
   expect([button imageForState:UIControlStateNormal]).willNot.beNil();
+});
+
+it(@"should load image correctly", ^{
+  button.frame = CGRectMake(0, 0, 44, 44);
+  [button layoutIfNeeded];
+  [imageProvider waitUntilCompletion];
+  expect(imageProvider.completedURLs.count).to.beGreaterThan(0);
+  expect(imageProvider.errdURLs).to.haveCount(0);
 });
 
 it(@"should update the selected property according to the model", ^{
@@ -81,6 +92,16 @@ it(@"should call didTap when the button is tapped", ^{
   expect(model.didTapCounter).to.equal(0);
   [button sendActionsForControlEvents:UIControlEventTouchUpInside];
   expect(model.didTapCounter).will.equal(1);
+});
+
+it(@"should not retain itself", ^{
+  __weak CUIMenuItemIconButton *weakButton;
+  @autoreleasepool {
+    CUIMenuItemIconButton *strongButton = [[CUIMenuItemIconButton alloc] initWithModel:model];
+    weakButton = strongButton;
+    expect(weakButton).notTo.beNil();
+  }
+  expect(weakButton).to.beNil();
 });
 
 SpecEnd
