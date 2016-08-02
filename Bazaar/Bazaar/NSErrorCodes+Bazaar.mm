@@ -38,7 +38,15 @@ LTErrorCodesImplement(BazaarErrorCodeProductID,
   /// Retrieval of file attributes has failed.
   BZRErrorCodeFileAttributesRetrievalFailed,
   /// Directory enumeration failed.
-  BZRErrorCodeDirectoryEnumrationFailed
+  BZRErrorCodeDirectoryEnumrationFailed,
+  /// Requested content provider is not registered.
+  BZErrorCodeProductContentProviderNotRegistered,
+  /// Failure due to invalid underlying content provider parameters.
+  BZErrorCodeInvalidUnderlyingContentProviderParameters,
+  /// Failure due to unexpected underlying content provider parameters class.
+  BZErrorCodeUnexpectedUnderlyingContentProviderParametersClass,
+  /// Copy product's content to temporary directory has failed.
+  BZErrorCodeCopyProductContentFailed
 );
 
 NS_ASSUME_NONNULL_END

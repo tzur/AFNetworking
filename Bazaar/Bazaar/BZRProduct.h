@@ -5,7 +5,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class BZRProductContentDescriptor, BZRProductPriceInfo;
+@class BZRContentProviderParameters, BZRProductPriceInfo;
 
 /// Possible values for types of products, corresponding to products purchasable in itunes
 /// connect.
@@ -29,15 +29,20 @@ LTEnumDeclare(NSUInteger, BZRProductPurchaseStatus,
 /// Represents a single in-app product.
 @interface BZRProduct : BZRModel <MTLJSONSerializing>
 
+/// Returns a new \c BZRProduct with \c contentProviderParameters set to given
+/// \c contentProviderParameters.
+- (BZRProduct *)productWithContentProviderParameters:
+    (BZRContentProviderParameters *)contentProviderParameters error:(NSError **)error;
+
 /// The AppStore unique identifier, used to uniquely identify the product.
 @property (readonly, nonatomic) NSString *identifier;
 
 /// Product type.
 @property (readonly, nonatomic) BZRProductType *productType;
 
-/// Describes the way to fetch the content that needed in order to use the product. \c nil if no
-/// content is needed to be fetched.
-@property (readonly, nonatomic, nullable) BZRProductContentDescriptor *descriptor;
+/// Describes the parameters needed to fetch the content of the product. \c nil if no content is
+/// needed to be fetched.
+@property (readonly, nonatomic, nullable) BZRContentProviderParameters *contentProviderParameters;
 
 /// Holds the price and the locale of the product.
 @property (readonly, nonatomic, nullable) BZRProductPriceInfo *priceInfo;
