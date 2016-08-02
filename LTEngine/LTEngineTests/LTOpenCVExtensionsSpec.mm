@@ -408,4 +408,50 @@ context(@"checkerboard pattern", ^{
   });
 });
 
+context(@"row subset", ^{
+  __block cv::Mat4b mat;
+
+  beforeEach(^{
+    mat = cv::Mat4b(8, 3);
+    for (int i = 0; i < mat.rows; ++i) {
+      for (int j = 0; j < mat.cols; ++j) {
+        mat(i, j) = cv::Vec4b(i) + cv::Vec4b(j);
+      }
+    }
+  });
+
+  it(@"should return correct result on contiguous matrices", ^{
+    cv::Mat4b subset = LTRowSubset(mat, {3, 4, 7});
+
+    cv::Mat4b expected(3, mat.cols);
+    mat.row(3).copyTo(expected.row(0));
+    mat.row(4).copyTo(expected.row(1));
+    mat.row(7).copyTo(expected.row(2));
+    expect($(subset)).to.equalMat($(expected));
+  });
+
+  it(@"should return correct results on non-continuous matrices", ^{
+    cv::Mat4b nonContinuous = mat(cv::Rect(0, 0, 2, 8));
+    expect(nonContinuous.isContinuous()).to.beFalsy();
+
+    cv::Mat4b subset = LTRowSubset(nonContinuous, {3, 4, 7});
+
+    cv::Mat4b expected(3, 2);
+    mat.row(3).colRange(0, 2).copyTo(expected.row(0));
+    mat.row(4).colRange(0, 2).copyTo(expected.row(1));
+    mat.row(7).colRange(0, 2).copyTo(expected.row(2));
+    expect($(subset)).to.equalMat($(expected));
+  });
+
+  it(@"should raise when providing invalid indices", ^{
+    expect(^{
+      LTRowSubset(mat, {3, -1, 7});
+    }).to.raise(NSInvalidArgumentException);
+
+    expect(^{
+      LTRowSubset(mat, {3, 8, 7});
+    }).to.raise(NSInvalidArgumentException);
+  });
+});
+
 SpecEnd
