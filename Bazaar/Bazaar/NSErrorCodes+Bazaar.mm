@@ -24,7 +24,15 @@ LTErrorCodesImplement(BazaarErrorCodeProductID,
   /// Failure during data conversion.
   BZRErrorCodeKeychainStorageConversionFailed,
   /// Failure during data archiving.
-  BZRErrorCodeKeychainStorageArchivingError
+  BZRErrorCodeKeychainStorageArchivingError,
+  /// Archive creation failed.
+  BZRErrorCodeArchiveCreationFailed,
+  /// Unachiving operaiton failed.
+  BZRErrorCodeUnarchivingFailed,
+  /// Archiving operation was cancelled.
+  BZRErrorCodeArchivingCancelled,
+  /// Archiving of an item, a file or a directory, has failed.
+  BZRErrorCodeItemArchivingFailed
 );
 
 NS_ASSUME_NONNULL_END
