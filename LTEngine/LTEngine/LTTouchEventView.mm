@@ -72,8 +72,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(nullable UIEvent *)event {
   [super touchesBegan:touches withEvent:event];
   [self updateMapTableWithBeginningTouches:touches];
-  [self updateDisplayLink];
   [self delegateTouches:touches event:event sequenceState:LTTouchEventSequenceStateStart];
+  [self updateDisplayLink];
 }
 
 - (void)touchesMoved:(NSSet<UITouch *> *)touches withEvent:(nullable UIEvent *)event {
@@ -84,14 +84,12 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(nullable UIEvent *)event {
   [super touchesEnded:touches withEvent:event];
   [self delegateTouches:touches event:event sequenceState:LTTouchEventSequenceStateEnd];
-  [self updateMapTableWithTerminatingTouches:touches];
   [self updateDisplayLink];
 }
 
 - (void)touchesCancelled:(nullable NSSet<UITouch *> *)touches withEvent:(nullable UIEvent *)event {
   [super touchesCancelled:touches withEvent:event];
   [self delegateTouches:touches event:event sequenceState:LTTouchEventSequenceStateCancellation];
-  [self updateMapTableWithTerminatingTouches:touches];
   [self updateDisplayLink];
 }
 
@@ -127,9 +125,12 @@ NS_ASSUME_NONNULL_BEGIN
     return;
   }
 
+  // Clear the map table before(!) calling the delegate in order to keep this object re-entrant,
+  // i.e. nested calls to \c cancelTouchEventSequences do not lead to an infinite loop or other
+  // degenerate behavior.
+  [self.touchToSequenceID removeAllObjects];
   [self.delegate touchEventSequencesWithIDs:sequenceIDs
                         terminatedWithState:LTTouchEventSequenceStateCancellation];
-  [self.touchToSequenceID removeAllObjects];
 }
 
 #pragma mark -
@@ -170,12 +171,6 @@ NS_ASSUME_NONNULL_BEGIN
   }
 }
 
-- (void)updateMapTableWithTerminatingTouches:(NSSet<UITouch *> *)touches {
-  for (UITouch *touch in touches) {
-    [self.touchToSequenceID removeObjectForKey:touch];
-  }
-}
-
 #pragma mark -
 #pragma mark Auxiliary methods - Display Link
 #pragma mark -
@@ -198,6 +193,14 @@ NS_ASSUME_NONNULL_BEGIN
       // The sequenceID does not exist, since it has been removed due to an external termination
       // request.
       continue;
+    }
+
+    if (state == LTTouchEventSequenceStateEnd || state == LTTouchEventSequenceStateCancellation) {
+      // Remove the touch from the map table before(!) calling the delegate, in order to ensure that
+      // possible external termination requests performed as a result of the delegate call only
+      // trigger the termination of touches that have not been declared as terminated in the
+      // aforementioned delegate call.
+      [self.touchToSequenceID removeObjectForKey:mainTouch];
     }
 
     NSUInteger sequenceID = [boxedSequenceID unsignedIntegerValue];
