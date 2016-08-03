@@ -20,7 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
           NSString *description =
               [NSString stringWithFormat:@"File size is not specified in attributes for item at "
                "path %@, item type is %@", filePath, fileAttributes[NSFileType]];
-          *error = [NSError lt_errorWithCode:BZRErrorCodeFileAttributesRetrievalFailed
+          *error = [NSError lt_errorWithCode:BZRErrorCodeFileAttributesRetrievalFailed path:filePath
                                  description:description];
           return nil;
         }
@@ -35,7 +35,7 @@ NS_ASSUME_NONNULL_BEGIN
       NSError *error;
       NSDictionary *attributes = [self attributesOfItemAtPath:filePath error:&error];
       if (!attributes) {
-        error = [NSError lt_errorWithCode:BZRErrorCodeFileAttributesRetrievalFailed
+        error = [NSError lt_errorWithCode:BZRErrorCodeFileAttributesRetrievalFailed path:filePath
                           underlyingError:error];
         [subscriber sendError:error];
         return nil;
