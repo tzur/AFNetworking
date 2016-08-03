@@ -57,6 +57,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)viewDidLoad {
   [super viewDidLoad];
 
+  self.view.accessibilityIdentifier = @"CameraPreview";
   [self setupPreviewView];
   [self setupGestureView];
   [self setupBlurView];
