@@ -214,7 +214,7 @@ context(@"processing", ^{
     
     expect($([output image])).to.beCloseToMat($(expected));
   });
-  
+
   it(@"should consider flip when cloning", ^{
     cv::Mat4b sourceImage(kSourceSize.height, kSourceSize.width);
     sourceImage.setTo(cv::Scalar(128, 128, 128, 255));
@@ -240,7 +240,7 @@ context(@"processing", ^{
     cv::Vec4b outputRightValue = outputMat.at<cv::Vec4b>(origin.y,
                                                          origin.x + targetRect.size.width  - 1);
     
-    expect(outputRightValue == red).to.beTruthy();
+    expect(outputRightValue == blue).to.beTruthy();
     expect(outputLeftValue == blue).to.beTruthy();
   });
 

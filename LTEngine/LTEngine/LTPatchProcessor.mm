@@ -173,6 +173,7 @@ LTPropertyProxy(CGFloat, smoothingAlpha, SmoothingAlpha, self.compositor);
 
 - (void)setFlip:(BOOL)flip {
   self.compositor.flip = flip;
+  self.solver.flip = flip;
 }
 
 @end
