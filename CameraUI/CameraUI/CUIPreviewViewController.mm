@@ -113,7 +113,6 @@ NS_ASSUME_NONNULL_BEGIN
       takeUntil:[self rac_willDeallocSignal]]
       subscribeNext:^(LTTexture *texture) {
         [contentView replaceContentWith:texture];
-        [contentView setNeedsDisplayContent];
       }];
 
   self.previewView = contentView;
