@@ -97,6 +97,11 @@
 		FA1B88541D338A8600097AD0 /* BZRKeychainStorage.mm in Sources */ = {isa = PBXBuildFile; fileRef = FA1B88531D338A8600097AD0 /* BZRKeychainStorage.mm */; };
 		FA1B885D1D33B2BC00097AD0 /* BZRKeychainStorageSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = FA1B885C1D33B2BC00097AD0 /* BZRKeychainStorageSpec.mm */; };
 		FA3C38161D35265F004A2673 /* libUICKeyChainStore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FA8D434B1D3517CC006FF5DB /* libUICKeyChainStore.a */; };
+		9FE7D5A11D3F6B2C00685F19 /* BZRPurchase.h in Headers */ = {isa = PBXBuildFile; fileRef = 9FE7D59D1D3F6B2C00685F19 /* BZRPurchase.h */; };
+		9FE7D5A21D3F6B2C00685F19 /* BZRPurchase.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9FE7D59E1D3F6B2C00685F19 /* BZRPurchase.mm */; };
+		9FE7D5A31D3F6B2C00685F19 /* BZRPurchaseManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 9FE7D59F1D3F6B2C00685F19 /* BZRPurchaseManager.h */; };
+		9FE7D5A41D3F6B2C00685F19 /* BZRPurchaseManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9FE7D5A01D3F6B2C00685F19 /* BZRPurchaseManager.mm */; };
+		9FE7D5D01D3F6B4400685F19 /* BZRPurchaseManagerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9FE7D5CF1D3F6B4400685F19 /* BZRPurchaseManagerSpec.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -592,6 +597,11 @@
 		FA1B88531D338A8600097AD0 /* BZRKeychainStorage.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRKeychainStorage.mm; sourceTree = "<group>"; };
 		FA1B885C1D33B2BC00097AD0 /* BZRKeychainStorageSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; lineEnding = 0; path = BZRKeychainStorageSpec.mm; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		FA8D43221D3517CC006FF5DB /* UICKeyChainStore.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = UICKeyChainStore.xcodeproj; path = ../third_party/UICKeyChainStore/Lib/UICKeyChainStore.xcodeproj; sourceTree = "<group>"; };
+		9FE7D59D1D3F6B2C00685F19 /* BZRPurchase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRPurchase.h; sourceTree = "<group>"; };
+		9FE7D59E1D3F6B2C00685F19 /* BZRPurchase.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRPurchase.mm; sourceTree = "<group>"; };
+		9FE7D59F1D3F6B2C00685F19 /* BZRPurchaseManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRPurchaseManager.h; sourceTree = "<group>"; };
+		9FE7D5A01D3F6B2C00685F19 /* BZRPurchaseManager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRPurchaseManager.mm; sourceTree = "<group>"; };
+		9FE7D5CF1D3F6B4400685F19 /* BZRPurchaseManagerSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRPurchaseManagerSpec.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -643,6 +653,10 @@
 		650D7D3D1D324A92003CE646 /* Internal */ = {
 			isa = PBXGroup;
 			children = (
+				9FE7D59D1D3F6B2C00685F19 /* BZRPurchase.h */,
+				9FE7D59E1D3F6B2C00685F19 /* BZRPurchase.mm */,
+				9FE7D59F1D3F6B2C00685F19 /* BZRPurchaseManager.h */,
+				9FE7D5A01D3F6B2C00685F19 /* BZRPurchaseManager.mm */,
 				650D7D3E1D324AAD003CE646 /* SKProductsRequest+RACSignalSupport.h */,
 				650D7D3F1D324AAD003CE646 /* SKProductsRequest+RACSignalSupport.mm */,
 			);
@@ -682,6 +696,7 @@
 		65332E441D33902400920C32 /* Internal */ = {
 			isa = PBXGroup;
 			children = (
+				9FE7D5CF1D3F6B4400685F19 /* BZRPurchaseManagerSpec.mm */,
 				65332E451D33903E00920C32 /* SKProductsRequest+RACSignalSupportSpec.mm */,
 			);
 			name = Internal;
@@ -1129,6 +1144,7 @@
 				B97A87011D461067004390FC /* BZRLocalJSONProductsProvider.h in Headers */,
 				B97E6CCE1D41103200C02863 /* BZRProduct.h in Headers */,
 				B97E6C251D40F44800C02863 /* BZRProductsProvider.h in Headers */,
+				9FE7D5A31D3F6B2C00685F19 /* BZRPurchaseManager.h in Headers */,
 				6581E8731D3B9FB300B26E1A /* BZRModel.h in Headers */,
 				6581E86C1D3B9F6100B26E1A /* BZRReceiptEnvironment.h in Headers */,
 				6581E86D1D3B9F6400B26E1A /* BZRReceiptModel.h in Headers */,
@@ -1144,6 +1160,7 @@
 				6581E8721D3B9F8000B26E1A /* BZRValidatricksReceiptValidator.h in Headers */,
 				6581E8741D3B9FB900B26E1A /* NSError+Bazaar.h in Headers */,
 				B9E4242B1D4CB0C0004C4101 /* BZRInAppStoreManagerConfiguration.h in Headers */,
+				9FE7D5A11D3F6B2C00685F19 /* BZRPurchase.h in Headers */,
 				6581E8751D3B9FBF00B26E1A /* NSErrorCodes+Bazaar.h in Headers */,
 				6581E8761D3B9FCE00B26E1A /* RACSignal+Bazaar.h in Headers */,
 			);
@@ -1632,6 +1649,7 @@
 				B97A87461D4610C1004390FC /* BZRRemoteJsonProductsProviderSpec.mm in Sources */,
 				65332E761D3392C200920C32 /* EXPMatchers+deliverValuesOnThread.m in Sources */,
 				65332E461D33903E00920C32 /* SKProductsRequest+RACSignalSupportSpec.mm in Sources */,
+				9FE7D5D01D3F6B4400685F19 /* BZRPurchaseManagerSpec.mm in Sources */,
 				65F03B681CFC2AC1008B1847 /* BZRModelSpec.mm in Sources */,
 				65332E7F1D3392C200920C32 /* EXPMatchers+sendValuesWithCount.m in Sources */,
 				65332E7B1D3392C200920C32 /* EXPMatchers+matchValues.m in Sources */,
@@ -1660,6 +1678,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9FE7D5A21D3F6B2C00685F19 /* BZRPurchase.mm in Sources */,
 				65BDA0081D33FF8000CC1F31 /* NSError+Bazaar.mm in Sources */,
 				B97A87021D461067004390FC /* BZRLocalJSONProductsProvider.mm in Sources */,
 				B97E6CCF1D41103200C02863 /* BZRProduct.mm in Sources */,
@@ -1667,6 +1686,7 @@
 				FA1B88541D338A8600097AD0 /* BZRKeychainStorage.mm in Sources */,
 				6529F8691CEB6F0E00FBABFE /* BZRReceiptValidationParameters.mm in Sources */,
 				6502EFA41D341809000CD68B /* BZRValidatricksReceiptModel.mm in Sources */,
+				9FE7D5A41D3F6B2C00685F19 /* BZRPurchaseManager.mm in Sources */,
 				6583555A1D2F9D9F00B88A70 /* NSErrorCodes+Bazaar.mm in Sources */,
 				65C538D71D34F521004C91D4 /* NSValueTransformer+Validatricks.mm in Sources */,
 				6584CE881CF467A2002C6F86 /* BZRReceiptEnvironment.mm in Sources */,
