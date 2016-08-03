@@ -110,6 +110,38 @@ CGPoints LTConvexHull(const CGPoints &points) {
 }
 
 #pragma mark -
+#pragma mark Boundary
+#pragma mark -
+
+static CGPoints LTCGPointsFromCVPoints(const std::vector<cv::Point> &points) {
+  CGPoints output(points.size());
+
+  std::transform(points.begin(), points.end(), output.begin(), [](const cv::Point &point) {
+    return CGPointMake(point.x, point.y);
+  });
+
+  return output;
+}
+
+CGPoints LTOuterBoundary(const cv::Mat &mat) {
+  LTParameterAssert(mat.type() == CV_8UC1,
+                    @"Type (%lu) of mat must be CV_8UC1", (unsigned long)mat.type());
+  std::vector<std::vector<cv::Point>> contours;
+
+  cv::Mat1b buffer = cv::Mat1b(mat.rows + 2, mat.cols + 2, 0.0);
+  mat.copyTo(buffer(cv::Rect(1, 1, mat.cols, mat.rows)));
+
+  cv::findContours(buffer, contours, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_TC89_KCOS,
+                   cv::Point(-1, -1));
+
+  if (!contours.size()) {
+    return CGPoints();
+  }
+
+  return LTCGPointsFromCVPoints(contours[0]);
+}
+
+#pragma mark -
 #pragma mark Rotation
 #pragma mark -
 
