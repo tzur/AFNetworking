@@ -768,6 +768,9 @@
 		85E647EB1D22CFFB00B40465 /* LTMeshBaseDrawer.h in Headers */ = {isa = PBXBuildFile; fileRef = 85E647E91D22CFFB00B40465 /* LTMeshBaseDrawer.h */; };
 		85E647EC1D22CFFB00B40465 /* LTMeshBaseDrawer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 85E647EA1D22CFFB00B40465 /* LTMeshBaseDrawer.mm */; };
 		85E647EE1D22D02B00B40465 /* LTMeshBaseDrawerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 85E647ED1D22D02B00B40465 /* LTMeshBaseDrawerSpec.mm */; };
+		85ECD6561D44020A007C9056 /* LTRegularGridMesh.h in Headers */ = {isa = PBXBuildFile; fileRef = 85ECD6541D44020A007C9056 /* LTRegularGridMesh.h */; };
+		85ECD6571D44020A007C9056 /* LTRegularGridMesh.mm in Sources */ = {isa = PBXBuildFile; fileRef = 85ECD6551D44020A007C9056 /* LTRegularGridMesh.mm */; };
+		85ECD65A1D440E6A007C9056 /* LTRegularGridMeshSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 85ECD6591D440E6A007C9056 /* LTRegularGridMeshSpec.mm */; };
 		85F154EB1D1283CF00967A90 /* LTPackingRectsProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = 85F154EA1D1283CF00967A90 /* LTPackingRectsProvider.h */; };
 		85F1550C1D1283DA00967A90 /* LTHorizontalPackingRectsProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = 85F1550A1D1283DA00967A90 /* LTHorizontalPackingRectsProvider.h */; };
 		85F1550D1D1283DA00967A90 /* LTHorizontalPackingRectsProvider.mm in Sources */ = {isa = PBXBuildFile; fileRef = 85F1550B1D1283DA00967A90 /* LTHorizontalPackingRectsProvider.mm */; };
@@ -2447,6 +2450,9 @@
 		85E647E91D22CFFB00B40465 /* LTMeshBaseDrawer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTMeshBaseDrawer.h; sourceTree = "<group>"; };
 		85E647EA1D22CFFB00B40465 /* LTMeshBaseDrawer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTMeshBaseDrawer.mm; sourceTree = "<group>"; };
 		85E647ED1D22D02B00B40465 /* LTMeshBaseDrawerSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTMeshBaseDrawerSpec.mm; sourceTree = "<group>"; };
+		85ECD6541D44020A007C9056 /* LTRegularGridMesh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTRegularGridMesh.h; sourceTree = "<group>"; };
+		85ECD6551D44020A007C9056 /* LTRegularGridMesh.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTRegularGridMesh.mm; sourceTree = "<group>"; };
+		85ECD6591D440E6A007C9056 /* LTRegularGridMeshSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTRegularGridMeshSpec.mm; sourceTree = "<group>"; };
 		85F154EA1D1283CF00967A90 /* LTPackingRectsProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTPackingRectsProvider.h; sourceTree = "<group>"; };
 		85F1550A1D1283DA00967A90 /* LTHorizontalPackingRectsProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTHorizontalPackingRectsProvider.h; sourceTree = "<group>"; };
 		85F1550B1D1283DA00967A90 /* LTHorizontalPackingRectsProvider.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTHorizontalPackingRectsProvider.mm; sourceTree = "<group>"; };
@@ -4880,6 +4886,8 @@
 				8BA3E13A182A602F00FDD95A /* LTProgram.mm */,
 				8B22673D19979F450049CF26 /* LTProgramFactory.h */,
 				8B22673E19979F450049CF26 /* LTProgramFactory.m */,
+				85ECD6541D44020A007C9056 /* LTRegularGridMesh.h */,
+				85ECD6551D44020A007C9056 /* LTRegularGridMesh.mm */,
 				8B9F3BE41C15DC6800FEB7C4 /* LTRenderbuffer.h */,
 				8B9F3BE51C15DC6800FEB7C4 /* LTRenderbuffer.mm */,
 				8BAB32281C282BF300DEA2A4 /* LTRenderbuffer+Writing.h */,
@@ -4932,6 +4940,7 @@
 				857F74841D3691E8005DA3E2 /* LTIndicesDataSpec.mm */,
 				8BA3E143182A848300FDD95A /* LTProgramSpec.mm */,
 				8B2267451997BBC60049CF26 /* LTProgramFactorySpec.mm */,
+				85ECD6591D440E6A007C9056 /* LTRegularGridMeshSpec.mm */,
 				8BAB32091C28273E00DEA2A4 /* LTRenderbufferSpec.mm */,
 				8BA3E141182A773300FDD95A /* LTShaderSpec.mm */,
 				8B8E50F41861D36D00821829 /* LTShaderStorageSpec.m */,
@@ -5301,6 +5310,7 @@
 				500CAA131D26B2A0009CF19F /* LTContentTouchEventDelegate.h in Headers */,
 				500CA9E11D26B013009CF19F /* LTTouchEventCancellation.h in Headers */,
 				28463D10196983DE0021A7CD /* LTDefaultModule.h in Headers */,
+				85ECD6561D44020A007C9056 /* LTRegularGridMesh.h in Headers */,
 				8B871FCA1924A75E00517F2E /* LTImageProcessor.h in Headers */,
 				8B871FCC1924A75E00517F2E /* LTIterativeImageProcessor.h in Headers */,
 				8B22673F19979F450049CF26 /* LTProgramFactory.h in Headers */,
@@ -6372,6 +6382,7 @@
 				854965791C6B27EE009720FF /* LTSolidRectsDrawer.fsh in Sources */,
 				03045D3419C176BA0075207D /* LTClarity.fsh in Sources */,
 				8BABF1B219BC7D6700AED760 /* LTRedBlackEAWProcessor.fsh in Sources */,
+				85ECD6571D44020A007C9056 /* LTRegularGridMesh.mm in Sources */,
 				8BABF1B319BC7D6700AED760 /* LTRedBlackEAWProcessor.vsh in Sources */,
 				285EEA5D1B15C552002D10EE /* LTImageTIFFCompressor.mm in Sources */,
 				8BABF1AF19BC63EC00AED760 /* LTBlueYellowEAWProcessor.vsh in Sources */,
@@ -6853,6 +6864,7 @@
 				8B16C9CD1BAF01C5002FB750 /* LTTestUtils.mm in Sources */,
 				283906A118C4DB0A00BD21CE /* LTRoundBrushSpec.mm in Sources */,
 				03C192ED18FABAC300DC6CA6 /* LTColorConversionProcessorSpec.mm in Sources */,
+				85ECD65A1D440E6A007C9056 /* LTRegularGridMeshSpec.mm in Sources */,
 				8BAECDEC18FE9B3900D43125 /* LTPassthroughProcessorSpec.mm in Sources */,
 				283906CB18C71DF500BD21CE /* LTPainterSpec.mm in Sources */,
 				8BAE3A8A18B3D1AF00DA79E1 /* LTFFTConvolutionProcessorSpec.mm in Sources */,
