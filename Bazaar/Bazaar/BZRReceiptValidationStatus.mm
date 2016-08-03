@@ -45,6 +45,10 @@ NS_ASSUME_NONNULL_BEGIN
   return YES;
 }
 
++ (BOOL)supportsSecureCoding {
+  return YES;
+}
+
 @end
 
 NS_ASSUME_NONNULL_END
