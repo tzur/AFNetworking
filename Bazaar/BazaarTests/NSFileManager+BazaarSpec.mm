@@ -99,7 +99,7 @@ context(@"files attributes retrieval", ^{
 
     expect(signal).will.matchError(^BOOL(NSError *error) {
       return error.lt_isLTDomain && error.code == BZRErrorCodeFileAttributesRetrievalFailed &&
-          error.lt_underlyingError != nil;
+          [error.lt_path isEqualToString:nonExistingFilePath] && error.lt_underlyingError != nil;
     });
   });
 
@@ -108,7 +108,8 @@ context(@"files attributes retrieval", ^{
     RACSignal *signal = [fileManager bzr_retrieveFilesSizes:failingFilePaths];
 
     expect(signal).will.matchError(^BOOL(NSError *error) {
-      return error.lt_isLTDomain && error.code == BZRErrorCodeFileAttributesRetrievalFailed;
+      return error.lt_isLTDomain && error.code == BZRErrorCodeFileAttributesRetrievalFailed &&
+          [error.lt_path isEqualToString:@"baz"];
     });
   });
 
