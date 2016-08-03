@@ -7,7 +7,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// View controller that displays a live preview and handles tap and pinch gestures.
 ///
-/// The internal views have the following accessibility identifiers: "LayerView", "SignalView".
+/// The internal views have the following accessibility identifiers: "CameraPreview", "LayerView",
+/// "SignalView".
 @interface CUIPreviewViewController : UIViewController
 
 - (instancetype)init NS_UNAVAILABLE;
