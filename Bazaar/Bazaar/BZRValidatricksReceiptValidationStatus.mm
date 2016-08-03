@@ -1,21 +1,21 @@
 // Copyright (c) 2016 Lightricks. All rights reserved.
 // Created by Daniel Lahyani.
 
-#import "BZRValidatricksReceiptValidationResponse.h"
+#import "BZRValidatricksReceiptValidationStatus.h"
 
 #import "BZRValidatricksReceiptModel.h"
 #import "NSValueTransformer+Validatricks.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@implementation BZRValidatricksReceiptValidationResponse
+@implementation BZRValidatricksReceiptValidationStatus
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
   return @{
-    @instanceKeypath(BZRReceiptValidationResponse, isValid): @"valid",
-    @instanceKeypath(BZRReceiptValidationResponse, error): @"reason",
-    @instanceKeypath(BZRReceiptValidationResponse, validationDateTime): @"currentDateTime",
-    @instanceKeypath(BZRReceiptValidationResponse, receipt): @"receipt",
+    @instanceKeypath(BZRReceiptValidationStatus, isValid): @"valid",
+    @instanceKeypath(BZRReceiptValidationStatus, error): @"reason",
+    @instanceKeypath(BZRReceiptValidationStatus, validationDateTime): @"currentDateTime",
+    @instanceKeypath(BZRReceiptValidationStatus, receipt): @"receipt",
   };
 }
 

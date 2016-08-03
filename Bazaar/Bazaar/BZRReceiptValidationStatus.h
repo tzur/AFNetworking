@@ -7,8 +7,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class BZRReceiptInfo, BZRReceiptValidationError;
 
-/// Value object that represents a receipt-validation response.
-@interface BZRReceiptValidationResponse : BZRModel
+/// Value object that represents a receipt-validation status.
+@interface BZRReceiptValidationStatus : BZRModel
 
 /// \c YES if the receipt was validated successfully and is found to be valid. If this is \c NO then
 /// \c error will provide information on the reason for validation failure.

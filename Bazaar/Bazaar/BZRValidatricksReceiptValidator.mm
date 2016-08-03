@@ -8,7 +8,7 @@
 
 #import "BZRReceiptValidationParameters.h"
 #import "BZRReceiptValidationParameters+Validatricks.h"
-#import "BZRValidatricksReceiptValidationResponse.h"
+#import "BZRValidatricksReceiptValidationStatus.h"
 #import "FBRHTTPClient+Validatricks.h"
 #import "NSErrorCodes+Bazaar.h"
 #import "RACSignal+Bazaar.h"
@@ -78,7 +78,7 @@ static NSString * const kReceiptValidationEndpoint = @"validateReceipt";
   FBRHTTPRequestParameters *requestParameters = parameters.validatricksRequestParameters;
   return [[[self.httpClient POST:kReceiptValidationEndpoint withParameters:requestParameters]
       fbr_deserializeJSON]
-      bzr_deserializeModel:[BZRValidatricksReceiptValidationResponse class]];
+      bzr_deserializeModel:[BZRValidatricksReceiptValidationStatus class]];
 }
 
 @end
