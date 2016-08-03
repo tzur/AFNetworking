@@ -123,7 +123,7 @@ static CGPoints LTCGPointsFromCVPoints(const std::vector<cv::Point> &points) {
   return output;
 }
 
-CGPoints LTOuterBoundary(const cv::Mat &mat) {
+static std::vector<std::vector<cv::Point>> LTContours(const cv::Mat &mat, int mode) {
   LTParameterAssert(mat.type() == CV_8UC1,
                     @"Type (%lu) of mat must be CV_8UC1", (unsigned long)mat.type());
   std::vector<std::vector<cv::Point>> contours;
@@ -131,14 +131,23 @@ CGPoints LTOuterBoundary(const cv::Mat &mat) {
   cv::Mat1b buffer = cv::Mat1b(mat.rows + 2, mat.cols + 2, 0.0);
   mat.copyTo(buffer(cv::Rect(1, 1, mat.cols, mat.rows)));
 
-  cv::findContours(buffer, contours, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_TC89_KCOS,
-                   cv::Point(-1, -1));
+  cv::findContours(buffer, contours, mode, cv::CHAIN_APPROX_TC89_KCOS, cv::Point(-1, -1));
+  return contours;
+}
 
-  if (!contours.size()) {
-    return CGPoints();
+CGPoints LTOuterBoundary(const cv::Mat &mat) {
+  std::vector<std::vector<cv::Point>> contours = LTContours(mat, cv::RETR_EXTERNAL);
+  return !contours.size() ? CGPoints() : LTCGPointsFromCVPoints(contours[0]);
+}
+
+std::vector<CGPoints> LTBoundaries(const cv::Mat &mat) {
+  std::vector<std::vector<cv::Point>> contours = LTContours(mat, cv::RETR_LIST);
+
+  std::vector<CGPoints> boundaries;
+  for(auto contour : contours) {
+    boundaries.push_back(LTCGPointsFromCVPoints(contour));
   }
-
-  return LTCGPointsFromCVPoints(contours[0]);
+  return boundaries;
 }
 
 #pragma mark -
