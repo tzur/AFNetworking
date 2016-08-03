@@ -97,6 +97,12 @@ cv::Mat4b LTWhiteGrayCheckerboardPattern(CGSize size, uint tileSize);
 cv::Mat4b LTCheckerboardPattern(CGSize size, uint tileSize, cv::Vec4b firstColor,
                                 cv::Vec4b secondColor);
 
+/// Returns new matrix containing a subset of the rows of the given \c mat defined by \c indices, in
+/// the order they are specified in the \c indices vector. Every value in \c indices must be in the
+/// range <tt>[0, mat.rows - 1]</tt>. An invalid index will raise an \c NSInvalidArgumentException
+/// exception.
+cv::Mat LTRowSubset(const cv::Mat &mat, const std::vector<int> &indices);
+
 #pragma mark -
 #pragma mark Details
 #pragma mark -

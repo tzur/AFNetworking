@@ -237,3 +237,22 @@ cv::Mat4b LTCheckerboardPattern(CGSize size, uint tileSize, cv::Vec4b firstColor
 
   return checkerboard;
 }
+
+cv::Mat LTRowSubset(const cv::Mat &mat, const std::vector<int> &indices) {
+  cv::Mat result(cv::Size(mat.cols, (int)indices.size()), mat.type());
+
+  uchar *output = result.data;
+
+  for (int index : indices) {
+    LTParameterAssert(index >= 0 && index < mat.rows, @"Indices must be in the range [0, %d], "
+                      "got: %d", mat.rows - 1, index);
+    
+    const uchar *start = mat.ptr(index);
+    const uchar *end = start + mat.elemSize() * mat.cols;
+
+    memcpy(output, start, end - start);
+    output += (end - start);
+  }
+
+  return result;
+}
