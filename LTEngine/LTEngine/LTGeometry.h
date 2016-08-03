@@ -31,6 +31,18 @@ BOOL LTPointsAreCollinear(const CGPoints &points);
 CGPoints LTConvexHull(const CGPoints &points);
 
 #pragma mark -
+#pragma mark Boundary
+#pragma mark -
+
+/// Returns the approximate outer boundary of points surrounding the non-zero values of the given
+/// \c mat. The computation is performed using the k-cosine measure of Teh and Chin (see Teh, C.H.
+/// and Chin, R.T., On the Detection of Dominant Points on Digital Curve. PAMI 11 8, pp 859-872
+/// (1989) for more details). The \c type() of the given \c mat must be \c CV_8UC1.
+/// In case that the given \c mat contains several distinct areas of non-zero values, the boundary
+/// of an arbitrarily chosen, but non-nested area is returned.
+CGPoints LTOuterBoundary(const cv::Mat &mat);
+
+#pragma mark -
 #pragma mark Rotation
 #pragma mark -
 

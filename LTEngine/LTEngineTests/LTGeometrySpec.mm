@@ -198,6 +198,84 @@ context(@"convex hull", ^{
   });
 });
 
+context(@"outer boundary calculation", ^{
+  it(@"should return no points on an empty mask", ^{
+    cv::Mat1b mask = cv::Mat1b(3, 3, 0.0);
+    CGPoints points = LTOuterBoundary(mask);
+    expect(points.size()).to.equal(0);
+  });
+
+  it(@"should return the correct points for a single center point", ^{
+    cv::Mat1b mask = cv::Mat1b(3, 3, 0.0);
+    mask[1][1] = 255;
+    CGPoints points = LTOuterBoundary(mask);
+    expect(points.size()).to.equal(1);
+    expect(points[0]).to.equal(CGPointMake(1, 1));
+  });
+
+  it(@"should return the correct points for a single edge point", ^{
+    cv::Mat1b mask = cv::Mat1b(5, 5, 0.0);
+    mask[0][1] = 255;
+    CGPoints points = LTOuterBoundary(mask);
+    expect(points.size()).to.equal(1);
+    expect(points[0]).to.equal(CGPointMake(1, 0));
+  });
+
+  it(@"should return the correct points for a single corner point", ^{
+    cv::Mat1b mask = cv::Mat1b(5, 5, 0.0);
+    mask[0][0] = 255;
+    CGPoints points = LTOuterBoundary(mask);
+    expect(points.size()).to.equal(1);
+    expect(points[0]).to.equal(CGPointMake(0, 0));
+  });
+
+  it(@"should return the correct points for a centered rect", ^{
+    cv::Mat1b mask = cv::Mat1b(5, 5, 0.0);
+    mask(cv::Rect(1, 1, 3, 3)).setTo(255);
+    CGPoints points = LTOuterBoundary(mask);
+    expect(points.size()).to.equal(4);
+    expect(points[0]).to.equal(CGPointMake(1, 1));
+    expect(points[1]).to.equal(CGPointMake(1, 3));
+    expect(points[2]).to.equal(CGPointMake(3, 3));
+    expect(points[3]).to.equal(CGPointMake(3, 1));
+  });
+
+  it(@"should return the correct outer points for a centered rect with hole", ^{
+    cv::Mat1b mask = cv::Mat1b(8, 10, 0.0);
+    mask(cv::Rect(1, 1, 8, 6)).setTo(255);
+    mask(cv::Rect(3, 3, 4, 2)).setTo(0);
+
+    CGPoints points = LTOuterBoundary(mask);
+    expect(points.size()).to.equal(4);
+    expect(points[0]).to.equal(CGPointMake(1, 1));
+    expect(points[1]).to.equal(CGPointMake(1, 6));
+    expect(points[2]).to.equal(CGPointMake(8, 6));
+    expect(points[3]).to.equal(CGPointMake(8, 1));
+  });
+
+  it(@"should return one of the boundaries for two distinct rects", ^{
+    cv::Mat1b mask = cv::Mat1b(8, 10, 0.0);
+    mask(cv::Rect(1, 1, 3, 4)).setTo(255);
+    mask(cv::Rect(5, 1, 4, 5)).setTo(255);
+
+    CGPoints points = LTOuterBoundary(mask);
+    expect(points.size()).to.equal(4);
+    expect(points[0]).to.equal(CGPointMake(5, 1));
+    expect(points[1]).to.equal(CGPointMake(5, 5));
+    expect(points[2]).to.equal(CGPointMake(8, 5));
+    expect(points[3]).to.equal(CGPointMake(8, 1));
+  });
+
+  it(@"should raise when attempting to compute boundary for mats of wrong type", ^{
+    expect(^{
+      LTOuterBoundary(cv::Mat4b(1, 1));
+    }).to.raise(NSInvalidArgumentException);
+    expect(^{
+      LTOuterBoundary(cv::Mat1f(1, 1));
+    }).to.raise(NSInvalidArgumentException);
+  });
+});
+
 context(@"affine transformations", ^{
   it(@"should correctly rotate a given point", ^{
     CGPoint point = LTRotatePoint(CGPointMake(1, 0), M_PI_2);
