@@ -8,57 +8,7 @@
 #import "PTUChangeset.h"
 #import "PTUChangesetMetadata.h"
 #import "PTUChangesetMove.h"
-
-static BOOL PTUCollectionSemanticallyEqual(id<LTRandomAccessCollection> lhs,
-                                           id<LTRandomAccessCollection> rhs) {
-  if (lhs == rhs) {
-    return YES;
-  }
-
-  if (lhs.count != rhs.count) {
-    return NO;
-  }
-
-  for (NSUInteger i = 0; i < lhs.count; ++i) {
-    if (![lhs[i] isEqual:rhs[i]]) {
-      return NO;
-    }
-  }
-
-  return YES;
-}
-
-static BOOL PTUDataModelSemanticallyEqual(PTUDataModel *lhs, PTUDataModel *rhs) {
-  if (lhs == rhs) {
-    return YES;
-  }
-
-  if (lhs.count != rhs.count) {
-    return NO;
-  }
-
-  for (NSUInteger i = 0; i < lhs.count; ++i) {
-    if (!PTUCollectionSemanticallyEqual(lhs[i], rhs[i])) {
-      return NO;
-    }
-  }
-
-  return YES;
-}
-
-static BOOL PTUCompare(NSObject *lhs, NSObject *rhs) {
-  return rhs == lhs || [lhs isEqual:rhs];
-}
-
-static BOOL PTUChangesetSemanticallyEqual(PTUChangeset *lhs, PTUChangeset *rhs) {
-  return lhs == rhs ||
-      (PTUCompare(lhs.insertedIndexes, rhs.insertedIndexes) &&
-      PTUCompare(lhs.deletedIndexes, rhs.deletedIndexes) &&
-      PTUCompare(lhs.updatedIndexes, rhs.updatedIndexes) &&
-      PTUCompare(lhs.movedIndexes, rhs.movedIndexes) &&
-      PTUDataModelSemanticallyEqual(lhs.beforeDataModel, rhs.beforeDataModel) &&
-      PTUDataModelSemanticallyEqual(lhs.afterDataModel, rhs.afterDataModel));
-}
+#import "PTUTestUtils.h"
 
 SpecBegin(PTUChangesetProviderReverser)
 
