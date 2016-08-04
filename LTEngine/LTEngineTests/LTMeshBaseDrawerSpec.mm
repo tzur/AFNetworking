@@ -10,28 +10,6 @@
 #import "LTTexture+Factory.h"
 #import "LTTextureDrawerExamples.h"
 
-static cv::Mat4b LTGenerateCellsMat(CGSize matSize, CGSize cellSize) {
-  LTParameterAssert(std::round(matSize) == matSize);
-  LTParameterAssert(std::round(cellSize) == cellSize);
-
-  CGSize meshSize = matSize / cellSize;
-  LTParameterAssert(std::round(meshSize) == meshSize);
-
-  cv::Mat4b mat(matSize.height, matSize.width);
-  LTRandom *random = [[LTRandom alloc] initWithSeed:0];
-  for (int i = 0; i < meshSize.height; ++i) {
-    for (int j = 0; j < meshSize.width; ++j) {
-      cv::Rect rect(j * cellSize.width, i * cellSize.height, cellSize.width, cellSize.height);
-      cv::Vec4b color([random randomUnsignedIntegerBelow:256],
-                      [random randomUnsignedIntegerBelow:256],
-                      [random randomUnsignedIntegerBelow:256], 255);
-      mat(rect).setTo(color);
-    }
-  }
-
-  return mat;
-}
-
 static cv::Mat4b LTGenerateWireframeMat(CGSize wireframeSize, CGSize cellSize) {
   LTParameterAssert(std::round(wireframeSize) == wireframeSize);
   LTParameterAssert(std::round(cellSize) == cellSize);

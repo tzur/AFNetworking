@@ -82,6 +82,11 @@ UIImage *LTCreateUIImage(CGSize size);
 cv::Mat LTLoadDeviceDependentMat(Class classInBundle, NSString *simulatorName,
                                  NSString *deviceName);
 
+/// Returns a matrix of size \c matSize which is devided into cells of uniform size \c cellSize with
+/// random RGB colors. \c matSize and \c cellSize must be integral. The grid that is obtained from
+/// the cells will be of size <tt>matSize / cellSize</tt>. This size must also be integral.
+cv::Mat4b LTGenerateCellsMat(CGSize matSize, CGSize cellSize);
+
 /// Returns the mean value of all elements in the given container.
 template <typename Container>
 double LTMean(const Container &container) {

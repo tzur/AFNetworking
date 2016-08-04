@@ -13,22 +13,6 @@
 #import "LTMeshBaseDrawer.h"
 #import "LTFbo.h"
 
-static cv::Mat4b LTGenerateCellsMat(CGSize matSize, CGSize meshSize, CGSize cellSize) {
-  cv::Mat4b mat (matSize.height, matSize.width);
-  LTRandom *random = [[LTRandom alloc] initWithSeed:0];
-  for (int i = 0; i < meshSize.height; ++i) {
-    for (int j = 0; j < meshSize.width; ++j) {
-      cv::Rect rect(j * cellSize.width, i * cellSize.height, cellSize.width, cellSize.height);
-      cv::Vec4b color([random randomUnsignedIntegerBelow:256],
-                      [random randomUnsignedIntegerBelow:256],
-                      [random randomUnsignedIntegerBelow:256], 255);
-      mat(rect).setTo(color);
-    }
-  }
-
-  return mat;
-}
-
 SpecBegin(LTMeshProcessor)
 
 __block LTTexture *input;
@@ -149,7 +133,7 @@ context(@"processing", ^{
     [input clearWithColor:LTVector4::ones()];
     input.magFilterInterpolation = LTTextureInterpolationNearest;
     input.minFilterInterpolation = LTTextureInterpolationNearest;
-    cv::Mat4b cellsMat = LTGenerateCellsMat(kUnpaddedInputSize, kMeshSize, cellSize);
+    cv::Mat4b cellsMat = LTGenerateCellsMat(kUnpaddedInputSize, cellSize);
     [input mappedImageForWriting:^(cv::Mat *mapped, BOOL) {
       cellsMat.copyTo((*mapped)(LTCVRectWithCGRect(displacementSourceRect)));
     }];
