@@ -266,12 +266,131 @@ context(@"outer boundary calculation", ^{
     expect(points[3]).to.equal(CGPointMake(8, 1));
   });
 
-  it(@"should raise when attempting to compute boundary for mats of wrong type", ^{
+  it(@"should raise when attempting to compute boundary for mats of the wrong type", ^{
     expect(^{
       LTOuterBoundary(cv::Mat4b(1, 1));
     }).to.raise(NSInvalidArgumentException);
     expect(^{
       LTOuterBoundary(cv::Mat1f(1, 1));
+    }).to.raise(NSInvalidArgumentException);
+  });
+});
+
+context(@"boundaries calculations", ^{
+  it(@"should return no boundaries on an empty mask", ^{
+    cv::Mat1b mask = cv::Mat1b(3, 3, 0.0);
+    std::vector<CGPoints> boundaries = LTBoundaries(mask);
+    expect(boundaries.size()).to.equal(0);
+  });
+
+  it(@"should return the correct points for a single center point", ^{
+    cv::Mat1b mask = cv::Mat1b(3, 3, 0.0);
+    mask[1][1] = 255;
+    std::vector<CGPoints> boundaries = LTBoundaries(mask);
+    expect(boundaries.size()).to.equal(1);
+    expect(boundaries[0].size()).to.equal(1);
+    expect(boundaries[0][0]).to.equal(CGPointMake(1, 1));
+  });
+
+  it(@"should return the correct points for a single edge point", ^{
+    cv::Mat1b mask = cv::Mat1b(5, 5, 0.0);
+    mask[0][1] = 255;
+    std::vector<CGPoints> boundaries = LTBoundaries(mask);
+    expect(boundaries.size()).to.equal(1);
+    expect(boundaries[0].size()).to.equal(1);
+    expect(boundaries[0][0]).to.equal(CGPointMake(1, 0));
+  });
+
+  it(@"should return the correct points for a single corner point", ^{
+    cv::Mat1b mask = cv::Mat1b(5, 5, 0.0);
+    mask[0][0] = 255;
+    std::vector<CGPoints> boundaries = LTBoundaries(mask);
+    expect(boundaries.size()).to.equal(1);
+    expect(boundaries[0].size()).to.equal(1);
+    expect(boundaries[0][0]).to.equal(CGPointMake(0, 0));
+  });
+
+  it(@"should return the correct points for three distinct points", ^{
+    cv::Mat1b mask = cv::Mat1b(5, 5, 0.0);
+    mask[0][0] = 255;
+    mask[2][2] = 255;
+    mask[3][4] = 255;
+
+    std::vector<CGPoints> boundaries = LTBoundaries(mask);
+    expect(boundaries.size()).to.equal(3);
+    expect(boundaries[0].size()).to.equal(1);
+    expect(boundaries[1].size()).to.equal(1);
+    expect(boundaries[2].size()).to.equal(1);
+
+    expect(boundaries[0][0]).to.equal(CGPointMake(4, 3));
+    expect(boundaries[1][0]).to.equal(CGPointMake(2, 2));
+    expect(boundaries[2][0]).to.equal(CGPointMake(0, 0));
+  });
+
+  it(@"should return the correct points for a centered rect", ^{
+    cv::Mat1b mask = cv::Mat1b(5, 5, 0.0);
+    mask(cv::Rect(1, 1, 3, 3)).setTo(255);
+    std::vector<CGPoints> boundaries = LTBoundaries(mask);
+    expect(boundaries.size()).to.equal(1);
+    CGPoints points = boundaries[0];
+    expect(points.size()).to.equal(4);
+    expect(points[0]).to.equal(CGPointMake(1, 1));
+    expect(points[1]).to.equal(CGPointMake(1, 3));
+    expect(points[2]).to.equal(CGPointMake(3, 3));
+    expect(points[3]).to.equal(CGPointMake(3, 1));
+  });
+
+  it(@"should return the correct outer points for two nested rects", ^{
+    cv::Mat1b mask = cv::Mat1b(80, 100, 0.0);
+    mask(cv::Rect(10, 10, 80, 60)).setTo(255);
+    mask(cv::Rect(30, 30, 40, 20)).setTo(0);
+
+    std::vector<CGPoints> boundaries = LTBoundaries(mask);
+    expect(boundaries.size()).to.equal(2);
+    CGPoints firstBoundary = boundaries[0];
+    expect(firstBoundary.size()).to.equal(4);
+    expect(firstBoundary[0]).to.equal(CGPointMake(30, 29));
+    expect(firstBoundary[1]).to.equal(CGPointMake(70, 30));
+    expect(firstBoundary[2]).to.equal(CGPointMake(69, 50));
+    expect(firstBoundary[3]).to.equal(CGPointMake(29, 49));
+
+    CGPoints secondBoundary = boundaries[1];
+    expect(secondBoundary.size()).to.equal(4);
+    expect(secondBoundary[0]).to.equal(CGPointMake(10, 10));
+    expect(secondBoundary[1]).to.equal(CGPointMake(10, 69));
+    expect(secondBoundary[2]).to.equal(CGPointMake(89, 69));
+    expect(secondBoundary[3]).to.equal(CGPointMake(89, 10));
+  });
+
+  it(@"should return both boundaries for two distinct rects", ^{
+    cv::Mat1b mask = cv::Mat1b(80, 100, 0.0);
+    mask(cv::Rect(10, 10, 30, 40)).setTo(255);
+    mask(cv::Rect(50, 10, 40, 50)).setTo(255);
+
+    std::vector<CGPoints> boundaries = LTBoundaries(mask);
+    expect(boundaries.size()).to.equal(2);
+
+    CGPoints firstBoundary = boundaries[0];
+    expect(firstBoundary.size()).to.equal(4);
+    expect(firstBoundary[0]).to.equal(CGPointMake(50, 10));
+    expect(firstBoundary[1]).to.equal(CGPointMake(50, 59));
+    expect(firstBoundary[2]).to.equal(CGPointMake(89, 59));
+    expect(firstBoundary[3]).to.equal(CGPointMake(89, 10));
+
+    CGPoints secondBoundary = boundaries[1];
+    expect(secondBoundary.size()).to.equal(4);
+    expect(secondBoundary[0]).to.equal(CGPointMake(10, 10));
+    expect(secondBoundary[1]).to.equal(CGPointMake(10, 49));
+    expect(secondBoundary[2]).to.equal(CGPointMake(39, 49));
+    expect(secondBoundary[3]).to.equal(CGPointMake(39, 10));
+  });
+
+  it(@"should raise when attempting to compute boundary for mats of the wrong type", ^{
+    expect(^{
+      LTBoundaries(cv::Mat4b(1, 1));
+    }).to.raise(NSInvalidArgumentException);
+    expect(^{
+      LTBoundaries(cv::Mat1f(1, 1));
     }).to.raise(NSInvalidArgumentException);
   });
 });
