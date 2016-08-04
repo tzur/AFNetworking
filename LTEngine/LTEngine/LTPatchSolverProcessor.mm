@@ -105,6 +105,7 @@
 - (void)setDefaultValues {
   self.sourceRect = [LTRotatedRect rect:CGRectFromSize(self.source.size)];
   self.targetRect = [LTRotatedRect rect:CGRectFromSize(self.source.size)];
+  self.flip = NO;
 }
 
 - (void)processMaskIfNeeded {
@@ -113,6 +114,18 @@
     [self calculateChi];
     self.lastProcessedMaskGenerationID = self.mask.generationID;
   }
+}
+
+- (void)flipResizedSourceIfNeeded {
+  if (!self.flip) {
+    return;
+  }
+  // TODO:(danny) Implement flipping with GPU support.
+  [self.sourceResized mappedImageForWriting:^(cv::Mat * _Nonnull mapped, BOOL) {
+    CGSize size = [self maskWorkingRect].size;
+    cv::Rect rect = cv::Rect(0, 0, size.width, size.height);
+    cv::flip((*mapped)(rect), (*mapped)(rect), 1.0);
+  }];
 }
 
 - (void)createTransformedKernel {
@@ -184,6 +197,10 @@
   // TODO: (yaron) optional performance boost: process textures that their rect has been changed
   // only.
   [self.sourceResizer process];
+
+  // Flip the source patch if needed, to make sure the membrane will be aligned correctly.
+  [self flipResizedSourceIfNeeded];
+
   [self.targetResizer process];
 
   // TODO: (yaron) optional performance boost is to move all GPU operations in this processor to CPU

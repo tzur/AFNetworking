@@ -25,4 +25,8 @@
 /// (0, 0, source.width, source.height).
 @property (strong, nonatomic) LTRotatedRect *targetRect;
 
+/// \c YES if the \c sourceRect should be used in a mirrored way. The mirroring is performed along
+/// the vertical line with <tt>x = 0.5</tt>, in texture coordinate space.
+@property (nonatomic) BOOL flip;
+
 @end
