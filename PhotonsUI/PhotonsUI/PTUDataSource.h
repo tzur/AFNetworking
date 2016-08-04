@@ -19,6 +19,10 @@ NS_ASSUME_NONNULL_BEGIN
 /// be returned.
 - (nullable NSIndexPath *)indexPathOfDescriptor:(id<PTNDescriptor>)descriptor;
 
+/// Hot signal sending a \c RACUnit every time the receiver's collection view is updated and
+/// completes when the receiver is deallocated.
+@property (readonly, nonatomic) RACSignal *didUpdateCollectionView;
+
 /// Title associated with the data provided in this data source, or \c nil if no such title exists.
 /// This property is KVO compliant.
 @property (readonly, nonatomic, nullable) NSString *title;

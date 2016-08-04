@@ -11,6 +11,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Current data represented by the receiever.
 @property (strong, nonatomic) NSArray<NSArray<id<PTNDescriptor>> *> *data;
 
+/// Subject used as the \c didUpdateCollectionView signal.
+@property (readonly, nonatomic) RACSubject *didUpdateCollectionView;
+
 /// Title associated with this data.
 @property (strong, nonatomic, nullable) NSString *title;
 

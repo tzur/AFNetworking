@@ -231,12 +231,94 @@ context(@"collection view", ^{
     it(@"should correctly select items", ^{
       dataSource.data = @[@[asset]];
       [collectionView reloadData];
+      [dataSource.didUpdateCollectionView sendNext:[RACUnit defaultUnit]];
       [collectionView layoutIfNeeded];
       
       NSIndexPath *indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
       expect([collectionView cellForItemAtIndexPath:indexPath].isSelected).to.beFalsy();
       [viewController selectItem:asset];
       expect([collectionView cellForItemAtIndexPath:indexPath].isSelected).to.beTruthy();
+    });
+    
+    context(@"deferring", ^{
+      __block id<PTNDescriptor> otherAsset;
+      __block id<PTNDescriptor> anotherAsset;
+      __block NSIndexPath *indexPath;
+      __block NSIndexPath *otherIndexPath;
+      
+      beforeEach(^{
+        otherAsset = PTNCreateAssetDescriptor(nil, @"bar", 0, nil, nil, 0);
+        anotherAsset = PTNCreateAssetDescriptor(nil, @"baz", 0, nil, nil, 0);
+        indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
+        otherIndexPath = [NSIndexPath indexPathForItem:1 inSection:0];
+        dataSource.data = @[@[asset]];
+        [dataSource.didUpdateCollectionView sendNext:[RACUnit defaultUnit]];
+        [collectionView reloadData];
+        [collectionView layoutIfNeeded];
+      });
+      
+      it(@"should defer selection when collection doesn't contain item", ^{
+        [viewController selectItem:otherAsset];
+        
+        expect([collectionView cellForItemAtIndexPath:indexPath].isSelected).to.beFalsy();
+        
+        dataSource.data = @[@[asset, otherAsset]];
+        [collectionView reloadData];
+        [collectionView layoutIfNeeded];
+        [dataSource.didUpdateCollectionView sendNext:[RACUnit defaultUnit]];
+        expect([collectionView cellForItemAtIndexPath:otherIndexPath].isSelected).to.beTruthy();
+      });
+      
+      it(@"should defer only the latest selection", ^{
+        [viewController selectItem:otherAsset];
+        [viewController selectItem:anotherAsset];
+        
+        expect([collectionView cellForItemAtIndexPath:indexPath].isSelected).to.beFalsy();
+        
+        dataSource.data = @[@[otherAsset, asset]];
+        [dataSource.didUpdateCollectionView sendNext:[RACUnit defaultUnit]];
+        expect([collectionView cellForItemAtIndexPath:indexPath].isSelected).to.beFalsy();
+        expect([collectionView cellForItemAtIndexPath:otherIndexPath].isSelected).to.beFalsy();
+        
+        dataSource.data = @[@[anotherAsset, otherAsset]];
+        [dataSource.didUpdateCollectionView sendNext:[RACUnit defaultUnit]];
+        expect([collectionView cellForItemAtIndexPath:indexPath].isSelected).to.beTruthy();
+        expect([collectionView cellForItemAtIndexPath:otherIndexPath].isSelected).to.beFalsy();
+      });
+      
+      it(@"should stop deferring when another asset was selected", ^{
+        [viewController selectItem:otherAsset];
+        [viewController selectItem:asset];
+        
+        expect([collectionView cellForItemAtIndexPath:indexPath].isSelected).to.beTruthy();
+        
+        dataSource.data = @[@[otherAsset, asset]];
+        [collectionView reloadData];
+        [collectionView layoutIfNeeded];
+        [dataSource.didUpdateCollectionView sendNext:[RACUnit defaultUnit]];
+        expect([collectionView cellForItemAtIndexPath:indexPath].isSelected).to.beFalsy();
+        expect([collectionView cellForItemAtIndexPath:otherIndexPath].isSelected).to.beTruthy();
+      });
+      
+      it(@"should defer until selected", ^{
+        [viewController selectItem:otherAsset];
+        
+        dataSource.data = @[@[anotherAsset, asset]];
+        [collectionView reloadData];
+        [collectionView layoutIfNeeded];
+        [dataSource.didUpdateCollectionView sendNext:[RACUnit defaultUnit]];
+        
+        expect([collectionView cellForItemAtIndexPath:indexPath].isSelected).to.beFalsy();
+        expect([collectionView cellForItemAtIndexPath:otherIndexPath].isSelected).to.beFalsy();
+        
+        dataSource.data = @[@[otherAsset, asset]];
+        [collectionView reloadData];
+        [collectionView layoutIfNeeded];
+        [dataSource.didUpdateCollectionView sendNext:[RACUnit defaultUnit]];
+        
+        expect([collectionView cellForItemAtIndexPath:indexPath].isSelected).to.beTruthy();
+        expect([collectionView cellForItemAtIndexPath:otherIndexPath].isSelected).to.beFalsy();
+      });
     });
 
     it(@"should correctly deselect items", ^{
@@ -304,8 +386,10 @@ context(@"collection view", ^{
   });
 
   context(@"scrolling", ^{
+    __block id<PTNDescriptor> otherAsset;
+    
     beforeEach(^{
-      id<PTNDescriptor> otherAsset = PTNCreateAssetDescriptor(nil, @"bar", 0, nil, nil, 0);
+      otherAsset = PTNCreateAssetDescriptor(nil, @"bar", 0, nil, nil, 0);
       dataSource.data = @[@[
         otherAsset,
         otherAsset,
@@ -324,6 +408,7 @@ context(@"collection view", ^{
       beforeEach(^{
         viewController.view.frame = CGRectMake(0, 0, 100, 302);
         [viewController.view layoutIfNeeded];
+        [dataSource.didUpdateCollectionView sendNext:[RACUnit defaultUnit]];
       });
 
       it(@"should correctly scroll to top", ^{
@@ -370,6 +455,7 @@ context(@"collection view", ^{
         [viewController setConfiguration:configuration animated:NO];
         viewController.view.frame = CGRectMake(0, 0, 302, 100);
         [viewController.view layoutIfNeeded];
+        [dataSource.didUpdateCollectionView sendNext:[RACUnit defaultUnit]];
       });
 
       it(@"should correctly scroll to top", ^{
@@ -398,6 +484,133 @@ context(@"collection view", ^{
         [viewController scrollToItem:asset
                     atScrollPosition:PTUCollectionViewScrollPositionBottomRight animated:NO];
         expect(collectionView.contentOffset).to.equal(CGPointMake(101, 0));
+      });
+    });
+    
+    context(@"deferring", ^{
+      __block id<PTNDescriptor> bazAsset;
+      __block id<PTNDescriptor> gazAsset;
+      
+      beforeEach(^{
+        viewController.view.frame = CGRectMake(0, 0, 100, 302);
+        [viewController.view layoutIfNeeded];
+        bazAsset = PTNCreateDescriptor(nil, @"baz", 0);
+        gazAsset = PTNCreateDescriptor(nil, @"gaz", 0);
+      });
+      
+      it(@"should defer scrolling when item isn't in the collection", ^{
+        [viewController scrollToItem:bazAsset
+                    atScrollPosition:PTUCollectionViewScrollPositionCenter
+                            animated:NO];
+        expect(collectionView.contentOffset).to.equal(CGPointMake(0, 0));
+        
+        dataSource.data = @[@[
+          otherAsset,
+          otherAsset,
+          otherAsset,
+          bazAsset,
+          otherAsset,
+          otherAsset,
+          otherAsset
+        ]];
+        [dataSource.didUpdateCollectionView sendNext:[RACUnit defaultUnit]];
+        
+        expect(collectionView.contentOffset).to.equal(CGPointMake(0, 202));
+      });
+      
+      it(@"should defer only the latest scroll", ^{
+        [viewController scrollToItem:bazAsset
+                    atScrollPosition:PTUCollectionViewScrollPositionCenter
+                            animated:NO];
+        expect(collectionView.contentOffset).to.equal(CGPointMake(0, 0));
+
+        [viewController scrollToItem:gazAsset
+                    atScrollPosition:PTUCollectionViewScrollPositionCenter
+                            animated:NO];
+        expect(collectionView.contentOffset).to.equal(CGPointMake(0, 0));
+        
+        dataSource.data = @[@[
+          otherAsset,
+          bazAsset,
+          otherAsset,
+          gazAsset,
+          otherAsset,
+          otherAsset,
+          otherAsset
+        ]];
+        [dataSource.didUpdateCollectionView sendNext:[RACUnit defaultUnit]];
+        expect(collectionView.contentOffset).to.equal(CGPointMake(0, 202));
+      });
+      
+      it(@"should stop deferring when a new asset is scrolled to", ^{
+        [viewController scrollToItem:bazAsset
+                    atScrollPosition:PTUCollectionViewScrollPositionCenter
+                            animated:NO];
+        expect(collectionView.contentOffset).to.equal(CGPointMake(0, 0));
+
+        [viewController scrollToItem:asset
+                    atScrollPosition:PTUCollectionViewScrollPositionCenter
+                            animated:NO];
+        expect(collectionView.contentOffset).to.equal(CGPointMake(0, 202));
+
+        dataSource.data = @[@[
+          bazAsset,
+          otherAsset,
+          otherAsset,
+          otherAsset,
+          otherAsset,
+          otherAsset,
+          otherAsset
+        ]];
+        [dataSource.didUpdateCollectionView sendNext:[RACUnit defaultUnit]];
+        
+        expect(collectionView.contentOffset).to.equal(CGPointMake(0, 202));
+      });
+      
+      it(@"should stop deferring when scrolling is manually applied", ^{
+        [viewController scrollToItem:bazAsset
+                    atScrollPosition:PTUCollectionViewScrollPositionCenter
+                            animated:NO];
+        
+        collectionView.contentOffset = CGPointMake(0, 1);
+        
+        dataSource.data = @[@[
+          otherAsset,
+          otherAsset,
+          otherAsset,
+          otherAsset,
+          otherAsset,
+          otherAsset,
+          bazAsset
+        ]];
+        [dataSource.didUpdateCollectionView sendNext:[RACUnit defaultUnit]];
+        
+        expect(collectionView.contentOffset).to.equal(CGPointMake(0, 1));
+      });
+      
+      it(@"should defer scrolling until applied", ^{
+        [viewController scrollToItem:gazAsset
+                    atScrollPosition:PTUCollectionViewScrollPositionCenter
+                            animated:NO];
+        expect(collectionView.contentOffset).to.equal(CGPointMake(0, 0));
+        
+        dataSource.data = @[@[
+          otherAsset,
+          otherAsset
+        ]];
+        [dataSource.didUpdateCollectionView sendNext:[RACUnit defaultUnit]];
+        expect(collectionView.contentOffset).to.equal(CGPointMake(0, 0));
+        
+        dataSource.data = @[@[
+          otherAsset,
+          otherAsset,
+          otherAsset,
+          gazAsset,
+          otherAsset,
+          otherAsset
+        ]];
+        [dataSource.didUpdateCollectionView sendNext:[RACUnit defaultUnit]];
+        expect(collectionView.contentOffset).to.equal(CGPointMake(0, 202));
       });
     });
   });

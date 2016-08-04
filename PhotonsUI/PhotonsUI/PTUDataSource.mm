@@ -29,6 +29,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Class used for collection view cells.
 @property (readonly, nonatomic) Class cellClass;
 
+/// Subject sending a \c RACUnit every time the receiver's collection view is updated.
+@property (readonly, nonatomic) RACSubject *didUpdateCollectionViewSubject;
+
 /// Current data model.
 @property (strong, nonatomic) PTUDataModel *dataModel;
 
@@ -64,8 +67,10 @@ NS_ASSUME_NONNULL_BEGIN
     _cellViewModelProvider = cellViewModelProvider;
     _changesetProvider = changesetProvider;
     _cellClass = cellClass;
+    
     self.dataModel = @[];
     self.sectionTitles = @{};
+    _didUpdateCollectionViewSubject = [RACSubject subject];
 
     [self setupCollectionView:collectionView];
     [self bindMetadataSignal];
@@ -93,6 +98,7 @@ NS_ASSUME_NONNULL_BEGIN
 
         if (!changeset.hasIncrementalChanges) {
           [self.collectionView reloadData];
+          [self.didUpdateCollectionViewSubject sendNext:[RACUnit defaultUnit]];
           return;
         }
 
@@ -118,7 +124,9 @@ NS_ASSUME_NONNULL_BEGIN
           for (PTUChangesetMove *move in changeset.movedIndexes) {
             [self.collectionView moveItemAtIndexPath:move.fromIndex toIndexPath:move.toIndex];
           }
-        } completion:nil];
+        } completion:^(BOOL) {
+          [self.didUpdateCollectionViewSubject sendNext:[RACUnit defaultUnit]];
+        }];
       } error:^(NSError *error) {
         @strongify(self)
         self.error = error;
@@ -148,6 +156,10 @@ NS_ASSUME_NONNULL_BEGIN
         @strongify(self);
         self.error = error;
       }];
+}
+
+- (RACSignal *)didUpdateCollectionView {
+  return [self.didUpdateCollectionViewSubject takeUntil:self.rac_willDeallocSignal];
 }
 
 - (nullable id<PTNDescriptor>)descriptorAtIndexPath:(NSIndexPath *)index {
