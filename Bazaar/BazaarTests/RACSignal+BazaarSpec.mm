@@ -76,33 +76,34 @@
 
 SpecBegin(RACSignal_Bazaar)
 
-context(@"deserialize model operator", ^{
+NSString * const kRACSignalModelDeserializationExamples = @"RACSignal+BazaarSharedExamples";
+NSString * const kRACSignalModelDeserializationSubjectKey = @"RACSignalModelDeserializationSubject";
+NSString * const kRACSignalModelDeserializationRecorderKey =
+    @"RACSignalModelDeserializationRecorder";
+NSString * const kRACSignalModelDeserializationBlockKey = @"RACSignalModelDeserializationBlock";
+
+/// Block used to call the deserialize operator with \c model class.
+typedef RACSignal *(^BZRDeserializationBlock) (RACSignal *signal, Class model);
+
+sharedExamplesFor(kRACSignalModelDeserializationExamples, ^(NSDictionary *data) {
   __block RACSubject *subject;
   __block LLSignalTestRecorder *recorder;
+  __block BZRDeserializationBlock deserializeBlock;
 
   beforeEach(^{
-    subject = [RACSubject subject];
-    recorder = [[subject bzr_deserializeModel:[BZRDummyJSONSerializingModel class]] testRecorder];
+    subject = data[kRACSignalModelDeserializationSubjectKey];
+    recorder = data[kRACSignalModelDeserializationRecorderKey];
+    deserializeBlock = data[kRACSignalModelDeserializationBlockKey];
   });
 
   it(@"should raise exception if the model class is invalid", ^{
     expect(^{
-      [subject bzr_deserializeModel:[NSObject class]];
+      deserializeBlock(subject, [NSObject class]);
     }).to.raise(NSInvalidArgumentException);
 
     expect(^{
-      [subject bzr_deserializeModel:[BZRModel class]];
+      deserializeBlock(subject, [BZRModel class]);
     }).to.raise(NSInvalidArgumentException);
-  });
-
-  it(@"should send the deserialized model when JSON dictionary is received", ^{
-    BZRDummyJSONSerializingModel *model = [BZRDummyJSONSerializingModel modelWithValue:@"foo"
-                                                                         optionalValue:@"bar"];
-    NSDictionary *JSONDictionary = [MTLJSONAdapter JSONDictionaryFromModel:model];
-
-    [subject sendNext:JSONDictionary];
-    [subject sendNext:JSONDictionary];
-    expect(recorder).to.sendValues(@[model, model]);
   });
 
   it(@"should complete when the underlying signal completes", ^{
@@ -140,9 +141,46 @@ context(@"deserialize model operator", ^{
     });
   });
 
+  it(@"should err if nil is sent by the underlying signal", ^{
+    expect(^{
+      [subject sendNext:nil];
+    }).toNot.raiseAny();
+    expect(recorder).to.matchError(^BOOL(NSError *signalError) {
+      return signalError.lt_isLTDomain &&
+      signalError.code == BZRErrorCodeModelJSONDeserializationFailed;
+    });
+  });
+
+  it(@"should err if invalid json object is sent by the underlying signal", ^{
+    expect(^{
+      [subject sendNext:@[@"foo", @"bar"]];
+    }).toNot.raiseAny();
+    expect(recorder).to.matchError(^BOOL(NSError *signalError) {
+      return signalError.lt_isLTDomain &&
+      signalError.code == BZRErrorCodeModelJSONDeserializationFailed;
+    });
+  });
+});
+
+context(@"deserialize model operator", ^{
+  itShouldBehaveLike(kRACSignalModelDeserializationExamples, ^{
+    RACSubject *subject = [RACSubject subject];
+    LLSignalTestRecorder *recorder = [[subject bzr_deserializeModel:
+        [BZRDummyJSONSerializingModel class]] testRecorder];
+
+    return @{
+      kRACSignalModelDeserializationSubjectKey: subject,
+      kRACSignalModelDeserializationRecorderKey: recorder,
+      kRACSignalModelDeserializationBlockKey: ^RACSignal *(RACSignal *signal, Class model) {
+        return [signal bzr_deserializeModel:model];
+      }
+    };
+  });
+
   it(@"should err if an exception is raised during deserialization", ^{
-    recorder = [[subject bzr_deserializeModel:[BZRDummyJSONSerializingExceptionRaisingModel class]]
-        testRecorder];
+    RACSubject *subject = [RACSubject subject];
+    LLSignalTestRecorder *recorder = [[subject bzr_deserializeModel:
+        [BZRDummyJSONSerializingExceptionRaisingModel class]] testRecorder];
 
     expect(^{
       [subject sendNext:@{}];
@@ -154,24 +192,36 @@ context(@"deserialize model operator", ^{
           [signalError.bzr_exception.name isEqualToString:NSInternalInconsistencyException];
     });
   });
+});
 
-  it(@"should err if nil is sent by the underlying signal", ^{
-    expect(^{
-      [subject sendNext:nil];
-    }).toNot.raiseAny();
-    expect(recorder).to.matchError(^BOOL(NSError *signalError) {
-      return signalError.lt_isLTDomain &&
-          signalError.code == BZRErrorCodeModelJSONDeserializationFailed;
-    });
+context(@"deserialize array of models operator", ^{
+  itShouldBehaveLike(kRACSignalModelDeserializationExamples, ^{
+    RACSubject *subject = [RACSubject subject];
+    LLSignalTestRecorder *recorder = [[subject bzr_deserializeArrayOfModels:
+        [BZRDummyJSONSerializingModel class]] testRecorder];
+
+    return @{
+      kRACSignalModelDeserializationSubjectKey: subject,
+      kRACSignalModelDeserializationRecorderKey: recorder,
+      kRACSignalModelDeserializationBlockKey: ^RACSignal *(RACSignal *signal, Class model) {
+        return [signal bzr_deserializeArrayOfModels:model];
+      }
+    };
   });
 
-  it(@"should err if invalid json object is sent by the underlying signal", ^{
+  it(@"should err if an exception is raised during deserialization", ^{
+    RACSubject *subject = [RACSubject subject];
+    LLSignalTestRecorder *recorder = [[subject bzr_deserializeArrayOfModels:
+        [BZRDummyJSONSerializingExceptionRaisingModel class]] testRecorder];
+
     expect(^{
-      [subject sendNext:@[@"foo", @"bar"]];
+      [subject sendNext:@[@{}]];
     }).toNot.raiseAny();
     expect(recorder).to.matchError(^BOOL(NSError *signalError) {
+      NSLog(@"%@", signalError);
       return signalError.lt_isLTDomain &&
-          signalError.code == BZRErrorCodeModelJSONDeserializationFailed;
+      signalError.code == BZRErrorCodeModelJSONDeserializationFailed &&
+      [signalError.bzr_exception.name isEqualToString:NSInternalInconsistencyException];
     });
   });
 });
