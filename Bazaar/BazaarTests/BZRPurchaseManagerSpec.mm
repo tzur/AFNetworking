@@ -103,9 +103,10 @@ context(@"payment creation", ^{
   it(@"should add payment to queue when purchasing", ^{
     SKProduct *product =  BZRMockProductWithIdentifier(@"foo");
     SKPayment *payment = [SKPayment paymentWithProduct:product];
+    OCMExpect([paymentQueue addPayment:payment]);
     [purchaseManager purchaseProduct:product quantity:1
                          updateBlock:^(SKPaymentTransaction *){}];
-    OCMVerify([paymentQueue addPayment:payment]);
+    OCMVerifyAllWithDelay(paymentQueue, 0.01);
   });
 });
 
