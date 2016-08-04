@@ -1,18 +1,20 @@
 // Copyright (c) 2016 Lightricks. All rights reserved.
 // Created by Ben Yohay.
 
-#import "BZRRemoteJSONProductsProvider.h"
+#import "BZRRemoteProductsProvider.h"
 
 #import <Fiber/FBRHTTPClient.h>
 #import <Fiber/RACSignal+Fiber.h>
 
+#import "BZRProduct.h"
 #import "NSErrorCodes+Bazaar.h"
+#import "RACSignal+Bazaar.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface BZRRemoteJSONProductsProvider ()
+@interface BZRRemoteProductsProvider ()
 
-/// Url to get the JSON file from.
+/// URL to get the JSON file from.
 @property (readonly, nonatomic) NSURL *URL;
 
 /// Client used to make an HTTP request.
@@ -20,7 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-@implementation BZRRemoteJSONProductsProvider
+@implementation BZRRemoteProductsProvider
 
 - (instancetype)initWithURL:(NSURL *)URL HTTPClient:(FBRHTTPClient *)HTTPClient {
   if (self = [super init]) {
@@ -35,15 +37,10 @@ NS_ASSUME_NONNULL_BEGIN
   return [self initWithURL:URL HTTPClient:[FBRHTTPClient client]];
 }
 
-- (RACSignal *)fetchJSONProductList {
-  return [[[self.HTTPClient GET:self.URL.path withParameters:nil] fbr_deserializeJSON]
-      tryMap:^id(id value, NSError **error) {
-        if (![value isKindOfClass:[NSArray class]]) {
-          *error = [NSError lt_errorWithCode:BZRErrorCodeJSONDataDeserializationFailed];
-          return nil;
-        }
-        return value;
-      }];
+- (RACSignal *)fetchProductList {
+  return [[[[self.HTTPClient GET:self.URL.path withParameters:nil] fbr_deserializeJSON]
+      bzr_deserializeArrayOfModels:[BZRProduct class]]
+      setNameWithFormat:@"%@ -fetchProductList", self.description];
 };
 
 @end

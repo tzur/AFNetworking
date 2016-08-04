@@ -36,6 +36,31 @@ NS_ASSUME_NONNULL_BEGIN
   }];
 }
 
+- (RACSignal *)bzr_deserializeArrayOfModels:(Class)modelClass {
+  LTParameterAssert([modelClass isSubclassOfClass:[BZRModel class]] &&
+                    [modelClass conformsToProtocol:@protocol(MTLJSONSerializing)], @"Model class "
+                    @"must be a subclass of BZRModel and conform to MTLJSONSerializing, got: %@",
+                    modelClass);
+
+  return [self tryMap:^NSArray * _Nullable(NSArray<NSDictionary *> *JSONArray, NSError **error) {
+    @try {
+      NSError *underlyingError;
+      NSArray<BZRModel *> *models = [MTLJSONAdapter modelsOfClass:modelClass fromJSONArray:JSONArray
+                                                            error:&underlyingError];
+      if (!models || underlyingError) {
+        *error = [NSError lt_errorWithCode:BZRErrorCodeModelJSONDeserializationFailed
+                           underlyingError:underlyingError];
+      } else {
+        return models;
+      }
+    } @catch (NSException *exception) {
+      *error = [NSError bzr_errorWithCode:BZRErrorCodeModelJSONDeserializationFailed
+                                exception:exception];
+    }
+    return nil;
+  }];
+}
+
 @end
 
 NS_ASSUME_NONNULL_END

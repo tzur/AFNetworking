@@ -22,6 +22,21 @@ NS_ASSUME_NONNULL_BEGIN
 /// @see BZRModel, MTLJSONSerializing.
 - (RACSignal *)bzr_deserializeModel:(Class)modelClass;
 
+/// Deserializes instances of the given \c modelClass from JSON array values. The \c modelClass
+/// must be a subclass of \c BZRModel and conform to the \c MTLJSONSerializing protocol, otherwise
+/// an \c NSInvalidArgumentException is raised.
+///
+/// The receiver is assumed to send \c NSArray values containing \c NSDictionary objects each
+/// represents a serialized instance of \c modelClass in JSON format
+///
+/// The returned signal sends an \c NSArray containing instances of \c modelClass deserialzied from
+/// the underlying signal JSON array. It completes when the underlying signal completes and errs if
+/// the underlying signal errs or if a value sent by the underlying signal is not an \c NSArray
+/// containing serialized instances of \c modelClass
+///
+/// @see BZRModel, MTLJSONSerializing.
+- (RACSignal *)bzr_deserializeArrayOfModels:(Class)modelClass;
+
 @end
 
 NS_ASSUME_NONNULL_END
