@@ -1,16 +1,18 @@
 // Copyright (c) 2016 Lightricks. All rights reserved.
 // Created by Ben Yohay.
 
-#import "BZRLocalJSONProductsProvider.h"
+#import "BZRLocalProductsProvider.h"
 
 #import <LTKit/LTPath.h>
 #import <LTKit/NSFileManager+LTKit.h>
 
+#import "BZRProduct.h"
 #import "NSErrorCodes+Bazaar.h"
+#import "RACSignal+Bazaar.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface BZRLocalJSONProductsProvider ()
+@interface BZRLocalProductsProvider ()
 
 /// Path from which to fetch the JSON list.
 @property (readonly, nonatomic) LTPath *path;
@@ -20,19 +22,19 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-@implementation BZRLocalJSONProductsProvider
+@implementation BZRLocalProductsProvider
 
 - (instancetype)initWithPath:(LTPath *)path fileManager:(NSFileManager *)fileManager {
   if (self = [super init]) {
-    _fileManager = fileManager;
     _path = path;
+    _fileManager = fileManager;
   }
   return self;
 }
 
-- (RACSignal *)fetchJSONProductList {
-  return [[RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
-    NSError *error = nil;
+- (RACSignal *)fetchProductList {
+  return [[[[RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+    NSError *error;
     NSData *data = [self.fileManager lt_dataWithContentsOfFile:self.path.path options:0
                                                          error:&error];
     if (error) {
@@ -52,7 +54,10 @@ NS_ASSUME_NONNULL_BEGIN
     [subscriber sendCompleted];
 
     return nil;
-  }] subscribeOn:[RACScheduler scheduler]];
+  }]
+      bzr_deserializeArrayOfModels:[BZRProduct class]]
+      subscribeOn:[RACScheduler scheduler]]
+      setNameWithFormat:@"%@ -fetchProductList", self.description];
 }
 
 @end

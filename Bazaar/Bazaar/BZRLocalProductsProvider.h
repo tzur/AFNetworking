@@ -1,14 +1,14 @@
 // Copyright (c) 2016 Lightricks. All rights reserved.
 // Created by Ben Yohay.
 
-#import "BZRJSONProductsProvider.h"
+#import "BZRProductsProvider.h"
 
 @class LTPath;
 
 NS_ASSUME_NONNULL_BEGIN
 
 /// Provides a list of JSON-serialized \c BZRProducts from a local source.
-@interface BZRLocalJSONProductsProvider : NSObject <BZRJSONProductsProvider>
+@interface BZRLocalProductsProvider : NSObject <BZRProductsProvider>
 
 - (instancetype)init NS_UNAVAILABLE;
 

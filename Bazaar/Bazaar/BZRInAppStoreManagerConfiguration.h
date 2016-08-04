@@ -13,8 +13,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Initializes the in-app store configuration with default parameters.
 ///
-/// \c productsProvider will be the initialized with \c BZRLocalJSONProductsProvider, which will be
-/// initialized with the given \c productsListJSONFilePath.
+/// \c productsProvider will be initialized with \c BZRLocalProductsProvider, given
+/// \c productsListJSONFilePath.
 ///
 /// \c bundleManager will be initialized with the default parameters as provided by
 /// \c -[BZRProductBundleManager init].

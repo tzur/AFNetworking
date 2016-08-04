@@ -1,14 +1,14 @@
 // Copyright (c) 2016 Lightricks. All rights reserved.
 // Created by Ben Yohay.
 
-#import "BZRJSONProductsProvider.h"
+#import "BZRProductsProvider.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @class FBRHTTPClient;
 
 /// Provider used to fetch JSON-serialized \c BZRProduct list from a remote source.
-@interface BZRRemoteJSONProductsProvider : NSObject <BZRJSONProductsProvider>
+@interface BZRRemoteProductsProvider : NSObject <BZRProductsProvider>
 
 - (instancetype)init NS_UNAVAILABLE;
 
