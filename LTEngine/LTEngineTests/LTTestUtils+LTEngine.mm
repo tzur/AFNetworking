@@ -53,6 +53,19 @@ cv::Mat LTRotateMat(const cv::Mat input, CGFloat angle) {
   return rotated;
 }
 
+cv::Mat LTRotateHalfPiClockwise(cv::Mat input, NSInteger rotations) {
+  rotations = (((rotations % 4) + 4) % 4);
+
+  cv::Mat output = input.clone();
+
+  for (NSInteger i = 0; i < rotations; ++i) {
+    cv::transpose(output, output);
+    cv::flip(output, output, 1);
+  }
+
+  return output;
+}
+
 BOOL LTCompareMat(const cv::Mat &expected, const cv::Mat &actual, std::vector<int> *firstMismatch) {
   if (LTCompareMatMetadata(expected, actual)) {
     return NO;
