@@ -190,6 +190,15 @@
 		06E8E1251D225FED00C60DAC /* LTLaplacianLevelReconstructProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 06E8E1231D225FED00C60DAC /* LTLaplacianLevelReconstructProcessor.mm */; };
 		06E8E1441D22607C00C60DAC /* LTLaplacianLevelReconstruct.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 06E8E1211D225FED00C60DAC /* LTLaplacianLevelReconstruct.fsh */; };
 		06E8E1461D22612900C60DAC /* LTLaplacianLevelReconstructProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 06E8E1451D22612900C60DAC /* LTLaplacianLevelReconstructProcessorSpec.mm */; };
+		06F9EEE71D577D8C002D2726 /* LTBilateralFilterPyramidProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 06F9EEE51D577D8C002D2726 /* LTBilateralFilterPyramidProcessor.h */; };
+		06F9EEE81D577D8C002D2726 /* LTBilateralFilterPyramidProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 06F9EEE61D577D8C002D2726 /* LTBilateralFilterPyramidProcessor.mm */; };
+		06F9EF1C1D57A7AC002D2726 /* LTBilateralFilterPyramidProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 06F9EF1B1D57A7AC002D2726 /* LTBilateralFilterPyramidProcessorSpec.mm */; };
+		06F9F2D51D59B558002D2726 /* HorizontalStepFunction32_bilateral_L1toL3.png in Resources */ = {isa = PBXBuildFile; fileRef = 06F9F2CF1D59B558002D2726 /* HorizontalStepFunction32_bilateral_L1toL3.png */; };
+		06F9F2D61D59B558002D2726 /* HorizontalStepFunction32_bilateral_L1toL3toL1.png in Resources */ = {isa = PBXBuildFile; fileRef = 06F9F2D01D59B558002D2726 /* HorizontalStepFunction32_bilateral_L1toL3toL1.png */; };
+		06F9F2D71D59B558002D2726 /* Lena128_bilateral_L1toL3.png in Resources */ = {isa = PBXBuildFile; fileRef = 06F9F2D11D59B558002D2726 /* Lena128_bilateral_L1toL3.png */; };
+		06F9F2D81D59B558002D2726 /* Lena128_bilateral_L1toL3toL1.png in Resources */ = {isa = PBXBuildFile; fileRef = 06F9F2D21D59B558002D2726 /* Lena128_bilateral_L1toL3toL1.png */; };
+		06F9F2D91D59B558002D2726 /* VerticalStepFunction33_bilateral_L1toL3.png in Resources */ = {isa = PBXBuildFile; fileRef = 06F9F2D31D59B558002D2726 /* VerticalStepFunction33_bilateral_L1toL3.png */; };
+		06F9F2DA1D59B558002D2726 /* VerticalStepFunction33_bilateral_L1toL3toL1.png in Resources */ = {isa = PBXBuildFile; fileRef = 06F9F2D41D59B558002D2726 /* VerticalStepFunction33_bilateral_L1toL3toL1.png */; };
 		090898FA1C4F97FB0022FA62 /* EXPMatchers+beCloseToGLKMatrix.mm in Sources */ = {isa = PBXBuildFile; fileRef = 090898F81C4F97FB0022FA62 /* EXPMatchers+beCloseToGLKMatrix.mm */; };
 		2520D3EC1C4B8774004A3A94 /* LTMutableEuclideanSpline.h in Headers */ = {isa = PBXBuildFile; fileRef = 2520D3EA1C4B8774004A3A94 /* LTMutableEuclideanSpline.h */; };
 		2520D3ED1C4B8774004A3A94 /* LTMutableEuclideanSpline.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2520D3EB1C4B8774004A3A94 /* LTMutableEuclideanSpline.mm */; };
@@ -1814,6 +1823,15 @@
 		06E8E1221D225FED00C60DAC /* LTLaplacianLevelReconstructProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTLaplacianLevelReconstructProcessor.h; sourceTree = "<group>"; };
 		06E8E1231D225FED00C60DAC /* LTLaplacianLevelReconstructProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTLaplacianLevelReconstructProcessor.mm; sourceTree = "<group>"; };
 		06E8E1451D22612900C60DAC /* LTLaplacianLevelReconstructProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTLaplacianLevelReconstructProcessorSpec.mm; sourceTree = "<group>"; };
+		06F9EEE51D577D8C002D2726 /* LTBilateralFilterPyramidProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTBilateralFilterPyramidProcessor.h; sourceTree = "<group>"; };
+		06F9EEE61D577D8C002D2726 /* LTBilateralFilterPyramidProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTBilateralFilterPyramidProcessor.mm; sourceTree = "<group>"; };
+		06F9EF1B1D57A7AC002D2726 /* LTBilateralFilterPyramidProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTBilateralFilterPyramidProcessorSpec.mm; sourceTree = "<group>"; };
+		06F9F2CF1D59B558002D2726 /* HorizontalStepFunction32_bilateral_L1toL3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = HorizontalStepFunction32_bilateral_L1toL3.png; path = Resources/HorizontalStepFunction32_bilateral_L1toL3.png; sourceTree = "<group>"; };
+		06F9F2D01D59B558002D2726 /* HorizontalStepFunction32_bilateral_L1toL3toL1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = HorizontalStepFunction32_bilateral_L1toL3toL1.png; path = Resources/HorizontalStepFunction32_bilateral_L1toL3toL1.png; sourceTree = "<group>"; };
+		06F9F2D11D59B558002D2726 /* Lena128_bilateral_L1toL3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Lena128_bilateral_L1toL3.png; path = Resources/Lena128_bilateral_L1toL3.png; sourceTree = "<group>"; };
+		06F9F2D21D59B558002D2726 /* Lena128_bilateral_L1toL3toL1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Lena128_bilateral_L1toL3toL1.png; path = Resources/Lena128_bilateral_L1toL3toL1.png; sourceTree = "<group>"; };
+		06F9F2D31D59B558002D2726 /* VerticalStepFunction33_bilateral_L1toL3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = VerticalStepFunction33_bilateral_L1toL3.png; path = Resources/VerticalStepFunction33_bilateral_L1toL3.png; sourceTree = "<group>"; };
+		06F9F2D41D59B558002D2726 /* VerticalStepFunction33_bilateral_L1toL3toL1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = VerticalStepFunction33_bilateral_L1toL3toL1.png; path = Resources/VerticalStepFunction33_bilateral_L1toL3toL1.png; sourceTree = "<group>"; };
 		090898F71C4F97FB0022FA62 /* EXPMatchers+beCloseToGLKMatrix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EXPMatchers+beCloseToGLKMatrix.h"; sourceTree = "<group>"; };
 		090898F81C4F97FB0022FA62 /* EXPMatchers+beCloseToGLKMatrix.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "EXPMatchers+beCloseToGLKMatrix.mm"; sourceTree = "<group>"; };
 		2520D3EA1C4B8774004A3A94 /* LTMutableEuclideanSpline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTMutableEuclideanSpline.h; sourceTree = "<group>"; };
@@ -2925,6 +2943,8 @@
 				8BD685EA1885404600571E75 /* LTBilateralFilter.vsh */,
 				8BD685E61885402F00571E75 /* LTBilateralFilterProcessor.h */,
 				8BD685E71885402F00571E75 /* LTBilateralFilterProcessor.mm */,
+				06F9EEE51D577D8C002D2726 /* LTBilateralFilterPyramidProcessor.h */,
+				06F9EEE61D577D8C002D2726 /* LTBilateralFilterPyramidProcessor.mm */,
 				502B1CBD19FA83EC00985F30 /* LTBlendMode.h */,
 				8BAE3A0E18ACFF6E00DA79E1 /* LTPatchBoundary.fsh */,
 				8BAE3A0F18ACFF6E00DA79E1 /* LTPatchBoundary.vsh */,
@@ -3097,6 +3117,7 @@
 				8BAE3A9F18B4D64E00DA79E1 /* LTArithmeticProcessorSpec.mm */,
 				03AD29C01891426100516D14 /* LTBicubicResizeProcessorSpec.mm */,
 				8BD685FE1885519700571E75 /* LTBilateralFilterProcessorSpec.mm */,
+				06F9EF1B1D57A7AC002D2726 /* LTBilateralFilterPyramidProcessorSpec.mm */,
 				03734AC1188E9F27008B4056 /* LTBoxFilterProcessorSpec.mm */,
 				03C7B68D18CEF7AD00E728F5 /* LTBWProcessorSpec.mm */,
 				030CF74518993BF1000E9ED0 /* LTBWTonalityProcessorSpec.mm */,
@@ -4592,6 +4613,12 @@
 				06B5C1F21D181A9400401556 /* HorizontalStepFunction33.png */,
 				06B5C1F31D181A9400401556 /* VerticalStepFunction32.png */,
 				06B5C1F41D181A9400401556 /* VerticalStepFunction33.png */,
+				06F9F2CF1D59B558002D2726 /* HorizontalStepFunction32_bilateral_L1toL3.png */,
+				06F9F2D01D59B558002D2726 /* HorizontalStepFunction32_bilateral_L1toL3toL1.png */,
+				06F9F2D11D59B558002D2726 /* Lena128_bilateral_L1toL3.png */,
+				06F9F2D21D59B558002D2726 /* Lena128_bilateral_L1toL3toL1.png */,
+				06F9F2D31D59B558002D2726 /* VerticalStepFunction33_bilateral_L1toL3.png */,
+				06F9F2D41D59B558002D2726 /* VerticalStepFunction33_bilateral_L1toL3toL1.png */,
 			);
 			name = Images;
 			sourceTree = "<group>";
@@ -5493,6 +5520,7 @@
 				28F340661B1EECBF00545B82 /* LTTextureBaseArchiver.h in Headers */,
 				50B6BB231C1E9F310043FE24 /* LTEasyVectorBoxing.h in Headers */,
 				8B8720111924A76100517F2E /* LTRectDrawer+PassthroughShader.h in Headers */,
+				06F9EEE71D577D8C002D2726 /* LTBilateralFilterPyramidProcessor.h in Headers */,
 				8B8720121924A76100517F2E /* LTRectDrawer.h in Headers */,
 				500CAA1D1D26B305009CF19F /* LTContentNavigationManager.h in Headers */,
 				502B1CAA19FA81B200985F30 /* LTQuadMixerProcessor.h in Headers */,
@@ -6121,6 +6149,7 @@
 				A8BDC63E1AC9DA64005FC392 /* CircularPatchDrawerAlpha.png in Resources */,
 				85F599AA1CDF2166009A47B4 /* LTDisplacementMapDrawerReshapedWithoutMask.png in Resources */,
 				2897579A1AE66EE900A44594 /* CircularPatchDrawerMasked.png in Resources */,
+				06F9F2D91D59B558002D2726 /* VerticalStepFunction33_bilateral_L1toL3.png in Resources */,
 				8518E2681C858D890051FAF3 /* NoiseGuidedSigma01Steps1.png in Resources */,
 				284AA2B91AC99DD1007F86DB /* CircularPatchDoubleMirror.png in Resources */,
 				280E40D81990C2F6008C5BD9 /* PerspectiveCompound.png in Resources */,
@@ -6141,6 +6170,7 @@
 				06372CF81D05A4690083AE49 /* SmoothPyramidUpsampleUpdateGrid5.png in Resources */,
 				03C192C518F6F3B200DC6CA6 /* RadialMaskOffCenter.png in Resources */,
 				85F599A91CDF2166009A47B4 /* LTDisplacementMapDrawerReshapedWithMask.png in Resources */,
+				06F9F2D61D59B558002D2726 /* HorizontalStepFunction32_bilateral_L1toL3toL1.png in Resources */,
 				280A8BA51CBD234100157507 /* RadialMaskOffCenterStretched.png in Resources */,
 				03F99DB8189632B700B77136 /* DeltaBicubic.png in Resources */,
 				8BABF19119BC52C100AED760 /* PyramidGrid6.png in Resources */,
@@ -6182,6 +6212,7 @@
 				30DDD6B51CFC8A7500AE72B8 /* GaussianFilterDelta51.png in Resources */,
 				8BBEE93819FC032300A2FA6B /* AspectFittedFlower.png in Resources */,
 				282AC69B1924B9BC006CAA2B /* ShapeDrawerTriangularMeshShapeTriangleWithShadowMask.png in Resources */,
+				06F9F2D51D59B558002D2726 /* HorizontalStepFunction32_bilateral_L1toL3.png in Resources */,
 				286A932D18CF727300F203DF /* BristleBrushBristles.2.png in Resources */,
 				8BAED5331886D21D00BCACF7 /* TwoInputTextures.fsh in Resources */,
 				28A612971934F15D00D005D8 /* GaussianSquare.png in Resources */,
@@ -6261,6 +6292,7 @@
 				2828016B1B20AF1300596FD4 /* LTPatchSolverProcessorSolution.png in Resources */,
 				8518E2641C858D890051FAF3 /* NoiseBilateralSigma01Steps1.png in Resources */,
 				28BB81AD192509450071CB0B /* ShapeDrawerActualDrawingUpdated.png in Resources */,
+				06F9F2D71D59B558002D2726 /* Lena128_bilateral_L1toL3.png in Resources */,
 				280F5A30191A975500F9F80B /* ShapeDrawerEllipticShapeRotatedEllipse.png in Resources */,
 				284AA2B31AC99DD1007F86DB /* CircularCloneRotation.png in Resources */,
 				03FDEE3819E1B016002DC735 /* TonalGrain.png in Resources */,
@@ -6299,6 +6331,7 @@
 				8BA82041197E55C800FBE68E /* RectUp.jpg in Resources */,
 				03FB6B5619DAAC4E00255085 /* LenaClarity.png in Resources */,
 				8BAD630E18A3D70100482564 /* ValueSetter.fsh in Resources */,
+				06F9F2D81D59B558002D2726 /* Lena128_bilateral_L1toL3toL1.png in Resources */,
 				28FB00ED1A0AB46D004490AF /* BristleBrushBristles.FlatBlunt.png in Resources */,
 				06B5C1F61D181A9400401556 /* HorizontalStepFunction33.png in Resources */,
 				280F5A2E191A975500F9F80B /* ShapeDrawerEllipticShapeEllipse.png in Resources */,
@@ -6319,6 +6352,7 @@
 				85F372C01C8C891600E1D429 /* LT3DLUTIdentity2x2x2.png in Resources */,
 				2856D2871A00E10B008FC29F /* PerspectiveOverflow.png in Resources */,
 				2840186719C704730003A064 /* FlowerOutput0.5.png in Resources */,
+				06F9F2DA1D59B558002D2726 /* VerticalStepFunction33_bilateral_L1toL3toL1.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6429,6 +6463,7 @@
 				03329F8418ED5A1A00CD61C2 /* LTAnalogFilm.vsh in Sources */,
 				03C192AC18F511D800DC6CA6 /* LTDualMask.fsh in Sources */,
 				8BD688E81B6A8E2C003BDA34 /* LTTextureIZArchiver.mm in Sources */,
+				06F9EEE81D577D8C002D2726 /* LTBilateralFilterPyramidProcessor.mm in Sources */,
 				8B539FF51B4A882600036743 /* LTFboPool.mm in Sources */,
 				50D82E941BFCAC30002EDCBD /* LTCompoundParameterizedObject.mm in Sources */,
 				03C192EE18FABDFE00DC6CA6 /* LTColorConversionProcessor.fsh in Sources */,
@@ -6973,6 +7008,7 @@
 				8B329020192CACAA0010592E /* LTTextureContentsDataArchiverSpec.mm in Sources */,
 				030CF74618993BF1000E9ED0 /* LTBWTonalityProcessorSpec.mm in Sources */,
 				8B9D3FC51891116A001A964D /* LTEasyBoxing+LTEngineSpec.mm in Sources */,
+				06F9EF1C1D57A7AC002D2726 /* LTBilateralFilterPyramidProcessorSpec.mm in Sources */,
 				8BAD631B18A3D75900482564 /* ValueSetter.fsh in Sources */,
 				28A612871934EF6400D005D8 /* LTEdgeAvoidingMultiTextureBrushSpec.mm in Sources */,
 				2843721C19F5918C003F3B4A /* UIColor+VectorSpec.mm in Sources */,
