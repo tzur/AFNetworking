@@ -736,6 +736,9 @@
 		6AB548C01C81F99700672127 /* LTCVPixelBufferExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 6AB548BE1C81F99700672127 /* LTCVPixelBufferExtensions.h */; };
 		6AB548C11C81F99700672127 /* LTCVPixelBufferExtensions.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6AB548BF1C81F99700672127 /* LTCVPixelBufferExtensions.mm */; };
 		6AB549061C822CE100672127 /* LTCVPixelBufferExtensionsSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6AB549051C822CE100672127 /* LTCVPixelBufferExtensionsSpec.mm */; };
+		6AB997051D5B3ABB0059863F /* LTPixelBufferPool.h in Headers */ = {isa = PBXBuildFile; fileRef = 6AB997031D5B3ABB0059863F /* LTPixelBufferPool.h */; };
+		6AB997061D5B3ABB0059863F /* LTPixelBufferPool.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6AB997041D5B3ABB0059863F /* LTPixelBufferPool.mm */; };
+		6AB9973A1D5B3B930059863F /* LTPixelBufferPoolSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6AB997391D5B3B930059863F /* LTPixelBufferPoolSpec.mm */; };
 		8518E2641C858D890051FAF3 /* NoiseBilateralSigma01Steps1.png in Resources */ = {isa = PBXBuildFile; fileRef = 8518E25D1C858D890051FAF3 /* NoiseBilateralSigma01Steps1.png */; };
 		8518E2651C858D890051FAF3 /* NoiseBilateralSigma01Steps2.png in Resources */ = {isa = PBXBuildFile; fileRef = 8518E25E1C858D890051FAF3 /* NoiseBilateralSigma01Steps2.png */; };
 		8518E2661C858D890051FAF3 /* NoiseBilateralSigma02Steps1.png in Resources */ = {isa = PBXBuildFile; fileRef = 8518E25F1C858D890051FAF3 /* NoiseBilateralSigma02Steps1.png */; };
@@ -2427,6 +2430,9 @@
 		6AB548BE1C81F99700672127 /* LTCVPixelBufferExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTCVPixelBufferExtensions.h; sourceTree = "<group>"; };
 		6AB548BF1C81F99700672127 /* LTCVPixelBufferExtensions.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTCVPixelBufferExtensions.mm; sourceTree = "<group>"; };
 		6AB549051C822CE100672127 /* LTCVPixelBufferExtensionsSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTCVPixelBufferExtensionsSpec.mm; sourceTree = "<group>"; };
+		6AB997031D5B3ABB0059863F /* LTPixelBufferPool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTPixelBufferPool.h; sourceTree = "<group>"; };
+		6AB997041D5B3ABB0059863F /* LTPixelBufferPool.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTPixelBufferPool.mm; sourceTree = "<group>"; };
+		6AB997391D5B3B930059863F /* LTPixelBufferPoolSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTPixelBufferPoolSpec.mm; sourceTree = "<group>"; };
 		8518E25D1C858D890051FAF3 /* NoiseBilateralSigma01Steps1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = NoiseBilateralSigma01Steps1.png; path = Resources/NoiseBilateralSigma01Steps1.png; sourceTree = "<group>"; };
 		8518E25E1C858D890051FAF3 /* NoiseBilateralSigma01Steps2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = NoiseBilateralSigma01Steps2.png; path = Resources/NoiseBilateralSigma01Steps2.png; sourceTree = "<group>"; };
 		8518E25F1C858D890051FAF3 /* NoiseBilateralSigma02Steps1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = NoiseBilateralSigma02Steps1.png; path = Resources/NoiseBilateralSigma02Steps1.png; sourceTree = "<group>"; };
@@ -4909,6 +4915,8 @@
 				857F74631D3691BE005DA3E2 /* LTIndicesData.mm */,
 				8B3F94D0187C194500FAA265 /* LTMMTexture.h */,
 				8B3F94D1187C194500FAA265 /* LTMMTexture.mm */,
+				6AB997031D5B3ABB0059863F /* LTPixelBufferPool.h */,
+				6AB997041D5B3ABB0059863F /* LTPixelBufferPool.mm */,
 				8BA3E139182A602F00FDD95A /* LTProgram.h */,
 				8BA3E13A182A602F00FDD95A /* LTProgram.mm */,
 				8B22673D19979F450049CF26 /* LTProgramFactory.h */,
@@ -4965,6 +4973,7 @@
 				8B3667E2184754BD002A1833 /* LTGPUResourceExamples.mm */,
 				8B2DAE72184B821000F1623B /* LTGPUQueueSpec.mm */,
 				857F74841D3691E8005DA3E2 /* LTIndicesDataSpec.mm */,
+				6AB997391D5B3B930059863F /* LTPixelBufferPoolSpec.mm */,
 				8BA3E143182A848300FDD95A /* LTProgramSpec.mm */,
 				8B2267451997BBC60049CF26 /* LTProgramFactorySpec.mm */,
 				85ECD6591D440E6A007C9056 /* LTRegularGridMeshSpec.mm */,
@@ -5415,6 +5424,7 @@
 				8B871FE31924A75E00517F2E /* LTFFTConvolutionProcessor.h in Headers */,
 				8B871FE41924A75E00517F2E /* LTFFTProcessor.h in Headers */,
 				8B871FE61924A75E00517F2E /* LTMaskOverlayProcessor.h in Headers */,
+				6AB997051D5B3ABB0059863F /* LTPixelBufferPool.h in Headers */,
 				28C2074F1AE67DAB007214A5 /* LTTextureMetadata.h in Headers */,
 				8B871FE71924A75E00517F2E /* LTMaskedArithmeticProcessor.h in Headers */,
 				8B871FE81924A75F00517F2E /* LTMixerProcessor.h in Headers */,
@@ -6698,6 +6708,7 @@
 				8BA5DC1418A11F1E00A60A15 /* LTOpenCVExtensions.mm in Sources */,
 				284004BE18D7650800403938 /* LTSingleTextureBrush.mm in Sources */,
 				03AFC171190E24B500F17063 /* LTTiltShiftProcessor.mm in Sources */,
+				6AB997061D5B3ABB0059863F /* LTPixelBufferPool.mm in Sources */,
 				254DD74F1BF9FA2000972C0A /* LTBasicParameterizedObjectFactories.mm in Sources */,
 				28A0C70A1AC0188D00FBC803 /* LTCircularMeshModel.mm in Sources */,
 				03BBB375188C0675001E7703 /* LTFractionalNoise.mm in Sources */,
@@ -6955,6 +6966,7 @@
 				28A5EABF18D1DC61007E80C9 /* LTBrushScatterEffectSpec.mm in Sources */,
 				2839069E18C4DB0A00BD21CE /* LTBrushSpec.mm in Sources */,
 				8BFA90E119212AC70088310E /* LTImageProcessorSpec.mm in Sources */,
+				6AB9973A1D5B3B930059863F /* LTPixelBufferPoolSpec.mm in Sources */,
 				8B2267461997BBC60049CF26 /* LTProgramFactorySpec.mm in Sources */,
 				285B5E431C561E2200F7F641 /* LTTextureArchiveMetadataSpec.mm in Sources */,
 				25705DD21B5E25830054EC70 /* LTBrushRandomState+LTBrushSpec.mm in Sources */,

@@ -13,6 +13,7 @@ namespace lt {
 
 // Core Video.
 template <> struct IsCoreFoundationObjectRef<CVPixelBufferRef> : public std::true_type {};
+template <> struct IsCoreFoundationObjectRef<CVPixelBufferPoolRef> : public std::true_type {};
 template <> struct IsCoreFoundationObjectRef<CVOpenGLESTextureCacheRef> : public std::true_type {};
 
 // Core Text.
