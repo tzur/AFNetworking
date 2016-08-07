@@ -1,11 +1,11 @@
 // Copyright (c) 2016 Lightricks. All rights reserved.
 // Created by Daniel Lahyani.
 
-#import "BZRReceiptValidationResponse.h"
+#import "BZRReceiptValidationStatus.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface BZRValidatricksReceiptValidationResponse : BZRReceiptValidationResponse
+@interface BZRValidatricksReceiptValidationStatus : BZRReceiptValidationStatus
     <MTLJSONSerializing>
 @end
 

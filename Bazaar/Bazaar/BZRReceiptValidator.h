@@ -12,10 +12,10 @@ NS_ASSUME_NONNULL_BEGIN
 /// validator will validate that the receipt was issued for the application specified by
 /// \c parameters.applicationBundleId. If \c parameters.deviceId is not \c nil the validator may use
 /// it to validate that the receipt was issued for a device with the same ID.
-/// Returns a signal that sends a single \c BZRReceiptValidationResponse and then completes or errs
+/// Returns a signal that sends a single \c BZRReceiptValidationStatus and then completes or errs
 /// if failed to complete the receipt validation.
 ///
-/// @return <tt>RACSignal<BZRReceiptValidationResponse *></tt>
+/// @return <tt>RACSignal<BZRReceiptValidationStatus></tt>
 - (RACSignal *)validateReceiptWithParameters:(BZRReceiptValidationParameters *)parameters;
 
 @end

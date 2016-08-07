@@ -11,7 +11,7 @@
 
 #import "BZRReceiptValidationError.h"
 #import "BZRReceiptValidationParameters+Validatricks.h"
-#import "BZRValidatricksReceiptValidationResponse.h"
+#import "BZRValidatricksReceiptValidationStatus.h"
 #import "FBRHTTPClient+Validatricks.h"
 #import "NSErrorCodes+Bazaar.h"
 
@@ -127,13 +127,13 @@ context(@"receipt validation", ^{
     });
 
     it(@"should send the deserialized validation response and then complete", ^{
-      BZRValidatricksReceiptValidationResponse *response =
-          [MTLJSONAdapter modelOfClass:[BZRValidatricksReceiptValidationResponse class]
+      BZRValidatricksReceiptValidationStatus *status =
+          [MTLJSONAdapter modelOfClass:[BZRValidatricksReceiptValidationStatus class]
                     fromJSONDictionary:JSONResponse error:nil];
       [subject sendNext:BZRValidatricksResponseWithJSONObject(JSONResponse)];
       [subject sendCompleted];
 
-      expect(recorder).to.sendValues(@[response]);
+      expect(recorder).to.sendValues(@[status]);
       expect(recorder).to.complete();
     });
 
