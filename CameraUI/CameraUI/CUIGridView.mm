@@ -69,13 +69,13 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)addHorizontalLineToPath:(UIBezierPath *)path atPortion:(CGFloat)yPortion {
-  CGFloat y = CGRectGetMinY(self.bounds) + yPortion * self.bounds.size.height;
+  CGFloat y = CGRectGetMinY(self.bounds) + std::round(yPortion * self.bounds.size.height);
   [path moveToPoint:CGPointMake(CGRectGetMinX(self.bounds), y)];
   [path addLineToPoint:CGPointMake(CGRectGetMaxX(self.bounds), y)];
 }
 
 - (void)addVerticalLineToPath:(UIBezierPath *)path atPortion:(CGFloat)xPortion {
-  CGFloat x = CGRectGetMinX(self.bounds) + xPortion * self.bounds.size.width;
+  CGFloat x = CGRectGetMinX(self.bounds) + std::round(xPortion * self.bounds.size.width);
   [path moveToPoint:CGPointMake(x, CGRectGetMinY(self.bounds))];
   [path addLineToPoint:CGPointMake(x, CGRectGetMaxY(self.bounds))];
 }
@@ -91,9 +91,9 @@ NS_ASSUME_NONNULL_BEGIN
 + (CUIGridView *)whiteGrid {
   CUIGridView *gridView = [[CUIGridView alloc] initWithFrame:CGRectZero];
   gridView.lineWidth = 1;
-  gridView.color = [UIColor whiteColor];
+  gridView.color = [[UIColor whiteColor] colorWithAlphaComponent:0.55];
   gridView.outlineWidth = 0.5;
-  gridView.outlineColor = [[UIColor blackColor] colorWithAlphaComponent:0.25];
+  gridView.outlineColor = [[UIColor blackColor] colorWithAlphaComponent:0.15];
   return  gridView;
 }
 
