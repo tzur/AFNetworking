@@ -187,11 +187,11 @@ context(@"", ^{
       session.previewLayer = previewLayer;
       session.videoConnection = videoConnection;
       session.stillConnection = stillConnection;
+      OCMReject([previewConnection setVideoOrientation:AVCaptureVideoOrientationLandscapeRight]);
+      OCMReject([videoConnection setVideoOrientation:AVCaptureVideoOrientationLandscapeRight]);
 
       device.videoOrientation = AVCaptureVideoOrientationLandscapeRight;
 
-      OCMVerify([previewConnection setVideoOrientation:AVCaptureVideoOrientationLandscapeRight]);
-      OCMVerify([videoConnection setVideoOrientation:AVCaptureVideoOrientationLandscapeRight]);
       OCMVerify([stillConnection setVideoOrientation:AVCaptureVideoOrientationLandscapeRight]);
     });
 

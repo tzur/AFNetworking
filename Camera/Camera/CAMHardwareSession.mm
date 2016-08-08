@@ -65,6 +65,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)createPreviewLayer {
   self.previewLayer = [AVCaptureVideoPreviewLayer layerWithSession:self.session];
   self.previewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
+  self.previewLayer.connection.videoOrientation = AVCaptureVideoOrientationPortrait;
 }
 
 - (BOOL)setCamera:(CAMDeviceCamera *)camera error:(NSError * __autoreleasing *)error {
@@ -88,7 +89,7 @@ NS_ASSUME_NONNULL_BEGIN
 
   LTParameterAssert([device hasMediaType:AVMediaTypeVideo], @"device must provide video");
   NSError *internalError;
-  AVCaptureVideoOrientation currentOrientation = self.videoConnection.videoOrientation;
+  AVCaptureVideoOrientation currentStillOrientation = self.stillConnection.videoOrientation;
 
   if (self.videoInput) {
     [self.session removeInput:self.videoInput];
@@ -132,17 +133,23 @@ NS_ASSUME_NONNULL_BEGIN
   }
   [self.session addInput:self.videoInput];
 
-  self.videoConnection = self.videoOutput.connections.firstObject;
-  self.videoConnection.videoOrientation = currentOrientation;
+  [self updateVideoConnection];
   self.stillConnection = self.stillOutput.connections.firstObject;
-  self.stillConnection.videoOrientation = currentOrientation;
+  self.stillConnection.videoOrientation = currentStillOrientation;
 
   return YES;
 }
 
-- (BOOL)setupVideoOutputWithError:(NSError * __autoreleasing *)error {
-  AVCaptureVideoOrientation currentOrientation = self.videoConnection.videoOrientation;
+- (void)updateVideoConnection {
+  self.videoConnection = self.videoOutput.connections.firstObject;
+  self.videoConnection.videoOrientation = AVCaptureVideoOrientationPortrait;
+  if (self.videoConnection.isVideoMirroringSupported &&
+      self.videoDevice.position == AVCaptureDevicePositionFront) {
+    self.videoConnection.videoMirrored = YES;
+  }
+}
 
+- (BOOL)setupVideoOutputWithError:(NSError * __autoreleasing *)error {
   if (self.videoOutput) {
     [self.session removeOutput:self.videoOutput];
   }
@@ -156,14 +163,13 @@ NS_ASSUME_NONNULL_BEGIN
   }
   [self.session addOutput:self.videoOutput];
 
-  self.videoConnection = self.videoOutput.connections.firstObject;
-  self.videoConnection.videoOrientation = currentOrientation;
+  [self updateVideoConnection];
 
   return YES;
 }
 
 - (BOOL)setupStillOutputWithError:(NSError * __autoreleasing *)error {
-  AVCaptureVideoOrientation currentOrientation = self.videoConnection.videoOrientation;
+  AVCaptureVideoOrientation currentStillOrientation = self.stillConnection.videoOrientation;
 
   if (self.stillOutput) {
     [self.session removeOutput:self.stillOutput];
@@ -179,7 +185,7 @@ NS_ASSUME_NONNULL_BEGIN
   [self.session addOutput:self.stillOutput];
 
   self.stillConnection = self.stillOutput.connections.firstObject;
-  self.stillConnection.videoOrientation = currentOrientation;
+  self.stillConnection.videoOrientation = currentStillOrientation;
 
   return YES;
 }
