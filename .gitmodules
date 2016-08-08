@@ -35,3 +35,6 @@
 [submodule "third_party/UICKeyChainStore"]
 	path = third_party/UICKeyChainStore
 	url = https://github.com/Lightricks/UICKeyChainStore.git
+[submodule "third_party/SSZipArchive"]
+	path = third_party/SSZipArchive
+	url = https://github.com/Lightricks/ZipArchive.git

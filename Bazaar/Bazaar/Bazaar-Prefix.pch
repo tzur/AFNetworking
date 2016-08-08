@@ -23,5 +23,6 @@
 #import <LTKit/LTEasyBoxing.h>
 #import <LTKit/LTEnum.h>
 #import <LTKit/LTKeypathCoding.h>
+#import <LTKit/LTTypedefs.h>
 #import <LTKit/NSError+LTKit.h>
 #import <LTKit/NSErrorCodes+LTKit.h>
