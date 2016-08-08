@@ -54,4 +54,45 @@ context(@"filter", ^{
   });
 });
 
+context(@"classify", ^{
+  it(@"should return a dictionary mapping objects to their labels", ^{
+    NSArray<NSNumber *> *array = @[@(-1), @0, @1];
+    NSDictionary<NSNumber *, NSArray<NSNumber *> *> *classifiedArray =
+        (NSDictionary<NSNumber *, NSArray<NSNumber *> *> *)
+        [array lt_classify:^NSNumber * _Nonnull(NSNumber * _Nonnull value) {
+          return @([value integerValue] >= 0);
+        }];
+
+    expect(classifiedArray.allKeys.count).to.equal(2);
+    expect(classifiedArray[@YES]).to.equal(@[@0, @1]);
+    expect(classifiedArray[@NO]).to.equal(@[@(-1)]);
+  });
+
+  it(@"should return a dictionary mapping one label for all objects", ^{
+    NSArray<NSNumber *> *array = @[@(-1), @0, @1];
+    NSDictionary<NSString *, NSArray<NSNumber *> *> *classifiedArray =
+        (NSDictionary<NSString *, NSArray<NSNumber *> *> *)
+        [array lt_classify:^NSString * _Nonnull(NSNumber *) {
+          return @"foo";
+        }];
+
+    expect(classifiedArray.allKeys.count).to.equal(1);
+    expect(classifiedArray[@"foo"]).to.equal(array);
+  });
+
+  it(@"should return a dictionary with a unique label for each object", ^{
+    NSArray<NSNumber *> *array = @[@(-1), @0, @1];
+    NSDictionary<NSNumber *, NSArray<NSNumber *> *> *classifiedArray =
+        (NSDictionary<NSNumber *, NSArray<NSNumber *> *> *)
+        [array lt_classify:^NSNumber * _Nonnull(NSNumber * _Nonnull value) {
+          return value;
+        }];
+
+    expect(classifiedArray.allKeys.count).to.equal(array.count);
+    expect(classifiedArray[@0]).to.equal(@[@0]);
+    expect(classifiedArray[@1]).to.equal(@[@1]);
+    expect(classifiedArray[@(-1)]).to.equal(@[@(-1)]);
+  });
+});
+
 SpecEnd
