@@ -84,6 +84,18 @@ sharedExamplesFor(kLTGLPixelFormatExamples, ^(NSDictionary *contextInfo) {
       expect(pixelFormat.cvPixelFormatType).notTo.equal(kUnknownType);
     }];
   });
+
+  it(@"should provide matTypeCIFormat for all pixel formats", ^{
+    [LTGLPixelFormat enumerateEnumUsingBlock:^(LTGLPixelFormat *pixelFormat) {
+      expect(pixelFormat.ciFormatForMatType).notTo.equal(kUnknownType);
+    }];
+  });
+
+  it(@"should provide cvPixelBufferTypeCIFormat for all pixel formats", ^{
+    [LTGLPixelFormat enumerateEnumUsingBlock:^(LTGLPixelFormat *pixelFormat) {
+      expect(pixelFormat.ciFormatForCVPixelFormatType).notTo.equal(kUnknownType);
+    }];
+  });
 });
 
 itShouldBehaveLike(kLTGLPixelFormatExamples, @{@"version": @(LTGLVersion2)});

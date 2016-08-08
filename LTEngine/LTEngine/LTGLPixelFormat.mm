@@ -147,7 +147,7 @@ static _LTGLPixelFormat LTGLPixelFormatForRenderbufferInternalFormat(GLenum inte
                     "version %lu", (unsigned long)internalFormat, (unsigned long)version);
 }
 
-/// Maps between pixel format pair to OpenGL internal format.
+/// Maps between \c cv::Mat \c type to pixel format.
 static const std::unordered_map<int, _LTGLPixelFormat> kMatTypeToPixelFormat{
   {CV_8UC1, LTGLPixelFormatR8Unorm},
   {CV_16FC1, LTGLPixelFormatR16Float},
@@ -218,6 +218,32 @@ static _LTGLPixelFormat LTGLPixelFormatForPlanarCVPixelFormatType(OSType type, s
 
   return planes[planeIndex];
 }
+
+/// Maps between \c cv::Mat \c type to \c CIFormat.
+static const std::unordered_map<int, CIFormat> kMatTypeToCIFormat{
+  {CV_8UC1, kCIFormatR8},
+  {CV_16FC1, kCIFormatRh},
+  {CV_32FC1, kCIFormatRf},
+  {CV_8UC2, kCIFormatRG8},
+  {CV_16FC2, kCIFormatRGh},
+  {CV_32FC2, kCIFormatRGf},
+  {CV_8UC4, kCIFormatRGBA8},
+  {CV_16FC4, kCIFormatRGBAh},
+  {CV_32FC4, kCIFormatRGBAf}
+};
+
+/// Maps between CoreVideo pixel format (CVPixelFormatType) to \c CIFormat.
+static const std::unordered_map<OSType, CIFormat> kCVPixelBufferTypeToCIFormat{
+  {kCVPixelFormatType_OneComponent8, kCIFormatR8},
+  {kCVPixelFormatType_OneComponent16Half, kCIFormatRh},
+  {kCVPixelFormatType_OneComponent32Float, kCIFormatRf},
+  {kCVPixelFormatType_TwoComponent8, kCIFormatRG8},
+  {kCVPixelFormatType_TwoComponent16Half, kCIFormatRGh},
+  {kCVPixelFormatType_TwoComponent32Float, kCIFormatRGf},
+  {kCVPixelFormatType_32BGRA, kCIFormatBGRA8},
+  {kCVPixelFormatType_64RGBAHalf, kCIFormatRGBAh},
+  {kCVPixelFormatType_128RGBAFloat, kCIFormatRGBAf}
+};
 
 @implementation LTGLPixelFormat (Additions)
 
@@ -349,6 +375,16 @@ static _LTGLPixelFormat LTGLPixelFormatForPlanarCVPixelFormatType(OSType type, s
     }
   }
   return kUnknownType;
+}
+
+- (CIFormat)ciFormatForMatType {
+  const auto it = kMatTypeToCIFormat.find(self.matType);
+  return it != kMatTypeToCIFormat.cend() ? it->second : kUnknownType;
+}
+
+- (CIFormat)ciFormatForCVPixelFormatType {
+  const auto it = kCVPixelBufferTypeToCIFormat.find(self.cvPixelFormatType);
+  return it != kCVPixelBufferTypeToCIFormat.cend() ? it->second : kUnknownType;
 }
 
 @end
