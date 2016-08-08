@@ -15,6 +15,8 @@ LTErrorCodesDeclare(BazaarErrorCodeProductID,
   BZRErrorCodeReceiptValidationFailed,
   /// Failure during products metadata fetching.
   BZRErrorCodeProductsMetadataFetchingFailed,
+  /// Failure during receipt refreshing.
+  BZRErrorCodeReceiptRefreshFailed,
   /// Deserilization of a model instance from JSON dictionary has failed.
   BZRErrorCodeModelJSONDeserializationFailed,
   /// Deserialization of a JSON object from raw data has failed.
