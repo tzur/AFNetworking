@@ -7,6 +7,8 @@ const int kOperationTypeAdd = 0;
 const int kOperationTypeSubtract = 1;
 const int kOperationTypeMultiply = 2;
 const int kOperationTypeDivide = 3;
+const int kOperationTypeMax = 4;
+const int kOperationTypeMin = 5;
 
 uniform lowp sampler2D sourceTexture;
 uniform lowp sampler2D secondTexture;
@@ -40,5 +42,9 @@ void main() {
     gl_FragColor = vec4(first * second, 1.0);
   } else if (operationType == kOperationTypeDivide) {
     gl_FragColor = vec4(first / second, 1.0);
+  } else if (operationType == kOperationTypeMax) {
+    gl_FragColor = vec4(max(first, second), 1.0);
+  } else if (operationType == kOperationTypeMin) {
+    gl_FragColor = vec4(min(first, second), 1.0);
   }
 }

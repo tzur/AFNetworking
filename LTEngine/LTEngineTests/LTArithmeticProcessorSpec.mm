@@ -87,6 +87,8 @@ static NSString * const kArithmeticProcessorAddResultValueKey = @"addResultValue
 static NSString * const kArithmeticProcessorSubResultValueKey = @"subResultValue";
 static NSString * const kArithmeticProcessorMulResultValueKey = @"mulResultValue";
 static NSString * const kArithmeticProcessorDivResultValueKey = @"divResultValue";
+static NSString * const kArithmeticProcessorMaxResultValueKey = @"maxResultValue";
+static NSString * const kArithmeticProcessorMinResultValueKey = @"minResultValue";
 
 sharedExamplesFor(kArithmeticProcessorSharedExamples, ^(NSDictionary *data) {
   __block LTTexture *firstIn;
@@ -113,9 +115,9 @@ sharedExamplesFor(kArithmeticProcessorSharedExamples, ^(NSDictionary *data) {
 
   it(@"should add two textures", ^{
     LTArithmeticProcessor *processor =
-    [[LTArithmeticProcessor alloc] initWithFirstOperand:firstIn
-                                          secondOperand:secondIn
-                                                 output:outputTex];
+        [[LTArithmeticProcessor alloc] initWithFirstOperand:firstIn
+                                              secondOperand:secondIn
+                                                     output:outputTex];
     processor.operation = LTArithmeticOperationAdd;
     [processor process];
 
@@ -125,9 +127,9 @@ sharedExamplesFor(kArithmeticProcessorSharedExamples, ^(NSDictionary *data) {
 
   it(@"should subtract two textures", ^{
     LTArithmeticProcessor *processor =
-    [[LTArithmeticProcessor alloc] initWithFirstOperand:firstIn
-                                          secondOperand:secondIn
-                                                 output:outputTex];
+        [[LTArithmeticProcessor alloc] initWithFirstOperand:firstIn
+                                              secondOperand:secondIn
+                                                     output:outputTex];
     processor.operation = LTArithmeticOperationSubtract;
     [processor process];
 
@@ -137,9 +139,9 @@ sharedExamplesFor(kArithmeticProcessorSharedExamples, ^(NSDictionary *data) {
 
   it(@"should multiply two textures", ^{
     LTArithmeticProcessor *processor =
-    [[LTArithmeticProcessor alloc] initWithFirstOperand:firstIn
-                                          secondOperand:secondIn
-                                                 output:outputTex];
+        [[LTArithmeticProcessor alloc] initWithFirstOperand:firstIn
+                                              secondOperand:secondIn
+                                                     output:outputTex];
     processor.operation = LTArithmeticOperationMultiply;
     [processor process];
 
@@ -149,13 +151,37 @@ sharedExamplesFor(kArithmeticProcessorSharedExamples, ^(NSDictionary *data) {
 
   it(@"should divide two textures in-place", ^{
     LTArithmeticProcessor *processor =
-    [[LTArithmeticProcessor alloc] initWithFirstOperand:secondIn
-                                          secondOperand:firstIn
-                                                 output:outputTex];
+        [[LTArithmeticProcessor alloc] initWithFirstOperand:secondIn
+                                              secondOperand:firstIn
+                                                     output:outputTex];
     processor.operation = LTArithmeticOperationDivide;
     [processor process];
 
     cv::Scalar resultValue = [data[kArithmeticProcessorDivResultValueKey] scalarValue];
+    expect($([outputTex image])).to.beCloseToScalar($(resultValue));
+  });
+
+  it(@"should max two textures", ^{
+    LTArithmeticProcessor *processor =
+        [[LTArithmeticProcessor alloc] initWithFirstOperand:firstIn
+                                              secondOperand:secondIn
+                                                     output:outputTex];
+    processor.operation = LTArithmeticOperationMax;
+    [processor process];
+
+    cv::Scalar resultValue = [data[kArithmeticProcessorMaxResultValueKey] scalarValue];
+    expect($([outputTex image])).to.beCloseToScalar($(resultValue));
+  });
+
+  it(@"should min two textures", ^{
+    LTArithmeticProcessor *processor =
+        [[LTArithmeticProcessor alloc] initWithFirstOperand:firstIn
+                                              secondOperand:secondIn
+                                                     output:outputTex];
+    processor.operation = LTArithmeticOperationMin;
+    [processor process];
+
+    cv::Scalar resultValue = [data[kArithmeticProcessorMinResultValueKey] scalarValue];
     expect($([outputTex image])).to.beCloseToScalar($(resultValue));
   });
 });
@@ -170,7 +196,9 @@ context(@"Processing", ^{
              // Value should be (128 * 64) / 255, since multiplication is done in [0, 1].
              kArithmeticProcessorMulResultValueKey: $(cv::Scalar(32, 32, 32, 255)),
              // Value should be (64 / 255) / (128 / 255), since division is done in [0, 1].
-             kArithmeticProcessorDivResultValueKey: $(cv::Scalar(128, 128, 128, 255))
+             kArithmeticProcessorDivResultValueKey: $(cv::Scalar(128, 128, 128, 255)),
+             kArithmeticProcessorMaxResultValueKey: $(cv::Scalar(128, 128, 128, 255)),
+             kArithmeticProcessorMinResultValueKey: $(cv::Scalar(64, 64, 64, 255))
              };
   });
 
@@ -181,7 +209,9 @@ context(@"Processing", ^{
              kArithmeticProcessorAddResultValueKey: $(cv::Scalar(192, 192, 192, 255)),
              kArithmeticProcessorSubResultValueKey: $(cv::Scalar(64, 64, 64, 255)),
              kArithmeticProcessorMulResultValueKey: $(cv::Scalar(32, 32, 32, 255)),
-             kArithmeticProcessorDivResultValueKey: $(cv::Scalar(128, 128, 128, 255))
+             kArithmeticProcessorDivResultValueKey: $(cv::Scalar(128, 128, 128, 255)),
+             kArithmeticProcessorMaxResultValueKey: $(cv::Scalar(128, 128, 128, 255)),
+             kArithmeticProcessorMinResultValueKey: $(cv::Scalar(64, 64, 64, 255))
              };
   });
 
@@ -192,7 +222,9 @@ context(@"Processing", ^{
              kArithmeticProcessorAddResultValueKey: $(cv::Scalar(192, 192, 192, 255)),
              kArithmeticProcessorSubResultValueKey: $(cv::Scalar(64, 64, 64, 255)),
              kArithmeticProcessorMulResultValueKey: $(cv::Scalar(32, 32, 32, 255)),
-             kArithmeticProcessorDivResultValueKey: $(cv::Scalar(128, 128, 128, 255))
+             kArithmeticProcessorDivResultValueKey: $(cv::Scalar(128, 128, 128, 255)),
+             kArithmeticProcessorMaxResultValueKey: $(cv::Scalar(128, 128, 128, 255)),
+             kArithmeticProcessorMinResultValueKey: $(cv::Scalar(64, 64, 64, 255))
              };
   });
 
@@ -203,7 +235,9 @@ context(@"Processing", ^{
              kArithmeticProcessorAddResultValueKey: $(cv::Scalar(255, 255, 255, 255)),
              kArithmeticProcessorSubResultValueKey: $(cv::Scalar(0, 0, 0, 255)),
              kArithmeticProcessorMulResultValueKey: $(cv::Scalar(64, 64, 64, 255)),
-             kArithmeticProcessorDivResultValueKey: $(cv::Scalar(255, 255, 255, 255))
+             kArithmeticProcessorDivResultValueKey: $(cv::Scalar(255, 255, 255, 255)),
+             kArithmeticProcessorMaxResultValueKey: $(cv::Scalar(128, 128, 128, 255)),
+             kArithmeticProcessorMinResultValueKey: $(cv::Scalar(128, 128, 128, 255))
              };
   });
 
@@ -214,7 +248,9 @@ context(@"Processing", ^{
              kArithmeticProcessorAddResultValueKey: $(cv::Scalar(128, 128, 128, 255)),
              kArithmeticProcessorSubResultValueKey: $(cv::Scalar(0, 0, 0, 255)),
              kArithmeticProcessorMulResultValueKey: $(cv::Scalar(16, 16, 16, 255)),
-             kArithmeticProcessorDivResultValueKey: $(cv::Scalar(255, 255, 255, 255))
+             kArithmeticProcessorDivResultValueKey: $(cv::Scalar(255, 255, 255, 255)),
+             kArithmeticProcessorMaxResultValueKey: $(cv::Scalar(64, 64, 64, 255)),
+             kArithmeticProcessorMinResultValueKey: $(cv::Scalar(64, 64, 64, 255))
              };
   });
 
@@ -225,7 +261,9 @@ context(@"Processing", ^{
              kArithmeticProcessorAddResultValueKey: $(cv::Scalar(255, 255, 255, 255)),
              kArithmeticProcessorSubResultValueKey: $(cv::Scalar(0, 0, 0, 255)),
              kArithmeticProcessorMulResultValueKey: $(cv::Scalar(64, 64, 64, 255)),
-             kArithmeticProcessorDivResultValueKey: $(cv::Scalar(255, 255, 255, 255))
+             kArithmeticProcessorDivResultValueKey: $(cv::Scalar(255, 255, 255, 255)),
+             kArithmeticProcessorMaxResultValueKey: $(cv::Scalar(128, 128, 128, 255)),
+             kArithmeticProcessorMinResultValueKey: $(cv::Scalar(128, 128, 128, 255))
              };
   });
 
@@ -236,7 +274,9 @@ context(@"Processing", ^{
              kArithmeticProcessorAddResultValueKey: $(cv::Scalar(128, 128, 128, 255)),
              kArithmeticProcessorSubResultValueKey: $(cv::Scalar(0, 0, 0, 255)),
              kArithmeticProcessorMulResultValueKey: $(cv::Scalar(16, 16, 16, 255)),
-             kArithmeticProcessorDivResultValueKey: $(cv::Scalar(255, 255, 255, 255))
+             kArithmeticProcessorDivResultValueKey: $(cv::Scalar(255, 255, 255, 255)),
+             kArithmeticProcessorMaxResultValueKey: $(cv::Scalar(64, 64, 64, 255)),
+             kArithmeticProcessorMinResultValueKey: $(cv::Scalar(64, 64, 64, 255))
              };
   });
 });

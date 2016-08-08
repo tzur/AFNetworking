@@ -10,7 +10,9 @@ typedef NS_ENUM(NSUInteger, LTArithmeticOperation) {
   LTArithmeticOperationAdd = 0,
   LTArithmeticOperationSubtract = 1,
   LTArithmeticOperationMultiply = 2,
-  LTArithmeticOperationDivide = 3
+  LTArithmeticOperationDivide = 3,
+  LTArithmeticOperationMax = 4,
+  LTArithmeticOperationMin = 5
 };
 
 /// Processor for calculating an elementwise arithmetic operation between two input textures,
