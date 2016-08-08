@@ -22,7 +22,10 @@ NS_ASSUME_NONNULL_BEGIN
 /// \c YES if the view should be hidden.
 @property (readonly, nonatomic) BOOL hidden;
 
-/// \c YES if the view should be enabled.
+/// Signal of \c BOOL values that signals whether the view should be enabled.
+@property (strong, nonatomic) RACSignal *enabledSignal;
+
+/// Last value that was sent over \c enabledSignal.
 @property (readonly, nonatomic) BOOL enabled;
 
 /// List of subitems of this item. \c nil value means the item has no subitems.

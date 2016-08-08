@@ -19,7 +19,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// \c currentFlashMode of the \c CAMFlashDevice instance, unless \c enabled is \c NO, and in such
 /// case they are nil.
 ///
-/// \c enabled is \c YES if the toggling between the flash modes is supported by the device.
+/// By default, \c enabledSignal sends \c YES if the toggling between the flash modes is supported
+/// by the device.
 ///
 /// The \c hidden and \c selected properties are always \c NO.
 ///

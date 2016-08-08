@@ -25,6 +25,7 @@ it(@"should have init properties", ^{
   expect(selectableMenuItemViewModel.hidden).to.beFalsy();
   expect(selectableMenuItemViewModel.subitems).to.beNil;
   expect(selectableMenuItemViewModel.selected).to.beFalsy();
+  expect(selectableMenuItemViewModel.enabledSignal).toNot.beNil;
   expect(selectableMenuItemViewModel.enabled).to.beTruthy();
 });
 
@@ -42,6 +43,20 @@ it(@"should not change after didtap", ^{
 it(@"should change selected", ^{
   selectableMenuItemViewModel.selected = YES;
   expect(selectableMenuItemViewModel.selected).to.beTruthy();
+});
+
+context(@"enabledSignal", ^{
+  it(@"should update the enabled property", ^{
+    RACSubject *enabledSignal = [[RACSubject alloc] init];
+    selectableMenuItemViewModel.enabledSignal = enabledSignal;
+    expect(selectableMenuItemViewModel.enabled).to.beTruthy();
+
+    [enabledSignal sendNext:@NO];
+    expect(selectableMenuItemViewModel.enabled).will.beFalsy();
+
+    [enabledSignal sendNext:@YES];
+    expect(selectableMenuItemViewModel.enabled).will.beTruthy();
+  });
 });
 
 SpecEnd

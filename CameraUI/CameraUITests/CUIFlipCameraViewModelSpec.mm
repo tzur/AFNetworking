@@ -43,14 +43,28 @@ context(@"initialization", ^{
   it(@"should set the subitems to nil", ^{
     expect(flipViewModel.subitems).to.beNil();
   });
+
+  context(@"enabled", ^{
+    it(@"should match the device's canChangeCamera property", ^{
+      device.canChangeCamera = NO;
+      expect(flipViewModel.enabled).to.beFalsy();
+
+      device.canChangeCamera = YES;
+      expect(flipViewModel.enabled).will.beTruthy();
+    });
+  });
 });
 
-context(@"enabled", ^{
-  it(@"should match the device's canChangeCamera property", ^{
-    device.canChangeCamera = NO;
-    expect(flipViewModel.enabled).to.beFalsy();
+context(@"enabledSignal", ^{
+  it(@"should update the enabled property", ^{
+    RACSubject *enabledSignal = [[RACSubject alloc] init];
+    flipViewModel.enabledSignal = enabledSignal;
+    expect(flipViewModel.enabled).to.beTruthy();
 
-    device.canChangeCamera = YES;
+    [enabledSignal sendNext:@NO];
+    expect(flipViewModel.enabled).will.beFalsy();
+
+    [enabledSignal sendNext:@YES];
     expect(flipViewModel.enabled).will.beTruthy();
   });
 });

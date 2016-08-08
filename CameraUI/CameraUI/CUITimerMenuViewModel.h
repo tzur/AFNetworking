@@ -15,6 +15,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// first interval that matches (i.e. is within \c precision) the \c id<CUITimerContainer>. If no
 /// interval currently matches, \c title and \c iconURL are \c nil.
 ///
+/// By default, \c enabledSignal sends \c YES.
+///
 /// The \c hidden and \c selected properties are always \c NO.
 ///
 /// Calling \c didTap doesn't do anything.

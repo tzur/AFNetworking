@@ -18,6 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize iconURL = _iconURL;
 @synthesize selected = _selected;
 @synthesize hidden = _hidden;
+@synthesize enabledSignal = _enabledSignal;
 @synthesize enabled = _enabled;
 @synthesize subitems = _subitems;
 
@@ -46,7 +47,8 @@ NS_ASSUME_NONNULL_BEGIN
     _title = title;
     _iconURL = iconURL;
     _hidden = NO;
-    _enabled = YES;
+    _enabledSignal = [RACSignal return:@YES];
+    RAC(self, enabled) = [RACObserve(self, enabledSignal) switchToLatest];;
     [self setup];
   }
   return self;

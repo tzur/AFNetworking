@@ -13,7 +13,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// \c title and \c iconURL hold the button's title and icon URL respectively, unless \c enabled is
 /// \c NO, and in such case they are nil.
 ///
-/// \c enabled is \c YES if the toggling between the available cameras is supported by the device.
+/// By default, \c enabledSignal sends \c YES if the toggling between the available cameras is
+/// supported by the device.
 ///
 /// The \c hidden and \c selected properties are always \c NO.
 ///

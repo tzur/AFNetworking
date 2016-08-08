@@ -21,6 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize iconURL = _iconURL;
 @synthesize selected = _selected;
 @synthesize hidden = _hidden;
+@synthesize enabledSignal = _enabledSignal;
 @synthesize enabled = _enabled;
 @synthesize subitems = _subitems;
 
@@ -33,7 +34,8 @@ NS_ASSUME_NONNULL_BEGIN
     _selected = NO;
     _hidden = NO;
     _subitems = nil;
-    RAC(self, enabled) = RACObserve(self, flipDevice.canChangeCamera);
+    self.enabledSignal = RACObserve(self, flipDevice.canChangeCamera);
+    RAC(self, enabled) = [RACObserve(self, enabledSignal) switchToLatest];
     RAC(self, title) = [RACObserve(self, enabled) map:^NSString *(NSNumber *enabled) {
       return enabled.boolValue ? title : nil;
     }];

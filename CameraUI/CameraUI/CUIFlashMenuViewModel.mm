@@ -22,6 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize iconURL = _iconURL;
 @synthesize selected = _selected;
 @synthesize hidden = _hidden;
+@synthesize enabledSignal = _enabledSignal;
 @synthesize enabled = _enabled;
 @synthesize subitems = _subitems;
 
@@ -40,7 +41,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)setup {
   _selected = NO;
   _hidden = NO;
-  RAC(self, enabled) = RACObserve(self, flashDevice.hasFlash);
+  self.enabledSignal = RACObserve(self, flashDevice.hasFlash);
+  RAC(self, enabled) = [RACObserve(self, enabledSignal) switchToLatest];
   @weakify(self);
   RAC(self, iconURL) = [RACSignal
       combineLatest:@[

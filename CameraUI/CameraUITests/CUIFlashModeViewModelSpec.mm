@@ -69,6 +69,20 @@ context(@"initialization", ^{
   });
 });
 
+context(@"enabledSignal", ^{
+  it(@"should update the enabled property", ^{
+    RACSubject *enabledSignal = [[RACSubject alloc] init];
+    flashModeViewModel.enabledSignal = enabledSignal;
+    expect(flashModeViewModel.enabled).to.beTruthy();
+
+    [enabledSignal sendNext:@NO];
+    expect(flashModeViewModel.enabled).will.beFalsy();
+
+    [enabledSignal sendNext:@YES];
+    expect(flashModeViewModel.enabled).will.beTruthy();
+  });
+});
+
 context(@"selected", ^{
   it(@"should match the device's currentFlashMode", ^{
     expect(flashModeViewModel.selected).will.beTruthy();
