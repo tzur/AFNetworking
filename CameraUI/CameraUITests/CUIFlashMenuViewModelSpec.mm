@@ -59,15 +59,29 @@ context(@"initialization", ^{
   it(@"should set the subitems with the given flash modes", ^{
     expect(flashViewModel.subitems).to.equal(flashModes);
   });
+
+  context(@"enabled", ^{
+    it(@"should match the device's hasFlash property", ^{
+      device.hasFlash = NO;
+      expect(flashViewModel.enabled).to.beFalsy();
+
+      device.hasFlash = YES;
+      expect(flashViewModel.enabled).to.beTruthy();
+    });
+  });
 });
 
-context(@"enabled", ^{
-  it(@"should match the device's hasFlash property", ^{
-    device.hasFlash = NO;
-    expect(flashViewModel.enabled).to.beFalsy();
-
-    device.hasFlash = YES;
+context(@"enabledSignal", ^{
+  it(@"should update the enabled property", ^{
+    RACSubject *enabledSignal = [[RACSubject alloc] init];
+    flashViewModel.enabledSignal = enabledSignal;
     expect(flashViewModel.enabled).to.beTruthy();
+
+    [enabledSignal sendNext:@NO];
+    expect(flashViewModel.enabled).will.beFalsy();
+
+    [enabledSignal sendNext:@YES];
+    expect(flashViewModel.enabled).will.beTruthy();
   });
 });
 

@@ -41,6 +41,7 @@ context(@"initialization", ^{
   it(@"should set default values", ^{
     expect(timerViewModel.selected).to.beFalsy();
     expect(timerViewModel.hidden).to.beFalsy();
+    expect(timerViewModel.enabled).to.beTruthy();
   });
 
   it(@"should set values from initializer", ^{
@@ -85,6 +86,20 @@ context(@"iconURL", ^{
     expect(timerModes[0].interval).to.beCloseTo(timerModes[2].interval);
     timerContainer.interval = timerModes[2].interval;
     expect(timerViewModel.iconURL).to.equal(timerModes[0].iconURL);
+  });
+});
+
+context(@"enabledSignal", ^{
+  it(@"should update the enabled property", ^{
+    RACSubject *enabledSignal = [[RACSubject alloc] init];
+    timerViewModel.enabledSignal = enabledSignal;
+    expect(timerViewModel.enabled).to.beTruthy();
+
+    [enabledSignal sendNext:@NO];
+    expect(timerViewModel.enabled).will.beFalsy();
+
+    [enabledSignal sendNext:@YES];
+    expect(timerViewModel.enabled).will.beTruthy();
   });
 });
 

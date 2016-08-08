@@ -18,6 +18,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// The \c hidden and \c selected properties are always \c NO, and the \c subitems property is
 /// always \c nil.
 ///
+/// By default, \c enabledSignal sends \c YES.
+///
 /// Calling \c didTap toggles the visibility of the \c CUIGridContainer's grid.
 @interface CUIGridViewModel : NSObject <CUIMenuItemViewModel>
 

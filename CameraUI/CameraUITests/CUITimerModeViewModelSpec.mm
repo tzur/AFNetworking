@@ -107,6 +107,20 @@ context(@"selected", ^{
   });
 });
 
+context(@"enabledSignal", ^{
+  it(@"should update the enabled property", ^{
+    RACSubject *enabledSignal = [[RACSubject alloc] init];
+    timerModeViewModel.enabledSignal = enabledSignal;
+    expect(timerModeViewModel.enabled).to.beTruthy();
+
+    [enabledSignal sendNext:@NO];
+    expect(timerModeViewModel.enabled).will.beFalsy();
+
+    [enabledSignal sendNext:@YES];
+    expect(timerModeViewModel.enabled).will.beTruthy();
+  });
+});
+
 context(@"didTap", ^{
   it(@"should set the container's interval", ^{
     timerContainer.interval = 5;

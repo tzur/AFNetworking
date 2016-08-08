@@ -15,9 +15,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// If the current flash mode doesn't match this object's flash mode, calling \c didTap will trigger
 /// a call to the \c CAMFlashDevice object to change its flash mode to this object's flash mode.
 ///
-/// The \c hidden property is always \c NO.
+/// \c hidden property is always \c NO.
 ///
-/// The \c enabled property is always \c YES.
+/// By default, \c enabledSignal sends \c YES.
 ///
 /// The \c selected property is \c YES if the this object's \c flashMode matches the
 /// \c CAMFlashDevice object's \c currentFlashMode.

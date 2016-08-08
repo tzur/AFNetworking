@@ -46,6 +46,20 @@ context(@"initialization", ^{
   });
 });
 
+context(@"enabledSignal", ^{
+  it(@"should update the enabled property", ^{
+    RACSubject *enabledSignal = [[RACSubject alloc] init];
+    gridViewModel.enabledSignal = enabledSignal;
+    expect(gridViewModel.enabled).to.beTruthy();
+
+    [enabledSignal sendNext:@NO];
+    expect(gridViewModel.enabled).will.beFalsy();
+
+    [enabledSignal sendNext:@YES];
+    expect(gridViewModel.enabled).will.beTruthy();
+  });
+});
+
 context(@"didTap", ^{
   beforeEach(^{
     gridContainer.gridHidden = YES;

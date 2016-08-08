@@ -14,6 +14,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation CUISimpleMenuItemViewModel
 
+@synthesize enabledSignal = _enabledSignal;
+
 - (instancetype)init {
   if (self = [super init]) {
     _enabled = YES;

@@ -20,8 +20,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// \c selected is \c YES when the \c id<CUITimerContainer>'s interval is within \c precision of
 /// this object's.
 ///
-/// The \c hidden property is always \c NO, \c enabled is always \c YES and \c subitems is always
-/// \c nil.
+/// By default, \c enabledSignal sends \c YES.
+///
+/// The \c hidden property is always \c NO and \c subitems is always \c nil.
 @interface CUITimerModeViewModel : NSObject <CUIMenuItemViewModel>
 
 - (instancetype)init NS_UNAVAILABLE;
