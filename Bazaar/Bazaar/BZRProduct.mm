@@ -3,7 +3,7 @@
 
 #import "BZRProduct.h"
 
-#import "BZRProductContentDescriptor.h"
+#import "BZRContentProviderParameters.h"
 #import "BZRProductPriceInfo.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -24,6 +24,19 @@ LTEnumImplement(NSUInteger, BZRProductPurchaseStatus,
 @implementation BZRProduct
 
 #pragma mark -
+#pragma mark Creating new products
+#pragma mark -
+
+- (BZRProduct *)productWithContentProviderParameters:
+    (BZRContentProviderParameters *)contentProviderParameters
+    error:(NSError * __autoreleasing *)error {
+  NSMutableDictionary *productDictionary = [[self dictionaryValue] mutableCopy];
+  productDictionary[@keypath(self.contentProviderParameters)] =
+      contentProviderParameters;
+  return [self initWithDictionary:productDictionary error:error];
+}
+
+#pragma mark -
 #pragma mark MTLJSONSerializing
 #pragma mark -
 
@@ -31,7 +44,7 @@ LTEnumImplement(NSUInteger, BZRProductPurchaseStatus,
   return @{
     @instanceKeypath(BZRProduct, identifier): @"identifier",
     @instanceKeypath(BZRProduct, productType): @"productType",
-    @instanceKeypath(BZRProduct, descriptor): @"contentDescriptor",
+    @instanceKeypath(BZRProduct, contentProviderParameters): @"contentProviderParameters",
     @instanceKeypath(BZRProduct, priceInfo): @"priceInfo",
     @instanceKeypath(BZRProduct, purchaseStatus): @"purchaseStatus",
   };
@@ -63,7 +76,7 @@ LTEnumImplement(NSUInteger, BZRProductPurchaseStatus,
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
     nullablePropertyKeys = [NSSet setWithArray:@[
-      @instanceKeypath(BZRProduct, descriptor),
+      @instanceKeypath(BZRProduct, contentProviderParameters),
       @instanceKeypath(BZRProduct, priceInfo),
       @instanceKeypath(BZRProduct, purchaseStatus)
     ]];

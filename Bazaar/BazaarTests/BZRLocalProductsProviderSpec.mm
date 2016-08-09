@@ -3,7 +3,6 @@
 
 #import "BZRLocalProductsProvider.h"
 
-#import <LTKit/LTPath.h>
 #import <LTKit/NSFileManager+LTKit.h>
 
 #import "BZRTestUtils.h"

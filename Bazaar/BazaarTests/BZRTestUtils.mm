@@ -3,6 +3,7 @@
 
 #import "BZRTestUtils.h"
 
+#import "BZRContentProviderParameters.h"
 #import "BZRProduct.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -30,6 +31,12 @@ BZRProduct *BZRProductWithIdentifier(NSString *identifier) {
   };
 
   return [MTLJSONAdapter modelOfClass:[BZRProduct class] fromJSONDictionary:JSONProduct error:NULL];
+}
+
+BZRProduct *BZRProductWithIdentifierAndParameters(NSString *identifier,
+    BZRContentProviderParameters *parameters) {
+  BZRProduct *product = BZRProductWithIdentifier(identifier);
+  return [product productWithContentProviderParameters:parameters error:NULL];
 }
 
 NS_ASSUME_NONNULL_END
