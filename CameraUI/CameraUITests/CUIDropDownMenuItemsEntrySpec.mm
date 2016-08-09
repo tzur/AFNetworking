@@ -3,38 +3,41 @@
 
 #import "CUIDropDownMenuItemsEntry.h"
 
+#import "CUIMenuItemIconButton.h"
 #import "CUIMenuItemTextButton.h"
 #import "CUISharedTheme.h"
 #import "CUISimpleMenuItemViewModel.h"
+#import "UIView+Retrieval.h"
 
 SpecBegin(CUIDropDownMenuItemsEntry)
 
 __block CUIDropDownMenuItemsEntry *entry;
 __block CUISimpleMenuItemViewModel *model;
-__block Class itemViewClass;
-__block id themeMock;
+__block Class mainBarViewClass;
+__block Class subitemViewClass;
 
 beforeEach(^{
-  themeMock = LTMockProtocol(@protocol(CUITheme));
+  LTMockProtocol(@protocol(CUITheme));
   model = [[CUISimpleMenuItemViewModel alloc] init];
   model.subitems= @[
     [[CUISimpleMenuItemViewModel alloc] init],
     [[CUISimpleMenuItemViewModel alloc] init]
   ];
-  itemViewClass = [CUIMenuItemTextButton class];
+  mainBarViewClass = [CUIMenuItemTextButton class];
+  subitemViewClass = [CUIMenuItemIconButton class];
   entry = [[CUIDropDownMenuItemsEntry alloc] initWithItem:model
-                                     mainBarItemViewClass:itemViewClass
-                                     submenuItemViewClass:itemViewClass];
+                                     mainBarItemViewClass:mainBarViewClass
+                                     submenuItemViewClass:subitemViewClass];
 });
 
 context(@"initialization", ^{
   it(@"should raise an exception when initialized with nil item", ^{
-    CUISimpleMenuItemViewModel *model = nil;
+    CUISimpleMenuItemViewModel *nilModel = nil;
     expect(^{
-      CUIDropDownMenuItemsEntry * __unused group =
-          [[CUIDropDownMenuItemsEntry alloc] initWithItem:model
-                                     mainBarItemViewClass:itemViewClass
-                                     submenuItemViewClass:itemViewClass];
+      CUIDropDownMenuItemsEntry * __unused entry =
+          [[CUIDropDownMenuItemsEntry alloc] initWithItem:nilModel
+                                     mainBarItemViewClass:mainBarViewClass
+                                     submenuItemViewClass:mainBarViewClass];
     }).to.raise(NSInvalidArgumentException);
   });
 
@@ -43,7 +46,7 @@ context(@"initialization", ^{
       CUIDropDownMenuItemsEntry * __unused entry =
           [[CUIDropDownMenuItemsEntry alloc] initWithItem:model
                                      mainBarItemViewClass:UIView.class
-                                     submenuItemViewClass:itemViewClass];
+                                     submenuItemViewClass:mainBarViewClass];
     }).to.raise(NSInvalidArgumentException);
   });
 
@@ -51,32 +54,41 @@ context(@"initialization", ^{
     expect(^{
       CUIDropDownMenuItemsEntry * __unused entry =
           [[CUIDropDownMenuItemsEntry alloc] initWithItem:model
-                                     mainBarItemViewClass:itemViewClass
+                                     mainBarItemViewClass:mainBarViewClass
                                      submenuItemViewClass:UIView.class];
     }).to.raise(NSInvalidArgumentException);
   });
 
-  it(@"should create a mainBarItemView that is not nil", ^{
-    expect(entry.mainBarItemView).toNot.beNil();
+  it(@"should create a mainBarItemView with correct type", ^{
+    expect(entry.mainBarItemView).to.beKindOf(mainBarViewClass);
   });
-     
-  it(@"should create the same subviews number as the given subitems number", ^{
-    NSArray *submenuViews = ((UIStackView *)(entry.submenuView)).arrangedSubviews;
-    expect([submenuViews count]).to.equal([model.subitems count]);
+
+  it(@"should create a submenuView with internal stack view", ^{
+    expect(entry.submenuView).toNot.beNil();
+    expect([entry.submenuView wf_viewForAccessibilityIdentifier:@"StackView"]).toNot.beNil();
+  });
+
+  it(@"should create subviews with correct count and type", ^{
+    UIStackView *stackView =
+        (UIStackView *)[entry.submenuView wf_viewForAccessibilityIdentifier:@"StackView"];
+    expect(stackView.arrangedSubviews.count).to.equal(model.subitems.count);
+    for (NSUInteger i = 0; i < stackView.arrangedSubviews.count; ++i) {
+      expect(stackView.arrangedSubviews[i]).to.beKindOf(subitemViewClass);
+    }
   });
 
   it(@"should set the submenu view as a child of the mainBarItemView", ^{
     expect(entry.submenuView.superview).to.beIdenticalTo(entry.mainBarItemView);
   });
-  
+
   it(@"should create nil submenuView if given nil subitems", ^{
     model.subitems = nil;
-    CUIDropDownMenuItemsEntry * entry =
+    CUIDropDownMenuItemsEntry *anotherEntry =
         [[CUIDropDownMenuItemsEntry alloc] initWithItem:model
-                                   mainBarItemViewClass:itemViewClass
-                                   submenuItemViewClass:itemViewClass];
+                                   mainBarItemViewClass:mainBarViewClass
+                                   submenuItemViewClass:mainBarViewClass];
 
-    expect(entry.submenuView).to.beNil();
+    expect(anotherEntry.submenuView).to.beNil();
   });
 });
 
@@ -87,31 +99,32 @@ context(@"didTapSignal", ^{
     UIButton *button = (UIButton *)entry.mainBarItemView;
     [button sendActionsForControlEvents:UIControlEventTouchUpInside];
 
-    expect(recorder.values).to.equal(@[RACTuplePack(entry, button)]);
+    expect(recorder).to.sendValues(@[RACTuplePack(entry, button)]);
   });
 
   it(@"should send a RACTuple after the items in the submenuView are tapped", ^{
     LLSignalTestRecorder *recorder = [entry.didTapSignal testRecorder];
 
-    UIStackView *submenuView = (UIStackView *)entry.submenuView;
-    UIButton *button0 = (UIButton *)submenuView.arrangedSubviews[0];
+    UIStackView *stackView =
+        (UIStackView *)[entry.submenuView wf_viewForAccessibilityIdentifier:@"StackView"];
+    UIButton *button0 = stackView.arrangedSubviews[0];
     [button0 sendActionsForControlEvents:UIControlEventTouchUpInside];
-    UIButton *button1 = (UIButton *)submenuView.arrangedSubviews[1];
+    UIButton *button1 = stackView.arrangedSubviews[1];
     [button1 sendActionsForControlEvents:UIControlEventTouchUpInside];
 
-    expect(recorder.values).to.equal(@[RACTuplePack(entry, button0), RACTuplePack(entry, button1)]);
+    expect(recorder).to.sendValues(@[RACTuplePack(entry, button0), RACTuplePack(entry, button1)]);
   });
-  
+
   it(@"should complete when the entry deallocated", ^{
     LLSignalTestRecorder *recorder;
     @autoreleasepool {
-      CUIDropDownMenuItemsEntry * entry =
+      CUIDropDownMenuItemsEntry *anotherEntry =
           [[CUIDropDownMenuItemsEntry alloc] initWithItem:model
-                                     mainBarItemViewClass:itemViewClass
-                                     submenuItemViewClass:itemViewClass];
-      recorder = [entry.didTapSignal testRecorder];
+                                     mainBarItemViewClass:mainBarViewClass
+                                     submenuItemViewClass:mainBarViewClass];
+      recorder = [anotherEntry.didTapSignal testRecorder];
     }
-    expect(recorder.hasCompleted).to.beTruthy();
+    expect(recorder).to.complete();
   });
 });
 

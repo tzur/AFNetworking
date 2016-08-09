@@ -16,6 +16,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// For the \c submenuView it generates a view that contains \c UIButtons that conform to the
 /// \c CUIMenuItemButton protocol. These \c UIButtons show the \c subitems of the given
 /// \c CUIMenuItemViewModel object, and are orderd verticaly according to the \c subitems order.
+///
+/// \c submenuView contains a \c UIStackView with accessibility identifier "StackView".
 @interface CUIDropDownMenuItemsEntry : NSObject <CUIDropDownEntry>
 
 - (instancetype)init NS_UNAVAILABLE;
