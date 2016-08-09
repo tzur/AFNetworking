@@ -129,9 +129,17 @@ typedef std::vector<OSType> LTGLPixelFormatSupportedCVPixelFormatTypes;
 /// found.
 @property (readonly, nonatomic) int matType;
 
-/// CoreVideo type of pixel format type that is compatible with the pixel format or \c kUnknownType
+/// Core Video type of pixel format type that is compatible with the pixel format or \c kUnknownType
 /// if no compatible type is found.
 @property (readonly, nonatomic) OSType cvPixelFormatType;
+
+/// Core Image format that is compatible with \c matType or \c kUnknownType if no compatible type is
+/// found.
+@property (readonly, nonatomic) CIFormat ciFormatForMatType;
+
+/// Core Image format that is compatible with \c cvPixelFormatType or \c kUnknownType if no
+/// compatible type is found.
+@property (readonly, nonatomic) CIFormat ciFormatForCVPixelFormatType;
 
 @end
 
