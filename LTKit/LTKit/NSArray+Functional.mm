@@ -37,6 +37,20 @@ NS_ASSUME_NONNULL_BEGIN
   return [self filteredArrayUsingPredicate:predicate];
 }
 
+- (NSDictionary<id<NSCopying>, NSArray<id> *> *)lt_classify:(LTArrayClassifierBlock)block {
+  LTParameterAssert(block);
+
+  NSMutableDictionary<id<NSCopying>, NSMutableArray *> *classified =
+      [NSMutableDictionary dictionary];
+  for (id object in self) {
+    id label = block(object);
+    NSMutableArray *objectsMatchingLabel = classified[label] ?: [NSMutableArray array];
+    [objectsMatchingLabel addObject:object];
+    classified[label] = objectsMatchingLabel;
+  }
+  return [classified copy];
+}
+
 @end
 
 NS_ASSUME_NONNULL_END

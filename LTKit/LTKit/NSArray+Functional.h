@@ -7,7 +7,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface NSArray<ObjectType> (Functional)
 
 /// Callback block used with \c lt_map: method.
-typedef id _Nonnull (^LTArrayMapBlock)(ObjectType _Nonnull object);
+typedef id _Nonnull(^LTArrayMapBlock)(ObjectType _Nonnull object);
 
 /// Returns a new array with the results of calling the provided \c block on every element in this
 /// array. If \c block returns \c nil an \c NSInvalidArgumentException is raised.
@@ -23,7 +23,7 @@ typedef id _Nonnull (^LTArrayMapBlock)(ObjectType _Nonnull object);
 - (NSArray *)lt_map:(LTArrayMapBlock)block;
 
 /// Callback block used with \c lt_reduce:initial:.
-typedef id _Nonnull (^LTArrayReduceBlock)(id _Nonnull value, ObjectType object);
+typedef id _Nonnull(^LTArrayReduceBlock)(id _Nonnull value, ObjectType object);
 
 /// Applies the given \c block against an accumulator and each element of the array to reduce it to
 /// a single value. The \c initialValue argument is passed as the accumulator to the reduce block
@@ -47,6 +47,32 @@ typedef BOOL (^LTArrayFilterBlock)(ObjectType _Nonnull object);
 /// Returns a filtered array containing all and only the items of the receiver that \c block has
 /// returned \c YES for.
 - (NSArray<ObjectType> *)lt_filter:(LTArrayFilterBlock)block;
+
+/// Callback block used to classify objects of an array.
+///
+/// \c object is the array element to classify. The block returns a label for that item. The
+/// returned label must conform to \c NSCopying in order to be used as a key in an \c NSDictionary.
+typedef id<NSCopying> _Nonnull(^LTArrayClassifierBlock)(ObjectType _Nonnull object);
+
+/// Classifies all the objects in an array using the given \c classifier.
+///
+/// Returns a dictionary in which keys are labels returned by the classifier and the value for each
+/// key is an array containing the objects that matched that label.
+///
+/// <b>Example for classifying an array:</b>
+/// @code
+/// // Array with integer numbers -5 to 5.
+/// NSArray<NSNumber *> *source = ...;
+/// NSDictionary<NSNumber *, NSNumber *> *classification =
+///     [source lt_classify:^NSNumber *(NSNumber *value) {
+///       return @([value integerValue] >= 0);
+///     }];
+/// // classification = @{
+/// //   @YES: @[@0, @1, @2, @3, @4, @5],
+/// //   @NO: @[@-5, @-4, @-3, @-2 ,@-1]
+/// // }
+/// @endcode
+- (NSDictionary<id<NSCopying>, NSArray<ObjectType> *> *)lt_classify:(LTArrayClassifierBlock)block;
 
 @end
 
