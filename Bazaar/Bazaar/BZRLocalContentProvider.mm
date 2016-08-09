@@ -52,7 +52,7 @@ NS_ASSUME_NONNULL_BEGIN
     NSError *error;
     [self.fileManager copyItemAtURL:sourceURL toURL:targetPath.url error:&error];
     if (error) {
-      NSError *copyContentError = [NSError lt_errorWithCode:BZErrorCodeCopyProductContentFailed
+      NSError *copyContentError = [NSError lt_errorWithCode:BZRErrorCodeCopyProductContentFailed
                                             underlyingError:error];
       [subscriber sendError:copyContentError];
     } else {

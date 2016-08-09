@@ -60,7 +60,7 @@ NS_ASSUME_NONNULL_BEGIN
         if (![productForUnderlyingContentProvider.contentProviderParameters
               isKindOfClass:[contentProvider expectedParametersClass]]) {
           *error = [NSError
-                    lt_errorWithCode:BZErrorCodeUnexpectedUnderlyingContentProviderParametersClass];
+                    lt_errorWithCode:BZRErrorCodeUnexpectedUnderlyingContentProviderParametersClass];
           return nil;
         }
         return tuple;
@@ -81,7 +81,7 @@ NS_ASSUME_NONNULL_BEGIN
       NSError *error;
       NSString *errorDescription = [NSString stringWithFormat:@"Content provider with name %@ "
                                     "is not registered.", contentProviderName];
-      error = [NSError lt_errorWithCode:BZErrorCodeProductContentProviderNotRegistered
+      error = [NSError lt_errorWithCode:BZRErrorCodeProductContentProviderNotRegistered
                             description:errorDescription];
       [subscriber sendError:error];
     } else {
@@ -100,7 +100,7 @@ NS_ASSUME_NONNULL_BEGIN
         [product productWithContentProviderParameters:parametersForContentProvider error:&error];
     if (!productForUnderlyingContentProvider || error) {
       NSError *invalidParametersError =
-          [NSError lt_errorWithCode:BZErrorCodeInvalidUnderlyingContentProviderParameters
+          [NSError lt_errorWithCode:BZRErrorCodeInvalidUnderlyingContentProviderParameters
           underlyingError:error];
       [subscriber sendError:invalidParametersError];
     } else {
