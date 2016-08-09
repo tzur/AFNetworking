@@ -59,7 +59,7 @@ context(@"fetching with underlying content provider", ^{
     RACSignal *signal = [multiProvider fetchContentForProduct:product];
 
     expect(signal).will.matchError(^BOOL(NSError *error) {
-      return error.lt_isLTDomain && error.code == BZErrorCodeProductContentProviderNotRegistered;
+      return error.lt_isLTDomain && error.code == BZRErrorCodeProductContentProviderNotRegistered;
     });
   });
 
@@ -79,7 +79,7 @@ context(@"fetching with underlying content provider", ^{
 
     expect(signal).will.matchError(^BOOL(NSError *error) {
       return error.lt_isLTDomain &&
-          error.code == BZErrorCodeInvalidUnderlyingContentProviderParameters &&
+          error.code == BZRErrorCodeInvalidUnderlyingContentProviderParameters &&
           error.lt_underlyingError == underlyingError;
     });
   });
@@ -97,7 +97,7 @@ context(@"fetching with underlying content provider", ^{
 
     expect(signal).will.matchError(^BOOL(NSError *error) {
       return error.lt_isLTDomain &&
-      error.code == BZErrorCodeUnexpectedUnderlyingContentProviderParametersClass;
+      error.code == BZRErrorCodeUnexpectedUnderlyingContentProviderParametersClass;
     });
   });
 

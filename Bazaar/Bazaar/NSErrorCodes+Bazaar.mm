@@ -40,13 +40,13 @@ LTErrorCodesImplement(BazaarErrorCodeProductID,
   /// Directory enumeration failed.
   BZRErrorCodeDirectoryEnumrationFailed,
   /// Requested content provider is not registered.
-  BZErrorCodeProductContentProviderNotRegistered,
+  BZRErrorCodeProductContentProviderNotRegistered,
   /// Failure due to invalid underlying content provider parameters.
-  BZErrorCodeInvalidUnderlyingContentProviderParameters,
+  BZRErrorCodeInvalidUnderlyingContentProviderParameters,
   /// Failure due to unexpected underlying content provider parameters class.
-  BZErrorCodeUnexpectedUnderlyingContentProviderParametersClass,
+  BZRErrorCodeUnexpectedUnderlyingContentProviderParametersClass,
   /// Copy product's content to temporary directory has failed.
-  BZErrorCodeCopyProductContentFailed
+  BZRErrorCodeCopyProductContentFailed
 );
 
 NS_ASSUME_NONNULL_END

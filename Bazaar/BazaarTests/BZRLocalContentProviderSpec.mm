@@ -72,7 +72,7 @@ context(@"fetching product", ^{
     RACSignal *signal = [provider fetchContentForProduct:product];
 
     expect(signal).will.matchError(^BOOL(NSError *error) {
-      return error.lt_isLTDomain && error.code == BZErrorCodeCopyProductContentFailed;
+      return error.lt_isLTDomain && error.code == BZRErrorCodeCopyProductContentFailed;
     });
   });
 
