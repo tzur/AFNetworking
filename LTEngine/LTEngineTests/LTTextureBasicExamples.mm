@@ -3,6 +3,7 @@
 
 #import "LTTextureBasicExamples.h"
 
+#import "LTCVPixelBufferExtensions.h"
 #import "LTGLKitExtensions.h"
 #import "LTTexture+Protected.h"
 
@@ -432,8 +433,8 @@ sharedExamplesFor(kLTTextureBasicExamples, ^(NSDictionary *data) {
       });
     });
 
-    context(@"drawing with coregraphics", ^{
-      it(@"should draw with coregraphics to red channel texture", ^{
+    context(@"drawing with core graphics", ^{
+      it(@"should draw with core graphics to red channel texture", ^{
         LTTexture *texture = [(LTTexture *)[textureClass alloc]
                               initWithSize:CGSizeMake(67, 48) pixelFormat:$(LTGLPixelFormatR8Unorm)
                               allocateMemory:YES];
@@ -452,7 +453,7 @@ sharedExamplesFor(kLTTextureBasicExamples, ^(NSDictionary *data) {
         expect($([texture image])).to.equalMat($(expected));
       });
 
-      it(@"should draw with coregraphics to 4 channel texture", ^{
+      it(@"should draw with core graphics to 4 channel texture", ^{
         [texture drawWithCoreGraphics:^(CGContextRef context) {
           UIGraphicsPushContext(context); {
             [[UIColor blackColor] setFill];
@@ -488,6 +489,246 @@ sharedExamplesFor(kLTTextureBasicExamples, ^(NSDictionary *data) {
           if (data) {
             CFRelease(data);
           }
+        }];
+
+        expect(mapped).to.beTruthy();
+      });
+    });
+
+    context(@"drawing with core image", ^{
+      it(@"should leave texture unchanged in case block returns nil", ^{
+        NSString *expectedGenerationID = texture.generationID;
+        cv::Mat expected = texture.image;
+
+        [texture drawWithCoreImage:^CIImage *{
+          return nil;
+        }];
+
+        expect(texture.generationID).to.equal(expectedGenerationID);
+        expect($(texture.image)).to.equalMat($(expected));
+      });
+
+      it(@"should draw to red channel byte texture", ^{
+        LTTexture *texture = [(LTTexture *)[textureClass alloc]
+                              initWithSize:CGSizeMake(65, 47)
+                              pixelFormat:$(LTGLPixelFormatR8Unorm) allocateMemory:YES];
+
+        cv::Mat1b expected = cv::Mat1b::zeros(texture.size.height, texture.size.width);
+        expected(cv::Rect(0, 0, 4, 4)).setTo(255);
+        auto pixelBuffer = LTCVPixelBufferCreate(expected.cols, expected.rows,
+                                                 kCVPixelFormatType_OneComponent8);
+        LTCVPixelBufferImageForWriting(pixelBuffer.get(), ^(cv::Mat *image) {
+          expected.copyTo(*image);
+        });
+
+        CIImage *expectedCIImage = [CIImage imageWithCVPixelBuffer:pixelBuffer.get() options:@{
+          kCIImageColorSpace: [NSNull null]
+        }];
+
+        [texture drawWithCoreImage:^CIImage *{
+          return expectedCIImage;
+        }];
+
+        expect($([texture image])).to.equalMat($(expected));
+      });
+
+      dit(@"should draw to red channel half float texture", ^{
+        using half_float::half;
+
+        LTTexture *texture = [(LTTexture *)[textureClass alloc]
+                              initWithSize:CGSizeMake(65, 47)
+                              pixelFormat:$(LTGLPixelFormatR16Float) allocateMemory:YES];
+
+        cv::Mat1hf expected = cv::Mat1hf::zeros(texture.size.height, texture.size.width);
+        cv::Mat1hf roi = expected(cv::Rect(0, 0, 4, 4));
+        std::fill(roi.begin(), roi.end(), half(1));
+
+        auto pixelBuffer = LTCVPixelBufferCreate(expected.cols, expected.rows,
+                                                 kCVPixelFormatType_OneComponent16Half);
+        LTCVPixelBufferImageForWriting(pixelBuffer.get(), ^(cv::Mat *image) {
+          expected.copyTo(*image);
+        });
+
+        CIImage *expectedCIImage = [CIImage imageWithCVPixelBuffer:pixelBuffer.get() options:@{
+          kCIImageColorSpace: [NSNull null]
+        }];
+
+        [texture drawWithCoreImage:^CIImage *{
+          return expectedCIImage;
+        }];
+
+        expect($([texture image])).to.equalMat($(expected));
+      });
+
+      it(@"should draw to 4 channel byte texture", ^{
+        LTTexture *texture = [(LTTexture *)[textureClass alloc]
+                              initWithSize:CGSizeMake(65, 47)
+                              pixelFormat:$(LTGLPixelFormatRGBA8Unorm) allocateMemory:YES];
+
+        cv::Mat4b expected(texture.size.height, texture.size.width, cv::Vec4b(0, 0, 0, 255));
+        expected(cv::Rect(0, 0, 4, 4)).setTo(cv::Vec4b(255, 0, 0, 255));
+        auto pixelBuffer = LTCVPixelBufferCreate(expected.cols, expected.rows,
+                                                 kCVPixelFormatType_32BGRA);
+        LTCVPixelBufferImageForWriting(pixelBuffer.get(), ^(cv::Mat *image) {
+          cv::cvtColor(expected, *image, CV_RGBA2BGRA);
+        });
+
+        CIImage *expectedCIImage = [CIImage imageWithCVPixelBuffer:pixelBuffer.get() options:@{
+          kCIImageColorSpace: [NSNull null]
+        }];
+
+        [texture drawWithCoreImage:^CIImage *{
+          return expectedCIImage;
+        }];
+
+        expect($(texture.image)).to.equalMat($(expected));
+      });
+
+      dit(@"should draw to 4 channel half float texture", ^{
+        using half_float::half;
+
+        LTTexture *texture = [(LTTexture *)[textureClass alloc]
+                              initWithSize:CGSizeMake(65, 47)
+                              pixelFormat:$(LTGLPixelFormatRGBA16Float) allocateMemory:YES];
+
+        cv::Mat4hf expected = cv::Mat4hf::zeros(texture.size.height, texture.size.width);
+        cv::Mat4hf roi = expected(cv::Rect(0, 0, 4, 4));
+        std::fill(roi.begin(), roi.end(), cv::Vec4hf(half(1), half(2), half(3), half(4)));
+
+        auto pixelBuffer = LTCVPixelBufferCreate(expected.cols, expected.rows,
+                                                 kCVPixelFormatType_64RGBAHalf);
+        LTCVPixelBufferImageForWriting(pixelBuffer.get(), ^(cv::Mat *image) {
+          expected.copyTo(*image);
+        });
+
+        CIImage *expectedCIImage = [CIImage imageWithCVPixelBuffer:pixelBuffer.get() options:@{
+          kCIImageColorSpace: [NSNull null]
+        }];
+
+        [texture drawWithCoreImage:^CIImage *{
+          return expectedCIImage;
+        }];
+
+        expect($(texture.image)).to.equalMat($(expected));
+      });
+    });
+
+    context(@"reading contents as CIImage", ^{
+      it(@"should generate CIImage for a red channel byte texture", ^{
+        cv::Mat1b input(47, 65, 128);
+        LTTexture *texture = [(LTTexture *)[textureClass alloc] initWithImage:input];
+
+        __block auto pixelBuffer =
+            LTCVPixelBufferCreate(input.cols, input.rows, kCVPixelFormatType_32BGRA);
+
+        CIContext *context = [CIContext contextWithOptions:@{
+          kCIContextWorkingColorSpace: [NSNull null],
+          kCIContextOutputColorSpace: [NSNull null]
+        }];
+
+        __block BOOL mapped = NO;
+        [texture mappedCIImage:^(CIImage *image) {
+          expect(image.extent).to.equal(CGRectMake(0, 0, input.cols, input.rows));
+
+          [context render:image toCVPixelBuffer:pixelBuffer.get()
+                   bounds:image.extent colorSpace:NULL];
+
+          LTCVPixelBufferImageForReading(pixelBuffer.get(), ^(const cv::Mat &image) {
+            std::vector<cv::Mat> channels;
+            cv::split(image, channels);
+            expect($(channels[0])).to.equalMat($(input));
+          });
+
+          mapped = YES;
+        }];
+
+        expect(mapped).to.beTruthy();
+      });
+
+      dit(@"should generate CIImage for a red channel half float texture", ^{
+        using half_float::half;
+
+        cv::Mat1hf input = cv::Mat1hf::zeros(47, 65);
+        std::fill(input.begin(), input.end(), half(1));
+        LTTexture *texture = [(LTTexture *)[textureClass alloc] initWithImage:input];
+
+        __block auto pixelBuffer =
+            LTCVPixelBufferCreate(input.cols, input.rows, kCVPixelFormatType_OneComponent16Half);
+
+        CIContext *context = [CIContext contextWithOptions:@{
+          kCIContextWorkingColorSpace: [NSNull null],
+          kCIContextOutputColorSpace: [NSNull null]
+        }];
+
+        __block BOOL mapped = NO;
+        [texture mappedCIImage:^(CIImage *image) {
+          expect(image.extent).to.equal(CGRectMake(0, 0, input.cols, input.rows));
+
+          [context render:image toCVPixelBuffer:pixelBuffer.get()
+                   bounds:image.extent colorSpace:NULL];
+
+          LTCVPixelBufferImageForReading(pixelBuffer.get(), ^(const cv::Mat &image) {
+            expect($(image)).to.equalMat($(input));
+          });
+
+          mapped = YES;
+        }];
+
+        expect(mapped).to.beTruthy();
+      });
+
+      it(@"should generate CIImage for a 4 channel byte texture", ^{
+        cv::Mat4b input(47, 65, cv::Vec4b(32, 64, 128, 255));
+        LTTexture *texture = [(LTTexture *)[textureClass alloc] initWithImage:input];
+
+        __block BOOL mapped = NO;
+        [texture mappedCIImage:^(CIImage *image) {
+          mapped = YES;
+
+          expect(image.extent).to.equal(CGRectMake(0, 0, input.cols, input.rows));
+
+          CIContext *context = [CIContext contextWithOptions:@{
+            kCIContextWorkingColorSpace: [NSNull null],
+            kCIContextOutputColorSpace: [NSNull null]
+          }];
+
+          cv::Mat4b output(input.rows, input.cols);
+          [context render:image toBitmap:output.data rowBytes:output.step[0] bounds:image.extent
+                   format:kCIFormatRGBA8 colorSpace:NULL];
+
+          expect($(output)).to.equalMat($(input));
+        }];
+
+        expect(mapped).to.beTruthy();
+      });
+
+      dit(@"should generate CIImage for a 4 channel half float texture", ^{
+        using half_float::half;
+
+        cv::Mat4hf input = cv::Mat4hf::zeros(47, 65);
+        std::fill(input.begin(), input.end(), cv::Vec4hf(half(1), half(2), half(3), half(4)));
+        LTTexture *texture = [(LTTexture *)[textureClass alloc] initWithImage:input];
+
+        __block auto pixelBuffer =
+            LTCVPixelBufferCreate(input.cols, input.rows, kCVPixelFormatType_64RGBAHalf);
+
+        CIContext *context = [CIContext contextWithOptions:@{
+          kCIContextWorkingColorSpace: [NSNull null],
+          kCIContextOutputColorSpace: [NSNull null]
+        }];
+
+        __block BOOL mapped = NO;
+        [texture mappedCIImage:^(CIImage *image) {
+          expect(image.extent).to.equal(CGRectMake(0, 0, input.cols, input.rows));
+
+          [context render:image toCVPixelBuffer:pixelBuffer.get()
+                   bounds:image.extent colorSpace:NULL];
+
+          LTCVPixelBufferImageForReading(pixelBuffer.get(), ^(const cv::Mat &image) {
+            expect($(image)).to.equalMat($(input));
+          });
+
+          mapped = YES;
         }];
 
         expect(mapped).to.beTruthy();

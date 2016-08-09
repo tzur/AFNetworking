@@ -218,6 +218,28 @@ typedef void (^LTTextureCoreGraphicsBlock)(CGContextRef context);
 /// @see LTTextureCoreGraphicsBlock for more information about the \c block.
 - (void)drawWithCoreGraphics:(LTTextureCoreGraphicsBlock)block;
 
+/// Block for transferring texture contents as a \c CIImage for reading. The given image should not
+/// be stored or used outside the context of the block.
+typedef void (^LTTextureMappedCIImageBlock)(CIImage *image);
+
+/// Calls the given \c block with a valid \c CIImage as a wrapper for the texture's data.
+///
+/// @note current implementation allows to create an image of textures of 1 or 4 channels only on
+/// certain configurations. An assert will be thrown for other types of textures.
+- (void)mappedCIImage:(LTTextureMappedCIImageBlock)block;
+
+/// Block for drawing into the texture's data using Core Image. The block should return a \c CIImage
+/// that will be rendered to the entire texture data using a \c CIContext, or \c nil in order to opt
+/// out without rendering anything.
+typedef CIImage * _Nullable(^LTTextureCoreImageBlock)();
+
+/// Calls the given \c block and renders the \c CIImage it returns (which can be the output of a
+/// \c CIFilter for example) into the entire texture. In case the given \c block returns \c nil, the
+/// texture is left unchanged.
+///
+/// @note: On simulator, it is currently possible to draw only to textures of byte precision.
+- (void)drawWithCoreImage:(LTTextureCoreImageBlock)block;
+
 /// Returns pixel value at the given location, with symmetric boundary condition. The returned
 /// value is an RBGA value of the texture pixel at the given location.
 ///

@@ -394,6 +394,9 @@
 		285EEA5D1B15C552002D10EE /* LTImageTIFFCompressor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 285EEA5B1B15C552002D10EE /* LTImageTIFFCompressor.mm */; };
 		2868B7381933546300E1BF0F /* LTEdgeAvoidingMultiTextureBrush.h in Headers */ = {isa = PBXBuildFile; fileRef = 2868B7361933546300E1BF0F /* LTEdgeAvoidingMultiTextureBrush.h */; };
 		2868B7391933546300E1BF0F /* LTEdgeAvoidingMultiTextureBrush.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2868B7371933546300E1BF0F /* LTEdgeAvoidingMultiTextureBrush.mm */; };
+		286A041A1D5CADE900DAC4F3 /* CIImage+Swizzle.h in Headers */ = {isa = PBXBuildFile; fileRef = 286A04181D5CADE900DAC4F3 /* CIImage+Swizzle.h */; };
+		286A041B1D5CADE900DAC4F3 /* CIImage+Swizzle.m in Sources */ = {isa = PBXBuildFile; fileRef = 286A04191D5CADE900DAC4F3 /* CIImage+Swizzle.m */; };
+		286A044F1D5CB04000DAC4F3 /* CIImage+SwizzleSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 286A044E1D5CB04000DAC4F3 /* CIImage+SwizzleSpec.mm */; };
 		286A932D18CF727300F203DF /* BristleBrushBristles.2.png in Resources */ = {isa = PBXBuildFile; fileRef = 286A932A18CF727300F203DF /* BristleBrushBristles.2.png */; };
 		286A932E18CF727300F203DF /* BristleBrushBristles.4.png in Resources */ = {isa = PBXBuildFile; fileRef = 286A932B18CF727300F203DF /* BristleBrushBristles.4.png */; };
 		286A932F18CF727300F203DF /* BristleBrushBristles.20.png in Resources */ = {isa = PBXBuildFile; fileRef = 286A932C18CF727300F203DF /* BristleBrushBristles.20.png */; };
@@ -2082,6 +2085,9 @@
 		285EEA5B1B15C552002D10EE /* LTImageTIFFCompressor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTImageTIFFCompressor.mm; sourceTree = "<group>"; };
 		2868B7361933546300E1BF0F /* LTEdgeAvoidingMultiTextureBrush.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTEdgeAvoidingMultiTextureBrush.h; sourceTree = "<group>"; };
 		2868B7371933546300E1BF0F /* LTEdgeAvoidingMultiTextureBrush.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTEdgeAvoidingMultiTextureBrush.mm; sourceTree = "<group>"; };
+		286A04181D5CADE900DAC4F3 /* CIImage+Swizzle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CIImage+Swizzle.h"; sourceTree = "<group>"; };
+		286A04191D5CADE900DAC4F3 /* CIImage+Swizzle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CIImage+Swizzle.m"; sourceTree = "<group>"; };
+		286A044E1D5CB04000DAC4F3 /* CIImage+SwizzleSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "CIImage+SwizzleSpec.mm"; sourceTree = "<group>"; };
 		286A932A18CF727300F203DF /* BristleBrushBristles.2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = BristleBrushBristles.2.png; path = Resources/BristleBrushBristles.2.png; sourceTree = "<group>"; };
 		286A932B18CF727300F203DF /* BristleBrushBristles.4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = BristleBrushBristles.4.png; path = Resources/BristleBrushBristles.4.png; sourceTree = "<group>"; };
 		286A932C18CF727300F203DF /* BristleBrushBristles.20.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = BristleBrushBristles.20.png; path = Resources/BristleBrushBristles.20.png; sourceTree = "<group>"; };
@@ -4698,6 +4704,8 @@
 		8B7C6C781B52722900B90DBE /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				286A04181D5CADE900DAC4F3 /* CIImage+Swizzle.h */,
+				286A04191D5CADE900DAC4F3 /* CIImage+Swizzle.m */,
 				50FEAFAA19DC0510009C6E22 /* LTCGPathExtensions.h */,
 				50FEAFAB19DC0510009C6E22 /* LTCGPathExtensions.mm */,
 				6AB548BE1C81F99700672127 /* LTCVPixelBufferExtensions.h */,
@@ -4756,6 +4764,7 @@
 		8B7C6C7C1B52761000B90DBE /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				286A044E1D5CB04000DAC4F3 /* CIImage+SwizzleSpec.mm */,
 				50FEAFBE19DC0C95009C6E22 /* LTCGPathExtensionsSpec.mm */,
 				6AB549051C822CE100672127 /* LTCVPixelBufferExtensionsSpec.mm */,
 				8B4890D318A126C500598AEE /* LTOpenCVExtensionsSpec.mm */,
@@ -5380,6 +5389,7 @@
 				50E998A41C075F67004F15C9 /* LTReparameterizedObject.h in Headers */,
 				8BC1C9E619FA5A0800107580 /* LTAspectFillResizeProcessor.h in Headers */,
 				503044FC1C3BCF5F00355B86 /* LTSplineControlPoint.h in Headers */,
+				286A041A1D5CADE900DAC4F3 /* CIImage+Swizzle.h in Headers */,
 				8BA822C0198954AE00FBE68E /* LTTransformers.h in Headers */,
 				50802FC71C2402E1008607C7 /* LTTouchEvent.h in Headers */,
 				500CA9FE1D26B11F009CF19F /* LTPresentationView.h in Headers */,
@@ -6633,6 +6643,7 @@
 				25AF17571AD50BE00055E664 /* LTVGTypesetter.mm in Sources */,
 				288419401BD3A04A00B09F6B /* LTTextureArchiveMetadata.mm in Sources */,
 				8BAAC5B518BB446E00A4B4DA /* LTRectCopyProcessor.mm in Sources */,
+				286A041B1D5CADE900DAC4F3 /* CIImage+Swizzle.m in Sources */,
 				8BA3E13B182A602F00FDD95A /* LTProgram.mm in Sources */,
 				5004CAEE1CC92D6900D1CE7A /* LTParameterizedObjectConstructor.mm in Sources */,
 				500CAA0D1D26B23C009CF19F /* LTPainter+Interaction.mm in Sources */,
@@ -6908,6 +6919,7 @@
 				0352FAA11A188F7B0046E002 /* LTBasicOilPaintingProcessorSpec.mm in Sources */,
 				50D82E991BFCAC67002EDCBD /* LTCompoundParameterizedObjectSpec.mm in Sources */,
 				8B3831FF1B56906E00620560 /* LTIZCompressorSpec.mm in Sources */,
+				286A044F1D5CB04000DAC4F3 /* CIImage+SwizzleSpec.mm in Sources */,
 				03045D3319C1717E0075207D /* LTClarityProcessorSpec.mm in Sources */,
 				8B17A5B41C32A834001713BB /* LTEAGLViewSpec.mm in Sources */,
 				8BA3E144182A848300FDD95A /* LTProgramSpec.mm in Sources */,
