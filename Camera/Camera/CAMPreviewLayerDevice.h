@@ -12,7 +12,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// Converts the given point in \c previewLayer's coordinates to device coordinates.
 - (CGPoint)devicePointFromPreviewLayerPoint:(CGPoint)previewLayerPoint;
 
-/// Layer that displays an unedited live preview from the camera.
+/// Layer that displays an unedited live preview from the camera. The preview is oriented to fit in
+/// portrait display.
 @property (readonly, nonatomic) CALayer *previewLayer;
 
 @end

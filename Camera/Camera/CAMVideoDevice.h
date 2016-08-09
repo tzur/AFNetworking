@@ -23,19 +23,24 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Maps any value from \c trigger to a \c UIImage captured as quickly as possible. This is needed
 /// for features that require hardware-level synchronization, such as flash (see \c CAMFlashDevice).
+/// The captured image orientation is set according to \c videoOrientation.
 ///
 /// Returned signal completes when the receiver is deallocated or \c trigger completes, or errs
 /// if there is a problem capturing an image. All events are sent on an arbitrary thread.
 - (RACSignal *)stillFramesWithTrigger:(RACSignal *)trigger;
 
-/// Signal that sends \c CAMVideoFrames captured by the camera. The signal completes when the
-/// receiver is deallocated or errs if there is a problem capturing video. All events are sent on
-/// an arbitrary thread.
+/// Signal that sends \c CAMVideoFrames captured by the camera.
+///
+/// The frames are oriented to fit in portrait display. Frames from the front camera are being
+/// mirrored before they are being sent over the signal.
+///
+/// The signal completes when the receiver is deallocated or errs if there is a problem capturing
+/// video. All events are sent on an arbitrary thread.
 @property (readonly, nonatomic) RACSignal *videoFrames;
 
-/// Video orientation. The current value of this property is embedded into every video frame on
+/// Video orientation. The current value of this property influences every video frame on
 /// \c videoFrames and \c stillFramesWithTrigger:. Setting this to the current orientation of the
-/// device will result in correctly oriented images.
+/// device will result in correctly oriented frames.
 @property (nonatomic) AVCaptureVideoOrientation videoOrientation;
 
 /// Signal that sends \c RACUnit whenever the subject in front of the camera has changed

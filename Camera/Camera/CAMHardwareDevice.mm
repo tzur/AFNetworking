@@ -251,8 +251,6 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
 
 - (void)setVideoOrientation:(AVCaptureVideoOrientation)videoOrientation {
   _videoOrientation = videoOrientation;
-  self.session.previewLayer.connection.videoOrientation = videoOrientation;
-  self.session.videoConnection.videoOrientation = videoOrientation;
   self.session.stillConnection.videoOrientation = videoOrientation;
 }
 
