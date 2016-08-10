@@ -14,6 +14,9 @@
 		6501C2221CE22ADF0061BD9E /* libSpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 654B1F4D1CE2228C001F36FA /* libSpecta.a */; };
 		6501C2231CE22AEE0061BD9E /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 654B1F5C1CE22299001F36FA /* libOCMock.a */; };
 		6501C2471CE22D610061BD9E /* libBazaar.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 65FA32981CE2185D00901304 /* libBazaar.a */; };
+		6501EF6A1D5B4A10007B76CC /* LTProgress+Bazaar.h in Headers */ = {isa = PBXBuildFile; fileRef = 6501EF681D5B4A10007B76CC /* LTProgress+Bazaar.h */; };
+		6501EF6B1D5B4A10007B76CC /* LTProgress+Bazaar.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6501EF691D5B4A10007B76CC /* LTProgress+Bazaar.mm */; };
+		6501EF6D1D5B4EA9007B76CC /* LTProgress+BazaarSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6501EF6C1D5B4EA9007B76CC /* LTProgress+BazaarSpec.mm */; };
 		6502EFA31D341809000CD68B /* BZRReceiptValidationParameters+Validatricks.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6502EF9B1D341809000CD68B /* BZRReceiptValidationParameters+Validatricks.mm */; };
 		6502EFA41D341809000CD68B /* BZRValidatricksReceiptModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6502EF9D1D341809000CD68B /* BZRValidatricksReceiptModel.mm */; };
 		6502EFA51D341809000CD68B /* BZRValidatricksReceiptValidationStatus.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6502EF9F1D341809000CD68B /* BZRValidatricksReceiptValidationStatus.mm */; };
@@ -519,6 +522,9 @@
 		65013B261D49804F00D06E79 /* BZRZipArchiving.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRZipArchiving.h; sourceTree = "<group>"; };
 		65013B551D498D2800D06E79 /* BZRZipArchiveFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRZipArchiveFactory.h; sourceTree = "<group>"; };
 		65013B561D498D2800D06E79 /* BZRZipArchiveFactory.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRZipArchiveFactory.mm; sourceTree = "<group>"; };
+		6501EF681D5B4A10007B76CC /* LTProgress+Bazaar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "LTProgress+Bazaar.h"; sourceTree = "<group>"; };
+		6501EF691D5B4A10007B76CC /* LTProgress+Bazaar.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "LTProgress+Bazaar.mm"; sourceTree = "<group>"; };
+		6501EF6C1D5B4EA9007B76CC /* LTProgress+BazaarSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "LTProgress+BazaarSpec.mm"; sourceTree = "<group>"; };
 		6502EF9A1D341809000CD68B /* BZRReceiptValidationParameters+Validatricks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BZRReceiptValidationParameters+Validatricks.h"; sourceTree = "<group>"; };
 		6502EF9B1D341809000CD68B /* BZRReceiptValidationParameters+Validatricks.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "BZRReceiptValidationParameters+Validatricks.mm"; sourceTree = "<group>"; };
 		6502EF9C1D341809000CD68B /* BZRValidatricksReceiptModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRValidatricksReceiptModel.h; sourceTree = "<group>"; };
@@ -1091,10 +1097,12 @@
 				6592A33A1D40EF0C00CC318D /* Errors */,
 				65F03B6A1CFC3E0C008B1847 /* BZRModel.h */,
 				65F03B6B1CFC3E0C008B1847 /* BZRModel.mm */,
-				6502EFCC1D34D581000CD68B /* RACSignal+Bazaar.h */,
-				6502EFCD1D34D581000CD68B /* RACSignal+Bazaar.mm */,
+				6501EF681D5B4A10007B76CC /* LTProgress+Bazaar.h */,
+				6501EF691D5B4A10007B76CC /* LTProgress+Bazaar.mm */,
 				6526DF141D413BBE0034DE01 /* NSFileManager+Bazaar.h */,
 				6526DF151D413BBE0034DE01 /* NSFileManager+Bazaar.mm */,
+				6502EFCC1D34D581000CD68B /* RACSignal+Bazaar.h */,
+				6502EFCD1D34D581000CD68B /* RACSignal+Bazaar.mm */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -1140,9 +1148,10 @@
 			children = (
 				65D18A1C1D4FB1FE005987F9 /* Archiving */,
 				65F03B671CFC2AC1008B1847 /* BZRModelSpec.mm */,
+				6501EF6C1D5B4EA9007B76CC /* LTProgress+BazaarSpec.mm */,
 				65329ED51CFEF0190029CE4F /* NSError+BazaarSpec.mm */,
-				65C538B01D34EB68004C91D4 /* RACSignal+BazaarSpec.mm */,
 				65DA71BF1D4A6ACC00B4FA45 /* NSFileManager+BazaarSpec.mm */,
+				65C538B01D34EB68004C91D4 /* RACSignal+BazaarSpec.mm */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -1304,6 +1313,7 @@
 				6581E8761D3B9FCE00B26E1A /* RACSignal+Bazaar.h in Headers */,
 				65F3F7021D5A688D008E3C3A /* SKProductsRequest+RACSignalSupport.h in Headers */,
 				65D67B921D53DBF400B647ED /* SKReceiptRefreshRequest+RACSignalSupport.h in Headers */,
+				6501EF6A1D5B4A10007B76CC /* LTProgress+Bazaar.h in Headers */,
 				6581E8741D3B9FB900B26E1A /* NSError+Bazaar.h in Headers */,
 				6581E8751D3B9FBF00B26E1A /* NSErrorCodes+Bazaar.h in Headers */,
 				6581E8731D3B9FB300B26E1A /* BZRModel.h in Headers */,
@@ -1847,6 +1857,7 @@
 				6599B42F1CFA4AE100525BB7 /* BZRReceiptValidationStatusSpec.mm in Sources */,
 				65332E701D3392C200920C32 /* LLSignalTestRecorder.m in Sources */,
 				65C538B11D34EB68004C91D4 /* RACSignal+BazaarSpec.mm in Sources */,
+				6501EF6D1D5B4EA9007B76CC /* LTProgress+BazaarSpec.mm in Sources */,
 				6562104F1D3779FB00E12FAF /* BZRReceiptValidationParameters+ValidatricksSpec.mm in Sources */,
 				9FE7D4F11D3F5D1000685F19 /* UICKeyChainStore+SecureStorageSpec.mm in Sources */,
 				65332E721D3392C200920C32 /* LLReactiveMatchersHelpers.m in Sources */,
@@ -1896,6 +1907,7 @@
 				B97A871A1D4610A7004390FC /* BZRRemoteProductsProvider.mm in Sources */,
 				6580F0741CEB2E8D007EABDD /* BZRReceiptValidationStatus.mm in Sources */,
 				65F03B6C1CFC3E0C008B1847 /* BZRModel.mm in Sources */,
+				6501EF6B1D5B4A10007B76CC /* LTProgress+Bazaar.mm in Sources */,
 				6526DF171D413BBE0034DE01 /* NSFileManager+Bazaar.mm in Sources */,
 				65D67B4A1D53AB6A00B647ED /* BZRZipUnarchiver.mm in Sources */,
 				6527D6021D39411600A3AB29 /* FBRHTTPClient+Validatricks.mm in Sources */,
