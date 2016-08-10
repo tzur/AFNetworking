@@ -1,8 +1,7 @@
 // Copyright (c) 2015 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
-#import <opencv2/core/core.hpp>
-
+#import "LTOpenCVCore.h"
 #import "LTVector.h"
 
 #ifdef __cplusplus

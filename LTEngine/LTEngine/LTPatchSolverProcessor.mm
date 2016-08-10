@@ -177,7 +177,8 @@
   [boundary mappedImageForReading:^(const cv::Mat &mapped, BOOL) {
     LTConvertMat(mapped, &_boundarySingle, CV_32F);
   }];
-  cv::merge({_boundarySingle, _boundarySingle, _boundarySingle, _boundarySingle}, _boundaryRGBA);
+  std::vector<cv::Mat1f> channels(4, _boundarySingle);
+  cv::merge(channels, _boundaryRGBA);
 }
 
 - (void)calculateChi {
