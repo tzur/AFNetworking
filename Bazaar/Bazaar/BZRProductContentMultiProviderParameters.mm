@@ -12,12 +12,12 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
-  return @{
+  return [[super JSONKeyPathsByPropertyKey] mtl_dictionaryByAddingEntriesFromDictionary:@{
     @instanceKeypath(BZRProductContentMultiProviderParameters, contentProviderName):
         @"contentProviderName",
     @instanceKeypath(BZRProductContentMultiProviderParameters, parametersForContentProvider):
         @"parametersForContentProvider"
-  };
+  }];
 }
 
 #pragma mark -

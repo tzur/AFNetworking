@@ -8,9 +8,9 @@ NS_ASSUME_NONNULL_BEGIN
 @implementation BZRLocalContentProviderParameters
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
-  return @{
-    @instanceKeypath(BZRLocalContentProviderParameters, URL): @"URL",
-  };
+  return [[super JSONKeyPathsByPropertyKey] mtl_dictionaryByAddingEntriesFromDictionary:@{
+    @instanceKeypath(BZRLocalContentProviderParameters, URL): @"URL"
+  }];
 }
 
 @end

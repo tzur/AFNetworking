@@ -7,6 +7,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation BZRContentProviderParameters
 
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+  return @{};
+}
+
 + (Class)classForParsingJSONDictionary:(NSDictionary *)JSONDictionary {
   LTParameterAssert(JSONDictionary[@"type"], @"The JSON field named 'type' is missing, so the class"
                     " of the content provider couldn't be determined.");
