@@ -9,13 +9,6 @@
 // Third Party Frameworks.
 #import <Mantle/Mantle.h>
 #import <ReactiveCocoa/ReactiveCocoa.h>
-
-#undef keypath
-#undef onExit
-#undef strongify
-#undef weakify
-#undef unsafeify
-
 #import <extobjc/extobjc.h>
 
 // LTKit.
