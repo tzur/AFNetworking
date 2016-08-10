@@ -4,10 +4,4 @@
 #import <Masonry/Masonry.h>
 #import <ReactiveCocoa/ReactiveCocoa.h>
 
-#undef keypath
-#undef onExit
-#undef weakify
-#undef unsafeify
-#undef strongify
-
 #import <LTEngine/LTEngine-Prefix.pch>
