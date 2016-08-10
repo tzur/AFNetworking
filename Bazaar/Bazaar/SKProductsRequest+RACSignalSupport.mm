@@ -59,12 +59,11 @@ static void RACUseDelegateProxy(SKProductsRequest *self) {
 // invokes \c request:didFailWithError: on its delegate and completes when the proxy delegate
 // deallocs.
 - (RACSignal *)bzr_errorSignal {
-  @weakify(self);
   return [[self.bzr_delegateProxy signalForSelector:@selector(request:didFailWithError:)]
       flattenMap:^RACStream *(RACTuple *parameters) {
-        @strongify(self);
-        NSError *error = [NSError bzr_errorWithCode:BZRErrorCodeProductsMetadataFetchingFailed
-                                    productsRequest:self underlyingError:parameters.second];
+        RACTupleUnpack(SKProductsRequest *request, NSError *error) = parameters;
+        error = [NSError bzr_errorWithCode:BZRErrorCodeProductsMetadataFetchingFailed
+                           productsRequest:request underlyingError:error];
         return [RACSignal error:error];
       }];
 }
