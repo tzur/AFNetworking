@@ -25,8 +25,11 @@ NS_ASSUME_NONNULL_BEGIN
 /// View for attaching gesture recognizers.
 @property (readonly, nonatomic) UIView *gestureView;
 
-/// View showing the preview image.
-@property (strong, nonatomic) UIView *previewView;
+/// View showing the preview image of \c previewLayer.
+@property (readonly, nonatomic) UIView *previewView;
+
+/// View showing the preview image of \c previewSignal.
+@property (readonly, nonatomic) UIView *previewFromSignalView;
 
 /// View used for blurring the \c previewView.
 @property (readonly, nonatomic) UIVisualEffectView *blurView;
@@ -94,16 +97,18 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 - (void)setupPreviewView {
-  if (self.viewModel.usePreviewLayer) {
-    [self setupPreviewLayerView];
-  } else {
-    [self setupPreviewSignalView];
-  }
+  [self setupPreviewLayerView];
+  [self setupPreviewSignalView];
 }
 
 - (void)setupPreviewLayerView {
-  self.previewView = [[CUILayerView alloc] initWithLayer:self.viewModel.previewLayer];
+  _previewView = [[CUILayerView alloc] initWithLayer:self.viewModel.previewLayer];
   self.previewView.accessibilityIdentifier = @"LayerView";
+  RAC(self.previewView, hidden) = [RACObserve(self.viewModel, usePreviewLayer) not];
+  [self.view addSubview:self.previewView];
+  [self.previewView mas_makeConstraints:^(MASConstraintMaker *make) {
+    make.edges.equalTo(self.view);
+  }];
 }
 
 - (void)setupPreviewSignalView {
@@ -116,14 +121,10 @@ NS_ASSUME_NONNULL_BEGIN
         [contentView replaceContentWith:texture];
       }];
 
-  self.previewView = contentView;
-}
-
-- (void)setPreviewView:(UIView *)previewView {
-  _previewView = previewView;
-
-  [self.view addSubview:previewView];
-  [previewView mas_makeConstraints:^(MASConstraintMaker *make) {
+  _previewFromSignalView = contentView;
+  RAC(self.previewFromSignalView, hidden) = RACObserve(self.viewModel, usePreviewLayer);
+  [self.view addSubview:self.previewFromSignalView];
+  [self.previewFromSignalView mas_makeConstraints:^(MASConstraintMaker *make) {
     make.edges.equalTo(self.view);
   }];
 }

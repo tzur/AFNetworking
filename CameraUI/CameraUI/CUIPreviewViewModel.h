@@ -31,27 +31,21 @@ NS_ASSUME_NONNULL_BEGIN
 /// Activate capture animation.
 - (void)performCaptureAnimation;
 
-/// When \c YES, \c previewLayer should be used for the live preview, and is guaranteed to not
-/// be \c nil. When \c NO, \c previewSignal should be used, and is guaranteed to not be \c
-/// nil.
-///
-/// This property is guaranteed to not change after initialization and so does not need to be
-/// observed.
+/// \c YES when \c previewLayer should be used for the live preview, else \c previewSignal should
+/// be used for the live preview.
 @property (readonly, nonatomic) BOOL usePreviewLayer;
 
-/// Layer showing live preview from the camera. Guaranteed to not be \c nil when \c usePreviewLayer
-/// is \c YES. When it is \c nil, use \c previewSignal instead.
+/// Layer showing live preview from the camera.
 ///
 /// This property is guaranteed to not change after initialization and so does not need to be
 /// observed.
-@property (readonly, nonatomic, nullable) CALayer *previewLayer;
+@property (readonly, nonatomic) CALayer *previewLayer;
 
-/// Signal of \c LTTextures, showing live preview from the camera. Guaranteed to not be
-/// \c nil when \c usePreviewLayer is \c NO. When it is \c nil, use \c previewLayer instead.
+/// Signal of \c LTTextures, showing live preview from the camera.
 ///
 /// This property is guaranteed to not change after initialization and so does not need to be
 /// observed.
-@property (readonly, nonatomic, nullable) RACSignal *previewSignal;
+@property (readonly, nonatomic) RACSignal *previewSignal;
 
 /// Hot signal that sends \c RACUnits whenever the "capturing" animation should be performed.
 @property (readonly, nonatomic) RACSignal *animateCapture;
@@ -75,13 +69,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)init NS_UNAVAILABLE;
 
-/// Initializes with the given \c device and \c nil preview signal.
-- (instancetype)initWithDevice:(id<CUIPreviewDevice>)device;
-
-/// Initializes with the given \c device and live preview signal. \c usePreviewLayer is set to
-/// \c YES if and only if \c signal is \c nil.
+/// Initializes with the given \c device and live preview signal. When \c usePreviewLayerSignal
+/// sends \c YES, the device layer is used as the preview instead of the \c previewSignal.
 - (instancetype)initWithDevice:(id<CUIPreviewDevice>)device
-                 previewSignal:(nullable RACSignal *)signal NS_DESIGNATED_INITIALIZER;
+                 previewSignal:(RACSignal *)previewSignal
+         usePreviewLayerSignal:(RACSignal *)usePreviewLayerSignal NS_DESIGNATED_INITIALIZER;
 
 @end
 
