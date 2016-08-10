@@ -29,13 +29,14 @@ template <typename T>
 struct IsCoreFoundationObjectRef : public std::false_type {};
 
 // Core Graphics.
+template <> struct IsCoreFoundationObjectRef<CGColorRef> : public std::true_type {};
 template <> struct IsCoreFoundationObjectRef<CGColorSpaceRef> : public std::true_type {};
 template <> struct IsCoreFoundationObjectRef<CGContextRef> : public std::true_type {};
 template <> struct IsCoreFoundationObjectRef<CGDataProviderRef> : public std::true_type {};
+template <> struct IsCoreFoundationObjectRef<CGGradientRef> : public std::true_type {};
 template <> struct IsCoreFoundationObjectRef<CGImageRef> : public std::true_type {};
 template <> struct IsCoreFoundationObjectRef<CGPathRef> : public std::true_type {};
 template <> struct IsCoreFoundationObjectRef<CGMutablePathRef> : public std::true_type {};
-template <> struct IsCoreFoundationObjectRef<CGGradientRef> : public std::true_type {};
 
 #pragma mark -
 #pragma mark RefReleaser
