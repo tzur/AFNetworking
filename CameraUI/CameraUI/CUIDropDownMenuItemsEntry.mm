@@ -21,6 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 @implementation CUIDropDownMenuItemsEntry
 
 @synthesize mainBarItemView = _mainBarItemView;
+@synthesize submenuView = _submenuView;
 @synthesize didTapSignal = _didTapSignal;
 
 - (instancetype)initWithItem:(id<CUIMenuItemViewModel>)item
@@ -58,20 +59,32 @@ NS_ASSUME_NONNULL_BEGIN
   if (!self.item.subitems) {
     return;
   }
+  [self setupSubmenuView];
   [self setupStackView];
   [self addSubmenuItemsWithViewClass:itemViewClass];
 }
 
-- (void)setupStackView {
-  _stackView = [[UIStackView alloc] initWithFrame:CGRectZero];
-  [self.mainBarItemView addSubview:self.stackView];
-  self.stackView.alignment = UIStackViewAlignmentCenter;
-  self.stackView.distribution = UIStackViewDistributionEqualSpacing;
-  self.stackView.axis = UILayoutConstraintAxisVertical;
-  [self.stackView mas_makeConstraints:^(MASConstraintMaker *make) {
+- (void)setupSubmenuView {
+  _submenuView = [[UIView alloc] initWithFrame:CGRectZero];
+  [self.mainBarItemView addSubview:self.submenuView];
+  [self.submenuView mas_makeConstraints:^(MASConstraintMaker *make) {
     make.top.equalTo(self.mainBarItemView.mas_bottom);
     make.centerX.equalTo(self.mainBarItemView);
     make.width.greaterThanOrEqualTo(self.mainBarItemView);
+  }];
+}
+
+- (void)setupStackView {
+  _stackView = [[UIStackView alloc] initWithFrame:CGRectZero];
+  self.stackView.accessibilityIdentifier = @"StackView";
+
+  self.stackView.alignment = UIStackViewAlignmentCenter;
+  self.stackView.distribution = UIStackViewDistributionEqualSpacing;
+  self.stackView.axis = UILayoutConstraintAxisVertical;
+
+  [self.submenuView addSubview:self.stackView];
+  [self.stackView mas_makeConstraints:^(MASConstraintMaker *make) {
+    make.edges.equalTo(self.submenuView);
   }];
 }
 
@@ -83,6 +96,7 @@ NS_ASSUME_NONNULL_BEGIN
     [self.stackView addArrangedSubview:itemButton];
     [itemButton mas_makeConstraints:^(MASConstraintMaker *make) {
       make.width.greaterThanOrEqualTo(self.mainBarItemView);
+      make.width.greaterThanOrEqualTo(self.submenuView);
       make.height.equalTo(self.mainBarItemView);
     }];
   }
@@ -99,14 +113,6 @@ NS_ASSUME_NONNULL_BEGIN
         @strongify(self);
         return RACTuplePack(self, button);
       }];
-}
-
-#pragma mark -
-#pragma mark CUIDropDownEntry
-#pragma mark -
-
-- (nullable UIView *)submenuView {
-  return self.stackView;
 }
 
 @end
