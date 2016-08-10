@@ -74,20 +74,6 @@ context(@"1D filter kernel", ^{
     expect($(result)).to.
         equalMat($(LTCreate1DRGBAMat({0, 0, 0, 0, 70, 115, 70, 0, 0, 0, 0})));
   });
-
-  it(@"should return equal results for OpenCV 1D GaussianBlur", ^{
-    const CGFloat kSigma = 1.5;
-    const NSUInteger kKernelSize = 7;
-    LTGaussianFilterProcessor *filter =
-        [[LTGaussianFilterProcessor alloc] initWithInput:input outputs:@[output]
-                                            numberOfTaps:kKernelSize];
-    filter.sigma = kSigma;
-    [filter process];
-    cv::Mat expected;
-    cv::GaussianBlur([input image], expected, cv::Size(kKernelSize, kKernelSize), kSigma, kSigma,
-        cv::BORDER_REPLICATE);
-    expect($([output image])).to.equalMat($(expected));
-  });
 });
 
 context(@"compare to OpenCV 2d on real image", ^{
