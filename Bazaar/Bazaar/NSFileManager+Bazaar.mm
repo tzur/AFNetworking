@@ -121,6 +121,26 @@ NS_ASSUME_NONNULL_BEGIN
       setNameWithFormat:@"%@ -bzr_deleteItemAtPathIfExists: %@", self.description, path];
 }
 
+- (RACSignal *)bzr_createDirectoryAtPathIfNotExists:(NSString *)path {
+  return [[[RACSignal
+      createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+        NSError *underlyingError;
+        BOOL createDirectorySuceeded =
+            [self createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil
+                                  error:&underlyingError];
+        if (!createDirectorySuceeded) {
+          NSError *error = [NSError lt_errorWithCode:BZRErrorCodeDirectoryCreationFailed
+                                     underlyingError:underlyingError];
+          [subscriber sendError:error];
+        } else {
+          [subscriber sendCompleted];
+        }
+        return nil;
+      }]
+      subscribeOn:[RACScheduler scheduler]]
+      setNameWithFormat:@"%@ -bzr_createDirectoryAtPathIfNotExists: %@", self.description, path];
+}
+
 @end
 
 NS_ASSUME_NONNULL_END

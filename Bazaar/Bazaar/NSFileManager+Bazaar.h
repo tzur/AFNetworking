@@ -49,6 +49,18 @@ NS_ASSUME_NONNULL_BEGIN
 /// but the signal does not support subscription cancellation.
 - (RACSignal *)bzr_deleteItemAtPathIfExists:(NSString *)path;
 
+/// Creates directory at the specified path if it does not exist.
+///
+/// Returns a signal that creates the directory at \c path upon subscription and then completes. The
+/// intermediate directories will be created as well if they don't exist. The signal errs if
+/// creation failed.
+///
+/// @return <tt>RACSignal</tt>
+///
+/// @note Subscription is performed on a new scheduler in order to not block the subscriber thread,
+/// but the signal does not support subscription cancellation.
+- (RACSignal *)bzr_createDirectoryAtPathIfNotExists:(NSString *)path;
+
 @end
 
 NS_ASSUME_NONNULL_END

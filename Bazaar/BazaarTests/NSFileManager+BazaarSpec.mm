@@ -261,4 +261,44 @@ context(@"directory enumeration", ^{
   });
 });
 
+context(@"directory creation", ^{
+  __block NSString *directoryPath;
+
+  beforeEach(^{
+    directoryPath = @"foo";
+  });
+
+  it(@"should err if creation failed", ^{
+    NSError *underlyingError = [NSError lt_errorWithCode:1337];
+    OCMExpect([fileManager createDirectoryAtPath:directoryPath withIntermediateDirectories:YES
+        attributes:OCMOCK_ANY error:[OCMArg setTo:underlyingError]]).andReturn(NO);
+    RACSignal *signal = [fileManager bzr_createDirectoryAtPathIfNotExists:directoryPath];
+
+    expect(signal).will.matchError(^BOOL(NSError *error) {
+      return error.lt_isLTDomain && error.code == BZRErrorCodeDirectoryCreationFailed &&
+          [error.lt_underlyingError isEqual:underlyingError];
+    });
+    OCMVerifyAll(fileManager);
+  });
+
+  it(@"should complete if creation succeeded", ^{
+    OCMExpect([fileManager createDirectoryAtPath:directoryPath withIntermediateDirectories:YES
+        attributes:OCMOCK_ANY error:[OCMArg anyObjectRef]]).andReturn(YES);
+    RACSignal *signal = [fileManager bzr_createDirectoryAtPathIfNotExists:directoryPath];
+
+    expect(signal).will.complete();
+    OCMVerifyAll(fileManager);
+  });
+
+  it(@"should not deliver values on the main thread", ^{
+    OCMExpect([fileManager createDirectoryAtPath:directoryPath withIntermediateDirectories:YES
+        attributes:OCMOCK_ANY error:[OCMArg anyObjectRef]]).andReturn(YES);
+    LLSignalTestRecorder *recorder =
+        [[fileManager bzr_createDirectoryAtPathIfNotExists:directoryPath] testRecorder];
+
+    expect(recorder).will.complete();
+    expect(recorder).toNot.deliverValuesOnMainThread();
+  });
+});
+
 SpecEnd
