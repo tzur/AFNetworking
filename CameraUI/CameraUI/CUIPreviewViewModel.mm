@@ -18,6 +18,10 @@ NS_ASSUME_NONNULL_BEGIN
 /// Subject for sending \c CUIFocusIconMode marking how and where the focus icon should be shown.
 @property (readonly, nonatomic) RACSubject *focusModeSubject;
 
+/// \c YES when \c previewLayer should be used for the live preview, else \c previewSignal should
+/// be used for the live preview.
+@property (readwrite, nonatomic) BOOL usePreviewLayer;
+
 @end
 
 @implementation CUIPreviewViewModel
@@ -33,17 +37,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 static const CGFloat kMaxZoom = 4.0;
 
-- (instancetype)initWithDevice:(id<CUIPreviewDevice>)device {
-  return [self initWithDevice:device previewSignal:nil];
-}
-
 - (instancetype)initWithDevice:(id<CUIPreviewDevice>)device
-                 previewSignal:(nullable RACSignal *)signal {
+                 previewSignal:(RACSignal *)previewSignal
+         usePreviewLayerSignal:(RACSignal *)usePreviewLayerSignal {
   if (self = [super init]) {
     _device = device;
-    _usePreviewLayer = signal == nil;
-    _previewLayer = self.usePreviewLayer ? device.previewLayer : nil;
-    _previewSignal = self.usePreviewLayer ? nil : signal;
+    _previewLayer = device.previewLayer;
+    _previewSignal = previewSignal;
+    RAC(self, usePreviewLayer) = usePreviewLayerSignal;
     [self setupZoom];
     [self setupFocus];
     [self setupCaptureAnimation];

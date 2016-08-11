@@ -14,6 +14,7 @@ __block CAMDeviceStub *deviceStub;
 __block RACSubject *previewSignal;
 __block CUIPreviewViewModel *previewViewModel;
 __block RACSubject *subjectAreaChanged;
+__block RACSubject *usePreviewLayerSignal;
 __block CALayer *deviceLayer;
 
 beforeEach(^{
@@ -23,32 +24,28 @@ beforeEach(^{
   deviceStub.previewLayer = deviceLayer;
   subjectAreaChanged = [RACSubject subject];
   deviceStub.subjectAreaChanged = subjectAreaChanged;
+  usePreviewLayerSignal = [RACSubject subject];
   previewViewModel = [[CUIPreviewViewModel alloc] initWithDevice:deviceStub
-                                                   previewSignal:previewSignal];
+                                                   previewSignal:previewSignal
+                                           usePreviewLayerSignal:usePreviewLayerSignal];
 });
 
 context(@"preview properties initialization", ^{
-  it(@"should initialize correctly without signal", ^{
-    CUIPreviewViewModel *viewModel = [[CUIPreviewViewModel alloc] initWithDevice:deviceStub];
-    expect(viewModel.usePreviewLayer).to.beTruthy();
-    expect(viewModel.previewLayer).to.equal(deviceLayer);
-    expect(viewModel.previewSignal).to.beNil();
+  it(@"should initialize correctly", ^{
+    expect(previewViewModel.usePreviewLayer).to.beFalsy();
+    expect(previewViewModel.previewLayer).to.equal(deviceLayer);
+    expect(previewViewModel.previewSignal).to.equal(previewSignal);
   });
 
-  it(@"should initialize correctly with nil signal", ^{
-    CUIPreviewViewModel *viewModel = [[CUIPreviewViewModel alloc] initWithDevice:deviceStub
-                                                                   previewSignal:nil];
-    expect(viewModel.usePreviewLayer).to.beTruthy();
-    expect(viewModel.previewLayer).to.equal(deviceLayer);
-    expect(viewModel.previewSignal).to.beNil();
-  });
-
-  it(@"should initialize correctly with signal", ^{
-    CUIPreviewViewModel *viewModel = [[CUIPreviewViewModel alloc] initWithDevice:deviceStub
-                                                                   previewSignal:previewSignal];
-    expect(viewModel.usePreviewLayer).to.beFalsy();
-    expect(viewModel.previewLayer).to.beNil();
-    expect(viewModel.previewSignal).to.equal(previewSignal);
+  it(@"should change usePreviewLayer", ^{
+    expect(previewViewModel.usePreviewLayer).to.beFalsy();
+    [usePreviewLayerSignal sendNext:@(YES)];
+    expect(previewViewModel.usePreviewLayer).to.beTruthy();
+    [usePreviewLayerSignal sendNext:@(NO)];
+    expect(previewViewModel.usePreviewLayer).to.beFalsy();
+    [usePreviewLayerSignal sendNext:@(YES)];
+    [usePreviewLayerSignal sendNext:@(YES)];
+    expect(previewViewModel.usePreviewLayer).to.beTruthy();
   });
 });
 
@@ -80,7 +77,9 @@ it(@"animateCapture signal should complete", ^{
   LLSignalTestRecorder *recorder;
   @autoreleasepool {
     CUIPreviewViewModel *newPreviewViewModel =
-        [[CUIPreviewViewModel alloc] initWithDevice:deviceStub];
+        [[CUIPreviewViewModel alloc] initWithDevice:deviceStub
+                                      previewSignal:[RACSignal never]
+                              usePreviewLayerSignal:[RACSignal never]];
     weakPreviewViewModel = newPreviewViewModel;
     recorder = [newPreviewViewModel.animateCapture testRecorder];
   }
@@ -93,7 +92,9 @@ it(@"should not retain from animateCapture signal", ^{
   RACSignal *signal;
   @autoreleasepool {
     CUIPreviewViewModel *newPreviewViewModel =
-        [[CUIPreviewViewModel alloc] initWithDevice:deviceStub];
+        [[CUIPreviewViewModel alloc] initWithDevice:deviceStub
+                                      previewSignal:[RACSignal never]
+                              usePreviewLayerSignal:[RACSignal never]];
     weakPreviewViewModel = newPreviewViewModel;
     signal = newPreviewViewModel.animateCapture;
   }
@@ -213,7 +214,9 @@ context(@"focus", ^{
     LLSignalTestRecorder *recorder;
     @autoreleasepool {
       CUIPreviewViewModel *newPreviewViewModel =
-          [[CUIPreviewViewModel alloc] initWithDevice:deviceStub];
+          [[CUIPreviewViewModel alloc] initWithDevice:deviceStub
+                                        previewSignal:[RACSignal never]
+                                usePreviewLayerSignal:[RACSignal never]];
       weakPreviewViewModel = newPreviewViewModel;
       recorder = [newPreviewViewModel.focusModeAndPosition testRecorder];
     }
@@ -226,7 +229,9 @@ context(@"focus", ^{
     RACSignal *signal;
     @autoreleasepool {
       CUIPreviewViewModel *newPreviewViewModel =
-          [[CUIPreviewViewModel alloc] initWithDevice:deviceStub];
+          [[CUIPreviewViewModel alloc] initWithDevice:deviceStub
+                                        previewSignal:[RACSignal never]
+                                usePreviewLayerSignal:[RACSignal never]];
       weakPreviewViewModel = newPreviewViewModel;
       signal = newPreviewViewModel.focusModeAndPosition;
     }

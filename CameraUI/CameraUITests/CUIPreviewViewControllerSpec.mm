@@ -8,8 +8,8 @@
 
 @interface CUIFakePreviewViewModel : NSObject <CUIPreviewViewModel>
 @property (nonatomic) BOOL usePreviewLayer;
-@property (strong, nonatomic, nullable) CALayer *previewLayer;
-@property (strong, nonatomic, nullable) RACSignal *previewSignal;
+@property (strong, nonatomic) CALayer *previewLayer;
+@property (strong, nonatomic) RACSignal *previewSignal;
 @property (strong, nonatomic) RACSignal *animateCapture;
 @property (strong, nonatomic) RACSignal *focusModeAndPosition;
 @property (nonatomic) BOOL tapEnabled;
@@ -37,52 +37,52 @@ beforeEach(^{
 });
 
 context(@"preview view", ^{
-  context(@"using layer", ^{
-    __block CUIPreviewViewController *viewController;
+  __block CUIPreviewViewController *viewController;
+  __block RACSubject *previewSignal;
 
-    beforeEach(^{
-      viewModel.usePreviewLayer = YES;
-      viewModel.previewLayer = [CALayer layer];
+  beforeEach(^{
+    previewSignal = [RACSubject subject];
+    [previewSignal startCountingSubscriptions];
 
-      viewController = [[CUIPreviewViewController alloc] initWithViewModel:viewModel];
-    });
+    viewModel.usePreviewLayer = NO;
+    viewModel.previewSignal = previewSignal;
+    viewModel.previewLayer = [CALayer layer];
 
-    it(@"should create view for preview layer", ^{
-      expect([viewController.view wf_viewForAccessibilityIdentifier:@"LayerView"]).notTo.beNil();
-      expect([viewController.view wf_viewForAccessibilityIdentifier:@"SignalView"]).to.beNil();
-    });
+    viewController = [[CUIPreviewViewController alloc] initWithViewModel:viewModel];
   });
 
-  context(@"using signal", ^{
-    __block CUIPreviewViewController *viewController;
-    __block RACSubject *previewSignal;
+  it(@"should create view for preview signal", ^{
+    expect([viewController.view wf_viewForAccessibilityIdentifier:@"LayerView"]).notTo.beNil();
+    expect([viewController.view wf_viewForAccessibilityIdentifier:@"SignalView"]).notTo.beNil();
+  });
 
-    beforeEach(^{
-      previewSignal = [RACSubject subject];
-      [previewSignal startCountingSubscriptions];
+  it(@"should subscribe to preview signal", ^{
+    [viewController loadViewIfNeeded];
+    expect(previewSignal).to.beSubscribedTo(1);
+  });
 
-      viewModel.usePreviewLayer = NO;
-      viewModel.previewSignal = previewSignal;
-
-      viewController = [[CUIPreviewViewController alloc] initWithViewModel:viewModel];
-    });
-
-    it(@"should create view for preview signal", ^{
-      expect([viewController.view wf_viewForAccessibilityIdentifier:@"LayerView"]).to.beNil();
-      expect([viewController.view wf_viewForAccessibilityIdentifier:@"SignalView"]).notTo.beNil();
-    });
-
-    it(@"should subscribe to preview signal", ^{
-      [viewController loadViewIfNeeded];
-      expect(previewSignal).to.beSubscribedTo(1);
-    });
+  it(@"should toggle to preview layer and signal", ^{
+    UIView *layerView = [viewController.view wf_viewForAccessibilityIdentifier:@"LayerView"];
+    UIView *signalView = [viewController.view wf_viewForAccessibilityIdentifier:@"SignalView"];
+    expect(layerView.hidden).to.beTruthy();
+    expect(signalView.hidden).to.beFalsy();
+    viewModel.usePreviewLayer = YES;
+    expect(layerView.hidden).to.beFalsy();
+    expect(signalView.hidden).to.beTruthy();
+    viewModel.usePreviewLayer = NO;
+    expect(layerView.hidden).to.beTruthy();
+    expect(signalView.hidden).to.beFalsy();
   });
 });
 
 context(@"dealloc", ^{
+  beforeEach(^{
+    viewModel.previewLayer = [CALayer layer];
+    viewModel.previewSignal = [RACSignal never];
+  });
+
   it(@"should dealloc when using layer", ^{
     viewModel.usePreviewLayer = YES;
-    viewModel.previewLayer = [CALayer layer];
 
     __weak CUIPreviewViewController *weakController;
     __weak UIView *weakView;
@@ -101,8 +101,6 @@ context(@"dealloc", ^{
 
   it(@"should dealloc when using signal", ^{
     viewModel.usePreviewLayer = NO;
-    viewModel.previewLayer = nil;
-    viewModel.previewSignal = [RACSignal never];
 
     __weak CUIPreviewViewController *weakController;
     __weak UIView *weakView;
