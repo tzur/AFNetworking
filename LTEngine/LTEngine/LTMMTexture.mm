@@ -3,8 +3,8 @@
 
 #import "LTMMTexture.h"
 
-#import "LTBoundaryCondition.h"
 #import "CIImage+Swizzle.h"
+#import "LTBoundaryCondition.h"
 #import "LTCVPixelBufferExtensions.h"
 #import "LTFbo.h"
 #import "LTFboPool.h"
@@ -422,7 +422,7 @@ typedef LTTextureMappedWriteBlock LTTextureMappedBlock;
       // In case the internal pixel format is BGRA, and since we are treating it as RGBA the image
       // needs to be swizzled so it will be correctly written.
       if (self.pixelFormat.ciFormatForCVPixelFormatType == kCIFormatBGRA8) {
-        image = [self swizzledImageFromImage:image];
+        image = image.lt_swizzledImage;
       }
 
       CIContext *context = [CIContext contextWithOptions:@{
