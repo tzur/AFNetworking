@@ -71,7 +71,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation CAMHardwareDevice
 
-@synthesize videoOrientation = _videoOrientation;
+@synthesize previewLayerWithPortraitOrientation = _previewLayerWithPortraitOrientation;
+@synthesize videoFramesWithPortraitOrientation = _videoFramesWithPortraitOrientation;
+@synthesize deviceOrientation = _deviceOrientation;
 
 - (instancetype)initWithSession:(CAMHardwareSession *)session {
   if (self = [super init]) {
@@ -249,9 +251,27 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
   return [self.videoFramesSignalsSubject switchToLatest];
 }
 
-- (void)setVideoOrientation:(AVCaptureVideoOrientation)videoOrientation {
-  _videoOrientation = videoOrientation;
-  self.session.stillConnection.videoOrientation = videoOrientation;
+- (void)setVideoFramesWithPortraitOrientation:(BOOL)videoFramesWithPortraitOrientation {
+  _videoFramesWithPortraitOrientation = videoFramesWithPortraitOrientation;
+  if (self.videoFramesWithPortraitOrientation) {
+    self.session.videoConnection.videoOrientation = AVCaptureVideoOrientationPortrait;
+  } else {
+    self.session.videoConnection.videoOrientation =
+        (AVCaptureVideoOrientation)self.deviceOrientation;
+  }
+}
+
+- (void)setDeviceOrientation:(UIInterfaceOrientation)deviceOrientation {
+  _deviceOrientation = deviceOrientation;
+  self.session.stillConnection.videoOrientation = (AVCaptureVideoOrientation)self.deviceOrientation;
+  if (!self.videoFramesWithPortraitOrientation) {
+    self.session.videoConnection.videoOrientation =
+        (AVCaptureVideoOrientation)self.deviceOrientation;
+  }
+  if (!self.previewLayerWithPortraitOrientation) {
+    self.session.previewLayer.connection.videoOrientation =
+        (AVCaptureVideoOrientation)self.deviceOrientation;
+  }
 }
 
 - (RACSignal *)subjectAreaChanged {
@@ -283,6 +303,16 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
 
 - (CALayer *)previewLayer {
   return self.session.previewLayer;
+}
+
+- (void)setPreviewLayerWithPortraitOrientation:(BOOL)previewLayerWithPortraitOrientation {
+  _previewLayerWithPortraitOrientation = previewLayerWithPortraitOrientation;
+  if (self.previewLayerWithPortraitOrientation) {
+    self.session.previewLayer.connection.videoOrientation = AVCaptureVideoOrientationPortrait;
+  } else {
+    self.session.previewLayer.connection.videoOrientation =
+        (AVCaptureVideoOrientation)self.deviceOrientation;
+  }
 }
 
 #pragma mark -
