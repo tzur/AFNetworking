@@ -68,7 +68,7 @@ sharedExamplesFor(kImageZeroSharedExamples, ^(NSDictionary *data) {
       cv::Mat expected(image.clone());
       expect([compressor compressImage:image toPath:path error:&error]).to.beTruthy();
 
-      __block cv::Mat output;
+      __block cv::Mat output(0, 0, type);
       expect([compressor decompressFromPath:path toImage:&output error:&error]).to.beTruthy();
 
       // Creating a new Mat since theoretically compression may mutate the input.

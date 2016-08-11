@@ -17,7 +17,7 @@ EXPMatcherImplementationBegin(equalMat, (NSValue *expected)) {
     return !prerequisiteErrorMessage;
   });
 
-  __block std::vector<int> firstMismatch([expected matValue].dims);
+  __block std::vector<int> firstMismatch;
 
   match(^BOOL{
     // Compare pointers.
@@ -36,10 +36,19 @@ EXPMatcherImplementationBegin(equalMat, (NSValue *expected)) {
     if (prerequisiteErrorMessage) {
       return prerequisiteErrorMessage;
     }
-    return [NSString stringWithFormat:@"First failure: expected %@ at %@, got %@",
-            LTMatValueAsString([expected matValue], firstMismatch),
-            LTIndicesVectorAsString(firstMismatch),
-            LTMatValueAsString([actual matValue], firstMismatch)];
+
+    if (firstMismatch.empty()) {
+      cv::Mat expectedMat = [expected matValue];
+      cv::Mat actualMat = [actual matValue];
+      return [NSString stringWithFormat:@"Metadata mismatch, expected: size (%d, %d), type %d, "
+              "got: size (%d, %d), type %d", expectedMat.cols, expectedMat.rows, expectedMat.type(),
+              actualMat.cols, actualMat.rows, actualMat.type()];
+    } else {
+      return [NSString stringWithFormat:@"First failure: expected %@ at %@, got %@",
+              LTMatValueAsString([expected matValue], firstMismatch),
+              LTIndicesVectorAsString(firstMismatch),
+              LTMatValueAsString([actual matValue], firstMismatch)];
+    }
   });
 
   failureMessageForNotTo(^NSString *{
@@ -50,10 +59,18 @@ EXPMatcherImplementationBegin(equalMat, (NSValue *expected)) {
     if (prerequisiteErrorMessage) {
       return prerequisiteErrorMessage;
     }
-    return [NSString stringWithFormat:@"First failure: expected not '%@' at %@, got '%@'",
-            LTMatValueAsString([expected matValue], firstMismatch),
-            LTIndicesVectorAsString(firstMismatch),
-            LTMatValueAsString([actual matValue], firstMismatch)];
+    if (firstMismatch.empty()) {
+      cv::Mat expectedMat = [expected matValue];
+      cv::Mat actualMat = [actual matValue];
+      return [NSString stringWithFormat:@"Metadata match where expected not to. Expected: size "
+              "(%d, %d), type %d, got: size (%d, %d), type %d", expectedMat.cols, expectedMat.rows,
+              expectedMat.type(), actualMat.cols, actualMat.rows, actualMat.type()];
+    } else {
+      return [NSString stringWithFormat:@"First failure: expected not '%@' at %@, got '%@'",
+              LTMatValueAsString([expected matValue], firstMismatch),
+              LTIndicesVectorAsString(firstMismatch),
+              LTMatValueAsString([actual matValue], firstMismatch)];
+    }
   });
 }
 
