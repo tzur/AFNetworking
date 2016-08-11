@@ -113,11 +113,64 @@ sharedExamplesFor(kLTMMTextureExamples, ^(NSDictionary *contextInfo) {
     });
 
     dit(@"should read correct data after gpu draw", ^{
+      cv::Mat4b expected(texture.size.height, texture.size.width, cv::Vec4b(255, 0, 0, 255));
       CGRect rect = CGRectMake(0, 0, texture.size.width, texture.size.height);
       [drawer drawRect:rect inFramebuffer:fbo fromRect:rect];
 
       [texture mappedImageForReading:^(const cv::Mat &mapped, BOOL) {
-        expect(LTCompareMatWithValue(cv::Scalar(255, 0, 0, 255), mapped)).to.beTruthy();
+        expect($(mapped)).to.equalMat($(expected));
+      }];
+    });
+
+    dit(@"should map correct data to core image after cpu write", ^{
+      cv::Mat4b expected(texture.size.height, texture.size.width, cv::Vec4b(255, 0, 0, 255));
+      [texture mappedImageForWriting:^(cv::Mat *mapped, BOOL) {
+        mapped->setTo(cv::Vec4b(255, 0, 0, 255));
+      }];
+
+      [texture mappedCIImage:^(CIImage *image) {
+        cv::Mat4b mapped(texture.size.height, texture.size.width);
+
+        CIContext *context = [CIContext contextWithOptions:@{
+          kCIContextWorkingColorSpace: [NSNull null],
+          kCIContextOutputColorSpace: [NSNull null]
+        }];
+
+        [context render:image toBitmap:mapped.data rowBytes:mapped.step[0] bounds:image.extent
+                 format:kCIFormatRGBA8 colorSpace:NULL];
+
+        expect($(mapped)).to.equalMat($(expected));
+      }];
+    });
+
+    dit(@"should map correct data to core image after gpu draw", ^{
+      cv::Mat4b expected(texture.size.height, texture.size.width, cv::Vec4b(255, 0, 0, 255));
+      CGRect rect = CGRectMake(0, 0, texture.size.width, texture.size.height);
+      [drawer drawRect:rect inFramebuffer:fbo fromRect:rect];
+
+      [texture mappedCIImage:^(CIImage *image) {
+        cv::Mat4b mapped(texture.size.height, texture.size.width);
+
+        CIContext *context = [CIContext contextWithOptions:@{
+          kCIContextWorkingColorSpace: [NSNull null],
+          kCIContextOutputColorSpace: [NSNull null]
+        }];
+
+        [context render:image toBitmap:mapped.data rowBytes:mapped.step[0] bounds:image.extent
+                 format:kCIFormatRGBA8 colorSpace:NULL];
+
+        expect($(mapped)).to.equalMat($(expected));
+      }];
+    });
+
+    dit(@"should read correct data after core image draw", ^{
+      cv::Mat4b expected(texture.size.height, texture.size.width, cv::Vec4b(255, 0, 0, 255));
+      [texture drawWithCoreImage:^CIImage *{
+        return [CIImage imageWithColor:[CIColor colorWithRed:1 green:0 blue:0]];
+      }];
+
+      [texture mappedImageForReading:^(const cv::Mat &mapped, BOOL) {
+        expect($(mapped)).to.equalMat($(expected));
       }];
     });
   });

@@ -4,6 +4,7 @@
 #import "LTMMTexture.h"
 
 #import "LTBoundaryCondition.h"
+#import "CIImage+Swizzle.h"
 #import "LTCVPixelBufferExtensions.h"
 #import "LTFbo.h"
 #import "LTFboPool.h"
@@ -381,6 +382,58 @@ typedef LTTextureMappedWriteBlock LTTextureMappedBlock;
     }
   }];
   _syncObject = syncObject;
+}
+
+- (void)mappedCIImage:(LTTextureMappedCIImageBlock)block {
+  LTParameterAssert(block);
+
+  [self mappedImageForReading:^(const cv::Mat &, BOOL) {
+    @autoreleasepool {
+      CIImage *image = [[CIImage alloc] initWithCVPixelBuffer:_pixelBuffer.get() options:@{
+        kCIImageColorSpace: [NSNull null]
+      }];
+
+      // In case the internal pixel format is BGRA, and since we are treating it as RGBA the image
+      // needs to be swizzled so it can be correctly used.
+      if (self.pixelFormat.ciFormatForCVPixelFormatType == kCIFormatBGRA8) {
+        image = image.lt_swizzledImage;
+      }
+
+      block(image);
+    }
+  }];
+}
+
+- (void)drawWithCoreImage:(LTTextureCoreImageBlock)block {
+  LTParameterAssert(block);
+  
+#if TARGET_IPHONE_SIMULATOR
+  // Simulator does not support rendering to certain target types of less than four channels, so
+  // let the superclass handle this.
+  [super drawWithCoreImage:block];
+#else
+  @autoreleasepool {
+    __block CIImage * _Nullable image = block();
+    if (!image) {
+      return;
+    }
+
+    [self mappedImageForWriting:^(cv::Mat *, BOOL) {
+      // In case the internal pixel format is BGRA, and since we are treating it as RGBA the image
+      // needs to be swizzled so it will be correctly written.
+      if (self.pixelFormat.ciFormatForCVPixelFormatType == kCIFormatBGRA8) {
+        image = [self swizzledImageFromImage:image];
+      }
+
+      CIContext *context = [CIContext contextWithOptions:@{
+        kCIContextWorkingColorSpace: [NSNull null],
+        kCIContextOutputColorSpace: [NSNull null]
+      }];
+      [context render:image toCVPixelBuffer:_pixelBuffer.get()
+               bounds:CGRectFromSize(self.size) colorSpace:NULL];
+    }];
+  }
+#endif
 }
 
 #pragma mark -

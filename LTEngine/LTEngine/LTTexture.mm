@@ -4,6 +4,8 @@
 #import "LTTexture+Protected.h"
 
 #import "LTBoundaryCondition.h"
+#import "CIImage+Swizzle.h"
+#import "LTCVPixelBufferExtensions.h"
 #import "LTFbo.h"
 #import "LTFboPool.h"
 #import "LTGLContext.h"
@@ -312,6 +314,86 @@ NS_ASSUME_NONNULL_BEGIN
     default:
       LTAssert(NO, @"Texture has %d channels, which is not supported for a CGBitmapContext",
                mat.channels());
+  }
+}
+
+- (void)mappedCIImage:(LTTextureMappedCIImageBlock)block {
+  LTParameterAssert(block);
+
+  [self mappedImageForReading:^(const cv::Mat &mapped, BOOL) {
+    @autoreleasepool {
+      auto pixelBuffer(LTCVPixelBufferCreate(mapped.cols, mapped.rows,
+                                             self.pixelFormat.cvPixelFormatType));
+
+      LTCVPixelBufferImageForWriting(pixelBuffer.get(), ^(cv::Mat *image) {
+        mapped.copyTo(*image);
+      });
+
+      CIImage *image = [[CIImage alloc] initWithCVPixelBuffer:pixelBuffer.get() options:@{
+        kCIImageColorSpace: [NSNull null]
+      }];
+
+      // In case the internal pixel format is BGRA, and since we are treating it as RGBA the image
+      // needs to be swizzled so it can be correctly used.
+      if (self.pixelFormat.ciFormatForCVPixelFormatType == kCIFormatBGRA8) {
+        image = image.lt_swizzledImage;
+      }
+
+      block(image);
+    }
+  }];
+}
+
+- (void)drawWithCoreImage:(LTTextureCoreImageBlock)block {
+  LTParameterAssert(block);
+
+  @autoreleasepool {
+    CIImage * _Nullable image = block();
+    if (!image) {
+      return;
+    }
+
+    // In case the target pixel format is BGRA, and since we are treating it as RGBA the image
+    // needs to be swizzled so it will be correctly written.
+    if (self.pixelFormat.ciFormatForCVPixelFormatType == kCIFormatBGRA8) {
+      image = image.lt_swizzledImage;
+    }
+
+    OSType cvPixelFormatType = self.pixelFormat.cvPixelFormatType;
+
+#if TARGET_IPHONE_SIMULATOR
+    // Simulator does not support rendering to certain target types of less than four channels, so
+    // we'll render to 4 channels in this scenario, and take only the required channels later on.
+    if ([self.pixelFormat isEqual:$(LTGLPixelFormatR8Unorm)]) {
+      cvPixelFormatType = $(LTGLPixelFormatRGBA8Unorm).cvPixelFormatType;
+    }
+#endif
+
+    __block auto pixelBuffer(LTCVPixelBufferCreate(self.size.width, self.size.height,
+                                                   cvPixelFormatType));
+
+    CIContext *context = [CIContext contextWithOptions:@{
+      kCIContextWorkingColorSpace: [NSNull null],
+      kCIContextOutputColorSpace: [NSNull null]
+    }];
+
+    [context render:image toCVPixelBuffer:pixelBuffer.get()
+             bounds:CGRectFromSize(self.size) colorSpace:NULL];
+
+    [self mappedImageForWriting:^(cv::Mat *mapped, BOOL) {
+      LTCVPixelBufferImageForReading(pixelBuffer.get(), ^(const cv::Mat &image) {
+#if TARGET_IPHONE_SIMULATOR
+        std::vector<int> fromTo;
+        for (int i = 0; i < mapped->channels(); ++i) {
+          fromTo.push_back(i);
+          fromTo.push_back(i);
+        }
+        cv::mixChannels(&image, 1, mapped, 1, fromTo.data(), mapped->channels());
+#else
+        image.copyTo(*mapped);
+#endif
+      });
+    }];
   }
 }
 
