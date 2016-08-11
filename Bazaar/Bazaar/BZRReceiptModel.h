@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 /// Describes a single in-app purchase that is listed in an application receipt.
-@interface BZRReceiptInAppPurchaseInfo : BZRModel
+@interface BZRReceiptInAppPurchaseInfo : BZRModel <NSSecureCoding>
 
 /// iTune-Connect product ID of the IAP.
 @property (readonly, nonatomic) NSString *productId;
@@ -30,7 +30,7 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 /// Describes the subscription status as listed in a receipt.
-@interface BZRReceiptSubscriptionInfo : BZRModel
+@interface BZRReceiptSubscriptionInfo : BZRModel <NSSecureCoding>
 
 /// iTunes-Connect product ID of the subscription.
 @property (readonly, nonatomic) NSString *productId;
@@ -41,7 +41,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// Date and time when the subscription were originaly purchased.
 @property (readonly, nonatomic) NSDate *originalPurchaseDateTime;
 
-/// Date and time of the latest subscription renewal or \c nil if no renewlas issued.
+/// Date and time of the latest subscription renewal or \c nil if no renewals issued.
 @property (readonly, nonatomic, nullable) NSDate *lastPurchaseDateTime;
 
 /// Date and time of the subscription expiration.
@@ -60,7 +60,7 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 /// Contains crucial information that is extracted from application receipt.
-@interface BZRReceiptInfo : BZRModel
+@interface BZRReceiptInfo : BZRModel <NSSecureCoding>
 
 /// The environment that the receipt was issued for.
 @property (readonly, nonatomic) BZRReceiptEnvironment *environment;

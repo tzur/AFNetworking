@@ -10,6 +10,11 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 @implementation BZRReceiptInAppPurchaseInfo
+
++ (BOOL)supportsSecureCoding {
+  return YES;
+}
+
 @end
 
 #pragma mark -
@@ -31,6 +36,10 @@ NS_ASSUME_NONNULL_BEGIN
   return nullablePropertyKeys;
 }
 
++ (BOOL)supportsSecureCoding {
+  return YES;
+}
+
 @end
 
 #pragma mark -
@@ -50,6 +59,10 @@ NS_ASSUME_NONNULL_BEGIN
   });
 
   return nullablePropertyKeys;
+}
+
++ (BOOL)supportsSecureCoding {
+  return YES;
 }
 
 @end

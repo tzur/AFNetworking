@@ -3,8 +3,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class BZRProduct, BZRProductBundleManager, BZRProductContentFetcher, BZRProductEligibilityVerifier,
-    LTPath;
+@class BZRKeychainStorage, BZRProduct, BZRProductBundleManager, BZRProductContentFetcher,
+    BZRProductEligibilityVerifier, BZRReceiptValidationStatusProvider, LTPath;
 
 @protocol BZRProductsProvider, BZRReceiptValidator;
 
@@ -28,8 +28,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// \c -[BZRInAppProductPurchaser initWithEligibilityVerifier:contentPathProvider:
 /// contentProviderFactory:bundleManager:].
 ///
-/// \c receiptValidator will be initialized with the default initializer of
-/// \c BZRValidatricksReceiptValidator as provided by \c -[BZRValidatricksReceiptValidator init].
+/// \c validationStatusProvider will be initialized with the default initializer of
+/// \c BZRReceiptValidationStatusProvider as provided by
+/// \c -[BZRReceiptValidationStatusProvider initWithKeychainStorage:] with \c keychainStorage.
 - (instancetype)initWithProductsListJSONFilePath:(LTPath *)productsListJSONFilePath;
 
 /// Provider used to fetch product list.
@@ -44,8 +45,11 @@ NS_ASSUME_NONNULL_BEGIN
 /// Fetcher used to fetch a product's content.
 @property (strong, nonatomic) BZRProductContentFetcher *contentFetcher;
 
-/// Validator used to validate a user's receipt.
-@property (strong, nonatomic) id<BZRReceiptValidator> receiptValidator;
+/// Provider used to provide \c BZRReceiptValidationStatus.
+@property (strong, nonatomic) BZRReceiptValidationStatusProvider *validationStatusProvider;
+
+/// Storage used to provide secure save/load of data.
+@property (strong, nonatomic) BZRKeychainStorage *keychainStorage;
 
 @end
 
