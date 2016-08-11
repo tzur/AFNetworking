@@ -68,6 +68,14 @@ NSString *LTSystemErrorMessageForError(int error) {
   }];
 }
 
++ (instancetype)lt_errorWithCode:(NSInteger)code description:(NSString *)description
+                 underlyingError:(nullable NSError *)underlyingError {
+  return [NSError lt_errorWithCode:code userInfo:@{
+    kLTErrorDescriptionKey: description ?: [NSNull null],
+    NSUnderlyingErrorKey: underlyingError ?: [NSError lt_nullValueGivenError]
+  }];
+}
+
 + (instancetype)lt_errorWithCode:(NSInteger)code path:(NSString *)path
                  underlyingError:(nullable NSError *)underlyingError {
   return [NSError lt_errorWithCode:code userInfo:@{
