@@ -30,48 +30,50 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (RACSignal *)bzr_retrieveFilesAttributes:(NSArray<NSString *> *)filePaths {
-  return [[[RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
-    for (NSString *filePath in filePaths) {
-      NSError *error;
-      NSDictionary *attributes = [self attributesOfItemAtPath:filePath error:&error];
-      if (!attributes) {
-        error = [NSError lt_errorWithCode:BZRErrorCodeFileAttributesRetrievalFailed path:filePath
-                          underlyingError:error];
-        [subscriber sendError:error];
+  return [[[RACSignal
+      createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+        for (NSString *filePath in filePaths) {
+          NSError *error;
+          NSDictionary *attributes = [self attributesOfItemAtPath:filePath error:&error];
+          if (!attributes) {
+            error = [NSError lt_errorWithCode:BZRErrorCodeFileAttributesRetrievalFailed
+                                         path:filePath underlyingError:error];
+            [subscriber sendError:error];
+            return nil;
+          }
+
+          [subscriber sendNext:[RACTuple tupleWithObjects:filePath, attributes, nil]];
+        }
+
+        [subscriber sendCompleted];
         return nil;
-      }
-
-      [subscriber sendNext:[RACTuple tupleWithObjects:filePath, attributes, nil]];
-    }
-
-    [subscriber sendCompleted];
-    return nil;
-  }]
+      }]
       subscribeOn:[RACScheduler scheduler]]
       setNameWithFormat:@"%@ -bzr_retrieveFilesAttributes", self.description];
 }
 
 - (RACSignal *)bzr_enumerateDirectoryAtPath:(NSString *)directoryPath {
-  return [[[RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
-    NSError *error;
-    NSDirectoryEnumerator<NSString *> *enumerator =
-        [self bzr_directoryEnumeratorAtPath:directoryPath error:&error];
-    if (!enumerator) {
-      [subscriber sendError:error];
-      return nil;
-    }
+  return [[[RACSignal
+      createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+        NSError *error;
+        NSDirectoryEnumerator<NSString *> *enumerator =
+            [self bzr_directoryEnumeratorAtPath:directoryPath error:&error];
+        if (!enumerator) {
+          [subscriber sendError:error];
+          return nil;
+        }
 
-    for (NSString *item in enumerator) {
-      NSString *itemPath = [directoryPath stringByAppendingPathComponent:item];
-      BOOL isDirectory;
-      if (![self fileExistsAtPath:itemPath isDirectory:&isDirectory] || isDirectory) {
-        continue;
-      }
-      [subscriber sendNext:[RACTuple tupleWithObjects:directoryPath, item, nil]];
-    }
-    [subscriber sendCompleted];
-    return nil;
-  }]
+        for (NSString *item in enumerator) {
+          NSString *itemPath = [directoryPath stringByAppendingPathComponent:item];
+          BOOL isDirectory;
+          if (![self fileExistsAtPath:itemPath isDirectory:&isDirectory] || isDirectory) {
+            continue;
+          }
+          [subscriber sendNext:[RACTuple tupleWithObjects:directoryPath, item, nil]];
+        }
+        [subscriber sendCompleted];
+        return nil;
+      }]
       subscribeOn:[RACScheduler scheduler]]
       setNameWithFormat:@"%@ -bzr_enumerateDirectoryAtPath: %@", self.description, directoryPath];
 }
@@ -93,26 +95,28 @@ NS_ASSUME_NONNULL_BEGIN
     NSString *description =
         [NSString stringWithFormat:@"Failed to create enumartor for directory at path %@",
          directoryPath];
-    *error = [NSError lt_errorWithCode:BZRErrorCodeDirectoryEnumrationFailed
-                                  path:directoryPath description:description];
+    *error = [NSError lt_errorWithCode:BZRErrorCodeDirectoryEnumrationFailed path:directoryPath
+                           description:description];
   }
   return enumerator;
 }
 
 - (RACSignal *)bzr_deleteItemAtPathIfExists:(NSString *)path {
-  return [[[RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
-    NSError *error;
-    if ([self fileExistsAtPath:path isDirectory:nil]) {
-      if (![self removeItemAtPath:path error:&error] || error) {
-        error = [NSError lt_errorWithCode:LTErrorCodeFileRemovalFailed path:path
-                          underlyingError:error];
-        [subscriber sendError:error];
+  return [[[RACSignal
+      createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+        NSError *itemRemovalError;
+        if ([self fileExistsAtPath:path isDirectory:nil]) {
+          BOOL success = [self removeItemAtPath:path error:&itemRemovalError];
+          if (!success) {
+            NSError *error = [NSError lt_errorWithCode:LTErrorCodeFileRemovalFailed path:path
+                                       underlyingError:itemRemovalError];
+            [subscriber sendError:error];
+            return nil;
+          }
+        }
+        [subscriber sendCompleted];
         return nil;
-      }
-    }
-    [subscriber sendCompleted];
-    return nil;
-  }]
+      }]
       subscribeOn:[RACScheduler scheduler]]
       setNameWithFormat:@"%@ -bzr_deleteItemAtPathIfExists: %@", self.description, path];
 }
