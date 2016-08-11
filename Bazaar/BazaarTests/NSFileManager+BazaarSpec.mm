@@ -47,6 +47,10 @@ beforeEach(^{
   fileManager = OCMPartialMock([[NSFileManager alloc] init]);
 });
 
+afterEach(^{
+  fileManager = nil;
+});
+
 context(@"files attributes retrieval", ^{
   __block NSArray<NSString *> *filePaths;
   __block NSString *nonExistingFilePath;
@@ -114,8 +118,10 @@ context(@"files attributes retrieval", ^{
   });
 
   it(@"should not deliver values on the main thread", ^{
-    RACSignal *signal = [fileManager bzr_retrieveFilesSizes:filePaths];
-    expect(signal).willNot.deliverValuesOnMainThread();
+    LLSignalTestRecorder *recorder = [[fileManager bzr_retrieveFilesSizes:filePaths] testRecorder];
+    
+    expect(recorder).will.complete();
+    expect(recorder).toNot.deliverValuesOnMainThread();
   });
 });
 
@@ -174,8 +180,13 @@ context(@"file deletion", ^{
   });
 
   it(@"should not deliver values on the main thread", ^{
-    RACSignal *signal = [fileManager bzr_deleteItemAtPathIfExists:filePath];
-    expect(signal).willNot.deliverValuesOnMainThread();
+    OCMExpect([fileManager removeItemAtPath:filePath error:[OCMArg anyObjectRef]])
+        .andReturn(YES);
+    LLSignalTestRecorder *recorder =
+        [[fileManager bzr_deleteItemAtPathIfExists:filePath] testRecorder];
+
+    expect(recorder).will.complete();
+    expect(recorder).toNot.deliverValuesOnMainThread();
   });
 });
 
@@ -242,8 +253,11 @@ context(@"directory enumeration", ^{
   });
 
   it(@"should not deliver values on the main thread", ^{
-    RACSignal *signal = [fileManager bzr_enumerateDirectoryAtPath:kDirectoryPath];
-    expect(signal).willNot.deliverValuesOnMainThread();
+    LLSignalTestRecorder *recorder =
+        [[fileManager bzr_enumerateDirectoryAtPath:kDirectoryPath] testRecorder];
+    
+    expect(recorder).will.complete();
+    expect(recorder).toNot.deliverValuesOnMainThread();
   });
 });
 
