@@ -178,7 +178,7 @@ context(@"", ^{
       CFRelease(sampleBuffer);
     });
 
-    it(@"should update orientation", ^{
+    it(@"should update frames orientation correctly", ^{
       id previewLayer = OCMClassMock([AVCaptureVideoPreviewLayer class]);
       id previewConnection = OCMClassMock([AVCaptureConnection class]);
       OCMStub([previewLayer connection]).andReturn(previewConnection);
@@ -187,14 +187,58 @@ context(@"", ^{
       session.previewLayer = previewLayer;
       session.videoConnection = videoConnection;
       session.stillConnection = stillConnection;
-      OCMReject([previewConnection setVideoOrientation:AVCaptureVideoOrientationLandscapeRight]);
-      OCMReject([videoConnection setVideoOrientation:AVCaptureVideoOrientationLandscapeRight]);
+      UIInterfaceOrientation deviceOrientation = UIInterfaceOrientationLandscapeRight;
+      AVCaptureVideoOrientation videoOrientation = (AVCaptureVideoOrientation)deviceOrientation;
 
-      device.videoOrientation = AVCaptureVideoOrientationLandscapeRight;
+      device.videoFramesWithPortraitOrientation = NO;
+      device.previewLayerWithPortraitOrientation = NO;
+      device.deviceOrientation = deviceOrientation;
 
-      OCMVerify([stillConnection setVideoOrientation:AVCaptureVideoOrientationLandscapeRight]);
+      expect(device.deviceOrientation).to.equal(deviceOrientation);
+      OCMVerify([stillConnection setVideoOrientation:videoOrientation]);
+      OCMVerify([previewConnection setVideoOrientation:videoOrientation]);
+      OCMVerify([videoConnection setVideoOrientation:videoOrientation]);
     });
 
+    it(@"should update frames orientation correctly when locked on portrait orientation", ^{
+      id previewLayer = OCMClassMock([AVCaptureVideoPreviewLayer class]);
+      id previewConnection = OCMClassMock([AVCaptureConnection class]);
+      OCMStub([previewLayer connection]).andReturn(previewConnection);
+      id videoConnection = OCMClassMock([AVCaptureConnection class]);
+      id stillConnection = OCMClassMock([AVCaptureConnection class]);
+      session.previewLayer = previewLayer;
+      session.videoConnection = videoConnection;
+      session.stillConnection = stillConnection;
+      UIInterfaceOrientation deviceOrientation = UIInterfaceOrientationLandscapeRight;
+      AVCaptureVideoOrientation videoOrientation = (AVCaptureVideoOrientation)deviceOrientation;
+      OCMReject([previewConnection setVideoOrientation:videoOrientation]);
+      OCMReject([videoConnection setVideoOrientation:videoOrientation]);
+
+      device.videoFramesWithPortraitOrientation = YES;
+      device.previewLayerWithPortraitOrientation = YES;
+      device.deviceOrientation = deviceOrientation;
+
+      expect(device.deviceOrientation).to.equal(deviceOrientation);
+      OCMVerify([stillConnection setVideoOrientation:videoOrientation]);
+    });
+
+    it(@"should update video frames orientation correctly", ^{
+      id videoConnection = OCMClassMock([AVCaptureConnection class]);
+      session.videoConnection = videoConnection;
+      UIInterfaceOrientation deviceOrientation = UIInterfaceOrientationLandscapeRight;
+      AVCaptureVideoOrientation videoOrientation = (AVCaptureVideoOrientation)deviceOrientation;
+
+      device.videoFramesWithPortraitOrientation = NO;
+      device.deviceOrientation = deviceOrientation;
+      OCMVerify([videoConnection setVideoOrientation:videoOrientation]);
+
+      device.videoFramesWithPortraitOrientation = YES;
+      OCMVerify([videoConnection setVideoOrientation:AVCaptureVideoOrientationPortrait]);
+
+      device.videoFramesWithPortraitOrientation = NO;
+      OCMVerify([videoConnection setVideoOrientation:videoOrientation]);
+    });
+    
     it(@"should send subject changed updates", ^{
       LLSignalTestRecorder *recorder = [device.subjectAreaChanged testRecorder];
       [[NSNotificationCenter defaultCenter]
@@ -267,6 +311,25 @@ context(@"", ^{
       OCMStub([previewLayer pointForCaptureDevicePointOfInterest:point]).andReturn(convertedPoint);
 
       expect([device previewLayerPointFromDevicePoint:point]).to.equal(convertedPoint);
+    });
+
+    it(@"should update preview layer orientation correctly", ^{
+      id previewLayer = OCMClassMock([AVCaptureVideoPreviewLayer class]);
+      id previewConnection = OCMClassMock([AVCaptureConnection class]);
+      OCMStub([previewLayer connection]).andReturn(previewConnection);
+      session.previewLayer = previewLayer;
+      UIInterfaceOrientation deviceOrientation = UIInterfaceOrientationLandscapeRight;
+      AVCaptureVideoOrientation videoOrientation = (AVCaptureVideoOrientation)deviceOrientation;
+
+      device.previewLayerWithPortraitOrientation = NO;
+      device.deviceOrientation = deviceOrientation;
+      OCMVerify([previewConnection setVideoOrientation:videoOrientation]);
+
+      device.previewLayerWithPortraitOrientation = YES;
+      OCMVerify([previewConnection setVideoOrientation:AVCaptureVideoOrientationPortrait]);
+
+      device.previewLayerWithPortraitOrientation = NO;
+      OCMVerify([previewConnection setVideoOrientation:videoOrientation]);
     });
   });
 
