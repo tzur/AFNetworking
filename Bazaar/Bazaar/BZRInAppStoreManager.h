@@ -43,18 +43,19 @@ NS_ASSUME_NONNULL_BEGIN
 /// Returns a signal that sends the list of products purchased by the user. This includes all the
 /// products that the user has purchased in the store on all devices, and products that the user
 /// acquired via subscription on this device. Whenever the list changes, the signal sends it. The
-/// signal completes when the class' instance is deallocated. The list might be outdated, for
-/// example if the user has made purchases on a another device. In order to update it,
+/// signal completes when the receiver is deallocated. The list might be outdated, for example if
+/// the user has made purchases on a another device. In order to update it,
 /// \c restorePurchasedProducts should be called. The signal doesn't err.
 ///
 /// @return <tt>RACSignal<NSArray<BZRProduct>></tt>
 - (RACSignal *)purchasedProducts;
 
-/// Provides the list of products that their content is already available on the device.
+/// Provides the list of products that their content is already available on the device. Products
+/// without content will be in the list as well.
 ///
 /// Returns a signal that sends the list of products with downloaded content. Whenever the list
-/// changes the signal sends it. The signal completes when the class' instance is deallocated.
-/// Products without content will be in the list as well. The signal doesn't err.
+/// changes the signal sends it. The signal completes when the receiver is deallocated. The signal
+/// doesn't err.
 ///
 /// @return <tt>RACSignal<NSArray<BZRProduct>></tt>
 - (RACSignal *)productsWithDownloadedContent;
@@ -106,6 +107,12 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 /// @return <tt>RACSignal<BZRReceiptSubscriptionInfo></tt>
 - (RACSignal *)fetchUserSubscriptionInfo;
+
+/// Sends errors reported by underlying modules used by the in-app store manager. The signal
+/// completes when the receiver is deallocated. The signal doesn't err.
+///
+/// @return <tt>RACSignal<NSError></tt>
+@property (readonly, nonatomic) RACSignal *errorsSignal;
 
 @end
 

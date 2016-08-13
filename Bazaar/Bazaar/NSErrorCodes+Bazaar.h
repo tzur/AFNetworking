@@ -31,6 +31,10 @@ LTErrorCodesDeclare(BazaarErrorCodeProductID,
   BZRErrorCodeKeychainStorageConversionFailed,
   /// Failure during data archiving.
   BZRErrorCodeKeychainStorageArchivingError,
+  /// Loading data from storage has failed.
+  BZRErrorCodeLoadingDataFromStorageFailed,
+  /// Storing data to storage has failed.
+  BZRErrorCodeStoringDataToStorageFailed,
   /// Creation of an archive file has failed.
   BZRErrorCodeArchiveCreationFailed,
   /// Unarchiving of an archive file failed.

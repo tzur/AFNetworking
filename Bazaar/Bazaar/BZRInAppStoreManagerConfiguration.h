@@ -48,7 +48,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// Provider used to provide \c BZRReceiptValidationStatus.
 @property (strong, nonatomic) BZRReceiptValidationStatusProvider *validationStatusProvider;
 
-/// Storage used to provide secure save/load of data.
+/// Storage used to provide secure store/load of data.
 @property (strong, nonatomic) BZRKeychainStorage *keychainStorage;
 
 @end
