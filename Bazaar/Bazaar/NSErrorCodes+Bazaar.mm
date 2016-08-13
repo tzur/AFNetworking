@@ -46,7 +46,9 @@ LTErrorCodesImplement(BazaarErrorCodeProductID,
   /// Failure due to unexpected underlying content provider parameters class.
   BZRErrorCodeUnexpectedUnderlyingContentProviderParametersClass,
   /// Copy product's content to temporary directory has failed.
-  BZRErrorCodeCopyProductContentFailed
+  BZRErrorCodeCopyProductContentFailed,
+  /// Creation of directory has failed.
+  BZRErrorCodeDirectoryCreationFailed
 );
 
 NS_ASSUME_NONNULL_END
