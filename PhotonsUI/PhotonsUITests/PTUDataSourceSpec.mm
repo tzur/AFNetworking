@@ -138,6 +138,60 @@ context(@"updates", ^{
     OCMVerify([collectionView insertItemsAtIndexPaths:inserted]);
     OCMVerify([collectionView reloadItemsAtIndexPaths:updated]);
   });
+  
+  it(@"should notify on data change due to reload", ^{
+    LLSignalTestRecorder *recorder = [dataSource.didUpdateCollectionView testRecorder];
+    
+    PTUChangeset *changeset = [[PTUChangeset alloc] initWithAfterDataModel:@[@[], @[]]];
+    [dataSignal sendNext:changeset];
+    OCMVerify([collectionView reloadData]);
+    expect(recorder).to.sendValues(@[[RACUnit defaultUnit]]);
+    
+    [dataSignal sendNext:changeset];
+    OCMVerify([collectionView reloadData]);
+    expect(recorder).to.sendValues(@[[RACUnit defaultUnit], [RACUnit defaultUnit]]);
+  });
+
+  it(@"should notify on data change due batch updates", ^{
+    LLSignalTestRecorder *recorder = [dataSource.didUpdateCollectionView testRecorder];
+    
+    NSArray *updated = @[[NSIndexPath indexPathForItem:0 inSection:0]];
+    NSArray *inserted = @[[NSIndexPath indexPathForItem:1 inSection:0]];
+    PTUChangeset *changeset = [[PTUChangeset alloc] initWithBeforeDataModel:@[@[@1]]
+                                                             afterDataModel:@[@[@2, @3]]
+                                                                    deleted:nil
+                                                                   inserted:inserted
+                                                                    updated:updated
+                                                                      moved:nil];
+
+    OCMStub([collectionView performBatchUpdates:[OCMArg invokeBlock]
+                                     completion:([OCMArg invokeBlockWithArgs:@YES, nil])]);
+    [dataSignal sendNext:changeset];
+    expect(recorder).to.sendValues(@[[RACUnit defaultUnit]]);
+    
+    [dataSignal sendNext:changeset];
+    expect(recorder).to.sendValues(@[[RACUnit defaultUnit], [RACUnit defaultUnit]]);
+  });
+  
+  it(@"should complete collection view update signal on dealloc", ^{
+    __weak id<PTUDataSource> weakDataSource;
+    __block LLSignalTestRecorder *recorder;
+    
+    @autoreleasepool {
+      UICollectionViewLayout *layout = OCMClassMock(UICollectionViewLayout.class);
+      UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero
+                                                            collectionViewLayout:layout];
+      id<PTUDataSource> dataSource = [[PTUDataSource alloc] initWithCollectionView:collectionView
+                                                                 changesetProvider:changesetProvider
+                                                             cellViewModelProvider:viewModelProvider
+                                                                         cellClass:cellClass];
+      weakDataSource = dataSource;
+      recorder = [dataSource.didUpdateCollectionView testRecorder];
+    }
+    
+    expect(weakDataSource).to.beNil();
+    expect(recorder).to.complete();
+  });
 });
 
 SpecEnd

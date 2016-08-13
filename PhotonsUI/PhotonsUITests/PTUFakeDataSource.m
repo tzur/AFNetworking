@@ -15,6 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 @implementation PTUFakeDataSource
 
 @synthesize title = _title;
+@synthesize didUpdateCollectionView = _didUpdateCollectionView;
 
 - (nullable id<PTNDescriptor>)descriptorAtIndexPath:(NSIndexPath *)index {
   if (self.data.count <= (NSUInteger)index.section) {
@@ -49,6 +50,14 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)setData:(NSArray<NSArray<id<PTNDescriptor>> *> *)data {
   _data = data;
   self.hasData = YES;
+}
+
+- (RACSignal *)didUpdateCollectionView {
+  if (!_didUpdateCollectionView) {
+    _didUpdateCollectionView = [RACSubject subject];
+  }
+  
+  return _didUpdateCollectionView;
 }
 
 #pragma mark -

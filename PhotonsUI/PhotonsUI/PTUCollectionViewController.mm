@@ -37,7 +37,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-@interface PTUCollectionViewController () <UICollectionViewDelegateFlowLayout>
+@interface PTUCollectionViewController () <UICollectionViewDelegateFlowLayout, UIScrollViewDelegate>
 
 /// Provider of \c PTUDataSource conforming objects.
 @property (readonly, nonatomic) id<PTUDataSourceProvider> dataSourceProvider;
@@ -97,6 +97,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)setup {
   [self setupCollectionView];
   [self setupSelectionSignals];
+  [self setupControlSignals];
   [self setupTitleBinding];
   [self setupInfoViews];
   [self buildDefaultEmptyView];
@@ -142,6 +143,103 @@ NS_ASSUME_NONNULL_BEGIN
 - (BOOL)collectionView:(UICollectionView __unused *)collectionView
     shouldDeselectItemAtIndexPath:(nonnull NSIndexPath __unused *)indexPath {
   return NO;
+}
+
+- (void)setupControlSignals {
+  @weakify(self);
+  [[[[[RACSignal
+      combineLatest:@[
+        [self rac_signalForSelector:@selector(selectItem:)],
+        [RACObserve(self, dataSource.didUpdateCollectionView) switchToLatest]
+      ]]
+      reduceEach:(id)^NSIndexPath * _Nullable (RACTuple *selectedItem, NSNumber *) {
+        @strongify(self);
+        return [self.dataSource indexPathOfDescriptor:selectedItem.first];
+      }]
+      ignore:nil]
+      takeUntil:self.rac_willDeallocSignal]
+      subscribeNext:^(NSIndexPath *indexPath) {
+        @strongify(self);
+        [self.collectionView selectItemAtIndexPath:indexPath animated:NO
+                                    scrollPosition:UICollectionViewScrollPositionNone];
+      }];
+  
+  [[[[[[[self rac_signalForSelector:@selector(scrollToItem:atScrollPosition:animated:)
+                       fromProtocol:@protocol(PTUCollectionViewController)]
+      map:^RACSignal *(RACTuple *value) {
+        @strongify(self);
+        return [[RACSignal
+            combineLatest:@[
+              [RACSignal return:value],
+              [[RACObserve(self, dataSource.didUpdateCollectionView)
+                  switchToLatest]
+                  startWith:[RACUnit defaultUnit]]
+            ]]
+            takeUntil:[self rac_signalForSelector:@selector(scrollViewDidScroll:)]];
+      }]
+      switchToLatest]
+      reduceEach:(id)^RACTuple *(RACTuple *scrollToItem, NSNumber *) {
+        @strongify(self);
+        RACTupleUnpack(id<PTNDescriptor> item, NSNumber *position, NSNumber *animated) =
+            scrollToItem;
+        NSIndexPath * _Nullable indexPath = [self.dataSource indexPathOfDescriptor:item];
+        PTUCollectionViewScrollPosition scrollPosition =
+            (PTUCollectionViewScrollPosition)position.unsignedIntegerValue;
+        UICollectionViewScrollPosition nativeScrollPosition =
+            [self collectionViewScrollPosition:scrollPosition];
+        
+        return RACTuplePack(indexPath, @(nativeScrollPosition), animated);
+      }]
+      filter:^BOOL(RACTuple *scrollToItem) {
+        return scrollToItem.first != nil;
+      }]
+      takeUntil:self.rac_willDeallocSignal]
+      subscribeNext:^(RACTuple *scrollToItem) {
+        @strongify(self);
+        RACTupleUnpack(NSIndexPath *indexPath, NSNumber *position, NSNumber *animated) =
+            scrollToItem;
+        PTUCollectionViewScrollPosition scrollPosition =
+            (PTUCollectionViewScrollPosition)position.unsignedIntegerValue;
+        
+        [self.collectionView scrollToItemAtIndexPath:indexPath
+                                    atScrollPosition:scrollPosition
+                                            animated:animated.boolValue];
+      }];
+}
+
+- (void)scrollViewDidScroll:(UIScrollView __unused *)scrollView {
+  // Required for signal.
+}
+
+- (void)selectItem:(id<PTNDescriptor> __unused)item {
+  // Required by protocol.
+}
+
+- (void)scrollToItem:(id<PTNDescriptor> __unused)item
+    atScrollPosition:(PTUCollectionViewScrollPosition __unused)position
+            animated:(BOOL __unused)animated {
+  // Required by protocol.
+}
+
+- (UICollectionViewScrollPosition)collectionViewScrollPosition:
+    (PTUCollectionViewScrollPosition)position {
+  switch (position) {
+    case PTUCollectionViewScrollPositionTopLeft:
+      return [self scrollsVertically] ?
+          UICollectionViewScrollPositionTop :
+          UICollectionViewScrollPositionLeft;
+    case PTUCollectionViewScrollPositionCenter:
+      return [self scrollsVertically] ?
+          UICollectionViewScrollPositionCenteredVertically :
+          UICollectionViewScrollPositionCenteredHorizontally;
+    case PTUCollectionViewScrollPositionBottomRight:
+      return [self scrollsVertically] ?
+          UICollectionViewScrollPositionBottom :
+          UICollectionViewScrollPositionRight;
+    default:
+      LTAssert(NO, @"PTUCollectionViewScrollPosition %lu can not be translated to "
+               "UICollectionViewScrollPosition", (unsigned long)position);
+  }
 }
 
 - (void)setupTitleBinding {
@@ -297,56 +395,12 @@ NS_ASSUME_NONNULL_BEGIN
   return layout;
 }
 
-- (void)scrollToItem:(id<PTNDescriptor>)item
-    atScrollPosition:(PTUCollectionViewScrollPosition)position
-            animated:(BOOL)animated {
-  NSIndexPath *indexPath = [self.dataSource indexPathOfDescriptor:item];
-  if (!indexPath) {
-    return;
-  }
-
-  [self.collectionView scrollToItemAtIndexPath:indexPath
-                              atScrollPosition:[self collectionViewScrollPosition:position]
-                                      animated:animated];
-}
-
-- (UICollectionViewScrollPosition)collectionViewScrollPosition:
-    (PTUCollectionViewScrollPosition)position {
-  switch (position) {
-    case PTUCollectionViewScrollPositionTopLeft:
-      return [self scrollsVertically] ?
-          UICollectionViewScrollPositionTop :
-          UICollectionViewScrollPositionLeft;
-    case PTUCollectionViewScrollPositionCenter:
-      return [self scrollsVertically] ?
-          UICollectionViewScrollPositionCenteredVertically :
-          UICollectionViewScrollPositionCenteredHorizontally;
-    case PTUCollectionViewScrollPositionBottomRight:
-      return [self scrollsVertically] ?
-          UICollectionViewScrollPositionBottom :
-          UICollectionViewScrollPositionRight;
-    default:
-      LTAssert(NO, @"PTUCollectionViewScrollPosition %lu can not be translated to "
-               "UICollectionViewScrollPosition", (unsigned long)position);
-  }
-}
-
 - (BOOL)scrollsVertically {
   return self.configuration.scrollDirection == UICollectionViewScrollDirectionVertical;
 }
 
 - (void)scrollToTopAnimated:(BOOL)animated {
   [self.collectionView setContentOffset:CGPointZero animated:animated];
-}
-
-- (void)selectItem:(id<PTNDescriptor>)item {
-  NSIndexPath *indexPath = [self.dataSource indexPathOfDescriptor:item];
-  if (!indexPath) {
-    return;
-  }
-
-  [self.collectionView selectItemAtIndexPath:indexPath animated:NO
-                              scrollPosition:UICollectionViewScrollPositionNone];
 }
 
 - (void)deselectItem:(id<PTNDescriptor>)item {

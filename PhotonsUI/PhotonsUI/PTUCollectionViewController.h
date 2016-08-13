@@ -27,14 +27,19 @@ typedef NS_ENUM(NSUInteger, PTUCollectionViewScrollPosition) {
 - (void)scrollToTopAnimated:(BOOL)animated;
 
 /// Scrolls the collection view contents until the specified \c item is visible in \c position and
-/// optionally animates the change. If \c item cannot be found in the collection this has no effect.
+/// optionally animates the change. If \c item cannot be found in the collection the scrolling is
+/// deferred to until the item is successfully scrolled to or until a different scrolling is applied
+/// either programatically or via user interaction, at which point the scrolling action is
+/// discarded.
 - (void)scrollToItem:(id<PTNDescriptor>)item
     atScrollPosition:(PTUCollectionViewScrollPosition)position
             animated:(BOOL)animated;
 
 /// Sets \c item to be selected. Calling this method will not trigger values on the \c itemSelected
-/// signal, or apply any scrolling. If \c item cannot be found in the collection or is already
-/// selected this has no effect.
+/// signal, or apply any scrolling. If \c item is already selected this has no effect. If \c item
+/// cannot be found in the collection the selection is deferred to until the item is successfully
+/// selected or until a different selection is applied, at which point the selection action is
+/// discarded.
 - (void)selectItem:(id<PTNDescriptor>)item;
 
 /// Sets \c item to be deselected. Calling this method will not trigger values on the
@@ -43,7 +48,7 @@ typedef NS_ENUM(NSUInteger, PTUCollectionViewScrollPosition) {
 - (void)deselectItem:(id<PTNDescriptor>)item;
 
 /// Sets \c configuration as the receiver's current configuration. Calling this method changes the
-/// underlying collection layout and possibly changes the offest of the scrolled content.
+/// underlying collection layout and possibly changes the offset of the scrolled content.
 - (void)setConfiguration:(PTUCollectionViewConfiguration *)configuration animated:(BOOL)animated;
 
 /// Discards the currently used \c PTUDataSource and fetches a new data source from the given
@@ -110,7 +115,7 @@ typedef NS_ENUM(NSUInteger, PTUCollectionViewScrollPosition) {
 
 /// View displayed behind the cells of this collection view controller's collection view, the view
 /// will automatically track the size of the receiver's view. Setting this view will add it the the
-/// receiver's view heirarchy. Setting this view to \c nil will result in no view to be displayed
+/// receiver's view hierarchy. Setting this view to \c nil will result in no view to be displayed
 /// behind the collection view, which is the default behavior.
 @property (strong, nonatomic, nullable) UIView *backgroundView;
 
