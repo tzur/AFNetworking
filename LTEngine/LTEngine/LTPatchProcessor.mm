@@ -311,7 +311,6 @@ LTPropertyProxy(CGFloat, smoothingAlpha, SmoothingAlpha, self.compositor);
     [self.rectCopyProcessor process];
   }
   
-  NSLog(@"workingSize : %@",NSStringFromCGSize(self.workingSize));
   [self.workingSizeToProcessor[$(self.workingSize)] process];
 
   [self updateRectCopyProcessorRects];
