@@ -81,6 +81,8 @@
 		84FF72F81C8EEFA000D1DA9F /* libPhotons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 848EFFDF1C591BFF001D8368 /* libPhotons.a */; };
 		887265951D772D8300D4F2A6 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 88FAF8F21D7727820023AF7A /* Localizable.strings */; };
 		887265961D772D8700D4F2A6 /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = 88FAF9151D7727890023AF7A /* Localizable.stringsdict */; };
+		887267BD1D7C3C8F00D4F2A6 /* PTULocalization.mm in Sources */ = {isa = PBXBuildFile; fileRef = 887267BC1D7C3C8F00D4F2A6 /* PTULocalization.mm */; };
+		887267BF1D7C3CCA00D4F2A6 /* PTULocalizationSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 887267BE1D7C3CCA00D4F2A6 /* PTULocalizationSpec.mm */; };
 		8B0B9A1D1CA6BF6900ED2334 /* ReactiveCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B368F771CA6AC53003E34CF /* ReactiveCocoa.framework */; };
 		8B0B9A2A1CA6C09D00ED2334 /* DropboxSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B0B9A281CA6C09000ED2334 /* DropboxSDK.framework */; };
 		8B368FAB1CA6ACB3003E34CF /* Masonry.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B368F401CA6ABF8003E34CF /* Masonry.framework */; };
@@ -539,6 +541,9 @@
 		8872653F1D772CDF00D4F2A6 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = fr; path = fr.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		8872656E1D772D7B00D4F2A6 /* PhotonsUIBundle.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PhotonsUIBundle.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		887265701D772D7B00D4F2A6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		887267BB1D7C3C8F00D4F2A6 /* PTULocalization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTULocalization.h; sourceTree = "<group>"; };
+		887267BC1D7C3C8F00D4F2A6 /* PTULocalization.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PTULocalization.mm; sourceTree = "<group>"; };
+		887267BE1D7C3CCA00D4F2A6 /* PTULocalizationSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PTULocalizationSpec.mm; sourceTree = "<group>"; };
 		88FAF8F31D7727820023AF7A /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
 		88FAF9161D7727890023AF7A /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = Base; path = Base.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		8B0B9A281CA6C09000ED2334 /* DropboxSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DropboxSDK.framework; path = "../third_party/dropbox-ios-sdk/DropboxSDK.framework"; sourceTree = "<group>"; };
@@ -614,7 +619,9 @@
 			isa = PBXGroup;
 			children = (
 				848E00061C591DD1001D8368 /* PhotonsUI.h */,
+				8819B4121D76FF390058C31A /* Localization */,
 				848E0A441C5921FE001D8368 /* Base */,
+				887267B91D7C3C5C00D4F2A6 /* Localization */,
 				848E001F1C591E7B001D8368 /* Supporting Files */,
 			);
 			path = PhotonsUI;
@@ -668,6 +675,7 @@
 		848E00241C59208B001D8368 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				887267BA1D7C3C7100D4F2A6 /* Localization */,
 				8428F3751C676A480007B0A5 /* PTUAlbumChangesetProviderSpec.mm */,
 				BE7B8C2C1D37ACB00013F1FC /* PTUArrayChangesetProviderSpec.mm */,
 				84F830DC1D11986E00A01882 /* PTUCellSizingStrategySpec.mm */,
@@ -935,6 +943,23 @@
 				887265701D772D7B00D4F2A6 /* Info.plist */,
 			);
 			path = PhotonsUIBundle;
+			sourceTree = "<group>";
+		};
+		887267B91D7C3C5C00D4F2A6 /* Localization */ = {
+			isa = PBXGroup;
+			children = (
+				887267BB1D7C3C8F00D4F2A6 /* PTULocalization.h */,
+				887267BC1D7C3C8F00D4F2A6 /* PTULocalization.mm */,
+			);
+			name = Localization;
+			sourceTree = "<group>";
+		};
+		887267BA1D7C3C7100D4F2A6 /* Localization */ = {
+			isa = PBXGroup;
+			children = (
+				887267BE1D7C3CCA00D4F2A6 /* PTULocalizationSpec.mm */,
+			);
+			name = Localization;
 			sourceTree = "<group>";
 		};
 		8B368F3B1CA6ABF8003E34CF /* Products */ = {
@@ -1460,6 +1485,7 @@
 				8463DA081D1009C300FF4935 /* PTNFakeAlbumDescriptor.m in Sources */,
 				848E097A1C59212F001D8368 /* EXPMatchers+error.m in Sources */,
 				84CCAFAC1D64A8AF00BD7323 /* PTUFakeImageCellViewModel.m in Sources */,
+				887267BF1D7C3CCA00D4F2A6 /* PTULocalizationSpec.mm in Sources */,
 				84D741891C7A270500BCA294 /* PTUTestUtils.mm in Sources */,
 				8449B5F81D1AD6F10054272C /* PTUChangesetMetadataSpec.mm in Sources */,
 				84AA15011D3A17C7002EE833 /* PTUCompoundChangesetProviderSpec.mm in Sources */,
@@ -1475,6 +1501,7 @@
 				84FF72F51C8EED9800D1DA9F /* PTUChangeset.m in Sources */,
 				84BE49051D2E44150090105C /* PTUDataSourceProvider.m in Sources */,
 				841FA8C91D6D966A009C44A9 /* PTUHeaderCell.m in Sources */,
+				887267BD1D7C3C8F00D4F2A6 /* PTULocalization.mm in Sources */,
 				84FF72F61C8EED9900D1DA9F /* PTUChangesetMove.m in Sources */,
 				84FF72F41C8EED9600D1DA9F /* PTUAlbumChangesetProvider.m in Sources */,
 				8414247D1D770FDC00968C36 /* PTUErrorViewProvider.mm in Sources */,
