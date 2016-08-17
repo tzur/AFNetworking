@@ -5,45 +5,8 @@
 
 #import "PTNDisposableRetainingSignal.h"
 #import "PTNTestUtils.h"
+#import "PTUFakeImageCellViewModel.h"
 #import "PTUImageCellViewModel.h"
-
-/// \c PTUimageCellModel implementation using subjects as the view models signals used for testing.
-@interface PTUFakeImageCellViewModel : NSObject <PTUImageCellViewModel>
-
-/// Initializes with \c imageSignal to be returned by \c imageSignalForCellSize: with any parameter,
-/// \c titleSignal and \c subtitleSignal.
-- (instancetype)initWithImageSignal:(nullable RACSignal *)imageSignal
-                        titleSignal:(nullable RACSignal *)titleSignal
-                     subtitleSignal:(nullable RACSignal *)subtitleSignal;
-
-/// Signal used as this view model's \c imageSignalForCellSize: with any size.
-@property (strong, nonatomic) RACSignal *imageSignal;
-
-/// Signal used as this view model's \c titleSignal.
-@property (strong, nonatomic) RACSignal *titleSignal;
-
-/// Signal used as this view model's \c subtitleSignal.
-@property (strong, nonatomic) RACSignal *subtitleSignal;
-
-@end
-
-@implementation PTUFakeImageCellViewModel
-
-- (instancetype)initWithImageSignal:(RACSignal *)imageSignal titleSignal:(RACSignal *)titleSignal
-                     subtitleSignal:(RACSignal *)subtitleSignal {
-  if (self = [super init]) {
-    _imageSignal = imageSignal;
-    _titleSignal = titleSignal;
-    _subtitleSignal = subtitleSignal;
-  }
-  return self;
-}
-
-- (RACSignal *)imageSignalForCellSize:(CGSize __unused)cellSize {
-  return self.imageSignal;
-}
-
-@end
 
 SpecBegin(PTUImageCellView)
 

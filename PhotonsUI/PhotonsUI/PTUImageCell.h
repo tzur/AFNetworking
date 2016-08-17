@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// signal of the \c viewModel. Errors on these signals are mapped to \c nil and all values are
 /// explicitly delivered on the main thread. Current \c viewModel image signal will be queried and
 /// used each time the cell view size changes.
-- (void)setViewModel:(nullable id<PTUImageCellViewModel>)viewModel;
+@property (strong, nonatomic, nullable) id<PTUImageCellViewModel> viewModel;
 
 @end
 

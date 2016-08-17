@@ -5,11 +5,12 @@
 
 #import <LTKit/LTCGExtensions.h>
 
+#import "PTUImageCellController.h"
 #import "PTUImageCellViewModel.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface PTUImageCellView ()
+@interface PTUImageCellView () <PTUImageCellControllerDelegate>
 
 /// Image view to display image in.
 @property (readonly, nonatomic) UIImageView *imageView;
@@ -23,17 +24,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// Grouping of both title and subtitle labels for layout purposes.
 @property (readonly, nonatomic) UIView *labelsView;
 
-/// Manual disposal handle for the image signal of the \c viewModel.
-@property (strong, nonatomic) RACDisposable *imageSignalDisposable;
-
-/// Manual disposal handle for the title signal of the \c viewModel.
-@property (strong, nonatomic) RACDisposable *titleSignalDisposable;
-
-/// Manual disposal handle for the subtitle signal of the \c viewModel.
-@property (strong, nonatomic) RACDisposable *subtitleSignalDisposable;
-
-/// Current view size in points stored to avoid unnecessary work when size did not change.
-@property (nonatomic) CGSize currentSize;
+/// Controller handling view model signal management.
+@property (readonly, nonatomic) PTUImageCellController *imageCellController;
 
 @end
 
@@ -46,19 +38,26 @@ NS_ASSUME_NONNULL_BEGIN
   return self;
 }
 
-- (void)dealloc {
-  [self.imageSignalDisposable dispose];
-  [self.titleSignalDisposable dispose];
-  [self.subtitleSignalDisposable dispose];
-}
-
 #pragma mark -
 #pragma mark Setup
 #pragma mark -
 
 - (void)setup {
+  [self setupImageCellController];
   [self setupImageView];
   [self setupLabels];
+}
+
+- (void)setupImageCellController {
+  _imageCellController = [[PTUImageCellController alloc] init];
+  self.imageCellController.delegate = self;
+}
+
+- (void)setupImageView {
+  _imageView = [[UIImageView alloc] initWithFrame:CGRectZero];
+  self.imageView.contentMode = UIViewContentModeScaleAspectFill;
+  self.imageView.clipsToBounds = YES;
+  [self addSubview:self.imageView];
 }
 
 - (void)setupLabels {
@@ -81,27 +80,24 @@ NS_ASSUME_NONNULL_BEGIN
   [self.labelsView addSubview:self.subtitleLabel];
 }
 
-- (void)setupImageView {
-  _imageView = [[UIImageView alloc] initWithFrame:CGRectZero];
-  self.imageView.contentMode = UIViewContentModeScaleAspectFill;
-  self.imageView.clipsToBounds = YES;
-  [self addSubview:self.imageView];
-}
-
 #pragma mark -
 #pragma mark Update
 #pragma mark -
 
 - (void)layoutSubviews {
   [super layoutSubviews];
-  if (self.currentSize == self.bounds.size) {
-    return;
-  }
-  self.currentSize = self.bounds.size;
+  self.imageCellController.imageSize = [self pixelSize];
 
   [self updateImageView];
   [self updateLabels];
-  [self replaceImageSignalBinding];
+}
+
+- (CGSize)pixelSize {
+  return self.bounds.size * [self contentScaleFactor];
+}
+
+- (CGFloat)contentScaleFactor {
+  return [UIScreen mainScreen].scale;
 }
 
 - (void)updateImageView {
@@ -158,75 +154,45 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 #pragma mark -
-#pragma mark View model
+#pragma mark PTUImageCellControllerDelegate
 #pragma mark -
 
 - (void)setViewModel:(nullable id<PTUImageCellViewModel>)viewModel {
-  _viewModel = viewModel;
-  [self.titleSignalDisposable dispose];
-  [self.subtitleSignalDisposable dispose];
-
-  if (!viewModel) {
-    self.titleLabel.text = nil;
-    self.subtitleLabel.text = nil;
-  }
-
-  @weakify(self);
-  self.titleSignalDisposable = [[viewModel.titleSignal
-      deliverOnMainThread]
-      subscribeNext:^(NSString *title) {
-        @strongify(self);
-        self.titleLabel.text = title;
-      } error:^(NSError *) {
-        @strongify(self);
-        self.titleLabel.text = nil;
-      }];
-
-  self.subtitleSignalDisposable = [[viewModel.subtitleSignal
-      deliverOnMainThread]
-      subscribeNext:^(NSString *subtitle) {
-        @strongify(self);
-        self.subtitleLabel.text = subtitle;
-      } error:^(NSError *) {
-        @strongify(self);
-        self.subtitleLabel.text = nil;
-      }];
-
-  if (!CGSizeEqualToSize(self.currentSize, CGSizeZero)) {
-    [self replaceImageSignalBindingAndClearImageView];
-  }
+  self.imageCellController.viewModel = viewModel;
 }
 
-- (void)replaceImageSignalBindingAndClearImageView {
-  [self.imageSignalDisposable dispose];
+- (nullable id<PTUImageCellViewModel>)viewModel {
+  return self.imageCellController.viewModel;
+}
+
+- (void)imageCellController:(PTUImageCellController __unused *)imageCellController
+                loadedImage:(nullable UIImage *)image {
+  self.imageView.image = image;
+}
+
+- (void)imageCellController:(PTUImageCellController __unused *)imageCellController
+                loadedTitle:(nullable NSString *)title {
+  self.titleLabel.text = title;
+}
+
+- (void)imageCellController:(PTUImageCellController __unused *)imageCellController
+             loadedSubtitle:(nullable NSString *)subtitle {
+  self.subtitleLabel.text = subtitle;
+}
+
+- (void)imageCellController:(PTUImageCellController __unused *)imageCellController
+          errorLoadingImage:(nonnull NSError __unused *)error {
   self.imageView.image = nil;
-  [self bindImageSignal];
 }
 
-- (void)replaceImageSignalBinding {
-  [self.imageSignalDisposable dispose];
-  [self bindImageSignal];
+- (void)imageCellController:(PTUImageCellController __unused *)imageCellController
+          errorLoadingTitle:(nonnull NSError __unused *)error {
+  self.titleLabel.text = nil;
 }
 
-- (void)bindImageSignal {
-  @weakify(self);
-  self.imageSignalDisposable = [[[self.viewModel imageSignalForCellSize:[self pixelSize]]
-      deliverOnMainThread]
-      subscribeNext:^(UIImage *image) {
-        @strongify(self);
-        self.imageView.image = image;
-      } error:^(NSError *) {
-        @strongify(self);
-        self.imageView.image = nil;
-      }];
-}
-
-- (CGSize)pixelSize {
-  return self.bounds.size * [self contentScaleFactor];
-}
-
-- (CGFloat)contentScaleFactor {
-  return [UIScreen mainScreen].scale;
+- (void)imageCellController:(PTUImageCellController __unused *)imageCellController
+       errorLoadingSubtitle:(nonnull NSError __unused *)error {
+  self.subtitleLabel.text = nil;
 }
 
 #pragma mark -
