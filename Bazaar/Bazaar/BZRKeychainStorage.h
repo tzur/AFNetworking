@@ -11,6 +11,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)init NS_UNAVAILABLE;
 
+/// Initializes with new underlying \c BZRKeychainHandler with the specified \c accessGroup,
+/// a key used to share access to the same storage through different applications.
+- (instancetype)initWithAccessGroup:(NSString *)accessGroup;
+
 /// Initializes with a \c BZRKeychainHandler conforming class to be used for keychain storage.
 - (instancetype)initWithKeychainHandler:(id<BZRKeychainHandler>)keychainHandler
       NS_DESIGNATED_INITIALIZER;

@@ -6,6 +6,7 @@
 #import "BZRKeychainHandler.h"
 #import "NSError+Bazaar.h"
 #import "NSErrorCodes+Bazaar.h"
+#import "UICKeyChainStore+SecureStorage.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -17,6 +18,13 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 @implementation BZRKeychainStorage
+
+- (instancetype)initWithAccessGroup:(NSString *)accessGroup {
+  UICKeyChainStore *keychainStore =
+      [[UICKeyChainStore alloc] initWithService:[UICKeyChainStore defaultService]
+                                    accessGroup:accessGroup];
+  return [self initWithKeychainHandler:keychainStore];
+}
 
 - (instancetype)initWithKeychainHandler:(id<BZRKeychainHandler>)keychainHandler {
   if (self = [super init]) {
