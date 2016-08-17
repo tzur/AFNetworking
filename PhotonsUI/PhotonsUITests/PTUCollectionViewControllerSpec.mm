@@ -52,6 +52,8 @@ SpecBegin(PTUCollectionViewController)
 __block PTUFakeDataSource *dataSource;
 __block id<PTUDataSourceProvider> dataSourceProvider;
 __block PTUCollectionViewConfiguration *configuration;
+__block id<PTUCellSizingStrategy> assetCellSizingStrategy;
+__block id<PTUCellSizingStrategy> albumCellSizingStrategy;
 
 __block PTUCollectionViewController *viewController;
 
@@ -60,7 +62,13 @@ __block id<PTNAssetDescriptor> asset;
 beforeEach(^{
   dataSource = [[PTUFakeDataSource alloc] init];
   dataSourceProvider = OCMProtocolMock(@protocol(PTUDataSourceProvider));
-  configuration = [PTUCollectionViewConfiguration defaultConfiguration];
+  assetCellSizingStrategy = [PTUCellSizingStrategy constant:CGSizeMake(100, 100)];
+  albumCellSizingStrategy = [PTUCellSizingStrategy rowWithHeight:100];
+  configuration = [[PTUCollectionViewConfiguration alloc]
+      initWithAssetCellSizingStrategy:assetCellSizingStrategy
+      albumCellSizingStrategy:albumCellSizingStrategy minimumItemSpacing:0
+      minimumLineSpacing:0 scrollDirection:UICollectionViewScrollDirectionVertical
+      showVerticalScrollIndicator:NO showHorizontalScrollIndicator:NO enablePaging:NO];
   OCMStub([dataSourceProvider dataSourceForCollectionView:OCMOCK_ANY]).andReturn(dataSource);
   viewController =
       [[PTUCollectionViewController alloc] initWithDataSourceProvider:dataSourceProvider
@@ -145,11 +153,11 @@ context(@"collection view", ^{
         (UICollectionViewFlowLayout *)collectionView.collectionViewLayout;
 
     expect(layout.scrollDirection).to.equal(UICollectionViewScrollDirectionVertical);
-    expect(layout.minimumInteritemSpacing).to.equal(@1);
-    expect(layout.minimumLineSpacing).to.equal(@1);
+    expect(layout.minimumInteritemSpacing).to.equal(@0);
+    expect(layout.minimumLineSpacing).to.equal(@0);
 
     expect(collectionView.showsHorizontalScrollIndicator).to.beFalsy();
-    expect(collectionView.showsVerticalScrollIndicator).to.beTruthy();
+    expect(collectionView.showsVerticalScrollIndicator).to.beFalsy();
     expect(collectionView.pagingEnabled).to.beFalsy();
   });
   
@@ -219,12 +227,12 @@ context(@"collection view", ^{
     expect([collectionView cellForItemAtIndexPath:albumIndexPath].frame.size)
         .to.equal(CGSizeMake(200, 100));
 
-    viewController.view.frame = CGRectMake(0, 0, 332, 200);
+    viewController.view.frame = CGRectMake(0, 0, 314, 200);
     [viewController.view layoutIfNeeded];
     expect([collectionView cellForItemAtIndexPath:assetIndexPath].frame.size)
-        .to.beCloseToPointWithin(CGSizeMake(110, 110), FLT_EPSILON);
+        .to.beCloseToPointWithin(CGSizeMake(100, 100), FLT_EPSILON);
     expect([collectionView cellForItemAtIndexPath:albumIndexPath].frame.size)
-        .to.equal(CGSizeMake(332, 100));
+        .to.equal(CGSizeMake(314, 100));
   });
 
   context(@"selection", ^{
@@ -406,7 +414,7 @@ context(@"collection view", ^{
 
     context(@"vertical", ^{
       beforeEach(^{
-        viewController.view.frame = CGRectMake(0, 0, 100, 302);
+        viewController.view.frame = CGRectMake(0, 0, 100, 300);
         [viewController.view layoutIfNeeded];
         [dataSource.didUpdateCollectionView sendNext:[RACUnit defaultUnit]];
       });
@@ -422,38 +430,35 @@ context(@"collection view", ^{
         expect(collectionView.contentOffset).to.equal(CGPointMake(0, 0));
         [viewController scrollToItem:asset
                     atScrollPosition:PTUCollectionViewScrollPositionTopLeft animated:NO];
-        expect(collectionView.contentOffset).to.equal(CGPointMake(0, 303));
+        expect(collectionView.contentOffset).to.equal(CGPointMake(0, 300));
       });
 
       it(@"should correctly scroll at center position", ^{
         expect(collectionView.contentOffset).to.equal(CGPointMake(0, 0));
         [viewController scrollToItem:asset atScrollPosition:PTUCollectionViewScrollPositionCenter
                             animated:NO];
-        expect(collectionView.contentOffset).to.equal(CGPointMake(0, 202));
+        expect(collectionView.contentOffset).to.equal(CGPointMake(0, 200));
       });
 
       it(@"should correctly scroll at bottom position", ^{
         expect(collectionView.contentOffset).to.equal(CGPointMake(0, 0));
         [viewController scrollToItem:asset
                     atScrollPosition:PTUCollectionViewScrollPositionBottomRight animated:NO];
-        expect(collectionView.contentOffset).to.equal(CGPointMake(0, 101));
+        expect(collectionView.contentOffset).to.equal(CGPointMake(0, 100));
       });
     });
 
     context(@"horizontal", ^{
       beforeEach(^{
-        id<PTUCellSizingStrategy> assetSizingStrategy =
-            [PTUCellSizingStrategy adaptiveFitColumn:CGSizeMake(100, 100) maximumScale:1.2];
-        id<PTUCellSizingStrategy> albumSizingStrategy = [PTUCellSizingStrategy rowWithHeight:100];
         PTUCollectionViewConfiguration *configuration =
             [[PTUCollectionViewConfiguration alloc]
-            initWithAssetCellSizingStrategy:assetSizingStrategy
-            albumCellSizingStrategy:albumSizingStrategy minimumItemSpacing:1 minimumLineSpacing:1
-            scrollDirection:UICollectionViewScrollDirectionHorizontal
+            initWithAssetCellSizingStrategy:assetCellSizingStrategy
+            albumCellSizingStrategy:albumCellSizingStrategy minimumItemSpacing:0
+            minimumLineSpacing:0 scrollDirection:UICollectionViewScrollDirectionHorizontal
             showVerticalScrollIndicator:YES showHorizontalScrollIndicator:NO enablePaging:NO];
 
         [viewController setConfiguration:configuration animated:NO];
-        viewController.view.frame = CGRectMake(0, 0, 302, 100);
+        viewController.view.frame = CGRectMake(0, 0, 300, 100);
         [viewController.view layoutIfNeeded];
         [dataSource.didUpdateCollectionView sendNext:[RACUnit defaultUnit]];
       });
@@ -469,21 +474,21 @@ context(@"collection view", ^{
         expect(collectionView.contentOffset).to.equal(CGPointMake(0, 0));
         [viewController scrollToItem:asset atScrollPosition:PTUCollectionViewScrollPositionTopLeft
                             animated:NO];
-        expect(collectionView.contentOffset).to.equal(CGPointMake(303, 0));
+        expect(collectionView.contentOffset).to.equal(CGPointMake(300, 0));
       });
 
       it(@"should correctly scroll at center position", ^{
         expect(collectionView.contentOffset).to.equal(CGPointMake(0, 0));
         [viewController scrollToItem:asset atScrollPosition:PTUCollectionViewScrollPositionCenter
                             animated:NO];
-        expect(collectionView.contentOffset).to.equal(CGPointMake(202, 0));
+        expect(collectionView.contentOffset).to.equal(CGPointMake(200, 0));
       });
 
       it(@"should correctly scroll at right position", ^{
         expect(collectionView.contentOffset).to.equal(CGPointMake(0, 0));
         [viewController scrollToItem:asset
                     atScrollPosition:PTUCollectionViewScrollPositionBottomRight animated:NO];
-        expect(collectionView.contentOffset).to.equal(CGPointMake(101, 0));
+        expect(collectionView.contentOffset).to.equal(CGPointMake(100, 0));
       });
     });
     
@@ -492,7 +497,7 @@ context(@"collection view", ^{
       __block id<PTNDescriptor> gazAsset;
       
       beforeEach(^{
-        viewController.view.frame = CGRectMake(0, 0, 100, 302);
+        viewController.view.frame = CGRectMake(0, 0, 100, 300);
         [viewController.view layoutIfNeeded];
         bazAsset = PTNCreateDescriptor(nil, @"baz", 0);
         gazAsset = PTNCreateDescriptor(nil, @"gaz", 0);
@@ -515,7 +520,7 @@ context(@"collection view", ^{
         ]];
         [dataSource.didUpdateCollectionView sendNext:[RACUnit defaultUnit]];
         
-        expect(collectionView.contentOffset).to.equal(CGPointMake(0, 202));
+        expect(collectionView.contentOffset).to.equal(CGPointMake(0, 200));
       });
       
       it(@"should defer only the latest scroll", ^{
@@ -539,7 +544,7 @@ context(@"collection view", ^{
           otherAsset
         ]];
         [dataSource.didUpdateCollectionView sendNext:[RACUnit defaultUnit]];
-        expect(collectionView.contentOffset).to.equal(CGPointMake(0, 202));
+        expect(collectionView.contentOffset).to.equal(CGPointMake(0, 200));
       });
       
       it(@"should stop deferring when a new asset is scrolled to", ^{
@@ -551,7 +556,7 @@ context(@"collection view", ^{
         [viewController scrollToItem:asset
                     atScrollPosition:PTUCollectionViewScrollPositionCenter
                             animated:NO];
-        expect(collectionView.contentOffset).to.equal(CGPointMake(0, 202));
+        expect(collectionView.contentOffset).to.equal(CGPointMake(0, 200));
 
         dataSource.data = @[@[
           bazAsset,
@@ -564,7 +569,7 @@ context(@"collection view", ^{
         ]];
         [dataSource.didUpdateCollectionView sendNext:[RACUnit defaultUnit]];
         
-        expect(collectionView.contentOffset).to.equal(CGPointMake(0, 202));
+        expect(collectionView.contentOffset).to.equal(CGPointMake(0, 200));
       });
       
       it(@"should stop deferring when scrolling is manually applied", ^{
@@ -610,7 +615,7 @@ context(@"collection view", ^{
           otherAsset
         ]];
         [dataSource.didUpdateCollectionView sendNext:[RACUnit defaultUnit]];
-        expect(collectionView.contentOffset).to.equal(CGPointMake(0, 202));
+        expect(collectionView.contentOffset).to.equal(CGPointMake(0, 200));
       });
     });
   });
