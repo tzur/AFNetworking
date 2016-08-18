@@ -32,7 +32,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// only one \c BZRPaymentQueue should be instantiated.
 ///
 /// @see SKPaymentQueue, SKPaymentTransactionObserver, SKPaymentTransaction, SKDownload.
-@interface BZRPaymentQueue : NSObject <BZRDownlodsPaymentQueue, BZRPaymentsPaymentQueue,
+@interface BZRPaymentQueue : NSObject <BZRDownloadsPaymentQueue, BZRPaymentsPaymentQueue,
                                        BZRRestorationPaymentQueue>
 
 /// Initializes with \c underlyingPaymentQueue, set to \c -[SKPaymentQueue defaultQueue].

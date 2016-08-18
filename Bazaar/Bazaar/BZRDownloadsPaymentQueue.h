@@ -7,7 +7,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// \c BZRDownlodsPaymentQueue provides an interface for downloading content and sending updates
 /// regarding the downloads.
-@protocol BZRDownlodsPaymentQueue <NSObject>
+@protocol BZRDownloadsPaymentQueue <NSObject>
 
 /// Starts downloading the content from each download in \c downloads. Will initiate sending updates
 /// of downloads to \c downloadsDelegate.
@@ -29,7 +29,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Invoked when \c paymentQueue informs its delegates that the state of downloads in \c downloads
 /// was updated.
-- (void)paymentQueue:(id<BZRDownlodsPaymentQueue>)paymentQueue
+- (void)paymentQueue:(id<BZRDownloadsPaymentQueue>)paymentQueue
     updatedDownloads:(NSArray<SKDownload *> *)downloads;
 
 @end

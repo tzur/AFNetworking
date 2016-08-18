@@ -3,45 +3,7 @@
 
 #import "BZRPurchaseManager.h"
 
-/// Fake \c SKPaymentTransaction with a mutable \c transactionState.
-@interface BZRFakePaymentTransaction : SKPaymentTransaction <NSCopying>
-
-/// Intiialize with \c payment.
-- (instancetype)initWithPayment:(SKPayment *)payment;
-
-/// State of the transaction.
-@property (readwrite, nonatomic) SKPaymentTransactionState transactionState;
-
-/// Payment this transaction is performing.
-@property (readonly, nonatomic) SKPayment *payment;
-
-@end
-
-@implementation BZRFakePaymentTransaction : SKPaymentTransaction
-
-@synthesize payment = _payment;
-@synthesize transactionState = _transactionState;
-
-- (instancetype)initWithPayment:(SKPayment *)payment {
-  if (self = [super init]) {
-    _payment = payment;
-  }
-  return self;
-}
-
-- (id)copyWithZone:(NSZone __unused *)zone {
-  BZRFakePaymentTransaction *transaction =
-      [[BZRFakePaymentTransaction alloc] initWithPayment:self.payment];
-  transaction.transactionState = self.transactionState;
-  return transaction;
-}
-
-- (BOOL)isEqual:(BZRFakePaymentTransaction *)otherTransaction {
-  return ([self.payment isEqual:otherTransaction.payment]
-          && self.transactionState == otherTransaction.transactionState);
-}
-
-@end
+#import "BZRFakePaymentTransaction.h"
 
 /// Returns a mock \c SKPRoduct with the given \c identifier.
 static id BZRMockProductWithIdentifier(NSString *identifier) {

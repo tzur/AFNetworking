@@ -119,6 +119,10 @@
 		B9256C001D73320700490815 /* BZRTransactionRestorationManager.h in Headers */ = {isa = PBXBuildFile; fileRef = B9256BFE1D73320700490815 /* BZRTransactionRestorationManager.h */; };
 		B9256C011D73320700490815 /* BZRTransactionRestorationManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = B9256BFF1D73320700490815 /* BZRTransactionRestorationManager.mm */; };
 		B9256C031D73321300490815 /* BZRTransactionRestorationManagerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = B9256C021D73321300490815 /* BZRTransactionRestorationManagerSpec.mm */; };
+		B9237ADE1D69D60C0069B4F1 /* BZRProductDownloadManager.h in Headers */ = {isa = PBXBuildFile; fileRef = B9237ADC1D69D60C0069B4F1 /* BZRProductDownloadManager.h */; };
+		B9237ADF1D69D60C0069B4F1 /* BZRProductDownloadManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = B9237ADD1D69D60C0069B4F1 /* BZRProductDownloadManager.mm */; };
+		B9237B101D69D6270069B4F1 /* BZRFakePaymentTransaction.mm in Sources */ = {isa = PBXBuildFile; fileRef = B9237B0E1D69D6270069B4F1 /* BZRFakePaymentTransaction.mm */; };
+		B9237B111D69D6270069B4F1 /* BZRProductDownloadManagerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = B9237B0F1D69D6270069B4F1 /* BZRProductDownloadManagerSpec.mm */; };
 		B93FC2A91D58690500A2170C /* BZRProductEligibilityVerifierSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = B93FC2A81D58690500A2170C /* BZRProductEligibilityVerifierSpec.mm */; };
 		B93FC33D1D586C4800A2170C /* BZRReceiptValidationStatusProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = B93FC33B1D586C4800A2170C /* BZRReceiptValidationStatusProvider.h */; };
 		B93FC33E1D586C4800A2170C /* BZRReceiptValidationStatusProvider.mm in Sources */ = {isa = PBXBuildFile; fileRef = B93FC33C1D586C4800A2170C /* BZRReceiptValidationStatusProvider.mm */; };
@@ -702,6 +706,11 @@
 		B9256BFE1D73320700490815 /* BZRTransactionRestorationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRTransactionRestorationManager.h; sourceTree = "<group>"; };
 		B9256BFF1D73320700490815 /* BZRTransactionRestorationManager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRTransactionRestorationManager.mm; sourceTree = "<group>"; };
 		B9256C021D73321300490815 /* BZRTransactionRestorationManagerSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRTransactionRestorationManagerSpec.mm; sourceTree = "<group>"; };
+		B9237ADC1D69D60C0069B4F1 /* BZRProductDownloadManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRProductDownloadManager.h; sourceTree = "<group>"; };
+		B9237ADD1D69D60C0069B4F1 /* BZRProductDownloadManager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRProductDownloadManager.mm; sourceTree = "<group>"; };
+		B9237B0D1D69D6270069B4F1 /* BZRFakePaymentTransaction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRFakePaymentTransaction.h; sourceTree = "<group>"; };
+		B9237B0E1D69D6270069B4F1 /* BZRFakePaymentTransaction.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRFakePaymentTransaction.mm; sourceTree = "<group>"; };
+		B9237B0F1D69D6270069B4F1 /* BZRProductDownloadManagerSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRProductDownloadManagerSpec.mm; sourceTree = "<group>"; };
 		B93FC2A81D58690500A2170C /* BZRProductEligibilityVerifierSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRProductEligibilityVerifierSpec.mm; sourceTree = "<group>"; };
 		B93FC33B1D586C4800A2170C /* BZRReceiptValidationStatusProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRReceiptValidationStatusProvider.h; sourceTree = "<group>"; };
 		B93FC33C1D586C4800A2170C /* BZRReceiptValidationStatusProvider.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRReceiptValidationStatusProvider.mm; sourceTree = "<group>"; };
@@ -814,6 +823,8 @@
 			isa = PBXGroup;
 			children = (
 				B9256BCA1D7331BE00490815 /* Payment Queue */,
+				B9237ADC1D69D60C0069B4F1 /* BZRProductDownloadManager.h */,
+				B9237ADD1D69D60C0069B4F1 /* BZRProductDownloadManager.mm */,
 				9FE7D59D1D3F6B2C00685F19 /* BZRPurchase.h */,
 				9FE7D59E1D3F6B2C00685F19 /* BZRPurchase.mm */,
 				9FE7D59F1D3F6B2C00685F19 /* BZRPurchaseManager.h */,
@@ -871,6 +882,9 @@
 			isa = PBXGroup;
 			children = (
 				65D90BC51D5BB6E500BEB74C /* BZRPaymentQueueSpec.mm */,
+				B9237B0D1D69D6270069B4F1 /* BZRFakePaymentTransaction.h */,
+				B9237B0E1D69D6270069B4F1 /* BZRFakePaymentTransaction.mm */,
+				B9237B0F1D69D6270069B4F1 /* BZRProductDownloadManagerSpec.mm */,
 				9FE7D5CF1D3F6B4400685F19 /* BZRPurchaseManagerSpec.mm */,
 				B9256C021D73321300490815 /* BZRTransactionRestorationManagerSpec.mm */,
 				65332E451D33903E00920C32 /* SKProductsRequest+RACSignalSupportSpec.mm */,
@@ -1472,6 +1486,7 @@
 				6501EFE21D5B55CC007B76CC /* BZRFileArchiver.h in Headers */,
 				6526DEF51D41070E0034DE01 /* BZRZipFileArchiver.h in Headers */,
 				65013B571D498D2800D06E79 /* BZRZipArchiveFactory.h in Headers */,
+				B9237ADE1D69D60C0069B4F1 /* BZRProductDownloadManager.h in Headers */,
 				65D67B451D53AAA000B647ED /* BZRZipArchiver.h in Headers */,
 				65D67B491D53AB6A00B647ED /* BZRZipUnarchiver.h in Headers */,
 				6501EFE11D5B54EA007B76CC /* BZRZipArchiving.h in Headers */,
@@ -1979,6 +1994,7 @@
 				B93FC4661D58CB8F00A2170C /* BZRProductContentManagerSpec.mm in Sources */,
 				65329ED61CFEF0190029CE4F /* NSError+BazaarSpec.mm in Sources */,
 				65332E7A1D3392C200920C32 /* EXPMatchers+matchValue.m in Sources */,
+				B9237B111D69D6270069B4F1 /* BZRProductDownloadManagerSpec.mm in Sources */,
 				65332E741D3392C200920C32 /* EXPMatchers+beSubscribedTo.m in Sources */,
 				65332E731D3392C200920C32 /* LLReactiveMatchersMessageBuilder.m in Sources */,
 				B97A87461D4610C1004390FC /* BZRRemoteProductsProviderSpec.mm in Sources */,
@@ -2019,6 +2035,7 @@
 				65332E781D3392C200920C32 /* EXPMatchers+finish.m in Sources */,
 				65D67B4C1D53B10C00B647ED /* BZRZipUnarchiverSpec.mm in Sources */,
 				65C74D051D5352D000D7518C /* BZRZipArchiverSpec.mm in Sources */,
+				B9237B101D69D6270069B4F1 /* BZRFakePaymentTransaction.mm in Sources */,
 				65C74D041D5352D000D7518C /* BZRZipArchiveFactorySpec.mm in Sources */,
 				65C74D061D5352D000D7518C /* BZRZipFileArchiverSpec.mm in Sources */,
 			);
@@ -2037,6 +2054,7 @@
 				651A261A1D392B79001D418B /* BZRValidatricksReceiptValidator.mm in Sources */,
 				FA1B88541D338A8600097AD0 /* BZRKeychainStorage.mm in Sources */,
 				65D67B461D53AAA000B647ED /* BZRZipArchiver.mm in Sources */,
+				B9237ADF1D69D60C0069B4F1 /* BZRProductDownloadManager.mm in Sources */,
 				6529F8691CEB6F0E00FBABFE /* BZRReceiptValidationParameters.mm in Sources */,
 				B9FD07FF1D61B38E00523BB4 /* BZRKeychainStorage+TypeSafety.mm in Sources */,
 				6502EFA41D341809000CD68B /* BZRValidatricksReceiptModel.mm in Sources */,
