@@ -24,7 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Creates and returns a \c PTUCollectionViewConfiguration resembling that of the Photos app.
 ///   - \c assetSizingStrategy is set to
-///     \c [PTUCellSizingStrategy adaptiveFitRow:(100, 100) maximumScale:1.2].
+///     \c [PTUCellSizingStrategy adaptiveFitRow:(92, 92) maximumScale:1.2].
 ///   - \c albumSizingStrategy of \c [PTUCellSizingStrategy rowWithHeight:100].
 ///   - \c itemSpacing of \c 1.
 ///   - \c lineSpacing of \c 1.

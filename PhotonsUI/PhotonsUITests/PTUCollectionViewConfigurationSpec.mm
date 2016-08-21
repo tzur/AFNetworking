@@ -31,8 +31,12 @@ it(@"should correctly initalize with default initializer", ^{
   PTUCollectionViewConfiguration *configuration =
       [PTUCollectionViewConfiguration defaultConfiguration];
 
-  expect(configuration.assetCellSizingStrategy).to.beKindOf([PTUAdaptiveCellSizingStrategy class]);
-  expect(configuration.albumCellSizingStrategy).to.beKindOf([PTURowSizingStrategy class]);
+  id<PTUCellSizingStrategy> assetSizingStrategy =
+      [[PTUAdaptiveCellSizingStrategy alloc] initMatchingWidthWithSize:CGSizeMake(92, 92)
+                                                          maximumScale:1.2];
+  id<PTUCellSizingStrategy> albumSizingStrategy = [[PTURowSizingStrategy alloc] initWithHeight:100];
+  expect(configuration.assetCellSizingStrategy).to.equal(assetSizingStrategy);
+  expect(configuration.albumCellSizingStrategy).to.equal(albumSizingStrategy);
   expect(configuration.minimumItemSpacing).to.equal(1);
   expect(configuration.minimumLineSpacing).to.equal(1);
   expect(configuration.scrollDirection).to.equal(UICollectionViewScrollDirectionVertical);
