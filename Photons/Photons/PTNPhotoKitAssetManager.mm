@@ -9,6 +9,7 @@
 #import "NSURL+PhotoKit.h"
 #import "PTNAlbumChangeset+PhotoKit.h"
 #import "PTNAuthorizationManager.h"
+#import "PTNAuthorizationStatus.h"
 #import "PTNImageFetchOptions+PhotoKit.h"
 #import "PTNImageMetadata.h"
 #import "PTNPhotoKitAlbum.h"
@@ -301,7 +302,8 @@ NS_ASSUME_NONNULL_BEGIN
   }
 
   return [RACSignal defer:^RACSignal *{
-    if (self.authorizationManager.authorizationStatus != PTNAuthorizationStatusAuthorized) {
+    if (![self.authorizationManager.authorizationStatus
+          isEqual:$(PTNAuthorizationStatusAuthorized)]) {
       return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeNotAuthorized url:url]];
     }
 
@@ -338,7 +340,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (RACSignal *)fetchAssetForDescriptor:(id<PTNDescriptor>)descriptor {
   return [RACSignal defer:^RACSignal *{
-    if (self.authorizationManager.authorizationStatus != PTNAuthorizationStatusAuthorized) {
+    if (![self.authorizationManager.authorizationStatus
+          isEqual:$(PTNAuthorizationStatusAuthorized)]) {
       return [RACSignal error:[NSError ptn_errorWithCode:PTNErrorCodeNotAuthorized
                                     associatedDescriptor:descriptor]];
     }

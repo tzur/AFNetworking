@@ -8,9 +8,10 @@
 #import "NSError+Photons.h"
 #import "NSURL+PhotoKit.h"
 #import "PTNAlbumChangeset+PhotoKit.h"
+#import "PTNAuthorizationStatus.h"
 #import "PTNDescriptor.h"
-#import "PTNImageFetchOptions+PhotoKit.h"
 #import "PTNImageAsset.h"
+#import "PTNImageFetchOptions+PhotoKit.h"
 #import "PTNIncrementalChanges.h"
 #import "PTNPhotoKitAlbum.h"
 #import "PTNPhotoKitFakeAuthorizationManager.h"
@@ -18,9 +19,9 @@
 #import "PTNPhotoKitFakeFetcher.h"
 #import "PTNPhotoKitFakeImageManager.h"
 #import "PTNPhotoKitFakeObserver.h"
-#import "PTNPhotokitImageAsset.h"
 #import "PTNPhotoKitImageManager.h"
 #import "PTNPhotoKitTestUtils.h"
+#import "PTNPhotoKitImageAsset.h"
 #import "PTNProgress.h"
 #import "PTNResizingStrategy.h"
 #import "PhotoKit+Photons.h"
@@ -185,7 +186,7 @@ context(@"album fetching", ^{
     });
 
     it(@"should error when not authorized", ^{
-      authorizationManager.authorizationStatus = PTNAuthorizationStatusNotDetermined;
+      authorizationManager.authorizationStatus = $(PTNAuthorizationStatusNotDetermined);
 
       expect([manager fetchAlbumWithURL:url]).will.matchError(^BOOL(NSError *error) {
         return error.code == PTNErrorCodeNotAuthorized;
@@ -382,7 +383,7 @@ context(@"album fetching", ^{
     });
 
     it(@"should error when not authorized", ^{
-      authorizationManager.authorizationStatus = PTNAuthorizationStatusNotDetermined;
+      authorizationManager.authorizationStatus = $(PTNAuthorizationStatusNotDetermined);
 
       expect([manager fetchAlbumWithURL:url]).will.matchError(^BOOL(NSError *error) {
         return error.code == PTNErrorCodeNotAuthorized;
@@ -515,7 +516,7 @@ context(@"asset fetching", ^{
   it(@"should error when not authorized", ^{
     NSURL *url = [NSURL ptn_photoKitAssetURLWithAsset:asset];
 
-    authorizationManager.authorizationStatus = PTNAuthorizationStatusNotDetermined;
+    authorizationManager.authorizationStatus = $(PTNAuthorizationStatusNotDetermined);
 
     expect([manager fetchDescriptorWithURL:url]).will.matchError(^BOOL(NSError *error) {
       return error.code == PTNErrorCodeNotAuthorized;
@@ -704,7 +705,7 @@ context(@"image fetching", ^{
   });
 
   it(@"should error when not authorized", ^{
-    authorizationManager.authorizationStatus = PTNAuthorizationStatusNotDetermined;
+    authorizationManager.authorizationStatus = $(PTNAuthorizationStatusNotDetermined);
 
     RACSignal *values = [manager fetchImageWithDescriptor:asset
                                         resizingStrategy:resizingStrategy

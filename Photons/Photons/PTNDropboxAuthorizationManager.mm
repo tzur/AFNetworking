@@ -5,15 +5,15 @@
 
 #import <DropboxSDK/DropboxSDK.h>
 
-#import "DBSession+RACSignalSupport.h"
 #import "NSError+Photons.h"
+#import "PTNAuthorizationStatus.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface PTNDropboxAuthorizationManager ()
+@interface PTNDropboxAuthorizationManager () <DBSessionDelegate>
 
 /// Current authorization status, as a readwrite KVO compliant variable.
-@property (readwrite, nonatomic) PTNAuthorizationStatus authorizationStatus;
+@property (readwrite, nonatomic) PTNAuthorizationStatus *authorizationStatus;
 
 @end
 
@@ -22,6 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithDropboxSession:(DBSession *)dropboxSession {
   if (self = [super init]) {
     _dropboxSession = dropboxSession;
+    self.dropboxSession.delegate = self;
     [self updateAuthorizationStatus];
   }
   return self;
@@ -35,23 +36,17 @@ NS_ASSUME_NONNULL_BEGIN
   @weakify(self)
   return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
     @strongify(self)
-    if (self.dropboxSession.isLinked) {
-      self.authorizationStatus = PTNAuthorizationStatusAuthorized;
+    [self updateAuthorizationStatus];
+    if ([self.authorizationStatus isEqual:$(PTNAuthorizationStatusAuthorized)]) {
+      [subscriber sendNext:self.authorizationStatus];
       [subscriber sendCompleted];
 
       return nil;
     }
 
-    [[[self.dropboxSession ptn_authorizationFailureSignal]
-        flattenMap:^RACStream *(id __unused value) {
-          return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeAuthorizationFailed]];
-        }]
-        subscribe:subscriber];
-
-    [[[[RACObserve(self, authorizationStatus)
+    [[[RACObserve(self, authorizationStatus)
         skip:1]
         take:1]
-        ignoreValues]
         subscribe:subscriber];
 
     [self.dropboxSession linkFromController:viewController];
@@ -85,9 +80,22 @@ NS_ASSUME_NONNULL_BEGIN
   return NO;
 }
 
+#pragma mark -
+#pragma mark DBSessionDelegate
+#pragma mark -
+
+- (void)sessionDidReceiveAuthorizationFailure:(DBSession *)session
+                                       userId:(NSString * __unused)userId {
+  if (self.dropboxSession != session) {
+    return;
+  }
+  
+  [self updateAuthorizationStatus];
+}
+
 - (void)updateAuthorizationStatus {
   self.authorizationStatus = self.dropboxSession.isLinked ?
-      PTNAuthorizationStatusAuthorized : PTNAuthorizationStatusNotDetermined;
+      $(PTNAuthorizationStatusAuthorized) : $(PTNAuthorizationStatusNotDetermined);
 }
 
 @end

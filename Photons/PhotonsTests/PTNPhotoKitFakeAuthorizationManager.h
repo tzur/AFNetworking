@@ -5,12 +5,14 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class PTNAuthorizationStatus;
+
 /// Fake authorization manager for testing.
 @interface PTNPhotoKitFakeAuthorizationManager : NSObject <PTNAuthorizationManager>
 
 /// Authorization status returned by the fetcher, default value is
 /// \c PHAuthorizationStatusAuthorized.
-@property (readwrite, nonatomic) PTNAuthorizationStatus authorizationStatus;
+@property (readwrite, nonatomic) PTNAuthorizationStatus *authorizationStatus;
 
 @end
 

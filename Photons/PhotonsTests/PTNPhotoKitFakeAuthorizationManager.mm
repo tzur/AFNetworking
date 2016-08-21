@@ -3,13 +3,15 @@
 
 #import "PTNPhotoKitFakeAuthorizationManager.h"
 
+#import "PTNAuthorizationStatus.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
 @implementation PTNPhotoKitFakeAuthorizationManager
 
 - (instancetype)init {
   if (self = [super init]) {
-    self.authorizationStatus = PTNAuthorizationStatusAuthorized;
+    self.authorizationStatus = $(PTNAuthorizationStatusAuthorized);
   }
   return self;
 }

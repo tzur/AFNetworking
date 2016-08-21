@@ -7,6 +7,7 @@
 
 #import "DBSession+RACSignalSupport.h"
 #import "NSError+Photons.h"
+#import "PTNAuthorizationStatus.h"
 #import "PTNOpenURLManager.h"
 
 SpecBegin(PTNDropboxAuthorizationManager)
@@ -21,9 +22,10 @@ beforeEach(^{
   viewController = OCMClassMock([UIViewController class]);
 });
 
-it(@"should complete immediately if session is already linked", ^{
+it(@"should return immediately if session is already linked", ^{
   OCMStub([dbSession isLinked]).andReturn(YES);
-  expect([manager requestAuthorizationFromViewController:viewController]).will.complete();
+  expect([manager requestAuthorizationFromViewController:viewController])
+      .to.sendValues(@[$(PTNAuthorizationStatusAuthorized)]);
 });
 
 it(@"should reqest access from dropbox if session isn't linked", ^{
@@ -55,8 +57,8 @@ context(@"openURL handling", ^{
     OCMExpect([dbSession isLinked]).andReturn(YES);
     [manager application:app openURL:url options:nil];
 
-    expect(values).to.complete();
-    expect(manager.authorizationStatus).to.equal(PTNAuthorizationStatusAuthorized);
+    expect(values).to.sendValues(@[$(PTNAuthorizationStatusAuthorized)]);
+    expect(manager.authorizationStatus).to.equal($(PTNAuthorizationStatusAuthorized));
   });
 
   it(@"should correctly interperet dropbox openURL request as undetermiend", ^{
@@ -69,8 +71,8 @@ context(@"openURL handling", ^{
     OCMExpect([dbSession isLinked]).andReturn(NO);
     [manager application:app openURL:url options:nil];
 
-    expect(values).to.complete();
-    expect(manager.authorizationStatus).to.equal(PTNAuthorizationStatusNotDetermined);
+    expect(values).to.sendValues(@[$(PTNAuthorizationStatusNotDetermined)]);
+    expect(manager.authorizationStatus).to.equal($(PTNAuthorizationStatusNotDetermined));
   });
 
   it(@"should not claim to handle unsupported URLs", ^{
@@ -90,31 +92,31 @@ context(@"openURL handling", ^{
     [manager application:app openURL:url options:nil];
 
     expect(recorder).to.sendValues(@[
-      @(PTNAuthorizationStatusNotDetermined),
-      @(PTNAuthorizationStatusNotDetermined),
-      @(PTNAuthorizationStatusAuthorized)
+      $(PTNAuthorizationStatusNotDetermined),
+      $(PTNAuthorizationStatusNotDetermined),
+      $(PTNAuthorizationStatusAuthorized)
     ]);
   });
 });
 
-it(@"should forward linking error as restricted access", ^{
+it(@"should return not determined status on authorization failure", ^{
   OCMExpect([dbSession isLinked]).andReturn(NO);
-  OCMStub([dbSession ptn_authorizationFailureSignal]).andReturn([RACSignal return:@"foo"]);
+  LLSignalTestRecorder *recorder = [[manager requestAuthorizationFromViewController:viewController]
+                                    testRecorder];
 
-  expect([manager requestAuthorizationFromViewController:viewController])
-      .to.matchError(^BOOL(NSError *error) {
-    return error.code == PTNErrorCodeAuthorizationFailed;
-  });
+  [(id<DBSessionDelegate>)manager sessionDidReceiveAuthorizationFailure:dbSession userId:@"foo"];
+
+  expect(recorder).to.sendValues(@[$(PTNAuthorizationStatusNotDetermined)]);
 });
 
 it(@"should revoke access", ^{
   OCMExpect([dbSession isLinked]).andReturn(YES);
   expect([manager requestAuthorizationFromViewController:viewController]).will.complete();
-  expect(manager.authorizationStatus).to.equal(PTNAuthorizationStatusAuthorized);
+  expect(manager.authorizationStatus).to.equal($(PTNAuthorizationStatusAuthorized));
 
   OCMExpect([dbSession isLinked]).andReturn(NO);
   expect([manager revokeAuthorization]).to.complete();
-  expect(manager.authorizationStatus).to.equal(PTNAuthorizationStatusNotDetermined);
+  expect(manager.authorizationStatus).to.equal($(PTNAuthorizationStatusNotDetermined));
 });
 
 SpecEnd
