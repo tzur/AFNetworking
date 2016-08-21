@@ -9,15 +9,11 @@
 NS_ASSUME_NONNULL_BEGIN
 
 BZRProduct *BZRProductWithIdentifierAndContent(NSString *identifier) {
-  NSDictionary *descriptor = @{
-    @"contentProvider": @"provider",
-  };
-
   NSDictionary *JSONProduct = @{
     @"identifier": identifier,
     @"productType": @"renewableSubscription",
     @"purchaseStatus": @"purchased",
-    @"contentDescriptor": descriptor
+    @"contentProviderParameters": @{}
   };
 
   return [MTLJSONAdapter modelOfClass:[BZRProduct class] fromJSONDictionary:JSONProduct error:NULL];
