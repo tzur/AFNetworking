@@ -44,4 +44,10 @@
 /// @see storeRect:toImage: for more information.
 - (cv::Mat)imageAtLevel:(NSUInteger)level;
 
+/// Returns a newly allocates pixel buffer matching the format of this texture, that contains a copy
+/// of the texture's content. For a mipmap, only the base level is used.
+///
+/// @see the documentation for <tt>-[LTTexture pixelBuffer]</tt>.
+- (lt::Ref<CVPixelBufferRef>)pixelBuffer;
+
 @end

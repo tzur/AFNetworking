@@ -3,6 +3,7 @@
 
 #import "LTGLTexture.h"
 
+#import "LTCVPixelBufferExtensions.h"
 #import "LTFbo.h"
 #import "LTGLContext.h"
 #import "LTProgram.h"
@@ -275,6 +276,42 @@ sharedExamplesFor(kLTGLTextureExamples, ^(NSDictionary *contextInfo) {
 
           expect(LTCompareMatWithValue(cv::Scalar(0, 255, 0, 255), drawnPart)).to.beTruthy();
         });
+      });
+    });
+  });
+
+  context(@"pixel buffer", ^{
+    it(@"should return pixel buffer with texture's content", ^{
+      cv::Mat4b originalImage = cv::Mat4b(2, 1, cv::Vec4b(1, 2, 3, 4));
+      LTGLTexture *texture = [[LTGLTexture alloc] initWithImage:originalImage];
+
+      auto pixelBuffer = [texture pixelBuffer];
+      LTCVPixelBufferImageForReading(pixelBuffer.get(), ^(const cv::Mat &image) {
+        expect($(image)).to.equalMat($(originalImage));
+      });
+    });
+
+    // Power of two image tends to create continuous pixel buffers, which might trigger different
+    // loading and storing behavious of a texture.
+    it(@"should return pixel buffer with texture's content with large power of two image", ^{
+      cv::Mat4b originalImage = cv::Mat4b(2048, 1024, cv::Vec4b(100, 150, 200, 250));
+      LTGLTexture *texture = [[LTGLTexture alloc] initWithImage:originalImage];
+
+      auto pixelBuffer = [texture pixelBuffer];
+      LTCVPixelBufferImageForReading(pixelBuffer.get(), ^(const cv::Mat &image) {
+        expect($(image)).to.equalMat($(originalImage));
+      });
+    });
+
+    it(@"should return pixel buffer of mipmap texture with content of the base level", ^{
+      cv::Mat4b baseLevel = cv::Mat4b(2, 2, cv::Vec4b(1, 2, 3, 4));
+      cv::Mat4b anotherLevel = cv::Mat4b(1, 1, cv::Vec4b(100, 101, 102, 103));
+
+      LTGLTexture *texture = [[LTGLTexture alloc] initWithMipmapImages:{baseLevel, anotherLevel}];
+
+      auto pixelBuffer = [texture pixelBuffer];
+      LTCVPixelBufferImageForReading(pixelBuffer.get(), ^(const cv::Mat &image) {
+        expect($(image)).to.equalMat($(baseLevel));
       });
     });
   });
