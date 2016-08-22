@@ -504,36 +504,23 @@ context(@"draw delegate", ^{
   });
 });
 
-context(@"framebuffer delegate", ^{
-  __block id delegateMock;
-  __block id eaglViewMock;
-  __block LTPresentationView *view;
+it(@"should call framebuffer delegate when framebuffer size changes", ^{
+  id delegateMock = OCMProtocolMock(@protocol(LTPresentationViewFramebufferDelegate));
 
-  beforeEach(^{
-    delegateMock = [OCMockObject mockForProtocol:@protocol(LTPresentationViewFramebufferDelegate)];
-    eaglViewMock = [OCMockObject niceMockForClass:[LTEAGLView class]];
-    [[[eaglViewMock stub] andReturnValue:$(CGSizeMake(20, 10))] drawableSize];
+  LTPresentationView *view = [[LTPresentationView alloc]
+                              initWithFrame:kViewFrame context:[LTGLContext currentContext]
+                              contentTexture:contentTexture
+                              contentLocationProvider:contentLocationProvider];
+  LTAddViewToWindow(view);
 
-    view = [[LTPresentationView alloc] initWithFrame:kViewFrame context:[LTGLContext currentContext]
-                                      contentTexture:contentTexture
-                             contentLocationProvider:contentLocationProvider];
-    view.eaglView = eaglViewMock;
-    view.framebufferDelegate = delegateMock;
-  });
+  view.framebufferDelegate = delegateMock;
 
-  afterEach(^{
-    delegateMock = nil;
-    eaglViewMock = nil;
-    view = nil;
-  });
+  OCMExpect([delegateMock presentationView:view
+                  framebufferChangedToSize:view.frame.size * view.contentScaleFactor]);
 
-  it(@"should forward event to delegate", ^{
-    OCMExpect([delegateMock presentationView:view framebufferChangedToSize:CGSizeMake(20, 10)]);
-    [fbo bindAndDrawOnScreen:^{
-      [((id<LTEAGLViewDelegate>)view) eaglView:eaglViewMock drawInRect:CGRectMake(0, 0, 1, 1)];
-    }];
-    OCMVerifyAll(delegateMock);
-  });
+  [view layoutIfNeeded];
+
+  OCMVerifyAllWithDelay(delegateMock, 1);
 });
 
 SpecEnd
