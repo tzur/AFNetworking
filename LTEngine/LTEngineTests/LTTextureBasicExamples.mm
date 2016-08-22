@@ -735,6 +735,30 @@ sharedExamplesFor(kLTTextureBasicExamples, ^(NSDictionary *data) {
       });
     });
 
+    context(@"pixel buffer", ^{
+      it(@"should return pixel buffer", ^{
+        auto pixelBuffer = [texture pixelBuffer];
+        BOOL empty = !pixelBuffer;
+        expect(empty).to.beFalsy();
+      });
+
+      dit(@"should return pixel buffer with previous GPU writes already in effect", ^{
+        const std::array<float, 5> values = {{0, 0.25, 0.5, 0.75, 1.0}};
+
+        for (float value : values) {
+          [texture clearWithColor:LTVector4(value, value, value, value)];
+          lt::Ref<CVPixelBufferRef> pixelBuffer = [texture pixelBuffer];
+          LTCVPixelBufferImageForReading(pixelBuffer.get(), ^(const cv::Mat &image) {
+            cv::Mat4b expected = cv::Mat4b(texture.size.height, texture.size.width,
+                                           cv::Vec4b(value * 255, value * 255, value * 255,
+                                                     value * 255));
+
+            expect($(image)).to.beCloseToMat($(expected));
+          });
+        }
+      });
+    });
+
     context(@"generation ID", ^{
       __block id generationID;
 
