@@ -17,10 +17,10 @@ NS_ASSUME_NONNULL_BEGIN
 /// it with validation parameters provided by a \c BZRReceiptValidationParametersProvider.
 - (instancetype)initWithKeychainStorage:(BZRKeychainStorage *)keychainStorage;
 
-/// Initializes with \c receiptValidator, used to validate the receipt and return the latest
-/// \c BZRReceiptValidationStatus, with \c keychainStorage, used to store and load the last
-/// \c BZRReceiptValidationStatus that was validated, and with \c validationParametersProvider, used
-/// to provide validation parameters to \c receiptValidator to validate the receipt.
+/// Initializes with \c keychainStorage, used to cache receipt validation status.
+/// \c receiptValidator is used to validate the receipt and return the latest
+/// \c BZRReceiptValidationStatus. \c validationParametersProvider is used to provide validation
+/// parameters to \c receiptValidator to validate the receipt.
 - (instancetype)initWithKeychainStorage:(BZRKeychainStorage *)keychainStorage
     receiptValidator:(id<BZRReceiptValidator>)receiptValidator
     validationParametersProvider:
@@ -42,6 +42,12 @@ NS_ASSUME_NONNULL_BEGIN
 /// \c validateReceipt has never completed successfully, this holds the value loaded using
 /// \c keychainStorage. If the value doesn't exist in storage, this property will be \c nil.
 @property (readonly, nonatomic, nullable) BZRReceiptValidationStatus *receiptValidationStatus;
+
+/// Sends storage errors as values. The signal completes when the receiver is deallocated. The
+/// signal doesn't err.
+///
+/// @return <tt>RACSignal<NSError></tt>
+@property (readonly, nonatomic) RACSignal *storageErrorsSignal;
 
 @end
 

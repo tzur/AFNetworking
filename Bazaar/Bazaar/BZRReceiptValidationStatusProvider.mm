@@ -3,7 +3,7 @@
 
 #import "BZRReceiptValidationStatusProvider.h"
 
-#import "BZRKeychainStorage.h"
+#import "BZRKeychainStorage+TypeSafety.h"
 #import "BZRReceiptValidationParametersProvider.h"
 #import "BZRReceiptValidationStatus.h"
 #import "BZRReceiptValidator.h"
@@ -26,6 +26,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Latest \c BZRReceiptValidationStatus validated successfully with \c receiptValidator.
 @property (nonatomic, nullable) BZRReceiptValidationStatus *receiptValidationStatus;
+
+/// Stores the latest storage error that occurred.
+@property (strong, nonatomic, nullable) NSError *storageError;
 
 @end
 
@@ -57,6 +60,7 @@ NSString * const kValidationStatusStorageKey = @"validationStatus";
     _receiptValidator = receiptValidator;
     _keychainStorage = keychainStorage;
     _validationParametersProvider = validationParametersProvider;
+    _storageErrorsSignal = RACObserve(self, storageError);
   }
   return self;
 }
@@ -74,20 +78,25 @@ NSString * const kValidationStatusStorageKey = @"validationStatus";
 
 - (nullable BZRReceiptValidationStatus *)loadValidationStatusFromStorage {
   NSError *error;
-  NSObject *validationStatus =
-      (NSObject *)[self.keychainStorage valueForKey:kValidationStatusStorageKey error:&error];
-  if (error || ![validationStatus isKindOfClass:[BZRReceiptValidationStatus class]]) {
+  BZRReceiptValidationStatus *receiptValidationStatus =
+      [self.keychainStorage valueOfClass:[BZRReceiptValidationStatus class]
+                                  forKey:kValidationStatusStorageKey error:&error];
+  if (error) {
+    self.storageError = error;
     return nil;
   }
-  return (BZRReceiptValidationStatus *)validationStatus;
+  return receiptValidationStatus;
 }
 
 - (void)setReceiptValidationStatus:(nullable BZRReceiptValidationStatus *)receiptValidationStatus {
   _receiptValidationStatus = receiptValidationStatus;
-
   NSError *error;
   [self.keychainStorage setValue:receiptValidationStatus forKey:kValidationStatusStorageKey
                            error:&error];
+  if (error) {
+    self.storageError =
+        [NSError lt_errorWithCode:BZRErrorCodeStoringDataToStorageFailed underlyingError:error];
+  }
 }
 
 #pragma mark -
