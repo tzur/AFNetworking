@@ -161,6 +161,10 @@ NS_ASSUME_NONNULL_BEGIN
   LTMethodNotImplemented();
 }
 
+- (lt::Ref<CVPixelBufferRef>)pixelBuffer {
+  LTMethodNotImplemented();
+}
+
 #pragma mark -
 #pragma mark LTTexture implemented methods
 #pragma mark -

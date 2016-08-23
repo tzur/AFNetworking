@@ -44,4 +44,16 @@
 /// @note \c pixelBuffer is retained by this texture.
 - (instancetype)initWithPixelBuffer:(CVPixelBufferRef)pixelBuffer planeIndex:(size_t)planeIndex;
 
+/// Returns the pixel buffer that backs the content of this texture. This is a zero-copy operation.
+///
+/// All previous GPU operations involving writes to the texture complete before the pixel buffer is
+/// returned. Future operations MUST be synchronized manually, at the sole responsibly of the
+/// caller.
+///
+/// @note you <b>MUST NOT</b> write to the texture while holding the returned pixel buffer. The best
+/// approach is to avoid using the texture at all after calling this function.
+///
+/// @see the documentation of <tt>-[LTTexture pixelBuffer]</tt>.
+- (lt::Ref<CVPixelBufferRef>)pixelBuffer;
+
 @end

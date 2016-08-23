@@ -140,13 +140,31 @@ struct LTVector4;
 /// device) or regular precision. Half-float precision textures will be converted to unsigned byte
 /// precision if no support for half-float color buffers is available.
 ///
-/// TODO:(yaron) the final precision is controlled by LTFbo, and as discussed with Amit, shouldn't
+/// TODO:(yaron) the final precision is controlled by \c LTFbo, and as discussed with Amit, shouldn't
 /// change since we can always use the slow cloning path.
 - (LTTexture *)clone;
 
 /// Clones the texture into the given texture. The target \c texture must be of the same size of the
 /// receiver.
 - (void)cloneTo:(LTTexture *)texture;
+
+/// Returns a pixel buffer with the content of this texture. The returned pixel buffer might be a
+/// copy of the texture's content, or it might be the actual pixel buffer that backs the texture and
+/// is shared with the GPU.
+///
+/// It is guaranteed that all previous GPU operations involving writes to the texture complete
+/// before the pixel buffer is returned. On the other hand, future operations MUST be synchronized
+/// manually, which is very difficult to get right. Avoid operating on both the pixel buffer and the
+/// texture at all cost.
+///
+/// The format of the pixel buffer is implementation dependent.
+///
+/// Raises if the pixel buffer cannot be returned, either because of an allocation failure,
+/// unsupported texture format, or any other error.
+///
+/// @note you <b>MUST NOT</b> write to the texture while holding the returned pixel buffer. The best
+/// approach is to avoid using the texture at all after calling this function.
+- (lt::Ref<CVPixelBufferRef>)pixelBuffer;
 
 #pragma mark -
 #pragma mark LTTexture implemented methods

@@ -3,6 +3,7 @@
 
 #import "LTGLTexture.h"
 
+#import "LTCVPixelBufferExtensions.h"
 #import "LTFbo.h"
 #import "LTFboPool.h"
 #import "LTGLContext.h"
@@ -313,6 +314,22 @@ static void LTVerifyMipmapImages(const Matrices &images) {
         LTTextureInterpolationNearestMipmapNearest : LTTextureInterpolationNearest;
     [rectDrawer drawRect:targetRect inFramebuffer:fbo fromRect:sourceRect];
   }];
+}
+
+- (lt::Ref<CVPixelBufferRef>)pixelBuffer {
+  lt::Ref<CVPixelBufferRef> pixelBuffer = LTCVPixelBufferCreate(self.size.width, self.size.height,
+                                                                self.pixelFormat.cvPixelFormatType);
+
+  LTCVPixelBufferImageForWriting(pixelBuffer.get(), ^(cv::Mat *image) {
+    // -storeRect:toImage does not work with non continuous matrices. 
+    if (image->isContinuous()) {
+      [self storeRect:CGRectMake(0, 0, self.size.width, self.size.height) toImage:image];
+    } else {
+      [self image].copyTo(*image);
+    }
+  });
+
+  return pixelBuffer;
 }
 
 #pragma mark -

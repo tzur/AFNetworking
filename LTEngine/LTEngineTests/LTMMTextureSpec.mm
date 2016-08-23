@@ -388,6 +388,43 @@ sharedExamplesFor(kLTMMTextureExamples, ^(NSDictionary *contextInfo) {
       LTVector4 actual = [cloned pixelValue:CGPointMake(0, 0)];
       expect(actual).to.equal(expected);
     });
+
+    it(@"should return pixel buffer that backs the texture", ^{
+      auto pixelBuffer = LTCVPixelBufferCreate(1, 1, kCVPixelFormatType_32BGRA);
+      LTMMTexture *texture = [[LTMMTexture alloc] initWithPixelBuffer:pixelBuffer.get()];
+      auto returnedPixelBuffer = [texture pixelBuffer];
+
+      CVPixelBufferRef expected = pixelBuffer.get();
+      CVPixelBufferRef actual = returnedPixelBuffer.get();
+      expect(expected).to.equal(actual);
+    });
+
+    it(@"should return planar pixel buffer that backs the texture", ^{
+      auto pixelBuffer =
+          LTCVPixelBufferCreate(2, 2, kCVPixelFormatType_420YpCbCr8BiPlanarFullRange);
+
+      LTMMTexture *plane0 = [[LTMMTexture alloc] initWithPixelBuffer:pixelBuffer.get()
+                                                          planeIndex:0];
+      LTMMTexture *plane1 = [[LTMMTexture alloc] initWithPixelBuffer:pixelBuffer.get()
+                                                          planeIndex:1];
+
+      __block auto pixelBufferPlane0 = [plane0 pixelBuffer];
+      __block auto pixelBufferPlane1 = [plane1 pixelBuffer];
+
+      expect(pixelBufferPlane0.get()).to.equal(pixelBuffer.get());
+      expect(pixelBufferPlane1.get()).to.equal(pixelBuffer.get());
+    });
+
+    it(@"should wait for pending GPU writes before returning pixel bufer", ^{
+      auto pixelBuffer = LTCVPixelBufferCreate(1, 1, kCVPixelFormatType_32BGRA);
+      LTMMTexture *texture = [[LTMMTexture alloc] initWithPixelBuffer:pixelBuffer.get()];
+
+      [texture clearWithColor:LTVector4(0.5, 0.5, 0.5, 1)];
+      expect(texture.syncObject).notTo.beNil();
+
+      auto returnedPixelBuffer = [texture pixelBuffer];
+      expect(texture.syncObject).to.beNil();
+    });
   });
 });
 

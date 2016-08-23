@@ -268,6 +268,14 @@
   [self.lock unlock];
 }
 
+- (lt::Ref<CVPixelBufferRef>)pixelBuffer {
+  [self lockTextureAndExecute:^{
+    [self waitForGPU];
+  }];
+
+  return lt::Ref<CVPixelBufferRef>(CVPixelBufferRetain(_pixelBuffer.get()));
+}
+
 #pragma mark -
 #pragma mark Overridden methods
 #pragma mark -
@@ -334,15 +342,7 @@ typedef LTTextureMappedWriteBlock LTTextureMappedBlock;
     LTAssert(_pixelBuffer, @"Pixel buffer must be created before calling mappedImage:");
 
     // Make sure everything is written to the texture before reading back to CPU.
-    __block BOOL isSync;
-    [[LTGLContext currentContext] executeForOpenGLES2:^{
-      isSync = glIsSyncAPPLE(self.syncObject);
-    } openGLES3:^{
-      isSync = glIsSync(self.syncObject);
-    }];
-    if (isSync) {
-      [self waitForGPU];
-    }
+    [self waitForGPU];
 
     if (!CVPixelBufferIsPlanar(_pixelBuffer.get())) {
       LTCVPixelBufferImage(_pixelBuffer.get(), lockFlags, ^(cv::Mat *image) {
@@ -358,6 +358,16 @@ typedef LTTextureMappedWriteBlock LTTextureMappedBlock;
 
 - (void)waitForGPU {
   static const GLuint64 kMaxTimeout = std::numeric_limits<GLuint64>::max();
+
+  __block BOOL isSync;
+  [[LTGLContext currentContext] executeForOpenGLES2:^{
+    isSync = glIsSyncAPPLE(self.syncObject);
+  } openGLES3:^{
+    isSync = glIsSync(self.syncObject);
+  }];
+  if (!isSync) {
+    return;
+  }
 
   __block GLenum waitResult;
   [[LTGLContext currentContext] executeForOpenGLES2:^{
