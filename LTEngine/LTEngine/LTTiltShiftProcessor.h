@@ -72,4 +72,20 @@ LTPropertyDeclare(BOOL, invertMask, InvertMask);
 @property (nonatomic) CGFloat intensity;
 LTPropertyDeclare(CGFloat, intensity, Intensity);
 
+#pragma mark -
+#pragma mark Input/Output
+#pragma mark -
+
+/// Size of the input texture.
+@property (readonly, nonatomic) CGSize inputSize;
+
+/// Size of the output texture.
+@property (readonly, nonatomic) CGSize outputSize;
+
+/// Output texture of the processor.
+@property (readonly, nonatomic) LTTexture *outputTexture;
+
+/// Input texture of the processor.
+@property (readonly, nonatomic) LTTexture *inputTexture;
+
 @end
