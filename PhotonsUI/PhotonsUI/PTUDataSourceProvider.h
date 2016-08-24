@@ -22,10 +22,14 @@ NS_ASSUME_NONNULL_BEGIN
 /// creating \c PTUDataSource objects along with the given \c collectionView.
 ///
 /// @note \c cellClass must be a subclass of \c UICollectionViewCell that conforms to the
-/// \c PTUImageCell.
+/// \c PTUImageCell protocol.
+///
+/// @note \c headerCellClass must be a subclass of \c UICollectionReusableView that conforms to the
+/// \c PTUHeaderCell protocol.
 - (instancetype)initWithChangesetProvider:(id<PTUChangesetProvider>)changesetProvider
                     cellViewModelProvider:(id<PTUImageCellViewModelProvider>)cellViewModelProvider
-                                cellClass:(Class)cellClass NS_DESIGNATED_INITIALIZER;
+                                cellClass:(Class)cellClass headerCellClass:(Class)headerCellClass
+    NS_DESIGNATED_INITIALIZER;
 
 /// Initializes with a \c asset manager and \c url used to create and use the default
 /// \c PTUAlbumChangesetProvider and \c PTUImageCellViewModelProvider and uses \c PTUImageCell as

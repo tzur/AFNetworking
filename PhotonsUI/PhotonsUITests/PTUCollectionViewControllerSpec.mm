@@ -54,6 +54,7 @@ __block id<PTUDataSourceProvider> dataSourceProvider;
 __block PTUCollectionViewConfiguration *configuration;
 __block id<PTUCellSizingStrategy> assetCellSizingStrategy;
 __block id<PTUCellSizingStrategy> albumCellSizingStrategy;
+__block id<PTUCellSizingStrategy> headerCellSizingStrategy;
 
 __block PTUCollectionViewController *viewController;
 
@@ -64,9 +65,11 @@ beforeEach(^{
   dataSourceProvider = OCMProtocolMock(@protocol(PTUDataSourceProvider));
   assetCellSizingStrategy = [PTUCellSizingStrategy constant:CGSizeMake(100, 100)];
   albumCellSizingStrategy = [PTUCellSizingStrategy rowWithHeight:100];
+  headerCellSizingStrategy = [PTUCellSizingStrategy rowWithHeight:25];
   configuration = [[PTUCollectionViewConfiguration alloc]
       initWithAssetCellSizingStrategy:assetCellSizingStrategy
-      albumCellSizingStrategy:albumCellSizingStrategy minimumItemSpacing:0
+      albumCellSizingStrategy:albumCellSizingStrategy
+      headerCellSizingStrategy:headerCellSizingStrategy minimumItemSpacing:0
       minimumLineSpacing:0 scrollDirection:UICollectionViewScrollDirectionVertical
       showVerticalScrollIndicator:NO showHorizontalScrollIndicator:NO enablePaging:NO];
   OCMStub([dataSourceProvider dataSourceForCollectionView:OCMOCK_ANY]).andReturn(dataSource);
@@ -166,6 +169,7 @@ context(@"collection view", ^{
         [[PTUCollectionViewConfiguration alloc]
         initWithAssetCellSizingStrategy:OCMProtocolMock(@protocol(PTUCellSizingStrategy))
         albumCellSizingStrategy:OCMProtocolMock(@protocol(PTUCellSizingStrategy))
+        headerCellSizingStrategy:OCMProtocolMock(@protocol(PTUCellSizingStrategy))
         minimumItemSpacing:3 minimumLineSpacing:4
         scrollDirection:UICollectionViewScrollDirectionHorizontal
         showVerticalScrollIndicator:NO showHorizontalScrollIndicator:YES enablePaging:YES];
@@ -207,6 +211,20 @@ context(@"collection view", ^{
     expect([collectionView cellForItemAtIndexPath:indexPath].frame.size)
         .to.equal(CGSizeMake(200, 100));
   });
+  
+  it(@"should size header cells according to strategy", ^{
+    dataSource.data = @[@[asset], @[asset]];
+    [collectionView reloadData];
+    [collectionView layoutIfNeeded];
+
+    expect(collectionView.numberOfSections).to.equal(2);
+    expect([collectionView numberOfItemsInSection:0]).to.equal(1);
+    expect([collectionView numberOfItemsInSection:1]).to.equal(1);
+    NSIndexPath *indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
+    expect([collectionView
+            layoutAttributesForSupplementaryElementOfKind:UICollectionElementKindSectionHeader
+            atIndexPath:indexPath].frame.size).to.equal(CGSizeMake(200, 25));
+  });
 
   it(@"should resize cells on size change", ^{
     dataSource.data = @[
@@ -226,6 +244,9 @@ context(@"collection view", ^{
         .to.equal(CGSizeMake(100, 100));
     expect([collectionView cellForItemAtIndexPath:albumIndexPath].frame.size)
         .to.equal(CGSizeMake(200, 100));
+    expect([collectionView
+            layoutAttributesForSupplementaryElementOfKind:UICollectionElementKindSectionHeader
+            atIndexPath:assetIndexPath].frame.size).to.equal(CGSizeMake(200, 25));
 
     viewController.view.frame = CGRectMake(0, 0, 314, 200);
     [viewController.view layoutIfNeeded];
@@ -233,6 +254,71 @@ context(@"collection view", ^{
         .to.beCloseToPointWithin(CGSizeMake(100, 100), FLT_EPSILON);
     expect([collectionView cellForItemAtIndexPath:albumIndexPath].frame.size)
         .to.equal(CGSizeMake(314, 100));
+    expect([collectionView
+            layoutAttributesForSupplementaryElementOfKind:UICollectionElementKindSectionHeader
+            atIndexPath:assetIndexPath].frame.size).to.equal(CGSizeMake(314, 25));
+  });
+  
+  context(@"section headers", ^{
+    it(@"should not show headers when there is no data", ^{
+      dataSource.data = @[@[]];
+      [collectionView reloadData];
+      [collectionView layoutIfNeeded];
+      
+      NSIndexPath *indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
+      expect(^{
+        [collectionView
+            layoutAttributesForSupplementaryElementOfKind:UICollectionElementKindSectionHeader
+            atIndexPath:indexPath];
+      }).to.raise(NSInternalInconsistencyException);
+    });
+    
+    it(@"should not show headers when there is a single section", ^{
+      dataSource.data = @[@[asset]];
+      [collectionView reloadData];
+      [collectionView layoutIfNeeded];
+      
+      NSIndexPath *indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
+      expect(^{
+        [collectionView
+            layoutAttributesForSupplementaryElementOfKind:UICollectionElementKindSectionHeader
+            atIndexPath:indexPath];
+      }).to.raise(NSInternalInconsistencyException);
+    });
+    
+    it(@"should not show headers when there is a single active section", ^{
+      dataSource.data = @[@[asset], @[], @[]];
+      [collectionView reloadData];
+      [collectionView layoutIfNeeded];
+      
+      NSIndexPath *indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
+      expect(^{
+        [collectionView
+            layoutAttributesForSupplementaryElementOfKind:UICollectionElementKindSectionHeader
+            atIndexPath:indexPath];
+      }).to.raise(NSInternalInconsistencyException);
+    });
+    
+    it(@"should show headers only for active sections", ^{
+      dataSource.data = @[@[], @[asset], @[asset]];
+      [collectionView reloadData];
+      [collectionView layoutIfNeeded];
+      
+      NSIndexPath *firstIndexPath = [NSIndexPath indexPathForItem:0 inSection:0];
+      NSIndexPath *secondIndexPath = [NSIndexPath indexPathForItem:0 inSection:1];
+      NSIndexPath *thirdIndexPath = [NSIndexPath indexPathForItem:0 inSection:2];
+      expect(^{
+        [collectionView
+            layoutAttributesForSupplementaryElementOfKind:UICollectionElementKindSectionHeader
+            atIndexPath:firstIndexPath];
+      }).to.raise(NSInternalInconsistencyException);
+      expect([collectionView
+              layoutAttributesForSupplementaryElementOfKind:UICollectionElementKindSectionHeader
+              atIndexPath:secondIndexPath].frame.size).to.equal(CGSizeMake(200, 25));
+      expect([collectionView
+              layoutAttributesForSupplementaryElementOfKind:UICollectionElementKindSectionHeader
+              atIndexPath:thirdIndexPath].frame.size).to.equal(CGSizeMake(200, 25));
+    });
   });
 
   context(@"selection", ^{
@@ -453,7 +539,8 @@ context(@"collection view", ^{
         PTUCollectionViewConfiguration *configuration =
             [[PTUCollectionViewConfiguration alloc]
             initWithAssetCellSizingStrategy:assetCellSizingStrategy
-            albumCellSizingStrategy:albumCellSizingStrategy minimumItemSpacing:0
+            albumCellSizingStrategy:albumCellSizingStrategy
+            headerCellSizingStrategy:headerCellSizingStrategy minimumItemSpacing:0
             minimumLineSpacing:0 scrollDirection:UICollectionViewScrollDirectionHorizontal
             showVerticalScrollIndicator:YES showHorizontalScrollIndicator:NO enablePaging:NO];
 

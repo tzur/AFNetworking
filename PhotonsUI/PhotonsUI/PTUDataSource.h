@@ -41,8 +41,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// \c changesetProvider. The receiver subscribes to the \c fetchChangeset signal of
 /// \c changesetProvider and uses that signal to maintain the latest data and deliver appropriate
 /// updates as they arrive as well as the \c fetchChangesetMetadata signal to update the latest
-/// \c title property. \c cellViewModelProvder and \c cellClass are used when configuring the
-/// given \c collectionView content.
+/// \c title property. \c cellViewModelProvder, \c cellClass and \c headerCellClass are used when
+/// configuring the given \c collectionView content.
 @interface PTUDataSource : NSObject <PTUDataSource>
 
 - (instancetype)init NS_UNAVAILABLE;
@@ -51,12 +51,19 @@ NS_ASSUME_NONNULL_BEGIN
 /// \c changesetProvider, \c cellViewModelProvider as provider of \c PTUImageCellViewModel objects
 /// and \c cellClass as the class to use for each cell.
 ///
+/// @note The reciever sets the \c collectionView's \c dataSource property. Setting its
+/// \c dataSource after the initialization of this object is considered undefined behavior.
+///
 /// @note \c cellClass must be a subclass of \c UICollectionViewCell that conforms to the
 /// \c PTUImageCell.
+///
+/// @note \c headerCellClass must be a subclass of \c UICollectionReusableView that conforms to the
+/// \c PTUHeaderCell.
 - (instancetype)initWithCollectionView:(UICollectionView *)collectionView
                      changesetProvider:(id<PTUChangesetProvider>)changesetProvider
                  cellViewModelProvider:(id<PTUImageCellViewModelProvider>)cellViewModelProvider
-                             cellClass:(Class)cellClass NS_DESIGNATED_INITIALIZER;
+                             cellClass:(Class)cellClass headerCellClass:(Class)headerCellClass
+    NS_DESIGNATED_INITIALIZER;
 
 @end
 

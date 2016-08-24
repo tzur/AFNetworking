@@ -55,8 +55,8 @@ NS_ASSUME_NONNULL_BEGIN
 @implementation PTUConstantCellSizingStrategy
 
 - (instancetype)initWithSize:(CGSize)size {
-  LTParameterAssert(size.width > 0 && size.height > 0, @"Size must be positive, got: %@",
-                    NSStringFromCGSize(size));
+  LTParameterAssert(size.width >= 0 && size.height >= 0, @"Size must equal to or greater than "
+                    "zero, got: %@", NSStringFromCGSize(size));
   if (self = [super init]) {
     _size = size;
   }
