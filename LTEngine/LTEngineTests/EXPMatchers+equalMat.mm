@@ -59,18 +59,8 @@ EXPMatcherImplementationBegin(equalMat, (NSValue *expected)) {
     if (prerequisiteErrorMessage) {
       return prerequisiteErrorMessage;
     }
-    if (firstMismatch.empty()) {
-      cv::Mat expectedMat = [expected matValue];
-      cv::Mat actualMat = [actual matValue];
-      return [NSString stringWithFormat:@"Metadata match where expected not to. Expected: size "
-              "(%d, %d), type %d, got: size (%d, %d), type %d", expectedMat.cols, expectedMat.rows,
-              expectedMat.type(), actualMat.cols, actualMat.rows, actualMat.type()];
-    } else {
-      return [NSString stringWithFormat:@"First failure: expected not '%@' at %@, got '%@'",
-              LTMatValueAsString([expected matValue], firstMismatch),
-              LTIndicesVectorAsString(firstMismatch),
-              LTMatValueAsString([actual matValue], firstMismatch)];
-    }
+
+    return @"Expected matrices not to be equal, got equal matrices";
   });
 }
 
