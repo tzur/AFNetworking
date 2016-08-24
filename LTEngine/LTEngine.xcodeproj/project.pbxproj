@@ -743,6 +743,7 @@
 		6AB997051D5B3ABB0059863F /* LTPixelBufferPool.h in Headers */ = {isa = PBXBuildFile; fileRef = 6AB997031D5B3ABB0059863F /* LTPixelBufferPool.h */; };
 		6AB997061D5B3ABB0059863F /* LTPixelBufferPool.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6AB997041D5B3ABB0059863F /* LTPixelBufferPool.mm */; };
 		6AB9973A1D5B3B930059863F /* LTPixelBufferPoolSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6AB997391D5B3B930059863F /* LTPixelBufferPoolSpec.mm */; };
+		7C6C5B841D6DA6E400D9F269 /* AspectFittedHalfTransparent.png in Resources */ = {isa = PBXBuildFile; fileRef = 7C6C5B831D6DA6E400D9F269 /* AspectFittedHalfTransparent.png */; };
 		8518E2641C858D890051FAF3 /* NoiseBilateralSigma01Steps1.png in Resources */ = {isa = PBXBuildFile; fileRef = 8518E25D1C858D890051FAF3 /* NoiseBilateralSigma01Steps1.png */; };
 		8518E2651C858D890051FAF3 /* NoiseBilateralSigma01Steps2.png in Resources */ = {isa = PBXBuildFile; fileRef = 8518E25E1C858D890051FAF3 /* NoiseBilateralSigma01Steps2.png */; };
 		8518E2661C858D890051FAF3 /* NoiseBilateralSigma02Steps1.png in Resources */ = {isa = PBXBuildFile; fileRef = 8518E25F1C858D890051FAF3 /* NoiseBilateralSigma02Steps1.png */; };
@@ -2454,6 +2455,7 @@
 		6AB997031D5B3ABB0059863F /* LTPixelBufferPool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTPixelBufferPool.h; sourceTree = "<group>"; };
 		6AB997041D5B3ABB0059863F /* LTPixelBufferPool.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTPixelBufferPool.mm; sourceTree = "<group>"; };
 		6AB997391D5B3B930059863F /* LTPixelBufferPoolSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTPixelBufferPoolSpec.mm; sourceTree = "<group>"; };
+		7C6C5B831D6DA6E400D9F269 /* AspectFittedHalfTransparent.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = AspectFittedHalfTransparent.png; path = Resources/AspectFittedHalfTransparent.png; sourceTree = "<group>"; };
 		8518E25D1C858D890051FAF3 /* NoiseBilateralSigma01Steps1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = NoiseBilateralSigma01Steps1.png; path = Resources/NoiseBilateralSigma01Steps1.png; sourceTree = "<group>"; };
 		8518E25E1C858D890051FAF3 /* NoiseBilateralSigma01Steps2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = NoiseBilateralSigma01Steps2.png; path = Resources/NoiseBilateralSigma01Steps2.png; sourceTree = "<group>"; };
 		8518E25F1C858D890051FAF3 /* NoiseBilateralSigma02Steps1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = NoiseBilateralSigma02Steps1.png; path = Resources/NoiseBilateralSigma02Steps1.png; sourceTree = "<group>"; };
@@ -4439,6 +4441,7 @@
 				032DFC4E1A1A50FB002A4F69 /* Lena128BasicOilPainting.png */,
 				032DFC4F1A1A50FB002A4F69 /* MealBasicOilPainting.png */,
 				8BBEE93719FC032300A2FA6B /* AspectFittedFlower.png */,
+				7C6C5B831D6DA6E400D9F269 /* AspectFittedHalfTransparent.png */,
 				038DDD8119EFD19D0018F9E4 /* Lena128CLAHE.png */,
 				03A094FB19ED453600BB542A /* Lena128AnalogProcessor.png */,
 				0317070419E9317100F4F975 /* Lena128BWProcessor.png */,
@@ -6279,6 +6282,7 @@
 				03C3152D1965986F00F742B1 /* MacbethGreyEdges.png in Resources */,
 				8BAB99DE1869F73400D79554 /* QuadDown.jpg in Resources */,
 				280A8BA21CBD234100157507 /* RadialMaskCenterInvertedStretched.png in Resources */,
+				7C6C5B841D6DA6E400D9F269 /* AspectFittedHalfTransparent.png in Resources */,
 				8BA8C6841869782200E6F486 /* Gray.jpg in Resources */,
 				037238391AA317F000937EAA /* Indexed.png in Resources */,
 				8BAB99E31869F73400D79554 /* QuadRightMirrored.jpg in Resources */,
