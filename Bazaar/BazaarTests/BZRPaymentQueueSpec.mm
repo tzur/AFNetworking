@@ -1,7 +1,7 @@
 // Copyright (c) 2016 Lightricks. All rights reserved.
 // Created by Daniel Lahyani.
 
-#import "BZRPaymentQueueObserver.h"
+#import "BZRPaymentQueue.h"
 
 /// Returns a new array which contains interleaved objects from \c anArray and \c anotherArray.
 /// Item at index \c i in the returned array is the <tt>(i / 2)</tt>'th item from \c anArray if
@@ -17,24 +17,27 @@ NSArray *BZRZipArrays(NSArray *anArray, NSArray *anotherArray) {
   return zippedArray;
 }
 
-SpecBegin(BZRPaymentQueueObserver)
+@interface BZRPaymentQueue () <SKPaymentTransactionObserver>
+@end
 
-__block SKPaymentQueue *paymentQueue;
+SpecBegin(BZRPaymentQueue)
+
+__block SKPaymentQueue *underlyingPaymentQueue;
 __block id paymentsDelegate;
 __block id restorationDelegate;
 __block id downloadsDelegate;
-__block BZRPaymentQueueObserver *observer;
+__block BZRPaymentQueue *paymentQueue;
 
 beforeEach(^{
-  paymentQueue = OCMClassMock([SKPaymentQueue class]);
+  underlyingPaymentQueue = OCMClassMock([SKPaymentQueue class]);
   paymentsDelegate = OCMStrictProtocolMock(@protocol(BZRPaymentQueuePaymentsDelegate));
   restorationDelegate = OCMStrictProtocolMock(@protocol(BZRPaymentQueueRestorationDelegate));
   downloadsDelegate = OCMStrictProtocolMock(@protocol(BZRPaymentQueueDownloadsDelegate));
 
-  observer = [[BZRPaymentQueueObserver alloc] init];
-  observer.paymentsDelegate = paymentsDelegate;
-  observer.restorationDelegate = restorationDelegate;
-  observer.downloadsDelegate = downloadsDelegate;
+  paymentQueue = [[BZRPaymentQueue alloc] initWithUnderlyingPaymentQueue:underlyingPaymentQueue];
+  paymentQueue.paymentsDelegate = paymentsDelegate;
+  paymentQueue.restorationDelegate = restorationDelegate;
+  paymentQueue.downloadsDelegate = downloadsDelegate;
 });
 
 context(@"transactions", ^{
@@ -67,7 +70,7 @@ context(@"transactions", ^{
     OCMExpect([paymentsDelegate paymentQueue:paymentQueue
                   paymentTransactionsUpdated:paymentTransactions]);
 
-    [observer paymentQueue:paymentQueue updatedTransactions:paymentTransactions];
+    [paymentQueue paymentQueue:underlyingPaymentQueue updatedTransactions:paymentTransactions];
     OCMVerifyAll(paymentsDelegate);
   });
 
@@ -75,7 +78,7 @@ context(@"transactions", ^{
     OCMExpect([restorationDelegate paymentQueue:paymentQueue
                            transactionsRestored:restorationTransactions]);
 
-    [observer paymentQueue:paymentQueue updatedTransactions:restorationTransactions];
+    [paymentQueue paymentQueue:underlyingPaymentQueue updatedTransactions:restorationTransactions];
     OCMVerifyAll(restorationDelegate);
   });
 
@@ -87,7 +90,7 @@ context(@"transactions", ^{
     OCMExpect([restorationDelegate paymentQueue:paymentQueue
                            transactionsRestored:[restorationTransactions subarrayWithRange:range]]);
 
-    [observer paymentQueue:paymentQueue updatedTransactions:transactions];
+    [paymentQueue paymentQueue:underlyingPaymentQueue updatedTransactions:transactions];
     OCMVerifyAll(paymentsDelegate);
     OCMVerifyAll(restorationDelegate);
   });
@@ -96,7 +99,7 @@ context(@"transactions", ^{
     OCMExpect([paymentsDelegate paymentQueue:paymentQueue
                   paymentTransactionsRemoved:paymentTransactions]);
 
-    [observer paymentQueue:paymentQueue removedTransactions:paymentTransactions];
+    [paymentQueue paymentQueue:underlyingPaymentQueue removedTransactions:paymentTransactions];
     OCMVerifyAll(paymentsDelegate);
   });
 
@@ -104,7 +107,7 @@ context(@"transactions", ^{
     OCMExpect([restorationDelegate paymentQueue:paymentQueue
                     restoredTransactionsRemoved:restorationTransactions]);
 
-    [observer paymentQueue:paymentQueue removedTransactions:restorationTransactions];
+    [paymentQueue paymentQueue:underlyingPaymentQueue removedTransactions:restorationTransactions];
     OCMVerifyAll(restorationDelegate);
   });
 
@@ -116,7 +119,7 @@ context(@"transactions", ^{
     OCMExpect([restorationDelegate paymentQueue:paymentQueue
                     restoredTransactionsRemoved:[restorationTransactions subarrayWithRange:range]]);
 
-    [observer paymentQueue:paymentQueue removedTransactions:transactions];
+    [paymentQueue paymentQueue:underlyingPaymentQueue removedTransactions:transactions];
     OCMVerifyAll(paymentsDelegate);
     OCMVerifyAll(restorationDelegate);
   });
@@ -124,7 +127,7 @@ context(@"transactions", ^{
   it(@"should notify the restoration delegate when restoration completes", ^{
     OCMExpect([restorationDelegate paymentQueueRestorationCompleted:paymentQueue]);
 
-    [observer paymentQueueRestoreCompletedTransactionsFinished:paymentQueue];
+    [paymentQueue paymentQueueRestoreCompletedTransactionsFinished:underlyingPaymentQueue];
     OCMVerifyAll(restorationDelegate);
   });
 
@@ -132,20 +135,21 @@ context(@"transactions", ^{
     NSError *error = [NSError lt_errorWithCode:1337];
     OCMExpect([restorationDelegate paymentQueue:paymentQueue restorationFailedWithError:error]);
 
-    [observer paymentQueue:paymentQueue restoreCompletedTransactionsFailedWithError:error];
+    [paymentQueue paymentQueue:underlyingPaymentQueue
+        restoreCompletedTransactionsFailedWithError:error];
     OCMVerifyAll(restorationDelegate);
   });
 });
 
 context(@"downloads", ^{
-  it(@"should report the downloads delegate when downloads are upadted", ^{
+  it(@"should report the downloads delegate when downloads are updated", ^{
     NSArray<SKDownload *> *downloads = @[
       OCMClassMock([SKDownload class]),
       OCMClassMock([SKDownload class])
     ];
     OCMExpect([downloadsDelegate paymentQueue:paymentQueue updatedDownloads:downloads]);
 
-    [observer paymentQueue:paymentQueue updatedDownloads:downloads];
+    [paymentQueue paymentQueue:underlyingPaymentQueue updatedDownloads:downloads];
     OCMVerifyAll(downloadsDelegate);
   });
 });
