@@ -13,6 +13,7 @@
 #import "PTUCollectionViewConfiguration.h"
 #import "PTUDataSource.h"
 #import "PTUDataSourceProvider.h"
+#import "PTUHeaderCell.h"
 #import "PTUImageCell.h"
 #import "PTUImageCellViewModelProvider.h"
 
@@ -58,6 +59,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Current cached cell size to use for assets.
 @property (nonatomic) CGSize assetCellSize;
 
+/// Current cached cell size to use for headers.
+@property (nonatomic) CGSize headerCellSize;
+
 @end
 
 @implementation PTUCollectionViewController
@@ -87,7 +91,8 @@ NS_ASSUME_NONNULL_BEGIN
   id<PTUDataSourceProvider> dataSourceProvider =
       [[PTUDataSourceProvider alloc] initWithChangesetProvider:changesetProvider
                                          cellViewModelProvider:cellViewModelProvider
-                                                     cellClass:[PTUImageCell class]];
+                                                     cellClass:[PTUImageCell class]
+                                               headerCellClass:[PTUHeaderCell class]];
   PTUCollectionViewConfiguration *configuration =
       [PTUCollectionViewConfiguration defaultConfiguration];
 
@@ -324,6 +329,9 @@ NS_ASSUME_NONNULL_BEGIN
   self.assetCellSize = [self.configuration.assetCellSizingStrategy
       cellSizeForViewSize:self.view.frame.size itemSpacing:self.configuration.minimumItemSpacing
               lineSpacing:self.configuration.minimumLineSpacing];
+  self.headerCellSize = [self.configuration.headerCellSizingStrategy
+      cellSizeForViewSize:self.view.frame.size itemSpacing:self.configuration.minimumItemSpacing
+              lineSpacing:self.configuration.minimumLineSpacing];
 }
 
 #pragma mark -
@@ -428,6 +436,25 @@ NS_ASSUME_NONNULL_BEGIN
     return self.albumCellSize;
   }
   return self.assetCellSize;
+}
+
+- (CGSize)collectionView:(UICollectionView *)collectionView
+                  layout:(UICollectionViewLayout __unused *)collectionViewLayout
+    referenceSizeForHeaderInSection:(NSInteger)section {
+  NSInteger numberOfActiveSections = 0;
+  for (NSInteger i = 0; i < collectionView.numberOfSections; ++i) {
+    numberOfActiveSections += [collectionView numberOfItemsInSection:i] ? 1 : 0;
+  }
+  
+  if (numberOfActiveSections < 2) {
+    return CGSizeZero;
+  }
+  
+  if (![collectionView numberOfItemsInSection:section]) {
+    return CGSizeZero;
+  }
+  
+  return self.headerCellSize;
 }
 
 @end

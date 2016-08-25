@@ -10,6 +10,7 @@
 #import "PTUChangesetMetadata.h"
 #import "PTUChangesetMove.h"
 #import "PTUChangesetProvider.h"
+#import "PTUHeaderCell.h"
 #import "PTUImageCell.h"
 #import "PTUImageCellViewModelProvider.h"
 
@@ -28,6 +29,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Class used for collection view cells.
 @property (readonly, nonatomic) Class cellClass;
+
+/// Class used for collection view headers.
+@property (readonly, nonatomic) Class headerCellClass;
 
 /// Subject sending a \c RACUnit every time the receiver's collection view is updated.
 @property (readonly, nonatomic) RACSubject *didUpdateCollectionViewSubject;
@@ -58,15 +62,21 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithCollectionView:(UICollectionView *)collectionView
                      changesetProvider:(id<PTUChangesetProvider>)changesetProvider
                  cellViewModelProvider:(id<PTUImageCellViewModelProvider>)cellViewModelProvider
-                             cellClass:(Class)cellClass {
+                             cellClass:(Class)cellClass headerCellClass:(Class)headerCellClass {
   LTParameterAssert([cellClass isSubclassOfClass:[UICollectionViewCell class]] &&
                     [cellClass conformsToProtocol:@protocol(PTUImageCell)], @"Given cellClass is "
                     "not a subclass of UICollectionViewCell or does not conform to the "
                     "PTUImageCell protocol: %@", NSStringFromClass(cellClass));
+  LTParameterAssert([headerCellClass isSubclassOfClass:[UICollectionReusableView class]] &&
+                    [headerCellClass conformsToProtocol:@protocol(PTUHeaderCell)], @"Given "
+                    "headerCellClass is not a subclass of UICollectionReusableView or does not "
+                    "conform to the PTUHeaderCell protocol: %@",
+                    NSStringFromClass(headerCellClass));
   if (self = [super init]) {
     _cellViewModelProvider = cellViewModelProvider;
     _changesetProvider = changesetProvider;
     _cellClass = cellClass;
+    _headerCellClass = headerCellClass;
     
     self.dataModel = @[];
     self.sectionTitles = @{};
@@ -83,6 +93,9 @@ NS_ASSUME_NONNULL_BEGIN
   self.collectionView.dataSource = self;
   [self.collectionView registerClass:self.cellClass
           forCellWithReuseIdentifier:NSStringFromClass(self.cellClass)];
+  [self.collectionView registerClass:self.headerCellClass
+          forSupplementaryViewOfKind:UICollectionElementKindSectionHeader
+                 withReuseIdentifier:NSStringFromClass(self.headerCellClass)];
   [self bindCollectionViewToDataSignal:[self.changesetProvider fetchChangeset]];
 }
 
@@ -213,6 +226,23 @@ NS_ASSUME_NONNULL_BEGIN
   cell.viewModel = [self.cellViewModelProvider viewModelForDescriptor:descriptor];
 
   return cell;
+}
+
+- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView
+           viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
+  if (![kind isEqualToString:UICollectionElementKindSectionHeader]) {
+    return [[UICollectionReusableView alloc] initWithFrame:CGRectZero];
+  }
+  
+  NSString *title = self.sectionTitles[@(indexPath.section)];
+  
+  UICollectionReusableView<PTUHeaderCell> *headerCell =
+      [collectionView dequeueReusableSupplementaryViewOfKind:kind
+                                         withReuseIdentifier:NSStringFromClass(self.headerCellClass)
+                                                forIndexPath:indexPath];
+  headerCell.title = title;
+  
+  return headerCell;
 }
 
 @end

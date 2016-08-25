@@ -14,6 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// Initializes with configuration parameters.
 - (instancetype)initWithAssetCellSizingStrategy:(id<PTUCellSizingStrategy>)assetSizingStrategy
                         albumCellSizingStrategy:(id<PTUCellSizingStrategy>)albumSizingStrategy
+                       headerCellSizingStrategy:(id<PTUCellSizingStrategy>)headerCellSizingStrategy
                              minimumItemSpacing:(CGFloat)minimumItemSpacing
                              minimumLineSpacing:(CGFloat)minimumLineSpacing
                                 scrollDirection:(UICollectionViewScrollDirection)scrollDirection
@@ -26,6 +27,7 @@ NS_ASSUME_NONNULL_BEGIN
 ///   - \c assetSizingStrategy is set to
 ///     \c [PTUCellSizingStrategy adaptiveFitRow:(92, 92) maximumScale:1.2].
 ///   - \c albumSizingStrategy of \c [PTUCellSizingStrategy rowWithHeight:100].
+///   - \c headerSizingStrategy of \c [PTUCellSizingStrategy rowWithHeight:25].
 ///   - \c itemSpacing of \c 1.
 ///   - \c lineSpacing of \c 1.
 ///   - \c scrollDirection set to \c UICollectionViewScrollDirectionVertical.
@@ -37,6 +39,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// Creates and returns a \c PTUCollectionViewConfiguration suitable for a Photo selection strip.
 ///   - \c assetSizingStrategy is set to \c [PTUCellSizingStrategy gridWithItemsPerColumn:1].
 ///   - \c albumSizingStrategy of \c [PTUCellSizingStrategy gridWithItemsPerColumn:1].
+///   - \c headerSizingStrategy of \c [PTUCellSizingStrategy constant:(0, 0)].
 ///   - \c itemSpacing of \c 0.
 ///   - \c lineSpacing of \c 1.
 ///   - \c scrollDirection set to \c UICollectionViewScrollDirectionHorizontal.
@@ -52,6 +55,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Cell sizing strategy to determine the size of cells representing descriptors conforming to
 /// \c PTNAlbumDescriptor.
 @property (readonly, nonatomic) id<PTUCellSizingStrategy> albumCellSizingStrategy;
+
+/// Cell sizing strategy to determine the size of header supplementary views.
+@property (readonly, nonatomic) id<PTUCellSizingStrategy> headerCellSizingStrategy;
 
 /// Minimum inter-item spacing in points.
 @property (readonly, nonatomic) CGFloat minimumItemSpacing;

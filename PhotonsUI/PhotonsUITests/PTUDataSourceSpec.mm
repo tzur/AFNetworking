@@ -4,10 +4,13 @@
 #import "PTUDataSource.h"
 
 #import "PTNFakeAssetManager.h"
+#import "PTNTestUtils.h"
 #import "PTUChangeset.h"
 #import "PTUChangesetMetadata.h"
 #import "PTUChangesetProvider.h"
+#import "PTUHeaderCell.h"
 #import "PTUImageCell.h"
+#import "PTUImageCellViewModelProvider.h"
 
 SpecBegin(PTUDataSource)
 
@@ -15,13 +18,21 @@ __block PTUDataSource *dataSource;
 __block RACSubject *dataSignal;
 __block RACSubject *metadataSignal;
 __block UICollectionView *collectionView;
+__block id<UICollectionViewDataSource> collectionViewDataSource;
 __block id<PTUChangesetProvider> changesetProvider;
 __block id<PTUImageCellViewModelProvider> viewModelProvider;
 __block Class cellClass;
+__block Class headerCellClass;
 
 beforeEach(^{
   cellClass = [PTUImageCell class];
+  headerCellClass = [PTUHeaderCell class];
   collectionView = OCMClassMock([UICollectionView class]);
+  OCMStub([collectionView setDataSource:OCMOCK_ANY]).andDo(^(NSInvocation *invocation) {
+    __unsafe_unretained id<UICollectionViewDataSource> dataSource;
+    [invocation getArgument:&dataSource atIndex:2];
+    collectionViewDataSource = dataSource;
+  });
   dataSignal = [RACSubject subject];
   metadataSignal = [RACSubject subject];
   changesetProvider = OCMProtocolMock(@protocol(PTUChangesetProvider));
@@ -31,7 +42,12 @@ beforeEach(^{
   dataSource = [[PTUDataSource alloc] initWithCollectionView:collectionView
                                            changesetProvider:changesetProvider
                                        cellViewModelProvider:viewModelProvider
-                                                   cellClass:cellClass];
+                                                   cellClass:cellClass
+                                             headerCellClass:headerCellClass];
+});
+
+it(@"should set the given collection view's data source", ^{
+  expect(collectionViewDataSource).to.conformTo(@protocol(UICollectionViewDataSource));
 });
 
 it(@"should start with empty data", ^{
@@ -46,8 +62,10 @@ it(@"should not update hasData with empty data", ^{
   expect(dataSource.hasData).to.beFalsy();
 });
 
-it(@"should register given cell class for reuse", ^{
+it(@"should register given cell classes for reuse", ^{
   OCMVerify([collectionView registerClass:cellClass forCellWithReuseIdentifier:OCMOCK_ANY]);
+  OCMVerify([collectionView registerClass:headerCellClass forSupplementaryViewOfKind:OCMOCK_ANY
+                      withReuseIdentifier:OCMOCK_ANY]);
 });
 
 it(@"should remain up to date with sent data", ^{
@@ -103,6 +121,77 @@ it(@"should properly update error and error flag on metadata fetch error", ^{
   expect(dataSource.error).to.equal(error);
 });
 
+it(@"should dequeue cells from collection view", ^{
+  PTUChangeset *changeset = [[PTUChangeset alloc] initWithAfterDataModel:@[@[@1]]];
+  [dataSignal sendNext:changeset];
+  
+  id cell = [[cellClass alloc] initWithFrame:CGRectZero];
+  NSIndexPath *indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
+  OCMStub([collectionView dequeueReusableCellWithReuseIdentifier:OCMOCK_ANY
+                                                    forIndexPath:indexPath]).andReturn(cell);
+  
+  expect([collectionViewDataSource collectionView:collectionView
+                           cellForItemAtIndexPath:indexPath]).to.equal(cell);
+});
+
+it(@"should correctly configure cells", ^{
+  id<PTNDescriptor> asset = PTNCreateDescriptor(nil, @"foo", 0);
+  id<PTUImageCellViewModel> viewModel = OCMProtocolMock(@protocol(PTUImageCellViewModel));
+  OCMStub([viewModelProvider viewModelForDescriptor:asset]).andReturn(viewModel);
+  PTUChangeset *changeset = [[PTUChangeset alloc] initWithAfterDataModel:@[@[asset]]];
+  [dataSignal sendNext:changeset];
+  
+  NSIndexPath *indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
+  OCMStub([collectionView dequeueReusableCellWithReuseIdentifier:OCMOCK_ANY
+      forIndexPath:indexPath]).andReturn([[cellClass alloc] initWithFrame:CGRectZero]);
+  
+  UICollectionViewCell<PTUImageCell> *cell =
+      (UICollectionViewCell<PTUImageCell> *)[collectionViewDataSource collectionView:collectionView
+      cellForItemAtIndexPath:indexPath];
+  
+  expect(cell).to.beKindOf(cellClass);
+  expect(cell).to.conformTo(@protocol(PTUImageCell));
+  expect(cell.viewModel).to.equal(viewModel);
+});
+
+it(@"should dequeue header cells from collection view", ^{
+  PTUChangeset *changeset = [[PTUChangeset alloc] initWithAfterDataModel:@[@[]]];
+  [dataSignal sendNext:changeset];
+  
+  id headerCell = [[headerCellClass alloc] initWithFrame:CGRectZero];
+  NSIndexPath *indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
+  OCMStub([collectionView
+      dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader
+      withReuseIdentifier:OCMOCK_ANY forIndexPath:indexPath]).andReturn(headerCell);
+  
+  expect([collectionViewDataSource collectionView:collectionView
+      viewForSupplementaryElementOfKind:UICollectionElementKindSectionHeader
+                                      atIndexPath:indexPath]).to.equal(headerCell);
+});
+
+it(@"should correctly configure headers", ^{
+  PTUChangesetMetadata *changesetMetadata = [[PTUChangesetMetadata alloc] initWithTitle:nil
+      sectionTitles:@{@0 : @"foo"}];
+  [metadataSignal sendNext:changesetMetadata];
+  PTUChangeset *changeset = [[PTUChangeset alloc] initWithAfterDataModel:@[@[]]];
+  [dataSignal sendNext:changeset];
+  
+  NSIndexPath *indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
+  OCMStub([collectionView
+      dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader
+      withReuseIdentifier:OCMOCK_ANY forIndexPath:indexPath])
+      .andReturn([[headerCellClass alloc] initWithFrame:CGRectZero]);
+  
+  UICollectionReusableView<PTUHeaderCell> *headerCell =
+      (UICollectionReusableView<PTUHeaderCell> *)[collectionViewDataSource
+      collectionView:collectionView
+      viewForSupplementaryElementOfKind:UICollectionElementKindSectionHeader atIndexPath:indexPath];
+  
+  expect(headerCell).to.beKindOf(headerCellClass);
+  expect(headerCell).to.conformTo(@protocol(PTUHeaderCell));
+  expect(headerCell.title).to.equal(@"foo");
+});
+
 context(@"updates", ^{
   it(@"should reload collection view on initial data", ^{
     PTUChangeset *changeset = [[PTUChangeset alloc] initWithAfterDataModel:@[@[@1], @[@2, @3]]];
@@ -118,7 +207,6 @@ context(@"updates", ^{
     [dataSignal sendNext:changeset];
     OCMVerify([collectionView reloadData]);
   });
-
 
   it(@"should update according to incremental changes if available", ^{
     [[(OCMockObject *)collectionView reject] reloadData];
@@ -184,7 +272,8 @@ context(@"updates", ^{
       id<PTUDataSource> dataSource = [[PTUDataSource alloc] initWithCollectionView:collectionView
                                                                  changesetProvider:changesetProvider
                                                              cellViewModelProvider:viewModelProvider
-                                                                         cellClass:cellClass];
+                                                                         cellClass:cellClass
+                                                                   headerCellClass:headerCellClass];
       weakDataSource = dataSource;
       recorder = [dataSource.didUpdateCollectionView testRecorder];
     }

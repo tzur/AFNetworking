@@ -5,6 +5,7 @@
 
 #import "PTUChangesetProvider.h"
 #import "PTUDataSource.h"
+#import "PTUHeaderCell.h"
 #import "PTUImageCell.h"
 
 SpecBegin(PTUDataSourceProvider)
@@ -28,7 +29,8 @@ context(@"designated initializer", ^{
         OCMProtocolMock(@protocol(PTUImageCellViewModelProvider));
     provider = [[PTUDataSourceProvider alloc] initWithChangesetProvider:changesetProvider
                                                   cellViewModelProvider:cellViewModelProvider
-                                                              cellClass:[PTUImageCell class]];
+                                                              cellClass:[PTUImageCell class]
+                                                        headerCellClass:[PTUHeaderCell class]];
 
     collectionView = OCMClassMock([UICollectionView class]);
   });
