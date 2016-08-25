@@ -3,6 +3,7 @@
 
 #import "LTTexture+Protected.h"
 
+#import "CIContext+PixelFormat.h"
 #import "CIImage+Swizzle.h"
 #import "LTBoundaryCondition.h"
 #import "LTCVPixelBufferExtensions.h"
@@ -376,11 +377,7 @@ NS_ASSUME_NONNULL_BEGIN
     __block auto pixelBuffer(LTCVPixelBufferCreate(self.size.width, self.size.height,
                                                    cvPixelFormatType));
 
-    CIContext *context = [CIContext contextWithOptions:@{
-      kCIContextWorkingColorSpace: [NSNull null],
-      kCIContextOutputColorSpace: [NSNull null]
-    }];
-
+    CIContext *context = [CIContext lt_contextWithPixelFormat:(self.pixelFormat)];
     [context render:image toCVPixelBuffer:pixelBuffer.get()
              bounds:CGRectFromSize(self.size) colorSpace:NULL];
 

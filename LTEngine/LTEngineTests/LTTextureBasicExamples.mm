@@ -611,6 +611,52 @@ sharedExamplesFor(kLTTextureBasicExamples, ^(NSDictionary *data) {
 
         expect($(texture.image)).to.equalMat($(expected));
       });
+
+      it(@"should use byte working format when target texture is of byte precision", ^{
+        static const cv::Vec4b kColor(32, 64, 128, 255);
+        LTTexture *texture = [(LTTexture *)[textureClass alloc]
+                              initWithImage:cv::Mat4b(47, 65, kColor)];
+
+        LTTexture *output = [(LTTexture *)[textureClass alloc]
+                             initWithImage:cv::Mat4b::zeros(1, 1)];
+        LTTexture *expectedOutput = [(LTTexture *)[textureClass alloc]
+                                     initWithImage:cv::Mat4b(1, 1, kColor)];
+
+        [texture mappedCIImage:^(CIImage *image) {
+          [output drawWithCoreImage:^CIImage *{
+            CIFilter *filter = [CIFilter filterWithName:@"CIAreaAverage"];
+            [filter setValue:image forKey:kCIInputImageKey];
+            return filter.outputImage;
+          }];
+        }];
+
+        expect($(output.image)).notTo.equalMat($(expectedOutput.image));
+        expect($(output.image)).to.beCloseToMat($(expectedOutput.image));
+      });
+
+      dit(@"should use half float working format when target texture is of half float precision", ^{
+        static const LTVector4 kColor(0.1, 0.2, 0.3, 0.4);
+        LTTexture *texture = [(LTTexture *)[textureClass alloc]
+                              initWithSize:CGSizeMake(65, 47)
+                              pixelFormat:$(LTGLPixelFormatRGBA16Float) allocateMemory:YES];
+        [texture clearWithColor:kColor];
+
+        LTTexture *output = [[textureClass alloc]
+                             initWithSize:CGSizeMakeUniform(1)
+                             pixelFormat:texture.pixelFormat allocateMemory:YES];
+        LTTexture *expectedOutput = [[textureClass alloc] initWithPropertiesOf:output];
+        [expectedOutput clearWithColor:kColor];
+
+        [texture mappedCIImage:^(CIImage *image) {
+          [output drawWithCoreImage:^CIImage *{
+            CIFilter *filter = [CIFilter filterWithName:@"CIAreaAverage"];
+            [filter setValue:image forKey:kCIInputImageKey];
+            return filter.outputImage;
+          }];
+        }];
+
+        expect($(output.image)).to.beCloseToMatWithin($(expectedOutput.image), 1e-3);
+      });
     });
 
     context(@"reading contents as CIImage", ^{

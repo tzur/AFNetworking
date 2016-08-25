@@ -3,6 +3,7 @@
 
 #import "LTMMTexture.h"
 
+#import "CIContext+PixelFormat.h"
 #import "CIImage+Swizzle.h"
 #import "LTBoundaryCondition.h"
 #import "LTCVPixelBufferExtensions.h"
@@ -435,10 +436,7 @@ typedef LTTextureMappedWriteBlock LTTextureMappedBlock;
         image = image.lt_swizzledImage;
       }
 
-      CIContext *context = [CIContext contextWithOptions:@{
-        kCIContextWorkingColorSpace: [NSNull null],
-        kCIContextOutputColorSpace: [NSNull null]
-      }];
+      CIContext *context = [CIContext lt_contextWithPixelFormat:(self.pixelFormat)];
       [context render:image toCVPixelBuffer:_pixelBuffer.get()
                bounds:CGRectFromSize(self.size) colorSpace:NULL];
     }];
