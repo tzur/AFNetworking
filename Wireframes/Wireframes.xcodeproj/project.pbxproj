@@ -77,6 +77,8 @@
 		C77A04241D40DAE700427AD7 /* UIFont+UtilitiesSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = C77A04231D40DAE700427AD7 /* UIFont+UtilitiesSpec.mm */; };
 		C9133D8F1D3574FE009E796B /* CALayer+Enumeration.m in Sources */ = {isa = PBXBuildFile; fileRef = C9133D8E1D3574FE009E796B /* CALayer+Enumeration.m */; };
 		C9133DAB1D357524009E796B /* CALayer+EnumerationSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = C9133DAA1D357524009E796B /* CALayer+EnumerationSpec.m */; };
+		C99B8BB41D6F6DAD00897FF1 /* UIFont+Size.mm in Sources */ = {isa = PBXBuildFile; fileRef = C99B8BB31D6F6DAD00897FF1 /* UIFont+Size.mm */; };
+		C99B8BB71D6F6E2C00897FF1 /* UIFont+SizeSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = C99B8BB61D6F6E2C00897FF1 /* UIFont+SizeSpec.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -463,6 +465,9 @@
 		C9133D8D1D3574FE009E796B /* CALayer+Enumeration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CALayer+Enumeration.h"; sourceTree = "<group>"; };
 		C9133D8E1D3574FE009E796B /* CALayer+Enumeration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CALayer+Enumeration.m"; sourceTree = "<group>"; };
 		C9133DAA1D357524009E796B /* CALayer+EnumerationSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CALayer+EnumerationSpec.m"; sourceTree = "<group>"; };
+		C99B8BB21D6F6DAD00897FF1 /* UIFont+Size.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIFont+Size.h"; sourceTree = "<group>"; };
+		C99B8BB31D6F6DAD00897FF1 /* UIFont+Size.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIFont+Size.mm"; sourceTree = "<group>"; };
+		C99B8BB61D6F6E2C00897FF1 /* UIFont+SizeSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIFont+SizeSpec.mm"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -873,6 +878,8 @@
 				8BE97B301D47463A001ED33A /* CATransaction+Animations.m */,
 				8B283FB91CBE29F400B745AE /* UIColor+Utilities.h */,
 				8B283FBA1CBE29F400B745AE /* UIColor+Utilities.mm */,
+				C99B8BB21D6F6DAD00897FF1 /* UIFont+Size.h */,
+				C99B8BB31D6F6DAD00897FF1 /* UIFont+Size.mm */,
 				C77A04071D40DA2800427AD7 /* UIFont+Utilities.h */,
 				C77A04081D40DA2800427AD7 /* UIFont+Utilities.mm */,
 				8B283F6E1CBA9C6E00B745AE /* UIViewController+Containment.h */,
@@ -899,6 +906,7 @@
 				C9133DAA1D357524009E796B /* CALayer+EnumerationSpec.m */,
 				8B078FDB1D47B0AC00A8E9EB /* CATransaction+AnimationsSpec.mm */,
 				8B283FBC1CBE322F00B745AE /* UIColor+UtilitiesSpec.mm */,
+				C99B8BB61D6F6E2C00897FF1 /* UIFont+SizeSpec.mm */,
 				C77A04231D40DAE700427AD7 /* UIFont+UtilitiesSpec.mm */,
 				8B283FA61CBA9E2900B745AE /* UIViewController+ContainmentSpec.mm */,
 			);
@@ -1267,6 +1275,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C99B8BB41D6F6DAD00897FF1 /* UIFont+Size.mm in Sources */,
 				6AAED9F51CC62AAD00B3C62F /* WFPaintCodeImageProvider.mm in Sources */,
 				6AAED9FC1CC62B9000B3C62F /* NSURL+WFImageProvider.m in Sources */,
 				8BE97B311D47463A001ED33A /* CATransaction+Animations.m in Sources */,
@@ -1314,6 +1323,7 @@
 				8B283F511CBA88E800B745AE /* EXPMatchers+beBlock.mm in Sources */,
 				6AB2AF621CC4E63E00BC2371 /* LLReactiveMatchersHelpers.m in Sources */,
 				6AB2AF631CC4E63E00BC2371 /* LLReactiveMatchersMessageBuilder.m in Sources */,
+				C99B8BB71D6F6E2C00897FF1 /* UIFont+SizeSpec.mm in Sources */,
 				6AAEDB871CD73B0100B3C62F /* UIImageView+ViewModelSpec.mm in Sources */,
 				8BC7B65B1CF1EEFC0047BEDE /* LTObjectionModule.mm in Sources */,
 				6AAEDB8F1CD7863900B3C62F /* WFFakeImageViewModel.m in Sources */,
