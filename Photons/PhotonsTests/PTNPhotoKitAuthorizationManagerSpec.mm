@@ -3,13 +3,14 @@
 
 #import "PTNPhotoKitAuthorizationManager.h"
 
-#import "PTNPhotoKitAuthorizer.h"
 #import "NSError+Photons.h"
+#import "PTNAuthorizationStatus.h"
+#import "PTNPhotoKitAuthorizer.h"
 
 SpecBegin(PTNPhotoKitAuthorizationManager)
 
 __block PTNPhotoKitAuthorizationManager *manager;
-__block id authorizer;
+__block PTNPhotoKitAuthorizer *authorizer;
 __block UIViewController *viewController;
 
 beforeEach(^{
@@ -23,22 +24,26 @@ it(@"should request authorization from PhotoKit if authorization status is undet
   [[manager requestAuthorizationFromViewController:viewController]
       subscribeNext:^(id __unused x) {}];
 
-  OCMVerifyAll(authorizer);
+  OCMVerifyAll((id)authorizer);
 });
 
 it(@"should send updates correctly when authorization status changes", ^{
   OCMStub([authorizer authorizationStatus]).andReturn(PHAuthorizationStatusNotDetermined);
+  
   OCMExpect([authorizer requestAuthorization:
       ([OCMArg invokeBlockWithArgs:@(PHAuthorizationStatusAuthorized), nil])]);
-
-  expect([manager requestAuthorizationFromViewController:viewController]).to.complete();
+  expect([manager requestAuthorizationFromViewController:viewController])
+      .to.sendValues(@[$(PTNAuthorizationStatusAuthorized)]);
 
   OCMExpect([authorizer requestAuthorization:
       ([OCMArg invokeBlockWithArgs:@(PHAuthorizationStatusDenied), nil])]);
   expect([manager requestAuthorizationFromViewController:viewController])
-      .to.matchError(^BOOL(NSError *error) {
-    return error.code == PTNErrorCodeAuthorizationFailed;
-  });
+      .to.sendValues(@[$(PTNAuthorizationStatusDenied)]);
+  
+  OCMExpect([authorizer requestAuthorization:
+      ([OCMArg invokeBlockWithArgs:@(PHAuthorizationStatusRestricted), nil])]);
+  expect([manager requestAuthorizationFromViewController:viewController])
+      .to.sendValues(@[$(PTNAuthorizationStatusRestricted)]);
 });
 
 SpecEnd

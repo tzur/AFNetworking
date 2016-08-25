@@ -19,6 +19,9 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)init NS_UNAVAILABLE;
 
 /// Initializes with the \c dropboxSession that handles the authorization flow.
+///
+/// @note The receiver sets itself as \c dropboxSessions's delegate. Setting its delegate after the
+/// creation of this object is considered undefined behavior.
 - (instancetype)initWithDropboxSession:(DBSession *)dropboxSession NS_DESIGNATED_INITIALIZER;
 
 /// Dropbox session that handles authorization flow.
