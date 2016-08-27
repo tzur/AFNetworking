@@ -194,8 +194,14 @@ context(@"cgrect operations", ^{
                             CGSizeMake(-1, -2))).to.equal(CGRectMake(3.5, 5, -1, -2));
   });
   
-  it(@"arithmetic", ^{
+  it(@"center", ^{
     expect(CGRectCenter(CGRectMake(1, 2, 3, 4))).to.equal(CGPointMake(2.5, 4));
+  });
+
+  it(@"area", ^{
+    expect(CGRectArea(CGRectMake(1, 2, 3, 4))).to.equal(12);
+    expect(CGRectArea(CGRectMake(1, 2, -3, -4))).to.equal(12);
+    expect(CGRectArea(CGRectMake(1, 2, 3, 4))).to.equal(CGRectArea(CGRectMake(5, 7, 3, 4)));
   });
 });
 

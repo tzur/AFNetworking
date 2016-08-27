@@ -334,6 +334,11 @@ CG_INLINE CGPoint CGRectCenter(const CGRect &rect) {
   return rect.origin + 0.5 * rect.size;
 }
 
+/// Returns the area of the given rect.
+CG_INLINE CGFloat CGRectArea(const CGRect &rect) {
+  return CGRectGetWidth(rect) * CGRectGetHeight(rect);
+}
+
 /// Returns a hash code for the given rect.
 CG_INLINE NSUInteger CGRectHash(const CGRect &rect) {
   NSUInteger hashCode = [@(rect.origin.x) hash];
