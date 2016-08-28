@@ -81,7 +81,7 @@ context(@"openURL handling", ^{
     expect([manager application:app openURL:url options:nil]).to.beFalsy();
   });
   
-  it(@"should update internal state as authorization status changes", ^{
+  it(@"should update state when authorization status changes", ^{
     OCMStub([dbSession handleOpenURL:url]).andReturn(YES);
     LLSignalTestRecorder *recorder = [RACObserve(manager, authorizationStatus) testRecorder];
 

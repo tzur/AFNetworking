@@ -33,7 +33,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @required
 
-/// Current authorization status of this source.
+/// Current authorization status of this source. This property is KVO compliant, but will only
+/// update according to authorization requests made by the receiver.
 @property (readonly, nonatomic) PTNAuthorizationStatus *authorizationStatus;
 
 @end
