@@ -40,13 +40,21 @@ NS_ASSUME_NONNULL_BEGIN
 /// Authorization handler of the PhotoKit photo library.
 @property (readonly, nonatomic) PTNPhotoKitAuthorizer *authorizer;
 
+/// Current authorization status of this source. This property is KVO compliant, but will only
+/// update according to authorization requests made by the receiver.
+@property (strong, nonatomic) PTNAuthorizationStatus *authorizationStatus;
+
 @end
 
 @implementation PTNPhotoKitAuthorizationManager
 
+@synthesize authorizationStatus = _authorizationStatus;
+
 - (instancetype)initWithPhotoKitAuthorizer:(PTNPhotoKitAuthorizer *)authorizer {
   if (self = [super init]) {
     _authorizer = authorizer;
+    _authorizationStatus = [PTNAuthorizationStatus
+                            enumWithPhotoKitStatus:authorizer.authorizationStatus];
   }
   return self;
 }
@@ -56,18 +64,18 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 - (RACSignal *)requestAuthorizationFromViewController:(UIViewController __unused *)viewController {
-  return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+  return [RACSignal defer:^RACSignal *{
+    RACSignal *statusSignal = [[[RACObserve(self, authorizationStatus)
+        skip:1]
+        take:1]
+        replayLast];
+    
     [self.authorizer requestAuthorization:^(PHAuthorizationStatus status) {
-      [subscriber sendNext:[PTNAuthorizationStatus enumWithPhotoKitStatus:status]];
-      [subscriber sendCompleted];
+      self.authorizationStatus = [PTNAuthorizationStatus enumWithPhotoKitStatus:status];
     }];
 
-    return nil;
+    return statusSignal;
   }];
-}
-
-- (PTNAuthorizationStatus *)authorizationStatus {
-  return [PTNAuthorizationStatus enumWithPhotoKitStatus:self.authorizer.authorizationStatus];
 }
 
 @end

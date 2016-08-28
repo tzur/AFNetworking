@@ -15,6 +15,7 @@ __block UIViewController *viewController;
 
 beforeEach(^{
   authorizer = OCMClassMock([PTNPhotoKitAuthorizer class]);
+  OCMStub([authorizer authorizationStatus]).andReturn(PHAuthorizationStatusNotDetermined);
   manager = [[PTNPhotoKitAuthorizationManager alloc] initWithPhotoKitAuthorizer:authorizer];
   viewController = OCMClassMock([UIViewController class]);
 });
@@ -28,8 +29,6 @@ it(@"should request authorization from PhotoKit if authorization status is undet
 });
 
 it(@"should send updates correctly when authorization status changes", ^{
-  OCMStub([authorizer authorizationStatus]).andReturn(PHAuthorizationStatusNotDetermined);
-  
   OCMExpect([authorizer requestAuthorization:
       ([OCMArg invokeBlockWithArgs:@(PHAuthorizationStatusAuthorized), nil])]);
   expect([manager requestAuthorizationFromViewController:viewController])
@@ -44,6 +43,29 @@ it(@"should send updates correctly when authorization status changes", ^{
       ([OCMArg invokeBlockWithArgs:@(PHAuthorizationStatusRestricted), nil])]);
   expect([manager requestAuthorizationFromViewController:viewController])
       .to.sendValues(@[$(PTNAuthorizationStatusRestricted)]);
+});
+
+it(@"should update property when authorization status changes", ^{
+  LLSignalTestRecorder *recorder = [RACObserve(manager, authorizationStatus) testRecorder];
+  
+  OCMExpect([authorizer requestAuthorization:
+      ([OCMArg invokeBlockWithArgs:@(PHAuthorizationStatusAuthorized), nil])]);
+  [[manager requestAuthorizationFromViewController:viewController] subscribeNext:^(id) {}];
+
+  OCMExpect([authorizer requestAuthorization:
+      ([OCMArg invokeBlockWithArgs:@(PHAuthorizationStatusDenied), nil])]);
+  [[manager requestAuthorizationFromViewController:viewController] subscribeNext:^(id) {}];
+  
+  OCMExpect([authorizer requestAuthorization:
+      ([OCMArg invokeBlockWithArgs:@(PHAuthorizationStatusRestricted), nil])]);
+  [[manager requestAuthorizationFromViewController:viewController] subscribeNext:^(id) {}];
+  
+  expect(recorder).to.sendValues(@[
+    $(PTNAuthorizationStatusNotDetermined),
+    $(PTNAuthorizationStatusAuthorized),
+    $(PTNAuthorizationStatusDenied),
+    $(PTNAuthorizationStatusRestricted)
+  ]);
 });
 
 SpecEnd
