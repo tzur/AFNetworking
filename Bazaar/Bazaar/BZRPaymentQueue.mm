@@ -19,6 +19,10 @@ typedef NSDictionary<NSString *, NSArray<SKPaymentTransaction *> *> BZRClassifie
 
 @implementation BZRPaymentQueue
 
+@synthesize downloadsDelegate = _downloadsDelegate;
+@synthesize paymentsDelegate = _paymentsDelegate;
+@synthesize restorationDelegate = _restorationDelegate;
+
 /// Label for transactions classified as payment transactions.
 static NSString * const kPaymentLabel = @"Payment";
 
@@ -46,16 +50,8 @@ static NSString * const kRestorationLabel = @"Restoration";
 }
 
 #pragma mark -
-#pragma mark BZRPaymentQueue
+#pragma mark BZRDownloadsPaymentQueue
 #pragma mark -
-
-- (void)addPayment:(SKPayment *)payment {
-  [self.underlyingPaymentQueue addPayment:payment];
-}
-
-- (void)finishTransaction:(SKPaymentTransaction *)transaction {
-  [self.underlyingPaymentQueue finishTransaction:transaction];
-}
 
 - (void)restoreCompletedTransactions {
   [self.underlyingPaymentQueue restoreCompletedTransactions];
@@ -65,9 +61,17 @@ static NSString * const kRestorationLabel = @"Restoration";
   [self.underlyingPaymentQueue restoreCompletedTransactionsWithApplicationUsername:username];
 }
 
-- (NSArray<SKPaymentTransaction *> *)transactions {
-  return self.underlyingPaymentQueue.transactions;
+#pragma mark -
+#pragma mark BZRPaymentsPaymentQueue
+#pragma mark -
+
+- (void)addPayment:(SKPayment *)payment {
+  [self.underlyingPaymentQueue addPayment:payment];
 }
+
+#pragma mark -
+#pragma mark BZRRestorationPaymentQueue
+#pragma mark -
 
 - (void)startDownloads:(NSArray<SKDownload *> *)downloads {
   [self.underlyingPaymentQueue startDownloads:downloads];
@@ -75,6 +79,10 @@ static NSString * const kRestorationLabel = @"Restoration";
 
 - (void)cancelDownloads:(NSArray<SKDownload *> *)downloads {
   [self.underlyingPaymentQueue cancelDownloads:downloads];
+}
+
+- (NSArray<SKPaymentTransaction *> *)transactions {
+  return self.underlyingPaymentQueue.transactions;
 }
 
 #pragma mark -
@@ -144,6 +152,14 @@ static NSString * const kRestorationLabel = @"Restoration";
 - (void)paymentQueue:(SKPaymentQueue __unused *)queue
     updatedDownloads:(NSArray<SKDownload *> *)downloads {
   [self.downloadsDelegate paymentQueue:self updatedDownloads:downloads];
+}
+
+#pragma mark -
+#pragma mark Finishing transactions
+#pragma mark -
+
+- (void)finishTransaction:(SKPaymentTransaction *)transaction {
+  [self.underlyingPaymentQueue finishTransaction:transaction];
 }
 
 @end
