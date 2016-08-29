@@ -60,10 +60,13 @@ typedef NSDictionary<NSString *, id<PTNAuthorizationManager>> PTNSchemeToAuthori
 /// @return <tt>RACSignal<></tt>.
 - (RACSignal *)revokeAuthorizationForScheme:(NSString *)scheme;
 
-/// Returns the current authorization status of the Photons source corresponding to \c scheme, or
-/// \c nil if \c scheme does not correspond to any of the receiver's underlying
-/// \c PTNAuthorizationManager objects.
-- (nullable PTNAuthorizationStatus *)authorizationStatusForScheme:(NSString *)scheme;
+/// Returns a signal sending the current authorization status of the Photons source corresponding to
+/// \c scheme, followed by any updates to that authorization status or errs with
+/// \c PTNErrorCodeUnrecognizedURLScheme error code if \c scheme does not correspond to any of the
+/// receiver's underlying \c PTNAuthorizationManager objects.
+///
+/// @return <tt>RACSignal<PTNAuthorizationStatus *></tt>.
+- (RACSignal *)authorizationStatusForScheme:(NSString *)scheme;
 
 /// Mapping between \c NSURL schemes this manager supports and the \c PTNAuthorizationManager that
 /// handles them.
