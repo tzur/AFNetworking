@@ -1,23 +1,23 @@
 // Copyright (c) 2016 Lightricks. All rights reserved.
 // Created by Ben Yohay.
 
-#import "BZRLocalContentProvider.h"
+#import "BZRLocalContentFetcher.h"
 
-#import "BZRLocalContentProviderParameters.h"
+#import "BZRLocalContentFetcherParameters.h"
 #import "BZRProduct.h"
 #import "NSErrorCodes+Bazaar.h"
 #import "NSFileManager+Bazaar.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface BZRLocalContentProvider ()
+@interface BZRLocalContentFetcher ()
 
 /// Manager used to copy files from the given URL to temp folder.
 @property (readonly, nonatomic) NSFileManager *fileManager;
 
 @end
 
-@implementation BZRLocalContentProvider
+@implementation BZRLocalContentFetcher
 
 - (instancetype)initWithFileManager:(NSFileManager *)fileManager {
   if (self = [super init]) {
@@ -28,12 +28,12 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (RACSignal *)fetchContentForProduct:(BZRProduct *)product {
-  LTParameterAssert([product.contentProviderParameters
-                     isKindOfClass:[BZRLocalContentProvider expectedParametersClass]],
-                    @"The product's contentProviderParameters must be of class %@, got %@",
-                    [BZRLocalContentProvider expectedParametersClass],
-                    [product.contentProviderParameters class]);
-  NSURL *URL = ((BZRLocalContentProviderParameters *)product.contentProviderParameters).URL;
+  LTParameterAssert([product.contentFetcherParameters
+                     isKindOfClass:[BZRLocalContentFetcher expectedParametersClass]],
+                    @"The product's contentFetcherParameters must be of class %@, got %@",
+                    [BZRLocalContentFetcher expectedParametersClass],
+                    [product.contentFetcherParameters class]);
+  NSURL *URL = ((BZRLocalContentFetcherParameters *)product.contentFetcherParameters).URL;
   LTParameterAssert([URL isFileURL], @"URL provided is not an address to a local file: %@", URL);
 
   NSString *contentFilename = [[URL absoluteString] lastPathComponent];
@@ -64,7 +64,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 + (Class)expectedParametersClass {
-  return [BZRLocalContentProviderParameters class];
+  return [BZRLocalContentFetcherParameters class];
 }
 
 @end

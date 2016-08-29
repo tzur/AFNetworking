@@ -1,14 +1,14 @@
 // Copyright (c) 2016 Lightricks. All rights reserved.
 // Created by Ben Yohay.
 
-#import "BZRProductContentProvider.h"
+#import "BZRProductContentFetcher.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @class BZRModel;
 
 /// Provides product content by fetching the content from a local path.
-@interface BZRLocalContentProvider : NSObject <BZRProductContentProvider>
+@interface BZRLocalContentFetcher : NSObject <BZRProductContentFetcher>
 
 - (instancetype)init NS_UNAVAILABLE;
 

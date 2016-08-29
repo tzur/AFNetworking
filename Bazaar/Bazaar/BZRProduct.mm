@@ -3,7 +3,7 @@
 
 #import "BZRProduct.h"
 
-#import "BZRContentProviderParameters.h"
+#import "BZRContentFetcherParameters.h"
 #import "BZRProductPriceInfo.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -27,12 +27,12 @@ LTEnumImplement(NSUInteger, BZRProductPurchaseStatus,
 #pragma mark Creating new products
 #pragma mark -
 
-- (BZRProduct *)productWithContentProviderParameters:
-    (BZRContentProviderParameters *)contentProviderParameters
+- (BZRProduct *)productWithContentFetcherParameters:
+    (BZRContentFetcherParameters *)contentFetcherParameters
     error:(NSError * __autoreleasing *)error {
   NSMutableDictionary *productDictionary = [[self dictionaryValue] mutableCopy];
-  productDictionary[@keypath(self.contentProviderParameters)] =
-      contentProviderParameters;
+  productDictionary[@keypath(self.contentFetcherParameters)] =
+      contentFetcherParameters;
   return [self initWithDictionary:productDictionary error:error];
 }
 
@@ -44,7 +44,7 @@ LTEnumImplement(NSUInteger, BZRProductPurchaseStatus,
   return @{
     @instanceKeypath(BZRProduct, identifier): @"identifier",
     @instanceKeypath(BZRProduct, productType): @"productType",
-    @instanceKeypath(BZRProduct, contentProviderParameters): @"contentProviderParameters",
+    @instanceKeypath(BZRProduct, contentFetcherParameters): @"contentFetcherParameters",
     @instanceKeypath(BZRProduct, priceInfo): @"priceInfo",
     @instanceKeypath(BZRProduct, purchaseStatus): @"purchaseStatus",
   };
@@ -76,7 +76,7 @@ LTEnumImplement(NSUInteger, BZRProductPurchaseStatus,
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
     nullablePropertyKeys = [NSSet setWithArray:@[
-      @instanceKeypath(BZRProduct, contentProviderParameters),
+      @instanceKeypath(BZRProduct, contentFetcherParameters),
       @instanceKeypath(BZRProduct, priceInfo),
       @instanceKeypath(BZRProduct, purchaseStatus)
     ]];

@@ -1,11 +1,11 @@
 // Copyright (c) 2016 Lightricks. All rights reserved.
 // Created by Ben Yohay.
 
-#import "BZRContentProviderParameters.h"
+#import "BZRContentFetcherParameters.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@implementation BZRContentProviderParameters
+@implementation BZRContentFetcherParameters
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
   return @{};
@@ -13,13 +13,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (Class)classForParsingJSONDictionary:(NSDictionary *)JSONDictionary {
   LTParameterAssert(JSONDictionary[@"type"], @"The JSON field named 'type' is missing, so the class"
-                    " of the content provider couldn't be determined.");
-  Class contentProviderParametersClass = NSClassFromString(JSONDictionary[@"type"]);
-  LTParameterAssert([contentProviderParametersClass isSubclassOfClass:self], @"The JSON field named"
+                    " of the content fetcher couldn't be determined.");
+  Class contentFetcherParametersClass = NSClassFromString(JSONDictionary[@"type"]);
+  LTParameterAssert([contentFetcherParametersClass isSubclassOfClass:self], @"The JSON field named"
                     " 'type' must specify a name of a subclass of %@, got: %@", self,
                     JSONDictionary[@"type"]);
 
-  return contentProviderParametersClass;
+  return contentFetcherParametersClass;
 }
 
 @end

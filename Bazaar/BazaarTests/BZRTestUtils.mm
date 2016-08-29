@@ -3,21 +3,17 @@
 
 #import "BZRTestUtils.h"
 
-#import "BZRContentProviderParameters.h"
+#import "BZRContentFetcherParameters.h"
 #import "BZRProduct.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 BZRProduct *BZRProductWithIdentifierAndContent(NSString *identifier) {
-  NSDictionary *descriptor = @{
-    @"contentProvider": @"provider",
-  };
-
   NSDictionary *JSONProduct = @{
     @"identifier": identifier,
     @"productType": @"renewableSubscription",
     @"purchaseStatus": @"purchased",
-    @"contentDescriptor": descriptor
+    @"contentFetcherParameters": @{}
   };
 
   return [MTLJSONAdapter modelOfClass:[BZRProduct class] fromJSONDictionary:JSONProduct error:NULL];
@@ -34,9 +30,9 @@ BZRProduct *BZRProductWithIdentifier(NSString *identifier) {
 }
 
 BZRProduct *BZRProductWithIdentifierAndParameters(NSString *identifier,
-    BZRContentProviderParameters *parameters) {
+    BZRContentFetcherParameters *parameters) {
   BZRProduct *product = BZRProductWithIdentifier(identifier);
-  return [product productWithContentProviderParameters:parameters error:NULL];
+  return [product productWithContentFetcherParameters:parameters error:NULL];
 }
 
 NS_ASSUME_NONNULL_END

@@ -3,7 +3,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class BZRKeychainStorage, BZRProduct, BZRProductBundleManager, BZRProductContentFetcher,
+@class BZRKeychainStorage, BZRProduct, BZRProductBundleManager, BZRProductContentProvider,
     BZRProductEligibilityVerifier, BZRReceiptValidationStatusProvider, LTPath;
 
 @protocol BZRProductsProvider, BZRReceiptValidator;
@@ -19,18 +19,18 @@ NS_ASSUME_NONNULL_BEGIN
 /// \c bundleManager will be initialized with the default parameters as provided by
 /// \c -[BZRProductBundleManager init].
 ///
-/// \c eligibilityVerifier will be initialized with the default initializer
-/// \c -[BZRProductEligibilityVerifier init].
-///
-/// \c contentFetcher will be initialized with \c eligibilityVerifier, with a
-/// \c BZRContentPathProvider which will be initialized with \c bundleManager, with
-/// a \c BZRProductContentProviderFactory and with \c bundleManager as provided by 
-/// \c -[BZRInAppProductPurchaser initWithEligibilityVerifier:contentPathProvider:
-/// contentProviderFactory:bundleManager:].
-///
 /// \c validationStatusProvider will be initialized with the default initializer of
 /// \c BZRReceiptValidationStatusProvider as provided by
 /// \c -[BZRReceiptValidationStatusProvider initWithKeychainStorage:] with \c keychainStorage.
+///
+/// \c eligibilityVerifier will be initialized using
+/// \c -[initWithReceiptValidationStatusProvider:timeProvider:expiredSubscriptionGracePeriod], with
+/// \c validationStatusProvider, with a new instance of \c BZRTimeProvider, and with
+/// \c expiredSubscriptionGracePeriod set to \c 7.
+///
+/// \c contentProvider will be initialized using
+/// \c -[initWithEligibilityVerifier:contentFetcher:contentManager], with \c eligibilityVerifier,
+/// with a new instance of \c BZRMultiContentFetcher, and with \c bundleManager.
 - (instancetype)initWithProductsListJSONFilePath:(LTPath *)productsListJSONFilePath;
 
 /// Provider used to fetch product list.
@@ -39,17 +39,17 @@ NS_ASSUME_NONNULL_BEGIN
 /// Manager used to extract, delete and find content directory with.
 @property (strong, nonatomic) BZRProductBundleManager *bundleManager;
 
-/// Verifier used to verify that a user is allowed to use a certain product.
-@property (strong, nonatomic) BZRProductEligibilityVerifier *eligibilityVerifier;
-
-/// Fetcher used to fetch a product's content.
-@property (strong, nonatomic) BZRProductContentFetcher *contentFetcher;
+/// Storage used to provide secure store/load of data.
+@property (strong, nonatomic) BZRKeychainStorage *keychainStorage;
 
 /// Provider used to provide \c BZRReceiptValidationStatus.
 @property (strong, nonatomic) BZRReceiptValidationStatusProvider *validationStatusProvider;
 
-/// Storage used to provide secure store/load of data.
-@property (strong, nonatomic) BZRKeychainStorage *keychainStorage;
+/// Verifier used to verify that a user is allowed to use a certain product.
+@property (strong, nonatomic) BZRProductEligibilityVerifier *eligibilityVerifier;
+
+/// Provider used to provide a product's content.
+@property (strong, nonatomic) BZRProductContentProvider *contentProvider;
 
 @end
 
