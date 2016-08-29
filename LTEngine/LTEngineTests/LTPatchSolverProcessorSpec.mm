@@ -26,7 +26,25 @@ context(@"initialization", ^{
     }).toNot.raiseAny();
   });
   
-  it(@"should not initialize with non half-float texture", ^{
+  it(@"should not initialize with non byte mask texture", ^{
+    LTTexture *mask = [LTTexture textureWithSize:CGSizeMake(17, 16)
+                                     pixelFormat:$(LTGLPixelFormatRGBA16Float)
+                                  allocateMemory:YES];
+    LTTexture *source = [LTTexture byteRGBATextureWithSize:CGSizeMake(16, 16)];
+    LTTexture *target = [LTTexture byteRGBATextureWithSize:CGSizeMake(16, 16)];
+    LTTexture *output = [LTTexture textureWithSize:CGSizeMake(15, 16)
+                                       pixelFormat:$(LTGLPixelFormatRGBA16Float)
+                                    allocateMemory:YES];
+
+    expect(^{
+      LTPatchSolverProcessor __unused *processor = [[LTPatchSolverProcessor alloc]
+                                                    initWithMask:mask
+                                                    source:source target:target
+                                                    output:output];
+    }).to.raise(NSInvalidArgumentException);
+  });
+
+  it(@"should not initialize with non half-float output texture", ^{
     LTTexture *mask = [LTTexture byteRGBATextureWithSize:CGSizeMake(16, 16)];
     LTTexture *source = [LTTexture byteRGBATextureWithSize:CGSizeMake(16, 16)];
     LTTexture *target = [LTTexture byteRGBATextureWithSize:CGSizeMake(16, 16)];

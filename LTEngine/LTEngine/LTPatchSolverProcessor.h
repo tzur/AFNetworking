@@ -10,8 +10,8 @@
 /// mask's boundary.
 @interface LTPatchSolverProcessor : LTImageProcessor
 
-/// Initializes with mask, source texture, target texture and an output texture. The output texture
-/// must be of half-float precision.
+/// Initializes with mask, source texture, target texture and an output texture. The mask texture
+/// must be of byte precision. The output texture must be of half-float precision.
 - (instancetype)initWithMask:(LTTexture *)mask source:(LTTexture *)source
                       target:(LTTexture *)target output:(LTTexture *)output;
 
