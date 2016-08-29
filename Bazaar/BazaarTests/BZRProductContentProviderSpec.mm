@@ -38,7 +38,8 @@ context(@"deallocating object", ^{
     @autoreleasepool {
       BZRProductContentProvider *provider =
           [[BZRProductContentProvider alloc] initWithEligibilityVerifier:eligibilityVerifier
-              contentFetcher:contentFetcher contentManager:contentManager];
+                                                          contentFetcher:contentFetcher
+                                                          contentManager:contentManager];
       weakProvider = provider;
       recorder = [[provider fetchProductContent:product] testRecorder];
     }
