@@ -1,11 +1,11 @@
 // Copyright (c) 2016 Lightricks. All rights reserved.
 // Created by Ben Yohay.
 
-#import "BZRProductContentMultiProviderParameters.h"
+#import "BZRProductContentMultiFetcherParameters.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@implementation BZRProductContentMultiProviderParameters
+@implementation BZRProductContentMultiFetcherParameters
 
 #pragma mark -
 #pragma mark MTLJSONSerializing
@@ -13,10 +13,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
   return [[super JSONKeyPathsByPropertyKey] mtl_dictionaryByAddingEntriesFromDictionary:@{
-    @instanceKeypath(BZRProductContentMultiProviderParameters, contentProviderName):
-        @"contentProviderName",
-    @instanceKeypath(BZRProductContentMultiProviderParameters, parametersForContentProvider):
-        @"parametersForContentProvider"
+    @instanceKeypath(BZRProductContentMultiFetcherParameters, contentFetcherName):
+        @"contentFetcherName",
+    @instanceKeypath(BZRProductContentMultiFetcherParameters, parametersForContentFetcher):
+        @"parametersForContentFetcher"
   }];
 }
 
@@ -29,7 +29,7 @@ NS_ASSUME_NONNULL_BEGIN
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
     nullablePropertyKeys = [NSSet setWithArray:@[
-      @instanceKeypath(BZRProductContentMultiProviderParameters, parametersForContentProvider)
+      @instanceKeypath(BZRProductContentMultiFetcherParameters, parametersForContentFetcher)
     ]];
   });
   

@@ -1,37 +1,37 @@
 // Copyright (c) 2016 Lightricks. All rights reserved.
 // Created by Ben Yohay.
 
-#import "BZRProductContentFetcher.h"
+#import "BZRProductContentProvider.h"
 
 #import "BZRProduct.h"
+#import "BZRProductContentFetcher.h"
 #import "BZRProductContentManager.h"
-#import "BZRProductContentProvider.h"
 #import "BZRProductEligibilityVerifier.h"
 #import "NSErrorCodes+Bazaar.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface BZRProductContentFetcher ()
+@interface BZRProductContentProvider ()
 
 /// Verifier used to verify that the user is eligible to use a product.
 @property (readonly, nonatomic) BZRProductEligibilityVerifier *eligibilityVerifier;
 
-/// Provider used to fetch content.
-@property (readonly, nonatomic) id<BZRProductContentProvider> contentProvider;
+/// Fetcher used to fetch content.
+@property (readonly, nonatomic) id<BZRProductContentFetcher> contentFetcher;
 
 /// Manager used to extract content from an archive file.
 @property (readonly, nonatomic) BZRProductContentManager *contentManager;
 
 @end
 
-@implementation BZRProductContentFetcher
+@implementation BZRProductContentProvider
 
 - (instancetype)initWithEligibilityVerifier:(BZRProductEligibilityVerifier *)eligibilityVerifier
-                            contentProvider:(id<BZRProductContentProvider>)contentProvider
+                             contentFetcher:(id<BZRProductContentFetcher>)contentFetcher
                              contentManager:(BZRProductContentManager *)contentManager {
   if (self = [super init]) {
     _eligibilityVerifier = eligibilityVerifier;
-    _contentProvider = contentProvider;
+    _contentFetcher = contentFetcher;
     _contentManager = contentManager;
   }
   return self;
@@ -41,7 +41,7 @@ NS_ASSUME_NONNULL_BEGIN
   @weakify(self);
   return [[self validateEligibility:product] then:^{
     @strongify(self);
-    if (!product.contentProviderParameters) {
+    if (!product.contentFetcherParameters) {
       return [RACSignal empty];
     }
     LTPath *pathToContent =
@@ -49,7 +49,7 @@ NS_ASSUME_NONNULL_BEGIN
     if (pathToContent) {
       return [RACSignal return:pathToContent];
     }
-    return [[self.contentProvider fetchContentForProduct:product]
+    return [[self.contentFetcher fetchContentForProduct:product]
         flattenMap:^RACSignal *(LTPath *contentArchivePath) {
           @strongify(self);
           return [self.contentManager extractContentOfProduct:product.identifier

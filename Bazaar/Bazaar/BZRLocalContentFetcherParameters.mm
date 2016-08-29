@@ -1,15 +1,15 @@
 // Copyright (c) 2016 Lightricks. All rights reserved.
 // Created by Ben Yohay.
 
-#import "BZRLocalContentProviderParameters.h"
+#import "BZRLocalContentFetcherParameters.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@implementation BZRLocalContentProviderParameters
+@implementation BZRLocalContentFetcherParameters
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
   return [[super JSONKeyPathsByPropertyKey] mtl_dictionaryByAddingEntriesFromDictionary:@{
-    @instanceKeypath(BZRLocalContentProviderParameters, URL): @"URL"
+    @instanceKeypath(BZRLocalContentFetcherParameters, URL): @"URL"
   }];
 }
 

@@ -47,12 +47,12 @@ LTErrorCodesDeclare(BazaarErrorCodeProductID,
   BZRErrorCodeFileAttributesRetrievalFailed,
   /// Directory enumeration failed.
   BZRErrorCodeDirectoryEnumrationFailed,
-  /// Requested content provider is not registered.
-  BZRErrorCodeProductContentProviderNotRegistered,
-  /// Failure due to invalid underlying content provider parameters.
-  BZRErrorCodeInvalidUnderlyingContentProviderParameters,
-  /// Failure due to unexpected underlying content provider parameters class.
-  BZRErrorCodeUnexpectedUnderlyingContentProviderParametersClass,
+  /// Requested content fetcher is not registered.
+  BZRErrorCodeProductContentFetcherNotRegistered,
+  /// Failure due to invalid underlying content fetcher parameters.
+  BZRErrorCodeInvalidUnderlyingContentFetcherParameters,
+  /// Failure due to unexpected underlying content fetcher parameters class.
+  BZRErrorCodeUnexpectedUnderlyingContentFetcherParametersClass,
   /// Copy product's content to temporary directory has failed.
   BZRErrorCodeCopyProductContentFailed,
   /// Creation of directory has failed.
