@@ -33,6 +33,10 @@ context(@"properties", ^{
     expect(processor.spread).to.equal(0);
     expect(processor.angle).to.equal(0);
     expect(processor.invertMask).to.beFalsy();
+    expect(processor.inputTexture).to.equal(input);
+    expect(processor.outputTexture).to.equal(output);
+    expect(processor.inputSize).to.equal(input.size);
+    expect(processor.outputSize).to.equal(output.size);
   });
 });
 

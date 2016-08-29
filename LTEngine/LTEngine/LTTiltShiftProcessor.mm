@@ -212,4 +212,24 @@ LTPropertyProxy(CGFloat, intensity, Intensity, self.maskedBlurProcessor);
   [self setNeedsDualMaskUpdate];
 }
 
+#pragma mark -
+#pragma mark Input/Output
+#pragma mark -
+
+- (CGSize)inputSize {
+  return self.maskedBlurProcessor.inputSize;
+}
+
+- (CGSize)outputSize {
+  return self.maskedBlurProcessor.outputSize;
+}
+
+- (LTTexture *)outputTexture {
+  return self.maskedBlurProcessor.outputTexture;
+}
+
+- (LTTexture *)inputTexture {
+  return self.maskedBlurProcessor.inputTexture;
+}
+
 @end
