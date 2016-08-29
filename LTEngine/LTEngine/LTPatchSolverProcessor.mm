@@ -75,6 +75,7 @@
 
 - (instancetype)initWithMask:(LTTexture *)mask source:(LTTexture *)source
                       target:(LTTexture *)target output:(LTTexture *)output {
+  LTParameterAssert(mask.dataType == LTGLPixelDataTypeUnorm && mask.bitDepth == LTGLPixelBitDepth8,
   LTParameterAssert(output.bitDepth == LTGLPixelBitDepth16 &&
                     output.dataType == LTGLPixelDataTypeFloat,
                     @"Output texture must be of half-float precision, got: %@", output.pixelFormat);
@@ -138,8 +139,10 @@
 }
 
 - (void)createResizersAndTextures {
-  self.sourceResized = [LTTexture byteRGBATextureWithSize:self.workingSize];
-  self.targetResized = [LTTexture byteRGBATextureWithSize:self.workingSize];
+  self.sourceResized = [LTTexture textureWithSize:self.workingSize
+                                      pixelFormat:self.source.pixelFormat allocateMemory:YES];
+  self.targetResized = [LTTexture textureWithSize:self.workingSize
+                                      pixelFormat:self.target.pixelFormat allocateMemory:YES];
   self.maskResized = [LTTexture byteRGBATextureWithSize:self.workingSize];
 
   static const LTVector4 kBlack = LTVector4(0, 0, 0, 0);

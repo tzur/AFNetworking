@@ -83,7 +83,7 @@ context(@"processing", ^{
   // at its boundaries. Verify that the patch solver creates the expected smoothing membrane. Verify
   // that the black and white pixels of the images do not affect the opposite side in the membrane
   // texture.
-  it(@"should produce proper membrane for input", ^{
+  it(@"should produce proper membrane for source and target with byte percision", ^{
     cv::Mat4b sourceMat = cv::Mat4b::zeros(kTextureWidth, kTextureWidth);
     sourceMat(cv::Rect(0, 0, kTextureWidth / 2, kTextureWidth)) = cv::Vec4b(0, 0, 0, 255);
     sourceMat(cv::Rect(kTextureWidth / 2, 0, kTextureWidth / 2, kTextureWidth)) =
@@ -109,6 +109,37 @@ context(@"processing", ^{
     expect($(membrane)).to.equalMat($(expected));
   });
 
+  it(@"should produce proper membrane for source and target with half float percision", ^{
+    using half_float::half;
+
+    cv::Mat4hf sourceMat = cv::Mat4hf(kTextureWidth, kTextureWidth);
+    sourceMat(cv::Rect(0, 0, kTextureWidth / 2, kTextureWidth))
+        .setTo(cv::Vec4hf(half(0), half(0), half(0), half(1)));
+    sourceMat(cv::Rect(kTextureWidth / 2, 0, kTextureWidth / 2, kTextureWidth))
+        .setTo(cv::Vec4hf(half(1), half(1), half(1), half(1)));
+
+    source = [LTTexture textureWithImage:sourceMat];
+    cv::Mat4b maskMat(kTextureWidth, kTextureWidth, cv::Vec4b(255, 255, 255, 255));
+    maskMat(cv::Rect(1, 1, kTextureWidth - 2, kTextureWidth - 2)) = cv::Vec4b(0, 0, 0, 255);
+    mask = [LTTexture textureWithImage:maskMat];
+    target = [LTTexture textureWithSize:CGSizeMakeUniform(kTextureWidth)
+                            pixelFormat:$(LTGLPixelFormatRGBA16Float) allocateMemory:YES];
+    [target clearWithColor:LTVector4(0.5, 0.5, 0.5, 1)];
+
+    LTPatchSolverProcessor *processor =
+        [[LTPatchSolverProcessor alloc] initWithMask:mask source:source target:target
+                                              output:output];
+    [processor process];
+
+    cv::Mat4b membrane;
+    LTConvertMat(output.image, &membrane, membrane.type());
+    std::transform(membrane.begin(), membrane.end(), membrane.begin(), [](const cv::Vec4b &value) {
+      return cv::Vec4b(value[0], value[1], value[2], 255);
+    });
+
+    cv::Mat4b expected = LTLoadMat([self class], @"LTPatchSolverProcessorSolution.png");
+    expect($(membrane)).to.beCloseToMatWithin($(expected), 1);
+  });
 });
 
 SpecEnd
