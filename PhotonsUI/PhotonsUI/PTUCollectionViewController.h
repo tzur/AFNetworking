@@ -85,8 +85,8 @@ typedef NS_ENUM(NSUInteger, PTUCollectionViewScrollPosition) {
 /// Implementation of \c PTUCollectionController that displays the content of a given
 /// \c PTUDataSourceProvider according to a given configuration object. The controller adapts to
 /// changes in its view's size to resize its content according to \c configuration. Section titles
-/// are created according to \c configuration if their respective section has at least one item
-/// and the entire collection has at least 2 sections with at least one item.
+/// are created according to \c configuration if their respective section has a title, at least one
+/// item, and the entire collection has at least 2 sections with at least one item.
 ///
 /// The view controller contains views with the <tt>{CollectionView, Empty, Error}</tt>
 /// accessibility identifiers.

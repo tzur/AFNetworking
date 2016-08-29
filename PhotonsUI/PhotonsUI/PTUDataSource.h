@@ -19,6 +19,11 @@ NS_ASSUME_NONNULL_BEGIN
 /// be returned.
 - (nullable NSIndexPath *)indexPathOfDescriptor:(id<PTNDescriptor>)descriptor;
 
+/// Returns the \c NSString section title at \c section according to the current data of the
+/// receiver or \c nil if \c section is out of bounds of the receiver's data, or if the
+/// corresponding section has no title.
+- (nullable NSString *)titleForSection:(NSInteger)section;
+
 /// Hot signal sending a \c RACUnit every time the receiver's collection view is updated and
 /// completes when the receiver is deallocated.
 @property (readonly, nonatomic) RACSignal *didUpdateCollectionView;

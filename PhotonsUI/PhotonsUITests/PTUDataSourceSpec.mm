@@ -93,14 +93,22 @@ it(@"should remain up to date with sent data", ^{
 
 it(@"should remain up to date with title of sent metadata", ^{
   PTUChangesetMetadata *changesetMetadata = [[PTUChangesetMetadata alloc] initWithTitle:@"foo"
-                                                                          sectionTitles:@{}];
+      sectionTitles:@{@1: @"bar", @2: @"baz"}];
   [metadataSignal sendNext:changesetMetadata];
   expect(dataSource.title).to.equal(@"foo");
-  
+  expect([dataSource titleForSection:1]).to.equal(@"bar");
+  expect([dataSource titleForSection:2]).to.equal(@"baz");
+  expect([dataSource titleForSection:0]).to.beNil();
+  expect([dataSource titleForSection:3]).to.beNil();
+
   PTUChangesetMetadata *otherChangesetMetadata = [[PTUChangesetMetadata alloc] initWithTitle:@"bar"
-                                                                               sectionTitles:@{}];
+      sectionTitles:@{@1: @"baz", @2: @"gaz"}];
   [metadataSignal sendNext:otherChangesetMetadata];
   expect(dataSource.title).to.equal(@"bar");
+  expect([dataSource titleForSection:1]).to.equal(@"baz");
+  expect([dataSource titleForSection:2]).to.equal(@"gaz");
+  expect([dataSource titleForSection:0]).to.beNil();
+  expect([dataSource titleForSection:3]).to.beNil();
 });
 
 it(@"should properly update error and error flag on data fetch error", ^{

@@ -214,6 +214,7 @@ context(@"collection view", ^{
   
   it(@"should size header cells according to strategy", ^{
     dataSource.data = @[@[asset], @[asset]];
+    dataSource.sectionTitles = @{@0: @"", @1: @""};
     [collectionView reloadData];
     [collectionView layoutIfNeeded];
 
@@ -231,6 +232,7 @@ context(@"collection view", ^{
       @[asset],
       @[OCMProtocolMock(@protocol(PTNAlbumDescriptor))]
     ];
+    dataSource.sectionTitles = @{@0: @"", @1: @""};
     [collectionView reloadData];
     [collectionView layoutIfNeeded];
 
@@ -260,6 +262,10 @@ context(@"collection view", ^{
   });
   
   context(@"section headers", ^{
+    beforeEach(^{
+      dataSource.sectionTitles = @{@0: @"foo", @1: @"bar", @2: @"baz"};
+    });
+
     it(@"should not show headers when there is no data", ^{
       dataSource.data = @[@[]];
       [collectionView reloadData];
@@ -297,6 +303,28 @@ context(@"collection view", ^{
             layoutAttributesForSupplementaryElementOfKind:UICollectionElementKindSectionHeader
             atIndexPath:indexPath];
       }).to.raise(NSInternalInconsistencyException);
+    });
+
+    it(@"should not show headers if they have no title", ^{
+      dataSource.data = @[@[], @[asset], @[asset]];
+      dataSource.sectionTitles = @{@1: @"foo"};
+      [collectionView reloadData];
+      [collectionView layoutIfNeeded];
+
+      NSIndexPath *firstIndexPath = [NSIndexPath indexPathForItem:0 inSection:0];
+      NSIndexPath *secondIndexPath = [NSIndexPath indexPathForItem:0 inSection:1];
+      NSIndexPath *thirdIndexPath = [NSIndexPath indexPathForItem:0 inSection:2];
+      expect(^{
+        [collectionView
+            layoutAttributesForSupplementaryElementOfKind:UICollectionElementKindSectionHeader
+            atIndexPath:firstIndexPath];
+      }).to.raise(NSInternalInconsistencyException);
+      expect([collectionView
+              layoutAttributesForSupplementaryElementOfKind:UICollectionElementKindSectionHeader
+              atIndexPath:secondIndexPath].frame.size).to.equal(CGSizeMake(200, 25));
+      expect([collectionView
+              layoutAttributesForSupplementaryElementOfKind:UICollectionElementKindSectionHeader
+              atIndexPath:thirdIndexPath].frame.size).to.equal(CGSizeMake(0, 0));
     });
     
     it(@"should show headers only for active sections", ^{
