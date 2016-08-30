@@ -16,12 +16,17 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation PTNAcceptingAuthorizationManager
 
-- (RACSignal *)requestAuthorizationFromViewController:(UIViewController __unused *)viewController {
-  return [RACSignal return:$(PTNAuthorizationStatusAuthorized)];
+@synthesize authorizationStatus = _authorizationStatus;
+
+- (instancetype)init {
+  if (self = [super init]) {
+    _authorizationStatus = $(PTNAuthorizationStatusAuthorized);
+  }
+  return self;
 }
 
-- (PTNAuthorizationStatus *)authorizationStatus {
-  return $(PTNAuthorizationStatusAuthorized);
+- (RACSignal *)requestAuthorizationFromViewController:(UIViewController __unused *)viewController {
+  return [RACSignal return:$(PTNAuthorizationStatusAuthorized)];
 }
 
 @end
@@ -49,7 +54,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (RACSignal *)requestAuthorizationForScheme:(NSString *)scheme
                           fromViewController:(UIViewController *)viewController {
-  id<PTNAuthorizationManager> authorizationManager = self.sourceMapping[scheme];
+  _Nullable id<PTNAuthorizationManager> authorizationManager = self.sourceMapping[scheme];
   if (!authorizationManager) {
     return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeUnrecognizedURLScheme
         description:[NSString stringWithFormat:@"Unsupported scheme: %@", scheme]]];
@@ -59,7 +64,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (RACSignal *)revokeAuthorizationForScheme:(NSString *)scheme {
-  id<PTNAuthorizationManager> authorizationManager = self.sourceMapping[scheme];
+  _Nullable id<PTNAuthorizationManager> authorizationManager = self.sourceMapping[scheme];
   if (![authorizationManager respondsToSelector:@selector(revokeAuthorization)]) {
     return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeUnrecognizedURLScheme
         description:[NSString stringWithFormat:@"Unsupported scheme: %@", scheme]]];
@@ -68,8 +73,14 @@ NS_ASSUME_NONNULL_BEGIN
   return [authorizationManager revokeAuthorization];
 }
 
-- (nullable PTNAuthorizationStatus *)authorizationStatusForScheme:(NSString *)scheme {
-  return self.sourceMapping[scheme].authorizationStatus;
+- (RACSignal *)authorizationStatusForScheme:(NSString *)scheme {
+  _Nullable id<PTNAuthorizationManager> authorizationManager = self.sourceMapping[scheme];
+  if (!authorizationManager) {
+    return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeUnrecognizedURLScheme
+        description:[NSString stringWithFormat:@"Unsupported scheme: %@", scheme]]];
+  }
+
+  return RACObserve(authorizationManager, authorizationStatus);
 }
 
 @end
