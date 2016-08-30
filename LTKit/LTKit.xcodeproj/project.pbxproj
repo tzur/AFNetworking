@@ -61,6 +61,10 @@
 		84F7AB261C3290BA00AA502F /* LTPath.h in Headers */ = {isa = PBXBuildFile; fileRef = 84F7AB241C3290BA00AA502F /* LTPath.h */; };
 		84F7AB271C3290BA00AA502F /* LTPath.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F7AB251C3290BA00AA502F /* LTPath.m */; };
 		84F7AB291C3290D600AA502F /* LTPathSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F7AB281C3290D600AA502F /* LTPathSpec.m */; };
+		885E975F1D72D3A800A117A2 /* LocalizationTest.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 885E975E1D72D3A800A117A2 /* LocalizationTest.bundle */; };
+		88C67F5A1D72C7B800A0E0FC /* LTLocalizationTable.h in Headers */ = {isa = PBXBuildFile; fileRef = 88C67F581D72C7B800A0E0FC /* LTLocalizationTable.h */; };
+		88C67F5B1D72C7B800A0E0FC /* LTLocalizationTable.mm in Sources */ = {isa = PBXBuildFile; fileRef = 88C67F591D72C7B800A0E0FC /* LTLocalizationTable.mm */; };
+		88C67F5E1D72CE0500A0E0FC /* LTLocalizationTableSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 88C67F5D1D72CE0500A0E0FC /* LTLocalizationTableSpec.mm */; };
 		8B04C96B1BEE651A0024D22E /* LTRefSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B04C96A1BEE651A0024D22E /* LTRefSpec.mm */; };
 		8B0B99721CA6BADF00ED2334 /* libextobjc_iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B0B996A1CA6BAA300ED2334 /* libextobjc_iOS.a */; };
 		8B0B99731CA6BADF00ED2334 /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B0B99461CA6BA8C00ED2334 /* libOCMock.a */; };
@@ -441,6 +445,10 @@
 		84F7AB241C3290BA00AA502F /* LTPath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTPath.h; sourceTree = "<group>"; };
 		84F7AB251C3290BA00AA502F /* LTPath.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTPath.m; sourceTree = "<group>"; };
 		84F7AB281C3290D600AA502F /* LTPathSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTPathSpec.m; sourceTree = "<group>"; };
+		885E975E1D72D3A800A117A2 /* LocalizationTest.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = LocalizationTest.bundle; sourceTree = "<group>"; };
+		88C67F581D72C7B800A0E0FC /* LTLocalizationTable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTLocalizationTable.h; sourceTree = "<group>"; };
+		88C67F591D72C7B800A0E0FC /* LTLocalizationTable.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTLocalizationTable.mm; sourceTree = "<group>"; };
+		88C67F5D1D72CE0500A0E0FC /* LTLocalizationTableSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTLocalizationTableSpec.mm; sourceTree = "<group>"; };
 		8B04C96A1BEE651A0024D22E /* LTRefSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTRefSpec.mm; sourceTree = "<group>"; };
 		8B1889351BEBC8F100E9BD67 /* LTRef.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTRef.h; sourceTree = "<group>"; };
 		8B18BB4019226A7D00DA4B64 /* LTKeyPathCoding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTKeyPathCoding.h; sourceTree = "<group>"; };
@@ -616,6 +624,23 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		88C67F3F1D72C1DB00A0E0FC /* Localization */ = {
+			isa = PBXGroup;
+			children = (
+				88C67F581D72C7B800A0E0FC /* LTLocalizationTable.h */,
+				88C67F591D72C7B800A0E0FC /* LTLocalizationTable.mm */,
+			);
+			name = Localization;
+			sourceTree = "<group>";
+		};
+		88C67F5C1D72CC6600A0E0FC /* Localization */ = {
+			isa = PBXGroup;
+			children = (
+				88C67F5D1D72CE0500A0E0FC /* LTLocalizationTableSpec.mm */,
+			);
+			name = Localization;
+			sourceTree = "<group>";
+		};
 		8B0B991F1CA6BA8300ED2334 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -732,6 +757,7 @@
 				8B7C6C781B52722900B90DBE /* Extensions */,
 				8B871FAC1923CE2400517F2E /* IO */,
 				8BB47145183B533500CA1681 /* Libraries */,
+				88C67F3F1D72C1DB00A0E0FC /* Localization */,
 				8B3DEBEA18296B6100EA0C1A /* Supporting Files */,
 				28ABDFF618715394005A5DEC /* UI */,
 			);
@@ -766,6 +792,7 @@
 				8B3DEBFF18296B6100EA0C1A /* LTKitTests-Info.plist */,
 				8BA11ADC183124CB00A5001D /* LTKitTests-Prefix.pch */,
 				8B3DEC0018296B6100EA0C1A /* InfoPlist.strings */,
+				885E975E1D72D3A800A117A2 /* LocalizationTest.bundle */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -867,6 +894,7 @@
 				8BEE674419596F59005E4D53 /* Data Structures */,
 				8B7C6C7C1B52761000B90DBE /* Extensions */,
 				8B329023192CC2590010592E /* IO */,
+				88C67F5C1D72CC6600A0E0FC /* Localization */,
 				8B85C797182A2EC7004C352E /* Supporting Files */,
 				28ABE00618715514005A5DEC /* UI */,
 			);
@@ -1063,6 +1091,7 @@
 				8B87D5AC1C05B1E10005410A /* LTErrorCodesRegistry.h in Headers */,
 				8B2405801B8607270079B724 /* UIDevice+Hardware.h in Headers */,
 				8BF7B1721949BC7500E67079 /* LTBidirectionalMap.h in Headers */,
+				88C67F5A1D72C7B800A0E0FC /* LTLocalizationTable.h in Headers */,
 				5067221A19EA80B5003AF8D2 /* LTQueue.h in Headers */,
 				8B8720341924A76500517F2E /* LTAssert.h in Headers */,
 				8B410E8D1CE1F01E007DFF42 /* NSArray+SelectorName.h in Headers */,
@@ -1366,6 +1395,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				885E975F1D72D3A800A117A2 /* LocalizationTest.bundle in Resources */,
 				8B3DEC0218296B6100EA0C1A /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1394,6 +1424,7 @@
 				8BA5D6A5199250240093A4FD /* NSString+Hashing.m in Sources */,
 				8B87D5371C04BA940005410A /* NSBundle+Path.mm in Sources */,
 				8BB236C31CDCD5C500057F11 /* NSObject+DynamicDispatch.mm in Sources */,
+				88C67F5B1D72C7B800A0E0FC /* LTLocalizationTable.mm in Sources */,
 				8BF9A53B18F684AC00CCA084 /* LTTimer.m in Sources */,
 				259FF7D01C14920C00362CDD /* LTBipartiteGraph.mm in Sources */,
 				28362120186C58DC00665ED9 /* LTCGExtensions.m in Sources */,
@@ -1465,6 +1496,7 @@
 				658CD3E11D50AC0C00FF7FD6 /* LTProgressSpec.mm in Sources */,
 				8B9FE5891BA9D60E0085E97E /* UIScreen+PhysicalSpec.mm in Sources */,
 				8B9D3FC51891116A001A964D /* LTEasyBoxingSpec.mm in Sources */,
+				88C67F5E1D72CE0500A0E0FC /* LTLocalizationTableSpec.mm in Sources */,
 				8BBBE60B1B4E8A7B00726C2A /* NSError+LTKitSpec.mm in Sources */,
 				8352050A1D2A455E00000EEC /* LTEventTarget.m in Sources */,
 			);
