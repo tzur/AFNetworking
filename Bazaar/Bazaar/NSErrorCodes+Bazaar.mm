@@ -52,7 +52,9 @@ LTErrorCodesImplement(BazaarErrorCodeProductID,
   /// Copy product's content to temporary directory has failed.
   BZRErrorCodeCopyProductContentFailed,
   /// Creation of directory has failed.
-  BZRErrorCodeDirectoryCreationFailed
+  BZRErrorCodeDirectoryCreationFailed,
+  /// Purchase of a product has failed.
+  BZRErrorCodePurchaseFailed
 );
 
 NS_ASSUME_NONNULL_END

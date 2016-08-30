@@ -10,6 +10,7 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize payment = _payment;
 @synthesize transactionState = _transactionState;
 @synthesize downloads = _downloads;
+@synthesize error = _error;
 
 - (instancetype)init {
   return [self initWithPayment:nil];

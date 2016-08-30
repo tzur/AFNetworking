@@ -27,6 +27,9 @@ NS_ASSUME_NONNULL_BEGIN
                   underlyingError:(nullable NSError *)underlyingError
                       description:(nullable NSString *)description;
 
+/// Creates and returns an instance of \c NSError wrapping the given \c failingTransaction.
++ (instancetype)bzr_purchaseFailedErrorWithTransaction:(SKPaymentTransaction *)failingTransaction;
+
 /// Exception object wrapped by this error.
 @property (readonly, nonatomic, nullable) NSException *bzr_exception;
 
@@ -36,8 +39,11 @@ NS_ASSUME_NONNULL_BEGIN
 /// Path of the archive file that a failing archiving operation was executed on.
 @property (readonly, nonatomic, nullable) NSString *bzr_archivePath;
 
-/// Path of the failing item that was archvie or unarchived.
+/// Path of the failing item that was archived or unarchived.
 @property (readonly, nonatomic, nullable) NSString *bzr_failingItemPath;
+
+/// Failed transaction wrapped by this error.
+@property (readonly, nonatomic, nullable) SKPaymentTransaction *bzr_failingTransaction;
 
 @end
 

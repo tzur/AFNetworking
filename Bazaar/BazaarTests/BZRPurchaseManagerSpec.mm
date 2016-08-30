@@ -4,6 +4,9 @@
 #import "BZRPurchaseManager.h"
 
 #import "BZRFakePaymentTransaction.h"
+#import "BZRPaymentsPaymentQueue.h"
+#import "NSError+Bazaar.h"
+#import "NSErrorCodes+Bazaar.h"
 
 /// Returns a mock \c SKPRoduct with the given \c identifier.
 static id BZRMockProductWithIdentifier(NSString *identifier) {
@@ -12,316 +15,303 @@ static id BZRMockProductWithIdentifier(NSString *identifier) {
   return product;
 }
 
-/// Returns a \c BZRTransactionUpdateBlock that adds a copy of the \c SKPaymentTransactions updates
-/// it receives to \c log.
-static BZRTransactionUpdateBlock BZRUpdateBlockWithLog(NSMutableArray<BZRFakePaymentTransaction *> *log) {
-  return ^(SKPaymentTransaction * _Nonnull transaction) {
-    [log addObject:[transaction copy]];
-  };
+/// Fake \c BZRPaymentsPaymentQueue, used to inspect which payment was called with \c addPayment.
+@interface BZRFakePaymentsPaymentQueue : NSObject <BZRPaymentsPaymentQueue>
+
+/// Payment expected to be called with \c addPayment
+@property (strong, nonatomic, nullable) SKPayment *expectedPaymentForAddPayment;
+
+@end
+
+@implementation BZRFakePaymentsPaymentQueue
+
+@synthesize paymentsDelegate = _paymentsDelegate;
+
+- (void)addPayment:(SKPayment *)payment {
+  if (self.expectedPaymentForAddPayment) {
+    expect(payment).to.equal(self.expectedPaymentForAddPayment);
+  }
 }
+
+@end
+
+@interface BZRPurchaseManager () <BZRPaymentQueuePaymentsDelegate>
+@end
 
 SpecBegin(BZRPurchaseManager)
 
-__block id paymentQueue;
-__block dispatch_queue_t updatesQueue;
+__block BZRFakePaymentsPaymentQueue *paymentQueue;
+__block SKProduct *product;
+__block SKPayment *payment;
+__block BZRFakePaymentTransaction *transaction;
 
 beforeEach(^{
-  paymentQueue = OCMClassMock([SKPaymentQueue class]);
-  updatesQueue = dispatch_queue_create("com.lightricks.bazaar.test.purchaseManager.unhandled",
-                                       DISPATCH_QUEUE_SERIAL);
+  paymentQueue = [[BZRFakePaymentsPaymentQueue alloc] init];
+  product =  BZRMockProductWithIdentifier(@"foo");
+  payment = [SKPayment paymentWithProduct:product];
+  transaction = [[BZRFakePaymentTransaction alloc] initWithPayment:payment];
 });
 
 context(@"initialization", ^{
-  
   it(@"should initialize without application user identifier", ^{
     BZRPurchaseManager *purchaseManager =
-        [[BZRPurchaseManager alloc] initWithPaymentQueue:paymentQueue
-                                       applicationUserId:nil
-                                   unhandledUpdatesBlock: ^(SKPaymentTransaction *){}
-                                            updatesQueue:updatesQueue];
+        [[BZRPurchaseManager alloc] initWithPaymentQueue:paymentQueue applicationUserID:nil];
     expect(purchaseManager).toNot.beNil();
   });
-  
+
   it(@"should initialize with application user identifier", ^{
     BZRPurchaseManager *purchaseManager =
-        [[BZRPurchaseManager alloc] initWithPaymentQueue:paymentQueue
-                                       applicationUserId:@"userID"
-                                   unhandledUpdatesBlock: ^(SKPaymentTransaction *){}
-                                            updatesQueue:updatesQueue];
+        [[BZRPurchaseManager alloc] initWithPaymentQueue:paymentQueue applicationUserID:@"userID"];
     expect(purchaseManager).toNot.beNil();
+  });
+});
+
+context(@"deallocating object", ^{
+  it(@"should complete when object is deallocated", ^{
+    BZRPurchaseManager __weak *weakPurchaseManager;
+    LLSignalTestRecorder *recorder;
+
+    transaction.transactionState = SKPaymentTransactionStatePurchasing;
+
+    @autoreleasepool {
+      BZRPurchaseManager *purchaseManager =
+          [[BZRPurchaseManager alloc] initWithPaymentQueue:paymentQueue applicationUserID:nil];
+      weakPurchaseManager = purchaseManager;
+
+      recorder = [[purchaseManager purchaseProduct:product quantity:1] testRecorder];
+      [purchaseManager paymentQueue:paymentQueue paymentTransactionsUpdated:@[transaction]];
+    }
+
+    expect(weakPurchaseManager).to.beNil();
+    expect(recorder).will.complete();
   });
 });
 
 context(@"payment creation", ^{
-  __block BZRPurchaseManager *purchaseManager;
-  
-  beforeEach(^{
-    purchaseManager = [[BZRPurchaseManager alloc] initWithPaymentQueue:paymentQueue
-                                                     applicationUserId:nil
-                                                 unhandledUpdatesBlock: ^(SKPaymentTransaction *){}
-                                                          updatesQueue:updatesQueue];
-  });
-  
-  it(@"should add payment to queue when purchasing", ^{
-    SKProduct *product =  BZRMockProductWithIdentifier(@"foo");
-    SKPayment *payment = [SKPayment paymentWithProduct:product];
-    OCMExpect([paymentQueue addPayment:payment]);
-    [purchaseManager purchaseProduct:product quantity:1
-                         updateBlock:^(SKPaymentTransaction *){}];
-    OCMVerifyAllWithDelay(paymentQueue, 0.01);
+  it(@"should add payment to queue with correct userID when purchasing", ^{
+    SKMutablePayment *payment = [SKMutablePayment paymentWithProduct:product];
+    payment.quantity = 1337;
+    payment.applicationUsername = @"foo";
+    paymentQueue.expectedPaymentForAddPayment = payment;
+
+    BZRPurchaseManager *purchaseManager =
+        [[BZRPurchaseManager alloc] initWithPaymentQueue:paymentQueue
+                                       applicationUserID:payment.applicationUsername];
+
+    [[purchaseManager purchaseProduct:product quantity:payment.quantity] testRecorder];
   });
 });
 
-context(@"single payment update forwarding", ^{
-  __block id<SKPaymentTransactionObserver> transactionObserver;
-  __block NSMutableArray<BZRFakePaymentTransaction *> *unhandledTransactionsLog;
+context(@"payment update forwarding", ^{
   __block BZRPurchaseManager *purchaseManager;
-  __block NSMutableArray<BZRFakePaymentTransaction *> *updateLog;
-  __block BZRTransactionUpdateBlock updateBlock;
-  __block SKProduct *product;
-  __block SKPayment *payment;
-  
-  beforeEach(^{
-    OCMStub([paymentQueue addTransactionObserver:OCMOCK_ANY]).andDo(^(NSInvocation *invocation) {
-      __unsafe_unretained id<SKPaymentTransactionObserver> _transactionObserver;
-      [invocation getArgument:&_transactionObserver atIndex:2];
-      transactionObserver = _transactionObserver;
-    });
-    unhandledTransactionsLog = [[NSMutableArray alloc] init];
-    purchaseManager = [[BZRPurchaseManager alloc] initWithPaymentQueue:paymentQueue
-                                                     applicationUserId:nil
-                                                 unhandledUpdatesBlock:
-                           BZRUpdateBlockWithLog(unhandledTransactionsLog)
-                                                          updatesQueue:updatesQueue];
-    updateLog = [[NSMutableArray alloc] init];
-    updateBlock = BZRUpdateBlockWithLog(updateLog);
-    product = BZRMockProductWithIdentifier(@"foo");
-    payment = [SKPayment paymentWithProduct:product];
-  });
-  
-  it(@"should forward transaction updates for successfull payments", ^{
-    [purchaseManager purchaseProduct:product quantity:1 updateBlock:updateBlock];
-    
-    BZRFakePaymentTransaction *transaction =
-        [[BZRFakePaymentTransaction alloc] initWithPayment:payment];
-    transaction.transactionState = SKPaymentTransactionStatePurchasing;
-    [transactionObserver paymentQueue:paymentQueue updatedTransactions:@[transaction]];
-    expect([updateLog lastObject]).will.equal(transaction);
-    
-    transaction.transactionState = SKPaymentTransactionStatePurchased;
-    [transactionObserver paymentQueue:paymentQueue updatedTransactions:@[transaction]];
-    expect([updateLog lastObject]).will.equal(transaction);
-    expect([updateLog count]).will.equal(2);
-    expect([unhandledTransactionsLog count]).will.equal(0);
-  });
-  
-  it(@"should forward transaction updates for deferred payments", ^{
-    [purchaseManager purchaseProduct:product quantity:1 updateBlock:updateBlock];
-    
-    BZRFakePaymentTransaction *transaction =
-        [[BZRFakePaymentTransaction alloc] initWithPayment:payment];
-    transaction.transactionState = SKPaymentTransactionStateDeferred;
-    [transactionObserver paymentQueue:paymentQueue updatedTransactions:@[transaction]];
-    expect([updateLog lastObject]).will.equal(transaction);
-    
-    transaction.transactionState = SKPaymentTransactionStateFailed;
-    [transactionObserver paymentQueue:paymentQueue updatedTransactions:@[transaction]];
-    expect([updateLog lastObject]).will.equal(transaction);
-    expect([updateLog count]).will.equal(2);
-    expect([unhandledTransactionsLog count]).will.equal(0);
-  });
-  
-  it(@"should forward transaction updates for eventually failing payments", ^{
-    [purchaseManager purchaseProduct:product quantity:1 updateBlock:updateBlock];
-    
-    BZRFakePaymentTransaction *transaction =
-        [[BZRFakePaymentTransaction alloc] initWithPayment:payment];
-    transaction.transactionState = SKPaymentTransactionStatePurchasing;
-    [transactionObserver paymentQueue:paymentQueue updatedTransactions:@[transaction]];
-    expect([updateLog lastObject]).will.equal(transaction);
-    
-    transaction.transactionState = SKPaymentTransactionStateFailed;
-    [transactionObserver paymentQueue:paymentQueue updatedTransactions:@[transaction]];
-    expect([updateLog lastObject]).will.equal(transaction);
-    expect([updateLog count]).will.equal(2);
-    expect([unhandledTransactionsLog count]).will.equal(0);
-  });
-  
-  it(@"should forward transaction updates for immediately failing payments", ^{
-    [purchaseManager purchaseProduct:product quantity:1 updateBlock:updateBlock];
+  __block LLSignalTestRecorder *unhandledTransactionsRecorder;
 
-    BZRFakePaymentTransaction *transaction =
-        [[BZRFakePaymentTransaction alloc] initWithPayment:payment];
-    transaction.transactionState = SKPaymentTransactionStateFailed;
-    [transactionObserver paymentQueue:paymentQueue updatedTransactions:@[transaction]];
-    expect([updateLog lastObject]).will.equal(transaction);
-    expect([updateLog count]).will.equal(1);
-    expect([unhandledTransactionsLog count]).will.equal(0);
-  });
-  
-  it(@"should ignore restored transactions", ^{
-    [purchaseManager purchaseProduct:product quantity:1 updateBlock:updateBlock];
-    
-    BZRFakePaymentTransaction *transaction =
-        [[BZRFakePaymentTransaction alloc] initWithPayment:payment];
-    transaction.transactionState = SKPaymentTransactionStateRestored;
-    [transactionObserver paymentQueue:paymentQueue updatedTransactions:@[transaction]];
-    expect([updateLog lastObject]).will.beNil();
-    expect([updateLog count]).will.equal(0);
-    expect([unhandledTransactionsLog count]).will.equal(0);
-  });
-  
-  it(@"should forward purchased transactions as unhandled for existing payments if they got no \
-     updates yet", ^{
-    [purchaseManager purchaseProduct:product quantity:1 updateBlock:updateBlock];
-    
-    BZRFakePaymentTransaction *transaction =
-      [[BZRFakePaymentTransaction alloc] initWithPayment:payment];
-    transaction.transactionState = SKPaymentTransactionStatePurchased;
-    [transactionObserver paymentQueue:paymentQueue updatedTransactions:@[transaction]];
-    expect([updateLog lastObject]).will.beNil();
-    expect([updateLog count]).will.equal(0);
-    expect([unhandledTransactionsLog lastObject]).will.equal(transaction);
-    expect([unhandledTransactionsLog count]).will.equal(1);
-  });
-  
-  it(@"should forward purchasing transactions as unhandled if no matching payments exist", ^{
-     BZRFakePaymentTransaction *transaction =
-         [[BZRFakePaymentTransaction alloc] initWithPayment:payment];
-     transaction.transactionState = SKPaymentTransactionStatePurchasing;
-     [transactionObserver paymentQueue:paymentQueue updatedTransactions:@[transaction]];
-     expect([updateLog lastObject]).will.beNil();
-     expect([updateLog count]).will.equal(0);
-     expect([unhandledTransactionsLog lastObject]).will.equal(transaction);
-     expect([unhandledTransactionsLog count]).will.equal(1);
-   });
-  
-  it(@"should forward deferred transactions as unhandled if no matching payments exist", ^{
-    BZRFakePaymentTransaction *transaction =
-        [[BZRFakePaymentTransaction alloc] initWithPayment:payment];
-    transaction.transactionState = SKPaymentTransactionStateDeferred;
-    [transactionObserver paymentQueue:paymentQueue updatedTransactions:@[transaction]];
-    expect([updateLog lastObject]).will.beNil();
-    expect([updateLog count]).will.equal(0);
-    expect([unhandledTransactionsLog lastObject]).will.equal(transaction);
-    expect([unhandledTransactionsLog count]).will.equal(1);
-  });
-  
-  it(@"should forward purchased transactions as unhandled if no matching payments exist", ^{
-    BZRFakePaymentTransaction *transaction =
-        [[BZRFakePaymentTransaction alloc] initWithPayment:payment];
-    transaction.transactionState = SKPaymentTransactionStatePurchased;
-    [transactionObserver paymentQueue:paymentQueue updatedTransactions:@[transaction]];
-    expect([unhandledTransactionsLog lastObject]).will.equal(transaction);
-    expect([updateLog count]).will.equal(0);
-    expect([unhandledTransactionsLog count]).will.equal(1);
-  });
-});
-
-context(@"identical payments update forwarding", ^{
-  __block id<SKPaymentTransactionObserver> transactionObserver;
-  __block BZRPurchaseManager *purchaseManager;
-  __block NSMutableArray<BZRFakePaymentTransaction *> *updateLog;
-  __block BZRTransactionUpdateBlock updateBlock;
-  __block NSMutableArray<BZRFakePaymentTransaction *> *otherUpdateLog;
-  __block BZRTransactionUpdateBlock otherUpdateBlock;
-  __block SKProduct *product;
-  __block SKPayment *payment;
-  __block SKPayment *otherPayment;
-  
   beforeEach(^{
-    OCMStub([paymentQueue addTransactionObserver:OCMOCK_ANY]).andDo(^(NSInvocation *invocation) {
-      __unsafe_unretained id<SKPaymentTransactionObserver> _transactionObserver;
-      [invocation getArgument:&_transactionObserver atIndex:2];
-      transactionObserver = _transactionObserver;
+    purchaseManager =
+        [[BZRPurchaseManager alloc] initWithPaymentQueue:paymentQueue applicationUserID:nil];
+    unhandledTransactionsRecorder = [purchaseManager.unhandledTransactionsSignal testRecorder];
+  });
+
+  it(@"should forward updated transactions as unhandled if no purchase was requested", ^{
+    transaction.transactionState = SKPaymentTransactionStatePurchasing;
+    [purchaseManager paymentQueue:paymentQueue paymentTransactionsUpdated:@[transaction]];
+    transaction.transactionState = SKPaymentTransactionStateDeferred;
+    [purchaseManager paymentQueue:paymentQueue paymentTransactionsUpdated:@[transaction]];
+    transaction.transactionState = SKPaymentTransactionStatePurchased;
+    [purchaseManager paymentQueue:paymentQueue paymentTransactionsUpdated:@[transaction]];
+    transaction.transactionState = SKPaymentTransactionStateFailed;
+    [purchaseManager paymentQueue:paymentQueue paymentTransactionsUpdated:@[transaction]];
+
+    expect(unhandledTransactionsRecorder).will
+        .sendValues(@[transaction, transaction, transaction, transaction]);
+  });
+
+  it(@"should not forward removed transactions as unhandled if no purchase was requested", ^{
+    transaction.transactionState = SKPaymentTransactionStatePurchased;
+    [purchaseManager paymentQueue:paymentQueue paymentTransactionsRemoved:@[transaction]];
+    transaction.transactionState = SKPaymentTransactionStateFailed;
+    [purchaseManager paymentQueue:paymentQueue paymentTransactionsRemoved:@[transaction]];
+
+    purchaseManager = nil;
+    expect(unhandledTransactionsRecorder).will.complete();
+    expect(unhandledTransactionsRecorder).will.sendValuesWithCount(0);
+  });
+
+  context(@"purchase was requested", ^{
+    __block LLSignalTestRecorder *recorder;
+
+    beforeEach(^{
+      recorder = [[purchaseManager purchaseProduct:product quantity:1] testRecorder];
     });
-    purchaseManager = [[BZRPurchaseManager alloc] initWithPaymentQueue:paymentQueue
-                                                     applicationUserId:nil
-                                                 unhandledUpdatesBlock: ^(SKPaymentTransaction *){}
-                                                          updatesQueue:updatesQueue];
-    updateLog = [[NSMutableArray alloc] init];
-    updateBlock = BZRUpdateBlockWithLog(updateLog);
-    otherUpdateLog = [[NSMutableArray alloc] init];
-    otherUpdateBlock = BZRUpdateBlockWithLog(otherUpdateLog);
-    product = BZRMockProductWithIdentifier(@"foo");
-    payment = [SKPayment paymentWithProduct:product];
-    otherPayment = [SKPayment paymentWithProduct:product];
-  });
-  
-  it(@"should forward transaction updates correctly", ^{
-    [purchaseManager purchaseProduct:product quantity:1 updateBlock:updateBlock];
-    [purchaseManager purchaseProduct:product quantity:1 updateBlock:otherUpdateBlock];
-    
-    BZRFakePaymentTransaction *transaction =
-        [[BZRFakePaymentTransaction alloc] initWithPayment:payment];
-    BZRFakePaymentTransaction *otherTransaction =
-        [[BZRFakePaymentTransaction alloc] initWithPayment:otherPayment];
-    transaction.transactionState = SKPaymentTransactionStatePurchasing;
-    otherTransaction.transactionState = SKPaymentTransactionStatePurchasing;
-    
-    [transactionObserver paymentQueue:paymentQueue
-                  updatedTransactions:@[transaction]];
-    expect([updateLog lastObject]).will.equal(transaction);
-    [transactionObserver paymentQueue:paymentQueue
-                  updatedTransactions:@[otherTransaction]];
-    expect([otherUpdateLog lastObject]).will.equal(otherTransaction);
-    
-    transaction.transactionState = SKPaymentTransactionStatePurchased;
-    otherTransaction.transactionState = SKPaymentTransactionStatePurchased;
-    [transactionObserver paymentQueue:paymentQueue
-                  updatedTransactions:@[transaction]];
-    expect([updateLog lastObject]).will.equal(transaction);
-    [transactionObserver paymentQueue:paymentQueue
-                  updatedTransactions:@[otherTransaction]];
-    expect([otherUpdateLog lastObject]).will.equal(otherTransaction);
-  });
-  
-  it(@"should forward simultaneous transaction updates correctly", ^{
-    [purchaseManager purchaseProduct:product quantity:1 updateBlock:updateBlock];
-    [purchaseManager purchaseProduct:product quantity:1 updateBlock:otherUpdateBlock];
-    
-    BZRFakePaymentTransaction *transaction =
-        [[BZRFakePaymentTransaction alloc] initWithPayment:payment];
-    BZRFakePaymentTransaction *otherTransaction =
-        [[BZRFakePaymentTransaction alloc] initWithPayment:otherPayment];
-    transaction.transactionState = SKPaymentTransactionStatePurchasing;
-    otherTransaction.transactionState = SKPaymentTransactionStatePurchasing;
-    
-    [transactionObserver paymentQueue:paymentQueue
-                  updatedTransactions:@[transaction, otherTransaction]];
-    expect([updateLog lastObject]).will.equal(transaction);
-    expect([otherUpdateLog lastObject]).will.equal(otherTransaction);
-    
-    transaction.transactionState = SKPaymentTransactionStatePurchased;
-    otherTransaction.transactionState = SKPaymentTransactionStatePurchased;
-    [transactionObserver paymentQueue:paymentQueue
-                  updatedTransactions:@[transaction, otherTransaction]];
-    expect([updateLog lastObject]).will.equal(transaction);
-    expect([otherUpdateLog lastObject]).will.equal(otherTransaction);
-  });
-  
-  it(@"should forward simultaneous transaction updates when one payment fails", ^{
-    [purchaseManager purchaseProduct:product quantity:1 updateBlock:updateBlock];
-    [purchaseManager purchaseProduct:product quantity:1 updateBlock:otherUpdateBlock];
-    
-    BZRFakePaymentTransaction *transaction =
-        [[BZRFakePaymentTransaction alloc] initWithPayment:payment];
-    BZRFakePaymentTransaction *otherTransaction =
-        [[BZRFakePaymentTransaction alloc] initWithPayment:otherPayment];
-    transaction.transactionState = SKPaymentTransactionStatePurchasing;
-    otherTransaction.transactionState = SKPaymentTransactionStatePurchasing;
-    
-    [transactionObserver paymentQueue:paymentQueue
-                  updatedTransactions:@[transaction, otherTransaction]];
-    expect([updateLog lastObject]).will.equal(transaction);
-    expect([otherUpdateLog lastObject]).will.equal(otherTransaction);
-    
-    transaction.transactionState = SKPaymentTransactionStatePurchased;
-    otherTransaction.transactionState = SKPaymentTransactionStateFailed;
-    [transactionObserver paymentQueue:paymentQueue
-                  updatedTransactions:@[transaction, otherTransaction]];
-    expect([updateLog lastObject]).will.equal(transaction);
-    expect([otherUpdateLog lastObject]).will.equal(otherTransaction);
+
+    it(@"should not send updates for removed transaction without update first", ^{
+      transaction.transactionState = SKPaymentTransactionStatePurchased;
+      [purchaseManager paymentQueue:paymentQueue paymentTransactionsRemoved:@[transaction]];
+
+      purchaseManager = nil;
+      expect(recorder).will.complete();
+      expect(unhandledTransactionsRecorder).will.complete();
+      expect(recorder).will.sendValuesWithCount(0);
+      expect(unhandledTransactionsRecorder).will.sendValuesWithCount(0);
+    });
+
+    it(@"should send transaction updates for successful payments", ^{
+      transaction.transactionState = SKPaymentTransactionStatePurchasing;
+      [purchaseManager paymentQueue:paymentQueue paymentTransactionsUpdated:@[transaction]];
+      transaction.transactionState = SKPaymentTransactionStateDeferred;
+      [purchaseManager paymentQueue:paymentQueue paymentTransactionsUpdated:@[transaction]];
+      transaction.transactionState = SKPaymentTransactionStatePurchased;
+      [purchaseManager paymentQueue:paymentQueue paymentTransactionsUpdated:@[transaction]];
+      [purchaseManager paymentQueue:paymentQueue paymentTransactionsRemoved:@[transaction]];
+
+      purchaseManager = nil;
+      expect(recorder).will.complete();
+      expect(recorder).will.sendValues(@[transaction, transaction, transaction]);
+      expect(unhandledTransactionsRecorder).will.complete();
+      expect(unhandledTransactionsRecorder).will.sendValuesWithCount(0);
+    });
+
+    it(@"should err for failed payment", ^{
+      transaction.transactionState = SKPaymentTransactionStateFailed;
+      transaction.error = [NSError lt_errorWithCode:1337];
+      [purchaseManager paymentQueue:paymentQueue paymentTransactionsUpdated:@[transaction]];
+
+      expect(recorder).will.matchError(^BOOL(NSError *error) {
+        return error.lt_isLTDomain && error.code == BZRErrorCodePurchaseFailed &&
+            [error.bzr_failingTransaction isEqual:transaction] &&
+            error.lt_underlyingError == transaction.error;
+      });
+      purchaseManager = nil;
+      expect(unhandledTransactionsRecorder).will.complete();
+      expect(unhandledTransactionsRecorder).will.sendValuesWithCount(0);
+    });
+
+    it(@"should forward restored purchased and deferred transactions to unhandled transaction if "
+       "purchasing transaction wasn't called before", ^{
+      transaction.transactionState = SKPaymentTransactionStateRestored;
+      [purchaseManager paymentQueue:paymentQueue paymentTransactionsUpdated:@[transaction]];
+      transaction.transactionState = SKPaymentTransactionStatePurchased;
+      [purchaseManager paymentQueue:paymentQueue paymentTransactionsUpdated:@[transaction]];
+      transaction.transactionState = SKPaymentTransactionStateDeferred;
+      [purchaseManager paymentQueue:paymentQueue paymentTransactionsUpdated:@[transaction]];
+      transaction.transactionState = SKPaymentTransactionStatePurchasing;
+      [purchaseManager paymentQueue:paymentQueue paymentTransactionsUpdated:@[transaction]];
+         transaction.transactionState = SKPaymentTransactionStatePurchased;
+      [purchaseManager paymentQueue:paymentQueue paymentTransactionsRemoved:@[transaction]];
+
+      expect(recorder).will.complete();
+      expect(recorder).will.sendValues(@[transaction]);
+      expect(unhandledTransactionsRecorder).will
+         .sendValues(@[transaction, transaction, transaction]);
+    });
+
+    context(@"identical payments update forwarding", ^{
+      __block SKPayment *otherPayment;
+      __block BZRFakePaymentTransaction *otherTransaction;
+
+      beforeEach(^{
+        otherPayment = [SKPayment paymentWithProduct:product];
+        otherTransaction = [[BZRFakePaymentTransaction alloc] initWithPayment:otherPayment];
+      });
+
+      it(@"should forward second transaction to unhandled when only one purchase was requested", ^{
+        transaction.transactionState = SKPaymentTransactionStatePurchasing;
+        otherTransaction.transactionState = SKPaymentTransactionStateFailed;
+
+        [purchaseManager paymentQueue:paymentQueue paymentTransactionsUpdated:@[transaction]];
+        expect(recorder).will.sendValues(@[transaction]);
+        [purchaseManager paymentQueue:paymentQueue paymentTransactionsUpdated:@[otherTransaction]];
+        expect(unhandledTransactionsRecorder).will.sendValues(@[otherTransaction]);
+      });
+
+      context(@"two purchases requested", ^{
+        __block LLSignalTestRecorder *otherRecorder;
+
+        beforeEach(^{
+          otherRecorder = [[purchaseManager purchaseProduct:product quantity:1] testRecorder];
+        });
+
+        it(@"should forward transaction updates correctly", ^{
+          transaction.transactionState = SKPaymentTransactionStatePurchasing;
+          otherTransaction.transactionState = SKPaymentTransactionStatePurchasing;
+
+          [purchaseManager paymentQueue:paymentQueue paymentTransactionsUpdated:@[transaction]];
+          expect(recorder).will.sendValues(@[transaction]);
+          [purchaseManager paymentQueue:paymentQueue
+             paymentTransactionsUpdated:@[otherTransaction]];
+          expect(otherRecorder).will.sendValues(@[otherTransaction]);
+
+          transaction.transactionState = SKPaymentTransactionStatePurchased;
+          [purchaseManager paymentQueue:paymentQueue paymentTransactionsUpdated:@[transaction]];
+          expect(recorder).will.sendValues(@[transaction, transaction]);
+          otherTransaction.transactionState = SKPaymentTransactionStateDeferred;
+          [purchaseManager paymentQueue:paymentQueue
+             paymentTransactionsUpdated:@[otherTransaction]];
+          expect(otherRecorder).will.sendValues(@[otherTransaction, otherTransaction]);
+        });
+
+        it(@"should forward transactions updates correctly when one payment completes", ^{
+          transaction.transactionState = SKPaymentTransactionStatePurchasing;
+          otherTransaction.transactionState = SKPaymentTransactionStatePurchasing;
+
+          [purchaseManager paymentQueue:paymentQueue
+             paymentTransactionsUpdated:@[transaction, otherTransaction]];
+
+          otherTransaction.transactionState = SKPaymentTransactionStatePurchased;
+          [purchaseManager paymentQueue:paymentQueue paymentTransactionsRemoved:@[transaction]];
+          expect(recorder).will.complete();
+          expect(recorder).will.sendValues(@[transaction]);
+          expect(otherRecorder).will.sendValues(@[otherTransaction]);
+        });
+
+        it(@"should forward simultaneous transaction updates correctly", ^{
+          transaction.transactionState = SKPaymentTransactionStatePurchasing;
+          otherTransaction.transactionState = SKPaymentTransactionStatePurchasing;
+          [purchaseManager paymentQueue:paymentQueue
+             paymentTransactionsUpdated:@[transaction, otherTransaction]];
+          expect(recorder).will.sendValues(@[transaction]);
+          expect(otherRecorder).will.sendValues(@[otherTransaction]);
+
+          transaction.transactionState = SKPaymentTransactionStatePurchased;
+          otherTransaction.transactionState = SKPaymentTransactionStateRestored;
+          otherTransaction.error = [NSError lt_errorWithCode:1337];
+          [purchaseManager paymentQueue:paymentQueue
+             paymentTransactionsUpdated:@[transaction, otherTransaction]];
+          expect(recorder).will.sendValues(@[transaction, transaction]);
+          expect(otherRecorder).will.sendValues(@[otherTransaction, otherTransaction]);
+        });
+
+        it(@"should forward simultaneous transaction updates when one payment fails", ^{
+          transaction.transactionState = SKPaymentTransactionStatePurchasing;
+          otherTransaction.transactionState = SKPaymentTransactionStateFailed;
+          otherTransaction.error = [NSError lt_errorWithCode:1337];
+
+          [purchaseManager paymentQueue:paymentQueue
+             paymentTransactionsUpdated:@[transaction, otherTransaction]];
+          expect(recorder).will.sendValues(@[transaction]);
+          expect(otherRecorder).will.matchError(^BOOL(NSError *error) {
+            return error.lt_isLTDomain && error.code == BZRErrorCodePurchaseFailed &&
+                [error.bzr_failingTransaction isEqual:otherTransaction] &&
+                error.lt_underlyingError == otherTransaction.error;
+          });
+        });
+
+        it(@"should forward simultaneous transactions removals correctly", ^{
+          transaction.transactionState = SKPaymentTransactionStatePurchasing;
+          otherTransaction.transactionState = SKPaymentTransactionStatePurchasing;
+          [purchaseManager paymentQueue:paymentQueue
+              paymentTransactionsUpdated:@[transaction, otherTransaction]];
+
+          transaction.transactionState = SKPaymentTransactionStatePurchased;
+          otherTransaction.transactionState = SKPaymentTransactionStatePurchased;
+          [purchaseManager paymentQueue:paymentQueue
+              paymentTransactionsRemoved:@[transaction, otherTransaction]];
+
+          expect(recorder).will.complete();
+          expect(otherRecorder).will.complete();
+        });
+      });
+    });
   });
 });
 
