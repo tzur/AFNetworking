@@ -202,6 +202,10 @@ NS_ASSUME_NONNULL_BEGIN
   return nil;
 }
 
+- (nullable NSString *)titleForSection:(NSInteger)section {
+  return self.sectionTitles[@(section)];
+}
+
 #pragma mark -
 #pragma mark UICollectionViewDataSource
 #pragma mark -

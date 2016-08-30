@@ -17,6 +17,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Title associated with this data.
 @property (strong, nonatomic, nullable) NSString *title;
 
+/// Mapping of sections to their respective titles.
+@property (strong, nonatomic) NSDictionary<NSNumber *, NSString *> *sectionTitles;
+
 /// \c YES if the reciever has any data.
 @property (readonly, nonatomic) BOOL hasData;
 

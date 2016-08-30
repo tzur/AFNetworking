@@ -39,6 +39,10 @@ NS_ASSUME_NONNULL_BEGIN
   return nil;
 }
 
+- (nullable NSString *)titleForSection:(NSInteger)section {
+  return self.sectionTitles[@(section)];
+}
+
 - (void)setCollectionView:(nullable UICollectionView *)collectionView {
   _collectionView = collectionView;
   self.collectionView.dataSource = self;

@@ -441,20 +441,34 @@ NS_ASSUME_NONNULL_BEGIN
 - (CGSize)collectionView:(UICollectionView *)collectionView
                   layout:(UICollectionViewLayout __unused *)collectionViewLayout
     referenceSizeForHeaderInSection:(NSInteger)section {
+  if ([self numberOfActiveSectionsInCollectionView:collectionView startingAt:0] < 2 ||
+      ![collectionView numberOfItemsInSection:section] ||
+      ![self.dataSource titleForSection:section]) {
+    return CGSizeZero;
+  }
+
+  return self.headerCellSize;
+}
+
+- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView
+                        layout:(UICollectionViewLayout __unused *)collectionViewLayout
+        insetForSectionAtIndex:(NSInteger)section {
+  if (![self.collectionView numberOfItemsInSection:section] ||
+      self.collectionView.numberOfSections <= section ||
+      [self numberOfActiveSectionsInCollectionView:collectionView startingAt:section] == 1) {
+    return UIEdgeInsetsZero;
+  }
+
+  return UIEdgeInsetsMake(0, 0, self.configuration.minimumLineSpacing, 0);
+}
+
+- (NSInteger)numberOfActiveSectionsInCollectionView:(UICollectionView *)collectionView
+                                         startingAt:(NSInteger)section {
   NSInteger numberOfActiveSections = 0;
-  for (NSInteger i = 0; i < collectionView.numberOfSections; ++i) {
+  for (NSInteger i = section; i < collectionView.numberOfSections; ++i) {
     numberOfActiveSections += [collectionView numberOfItemsInSection:i] ? 1 : 0;
   }
-  
-  if (numberOfActiveSections < 2) {
-    return CGSizeZero;
-  }
-  
-  if (![collectionView numberOfItemsInSection:section]) {
-    return CGSizeZero;
-  }
-  
-  return self.headerCellSize;
+  return numberOfActiveSections;
 }
 
 @end
