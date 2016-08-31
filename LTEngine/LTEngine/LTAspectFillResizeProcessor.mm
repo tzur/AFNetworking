@@ -41,6 +41,7 @@
       CGRect outputRect = CGRectMake(origin.width, origin.height,
                                      aspectFillSize.width, aspectFillSize.height);
 
+      CGContextSetBlendMode(context, kCGBlendModeCopy);
       CGContextDrawImage(context, outputRect, imageRef);
     }];
   }];
