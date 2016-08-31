@@ -9,7 +9,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Holds the observer posting data.
 @interface CUIObserverPostingData : NSObject
-@property (strong, nonatomic) id observer;
+@property (weak, nonatomic) id observer;
 @property (nonatomic) SEL notificationSelector;
 @property (strong, nonatomic, nullable) NSString *notificationName;
 @property (strong, nonatomic, nullable) id notificationSender;
