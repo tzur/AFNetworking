@@ -12,6 +12,8 @@
 		650BB33E1D465389008648A3 /* libLTKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 650BB3221D465335008648A3 /* libLTKit.a */; };
 		650BB33F1D465389008648A3 /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B425EE51CA6D218001C457E /* libOCMock.a */; };
 		650BB3401D465389008648A3 /* libSpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B425F021CA6D218001C457E /* libSpecta.a */; };
+		8414247D1D770FDC00968C36 /* PTUErrorViewProvider.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8414247C1D770FDC00968C36 /* PTUErrorViewProvider.mm */; };
+		841424A01D77126600968C36 /* PTUErrorViewProvider.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8414249F1D77126600968C36 /* PTUErrorViewProvider.mm */; };
 		841FA8C91D6D966A009C44A9 /* PTUHeaderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 841FA8C81D6D966A009C44A9 /* PTUHeaderCell.m */; };
 		8428F3761C676A480007B0A5 /* PTUAlbumChangesetProviderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8428F3751C676A480007B0A5 /* PTUAlbumChangesetProviderSpec.mm */; };
 		8428F3AF1C68F7590007B0A5 /* PTUChangesetSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8428F3AE1C68F7590007B0A5 /* PTUChangesetSpec.mm */; };
@@ -369,6 +371,9 @@
 		650BB31C1D465335008648A3 /* LTKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LTKit.xcodeproj; path = ../LTKit/LTKit.xcodeproj; sourceTree = "<group>"; };
 		650BB3251D46533E008648A3 /* extobjc.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = extobjc.xcodeproj; path = ../third_party/libextobjc/extobjc.xcodeproj; sourceTree = "<group>"; };
 		650BB3341D465359008648A3 /* TestHost.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TestHost.xcodeproj; path = ../../Foundations/TestHost.xcodeproj; sourceTree = "<group>"; };
+		8414247B1D770FDC00968C36 /* PTUErrorViewProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTUErrorViewProvider.h; sourceTree = "<group>"; };
+		8414247C1D770FDC00968C36 /* PTUErrorViewProvider.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PTUErrorViewProvider.mm; sourceTree = "<group>"; };
+		8414249F1D77126600968C36 /* PTUErrorViewProvider.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PTUErrorViewProvider.mm; sourceTree = "<group>"; };
 		8414ED571C624E6B00014DD1 /* PTUAlbumChangesetProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTUAlbumChangesetProvider.h; sourceTree = "<group>"; };
 		8414ED581C624E6B00014DD1 /* PTUAlbumChangesetProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTUAlbumChangesetProvider.m; sourceTree = "<group>"; };
 		841FA8A61D6D92D2009C44A9 /* PTUHeaderCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PTUHeaderCell.h; sourceTree = "<group>"; };
@@ -634,6 +639,7 @@
 				84AA15001D3A17C7002EE833 /* PTUCompoundChangesetProviderSpec.mm */,
 				84BE48DC1D2E43F60090105C /* PTUDataSourceProviderSpec.mm */,
 				8449EC351D10443E008FD345 /* PTUDataSourceSpec.mm */,
+				8414249F1D77126600968C36 /* PTUErrorViewProvider.mm */,
 				84BE48DD1D2E43F60090105C /* PTUFakeDataSource.h */,
 				84BE48DE1D2E43F60090105C /* PTUFakeDataSource.m */,
 				84CCAFAA1D64A8AF00BD7323 /* PTUFakeImageCellViewModel.h */,
@@ -745,6 +751,8 @@
 				84A6CE1C1D392502003369E0 /* PTUCompoundChangesetProvider.m */,
 				84BE49021D2E44150090105C /* PTUDataSourceProvider.h */,
 				84BE49031D2E44150090105C /* PTUDataSourceProvider.m */,
+				8414247B1D770FDC00968C36 /* PTUErrorViewProvider.h */,
+				8414247C1D770FDC00968C36 /* PTUErrorViewProvider.mm */,
 				8482E0131D2143690084D565 /* PTUCollectionViewConfiguration.h */,
 				8482E0141D2143690084D565 /* PTUCollectionViewConfiguration.mm */,
 				84EA94B51D0702A90052455E /* PTUDataSource.h */,
@@ -1331,6 +1339,7 @@
 				848E09781C59212F001D8368 /* EXPMatchers+complete.m in Sources */,
 				848E09731C59212F001D8368 /* LLSignalTestRecorder.m in Sources */,
 				84884C7F1C71D83000DBB987 /* PTUChangesetMoveSpec.mm in Sources */,
+				841424A01D77126600968C36 /* PTUErrorViewProvider.mm in Sources */,
 				8449EC361D10443E008FD345 /* PTUDataSourceSpec.mm in Sources */,
 				84BE48E21D2E43F60090105C /* PTUDataSourceProviderSpec.mm in Sources */,
 				848E097C1C59212F001D8368 /* EXPMatchers+matchError.m in Sources */,
@@ -1375,6 +1384,7 @@
 				841FA8C91D6D966A009C44A9 /* PTUHeaderCell.m in Sources */,
 				84FF72F61C8EED9900D1DA9F /* PTUChangesetMove.m in Sources */,
 				84FF72F41C8EED9600D1DA9F /* PTUAlbumChangesetProvider.m in Sources */,
+				8414247D1D770FDC00968C36 /* PTUErrorViewProvider.mm in Sources */,
 				8449B5DB1D1AD5410054272C /* PTUChangesetMetadata.m in Sources */,
 				84765E121D29393600D3D5C5 /* PTUChangesetProviderReverser.m in Sources */,
 				84A0DC3D1C8747AE005A98F3 /* PTUImageCellViewModel.m in Sources */,

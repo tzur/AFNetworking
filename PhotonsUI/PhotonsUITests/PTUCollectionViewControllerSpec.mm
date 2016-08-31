@@ -3,14 +3,16 @@
 
 #import "PTUCollectionViewController.h"
 
+#import <Photons/NSError+Photons.h>
+
+#import "PTNTestUtils.h"
 #import "PTUCellSizingStrategy.h"
 #import "PTUCollectionViewConfiguration.h"
 #import "PTUDataSource.h"
 #import "PTUDataSourceProvider.h"
+#import "PTUErrorViewProvider.h"
 #import "PTUFakeDataSource.h"
 #import "UIView+Retrieval.h"
-
-#import "PTNTestUtils.h"
 
 static void PTUSimulateSelection(UICollectionView *collectionView, NSIndexPath *indexPath) {
   id<UICollectionViewDelegate> delegate = collectionView.delegate;
@@ -87,7 +89,6 @@ context(@"initialization", ^{
   it(@"should add subviews on initialization", ^{
     expect([viewController.view wf_viewForAccessibilityIdentifier:@"CollectionView"]).toNot.beNil();
     expect([viewController.view wf_viewForAccessibilityIdentifier:@"Empty"]).toNot.beNil();
-    expect([viewController.view wf_viewForAccessibilityIdentifier:@"Error"]).toNot.beNil();
   });
 
   it(@"should correctly initialize with manager and URL", ^{
@@ -820,17 +821,17 @@ context(@"empty view", ^{
   });
 
   it(@"should show the view when the collection is empty and data source did not err", ^{
-    expect(!emptyView.isHidden || emptyView.alpha == 1).to.beTruthy();
+    expect(!emptyView.isHidden && emptyView.alpha == 1).to.beTruthy();
 
     dataSource.data = @[@[], @[]];
-    expect(!emptyView.isHidden || emptyView.alpha == 1).to.beTruthy();
+    expect(!emptyView.isHidden && emptyView.alpha == 1).to.beTruthy();
   });
   
   it(@"should bind new empty views and set them according to the current value", ^{
     UIView *newEmptyView = [[UIView alloc] init];
 
     viewController.emptyView = newEmptyView;
-    expect(!newEmptyView.isHidden || newEmptyView.alpha == 1).to.beTruthy();
+    expect(!newEmptyView.isHidden && newEmptyView.alpha == 1).to.beTruthy();
 
     dataSource.data = @[@[asset]];
     expect(newEmptyView.isHidden || newEmptyView.alpha == 0).to.beTruthy();
@@ -840,41 +841,104 @@ context(@"empty view", ^{
     expect(newerEmptyView.isHidden || newerEmptyView.alpha == 0).to.beTruthy();
 
     dataSource.data = @[@[]];
-    expect(!newerEmptyView.isHidden || newerEmptyView.alpha == 1).to.beTruthy();
+    expect(!newerEmptyView.isHidden && newerEmptyView.alpha == 1).to.beTruthy();
   });
 });
 
 context(@"error view", ^{
-  __block UIView *errorView;
-
-  beforeEach(^{
-    errorView = [viewController.view wf_viewForAccessibilityIdentifier:@"Error"];
-  });
-  
   it(@"should hide the view when the data source did not err", ^{
-    expect(errorView.isHidden || errorView.alpha == 0).to.beTruthy();
+    expect(viewController.errorView.isHidden || viewController.errorView.alpha == 0).to.beTruthy();
   });
   
   it(@"should show the view when the data source did err", ^{
     dataSource.error = [NSError lt_errorWithCode:1337];
-    expect(!errorView.isHidden || errorView.alpha == 1).to.beTruthy();
+    expect(!viewController.errorView.isHidden && viewController.errorView.alpha == 1).to.beTruthy();
   });
-  
-  it(@"should bind new error views and set them according to the current value", ^{
-    UIView *newErrorView = [[UIView alloc] init];
 
-    viewController.emptyView = newErrorView;
-    expect(!newErrorView.isHidden || newErrorView.alpha == 1).to.beTruthy();
+  context(@"error view provider", ^{
+    __block UIView *errorView;
+    __block id<PTUErrorViewProvider> errorViewProvider;
 
-    dataSource.error = [NSError lt_errorWithCode:1337];
-    expect(newErrorView.isHidden || newErrorView.alpha == 0).to.beTruthy();
+    beforeEach(^{
+      errorView = [[UIView alloc] init];
+      errorViewProvider = OCMProtocolMock(@protocol(PTUErrorViewProvider));
+      OCMStub([errorViewProvider errorViewForError:OCMOCK_ANY associatedURL:OCMOCK_ANY])
+          .andReturn(errorView);
+    });
 
-    UIView *newerErrorView = [[UIView alloc] init];
-    viewController.emptyView = newerErrorView;
-    expect(newerErrorView.isHidden || newerErrorView.alpha == 0).to.beTruthy();
+    it(@"should use provided error view provider", ^{
+      viewController.errorViewProvider = errorViewProvider;
 
-    dataSource.error = nil;
-    expect(!newerErrorView.isHidden || newerErrorView.alpha == 1).to.beTruthy();
+      dataSource.error = [NSError lt_errorWithCode:1337];
+      OCMVerify([errorViewProvider errorViewForError:dataSource.error associatedURL:OCMOCK_ANY]);
+      expect([errorView isDescendantOfView:viewController.view]).to.beTruthy();
+      expect(!errorView.isHidden && errorView.alpha == 1).to.beTruthy();
+
+      dataSource.error = nil;
+      expect(errorView.isHidden || errorView.alpha == 0).to.beTruthy();
+    });
+
+    it(@"should use provided error view provider retroactively", ^{
+      dataSource.error = [NSError lt_errorWithCode:1337];
+      expect([errorView isDescendantOfView:viewController.view]).to.beFalsy();
+
+      viewController.errorViewProvider = errorViewProvider;
+      OCMVerify([errorViewProvider errorViewForError:dataSource.error associatedURL:OCMOCK_ANY]);
+      expect([errorView isDescendantOfView:viewController.view]).to.beTruthy();
+      expect(!errorView.isHidden && errorView.alpha == 1).to.beTruthy();
+    });
+
+    it(@"should continue to function accross data sources", ^{
+      PTUFakeDataSource *newDataSource = [[PTUFakeDataSource alloc] init];
+      PTUDataSourceProvider *newDataSourceProvider =
+          OCMProtocolMock(@protocol(PTUDataSourceProvider));
+      OCMExpect([newDataSourceProvider dataSourceForCollectionView:OCMOCK_ANY])
+          .andReturn(dataSource);
+      OCMExpect([newDataSourceProvider dataSourceForCollectionView:OCMOCK_ANY])
+          .andReturn(newDataSource);
+
+      viewController =
+          [[PTUCollectionViewController alloc] initWithDataSourceProvider:newDataSourceProvider
+                                                     initialConfiguration:configuration];
+
+      viewController.errorViewProvider = errorViewProvider;
+      dataSource.error = [NSError lt_errorWithCode:1337];
+      expect(!errorView.isHidden && errorView.alpha == 1).to.beTruthy();
+
+      [viewController reloadData];
+      expect(errorView.isHidden || errorView.alpha == 0).to.beTruthy();
+
+      newDataSource.error = [NSError lt_errorWithCode:1338];
+      expect(!errorView.isHidden && errorView.alpha == 1).to.beTruthy();
+    });
+
+    it(@"should provide associated urls", ^{
+      viewController.errorViewProvider = errorViewProvider;
+      NSURL *url = [NSURL URLWithString:@"http://www.foo.bar"];
+
+      dataSource.error = [NSError lt_errorWithCode:1337 url:url];
+      OCMVerify([errorViewProvider errorViewForError:dataSource.error associatedURL:url]);
+
+      NSURL *descriptorURL = [NSURL URLWithString:@"http://www.foo.bar/baz"];
+      id<PTNDescriptor> descriptor = PTNCreateDescriptor(descriptorURL, @"baz", 0);
+      dataSource.error = [NSError ptn_errorWithCode:1337 associatedDescriptor:descriptor];
+      OCMVerify([errorViewProvider errorViewForError:dataSource.error associatedURL:descriptorURL]);
+
+      NSURL *descriptorsURL = [NSURL URLWithString:@"http://www.foo.bar/baz/gaz"];
+      id<PTNDescriptor> otherDescriptor = PTNCreateDescriptor(descriptorsURL, @"gaz", 0);
+      dataSource.error = [NSError ptn_errorWithCode:1337 associatedDescriptors:@[otherDescriptor]];
+      OCMVerify([errorViewProvider errorViewForError:dataSource.error
+                                       associatedURL:descriptorsURL]);
+    });
+
+    it(@"should bind new error views and set them according to the current value", ^{
+      viewController.errorViewProvider = errorViewProvider;
+      dataSource.error = [NSError lt_errorWithCode:1337];
+      expect(!errorView.isHidden && errorView.alpha == 1).to.beTruthy();
+
+      dataSource.error = nil;
+      expect(errorView.isHidden || errorView.alpha == 0).to.beTruthy();
+    });
   });
 });
 

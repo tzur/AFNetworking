@@ -53,7 +53,17 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)setData:(NSArray<NSArray<id<PTNDescriptor>> *> *)data {
   _data = data;
-  self.hasData = YES;
+  self.hasData = [self dataModelHasData];
+}
+
+- (BOOL)dataModelHasData {
+  for (NSArray *collection in self.data) {
+    if (collection.count) {
+      return YES;
+    }
+  }
+
+  return NO;
 }
 
 - (RACSignal *)didUpdateCollectionView {
