@@ -5,7 +5,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class PTUCollectionViewConfiguration;
 
-@protocol PTNAssetManager, PTUDataSourceProvider, PTNDescriptor;
+@protocol PTNAssetManager, PTNDescriptor, PTUDataSourceProvider, PTUErrorViewProvider;
 
 /// Available target positions of item being scrolled to.
 typedef NS_ENUM(NSUInteger, PTUCollectionViewScrollPosition) {
@@ -126,13 +126,20 @@ typedef NS_ENUM(NSUInteger, PTUCollectionViewScrollPosition) {
 
 /// View to display when the receiver's current \c PTUDataSource has no data, but did not err. The
 /// view will automatically track the size of the receiver's view. The default view contains a
-/// single \c UILabel containing the string "No photos".
+/// single \c UILabel containing the localized string "No photos".
 @property (strong, nonatomic) UIView *emptyView;
 
-/// View to display when the receiver's current \c PTUDataSource declares that an error occurred.
-/// The view will automatically track the size of the receiver's view. Default view contains a
-/// single \c UILabel containing the string "Error fetching data".
-@property (strong, nonatomic) UIView *errorView;
+/// Provider of views to display when the receiver's current \c PTUDataSource declares that an error
+/// occurred. The provider will be queried upon error, and the view it returns will be set as the
+/// receiver's error view, automatically tracking the size of the receiver's view. The default
+/// provider provides a constant view with a single \c UILabel containing the localized string
+/// \c "Error fetching data" for every error and url pair.
+@property (strong, nonatomic) id<PTUErrorViewProvider> errorViewProvider;
+
+/// Current view used to display when the receiver's current \c PTUDataSource declares that an error
+/// occurred. This property is set by \c errorViewProvider. The view will automatically track the
+/// size of the receiver's view.
+@property (readonly, nonatomic, nullable) UIView *errorView;
 
 @end
 

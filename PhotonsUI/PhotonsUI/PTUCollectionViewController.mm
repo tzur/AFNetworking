@@ -4,6 +4,8 @@
 #import "PTUCollectionViewController.h"
 
 #import <LTKit/LTCGExtensions.h>
+#import <LTKit/NSArray+Functional.h>
+#import <Photons/NSError+Photons.h>
 #import <Photons/PTNDescriptor.h>
 
 #import "PTUAlbumChangesetProvider.h"
@@ -13,6 +15,7 @@
 #import "PTUCollectionViewConfiguration.h"
 #import "PTUDataSource.h"
 #import "PTUDataSourceProvider.h"
+#import "PTUErrorViewProvider.h"
 #import "PTUHeaderCell.h"
 #import "PTUImageCell.h"
 #import "PTUImageCellViewModelProvider.h"
@@ -101,9 +104,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)setup {
   [self setupCollectionView];
+  [self setupTitleBinding];
   [self setupSelectionSignals];
   [self setupControlSignals];
-  [self setupTitleBinding];
   [self setupInfoViews];
   [self buildDefaultEmptyView];
   [self buildDefaultErrorView];
@@ -123,6 +126,16 @@ NS_ASSUME_NONNULL_BEGIN
     make.edges.equalTo(self.view);
   }];
 }
+
+- (void)setupTitleBinding {
+  RACSignal *dataSourceTitle = RACObserve(self, dataSource.title);
+  RAC(self, localizedTitle) = dataSourceTitle;
+  RAC(self, title) = dataSourceTitle;
+}
+
+#pragma mark -
+#pragma mark Selection and scrolling
+#pragma mark -
 
 - (void)setupSelectionSignals {
   @weakify(self);
@@ -247,11 +260,9 @@ NS_ASSUME_NONNULL_BEGIN
   }
 }
 
-- (void)setupTitleBinding {
-  RACSignal *datasourceTitle = RACObserve(self, dataSource.title);
-  RAC(self, localizedTitle) = datasourceTitle;
-  RAC(self, title) = datasourceTitle;
-}
+#pragma mark -
+#pragma mark Info views
+#pragma mark -
 
 - (void)setupInfoViews {
   @weakify(self);
@@ -262,8 +273,7 @@ NS_ASSUME_NONNULL_BEGIN
       }]
       switchToLatest]
       combineLatestWith:RACObserve(self, dataSource.error)]
-      map:^NSNumber *(RACTuple *tuple) {
-        RACTupleUnpack(NSNumber * _Nullable hasData, NSError * _Nullable error) = tuple;
+      reduceEach:(id)^NSNumber *(NSNumber * _Nullable hasData, NSError * _Nullable error) {
         return @(hasData.boolValue || error != nil);
       }];
 
@@ -284,13 +294,43 @@ NS_ASSUME_NONNULL_BEGIN
     reduce:(id)^NSNumber *(NSNumber *hideEmpty, NSNumber *hideError) {
       return @(!hideEmpty.boolValue || !hideError.boolValue);
     }];
+  
+  RAC(self, errorView) = [[[RACObserve(self, errorViewProvider)
+      map:^RACSignal *(id<PTUErrorViewProvider> errorViewProvider) {
+        @strongify(self);
+        return [RACSignal combineLatest:@[
+          [RACSignal return:errorViewProvider],
+          [RACObserve(self, dataSource.error) ignore:nil]
+        ]];
+      }]
+      switchToLatest]
+      reduceEach:(id)^UIView *(id<PTUErrorViewProvider> errorViewProvider, NSError *error) {
+        return [errorViewProvider errorViewForError:error
+                                      associatedURL:PTUExtractAssociatedURL(error)];
+      }];
 
-  [self buildDefaultEmptyView];
-  [self buildDefaultErrorView];
+  self.emptyView = [self buildDefaultEmptyView];
+  self.errorViewProvider = [[PTUErrorViewProvider alloc] initWithView:[self buildDefaultErrorView]];
 }
 
-- (void)buildDefaultEmptyView {
-  self.emptyView = [[UIView alloc] initWithFrame:CGRectZero];
+static NSURL * _Nullable PTUExtractAssociatedURL(NSError *error) {
+  if (error.lt_url) {
+    return error.lt_url;
+  } else if (error.ptn_associatedDescriptor) {
+    return error.ptn_associatedDescriptor.ptn_identifier;
+  } else if (error.ptn_associatedDescriptors) {
+    NSSet *urlSet = [NSSet setWithArray:[error.ptn_associatedDescriptors
+        lt_map:^NSURL *(id<PTNDescriptor> descriptor) {
+          return descriptor.ptn_identifier;
+        }]];
+    return urlSet.count == 1 ? urlSet.anyObject : nil;
+  } else {
+    return nil;
+  }
+}
+
+- (UIView *)buildDefaultEmptyView {
+  UIView *emptyView = [[UIView alloc] initWithFrame:CGRectZero];
 
   UILabel *noPhotosLabel = [[UILabel alloc] initWithFrame:CGRectZero];
   noPhotosLabel.text = @"No photos";
@@ -298,15 +338,17 @@ NS_ASSUME_NONNULL_BEGIN
   noPhotosLabel.font = [UIFont italicSystemFontOfSize:15];
   noPhotosLabel.textColor = [UIColor lightGrayColor];
 
-  [self.emptyView addSubview:noPhotosLabel];
+  [emptyView addSubview:noPhotosLabel];
   [noPhotosLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-    make.bottom.equalTo(self.mas_topLayoutGuide).with.offset(44);
-    make.centerX.equalTo(self.emptyView);
+    make.bottom.equalTo(emptyView.mas_top).with.offset(44);
+    make.centerX.equalTo(emptyView);
   }];
+
+  return emptyView;
 }
 
-- (void)buildDefaultErrorView {
-  self.errorView = [[UIView alloc] initWithFrame:CGRectZero];
+- (UIView *)buildDefaultErrorView {
+  UIView *errorView = [[UIView alloc] initWithFrame:CGRectZero];
 
   UILabel *errorLabel = [[UILabel alloc] initWithFrame:CGRectZero];
   errorLabel.text = @"Error fetching data";
@@ -314,11 +356,13 @@ NS_ASSUME_NONNULL_BEGIN
   errorLabel.font = [UIFont italicSystemFontOfSize:15];
   errorLabel.textColor = [UIColor lightGrayColor];
 
-  [self.errorView addSubview:errorLabel];
+  [errorView addSubview:errorLabel];
   [errorLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-    make.bottom.equalTo(self.mas_topLayoutGuide).with.offset(44);
-    make.centerX.equalTo(self.errorView);
+    make.bottom.equalTo(errorView.mas_top).with.offset(44);
+    make.centerX.equalTo(errorView);
   }];
+
+  return errorView;
 }
 
 - (void)viewDidLayoutSubviews {

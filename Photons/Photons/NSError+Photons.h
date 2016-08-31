@@ -51,7 +51,7 @@ extern NSString * kPTNErrorAssociatedDescriptorsKey;
 @property (readonly, nonatomic, nullable) id<PTNDescriptor> ptn_associatedDescriptor;
 
 /// Photons descriptors associated with the error.
-@property (readonly, nonatomic, nullable) id<PTNDescriptor> ptn_associatedDescriptors;
+@property (readonly, nonatomic, nullable) NSArray<id<PTNDescriptor>> *ptn_associatedDescriptors;
 
 @end
 

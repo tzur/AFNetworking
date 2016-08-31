@@ -71,7 +71,7 @@ NSString * kPTNErrorAssociatedDescriptorsKey = @"AssociatedDescriptors";
       self.userInfo[kPTNErrorAssociatedDescriptorKey] : nil;
 }
 
-- (nullable id<PTNDescriptor>)ptn_associatedDescriptors {
+- (nullable NSArray<id<PTNDescriptor>> *)ptn_associatedDescriptors {
   return self.userInfo[kPTNErrorAssociatedDescriptorsKey] != [NSNull null] ?
       self.userInfo[kPTNErrorAssociatedDescriptorsKey] : nil;
 }
