@@ -3,6 +3,33 @@
 
 #import "BZRProduct.h"
 
+#import "BZRContentFetcherParameters.h"
+
+/// Dummy concrete implemenation of \c BZRContentFetcherParameters used for testing.
+@interface BZRDummyContentFetcherParameters : BZRContentFetcherParameters
+
+/// Value to be passed to content fetcher.
+@property (readonly, nonatomic) NSString *value;
+
+@end
+
+@implementation BZRDummyContentFetcherParameters
+
+- (instancetype)initWithValue:(NSString *)value {
+  if (self = [super init]) {
+    _value = [value copy];
+  }
+  return self;
+}
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+  return @{
+    @instanceKeypath(BZRDummyContentFetcherParameters, value): @"value"
+  };
+}
+
+@end
+
 SpecBegin(BZRProduct)
 
 context(@"initialization", ^{
@@ -17,35 +44,48 @@ context(@"initialization", ^{
 });
 
 context(@"conversion" , ^{
-  it(@"should correctly convert productType and purchaseStatus from BZRProduct to JSON", ^{
-    NSDictionary *productDict = @{
-      @"identifier": @"id",
-      @"productType": $(BZRProductTypeNonConsumable),
-      @"purchaseStatus": $(BZRProductPurchaseStatusPurchased),
+  it(@"should correctly convert BZRProduct instance to JSON dictionary", ^{
+    BZRDummyContentFetcherParameters *contentFetcherParameters =
+        [[BZRDummyContentFetcherParameters alloc] initWithValue:@"bar"];
+    NSDictionary *dictionaryValue =  @{
+      @instanceKeypath(BZRProduct, identifier): @"foo",
+      @instanceKeypath(BZRProduct, productType): $(BZRProductTypeNonConsumable),
+      @instanceKeypath(BZRProduct, purchaseStatus): $(BZRProductPurchaseStatusPurchased),
+      @instanceKeypath(BZRProduct, contentFetcherParameters): contentFetcherParameters
     };
 
     NSError *error = nil;
-    BZRProduct *product = [[BZRProduct alloc] initWithDictionary:productDict error:&error];
+    BZRProduct *product = [[BZRProduct alloc] initWithDictionary:dictionaryValue error:&error];
     expect(error).to.beNil();
 
-    NSDictionary *jsonDict = [MTLJSONAdapter JSONDictionaryFromModel:product];
-    expect(jsonDict[@"productType"]).to.equal(@"nonConsumable");
-    expect(jsonDict[@"purchaseStatus"]).to.equal(@"purchased");
+    NSDictionary *jsonDictionary = [MTLJSONAdapter JSONDictionaryFromModel:product];
+    expect(jsonDictionary[@"productType"]).to.equal(@"nonConsumable");
+    expect(jsonDictionary[@"purchaseStatus"]).to.equal(@"purchased");
+    expect(jsonDictionary[@"contentFetcherParameters"])
+        .to.equal([MTLJSONAdapter JSONDictionaryFromModel:contentFetcherParameters]);
   });
 
-  it(@"should correctly convert productType and purchaseStatus from JSON to BZRProduct", ^{
-    NSDictionary *JSONDict = @{
+  it(@"should correctly convert from JSON dictionary to BZRProduct", ^{
+    NSDictionary *jsonDictionary = @{
       @"identifier": @"id",
-      @"productType": @"renewableSubscription",
-      @"purchaseStatus": @"acquiredViaSubscription",
+      @"productType": @"nonRenewingSubscription",
+      @"purchaseStatus": @"purchased",
+      @"contentFetcherParameters": @{
+        @"type": NSStringFromClass([BZRDummyContentFetcherParameters class]),
+        @"value": @"foo"
+      }
     };
+    BZRDummyContentFetcherParameters *expectedParameters =
+        [[BZRDummyContentFetcherParameters alloc] initWithValue:@"foo"];
 
     NSError *error = nil;
     BZRProduct *product = [MTLJSONAdapter modelOfClass:[BZRProduct class]
-                                    fromJSONDictionary:JSONDict error:&error];
+                                    fromJSONDictionary:jsonDictionary error:&error];
     expect(error).to.beNil();
-    expect(product.productType).to.equal($(BZRProductTypeRenewableSubscription));
-    expect(product.purchaseStatus).to.equal($(BZRProductPurchaseStatusAcquiredViaSubscription));
+    expect(product.identifier).to.equal(@"id");
+    expect(product.productType).to.equal($(BZRProductTypeNonRenewingSubscription));
+    expect(product.purchaseStatus).to.equal($(BZRProductPurchaseStatusPurchased));
+    expect(product.contentFetcherParameters).to.equal(expectedParameters);
   });
 });
 
