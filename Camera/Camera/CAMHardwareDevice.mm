@@ -5,7 +5,6 @@
 
 #import <LTEngine/LTMMTexture.h>
 #import <LTEngine/LTGLContext.h>
-#import <libkern/OSAtomic.h>
 
 #import "AVCaptureDevice+Configure.h"
 #import "CAMDevicePreset.h"
@@ -181,7 +180,7 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
 
     CMSampleTimingInfo timingInfo;
     OSStatus status = CMSampleBufferGetSampleTimingInfo(sampleBuffer, 0, &timingInfo);
-    LTAssert(status == noErr, @"Failed to retrieve sample timing, status: %d", status);
+    LTAssert(status == noErr, @"Failed to retrieve sample timing, status: %d", (int)status);
 
     id<CAMVideoFrame> frame;
     if (CVPixelBufferIsPlanar(pixelBuffer)) {
