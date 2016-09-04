@@ -12,4 +12,6 @@
 
   // LTKit.
   #import <LTKit/LTKit-Prefix.pch>
+
+  #import "PTULocalization.h"
 #endif
