@@ -9,30 +9,25 @@
 NS_ASSUME_NONNULL_BEGIN
 
 BZRProduct *BZRProductWithIdentifierAndContent(NSString *identifier) {
-  NSDictionary *JSONProduct = @{
-    @"identifier": identifier,
-    @"productType": @"renewableSubscription",
-    @"purchaseStatus": @"purchased",
-    @"contentFetcherParameters": @{}
-  };
-
-  return [MTLJSONAdapter modelOfClass:[BZRProduct class] fromJSONDictionary:JSONProduct error:NULL];
+  return BZRProductWithIdentifierAndParameters(identifier,
+                                               OCMClassMock([BZRContentFetcherParameters class]));
 }
 
 BZRProduct *BZRProductWithIdentifier(NSString *identifier) {
-  NSDictionary *JSONProduct = @{
-    @"identifier": identifier,
-    @"productType": @"renewableSubscription",
-    @"purchaseStatus": @"purchased",
-  };
-
-  return [MTLJSONAdapter modelOfClass:[BZRProduct class] fromJSONDictionary:JSONProduct error:NULL];
+  return BZRProductWithIdentifierAndParameters(identifier, nil);
 }
 
 BZRProduct *BZRProductWithIdentifierAndParameters(NSString *identifier,
-    BZRContentFetcherParameters *parameters) {
-  BZRProduct *product = BZRProductWithIdentifier(identifier);
-  return [product productWithContentFetcherParameters:parameters error:NULL];
+    BZRContentFetcherParameters * _Nullable parameters) {
+  NSDictionary *contentFetcherParametersDictionary = parameters ?
+      @{@instanceKeypath(BZRProduct, contentFetcherParameters): parameters} : @{};
+  NSDictionary *dictionaryValue = [@{
+    @instanceKeypath(BZRProduct, identifier): identifier,
+    @instanceKeypath(BZRProduct, productType): $(BZRProductTypeNonConsumable),
+    @instanceKeypath(BZRProduct, purchaseStatus): $(BZRProductPurchaseStatusPurchased),
+  } mtl_dictionaryByAddingEntriesFromDictionary:contentFetcherParametersDictionary];
+
+  return [[BZRProduct alloc] initWithDictionary:dictionaryValue error:nil];
 }
 
 NS_ASSUME_NONNULL_END

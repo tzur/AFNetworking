@@ -50,6 +50,11 @@ LTEnumImplement(NSUInteger, BZRProductPurchaseStatus,
   };
 }
 
++ (NSValueTransformer *)contentFetcherParametersJSONTransformer {
+  return [NSValueTransformer
+          mtl_JSONDictionaryTransformerWithModelClass:[BZRContentFetcherParameters class]];
+}
+
 + (NSValueTransformer *)productTypeJSONTransformer {
   return [NSValueTransformer mtl_valueMappingTransformerWithDictionary:@{
     @"nonConsumable": $(BZRProductTypeNonConsumable),

@@ -14,6 +14,6 @@ BZRProduct *BZRProductWithIdentifier(NSString *identifier);
 /// Returns a \c BZRProduct with identifier set to \c identifier and with
 /// \c contentProviderParameters set to \c parameters.
 BZRProduct *BZRProductWithIdentifierAndParameters(NSString *identifier,
-    BZRContentFetcherParameters *parameters);
+    BZRContentFetcherParameters * _Nullable parameters);
 
 NS_ASSUME_NONNULL_END
