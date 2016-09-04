@@ -44,7 +44,9 @@ LTErrorCodesImplement(CameraErrorCodeProductID,
   /// Caused when the <tt>CMMotionManager</tt>'s device motion is unavailable.
   CAMErrorCodeDeviceMotionUnavailable,
   /// Caused when the \c CMDeviceMotionHandler receives an error.
-  CAMErrorCodeDeviceMotionUpdateError
+  CAMErrorCodeDeviceMotionUpdateError,
+  /// Caused when the requested physical camera device is unavailable.
+  CAMErrorCodeCameraUnavailable
 );
 
 NS_ASSUME_NONNULL_END
