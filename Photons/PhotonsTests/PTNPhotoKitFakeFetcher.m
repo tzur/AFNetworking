@@ -32,6 +32,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Maps between asset collections to collection list.
 @property (strong, nonatomic) NSMutableDictionary *assetCollectionsToCollectionList;
 
+/// All threads from which calls to the receiver were made.
+@property (strong, atomic) NSSet<NSThread *> *operatingThreads;
+
 @end
 
 @implementation PTNPhotoKitFakeFetcher
@@ -45,6 +48,7 @@ NS_ASSUME_NONNULL_BEGIN
     self.assetCollectionLocalIdentifierToAssets = [NSMutableDictionary dictionary];
     self.collectionListToAssetCollections = [NSMutableDictionary dictionary];
     self.assetCollectionsToCollectionList = [NSMutableDictionary dictionary];
+    self.operatingThreads = [NSSet set];
   }
   return self;
 }
@@ -102,6 +106,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (PTNAssetCollectionsFetchResult *)fetchAssetCollectionsWithLocalIdentifiers:
     (NSArray<NSString *> *)identifiers options:(nullable PHFetchOptions __unused *)options {
+  self.operatingThreads = [self.operatingThreads setByAddingObject:[NSThread currentThread]];
   id fetchResult;
   @synchronized (self.localIdentifierToAssetCollection) {
     fetchResult = [identifiers.rac_sequence map:^(NSString *identifier) {
@@ -114,6 +119,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (PHCollectionList *)transientCollectionListWithCollections:(NSArray<PHCollection *> *)collections
                                                        title:(NSString __unused *)title {
+  self.operatingThreads = [self.operatingThreads setByAddingObject:[NSThread currentThread]];
   PHCollectionList *result;
   @synchronized (self.typeToAssetCollections) {
     result = self.assetCollectionsToCollectionList[collections];
@@ -123,6 +129,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (PTNCollectionsFetchResult *)fetchCollectionsInCollectionList:(PHCollectionList *)collectionList
     options:(nullable PHFetchOptions __unused *)options {
+  self.operatingThreads = [self.operatingThreads setByAddingObject:[NSThread currentThread]];
   PTNCollectionsFetchResult *result;
   @synchronized (self.typeToAssetCollections) {
     result = self.collectionListToAssetCollections[collectionList.localIdentifier];
@@ -132,6 +139,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (PTNAssetCollectionsFetchResult *)fetchAssetCollectionsWithType:(PHAssetCollectionType)type
     subtype:(PHAssetCollectionSubtype)subtype options:(nullable PHFetchOptions __unused *)options {
+  self.operatingThreads = [self.operatingThreads setByAddingObject:[NSThread currentThread]];
   NSArray *albumType = @[@(type), @(subtype)];
   PTNAssetCollectionsFetchResult *result;
   @synchronized (self.typeToAssetCollections) {
@@ -142,11 +150,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (PTNAssetsFetchResult *)fetchAssetsInAssetCollection:(PHAssetCollection *)assetCollection
                                                options:(nullable PHFetchOptions __unused *)options {
+  self.operatingThreads = [self.operatingThreads setByAddingObject:[NSThread currentThread]];
   return self.assetCollectionLocalIdentifierToAssets[assetCollection.localIdentifier];
 }
 
 - (PTNAssetsFetchResult *)fetchAssetsWithLocalIdentifiers:(NSArray<NSString *> *)identifiers
     options:(nullable PHFetchOptions __unused *)options {
+  self.operatingThreads = [self.operatingThreads setByAddingObject:[NSThread currentThread]];
   id fetchResult;
   @synchronized (self.localIdentifierToAsset) {
     fetchResult = [identifiers.rac_sequence map:^(NSString *identifier) {
@@ -159,6 +169,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (nullable PTNAssetsFetchResult *)fetchKeyAssetsInAssetCollection:
     (PHAssetCollection *)assetCollection options:(nullable PHFetchOptions __unused *)options {
+  self.operatingThreads = [self.operatingThreads setByAddingObject:[NSThread currentThread]];
   PHAsset *keyAsset;
   
   @synchronized (self.assetCollectionLocalIdentifierToKeyAsset) {
@@ -171,6 +182,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (PHFetchResultChangeDetails *)changeDetailsFromFetchResult:(PHFetchResult *)fromResult
                                                toFetchResult:(PHFetchResult *)toResult
                                               changedObjects:(NSArray<PHObject *> *)changedObjects {
+  self.operatingThreads = [self.operatingThreads setByAddingObject:[NSThread currentThread]];
   NSArray<NSNumber *> *indexes = [[changedObjects.rac_sequence
       filter:^BOOL(PHObject *object) {
         return [toResult containsObject:object];

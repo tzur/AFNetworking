@@ -166,8 +166,8 @@ NS_ASSUME_NONNULL_BEGIN
         return changeset;
       }]
       distinctUntilChanged]
-      ptn_replayLastLazily]
-      subscribeOn:RACScheduler.scheduler];
+      subscribeOn:RACScheduler.scheduler]
+      ptn_replayLastLazily];
 
   self.albumSignalCache[url] = changeset;
 

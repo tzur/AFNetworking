@@ -181,7 +181,7 @@ context(@"album fetching", ^{
         RACSignal *values = [manager fetchAlbumWithURL:url];
         
         expect(values).will.sendValuesWithCount(1);
-        expect(values).willNot.deliverValuesOnMainThread();
+        expect(fetcher.operatingThreads).notTo.contain([NSThread mainThread]);
       });
     });
 
@@ -378,7 +378,7 @@ context(@"album fetching", ^{
         RACSignal *values = [manager fetchAlbumWithURL:url];
         
         expect(values).will.sendValuesWithCount(1);
-        expect(values).willNot.deliverValuesOnMainThread();
+        expect(fetcher.operatingThreads).notTo.contain([NSThread mainThread]);
       });
     });
 
@@ -530,7 +530,7 @@ context(@"asset fetching", ^{
       RACSignal *values = [manager fetchDescriptorWithURL:url];
       
       expect(values).will.sendValuesWithCount(1);
-      expect(values).willNot.deliverValuesOnMainThread();
+      expect(fetcher.operatingThreads).notTo.contain([NSThread mainThread]);
     });
   });
 });
@@ -630,7 +630,7 @@ context(@"image fetching", ^{
                                                       options:options];
 
         expect(values).will.sendValuesWithCount(1);
-        expect(values).willNot.deliverValuesOnMainThread();
+        expect(fetcher.operatingThreads).notTo.contain([NSThread mainThread]);
       });
     });
 
