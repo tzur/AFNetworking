@@ -258,12 +258,38 @@ context(@"rounding cgstructs", ^{
     expect(std::ceil(-1 * size)).to.equal(CGSizeMake(0, 0));
     expect(std::round(-1 * size)).to.equal(CGSizeMake(0, -1));
   });
-  
-  it(@"rounding cgrects", ^{
-    const CGRect rect = CGRectFromEdges(0.4, 0.6, 2.6, 2.4);
-    expect(CGRoundRect(rect)).to.equal(CGRectFromEdges(0, 1, 3, 2));
-    expect(CGRoundRectInside(rect)).to.equal(CGRectFromEdges(1, 1, 2, 2));
-    expect(CGRoundRectOutside(rect)).to.equal(CGRectFromEdges(0, 0, 3, 3));
+
+  context(@"CGRect", ^{
+    it(@"should round to integral points", ^{
+      const CGRect rect = CGRectFromEdges(0.4, 0.6, 2.6, 2.4);
+      expect(CGRoundRect(rect)).to.equal(CGRectFromEdges(0, 1, 3, 2));
+      expect(CGRoundRectInside(rect)).to.equal(CGRectFromEdges(1, 1, 2, 2));
+      expect(CGRoundRectOutside(rect)).to.equal(CGRectFromEdges(0, 0, 3, 3));
+    });
+
+    it(@"should round to integral pixels", ^{
+      const CGRect rect1 = CGRectMake(0.5, 0.5, 0.5, 0.5);
+      expect(CGRoundRect(rect1, 2)).to.equal(CGRectMake(0.5, 0.5, 0.5, 0.5));
+      expect(CGRoundRectInside(rect1, 2)).to.equal(CGRectMake(0.5, 0.5, 0.5, 0.5));
+      expect(CGRoundRectOutside(rect1, 2)).to.equal(CGRectMake(0.5, 0.5, 0.5, 0.5));
+
+      const CGRect rect2 = CGRectMake(0.2, 0.8, 1.1, 0.2);
+      expect(CGRoundRect(rect2, 2)).to.equal(CGRectMake(0, 1, 1.5, 0));
+      expect(CGRoundRectInside(rect2, 2)).to.equal(CGRectMake(0.5, 1, 0.5, 0));
+      expect(CGRoundRectOutside(rect2, 2)).to.equal(CGRectMake(0, 0.5, 1.5, 0.5));
+    });
+
+    it(@"should handle nonpositive size", ^{
+      const CGRect rect1 = CGRectMake(-1.1, -2.1, -3.1, -4.1);
+      expect(CGRoundRect(rect1, 1)).to.equal(CGRectMake(-1, -2, -3, -4));
+      expect(CGRoundRectInside(rect1, 1)).to.equal(CGRectMake(-4, -6, 2, 3));
+      expect(CGRoundRectOutside(rect1, 1)).to.equal(CGRectMake(-5, -7, 4, 5));
+
+      const CGRect rect2 = CGRectMake(1.5, 2.5, 0, 0);
+      expect(CGRoundRect(rect2, 1)).to.equal(CGRectMake(2, 3, 0, 0));
+      expect(CGRoundRectInside(rect2, 1)).to.equal(CGRectMake(1.5, 2.5, 0, 0));
+      expect(CGRoundRectOutside(rect2, 1)).to.equal(CGRectMake(1, 2, 1, 1));
+    });
   });
 });
 
