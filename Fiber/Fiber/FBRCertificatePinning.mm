@@ -5,7 +5,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-NSData *FBRCyclicXorDataWithKey(NSData *buffer, NSData *key);
+static NSData *FBRCyclicXorDataWithKey(NSData *buffer, NSData *key);
 
 NSData *FBREncryptCertificate(NSData *buffer, NSString *key) {
   return FBRCyclicXorDataWithKey(buffer, [key dataUsingEncoding:NSUTF8StringEncoding]);
