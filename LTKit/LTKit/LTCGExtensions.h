@@ -8,7 +8,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// @note the null point is not the same as the zero point, and that the null point will never be
 /// equal to another point (even another null point).
 ///
-/// @note arithemtic operations on the null point are not defined.
+/// @note arithmetic operations on the null point are not defined.
 CG_EXTERN const CGPoint CGPointNull;
 
 /// The "empty" size. This is the size returned when a size value is not set, for example, when a
@@ -17,7 +17,7 @@ CG_EXTERN const CGPoint CGPointNull;
 /// @note the null size is not the same as the zero size, and that the null size will never be equal
 /// to another size (even another null size).
 ///
-/// @note arithemtic operations on the null size are not defined.
+/// @note arithmetic operations on the null size are not defined.
 CG_EXTERN const CGSize CGSizeNull;
 
 /// Returns whether the given point is the null point.
@@ -319,7 +319,7 @@ CG_INLINE CGRect CGRectFromPoints(const CGPoint &topLeft, const CGPoint &bottomR
   return CGRectFromOriginAndSize(topLeft, CGSizeFromPoint(bottomRight - topLeft));
 }
 
-/// Returns a CGRect with the given edge coordiantes.
+/// Returns a CGRect with the given edge coordinates.
 CG_INLINE CGRect CGRectFromEdges(CGFloat left, CGFloat top, CGFloat right, CGFloat bottom) {
   return CGRectFromPoints(CGPointMake(left, top), CGPointMake(right, bottom));
 }
@@ -401,26 +401,39 @@ CG_INLINE CGSize round(const CGSize &size) {
 
 }
 
-/// Rounds the given CGRect, such that its corner coordinates are rounded to the nearest integer
-/// values (meaning that its size is rounded to an integer, but not necessarily the nearest one).
-CG_INLINE CGRect CGRoundRect(const CGRect &rect) {
-  return CGRectFromPoints(std::round(rect.origin), std::round(rect.origin + rect.size));
+/// Rounds the given \c CGRect, such that its corner coordinates are rounded to the nearest integral
+/// pixel values (meaning that its size, in pixels, is rounded to an integer, but not necessarily
+/// the nearest one). \c scale defines the scaling factor that converts from points to pixels.
+CG_INLINE CGRect CGRoundRect(const CGRect &rect, CGFloat scale = 1) {
+  return CGRectFromPoints(std::round(rect.origin * scale) / scale,
+                          std::round((rect.origin + rect.size) * scale) / scale);
 }
 
-/// Rounds the given CGRect, such that its corner coordinates are rounded to integer values while
-/// keeping the result rect inside the original one.
+/// Returns the largest rectangle contained inside \c rect, whose corners have integral pixel
+/// coordinates. If no such rectangle exists, returns a zero size rectangle contained within \c rect
+/// (whose origin might not be integral).
 ///
-/// @note assumes non-negative origin and size.
-CG_INLINE CGRect CGRoundRectInside(const CGRect rect) {
-  return CGRectFromPoints(std::ceil(rect.origin), std::floor(rect.origin + rect.size));
+/// \c scale defines the scaling factor that converts from points to pixels.
+///
+/// @note the returned rectangle is standardized, that is, has nonnegative size.
+CG_INLINE CGRect CGRoundRectInside(const CGRect rect, CGFloat scale = 1) {
+  CGRect standardized = CGRectStandardize(rect);
+  CGPoint origin = std::clamp(std::ceil(standardized.origin * scale) / scale, standardized);
+  CGSize size = CGSizeFromPoint(std::floor((standardized.origin + standardized.size) * scale) /
+                                scale) - CGSizeFromPoint(origin);
+  return CGRectMake(origin.x, origin.y, MAX(size.width, 0), MAX(size.height, 0));
 }
 
-/// Rounds the given CGRect, such that its corner coordinates are rounded to integer values while
-/// the result rect contains the original one.
+/// Returns the smallest rectangle that contains \c rect, whose corners have integral pixel
+/// coordinates. Similar to \c CGRectIntegral, but can work in pixels instead of points.
 ///
-/// @note assumes non-negative origin and size.
-CG_INLINE CGRect CGRoundRectOutside(const CGRect rect) {
-  return CGRectFromPoints(std::floor(rect.origin), std::ceil(rect.origin + rect.size));
+/// \c scale defines the scaling factor that converts from points to pixels.
+///
+/// @note the returned rectangle is standardized, that is, has nonnegative size.
+CG_INLINE CGRect CGRoundRectOutside(const CGRect rect, CGFloat scale = 1) {
+  CGRect standardized = CGRectStandardize(rect);
+  return CGRectFromPoints(std::floor(standardized.origin * scale) / scale,
+                          std::ceil((standardized.origin + standardized.size) * scale) / scale);
 }
 
 #pragma mark -
