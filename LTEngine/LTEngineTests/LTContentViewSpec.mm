@@ -14,6 +14,7 @@
 #import "LTPresentationViewFramebufferDelegate.h"
 #import "LTTexture+Factory.h"
 #import "LTTouchEvent.h"
+#import "LTTouchEventSequenceSplitter.h"
 #import "LTTouchEventView.h"
 
 @interface LTContentView ()
@@ -504,6 +505,15 @@ context(@"protocols", ^{
       [view snapshotView];
       expect(numberOfDelegateCalls).to.equal(1);
     });
+  });
+});
+
+context(@"touch event sequence splitting", ^{
+  it(@"should use a touch event sequence splitter", ^{
+    LTContentView *view = [[LTContentView alloc] initWithContext:[LTGLContext currentContext]];
+    expect(view.touchEventView.delegate).to.beKindOf([LTTouchEventSequenceSplitter class]);
+    LTTouchEventSequenceSplitter *splitter = view.touchEventView.delegate;
+    expect(splitter.delegate).to.equal(view);
   });
 });
 
