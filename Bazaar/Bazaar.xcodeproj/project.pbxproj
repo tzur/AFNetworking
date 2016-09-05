@@ -179,6 +179,21 @@
 		FA3C38161D35265F004A2673 /* libUICKeyChainStore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FA8D434B1D3517CC006FF5DB /* libUICKeyChainStore.a */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXBuildRule section */
+		65C6A2E61D7DAB4A00F13649 /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = com.apple.compilers.proxy.script;
+			filePatterns = "*.cer";
+			fileType = pattern.proxy;
+			isEditable = 1;
+			outputFiles = (
+				"$(DERIVED_FILE_DIR)/$(arch)/BZR${INPUT_FILE_BASE}Cert.h",
+				"$(DERIVED_FILE_DIR)/$(arch)/BZR${INPUT_FILE_BASE}Cert.mm",
+			);
+			script = "\"$PROJECT_DIR/../BuildTools/EncryptCertficate.py\" $CERTIFICATE_ENCRYPTION_KEY \"$INPUT_FILE_PATH\" BZR \"$DERIVED_FILE_DIR/$arch\"";
+		};
+/* End PBXBuildRule section */
+
 /* Begin PBXContainerItemProxy section */
 		650D7D171D3245E8003CE646 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -2268,6 +2283,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 654B1EBD1CE21975001F36FA /* StaticLibrary.xcconfig */;
 			buildSettings = {
+				CERTIFICATE_ENCRYPTION_KEY = "keyPathsForValuesAffectingValueForKey:";
 				GCC_PREFIX_HEADER = "$(SRCROOT)/$(TARGET_NAME)/$(TARGET_NAME)-Prefix.pch";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2279,6 +2295,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 654B1EBD1CE21975001F36FA /* StaticLibrary.xcconfig */;
 			buildSettings = {
+				CERTIFICATE_ENCRYPTION_KEY = "keyPathsForValuesAffectingValueForKey:";
 				GCC_PREFIX_HEADER = "$(SRCROOT)/$(TARGET_NAME)/$(TARGET_NAME)-Prefix.pch";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
