@@ -8,7 +8,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// @note the null point is not the same as the zero point, and that the null point will never be
 /// equal to another point (even another null point).
 ///
-/// @note arithemtic operations on the null point are not defined.
+/// @note arithmetic operations on the null point are not defined.
 CG_EXTERN const CGPoint CGPointNull;
 
 /// The "empty" size. This is the size returned when a size value is not set, for example, when a
@@ -17,7 +17,7 @@ CG_EXTERN const CGPoint CGPointNull;
 /// @note the null size is not the same as the zero size, and that the null size will never be equal
 /// to another size (even another null size).
 ///
-/// @note arithemtic operations on the null size are not defined.
+/// @note arithmetic operations on the null size are not defined.
 CG_EXTERN const CGSize CGSizeNull;
 
 /// Returns whether the given point is the null point.
@@ -319,7 +319,7 @@ CG_INLINE CGRect CGRectFromPoints(const CGPoint &topLeft, const CGPoint &bottomR
   return CGRectFromOriginAndSize(topLeft, CGSizeFromPoint(bottomRight - topLeft));
 }
 
-/// Returns a CGRect with the given edge coordiantes.
+/// Returns a CGRect with the given edge coordinates.
 CG_INLINE CGRect CGRectFromEdges(CGFloat left, CGFloat top, CGFloat right, CGFloat bottom) {
   return CGRectFromPoints(CGPointMake(left, top), CGPointMake(right, bottom));
 }
