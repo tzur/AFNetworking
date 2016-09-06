@@ -42,6 +42,9 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)registerAsset:(PHAsset *)asset
     asKeyAssetOfAssetCollection:(PHAssetCollection *)assetCollection;
 
+/// All threads from which calls to the receiver were made.
+@property (readonly, atomic) NSSet<NSThread *> *operatingThreads;
+
 @end
 
 NS_ASSUME_NONNULL_END
