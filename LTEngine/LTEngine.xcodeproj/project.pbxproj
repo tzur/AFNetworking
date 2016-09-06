@@ -200,6 +200,9 @@
 		06F9F2D91D59B558002D2726 /* VerticalStepFunction33_bilateral_L1toL3.png in Resources */ = {isa = PBXBuildFile; fileRef = 06F9F2D31D59B558002D2726 /* VerticalStepFunction33_bilateral_L1toL3.png */; };
 		06F9F2DA1D59B558002D2726 /* VerticalStepFunction33_bilateral_L1toL3toL1.png in Resources */ = {isa = PBXBuildFile; fileRef = 06F9F2D41D59B558002D2726 /* VerticalStepFunction33_bilateral_L1toL3toL1.png */; };
 		090898FA1C4F97FB0022FA62 /* EXPMatchers+beCloseToGLKMatrix.mm in Sources */ = {isa = PBXBuildFile; fileRef = 090898F81C4F97FB0022FA62 /* EXPMatchers+beCloseToGLKMatrix.mm */; };
+		2520B1811D7DA22100F9ECCA /* LTTouchEventSequenceSplitter.h in Headers */ = {isa = PBXBuildFile; fileRef = 2520B1801D7DA22100F9ECCA /* LTTouchEventSequenceSplitter.h */; };
+		2520B1B51D7DA28E00F9ECCA /* LTTouchEventSequenceSplitter.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2520B1B41D7DA28E00F9ECCA /* LTTouchEventSequenceSplitter.mm */; };
+		2520B1B71D7DADC100F9ECCA /* LTTouchEventSequenceSplitterSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2520B1B61D7DADC100F9ECCA /* LTTouchEventSequenceSplitterSpec.mm */; };
 		2520D3EC1C4B8774004A3A94 /* LTMutableEuclideanSpline.h in Headers */ = {isa = PBXBuildFile; fileRef = 2520D3EA1C4B8774004A3A94 /* LTMutableEuclideanSpline.h */; };
 		2520D3ED1C4B8774004A3A94 /* LTMutableEuclideanSpline.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2520D3EB1C4B8774004A3A94 /* LTMutableEuclideanSpline.mm */; };
 		2520D4121C4B8CC9004A3A94 /* LTMutableEuclideanSplineSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2520D40F1C4B8CC9004A3A94 /* LTMutableEuclideanSplineSpec.mm */; };
@@ -1869,6 +1872,9 @@
 		06F9F2D41D59B558002D2726 /* VerticalStepFunction33_bilateral_L1toL3toL1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = VerticalStepFunction33_bilateral_L1toL3toL1.png; path = Resources/VerticalStepFunction33_bilateral_L1toL3toL1.png; sourceTree = "<group>"; };
 		090898F71C4F97FB0022FA62 /* EXPMatchers+beCloseToGLKMatrix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EXPMatchers+beCloseToGLKMatrix.h"; sourceTree = "<group>"; };
 		090898F81C4F97FB0022FA62 /* EXPMatchers+beCloseToGLKMatrix.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "EXPMatchers+beCloseToGLKMatrix.mm"; sourceTree = "<group>"; };
+		2520B1801D7DA22100F9ECCA /* LTTouchEventSequenceSplitter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTTouchEventSequenceSplitter.h; sourceTree = "<group>"; };
+		2520B1B41D7DA28E00F9ECCA /* LTTouchEventSequenceSplitter.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTTouchEventSequenceSplitter.mm; sourceTree = "<group>"; };
+		2520B1B61D7DADC100F9ECCA /* LTTouchEventSequenceSplitterSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTTouchEventSequenceSplitterSpec.mm; sourceTree = "<group>"; };
 		2520D3EA1C4B8774004A3A94 /* LTMutableEuclideanSpline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTMutableEuclideanSpline.h; sourceTree = "<group>"; };
 		2520D3EB1C4B8774004A3A94 /* LTMutableEuclideanSpline.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTMutableEuclideanSpline.mm; sourceTree = "<group>"; };
 		2520D40F1C4B8CC9004A3A94 /* LTMutableEuclideanSplineSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTMutableEuclideanSplineSpec.mm; sourceTree = "<group>"; };
@@ -3865,6 +3871,8 @@
 				50802FC21C2402E1008607C7 /* LTTouchEvent.mm */,
 				500CA9DF1D26B013009CF19F /* LTTouchEventCancellation.h */,
 				25FBF7D81C32D26D00E2E5BC /* LTTouchEventDelegate.h */,
+				2520B1801D7DA22100F9ECCA /* LTTouchEventSequenceSplitter.h */,
+				2520B1B41D7DA28E00F9ECCA /* LTTouchEventSequenceSplitter.mm */,
 				25FBF7D91C32D26D00E2E5BC /* LTTouchEventView.h */,
 				25FBF7DA1C32D26D00E2E5BC /* LTTouchEventView.mm */,
 			);
@@ -3889,6 +3897,7 @@
 				28E9617D1D3A68A40064EEA6 /* Predicates */,
 				500CAA141D26B2CF009CF19F /* LTContentTouchEventSpec.mm */,
 				50802FD71C24113F008607C7 /* LTTouchEventSpec.mm */,
+				2520B1B61D7DADC100F9ECCA /* LTTouchEventSequenceSplitterSpec.mm */,
 				25FBF7FB1C32D27900E2E5BC /* LTTouchEventViewSpec.mm */,
 				50501ABC1C34381A005FFDEB /* LTTouchEventViewTestUtils.h */,
 				50501ABD1C34381A005FFDEB /* LTTouchEventViewTestUtils.mm */,
@@ -5667,6 +5676,7 @@
 				8B8720301924A76400517F2E /* half.hpp in Headers */,
 				507BDD411D1172DC00EF0997 /* LTSamplerTestUtils.h in Headers */,
 				25CE71E11BF9D82D00E13CB4 /* LTBasicParameterizedObject.h in Headers */,
+				2520B1811D7DA22100F9ECCA /* LTTouchEventSequenceSplitter.h in Headers */,
 				8B8720311924A76500517F2E /* LTForegroundOperation.h in Headers */,
 				5054C6E31CC68D7B00976EA1 /* LTDynamicDrawer.h in Headers */,
 				8B8720321924A76500517F2E /* LTGPUBlock.h in Headers */,
@@ -6646,6 +6656,7 @@
 				28F340651B1EECB000545B82 /* LTTextureJpegArchiver.mm in Sources */,
 				8BB47136183A438300CA1681 /* LTDrawingContext.mm in Sources */,
 				280F5A19191A8CFE00F9F80B /* LTShapeDrawerParams.mm in Sources */,
+				2520B1B51D7DA28E00F9ECCA /* LTTouchEventSequenceSplitter.mm in Sources */,
 				284ED11818954E9B00414A8A /* LTLinearInterpolant.mm in Sources */,
 				2843B77618ABBF1F0044B87A /* LTTextureDrawer.mm in Sources */,
 				8B98516E186884F300D680D0 /* LTPassthroughShader.vsh in Sources */,
@@ -7030,6 +7041,7 @@
 				8B5A0E06189AA91C0098399C /* LTGLTextureSpec.mm in Sources */,
 				0367A4B218ACF47B00B42E34 /* LTProceduralFrameProcessorSpec.mm in Sources */,
 				8BC465B9189954FA0094F7BC /* LTForegroundOperationSpec.mm in Sources */,
+				2520B1B71D7DADC100F9ECCA /* LTTouchEventSequenceSplitterSpec.mm in Sources */,
 				284004D518D8422A00403938 /* LTSingleTextureBrushSpec.mm in Sources */,
 				8B16C9CC1BAF01C5002FB750 /* EXPMatchers+beCloseToPoint.mm in Sources */,
 				50E998A81C075F89004F15C9 /* LTReparameterizationSpec.mm in Sources */,

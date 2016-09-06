@@ -10,6 +10,7 @@
 #import "LTPresentationView.h"
 #import "LTTexture+Factory.h"
 #import "LTTouchEventDelegate.h"
+#import "LTTouchEventSequenceSplitter.h"
 #import "LTTouchEventView.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -19,6 +20,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// View used to receive touch events.
 @property (readonly, nonatomic) LTTouchEventView *touchEventView;
+
+/// Object used to split touch event sequences.
+@property (readonly, nonatomic) LTTouchEventSequenceSplitter *touchEventSequenceSplitter;
 
 /// Object responsible for managing which gestures should be allowed to modify the location of the
 /// content rectangle. In addition, handles the forwarding of touch events occurring on this view
@@ -104,6 +108,7 @@ NS_ASSUME_NONNULL_BEGIN
                      contentScaleFactor:contentScaleFactor navigationState:navigationState];
     [self createPresentationViewWithFrame:self.bounds context:context
                            contentTexture:contentTexture];
+    [self createTouchEventSequenceSplitter];
     [self createTouchEventViewWithFrame:self.bounds];
     [self createInteractionManager];
     [self createConverter];
@@ -139,10 +144,17 @@ NS_ASSUME_NONNULL_BEGIN
   [self addSubview:self.presentationView];
 }
 
+- (void)createTouchEventSequenceSplitter {
+  _touchEventSequenceSplitter =
+      [[LTTouchEventSequenceSplitter alloc] initWithTouchEventDelegate:self];
+}
+
 - (void)createTouchEventViewWithFrame:(CGRect)frame {
   LTAssert(self.presentationView);
+  LTAssert(self.touchEventSequenceSplitter);
 
-  _touchEventView = [[LTTouchEventView alloc] initWithFrame:frame delegate:self];
+  _touchEventView = [[LTTouchEventView alloc] initWithFrame:frame
+                                                   delegate:self.touchEventSequenceSplitter];
   [self addSubview:self.touchEventView];
 }
 
