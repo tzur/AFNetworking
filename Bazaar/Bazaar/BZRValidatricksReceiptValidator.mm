@@ -9,6 +9,7 @@
 #import "BZRReceiptValidationParameters.h"
 #import "BZRReceiptValidationParameters+Validatricks.h"
 #import "BZRValidatricksReceiptValidationStatus.h"
+#import "BZRValidatricksServerCert.h"
 #import "FBRHTTPClient+Validatricks.h"
 #import "NSErrorCodes+Bazaar.h"
 #import "RACSignal+Bazaar.h"
@@ -46,10 +47,14 @@ static NSString * const kReceiptValidationEndpoint = @"validateReceipt";
   return kReceiptValidationEndpoint;
 }
 
++ (NSSet<NSData *> *)validatricksServerCertificates {
+  return [NSSet setWithObject:BZRValidatricksServerCertificateData()];
+}
+
 - (instancetype)init {
-  // TODO:(dlahyani) Load Lightricks certificate here and send it to the client for SSL pinning.
   return [self initWithServerURL:[[self class] defaultValidatricksServerURL]
-                          APIKey:kValidatricksAPIKey pinnedServerCertificates:nil];
+                          APIKey:kValidatricksAPIKey
+        pinnedServerCertificates:[[self class] validatricksServerCertificates]];
 }
 
 - (instancetype)initWithServerURL:(NSURL *)serverURL APIKey:(nullable NSString *)APIKey
