@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		6507943A1D255E8700187A5D /* FBRHTTPResponse.mm in Sources */ = {isa = PBXBuildFile; fileRef = 650794391D255E8700187A5D /* FBRHTTPResponse.mm */; };
 		650794591D25646800187A5D /* FBRHTTPResponseSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 650794581D25646800187A5D /* FBRHTTPResponseSpec.mm */; };
+		65079A4A1D7D94690022CB11 /* FBRCertificatePinning.mm in Sources */ = {isa = PBXBuildFile; fileRef = 65079A491D7D94690022CB11 /* FBRCertificatePinning.mm */; };
 		652D57561D2FB25000A4EB18 /* RACSignal+FiberSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 652D57551D2FB25000A4EB18 /* RACSignal+FiberSpec.mm */; };
 		6535FE3E1D047770002EEB8F /* libSpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 65C62BD91D047711000FCE99 /* libSpecta.a */; };
 		6535FE3F1D047777002EEB8F /* libExpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 65C62BAB1D0476F6000FCE99 /* libExpecta.a */; };
@@ -37,6 +38,7 @@
 		65A694421D083D4D001DE328 /* FBRHTTPSessionRequestMarshalling.h in Headers */ = {isa = PBXBuildFile; fileRef = 65A6943D1D082E46001DE328 /* FBRHTTPSessionRequestMarshalling.h */; };
 		65A694431D083D4D001DE328 /* FBRHTTPSessionSecurityPolicy.h in Headers */ = {isa = PBXBuildFile; fileRef = 65A6943A1D0821B9001DE328 /* FBRHTTPSessionSecurityPolicy.h */; };
 		65A694441D083D4D001DE328 /* FBRHTTPClient.h in Headers */ = {isa = PBXBuildFile; fileRef = 65A694091D05948F001DE328 /* FBRHTTPClient.h */; };
+		65B5FA5C1D7DC02E005FDA21 /* FBRCertificatePinningSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 65B5FA5B1D7DC02E005FDA21 /* FBRCertificatePinningSpec.mm */; };
 		65B7F16E1D186531005810C9 /* FBRHTTPSessionRequestMarshalling.mm in Sources */ = {isa = PBXBuildFile; fileRef = 65B7F16D1D186531005810C9 /* FBRHTTPSessionRequestMarshalling.mm */; };
 		65B7F18D1D186966005810C9 /* FBRHTTPSessionRequestMarshallingSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 65B7F18C1D186966005810C9 /* FBRHTTPSessionRequestMarshallingSpec.mm */; };
 		65BDFC2C1D0EC58800C86D36 /* libextobjc_iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 65BDFC151D0EC56D00C86D36 /* libextobjc_iOS.a */; };
@@ -373,6 +375,8 @@
 		650794381D255E8700187A5D /* FBRHTTPResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBRHTTPResponse.h; sourceTree = "<group>"; };
 		650794391D255E8700187A5D /* FBRHTTPResponse.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FBRHTTPResponse.mm; sourceTree = "<group>"; };
 		650794581D25646800187A5D /* FBRHTTPResponseSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FBRHTTPResponseSpec.mm; sourceTree = "<group>"; };
+		65079A481D7D94070022CB11 /* FBRCertificatePinning.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FBRCertificatePinning.h; sourceTree = "<group>"; };
+		65079A491D7D94690022CB11 /* FBRCertificatePinning.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FBRCertificatePinning.mm; sourceTree = "<group>"; };
 		652D57551D2FB25000A4EB18 /* RACSignal+FiberSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "RACSignal+FiberSpec.mm"; sourceTree = "<group>"; };
 		6535FE4D1D047911002EEB8F /* ReactiveCocoa.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactiveCocoa.xcodeproj; path = ../third_party/ReactiveCocoa/ReactiveCocoa.xcodeproj; sourceTree = "<group>"; };
 		6535FE5F1D047B22002EEB8F /* Fiber-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "Fiber-Prefix.pch"; path = "Fiber/Fiber-Prefix.pch"; sourceTree = "<group>"; };
@@ -407,6 +411,7 @@
 		65A6943A1D0821B9001DE328 /* FBRHTTPSessionSecurityPolicy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBRHTTPSessionSecurityPolicy.h; sourceTree = "<group>"; };
 		65A6943D1D082E46001DE328 /* FBRHTTPSessionRequestMarshalling.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBRHTTPSessionRequestMarshalling.h; sourceTree = "<group>"; };
 		65AE67501D0461350083D1CE /* libFiber.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libFiber.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		65B5FA5B1D7DC02E005FDA21 /* FBRCertificatePinningSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FBRCertificatePinningSpec.mm; sourceTree = "<group>"; };
 		65B6E5731D46419100D503C0 /* TestHost.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TestHost.xcodeproj; path = ../Foundations/TestHost.xcodeproj; sourceTree = "<group>"; };
 		65B7F16D1D186531005810C9 /* FBRHTTPSessionRequestMarshalling.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FBRHTTPSessionRequestMarshalling.mm; sourceTree = "<group>"; };
 		65B7F18C1D186966005810C9 /* FBRHTTPSessionRequestMarshallingSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FBRHTTPSessionRequestMarshallingSpec.mm; sourceTree = "<group>"; };
@@ -496,6 +501,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		65079A241D7D93DD0022CB11 /* Certificate Pinning */ = {
+			isa = PBXGroup;
+			children = (
+				65079A481D7D94070022CB11 /* FBRCertificatePinning.h */,
+				65079A491D7D94690022CB11 /* FBRCertificatePinning.mm */,
+			);
+			name = "Certificate Pinning";
+			sourceTree = "<group>";
+		};
 		6535FE4E1D047911002EEB8F /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -632,12 +646,21 @@
 		65AE67521D0461350083D1CE /* Fiber */ = {
 			isa = PBXGroup;
 			children = (
+				65079A241D7D93DD0022CB11 /* Certificate Pinning */,
 				659F3AB91D23DD750097F3D0 /* Errors */,
 				65A694351D081FA1001DE328 /* HTTP Session */,
 				65F5137F1D1C19DE000687A7 /* Internal Utils */,
 				65C62B751D046D88000FCE99 /* Supporting Files */,
 			);
 			path = Fiber;
+			sourceTree = "<group>";
+		};
+		65B5FA371D7DBFFC005FDA21 /* Certificate Pinning */ = {
+			isa = PBXGroup;
+			children = (
+				65B5FA5B1D7DC02E005FDA21 /* FBRCertificatePinningSpec.mm */,
+			);
+			name = "Certificate Pinning";
 			sourceTree = "<group>";
 		};
 		65B6E5741D46419100D503C0 /* Products */ = {
@@ -739,6 +762,7 @@
 		65C62B931D04753A000FCE99 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				65B5FA371D7DBFFC005FDA21 /* Certificate Pinning */,
 				659F3BD81D24598F0097F3D0 /* Errors */,
 				65892E461D16EC250049815D /* HTTP Session */,
 				65F513A01D1C1C65000687A7 /* Internal Utils */,
@@ -984,10 +1008,6 @@
 					ProjectRef = 65BDFC031D0EC56D00C86D36 /* extobjc.xcodeproj */;
 				},
 				{
-					ProductGroup = 65B6E5741D46419100D503C0 /* Products */;
-					ProjectRef = 65B6E5731D46419100D503C0 /* TestHost.xcodeproj */;
-				},
-				{
 					ProductGroup = 65A6940D1D05999B001DE328 /* Products */;
 					ProjectRef = 65A6940C1D05999B001DE328 /* LTKit.xcodeproj */;
 				},
@@ -1002,6 +1022,10 @@
 				{
 					ProductGroup = 65C62BC61D047711000FCE99 /* Products */;
 					ProjectRef = 65C62BC51D047711000FCE99 /* Specta.xcodeproj */;
+				},
+				{
+					ProductGroup = 65B6E5741D46419100D503C0 /* Products */;
+					ProjectRef = 65B6E5731D46419100D503C0 /* TestHost.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -1301,6 +1325,7 @@
 				65892E721D16F8F70049815D /* FBRHTTPSessionSecurityPolicy.mm in Sources */,
 				65892FA91D1ACFB80049815D /* FBRAFNetworkingSessionAdapter.mm in Sources */,
 				65892F681D1AAF510049815D /* FBRHTTPRequest.mm in Sources */,
+				65079A4A1D7D94690022CB11 /* FBRCertificatePinning.mm in Sources */,
 				659F3ABC1D23E1830097F3D0 /* NSErrorCodes+Fiber.mm in Sources */,
 				659F3B661D243B630097F3D0 /* AFNetworking+Fiber.mm in Sources */,
 				65A6941B1D05AAD0001DE328 /* FBRHTTPTaskProgress.mm in Sources */,
@@ -1345,6 +1370,7 @@
 				659F3ABE1D23E63E0097F3D0 /* FBRHTTPClientSpec.mm in Sources */,
 				652D57561D2FB25000A4EB18 /* RACSignal+FiberSpec.mm in Sources */,
 				659F3BDA1D2459AA0097F3D0 /* NSError+FiberSpec.mm in Sources */,
+				65B5FA5C1D7DC02E005FDA21 /* FBRCertificatePinningSpec.mm in Sources */,
 				65C62C081D047727000FCE99 /* EXPMatchers+complete.m in Sources */,
 				65C62C051D047727000FCE99 /* LLReactiveMatchersHelpers.m in Sources */,
 			);

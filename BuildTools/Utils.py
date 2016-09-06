@@ -10,7 +10,7 @@ def string_to_buffer(variable_name, s):
 
     # Create lines of code.
     for group in grouped_chars:
-        lines.append("  %s," % ", ".join([hex(ord(c)) for c in group]))
+        lines.append("  %s," % ", ".join(['0x{:02X}'.format(ord(c)) for c in group]))
 
     # Remove last ',' from the last line.
     lines[-1] = lines[-1][:-1]
