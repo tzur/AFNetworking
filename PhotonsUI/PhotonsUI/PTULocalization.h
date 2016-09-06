@@ -20,7 +20,8 @@ extern NSString * const kPTUDefaultLocalizationTableName;
 /// Returns localized \c key string from the given table with name \c tableName. \c key is returned
 /// if no such key exists in \c tableName or if \c tableName does not exist.
 static inline NSString *PTULocalizeFromTable(NSString *tableName, NSString *key) {
-  return [PTULocalization localizationTables][tableName][key];
+  LTLocalizationTable * _Nullable table = [PTULocalization localizationTables][tableName];
+  return table ? table[key] : key;
 }
 
 /// Returns localized \c key string from the default table. \c key is returned if no such key exists
