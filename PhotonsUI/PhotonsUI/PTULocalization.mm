@@ -13,9 +13,19 @@ NSString * const kPTUDefaultLocalizationTableName = @"Localizable";
   static NSDictionary<NSString *, LTLocalizationTable *> *sharedInstance;
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
-    NSString *path = [[[NSBundle mainBundle] resourcePath]
-                      stringByAppendingPathComponent:@"PhotonsUI.bundle"];
-    NSBundle *bundle = [NSBundle bundleWithPath:path];
+    NSString * _Nullable path = [[NSBundle mainBundle] pathForResource:@"PhotonsUIBundle"
+                                                                ofType:@"bundle"];
+    if (!path) {
+      sharedInstance = @{};
+      return;
+    }
+
+    NSBundle * _Nullable bundle = [NSBundle bundleWithPath:path];
+    if (!bundle) {
+      sharedInstance = @{};
+      return;
+    }
+
     sharedInstance = @{
       kPTUDefaultLocalizationTableName: [[LTLocalizationTable alloc]
                                          initWithBundle:bundle
