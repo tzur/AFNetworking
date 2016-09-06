@@ -55,8 +55,10 @@ static const NSUInteger kAssetSection = 1;
       map:^PTUChangesetMetadata *(id<PTNDescriptor> descriptor) {
         return [[PTUChangesetMetadata alloc] initWithTitle:descriptor.localizedTitle
                                              sectionTitles:@{
-          @(kAlbumSection): @"Albums",
-          @(kAssetSection): @"Photos"
+          @(kAlbumSection): _LDefault(@"Albums", @"Title of a section header in a list which "
+                                      "contains albums"),
+          @(kAssetSection): _LDefault(@"Photos", @"Title of a section header in a list which "
+                                      "contains photos")
         }];
       }];
 }

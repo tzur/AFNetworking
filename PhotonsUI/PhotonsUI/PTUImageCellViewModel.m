@@ -65,9 +65,9 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (NSString *)stringWithImageCount:(NSUInteger)count {
-  return [NSString stringWithFormat:@"%@ %@",
-          (count > 0 ? [NSString stringWithFormat:@"%lu", (unsigned long)count] : @"No"),
-          (count == 1 ? @"photo" : @"photos")];
+  return [NSString stringWithFormat:_LPlural(@"%lu Photos", @"Label under a photo album name, "
+                                             "describing the number of photos currently present in "
+                                             "that album"), count];
 }
 
 @end
