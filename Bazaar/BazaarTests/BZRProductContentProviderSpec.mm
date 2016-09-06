@@ -8,25 +8,21 @@
 #import "BZRProduct.h"
 #import "BZRProductContentFetcher.h"
 #import "BZRProductContentManager.h"
-#import "BZRProductEligibilityVerifier.h"
 #import "BZRTestUtils.h"
 #import "NSErrorCodes+Bazaar.h"
 
 SpecBegin(BZRProductContentProvider)
 
-__block BZRProductEligibilityVerifier *eligibilityVerifier;
 __block id<BZRProductContentFetcher> contentFetcher;
 __block BZRProductContentManager *contentManager;
 __block BZRProductContentProvider *contentProvider;
 
 beforeEach(^{
-  eligibilityVerifier = OCMClassMock([BZRProductEligibilityVerifier class]);
   contentFetcher = OCMProtocolMock(@protocol(BZRProductContentFetcher));
   contentManager = OCMClassMock([BZRProductContentManager class]);
   contentProvider =
-      [[BZRProductContentProvider alloc] initWithEligibilityVerifier:eligibilityVerifier
-                                                      contentFetcher:contentFetcher
-                                                      contentManager:contentManager];
+      [[BZRProductContentProvider alloc] initWithContentFetcher:contentFetcher
+                                                 contentManager:contentManager];
 });
 
 context(@"deallocating object", ^{
@@ -37,9 +33,8 @@ context(@"deallocating object", ^{
 
     @autoreleasepool {
       BZRProductContentProvider *provider =
-          [[BZRProductContentProvider alloc] initWithEligibilityVerifier:eligibilityVerifier
-                                                          contentFetcher:contentFetcher
-                                                          contentManager:contentManager];
+          [[BZRProductContentProvider alloc] initWithContentFetcher:contentFetcher
+                                                     contentManager:contentManager];
       weakProvider = provider;
       recorder = [[provider fetchProductContent:product] testRecorder];
     }
@@ -47,29 +42,7 @@ context(@"deallocating object", ^{
   });
 });
 
-context(@"user is not eligible to use product", ^{
-  beforeEach(^{
-    OCMStub([eligibilityVerifier verifyEligibilityForProduct:OCMOCK_ANY])
-        .andReturn([RACSignal return:@NO]);
-  });
-
-  it(@"should err when fetching content", ^{
-    BZRProduct *product = BZRProductWithIdentifier(@"foo");
-
-    RACSignal *fetchingContent = [contentProvider fetchProductContent:product];
-
-    expect(fetchingContent).will.matchError(^BOOL(NSError *error) {
-      return error.lt_isLTDomain && error.code == BZRErrorCodeUserNotAllowedToUseProduct;
-    });
-  });
-});
-
-context(@"user eligibile to use product", ^{
-  beforeEach(^{
-    OCMStub([eligibilityVerifier verifyEligibilityForProduct:OCMOCK_ANY])
-        .andReturn([RACSignal return:@YES]);
-  });
-
+context(@"fetching content", ^{
   it(@"should complete when product has no content", ^{
     BZRProduct *product = BZRProductWithIdentifier(@"foo");
 
