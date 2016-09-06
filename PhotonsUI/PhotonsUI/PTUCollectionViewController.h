@@ -93,6 +93,9 @@ typedef NS_ENUM(NSUInteger, PTUCollectionViewScrollPosition) {
 ///
 /// @note The \c title property of this view controller is bound to \c localizedTitle and should not
 /// be manually set.
+///
+/// @note As a performance enhancement this class assumes homogenous sections, i.e. each section
+/// contains just one type of cell.
 @interface PTUCollectionViewController : UIViewController <PTUCollectionViewController>
 
 - (instancetype)init NS_UNAVAILABLE;

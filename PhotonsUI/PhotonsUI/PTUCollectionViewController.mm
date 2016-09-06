@@ -65,6 +65,12 @@ NS_ASSUME_NONNULL_BEGIN
 /// Current cached cell size to use for headers.
 @property (nonatomic) CGSize headerCellSize;
 
+/// Cache for cell sizes, assuming each section has homogenous cell types and omitting the need for
+/// executing costly data source queries for each item. The need for this comes for the fact that
+/// flow layout creates all the \c UICollectionViewLayoutAttribute objects in advance, rather than
+/// only those presented. Causing extremely large albums to take very long to load.
+@property (readonly, nonatomic) NSMutableDictionary *sectionItemSizeCache;
+
 @end
 
 @implementation PTUCollectionViewController
@@ -105,6 +111,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)setup {
   [self setupCollectionView];
   [self setupTitleBinding];
+  [self setupSectionItemSizeCache];
   [self setupSelectionSignals];
   [self setupControlSignals];
   [self setupInfoViews];
@@ -131,6 +138,20 @@ NS_ASSUME_NONNULL_BEGIN
   RACSignal *dataSourceTitle = RACObserve(self, dataSource.title);
   RAC(self, localizedTitle) = dataSourceTitle;
   RAC(self, title) = dataSourceTitle;
+}
+
+- (void)setupSectionItemSizeCache {
+  _sectionItemSizeCache = [NSMutableDictionary dictionary];
+  @weakify(self);
+  [[RACSignal
+      merge:@[
+        [RACObserve(self, dataSource.didUpdateCollectionView) switchToLatest],
+        [self rac_signalForSelector:@selector(viewDidLayoutSubviews)]
+      ]]
+      subscribeNext:^(id) {
+        @strongify(self);
+        [self.sectionItemSizeCache removeAllObjects];
+      }];
 }
 
 #pragma mark -
@@ -168,7 +189,9 @@ NS_ASSUME_NONNULL_BEGIN
   [[[[[RACSignal
       combineLatest:@[
         [self rac_signalForSelector:@selector(selectItem:)],
-        [RACObserve(self, dataSource.didUpdateCollectionView) switchToLatest]
+        [[RACObserve(self, dataSource.didUpdateCollectionView)
+            switchToLatest]
+            startWith:[RACUnit defaultUnit]]
       ]]
       reduceEach:(id)^NSIndexPath * _Nullable (RACTuple *selectedItem, NSNumber *) {
         @strongify(self);
@@ -475,6 +498,17 @@ static NSURL * _Nullable PTUExtractAssociatedURL(NSError *error) {
 - (CGSize)collectionView:(UICollectionView __unused *)collectionView
                   layout:(UICollectionViewLayout __unused *)collectionViewLayout
   sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
+  NSValue * _Nullable cachedSize = self.sectionItemSizeCache[@(indexPath.section)];
+  if (cachedSize) {
+    return cachedSize.CGSizeValue;
+  }
+
+  CGSize size = [self sizeForItemAtIndexPath:indexPath];
+  self.sectionItemSizeCache[@(indexPath.section)] = $(size);
+  return size;
+}
+
+- (CGSize)sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
   id<PTNDescriptor> descriptor = [self.dataSource descriptorAtIndexPath:indexPath];
   if ([descriptor conformsToProtocol:@protocol(PTNAlbumDescriptor)]) {
     return self.albumCellSize;
