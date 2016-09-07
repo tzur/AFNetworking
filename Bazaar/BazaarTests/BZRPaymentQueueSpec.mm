@@ -40,6 +40,17 @@ beforeEach(^{
   paymentQueue.downloadsDelegate = downloadsDelegate;
 });
 
+context(@"deallocating object", ^{
+  it(@"should dealloc when all strong references are relinquished", ^{
+    BZRPaymentQueue __weak *weakPaymentQueue;
+    @autoreleasepool {
+      BZRPaymentQueue *paymentQueue = [[BZRPaymentQueue alloc] init];
+      weakPaymentQueue = paymentQueue;
+    }
+    expect(weakPaymentQueue).to.beNil();
+  });
+});
+
 context(@"transactions", ^{
   __block NSArray<SKPaymentTransaction *> *paymentTransactions;
   __block NSArray<SKPaymentTransaction *> *restorationTransactions;
