@@ -6,15 +6,11 @@
 #import "BZRProduct.h"
 #import "BZRProductContentFetcher.h"
 #import "BZRProductContentManager.h"
-#import "BZRProductEligibilityVerifier.h"
 #import "NSErrorCodes+Bazaar.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface BZRProductContentProvider ()
-
-/// Verifier used to verify that the user is eligible to use a product.
-@property (readonly, nonatomic) BZRProductEligibilityVerifier *eligibilityVerifier;
 
 /// Fetcher used to fetch content.
 @property (readonly, nonatomic) id<BZRProductContentFetcher> contentFetcher;
@@ -26,11 +22,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation BZRProductContentProvider
 
-- (instancetype)initWithEligibilityVerifier:(BZRProductEligibilityVerifier *)eligibilityVerifier
-                             contentFetcher:(id<BZRProductContentFetcher>)contentFetcher
-                             contentManager:(BZRProductContentManager *)contentManager {
+- (instancetype)initWithContentFetcher:(id<BZRProductContentFetcher>)contentFetcher
+                        contentManager:(BZRProductContentManager *)contentManager {
   if (self = [super init]) {
-    _eligibilityVerifier = eligibilityVerifier;
     _contentFetcher = contentFetcher;
     _contentManager = contentManager;
   }
@@ -39,34 +33,29 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (RACSignal *)fetchProductContent:(BZRProduct *)product {
   @weakify(self);
-  return [[self validateEligibility:product] then:^{
+  return [[RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
     @strongify(self);
     if (!product.contentFetcherParameters) {
-      return [RACSignal empty];
+      [subscriber sendCompleted];
+      return nil;
     }
     LTPath *pathToContent =
         [self.contentManager pathToContentDirectoryOfProduct:product.identifier];
+    [subscriber sendNext:pathToContent];
+    [subscriber sendCompleted];
+    return nil;
+  }]
+  flattenMap:^RACStream *(LTPath * _Nullable pathToContent) {
+    @strongify(self);
     if (pathToContent) {
       return [RACSignal return:pathToContent];
     }
     return [[self.contentFetcher fetchContentForProduct:product]
         flattenMap:^RACSignal *(LTPath *contentArchivePath) {
-          @strongify(self);
           return [self.contentManager extractContentOfProduct:product.identifier
                                                   fromArchive:contentArchivePath];
-        }];
-  }];
-}
-
-- (RACSignal *)validateEligibility:(BZRProduct *)product {
-  return [[self.eligibilityVerifier verifyEligibilityForProduct:product.identifier]
-     tryMap:^NSNumber *(NSNumber *isUserEligibleToUseProduct, NSError **error) {
-       if (![isUserEligibleToUseProduct boolValue]) {
-         *error = [NSError lt_errorWithCode:BZRErrorCodeUserNotAllowedToUseProduct];
-         return nil;
-       }
-       return @YES;
      }];
+  }];
 }
 
 @end

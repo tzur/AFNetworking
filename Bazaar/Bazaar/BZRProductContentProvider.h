@@ -3,7 +3,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class BZRProduct, BZRProductContentManager, BZRProductEligibilityVerifier;
+@class BZRProduct, BZRProductContentManager;
+
 @protocol BZRProductContentFetcher;
 
 /// Provider used to fetch content of products.
@@ -11,12 +12,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)init NS_UNAVAILABLE;
 
-/// Initializes with \c eligibilityVerifier, used to verify that the user is allowed to use a
-/// product. \c contentFetcher is used to fetch content. \c contentManager is used to extract
-/// content from an archive file.
-- (instancetype)initWithEligibilityVerifier:(BZRProductEligibilityVerifier *)eligibilityVerifier
-                             contentFetcher:(id<BZRProductContentFetcher>)contentFetcher
-                             contentManager:(BZRProductContentManager *)contentManager
+/// Initializes with \c contentFetcher, used to fetch content, and with \c contentManager, used to
+/// extract content from an archive file.
+- (instancetype)initWithContentFetcher:(id<BZRProductContentFetcher>)contentFetcher
+                        contentManager:(BZRProductContentManager *)contentManager
     NS_DESIGNATED_INITIALIZER;
 
 /// Provides the content of the given \c product if the user is allowed to use it.
