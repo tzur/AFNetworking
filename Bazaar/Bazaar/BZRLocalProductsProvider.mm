@@ -23,6 +23,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation BZRLocalProductsProvider
 
+- (instancetype)initWithPath:(LTPath *)path {
+  return [self initWithPath:path fileManager:[NSFileManager defaultManager]];
+}
+
 - (instancetype)initWithPath:(LTPath *)path fileManager:(NSFileManager *)fileManager {
   if (self = [super init]) {
     _path = path;
