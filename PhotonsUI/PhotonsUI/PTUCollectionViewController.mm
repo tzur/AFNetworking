@@ -86,8 +86,8 @@ NS_ASSUME_NONNULL_BEGIN
                       initialConfiguration:(PTUCollectionViewConfiguration *)initialConfiguration {
   if (self = [super initWithNibName:nil bundle:nil]) {
     _dataSourceProvider = dataSourceProvider;
+    _configuration = initialConfiguration;
     [self setup];
-    [self setConfiguration:initialConfiguration animated:NO];
   }
   return self;
 }
@@ -114,10 +114,7 @@ NS_ASSUME_NONNULL_BEGIN
   [self setupSectionItemSizeCache];
   [self setupSelectionSignals];
   [self setupControlSignals];
-  [self setupInfoViews];
-  [self buildDefaultEmptyView];
-  [self buildDefaultErrorView];
-  [self reloadData];
+  [self setupInfoViewBinding];
 }
 
 - (void)setupCollectionView {
@@ -127,11 +124,20 @@ NS_ASSUME_NONNULL_BEGIN
   self.collectionView.delegate = self;
   self.collectionView.allowsMultipleSelection = YES;
   self.collectionView.backgroundColor = [UIColor clearColor];
+  [self setConfiguration:self.configuration animated:NO];
+  [self configureDataSource];
+}
 
+- (void)configureDataSource {
+  self.dataSource = [self.dataSourceProvider dataSourceForCollectionView:self.collectionView];
+}
+
+- (void)viewDidLoad {
   [self.view addSubview:self.collectionView];
   [self.collectionView mas_makeConstraints:^(MASConstraintMaker *make) {
     make.edges.equalTo(self.view);
   }];
+  [self setupDefaultInfoViews];
 }
 
 - (void)setupTitleBinding {
@@ -287,7 +293,7 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark Info views
 #pragma mark -
 
-- (void)setupInfoViews {
+- (void)setupInfoViewBinding {
   @weakify(self);
   RACSignal *hideEmptyView = [[[[RACObserve(self, emptyView)
       map:^RACStream *(id) {
@@ -331,9 +337,6 @@ NS_ASSUME_NONNULL_BEGIN
         return [errorViewProvider errorViewForError:error
                                       associatedURL:PTUExtractAssociatedURL(error)];
       }];
-
-  self.emptyView = [self buildDefaultEmptyView];
-  self.errorViewProvider = [[PTUErrorViewProvider alloc] initWithView:[self buildDefaultErrorView]];
 }
 
 static NSURL * _Nullable PTUExtractAssociatedURL(NSError *error) {
@@ -349,6 +352,16 @@ static NSURL * _Nullable PTUExtractAssociatedURL(NSError *error) {
     return urlSet.count == 1 ? urlSet.anyObject : nil;
   } else {
     return nil;
+  }
+}
+
+- (void)setupDefaultInfoViews {
+  if (!self.emptyView) {
+    self.emptyView = [self buildDefaultEmptyView];
+  }
+  if (!self.errorViewProvider) {
+    self.errorViewProvider = [[PTUErrorViewProvider alloc]
+                              initWithView:[self buildDefaultErrorView]];
   }
 }
 
@@ -490,7 +503,7 @@ static NSURL * _Nullable PTUExtractAssociatedURL(NSError *error) {
 }
 
 - (void)reloadData {
-  self.dataSource = [self.dataSourceProvider dataSourceForCollectionView:self.collectionView];
+  [self configureDataSource];
 }
 
 #pragma mark -
