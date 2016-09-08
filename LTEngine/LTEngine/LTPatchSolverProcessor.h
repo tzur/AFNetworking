@@ -7,7 +7,8 @@
 
 /// Processor for solving the Poisson equation. The processor is given a mask, source and target
 /// textures, and calculates a result to the equation given the boundary condition T - S on the
-/// mask's boundary.
+/// mask's boundary. Mask's boundary is determined with threshold of \c 0.5 (@see
+/// \c LTPatchBoundaryProcessor for more information).
 @interface LTPatchSolverProcessor : LTImageProcessor
 
 /// Initializes with mask, source texture, target texture and an output texture. The mask texture

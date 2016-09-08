@@ -175,6 +175,7 @@
   LTTexture *boundary = [LTTexture byteRedTextureWithSize:self.workingSize];
   LTPatchBoundaryProcessor *processor = [[LTPatchBoundaryProcessor alloc]
                                          initWithInput:self.maskResized output:boundary];
+  processor.threshold = 0.5;
   [processor process];
 
   // Convert to 1 and 4-channel float.

@@ -107,8 +107,8 @@ context(@"processing", ^{
     sourceMat(cv::Rect(kTextureWidth / 2, 0, kTextureWidth / 2, kTextureWidth)) =
         cv::Vec4b(255, 255, 255, 255);
     source = [LTTexture textureWithImage:sourceMat];
-    cv::Mat4b maskMat(kTextureWidth, kTextureWidth, cv::Vec4b(255, 255, 255, 255));
-    maskMat(cv::Rect(1, 1, kTextureWidth - 2, kTextureWidth - 2)) = cv::Vec4b(0, 0, 0, 255);
+    cv::Mat4b maskMat(kTextureWidth, kTextureWidth, cv::Vec4b(200, 200, 200, 255));
+    maskMat(cv::Rect(1, 1, kTextureWidth - 2, kTextureWidth - 2)) = cv::Vec4b(100, 100, 100, 255);
     mask = [LTTexture textureWithImage:maskMat];
     [target clearWithColor:LTVector4(0.5, 0.5, 0.5, 1)];
 
@@ -137,8 +137,8 @@ context(@"processing", ^{
         .setTo(cv::Vec4hf(half(1), half(1), half(1), half(1)));
 
     source = [LTTexture textureWithImage:sourceMat];
-    cv::Mat4b maskMat(kTextureWidth, kTextureWidth, cv::Vec4b(255, 255, 255, 255));
-    maskMat(cv::Rect(1, 1, kTextureWidth - 2, kTextureWidth - 2)) = cv::Vec4b(0, 0, 0, 255);
+    cv::Mat4b maskMat(kTextureWidth, kTextureWidth, cv::Vec4b(200, 200, 200, 255));
+    maskMat(cv::Rect(1, 1, kTextureWidth - 2, kTextureWidth - 2)) = cv::Vec4b(100, 100, 100, 255);
     mask = [LTTexture textureWithImage:maskMat];
     target = [LTTexture textureWithSize:CGSizeMakeUniform(kTextureWidth)
                             pixelFormat:$(LTGLPixelFormatRGBA16Float) allocateMemory:YES];
