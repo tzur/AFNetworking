@@ -3,7 +3,7 @@
 
 #import "CUIDropDownMenuItemsEntry.h"
 
-#import "CUIMenuItemButton.h"
+#import "CUIMenuItemView.h"
 #import "CUIMenuItemViewModel.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -42,14 +42,14 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (BOOL)validateItemViewClass:(Class)itemViewClass {
-  return [itemViewClass conformsToProtocol:@protocol(CUIMenuItemButton)] &&
+  return [itemViewClass conformsToProtocol:@protocol(CUIMenuItemView)] &&
       [itemViewClass isSubclassOfClass:[UIButton class]];
 }
 
 - (void)setupMainBarItemViewWithViewClass:(Class)mainBarItemViewClass  {
   // Casting because the compiler does not find self.item as valid type for initWithModel.
-  UIButton<CUIMenuItemButton> *itemButton =
-      [(UIButton<CUIMenuItemButton> *)[mainBarItemViewClass alloc] initWithModel:self.item];
+  UIButton<CUIMenuItemView> *itemButton =
+      [(UIButton<CUIMenuItemView> *)[mainBarItemViewClass alloc] initWithModel:self.item];
   [itemButton addTarget:self action:@selector(didTap:)
        forControlEvents:UIControlEventTouchUpInside];
   _mainBarItemView = itemButton;
@@ -90,7 +90,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)addSubmenuItemsWithViewClass:(Class)itemViewClass {
   for (id<CUIMenuItemViewModel> item in self.item.subitems) {
-    UIButton<CUIMenuItemButton> *itemButton = [[itemViewClass alloc] initWithModel:item];
+    UIButton<CUIMenuItemView> *itemButton = [[itemViewClass alloc] initWithModel:item];
     [itemButton addTarget:self action:@selector(didTap:)
          forControlEvents:UIControlEventTouchUpInside];
     [self.stackView addArrangedSubview:itemButton];

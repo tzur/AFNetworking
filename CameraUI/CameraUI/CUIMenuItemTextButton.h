@@ -1,7 +1,7 @@
 // Copyright (c) 2016 Lightricks. All rights reserved.
 // Created by Reuven Siman Tov.
 
-#import "CUIMenuItemButton.h"
+#import "CUIMenuItemView.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -9,7 +9,7 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 /// Ignores the \c iconURL and \c subitems properties of the \c CUIMenuItemViewModel. The text
 /// format (e.g. color and font) is being set according to current \c CUISharedTheme instance.
-@interface CUIMenuItemTextButton : UIButton <CUIMenuItemButton>
+@interface CUIMenuItemTextButton : UIButton <CUIMenuItemView>
 
 - (instancetype)init NS_UNAVAILABLE;
 
