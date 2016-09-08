@@ -192,11 +192,19 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)setupControlSignals {
   @weakify(self);
+  // To support deferred controls we try the operation once initially, and then retry again on every
+  // new data being loaded, or whenever the view appears.
+  // The view appearance cue is necessary since successful scrolling requires valid contentSize in
+  // the collection view, which is guaranteed only on appearance. This isn't a requirement for
+  // selection but its added to it as well for good measure, as reselecting an already selected
+  // asset has no effect.
   [[[[[RACSignal
       combineLatest:@[
         [self rac_signalForSelector:@selector(selectItem:)],
         [[RACObserve(self, dataSource.didUpdateCollectionView)
             switchToLatest]
+            startWith:[RACUnit defaultUnit]],
+        [[self rac_signalForSelector:@selector(viewDidAppear:)]
             startWith:[RACUnit defaultUnit]]
       ]]
       reduceEach:(id)^NSIndexPath * _Nullable (RACTuple *selectedItem, NSNumber *) {
@@ -215,11 +223,15 @@ NS_ASSUME_NONNULL_BEGIN
                        fromProtocol:@protocol(PTUCollectionViewController)]
       map:^RACSignal *(RACTuple *value) {
         @strongify(self);
+        // Deferred scrolling retries are made only until another scroll is made either
+        // programmatically or via user interaction.
         return [[RACSignal
             combineLatest:@[
               [RACSignal return:value],
               [[RACObserve(self, dataSource.didUpdateCollectionView)
                   switchToLatest]
+                  startWith:[RACUnit defaultUnit]],
+              [[self rac_signalForSelector:@selector(viewDidAppear:)]
                   startWith:[RACUnit defaultUnit]]
             ]]
             takeUntil:[self rac_signalForSelector:@selector(scrollViewDidScroll:)]];
