@@ -52,6 +52,7 @@
     * `libLTEngine.a`
     * `libLTKit.a`
     * `Mantle.framework` (from `Mantle-iOS`)
+    * `libcompression.tbd`
     * `libextobjc_iOS.a`
   - Add `LTEngine.bundle` to `Copy Bundle Resources`.
 8. LTEngine requires the C++ Standard Library to be included in the project, in order to include it, a `.mm` file must be present in your project. If no such file exists, rename an existing `.m` file to `.mm`.
