@@ -65,6 +65,7 @@
 		83B730681CDB56870090C0BF /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83B730671CDB56870090C0BF /* CoreMedia.framework */; };
 		83B7318B1CDB91D10090C0BF /* libCamera.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 83FF06D91CD7266B00383C6B /* libCamera.a */; };
 		83BDB8271D3B7B8C000C2088 /* Lena.png in Resources */ = {isa = PBXBuildFile; fileRef = 83BDB8261D3B7B8C000C2088 /* Lena.png */; };
+		8BF68AF71D82E9690093910D /* libcompression.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BF68AF61D82E9690093910D /* libcompression.tbd */; };
 		8D01B2F115E961DB011B44B9 /* CAMDevicePreset.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8D01B772F8E8AF1392710F22 /* CAMDevicePreset.mm */; };
 		8D01BCAEC8899C79F2710F04 /* CAMDevicePresetSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8D01BF505FBFFC6081864B06 /* CAMDevicePresetSpec.mm */; };
 		BE84C54E1D463BB10098DC1D /* CAMSampleTimingInfo.mm in Sources */ = {isa = PBXBuildFile; fileRef = BE84C54D1D463BB10098DC1D /* CAMSampleTimingInfo.mm */; };
@@ -525,6 +526,7 @@
 		83FF06ED1CD7270300383C6B /* StaticLibrary.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = StaticLibrary.xcconfig; sourceTree = "<group>"; };
 		83FF06F21CD7272F00383C6B /* CameraTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CameraTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		83FF06F61CD7272F00383C6B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8BF68AF61D82E9690093910D /* libcompression.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libcompression.tbd; path = usr/lib/libcompression.tbd; sourceTree = SDKROOT; };
 		8D01B1E18E03D65BC0430673 /* CAMDevicePreset.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAMDevicePreset.h; sourceTree = "<group>"; };
 		8D01B772F8E8AF1392710F22 /* CAMDevicePreset.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CAMDevicePreset.mm; sourceTree = "<group>"; };
 		8D01BF505FBFFC6081864B06 /* CAMDevicePresetSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CAMDevicePresetSpec.mm; sourceTree = "<group>"; };
@@ -568,6 +570,7 @@
 				83B72D351CDA421C0090C0BF /* opencv2.framework in Frameworks */,
 				836C662B1CD7711900BE4496 /* ReactiveCocoa.framework in Frameworks */,
 				83B7318B1CDB91D10090C0BF /* libCamera.a in Frameworks */,
+				8BF68AF71D82E9690093910D /* libcompression.tbd in Frameworks */,
 				6542A5701D4636DB00450B46 /* libExpecta.a in Frameworks */,
 				6542A51A1D4635C300450B46 /* libextobjc_iOS.a in Frameworks */,
 				06C02F641D1954B500745557 /* libLTEngine.a in Frameworks */,
@@ -653,6 +656,7 @@
 		6542A5231D4635E700450B46 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				8BF68AF61D82E9690093910D /* libcompression.tbd */,
 				6542A5241D46364400450B46 /* libExpecta.a */,
 				6542A5251D46364400450B46 /* libOCMock.a */,
 				6542A5261D46364400450B46 /* libSpecta.a */,
