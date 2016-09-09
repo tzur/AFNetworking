@@ -16,7 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// \c objectForKeyedSubscript:key will return an object which is equal to \c object.
 ///
 /// Note that a copy of \c object may be created.
-- (void)setObject:(id<NSCopying>)object forKeyedSubscript:(NSString *)key;
+- (void)setObject:(id<NSSecureCoding, NSCopying>)object forKeyedSubscript:(NSString *)key;
 
 /// Deletes the object attached to the key specified by \c key. Should raise an exception on
 /// failure. It must hold that after a successful invocation of this method invocation of
