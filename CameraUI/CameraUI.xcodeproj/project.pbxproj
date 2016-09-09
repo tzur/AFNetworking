@@ -33,6 +33,7 @@
 		83B731B51CDB92670090C0BF /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83B731B41CDB92670090C0BF /* CoreMedia.framework */; };
 		83B731C31CDB92A20090C0BF /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83B731C21CDB92A20090C0BF /* opencv2.framework */; };
 		83B731C41CDB92C00090C0BF /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83B731C21CDB92A20090C0BF /* opencv2.framework */; };
+		8BF68AA51D82E8200093910D /* libcompression.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BF68AA41D82E8200093910D /* libcompression.tbd */; };
 		BE0D7A7E1CF49705009899F9 /* CUIMenuItemTextButton.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0D7A7D1CF49705009899F9 /* CUIMenuItemTextButton.m */; };
 		BE0D7A9E1CF4978F009899F9 /* CUISimpleMenuItemViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0D7A9C1CF4978F009899F9 /* CUISimpleMenuItemViewModel.m */; };
 		BE0D7A9F1CF4978F009899F9 /* CUIMenuItemTextButtonSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = BE0D7A9D1CF4978F009899F9 /* CUIMenuItemTextButtonSpec.mm */; };
@@ -498,6 +499,7 @@
 		83B731B41CDB92670090C0BF /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		83B731B61CDB928A0090C0BF /* LTEngine.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LTEngine.xcodeproj; path = ../LTEngine/LTEngine.xcodeproj; sourceTree = "<group>"; };
 		83B731C21CDB92A20090C0BF /* opencv2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = opencv2.framework; path = ../third_party/opencv/opencv2.framework; sourceTree = "<group>"; };
+		8BF68AA41D82E8200093910D /* libcompression.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libcompression.tbd; path = usr/lib/libcompression.tbd; sourceTree = SDKROOT; };
 		BE0D7A7B1CF49705009899F9 /* CUIMenuItemButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUIMenuItemButton.h; sourceTree = "<group>"; };
 		BE0D7A7C1CF49705009899F9 /* CUIMenuItemTextButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUIMenuItemTextButton.h; sourceTree = "<group>"; };
 		BE0D7A7D1CF49705009899F9 /* CUIMenuItemTextButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CUIMenuItemTextButton.m; sourceTree = "<group>"; };
@@ -653,6 +655,7 @@
 				83B729E61CD8D7D90090C0BF /* ReactiveCocoa.framework in Frameworks */,
 				83B72A7A1CD8E2FD0090C0BF /* libCamera.a in Frameworks */,
 				83B729001CD8D2080090C0BF /* libCameraUI.a in Frameworks */,
+				8BF68AA51D82E8200093910D /* libcompression.tbd in Frameworks */,
 				83B729E11CD8D7BE0090C0BF /* libExpecta.a in Frameworks */,
 				65061A251D463962003D45B1 /* libextobjc_iOS.a in Frameworks */,
 				F965C9E91CF3183100005627 /* libLTEngine.a in Frameworks */,
@@ -669,6 +672,7 @@
 		650619D21D463867003D45B1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				8BF68AA41D82E8200093910D /* libcompression.tbd */,
 				F965C9EC1CF318CE00005627 /* Accelerate.framework */,
 				83B731B21CDB92640090C0BF /* AssetsLibrary.framework */,
 				83B731B01CDB92600090C0BF /* AVFoundation.framework */,

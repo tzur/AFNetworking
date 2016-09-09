@@ -1186,6 +1186,12 @@
 		8BEBF3ED18FA9CA5005A0DE9 /* LTMixer.vsh in Sources */ = {isa = PBXBuildFile; fileRef = 8BEBF3EB18FA9ABA005A0DE9 /* LTMixer.vsh */; };
 		8BEBF3EF18FA9E4E005A0DE9 /* LTMixerProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BEBF3EE18FA9E4E005A0DE9 /* LTMixerProcessorSpec.mm */; };
 		8BEBF3F918FAA1BD005A0DE9 /* LTPassthroughProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BEBF3F818FAA1BD005A0DE9 /* LTPassthroughProcessor.mm */; };
+		8BF68A6E1D82E7FE0093910D /* NSData+Compression.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BF68A6C1D82E7FE0093910D /* NSData+Compression.h */; };
+		8BF68A6F1D82E7FE0093910D /* NSData+Compression.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BF68A6D1D82E7FE0093910D /* NSData+Compression.mm */; };
+		8BF68AA31D82E8160093910D /* NSData+CompressionSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BF68AA21D82E8160093910D /* NSData+CompressionSpec.mm */; };
+		8BF68AD21D82E8640093910D /* NSErrorCodes+LTEngine.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BF68AD01D82E8640093910D /* NSErrorCodes+LTEngine.h */; };
+		8BF68AD31D82E8640093910D /* NSErrorCodes+LTEngine.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BF68AD11D82E8640093910D /* NSErrorCodes+LTEngine.mm */; };
+		8BF68B1C1D82E99A0093910D /* libcompression.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BF68B1B1D82E99A0093910D /* libcompression.tbd */; };
 		8BFA8F31190FE64B0088310E /* LTGPUImageProcessor+Protected.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BFA8F30190FE64B0088310E /* LTGPUImageProcessor+Protected.mm */; };
 		8BFA8F47191111980088310E /* MixerPlacementRect.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BFA8F46191111980088310E /* MixerPlacementRect.png */; };
 		8BFA8F4919111E700088310E /* LTMultiscaleNoiseProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BFA8F4819111E700088310E /* LTMultiscaleNoiseProcessorSpec.mm */; };
@@ -2896,6 +2902,12 @@
 		8BEBF3F718FAA1BD005A0DE9 /* LTPassthroughProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTPassthroughProcessor.h; sourceTree = "<group>"; };
 		8BEBF3F818FAA1BD005A0DE9 /* LTPassthroughProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTPassthroughProcessor.mm; sourceTree = "<group>"; };
 		8BF64CD51B68BA6B00E70DFE /* LTIZHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTIZHeader.h; sourceTree = "<group>"; };
+		8BF68A6C1D82E7FE0093910D /* NSData+Compression.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Compression.h"; sourceTree = "<group>"; };
+		8BF68A6D1D82E7FE0093910D /* NSData+Compression.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSData+Compression.mm"; sourceTree = "<group>"; };
+		8BF68AA21D82E8160093910D /* NSData+CompressionSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSData+CompressionSpec.mm"; sourceTree = "<group>"; };
+		8BF68AD01D82E8640093910D /* NSErrorCodes+LTEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSErrorCodes+LTEngine.h"; sourceTree = "<group>"; };
+		8BF68AD11D82E8640093910D /* NSErrorCodes+LTEngine.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSErrorCodes+LTEngine.mm"; sourceTree = "<group>"; };
+		8BF68B1B1D82E99A0093910D /* libcompression.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libcompression.tbd; path = usr/lib/libcompression.tbd; sourceTree = SDKROOT; };
 		8BF7EFB918743EBE005695D0 /* LTImageProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTImageProcessor.h; sourceTree = "<group>"; };
 		8BFA8F2F190FE64B0088310E /* LTGPUImageProcessor+Protected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "LTGPUImageProcessor+Protected.h"; sourceTree = "<group>"; };
 		8BFA8F30190FE64B0088310E /* LTGPUImageProcessor+Protected.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "LTGPUImageProcessor+Protected.mm"; sourceTree = "<group>"; };
@@ -2957,6 +2969,7 @@
 				8BA3E118182A437300FDD95A /* QuartzCore.framework in Frameworks */,
 				8B3DEBF718296B6100EA0C1A /* Foundation.framework in Frameworks */,
 				8BA3E119182A437300FDD95A /* UIKit.framework in Frameworks */,
+				8BF68B1C1D82E99A0093910D /* libcompression.tbd in Frameworks */,
 				656155B91D464A58009E701C /* libExpecta.a in Frameworks */,
 				8B0B98F91CA6B9CC00ED2334 /* libextobjc_iOS.a in Frameworks */,
 				8B3DEBFC18296B6100EA0C1A /* libLTEngine.a in Frameworks */,
@@ -3753,6 +3766,8 @@
 			children = (
 				8B3831F41B568FC800620560 /* ImageZero */,
 				8B3831F31B568FB300620560 /* Interfaces */,
+				8BF68A6C1D82E7FE0093910D /* NSData+Compression.h */,
+				8BF68A6D1D82E7FE0093910D /* NSData+Compression.mm */,
 			);
 			name = Compression;
 			sourceTree = "<group>";
@@ -4329,6 +4344,7 @@
 			children = (
 				8B3831F61B56903200620560 /* ImageZero */,
 				8B3831F71B56903600620560 /* Interfaces */,
+				8BF68AA21D82E8160093910D /* NSData+CompressionSpec.mm */,
 			);
 			name = Compression;
 			sourceTree = "<group>";
@@ -4380,6 +4396,7 @@
 		8B3DEBE618296B6100EA0C1A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				8BF68B1B1D82E99A0093910D /* libcompression.tbd */,
 				8BA8C68718699D9A00E6F486 /* Accelerate.framework */,
 				8B3C0A5A1832953E000845BA /* AssetsLibrary.framework */,
 				8B3C0A531832950F000845BA /* AVFoundation.framework */,
@@ -4434,6 +4451,8 @@
 				8B16C9731BAEAE19002FB750 /* LTTypedefs+LTEngine.h */,
 				8B16CA451BAF147B002FB750 /* NSBundle+LTEngineBundle.h */,
 				8B16CA461BAF147B002FB750 /* NSBundle+LTEngineBundle.m */,
+				8BF68AD01D82E8640093910D /* NSErrorCodes+LTEngine.h */,
+				8BF68AD11D82E8640093910D /* NSErrorCodes+LTEngine.mm */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -5516,9 +5535,11 @@
 				8B871FEC1924A75F00517F2E /* LTPatchCompositorProcessor.h in Headers */,
 				28B117A319C8587E007E2F17 /* LTOneShotBaseImageProcessor+Protected.h in Headers */,
 				8BABF0CD19B8486500AED760 /* LTEAWProcessor.h in Headers */,
+				8BF68AD21D82E8640093910D /* NSErrorCodes+LTEngine.h in Headers */,
 				2884193F1BD3A04A00B09F6B /* LTTextureArchiveMetadata.h in Headers */,
 				502B1CBF19FA83EC00985F30 /* LTBlendMode.h in Headers */,
 				285EEA5C1B15C552002D10EE /* LTImageTIFFCompressor.h in Headers */,
+				8BF68A6E1D82E7FE0093910D /* NSData+Compression.h in Headers */,
 				8B871FED1924A75F00517F2E /* LTPatchProcessor.h in Headers */,
 				500677471C69BFE7002C6A24 /* LTContinuousParametricValueProvider.h in Headers */,
 				30DDD6A51CFC8A0700AE72B8 /* LTGaussianFilterProcessor.h in Headers */,
@@ -6612,6 +6633,7 @@
 				28F3CAA01D004B2B007FC2E9 /* LTLinearProcessor.mm in Sources */,
 				28C207791AE7B143007214A5 /* LTTextureArchiver.mm in Sources */,
 				28FC0E6C1D2A9FEC00237FF8 /* LTContentTouchEventAndPredicate.mm in Sources */,
+				8BF68A6F1D82E7FE0093910D /* NSData+Compression.mm in Sources */,
 				030CF744189935AF000E9ED0 /* LTBWTonality.fsh in Sources */,
 				8BB92FAE1906AE5400954124 /* LTMaskOverlayProcessor.mm in Sources */,
 				0367A4B518ACF7AA00B42E34 /* LTProceduralFrame.fsh in Sources */,
@@ -6638,6 +6660,7 @@
 				85CDE5391CFED51C00229787 /* LTForegroundBackgroundDrawer.mm in Sources */,
 				28C207A61AEF5FC2007214A5 /* LTTextureArchiveType.mm in Sources */,
 				284004AF18D7510500403938 /* LTMultiTextureBrush.mm in Sources */,
+				8BF68AD31D82E8640093910D /* NSErrorCodes+LTEngine.mm in Sources */,
 				281035F91D6DC4B300AF7C0F /* CIContext+PixelFormat.mm in Sources */,
 				8BAE3A2F18AD24B000DA79E1 /* LTMaskedArithmeticProcessor.mm in Sources */,
 				500CA9FF1D26B11F009CF19F /* LTPresentationView.mm in Sources */,
@@ -6895,6 +6918,7 @@
 				30DDD6AF1CFC8A5700AE72B8 /* LTGaussianFilterProcessorSpec.mm in Sources */,
 				8BAE3A3918B1FFBC00DA79E1 /* LTFFTProcessorSpec.mm in Sources */,
 				8597AEB51D748EF9008C96D2 /* LTAnisotropicDiffusionProcessorSpec.mm in Sources */,
+				8BF68AA31D82E8160093910D /* NSData+CompressionSpec.mm in Sources */,
 				06B5C28A1D181DCB00401556 /* LTLaplacianPyramidProcessorSpec.mm in Sources */,
 				50C371661BF0DDA5003EC78D /* LTBasicPolynomialInterpolantSpec.mm in Sources */,
 				28A5EAC118D1DC6F007E80C9 /* LTBrushShapeDynamicsEffectSpec.mm in Sources */,
