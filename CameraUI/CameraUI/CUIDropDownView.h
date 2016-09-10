@@ -23,6 +23,10 @@ NS_ASSUME_NONNULL_BEGIN
 /// \c YES.
 @interface CUIDropDownView : UIView
 
+- (instancetype)init NS_UNAVAILABLE;
+
+- (instancetype)initWithCoder:(NSCoder *)aDecoder NS_UNAVAILABLE;
+
 /// Hides the shown drop down views till next tap on their \c mainBarItemView parent view.
 - (void)hideDropDownViews;
 
