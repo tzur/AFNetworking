@@ -60,6 +60,39 @@
 
 @end
 
+/// Fake protocol with properties.
+@protocol LTFakeProtocol <NSObject>
+@property (nonatomic) NSUInteger myUnsignedInteger;
+@property (strong, nonatomic) NSString *myString;
+@end
+
+/// Fake \c LTValueObject implementation with properties as well as synthesized protocol properties.
+@interface LTFakeValueObjectConformingToProtocol : LTValueObject <LTFakeProtocol>
+
+- (instancetype)initWithMyDouble:(double)myDouble myUnsignedInteger:(NSUInteger)myUnsignedInteger
+                        myString:(nullable NSString *)myString;
+
+@property (nonatomic) double myDouble;
+
+@end
+
+@implementation LTFakeValueObjectConformingToProtocol
+
+@synthesize myUnsignedInteger = _myUnsignedInteger;
+@synthesize myString = _myString;
+
+- (instancetype)initWithMyDouble:(double)myDouble myUnsignedInteger:(NSUInteger)myUnsignedInteger
+                        myString:(nullable NSString *)myString {
+  if (self = [super init]) {
+    _myDouble = myDouble;
+    _myUnsignedInteger = myUnsignedInteger;
+    _myString = myString;
+  }
+  return self;
+}
+
+@end
+
 /// Fake \c LTValueObject implementation with weak properties.
 @interface LTFakeValueObjectWithWeakProperties : LTValueObject
 
@@ -82,6 +115,32 @@
     _myString = myString;
   }
   return self;
+}
+
+@end
+
+@interface LTFakeValueObjectWithNonIvarProperties : LTValueObject
+
+- (instancetype)initWithMyDouble:(double)myDouble myInteger:(NSInteger)myInteger;
+
+@property (nonatomic) double myDouble;
+@property (nonatomic) NSInteger myInteger;
+@property (readonly, nonatomic, nullable) NSString *myString;
+
+@end
+
+@implementation LTFakeValueObjectWithNonIvarProperties
+
+- (instancetype)initWithMyDouble:(double)myDouble myInteger:(NSInteger)myInteger {
+  if (self = [super init]) {
+    _myDouble = myDouble;
+    _myInteger = myInteger;
+  }
+  return self;
+}
+
+- (nullable NSString *)myString {
+  return [NSString stringWithFormat:@"%ld %g", self.myInteger, self.myDouble];
 }
 
 @end
@@ -225,6 +284,44 @@ context(@"value object with compound properties", ^{
   });
 });
 
+context(@"value object with synthesized protocol properties", ^{
+  __block LTFakeValueObjectConformingToProtocol *firstObject;
+  __block LTFakeValueObjectConformingToProtocol *secondObject;
+  __block LTFakeValueObjectConformingToProtocol *thirdObject;
+
+  beforeEach(^{
+    firstObject = [[LTFakeValueObjectConformingToProtocol alloc] initWithMyDouble:0.3
+                                                                myUnsignedInteger:7
+                                                                         myString:@"foo"];
+    secondObject = [[LTFakeValueObjectConformingToProtocol alloc] initWithMyDouble:0.3
+                                                                 myUnsignedInteger:7
+                                                                          myString:@"foo"];
+    thirdObject = [[LTFakeValueObjectConformingToProtocol alloc] initWithMyDouble:0.3
+                                                                myUnsignedInteger:8
+                                                                         myString:@"foo"];
+  });
+
+  it(@"should handle isEqual correctly", ^{
+    expect(firstObject).to.equal(secondObject);
+    expect(secondObject).to.equal(firstObject);
+
+    expect(firstObject).notTo.equal(thirdObject);
+    expect(thirdObject).notTo.equal(firstObject);
+    expect(firstObject).notTo.equal(nil);
+  });
+
+  it(@"should return hash", ^{
+    expect(firstObject.hash).to.equal(secondObject.hash);
+  });
+
+  it(@"should return description", ^{
+    NSString *description = [NSString stringWithFormat:@"<%@: %p, myDouble: %@, myUnsignedInteger: "
+                             "%@, myString: %@>", firstObject.class, firstObject, @(0.3), @(7),
+                             @"foo"];
+    expect([firstObject description]).to.equal(description);
+  });
+});
+
 context(@"value object with weak properties", ^{
   __block LTFakeValueObjectWithWeakProperties *firstObject;
   __block LTFakeValueObjectWithWeakProperties *secondObject;
@@ -254,6 +351,38 @@ context(@"value object with weak properties", ^{
     expect(^{
       [firstObject description];
     }).to.raise(NSInternalInconsistencyException);
+  });
+});
+
+context(@"value object with non-ivar properties", ^{
+  __block LTFakeValueObjectWithNonIvarProperties *firstObject;
+  __block LTFakeValueObjectWithNonIvarProperties *secondObject;
+  __block LTFakeValueObjectWithNonIvarProperties *thirdObject;
+
+  beforeEach(^{
+    firstObject = [[LTFakeValueObjectWithNonIvarProperties alloc] initWithMyDouble:0.3 myInteger:7];
+    secondObject = [[LTFakeValueObjectWithNonIvarProperties alloc] initWithMyDouble:0.3
+                                                                          myInteger:7];
+    thirdObject = [[LTFakeValueObjectWithNonIvarProperties alloc] initWithMyDouble:0.3 myInteger:8];
+  });
+
+  it(@"should handle isEqual correctly", ^{
+    expect(firstObject).to.equal(secondObject);
+    expect(secondObject).to.equal(firstObject);
+
+    expect(firstObject).notTo.equal(thirdObject);
+    expect(thirdObject).notTo.equal(firstObject);
+    expect(firstObject).notTo.equal(nil);
+  });
+
+  it(@"should return hash", ^{
+    expect(firstObject.hash).to.equal(secondObject.hash);
+  });
+
+  it(@"should return description", ^{
+    NSString *description = [NSString stringWithFormat:@"<%@: %p, myDouble: %@, myInteger: %@>",
+                             firstObject.class, firstObject, @(0.3), @(7)];
+    expect([firstObject description]).to.equal(description);
   });
 });
 

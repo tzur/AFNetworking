@@ -34,8 +34,13 @@ static NSArray<NSString *> *LTPropertyKeys(Class classObject) {
              propertyName, NSStringFromClass(classObject));
     LTAssert(!attributes->weak, @"Weak properties are prohibited by this, property: %@ from class: "
              "%@ is weak", propertyName, NSStringFromClass(classObject));
-    
-    [propertyKeys addObject:propertyName];
+
+    // The limitation for ivar backed properties also prevents an endless recursion when objects
+    // conform to NSObject, as the NSObject protocol contains hash and description as properties
+    // without backing ivars, and accessing them calls the respective method on the receiver.
+    if (attributes->ivar) {
+      [propertyKeys addObject:propertyName];
+    }
   }
   
   return propertyKeys;

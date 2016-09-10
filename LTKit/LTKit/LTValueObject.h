@@ -8,7 +8,8 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 /// This class should be treated an implementation detail, i.e. <tt>LTValueObject *</tt> should
 /// never be used. The class provides default implementations for \c description, \c isEqual: and
-/// \c hash.
+/// \c hash based on the object's ivars. Properties that are not backed by ivars are ignored as they
+/// are not part of the value object itself, but rather inferred from existing properties.
 ///
 /// \c description is implemented by iterating the class property list, and concatenating a string
 /// in the format of <tt><[class name]: [pointer value], [p1 name]: [p1 description](, ...)></tt>
