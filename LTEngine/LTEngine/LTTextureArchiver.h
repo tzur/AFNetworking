@@ -13,10 +13,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Associates \c object with the specified \c key. Both \c key and \c object must not be \c nil.
 /// Will raise an exception on failure. After a successful invocation of this method a following
-/// \c objectForKeyedSubscript:key will return an object which is equal to \c object.
+/// \c objectForKeyedSubscript:key will return an object which is equal to \c object. \c object must
+/// be a valid Foundations object serializable in JSON format.
 ///
 /// Note that a copy of \c object may be created.
-- (void)setObject:(id<NSSecureCoding, NSCopying>)object forKeyedSubscript:(NSString *)key;
+- (void)setObject:(id<NSCopying>)object forKeyedSubscript:(NSString *)key;
 
 /// Deletes the object attached to the key specified by \c key. Should raise an exception on
 /// failure. It must hold that after a successful invocation of this method invocation of
