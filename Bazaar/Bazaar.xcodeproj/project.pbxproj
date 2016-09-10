@@ -109,8 +109,6 @@
 		8414201A1D76C33000968C36 /* libextobjc_iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6529F85F1CEB65E900FBABFE /* libextobjc_iOS.a */; };
 		9FD3A75C1D3DF26100967F8D /* UICKeyChainStore+SecureStorage.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9FD3A75B1D3DF26100967F8D /* UICKeyChainStore+SecureStorage.mm */; };
 		9FE7D4F11D3F5D1000685F19 /* UICKeyChainStore+SecureStorageSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9FE7D4F01D3F5D1000685F19 /* UICKeyChainStore+SecureStorageSpec.mm */; };
-		9FE7D5A11D3F6B2C00685F19 /* BZRPurchase.h in Headers */ = {isa = PBXBuildFile; fileRef = 9FE7D59D1D3F6B2C00685F19 /* BZRPurchase.h */; };
-		9FE7D5A21D3F6B2C00685F19 /* BZRPurchase.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9FE7D59E1D3F6B2C00685F19 /* BZRPurchase.mm */; };
 		9FE7D5A31D3F6B2C00685F19 /* BZRPurchaseManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 9FE7D59F1D3F6B2C00685F19 /* BZRPurchaseManager.h */; };
 		9FE7D5A41D3F6B2C00685F19 /* BZRPurchaseManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9FE7D5A01D3F6B2C00685F19 /* BZRPurchaseManager.mm */; };
 		9FE7D5D01D3F6B4400685F19 /* BZRPurchaseManagerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9FE7D5CF1D3F6B4400685F19 /* BZRPurchaseManagerSpec.mm */; };
@@ -711,8 +709,6 @@
 		9FD3A75A1D3DF26100967F8D /* UICKeyChainStore+SecureStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UICKeyChainStore+SecureStorage.h"; sourceTree = "<group>"; };
 		9FD3A75B1D3DF26100967F8D /* UICKeyChainStore+SecureStorage.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UICKeyChainStore+SecureStorage.mm"; sourceTree = "<group>"; };
 		9FE7D4F01D3F5D1000685F19 /* UICKeyChainStore+SecureStorageSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UICKeyChainStore+SecureStorageSpec.mm"; sourceTree = "<group>"; };
-		9FE7D59D1D3F6B2C00685F19 /* BZRPurchase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRPurchase.h; sourceTree = "<group>"; };
-		9FE7D59E1D3F6B2C00685F19 /* BZRPurchase.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRPurchase.mm; sourceTree = "<group>"; };
 		9FE7D59F1D3F6B2C00685F19 /* BZRPurchaseManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRPurchaseManager.h; sourceTree = "<group>"; };
 		9FE7D5A01D3F6B2C00685F19 /* BZRPurchaseManager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRPurchaseManager.mm; sourceTree = "<group>"; };
 		9FE7D5CF1D3F6B4400685F19 /* BZRPurchaseManagerSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRPurchaseManagerSpec.mm; sourceTree = "<group>"; };
@@ -843,8 +839,6 @@
 				B9256BCA1D7331BE00490815 /* Payment Queue */,
 				B9237ADC1D69D60C0069B4F1 /* BZRProductDownloadManager.h */,
 				B9237ADD1D69D60C0069B4F1 /* BZRProductDownloadManager.mm */,
-				9FE7D59D1D3F6B2C00685F19 /* BZRPurchase.h */,
-				9FE7D59E1D3F6B2C00685F19 /* BZRPurchase.mm */,
 				9FE7D59F1D3F6B2C00685F19 /* BZRPurchaseManager.h */,
 				9FE7D5A01D3F6B2C00685F19 /* BZRPurchaseManager.mm */,
 				B9256BFE1D73320700490815 /* BZRTransactionRestorationManager.h */,
@@ -1498,7 +1492,6 @@
 				B9484B5C1D50A09900910066 /* BZRLocalContentFetcherParameters.h in Headers */,
 				B9502A7C1D6DCDC500E633BE /* BZRProductContentProvider.h in Headers */,
 				B97A87191D4610A7004390FC /* BZRRemoteProductsProvider.h in Headers */,
-				9FE7D5A11D3F6B2C00685F19 /* BZRPurchase.h in Headers */,
 				9FE7D5A31D3F6B2C00685F19 /* BZRPurchaseManager.h in Headers */,
 				6501EFE21D5B55CC007B76CC /* BZRFileArchiver.h in Headers */,
 				B9ABD1081D7D75AB004D2877 /* BZRStore.h in Headers */,
@@ -2064,7 +2057,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				65C6A2E51D7DAB4500F13649 /* ValidatricksServer.cer in Sources */,
-				9FE7D5A21D3F6B2C00685F19 /* BZRPurchase.mm in Sources */,
 				65BDA0081D33FF8000CC1F31 /* NSError+Bazaar.mm in Sources */,
 				B9502A7D1D6DCDC500E633BE /* BZRProductContentProvider.mm in Sources */,
 				B97A87021D461067004390FC /* BZRLocalProductsProvider.mm in Sources */,

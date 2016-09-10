@@ -4,6 +4,8 @@
 #import "NSError+Bazaar.h"
 
 #import <LTKit/NSError+LTKit.h>
+#import "BZRFakePaymentTransaction.h"
+#import "NSErrorCodes+Bazaar.h"
 
 SpecBegin(NSError_Bazaar)
 
@@ -71,6 +73,21 @@ context(@"archiving error", ^{
     expect(error.bzr_failingItemPath).to.equal(failingItem);
     expect(error.lt_underlyingError).to.equal(underlyingError);
     expect(error.lt_description).to.equal(description);
+  });
+});
+
+context(@"purchase error", ^{
+  it(@"should return an error with the given transaction and underlying error set to transacion's "
+     "error", ^{
+     BZRFakePaymentTransaction *transaction = [[BZRFakePaymentTransaction alloc] init];
+     transaction.error = [NSError lt_errorWithCode:1337];
+
+     NSError *error = [NSError bzr_purchaseFailedErrorWithTransaction:transaction];
+
+     expect(error).toNot.beNil();
+     expect(error.lt_isLTDomain).to.beTruthy();
+     expect(error.code).to.equal(BZRErrorCodePurchaseFailed);
+     expect(error.lt_underlyingError).to.equal(transaction.error);
   });
 });
 

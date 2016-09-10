@@ -1,38 +1,50 @@
 // Copyright (c) 2016 Lightricks. All rights reserved.
 // Created by Hagai Weinfeld.
 
-#import "BZRPurchase.h"
-
 NS_ASSUME_NONNULL_BEGIN
 
-/// Class for initiating payments and following their corresponding \c SKPaymentTransaction's state
-/// in an \c SKPaymentQueue.
+@protocol BZRPaymentsPaymentQueue;
+
+/// Class for managing in-app purchases from Apple's AppStore and following their corresponding
+/// \c SKPaymentTransaction's state as reported by an \c BZRPaymentsPaymentQueue.
+///
+/// A manager may receive updates for purchases that were not initiated by it. These are forwarded
+/// to \c unhandledTransactionsSignal.
 @interface BZRPurchaseManager : NSObject
 
 - (instancetype)init NS_UNAVAILABLE;
 
-/// Initialize with \c paymentQueue, \c applicationUserId, \c unhandledUpdatesBlock and
-/// \c updatesQueue. Payments will be performed on \c paymentQueue which will
-/// be observed for updates. \c unhandledUpdatesBlock will be called on
-/// \c updatesQueue for every \c SKPaymentTransaction update that does not correspond
-/// to an \c SKPayment initiated by this instance of \c BZRPurchaseManager.
+/// Initialize the receiver with \c paymentQueue, used to initiate payment requests. Setting
+/// \c paymentQueue's \c paymentsDelegate after the initialization of the receiver is considered
+/// undefined behavior. \c applicationUserID is used to identify the user while making a payment
+/// request.
 ///
-/// The \c applicationUserId is a user ID provided by the application that uniquely identifies the
+/// The \c applicationUserID is a user ID provided by the application that uniquely identifies the
 /// user (i.e. it must be different for different users and identical for the same user across
 /// devices). If it is not \c nil, it will be used when making purchases to assist with
 /// fraud detection. For more information about the application user identifier follow this link:
 /// https://developer.apple.com/library/ios/documentation/NetworkingInternet/Conceptual/StoreKitGuide/Chapters/RequestPayment.html#//apple_ref/doc/uid/TP40008267-CH4-SW6
-- (instancetype)initWithPaymentQueue:(SKPaymentQueue *)paymentQueue
-                   applicationUserId:(nullable NSString *)applicationUserId
-               unhandledUpdatesBlock:(BZRTransactionUpdateBlock)unhandledUpdatesBlock
-                        updatesQueue:(dispatch_queue_t)updatesQueue
+- (instancetype)initWithPaymentQueue:(id<BZRPaymentsPaymentQueue>)paymentQueue
+                   applicationUserID:(nullable NSString *)applicationUserID
     NS_DESIGNATED_INITIALIZER;
 
-/// Initiates a payment for \c product with \c quantity. \c paymentQueue is observed for
-// \c SKPaymentTransaction updates, \c updateBlock will be called on \c updatesQueue for every
-/// transaction update that belongs to the purchasing process of that payment.
-- (void)purchaseProduct:(SKProduct *)product quantity:(NSUInteger)quantity
-            updateBlock:(BZRTransactionUpdateBlock)updateBlock;
+/// Initiates a payment request for \c product with \c quantity.
+///
+/// Returns a signal that initiates a payment request upon subscription and sends
+/// \c SKPaymentTransaction updates for every transaction update that belongs to the purchasing
+/// process of that payment. The signal completes when the transaction has finished. This occurs
+/// only after \c finishTransaction was invoked for that transaction. The signal errs if the
+/// transaction has failed.
+///
+/// @returns <tt>RACSignal<SKPaymentTransaction></tt>
+- (RACSignal *)purchaseProduct:(SKProduct *)product quantity:(NSUInteger)quantity;
+
+/// Sends transactions that are received by the delegate calls and are not associated with a
+/// purchase made using the receiver. The signal completes when the receiver is deallocated. The
+/// signal doesn't err.
+///
+/// @return <tt>RACSubject<SKPaymentTransaction></tt>
+@property (readonly, nonatomic) RACSignal *unhandledTransactionsSignal;
 
 @end
 

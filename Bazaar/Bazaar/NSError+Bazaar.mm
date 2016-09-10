@@ -2,13 +2,15 @@
 // Created by Daniel Lahyani.
 
 #import "NSError+Bazaar.h"
+#import "NSErrorCodes+Bazaar.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 NSString * const kBZRErrorExceptionKey = @"BZRErrorException";
 NSString * const kBZRErrorProductsRequestKey = @"BZRErrorProductsRequest";
 NSString * const kBZRErrorArchivePathKey = @"BZRErrorArchivePath";
-NSString * const kBZRErrorFailingItemPathKey = @"BZRErrorFailingItemPathKey";
+NSString * const kBZRErrorFailingItemPathKey = @"BZRErrorFailingItemPath";
+NSString * const kBZRErrorFailingTransactionKey = @"BZRErrorFailingTransaction";
 
 @implementation NSError (Bazaar)
 
@@ -52,6 +54,13 @@ NSString * const kBZRErrorFailingItemPathKey = @"BZRErrorFailingItemPathKey";
   return [NSError lt_errorWithCode:code userInfo:userInfo];
 }
 
++ (instancetype)bzr_purchaseFailedErrorWithTransaction:(SKPaymentTransaction *)failingTransaction {
+  NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
+  userInfo[kBZRErrorFailingTransactionKey] = failingTransaction;
+  userInfo[NSUnderlyingErrorKey] = failingTransaction.error;
+  return [NSError lt_errorWithCode:BZRErrorCodePurchaseFailed userInfo:userInfo];
+}
+
 - (nullable NSException *)bzr_exception {
   return self.userInfo[kBZRErrorExceptionKey];
 }
@@ -66,6 +75,10 @@ NSString * const kBZRErrorFailingItemPathKey = @"BZRErrorFailingItemPathKey";
 
 - (nullable NSString *)bzr_failingItemPath {
   return self.userInfo[kBZRErrorFailingItemPathKey];
+}
+
+- (nullable SKPaymentTransaction *)bzr_failingTransaction {
+  return self.userInfo[kBZRErrorFailingTransactionKey];
 }
 
 @end
