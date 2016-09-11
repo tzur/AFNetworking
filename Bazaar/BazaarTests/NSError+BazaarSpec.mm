@@ -77,8 +77,7 @@ context(@"archiving error", ^{
 });
 
 context(@"purchase error", ^{
-  it(@"should return an error with the given transaction and underlying error set to transacion's "
-     "error", ^{
+  it(@"should return an error with the given transaction and underlying error", ^{
      BZRFakePaymentTransaction *transaction = [[BZRFakePaymentTransaction alloc] init];
      transaction.error = [NSError lt_errorWithCode:1337];
 

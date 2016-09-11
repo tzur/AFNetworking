@@ -23,6 +23,7 @@ NSArray *BZRZipArrays(NSArray *anArray, NSArray *anotherArray) {
 SpecBegin(BZRPaymentQueue)
 
 __block SKPaymentQueue *underlyingPaymentQueue;
+__block RACSubject *subject;
 __block id paymentsDelegate;
 __block id restorationDelegate;
 __block id downloadsDelegate;
@@ -30,11 +31,13 @@ __block BZRPaymentQueue *paymentQueue;
 
 beforeEach(^{
   underlyingPaymentQueue = OCMClassMock([SKPaymentQueue class]);
+  subject = [RACSubject subject];
   paymentsDelegate = OCMStrictProtocolMock(@protocol(BZRPaymentQueuePaymentsDelegate));
   restorationDelegate = OCMStrictProtocolMock(@protocol(BZRPaymentQueueRestorationDelegate));
   downloadsDelegate = OCMStrictProtocolMock(@protocol(BZRPaymentQueueDownloadsDelegate));
 
-  paymentQueue = [[BZRPaymentQueue alloc] initWithUnderlyingPaymentQueue:underlyingPaymentQueue];
+  paymentQueue = [[BZRPaymentQueue alloc] initWithUnderlyingPaymentQueue:underlyingPaymentQueue
+                                           unfinishedTransactionsSubject:subject];
   paymentQueue.paymentsDelegate = paymentsDelegate;
   paymentQueue.restorationDelegate = restorationDelegate;
   paymentQueue.downloadsDelegate = downloadsDelegate;
@@ -77,80 +80,145 @@ context(@"transactions", ^{
     restorationTransactions = @[restoredTransaction, restoredTransaction];
   });
 
-  it(@"should notify payments delegate when payment transactions are updated", ^{
-    OCMExpect([paymentsDelegate paymentQueue:paymentQueue
-                  paymentTransactionsUpdated:paymentTransactions]);
+  context(@"sending transactions to right place", ^{
+    it(@"should send transactions with subject and not call delegate", ^{
+      OCMReject([paymentsDelegate paymentQueue:paymentQueue
+                    paymentTransactionsUpdated:paymentTransactions]);
+      LLSignalTestRecorder *recorder = [subject testRecorder];
 
-    [paymentQueue paymentQueue:underlyingPaymentQueue updatedTransactions:paymentTransactions];
-    OCMVerifyAll(paymentsDelegate);
+      [paymentQueue paymentQueue:underlyingPaymentQueue updatedTransactions:paymentTransactions];
+
+      expect(recorder).will.sendValues(paymentTransactions);
+    });
+
+    it(@"should send transactions to delegates if restore completed transactions was called", ^{
+      OCMExpect([paymentsDelegate paymentQueue:paymentQueue
+                    paymentTransactionsUpdated:paymentTransactions]);
+      OCMExpect([restorationDelegate paymentQueue:paymentQueue
+                             transactionsRestored:restorationTransactions]);
+      LLSignalTestRecorder *recorder = [subject testRecorder];
+
+      [paymentQueue restoreCompletedTransactions];
+      [paymentQueue paymentQueue:underlyingPaymentQueue updatedTransactions:paymentTransactions];
+      [subject sendCompleted];
+
+      expect(recorder).will.complete();
+      expect(recorder).will.sendValuesWithCount(0);
+    });
+
+    it(@"should send transactions to delegates if restore completed transactions with username was "
+       "called", ^{
+      OCMExpect([paymentsDelegate paymentQueue:paymentQueue
+                    paymentTransactionsUpdated:paymentTransactions]);
+      OCMExpect([restorationDelegate paymentQueue:paymentQueue
+                             transactionsRestored:restorationTransactions]);
+      LLSignalTestRecorder *recorder = [subject testRecorder];
+
+      [paymentQueue restoreCompletedTransactionsWithApplicationUsername:@"foo"];
+      [paymentQueue paymentQueue:underlyingPaymentQueue updatedTransactions:paymentTransactions];
+      [subject sendCompleted];
+
+      expect(recorder).will.complete();
+      expect(recorder).will.sendValuesWithCount(0);
+    });
+
+    it(@"should send transactions to delegates if add payment was called", ^{
+      OCMExpect([paymentsDelegate paymentQueue:paymentQueue
+                    paymentTransactionsUpdated:paymentTransactions]);
+      LLSignalTestRecorder *recorder = [subject testRecorder];
+
+      [paymentQueue addPayment:OCMClassMock([SKPayment class])];
+      [paymentQueue paymentQueue:underlyingPaymentQueue updatedTransactions:paymentTransactions];
+      [subject sendCompleted];
+
+      expect(recorder).will.complete();
+      expect(recorder).will.sendValuesWithCount(0);
+    });
   });
 
-  it(@"should notify restoration delegate when restoration transactions are updated", ^{
-    OCMExpect([restorationDelegate paymentQueue:paymentQueue
-                           transactionsRestored:restorationTransactions]);
+  context(@"sending transactions to delegates", ^{
+    beforeEach(^{
+      [paymentQueue addPayment:OCMClassMock([SKPayment class])];
+    });
 
-    [paymentQueue paymentQueue:underlyingPaymentQueue updatedTransactions:restorationTransactions];
-    OCMVerifyAll(restorationDelegate);
+    it(@"should notify payments delegate when payment transactions are updated", ^{
+      OCMExpect([paymentsDelegate paymentQueue:paymentQueue
+                    paymentTransactionsUpdated:paymentTransactions]);
+
+      [paymentQueue paymentQueue:underlyingPaymentQueue updatedTransactions:paymentTransactions];
+      OCMVerifyAll(paymentsDelegate);
+    });
+
+    it(@"should notify restoration delegate when restoration transactions are updated", ^{
+      OCMExpect([restorationDelegate paymentQueue:paymentQueue
+                             transactionsRestored:restorationTransactions]);
+
+      [paymentQueue paymentQueue:underlyingPaymentQueue updatedTransactions:restorationTransactions];
+      OCMVerifyAll(restorationDelegate);
+    });
+
+    it(@"should correctly separate transaction updates to payment and restoration delegates", ^{
+      NSArray *transactions = BZRZipArrays(paymentTransactions, restorationTransactions);
+      NSRange range = NSMakeRange(0, transactions.count / 2);
+      OCMExpect([paymentsDelegate paymentQueue:paymentQueue
+                    paymentTransactionsUpdated:[paymentTransactions subarrayWithRange:range]]);
+      OCMExpect([restorationDelegate paymentQueue:paymentQueue
+                             transactionsRestored:[restorationTransactions subarrayWithRange:range]]);
+
+      [paymentQueue paymentQueue:underlyingPaymentQueue updatedTransactions:transactions];
+      OCMVerifyAll(paymentsDelegate);
+      OCMVerifyAll(restorationDelegate);
+    });
+
+    it(@"should notify payments delegate when payment transactions are removed", ^{
+      OCMExpect([paymentsDelegate paymentQueue:paymentQueue
+                    paymentTransactionsRemoved:paymentTransactions]);
+
+      [paymentQueue paymentQueue:underlyingPaymentQueue removedTransactions:paymentTransactions];
+      OCMVerifyAll(paymentsDelegate);
+    });
+
+    it(@"should notify restoration delegate when restoration transactions are removed", ^{
+      OCMExpect([restorationDelegate paymentQueue:paymentQueue
+                      restoredTransactionsRemoved:restorationTransactions]);
+
+      [paymentQueue paymentQueue:underlyingPaymentQueue removedTransactions:restorationTransactions];
+      OCMVerifyAll(restorationDelegate);
+    });
+
+    it(@"should correctly separate removed transactions to payment and restoration delegates", ^{
+      NSArray *transactions = BZRZipArrays(paymentTransactions, restorationTransactions);
+      NSRange range = NSMakeRange(0, transactions.count / 2);
+      OCMExpect([paymentsDelegate paymentQueue:paymentQueue
+                    paymentTransactionsRemoved:[paymentTransactions subarrayWithRange:range]]);
+      OCMExpect([restorationDelegate paymentQueue:paymentQueue
+                      restoredTransactionsRemoved:[restorationTransactions subarrayWithRange:range]]);
+
+      [paymentQueue paymentQueue:underlyingPaymentQueue removedTransactions:transactions];
+      OCMVerifyAll(paymentsDelegate);
+      OCMVerifyAll(restorationDelegate);
+    });
+
+    it(@"should notify the restoration delegate when restoration completes", ^{
+      OCMExpect([restorationDelegate paymentQueueRestorationCompleted:paymentQueue]);
+
+      [paymentQueue paymentQueueRestoreCompletedTransactionsFinished:underlyingPaymentQueue];
+      OCMVerifyAll(restorationDelegate);
+    });
+
+    it(@"should notify the restoration delegate when restoration fails", ^{
+      NSError *error = [NSError lt_errorWithCode:1337];
+      OCMExpect([restorationDelegate paymentQueue:paymentQueue restorationFailedWithError:error]);
+
+      [paymentQueue paymentQueue:underlyingPaymentQueue
+          restoreCompletedTransactionsFailedWithError:error];
+      OCMVerifyAll(restorationDelegate);
+    });
   });
 
-  it(@"should correctly separate transaction updates to payment and restoration delegates", ^{
-    NSArray *transactions = BZRZipArrays(paymentTransactions, restorationTransactions);
-    NSRange range = NSMakeRange(0, transactions.count / 2);
-    OCMExpect([paymentsDelegate paymentQueue:paymentQueue
-                  paymentTransactionsUpdated:[paymentTransactions subarrayWithRange:range]]);
-    OCMExpect([restorationDelegate paymentQueue:paymentQueue
-                           transactionsRestored:[restorationTransactions subarrayWithRange:range]]);
-
-    [paymentQueue paymentQueue:underlyingPaymentQueue updatedTransactions:transactions];
-    OCMVerifyAll(paymentsDelegate);
-    OCMVerifyAll(restorationDelegate);
-  });
-
-  it(@"should notify payments delegate when payment transactions are removed", ^{
-    OCMExpect([paymentsDelegate paymentQueue:paymentQueue
-                  paymentTransactionsRemoved:paymentTransactions]);
-
-    [paymentQueue paymentQueue:underlyingPaymentQueue removedTransactions:paymentTransactions];
-    OCMVerifyAll(paymentsDelegate);
-  });
-
-  it(@"should notify restoration delegate when restoration transactions are removed", ^{
-    OCMExpect([restorationDelegate paymentQueue:paymentQueue
-                    restoredTransactionsRemoved:restorationTransactions]);
-
-    [paymentQueue paymentQueue:underlyingPaymentQueue removedTransactions:restorationTransactions];
-    OCMVerifyAll(restorationDelegate);
-  });
-
-  it(@"should correctly separate removed transactions to payment and restoration delegates", ^{
-    NSArray *transactions = BZRZipArrays(paymentTransactions, restorationTransactions);
-    NSRange range = NSMakeRange(0, transactions.count / 2);
-    OCMExpect([paymentsDelegate paymentQueue:paymentQueue
-                  paymentTransactionsRemoved:[paymentTransactions subarrayWithRange:range]]);
-    OCMExpect([restorationDelegate paymentQueue:paymentQueue
-                    restoredTransactionsRemoved:[restorationTransactions subarrayWithRange:range]]);
-
-    [paymentQueue paymentQueue:underlyingPaymentQueue removedTransactions:transactions];
-    OCMVerifyAll(paymentsDelegate);
-    OCMVerifyAll(restorationDelegate);
-  });
-
-  it(@"should notify the restoration delegate when restoration completes", ^{
-    OCMExpect([restorationDelegate paymentQueueRestorationCompleted:paymentQueue]);
-
-    [paymentQueue paymentQueueRestoreCompletedTransactionsFinished:underlyingPaymentQueue];
-    OCMVerifyAll(restorationDelegate);
-  });
-
-  it(@"should notify the restoration delegate when restoration fails", ^{
-    NSError *error = [NSError lt_errorWithCode:1337];
-    OCMExpect([restorationDelegate paymentQueue:paymentQueue restorationFailedWithError:error]);
-
-    [paymentQueue paymentQueue:underlyingPaymentQueue
-        restoreCompletedTransactionsFailedWithError:error];
-    OCMVerifyAll(restorationDelegate);
-  });
 });
+
+
 
 context(@"downloads", ^{
   it(@"should report the downloads delegate when downloads are updated", ^{
