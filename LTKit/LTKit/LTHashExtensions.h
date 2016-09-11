@@ -112,6 +112,36 @@ struct ::std::hash<CGAffineTransform> {
 };
 
 #pragma mark -
+#pragma mark CATransform3D
+#pragma mark -
+
+template <>
+struct ::std::hash<CATransform3D> {
+  inline size_t operator()(CATransform3D t) const {
+    size_t seed = 0;
+
+    lt::hash_combine(seed, t.m11);
+    lt::hash_combine(seed, t.m12);
+    lt::hash_combine(seed, t.m13);
+    lt::hash_combine(seed, t.m14);
+    lt::hash_combine(seed, t.m21);
+    lt::hash_combine(seed, t.m22);
+    lt::hash_combine(seed, t.m23);
+    lt::hash_combine(seed, t.m24);
+    lt::hash_combine(seed, t.m31);
+    lt::hash_combine(seed, t.m32);
+    lt::hash_combine(seed, t.m33);
+    lt::hash_combine(seed, t.m34);
+    lt::hash_combine(seed, t.m41);
+    lt::hash_combine(seed, t.m42);
+    lt::hash_combine(seed, t.m43);
+    lt::hash_combine(seed, t.m44);
+
+    return seed;
+  }
+};
+
+#pragma mark -
 #pragma mark std::pair
 #pragma mark -
 

@@ -79,6 +79,15 @@ context(@"structs", ^{
     size_t hash1 = std::hash<CGAffineTransform>()(CGAffineTransformMake(1, 2, 3, 4, 5, 6));
     expect(hash0).to.equal(hash1);
   });
+
+  it(@"should hash CATransform3D", ^{
+    CATransform3D transform = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16};
+    CATransform3D otherTransform = transform;
+
+    size_t hash0 = std::hash<CATransform3D>()(transform);
+    size_t hash1 = std::hash<CATransform3D>()(otherTransform);
+    expect(hash0).to.equal(hash1);
+  });
 });
 
 context(@"Objective-C objects", ^{
