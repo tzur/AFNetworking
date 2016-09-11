@@ -53,6 +53,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Whether the camera is capable of flashing.
 @property (nonatomic) BOOL hasFlash;
 
+/// Whether the camera has a torch.
+@property (nonatomic) BOOL hasTorch;
+
 /// Whether the camera's flash will light if an image is captured right now. When the current flash
 /// mode is \c AVCaptureFlashModeAuto, this depends on current exposure measurements.
 @property (nonatomic) BOOL flashWillFire;
@@ -90,6 +93,7 @@ NS_ASSUME_NONNULL_BEGIN
   [self setupExposureProperties];
   [self setupZoomProperties];
   [self setupFlashProperties];
+  [self setupTorchProperties];
   [self setupFlipProperties];
 }
 
@@ -127,6 +131,10 @@ NS_ASSUME_NONNULL_BEGIN
 
   RAC(self, currentFlashMode, @(AVCaptureFlashModeOff)) =
       RACObserve(self, session.videoDevice.flashMode);
+}
+
+- (void)setupTorchProperties {
+  RAC(self, hasTorch, @NO) = RACObserve(self, session.videoDevice.hasTorch);
 }
 
 - (void)setupFlipProperties {
@@ -634,6 +642,59 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
     } error:&error];
     return success ? [RACSignal return:@(flashMode)] : [RACSignal error:error];
   }];
+}
+
+#pragma mark -
+#pragma mark CAMTorchDevice
+#pragma mark -
+
+- (RACSignal *)setTorchLevel:(float)torchLevel {
+  @weakify(self);
+  return [RACSignal defer:^RACSignal *{
+    @strongify(self);
+    NSError *error;
+    BOOL success = [self setTorchLevel:torchLevel error:&error];
+    return success ? [RACSignal return:@(torchLevel)] : [RACSignal error:error];
+  }];
+}
+
+- (BOOL)setTorchLevel:(float)torchLevel error:(NSError * __autoreleasing *)error {
+  AVCaptureDevice *device = self.session.videoDevice;
+  BOOL success = [device cam_performWhileLocked:^BOOL(NSError **errorPtr) {
+    LTParameterAssert(torchLevel <= 1, @"Torch level factor above maximum");
+    LTParameterAssert(torchLevel >= 0, @"Torch level below minimum");
+    if (torchLevel == 0) {
+      return [self setDeviceTorchOff:device error:errorPtr];
+    } else {
+      return [self setDeviceTorchOn:device withLevel:torchLevel error:errorPtr];
+    }
+  } error:error];
+  return success;
+}
+
+- (BOOL)setDeviceTorchOff:(AVCaptureDevice *)device error:(NSError *__autoreleasing *)errorPtr {
+  if (![device isTorchModeSupported:AVCaptureTorchModeOff]) {
+    *errorPtr = [NSError lt_errorWithCode:CAMErrorCodeTorchModeSettingUnsupported];
+    return NO;
+  }
+  device.torchMode = AVCaptureTorchModeOff;
+  return YES;
+}
+
+- (BOOL)setDeviceTorchOn:(AVCaptureDevice *)device withLevel:(float)torchLevel
+                   error:(NSError *__autoreleasing *)errorPtr {
+  if (![device isTorchModeSupported:AVCaptureTorchModeOn]) {
+    *errorPtr = [NSError lt_errorWithCode:CAMErrorCodeTorchModeSettingUnsupported];
+    return NO;
+  }
+  NSError *setLevelError;
+  BOOL torchWasSet = [device setTorchModeOnWithLevel:torchLevel error:&setLevelError];
+  if (setLevelError || !torchWasSet) {
+    *errorPtr = [NSError lt_errorWithCode:CAMErrorCodeTorchModeSettingUnsupported
+                          underlyingError:setLevelError];
+    return NO;
+  }
+  return YES;
 }
 
 #pragma mark -
