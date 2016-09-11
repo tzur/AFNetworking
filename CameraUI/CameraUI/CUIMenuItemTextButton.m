@@ -27,10 +27,10 @@ NS_ASSUME_NONNULL_BEGIN
       [[RACObserve(self, model.title) distinctUntilChanged] deliverOnMainThread],
       [RACSignal return:@(UIControlStateNormal)]
     ]];
+  [self setupFontAndColor];
   RAC(self, selected) = [RACObserve(self, model.selected) deliverOnMainThread];
   RAC(self, hidden) = [RACObserve(self, model.hidden) deliverOnMainThread];
   RAC(self, enabled) = [RACObserve(self, model.enabled) deliverOnMainThread];
-  [self setupFontAndColor];
   [self addTarget:self.model action:@selector(didTap) forControlEvents:UIControlEventTouchUpInside];
 }
 
@@ -40,6 +40,10 @@ NS_ASSUME_NONNULL_BEGIN
   [self setTitleColor:theme.titleHighlightedColor forState:UIControlStateSelected];
   [self setTitleColor:theme.titleHighlightedColor forState:UIControlStateHighlighted];
   self.titleLabel.font = theme.titleFont;
+  RAC(self, titleLabel.font) = [RACObserve(self, selected)
+      map:^UIFont *(NSNumber *selected) {
+        return selected.boolValue ? theme.titleHighlightedFont : theme.titleFont;
+      }];
 }
 
 - (void)setEnabled:(BOOL)enabled {

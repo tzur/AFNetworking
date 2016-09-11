@@ -9,7 +9,9 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 /// Ignores the \c iconURL and \c subitems properties of the \c CUIMenuItemViewModel. The text
 /// format (e.g. color and font) is being set according to current \c CUISharedTheme instance.
-/// When \c model is \c NO, the \c alpha of this view is set to \c 0.4.
+/// \c titleHighlightedFont is used only for \c selected state, and \c titleHighlightedColor is
+/// used only for \c highlighted state. When \c enabled is \c NO, the \c alpha of this view is
+/// set to \c 0.4.
 @interface CUIMenuItemTextButton : UIButton <CUIMenuItemView>
 
 - (instancetype)init NS_UNAVAILABLE;

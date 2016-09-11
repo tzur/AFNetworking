@@ -12,6 +12,7 @@ static NSString * const kTitle = @"Title text";
 static UIColor * const kTitleColor = [UIColor greenColor];
 static UIColor * const kTitleHighlightedColor = [UIColor redColor];
 static UIFont * const kTitleFont = [UIFont italicSystemFontOfSize:25];
+static UIFont * const kTitleHighlightedFont = [UIFont boldSystemFontOfSize:12];
 
 __block CUIMenuItemTextButton *button;
 __block CUISimpleMenuItemViewModel *model;
@@ -22,6 +23,7 @@ beforeEach(^{
   OCMStub([themeMock titleColor]).andReturn(kTitleColor);
   OCMStub([themeMock titleHighlightedColor]).andReturn(kTitleHighlightedColor);
   OCMStub([themeMock titleFont]).andReturn(kTitleFont);
+  OCMStub([themeMock titleHighlightedFont]).andReturn(kTitleHighlightedFont);
   model = [[CUISimpleMenuItemViewModel alloc] init];
   model.title = kTitle;
   button = [[CUIMenuItemTextButton alloc] initWithModel:model];
@@ -78,6 +80,14 @@ it(@"should set the text format according to the shared theme", ^{
   expect(button.titleLabel.textColor).to.equal(kTitleColor);
   expect([button titleColorForState:UIControlStateSelected]).to.equal(kTitleHighlightedColor);
   expect([button titleColorForState:UIControlStateHighlighted]).to.equal(kTitleHighlightedColor);
+  expect(button.titleLabel.font).to.equal(kTitleFont);
+});
+
+it(@"should update the font according to selected property", ^{
+  expect(button.titleLabel.font).to.equal(kTitleFont);
+  model.selected = YES;
+  expect(button.titleLabel.font).to.equal(kTitleHighlightedFont);
+  model.selected = NO;
   expect(button.titleLabel.font).to.equal(kTitleFont);
 });
 
