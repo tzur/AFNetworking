@@ -5,8 +5,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol CUIMenuItemViewModel;
 
-/// Protocol for a \c UIButton that shows a menu item in a menu view.
-@protocol CUIMenuItemButton <NSObject>
+/// Protocol for a \c UIView that shows a menu item in a menu view.
+@protocol CUIMenuItemView <NSObject>
 
 /// Initializes this object with the given \c model as a view-model for this view.
 - (instancetype)initWithModel:(id<CUIMenuItemViewModel>)model;

@@ -1,7 +1,7 @@
 // Copyright (c) 2016 Lightricks. All rights reserved.
 // Created by Reuven Siman Tov.
 
-#import "CUIMenuItemButton.h"
+#import "CUIMenuItemView.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -11,7 +11,7 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 /// The icon's color, highlighted color and selected color are being set according to current \c
 /// CUISharedTheme instance.
-@interface CUIMenuItemIconButton : UIButton <CUIMenuItemButton>
+@interface CUIMenuItemIconButton : UIButton <CUIMenuItemView>
 
 - (instancetype)init NS_UNAVAILABLE;
 
