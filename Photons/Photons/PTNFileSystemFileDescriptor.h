@@ -7,7 +7,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/// Represents a File System file.
+/// Represents a File System file. As a \c PTNAssetDescriptor the recevier supports no capabilities
+/// and has no traits.
 @interface PTNFileSystemFileDescriptor : NSObject <PTNAssetDescriptor>
 
 - (instancetype)init NS_UNAVAILABLE;

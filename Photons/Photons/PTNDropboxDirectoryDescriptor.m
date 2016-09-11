@@ -58,6 +58,10 @@ NS_ASSUME_NONNULL_BEGIN
   return PTNAlbumDescriptorCapabilityNone;
 }
 
+- (NSSet<NSString *> *)descriptorTraits {
+  return [NSSet setWithObject:kPTNDescriptorTraitCloudBasedKey];
+}
+
 #pragma mark -
 #pragma mark NSObject
 #pragma mark -

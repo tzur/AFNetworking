@@ -25,6 +25,10 @@ it(@"should return correct identifier", ^{
   PTNDropboxEntry *entry = [PTNDropboxEntry entryWithPath:kPath];
 
   expect(asset.ptn_identifier).to.equal([NSURL ptn_dropboxAlbumURLWithEntry:entry]);
+  expect(asset.localizedTitle).to.equal(@"bar");
+  expect(asset.descriptorCapabilities).to.equal(PTNDescriptorCapabilityNone);
+  expect(asset.albumDescriptorCapabilities).to.equal(PTNAssetDescriptorCapabilityNone);
+  expect(asset.descriptorTraits).to.contain(kPTNDescriptorTraitCloudBasedKey);
 });
 
 it(@"should use last path component for localized title", ^{

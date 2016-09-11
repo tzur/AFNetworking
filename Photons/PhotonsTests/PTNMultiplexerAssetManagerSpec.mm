@@ -49,10 +49,10 @@ beforeEach(^{
     kSchemeC: managerC
   }];
 
-  descriptorA = PTNCreateDescriptor((PTNCreateURL(kSchemeA, nil, nil)), nil, 0);
-  descriptorB = PTNCreateDescriptor((PTNCreateURL(kSchemeB, nil, nil)), nil, 0);
-  descriptorC = PTNCreateDescriptor((PTNCreateURL(kSchemeC, nil, nil)), nil, 0);
-  descriptorD = PTNCreateDescriptor((PTNCreateURL(kSchemeD, nil, nil)), nil, 0);
+  descriptorA = PTNCreateDescriptor((PTNCreateURL(kSchemeA, nil, nil)), nil, 0, nil);
+  descriptorB = PTNCreateDescriptor((PTNCreateURL(kSchemeB, nil, nil)), nil, 0, nil);
+  descriptorC = PTNCreateDescriptor((PTNCreateURL(kSchemeC, nil, nil)), nil, 0, nil);
+  descriptorD = PTNCreateDescriptor((PTNCreateURL(kSchemeD, nil, nil)), nil, 0, nil);
 });
 
 context(@"album fetching", ^{
@@ -221,9 +221,9 @@ context(@"changes", ^{
   context(@"favorite", ^{
     beforeEach(^{
       descriptorA = PTNCreateAssetDescriptor(PTNCreateURL(kSchemeA, nil, nil), nil, 0, nil, nil,
-                                             PTNAssetDescriptorCapabilityFavorite);
+                                             nil, PTNAssetDescriptorCapabilityFavorite);
       descriptorB = PTNCreateAssetDescriptor(PTNCreateURL(kSchemeB, nil, nil), nil, 0, nil, nil,
-                                             PTNAssetDescriptorCapabilityFavorite);
+                                             nil, PTNAssetDescriptorCapabilityFavorite);
     });
 
     it(@"should forward favorite requests to underlying managers", ^{
@@ -260,7 +260,7 @@ context(@"changes", ^{
 
     it(@"should err when any descriptors don't support PTNAssetDescriptorCapabilityFavorite", ^{
       id<PTNAssetDescriptor> Unfavorable =
-          PTNCreateAssetDescriptor(PTNCreateURL(kSchemeA, nil, nil), nil, 0, nil, nil, 0);
+          PTNCreateAssetDescriptor(PTNCreateURL(kSchemeA, nil, nil), nil, 0, nil, nil, nil, 0);
       RACSignal *values = [multiplexerManager favoriteDescriptors:@[descriptorA, Unfavorable]
                                                          favorite:YES];
 

@@ -18,30 +18,45 @@ id<PTNAlbum> PTNCreateAlbum(NSURL * _Nullable url, id<LTRandomAccessCollection> 
 
 id<PTNDescriptor> PTNCreateDescriptor(NSURL * _Nullable identifier,
                                       NSString * _Nullable localizedTitle,
-                                      PTNDescriptorCapabilities capabilites) {
+                                      PTNDescriptorCapabilities capabilities,
+                                      NSSet<NSString *> * _Nullable traits) {
   return [[PTNFakeDescriptor alloc] initWithIdentifier:identifier localizedTitle:localizedTitle
-                                descriptorCapabilities:capabilites];
+                                descriptorCapabilities:capabilities descriptorTraits:traits];
 }
 
 id<PTNAssetDescriptor> PTNCreateAssetDescriptor(NSURL * _Nullable identifier,
                                                 NSString * _Nullable localizedTitle,
-                                                PTNDescriptorCapabilities capabilites,
+                                                PTNDescriptorCapabilities capabilities,
+                                                NSSet<NSString *> * _Nullable traits,
                                                 NSDate * _Nullable creationDate,
                                                 NSDate * _Nullable modificationDate,
                                                 PTNAssetDescriptorCapabilities assetCapabilities) {
   return [[PTNFakeAssetDescriptor alloc] initWithIdentifier:identifier localizedTitle:localizedTitle
-      descriptorCapabilities:capabilites creationDate:creationDate modificationDate:modificationDate
-      assetDescriptorCapabilities:assetCapabilities];
+      descriptorCapabilities:capabilities descriptorTraits:traits creationDate:creationDate
+      modificationDate:modificationDate assetDescriptorCapabilities:assetCapabilities];
 }
 
 id<PTNAlbumDescriptor> PTNCreateAlbumDescriptor(NSURL * _Nullable identifier,
                                                 NSString * _Nullable localizedTitle,
-                                                PTNDescriptorCapabilities capabilites,
+                                                PTNDescriptorCapabilities capabilities,
+                                                NSSet<NSString *> * _Nullable traits,
                                                 NSUInteger assetCount,
                                                 PTNAlbumDescriptorCapabilities albumCapabilities) {
   return [[PTNFakeAlbumDescriptor alloc] initWithIdentifier:identifier localizedTitle:localizedTitle
-                                     descriptorCapabilities:capabilites assetCount:assetCount
-                                albumDescriptorCapabilities:albumCapabilities];
+      descriptorCapabilities:capabilities descriptorTraits:traits assetCount:assetCount
+      albumDescriptorCapabilities:albumCapabilities];
+}
+
+id<PTNDescriptor> PTNCreateDescriptor(NSString *localizedTitle) {
+  return PTNCreateDescriptor(nil, localizedTitle, 0, nil);
+}
+
+id<PTNAssetDescriptor> PTNCreateAssetDescriptor(NSString *localizedTitle) {
+  return PTNCreateAssetDescriptor(nil, localizedTitle, 0, nil, nil, nil, 0);
+}
+
+id<PTNAlbumDescriptor> PTNCreateAlbumDescriptor(NSString *localizedTitle, NSUInteger assetCount) {
+  return PTNCreateAlbumDescriptor(nil, localizedTitle, 0, nil, assetCount, 0);
 }
 
 PTNDisposableRetainingSignal *PTNCreateDisposableRetainingSignal() {

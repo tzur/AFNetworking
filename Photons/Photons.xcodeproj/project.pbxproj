@@ -28,6 +28,7 @@
 		842A3C4D1C54D65D00BD10C1 /* PTNFileBackedImageAssetSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 842A3C4C1C54D65D00BD10C1 /* PTNFileBackedImageAssetSpec.m */; };
 		842C099C1CC8B87900DB2DB2 /* PTNCacheProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 842C099B1CC8B87900DB2DB2 /* PTNCacheProxy.m */; };
 		842C09B71CC8C97C00DB2DB2 /* PTNCacheProxySpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 842C09B61CC8C97C00DB2DB2 /* PTNCacheProxySpec.mm */; };
+		8430E00D1D8839350071C3C3 /* PTNDescriptor.m in Sources */ = {isa = PBXBuildFile; fileRef = 8430E00C1D8839350071C3C3 /* PTNDescriptor.m */; };
 		84331A951C300C96004502B5 /* PTNDropboxEntrySpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 84331A941C300C96004502B5 /* PTNDropboxEntrySpec.m */; };
 		84333C771CC7B75200EC5FB2 /* PTNAlbum.m in Sources */ = {isa = PBXBuildFile; fileRef = 84333C761CC7B75200EC5FB2 /* PTNAlbum.m */; };
 		84333C921CC7B7FE00EC5FB2 /* PTNAlbumSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 84333C911CC7B7FE00EC5FB2 /* PTNAlbumSpec.mm */; };
@@ -59,7 +60,6 @@
 		8478045E1CA0047F0092B41E /* PTNGatewayAssetManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8478045D1CA0047F0092B41E /* PTNGatewayAssetManager.m */; };
 		847804731CA01AA10092B41E /* PTNGatewayTestUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 847804721CA01AA10092B41E /* PTNGatewayTestUtils.m */; };
 		84794C701CBE90D90042D8F1 /* PTNCacheFakeNSURLCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 84794C6F1CBE90D90042D8F1 /* PTNCacheFakeNSURLCache.m */; };
-		847BE2011D69DA8500F33BC8 /* PTNAuthorizationStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = 847BE2001D69DA8500F33BC8 /* PTNAuthorizationStatus.m */; };
 		847BE14A1D69A68F00F33BC8 /* PTNMultiplexerAuthorizationManagerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 847BE1491D69A68F00F33BC8 /* PTNMultiplexerAuthorizationManagerSpec.mm */; };
 		847BE2011D69DA8500F33BC8 /* PTNAuthorizationStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = 847BE2001D69DA8500F33BC8 /* PTNAuthorizationStatus.m */; };
 		848186E01C3BC4F70070462E /* PTNDropboxFileDescriptorSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 848186DF1C3BC4F70070462E /* PTNDropboxFileDescriptorSpec.m */; };
@@ -491,6 +491,7 @@
 		842C099A1CC8B87900DB2DB2 /* PTNCacheProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNCacheProxy.h; sourceTree = "<group>"; };
 		842C099B1CC8B87900DB2DB2 /* PTNCacheProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNCacheProxy.m; sourceTree = "<group>"; };
 		842C09B61CC8C97C00DB2DB2 /* PTNCacheProxySpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PTNCacheProxySpec.mm; sourceTree = "<group>"; };
+		8430E00C1D8839350071C3C3 /* PTNDescriptor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNDescriptor.m; sourceTree = "<group>"; };
 		84331A8F1C300C7B004502B5 /* PTNDropboxEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNDropboxEntry.h; sourceTree = "<group>"; };
 		84331A901C300C7B004502B5 /* PTNDropboxEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNDropboxEntry.m; sourceTree = "<group>"; };
 		84331A941C300C96004502B5 /* PTNDropboxEntrySpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNDropboxEntrySpec.m; sourceTree = "<group>"; };
@@ -548,8 +549,6 @@
 		847804721CA01AA10092B41E /* PTNGatewayTestUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNGatewayTestUtils.m; sourceTree = "<group>"; };
 		84794C6E1CBE90D90042D8F1 /* PTNCacheFakeNSURLCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNCacheFakeNSURLCache.h; sourceTree = "<group>"; };
 		84794C6F1CBE90D90042D8F1 /* PTNCacheFakeNSURLCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNCacheFakeNSURLCache.m; sourceTree = "<group>"; };
-		847BE1FF1D69DA8500F33BC8 /* PTNAuthorizationStatus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNAuthorizationStatus.h; sourceTree = "<group>"; };
-		847BE2001D69DA8500F33BC8 /* PTNAuthorizationStatus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNAuthorizationStatus.m; sourceTree = "<group>"; };
 		847BE1491D69A68F00F33BC8 /* PTNMultiplexerAuthorizationManagerSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PTNMultiplexerAuthorizationManagerSpec.mm; sourceTree = "<group>"; };
 		847BE1FF1D69DA8500F33BC8 /* PTNAuthorizationStatus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNAuthorizationStatus.h; sourceTree = "<group>"; };
 		847BE2001D69DA8500F33BC8 /* PTNAuthorizationStatus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNAuthorizationStatus.m; sourceTree = "<group>"; };
@@ -1182,6 +1181,7 @@
 				842A3C421C54D33A00BD10C1 /* PTNDataBackedImageAsset.h */,
 				842A3C431C54D33A00BD10C1 /* PTNDataBackedImageAsset.m */,
 				8B2FD0851B00E81100757B1F /* PTNDescriptor.h */,
+				8430E00C1D8839350071C3C3 /* PTNDescriptor.m */,
 				842A3C461C54D42000BD10C1 /* PTNFileBackedImageAsset.h */,
 				842A3C471C54D42000BD10C1 /* PTNFileBackedImageAsset.m */,
 				848D2C7A1C4D061400491AB3 /* PTNImageAsset.h */,
@@ -1835,6 +1835,7 @@
 				84515F5B1C96A8A500AD8B5B /* PTNOpenURLManager.m in Sources */,
 				84E55C251C8EC83800D91339 /* PTNDataBackedImageAsset.m in Sources */,
 				84E55C2E1C8EC84800D91339 /* NSURL+Dropbox.m in Sources */,
+				8430E00D1D8839350071C3C3 /* PTNDescriptor.m in Sources */,
 				84E55C231C8EC83500D91339 /* PTNAlbumChangeset.m in Sources */,
 				845162F31C986A5E00AD8B5B /* NSURL+PTNCache.m in Sources */,
 				84E55C241C8EC83600D91339 /* PTNAlbumChangesetMove.m in Sources */,

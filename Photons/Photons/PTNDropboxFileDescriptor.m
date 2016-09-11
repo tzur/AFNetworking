@@ -62,6 +62,10 @@ NS_ASSUME_NONNULL_BEGIN
   return PTNAssetDescriptorCapabilityNone;
 }
 
+- (NSSet<NSString *> *)descriptorTraits {
+  return [NSSet setWithObject:kPTNDescriptorTraitCloudBasedKey];
+}
+
 #pragma mark -
 #pragma mark NSObject
 #pragma mark -

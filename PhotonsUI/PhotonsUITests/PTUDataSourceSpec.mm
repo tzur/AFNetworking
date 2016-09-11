@@ -143,7 +143,7 @@ it(@"should dequeue cells from collection view", ^{
 });
 
 it(@"should correctly configure cells", ^{
-  id<PTNDescriptor> asset = PTNCreateDescriptor(nil, @"foo", 0);
+  id<PTNDescriptor> asset = PTNCreateDescriptor(@"foo");
   id<PTUImageCellViewModel> viewModel = OCMProtocolMock(@protocol(PTUImageCellViewModel));
   OCMStub([viewModelProvider viewModelForDescriptor:asset]).andReturn(viewModel);
   PTUChangeset *changeset = [[PTUChangeset alloc] initWithAfterDataModel:@[@[asset]]];

@@ -15,7 +15,7 @@ __block PTUArrayChangesetProvider *provider;
 __block NSArray<id<PTNDescriptor>> *descriptors;
 
 beforeEach(^{
-  descriptors = @[PTNCreateDescriptor(nil, nil, 0)];
+  descriptors = @[PTNCreateDescriptor(nil, nil, 0, nil)];
   provider = [[PTUArrayChangesetProvider alloc] initWithDescriptors:descriptors
                                                      changesetTitle:kChangesetTitle];
 });

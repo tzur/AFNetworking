@@ -7,7 +7,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/// Represents a Dropbox directory. This is a simple wrapper on top of \c DBMetadata.
+/// Represents a Dropbox directory. This is a simple wrapper on top of \c DBMetadata. As a
+/// \c PTNAlbumDescriptor the receiver has no album descriptor or descriptor capabilities and
+/// contains the \c kPTNDescriptorTraitCloudBasedKey trait.
 @interface PTNDropboxDirectoryDescriptor : NSObject <PTNAlbumDescriptor>
 
 - (instancetype)init NS_UNAVAILABLE;

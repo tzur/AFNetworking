@@ -21,6 +21,7 @@ it(@"should return correct identifier", ^{
   expect(asset.modificationDate).to.equal(lastModified);
   expect(asset.descriptorCapabilities).to.equal(PTNDescriptorCapabilityNone);
   expect(asset.assetDescriptorCapabilities).to.equal(PTNAssetDescriptorCapabilityNone);
+  expect(asset.descriptorTraits).to.contain(kPTNDescriptorTraitCloudBasedKey);
 });
 
 it(@"should return correct identifier with latest revision", ^{
