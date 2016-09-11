@@ -65,6 +65,15 @@ it(@"should update the enabled property according to the model", ^{
   expect(button.enabled).will.equal(NO);
 });
 
+it(@"should update the alpha property according to the enabled property", ^{
+  model.enabled = YES;
+  expect(button.alpha).to.equal(1.0);
+  model.enabled = NO;
+  expect(button.alpha).to.beCloseTo(0.4);
+  model.enabled = YES;
+  expect(button.alpha).to.equal(1.0);
+});
+
 it(@"should set the text format according to the shared theme", ^{
   expect(button.titleLabel.textColor).to.equal(kTitleColor);
   expect([button titleColorForState:UIControlStateSelected]).to.equal(kTitleHighlightedColor);

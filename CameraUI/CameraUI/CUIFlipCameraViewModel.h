@@ -10,8 +10,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// \c CUIMenuItemViewModel that serves as a view model for menu item button that toggles between
 /// the available cameras of a given \c CAMFlipDevice instance.
 ///
-/// \c title and \c iconURL hold the button's title and icon URL respectively, unless \c enabled is
-/// \c NO, and in such case they are nil.
+/// \c title and \c iconURL hold the button's title and icon URL respectively.
 ///
 /// By default, \c enabledSignal sends \c YES if the toggling between the available cameras is
 /// supported by the device.

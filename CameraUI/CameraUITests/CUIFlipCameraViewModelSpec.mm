@@ -32,15 +32,11 @@ context(@"initialization", ^{
     }).to.raise(NSInvalidArgumentException);
   });
 
-  it(@"should set the selected property to NO", ^{
+  it(@"should set properties", ^{
+    expect(flipViewModel.title).to.equal(title);
+    expect(flipViewModel.iconURL).to.equal(iconURL);
     expect(flipViewModel.selected).to.beFalsy();
-  });
-  
-  it(@"should set the hidden property to NO", ^{
     expect(flipViewModel.hidden).to.beFalsy();
-  });
-
-  it(@"should set the subitems to nil", ^{
     expect(flipViewModel.subitems).to.beNil();
   });
 
@@ -66,30 +62,6 @@ context(@"enabledSignal", ^{
 
     [enabledSignal sendNext:@YES];
     expect(flipViewModel.enabled).will.beTruthy();
-  });
-});
-
-context(@"title", ^{
-  it(@"should be nil when enabled is NO", ^{
-    device.canChangeCamera = NO;
-    expect(flipViewModel.title).to.beNil();
-  });
-
-  it(@"should be the given title when enabled is YES", ^{
-    device.canChangeCamera = YES;
-    expect(flipViewModel.title).to.equal(title);
-  });
-});
-
-context(@"iconURL", ^{
-  it(@"should be nil when enabled is NO", ^{
-    device.canChangeCamera = NO;
-    expect(flipViewModel.iconURL).to.beNil();
-  });
-
-  it(@"should be the given icon URL when enabled is YES", ^{
-    device.canChangeCamera = YES;
-    expect(flipViewModel.iconURL).to.equal(iconURL);
   });
 });
 
