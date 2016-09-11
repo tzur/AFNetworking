@@ -25,14 +25,43 @@
 @interface BZRProductDownloadManager (ForTesting) <BZRPaymentQueueDownloadsDelegate>
 @end
 
+/// Fake \c BZRDownloadsPaymentQueue with mutable \c transactions and functionality to inspect input
+/// of its methods.
+@interface BZRFakeDownloadsPaymentQueue : NSObject <BZRDownloadsPaymentQueue>
+
+/// Mutable array of transactions.
+@property (readwrite, nonatomic) NSArray<SKPaymentTransaction *> *transactions;
+
+/// \c YES if \c startDownloads was called, \c NO otherwise.
+@property (readonly, nonatomic) BOOL wasStartDownloadsCalled;
+
+/// Array of \c SKDownloads with which \c canceDownloads was called. \c nil if \c canceDownloads was
+/// never called.
+@property (readonly, nonatomic, nullable) NSArray<SKDownload *> *cancelledDownloads;
+
+@end
+
+@implementation BZRFakeDownloadsPaymentQueue
+
+@synthesize downloadsDelegate = _downloadsDelegate;
+
+- (void)startDownloads:(NSArray<SKDownload *> __unused *)downloads {
+  _wasStartDownloadsCalled = YES;
+}
+
+- (void)cancelDownloads:(NSArray<SKDownload *> *)downloads {
+  _cancelledDownloads = downloads;
+}
+
+@end
+
 SpecBegin(BZRProductDownloadManager)
 
-__block BZRPaymentQueue *paymentQueue;
+__block BZRFakeDownloadsPaymentQueue *paymentQueue;
 __block BZRFakePaymentTransaction *paymentTransaction;
 
 beforeEach(^{
-  SKPaymentQueue *underlyingPaymentQueue = OCMClassMock([SKPaymentQueue class]);
-  paymentQueue = [[BZRPaymentQueue alloc] initWithUnderlyingPaymentQueue:underlyingPaymentQueue];
+  paymentQueue = [[BZRFakeDownloadsPaymentQueue alloc] init];
   paymentTransaction = [[BZRFakePaymentTransaction alloc] init];
 });
 
@@ -42,7 +71,7 @@ context(@"deallocating object", ^{
     LLSignalTestRecorder *recorder;
 
     paymentTransaction.transactionState = SKPaymentTransactionStatePurchased;
-    OCMStub([paymentQueue transactions]).andReturn(@[paymentTransaction]);
+    paymentQueue.transactions = @[paymentTransaction];
     BZRFakeDownload *download = [[BZRFakeDownload alloc] init];
     paymentTransaction.downloads = @[download];
 
@@ -97,9 +126,16 @@ context(@"downloading content for transaction", ^{
 
     beforeEach(^{
       paymentTransaction.transactionState = SKPaymentTransactionStatePurchased;
-      OCMStub([paymentQueue transactions]).andReturn(@[paymentTransaction]);
+      paymentQueue.transactions = @[paymentTransaction];
       download = [[BZRFakeDownload alloc] init];
       paymentTransaction.downloads = @[download];
+    });
+
+    it(@"should send download for every call to delegate and complete when download finishes", ^{
+      [[[downloadManager downloadContentForTransaction:paymentTransaction]
+          firstObject] testRecorder];
+
+      expect(paymentQueue.wasStartDownloadsCalled).to.beTruthy();
     });
 
     it(@"should send download for every call to delegate and complete when download finishes", ^{
@@ -137,7 +173,7 @@ context(@"downloading content for transaction", ^{
       [[signal subscribeNext:^(SKDownload __unused *download) {
       }] dispose];
 
-      OCMVerify([paymentQueue cancelDownloads:@[download]]);
+      expect(paymentQueue.cancelledDownloads).to.equal(@[download]);
     });
 
     it(@"should err when download has failed", ^{
