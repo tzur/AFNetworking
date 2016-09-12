@@ -23,9 +23,9 @@ it(@"should have init properties", ^{
   expect(selectableMenuItemViewModel.iconURL).to.equal(url);
   expect(selectableMenuItemViewModel.menuItemModel).to.beIdenticalTo(model);
   expect(selectableMenuItemViewModel.hidden).to.beFalsy();
-  expect(selectableMenuItemViewModel.subitems).to.beNil;
+  expect(selectableMenuItemViewModel.subitems).to.beNil();
   expect(selectableMenuItemViewModel.selected).to.beFalsy();
-  expect(selectableMenuItemViewModel.enabledSignal).toNot.beNil;
+  expect(selectableMenuItemViewModel.enabledSignal).toNot.beNil();
   expect(selectableMenuItemViewModel.enabled).to.beTruthy();
 });
 
@@ -35,7 +35,7 @@ it(@"should not change after didtap", ^{
   expect(selectableMenuItemViewModel.iconURL).to.equal(url);
   expect(selectableMenuItemViewModel.menuItemModel).to.beIdenticalTo(model);
   expect(selectableMenuItemViewModel.hidden).to.beFalsy();
-  expect(selectableMenuItemViewModel.subitems).to.beNil;
+  expect(selectableMenuItemViewModel.subitems).to.beNil();
   expect(selectableMenuItemViewModel.selected).to.beFalsy();
   expect(selectableMenuItemViewModel.enabled).to.beTruthy();
 });

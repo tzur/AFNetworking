@@ -72,7 +72,7 @@ context(@"enabledSignal", ^{
 context(@"title", ^{
   it(@"should be nil when enabled is NO", ^{
     device.canChangeCamera = NO;
-    expect(flipViewModel.title).to.beNil;
+    expect(flipViewModel.title).to.beNil();
   });
 
   it(@"should be the given title when enabled is YES", ^{
@@ -84,7 +84,7 @@ context(@"title", ^{
 context(@"iconURL", ^{
   it(@"should be nil when enabled is NO", ^{
     device.canChangeCamera = NO;
-    expect(flipViewModel.iconURL).to.beNil;
+    expect(flipViewModel.iconURL).to.beNil();
   });
 
   it(@"should be the given icon URL when enabled is YES", ^{
@@ -113,7 +113,7 @@ context(@"didTap", ^{
     device.activeCamera = $(CAMDeviceCameraBack);
     [flipViewModel didTap];
 
-    expect(device.setCameraWasCalled).to.beFalsy;
+    expect(device.setCameraWasCalled).to.beFalsy();
   });
 });
 

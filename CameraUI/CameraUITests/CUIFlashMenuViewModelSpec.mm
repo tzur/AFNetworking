@@ -100,12 +100,12 @@ context(@"title", ^{
     expect(flashViewModel.title).to.equal(flashModes[0].title);
 
     device.currentFlashMode = kInvalidFlashMode;
-    expect(flashViewModel.title).will.beNil;
+    expect(flashViewModel.title).will.beNil();
   });
 
   it(@"should be nil when enabled is NO", ^{
     device.hasFlash = NO;
-    expect(flashViewModel.title).will.beNil;
+    expect(flashViewModel.title).will.beNil();
 
     device.hasFlash = YES;
     expect(flashViewModel.title).to.equal(flashModes[0].title);
@@ -127,12 +127,12 @@ context(@"iconURL", ^{
     expect(flashViewModel.iconURL).to.equal(flashModes[0].iconURL);
 
     device.currentFlashMode = kInvalidFlashMode;
-    expect(flashViewModel.iconURL).will.beNil;
+    expect(flashViewModel.iconURL).will.beNil();
   });
   
   it(@"should be nil when enabled is NO", ^{
     device.hasFlash = NO;
-    expect(flashViewModel.iconURL).will.beNil;
+    expect(flashViewModel.iconURL).will.beNil();
 
     device.hasFlash = YES;
     expect(flashViewModel.iconURL).to.equal(flashModes[0].iconURL);
