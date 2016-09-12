@@ -16,16 +16,6 @@ LTEnumDeclare(NSUInteger, BZRProductType,
   BZRProductTypeNonRenewingSubscription
 );
 
-/// Possible values for the purchase status of a product.
-LTEnumDeclare(NSUInteger, BZRProductPurchaseStatus,
-  /// The product was not purchased.
-  BZRProductPurchaseStatusNotPurchased,
-  /// The product was acquired while the user was a subscriber.
-  BZRProductPurchaseStatusAcquiredViaSubscription,
-  /// The product was purchased while the user was not a subscriber.
-  BZRProductPurchaseStatusPurchased
-);
-
 /// Represents a single in-app product.
 @interface BZRProduct : BZRModel <MTLJSONSerializing>
 
@@ -46,9 +36,6 @@ LTEnumDeclare(NSUInteger, BZRProductPurchaseStatus,
 
 /// Holds the price and the locale of the product.
 @property (readonly, nonatomic, nullable) BZRProductPriceInfo *priceInfo;
-
-/// Holds the purchase status of the product.
-@property (readonly, nonatomic, nullable) BZRProductPurchaseStatus *purchaseStatus;
 
 @end
 

@@ -15,12 +15,6 @@ LTEnumImplement(NSUInteger, BZRProductType,
   BZRProductTypeNonRenewingSubscription
 );
 
-LTEnumImplement(NSUInteger, BZRProductPurchaseStatus,
-  BZRProductPurchaseStatusNotPurchased,
-  BZRProductPurchaseStatusAcquiredViaSubscription,
-  BZRProductPurchaseStatusPurchased
-);
-
 @implementation BZRProduct
 
 #pragma mark -
@@ -45,8 +39,7 @@ LTEnumImplement(NSUInteger, BZRProductPurchaseStatus,
     @instanceKeypath(BZRProduct, identifier): @"identifier",
     @instanceKeypath(BZRProduct, productType): @"productType",
     @instanceKeypath(BZRProduct, contentFetcherParameters): @"contentFetcherParameters",
-    @instanceKeypath(BZRProduct, priceInfo): @"priceInfo",
-    @instanceKeypath(BZRProduct, purchaseStatus): @"purchaseStatus",
+    @instanceKeypath(BZRProduct, priceInfo): @"priceInfo"
   };
 }
 
@@ -64,14 +57,6 @@ LTEnumImplement(NSUInteger, BZRProductPurchaseStatus,
   }];
 }
 
-+ (NSValueTransformer *)purchaseStatusJSONTransformer {
-  return [NSValueTransformer mtl_valueMappingTransformerWithDictionary:@{
-    @"notPurchased": $(BZRProductPurchaseStatusNotPurchased),
-    @"acquiredViaSubscription": $(BZRProductPurchaseStatusAcquiredViaSubscription),
-    @"purchased": $(BZRProductPurchaseStatusPurchased)
-  }];
-}
-
 #pragma mark -
 #pragma mark BZRModel
 #pragma mark -
@@ -82,8 +67,7 @@ LTEnumImplement(NSUInteger, BZRProductPurchaseStatus,
   dispatch_once(&onceToken, ^{
     nullablePropertyKeys = [NSSet setWithArray:@[
       @instanceKeypath(BZRProduct, contentFetcherParameters),
-      @instanceKeypath(BZRProduct, priceInfo),
-      @instanceKeypath(BZRProduct, purchaseStatus)
+      @instanceKeypath(BZRProduct, priceInfo)
     ]];
   });
   

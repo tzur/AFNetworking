@@ -36,10 +36,9 @@ context(@"initialization", ^{
   it(@"should correctly specifiy nullable properties", ^{
     NSSet<NSString *> *nullableProperties = [BZRProduct nullablePropertyKeys];
 
-    expect(nullableProperties.count).to.equal(3);
+    expect(nullableProperties.count).to.equal(2);
     expect(nullableProperties).to.contain(@instanceKeypath(BZRProduct, contentFetcherParameters));
     expect(nullableProperties).to.contain(@instanceKeypath(BZRProduct, priceInfo));
-    expect(nullableProperties).to.contain(@instanceKeypath(BZRProduct, purchaseStatus));
   });
 });
 
@@ -50,7 +49,6 @@ context(@"conversion" , ^{
     NSDictionary *dictionaryValue =  @{
       @instanceKeypath(BZRProduct, identifier): @"foo",
       @instanceKeypath(BZRProduct, productType): $(BZRProductTypeNonConsumable),
-      @instanceKeypath(BZRProduct, purchaseStatus): $(BZRProductPurchaseStatusPurchased),
       @instanceKeypath(BZRProduct, contentFetcherParameters): contentFetcherParameters
     };
 
@@ -60,7 +58,6 @@ context(@"conversion" , ^{
 
     NSDictionary *jsonDictionary = [MTLJSONAdapter JSONDictionaryFromModel:product];
     expect(jsonDictionary[@"productType"]).to.equal(@"nonConsumable");
-    expect(jsonDictionary[@"purchaseStatus"]).to.equal(@"purchased");
     expect(jsonDictionary[@"contentFetcherParameters"])
         .to.equal([MTLJSONAdapter JSONDictionaryFromModel:contentFetcherParameters]);
   });
@@ -69,7 +66,6 @@ context(@"conversion" , ^{
     NSDictionary *jsonDictionary = @{
       @"identifier": @"id",
       @"productType": @"nonRenewingSubscription",
-      @"purchaseStatus": @"purchased",
       @"contentFetcherParameters": @{
         @"type": NSStringFromClass([BZRDummyContentFetcherParameters class]),
         @"value": @"foo"
@@ -84,7 +80,6 @@ context(@"conversion" , ^{
     expect(error).to.beNil();
     expect(product.identifier).to.equal(@"id");
     expect(product.productType).to.equal($(BZRProductTypeNonRenewingSubscription));
-    expect(product.purchaseStatus).to.equal($(BZRProductPurchaseStatusPurchased));
     expect(product.contentFetcherParameters).to.equal(expectedParameters);
   });
 });
