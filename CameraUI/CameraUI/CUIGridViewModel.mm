@@ -22,8 +22,9 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize enabled = _enabled;
 @synthesize subitems = _subitems;
 
-- (instancetype)initWithGridContainer:(id<CUIGridContainer>)gridContainer title:(NSString *)title
-                              iconURL:(NSURL *)iconURL {
+- (instancetype)initWithGridContainer:(id<CUIGridContainer>)gridContainer
+                                title:(nullable NSString *)title
+                              iconURL:(nullable NSURL *)iconURL {
   LTParameterAssert(gridContainer);
   if (self = [super init]) {
     _gridContainer = gridContainer;
