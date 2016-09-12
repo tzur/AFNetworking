@@ -15,6 +15,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)init NS_UNAVAILABLE;
 
 /// Initializes with \c configuration, used to configure this class with configuration objects.
+/// Upon initializiation, fetching of product list is performed. If there was an error while
+/// fetching, it will be sent with \c errorsSignal.
 - (instancetype)initWithConfiguration:(BZRStoreConfiguration *)configuration
     NS_DESIGNATED_INITIALIZER;
 

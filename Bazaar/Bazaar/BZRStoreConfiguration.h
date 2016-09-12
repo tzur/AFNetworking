@@ -3,8 +3,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class BZRKeychainStorage, BZRProduct, BZRProductContentManager, BZRProductContentProvider,
-    BZRAcquiredViaSubscriptionProvider,  BZRReceiptValidationStatusProvider, LTPath;
+@class BZRAcquiredViaSubscriptionProvider, BZRKeychainStorage, BZRProduct, BZRProductContentManager,
+    BZRProductContentProvider, BZRReceiptValidationStatusProvider, BZRStoreKitFacadeFactory, LTPath;
 
 @protocol BZRProductsProvider;
 
@@ -44,8 +44,10 @@ NS_ASSUME_NONNULL_BEGIN
 /// \c BZRProductsAcquiredViaSubscriptionProvider as provided by
 /// \c -[BZRProductsAcquiredViaSubscriptionProvider initWithKeychainStorage:] with the given
 /// \c keychainStorage.
+///
+/// \c storeKitFacadeFactory will be initialized using \c -[BZRStoreKitFacadeFactory init].
 - (instancetype)initWithProductsListJSONFilePath:(LTPath *)productsListJSONFilePath
-                             keychainAccessGroup:(NSString *)keychainAccessGroup
+                             keychainAccessGroup:(nullable NSString *)keychainAccessGroup
                   expiredSubscriptionGracePeriod:(NSUInteger)expiredSubscriptionGracePeriod
     NS_DESIGNATED_INITIALIZER;
 
@@ -63,6 +65,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Provider used to provide list of acquired via subsription products.
 @property (strong, nonatomic) BZRAcquiredViaSubscriptionProvider *acquiredViaSubscriptionProvider;
+
+/// Factory used to create \c BZRStoreKitFacade.
+@property (strong, nonatomic) BZRStoreKitFacadeFactory *storeKitFacadeFactory;
 
 @end
 

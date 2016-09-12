@@ -11,7 +11,7 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 ///   - Fetching/deleting products' content.
 ///
-///   - Fetching price information of products.
+///   - Getting the list of products that was last fetched.
 ///
 @protocol BZRProductsManager <NSObject>
 
@@ -52,13 +52,14 @@ NS_ASSUME_NONNULL_BEGIN
 /// @return <tt>RACSignal</tt>
 - (RACSignal *)refreshReceipt;
 
-/// Fetches the price of each product specified by \c productIdentifiers.
+/// Returns most recently fetched list of products. This however doesn't trigger the fetching
+/// process.
 ///
-/// Returns a signal that sends the price information of the products specified by
-/// \c productIdentifiers and completes. The signal errs if the fetching has failed.
+/// Returns a signal that send the list of products as \c BZRProduct and completes. The signal errs
+/// if there was an error while fetching the list of products.
 ///
-/// @return <tt><RACSignal<NSArray<BZRProductPriceInfo>></tt>
-- (RACSignal *)priceForProducts:(NSArray<NSString *> *)productIdentifiers;
+/// @return <tt><RACSignal<NSSet<BZRProduct>></tt>
+- (RACSignal *)productList;
 
 @end
 
