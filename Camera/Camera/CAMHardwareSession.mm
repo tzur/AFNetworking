@@ -268,7 +268,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation CAMHardwareSessionFactory
 
-+ (RACSignal *)sessionWithPreset:(CAMDevicePreset *)preset {
+- (RACSignal *)sessionWithPreset:(CAMDevicePreset *)preset {
   return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
     CAMHardwareSession *session = [[CAMHardwareSession alloc]
         initWithPreset:preset session:[[AVCaptureSession alloc] init]];
@@ -284,7 +284,7 @@ NS_ASSUME_NONNULL_BEGIN
   }];
 }
 
-+ (BOOL)configureSession:(CAMHardwareSession *)session withPreset:(CAMDevicePreset *)preset
+- (BOOL)configureSession:(CAMHardwareSession *)session withPreset:(CAMDevicePreset *)preset
                    error:(NSError * __autoreleasing *)error {
   BOOL success;
 

@@ -35,7 +35,7 @@
 @end
 
 @interface CAMHardwareSessionFactory (ForTesting)
-+ (BOOL)configureSession:(CAMHardwareSession *)session withPreset:(CAMDevicePreset *)preset
+- (BOOL)configureSession:(CAMHardwareSession *)session withPreset:(CAMDevicePreset *)preset
                    error:(NSError * __autoreleasing *)error;
 @end
 
@@ -468,20 +468,22 @@ context(@"factory", ^{
   __block id session;
   __block id preset;
   __block NSError *error;
+  __block CAMHardwareSessionFactory *factory;
 
   beforeEach(^{
     session = OCMClassMock([CAMHardwareSession class]);
     preset = OCMClassMock([CAMDevicePreset class]);
     error = nil;
+    factory = [[CAMHardwareSessionFactory alloc] init];
   });
 
   it(@"should create preview layer", ^{
-    [CAMHardwareSessionFactory configureSession:session withPreset:preset error:&error];
+    [factory configureSession:session withPreset:preset error:&error];
     OCMVerify([session createPreviewLayer]);
   });
 
   it(@"should create video input", ^{
-    [CAMHardwareSessionFactory configureSession:session withPreset:preset error:&error];
+    [factory configureSession:session withPreset:preset error:&error];
     OCMVerify([session setupVideoInputWithDevice:OCMOCK_ANY formatStrategy:OCMOCK_ANY
                                            error:[OCMArg anyObjectRef]]);
   });
@@ -490,7 +492,7 @@ context(@"factory", ^{
     OCMStub([session setupVideoInputWithDevice:OCMOCK_ANY formatStrategy:OCMOCK_ANY
                                          error:[OCMArg setTo:nil]]).andReturn(YES);
 
-    [CAMHardwareSessionFactory configureSession:session withPreset:preset error:&error];
+    [factory configureSession:session withPreset:preset error:&error];
     OCMVerify([session setupVideoOutputWithError:[OCMArg anyObjectRef]]);
   });
 
@@ -499,7 +501,7 @@ context(@"factory", ^{
                                          error:[OCMArg setTo:nil]]).andReturn(YES);
     OCMStub([session setupVideoOutputWithError:[OCMArg setTo:nil]]).andReturn(YES);
 
-    [CAMHardwareSessionFactory configureSession:session withPreset:preset error:&error];
+    [factory configureSession:session withPreset:preset error:&error];
     OCMVerify([session setupStillOutputWithError:[OCMArg anyObjectRef]]);
   });
 
@@ -510,7 +512,7 @@ context(@"factory", ^{
     OCMStub([session setupVideoOutputWithError:[OCMArg setTo:nil]]).andReturn(YES);
     OCMStub([session setupStillOutputWithError:[OCMArg setTo:nil]]).andReturn(YES);
 
-    [CAMHardwareSessionFactory configureSession:session withPreset:preset error:&error];
+    [factory configureSession:session withPreset:preset error:&error];
     OCMVerify([session setupAudioInputWithDevice:OCMOCK_ANY error:[OCMArg anyObjectRef]]);
   });
 
@@ -523,7 +525,7 @@ context(@"factory", ^{
     OCMStub([session setupAudioInputWithDevice:OCMOCK_ANY
                                          error:[OCMArg setTo:nil]]).andReturn(YES);
 
-    [CAMHardwareSessionFactory configureSession:session withPreset:preset error:&error];
+    [factory configureSession:session withPreset:preset error:&error];
     OCMVerify([session setupAudioOutputWithError:[OCMArg anyObjectRef]]);
   });
 
@@ -535,7 +537,7 @@ context(@"factory", ^{
     OCMStub([session setupStillOutputWithError:[OCMArg setTo:nil]]).andReturn(YES);
 
     [[[session reject] ignoringNonObjectArgs] setupAudioInputWithDevice:OCMOCK_ANY error:NULL];
-    [CAMHardwareSessionFactory configureSession:session withPreset:preset error:&error];
+    [factory configureSession:session withPreset:preset error:&error];
   });
 
   it(@"should not create audio output when audio not enabled", ^{
@@ -548,7 +550,7 @@ context(@"factory", ^{
                                          error:[OCMArg setTo:nil]]).andReturn(YES);
 
     [[[session reject] ignoringNonObjectArgs] setupAudioOutputWithError:NULL];
-    [CAMHardwareSessionFactory configureSession:session withPreset:preset error:&error];
+    [factory configureSession:session withPreset:preset error:&error];
   });
 
   it(@"should successfully configure session", ^{
@@ -561,8 +563,7 @@ context(@"factory", ^{
                                          error:[OCMArg setTo:nil]]).andReturn(YES);
     OCMStub([session setupAudioOutputWithError:[OCMArg setTo:nil]]).andReturn(YES);
 
-    BOOL success =
-        [CAMHardwareSessionFactory configureSession:session withPreset:preset error:&error];
+    BOOL success = [factory configureSession:session withPreset:preset error:&error];
     expect(success).to.beTruthy();
     expect(error).to.beNil();
   });
@@ -570,8 +571,7 @@ context(@"factory", ^{
   it(@"should return error when video input setup failed", ^{
     OCMStub([session setupVideoInputWithDevice:OCMOCK_ANY formatStrategy:OCMOCK_ANY
                                          error:[OCMArg setTo:kError]]).andReturn(NO);
-    BOOL success =
-        [CAMHardwareSessionFactory configureSession:session withPreset:preset error:&error];
+    BOOL success = [factory configureSession:session withPreset:preset error:&error];
     expect(success).to.beFalsy();
     expect(error).to.equal(kError);
   });
@@ -580,8 +580,7 @@ context(@"factory", ^{
     OCMStub([session setupVideoInputWithDevice:OCMOCK_ANY formatStrategy:OCMOCK_ANY
                                          error:[OCMArg setTo:nil]]).andReturn(YES);
     OCMStub([session setupVideoOutputWithError:[OCMArg setTo:kError]]).andReturn(NO);
-    BOOL success =
-        [CAMHardwareSessionFactory configureSession:session withPreset:preset error:&error];
+    BOOL success = [factory configureSession:session withPreset:preset error:&error];
     expect(success).to.beFalsy();
     expect(error).to.equal(kError);
   });
@@ -591,8 +590,7 @@ context(@"factory", ^{
                                          error:[OCMArg setTo:nil]]).andReturn(YES);
     OCMStub([session setupVideoOutputWithError:[OCMArg setTo:nil]]).andReturn(YES);
     OCMStub([session setupStillOutputWithError:[OCMArg setTo:kError]]).andReturn(NO);
-    BOOL success =
-        [CAMHardwareSessionFactory configureSession:session withPreset:preset error:&error];
+    BOOL success = [factory configureSession:session withPreset:preset error:&error];
     expect(success).to.beFalsy();
     expect(error).to.equal(kError);
   });
@@ -605,8 +603,7 @@ context(@"factory", ^{
     OCMStub([session setupStillOutputWithError:[OCMArg setTo:nil]]).andReturn(YES);
     OCMStub([session setupAudioInputWithDevice:OCMOCK_ANY
                                          error:[OCMArg setTo:kError]]).andReturn(NO);
-    BOOL success =
-        [CAMHardwareSessionFactory configureSession:session withPreset:preset error:&error];
+    BOOL success = [factory configureSession:session withPreset:preset error:&error];
     expect(success).to.beFalsy();
     expect(error).to.equal(kError);
   });
@@ -620,8 +617,7 @@ context(@"factory", ^{
     OCMStub([session setupAudioInputWithDevice:OCMOCK_ANY
                                          error:[OCMArg setTo:nil]]).andReturn(YES);
     OCMStub([session setupAudioOutputWithError:[OCMArg setTo:kError]]).andReturn(NO);
-    BOOL success =
-        [CAMHardwareSessionFactory configureSession:session withPreset:preset error:&error];
+    BOOL success = [factory configureSession:session withPreset:preset error:&error];
     expect(success).to.beFalsy();
     expect(error).to.equal(kError);
   });
