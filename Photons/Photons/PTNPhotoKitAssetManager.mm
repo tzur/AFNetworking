@@ -122,9 +122,7 @@ NS_ASSUME_NONNULL_BEGIN
         // an empty album will be returned as a fetch result with a single album, but when User
         // Albums is requested, if there are no user albums the result will be empty and it won't
         // be an error.
-        if (!fetchResult.count &&
-            !([url.ptn_photoKitURLType isEqual:$(PTNPhotoKitURLTypeMetaAlbumType)] &&
-              [url.ptn_photoKitMetaAlbumType isEqual:$(PTNPhotoKitMetaAlbumTypeUserAlbums)])) {
+        if (![self isCollectionsFetchResult:fetchResult validForURL:url]) {
           if (errorPtr) {
             *errorPtr = [NSError lt_errorWithCode:PTNErrorCodeAlbumNotFound url:url];
           }
@@ -174,6 +172,19 @@ NS_ASSUME_NONNULL_BEGIN
   return changeset;
 }
 
+- (BOOL)isCollectionsFetchResult:(PHFetchResult *)fetchResult validForURL:(NSURL *)url {
+  if (fetchResult.count) {
+    return YES;
+  }
+
+  if (![url.ptn_photoKitURLType isEqual:$(PTNPhotoKitURLTypeMetaAlbumType)]) {
+    return NO;
+  }
+
+  return [url.ptn_photoKitMetaAlbumType isEqual:$(PTNPhotoKitMetaAlbumTypeUserAlbums)] ||
+      [url.ptn_photoKitMetaAlbumType isEqual:$(PTNPhotoKitMetaAlbumTypePhotosAppSmartAlbums)];
+}
+
 - (RACSignal *)nextChangesetForRegularAlbumWithURL:(NSURL *)url
                                andInitialChangeset:(RACSignal *)initialChangeset {
   // Returns consecutive (PHFetchResult, PTNAlbumChangeset) tuple on each notification.
@@ -201,39 +212,56 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (RACSignal *)nextChangesetForSmartAlbumCollectionWithURL:(NSURL *)url
                                        andInitialChangeset:(RACSignal *)initialChangeset {
-   return [[initialChangeset reduceEach:(id)^(PHFetchResult *initialFetchResult,
-                                              PTNAlbumChangeset __unused *changeset) {
-     NSMutableArray *signals = [NSMutableArray array];
+  // Track changes on each subalbum. For each change fetch the smart album collection
+  // again, and send proper change details with the changed smart album.
+  return [initialChangeset flattenMap:^RACStream *(RACTuple *values) {
+    PHFetchResult *initialFetchResult = values.first;
+    return [[[[[self recursiveUpdatesForSmartAlbums]
+      flattenMap:^RACStream *(PHAssetCollection *updatedCollection) {
+        return [RACSignal combineLatest:@[
+          [self fetchFetchResultWithURL:url],
+          [RACSignal return:updatedCollection]
+        ]];
+      }]
+      combinePreviousWithStart:RACTuplePack(initialFetchResult, nil)
+      reduce:^RACTuple *(RACTuple *previous, RACTuple *current) {
+        return RACTuplePack(previous.first, current.first, current.second);
+      }]
+      filter:^BOOL(RACTuple *values) {
+        RACTupleUnpack(PHFetchResult *previousFetch, PHFetchResult *currentFetch,
+                       PHAssetCollection *updatedCollection) = values;
+        return [previousFetch containsObject:updatedCollection] ||
+            [currentFetch containsObject:updatedCollection];
+      }]
+      reduceEach:(id)^RACTuple *(PHFetchResult *previousFetch, PHFetchResult *currentFetch,
+                                 PHAssetCollection *) {
+        PHFetchResultChangeDetails *changeDetails =
+            [self.fetcher changeDetailsFromFetchResult:previousFetch toFetchResult:currentFetch
+                                        changedObjects:nil];
+        PTNAlbumChangeset *changeset = [PTNAlbumChangeset changesetWithURL:url
+                                                     photoKitChangeDetails:changeDetails];
 
-     // Track changes on each subalbum. For each change fetch the smart album collection
-     // again, and send proper change details with the changed smart album. Assumption is that the
-     // list of albums doesn't change (since it's a smart album fetch result).
-     for (PHAssetCollection *collection in initialFetchResult) {
-       NSURL *subalbumURL = [NSURL ptn_photoKitAlbumURLWithCollection:collection];
+        return RACTuplePack(currentFetch, changeset);
+      }];
+    }];
+}
 
-       RACSignal *signal = [[[[self fetchAlbumWithURL:subalbumURL]
-           skip:1]
-           flattenMap:^RACStream *(id __unused value) {
-             return [self fetchFetchResultWithURL:url];
-           }] map:^id(PHFetchResult *newFetchResult) {
-             NSUInteger index = [newFetchResult indexOfObject:collection];
-             NSArray *changedObjects = index != NSNotFound ? @[newFetchResult[index]] : nil;
+- (RACSignal *)recursiveUpdatesForSmartAlbums {
+  NSURL *smartAlbumURL =
+      [NSURL ptn_photoKitMetaAlbumWithType:$(PTNPhotoKitMetaAlbumTypeSmartAlbums)];
+  return [[self fetchFetchResultWithURL:smartAlbumURL]
+      flattenMap:^RACStream *(PHFetchResult *fetchResult) {
+        NSMutableArray *signals = [NSMutableArray array];
 
-             PHFetchResultChangeDetails *changeDetails =
-                 [self.fetcher changeDetailsFromFetchResult:initialFetchResult
-                                              toFetchResult:newFetchResult
-                                             changedObjects:changedObjects];
-             PTNAlbumChangeset *changeset = [PTNAlbumChangeset changesetWithURL:url
-                                                          photoKitChangeDetails:changeDetails];
+        for (PHAssetCollection *collection in fetchResult) {
+          NSURL *subalbumURL = [NSURL ptn_photoKitAlbumURLWithCollection:collection];
 
-             return RACTuplePack(newFetchResult, changeset);
-           }];
-
-       [signals addObject:signal];
-     }
-     
-     return [RACSignal merge:signals];
-   }] flatten];
+          RACSignal *signal = [[[self fetchAlbumWithURL:subalbumURL] skip:1] mapReplace:collection];
+          [signals addObject:signal];
+        }
+         
+        return [RACSignal merge:signals];
+    }];
 }
 
 - (BOOL)shouldFlattenAlbum:(NSURL *)url {
@@ -427,7 +455,11 @@ NS_ASSUME_NONNULL_BEGIN
 
   for (PHAssetCollection *assetCollection in smartAlbums) {
     if ([photosAppSubtypes containsObject:@(assetCollection.assetCollectionSubtype)]) {
-      [albums addObject:assetCollection];
+      PHFetchResult *fetchResult = [self.fetcher fetchAssetsInAssetCollection:assetCollection
+                                                                      options:nil];
+      if (fetchResult.count) {
+        [albums addObject:assetCollection];
+      }
     }
   }
 

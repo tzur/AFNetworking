@@ -43,8 +43,8 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (PHFetchResultChangeDetails *)changeDetailsFromFetchResult:(PHFetchResult *)fromResult
-                                               toFetchResult:(PHFetchResult *)toResult
-                                              changedObjects:(NSArray<PHObject *> *)changedObjects {
+    toFetchResult:(PHFetchResult *)toResult
+    changedObjects:(nullable NSArray<PHObject *> *)changedObjects {
   return [PHFetchResultChangeDetails changeDetailsFromFetchResult:fromResult toFetchResult:toResult
                                                    changedObjects:changedObjects];
 }

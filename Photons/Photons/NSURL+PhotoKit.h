@@ -28,6 +28,7 @@ LTEnumDeclare(NSUInteger, PTNPhotoKitMetaAlbumType,
   /// Album of album types included in operating system's albums.
   PTNPhotoKitMetaAlbumTypeSmartAlbums,
   /// Album of album types included in operating system's albums as displayed in the Photos app.
+  /// This includes hiding empty albums.
   PTNPhotoKitMetaAlbumTypePhotosAppSmartAlbums,
   /// Album of user's albums.
   PTNPhotoKitMetaAlbumTypeUserAlbums

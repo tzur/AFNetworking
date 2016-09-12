@@ -35,6 +35,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// All threads from which calls to the receiver were made.
 @property (strong, atomic) NSSet<NSThread *> *operatingThreads;
 
+/// Mock used to register change details between fetch results.
+@property (readonly, nonatomic) PTNPhotoKitFetcher *changeDetailsMock;
+
 @end
 
 @implementation PTNPhotoKitFakeFetcher
@@ -49,6 +52,7 @@ NS_ASSUME_NONNULL_BEGIN
     self.collectionListToAssetCollections = [NSMutableDictionary dictionary];
     self.assetCollectionsToCollectionList = [NSMutableDictionary dictionary];
     self.operatingThreads = [NSSet set];
+    _changeDetailsMock = OCMClassMock(PTNPhotoKitFetcher.class);
   }
   return self;
 }
@@ -98,6 +102,14 @@ NS_ASSUME_NONNULL_BEGIN
   @synchronized (self.assetCollectionLocalIdentifierToKeyAsset) {
     self.assetCollectionLocalIdentifierToKeyAsset[assetCollection.localIdentifier] = asset;
   }
+}
+
+- (void)registerChangeDetails:(PHFetchResultChangeDetails *)changeDetails
+           forFromFetchResult:(PHFetchResult *)fromResult
+                toFetchResult:(PHFetchResult *)toResult
+               changedObjects:(nullable NSArray<PHObject *> *)changedObjects {
+  OCMStub([self.changeDetailsMock changeDetailsFromFetchResult:fromResult toFetchResult:toResult
+      changedObjects:changedObjects]).andReturn(changeDetails);
 }
 
 #pragma mark -
@@ -180,34 +192,11 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (PHFetchResultChangeDetails *)changeDetailsFromFetchResult:(PHFetchResult *)fromResult
-                                               toFetchResult:(PHFetchResult *)toResult
-                                              changedObjects:(NSArray<PHObject *> *)changedObjects {
+   toFetchResult:(PHFetchResult *)toResult
+   changedObjects:(nullable NSArray<PHObject *> *)changedObjects {
   self.operatingThreads = [self.operatingThreads setByAddingObject:[NSThread currentThread]];
-  NSArray<NSNumber *> *indexes = [[changedObjects.rac_sequence
-      filter:^BOOL(PHObject *object) {
-        return [toResult containsObject:object];
-      }] map:^(PHObject *object) {
-        return @([toResult indexOfObject:object]);
-      }].array;
-
-  NSMutableIndexSet *indexSet = [NSMutableIndexSet indexSet];
-  for (NSNumber *index in indexes) {
-    [indexSet addIndex:index.unsignedIntegerValue];
-  }
-  
-  PTNPhotoKitFakeFetchResultChangeDetails *changeDetails =
-      [[PTNPhotoKitFakeFetchResultChangeDetails alloc] initWithBeforeChanges:fromResult
-                                                                afterChanges:toResult
-                                                       hasIncrementalChanges:YES
-                                                              removedIndexes:[NSIndexSet indexSet]
-                                                              removedObjects:@[]
-                                                             insertedIndexes:[NSIndexSet indexSet]
-                                                             insertedObjects:@[]
-                                                              changedIndexes:indexSet
-                                                              changedObjects:changedObjects
-                                                                    hasMoves:NO];
-
-  return changeDetails;
+  return [self.changeDetailsMock changeDetailsFromFetchResult:fromResult toFetchResult:toResult
+                                               changedObjects:changedObjects];
 }
 
 @end
