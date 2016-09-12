@@ -16,7 +16,7 @@ beforeEach(^{
 
 context(@"initialization", ^{
   it(@"should initialize correctly", ^{
-    expect(set).toNot.beNil;
+    expect(set).toNot.beNil();
     expect(set.pivotValue).to.equal(1);
     expect(set.numberOfValuesPerSequence).to.equal(3);
     expect(set.valueDistance).to.equal(5);

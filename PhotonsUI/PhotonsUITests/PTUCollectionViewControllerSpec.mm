@@ -185,7 +185,7 @@ context(@"collection view", ^{
     expect(layout.minimumLineSpacing).to.equal(@4);
 
     expect(collectionView.showsHorizontalScrollIndicator).to.beTruthy();
-    expect(collectionView.showsVerticalScrollIndicator).to.beFalsy;
+    expect(collectionView.showsVerticalScrollIndicator).to.beFalsy();
     expect(collectionView.pagingEnabled).to.beTruthy();
   });
 
