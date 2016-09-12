@@ -26,8 +26,9 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)init NS_UNAVAILABLE;
 
 /// Initializes with the given \c gridContainer, \c title and \c iconURL.
-- (instancetype)initWithGridContainer:(id<CUIGridContainer>)gridContainer title:(NSString *)title
-                              iconURL:(NSURL *)iconURL;
+- (instancetype)initWithGridContainer:(id<CUIGridContainer>)gridContainer
+                                title:(nullable NSString *)title
+                              iconURL:(nullable NSURL *)iconURL;
 
 @end
 
