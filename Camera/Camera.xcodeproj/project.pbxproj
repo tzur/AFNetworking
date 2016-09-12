@@ -68,6 +68,8 @@
 		8BF68AF71D82E9690093910D /* libcompression.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BF68AF61D82E9690093910D /* libcompression.tbd */; };
 		8D01B2F115E961DB011B44B9 /* CAMDevicePreset.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8D01B772F8E8AF1392710F22 /* CAMDevicePreset.mm */; };
 		8D01BCAEC8899C79F2710F04 /* CAMDevicePresetSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8D01BF505FBFFC6081864B06 /* CAMDevicePresetSpec.mm */; };
+		BE6375E81D8691A4004F3710 /* CAMDeviceLocation.mm in Sources */ = {isa = PBXBuildFile; fileRef = BE6375E71D8691A4004F3710 /* CAMDeviceLocation.mm */; };
+		BE63760D1D869C81004F3710 /* CAMDeviceLocationSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = BE63760C1D869C81004F3710 /* CAMDeviceLocationSpec.mm */; };
 		BE84C54E1D463BB10098DC1D /* CAMSampleTimingInfo.mm in Sources */ = {isa = PBXBuildFile; fileRef = BE84C54D1D463BB10098DC1D /* CAMSampleTimingInfo.mm */; };
 		BE84C56D1D46400A0098DC1D /* CAMSampleTimingInfoSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = BE84C56C1D46400A0098DC1D /* CAMSampleTimingInfoSpec.mm */; };
 		BEB6EDCF1D325BE800E9D424 /* LTObjectionModule.mm in Sources */ = {isa = PBXBuildFile; fileRef = BEB6EDCC1D325BE800E9D424 /* LTObjectionModule.mm */; };
@@ -530,6 +532,9 @@
 		8D01B1E18E03D65BC0430673 /* CAMDevicePreset.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAMDevicePreset.h; sourceTree = "<group>"; };
 		8D01B772F8E8AF1392710F22 /* CAMDevicePreset.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CAMDevicePreset.mm; sourceTree = "<group>"; };
 		8D01BF505FBFFC6081864B06 /* CAMDevicePresetSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CAMDevicePresetSpec.mm; sourceTree = "<group>"; };
+		BE6375E61D8691A4004F3710 /* CAMDeviceLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAMDeviceLocation.h; sourceTree = "<group>"; };
+		BE6375E71D8691A4004F3710 /* CAMDeviceLocation.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CAMDeviceLocation.mm; sourceTree = "<group>"; };
+		BE63760C1D869C81004F3710 /* CAMDeviceLocationSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CAMDeviceLocationSpec.mm; sourceTree = "<group>"; };
 		BE84C54C1D463BB10098DC1D /* CAMSampleTimingInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAMSampleTimingInfo.h; sourceTree = "<group>"; };
 		BE84C54D1D463BB10098DC1D /* CAMSampleTimingInfo.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CAMSampleTimingInfo.mm; sourceTree = "<group>"; };
 		BE84C56C1D46400A0098DC1D /* CAMSampleTimingInfoSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CAMSampleTimingInfoSpec.mm; sourceTree = "<group>"; };
@@ -908,6 +913,8 @@
 			children = (
 				8395AE691CFDCA3C00C91C9E /* AVCaptureDevice+Configure.h */,
 				8395AE6A1CFDCA3C00C91C9E /* AVCaptureDevice+Configure.mm */,
+				BE6375E61D8691A4004F3710 /* CAMDeviceLocation.h */,
+				BE6375E71D8691A4004F3710 /* CAMDeviceLocation.mm */,
 				BED6927C1D32310300061BB5 /* CAMDeviceOrientation.h */,
 				BED6927D1D32310300061BB5 /* CAMDeviceOrientation.mm */,
 				BE84C54C1D463BB10098DC1D /* CAMSampleTimingInfo.h */,
@@ -930,6 +937,7 @@
 			isa = PBXGroup;
 			children = (
 				8395AE6E1CFDCA4E00C91C9E /* AVCaptureDevice+ConfigureSpec.mm */,
+				BE63760C1D869C81004F3710 /* CAMDeviceLocationSpec.mm */,
 				BED6929C1D32311000061BB5 /* CAMDeviceOrientationSpec.mm */,
 				BE84C56C1D46400A0098DC1D /* CAMSampleTimingInfoSpec.mm */,
 			);
@@ -1440,6 +1448,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BE6375E81D8691A4004F3710 /* CAMDeviceLocation.mm in Sources */,
 				06C02EFC1D19389200745557 /* CAMExposureMap.fsh in Sources */,
 				BE84C54E1D463BB10098DC1D /* CAMSampleTimingInfo.mm in Sources */,
 				8355479F1D783E1D00F65398 /* CAMBlankDevice.mm in Sources */,
@@ -1498,6 +1507,7 @@
 				835205A41D2A5B2700000EEC /* EXPMatchers+sendError.m in Sources */,
 				835205971D2A5B2700000EEC /* EXPExpect+LLReactiveMatchersExtensions.m in Sources */,
 				06C02F7C1D1970D900745557 /* EXPMatchers+equalScalar.mm in Sources */,
+				BE63760D1D869C81004F3710 /* CAMDeviceLocationSpec.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
