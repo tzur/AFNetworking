@@ -7,6 +7,7 @@
 #import "CAMFlipDevice.h"
 #import "CAMFocusDevice.h"
 #import "CAMPreviewLayerDevice.h"
+#import "CAMTorchDevice.h"
 #import "CAMVideoDevice.h"
 #import "CAMWhiteBalanceDevice.h"
 #import "CAMZoomDevice.h"
@@ -31,8 +32,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// 6. \c previewLayerPointFromDevicePoint: returns \c CGPoint * 2.
 /// \c devicePointFromPreviewLayerPoint: return the given \c CGPoint * 0.5.
 @interface CAMDeviceStub : NSObject <CAMAudioDevice, CAMExposureDevice, CAMFlashDevice,
-    CAMFlipDevice, CAMFocusDevice, CAMPreviewLayerDevice, CAMVideoDevice, CAMWhiteBalanceDevice,
-    CAMZoomDevice>
+    CAMFlipDevice, CAMFocusDevice, CAMPreviewLayerDevice, CAMTorchDevice, CAMVideoDevice,
+    CAMWhiteBalanceDevice, CAMZoomDevice>
 
 #pragma mark -
 #pragma mark CAMAudioDevice
@@ -87,6 +88,16 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Return value for the \c setFlashMode: method.
 @property (strong, nonatomic, nullable) RACSignal *setFlashModeSignal;
+
+#pragma mark -
+#pragma mark CAMTorchDevice
+#pragma mark -
+
+/// @see CAMTorchDevice.
+@property (nonatomic) BOOL hasTorch;
+
+/// Return value for the \c setTorchLevel: method.
+@property (strong, nonatomic, nullable) RACSignal *setTorchLevelSignal;
 
 #pragma mark -
 #pragma mark CAMFlipDevice

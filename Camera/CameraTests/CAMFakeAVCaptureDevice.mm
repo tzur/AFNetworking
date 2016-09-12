@@ -10,6 +10,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readwrite, nonatomic) AVCaptureFocusMode focusMode;
 @property (readwrite, nonatomic) CGPoint focusPointOfInterest;
 @property (readwrite, nonatomic) float lensPosition;
+@property (readwrite, nonatomic) float torchLevel;
 @property (readwrite, nonatomic) BOOL adjustingFocus;
 @property (readwrite, nonatomic) AVCaptureExposureMode exposureMode;
 @property (readwrite, nonatomic) CGPoint exposurePointOfInterest;
@@ -21,6 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readwrite, nonatomic) CGFloat videoZoomFactor;
 @property (readwrite, nonatomic) BOOL rampingVideoZoom;
 @property (readwrite, nonatomic) AVCaptureFlashMode flashMode;
+@property (readwrite, nonatomic) AVCaptureTorchMode torchMode;
 @end
 
 @implementation CAMFakeAVCaptureDevice
@@ -148,6 +150,21 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (BOOL)isFlashModeSupported:(AVCaptureFlashMode __unused)flashMode {
   return self.flashModeSupported;
+}
+
+#pragma mark -
+#pragma mark Torch
+#pragma mark -
+
+- (BOOL)isTorchModeSupported:(AVCaptureTorchMode __unused)torchMode {
+  return self.torchModeSupported;
+}
+
+- (BOOL)setTorchModeOnWithLevel:(float)torchLevel
+                          error:(NSError __unused *__autoreleasing *)outError {
+  self.torchMode = AVCaptureTorchModeOn;
+  self.torchLevel = torchLevel;
+  return YES;
 }
 
 @end

@@ -830,6 +830,86 @@ context(@"", ^{
       });
     });
   });
+
+  context(@"torch", ^{
+    static const float kTorchLevel = 0.0625;
+
+    __block CAMFakeAVCaptureDevice *videoDevice;
+
+    beforeEach(^{
+      videoDevice = [[CAMFakeAVCaptureDevice alloc] init];
+      session.videoDevice = videoDevice;
+    });
+
+    context(@"positive", ^{
+      beforeEach(^{
+        videoDevice.torchModeSupported = YES;
+      });
+
+      it(@"should set torch level", ^{
+        LLSignalTestRecorder *recorder = [[device setTorchLevel:kTorchLevel] testRecorder];
+        expect(recorder).to.sendValues(@[@(kTorchLevel)]);
+        expect(recorder).to.complete();
+        expect(videoDevice.torchMode).to.equal(AVCaptureTorchModeOn);
+        expect(videoDevice.torchLevel).to.equal(kTorchLevel);
+      });
+
+      it(@"should set torch on and off", ^{
+        expect(videoDevice.torchMode).to.equal(AVCaptureTorchModeOff);
+        [[device setTorchLevel:1] subscribeNext:^(id) {}];
+        expect(videoDevice.torchMode).to.equal(AVCaptureTorchModeOn);
+        expect(videoDevice.torchLevel).to.equal(1);
+        LLSignalTestRecorder *recorder = [[device setTorchLevel:0] testRecorder];
+        expect(recorder).to.sendValues(@[@(AVCaptureTorchModeOff)]);
+        expect(recorder).to.complete();
+        expect(videoDevice.torchMode).to.equal(AVCaptureTorchModeOff);
+      });
+
+      it(@"should update hasTorch", ^{
+        expect(device.hasTorch).to.beFalsy();
+        videoDevice.hasTorch = YES;
+        expect(device.hasTorch).to.beTruthy();
+      });
+
+      it(@"should rais for illegal level", ^{
+        expect(^{
+          [[device setTorchLevel:2] testRecorder];
+        }).to.raise(NSInvalidArgumentException);
+
+        expect(^{
+          [[device setTorchLevel:-0.5] testRecorder];
+        }).to.raise(NSInvalidArgumentException);
+      });
+    });
+
+    context(@"require subscription", ^{
+      beforeEach(^{
+        videoDevice.torchModeSupported = YES;
+      });
+
+      it(@"should not set torch level", ^{
+        [device setTorchLevel:kTorchLevel];
+        expect(videoDevice.torchMode).toNot.equal(AVCaptureTorchModeOn);
+        expect(videoDevice.torchLevel).to.equal(0);
+      });
+    });
+
+    context(@"negative", ^{
+      it(@"should return error from torch mode", ^{
+        LLSignalTestRecorder *recorder = [[device setTorchLevel:0] testRecorder];
+        NSError *expected = [NSError lt_errorWithCode:CAMErrorCodeTorchModeSettingUnsupported];
+        expect(recorder).to.sendError(expected);
+        expect(videoDevice.torchMode).toNot.equal(AVCaptureTorchModeAuto);
+      });
+
+      it(@"should return error from torch level", ^{
+        LLSignalTestRecorder *recorder = [[device setTorchLevel:kTorchLevel] testRecorder];
+        NSError *expected = [NSError lt_errorWithCode:CAMErrorCodeTorchModeSettingUnsupported];
+        expect(recorder).to.sendError(expected);
+        expect(videoDevice.torchMode).toNot.equal(AVCaptureTorchModeAuto);
+      });
+    });
+  });
 });
 
 context(@"flip", ^{
@@ -997,6 +1077,14 @@ context(@"retaining", ^{
 
   itShouldBehaveLike(@"retaining", @{@"signalBlock": ^RACSignal *(CAMHardwareDevice *device) {
     return [device setFlashMode:AVCaptureFlashModeOff];
+  }});
+
+  itShouldBehaveLike(@"retaining", @{@"signalBlock": ^RACSignal *(CAMHardwareDevice *device) {
+    return [device setTorchLevel:0];
+  }});
+
+  itShouldBehaveLike(@"retaining", @{@"signalBlock": ^RACSignal *(CAMHardwareDevice *device) {
+    return [device setTorchLevel:0.01];
   }});
 
   itShouldBehaveLike(@"retaining", @{@"signalBlock": ^RACSignal *(CAMHardwareDevice *device) {

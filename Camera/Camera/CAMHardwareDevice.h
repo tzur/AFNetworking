@@ -7,6 +7,7 @@
 #import "CAMFlipDevice.h"
 #import "CAMFocusDevice.h"
 #import "CAMPreviewLayerDevice.h"
+#import "CAMTorchDevice.h"
 #import "CAMVideoDevice.h"
 #import "CAMWhiteBalanceDevice.h"
 #import "CAMZoomDevice.h"
@@ -26,8 +27,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// free for receiving the next frames. If non-trivial, non-GPU processing needs to be done, do the
 /// work on a different queue.
 @interface CAMHardwareDevice : NSObject <CAMAudioDevice, CAMExposureDevice, CAMFlashDevice,
-    CAMFlipDevice, CAMFocusDevice, CAMPreviewLayerDevice, CAMVideoDevice, CAMWhiteBalanceDevice,
-    CAMZoomDevice>
+    CAMFlipDevice, CAMFocusDevice, CAMPreviewLayerDevice, CAMTorchDevice, CAMVideoDevice,
+    CAMWhiteBalanceDevice, CAMZoomDevice>
 
 - (instancetype)init NS_UNAVAILABLE;
 

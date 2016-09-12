@@ -41,6 +41,8 @@ LTErrorCodesImplement(CameraErrorCodeProductID,
   CAMErrorCodeWhiteBalanceSettingUnsupported,
   /// Caused when the requested flash setting is not supported.
   CAMErrorCodeFlashModeSettingUnsupported,
+  /// Caused when the requested torch setting is not supported.
+  CAMErrorCodeTorchModeSettingUnsupported,
   /// Caused when the <tt>CMMotionManager</tt>'s device motion is unavailable.
   CAMErrorCodeDeviceMotionUnavailable,
   /// Caused when the \c CMDeviceMotionHandler receives an error.

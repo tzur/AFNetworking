@@ -58,8 +58,14 @@ NS_ASSUME_NONNULL_BEGIN
 /// Value to return in \c isFlashModeSupported:.
 @property (nonatomic) BOOL flashModeSupported;
 
+/// Value to return in \c isTorchModeSupported:.
+@property (nonatomic) BOOL torchModeSupported;
+
 /// Override to allow setting this property.
 @property (nonatomic) BOOL hasFlash;
+
+/// Override to allow setting this property.
+@property (nonatomic) BOOL hasTorch;
 
 /// Override to allow setting this property.
 @property (nonatomic) BOOL flashActive;

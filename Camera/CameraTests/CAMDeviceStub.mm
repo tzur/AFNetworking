@@ -48,6 +48,14 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 #pragma mark -
+#pragma mark CAMTorchDevice
+#pragma mark -
+
+- (RACSignal *)setTorchLevel:(float __unused)torchLevel {
+  return self.setTorchLevelSignal;
+}
+
+#pragma mark -
 #pragma mark CAMFlipDevice
 #pragma mark -
 
