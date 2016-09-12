@@ -9,6 +9,7 @@
 #import "BZRFileArchiver.h"
 #import "NSErrorCodes+Bazaar.h"
 #import "NSFileManager+Bazaar.h"
+#import "BZRZipFileArchiver.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -26,6 +27,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Base directory where all product's content are saved.
 NSString * const kBazaarProductsContentDirectory = @"Bazaar/ProductsContent/";
+
+- (instancetype)init {
+  BZRZipFileArchiver *archiver = [[BZRZipFileArchiver alloc] init];
+  return [self initWithFileManager:[NSFileManager defaultManager] fileArchiver:archiver];
+}
 
 - (instancetype)initWithFileManager:(NSFileManager *)fileManager
                        fileArchiver:(id<BZRFileArchiver>)fileArchiver {
