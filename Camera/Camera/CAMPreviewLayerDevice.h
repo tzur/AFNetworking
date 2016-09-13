@@ -12,21 +12,14 @@ NS_ASSUME_NONNULL_BEGIN
 /// Converts the given point in \c previewLayer's coordinates to device coordinates.
 - (CGPoint)devicePointFromPreviewLayerPoint:(CGPoint)previewLayerPoint;
 
-/// Layer that displays an unedited live preview from the camera. The preview is oriented to fit in
-/// portrait display.
+/// Layer that displays an unedited live preview from the camera.
 @property (readonly, nonatomic) CALayer *previewLayer;
 
-/// \c YES if the live preview should have portrait orientation regardless to the
-/// device's orientation, and \c NO if the live preview should be rotated to match device
-/// orientation. When the preview view that shows the live preview is locked on portrait
-/// orientation, setting the value to \c YES will result in live preview that matches the preview
-//// orientation.
-@property (nonatomic) BOOL previewLayerWithPortraitOrientation;
-
-/// Device orientation. When \c previewLayerWithPortraitOrientation is \c NO, setting this property
-/// to the current orientation of the device will result in preview that matches the device's
-/// orientation.
-@property (nonatomic) UIInterfaceOrientation deviceOrientation;
+/// Current interface orientation. Setting this property to the current orientation of the
+/// interface will result in correctly oriented preview in \c previewLayer.
+///
+/// @see UIApplication.statusBarOrientation.
+@property (nonatomic) UIInterfaceOrientation interfaceOrientation;
 
 @end
 

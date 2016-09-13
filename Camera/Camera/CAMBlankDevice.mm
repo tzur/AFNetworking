@@ -18,9 +18,8 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize activeCamera = _activeCamera;
 @synthesize canChangeCamera = _canChangeCamera;
 @synthesize previewLayer = _previewLayer;
-@synthesize previewLayerWithPortraitOrientation = _previewLayerWithPortraitOrientation;
-@synthesize deviceOrientation = _deviceOrientation;
-@synthesize videoFramesWithPortraitOrientation = _videoFramesWithPortraitOrientation;
+@synthesize interfaceOrientation = _interfaceOrientation;
+@synthesize gravityOrientation = _gravityOrientation;
 @synthesize hasZoom = _hasZoom;
 @synthesize minZoomFactor = _minZoomFactor;
 @synthesize maxZoomFactor = _maxZoomFactor;
