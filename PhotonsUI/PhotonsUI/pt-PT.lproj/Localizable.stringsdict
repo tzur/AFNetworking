@@ -4,7 +4,7 @@
   <dict>
     <!-- Label under a photo album name, describing the number of photos currently present in that 
      album. -->
-    <key>%lu photos</key>
+    <key>%lu Photos</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
       <string>%#@photos@</string>
@@ -15,11 +15,11 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>lu</string>
         <key>zero</key>
-        <string>No photos</string>
+        <string>No Photos</string>
         <key>one</key>
-        <string>1 photo</string>
+        <string>1 Photo</string>
         <key>other</key>
-        <string>%lu photos</string>
+        <string>%lu Photos</string>
       </dict>
     </dict>
   </dict>
