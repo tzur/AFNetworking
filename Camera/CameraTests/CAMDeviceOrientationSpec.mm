@@ -28,7 +28,7 @@ static NSError * const kError = [NSError lt_errorWithCode:1];
 @synthesize deviceMotionAvailable = _deviceMotionAvailable;
 - (void)startDeviceMotionUpdatesToQueue:(NSOperationQueue * __unused)queue
                             withHandler:(CMDeviceMotionHandler)handler {
-  _handler = handler;
+  _handler = [handler copy];
   ++self.startDeviceMotionUpdatesCallsCount;
 }
 - (void)updateDeviceMotion:(CMDeviceMotion *)motion {
@@ -60,10 +60,10 @@ __block RACSignal *signal;
 
 beforeEach(^{
   manager = [[CAMFakeMotionManager alloc] init];
-  LTBindObjectToClass(manager, [CMMotionManager class]);
-  motion = [[CAMFakeDeviceMotion alloc] init];
   manager.deviceMotionAvailable = YES;
-  orientation = [[CAMDeviceOrientation alloc] init];
+  motion = [[CAMFakeDeviceMotion alloc] init];
+
+  orientation = [[CAMDeviceOrientation alloc] initWithMotionManager:manager];
   signal = [orientation deviceOrientationWithRefreshInterval:kTimeInterval];
 });
 
@@ -96,6 +96,25 @@ context(@"signal subscription", ^{
   });
 });
 
+context(@"retaining", ^{
+  it(@"should not retain manager while signal is active", ^{
+    __weak CAMFakeMotionManager *weakManager;
+    @autoreleasepool {
+      CAMFakeMotionManager *strongManager = [[CAMFakeMotionManager alloc] init];
+      weakManager = strongManager;
+
+      CAMDeviceOrientation * __unused localOrientation =
+          [[CAMDeviceOrientation alloc] initWithMotionManager:manager];
+
+      signal = [orientation deviceOrientationWithRefreshInterval:kTimeInterval];
+      [signal subscribeCompleted:^{}];
+
+      expect(weakManager).notTo.beNil();
+    }
+    expect(weakManager).to.beNil();
+  });
+});
+
 context(@"signal", ^{
   it(@"should send error if the CMMotionManager sends an error for device motion update", ^{
     LLSignalTestRecorder *recorder = [signal testRecorder];
@@ -104,16 +123,16 @@ context(@"signal", ^{
     expect(recorder).to.sendError([NSError lt_errorWithCode:CAMErrorCodeDeviceMotionUpdateError
                                             underlyingError:kError]);
   });
-  
+
   it(@"should complete when the CAMDeviceOrientation object is deallocated", ^{
-    RACSignal *signal;
     LLSignalTestRecorder *recorder;
     @autoreleasepool {
-      CAMDeviceOrientation *orientation = [[CAMDeviceOrientation alloc] init];
-      signal = [orientation deviceOrientationWithRefreshInterval:kTimeInterval];
-      recorder = [signal testRecorder];
+      CAMDeviceOrientation *localOrientation =
+          [[CAMDeviceOrientation alloc] initWithMotionManager:manager];
+      RACSignal *localSignal =
+          [localOrientation deviceOrientationWithRefreshInterval:kTimeInterval];
+      recorder = [localSignal testRecorder];
     }
-
     expect(recorder).to.complete();
   });
 
