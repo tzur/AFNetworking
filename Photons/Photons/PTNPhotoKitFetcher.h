@@ -63,11 +63,13 @@ typedef PHFetchResult<PHAssetCollection *> PTNAssetCollectionsFetchResult;
     (PHAssetCollection *)assetCollection options:(nullable PHFetchOptions *)options;
 
 /// Creates a change details object that summarizes the differences between two fetch results.
+/// \c changedObject is a collection of objects to manually note as changed between the two fetch
+/// results, or \c nil to compare the fetch results entirely.
 ///
 /// @see [PHFetchResultChangeDetails changeDetailsFromFetchResult:toFetchResult:changedObjects:].
 - (PHFetchResultChangeDetails *)changeDetailsFromFetchResult:(PHFetchResult *)fromResult
-                                               toFetchResult:(PHFetchResult *)toResult
-                                              changedObjects:(NSArray<PHObject *> *)changedObjects;
+    toFetchResult:(PHFetchResult *)toResult
+    changedObjects:(nullable NSArray<PHObject *> *)changedObjects;
 
 @end
 

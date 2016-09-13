@@ -16,12 +16,13 @@
 #import "PTNPhotoKitAlbum.h"
 #import "PTNPhotoKitFakeAuthorizationManager.h"
 #import "PTNPhotoKitFakeChangeManager.h"
+#import "PTNPhotoKitFakeFetchResultChangeDetails.h"
 #import "PTNPhotoKitFakeFetcher.h"
 #import "PTNPhotoKitFakeImageManager.h"
 #import "PTNPhotoKitFakeObserver.h"
+#import "PTNPhotoKitImageAsset.h"
 #import "PTNPhotoKitImageManager.h"
 #import "PTNPhotoKitTestUtils.h"
-#import "PTNPhotoKitImageAsset.h"
 #import "PTNProgress.h"
 #import "PTNResizingStrategy.h"
 #import "PhotoKit+Photons.h"
@@ -251,15 +252,19 @@ context(@"album fetching", ^{
       __block NSURL *url;
       __block PHCollectionList *transientList;
 
+      __block id favoritesCollection;
+      __block id cameraRollCollection;
+      __block id userCollection;
+
       beforeEach(^{
         PHAssetCollectionSubtype userLibrary = PHAssetCollectionSubtypeSmartAlbumUserLibrary;
         PHAssetCollectionSubtype favorites = PHAssetCollectionSubtypeSmartAlbumFavorites;
-        id firstCollection = PTNPhotoKitCreateAssetCollection(@"foo", favorites);
-        id secondCollection = PTNPhotoKitCreateAssetCollection(@"bar", userLibrary);
-        id thirdCollection = PTNPhotoKitCreateAssetCollection(@"baz");
+        favoritesCollection = PTNPhotoKitCreateAssetCollection(@"foo", favorites);
+        cameraRollCollection = PTNPhotoKitCreateAssetCollection(@"bar", userLibrary);
+        userCollection = PTNPhotoKitCreateAssetCollection(@"baz");
 
-        albums = @[firstCollection, secondCollection, thirdCollection];
-        albumsSubset = @[secondCollection, firstCollection];
+        albums = @[favoritesCollection, cameraRollCollection, userCollection];
+        albumsSubset = @[cameraRollCollection, favoritesCollection];
 
         [fetcher registerAssetCollections:albums withType:PHAssetCollectionTypeSmartAlbum
                                andSubtype:PHAssetCollectionSubtypeAny];
@@ -270,46 +275,118 @@ context(@"album fetching", ^{
         [fetcher registerCollectionList:transientList withAssetCollections:albumsSubset];
         [fetcher registerAssetCollections:albumsSubset withCollectionList:transientList];
 
-        [fetcher registerAssetCollection:firstCollection];
-        [fetcher registerAssetCollection:secondCollection];
+        [fetcher registerAssetCollection:favoritesCollection];
+        [fetcher registerAssetCollection:cameraRollCollection];
+        [fetcher registerAssetCollection:userCollection];
 
         PTNPhotoKitMetaAlbumType *type = $(PTNPhotoKitMetaAlbumTypePhotosAppSmartAlbums);
         url = [NSURL ptn_photoKitMetaAlbumWithType:type];
       });
 
+      it(@"should fetch smart album subset", ^{
+        id asset = PTNPhotoKitCreateAsset(nil);
+        NSArray *assets = @[asset];
+        [fetcher registerAssets:assets withAssetCollection:favoritesCollection];
+        [fetcher registerAssets:assets withAssetCollection:cameraRollCollection];
+
+        LLSignalTestRecorder *recorder = [[manager fetchAlbumWithURL:url] testRecorder];
+
+        id<PTNAlbum> album = [[PTNPhotoKitAlbum alloc] initWithURL:url fetchResult:albumsSubset];
+
+        expect(recorder).will.sendValues(@[[PTNAlbumChangeset changesetWithAfterAlbum:album]]);
+      });
+
+      it(@"should hide empty albums", ^{
+        id asset = PTNPhotoKitCreateAsset(nil);
+        NSArray *assets = @[asset];
+        [fetcher registerAssets:assets withAssetCollection:favoritesCollection];
+        [fetcher registerAssets:@[] withAssetCollection:cameraRollCollection];
+
+        PHCollectionList *transientList = OCMClassMock([PHCollectionList class]);
+        OCMStub(transientList.localIdentifier).andReturn(@[@"bar"]);
+
+        [fetcher registerAssetCollections:@[favoritesCollection] withCollectionList:transientList];
+        [fetcher registerCollectionList:transientList withAssetCollections:@[favoritesCollection]];
+
+        LLSignalTestRecorder *recorder = [[manager fetchAlbumWithURL:url] testRecorder];
+
+        id<PTNAlbum> album = [[PTNPhotoKitAlbum alloc] initWithURL:url
+            fetchResult:(PHFetchResult *)@[favoritesCollection]];
+
+        expect(recorder).will.sendValues(@[[PTNAlbumChangeset changesetWithAfterAlbum:album]]);
+      });
+
+      it(@"should not err on empty smart album subsets", ^{
+        NSArray *assets = @[];
+        [fetcher registerAssets:assets withAssetCollection:favoritesCollection];
+        [fetcher registerAssets:assets withAssetCollection:cameraRollCollection];
+
+        LLSignalTestRecorder *recorder = [[manager fetchAlbumWithURL:url] testRecorder];
+
+        id<PTNAlbum> album = [[PTNPhotoKitAlbum alloc] initWithURL:url
+                                                       fetchResult:(PHFetchResult *)@[]];
+
+        expect(recorder).will.sendValues(@[[PTNAlbumChangeset changesetWithAfterAlbum:album]]);
+      });
+
       it(@"should update transient album collection on subalbum change", ^{
         id asset = PTNPhotoKitCreateAsset(nil);
+        NSArray *assets = @[asset];
+        [fetcher registerAssets:assets withAssetCollection:favoritesCollection];
+        [fetcher registerAssets:assets withAssetCollection:cameraRollCollection];
 
-        id changeDetails = PTNPhotoKitCreateChangeDetailsForAssets(@[asset]);
+        NSIndexSet *emptySet = [NSIndexSet indexSet];
+        NSIndexSet *updatedIndexes = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 2)];
+
+        PTNPhotoKitFakeFetchResultChangeDetails *changeDetails =
+            [[PTNPhotoKitFakeFetchResultChangeDetails alloc] initWithBeforeChanges:albumsSubset
+            afterChanges:albumsSubset hasIncrementalChanges:YES removedIndexes:emptySet
+            removedObjects:@[] insertedIndexes:emptySet insertedObjects:@[]
+            changedIndexes:updatedIndexes changedObjects:albumsSubset hasMoves:NO];
+
+        [fetcher registerChangeDetails:changeDetails forFromFetchResult:albumsSubset
+                         toFetchResult:albumsSubset changedObjects:nil];
+
         id change = PTNPhotoKitCreateChangeForFetchDetails(changeDetails);
 
         LLSignalTestRecorder *recorder = [[manager fetchAlbumWithURL:url] testRecorder];
         [observer sendChange:change];
 
         id<PTNAlbum> album = [[PTNPhotoKitAlbum alloc] initWithURL:url fetchResult:albumsSubset];
-        NSIndexSet *emptySet = [NSIndexSet indexSet];
 
-        PTNIncrementalChanges *firstChanges =
-            [PTNIncrementalChanges changesWithRemovedIndexes:emptySet insertedIndexes:emptySet
-                                              updatedIndexes:[NSIndexSet indexSetWithIndex:0]
-                                                       moves:@[]];
-
-        PTNIncrementalChanges *secondChanges =
-            [PTNIncrementalChanges changesWithRemovedIndexes:emptySet insertedIndexes:emptySet
-                                              updatedIndexes:[NSIndexSet indexSetWithIndex:1]
-                                                       moves:@[]];
+        PTNIncrementalChanges *changes =
+        [PTNIncrementalChanges changesWithRemovedIndexes:emptySet insertedIndexes:emptySet
+                                          updatedIndexes:updatedIndexes
+                                                   moves:@[]];
 
         expect([NSSet setWithArray:recorder.values]).will.equal([NSSet setWithArray:@[
           [PTNAlbumChangeset changesetWithAfterAlbum:album],
           [PTNAlbumChangeset changesetWithBeforeAlbum:album
                                            afterAlbum:album
-                                      subalbumChanges:firstChanges
-                                         assetChanges:nil],
-          [PTNAlbumChangeset changesetWithBeforeAlbum:album
-                                           afterAlbum:album
-                                      subalbumChanges:secondChanges
+                                      subalbumChanges:changes
                                          assetChanges:nil]]
         ]);
+      });
+
+      it(@"should not update transient album collection on irrelevant subalbum change", ^{
+        id asset = PTNPhotoKitCreateAsset(nil);
+        NSArray *assets = @[asset];
+        [fetcher registerAssets:assets withAssetCollection:favoritesCollection];
+        [fetcher registerAssets:assets withAssetCollection:cameraRollCollection];
+        
+        NSArray *otherAssets = @[PTNPhotoKitCreateAsset(nil)];
+        [fetcher registerAssets:otherAssets withAssetCollection:userCollection];
+
+        id changeDetails = PTNPhotoKitCreateChangeDetailsForAssets(otherAssets);
+        id change = OCMClassMock(PHChange.class);
+        OCMStub([change changeDetailsForFetchResult:(id)otherAssets]).andReturn(changeDetails);
+
+        LLSignalTestRecorder *recorder = [[manager fetchAlbumWithURL:url] testRecorder];
+        [observer sendChange:change];
+
+        id<PTNAlbum> album = [[PTNPhotoKitAlbum alloc] initWithURL:url fetchResult:albumsSubset];
+
+        expect(recorder).will.sendValues(@[[PTNAlbumChangeset changesetWithAfterAlbum:album]]);
       });
     });
 
@@ -338,36 +415,36 @@ context(@"album fetching", ^{
       });
 
       it(@"should update smart album collection on subalbum change", ^{
-        id asset = PTNPhotoKitCreateAsset(nil);
+        NSIndexSet *updatedIndexes = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 2)];
+        NSIndexSet *emptySet = [NSIndexSet indexSet];
 
-        id changeDetails = PTNPhotoKitCreateChangeDetailsForAssets(@[asset]);
+        PTNPhotoKitFakeFetchResultChangeDetails *changeDetails =
+            [[PTNPhotoKitFakeFetchResultChangeDetails alloc] initWithBeforeChanges:albums
+            afterChanges:albums hasIncrementalChanges:YES removedIndexes:emptySet
+            removedObjects:@[] insertedIndexes:emptySet insertedObjects:@[]
+            changedIndexes:updatedIndexes
+            changedObjects:albums hasMoves:NO];
+
+        [fetcher registerChangeDetails:changeDetails forFromFetchResult:albums
+                         toFetchResult:albums changedObjects:nil];
+
         id change = PTNPhotoKitCreateChangeForFetchDetails(changeDetails);
 
         LLSignalTestRecorder *recorder = [[manager fetchAlbumWithURL:url] testRecorder];
         [observer sendChange:change];
 
         id<PTNAlbum> album = [[PTNPhotoKitAlbum alloc] initWithURL:url fetchResult:albums];
-        NSIndexSet *emptySet = [NSIndexSet indexSet];
 
-        PTNIncrementalChanges *firstChanges =
+        PTNIncrementalChanges *changes =
             [PTNIncrementalChanges changesWithRemovedIndexes:emptySet insertedIndexes:emptySet
-                                              updatedIndexes:[NSIndexSet indexSetWithIndex:0]
-                                                       moves:@[]];
-
-        PTNIncrementalChanges *secondChanges =
-            [PTNIncrementalChanges changesWithRemovedIndexes:emptySet insertedIndexes:emptySet
-                                              updatedIndexes:[NSIndexSet indexSetWithIndex:1]
+                                              updatedIndexes:updatedIndexes
                                                        moves:@[]];
 
         expect([NSSet setWithArray:recorder.values]).will.equal([NSSet setWithArray:@[
           [PTNAlbumChangeset changesetWithAfterAlbum:album],
           [PTNAlbumChangeset changesetWithBeforeAlbum:album
                                            afterAlbum:album
-                                      subalbumChanges:firstChanges
-                                         assetChanges:nil],
-          [PTNAlbumChangeset changesetWithBeforeAlbum:album
-                                           afterAlbum:album
-                                      subalbumChanges:secondChanges
+                                      subalbumChanges:changes
                                          assetChanges:nil]
         ]]);
       });

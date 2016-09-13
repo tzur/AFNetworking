@@ -42,6 +42,13 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)registerAsset:(PHAsset *)asset
     asKeyAssetOfAssetCollection:(PHAssetCollection *)assetCollection;
 
+/// Registers the given \c changeDetails to be returned when requesting change details from
+/// \c fromResult to \c toResult with \c changedObjects.
+- (void)registerChangeDetails:(PHFetchResultChangeDetails *)changeDetails
+           forFromFetchResult:(PHFetchResult *)fromResult
+                toFetchResult:(PHFetchResult *)toResult
+               changedObjects:(nullable NSArray<PHObject *> *)changedObjects;
+
 /// All threads from which calls to the receiver were made.
 @property (readonly, atomic) NSSet<NSThread *> *operatingThreads;
 
