@@ -51,10 +51,6 @@
 		BEC7B1B01D1FFF3C0012C286 /* Masonry.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BEC7B1AB1D1FFC0C0012C286 /* Masonry.framework */; };
 		BECE31E21D3BA11900B96053 /* CUIFlipCameraViewModelSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = BECE31E11D3BA11900B96053 /* CUIFlipCameraViewModelSpec.mm */; };
 		BECFD6901D23AD6600361F3D /* CUIFlashModeViewModelSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = BECFD68F1D23AD6600361F3D /* CUIFlashModeViewModelSpec.mm */; };
-		BED2B7E51D34E0D00080E413 /* CUIShootButton.mm in Sources */ = {isa = PBXBuildFile; fileRef = BED2B7E41D34E0D00080E413 /* CUIShootButton.mm */; };
-		BEE2692C1D34EC0600360AFF /* CUIShootButtonSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = BEE2692B1D34EC0600360AFF /* CUIShootButtonSpec.mm */; };
-		BEE3E2C01D33DB670061D805 /* CUIShootButtonDrawer.mm in Sources */ = {isa = PBXBuildFile; fileRef = BEE3E2BF1D33DB670061D805 /* CUIShootButtonDrawer.mm */; };
-		BEE3E2E71D33DE280061D805 /* CUIShootButtonDrawerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = BEE3E2E61D33DE280061D805 /* CUIShootButtonDrawerSpec.mm */; };
 		BEE564761D800E9600E79E55 /* CUIDropDownEntryViewModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = BEE564751D800E9600E79E55 /* CUIDropDownEntryViewModel.mm */; };
 		BEEE6D2E1D21385D00579F5D /* EXPExpect+LLReactiveMatchersExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = BEEE6D091D21385D00579F5D /* EXPExpect+LLReactiveMatchersExtensions.m */; };
 		BEEE6D2F1D21385D00579F5D /* LLSignalTestRecorder.m in Sources */ = {isa = PBXBuildFile; fileRef = BEEE6D0B1D21385D00579F5D /* LLSignalTestRecorder.m */; };
@@ -529,12 +525,6 @@
 		BEC7B1AE1D1FFCE40012C286 /* CUIDropDownMenuItemsEntrySpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUIDropDownMenuItemsEntrySpec.mm; sourceTree = "<group>"; };
 		BECE31E11D3BA11900B96053 /* CUIFlipCameraViewModelSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUIFlipCameraViewModelSpec.mm; sourceTree = "<group>"; };
 		BECFD68F1D23AD6600361F3D /* CUIFlashModeViewModelSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUIFlashModeViewModelSpec.mm; sourceTree = "<group>"; };
-		BED2B7E31D34E0D00080E413 /* CUIShootButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUIShootButton.h; sourceTree = "<group>"; };
-		BED2B7E41D34E0D00080E413 /* CUIShootButton.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUIShootButton.mm; sourceTree = "<group>"; };
-		BEE2692B1D34EC0600360AFF /* CUIShootButtonSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUIShootButtonSpec.mm; sourceTree = "<group>"; };
-		BEE3E2BE1D33DB670061D805 /* CUIShootButtonDrawer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUIShootButtonDrawer.h; sourceTree = "<group>"; };
-		BEE3E2BF1D33DB670061D805 /* CUIShootButtonDrawer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUIShootButtonDrawer.mm; sourceTree = "<group>"; };
-		BEE3E2E61D33DE280061D805 /* CUIShootButtonDrawerSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUIShootButtonDrawerSpec.mm; sourceTree = "<group>"; };
 		BEE564741D800E9600E79E55 /* CUIDropDownEntryViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUIDropDownEntryViewModel.h; sourceTree = "<group>"; };
 		BEE564751D800E9600E79E55 /* CUIDropDownEntryViewModel.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUIDropDownEntryViewModel.mm; sourceTree = "<group>"; };
 		BEEE6D081D21385D00579F5D /* EXPExpect+LLReactiveMatchersExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EXPExpect+LLReactiveMatchersExtensions.h"; sourceTree = "<group>"; };
@@ -1000,7 +990,6 @@
 			isa = PBXGroup;
 			children = (
 				BE4629311CDF1DE700D9F7E2 /* Drop Down Bar */,
-				BEE3E2E11D33DD3C0061D805 /* Main Bar */,
 				BE46294F1CDF1E2500D9F7E2 /* Modes Bar */,
 				F9CD3BF71CECBC3700190169 /* CUISharedTheme.h */,
 				F9CD3BF81CECBC3700190169 /* CUISharedTheme.mm */,
@@ -1023,7 +1012,6 @@
 			isa = PBXGroup;
 			children = (
 				BE4629571CDF24D200D9F7E2 /* Drop Down Bar */,
-				BEE3E2E21D33DDCA0061D805 /* Main Bar */,
 				BE4629561CDF24C700D9F7E2 /* Modes Bar */,
 				F9CD3C161CECBC4500190169 /* CUISharedThemeSpec.mm */,
 			);
@@ -1090,26 +1078,6 @@
 				BEC7B1AD1D1FFC0C0012C286 /* Masonry.framework */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		BEE3E2E11D33DD3C0061D805 /* Main Bar */ = {
-			isa = PBXGroup;
-			children = (
-				BED2B7E31D34E0D00080E413 /* CUIShootButton.h */,
-				BED2B7E41D34E0D00080E413 /* CUIShootButton.mm */,
-				BEE3E2BE1D33DB670061D805 /* CUIShootButtonDrawer.h */,
-				BEE3E2BF1D33DB670061D805 /* CUIShootButtonDrawer.mm */,
-			);
-			name = "Main Bar";
-			sourceTree = "<group>";
-		};
-		BEE3E2E21D33DDCA0061D805 /* Main Bar */ = {
-			isa = PBXGroup;
-			children = (
-				BEE3E2E61D33DE280061D805 /* CUIShootButtonDrawerSpec.mm */,
-				BEE2692B1D34EC0600360AFF /* CUIShootButtonSpec.mm */,
-			);
-			name = "Main Bar";
 			sourceTree = "<group>";
 		};
 		BEEE6D061D21385D00579F5D /* LLReactiveMatchers */ = {
@@ -1684,7 +1652,6 @@
 				F9262E571D23A91A00CA60E7 /* CUIPreviewViewController.mm in Sources */,
 				836374061D3FBA9000C8D09D /* CUITimerModeViewModel.mm in Sources */,
 				F965CD611CF478F100005627 /* CUIIconWithTitleCell.mm in Sources */,
-				BED2B7E51D34E0D00080E413 /* CUIShootButton.mm in Sources */,
 				BEFF88021D22682200DEAA97 /* CUIFlashModeViewModel.mm in Sources */,
 				BEFF88011D22682200DEAA97 /* CUIFlashMenuViewModel.mm in Sources */,
 				BEC7B1861D1FF4E50012C286 /* CUIDropDownMenuItemsEntry.mm in Sources */,
@@ -1694,7 +1661,6 @@
 				F925C2AC1D378BC100C95F46 /* CUIFocusIconMode.mm in Sources */,
 				F9A685361D211AF100E0F319 /* CUIMenuItemsDataSource.mm in Sources */,
 				BE0D7A7E1CF49705009899F9 /* CUIMenuItemTextButton.m in Sources */,
-				BEE3E2C01D33DB670061D805 /* CUIShootButtonDrawer.mm in Sources */,
 				BE97556D1D0075A80081A766 /* CUIMenuItemIconButton.mm in Sources */,
 				BE1C90AA1D20213500FF20CA /* CUIDropDownView.mm in Sources */,
 			);
@@ -1721,10 +1687,8 @@
 				BEEE6D331D21385D00579F5D /* EXPMatchers+beSubscribedTo.m in Sources */,
 				BEEE6D391D21385D00579F5D /* EXPMatchers+matchValue.m in Sources */,
 				BEEE6D3C1D21385D00579F5D /* EXPMatchers+sendEvents.m in Sources */,
-				BEE2692C1D34EC0600360AFF /* CUIShootButtonSpec.mm in Sources */,
 				BEEE6D341D21385D00579F5D /* EXPMatchers+complete.m in Sources */,
 				F9CD3C171CECBC4500190169 /* CUISharedThemeSpec.mm in Sources */,
-				BEE3E2E71D33DE280061D805 /* CUIShootButtonDrawerSpec.mm in Sources */,
 				BE0E850A1D2B9B1F00093B01 /* CAMDeviceStub.mm in Sources */,
 				8328EE411D436169008C5A19 /* CUITimerModeViewModelSpec.mm in Sources */,
 				BEEE6D2F1D21385D00579F5D /* LLSignalTestRecorder.m in Sources */,
