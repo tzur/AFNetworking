@@ -531,7 +531,6 @@
 		28F340641B1EECB000545B82 /* LTTextureJpegArchiver.h in Headers */ = {isa = PBXBuildFile; fileRef = 28F340621B1EECB000545B82 /* LTTextureJpegArchiver.h */; };
 		28F340651B1EECB000545B82 /* LTTextureJpegArchiver.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28F340631B1EECB000545B82 /* LTTextureJpegArchiver.mm */; };
 		28F340661B1EECBF00545B82 /* LTTextureBaseArchiver.h in Headers */ = {isa = PBXBuildFile; fileRef = 28C207A71AEF60E6007214A5 /* LTTextureBaseArchiver.h */; };
-		28F3CA7E1D004B20007FC2E9 /* LTLinear.fsh in Resources */ = {isa = PBXBuildFile; fileRef = 28F3CA7D1D004B20007FC2E9 /* LTLinear.fsh */; };
 		28F3CA9F1D004B2B007FC2E9 /* LTLinearProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 28F3CA9D1D004B2B007FC2E9 /* LTLinearProcessor.h */; };
 		28F3CAA01D004B2B007FC2E9 /* LTLinearProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28F3CA9E1D004B2B007FC2E9 /* LTLinearProcessor.mm */; };
 		28F3CAA21D004B59007FC2E9 /* LTLinearProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28F3CAA11D004B59007FC2E9 /* LTLinearProcessorSpec.mm */; };
@@ -6488,7 +6487,6 @@
 				03C7B6C718CF124900E728F5 /* NegativeContrastCurve.png in Resources */,
 				03C7B6C318CF124900E728F5 /* FillLightCurve.png in Resources */,
 				033DCD8819F2B57A004BF795 /* NegativeShadowsCurve.png in Resources */,
-				28F3CA7E1D004B20007FC2E9 /* LTLinear.fsh in Resources */,
 				03C7B6C618CF124900E728F5 /* NegativeBrightnessCurve.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
