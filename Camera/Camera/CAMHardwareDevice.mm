@@ -661,7 +661,7 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
 - (BOOL)setTorchLevel:(float)torchLevel error:(NSError * __autoreleasing *)error {
   AVCaptureDevice *device = self.session.videoDevice;
   BOOL success = [device cam_performWhileLocked:^BOOL(NSError **errorPtr) {
-    LTParameterAssert(torchLevel <= 1, @"Torch level factor above maximum");
+    LTParameterAssert(torchLevel <= 1, @"Torch level above maximum");
     LTParameterAssert(torchLevel >= 0, @"Torch level below minimum");
     if (torchLevel == 0) {
       return [self setDeviceTorchOff:device error:errorPtr];
@@ -672,7 +672,7 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
   return success;
 }
 
-- (BOOL)setDeviceTorchOff:(AVCaptureDevice *)device error:(NSError *__autoreleasing *)errorPtr {
+- (BOOL)setDeviceTorchOff:(AVCaptureDevice *)device error:(NSError * __autoreleasing *)errorPtr {
   if (![device isTorchModeSupported:AVCaptureTorchModeOff]) {
     *errorPtr = [NSError lt_errorWithCode:CAMErrorCodeTorchModeSettingUnsupported];
     return NO;
@@ -682,7 +682,7 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
 }
 
 - (BOOL)setDeviceTorchOn:(AVCaptureDevice *)device withLevel:(float)torchLevel
-                   error:(NSError *__autoreleasing *)errorPtr {
+                   error:(NSError * __autoreleasing *)errorPtr {
   if (![device isTorchModeSupported:AVCaptureTorchModeOn]) {
     *errorPtr = [NSError lt_errorWithCode:CAMErrorCodeTorchModeSettingUnsupported];
     return NO;
