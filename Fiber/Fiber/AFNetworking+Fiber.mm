@@ -72,18 +72,15 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (AFHTTPRequestSerializer *)fbr_serializerForRequest:(FBRHTTPRequest *)request
                                 withDefaultSerializer:(AFHTTPRequestSerializer *)defaultSerializer {
-  if (!request.headers && !request.parametersEncoding) {
-    return defaultSerializer;
-  }
-
   AFHTTPRequestSerializer *serializer;
   if (request.parameters && request.parametersEncoding) {
     serializer = [AFHTTPRequestSerializer
                   fbr_requestSerializerForParametersEncoding:request.parametersEncoding];
+  } else {
+    serializer = [defaultSerializer copy];
   }
 
   if (request.headers) {
-    serializer = serializer ?: [defaultSerializer copy];
     [serializer fbr_appendHeaders:request.headers];
   }
 

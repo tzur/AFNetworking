@@ -115,7 +115,7 @@ context(@"serializer for request", ^{
         [AFHTTPRequestSerializer fbr_serializerForRequest:request
                                     withDefaultSerializer:defaultSerializer];
 
-    expect(serializer).to.beIdenticalTo(defaultSerializer);
+    expect(serializer).to.beIdenticalTo(defaultSerializerCopy);
   });
 
   it(@"should add the request headers to the returned serializer", ^{
