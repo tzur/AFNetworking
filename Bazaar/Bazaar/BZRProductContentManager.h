@@ -4,6 +4,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @class LTPath;
+
 @protocol BZRFileArchiver;
 
 /// Manages the content of in-app store products. It provides methods to extract product's content

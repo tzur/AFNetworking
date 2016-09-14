@@ -3,8 +3,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class BZRAcquiredViaSubscriptionProvider, BZRKeychainStorage, BZRProduct, BZRProductContentManager,
-    BZRProductContentProvider, BZRReceiptValidationStatusProvider, BZRStoreKitFacadeFactory, LTPath;
+@class BZRAcquiredViaSubscriptionProvider, BZRProductContentManager, BZRProductContentProvider,
+    BZRReceiptValidationStatusProvider, BZRStoreKitFacadeFactory, LTPath;
 
 @protocol BZRProductsProvider;
 
