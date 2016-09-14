@@ -12,7 +12,6 @@ NS_ASSUME_NONNULL_BEGIN
 ///   - Fetching/deleting products' content.
 ///
 ///   - Getting the list of products that was last fetched.
-///
 @protocol BZRProductsManager <NSObject>
 
 /// Makes a purchase of the product specified by \c productIdentifier.

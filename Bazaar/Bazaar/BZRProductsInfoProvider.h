@@ -3,7 +3,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class BZRReceiptSubscriptionInfo;
+@class BZRReceiptSubscriptionInfo, LTPath;
 
 /// Interface for providing the list of purchased products, products with downloaded content, and
 /// subscription information. All properties are KVO-compliant.
