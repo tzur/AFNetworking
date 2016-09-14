@@ -44,23 +44,15 @@ NS_ASSUME_NONNULL_BEGIN
   self.enabledSignal = RACObserve(self, flashDevice.hasFlash);
   RAC(self, enabled) = [RACObserve(self, enabledSignal) switchToLatest];
   @weakify(self);
-  RAC(self, iconURL) = [RACSignal
-      combineLatest:@[
-        RACObserve(self, flashDevice.currentFlashMode),
-        RACObserve(self, enabled)
-      ]
-      reduce:(id)^NSURL *(NSNumber *flashMode, NSNumber *enabled){
-        @strongify(self);
-        return enabled.boolValue ? [self flashModeViewModelForFlashMode:flashMode].iconURL : nil;
+  RAC(self, iconURL) = [RACObserve(self, flashDevice.currentFlashMode)
+      map:^NSURL *(NSNumber *flashMode) {
+        @strongify(self)
+        return [self flashModeViewModelForFlashMode:flashMode].iconURL;
       }];
-  RAC(self, title) = [RACSignal
-      combineLatest:@[
-        RACObserve(self, flashDevice.currentFlashMode),
-        RACObserve(self, enabled)
-      ]
-      reduce:(id)^NSString *(NSNumber *flashMode, NSNumber *enabled){
-        @strongify(self);
-        return enabled.boolValue ? [self flashModeViewModelForFlashMode:flashMode].title : nil;
+  RAC(self, title) =  [RACObserve(self, flashDevice.currentFlashMode)
+      map:^NSString *(NSNumber *flashMode) {
+        @strongify(self)
+        return [self flashModeViewModelForFlashMode:flashMode].title;
       }];
 }
 

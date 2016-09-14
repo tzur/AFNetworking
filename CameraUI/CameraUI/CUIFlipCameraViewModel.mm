@@ -31,17 +31,13 @@ NS_ASSUME_NONNULL_BEGIN
   LTParameterAssert(flipDevice, @"Given flipDevice is nil");
   if (self = [super init]) {
     _flipDevice = flipDevice;
+    _title = title;
+    _iconURL = iconURL;
     _selected = NO;
     _hidden = NO;
     _subitems = nil;
     self.enabledSignal = RACObserve(self, flipDevice.canChangeCamera);
     RAC(self, enabled) = [RACObserve(self, enabledSignal) switchToLatest];
-    RAC(self, title) = [RACObserve(self, enabled) map:^NSString *(NSNumber *enabled) {
-      return enabled.boolValue ? title : nil;
-    }];
-    RAC(self, iconURL) = [RACObserve(self, enabled) map:^NSURL *(NSNumber *enabled) {
-      return enabled.boolValue ? iconURL : nil;
-    }];
   }
   return self;
 }

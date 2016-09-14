@@ -16,8 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// instance.
 ///
 /// \c title and \c iconURL are taken from the \c CUIFlashModeViewModel that matches the
-/// \c currentFlashMode of the \c CAMFlashDevice instance, unless \c enabled is \c NO, and in such
-/// case they are nil.
+/// \c currentFlashMode of the \c CAMFlashDevice instance.
 ///
 /// By default, \c enabledSignal sends \c YES if the toggling between the flash modes is supported
 /// by the device.
