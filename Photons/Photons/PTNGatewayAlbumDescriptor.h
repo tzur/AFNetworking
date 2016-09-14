@@ -7,7 +7,8 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /// Album descriptor for a gateway album. The gateway album is used to describe virtual album with a
-/// custom localized title and image, referencing another album when fetched.
+/// custom localized title and image, referencing another album when fetched. As a
+/// \c PTNAlbumDescriptor the receiver supports no capabilites and has no traits.
 @interface PTNGatewayAlbumDescriptor : NSObject <PTNAlbumDescriptor>
 
 - (instancetype)init NS_UNAVAILABLE;

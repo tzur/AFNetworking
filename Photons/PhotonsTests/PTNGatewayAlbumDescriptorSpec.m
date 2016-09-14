@@ -24,6 +24,7 @@ it(@"should initialize a gateway album descriptor with a signal", ^{
   expect(descriptor.assetCount).to.equal(PTNNotFound);
   expect(descriptor.descriptorCapabilities).to.equal(PTNDescriptorCapabilityNone);
   expect(descriptor.albumDescriptorCapabilities).to.equal(PTNAlbumDescriptorCapabilityNone);
+  expect(descriptor.descriptorTraits).to.equal([NSSet set]);
 });
 
 it(@"should initialize a gateway album descriptor with a static image", ^{
@@ -43,6 +44,7 @@ it(@"should initialize a gateway album descriptor with a static image", ^{
   expect(descriptor.assetCount).to.equal(PTNNotFound);
   expect(descriptor.descriptorCapabilities).to.equal(PTNDescriptorCapabilityNone);
   expect(descriptor.albumDescriptorCapabilities).to.equal(PTNAlbumDescriptorCapabilityNone);
+  expect(descriptor.descriptorTraits).to.equal([NSSet set]);
 });
 
 SpecEnd

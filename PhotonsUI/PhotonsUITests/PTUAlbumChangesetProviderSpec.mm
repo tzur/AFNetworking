@@ -29,7 +29,7 @@ beforeEach(^{
   url = [NSURL URLWithString:@"http://www.foo.com"];
   provider = [[PTUAlbumChangesetProvider alloc] initWithManager:assetManager albumURL:url];
   album = PTNCreateAlbum(nil, @[@"bar"], @[@"foo", @"bar"]);
-  descriptor = PTNCreateDescriptor(nil, @"foo", 0);
+  descriptor = PTNCreateDescriptor(@"foo");
 });
 
 context(@"data fetching", ^{
@@ -173,7 +173,7 @@ context(@"metadata fetching", ^{
 
   it(@"should update metadata as underlying asset changes", ^{
     OCMStub([assetManager fetchDescriptorWithURL:url]).andReturn([[RACSignal return:descriptor]
-        concat:[RACSignal return:PTNCreateDescriptor(nil, @"bar", 0)]]);
+        concat:[RACSignal return:PTNCreateDescriptor(@"bar")]]);
 
     LLSignalTestRecorder *values = [[provider fetchChangesetMetadata] testRecorder];
 

@@ -49,6 +49,10 @@ NS_ASSUME_NONNULL_BEGIN
   return PTNAlbumDescriptorCapabilityNone;
 }
 
+- (NSSet<NSString *> *)descriptorTraits {
+  return [NSSet set];
+}
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -22,6 +22,7 @@ it(@"should initialize with path", ^{
   expect(identifier.ptn_fileSystemAlbumPath).to.equal(path);
   expect(descriptor.descriptorCapabilities).to.equal(PTNDescriptorCapabilityNone);
   expect(descriptor.albumDescriptorCapabilities).to.equal(PTNAlbumDescriptorCapabilityNone);
+  expect(descriptor.descriptorTraits).to.equal([NSSet set]);
 });
 
 it(@"should use last path component for localized title", ^{

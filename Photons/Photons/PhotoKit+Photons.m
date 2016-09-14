@@ -26,6 +26,11 @@ NS_ASSUME_NONNULL_BEGIN
   return PTNAssetDescriptorCapabilityFavorite;
 }
 
+- (NSSet<NSString *> *)descriptorTraits {
+  return self.sourceType == PHAssetSourceTypeCloudShared ?
+      [NSSet setWithObject:kPTNDescriptorTraitCloudBasedKey] : [NSSet set];
+}
+
 @end
 
 @implementation PHCollection (Photons)
@@ -51,6 +56,10 @@ NS_ASSUME_NONNULL_BEGIN
 - (PTNAlbumDescriptorCapabilities)albumDescriptorCapabilities {
   return [self canPerformEditOperation:PHCollectionEditOperationRemoveContent] ?
       PTNAlbumDescriptorCapabilityRemoveContent : PTNAlbumDescriptorCapabilityNone;
+}
+
+- (NSSet<NSString *> *)descriptorTraits {
+  return [NSSet set];
 }
 
 @end

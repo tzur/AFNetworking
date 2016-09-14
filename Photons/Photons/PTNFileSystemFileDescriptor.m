@@ -54,6 +54,10 @@ NS_ASSUME_NONNULL_BEGIN
   return PTNAssetDescriptorCapabilityNone;
 }
 
+- (NSSet<NSString *> *)descriptorTraits {
+  return [NSSet set];
+}
+
 #pragma mark -
 #pragma mark NSObject
 #pragma mark -

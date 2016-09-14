@@ -18,7 +18,7 @@ beforeEach(^{
   assetManager = OCMProtocolMock(@protocol(PTNAssetManager));
   options = [PTNImageFetchOptions optionsWithDeliveryMode:PTNImageDeliveryModeHighQuality
                                                resizeMode:PTNImageResizeModeExact];
-  descriptor = PTNCreateDescriptor([NSURL URLWithString:@"http://www.foo.com"], @"foo", 0);
+  descriptor = PTNCreateDescriptor([NSURL URLWithString:@"http://www.foo.com"], @"foo", 0, nil);
 });
 
 it(@"should return correct view model when created with options", ^{

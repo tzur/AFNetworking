@@ -33,6 +33,20 @@ context(@"asset descriptor", ^{
 
     expect(asset.descriptorCapabilities & PTNAssetDescriptorCapabilityFavorite).to.beTruthy();
   });
+
+  it(@"should reveal cloud based traits when the underlying asset is cloud based", ^{
+    PHAsset *cloudAsset = OCMPartialMock([[PHAsset alloc] init]);
+    OCMStub(cloudAsset.sourceType).andReturn(PHAssetSourceTypeCloudShared);
+    expect(cloudAsset.descriptorTraits).to.contain(kPTNDescriptorTraitCloudBasedKey);
+
+    PHAsset *iTunesAsset = OCMPartialMock([[PHAsset alloc] init]);
+    OCMStub(iTunesAsset.sourceType).andReturn(PHAssetSourceTypeiTunesSynced);
+    expect(iTunesAsset.descriptorTraits).to.equal([NSSet set]);
+
+    PHAsset *asset = OCMPartialMock([[PHAsset alloc] init]);
+    OCMStub(asset.sourceType).andReturn(PHAssetSourceTypeUserLibrary);
+    expect(asset.descriptorTraits).to.equal([NSSet set]);
+  });
 });
 
 context(@"album descriptor", ^{
@@ -96,6 +110,11 @@ context(@"album descriptor", ^{
 
     expect(album.albumDescriptorCapabilities & PTNAlbumDescriptorCapabilityRemoveContent)
         .to.beFalsy();
+  });
+
+  it(@"should reveal no traits", ^{
+    PHCollection *album = OCMPartialMock([[PHCollection alloc] init]);
+    expect(album.descriptorTraits).to.equal([NSSet set]);
   });
 });
 

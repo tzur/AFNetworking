@@ -78,7 +78,7 @@ beforeEach(^{
   viewController =
       [[PTUCollectionViewController alloc] initWithDataSourceProvider:dataSourceProvider
                                                  initialConfiguration:configuration];
-  asset = PTNCreateAssetDescriptor(nil, @"foo", 0, nil, nil, 0);
+  asset = PTNCreateAssetDescriptor(@"foo");
 });
 
 context(@"initialization", ^{
@@ -370,8 +370,8 @@ context(@"collection view", ^{
       __block NSIndexPath *otherIndexPath;
       
       beforeEach(^{
-        otherAsset = PTNCreateAssetDescriptor(nil, @"bar", 0, nil, nil, 0);
-        anotherAsset = PTNCreateAssetDescriptor(nil, @"baz", 0, nil, nil, 0);
+        otherAsset = PTNCreateAssetDescriptor(@"bar");
+        anotherAsset = PTNCreateAssetDescriptor(@"baz");
         indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
         otherIndexPath = [NSIndexPath indexPathForItem:1 inSection:0];
         dataSource.data = @[@[asset]];
@@ -458,7 +458,7 @@ context(@"collection view", ^{
     });
 
     it(@"should send values correctly when selecting items", ^{
-      id<PTNDescriptor> otherAsset = PTNCreateAssetDescriptor(nil, @"foo", 0, nil, nil, 0);
+      id<PTNDescriptor> otherAsset = PTNCreateAssetDescriptor(@"foo");
       dataSource.data = @[@[asset, otherAsset]];
       [collectionView reloadData];
       [collectionView layoutIfNeeded];
@@ -473,7 +473,7 @@ context(@"collection view", ^{
     });
 
     it(@"should send values correctly when deselecting items", ^{
-      id<PTNDescriptor> otherAsset = PTNCreateAssetDescriptor(nil, @"foo", 0, nil, nil, 0);
+      id<PTNDescriptor> otherAsset = PTNCreateAssetDescriptor(@"foo");
       dataSource.data = @[@[asset, otherAsset]];
       [collectionView reloadData];
       [collectionView layoutIfNeeded];
@@ -512,7 +512,7 @@ context(@"collection view", ^{
     __block id<PTNDescriptor> otherAsset;
     
     beforeEach(^{
-      otherAsset = PTNCreateAssetDescriptor(nil, @"bar", 0, nil, nil, 0);
+      otherAsset = PTNCreateAssetDescriptor(@"bar");
       dataSource.data = @[@[
         otherAsset,
         otherAsset,
@@ -615,8 +615,8 @@ context(@"collection view", ^{
       beforeEach(^{
         viewController.view.frame = CGRectMake(0, 0, 100, 300);
         [viewController.view layoutIfNeeded];
-        bazAsset = PTNCreateDescriptor(nil, @"baz", 0);
-        gazAsset = PTNCreateDescriptor(nil, @"gaz", 0);
+        bazAsset = PTNCreateDescriptor(@"baz");
+        gazAsset = PTNCreateDescriptor(@"gaz");
       });
       
       it(@"should defer scrolling when item isn't in the collection", ^{
@@ -920,12 +920,12 @@ context(@"error view", ^{
       OCMVerify([errorViewProvider errorViewForError:dataSource.error associatedURL:url]);
 
       NSURL *descriptorURL = [NSURL URLWithString:@"http://www.foo.bar/baz"];
-      id<PTNDescriptor> descriptor = PTNCreateDescriptor(descriptorURL, @"baz", 0);
+      id<PTNDescriptor> descriptor = PTNCreateDescriptor(descriptorURL, @"baz", 0, nil);
       dataSource.error = [NSError ptn_errorWithCode:1337 associatedDescriptor:descriptor];
       OCMVerify([errorViewProvider errorViewForError:dataSource.error associatedURL:descriptorURL]);
 
       NSURL *descriptorsURL = [NSURL URLWithString:@"http://www.foo.bar/baz/gaz"];
-      id<PTNDescriptor> otherDescriptor = PTNCreateDescriptor(descriptorsURL, @"gaz", 0);
+      id<PTNDescriptor> otherDescriptor = PTNCreateDescriptor(descriptorsURL, @"gaz", 0, nil);
       dataSource.error = [NSError ptn_errorWithCode:1337 associatedDescriptors:@[otherDescriptor]];
       OCMVerify([errorViewProvider errorViewForError:dataSource.error
                                        associatedURL:descriptorsURL]);

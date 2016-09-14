@@ -34,7 +34,7 @@ context(@"PTNDescriptor", ^{
   __block id<PTUImageCellViewModel> viewModel;
 
   beforeEach(^{
-    descriptor = PTNCreateDescriptor(url, @"foo", 0);
+    descriptor = PTNCreateDescriptor(url, @"foo", 0, nil);
     viewModel = [[PTUImageCellViewModel alloc] initWithAssetManager:assetManager
                                                          descriptor:descriptor
                                                   imageFetchOptions:options];
@@ -82,7 +82,7 @@ context(@"PTNDescriptor", ^{
 
 context(@"PTNAlbumDescriptor", ^{
   it(@"should populate subtitle with asset count if available", ^{
-    id<PTNAlbumDescriptor> albumDescriptor = PTNCreateAlbumDescriptor(url, @"bar", 0, 7, 0);
+    id<PTNAlbumDescriptor> albumDescriptor = PTNCreateAlbumDescriptor(url, @"bar", 0, nil, 7, 0);
     id<PTUImageCellViewModel> viewModel =
         [[PTUImageCellViewModel alloc] initWithAssetManager:assetManager descriptor:albumDescriptor
                                           imageFetchOptions:options];
@@ -92,7 +92,7 @@ context(@"PTNAlbumDescriptor", ^{
 
   it(@"should populate subtitle with using album if asset count is unavailable", ^{
     id<PTNAlbumDescriptor> albumDescriptor =
-        PTNCreateAlbumDescriptor(url, @"bar", 0, PTNNotFound, 0);
+        PTNCreateAlbumDescriptor(url, @"bar", 0, nil, PTNNotFound, 0);
     id<PTUImageCellViewModel> viewModel =
         [[PTUImageCellViewModel alloc] initWithAssetManager:assetManager descriptor:albumDescriptor
                                           imageFetchOptions:options];
@@ -107,7 +107,7 @@ context(@"PTNAlbumDescriptor", ^{
 
   it(@"should deliver updates descriptor's album", ^{
     id<PTNAlbumDescriptor> albumDescriptor =
-        PTNCreateAlbumDescriptor(url, @"bar", 0, PTNNotFound, 0);
+        PTNCreateAlbumDescriptor(url, @"bar", 0, nil, PTNNotFound, 0);
     id<PTUImageCellViewModel> viewModel =
         [[PTUImageCellViewModel alloc] initWithAssetManager:assetManager descriptor:albumDescriptor
                                           imageFetchOptions:options];

@@ -7,7 +7,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/// Represents a File System directory.
+/// Represents a File System directory. As a \c PTNAlbumDescriptor the recevier supports no
+/// capabilities and has no traits.
 @interface PTNFileSystemDirectoryDescriptor : NSObject <PTNAlbumDescriptor>
 
 - (instancetype)init NS_UNAVAILABLE;

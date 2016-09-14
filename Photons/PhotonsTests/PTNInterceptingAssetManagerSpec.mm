@@ -84,11 +84,11 @@ context(@"album fetching", ^{
     subalbumDescriptorURL = [NSURL URLWithString:@"http://www.foo.com/bar"];
     otherDescriptorURL = [NSURL URLWithString:@"http://www.foo.com/other"];
 
-    assetDescriptor = PTNCreateDescriptor(assetDescriptorURL, @"foo", 0);
-    subalbumDescriptor = PTNCreateDescriptor(subalbumDescriptorURL, @"bar", 0);
+    assetDescriptor = PTNCreateDescriptor(assetDescriptorURL, @"foo", 0, nil);
+    subalbumDescriptor = PTNCreateDescriptor(subalbumDescriptorURL, @"bar", 0, nil);
 
-    interceptingDescriptor = PTNCreateDescriptor(nil, @"baz", 0);
-    otherDescriptor = PTNCreateDescriptor(otherDescriptorURL, @"gaz", 0);
+    interceptingDescriptor = PTNCreateDescriptor(nil, @"baz", 0, nil);
+    otherDescriptor = PTNCreateDescriptor(otherDescriptorURL, @"gaz", 0, nil);
 
     album = [[PTNAlbum alloc] initWithURL:albumURL
                                 subalbums:@[subalbumDescriptor, otherDescriptor]
@@ -461,7 +461,7 @@ context(@"album fetching", ^{
       [underlyingAssetManager serveDescriptorURL:assetDescriptorURL withDescriptor:assetDescriptor];
 
       NSURL *irrelevantURL = [NSURL URLWithString:@"http://www.foo.com/baz"];
-      id<PTNDescriptor> irrelevantDescriptor = PTNCreateDescriptor(irrelevantURL, nil, 0);
+      id<PTNDescriptor> irrelevantDescriptor = PTNCreateDescriptor(irrelevantURL, nil, 0, nil);
       [interceptionMap sendNext:@{assetDescriptorURL: interceptingDescriptor,
                                   irrelevantURL: irrelevantDescriptor}];
       [underlyingAssetManager serveDescriptorURL:irrelevantURL withDescriptor:irrelevantDescriptor];
@@ -501,7 +501,7 @@ context(@"album fetching", ^{
       [interceptionMap sendNext:@{assetDescriptorURL: interceptingDescriptor}];
       [underlyingAssetManager serveDescriptorURL:assetDescriptorURL withDescriptor:assetDescriptor];
 
-      id<PTNDescriptor> updatedDescriptor = PTNCreateDescriptor(assetDescriptorURL, nil, 0);
+      id<PTNDescriptor> updatedDescriptor = PTNCreateDescriptor(assetDescriptorURL, nil, 0, nil);
       PTNAlbum *newAlbum = [[PTNAlbum alloc] initWithURL:albumURL
                                                subalbums:@[subalbumDescriptor, otherDescriptor]
                                                   assets:@[updatedDescriptor, otherDescriptor]];
@@ -632,8 +632,8 @@ context(@"asset fetching", ^{
 
   beforeEach(^{
     url = [NSURL URLWithString:@"http://www.foo.com"];
-    interceptingDescriptor = PTNCreateDescriptor(nil, nil, 0);
-    descriptor = PTNCreateDescriptor(url, @"bar", 0);
+    interceptingDescriptor = PTNCreateDescriptor(nil, nil, 0, nil);
+    descriptor = PTNCreateDescriptor(url, @"bar", 0, nil);
   });
 
   it(@"should return regular desciptor when it isn't intercepted", ^{
@@ -669,7 +669,7 @@ context(@"asset fetching", ^{
     LLSignalTestRecorder *values =
         [[interceptingAssetManager fetchDescriptorWithURL:url] testRecorder];
 
-    id<PTNDescriptor> otherDescriptor = PTNCreateDescriptor(url, nil, 0);
+    id<PTNDescriptor> otherDescriptor = PTNCreateDescriptor(url, nil, 0, nil);
     NSURL *otherURL = [NSURL URLWithString:@"http://www.foo.com/bar"];
 
     [underlyingAssetManager serveDescriptorURL:url withDescriptor:descriptor];

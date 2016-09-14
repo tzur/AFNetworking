@@ -7,7 +7,10 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/// Represents a Dropbox file. This is a simple wrapper on top of \c DBMetadata.
+/// Represents a Dropbox file. This is a simple wrapper on top of \c DBMetadata. As a
+/// \c PTNAssetDescriptor the receiver has no asset descriptor or descriptor capabilities and
+/// contains the \c kPTNDescriptorTraitCloudBasedKey trait. The creation date is not available and
+/// the last modification date is set according to the underlying \c DBMetadata.
 @interface PTNDropboxFileDescriptor : NSObject <PTNAssetDescriptor>
 
 - (instancetype)init NS_UNAVAILABLE;
