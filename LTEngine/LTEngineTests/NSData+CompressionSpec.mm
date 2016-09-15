@@ -58,7 +58,10 @@ sharedExamplesFor(kLTCompressionExamples, ^(NSDictionary *data) {
   });
 
   it(@"should error when decompressing invalid data", ^{
-    NSMutableData *input = [NSMutableData dataWithLength:33];
+    std::vector<int> data(33);
+    std::iota(data.begin(), data.end(), 1);
+
+    NSData *input = [NSData dataWithBytes:data.data() length:data.size() * sizeof(int)];
 
     NSError *error;
     NSMutableData * _Nullable decompressed =

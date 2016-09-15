@@ -77,8 +77,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-static NSDictionary *PTNGetMetadata(CGImageSourceRef sourceRef, NSURL * _Nullable url,
-                                    NSError *__autoreleasing *error);
+static NSDictionary * _Nullable PTNGetMetadata(CGImageSourceRef sourceRef, NSURL * _Nullable url,
+                                               NSError *__autoreleasing *error);
 
 static void PTNSetError(NSError *__autoreleasing *error, NSInteger errorCode, NSURL * _Nullable url,
                         NSString * _Nullable description);
@@ -91,7 +91,8 @@ static NSDictionary *PTNGetMetadataFromURL(NSURL *url, NSError *__autoreleasing 
   return PTNGetMetadata(sourceRef, url, error);
 }
 
-static NSDictionary *PTNGetMetadataFromData(NSData *data, NSError *__autoreleasing *error) {
+static NSDictionary * _Nullable PTNGetMetadataFromData(NSData *data,
+                                                       NSError *__autoreleasing *error) {
   __block CGImageSourceRef sourceRef = CGImageSourceCreateWithData((__bridge CFDataRef)data, NULL);
   @onExit {
     LTCFSafeRelease(sourceRef);
@@ -99,8 +100,8 @@ static NSDictionary *PTNGetMetadataFromData(NSData *data, NSError *__autoreleasi
   return PTNGetMetadata(sourceRef, nil, error);
 }
 
-static NSDictionary *PTNGetMetadata(CGImageSourceRef sourceRef, NSURL * _Nullable url,
-                                    NSError *__autoreleasing *error) {
+static NSDictionary * _Nullable PTNGetMetadata(CGImageSourceRef sourceRef, NSURL * _Nullable url,
+                                               NSError *__autoreleasing *error) {
   if (!sourceRef) {
     PTNSetError(error, PTNErrorCodeDescriptorCreationFailed, url, @"Failed creating CGImageSource");
     return nil;

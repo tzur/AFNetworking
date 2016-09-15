@@ -13,16 +13,17 @@ NS_ASSUME_NONNULL_BEGIN
 id<PTNAlbum> PTNCreateAlbum(NSURL * _Nullable url, id<LTRandomAccessCollection> _Nullable assets,
                             id<LTRandomAccessCollection> _Nullable subalbums);
 
-/// Creates and returns a \c PTNDescriptor with \c identifier, \c localizedTitle, \c capabilities
-/// and \c traits or \c nil to support no traits.
+/// Creates and returns a \c PTNDescriptor with \c identifier or \c nil for a default identifier
+/// of \c fake://descriptor, \c localizedTitle, \c capabilities and \c traits or \c nil to support
+/// no traits.
 id<PTNDescriptor> PTNCreateDescriptor(NSURL * _Nullable identifier,
                                       NSString * _Nullable localizedTitle,
                                       PTNDescriptorCapabilities capabilities,
                                       NSSet<NSString *> * _Nullable traits);
 
-/// Creates and returns a \c PTNAssetDescriptor with \c identifier, \c localizedTitle,
-/// \c capabilities, \c traits or \c nil to support no traits, \c creationDate, \c modificationDate
-/// and \c assetCapabilities.
+/// Creates and returns a \c PTNAssetDescriptor with \c identifier or \c nil for a default
+/// identifier of \c fake://descriptor.asset, \c localizedTitle, \c capabilities, \c traits or
+/// \c nil to support no traits, \c creationDate, \c modificationDate and \c assetCapabilities.
 id<PTNAssetDescriptor> PTNCreateAssetDescriptor(NSURL * _Nullable identifier,
                                                 NSString * _Nullable localizedTitle,
                                                 PTNDescriptorCapabilities capabilities,
@@ -31,9 +32,9 @@ id<PTNAssetDescriptor> PTNCreateAssetDescriptor(NSURL * _Nullable identifier,
                                                 NSDate * _Nullable modificationDate,
                                                 PTNAssetDescriptorCapabilities assetCapabilities);
 
-/// Creates and returns a \c PTNAlbumDescriptor with \c identifier, \c localizedTitle,
-/// \c capabilities, \c traits or \c nil to support no traits, \c assetCount and
-/// \c albumCapabilities.
+/// Creates and returns a \c PTNAlbumDescriptor with \c identifier or \c nil for a default
+/// identifier of \c fake://descriptor.album, \c localizedTitle, \c capabilities, \c traits or
+/// \c nil to support no traits, \c assetCount and \c albumCapabilities.
 id<PTNAlbumDescriptor> PTNCreateAlbumDescriptor(NSURL * _Nullable identifier,
                                                 NSString * _Nullable localizedTitle,
                                                 PTNDescriptorCapabilities capabilities,

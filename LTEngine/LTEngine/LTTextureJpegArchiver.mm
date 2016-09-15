@@ -33,7 +33,7 @@ NS_ASSUME_NONNULL_BEGIN
   LTParameterAssert(path);
   [self verifyTexture:texture];
 
-  UIImage *image = [self unarchiveImageFromPath:path error:error];
+  UIImage * _Nullable image = [self unarchiveImageFromPath:path error:error];
   if (!image) {
     return NO;
   }
@@ -59,10 +59,11 @@ NS_ASSUME_NONNULL_BEGIN
   return YES;
 }
 
-- (UIImage *)unarchiveImageFromPath:(NSString *)path error:(NSError *__autoreleasing *)error {
+- (nullable UIImage *)unarchiveImageFromPath:(NSString *)path
+                                       error:(NSError *__autoreleasing *)error {
   LTParameterAssert(path);
   LTImageLoader *imageLoader = [JSObjection defaultInjector][[LTImageLoader class]];
-  UIImage *image = [imageLoader imageWithContentsOfFile:path];
+  UIImage * _Nullable image = [imageLoader imageWithContentsOfFile:path];
   if (!image && error) {
     *error = [NSError lt_errorWithCode:LTErrorCodeFileReadFailed path:path];
   }

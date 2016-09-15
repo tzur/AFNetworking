@@ -334,6 +334,13 @@
 			remoteGlobalIDString = 84FF72E81C8EED6D00D1DA9F;
 			remoteInfo = PhotonsUI;
 		};
+		8B54EAFB1D89938A00104102 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 65BAF1491D47F9E1009BBB6F /* PhotonsUI.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8872656E1D772D7B00D4F2A6;
+			remoteInfo = PhotonsUIBundle;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -454,6 +461,7 @@
 			children = (
 				65BAF14F1D47F9E2009BBB6F /* libPhotonsUI.a */,
 				65BAF1511D47F9E2009BBB6F /* PhotonsUITests.xctest */,
+				8B54EAFC1D89938A00104102 /* PhotonsUIBundle.bundle */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -481,7 +489,7 @@
 		652397381D47F69F00222BCB /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0730;
+				LastUpgradeCheck = 0800;
 				ORGANIZATIONNAME = Lightricks;
 				TargetAttributes = {
 					65BAF4211D48B1A7009BBB6F = {
@@ -707,6 +715,13 @@
 			remoteRef = 65BAF2C51D4801B1009BBB6F /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		8B54EAFC1D89938A00104102 /* PhotonsUIBundle.bundle */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = PhotonsUIBundle.bundle;
+			remoteRef = 8B54EAFB1D89938A00104102 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXTargetDependency section */
@@ -827,8 +842,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -871,8 +888,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";

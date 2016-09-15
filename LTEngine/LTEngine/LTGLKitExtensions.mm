@@ -58,7 +58,12 @@ GLKVector4 GLKRGBA2HSVA(const GLKVector4 &rgba) {
     h = 4 + (rgba.r - rgba.g) / delta;
   }
   h /= 6;
+
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_10_0
+  return GLKVector4Make(std::fmod(h > 0 ? h : h + 1, 1), s, v, rgba.a);
+#else
   return GLKVector4Make(h > 0 ? h : h + 1, s, v, rgba.a);
+#endif
 }
 
 GLKVector3 GLKRGB2YIQ(const GLKVector3 &rgb) {

@@ -29,7 +29,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (RACSignal *)fbr_deserializeJSONResponse {
-  return [self tryMap:^id _Nullable (FBRHTTPResponse *response, NSError **error) {
+  return [self tryMap:^id _Nullable(FBRHTTPResponse *response, NSError **error) {
     NSData *data = response.content;
     if (!data) {
       if (error) {

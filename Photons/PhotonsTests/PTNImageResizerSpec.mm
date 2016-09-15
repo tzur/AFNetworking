@@ -358,7 +358,7 @@ context(@"Data Resizing", ^{
 
     it(@"should err when invalid data is given", ^{
       static CGSize kTargetSize = CGSizeMake(6, 6);
-      imageData = nil;
+      imageData = [NSData data];
       
       RACSignal *signal = [resizer resizeImageFromData:imageData toSize:kTargetSize
                                            contentMode:PTNImageContentModeAspectFill];

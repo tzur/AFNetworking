@@ -3,6 +3,8 @@
 
 #import "WFTestUtils.h"
 
+#import <LTKit/LTCGExtensions.h>
+
 NS_ASSUME_NONNULL_BEGIN
 
 UIImage *WFCreateBlankImage(CGFloat width, CGFloat height) {
@@ -35,7 +37,7 @@ UIColor *WFGetPixelColor(UIImage *image, CGFloat x, CGFloat y) {
   [image drawInRect:CGRectMake(-(x * image.scale), -(y * image.scale), imageWidth, imageHeight)
           blendMode:kCGBlendModeCopy alpha:1];
 
-  uint8_t *data = CGBitmapContextGetData(ctx);
+  uint8_t *data = (uint8_t *)CGBitmapContextGetData(ctx);
   UIColor *color = [UIColor colorWithRed:data[2] / 255.0f
                                    green:data[1] / 255.0f
                                     blue:data[0] / 255.0f

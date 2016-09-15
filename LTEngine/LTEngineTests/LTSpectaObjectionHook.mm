@@ -63,9 +63,9 @@ void LTBindBlockToClass(JSObjectionBindBlock block, Class objectClass) {
 
 @implementation LTSpectaObjectionHook
 
-static LTObjectionModule *_module;
-static JSObjectionInjector *_injector;
-static JSObjectionInjector *_lastUsedInjector;
+static LTObjectionModule * _Nullable _module;
+static JSObjectionInjector * _Nullable _injector;
+static JSObjectionInjector * _Nullable _lastUsedInjector;
 
 + (void)beforeEach {
   _module = [[_LTTestModule alloc] init];

@@ -87,7 +87,11 @@ NS_ASSUME_NONNULL_BEGIN
   [self updateDisplayLink];
 }
 
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_10_0
+- (void)touchesCancelled:(NSSet<UITouch *> *)touches withEvent:(nullable UIEvent *)event {
+#else
 - (void)touchesCancelled:(nullable NSSet<UITouch *> *)touches withEvent:(nullable UIEvent *)event {
+#endif
   [super touchesCancelled:touches withEvent:event];
   [self delegateTouches:touches event:event sequenceState:LTTouchEventSequenceStateCancellation];
   [self updateDisplayLink];

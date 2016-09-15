@@ -28,6 +28,7 @@ void LTMyTypeRelease(const LTMyType *myType) {
   if (releaseBlock) {
     releaseBlock(myType);
   }
+  delete myType;
 }
 
 LTRefReleaserMake(LTMyType *, LTMyTypeRelease);
@@ -210,18 +211,18 @@ context(@"releasing a ref", ^{
 });
 
 context(@"releaser for core foundation objects", ^{
-  it(@"should release CGColorSpace", ^{
-    CGColorSpaceRef colorSpaceRef;
+  it(@"should release CGMutablePathRef", ^{
+    CGMutablePathRef mutablePathRef;
     CFIndex retainCount;
 
     {
-      lt::Ref<CGColorSpaceRef> colorSpace(CGColorSpaceCreateDeviceRGB());
-      colorSpaceRef = (CGColorSpaceRef)CFRetain(colorSpace.get());
-      retainCount = CFGetRetainCount(colorSpaceRef);
+      lt::Ref<CGMutablePathRef> mutablePath(CGPathCreateMutable());
+      mutablePathRef = (CGMutablePathRef)CFRetain(mutablePath.get());
+      retainCount = CFGetRetainCount(mutablePathRef);
     }
 
-    expect(CFGetRetainCount(colorSpaceRef)).to.equal(retainCount - 1);
-    CGColorSpaceRelease(colorSpaceRef);
+    expect(CFGetRetainCount(mutablePathRef)).to.equal(retainCount - 1);
+    CFRelease(mutablePathRef);
   });
 });
 

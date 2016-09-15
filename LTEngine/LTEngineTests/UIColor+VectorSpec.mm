@@ -38,7 +38,11 @@ context(@"from UIColor", ^{
     expect([UIColor clearColor].lt_ltVectorHSVA).to.equal(kClear);
     expect([UIColor blackColor].lt_ltVectorHSVA).to.equal(kBlack);
     expect([UIColor whiteColor].lt_ltVectorHSVA).to.equal(LTVector4(0, 0, 1, 1));
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_10_0
+    expect([UIColor redColor].lt_ltVectorHSVA).to.equal(LTVector4(0, 1, 1, 1));
+#else
     expect([UIColor redColor].lt_ltVectorHSVA).to.equal(LTVector4(1, 1, 1, 1));
+#endif
     expect(([UIColor greenColor].lt_ltVectorHSVA - LTVector4(1.0 / 3, 1, 1, 1))
               .length()).to.beCloseTo(0);
     expect(([UIColor blueColor].lt_ltVectorHSVA - LTVector4(2.0 / 3, 1, 1, 1))

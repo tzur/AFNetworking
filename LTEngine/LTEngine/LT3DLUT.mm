@@ -74,6 +74,10 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 + (cv::Mat)identityLatticeWithDimensionSizes:(LT3DLUTLatticeSize)latticeSize {
+  LTParameterAssert(latticeSize.rDimensionSize >= 2 && latticeSize.gDimensionSize >= 2 &&
+                    latticeSize.bDimensionSize >= 2, @"At least one of the lattice dimensions is "
+                    "smaller than 2, got: (%d, %d, %d)", latticeSize.rDimensionSize,
+                    latticeSize.gDimensionSize, latticeSize.bDimensionSize);
   int latticeDims[] = {latticeSize.bDimensionSize, latticeSize.gDimensionSize,
       latticeSize.rDimensionSize};
   cv::Mat4b lattice(3, latticeDims);

@@ -32,11 +32,11 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)storeInfo:(NSDictionary *)info forURL:(NSURL *)url {
-  [self storeData:nil withInfo:info forURL:url
+  [self storeData:[NSData data] withInfo:info forURL:url
       withStoragePolicy:NSURLCacheStorageAllowedInMemoryOnly];
 }
 
-- (void)storeData:(nullable NSData *)data withInfo:(nullable NSDictionary *)info
+- (void)storeData:(NSData *)data withInfo:(nullable NSDictionary *)info
            forURL:(NSURL *)url withStoragePolicy:(NSURLCacheStoragePolicy)storagePolicy {
   NSCachedURLResponse *cachedResponse = [self responseFromData:data withUserInfo:info url:url
                                                  storagePolicy:storagePolicy];
