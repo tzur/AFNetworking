@@ -32,8 +32,10 @@ NS_ASSUME_NONNULL_BEGIN
   return [self tryMap:^id _Nullable (FBRHTTPResponse *response, NSError **error) {
     NSData *data = response.content;
     if (!data) {
-      *error = [NSError lt_errorWithCode:FBRErrorCodeJSONDeserializationFailed
-                             description:@"Can not deserialize JSON object from nil value"];
+      if (error) {
+        *error = [NSError lt_errorWithCode:FBRErrorCodeJSONDeserializationFailed
+                               description:@"Can not deserialize JSON object from nil value"];
+      }
       return nil;
     }
     
