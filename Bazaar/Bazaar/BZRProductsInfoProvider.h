@@ -25,7 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 /// @note The user isn't necessarily allowed to use the products returned by this method, for
 /// example if he acquired a product via a subscription that expired. One should check
-/// \c productsAllowedToBeUsed to get the list of products that the user is allowed to use.
+/// \c allowedProducts to get the list of products that the user is allowed to use.
 @property (readonly, nonatomic) NSSet<NSString *> *acquiredProducts;
 
 /// List of products that the user is allowed to use. KVO-compliant.
