@@ -3,7 +3,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class PHAsset, PHAssetCollection, PHCollectionList, PHFetchResult;
+@class PHAsset, PHAssetChangeRequest, PHAssetCollection, PHCollectionList, PHFetchResult;
 
 /// Protocol for changing PhotoKit entities in the shared \c PHPhotoLibrary.
 @protocol PTNPhotoKitChangeManager <NSObject>
@@ -11,10 +11,11 @@ NS_ASSUME_NONNULL_BEGIN
 /// Type of block called by the \c -performChanges:completionHandler: when a request has finished.
 typedef void (^PTNChangeRequestCompletionBlock)(BOOL success, NSError * _Nullable error);
 
-/// Requests that the image at the specified \c fileURL will be created. Call this method within a
-/// photo library change block to create image asset. For details on change blocks, see the
-/// \c PTNPhotoKitChangeManager protocol.
-- (void)createAssetFromImageAtFileURL:(NSURL *)fileURL;
+/// Requests that the image at the specified \c fileURL will be created. Returns the \c
+/// PHAssetChangeRequest instance associated with the request, or \c nil if \c fileURL is not a
+/// valid file URL. Call this method within a photo library change block to create image asset. For
+/// details on change blocks, see the \c PTNPhotoKitChangeManager protocol.
+- (nullable PHAssetChangeRequest *)createAssetFromImageAtFileURL:(NSURL *)fileURL;
 
 /// Requests that the specified \c assets be deleted. Call this method within a photo library change
 /// block to delete assets. For details on change blocks, see the \c PTNPhotoKitChangeManager

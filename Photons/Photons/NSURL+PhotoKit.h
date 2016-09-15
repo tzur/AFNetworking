@@ -3,7 +3,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class PHAsset, PHCollection;
+@class PHAsset, PHCollection, PHObjectPlaceholder;
 
 /// Possible types of PhotoKit URL.
 LTEnumDeclare(NSUInteger, PTNPhotoKitURLType,
@@ -45,6 +45,9 @@ LTEnumDeclare(NSUInteger, PTNPhotoKitMetaAlbumType,
 
 /// The URL scheme associated with PhotoKit URLs.
 + (NSString *)ptn_photoKitScheme;
+
+/// The unique identifier URL of the given \c objectPlaceholder.
++ (NSURL *)ptn_photoKitAssetURLWithObjectPlaceholder:(PHObjectPlaceholder *)objectPlaceholder;
 
 /// The unique identifier URL of the given \c asset.
 + (NSURL *)ptn_photoKitAssetURLWithAsset:(PHAsset *)asset;

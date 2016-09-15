@@ -47,6 +47,16 @@ static NSString * const kSubtypeKey = @"subtype";
   return @"com.lightricks.Photons.PhotoKit";
 }
 
++ (NSURL *)ptn_photoKitAssetURLWithObjectPlaceholder:(PHObjectPlaceholder *)objectPlaceholder {
+  NSURLComponents *components = [[NSURLComponents alloc] init];
+
+  components.scheme = [NSURL ptn_photoKitScheme];
+  components.host = kAssetKey;
+  components.path = [@"/" stringByAppendingString:objectPlaceholder.localIdentifier];
+
+  return components.URL;
+}
+
 + (NSURL *)ptn_photoKitAssetURLWithAsset:(PHAsset *)asset {
   NSURLComponents *components = [[NSURLComponents alloc] init];
 

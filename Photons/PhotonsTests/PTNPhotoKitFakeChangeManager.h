@@ -7,6 +7,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol PTNAlbumDescriptor, PTNDescriptor;
 
+@class PHAssetChangeRequest;
+
 /// Fake \c PTNPhotoKitChangeManager used for testing, calling the given update block, registering
 /// all change requests and calling the given completion block with the set values.
 ///
@@ -46,6 +48,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Error returned at the change request completion block.
 @property (strong, nonatomic, nullable) NSError *error;
+
+/// \c PHCacheRequest returned by change methods that return a change request. Default value is
+/// \c nil.
+@property (strong, nonatomic, nullable) PHAssetChangeRequest *changeRequest;
 
 @end
 
