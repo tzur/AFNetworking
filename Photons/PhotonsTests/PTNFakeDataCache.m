@@ -36,15 +36,10 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 - (void)storeInfo:(NSDictionary *)info forURL:(NSURL *)url {
-  [self storeNullableData:nil withInfo:info forURL:url];
+  [self storeData:[NSData data] withInfo:info forURL:url];
 }
 
 - (void)storeData:(NSData *)data withInfo:(nullable NSDictionary *)info forURL:(NSURL *)url {
-  [self storeNullableData:data withInfo:info forURL:url];
-}
-
-- (void)storeNullableData:(nullable NSData *)data withInfo:(nullable NSDictionary *)info
-                   forURL:(NSURL *)url {
   self.responses[url] = [[PTNCacheResponse alloc] initWithData:data info:info];
 }
 

@@ -973,7 +973,7 @@
 		65AE67481D0461350083D1CE /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0730;
+				LastUpgradeCheck = 0800;
 				ORGANIZATIONNAME = Lightricks;
 				TargetAttributes = {
 					65AE674F1D0461350083D1CE = {
@@ -1409,6 +1409,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_PREFIX_HEADER = "$(TARGET_NAME)/$(TARGET_NAME)-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",

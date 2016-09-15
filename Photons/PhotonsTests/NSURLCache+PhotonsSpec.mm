@@ -30,7 +30,8 @@ it(@"should store and retrieve data and info", ^{
 it(@"should store and retrieve info without data", ^{
   [cache storeInfo:info forURL:url];
 
-  PTNCacheResponse *nilDataResponse = [[PTNCacheResponse alloc] initWithData:nil info:info];
+  PTNCacheResponse *nilDataResponse = [[PTNCacheResponse alloc] initWithData:[NSData data]
+                                                                        info:info];
   expect([cache cachedDataForURL:url]).to.sendValues(@[nilDataResponse]);
 });
 

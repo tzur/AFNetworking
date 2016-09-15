@@ -39,6 +39,7 @@ context(@"deallocating object", ^{
       recorder = [[provider fetchProductContent:product] testRecorder];
     }
     expect(weakProvider).to.beNil();
+    expect(recorder).to.complete();
   });
 });
 

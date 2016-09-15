@@ -51,6 +51,11 @@ context(@"preview view", ^{
     viewController = [[CUIPreviewViewController alloc] initWithViewModel:viewModel];
   });
 
+  afterEach(^{
+    viewModel = nil;
+    viewController = nil;
+  });
+
   it(@"should create view for preview signal", ^{
     expect([viewController.view wf_viewForAccessibilityIdentifier:@"LayerView"]).notTo.beNil();
     expect([viewController.view wf_viewForAccessibilityIdentifier:@"SignalView"]).notTo.beNil();

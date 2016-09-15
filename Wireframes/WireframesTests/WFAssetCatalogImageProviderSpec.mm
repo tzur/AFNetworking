@@ -3,6 +3,8 @@
 
 #import "WFAssetCatalogImageProvider.h"
 
+#import <LTKit/LTCGExtensions.h>
+
 SpecBegin(WFAssetCatalogImageProvider)
 
 __block WFAssetCatalogImageProvider *provider;
@@ -27,7 +29,7 @@ context(@"errors", ^{
 context(@"asset catalog", ^{
   __block UIImage *expectedImage;
 
-  beforeAll(^{
+  beforeEach(^{
     expectedImage = [UIImage imageNamed:@"SmallImageInAssetCatalog" inBundle:testsBundle
           compatibleWithTraitCollection:nil];
     LTAssert(expectedImage, "Required image is not present in tests bundle");
@@ -44,17 +46,34 @@ context(@"asset catalog", ^{
 context(@"bundle", ^{
   __block UIImage *expectedImage;
 
-  beforeAll(^{
+  beforeEach(^{
     expectedImage = [UIImage imageNamed:@"SmallImageInBundle.jpg" inBundle:testsBundle
           compatibleWithTraitCollection:nil];
     LTAssert(expectedImage, "Required image is not present in tests bundle");
   });
 
+  it(@"should load image from bundle via fragment reference", ^{
+    NSURLComponents *components = [NSURLComponents componentsWithURL:testsBundle.bundleURL
+                                             resolvingAgainstBaseURL:NO];
+    components.fragment = @"SmallImageInBundle.jpg";
+    NSURL *imageURL = components.URL;
+
+    RACSignal *image = [provider imageWithURL:imageURL];
+    expect(image).will.sendValues(@[expectedImage]);
+  });
+
   it(@"should load image from bundle via file URL", ^{
     NSURL *imageURL = [NSURL URLWithString:@"SmallImageInBundle.jpg"
                              relativeToURL:testsBundle.bundleURL];
-    RACSignal *image = [provider imageWithURL:imageURL];
-    expect(image).will.sendValues(@[expectedImage]);
+
+    // Compare images only by size since images that are retrieved from the bundle are not -isEqual:
+    // to images that are loaded indirectly from the bundle via full file path URL.
+    LLSignalTestRecorder *recorder = [[provider imageWithURL:imageURL] testRecorder];
+    expect(recorder).will.complete();
+    expect(recorder).to.sendValuesWithCount(1);
+    expect(recorder).to.matchValue(0, ^BOOL(UIImage *image) {
+      return image.size == expectedImage.size;
+    });
   });
 });
 

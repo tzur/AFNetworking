@@ -107,6 +107,7 @@
 		65F3F7061D5A68F7008E3C3A /* FBRHTTPClient+Validatricks.h in Headers */ = {isa = PBXBuildFile; fileRef = 6527D6001D39411600A3AB29 /* FBRHTTPClient+Validatricks.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		65F3F7071D5A68F7008E3C3A /* NSValueTransformer+Validatricks.h in Headers */ = {isa = PBXBuildFile; fileRef = 65C538D51D34F521004C91D4 /* NSValueTransformer+Validatricks.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		8414201A1D76C33000968C36 /* libextobjc_iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6529F85F1CEB65E900FBABFE /* libextobjc_iOS.a */; };
+		8B54E9E01D89926800104102 /* BZRProductPriceInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = B97E6CCC1D41103200C02863 /* BZRProductPriceInfo.h */; };
 		9FD3A75C1D3DF26100967F8D /* UICKeyChainStore+SecureStorage.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9FD3A75B1D3DF26100967F8D /* UICKeyChainStore+SecureStorage.mm */; };
 		9FE7D4F11D3F5D1000685F19 /* UICKeyChainStore+SecureStorageSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9FE7D4F01D3F5D1000685F19 /* UICKeyChainStore+SecureStorageSpec.mm */; };
 		9FE7D5A31D3F6B2C00685F19 /* BZRPurchaseManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 9FE7D59F1D3F6B2C00685F19 /* BZRPurchaseManager.h */; };
@@ -153,7 +154,6 @@
 		B97E6C251D40F44800C02863 /* BZRProductsProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = B97E6C231D40F44800C02863 /* BZRProductsProvider.h */; };
 		B97E6CCE1D41103200C02863 /* BZRProduct.h in Headers */ = {isa = PBXBuildFile; fileRef = B97E6CC81D41103200C02863 /* BZRProduct.h */; };
 		B97E6CCF1D41103200C02863 /* BZRProduct.mm in Sources */ = {isa = PBXBuildFile; fileRef = B97E6CC91D41103200C02863 /* BZRProduct.mm */; };
-		B97E6CD21D41103200C02863 /* BZRProductPriceInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = B97E6CCC1D41103200C02863 /* BZRProductPriceInfo.h */; };
 		B97E6CD31D41103200C02863 /* BZRProductPriceInfo.mm in Sources */ = {isa = PBXBuildFile; fileRef = B97E6CCD1D41103200C02863 /* BZRProductPriceInfo.mm */; };
 		B98505C31D85B479002ABF72 /* BZRAcquiredViaSubscriptionProviderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = B98505C21D85B479002ABF72 /* BZRAcquiredViaSubscriptionProviderSpec.mm */; };
 		B9ABD1061D7D75AB004D2877 /* BZRProductsInfoProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = B9ABD1021D7D75AB004D2877 /* BZRProductsInfoProvider.h */; };
@@ -1476,7 +1476,7 @@
 				B9FD07FE1D61B38E00523BB4 /* BZRKeychainStorage+TypeSafety.h in Headers */,
 				6581E86C1D3B9F6100B26E1A /* BZRReceiptEnvironment.h in Headers */,
 				6581E86D1D3B9F6400B26E1A /* BZRReceiptModel.h in Headers */,
-				B97E6CD21D41103200C02863 /* BZRProductPriceInfo.h in Headers */,
+				8B54E9E01D89926800104102 /* BZRProductPriceInfo.h in Headers */,
 				6581E86E1D3B9F6700B26E1A /* BZRReceiptValidationError.h in Headers */,
 				6581E8701D3B9F6F00B26E1A /* BZRReceiptValidationStatus.h in Headers */,
 				B93FC4371D58CB8700A2170C /* BZRProductContentManager.h in Headers */,
@@ -1486,7 +1486,6 @@
 				B9256BFB1D7331CD00490815 /* BZRDownloadsPaymentQueue.h in Headers */,
 				B9EE58A91D5DF76F008B4448 /* BZRTimeConversion.h in Headers */,
 				B97E6CCE1D41103200C02863 /* BZRProduct.h in Headers */,
-				B97E6CD21D41103200C02863 /* BZRProductPriceInfo.h in Headers */,
 				B9ABD1061D7D75AB004D2877 /* BZRProductsInfoProvider.h in Headers */,
 				B97E6C251D40F44800C02863 /* BZRProductsProvider.h in Headers */,
 				65F3F6D41D5A67BE008E3C3A /* BZRLocalProductsProvider.h in Headers */,
@@ -1564,7 +1563,7 @@
 		65FA32901CE2185D00901304 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0730;
+				LastUpgradeCheck = 0800;
 				ORGANIZATIONNAME = Lightricks;
 				TargetAttributes = {
 					654B1F091CE22030001F36FA = {

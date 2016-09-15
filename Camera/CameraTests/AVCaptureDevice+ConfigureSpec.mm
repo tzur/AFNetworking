@@ -59,7 +59,9 @@ context(@"negative flows", ^{
     NSError *error;
 
     BOOL success = [device cam_performWhileLocked:^BOOL(NSError **errorPtr) {
-      *errorPtr = kError;
+      if (errorPtr) {
+        *errorPtr = kError;
+      }
       return NO;
     } error:&error];
 

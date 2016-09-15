@@ -33,13 +33,6 @@ NS_ASSUME_NONNULL_BEGIN
                                                    resolvingAgainstBaseURL:YES];
     bundleComponents.fragment = nil;
     bundleURL = bundleComponents.URL;
-  } else if (url.host) {
-    imageName = url.path;
-    NSURLComponents *bundleComponents = [NSURLComponents componentsWithURL:url
-                                                   resolvingAgainstBaseURL:YES];
-    bundleComponents.path = nil;
-    bundleComponents.query = nil;
-    bundleURL = bundleComponents.URL;
   } else {
     imageName = url.path;
     bundleURL = nil;

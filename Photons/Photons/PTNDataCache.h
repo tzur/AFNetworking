@@ -25,7 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)storeData:(NSData *)data withInfo:(nullable NSDictionary *)info
            forURL:(NSURL *)url;
 
-/// Stores \c nil data and \c info under \c url as the key. This method is non blocking.
+/// Stores empty data and \c info under \c url as the key. This method is non blocking.
 ///
 /// @note This is a non-blocking call.
 ///

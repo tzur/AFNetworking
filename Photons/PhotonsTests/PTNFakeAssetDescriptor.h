@@ -14,7 +14,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Initializes with \c ptn_identifier, \c localizedTitle, \c descriptorCapabilities,
 /// \c descriptorTraits, \c creationDate, \c modificationDate and \c assetDescriptorCapabilities.
-- (instancetype)initWithIdentifier:(NSURL *)ptn_identifier localizedTitle:(NSString *)localizedTitle
+- (instancetype)initWithIdentifier:(NSURL *)ptn_identifier
+                    localizedTitle:(nullable NSString *)localizedTitle
             descriptorCapabilities:(PTNDescriptorCapabilities)descriptorCapabilities
                   descriptorTraits:(NSSet<NSString *> *)descriptorTraits
                       creationDate:(nullable NSDate *)creationDate

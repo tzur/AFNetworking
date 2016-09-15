@@ -60,17 +60,6 @@ context(@"session", ^{
     session = [[CAMHardwareSession alloc] initWithPreset:preset session:sessionMock];
   });
 
-  context(@"preview layer", ^{
-    it(@"should create layer with session", ^{
-      expect(session.previewLayer).to.beNil();
-
-      [session createPreviewLayer];
-
-      expect(session.previewLayer).toNot.beNil();
-      expect(session.previewLayer.session).to.equal(sessionMock);
-    });
-  });
-
   context(@"video input", ^{
     __block CAMFakeAVCaptureDevice *device;
 

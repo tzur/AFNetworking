@@ -14,7 +14,8 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize assetCount = _assetCount;
 @synthesize albumDescriptorCapabilities = _albumDescriptorCapabilities;
 
-- (instancetype)initWithIdentifier:(NSURL *)ptn_identifier localizedTitle:(NSString *)localizedTitle
+- (instancetype)initWithIdentifier:(NSURL *)ptn_identifier
+                    localizedTitle:(nullable NSString *)localizedTitle
             descriptorCapabilities:(PTNDescriptorCapabilities)descriptorCapabilities
                   descriptorTraits:(NSSet<NSString *> *)descriptorTraits
                         assetCount:(NSUInteger)assetCount

@@ -20,8 +20,11 @@ id<PTNDescriptor> PTNCreateDescriptor(NSURL * _Nullable identifier,
                                       NSString * _Nullable localizedTitle,
                                       PTNDescriptorCapabilities capabilities,
                                       NSSet<NSString *> * _Nullable traits) {
-  return [[PTNFakeDescriptor alloc] initWithIdentifier:identifier localizedTitle:localizedTitle
-                                descriptorCapabilities:capabilities descriptorTraits:traits];
+  return [[PTNFakeDescriptor alloc]
+          initWithIdentifier:identifier ?: [NSURL URLWithString:@"fake://descriptor"]
+          localizedTitle:localizedTitle
+          descriptorCapabilities:capabilities
+          descriptorTraits:traits ?: [NSSet set]];
 }
 
 id<PTNAssetDescriptor> PTNCreateAssetDescriptor(NSURL * _Nullable identifier,
@@ -31,9 +34,14 @@ id<PTNAssetDescriptor> PTNCreateAssetDescriptor(NSURL * _Nullable identifier,
                                                 NSDate * _Nullable creationDate,
                                                 NSDate * _Nullable modificationDate,
                                                 PTNAssetDescriptorCapabilities assetCapabilities) {
-  return [[PTNFakeAssetDescriptor alloc] initWithIdentifier:identifier localizedTitle:localizedTitle
-      descriptorCapabilities:capabilities descriptorTraits:traits creationDate:creationDate
-      modificationDate:modificationDate assetDescriptorCapabilities:assetCapabilities];
+  return [[PTNFakeAssetDescriptor alloc]
+          initWithIdentifier:identifier ?: [NSURL URLWithString:@"fake://descriptor.asset"]
+          localizedTitle:localizedTitle
+          descriptorCapabilities:capabilities
+          descriptorTraits:traits ?: [NSSet set]
+          creationDate:creationDate
+          modificationDate:modificationDate
+          assetDescriptorCapabilities:assetCapabilities];
 }
 
 id<PTNAlbumDescriptor> PTNCreateAlbumDescriptor(NSURL * _Nullable identifier,
@@ -42,9 +50,13 @@ id<PTNAlbumDescriptor> PTNCreateAlbumDescriptor(NSURL * _Nullable identifier,
                                                 NSSet<NSString *> * _Nullable traits,
                                                 NSUInteger assetCount,
                                                 PTNAlbumDescriptorCapabilities albumCapabilities) {
-  return [[PTNFakeAlbumDescriptor alloc] initWithIdentifier:identifier localizedTitle:localizedTitle
-      descriptorCapabilities:capabilities descriptorTraits:traits assetCount:assetCount
-      albumDescriptorCapabilities:albumCapabilities];
+  return [[PTNFakeAlbumDescriptor alloc]
+          initWithIdentifier:identifier ?: [NSURL URLWithString:@"fake://descriptor.album"]
+          localizedTitle:localizedTitle
+          descriptorCapabilities:capabilities
+          descriptorTraits:traits ?: [NSSet set]
+          assetCount:assetCount
+          albumDescriptorCapabilities:albumCapabilities];
 }
 
 id<PTNDescriptor> PTNCreateDescriptor(NSString *localizedTitle) {

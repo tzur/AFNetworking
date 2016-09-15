@@ -18,7 +18,7 @@ void LTAddViewToWindow(UIView *view) {
 
 @implementation LTSpectaKeyWindowViewHook
 
-static UIView *_keyWindowView;
+static UIView * _Nullable _keyWindowView;
 static BOOL _didAccessView;
 
 + (void)beforeEach {

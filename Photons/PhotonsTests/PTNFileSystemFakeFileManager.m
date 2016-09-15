@@ -66,7 +66,7 @@ NS_ASSUME_NONNULL_BEGIN
   return self;
 }
 
-- (PTNFileSystemFakeFileManagerFile *)fileAtPath:(NSString *)path {
+- (nullable PTNFileSystemFakeFileManagerFile *)fileAtPath:(NSString *)path {
   for (PTNFileSystemFakeFileManagerFile *file in self.files) {
     if ([[file.path stringByAppendingPathComponent:file.name] isEqualToString:path]) {
       return file;

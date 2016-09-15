@@ -7269,6 +7269,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 8B6B4FB01BDFA41700662235 /* Application.xcconfig */;
 			buildSettings = {
+				COMPRESS_PNG_FILES = NO;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "LTEngineTests/LTEngineTests-Prefix.pch";
@@ -7286,6 +7287,7 @@
 				INFOPLIST_FILE = "LTEngineTests/LTEngineTests-Info.plist";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.Lightricks.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRIP_PNG_TEXT = NO;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};
@@ -7295,6 +7297,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 8B6B4FB01BDFA41700662235 /* Application.xcconfig */;
 			buildSettings = {
+				COMPRESS_PNG_FILES = NO;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "LTEngineTests/LTEngineTests-Prefix.pch";
@@ -7312,6 +7315,7 @@
 				INFOPLIST_FILE = "LTEngineTests/LTEngineTests-Info.plist";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.Lightricks.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRIP_PNG_TEXT = NO;
 				WRAPPER_EXTENSION = xctest;
 			};
 			name = Release;

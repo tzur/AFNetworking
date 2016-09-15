@@ -88,15 +88,19 @@ objection_requires_sel(@selector(fileManager));
 
 - (BOOL)createArchiveFolderAtPath:(LTPath *)path error:(NSError *__autoreleasing *)error {
   if ([self.fileManager fileExistsAtPath:path.path]) {
-    [self setError:error withCode:LTErrorCodeFileAlreadyExists path:path.path underlyingError:nil];
+    if (error) {
+      *error = [NSError lt_errorWithCode:LTErrorCodeFileAlreadyExists path:path.path];
+    }
     return NO;
   }
 
   NSError *createError;
   if (![self.fileManager createDirectoryAtPath:path.path withIntermediateDirectories:NO
                                     attributes:nil error:&createError]) {
-    [self setError:error withCode:LTErrorCodeFileWriteFailed
-              path:path.path underlyingError:createError];
+    if (error) {
+      *error = [NSError lt_errorWithCode:LTErrorCodeFileWriteFailed path:path.path
+                         underlyingError:createError];
+    }
     return NO;
   }
 
@@ -222,8 +226,10 @@ objection_requires_sel(@selector(fileManager));
 
   NSError *archiverError;
   if (![type.archiver archiveTexture:texture inPath:contentPath error:&archiverError]) {
-    [self setError:error withCode:LTErrorCodeFileWriteFailed
-              path:contentPath underlyingError:archiverError];
+    if (error) {
+      *error = [NSError lt_errorWithCode:LTErrorCodeFileWriteFailed path:contentPath
+                         underlyingError:archiverError];
+    }
     return NO;
   }
 
@@ -323,7 +329,9 @@ objection_requires_sel(@selector(fileManager));
   NSString *description =
       [NSString stringWithFormat:@"Could not create UIImage from %@: invalid pixel format %@",
        path.path, metadata.pixelFormat.name];
-  [self setError:error withCode:LTErrorCodeObjectCreationFailed description:description];
+  if (error) {
+    *error = [NSError lt_errorWithCode:LTErrorCodeObjectCreationFailed description:description];
+  }
   return NO;
 }
 
@@ -377,8 +385,10 @@ objection_requires_sel(@selector(fileManager));
 
   NSError *removeError;
   if (![self.fileManager removeItemAtPath:path.path error:&removeError]) {
-    [self setError:error withCode:LTErrorCodeFileRemovalFailed
-              path:path.path underlyingError:removeError];
+    if (error) {
+      *error = [NSError lt_errorWithCode:LTErrorCodeFileRemovalFailed path:path.path
+                         underlyingError:removeError];
+    }
     return NO;
   }
 
@@ -477,15 +487,18 @@ objection_requires_sel(@selector(fileManager));
 
   NSString *metadataPath = [self metadataPathForArchiveFolderPath:path];
   if ([self.fileManager fileExistsAtPath:metadataPath]) {
-    [self setError:error withCode:LTErrorCodeFileAlreadyExists
-              path:metadataPath underlyingError:nil];
+    if (error) {
+      *error = [NSError lt_errorWithCode:LTErrorCodeFileAlreadyExists path:metadataPath];
+    }
     return NO;
   }
 
   NSDictionary *json = [MTLJSONAdapter JSONDictionaryFromModel:metadata];
   if (!json) {
-    [self setError:error withCode:LTErrorCodeFileWriteFailed
-       description:@"Failed to serialize texture metadata"];
+    if (error) {
+      *error = [NSError lt_errorWithCode:LTErrorCodeFileWriteFailed
+                             description:@"Failed to serialize texture metadata"];
+    }
     return NO;
   }
 
@@ -502,7 +515,9 @@ objection_requires_sel(@selector(fileManager));
 
   NSString *metadataPath = [self metadataPathForArchiveFolderPath:path];
   if (![self.fileManager fileExistsAtPath:metadataPath]) {
-    [self setError:error withCode:LTErrorCodeFileNotFound path:metadataPath underlyingError:nil];
+    if (error) {
+      *error = [NSError lt_errorWithCode:LTErrorCodeFileNotFound path:metadataPath];
+    }
     return nil;
   }
 
@@ -516,15 +531,19 @@ objection_requires_sel(@selector(fileManager));
   LTTextureArchiveMetadata *metadata = [MTLJSONAdapter modelOfClass:[LTTextureArchiveMetadata class]
                                                  fromJSONDictionary:dictionary error:&mantleError];
   if (!metadata) {
-    [self setError:error withCode:LTErrorCodeFileReadFailed
-              path:metadataPath underlyingError:mantleError];
+    if (error) {
+      *error = [NSError lt_errorWithCode:LTErrorCodeFileReadFailed path:metadataPath
+                         underlyingError:mantleError];
+    }
     return nil;
   }
 
   NSError *metadataError = [self verifyArchiveMetadata:metadata];
   if (metadataError) {
-    [self setError:error withCode:LTErrorCodeFileReadFailed
-              path:metadataPath underlyingError:metadataError];
+    if (error) {
+      *error = [NSError lt_errorWithCode:LTErrorCodeFileReadFailed path:metadataPath
+                         underlyingError:metadataError];
+    }
     return nil;
   }
 
@@ -562,24 +581,6 @@ static NSString * const kContentFilename = @"content";
 - (NSString *)contentPathForArchiveFolderPath:(LTPath *)path fileExtension:(NSString *)extension {
   NSString *filename = [kContentFilename stringByAppendingPathExtension:extension];
   return [path.path stringByAppendingPathComponent:filename];
-}
-
-#pragma mark -
-#pragma mark Errors
-#pragma mark -
-
-- (void)setError:(NSError *__autoreleasing *)error withCode:(NSInteger)code
-     description:(NSString *)description {
-  if (error) {
-    *error = [NSError lt_errorWithCode:code description:description];
-  }
-}
-
-- (void)setError:(NSError *__autoreleasing *)error withCode:(NSInteger)code path:(NSString *)path
- underlyingError:(nullable NSError *)underlyingError {
-  if (error) {
-    *error = [NSError lt_errorWithCode:code path:path underlyingError:underlyingError];
-  }
 }
 
 @end
