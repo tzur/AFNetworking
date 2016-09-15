@@ -9,6 +9,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Font for title, such as the title of a menu item.
 @property (readonly, nonatomic) UIFont *titleFont;
 
+/// Font for selected or highlighted title.
+@property (readonly, nonatomic) UIFont *titleHighlightedFont;
+
 /// Color for unselected titles.
 @property (readonly, nonatomic) UIColor *titleColor;
 
