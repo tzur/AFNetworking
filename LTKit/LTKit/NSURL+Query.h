@@ -32,6 +32,25 @@ NS_ASSUME_NONNULL_BEGIN
 /// in order to be initialized.
 - (NSURL *)lt_URLByAppendingQueryDictionary:(NSDictionary<NSString *, NSString *> *)queryDictionary;
 
+/// Returns a new URL made by appending query items as defined by \c queryArrayDictionary, for each
+/// array in the dictionary, all items are added with the appropriate key. The order and the
+/// multiplicity of the original query items are preserved, as well as the order of values within
+/// each array, but the ordering of the new arrays themselves is not defined.
+///
+/// @note \c NSNull is not allowed. Use empty strings to append query item with empty key and/or
+/// value parts.
+///
+/// @note empty arrays are not allowed. Use empty strings to append query items with empty values.
+///
+/// Raises \c NSInvalidArgumentException if \c queryArrayDictionary contains anything other than
+/// \c NSString and non-empty \c NSArray of \c NSString.
+///
+/// Raises \c NSInternalInconsistencyException if the URL string of the receiver could not be
+/// parsed. This should never happen, since the receiver instance has applied the same parsing logic
+/// in order to be initialized.
+- (NSURL *)lt_URLByAppendingQueryArrayDictionary:
+    (NSDictionary<NSString *, NSArray<NSString *> *> *)queryArrayDictionary;
+
 /// The query URL component as an array of name/value pairs. It is a one-to-one mapping of \c query
 /// property.
 ///
@@ -63,6 +82,20 @@ NS_ASSUME_NONNULL_BEGIN
 /// Use \c queryItems when a one-to-one representation of the \c query string is required (and it is
 /// if there is anything remotely related to security).
 @property (readonly, nonatomic) NSDictionary<NSString *, NSString *> *lt_queryDictionary;
+
+/// Query items as a dictionary mapping query keys to query value arrays. Multiple query items with
+/// the same key are joined into single arrays. Missing query values are converted to empty value
+/// strings.
+///
+/// @note while this property offers a convenient way to access URL's \c query string arrays, it
+/// does not represent it uniquely. For example, the original ordering is not preserved between
+/// different keys, and there is no way to distinguish between <tt>"key="</tt> and <tt>"key"</tt>
+/// query strings.
+///
+/// Use \c queryItems when a one-to-one representation of the \c query string is required (and it is
+/// if there is anything remotely related to security).
+@property (readonly, nonatomic) NSDictionary<NSString *, NSArray<NSString *> *>
+    *lt_queryArrayDictionary;
 
 @end
 

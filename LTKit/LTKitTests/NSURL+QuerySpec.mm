@@ -45,6 +45,54 @@ context(@"queryDictionary", ^{
   });
 });
 
+context(@"queryArrayDictionary", ^{
+  it(@"should return empty dictionary for missing query", ^{
+    NSURL *url = [NSURL URLWithString:@"foo/bar"];
+    expect(url.lt_queryArrayDictionary).to.equal(@{});
+  });
+
+  it(@"should return empty dictionary for empty query", ^{
+    NSURL *url = [NSURL URLWithString:@"foo/bar?"];
+    expect(url.lt_queryArrayDictionary).to.equal(@{});
+  });
+
+  it(@"should contain correct query items with keys and values", ^{
+    NSURL *url = [NSURL URLWithString:@"foo/bar?key1=value1&key2=value2"];
+    expect(url.lt_queryArrayDictionary).to.equal(@{
+      @"key1": @[@"value1"],
+      @"key2": @[@"value2"]
+    });
+  });
+
+  it(@"should return all values for duplicate keys", ^{
+    NSURL *url = [NSURL URLWithString:@"foo/bar?key=value1&key=value2"];
+    expect(url.lt_queryArrayDictionary[@"key"]).to.equal(@[@"value1", @"value2"]);
+  });
+
+  it(@"should return empty string for missing value", ^{
+    NSURL *url = [NSURL URLWithString:@"foo/bar?key"];
+    expect(url.lt_queryArrayDictionary[@"key"]).to.equal(@[@""]);
+  });
+
+  it(@"should return empty string for empty value", ^{
+    NSURL *url = [NSURL URLWithString:@"foo/bar?key="];
+    expect(url.lt_queryArrayDictionary[@"key"]).to.equal(@[@""]);
+  });
+
+  it(@"should return empty key and values for empty items", ^{
+    NSURL *url = [NSURL URLWithString:@"foo/bar?&"];
+    expect(url.lt_queryArrayDictionary[@""]).to.equal(@[@"", @""]);
+  });
+
+  it(@"should join arrays even without consecutive keys", ^{
+    NSURL *url = [NSURL URLWithString:@"foo/bar?key1=value1&key2=value1&key1=value2"];
+    expect(url.lt_queryArrayDictionary).to.equal(@{
+      @"key1": @[@"value1", @"value2"],
+      @"key2": @[@"value1"]
+    });
+  });
+});
+
 context(@"queryItems", ^{
   it(@"should return nil for missing query", ^{
     NSURL *url = [NSURL URLWithString:@"foo/bar"];
@@ -138,7 +186,7 @@ context(@"lt_URLByAppendingQueryDictionary", ^{
   });
 
   it(@"should not modify URL when appending empty query dictionary", ^{
-    NSURL *url = [NSURL URLWithString:@"foo/bar&key=value"];
+    NSURL *url = [NSURL URLWithString:@"foo/bar?key=value"];
     expect([url lt_URLByAppendingQueryDictionary:@{}]).to.equal(url);
   });
 
@@ -171,6 +219,70 @@ context(@"lt_URLByAppendingQueryDictionary", ^{
     NSURL *relativeURL = [NSURL URLWithString:@"/newroot/path?key1=value1" relativeToURL:baseURL];
 
     NSURL *urlWithQuery = [relativeURL lt_URLByAppendingQueryDictionary:@{@"key2": @"value2"}];
+
+    expect(urlWithQuery.baseURL).to.equal(baseURL);
+    expect(urlWithQuery.query).to.equal(@"key1=value1&key2=value2");
+  });
+});
+
+context(@"lt_URLByAppendingQueryArrayDictionary", ^{
+  it(@"should raise when query dictionary is illegal", ^{
+    NSURL *url = [NSURL URLWithString:@"foo"];
+
+    expect(^{
+      [url lt_URLByAppendingQueryArrayDictionary:@{@"key": [NSNull null]}];
+    }).to.raise(NSInvalidArgumentException);
+
+    expect(^{
+      [url lt_URLByAppendingQueryArrayDictionary:@{@42: @"value"}];
+    }).to.raise(NSInvalidArgumentException);
+
+    expect(^{
+      [url lt_URLByAppendingQueryArrayDictionary:@{@"key": @"value"}];
+    }).to.raise(NSInvalidArgumentException);
+
+    expect(^{
+      [url lt_URLByAppendingQueryArrayDictionary:@{@"key": @[]}];
+    }).to.raise(NSInvalidArgumentException);
+  });
+
+  it(@"should not modify URL when appending empty query dictionary", ^{
+    NSURL *url = [NSURL URLWithString:@"foo/bar?key=value"];
+    expect([url lt_URLByAppendingQueryArrayDictionary:@{}]).to.equal(url);
+  });
+
+  it(@"should correctly append query dictionary to URL without a query", ^{
+    NSURL *url = [NSURL URLWithString:@"foo/bar"];
+    NSURL *urlWithQuery =
+        [url lt_URLByAppendingQueryArrayDictionary:@{@"key": @[@"value1", @"value2"]}];
+    expect(urlWithQuery.query).to.equal(@"key=value1&key=value2");
+  });
+
+  it(@"should append query to url with existing query", ^{
+    NSURL *url = [NSURL URLWithString:@"foo/bar?key=value1"];
+    NSURL *urlWithQuery =
+        [url lt_URLByAppendingQueryArrayDictionary:@{@"key": @[@"value2", @"value3"]}];
+    expect(urlWithQuery.query).to.equal(@"key=value1&key=value2&key=value3");
+  });
+
+  it(@"should append empty query value for empty dictionary value", ^{
+    NSURL *url = [NSURL URLWithString:@"foo/bar"];
+    NSURL *urlWithQuery = [url lt_URLByAppendingQueryArrayDictionary:@{@"key": @[@""]}];
+    expect(urlWithQuery.query).to.equal(@"key=");
+  });
+
+  it(@"should append empty query key for empty dictionary key", ^{
+    NSURL *url = [NSURL URLWithString:@"foo/bar"];
+    NSURL *urlWithQuery = [url lt_URLByAppendingQueryArrayDictionary:@{@"": @[@""]}];
+    expect(urlWithQuery.query).to.equal(@"=");
+  });
+
+  it(@"should preserve relative URL", ^{
+    NSURL *baseURL = [NSURL URLWithString:@"scheme://domain/root"];
+    NSURL *relativeURL = [NSURL URLWithString:@"/newroot/path?key1=value1" relativeToURL:baseURL];
+
+    NSURL *urlWithQuery =
+        [relativeURL lt_URLByAppendingQueryArrayDictionary:@{@"key2": @[@"value2"]}];
 
     expect(urlWithQuery.baseURL).to.equal(baseURL);
     expect(urlWithQuery.query).to.equal(@"key1=value1&key2=value2");
