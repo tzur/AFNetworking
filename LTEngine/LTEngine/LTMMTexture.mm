@@ -370,6 +370,14 @@ typedef LTTextureMappedWriteBlock LTTextureMappedBlock;
     return;
   }
 
+  // While flushing is an expensive operation and should not be necessary at this point according to
+  // the specification of glClientWaitSync(APPLE), there seems to be a bug in the implementation of
+  // glClientWaitSync(APPLE) occurring on devices running iOS 10. Hence, we perform a manual
+  // flushing.
+  //
+  // TODO:(Rouven) Remove this line once the bug is fixed.
+  glFlush();
+  
   __block GLenum waitResult;
   [[LTGLContext currentContext] executeForOpenGLES2:^{
     waitResult = glClientWaitSyncAPPLE(self.syncObject, GL_SYNC_FLUSH_COMMANDS_BIT, kMaxTimeout);
