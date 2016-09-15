@@ -26,7 +26,8 @@ beforeEach(^{
   subtitleSubject = [RACSubject subject];
   viewModel = [[PTUFakeImageCellViewModel alloc] initWithImageSignal:imageSubject
                                                          titleSignal:titleSubject
-                                                      subtitleSignal:subtitleSubject];
+                                                      subtitleSignal:subtitleSubject
+                                                              traits:nil];
   imageCellView.viewModel = viewModel;
 });
 
@@ -106,7 +107,7 @@ it(@"should stop taking values from previous view model once changed", ^{
   RACSubject *newSubject = [RACSubject subject];
   PTUFakeImageCellViewModel *otherViewModel =
       [[PTUFakeImageCellViewModel alloc] initWithImageSignal:newSubject titleSignal:nil
-                                              subtitleSignal:nil];
+                                              subtitleSignal:nil traits:nil];
   imageCellView.viewModel = otherViewModel;
 
   [newSubject sendNext:otherImage];
@@ -141,7 +142,8 @@ context(@"memory management", ^{
     subtitleSignal = PTNCreateDisposableRetainingSignal();
     disposableViewModel = [[PTUFakeImageCellViewModel alloc] initWithImageSignal:imageSignal
                                                                      titleSignal:titleSignal
-                                                                  subtitleSignal:subtitleSignal];
+                                                                  subtitleSignal:subtitleSignal
+                                                                          traits:nil];
   });
 
   it(@"should dispose subscriptions when changing view model", ^{

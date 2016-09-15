@@ -27,7 +27,8 @@ beforeEach(^{
   subtitleSubject = [RACSubject subject];
   viewModel = [[PTUFakeImageCellViewModel alloc] initWithImageSignal:imageSubject
                                                          titleSignal:titleSubject
-                                                      subtitleSignal:subtitleSubject];
+                                                      subtitleSignal:subtitleSubject
+                                                              traits:nil];
   
   delegate = OCMProtocolMock(@protocol(PTUImageCellControllerDelegate));
   imageCellController = [[PTUImageCellController alloc] init];
@@ -101,9 +102,7 @@ it(@"should stop taking values from previous view model once changed", ^{
   [[(OCMockObject *)delegate reject] imageCellController:imageCellController loadedTitle:@"foo"];
   [[(OCMockObject *)delegate reject] imageCellController:imageCellController loadedSubtitle:@"bar"];
 
-  PTUFakeImageCellViewModel *otherViewModel =
-      [[PTUFakeImageCellViewModel alloc] initWithImageSignal:nil titleSignal:nil
-                                              subtitleSignal:nil];
+  PTUFakeImageCellViewModel *otherViewModel = [[PTUFakeImageCellViewModel alloc] init];
   imageCellController.viewModel = otherViewModel;
   
   [imageSubject sendNext:image];
@@ -119,7 +118,8 @@ it(@"should take values from new view model once changed", ^{
   PTUFakeImageCellViewModel *otherViewModel =
       [[PTUFakeImageCellViewModel alloc] initWithImageSignal:newImageSubject
                                                  titleSignal:newTitleSubject
-                                              subtitleSignal:newSubtitleSubject];
+                                              subtitleSignal:newSubtitleSubject
+                                                      traits:nil];
   imageCellController.viewModel = otherViewModel;
   
   [newImageSubject sendNext:image];
@@ -150,7 +150,8 @@ context(@"memory management", ^{
     subtitleSignal = PTNCreateDisposableRetainingSignal();
     disposableViewModel = [[PTUFakeImageCellViewModel alloc] initWithImageSignal:imageSignal
                                                                      titleSignal:titleSignal
-                                                                  subtitleSignal:subtitleSignal];
+                                                                  subtitleSignal:subtitleSignal
+                                                                          traits:nil];
   });
 
   it(@"should dispose subscriptions when changing view model", ^{

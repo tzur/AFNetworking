@@ -78,6 +78,38 @@ context(@"PTNDescriptor", ^{
 
     expect(values).will.sendValues(@[image, otherImage]);
   });
+
+  it(@"should expose traits according to underlying descriptor", ^{
+    expect(viewModel.traits).to.equal([NSSet set]);
+
+    id<PTNDescriptor> sessionAsset = PTNCreateDescriptor(nil, @"foo", 0,
+        [NSSet setWithObject:kPTNDescriptorTraitSessionKey]);
+    PTUImageCellViewModel *sessionViewModel = [[PTUImageCellViewModel alloc]
+                                               initWithAssetManager:assetManager
+                                               descriptor:sessionAsset
+                                               imageFetchOptions:options];
+    expect(sessionViewModel.traits).to.contain(kPTUImageCellViewModelTraitSessionKey);
+
+    id<PTNDescriptor> cloudAsset = PTNCreateDescriptor(nil, @"foo", 0,
+        [NSSet setWithObject:kPTNDescriptorTraitCloudBasedKey]);
+    PTUImageCellViewModel *cloudViewModel = [[PTUImageCellViewModel alloc]
+                                             initWithAssetManager:assetManager
+                                             descriptor:cloudAsset
+                                             imageFetchOptions:options];
+    expect(cloudViewModel.traits).to.contain(kPTUImageCellViewModelTraitCloudBasedKey);
+
+    id<PTNDescriptor> cloudSessionAsset =
+        PTNCreateDescriptor(nil, @"foo", 0, [NSSet setWithArray:@[
+          kPTUImageCellViewModelTraitSessionKey,
+          kPTUImageCellViewModelTraitCloudBasedKey
+        ]]);
+    PTUImageCellViewModel *cloudSessionViewModel = [[PTUImageCellViewModel alloc]
+                                                    initWithAssetManager:assetManager
+                                                    descriptor:cloudSessionAsset
+                                                    imageFetchOptions:options];
+    expect(cloudSessionViewModel.traits).to.contain(kPTUImageCellViewModelTraitSessionKey);
+    expect(cloudSessionViewModel.traits).to.contain(kPTUImageCellViewModelTraitCloudBasedKey);
+  });
 });
 
 context(@"PTNAlbumDescriptor", ^{
