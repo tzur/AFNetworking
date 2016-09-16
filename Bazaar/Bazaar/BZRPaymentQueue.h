@@ -49,14 +49,15 @@ NS_ASSUME_NONNULL_BEGIN
     unfinishedTransactionsSubject;
 
 /// Initializes with \c underlyingPaymentQueue, used to be notified of transactions and downloads
-/// updates, and with \c unfinishedTransactionsSubject, used to send unfinished transactions with.
+/// updates, and with \c unfinishedTransactionsSubject, used to send an array of unfinished
+/// transactions.
 ///
 /// \c SKPaymentQueue sends all transactions that weren't finished from the last run of the
 /// application when an observer is added to it. \c BZRPaymentQueue adds an observer to it at
 /// initialization, but \c BZRPaymentQueue's underlying delegates are \c nil. As a result, these
 /// transactions will never be handled. The solution is to pass a subject that should already be
 /// subscribed to, which will send the transactions as they arrive. The transactions will be sent to
-/// the delegates instead of the subject as soon as \c addPayment, \c restoreFinishedTransactions or
+/// the delegates instead of the subject as soon as \c addPayment or
 /// \c restoreCompletedTransactionsWithApplicationUsername were called, because this is when the
 /// delegates start to expect transactions to arrive.
 - (instancetype)initWithUnderlyingPaymentQueue:(SKPaymentQueue *)underlyingPaymentQueue

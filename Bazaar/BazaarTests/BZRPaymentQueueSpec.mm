@@ -88,22 +88,7 @@ context(@"transactions", ^{
 
       [paymentQueue paymentQueue:underlyingPaymentQueue updatedTransactions:paymentTransactions];
 
-      expect(recorder).will.sendValues(paymentTransactions);
-    });
-
-    it(@"should send transactions to delegates if restore completed transactions was called", ^{
-      OCMExpect([paymentsDelegate paymentQueue:paymentQueue
-                    paymentTransactionsUpdated:paymentTransactions]);
-      OCMExpect([restorationDelegate paymentQueue:paymentQueue
-                             transactionsRestored:restorationTransactions]);
-      LLSignalTestRecorder *recorder = [subject testRecorder];
-
-      [paymentQueue restoreCompletedTransactions];
-      [paymentQueue paymentQueue:underlyingPaymentQueue updatedTransactions:paymentTransactions];
-      [subject sendCompleted];
-
-      expect(recorder).will.complete();
-      expect(recorder).will.sendValuesWithCount(0);
+      expect(recorder).will.sendValues(@[paymentTransactions]);
     });
 
     it(@"should send transactions to delegates if restore completed transactions with username was "
@@ -114,7 +99,7 @@ context(@"transactions", ^{
                              transactionsRestored:restorationTransactions]);
       LLSignalTestRecorder *recorder = [subject testRecorder];
 
-      [paymentQueue restoreCompletedTransactionsWithApplicationUsername:@"foo"];
+      [paymentQueue restoreCompletedTransactionsWithApplicationUserID:@"foo"];
       [paymentQueue paymentQueue:underlyingPaymentQueue updatedTransactions:paymentTransactions];
       [subject sendCompleted];
 
@@ -153,7 +138,8 @@ context(@"transactions", ^{
       OCMExpect([restorationDelegate paymentQueue:paymentQueue
                              transactionsRestored:restorationTransactions]);
 
-      [paymentQueue paymentQueue:underlyingPaymentQueue updatedTransactions:restorationTransactions];
+      [paymentQueue paymentQueue:underlyingPaymentQueue
+             updatedTransactions:restorationTransactions];
       OCMVerifyAll(restorationDelegate);
     });
 
@@ -163,7 +149,8 @@ context(@"transactions", ^{
       OCMExpect([paymentsDelegate paymentQueue:paymentQueue
                     paymentTransactionsUpdated:[paymentTransactions subarrayWithRange:range]]);
       OCMExpect([restorationDelegate paymentQueue:paymentQueue
-                             transactionsRestored:[restorationTransactions subarrayWithRange:range]]);
+                             transactionsRestored:[restorationTransactions
+                                                   subarrayWithRange:range]]);
 
       [paymentQueue paymentQueue:underlyingPaymentQueue updatedTransactions:transactions];
       OCMVerifyAll(paymentsDelegate);
@@ -182,7 +169,8 @@ context(@"transactions", ^{
       OCMExpect([restorationDelegate paymentQueue:paymentQueue
                       restoredTransactionsRemoved:restorationTransactions]);
 
-      [paymentQueue paymentQueue:underlyingPaymentQueue removedTransactions:restorationTransactions];
+      [paymentQueue paymentQueue:underlyingPaymentQueue
+             removedTransactions:restorationTransactions];
       OCMVerifyAll(restorationDelegate);
     });
 
@@ -192,7 +180,8 @@ context(@"transactions", ^{
       OCMExpect([paymentsDelegate paymentQueue:paymentQueue
                     paymentTransactionsRemoved:[paymentTransactions subarrayWithRange:range]]);
       OCMExpect([restorationDelegate paymentQueue:paymentQueue
-                      restoredTransactionsRemoved:[restorationTransactions subarrayWithRange:range]]);
+                      restoredTransactionsRemoved:[restorationTransactions
+                                                   subarrayWithRange:range]]);
 
       [paymentQueue paymentQueue:underlyingPaymentQueue removedTransactions:transactions];
       OCMVerifyAll(paymentsDelegate);

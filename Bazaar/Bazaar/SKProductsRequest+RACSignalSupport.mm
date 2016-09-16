@@ -40,7 +40,7 @@ static void RACUseDelegateProxy(SKProductsRequest *self) {
   return signal;
 }
 
-// A signal that sends \c SKProductResponse values. It completes when the proxy delegate deallocs
+// A signal that sends \c SKProductsResponse values. It completes when the proxy delegate deallocs
 // and never errs.
 - (RACSignal *)bzr_responseSignal {
   return [[self.bzr_delegateProxy signalForSelector:@selector(productsRequest:didReceiveResponse:)]

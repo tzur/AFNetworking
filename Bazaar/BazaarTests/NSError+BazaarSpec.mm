@@ -76,17 +76,30 @@ context(@"archiving error", ^{
   });
 });
 
-context(@"purchase error", ^{
+context(@"transaction error", ^{
   it(@"should return an error with the given transaction and underlying error", ^{
-     BZRFakePaymentTransaction *transaction = [[BZRFakePaymentTransaction alloc] init];
-     transaction.error = [NSError lt_errorWithCode:1337];
+    BZRFakePaymentTransaction *transaction = [[BZRFakePaymentTransaction alloc] init];
+    transaction.transactionState = SKPaymentTransactionStateFailed;
+    transaction.error = [NSError lt_errorWithCode:133737];
 
-     NSError *error = [NSError bzr_purchaseFailedErrorWithTransaction:transaction];
+    NSError *error = [NSError bzr_errorWithCode:1337 transaction:transaction];
 
-     expect(error).toNot.beNil();
-     expect(error.lt_isLTDomain).to.beTruthy();
-     expect(error.code).to.equal(BZRErrorCodePurchaseFailed);
-     expect(error.lt_underlyingError).to.equal(transaction.error);
+    expect(error).toNot.beNil();
+    expect(error.lt_isLTDomain).to.beTruthy();
+    expect(error.code).to.equal(1337);
+    expect(error.lt_underlyingError).to.equal(transaction.error);
+  });
+
+  it(@"should return an error with the given transaction without an underlying error", ^{
+    BZRFakePaymentTransaction *transaction = [[BZRFakePaymentTransaction alloc] init];
+    transaction.transactionState = SKPaymentTransactionStatePurchased;
+
+    NSError *error = [NSError bzr_errorWithCode:1337 transaction:transaction];
+
+    expect(error).toNot.beNil();
+    expect(error.lt_isLTDomain).to.beTruthy();
+    expect(error.code).to.equal(1337);
+    expect(error.lt_underlyingError).to.beNil();
   });
 });
 

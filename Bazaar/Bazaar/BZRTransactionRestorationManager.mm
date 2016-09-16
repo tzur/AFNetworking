@@ -12,13 +12,18 @@ NS_ASSUME_NONNULL_BEGIN
 /// Used to restore completed transactions with.
 @property (readonly, nonatomic) id<BZRRestorationPaymentQueue> paymentQueue;
 
+/// Application user identifier to use when restoring transactions.
+@property (readonly, nonatomic, nullable) NSString *applicationUserID;
+
 @end
 
 @implementation BZRTransactionRestorationManager
 
-- (instancetype)initWithPaymentQueue:(id<BZRRestorationPaymentQueue>)paymentQueue {
+- (instancetype)initWithPaymentQueue:(id<BZRRestorationPaymentQueue>)paymentQueue
+                   applicationUserID:(nullable NSString *)applicationUserID {
   if (self = [super init]) {
     _paymentQueue = paymentQueue;
+    _applicationUserID = applicationUserID;
     paymentQueue.restorationDelegate = self;
   }
   return self;
@@ -29,17 +34,7 @@ NS_ASSUME_NONNULL_BEGIN
   return [RACSignal defer:^RACSignal *{
     @strongify(self);
     RACSignal *transactionsSignal = [[self restoredTransactionsSignal] replay];
-    [self.paymentQueue restoreCompletedTransactions];
-    return transactionsSignal;
-  }];
-}
-
-- (RACSignal *)restoreCompletedTransactionsWithApplicationUserID:(NSString *)applicationUserID {
-  @weakify(self);
-  return [RACSignal defer:^RACSignal *{
-    @strongify(self);
-    RACSignal *transactionsSignal = [[self restoredTransactionsSignal] replay];
-    [self.paymentQueue restoreCompletedTransactionsWithApplicationUsername:applicationUserID];
+    [self.paymentQueue restoreCompletedTransactionsWithApplicationUserID:self.applicationUserID];
     return transactionsSignal;
   }];
 }
