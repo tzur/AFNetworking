@@ -12,6 +12,13 @@ NS_ASSUME_NONNULL_BEGIN
 /// Queue used to make payments, restore completed transactions and manage downloads.
 @property (readonly, nonatomic) SKPaymentQueue *underlyingPaymentQueue;
 
+/// Subject used to send unfinished transactions with.
+@property (readonly, nonatomic) RACSubject *unfinishedTransactionsSubject;
+
+/// if \c YES, transactions will be sent using \c unfinishedTransactionsSubject. Otherwise, they
+/// will be passed to the appropriate delegate.
+@property (nonatomic) BOOL shouldSendTransactionsAsUnfinished;
+
 @end
 
 /// Collection of transactions classified as payment transactions or restoration transactions.
@@ -34,13 +41,23 @@ static NSString * const kRestorationLabel = @"Restoration";
 #pragma mark -
 
 - (instancetype)init {
-  return [self initWithUnderlyingPaymentQueue:[SKPaymentQueue defaultQueue]];
+  return [self initWithUnderlyingPaymentQueue:[SKPaymentQueue defaultQueue]
+                unfinishedTransactionsSubject:nil];
 }
 
-- (instancetype)initWithUnderlyingPaymentQueue:(SKPaymentQueue *)underlyingPaymentQueue {
+- (instancetype)initWithUnfinishedTransactionsSubject:(nullable RACSubject *)
+    unfinishedTransactionsSubject {
+  return [self initWithUnderlyingPaymentQueue:[SKPaymentQueue defaultQueue]
+                unfinishedTransactionsSubject:unfinishedTransactionsSubject];
+}
+
+- (instancetype)initWithUnderlyingPaymentQueue:(SKPaymentQueue *)underlyingPaymentQueue
+    unfinishedTransactionsSubject:(nullable RACSubject *)unfinishedTransactionsSubject {
   if (self = [super init]) {
     _underlyingPaymentQueue = underlyingPaymentQueue;
+    _unfinishedTransactionsSubject = unfinishedTransactionsSubject;
     [self.underlyingPaymentQueue addTransactionObserver:self];
+    self.shouldSendTransactionsAsUnfinished = YES;
   }
   return self;
 }
@@ -53,26 +70,6 @@ static NSString * const kRestorationLabel = @"Restoration";
 #pragma mark BZRDownloadsPaymentQueue
 #pragma mark -
 
-- (void)restoreCompletedTransactions {
-  [self.underlyingPaymentQueue restoreCompletedTransactions];
-}
-
-- (void)restoreCompletedTransactionsWithApplicationUsername:(nullable NSString *)username {
-  [self.underlyingPaymentQueue restoreCompletedTransactionsWithApplicationUsername:username];
-}
-
-#pragma mark -
-#pragma mark BZRPaymentsPaymentQueue
-#pragma mark -
-
-- (void)addPayment:(SKPayment *)payment {
-  [self.underlyingPaymentQueue addPayment:payment];
-}
-
-#pragma mark -
-#pragma mark BZRRestorationPaymentQueue
-#pragma mark -
-
 - (void)startDownloads:(NSArray<SKDownload *> *)downloads {
   [self.underlyingPaymentQueue startDownloads:downloads];
 }
@@ -83,6 +80,29 @@ static NSString * const kRestorationLabel = @"Restoration";
 
 - (NSArray<SKPaymentTransaction *> *)transactions {
   return self.underlyingPaymentQueue.transactions;
+}
+
+#pragma mark -
+#pragma mark BZRPaymentsPaymentQueue
+#pragma mark -
+
+- (void)addPayment:(SKPayment *)payment {
+  self.shouldSendTransactionsAsUnfinished = NO;
+  [self.underlyingPaymentQueue addPayment:payment];
+}
+
+#pragma mark -
+#pragma mark BZRRestorationPaymentQueue
+#pragma mark -
+
+- (void)restoreCompletedTransactions {
+  self.shouldSendTransactionsAsUnfinished = NO;
+  [self.underlyingPaymentQueue restoreCompletedTransactions];
+}
+
+- (void)restoreCompletedTransactionsWithApplicationUsername:(nullable NSString *)username {
+  self.shouldSendTransactionsAsUnfinished = NO;
+  [self.underlyingPaymentQueue restoreCompletedTransactionsWithApplicationUsername:username];
 }
 
 #pragma mark -
@@ -106,6 +126,11 @@ static NSString * const kRestorationLabel = @"Restoration";
 
 - (void)paymentQueue:(SKPaymentQueue __unused *)queue
  updatedTransactions:(NSArray<SKPaymentTransaction *> *)transactions {
+  if (self.shouldSendTransactionsAsUnfinished) {
+    [self sendTransactionsAsUnfinished:transactions];
+    return;
+  }
+
   BZRClassifiedTransactions *classifiedTransactions =
       [[self class] classifyTransactions:transactions];
 
@@ -117,6 +142,12 @@ static NSString * const kRestorationLabel = @"Restoration";
   if (classifiedTransactions[kRestorationLabel].count) {
     [self.restorationDelegate paymentQueue:self
                       transactionsRestored:classifiedTransactions[kRestorationLabel]];
+  }
+}
+
+- (void)sendTransactionsAsUnfinished:(NSArray<SKPaymentTransaction *> *)transactions {
+  for (SKPaymentTransaction *transaction in transactions) {
+    [self.unfinishedTransactionsSubject sendNext:transaction];
   }
 }
 
