@@ -15,6 +15,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+NSString * const kPTUImageCellViewModelTraitSessionKey = @"Session";
+NSString * const kPTUImageCellViewModelTraitCloudBasedKey = @"Cloud";
+
 @implementation PTUImageCellViewModel
 
 - (instancetype)initWithAssetManager:(id<PTNAssetManager>)assetManager
@@ -68,6 +71,17 @@ NS_ASSUME_NONNULL_BEGIN
   return [NSString stringWithFormat:_LPlural(@"%lu Photos", @"Label under a photo album name, "
                                              "describing the number of photos currently present in "
                                              "that album"), count];
+}
+
+- (NSSet *)traits {
+  NSMutableSet *traits = [NSMutableSet set];
+  if ([self.descriptor.descriptorTraits containsObject:kPTNDescriptorTraitSessionKey]) {
+    [traits addObject:kPTUImageCellViewModelTraitSessionKey];
+  }
+  if ([self.descriptor.descriptorTraits containsObject:kPTNDescriptorTraitCloudBasedKey]) {
+    [traits addObject:kPTUImageCellViewModelTraitCloudBasedKey];
+  }
+  return traits;
 }
 
 @end

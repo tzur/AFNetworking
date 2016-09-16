@@ -5,6 +5,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol PTNAssetManager, PTNDescriptor, PTNImageFetchOptions;
 
+/// Cell that represents an editing session.
+extern NSString * const kPTUImageCellViewModelTraitSessionKey;
+
+/// Cell that represents an asset that is backed by remote network storage. Note that the asset
+/// might be already downloaded and cached by the client.
+extern NSString * const kPTUImageCellViewModelTraitCloudBasedKey;
+
 @class PTNImageFetchOptions;
 
 /// Protocol for collection view image cells view models to conform to in order to be used by the
@@ -23,10 +30,15 @@ NS_ASSUME_NONNULL_BEGIN
 /// display, and it should be set to \c nil.
 @property (readonly, nonatomic, nullable) RACSignal *subtitleSignal;
 
+/// Set of traits defining properties of the corresponding cell.
+///
+/// @see PTUImageCellViewModel.h for the cell default trait keys.
+@property (readonly, nonatomic) NSSet<NSString *> *traits;
+
 @end
 
 /// \c PTUImageCellViewModel default implementation, delivering properties associated with a
-/// \c PTNDescriptor instance.
+/// \c PTNDescriptor instance. \c traits are derived from given descriptor's \c descriptorTraits.
 @interface PTUImageCellViewModel : NSObject <PTUImageCellViewModel>
 
 - (instancetype)init NS_UNAVAILABLE;
