@@ -88,11 +88,12 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark Creation
 #pragma mark -
 
-- (void)createAssetFromImageAtFileURL:(NSURL *)fileURL {
+- (nullable PHAssetChangeRequest *)createAssetFromImageAtFileURL:(NSURL *)fileURL {
   LTAssert(!self.inChangeBlock, @"Attempting to create image at file URL %@ not within a change "
            "block", fileURL);
   
   [self.assetsCreated addObject:fileURL];
+  return self.changeRequest;
 }
 
 #pragma mark -

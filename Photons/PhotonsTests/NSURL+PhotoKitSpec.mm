@@ -7,6 +7,15 @@
 
 SpecBegin(NSURL_PhotoKit)
 
+it(@"should return valid object placeholder URL", ^{
+  id objectPlaceholder = OCMClassMock([PHObjectPlaceholder class]);
+  OCMStub([objectPlaceholder localIdentifier]).andReturn(@"foo");
+
+  NSURL *url = [NSURL ptn_photoKitAssetURLWithObjectPlaceholder:objectPlaceholder];
+  expect(url.ptn_photoKitURLType.value).to.equal(PTNPhotoKitURLTypeAsset);
+  expect(url.ptn_photoKitAssetIdentifier).to.equal(@"foo");
+});
+
 it(@"should return valid asset URL", ^{
   id asset = OCMClassMock([PHAsset class]);
   OCMStub([asset localIdentifier]).andReturn(@"foo");
