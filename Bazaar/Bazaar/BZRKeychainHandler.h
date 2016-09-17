@@ -11,11 +11,12 @@ NS_ASSUME_NONNULL_BEGIN
 - (nullable NSData *)dataForKey:(NSString *)key error:(NSError **)error;
 
 /// Set the value of \c key to be \c data. If \c data is \c nil, \c key will be removed from the
-/// receiver's keychain storage. \c error is set with an appropriate error on failure.
-- (void)setData:(nullable NSData *)data forKey:(NSString *)key error:(NSError **)error;
+/// receiver's keychain storage. On success returns \c YES, on failure returns \c NO and \c error is
+/// set with an appropriate error.
+- (BOOL)setData:(nullable NSData *)data forKey:(NSString *)key error:(NSError **)error;
 
 /// Bazaar namespace error for the given underlying class error.
-+ (nullable NSError *)errorForUnderlyingError:(nullable NSError *)underlyingError;
++ (NSError *)errorForUnderlyingError:(NSError *)underlyingError;
 
 @end
 

@@ -17,11 +17,13 @@ NS_ASSUME_NONNULL_BEGIN
         RACTupleUnpack(NSString *filePath, NSDictionary *fileAttributes) = attributesTuple;
         NSNumber *fileSize = fileAttributes[NSFileSize];
         if (!fileSize) {
-          NSString *description =
-              [NSString stringWithFormat:@"File size is not specified in attributes for item at "
-               "path %@, item type is %@", filePath, fileAttributes[NSFileType]];
-          *error = [NSError lt_errorWithCode:BZRErrorCodeFileAttributesRetrievalFailed path:filePath
-                                 description:description];
+          if (error) {
+            NSString *description =
+                [NSString stringWithFormat:@"File size is not specified in attributes for item at "
+                 "path %@, item type is %@", filePath, fileAttributes[NSFileType]];
+            *error = [NSError lt_errorWithCode:BZRErrorCodeFileAttributesRetrievalFailed
+                                          path:filePath description:description];
+          }
           return nil;
         }
         return [RACTuple tupleWithObjects:filePath, fileSize, nil];
@@ -78,24 +80,24 @@ NS_ASSUME_NONNULL_BEGIN
       setNameWithFormat:@"%@ -bzr_enumerateDirectoryAtPath: %@", self.description, directoryPath];
 }
 
-- (NSDirectoryEnumerator<NSString *> *)bzr_directoryEnumeratorAtPath:(NSString *)directoryPath
+- (nullable NSDirectoryEnumerator<NSString *> *)bzr_directoryEnumeratorAtPath:(NSString *)path
     error:(NSError * __autoreleasing *)error {
   BOOL isDirectory;
-  if (![self fileExistsAtPath:directoryPath isDirectory:&isDirectory] || !isDirectory) {
-    NSString *description =
-        [NSString stringWithFormat:@"Item at path %@ does not exist or is not a directory",
-         directoryPath];
-    *error = [NSError lt_errorWithCode:BZRErrorCodeDirectoryEnumrationFailed path:directoryPath
-                           description:description];
+  if (![self fileExistsAtPath:path isDirectory:&isDirectory] || !isDirectory) {
+    if (error) {
+      NSString *description =
+          [NSString stringWithFormat:@"Item at path %@ does not exist or is not a directory", path];
+      *error = [NSError lt_errorWithCode:BZRErrorCodeDirectoryEnumrationFailed path:path
+                             description:description];
+    }
     return nil;
   }
 
-  NSDirectoryEnumerator<NSString *> *enumerator = [self enumeratorAtPath:directoryPath];
-  if (!enumerator) {
+  NSDirectoryEnumerator<NSString *> *enumerator = [self enumeratorAtPath:path];
+  if (!enumerator && error) {
     NSString *description =
-        [NSString stringWithFormat:@"Failed to create enumartor for directory at path %@",
-         directoryPath];
-    *error = [NSError lt_errorWithCode:BZRErrorCodeDirectoryEnumrationFailed path:directoryPath
+      [NSString stringWithFormat:@"Failed to create enumartor for directory at path %@", path];
+    *error = [NSError lt_errorWithCode:BZRErrorCodeDirectoryEnumrationFailed path:path
                            description:description];
   }
   return enumerator;

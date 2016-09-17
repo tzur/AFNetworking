@@ -7,6 +7,12 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/// Error code used by \c UICKeychain when a conversion error occurs.
+extern const NSInteger kUICKeychainStoreConversionErrorCode;
+
+/// Error code used by \c UICKeychain when an unexpected error occurs.
+extern const NSInteger kUICKeychainStoreUnexpectedErrorCode;
+
 /// Category for conforming to \c BZRKeychainHandler.
 @interface UICKeyChainStore (SecureStorage) <BZRKeychainHandler>
 @end

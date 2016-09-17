@@ -59,8 +59,9 @@ NS_ASSUME_NONNULL_BEGIN
                        BZRProduct *productForUnderlyingContentFetcher) = tuple;
         if (![productForUnderlyingContentFetcher.contentFetcherParameters
               isKindOfClass:[contentFetcher expectedParametersClass]]) {
-          *error = [NSError
-                    lt_errorWithCode:BZRErrorCodeUnexpectedUnderlyingContentFetcherParametersClass];
+          if (error) {
+            *error = [NSError lt_errorWithCode:BZRErrorCodeUnexpectedContentFetcherParametersClass];
+          }
           return nil;
         }
         return tuple;
@@ -100,8 +101,8 @@ NS_ASSUME_NONNULL_BEGIN
         [product productWithContentFetcherParameters:parametersForContentFetcher error:&error];
     if (!productForUnderlyingContentFetcher || error) {
       NSError *invalidParametersError =
-          [NSError lt_errorWithCode:BZRErrorCodeInvalidUnderlyingContentFetcherParameters
-          underlyingError:error];
+          [NSError lt_errorWithCode:BZRErrorCodeInvalidContentFetcherParameters
+                    underlyingError:error];
       [subscriber sendError:invalidParametersError];
     } else {
       [subscriber sendNext:productForUnderlyingContentFetcher];

@@ -25,7 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
     validationParametersProvider;
 
 /// Latest \c BZRReceiptValidationStatus validated successfully with \c receiptValidator.
-@property (nonatomic, nullable) BZRReceiptValidationStatus *receiptValidationStatus;
+@property (readwrite, nonatomic, nullable) BZRReceiptValidationStatus *receiptValidationStatus;
 
 /// Stores the latest storage error that occurred.
 @property (strong, nonatomic, nullable) NSError *storageError;
@@ -91,9 +91,9 @@ NSString * const kValidationStatusStorageKey = @"validationStatus";
 - (void)setReceiptValidationStatus:(nullable BZRReceiptValidationStatus *)receiptValidationStatus {
   _receiptValidationStatus = receiptValidationStatus;
   NSError *error;
-  [self.keychainStorage setValue:receiptValidationStatus forKey:kValidationStatusStorageKey
-                           error:&error];
-  if (error) {
+  BOOL success = [self.keychainStorage setValue:receiptValidationStatus
+                                         forKey:kValidationStatusStorageKey error:&error];
+  if (!success) {
     self.storageError =
         [NSError lt_errorWithCode:BZRErrorCodeStoringDataToStorageFailed underlyingError:error];
   }
@@ -110,11 +110,10 @@ NSString * const kValidationStatusStorageKey = @"validationStatus";
   }] tryMap:^BZRReceiptValidationParameters * _Nullable
             (BZRReceiptValidationParameters * _Nullable receiptValidationParameters,
              NSError **error) {
-    if (!receiptValidationParameters) {
+    if (!receiptValidationParameters && error) {
       NSString *description = @"Receipt validation parameters are nil";
       *error = [NSError lt_errorWithCode:BZRErrorCodeReceiptValidationFailed
                              description:description];
-      return nil;
     }
     return receiptValidationParameters;
   }] flattenMap:^RACStream *(BZRReceiptValidationParameters *receiptValidationParameters) {
@@ -129,10 +128,12 @@ NSString * const kValidationStatusStorageKey = @"validationStatus";
       tryMap:^BZRReceiptValidationStatus * _Nullable
           (BZRReceiptValidationStatus *receiptValidationStatus, NSError **error) {
         if (!receiptValidationStatus.isValid) {
-          NSString *description = [NSString stringWithFormat:@"Failed to validate receipt, "
-                                   "reason: %@", receiptValidationStatus.error];
-          *error = [NSError lt_errorWithCode:BZRErrorCodeReceiptValidationFailed
-                                 description:description];
+          if (error) {
+            NSString *description = [NSString stringWithFormat:@"Failed to validate receipt, "
+                                     "reason: %@", receiptValidationStatus.error];
+            *error = [NSError lt_errorWithCode:BZRErrorCodeReceiptValidationFailed
+                                   description:description];
+          }
           return nil;
         }
         return receiptValidationStatus;

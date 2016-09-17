@@ -59,11 +59,14 @@ context(@"loading validation status from storage", ^{
     OCMStub([receiptValidationParametersProvider receiptValidationParameters])
         .andReturn(receiptValidationParameters);
 
-    RACSignal *validateSignal = [validationStatusProvider validateReceipt];
+    LLSignalTestRecorder *validationSignal =
+        [[validationStatusProvider validateReceipt] testRecorder];
 
-    expect(validateSignal).will.complete();
-    OCMStub([keychainStorage valueOfClass:OCMOCK_ANY forKey:OCMOCK_ANY
-                                    error:[OCMArg anyObjectRef]]);
+    expect(validationSignal).will.complete();
+    expect(validationSignal).will.sendValues(@[receiptValidationStatus]);
+
+    OCMReject([keychainStorage valueOfClass:OCMOCK_ANY forKey:OCMOCK_ANY
+                                      error:[OCMArg anyObjectRef]]);
     expect(validationStatusProvider.receiptValidationStatus).notTo.beNil();
   });
 

@@ -9,34 +9,27 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation UICKeyChainStore (SecureStorage)
 
-/// Error code used by \c UICKeychain when a conversion error occurs.
-static const NSInteger kKeychainStoreConversionErrorCode = -67594;
+const NSInteger kUICKeychainStoreConversionErrorCode = -67594;
+const NSInteger kUICKeychainStoreUnexpectedErrorCode = -99999;
 
-/// Error code used by \c UICKeychain when an unexpected error occurs.
-static const NSInteger kKeychainStoreUnexpectedErrorCode = -99999;
-
-+ (nullable NSError *)errorForUnderlyingError:(nullable NSError *)underlyingError {
-  if (!underlyingError) {
-    return nil;
-  }
-  NSError *error;
++ (NSError *)errorForUnderlyingError:(NSError *)underlyingError {
   NSInteger errorCode;
   switch (underlyingError.code) {
     case UICKeyChainStoreErrorInvalidArguments:
       errorCode = BZRErrorCodeKeychainStorageInvalidArguments;
       break;
-    case kKeychainStoreConversionErrorCode:
+    case kUICKeychainStoreConversionErrorCode:
       errorCode = BZRErrorCodeKeychainStorageConversionFailed;
       break;
-    case kKeychainStoreUnexpectedErrorCode:
+    case kUICKeychainStoreUnexpectedErrorCode:
       errorCode = BZRErrorCodeKeychainStorageUnexpectedFailure;
       break;
     default:
       errorCode = BZRErrorCodeKeychainStorageAccessFailed;
       break;
   }
-  error = [NSError lt_errorWithCode:errorCode underlyingError:underlyingError];
-  return error;
+  
+  return [NSError lt_errorWithCode:errorCode underlyingError:underlyingError];
 }
 
 @end

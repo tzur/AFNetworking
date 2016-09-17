@@ -79,7 +79,7 @@ context(@"fetching with underlying content fetcher", ^{
 
     expect(signal).will.matchError(^BOOL(NSError *error) {
       return error.lt_isLTDomain &&
-          error.code == BZRErrorCodeInvalidUnderlyingContentFetcherParameters &&
+          error.code == BZRErrorCodeInvalidContentFetcherParameters &&
           error.lt_underlyingError == underlyingError;
     });
   });
@@ -97,7 +97,7 @@ context(@"fetching with underlying content fetcher", ^{
 
     expect(signal).will.matchError(^BOOL(NSError *error) {
       return error.lt_isLTDomain &&
-      error.code == BZRErrorCodeUnexpectedUnderlyingContentFetcherParametersClass;
+      error.code == BZRErrorCodeUnexpectedContentFetcherParametersClass;
     });
   });
 

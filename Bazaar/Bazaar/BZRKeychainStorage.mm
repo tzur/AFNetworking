@@ -37,9 +37,8 @@ NS_ASSUME_NONNULL_BEGIN
                                      error:(NSError * __autoreleasing *)error {
   NSError *underlyingError;
   NSData *data = [self.keychainHandler dataForKey:key error:&underlyingError];
-  
-  if (!data ||  underlyingError) {
-    if (error) {
+  if (!data) {
+    if (underlyingError && error) {
       *error = [self.keychainHandler errorForUnderlyingError:underlyingError];
     }
     return nil;
@@ -60,18 +59,24 @@ NS_ASSUME_NONNULL_BEGIN
   return value;
 }
 
-- (void)setValue:(nullable id<NSSecureCoding>)value forKey:(NSString *)key
+- (BOOL)setValue:(nullable id<NSSecureCoding>)value forKey:(NSString *)key
            error:(NSError * __autoreleasing *)error {
   NSData *data = nil;
   if (value) {
     LTParameterAssert([self isObjectValidForArchiving:value], @"Value is not serializable.");
     data = [NSKeyedArchiver archivedDataWithRootObject:value];
   }
+
   NSError *underlyingError;
-  [self.keychainHandler setData:data forKey:key error:&underlyingError];
-  if (error) {
-    *error = [self.keychainHandler errorForUnderlyingError:underlyingError];
+  BOOL success = [self.keychainHandler setData:data forKey:key error:&underlyingError];
+  if (!success) {
+    if (error) {
+      *error = underlyingError ?
+          [self.keychainHandler errorForUnderlyingError:underlyingError] :
+          [NSError lt_errorWithCode:BZRErrorCodeKeychainStorageUnexpectedFailure];
+    }
   }
+  return success;
 }
 
 - (BOOL)isObjectValidForArchiving:(id)object {

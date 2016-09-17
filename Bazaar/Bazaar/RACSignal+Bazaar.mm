@@ -18,21 +18,22 @@ NS_ASSUME_NONNULL_BEGIN
                     modelClass);
 
   return [self tryMap:^BZRModel * _Nullable(NSDictionary *JSONDictionary, NSError **error) {
+    BZRModel *model = nil;
     @try {
       NSError *underlyingError;
-      BZRModel *model = [MTLJSONAdapter modelOfClass:modelClass fromJSONDictionary:JSONDictionary
-                                              error:&underlyingError];
-      if (!model || underlyingError) {
+      model = [MTLJSONAdapter modelOfClass:modelClass fromJSONDictionary:JSONDictionary
+                                     error:&underlyingError];
+      if (!model && error) {
         *error = [NSError lt_errorWithCode:BZRErrorCodeModelJSONDeserializationFailed
-                          underlyingError:underlyingError];
-      } else {
-        return model;
+                           underlyingError:underlyingError];
       }
     } @catch (NSException *exception) {
-      *error = [NSError bzr_errorWithCode:BZRErrorCodeModelJSONDeserializationFailed
-                                exception:exception];
+      if (error) {
+        *error = [NSError bzr_errorWithCode:BZRErrorCodeModelJSONDeserializationFailed
+                                  exception:exception];
+      }
     }
-    return nil;
+    return model;
   }];
 }
 
@@ -43,21 +44,22 @@ NS_ASSUME_NONNULL_BEGIN
                     modelClass);
 
   return [self tryMap:^NSArray * _Nullable(NSArray<NSDictionary *> *JSONArray, NSError **error) {
+    NSArray<BZRModel *> *models = nil;
     @try {
       NSError *underlyingError;
-      NSArray<BZRModel *> *models = [MTLJSONAdapter modelsOfClass:modelClass fromJSONArray:JSONArray
-                                                            error:&underlyingError];
-      if (!models || underlyingError) {
+      models = [MTLJSONAdapter modelsOfClass:modelClass fromJSONArray:JSONArray
+                                       error:&underlyingError];
+      if (!models && error) {
         *error = [NSError lt_errorWithCode:BZRErrorCodeModelJSONDeserializationFailed
                            underlyingError:underlyingError];
-      } else {
-        return models;
       }
     } @catch (NSException *exception) {
-      *error = [NSError bzr_errorWithCode:BZRErrorCodeModelJSONDeserializationFailed
-                                exception:exception];
+      if (error) {
+        *error = [NSError bzr_errorWithCode:BZRErrorCodeModelJSONDeserializationFailed
+                                  exception:exception];
+      }
     }
-    return nil;
+    return models;
   }];
 }
 

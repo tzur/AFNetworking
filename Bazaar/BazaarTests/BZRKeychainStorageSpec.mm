@@ -32,11 +32,16 @@ context(@"keychain storage", ^{
   it(@"should store values correctly", ^{
     NSString *key = @"key";
     NSString *value = @"value";
+    NSData *archivedValue = [NSKeyedArchiver archivedDataWithRootObject:value];
+    OCMExpect([keychainHandler setData:archivedValue forKey:key error:[OCMArg anyObjectRef]])
+        .andReturn(YES);
+
     NSError *error;
-    [secureStorage setValue:value forKey:key error:&error];
+    BOOL success = [secureStorage setValue:value forKey:key error:&error];
+
+    expect(success).to.beTruthy();
     expect(error).to.beNil();
-    OCMVerify([keychainHandler setData:[NSKeyedArchiver archivedDataWithRootObject:value]
-                                forKey:key error:[OCMArg anyObjectRef]]);
+    OCMVerifyAll((id)keychainHandler);
   });
   
   it(@"should read values correctly", ^{
@@ -51,10 +56,16 @@ context(@"keychain storage", ^{
   });
 
   it(@"should allow nil value", ^{
+    NSString *key = @"foo";
+    OCMExpect([keychainHandler setData:nil forKey:key error:[OCMArg anyObjectRef]])
+        .andReturn(YES);
+
     NSError *error;
-    [secureStorage setValue:nil forKey:@"someKey" error:&error];
+    BOOL success = [secureStorage setValue:nil forKey:key error:&error];
+
+    expect(success).to.beTruthy();
     expect(error).to.beNil();
-    OCMVerify([keychainHandler setData:nil forKey:@"someKey" error:[OCMArg anyObjectRef]]);
+    OCMVerifyAll((id)keychainHandler);
   });
   
   it(@"should return nil for non-existing values", ^{
@@ -70,8 +81,11 @@ context(@"keychain storage", ^{
     NSError *bazaarError = OCMClassMock([NSError class]);
     OCMStub([keychainHandler dataForKey:[OCMArg any] error:[OCMArg setTo:underlyingError]]);
     OCMStub([keychainHandler errorForUnderlyingError:underlyingError]).andReturn(bazaarError);
+
     NSError *error;
-    [secureStorage valueForKey:@"key" error:&error];
+    id value = [secureStorage valueForKey:@"key" error:&error];
+
+    expect(value).to.beNil();
     expect(error).to.equal(bazaarError);
   });
   
@@ -81,8 +95,11 @@ context(@"keychain storage", ^{
     OCMStub([keychainHandler setData:OCMOCK_ANY forKey:OCMOCK_ANY
                                error:[OCMArg setTo:underlyingError]]);
     OCMStub([keychainHandler errorForUnderlyingError:underlyingError]).andReturn(bazaarError);
+
     NSError *error;
-    [secureStorage setValue:@"value" forKey:@"key" error:&error];
+    BOOL success = [secureStorage setValue:@"value" forKey:@"key" error:&error];
+
+    expect(success).to.beFalsy();
     expect(error).to.equal(bazaarError);
   });
   
