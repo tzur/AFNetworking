@@ -1,6 +1,8 @@
 // Copyright (c) 2013 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
+NS_ASSUME_NONNULL_BEGIN
+
 namespace cv {
   class Mat;
 }
@@ -57,3 +59,5 @@ typedef NS_ENUM(NSUInteger, LTImageDepth) {
 @property (readonly, nonatomic) LTImageDepth depth;
 
 @end
+
+NS_ASSUME_NONNULL_END

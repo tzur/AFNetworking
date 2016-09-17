@@ -3,6 +3,8 @@
 
 #import "LTImage.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class LTTexture;
 
 /// Category for loading a \c UIImage directly to \c LTTexture, without allocating an intermediary
@@ -17,3 +19,5 @@
 + (void)loadImage:(UIImage *)image toTexture:(LTTexture *)texture;
 
 @end
+
+NS_ASSUME_NONNULL_END

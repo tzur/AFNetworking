@@ -7,6 +7,8 @@
 #import <LTKit/NSError+LTKit.h>
 #import <MobileCoreServices/MobileCoreServices.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface LTImage () {
   /// Image contents.
   cv::Mat _mat;
@@ -263,3 +265,5 @@ typedef void (^LTImageCGImageBlock)(CGImageRef imageRef);
 }
 
 @end
+
+NS_ASSUME_NONNULL_END
