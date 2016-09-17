@@ -56,6 +56,13 @@ NS_ASSUME_NONNULL_BEGIN
 /// failed.
 + (instancetype)textureWithUIImage:(UIImage *)image;
 
+/// Allocates a texture with the \c size and \c pixelFormat properties suitable for the given
+/// \c image, and loads the \c image to the texture. If \c backgroundColor is set, the returned
+/// texture will first be filled with the given color and then the image will be drawn over it using
+/// normal blending mode. Otherwise no filling will be made prior to the drawing, potentially
+/// preserving the transparency of the image.
++ (instancetype)textureWithUIImage:(UIImage *)image backgroundColor:(UIColor *)backgroundColor;
+
 /// Creates a new byte precision, 4 channels RGBA texture with the given \c size and allocates its
 /// memory. This is a convenience method which is similar to calling:
 ///
