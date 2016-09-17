@@ -28,7 +28,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithImage:(UIImage *)image {
   LTParameterAssert(image);
   cv::Mat mat = [[self class] allocateMatForImage:image];
-  [[self class] loadImage:image toMat:&mat];
+  [[self class] loadImage:image toMat:&mat backgroundColor:nil];
   return [self initWithMat:mat copy:NO];
 }
 
@@ -49,7 +49,8 @@ NS_ASSUME_NONNULL_BEGIN
   return cv::Mat(size.height, size.width, [self matTypeForImage:image]);
 }
 
-+ (void)loadImage:(UIImage *)image toMat:(cv::Mat *)mat {
++ (void)loadImage:(UIImage *)image toMat:(cv::Mat *)mat
+  backgroundColor:(nullable UIColor *)backgroundColor {
   LTParameterAssert(CGSizeMake(mat->cols, mat->rows) == [self imageSizeInPixels:image]);
   LTParameterAssert(mat->type() == [[self class] matTypeForImage:image],
                     @"Invalid mat type given (%d vs. the required %d)",
@@ -67,13 +68,26 @@ NS_ASSUME_NONNULL_BEGIN
   CGContextScaleCTM(context, 1.0, -1.0);
 
   UIGraphicsPushContext(context);
-  // Use kCGBlendModeCopy to make sure the image overwrites the context buffer, which may be
-  // uninitialized.
-  [image drawInRect:CGRectMake(0, 0, mat->cols, mat->rows) blendMode:kCGBlendModeCopy alpha:1.0];
+  CGRect rect = CGRectMake(0, 0, mat->cols, mat->rows);
+  if (backgroundColor && [self hasAlpha:image]) {
+    [backgroundColor setFill];
+    UIRectFill(rect);
+    [image drawInRect:rect];
+  } else {
+    // Use kCGBlendModeCopy to make sure the image overwrites the context buffer, which may be
+    // uninitialized.
+    [image drawInRect:rect blendMode:kCGBlendModeCopy alpha:1.0];
+  }
   UIGraphicsPopContext();
   
   CGContextRelease(context);
   CGColorSpaceRelease(colorSpace);
+}
+
++ (BOOL)hasAlpha:(UIImage *)image {
+  CGImageAlphaInfo alphaInfo = CGImageGetAlphaInfo(image.CGImage);
+  return !((alphaInfo & kCGImageAlphaNone) && (alphaInfo & kCGImageAlphaNoneSkipLast) &&
+      (alphaInfo & kCGImageAlphaNoneSkipFirst));
 }
 
 + (CGColorSpaceRef)newBitmapColorSpaceFromColorSpace:(CGColorSpaceRef)colorSpace {
