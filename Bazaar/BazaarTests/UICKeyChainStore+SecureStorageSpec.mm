@@ -7,17 +7,11 @@
 
 #import "NSErrorCodes+Bazaar.h"
 
-/// Error code used by \c UICKeyChainStore when a conversion error occurs.
-static const NSInteger kKeychainStoreConversionErrorCode = -67594;
-
-/// Error code used by \c UICKeyChainStore when an unexpected error occurs.
-static const NSInteger kKeychainStoreUnexpectedErrorCode = -99999;
-
 SpecBegin(UICKeyChainStoreSecureStorage)
 
 context(@"underlying error", ^{
   it(@"should convert unexpected error correctly", ^{
-    NSError *underlyingError = [NSError lt_errorWithCode:kKeychainStoreUnexpectedErrorCode];
+    NSError *underlyingError = [NSError lt_errorWithCode:kUICKeychainStoreUnexpectedErrorCode];
     NSError *error = [UICKeyChainStore errorForUnderlyingError:underlyingError];
     expect(error.lt_underlyingError).to.equal(underlyingError);
     expect(error.lt_isLTDomain).to.beTruthy();
@@ -25,7 +19,7 @@ context(@"underlying error", ^{
   });
   
   it(@"should convert conversion error correctly", ^{
-    NSError *underlyingError = [NSError lt_errorWithCode:kKeychainStoreConversionErrorCode];
+    NSError *underlyingError = [NSError lt_errorWithCode:kUICKeychainStoreConversionErrorCode];
     NSError *error = [UICKeyChainStore errorForUnderlyingError:underlyingError];
     expect(error.lt_underlyingError).to.equal(underlyingError);
     expect(error.lt_isLTDomain).to.beTruthy();

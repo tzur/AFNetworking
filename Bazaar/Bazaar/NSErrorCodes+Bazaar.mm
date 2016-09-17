@@ -45,10 +45,10 @@ LTErrorCodesImplement(BazaarErrorCodeProductID,
   BZRErrorCodeDirectoryEnumrationFailed,
   /// Requested content fetcher is not registered.
   BZRErrorCodeProductContentFetcherNotRegistered,
-  /// Failure due to invalid underlying content fetcher parameters.
-  BZRErrorCodeInvalidUnderlyingContentFetcherParameters,
-  /// Failure due to unexpected underlying content fetcher parameters class.
-  BZRErrorCodeUnexpectedUnderlyingContentFetcherParametersClass,
+  /// Failure due to invalid content fetcher parameters.
+  BZRErrorCodeInvalidContentFetcherParameters,
+  /// Failure due to unexpected content fetcher parameters class.
+  BZRErrorCodeUnexpectedContentFetcherParametersClass,
   /// Copy product's content to temporary directory has failed.
   BZRErrorCodeCopyProductContentFailed,
   /// Creation of directory has failed.

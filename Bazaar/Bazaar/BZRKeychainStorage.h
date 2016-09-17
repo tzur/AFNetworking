@@ -24,8 +24,9 @@ NS_ASSUME_NONNULL_BEGIN
 - (nullable id<NSSecureCoding>)valueForKey:(NSString *)key error:(NSError **)error;
 
 /// Set the value of \c key to be \c value. If \c value is \c nil, \c key will be removed from the
-/// receiver's secure storage. \c error is set with an appropriate error on failure.
-- (void)setValue:(nullable id<NSSecureCoding>)value forKey:(NSString *)key error:(NSError **)error;
+/// receiver. On success returns \c YES, on failure returns \c NO and \c error is set with an
+/// appropriate error.
+- (BOOL)setValue:(nullable id<NSSecureCoding>)value forKey:(NSString *)key error:(NSError **)error;
 
 @end
 

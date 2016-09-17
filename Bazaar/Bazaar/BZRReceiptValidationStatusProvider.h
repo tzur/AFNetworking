@@ -4,10 +4,11 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @class BZRKeychainStorage, BZRReceiptValidationStatus;
+
 @protocol BZRReceiptValidationParametersProvider, BZRReceiptValidator;
 
 /// Provider used to provide \c BZRReceiptValidationStatus by validating the receipt and by giving
-/// access to the the status of the latest successful validation.
+/// access to the status of the latest successful validation.
 @interface BZRReceiptValidationStatusProvider : NSObject
 
 - (instancetype)init NS_UNAVAILABLE;

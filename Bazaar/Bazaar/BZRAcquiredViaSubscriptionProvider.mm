@@ -62,9 +62,10 @@ NSString * const kProductsAcquiredViaSubscriptionSetKey = @"productsAcquiredViaS
 - (void)setProductsAcquiredViaSubscription:(NSSet<NSString *> *)productsAcquiredViaSubscription {
   _productsAcquiredViaSubscription = productsAcquiredViaSubscription;
   NSError *error;
-  [self.keychainStorage setValue:productsAcquiredViaSubscription
-                          forKey:kProductsAcquiredViaSubscriptionSetKey error:&error];
-  if (error) {
+  BOOL success = [self.keychainStorage setValue:productsAcquiredViaSubscription
+                                         forKey:kProductsAcquiredViaSubscriptionSetKey
+                                          error:&error];
+  if (!success) {
     NSString *description =
         @"Failed to store products acquired via subscription set to secure storage";
     [self.storageErrorsSubject sendNext:
