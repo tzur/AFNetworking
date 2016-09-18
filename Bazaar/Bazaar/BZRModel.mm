@@ -75,6 +75,18 @@ NS_ASSUME_NONNULL_BEGIN
   return self;
 }
 
+#pragma mark -
+#pragma mark Mutating properties
+#pragma mark -
+
+- (instancetype)modelByOverridingProperty:(NSString *)propertyName withValue:(id)value {
+  NSDictionary *dictionaryValue =
+      [self.dictionaryValue mtl_dictionaryByAddingEntriesFromDictionary:@{propertyName: value}];
+  BZRModel *model = [[self class] modelWithDictionary:dictionaryValue error:nil];
+  LTAssert(model, @"Failed to initialize model with dictionary value %@", dictionaryValue);
+  return model;
+}
+
 @end
 
 NS_ASSUME_NONNULL_END

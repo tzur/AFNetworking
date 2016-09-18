@@ -26,6 +26,9 @@ NS_ASSUME_NONNULL_BEGIN
        withNullablePropertyKeys:(NSSet<NSString *> *)nullablePropertyKeys
                           error:(NSError **)error;
 
+/// Returns a new \c BZRModel with the property named \c propertyName set to \c value.
+- (instancetype)modelByOverridingProperty:(NSString *)propertyName withValue:(id)value;
+
 @end
 
 NS_ASSUME_NONNULL_END
