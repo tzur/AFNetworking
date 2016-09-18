@@ -3,6 +3,7 @@
 
 #import "LTGPUQueue.h"
 
+#import "LTGLContext.h"
 #import "LTGLException.h"
 
 SpecBegin(LTGPUQueue)
@@ -232,10 +233,10 @@ context(@"opengl", ^{
   });
 
   it(@"should have valid opengl context for sync blocks", ^{
-    __block EAGLContext *context;
+    __block LTGLContext *context;
 
     [queue runSyncIfNotPaused:^{
-      context = [EAGLContext currentContext];
+      context = [LTGLContext currentContext];
     }];
 
     expect(context).toNot.beNil();
@@ -243,13 +244,59 @@ context(@"opengl", ^{
 
   it(@"should have valid opengl context for async blocks", ^{
     waitUntil(^(DoneCallback done) {
-      __block EAGLContext *context;
+      __block LTGLContext *context;
 
       [queue runAsync:^{
-        context = [EAGLContext currentContext];
+        context = [LTGLContext currentContext];
       } completion:^{
         dispatch_async(dispatch_get_main_queue(), ^{
           expect(context).toNot.beNil();
+          done();
+        });
+      }];
+    });
+  });
+
+  it(@"should restore opengl context for sync blocks", ^{
+    LTGLContext *context = [LTGLContext currentContext];
+
+    [queue runSyncIfNotPaused:^{
+    }];
+
+    expect([LTGLContext currentContext]).to.equal(context);
+  });
+
+  it(@"should restore opengl context for async blocks", ^{
+    waitUntil(^(DoneCallback done) {
+      LTGLContext *context = [LTGLContext currentContext];
+
+      [queue runAsync:^{
+      } completion:^{
+        dispatch_async(dispatch_get_main_queue(), ^{
+          expect([LTGLContext currentContext]).to.equal(context);
+          done();
+        });
+      }];
+    });
+  });
+
+  it(@"should restore nil opengl context for sync blocks", ^{
+    [LTGLContext setCurrentContext:nil];
+
+    [queue runSyncIfNotPaused:^{
+    }];
+
+    expect([LTGLContext currentContext]).to.beNil();
+  });
+
+  it(@"should restore nil opengl context for async blocks", ^{
+    [LTGLContext setCurrentContext:nil];
+
+    waitUntil(^(DoneCallback done) {
+      [queue runAsync:^{
+      } completion:^{
+        dispatch_async(dispatch_get_main_queue(), ^{
+          expect([LTGLContext currentContext]).to.beNil();
           done();
         });
       }];

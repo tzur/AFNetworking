@@ -7,14 +7,17 @@
 /// context, and since the queue is serial there are no concurrency issues with dispatching multiple
 /// operations to the queue.
 ///
-/// Blocks can be dispatched to the queue synchronously and
-/// asynchronously, with the limitation that synchronous dispatching request can be discarded if the
-/// queue is paused to avoid deadlocks.
+/// Blocks can be dispatched to the queue synchronously and asynchronously, with the limitation that
+/// synchronous dispatching request can be discarded if the queue is paused to avoid deadlocks.
 ///
-/// On destruction, the queue will resume itself if paused and
-/// execute all remaining tasks before proceeding.
+/// On destruction, the queue will resume itself if paused and execute all remaining tasks before
+/// proceeding.
 ///
 /// This class is thread-safe.
+///
+/// @note this queue handles switching between different \c LTGLContext objects, but not between
+/// \c EAGLContext. Using \c EAGLContext directly in conjunction with this queue will result in
+/// undefined behavior.
 @interface LTGPUQueue : NSObject
 
 /// Initializes a new queue with no shared context.
