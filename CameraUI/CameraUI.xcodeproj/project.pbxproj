@@ -40,6 +40,7 @@
 		BE0E850A1D2B9B1F00093B01 /* CAMDeviceStub.mm in Sources */ = {isa = PBXBuildFile; fileRef = BE0E85091D2B9B1F00093B01 /* CAMDeviceStub.mm */; };
 		BE1C90AA1D20213500FF20CA /* CUIDropDownView.mm in Sources */ = {isa = PBXBuildFile; fileRef = BE1C90A91D20213500FF20CA /* CUIDropDownView.mm */; };
 		BE1D01091D203656008FA64F /* CUIDropDownViewSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = BE1D01081D203656008FA64F /* CUIDropDownViewSpec.mm */; };
+		BE3F84CC1D82DB690043F3E3 /* CUIDropDownHorizontalViewSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = BE3F84CB1D82DB690043F3E3 /* CUIDropDownHorizontalViewSpec.mm */; };
 		BE40FECA1D253776004A7C51 /* CUIFlashMenuViewModelSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = BE40FEC91D253776004A7C51 /* CUIFlashMenuViewModelSpec.mm */; };
 		BE52379C1D3B952C00A4DD80 /* CUIFlipCameraViewModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = BE52379B1D3B952C00A4DD80 /* CUIFlipCameraViewModel.mm */; };
 		BE8229021D81BE2D000B0C06 /* CUIDropDownEntryViewModelSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = BE8229011D81BE2D000B0C06 /* CUIDropDownEntryViewModelSpec.mm */; };
@@ -52,6 +53,7 @@
 		BECE31E21D3BA11900B96053 /* CUIFlipCameraViewModelSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = BECE31E11D3BA11900B96053 /* CUIFlipCameraViewModelSpec.mm */; };
 		BECFD6901D23AD6600361F3D /* CUIFlashModeViewModelSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = BECFD68F1D23AD6600361F3D /* CUIFlashModeViewModelSpec.mm */; };
 		BEE564761D800E9600E79E55 /* CUIDropDownEntryViewModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = BEE564751D800E9600E79E55 /* CUIDropDownEntryViewModel.mm */; };
+		BEE564791D801E7B00E79E55 /* CUIDropDownHorizontalView.mm in Sources */ = {isa = PBXBuildFile; fileRef = BEE564781D801E7B00E79E55 /* CUIDropDownHorizontalView.mm */; };
 		BEEE6D2E1D21385D00579F5D /* EXPExpect+LLReactiveMatchersExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = BEEE6D091D21385D00579F5D /* EXPExpect+LLReactiveMatchersExtensions.m */; };
 		BEEE6D2F1D21385D00579F5D /* LLSignalTestRecorder.m in Sources */ = {isa = PBXBuildFile; fileRef = BEEE6D0B1D21385D00579F5D /* LLSignalTestRecorder.m */; };
 		BEEE6D301D21385D00579F5D /* RACSignal+LLSubscriptionCounting.m in Sources */ = {isa = PBXBuildFile; fileRef = BEEE6D0D1D21385D00579F5D /* RACSignal+LLSubscriptionCounting.m */; };
@@ -509,6 +511,7 @@
 		BE1C90A81D20213500FF20CA /* CUIDropDownView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUIDropDownView.h; sourceTree = "<group>"; };
 		BE1C90A91D20213500FF20CA /* CUIDropDownView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUIDropDownView.mm; sourceTree = "<group>"; };
 		BE1D01081D203656008FA64F /* CUIDropDownViewSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUIDropDownViewSpec.mm; sourceTree = "<group>"; };
+		BE3F84CB1D82DB690043F3E3 /* CUIDropDownHorizontalViewSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUIDropDownHorizontalViewSpec.mm; sourceTree = "<group>"; };
 		BE40FEC91D253776004A7C51 /* CUIFlashMenuViewModelSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUIFlashMenuViewModelSpec.mm; sourceTree = "<group>"; };
 		BE4629621CDF52D700D9F7E2 /* CUIMenuItemViewModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CUIMenuItemViewModel.h; sourceTree = "<group>"; };
 		BE52379A1D3B952C00A4DD80 /* CUIFlipCameraViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUIFlipCameraViewModel.h; sourceTree = "<group>"; };
@@ -527,6 +530,8 @@
 		BECFD68F1D23AD6600361F3D /* CUIFlashModeViewModelSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUIFlashModeViewModelSpec.mm; sourceTree = "<group>"; };
 		BEE564741D800E9600E79E55 /* CUIDropDownEntryViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUIDropDownEntryViewModel.h; sourceTree = "<group>"; };
 		BEE564751D800E9600E79E55 /* CUIDropDownEntryViewModel.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUIDropDownEntryViewModel.mm; sourceTree = "<group>"; };
+		BEE564771D801E7B00E79E55 /* CUIDropDownHorizontalView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUIDropDownHorizontalView.h; sourceTree = "<group>"; };
+		BEE564781D801E7B00E79E55 /* CUIDropDownHorizontalView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUIDropDownHorizontalView.mm; sourceTree = "<group>"; };
 		BEEE6D081D21385D00579F5D /* EXPExpect+LLReactiveMatchersExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EXPExpect+LLReactiveMatchersExtensions.h"; sourceTree = "<group>"; };
 		BEEE6D091D21385D00579F5D /* EXPExpect+LLReactiveMatchersExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EXPExpect+LLReactiveMatchersExtensions.m"; sourceTree = "<group>"; };
 		BEEE6D0A1D21385D00579F5D /* LLSignalTestRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LLSignalTestRecorder.h; sourceTree = "<group>"; };
@@ -920,6 +925,8 @@
 				BEC7B1851D1FF4E50012C286 /* CUIDropDownEntry.h */,
 				BEE564741D800E9600E79E55 /* CUIDropDownEntryViewModel.h */,
 				BEE564751D800E9600E79E55 /* CUIDropDownEntryViewModel.mm */,
+				BEE564771D801E7B00E79E55 /* CUIDropDownHorizontalView.h */,
+				BEE564781D801E7B00E79E55 /* CUIDropDownHorizontalView.mm */,
 				BEC7B1831D1FF4E50012C286 /* CUIDropDownMenuItemsEntry.h */,
 				BEC7B1841D1FF4E50012C286 /* CUIDropDownMenuItemsEntry.mm */,
 				BE1C90A81D20213500FF20CA /* CUIDropDownView.h */,
@@ -1055,6 +1062,7 @@
 			isa = PBXGroup;
 			children = (
 				BE8229011D81BE2D000B0C06 /* CUIDropDownEntryViewModelSpec.mm */,
+				BE3F84CB1D82DB690043F3E3 /* CUIDropDownHorizontalViewSpec.mm */,
 				BEC7B1AE1D1FFCE40012C286 /* CUIDropDownMenuItemsEntrySpec.mm */,
 				BE1D01081D203656008FA64F /* CUIDropDownViewSpec.mm */,
 				BECFD68F1D23AD6600361F3D /* CUIFlashModeViewModelSpec.mm */,
@@ -1655,6 +1663,7 @@
 				BEFF88021D22682200DEAA97 /* CUIFlashModeViewModel.mm in Sources */,
 				BEFF88011D22682200DEAA97 /* CUIFlashMenuViewModel.mm in Sources */,
 				BEC7B1861D1FF4E50012C286 /* CUIDropDownMenuItemsEntry.mm in Sources */,
+				BEE564791D801E7B00E79E55 /* CUIDropDownHorizontalView.mm in Sources */,
 				F965CD621CF478F100005627 /* CUISelectableMenuItemViewModel.mm in Sources */,
 				F9CD3BF91CECBC3700190169 /* CUISharedTheme.mm in Sources */,
 				F9660E8A1D09A90A00669EB0 /* CUISingleChoiceMenuViewModel.mm in Sources */,
@@ -1685,6 +1694,7 @@
 				BEEE6D371D21385D00579F5D /* EXPMatchers+finish.m in Sources */,
 				BEEE6D321D21385D00579F5D /* LLReactiveMatchersMessageBuilder.m in Sources */,
 				BEEE6D331D21385D00579F5D /* EXPMatchers+beSubscribedTo.m in Sources */,
+				BE3F84CC1D82DB690043F3E3 /* CUIDropDownHorizontalViewSpec.mm in Sources */,
 				BEEE6D391D21385D00579F5D /* EXPMatchers+matchValue.m in Sources */,
 				BEEE6D3C1D21385D00579F5D /* EXPMatchers+sendEvents.m in Sources */,
 				BEEE6D341D21385D00579F5D /* EXPMatchers+complete.m in Sources */,
