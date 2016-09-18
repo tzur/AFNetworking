@@ -60,6 +60,21 @@ context(@"session", ^{
     session = [[CAMHardwareSession alloc] initWithPreset:preset session:sessionMock];
   });
 
+  context(@"preview layer", ^{
+    it(@"should create layer with session", ^{
+      id classMock = OCMClassMock([AVCaptureVideoPreviewLayer class]);
+      OCMStub([classMock layerWithSession:sessionMock]).andReturn(classMock);
+
+      expect(session.previewLayer).to.beNil();
+
+      [session createPreviewLayer];
+
+      expect(session.previewLayer).to.beIdenticalTo(classMock);
+
+      [classMock stopMocking];
+    });
+  });
+
   context(@"video input", ^{
     __block CAMFakeAVCaptureDevice *device;
 
@@ -77,6 +92,9 @@ context(@"session", ^{
     it(@"should keep device and input on success", ^{
       formatStrategy.format = @1;
       OCMStub([sessionMock canAddInput:OCMOCK_ANY]).andReturn(YES);
+      id deviceInput = OCMClassMock([AVCaptureDeviceInput class]);
+      OCMStub([deviceInput deviceInputWithDevice:device error:[OCMArg anyObjectRef]])
+          .andReturn(deviceInput);
 
       BOOL success;
       NSError *error;
@@ -87,8 +105,9 @@ context(@"session", ^{
       expect(error).to.beNil();
       OCMVerify([sessionMock addInput:OCMOCK_ANY]);
       expect(session.videoDevice).to.beIdenticalTo(device);
-      expect(session.videoInput).toNot.beNil();
-      expect(session.videoInput.device).to.beIdenticalTo(device);
+      expect(session.videoInput).to.beIdenticalTo(deviceInput);
+
+      [deviceInput stopMocking];
     });
 
     it(@"should return error when device is nil", ^{
@@ -150,6 +169,9 @@ context(@"session", ^{
     it(@"should return error when unable to attach input", ^{
       formatStrategy.format = @1;
       OCMStub([sessionMock canAddInput:OCMOCK_ANY]).andReturn(NO);
+      id deviceInput = OCMClassMock([AVCaptureDeviceInput class]);
+      OCMStub([deviceInput deviceInputWithDevice:device error:[OCMArg anyObjectRef]])
+          .andReturn(deviceInput);
 
       BOOL success;
       NSError *error;
@@ -159,11 +181,16 @@ context(@"session", ^{
       expect(success).to.beFalsy();
       expect(error.domain).to.equal(kLTErrorDomain);
       expect(error.code).to.equal(CAMErrorCodeFailedAttachingVideoInput);
+
+      [deviceInput stopMocking];
     });
 
     it(@"should remove current input", ^{
       formatStrategy.format = @1;
       OCMStub([sessionMock canAddInput:OCMOCK_ANY]).andReturn(YES);
+      id deviceInput = OCMClassMock([AVCaptureDeviceInput class]);
+      OCMExpect([deviceInput deviceInputWithDevice:device error:[OCMArg anyObjectRef]])
+          .andReturn(deviceInput);
 
       NSError *error;
       [session setupVideoInputWithDevice:device formatStrategy:formatStrategy error:&error];
@@ -171,7 +198,8 @@ context(@"session", ^{
 
       [session setupVideoInputWithDevice:device formatStrategy:formatStrategy error:&error];
       OCMVerify([sessionMock removeInput:firstInput];);
-      expect(session.videoInput).toNot.beIdenticalTo(firstInput);
+
+      [deviceInput stopMocking];
     });
   });
 
@@ -195,6 +223,9 @@ context(@"session", ^{
     it(@"should keep device and input on success", ^{
       formatStrategy.format = @1;
       OCMStub([sessionMock canAddInput:OCMOCK_ANY]).andReturn(YES);
+      id deviceInput = OCMClassMock([AVCaptureDeviceInput class]);
+      OCMExpect([deviceInput deviceInputWithDevice:device error:[OCMArg anyObjectRef]])
+          .andReturn(deviceInput);
 
       BOOL success;
       NSError *error;
@@ -204,13 +235,17 @@ context(@"session", ^{
       expect(error).to.beNil();
       OCMVerify([sessionMock addInput:OCMOCK_ANY]);
       expect(session.videoDevice).to.beIdenticalTo(device);
-      expect(session.videoInput).toNot.beNil();
-      expect(session.videoInput.device).to.beIdenticalTo(device);
+      expect(session.videoInput).to.beIdenticalTo(deviceInput);
+
+      [deviceInput stopMocking];
     });
 
     it(@"should remove current input", ^{
       formatStrategy.format = @1;
       OCMStub([sessionMock canAddInput:OCMOCK_ANY]).andReturn(YES);
+      id deviceInput = OCMClassMock([AVCaptureDeviceInput class]);
+      OCMExpect([deviceInput deviceInputWithDevice:device error:[OCMArg anyObjectRef]])
+          .andReturn(deviceInput);
 
       NSError *error;
       [session setupVideoInputWithDevice:device formatStrategy:formatStrategy error:&error];
@@ -219,6 +254,8 @@ context(@"session", ^{
       [session setCamera:camera error:&error];
       OCMVerify([sessionMock removeInput:firstInput];);
       expect(session.videoInput).toNot.beIdenticalTo(firstInput);
+
+      [deviceInput stopMocking];
     });
 
     it(@"should begin and commit configuration", ^{
