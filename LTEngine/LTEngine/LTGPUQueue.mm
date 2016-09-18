@@ -126,7 +126,7 @@ objection_register_singleton([LTGPUQueue class]);
 
 - (void)executeAsyncBlock:(LTVoidBlock)block completion:(LTCompletionBlock)completion
                   failure:(LTGPUQueueFailureBlock)failure {
-  [self useContext];
+  LTGLContext *previousContext = [self useContext];
 
   @try {
     [self executeBlock:block];
@@ -136,7 +136,7 @@ objection_register_singleton([LTGPUQueue class]);
     [self handleAsyncError:[NSError lt_errorWithLTGLException:exception] failure:failure];
     return;
   } @finally {
-    [self clearContext];
+    [self restoreContext:previousContext];
   }
 
   if (completion) {
@@ -198,7 +198,7 @@ objection_register_singleton([LTGPUQueue class]);
 }
 
 - (BOOL)executeSyncBlock:(LTVoidBlock)block error:(NSError *__autoreleasing *)error {
-  [self useContext];
+  LTGLContext *previousContext = [self useContext];
 
   @try {
     [self executeBlock:block];
@@ -207,7 +207,7 @@ objection_register_singleton([LTGPUQueue class]);
              exception.description);
     *error = [NSError lt_errorWithLTGLException:exception];
   } @finally {
-    [self clearContext];
+    [self restoreContext:previousContext];
   }
 
   return !*error;
@@ -237,14 +237,16 @@ objection_register_singleton([LTGPUQueue class]);
   }
 }
 
-- (void)useContext {
-  if ([LTGLContext currentContext] != self.context) {
+- (LTGLContext *)useContext {
+  LTGLContext *previousContext = [LTGLContext currentContext];
+  if (previousContext != self.context) {
     [LTGLContext setCurrentContext:self.context];
   }
+  return previousContext;
 }
 
-- (void)clearContext {
-  [LTGLContext setCurrentContext:nil];
+- (void)restoreContext:(LTGLContext *)context {
+  [LTGLContext setCurrentContext:context];
 }
 
 #pragma mark -
