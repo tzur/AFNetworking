@@ -3,123 +3,90 @@
 
 #import "CAMVideoFrame.h"
 
-#import <LTEngine/LTTexture.h>
+#import <LTEngine/LTGLContext.h>
+#import <LTEngine/LTTexture+Factory.h>
 
 #import "CAMDevicePreset.h"
-#import "CAMSampleTimingInfo.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-static NSString *CAMSampleTimingInfoString(CMSampleTimingInfo sampleTimingInfo) {
-  return [NSString stringWithFormat:@"{%g, %g, %g}", CMTimeGetSeconds(sampleTimingInfo.duration),
-      CMTimeGetSeconds(sampleTimingInfo.presentationTimeStamp),
-      CMTimeGetSeconds(sampleTimingInfo.decodeTimeStamp)];
+@implementation CAMVideoFrame {
+  /// Backing sample buffer.
+  lt::Ref<CMSampleBufferRef> _sampleBuffer;
 }
 
-@implementation CAMVideoFrameYCbCr
+/// Dictionary mapping supported pixel buffer formats to their respective \c CAMPixelFormat.
+static NSDictionary * const kCVPixelFormatToCAMPixelFormat = @{
+  @(kCVPixelFormatType_420YpCbCr8BiPlanarFullRange): $(CAMPixelFormat420f),
+  @(kCVPixelFormatType_32BGRA): $(CAMPixelFormatBGRA)
+};
 
-@synthesize sampleTimingInfo = _sampleTimingInfo;
-
-- (instancetype)initWithYTexture:(LTTexture *)yTexture cbcrTexture:(LTTexture *)cbcrTexture
-                sampleTimingInfo:(CMSampleTimingInfo)sampleTimingInfo {
-  LTParameterAssert(yTexture, @"Y' texture can't be nil");
-  LTParameterAssert(yTexture.pixelFormat.value == LTGLPixelFormatR8Unorm,
-      @"Y' texture must be R8Unorm");
-  LTParameterAssert(cbcrTexture, @"CbCr texture can't be nil");
-  LTParameterAssert(cbcrTexture.pixelFormat.value == LTGLPixelFormatRG8Unorm,
-      @"CbCr texture must be RG8Unorm");
+- (instancetype)initWithSampleBuffer:(CMSampleBufferRef)sampleBuffer {
+  LTParameterAssert(sampleBuffer);
+  CVPixelBufferRef pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
+  LTParameterAssert(pixelBuffer, @"sampleBuffer does not contain an image buffer");
+  OSType pixelFormat = CVPixelBufferGetPixelFormatType(pixelBuffer);
+  LTParameterAssert([kCVPixelFormatToCAMPixelFormat.allKeys containsObject:@(pixelFormat)],
+      @"sampleBuffer's image buffer has an unsupported pixel format: %d", (int)pixelFormat);
   if (self = [super init]) {
-    _yTexture = yTexture;
-    _cbcrTexture = cbcrTexture;
-    _sampleTimingInfo = sampleTimingInfo;
+    _sampleBuffer = lt::Ref<CMSampleBufferRef>((CMSampleBufferRef)CFRetain(sampleBuffer));
   }
   return self;
 }
 
-- (CAMPixelFormat *)pixelFormat {
-  return $(CAMPixelFormat420f);
+- (lt::Ref<CMSampleBufferRef>)sampleBuffer {
+  return lt::Ref<CMSampleBufferRef>((CMSampleBufferRef)CFRetain(_sampleBuffer.get()));
 }
 
-- (NSArray<LTTexture *> *)textures {
-  return @[self.yTexture, self.cbcrTexture];
+- (lt::Ref<CVPixelBufferRef>)pixelBuffer {
+  CVPixelBufferRef pixelBuffer = CMSampleBufferGetImageBuffer(_sampleBuffer.get());
+  return lt::Ref<CVPixelBufferRef>(CVPixelBufferRetain(pixelBuffer));
 }
 
-#pragma mark -
-#pragma mark NSObject
-#pragma mark -
+- (UIImage *)image {
+  LTAssert([LTGLContext currentContext]);
 
-- (NSString *)description {
-  return [NSString stringWithFormat:@"<%@: %p, yTexture: %@, cbcrTexture: %@, sampleTimingInfo: "
-          "%@>", [self class], self, self.yTexture, self.cbcrTexture,
-          CAMSampleTimingInfoString(self.sampleTimingInfo)];
+  CVPixelBufferRef pixelBuffer = CMSampleBufferGetImageBuffer(_sampleBuffer.get());
+
+  CIImage *ciImage = [CIImage imageWithCVPixelBuffer:pixelBuffer];
+  CIContext *context = [CIContext contextWithEAGLContext:[LTGLContext currentContext].context];
+  CGSize size = CVImageBufferGetDisplaySize(pixelBuffer);
+  lt::Ref<CGImageRef> cgImage([context createCGImage:ciImage fromRect:CGRectFromSize(size)]);
+
+  return [UIImage imageWithCGImage:cgImage.get()];
 }
 
-- (BOOL)isEqual:(CAMVideoFrameYCbCr *)other {
-  if (other == self) {
-    return YES;
+- (LTTexture *)textureAtPlaneIndex:(NSUInteger)planeIndex {
+  LTAssert([LTGLContext currentContext]);
+
+  CVPixelBufferRef pixelBuffer = CMSampleBufferGetImageBuffer(_sampleBuffer.get());
+  LTParameterAssert(planeIndex == 0 || planeIndex < CVPixelBufferGetPlaneCount(pixelBuffer));
+
+  if (CVPixelBufferIsPlanar(pixelBuffer)) {
+    return [LTTexture textureWithPixelBuffer:pixelBuffer planeIndex:planeIndex];
+  } else {
+    return [LTTexture textureWithPixelBuffer:pixelBuffer];
   }
-  if (![other isKindOfClass:[self class]]) {
-    return NO;
-  }
-
-  return [self.yTexture isEqual:other.yTexture] && [self.cbcrTexture isEqual:other.cbcrTexture] &&
-      CAMSampleTimingInfoIsEqual(self.sampleTimingInfo, other.sampleTimingInfo);
 }
 
-- (NSUInteger)hash {
-  return self.yTexture.hash ^ self.cbcrTexture.hash ^
-      CAMSampleTimingInfoHash(self.sampleTimingInfo);
+- (CMSampleTimingInfo)timingInfo {
+  CMSampleTimingInfo timingInfo;
+  OSStatus status = CMSampleBufferGetSampleTimingInfo(_sampleBuffer.get(), 0, &timingInfo);
+  LTAssert(status == 0, @"Failed to retrieve sample timing, status: %d", (int)status);
+  return timingInfo;
 }
 
-@end
-
-@implementation CAMVideoFrameBGRA
-
-@synthesize sampleTimingInfo = _sampleTimingInfo;
-
-- (instancetype)initWithBGRATexture:(LTTexture *)bgraTexture
-                   sampleTimingInfo:(CMSampleTimingInfo)sampleTimingInfo{
-  LTParameterAssert(bgraTexture, @"BGRA texture can't be nil");
-  LTParameterAssert(bgraTexture.pixelFormat.value == LTGLPixelFormatRGBA8Unorm,
-      @"BGRA texture must be RGBA8Unorm");
-  if (self = [super init]) {
-    _bgraTexture = bgraTexture;
-    _sampleTimingInfo = sampleTimingInfo;
-  }
-  return self;
+- (int)exifOrientation {
+  NSNumber *orientation = (__bridge NSNumber *)CMGetAttachment(_sampleBuffer.get(),
+                                                               (__bridge CFStringRef)@"Orientation",
+                                                               NULL);
+  return [orientation intValue];
 }
 
 - (CAMPixelFormat *)pixelFormat {
-  return $(CAMPixelFormatBGRA);
-}
-
-- (NSArray<LTTexture *> *)textures {
-  return @[self.bgraTexture];
-}
-
-#pragma mark -
-#pragma mark NSObject
-#pragma mark -
-
-- (NSString *)description {
-  return [NSString stringWithFormat:@"<%@: %p, bgraTexture: %@, sampleTimingInfo: %@>",
-          [self class], self, self.bgraTexture, CAMSampleTimingInfoString(self.sampleTimingInfo)];
-}
-
-- (BOOL)isEqual:(CAMVideoFrameBGRA *)other {
-  if (other == self) {
-    return YES;
-  }
-  if (![other isKindOfClass:[self class]]) {
-    return NO;
-  }
-
-  return [self.bgraTexture isEqual:other.bgraTexture] &&
-      CAMSampleTimingInfoIsEqual(self.sampleTimingInfo, other.sampleTimingInfo);
-}
-
-- (NSUInteger)hash {
-  return self.bgraTexture.hash ^ CAMSampleTimingInfoHash(self.sampleTimingInfo);
+  CVPixelBufferRef pixelBuffer = CMSampleBufferGetImageBuffer(_sampleBuffer.get());
+  OSType pixelFormat = CVPixelBufferGetPixelFormatType(pixelBuffer);
+  return kCVPixelFormatToCAMPixelFormat[@(pixelFormat)];
 }
 
 @end

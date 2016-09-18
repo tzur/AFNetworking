@@ -3,198 +3,158 @@
 
 #import "CAMVideoFrame.h"
 
-#import <LTEngine/LTTexture+Factory.h>
+#import <LTEngine/LTImage.h>
+#import <LTEngine/LTTexture.h>
 
-#import "CAMDevicePreset.h"
 #import "CAMSampleTimingInfo.h"
+#import "CAMTestUtils.h"
+#import "CAMDevicePreset.h"
 
 SpecBegin(CAMVideoFrame)
 
-__block CMSampleTimingInfo sampleTimingInfo;
-__block CMSampleTimingInfo otherTimingInfo;
+__block cv::Mat image;
+__block CMSampleTimingInfo sampleTiming;
+__block lt::Ref<CMSampleBufferRef> sampleBuffer;
 
 beforeEach(^{
-  sampleTimingInfo = {kCMTimeZero, CMTimeMake(1, 60), kCMTimeZero};
-  otherTimingInfo = {kCMTimeZero, CMTimeMake(2, 60), kCMTimeZero};
+  image = cv::Mat(12, 10, CV_8UC4);
+  image(cv::Rect(0, 0, 5, 6)) = cv::Scalar(255, 0, 0, 255);
+  image(cv::Rect(5, 0, 5, 6)) = cv::Scalar(0, 255, 0, 255);
+  image(cv::Rect(0, 6, 5, 6)) = cv::Scalar(0, 0, 255, 255);
+  image(cv::Rect(5, 6, 5, 6)) = cv::Scalar(128, 128, 128, 255);
+
+  sampleTiming = {kCMTimeZero, CMTimeMake(1, 60), kCMTimeZero};
+
+  sampleBuffer = CAMCreateSampleBufferForImage(image, sampleTiming);
 });
 
-context(@"Y'CbCr", ^{
-  __block LTTexture *yTexture;
-  __block LTTexture *cbcrTexture;
+context(@"initialization and basic properties", ^{
+  __block CAMVideoFrame *frame;
 
   beforeEach(^{
-    yTexture = [LTTexture textureWithSize:CGSizeMakeUniform(1)
-                              pixelFormat:$(LTGLPixelFormatR8Unorm) allocateMemory:NO];
-    cbcrTexture = [LTTexture textureWithSize:CGSizeMakeUniform(1)
-                                 pixelFormat:$(LTGLPixelFormatRG8Unorm) allocateMemory:NO];
+    frame = [[CAMVideoFrame alloc] initWithSampleBuffer:sampleBuffer.get()];
+  });
+
+  it(@"should initialize correctly", ^{
+    expect([frame sampleBuffer].get()).to.equal(sampleBuffer.get());
+  });
+
+  it(@"should retain sample buffer and release after dealloc", ^{
+    lt::Ref<CMSampleBufferRef> localSampleBuffer = CAMCreateImageSampleBuffer(CGSizeMake(3, 6));
+    CMSampleBufferRef sampleBufferRef = localSampleBuffer.get();
+    NSInteger initialRetainCount = CFGetRetainCount(sampleBufferRef);
+    @autoreleasepool {
+      CAMVideoFrame * __unused anotherFrame =
+          [[CAMVideoFrame alloc] initWithSampleBuffer:sampleBufferRef];
+      expect(CFGetRetainCount(sampleBufferRef)).to.beGreaterThan(initialRetainCount);
+    }
+    expect(CFGetRetainCount(sampleBufferRef)).to.equal(initialRetainCount);
+  });
+
+  it(@"should not retain sample buffer after returned lt::Ref is released", ^{
+    CMSampleBufferRef sampleBufferRef = sampleBuffer.get();
+    NSInteger initialRetainCount = CFGetRetainCount(sampleBufferRef);
+
+    lt::Ref<CMSampleBufferRef> sampleBufferLTRef = [frame sampleBuffer];
+    sampleBufferLTRef.reset(nullptr);
+
+    expect(CFGetRetainCount(sampleBufferRef)).to.equal(initialRetainCount);
+  });
+
+  it(@"should return original sample buffer's image buffer", ^{
+    expect([frame pixelBuffer].get()).to.equal(CMSampleBufferGetImageBuffer(sampleBuffer.get()));
+  });
+
+  it(@"should not retain internal pixel buffer after deallocation", ^{
+    lt::Ref<CMSampleBufferRef> localSampleBuffer = CAMCreateImageSampleBuffer(CGSizeMake(3, 6));
+    CMSampleBufferRef sampleBufferRef = localSampleBuffer.get();
+    CVPixelBufferRef pixelBufferRef = CMSampleBufferGetImageBuffer(localSampleBuffer.get());
+    NSInteger initialRetainCount = CFGetRetainCount(pixelBufferRef);
+    @autoreleasepool {
+      CAMVideoFrame * __unused anotherFrame =
+          [[CAMVideoFrame alloc] initWithSampleBuffer:sampleBufferRef];
+    }
+    expect(CFGetRetainCount(pixelBufferRef)).to.equal(initialRetainCount);
+  });
+
+  it(@"should not retain internal pixel buffer after returned lt::Ref is released", ^{
+    CVPixelBufferRef pixelBufferRef = CMSampleBufferGetImageBuffer(sampleBuffer.get());
+    NSInteger initialRetainCount = CFGetRetainCount(pixelBufferRef);
+
+    lt::Ref<CVPixelBufferRef> pixelBuffer = [frame pixelBuffer];
+    pixelBuffer.reset(nullptr);
+
+    expect(CFGetRetainCount(pixelBufferRef)).to.equal(initialRetainCount);
+  });
+
+  it(@"should return timing info", ^{
+    expect(CAMSampleTimingInfoIsEqual([frame timingInfo], sampleTiming)).to.beTruthy();
+  });
+
+  it(@"should return orientation", ^{
+    expect([frame exifOrientation]).to.equal(0);
+
+    NSDictionary *attachments = @{@"Orientation": @5};
+    CMSetAttachments(sampleBuffer.get(), (__bridge CFDictionaryRef)attachments,
+                     kCMAttachmentMode_ShouldPropagate);
+
+    expect([frame exifOrientation]).to.equal(5);
+  });
+
+  it(@"should return pixel format", ^{
+    expect([frame pixelFormat]).to.equal($(CAMPixelFormatBGRA));
+  });
+});
+
+context(@"conversion to UIImage", ^{
+  __block CAMVideoFrame *frame;
+  __block UIImage *uiImage;
+
+  beforeEach(^{
+    frame = [[CAMVideoFrame alloc] initWithSampleBuffer:sampleBuffer.get()];
+    uiImage = [frame image];
+  });
+
+  it(@"should create image with correct size", ^{
+    expect(uiImage.size).to.equal(CGSizeMake(image.cols, image.rows));
+    expect(uiImage.scale).to.equal(1);
+  });
+
+  it(@"should create image with correct contents converted to RGBA", ^{
+    cv::Mat swizzledImage(image.size(), image.type());
+
+    static const int rgbaToBgra[] = {0, 2, 1, 1, 2, 0, 3, 3};
+    cv::mixChannels(&image, 1, &swizzledImage, 1, rgbaToBgra, 4);
+
+    expect($([[LTImage alloc] initWithImage:uiImage].mat)).to.equalMat($(swizzledImage));
+  });
+});
+
+context(@"conversion to LTTexture", ^{
+  __block CAMVideoFrame *frame;
+  __block LTTexture *texture;
+
+  beforeEach(^{
+    frame = [[CAMVideoFrame alloc] initWithSampleBuffer:sampleBuffer.get()];
+    texture = [frame textureAtPlaneIndex:0];
   });
 
   afterEach(^{
-    yTexture = nil;
-    cbcrTexture = nil;
+    texture = nil;
   });
 
-  context(@"init", ^{
-    it(@"should not raise when initializing with valid pair", ^{
-      expect(^{
-        __unused id frame = [[CAMVideoFrameYCbCr alloc] initWithYTexture:yTexture
-                                                             cbcrTexture:cbcrTexture
-                                                        sampleTimingInfo:sampleTimingInfo];
-      }).toNot.raiseAny();
-    });
-
-    it(@"should init properties correctly", ^{
-      CAMVideoFrameYCbCr *frame = [[CAMVideoFrameYCbCr alloc] initWithYTexture:yTexture
-                                                                   cbcrTexture:cbcrTexture
-                                                              sampleTimingInfo:sampleTimingInfo];
-      expect(frame.pixelFormat).to.equal($(CAMPixelFormat420f));
-      expect(frame.textures).to.equal(@[yTexture, cbcrTexture]);
-      expect(frame.yTexture).to.equal(yTexture);
-      expect(frame.cbcrTexture).to.equal(cbcrTexture);
-      expect(CAMSampleTimingInfoIsEqual(frame.sampleTimingInfo, sampleTimingInfo)).to.beTruthy();
-    });
-
-    it(@"should raise when initializing with nil textures", ^{
-      expect(^{
-        LTTexture *texture = nil;
-        __unused id frame = [[CAMVideoFrameYCbCr alloc] initWithYTexture:texture
-                                                             cbcrTexture:cbcrTexture
-                                                        sampleTimingInfo:sampleTimingInfo];
-      }).to.raise(NSInvalidArgumentException);
-
-      expect(^{
-        LTTexture *texture = nil;
-        __unused id frame = [[CAMVideoFrameYCbCr alloc] initWithYTexture:yTexture
-                                                             cbcrTexture:texture
-                                                        sampleTimingInfo:sampleTimingInfo];
-      }).to.raise(NSInvalidArgumentException);
-    });
-
-    it(@"should raise when initializing with wrong texture format", ^{
-      expect(^{
-        __unused id frame = [[CAMVideoFrameYCbCr alloc] initWithYTexture:cbcrTexture
-                                                             cbcrTexture:cbcrTexture
-                                                        sampleTimingInfo:sampleTimingInfo];
-      }).to.raise(NSInvalidArgumentException);
-
-      expect(^{
-        __unused id frame = [[CAMVideoFrameYCbCr alloc] initWithYTexture:yTexture
-                                                             cbcrTexture:yTexture
-                                                        sampleTimingInfo:sampleTimingInfo];
-      }).to.raise(NSInvalidArgumentException);
-    });
+  it(@"should create texture with correct size", ^{
+    expect(texture.size).to.equal(CGSizeMake(image.cols, image.rows));
   });
 
-  context(@"NSObject", ^{
-    __block CAMVideoFrameYCbCr *frame;
-    __block CAMVideoFrameYCbCr *sameFrame;
-    __block CAMVideoFrameYCbCr *otherFrame;
-    __block CAMVideoFrameYCbCr *otherTimingInfoFrame;
-
-    beforeEach(^{
-      frame = [[CAMVideoFrameYCbCr alloc] initWithYTexture:yTexture cbcrTexture:cbcrTexture
-                                          sampleTimingInfo:sampleTimingInfo];
-      sameFrame = [[CAMVideoFrameYCbCr alloc] initWithYTexture:yTexture cbcrTexture:cbcrTexture
-                                              sampleTimingInfo:sampleTimingInfo];
-
-      LTTexture *texture = [LTTexture textureWithSize:CGSizeMakeUniform(1)
-                                          pixelFormat:$(LTGLPixelFormatRG8Unorm)
-                                       allocateMemory:NO];
-      otherFrame = [[CAMVideoFrameYCbCr alloc] initWithYTexture:yTexture cbcrTexture:texture
-                                               sampleTimingInfo:sampleTimingInfo];
-      otherTimingInfoFrame = [[CAMVideoFrameYCbCr alloc] initWithYTexture:yTexture
-                                                              cbcrTexture:cbcrTexture
-                                                         sampleTimingInfo:otherTimingInfo];
-    });
-
-    it(@"should handle isEqual correctly", ^{
-      expect(frame).to.equal(sameFrame);
-      expect(frame).toNot.equal(otherFrame);
-      expect(sameFrame).toNot.equal(otherFrame);
-      expect(frame).toNot.equal(otherTimingInfoFrame);
-    });
-
-    it(@"should handle hash correctly", ^{
-      expect(frame.hash).to.equal(sameFrame.hash);
-    });
-  });
-});
-
-context(@"BGRA", ^{
-  __block LTTexture *bgraTexture;
-  __block LTTexture *otherTexture;
-
-  beforeEach(^{
-    bgraTexture = [LTTexture textureWithSize:CGSizeMakeUniform(1)
-                                 pixelFormat:$(LTGLPixelFormatRGBA8Unorm) allocateMemory:NO];
-    otherTexture = [LTTexture textureWithSize:CGSizeMakeUniform(1)
-                                  pixelFormat:$(LTGLPixelFormatRG8Unorm) allocateMemory:NO];
+  it(@"should create texture with correct contents", ^{
+    expect($([texture image])).to.equalMat($(image));
   });
 
-  context(@"init", ^{
-    it(@"should not raise when initializing with valid texture", ^{
-      expect(^{
-        __unused id frame = [[CAMVideoFrameBGRA alloc] initWithBGRATexture:bgraTexture
-                                                          sampleTimingInfo:sampleTimingInfo];
-      }).toNot.raiseAny();
-    });
-
-    it(@"should init properties correctly", ^{
-      CAMVideoFrameBGRA *frame = [[CAMVideoFrameBGRA alloc] initWithBGRATexture:bgraTexture
-                                                               sampleTimingInfo:sampleTimingInfo];
-      expect(frame.pixelFormat).to.equal($(CAMPixelFormatBGRA));
-      expect(frame.textures).to.equal(@[bgraTexture]);
-      expect(frame.bgraTexture).to.equal(bgraTexture);
-      expect(CAMSampleTimingInfoIsEqual(frame.sampleTimingInfo, sampleTimingInfo)).to.beTruthy();
-    });
-
-    it(@"should raise when initializing with nil textures", ^{
-      expect(^{
-        LTTexture *texture = nil;
-        __unused id frame = [[CAMVideoFrameBGRA alloc] initWithBGRATexture:texture
-                                                          sampleTimingInfo:sampleTimingInfo];
-      }).to.raise(NSInvalidArgumentException);
-    });
-
-    it(@"should raise when initializing with wrong texture format", ^{
-      expect(^{
-        __unused id frame = [[CAMVideoFrameBGRA alloc] initWithBGRATexture:otherTexture
-                                                          sampleTimingInfo:sampleTimingInfo];
-      }).to.raise(NSInvalidArgumentException);
-    });
-  });
-
-  context(@"NSObject", ^{
-    __block CAMVideoFrameBGRA *frame;
-    __block CAMVideoFrameBGRA *sameFrame;
-    __block CAMVideoFrameBGRA *otherFrame;
-    __block CAMVideoFrameBGRA *otherTimingInfoFrame;
-
-    beforeEach(^{
-      frame = [[CAMVideoFrameBGRA alloc] initWithBGRATexture:bgraTexture
-                                            sampleTimingInfo:sampleTimingInfo];
-      sameFrame = [[CAMVideoFrameBGRA alloc] initWithBGRATexture:bgraTexture
-                                                sampleTimingInfo:sampleTimingInfo];
-
-      LTTexture *texture = [LTTexture textureWithSize:CGSizeMakeUniform(1)
-                                          pixelFormat:$(LTGLPixelFormatRGBA8Unorm)
-                                       allocateMemory:NO];
-      otherFrame = [[CAMVideoFrameBGRA alloc] initWithBGRATexture:texture
-                                                 sampleTimingInfo:sampleTimingInfo];
-      otherTimingInfoFrame = [[CAMVideoFrameBGRA alloc] initWithBGRATexture:texture
-                                                           sampleTimingInfo:otherTimingInfo];
-    });
-
-    it(@"should handle isEqual correctly", ^{
-      expect(frame).to.equal(sameFrame);
-      expect(frame).toNot.equal(otherFrame);
-      expect(sameFrame).toNot.equal(otherFrame);
-      expect(frame).toNot.equal(otherTimingInfoFrame);
-    });
-
-    it(@"should handle hash correctly", ^{
-      expect(frame.hash).to.equal(sameFrame.hash);
-    });
+  it(@"should raise exception when planeIndex is out of bounds", ^{
+    expect(^{
+      LTTexture * __unused anotherTexture = [frame textureAtPlaneIndex:1];
+    }).to.raise(NSInvalidArgumentException);
   });
 });
 

@@ -7,55 +7,57 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/// Container protocol that holds one or more \c LTTextures, representing a single image. This is
-/// needed, for example, for 4:2:0 YCbCr images, in which the chroma texture is subsampled and
-/// can't be held in the same \c LTTexture object.
+/// Container protocol that holds a video frame along with related metadata.
 @protocol CAMVideoFrame <NSObject>
 
-/// Pixel format of the image represented by \c textures.
-@property (readonly, nonatomic) CAMPixelFormat *pixelFormat;
+/// Returns a \c CMSampleBuffer pointing to the image data of this video frame.
+- (lt::Ref<CMSampleBufferRef>)sampleBuffer;
 
-/// Textures held by the receiver. The number and properties of these textures is determined by \c
-/// pixelFormat.
-@property (readonly, nonatomic) NSArray<LTTexture *> *textures;
+/// Returns a \c CVPixelBuffer pointing to the image data of this video frame.
+- (lt::Ref<CVPixelBufferRef>)pixelBuffer;
+
+/// Returns a \c UIImage with a copy of the contents of this video frame. The returned image is
+/// always RGBA, no matter what \c pixelFormat this video frame has. This is an expensive operation.
+- (UIImage *)image;
+
+/// Returns a \c LTTexture with the contexts of this \c CAMVideoFrame. When possible, this is a
+/// zero-copy operation, and the returned texture is backed by this video frame's data. Otherwise,
+/// the data is copied.
+///
+/// The returned texture is created on the current thread using the current \c LTGLContext. If
+/// there is no current \c LTGLContext or the creation of the texture fails, an exception is raised.
+///
+/// @param planeIndex Plane index to create a texture from. Raises \c NSInvalidArgumentException if
+/// the requested index doesn't exist in the frame, or if the frame is non-planer and \c planeIndex
+/// is not \c 0.
+///
+/// @note You must take extra care when referencing the returned texture. GPU - CPU synchronization
+/// falls into your responsibility. See \c LTMMTexture for more info.
+- (LTTexture *)textureAtPlaneIndex:(NSUInteger)planeIndex;
 
 /// Timing info for the video frame.
-@property (readonly, nonatomic) CMSampleTimingInfo sampleTimingInfo;
+- (CMSampleTimingInfo)timingInfo;
+
+/// Orientation of the video frame, according to EXIF specification.
+///
+/// @see http://sylvana.net/jpegcrop/exif_orientation.html
+/// @see http://www.exif.org/Exif2-2.PDF, page 18
+- (int)exifOrientation;
+
+/// Pixel format of the image data of this video frame.
+- (CAMPixelFormat *)pixelFormat;
 
 @end
 
-/// \c CAMVideoFrame implementation that hold a Y'CbCr texture pair.
-@interface CAMVideoFrameYCbCr : NSObject <CAMVideoFrame>
+/// Concrete implementation of \c id<CAMVideoFrame> backed by a \c CMSampleBuffer.
+@interface CAMVideoFrame : NSObject <CAMVideoFrame>
 
 - (instancetype)init NS_UNAVAILABLE;
 
-/// Initializes with a Y'CbCr 4:2:0 texture pair and frame timing info. \c pixelFormat will be set
-/// to \c CAMPixelFormat420f. Raises \c NSInvalidArgumentException if the textures' types are not
-/// \c LTGLPixelFormatR8Unorm and \c LTGLPixelFormatRG8Unorm respectively.
-- (instancetype)initWithYTexture:(LTTexture *)yTexture cbcrTexture:(LTTexture *)cbcrTexture
-                sampleTimingInfo:(CMSampleTimingInfo)sampleTimingInfo NS_DESIGNATED_INITIALIZER;
-
-/// Luma (Y') texture.
-@property (readonly, nonatomic) LTTexture *yTexture;
-
-/// Chroma (CbCr) texture.
-@property (readonly, nonatomic) LTTexture *cbcrTexture;
-
-@end
-
-/// \c CAMVideoFrame implementation that hold a BGRA texture.
-@interface CAMVideoFrameBGRA : NSObject <CAMVideoFrame>
-
-- (instancetype)init NS_UNAVAILABLE;
-
-/// Initializes with a single BGRA texture and frame timing info. \c pixelFormat will be set to \c
-/// CAMPixelFormatBGRA. Raises \c NSInvalidArgumentException if the texture's type is not \c
-/// LTGLPixelFormatRGBA8Unorm.
-- (instancetype)initWithBGRATexture:(LTTexture *)bgraTexture
-                   sampleTimingInfo:(CMSampleTimingInfo)sampleTimingInfo NS_DESIGNATED_INITIALIZER;
-
-/// BGRA texture.
-@property (readonly, nonatomic) LTTexture *bgraTexture;
+/// Initializes with the given \c CMSampleBuffer. \c sampleBuffer must contain an image buffer.
+///
+/// @note \c sampleBuffer is retained by this video frame.
+- (instancetype)initWithSampleBuffer:(CMSampleBufferRef)sampleBuffer NS_DESIGNATED_INITIALIZER;
 
 @end
 
