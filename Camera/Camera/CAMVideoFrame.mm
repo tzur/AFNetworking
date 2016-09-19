@@ -44,12 +44,10 @@ static NSDictionary * const kCVPixelFormatToCAMPixelFormat = @{
 }
 
 - (UIImage *)image {
-  LTAssert([LTGLContext currentContext]);
-
   CVPixelBufferRef pixelBuffer = CMSampleBufferGetImageBuffer(_sampleBuffer.get());
 
   CIImage *ciImage = [CIImage imageWithCVPixelBuffer:pixelBuffer];
-  CIContext *context = [CIContext contextWithEAGLContext:[LTGLContext currentContext].context];
+  CIContext *context = [CIContext contextWithOptions:nil];
   CGSize size = CVImageBufferGetDisplaySize(pixelBuffer);
   lt::Ref<CGImageRef> cgImage([context createCGImage:ciImage fromRect:CGRectFromSize(size)]);
 
