@@ -407,7 +407,7 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 - (RACSignal *)fetchAlbumWithType:(PTNPhotoKitAlbumType *)type {
-  PTNAssetCollectionsFetchResult *assetCollections;
+  PTNCollectionsFetchResult *assetCollections;
   switch (type.value) {
     case PTNPhotoKitAlbumTypeCameraRoll:
       assetCollections =
@@ -422,7 +422,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (RACSignal *)fetchMetaAlbumWithType:(PTNPhotoKitMetaAlbumType *)type {
-  PTNAssetCollectionsFetchResult *assetCollections;
+  PTNCollectionsFetchResult *assetCollections;
   switch (type.value) {
     case PTNPhotoKitMetaAlbumTypeSmartAlbums:
       assetCollections = [self fetchSmartAlbums];
@@ -439,17 +439,17 @@ NS_ASSUME_NONNULL_BEGIN
   return [RACSignal return:assetCollections];
 }
 
-- (PHFetchResult *)fetchUserAlbums {
+- (PTNCollectionsFetchResult *)fetchUserAlbums {
   return [self.fetcher fetchAssetCollectionsWithType:PHAssetCollectionTypeAlbum
                                              subtype:PHAssetCollectionSubtypeAny options:nil];
 }
 
-- (PHFetchResult *)fetchSmartAlbums {
+- (PTNCollectionsFetchResult *)fetchSmartAlbums {
   return [self.fetcher fetchAssetCollectionsWithType:PHAssetCollectionTypeSmartAlbum
                                              subtype:PHAssetCollectionSubtypeAny options:nil];
 }
 
-- (PHFetchResult *)fetchPhotosAppSmartAlbums:(PHFetchResult *)smartAlbums {
+- (PTNCollectionsFetchResult *)fetchPhotosAppSmartAlbums:(PHFetchResult *)smartAlbums {
   NSMutableArray *albums = [NSMutableArray array];
   NSOrderedSet *photosAppSubtypes = [[self class] photosAppSubtypes];
 

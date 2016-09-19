@@ -133,6 +133,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)viewDidLoad {
+  [super viewDidLoad];
   [self.view addSubview:self.collectionView];
   [self.collectionView mas_makeConstraints:^(MASConstraintMaker *make) {
     make.edges.equalTo(self.view);
