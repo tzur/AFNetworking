@@ -509,8 +509,8 @@ objection_requires_sel(@selector(fileManager));
   return YES;
 }
 
-- (LTTextureArchiveMetadata *)metadataFromPath:(LTPath *)path
-                                         error:(NSError *__autoreleasing *)error {
+- (nullable LTTextureArchiveMetadata *)metadataFromPath:(LTPath *)path
+                                                  error:(NSError *__autoreleasing *)error {
   LTParameterAssert(path);
 
   NSString *metadataPath = [self metadataPathForArchiveFolderPath:path];
