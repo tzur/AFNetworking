@@ -84,7 +84,11 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 + (instancetype)textureWithUIImage:(UIImage *)image {
-  return [LTImage textureWithImage:image];
+  return [LTImage textureWithImage:image backgroundColor:nil];
+}
+
++ (instancetype)textureWithUIImage:(UIImage *)image backgroundColor:(UIColor *)backgroundColor {
+  return [LTImage textureWithImage:image backgroundColor:backgroundColor];
 }
 
 + (instancetype)byteRGBATextureWithSize:(CGSize)size {

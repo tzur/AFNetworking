@@ -5,7 +5,7 @@
 
 #import "LTCVPixelBufferExtensions.h"
 
-SpecBegin(LTTextureFactory)
+SpecBegin(LTTexture_Factory)
 
 /// Since the class is currently decided in compile time, only verify that the class methods are
 /// correctly called and that the returned object is indeed a texture class.
@@ -32,6 +32,24 @@ it(@"should initialize with image", ^{
 
   LTTexture *texture = [LTTexture textureWithImage:image];
 
+  expect(texture).to.beKindOf([LTTexture class]);
+});
+
+it(@"should initialize with UIImage", ^{
+  UIGraphicsBeginImageContext(CGSizeMake(4, 4));
+  UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+  UIGraphicsEndImageContext();
+
+  LTTexture *texture = [LTTexture textureWithUIImage:image];
+  expect(texture).to.beKindOf([LTTexture class]);
+});
+
+it(@"should initialize with UIImage and background", ^{
+  UIGraphicsBeginImageContext(CGSizeMake(4, 4));
+  UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+  UIGraphicsEndImageContext();
+
+  LTTexture *texture = [LTTexture textureWithUIImage:image backgroundColor:[UIColor whiteColor]];
   expect(texture).to.beKindOf([LTTexture class]);
 });
 
