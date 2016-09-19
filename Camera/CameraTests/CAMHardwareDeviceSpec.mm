@@ -9,7 +9,6 @@
 #import "CAMDevicePreset.h"
 #import "CAMFakeAVCaptureDevice.h"
 #import "CAMHardwareSession.h"
-#import "CAMSampleTimingInfo.h"
 #import "CAMTestUtils.h"
 #import "CAMVideoFrame.h"
 
@@ -56,6 +55,8 @@ context(@"", ^{
   });
 
   context(@"video", ^{
+    static const CGSize kSize = CGSizeMake(3, 6);
+
     it(@"should set pixel format", ^{
       id videoOutput = OCMClassMock([AVCaptureVideoDataOutput class]);
       session.videoOutput = videoOutput;
@@ -116,11 +117,8 @@ context(@"", ^{
     });
 
     it(@"should send video frames", ^{
-      CGSize size = CGSizeMake(3, 6);
-      lt::Ref<CMSampleBufferRef> sampleBuffer = CAMCreateImageSampleBuffer(size);
-      CMSampleTimingInfo sampleTimingInfo;
-      OSStatus status = CMSampleBufferGetSampleTimingInfo(sampleBuffer.get(), 0, &sampleTimingInfo);
-      expect(status).to.equal(noErr);
+      __block lt::Ref<CMSampleBufferRef> sampleBuffer(CAMCreateImageSampleBuffer(kSize));
+      __block lt::Ref<CMSampleBufferRef> sampleBuffer2(CAMCreateImageSampleBuffer(kSize));
 
       id output = OCMClassMock([AVCaptureVideoDataOutput class]);
       id connection = OCMClassMock([AVCaptureConnection class]);
@@ -129,16 +127,14 @@ context(@"", ^{
       [device captureOutput:output didOutputSampleBuffer:sampleBuffer.get()
              fromConnection:connection];
       expect(recorder).to.sendValuesWithCount(1);
-      expect(recorder).to.matchValue(0, ^BOOL(CAMVideoFrameBGRA *frame) {
-        return [frame isKindOfClass:[CAMVideoFrameBGRA class]] && frame.bgraTexture.size == size &&
-            CAMSampleTimingInfoIsEqual(sampleTimingInfo, frame.sampleTimingInfo);
+      expect(recorder).to.matchValue(0, ^BOOL(id<CAMVideoFrame> frame) {
+        return [frame sampleBuffer].get() == sampleBuffer.get();
       });
-      [device captureOutput:output didOutputSampleBuffer:sampleBuffer.get()
+      [device captureOutput:output didOutputSampleBuffer:sampleBuffer2.get()
              fromConnection:connection];
       expect(recorder).to.sendValuesWithCount(2);
-      expect(recorder).to.matchValue(1, ^BOOL(CAMVideoFrameBGRA *frame) {
-        return [frame isKindOfClass:[CAMVideoFrameBGRA class]] && frame.bgraTexture.size == size &&
-            CAMSampleTimingInfoIsEqual(sampleTimingInfo, frame.sampleTimingInfo);
+      expect(recorder).to.matchValue(1, ^BOOL(id<CAMVideoFrame> frame) {
+        return [frame sampleBuffer].get() == sampleBuffer2.get();
       });
       expect(recorder).toNot.complete();
     });
@@ -203,7 +199,7 @@ context(@"", ^{
       device.videoFramesWithPortraitOrientation = NO;
       OCMVerify([videoConnection setVideoOrientation:videoOrientation]);
     });
-    
+
     it(@"should send subject changed updates", ^{
       LLSignalTestRecorder *recorder = [device.subjectAreaChanged testRecorder];
       [[NSNotificationCenter defaultCenter]
