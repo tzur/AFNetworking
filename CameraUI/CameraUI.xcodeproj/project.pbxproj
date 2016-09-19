@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0609BA5F1D9132D4000938EB /* CUISampleBufferView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0609BA5E1D9132D4000938EB /* CUISampleBufferView.mm */; };
+		0609BA8B1D9132E5000938EB /* CUISampleBufferViewSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0609BA8A1D9132E5000938EB /* CUISampleBufferViewSpec.mm */; };
+		0609BA8E1D913314000938EB /* CAMTestUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0609BA8D1D913314000938EB /* CAMTestUtils.mm */; };
 		288E8EC21D3BEAEC000B7E69 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288E8EC11D3BEAEC000B7E69 /* MobileCoreServices.framework */; };
 		65061A061D463938003D45B1 /* libLTKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 65061A031D463932003D45B1 /* libLTKit.a */; };
 		65061A251D463962003D45B1 /* libextobjc_iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 65061A201D463954003D45B1 /* libextobjc_iOS.a */; };
@@ -456,6 +459,11 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0609BA5D1D9132D4000938EB /* CUISampleBufferView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUISampleBufferView.h; sourceTree = "<group>"; };
+		0609BA5E1D9132D4000938EB /* CUISampleBufferView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUISampleBufferView.mm; sourceTree = "<group>"; };
+		0609BA8A1D9132E5000938EB /* CUISampleBufferViewSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUISampleBufferViewSpec.mm; sourceTree = "<group>"; };
+		0609BA8C1D913314000938EB /* CAMTestUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CAMTestUtils.h; path = ../../Camera/CameraTests/CAMTestUtils.h; sourceTree = "<group>"; };
+		0609BA8D1D913314000938EB /* CAMTestUtils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CAMTestUtils.mm; path = ../../Camera/CameraTests/CAMTestUtils.mm; sourceTree = "<group>"; };
 		288E8EC11D3BEAEC000B7E69 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		650619F31D46388F003D45B1 /* TestHost.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TestHost.xcodeproj; path = ../Foundations/TestHost.xcodeproj; sourceTree = "<group>"; };
 		650619FD1D463932003D45B1 /* LTKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LTKit.xcodeproj; path = ../LTKit/LTKit.xcodeproj; sourceTree = "<group>"; };
@@ -968,6 +976,8 @@
 				F9262E541D23A91A00CA60E7 /* CUIPreviewViewController.mm */,
 				F9262E551D23A91A00CA60E7 /* CUIPreviewViewModel.h */,
 				F9262E561D23A91A00CA60E7 /* CUIPreviewViewModel.mm */,
+				0609BA5D1D9132D4000938EB /* CUISampleBufferView.h */,
+				0609BA5E1D9132D4000938EB /* CUISampleBufferView.mm */,
 			);
 			name = Preview;
 			sourceTree = "<group>";
@@ -1032,6 +1042,7 @@
 				F9A684781D1FF45200E0F319 /* CUILayerViewSpec.mm */,
 				83AE3F111D48948A00F51B89 /* CUIPreviewViewControllerSpec.mm */,
 				F9E72E881D2BD9B5000E12C1 /* CUIPreviewViewModelSpec.mm */,
+				0609BA8A1D9132E5000938EB /* CUISampleBufferViewSpec.mm */,
 			);
 			name = Preview;
 			sourceTree = "<group>";
@@ -1152,6 +1163,8 @@
 		F935E5921D33DFD6003DEEE5 /* Test Utils */ = {
 			isa = PBXGroup;
 			children = (
+				0609BA8C1D913314000938EB /* CAMTestUtils.h */,
+				0609BA8D1D913314000938EB /* CAMTestUtils.mm */,
 				F935E56F1D33DFCF003DEEE5 /* CUIFakeNSNotificationCenter.h */,
 				F935E5701D33DFCF003DEEE5 /* CUIFakeNSNotificationCenter.mm */,
 				8328EE421D436E7E008C5A19 /* CUIFakeTimerContainer.h */,
@@ -1663,6 +1676,7 @@
 				BEFF88021D22682200DEAA97 /* CUIFlashModeViewModel.mm in Sources */,
 				BEFF88011D22682200DEAA97 /* CUIFlashMenuViewModel.mm in Sources */,
 				BEC7B1861D1FF4E50012C286 /* CUIDropDownMenuItemsEntry.mm in Sources */,
+				0609BA5F1D9132D4000938EB /* CUISampleBufferView.mm in Sources */,
 				BEE564791D801E7B00E79E55 /* CUIDropDownHorizontalView.mm in Sources */,
 				F965CD621CF478F100005627 /* CUISelectableMenuItemViewModel.mm in Sources */,
 				F9CD3BF91CECBC3700190169 /* CUISharedTheme.mm in Sources */,
@@ -1700,6 +1714,7 @@
 				BEEE6D341D21385D00579F5D /* EXPMatchers+complete.m in Sources */,
 				F9CD3C171CECBC4500190169 /* CUISharedThemeSpec.mm in Sources */,
 				BE0E850A1D2B9B1F00093B01 /* CAMDeviceStub.mm in Sources */,
+				0609BA8B1D9132E5000938EB /* CUISampleBufferViewSpec.mm in Sources */,
 				8328EE411D436169008C5A19 /* CUITimerModeViewModelSpec.mm in Sources */,
 				BEEE6D2F1D21385D00579F5D /* LLSignalTestRecorder.m in Sources */,
 				F9D0D2281D06BACB0033A4A5 /* WFFakePaintCodeModule.m in Sources */,
@@ -1721,6 +1736,7 @@
 				BEEE6D381D21385D00579F5D /* EXPMatchers+matchError.m in Sources */,
 				BEEE6D3E1D21385D00579F5D /* EXPMatchers+sendValuesWithCount.m in Sources */,
 				8328EDBC1D40F9E8008C5A19 /* CUIGridViewModelSpec.mm in Sources */,
+				0609BA8E1D913314000938EB /* CAMTestUtils.mm in Sources */,
 				F965C9E61CF317F800005627 /* LTObjectionModule.mm in Sources */,
 				8328EE3F1D43615C008C5A19 /* CUITimerMenuViewModelSpec.mm in Sources */,
 				BEC7B1AF1D1FFCE40012C286 /* CUIDropDownMenuItemsEntrySpec.mm in Sources */,
