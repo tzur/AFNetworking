@@ -38,7 +38,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly, nonatomic) id<BZRPaymentsPaymentQueue> paymentQueue;
 
 /// Application user identifier to use in payments.
-@property (readonly, nonatomic) NSString *applicationUserID;
+@property (readonly, nonatomic, nullable) NSString *applicationUserID;
 
 /// Payments for which no transaction updates have arrived.
 @property (readonly, nonatomic) NSMutableArray<SKPayment *> *pendingPayments;
@@ -124,7 +124,7 @@ NS_ASSUME_NONNULL_BEGIN
           return [RACEvent completedEvent];
         } else if (transaction.transactionState == SKPaymentTransactionStateFailed) {
           return [RACEvent eventWithError:
-                  [NSError bzr_purchaseFailedErrorWithTransaction:transaction]];
+                  [NSError bzr_errorWithCode:BZRErrorCodePurchaseFailed transaction:transaction]];
         }
         return [RACEvent eventWithValue:transaction];
       }]

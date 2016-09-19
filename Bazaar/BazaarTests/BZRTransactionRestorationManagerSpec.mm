@@ -12,9 +12,6 @@
 /// called.
 @interface BZRFakeRestorationPaymentQueue : NSObject <BZRRestorationPaymentQueue>
 
-/// \c YES if \c -[self restoreCompletedTransactions] was called, \c NO otherwise.
-@property (readonly, nonatomic) BOOL wasRestoreCompletedTransactionsCalled;
-
 /// \c username with which \c -[self restoreCompletedTransactionsWithApplicationUsername:]
 /// was called. \c nil if
 /// \c -[self restoreCompletedTransactionsWithApplicationUsername:] was never called or was called
@@ -27,12 +24,8 @@
 
 @synthesize restorationDelegate = _restorationDelegate;
 
-- (void)restoreCompletedTransactions {
-  _wasRestoreCompletedTransactionsCalled = YES;
-}
-
-- (void)restoreCompletedTransactionsWithApplicationUsername:(nullable NSString *)username {
-  _restoreCompletedTransactionsCalledWithUsername = username;
+- (void)restoreCompletedTransactionsWithApplicationUserID:(nullable NSString *)applicationUserID {
+  _restoreCompletedTransactionsCalledWithUsername = applicationUserID;
 }
 
 @end
@@ -40,9 +33,11 @@
 SpecBegin(BZRTransactionRestorationManager)
 
 __block BZRFakeRestorationPaymentQueue *paymentQueue;
+__block NSString *applicationUserID;
 
 beforeEach(^{
   paymentQueue = [[BZRFakeRestorationPaymentQueue alloc] init];
+  applicationUserID = @"foo";
 });
 
 context(@"deallocating object", ^{
@@ -51,7 +46,8 @@ context(@"deallocating object", ^{
 
     @autoreleasepool {
       BZRTransactionRestorationManager *restorationManager =
-          [[BZRTransactionRestorationManager alloc] initWithPaymentQueue:paymentQueue];
+          [[BZRTransactionRestorationManager alloc] initWithPaymentQueue:paymentQueue
+                                                       applicationUserID:applicationUserID];
       weakRestorationManager = restorationManager;
       [restorationManager restoreCompletedTransactions];
     }
@@ -65,27 +61,17 @@ context(@"restoring completed transactions", ^{
 
   beforeEach(^{
     restorationManager =
-        [[BZRTransactionRestorationManager alloc] initWithPaymentQueue:paymentQueue];
+        [[BZRTransactionRestorationManager alloc] initWithPaymentQueue:paymentQueue
+                                                     applicationUserID:applicationUserID];
   });
 
-  it(@"should call restore completed transactions", ^{
+  it(@"should call restore completed transactions with correct application user ID", ^{
     LLSignalTestRecorder *recorder =
         [[restorationManager restoreCompletedTransactions] testRecorder];
     [restorationManager paymentQueueRestorationCompleted:paymentQueue];
 
     expect(recorder).will.complete();
-    expect(paymentQueue.wasRestoreCompletedTransactionsCalled).to.beTruthy();
-  });
-
-  it(@"should call restore completed transactions with correct application user ID", ^{
-    NSString *username = @"foo";
-    LLSignalTestRecorder *recorder =
-        [[restorationManager restoreCompletedTransactionsWithApplicationUserID:username]
-        testRecorder];
-    [restorationManager paymentQueueRestorationCompleted:paymentQueue];
-
-    expect(recorder).will.complete();
-    expect(paymentQueue.restoreCompletedTransactionsCalledWithUsername).to.equal(username);
+    expect(paymentQueue.restoreCompletedTransactionsCalledWithUsername).to.equal(applicationUserID);
   });
 
   it(@"should err when restoration failed", ^{

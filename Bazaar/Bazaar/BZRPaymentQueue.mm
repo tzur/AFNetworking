@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// Queue used to make payments, restore completed transactions and manage downloads.
 @property (readonly, nonatomic) SKPaymentQueue *underlyingPaymentQueue;
 
-/// Subject used to send unfinished transactions with.
+/// Subject used to send an array of unfinished transactions.
 @property (readonly, nonatomic) RACSubject *unfinishedTransactionsSubject;
 
 /// if \c YES, transactions will be sent using \c unfinishedTransactionsSubject. Otherwise, they
@@ -95,14 +95,10 @@ static NSString * const kRestorationLabel = @"Restoration";
 #pragma mark BZRRestorationPaymentQueue
 #pragma mark -
 
-- (void)restoreCompletedTransactions {
+- (void)restoreCompletedTransactionsWithApplicationUserID:(nullable NSString *)applicationUserID {
   self.shouldSendTransactionsAsUnfinished = NO;
-  [self.underlyingPaymentQueue restoreCompletedTransactions];
-}
-
-- (void)restoreCompletedTransactionsWithApplicationUsername:(nullable NSString *)username {
-  self.shouldSendTransactionsAsUnfinished = NO;
-  [self.underlyingPaymentQueue restoreCompletedTransactionsWithApplicationUsername:username];
+  [self.underlyingPaymentQueue
+   restoreCompletedTransactionsWithApplicationUsername:applicationUserID];
 }
 
 #pragma mark -
@@ -127,7 +123,7 @@ static NSString * const kRestorationLabel = @"Restoration";
 - (void)paymentQueue:(SKPaymentQueue __unused *)queue
  updatedTransactions:(NSArray<SKPaymentTransaction *> *)transactions {
   if (self.shouldSendTransactionsAsUnfinished) {
-    [self sendTransactionsAsUnfinished:transactions];
+    [self.unfinishedTransactionsSubject sendNext:transactions];
     return;
   }
 
@@ -142,12 +138,6 @@ static NSString * const kRestorationLabel = @"Restoration";
   if (classifiedTransactions[kRestorationLabel].count) {
     [self.restorationDelegate paymentQueue:self
                       transactionsRestored:classifiedTransactions[kRestorationLabel]];
-  }
-}
-
-- (void)sendTransactionsAsUnfinished:(NSArray<SKPaymentTransaction *> *)transactions {
-  for (SKPaymentTransaction *transaction in transactions) {
-    [self.unfinishedTransactionsSubject sendNext:transaction];
   }
 }
 

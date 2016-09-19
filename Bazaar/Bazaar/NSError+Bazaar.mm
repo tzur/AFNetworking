@@ -10,7 +10,7 @@ NSString * const kBZRErrorExceptionKey = @"BZRErrorException";
 NSString * const kBZRErrorProductsRequestKey = @"BZRErrorProductsRequest";
 NSString * const kBZRErrorArchivePathKey = @"BZRErrorArchivePath";
 NSString * const kBZRErrorFailingItemPathKey = @"BZRErrorFailingItemPath";
-NSString * const kBZRErrorFailingTransactionKey = @"BZRErrorFailingTransaction";
+NSString * const kBZRErrorTransactionKey = @"BZRErrorTransaction";
 
 @implementation NSError (Bazaar)
 
@@ -54,11 +54,14 @@ NSString * const kBZRErrorFailingTransactionKey = @"BZRErrorFailingTransaction";
   return [NSError lt_errorWithCode:code userInfo:userInfo];
 }
 
-+ (instancetype)bzr_purchaseFailedErrorWithTransaction:(SKPaymentTransaction *)failingTransaction {
++ (instancetype)bzr_errorWithCode:(NSInteger)code
+                      transaction:(SKPaymentTransaction *)transaction {
   NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
-  userInfo[kBZRErrorFailingTransactionKey] = failingTransaction;
-  userInfo[NSUnderlyingErrorKey] = failingTransaction.error;
-  return [NSError lt_errorWithCode:BZRErrorCodePurchaseFailed userInfo:userInfo];
+  userInfo[kBZRErrorTransactionKey] = transaction;
+  if (transaction.transactionState == SKPaymentTransactionStateFailed) {
+    userInfo[NSUnderlyingErrorKey] = transaction.error;
+  }
+  return [NSError lt_errorWithCode:code userInfo:userInfo];
 }
 
 - (nullable NSException *)bzr_exception {
@@ -77,8 +80,8 @@ NSString * const kBZRErrorFailingTransactionKey = @"BZRErrorFailingTransaction";
   return self.userInfo[kBZRErrorFailingItemPathKey];
 }
 
-- (nullable SKPaymentTransaction *)bzr_failingTransaction {
-  return self.userInfo[kBZRErrorFailingTransactionKey];
+- (nullable SKPaymentTransaction *)bzr_transaction {
+  return self.userInfo[kBZRErrorTransactionKey];
 }
 
 @end

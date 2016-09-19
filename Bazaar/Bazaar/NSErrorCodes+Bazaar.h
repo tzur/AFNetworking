@@ -58,7 +58,9 @@ LTErrorCodesDeclare(BazaarErrorCodeProductID,
   /// Creation of directory has failed.
   BZRErrorCodeDirectoryCreationFailed,
   /// Purchase of a product has failed.
-  BZRErrorCodePurchaseFailed
+  BZRErrorCodePurchaseFailed,
+  /// Received a transaction that isn't associated with a payment.
+  BZRErrorCodeUnhandledTransactionReceived
 );
 
 NS_ASSUME_NONNULL_END

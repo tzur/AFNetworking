@@ -9,14 +9,10 @@ NS_ASSUME_NONNULL_BEGIN
 /// updates regarding restored transactions.
 @protocol BZRRestorationPaymentQueue <NSObject>
 
-/// Restores completed transactions. Will initiate sending updates of restored transactions to
-/// \c restorationDelegate.
-- (void)restoreCompletedTransactions;
-
-/// Restores completed transactions with username specified by \c username, or with the default
-/// username if \c username is \c nil. Will initiate sending updates of restored transactions to
-/// \c restorationDelegate.
-- (void)restoreCompletedTransactionsWithApplicationUsername:(nullable NSString *)username;
+/// Restores completed transactions with username specified by \c applicationUserID, or without a
+/// username if \c applicationUserID is \c nil. Will initiate sending updates of restored
+/// transactions to \c restorationDelegate.
+- (void)restoreCompletedTransactionsWithApplicationUserID:(nullable NSString *)applicationUserID;
 
 /// Delegate that will be receiving updates regarding restored transactions.
 @property (weak, nonatomic, nullable) id<BZRPaymentQueueRestorationDelegate> restorationDelegate;

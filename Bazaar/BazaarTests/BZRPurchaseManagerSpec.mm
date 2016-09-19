@@ -178,7 +178,7 @@ context(@"payment update forwarding", ^{
 
       expect(recorder).will.matchError(^BOOL(NSError *error) {
         return error.lt_isLTDomain && error.code == BZRErrorCodePurchaseFailed &&
-            [error.bzr_failingTransaction isEqual:transaction] &&
+            [error.bzr_transaction isEqual:transaction] &&
             error.lt_underlyingError == transaction.error;
       });
       purchaseManager = nil;
@@ -291,7 +291,7 @@ context(@"payment update forwarding", ^{
           expect(recorder).will.sendValues(@[transaction]);
           expect(otherRecorder).will.matchError(^BOOL(NSError *error) {
             return error.lt_isLTDomain && error.code == BZRErrorCodePurchaseFailed &&
-                [error.bzr_failingTransaction isEqual:otherTransaction] &&
+                [error.bzr_transaction isEqual:otherTransaction] &&
                 error.lt_underlyingError == otherTransaction.error;
           });
         });

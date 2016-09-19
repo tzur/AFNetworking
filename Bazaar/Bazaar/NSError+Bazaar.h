@@ -27,8 +27,9 @@ NS_ASSUME_NONNULL_BEGIN
                   underlyingError:(nullable NSError *)underlyingError
                       description:(nullable NSString *)description;
 
-/// Creates and returns an instance of \c NSError wrapping the given \c failingTransaction.
-+ (instancetype)bzr_purchaseFailedErrorWithTransaction:(SKPaymentTransaction *)failingTransaction;
+/// Creates and returns an instance of \c NSError with the given error \c code wrapping the given
+/// \c transaction.
++ (instancetype)bzr_errorWithCode:(NSInteger)code transaction:(SKPaymentTransaction *)transaction;
 
 /// Exception object wrapped by this error.
 @property (readonly, nonatomic, nullable) NSException *bzr_exception;
@@ -43,7 +44,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly, nonatomic, nullable) NSString *bzr_failingItemPath;
 
 /// Failed transaction wrapped by this error.
-@property (readonly, nonatomic, nullable) SKPaymentTransaction *bzr_failingTransaction;
+@property (readonly, nonatomic, nullable) SKPaymentTransaction *bzr_transaction;
 
 @end
 
