@@ -80,10 +80,12 @@ NS_ASSUME_NONNULL_BEGIN
       tryMap:^BZRReceiptValidationStatus * _Nullable
           (BZRReceiptValidationStatus *receiptValidationStatus, NSError **error) {
         if (!receiptValidationStatus.isValid) {
-          NSString *description = [NSString stringWithFormat:@"Failed to validate receipt, "
-                                   "reason: %@", receiptValidationStatus.error];
-          *error = [NSError lt_errorWithCode:BZRErrorCodeReceiptValidationFailed
-                                 description:description];
+          if (error) {
+            NSString *description = [NSString stringWithFormat:@"Failed to validate receipt, "
+                                     "reason: %@", receiptValidationStatus.error];
+            *error = [NSError lt_errorWithCode:BZRErrorCodeReceiptValidationFailed
+                                   description:description];
+          }
           return nil;
         }
         return receiptValidationStatus;

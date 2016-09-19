@@ -47,7 +47,8 @@ context(@"deallocating object", ^{
   it(@"should dealloc when all strong references are relinquished", ^{
     BZRPaymentQueue __weak *weakPaymentQueue;
     @autoreleasepool {
-      BZRPaymentQueue *paymentQueue = [[BZRPaymentQueue alloc] init];
+      BZRPaymentQueue *paymentQueue =
+          [[BZRPaymentQueue alloc] initWithUnfinishedTransactionsSubject:[RACSubject subject]];
       weakPaymentQueue = paymentQueue;
     }
     expect(weakPaymentQueue).to.beNil();
