@@ -45,18 +45,18 @@ NS_ASSUME_NONNULL_BEGIN
   RAC(self, enabled) = [RACObserve(self, enabledSignal) switchToLatest];
   @weakify(self);
   RAC(self, iconURL) = [RACObserve(self, flashDevice.currentFlashMode)
-      map:^NSURL *(NSNumber *flashMode) {
+      map:^NSURL * _Nullable(NSNumber *flashMode) {
         @strongify(self)
         return [self flashModeViewModelForFlashMode:flashMode].iconURL;
       }];
   RAC(self, title) =  [RACObserve(self, flashDevice.currentFlashMode)
-      map:^NSString *(NSNumber *flashMode) {
+      map:^NSString * _Nullable(NSNumber *flashMode) {
         @strongify(self)
         return [self flashModeViewModelForFlashMode:flashMode].title;
       }];
 }
 
-- (CUIFlashModeViewModel *)flashModeViewModelForFlashMode:(NSNumber *)flashMode {
+- (nullable CUIFlashModeViewModel *)flashModeViewModelForFlashMode:(NSNumber *)flashMode {
   for (CUIFlashModeViewModel *mode in self.subitems) {
     if (flashMode.integerValue == mode.flashMode) {
       return mode;
