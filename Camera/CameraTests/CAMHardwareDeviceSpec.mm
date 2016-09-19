@@ -4,7 +4,6 @@
 #import "CAMHardwareDevice.h"
 
 #import <LTEngine/LTMMTexture.h>
-#import <LTEngine/LTOpenCVExtensions.h>
 
 #import "CAMDevicePreset.h"
 #import "CAMFakeAVCaptureDevice.h"
@@ -60,10 +59,13 @@ context(@"", ^{
     it(@"should set pixel format", ^{
       id videoOutput = OCMClassMock([AVCaptureVideoDataOutput class]);
       session.videoOutput = videoOutput;
+      id stillOutput = OCMClassMock([AVCaptureStillImageOutput class]);
+      session.stillOutput = stillOutput;
 
       CAMPixelFormat *pixelFormat = $(CAMPixelFormat420f);
       LLSignalTestRecorder *recorder = [[device setPixelFormat:pixelFormat] testRecorder];
       OCMVerify([videoOutput setVideoSettings:pixelFormat.videoSettings]);
+      OCMVerify([stillOutput setOutputSettings:pixelFormat.videoSettings]);
       expect(recorder).to.sendValues(@[pixelFormat]);
       expect(recorder).to.complete();
     });
@@ -71,8 +73,11 @@ context(@"", ^{
     it(@"should not set pixel format without subscribing", ^{
       id videoOutput = OCMClassMock([AVCaptureVideoDataOutput class]);
       session.videoOutput = videoOutput;
+      id stillOutput = OCMClassMock([AVCaptureStillImageOutput class]);
+      session.stillOutput = stillOutput;
 
       OCMReject([videoOutput setVideoSettings:OCMOCK_ANY]);
+      OCMReject([stillOutput setOutputSettings:OCMOCK_ANY]);
       [device setPixelFormat:$(CAMPixelFormat420f)];
     });
 
@@ -83,7 +88,7 @@ context(@"", ^{
       RACSubject *trigger = [RACSubject subject];
       RACSignal *stillFrames = [device stillFramesWithTrigger:trigger];
 
-      lt::Ref<CMSampleBufferRef> sampleBuffer = CAMCreateEmptySampleBuffer();
+      __block lt::Ref<CMSampleBufferRef> sampleBuffer(CAMCreateImageSampleBuffer(kSize));
       CMSampleBufferRef sampleBufferRef = sampleBuffer.get();
       NSValue *boxedSampleBuffer = [NSValue value:&sampleBufferRef
                                      withObjCType:@encode(CMSampleBufferRef)];
@@ -92,27 +97,22 @@ context(@"", ^{
                completionHandler:
                    ([OCMArg invokeBlockWithArgs:boxedSampleBuffer, [NSNull null], nil])]);
 
-      id avcaptureClassMock = OCMClassMock([AVCaptureStillImageOutput class]);
-      [[[[avcaptureClassMock stub] ignoringNonObjectArgs] andReturn:nil]
-          jpegStillImageNSDataRepresentation:NULL];
-
-      UIImage *image = LTLoadImage([self class], @"Lena.png");
-      expect(image).toNot.beNil();
-      id uiimageClassMock = OCMClassMock([UIImage class]);
-      OCMStub([uiimageClassMock imageWithData:OCMOCK_ANY]).andReturn(image);
-
       LLSignalTestRecorder *recorder = [stillFrames testRecorder];
 
       [trigger sendNext:nil];
-      expect(recorder).to.sendValues(@[image]);
+      expect(recorder).to.sendValuesWithCount(1);
+      expect(recorder).to.matchValue(0, ^BOOL(id<CAMVideoFrame> frame) {
+        return [frame sampleBuffer].get() == sampleBuffer.get();
+      });
       [trigger sendNext:nil];
-      expect(recorder).to.sendValues(@[image, image]);
+      expect(recorder).to.sendValuesWithCount(2);
+      expect(recorder).to.matchValue(1, ^BOOL(id<CAMVideoFrame> frame) {
+        return [frame sampleBuffer].get() == sampleBuffer.get();
+      });
       expect(recorder).toNot.complete();
       [trigger sendCompleted];
       expect(recorder).to.complete();
 
-      [uiimageClassMock stopMocking];
-      [avcaptureClassMock stopMocking];
       boxedSampleBuffer = nil;
     });
 

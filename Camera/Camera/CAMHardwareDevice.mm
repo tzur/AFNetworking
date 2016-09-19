@@ -194,6 +194,7 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
   return [RACSignal defer:^RACSignal *{
     @strongify(self);
     self.session.videoOutput.videoSettings = pixelFormat.videoSettings;
+    self.session.stillOutput.outputSettings = pixelFormat.videoSettings;
     return [RACSignal return:pixelFormat];
   }];
 }
@@ -211,10 +212,9 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
                                     lt_errorWithCode:CAMErrorCodeFailedCapturingFromStillOutput
                                     underlyingError:error]];
            } else {
-             NSData *data = [AVCaptureStillImageOutput
-                             jpegStillImageNSDataRepresentation:imageDataSampleBuffer];
-             UIImage *image = [UIImage imageWithData:data];
-             [subscriber sendNext:image];
+             CAMVideoFrame *frame =
+                 [[CAMVideoFrame alloc] initWithSampleBuffer:imageDataSampleBuffer];
+             [subscriber sendNext:frame];
              [subscriber sendCompleted];
            }
          }];
