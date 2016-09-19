@@ -156,6 +156,8 @@
 		B98505C31D85B479002ABF72 /* BZRAcquiredViaSubscriptionProviderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = B98505C21D85B479002ABF72 /* BZRAcquiredViaSubscriptionProviderSpec.mm */; };
 		B98505F31D85BB4A002ABF72 /* BZRProduct+SKProduct.h in Headers */ = {isa = PBXBuildFile; fileRef = B98505F11D85BB4A002ABF72 /* BZRProduct+SKProduct.h */; };
 		B98505F41D85BB4A002ABF72 /* BZRProduct+SKProduct.mm in Sources */ = {isa = PBXBuildFile; fileRef = B98505F21D85BB4A002ABF72 /* BZRProduct+SKProduct.mm */; };
+		B98506B21D869595002ABF72 /* BZRStoreKitFacadeFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = B98506B01D869595002ABF72 /* BZRStoreKitFacadeFactory.h */; };
+		B98506B31D869595002ABF72 /* BZRStoreKitFacadeFactory.mm in Sources */ = {isa = PBXBuildFile; fileRef = B98506B11D869595002ABF72 /* BZRStoreKitFacadeFactory.mm */; };
 		B9ABD1061D7D75AB004D2877 /* BZRProductsInfoProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = B9ABD1021D7D75AB004D2877 /* BZRProductsInfoProvider.h */; };
 		B9ABD1071D7D75AB004D2877 /* BZRProductsManager.h in Headers */ = {isa = PBXBuildFile; fileRef = B9ABD1031D7D75AB004D2877 /* BZRProductsManager.h */; };
 		B9ABD1081D7D75AB004D2877 /* BZRStore.h in Headers */ = {isa = PBXBuildFile; fileRef = B9ABD1041D7D75AB004D2877 /* BZRStore.h */; };
@@ -779,6 +781,8 @@
 		B98505C21D85B479002ABF72 /* BZRAcquiredViaSubscriptionProviderSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRAcquiredViaSubscriptionProviderSpec.mm; sourceTree = "<group>"; };
 		B98505F11D85BB4A002ABF72 /* BZRProduct+SKProduct.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BZRProduct+SKProduct.h"; sourceTree = "<group>"; };
 		B98505F21D85BB4A002ABF72 /* BZRProduct+SKProduct.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "BZRProduct+SKProduct.mm"; sourceTree = "<group>"; };
+		B98506B01D869595002ABF72 /* BZRStoreKitFacadeFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRStoreKitFacadeFactory.h; sourceTree = "<group>"; };
+		B98506B11D869595002ABF72 /* BZRStoreKitFacadeFactory.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRStoreKitFacadeFactory.mm; sourceTree = "<group>"; };
 		B9ABD1021D7D75AB004D2877 /* BZRProductsInfoProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRProductsInfoProvider.h; sourceTree = "<group>"; };
 		B9ABD1031D7D75AB004D2877 /* BZRProductsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRProductsManager.h; sourceTree = "<group>"; };
 		B9ABD1041D7D75AB004D2877 /* BZRStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRStore.h; sourceTree = "<group>"; };
@@ -885,6 +889,8 @@
 				650D7D3F1D324AAD003CE646 /* SKProductsRequest+RACSignalSupport.mm */,
 				65D67B901D53DBF400B647ED /* SKReceiptRefreshRequest+RACSignalSupport.h */,
 				65D67B911D53DBF400B647ED /* SKReceiptRefreshRequest+RACSignalSupport.mm */,
+				B98506B01D869595002ABF72 /* BZRStoreKitFacadeFactory.h */,
+				B98506B11D869595002ABF72 /* BZRStoreKitFacadeFactory.mm */,
 			);
 			name = Internal;
 			sourceTree = "<group>";
@@ -1523,6 +1529,7 @@
 				65F3F7031D5A68F7008E3C3A /* BZRReceiptValidationParameters+Validatricks.h in Headers */,
 				65F3F7041D5A68F7008E3C3A /* BZRValidatricksReceiptModel.h in Headers */,
 				65F3F7051D5A68F7008E3C3A /* BZRValidatricksReceiptValidationStatus.h in Headers */,
+				B98506B21D869595002ABF72 /* BZRStoreKitFacadeFactory.h in Headers */,
 				B9ABD58F1D7FF793004D2877 /* BZRAcquiredViaSubscriptionProvider.h in Headers */,
 				B9ABD1091D7D75AB004D2877 /* BZRStoreConfiguration.h in Headers */,
 				65F3F7061D5A68F7008E3C3A /* FBRHTTPClient+Validatricks.h in Headers */,
@@ -2175,6 +2182,7 @@
 				6580F0741CEB2E8D007EABDD /* BZRReceiptValidationStatus.mm in Sources */,
 				B9ABD4531D7EEF86004D2877 /* BZRStoreKitRequestsFactory.mm in Sources */,
 				B9256C011D73320700490815 /* BZRTransactionRestorationManager.mm in Sources */,
+				B98506B31D869595002ABF72 /* BZRStoreKitFacadeFactory.mm in Sources */,
 				6526DEF61D41070E0034DE01 /* BZRZipFileArchiver.mm in Sources */,
 				65F03B6C1CFC3E0C008B1847 /* BZRModel.mm in Sources */,
 				6501EF6B1D5B4A10007B76CC /* LTProgress+Bazaar.mm in Sources */,
