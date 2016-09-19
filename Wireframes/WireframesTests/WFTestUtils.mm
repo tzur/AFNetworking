@@ -13,7 +13,7 @@ UIImage *WFCreateBlankImage(CGFloat width, CGFloat height) {
 
 UIImage *WFCreateSolidImage(CGFloat width, CGFloat height, UIColor *color) {
   CGSize size = CGSizeMake(width, height);
-  UIGraphicsBeginImageContextWithOptions(size, YES, 0);
+  UIGraphicsBeginImageContextWithOptions(size, NO, 0);
   [color setFill];
   UIRectFill(CGRectMake(0, 0, size.width, size.height));
   UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
