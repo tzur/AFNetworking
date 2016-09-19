@@ -10,6 +10,7 @@
 #import "CAMFakeAVCaptureDevice.h"
 #import "CAMHardwareSession.h"
 #import "CAMSampleTimingInfo.h"
+#import "CAMTestUtils.h"
 #import "CAMVideoFrame.h"
 
 @interface CAMHardwareDevice (ForTesting) <AVCaptureVideoDataOutputSampleBufferDelegate,
@@ -40,41 +41,6 @@
   return self.videoMaxZoomFactorToReturn;
 }
 @end
-
-static CMSampleBufferRef CAMCreateEmptySampleBuffer() {
-  CMSampleBufferRef sampleBuffer;
-  OSStatus status = CMSampleBufferCreate(kCFAllocatorDefault, NULL, YES, NULL, NULL, NULL,
-                                         0, 0, NULL, 0, NULL, &sampleBuffer);
-  LTAssert(status == 0, @"CMSampleBufferCreate failed - check code");
-  return sampleBuffer;
-}
-
-static CMSampleBufferRef CAMCreateImageSampleBuffer(CGSize size) {
-  CVImageBufferRef imageBuffer;
-  CVReturn pixelBufferCreate =
-      CVPixelBufferCreate(NULL, (size_t)size.width, (size_t)size.height, kCVPixelFormatType_32BGRA,
-                          NULL, &imageBuffer);
-  LTAssert(pixelBufferCreate == kCVReturnSuccess, @"CVPixelBufferCreate failed - check code");
-
-  CMVideoFormatDescriptionRef videoFormat;
-  CVReturn videoFormatCreate =
-      CMVideoFormatDescriptionCreateForImageBuffer(NULL, imageBuffer, &videoFormat);
-  LTAssert(videoFormatCreate == kCVReturnSuccess,
-      @"CMVideoFormatDescriptionCreateForImageBuffer failed - check code");
-
-  CMSampleTimingInfo sampleTimingInfo = {kCMTimeZero, CMTimeMake(1, 60), kCMTimeZero};
-
-  CMSampleBufferRef sampleBuffer;
-  OSStatus sampleBufferCreate =
-      CMSampleBufferCreateForImageBuffer(kCFAllocatorDefault, imageBuffer, YES, NULL, NULL,
-                                         videoFormat, &sampleTimingInfo, &sampleBuffer);
-  LTAssert(sampleBufferCreate == 0, @"CMSampleBufferCreateForImageBuffer failed - check code");
-
-  CFRelease(videoFormat);
-  CFRelease(imageBuffer);
-
-  return sampleBuffer;
-}
 
 SpecBegin(CAMHardwareDevice)
 
@@ -116,8 +82,9 @@ context(@"", ^{
       RACSubject *trigger = [RACSubject subject];
       RACSignal *stillFrames = [device stillFramesWithTrigger:trigger];
 
-      CMSampleBufferRef sampleBuffer = CAMCreateEmptySampleBuffer();
-      NSValue *boxedSampleBuffer = [NSValue value:&sampleBuffer
+      lt::Ref<CMSampleBufferRef> sampleBuffer = CAMCreateEmptySampleBuffer();
+      CMSampleBufferRef sampleBufferRef = sampleBuffer.get();
+      NSValue *boxedSampleBuffer = [NSValue value:&sampleBufferRef
                                      withObjCType:@encode(CMSampleBufferRef)];
       OCMStub([stillOutput
                captureStillImageAsynchronouslyFromConnection:OCMOCK_ANY
@@ -146,36 +113,34 @@ context(@"", ^{
       [uiimageClassMock stopMocking];
       [avcaptureClassMock stopMocking];
       boxedSampleBuffer = nil;
-      CFRelease(sampleBuffer);
     });
 
     it(@"should send video frames", ^{
       CGSize size = CGSizeMake(3, 6);
-      CMSampleBufferRef sampleBuffer = CAMCreateImageSampleBuffer(size);
+      lt::Ref<CMSampleBufferRef> sampleBuffer = CAMCreateImageSampleBuffer(size);
       CMSampleTimingInfo sampleTimingInfo;
-      OSStatus status = CMSampleBufferGetSampleTimingInfo(sampleBuffer, 0, &sampleTimingInfo);
+      OSStatus status = CMSampleBufferGetSampleTimingInfo(sampleBuffer.get(), 0, &sampleTimingInfo);
       expect(status).to.equal(noErr);
 
       id output = OCMClassMock([AVCaptureVideoDataOutput class]);
       id connection = OCMClassMock([AVCaptureConnection class]);
       LLSignalTestRecorder *recorder = [[device videoFrames] testRecorder];
 
-      [device captureOutput:output didOutputSampleBuffer:sampleBuffer fromConnection:connection];
+      [device captureOutput:output didOutputSampleBuffer:sampleBuffer.get()
+             fromConnection:connection];
       expect(recorder).to.sendValuesWithCount(1);
       expect(recorder).to.matchValue(0, ^BOOL(CAMVideoFrameBGRA *frame) {
         return [frame isKindOfClass:[CAMVideoFrameBGRA class]] && frame.bgraTexture.size == size &&
             CAMSampleTimingInfoIsEqual(sampleTimingInfo, frame.sampleTimingInfo);
-        ;
       });
-      [device captureOutput:output didOutputSampleBuffer:sampleBuffer fromConnection:connection];
+      [device captureOutput:output didOutputSampleBuffer:sampleBuffer.get()
+             fromConnection:connection];
       expect(recorder).to.sendValuesWithCount(2);
       expect(recorder).to.matchValue(1, ^BOOL(CAMVideoFrameBGRA *frame) {
         return [frame isKindOfClass:[CAMVideoFrameBGRA class]] && frame.bgraTexture.size == size &&
             CAMSampleTimingInfoIsEqual(sampleTimingInfo, frame.sampleTimingInfo);
       });
       expect(recorder).toNot.complete();
-
-      CFRelease(sampleBuffer);
     });
 
     it(@"should update frames orientation correctly", ^{
@@ -268,20 +233,22 @@ context(@"", ^{
 
   context(@"audio", ^{
     it(@"should send audio frame", ^{
-      CMSampleBufferRef sampleBuffer = CAMCreateEmptySampleBuffer();
+      lt::Ref<CMSampleBufferRef> sampleBuffer = CAMCreateEmptySampleBuffer();
 
       id output = OCMClassMock([AVCaptureAudioDataOutput class]);
       id connection = OCMClassMock([AVCaptureConnection class]);
       LLSignalTestRecorder *recorder = [[device audioFrames] testRecorder];
-      NSValue *expected = [NSValue value:&sampleBuffer withObjCType:@encode(CMSampleBufferRef)];
+      CMSampleBufferRef sampleBufferRef = sampleBuffer.get();
+      NSValue *expected = [NSValue value:&sampleBufferRef
+                            withObjCType:@encode(CMSampleBufferRef)];
 
-      [device captureOutput:output didOutputSampleBuffer:sampleBuffer fromConnection:connection];
+      [device captureOutput:output didOutputSampleBuffer:sampleBuffer.get()
+             fromConnection:connection];
       expect(recorder).to.sendValues(@[expected]);
-      [device captureOutput:output didOutputSampleBuffer:sampleBuffer fromConnection:connection];
+      [device captureOutput:output didOutputSampleBuffer:sampleBuffer.get()
+             fromConnection:connection];
       expect(recorder).to.sendValues(@[expected, expected]);
       expect(recorder).toNot.complete();
-
-      CFRelease(sampleBuffer);
     });
   });
 

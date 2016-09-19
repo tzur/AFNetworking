@@ -3,6 +3,7 @@
 
 #import <LTKit/LTRef.h>
 
+#import <CoreMedia/CoreMedia.h>
 #import <CoreText/CoreText.h>
 #import <CoreVideo/CoreVideo.h>
 #import <ImageIO/ImageIO.h>
@@ -10,6 +11,11 @@
 #ifdef __cplusplus
 
 namespace lt {
+
+// Core Media.
+template <> struct IsCoreFoundationObjectRef<CMSampleBufferRef> : public std::true_type {};
+template <> struct IsCoreFoundationObjectRef<CMVideoFormatDescriptionRef> :
+    public std::true_type {};
 
 // Core Video.
 template <> struct IsCoreFoundationObjectRef<CVPixelBufferRef> : public std::true_type {};

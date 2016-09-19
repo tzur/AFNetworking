@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0627C4C11D1A6CED00EFEC6B /* Mantle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0627C4BE1D1A6CD900EFEC6B /* Mantle.framework */; };
+		069B348C1D8A9FBC007D99C6 /* CAMTestUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 069B348B1D8A9FBC007D99C6 /* CAMTestUtils.mm */; };
 		06C02EFB1D19387900745557 /* CAMExposureMapProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 06C02EFA1D19387900745557 /* CAMExposureMapProcessor.mm */; };
 		06C02EFC1D19389200745557 /* CAMExposureMap.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 06C02EF81D19387900745557 /* CAMExposureMap.fsh */; };
 		06C02F631D1951DD00745557 /* CAMExposureMapProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 06C02F621D1951DD00745557 /* CAMExposureMapProcessorSpec.mm */; };
@@ -419,6 +420,8 @@
 
 /* Begin PBXFileReference section */
 		0627C4B21D1A6CD900EFEC6B /* Mantle.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Mantle.xcodeproj; path = ../third_party/Mantle/Mantle.xcodeproj; sourceTree = "<group>"; };
+		069B348A1D8A9FBC007D99C6 /* CAMTestUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAMTestUtils.h; sourceTree = "<group>"; };
+		069B348B1D8A9FBC007D99C6 /* CAMTestUtils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CAMTestUtils.mm; sourceTree = "<group>"; };
 		06C02EF81D19387900745557 /* CAMExposureMap.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = CAMExposureMap.fsh; sourceTree = "<group>"; };
 		06C02EF91D19387900745557 /* CAMExposureMapProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAMExposureMapProcessor.h; sourceTree = "<group>"; };
 		06C02EFA1D19387900745557 /* CAMExposureMapProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CAMExposureMapProcessor.mm; sourceTree = "<group>"; };
@@ -883,6 +886,8 @@
 				BED1577E1D2A9B50005D83F7 /* CAMDeviceStub.mm */,
 				83893A561D12C827002B64B4 /* CAMFakeAVCaptureDevice.h */,
 				83893A571D12C827002B64B4 /* CAMFakeAVCaptureDevice.mm */,
+				069B348A1D8A9FBC007D99C6 /* CAMTestUtils.h */,
+				069B348B1D8A9FBC007D99C6 /* CAMTestUtils.mm */,
 			);
 			name = "Test Utils";
 			sourceTree = "<group>";
@@ -1470,6 +1475,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				069B348C1D8A9FBC007D99C6 /* CAMTestUtils.mm in Sources */,
 				835205A31D2A5B2700000EEC /* EXPMatchers+matchValues.m in Sources */,
 				835205991D2A5B2700000EEC /* RACSignal+LLSubscriptionCounting.m in Sources */,
 				06C02F731D196A5000745557 /* EXPMatchers+equalMat.mm in Sources */,
