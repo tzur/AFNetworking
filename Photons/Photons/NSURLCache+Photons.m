@@ -63,7 +63,7 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark Mapping
 #pragma mark -
 
-- (NSCachedURLResponse *)responseFromData:(NSData *)data withUserInfo:(NSDictionary *)info
+- (NSCachedURLResponse *)responseFromData:(NSData *)data withUserInfo:(nullable NSDictionary *)info
                                       url:(NSURL *)url
                             storagePolicy:(NSURLCacheStoragePolicy)storagePolicy {
   NSURLResponse *internalResponse = [[NSURLResponse alloc] initWithURL:url MIMEType:nil
