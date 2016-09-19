@@ -379,7 +379,9 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
 
       return YES;
     } else {
-      *errorPtr = [NSError lt_errorWithCode:CAMErrorCodeFocusSettingUnsupported];
+      if (errorPtr) {
+        *errorPtr = [NSError lt_errorWithCode:CAMErrorCodeFocusSettingUnsupported];
+      }
       return NO;
     }
   } error:error];
@@ -400,7 +402,9 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
                                  }];
         return YES;
       } else {
-        *errorPtr = [NSError lt_errorWithCode:CAMErrorCodeFocusSettingUnsupported];
+        if (errorPtr) {
+          *errorPtr = [NSError lt_errorWithCode:CAMErrorCodeFocusSettingUnsupported];
+        }
         return NO;
       }
     } error:&error];
@@ -463,7 +467,9 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
       }
       return YES;
     } else {
-      *errorPtr = [NSError lt_errorWithCode:CAMErrorCodeExposureSettingUnsupported];
+      if (errorPtr) {
+        *errorPtr = [NSError lt_errorWithCode:CAMErrorCodeExposureSettingUnsupported];
+      }
       return NO;
     }
   } error:error];
@@ -541,7 +547,9 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
       device.whiteBalanceMode = mode;
       return YES;
     } else {
-      *errorPtr = [NSError lt_errorWithCode:CAMErrorCodeWhiteBalanceSettingUnsupported];
+      if (errorPtr) {
+        *errorPtr = [NSError lt_errorWithCode:CAMErrorCodeWhiteBalanceSettingUnsupported];
+      }
       return NO;
     }
   } error:error];
@@ -565,7 +573,9 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
          }];
         return YES;
       } else {
-        *errorPtr = [NSError lt_errorWithCode:CAMErrorCodeWhiteBalanceSettingUnsupported];
+        if (errorPtr) {
+          *errorPtr = [NSError lt_errorWithCode:CAMErrorCodeWhiteBalanceSettingUnsupported];
+        }
         return NO;
       }
     } error:&error];
@@ -636,7 +646,9 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
         device.flashMode = flashMode;
         return YES;
       } else {
-        *errorPtr = [NSError lt_errorWithCode:CAMErrorCodeFlashModeSettingUnsupported];
+        if (errorPtr) {
+          *errorPtr = [NSError lt_errorWithCode:CAMErrorCodeFlashModeSettingUnsupported];
+        }
         return NO;
       }
     } error:&error];
@@ -674,7 +686,9 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
 
 - (BOOL)setDeviceTorchOff:(AVCaptureDevice *)device error:(NSError * __autoreleasing *)errorPtr {
   if (![device isTorchModeSupported:AVCaptureTorchModeOff]) {
-    *errorPtr = [NSError lt_errorWithCode:CAMErrorCodeTorchModeSettingUnsupported];
+    if (errorPtr) {
+      *errorPtr = [NSError lt_errorWithCode:CAMErrorCodeTorchModeSettingUnsupported];
+    }
     return NO;
   }
   device.torchMode = AVCaptureTorchModeOff;
@@ -684,7 +698,9 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
 - (BOOL)setDeviceTorchOn:(AVCaptureDevice *)device withLevel:(float)torchLevel
                    error:(NSError * __autoreleasing *)errorPtr {
   if (![device isTorchModeSupported:AVCaptureTorchModeOn]) {
-    *errorPtr = [NSError lt_errorWithCode:CAMErrorCodeTorchModeSettingUnsupported];
+    if (errorPtr) {
+      *errorPtr = [NSError lt_errorWithCode:CAMErrorCodeTorchModeSettingUnsupported];
+    }
     return NO;
   }
   NSError *setLevelError;
