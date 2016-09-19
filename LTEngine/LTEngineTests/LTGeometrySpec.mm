@@ -844,6 +844,21 @@ context(@"relationship point and line/edge", ^{
           expect(LTPointOnPolylineNearestToPoint(polyline, points.first)).to.equal(points.second);
         }
       });
+
+      it(@"should raise when attempting to compute closest point for non-existing polyline", ^{
+        expect(^{
+          CGPoints emptyPolyline;
+          LTPointOnPolylineNearestToPoint(emptyPolyline, CGPointZero);
+        }).to.raise(NSInvalidArgumentException);
+      });
+
+      it(@"should raise when attempting to compute closest point for invalid polyline", ^{
+        expect(^{
+          CGPoints invalidPolyline;
+          invalidPolyline.push_back({CGPointZero});
+          LTPointOnPolylineNearestToPoint(invalidPolyline, CGPointZero);
+        }).to.raise(NSInvalidArgumentException);
+      });
     });
     
     context(@"distance of point from polyline", ^{

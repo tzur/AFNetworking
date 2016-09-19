@@ -415,7 +415,10 @@ CGFloat LTDistanceFromEdge(CGPoint p0, CGPoint p1, CGPoint point) {
 }
 
 CGPoint LTPointOnPolylineNearestToPoint(const CGPoints &polyline, CGPoint point) {
-  CGPoint result;
+  LTParameterAssert(polyline.size() >= 2, @"Given polyline of invalid size: %lu",
+                    (unsigned long)polyline.size());
+
+  CGPoint result = CGPointNull;
   CGFloat minDistance = CGFLOAT_MAX;
   
   for(CGPoints::size_type i = 0; i + 1 < polyline.size(); ++i) {
