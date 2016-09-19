@@ -23,7 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// saves the set to storage.
 - (void)removeAcquiredViaSubscriptionProduct:(NSString *)productIdentifier;
 
-/// Set of products that were acquired via subscription.
+/// Set of products that were acquired via subscription. KVO compliant.
 @property (readonly, nonatomic) NSSet<NSString *> *productsAcquiredViaSubscription;
 
 /// Sends storage errors as values. The signal completes when the receiver is deallocated. The

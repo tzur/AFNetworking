@@ -79,10 +79,10 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark Mutating properties
 #pragma mark -
 
-- (instancetype)modelByOverridingProperty:(NSString *)propertyName withValue:(id)value {
-  NSDictionary *dictionaryValue =
-      [self.dictionaryValue mtl_dictionaryByAddingEntriesFromDictionary:@{propertyName: value}];
-  BZRModel *model = [[self class] modelWithDictionary:dictionaryValue error:nil];
+- (instancetype)modelByOverridingProperty:(NSString *)propertyName withValue:(nullable id)value {
+  NSMutableDictionary *dictionaryValue = [self.dictionaryValue mutableCopy];
+  dictionaryValue[propertyName] = value;
+  BZRModel *model = [[self class] modelWithDictionary:[dictionaryValue copy] error:nil];
   LTAssert(model, @"Failed to initialize model with dictionary value %@", dictionaryValue);
   return model;
 }

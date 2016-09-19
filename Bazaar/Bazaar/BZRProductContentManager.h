@@ -12,11 +12,13 @@ NS_ASSUME_NONNULL_BEGIN
 /// available and get URLs to content of products.
 @interface BZRProductContentManager : NSObject
 
-/// Initializes with \c fileManager set to \c +[NSFileManager defaultManager] and \c fileArchiver
-/// set to a new instance of \c BZRZipFileArchiver.
+- (instancetype)init NS_UNAVAILABLE;
+
+/// Initializes with \c fileManager and \c fileArchiver set to a new instance of
+/// \c BZRZipFileArchiver.
 ///
 /// @see initWithFileManager:fileArchiver:
-- (instancetype)init;
+- (instancetype)initWithFileManager:(NSFileManager *)fileManager;
 
 /// Initializes with \c fileManager, used for interaction with files and directories, and with
 /// \c fileArchiver, used to extract content archives.

@@ -30,6 +30,10 @@ NS_ASSUME_NONNULL_BEGIN
                     archiveFactory:[[BZRZipArchiveFactory alloc] init]];
 }
 
+- (instancetype)initWithFileManager:(NSFileManager *)fileManager {
+  return [self initWithFileManager:fileManager archiveFactory:[[BZRZipArchiveFactory alloc] init]];
+}
+
 - (instancetype)initWithFileManager:(NSFileManager *)fileManager
                      archiveFactory:(BZRZipArchiveFactory *)archiveFactory {
   if (self = [super init]) {
