@@ -81,7 +81,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (BOOL)fileExistsAtPath:(NSString *)path isDirectory:(nullable BOOL *)isDirectory {
   PTNFileSystemFakeFileManagerFile *file = [self fileAtPath:path];
-  *isDirectory = file.isDirectory;
+  if (isDirectory) {
+    *isDirectory = file.isDirectory;
+  }
   return file != nil;
 }
 

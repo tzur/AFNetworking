@@ -129,11 +129,19 @@ context(@"asset fetching", ^{
     });
   });
 
-  it(@"should error on directory URL", ^{
+  it(@"should fetch directory descriptor for directory URL", ^{
     NSURL *url = [NSURL ptn_fileSystemAlbumURLWithPath:PTNFileSystemPathFromString(@"baz")];
 
+    expect([manager fetchDescriptorWithURL:url]).will.sendValues(@[
+      PTNFileSystemDirectoryFromString(@"baz")
+    ]);
+  });
+
+  it(@"should error when fetching asset of non-directory with directory descriptor URL", ^{
+    NSURL *url = [NSURL ptn_fileSystemAlbumURLWithPath:PTNFileSystemPathFromString(@"foo.jpg")];
+
     expect([manager fetchDescriptorWithURL:url]).will.matchError(^BOOL(NSError *error) {
-      return error.code == PTNErrorCodeInvalidURL;
+      return error.code == PTNErrorCodeAlbumNotFound;
     });
   });
 
