@@ -211,6 +211,11 @@ context(@"LTVector2", ^{
       expect(std::max(LTVector2(1, 7))).to.equal(7);
     });
 
+    it(@"should return absolute value of each element", ^{
+      expect(std::abs(LTVector2(-1, 2))).to.equal(LTVector2(1, 2));
+      expect(std::abs(LTVector2(1, -2))).to.equal(LTVector2(1, 2));
+    });
+
     it(@"should return square root of each element", ^{
       expect(std::sqrt(LTVector2(0, 4))).to.equal(LTVector2(0, 2));
     });
@@ -409,6 +414,11 @@ context(@"LTVector3", ^{
 
     it(@"should return maximal component", ^{
       expect(std::max(LTVector3(1, 7, -5))).to.equal(7);
+    });
+
+    it(@"should return absolute value of each element", ^{
+      expect(std::abs(LTVector3(-1, 2, -3))).to.equal(LTVector3(1, 2, 3));
+      expect(std::abs(LTVector3(1, -2, 3))).to.equal(LTVector3(1, 2, 3));
     });
 
     it(@"should return square root of each element", ^{
@@ -658,6 +668,11 @@ context(@"LTVector4", ^{
 
     it(@"should return maximal component", ^{
       expect(std::max(LTVector4(1, 7, -5, 100))).to.equal(100);
+    });
+
+    it(@"should return absolute value of each element", ^{
+      expect(std::abs(LTVector4(-1, 2, -3, 4))).to.equal(LTVector4(1, 2, 3, 4));
+      expect(std::abs(LTVector4(1, -2, 3, -4))).to.equal(LTVector4(1, 2, 3, 4));
     });
 
     it(@"should return square root of each element", ^{

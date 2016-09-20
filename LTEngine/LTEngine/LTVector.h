@@ -304,7 +304,12 @@ namespace std {
     return max(a.x, a.y);
   }
 
-  /// Returns the squqre root of each element of the vector.
+  /// Returns the absolute value of each element of the vector.
+  inline LTVector2 abs(const LTVector2 &v) {
+    return LTVector2(abs(v.x), abs(v.y));
+  }
+
+  /// Returns the square root of each element of the vector.
   inline LTVector2 sqrt(const LTVector2 &v) {
     return LTVector2(sqrt(v.x), sqrt(v.y));
   }
@@ -621,7 +626,12 @@ namespace std {
     return max(max(a.x, a.y), a.z);
   }
 
-  /// Returns the squqre root of each element of the vector.
+  /// Returns the absolute value of each element of the vector.
+  inline LTVector3 abs(const LTVector3 &v) {
+    return LTVector3(abs(v.x), abs(v.y), abs(v.z));
+  }
+
+  /// Returns the square root of each element of the vector.
   inline LTVector3 sqrt(const LTVector3 &v) {
     return LTVector3(sqrt(v.x), sqrt(v.y), sqrt(v.z));
   }
@@ -986,7 +996,12 @@ namespace std {
     return max(max(max(a.x, a.y), a.z), a.w);
   }
 
-  /// Returns the squqre root of each element of the vector.
+  /// Returns the absolute value of each element of the vector.
+  inline LTVector4 abs(const LTVector4 &v) {
+    return LTVector4(abs(v.x), abs(v.y), abs(v.z), abs(v.w));
+  }
+
+  /// Returns the square root of each element of the vector.
   inline LTVector4 sqrt(const LTVector4 &v) {
     return LTVector4(sqrt(v.x), sqrt(v.y), sqrt(v.z), sqrt(v.w));
   }
