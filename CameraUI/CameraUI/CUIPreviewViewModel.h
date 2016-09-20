@@ -18,8 +18,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// ViewModel for CUIPreviewViewController. Provides a live preview, controls focus and zoom.
 ///
-/// Live preview is provided via a signal of \c LTTextures (\c previewSignal), or via
-/// a layer (\c previewLayer) when the signal is \c nil.
+/// Live preview is provided via a signal of \c CAMVideoFrames (\c previewSignal), or via
+/// a layer (\c previewLayer) when \c usePreviewLayer is \c YES.
 @protocol CUIPreviewViewModel <CUIGridContainer>
 
 /// Called by the view controller when the preview view was tapped.
@@ -41,7 +41,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// observed.
 @property (readonly, nonatomic) CALayer *previewLayer;
 
-/// Signal of \c LTTextures, showing live preview from the camera.
+/// Signal of \c CAMVideoFrames, showing live preview from the camera.
 ///
 /// This property is guaranteed to not change after initialization and so does not need to be
 /// observed.
