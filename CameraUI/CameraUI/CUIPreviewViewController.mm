@@ -3,15 +3,12 @@
 
 #import "CUIPreviewViewController.h"
 
-#import <LTEngine/LTContentView.h>
-#import <LTEngine/LTGLContext.h>
-#import <LTEngine/LTTexture.h>
-
 #import "CUIFocusIconMode.h"
 #import "CUIFocusView.h"
 #import "CUIGridView.h"
 #import "CUILayerView.h"
 #import "CUIPreviewViewModel.h"
+#import "CUISampleBufferView.h"
 #import "CUISharedTheme.h"
 #import "UIViewController+LifecycleSignals.h"
 
@@ -112,16 +109,11 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)setupPreviewSignalView {
-  LTContentView *contentView = [[LTContentView alloc] initWithContext:[LTGLContext currentContext]];
-  contentView.accessibilityIdentifier = @"SignalView";
+  CUISampleBufferView *signalView = [[CUISampleBufferView alloc]
+                                     initWithVideoFrames:self.viewModel.previewSignal];
+  signalView.accessibilityIdentifier = @"SignalView";
+  _previewFromSignalView = signalView;
 
-  [[self.viewModel.previewSignal
-      takeUntil:[self rac_willDeallocSignal]]
-      subscribeNext:^(LTTexture *texture) {
-        [contentView replaceContentWith:texture];
-      }];
-
-  _previewFromSignalView = contentView;
   RAC(self.previewFromSignalView, hidden) = RACObserve(self.viewModel, usePreviewLayer);
   [self.view addSubview:self.previewFromSignalView];
   [self.previewFromSignalView mas_makeConstraints:^(MASConstraintMaker *make) {
