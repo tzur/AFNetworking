@@ -35,18 +35,13 @@ NS_ASSUME_NONNULL_BEGIN
 @interface BZRPaymentQueue : NSObject <BZRDownloadsPaymentQueue, BZRPaymentsPaymentQueue,
                                        BZRRestorationPaymentQueue>
 
-/// Initializes with \c underlyingPaymentQueue set to \c -[SKPaymentQueue defaultQueue], and with
-/// \c unfinishedTransactionsSubject set to \c nil.
-///
-/// @see initWithPaymentQueue:unfinishedTransactionsSubject:
-- (instancetype)init;
+- (instancetype)init NS_UNAVAILABLE;
 
 /// Initializes with \c underlyingPaymentQueue set to \c -[SKPaymentQueue defaultQueue], and with
 /// \c unfinishedTransactionsSubject set to \c unfinishedTransactionsSubject.
 ///
 /// @see initWithPaymentQueue:unfinishedTransactionsSubject:
-- (instancetype)initWithUnfinishedTransactionsSubject:(nullable RACSubject *)
-    unfinishedTransactionsSubject;
+- (instancetype)initWithUnfinishedTransactionsSubject:(RACSubject *)unfinishedTransactionsSubject;
 
 /// Initializes with \c underlyingPaymentQueue, used to be notified of transactions and downloads
 /// updates, and with \c unfinishedTransactionsSubject, used to send an array of unfinished
@@ -61,7 +56,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// \c restoreCompletedTransactionsWithApplicationUsername were called, because this is when the
 /// delegates start to expect transactions to arrive.
 - (instancetype)initWithUnderlyingPaymentQueue:(SKPaymentQueue *)underlyingPaymentQueue
-                 unfinishedTransactionsSubject:(nullable RACSubject *)unfinishedTransactionsSubject
+                 unfinishedTransactionsSubject:(RACSubject *)unfinishedTransactionsSubject
     NS_DESIGNATED_INITIALIZER;
 
 /// Finishes a transaction. The transaction should no longer be used afterwards.
