@@ -87,6 +87,22 @@ static NSDictionary * const kCVPixelFormatToCAMPixelFormat = @{
   return kCVPixelFormatToCAMPixelFormat[@(pixelFormat)];
 }
 
+#pragma mark -
+#pragma mark Debugging
+#pragma mark -
+
+- (NSString *)debugDescription {
+  CVPixelBufferRef pixelBuffer = CMSampleBufferGetImageBuffer(_sampleBuffer.get());
+  size_t width = CVPixelBufferGetWidth(pixelBuffer);
+  size_t height = CVPixelBufferGetHeight(pixelBuffer);
+  return [NSString stringWithFormat:@"<%@: %p, pixelFormat: %@, size: %@>", [self class], self,
+          self.pixelFormat.name, NSStringFromCGSize(CGSizeMake(width, height))];
+}
+
+- (id)debugQuickLookObject {
+  return [self image];
+}
+
 @end
 
 NS_ASSUME_NONNULL_END
