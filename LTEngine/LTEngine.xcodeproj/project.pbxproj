@@ -2640,6 +2640,7 @@
 		8B539FF31B4A882600036743 /* LTFboPool.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTFboPool.mm; sourceTree = "<group>"; };
 		8B57713518CF4A60009AF6E5 /* LTPatchSolverProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTPatchSolverProcessor.h; sourceTree = "<group>"; };
 		8B57713618CF4A60009AF6E5 /* LTPatchSolverProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; lineEnding = 0; path = LTPatchSolverProcessor.mm; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		8B57B2361D91641E00814B3C /* Bundle.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Bundle.xcconfig; sourceTree = "<group>"; };
 		8B5A0E05189AA91C0098399C /* LTGLTextureSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTGLTextureSpec.mm; sourceTree = "<group>"; };
 		8B6B4FAB1BDFA41700662235 /* Common.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Common.xcconfig; path = ../Configuration/Common.xcconfig; sourceTree = "<group>"; };
 		8B6B4FAD1BDFA41700662235 /* Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
@@ -4760,6 +4761,7 @@
 			isa = PBXGroup;
 			children = (
 				8B6B4FB01BDFA41700662235 /* Application.xcconfig */,
+				8B57B2361D91641E00814B3C /* Bundle.xcconfig */,
 				8B6B4FB11BDFA41700662235 /* Framework.xcconfig */,
 				8B6B4FB21BDFA41700662235 /* StaticLibrary.xcconfig */,
 			);
@@ -7322,6 +7324,7 @@
 		};
 		8BCFBFFD18CF0AF100E612DE /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8B57B2361D91641E00814B3C /* Bundle.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
@@ -7342,6 +7345,7 @@
 		};
 		8BCFBFFF18CF0AF100E612DE /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8B57B2361D91641E00814B3C /* Bundle.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
