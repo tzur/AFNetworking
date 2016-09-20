@@ -462,8 +462,6 @@
 		848EFFAE1C591B91001D8368 /* Common.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Common.xcconfig; sourceTree = "<group>"; };
 		848EFFB01C591B91001D8368 /* Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
 		848EFFB11C591B91001D8368 /* Release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
-		848EFFB21C591B91001D8368 /* Configurations.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Configurations.png; sourceTree = "<group>"; };
-		848EFFB31C591B91001D8368 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		848EFFB51C591B91001D8368 /* Application.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Application.xcconfig; sourceTree = "<group>"; };
 		848EFFB61C591B91001D8368 /* Framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Framework.xcconfig; sourceTree = "<group>"; };
 		848EFFB71C591B91001D8368 /* StaticLibrary.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = StaticLibrary.xcconfig; sourceTree = "<group>"; };
@@ -545,6 +543,7 @@
 		88FAF8F31D7727820023AF7A /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
 		88FAF9161D7727890023AF7A /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = Base; path = Base.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		8B0B9A281CA6C09000ED2334 /* DropboxSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DropboxSDK.framework; path = "../third_party/dropbox-ios-sdk/DropboxSDK.framework"; sourceTree = "<group>"; };
+		8B57B1FC1D914FE100814B3C /* Bundle.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Bundle.xcconfig; sourceTree = "<group>"; };
 		BE7B8C0E1D37A5940013F1FC /* PTUArrayChangesetProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTUArrayChangesetProvider.h; sourceTree = "<group>"; };
 		BE7B8C0F1D37A5940013F1FC /* PTUArrayChangesetProvider.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PTUArrayChangesetProvider.mm; sourceTree = "<group>"; };
 		BE7B8C2C1D37ACB00013F1FC /* PTUArrayChangesetProviderSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PTUArrayChangesetProviderSpec.mm; sourceTree = "<group>"; };
@@ -847,11 +846,9 @@
 		848EFFAD1C591B91001D8368 /* Configuration */ = {
 			isa = PBXGroup;
 			children = (
-				848EFFAE1C591B91001D8368 /* Common.xcconfig */,
 				848EFFAF1C591B91001D8368 /* Configurations */,
-				848EFFB21C591B91001D8368 /* Configurations.png */,
-				848EFFB31C591B91001D8368 /* README.md */,
 				848EFFB41C591B91001D8368 /* Targets */,
+				848EFFAE1C591B91001D8368 /* Common.xcconfig */,
 			);
 			name = Configuration;
 			path = ../Configuration;
@@ -870,6 +867,7 @@
 			isa = PBXGroup;
 			children = (
 				848EFFB51C591B91001D8368 /* Application.xcconfig */,
+				8B57B1FC1D914FE100814B3C /* Bundle.xcconfig */,
 				848EFFB61C591B91001D8368 /* Framework.xcconfig */,
 				848EFFB71C591B91001D8368 /* StaticLibrary.xcconfig */,
 			);
@@ -1733,6 +1731,7 @@
 		};
 		887265711D772D7B00D4F2A6 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8B57B1FC1D914FE100814B3C /* Bundle.xcconfig */;
 			buildSettings = {
 				INFOPLIST_FILE = PhotonsUIBundle/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
@@ -1744,6 +1743,7 @@
 		};
 		887265721D772D7B00D4F2A6 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8B57B1FC1D914FE100814B3C /* Bundle.xcconfig */;
 			buildSettings = {
 				INFOPLIST_FILE = PhotonsUIBundle/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
