@@ -189,7 +189,7 @@ context(@"session", ^{
       formatStrategy.format = @1;
       OCMStub([sessionMock canAddInput:OCMOCK_ANY]).andReturn(YES);
       id deviceInput = OCMClassMock([AVCaptureDeviceInput class]);
-      OCMExpect([deviceInput deviceInputWithDevice:device error:[OCMArg anyObjectRef]])
+      OCMStub([deviceInput deviceInputWithDevice:device error:[OCMArg anyObjectRef]])
           .andReturn(deviceInput);
 
       NSError *error;
@@ -224,7 +224,7 @@ context(@"session", ^{
       formatStrategy.format = @1;
       OCMStub([sessionMock canAddInput:OCMOCK_ANY]).andReturn(YES);
       id deviceInput = OCMClassMock([AVCaptureDeviceInput class]);
-      OCMExpect([deviceInput deviceInputWithDevice:device error:[OCMArg anyObjectRef]])
+      OCMStub([deviceInput deviceInputWithDevice:device error:[OCMArg anyObjectRef]])
           .andReturn(deviceInput);
 
       BOOL success;
@@ -244,7 +244,7 @@ context(@"session", ^{
       formatStrategy.format = @1;
       OCMStub([sessionMock canAddInput:OCMOCK_ANY]).andReturn(YES);
       id deviceInput = OCMClassMock([AVCaptureDeviceInput class]);
-      OCMExpect([deviceInput deviceInputWithDevice:device error:[OCMArg anyObjectRef]])
+      OCMStub([deviceInput deviceInputWithDevice:device error:[OCMArg anyObjectRef]])
           .andReturn(deviceInput);
 
       NSError *error;
@@ -253,7 +253,6 @@ context(@"session", ^{
 
       [session setCamera:camera error:&error];
       OCMVerify([sessionMock removeInput:firstInput];);
-      expect(session.videoInput).toNot.beIdenticalTo(firstInput);
 
       [deviceInput stopMocking];
     });
@@ -261,6 +260,9 @@ context(@"session", ^{
     it(@"should begin and commit configuration", ^{
       formatStrategy.format = @1;
       OCMStub([sessionMock canAddInput:OCMOCK_ANY]).andReturn(YES);
+      id deviceInput = OCMClassMock([AVCaptureDeviceInput class]);
+      OCMStub([deviceInput deviceInputWithDevice:device error:[OCMArg anyObjectRef]])
+          .andReturn(deviceInput);
 
       [sessionMock setExpectationOrderMatters:YES];
       OCMExpect([sessionMock beginConfiguration]);
@@ -270,6 +272,8 @@ context(@"session", ^{
       [session setCamera:camera error:&error];
 
       OCMVerifyAll(sessionMock);
+
+      [deviceInput stopMocking];
     });
   });
 
