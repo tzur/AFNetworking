@@ -71,6 +71,8 @@
 		8D01BCAEC8899C79F2710F04 /* CAMDevicePresetSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8D01BF505FBFFC6081864B06 /* CAMDevicePresetSpec.mm */; };
 		BE6375E81D8691A4004F3710 /* CAMDeviceLocation.mm in Sources */ = {isa = PBXBuildFile; fileRef = BE6375E71D8691A4004F3710 /* CAMDeviceLocation.mm */; };
 		BE63760D1D869C81004F3710 /* CAMDeviceLocationSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = BE63760C1D869C81004F3710 /* CAMDeviceLocationSpec.mm */; };
+		BE63763D1D88155C004F3710 /* CAMSampleBufferMetadataUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = BE63763C1D88155C004F3710 /* CAMSampleBufferMetadataUtils.mm */; };
+		BE66B2A11D882511004D99B2 /* CAMSampleBufferMetadataUtilsSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = BE66B2A01D882511004D99B2 /* CAMSampleBufferMetadataUtilsSpec.mm */; };
 		BE84C54E1D463BB10098DC1D /* CAMSampleTimingInfo.mm in Sources */ = {isa = PBXBuildFile; fileRef = BE84C54D1D463BB10098DC1D /* CAMSampleTimingInfo.mm */; };
 		BE84C56D1D46400A0098DC1D /* CAMSampleTimingInfoSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = BE84C56C1D46400A0098DC1D /* CAMSampleTimingInfoSpec.mm */; };
 		BEB6EDCF1D325BE800E9D424 /* LTObjectionModule.mm in Sources */ = {isa = PBXBuildFile; fileRef = BEB6EDCC1D325BE800E9D424 /* LTObjectionModule.mm */; };
@@ -538,6 +540,9 @@
 		BE6375E61D8691A4004F3710 /* CAMDeviceLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAMDeviceLocation.h; sourceTree = "<group>"; };
 		BE6375E71D8691A4004F3710 /* CAMDeviceLocation.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CAMDeviceLocation.mm; sourceTree = "<group>"; };
 		BE63760C1D869C81004F3710 /* CAMDeviceLocationSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CAMDeviceLocationSpec.mm; sourceTree = "<group>"; };
+		BE63763B1D88155C004F3710 /* CAMSampleBufferMetadataUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAMSampleBufferMetadataUtils.h; sourceTree = "<group>"; };
+		BE63763C1D88155C004F3710 /* CAMSampleBufferMetadataUtils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CAMSampleBufferMetadataUtils.mm; sourceTree = "<group>"; };
+		BE66B2A01D882511004D99B2 /* CAMSampleBufferMetadataUtilsSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CAMSampleBufferMetadataUtilsSpec.mm; sourceTree = "<group>"; };
 		BE84C54C1D463BB10098DC1D /* CAMSampleTimingInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAMSampleTimingInfo.h; sourceTree = "<group>"; };
 		BE84C54D1D463BB10098DC1D /* CAMSampleTimingInfo.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CAMSampleTimingInfo.mm; sourceTree = "<group>"; };
 		BE84C56C1D46400A0098DC1D /* CAMSampleTimingInfoSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CAMSampleTimingInfoSpec.mm; sourceTree = "<group>"; };
@@ -924,6 +929,8 @@
 				BE6375E71D8691A4004F3710 /* CAMDeviceLocation.mm */,
 				BED6927C1D32310300061BB5 /* CAMDeviceOrientation.h */,
 				BED6927D1D32310300061BB5 /* CAMDeviceOrientation.mm */,
+				BE63763B1D88155C004F3710 /* CAMSampleBufferMetadataUtils.h */,
+				BE63763C1D88155C004F3710 /* CAMSampleBufferMetadataUtils.mm */,
 				BE84C54C1D463BB10098DC1D /* CAMSampleTimingInfo.h */,
 				BE84C54D1D463BB10098DC1D /* CAMSampleTimingInfo.mm */,
 			);
@@ -946,6 +953,7 @@
 				8395AE6E1CFDCA4E00C91C9E /* AVCaptureDevice+ConfigureSpec.mm */,
 				BE63760C1D869C81004F3710 /* CAMDeviceLocationSpec.mm */,
 				BED6929C1D32311000061BB5 /* CAMDeviceOrientationSpec.mm */,
+				BE66B2A01D882511004D99B2 /* CAMSampleBufferMetadataUtilsSpec.mm */,
 				BE84C56C1D46400A0098DC1D /* CAMSampleTimingInfoSpec.mm */,
 			);
 			name = Utils;
@@ -1462,6 +1470,7 @@
 				06C02EFB1D19387900745557 /* CAMExposureMapProcessor.mm in Sources */,
 				835206491D2A7F8B00000EEC /* CAMVideoFrame.mm in Sources */,
 				8395AE6B1CFDCA3C00C91C9E /* AVCaptureDevice+Configure.mm in Sources */,
+				BE63763D1D88155C004F3710 /* CAMSampleBufferMetadataUtils.mm in Sources */,
 				8352064E1D2A81FA00000EEC /* CAMHardwareDevice.mm in Sources */,
 				8351F9AD1CF6EDD800DEB376 /* NSErrorCodes+Camera.m in Sources */,
 				BED6927E1D32310300061BB5 /* CAMDeviceOrientation.mm in Sources */,
@@ -1503,6 +1512,7 @@
 				BEB6EDD01D325BE800E9D424 /* LTSpectaObjectionHook.mm in Sources */,
 				835205A71D2A5B2700000EEC /* EXPMatchers+sendValuesWithCount.m in Sources */,
 				BE84C56D1D46400A0098DC1D /* CAMSampleTimingInfoSpec.mm in Sources */,
+				BE66B2A11D882511004D99B2 /* CAMSampleBufferMetadataUtilsSpec.mm in Sources */,
 				06C02F751D196A9800745557 /* LTTestUtils+LTEngine.mm in Sources */,
 				835206501D2A820700000EEC /* CAMHardwareDeviceSpec.mm in Sources */,
 				834540351D7C002800D7D619 /* CAMBlankDeviceSpec.mm in Sources */,
