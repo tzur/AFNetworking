@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// \c stillFramesWithTrigger:.
 @protocol CAMVideoDevice <NSObject>
 
-/// Sets the pixel format of the frames sent on \c videoFrames.
+/// Sets the pixel format of the frames sent on \c videoFrames and \c stillFramesWithTrigger:.
 ///
 /// Returned signal sends the new \c pixelFormat and completes when the new format is set, or errs
 /// if there is a problem setting the format. All events are sent on an arbitrary thread.
@@ -21,9 +21,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// @see CAMVideoFrame.
 - (RACSignal *)setPixelFormat:(CAMPixelFormat *)pixelFormat;
 
-/// Maps any value from \c trigger to a \c UIImage captured as quickly as possible. This is needed
-/// for features that require hardware-level synchronization, such as flash (see \c CAMFlashDevice).
-/// The captured image orientation is set according to \c deviceOrientation.
+/// Maps any value from \c trigger to a \c CAMVideoFrame captured as quickly as possible. This is
+/// needed for features that require hardware-level synchronization, such as flash (see \c
+/// CAMFlashDevice). The captured image orientation is set according to \c deviceOrientation.
 ///
 /// Returned signal completes when the receiver is deallocated or \c trigger completes, or errs
 /// if there is a problem capturing an image. All events are sent on an arbitrary thread.

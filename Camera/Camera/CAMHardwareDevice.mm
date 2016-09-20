@@ -3,9 +3,6 @@
 
 #import "CAMHardwareDevice.h"
 
-#import <LTEngine/LTMMTexture.h>
-#import <LTEngine/LTGLContext.h>
-
 #import "AVCaptureDevice+Configure.h"
 #import "CAMDevicePreset.h"
 #import "CAMHardwareSession.h"
@@ -20,7 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly, nonatomic) CAMHardwareSession *session;
 
 /// Subject for sending video frames.
-@property (readonly, nonatomic) RACSubject *videoFramesSignalsSubject;
+@property (readonly, nonatomic) RACSubject *videoFramesSubject;
 
 /// Subject for sending audio frames.
 @property (readonly, nonatomic) RACSubject *audioFramesSubject;
@@ -80,7 +77,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithSession:(CAMHardwareSession *)session {
   if (self = [super init]) {
     _session = session;
-    _videoFramesSignalsSubject = [RACSubject subject];
+    _videoFramesSubject = [RACSubject subject];
     _audioFramesSubject = [RACSubject subject];
     self.session.videoDelegate = self;
     self.session.audioDelegate = self;
@@ -170,42 +167,17 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
   }
 }
 
+- (void)captureOutput:(AVCaptureOutput __unused *)captureOutput
+  didDropSampleBuffer:(CMSampleBufferRef)sampleBuffer
+       fromConnection:(AVCaptureConnection __unused *)connection {
+  NSString *dropReason = (__bridge NSString *)(CFStringRef)
+      CMGetAttachment(sampleBuffer, kCMSampleBufferAttachmentKey_DroppedFrameReason, NULL);
+  NSError *error = [NSError lt_errorWithCode:CAMErrorCodeDroppedFrame description:dropReason];
+  LogError(@"%@", error);
+}
+
 - (void)didOutputVideoSampleBuffer:(CMSampleBufferRef)sampleBuffer {
-  // Conversion of CMSampleBuffers to LTTextures should be done synchronously from here, because
-  // sampleBuffer may be reused immediately at the end of the delegate method. Async is possible
-  // but requires CFRetain and CFRelease.
-
-  RACSignal *convertFrame = [RACSignal defer:^RACSignal *{
-    if (![LTGLContext currentContext]) {
-      // This sometimes happens for the first few frames, because the sampleBuffer delegate & queue
-      // are set after AVCaptureSession's initialization.
-      LogError(@"No LTGLContext in didOutputVideoSampleBuffer:");
-      return [RACSignal empty];
-    }
-
-    CVPixelBufferRef pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
-    LTAssert(pixelBuffer != NULL, @"Video sampleBuffer does not contain pixelBuffer");
-
-    CMSampleTimingInfo timingInfo;
-    OSStatus status = CMSampleBufferGetSampleTimingInfo(sampleBuffer, 0, &timingInfo);
-    LTAssert(status == noErr, @"Failed to retrieve sample timing, status: %d", (int)status);
-
-    id<CAMVideoFrame> frame;
-    if (CVPixelBufferIsPlanar(pixelBuffer)) {
-      LTTexture *yTexture = [[LTMMTexture alloc] initWithPixelBuffer:pixelBuffer planeIndex:0];
-      LTTexture *cbcrTexture = [[LTMMTexture alloc] initWithPixelBuffer:pixelBuffer planeIndex:1];
-      frame = [[CAMVideoFrameYCbCr alloc] initWithYTexture:yTexture cbcrTexture:cbcrTexture
-                                          sampleTimingInfo:timingInfo];
-    } else {
-      LTTexture *bgraTexture = [[LTMMTexture alloc] initWithPixelBuffer:pixelBuffer];
-      frame = [[CAMVideoFrameBGRA alloc] initWithBGRATexture:bgraTexture
-                                            sampleTimingInfo:timingInfo];
-    }
-
-    return [RACSignal return:frame];
-  }];
-
-  [self.videoFramesSignalsSubject sendNext:convertFrame];
+  [self.videoFramesSubject sendNext:[[CAMVideoFrame alloc] initWithSampleBuffer:sampleBuffer]];
 }
 
 - (void)didOutputAudioSampleBuffer:(CMSampleBufferRef)sampleBuffer {
@@ -222,6 +194,7 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
   return [RACSignal defer:^RACSignal *{
     @strongify(self);
     self.session.videoOutput.videoSettings = pixelFormat.videoSettings;
+    self.session.stillOutput.outputSettings = pixelFormat.videoSettings;
     return [RACSignal return:pixelFormat];
   }];
 }
@@ -239,10 +212,9 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
                                     lt_errorWithCode:CAMErrorCodeFailedCapturingFromStillOutput
                                     underlyingError:error]];
            } else {
-             NSData *data = [AVCaptureStillImageOutput
-                             jpegStillImageNSDataRepresentation:imageDataSampleBuffer];
-             UIImage *image = [UIImage imageWithData:data];
-             [subscriber sendNext:image];
+             CAMVideoFrame *frame =
+                 [[CAMVideoFrame alloc] initWithSampleBuffer:imageDataSampleBuffer];
+             [subscriber sendNext:frame];
              [subscriber sendCompleted];
            }
          }];
@@ -255,7 +227,7 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
 }
 
 - (RACSignal *)videoFrames {
-  return [self.videoFramesSignalsSubject switchToLatest];
+  return self.videoFramesSubject;
 }
 
 - (void)setVideoFramesWithPortraitOrientation:(BOOL)videoFramesWithPortraitOrientation {

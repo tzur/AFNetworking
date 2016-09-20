@@ -304,6 +304,7 @@ NS_ASSUME_NONNULL_BEGIN
   if (!success) {
     return NO;
   }
+  session.stillOutput.outputSettings = preset.pixelFormat.videoSettings;
 
   if (preset.enableAudio) {
     AVCaptureDevice *device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeAudio];
