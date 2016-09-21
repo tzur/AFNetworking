@@ -3,8 +3,12 @@
 
 #import "PTNGatewayAssetManager.h"
 
+#import <LTKit/LTRandomAccessCollection.h>
+
 #import "NSError+Photons.h"
 #import "NSURL+Gateway.h"
+#import "PTNAlbum.h"
+#import "PTNAlbumChangeset.h"
 #import "PTNGatewayAlbumDescriptor.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -46,7 +50,19 @@ NS_ASSUME_NONNULL_BEGIN
     return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeInvalidURL url:url]];
   }
 
-  return descriptor.albumSignal;
+  if (url.ptn_isFlattened) {
+    return descriptor.albumSignal;
+  }
+
+  PTNGatewayAlbumDescriptor *flattenedDescriptor = [[PTNGatewayAlbumDescriptor alloc]
+      initWithIdentifier:[NSURL ptn_flattenedGatewayAlbumURLWithKey:url.ptn_gatewayKey]
+      localizedTitle:descriptor.localizedTitle imageSignal:descriptor.imageSignal
+      albumSignal:descriptor.albumSignal];
+
+    id<PTNAlbum> album = [[PTNAlbum alloc] initWithURL:descriptor.ptn_identifier
+                                             subalbums:@[flattenedDescriptor] assets:@[]];
+
+  return [RACSignal return:[PTNAlbumChangeset changesetWithAfterAlbum:album]];
 }
 
 - (RACSignal *)fetchDescriptorWithURL:(NSURL *)url {

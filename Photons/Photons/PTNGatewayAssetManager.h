@@ -10,6 +10,10 @@ NS_ASSUME_NONNULL_BEGIN
 /// Asset manager backed by a static list of \c PTNGatewayAlbumDescriptor objects. Each descriptor's
 /// Gateway key is stored and any successive fetching of assets, albums and images with a Gateway
 /// URL of the same key will return the corresponding descriptor or the signals defined by it.
+///
+/// By default album signals are unflattened, meaning that they are returned wrapped by an
+/// intermediate album with the original album as its only subalbum. To avoid this behavior use
+/// a URL created with -ptn_flattenedGatewayAlbumURLWithKey: using the same key.
 @interface PTNGatewayAssetManager : NSObject <PTNAssetManager>
 
 - (instancetype)init NS_UNAVAILABLE;
