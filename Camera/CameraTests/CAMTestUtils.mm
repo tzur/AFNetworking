@@ -9,7 +9,7 @@ lt::Ref<CMSampleBufferRef> CAMCreateEmptySampleBuffer() {
   CMSampleBufferRef sampleBuffer;
   OSStatus status = CMSampleBufferCreateReady(kCFAllocatorDefault, NULL, NULL, 0, 0, NULL, 0, NULL,
                                               &sampleBuffer);
-  LTAssert(((int)status) == 0, @"CMSampleBufferCreate failed, got %d", status);
+  LTAssert(((int)status) == 0, @"CMSampleBufferCreate failed, got %d", (int)status);
   return lt::Ref<CMSampleBufferRef>(sampleBuffer);
 }
 
@@ -49,7 +49,7 @@ lt::Ref<CMSampleBufferRef> CAMCreateImageSampleBuffer(CGSize size) {
       CMSampleBufferCreateReadyWithImageBuffer(kCFAllocatorDefault, imageBufferRef.get(),
                                                videoFormatRef.get(), &sampleTimingInfo,
                                                &sampleBuffer);
-  LTAssert(sampleBufferCreate == 0, @"CMSampleBufferCreateForImageBuffer failed, got: %d",
+  LTAssert(((int)sampleBufferCreate) == 0, @"CMSampleBufferCreateForImageBuffer failed, got: %d",
            (int)sampleBufferCreate);
 
   return lt::Ref<CMSampleBufferRef>(sampleBuffer);
@@ -96,7 +96,7 @@ lt::Ref<CMSampleBufferRef> CAMCreateSampleBufferForImage(const cv::Mat4b &image,
       CMSampleBufferCreateReadyWithImageBuffer(kCFAllocatorDefault, imageBufferRef.get(),
                                                videoFormatRef.get(), &sampleTiming,
                                                &sampleBuffer);
-  LTAssert(sampleBufferCreate == 0, @"CMSampleBufferCreateForImageBuffer failed, got: %d",
+  LTAssert(((int)sampleBufferCreate) == 0, @"CMSampleBufferCreateForImageBuffer failed, got: %d",
            (int)sampleBufferCreate);
 
   return lt::Ref<CMSampleBufferRef>(sampleBuffer);
