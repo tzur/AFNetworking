@@ -82,6 +82,8 @@
 		BED1577F1D2A9B50005D83F7 /* CAMDeviceStub.mm in Sources */ = {isa = PBXBuildFile; fileRef = BED1577E1D2A9B50005D83F7 /* CAMDeviceStub.mm */; };
 		BED6927E1D32310300061BB5 /* CAMDeviceOrientation.mm in Sources */ = {isa = PBXBuildFile; fileRef = BED6927D1D32310300061BB5 /* CAMDeviceOrientation.mm */; };
 		BED6929D1D32311000061BB5 /* CAMDeviceOrientationSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = BED6929C1D32311000061BB5 /* CAMDeviceOrientationSpec.mm */; };
+		BEEDB2101D91ABDD00406926 /* UIDevice+CameraMake.mm in Sources */ = {isa = PBXBuildFile; fileRef = BEEDB20F1D91ABDD00406926 /* UIDevice+CameraMake.mm */; };
+		BEEDB2351D91B09F00406926 /* UIDevice+CameraMakeSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = BEEDB2341D91B09F00406926 /* UIDevice+CameraMakeSpec.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -558,6 +560,9 @@
 		BED6927C1D32310300061BB5 /* CAMDeviceOrientation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAMDeviceOrientation.h; sourceTree = "<group>"; };
 		BED6927D1D32310300061BB5 /* CAMDeviceOrientation.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CAMDeviceOrientation.mm; sourceTree = "<group>"; };
 		BED6929C1D32311000061BB5 /* CAMDeviceOrientationSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CAMDeviceOrientationSpec.mm; sourceTree = "<group>"; };
+		BEEDB20E1D91ABDD00406926 /* UIDevice+CameraMake.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDevice+CameraMake.h"; sourceTree = "<group>"; };
+		BEEDB20F1D91ABDD00406926 /* UIDevice+CameraMake.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIDevice+CameraMake.mm"; sourceTree = "<group>"; };
+		BEEDB2341D91B09F00406926 /* UIDevice+CameraMakeSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIDevice+CameraMakeSpec.mm"; sourceTree = "<group>"; };
 		F90A1F651D4898B600AC9C22 /* CAMTorchDevice.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CAMTorchDevice.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -933,6 +938,8 @@
 				BE63763C1D88155C004F3710 /* CAMSampleBufferMetadataUtils.mm */,
 				BE84C54C1D463BB10098DC1D /* CAMSampleTimingInfo.h */,
 				BE84C54D1D463BB10098DC1D /* CAMSampleTimingInfo.mm */,
+				BEEDB20E1D91ABDD00406926 /* UIDevice+CameraMake.h */,
+				BEEDB20F1D91ABDD00406926 /* UIDevice+CameraMake.mm */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -955,6 +962,7 @@
 				BED6929C1D32311000061BB5 /* CAMDeviceOrientationSpec.mm */,
 				BE66B2A01D882511004D99B2 /* CAMSampleBufferMetadataUtilsSpec.mm */,
 				BE84C56C1D46400A0098DC1D /* CAMSampleTimingInfoSpec.mm */,
+				BEEDB2341D91B09F00406926 /* UIDevice+CameraMakeSpec.mm */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -1469,6 +1477,7 @@
 				8355479F1D783E1D00F65398 /* CAMBlankDevice.mm in Sources */,
 				06C02EFB1D19387900745557 /* CAMExposureMapProcessor.mm in Sources */,
 				835206491D2A7F8B00000EEC /* CAMVideoFrame.mm in Sources */,
+				BEEDB2101D91ABDD00406926 /* UIDevice+CameraMake.mm in Sources */,
 				8395AE6B1CFDCA3C00C91C9E /* AVCaptureDevice+Configure.mm in Sources */,
 				BE63763D1D88155C004F3710 /* CAMSampleBufferMetadataUtils.mm in Sources */,
 				8352064E1D2A81FA00000EEC /* CAMHardwareDevice.mm in Sources */,
@@ -1505,6 +1514,7 @@
 				06C02F711D195CB300745557 /* LTSpectaOpenGLContextHook.mm in Sources */,
 				8D01BCAEC8899C79F2710F04 /* CAMDevicePresetSpec.mm in Sources */,
 				8352059E1D2A5B2700000EEC /* EXPMatchers+deliverValuesOnThread.m in Sources */,
+				BEEDB2351D91B09F00406926 /* UIDevice+CameraMakeSpec.mm in Sources */,
 				06C02F791D1970D100745557 /* EXPMatchers+beCloseToMat.mm in Sources */,
 				835205A61D2A5B2700000EEC /* EXPMatchers+sendValues.m in Sources */,
 				83893A581D12C827002B64B4 /* CAMFakeAVCaptureDevice.mm in Sources */,
