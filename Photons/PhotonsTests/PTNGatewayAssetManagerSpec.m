@@ -3,8 +3,12 @@
 
 #import "PTNGatewayAssetManager.h"
 
+#import <LTKit/LTRandomAccessCollection.h>
+
 #import "NSError+Photons.h"
 #import "NSURL+Gateway.h"
+#import "PTNAlbum.h"
+#import "PTNAlbumChangeset.h"
 #import "PTNGatewayAlbumDescriptor.h"
 #import "PTNGatewayTestUtils.h"
 #import "PTNImageFetchOptions.h"
@@ -27,10 +31,24 @@ beforeEach(^{
 });
 
 context(@"album fetching", ^{
-  it(@"should fetch album of registered for asset", ^{
+  it(@"should fetch wrapped album of registered for asset", ^{
     NSURL *url = fooDescriptor.ptn_identifier;
 
-    expect([manager fetchAlbumWithURL:url]).to.equal(fooDescriptor.albumSignal);
+    expect([manager fetchAlbumWithURL:url]).will.matchValue(0, ^BOOL(PTNAlbumChangeset *changeset) {
+      id<LTRandomAccessCollection> assets = changeset.afterAlbum.assets;
+      id<LTRandomAccessCollection> subalbums = changeset.afterAlbum.subalbums;
+      id<PTNDescriptor> albumDescriptor = subalbums.firstObject;
+      return !changeset.beforeAlbum &&
+          !assets.count &&
+          subalbums.count == 1 &&
+          [manager fetchAlbumWithURL:albumDescriptor.ptn_identifier] == fooDescriptor.albumSignal;
+    });
+  });
+
+  it(@"should fetch album of registered for asset when fetching with flattened URL", ^{
+    NSURL *url = [NSURL ptn_flattenedGatewayAlbumURLWithKey:@"foo"];
+
+    expect([manager fetchAlbumWithURL:url]).equal(fooDescriptor.albumSignal);
   });
 
   it(@"should return error for invalid URLs", ^{

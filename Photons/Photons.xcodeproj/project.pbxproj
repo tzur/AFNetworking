@@ -57,7 +57,7 @@
 		846E18A51C7330B900B94467 /* PTNDropboxAssetManagerSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 846E18A41C7330B900B94467 /* PTNDropboxAssetManagerSpec.m */; };
 		84741D1C1C99ADF5001D3D1D /* PTNStaticImageAsset.m in Sources */ = {isa = PBXBuildFile; fileRef = 84741D1B1C99ADF5001D3D1D /* PTNStaticImageAsset.m */; };
 		84741D1E1C99B173001D3D1D /* PTNStaticImageAssetSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 84741D1D1C99B173001D3D1D /* PTNStaticImageAssetSpec.m */; };
-		8478045E1CA0047F0092B41E /* PTNGatewayAssetManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8478045D1CA0047F0092B41E /* PTNGatewayAssetManager.m */; };
+		8478045E1CA0047F0092B41E /* PTNGatewayAssetManagerSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 8478045D1CA0047F0092B41E /* PTNGatewayAssetManagerSpec.m */; };
 		847804731CA01AA10092B41E /* PTNGatewayTestUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 847804721CA01AA10092B41E /* PTNGatewayTestUtils.m */; };
 		84794C701CBE90D90042D8F1 /* PTNCacheFakeNSURLCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 84794C6F1CBE90D90042D8F1 /* PTNCacheFakeNSURLCache.m */; };
 		847BE14A1D69A68F00F33BC8 /* PTNMultiplexerAuthorizationManagerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 847BE1491D69A68F00F33BC8 /* PTNMultiplexerAuthorizationManagerSpec.mm */; };
@@ -544,7 +544,7 @@
 		8476B71B1C56847F004E0175 /* DBSession+Photons.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "DBSession+Photons.h"; sourceTree = "<group>"; };
 		8476B71C1C56847F004E0175 /* DBSession+Photons.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "DBSession+Photons.m"; sourceTree = "<group>"; };
 		8476B8AB1C58BB4A004E0175 /* PTNAuthorizationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNAuthorizationManager.h; sourceTree = "<group>"; };
-		8478045D1CA0047F0092B41E /* PTNGatewayAssetManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNGatewayAssetManager.m; sourceTree = "<group>"; };
+		8478045D1CA0047F0092B41E /* PTNGatewayAssetManagerSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNGatewayAssetManagerSpec.m; sourceTree = "<group>"; };
 		847804711CA01AA10092B41E /* PTNGatewayTestUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNGatewayTestUtils.h; sourceTree = "<group>"; };
 		847804721CA01AA10092B41E /* PTNGatewayTestUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNGatewayTestUtils.m; sourceTree = "<group>"; };
 		84794C6E1CBE90D90042D8F1 /* PTNCacheFakeNSURLCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNCacheFakeNSURLCache.h; sourceTree = "<group>"; };
@@ -980,7 +980,7 @@
 			children = (
 				84515E961C96A4DC00AD8B5B /* NSURL+GatewaySpec.m */,
 				8451617D1C98500500AD8B5B /* PTNGatewayAlbumDescriptorSpec.m */,
-				8478045D1CA0047F0092B41E /* PTNGatewayAssetManager.m */,
+				8478045D1CA0047F0092B41E /* PTNGatewayAssetManagerSpec.m */,
 				847804711CA01AA10092B41E /* PTNGatewayTestUtils.h */,
 				847804721CA01AA10092B41E /* PTNGatewayTestUtils.m */,
 			);
@@ -1960,7 +1960,7 @@
 				8463DA051D1008A000FF4935 /* PTNFakeAlbumDescriptor.m in Sources */,
 				842C09B71CC8C97C00DB2DB2 /* PTNCacheProxySpec.mm in Sources */,
 				8B5619901B661387006B0DA0 /* PTNImageFetchOptions+PhotoKitSpec.m in Sources */,
-				8478045E1CA0047F0092B41E /* PTNGatewayAssetManager.m in Sources */,
+				8478045E1CA0047F0092B41E /* PTNGatewayAssetManagerSpec.m in Sources */,
 				84515E971C96A4DC00AD8B5B /* NSURL+GatewaySpec.m in Sources */,
 				84884C6B1C71CD2C00DBB987 /* PTNPhotoKitImageAssetSpec.mm in Sources */,
 				848189C11C3C1A350070462E /* PTNMultiplexerAssetManagerSpec.mm in Sources */,

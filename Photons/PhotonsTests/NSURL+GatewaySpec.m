@@ -8,7 +8,15 @@ SpecBegin(NSURL_Gateway)
 it(@"should create valid gateway album url", ^{
   NSURL *url = [NSURL ptn_gatewayAlbumURLWithKey:@"foo"];
   expect(url.scheme).to.equal([NSURL ptn_gatewayScheme]);
-  expect([url ptn_gatewayKey]).to.equal(@"foo");
+  expect(url.ptn_gatewayKey).to.equal(@"foo");
+  expect(url.ptn_isFlattened).to.beFalsy();
+});
+
+it(@"should create valid flattened gateway album url", ^{
+  NSURL *url = [NSURL ptn_flattenedGatewayAlbumURLWithKey:@"foo"];
+  expect(url.scheme).to.equal([NSURL ptn_gatewayScheme]);
+  expect(url.ptn_gatewayKey).to.equal(@"foo");
+  expect(url.ptn_isFlattened).to.beTruthy();
 });
 
 it(@"should return unique asset URL for each key", ^{
