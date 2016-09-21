@@ -12,8 +12,8 @@
 #import "PTNAlbumChangeset.h"
 #import "PTNFileBackedImageAsset.h"
 #import "PTNFileSystemDirectoryDescriptor.h"
-#import "PTNFileSystemFileManager.h"
 #import "PTNFileSystemFileDescriptor.h"
+#import "PTNFileSystemFileManager.h"
 #import "PTNImageFetchOptions.h"
 #import "PTNImageMetadata.h"
 #import "PTNImageResizer.h"
@@ -134,11 +134,17 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 - (RACSignal *)fetchDescriptorWithURL:(NSURL *)url {
-  if (url.ptn_fileSystemURLType != PTNFileSystemURLTypeAsset) {
+  if (url.ptn_fileSystemURLType == PTNFileSystemURLTypeAsset) {
+    return [[self fetchFileWithURL:url] subscribeOn:[RACScheduler scheduler]];
+  } else if (url.ptn_fileSystemURLType == PTNFileSystemURLTypeAlbum) {
+    return [[self fetchDirectoryWithURL:url] subscribeOn:[RACScheduler scheduler]];
+  } else {
     return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeInvalidURL url:url]];
   }
+}
 
-  return [[RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+- (RACSignal *)fetchFileWithURL:(NSURL *)url {
+  return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
     if (![self nonDirectoryExistsAtURL:url]) {
       [subscriber sendError:[NSError lt_errorWithCode:PTNErrorCodeAssetNotFound url:url]];
       return nil;
@@ -150,7 +156,29 @@ NS_ASSUME_NONNULL_BEGIN
     [subscriber sendNext:asset];
     [subscriber sendCompleted];
     return nil;
-  }] subscribeOn:[RACScheduler scheduler]];
+  }];
+}
+
+- (RACSignal *)fetchDirectoryWithURL:(NSURL *)url {
+  return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+    LTPath *path = url.ptn_fileSystemAlbumPath;
+    if (!path) {
+      [subscriber sendError:[NSError lt_errorWithCode:PTNErrorCodeInvalidURL url:url]];
+      return nil;
+    }
+
+    if (![self directoryExistsAtURL:url]) {
+      [subscriber sendError:[NSError lt_errorWithCode:PTNErrorCodeAlbumNotFound url:url]];
+      return nil;
+    }
+
+    id<PTNDescriptor> album = [[PTNFileSystemDirectoryDescriptor alloc]
+                               initWithPath:url.ptn_fileSystemAlbumPath];
+
+    [subscriber sendNext:album];
+    [subscriber sendCompleted];
+    return nil;
+  }];
 }
 
 - (RACSignal *)fetchKeyAssetForDirectoryURL:(NSURL *)url {
@@ -211,6 +239,13 @@ NS_ASSUME_NONNULL_BEGIN
   BOOL fileExists = [self.fileManager fileExistsAtPath:url.ptn_fileSystemAssetPath.path
                                            isDirectory:&isDirectory];
   return fileExists && !isDirectory;
+}
+
+- (BOOL)directoryExistsAtURL:(NSURL *)url {
+  BOOL isDirectory;
+  BOOL fileExists = [self.fileManager fileExistsAtPath:url.ptn_fileSystemAlbumPath.path
+                                           isDirectory:&isDirectory];
+  return fileExists && isDirectory;
 }
 
 @end
