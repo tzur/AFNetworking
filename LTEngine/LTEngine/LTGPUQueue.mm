@@ -187,7 +187,9 @@ objection_register_singleton([LTGPUQueue class]);
 
     dispatch_group_leave(self.group);
 
-    [self handleSyncError:error failure:failure];
+    if (error) {
+      [self handleSyncError:error failure:failure];
+    }
 
     return YES;
   }

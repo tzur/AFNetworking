@@ -154,6 +154,31 @@ context(@"sync blocks", ^{
 
     expect(weakObject).to.beNil();
   });
+
+  it(@"should not call error block on normal execution", ^{
+    __block BOOL causedError = NO;
+
+    [queue runSyncIfNotPaused:^{
+    } failure:^BOOL(NSError __unused *error) {
+      causedError = YES;
+      return YES;
+    }];
+
+    expect(causedError).to.beFalsy();
+  });
+
+  it(@"should call error block on exception", ^{
+    __block BOOL causedError = NO;
+
+    [queue runSyncIfNotPaused:^{
+      [LTGLException raise:@"MyError" format:@"description"];
+    } failure:^BOOL(NSError __unused *error) {
+      causedError = YES;
+      return YES;
+    }];
+
+    expect(causedError).to.beTruthy();
+  });
 });
 
 context(@"pause and resume", ^{
