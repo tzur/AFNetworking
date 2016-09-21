@@ -28,6 +28,11 @@
 /// Mask used to select part of \c sourceRect to copy.
 @property (strong, nonatomic) LTTexture *mask;
 
+/// Threshold between the pixel values considered to be inside the mask and the pixel values
+/// considered to be outside the mask when extracting the mask boundary (@see the \c threshold
+/// property of \c LTPatchBoundaryProcessor for more information).
+@property (readonly, nonatomic) CGFloat maskBoundaryThreshold;
+
 /// Source texture, used to copy the data from.
 @property (strong, nonatomic) LTTexture *source;
 
@@ -75,17 +80,28 @@
 
 - (instancetype)initWithMask:(LTTexture *)mask source:(LTTexture *)source
                       target:(LTTexture *)target output:(LTTexture *)output {
+  return [self initWithMask:mask maskBoundaryThreshold:0 source:source target:target output:output];
+}
+
+- (instancetype)initWithMask:(LTTexture *)mask maskBoundaryThreshold:(CGFloat)maskBoundaryThreshold
+                      source:(LTTexture *)source target:(LTTexture *)target
+                      output:(LTTexture *)output {
   LTParameterAssert(mask.dataType == LTGLPixelDataTypeUnorm && mask.bitDepth == LTGLPixelBitDepth8,
                     @"Mask texture must be of byte precision, got %@", mask.pixelFormat);
   LTParameterAssert(output.bitDepth == LTGLPixelBitDepth16 &&
                     output.dataType == LTGLPixelDataTypeFloat,
                     @"Output texture must be of half-float precision, got: %@", output.pixelFormat);
+  LTParameterAssert(maskBoundaryThreshold >= 0 && maskBoundaryThreshold <= 1,
+                    @"maskBoundaryThreshold (%g) must be in [0, 1]", maskBoundaryThreshold);
+
   if (self = [super init]) {
     self.mask = mask;
     self.source = source;
     self.target = target;
     self.output = output;
 
+    _maskBoundaryThreshold = maskBoundaryThreshold;
+    
     // TODO:(yaron) working dimension can be different than the closest power of two. As discussed
     // in vDSP_create_fftsetup: "Parameter __vDSP_Log2N is a base-two exponent and specifies that
     // the largest transform length that can processed using the resulting setup structure is
@@ -175,7 +191,7 @@
   LTTexture *boundary = [LTTexture byteRedTextureWithSize:self.workingSize];
   LTPatchBoundaryProcessor *processor = [[LTPatchBoundaryProcessor alloc]
                                          initWithInput:self.maskResized output:boundary];
-  processor.threshold = 0.5;
+  processor.threshold = self.maskBoundaryThreshold;
   [processor process];
 
   // Convert to 1 and 4-channel float.
