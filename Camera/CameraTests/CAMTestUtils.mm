@@ -9,7 +9,7 @@ lt::Ref<CMSampleBufferRef> CAMCreateEmptySampleBuffer() {
   CMSampleBufferRef sampleBuffer;
   OSStatus status = CMSampleBufferCreateReady(kCFAllocatorDefault, NULL, NULL, 0, 0, NULL, 0, NULL,
                                               &sampleBuffer);
-  LTAssert(status == 0, @"CMSampleBufferCreate failed, got %d", status);
+  LTAssert(((int)status) == 0, @"CMSampleBufferCreate failed, got %d", status);
   return lt::Ref<CMSampleBufferRef>(sampleBuffer);
 }
 
@@ -25,10 +25,10 @@ static lt::Ref<CVImageBufferRef> CAMCreatePixelBuffer(size_t width, size_t heigh
 }
 
 static lt::Ref<CMVideoFormatDescriptionRef>
-CAMCreateVideoFormatDescription(const lt::Ref<CVImageBufferRef> &imageBuffer) {
+CAMCreateVideoFormatDescription(CVImageBufferRef imageBuffer) {
   CMVideoFormatDescriptionRef videoFormat;
   CVReturn videoFormatCreate =
-      CMVideoFormatDescriptionCreateForImageBuffer(NULL, imageBuffer.get(), &videoFormat);
+      CMVideoFormatDescriptionCreateForImageBuffer(NULL, imageBuffer, &videoFormat);
   LTAssert(videoFormatCreate == kCVReturnSuccess,
            @"CMVideoFormatDescriptionCreateForImageBuffer failed, got: %d", videoFormatCreate);
 
@@ -40,7 +40,7 @@ lt::Ref<CMSampleBufferRef> CAMCreateImageSampleBuffer(CGSize size) {
       CAMCreatePixelBuffer((size_t)size.width, (size_t)size.height, kCVPixelFormatType_32BGRA);
 
   lt::Ref<CMVideoFormatDescriptionRef> videoFormatRef =
-      CAMCreateVideoFormatDescription(imageBufferRef);
+      CAMCreateVideoFormatDescription(imageBufferRef.get());
 
   CMSampleTimingInfo sampleTimingInfo = {kCMTimeZero, CMTimeMake(1, 60), kCMTimeZero};
 
@@ -50,7 +50,7 @@ lt::Ref<CMSampleBufferRef> CAMCreateImageSampleBuffer(CGSize size) {
                                                videoFormatRef.get(), &sampleTimingInfo,
                                                &sampleBuffer);
   LTAssert(sampleBufferCreate == 0, @"CMSampleBufferCreateForImageBuffer failed, got: %d",
-           sampleBufferCreate);
+           (int)sampleBufferCreate);
 
   return lt::Ref<CMSampleBufferRef>(sampleBuffer);
 }
@@ -63,7 +63,7 @@ lt::Ref<CMSampleBufferRef> CAMCreateSampleBufferForImage(const cv::Mat4b &image)
 lt::Ref<CMSampleBufferRef> CAMCreateSampleBufferForImage(const cv::Mat4b &image,
                                                          const CMSampleTimingInfo &sampleTiming) {
   __block lt::Ref<CVImageBufferRef> imageBufferRef =
-      CAMCreatePixelBuffer((size_t)image.cols, (size_t)image.rows, kCVPixelFormatType_32BGRA);
+      CAMCreatePixelBuffer(image.cols, image.rows, kCVPixelFormatType_32BGRA);
 
   CVReturn lockResult = CVPixelBufferLockBaseAddress(imageBufferRef.get(), 0);
   if (kCVReturnSuccess != lockResult) {
@@ -89,7 +89,7 @@ lt::Ref<CMSampleBufferRef> CAMCreateSampleBufferForImage(const cv::Mat4b &image,
   };
 
   lt::Ref<CMVideoFormatDescriptionRef> videoFormatRef =
-      CAMCreateVideoFormatDescription(imageBufferRef);
+      CAMCreateVideoFormatDescription(imageBufferRef.get());
 
   CMSampleBufferRef sampleBuffer;
   OSStatus sampleBufferCreate =
@@ -97,7 +97,7 @@ lt::Ref<CMSampleBufferRef> CAMCreateSampleBufferForImage(const cv::Mat4b &image,
                                                videoFormatRef.get(), &sampleTiming,
                                                &sampleBuffer);
   LTAssert(sampleBufferCreate == 0, @"CMSampleBufferCreateForImageBuffer failed, got: %d",
-           sampleBufferCreate);
+           (int)sampleBufferCreate);
 
   return lt::Ref<CMSampleBufferRef>(sampleBuffer);
 }
