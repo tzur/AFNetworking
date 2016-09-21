@@ -7,14 +7,30 @@
 
 /// Processor for solving the Poisson equation. The processor is given a mask, source and target
 /// textures, and calculates a result to the equation given the boundary condition T - S on the
-/// mask's boundary. Mask's boundary is determined with threshold of \c 0.5 (@see
-/// \c LTPatchBoundaryProcessor for more information).
+/// mask's boundary.
 @interface LTPatchSolverProcessor : LTImageProcessor
 
-/// Initializes with mask, source texture, target texture and an output texture. The mask texture
-/// must be of byte precision. The output texture must be of half-float precision.
+- (instancetype)init NS_UNAVAILABLE;
+
+/// Initializes with the given \c mask, \c source, \c target, and \c output textures. Identical to
+/// calling:
+///
+/// @code
+///   [[LTPatchSolverProcessor alloc] initWithMask:mask maskBoundaryThreshold:0 source:source
+///                                         target:target output:output]
+/// @endcode
 - (instancetype)initWithMask:(LTTexture *)mask source:(LTTexture *)source
                       target:(LTTexture *)target output:(LTTexture *)output;
+
+/// Initializes with the given \c mask, \c maskBoundaryThreshold, \c source, \c target, and
+/// \c output. The \c maskBoundaryThreshold constitutes a threshold between the pixel values
+/// considered to be inside the mask and the pixel values considered to be outside the mask when
+/// extracting the mask boundary (@see the \c threshold property of \c LTPatchBoundaryProcessor for
+/// more information). The \c mask texture must be of byte precision. \c maskBoundaryThreshold must
+/// be in <tt>[0, 1]</tt>. The \c output texture must be of half-float precision.
+- (instancetype)initWithMask:(LTTexture *)mask maskBoundaryThreshold:(CGFloat)maskBoundaryThreshold
+                      source:(LTTexture *)source target:(LTTexture *)target
+                      output:(LTTexture *)output NS_DESIGNATED_INITIALIZER;
 
 /// Rotated rect defining a region of interest in the source texture, which the data is copied from.
 /// The default value is an axis aligned rect of (0, 0, source.width, source.height).
