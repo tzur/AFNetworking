@@ -9,6 +9,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface BZRZipFileArchiver : NSObject <BZRFileArchiver>
 
+/// Convenience initializer that initializes \c archiveFactory with 
+/// \c [[BZRZipArchiveFactory alloc] init].
+///
+/// @see initWithFileManager:archiveFactory:
+- (instancetype)initWithFileManager:(NSFileManager *)fileManager;
+
 /// Initializes the receiver with the given \c fileManager and \c archiveFactory.
 ///
 /// The \c fileManager will be used to interact with the file system when archiving / unarchiving

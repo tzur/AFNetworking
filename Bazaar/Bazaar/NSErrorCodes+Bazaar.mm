@@ -56,7 +56,11 @@ LTErrorCodesImplement(BazaarErrorCodeProductID,
   /// Purchase of a product has failed.
   BZRErrorCodePurchaseFailed,
   /// Received a transaction that isn't associated with a payment.
-  BZRErrorCodeUnhandledTransactionReceived
+  BZRErrorCodeUnhandledTransactionReceived,
+  /// Received a purchase request with invalid product identifer.
+  BZRErrorCodeInvalidProductIdentifer,
+  /// Fetching of product list has failed.
+  BZRErrorCodeFetchingProductListFailed
 );
 
 NS_ASSUME_NONNULL_END

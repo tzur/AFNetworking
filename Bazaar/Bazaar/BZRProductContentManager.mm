@@ -28,9 +28,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Base directory where all product's content are saved.
 NSString * const kBazaarProductsContentDirectory = @"Bazaar/ProductsContent/";
 
-- (instancetype)init {
-  BZRZipFileArchiver *archiver = [[BZRZipFileArchiver alloc] init];
-  return [self initWithFileManager:[NSFileManager defaultManager] fileArchiver:archiver];
+- (instancetype)initWithFileManager:(NSFileManager *)fileManager {
+  BZRZipFileArchiver *archiver = [[BZRZipFileArchiver alloc] initWithFileManager:fileManager];
+  return [self initWithFileManager:fileManager fileArchiver:archiver];
 }
 
 - (instancetype)initWithFileManager:(NSFileManager *)fileManager

@@ -27,7 +27,7 @@ NS_ASSUME_NONNULL_BEGIN
                           error:(NSError **)error;
 
 /// Returns a new \c BZRModel with the property named \c propertyName set to \c value.
-- (instancetype)modelByOverridingProperty:(NSString *)propertyName withValue:(id)value;
+- (instancetype)modelByOverridingProperty:(NSString *)propertyName withValue:(nullable id)value;
 
 @end
 

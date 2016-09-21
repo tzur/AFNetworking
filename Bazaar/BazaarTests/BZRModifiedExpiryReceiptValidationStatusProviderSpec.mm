@@ -6,27 +6,9 @@
 #import "BZRReceiptEnvironment.h"
 #import "BZRReceiptModel.h"
 #import "BZRReceiptValidationStatus.h"
+#import "BZRTestUtils.h"
 #import "BZRTimeConversion.h"
 #import "BZRTimeProvider.h"
-
-static BZRReceiptValidationStatus *BZRReceiptValidationStatusWithSubscriptionExpiry(BOOL expiry) {
-  BZRReceiptSubscriptionInfo *subscription = [BZRReceiptSubscriptionInfo modelWithDictionary:@{
-    @instanceKeypath(BZRReceiptSubscriptionInfo, productId): @"foo",
-    @instanceKeypath(BZRReceiptSubscriptionInfo, originalTransactionId): @"bar",
-    @instanceKeypath(BZRReceiptSubscriptionInfo, originalPurchaseDateTime): [NSDate date],
-    @instanceKeypath(BZRReceiptSubscriptionInfo, expirationDateTime): [NSDate date],
-    @instanceKeypath(BZRReceiptSubscriptionInfo, isExpired): @(expiry)
-  } error:nil];
-  BZRReceiptInfo *receipt = [BZRReceiptInfo modelWithDictionary:@{
-    @instanceKeypath(BZRReceiptInfo, environment): $(BZRReceiptEnvironmentSandbox),
-    @instanceKeypath(BZRReceiptInfo, subscription): subscription
-  } error:nil];
-  return [BZRReceiptValidationStatus modelWithDictionary:@{
-    @instanceKeypath(BZRReceiptValidationStatus, isValid): @YES,
-    @instanceKeypath(BZRReceiptValidationStatus, validationDateTime): [NSDate date],
-    @instanceKeypath(BZRReceiptValidationStatus, receipt): receipt
-  } error:nil];
-}
 
 SpecBegin(BZRModifiedExpiryReceiptValidationStatusProvider)
 
@@ -56,8 +38,7 @@ context(@"deallocating object", ^{
     RACSignal *errorsSignal;
 
     OCMStub([timeProvider currentTime]).andReturn([RACSignal return:[NSDate distantPast]]);
-    BZRReceiptValidationStatus *receiptValidationStatus =
-        BZRReceiptValidationStatusWithSubscriptionExpiry(YES);
+    BZRReceiptValidationStatus *receiptValidationStatus = BZRReceiptValidationStatusWithExpiry(YES);
     OCMStub([underlyingProvider fetchReceiptValidationStatus])
         .andReturn([RACSignal return:receiptValidationStatus]);
 
@@ -106,7 +87,7 @@ context(@"handling errors", ^{
     beforeEach(^{
       error = OCMClassMock([NSError class]);
       OCMStub([timeProvider currentTime]).andReturn([RACSignal error:error]);
-      receiptValidationStatus = BZRReceiptValidationStatusWithSubscriptionExpiry(YES);
+      receiptValidationStatus = BZRReceiptValidationStatusWithExpiry(YES);
       OCMStub([underlyingProvider fetchReceiptValidationStatus])
           .andReturn([RACSignal return:receiptValidationStatus]);
     });
@@ -193,7 +174,7 @@ context(@"subscription not expired", ^{
   __block NSTimeInterval gracePeriodSeconds;
 
   beforeEach(^{
-    validationStatus = BZRReceiptValidationStatusWithSubscriptionExpiry(NO);
+    validationStatus = BZRReceiptValidationStatusWithExpiry(NO);
     gracePeriodSeconds = [BZRTimeConversion numberOfSecondsInDays:gracePeriod];
   });
 
@@ -225,7 +206,7 @@ context(@"subscription expired", ^{
   __block NSTimeInterval gracePeriodSeconds;
 
   beforeEach(^{
-    validationStatus = BZRReceiptValidationStatusWithSubscriptionExpiry(YES);
+    validationStatus = BZRReceiptValidationStatusWithExpiry(YES);
     gracePeriodSeconds = [BZRTimeConversion numberOfSecondsInDays:gracePeriod];
   });
 
