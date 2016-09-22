@@ -337,11 +337,11 @@ context(@"", ^{
       });
 
       it(@"should set manual focus", ^{
-        LLSignalTestRecorder *recorder = [[device setLockedFocusPosition:0.3] testRecorder];
-        expect(recorder).will.sendValues(@[@((CGFloat)0.3)]);
+        LLSignalTestRecorder *recorder = [[device setLockedFocusPosition:0.25] testRecorder];
+        expect(recorder).will.sendValues(@[@(0.25)]);
         expect(recorder).to.complete();
         expect(videoDevice.focusMode).to.equal(AVCaptureFocusModeLocked);
-        expect(videoDevice.lensPosition).to.equal(0.3);
+        expect(videoDevice.lensPosition).to.equal(0.25);
       });
     });
 
@@ -371,9 +371,9 @@ context(@"", ^{
 
       it(@"should not set manual focus", ^{
         videoDevice.focusMode = AVCaptureFocusModeAutoFocus;
-        [device setLockedFocusPosition:0.3];
+        [device setLockedFocusPosition:0.25];
         expect(videoDevice.focusMode).toNot.equal(AVCaptureFocusModeLocked);
-        expect(videoDevice.lensPosition).toNot.equal(0.3);
+        expect(videoDevice.lensPosition).toNot.equal(0.25);
       });
     });
 
@@ -401,10 +401,10 @@ context(@"", ^{
       });
 
       it(@"should return error from manual focus", ^{
-        LLSignalTestRecorder *recorder = [[device setLockedFocusPosition:0.3] testRecorder];
+        LLSignalTestRecorder *recorder = [[device setLockedFocusPosition:0.25] testRecorder];
         NSError *expected = [NSError lt_errorWithCode:CAMErrorCodeFocusSettingUnsupported];
         expect(recorder).will.sendError(expected);
-        expect(videoDevice.lensPosition).toNot.equal(0.3);
+        expect(videoDevice.lensPosition).toNot.equal(0.25);
       });
     });
   });
@@ -452,10 +452,10 @@ context(@"", ^{
       it(@"should set exposure compensation", ^{
         videoDevice.minExposureTargetBias = 0;
         videoDevice.maxExposureTargetBias = 1;
-        LLSignalTestRecorder *recorder = [[device setExposureCompensation:0.3] testRecorder];
-        expect(recorder).will.sendValues(@[@0.3f]);
+        LLSignalTestRecorder *recorder = [[device setExposureCompensation:0.25] testRecorder];
+        expect(recorder).will.sendValues(@[@0.25]);
         expect(recorder).to.complete();
-        expect(videoDevice.exposureTargetBias).to.equal(0.3);
+        expect(videoDevice.exposureTargetBias).to.equal(0.25);
       });
 
       it(@"should update min exposure compensation", ^{
@@ -511,8 +511,8 @@ context(@"", ^{
       it(@"should not set exposure compensation", ^{
         videoDevice.minExposureTargetBias = 0;
         videoDevice.maxExposureTargetBias = 1;
-        [device setExposureCompensation:0.3];
-        expect(videoDevice.exposureTargetBias).toNot.equal(0.3);
+        [device setExposureCompensation:0.25];
+        expect(videoDevice.exposureTargetBias).toNot.equal(0.25);
       });
     });
 
@@ -580,8 +580,8 @@ context(@"", ^{
         AVCaptureWhiteBalanceGains gains({0.1, 0.2, 0.3});
         videoDevice.gainsToReturnFromConversion = gains;
         LLSignalTestRecorder *recorder =
-            [[device setLockedWhiteBalanceWithTemperature:0.2 tint:0.4] testRecorder];
-        expect(recorder).will.sendValues(@[RACTuplePack(@0.2f, @0.4f)]);
+            [[device setLockedWhiteBalanceWithTemperature:0.25 tint:0.5] testRecorder];
+        expect(recorder).will.sendValues(@[RACTuplePack(@0.25, @0.5)]);
         expect(recorder).to.complete();
         expect(videoDevice.whiteBalanceMode).to.equal(AVCaptureWhiteBalanceModeLocked);
         expect(videoDevice.deviceWhiteBalanceGains).to.equal(gains);
@@ -621,7 +621,7 @@ context(@"", ^{
         videoDevice.whiteBalanceMode = AVCaptureWhiteBalanceModeAutoWhiteBalance;
         AVCaptureWhiteBalanceGains gains({0.1, 0.2, 0.3});
         videoDevice.gainsToReturnFromConversion = gains;
-        [device setLockedWhiteBalanceWithTemperature:0.2 tint:0.4];
+        [device setLockedWhiteBalanceWithTemperature:0.25 tint:0.5];
         expect(videoDevice.whiteBalanceMode).toNot.equal(AVCaptureWhiteBalanceModeLocked);
         expect(videoDevice.deviceWhiteBalanceGains).toNot.equal(gains);
       });
@@ -653,7 +653,7 @@ context(@"", ^{
         AVCaptureWhiteBalanceGains gains({0.1, 0.2, 0.3});
         videoDevice.gainsToReturnFromConversion = gains;
         LLSignalTestRecorder *recorder =
-            [[device setLockedWhiteBalanceWithTemperature:0.2 tint:0.4] testRecorder];
+            [[device setLockedWhiteBalanceWithTemperature:0.25 tint:0.5] testRecorder];
         NSError *expected = [NSError lt_errorWithCode:CAMErrorCodeWhiteBalanceSettingUnsupported];
         expect(recorder).will.sendError(expected);
         expect(videoDevice.deviceWhiteBalanceGains).toNot.equal(gains);
@@ -725,13 +725,13 @@ context(@"", ^{
 
     context(@"require subscription", ^{
       it(@"should not set zoom", ^{
-        [device setZoom:0.3];
-        expect(videoDevice.videoZoomFactor).toNot.equal(0.3);
+        [device setZoom:0.25];
+        expect(videoDevice.videoZoomFactor).toNot.equal(0.25);
       });
 
       it(@"should not set zoom ramped", ^{
-        [device setZoom:0.3 rate:0.5];
-        expect(videoDevice.videoZoomFactor).toNot.equal(0.3);
+        [device setZoom:0.25 rate:0.5];
+        expect(videoDevice.videoZoomFactor).toNot.equal(0.25);
       });
     });
   });
