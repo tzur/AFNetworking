@@ -52,13 +52,15 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)processMat:(cv::Mat *)mat
    onDispatchGroup:(dispatch_group_t)group
    processingBlock:(LTMatDispatcherProcessingBlock)processingBlock {
+  cv::Mat localMat = *mat;
   LTMatDispatcherShardingBlock shardingBlock = ^cv::Rect(NSUInteger shardIndex,
                                                          NSUInteger shardCount) {
-    int rowsPerShard = mat->rows / shardCount;
+    int rowsPerShard = localMat.rows / shardCount;
     int startRow = (int)(shardIndex * rowsPerShard);
-    int endRow = (shardIndex == shardCount - 1) ? mat->rows : (int)(shardIndex + 1) * rowsPerShard;
+    int endRow = (shardIndex == shardCount - 1) ? localMat.rows :
+        (int)(shardIndex + 1) * rowsPerShard;
 
-    return cv::Rect(0, startRow, mat->cols, endRow - startRow);
+    return cv::Rect(0, startRow, localMat.cols, endRow - startRow);
   };
 
   [self processMat:mat onDispatchGroup:group
@@ -97,13 +99,14 @@ NS_ASSUME_NONNULL_BEGIN
   cv::Rect matRect(cv::Rect(cv::Point(0, 0), mat->size()));
   NSUInteger shardCount = std::max(std::min((int)self.maxShardCount, mat->rows), 1);
 
+  cv::Mat localMat = *mat;
   for (NSUInteger shardIndex = 0; shardIndex < shardCount; ++shardIndex) {
     dispatch_group_async(group, self.queue, ^{
       cv::Rect roi(shardingBlock(shardIndex, shardCount));
       LTParameterAssert((roi & matRect) == roi, @"Given shard ROI must be a sub rect of the input "
                         "mat. Given ROI (%d, %d, %d, %d), given mat size: (%d, %d)", roi.x, roi.y,
-                        roi.width, roi.height, mat->cols, mat->rows);
-      processingBlock(shardIndex, shardCount, (*mat)(roi));
+                        roi.width, roi.height, localMat.cols, localMat.rows);
+      processingBlock(shardIndex, shardCount, localMat(roi));
     });
   }
 }
