@@ -10,6 +10,7 @@
 #import "LTGLTexture.h"
 #import "LTImage.h"
 #import "LTTexture+Factory.h"
+#import "LTTextureArchiveMetadata.h"
 #import "LTTextureArchiveType.h"
 #import "LTTextureArchiverNonPersistentStorage.h"
 #import "LTTextureBaseArchiver.h"
@@ -622,6 +623,34 @@ context(@"unarchiving", ^{
       expect(error).to.beNil();
       expect(image).notTo.beNil();
       expect($([[LTImage alloc] initWithImage:image].mat)).to.equalMat($(texture.image));
+    });
+  });
+
+  context(@"texture metadata", ^{
+    it(@"should unarchive correctly", ^{
+      LTTextureArchiveMetadata *metadata = [archiver metadataFromPath:archivePath error:&error];
+      expect(error).to.beNil();
+      expect(metadata.archiveType).to.equal($(LTTextureArchiveTypeUncompressedMat));
+      expect(metadata.textureMetadata).to.equal(texture.metadata);
+    });
+
+    it(@"should return nil if archive does not exist", ^{
+      LTTextureArchiveMetadata *metadata = [archiver metadataFromPath:LTPathMake(@"noArchive")
+                                                                error:&error];
+      expect(metadata).to.beNil();
+      expect(error).notTo.beNil();
+      expect(error.code).to.equal(LTErrorCodeFileNotFound);
+    });
+
+    it(@"should return nil if failed to load archive metadata", ^{
+      NSString *metadataPath = [archivePath pathByAppendingPathComponent:@"metadata.plist"].path;
+      OCMStub([fileManager lt_dictionaryWithContentsOfFile:metadataPath
+                                                     error:[OCMArg setTo:kFakeError]]);
+
+      LTTextureArchiveMetadata *metadata = [archiver metadataFromPath:archivePath error:&error];
+      expect(metadata).to.beNil();
+      expect(error).notTo.beNil();
+      expect(error).to.equal(kFakeError);
     });
   });
 });

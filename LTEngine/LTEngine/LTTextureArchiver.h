@@ -3,7 +3,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class LTPath, LTTexture, LTTextureArchiveType;
+@class LTPath, LTTexture, LTTextureArchiveMetadata, LTTextureArchiveType;
 
 /// Protocol for a key-value storage used by the \c LTTextureArchiver.
 @protocol LTTextureArchiverStorage <NSObject>
@@ -80,6 +80,10 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 /// @note Only archives of byte RGBA textures can be unarchived to \c UIImage.
 - (nullable UIImage *)unarchiveImageFromPath:(LTPath *)path error:(NSError **)error;
+
+/// Loads the texture metadata stored with a previously archived texture in the given path. In case
+/// of failure, returns \c nil while populating error.
+- (nullable LTTextureArchiveMetadata *)metadataFromPath:(LTPath *)path error:(NSError **)error;
 
 /// Removes the archive stored in the given \c path. Returns \c YES in case of success or \c NO
 /// while populating \c error in case of failure.
