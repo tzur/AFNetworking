@@ -27,6 +27,9 @@ typedef NS_ENUM(NSUInteger, UIDeviceKind) {
   UIDeviceKindIPhone6Plus,
   UIDeviceKindIPhone6S,
   UIDeviceKindIPhone6SPlus,
+  UIDeviceKindIPhoneSE,
+  UIDeviceKindIPhone7,
+  UIDeviceKindIPhone7Plus,
 
   // iPod.
   UIDeviceKindIPod1G,
@@ -43,7 +46,8 @@ typedef NS_ENUM(NSUInteger, UIDeviceKind) {
   UIDeviceKindIPad4G,
   UIDeviceKindIPadAir1G,
   UIDeviceKindIPadAir2G,
-  UIDeviceKindIPadPro,
+  UIDeviceKindIPadPro9_7,
+  UIDeviceKindIPadPro12_9,
 
   // iPad mini.
   UIDeviceKindIPadMini1G,
@@ -54,6 +58,7 @@ typedef NS_ENUM(NSUInteger, UIDeviceKind) {
   // Apple TV.
   UIDeviceKindAppleTV2,
   UIDeviceKindAppleTV3,
+  UIDeviceKindAppleTV4,
 
   // Simulator.
   UIDeviceKindSimulatorIPhone,

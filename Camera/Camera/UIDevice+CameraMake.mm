@@ -41,12 +41,19 @@ NS_ASSUME_NONNULL_BEGIN
       return @"iPhone 6s";
     case UIDeviceKindIPhone6SPlus:
       return @"iPhone 6s Plus";
+    case UIDeviceKindIPhoneSE:
+      return @"iPhone SE";
+    case UIDeviceKindIPhone7:
+      return @"iPhone 7";
+    case UIDeviceKindIPhone7Plus:
+      return @"iPhone 7 Plus";
 
     case UIDeviceKindIPod1G:
     case UIDeviceKindIPod2G:
     case UIDeviceKindIPod3G:
     case UIDeviceKindIPod4G:
     case UIDeviceKindIPod5G:
+    case UIDeviceKindIPod6G:
       return @"iPod touch";
 
     case UIDeviceKindIPad1G:
@@ -59,6 +66,10 @@ NS_ASSUME_NONNULL_BEGIN
       return @"iPad Air";
     case UIDeviceKindIPadAir2G:
       return @"iPad Air 2";
+    case UIDeviceKindIPadPro9_7:
+      return @"iPad Pro";
+    case UIDeviceKindIPadPro12_9:
+      return @"iPad Pro";
 
     case UIDeviceKindIPadMini1G:
       return @"iPad mini";
@@ -68,16 +79,13 @@ NS_ASSUME_NONNULL_BEGIN
       return @"iPad mini 3";
 
       // Missing data - educated guesses.
-    case UIDeviceKindIPod6G:
-      return @"iPod touch";
-    case UIDeviceKindIPadPro:
-      return @"iPad Pro";
     case UIDeviceKindIPadMini4G:
       return @"iPad mini 4";
 
       // No camera or N/A
     case UIDeviceKindAppleTV2:
     case UIDeviceKindAppleTV3:
+    case UIDeviceKindAppleTV4:
     case UIDeviceKindSimulatorIPhone:
     case UIDeviceKindSimulatorIPad:
     case UIDeviceKindUnknownIPhone:
