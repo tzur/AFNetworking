@@ -31,8 +31,8 @@ context(@"initialization", ^{
 
   beforeEach(^{
     input = [LTTexture byteRedTextureWithSize:CGSizeMake(1, 1)];
-    guide = [LTTexture byteRedTextureWithSize:CGSizeMake(1, 1)];
-    output = [LTTexture byteRedTextureWithSize:CGSizeMake(1, 1)];
+    guide = [LTTexture byteRedTextureWithSize:CGSizeMake(2, 2)];
+    output = [LTTexture byteRedTextureWithSize:CGSizeMake(4, 4)];
   });
 
   afterEach(^{
@@ -42,7 +42,7 @@ context(@"initialization", ^{
   });
 
   it(@"should raise when input width is greater than the output width", ^{
-    LTTexture *inputWithInvalidWidth = [LTTexture byteRGBATextureWithSize:CGSizeMake(9, 4)];
+    LTTexture *inputWithInvalidWidth = [LTTexture byteRGBATextureWithSize:CGSizeMake(9, 1)];
     expect(^{
       LTAnisotropicDiffusionProcessor __unused *processor =
           [[LTAnisotropicDiffusionProcessor alloc] initWithInput:inputWithInvalidWidth guide:guide
@@ -51,7 +51,7 @@ context(@"initialization", ^{
   });
 
   it(@"should raise when input height is greater than the output height", ^{
-    LTTexture *inputWithInvalidHeight = [LTTexture byteRGBATextureWithSize:CGSizeMake(4, 9)];
+    LTTexture *inputWithInvalidHeight = [LTTexture byteRGBATextureWithSize:CGSizeMake(1, 9)];
     expect(^{
       LTAnisotropicDiffusionProcessor __unused *processor =
           [[LTAnisotropicDiffusionProcessor alloc] initWithInput:inputWithInvalidHeight guide:guide
@@ -59,11 +59,20 @@ context(@"initialization", ^{
     }).to.raise(NSInvalidArgumentException);
   });
 
-  it(@"should raise when guide and output texture sizes are different", ^{
-    LTTexture *guideWithInvalidSize = [LTTexture byteRGBATextureWithSize:CGSizeMake(7, 7)];
+  it(@"should raise when input width is greater than the guide width", ^{
+    LTTexture *inputWithInvalidWidth = [LTTexture byteRGBATextureWithSize:CGSizeMake(3, 1)];
     expect(^{
       LTAnisotropicDiffusionProcessor __unused *processor =
-          [[LTAnisotropicDiffusionProcessor alloc] initWithInput:input guide:guideWithInvalidSize
+          [[LTAnisotropicDiffusionProcessor alloc] initWithInput:inputWithInvalidWidth guide:guide
+                                                          output:output];
+    }).to.raise(NSInvalidArgumentException);
+  });
+
+  it(@"should raise when input height is greater than the guide height", ^{
+    LTTexture *inputWithInvalidHeight = [LTTexture byteRGBATextureWithSize:CGSizeMake(1, 3)];
+    expect(^{
+      LTAnisotropicDiffusionProcessor __unused *processor =
+          [[LTAnisotropicDiffusionProcessor alloc] initWithInput:inputWithInvalidHeight guide:guide
                                                           output:output];
     }).to.raise(NSInvalidArgumentException);
   });

@@ -29,9 +29,9 @@ extern const NSUInteger kKernelSizeUpperBound;
 - (instancetype)initWithInput:(LTTexture *)input output:(LTTexture *)output;
 
 /// Initializes with the given \c input, \c guide and \c output. \c input size must be smaller than
-/// or equal to the \c output size in both dimensions, \c guide and \c output sizes must be equal
-/// and \c input and \c output pixel formats must have the same number of components. If \c guide
-/// is set to \c nil, \c input is taken as the guide texture.
+/// or equal to the \c output size and the \c guide size in both dimensions and \c input and
+/// \c output pixel formats must have the same number of components. If \c guide is set to \c nil,
+/// \c input is taken as the guide texture.
 - (instancetype)initWithInput:(LTTexture *)input guide:(LTTexture * _Nullable)guide
                        output:(LTTexture *)output
     NS_DESIGNATED_INITIALIZER;
@@ -40,10 +40,14 @@ extern const NSUInteger kKernelSizeUpperBound;
 /// texture. Must be a positive value. Set to \c 0.1 by default.
 @property (nonatomic) CGFloat rangeSigma;
 
-/// Kernel size of \c guide neighbour pixels to take in account when calculating the diffusion
-/// extent of a given pixel. It's recommended to fit the \c kernelSize to the ratio between the
-/// \c input size and the \c output size: The larger the ratio is, the larger the kernel size should
-/// be. Value must be an odd number in <tt>[1, kKernelSizeUpperBound]</tt>. Set to \c 15 by default.
+/// Kernel size of neighbour pixels to take in account when calculating the diffusion extent of a
+/// given pixel. Note the kernel size is observed in the \c output resolution and therefore,
+/// sampling values from the \c input and the \c guide will be with different kernel sizes depending
+/// on the ratios between the \c output size to the \c input size and between the \c output size to
+/// the \c guide size repsectively. Therefore it is highly recommended to take those ratios into
+/// acount when determining the kernel size: the larger the ratio is, the larger the kernel size
+/// should be. Value must be an odd number in <tt>[1, kKernelSizeUpperBound]</tt>. Set to \c 15 by
+/// default.
 ///
 /// @note a large \c kernelSize can significantly increase the processing time.
 /// @note automatical mapping between the ratio and the recommended kernel size should be added.

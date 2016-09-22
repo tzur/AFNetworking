@@ -66,9 +66,10 @@ const NSUInteger kKernelSizeUpperBound = 101;
     _input = input;
 
     _guide = guide ?: input;
-    LTParameterAssert(output.size == self.guide.size,
-                      @"guide size (%@) and output size (%@) must be equal",
-                      NSStringFromCGSize(guide.size), NSStringFromCGSize(output.size));
+    LTParameterAssert(input.size.width <= self.guide.size.width &&
+                      input.size.height <= self.guide.size.height, @"input size (%@) must be "
+                      "smaller than or equal to the guide size (%@) in both dimensions",
+                      NSStringFromCGSize(input.size), NSStringFromCGSize(self.guide.size));
 
     _output = output;
 
@@ -112,17 +113,8 @@ const NSUInteger kKernelSizeUpperBound = 101;
 }
 
 - (void)process {
-  [self.input executeAndPreserveParameters:^{
-    self.input.minFilterInterpolation = LTTextureInterpolationNearest;
-    self.input.magFilterInterpolation = LTTextureInterpolationNearest;
-
-    [self.intermediateTexture executeAndPreserveParameters:^{
-      self.intermediateTexture.minFilterInterpolation = LTTextureInterpolationNearest;
-      self.intermediateTexture.magFilterInterpolation = LTTextureInterpolationNearest;
-      [self.horizontalDiffuser process];
-      [self.verticalDiffuser process];
-    }];
-  }];
+  [self.horizontalDiffuser process];
+  [self.verticalDiffuser process];
 }
 
 - (void)setRangeSigma:(CGFloat)rangeSigma {
