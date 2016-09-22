@@ -33,84 +33,84 @@ context(@"default sharding", ^{
 
   context(@"async processing", ^{
     it(@"should split even mat to two even parts", ^{
-      cv::Mat4b image(4, 4);
-      image(cv::Rect(0, 0, 4, 2)) = cv::Vec4b(255, 255, 255, 255);
-      image(cv::Rect(0, 2, 4, 2)) = cv::Vec4b(255, 0, 0, 255);
+      waitUntil(^(DoneCallback done) {
+        cv::Mat4b image(4, 4);
+        image(cv::Rect(0, 0, 4, 2)) = cv::Vec4b(255, 255, 255, 255);
+        image(cv::Rect(0, 2, 4, 2)) = cv::Vec4b(255, 0, 0, 255);
 
-      [dispatcher processMat:&image processingBlock:^(NSUInteger shardIndex,
-                                                      NSUInteger shardCount,
-                                                      cv::Mat shard) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-          expect(shard.size() == cv::Size(4, 2)).to.beTruthy();
+        [dispatcher processMat:&image processingBlock:^(NSUInteger shardIndex,
+                                                        NSUInteger shardCount,
+                                                        cv::Mat shard) {
+          dispatch_async(dispatch_get_main_queue(), ^{
+            expect(shard.size() == cv::Size(4, 2)).to.beTruthy();
 
-          switch (shardIndex) {
-            case 0: {
-              expect($(shard)).to.equalScalar($(cv::Scalar(255, 255, 255, 255)));
-            } break;
-            case 1: {
-              expect($(shard)).to.equalScalar($(cv::Scalar(255, 0, 0, 255)));
-            } break;
-            default:
-              expect(NO).to.beTruthy();
-          }
+            switch (shardIndex) {
+              case 0: {
+                expect($(shard)).to.equalScalar($(cv::Scalar(255, 255, 255, 255)));
+              } break;
+              case 1: {
+                expect($(shard)).to.equalScalar($(cv::Scalar(255, 0, 0, 255)));
+              } break;
+              default:
+                expect(NO).to.beTruthy();
+            }
 
-          if (shardIndex == shardCount - 1) {
-            finished = YES;
-          }
-        });
-      } completion:nil];
-
-      expect(finished).will.beTruthy();
+            if (shardIndex == shardCount - 1) {
+              done();
+            }
+          });
+        } completion:nil];
+      });
     });
 
     it(@"should split odd mat to two uneven parts", ^{
-      cv::Mat4b image(5, 4);
-      image(cv::Rect(0, 0, 4, 2)) = cv::Vec4b(255, 255, 255, 255);
-      image(cv::Rect(0, 2, 4, 3)) = cv::Vec4b(255, 0, 0, 255);
+      waitUntil(^(DoneCallback done) {
+        cv::Mat4b image(5, 4);
+        image(cv::Rect(0, 0, 4, 2)) = cv::Vec4b(255, 255, 255, 255);
+        image(cv::Rect(0, 2, 4, 3)) = cv::Vec4b(255, 0, 0, 255);
 
-      [dispatcher processMat:&image processingBlock:^(NSUInteger shardIndex,
-                                                      NSUInteger shardCount,
-                                                      cv::Mat shard) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-          switch (shardIndex) {
-            case 0: {
-              expect(shard.size() == cv::Size(4, 2)).to.beTruthy();
-              expect($(shard)).to.equalScalar($(cv::Scalar(255, 255, 255, 255)));
-            } break;
-            case 1: {
-              expect(shard.size() == cv::Size(4, 3)).to.beTruthy();
-              expect($(shard)).to.equalScalar($(cv::Scalar(255, 0, 0, 255)));
-            } break;
-            default:
-              expect(NO).to.beTruthy();
-          }
+        [dispatcher processMat:&image processingBlock:^(NSUInteger shardIndex,
+                                                        NSUInteger shardCount,
+                                                        cv::Mat shard) {
+          dispatch_async(dispatch_get_main_queue(), ^{
+            switch (shardIndex) {
+              case 0: {
+                expect(shard.size() == cv::Size(4, 2)).to.beTruthy();
+                expect($(shard)).to.equalScalar($(cv::Scalar(255, 255, 255, 255)));
+              } break;
+              case 1: {
+                expect(shard.size() == cv::Size(4, 3)).to.beTruthy();
+                expect($(shard)).to.equalScalar($(cv::Scalar(255, 0, 0, 255)));
+              } break;
+              default:
+                expect(NO).to.beTruthy();
+            }
 
-          if (shardIndex == shardCount - 1) {
-            finished = YES;
-          }
-        });
-      } completion:nil];
-
-      expect(finished).will.beTruthy();
+            if (shardIndex == shardCount - 1) {
+              done();
+            }
+          });
+        } completion:nil];
+      });
     });
 
     it(@"should call completion block", ^{
-      cv::Mat4b image(4, 4);
+      waitUntil(^(DoneCallback done) {
+        cv::Mat4b image(4, 4);
 
-      __block BOOL processingDone;
-      __block BOOL completed;
+        __block BOOL processingDone = NO;
 
-      [dispatcher processMat:&image processingBlock:^(NSUInteger shardIndex, NSUInteger shardCount,
-                                                      cv::Mat __unused shard) {
-        if (shardIndex == shardCount - 1) {
-          processingDone = YES;
-        }
-      } completion:^{
-        expect(processingDone).to.beTruthy();
-        completed = YES;
-      }];
-      
-      expect(completed).will.beTruthy();
+        [dispatcher processMat:&image processingBlock:^(NSUInteger shardIndex,
+                                                        NSUInteger shardCount,
+                                                        cv::Mat __unused shard) {
+          if (shardIndex == shardCount - 1) {
+            processingDone = YES;
+          }
+        } completion:^{
+          expect(processingDone).to.beTruthy();
+          done();
+        }];
+      });
     });
   });
 
@@ -167,23 +167,23 @@ context(@"custom sharding", ^{
 
   context(@"async processing", ^{
     it(@"should send shards as defined by the sharding block", ^{
-      cv::Mat4b image(2, 2, cv::Vec4b(0, 0, 0, 255));
-      __block BOOL completed = NO;
+      __block cv::Mat4b image(2, 2, cv::Vec4b(0, 0, 0, 255));
 
-      [dispatcher processMat:&image shardingBlock:shardingBlock
-             processingBlock:^(NSUInteger shardIndex,
-                               NSUInteger,
-                               cv::Mat shard) {
-               shard.setTo(cv::Vec4b(shardIndex, 0, 0, 128));
-             } completion:^{
-               completed = YES;
-             }];
+      waitUntil(^(DoneCallback done) {
+        [dispatcher processMat:&image shardingBlock:shardingBlock
+               processingBlock:^(NSUInteger shardIndex,
+                                 NSUInteger,
+                                 cv::Mat shard) {
+                 shard.setTo(cv::Vec4b(shardIndex, 0, 0, 128));
+               } completion:^{
+                 done();
+               }];
+      });
 
       cv::Mat4b expectedImage(image.clone());
       expectedImage(0, 0) = cv::Vec4b(0, 0, 0, 128);
       expectedImage(1, 1) = cv::Vec4b(1, 0, 0, 128);
 
-      expect(completed).will.beTruthy();
       expect($(image)).to.equalMat($(expectedImage));
     });
   });
