@@ -26,12 +26,22 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithIdentifier:(NSURL *)identifier localizedTitle:(NSString *)localizedTitle
                        imageSignal:(RACSignal *)imageSignal
                        albumSignal:(RACSignal *)albumSignal {
+  return [self initWithIdentifier:identifier localizedTitle:localizedTitle
+                 imageSignalBlock:^RACSignal *(id<PTNResizingStrategy>, PTNImageFetchOptions *) {
+                   return imageSignal;
+                 } albumSignal:albumSignal];
+}
+
+- (instancetype)initWithIdentifier:(NSURL *)identifier localizedTitle:(NSString *)localizedTitle
+                  imageSignalBlock:(PTNGatewayImageSignalBlock)imageSignalBlock
+                       albumSignal:(RACSignal *)albumSignal {
   LTParameterAssert([identifier.scheme isEqualToString:[NSURL ptn_gatewayScheme]], @"identifer "
                     "must be a Gateway URL: %@", identifier);
+  LTParameterAssert(imageSignalBlock, @"No image signal block given");
   if (self = [super init]) {
     _ptn_identifier = identifier;
     _localizedTitle = localizedTitle;
-    _imageSignal = imageSignal;
+    _imageSignalBlock = [imageSignalBlock copy];
     _albumSignal = albumSignal;
   }
   return self;

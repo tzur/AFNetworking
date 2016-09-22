@@ -20,11 +20,14 @@ __block PTNGatewayAlbumDescriptor *fooDescriptor;
 __block PTNGatewayAlbumDescriptor *barDescriptor;
 __block PTNGatewayAssetManager *manager;
 
+__block RACSignal *imageSignal;
+
 beforeEach(^{
-  fooDescriptor = PTNGatewayCreateAlbumDescriptor(@"foo", [[RACSignal alloc] init],
-                                                  [[RACSignal alloc] init]);
-  barDescriptor = PTNGatewayCreateAlbumDescriptor(@"bar", [[RACSignal alloc] init],
-                                                  [[RACSignal alloc] init]);
+  imageSignal = [RACSignal empty];
+  fooDescriptor = PTNGatewayCreateAlbumDescriptorWithSignal(@"foo", [RACSignal empty],
+                                                            imageSignal);
+  barDescriptor = PTNGatewayCreateAlbumDescriptorWithSignal(@"bar", [RACSignal empty],
+                                                            imageSignal);
 
   NSSet *descriptors = [NSSet setWithArray:@[fooDescriptor, barDescriptor]];
   manager = [[PTNGatewayAssetManager alloc] initWithDescriptors:descriptors];
@@ -106,7 +109,7 @@ context(@"image fetching", ^{
                                          resizingStrategy:resizingStrategy
                                                   options:options];
 
-    expect(values).to.equal(fooDescriptor.imageSignal);
+    expect(values).to.equal(imageSignal);
   });
 
   it(@"should return error for invalid descriptors", ^{
@@ -121,8 +124,31 @@ context(@"image fetching", ^{
     });
   });
 
+  it(@"should return signal based on given parameters", ^{
+    __block id<PTNResizingStrategy> givenResizingStrategy;
+    __block PTNImageFetchOptions *givenOptions;
+    PTNGatewayAlbumDescriptor *blockDescriptor = PTNGatewayCreateAlbumDescriptor(@"block",
+        [RACSignal empty], ^RACSignal *(id<PTNResizingStrategy> resizingStrategy,
+                                        PTNImageFetchOptions *options) {
+          givenResizingStrategy = resizingStrategy;
+          givenOptions = options;
+          return imageSignal;
+        });
+
+    manager = [[PTNGatewayAssetManager alloc]
+               initWithDescriptors:[NSSet setWithObject:blockDescriptor]];
+    RACSignal *values = [manager fetchImageWithDescriptor:blockDescriptor
+                                         resizingStrategy:resizingStrategy
+                                                  options:options];
+    expect(values).to.equal(imageSignal);
+    expect(givenResizingStrategy).to.equal(resizingStrategy);
+    expect(givenOptions).to.equal(options);
+  });
+
   it(@"should return error for valid unregistered descriptors", ^{
-    id<PTNDescriptor> descriptor = PTNGatewayCreateAlbumDescriptor(@"baz", nil, nil);
+    id<PTNDescriptor> descriptor = PTNGatewayCreateAlbumDescriptorWithSignal(@"baz",
+                                                                             [RACSignal empty],
+                                                                             [RACSignal empty]);
 
     RACSignal *values = [manager fetchImageWithDescriptor:descriptor
                                          resizingStrategy:resizingStrategy
