@@ -63,8 +63,8 @@ NS_ASSUME_NONNULL_BEGIN
            error:(NSError * __autoreleasing *)error {
   NSData *data = nil;
   if (value) {
-    LTParameterAssert([self isObjectValidForArchiving:value], @"Value is not serializable.");
     data = [NSKeyedArchiver archivedDataWithRootObject:value];
+    LTParameterAssert(data, @"Value is not serializable.");
   }
 
   NSError *underlyingError;
@@ -77,11 +77,6 @@ NS_ASSUME_NONNULL_BEGIN
     }
   }
   return success;
-}
-
-- (BOOL)isObjectValidForArchiving:(id)object {
-    return [NSPropertyListSerialization propertyList:object
-                                    isValidForFormat:NSPropertyListBinaryFormat_v1_0];
 }
 
 @end
