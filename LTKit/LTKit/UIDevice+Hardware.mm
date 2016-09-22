@@ -26,16 +26,21 @@ static NSDictionary * const kPlatformSubstringToUIDeviceKind = @{
   @"iPhone6,2": @(UIDeviceKindIPhone5S),
   @"iPhone7,2": @(UIDeviceKindIPhone6),
   @"iPhone7,1": @(UIDeviceKindIPhone6Plus),
-  @"iPhone8,2": @(UIDeviceKindIPhone6S),
-  @"iPhone8,1": @(UIDeviceKindIPhone6SPlus),
+  @"iPhone8,1": @(UIDeviceKindIPhone6S),
+  @"iPhone8,2": @(UIDeviceKindIPhone6SPlus),
+  @"iPhone8,4": @(UIDeviceKindIPhoneSE),
+  @"iPhone9,1": @(UIDeviceKindIPhone7),
+  @"iPhone9,2": @(UIDeviceKindIPhone7Plus),
+  @"iPhone9,3": @(UIDeviceKindIPhone7),
+  @"iPhone9,4": @(UIDeviceKindIPhone7Plus),
 
   // iPod.
-  @"iPod1": @(UIDeviceKindIPod1G),
-  @"iPod2": @(UIDeviceKindIPod2G),
-  @"iPod3": @(UIDeviceKindIPod3G),
-  @"iPod4": @(UIDeviceKindIPod4G),
-  @"iPod5": @(UIDeviceKindIPod5G),
-  @"iPod7": @(UIDeviceKindIPod6G),
+  @"iPod1,1": @(UIDeviceKindIPod1G),
+  @"iPod2,1": @(UIDeviceKindIPod2G),
+  @"iPod3,1": @(UIDeviceKindIPod3G),
+  @"iPod4,1": @(UIDeviceKindIPod4G),
+  @"iPod5,1": @(UIDeviceKindIPod5G),
+  @"iPod7,1": @(UIDeviceKindIPod6G),
 
   // iPad.
   @"iPad1": @(UIDeviceKindIPad1G),
@@ -54,7 +59,10 @@ static NSDictionary * const kPlatformSubstringToUIDeviceKind = @{
   @"iPad4,3": @(UIDeviceKindIPadAir1G), // iPad Air WiFi + Cellular (China).
   @"iPad5,3": @(UIDeviceKindIPadAir2G), // iPad Air 2 WiFi.
   @"iPad5,4": @(UIDeviceKindIPadAir2G), // iPad Air 2 WiFi + Cellular.
-  @"iPad6,8": @(UIDeviceKindIPadPro),
+  @"iPad6,3": @(UIDeviceKindIPadPro9_7), // iPad pro 9.7-Inch WiFi.
+  @"iPad6,4": @(UIDeviceKindIPadPro9_7), // iPad pro 9.7-Inch WiFi + Cellular.
+  @"iPad6,7": @(UIDeviceKindIPadPro12_9), // iPad pro 12.9-Inch WiFi.
+  @"iPad6,8": @(UIDeviceKindIPadPro12_9), // iPad pro 12.9-Inch WiFi + Cellular.
 
   // iPad mini.
   @"iPad2,5": @(UIDeviceKindIPadMini1G), // iPad mini WiFi.
@@ -70,8 +78,10 @@ static NSDictionary * const kPlatformSubstringToUIDeviceKind = @{
   @"iPad5,2": @(UIDeviceKindIPadMini4G),
 
   // Apple TV.
-  @"AppleTV2": @(UIDeviceKindAppleTV2),
-  @"AppleTV3": @(UIDeviceKindAppleTV3),
+  @"AppleTV2,1": @(UIDeviceKindAppleTV2),
+  @"AppleTV3,1": @(UIDeviceKindAppleTV3),
+  @"AppleTV3,2": @(UIDeviceKindAppleTV3),
+  @"AppleTV5,3": @(UIDeviceKindAppleTV4),
 
   // Simulator (iPad / iPhone types are not resolved by platform string).
   @"x86_64": @(UIDeviceKindSimulatorIPhone),
@@ -100,6 +110,9 @@ static NSDictionary * const kDeviceKindToString = @{
   @(UIDeviceKindIPhone6Plus): @"UIDeviceKindIPhone6Plus",
   @(UIDeviceKindIPhone6S): @"UIDeviceKindIPhone6S",
   @(UIDeviceKindIPhone6SPlus): @"UIDeviceKindIPhone6SPlus",
+  @(UIDeviceKindIPhoneSE): @"UIDeviceKindIPhoneSE",
+  @(UIDeviceKindIPhone7): @"UIDeviceKindIPhone7",
+  @(UIDeviceKindIPhone7Plus): @"UIDeviceKindIPhone7Plus",
 
   // iPod.
   @(UIDeviceKindIPod1G): @"UIDeviceKindIPod1G",
@@ -116,7 +129,8 @@ static NSDictionary * const kDeviceKindToString = @{
   @(UIDeviceKindIPad4G): @"UIDeviceKindIPad4G",
   @(UIDeviceKindIPadAir1G): @"UIDeviceKindIPadAir1G",
   @(UIDeviceKindIPadAir2G): @"UIDeviceKindIPadAir2G",
-  @(UIDeviceKindIPadPro): @"UIDeviceKindIPadPro",
+  @(UIDeviceKindIPadPro9_7): @"UIDeviceKindIPadPro9_7",
+  @(UIDeviceKindIPadPro12_9): @"UIDeviceKindIPadPro12_9",
 
   // iPad mini.
   @(UIDeviceKindIPadMini1G): @"UIDeviceKindIPadMini1G",
@@ -127,6 +141,7 @@ static NSDictionary * const kDeviceKindToString = @{
   // Apple TV.
   @(UIDeviceKindAppleTV2): @"UIDeviceKindAppleTV2",
   @(UIDeviceKindAppleTV3): @"UIDeviceKindAppleTV3",
+  @(UIDeviceKindAppleTV4): @"UIDeviceKindAppleTV4",
 
   // Simulator
   @(UIDeviceKindSimulatorIPhone): @"UIDeviceKindSimulatorIPhone",
@@ -272,6 +287,8 @@ typedef NS_ENUM(NSUInteger, UIDeviceScreenType) {
     case UIDeviceKindIPhone5S:
     case UIDeviceKindIPhone6:
     case UIDeviceKindIPhone6S:
+    case UIDeviceKindIPhoneSE:
+    case UIDeviceKindIPhone7:
     case UIDeviceKindUnknownIPhone:
     case UIDeviceKindSimulatorIPhone:
       return UIDeviceScreenTypeIPhoneRetina;
@@ -289,6 +306,7 @@ typedef NS_ENUM(NSUInteger, UIDeviceScreenType) {
 
     case UIDeviceKindIPhone6Plus:
     case UIDeviceKindIPhone6SPlus:
+    case UIDeviceKindIPhone7Plus:
       return UIDeviceScreenTypeIPhonePlusRetina;
 
     case UIDeviceKindIPad1G:
@@ -300,7 +318,8 @@ typedef NS_ENUM(NSUInteger, UIDeviceScreenType) {
     case UIDeviceKindIPad4G:
     case UIDeviceKindIPadAir1G:
     case UIDeviceKindIPadAir2G:
-    case UIDeviceKindIPadPro:
+    case UIDeviceKindIPadPro9_7:
+    case UIDeviceKindIPadPro12_9:
     case UIDeviceKindUnknownIPad:
     case UIDeviceKindSimulatorIPad:
       return UIDeviceScreenTypeIPadRetina;
