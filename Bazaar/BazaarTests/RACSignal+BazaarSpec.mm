@@ -186,7 +186,6 @@ context(@"deserialize model operator", ^{
       [subject sendNext:@{}];
     }).toNot.raiseAny();
     expect(recorder).to.matchError(^BOOL(NSError *signalError) {
-      NSLog(@"%@", signalError);
       return signalError.lt_isLTDomain &&
           signalError.code == BZRErrorCodeModelJSONDeserializationFailed &&
           [signalError.bzr_exception.name isEqualToString:NSInternalInconsistencyException];
@@ -218,7 +217,6 @@ context(@"deserialize array of models operator", ^{
       [subject sendNext:@[@{}]];
     }).toNot.raiseAny();
     expect(recorder).to.matchError(^BOOL(NSError *signalError) {
-      NSLog(@"%@", signalError);
       return signalError.lt_isLTDomain &&
       signalError.code == BZRErrorCodeModelJSONDeserializationFailed &&
       [signalError.bzr_exception.name isEqualToString:NSInternalInconsistencyException];
