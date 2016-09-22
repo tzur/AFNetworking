@@ -65,7 +65,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)createPreviewLayer {
   self.previewLayer = [AVCaptureVideoPreviewLayer layerWithSession:self.session];
   self.previewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
-  self.previewLayer.connection.videoOrientation = AVCaptureVideoOrientationPortrait;
 }
 
 - (BOOL)setCamera:(CAMDeviceCamera *)camera error:(NSError * __autoreleasing *)error {
@@ -89,7 +88,9 @@ NS_ASSUME_NONNULL_BEGIN
 
   LTParameterAssert([device hasMediaType:AVMediaTypeVideo], @"device must provide video");
   NSError *internalError;
-  AVCaptureVideoOrientation currentStillOrientation = self.stillConnection.videoOrientation;
+  AVCaptureVideoOrientation videoOrientation = self.videoConnection.videoOrientation;
+  AVCaptureVideoOrientation stillOrientation = self.stillConnection.videoOrientation;
+  AVCaptureVideoOrientation previewOrientation = self.previewLayer.connection.videoOrientation;
 
   if (self.videoInput) {
     [self.session removeInput:self.videoInput];
@@ -134,22 +135,17 @@ NS_ASSUME_NONNULL_BEGIN
   [self.session addInput:self.videoInput];
 
   [self updateVideoConnection];
-  self.stillConnection = self.stillOutput.connections.firstObject;
-  self.stillConnection.videoOrientation = currentStillOrientation;
+  [self updateStillConnection];
+  self.videoConnection.videoOrientation = videoOrientation;
+  self.stillConnection.videoOrientation = stillOrientation;
+  self.previewLayer.connection.videoOrientation = previewOrientation;
 
   return YES;
 }
 
-- (void)updateVideoConnection {
-  self.videoConnection = self.videoOutput.connections.firstObject;
-  self.videoConnection.videoOrientation = AVCaptureVideoOrientationPortrait;
-  if (self.videoConnection.isVideoMirroringSupported &&
-      self.videoDevice.position == AVCaptureDevicePositionFront) {
-    self.videoConnection.videoMirrored = YES;
-  }
-}
-
 - (BOOL)setupVideoOutputWithError:(NSError * __autoreleasing *)error {
+  AVCaptureVideoOrientation videoOrientation = self.videoConnection.videoOrientation;
+
   if (self.videoOutput) {
     [self.session removeOutput:self.videoOutput];
   }
@@ -164,12 +160,21 @@ NS_ASSUME_NONNULL_BEGIN
   [self.session addOutput:self.videoOutput];
 
   [self updateVideoConnection];
+  self.videoConnection.videoOrientation = videoOrientation;
 
   return YES;
 }
 
+- (void)updateVideoConnection {
+  self.videoConnection = self.videoOutput.connections.firstObject;
+  if (self.videoConnection.isVideoMirroringSupported &&
+      self.videoDevice.position == AVCaptureDevicePositionFront) {
+    self.videoConnection.videoMirrored = YES;
+  }
+}
+
 - (BOOL)setupStillOutputWithError:(NSError * __autoreleasing *)error {
-  AVCaptureVideoOrientation currentStillOrientation = self.stillConnection.videoOrientation;
+  AVCaptureVideoOrientation stillOrientation = self.stillConnection.videoOrientation;
 
   if (self.stillOutput) {
     [self.session removeOutput:self.stillOutput];
@@ -184,10 +189,14 @@ NS_ASSUME_NONNULL_BEGIN
   }
   [self.session addOutput:self.stillOutput];
 
-  self.stillConnection = self.stillOutput.connections.firstObject;
-  self.stillConnection.videoOrientation = currentStillOrientation;
+  [self updateStillConnection];
+  self.stillConnection.videoOrientation = stillOrientation;
 
   return YES;
+}
+
+- (void)updateStillConnection {
+  self.stillConnection = self.stillOutput.connections.firstObject;
 }
 
 - (BOOL)setupAudioInputWithDevice:(AVCaptureDevice *)device
@@ -225,7 +234,7 @@ NS_ASSUME_NONNULL_BEGIN
   }
   [self.session addInput:self.audioInput];
 
-  self.audioConnection = self.audioOutput.connections.firstObject;
+  [self updateAudioConnection];
 
   return YES;
 }
@@ -245,9 +254,13 @@ NS_ASSUME_NONNULL_BEGIN
   }
   [self.session addOutput:self.audioOutput];
 
-  self.audioConnection = self.audioOutput.connections.firstObject;
+  [self updateAudioConnection];
 
   return YES;
+}
+
+- (void)updateAudioConnection {
+  self.audioConnection = self.audioOutput.connections.firstObject;
 }
 
 - (void)setVideoDelegate:(nullable id<AVCaptureVideoDataOutputSampleBufferDelegate>)videoDelegate {
