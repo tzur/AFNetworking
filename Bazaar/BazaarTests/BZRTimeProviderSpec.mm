@@ -11,11 +11,11 @@ beforeEach(^{
   timeProvider = [[BZRTimeProvider alloc] init];
 });
 
-context(@"verifying current time", ^{
+it(@"should send a single value and complete", ^{
   LLSignalTestRecorder *recorder = [[timeProvider currentTime] testRecorder];
 
   expect(recorder).will.complete();
-  expect(recorder).will.sendValuesWithCount(1);
+  expect(recorder).to.sendValuesWithCount(1);
 });
 
 SpecEnd

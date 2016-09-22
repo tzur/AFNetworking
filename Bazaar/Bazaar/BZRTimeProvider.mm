@@ -9,7 +9,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (RACSignal *)currentTime {
   return [RACSignal defer:^RACSignal *{
-   return [RACSignal return:[NSDate date]];
+    return [RACSignal return:[NSDate date]];
   }];
 }
 
