@@ -3,7 +3,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class  BZRPaymentQueue, BZRProductDownloadManager, BZRPurchaseManager,
+@class BZRPaymentQueue, BZRProductDownloadManager, BZRPurchaseManager,
     BZRTransactionRestorationManager;
 
 @protocol BZRStoreKitRequestsFactory;
