@@ -392,8 +392,8 @@ context(@"fetching product content", ^{
   });
 
   it(@"should update downloaded content products", ^{
-      BZRStubProductDictionaryToReturnProductWithIdentifier(productIdentifier, productsProvider,
-                                                            storeKitFacade);
+    BZRStubProductDictionaryToReturnProductWithIdentifier(productIdentifier, productsProvider,
+                                                          storeKitFacade);
     store = [[BZRStore alloc] initWithConfiguration:configuration];
 
     LTPath *path = [LTPath pathWithPath:@"bar"];
@@ -491,7 +491,8 @@ context(@"getting product list", ^{
     expect(recorder).will.complete();
 
     OCMVerify([productsProvider fetchProductList]);
-    OCMVerify([storeKitFacade fetchMetadataForProductsWithIdentifiers:OCMOCK_ANY]);
+    OCMVerify([storeKitFacade fetchMetadataForProductsWithIdentifiers:
+               [NSSet setWithObject:productIdentifier]]);
   });
 
   it(@"should send empty set even when facade sends products", ^{

@@ -175,7 +175,7 @@ typedef NSDictionary<NSString *, BZRProduct *> BZRProductDictionary;
       }]
       flattenMap:^RACStream *(BZRProductDictionary *productDictionary) {
         @strongify(self);
-        NSSet *productSet = [NSSet setWithArray:[productDictionary allValues]];
+        NSSet *productSet = [NSSet setWithArray:[productDictionary allKeys]];
         return [[self.storeKitFacade fetchMetadataForProductsWithIdentifiers:productSet]
             map:^BZRProductDictionary *(SKProductsResponse *productsResponse) {
               return [self productDictionary:productDictionary
