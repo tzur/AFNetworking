@@ -103,7 +103,7 @@ context(@"ptn_wrapErrorWithError", ^{
   });
 
   it(@"should not alter values", ^{
-    NSError *error = [[NSError alloc] init];
+    NSError *error = [NSError lt_errorWithCode:1337];
 
     LLSignalTestRecorder *recorder = [[subject ptn_wrapErrorWithError:error] testRecorder];
 
@@ -128,7 +128,7 @@ context(@"ptn_wrapErrorWithError", ^{
 
   it(@"should overwrite underlying error", ^{
     NSError *error = [NSError lt_errorWithCode:1338 path:@"foo"
-                               underlyingError:[[NSError alloc] init]];
+                               underlyingError:[NSError lt_errorWithCode:1337]];
 
     LLSignalTestRecorder *recorder = [[subject ptn_wrapErrorWithError:error] testRecorder];
 

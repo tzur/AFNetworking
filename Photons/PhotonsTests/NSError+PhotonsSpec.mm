@@ -10,7 +10,7 @@ __block NSError *underlyingError;
 
 beforeEach(^{
   descriptor = OCMProtocolMock(@protocol(PTNDescriptor));
-  underlyingError = [[NSError alloc] init];
+  underlyingError = [NSError lt_errorWithCode:1338];
 });
 
 it(@"should create an error with an associated descriptor", ^{
