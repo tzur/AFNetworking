@@ -206,12 +206,25 @@ context(@"session", ^{
   context(@"set camera", ^{
     __block CAMFakeAVCaptureDevice *device;
     __block id camera;
+    __block id deviceInput;
 
     beforeEach(^{
       device = [[CAMFakeAVCaptureDevice alloc] init];
       device.mediaTypes = @[AVMediaTypeVideo];
+
       camera = OCMClassMock([CAMDeviceCamera class]);
       OCMStub([camera device]).andReturn(device);
+
+      formatStrategy.format = @1;
+      OCMStub([sessionMock canAddInput:OCMOCK_ANY]).andReturn(YES);
+
+      deviceInput = OCMClassMock([AVCaptureDeviceInput class]);
+      OCMStub([deviceInput deviceInputWithDevice:device error:[OCMArg anyObjectRef]])
+          .andReturn(deviceInput);
+    });
+
+    afterEach(^{
+      [deviceInput stopMocking];
     });
 
     it(@"should not raise when not passing an error output", ^{
@@ -221,12 +234,6 @@ context(@"session", ^{
     });
 
     it(@"should keep device and input on success", ^{
-      formatStrategy.format = @1;
-      OCMStub([sessionMock canAddInput:OCMOCK_ANY]).andReturn(YES);
-      id deviceInput = OCMClassMock([AVCaptureDeviceInput class]);
-      OCMStub([deviceInput deviceInputWithDevice:device error:[OCMArg anyObjectRef]])
-          .andReturn(deviceInput);
-
       BOOL success;
       NSError *error;
       success = [session setCamera:camera error:&error];
@@ -236,34 +243,18 @@ context(@"session", ^{
       OCMVerify([sessionMock addInput:OCMOCK_ANY]);
       expect(session.videoDevice).to.beIdenticalTo(device);
       expect(session.videoInput).to.beIdenticalTo(deviceInput);
-
-      [deviceInput stopMocking];
     });
 
     it(@"should remove current input", ^{
-      formatStrategy.format = @1;
-      OCMStub([sessionMock canAddInput:OCMOCK_ANY]).andReturn(YES);
-      id deviceInput = OCMClassMock([AVCaptureDeviceInput class]);
-      OCMStub([deviceInput deviceInputWithDevice:device error:[OCMArg anyObjectRef]])
-          .andReturn(deviceInput);
-
       NSError *error;
       [session setupVideoInputWithDevice:device formatStrategy:formatStrategy error:&error];
       id firstInput = session.videoInput;
 
       [session setCamera:camera error:&error];
       OCMVerify([sessionMock removeInput:firstInput];);
-
-      [deviceInput stopMocking];
     });
 
     it(@"should begin and commit configuration", ^{
-      formatStrategy.format = @1;
-      OCMStub([sessionMock canAddInput:OCMOCK_ANY]).andReturn(YES);
-      id deviceInput = OCMClassMock([AVCaptureDeviceInput class]);
-      OCMStub([deviceInput deviceInputWithDevice:device error:[OCMArg anyObjectRef]])
-          .andReturn(deviceInput);
-
       [sessionMock setExpectationOrderMatters:YES];
       OCMExpect([sessionMock beginConfiguration]);
       OCMExpect([sessionMock commitConfiguration]);
@@ -272,8 +263,6 @@ context(@"session", ^{
       [session setCamera:camera error:&error];
 
       OCMVerifyAll(sessionMock);
-
-      [deviceInput stopMocking];
     });
   });
 
