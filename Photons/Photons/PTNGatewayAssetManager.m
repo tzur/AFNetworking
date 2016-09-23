@@ -56,7 +56,7 @@ NS_ASSUME_NONNULL_BEGIN
 
   PTNGatewayAlbumDescriptor *flattenedDescriptor = [[PTNGatewayAlbumDescriptor alloc]
       initWithIdentifier:[NSURL ptn_flattenedGatewayAlbumURLWithKey:url.ptn_gatewayKey]
-      localizedTitle:descriptor.localizedTitle imageSignal:descriptor.imageSignal
+      localizedTitle:descriptor.localizedTitle imageSignalBlock:descriptor.imageSignalBlock
       albumSignal:descriptor.albumSignal];
 
     id<PTNAlbum> album = [[PTNAlbum alloc] initWithURL:descriptor.ptn_identifier
@@ -75,8 +75,8 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (RACSignal *)fetchImageWithDescriptor:(id<PTNDescriptor>)descriptor
-                       resizingStrategy:(id<PTNResizingStrategy> __unused)resizingStrategy
-                                options:(PTNImageFetchOptions __unused *)options {
+                       resizingStrategy:(id<PTNResizingStrategy>)resizingStrategy
+                                options:(PTNImageFetchOptions *)options {
   // Although unregistered \c PTNGatewayAlbumDescriptors can technically be served, they will only
   // work for fetching images, resulting in confusing behavior and are therefore rejected.
   PTNGatewayAlbumDescriptor * _Nullable gatewayDescriptor =
@@ -87,7 +87,7 @@ NS_ASSUME_NONNULL_BEGIN
     return [RACSignal error:error];
   }
 
-  return gatewayDescriptor.imageSignal;
+  return gatewayDescriptor.imageSignalBlock(resizingStrategy, options);
 }
 
 #pragma mark -
