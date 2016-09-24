@@ -38,6 +38,10 @@ NS_ASSUME_NONNULL_BEGIN
 /// Timing info for the video frame.
 - (CMSampleTimingInfo)timingInfo;
 
+/// Returns propagatable metadata of \c sampleBuffer, or \c nil if the \c sampleBuffer doesn't
+/// have metadata.
+- (nullable NSDictionary *)propagatableMetadata;
+
 /// Orientation of the video frame, according to EXIF specification.
 ///
 /// @see http://sylvana.net/jpegcrop/exif_orientation.html

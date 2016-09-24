@@ -158,4 +158,32 @@ context(@"conversion to LTTexture", ^{
   });
 });
 
+context(@"propagatableMetadata", ^{
+  __block CAMVideoFrame *frame;
+
+  beforeEach(^{
+    frame = [[CAMVideoFrame alloc] initWithSampleBuffer:sampleBuffer.get()];
+  });
+
+  it(@"should return nil if the metatdata empty", ^{
+    expect([frame propagatableMetadata]).to.beNil();
+  });
+
+  it(@"should return nil if there is no propagatable metatdata", ^{
+    NSDictionary *attachments = @{@"Orientation": @5};
+    CMSetAttachments(sampleBuffer.get(), (__bridge CFDictionaryRef)attachments,
+                     kCMAttachmentMode_ShouldNotPropagate);
+
+    expect([frame propagatableMetadata]).to.beNil();
+  });
+
+  it(@"should return propagatable metatdata", ^{
+    NSDictionary *attachments = @{@"Orientation": @5};
+    CMSetAttachments(sampleBuffer.get(), (__bridge CFDictionaryRef)attachments,
+                     kCMAttachmentMode_ShouldPropagate);
+
+    expect([frame propagatableMetadata]).to.equal(attachments);
+  });
+});
+
 SpecEnd
