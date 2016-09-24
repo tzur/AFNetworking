@@ -273,11 +273,9 @@ context(@"collection view", ^{
       [collectionView layoutIfNeeded];
       
       NSIndexPath *indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
-      expect(^{
-        [collectionView
-            layoutAttributesForSupplementaryElementOfKind:UICollectionElementKindSectionHeader
-            atIndexPath:indexPath];
-      }).to.raise(NSInternalInconsistencyException);
+      expect([collectionView numberOfSections]).to.equal(1);
+      expect([collectionView supplementaryViewForElementKind:UICollectionElementKindSectionHeader
+                                                 atIndexPath:indexPath]).to.beNil();
     });
     
     it(@"should not show headers when there is a single section", ^{
@@ -286,11 +284,8 @@ context(@"collection view", ^{
       [collectionView layoutIfNeeded];
       
       NSIndexPath *indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
-      expect(^{
-        [collectionView
-            layoutAttributesForSupplementaryElementOfKind:UICollectionElementKindSectionHeader
-            atIndexPath:indexPath];
-      }).to.raise(NSInternalInconsistencyException);
+      expect([collectionView supplementaryViewForElementKind:UICollectionElementKindSectionHeader
+                                                 atIndexPath:indexPath]).to.beNil();
     });
     
     it(@"should not show headers when there is a single active section", ^{
@@ -299,11 +294,8 @@ context(@"collection view", ^{
       [collectionView layoutIfNeeded];
       
       NSIndexPath *indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
-      expect(^{
-        [collectionView
-            layoutAttributesForSupplementaryElementOfKind:UICollectionElementKindSectionHeader
-            atIndexPath:indexPath];
-      }).to.raise(NSInternalInconsistencyException);
+      expect([collectionView supplementaryViewForElementKind:UICollectionElementKindSectionHeader
+                                                 atIndexPath:indexPath]).to.beNil();
     });
 
     it(@"should not show headers if they have no title", ^{
@@ -315,11 +307,8 @@ context(@"collection view", ^{
       NSIndexPath *firstIndexPath = [NSIndexPath indexPathForItem:0 inSection:0];
       NSIndexPath *secondIndexPath = [NSIndexPath indexPathForItem:0 inSection:1];
       NSIndexPath *thirdIndexPath = [NSIndexPath indexPathForItem:0 inSection:2];
-      expect(^{
-        [collectionView
-            layoutAttributesForSupplementaryElementOfKind:UICollectionElementKindSectionHeader
-            atIndexPath:firstIndexPath];
-      }).to.raise(NSInternalInconsistencyException);
+      expect([collectionView supplementaryViewForElementKind:UICollectionElementKindSectionHeader
+                                                 atIndexPath:firstIndexPath]).to.beNil();
       expect([collectionView
               layoutAttributesForSupplementaryElementOfKind:UICollectionElementKindSectionHeader
               atIndexPath:secondIndexPath].frame.size).to.equal(CGSizeMake(200, 25));
@@ -336,11 +325,8 @@ context(@"collection view", ^{
       NSIndexPath *firstIndexPath = [NSIndexPath indexPathForItem:0 inSection:0];
       NSIndexPath *secondIndexPath = [NSIndexPath indexPathForItem:0 inSection:1];
       NSIndexPath *thirdIndexPath = [NSIndexPath indexPathForItem:0 inSection:2];
-      expect(^{
-        [collectionView
-            layoutAttributesForSupplementaryElementOfKind:UICollectionElementKindSectionHeader
-            atIndexPath:firstIndexPath];
-      }).to.raise(NSInternalInconsistencyException);
+      expect([collectionView supplementaryViewForElementKind:UICollectionElementKindSectionHeader
+                                                 atIndexPath:firstIndexPath]).to.beNil();
       expect([collectionView
               layoutAttributesForSupplementaryElementOfKind:UICollectionElementKindSectionHeader
               atIndexPath:secondIndexPath].frame.size).to.equal(CGSizeMake(200, 25));
