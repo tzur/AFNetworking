@@ -16,17 +16,17 @@ NS_ASSUME_NONNULL_BEGIN
 /// based on the given \c pixelFormat (\c kCIContextWorkingFormat will be either \c kCIFormatRGBA8
 /// or \c kCIFormatRGBAh according to its bit depth and data type).
 ///
-/// Returned contexts are cached in the thread local storage with the creation options as key.
-/// Therefore, requesting a context on the same thread for the same \c pixelFormat twice will only
-/// create a single context.
+/// Returned contexts are cached in global storage with the creation options as key. Therefore,
+/// requesting a context on the same thread for the same \c pixelFormat twice will only create a
+/// single context.
 ///
 /// @note Supported pixel format must have either \c LTGLPixelBitDepth8 and
 /// \c LTGLPixelDataTypeUnorm or \c LTGLPixelBitDepth16 and \c LTGLPixelDataTypeFloat. Will raise an
 /// exception otherwise.
 + (instancetype)lt_contextWithPixelFormat:(LTGLPixelFormat *)pixelFormat;
 
-/// Cleans the context cache of the current thread.
-+ (void)lt_cleanContextCache;
+/// Clears the global context cache.
++ (void)lt_clearContextCache;
 
 @end
 
