@@ -29,28 +29,30 @@ NS_ASSUME_NONNULL_BEGIN
   LTParameterAssert(NO, @"Invalid pixel format: %@", pixelFormat);
 }
 
-/// Thread-specific \c CIContext key.
-static NSString * const kCIContextMappingKey = @"com.lightricks.LTEngine.CIContextMappingKey";
+/// Maps between context options to the context instance.
+static NSMutableDictionary<NSDictionary<NSString *, id> *, CIContext *> *mapping;
 
 + (instancetype)lt_contextWithOptions:(NSDictionary<NSString *, id> *)options {
-  typedef NSMutableDictionary<NSDictionary<NSString *, id> *, CIContext *> LTCIContextMapping;
+  @synchronized (self) {
+    if (!mapping) {
+      mapping = [NSMutableDictionary dictionary];
+    }
 
-  LTCIContextMapping *mapping = [[NSThread currentThread] threadDictionary][kCIContextMappingKey] ?:
-      [NSMutableDictionary dictionary];
-  CIContext * _Nullable context = mapping[options];
-  if (context) {
-    return context;
+    CIContext * _Nullable context = mapping[options];
+    if (context) {
+      return context;
+    }
+
+    CIContext *newContext = [CIContext contextWithOptions:options];
+    mapping[options] = newContext;
+    return newContext;
   }
-
-  CIContext *newContext = [CIContext contextWithOptions:options];
-  mapping[options] = newContext;
-  [[NSThread currentThread] threadDictionary][kCIContextMappingKey] = mapping;
-
-  return newContext;
 }
 
-+ (void)lt_cleanContextCache {
-  [[[NSThread currentThread] threadDictionary] removeObjectForKey:kCIContextMappingKey];
++ (void)lt_clearContextCache {
+  @synchronized (self) {
+    [mapping removeAllObjects];
+  }
 }
 
 @end

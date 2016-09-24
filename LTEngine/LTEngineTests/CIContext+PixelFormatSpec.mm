@@ -58,10 +58,10 @@ it(@"should raise when creating context with an invalid pixel format", ^{
 
 context(@"caching contexts", ^{
   afterEach(^{
-    [CIContext lt_cleanContextCache];
+    [CIContext lt_clearContextCache];
   });
 
-  it(@"should cache contexts on the same thread", ^{
+  it(@"should cache contexts", ^{
     CIContext *firstContext = [CIContext lt_contextWithPixelFormat:$(LTGLPixelFormatRGBA8Unorm)];
     CIContext *secondContext = [CIContext lt_contextWithPixelFormat:$(LTGLPixelFormatRGBA8Unorm)];
 
@@ -71,27 +71,26 @@ context(@"caching contexts", ^{
     expect(firstContext).notTo.beIdenticalTo(otherContext);
   });
 
-  it(@"should clean context cache", ^{
+  it(@"should clear context cache", ^{
     CIContext *firstContext = [CIContext lt_contextWithPixelFormat:$(LTGLPixelFormatRGBA8Unorm)];
-    [CIContext lt_cleanContextCache];
+    [CIContext lt_clearContextCache];
     CIContext *secondContext = [CIContext lt_contextWithPixelFormat:$(LTGLPixelFormatRGBA8Unorm)];
 
     expect(firstContext).notTo.beIdenticalTo(secondContext);
   });
 
-  it(@"should not cache contexts between threads", ^{
+  it(@"should cache contexts between threads", ^{
     CIContext *firstContext = [CIContext lt_contextWithPixelFormat:$(LTGLPixelFormatRGBA8Unorm)];
 
     __block CIContext *secondContext;
     waitUntil(^(DoneCallback done) {
       dispatch_async(dispatch_get_global_queue(QOS_CLASS_DEFAULT, 0), ^{
         secondContext = [CIContext lt_contextWithPixelFormat:$(LTGLPixelFormatRGBA8Unorm)];
-        [CIContext lt_cleanContextCache];
         done();
       });
     });
 
-    expect(firstContext).notTo.beIdenticalTo(secondContext);
+    expect(firstContext).to.beIdenticalTo(secondContext);
   });
 });
 
