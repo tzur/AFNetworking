@@ -18,9 +18,6 @@
 
 - (instancetype)initWithInput:(LTTexture *)input guide:(LTTexture *)guide
                       outputs:(NSArray *)outputs {
-  LTParameterAssert(input.size == guide.size, @"Input and guide textures should have the same size "
-                    "(%@ vs. %@)", NSStringFromCGSize(input.size), NSStringFromCGSize(guide.size));
-  
   return [super initWithVertexSource:[LTBilateralFilterVsh source]
                       fragmentSource:[LTBilateralFilterFsh source]
                        sourceTexture:input
