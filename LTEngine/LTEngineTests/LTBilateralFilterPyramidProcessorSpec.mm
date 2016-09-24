@@ -20,12 +20,23 @@ context(@"initialization", ^{
     base = nil;
   });
 
-  it(@"should initialize with proper inputs", ^{
+  it(@"should initialize with proper inputs and no guides", ^{
     NSArray<LTTexture *> *levels = [LTBilateralFilterPyramidProcessor levelsForInput:base];
 
     expect(^{
       LTBilateralFilterPyramidProcessor __unused *processor =
-          [[LTBilateralFilterPyramidProcessor alloc] initWithInput:base outputs:levels
+          [[LTBilateralFilterPyramidProcessor alloc] initWithInput:base outputs:levels guides:nil
+                                                        rangeSigma:0.1];
+    }).toNot.raiseAny();
+  });
+
+  it(@"should initialize with proper inputs and guides", ^{
+    NSArray<LTTexture *> *levels = [LTBilateralFilterPyramidProcessor levelsForInput:base];
+    NSArray<LTTexture *> *guides = [LTBilateralFilterPyramidProcessor levelsForInput:base];
+
+    expect(^{
+      LTBilateralFilterPyramidProcessor __unused *processor =
+          [[LTBilateralFilterPyramidProcessor alloc] initWithInput:base outputs:levels guides:guides
                                                         rangeSigma:0.1];
     }).toNot.raiseAny();
   });
@@ -35,7 +46,7 @@ context(@"initialization", ^{
 
     expect(^{
       LTBilateralFilterPyramidProcessor __unused *processor =
-          [[LTBilateralFilterPyramidProcessor alloc] initWithInput:base outputs:levels
+          [[LTBilateralFilterPyramidProcessor alloc] initWithInput:base outputs:levels guides:nil
                                                         rangeSigma:0.1];
     }).to.raise(NSInvalidArgumentException);
   });
@@ -46,7 +57,7 @@ context(@"initialization", ^{
 
     expect(^{
       LTBilateralFilterPyramidProcessor __unused *processor =
-          [[LTBilateralFilterPyramidProcessor alloc] initWithInput:base outputs:levels
+          [[LTBilateralFilterPyramidProcessor alloc] initWithInput:base outputs:levels guides:nil
                                                      rangeFunction:nilRangeFunction];
     }).to.raise(NSInvalidArgumentException);
   });
@@ -96,6 +107,8 @@ static NSString * const kPyramidCreationExamplesDownsampleResultKey = @"downsamp
 
 static NSString * const kPyramidCreationExamplesUpsampleResultKey = @"upsampleFileName";
 
+static NSString * const kPyramidCreationExamplesUpsampleGuidedResultKey = @"upsampleGuidedFileName";
+
 sharedExamples(kPyramidCreationExamples, ^(NSDictionary *data) {
   context(@"processing", ^{
     __block cv::Mat inputImage;
@@ -115,7 +128,7 @@ sharedExamples(kPyramidCreationExamples, ^(NSDictionary *data) {
       NSArray<LTTexture *> *outputs = [LTBilateralFilterPyramidProcessor levelsForInput:input
                                                                               upToLevel:3];
       LTBilateralFilterPyramidProcessor *pyramidProcessor =
-          [[LTBilateralFilterPyramidProcessor alloc] initWithInput:input outputs:outputs
+          [[LTBilateralFilterPyramidProcessor alloc] initWithInput:input outputs:outputs guides:nil
                                                         rangeSigma:0.1];
       [pyramidProcessor process];
 
@@ -128,7 +141,7 @@ sharedExamples(kPyramidCreationExamples, ^(NSDictionary *data) {
       NSArray<LTTexture *> *outputs = [LTBilateralFilterPyramidProcessor levelsForInput:input
                                                                               upToLevel:3];
       LTBilateralFilterPyramidProcessor *downPyramidProcessor =
-          [[LTBilateralFilterPyramidProcessor alloc] initWithInput:input outputs:outputs
+          [[LTBilateralFilterPyramidProcessor alloc] initWithInput:input outputs:outputs guides:nil
                                                         rangeSigma:0.1];
       [downPyramidProcessor process];
 
@@ -138,6 +151,7 @@ sharedExamples(kPyramidCreationExamples, ^(NSDictionary *data) {
       LTBilateralFilterPyramidProcessor *upPyramidProcessor =
           [[LTBilateralFilterPyramidProcessor alloc] initWithInput:outputs.lastObject
                                                            outputs:upOutputs
+                                                            guides:nil
                                                      rangeFunction:^float(CGFloat scale) {
                                                        return 0.1 * scale ;
                                                      }];
@@ -147,6 +161,37 @@ sharedExamples(kPyramidCreationExamples, ^(NSDictionary *data) {
       cv::Mat expected = LTLoadMat([self class], fileName);
       expect($([finalOutput image])).to.equalMat($(expected));
     });
+
+    it(@"Should upsample correctly with guides the same size as the outputs", ^{
+      NSArray<LTTexture *> *downOutputs = [LTBilateralFilterPyramidProcessor levelsForInput:input
+                                                                                  upToLevel:3];
+      LTBilateralFilterPyramidProcessor *downPyramidProcessor =
+          [[LTBilateralFilterPyramidProcessor alloc] initWithInput:input outputs:downOutputs
+                                                            guides:nil rangeSigma:0.1];
+      [downPyramidProcessor process];
+
+      NSMutableArray<LTTexture *> *upOutputs = [NSMutableArray array];
+      NSMutableArray<LTTexture *> *guides = [NSMutableArray array];
+      for (NSInteger i = downOutputs.count - 2; i >= 0; --i) {
+        [upOutputs addObject:[LTTexture textureWithPropertiesOf:downOutputs[i]]];
+        [guides addObject:downOutputs[i]];
+      }
+      [upOutputs addObject:[LTTexture textureWithPropertiesOf:input]];
+      [guides addObject:input];
+
+      LTBilateralFilterPyramidProcessor *upPyramidProcessor =
+          [[LTBilateralFilterPyramidProcessor alloc] initWithInput:downOutputs.lastObject
+                                                           outputs:[upOutputs copy]
+                                                            guides:[guides copy]
+                                                     rangeFunction:^float(CGFloat scale) {
+                                                       return 0.1 * scale ;
+                                                     }];
+      [upPyramidProcessor process];
+
+      NSString *fileName = data[kPyramidCreationExamplesUpsampleGuidedResultKey];
+      cv::Mat expected = LTLoadMat([self class], fileName);
+      expect($([upOutputs.lastObject image])).to.equalMat($(expected));
+    });
   });
 });
 
@@ -155,19 +200,25 @@ itBehavesLike(kPyramidCreationExamples,
                 kPyramidCreationExamplesDownsampleResultKey:
                   @"VerticalStepFunction33_bilateral_L1toL3.png",
                 kPyramidCreationExamplesUpsampleResultKey:
-                  @"VerticalStepFunction33_bilateral_L1toL3toL1.png"});
+                  @"VerticalStepFunction33_bilateral_L1toL3toL1.png",
+                kPyramidCreationExamplesUpsampleGuidedResultKey:
+                  @"VerticalStepFunction33_bilateral_guided_upsample_L1toL3toL1.png"});
 
 itBehavesLike(kPyramidCreationExamples,
               @{kPyramidCreationExamplesFilenameKey: @"HorizontalStepFunction32.png",
                 kPyramidCreationExamplesDownsampleResultKey:
                   @"HorizontalStepFunction32_bilateral_L1toL3.png",
                 kPyramidCreationExamplesUpsampleResultKey:
-                  @"HorizontalStepFunction32_bilateral_L1toL3toL1.png"});
+                  @"HorizontalStepFunction32_bilateral_L1toL3toL1.png",
+                kPyramidCreationExamplesUpsampleGuidedResultKey:
+                  @"HorizontalStepFunction32_bilateral_guided_upsample_L1toL3toL1.png"});
 
 itBehavesLike(kPyramidCreationExamples, @{kPyramidCreationExamplesFilenameKey: @"Lena128.png",
                                           kPyramidCreationExamplesDownsampleResultKey:
                                             @"Lena128_bilateral_L1toL3.png",
                                           kPyramidCreationExamplesUpsampleResultKey:
-                                            @"Lena128_bilateral_L1toL3toL1.png"});
+                                            @"Lena128_bilateral_L1toL3toL1.png",
+                                          kPyramidCreationExamplesUpsampleGuidedResultKey:
+                                            @"Lena128_bilateral_guided_upsample_L1toL3toL1.png"});
 
 SpecEnd

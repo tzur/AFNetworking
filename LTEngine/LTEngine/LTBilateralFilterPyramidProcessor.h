@@ -17,16 +17,21 @@ typedef float (^LTBilateralPyramidRangeSigmaBlock)(CGFloat scalingFactor);
 
 - (instancetype)init NS_UNAVAILABLE;
 
-/// Initializes with an input texture, an array of output textures and a function generating range
-/// sigmas per output texture according to their relative size to the input.
-/// It's recommended to use \c levelsForInput: or \c levelsForInput:upToLevel: to generate the
-/// output textures before calling this initializer.
+/// Initializes with an input texture, an array of output textures, an optional array of guide
+/// textures and a function generating range sigmas per output texture according to their relative
+/// size to the input. It's recommended to use \c levelsForInput: or \c levelsForInput:upToLevel: to
+/// generate the output textures before calling this initializer.
+///
+/// @param guides an array of textures corresponding in number and order to the textures in \c
+/// outputs so that each texture in \c guides is used as a guide to its corresponding texture in
+/// \c outputs. If this array is \c nil then the input to each level is used as guide.
 ///
 /// @param rangeFunction a block that receives the scaling factor between \c input and the current
 /// output texture and returns a scalar float that will be used as the range sigma for calculating
 /// the bilateral filtered output.
 - (instancetype)initWithInput:(LTTexture *)input
                       outputs:(NSArray<LTTexture *> *)outputs
+                       guides:(nullable NSArray<LTTexture *> *)guides
                 rangeFunction:(LTBilateralPyramidRangeSigmaBlock)rangeFunction
     NS_DESIGNATED_INITIALIZER;
 
@@ -34,6 +39,7 @@ typedef float (^LTBilateralPyramidRangeSigmaBlock)(CGFloat scalingFactor);
 /// \c rangeSigma.
 - (instancetype)initWithInput:(LTTexture *)input
                       outputs:(NSArray<LTTexture *> *)outputs
+                       guides:(nullable NSArray<LTTexture *> *)guides
                    rangeSigma:(float)rangeSigma;
 
 #pragma mark -

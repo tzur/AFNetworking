@@ -16,6 +16,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Output pyramid texture array.
 @property (readonly, nonatomic) NSArray<LTTexture *> *outputs;
 
+/// Guide texture array for each pyramid level.
+@property (readonly, nonatomic, nullable) NSArray<LTTexture *> *guides;
+
 /// Range sigma function for the pyramid levels.
 @property (copy, readonly, nonatomic) LTBilateralPyramidRangeSigmaBlock rangeFunction;
 
@@ -58,14 +61,18 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithInput:(LTTexture *)input
                       outputs:(NSArray<LTTexture *> *)outputs
+                       guides:(NSArray<LTTexture *> * _Nullable)guides
                 rangeFunction:(LTBilateralPyramidRangeSigmaBlock)rangeFunction {
   LTParameterAssert(input);
   LTParameterAssert(outputs.count > 0, @"Output textures array must contain at least one texture");
+  LTParameterAssert(!guides || guides.count == outputs.count, @"Guide textures array must contain "
+                    "the exact same number of textures as the outputs array");
   LTParameterAssert(rangeFunction);
 
   if (self = [super init]) {
     _input = input;
     _outputs = outputs;
+    _guides = guides;
     _rangeFunction = [rangeFunction copy];
   }
   return self;
@@ -73,8 +80,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithInput:(LTTexture *)input
                       outputs:(NSArray<LTTexture *> *)outputs
+                       guides:(NSArray<LTTexture *> * _Nullable)guides
                    rangeSigma:(float)rangeSigma {
-  return [self initWithInput:input outputs:outputs
+  return [self initWithInput:input outputs:outputs guides:guides
                rangeFunction:^float(CGFloat) {
                  return rangeSigma;
                }];
@@ -87,9 +95,10 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)process {
   for (NSUInteger i = 0; i < self.outputs.count; ++i) {
     LTTexture *input = (i == 0) ? self.input : self.outputs[i - 1];
+    LTTexture *guide = self.guides ? self.guides[i] : input;
 
     LTBilateralFilterProcessor *processor =
-        [[LTBilateralFilterProcessor alloc] initWithInput:input
+        [[LTBilateralFilterProcessor alloc] initWithInput:input guide:guide
                                                   outputs:@[self.outputs[i]]];
 
     processor.rangeSigma =
