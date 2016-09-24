@@ -202,7 +202,7 @@ context(@"ptn_combineLatestWithIndex", ^{
   });
 });
 
-context(@"deserialize JSON operator", ^{
+context(@"ptn_image", ^{
   __block RACSubject *subject;
   __block LLSignalTestRecorder *recorder;
   __block id<PTNImageAsset> asset;
@@ -211,6 +211,12 @@ context(@"deserialize JSON operator", ^{
     subject = [RACSubject subject];
     recorder = [[subject ptn_image] testRecorder];
     asset = OCMProtocolMock(@protocol(PTNImageAsset));
+  });
+
+  afterEach(^{
+    [subject sendCompleted];
+    subject = nil;
+    recorder = nil;
   });
   
   it(@"should raise exception if the underlying signal sends unexpected values", ^{
