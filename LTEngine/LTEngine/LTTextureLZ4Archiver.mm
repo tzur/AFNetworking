@@ -1,17 +1,18 @@
-// Copyright (c) 2015 Lightricks. All rights reserved.
+// Copyright (c) 2016 Lightricks. All rights reserved.
 // Created by Amit Goldstein.
 
-#import "LTTextureUncompressedMatArchiver.h"
+#import "LTTextureLZ4Archiver.h"
 
 #import <LTKit/LTMMInputFile.h>
 #import <LTKit/LTMMOutputFile.h>
 #import <LTKit/NSError+LTKit.h>
 
 #import "LTTexture.h"
+#import "NSData+Compression.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@implementation LTTextureUncompressedMatArchiver
+@implementation LTTextureLZ4Archiver
 
 - (BOOL)archiveTexture:(LTTexture *)texture inPath:(NSString *)path
                  error:(NSError *__autoreleasing *)error {
@@ -31,9 +32,21 @@ NS_ASSUME_NONNULL_BEGIN
       data = mutableData;
     }
 
+    NSError *compressionError;
+    NSData * _Nullable compressedData = [data lt_compressWithCompressionType:LTCompressionTypeLZ4
+                                                                       error:&compressionError];
+    if (!compressedData) {
+      if (error) {
+        *error = [NSError lt_errorWithCode:LTErrorCodeFileWriteFailed path:path
+                           underlyingError:compressionError];
+      }
+      return;
+    }
+
     NSError *fileError;
-    LTMMOutputFile *file = [[LTMMOutputFile alloc]
-                            initWithPath:path size:data.length mode:0644 error:&fileError];
+    LTMMOutputFile *_Nullable file = [[LTMMOutputFile alloc]
+                                      initWithPath:path size:compressedData.length
+                                      mode:0644 error:&fileError];
     if (!file) {
       if (error) {
         *error = [NSError lt_errorWithCode:LTErrorCodeFileWriteFailed underlyingError:fileError];
@@ -41,7 +54,7 @@ NS_ASSUME_NONNULL_BEGIN
       return;
     }
 
-    memcpy(file.data, data.bytes, data.length);
+    memcpy(file.data, compressedData.bytes, compressedData.length);
     success = YES;
   }];
 
@@ -66,7 +79,7 @@ NS_ASSUME_NONNULL_BEGIN
   LTParameterAssert(path);
 
   NSError *fileError;
-  LTMMInputFile *file = [[LTMMInputFile alloc] initWithPath:path error:&fileError];
+  LTMMInputFile *file = [[LTMMInputFile alloc] initWithPath:path error:error];
   if (!file) {
     if (error) {
       *error = [NSError lt_errorWithCode:LTErrorCodeFileReadFailed underlyingError:fileError];
@@ -76,12 +89,23 @@ NS_ASSUME_NONNULL_BEGIN
 
   // NSData requires a non-const pointer but is not used in a way that can change the underlying
   // data.
-  NSData *data = [NSData dataWithBytesNoCopy:const_cast<unsigned char *>(file.data)
-                                      length:file.size freeWhenDone:NO];
-  if (!data) {
+  NSData *compressedData = [NSData dataWithBytesNoCopy:const_cast<unsigned char *>(file.data)
+                                                length:file.size freeWhenDone:NO];
+  if (!compressedData) {
     if (error) {
       *error = [NSError lt_errorWithCode:LTErrorCodeFileReadFailed path:path
                              description:@"Could not create data object from file"];
+    }
+    return NO;
+  }
+
+  NSError *decompressionError;
+  NSData *data = [compressedData lt_decompressWithCompressionType:LTCompressionTypeLZ4
+                                                            error:&decompressionError];
+  if (!data) {
+    if (error) {
+      *error = [NSError lt_errorWithCode:LTErrorCodeFileReadFailed path:path
+                         underlyingError:decompressionError];
     }
     return NO;
   }

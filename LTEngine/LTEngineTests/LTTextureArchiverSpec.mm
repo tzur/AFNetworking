@@ -392,7 +392,8 @@ context(@"unarchiving", ^{
       OCMStub([fileManager lt_dictionaryWithContentsOfFile:metadataPath
                                                      error:[OCMArg setTo:kFakeError]]);
 
-      result = [archiver unarchiveToTexture:texture fromPath:archivePath error:&error];
+      LTTexture *otherTexture = [LTTexture textureWithPropertiesOf:texture];
+      result = [archiver unarchiveToTexture:otherTexture fromPath:archivePath error:&error];
       expect(result).to.beFalsy();
       expect(error).notTo.beNil();
       expect(error).to.equal(kFakeError);
@@ -400,14 +401,14 @@ context(@"unarchiving", ^{
 
     it(@"should return error if failed to load archive content", ^{
       NSString *contentPath = [archivePath pathByAppendingPathComponent:@"content.mat"].path;
-      OCMStub([fileManager lt_dataWithContentsOfFile:contentPath options:NSDataReadingUncached
-                                               error:[OCMArg setTo:kFakeError]]);
+      result = [fileManager removeItemAtPath:contentPath error:&error];
+      expect(result).to.beTruthy();
 
-      result = [archiver unarchiveToTexture:texture fromPath:archivePath error:&error];
+      LTTexture *otherTexture = [LTTexture textureWithPropertiesOf:texture];
+      result = [archiver unarchiveToTexture:otherTexture fromPath:archivePath error:&error];
       expect(result).to.beFalsy();
       expect(error).notTo.beNil();
       expect(error.code).to.equal(LTErrorCodeFileReadFailed);
-      expect(error.userInfo[NSUnderlyingErrorKey]).to.equal(kFakeError);
     });
 
     it(@"should unarchive texture with solid color", ^{
@@ -446,6 +447,23 @@ context(@"unarchiving", ^{
       expect(otherTexture.generationID).to.equal(texture.generationID);
       expect($(otherTexture.image)).to.equalMat($(texture.image));
     });
+
+    it(@"should return YES without unarchiving if target already has the same generationID", ^{
+      // Content is removed, to make sure archiver will fail if tried to actually unarchive it.
+      NSString *contentPath = [archivePath pathByAppendingPathComponent:@"content.mat"].path;
+      result = [fileManager removeItemAtPath:contentPath error:&error];
+      expect(result).to.beTruthy();
+
+      LTTexture *otherTexture = [texture clone];
+      expect(otherTexture.generationID).to.equal(texture.generationID);
+
+      result = [archiver unarchiveToTexture:otherTexture fromPath:archivePath error:&error];
+      expect(result).to.beTruthy();
+      expect(error).to.beNil();
+      expect(otherTexture.metadata).to.equal(texture.metadata);
+      expect(otherTexture.generationID).to.equal(texture.generationID);
+      expect($(otherTexture.image)).to.equalMat($(mat));
+    });
   });
 
   context(@"unarchive to new texture", ^{
@@ -477,13 +495,12 @@ context(@"unarchiving", ^{
 
     it(@"should return nil if failed to load archive content", ^{
       NSString *contentPath = [archivePath pathByAppendingPathComponent:@"content.mat"].path;
-      OCMStub([fileManager lt_dataWithContentsOfFile:contentPath options:NSDataReadingUncached
-                                               error:[OCMArg setTo:kFakeError]]);
+      result = [fileManager removeItemAtPath:contentPath error:&error];
+      expect(result).to.beTruthy();
 
       texture = [archiver unarchiveTextureFromPath:archivePath error:&error];
       expect(texture).to.beNil();
       expect(error).notTo.beNil();
-      expect(error.lt_underlyingError).to.equal(kFakeError);
     });
 
     it(@"should unarchive texture with solid color", ^{
@@ -558,13 +575,12 @@ context(@"unarchiving", ^{
 
     it(@"should return nil if failed to load archive content", ^{
       NSString *contentPath = [archivePath pathByAppendingPathComponent:@"content.mat"].path;
-      OCMStub([fileManager lt_dataWithContentsOfFile:contentPath options:NSDataReadingUncached
-                                               error:[OCMArg setTo:kFakeError]]);
+      result = [fileManager removeItemAtPath:contentPath error:&error];
+      expect(result).to.beTruthy();
 
       image = [archiver unarchiveImageFromPath:archivePath error:&error];
       expect(image).to.beNil();
       expect(error).notTo.beNil();
-      expect(error.lt_underlyingError).to.equal(kFakeError);
     });
 
     it(@"should return nil if archive pixel format is not byte RGBA", ^{

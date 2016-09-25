@@ -16,7 +16,9 @@ LTEnumDeclare(NSUInteger, LTTextureArchiveType,
   /// Archives the texture in the ImageZero format.
   /// The texture must be RGBA8, and its alpha channel will be ignored (textures with
   /// \c usingAlphaChannel of \c YES cannot be archived using this type).
-  LTTextureArchiveTypeIZ
+  LTTextureArchiveTypeIZ,
+  /// Archives the texture as a losslessly compressed buffer using LZ4 compression.
+  LTTextureArchiveTypeLZ4
 );
 
 /// Category providing methods returning \c LTTextureBaseArchiver instances according to the archive
