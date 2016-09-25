@@ -211,7 +211,7 @@ context(@"image fetching", ^{
   context(@"fetch image of asset collection", ^{
     beforeEach(^{
       imageAsset =
-          [[PTNFileBackedImageAsset alloc] initWithFilePath:[LTPath pathWithPath:@"baz/foo.jpg"]
+          [[PTNFileBackedImageAsset alloc] initWithFilePath:[LTPath pathWithPath:@"baz/foo.jpeg"]
                                                 fileManager:fileManager
                                                imageResizer:imageResizer
                                            resizingStrategy:resizingStrategy];
