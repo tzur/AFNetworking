@@ -39,6 +39,7 @@ LTEnumImplement(NSUInteger, BZRProductType,
     @instanceKeypath(BZRProduct, identifier): @"identifier",
     @instanceKeypath(BZRProduct, productType): @"productType",
     @instanceKeypath(BZRProduct, contentFetcherParameters): @"contentFetcherParameters",
+    @instanceKeypath(BZRProduct, isSubscribersOnly): @"isSubscribersOnly",
     @instanceKeypath(BZRProduct, priceInfo): @"priceInfo"
   };
 }

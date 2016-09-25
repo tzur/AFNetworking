@@ -27,6 +27,7 @@ BZRProduct *BZRProductWithIdentifierAndParameters(NSString *identifier,
   NSDictionary *dictionaryValue = [@{
     @instanceKeypath(BZRProduct, identifier): identifier,
     @instanceKeypath(BZRProduct, productType): $(BZRProductTypeNonConsumable),
+    @instanceKeypath(BZRProduct, isSubscribersOnly): @NO,
   } mtl_dictionaryByAddingEntriesFromDictionary:contentFetcherParametersDictionary];
 
   return [[BZRProduct alloc] initWithDictionary:dictionaryValue error:nil];
