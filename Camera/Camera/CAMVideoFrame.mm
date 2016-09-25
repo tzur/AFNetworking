@@ -7,6 +7,7 @@
 #import <LTEngine/LTTexture+Factory.h>
 
 #import "CAMDevicePreset.h"
+#import "CAMSampleBufferMetadataUtils.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -65,6 +66,10 @@ static NSDictionary * const kCVPixelFormatToCAMPixelFormat = @{
   } else {
     return [LTTexture textureWithPixelBuffer:pixelBuffer];
   }
+}
+
+- (nullable NSDictionary *)propagatableMetadata {
+  return CAMGetPropagatableMetadata(_sampleBuffer.get());
 }
 
 - (CMSampleTimingInfo)timingInfo {
