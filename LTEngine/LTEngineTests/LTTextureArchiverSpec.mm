@@ -447,6 +447,23 @@ context(@"unarchiving", ^{
       expect(otherTexture.generationID).to.equal(texture.generationID);
       expect($(otherTexture.image)).to.equalMat($(texture.image));
     });
+
+    it(@"should return YES without unarchiving if target already has the same generationID", ^{
+      // Content is removed, to make sure archiver will fail if tried to actually unarchive it.
+      NSString *contentPath = [archivePath pathByAppendingPathComponent:@"content.mat"].path;
+      result = [fileManager removeItemAtPath:contentPath error:&error];
+      expect(result).to.beTruthy();
+
+      LTTexture *otherTexture = [texture clone];
+      expect(otherTexture.generationID).to.equal(texture.generationID);
+
+      result = [archiver unarchiveToTexture:otherTexture fromPath:archivePath error:&error];
+      expect(result).to.beTruthy();
+      expect(error).to.beNil();
+      expect(otherTexture.metadata).to.equal(texture.metadata);
+      expect(otherTexture.generationID).to.equal(texture.generationID);
+      expect($(otherTexture.image)).to.equalMat($(mat));
+    });
   });
 
   context(@"unarchive to new texture", ^{

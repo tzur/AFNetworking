@@ -262,6 +262,10 @@ objection_requires_sel(@selector(fileManager));
     return NO;
   }
 
+  if ([texture.generationID isEqualToString:archiveMetadata.textureMetadata.generationID]) {
+    return YES;
+  }
+
   return [self unarchiveToTexture:texture fromPath:path withArchiveType:archiveMetadata.archiveType
                          metadata:archiveMetadata.textureMetadata error:error];
 }
