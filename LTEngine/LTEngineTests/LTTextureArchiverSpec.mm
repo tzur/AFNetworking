@@ -392,7 +392,8 @@ context(@"unarchiving", ^{
       OCMStub([fileManager lt_dictionaryWithContentsOfFile:metadataPath
                                                      error:[OCMArg setTo:kFakeError]]);
 
-      result = [archiver unarchiveToTexture:texture fromPath:archivePath error:&error];
+      LTTexture *otherTexture = [LTTexture textureWithPropertiesOf:texture];
+      result = [archiver unarchiveToTexture:otherTexture fromPath:archivePath error:&error];
       expect(result).to.beFalsy();
       expect(error).notTo.beNil();
       expect(error).to.equal(kFakeError);
@@ -400,14 +401,14 @@ context(@"unarchiving", ^{
 
     it(@"should return error if failed to load archive content", ^{
       NSString *contentPath = [archivePath pathByAppendingPathComponent:@"content.mat"].path;
-      OCMStub([fileManager lt_dataWithContentsOfFile:contentPath options:NSDataReadingUncached
-                                               error:[OCMArg setTo:kFakeError]]);
+      result = [fileManager removeItemAtPath:contentPath error:&error];
+      expect(result).to.beTruthy();
 
-      result = [archiver unarchiveToTexture:texture fromPath:archivePath error:&error];
+      LTTexture *otherTexture = [LTTexture textureWithPropertiesOf:texture];
+      result = [archiver unarchiveToTexture:otherTexture fromPath:archivePath error:&error];
       expect(result).to.beFalsy();
       expect(error).notTo.beNil();
       expect(error.code).to.equal(LTErrorCodeFileReadFailed);
-      expect(error.userInfo[NSUnderlyingErrorKey]).to.equal(kFakeError);
     });
 
     it(@"should unarchive texture with solid color", ^{
@@ -477,13 +478,12 @@ context(@"unarchiving", ^{
 
     it(@"should return nil if failed to load archive content", ^{
       NSString *contentPath = [archivePath pathByAppendingPathComponent:@"content.mat"].path;
-      OCMStub([fileManager lt_dataWithContentsOfFile:contentPath options:NSDataReadingUncached
-                                               error:[OCMArg setTo:kFakeError]]);
+      result = [fileManager removeItemAtPath:contentPath error:&error];
+      expect(result).to.beTruthy();
 
       texture = [archiver unarchiveTextureFromPath:archivePath error:&error];
       expect(texture).to.beNil();
       expect(error).notTo.beNil();
-      expect(error.lt_underlyingError).to.equal(kFakeError);
     });
 
     it(@"should unarchive texture with solid color", ^{
@@ -558,13 +558,12 @@ context(@"unarchiving", ^{
 
     it(@"should return nil if failed to load archive content", ^{
       NSString *contentPath = [archivePath pathByAppendingPathComponent:@"content.mat"].path;
-      OCMStub([fileManager lt_dataWithContentsOfFile:contentPath options:NSDataReadingUncached
-                                               error:[OCMArg setTo:kFakeError]]);
+      result = [fileManager removeItemAtPath:contentPath error:&error];
+      expect(result).to.beTruthy();
 
       image = [archiver unarchiveImageFromPath:archivePath error:&error];
       expect(image).to.beNil();
       expect(error).notTo.beNil();
-      expect(error.lt_underlyingError).to.equal(kFakeError);
     });
 
     it(@"should return nil if archive pixel format is not byte RGBA", ^{
