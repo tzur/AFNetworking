@@ -15,13 +15,13 @@ static BOOL LTSaveMat(const cv::Mat &mat, NSString *relativePath) {
   NSMutableData *data = [NSMutableData dataWithLength:matSize];
   cv::Mat continuousMat(mat.rows, mat.cols, mat.type(), data.mutableBytes);
   mat.copyTo(continuousMat);
-  NSFileManager *fileManager = [JSObjection defaultInjector][[NSFileManager class]];
+  NSFileManager *fileManager = [NSFileManager defaultManager];
   return [fileManager lt_writeData:data toFile:LTTemporaryPath(relativePath)
                            options:NSDataWritingAtomic error:nil];
 }
 
 static BOOL LTLoadIntoMat(NSString *relativePath, cv::Mat *mat) {
-  NSFileManager *fileManager = [JSObjection defaultInjector][[NSFileManager class]];
+  NSFileManager *fileManager = [NSFileManager defaultManager];
   NSData *data = [fileManager lt_dataWithContentsOfFile:LTTemporaryPath(relativePath)
                                                 options:NSDataReadingUncached error:nil];
 
@@ -41,29 +41,23 @@ SpecBegin(LTTextureUncompressedMatArchiver)
 __block LTTextureUncompressedMatArchiver *archiver;
 __block LTTexture *texture;
 __block NSError *error;
-__block id fileManager;
 __block BOOL result;
 
-static NSError * const kFakeError = [NSError errorWithDomain:@"foo" code:1337 userInfo:nil];
-
 beforeEach(^{
-  fileManager = OCMPartialMock([NSFileManager defaultManager]);
-  LTBindObjectToClass(fileManager, [NSFileManager class]);
   archiver = [[LTTextureUncompressedMatArchiver alloc] init];
 
   NSString *path = LTTemporaryPath();
-  OCMStub([fileManager lt_documentsDirectory]).andReturn(path);
-  [fileManager createDirectoryAtPath:path withIntermediateDirectories:NO attributes:nil error:nil];
+  [[NSFileManager defaultManager] removeItemAtPath:LTTemporaryPath() error:nil];
+  [[NSFileManager defaultManager] createDirectoryAtPath:path withIntermediateDirectories:NO
+                                             attributes:nil error:nil];
 });
 
 afterEach(^{
-  [fileManager removeItemAtPath:LTTemporaryPath() error:nil];
+  [[NSFileManager defaultManager] removeItemAtPath:LTTemporaryPath() error:nil];
   archiver = nil;
   texture = nil;
   error = nil;
   result = NO;
-  [fileManager stopMocking];
-  fileManager = nil;
 });
 
 context(@"archiving", ^{
@@ -120,22 +114,6 @@ context(@"archiving", ^{
     expect($(stored)).to.beCloseToMat($(halfFloatTexture.image));
   });
 
-  pending(@"should archive float texture", ^{
-    cv::Mat4f mat(texture.size.height, texture.size.width);
-    mat.rowRange(0, 8).setTo(cv::Vec4f(0.25f, 0.5f, 0.75f, 1.0f));
-    mat.rowRange(8, 16).setTo(cv::Vec4f(0.75f, 0.5f, 0.25f, 1.0f));
-    texture = [LTTexture textureWithImage:mat];
-
-    result = [archiver archiveTexture:texture inPath:LTTemporaryPath(@"archive.mat") error:&error];
-    expect(result).to.beTruthy();
-    expect(error).to.beNil();
-    expect(LTFileExistsInTemporaryPath(@"archive.mat")).to.beTruthy();
-
-    __block cv::Mat4f stored(texture.size.height, texture.size.width);
-    expect(LTLoadIntoMat(@"archive.mat", &stored)).to.beTruthy();
-    expect($(stored)).to.beCloseToMat($(mat));
-  });
-
   it(@"should archive texture using the alpha channel", ^{
     texture.usingAlphaChannel = YES;
     expect(^{
@@ -144,14 +122,15 @@ context(@"archiving", ^{
   });
 
   it(@"should return error if failed to archive the texture", ^{
-    OCMStub([fileManager lt_writeData:[OCMArg any] toFile:LTTemporaryPath(@"archive.mat")
-                              options:NSDataWritingAtomic
-                                error:[OCMArg setTo:kFakeError]]).andReturn(NO);
+    BOOL success = [[NSFileManager defaultManager]
+                    createDirectoryAtPath:LTTemporaryPath(@"archive.mat")
+                    withIntermediateDirectories:NO attributes:nil error:nil];
+    expect(success).to.beTruthy();
+
     result = [archiver archiveTexture:texture inPath:LTTemporaryPath(@"archive.mat") error:&error];
     expect(result).to.beFalsy();
     expect(error).notTo.beNil();
     expect(error.code).to.equal(LTErrorCodeFileWriteFailed);
-    expect(error.userInfo[NSUnderlyingErrorKey]).to.equal(kFakeError);
   });
 });
 
@@ -199,20 +178,6 @@ context(@"unarchiving", ^{
     expect($(texture.image)).to.beCloseToMat($(mat));
   });
 
-  pending(@"should unarchive float texture", ^{
-    cv::Mat4f mat(32, 16);
-    mat.rowRange(0, 16).setTo(cv::Vec4f(0.25, 0.5, 0.75, 1.0));
-    expect(LTSaveMat(mat, @"archive.mat")).to.beTruthy();
-
-    texture = [LTTexture textureWithSize:CGSizeMake(mat.cols, mat.rows)
-                             pixelFormat:$(LTGLPixelFormatRGBA32Float) allocateMemory:YES];
-    result = [archiver unarchiveToTexture:texture
-                                 fromPath:LTTemporaryPath(@"archive.mat") error:&error];
-    expect(result).to.beTruthy();
-    expect(error).to.beNil();
-    expect($(texture.image)).to.beCloseToMat($(mat));
-  });
-
   it(@"should unarchive texture using the alpha channel", ^{
     cv::Mat4b mat(32, 16);
     mat.rowRange(0, 16).setTo(cv::Vec4b(255, 0, 0, 64));
@@ -247,6 +212,80 @@ context(@"unarchiving", ^{
     expect(^{
       [archiver unarchiveToTexture:texture fromPath:LTTemporaryPath(@"archive.mat") error:&error];
     }).to.raise(NSInvalidArgumentException);
+  });
+
+  it(@"should return error if failed to unarchive the texture", ^{
+    BOOL success = [[NSFileManager defaultManager]
+                    createDirectoryAtPath:LTTemporaryPath(@"archive.mat")
+                    withIntermediateDirectories:NO attributes:nil error:nil];
+    expect(success).to.beTruthy();
+
+    texture = [LTTexture byteRGBATextureWithSize:CGSizeMakeUniform(16)];
+    result = [archiver unarchiveToTexture:texture
+                                 fromPath:LTTemporaryPath(@"archive.mat") error:&error];
+    expect(result).to.beFalsy();
+    expect(error).notTo.beNil();
+    expect(error.code).to.equal(LTErrorCodeFileReadFailed);
+  });
+});
+
+context(@"sanity", ^{
+  it(@"should archive and unarchive rgba byte texture", ^{
+    cv::Mat4b mat = (cv::Mat4b(2, 2) << cv::Vec4b(0, 0, 0, 0), cv::Vec4b(255, 255, 255, 255),
+                     cv::Vec4b(16, 32, 64, 128), cv::Vec4b(128, 64, 32, 16));
+
+    LTTexture *texture = [LTTexture textureWithImage:mat];
+    [archiver archiveTexture:texture inPath:LTTemporaryPath(@"archive.mat") error:&error];
+
+    LTTexture *unarchivedTexture = [LTTexture textureWithPropertiesOf:texture];
+    [archiver unarchiveToTexture:unarchivedTexture fromPath:LTTemporaryPath(@"archive.mat")
+                           error:&error];
+
+    expect($(unarchivedTexture.image)).to.equalMat($(texture.image));
+  });
+
+  it(@"should archive and unarchive red byte texture", ^{
+    cv::Mat1b mat = (cv::Mat1b(2, 2) << 16, 32, 64, 128);
+
+    LTTexture *texture = [LTTexture textureWithImage:mat];
+    [archiver archiveTexture:texture inPath:LTTemporaryPath(@"archive.mat") error:&error];
+
+    LTTexture *unarchivedTexture = [LTTexture textureWithPropertiesOf:texture];
+    [archiver unarchiveToTexture:unarchivedTexture fromPath:LTTemporaryPath(@"archive.mat")
+                           error:&error];
+
+    expect($(unarchivedTexture.image)).to.equalMat($(texture.image));
+  });
+
+  it(@"should archive and unarchive rgba half float texture", ^{
+    using half_float::half;
+    cv::Mat4hf mat = (cv::Mat4hf(2, 2) << cv::Vec4hf(half(0), half(0), half(0), half(0)),
+                      cv::Vec4hf(half(1), half(2), half(3), half(4)),
+                      cv::Vec4hf(half(-1), half(-2), half(-3), half(-4)),
+                      cv::Vec4hf(half(0.5), half(0.25), half(-0.25), half(-0.5)));
+
+    LTTexture *texture = [LTTexture textureWithImage:mat];
+    [archiver archiveTexture:texture inPath:LTTemporaryPath(@"archive.mat") error:&error];
+
+    LTTexture *unarchivedTexture = [LTTexture textureWithPropertiesOf:texture];
+    [archiver unarchiveToTexture:unarchivedTexture fromPath:LTTemporaryPath(@"archive.mat")
+                           error:&error];
+
+    expect($(unarchivedTexture.image)).to.equalMat($(texture.image));
+  });
+
+  it(@"should archive and unarchive red half float texture", ^{
+    using half_float::half;
+    cv::Mat1hf mat = (cv::Mat1hf(2, 2) << half(0.5), half(2), half(-2), half(-0.25));
+
+    LTTexture *texture = [LTTexture textureWithImage:mat];
+    [archiver archiveTexture:texture inPath:LTTemporaryPath(@"archive.mat") error:&error];
+
+    LTTexture *unarchivedTexture = [LTTexture textureWithPropertiesOf:texture];
+    [archiver unarchiveToTexture:unarchivedTexture fromPath:LTTemporaryPath(@"archive.mat")
+                           error:&error];
+
+    expect($(unarchivedTexture.image)).to.equalMat($(texture.image));
   });
 });
 

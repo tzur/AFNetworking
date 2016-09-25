@@ -3,8 +3,9 @@
 
 #import "LTTextureUncompressedMatArchiver.h"
 
+#import <LTKit/LTMMInputFile.h>
+#import <LTKit/LTMMOutputFile.h>
 #import <LTKit/NSError+LTKit.h>
-#import <LTKit/NSFileManager+LTKit.h>
 
 #import "LTTexture.h"
 
@@ -17,7 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
   LTParameterAssert(texture);
   LTParameterAssert(path);
 
-  __block BOOL success;
+  __block BOOL success = NO;
   [texture mappedImageForReading:^(const cv::Mat &mat, BOOL) {
     NSData *data;
     NSUInteger matSize = mat.total() * mat.elemSize();
@@ -30,17 +31,18 @@ NS_ASSUME_NONNULL_BEGIN
       data = mutableData;
     }
 
-    NSError *writeError;
-    NSFileManager *fileManager = [JSObjection defaultInjector][[NSFileManager class]];
-    if (![fileManager lt_writeData:data toFile:path
-                           options:NSDataWritingAtomic error:&writeError]) {
+    NSError *fileError;
+    LTMMOutputFile *file = [[LTMMOutputFile alloc]
+                            initWithPath:path size:data.length mode:0644 error:&fileError];
+    if (!file) {
       if (error) {
-        *error = [NSError lt_errorWithCode:LTErrorCodeFileWriteFailed underlyingError:writeError];
+        *error = [NSError lt_errorWithCode:LTErrorCodeFileWriteFailed underlyingError:fileError];
       }
-      success = NO;
-    } else {
-      success = YES;
+      return;
     }
+
+    memcpy(file.data, data.bytes, data.length);
+    success = YES;
   }];
 
   return success;
@@ -63,14 +65,23 @@ NS_ASSUME_NONNULL_BEGIN
   LTParameterAssert(mat);
   LTParameterAssert(path);
 
-  NSError *dataError;
-  NSFileManager *fileManager = [JSObjection defaultInjector][[NSFileManager class]];
-  NSData *data = [fileManager lt_dataWithContentsOfFile:path
-                                                options:NSDataReadingUncached error:&dataError];
+  NSError *fileError;
+  LTMMInputFile *file = [[LTMMInputFile alloc] initWithPath:path error:&fileError];
+  if (!file) {
+    if (error) {
+      *error = [NSError lt_errorWithCode:LTErrorCodeFileReadFailed underlyingError:fileError];
+    }
+    return NO;
+  }
+
+  // NSData requires a non-const pointer but is not used in a way that can change the underlying
+  // data.
+  NSData *data = [NSData dataWithBytesNoCopy:const_cast<unsigned char *>(file.data)
+                                      length:file.size freeWhenDone:NO];
   if (!data) {
     if (error) {
       *error = [NSError lt_errorWithCode:LTErrorCodeFileReadFailed path:path
-                         underlyingError:dataError];
+                             description:@"Could not create data object from file"];
     }
     return NO;
   }
