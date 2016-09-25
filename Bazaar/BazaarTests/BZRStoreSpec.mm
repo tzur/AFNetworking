@@ -3,6 +3,8 @@
 
 #import "BZRStore.h"
 
+#import <LTKit/NSArray+Functional.h>
+
 #import "BZRAcquiredViaSubscriptionProvider.h"
 #import "BZRCachedReceiptValidationStatusProvider.h"
 #import "BZRFakeAcquiredViaSubscriptionProvider.h"
@@ -536,6 +538,64 @@ context(@"getting product list", ^{
     expect(recorder).will.matchError(^BOOL(NSError *error) {
       return error.lt_isLTDomain && error.code == BZRErrorCodeFetchingProductListFailed &&
           error.lt_underlyingError == underlyingError;
+    });
+  });
+
+  context(@"subscribers only products", ^{
+    __block BZRProduct *subscribersOnlyProduct;
+
+    beforeEach(^{
+      subscribersOnlyProduct =
+          [BZRProductWithIdentifier(productIdentifier)
+           modelByOverridingProperty:@instanceKeypath(BZRProduct, isSubscribersOnly)
+                           withValue:@YES];
+    });
+
+    it(@"should not fetch metadata for subscribers only products", ^{
+      OCMStub([productsProvider fetchProductList])
+          .andReturn([RACSignal return:@[subscribersOnlyProduct]]);
+
+      SKProductsResponse *response = OCMClassMock([SKProductsResponse class]);
+      OCMStub([response products]).andReturn(@[]);
+      OCMExpect([storeKitFacade fetchMetadataForProductsWithIdentifiers:[NSSet set]])
+          .andReturn([RACSignal return:response]);
+      store = [[BZRStore alloc] initWithConfiguration:configuration];
+
+      expect([store productList]).will.complete();
+
+      OCMVerifyAll((id)storeKitFacade);
+    });
+
+    it(@"should merge subscribers only products with products with price info", ^{
+      BZRProduct *notForSubscribersOnlyProduct = BZRProductWithIdentifier(@"bar");
+      RACSignal *productList =
+          [RACSignal return:@[subscribersOnlyProduct, notForSubscribersOnlyProduct]];
+      OCMStub([productsProvider fetchProductList]).andReturn(productList);
+
+      SKProductsResponse *response = BZRProductsResponseWithProduct(@"bar");
+      OCMExpect([storeKitFacade fetchMetadataForProductsWithIdentifiers:
+                 [NSSet setWithObject:@"bar"]]).andReturn([RACSignal return:response]);
+      store = [[BZRStore alloc] initWithConfiguration:configuration];
+
+      LLSignalTestRecorder *recorder = [[store productList] testRecorder];
+
+      expect(recorder).will.complete();
+      expect(recorder).will.matchValue(0, ^BOOL(NSSet<BZRProduct *> *productList) {
+        BZRProduct *priceInfoProduct =
+            [[productList allObjects] lt_filter:^BOOL(BZRProduct *product) {
+              return !product.isSubscribersOnly;
+            }].firstObject;
+        BZRProduct *subscribersOnlyProduct =
+            [[productList allObjects] lt_filter:^BOOL(BZRProduct *product) {
+              return product.isSubscribersOnly;
+            }].firstObject;
+
+        return [productList count] == 2 && [priceInfoProduct.identifier isEqualToString:@"bar"] &&
+            priceInfoProduct.priceInfo &&
+            [subscribersOnlyProduct.identifier isEqualToString:productIdentifier] &&
+            !subscribersOnlyProduct.priceInfo;
+      });
+      OCMVerifyAll((id)storeKitFacade);
     });
   });
 
