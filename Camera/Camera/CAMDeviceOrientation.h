@@ -3,6 +3,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class CMMotionManager;
+
 /// Protocol for object that tracks the device orientation, regardless of whether the device
 /// orientation lock is active.
 @protocol CAMDeviceOrientation <NSObject>
@@ -21,6 +23,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Object that conforms to \c CAMDeviceOrientation protocol, using the device's motion sensors.
 @interface CAMDeviceOrientation : NSObject <CAMDeviceOrientation>
+
+/// Initializes with default \c CMMotionManager.
+- (instancetype)init;
+
+/// Initializes with the given \c motionManager.
+- (instancetype)initWithMotionManager:(CMMotionManager *)motionManager NS_DESIGNATED_INITIALIZER;
+
 @end
 
 NS_ASSUME_NONNULL_END

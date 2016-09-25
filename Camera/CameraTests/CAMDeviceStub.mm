@@ -9,9 +9,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation CAMDeviceStub
 
-@synthesize previewLayerWithPortraitOrientation = _previewLayerWithPortraitOrientation;
-@synthesize videoFramesWithPortraitOrientation = _videoFramesWithPortraitOrientation;
-@synthesize deviceOrientation = _deviceOrientation;
+@synthesize interfaceOrientation = _interfaceOrientation;
+@synthesize gravityOrientation = _gravityOrientation;
 
 - (instancetype)initWithSession:(CAMHardwareSession __unused *)session {
   return self = [super init];

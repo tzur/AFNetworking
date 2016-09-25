@@ -70,9 +70,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation CAMHardwareDevice
 
-@synthesize previewLayerWithPortraitOrientation = _previewLayerWithPortraitOrientation;
-@synthesize videoFramesWithPortraitOrientation = _videoFramesWithPortraitOrientation;
-@synthesize deviceOrientation = _deviceOrientation;
+@synthesize interfaceOrientation = _interfaceOrientation;
+@synthesize gravityOrientation = _gravityOrientation;
 
 - (instancetype)initWithSession:(CAMHardwareSession *)session {
   if (self = [super init]) {
@@ -230,26 +229,38 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
   return self.videoFramesSubject;
 }
 
-- (void)setVideoFramesWithPortraitOrientation:(BOOL)videoFramesWithPortraitOrientation {
-  _videoFramesWithPortraitOrientation = videoFramesWithPortraitOrientation;
-  if (self.videoFramesWithPortraitOrientation) {
-    self.session.videoConnection.videoOrientation = AVCaptureVideoOrientationPortrait;
-  } else {
-    self.session.videoConnection.videoOrientation =
-        (AVCaptureVideoOrientation)self.deviceOrientation;
+- (void)setInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+  _interfaceOrientation = interfaceOrientation;
+  if (interfaceOrientation != UIInterfaceOrientationUnknown) {
+    AVCaptureVideoOrientation videoOrientation =
+        [self videoOrientationForInterfaceOrientation:interfaceOrientation];
+    self.session.videoConnection.videoOrientation = videoOrientation;
+    self.session.previewLayer.connection.videoOrientation = videoOrientation;
   }
 }
 
-- (void)setDeviceOrientation:(UIInterfaceOrientation)deviceOrientation {
-  _deviceOrientation = deviceOrientation;
-  self.session.stillConnection.videoOrientation = (AVCaptureVideoOrientation)self.deviceOrientation;
-  if (!self.videoFramesWithPortraitOrientation) {
-    self.session.videoConnection.videoOrientation =
-        (AVCaptureVideoOrientation)self.deviceOrientation;
+- (void)setGravityOrientation:(UIInterfaceOrientation)gravityOrientation {
+  _gravityOrientation = gravityOrientation;
+  if (gravityOrientation != UIInterfaceOrientationUnknown) {
+    AVCaptureVideoOrientation videoOrientation =
+        [self videoOrientationForInterfaceOrientation:gravityOrientation];
+    self.session.stillConnection.videoOrientation = videoOrientation;
   }
-  if (!self.previewLayerWithPortraitOrientation) {
-    self.session.previewLayer.connection.videoOrientation =
-        (AVCaptureVideoOrientation)self.deviceOrientation;
+}
+
+- (AVCaptureVideoOrientation)videoOrientationForInterfaceOrientation:
+    (UIInterfaceOrientation)interfaceOrientation {
+  switch (interfaceOrientation) {
+    case UIInterfaceOrientationPortrait:
+      return AVCaptureVideoOrientationPortrait;
+    case UIInterfaceOrientationPortraitUpsideDown:
+      return AVCaptureVideoOrientationPortraitUpsideDown;
+    case UIInterfaceOrientationLandscapeLeft:
+      return AVCaptureVideoOrientationLandscapeLeft;
+    case UIInterfaceOrientationLandscapeRight:
+      return AVCaptureVideoOrientationLandscapeRight;
+    case UIInterfaceOrientationUnknown:
+      LTAssert(NO, @"Unsupported interface orientation");
   }
 }
 
@@ -282,16 +293,6 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
 
 - (CALayer *)previewLayer {
   return self.session.previewLayer;
-}
-
-- (void)setPreviewLayerWithPortraitOrientation:(BOOL)previewLayerWithPortraitOrientation {
-  _previewLayerWithPortraitOrientation = previewLayerWithPortraitOrientation;
-  if (self.previewLayerWithPortraitOrientation) {
-    self.session.previewLayer.connection.videoOrientation = AVCaptureVideoOrientationPortrait;
-  } else {
-    self.session.previewLayer.connection.videoOrientation =
-        (AVCaptureVideoOrientation)self.deviceOrientation;
-  }
 }
 
 #pragma mark -
