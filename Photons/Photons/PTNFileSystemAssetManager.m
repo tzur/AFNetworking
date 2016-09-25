@@ -183,7 +183,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (RACSignal *)fetchKeyAssetForDirectoryURL:(NSURL *)url {
   return [[self fetchAlbumWithURL:url] flattenMap:^(PTNAlbumChangeset *changeset) {
-    PTNFileSystemFileDescriptor *keyAsset = changeset.afterAlbum.assets.firstObject;
+    PTNFileSystemFileDescriptor *keyAsset = changeset.afterAlbum.assets.lastObject;
     if (!keyAsset) {
       return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeKeyAssetsNotFound url:url]];
     }
