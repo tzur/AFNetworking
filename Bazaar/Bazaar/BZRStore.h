@@ -26,14 +26,6 @@ NS_ASSUME_NONNULL_BEGIN
 /// @return <tt>RACSignal<NSError></tt>
 @property (readonly, nonatomic) RACSignal *errorsSignal;
 
-/// Sends transactions of purchases that were completed successfully but were not finished in the
-/// last run of the application, and are finished in this run. Every \c SKPaymentTransaction object
-/// sent should be considered a successful purchase. The signal completes when the receiver is
-/// deallocated. The signal doesn't err.
-///
-/// @return <tt>RACSignal<SKPaymentTransaction></tt>
-@property (readonly, nonatomic) RACSignal *completedTransactionsSignal;
-
 @end
 
 NS_ASSUME_NONNULL_END

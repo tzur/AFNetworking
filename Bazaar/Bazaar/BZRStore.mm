@@ -68,6 +68,8 @@ typedef NSDictionary<NSString *, BZRProduct *> BZRProductDictionary;
 
 @implementation BZRStore
 
+@synthesize completedTransactionsSignal = _completedTransactionsSignal;
+
 #pragma mark -
 #pragma mark Initialization
 #pragma mark -
