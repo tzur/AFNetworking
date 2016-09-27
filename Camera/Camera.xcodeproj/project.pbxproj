@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		060881DC1D9A421F004D307D /* CAMVideoFrame+Factory.mm in Sources */ = {isa = PBXBuildFile; fileRef = 060881DB1D9A421F004D307D /* CAMVideoFrame+Factory.mm */; };
+		060882531D9A4F2C004D307D /* CAMVideoFrame+FactorySpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 060882521D9A4F2C004D307D /* CAMVideoFrame+FactorySpec.mm */; };
 		0627C4C11D1A6CED00EFEC6B /* Mantle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0627C4BE1D1A6CD900EFEC6B /* Mantle.framework */; };
 		069B348C1D8A9FBC007D99C6 /* CAMTestUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 069B348B1D8A9FBC007D99C6 /* CAMTestUtils.mm */; };
 		06C02EFB1D19387900745557 /* CAMExposureMapProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 06C02EFA1D19387900745557 /* CAMExposureMapProcessor.mm */; };
@@ -423,6 +425,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		060881DA1D9A421F004D307D /* CAMVideoFrame+Factory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CAMVideoFrame+Factory.h"; sourceTree = "<group>"; };
+		060881DB1D9A421F004D307D /* CAMVideoFrame+Factory.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "CAMVideoFrame+Factory.mm"; sourceTree = "<group>"; };
+		060882521D9A4F2C004D307D /* CAMVideoFrame+FactorySpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "CAMVideoFrame+FactorySpec.mm"; sourceTree = "<group>"; };
 		0627C4B21D1A6CD900EFEC6B /* Mantle.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Mantle.xcodeproj; path = ../third_party/Mantle/Mantle.xcodeproj; sourceTree = "<group>"; };
 		069B348A1D8A9FBC007D99C6 /* CAMTestUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAMTestUtils.h; sourceTree = "<group>"; };
 		069B348B1D8A9FBC007D99C6 /* CAMTestUtils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CAMTestUtils.mm; sourceTree = "<group>"; };
@@ -875,6 +880,8 @@
 				83893A501D128288002B64B4 /* CAMHardwareSession.mm */,
 				835206471D2A7F8B00000EEC /* CAMVideoFrame.h */,
 				835206481D2A7F8B00000EEC /* CAMVideoFrame.mm */,
+				060881DA1D9A421F004D307D /* CAMVideoFrame+Factory.h */,
+				060881DB1D9A421F004D307D /* CAMVideoFrame+Factory.mm */,
 			);
 			name = Hardware;
 			sourceTree = "<group>";
@@ -885,6 +892,7 @@
 				8352064F1D2A820700000EEC /* CAMHardwareDeviceSpec.mm */,
 				83893A531D128296002B64B4 /* CAMHardwareSessionSpec.mm */,
 				8352064A1D2A7FA100000EEC /* CAMVideoFrameSpec.mm */,
+				060882521D9A4F2C004D307D /* CAMVideoFrame+FactorySpec.mm */,
 			);
 			name = Hardware;
 			sourceTree = "<group>";
@@ -1479,6 +1487,7 @@
 				835206491D2A7F8B00000EEC /* CAMVideoFrame.mm in Sources */,
 				BEEDB2101D91ABDD00406926 /* UIDevice+CameraMake.mm in Sources */,
 				8395AE6B1CFDCA3C00C91C9E /* AVCaptureDevice+Configure.mm in Sources */,
+				060881DC1D9A421F004D307D /* CAMVideoFrame+Factory.mm in Sources */,
 				BE63763D1D88155C004F3710 /* CAMSampleBufferMetadataUtils.mm in Sources */,
 				8352064E1D2A81FA00000EEC /* CAMHardwareDevice.mm in Sources */,
 				8351F9AD1CF6EDD800DEB376 /* NSErrorCodes+Camera.m in Sources */,
@@ -1534,6 +1543,7 @@
 				8352059A1D2A5B2700000EEC /* LLReactiveMatchersHelpers.m in Sources */,
 				835205A41D2A5B2700000EEC /* EXPMatchers+sendError.m in Sources */,
 				835205971D2A5B2700000EEC /* EXPExpect+LLReactiveMatchersExtensions.m in Sources */,
+				060882531D9A4F2C004D307D /* CAMVideoFrame+FactorySpec.mm in Sources */,
 				06C02F7C1D1970D900745557 /* EXPMatchers+equalScalar.mm in Sources */,
 				BE63760D1D869C81004F3710 /* CAMDeviceLocationSpec.mm in Sources */,
 			);
