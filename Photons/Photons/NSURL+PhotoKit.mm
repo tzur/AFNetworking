@@ -3,8 +3,8 @@
 
 #import "NSURL+PhotoKit.h"
 
+#import <LTKit/NSArray+Functional.h>
 #import <LTKit/NSURL+Query.h>
-#import <Photos/Photos.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -20,28 +20,16 @@ LTEnumImplement(NSUInteger, PTNPhotoKitURLType,
   PTNPhotoKitURLTypeMetaAlbumType
 );
 
-/// Possible types of PhotoKit album type.
-LTEnumImplement(NSUInteger, PTNPhotoKitAlbumType,
-  /// Album type of user's camera roll.
-  PTNPhotoKitAlbumTypeCameraRoll
-);
-
-/// Possible types of PhotoKit albums of album types.
-LTEnumImplement(NSUInteger, PTNPhotoKitMetaAlbumType,
-  /// Album of album types included in operating system's albums.
-  PTNPhotoKitMetaAlbumTypeSmartAlbums,
-  /// Album of album types included in operating system's albums as displayed in the Photos app.
-  PTNPhotoKitMetaAlbumTypePhotosAppSmartAlbums,
-  /// Album of user's albums.
-  PTNPhotoKitMetaAlbumTypeUserAlbums
-);
-
 @implementation NSURL (PhotoKit)
 
 static NSString * const kAssetKey = @"asset";
 static NSString * const kAlbumKey = @"album";
+static NSString * const kAlbumTypeKey = @"albumType";
+static NSString * const kMetaAlbumTypeKey = @"metaAlbumType";
+static NSString * const kSubalbumsKey = @"subalbums";
 static NSString * const kTypeKey = @"type";
 static NSString * const kSubtypeKey = @"subtype";
+static NSString * const kFilterSubalbumsKey = @"filterSubalbums";
 
 + (NSString *)ptn_photoKitScheme {
   return @"com.lightricks.Photons.PhotoKit";
@@ -77,54 +65,130 @@ static NSString * const kSubtypeKey = @"subtype";
   return components.URL;
 }
 
-+ (NSURL * __nonnull)ptn_photoKitAlbumWithType:(PTNPhotoKitAlbumType *)type {
+#pragma mark -
+#pragma mark Types
+#pragma mark -
+
++ (NSURL *)ptn_photoKitAlbumWithType:(PHAssetCollectionType)type
+                             subtype:(PHAssetCollectionSubtype)subtype {
   NSURLComponents *components = [[NSURLComponents alloc] init];
 
-  PTNPhotoKitURLType *urlType = $(PTNPhotoKitURLTypeAlbumType);
-
   components.scheme = [NSURL ptn_photoKitScheme];
-  components.host = kAlbumKey;
-  components.queryItems = @[[NSURLQueryItem queryItemWithName:kTypeKey value:urlType.name],
-                            [NSURLQueryItem queryItemWithName:kSubtypeKey value:type.name]];
+  components.host = kAlbumTypeKey;
+  components.queryItems = @[
+    [NSURLQueryItem queryItemWithName:kTypeKey value:[NSString stringWithFormat:@"%lu",
+                                                      (unsigned long)type]],
+    [NSURLQueryItem queryItemWithName:kSubtypeKey value:[NSString stringWithFormat:@"%lu",
+                                                         (unsigned long)subtype]]
+  ];
 
   return components.URL;
 }
 
-+ (NSURL * __nonnull)ptn_photoKitMetaAlbumWithType:(PTNPhotoKitMetaAlbumType *)type {
++ (NSURL *)ptn_photoKitMetaAlbumWithType:(PHAssetCollectionType)type
+    subalbums:(const std::vector<PHAssetCollectionSubtype> &)subalbums {
   NSURLComponents *components = [[NSURLComponents alloc] init];
 
-  PTNPhotoKitURLType *urlType = $(PTNPhotoKitURLTypeMetaAlbumType);
-
   components.scheme = [NSURL ptn_photoKitScheme];
-  components.host = kAlbumKey;
-  components.queryItems = @[[NSURLQueryItem queryItemWithName:kTypeKey value:urlType.name],
-                            [NSURLQueryItem queryItemWithName:kSubtypeKey value:type.name]];
+  components.host = kMetaAlbumTypeKey;
+
+  NSMutableArray<NSURLQueryItem *> *subalbumsQuery =
+      [NSMutableArray arrayWithCapacity:subalbums.size()];
+  for (PHAssetCollectionSubtype subalbumType : subalbums) {
+    NSURLQueryItem *queryItem = [NSURLQueryItem queryItemWithName:kSubalbumsKey
+        value:[NSString stringWithFormat:@"%lu", (unsigned long)subalbumType]];
+    [subalbumsQuery addObject:queryItem];
+  }
+
+  components.queryItems = [@[
+    [NSURLQueryItem queryItemWithName:kTypeKey value:[NSString stringWithFormat:@"%lu",
+                                                      (unsigned long)type]],
+    [NSURLQueryItem queryItemWithName:kSubtypeKey
+        value:[NSString stringWithFormat:@"%lu", (unsigned long)PHAssetCollectionSubtypeAny]],
+    [NSURLQueryItem queryItemWithName:kFilterSubalbumsKey value:nil]
+  ] arrayByAddingObjectsFromArray:subalbumsQuery];
 
   return components.URL;
 }
+
++ (NSURL *)ptn_photoKitMetaAlbumWithType:(PHAssetCollectionType)type {
+  NSURLComponents *components = [[NSURLComponents alloc] init];
+
+  components.scheme = [NSURL ptn_photoKitScheme];
+  components.host = kMetaAlbumTypeKey;
+
+  components.queryItems = @[
+    [NSURLQueryItem queryItemWithName:kTypeKey value:[NSString stringWithFormat:@"%lu",
+                                                      (unsigned long)type]],
+    [NSURLQueryItem queryItemWithName:kSubtypeKey
+        value:[NSString stringWithFormat:@"%lu", (unsigned long)PHAssetCollectionSubtypeAny]]
+  ];
+
+  return components.URL;
+}
+
+#pragma mark -
+#pragma mark Convenience types
+#pragma mark -
+
++ (NSURL *)ptn_photoKitCameraRollAlbum {
+  return [self ptn_photoKitAlbumWithType:PHAssetCollectionTypeSmartAlbum
+                                 subtype:PHAssetCollectionSubtypeSmartAlbumUserLibrary];
+}
+
++ (NSURL *)ptn_photoKitSmartAlbums {
+  return [self ptn_photoKitMetaAlbumWithType:PHAssetCollectionTypeSmartAlbum];
+}
+
++ (NSURL *)ptn_photoKitPhotosAppSmartAlbums {
+  std::vector<PHAssetCollectionSubtype> subalbums = {
+    PHAssetCollectionSubtypeSmartAlbumUserLibrary,
+    PHAssetCollectionSubtypeSmartAlbumFavorites,
+    PHAssetCollectionSubtypeSmartAlbumVideos,
+    PHAssetCollectionSubtypeSmartAlbumSelfPortraits,
+    PHAssetCollectionSubtypeSmartAlbumPanoramas,
+    PHAssetCollectionSubtypeSmartAlbumTimelapses,
+    PHAssetCollectionSubtypeSmartAlbumSlomoVideos,
+    PHAssetCollectionSubtypeSmartAlbumBursts,
+    PHAssetCollectionSubtypeSmartAlbumScreenshots,
+    PHAssetCollectionSubtypeSmartAlbumGeneric
+  };
+
+  return [self ptn_photoKitMetaAlbumWithType:PHAssetCollectionTypeSmartAlbum
+                                   subalbums:subalbums];
+}
+
++ (NSURL *)ptn_photoKitUserAlbums {
+  return [self ptn_photoKitMetaAlbumWithType:PHAssetCollectionTypeAlbum];
+}
+
+#pragma mark -
+#pragma mark Getters
+#pragma mark -
 
 - (nullable PTNPhotoKitURLType *)ptn_photoKitURLType {
   if (![self.scheme isEqual:[NSURL ptn_photoKitScheme]]) {
     return nil;
   }
 
-  if ([self.host isEqual:kAlbumKey]) {
-    if (self.query) {
-      NSDictionary<NSString *, NSString *> *query = self.lt_queryDictionary;
-      if (query[kTypeKey] && query[kSubtypeKey]) {
-        PTNPhotoKitURLType *type = [PTNPhotoKitURLType enumWithName:query[kTypeKey]];
-        if (type.value == PTNPhotoKitURLTypeAlbumType) {
-          return $(PTNPhotoKitURLTypeAlbumType);
-        }
-        if (type.value == PTNPhotoKitURLTypeMetaAlbumType) {
-          return $(PTNPhotoKitURLTypeMetaAlbumType);
-        }
-      }
-    } else if (self.path.length > 0) {
-      return $(PTNPhotoKitURLTypeAlbum);
-    }
-  } else if ([self.host isEqual:kAssetKey] && !self.query && self.path.length > 0) {
+  if ([self.host isEqual:kAssetKey] && !self.query && self.path.length > 0) {
     return $(PTNPhotoKitURLTypeAsset);
+  } else if ([self.host isEqual:kAlbumKey] && !self.query && self.path.length > 0) {
+    return $(PTNPhotoKitURLTypeAlbum);
+  } else if ([self.host isEqual:kAlbumTypeKey]) {
+    NSDictionary<NSString *, NSString *> *query = self.lt_queryDictionary;
+    if (query[kTypeKey] && query[kSubtypeKey]) {
+      return $(PTNPhotoKitURLTypeAlbumType);
+    }
+
+    return nil;
+  } else if ([self.host isEqual:kMetaAlbumTypeKey]) {
+    NSDictionary<NSString *, NSString *> *query = self.lt_queryDictionary;
+    if (query[kTypeKey] && query[kSubtypeKey]) {
+      return $(PTNPhotoKitURLTypeMetaAlbumType);
+    }
+
+    return nil;
   }
 
   return nil;
@@ -146,30 +210,36 @@ static NSString * const kSubtypeKey = @"subtype";
   return [self.path substringFromIndex:1];
 }
 
-- (nullable PTNPhotoKitAlbumType *)ptn_photoKitAlbumType {
-  if (![self.ptn_photoKitURLType isEqual:$(PTNPhotoKitURLTypeAlbumType)]) {
+- (nullable NSNumber *)ptn_photoKitAlbumType {
+  if (![self.ptn_photoKitURLType isEqual:$(PTNPhotoKitURLTypeAlbumType)] &&
+      ![self.ptn_photoKitURLType isEqual:$(PTNPhotoKitURLTypeMetaAlbumType)]) {
     return nil;
   }
 
-  NSDictionary<NSString *, NSString *> *query = self.lt_queryDictionary;
-  if (!query[kSubtypeKey]) {
-    return nil;
-  }
-
-  return [PTNPhotoKitAlbumType enumWithName:query[kSubtypeKey]];
+  return @(self.lt_queryDictionary[kTypeKey].integerValue);
 }
 
-- (nullable PTNPhotoKitMetaAlbumType *)ptn_photoKitMetaAlbumType {
+- (nullable NSNumber *)ptn_photoKitAlbumSubtype {
+  if (![self.ptn_photoKitURLType isEqual:$(PTNPhotoKitURLTypeAlbumType)] &&
+      ![self.ptn_photoKitURLType isEqual:$(PTNPhotoKitURLTypeMetaAlbumType)]) {
+    return nil;
+  }
+
+  return @(self.lt_queryDictionary[kSubtypeKey].integerValue);
+}
+
+- (nullable NSArray<NSNumber *> *)ptn_photoKitAlbumSubalbums {
   if (![self.ptn_photoKitURLType isEqual:$(PTNPhotoKitURLTypeMetaAlbumType)]) {
     return nil;
   }
 
-  NSDictionary<NSString *, NSString *> *query = self.lt_queryDictionary;
-  if (!query[kSubtypeKey]) {
+  if (!self.lt_queryDictionary[kFilterSubalbumsKey]) {
     return nil;
   }
 
-  return [PTNPhotoKitMetaAlbumType enumWithName:query[kSubtypeKey]];
+  return [self.lt_queryArrayDictionary[kSubalbumsKey] lt_map:^NSNumber *(NSString *string) {
+    return @(string.integerValue);
+  }] ?: @[];
 }
 
 @end
