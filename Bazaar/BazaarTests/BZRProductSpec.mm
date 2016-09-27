@@ -49,6 +49,7 @@ context(@"conversion" , ^{
     NSDictionary *dictionaryValue =  @{
       @instanceKeypath(BZRProduct, identifier): @"foo",
       @instanceKeypath(BZRProduct, productType): $(BZRProductTypeNonConsumable),
+      @instanceKeypath(BZRProduct, isSubscribersOnly): @YES,
       @instanceKeypath(BZRProduct, contentFetcherParameters): contentFetcherParameters
     };
 
@@ -57,9 +58,10 @@ context(@"conversion" , ^{
     expect(error).to.beNil();
 
     NSDictionary *jsonDictionary = [MTLJSONAdapter JSONDictionaryFromModel:product];
-    expect(jsonDictionary[@"productType"]).to.equal(@"nonConsumable");
-    expect(jsonDictionary[@"contentFetcherParameters"])
+    expect(jsonDictionary[@instanceKeypath(BZRProduct, productType)]).to.equal(@"nonConsumable");
+    expect(jsonDictionary[@instanceKeypath(BZRProduct, contentFetcherParameters)])
         .to.equal([MTLJSONAdapter JSONDictionaryFromModel:contentFetcherParameters]);
+    expect(jsonDictionary[@instanceKeypath(BZRProduct, isSubscribersOnly)]).to.equal(@YES);
   });
 
   it(@"should correctly convert from JSON dictionary to BZRProduct", ^{
@@ -69,7 +71,8 @@ context(@"conversion" , ^{
       @"contentFetcherParameters": @{
         @"type": NSStringFromClass([BZRDummyContentFetcherParameters class]),
         @"value": @"foo"
-      }
+      },
+      @"isSubscribersOnly": @NO
     };
     BZRDummyContentFetcherParameters *expectedParameters =
         [[BZRDummyContentFetcherParameters alloc] initWithValue:@"foo"];
@@ -81,6 +84,7 @@ context(@"conversion" , ^{
     expect(product.identifier).to.equal(@"id");
     expect(product.productType).to.equal($(BZRProductTypeNonRenewingSubscription));
     expect(product.contentFetcherParameters).to.equal(expectedParameters);
+    expect(product.isSubscribersOnly).to.equal(NO);
   });
 });
 

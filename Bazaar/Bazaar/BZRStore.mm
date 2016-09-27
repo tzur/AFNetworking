@@ -26,6 +26,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Maps product identifiers to products.
 typedef NSDictionary<NSString *, BZRProduct *> BZRProductDictionary;
 
+/// Collection of classified \c BZRProduct.
+typedef NSDictionary<id, NSArray<BZRProduct *> *> BZRClassifiedProducts;
+
 @interface BZRStore ()
 
 /// Provider used to provide the list of products.
@@ -169,6 +172,9 @@ typedef NSDictionary<NSString *, BZRProduct *> BZRProductDictionary;
 }
 
 - (void)fetchProductDictionary {
+  NSNumber * const kAppStoreProducts = @1;
+  NSNumber * const kNonAppStoreProducts = @0;
+
   @weakify(self);
   RACSignal *fetchProductDictionarySignal = [[[self.productsProvider fetchProductList]
       map:^BZRProductDictionary *(NSArray<BZRProduct *> *productList) {
@@ -177,11 +183,22 @@ typedef NSDictionary<NSString *, BZRProduct *> BZRProductDictionary;
       }]
       flattenMap:^RACStream *(BZRProductDictionary *productDictionary) {
         @strongify(self);
-        NSSet *productSet = [NSSet setWithArray:[productDictionary allKeys]];
-        return [[self.storeKitFacade fetchMetadataForProductsWithIdentifiers:productSet]
+        BZRClassifiedProducts *classifiedProducts =
+            [[productDictionary allValues] lt_classify:^NSNumber *(BZRProduct *product) {
+              return product.isSubscribersOnly ? kNonAppStoreProducts : kAppStoreProducts;
+            }];
+        NSSet<NSString *> *appStoreProducts =
+            [NSSet setWithArray:[classifiedProducts[kAppStoreProducts]
+             valueForKey:@instanceKeypath(BZRProduct, identifier)]];
+
+        return [[[self.storeKitFacade fetchMetadataForProductsWithIdentifiers:appStoreProducts]
             map:^BZRProductDictionary *(SKProductsResponse *productsResponse) {
               return [self productDictionary:productDictionary
                       withPriceInfoAndProductFromProductsResponse:productsResponse];
+            }]
+            map:^BZRProductDictionary *(BZRProductDictionary *appStoreProducts) {
+              return [self appStoreProducts:appStoreProducts
+              mergedWithNonAppStoreProducts:classifiedProducts[kNonAppStoreProducts]];
             }];
       }];
   [fetchProductDictionarySignal subscribeNext:^(BZRProductDictionary *productDictionary) {
@@ -209,6 +226,13 @@ withPriceInfoAndProductFromProductsResponse:(SKProductsResponse *)productsRespon
                         withValue:product];
     return value;
   } initial:[@{} mutableCopy]];
+}
+
+- (BZRProductDictionary *)appStoreProducts:(BZRProductDictionary *)appStoreProducts
+             mergedWithNonAppStoreProducts:(NSArray<BZRProduct *> *)nonAppStoreProducts {
+  return [appStoreProducts mtl_dictionaryByAddingEntriesFromDictionary:
+          [NSDictionary dictionaryWithObjects:nonAppStoreProducts forKeys:
+           [nonAppStoreProducts valueForKey:@instanceKeypath(BZRProduct, identifier)]]];
 }
 
 - (NSSet<NSString *> *)downloadedContentProductsWithDictionary:
