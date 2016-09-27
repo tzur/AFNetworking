@@ -244,6 +244,18 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
 #pragma mark -
 
 - (void)eaglView:(LTEAGLView __unused *)eaglView drawInRect:(__unused CGRect)rect {
+#if defined(DEBUG) && __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_10_0
+  // Under iOS 10, the view hierarchy debugger does not bind an OpenGL framebuffer before calling
+  // the drawLayer:inContext: method of UIView (implementing the CALayerDelegate protocol). Hence,
+  // subsequent OpenGL render calls lead to an OpenGL error. Therefore, no rendering is performed in
+  // the following lines if no framebuffer is bound.
+  GLint currentlyBoundFramebuffer = 0;
+  glGetIntegerv(GL_DRAW_FRAMEBUFFER_BINDING, &currentlyBoundFramebuffer);
+  if (!currentlyBoundFramebuffer) {
+    return;
+  }
+#endif
+
   [self informAboutFramebufferChangesIfRequired];
 
   [self.context executeAndPreserveState:^(LTGLContext *context) {

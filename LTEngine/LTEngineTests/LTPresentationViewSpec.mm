@@ -7,6 +7,7 @@
 #import "LTContentLocationProvider.h"
 #import "LTEAGLView.h"
 #import "LTFbo.h"
+#import "LTFboPool.h"
 #import "LTGLContext.h"
 #import "LTGridDrawer.h"
 #import "LTGridDrawingManager.h"
@@ -37,9 +38,10 @@
 
 @end
 
-@interface LTPresentationView ()
+@interface LTPresentationView () <LTEAGLViewDelegate>
 @property (strong, nonatomic) LTEAGLView *eaglView;
 @property (strong, nonatomic) LTGridDrawingManager *pixelGrid;
+@property (strong, nonatomic) LTGLContext *context;
 @property (nonatomic) NSUInteger pixelsPerCheckerboardSquare;
 @end
 
@@ -156,6 +158,55 @@ context(@"initialization", ^{
       }).to.raise(NSInvalidArgumentException);
     });
   });
+});
+
+context(@"LTEAGLViewDelegate", ^{
+  beforeEach(^{
+    view = [[LTPresentationView alloc] initWithFrame:kViewFrame context:[LTGLContext currentContext]
+                                      contentTexture:contentTexture
+                             contentLocationProvider:contentLocationProvider];
+    [view layoutIfNeeded];
+  });
+
+  afterEach(^{
+    view = nil;
+  });
+
+  it(@"should perform drawing when requested", ^{
+    LTTexture *texture = [LTTexture byteRGBATextureWithSize:CGSizeMakeUniform(1)];
+    [texture clearWithColor:LTVector4::zeros()];
+
+    [[[LTFboPool currentPool] fboWithTexture:texture] bindAndDraw:^{
+      [view eaglView:OCMClassMock([LTEAGLView class]) drawInRect:CGRectZero];
+    }];
+
+    expect(texture.fillColor).toNot.equal(LTVector4::zeros());
+  });
+
+  it(@"should use its context when performing drawing", ^{
+    LTTexture *texture = [LTTexture byteRGBATextureWithSize:CGSizeMakeUniform(1)];
+    [texture clearWithColor:LTVector4::zeros()];
+
+    id contextMock = OCMClassMock([LTGLContext class]);
+    view.context = contextMock;
+    OCMExpect([contextMock executeAndPreserveState:OCMOCK_ANY]);
+
+    [[[LTFboPool currentPool] fboWithTexture:texture] bindAndDraw:^{
+      [view eaglView:OCMClassMock([LTEAGLView class]) drawInRect:CGRectZero];
+    }];
+
+    OCMVerifyAll(contextMock);
+  });
+
+#if defined(DEBUG) && __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_10_0
+  it(@"should not perform any drawing if no framebuffer is bound", ^{
+    id contextMock = OCMClassMock([LTGLContext class]);
+    view.context = contextMock;
+    OCMReject([contextMock executeAndPreserveState:OCMOCK_ANY]);
+
+    [view eaglView:OCMClassMock([LTEAGLView class]) drawInRect:CGRectZero];
+  });
+#endif
 });
 
 context(@"drawing", ^{
