@@ -3,6 +3,8 @@
 
 #import "CAMTestUtils.h"
 
+#import <LTEngine/LTCVPixelBufferExtensions.h>
+
 NS_ASSUME_NONNULL_BEGIN
 
 lt::Ref<CMSampleBufferRef> CAMCreateEmptySampleBuffer() {
@@ -11,17 +13,6 @@ lt::Ref<CMSampleBufferRef> CAMCreateEmptySampleBuffer() {
                                               &sampleBuffer);
   LTAssert(((int)status) == 0, @"CMSampleBufferCreate failed, got %d", (int)status);
   return lt::Ref<CMSampleBufferRef>(sampleBuffer);
-}
-
-static lt::Ref<CVImageBufferRef> CAMCreatePixelBuffer(size_t width, size_t height,
-                                                      OSType pixelFormatType) {
-  CVImageBufferRef imageBuffer;
-  CVReturn pixelBufferCreate =
-      CVPixelBufferCreate(NULL, width, height, pixelFormatType, NULL, &imageBuffer);
-  LTAssert(pixelBufferCreate == kCVReturnSuccess, @"CVPixelBufferCreate failed, got: %d",
-           pixelBufferCreate);
-
-  return lt::Ref<CVImageBufferRef>(imageBuffer);
 }
 
 static lt::Ref<CMVideoFormatDescriptionRef>
@@ -37,7 +28,7 @@ CAMCreateVideoFormatDescription(CVImageBufferRef imageBuffer) {
 
 lt::Ref<CMSampleBufferRef> CAMCreateImageSampleBuffer(CGSize size) {
   lt::Ref<CVImageBufferRef> imageBufferRef =
-      CAMCreatePixelBuffer((size_t)size.width, (size_t)size.height, kCVPixelFormatType_32BGRA);
+      LTCVPixelBufferCreate((size_t)size.width, (size_t)size.height, kCVPixelFormatType_32BGRA);
 
   lt::Ref<CMVideoFormatDescriptionRef> videoFormatRef =
       CAMCreateVideoFormatDescription(imageBufferRef.get());
@@ -63,30 +54,11 @@ lt::Ref<CMSampleBufferRef> CAMCreateSampleBufferForImage(const cv::Mat4b &image)
 lt::Ref<CMSampleBufferRef> CAMCreateSampleBufferForImage(const cv::Mat4b &image,
                                                          const CMSampleTimingInfo &sampleTiming) {
   __block lt::Ref<CVImageBufferRef> imageBufferRef =
-      CAMCreatePixelBuffer(image.cols, image.rows, kCVPixelFormatType_32BGRA);
+      LTCVPixelBufferCreate(image.cols, image.rows, kCVPixelFormatType_32BGRA);
 
-  CVReturn lockResult = CVPixelBufferLockBaseAddress(imageBufferRef.get(), 0);
-  if (kCVReturnSuccess != lockResult) {
-    [LTGLException raise:kLTCVPixelBufferLockingFailedException
-                  format:@"Failed locking base address of pixel buffer with error %d",
-     (int)lockResult];
-  }
-
-  void *base = CVPixelBufferGetBaseAddress(imageBufferRef.get());
-  size_t width = CVPixelBufferGetWidth(imageBufferRef.get());
-  size_t height = CVPixelBufferGetHeight(imageBufferRef.get());
-  size_t bytesPerRow = CVPixelBufferGetBytesPerRow(imageBufferRef.get());
-
-  cv::Mat targetImage((int)height, (int)width, CV_8UC4, base, bytesPerRow);
-  image.copyTo(targetImage);
-  @onExit {
-    CVReturn unlockResult = CVPixelBufferUnlockBaseAddress(imageBufferRef.get(), 0);
-    if (kCVReturnSuccess != unlockResult) {
-      [LTGLException raise:kLTCVPixelBufferLockingFailedException
-                    format:@"Failed unlocking base address of pixel buffer with error %d",
-       (int)unlockResult];
-    }
-  };
+  LTCVPixelBufferImageForWriting(imageBufferRef.get(), ^(cv::Mat *mapped) {
+    image.copyTo(*mapped);
+  });
 
   lt::Ref<CMVideoFormatDescriptionRef> videoFormatRef =
       CAMCreateVideoFormatDescription(imageBufferRef.get());
