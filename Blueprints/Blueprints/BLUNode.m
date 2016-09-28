@@ -50,8 +50,8 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (NSString *)description {
-  return [NSString stringWithFormat:@"<%@: %p, name: %@, value: %@, childNodes: %@>", self.class,
-          self, self.name, self.value, self.childNodes];
+  return [NSString stringWithFormat:@"<%@: %p, name: %@, value: %@, childNodes: %lu>", self.class,
+          self, self.name, self.value, (unsigned long)self.childNodes.count];
 }
 
 @end
