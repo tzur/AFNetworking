@@ -10,6 +10,7 @@
 #import "PTNAlbum.h"
 #import "PTNAlbumChangeset.h"
 #import "PTNGatewayAlbumDescriptor.h"
+#import "PTNIncrementalChanges.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -59,10 +60,19 @@ NS_ASSUME_NONNULL_BEGIN
       localizedTitle:descriptor.localizedTitle imageSignalBlock:descriptor.imageSignalBlock
       albumSignal:descriptor.albumSignal];
 
-    id<PTNAlbum> album = [[PTNAlbum alloc] initWithURL:descriptor.ptn_identifier
-                                             subalbums:@[flattenedDescriptor] assets:@[]];
+  id<PTNAlbum> album = [[PTNAlbum alloc] initWithURL:descriptor.ptn_identifier
+                                           subalbums:@[flattenedDescriptor] assets:@[]];
+  PTNAlbumChangeset *initialChangeset = [PTNAlbumChangeset changesetWithAfterAlbum:album];
+  PTNIncrementalChanges *incrementalChanges =
+      [PTNIncrementalChanges changesWithRemovedIndexes:nil insertedIndexes:nil
+                                        updatedIndexes:[NSIndexSet indexSetWithIndex:0] moves:nil];
+  PTNAlbumChangeset *updates = [PTNAlbumChangeset changesetWithBeforeAlbum:album afterAlbum:album
+                                                           subalbumChanges:incrementalChanges
+                                                              assetChanges:nil];
 
-  return [RACSignal return:[PTNAlbumChangeset changesetWithAfterAlbum:album]];
+  return [[RACSignal
+      return:initialChangeset]
+      concat:[descriptor.albumSignal mapReplace:updates]];
 }
 
 - (RACSignal *)fetchDescriptorWithURL:(NSURL *)url {
