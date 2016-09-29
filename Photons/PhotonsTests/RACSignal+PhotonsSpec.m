@@ -4,6 +4,7 @@
 #import "RACSignal+Photons.h"
 
 #import "PTNImageAsset.h"
+#import "PTNImageMetadata.h"
 #import "PTNProgress.h"
 
 SpecBegin(RACSignal_Photons)
@@ -199,6 +200,98 @@ context(@"ptn_combineLatestWithIndex", ^{
 
     [subjectB sendCompleted];
     expect(recorder).to.complete();
+  });
+});
+
+context(@"ptn_imageAndMetadata", ^{
+  __block RACSubject *subject;
+  __block LLSignalTestRecorder *recorder;
+  __block id<PTNImageAsset> asset;
+
+  __block UIImage *image;
+  __block PTNImageMetadata *metadata;
+  
+  beforeEach(^{
+    subject = [RACSubject subject];
+    recorder = [[subject ptn_imageAndMetadata] testRecorder];
+    asset = OCMProtocolMock(@protocol(PTNImageAsset));
+
+    image = [[UIImage alloc] init];
+    metadata = [[PTNImageMetadata alloc] init];
+  });
+
+  afterEach(^{
+    [subject sendCompleted];
+    subject = nil;
+    recorder = nil;
+  });
+  
+  it(@"should raise exception if the underlying signal sends unexpected values", ^{
+    expect(^{
+      [subject sendNext:@"foo"];
+    }).to.raise(NSInternalInconsistencyException);
+  });
+  
+  it(@"should ignore incomplete progress values", ^{
+    [subject sendNext:[[PTNProgress alloc] initWithProgress:@0.5]];
+    [subject sendNext:[[PTNProgress alloc] initWithProgress:@1]];
+
+    expect(recorder).to.sendValuesWithCount(0);
+  });
+  
+  it(@"should send the underlying image and image metadata", ^{
+    OCMStub([asset fetchImage]).andReturn([RACSignal return:image]);
+    OCMStub([asset fetchImageMetadata]).andReturn([RACSignal return:metadata]);
+
+    [subject sendNext:[[PTNProgress alloc] initWithProgress:@0.5]];
+    [subject sendNext:[[PTNProgress alloc] initWithResult:asset]];
+    [subject sendNext:[[PTNProgress alloc] initWithResult:asset]];
+
+    expect(recorder).to.sendValues(@[RACTuplePack(image, metadata), RACTuplePack(image, metadata)]);
+    expect(recorder).toNot.complete();
+  });
+  
+  it(@"should complete when the underlying signal completes before sending a result", ^{
+    [subject sendCompleted];
+    expect(recorder).to.complete();
+  });
+  
+  it(@"should complete when all underlying signals complete", ^{
+    OCMStub([asset fetchImage]).andReturn([RACSignal return:image]);
+    OCMStub([asset fetchImageMetadata]).andReturn([RACSignal return:metadata]);
+
+    [subject sendNext:[[PTNProgress alloc] initWithResult:asset]];
+    expect(recorder).toNot.complete();
+
+    [subject sendCompleted];
+    expect(recorder).to.complete();
+  });
+  
+  it(@"should err if the underlying signal errs", ^{
+    NSError *error = [NSError lt_errorWithCode:1337];
+    [subject sendError:error];
+
+    expect(recorder).to.sendError(error);
+  });
+  
+  it(@"should err if the image signal errs", ^{
+    NSError *error = [NSError lt_errorWithCode:1337];
+    OCMStub([asset fetchImage]).andReturn([RACSignal error:error]);
+    OCMStub([asset fetchImageMetadata]).andReturn([RACSignal return:metadata]);
+
+    [subject sendNext:[[PTNProgress alloc] initWithResult:asset]];
+
+    expect(recorder).to.sendError(error);
+  });
+
+  it(@"should err if the image metadata signal errs", ^{
+    NSError *error = [NSError lt_errorWithCode:1337];
+    OCMStub([asset fetchImage]).andReturn([RACSignal return:image]);
+    OCMStub([asset fetchImageMetadata]).andReturn([RACSignal error:error]);
+
+    [subject sendNext:[[PTNProgress alloc] initWithResult:asset]];
+
+    expect(recorder).to.sendError(error);
   });
 });
 

@@ -39,6 +39,22 @@ NS_ASSUME_NONNULL_BEGIN
 /// @return RACSignal<RACTuple *>.
 + (RACSignal *)ptn_combineLatestWithIndex:(id<NSFastEnumeration>)signals;
 
+/// Skips incomplete progress values and combines the latest image and image metadata signals of
+/// completed progress objects.
+///
+/// The receiver is assumed to send a sequence of zero or more \c PTNProgress<id<PTNImageAsset>>
+/// values followed by one or more completed \c PTNProgress<id<PTNImageAsset>> values.
+///
+/// The returned signal sends a \c RACTuple of <tt>(UIImage, PTNImageMetadata)</tt> pairs for each
+/// completed \c PTNProgress object, by combining the latest image and image metadata fetching
+/// signals of the \c id<PTNImageAsset> \c result. It completes when the receiver completes before
+/// sending a completed \c PTNProgress or when the receiver, the image fetching signal and the image
+/// metadata fetching signal complete. It errs when the receiver, the image fetching signal or the
+/// image metadata fetching signal errs.
+///
+/// @return RACSignal<RACTuple<UIImage *, PTNImageMetadata *> *>.
+- (RACSignal *)ptn_imageAndMetadata;
+
 /// Skips incomplete progress values and flattens image signal of completed progress objects.
 ///
 /// The receiver is assumed to send a sequence of zero or more \c PTNProgress<id<PTNImageAsset>>
