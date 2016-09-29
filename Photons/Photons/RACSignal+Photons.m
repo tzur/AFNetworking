@@ -100,6 +100,15 @@ NS_ASSUME_NONNULL_BEGIN
       setNameWithFormat:@"+ptn_combineLatestWithIndex: %@", signals];
 }
 
+- (RACSignal *)ptn_imageAndMetadata {
+  return [[[self
+      ptn_skipProgress]
+      flattenMap:^RACStream *(id<PTNImageAsset> asset) {
+        return [RACSignal combineLatest:@[[asset fetchImage], [asset fetchImageMetadata]]];
+      }]
+      setNameWithFormat:@"[%@] -ptn_imageAndMetadata", self.name];
+}
+
 - (RACSignal *)ptn_image {
   return [[[self
       ptn_skipProgress]
