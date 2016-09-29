@@ -13,7 +13,8 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 /// By default album signals are unflattened, meaning that they are returned wrapped by an
 /// intermediate album with the original album as its only subalbum. To avoid this behavior use
-/// a URL created with -ptn_flattenedGatewayAlbumURLWithKey: using the same key.
+/// a URL created with -ptn_flattenedGatewayAlbumURLWithKey: using the same key. Wrapping albums
+/// send an initial value followed by updates whenever their underlying albums updates.
 @interface PTNGatewayAssetManager : NSObject <PTNAssetManager>
 
 - (instancetype)init NS_UNAVAILABLE;

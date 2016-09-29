@@ -12,6 +12,7 @@
 #import "PTNGatewayAlbumDescriptor.h"
 #import "PTNGatewayTestUtils.h"
 #import "PTNImageFetchOptions.h"
+#import "PTNIncrementalChanges.h"
 #import "PTNResizingStrategy.h"
 
 SpecBegin(PTNGatewayAssetManager)
@@ -20,14 +21,14 @@ __block PTNGatewayAlbumDescriptor *fooDescriptor;
 __block PTNGatewayAlbumDescriptor *barDescriptor;
 __block PTNGatewayAssetManager *manager;
 
+__block RACSubject *albumSignal;
 __block RACSignal *imageSignal;
 
 beforeEach(^{
   imageSignal = [RACSignal empty];
-  fooDescriptor = PTNGatewayCreateAlbumDescriptorWithSignal(@"foo", [RACSignal empty],
-                                                            imageSignal);
-  barDescriptor = PTNGatewayCreateAlbumDescriptorWithSignal(@"bar", [RACSignal empty],
-                                                            imageSignal);
+  albumSignal = [RACSubject subject];
+  fooDescriptor = PTNGatewayCreateAlbumDescriptorWithSignal(@"foo", albumSignal, imageSignal);
+  barDescriptor = PTNGatewayCreateAlbumDescriptorWithSignal(@"bar", albumSignal, imageSignal);
 
   NSSet *descriptors = [NSSet setWithArray:@[fooDescriptor, barDescriptor]];
   manager = [[PTNGatewayAssetManager alloc] initWithDescriptors:descriptors];
@@ -44,6 +45,32 @@ context(@"album fetching", ^{
       return !changeset.beforeAlbum &&
           !assets.count &&
           subalbums.count == 1 &&
+          [manager fetchAlbumWithURL:albumDescriptor.ptn_identifier] == fooDescriptor.albumSignal;
+    });
+  });
+
+  it(@"should send updateds to wrapped album whenever underlying album updates", ^{
+    NSURL *url = fooDescriptor.ptn_identifier;
+    LLSignalTestRecorder *recorder = [[manager fetchAlbumWithURL:url] testRecorder];
+
+    expect(recorder).will.sendValuesWithCount(1);
+
+    [albumSignal sendNext:OCMClassMock(PTNAlbumChangeset.class)];
+    [albumSignal sendNext:OCMClassMock(PTNAlbumChangeset.class)];
+    [albumSignal sendNext:OCMClassMock(PTNAlbumChangeset.class)];
+    expect(recorder).will.sendValuesWithCount(4);
+
+    expect(recorder).will.matchValue(3, ^BOOL(PTNAlbumChangeset *changeset) {
+      id<LTRandomAccessCollection> assets = changeset.afterAlbum.assets;
+      id<LTRandomAccessCollection> subalbums = changeset.afterAlbum.subalbums;
+      id<PTNDescriptor> albumDescriptor = subalbums.firstObject;
+      PTNIncrementalChanges *changes = [PTNIncrementalChanges changesWithRemovedIndexes:nil
+          insertedIndexes:nil updatedIndexes:[NSIndexSet indexSetWithIndex:0] moves:nil];
+      return changeset.beforeAlbum == changeset.afterAlbum &&
+          !assets.count &&
+          subalbums.count == 1 &&
+          !changeset.assetChanges &&
+          [changeset.subalbumChanges isEqual:changes] &&
           [manager fetchAlbumWithURL:albumDescriptor.ptn_identifier] == fooDescriptor.albumSignal;
     });
   });
