@@ -20,7 +20,9 @@ NS_ASSUME_NONNULL_BEGIN
                           "instances, got %@ instead", [node class]);
         BLUNode * _Nullable subtree = node[path];
         if (!subtree) {
-          *errorPtr = [NSError lt_errorWithCode:BLUErrorCodePathNotFound path:path];
+          if (errorPtr) {
+            *errorPtr = [NSError lt_errorWithCode:BLUErrorCodePathNotFound path:path];
+          }
           return nil;
         }
 
@@ -42,7 +44,9 @@ NS_ASSUME_NONNULL_BEGIN
 
         BLUNode * _Nullable subtree = node[path];
         if (!subtree) {
-          *errorPtr = [NSError lt_errorWithCode:BLUErrorCodePathNotFound path:path];
+          if (errorPtr) {
+            *errorPtr = [NSError lt_errorWithCode:BLUErrorCodePathNotFound path:path];
+          }
           return nil;
         }
 
@@ -75,7 +79,9 @@ NS_ASSUME_NONNULL_BEGIN
 
         BLUNode * _Nullable subtree = node[path];
         if (!subtree) {
-          *errorPtr = [NSError lt_errorWithCode:BLUErrorCodePathNotFound path:path];
+          if (errorPtr) {
+            *errorPtr = [NSError lt_errorWithCode:BLUErrorCodePathNotFound path:path];
+          }
           return nil;
         }
 
