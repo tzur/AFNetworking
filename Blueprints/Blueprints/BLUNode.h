@@ -40,7 +40,7 @@ typedef id<NSCopying, NSObject> BLUNodeValue;
 /// with the requested mutation. Each mutation operation is efficient and only recreates the nodes
 /// from the root to the mutated node, so for balanced trees the cost will be <tt>O(log(n))</tt>
 /// where \c n is the number of nodes in the tree.
-@interface BLUNode<__covariant ObjectType:BLUNodeValue> : NSObject
+@interface BLUNode<__covariant ObjectType:BLUNodeValue> : NSObject <NSCopying>
 
 - (instancetype)init NS_UNAVAILABLE;
 

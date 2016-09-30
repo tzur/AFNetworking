@@ -66,4 +66,15 @@ context(@"NSObject", ^{
   });
 });
 
+context(@"NSCopying", ^{
+  it(@"should copy correctly", ^{
+    BLUNode<NSNumber *> *node1 = [BLUNode nodeWithName:@"node" childNodes:@[] value:@7];
+    BLUNode<NSNumber *> *node2 = [BLUNode nodeWithName:@"node" childNodes:@[node1] value:@7];
+
+    BLUNode *copy = [node2 copy];
+
+    expect(copy).to.equal(node2);
+  });
+});
+
 SpecEnd

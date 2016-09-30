@@ -54,6 +54,14 @@ NS_ASSUME_NONNULL_BEGIN
           self, self.name, self.value, (unsigned long)self.childNodes.count];
 }
 
+#pragma mark -
+#pragma mark NSCopying
+#pragma mark -
+
+- (id)copyWithZone:(nullable NSZone __unused *)zone {
+  return self;
+}
+
 @end
 
 NS_ASSUME_NONNULL_END
