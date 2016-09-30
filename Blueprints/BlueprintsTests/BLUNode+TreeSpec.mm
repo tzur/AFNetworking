@@ -254,6 +254,20 @@ context(@"removing nodes", ^{
   });
 });
 
+context(@"removing all child nodes", ^{
+  it(@"should return equal node if no child nodes existed", ^{
+    BLUNode *node = [BLUNode nodeWithName:@"node" childNodes:@[] value:@42];
+    expect([node nodeByRemovingAllChildNodes]).to.equal(node);
+  });
+
+  it(@"should remove all child nodes", ^{
+    BLUNode *node = [root nodeByRemovingAllChildNodes];
+    expect(node.childNodes.count).to.equal(0);
+    expect(node.name).to.equal(root.name);
+    expect(node.value).to.equal(root.value);
+  });
+});
+
 context(@"replacing nodes", ^{
   __block BLUNode *node;
 
@@ -288,7 +302,7 @@ context(@"filtering child nodes", ^{
     expect(filtered).to.equal(root);
   });
 
-  it(@"should return no childnodes when filtering all nodes", ^{
+  it(@"should return no child nodes when filtering all nodes", ^{
     BLUNode *filtered = [root nodeByFilteringChildNodes:^BOOL(BLUNode *) {
       return NO;
     } atPath:@"/left"];
@@ -435,7 +449,7 @@ context(@"enumeration", ^{
     expect(nodes).to.equal(@[root[@"/"]]);
   });
 
-  it(@"should stop while enumerating childs", ^{
+  it(@"should stop while enumerating children", ^{
     NSMutableArray *nodes = [NSMutableArray array];
     NSMutableArray *paths = [NSMutableArray array];
     NSMutableArray *indexPaths = [NSMutableArray array];

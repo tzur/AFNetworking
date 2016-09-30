@@ -104,6 +104,13 @@ NS_ASSUME_NONNULL_BEGIN
   return currentNode;
 }
 
+- (instancetype)nodeByRemovingAllChildNodes {
+  if (!self.childNodes.count) {
+    return self;
+  }
+  return [BLUNode nodeWithName:self.name childNodes:@[] value:self.value];
+}
+
 - (instancetype)nodeByFilteringChildNodes:(BLUNodeFilterBlock)filter atPath:(NSString *)path {
   BLUNode * _Nullable subtree = self[path];
   LTParameterAssert(subtree, @"Trying to filter child nodes of a non-existing path: %@", path);

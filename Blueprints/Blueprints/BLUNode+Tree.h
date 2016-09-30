@@ -46,6 +46,9 @@ typedef NS_ENUM(NSUInteger, BLUTreeEnumerationType) {
 /// \c node. If \c path does not point to any node, an exception will be raised.
 - (instancetype)nodeByReplacingNodeAtPath:(NSString *)path withNode:(BLUNode *)node;
 
+/// Returns a new node that is formed by removing all child nodes.
+- (instancetype)nodeByRemovingAllChildNodes;
+
 /// Block used for filtering child nodes at a given path. If \c NO is returned from the block, the
 /// child is filtered from the result.
 typedef BOOL (^BLUNodeFilterBlock)(BLUNode *child);
