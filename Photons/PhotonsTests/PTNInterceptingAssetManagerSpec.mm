@@ -578,6 +578,93 @@ context(@"album fetching", ^{
         return PTNChangesetSemanticallyEqual(returnedChangeset, interceptedChangeset);
       });
     });
+
+    it(@"should correctly handle mapping updates on the same intercepted asset", ^{
+      id<PTNDescriptor> otherInterceptingDescriptor = PTNCreateDescriptor(@"qux");
+
+      LLSignalTestRecorder *values = [[interceptingAssetManager fetchAlbumWithURL:albumURL]
+                                      testRecorder];
+
+      [underlyingAssetManager serveAlbumURL:albumURL withAlbum:album];
+      [interceptionMap sendNext:@{assetDescriptorURL: interceptingDescriptor}];
+      [underlyingAssetManager serveDescriptorURL:assetDescriptorURL withDescriptor:assetDescriptor];
+
+      [interceptionMap sendNext:@{assetDescriptorURL: otherInterceptingDescriptor}];
+
+      PTNAlbum *interceptedAlbum = [[PTNAlbum alloc] initWithURL:albumURL
+            subalbums:@[subalbumDescriptor, otherDescriptor]
+            assets:@[interceptingDescriptor, otherDescriptor]];
+      PTNAlbum *otherInterceptedAlbum = [[PTNAlbum alloc] initWithURL:albumURL
+            subalbums:@[subalbumDescriptor, otherDescriptor]
+            assets:@[otherInterceptingDescriptor, otherDescriptor]];
+
+      expect(values).will.sendValuesWithCount(3);
+      expect(values).will.matchValue(0, ^BOOL(PTNAlbumChangeset *returnedChangeset) {
+        PTNAlbumChangeset *afterAlbumChangeset = [PTNAlbumChangeset changesetWithAfterAlbum:album];
+        return PTNChangesetSemanticallyEqual(returnedChangeset, afterAlbumChangeset);
+      });
+      expect(values).will.matchValue(1, ^BOOL(PTNAlbumChangeset *returnedChangeset) {
+        PTNAlbumChangeset *interceptedChangeset =
+            [PTNAlbumChangeset changesetWithBeforeAlbum:album
+                                             afterAlbum:interceptedAlbum
+                                        subalbumChanges:nil assetChanges:mappingChanges];
+        return PTNChangesetSemanticallyEqual(returnedChangeset, interceptedChangeset);
+      });
+      expect(values).will.matchValue(2, ^BOOL(PTNAlbumChangeset *returnedChangeset) {
+        PTNAlbumChangeset *interceptedChangeset =
+            [PTNAlbumChangeset changesetWithBeforeAlbum:interceptedAlbum
+                                             afterAlbum:otherInterceptedAlbum
+                                        subalbumChanges:nil assetChanges:mappingChanges];
+        return PTNChangesetSemanticallyEqual(returnedChangeset, interceptedChangeset);
+      });
+    });
+
+    it(@"should correctly handle mapping updates of the same intercepting asset", ^{
+      LLSignalTestRecorder *values = [[interceptingAssetManager fetchAlbumWithURL:albumURL]
+                                      testRecorder];
+
+      [underlyingAssetManager serveAlbumURL:albumURL withAlbum:album];
+      [interceptionMap sendNext:@{assetDescriptorURL: interceptingDescriptor}];
+      [underlyingAssetManager serveDescriptorURL:assetDescriptorURL withDescriptor:assetDescriptor];
+
+      [interceptionMap sendNext:@{otherDescriptorURL: interceptingDescriptor}];
+      [underlyingAssetManager serveDescriptorURL:otherDescriptorURL withDescriptor:otherDescriptor];
+
+      PTNAlbum *interceptedAlbum = [[PTNAlbum alloc] initWithURL:albumURL
+            subalbums:@[subalbumDescriptor, otherDescriptor]
+            assets:@[interceptingDescriptor, otherDescriptor]];
+      PTNAlbum *otherInterceptedAlbum = [[PTNAlbum alloc] initWithURL:albumURL
+            subalbums:@[subalbumDescriptor, interceptingDescriptor]
+            assets:@[assetDescriptor, interceptingDescriptor]];
+
+      PTNIncrementalChanges *assetMappingChanges = [PTNIncrementalChanges
+          changesWithRemovedIndexes:nil insertedIndexes:nil
+          updatedIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 2)] moves:nil];
+      PTNIncrementalChanges *albumMappingChanges = [PTNIncrementalChanges
+          changesWithRemovedIndexes:nil insertedIndexes:nil
+          updatedIndexes:[NSIndexSet indexSetWithIndex:1] moves:nil];
+
+      expect(values).will.sendValuesWithCount(3);
+      expect(values).will.matchValue(0, ^BOOL(PTNAlbumChangeset *returnedChangeset) {
+        PTNAlbumChangeset *afterAlbumChangeset = [PTNAlbumChangeset changesetWithAfterAlbum:album];
+        return PTNChangesetSemanticallyEqual(returnedChangeset, afterAlbumChangeset);
+      });
+      expect(values).will.matchValue(1, ^BOOL(PTNAlbumChangeset *returnedChangeset) {
+        PTNAlbumChangeset *interceptedChangeset =
+            [PTNAlbumChangeset changesetWithBeforeAlbum:album
+                                             afterAlbum:interceptedAlbum
+                                        subalbumChanges:nil assetChanges:mappingChanges];
+        return PTNChangesetSemanticallyEqual(returnedChangeset, interceptedChangeset);
+      });
+      expect(values).will.matchValue(2, ^BOOL(PTNAlbumChangeset *returnedChangeset) {
+        PTNAlbumChangeset *interceptedChangeset =
+            [PTNAlbumChangeset changesetWithBeforeAlbum:interceptedAlbum
+                                             afterAlbum:otherInterceptedAlbum
+                                        subalbumChanges:albumMappingChanges
+                                           assetChanges:assetMappingChanges];
+        return PTNChangesetSemanticallyEqual(returnedChangeset, interceptedChangeset);
+      });
+    });
   });
 
   context(@"memory management", ^{
