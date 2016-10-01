@@ -13,28 +13,28 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark Nullability Validation
 #pragma mark -
 
-+ (NSSet<NSString *> *)nullablePropertyKeys {
-  static NSSet<NSString *> *nullablePropertyKeys;
++ (NSSet<NSString *> *)optionalPropertyKeys {
+  static NSSet<NSString *> *optionalPropertyKeys;
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
-    nullablePropertyKeys = [NSSet set];
+    optionalPropertyKeys = [NSSet set];
   });
 
-  return nullablePropertyKeys;
+  return optionalPropertyKeys;
 }
 
 + (BOOL)validateDictionaryValue:(NSDictionary *)dictionaryValue
-       withNullablePropertyKeys:(NSSet<NSString *> *)nullablePropertyKeys
+       withOptionalPropertyKeys:(NSSet<NSString *> *)optionalPropertyKeys
                           error:(NSError * __autoreleasing *)error {
   for (NSString *key in [self propertyKeys]) {
-    if ([nullablePropertyKeys containsObject:key]) {
+    if ([optionalPropertyKeys containsObject:key]) {
       continue;
     }
 
     id value = dictionaryValue[key];
     if (!value || value == [NSNull null]) {
       if (error) {
-        *error = [self nullabilityValidationErrorWithFailingKey:key];
+        *error = [self integrityValidationErrorWithFailingKey:key];
       }
       return NO;
     }
@@ -42,10 +42,10 @@ NS_ASSUME_NONNULL_BEGIN
   return YES;
 }
 
-+ (NSError *)nullabilityValidationErrorWithFailingKey:(NSString *)failingKey {
++ (NSError *)integrityValidationErrorWithFailingKey:(NSString *)failingKey {
   NSString *description = [NSString stringWithFormat:@"Invalid dictionary value for model %@, "
-                           "dictionary is lacking a value or specified null value for non-nullable "
-                           "property key: '%@'", self, failingKey];
+                           "dictionary is lacking a required value or specified null value for a "
+                           "required property key: '%@'", self, failingKey];
   return [NSError lt_errorWithCode:LTErrorCodeObjectCreationFailed description:description];
 }
 
@@ -56,7 +56,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithDictionary:(NSDictionary *)dictionaryValue
                              error:(NSError * __autoreleasing *)error {
   if (![[self class] validateDictionaryValue:dictionaryValue
-                    withNullablePropertyKeys:[[self class] nullablePropertyKeys] error:error]) {
+                    withOptionalPropertyKeys:[[self class] optionalPropertyKeys] error:error]) {
     return nil;
   }
 
