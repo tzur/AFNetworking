@@ -11,7 +11,7 @@ SpecBegin(BZRReceiptInAppPurchaseInfo)
 
 context(@"initialization", ^{
   it(@"should not allow nil properties", ^{
-    expect([BZRReceiptInAppPurchaseInfo nullablePropertyKeys].count).to.equal(0);
+    expect([BZRReceiptInAppPurchaseInfo optionalPropertyKeys].count).to.equal(0);
   });
 });
 
@@ -24,8 +24,8 @@ SpecEnd
 SpecBegin(BZRReceiptSubscriptionInfo)
 
 context(@"initialization", ^{
-  it(@"should correctly specify nullable properties", ^{
-    NSSet<NSString *> *nullableProperties = [BZRReceiptSubscriptionInfo nullablePropertyKeys];
+  it(@"should correctly specify optional properties", ^{
+    NSSet<NSString *> *nullableProperties = [BZRReceiptSubscriptionInfo optionalPropertyKeys];
 
     expect(nullableProperties.count).to.equal(2);
     expect(nullableProperties).to
@@ -44,8 +44,8 @@ SpecEnd
 SpecBegin(BZRReceiptInfo)
 
 context(@"initialization", ^{
-  it(@"should correctly specifiy nullable properties", ^{
-    NSSet<NSString *> *nullableProperties = [BZRReceiptInfo nullablePropertyKeys];
+  it(@"should correctly specifiy optional properties", ^{
+    NSSet<NSString *> *nullableProperties = [BZRReceiptInfo optionalPropertyKeys];
 
     expect(nullableProperties.count).to.equal(2);
     expect(nullableProperties).to.contain(@instanceKeypath(BZRReceiptInfo, inAppPurchases));

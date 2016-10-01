@@ -10,17 +10,17 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation BZRReceiptValidationStatus
 
-+ (NSSet<NSString *> *)nullablePropertyKeys {
-  static NSSet<NSString *> *nullablePropertyKeys;
++ (NSSet<NSString *> *)optionalPropertyKeys {
+  static NSSet<NSString *> *optionalPropertyKeys;
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
-    nullablePropertyKeys = [NSSet setWithArray:@[
+    optionalPropertyKeys = [NSSet setWithArray:@[
       @instanceKeypath(BZRReceiptValidationStatus, error),
       @instanceKeypath(BZRReceiptValidationStatus, receipt),
     ]];
   });
 
-  return nullablePropertyKeys;
+  return optionalPropertyKeys;
 }
 
 - (BOOL)validate:(NSError *__autoreleasing *)error {
