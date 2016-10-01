@@ -24,7 +24,7 @@
 
 @implementation BZRDummyJSONSerializingModel
 
-+ (NSSet<NSString *> *)nullablePropertyKeys {
++ (NSSet<NSString *> *)optionalPropertyKeys {
   return [NSSet setWithObject:@instanceKeypath(BZRDummyJSONSerializingModel, optionalValue)];
 }
 

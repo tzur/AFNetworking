@@ -6,19 +6,31 @@
 static NSString * const kInvalidValidPropertyValue = @"Baz";
 static const NSUInteger kValidationErrorCode = 1337;
 
+/// Dummy model used for testing \c BZRModel functionality.
 @interface BZRDummyModel : BZRModel
-@property (strong, readonly, nonatomic, nonnull) NSString *nonnullProperty;
-@property (strong, readonly, nonatomic, nullable) NSString *nullableProperty;
+
+/// Non-optional property, its value must be provided on initialization and must not be \c nil.
+@property (strong, readonly, nonatomic, nonnull) NSString *requiredProperty;
+
+/// Optional property, its value can be omitted and \c nil is a valid value for that key.
+@property (strong, readonly, nonatomic, nullable) NSString *optionalProperty;
+
+/// Optional property of a primitive type, its value can be omitted.
+@property (readonly, nonatomic) BOOL primitiveProperty;
+
 @end
 
 @implementation BZRDummyModel
 
-+ (NSSet<NSString *> *)nullablePropertyKeys {
-  return [NSSet setWithObjects:@instanceKeypath(BZRDummyModel, nullableProperty), nil];
++ (NSSet<NSString *> *)optionalPropertyKeys {
+  return [NSSet setWithArray:@[
+    @instanceKeypath(BZRDummyModel, optionalProperty),
+    @instanceKeypath(BZRDummyModel, primitiveProperty),
+  ]];
 }
 
 - (BOOL)validate:(NSError *__autoreleasing *)error {
-  if ([self.nonnullProperty isEqualToString:kInvalidValidPropertyValue]) {
+  if ([self.requiredProperty isEqualToString:kInvalidValidPropertyValue]) {
     if (error) {
       *error = [NSError lt_errorWithCode:kValidationErrorCode];
     }
@@ -31,48 +43,48 @@ static const NSUInteger kValidationErrorCode = 1337;
 
 SpecBegin(BZRModel)
 
-context(@"nullable properties", ^{
-  it(@"should return nil", ^{
-    expect([BZRModel nullablePropertyKeys].count).to.equal(0);
+context(@"optional properties", ^{
+  it(@"should have no optional properties by default", ^{
+    expect([BZRModel optionalPropertyKeys].count).to.equal(0);
   });
 });
 
 context(@"dictionary validation", ^{
   __block NSError *error;
-  __block NSSet<NSString *> *nullablePropertyKeys;
+  __block NSSet<NSString *> *optionalPropertyKeys;
 
   beforeEach(^{
     error = nil;
-    nullablePropertyKeys = [BZRDummyModel nullablePropertyKeys];
+    optionalPropertyKeys = [BZRDummyModel optionalPropertyKeys];
   });
 
-  it(@"should succeed if dictionary is missing a value for nullable property", ^{
-    NSDictionary *dictionaryValue = @{@instanceKeypath(BZRDummyModel, nonnullProperty): @"Foo"};
+  it(@"should succeed if dictionary is missing a value for optional properties", ^{
+    NSDictionary *dictionaryValue = @{@instanceKeypath(BZRDummyModel, requiredProperty): @"Foo"};
 
     BOOL isValid = [BZRDummyModel validateDictionaryValue:dictionaryValue
-                                 withNullablePropertyKeys:nullablePropertyKeys error:&error];
+                                 withOptionalPropertyKeys:optionalPropertyKeys error:&error];
     expect(isValid).to.beTruthy();
     expect(error).to.beNil();
   });
 
-  it(@"should fail validation if dictionary is missing value for nonnull property", ^{
-    NSDictionary *dictionaryValue = @{@instanceKeypath(BZRDummyModel, nullableProperty): @"Foo"};
+  it(@"should fail validation if dictionary is missing value for a mandatory property", ^{
+    NSDictionary *dictionaryValue = @{@instanceKeypath(BZRDummyModel, optionalProperty): @"Foo"};
 
     BOOL isValid = [BZRDummyModel validateDictionaryValue:dictionaryValue
-                                 withNullablePropertyKeys:nullablePropertyKeys error:&error];
+                                 withOptionalPropertyKeys:optionalPropertyKeys error:&error];
     expect(isValid).to.beFalsy();
     expect(error).toNot.beNil();
     expect(error.domain).to.equal(kLTErrorDomain);
     expect(error.code).to.equal(LTErrorCodeObjectCreationFailed);
   });
 
-  it(@"should fail validation if any property value is missing and no nullable keys are allowed", ^{
+  it(@"should fail validation if any property value is missing and no optional keys are allowed", ^{
     NSDictionary *dictionaryValue = @{
-      @instanceKeypath(BZRDummyModel, nonnullProperty): @"Foo"
+      @instanceKeypath(BZRDummyModel, requiredProperty): @"Foo"
     };
 
     BOOL isValid = [BZRDummyModel validateDictionaryValue:dictionaryValue
-                                 withNullablePropertyKeys:[NSSet set] error:&error];
+                                 withOptionalPropertyKeys:[NSSet set] error:&error];
     expect(isValid).to.beFalsy();
     expect(error).toNot.beNil();
     expect(error.domain).to.equal(kLTErrorDomain);
@@ -82,7 +94,7 @@ context(@"dictionary validation", ^{
 
 context(@"safe initializer", ^{
   it(@"should fail initialization if dictionary does not pass validation", ^{
-    NSDictionary *dictionaryValue = @{@instanceKeypath(BZRDummyModel, nullableProperty): @"Foo"};
+    NSDictionary *dictionaryValue = @{@instanceKeypath(BZRDummyModel, optionalProperty): @"Foo"};
 
     NSError *error;
     BZRDummyModel *model = [[BZRDummyModel alloc] initWithDictionary:dictionaryValue error:&error];
@@ -93,19 +105,19 @@ context(@"safe initializer", ^{
   });
 
   it(@"should initialize with valid dictionary value", ^{
-    NSDictionary *dictionaryValue = @{@instanceKeypath(BZRDummyModel, nonnullProperty): @"Foo"};
+    NSDictionary *dictionaryValue = @{@instanceKeypath(BZRDummyModel, requiredProperty): @"Foo"};
 
     NSError *error;
     BZRDummyModel *model = [[BZRDummyModel alloc] initWithDictionary:dictionaryValue error:&error];
     expect(model).toNot.beNil();
-    expect(model.nonnullProperty).to.equal(@"Foo");
-    expect(model.nullableProperty).to.beNil();
+    expect(model.requiredProperty).to.equal(@"Foo");
+    expect(model.optionalProperty).to.beNil();
     expect(error).to.beNil();
   });
 
   it(@"should fail initialization if post initialization validation fails", ^{
     NSDictionary *dictionaryValue = @{
-      @instanceKeypath(BZRDummyModel, nonnullProperty): kInvalidValidPropertyValue
+      @instanceKeypath(BZRDummyModel, requiredProperty): kInvalidValidPropertyValue
     };
 
     NSError *error;
@@ -113,6 +125,47 @@ context(@"safe initializer", ^{
     expect(model).to.beNil();
     expect(error).toNot.beNil();
     expect(error.code).to.equal(kValidationErrorCode);
+  });
+});
+
+context(@"overriding property values", ^{
+  __block BZRDummyModel *model;
+
+  beforeEach(^{
+    model = [[BZRDummyModel alloc] initWithDictionary:@{
+      @instanceKeypath(BZRDummyModel, requiredProperty): @"Foo",
+      @instanceKeypath(BZRDummyModel, optionalProperty): @"Bar",
+      @instanceKeypath(BZRDummyModel, primitiveProperty): @YES
+    } error:nil];
+  });
+
+  it(@"should return a new model with only the specified keys replaced", ^{
+    BZRDummyModel *modifiedModel =
+        [model modelByOverridingProperty:@keypath(model, optionalProperty) withValue:@"Baz"];
+
+    expect(modifiedModel).toNot.beIdenticalTo(model);
+    expect(model.optionalProperty).to.equal(@"Bar");
+    expect(modifiedModel.requiredProperty).to.equal(model.requiredProperty);
+    expect(modifiedModel.optionalProperty).to.equal(@"Baz");
+    expect(modifiedModel.primitiveProperty).to.beTruthy();
+  });
+
+  it(@"should return a new model with only the specified primitive key replaced", ^{
+    BZRDummyModel *modifiedModel =
+        [model modelByOverridingProperty:@keypath(model, primitiveProperty) withValue:@NO];
+
+    expect(modifiedModel).toNot.beIdenticalTo(model);
+    expect(model.primitiveProperty).to.beTruthy();
+    expect(modifiedModel.requiredProperty).to.equal(model.requiredProperty);
+    expect(modifiedModel.optionalProperty).to.equal(@"Bar");
+    expect(modifiedModel.primitiveProperty).to.beFalsy();
+  });
+
+  it(@"should raise exception if the property key to replace does not exist", ^{
+    expect(^{
+      BZRDummyModel __unused *modifiedModel =
+          [model modelByOverridingProperty:@"baz" withValue:@"Baz"];
+    }).to.raise(NSInternalInconsistencyException);
   });
 });
 

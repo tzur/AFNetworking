@@ -33,12 +33,13 @@
 SpecBegin(BZRProduct)
 
 context(@"initialization", ^{
-  it(@"should correctly specifiy nullable properties", ^{
-    NSSet<NSString *> *nullableProperties = [BZRProduct nullablePropertyKeys];
+  it(@"should correctly specifiy optional properties", ^{
+    NSSet<NSString *> *optionalProperties = [BZRProduct optionalPropertyKeys];
 
-    expect(nullableProperties.count).to.equal(2);
-    expect(nullableProperties).to.contain(@instanceKeypath(BZRProduct, contentFetcherParameters));
-    expect(nullableProperties).to.contain(@instanceKeypath(BZRProduct, priceInfo));
+    expect(optionalProperties.count).to.equal(3);
+    expect(optionalProperties).to.contain(@instanceKeypath(BZRProduct, contentFetcherParameters));
+    expect(optionalProperties).to.contain(@instanceKeypath(BZRProduct, priceInfo));
+    expect(optionalProperties).to.contain(@instanceKeypath(BZRProduct, isSubscribersOnly));
   });
 });
 

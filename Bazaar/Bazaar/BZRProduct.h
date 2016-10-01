@@ -34,7 +34,8 @@ LTEnumDeclare(NSUInteger, BZRProductType,
 /// needed to be fetched.
 @property (readonly, nonatomic, nullable) BZRContentFetcherParameters *contentFetcherParameters;
 
-/// \c YES if the product is for subscribers only, \c NO otherwise.
+/// \c YES if the product is for subscribers only, \c NO otherwise. Optional, the default value is
+/// \c NO.
 @property (readonly, nonatomic) BOOL isSubscribersOnly;
 
 /// Holds the price and the locale of the product.

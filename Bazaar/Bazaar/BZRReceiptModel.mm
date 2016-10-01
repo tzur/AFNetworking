@@ -23,17 +23,17 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation BZRReceiptSubscriptionInfo
 
-+ (NSSet<NSString *> *)nullablePropertyKeys {
-  static NSSet<NSString *> *nullablePropertyKeys;
++ (NSSet<NSString *> *)optionalPropertyKeys {
+  static NSSet<NSString *> *optionalPropertyKeys;
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
-    nullablePropertyKeys = [NSSet setWithArray:@[
+    optionalPropertyKeys = [NSSet setWithArray:@[
       @instanceKeypath(BZRReceiptSubscriptionInfo, lastPurchaseDateTime),
       @instanceKeypath(BZRReceiptSubscriptionInfo, cancellationDateTime)
     ]];
   });
 
-  return nullablePropertyKeys;
+  return optionalPropertyKeys;
 }
 
 + (BOOL)supportsSecureCoding {
@@ -48,17 +48,17 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation BZRReceiptInfo
 
-+ (NSSet<NSString *> *)nullablePropertyKeys {
-  static NSSet<NSString *> *nullablePropertyKeys;
++ (NSSet<NSString *> *)optionalPropertyKeys {
+  static NSSet<NSString *> *optionalPropertyKeys;
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
-    nullablePropertyKeys = [NSSet setWithArray:@[
+    optionalPropertyKeys = [NSSet setWithArray:@[
       @instanceKeypath(BZRReceiptInfo, inAppPurchases),
       @instanceKeypath(BZRReceiptInfo, subscription)
     ]];
   });
 
-  return nullablePropertyKeys;
+  return optionalPropertyKeys;
 }
 
 + (BOOL)supportsSecureCoding {

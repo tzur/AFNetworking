@@ -62,17 +62,18 @@ LTEnumImplement(NSUInteger, BZRProductType,
 #pragma mark BZRModel
 #pragma mark -
 
-+ (NSSet<NSString *> *)nullablePropertyKeys {
-  static NSSet<NSString *> *nullablePropertyKeys;
++ (NSSet<NSString *> *)optionalPropertyKeys {
+  static NSSet<NSString *> *optionalPropertyKeys;
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
-    nullablePropertyKeys = [NSSet setWithArray:@[
+    optionalPropertyKeys = [NSSet setWithArray:@[
       @instanceKeypath(BZRProduct, contentFetcherParameters),
-      @instanceKeypath(BZRProduct, priceInfo)
+      @instanceKeypath(BZRProduct, priceInfo),
+      @instanceKeypath(BZRProduct, isSubscribersOnly)
     ]];
   });
   
-  return nullablePropertyKeys;
+  return optionalPropertyKeys;
 }
 
 @end
