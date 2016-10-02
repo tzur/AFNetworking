@@ -4,9 +4,7 @@
 #import "CUISingleChoiceMenuViewController.h"
 
 #import "CUIIconWithTitleCell.h"
-#import "CUIMutableMenuItemView.h"
 #import "CUISharedTheme.h"
-#import "CUISingleChoiceMenuViewModel.h"
 
 @interface CUISingleChoiceMenuViewController (ForTesting) <UICollectionViewDelegate,
     UICollectionViewDelegateFlowLayout>
@@ -33,7 +31,7 @@
 SpecBegin(CUISingleChoiceMenuViewController)
 
 static const CGRect kFrame = CGRectMake(0, 0, 320, 100);
-static const CGRect kFrame2 = CGRectMake(0, 0, 375, 80);
+static const CGRect kFrame2 = CGRectMake(0, 0, 375, 120);
 static const CGFloat kStartingItemPerRow = 5.5;
 static NSURL * const kTestURL = [NSURL URLWithString:@"http://hello.world"];
 
@@ -56,11 +54,19 @@ beforeEach(^{
 });
 
 context(@"items per row", ^{
+  __block UICollectionView *collectionView;
+  __block UICollectionViewLayout *layout;
+
+  beforeEach(^{
+    collectionView = singleChoiceMenuViewController.collectionView;
+    layout = collectionView.collectionViewLayout;
+  });
+
   it(@"should start with 5.5 items per row", ^{
     expect(singleChoiceMenuViewController.itemsPerRow).to.equal(kStartingItemPerRow);
     CGSize itemSize =
-        [singleChoiceMenuViewController collectionView:singleChoiceMenuViewController.collectionView
-                                                layout:[[UICollectionViewFlowLayout alloc] init]
+        [singleChoiceMenuViewController collectionView:collectionView
+                                                layout:layout
                                 sizeForItemAtIndexPath:[NSIndexPath indexPathForItem:0
                                                                            inSection:0]];
     expect(itemSize.height).to.equal(kFrame.size.height);
@@ -71,8 +77,8 @@ context(@"items per row", ^{
     CGFloat itemsPerRow = 4;
     singleChoiceMenuViewController.itemsPerRow = itemsPerRow;
     CGSize itemSize =
-        [singleChoiceMenuViewController collectionView:singleChoiceMenuViewController.collectionView
-                                                layout:[[UICollectionViewFlowLayout alloc] init]
+        [singleChoiceMenuViewController collectionView:collectionView
+                                                layout:layout
                                 sizeForItemAtIndexPath:[NSIndexPath indexPathForItem:0
                                                                            inSection:0]];
     expect(itemSize.height).to.equal(kFrame.size.height);
@@ -83,8 +89,8 @@ context(@"items per row", ^{
     singleChoiceMenuViewController.view.frame = kFrame2;
     [singleChoiceMenuViewController.view layoutIfNeeded];
     CGSize itemSize =
-        [singleChoiceMenuViewController collectionView:singleChoiceMenuViewController.collectionView
-                                                layout:[[UICollectionViewFlowLayout alloc] init]
+        [singleChoiceMenuViewController collectionView:collectionView
+                                                layout:layout
                                 sizeForItemAtIndexPath:[NSIndexPath indexPathForItem:0
                                                                            inSection:0]];
     expect(itemSize.height).to.equal(kFrame2.size.height);
@@ -134,13 +140,13 @@ context(@"items cells", ^{
   });
 
   it(@"should update number of items", ^{
-    NSUInteger numberOfItems =
+    NSInteger numberOfItems =
         [singleChoiceMenuViewController.collectionView numberOfItemsInSection:0];
     expect(numberOfItems).to.equal(itemModels.count);
     NSArray<CUIMenuItemModel *> *newItemModels = @[
-        [[CUIMenuItemModel alloc] initWithLocalizedTitle:@"1" iconURL:kTestURL key:@""],
-        [[CUIMenuItemModel alloc] initWithLocalizedTitle:@"2" iconURL:kTestURL key:@""],
-        [[CUIMenuItemModel alloc] initWithLocalizedTitle:@"3" iconURL:kTestURL key:@""]
+      [[CUIMenuItemModel alloc] initWithLocalizedTitle:@"1" iconURL:kTestURL key:@""],
+      [[CUIMenuItemModel alloc] initWithLocalizedTitle:@"2" iconURL:kTestURL key:@""],
+      [[CUIMenuItemModel alloc] initWithLocalizedTitle:@"3" iconURL:kTestURL key:@""]
     ];
     [menuViewModel setItemModels:newItemModels selectedItem:newItemModels[1]];
     numberOfItems = [singleChoiceMenuViewController.collectionView numberOfItemsInSection:0];
