@@ -69,10 +69,14 @@ NS_ASSUME_NONNULL_BEGIN
 
   NSIndexSet *updatedAlbumIndexes =
       [[self class] mappingUpdatesInCollection:parameters.changeset.afterAlbum.subalbums
+                       previousInterceptionMap:parameters.previousInterceptionMap
+                               interceptionMap:parameters.interceptionMap
                            previousOriginalMap:parameters.previousOriginalMap
                                    originalMap:parameters.originalMap];
   NSIndexSet *updatedAssetIndexes =
       [[self class] mappingUpdatesInCollection:parameters.changeset.afterAlbum.assets
+                       previousInterceptionMap:parameters.previousInterceptionMap
+                               interceptionMap:parameters.interceptionMap
                            previousOriginalMap:parameters.previousOriginalMap
                                    originalMap:parameters.originalMap];
 
@@ -138,16 +142,35 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 + (NSIndexSet *)mappingUpdatesInCollection:(id<LTRandomAccessCollection>)collection
+                   previousInterceptionMap:(PTNDescriptorBidirectionalMap *)previousInterceptionMap
+                           interceptionMap:(PTNDescriptorBidirectionalMap *)interceptionMap
                        previousOriginalMap:(PTNDescriptorBidirectionalMap *)previousOriginalMap
                                originalMap:(PTNDescriptorBidirectionalMap *)originalMap {
   NSMutableIndexSet *updatedIndexes = [NSMutableIndexSet indexSet];
 
   NSArray<id<PTNDescriptor>> *alteredDescriptors =
-      [[self class] symmetricDifference:previousOriginalMap.allValues with:originalMap.allValues];
+      [[self class] symmetricDifference:previousInterceptionMap.allValues
+                                   with:interceptionMap.allValues];
 
-  for (id<PTNDescriptor> descriptor in alteredDescriptors) {
-    if ([collection containsObject:descriptor]) {
-      [updatedIndexes addIndex:[collection indexOfObject:descriptor]];
+  NSArray<NSURL *> *alteredKeys =
+      [[self class] symmetricDifference:previousInterceptionMap.allKeys
+                                   with:interceptionMap.allKeys];
+
+  NSArray<NSURL *> *alteredDescriptorKeys = [alteredDescriptors.rac_sequence
+      map:^NSURL *(id<PTNDescriptor> descriptor) {
+        // Originating in a symmetric difference, a descriptor will be in exactly one of the maps.
+        return [interceptionMap keyForObject:descriptor] ?:
+            [previousInterceptionMap keyForObject:descriptor];
+      }].array;
+
+  for (NSURL *identifier in [alteredKeys arrayByAddingObjectsFromArray:alteredDescriptorKeys]) {
+    // Indentifier should be in one of the original maps or in both, if it's in both it should point
+    // to the same asset, so it doesn't matter which one returns it.
+    id<PTNDescriptor> originalDescriptor = originalMap[identifier] ?:
+        previousOriginalMap[identifier];
+    NSUInteger indexPath = [collection indexOfObject:originalDescriptor];
+    if (indexPath != NSNotFound) {
+      [updatedIndexes addIndex:indexPath];
     }
   }
 
