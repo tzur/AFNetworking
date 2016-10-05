@@ -887,113 +887,147 @@ context(@"errors signal", ^{
 });
 
 context(@"KVO-compliance", ^{
+  __block BZRFakeCachedReceiptValidationStatusProvider *validationStatusProvider;
+  __block BZRFakeAcquiredViaSubscriptionProvider *acquiredViaSubscriptionProvider;
+
+  beforeEach(^{
+    validationStatusProvider = [[BZRFakeCachedReceiptValidationStatusProvider alloc] init];
+    acquiredViaSubscriptionProvider =  [[BZRFakeAcquiredViaSubscriptionProvider alloc] init];
+
+    configuration.validationStatusProvider = validationStatusProvider;
+    configuration.acquiredViaSubscriptionProvider = acquiredViaSubscriptionProvider;
+
+    store = [[BZRStore alloc] initWithConfiguration:configuration];
+  });
+
   context(@"purchased products", ^{
-    it(@"should depend on receipt validation status", ^{
-      BZRFakeCachedReceiptValidationStatusProvider *validationStatusProvider =
-          [[BZRFakeCachedReceiptValidationStatusProvider alloc] init];
-      configuration.validationStatusProvider = validationStatusProvider;
-      store = [[BZRStore alloc] initWithConfiguration:configuration];
-
-      RACSignal *productsSignal = RACObserve(store, purchasedProducts);
-      expect(productsSignal).will.sendValues(@[[NSSet set]]);
-
+    it(@"should update when receipt validation status changes", ^{
+      RACSignal *productsSignal = [RACObserve(store, purchasedProducts) testRecorder];
       validationStatusProvider.receiptValidationStatus =
-          BZRReceiptValidationStatusWithInAppPurchaseAndExpiry(productIdentifier, NO);
-      expect(productsSignal).will.sendValues(@[[NSSet setWithObject:productIdentifier]]);
+          BZRReceiptValidationStatusWithInAppPurchaseAndExpiry(@"foo", NO);
+
+      expect(productsSignal).to.sendValues(@[
+        [NSSet set],
+        [NSSet setWithObject:@"foo"]
+      ]);
     });
   });
 
   context(@"acquired via subscription products", ^{
-    it(@"should depend on acquired via subscription list", ^{
-      BZRFakeAcquiredViaSubscriptionProvider *acquiredViaSubscriptionProvider =
-          [[BZRFakeAcquiredViaSubscriptionProvider alloc] init];
-      configuration.acquiredViaSubscriptionProvider = acquiredViaSubscriptionProvider;
-      store = [[BZRStore alloc] initWithConfiguration:configuration];
-
-      RACSignal *productsSignal = RACObserve(store, acquiredViaSubscriptionProducts);
-      expect(productsSignal).will.sendValues(@[[NSSet set]]);
-
+    it(@"should update when acquired via subscription list changes", ^{
+      RACSignal *productsSignal =
+          [RACObserve(store, acquiredViaSubscriptionProducts) testRecorder];
       acquiredViaSubscriptionProvider.productsAcquiredViaSubscription =
-          [NSSet setWithObject:productIdentifier];
-      expect(productsSignal).will.sendValues(@[[NSSet setWithObject:productIdentifier]]);
+          [NSSet setWithObject:@"foo"];
+
+      expect(productsSignal).to.sendValues(@[
+        [NSSet set],
+        [NSSet setWithObject:@"foo"]
+      ]);
     });
   });
 
   context(@"acquired products", ^{
-    it(@"should depend on acquired via subscription list and receipt validation status", ^{
-      BZRFakeAcquiredViaSubscriptionProvider *acquiredViaSubscriptionProvider =
-          [[BZRFakeAcquiredViaSubscriptionProvider alloc] init];
-      configuration.acquiredViaSubscriptionProvider = acquiredViaSubscriptionProvider;
-      BZRFakeCachedReceiptValidationStatusProvider *validationStatusProvider =
-          [[BZRFakeCachedReceiptValidationStatusProvider alloc] init];
-      configuration.validationStatusProvider = validationStatusProvider;
-      store = [[BZRStore alloc] initWithConfiguration:configuration];
-
-      RACSignal *productsSignal = RACObserve(store, acquiredProducts);
-      expect(productsSignal).will.sendValues(@[[NSSet set]]);
-
-      validationStatusProvider.receiptValidationStatus =
-          BZRReceiptValidationStatusWithInAppPurchaseAndExpiry(productIdentifier, NO);
-      expect(productsSignal).will.sendValues(@[[NSSet setWithObject:productIdentifier]]);
-
+    it(@"should update when acquired via subscription list changes", ^{
+      validationStatusProvider.receiptValidationStatus = BZRReceiptValidationStatusWithExpiry(NO);
+      RACSignal *productsSignal = [RACObserve(store, acquiredProducts) testRecorder];
       acquiredViaSubscriptionProvider.productsAcquiredViaSubscription =
-          [NSSet setWithObject:@"bar"];
-      expect(productsSignal).will.sendValues(@[[NSSet setWithObjects:productIdentifier, @"bar",
-                                                nil]]);
+          [NSSet setWithObject:@"foo"];
+
+      expect(productsSignal).to.sendValues(@[
+        [NSSet set],
+        [NSSet setWithObject:@"foo"]
+      ]);
+    });
+
+    it(@"should update when receipt validation status changes", ^{
+      RACSignal *productsSignal = [RACObserve(store, acquiredProducts) testRecorder];
+      validationStatusProvider.receiptValidationStatus =
+          BZRReceiptValidationStatusWithInAppPurchaseAndExpiry(@"foo", NO);
+
+      expect(productsSignal).to.sendValues(@[
+        [NSSet set],
+        [NSSet setWithObject:@"foo"]
+      ]);
     });
   });
 
   context(@"allowed products", ^{
-    it(@"should depend on acquired via subscription list and receipt validation status", ^{
-      BZRFakeAcquiredViaSubscriptionProvider *acquiredViaSubscriptionProvider =
-          [[BZRFakeAcquiredViaSubscriptionProvider alloc] init];
-      configuration.acquiredViaSubscriptionProvider = acquiredViaSubscriptionProvider;
-      BZRFakeCachedReceiptValidationStatusProvider *validationStatusProvider =
-          [[BZRFakeCachedReceiptValidationStatusProvider alloc] init];
-      configuration.validationStatusProvider = validationStatusProvider;
-      store = [[BZRStore alloc] initWithConfiguration:configuration];
-
-      RACSignal *productsSignal = RACObserve(store, allowedProducts);
-      expect(productsSignal).will.sendValues(@[[NSSet set]]);
-
-      validationStatusProvider.receiptValidationStatus =
-          BZRReceiptValidationStatusWithInAppPurchaseAndExpiry(productIdentifier, NO);
-      expect(productsSignal).will.sendValues(@[[NSSet setWithObject:productIdentifier]]);
-
+    it(@"should update when acquired via subscription list is changed", ^{
+      validationStatusProvider.receiptValidationStatus = BZRReceiptValidationStatusWithExpiry(NO);
+      RACSignal *productsSignal = [RACObserve(store, allowedProducts) testRecorder];
       acquiredViaSubscriptionProvider.productsAcquiredViaSubscription =
-          [NSSet setWithObject:@"bar"];
-      expect(productsSignal).will.sendValues(@[[NSSet setWithObjects:productIdentifier, @"bar",
-                                                nil]]);
+          [NSSet setWithObjects:@"foo", @"bar", nil];
 
+      expect(productsSignal).to.sendValues(@[
+        [NSSet set],
+        [NSSet setWithObjects:@"foo", @"bar", nil]
+      ]);
+    });
+
+    it(@"should update when purchased products is changed", ^{
+      validationStatusProvider.receiptValidationStatus = BZRReceiptValidationStatusWithExpiry(NO);
+      RACSignal *productsSignal = [RACObserve(store, allowedProducts) testRecorder];
       validationStatusProvider.receiptValidationStatus =
-          BZRReceiptValidationStatusWithInAppPurchaseAndExpiry(productIdentifier, YES);
-      expect(productsSignal).will.sendValues(@[[NSSet setWithObject:productIdentifier]]);
+          BZRReceiptValidationStatusWithInAppPurchaseAndExpiry(@"foo", NO);
+
+      expect(productsSignal).to.sendValues(@[
+        [NSSet set],
+        [NSSet setWithObjects:@"foo", nil]
+      ]);
+    });
+
+    it(@"should remove acquired via subscription products when subscribption expires", ^{
+      validationStatusProvider.receiptValidationStatus = BZRReceiptValidationStatusWithExpiry(NO);
+      acquiredViaSubscriptionProvider.productsAcquiredViaSubscription =
+          [NSSet setWithObject:@"foo"];
+      RACSignal *productsSignal = [RACObserve(store, allowedProducts) testRecorder];
+      validationStatusProvider.receiptValidationStatus =
+          BZRReceiptValidationStatusWithInAppPurchaseAndExpiry(@"bar", NO);
+      validationStatusProvider.receiptValidationStatus =
+          BZRReceiptValidationStatusWithInAppPurchaseAndExpiry(@"bar", YES);
+
+      expect(productsSignal).to.sendValues(@[
+        [NSSet setWithObject:@"foo"],
+        [NSSet setWithObjects:@"foo", @"bar", nil],
+        [NSSet setWithObject:@"bar"]
+      ]);
+    });
+
+    it(@"should add acquried via subscription products when subscription renews", ^{
+      validationStatusProvider.receiptValidationStatus = BZRReceiptValidationStatusWithExpiry(YES);
+      acquiredViaSubscriptionProvider.productsAcquiredViaSubscription =
+          [NSSet setWithObject:@"foo"];
+      RACSignal *productsSignal = [RACObserve(store, allowedProducts) testRecorder];
+      validationStatusProvider.receiptValidationStatus =
+          BZRReceiptValidationStatusWithInAppPurchaseAndExpiry(@"bar", YES);
+      validationStatusProvider.receiptValidationStatus =
+          BZRReceiptValidationStatusWithInAppPurchaseAndExpiry(@"bar", NO);
+
+      expect(productsSignal).to.sendValues(@[
+        [NSSet set],
+        [NSSet setWithObject:@"bar"],
+        [NSSet setWithObjects:@"foo", @"bar", nil]
+      ]);
     });
   });
 
   context(@"subscription info", ^{
-    it(@"should depend on receipt validation status", ^{
-      BZRFakeCachedReceiptValidationStatusProvider *validationStatusProvider =
-          [[BZRFakeCachedReceiptValidationStatusProvider alloc] init];
-      configuration.validationStatusProvider = validationStatusProvider;
-      store = [[BZRStore alloc] initWithConfiguration:configuration];
-
-      RACSignal *subscriptionSignal = RACObserve(store, subscriptionInfo);
-      expect(subscriptionSignal).will.sendValues(@[[NSNull null]]);
-
-      BZRReceiptValidationStatus *receiptValidationStatus =
+    it(@"should update when receipt validation status is changed", ^{
+      RACSignal *subscriptionSignal = [RACObserve(store, subscriptionInfo) testRecorder];
+      BZRReceiptValidationStatus *activeSubscriptionStatus =
           BZRReceiptValidationStatusWithExpiry(NO);
-      validationStatusProvider.receiptValidationStatus = receiptValidationStatus;
-      BZRReceiptSubscriptionInfo *subscription = receiptValidationStatus.receipt.subscription;
-      expect(subscriptionSignal).will.sendValues(@[subscription]);
+      BZRReceiptValidationStatus *inactiveSubscriptionStatus =
+          BZRReceiptValidationStatusWithInAppPurchaseAndExpiry(@"foo", YES);
+      validationStatusProvider.receiptValidationStatus = activeSubscriptionStatus;
+      validationStatusProvider.receiptValidationStatus = inactiveSubscriptionStatus;
 
-      BZRReceiptInfo *receipt =
-          [receiptValidationStatus.receipt
-           modelByOverridingProperty:@keypath(receipt, subscription) withValue:nil];
-      validationStatusProvider.receiptValidationStatus = 
-          [receiptValidationStatus
-           modelByOverridingProperty:@keypath(receiptValidationStatus, receipt) withValue:receipt];
-      expect(subscriptionSignal).will.sendValues(@[[NSNull null]]);
+
+      expect(subscriptionSignal).to.sendValues(@[
+        [NSNull null],
+        activeSubscriptionStatus.receipt.subscription,
+        inactiveSubscriptionStatus.receipt.subscription
+      ]);
     });
   });
 });
