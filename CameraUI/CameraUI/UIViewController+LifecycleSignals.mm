@@ -15,9 +15,9 @@ NS_ASSUME_NONNULL_BEGIN
   return [[RACSignal
       merge:@[
         [[self cui_toForegroundFromNotificationCenter:notificationCenter] mapReplace:@YES],
-        [[self rac_signalForSelector:@selector(viewWillAppear:)] mapReplace:@YES],
+        [[self rac_signalForSelector:@selector(viewDidAppear:)] mapReplace:@YES],
         [[self cui_toBackgroundFromNotificationCenter:notificationCenter] mapReplace:@NO],
-        [[self rac_signalForSelector:@selector(viewDidDisappear:)] mapReplace:@NO]
+        [[self rac_signalForSelector:@selector(viewWillDisappear:)] mapReplace:@NO]
       ]]
       distinctUntilChanged];
 }

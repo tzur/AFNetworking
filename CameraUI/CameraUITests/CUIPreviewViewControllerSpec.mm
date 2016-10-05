@@ -61,11 +61,6 @@ context(@"preview view", ^{
     expect([viewController.view wf_viewForAccessibilityIdentifier:@"SignalView"]).notTo.beNil();
   });
 
-  it(@"should subscribe to preview signal", ^{
-    [viewController loadViewIfNeeded];
-    expect(previewSignal).to.beSubscribedTo(1);
-  });
-
   it(@"should toggle to preview layer and signal", ^{
     UIView *layerView = [viewController.view wf_viewForAccessibilityIdentifier:@"LayerView"];
     UIView *signalView = [viewController.view wf_viewForAccessibilityIdentifier:@"SignalView"];

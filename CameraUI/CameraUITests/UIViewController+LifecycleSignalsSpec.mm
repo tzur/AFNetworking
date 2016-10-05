@@ -25,20 +25,20 @@ context(@"send values", ^{
   });
 
   it(@"should update appearing and disappearing", ^{
-    [viewController viewWillAppear:NO];
+    [viewController viewDidAppear:NO];
     expect(recorder).to.sendValues(@[@YES]);
-    [viewController viewDidDisappear:NO];
+    [viewController viewWillDisappear:NO];
     expect(recorder).to.sendValues(@[@YES, @NO]);
-    [viewController viewWillAppear:NO];
+    [viewController viewDidAppear:NO];
     expect(recorder).to.sendValues(@[@YES, @NO, @YES]);
   });
 
   it(@"should not be affected by animation", ^{
-    [viewController viewWillAppear:YES];
+    [viewController viewDidAppear:YES];
     expect(recorder).to.sendValues(@[@YES]);
-    [viewController viewDidDisappear:YES];
+    [viewController viewWillDisappear:YES];
     expect(recorder).to.sendValues(@[@YES, @NO]);
-    [viewController viewWillAppear:YES];
+    [viewController viewDidAppear:YES];
     expect(recorder).to.sendValues(@[@YES, @NO, @YES]);
   });
 
@@ -55,7 +55,7 @@ context(@"send values", ^{
   });
 
   it(@"should update appearing going to background and back", ^{
-    [viewController viewWillAppear:NO];
+    [viewController viewDidAppear:NO];
     expect(recorder).to.sendValues(@[@YES]);
     [notificationCenterFake postNotificationName:UIApplicationWillResignActiveNotification
                                           object:nil];
@@ -76,7 +76,7 @@ context(@"send values", ^{
   it(@"should update without duplicates for mixed sources", ^{
     [notificationCenterFake postNotificationName:UIApplicationWillResignActiveNotification
                                           object:nil];
-    [viewController viewDidDisappear:NO];
+    [viewController viewWillDisappear:NO];
     expect(recorder).to.sendValues(@[@NO]);
   });
 });

@@ -109,8 +109,11 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)setupPreviewSignalView {
-  CUISampleBufferView *signalView = [[CUISampleBufferView alloc]
-                                     initWithVideoFrames:self.viewModel.previewSignal];
+  RACSignal *frames = [RACSignal if:[self cui_isVisible]
+                               then:self.viewModel.previewSignal
+                               else:[RACSignal never]];
+
+  CUISampleBufferView *signalView = [[CUISampleBufferView alloc] initWithVideoFrames:frames];
   signalView.accessibilityIdentifier = @"SignalView";
   _previewFromSignalView = signalView;
 

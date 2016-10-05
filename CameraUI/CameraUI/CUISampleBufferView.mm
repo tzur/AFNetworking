@@ -26,6 +26,9 @@ NS_ASSUME_NONNULL_BEGIN
         takeUntil:[self rac_willDeallocSignal]]
         subscribeNext:^(CAMVideoFrame *frame) {
           @strongify(self);
+          if (self.layer.error) {
+            [self.layer flush];
+          }
           [self.layer enqueueSampleBuffer:[frame sampleBuffer].get()];
         }];
   }
