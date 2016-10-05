@@ -6,6 +6,7 @@
 #import <LTKit/LTBidirectionalMap.h>
 #import <LTKit/LTRandomAccessCollection.h>
 
+#import "NSErrorCodes+Photons.h"
 #import "PTNAlbum.h"
 #import "PTNAlbumChangeset.h"
 #import "PTNFakeAssetManager.h"
@@ -169,10 +170,10 @@ context(@"album fetching", ^{
     });
   });
 
-  it(@"should proxy index of intercepted subalbum via original asset", ^{
-    [interceptionMap sendNext:@{subalbumDescriptorURL: interceptingDescriptor}];
-    [underlyingAssetManager serveDescriptorURL:subalbumDescriptorURL
-                                withDescriptor:subalbumDescriptor];
+  it(@"should proxy index of intercepted asset via original asset", ^{
+    [interceptionMap sendNext:@{assetDescriptorURL: interceptingDescriptor}];
+    [underlyingAssetManager serveDescriptorURL:assetDescriptorURL
+                                withDescriptor:assetDescriptor];
 
     LLSignalTestRecorder *values = [[interceptingAssetManager fetchAlbumWithURL:albumURL]
                                     testRecorder];
@@ -180,9 +181,27 @@ context(@"album fetching", ^{
     [underlyingAssetManager serveAlbumURL:albumURL withAlbum:album];
 
     expect(values).will.matchValue(0, ^BOOL(PTNAlbumChangeset *returnedChangeset) {
-      return [returnedChangeset.afterAlbum.subalbums indexOfObject:interceptingDescriptor] == 0 &&
+      return [returnedChangeset.afterAlbum.assets indexOfObject:interceptingDescriptor] == 0 &&
+          [returnedChangeset.afterAlbum.assets indexOfObject:otherDescriptor] == 1 &&
+          [returnedChangeset.afterAlbum.assets indexOfObject:assetDescriptor] == NSNotFound;
+    });
+  });
+
+  it(@"should not proxy index of intercepted subalbum when original asset can't be fetched", ^{
+    [interceptionMap sendNext:@{assetDescriptorURL: interceptingDescriptor}];
+    [underlyingAssetManager serveDescriptorURL:assetDescriptorURL
+        withError:[NSError lt_errorWithCode:1337]];
+
+    LLSignalTestRecorder *values = [[interceptingAssetManager fetchAlbumWithURL:albumURL]
+                                    testRecorder];
+
+    [underlyingAssetManager serveAlbumURL:albumURL withAlbum:album];
+
+    expect(values).will.matchValue(0, ^BOOL(PTNAlbumChangeset *returnedChangeset) {
+      return [returnedChangeset.afterAlbum.subalbums
+              indexOfObject:interceptingDescriptor] == NSNotFound &&
           [returnedChangeset.afterAlbum.subalbums indexOfObject:otherDescriptor] == 1 &&
-          [returnedChangeset.afterAlbum.subalbums indexOfObject:subalbumDescriptor] == NSNotFound;
+          [returnedChangeset.afterAlbum.subalbums indexOfObject:assetDescriptor] == NSNotFound;
     });
   });
 
