@@ -6,6 +6,7 @@
 #import <LTKit/LTBidirectionalMap.h>
 #import <LTKit/LTMappingRandomAccessCollection.h>
 
+#import "NSErrorCodes+Photons.h"
 #import "PTNAlbum.h"
 #import "PTNAlbumChangeset.h"
 #import "PTNAlbumInterceptionController.h"
@@ -155,18 +156,25 @@ NS_ASSUME_NONNULL_BEGIN
 - (RACSignal *)originalDescriptorsFromInterceptionMap:
     (PTNDescriptorBidirectionalMap *)interceptionMap {
   // Returns the descriptors that are originally associated with the URL keys of \c interceptionMap.
+  // Descriptors that can't be found are assumed to be removed and ignored.
   if (!interceptionMap.allKeys.count) {
     return [RACSignal return:[[LTBidirectionalMap alloc] init]];
   }
 
-  NSArray *signals = [interceptionMap.allKeys.rac_sequence map:^RACSignal *(NSURL *url) {
-    return [self fetchCachedDescriptorWithURL:url];
-  }].array;
+  RACSequence *signals = [interceptionMap.allKeys.rac_sequence map:^RACSignal *(NSURL *url) {
+    return [[self fetchCachedDescriptorWithURL:url] catchTo:[RACSignal return:nil]];
+  }];
 
   return [[[RACSignal combineLatest:signals]
       map:^id(RACTuple *descriptors) {
-        NSDictionary *dictionary = [[NSDictionary alloc] initWithObjects:descriptors.allObjects
-                                                                 forKeys:interceptionMap.allKeys];
+        NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
+        for (NSUInteger i = 0; i < descriptors.count; ++i) {
+          id<PTNDescriptor> _Nullable descriptor = descriptors[i];
+          if (descriptor) {
+            dictionary[interceptionMap.allKeys[i]] = descriptor;
+          }
+        }
+
         return [[LTBidirectionalMap alloc] initWithDictionary:dictionary];
       }]
       takeUntil:self.rac_willDeallocSignal];
