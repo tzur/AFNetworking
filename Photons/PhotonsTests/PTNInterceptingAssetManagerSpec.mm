@@ -110,12 +110,12 @@ context(@"album fetching", ^{
 
   it(@"should intercept given assets", ^{
     [interceptionMap sendNext:@{assetDescriptorURL: interceptingDescriptor}];
+    [underlyingAssetManager serveDescriptorURL:assetDescriptorURL withDescriptor:assetDescriptor];
 
     LLSignalTestRecorder *values = [[interceptingAssetManager fetchAlbumWithURL:albumURL]
                                     testRecorder];
 
     [underlyingAssetManager serveAlbumURL:albumURL withAlbum:album];
-    [underlyingAssetManager serveDescriptorURL:assetDescriptorURL withDescriptor:assetDescriptor];
 
 
     NSArray *assets = @[interceptingDescriptor, otherDescriptor];
@@ -132,12 +132,12 @@ context(@"album fetching", ^{
 
   it(@"should intercept given assets", ^{
     [interceptionMap sendNext:@{assetDescriptorURL: interceptingDescriptor}];
+    [underlyingAssetManager serveDescriptorURL:assetDescriptorURL withDescriptor:assetDescriptor];
 
     LLSignalTestRecorder *values = [[interceptingAssetManager fetchAlbumWithURL:albumURL]
                                     testRecorder];
 
     [underlyingAssetManager serveAlbumURL:albumURL withAlbum:album];
-    [underlyingAssetManager serveDescriptorURL:assetDescriptorURL withDescriptor:assetDescriptor];
 
 
     NSArray *assets = @[interceptingDescriptor, otherDescriptor];
@@ -154,13 +154,13 @@ context(@"album fetching", ^{
 
   it(@"should proxy index of intercepted asset via original asset", ^{
     [interceptionMap sendNext:@{assetDescriptorURL: interceptingDescriptor}];
+    [underlyingAssetManager serveDescriptorURL:assetDescriptorURL
+                                withDescriptor:assetDescriptor];
 
     LLSignalTestRecorder *values = [[interceptingAssetManager fetchAlbumWithURL:albumURL]
                                     testRecorder];
 
     [underlyingAssetManager serveAlbumURL:albumURL withAlbum:album];
-    [underlyingAssetManager serveDescriptorURL:assetDescriptorURL
-                                withDescriptor:assetDescriptor];
 
     expect(values).will.matchValue(0, ^BOOL(PTNAlbumChangeset *returnedChangeset) {
       return [returnedChangeset.afterAlbum.assets indexOfObject:interceptingDescriptor] == 0 &&
@@ -171,13 +171,13 @@ context(@"album fetching", ^{
 
   it(@"should proxy index of intercepted subalbum via original asset", ^{
     [interceptionMap sendNext:@{subalbumDescriptorURL: interceptingDescriptor}];
+    [underlyingAssetManager serveDescriptorURL:subalbumDescriptorURL
+                                withDescriptor:subalbumDescriptor];
 
     LLSignalTestRecorder *values = [[interceptingAssetManager fetchAlbumWithURL:albumURL]
                                     testRecorder];
 
     [underlyingAssetManager serveAlbumURL:albumURL withAlbum:album];
-    [underlyingAssetManager serveDescriptorURL:subalbumDescriptorURL
-                                withDescriptor:subalbumDescriptor];
 
     expect(values).will.matchValue(0, ^BOOL(PTNAlbumChangeset *returnedChangeset) {
       return [returnedChangeset.afterAlbum.subalbums indexOfObject:interceptingDescriptor] == 0 &&
@@ -189,14 +189,14 @@ context(@"album fetching", ^{
   it(@"should intercept given assets and subalbums", ^{
     [interceptionMap sendNext:@{assetDescriptorURL: interceptingDescriptor,
                                 subalbumDescriptorURL: interceptingDescriptor}];
+    [underlyingAssetManager serveDescriptorURL:assetDescriptorURL withDescriptor:assetDescriptor];
+    [underlyingAssetManager serveDescriptorURL:subalbumDescriptorURL
+                                withDescriptor:subalbumDescriptor];
 
     LLSignalTestRecorder *values = [[interceptingAssetManager fetchAlbumWithURL:albumURL]
                                     testRecorder];
 
     [underlyingAssetManager serveAlbumURL:albumURL withAlbum:album];
-    [underlyingAssetManager serveDescriptorURL:assetDescriptorURL withDescriptor:assetDescriptor];
-    [underlyingAssetManager serveDescriptorURL:subalbumDescriptorURL
-                                withDescriptor:subalbumDescriptor];
 
     NSArray *subalbums = @[interceptingDescriptor, otherDescriptor];
     NSArray *assets = @[interceptingDescriptor, otherDescriptor];
@@ -214,6 +214,9 @@ context(@"album fetching", ^{
   it(@"should intercept given assets and subalbums on before album", ^{
     [interceptionMap sendNext:@{assetDescriptorURL: interceptingDescriptor,
                                 subalbumDescriptorURL: interceptingDescriptor}];
+    [underlyingAssetManager serveDescriptorURL:assetDescriptorURL withDescriptor:assetDescriptor];
+    [underlyingAssetManager serveDescriptorURL:subalbumDescriptorURL
+                                withDescriptor:subalbumDescriptor];
 
     LLSignalTestRecorder *values = [[interceptingAssetManager fetchAlbumWithURL:albumURL]
                                     testRecorder];
@@ -223,9 +226,6 @@ context(@"album fetching", ^{
                                                                    subalbumChanges:nil
                                                                       assetChanges:nil];
     [underlyingAssetManager serveAlbumURL:albumURL withAlbumChangeset:sentChangeset];
-    [underlyingAssetManager serveDescriptorURL:assetDescriptorURL withDescriptor:assetDescriptor];
-    [underlyingAssetManager serveDescriptorURL:subalbumDescriptorURL
-                                withDescriptor:subalbumDescriptor];
 
     NSArray *subalbums = @[interceptingDescriptor, otherDescriptor];
     NSArray *assets = @[interceptingDescriptor, otherDescriptor];
@@ -244,12 +244,12 @@ context(@"album fetching", ^{
 
   it(@"should forward incremental changes on intercepted descriptors", ^{
     [interceptionMap sendNext:@{assetDescriptorURL: interceptingDescriptor}];
+    [underlyingAssetManager serveDescriptorURL:assetDescriptorURL withDescriptor:assetDescriptor];
 
     LLSignalTestRecorder *values = [[interceptingAssetManager fetchAlbumWithURL:albumURL]
                                     testRecorder];
 
     [underlyingAssetManager serveAlbumURL:albumURL withAlbum:album];
-    [underlyingAssetManager serveDescriptorURL:assetDescriptorURL withDescriptor:assetDescriptor];
 
     PTNIncrementalChanges *incrementalChanges = [PTNIncrementalChanges changesWithRemovedIndexes:nil
         insertedIndexes:[NSIndexSet indexSetWithIndex:0]
@@ -258,8 +258,6 @@ context(@"album fetching", ^{
         afterAlbum:album subalbumChanges:nil assetChanges:incrementalChanges];
     [underlyingAssetManager serveAlbumURL:albumURL withAlbumChangeset:sentChangeset];
     [underlyingAssetManager serveDescriptorURL:assetDescriptorURL withDescriptor:assetDescriptor];
-
-
 
     NSArray *assets = @[interceptingDescriptor, otherDescriptor];
     id<PTNAlbum> interceptedAlbum = [[PTNAlbum alloc] initWithURL:albumURL
@@ -279,12 +277,12 @@ context(@"album fetching", ^{
 
   it(@"should cache original descriptors", ^{
     [interceptionMap sendNext:@{assetDescriptorURL: interceptingDescriptor}];
+    [underlyingAssetManager serveDescriptorURL:assetDescriptorURL withDescriptor:assetDescriptor];
 
     LLSignalTestRecorder *values = [[interceptingAssetManager fetchAlbumWithURL:albumURL]
                                     testRecorder];
 
     [underlyingAssetManager serveAlbumURL:albumURL withAlbum:album];
-    [underlyingAssetManager serveDescriptorURL:assetDescriptorURL withDescriptor:assetDescriptor];
     [interceptionMap sendNext:@{assetDescriptorURL: interceptingDescriptor,
                                 otherDescriptorURL: interceptingDescriptor}];
     [underlyingAssetManager serveDescriptorURL:otherDescriptorURL withDescriptor:otherDescriptor];
@@ -537,12 +535,12 @@ context(@"album fetching", ^{
 
     it(@"should correctly handle updates on indexes outside original range", ^{
       [interceptionMap sendNext:@{assetDescriptorURL: interceptingDescriptor}];
+      [underlyingAssetManager serveDescriptorURL:assetDescriptorURL withDescriptor:assetDescriptor];
 
       LLSignalTestRecorder *values = [[interceptingAssetManager fetchAlbumWithURL:albumURL]
                                       testRecorder];
 
       [underlyingAssetManager serveAlbumURL:albumURL withAlbum:album];
-      [underlyingAssetManager serveDescriptorURL:assetDescriptorURL withDescriptor:assetDescriptor];
 
       PTNAlbum *newAlbum = [[PTNAlbum alloc] initWithURL:albumURL
           subalbums:@[subalbumDescriptor, otherDescriptor]
@@ -663,6 +661,34 @@ context(@"album fetching", ^{
                                         subalbumChanges:albumMappingChanges
                                            assetChanges:assetMappingChanges];
         return PTNChangesetSemanticallyEqual(returnedChangeset, interceptedChangeset);
+      });
+    });
+
+    it(@"should not skip album updates even if sent prior to mapping", ^{
+      PTNAlbumChangeset *changeset = [PTNAlbumChangeset changesetWithBeforeAlbum:album
+                                                                      afterAlbum:album
+                                                                 subalbumChanges:nil
+                                                                    assetChanges:nil];
+      RACSignal *albumUpdates = [[RACSignal
+           return:[PTNAlbumChangeset changesetWithAfterAlbum:album]]
+           concat:[RACSignal return:changeset]];
+
+      id<PTNAssetManager> assetManager = OCMProtocolMock(@protocol(PTNAssetManager));
+      OCMStub([assetManager fetchAlbumWithURL:OCMOCK_ANY]).andReturn(albumUpdates);
+
+      interceptingAssetManager =
+          [[PTNInterceptingAssetManager alloc] initWithAssetManager:assetManager
+                                             interceptedDescriptors:[RACSignal empty]];
+      LLSignalTestRecorder *values = [[interceptingAssetManager fetchAlbumWithURL:albumURL]
+                                      testRecorder];
+
+      expect(values).will.sendValuesWithCount(2);
+      expect(values).will.matchValue(0, ^BOOL(PTNAlbumChangeset *returnedChangeset) {
+        PTNAlbumChangeset *afterAlbumChangeset = [PTNAlbumChangeset changesetWithAfterAlbum:album];
+        return PTNChangesetSemanticallyEqual(returnedChangeset, afterAlbumChangeset);
+      });
+      expect(values).will.matchValue(1, ^BOOL(PTNAlbumChangeset *returnedChangeset) {
+        return PTNChangesetSemanticallyEqual(returnedChangeset, changeset);
       });
     });
   });
