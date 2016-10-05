@@ -296,14 +296,34 @@ context(@"focus", ^{
       expect(singleExposureSignal).to.beSubscribedTo(1);
     });
 
-    it(@"should send focus position when single focuse changed", ^{
+    it(@"should send focus position when single focus changed", ^{
       LLSignalTestRecorder *recorder = [previewViewModel.focusModeAndPosition testRecorder];
       expect(recorder).to.sendValues(@[]);
       [previewViewModel previewTapped:tapMock];
       expect(recorder).to.sendValues(@[kDefiniteFocusAtTapPoint]);
-      [singleFocusSignal sendNext:[RACUnit defaultUnit]];
+      [singleFocusSignal sendNext:$(kTapPoint)];
+      [singleFocusSignal sendCompleted];
       expect(recorder).to.sendValues(@[kDefiniteFocusAtTapPoint]);
-      [singleExposureSignal sendNext:[RACUnit defaultUnit]];
+      [singleExposureSignal sendNext:$(kTapPoint)];
+      [singleExposureSignal sendCompleted];
+      expect(recorder).to.sendValues(@[kDefiniteFocusAtTapPoint, kHiddenFocus]);
+    });
+
+    it(@"should hide focus after focus error", ^{
+      LLSignalTestRecorder *recorder = [previewViewModel.focusModeAndPosition testRecorder];
+      [previewViewModel previewTapped:tapMock];
+      [singleFocusSignal sendError:nil];
+      [singleExposureSignal sendNext:$(kTapPoint)];
+      [singleExposureSignal sendCompleted];
+      expect(recorder).to.sendValues(@[kDefiniteFocusAtTapPoint, kHiddenFocus]);
+    });
+
+    it(@"should hide focus after exposure error", ^{
+      LLSignalTestRecorder *recorder = [previewViewModel.focusModeAndPosition testRecorder];
+      [previewViewModel previewTapped:tapMock];
+      [singleFocusSignal sendNext:$(kTapPoint)];
+      [singleFocusSignal sendCompleted];
+      [singleExposureSignal sendError:nil];
       expect(recorder).to.sendValues(@[kDefiniteFocusAtTapPoint, kHiddenFocus]);
     });
   });
@@ -431,21 +451,25 @@ context(@"focus", ^{
       expect(recorder).to.sendValues(@[kDefiniteFocusAtTapPoint, focusAction]);
       [previewViewModel previewTapped:tapMock];
       expect(recorder).to.sendValues(@[kDefiniteFocusAtTapPoint, focusAction,
-          kDefiniteFocusAtTapPoint]);
+                                       kDefiniteFocusAtTapPoint]);
     });
 
-    it(@"should send focus position when single focuse changed twice", ^{
+    it(@"should send focus position when single focus changed twice", ^{
       expect(recorder).to.sendValues(@[]);
       [previewViewModel previewTapped:tapMock];
       expect(recorder).to.sendValues(@[kDefiniteFocusAtTapPoint]);
-      [singleFocusSignal sendNext:[RACUnit defaultUnit]];
-      [singleExposureSignal sendNext:[RACUnit defaultUnit]];
+      [singleFocusSignal sendNext:$(kTapPoint)];
+      [singleFocusSignal sendCompleted];
+      [singleExposureSignal sendNext:$(kTapPoint)];
+      [singleExposureSignal sendCompleted];
       expect(recorder).to.sendValues(@[kDefiniteFocusAtTapPoint, kHiddenFocus]);
       [previewViewModel previewTapped:tapMock2];
       expect(recorder).to.sendValues(@[kDefiniteFocusAtTapPoint, kHiddenFocus,
-          kDefiniteFocusAtTapPoint2]);
-      [singleFocusSignal sendNext:[RACUnit defaultUnit]];
-      [singleExposureSignal sendNext:[RACUnit defaultUnit]];
+                                       kDefiniteFocusAtTapPoint2]);
+      [singleFocusSignal sendNext:$(kTapPoint)];
+      [singleFocusSignal sendCompleted];
+      [singleExposureSignal sendNext:$(kTapPoint)];
+      [singleExposureSignal sendCompleted];
       expect(recorder).to.sendValues(@[kDefiniteFocusAtTapPoint, kHiddenFocus,
                                        kDefiniteFocusAtTapPoint2, kHiddenFocus]);
     });
@@ -456,10 +480,12 @@ context(@"focus", ^{
       expect(recorder).to.sendValues(@[kDefiniteFocusAtTapPoint]);
       [previewViewModel previewTapped:tapMock2];
       expect(recorder).to.sendValues(@[kDefiniteFocusAtTapPoint, kDefiniteFocusAtTapPoint2]);
-      [singleFocusSignal sendNext:[RACUnit defaultUnit]];
-      [singleExposureSignal sendNext:[RACUnit defaultUnit]];
+      [singleFocusSignal sendNext:$(kTapPoint)];
+      [singleFocusSignal sendCompleted];
+      [singleExposureSignal sendNext:$(kTapPoint)];
+      [singleExposureSignal sendCompleted];
       expect(recorder).to.sendValues(@[kDefiniteFocusAtTapPoint, kDefiniteFocusAtTapPoint2,
-          kHiddenFocus]);
+                                       kHiddenFocus]);
     });
   });
 });
