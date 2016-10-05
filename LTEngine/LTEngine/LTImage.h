@@ -17,6 +17,9 @@ typedef NS_ENUM(NSUInteger, LTImageDepth) {
 /// bitmap, and export them back to disk  or to parallel \c UIKit objects.
 ///
 /// All images are represented in premultiplied alpha, if an alpha channel exists.
+///
+/// @note loaded images will be of byte depth with either single or four channels, depending on the
+/// input image. Images with wider depth will be converted to byte in the loading process.
 @interface LTImage : NSObject
 
 /// Initializes the image with a given \c UIImage object. If the image has an orientation different
