@@ -405,33 +405,31 @@ withPriceInfoAndProductFromProductsResponse:(SKProductsResponse *)productsRespon
 
 + (NSSet *)keyPathsForValuesAffectingPurchasedProducts {
   return [NSSet setWithObject:
-          @instanceKeypath(BZRCachedReceiptValidationStatusProvider, receiptValidationStatus)];
+      @instanceKeypath(BZRStore, validationStatusProvider.receiptValidationStatus)];
 }
 
 + (NSSet *)keyPathsForValuesAffectingAcquiredViaSubscriptionProducts {
   return [NSSet setWithObject:
-          @instanceKeypath(BZRAcquiredViaSubscriptionProvider, productsAcquiredViaSubscription)];
+      @instanceKeypath(BZRStore, acquiredViaSubscriptionProvider.productsAcquiredViaSubscription)];
 }
 
 + (NSSet *)keyPathsForValuesAffectingAcquiredProducts {
   return [NSSet setWithObjects:
-    @instanceKeypath(BZRCachedReceiptValidationStatusProvider, receiptValidationStatus),
-    @instanceKeypath(BZRAcquiredViaSubscriptionProvider, productsAcquiredViaSubscription),
-    nil
-  ];
+      @instanceKeypath(BZRStore, validationStatusProvider.receiptValidationStatus),
+      @instanceKeypath(BZRStore, acquiredViaSubscriptionProvider.productsAcquiredViaSubscription),
+      nil];
 }
 
 + (NSSet *)keyPathsForValuesAffectingAllowedProducts {
   return [NSSet setWithObjects:
-    @instanceKeypath(BZRCachedReceiptValidationStatusProvider, receiptValidationStatus),
-    @instanceKeypath(BZRAcquiredViaSubscriptionProvider, productsAcquiredViaSubscription),
-    nil
-  ];
+      @instanceKeypath(BZRStore, validationStatusProvider.receiptValidationStatus),
+      @instanceKeypath(BZRStore, acquiredViaSubscriptionProvider.productsAcquiredViaSubscription),
+      nil];
 }
 
 + (NSSet *)keyPathsForValuesAffectingSubscriptionInfo {
   return [NSSet setWithObject:
-          @instanceKeypath(BZRCachedReceiptValidationStatusProvider, receiptValidationStatus)];
+      @instanceKeypath(BZRStore, validationStatusProvider.receiptValidationStatus)];
 }
 
 @end
