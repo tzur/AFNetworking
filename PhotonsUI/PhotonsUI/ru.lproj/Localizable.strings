@@ -1,0 +1,11 @@
+/* Title of a section header in a list which contains albums */
+"Albums" = "Альбомы";
+
+/* Label presented instead of content in an album when it couldn't be fetched due to an error */
+"Whoops! Something went wrong" = "Ой! Что-то пошло не так";
+
+/* Label presented instead of content in an empty album, indicating it has no photos */
+"No Photos" = "Альбом пуст";
+
+/* Title of a section header in a list which contains photos */
+"Camera" = "Камера";

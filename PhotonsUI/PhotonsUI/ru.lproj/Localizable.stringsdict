@@ -2,9 +2,9 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
   <dict>
-    <!-- Label under a photo album name, describing the number of photos currently present in that 
+    <!-- Label under a photo album, describing the number of photos currently present in that
      album. -->
-    <key>%lu Photos</key>
+    <key>%lu photos</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
       <string>%#@photos@</string>
@@ -15,11 +15,13 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>lu</string>
         <key>zero</key>
-        <string>No Photos</string>
+        <string>Нет фото</string>
         <key>one</key>
-        <string>1 Photo</string>
+        <string>1 фото</string>
+        <key>many</key>
+        <string>%lu фото</string>
         <key>other</key>
-        <string>%lu Photos</string>
+        <string>%lu фото</string>
       </dict>
     </dict>
   </dict>
