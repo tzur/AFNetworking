@@ -103,7 +103,8 @@ static const CGFloat kMaxZoom = 4.0;
 
 - (void)setupSubjectAreaChangedSignal {
   @weakify(self);
-  [self.device.subjectAreaChanged
+  [[self.device.subjectAreaChanged
+      takeUntil:[self rac_willDeallocSignal]]
       subscribeNext:^(id) {
         @strongify(self);
         CGPoint devicePoint = CGPointMake(0.5, 0.5);
@@ -125,10 +126,16 @@ static const CGFloat kMaxZoom = 4.0;
   RACSignal *setFocus = [self.device setSingleFocusPoint:devicePoint];
   RACSignal *setExposure = [self.device setSingleExposurePoint:devicePoint];
   @weakify(self);
-  [[RACSignal zip:@[setFocus, setExposure]] subscribeNext:^(id) {
-    @strongify(self);
-    [self.focusModeSubject sendNext:[CUIFocusIconMode hiddenFocus]];
-  }];
+  [[[RACSignal
+      zip:@[
+        [setFocus catchTo:[RACSignal empty]],
+        [setExposure catchTo:[RACSignal empty]]
+      ]]
+      takeUntil:[self rac_willDeallocSignal]]
+      subscribeCompleted:^{
+        @strongify(self);
+        [self.focusModeSubject sendNext:[CUIFocusIconMode hiddenFocus]];
+      }];
 }
 
 #pragma mark -
