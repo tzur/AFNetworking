@@ -220,9 +220,9 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
         return nil;
       }];
 
-  return [trigger flattenMap:^RACStream *(id) {
-    return captureStillImage;
-  }];
+  return [[[trigger mapReplace:captureStillImage]
+      concat]
+      takeUntil:[self rac_willDeallocSignal]];
 }
 
 - (RACSignal *)videoFrames {
