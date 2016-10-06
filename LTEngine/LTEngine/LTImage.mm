@@ -56,7 +56,7 @@ NS_ASSUME_NONNULL_BEGIN
                     @"Invalid mat type given (%d vs. the required %d)",
                     [[self class] matTypeForImage:image], mat->type());
 
-  size_t bitsPerComponent = CGImageGetBitsPerComponent(image.CGImage);
+  size_t bitsPerComponent = mat->elemSize1() * CHAR_BIT;
   CGColorSpaceRef colorSpace =
       [self newBitmapColorSpaceFromColorSpace:CGImageGetColorSpace(image.CGImage)];
   CGContextRef context = CGBitmapContextCreate(mat->data, mat->cols, mat->rows,

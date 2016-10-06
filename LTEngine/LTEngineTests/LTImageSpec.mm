@@ -128,6 +128,16 @@ context(@"loading images", ^{
     expect($(image.mat)).to.equalMat($(expected));
   });
 
+  it(@"should load 16 bit image as 8 bit", ^{
+    UIImage *png = LTLoadImage([self class], @"White16.png");
+
+    LTImage *image = [[LTImage alloc] initWithImage:png];
+    expect(image.size).to.equal(CGSizeMake(16, 16));
+
+    cv::Mat4b expected(image.size.height, image.size.width, cv::Vec4b(255, 255, 255, 255));
+    expect($(image.mat)).to.equalMat($(expected));
+  });
+
   context(@"load rotated images as portrait", ^{
     __block LTImage *expected;
 
