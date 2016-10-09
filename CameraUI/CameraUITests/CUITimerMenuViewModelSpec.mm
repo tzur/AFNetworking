@@ -4,10 +4,11 @@
 #import "CUITimerMenuViewModel.h"
 
 #import "CUIFakeTimerContainer.h"
+#import "CUITimerModeViewModel.h"
 
 SpecBegin(CUITimerMenuViewModel)
 
-__block id<CUITimerContainer> timerContainer;
+__block id<CAMTimerContainer> timerContainer;
 __block NSArray<CUITimerModeViewModel *> *timerModes;
 __block CUITimerMenuViewModel *timerViewModel;
 

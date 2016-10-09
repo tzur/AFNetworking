@@ -5,19 +5,15 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/// Protocol for controlling the time interval of a timer.
-@protocol CUITimerContainer <NSObject>
+@protocol CAMTimerContainer;
 
-/// Time interval of the timer.
-@property (nonatomic) NSTimeInterval interval;
+@class CUITimerModeViewModel;
 
-@end
-
-/// \c CUIMenuItemViewModel representing a single interval value of a \c id<CUITimerContainer>.
+/// \c CUIMenuItemViewModel representing a single interval value of a \c id<CAMTimerContainer>.
 ///
-/// Calling \c didTap sets the \c id<CUITimerContainer>'s interval to this object's value.
+/// Calling \c didTap sets the \c id<CAMTimerContainer>'s interval to this object's value.
 ///
-/// \c selected is \c YES when the \c id<CUITimerContainer>'s interval is within \c precision of
+/// \c selected is \c YES when the \c id<CAMTimerContainer>'s interval is within \c precision of
 /// this object's.
 ///
 /// By default, \c enabledSignal sends \c YES.
@@ -28,17 +24,17 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)init NS_UNAVAILABLE;
 
 /// Creates and returns a view model created with the given parameters.
-+ (instancetype)viewModelWithTimerContainer:(id<CUITimerContainer>)timerContainer
++ (instancetype)viewModelWithTimerContainer:(id<CAMTimerContainer>)timerContainer
                                    interval:(NSTimeInterval)interval
                                   precision:(NSTimeInterval)precision
                                       title:(nullable NSString *)title
                                     iconURL:(nullable NSURL *)iconURL;
 
-/// Initializes this object with the given \c id<CUITimerContainer>, the \c interval and
+/// Initializes this object with the given \c id<CAMTimerContainer>, the \c interval and
 /// \c precision that this object represents, and the \c title and \c iconURL that should be shown
 /// for this mode. Raises \c NSInvalidArgumentException if \c interval is negative or \c precision
 /// is non-positive.
-- (instancetype)initWithTimerContainer:(id<CUITimerContainer>)timerContainer
+- (instancetype)initWithTimerContainer:(id<CAMTimerContainer>)timerContainer
                               interval:(NSTimeInterval)interval
                              precision:(NSTimeInterval)precision
                                  title:(nullable NSString *)title

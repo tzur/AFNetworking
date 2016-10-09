@@ -3,6 +3,8 @@
 
 #import "CUITimerMenuViewModel.h"
 
+#import <Camera/CAMTimerContainer.h>
+
 #import "CUITimerModeViewModel.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -10,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface CUITimerMenuViewModel ()
 
 /// Timer container whose interval is controlled by this object.
-@property (readonly, nonatomic) id<CUITimerContainer> timerContainer;
+@property (readonly, nonatomic) id<CAMTimerContainer> timerContainer;
 
 @end
 
@@ -24,7 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize enabled = _enabled;
 @synthesize subitems = _subitems;
 
-- (instancetype)initWithTimerContainer:(id<CUITimerContainer>)timerContainer
+- (instancetype)initWithTimerContainer:(id<CAMTimerContainer>)timerContainer
                             timerModes:(NSArray<CUITimerModeViewModel *> *)timerModes {
   LTParameterAssert(timerContainer);
   LTParameterAssert(timerModes);
