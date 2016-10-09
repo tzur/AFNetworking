@@ -565,6 +565,7 @@
 		BED6927C1D32310300061BB5 /* CAMDeviceOrientation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAMDeviceOrientation.h; sourceTree = "<group>"; };
 		BED6927D1D32310300061BB5 /* CAMDeviceOrientation.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CAMDeviceOrientation.mm; sourceTree = "<group>"; };
 		BED6929C1D32311000061BB5 /* CAMDeviceOrientationSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CAMDeviceOrientationSpec.mm; sourceTree = "<group>"; };
+		BED7416B1DAA254D00433C9F /* CAMTimerContainer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CAMTimerContainer.h; sourceTree = "<group>"; };
 		BEEDB20E1D91ABDD00406926 /* UIDevice+CameraMake.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDevice+CameraMake.h"; sourceTree = "<group>"; };
 		BEEDB20F1D91ABDD00406926 /* UIDevice+CameraMake.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIDevice+CameraMake.mm"; sourceTree = "<group>"; };
 		BEEDB2341D91B09F00406926 /* UIDevice+CameraMakeSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIDevice+CameraMakeSpec.mm"; sourceTree = "<group>"; };
@@ -946,6 +947,7 @@
 				BE63763C1D88155C004F3710 /* CAMSampleBufferMetadataUtils.mm */,
 				BE84C54C1D463BB10098DC1D /* CAMSampleTimingInfo.h */,
 				BE84C54D1D463BB10098DC1D /* CAMSampleTimingInfo.mm */,
+				BED7416B1DAA254D00433C9F /* CAMTimerContainer.h */,
 				BEEDB20E1D91ABDD00406926 /* UIDevice+CameraMake.h */,
 				BEEDB20F1D91ABDD00406926 /* UIDevice+CameraMake.mm */,
 			);
