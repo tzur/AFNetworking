@@ -165,6 +165,9 @@
 		8BF7B1731949BC7500E67079 /* LTBidirectionalMap.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BF7B1711949BC7500E67079 /* LTBidirectionalMap.m */; };
 		8BF9A53B18F684AC00CCA084 /* LTTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BF9A53A18F684AC00CCA084 /* LTTimer.m */; };
 		8BF9A54918FA6B9100CCA084 /* LTTimerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BF9A54818FA6B9100CCA084 /* LTTimerSpec.mm */; };
+		C751B02B1D4881D7005DB5BB /* LTEventBusObserver.h in Headers */ = {isa = PBXBuildFile; fileRef = C751B0291D4881D7005DB5BB /* LTEventBusObserver.h */; };
+		C751B02C1D4881D7005DB5BB /* LTEventBusObserver.mm in Sources */ = {isa = PBXBuildFile; fileRef = C751B02A1D4881D7005DB5BB /* LTEventBusObserver.mm */; };
+		C751B0461D48879B005DB5BB /* LTEventBusObserverSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = C751B0451D48879B005DB5BB /* LTEventBusObserverSpec.mm */; };
 		C751B3D61D48C304005DB5BB /* LTVolatileMessageContainer.h in Headers */ = {isa = PBXBuildFile; fileRef = C751B3D41D48C304005DB5BB /* LTVolatileMessageContainer.h */; };
 		C751B3D71D48C304005DB5BB /* LTVolatileMessageContainer.mm in Sources */ = {isa = PBXBuildFile; fileRef = C751B3D51D48C304005DB5BB /* LTVolatileMessageContainer.mm */; };
 		C751B3D91D48C6C1005DB5BB /* LTVolatileMessageContainerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = C751B3D81D48C6C1005DB5BB /* LTVolatileMessageContainerSpec.mm */; };
@@ -573,6 +576,9 @@
 		8BF9A53918F684AC00CCA084 /* LTTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTTimer.h; sourceTree = "<group>"; };
 		8BF9A53A18F684AC00CCA084 /* LTTimer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTTimer.m; sourceTree = "<group>"; };
 		8BF9A54818FA6B9100CCA084 /* LTTimerSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTTimerSpec.mm; sourceTree = "<group>"; };
+		C751B0291D4881D7005DB5BB /* LTEventBusObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTEventBusObserver.h; sourceTree = "<group>"; };
+		C751B02A1D4881D7005DB5BB /* LTEventBusObserver.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTEventBusObserver.mm; sourceTree = "<group>"; };
+		C751B0451D48879B005DB5BB /* LTEventBusObserverSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTEventBusObserverSpec.mm; sourceTree = "<group>"; };
 		C751B3D31D48C178005DB5BB /* LTMessageContainer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTMessageContainer.h; sourceTree = "<group>"; };
 		C751B3D41D48C304005DB5BB /* LTVolatileMessageContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTVolatileMessageContainer.h; sourceTree = "<group>"; };
 		C751B3D51D48C304005DB5BB /* LTVolatileMessageContainer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTVolatileMessageContainer.mm; sourceTree = "<group>"; };
@@ -1165,6 +1171,7 @@
 				650F73C11C7A13DF00148CEC /* NSArray+Functional.h in Headers */,
 				8B4495831CE3209C008402D0 /* NSObject+PropertyAccessors.h in Headers */,
 				8BA5D6A4199250240093A4FD /* NSString+Hashing.h in Headers */,
+				C751B02B1D4881D7005DB5BB /* LTEventBusObserver.h in Headers */,
 				28E55E011961B21A00EBF9DA /* LTRandom.h in Headers */,
 				287A96F41A3320F200A609CD /* NSValue+Type.h in Headers */,
 				84F7AB261C3290BA00AA502F /* LTPath.h in Headers */,
@@ -1474,6 +1481,7 @@
 				5067221919EA80B5003AF8D2 /* LTBoundedQueue.mm in Sources */,
 				84455E451CD0F2AB00042CB7 /* LTFastEnumerator.m in Sources */,
 				8B4495841CE3209C008402D0 /* NSObject+PropertyAccessors.m in Sources */,
+				C751B02C1D4881D7005DB5BB /* LTEventBusObserver.mm in Sources */,
 				8BA5D6A5199250240093A4FD /* NSString+Hashing.m in Sources */,
 				8B87D5371C04BA940005410A /* NSBundle+Path.mm in Sources */,
 				8BB236C31CDCD5C500057F11 /* NSObject+DynamicDispatch.mm in Sources */,
@@ -1514,6 +1522,7 @@
 				8B24058D1B89BBB90079B724 /* UIDevice+HardwareSpec.mm in Sources */,
 				8BF9A54918FA6B9100CCA084 /* LTTimerSpec.mm in Sources */,
 				5067223219EA811A003AF8D2 /* LTQueueSpec.mm in Sources */,
+				C751B0461D48879B005DB5BB /* LTEventBusObserverSpec.mm in Sources */,
 				8B2840291CBE393000B745AE /* LTStructBoxingSpec.mm in Sources */,
 				5067223119EA811A003AF8D2 /* LTBoundedQueueSpec.mm in Sources */,
 				8B85C799182A2EE5004C352E /* LTLoggerSpec.mm in Sources */,
