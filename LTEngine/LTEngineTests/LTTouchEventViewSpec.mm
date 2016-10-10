@@ -219,44 +219,6 @@ sharedExamplesFor(kLTTouchEventViewExamples, ^(NSDictionary *data) {
         });
       });
 
-      context(@"event responding to coalesced touches selector", ^{
-        it(@"should convert only coalesced touches", ^{
-          expect(calls[0].events.count).to.equal(2);
-          expect(calls[1].events.count).to.equal(3);
-          expect(calls[2].events.count).to.equal(2);
-        });
-
-        it(@"should use different sequence IDs for different coalesced touches", ^{
-          NSSet *sequenceIDs =
-              [NSSet setWithArray:@[@(calls[0].events.firstObject.sequenceID),
-                                    @(calls[1].events.firstObject.sequenceID),
-                                    @(calls[2].events.firstObject.sequenceID)]];
-          expect(sequenceIDs.count).to.equal(3);
-        });
-
-        it(@"should use the same sequence ID for coalesced touches of the same main touch", ^{
-          for (LTTestTouchEventDelegateCall *call in calls) {
-            NSMutableSet *sequenceIDs = [NSMutableSet set];
-            for (LTTouchEvent *event in call.events) {
-              [sequenceIDs addObject:@(event.sequenceID)];
-            }
-            expect(sequenceIDs.count).to.equal(1);
-          }
-        });
-
-        it(@"should sort the coalesced touches according to their timestamp", ^{
-          expect(calls[0].events[0].timestamp).to.equal(0);
-          expect(calls[0].events[1].timestamp).to.equal(0.5);
-
-          expect(calls[1].events[0].timestamp).to.equal(1);
-          expect(calls[1].events[1].timestamp).to.equal(1.25);
-          expect(calls[1].events[2].timestamp).to.equal(1.5);
-
-          expect(calls[2].events[0].timestamp).to.equal(2);
-          expect(calls[2].events[1].timestamp).to.equal(2.5);
-        });
-      });
-
       context(@"event not responding to predicted touches selector", ^{
         beforeEach(^{
           LTTestTouchEventDelegate *delegate = [[LTTestTouchEventDelegate alloc] init];
