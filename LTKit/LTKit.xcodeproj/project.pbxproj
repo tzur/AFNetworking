@@ -102,9 +102,12 @@
 		8B4495A21CE322DB008402D0 /* NSObject+PropertyAccessorsSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B4495A11CE322DB008402D0 /* NSObject+PropertyAccessorsSpec.mm */; };
 		8B4E493819E950C500B3F55D /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B4E493719E950C500B3F55D /* ImageIO.framework */; };
 		8B4E494B19E950C800B3F55D /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B4E494A19E950C800B3F55D /* MobileCoreServices.framework */; };
+		8B59AA9D1DABC54F0006CC22 /* LTEventBusLoggerTarget.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B59AA9B1DABC54F0006CC22 /* LTEventBusLoggerTarget.h */; };
+		8B59AA9E1DABC54F0006CC22 /* LTEventBusLoggerTarget.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B59AA9C1DABC54F0006CC22 /* LTEventBusLoggerTarget.mm */; };
 		8B6A6EBE1CDA3ADC005FB7D9 /* LTRuntime.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B6A6EBC1CDA3ADC005FB7D9 /* LTRuntime.h */; };
 		8B6A6EBF1CDA3ADC005FB7D9 /* LTRuntime.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B6A6EBD1CDA3ADC005FB7D9 /* LTRuntime.mm */; };
 		8B6A6ED91CDA3B60005FB7D9 /* LTRuntimeSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B6A6ED81CDA3B60005FB7D9 /* LTRuntimeSpec.mm */; };
+		8B7622E51DABD6A90032999E /* LTEventBusLoggerTargetSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B7622E41DABD6A90032999E /* LTEventBusLoggerTargetSpec.mm */; };
 		8B78CFDE197654A900684B1D /* LTEnum.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B78CFDC197654A900684B1D /* LTEnum.h */; };
 		8B7C3CF31CDCD77700D03696 /* NSObject+DynamicDispatchSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B7C3CF21CDCD77700D03696 /* NSObject+DynamicDispatchSpec.mm */; };
 		8B7C6CA01B52829100B90DBE /* LTMMInputFile.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B7C6C9C1B52829100B90DBE /* LTMMInputFile.mm */; };
@@ -498,10 +501,13 @@
 		8B4D456F19C03AA8000B25F9 /* Specta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Specta.xcodeproj; path = ../../third_party/Specta/Specta/Specta.xcodeproj; sourceTree = "<group>"; };
 		8B4E493719E950C500B3F55D /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		8B4E494A19E950C800B3F55D /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
+		8B59AA9B1DABC54F0006CC22 /* LTEventBusLoggerTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTEventBusLoggerTarget.h; sourceTree = "<group>"; };
+		8B59AA9C1DABC54F0006CC22 /* LTEventBusLoggerTarget.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTEventBusLoggerTarget.mm; sourceTree = "<group>"; };
 		8B6A6EBC1CDA3ADC005FB7D9 /* LTRuntime.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTRuntime.h; sourceTree = "<group>"; };
 		8B6A6EBD1CDA3ADC005FB7D9 /* LTRuntime.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTRuntime.mm; sourceTree = "<group>"; };
 		8B6A6ED81CDA3B60005FB7D9 /* LTRuntimeSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTRuntimeSpec.mm; sourceTree = "<group>"; };
 		8B6B07AC185DF67F001CB60B /* LTLoggerMacrosImpl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTLoggerMacrosImpl.h; sourceTree = "<group>"; };
+		8B7622E41DABD6A90032999E /* LTEventBusLoggerTargetSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTEventBusLoggerTargetSpec.mm; sourceTree = "<group>"; };
 		8B78835F1BDF70790051CCD1 /* Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
 		8B7883601BDF70790051CCD1 /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
 		8B7883621BDF70790051CCD1 /* Application.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Application.xcconfig; sourceTree = "<group>"; };
@@ -1139,6 +1145,7 @@
 				8B8720341924A76500517F2E /* LTAssert.h in Headers */,
 				8B410E8D1CE1F01E007DFF42 /* NSArray+SelectorName.h in Headers */,
 				8B8720351924A76500517F2E /* LTCGExtensions.h in Headers */,
+				8B59AA9D1DABC54F0006CC22 /* LTEventBusLoggerTarget.h in Headers */,
 				28AA3EAE19A25BBE00518987 /* NSNumber+CGFloat.h in Headers */,
 				658CD3C61D50A79B00FF7FD6 /* LTProgress.h in Headers */,
 				8B6A6EBE1CDA3ADC005FB7D9 /* LTRuntime.h in Headers */,
@@ -1474,6 +1481,7 @@
 				8BF9A53B18F684AC00CCA084 /* LTTimer.m in Sources */,
 				259FF7D01C14920C00362CDD /* LTBipartiteGraph.mm in Sources */,
 				28362120186C58DC00665ED9 /* LTCGExtensions.m in Sources */,
+				8B59AA9E1DABC54F0006CC22 /* LTEventBusLoggerTarget.mm in Sources */,
 				835204ED1D2A43B300000EEC /* LTEventBus.m in Sources */,
 				84455E4C1CD0F5E500042CB7 /* LTMappingRandomAccessCollection.m in Sources */,
 				28B8BBC41B67CF8600CF9F73 /* LTWeakContainer.mm in Sources */,
@@ -1537,6 +1545,7 @@
 				8B7C6CA91B52832600B90DBE /* LTMMOutputFileSpec.mm in Sources */,
 				2836212E186C58F900665ED9 /* LTCGExtensionsSpec.mm in Sources */,
 				28ABE00818715527005A5DEC /* LTAnimationSpec.mm in Sources */,
+				8B7622E51DABD6A90032999E /* LTEventBusLoggerTargetSpec.mm in Sources */,
 				8BE6F7471C21879500F66BA2 /* LTHashExtensionsSpec.mm in Sources */,
 				8B2405391B85DAC60079B724 /* EXPMatchers+beCloseToPoint.mm in Sources */,
 				8BEE674619596F66005E4D53 /* LTBidirectionalMapSpec.mm in Sources */,
