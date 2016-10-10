@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface LTLogger ()
 
 /// Targets for logging.
-@property (strong, nonatomic) NSMutableSet *targets;
+@property (strong, nonatomic) NSMutableSet<id<LTLoggerTarget>> *targets;
 
 /// Lock for ensuring thread-safety when logging from multiple threads.
 @property (strong, nonatomic) NSLock *lock;
@@ -150,6 +150,10 @@ static NSString *stringFromNSDecimalWithCurrentLocale(NSDecimal value) {
 
 - (void)registerTarget:(id<LTLoggerTarget>)target {
   [self.targets addObject:target];
+}
+
+- (void)unregisterTarget:(id<LTLoggerTarget>)target {
+  [self.targets removeObject:target];
 }
 
 - (void)logWithFormat:(NSString *)format, ... {

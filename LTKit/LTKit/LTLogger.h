@@ -83,6 +83,9 @@ typedef NS_ENUM(NSUInteger, LTLogLevel) {
 /// Registers the given logger target to start recieving messages to log.
 - (void)registerTarget:(id<LTLoggerTarget>)target;
 
+/// Unregisters the given logger target.
+- (void)unregisterTarget:(id<LTLoggerTarget>)target;
+
 /// Logs the message to all selected targets.
 - (void)logWithFormat:(NSString *)format, ... NS_FORMAT_FUNCTION(1, 2);
 

@@ -71,4 +71,19 @@ LTNoFormatWarningEnd
   });
 });
 
+it(@"should unregister a logger target", ^{
+  [logger unregisterTarget:mockTarget];
+
+  logger.minimalLogLevel = LTLogLevelDebug;
+
+  OCMReject([mockTarget outputString:[OCMArg any]]);
+
+  NSString *message = @"Hey!";
+LTNoFormatWarningBegin
+  [logger logWithFormat:message file:__FILE__ line:__LINE__ logLevel:LTLogLevelDebug];
+LTNoFormatWarningEnd
+
+  OCMVerifyAll(mockTarget);
+});
+
 SpecEnd
