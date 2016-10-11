@@ -104,6 +104,10 @@ context(@"initialization and basic properties", ^{
   it(@"should return pixel format", ^{
     expect([frame pixelFormat]).to.equal($(CAMPixelFormatBGRA));
   });
+
+  it(@"should return size", ^{
+    expect([frame size]).to.equal(CGSizeMake(10, 12));
+  });
 });
 
 context(@"conversion to UIImage", ^{

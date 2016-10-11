@@ -51,6 +51,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Pixel format of the image data of this video frame.
 - (CAMPixelFormat *)pixelFormat;
 
+/// Size of the video frame, in pixels.
+- (CGSize)size;
+
 @end
 
 /// Concrete implementation of \c id<CAMVideoFrame> backed by a \c CMSampleBuffer.
