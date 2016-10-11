@@ -102,9 +102,12 @@
 		8B4495A21CE322DB008402D0 /* NSObject+PropertyAccessorsSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B4495A11CE322DB008402D0 /* NSObject+PropertyAccessorsSpec.mm */; };
 		8B4E493819E950C500B3F55D /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B4E493719E950C500B3F55D /* ImageIO.framework */; };
 		8B4E494B19E950C800B3F55D /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B4E494A19E950C800B3F55D /* MobileCoreServices.framework */; };
+		8B59AA9D1DABC54F0006CC22 /* LTEventBusLoggerTarget.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B59AA9B1DABC54F0006CC22 /* LTEventBusLoggerTarget.h */; };
+		8B59AA9E1DABC54F0006CC22 /* LTEventBusLoggerTarget.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B59AA9C1DABC54F0006CC22 /* LTEventBusLoggerTarget.mm */; };
 		8B6A6EBE1CDA3ADC005FB7D9 /* LTRuntime.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B6A6EBC1CDA3ADC005FB7D9 /* LTRuntime.h */; };
 		8B6A6EBF1CDA3ADC005FB7D9 /* LTRuntime.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B6A6EBD1CDA3ADC005FB7D9 /* LTRuntime.mm */; };
 		8B6A6ED91CDA3B60005FB7D9 /* LTRuntimeSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B6A6ED81CDA3B60005FB7D9 /* LTRuntimeSpec.mm */; };
+		8B7622E51DABD6A90032999E /* LTEventBusLoggerTargetSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B7622E41DABD6A90032999E /* LTEventBusLoggerTargetSpec.mm */; };
 		8B78CFDE197654A900684B1D /* LTEnum.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B78CFDC197654A900684B1D /* LTEnum.h */; };
 		8B7C3CF31CDCD77700D03696 /* NSObject+DynamicDispatchSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B7C3CF21CDCD77700D03696 /* NSObject+DynamicDispatchSpec.mm */; };
 		8B7C6CA01B52829100B90DBE /* LTMMInputFile.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B7C6C9C1B52829100B90DBE /* LTMMInputFile.mm */; };
@@ -162,6 +165,12 @@
 		8BF7B1731949BC7500E67079 /* LTBidirectionalMap.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BF7B1711949BC7500E67079 /* LTBidirectionalMap.m */; };
 		8BF9A53B18F684AC00CCA084 /* LTTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BF9A53A18F684AC00CCA084 /* LTTimer.m */; };
 		8BF9A54918FA6B9100CCA084 /* LTTimerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BF9A54818FA6B9100CCA084 /* LTTimerSpec.mm */; };
+		C751B02B1D4881D7005DB5BB /* LTEventBusObserver.h in Headers */ = {isa = PBXBuildFile; fileRef = C751B0291D4881D7005DB5BB /* LTEventBusObserver.h */; };
+		C751B02C1D4881D7005DB5BB /* LTEventBusObserver.mm in Sources */ = {isa = PBXBuildFile; fileRef = C751B02A1D4881D7005DB5BB /* LTEventBusObserver.mm */; };
+		C751B0461D48879B005DB5BB /* LTEventBusObserverSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = C751B0451D48879B005DB5BB /* LTEventBusObserverSpec.mm */; };
+		C751B3D61D48C304005DB5BB /* LTVolatileMessageContainer.h in Headers */ = {isa = PBXBuildFile; fileRef = C751B3D41D48C304005DB5BB /* LTVolatileMessageContainer.h */; };
+		C751B3D71D48C304005DB5BB /* LTVolatileMessageContainer.mm in Sources */ = {isa = PBXBuildFile; fileRef = C751B3D51D48C304005DB5BB /* LTVolatileMessageContainer.mm */; };
+		C751B3D91D48C6C1005DB5BB /* LTVolatileMessageContainerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = C751B3D81D48C6C1005DB5BB /* LTVolatileMessageContainerSpec.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -495,10 +504,13 @@
 		8B4D456F19C03AA8000B25F9 /* Specta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Specta.xcodeproj; path = ../../third_party/Specta/Specta/Specta.xcodeproj; sourceTree = "<group>"; };
 		8B4E493719E950C500B3F55D /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		8B4E494A19E950C800B3F55D /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
+		8B59AA9B1DABC54F0006CC22 /* LTEventBusLoggerTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTEventBusLoggerTarget.h; sourceTree = "<group>"; };
+		8B59AA9C1DABC54F0006CC22 /* LTEventBusLoggerTarget.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTEventBusLoggerTarget.mm; sourceTree = "<group>"; };
 		8B6A6EBC1CDA3ADC005FB7D9 /* LTRuntime.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTRuntime.h; sourceTree = "<group>"; };
 		8B6A6EBD1CDA3ADC005FB7D9 /* LTRuntime.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTRuntime.mm; sourceTree = "<group>"; };
 		8B6A6ED81CDA3B60005FB7D9 /* LTRuntimeSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTRuntimeSpec.mm; sourceTree = "<group>"; };
 		8B6B07AC185DF67F001CB60B /* LTLoggerMacrosImpl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTLoggerMacrosImpl.h; sourceTree = "<group>"; };
+		8B7622E41DABD6A90032999E /* LTEventBusLoggerTargetSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTEventBusLoggerTargetSpec.mm; sourceTree = "<group>"; };
 		8B78835F1BDF70790051CCD1 /* Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
 		8B7883601BDF70790051CCD1 /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
 		8B7883621BDF70790051CCD1 /* Application.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Application.xcconfig; sourceTree = "<group>"; };
@@ -564,6 +576,13 @@
 		8BF9A53918F684AC00CCA084 /* LTTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTTimer.h; sourceTree = "<group>"; };
 		8BF9A53A18F684AC00CCA084 /* LTTimer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTTimer.m; sourceTree = "<group>"; };
 		8BF9A54818FA6B9100CCA084 /* LTTimerSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTTimerSpec.mm; sourceTree = "<group>"; };
+		C751B0291D4881D7005DB5BB /* LTEventBusObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTEventBusObserver.h; sourceTree = "<group>"; };
+		C751B02A1D4881D7005DB5BB /* LTEventBusObserver.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTEventBusObserver.mm; sourceTree = "<group>"; };
+		C751B0451D48879B005DB5BB /* LTEventBusObserverSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTEventBusObserverSpec.mm; sourceTree = "<group>"; };
+		C751B3D31D48C178005DB5BB /* LTMessageContainer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTMessageContainer.h; sourceTree = "<group>"; };
+		C751B3D41D48C304005DB5BB /* LTVolatileMessageContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTVolatileMessageContainer.h; sourceTree = "<group>"; };
+		C751B3D51D48C304005DB5BB /* LTVolatileMessageContainer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTVolatileMessageContainer.mm; sourceTree = "<group>"; };
+		C751B3D81D48C6C1005DB5BB /* LTVolatileMessageContainerSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTVolatileMessageContainerSpec.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -764,6 +783,7 @@
 				8B871FAC1923CE2400517F2E /* IO */,
 				8BB47145183B533500CA1681 /* Libraries */,
 				88C67F3F1D72C1DB00A0E0FC /* Localization */,
+				C7D3E45E1D4F8411000A1EEC /* Logging */,
 				8B3DEBEA18296B6100EA0C1A /* Supporting Files */,
 				28ABDFF618715394005A5DEC /* UI */,
 			);
@@ -901,6 +921,7 @@
 				8B7C6C7C1B52761000B90DBE /* Extensions */,
 				8B329023192CC2590010592E /* IO */,
 				88C67F5C1D72CC6600A0E0FC /* Localization */,
+				C7D3E4771D4F88D9000A1EEC /* Logging */,
 				8B85C797182A2EC7004C352E /* Supporting Files */,
 				28ABE00618715514005A5DEC /* UI */,
 			);
@@ -957,9 +978,6 @@
 				8B87D5AB1C05B1E10005410A /* LTErrorCodesRegistry.m */,
 				835204EA1D2A43B300000EEC /* LTEventBus.h */,
 				835204EB1D2A43B300000EEC /* LTEventBus.m */,
-				8B3DEC0F18296D2200EA0C1A /* LTLogger.h */,
-				8B3DEC1018296D2200EA0C1A /* LTLogger.mm */,
-				8B6B07AC185DF67F001CB60B /* LTLoggerMacrosImpl.h */,
 				658CD3C41D50A79B00FF7FD6 /* LTProgress.h */,
 				658CD3C51D50A79B00FF7FD6 /* LTProgress.mm */,
 				28E55DFF1961B21A00EBF9DA /* LTRandom.h */,
@@ -995,7 +1013,6 @@
 				8BEE674219596DE7005E4D53 /* LTEnumSpec.mm */,
 				8B87D5CB1C05F2F80005410A /* LTErrorCodesRegistrySpec.mm */,
 				835205061D2A43D500000EEC /* LTEventBusSpec.mm */,
-				8B85C798182A2EE5004C352E /* LTLoggerSpec.mm */,
 				658CD3E01D50AC0C00FF7FD6 /* LTProgressSpec.mm */,
 				28D86F551962AB8C00145674 /* LTRandomSpec.mm */,
 				8B04C96A1BEE651A0024D22E /* LTRefSpec.mm */,
@@ -1077,6 +1094,34 @@
 			name = "Data Structures";
 			sourceTree = "<group>";
 		};
+		C7D3E45E1D4F8411000A1EEC /* Logging */ = {
+			isa = PBXGroup;
+			children = (
+				8B59AA9B1DABC54F0006CC22 /* LTEventBusLoggerTarget.h */,
+				8B59AA9C1DABC54F0006CC22 /* LTEventBusLoggerTarget.mm */,
+				C751B0291D4881D7005DB5BB /* LTEventBusObserver.h */,
+				C751B02A1D4881D7005DB5BB /* LTEventBusObserver.mm */,
+				8B3DEC0F18296D2200EA0C1A /* LTLogger.h */,
+				8B3DEC1018296D2200EA0C1A /* LTLogger.mm */,
+				8B6B07AC185DF67F001CB60B /* LTLoggerMacrosImpl.h */,
+				C751B3D31D48C178005DB5BB /* LTMessageContainer.h */,
+				C751B3D41D48C304005DB5BB /* LTVolatileMessageContainer.h */,
+				C751B3D51D48C304005DB5BB /* LTVolatileMessageContainer.mm */,
+			);
+			name = Logging;
+			sourceTree = "<group>";
+		};
+		C7D3E4771D4F88D9000A1EEC /* Logging */ = {
+			isa = PBXGroup;
+			children = (
+				8B7622E41DABD6A90032999E /* LTEventBusLoggerTargetSpec.mm */,
+				C751B0451D48879B005DB5BB /* LTEventBusObserverSpec.mm */,
+				8B85C798182A2EE5004C352E /* LTLoggerSpec.mm */,
+				C751B3D81D48C6C1005DB5BB /* LTVolatileMessageContainerSpec.mm */,
+			);
+			name = Logging;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -1106,12 +1151,14 @@
 				8B8720341924A76500517F2E /* LTAssert.h in Headers */,
 				8B410E8D1CE1F01E007DFF42 /* NSArray+SelectorName.h in Headers */,
 				8B8720351924A76500517F2E /* LTCGExtensions.h in Headers */,
+				8B59AA9D1DABC54F0006CC22 /* LTEventBusLoggerTarget.h in Headers */,
 				28AA3EAE19A25BBE00518987 /* NSNumber+CGFloat.h in Headers */,
 				658CD3C61D50A79B00FF7FD6 /* LTProgress.h in Headers */,
 				8B6A6EBE1CDA3ADC005FB7D9 /* LTRuntime.h in Headers */,
 				8B8720361924A76500517F2E /* LTEasyBoxing.h in Headers */,
 				8B7C6CA51B5282AC00B90DBE /* NSFileManager+LTKit.h in Headers */,
 				8B87203C1924A76600517F2E /* LTLogger.h in Headers */,
+				C751B3D61D48C304005DB5BB /* LTVolatileMessageContainer.h in Headers */,
 				8B87203D1924A76600517F2E /* LTLoggerMacrosImpl.h in Headers */,
 				259FF7CF1C14920C00362CDD /* LTBipartiteGraph.h in Headers */,
 				8B87203E1924A76600517F2E /* LTMetaMacros.h in Headers */,
@@ -1124,6 +1171,7 @@
 				650F73C11C7A13DF00148CEC /* NSArray+Functional.h in Headers */,
 				8B4495831CE3209C008402D0 /* NSObject+PropertyAccessors.h in Headers */,
 				8BA5D6A4199250240093A4FD /* NSString+Hashing.h in Headers */,
+				C751B02B1D4881D7005DB5BB /* LTEventBusObserver.h in Headers */,
 				28E55E011961B21A00EBF9DA /* LTRandom.h in Headers */,
 				287A96F41A3320F200A609CD /* NSValue+Type.h in Headers */,
 				84F7AB261C3290BA00AA502F /* LTPath.h in Headers */,
@@ -1417,6 +1465,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C751B3D71D48C304005DB5BB /* LTVolatileMessageContainer.mm in Sources */,
 				8B7C6CA21B52829100B90DBE /* LTMMOutputFile.mm in Sources */,
 				6AB5182F1CC2993D00540CC6 /* NSURL+Query.mm in Sources */,
 				8B87D5941C05AC630005410A /* NSErrorCodes+LTKit.mm in Sources */,
@@ -1432,6 +1481,7 @@
 				5067221919EA80B5003AF8D2 /* LTBoundedQueue.mm in Sources */,
 				84455E451CD0F2AB00042CB7 /* LTFastEnumerator.m in Sources */,
 				8B4495841CE3209C008402D0 /* NSObject+PropertyAccessors.m in Sources */,
+				C751B02C1D4881D7005DB5BB /* LTEventBusObserver.mm in Sources */,
 				8BA5D6A5199250240093A4FD /* NSString+Hashing.m in Sources */,
 				8B87D5371C04BA940005410A /* NSBundle+Path.mm in Sources */,
 				8BB236C31CDCD5C500057F11 /* NSObject+DynamicDispatch.mm in Sources */,
@@ -1439,6 +1489,7 @@
 				8BF9A53B18F684AC00CCA084 /* LTTimer.m in Sources */,
 				259FF7D01C14920C00362CDD /* LTBipartiteGraph.mm in Sources */,
 				28362120186C58DC00665ED9 /* LTCGExtensions.m in Sources */,
+				8B59AA9E1DABC54F0006CC22 /* LTEventBusLoggerTarget.mm in Sources */,
 				835204ED1D2A43B300000EEC /* LTEventBus.m in Sources */,
 				84455E4C1CD0F5E500042CB7 /* LTMappingRandomAccessCollection.m in Sources */,
 				28B8BBC41B67CF8600CF9F73 /* LTWeakContainer.mm in Sources */,
@@ -1465,11 +1516,13 @@
 			files = (
 				8B04C96B1BEE651A0024D22E /* LTRefSpec.mm in Sources */,
 				659361EA1C7C824D00A5F1D2 /* EXPMatchers+beBlock.mm in Sources */,
+				C751B3D91D48C6C1005DB5BB /* LTVolatileMessageContainerSpec.mm in Sources */,
 				28D86F561962AB8C00145674 /* LTRandomSpec.mm in Sources */,
 				8B44953A1CE1F4C7008402D0 /* NSArray+SelectorNameSpec.mm in Sources */,
 				8B24058D1B89BBB90079B724 /* UIDevice+HardwareSpec.mm in Sources */,
 				8BF9A54918FA6B9100CCA084 /* LTTimerSpec.mm in Sources */,
 				5067223219EA811A003AF8D2 /* LTQueueSpec.mm in Sources */,
+				C751B0461D48879B005DB5BB /* LTEventBusObserverSpec.mm in Sources */,
 				8B2840291CBE393000B745AE /* LTStructBoxingSpec.mm in Sources */,
 				5067223119EA811A003AF8D2 /* LTBoundedQueueSpec.mm in Sources */,
 				8B85C799182A2EE5004C352E /* LTLoggerSpec.mm in Sources */,
@@ -1501,6 +1554,7 @@
 				8B7C6CA91B52832600B90DBE /* LTMMOutputFileSpec.mm in Sources */,
 				2836212E186C58F900665ED9 /* LTCGExtensionsSpec.mm in Sources */,
 				28ABE00818715527005A5DEC /* LTAnimationSpec.mm in Sources */,
+				8B7622E51DABD6A90032999E /* LTEventBusLoggerTargetSpec.mm in Sources */,
 				8BE6F7471C21879500F66BA2 /* LTHashExtensionsSpec.mm in Sources */,
 				8B2405391B85DAC60079B724 /* EXPMatchers+beCloseToPoint.mm in Sources */,
 				8BEE674619596F66005E4D53 /* LTBidirectionalMapSpec.mm in Sources */,
