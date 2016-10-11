@@ -92,6 +92,11 @@ static NSDictionary * const kCVPixelFormatToCAMPixelFormat = @{
   return kCVPixelFormatToCAMPixelFormat[@(pixelFormat)];
 }
 
+- (CGSize)size {
+  CVPixelBufferRef pixelBuffer = CMSampleBufferGetImageBuffer(_sampleBuffer.get());
+  return CVImageBufferGetDisplaySize(pixelBuffer);
+}
+
 #pragma mark -
 #pragma mark Debugging
 #pragma mark -
