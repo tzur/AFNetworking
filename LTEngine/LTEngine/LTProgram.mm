@@ -3,10 +3,15 @@
 
 #import "LTProgram.h"
 
+#import <LTKit/NSString+Hashing.h>
 #import <numeric>
 
+#import "LTGLContext.h"
 #import "LTGLException.h"
+#import "LTProgramPool.h"
 #import "LTShader.h"
+
+NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark -
 #pragma mark LTProgramObject
@@ -46,26 +51,23 @@
 
 @interface LTProgram ()
 
-/// OpenGL name of the program.
-@property (readwrite, nonatomic) GLuint name;
-
 /// YES if the program is currently bound.
 @property (nonatomic) BOOL bound;
 
 /// Set to the previously bound program, or \c 0 if program is not bound.
 @property (nonatomic) GLint previousProgram;
 
-/// Maps uniforms and attributes to their \c LTProgramObject.
-@property (strong, nonatomic) NSDictionary *uniformToObject;
-@property (strong, nonatomic) NSDictionary *attributeToObject;
+/// Maps uniforms to their \c LTProgramObject.
+@property (readonly, nonatomic) NSDictionary<NSString *, LTProgramObject *> *uniformToObject;
 
-/// All uniforms and attributes names.
-@property (readwrite, nonatomic) NSSet *uniforms;
-@property (readwrite, nonatomic) NSSet *attributes;
+/// Maps attributes to their \c LTProgramObject.
+@property (readonly, nonatomic) NSDictionary<NSString *, LTProgramObject *> *attributeToObject;
 
 @end
 
 @implementation LTProgram
+
+@synthesize name = _name;
 
 #pragma mark -
 #pragma mark Initialization and destruction
@@ -74,48 +76,52 @@
 - (instancetype)initWithVertexSource:(NSString *)vertexSource
                       fragmentSource:(NSString *)fragmentSource {
   if (self = [super init]) {
-    self.attributeToObject = [NSMutableDictionary dictionary];
-    self.uniformToObject = [NSMutableDictionary dictionary];
-    [self loadWithVertexSource:vertexSource fragmentSource:fragmentSource];
+    _sourceIdentifier = [[vertexSource lt_SHA1] stringByAppendingString:[fragmentSource lt_SHA1]];
+
+    _name = [[LTGLContext currentContext].programPool nameForIdentifier:self.sourceIdentifier];
+
+    if (![self isProgramLinked]) {
+      [self linkWithVertexSource:vertexSource fragmentSource:fragmentSource];
+      [self extractUniformsFromProgram];
+      [self extractAttributesFromProgram];
+    } else {
+      [self extractUniformsFromProgram];
+      [self extractAttributesFromProgram];
+      [self resetState];
+    }
   }
   return self;
 }
 
 - (void)dealloc {
-  [self teardown];
-}
-
-- (void)teardown {
   [self unbind];
-  glDeleteProgram(self.name);
-  LTGLCheckDbg(@"Error deleting program");
+  [[LTGLContext currentContext].programPool recycleName:self.name
+                                         withIdentifier:self.sourceIdentifier];
 }
 
 #pragma mark -
 #pragma mark Program loading
 #pragma mark -
 
-- (void)loadWithVertexSource:(NSString *)vertexSource fragmentSource:(NSString *)fragmentSource {
+- (BOOL)isProgramLinked {
+  GLint value;
+  glGetProgramiv(self.name, GL_LINK_STATUS, &value);
+  return value == GL_TRUE;
+}
+
+- (void)linkWithVertexSource:(NSString *)vertexSource fragmentSource:(NSString *)fragmentSource {
   // Create vertex, fragment shaders.
   LTShader *vertex = [[LTShader alloc] initWithType:LTShaderTypeVertex
                                           andSource:vertexSource];
   LTShader *fragment = [[LTShader alloc] initWithType:LTShaderTypeFragment
                                             andSource:fragmentSource];
-  
-  // Create program.
-  self.name = glCreateProgram();
-  LTGLCheck(@"Program creation failed");
-  
+    
   // Attach vertex and fragment shaders to program.
   [vertex attachToProgram:self andExecute:^{
     [fragment attachToProgram:self andExecute:^{
       [self linkProgram];
     }];
   }];
-  
-  // Get uniforms and attributes data. This can be done only after linking.
-  [self extractUniformsFromProgram];
-  [self extractAttributesFromProgram];
 }
 
 - (void)extractUniformsFromProgram {
@@ -127,7 +133,9 @@
     LTProgramObject *object = [self uniformObjectForIndex:i maxNameLength:maxUniformNameLength];
     uniforms[object.name] = object;
   }
-  self.uniformToObject = [uniforms copy];
+
+  _uniformToObject = [uniforms copy];
+  _uniforms = [NSSet setWithArray:self.uniformToObject.allKeys];
 }
 
 - (void)extractAttributesFromProgram {
@@ -139,7 +147,9 @@
     LTProgramObject *object = [self attributeObjectForIndex:i maxNameLength:maxAttributeNameLength];
     attributes[object.name] = object;
   }
-  self.attributeToObject = [attributes copy];
+
+  _attributeToObject = [attributes copy];
+  _attributes = [NSSet setWithArray:self.attributeToObject.allKeys];
 }
 
 - (void)linkProgram {
@@ -195,7 +205,6 @@
   int uniformLocation = glGetUniformLocation(self.name, name.get());
   if (uniformLocation == -1) {
     // This should technically never happen, since we get the uniform name directly from OpenGL.
-    [self teardown];
     LTAssert(NO, @"Failed to retrieve uniform location for \"%s\"", name.get());
   }
   
@@ -215,7 +224,6 @@
   int attribLocation = glGetAttribLocation(self.name, name.get());
   if (attribLocation == -1) {
     // This should technically never happen, since we get the attribute name directly from OpenGL.
-    [self teardown];
     LTAssert(NO, @"Failed to retrieve attribute location for \"%s\"", name.get());
   }
   
@@ -444,6 +452,47 @@ static const LTTypeToTypeEncodingsMap kTypeToValidTypeEncodings = {
   }
 }
 
+- (void)resetState {
+  [self bindAndExecute:^{
+    [self.uniformToObject enumerateKeysAndObjectsUsingBlock:^(NSString *key,
+                                                              LTProgramObject *object, BOOL *) {
+      switch (object.type) {
+        case GL_BOOL:
+        case GL_INT:
+        case GL_SAMPLER_2D:
+          glUniform1i(object.index, 0);
+          break;
+        case GL_FLOAT:
+          glUniform1f(object.index, 0);
+          break;
+        case GL_FLOAT_VEC2:
+          glUniform2fv(object.index, 1, LTVector2::zeros().data());
+          break;
+        case GL_FLOAT_VEC3:
+          glUniform3fv(object.index, 1, LTVector3::zeros().data());
+          break;
+        case GL_FLOAT_VEC4:
+          glUniform4fv(object.index, 1, LTVector4::zeros().data());
+          break;
+        case GL_FLOAT_MAT2:
+          static const GLKMatrix2 kMatrix2 = {{0, 0, 0, 0}};
+          glUniformMatrix2fv(object.index, 1, GL_FALSE, kMatrix2.m);
+          break;
+        case GL_FLOAT_MAT3:
+          static const GLKMatrix3 kMatrix3 = {{0, 0, 0, 0, 0, 0, 0, 0, 0}};
+          glUniformMatrix3fv(object.index, 1, GL_FALSE, kMatrix3.m);
+          break;
+        case GL_FLOAT_MAT4:
+          static const GLKMatrix4 kMatrix4 = {{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}};
+          glUniformMatrix4fv(object.index, 1, GL_FALSE, kMatrix4.m);
+          break;
+        default:
+          LTAssert(NO, @"Unsupported object type: %d, for name: %@", object.type, key);
+      }
+    }];
+  }];
+}
+
 #pragma mark -
 #pragma mark Dictionary-like access
 #pragma mark -
@@ -464,20 +513,6 @@ static const LTTypeToTypeEncodingsMap kTypeToValidTypeEncodings = {
   LTAssert(NO, @"Given name '%@' is not a valid uniform in this program", key);
 }
 
-#pragma mark -
-#pragma mark Properties
-#pragma mark -
-
-- (void)setUniformToObject:(NSDictionary *)uniformToObject {
-  _uniformToObject = uniformToObject;
-
-  self.uniforms = [NSSet setWithArray:uniformToObject.allKeys];
-}
-
-- (void)setAttributeToObject:(NSDictionary *)attributeToObject {
-  _attributeToObject = attributeToObject;
-
-  self.attributes = [NSSet setWithArray:attributeToObject.allKeys];
-}
-
 @end
+
+NS_ASSUME_NONNULL_END
