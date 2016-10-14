@@ -3,6 +3,8 @@
 
 #import "LTGPUResource.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 /// Object for representing a GLSL program. The program is composed of a vertex and a fragment
 /// shader and may include uniforms (variables that are global for the entire drawing of an object)
 /// and attributes (variables that are set for each vertex).
@@ -10,8 +12,16 @@
 /// getting/setting the uniforms and attributes indices to set their values.
 @interface LTProgram : NSObject <LTGPUResource>
 
-/// Initializes an OpenGL program. Once a shader is loaded, attribute and uniforms information will
-/// be retrieved.
+/// Initializes an OpenGL program either by creating a GLSL program name or by recycling an existing
+/// one that is associated with the same \c vertexSource and \c fragmentSource.
+///
+/// If a new GLSL program name is created, the given vertex and fragment shaders are compiled and
+/// linked to create a valid program. Once such program is created, attribute and uniforms
+/// information is retrieved.
+///
+/// If the GLSL program name is recycled, its uniforms state is reset and no compilation or linking
+/// is performed. According to the OpenGL ES spec, the initial state of the uniforms is \c 0.0 for
+/// floating point uniforms, \c 0 for integer uniforms and \c FALSE for boolean uniforms.
 ///
 /// Throws LTGLException with \c kLTProgramCreationFailedException if the program failed to create,
 /// and \c kLTProgramLinkFailedException if the program linking failed.
@@ -72,4 +82,9 @@
 /// Names of all attributes of the program.
 @property (readonly, nonatomic) NSSet *attributes;
 
+/// Uniquely identifies the source code the program was compiled and linked from.
+@property (readonly, nonatomic) NSString *sourceIdentifier;
+
 @end
+
+NS_ASSUME_NONNULL_END

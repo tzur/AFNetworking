@@ -99,7 +99,6 @@ context(@"getting and setting uniforms and attributes", ^{
     program[@"uMat2"] = mat2;
     program[@"uMat3"] = mat3;
     program[@"uMat4"] = mat4;
-    program[@"uSampler"] = intValue;
 
     expect(program[@"uBool"]).to.equal(boolValue);
     expect(program[@"uInt"]).to.equal(intValue);
@@ -356,6 +355,69 @@ context(@"binding", ^{
   itShouldBehaveLike(kLTResourceExamples, ^{
     return @{kLTResourceExamplesSUTValue: [NSValue valueWithNonretainedObject:program],
              kLTResourceExamplesOpenGLParameterName: @GL_CURRENT_PROGRAM};
+  });
+});
+
+context(@"recycling", ^{
+  it(@"should recycle program with the same source", ^{
+    GLuint name;
+    @autoreleasepool {
+      LTProgram *program = [[LTProgram alloc] initWithVertexSource:kComplexVertexSource
+                                                    fragmentSource:kComplexFragmentSource];
+      name = program.name;
+    }
+
+    LTProgram *newProgram = [[LTProgram alloc] initWithVertexSource:kComplexVertexSource
+                                                     fragmentSource:kComplexFragmentSource];
+    expect(newProgram.name).to.equal(name);
+  });
+
+  it(@"should not recycle program with different source", ^{
+    GLuint name;
+    @autoreleasepool {
+      LTProgram *program = [[LTProgram alloc] initWithVertexSource:kBasicVertexSource
+                                                    fragmentSource:kBasicFragmentSource];
+      name = program.name;
+    }
+
+    LTProgram *newProgram = [[LTProgram alloc] initWithVertexSource:kComplexVertexSource
+                                                     fragmentSource:kComplexFragmentSource];
+    expect(newProgram.name).notTo.equal(name);
+  });
+
+  it(@"should reset state of the recycled program", ^{
+    @autoreleasepool {
+      LTProgram *program = [[LTProgram alloc] initWithVertexSource:kUniformTypesVertexSource
+                                                    fragmentSource:kBasicFragmentSource];
+      program[@"uBool"] = @(YES);
+      program[@"uInt"] = @(7);
+      program[@"uFloat"] = @(1.5);
+      program[@"uSampler"] = @(1);
+      program[@"uVec2"] = $(LTVector2(1, 2));
+      program[@"uVec3"] = $(LTVector3(1, 2, 3));
+      program[@"uVec4"] = $(LTVector4(1, 2, 3, 4));
+      program[@"uMat2"] = $(GLKMatrix2{{1, 2, 3, 4}});
+      program[@"uMat3"] = $(GLKMatrix3{{1, 2, 3, 4, 5, 6, 7, 8, 9}});
+      program[@"uMat4"] = $(GLKMatrix4{{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16}});
+    }
+
+    LTProgram *newProgram = [[LTProgram alloc] initWithVertexSource:kUniformTypesVertexSource
+                                                     fragmentSource:kBasicFragmentSource];
+
+    GLKMatrix2 mat2 = {{0, 0, 0, 0}};
+    GLKMatrix3 mat3 = {{0, 0, 0, 0, 0, 0, 0, 0, 0}};
+    GLKMatrix4 mat4 = {{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}};
+
+    expect(newProgram[@"uBool"]).to.equal(@(NO));
+    expect(newProgram[@"uInt"]).to.equal(@(0));
+    expect(newProgram[@"uFloat"]).to.equal(@(0));
+    expect(newProgram[@"uSampler"]).to.equal(@(0));
+    expect([newProgram[@"uVec2"] isEqualToValue:$(LTVector2())]).to.beTruthy();
+    expect([newProgram[@"uVec3"] isEqualToValue:$(LTVector3())]).to.beTruthy();
+    expect([newProgram[@"uVec4"] isEqualToValue:$(LTVector4())]).to.beTruthy();
+    expect([newProgram[@"uMat2"] isEqualToValue:$(mat2)]).to.beTruthy();
+    expect([newProgram[@"uMat3"] isEqualToValue:$(mat3)]).to.beTruthy();
+    expect([newProgram[@"uMat4"] isEqualToValue:$(mat4)]).to.beTruthy();
   });
 });
 
