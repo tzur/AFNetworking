@@ -54,6 +54,7 @@ context(@"initialization", ^{
   it(@"should initialize correctly without sharegroup", ^{
     expect(context.context).toNot.beNil();
     expect(context.fboPool).toNot.beNil();
+    expect(context.programPool).toNot.beNil();
   });
 
   it(@"should initialize correctly with sharegroup", ^{
@@ -62,6 +63,7 @@ context(@"initialization", ^{
     expect(sharedContext.context).toNot.beNil();
     expect(sharedContext.context.sharegroup).to.equal(sharedContext.context.sharegroup);
     expect(sharedContext.fboPool).toNot.beNil();
+    expect(sharedContext.programPool).toNot.beNil();
   });
 
   it(@"should initialize with nil sharegroup", ^{

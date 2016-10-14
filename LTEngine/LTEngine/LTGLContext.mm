@@ -6,6 +6,7 @@
 #import <stack>
 
 #import "LTFboPool.h"
+#import "LTProgramPool.h"
 
 /// OpenGL default blend function.
 LTGLContextBlendFuncArgs kLTGLContextBlendFuncDefault = {
@@ -56,12 +57,6 @@ typedef struct {
   std::stack<LTGLContextValues> _contextStack;
 }
 
-/// Underlying \c EAGLContext.
-@property (strong, nonatomic) EAGLContext *context;
-
-/// Framebuffer pool associated with this context.
-@property (strong, nonatomic) LTFboPool *fboPool;
-
 /// Holds \c LTGLContextValues objects for each \c executeAndRestoreState: call. Note that this is
 /// a stack since it's possible to have recursive calls to \c executeAndRestoreState:.
 @property (readonly, nonatomic) std::stack<LTGLContextValues> &contextStack;
@@ -101,19 +96,21 @@ typedef struct {
 
 - (instancetype)initWithSharegroup:(EAGLSharegroup *)sharegroup {
   if (self = [super init]) {
-    self.context = [self createEAGLContextWithSharegroup:sharegroup];
-    self.fboPool = [[LTFboPool alloc] init];
+    _context = [self createEAGLContextWithSharegroup:sharegroup];
+    _fboPool = [[LTFboPool alloc] init];
+    _programPool = [[LTProgramPool alloc] init];
   }
   return self;
 }
 
 - (instancetype)initWithSharegroup:(EAGLSharegroup *)sharegroup version:(LTGLVersion)version {
   if (self = [super init]) {
-    self.context = [self createEAGLContextWithSharegroup:sharegroup version:version];
+    _context = [self createEAGLContextWithSharegroup:sharegroup version:version];
     if (!self.context) {
       return nil;
     }
-    self.fboPool = [[LTFboPool alloc] init];
+    _fboPool = [[LTFboPool alloc] init];
+    _programPool = [[LTProgramPool alloc] init];
   }
   return self;
 }
@@ -131,6 +128,13 @@ typedef struct {
                                          version:(LTGLVersion)version {
   return [[EAGLContext alloc] initWithAPI:(EAGLRenderingAPI)version
                                sharegroup:sharegroup];
+}
+
+- (void)dealloc {
+  EAGLContext *currentContext = [EAGLContext currentContext];
+  [EAGLContext setCurrentContext:self.context];
+  [self.programPool flush];
+  [EAGLContext setCurrentContext:currentContext];
 }
 
 #pragma mark -

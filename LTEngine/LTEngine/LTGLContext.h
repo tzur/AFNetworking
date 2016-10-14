@@ -5,7 +5,7 @@
 
 #import "LTGLEnums.h"
 
-@class LTFboPool, LTGLContext;
+@class LTFboPool, LTGLContext, LTProgramPool;
 
 struct LTVector;
 
@@ -105,6 +105,9 @@ extern LTGLContextBlendEquationArgs kLTGLContextBlendEquationDefault;
 
 /// Framebuffer pool associated with this context.
 @property (readonly, nonatomic) LTFboPool *fboPool;
+
+/// Program pool associated with this context.
+@property (readonly, nonatomic) LTProgramPool *programPool;
 
 /// Blend function.
 @property (nonatomic) LTGLContextBlendFuncArgs blendFunc;
