@@ -180,7 +180,70 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
 }
 
 - (void)didOutputVideoSampleBuffer:(CMSampleBufferRef)sampleBuffer {
+  [self fixOrientationInSampleBuffer:sampleBuffer];
   [self.videoFramesSubject sendNext:[[CAMVideoFrame alloc] initWithSampleBuffer:sampleBuffer]];
+}
+
+- (void)fixOrientationInSampleBuffer:(CMSampleBufferRef)sampleBuffer {
+  static const CFStringRef kOrientationKey = (__bridge CFStringRef)@"Orientation";
+
+  NSNumber *currentOrientation =
+      (__bridge NSNumber *)CMGetAttachment(sampleBuffer, kOrientationKey, NULL);
+  if (![currentOrientation isKindOfClass:[NSNumber class]]) {
+    return;
+  }
+
+  int fixedOrientation = [self fixedOrientationForOrientation:currentOrientation.intValue];
+
+  CMSetAttachment(sampleBuffer, kOrientationKey, (__bridge CFNumberRef)@(fixedOrientation),
+                  kCMAttachmentMode_ShouldPropagate);
+}
+
+/// When interfaceOrientation and gravityOrientation are not the same value (f.e. when interface
+/// rotation is locked), the video frame will be oriented incorrectly. This can interfere with
+/// features such as face detection. Mirroring the still output can break features such as face
+/// tracking.
+- (int)fixedOrientationForOrientation:(int)orientation {
+  if (orientation < 1 || orientation > 8) {
+    return orientation;
+  }
+
+  /// Maps an EXIF orientation value to the orientation value relatively rotated 90 degrees CCW.
+  static const std::array<int, 9> kOrientationToRotatedOnceOrientation{{0, 6, 5, 8, 7, 4, 3, 2, 1}};
+
+  /// Maps an EXIF orientation value to the orientation value relatively mirrored.
+  static const std::array<int, 9> kOrientationToMirroredOrientation{{0, 2, 1, 4, 3, 6, 5, 8, 7}};
+
+  NSInteger rotationsDiff =
+      [self rotationsFromOrientation:self.interfaceOrientation] -
+      [self rotationsFromOrientation:self.gravityOrientation];
+  rotationsDiff = ((rotationsDiff % 4) + 4) % 4;
+
+  int fixedOrientation = orientation;
+  while (rotationsDiff-- > 0) {
+    fixedOrientation = kOrientationToRotatedOnceOrientation[fixedOrientation];
+  }
+
+  if (self.session.videoConnection.videoMirrored) {
+    fixedOrientation = kOrientationToMirroredOrientation[fixedOrientation];
+  }
+
+  return fixedOrientation;
+}
+
+- (NSInteger)rotationsFromOrientation:(UIInterfaceOrientation)orientation {
+  switch (orientation) {
+    case UIInterfaceOrientationPortrait:
+      return 0;
+    case UIInterfaceOrientationPortraitUpsideDown:
+      return 2;
+    case UIInterfaceOrientationLandscapeLeft:
+      return 3;
+    case UIInterfaceOrientationLandscapeRight:
+      return 1;
+    case UIInterfaceOrientationUnknown:
+      return 0;
+  }
 }
 
 - (void)didOutputAudioSampleBuffer:(CMSampleBufferRef)sampleBuffer {
