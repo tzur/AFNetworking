@@ -24,7 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// place.
 @property (readonly, nonatomic) RACSignal *interceptedDescriptors;
 
-/// Signal carrying \c RACTuples of \c RACTuples representing
+/// \c RACTuple of \c RACTuples representing
 /// @code
 /// ((<previousInterceptionMap>, <previousOriginalMap>), (<interceptionMap>, <originalMap>))
 /// @endcode
@@ -33,7 +33,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// \c PTNDescriptorBidirectionalMap, the interception mapping maps \c NSURL identifiers to the
 /// \c PTNDescriptor objects to inject in their place and the original mapping maps \c NSURL
 /// identifiers to the \c PTNDescriptor they represent normally prior to the interception.
-@property (readonly, nonatomic) RACSignal *previousAndCurrentMaps;
+@property (readonly, nonatomic) RACTuple *previousAndCurrentMaps;
 
 /// Underlying asset manager used to relay all asset requests.
 @property (readonly, nonatomic) id<PTNAssetManager> assetManager;
@@ -50,7 +50,7 @@ NS_ASSUME_NONNULL_BEGIN
               interceptedDescriptors:(RACSignal *)interceptedDescriptors {
   if (self = [super init]) {
     _assetManager = assetManager;
-    _interceptedDescriptors = [[[[[[interceptedDescriptors
+    _interceptedDescriptors = [[[[[[[interceptedDescriptors
         takeUntil:self.rac_willDeallocSignal]
         startWith:@{}]
         map:^LTBidirectionalMap *(NSDictionary *dictionary) {
@@ -58,13 +58,9 @@ NS_ASSUME_NONNULL_BEGIN
         }]
         distinctUntilChanged]
         catchTo:[RACSignal empty]]
-        replayLast];
-    // Replaying the last value of the previous and current maps although it originates from the
-    // already replayed \c interceptedDescriptors signal is required since the maps signal must have
-    // an initial value (and therefore is using \c startWith:), but should not use that value if
-    // a real mapping was already given.
-    _previousAndCurrentMaps = [[self fetchPreviousAndCurrentMaps]
-        replayLast];
+        replayLast]
+        deliverOnMainThread];
+    RAC(self, previousAndCurrentMaps) = [self fetchPreviousAndCurrentMaps];
     _originalSignalCache = [[PTNMulticastingSignalCache alloc] initWithReplayCapacity:1];
 
     [self autoClearSignalCache];
@@ -102,8 +98,8 @@ NS_ASSUME_NONNULL_BEGIN
   // on subscription).
   return [[[RACSignal
       ptn_combineLatestWithIndex:@[
-        self.previousAndCurrentMaps,
-        [self.assetManager fetchAlbumWithURL:url]
+        RACObserve(self, previousAndCurrentMaps),
+        [[self.assetManager fetchAlbumWithURL:url] deliverOnMainThread]
       ]]
       reduceEach:(id)^PTNAlbumChangeset *(RACTuple *combinedData, NSNumber *changedIndex) {
         RACTupleUnpack(RACTuple *mapsWithPrevious, PTNAlbumChangeset *changeset) = combinedData;
@@ -165,7 +161,7 @@ NS_ASSUME_NONNULL_BEGIN
     return [[self fetchCachedDescriptorWithURL:url] catchTo:[RACSignal return:nil]];
   }];
 
-  return [[[RACSignal combineLatest:signals]
+  return [[[[RACSignal combineLatest:signals]
       map:^id(RACTuple *descriptors) {
         NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
         for (NSUInteger i = 0; i < descriptors.count; ++i) {
@@ -177,7 +173,8 @@ NS_ASSUME_NONNULL_BEGIN
 
         return [[LTBidirectionalMap alloc] initWithDictionary:dictionary];
       }]
-      takeUntil:self.rac_willDeallocSignal];
+      takeUntil:self.rac_willDeallocSignal]
+      deliverOnMainThread];
 }
 
 - (RACSignal *)fetchCachedDescriptorWithURL:(NSURL *)url {
@@ -209,7 +206,7 @@ NS_ASSUME_NONNULL_BEGIN
           return [RACSignal return:interceptingDescriptor];
         }
 
-        return [self.assetManager fetchDescriptorWithURL:url];
+        return [[self.assetManager fetchDescriptorWithURL:url] deliverOnMainThread];
       }]
       switchToLatest];
 }
