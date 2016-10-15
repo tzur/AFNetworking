@@ -19,6 +19,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Subject for sending video frames.
 @property (readonly, nonatomic) RACSubject *videoFramesSubject;
 
+/// Subject for sending video frames errors.
+@property (readonly, nonatomic) RACSubject *videoFramesErrorsSubject;
+
 /// Subject for sending audio frames.
 @property (readonly, nonatomic) RACSubject *audioFramesSubject;
 
@@ -77,6 +80,7 @@ NS_ASSUME_NONNULL_BEGIN
   if (self = [super init]) {
     _session = session;
     _videoFramesSubject = [RACSubject subject];
+    _videoFramesErrorsSubject = [RACSubject subject];
     _audioFramesSubject = [RACSubject subject];
     self.session.videoDelegate = self;
     self.session.audioDelegate = self;
@@ -172,7 +176,7 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
   NSString *dropReason = (__bridge NSString *)(CFStringRef)
       CMGetAttachment(sampleBuffer, kCMSampleBufferAttachmentKey_DroppedFrameReason, NULL);
   NSError *error = [NSError lt_errorWithCode:CAMErrorCodeDroppedFrame description:dropReason];
-  LogError(@"%@", error);
+  [self.videoFramesErrorsSubject sendNext:error];
 }
 
 - (void)didOutputVideoSampleBuffer:(CMSampleBufferRef)sampleBuffer {
@@ -227,6 +231,10 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
 
 - (RACSignal *)videoFrames {
   return self.videoFramesSubject;
+}
+
+- (RACSignal *)videoFramesErrors {
+  return self.videoFramesErrorsSubject;
 }
 
 - (void)setInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
