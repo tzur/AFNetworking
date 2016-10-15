@@ -117,6 +117,8 @@ context(@"", ^{
     });
 
     context(@"video frames", ^{
+      static const CFStringRef kOrientationKey = (__bridge CFStringRef)@"Orientation";
+
       __block lt::Ref<CMSampleBufferRef> sampleBuffer;
       __block lt::Ref<CMSampleBufferRef> sampleBuffer2;
       __block id output;
@@ -194,6 +196,62 @@ context(@"", ^{
 
         expect(recorder).toNot.complete();
         expect(errorsRecorder).toNot.complete();
+      });
+
+      it(@"should not change orientation when orientations are equal and not mirrored", ^{
+        CMSetAttachment(sampleBuffer.get(), kOrientationKey, (__bridge CFNumberRef)@3,
+                        kCMAttachmentMode_ShouldPropagate);
+
+        [device captureOutput:output didOutputSampleBuffer:sampleBuffer.get()
+               fromConnection:connection];
+        expect([recorder.values[0] exifOrientation]).to.equal(3);
+      });
+
+      it(@"should rotate orientation when orientations are not equal", ^{
+        CMSetAttachment(sampleBuffer.get(), kOrientationKey, (__bridge CFNumberRef)@3,
+                        kCMAttachmentMode_ShouldPropagate);
+        device.interfaceOrientation = UIInterfaceOrientationPortrait;
+        device.gravityOrientation = UIInterfaceOrientationLandscapeLeft;
+
+        [device captureOutput:output didOutputSampleBuffer:sampleBuffer.get()
+               fromConnection:connection];
+        expect([recorder.values[0] exifOrientation]).to.equal(8);
+      });
+
+      it(@"should mirror orientation when connection is mirrored", ^{
+        CMSetAttachment(sampleBuffer.get(), kOrientationKey, (__bridge CFNumberRef)@3,
+                        kCMAttachmentMode_ShouldPropagate);
+        id videoConnection = OCMClassMock([AVCaptureConnection class]);
+        OCMStub([videoConnection isVideoMirrored]).andReturn(YES);
+        session.videoConnection = videoConnection;
+
+        [device captureOutput:output didOutputSampleBuffer:sampleBuffer.get()
+               fromConnection:connection];
+        expect([recorder.values[0] exifOrientation]).to.equal(4);
+      });
+
+      it(@"should rotate and mirror orientation when orientations are not equal and connection is "
+          "mirrored", ^{
+        CMSetAttachment(sampleBuffer.get(), kOrientationKey, (__bridge CFNumberRef)@3,
+                        kCMAttachmentMode_ShouldPropagate);
+        device.interfaceOrientation = UIInterfaceOrientationPortrait;
+        device.gravityOrientation = UIInterfaceOrientationLandscapeLeft;
+        id videoConnection = OCMClassMock([AVCaptureConnection class]);
+        OCMStub([videoConnection isVideoMirrored]).andReturn(YES);
+        session.videoConnection = videoConnection;
+
+        [device captureOutput:output didOutputSampleBuffer:sampleBuffer.get()
+               fromConnection:connection];
+        expect([recorder.values[0] exifOrientation]).to.equal(7);
+      });
+
+      it(@"should not change orientation when it doesn't exist", ^{
+        device.interfaceOrientation = UIInterfaceOrientationPortrait;
+        device.gravityOrientation = UIInterfaceOrientationLandscapeLeft;
+
+        [device captureOutput:output didOutputSampleBuffer:sampleBuffer.get()
+               fromConnection:connection];
+        expect([recorder.values[0] propagatableMetadata][@"Orientation"]).to.beNil();
       });
     });
 
