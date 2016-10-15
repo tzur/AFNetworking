@@ -45,6 +45,10 @@ NS_ASSUME_NONNULL_BEGIN
   return [[RACSignal never] takeUntil:[self rac_willDeallocSignal]];
 }
 
+- (RACSignal *)videoFramesErrors {
+  return [[RACSignal never] takeUntil:[self rac_willDeallocSignal]];
+}
+
 - (RACSignal *)subjectAreaChanged {
   return [[RACSignal never] takeUntil:[self rac_willDeallocSignal]];
 }

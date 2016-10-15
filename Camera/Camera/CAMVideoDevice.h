@@ -34,9 +34,19 @@ NS_ASSUME_NONNULL_BEGIN
 /// The frames are oriented according to \c interfaceOrientation. Frames from the front camera are
 /// mirrored before being sent over the signal.
 ///
-/// The signal completes when the receiver is deallocated or errs if there is a problem capturing
-/// video. All events are sent on an arbitrary thread.
+/// The signal completes when the receiver is deallocated or errs if there is a problem preventing
+/// capturing video entirely. Errors capturing individual frames are sent over \c videoFramesErrors.
+/// All events are sent on an arbitrary thread.
 @property (readonly, nonatomic) RACSignal *videoFrames;
+
+/// Signal that sends \c NSErrors when there are errors capturing individual frames by the camera.
+///
+/// It's possible that some errors will be sent here while \c videoFrames continues to send
+/// captured frames. A common reason for this is low memory combined with heavy processing.
+///
+/// The signal completes when the receiver is deallocated and never errs. All events are sent on an
+/// arbitrary thread.
+@property (readonly, nonatomic) RACSignal *videoFramesErrors;
 
 /// Current interface orientation. Setting this property to the current orientation of the
 /// interface will result in correctly oriented frames sent over \c videoFrames.

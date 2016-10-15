@@ -152,6 +152,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic, nullable) RACSignal *videoFrames;
 
 /// @see CAMVideoDevice.
+@property (strong, nonatomic, nullable) RACSignal *videoFramesErrors;
+
+/// @see CAMVideoDevice.
 @property (strong, nonatomic, nullable) RACSignal *subjectAreaChanged;
 
 /// Return value for the \c setPixelFormat: method.

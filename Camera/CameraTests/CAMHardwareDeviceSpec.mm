@@ -116,27 +116,85 @@ context(@"", ^{
       boxedSampleBuffer = nil;
     });
 
-    it(@"should send video frames", ^{
-      __block lt::Ref<CMSampleBufferRef> sampleBuffer(CAMCreateImageSampleBuffer(kSize));
-      __block lt::Ref<CMSampleBufferRef> sampleBuffer2(CAMCreateImageSampleBuffer(kSize));
+    context(@"video frames", ^{
+      __block lt::Ref<CMSampleBufferRef> sampleBuffer;
+      __block lt::Ref<CMSampleBufferRef> sampleBuffer2;
+      __block id output;
+      __block id connection;
+      __block LLSignalTestRecorder *recorder;
 
-      id output = OCMClassMock([AVCaptureVideoDataOutput class]);
-      id connection = OCMClassMock([AVCaptureConnection class]);
-      LLSignalTestRecorder *recorder = [[device videoFrames] testRecorder];
+      beforeEach(^{
+        sampleBuffer = lt::Ref<CMSampleBufferRef>(CAMCreateImageSampleBuffer(kSize));
+        sampleBuffer2 = lt::Ref<CMSampleBufferRef>(CAMCreateImageSampleBuffer(kSize));
 
-      [device captureOutput:output didOutputSampleBuffer:sampleBuffer.get()
-             fromConnection:connection];
-      expect(recorder).to.sendValuesWithCount(1);
-      expect(recorder).to.matchValue(0, ^BOOL(id<CAMVideoFrame> frame) {
-        return [frame sampleBuffer].get() == sampleBuffer.get();
+        output = OCMClassMock([AVCaptureVideoDataOutput class]);
+        connection = OCMClassMock([AVCaptureConnection class]);
+        recorder = [[device videoFrames] testRecorder];
       });
-      [device captureOutput:output didOutputSampleBuffer:sampleBuffer2.get()
-             fromConnection:connection];
-      expect(recorder).to.sendValuesWithCount(2);
-      expect(recorder).to.matchValue(1, ^BOOL(id<CAMVideoFrame> frame) {
-        return [frame sampleBuffer].get() == sampleBuffer2.get();
+
+      it(@"should send video frames", ^{
+        [device captureOutput:output didOutputSampleBuffer:sampleBuffer.get()
+               fromConnection:connection];
+        expect(recorder).to.sendValuesWithCount(1);
+        expect(recorder).to.matchValue(0, ^BOOL(id<CAMVideoFrame> frame) {
+          return [frame sampleBuffer].get() == sampleBuffer.get();
+        });
+
+        [device captureOutput:output didOutputSampleBuffer:sampleBuffer2.get()
+               fromConnection:connection];
+        expect(recorder).to.sendValuesWithCount(2);
+        expect(recorder).to.matchValue(1, ^BOOL(id<CAMVideoFrame> frame) {
+          return [frame sampleBuffer].get() == sampleBuffer2.get();
+        });
+
+        expect(recorder).toNot.complete();
       });
-      expect(recorder).toNot.complete();
+
+      it(@"should send video frames errors", ^{
+        CMSetAttachment(sampleBuffer.get(), kCMSampleBufferAttachmentKey_DroppedFrameReason,
+                        (__bridge CFStringRef)@"A", kCMAttachmentMode_ShouldPropagate);
+        CMSetAttachment(sampleBuffer2.get(), kCMSampleBufferAttachmentKey_DroppedFrameReason,
+                        (__bridge CFStringRef)@"B", kCMAttachmentMode_ShouldPropagate);
+
+        LLSignalTestRecorder *errorsRecorder = [[device videoFramesErrors] testRecorder];
+
+        [device captureOutput:output didDropSampleBuffer:sampleBuffer.get()
+               fromConnection:connection];
+        expect(errorsRecorder).to.sendValuesWithCount(1);
+        expect(errorsRecorder).to.sendValue(0, [NSError lt_errorWithCode:CAMErrorCodeDroppedFrame
+                                                             description:@"A"]);
+
+        [device captureOutput:output didDropSampleBuffer:sampleBuffer2.get()
+               fromConnection:connection];
+        expect(errorsRecorder).to.sendValuesWithCount(2);
+        expect(errorsRecorder).to.sendValue(1, [NSError lt_errorWithCode:CAMErrorCodeDroppedFrame
+                                                             description:@"B"]);
+
+        expect(errorsRecorder).toNot.complete();
+      });
+
+      it(@"should send video frames and errors without completing either signal", ^{
+        CMSetAttachment(sampleBuffer2.get(), kCMSampleBufferAttachmentKey_DroppedFrameReason,
+                        (__bridge CFStringRef)@"B", kCMAttachmentMode_ShouldPropagate);
+
+        LLSignalTestRecorder *errorsRecorder = [[device videoFramesErrors] testRecorder];
+
+        [device captureOutput:output didOutputSampleBuffer:sampleBuffer.get()
+               fromConnection:connection];
+        expect(recorder).to.sendValuesWithCount(1);
+        expect(recorder).to.matchValue(0, ^BOOL(id<CAMVideoFrame> frame) {
+          return [frame sampleBuffer].get() == sampleBuffer.get();
+        });
+
+        [device captureOutput:output didDropSampleBuffer:sampleBuffer2.get()
+               fromConnection:connection];
+        expect(errorsRecorder).to.sendValuesWithCount(1);
+        expect(errorsRecorder).to.sendValue(0, [NSError lt_errorWithCode:CAMErrorCodeDroppedFrame
+                                                             description:@"B"]);
+
+        expect(recorder).toNot.complete();
+        expect(errorsRecorder).toNot.complete();
+      });
     });
 
     it(@"should update interface orientation correctly", ^{
