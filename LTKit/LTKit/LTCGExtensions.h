@@ -339,6 +339,25 @@ CG_INLINE CGFloat CGRectArea(const CGRect &rect) {
   return CGRectGetWidth(rect) * CGRectGetHeight(rect);
 }
 
+/// Returns a value in <tt>[0, 1]</tt> equal to the ratio of intersection area to total unique area.
+/// A value of \c 0 indicates that the rects do not intersect, where a value of \c 1 indicates that
+/// the two rects completely overlap each other.
+CG_INLINE CGFloat CGRectOverlap(CGRect first, CGRect second) {
+  CGRect intersection = CGRectIntersection(first, second);
+  if (CGRectIsNull(intersection)) {
+    return 0;
+  }
+
+  CGFloat intersectionArea = CGRectArea(intersection);
+  CGFloat unionArea = CGRectArea(first) + CGRectArea(second);
+
+  if (unionArea == intersectionArea) {
+    return 0;
+  } else {
+    return intersectionArea / (unionArea - intersectionArea);
+  }
+}
+
 /// Returns a hash code for the given rect.
 CG_INLINE NSUInteger CGRectHash(const CGRect &rect) {
   NSUInteger hashCode = [@(rect.origin.x) hash];

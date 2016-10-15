@@ -203,6 +203,15 @@ context(@"cgrect operations", ^{
     expect(CGRectArea(CGRectMake(1, 2, -3, -4))).to.equal(12);
     expect(CGRectArea(CGRectMake(1, 2, 3, 4))).to.equal(CGRectArea(CGRectMake(5, 7, 3, 4)));
   });
+
+  it(@"overlap", ^{
+    expect(CGRectOverlap(CGRectMake(0, 0, 2, 2), CGRectMake(2, 2, 2, 2))).to.equal(0);
+    expect(CGRectOverlap(CGRectMake(0, 0, 2, 2), CGRectMake(0, 0, 2, 2))).to.equal(1);
+    expect(CGRectOverlap(CGRectMake(0, 0, 2, 2), CGRectMake(1, 1, 1, 1))).to.equal(0.25);
+    expect(CGRectOverlap(CGRectMake(0, 0, 2, 2), CGRectMake(0, 1, 2, 1))).to.equal(0.5);
+    expect(CGRectOverlap(CGRectMake(1, 1, 1, 1), CGRectMake(0, 0, 2, 2))).to.equal(0.25);
+    expect(CGRectOverlap(CGRectMake(0, 1, 2, 1), CGRectMake(0, 0, 2, 2))).to.equal(0.5);
+  });
 });
 
 context(@"cgtriangle operations", ^{
