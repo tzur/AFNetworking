@@ -144,19 +144,21 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 - (void)setupFocusView {
-  static const CGFloat kFocusSquareSize = 65;
-  static const CGFloat kFocusPlusSize = 20;
+  static const CGFloat kFocusSquareSize = 75;
+  static const CGFloat kFocusCornerRadius = 8;
+  static const CGFloat kFocusIndicatorLength = 6;
   static const CGFloat kFocusLineWidth = 1;
-  static const CGFloat kFocusOutlineWidth = 0.5;
-  static const CGFloat kFocusEdgeLength = kFocusSquareSize + 2 * kFocusOutlineWidth;
-
+  static const CGFloat kFocusShadowRadius = 1;
+  static const CGFloat kFocusShadowOpacity = 0.25;
   _focusView =
-      [[CUIFocusView alloc] initWithFrame:CGRectFromSize(CGSizeMakeUniform(kFocusEdgeLength))];
-  self.focusView.plusLength = kFocusPlusSize;
+      [[CUIFocusView alloc] initWithFrame:CGRectFromSize(CGSizeMakeUniform(kFocusSquareSize))];
+  self.focusView.cornerRadius = kFocusCornerRadius;
+  self.focusView.indicatorLength = kFocusIndicatorLength;
   self.focusView.lineWidth = kFocusLineWidth;
-  self.focusView.outlineWidth = kFocusOutlineWidth;
   self.focusView.color = [UIColor whiteColor];
-  self.focusView.outlineColor = [[UIColor blackColor] colorWithAlphaComponent:0.25];
+  self.focusView.shadowRadius = kFocusShadowRadius;
+  self.focusView.shadowColor = [UIColor blackColor];
+  self.focusView.shadowOpacity = kFocusShadowOpacity;
   self.focusView.alpha = 0;
   self.focusView.userInteractionEnabled = NO;
 
