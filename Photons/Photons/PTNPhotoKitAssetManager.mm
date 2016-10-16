@@ -179,12 +179,15 @@ NS_ASSUME_NONNULL_BEGIN
     return YES;
   }
 
-  if (![url.ptn_photoKitURLType isEqual:$(PTNPhotoKitURLTypeMetaAlbumType)]) {
-    return NO;
-  }
-
-  return [url.ptn_photoKitMetaAlbumType isEqual:$(PTNPhotoKitMetaAlbumTypeUserAlbums)] ||
-      [url.ptn_photoKitMetaAlbumType isEqual:$(PTNPhotoKitMetaAlbumTypePhotosAppSmartAlbums)];
+  // Fetching a fetch result does not err, so in order to validate it we check the number of objects
+  // in the result. A fetch result doesn't return actual assets, but rather collections of assets,
+  // so even a fetch of an empty album should have one item in the fetch result - an empty
+  // collection. The only cases where a fetch result can be empty without indicating some failure is
+  // when fetching the user albums when there are none, or fetching smart albums with an empty
+  // subalbum filter.
+  return [url.ptn_photoKitURLType isEqual:$(PTNPhotoKitURLTypeMetaAlbumType)] &&
+      ([url.ptn_photoKitAlbumType isEqual:@(PHAssetCollectionTypeAlbum)] ||
+       [url.ptn_photoKitAlbumSubalbums isEqual:@[]]);
 }
 
 - (RACSignal *)nextChangesetForRegularAlbumWithURL:(NSURL *)url
@@ -249,9 +252,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (RACSignal *)recursiveUpdatesForSmartAlbums {
-  NSURL *smartAlbumURL =
-      [NSURL ptn_photoKitMetaAlbumWithType:$(PTNPhotoKitMetaAlbumTypeSmartAlbums)];
-  return [[self fetchFetchResultWithURL:smartAlbumURL]
+  return [[self fetchFetchResultWithURL:[NSURL ptn_photoKitSmartAlbums]]
       flattenMap:^RACStream *(PHFetchResult *fetchResult) {
         NSMutableArray *signals = [NSMutableArray array];
 
@@ -273,8 +274,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (BOOL)shouldObserveChangesRecursively:(NSURL *)url {
   return [url.ptn_photoKitURLType isEqual:$(PTNPhotoKitURLTypeMetaAlbumType)] &&
-      ([url.ptn_photoKitMetaAlbumType isEqual:$(PTNPhotoKitMetaAlbumTypeSmartAlbums)] ||
-       [url.ptn_photoKitMetaAlbumType isEqual:$(PTNPhotoKitMetaAlbumTypePhotosAppSmartAlbums)]);
+      [url.ptn_photoKitAlbumType isEqual:@(PHAssetCollectionTypeSmartAlbum)];
 }
 
 #pragma mark -
@@ -343,9 +343,12 @@ NS_ASSUME_NONNULL_BEGIN
       case PTNPhotoKitURLTypeAlbum:
         return [self fetchAlbumWithIdentifier:url.ptn_photoKitAlbumIdentifier];
       case PTNPhotoKitURLTypeAlbumType:
-        return [self fetchAlbumWithType:url.ptn_photoKitAlbumType];
+        return [self fetchAlbumWithType:url.ptn_photoKitAlbumType
+                                subtype:url.ptn_photoKitAlbumSubtype];
       case PTNPhotoKitURLTypeMetaAlbumType:
-        return [self fetchMetaAlbumWithType:url.ptn_photoKitMetaAlbumType];
+        return [self fetchMetaAlbumWithType:url.ptn_photoKitAlbumType
+                                    subtype:url.ptn_photoKitAlbumSubtype
+                                  subalbums:url.ptn_photoKitAlbumSubalbums];
     }
   }];
 }
@@ -362,9 +365,9 @@ NS_ASSUME_NONNULL_BEGIN
     case PTNPhotoKitURLTypeAlbum:
       return url.ptn_photoKitAlbumIdentifier != nil;;
     case PTNPhotoKitURLTypeAlbumType:
-      return url.ptn_photoKitAlbumType != nil;
+      return url.ptn_photoKitAlbumType != nil && url.ptn_photoKitAlbumSubtype != nil;
     case PTNPhotoKitURLTypeMetaAlbumType:
-      return url.ptn_photoKitMetaAlbumType != nil;
+      return url.ptn_photoKitAlbumType != nil && url.ptn_photoKitAlbumSubtype != nil;
   }
 }
 
@@ -408,55 +411,23 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark Album types
 #pragma mark -
 
-- (RACSignal *)fetchAlbumWithType:(PTNPhotoKitAlbumType *)type {
-  PTNCollectionsFetchResult *assetCollections;
-  switch (type.value) {
-    case PTNPhotoKitAlbumTypeCameraRoll:
-      assetCollections =
-          [self.fetcher fetchAssetCollectionsWithType:PHAssetCollectionTypeSmartAlbum
-          subtype:PHAssetCollectionSubtypeSmartAlbumUserLibrary options:nil];
-      break;
-    default:
-      return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeInvalidURL]];
+- (RACSignal *)fetchAlbumWithType:(NSNumber *)type subtype:(NSNumber *)subtype {
+  return [RACSignal return:[self fetchResultsWithCollectionType:type collectionSubtype:subtype]];
+}
+
+- (RACSignal *)fetchMetaAlbumWithType:(NSNumber *)type subtype:(NSNumber *)subtype
+                            subalbums:(nullable NSArray<NSNumber *> *)subalbums {
+  PTNCollectionsFetchResult *fetchResults = [self fetchResultsWithCollectionType:type
+                                                               collectionSubtype:subtype];
+  if (!subalbums) {
+    return [RACSignal return:fetchResults];
   }
 
-  return [RACSignal return:assetCollections];
-}
-
-- (RACSignal *)fetchMetaAlbumWithType:(PTNPhotoKitMetaAlbumType *)type {
-  PTNCollectionsFetchResult *assetCollections;
-  switch (type.value) {
-    case PTNPhotoKitMetaAlbumTypeSmartAlbums:
-      assetCollections = [self fetchSmartAlbums];
-      break;
-    case PTNPhotoKitMetaAlbumTypeUserAlbums:
-      assetCollections = [self fetchUserAlbums];
-      break;
-    case PTNPhotoKitMetaAlbumTypePhotosAppSmartAlbums:
-      assetCollections = [self fetchPhotosAppSmartAlbums:[self fetchSmartAlbums]];
-      break;
-    default:
-      return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeInvalidURL]];
-  }
-  return [RACSignal return:assetCollections];
-}
-
-- (PTNCollectionsFetchResult *)fetchUserAlbums {
-  return [self.fetcher fetchAssetCollectionsWithType:PHAssetCollectionTypeAlbum
-                                             subtype:PHAssetCollectionSubtypeAny options:nil];
-}
-
-- (PTNCollectionsFetchResult *)fetchSmartAlbums {
-  return [self.fetcher fetchAssetCollectionsWithType:PHAssetCollectionTypeSmartAlbum
-                                             subtype:PHAssetCollectionSubtypeAny options:nil];
-}
-
-- (PTNCollectionsFetchResult *)fetchPhotosAppSmartAlbums:(PHFetchResult *)smartAlbums {
   NSMutableArray *albums = [NSMutableArray array];
-  NSOrderedSet *photosAppSubtypes = [[self class] photosAppSubtypes];
+  NSOrderedSet *subtypes = [NSOrderedSet orderedSetWithArray:subalbums];
 
-  for (PHAssetCollection *assetCollection in smartAlbums) {
-    if ([photosAppSubtypes containsObject:@(assetCollection.assetCollectionSubtype)]) {
+  for (PHAssetCollection *assetCollection in fetchResults) {
+    if ([subtypes containsObject:@(assetCollection.assetCollectionSubtype)]) {
       PHFetchResult *fetchResult = [self.fetcher fetchAssetsInAssetCollection:assetCollection
                                                                       options:nil];
       if (fetchResult.count) {
@@ -467,10 +438,10 @@ NS_ASSUME_NONNULL_BEGIN
 
   [albums sortUsingComparator:^NSComparisonResult(PHAssetCollection *firstCollection,
                                                   PHAssetCollection *secondCollection) {
-    NSUInteger firstSubtypeIndex = [photosAppSubtypes
-                                    indexOfObject:@(firstCollection.assetCollectionSubtype)];
-    NSUInteger secondSubtypeIndex = [photosAppSubtypes
-                                     indexOfObject:@(secondCollection.assetCollectionSubtype)];
+    NSUInteger firstSubtypeIndex =
+        [subtypes indexOfObject:@(firstCollection.assetCollectionSubtype)];
+    NSUInteger secondSubtypeIndex =
+        [subtypes indexOfObject:@(secondCollection.assetCollectionSubtype)];
     return [@(firstSubtypeIndex) compare:@(secondSubtypeIndex)];
   }];
 
@@ -480,27 +451,16 @@ NS_ASSUME_NONNULL_BEGIN
   // supported on URLs of type \c PTNPhotoKitURLTypeMetaAlbumType.
   PHCollectionList *collectionList = [self.fetcher transientCollectionListWithCollections:albums
                                                                                     title:@""];
-  return [self.fetcher fetchCollectionsInCollectionList:collectionList options:nil];
+  return [RACSignal return:[self.fetcher fetchCollectionsInCollectionList:collectionList
+                                                                  options:nil]];
 }
 
-+ (NSOrderedSet *)photosAppSubtypes {
-  static NSOrderedSet *subtypes;
-
-  static dispatch_once_t onceToken;
-  dispatch_once(&onceToken, ^{
-    subtypes = [NSOrderedSet orderedSetWithArray:@[
-      @(PHAssetCollectionSubtypeSmartAlbumUserLibrary),
-      @(PHAssetCollectionSubtypeSmartAlbumFavorites),
-      @(PHAssetCollectionSubtypeSmartAlbumGeneric),
-      @(PHAssetCollectionSubtypeSmartAlbumPanoramas),
-      @(PHAssetCollectionSubtypeSmartAlbumVideos),
-      @(PHAssetCollectionSubtypeSmartAlbumSlomoVideos),
-      @(PHAssetCollectionSubtypeSmartAlbumTimelapses),
-      @(PHAssetCollectionSubtypeSmartAlbumBursts)
-    ]];
-  });
-
-  return subtypes;
+- (PTNCollectionsFetchResult *)fetchResultsWithCollectionType:(NSNumber *)collectionType
+                                            collectionSubtype:(NSNumber *)collectionSubtype {
+  PHAssetCollectionType type = (PHAssetCollectionType)collectionType.unsignedIntegerValue;
+  PHAssetCollectionSubtype subtype =
+      (PHAssetCollectionSubtype)collectionSubtype.unsignedIntegerValue;
+  return [self.fetcher fetchAssetCollectionsWithType:type subtype:subtype options:nil];
 }
 
 - (RACSignal *)fetchAlbumWithIdentifier:(NSString *)identifier {

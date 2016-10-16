@@ -14,6 +14,9 @@ it(@"should return valid object placeholder URL", ^{
   NSURL *url = [NSURL ptn_photoKitAssetURLWithObjectPlaceholder:objectPlaceholder];
   expect(url.ptn_photoKitURLType.value).to.equal(PTNPhotoKitURLTypeAsset);
   expect(url.ptn_photoKitAssetIdentifier).to.equal(@"foo");
+  expect(url.ptn_photoKitAlbumType).to.beNil();
+  expect(url.ptn_photoKitAlbumSubtype).to.beNil();
+  expect(url.ptn_photoKitAlbumSubalbums).to.beNil();
 });
 
 it(@"should return valid asset URL", ^{
@@ -23,6 +26,9 @@ it(@"should return valid asset URL", ^{
   NSURL *url = [NSURL ptn_photoKitAssetURLWithAsset:asset];
   expect(url.ptn_photoKitURLType.value).to.equal(PTNPhotoKitURLTypeAsset);
   expect(url.ptn_photoKitAssetIdentifier).to.equal(@"foo");
+  expect(url.ptn_photoKitAlbumType).to.beNil();
+  expect(url.ptn_photoKitAlbumSubtype).to.beNil();
+  expect(url.ptn_photoKitAlbumSubalbums).to.beNil();
 });
 
 it(@"should return valid album URL", ^{
@@ -32,22 +38,50 @@ it(@"should return valid album URL", ^{
   NSURL *url = [NSURL ptn_photoKitAlbumURLWithCollection:collection];
   expect(url.ptn_photoKitURLType.value).to.equal(PTNPhotoKitURLTypeAlbum);
   expect(url.ptn_photoKitAlbumIdentifier).to.equal(@"foo");
+  expect(url.ptn_photoKitAlbumType).to.beNil();
+  expect(url.ptn_photoKitAlbumSubtype).to.beNil();
+  expect(url.ptn_photoKitAlbumSubalbums).to.beNil();
 });
 
 it(@"should return valid album type URL", ^{
-  PTNPhotoKitAlbumType *type = $(PTNPhotoKitAlbumTypeCameraRoll);
-  NSURL *url = [NSURL ptn_photoKitAlbumWithType:type];
+  NSURL *url = [NSURL ptn_photoKitAlbumWithType:PHAssetCollectionTypeSmartAlbum
+                                        subtype:PHAssetCollectionSubtypeSmartAlbumSlomoVideos];
   expect(url.ptn_photoKitURLType.value).to.equal(PTNPhotoKitURLTypeAlbumType);
-  expect(url.ptn_photoKitAlbumType.value).to.equal(PTNPhotoKitAlbumTypeCameraRoll);
-  expect(url.ptn_photoKitMetaAlbumType).to.beNil();
+  expect(url.ptn_photoKitAlbumType).to.equal(@(PHAssetCollectionTypeSmartAlbum));
+  expect(url.ptn_photoKitAlbumSubtype).to.equal(@(PHAssetCollectionSubtypeSmartAlbumSlomoVideos));
+  expect(url.ptn_photoKitAlbumSubalbums).to.beNil();
+  expect(url.ptn_photoKitAlbumIdentifier).to.beNil();
+  expect(url.ptn_photoKitAssetIdentifier).to.beNil();
 });
 
 it(@"should return valid meta album type URL", ^{
-  PTNPhotoKitMetaAlbumType *type = $(PTNPhotoKitMetaAlbumTypeSmartAlbums);
-  NSURL *url = [NSURL ptn_photoKitMetaAlbumWithType:type];
+  NSArray<NSNumber *> *subalbums = @[
+    @(PHAssetCollectionSubtypeSmartAlbumSlomoVideos),
+    @(PHAssetCollectionSubtypeAlbumCloudShared)
+  ];
+  std::vector<PHAssetCollectionSubtype> subalbumVector = {
+    PHAssetCollectionSubtypeSmartAlbumSlomoVideos,
+    PHAssetCollectionSubtypeAlbumCloudShared
+  };
+  NSURL *url = [NSURL ptn_photoKitMetaAlbumWithType:PHAssetCollectionTypeSmartAlbum
+                                      subalbums:subalbumVector];
   expect(url.ptn_photoKitURLType.value).to.equal(PTNPhotoKitURLTypeMetaAlbumType);
-  expect(url.ptn_photoKitAlbumType).to.beNil();
-  expect(url.ptn_photoKitMetaAlbumType.value).to.equal(PTNPhotoKitMetaAlbumTypeSmartAlbums);
+  expect(url.ptn_photoKitAlbumType).to.equal(@(PHAssetCollectionTypeSmartAlbum));
+  expect(url.ptn_photoKitAlbumSubtype).to.equal(@(PHAssetCollectionSubtypeAny));
+  expect(url.ptn_photoKitAlbumSubalbums).to.equal(subalbums);
+  expect(url.ptn_photoKitAlbumIdentifier).to.beNil();
+  expect(url.ptn_photoKitAssetIdentifier).to.beNil();
+});
+
+it(@"should filter subalbums even if subalbums set is empty", ^{
+  NSURL *url = [NSURL ptn_photoKitMetaAlbumWithType:PHAssetCollectionTypeSmartAlbum
+                                          subalbums:{}];
+  expect(url.ptn_photoKitURLType.value).to.equal(PTNPhotoKitURLTypeMetaAlbumType);
+  expect(url.ptn_photoKitAlbumType).to.equal(@(PHAssetCollectionTypeSmartAlbum));
+  expect(url.ptn_photoKitAlbumSubtype).to.equal(@(PHAssetCollectionSubtypeAny));
+  expect(url.ptn_photoKitAlbumSubalbums).to.equal(@[]);
+  expect(url.ptn_photoKitAlbumIdentifier).to.beNil();
+  expect(url.ptn_photoKitAssetIdentifier).to.beNil();
 });
 
 SpecEnd

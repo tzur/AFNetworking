@@ -26,7 +26,7 @@ it(@"should initialize with url and assets fetch result", ^{
 });
 
 it(@"should initialize with url and subalbums fetch result", ^{
-  NSURL *url = [NSURL ptn_photoKitMetaAlbumWithType:$(PTNPhotoKitMetaAlbumTypeSmartAlbums)];
+  NSURL *url = [NSURL ptn_photoKitSmartAlbums];
 
   id fetchResult = OCMClassMock([PHFetchResult class]);
 
