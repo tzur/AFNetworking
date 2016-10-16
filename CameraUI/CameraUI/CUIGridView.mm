@@ -11,6 +11,7 @@ NS_ASSUME_NONNULL_BEGIN
   if (self = [super initWithFrame:frame]) {
     self.opaque = NO;
     self.userInteractionEnabled = NO;
+    self.layer.shadowOffset = CGSizeMake(0.0, 0.0);
   }
   return self;
 }
@@ -24,19 +25,33 @@ NS_ASSUME_NONNULL_BEGIN
   [self setNeedsDisplay];
 }
 
-- (void)setOutlineColor:(nullable UIColor *)outlineColor {
-  _outlineColor = outlineColor;
-  [self setNeedsDisplay];
-}
-
 - (void)setLineWidth:(CGFloat)lineWidth {
   _lineWidth = lineWidth;
   [self setNeedsDisplay];
 }
 
-- (void)setOutlineWidth:(CGFloat)outlineWidth {
-  _outlineWidth = outlineWidth;
-  [self setNeedsDisplay];
+- (void)setShadowColor:(nullable UIColor *)shadowColor {
+  self.layer.shadowColor = shadowColor.CGColor;
+}
+
+- (nullable UIColor *)shadowColor {
+  return [UIColor colorWithCGColor:self.layer.shadowColor];
+}
+
+- (void)setShadowRadius:(CGFloat)shadowRadius {
+  self.layer.shadowRadius = shadowRadius;
+}
+
+- (CGFloat)shadowRadius {
+  return self.layer.shadowRadius;
+}
+
+- (void)setShadowOpacity:(CGFloat)shadowOpacity {
+  self.layer.shadowOpacity = shadowOpacity;
+}
+
+- (CGFloat)shadowOpacity {
+  return self.layer.shadowOpacity;
 }
 
 #pragma mark -
@@ -49,10 +64,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)drawGrid {
   UIBezierPath *gridPath = [self gridPath];
-
-  gridPath.lineWidth = [self outlineStroke];
-  [self.outlineColor setStroke];
-  [gridPath stroke];
 
   gridPath.lineWidth = self.lineWidth;
   [self.color setStroke];
@@ -80,20 +91,17 @@ NS_ASSUME_NONNULL_BEGIN
   [path addLineToPoint:CGPointMake(x, CGRectGetMaxY(self.bounds))];
 }
 
-- (CGFloat)outlineStroke {
-  return self.lineWidth + 2 * self.outlineWidth;
-}
-
 @end
 
 @implementation CUIGridView (Factory)
 
 + (CUIGridView *)whiteGrid {
   CUIGridView *gridView = [[CUIGridView alloc] initWithFrame:CGRectZero];
-  gridView.lineWidth = 1;
-  gridView.color = [[UIColor whiteColor] colorWithAlphaComponent:0.55];
-  gridView.outlineWidth = 0.5;
-  gridView.outlineColor = [[UIColor blackColor] colorWithAlphaComponent:0.15];
+  gridView.lineWidth = 0.5;
+  gridView.color = [[UIColor whiteColor] colorWithAlphaComponent:0.5];
+  gridView.shadowRadius = 1;
+  gridView.shadowColor = [UIColor blackColor];
+  gridView.shadowOpacity = 0.25;
   return  gridView;
 }
 
