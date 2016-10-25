@@ -12,21 +12,24 @@ NS_ASSUME_NONNULL_BEGIN
 /// Line width used for drawing all lines in the grid graphic.
 @property (nonatomic) CGFloat lineWidth;
 
-/// Outline width around all lines in the grid graphic.
-@property (nonatomic) CGFloat outlineWidth;
-
 /// Color of all lines in the grid.
 @property (strong, nonatomic, nullable) UIColor *color;
 
-/// Color of all outlines in the grid.
-@property (strong, nonatomic, nullable) UIColor *outlineColor;
+/// Shadow radius around all lines in the grid graphic.
+@property (nonatomic) CGFloat shadowRadius;
+
+/// Color of the shadow.
+@property (strong, nonatomic, nullable) UIColor *shadowColor;
+
+/// Opacity of the shadow.
+@property (nonatomic) CGFloat shadowOpacity;
 
 @end
 
 /// Category for creating \c CUIGridView instances with commonly used settings.
 @interface CUIGridView (Factory)
 
-/// Returns a white grid with 25% transparent black outline.
+/// Returns a white grid with 25% transparent black shadow.
 + (CUIGridView *)whiteGrid;
 
 @end
