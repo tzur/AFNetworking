@@ -10,6 +10,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithFrame:(CGRect)frame {
   if (self = [super initWithFrame:frame]) {
     [self buildLabel];
+    self.clipsToBounds = YES;
   }
   return self;
 }
