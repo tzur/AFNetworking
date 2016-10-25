@@ -10,6 +10,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithFrame:(CGRect)frame {
   if (self = [super initWithFrame:frame]) {
     self.opaque = NO;
+    self.layer.shadowOffset = CGSizeMake(0.0, 0.0);
   }
   return self;
 }
@@ -23,13 +24,13 @@ NS_ASSUME_NONNULL_BEGIN
   [self setNeedsDisplay];
 }
 
-- (void)setOutlineColor:(nullable UIColor *)outlineColor {
-  _outlineColor = outlineColor;
+- (void)setIndicatorLength:(CGFloat)indicatorLength {
+  _indicatorLength = indicatorLength;
   [self setNeedsDisplay];
 }
 
-- (void)setPlusLength:(CGFloat)plusLength {
-  _plusLength = plusLength;
+- (void)setCornerRadius:(CGFloat)cornerRadius {
+  _cornerRadius = cornerRadius;
   [self setNeedsDisplay];
 }
 
@@ -38,9 +39,28 @@ NS_ASSUME_NONNULL_BEGIN
   [self setNeedsDisplay];
 }
 
-- (void)setOutlineWidth:(CGFloat)outlineWidth {
-  _outlineWidth = outlineWidth;
-  [self setNeedsDisplay];
+- (void)setShadowColor:(nullable UIColor *)shadowColor {
+  self.layer.shadowColor = shadowColor.CGColor;
+}
+
+- (nullable UIColor *)shadowColor {
+  return [UIColor colorWithCGColor:self.layer.shadowColor];
+}
+
+- (void)setShadowRadius:(CGFloat)shadowRadius {
+  self.layer.shadowRadius = shadowRadius;
+}
+
+- (CGFloat)shadowRadius {
+  return self.layer.shadowRadius;
+}
+
+- (void)setShadowOpacity:(CGFloat)shadowOpacity {
+  self.layer.shadowOpacity = shadowOpacity;
+}
+
+- (CGFloat)shadowOpacity {
+  return self.layer.shadowOpacity;
 }
 
 #pragma mark -
@@ -49,59 +69,44 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)drawRect:(CGRect __unused)rect {
   [self drawRectLine];
-  [self drawPlusInCenter];
+  [self drawIndicators];
 }
 
 - (void)drawRectLine {
-  CGFloat strokeInset = self.outlineStroke / 2;
-  CGRect rectLine = CGRectInset(self.bounds, strokeInset, strokeInset);
-  UIBezierPath *rectPath = [UIBezierPath bezierPathWithRect:rectLine];
-
-  rectPath.lineWidth = self.outlineStroke;
-  [self.outlineColor setStroke];
-  [rectPath stroke];
+  CGRect rectLine = CGRectInset(self.bounds, [self strokeInset], [self strokeInset]);
+  UIBezierPath *rectPath = [UIBezierPath bezierPathWithRoundedRect:rectLine
+                                                      cornerRadius:self.cornerRadius];
 
   rectPath.lineWidth = self.lineWidth;
   [self.color setStroke];
   [rectPath stroke];
 }
 
-- (void)drawPlusInCenter {
-  CGContextRef context = UIGraphicsGetCurrentContext();
-  CGContextSaveGState(context);
-  CGContextTranslateCTM(context, self.bounds.size.width / 2, self.bounds.size.height / 2);
-  [self drawPlusOutline];
-  [self drawPlus];
-  CGContextRestoreGState(context);
-}
+- (void)drawIndicators {
+  UIBezierPath *indicatorsPath = [self indicatorsBezierPathWithRect:self.bounds];
 
-- (void)drawPlusOutline {
-  CGFloat plusOutlineLength = self.plusLength + 2 * self.outlineWidth;
-  UIBezierPath *plusOutlinePath = [self plusBezierPathWithLength:plusOutlineLength];
-  plusOutlinePath.lineWidth = self.outlineStroke;
-  [self.outlineColor setStroke];
-  [plusOutlinePath stroke];
-}
-
-- (void)drawPlus {
-  UIBezierPath *plusPath = [self plusBezierPathWithLength:self.plusLength];
-  plusPath.lineWidth = self.lineWidth;
+  indicatorsPath.lineWidth = self.lineWidth;
   [self.color setStroke];
-  [plusPath stroke];
+  [indicatorsPath stroke];
 }
 
-- (UIBezierPath *)plusBezierPathWithLength:(CGFloat)plusLength {
-  CGFloat halfLength = plusLength / 2;
-  UIBezierPath *plusPath = [UIBezierPath bezierPath];
-  [plusPath moveToPoint:CGPointMake(-halfLength, 0)];
-  [plusPath addLineToPoint:CGPointMake(halfLength, 0)];
-  [plusPath moveToPoint:CGPointMake(0, -halfLength)];
-  [plusPath addLineToPoint:CGPointMake(0, halfLength)];
-  return plusPath;
+- (UIBezierPath *)indicatorsBezierPathWithRect:(CGRect)rect {
+  CGFloat halfWidth = rect.size.width / 2;
+  CGFloat halfHeight = rect.size.height / 2;
+  UIBezierPath *indicatorsPath = [UIBezierPath bezierPath];
+  [indicatorsPath moveToPoint:CGPointMake(halfWidth, [self strokeInset])];
+  [indicatorsPath addLineToPoint:CGPointMake(halfWidth, self.indicatorLength)];
+  [indicatorsPath moveToPoint:CGPointMake([self strokeInset], halfHeight)];
+  [indicatorsPath addLineToPoint:CGPointMake(self.indicatorLength, halfHeight)];
+  [indicatorsPath moveToPoint:CGPointMake(halfWidth, rect.size.height - [self strokeInset])];
+  [indicatorsPath addLineToPoint:CGPointMake(halfWidth, rect.size.height - self.indicatorLength)];
+  [indicatorsPath moveToPoint:CGPointMake(rect.size.width - [self strokeInset], halfHeight)];
+  [indicatorsPath addLineToPoint:CGPointMake(rect.size.width - self.indicatorLength, halfHeight)];
+  return indicatorsPath;
 }
 
-- (CGFloat)outlineStroke {
-  return self.lineWidth + 2 * self.outlineWidth;
+- (CGFloat)strokeInset {
+  return self.lineWidth / 2;
 }
 
 @end
