@@ -17,7 +17,9 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)init NS_UNAVAILABLE;
 
 /// Initializes this image asset with \c image as the image to be retuned when fetched and \c asset
-/// to be used when fetching image metadata.
+/// to be used when fetching image metadata. Fetching metadata is supported for
+/// <tt>{PHAssetMediaTypeImage, PHAssetMediaTypeVideo}</tt> \c mediaType. \c PHAssetMediaTypeVideo
+/// assets return empty metadata.
 - (instancetype)initWithImage:(UIImage *)image asset:(PHAsset *)asset NS_DESIGNATED_INITIALIZER;
 
 @end

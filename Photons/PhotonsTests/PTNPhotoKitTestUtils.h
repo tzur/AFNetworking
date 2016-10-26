@@ -35,10 +35,16 @@ PHAsset *PTNPhotoKitCreateAssetForContentEditing(NSString *localIdentifier,
     NSDictionary * _Nullable contentEditingInfo, PHContentEditingInputRequestID requestID);
 
 /// Creates a \c PHContentEditingInput that returns \c fullSizeImageURL for its \c fullSizeImageURL
-/// property.
-/// If a \c nil \c fullSizeImageURL is passed the content editing input's \c fullSizeImageURL
-/// property will be \c nil.
-PHContentEditingInput *PTNPhotoKitCreateContentEditingInput(NSURL * _Nullable fullSizeImageURL);
+/// property and \c PHAssetMediaTypeImage as its \c mediaType property. If a \c nil
+/// \c fullSizeImageURL is passed the content editing input's \c fullSizeImageURL property will be
+/// \c nil.
+PHContentEditingInput *PTNPhotoKitCreateImageContentEditingInput(NSURL * _Nullable
+                                                                 fullSizeImageURL);
+
+/// Creates a \c PHContentEditingInput that returns \c avAsset for its \c avAsset property and
+/// \c PHAssetMediaTypeVideo as its \c mediaType property. If a \c nil \c avAsset is passed the
+/// content editing input's \c avAsset property will be \c nil.
+PHContentEditingInput *PTNPhotoKitCreateVideoContentEditingInput(AVAsset * _Nullable avAsset);
 
 /// Creates a \c PHFetchResultChangeDetails that returns the \c assets array for its
 /// \c fetchResultAfterChanges property.
