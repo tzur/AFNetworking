@@ -59,9 +59,18 @@ PHAsset *PTNPhotoKitCreateAssetForContentEditing(NSString *localIdentifier,
   return asset;
 }
 
-PHContentEditingInput *PTNPhotoKitCreateContentEditingInput(NSURL * _Nullable fullSizeImageURL) {
+PHContentEditingInput *PTNPhotoKitCreateImageContentEditingInput(NSURL * _Nullable
+                                                                 fullSizeImageURL) {
   PHContentEditingInput *contentEditingInput = OCMClassMock([PHContentEditingInput class]);
   OCMStub(contentEditingInput.fullSizeImageURL).andReturn(fullSizeImageURL);
+  OCMStub(contentEditingInput.mediaType).andReturn(PHAssetMediaTypeImage);
+  return contentEditingInput;
+}
+
+PHContentEditingInput *PTNPhotoKitCreateVideoContentEditingInput(AVAsset * _Nullable avAsset) {
+  PHContentEditingInput *contentEditingInput = OCMClassMock([PHContentEditingInput class]);
+  OCMStub(contentEditingInput.avAsset).andReturn(avAsset);
+  OCMStub(contentEditingInput.mediaType).andReturn(PHAssetMediaTypeVideo);
   return contentEditingInput;
 }
 

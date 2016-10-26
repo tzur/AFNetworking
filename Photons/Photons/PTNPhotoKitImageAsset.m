@@ -42,25 +42,11 @@ NS_ASSUME_NONNULL_BEGIN
     void (^completionHandler)(PHContentEditingInput *contentEditingInput, NSDictionary *info) =
         ^(PHContentEditingInput *contentEditingInput, NSDictionary *info) {
           @strongify(self)
-          // \c PHContentEditingInputResultIsInCloudKey is always \c YES, even if photo has already
-          // been downloaded. Check the \c fullSizeImageURL instead.
-          if (!contentEditingInput.fullSizeImageURL || info[PHContentEditingInputErrorKey]) {
-            NSError *wrappedError = [NSError lt_errorWithCode:PTNErrorCodeAssetMetadataLoadingFailed
-                                                          url:self.asset.ptn_identifier
-                                              underlyingError:info[PHContentEditingInputErrorKey]];
-            [subscriber sendError:wrappedError];
-            return;
-          }
-
-          NSError *metadataError;
-          PTNImageMetadata *metadata = [[PTNImageMetadata alloc]
-                                        initWithImageURL:contentEditingInput.fullSizeImageURL
-                                        error:&metadataError];
-          if (metadataError) {
-            NSError *wrappedError = [NSError lt_errorWithCode:PTNErrorCodeAssetMetadataLoadingFailed
-                                                          url:self.asset.ptn_identifier
-                                              underlyingError:metadataError];
-            [subscriber sendError:wrappedError];
+          NSError *error;
+          PTNImageMetadata *metadata = [self metadataForContentEditingInput:contentEditingInput
+                                                                       info:info error:&error];
+          if (!metadata) {
+            [subscriber sendError:error];
             return;
           }
 
@@ -75,6 +61,55 @@ NS_ASSUME_NONNULL_BEGIN
       [self.asset cancelContentEditingInputRequest:requestID];
     }];
   }];
+}
+
+- (nullable PTNImageMetadata *)metadataForContentEditingInput:(PHContentEditingInput *)input
+                                                         info:(NSDictionary *)info
+                                                        error:(NSError * __autoreleasing *)error {
+  if (input.mediaType == PHAssetMediaTypeImage) {
+    // \c PHContentEditingInputResultIsInCloudKey is always \c YES, even if photo has
+    // already been downloaded. Check the \c fullSizeImageURL instead.
+    if (!input.fullSizeImageURL || info[PHContentEditingInputErrorKey]) {
+      if (error) {
+        *error = [NSError lt_errorWithCode:PTNErrorCodeAssetMetadataLoadingFailed
+                                       url:self.asset.ptn_identifier
+                           underlyingError:info[PHContentEditingInputErrorKey]];
+      }
+      return nil;
+    }
+
+    NSError *metadataError;
+    PTNImageMetadata *metadata = [[PTNImageMetadata alloc] initWithImageURL:input.fullSizeImageURL
+                                                                      error:&metadataError];
+    if (metadataError) {
+      *error = [NSError lt_errorWithCode:PTNErrorCodeAssetMetadataLoadingFailed
+                                     url:self.asset.ptn_identifier
+                         underlyingError:metadataError];
+      return nil;
+    }
+
+    return metadata;
+  } else if (input.mediaType == PHAssetMediaTypeVideo) {
+    if (!input.avAsset) {
+      if (error) {
+        *error = [NSError lt_errorWithCode:PTNErrorCodeAssetMetadataLoadingFailed
+                                       url:self.asset.ptn_identifier
+                           underlyingError:info[PHContentEditingInputErrorKey]];
+      }
+      return nil;
+    }
+
+    return [[PTNImageMetadata alloc] init];
+  } else {
+    if (error) {
+      NSString *description = [NSString stringWithFormat:@"Unsupported media type given: %lu",
+                               (unsigned long)input.mediaType];
+      *error = [NSError lt_errorWithCode:PTNErrorCodeAssetMetadataLoadingFailed
+                                     url:self.asset.ptn_identifier
+                             description:description];
+    }
+    return nil;
+  };
 }
 
 #pragma mark -
