@@ -42,8 +42,11 @@ beforeEach(^{
     [receivedLogs addObject:log];
   });
 
+  LTEventBusObserverFilterBlock eventFilter = ^BOOL(NSObject *event) {
+    return ![event isKindOfClass:LTAnotherTestEvent.class];
+  };
   observer = [[LTEventBusObserver alloc] initWithMessageContainer:containerMock eventBus:eventBus
-                                             ignoredEventsClasses:@[LTAnotherTestEvent.class]];
+                                                      eventFilter:eventFilter];
 });
 
 it(@"should log a formatted event", ^{
@@ -58,7 +61,7 @@ it(@"should log a formatted event", ^{
   expect(separatedLog[2]).to.equal(event.description);
 });
 
-it(@"should not log event of an ignored type", ^{
+it(@"should not log filtered event", ^{
   LTAnotherTestEvent *event = [[LTAnotherTestEvent alloc] init];
   [eventBus post:event];
 

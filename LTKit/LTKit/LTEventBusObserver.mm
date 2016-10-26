@@ -13,8 +13,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// Container that saves logs.
 @property (readonly, nonatomic) id<LTMessageContainer> messageContainer;
 
-/// Event classes to ignore. All events are logged except the ones that are listed in this array.
-@property (readonly, nonatomic) NSSet<Class> *ignoredEventsClasses;
+/// Filter that returns \c NO on events that should not be saved.
+@property (readonly, nonatomic) LTEventBusObserverFilterBlock eventFilter;
 
 /// Event bus to be observed.
 @property (readonly, nonatomic) LTEventBus *eventBus;
@@ -28,10 +28,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithMessageContainer:(id<LTMessageContainer>)messageContainer
                                 eventBus:(LTEventBus *)eventBus
-                ignoredEventsClasses:(NSArray<Class> *)ignoredEventsClasses {
+                             eventFilter:(LTEventBusObserverFilterBlock)eventFilter {
   if (self = [super init]) {
     _messageContainer = messageContainer;
-    _ignoredEventsClasses = [NSSet setWithArray:ignoredEventsClasses];
+    _eventFilter = eventFilter;
     _dateFormatter = [self createDateFormatter];
     _eventBus = eventBus;
 
@@ -60,7 +60,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)handleEvent:(NSObject *)event {
-  if ([self.ignoredEventsClasses containsObject:event.class]) {
+  if (!self.eventFilter(event)) {
     return;
   }
 
