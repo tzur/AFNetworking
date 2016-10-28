@@ -194,7 +194,7 @@ context(@"transformation", ^{
 
   it(@"should correctly create a rotated copy of a path", ^{
     // In iOS, negative values mean clockwise rotation, while positive values in OSX.
-#if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
+#if TARGET_OS_SIMULATOR || TARGET_OS_IPHONE
     const CGFloat kClockwiseAngle = -M_PI / 2;
 #else
     const CGFloat kClockwiseAngle = M_PI / 2;

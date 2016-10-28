@@ -13,13 +13,13 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 void sit(NSString __unused *name, id __unused block) {
-#if TARGET_IPHONE_SIMULATOR
+#if TARGET_OS_SIMULATOR
   it(name, block);
 #endif
 }
 
 void dit(NSString __unused *name, id __unused block) {
-#if !TARGET_IPHONE_SIMULATOR && TARGET_OS_IPHONE
+#if !TARGET_OS_SIMULATOR && TARGET_OS_IPHONE
   it(name, block);
 #endif
 }

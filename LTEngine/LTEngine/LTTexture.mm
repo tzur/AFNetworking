@@ -366,7 +366,7 @@ NS_ASSUME_NONNULL_BEGIN
 
     OSType cvPixelFormatType = self.pixelFormat.cvPixelFormatType;
 
-#if TARGET_IPHONE_SIMULATOR
+#if TARGET_OS_SIMULATOR
     // Simulator does not support rendering to certain target types of less than four channels, so
     // we'll render to 4 channels in this scenario, and take only the required channels later on.
     if ([self.pixelFormat isEqual:$(LTGLPixelFormatR8Unorm)]) {
@@ -383,7 +383,7 @@ NS_ASSUME_NONNULL_BEGIN
 
     [self mappedImageForWriting:^(cv::Mat *mapped, BOOL) {
       LTCVPixelBufferImageForReading(pixelBuffer.get(), ^(const cv::Mat &image) {
-#if TARGET_IPHONE_SIMULATOR
+#if TARGET_OS_SIMULATOR
         std::vector<int> fromTo;
         for (int i = 0; i < mapped->channels(); ++i) {
           fromTo.push_back(i);

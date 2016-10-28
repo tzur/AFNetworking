@@ -426,7 +426,7 @@ typedef LTTextureMappedWriteBlock LTTextureMappedBlock;
 - (void)drawWithCoreImage:(LTTextureCoreImageBlock)block {
   LTParameterAssert(block);
   
-#if TARGET_IPHONE_SIMULATOR
+#if TARGET_OS_SIMULATOR
   // Simulator does not support rendering to certain target types of less than four channels, so
   // let the superclass handle this.
   [super drawWithCoreImage:block];

@@ -18,9 +18,9 @@ NS_ASSUME_NONNULL_BEGIN
   
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
-#if TARGET_IPHONE_SIMULATOR
+#if TARGET_OS_SIMULATOR
     activeClass = [LTGLTexture class];
-#elif !TARGET_IPHONE_SIMULATOR && TARGET_OS_IPHONE
+#elif !TARGET_OS_SIMULATOR && TARGET_OS_IPHONE
     activeClass = [LTMMTexture class];
 #endif
   });

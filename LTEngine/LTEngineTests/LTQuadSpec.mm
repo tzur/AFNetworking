@@ -698,7 +698,7 @@ context(@"properties", ^{
 
     it(@"should provide the correct transformation for non-axis-aligned quads", ^{
       // In iOS, negative values mean clockwise rotation, while positive values in OSX.
-#if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
+#if TARGET_OS_SIMULATOR || TARGET_OS_IPHONE
       const CGFloat kClockwiseAngle = -45.0 / 180.0 * M_PI;
 #else
       const CGFloat kClockwiseAngle = 45.0 / 180.0 * M_PI;
@@ -1484,7 +1484,7 @@ context(@"properties", ^{
 
     it(@"should provide the correct transformation for non-axis-aligned quads", ^{
       // In iOS, negative values mean clockwise rotation, while positive values in OSX.
-#if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
+#if TARGET_OS_SIMULATOR || TARGET_OS_IPHONE
       const CGFloat kClockwiseAngle = -45.0 / 180.0 * M_PI;
 #else
       const CGFloat kClockwiseAngle = 45.0 / 180.0 * M_PI;
