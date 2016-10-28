@@ -93,7 +93,7 @@ context(@"cgpoint operations", ^{
     expect(CGPointMake(1, 2) / CGSizeMake(0.5, 0.25)).to.equal(CGPointMake(2, 8));
 
     // In iOS, negative values mean clockwise rotation, while positive values in OSX.
-#if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
+#if TARGET_OS_SIMULATOR || TARGET_OS_IPHONE
     const CGFloat kClockwiseAngle = -M_PI_2;
 #else
     const CGFloat kClockwiseAngle = M_PI_2;
