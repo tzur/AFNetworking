@@ -1072,7 +1072,7 @@
 		848EFF731C591B3A001D8368 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0800;
+				LastUpgradeCheck = 0810;
 				ORGANIZATIONNAME = Lightricks;
 				TargetAttributes = {
 					848E000C1C591DD1001D8368 = {
