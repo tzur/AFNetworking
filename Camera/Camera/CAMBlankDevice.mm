@@ -24,6 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize minZoomFactor = _minZoomFactor;
 @synthesize maxZoomFactor = _maxZoomFactor;
 @synthesize zoomFactor = _zoomFactor;
+@synthesize hasTorch = _hasTorch;
 
 - (instancetype)init {
   if (self = [super init]) {
@@ -133,6 +134,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (RACSignal *)setFlashMode:(AVCaptureFlashMode __unused)flashMode {
   return [RACSignal error:[NSError lt_errorWithCode:CAMErrorCodeFlashModeSettingUnsupported]];
+}
+
+- (RACSignal *)setTorchLevel:(float __unused)torchLevel {
+  return [RACSignal error:[NSError lt_errorWithCode:CAMErrorCodeTorchModeSettingUnsupported]];
 }
 
 - (RACSignal *)setCamera:(CAMDeviceCamera *)camera {
