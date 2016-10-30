@@ -10,6 +10,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
   return @{
     @instanceKeypath(BZRProductPriceInfo, price): @"price",
+    @instanceKeypath(BZRProductPriceInfo, currencyCode): @"currencyCode",
     @instanceKeypath(BZRProductPriceInfo, localizedPrice): @"localizedPrice",
   };
 }

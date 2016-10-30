@@ -11,6 +11,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Price of the product (without the locale).
 @property (readonly, nonatomic) NSDecimalNumber *price;
 
+/// Three-letter currency code of product's price. For example "USD", "ILS", "RUB".
+@property (readonly, nonatomic) NSString *currencyCode;
+
 /// Localized Price of the product with the locale.
 @property (readonly, nonatomic) NSString *localizedPrice;
 

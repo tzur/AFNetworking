@@ -17,6 +17,7 @@ context(@"creating product price info from SKProduct", ^{
 
     expect(priceInfo.localizedPrice).to.equal(@"1 337,13 €");
     expect(priceInfo.price).to.equal(price);
+    expect(priceInfo.currencyCode).to.equal(@"EUR");
   });
 });
 
