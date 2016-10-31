@@ -62,6 +62,16 @@ context(@"setters", ^{
     });
   });
 
+  context(@"torch", ^{
+    it(@"should not support torch", ^{
+      expect(device.hasTorch).to.beFalsy();
+
+      LLSignalTestRecorder *recorder = [[device setTorchLevel:0.5] testRecorder];
+      expect(recorder).to
+          .sendError([NSError lt_errorWithCode:CAMErrorCodeTorchModeSettingUnsupported]);
+    });
+  });
+
   context(@"flip", ^{
     it(@"should start with back camera", ^{
       expect(device.activeCamera).to.equal($(CAMDeviceCameraBack));
