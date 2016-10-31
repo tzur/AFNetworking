@@ -64,6 +64,9 @@
 		84F7AB261C3290BA00AA502F /* LTPath.h in Headers */ = {isa = PBXBuildFile; fileRef = 84F7AB241C3290BA00AA502F /* LTPath.h */; };
 		84F7AB271C3290BA00AA502F /* LTPath.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F7AB251C3290BA00AA502F /* LTPath.m */; };
 		84F7AB291C3290D600AA502F /* LTPathSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F7AB281C3290D600AA502F /* LTPathSpec.m */; };
+		85BD008A1DC0E0920000FE97 /* NSArray+NSSet.h in Headers */ = {isa = PBXBuildFile; fileRef = 85BD00881DC0E0920000FE97 /* NSArray+NSSet.h */; };
+		85BD008B1DC0E0920000FE97 /* NSArray+NSSet.mm in Sources */ = {isa = PBXBuildFile; fileRef = 85BD00891DC0E0920000FE97 /* NSArray+NSSet.mm */; };
+		85BD00A51DC0E0A30000FE97 /* NSArray+NSSetSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 85BD00A41DC0E0A30000FE97 /* NSArray+NSSetSpec.mm */; };
 		885E975F1D72D3A800A117A2 /* LocalizationTest.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 885E975E1D72D3A800A117A2 /* LocalizationTest.bundle */; };
 		88C67F5A1D72C7B800A0E0FC /* LTLocalizationTable.h in Headers */ = {isa = PBXBuildFile; fileRef = 88C67F581D72C7B800A0E0FC /* LTLocalizationTable.h */; };
 		88C67F5B1D72C7B800A0E0FC /* LTLocalizationTable.mm in Sources */ = {isa = PBXBuildFile; fileRef = 88C67F591D72C7B800A0E0FC /* LTLocalizationTable.mm */; };
@@ -460,6 +463,9 @@
 		84F7AB241C3290BA00AA502F /* LTPath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTPath.h; sourceTree = "<group>"; };
 		84F7AB251C3290BA00AA502F /* LTPath.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTPath.m; sourceTree = "<group>"; };
 		84F7AB281C3290D600AA502F /* LTPathSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTPathSpec.m; sourceTree = "<group>"; };
+		85BD00881DC0E0920000FE97 /* NSArray+NSSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+NSSet.h"; sourceTree = "<group>"; };
+		85BD00891DC0E0920000FE97 /* NSArray+NSSet.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSArray+NSSet.mm"; sourceTree = "<group>"; };
+		85BD00A41DC0E0A30000FE97 /* NSArray+NSSetSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSArray+NSSetSpec.mm"; sourceTree = "<group>"; };
 		885E975E1D72D3A800A117A2 /* LocalizationTest.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = LocalizationTest.bundle; sourceTree = "<group>"; };
 		88C67F581D72C7B800A0E0FC /* LTLocalizationTable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTLocalizationTable.h; sourceTree = "<group>"; };
 		88C67F591D72C7B800A0E0FC /* LTLocalizationTable.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTLocalizationTable.mm; sourceTree = "<group>"; };
@@ -863,6 +869,8 @@
 				8B4AD2761C20375E00E3CBD3 /* LTHashExtensions.h */,
 				650F73BF1C7A13DF00148CEC /* NSArray+Functional.h */,
 				650F73C01C7A13DF00148CEC /* NSArray+Functional.mm */,
+				85BD00881DC0E0920000FE97 /* NSArray+NSSet.h */,
+				85BD00891DC0E0920000FE97 /* NSArray+NSSet.mm */,
 				8B410E8B1CE1F01E007DFF42 /* NSArray+SelectorName.h */,
 				8B410E8C1CE1F01E007DFF42 /* NSArray+SelectorName.mm */,
 				282CF088187B030A00904F07 /* NSObject+AddToContainer.h */,
@@ -906,6 +914,7 @@
 				8BE6F7461C21879500F66BA2 /* LTHashExtensionsSpec.mm */,
 				8B4495391CE1F4C7008402D0 /* NSArray+SelectorNameSpec.mm */,
 				650F73DB1C7A1A5500148CEC /* NSArray+FunctionalSpec.mm */,
+				85BD00A41DC0E0A30000FE97 /* NSArray+NSSetSpec.mm */,
 				8B4495A11CE322DB008402D0 /* NSObject+PropertyAccessorsSpec.mm */,
 				8BA5D6C0199250CE0093A4FD /* NSString+HashingSpec.mm */,
 			);
@@ -1134,6 +1143,7 @@
 				28B8BBC31B67CF8600CF9F73 /* LTWeakContainer.h in Headers */,
 				8B7C6CA31B52829F00B90DBE /* LTMMInputFile.h in Headers */,
 				6AB5182E1CC2993D00540CC6 /* NSURL+Query.h in Headers */,
+				85BD008A1DC0E0920000FE97 /* NSArray+NSSet.h in Headers */,
 				503442A71A0FB8AF008E0ED3 /* LTCFExtensions.h in Headers */,
 				835204EC1D2A43B300000EEC /* LTEventBus.h in Headers */,
 				255339401C3E512300C478F9 /* LTTreeNode.h in Headers */,
@@ -1467,6 +1477,7 @@
 			files = (
 				C751B3D71D48C304005DB5BB /* LTVolatileMessageContainer.mm in Sources */,
 				8B7C6CA21B52829100B90DBE /* LTMMOutputFile.mm in Sources */,
+				85BD008B1DC0E0920000FE97 /* NSArray+NSSet.mm in Sources */,
 				6AB5182F1CC2993D00540CC6 /* NSURL+Query.mm in Sources */,
 				8B87D5941C05AC630005410A /* NSErrorCodes+LTKit.mm in Sources */,
 				8B871FAF1923CEF800517F2E /* NSFileManager+LTKit.m in Sources */,
@@ -1521,6 +1532,7 @@
 				8B44953A1CE1F4C7008402D0 /* NSArray+SelectorNameSpec.mm in Sources */,
 				8B24058D1B89BBB90079B724 /* UIDevice+HardwareSpec.mm in Sources */,
 				8BF9A54918FA6B9100CCA084 /* LTTimerSpec.mm in Sources */,
+				85BD00A51DC0E0A30000FE97 /* NSArray+NSSetSpec.mm in Sources */,
 				5067223219EA811A003AF8D2 /* LTQueueSpec.mm in Sources */,
 				C751B0461D48879B005DB5BB /* LTEventBusObserverSpec.mm in Sources */,
 				8B2840291CBE393000B745AE /* LTStructBoxingSpec.mm in Sources */,
