@@ -278,6 +278,10 @@ withPriceInfoAndProductFromProductsResponse:(SKProductsResponse *)productsRespon
   return self.validationStatusProvider.receiptValidationStatus.receipt.subscription;
 }
 
+- (nullable BZRReceiptValidationStatus *)receiptValidationStatus {
+  return self.validationStatusProvider.receiptValidationStatus;
+}
+
 #pragma mark -
 #pragma mark BZRProductsManager
 #pragma mark -
@@ -428,6 +432,11 @@ withPriceInfoAndProductFromProductsResponse:(SKProductsResponse *)productsRespon
 }
 
 + (NSSet *)keyPathsForValuesAffectingSubscriptionInfo {
+  return [NSSet setWithObject:
+      @instanceKeypath(BZRStore, validationStatusProvider.receiptValidationStatus)];
+}
+
++ (NSSet *)keyPathsForValuesAffectingReceiptValidationStatus {
   return [NSSet setWithObject:
       @instanceKeypath(BZRStore, validationStatusProvider.receiptValidationStatus)];
 }
