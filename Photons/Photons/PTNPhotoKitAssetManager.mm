@@ -183,11 +183,11 @@ NS_ASSUME_NONNULL_BEGIN
   // in the result. A fetch result doesn't return actual assets, but rather collections of assets,
   // so even a fetch of an empty album should have one item in the fetch result - an empty
   // collection. The only cases where a fetch result can be empty without indicating some failure is
-  // when fetching the user albums when there are none, or fetching smart albums with an empty
-  // subalbum filter.
+  // when fetching the user albums when there are none, or fetching smart albums with a subalbum
+  // filter, which removes empty subalbums from the fetch.
   return [url.ptn_photoKitURLType isEqual:$(PTNPhotoKitURLTypeMetaAlbumType)] &&
       ([url.ptn_photoKitAlbumType isEqual:@(PHAssetCollectionTypeAlbum)] ||
-       [url.ptn_photoKitAlbumSubalbums isEqual:@[]]);
+       url.ptn_photoKitAlbumSubalbums);
 }
 
 - (RACSignal *)nextChangesetForRegularAlbumWithURL:(NSURL *)url
