@@ -584,10 +584,11 @@ context(@"album fetching", ^{
         expect(recorder).notTo.error();
       });
 
-      it(@"should not err fetching smart albums with an empty subalbum filter", ^{
-        [fetcher registerAssetCollections:@[] withType:PHAssetCollectionTypeAlbum
+      it(@"should not err fetching smart albums with a subalbum filter", ^{
+        [fetcher registerAssetCollections:@[] withType:PHAssetCollectionTypeSmartAlbum
                                andSubtype:PHAssetCollectionSubtypeAny];
-        NSURL *url = [NSURL ptn_photoKitMetaAlbumWithType:PHAssetCollectionTypeAlbum subalbums:{}];
+        NSURL *url = [NSURL ptn_photoKitMetaAlbumWithType:PHAssetCollectionTypeAlbum
+                      subalbums:{PHAssetCollectionSubtypeSmartAlbumFavorites}];
 
         LLSignalTestRecorder *recorder = [[manager fetchAlbumWithURL:url] testRecorder];
         expect(recorder).will.sendValuesWithCount(1);
