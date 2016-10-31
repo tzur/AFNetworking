@@ -10,6 +10,8 @@ NS_ASSUME_NONNULL_BEGIN
 + (instancetype)productPriceInfoWithSKProduct:(SKProduct *)product {
   NSDictionary *dictionaryValue = @{
     @instanceKeypath(BZRProductPriceInfo, price): product.price,
+    @instanceKeypath(BZRProductPriceInfo, currencyCode):
+        [product.priceLocale objectForKey:NSLocaleCurrencyCode],
     @instanceKeypath(BZRProductPriceInfo, localizedPrice):
         [BZRProductPriceInfo localizedPrice:product]
   };
