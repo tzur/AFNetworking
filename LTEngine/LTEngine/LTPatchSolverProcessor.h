@@ -26,8 +26,9 @@
 /// \c output. The \c maskBoundaryThreshold constitutes a threshold between the pixel values
 /// considered to be inside the mask and the pixel values considered to be outside the mask when
 /// extracting the mask boundary (@see the \c threshold property of \c LTPatchBoundaryProcessor for
-/// more information). The \c mask texture must be of byte precision. \c maskBoundaryThreshold must
-/// be in <tt>[0, 1]</tt>. The \c output texture must be of half-float precision.
+/// more information). \c mask must be of byte precision. \c output must be of half-float precision.
+/// \c source, \c target and \c output must have the same number of components.
+/// \c maskBoundaryThreshold must be in <tt>[0, 1]</tt>.
 - (instancetype)initWithMask:(LTTexture *)mask maskBoundaryThreshold:(CGFloat)maskBoundaryThreshold
                       source:(LTTexture *)source target:(LTTexture *)target
                       output:(LTTexture *)output NS_DESIGNATED_INITIALIZER;

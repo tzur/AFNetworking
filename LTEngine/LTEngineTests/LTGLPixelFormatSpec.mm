@@ -33,6 +33,15 @@ sharedExamplesFor(kLTGLPixelFormatExamples, ^(NSDictionary *contextInfo) {
     expect([pixelFormat renderbufferInternalFormatForVersion:version]).to.equal(internalFormat);
   });
 
+  it(@"should initialize with components, bit depth and data type correctly", ^{
+    [LTGLPixelFormat enumerateEnumUsingBlock:^(LTGLPixelFormat *expected) {
+      LTGLPixelFormat *pixelFormat = [[LTGLPixelFormat alloc] initWithComponents:expected.components
+                                                                        bitDepth:expected.bitDepth
+                                                                        dataType:expected.dataType];
+      expect(pixelFormat).to.equal(expected);
+    }];
+  });
+
   it(@"should return valid OpenGL format for all pixel formats", ^{
     [LTGLPixelFormat enumerateEnumUsingBlock:^(LTGLPixelFormat *pixelFormat) {
       expect([pixelFormat formatForVersion:version]).notTo.equal(LTGLInvalidEnum);
@@ -94,6 +103,24 @@ sharedExamplesFor(kLTGLPixelFormatExamples, ^(NSDictionary *contextInfo) {
   it(@"should provide cvPixelBufferTypeCIFormat for all pixel formats", ^{
     [LTGLPixelFormat enumerateEnumUsingBlock:^(LTGLPixelFormat *pixelFormat) {
       expect(pixelFormat.ciFormatForCVPixelFormatType).notTo.equal(kUnknownType);
+    }];
+  });
+
+  it(@"should return correct channels count for all pixel formats", ^{
+    [LTGLPixelFormat enumerateEnumUsingBlock:^(LTGLPixelFormat *pixelFormat) {
+      NSUInteger expectedChannels;
+      switch (pixelFormat.components) {
+        case LTGLPixelComponentsR:
+          expectedChannels = 1;
+          break;
+        case LTGLPixelComponentsRG:
+          expectedChannels = 2;
+          break;
+        case LTGLPixelComponentsRGBA:
+          expectedChannels = 4;
+          break;
+      }
+      expect(pixelFormat.channels).to.equal(expectedChannels);
     }];
   });
 });

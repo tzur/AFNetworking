@@ -26,7 +26,8 @@
 /// the default one.
 /// @param mask mask texture used to define the patch region.
 /// @param source texture used to take texture from.
-/// @param target target texture used as the base layer.
+/// @param target target texture used as the base layer. Must have the same number of channels as
+/// \c source.
 /// @param output contains the processing result. Size must be equal to \c target size.
 - (instancetype)initWithWorkingSize:(CGSize)workingSize mask:(LTTexture *)mask
                              source:(LTTexture *)source target:(LTTexture *)target
@@ -89,6 +90,11 @@ LTPropertyDeclare(CGFloat, smoothingAlpha, SmoothingAlpha);
                              source:(LTTexture *)source target:(LTTexture *)target
                              output:(LTTexture *)output {
   LTParameterAssert(target.size == output.size, @"Output size must equal target size");
+  LTParameterAssert(source.pixelFormat.channels == target.pixelFormat.channels, @"Source and "
+                    "target must have the same number of channels, got %lu and %lu respectively",
+                    (unsigned long)source.pixelFormat.channels,
+                    (unsigned long)target.pixelFormat.channels);
+
   if (self = [super init]) {
     self.mask = mask;
     self.source = source;
@@ -124,9 +130,13 @@ LTPropertyDeclare(CGFloat, smoothingAlpha, SmoothingAlpha);
 }
 
 - (void)createMembraneTexture {
+  LTGLPixelFormat *membranePixelFormat = [[LTGLPixelFormat alloc]
+                                          initWithComponents:self.source.pixelFormat.components
+                                          bitDepth:LTGLPixelBitDepth16
+                                          dataType:LTGLPixelDataTypeFloat];
+
   self.membrane = [LTTexture textureWithSize:[self maskSizeForCurrentWorkingSize]
-                                 pixelFormat:$(LTGLPixelFormatRGBA16Float)
-                              allocateMemory:YES];
+                                 pixelFormat:membranePixelFormat allocateMemory:YES];
 }
 
 - (void)createSolver {
@@ -220,6 +230,11 @@ LTPropertyProxy(CGFloat, smoothingAlpha, SmoothingAlpha, self.compositor);
                               source:(LTTexture *)source target:(LTTexture *)target
                               output:(LTTexture *)output {
   LTParameterAssert(target.size == output.size, @"Output size must equal target size");
+  LTParameterAssert(source.pixelFormat.channels == target.pixelFormat.channels, @"Source and "
+                    "target must have the same number of channels, got %lu and %lu respectively",
+                    (unsigned long)source.pixelFormat.channels,
+                    (unsigned long)target.pixelFormat.channels);
+
   if (self = [super init]) {
     self.workingSizes = workingSizes;
     self.mask = mask;
