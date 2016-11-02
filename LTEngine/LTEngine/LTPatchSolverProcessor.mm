@@ -18,9 +18,10 @@
 
 @interface LTPatchSolverProcessor () {
   /// Single channel float boundary.
-  cv::Mat1f _boundarySingle;
-  /// 4-channel float boundary. This is a duplicated 4-channel version of \c _boundarySingle.
-  cv::Mat4f _boundaryRGBA;
+  cv::Mat1f _boundarySingleChannel;
+  /// This is a duplicated channels version of \c _boundarySingleChannel according to the \c output
+  /// channels count.
+  cv::Mat _boundaryMultipleChannels;
   /// Boundary convoluted with the kernel.
   cv::Mat1f _paddedChi;
 }
@@ -93,6 +94,12 @@
                     @"Output texture must be of half-float precision, got: %@", output.pixelFormat);
   LTParameterAssert(maskBoundaryThreshold >= 0 && maskBoundaryThreshold <= 1,
                     @"maskBoundaryThreshold (%g) must be in [0, 1]", maskBoundaryThreshold);
+  LTParameterAssert(source.pixelFormat.channels == target.pixelFormat.channels &&
+                    source.pixelFormat.channels == output.pixelFormat.channels,
+                    @"Source, target and output must have the same channels count, got %lu, %lu "
+                    "and %lu respectively", (unsigned long)source.pixelFormat.channels,
+                    (unsigned long)target.pixelFormat.channels,
+                    (unsigned long)output.pixelFormat.channels);
 
   if (self = [super init]) {
     self.mask = mask;
@@ -194,17 +201,16 @@
   processor.threshold = self.maskBoundaryThreshold;
   [processor process];
 
-  // Convert to 1 and 4-channel float.
   [boundary mappedImageForReading:^(const cv::Mat &mapped, BOOL) {
-    LTConvertMat(mapped, &_boundarySingle, CV_32F);
+    LTConvertMat(mapped, &_boundarySingleChannel, CV_32F);
   }];
-  std::vector<cv::Mat1f> channels(4, _boundarySingle);
-  cv::merge(channels, _boundaryRGBA);
+  std::vector<cv::Mat1f> channels(self.output.pixelFormat.channels, _boundarySingleChannel);
+  cv::merge(channels, _boundaryMultipleChannels);
 }
 
 - (void)calculateChi {
   cv::Mat1f paddedBoundarySingle = cv::Mat1f::zeros(self.paddedWorkingSize);
-  _boundarySingle.copyTo(paddedBoundarySingle(self.unpaddedRect));
+  _boundarySingleChannel.copyTo(paddedBoundarySingle(self.unpaddedRect));
 
   _paddedChi = [self convolveKernelWith:paddedBoundarySingle];
 }
@@ -228,39 +234,38 @@
   // TODO: (yaron) optional performance boost is to move all GPU operations in this processor to CPU
   // for small working sizes. This will avoid the 3-4ms of GPU->CPU synchronization that is occurred
   // when mapping the images for reading.
-  __block cv::Mat4f source, target;
+  __block cv::Mat source, target;
   [self.sourceResized mappedImageForReading:^(const cv::Mat &mapped, BOOL) {
-    LTConvertMat(mapped, &source, CV_32FC4);
+    LTConvertMat(mapped, &source, CV_32FC(mapped.channels()));
   }];
   [self.targetResized mappedImageForReading:^(const cv::Mat &mapped, BOOL) {
-    LTConvertMat(mapped, &target, CV_32FC4);
+    LTConvertMat(mapped, &target, CV_32FC(mapped.channels()));
   }];
 
-  cv::Mat4f diff([self differenceAtBoundaryForSource:source target:target]);
-  cv::Mat4f membrane([self membraneForBoundaryDifference:diff]);
+  cv::Mat diff([self differenceAtBoundaryForSource:source target:target]);
+  cv::Mat membrane([self membraneForBoundaryDifference:diff]);
 
   cv::Rect roi(cv::Rect(0, 0, self.output.size.width, self.output.size.height));
-  cv::Mat4hf membraneHalfFloat;
-  LTConvertMat(membrane(roi), &membraneHalfFloat, membraneHalfFloat.type());
+  cv::Mat membraneHalfFloat;
+  LTConvertMat(membrane(roi), &membraneHalfFloat, CV_16FC(membrane.channels()));
   [self.output load:membraneHalfFloat];
 }
 
-- (cv::Mat4f)differenceAtBoundaryForSource:(const cv::Mat4f &)source
-    target:(const cv::Mat4f &)target {
-  cv::Mat4f diff(source.size());
+- (cv::Mat)differenceAtBoundaryForSource:(const cv::Mat &)source target:(const cv::Mat &)target {
+  cv::Mat diff(source.size(), source.type());
 
   // T - S.
   vDSP_vsub((const float *)source.data, 1, (const float *)target.data, 1, (float *)diff.data, 1,
             source.total() * source.channels());
   // Leave only diff at the boundary.
-  vDSP_vmul((const float *)diff.data, 1, (const float *)_boundaryRGBA.data, 1,
+  vDSP_vmul((const float *)diff.data, 1, (const float *)_boundaryMultipleChannels.data, 1,
             (float *)diff.data, 1, diff.total() * diff.channels());
 
   return diff;
 }
 
-- (cv::Mat4f)membraneForBoundaryDifference:(const cv::Mat4f &)diff {
-  cv::Mat4f paddedDiff = cv::Mat4f::zeros(self.paddedWorkingSize);
+- (cv::Mat)membraneForBoundaryDifference:(const cv::Mat &)diff {
+  cv::Mat paddedDiff = cv::Mat::zeros(self.paddedWorkingSize, diff.type());
   diff.copyTo(paddedDiff(self.unpaddedRect));
 
   // Calculate diff (*) kernel.
@@ -269,7 +274,9 @@
   Matrices membraneChannels;
   cv::Mat1f paddedErf(paddedDiff.size());
 
-  for (int i = 0; i < 3; ++i) {
+  // In case of an RGBA image, the membrane alpha channel is filled with zeros.
+  NSUInteger channelsForConvolving = paddedDiffChannels.size() == 4 ? 3 : paddedDiffChannels.size();
+  for (NSUInteger i = 0; i < channelsForConvolving; ++i) {
     @autoreleasepool {
       cv::Mat1f paddedErf([self convolveKernelWith:paddedDiffChannels[i]]);
       cv::Mat1f membrane;
@@ -279,8 +286,11 @@
     }
   }
 
-  membraneChannels.push_back(cv::Mat1f::zeros(self.unpaddedRect.size()));
-  cv::Mat4f membrane;
+  if (paddedDiffChannels.size() == 4) {
+    membraneChannels.push_back(cv::Mat1f::zeros(self.unpaddedRect.size()));
+  }
+
+  cv::Mat membrane;
   cv::merge(membraneChannels, membrane);
 
   return membrane;
