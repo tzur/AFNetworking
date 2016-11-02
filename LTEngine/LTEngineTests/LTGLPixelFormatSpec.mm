@@ -33,6 +33,15 @@ sharedExamplesFor(kLTGLPixelFormatExamples, ^(NSDictionary *contextInfo) {
     expect([pixelFormat renderbufferInternalFormatForVersion:version]).to.equal(internalFormat);
   });
 
+  it(@"should initialize with components, bit depth and data type correctly", ^{
+    [LTGLPixelFormat enumerateEnumUsingBlock:^(LTGLPixelFormat *expected) {
+      LTGLPixelFormat *pixelFormat = [[LTGLPixelFormat alloc] initWithComponents:expected.components
+                                                                        bitDepth:expected.bitDepth
+                                                                        dataType:expected.dataType];
+      expect(pixelFormat).to.equal(expected);
+    }];
+  });
+
   it(@"should return valid OpenGL format for all pixel formats", ^{
     [LTGLPixelFormat enumerateEnumUsingBlock:^(LTGLPixelFormat *pixelFormat) {
       expect([pixelFormat formatForVersion:version]).notTo.equal(LTGLInvalidEnum);

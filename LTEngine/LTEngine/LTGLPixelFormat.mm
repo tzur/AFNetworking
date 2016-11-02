@@ -276,6 +276,19 @@ static const std::unordered_map<OSType, CIFormat> kCVPixelBufferTypeToCIFormat{
   return [self initWithValue:pixelFormat];
 }
 
+- (instancetype)initWithComponents:(LTGLPixelComponents)components
+                          bitDepth:(LTGLPixelBitDepth)bitDepth
+                          dataType:(LTGLPixelDataType)dataType {
+  for (const auto &pair : kFormatToDescriptor) {
+    if (pair.second == LTDescriptorTuple{components, bitDepth, dataType}) {
+      return [self initWithValue:pair.first];
+    }
+  }
+  LTAssert(NO, @"No pixel format value was found for the given components (%lu), bitDepth (%lu)  "
+           "and dataType (%lu)", (unsigned long)components, (unsigned long)bitDepth,
+           (unsigned long)dataType);
+}
+
 + (LTGLPixelFormatSupportedMatTypes)supportedMatTypes {
   static LTGLPixelFormatSupportedMatTypes supportedTypes;
 

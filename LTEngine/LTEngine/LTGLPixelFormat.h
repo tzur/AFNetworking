@@ -89,6 +89,11 @@ typedef std::vector<OSType> LTGLPixelFormatSupportedCVPixelFormatTypes;
 - (instancetype)initWithPlanarCVPixelFormatType:(OSType)cvPixelFormatType
                                      planeIndex:(size_t)planeIndex;
 
+/// Initializes a pixel format from \c components, \c bitDepth and \c dataType.
+- (instancetype)initWithComponents:(LTGLPixelComponents)components
+                          bitDepth:(LTGLPixelBitDepth)bitDepth
+                          dataType:(LTGLPixelDataType)dataType;
+
 /// Returns a vector of the supported \c cv::Mat types via \c -[LTGLPixelFormat initWithMatType:].
 + (LTGLPixelFormatSupportedMatTypes)supportedMatTypes;
 
