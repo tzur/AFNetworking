@@ -44,7 +44,7 @@ context(@"initialization", ^{
     }).toNot.raiseAny();
   });
 
-  it(@"should not initialize if target size is different than output size", ^{
+  it(@"should raise when target size is different than output size", ^{
     LTTexture *output = [LTTexture byteRGBATextureWithSize:CGSizeMake(kSize.width - 1,
                                                                       kSize.height - 1)];
 
@@ -58,7 +58,7 @@ context(@"initialization", ^{
     }).to.raise(NSInvalidArgumentException);
   });
 
-  it(@"should not initialize if working size is not a power of two", ^{
+  it(@"should raise when working size is not a power of two", ^{
     expect(^{
       CGSizes workingSizes{CGSizeMake(32, 32), CGSizeMake(62, 64)};
       LTPatchProcessor __unused *processor = [[LTPatchProcessor alloc]
@@ -70,13 +70,33 @@ context(@"initialization", ^{
     }).to.raise(NSInvalidArgumentException);
   });
 
-  it(@"should not initialize if no working size is given", ^{
+  it(@"should raise when no working size is given", ^{
     expect(^{
       LTPatchProcessor __unused *processor = [[LTPatchProcessor alloc]
                                               initWithWorkingSizes:{}
                                               mask:mask
                                               source:source
                                               target:target
+                                              output:output];
+    }).to.raise(NSInvalidArgumentException);
+  });
+
+  it(@"should raise when source and target have a different number of channels", ^{
+    LTTexture *differentChannelsTexture = [LTTexture byteRedTextureWithSize:kSize];
+    expect(^{
+      LTPatchProcessor __unused *processor = [[LTPatchProcessor alloc]
+                                              initWithWorkingSizes:kWorkingSizes
+                                              mask:mask
+                                              source:differentChannelsTexture
+                                              target:target
+                                              output:output];
+    }).to.raise(NSInvalidArgumentException);
+    expect(^{
+      LTPatchProcessor __unused *processor = [[LTPatchProcessor alloc]
+                                              initWithWorkingSizes:kWorkingSizes
+                                              mask:mask
+                                              source:source
+                                              target:differentChannelsTexture
                                               output:output];
     }).to.raise(NSInvalidArgumentException);
   });
@@ -291,6 +311,60 @@ context(@"processing", ^{
       expected(rect).copyTo(redrawn(cv::Rect(0, 0, kSourceSize.width, kSourceSize.height)));
 
       expect($([output image])).to.beCloseToMat($(redrawn));
+    });
+  });
+
+  context(@"source and target with less than 4 channels", ^{
+    __block std::vector<cv::Mat1b> solutionRGChannels;
+
+    beforeEach(^{
+      std::vector<cv::Mat1b> solutionRGBAChannels;
+      cv::split(LTLoadMat([self class], @"LTPatchProcessorSolution.png"), solutionRGBAChannels);
+      solutionRGChannels = {solutionRGBAChannels[0], solutionRGBAChannels[1]};
+    });
+
+    it(@"should process one channel source and target textures correctly", ^{
+      LTTexture *source = [LTTexture byteRedTextureWithSize:kSourceSize];
+      [source clearWithColor:LTVector4(0.5, 0, 0, 1)];
+      [source mappedImageForWriting:^(cv::Mat *mapped, BOOL) {
+        (*mapped)(cv::Rect(0, 0, kSourceSize.height / 2, kSourceSize.width / 2)).setTo(0);
+      }];
+      LTTexture *target = [LTTexture byteRedTextureWithSize:kTargetSize];
+      [target clearWithColor:LTVector4(0, 0, 1, 1)];
+
+      processor = [[LTPatchProcessor alloc] initWithWorkingSizes:kWorkingSizes mask:mask
+                                                        source:source target:target output:output];
+      processor.targetRect = [LTRotatedRect rect:CGRectMake(8, 8,
+                                                            kSourceSize.width, kSourceSize.height)];
+      [processor process];
+
+      std::vector<cv::Mat1b> outputChannels;
+      cv::split(output.image, outputChannels);
+      expect($(outputChannels[0])).to.beCloseToMat($(solutionRGChannels[0]));
+    });
+
+    it(@"should process two channels source and target textures correctly", ^{
+      LTTexture *source = [LTTexture textureWithSize:kSourceSize
+                                         pixelFormat:$(LTGLPixelFormatRG8Unorm) allocateMemory:YES];
+      [source clearWithColor:LTVector4(0.5, 0, 0, 1)];
+      [source mappedImageForWriting:^(cv::Mat *mapped, BOOL) {
+        (*mapped)(cv::Rect(0, 0, kSourceSize.height / 2, kSourceSize.width / 2))
+            .setTo(cv::Vec2b(0, 255));
+      }];
+      LTTexture *target = [LTTexture textureWithSize:kTargetSize
+                                         pixelFormat:$(LTGLPixelFormatRG8Unorm) allocateMemory:YES];
+      [target clearWithColor:LTVector4(0, 0, 1, 1)];
+
+      processor = [[LTPatchProcessor alloc] initWithWorkingSizes:kWorkingSizes mask:mask
+                                                          source:source target:target output:output];
+      processor.targetRect = [LTRotatedRect rect:CGRectMake(8, 8,
+                                                            kSourceSize.width, kSourceSize.height)];
+      [processor process];
+
+      std::vector<cv::Mat1b> outputChannels;
+      cv::split(output.image, outputChannels);
+      expect($(outputChannels[0])).beCloseToMat($(solutionRGChannels[0]));
+      expect($(outputChannels[1])).beCloseToMat($(solutionRGChannels[1]));
     });
   });
 });

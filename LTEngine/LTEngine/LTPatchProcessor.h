@@ -21,7 +21,8 @@
 /// given dimensions must be a power of two. The first given working size will be the default one.
 /// @param mask mask texture used to define the patch region.
 /// @param source texture used to take texture from.
-/// @param target target texture used as the base layer.
+/// @param target target texture used as the base layer. Must have the same number of channels as
+/// \c source.
 /// @param output contains the processing result. Size must be equal to \c target size.
 - (instancetype)initWithWorkingSizes:(CGSizes)workingSizes mask:(LTTexture *)mask
                               source:(LTTexture *)source target:(LTTexture *)target
