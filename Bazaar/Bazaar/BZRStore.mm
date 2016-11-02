@@ -7,6 +7,7 @@
 
 #import "BZRAcquiredViaSubscriptionProvider.h"
 #import "BZRCachedReceiptValidationStatusProvider.h"
+#import "BZRPeriodicReceiptValidatorActivator.h"
 #import "BZRProduct+SKProduct.h"
 #import "BZRProductContentManager.h"
 #import "BZRProductContentProvider.h"
@@ -55,6 +56,9 @@ typedef NSDictionary<id, BZRProductList *> BZRClassifiedProducts;
 /// Manager used to check if the receipt file exists.
 @property (readonly, nonatomic) NSFileManager *fileManager;
 
+/// Activator used to control the periodic validation.
+@property (readonly, nonatomic) BZRPeriodicReceiptValidatorActivator *periodicValidatorActivator;
+
 /// Facade used to interact with Apple StoreKit.
 @property (readonly, nonatomic) BZRStoreKitFacade *storeKitFacade;
 
@@ -94,6 +98,7 @@ typedef NSDictionary<id, BZRProductList *> BZRClassifiedProducts;
     _acquiredViaSubscriptionProvider = configuration.acquiredViaSubscriptionProvider;
     _applicationReceiptBundle = configuration.applicationReceiptBundle;
     _fileManager = configuration.fileManager;
+    _periodicValidatorActivator = configuration.periodicValidatorActivator;
 
     [self initializeCompletedTransactionsSignal];
     [self initializeErrorsSignal];
@@ -115,7 +120,8 @@ typedef NSDictionary<id, BZRProductList *> BZRClassifiedProducts;
   _errorsSignal = [[[RACSignal merge:@[
     [self.errorsSubject replay],
     self.validationStatusProvider.nonCriticalErrorsSignal,
-    self.acquiredViaSubscriptionProvider.storageErrorsSignal
+    self.acquiredViaSubscriptionProvider.storageErrorsSignal,
+    self.periodicValidatorActivator.errorsSignal
   ]]
   takeUntil:[self rac_willDeallocSignal]]
   setNameWithFormat:@"%@ -errorsSignal", self];

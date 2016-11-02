@@ -114,4 +114,25 @@ context(@"invalid product identifiers error", ^{
   });
 });
 
+context(@"periodic validation errors", ^{
+  it(@"should return an error with the given days, last validation date and underlying error", ^{
+    NSInteger seccondsUntilSubscriptionInvalidation = 4;
+    NSDate *lastValidationDate = [NSDate date];
+    NSError *underlyingError = [NSError lt_errorWithCode:1337];
+
+    NSError *error =
+        [NSError bzr_errorWithSecondsUntilSubscriptionInvalidation:
+         @(seccondsUntilSubscriptionInvalidation) lastReceiptValidationDate:lastValidationDate
+         underlyingError:underlyingError];
+
+    expect(error).toNot.beNil();
+    expect(error.lt_isLTDomain).to.beTruthy();
+    expect(error.code).to.equal(BZRErrorCodePeriodicReceiptValidationFailed);
+    expect(error.bzr_secondsUntilSubscriptionInvalidation).to
+        .equal(seccondsUntilSubscriptionInvalidation);
+    expect(error.bzr_lastReceiptValidationDate).to.equal(lastValidationDate);
+    expect(error.lt_underlyingError).to.equal(underlyingError);
+  });
+});
+
 SpecEnd

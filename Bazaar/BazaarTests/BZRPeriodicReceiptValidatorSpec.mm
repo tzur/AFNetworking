@@ -67,7 +67,6 @@ context(@"deactivating timer", ^{
     [periodicReceiptValidator activatePeriodicValidationCheck:subject];
     [periodicReceiptValidator deactivatePeriodicValidationCheck];
     [subject sendNext:@"foo"];
-
   });
 });
 

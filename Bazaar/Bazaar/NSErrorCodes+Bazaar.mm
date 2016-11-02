@@ -60,7 +60,9 @@ LTErrorCodesImplement(BazaarErrorCodeProductID,
   /// Received a purchase request with invalid product identifer.
   BZRErrorCodeInvalidProductIdentifer,
   /// Fetching of product list has failed.
-  BZRErrorCodeFetchingProductListFailed
+  BZRErrorCodeFetchingProductListFailed,
+  /// The receipt validation has failed during the periodic check.
+  BZRErrorCodePeriodicReceiptValidationFailed
 );
 
 NS_ASSUME_NONNULL_END
