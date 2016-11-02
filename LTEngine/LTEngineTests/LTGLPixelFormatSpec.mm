@@ -96,6 +96,24 @@ sharedExamplesFor(kLTGLPixelFormatExamples, ^(NSDictionary *contextInfo) {
       expect(pixelFormat.ciFormatForCVPixelFormatType).notTo.equal(kUnknownType);
     }];
   });
+
+  it(@"should return correct channels count for all pixel formats", ^{
+    [LTGLPixelFormat enumerateEnumUsingBlock:^(LTGLPixelFormat *pixelFormat) {
+      NSUInteger expectedChannels;
+      switch (pixelFormat.components) {
+        case LTGLPixelComponentsR:
+          expectedChannels = 1;
+          break;
+        case LTGLPixelComponentsRG:
+          expectedChannels = 2;
+          break;
+        case LTGLPixelComponentsRGBA:
+          expectedChannels = 4;
+          break;
+      }
+      expect(pixelFormat.channels).to.equal(expectedChannels);
+    }];
+  });
 });
 
 itShouldBehaveLike(kLTGLPixelFormatExamples, @{@"version": @(LTGLVersion2)});

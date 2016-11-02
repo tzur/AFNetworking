@@ -119,6 +119,9 @@ typedef std::vector<OSType> LTGLPixelFormatSupportedCVPixelFormatTypes;
 /// Components of the pixel format.
 @property (readonly, nonatomic) LTGLPixelComponents components;
 
+/// Returns the number of channels of the pixel format.
+@property (readonly, nonatomic) NSUInteger channels;
+
 /// Bit depth of each component of the pixel format.
 @property (readonly, nonatomic) LTGLPixelBitDepth bitDepth;
 

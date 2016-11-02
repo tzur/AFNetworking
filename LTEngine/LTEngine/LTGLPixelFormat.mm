@@ -351,6 +351,17 @@ static const std::unordered_map<OSType, CIFormat> kCVPixelBufferTypeToCIFormat{
   return std::get<0>(self.descriptor);
 }
 
+- (NSUInteger)channels {
+  switch (self.components) {
+    case LTGLPixelComponentsR:
+      return 1;
+    case LTGLPixelComponentsRG:
+      return 2;
+    case LTGLPixelComponentsRGBA:
+      return 4;
+  }
+}
+
 - (LTGLPixelBitDepth)bitDepth {
   return std::get<1>(self.descriptor);
 }
