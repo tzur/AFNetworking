@@ -78,47 +78,4 @@ LTEnumImplement(NSUInteger, CAMDeviceCamera,
 
 @end
 
-@implementation CAMDevicePreset (Factory)
-
-+ (CAMDevicePreset *)stillCamera {
-  return [self stillCameraWithQueue:dispatch_get_main_queue()];
-}
-
-+ (CAMDevicePreset *)stillCameraWithQueue:(dispatch_queue_t)outputQueue {
-  return [[CAMDevicePreset alloc]
-      initWithPixelFormat:$(CAMPixelFormat420f)
-                   camera:$(CAMDeviceCameraBack)
-              enableAudio:NO
-           formatStrategy:[CAMFormatStrategy highestResolution420f]
-              outputQueue:outputQueue];
-}
-
-+ (CAMDevicePreset *)selfieCamera {
-  return [self selfieCameraWithQueue:dispatch_get_main_queue()];
-}
-
-+ (CAMDevicePreset *)selfieCameraWithQueue:(dispatch_queue_t)outputQueue {
-  return [[CAMDevicePreset alloc]
-      initWithPixelFormat:$(CAMPixelFormatBGRA)
-                   camera:$(CAMDeviceCameraFront)
-              enableAudio:NO
-           formatStrategy:[CAMFormatStrategy highestResolution420f]
-              outputQueue:outputQueue];
-}
-
-+ (CAMDevicePreset *)videoCamera {
-  return [self videoCameraWithQueue:dispatch_get_main_queue()];
-}
-
-+ (CAMDevicePreset *)videoCameraWithQueue:(dispatch_queue_t)outputQueue {
-  return [[CAMDevicePreset alloc]
-      initWithPixelFormat:$(CAMPixelFormat420f)
-                   camera:$(CAMDeviceCameraBack)
-              enableAudio:YES
-           formatStrategy:[CAMFormatStrategy exact420fWidth:1920 height:1080]
-              outputQueue:outputQueue];
-}
-
-@end
-
 NS_ASSUME_NONNULL_END

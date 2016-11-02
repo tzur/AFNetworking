@@ -88,33 +88,4 @@ LTEnumDeclare(NSUInteger, CAMDeviceCamera,
 
 @end
 
-/// Category for creating \c CAMDevicePreset instances of commonly used settings.
-@interface CAMDevicePreset (Factory)
-
-/// Returns a \c CAMDevicePreset fitting for still image photography. Uses Y'CbCr pixel format,
-/// back camera, no audio, highest resolution possible and main dispatch queue for processing.
-+ (CAMDevicePreset *)stillCamera;
-
-/// Returns a \c CAMDevicePreset fitting for still image photography. Uses Y'CbCr pixel format,
-/// back camera, no audio, highest resolution possible and the given queue for processing.
-+ (CAMDevicePreset *)stillCameraWithQueue:(dispatch_queue_t)outputQueue;
-
-/// Returns a \c CAMDevicePreset fitting for selfie images. Uses BGRA pixel format, front camera,
-/// no audio, highest resolution possible and main dispatch queue for processing.
-+ (CAMDevicePreset *)selfieCamera;
-
-/// Returns a \c CAMDevicePreset fitting for selfie images. Uses BGRA pixel format, front camera,
-/// no audio, highest resolution possible and the given queue for processing.
-+ (CAMDevicePreset *)selfieCameraWithQueue:(dispatch_queue_t)outputQueue;
-
-/// Returns a \c CAMDevicePreset fitting for video recording. Uses Y'CbCr pixel format, back camera
-/// with audio, 1080p resolution and main dispatch queue for processing.
-+ (CAMDevicePreset *)videoCamera;
-
-/// Returns a \c CAMDevicePreset fitting for video recording. Uses Y'CbCr pixel format, back camera
-/// with audio, 1080p resolution and the given queue for processing.
-+ (CAMDevicePreset *)videoCameraWithQueue:(dispatch_queue_t)outputQueue;
-
-@end
-
 NS_ASSUME_NONNULL_END
