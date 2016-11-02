@@ -80,7 +80,7 @@ context(@"preset object", ^{
   });
 
   it(@"should return set values", ^{
-    id<CAMFormatStrategy> formatStrategy = [CAMFormatStrategy highestResolution420f];
+    id<CAMFormatStrategy> formatStrategy = OCMProtocolMock(@protocol(CAMFormatStrategy));
     CAMDevicePreset *preset = [[CAMDevicePreset alloc] initWithPixelFormat:$(CAMPixelFormatBGRA)
                                                                     camera:$(CAMDeviceCameraFront)
                                                                enableAudio:YES

@@ -8,26 +8,6 @@
 
 SpecBegin(CAMFormatStrategy)
 
-context(@"factory", ^{
-  static const NSUInteger kWidth = 300;
-  static const NSUInteger kHeight = 250;
-
-  it(@"should return highest res strategy", ^{
-    expect([CAMFormatStrategy highestResolution420f]).to.
-        beKindOf([CAMFormatStrategyHighestResolution420f class]);
-  });
-
-  it(@"should return exact res strategy", ^{
-    CAMFormatStrategyExactResolution420f *strategy =
-        [CAMFormatStrategy exact420fWidth:kWidth height:kHeight];
-
-    expect(strategy).to.beKindOf([CAMFormatStrategyExactResolution420f class]);
-
-    expect(strategy.width).to.equal(kWidth);
-    expect(strategy.height).to.equal(kHeight);
-  });
-});
-
 context(@"highest resolution", ^{
   __block CAMFormatStrategyHighestResolution420f *formatStrategy;
 

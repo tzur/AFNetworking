@@ -14,21 +14,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-/// Factory class for convenient creation of various basic \c CAMFormatStrategy objects.
-@interface CAMFormatStrategy : NSObject
-
-/// Returns a strategy for selecting the highest resolution \c 420f format available.
-///
-/// @see kCVPixelFormatType_420YpCbCr8BiPlanarFullRange.
-+ (id<CAMFormatStrategy>)highestResolution420f;
-
-/// Returns a strategy for selecting a \c 420f format with the given resolution.
-///
-/// @see kCVPixelFormatType_420YpCbCr8BiPlanarFullRange.
-+ (id<CAMFormatStrategy>)exact420fWidth:(NSUInteger)width height:(NSUInteger)height;
-
-@end
-
 /// \c CAMFormatStrategy implementation that selects the Y'CbCr 4:2:0 full-range format with the
 /// highest available resolution. Returns \c nil if no matching formats are available. If more than
 /// one format matches, the first is returned.
