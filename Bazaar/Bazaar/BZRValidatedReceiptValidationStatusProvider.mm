@@ -7,6 +7,7 @@
 #import "BZRReceiptValidationParametersProvider.h"
 #import "BZRReceiptValidationStatus.h"
 #import "BZRReceiptValidator.h"
+#import "BZRRetryReceiptValidator.h"
 #import "BZRValidatricksReceiptValidator.h"
 #import "NSErrorCodes+Bazaar.h"
 
@@ -28,11 +29,18 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize nonCriticalErrorsSignal = _nonCriticalErrorsSignal;
 
 - (instancetype)init {
+  NSTimeInterval kInitialRetryDelay = 0.5;
+  NSUInteger kNumberOfRetries = 3;
+
   BZRValidatricksReceiptValidator *receiptValidator =
       [[BZRValidatricksReceiptValidator alloc] init];
+  BZRRetryReceiptValidator *retryValidator =
+      [[BZRRetryReceiptValidator alloc] initWithUnderlyingValidator:receiptValidator
+                                                  initialRetryDelay:kInitialRetryDelay
+                                                    numberOfRetries:kNumberOfRetries];
   BZRReceiptValidationParametersProvider *validationParametersProvider =
       [[BZRReceiptValidationParametersProvider alloc] init];
-  return [self initWithReceiptValidator:receiptValidator
+  return [self initWithReceiptValidator:retryValidator
            validationParametersProvider:validationParametersProvider];
 }
 
