@@ -5,6 +5,8 @@
 
 #import <AVFoundation/AVFoundation.h>
 
+#import "AVCaptureDeviceFormat+MediaProperties.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark -
@@ -17,7 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
   return [[CAMFormatStrategyHighestResolution420f alloc] init];
 }
 
-+ (id<CAMFormatStrategy>)exact420fWidth:(int32_t)width height:(int32_t)height {
++ (id<CAMFormatStrategy>)exact420fWidth:(NSUInteger)width height:(NSUInteger)height {
   return [[CAMFormatStrategyExactResolution420f alloc] initWithWidth:width height:height];
 }
 
@@ -27,33 +29,21 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark Implementations
 #pragma mark -
 
-static BOOL CAMFormatHasPixelFormat(AVCaptureDeviceFormat *format, FourCharCode pixelFormat) {
-  return CMFormatDescriptionGetMediaSubType(format.formatDescription) == pixelFormat;
-}
-
-static int64_t CAMFormatPixelCount(AVCaptureDeviceFormat *format) {
-  CMVideoDimensions dimensions =
-      CMVideoFormatDescriptionGetDimensions(format.formatDescription);
-  return dimensions.width * dimensions.height;
-}
-
 @implementation CAMFormatStrategyHighestResolution420f
 
 - (nullable AVCaptureDeviceFormat *)formatFrom:(NSArray<AVCaptureDeviceFormat *> *)formats {
   return [[formats.rac_sequence
       filter:^BOOL(AVCaptureDeviceFormat *format) {
-        return CAMFormatHasPixelFormat(format, '420f');
+        return format.cam_mediaSubType == '420f';
       }]
       foldLeftWithStart:nil reduce:^id(AVCaptureDeviceFormat *currentFormat,
                                        AVCaptureDeviceFormat *nextFormat) {
         if (!currentFormat) {
           return nextFormat;
         }
-
-        if (CAMFormatPixelCount(currentFormat) < CAMFormatPixelCount(nextFormat)) {
+        if (currentFormat.cam_pixelCount < nextFormat.cam_pixelCount) {
           return nextFormat;
         }
-
         return currentFormat;
       }];
 }
@@ -62,7 +52,7 @@ static int64_t CAMFormatPixelCount(AVCaptureDeviceFormat *format) {
 
 @implementation CAMFormatStrategyExactResolution420f
 
-- (instancetype)initWithWidth:(int32_t)width height:(int32_t)height {
+- (instancetype)initWithWidth:(NSUInteger)width height:(NSUInteger)height {
   if (self = [super init]) {
     _width = width;
     _height = height;
@@ -71,16 +61,11 @@ static int64_t CAMFormatPixelCount(AVCaptureDeviceFormat *format) {
 }
 
 - (nullable AVCaptureDeviceFormat *)formatFrom:(NSArray<AVCaptureDeviceFormat *> *)formats {
-  return [[[formats.rac_sequence
-      filter:^BOOL(AVCaptureDeviceFormat *format) {
-        return CAMFormatHasPixelFormat(format, '420f');
-      }]
-      filter:^BOOL(AVCaptureDeviceFormat *format) {
-        CMVideoDimensions dimensions =
-            CMVideoFormatDescriptionGetDimensions(format.formatDescription);
-        return dimensions.width == self.width && dimensions.height == self.height;
-      }]
-      head];
+  return [formats.rac_sequence
+      objectPassingTest:^BOOL(AVCaptureDeviceFormat *format) {
+        return format.cam_mediaSubType == '420f' &&
+            format.cam_width == self.width && format.cam_height == self.height;
+      }];
 }
 
 @end
