@@ -5,15 +5,7 @@
 
 #import <AVFoundation/AVFoundation.h>
 
-static AVCaptureDeviceFormat *CAMAVCaptureDeviceFormatMock(FourCharCode subtype,
-                                                           int32_t width,
-                                                           int32_t height) {
-  CMVideoFormatDescriptionRef description;
-  CMVideoFormatDescriptionCreate(NULL, subtype, width, height, NULL, &description);
-  id format = OCMClassMock([AVCaptureDeviceFormat class]);
-  OCMStub([format formatDescription]).andReturn(description);
-  return format;
-}
+#import "CAMFakeAVCaptureDeviceFormat.h"
 
 SpecBegin(CAMFormatStrategy)
 
@@ -47,15 +39,15 @@ context(@"highest resolution", ^{
 
   it(@"should select highest 4:2:0 full-range resolution", ^{
     formats = @[
-      CAMAVCaptureDeviceFormatMock('420f', 300, 400),
-      CAMAVCaptureDeviceFormatMock('420v', 300, 400),
-      CAMAVCaptureDeviceFormatMock('420f', 600, 400),
-      CAMAVCaptureDeviceFormatMock('420v', 600, 400),
-      CAMAVCaptureDeviceFormatMock('420f', 300, 1000),
-      CAMAVCaptureDeviceFormatMock('420v', 300, 1000),
-      CAMAVCaptureDeviceFormatMock('yuvf', 300, 1000),
-      CAMAVCaptureDeviceFormatMock('420f', 700, 400),
-      CAMAVCaptureDeviceFormatMock('420v', 700, 400)
+      [CAMFakeAVCaptureDeviceFormat formatWithSubtype:'420f' width:300 height:400],
+      [CAMFakeAVCaptureDeviceFormat formatWithSubtype:'420v' width:300 height:400],
+      [CAMFakeAVCaptureDeviceFormat formatWithSubtype:'420f' width:600 height:400],
+      [CAMFakeAVCaptureDeviceFormat formatWithSubtype:'420v' width:600 height:400],
+      [CAMFakeAVCaptureDeviceFormat formatWithSubtype:'420f' width:300 height:1000],
+      [CAMFakeAVCaptureDeviceFormat formatWithSubtype:'420v' width:300 height:1000],
+      [CAMFakeAVCaptureDeviceFormat formatWithSubtype:'yuvf' width:300 height:1000],
+      [CAMFakeAVCaptureDeviceFormat formatWithSubtype:'420f' width:700 height:400],
+      [CAMFakeAVCaptureDeviceFormat formatWithSubtype:'420v' width:700 height:400]
     ];
 
     AVCaptureDeviceFormat *format = [formatStrategy formatFrom:formats];
@@ -74,11 +66,11 @@ context(@"highest resolution", ^{
 
   it(@"should return nil when no 4:2:0 full-range formats are available", ^{
     formats = @[
-      CAMAVCaptureDeviceFormatMock('420v', 300, 400),
-      CAMAVCaptureDeviceFormatMock('420v', 600, 400),
-      CAMAVCaptureDeviceFormatMock('420v', 300, 1000),
-      CAMAVCaptureDeviceFormatMock('yuvf', 300, 1000),
-      CAMAVCaptureDeviceFormatMock('420v', 700, 400)
+      [CAMFakeAVCaptureDeviceFormat formatWithSubtype:'420v' width:300 height:400],
+      [CAMFakeAVCaptureDeviceFormat formatWithSubtype:'420v' width:600 height:400],
+      [CAMFakeAVCaptureDeviceFormat formatWithSubtype:'420v' width:300 height:1000],
+      [CAMFakeAVCaptureDeviceFormat formatWithSubtype:'yuvf' width:300 height:1000],
+      [CAMFakeAVCaptureDeviceFormat formatWithSubtype:'420v' width:700 height:400]
     ];
 
     AVCaptureDeviceFormat *format = [formatStrategy formatFrom:formats];
@@ -87,14 +79,14 @@ context(@"highest resolution", ^{
 
   it(@"should return first match when multiple matches", ^{
     formats = @[
-      CAMAVCaptureDeviceFormatMock('420v', 600, 400),
-      CAMAVCaptureDeviceFormatMock('420f', 300, 1000),
-      CAMAVCaptureDeviceFormatMock('420f', 300, 1000),
-      CAMAVCaptureDeviceFormatMock('420f', 300, 1000),
-      CAMAVCaptureDeviceFormatMock('420v', 300, 1000),
-      CAMAVCaptureDeviceFormatMock('yuvf', 300, 1000),
-      CAMAVCaptureDeviceFormatMock('420f', 700, 400),
-      CAMAVCaptureDeviceFormatMock('420v', 700, 400)
+      [CAMFakeAVCaptureDeviceFormat formatWithSubtype:'420v' width:600 height:400],
+      [CAMFakeAVCaptureDeviceFormat formatWithSubtype:'420f' width:300 height:1000],
+      [CAMFakeAVCaptureDeviceFormat formatWithSubtype:'420f' width:300 height:1000],
+      [CAMFakeAVCaptureDeviceFormat formatWithSubtype:'420f' width:300 height:1000],
+      [CAMFakeAVCaptureDeviceFormat formatWithSubtype:'420v' width:300 height:1000],
+      [CAMFakeAVCaptureDeviceFormat formatWithSubtype:'yuvf' width:300 height:1000],
+      [CAMFakeAVCaptureDeviceFormat formatWithSubtype:'420f' width:700 height:400],
+      [CAMFakeAVCaptureDeviceFormat formatWithSubtype:'420v' width:700 height:400]
     ];
 
     AVCaptureDeviceFormat *format = [formatStrategy formatFrom:formats];
@@ -118,15 +110,15 @@ context(@"exact resolution", ^{
 
   it(@"should select exact 4:2:0 full-range resolution", ^{
     formats = @[
-      CAMAVCaptureDeviceFormatMock('420f', 300, 400),
-      CAMAVCaptureDeviceFormatMock('420v', 300, 400),
-      CAMAVCaptureDeviceFormatMock('420f', 600, 400),
-      CAMAVCaptureDeviceFormatMock('420v', 600, 400),
-      CAMAVCaptureDeviceFormatMock('yuvf', 600, 400),
-      CAMAVCaptureDeviceFormatMock('420f', 300, 1000),
-      CAMAVCaptureDeviceFormatMock('420v', 300, 1000),
-      CAMAVCaptureDeviceFormatMock('420f', 700, 400),
-      CAMAVCaptureDeviceFormatMock('420v', 700, 400)
+      [CAMFakeAVCaptureDeviceFormat formatWithSubtype:'420f' width:300 height:400],
+      [CAMFakeAVCaptureDeviceFormat formatWithSubtype:'420v' width:300 height:400],
+      [CAMFakeAVCaptureDeviceFormat formatWithSubtype:'420f' width:600 height:400],
+      [CAMFakeAVCaptureDeviceFormat formatWithSubtype:'420v' width:600 height:400],
+      [CAMFakeAVCaptureDeviceFormat formatWithSubtype:'yuvf' width:600 height:400],
+      [CAMFakeAVCaptureDeviceFormat formatWithSubtype:'420f' width:300 height:1000],
+      [CAMFakeAVCaptureDeviceFormat formatWithSubtype:'420v' width:300 height:1000],
+      [CAMFakeAVCaptureDeviceFormat formatWithSubtype:'420f' width:700 height:400],
+      [CAMFakeAVCaptureDeviceFormat formatWithSubtype:'420v' width:700 height:400]
     ];
 
     AVCaptureDeviceFormat *format = [formatStrategy formatFrom:formats];
@@ -145,11 +137,11 @@ context(@"exact resolution", ^{
 
   it(@"should return nil when no 4:2:0 full-range format available at exact resolution", ^{
     formats = @[
-      CAMAVCaptureDeviceFormatMock('420v', 300, 400),
-      CAMAVCaptureDeviceFormatMock('420v', 600, 400),
-      CAMAVCaptureDeviceFormatMock('yuvf', 600, 400),
-      CAMAVCaptureDeviceFormatMock('420v', 300, 1000),
-      CAMAVCaptureDeviceFormatMock('420v', 700, 400)
+      [CAMFakeAVCaptureDeviceFormat formatWithSubtype:'420v' width:300 height:400],
+      [CAMFakeAVCaptureDeviceFormat formatWithSubtype:'420v' width:600 height:400],
+      [CAMFakeAVCaptureDeviceFormat formatWithSubtype:'yuvf' width:600 height:400],
+      [CAMFakeAVCaptureDeviceFormat formatWithSubtype:'420v' width:300 height:1000],
+      [CAMFakeAVCaptureDeviceFormat formatWithSubtype:'420v' width:700 height:400]
     ];
 
     AVCaptureDeviceFormat *format = [formatStrategy formatFrom:formats];
@@ -158,14 +150,14 @@ context(@"exact resolution", ^{
 
   it(@"should return nil when no exact resolution format available at full-range", ^{
     formats = @[
-      CAMAVCaptureDeviceFormatMock('420f', 300, 400),
-      CAMAVCaptureDeviceFormatMock('420v', 300, 400),
-      CAMAVCaptureDeviceFormatMock('420v', 600, 400),
-      CAMAVCaptureDeviceFormatMock('yuvf', 600, 400),
-      CAMAVCaptureDeviceFormatMock('420f', 300, 1000),
-      CAMAVCaptureDeviceFormatMock('420v', 300, 1000),
-      CAMAVCaptureDeviceFormatMock('420f', 700, 400),
-      CAMAVCaptureDeviceFormatMock('420v', 700, 400)
+      [CAMFakeAVCaptureDeviceFormat formatWithSubtype:'420f' width:300 height:400],
+      [CAMFakeAVCaptureDeviceFormat formatWithSubtype:'420v' width:300 height:400],
+      [CAMFakeAVCaptureDeviceFormat formatWithSubtype:'420v' width:600 height:400],
+      [CAMFakeAVCaptureDeviceFormat formatWithSubtype:'yuvf' width:600 height:400],
+      [CAMFakeAVCaptureDeviceFormat formatWithSubtype:'420f' width:300 height:1000],
+      [CAMFakeAVCaptureDeviceFormat formatWithSubtype:'420v' width:300 height:1000],
+      [CAMFakeAVCaptureDeviceFormat formatWithSubtype:'420f' width:700 height:400],
+      [CAMFakeAVCaptureDeviceFormat formatWithSubtype:'420v' width:700 height:400]
     ];
 
     AVCaptureDeviceFormat *format = [formatStrategy formatFrom:formats];
@@ -174,14 +166,14 @@ context(@"exact resolution", ^{
 
   it(@"should return first match when multiple matches", ^{
     formats = @[
-      CAMAVCaptureDeviceFormatMock('420f', 300, 400),
-      CAMAVCaptureDeviceFormatMock('420f', 600, 400),
-      CAMAVCaptureDeviceFormatMock('420f', 600, 400),
-      CAMAVCaptureDeviceFormatMock('420f', 600, 400),
-      CAMAVCaptureDeviceFormatMock('420v', 600, 400),
-      CAMAVCaptureDeviceFormatMock('yuvf', 600, 400),
-      CAMAVCaptureDeviceFormatMock('420f', 700, 400),
-      CAMAVCaptureDeviceFormatMock('420v', 700, 400)
+      [CAMFakeAVCaptureDeviceFormat formatWithSubtype:'420f' width:300 height:400],
+      [CAMFakeAVCaptureDeviceFormat formatWithSubtype:'420f' width:600 height:400],
+      [CAMFakeAVCaptureDeviceFormat formatWithSubtype:'420f' width:600 height:400],
+      [CAMFakeAVCaptureDeviceFormat formatWithSubtype:'420f' width:600 height:400],
+      [CAMFakeAVCaptureDeviceFormat formatWithSubtype:'420v' width:600 height:400],
+      [CAMFakeAVCaptureDeviceFormat formatWithSubtype:'yuvf' width:600 height:400],
+      [CAMFakeAVCaptureDeviceFormat formatWithSubtype:'420f' width:700 height:400],
+      [CAMFakeAVCaptureDeviceFormat formatWithSubtype:'420v' width:700 height:400]
     ];
 
     AVCaptureDeviceFormat *format = [formatStrategy formatFrom:formats];
