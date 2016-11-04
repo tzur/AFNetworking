@@ -318,6 +318,7 @@ NS_ASSUME_NONNULL_BEGIN
     return NO;
   }
   session.stillOutput.outputSettings = preset.pixelFormat.videoSettings;
+  session.stillOutput.highResolutionStillImageOutputEnabled = YES;
 
   if (preset.enableAudio) {
     AVCaptureDevice *device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeAudio];

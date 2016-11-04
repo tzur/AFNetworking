@@ -515,6 +515,17 @@ context(@"factory", ^{
     OCMVerify([session setupVideoOutputWithError:[OCMArg anyObjectRef]]);
   });
 
+  it(@"should configure video output", ^{
+    OCMStub([session setupVideoInputWithDevice:OCMOCK_ANY formatStrategy:OCMOCK_ANY
+                                         error:[OCMArg setTo:nil]]).andReturn(YES);
+    OCMStub([session setupVideoOutputWithError:[OCMArg setTo:nil]]).andReturn(YES);
+    id videoOutput = OCMClassMock([AVCaptureVideoDataOutput class]);
+    OCMStub([session videoOutput]).andReturn(videoOutput);
+
+    [factory configureSession:session withPreset:preset error:&error];
+    OCMVerify([videoOutput setVideoSettings:OCMOCK_ANY]);
+  });
+
   it(@"should create still output", ^{
     OCMStub([session setupVideoInputWithDevice:OCMOCK_ANY formatStrategy:OCMOCK_ANY
                                          error:[OCMArg setTo:nil]]).andReturn(YES);
@@ -522,6 +533,19 @@ context(@"factory", ^{
 
     [factory configureSession:session withPreset:preset error:&error];
     OCMVerify([session setupStillOutputWithError:[OCMArg anyObjectRef]]);
+  });
+
+  it(@"should configure still output", ^{
+    OCMStub([session setupVideoInputWithDevice:OCMOCK_ANY formatStrategy:OCMOCK_ANY
+                                         error:[OCMArg setTo:nil]]).andReturn(YES);
+    OCMStub([session setupVideoOutputWithError:[OCMArg setTo:nil]]).andReturn(YES);
+    OCMStub([session setupStillOutputWithError:[OCMArg setTo:nil]]).andReturn(YES);
+    id stillOutput = OCMClassMock([AVCaptureStillImageOutput class]);
+    OCMStub([session stillOutput]).andReturn(stillOutput);
+
+    [factory configureSession:session withPreset:preset error:&error];
+    OCMVerify([stillOutput setOutputSettings:OCMOCK_ANY]);
+    OCMVerify([stillOutput setHighResolutionStillImageOutputEnabled:YES]);
   });
 
   it(@"should create audio input", ^{
