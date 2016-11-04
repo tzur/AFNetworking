@@ -62,6 +62,8 @@
 		83893A581D12C827002B64B4 /* CAMFakeAVCaptureDevice.mm in Sources */ = {isa = PBXBuildFile; fileRef = 83893A571D12C827002B64B4 /* CAMFakeAVCaptureDevice.mm */; };
 		8395AE6B1CFDCA3C00C91C9E /* AVCaptureDevice+Configure.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8395AE6A1CFDCA3C00C91C9E /* AVCaptureDevice+Configure.mm */; };
 		8395AE6F1CFDCA4E00C91C9E /* AVCaptureDevice+ConfigureSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8395AE6E1CFDCA4E00C91C9E /* AVCaptureDevice+ConfigureSpec.mm */; };
+		83ACD9C41DCA4523008342F9 /* AVCaptureDeviceFormat+MediaProperties.mm in Sources */ = {isa = PBXBuildFile; fileRef = 83ACD9C31DCA4523008342F9 /* AVCaptureDeviceFormat+MediaProperties.mm */; };
+		83ACD9E91DCA453F008342F9 /* AVCaptureDeviceFormat+MediaPropertiesSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 83ACD9E81DCA453F008342F9 /* AVCaptureDeviceFormat+MediaPropertiesSpec.mm */; };
 		83B72D351CDA421C0090C0BF /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83B72D191CDA3F1E0090C0BF /* opencv2.framework */; };
 		83B7304A1CDB56770090C0BF /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83B730491CDB56770090C0BF /* AVFoundation.framework */; };
 		83B730661CDB567B0090C0BF /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83B730651CDB567B0090C0BF /* AssetsLibrary.framework */; };
@@ -517,6 +519,9 @@
 		8395AE691CFDCA3C00C91C9E /* AVCaptureDevice+Configure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AVCaptureDevice+Configure.h"; sourceTree = "<group>"; };
 		8395AE6A1CFDCA3C00C91C9E /* AVCaptureDevice+Configure.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "AVCaptureDevice+Configure.mm"; sourceTree = "<group>"; };
 		8395AE6E1CFDCA4E00C91C9E /* AVCaptureDevice+ConfigureSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "AVCaptureDevice+ConfigureSpec.mm"; sourceTree = "<group>"; };
+		83ACD9C21DCA4523008342F9 /* AVCaptureDeviceFormat+MediaProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AVCaptureDeviceFormat+MediaProperties.h"; sourceTree = "<group>"; };
+		83ACD9C31DCA4523008342F9 /* AVCaptureDeviceFormat+MediaProperties.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "AVCaptureDeviceFormat+MediaProperties.mm"; sourceTree = "<group>"; };
+		83ACD9E81DCA453F008342F9 /* AVCaptureDeviceFormat+MediaPropertiesSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "AVCaptureDeviceFormat+MediaPropertiesSpec.mm"; sourceTree = "<group>"; };
 		83B72CC61CDA3E5E0090C0BF /* LTEngine.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LTEngine.xcodeproj; path = ../LTEngine/LTEngine.xcodeproj; sourceTree = "<group>"; };
 		83B72D191CDA3F1E0090C0BF /* opencv2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = opencv2.framework; path = ../third_party/opencv/opencv2.framework; sourceTree = "<group>"; };
 		83B730491CDB56770090C0BF /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
@@ -944,6 +949,8 @@
 			children = (
 				8395AE691CFDCA3C00C91C9E /* AVCaptureDevice+Configure.h */,
 				8395AE6A1CFDCA3C00C91C9E /* AVCaptureDevice+Configure.mm */,
+				83ACD9C21DCA4523008342F9 /* AVCaptureDeviceFormat+MediaProperties.h */,
+				83ACD9C31DCA4523008342F9 /* AVCaptureDeviceFormat+MediaProperties.mm */,
 				BE6375E61D8691A4004F3710 /* CAMDeviceLocation.h */,
 				BE6375E71D8691A4004F3710 /* CAMDeviceLocation.mm */,
 				BED6927C1D32310300061BB5 /* CAMDeviceOrientation.h */,
@@ -973,6 +980,7 @@
 			isa = PBXGroup;
 			children = (
 				8395AE6E1CFDCA4E00C91C9E /* AVCaptureDevice+ConfigureSpec.mm */,
+				83ACD9E81DCA453F008342F9 /* AVCaptureDeviceFormat+MediaPropertiesSpec.mm */,
 				BE63760C1D869C81004F3710 /* CAMDeviceLocationSpec.mm */,
 				BED6929C1D32311000061BB5 /* CAMDeviceOrientationSpec.mm */,
 				BE66B2A01D882511004D99B2 /* CAMSampleBufferMetadataUtilsSpec.mm */,
@@ -1488,6 +1496,7 @@
 			files = (
 				BE6375E81D8691A4004F3710 /* CAMDeviceLocation.mm in Sources */,
 				06C02EFC1D19389200745557 /* CAMExposureMap.fsh in Sources */,
+				83ACD9C41DCA4523008342F9 /* AVCaptureDeviceFormat+MediaProperties.mm in Sources */,
 				BE84C54E1D463BB10098DC1D /* CAMSampleTimingInfo.mm in Sources */,
 				8355479F1D783E1D00F65398 /* CAMBlankDevice.mm in Sources */,
 				06C02EFB1D19387900745557 /* CAMExposureMapProcessor.mm in Sources */,
@@ -1531,6 +1540,7 @@
 				06C02F711D195CB300745557 /* LTSpectaOpenGLContextHook.mm in Sources */,
 				8D01BCAEC8899C79F2710F04 /* CAMDevicePresetSpec.mm in Sources */,
 				8352059E1D2A5B2700000EEC /* EXPMatchers+deliverValuesOnThread.m in Sources */,
+				83ACD9E91DCA453F008342F9 /* AVCaptureDeviceFormat+MediaPropertiesSpec.mm in Sources */,
 				BEEDB2351D91B09F00406926 /* UIDevice+CameraMakeSpec.mm in Sources */,
 				06C02F791D1970D100745557 /* EXPMatchers+beCloseToMat.mm in Sources */,
 				835205A61D2A5B2700000EEC /* EXPMatchers+sendValues.m in Sources */,
