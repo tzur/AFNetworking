@@ -40,8 +40,15 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly, nonatomic) NSDictionary<NSString *, NSArray<id<PTNDescriptor>> *>
     *assetCollectionsRemovedFromAlbumRequests;
 
+/// Mapping of assets added to an album in the form <localIdentifier, added assets>.
+@property (readonly, nonatomic) NSDictionary<NSString *, NSArray<id<PTNDescriptor>> *>
+    *assetsAddedToAlbumRequests;
+
 /// Current assets favorited by the manager.
 @property (readonly, nonatomic) NSArray *favoriteAssets;
+
+/// Titles of the asset collections requested to be created by the manager.
+@property (readonly, nonatomic) NSArray *assetCollectionCreationRequests;
 
 /// Success value retuned at the change request completion block.
 @property (nonatomic) BOOL success;

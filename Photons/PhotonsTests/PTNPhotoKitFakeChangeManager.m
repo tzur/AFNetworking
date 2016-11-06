@@ -30,8 +30,14 @@ NS_ASSUME_NONNULL_BEGIN
 /// Assets collections removed from an album.
 @property (readonly, nonatomic) NSMutableDictionary *assetCollectionsRemovedFromAlbum;
 
+/// Assets added to an album.
+@property (readonly, nonatomic) NSMutableDictionary *assetsAddedToAlbum;
+
 /// Current assets favorited by the manager.
 @property (readonly, nonatomic) NSMutableArray *mutableFavoriteAssets;
+
+/// Titles of asset colllections requested to be created by the manager.
+@property (readonly, nonatomic) NSMutableArray *assetsCollectionsCreated;
 
 @end
 
@@ -45,7 +51,9 @@ NS_ASSUME_NONNULL_BEGIN
     _collectionListsDeleted = [NSMutableArray array];
     _assetsRemovedFromAlbum = [NSMutableDictionary dictionary];
     _assetCollectionsRemovedFromAlbum = [NSMutableDictionary dictionary];
+    _assetsAddedToAlbum = [NSMutableDictionary dictionary];
     _mutableFavoriteAssets = [NSMutableArray array];
+    _assetsCollectionsCreated = [NSMutableArray array];
     self.inChangeBlock = YES;
     self.success = YES;
   }
@@ -76,8 +84,16 @@ NS_ASSUME_NONNULL_BEGIN
   return [self.assetCollectionsRemovedFromAlbum copy];
 }
 
+- (NSDictionary *)assetsAddedToAlbumRequests {
+  return [self.assetsAddedToAlbum copy];
+}
+
 - (NSArray *)favoriteAssets {
   return [self.mutableFavoriteAssets copy];
+}
+
+- (NSArray *)assetCollectionCreationRequests {
+  return [self.assetsCollectionsCreated copy];
 }
 
 #pragma mark -
@@ -94,6 +110,12 @@ NS_ASSUME_NONNULL_BEGIN
   
   [self.assetsCreated addObject:fileURL];
   return self.changeRequest;
+}
+
+- (void)creationRequestForAssetCollectionWithTitle:(NSString *)title {
+  LTAssert(!self.inChangeBlock, @"Attempting to create album with title %@ not within a change "
+           "block", title);
+  [self.assetsCollectionsCreated addObject:title];
 }
 
 #pragma mark -
@@ -152,6 +174,17 @@ NS_ASSUME_NONNULL_BEGIN
   } else {
     [self.mutableFavoriteAssets removeObject:asset];
   }
+}
+
+#pragma mark -
+#pragma mark Addition
+#pragma mark -
+
+- (void)addAssets:(id<NSFastEnumeration>)assets
+    toAssetCollection:(PHAssetCollection *)assetCollection {
+  LTAssert(!self.inChangeBlock, @"Attempting to add assets: %@ to collection: %@ "
+           "not within a change block", assets, assetCollection);
+  self.assetsAddedToAlbum[assetCollection.localIdentifier] = assets;
 }
 
 #pragma mark -

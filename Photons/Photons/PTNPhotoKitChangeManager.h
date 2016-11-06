@@ -3,7 +3,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class PHAsset, PHAssetChangeRequest, PHAssetCollection, PHCollectionList, PHFetchResult;
+@class PHAsset, PHAssetChangeRequest, PHAssetCollection, PHAssetCollectionChangeRequest,
+    PHCollectionList, PHFetchResult;
 
 /// Protocol for changing PhotoKit entities in the shared \c PHPhotoLibrary.
 @protocol PTNPhotoKitChangeManager <NSObject>
@@ -38,6 +39,12 @@ typedef void (^PTNChangeRequestCompletionBlock)(BOOL success, NSError * _Nullabl
 - (void)removeAssets:(id<NSFastEnumeration>)assets
  fromAssetCollection:(PHAssetCollection *)assetCollection;
 
+/// Requests that the specified \c assets be added to \c assetCollection. Call this method  within a
+/// photo library change block to add assets to a collection. For details on change blocks, see the
+/// \c PTNPhotoKitChangeManager protocol.
+- (void)addAssets:(id<NSFastEnumeration>)assets
+    toAssetCollection:(PHAssetCollection *)assetCollection;
+
 /// Requests that the specified \c collections be removed from \c collectionList. Call this method
 /// within a photo library change block to delete assets. For details on change blocks, see the
 /// \c PTNPhotoKitChangeManager protocol.
@@ -48,6 +55,11 @@ typedef void (^PTNChangeRequestCompletionBlock)(BOOL success, NSError * _Nullabl
 /// a photo library change block. For details on change blocks, see the \c PTNPhotoKitChangeManager
 /// protocol.
 - (void)favoriteAsset:(PHAsset *)asset favorite:(BOOL)favorite;
+
+/// Requests that an asset collection with given \c title be added to the Photos library. Call this
+/// method within a photo library change block. For details on change blocks, see the \c
+/// PTNPhotoKitChangeManager protocol.
+- (void)creationRequestForAssetCollectionWithTitle:(NSString *)title;
 
 /// Asynchronously runs a block that requests changes to be performed in the Photos library. Photos
 /// executes both the change block and the completion handler block on an arbitrary serial queue. To

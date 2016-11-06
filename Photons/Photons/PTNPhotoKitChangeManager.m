@@ -39,9 +39,20 @@ NS_ASSUME_NONNULL_BEGIN
   [request removeChildCollections:collections];
 }
 
+- (void)addAssets:(id<NSFastEnumeration>)assets
+    toAssetCollection:(PHAssetCollection *)assetCollection {
+  PHAssetCollectionChangeRequest *request = [PHAssetCollectionChangeRequest
+                                             changeRequestForAssetCollection:assetCollection];
+  [request addAssets:assets];
+}
+
 - (void)favoriteAsset:(PHAsset *)asset favorite:(BOOL)favorite {
   PHAssetChangeRequest *request = [PHAssetChangeRequest changeRequestForAsset:asset];
   request.favorite = favorite;
+}
+
+- (void)creationRequestForAssetCollectionWithTitle:(NSString *)title {
+  [PHAssetCollectionChangeRequest creationRequestForAssetCollectionWithTitle:title];
 }
 
 - (void)performChanges:(dispatch_block_t)changeBlock
