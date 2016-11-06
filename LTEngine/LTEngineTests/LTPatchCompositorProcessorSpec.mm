@@ -23,7 +23,7 @@ context(@"initialization", ^{
     output = [LTTexture byteRGBATextureWithSize:CGSizeMake(4, 4)];
   });
 
-  it(@"should initialize with correcly sized textures", ^{
+  it(@"should initialize with correctly sized textures", ^{
     expect(^{
       __unused LTPatchCompositorProcessor *processor = [[LTPatchCompositorProcessor alloc]
                                                         initWithSource:source target:target
@@ -60,7 +60,6 @@ context(@"initialization", ^{
 });
 
 context(@"processing", ^{
-
   __block LTTexture *mask;
   __block LTTexture *source;
   __block LTTexture *target;
