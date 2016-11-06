@@ -25,7 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// Returns a strategy for selecting a \c 420f format with the given resolution.
 ///
 /// @see kCVPixelFormatType_420YpCbCr8BiPlanarFullRange.
-+ (id<CAMFormatStrategy>)exact420fWidth:(int32_t)width height:(int32_t)height;
++ (id<CAMFormatStrategy>)exact420fWidth:(NSUInteger)width height:(NSUInteger)height;
 
 @end
 
@@ -45,13 +45,13 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)init NS_UNAVAILABLE;
 
 /// Initializes an instance with the given resolution to look for.
-- (instancetype)initWithWidth:(int32_t)width height:(int32_t)height NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithWidth:(NSUInteger)width height:(NSUInteger)height NS_DESIGNATED_INITIALIZER;
 
 /// Exact width to look for.
-@property (readonly, nonatomic) int32_t width;
+@property (readonly, nonatomic) NSUInteger width;
 
 /// Exact height to look for.
-@property (readonly, nonatomic) int32_t height;
+@property (readonly, nonatomic) NSUInteger height;
 
 @end
 

@@ -7,6 +7,7 @@
 
 #import "CAMDevicePreset.h"
 #import "CAMFakeAVCaptureDevice.h"
+#import "CAMFakeAVCaptureDeviceFormat.h"
 #import "CAMHardwareSession.h"
 #import "CAMTestUtils.h"
 #import "CAMVideoFrame.h"
@@ -28,16 +29,6 @@
 @property (readwrite, nonatomic, nullable) AVCaptureDeviceInput *audioInput;
 @property (readwrite, nonatomic, nullable) AVCaptureAudioDataOutput *audioOutput;
 @property (readwrite, nonatomic, nullable) AVCaptureConnection *audioConnection;
-@end
-
-@interface CAMFakeAVCaptureDeviceFormat : AVCaptureDeviceFormat
-@property (nonatomic) CGFloat videoMaxZoomFactorToReturn;
-@end
-
-@implementation CAMFakeAVCaptureDeviceFormat
-- (CGFloat)videoMaxZoomFactor {
-  return self.videoMaxZoomFactorToReturn;
-}
 @end
 
 SpecBegin(CAMHardwareDevice)
