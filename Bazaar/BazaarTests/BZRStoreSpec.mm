@@ -263,7 +263,20 @@ context(@"downloaded products", ^{
 });
 
 context(@"purchasing products", ^{
+  it(@"should send error when product list is empty", ^{
+    OCMStub([productsProvider fetchProductList]).andReturn([RACSignal empty]);
+    expect([store purchaseProduct:productIdentifier]).will.matchError(^BOOL(NSError *error) {
+      return error.lt_isLTDomain && error.code == BZRErrorCodeInvalidProductIdentifer;
+    });
+  });
+
   it(@"should send error when product doesn't exist", ^{
+    NSArray<BZRProduct *> *productList = @[
+      BZRProductWithIdentifier(@"bar"),
+      BZRProductWithIdentifier(@"baz")
+    ];
+
+    OCMStub([productsProvider fetchProductList]).andReturn([RACSignal return:productList]);
     expect([store purchaseProduct:productIdentifier]).will.matchError(^BOOL(NSError *error) {
       return error.lt_isLTDomain && error.code == BZRErrorCodeInvalidProductIdentifer;
     });
@@ -477,9 +490,13 @@ context(@"refreshing receipt", ^{
 });
 
 context(@"getting product list", ^{
-  it(@"should call fetch product list and fetch metadata only once", ^{
-    BZRProduct *product = BZRProductWithIdentifier(productIdentifier);
-    BZRStubProductDictionaryToReturnProduct(product, productsProvider, storeKitFacade);
+  __block BZRProduct *product;
+
+  beforeEach(^{
+    product = BZRProductWithIdentifier(productIdentifier);
+  });
+
+  it(@"should prefetch product list on initialization", ^{
     OCMExpect([productsProvider fetchProductList]).andReturn([RACSignal return:@[product]]);
     SKProductsResponse *response = BZRProductsResponseWithProduct(product.identifier);
     OCMExpect([storeKitFacade fetchMetadataForProductsWithIdentifiers:OCMOCK_ANY])
@@ -487,57 +504,98 @@ context(@"getting product list", ^{
 
     store = [[BZRStore alloc] initWithConfiguration:configuration];
 
-    LLSignalTestRecorder *recorder = [[store productList] testRecorder];
-    expect(recorder).will.complete();
-    recorder = [[store productList] testRecorder];
-    expect(recorder).will.complete();
-
-    OCMVerify([productsProvider fetchProductList]);
-    OCMVerify([storeKitFacade fetchMetadataForProductsWithIdentifiers:
-               [NSSet setWithObject:productIdentifier]]);
+    OCMVerifyAll((id)productsProvider);
+    OCMVerifyAll((id)storeKitFacade);
   });
 
-  it(@"should send empty set even when facade sends products", ^{
-    OCMStub([productsProvider fetchProductList]).andReturn([RACSignal return:@[]]);
-    SKProductsResponse *response = BZRProductsResponseWithProduct(productIdentifier);
-    OCMStub([storeKitFacade fetchMetadataForProductsWithIdentifiers:OCMOCK_ANY])
-        .andReturn([RACSignal return:response]);
+  it(@"should cache the fetched product list", ^{
+    BZRStubProductDictionaryToReturnProduct(product, productsProvider, storeKitFacade);
     store = [[BZRStore alloc] initWithConfiguration:configuration];
 
+    OCMReject([productsProvider fetchProductList]);
+    OCMReject([storeKitFacade fetchMetadataForProductsWithIdentifiers:OCMOCK_ANY]);
+    LLSignalTestRecorder *recorder = [[store productList] testRecorder];
+
+    expect(recorder).to.complete();
+  });
+
+  it(@"should refetch product list if an error occured during prefetch", ^{
+    NSError *error = [NSError lt_errorWithCode:1337];
+    OCMExpect([productsProvider fetchProductList]).andReturn([RACSignal error:error]);
+    store = [[BZRStore alloc] initWithConfiguration:configuration];
+
+    BZRStubProductDictionaryToReturnProduct(product, productsProvider, storeKitFacade);
     LLSignalTestRecorder *recorder = [[store productList] testRecorder];
 
     expect(recorder).will.complete();
-    expect(recorder).will.sendValues(@[[NSSet set]]);
+    expect(recorder).will.matchValue(0, ^BOOL(NSSet<BZRProduct *> *productList) {
+      return productList.count == 1 &&
+          [[[[productList allObjects] firstObject] identifier] isEqualToString:product.identifier];
+    });
+    OCMVerifyAll((id)productsProvider);
+    OCMVerifyAll((id)storeKitFacade);
   });
 
   it(@"should send error when failed to fetch product list", ^{
-    NSError *underlyingError = [NSError lt_errorWithCode:1337];
-    OCMStub([productsProvider fetchProductList]).andReturn([RACSignal error:underlyingError]);
-    SKProductsResponse *response = BZRProductsResponseWithProduct(productIdentifier);
-    OCMStub([storeKitFacade fetchMetadataForProductsWithIdentifiers:OCMOCK_ANY])
-        .andReturn([RACSignal return:response]);
-    store = [[BZRStore alloc] initWithConfiguration:configuration];
+    NSError *error = [NSError lt_errorWithCode:1337];
+    OCMStub([productsProvider fetchProductList]).andReturn([RACSignal error:error]);
 
+    store = [[BZRStore alloc] initWithConfiguration:configuration];
     LLSignalTestRecorder *recorder = [[store productList] testRecorder];
 
-    expect(recorder).will.matchError(^BOOL(NSError *error) {
-      return error.lt_isLTDomain && error.code == BZRErrorCodeFetchingProductListFailed &&
-          error.lt_underlyingError == underlyingError;
-    });
+    expect(recorder).will.sendError(error);
+  });
+
+  it(@"should dealloc when all strong references are relinquished", ^{
+    BZRStore * __weak weakStore;
+    NSError *error = [NSError lt_errorWithCode:1337];
+    OCMExpect([productsProvider fetchProductList]).andReturn([RACSignal error:error]);
+
+    RACSignal *productListSignal;
+    @autoreleasepool {
+      BZRStore *store = [[BZRStore alloc] initWithConfiguration:configuration];
+      weakStore = store;
+      expect([store errorsSignal]).will.matchValue(0, ^BOOL(NSError *error) {
+        return error.lt_isLTDomain && error.code == BZRErrorCodeFetchingProductListFailed;
+      });
+
+      OCMExpect([productsProvider fetchProductList]).andReturn([RACSignal return:@[product]]);
+      SKProductsResponse *response = BZRProductsResponseWithProduct(productIdentifier);
+      OCMStub([storeKitFacade fetchMetadataForProductsWithIdentifiers:OCMOCK_ANY])
+          .andReturn([RACSignal return:response]);
+
+      productListSignal = [store productList];
+    }
+    expect(weakStore).to.beNil();
   });
 
   it(@"should send error when failed to fetch products metadata", ^{
-    OCMStub([productsProvider fetchProductList]).andReturn([RACSignal return:@[]]);
-    NSError *underlyingError = [NSError lt_errorWithCode:1337];
+    OCMStub([productsProvider fetchProductList]).andReturn([RACSignal return:@[product]]);
+    NSError *error = [NSError lt_errorWithCode:1337];
     OCMStub([storeKitFacade fetchMetadataForProductsWithIdentifiers:OCMOCK_ANY])
-        .andReturn([RACSignal error:underlyingError]);
-    store = [[BZRStore alloc] initWithConfiguration:configuration];
+        .andReturn([RACSignal error:error]);
 
+    store = [[BZRStore alloc] initWithConfiguration:configuration];
     LLSignalTestRecorder *recorder = [[store productList] testRecorder];
 
-    expect(recorder).will.matchError(^BOOL(NSError *error) {
-      return error.lt_isLTDomain && error.code == BZRErrorCodeFetchingProductListFailed &&
-          error.lt_underlyingError == underlyingError;
+    expect(recorder).will.sendError(error);
+  });
+
+  it(@"should send error if product list contains some invalid product identifers", ^{
+    OCMStub([productsProvider fetchProductList]).andReturn([RACSignal return:@[product]]);
+
+    SKProductsResponse *response = OCMClassMock([SKProductsResponse class]);
+    OCMStub([response products]).andReturn(@[]);
+    OCMStub([response invalidProductIdentifiers]).andReturn(@[product.identifier]);
+    OCMStub([storeKitFacade fetchMetadataForProductsWithIdentifiers:OCMOCK_ANY])
+        .andReturn([RACSignal return:response]);
+
+    store = [[BZRStore alloc] initWithConfiguration:configuration];
+    LLSignalTestRecorder *recorder = [store.errorsSignal testRecorder];
+
+    expect(recorder).will.matchValue(0, ^BOOL(NSError *error) {
+      return error.lt_isLTDomain && error.code == BZRErrorCodeInvalidProductIdentifer &&
+          [error.bzr_productIdentifiers isEqual:[NSSet setWithObject:product.identifier]];
     });
   });
 
@@ -554,16 +612,12 @@ context(@"getting product list", ^{
     it(@"should not fetch metadata for subscribers only products", ^{
       OCMStub([productsProvider fetchProductList])
           .andReturn([RACSignal return:@[subscribersOnlyProduct]]);
+      OCMReject([storeKitFacade fetchMetadataForProductsWithIdentifiers:OCMOCK_ANY]);
 
-      SKProductsResponse *response = OCMClassMock([SKProductsResponse class]);
-      OCMStub([response products]).andReturn(@[]);
-      OCMExpect([storeKitFacade fetchMetadataForProductsWithIdentifiers:[NSSet set]])
-          .andReturn([RACSignal return:response]);
       store = [[BZRStore alloc] initWithConfiguration:configuration];
+      LLSignalTestRecorder *recorder = [[store productList] testRecorder];
 
-      expect([store productList]).will.complete();
-
-      OCMVerifyAll((id)storeKitFacade);
+      expect(recorder).will.complete();
     });
 
     it(@"should merge subscribers only products with products with price info", ^{
@@ -643,19 +697,6 @@ context(@"getting product list", ^{
 
       expect(recorder).will.complete();
       expect(recorder).will.sendValues(@[[NSSet set]]);
-    });
-
-    it(@"should dealloc when all strong references are relinquished", ^{
-      BZRStore * __weak weak_store;
-      SKProductsResponse *response = BZRProductsResponseWithProduct(productIdentifier);
-      OCMStub([storeKitFacade fetchMetadataForProductsWithIdentifiers:OCMOCK_ANY])
-          .andReturn([RACSignal return:response]);
-
-      @autoreleasepool {
-        BZRStore *store = [[BZRStore alloc] initWithConfiguration:configuration];
-        weak_store = store;
-      }
-      expect(weak_store).to.beNil();
     });
   });
 
@@ -828,7 +869,7 @@ context(@"handling unfinished transactions", ^{
 });
 
 context(@"errors signal", ^{
-  it(@"should completed when object is deallocated", ^{
+  it(@"should complete when object is deallocated", ^{
     BZRStore * __weak weakStore;
     RACSignal *errorsSignal;
 

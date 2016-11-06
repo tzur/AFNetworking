@@ -26,8 +26,11 @@ NS_ASSUME_NONNULL_BEGIN
 /// Maps product identifiers to products.
 typedef NSDictionary<NSString *, BZRProduct *> BZRProductDictionary;
 
+/// Collection of \c BZRProducts.
+typedef NSArray<BZRProduct *> BZRProductList;
+
 /// Collection of classified \c BZRProduct.
-typedef NSDictionary<id, NSArray<BZRProduct *> *> BZRClassifiedProducts;
+typedef NSDictionary<id, BZRProductList *> BZRClassifiedProducts;
 
 @interface BZRStore ()
 
@@ -62,7 +65,10 @@ typedef NSDictionary<id, NSArray<BZRProduct *> *> BZRClassifiedProducts;
 @property (readonly, nonatomic) RACSubject *completedTransactionsSubject;
 
 /// Dictionary that maps fetched product identifier to \c BZRProduct.
-@property (strong, nonatomic, nullable) NSDictionary<NSString *, BZRProduct *> *productDictionary;
+@property (strong, atomic, nullable) NSDictionary<NSString *, BZRProduct *> *productDictionary;
+
+/// Flag indicating whether product dictionary fetch is currently in progress or not.
+@property (atomic) BOOL productDictionaryFetchInProgress;
 
 /// Set of products with downloaded content.
 @property (strong, nonatomic) NSSet<NSString *> *downloadedContentProducts;
@@ -71,6 +77,8 @@ typedef NSDictionary<id, NSArray<BZRProduct *> *> BZRClassifiedProducts;
 
 @implementation BZRStore
 
+@synthesize productDictionary = _productDictionary;
+@synthesize productDictionaryFetchInProgress = _productDictionaryFetchInProgress;
 @synthesize completedTransactionsSignal = _completedTransactionsSignal;
 
 #pragma mark -
@@ -90,7 +98,7 @@ typedef NSDictionary<id, NSArray<BZRProduct *> *> BZRClassifiedProducts;
     [self initializeCompletedTransactionsSignal];
     [self initializeErrorsSignal];
     [self initializeStoreKitFacade:configuration.storeKitFacadeFactory];
-    [self fetchProductDictionary];
+    [self prefetchProductDictionary];
   }
   return self;
 }
@@ -171,51 +179,129 @@ typedef NSDictionary<id, NSArray<BZRProduct *> *> BZRClassifiedProducts;
       [factory storeKitFacadeWithUnfinishedTransactionsSubject:unfinishedTransactionsSubject];
 }
 
-- (void)fetchProductDictionary {
-  NSNumber * const kAppStoreProducts = @1;
-  NSNumber * const kNonAppStoreProducts = @0;
-
+- (void)prefetchProductDictionary {
   @weakify(self);
-  RACSignal *fetchProductDictionarySignal = [[[self.productsProvider fetchProductList]
-      map:^BZRProductDictionary *(NSArray<BZRProduct *> *productList) {
-        return [NSDictionary dictionaryWithObjects:productList
-                forKeys:[productList valueForKey:@instanceKeypath(BZRProduct, identifier)]];
-      }]
-      flattenMap:^RACStream *(BZRProductDictionary *productDictionary) {
+  [[self fetchProductDictionary]
+      subscribeNext:^(BZRProductDictionary * _Nullable productDictionary) {
         @strongify(self);
-        BZRClassifiedProducts *classifiedProducts =
-            [[productDictionary allValues] lt_classify:^NSNumber *(BZRProduct *product) {
-              return product.isSubscribersOnly ? kNonAppStoreProducts : kAppStoreProducts;
-            }];
-        NSSet<NSString *> *appStoreProducts =
-            [NSSet setWithArray:[classifiedProducts[kAppStoreProducts]
-             valueForKey:@instanceKeypath(BZRProduct, identifier)]];
-
-        return [[[self.storeKitFacade fetchMetadataForProductsWithIdentifiers:appStoreProducts]
-            map:^BZRProductDictionary *(SKProductsResponse *productsResponse) {
-              return [self productDictionary:productDictionary
-                      withPriceInfoAndProductFromProductsResponse:productsResponse];
-            }]
-            map:^BZRProductDictionary *(BZRProductDictionary *appStoreProducts) {
-              return [self appStoreProducts:appStoreProducts
-              mergedWithNonAppStoreProducts:classifiedProducts[kNonAppStoreProducts]];
-            }];
+        self.productDictionary = productDictionary;
+      } error:^(NSError *underlyingError) {
+        @strongify(self);
+        NSError *error = [NSError lt_errorWithCode:BZRErrorCodeFetchingProductListFailed
+                                   underlyingError:underlyingError];
+        [self.errorsSubject sendNext:error];
       }];
-  [fetchProductDictionarySignal subscribeNext:^(BZRProductDictionary *productDictionary) {
-    @strongify(self);
-    self.productDictionary = productDictionary;
+}
+
+- (nullable BZRProductDictionary *)productDictionary {
+  @synchronized(self) {
+    return _productDictionary;
+  }
+}
+
+- (void)setProductDictionary:(nullable NSDictionary<NSString *,BZRProduct *> *)productDictionary {
+  @synchronized(self) {
+    _productDictionary = productDictionary;
+
     self.downloadedContentProducts =
-        [self downloadedContentProductsWithDictionary:productDictionary];
-  } error:^(NSError *error) {
+        [NSSet setWithArray:[[productDictionary.allValues lt_filter:^BOOL(BZRProduct *product) {
+          return !product.contentFetcherParameters ||
+              [self pathToContentOfProduct:product.identifier];
+        }] valueForKey:@instanceKeypath(BZRProduct, identifier)]];
+  }
+}
+
+#pragma mark -
+#pragma mark Fetching Product List
+#pragma mark -
+
+- (RACSignal *)fetchProductDictionary {
+  @weakify(self);
+  return [[[RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
     @strongify(self);
-    NSError *fetchProductListError =
-        [NSError lt_errorWithCode:BZRErrorCodeFetchingProductListFailed underlyingError:error];
-    [self.errorsSubject sendNext:fetchProductListError];
+    self.productDictionaryFetchInProgress = YES;
+    return [[self fetchProductDictionaryInternal] subscribe:subscriber];
+  }] doError:^(NSError *) {
+    @strongify(self);
+    self.productDictionaryFetchInProgress = NO;
+  }] doCompleted:^{
+    @strongify(self);
+    self.productDictionaryFetchInProgress = NO;
   }];
 }
 
+/// Label used to mark AppStore products in a \c BZRClassifiedProducts.
+static NSNumber * const kAppStoreProductsLabel = @1;
+
+/// Label used to mark non AppStore products in a \c BZRClassifiedProducts.
+static NSNumber * const kNonAppStoreProductsLabel = @0;
+
+- (RACSignal *)fetchProductDictionaryInternal {
+  @weakify(self);
+  return [[[self.productsProvider fetchProductList]
+      map:^BZRClassifiedProducts *(BZRProductList *productList) {
+        return [productList lt_classify:^NSNumber *(BZRProduct * product) {
+              return product.isSubscribersOnly ? kNonAppStoreProductsLabel : kAppStoreProductsLabel;
+            }];
+      }]
+      flattenMap:^RACStream *(BZRClassifiedProducts *classifiedProducts) {
+        @strongify(self);
+        RACSignal *appStoreProductsMapper =
+            [self appStoreProductsDictionary:classifiedProducts[kAppStoreProductsLabel]];
+        RACSignal *nonAppStoreProductsMapper =
+            [self nonAppStoreProductsDictionary:classifiedProducts[kNonAppStoreProductsLabel]];
+        return [[RACSignal
+            zip:@[appStoreProductsMapper, nonAppStoreProductsMapper]]
+            map:^BZRProductDictionary *(RACTuple *productDictionaries) {
+              return [self mergeProductDictionaries:productDictionaries.allObjects];
+            }];
+      }];
+}
+
+- (BOOL)productDictionaryFetchInProgress {
+  @synchronized(self) {
+    return _productDictionaryFetchInProgress;
+  }
+}
+
+- (void)setProductDictionaryFetchInProgress:(BOOL)productDictionaryFetchInProgress {
+  @synchronized(self) {
+    _productDictionaryFetchInProgress = productDictionaryFetchInProgress;
+  }
+}
+
+- (RACSignal *)appStoreProductsDictionary:(BZRProductList *)products {
+  // If the given product list is empty avoid StoreKit overhead and return a signal that delivers an
+  // empty dictionary. Returning an empty signal is not good cause the returned signal is zipped
+  // with another signal and we don't want to lose the values from the other signal.
+  if (!products.count) {
+    return [RACSignal return:@{}];
+  }
+  
+  NSArray<NSString *> *identifiers =
+      [products valueForKey:@instanceKeypath(BZRProduct, identifier)];
+  @weakify(self);
+  return [[[self.storeKitFacade
+      fetchMetadataForProductsWithIdentifiers:[NSSet setWithArray:identifiers]]
+      doNext:^(SKProductsResponse *response) {
+        @strongify(self);
+        if (response.invalidProductIdentifiers.count) {
+          NSSet<NSString *> *productIdentifiers =
+              [NSSet setWithArray:response.invalidProductIdentifiers];
+          NSError *error = [NSError bzr_invalidProductsErrorWithIdentifers:productIdentifiers];
+          [self.errorsSubject sendNext:error];
+        }
+      }]
+      map:^BZRProductDictionary *(SKProductsResponse *response) {
+        @strongify(self);
+        BZRProductDictionary *productDictionary = [NSDictionary dictionaryWithObjects:products
+                                                                              forKeys:identifiers];
+        return [self productDictionary:productDictionary withMetadataFromProductsResponse:response];
+      }];
+}
+
 - (BZRProductDictionary *)productDictionary:(BZRProductDictionary *)productDictionary
-withPriceInfoAndProductFromProductsResponse:(SKProductsResponse *)productsResponse {
+           withMetadataFromProductsResponse:(SKProductsResponse *)productsResponse {
   return [productsResponse.products lt_reduce:^NSMutableDictionary<NSString *, BZRProduct *> *
           (NSMutableDictionary<NSString *, BZRProduct *> *value, SKProduct *product) {
     BZRProduct *bazaarProduct = productDictionary[product.productIdentifier];
@@ -228,19 +314,18 @@ withPriceInfoAndProductFromProductsResponse:(SKProductsResponse *)productsRespon
   } initial:[@{} mutableCopy]];
 }
 
-- (BZRProductDictionary *)appStoreProducts:(BZRProductDictionary *)appStoreProducts
-             mergedWithNonAppStoreProducts:(NSArray<BZRProduct *> *)nonAppStoreProducts {
-  return [appStoreProducts mtl_dictionaryByAddingEntriesFromDictionary:
-          [NSDictionary dictionaryWithObjects:nonAppStoreProducts forKeys:
-           [nonAppStoreProducts valueForKey:@instanceKeypath(BZRProduct, identifier)]]];
+- (RACSignal *)nonAppStoreProductsDictionary:(BZRProductList *)products {
+  NSArray<NSString *> *identifiers =
+      [products valueForKey:@instanceKeypath(BZRProduct, identifier)];
+  return [RACSignal return:[NSDictionary dictionaryWithObjects:products forKeys:identifiers]];
 }
 
-- (NSSet<NSString *> *)downloadedContentProductsWithDictionary:
-    (BZRProductDictionary *)productDictionary {
-  return [NSSet setWithArray:[[productDictionary.allValues lt_filter:^BOOL(BZRProduct *product) {
-    return !product.contentFetcherParameters ||
-    [self pathToContentOfProduct:product.identifier];
-  }] valueForKey:@instanceKeypath(BZRProduct, identifier)]];
+- (BZRProductDictionary *)mergeProductDictionaries:(NSArray<BZRProductDictionary *> *)dictionaries {
+  return [dictionaries
+      lt_reduce:^BZRProductDictionary *(BZRProductDictionary *mergedDictionary,
+                                        BZRProductDictionary *dictionary) {
+        return [mergedDictionary mtl_dictionaryByAddingEntriesFromDictionary:dictionary];
+      } initial:@{}];
 }
 
 #pragma mark -
@@ -386,21 +471,37 @@ withPriceInfoAndProductFromProductsResponse:(SKProductsResponse *)productsRespon
 }
 
 - (RACSignal *)productList {
-  RACSignal *fetchProductListErrorsSignal = [[self.errorsSignal filter:^BOOL(NSError *error) {
-    return error.code == BZRErrorCodeFetchingProductListFailed;
-  }]
-  flattenMap:^RACStream *(NSError *error) {
-    return [RACSignal error:error];
-  }];
-  RACSignal *productListSignal = [[RACObserve(self, productDictionary)
-      ignore:nil]
-      map:^NSSet<BZRProduct *> *(BZRProductDictionary *productDictionary) {
-        return [NSSet setWithArray:[productDictionary allValues]];
-      }];
-
-  return [[[RACSignal merge:@[productListSignal, fetchProductListErrorsSignal]]
+  @weakify(self);
+  return [[[RACObserve(self, productDictionaryFetchInProgress)
+      ignore:@YES]
       take:1]
-      setNameWithFormat:@"%@ -productList", self];
+      flattenMap:^RACStream *(NSNumber *) {
+        @strongify(self);
+        return self.productDictionary ? [self prefetchedProductListSignal] :
+            [self refetchProductListSignal];
+      }];
+}
+
+- (RACSignal *)prefetchedProductListSignal {
+  return [RACSignal return:[NSSet setWithArray:self.productDictionary.allValues]];
+}
+
+- (RACSignal *)refetchProductListSignal {
+  @weakify(self);
+  return [[[[self fetchProductDictionary]
+      doNext:^(BZRProductDictionary *productDictionary) {
+        @strongify(self);
+        self.productDictionary = productDictionary;
+      }]
+      doError:^(NSError *underlyingError) {
+        @strongify(self);
+        NSError *error = [NSError lt_errorWithCode:BZRErrorCodeFetchingProductListFailed
+                                   underlyingError:underlyingError];
+        [self.errorsSubject sendNext:error];
+      }]
+      map:^NSSet<BZRProduct *> *(BZRProductDictionary *productDictionary) {
+        return [NSSet setWithArray:productDictionary.allValues];
+      }];
 }
 
 #pragma mark -

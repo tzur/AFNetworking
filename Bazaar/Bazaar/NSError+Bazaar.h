@@ -31,6 +31,11 @@ NS_ASSUME_NONNULL_BEGIN
 /// \c transaction.
 + (instancetype)bzr_errorWithCode:(NSInteger)code transaction:(SKPaymentTransaction *)transaction;
 
+/// Creates and returns an instance of \c NSError with \c domain set to \c LTErrorDomain, \c code
+/// set to \c BZRErrorCodeInvalidProductIdentifier and \c bzr_productIdentifiers set to the given
+/// \c productIdentifiers.
++ (instancetype)bzr_invalidProductsErrorWithIdentifers:(NSSet<NSString *> *)productIdentifiers;
+
 /// Exception object wrapped by this error.
 @property (readonly, nonatomic, nullable) NSException *bzr_exception;
 
@@ -45,6 +50,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Failed transaction wrapped by this error.
 @property (readonly, nonatomic, nullable) SKPaymentTransaction *bzr_transaction;
+
+/// Invalid product identifiers related to the error.
+@property (readonly, nonatomic, nullable) NSSet<NSString *> *bzr_productIdentifiers;
 
 @end
 
