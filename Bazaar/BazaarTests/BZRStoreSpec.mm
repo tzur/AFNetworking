@@ -1030,6 +1030,25 @@ context(@"KVO-compliance", ^{
       ]);
     });
   });
+
+  context(@"receipt validation status", ^{
+    it(@"should update when receipt validation status is changed", ^{
+      RACSignal *receiptValidationStatusSignal =
+          [RACObserve(store, receiptValidationStatus) testRecorder];
+      BZRReceiptValidationStatus *activeSubscriptionStatus =
+          BZRReceiptValidationStatusWithExpiry(NO);
+      BZRReceiptValidationStatus *inactiveSubscriptionStatus =
+          BZRReceiptValidationStatusWithInAppPurchaseAndExpiry(@"foo", YES);
+      validationStatusProvider.receiptValidationStatus = activeSubscriptionStatus;
+      validationStatusProvider.receiptValidationStatus = inactiveSubscriptionStatus;
+
+      expect(receiptValidationStatusSignal).to.sendValues(@[
+        [NSNull null],
+        activeSubscriptionStatus,
+        inactiveSubscriptionStatus
+      ]);
+    });
+  });
 });
 
 SpecEnd
