@@ -7,6 +7,10 @@ const int kModeRGBToYIQ = 2;
 const int kModeYIQToRGB = 3;
 const int kModeRGBToYYYY = 4;
 
+// Factors to rescale and offset all YIQ channels to [0, 1] range.
+const highp vec3 kRGB2YIQScaleFactor = vec3(1.0, 1.0 / (2.0 * 0.595716), 1.0 / (2.0 * 0.522591));
+const highp vec3 kRGB2YIQBiasFactor = vec3(0.0, 0.5, 0.5);
+
 uniform sampler2D sourceTexture;
 
 uniform int mode;
@@ -16,6 +20,7 @@ varying highp vec2 vTexcoord;
 // This cryptic code of the rgb <--> hsv conversion is inspired by:
 // http://stackoverflow.com/questions/15095909/from-rgb-to-hsv-in-opengl-glsl
 // Main point is to avoid ifs using swizzling and steps.
+/// See: https://en.wikipedia.org/wiki/YIQ for RGB <--> YIQ conversion values.
 
 mediump vec3 RGBToHSV(mediump vec3 rgb) {
   mediump float eps = 1.0e-5;
@@ -37,16 +42,16 @@ mediump vec3 HSVToRGB(mediump vec3 hsv) {
 mediump vec3 RGBToYIQ(mediump vec3 rgb) {
   const highp mat3 m = mat3(0.299, 0.595716, 0.211456,
                             0.587, -0.274453, -0.522591,
-                            0.144, -0.321263, 0.311135);
+                            0.114, -0.321263, 0.311135);
 
-  return m * rgb;
+  return (m * rgb) * kRGB2YIQScaleFactor + kRGB2YIQBiasFactor;
 }
 
 mediump vec3 YIQToRGB(mediump vec3 yiq) {
   const highp mat3 m = mat3(1, 1, 1,
                             0.9563, -0.2721, -1.1070,
                             0.6210, -0.6474, 1.7046);
-  return m * yiq;
+  return m * ((yiq - kRGB2YIQBiasFactor) / kRGB2YIQScaleFactor);
 }
 
 void main() {

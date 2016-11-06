@@ -23,7 +23,7 @@ afterEach(^{
   processor = nil;
 });
 
-context(@"rgb to hsv", ^{
+context(@"RGB to HSV", ^{
   beforeEach(^{
     processor.mode = LTColorConversionRGBToHSV;
   });
@@ -33,7 +33,7 @@ context(@"rgb to hsv", ^{
     [processor process];
 
     cv::Mat4b expected(1, 1, cv::Vec4b(0, 0, 64, 255));
-    expect($(outputTexture.image)).to.beCloseToMat($(expected));
+    expect($([outputTexture image])).to.equalMat($(expected));
   });
 
   it(@"should convert red correctly", ^{
@@ -41,7 +41,7 @@ context(@"rgb to hsv", ^{
     [processor process];
 
     cv::Mat4b expected(1, 1, cv::Vec4b(0, 255, 255, 255));
-    expect($(outputTexture.image)).to.beCloseToMat($(expected));
+    expect($([outputTexture image])).to.equalMat($(expected));
   });
 
   it(@"should convert green correctly", ^{
@@ -49,7 +49,7 @@ context(@"rgb to hsv", ^{
     [processor process];
 
     cv::Mat4b expected(1, 1, cv::Vec4b(85, 255, 255, 255));
-    expect($(outputTexture.image)).to.beCloseToMat($(expected));
+    expect($([outputTexture image])).to.equalMat($(expected));
   });
 
   it(@"should convert blue correctly", ^{
@@ -57,11 +57,11 @@ context(@"rgb to hsv", ^{
     [processor process];
 
     cv::Mat4b expected(1, 1, cv::Vec4b(170, 255, 255, 255));
-    expect($(outputTexture.image)).to.beCloseToMat($(expected));
+    expect($([outputTexture image])).to.equalMat($(expected));
   });
 });
 
-context(@"hsv to rgb", ^{
+context(@"HSV to RGB", ^{
   beforeEach(^{
     processor.mode = LTColorConversionHSVToRGB;
   });
@@ -71,7 +71,7 @@ context(@"hsv to rgb", ^{
     [processor process];
 
     cv::Mat4b expected(1, 1, cv::Vec4b(64, 64, 64, 255));
-    expect($(outputTexture.image)).to.beCloseToMat($(expected));
+    expect($([outputTexture image])).to.equalMat($(expected));
   });
 
   it(@"should convert to red correctly", ^{
@@ -79,7 +79,7 @@ context(@"hsv to rgb", ^{
     [processor process];
 
     cv::Mat4b expected(1, 1, cv::Vec4b(255, 0, 0, 255));
-    expect($(outputTexture.image)).to.beCloseToMat($(expected));
+    expect($([outputTexture image])).to.equalMat($(expected));
   });
 
   it(@"should convert to green correctly", ^{
@@ -87,7 +87,7 @@ context(@"hsv to rgb", ^{
     [processor process];
 
     cv::Mat4b expected(1, 1, cv::Vec4b(0, 255, 0, 255));
-    expect($(outputTexture.image)).to.beCloseToMat($(expected));
+    expect($([outputTexture image])).to.equalMat($(expected));
   });
 
   it(@"should convert to blue correctly", ^{
@@ -95,11 +95,11 @@ context(@"hsv to rgb", ^{
     [processor process];
 
     cv::Mat4b expected(1, 1, cv::Vec4b(0, 0, 255, 255));
-    expect($(outputTexture.image)).to.beCloseToMat($(expected));
+    expect($([outputTexture image])).to.equalMat($(expected));
   });
 });
 
-context(@"rgb to yiq", ^{
+context(@"RGB to YIQ", ^{
   beforeEach(^{
     processor.mode = LTColorConversionRGBToYIQ;
   });
@@ -108,42 +108,42 @@ context(@"rgb to yiq", ^{
     [inputTexture load:cv::Mat4b(1, 1, cv::Vec4b(64, 64, 64, 255))];
     [processor process];
 
-    cv::Mat4b expected(1, 1, cv::Vec4b(66, 0, 0, 255));
-    expect($(outputTexture.image)).to.beCloseToMat($(expected));
+    cv::Mat4b expected(1, 1, cv::Vec4b(64, 128, 128, 255));
+    expect($([outputTexture image])).to.equalMat($(expected));
   });
 
   it(@"should convert red", ^{
     [inputTexture load:cv::Mat4b(1, 1, cv::Vec4b(255, 0, 0, 255))];
     [processor process];
 
-    cv::Mat4b expected(1, 1, cv::Vec4b(76, 152, 54, 255));
-    expect($(outputTexture.image)).to.beCloseToMat($(expected));
+    cv::Mat4b expected(1, 1, cv::Vec4b(76, 255, 179, 255));
+    expect($([outputTexture image])).to.equalMat($(expected));
   });
 });
 
-context(@"yiq to rgb", ^{
+context(@"YIQ to RGB", ^{
   beforeEach(^{
     processor.mode = LTColorConversionYIQToRGB;
   });
 
   it(@"should convert to grey", ^{
-    [inputTexture load:cv::Mat4b(1, 1, cv::Vec4b(64, 0, 0, 255))];
+    [inputTexture load:cv::Mat4b(1, 1, cv::Vec4b(64, 128, 128, 255))];
     [processor process];
 
     cv::Mat4b expected(1, 1, cv::Vec4b(64, 64, 64, 255));
-    expect($(outputTexture.image)).to.beCloseToMat($(expected));
+    expect($([outputTexture image])).to.beCloseToMat($(expected));
   });
 
   it(@"should convert to red", ^{
-    [inputTexture load:cv::Mat4b(1, 1, cv::Vec4b(76, 152, 54, 255))];
+    [inputTexture load:cv::Mat4b(1, 1, cv::Vec4b(76, 255, 179, 255))];
     [processor process];
 
     cv::Mat4b expected(1, 1, cv::Vec4b(255, 0, 0, 255));
-    expect($(outputTexture.image)).to.beCloseToMat($(expected));
+    expect($([outputTexture image])).to.equalMat($(expected));
   });
 });
 
-context(@"rgb to yyyy", ^{
+context(@"RGB to yyyy", ^{
   beforeEach(^{
     processor.mode = LTColorConversionRGBToYYYY;
   });
@@ -152,8 +152,51 @@ context(@"rgb to yyyy", ^{
     [inputTexture load:cv::Mat4b(1, 1, cv::Vec4b(64, 64, 64, 255))];
     [processor process];
 
-    cv::Mat4b expected(1, 1, cv::Vec4b(66, 66, 66, 66));
-    expect($(outputTexture.image)).to.beCloseToMat($(expected));
+    cv::Mat4b expected(1, 1, cv::Vec4b(64, 64, 64, 64));
+    expect($([outputTexture image])).to.equalMat($(expected));
+  });
+});
+
+context(@"check color space round trip conversion", ^{
+  __block std::vector<cv::Vec4b> testColors;
+  
+  before(^{
+    testColors.push_back(cv::Vec4b(0, 0, 0, 0));
+    testColors.push_back(cv::Vec4b(0, 0, 0, 255));
+    testColors.push_back(cv::Vec4b(255, 0, 0, 255));
+    testColors.push_back(cv::Vec4b(0, 255, 0, 255));
+    testColors.push_back(cv::Vec4b(0, 0, 255, 255));
+    testColors.push_back(cv::Vec4b(255, 255, 255, 255));
+  });
+  
+  it(@"should convert RGB to YIQ and back correctly", ^{
+    for (cv::Vec4b initialColor : testColors) {
+      [inputTexture load:cv::Mat4b(1, 1, initialColor)];
+      processor.mode = LTColorConversionRGBToYIQ;
+      [processor process];
+
+      [outputTexture cloneTo:inputTexture];
+      processor.mode = LTColorConversionYIQToRGB;
+      [processor process];
+      
+      cv::Mat4b expected(1, 1, initialColor);
+      expect($([outputTexture image])).to.beCloseToMat($(expected));
+    }
+  });
+  
+  it(@"should convert RGB to HSV and back correctly", ^{
+    for (cv::Vec4b initialColor : testColors) {
+      [inputTexture load:cv::Mat4b(1, 1, initialColor)];
+      processor.mode = LTColorConversionRGBToHSV;
+      [processor process];
+
+      [outputTexture cloneTo:inputTexture];
+      processor.mode = LTColorConversionHSVToRGB;
+      [processor process];
+      
+      cv::Mat4b expected(1, 1, initialColor);
+      expect($([outputTexture image])).to.equalMat($(expected));
+    }
   });
 });
 
