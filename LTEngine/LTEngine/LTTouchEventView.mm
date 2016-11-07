@@ -229,9 +229,21 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (LTTouchEvents *)touchEventsForMainTouch:(UITouch *)mainTouch
-                            withSequenceID:(NSUInteger)sequenceID
-                                   inEvent:(UIEvent __unused *)event {
-  return @[[LTTouchEvent touchEventWithPropertiesOfTouch:mainTouch sequenceID:sequenceID]];
+                            withSequenceID:(NSUInteger)sequenceID inEvent:(UIEvent *)event {
+  if (![event respondsToSelector:@selector(coalescedTouchesForTouch:)]) {
+    return @[[LTTouchEvent touchEventWithPropertiesOfTouch:mainTouch sequenceID:sequenceID]];
+  }
+
+  // Note that, according to Apple's documentation, one is supposed to use either main touches or
+  // coalesced touches. Never should one mix them. Hence, the coalesced touches "include the main
+  // touch" in the form of a separate instance and the main touch itself can be ignored when working
+  // with coalesced touches.
+  //
+  // @see https://developer.apple.com/videos/play/wwdc2015-233/ for more details.
+
+  NSArray<UITouch *> *sortedCoalescedTouches =
+      [self sortedTouches:[event coalescedTouchesForTouch:mainTouch]];
+  return [self touchEventsForTouches:sortedCoalescedTouches withSequenceID:sequenceID];
 }
 
 - (LTTouchEvents *)touchEventsForTouches:(NSArray<UITouch *> *)touches
