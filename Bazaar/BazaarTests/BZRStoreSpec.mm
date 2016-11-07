@@ -439,40 +439,158 @@ context(@"deleting product content", ^{
 });
 
 context(@"refreshing receipt", ^{
-  beforeEach(^{
-    OCMExpect([receiptValidationStatusProvider fetchReceiptValidationStatus])
-        .andReturn([RACSignal empty]);
-    OCMExpect([storeKitFacade restoreCompletedTransactions]).andReturn([RACSignal empty]);
+  static NSString * const kTransactionRestorationSharedExamples =
+      @"TransactionRestorationSharedExamples";
+
+  sharedExamplesFor(kTransactionRestorationSharedExamples, ^(NSDictionary *) {
+    context(@"transaction restoration", ^{
+      beforeEach(^{
+        OCMStub([receiptValidationStatusProvider fetchReceiptValidationStatus])
+            .andReturn([RACSignal empty]);
+      });
+
+      it(@"should use StoreKit to restore completed transactions", ^{
+        OCMExpect([storeKitFacade restoreCompletedTransactions]).andReturn([RACSignal empty]);
+
+        expect([store refreshReceipt]).will.complete();
+        OCMVerifyAll((id)storeKitFacade);
+      });
+
+      it(@"should filter out transaction values", ^{
+        OCMStub([storeKitFacade restoreCompletedTransactions])
+            .andReturn([RACSignal return:OCMClassMock([SKPaymentTransaction class])]);
+
+        LLSignalTestRecorder *recorder = [[store refreshReceipt] testRecorder];
+
+        expect(recorder).will.complete();
+        expect(recorder).to.sendValuesWithCount(0);
+      });
+
+      it(@"should finish restored transactions", ^{
+        NSArray<SKPaymentTransaction *> *transactions = @[
+          OCMClassMock([SKPaymentTransaction class]),
+          OCMClassMock([SKPaymentTransaction class])
+        ];
+        OCMStub([storeKitFacade restoreCompletedTransactions])
+            .andReturn(transactions.rac_sequence.signal);
+
+        OCMExpect([storeKitFacade finishTransaction:transactions[0]]);
+        OCMExpect([storeKitFacade finishTransaction:transactions[1]]);
+
+        LLSignalTestRecorder *recorder = [[store refreshReceipt] testRecorder];
+
+        expect(recorder).will.complete();
+        OCMVerifyAll((id)storeKitFacade);
+      });
+
+      it(@"should err if transaction restoration errs", ^{
+        NSError *error = [NSError lt_errorWithCode:1337];
+        OCMStub([storeKitFacade restoreCompletedTransactions]).andReturn([RACSignal error:error]);
+
+        LLSignalTestRecorder *recorder = [[store refreshReceipt] testRecorder];
+        
+        expect(recorder).will.sendError(error);
+      });
+    });
+
+    context(@"receipt validation", ^{
+      __block BZRReceiptValidationStatus *receiptValidationStatus;
+
+      beforeEach(^{
+        OCMStub([storeKitFacade restoreCompletedTransactions]).andReturn([RACSignal empty]);
+        receiptValidationStatus = OCMClassMock([BZRReceiptValidationStatus class]);
+      });
+
+      it(@"should validate the receipt if restoration completed successfully", ^{
+        OCMExpect([receiptValidationStatusProvider fetchReceiptValidationStatus])
+            .andReturn([RACSignal return:receiptValidationStatus]);
+
+        expect([store refreshReceipt]).will.complete();
+        OCMVerifyAll((id)receiptValidationStatusProvider);
+      });
+
+      it(@"should filter out receipt validation status values", ^{
+        OCMStub([receiptValidationStatusProvider fetchReceiptValidationStatus])
+            .andReturn([RACSignal return:receiptValidationStatus]);
+
+        LLSignalTestRecorder *recorder = [[store refreshReceipt] testRecorder];
+
+        expect(recorder).will.complete();
+        expect(recorder).to.sendValuesWithCount(0);
+      });
+
+      it(@"should err if receipt validation failed", ^{
+        NSError *error = [NSError lt_errorWithCode:1337];
+        OCMStub([receiptValidationStatusProvider fetchReceiptValidationStatus])
+            .andReturn([RACSignal error:error]);
+
+        LLSignalTestRecorder *recorder = [[store refreshReceipt] testRecorder];
+        
+        expect(recorder).will.sendError(error);
+      });
+    });
   });
 
-  it(@"should call store kit facade if receipt URL is nil", ^{
-    OCMStub([storeKitFacade refreshReceipt]).andReturn([RACSignal empty]);
+  context(@"receipt file is not available", ^{
+    context(@"refreshing receipt", ^{
+      beforeEach(^{
+        OCMStub([storeKitFacade restoreCompletedTransactions]).andReturn([RACSignal empty]);
+        OCMStub([receiptValidationStatusProvider fetchReceiptValidationStatus])
+            .andReturn([RACSignal empty]);
+      });
 
-    expect([store refreshReceipt]).will.complete();
-    OCMVerify([storeKitFacade refreshReceipt]);
-    OCMVerify([receiptValidationStatusProvider fetchReceiptValidationStatus]);
-    OCMVerify([storeKitFacade restoreCompletedTransactions]);
+      it(@"should use StoreKit to refresh the receipt if the receipt URL is nil", ^{
+        OCMExpect([storeKitFacade refreshReceipt]).andReturn([RACSignal empty]);
+
+        expect([store refreshReceipt]).will.complete();
+        OCMVerifyAll((id)storeKitFacade);
+      });
+
+      it(@"should use StoreKit to refresh the receipt if the receipt file does not exist", ^{
+        OCMStub([bundle appStoreReceiptURL]).andReturn([NSURL URLWithString:@"/foo"]);
+        OCMStub([fileManager fileExistsAtPath:@"/foo"]).andReturn(NO);
+        OCMExpect([storeKitFacade refreshReceipt]).andReturn([RACSignal empty]);
+
+        expect([store refreshReceipt]).will.complete();
+        OCMVerifyAll((id)storeKitFacade);
+      });
+
+      it(@"should err if receipt refreshing failed", ^{
+        NSError *error = [NSError lt_errorWithCode:1337];
+        OCMStub([storeKitFacade refreshReceipt]).andReturn([RACSignal error:error]);
+
+        expect([store refreshReceipt]).will.sendError(error);
+      });
+    });
+
+    context(@"transaction restoration", ^{
+      beforeEach(^{
+        OCMStub([storeKitFacade refreshReceipt]).andReturn([RACSignal empty]);
+      });
+
+      itShouldBehaveLike(kTransactionRestorationSharedExamples, @{});
+    });
   });
 
-  it(@"should call store kit facade if receipt file doesn't exist", ^{
-    OCMStub([bundle appStoreReceiptURL]).andReturn([NSURL URLWithString:@"/foo"]);
-    OCMStub([fileManager fileExistsAtPath:OCMOCK_ANY]).andReturn(NO);
-    OCMStub([storeKitFacade refreshReceipt]).andReturn([RACSignal empty]);
+  context(@"receipt file is available", ^{
+    beforeEach(^{
+      OCMStub([bundle appStoreReceiptURL]).andReturn([NSURL URLWithString:@"/foo"]);
+      OCMStub([fileManager fileExistsAtPath:@"/foo"]).andReturn(YES);
+    });
 
-    expect([store refreshReceipt]).will.complete();
-    OCMVerify([storeKitFacade refreshReceipt]);
-    OCMVerify([receiptValidationStatusProvider fetchReceiptValidationStatus]);
-    OCMVerify([storeKitFacade restoreCompletedTransactions]);
-  });
+    context(@"refreshing receipt", ^{
+      it(@"should not use StoreKit to refresh the receipt if the receipt file exists", ^{
+        OCMStub([storeKitFacade restoreCompletedTransactions]).andReturn([RACSignal empty]);
+        OCMStub([receiptValidationStatusProvider fetchReceiptValidationStatus])
+            .andReturn([RACSignal empty]);
+        OCMReject([storeKitFacade refreshReceipt]);
+        expect([store refreshReceipt]).will.complete();
+      });
+    });
 
-  it(@"should not call store kit facade if receipt already exists", ^{
-    OCMStub([bundle appStoreReceiptURL]).andReturn([NSURL URLWithString:@"/foo"]);
-    OCMStub([fileManager fileExistsAtPath:OCMOCK_ANY]).andReturn(YES);
-    OCMReject([storeKitFacade refreshReceipt]);
-
-    expect([store refreshReceipt]).will.complete();
-    OCMVerify([receiptValidationStatusProvider fetchReceiptValidationStatus]);
-    OCMVerify([storeKitFacade restoreCompletedTransactions]);
+    context(@"transaction restoration", ^{
+      itShouldBehaveLike(kTransactionRestorationSharedExamples, @{});
+    });
   });
 });
 
