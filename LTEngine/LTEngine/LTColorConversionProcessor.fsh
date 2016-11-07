@@ -6,6 +6,7 @@ const int kModeRGB2HSV = 1;
 const int kModeRGBToYIQ = 2;
 const int kModeYIQToRGB = 3;
 const int kModeRGBToYYYY = 4;
+const int kModeBGRToRGB = 5;
 
 // Factors to rescale and offset all YIQ channels to [0, 1] range.
 const highp vec3 kRGB2YIQScaleFactor = vec3(1.0, 1.0 / (2.0 * 0.595716), 1.0 / (2.0 * 0.522591));
@@ -67,5 +68,7 @@ void main() {
     gl_FragColor = vec4(YIQToRGB(color.rgb), color.a);
   } else if (mode == kModeRGBToYYYY) {
     gl_FragColor = vec4(RGBToYIQ(color.rgb).r);
+  } else if (mode == kModeBGRToRGB) {
+    gl_FragColor = color.bgra;
   }
 }

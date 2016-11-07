@@ -9,6 +9,7 @@ typedef NS_ENUM(NSUInteger, LTColorConversionMode) {
   LTColorConversionRGBToYIQ = 2,
   LTColorConversionYIQToRGB = 3,
   LTColorConversionRGBToYYYY = 4,
+  LTColorConversionBGRToRGB = 5,
 };
 
 /// Converts from one colorspace to another.

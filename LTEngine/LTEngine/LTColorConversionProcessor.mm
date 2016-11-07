@@ -10,10 +10,10 @@
 @implementation LTColorConversionProcessor
 
 - (instancetype)initWithInput:(LTTexture *)input output:(LTTexture *)output {
-  return self =  [super initWithVertexSource:[LTPassthroughShaderVsh source]
-                              fragmentSource:[LTColorConversionProcessorFsh source]
-                                       input:input
-                                   andOutput:output];
+  return self = [super initWithVertexSource:[LTPassthroughShaderVsh source]
+                             fragmentSource:[LTColorConversionProcessorFsh source]
+                                      input:input
+                                  andOutput:output];
 }
 
 - (void)setMode:(LTColorConversionMode)mode {

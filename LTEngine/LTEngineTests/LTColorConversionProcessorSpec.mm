@@ -121,6 +121,28 @@ context(@"RGB to YIQ", ^{
   });
 });
 
+context(@"BGR to RGB", ^{
+  beforeEach(^{
+    processor.mode = LTColorConversionBGRToRGB;
+  });
+
+  it(@"should convert grey", ^{
+    [inputTexture load:cv::Mat4b(1, 1, cv::Vec4b(64, 64, 64, 255))];
+    [processor process];
+
+    cv::Mat4b expected(1, 1, cv::Vec4b(64, 64, 64, 255));
+    expect($([outputTexture image])).to.equalMat($(expected));
+  });
+
+  it(@"should convert color correctly", ^{
+    [inputTexture load:cv::Mat4b(1, 1, cv::Vec4b(12, 187, 39, 255))];
+    [processor process];
+
+    cv::Mat4b expected(1, 1, cv::Vec4b(39, 187, 12, 255));
+    expect($([outputTexture image])).to.equalMat($(expected));
+  });
+});
+
 context(@"YIQ to RGB", ^{
   beforeEach(^{
     processor.mode = LTColorConversionYIQToRGB;
@@ -194,6 +216,21 @@ context(@"check color space round trip conversion", ^{
       processor.mode = LTColorConversionHSVToRGB;
       [processor process];
       
+      cv::Mat4b expected(1, 1, initialColor);
+      expect($([outputTexture image])).to.equalMat($(expected));
+    }
+  });
+
+  it(@"should convert RGB to BGR and back correctly", ^{
+    for (cv::Vec4b initialColor : testColors) {
+      [inputTexture load:cv::Mat4b(1, 1, initialColor)];
+      processor.mode = LTColorConversionBGRToRGB;
+      [processor process];
+
+      [outputTexture cloneTo:inputTexture];
+      processor.mode = LTColorConversionBGRToRGB;
+      [processor process];
+
       cv::Mat4b expected(1, 1, initialColor);
       expect($([outputTexture image])).to.equalMat($(expected));
     }
