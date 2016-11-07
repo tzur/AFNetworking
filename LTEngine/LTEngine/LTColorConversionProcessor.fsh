@@ -7,12 +7,15 @@ const int kModeRGBToYIQ = 2;
 const int kModeYIQToRGB = 3;
 const int kModeRGBToYYYY = 4;
 const int kModeBGRToRGB = 5;
+const int kModeYCbCrFullRangeToRGB = 6;
+const int kModeYCbCrVideoRangeToRGB = 7;
 
 // Factors to rescale and offset all YIQ channels to [0, 1] range.
 const highp vec3 kRGB2YIQScaleFactor = vec3(1.0, 1.0 / (2.0 * 0.595716), 1.0 / (2.0 * 0.522591));
 const highp vec3 kRGB2YIQBiasFactor = vec3(0.0, 0.5, 0.5);
 
 uniform sampler2D sourceTexture;
+uniform sampler2D auxiliaryTexture;
 
 uniform int mode;
 
@@ -55,6 +58,23 @@ mediump vec3 YIQToRGB(mediump vec3 yiq) {
   return m * ((yiq - kRGB2YIQBiasFactor) / kRGB2YIQScaleFactor);
 }
 
+mediump vec3 YCbCrFullRangeToRGB(mediump vec3 yCbCr) {
+  // Full range YCbCr to RGB, ITU-R BT.601. See http://www.equasys.de/colorconversion.html
+  const highp mat3 m = mat3(1, 1, 1,
+                            0, -0.343, 1.765,
+                            1.4, -0.711, 0);
+  return m * (yCbCr - vec3(0.0, 0.5, 0.5));
+}
+
+mediump vec3 YCbCrVideoRangeToRGB(mediump vec3 yCbCr) {
+  // Video range YCbCr to RGB, ITU-R BT.601. See
+  // https://en.wikipedia.org/wiki/YCbCr#ITU-R_BT.601_conversion
+  const highp mat3 m = mat3(1.1644, 1.1644, 1.1644,
+                            0, -0.3918, 2.0172,
+                            1.596, -0.813, 0);
+  return m * (yCbCr - vec3(0.0625, 0.5, 0.5));
+}
+
 void main() {
   lowp vec4 color = texture2D(sourceTexture, vTexcoord);
 
@@ -70,5 +90,11 @@ void main() {
     gl_FragColor = vec4(RGBToYIQ(color.rgb).r);
   } else if (mode == kModeBGRToRGB) {
     gl_FragColor = color.bgra;
+  } else if (mode == kModeYCbCrFullRangeToRGB) {
+    lowp vec4 cbCrColor = texture2D(auxiliaryTexture, vTexcoord);
+    gl_FragColor = vec4(YCbCrFullRangeToRGB(vec3(color.r, cbCrColor.rg)), 1.0);
+  } else if (mode == kModeYCbCrVideoRangeToRGB) {
+    lowp vec4 cbCrColor = texture2D(auxiliaryTexture, vTexcoord);
+    gl_FragColor = vec4(YCbCrVideoRangeToRGB(vec3(color.r, cbCrColor.rg)), 1.0);
   }
 }

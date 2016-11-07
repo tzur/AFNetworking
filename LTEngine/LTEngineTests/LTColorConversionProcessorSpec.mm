@@ -20,6 +20,8 @@ beforeEach(^{
 });
 
 afterEach(^{
+  inputTexture = nil;
+  outputTexture = nil;
   processor = nil;
 });
 
@@ -179,9 +181,73 @@ context(@"RGB to yyyy", ^{
   });
 });
 
+context(@"YCbCr full range to RGB", ^{
+  __block LTTexture *auxiliaryTexture;
+
+  beforeEach(^{
+    auxiliaryTexture = [LTTexture textureWithPropertiesOf:inputTexture];
+    processor = [[LTColorConversionProcessor alloc] initWithInput:inputTexture
+                                                   auxiliaryInput:auxiliaryTexture
+                                                           output:outputTexture];
+    processor.mode = LTColorConversionYCbCrFullRangeToRGB;
+  });
+
+  afterEach(^{
+    auxiliaryTexture = nil;
+  });
+
+  it(@"should convert grey", ^{
+    [inputTexture load:cv::Mat4b(1, 1, cv::Vec4b(64, 1, 2, 3))];
+    [auxiliaryTexture load:cv::Mat4b(1, 1, cv::Vec4b(128, 128, 4, 5))];
+    [processor process];
+
+    cv::Mat4b expected(1, 1, cv::Vec4b(64, 64, 64, 255));
+    expect($([outputTexture image])).to.beCloseToMat($(expected));
+  });
+
+  it(@"should convert color correctly", ^{
+    [inputTexture load:cv::Mat4b(1, 1, cv::Vec4b(112, 1, 2, 3))];
+    [auxiliaryTexture load:cv::Mat4b(1, 1, cv::Vec4b(167, 201, 4, 5))];
+    [processor process];
+
+    cv::Mat4b expected(1, 1, cv::Vec4b(215, 46, 182, 255));
+    expect($([outputTexture image])).to.equalMat($(expected));
+  });
+});
+
+context(@"YCbCr video range to RGB", ^{
+  __block LTTexture *auxiliaryTexture;
+
+  beforeEach(^{
+    auxiliaryTexture = [LTTexture textureWithPropertiesOf:inputTexture];
+    processor = [[LTColorConversionProcessor alloc] initWithInput:inputTexture
+                                                   auxiliaryInput:auxiliaryTexture
+                                                           output:outputTexture];
+    processor.mode = LTColorConversionYCbCrVideoRangeToRGB;
+  });
+
+  it(@"should convert grey", ^{
+    [inputTexture load:cv::Mat4b(1, 1, cv::Vec4b(64, 1, 2, 3))];
+    [auxiliaryTexture load:cv::Mat4b(1, 1, cv::Vec4b(128, 128, 4, 5))];
+    [processor process];
+
+    cv::Mat4b expected(1, 1, cv::Vec4b(56, 56, 56, 255));
+    expect($([outputTexture image])).to.beCloseToMat($(expected));
+  });
+
+  it(@"should convert color correctly", ^{
+    [inputTexture load:cv::Mat4b(1, 1, cv::Vec4b(112, 1, 2, 3))];
+    [auxiliaryTexture load:cv::Mat4b(1, 1, cv::Vec4b(167, 201, 4, 5))];
+    [processor process];
+
+    cv::Mat4b expected(1, 1, cv::Vec4b(229, 37, 192, 255));
+    expect($([outputTexture image])).to.equalMat($(expected));
+  });
+});
+
 context(@"check color space round trip conversion", ^{
   __block std::vector<cv::Vec4b> testColors;
-  
+
   before(^{
     testColors.push_back(cv::Vec4b(0, 0, 0, 0));
     testColors.push_back(cv::Vec4b(0, 0, 0, 255));
@@ -190,7 +256,7 @@ context(@"check color space round trip conversion", ^{
     testColors.push_back(cv::Vec4b(0, 0, 255, 255));
     testColors.push_back(cv::Vec4b(255, 255, 255, 255));
   });
-  
+
   it(@"should convert RGB to YIQ and back correctly", ^{
     for (cv::Vec4b initialColor : testColors) {
       [inputTexture load:cv::Mat4b(1, 1, initialColor)];
@@ -200,12 +266,12 @@ context(@"check color space round trip conversion", ^{
       [outputTexture cloneTo:inputTexture];
       processor.mode = LTColorConversionYIQToRGB;
       [processor process];
-      
+
       cv::Mat4b expected(1, 1, initialColor);
       expect($([outputTexture image])).to.beCloseToMat($(expected));
     }
   });
-  
+
   it(@"should convert RGB to HSV and back correctly", ^{
     for (cv::Vec4b initialColor : testColors) {
       [inputTexture load:cv::Mat4b(1, 1, initialColor)];
@@ -215,7 +281,7 @@ context(@"check color space round trip conversion", ^{
       [outputTexture cloneTo:inputTexture];
       processor.mode = LTColorConversionHSVToRGB;
       [processor process];
-      
+
       cv::Mat4b expected(1, 1, initialColor);
       expect($([outputTexture image])).to.equalMat($(expected));
     }

@@ -10,6 +10,8 @@ typedef NS_ENUM(NSUInteger, LTColorConversionMode) {
   LTColorConversionYIQToRGB = 3,
   LTColorConversionRGBToYYYY = 4,
   LTColorConversionBGRToRGB = 5,
+  LTColorConversionYCbCrFullRangeToRGB = 6,
+  LTColorConversionYCbCrVideoRangeToRGB = 7
 };
 
 /// Converts from one colorspace to another.
@@ -22,6 +24,13 @@ typedef NS_ENUM(NSUInteger, LTColorConversionMode) {
 
 /// Initializes with input image to be converted and output to store the result.
 - (instancetype)initWithInput:(LTTexture *)input output:(LTTexture *)output;
+
+/// Initializes with input and auxiliary images to be converted and output to store the result.
+///
+/// For \c LTColorConversionYCbCrFullRangeToRGB and \c LTColorConversionYCbCrVideoRangeToRGB, the Y
+/// channel is the R of \c input, Cb and Cr channels are the RG channels of \c auxiliaryInput.
+- (instancetype)initWithInput:(LTTexture *)input auxiliaryInput:(LTTexture *)auxiliaryInput
+                       output:(LTTexture *)output;
 
 /// What conversion mode should be used to produce the output.
 @property (nonatomic) LTColorConversionMode mode;
