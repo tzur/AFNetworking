@@ -25,11 +25,11 @@ varying highp vec2 vTexcoord;
 mediump vec3 RGBToHSV(mediump vec3 rgb) {
   mediump float eps = 1.0e-5;
   mediump vec4 swizzle = vec4(0.0, -1.0 / 3.0, 2.0 / 3.0, -1.0);
-  
+
   mediump vec4 p = mix(vec4(rgb.bg, swizzle.wz), vec4(rgb.gb, swizzle.xy), step(rgb.b, rgb.g));
   mediump vec4 q = mix(vec4(p.xyw, rgb.r), vec4(rgb.r, p.yzx), step(p.x, rgb.r));
   mediump float r = q.x - min(q.w, q.y);
-  
+
   return vec3(abs(q.z + (q.w - q.y) / (6.0 * r + eps)), r / (q.x + eps), q.x);
 }
 
