@@ -21,6 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithVideoFrames:(RACSignal *)framesSignal {
   if (self = [super initWithFrame:CGRectZero]) {
+    self.layer.videoGravity = AVLayerVideoGravityResizeAspectFill;
     @weakify(self);
     [[framesSignal
         takeUntil:[self rac_willDeallocSignal]]
