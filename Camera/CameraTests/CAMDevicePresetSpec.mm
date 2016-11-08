@@ -80,7 +80,7 @@ context(@"preset object", ^{
   });
 
   it(@"should return set values", ^{
-    id<CAMFormatStrategy> formatStrategy = [CAMFormatStrategy highestResolution420f];
+    id<CAMFormatStrategy> formatStrategy = OCMProtocolMock(@protocol(CAMFormatStrategy));
     CAMDevicePreset *preset = [[CAMDevicePreset alloc] initWithPixelFormat:$(CAMPixelFormatBGRA)
                                                                     camera:$(CAMDeviceCameraFront)
                                                                enableAudio:YES
@@ -92,34 +92,6 @@ context(@"preset object", ^{
     expect(preset.enableAudio).to.beTruthy();
     expect(preset.formatStrategy).to.equal(formatStrategy);
     expect(preset.outputQueue).to.equal(queue);
-  });
-
-  it(@"should return presets with given queue", ^{
-    CAMDevicePreset *stillPreset = [CAMDevicePreset stillCameraWithQueue:queue];
-    expect(stillPreset).toNot.beNil();
-    expect(stillPreset.outputQueue).to.equal(queue);
-
-    CAMDevicePreset *selfiePreset = [CAMDevicePreset selfieCameraWithQueue:queue];
-    expect(selfiePreset).toNot.beNil();
-    expect(selfiePreset.outputQueue).to.equal(queue);
-
-    CAMDevicePreset *videoPreset = [CAMDevicePreset videoCameraWithQueue:queue];
-    expect(videoPreset).toNot.beNil();
-    expect(videoPreset.outputQueue).to.equal(queue);
-  });
-
-  it(@"should return presets with main queue", ^{
-    CAMDevicePreset *stillPreset = [CAMDevicePreset stillCamera];
-    expect(stillPreset).toNot.beNil();
-    expect(stillPreset.outputQueue).to.equal(dispatch_get_main_queue());
-
-    CAMDevicePreset *selfiePreset = [CAMDevicePreset selfieCamera];
-    expect(selfiePreset).toNot.beNil();
-    expect(selfiePreset.outputQueue).to.equal(dispatch_get_main_queue());
-
-    CAMDevicePreset *videoPreset = [CAMDevicePreset videoCamera];
-    expect(videoPreset).toNot.beNil();
-    expect(videoPreset.outputQueue).to.equal(dispatch_get_main_queue());
   });
 });
 

@@ -9,26 +9,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-#pragma mark -
-#pragma mark Factory
-#pragma mark -
-
-@implementation CAMFormatStrategy
-
-+ (id<CAMFormatStrategy>)highestResolution420f {
-  return [[CAMFormatStrategyHighestResolution420f alloc] init];
-}
-
-+ (id<CAMFormatStrategy>)exact420fWidth:(NSUInteger)width height:(NSUInteger)height {
-  return [[CAMFormatStrategyExactResolution420f alloc] initWithWidth:width height:height];
-}
-
-@end
-
-#pragma mark -
-#pragma mark Implementations
-#pragma mark -
-
 @implementation CAMFormatStrategyHighestResolution420f
 
 - (nullable AVCaptureDeviceFormat *)formatFrom:(NSArray<AVCaptureDeviceFormat *> *)formats {
