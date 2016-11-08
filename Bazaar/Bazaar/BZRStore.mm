@@ -369,20 +369,28 @@ withPriceInfoAndProductFromProductsResponse:(SKProductsResponse *)productsRespon
 
 - (RACSignal *)refreshReceipt {
   @weakify(self);
-  return [[[RACSignal defer:^RACSignal *{
+  return [[RACSignal defer:^RACSignal *{
     @strongify(self);
-    RACSignal *refreshReceipt = [[self.storeKitFacade restoreCompletedTransactions]
-        concat:[self.validationStatusProvider fetchReceiptValidationStatus]];
-    return ([self isReceiptAvailable] ? refreshReceipt :
-            [[self.storeKitFacade refreshReceipt] concat:refreshReceipt]);
+    return [self isReceiptAvailable] ? [self restoreCompletedTransactions] :
+            [[self.storeKitFacade refreshReceipt] concat:[self restoreCompletedTransactions]];
   }]
-  ignoreValues]
   setNameWithFormat:@"%@ -refreshReceipt", self];
 }
 
 - (BOOL)isReceiptAvailable {
   NSURL *receiptURL = [self.applicationReceiptBundle appStoreReceiptURL];
   return receiptURL && [self.fileManager fileExistsAtPath:receiptURL.path];
+}
+
+- (RACSignal *)restoreCompletedTransactions {
+  @weakify(self);
+  return [[[[self.storeKitFacade restoreCompletedTransactions]
+      doNext:^(SKPaymentTransaction *transaction) {
+        @strongify(self);
+        [self.storeKitFacade finishTransaction:transaction];
+      }]
+      concat:[self.validationStatusProvider fetchReceiptValidationStatus]]
+      ignoreValues];
 }
 
 - (RACSignal *)productList {
