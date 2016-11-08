@@ -11,6 +11,7 @@ NSString * const kBZRErrorProductsRequestKey = @"BZRErrorProductsRequest";
 NSString * const kBZRErrorArchivePathKey = @"BZRErrorArchivePath";
 NSString * const kBZRErrorFailingItemPathKey = @"BZRErrorFailingItemPath";
 NSString * const kBZRErrorTransactionKey = @"BZRErrorTransaction";
+NSString * const kBZRErrorProductIdentifiersKey = @"BZRErrorProductIdentifiers";
 
 @implementation NSError (Bazaar)
 
@@ -64,6 +65,13 @@ NSString * const kBZRErrorTransactionKey = @"BZRErrorTransaction";
   return [NSError lt_errorWithCode:code userInfo:userInfo];
 }
 
++ (instancetype)bzr_invalidProductsErrorWithIdentifers:(NSSet<NSString *> *)productIdentifiers {
+  NSDictionary *userInfo = @{
+    kBZRErrorProductIdentifiersKey: [productIdentifiers copy]
+  };
+  return [self lt_errorWithCode:BZRErrorCodeInvalidProductIdentifer userInfo:userInfo];
+}
+
 - (nullable NSException *)bzr_exception {
   return self.userInfo[kBZRErrorExceptionKey];
 }
@@ -82,6 +90,10 @@ NSString * const kBZRErrorTransactionKey = @"BZRErrorTransaction";
 
 - (nullable SKPaymentTransaction *)bzr_transaction {
   return self.userInfo[kBZRErrorTransactionKey];
+}
+
+- (nullable NSSet<NSString *> *)bzr_productIdentifiers {
+  return self.userInfo[kBZRErrorProductIdentifiersKey];
 }
 
 @end

@@ -103,4 +103,15 @@ context(@"transaction error", ^{
   });
 });
 
+context(@"invalid product identifiers error", ^{
+  it(@"should return an invalid product identifiers error with the given products", ^{
+    NSSet<NSString *> *products = [NSSet setWithObjects:@"foo", @"bar", nil];
+    NSError *error = [NSError bzr_invalidProductsErrorWithIdentifers:products];
+
+    expect(error.domain).to.equal(kLTErrorDomain);
+    expect(error.code).to.equal(BZRErrorCodeInvalidProductIdentifer);
+    expect(error.bzr_productIdentifiers).to.equal(products);
+  });
+});
+
 SpecEnd
