@@ -256,3 +256,44 @@ cv::Mat LTRowSubset(const cv::Mat &mat, const std::vector<int> &indices) {
 
   return result;
 }
+
+cv::Mat LTRotateHalfPiClockwise(const cv::Mat &input, NSInteger rotations, BOOL mirrorHorizontal,
+                                cv::Mat * _Nullable intermediateMat) {
+  cv::Mat output;
+  LTRotateHalfPiClockwise(input, &output, rotations, mirrorHorizontal, intermediateMat);
+  return output;
+}
+
+void LTRotateHalfPiClockwise(const cv::Mat &input, cv::Mat *output,
+                             NSInteger rotations, BOOL mirrorHorizontal,
+                             cv::Mat * _Nullable intermediate) {
+  rotations = ((rotations % 4) + 4) % 4;
+  if (!intermediate) {
+    intermediate = output;
+  }
+
+  switch (rotations) {
+    case 0:
+      if (mirrorHorizontal) {
+        cv::flip(input, *output, 1);
+      } else {
+        input.copyTo(*output);
+      }
+      break;
+    case 1:
+      if (mirrorHorizontal) {
+        cv::transpose(input, *output);
+      } else {
+        cv::transpose(input, *intermediate);
+        cv::flip(*intermediate, *output, 1);
+      }
+      break;
+    case 2:
+      cv::flip(input, *output, mirrorHorizontal ? 0 : -1);
+      break;
+    case 3:
+      cv::transpose(input, *intermediate);
+      cv::flip(*intermediate, *output, mirrorHorizontal ? -1 : 0);
+      break;
+  }
+}

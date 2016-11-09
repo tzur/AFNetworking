@@ -5,6 +5,8 @@
 #import "LTOpenCVHalfFloat.h"
 #import "LTVector.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 namespace cv {
   /// \c CGFloat specializations of the \c Vec type.
   typedef Vec<CGFloat, 2> Vec2g;
@@ -103,6 +105,22 @@ cv::Mat4b LTCheckerboardPattern(CGSize size, uint tileSize, cv::Vec4b firstColor
 /// exception.
 cv::Mat LTRowSubset(const cv::Mat &mat, const std::vector<int> &indices);
 
+/// Rotates the given mat by 90 degrees around its center, \c rotations times and flips horizontally
+/// if \c mirrorHorizontal is \c YES. Positive values of \c rotations rotate clockwise and negative
+/// values counter clockwise. \c intermediate can be set to a preallocated Mat in the correct size
+/// after rotation to avoid this allocation within the function.
+cv::Mat LTRotateHalfPiClockwise(const cv::Mat &input, NSInteger rotations,
+                                BOOL mirrorHorizontal = NO,
+                                cv::Mat * _Nullable intermediateMat = NULL);
+
+/// Rotates the given mat by 90 degrees around its center, \c rotations times and flips horizontally
+/// if \c mirrorHorizontal is \c YES. Positive values of \c rotations rotate clockwise and negative
+/// values counter clockwise. \c output and \c intermediate can be set to a preallocated Mat in the
+/// correct size after rotation to avoid this allocation within the function.
+void LTRotateHalfPiClockwise(const cv::Mat &input, cv::Mat *output,
+                             NSInteger rotations, BOOL mirrorHorizontal,
+                             cv::Mat * _Nullable intermediate = NULL);
+
 #pragma mark -
 #pragma mark Details
 #pragma mark -
@@ -133,3 +151,5 @@ void LTConvertHalfFloat(const cv::Mat &input, cv::Mat *output, double alpha) {
     }
   }
 }
+
+NS_ASSUME_NONNULL_END

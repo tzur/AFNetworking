@@ -454,4 +454,156 @@ context(@"row subset", ^{
   });
 });
 
+context(@"rotate half pi clockwise and mirror", ^{
+  static const cv::Size kInputSize = cv::Size(8, 6);
+  static const cv::Size kHalfSize = kInputSize / 2;
+
+  static const cv::Rect kUpperLeft(0, 0, kHalfSize.width, kHalfSize.height);
+  static const cv::Rect kUpperRight(kHalfSize.width, 0, kHalfSize.width, kHalfSize.height);
+  static const cv::Rect kLowerLeft(0, kHalfSize.height, kHalfSize.width, kHalfSize.height);
+  static const cv::Rect kLowerRight(kHalfSize.width, kHalfSize.height, kHalfSize.width,
+                                    kHalfSize.height);
+
+  static const cv::Scalar kColorRed(255, 0, 0, 255);
+  static const cv::Scalar kColorGreen(0, 255, 0, 255);
+  static const cv::Scalar kColorBlue(0, 0, 255, 255);
+  static const cv::Scalar kColorWhite(255, 255, 255, 255);
+
+  __block cv::Mat4b inputImage;
+
+  beforeEach(^{
+    inputImage = cv::Mat4b(kInputSize, cv::Vec4b(0, 0, 0, 255));
+    inputImage(kUpperLeft).setTo(kColorRed);
+    inputImage(kUpperRight).setTo(kColorGreen);
+    inputImage(kLowerLeft).setTo(kColorBlue);
+    inputImage(kLowerRight).setTo(kColorWhite);
+  });
+
+  static NSString * const kLTOpenCVExtensionsRotationExamples =
+      @"LTOpenCVExtensionsRotationExamples";
+
+  static NSString * const kLTOpenCVExtensionsRotationRotationKey =
+      @"rotations";
+  static NSString * const kLTOpenCVExtensionsRotationMirrorKey =
+      @"mirror";
+  static NSString * const kLTOpenCVExtensionsRotationUpperLeftColorKey =
+      @"upperLeftColor";
+  static NSString * const kLTOpenCVExtensionsRotationUpperRightColorKey =
+      @"upperRightColor";
+  static NSString * const kLTOpenCVExtensionsRotationLowerLeftColorKey =
+      @"lowerLeftColor";
+  static NSString * const kLTOpenCVExtensionsRotationLowerRightColorKey =
+      @"lowerRightColor";
+
+  sharedExamples(kLTOpenCVExtensionsRotationExamples, ^(NSDictionary *data) {
+    it(@"should rotate and mirror correctly", ^{
+      NSInteger cwRotations = [data[kLTOpenCVExtensionsRotationRotationKey] integerValue];
+      BOOL mirror = [data[kLTOpenCVExtensionsRotationMirrorKey] boolValue];
+      
+      cv::Mat4b result = LTRotateHalfPiClockwise(inputImage, cwRotations, mirror);
+
+      cv::Scalar upperLeftColor = [data[kLTOpenCVExtensionsRotationUpperLeftColorKey] scalarValue];
+      cv::Scalar upperRightColor =
+          [data[kLTOpenCVExtensionsRotationUpperRightColorKey] scalarValue];
+      cv::Scalar lowerLeftColor = [data[kLTOpenCVExtensionsRotationLowerLeftColorKey] scalarValue];
+      cv::Scalar lowerRightColor =
+          [data[kLTOpenCVExtensionsRotationLowerRightColorKey] scalarValue];
+
+      cv::Size halfOutputSize = result.size() / 2;
+
+      cv::Rect upperLeft(0, 0, halfOutputSize.width, halfOutputSize.height);
+      cv::Rect upperRight(halfOutputSize.width, 0, halfOutputSize.width, halfOutputSize.height);
+      cv::Rect lowerLeft(0, halfOutputSize.height, halfOutputSize.width, halfOutputSize.height);
+      cv::Rect lowerRight(halfOutputSize.width, halfOutputSize.height, halfOutputSize.width,
+                          halfOutputSize.height);
+
+      expect($(result(upperLeft))).to.equalScalar($(upperLeftColor));
+      expect($(result(upperRight))).to.equalScalar($(upperRightColor));
+      expect($(result(lowerLeft))).to.equalScalar($(lowerLeftColor));
+      expect($(result(lowerRight))).to.equalScalar($(lowerRightColor));
+    });
+  });
+
+  itBehavesLike(kLTOpenCVExtensionsRotationExamples, @{
+    kLTOpenCVExtensionsRotationRotationKey: @0,
+    kLTOpenCVExtensionsRotationMirrorKey: @NO,
+    kLTOpenCVExtensionsRotationUpperLeftColorKey: $(kColorRed),
+    kLTOpenCVExtensionsRotationUpperRightColorKey: $(kColorGreen),
+    kLTOpenCVExtensionsRotationLowerLeftColorKey: $(kColorBlue),
+    kLTOpenCVExtensionsRotationLowerRightColorKey: $(kColorWhite)
+  });
+
+  itBehavesLike(kLTOpenCVExtensionsRotationExamples, @{
+    kLTOpenCVExtensionsRotationRotationKey: @1,
+    kLTOpenCVExtensionsRotationMirrorKey: @NO,
+    kLTOpenCVExtensionsRotationUpperLeftColorKey: $(kColorBlue),
+    kLTOpenCVExtensionsRotationUpperRightColorKey: $(kColorRed),
+    kLTOpenCVExtensionsRotationLowerLeftColorKey: $(kColorWhite),
+    kLTOpenCVExtensionsRotationLowerRightColorKey: $(kColorGreen)
+  });
+
+  itBehavesLike(kLTOpenCVExtensionsRotationExamples, @{
+    kLTOpenCVExtensionsRotationRotationKey: @2,
+    kLTOpenCVExtensionsRotationMirrorKey: @NO,
+    kLTOpenCVExtensionsRotationUpperLeftColorKey: $(kColorWhite),
+    kLTOpenCVExtensionsRotationUpperRightColorKey: $(kColorBlue),
+    kLTOpenCVExtensionsRotationLowerLeftColorKey: $(kColorGreen),
+    kLTOpenCVExtensionsRotationLowerRightColorKey: $(kColorRed)
+  });
+
+  itBehavesLike(kLTOpenCVExtensionsRotationExamples, @{
+    kLTOpenCVExtensionsRotationRotationKey: @3,
+    kLTOpenCVExtensionsRotationMirrorKey: @NO,
+    kLTOpenCVExtensionsRotationUpperLeftColorKey: $(kColorGreen),
+    kLTOpenCVExtensionsRotationUpperRightColorKey: $(kColorWhite),
+    kLTOpenCVExtensionsRotationLowerLeftColorKey: $(kColorRed),
+    kLTOpenCVExtensionsRotationLowerRightColorKey: $(kColorBlue)
+  });
+
+  itBehavesLike(kLTOpenCVExtensionsRotationExamples, @{
+    kLTOpenCVExtensionsRotationRotationKey: @0,
+    kLTOpenCVExtensionsRotationMirrorKey: @YES,
+    kLTOpenCVExtensionsRotationUpperLeftColorKey: $(kColorGreen),
+    kLTOpenCVExtensionsRotationUpperRightColorKey: $(kColorRed),
+    kLTOpenCVExtensionsRotationLowerLeftColorKey: $(kColorWhite),
+    kLTOpenCVExtensionsRotationLowerRightColorKey: $(kColorBlue)
+  });
+
+  itBehavesLike(kLTOpenCVExtensionsRotationExamples, @{
+    kLTOpenCVExtensionsRotationRotationKey: @1,
+    kLTOpenCVExtensionsRotationMirrorKey: @YES,
+    kLTOpenCVExtensionsRotationUpperLeftColorKey: $(kColorRed),
+    kLTOpenCVExtensionsRotationUpperRightColorKey: $(kColorBlue),
+    kLTOpenCVExtensionsRotationLowerLeftColorKey: $(kColorGreen),
+    kLTOpenCVExtensionsRotationLowerRightColorKey: $(kColorWhite)
+  });
+
+  itBehavesLike(kLTOpenCVExtensionsRotationExamples, @{
+    kLTOpenCVExtensionsRotationRotationKey: @2,
+    kLTOpenCVExtensionsRotationMirrorKey: @YES,
+    kLTOpenCVExtensionsRotationUpperLeftColorKey: $(kColorBlue),
+    kLTOpenCVExtensionsRotationUpperRightColorKey: $(kColorWhite),
+    kLTOpenCVExtensionsRotationLowerLeftColorKey: $(kColorRed),
+    kLTOpenCVExtensionsRotationLowerRightColorKey: $(kColorGreen)
+  });
+
+  itBehavesLike(kLTOpenCVExtensionsRotationExamples, @{
+    kLTOpenCVExtensionsRotationRotationKey: @3,
+    kLTOpenCVExtensionsRotationMirrorKey: @YES,
+    kLTOpenCVExtensionsRotationUpperLeftColorKey: $(kColorWhite),
+    kLTOpenCVExtensionsRotationUpperRightColorKey: $(kColorGreen),
+    kLTOpenCVExtensionsRotationLowerLeftColorKey: $(kColorBlue),
+    kLTOpenCVExtensionsRotationLowerRightColorKey: $(kColorRed)
+  });
+
+  itBehavesLike(kLTOpenCVExtensionsRotationExamples, @{
+    kLTOpenCVExtensionsRotationRotationKey: @-1,
+    kLTOpenCVExtensionsRotationMirrorKey: @YES,
+    kLTOpenCVExtensionsRotationUpperLeftColorKey: $(kColorWhite),
+    kLTOpenCVExtensionsRotationUpperRightColorKey: $(kColorGreen),
+    kLTOpenCVExtensionsRotationLowerLeftColorKey: $(kColorBlue),
+    kLTOpenCVExtensionsRotationLowerRightColorKey: $(kColorRed)
+  });
+});
+
 SpecEnd
