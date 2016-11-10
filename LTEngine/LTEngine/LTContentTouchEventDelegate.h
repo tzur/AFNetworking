@@ -18,21 +18,26 @@ NS_ASSUME_NONNULL_BEGIN
 /// have been received. The \c contentTouchEvents all belong to the same touch event sequence with
 /// the given \c state. The given \c predictedTouchEvents consist of possibly existing predicted
 /// touches. Both the \c touchEvents and the \c predictedTouchEvents are ordered according to their
-/// timestamps.
+/// timestamps. The timestamps are monotonically increasing also for consecutive calls to this
+/// method. The given \c contentTouchEvents contain at least one content touch event. If the given
+/// \c state is LTTouchEventSequenceStateStart, \c LTTouchEventSequenceStateEnd or
+/// \c LTTouchEventSequenceStateCancellation, the given \c contentTouchEvents contain exactly one
+/// content touch event.
 - (void)receivedContentTouchEvents:(LTContentTouchEvents *)contentTouchEvents
                    predictedEvents:(LTContentTouchEvents *)predictedTouchEvents
            touchEventSequenceState:(LTTouchEventSequenceState)state;
 
 /// Called to delegate the handling of the given updated \c contentTouchEvents. The
-/// \c contentTouchEvents are ordered according to their timestamps and belong to touch event
-/// sequences that have not ended yet.
+/// \c contentTouchEvents contain at least one touch event, are ordered according to their
+/// timestamps and belong to touch event sequences that have not ended yet. The timestamps are not
+/// necessarily monotonically increasing for consecutive calls to this method.
 - (void)receivedUpdatesOfContentTouchEvents:(LTContentTouchEvents *)contentTouchEvents;
 
 /// Called to inform the delegate that all content touch event sequences with the given
-/// \c sequenceIDs have been terminated with the given \c state. The given \c state is either
-/// \c LTTouchEventSequenceStateEnd or \c LTTouchEventSequenceStateCancellation. This call is
-/// neither preceeded nor followed by a call to
-/// \c receivedTouchEvents:predictedEvents:touchEventSequenceState: with state
+/// \c sequenceIDs have been terminated with the given \c state. The \c sequenceIDs contain at least
+/// one number. The given \c state is either \c LTTouchEventSequenceStateEnd or
+/// \c LTTouchEventSequenceStateCancellation. This call is neither preceeded nor followed by a call
+/// to \c receivedTouchEvents:predictedEvents:touchEventSequenceState: with state
 /// \c LTTouchEventSequenceStateEnd or \c LTTouchEventSequenceStateCancellation and a sequence ID
 /// provided in the given \c sequenceIDs.
 - (void)contentTouchEventSequencesWithIDs:(NSSet<NSNumber *> *)sequenceIDs
