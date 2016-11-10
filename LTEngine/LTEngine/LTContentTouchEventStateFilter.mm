@@ -68,13 +68,6 @@ NS_ASSUME_NONNULL_BEGIN
                         (unsigned long)state, (unsigned long)self.filterState);
       break;
     case LTContentTouchEventStateFilterStatePossible:
-      LTParameterAssert(state == LTTouchEventSequenceStateContinuation ||
-                        state == LTTouchEventSequenceStateContinuationStationary ||
-                        state == LTTouchEventSequenceStateEnd ||
-                        state == LTTouchEventSequenceStateCancellation,
-                        @"Invalid sequence state (%lu) provided for filter state (%lu)",
-                        (unsigned long)state, (unsigned long)self.filterState);
-      break;
     case LTContentTouchEventStateFilterStateActive:
       LTParameterAssert(state == LTTouchEventSequenceStateContinuation ||
                         state == LTTouchEventSequenceStateContinuationStationary ||
