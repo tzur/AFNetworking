@@ -187,7 +187,8 @@ typedef NSDictionary<id, BZRProductList *> BZRClassifiedProducts;
 
 - (void)prefetchProductDictionary {
   @weakify(self);
-  [[self fetchProductDictionary]
+  [[[self fetchProductDictionary]
+      takeUntil:[self rac_willDeallocSignal]]
       subscribeNext:^(BZRProductDictionary * _Nullable productDictionary) {
         @strongify(self);
         self.productDictionary = productDictionary;
@@ -252,6 +253,10 @@ static NSNumber * const kNonAppStoreProductsLabel = @0;
       }]
       flattenMap:^RACStream *(BZRClassifiedProducts *classifiedProducts) {
         @strongify(self);
+        if (!self) {
+          return [RACSignal empty];
+        }
+
         RACSignal *appStoreProductsMapper =
             [self appStoreProductsDictionary:classifiedProducts[kAppStoreProductsLabel]];
         RACSignal *nonAppStoreProductsMapper =
