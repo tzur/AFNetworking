@@ -11,6 +11,8 @@
 #import "LTTexture+Factory.h"
 #import "LTTouchEventDelegate.h"
 #import "LTTouchEventSequenceSplitter.h"
+#import "LTTouchEventSequenceValidator.h"
+#import "LTTouchEventTimestampFilter.h"
 #import "LTTouchEventView.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -23,6 +25,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Object used to split touch event sequences.
 @property (readonly, nonatomic) LTTouchEventSequenceSplitter *touchEventSequenceSplitter;
+
+/// Object used to validate touch event sequences and forward them to a filter ensuring that the
+/// timestamps of the touch events are monotonically increasing.
+@property (readonly, nonatomic) LTTouchEventSequenceValidator *touchEventSequenceValidator;
 
 /// Object responsible for managing which gestures should be allowed to modify the location of the
 /// content rectangle. In addition, handles the forwarding of touch events occurring on this view
@@ -109,6 +115,7 @@ NS_ASSUME_NONNULL_BEGIN
     [self createPresentationViewWithFrame:self.bounds context:context
                            contentTexture:contentTexture];
     [self createTouchEventSequenceSplitter];
+    [self createTouchEventValidatorAndFilter];
     [self createTouchEventViewWithFrame:self.bounds];
     [self createInteractionManager];
     [self createConverter];
@@ -149,12 +156,22 @@ NS_ASSUME_NONNULL_BEGIN
       [[LTTouchEventSequenceSplitter alloc] initWithTouchEventDelegate:self];
 }
 
-- (void)createTouchEventViewWithFrame:(CGRect)frame {
-  LTAssert(self.presentationView);
+- (void)createTouchEventValidatorAndFilter {
   LTAssert(self.touchEventSequenceSplitter);
 
+  LTTouchEventTimestampFilter *filter =
+      [[LTTouchEventTimestampFilter alloc]
+       initWithTouchEventDelegate:self.touchEventSequenceSplitter];
+  _touchEventSequenceValidator =
+      [[LTTouchEventSequenceValidator alloc] initWithDelegate:filter heldStrongly:YES];
+}
+
+- (void)createTouchEventViewWithFrame:(CGRect)frame {
+  LTAssert(self.presentationView);
+  LTAssert(self.touchEventSequenceValidator);
+
   _touchEventView = [[LTTouchEventView alloc] initWithFrame:frame
-                                                   delegate:self.touchEventSequenceSplitter];
+                                                   delegate:self.touchEventSequenceValidator];
   [self addSubview:self.touchEventView];
 }
 
