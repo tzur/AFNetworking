@@ -26,11 +26,9 @@ LTEnumDeclare(NSUInteger, PTNPhotoKitURLType,
 ///   - Asset identifier: <photokit scheme>://asset/<identifier>
 ///   - Album with type and subtype:
 ///       <photokit scheme>://albumType/?type=<type>&subtype=<subType>
-///   - Album of albums with the given type and a possible ordered subtype filter:
-///       <photokit scheme>://metaAlbum/?type=<type>&subtype=<subType>&filter&subalbums=<subtype1>
-///       &subalbums=<subtype2>...
-///   - Album of albums with the given type and no filtering:
-///       <photokit scheme>://metaAlbum/?type=<type>&subtype=<subType>
+///   - Album of albums with the given type, a possible ordered subtype filter and a title filter:
+///       <photokit scheme>://metaAlbum/?type=<type>&subtype=<subType>[&filter&subalbums=<subtype1>
+///       &subalbums=<subtype2>...][&title=<title>]
 @interface NSURL (PhotoKit)
 
 /// The URL scheme associated with PhotoKit URLs.
@@ -69,6 +67,14 @@ LTEnumDeclare(NSUInteger, PTNPhotoKitURLType,
 /// @important serializing this URL does not guarantee consistent results across iOS versions.
 + (NSURL *)ptn_photoKitMetaAlbumWithType:(PHAssetCollectionType)type;
 
+/// Returns a URL for requesting an album which contains all the albums corresponding to the the
+/// \c PHAssetCollectionTypeAlbum and the \c PHAssetCollectionSubtypeAny subtype with a title that
+/// matches \c title. The albums associated with this type of URL are expected to contain subalbums
+/// and no assets.
+///
+/// @important serializing this URL does not guarantee consistent results across iOS versions.
++ (NSURL *)ptn_photoKitUserAlbumsWithTitle:(NSString *)title;
+
 /// Returns the camera roll album. This equivalent to calling \c +ptn_photoKitAlbumWithType:subtype:
 /// with \c PHAssetCollectionTypeSmartAlbums and \c PHAssetCollectionSubtypeSmartAlbumUserLibrary.
 + (NSURL *)ptn_photoKitCameraRollAlbum;
@@ -104,8 +110,12 @@ LTEnumDeclare(NSUInteger, PTNPhotoKitURLType,
 /// The album identifier or \c nil if the URL is not a valid PhotoKit album URL.
 @property (readonly, nonatomic, nullable) NSString *ptn_photoKitAlbumIdentifier;
 
-/// The asset identifier or \c nil if the URL is not a valid PhotoKit album URL.
+/// The asset identifier or \c nil if the URL is not a valid PhotoKit asset URL.
 @property (readonly, nonatomic, nullable) NSString *ptn_photoKitAssetIdentifier;
+
+/// Fetch options to use when fetching an album with the receiver, or \c nil if the receiver is not
+/// a valid album url or does not require any fetch options.
+@property (readonly, nonatomic, nullable) PHFetchOptions *ptn_photoKitAlbumFetchOptions;
 
 @end
 

@@ -596,6 +596,50 @@ context(@"album fetching", ^{
       });
     });
   });
+
+  context(@"fetch options", ^{
+    __block id fetcherMock;
+    __block PTNPhotoKitAssetManager *assetManager;
+
+    beforeEach(^{
+      fetcherMock = OCMProtocolMock(@protocol(PTNPhotoKitFetcher));
+      assetManager = [[PTNPhotoKitAssetManager alloc] initWithFetcher:fetcherMock observer:observer
+                                                         imageManager:imageManager
+                                                 authorizationManager:authorizationManager
+                                                        changeManager:changeManager];
+    });
+
+    it(@"should fetch album type with fetch options", ^{
+      PHFetchOptions *options = OCMClassMock(PHFetchOptions.class);
+      NSURL *url = OCMClassMock(NSURL.class);
+      OCMStub([url ptn_photoKitURLType]).andReturn($(PTNPhotoKitURLTypeAlbumType));
+      OCMStub([url ptn_photoKitAlbumType]).andReturn(@(PHAssetCollectionTypeSmartAlbum));
+      OCMStub([url ptn_photoKitAlbumSubtype]).andReturn(@(PHAssetCollectionSubtypeSmartAlbumBursts));
+      OCMStub([url ptn_photoKitAlbumFetchOptions]).andReturn(options);
+
+      [[assetManager fetchAlbumWithURL:url] subscribeNext:^(id) {}];
+
+      OCMExpect([fetcherMock fetchAssetCollectionsWithType:PHAssetCollectionTypeSmartAlbum
+          subtype:PHAssetCollectionSubtypeSmartAlbumBursts options:options]);
+      OCMVerifyAllWithDelay(fetcherMock, 1);
+    });
+
+    it(@"should fetch meta album type with fetch options", ^{
+      PHFetchOptions *options = OCMClassMock(PHFetchOptions.class);
+      NSURL *url = OCMClassMock(NSURL.class);
+      OCMStub([url ptn_photoKitURLType]).andReturn($(PTNPhotoKitURLTypeMetaAlbumType));
+      OCMStub([url ptn_photoKitAlbumType]).andReturn(@(PHAssetCollectionTypeSmartAlbum));
+      OCMStub([url ptn_photoKitAlbumSubtype]).andReturn(@(PHAssetCollectionSubtypeAny));
+      OCMStub([url ptn_photoKitAlbumFetchOptions]).andReturn(options);
+
+      [[assetManager fetchAlbumWithURL:url] subscribeNext:^(id) {}];
+
+      OCMExpect([fetcherMock fetchAssetCollectionsWithType:PHAssetCollectionTypeSmartAlbum
+                                                   subtype:PHAssetCollectionSubtypeAny
+                                                   options:options]);
+      OCMVerifyAllWithDelay(fetcherMock, 1);
+    });
+  });
 });
 
 context(@"asset fetching", ^{
