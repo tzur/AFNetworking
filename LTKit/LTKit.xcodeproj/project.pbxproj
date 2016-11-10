@@ -31,6 +31,9 @@
 		28E55E011961B21A00EBF9DA /* LTRandom.h in Headers */ = {isa = PBXBuildFile; fileRef = 28E55DFF1961B21A00EBF9DA /* LTRandom.h */; };
 		28E55E021961B21A00EBF9DA /* LTRandom.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28E55E001961B21A00EBF9DA /* LTRandom.mm */; };
 		28EA157318BB3F53003C00BF /* LTPropertyMacrosSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28EA157218BB3F53003C00BF /* LTPropertyMacrosSpec.mm */; };
+		5009329D1DD471140092BCF5 /* NSObject+NSSet.h in Headers */ = {isa = PBXBuildFile; fileRef = 5009329B1DD471140092BCF5 /* NSObject+NSSet.h */; };
+		5009329E1DD471140092BCF5 /* NSObject+NSSet.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5009329C1DD471140092BCF5 /* NSObject+NSSet.mm */; };
+		500932B81DD472C40092BCF5 /* NSObject+NSSetSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 500932B71DD472C40092BCF5 /* NSObject+NSSetSpec.mm */; };
 		503442A71A0FB8AF008E0ED3 /* LTCFExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 503442A51A0FB8AF008E0ED3 /* LTCFExtensions.h */; };
 		503442BD1A0FB95B008E0ED3 /* LTCFExtensionsSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 503442BC1A0FB95B008E0ED3 /* LTCFExtensionsSpec.mm */; };
 		5067221819EA80B5003AF8D2 /* LTBoundedQueue.h in Headers */ = {isa = PBXBuildFile; fileRef = 5067221419EA80B5003AF8D2 /* LTBoundedQueue.h */; };
@@ -425,6 +428,9 @@
 		28E55E001961B21A00EBF9DA /* LTRandom.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTRandom.mm; sourceTree = "<group>"; };
 		28EA156518B9E217003C00BF /* LTPropertyMacros.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTPropertyMacros.h; sourceTree = "<group>"; };
 		28EA157218BB3F53003C00BF /* LTPropertyMacrosSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTPropertyMacrosSpec.mm; sourceTree = "<group>"; };
+		5009329B1DD471140092BCF5 /* NSObject+NSSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+NSSet.h"; sourceTree = "<group>"; };
+		5009329C1DD471140092BCF5 /* NSObject+NSSet.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSObject+NSSet.mm"; sourceTree = "<group>"; };
+		500932B71DD472C40092BCF5 /* NSObject+NSSetSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSObject+NSSetSpec.mm"; sourceTree = "<group>"; };
 		503442A51A0FB8AF008E0ED3 /* LTCFExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTCFExtensions.h; sourceTree = "<group>"; };
 		503442BC1A0FB95B008E0ED3 /* LTCFExtensionsSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTCFExtensionsSpec.mm; sourceTree = "<group>"; };
 		5067221419EA80B5003AF8D2 /* LTBoundedQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTBoundedQueue.h; sourceTree = "<group>"; };
@@ -875,6 +881,8 @@
 				8B410E8C1CE1F01E007DFF42 /* NSArray+SelectorName.mm */,
 				282CF088187B030A00904F07 /* NSObject+AddToContainer.h */,
 				282CF089187B030A00904F07 /* NSObject+AddToContainer.m */,
+				5009329B1DD471140092BCF5 /* NSObject+NSSet.h */,
+				5009329C1DD471140092BCF5 /* NSObject+NSSet.mm */,
 				8B4495811CE3209C008402D0 /* NSObject+PropertyAccessors.h */,
 				8B4495821CE3209C008402D0 /* NSObject+PropertyAccessors.m */,
 				8BA5D6A2199250240093A4FD /* NSString+Hashing.h */,
@@ -915,6 +923,7 @@
 				8B4495391CE1F4C7008402D0 /* NSArray+SelectorNameSpec.mm */,
 				650F73DB1C7A1A5500148CEC /* NSArray+FunctionalSpec.mm */,
 				85BD00A41DC0E0A30000FE97 /* NSArray+NSSetSpec.mm */,
+				500932B71DD472C40092BCF5 /* NSObject+NSSetSpec.mm */,
 				8B4495A11CE322DB008402D0 /* NSObject+PropertyAccessorsSpec.mm */,
 				8BA5D6C0199250CE0093A4FD /* NSString+HashingSpec.mm */,
 			);
@@ -1176,6 +1185,7 @@
 				8B8720421924A76700517F2E /* LTTimer.h in Headers */,
 				8B9FE5761BA9D4A40085E97E /* UIScreen+Physical.h in Headers */,
 				8B8720431924A76700517F2E /* LTTypedefs.h in Headers */,
+				5009329D1DD471140092BCF5 /* NSObject+NSSet.h in Headers */,
 				8B87D5361C04BA940005410A /* NSBundle+Path.h in Headers */,
 				8B8720441924A76700517F2E /* NSObject+AddToContainer.h in Headers */,
 				650F73C11C7A13DF00148CEC /* NSArray+Functional.h in Headers */,
@@ -1516,6 +1526,7 @@
 				650F73C21C7A13DF00148CEC /* NSArray+Functional.mm in Sources */,
 				8BF7B1731949BC7500E67079 /* LTBidirectionalMap.m in Sources */,
 				8B2405891B860D620079B724 /* NSLocale+Language.m in Sources */,
+				5009329E1DD471140092BCF5 /* NSObject+NSSet.mm in Sources */,
 				287A96F51A3320F200A609CD /* NSValue+Type.mm in Sources */,
 				8B9FE5771BA9D4A40085E97E /* UIScreen+Physical.m in Sources */,
 			);
@@ -1559,6 +1570,7 @@
 				28B8BBC81B68C1CE00CF9F73 /* LTWeakContainerSpec.mm in Sources */,
 				8BBE8943183506E4006C58AA /* LTTestUtils.mm in Sources */,
 				284EBBD11A33ABF600D36688 /* NSValue+TypeSpec.mm in Sources */,
+				500932B81DD472C40092BCF5 /* NSObject+NSSetSpec.mm in Sources */,
 				8B87D54E1C04BC2F0005410A /* NSBundle+PathSpec.mm in Sources */,
 				8B7C6CA81B52832600B90DBE /* LTMMInputFileSpec.mm in Sources */,
 				503442BD1A0FB95B008E0ED3 /* LTCFExtensionsSpec.mm in Sources */,

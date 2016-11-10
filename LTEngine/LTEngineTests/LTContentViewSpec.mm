@@ -15,6 +15,9 @@
 #import "LTTexture+Factory.h"
 #import "LTTouchEvent.h"
 #import "LTTouchEventSequenceSplitter.h"
+#import "LTTouchEventSequenceValidator.h"
+#import "LTTouchEventSequenceValidatorExamples.h"
+#import "LTTouchEventTimestampFilter.h"
 #import "LTTouchEventView.h"
 
 @interface LTContentView ()
@@ -508,12 +511,37 @@ context(@"protocols", ^{
   });
 });
 
-context(@"touch event sequence splitting", ^{
-  it(@"should use a touch event sequence splitter", ^{
-    LTContentView *view = [[LTContentView alloc] initWithContext:[LTGLContext currentContext]];
-    expect(view.touchEventView.delegate).to.beKindOf([LTTouchEventSequenceSplitter class]);
-    LTTouchEventSequenceSplitter *splitter = view.touchEventView.delegate;
-    expect(splitter.delegate).to.equal(view);
+context(@"touch event sequence pipeline", ^{
+  __block LTContentView *view;
+
+  beforeEach(^{
+    view = [[LTContentView alloc] initWithContext:[LTGLContext currentContext]];
+  });
+
+  it(@"should use a touch event sequence validator concatenated to the touch event view", ^{
+    expect(view.touchEventView.delegate).to.beKindOf([LTTouchEventSequenceValidator class]);
+  });
+
+  it(@"should use a touch event timestamp filter concatenated to the validator", ^{
+    LTTouchEventSequenceValidator *validator = view.touchEventView.delegate;
+    expect(validator.delegate).to.beKindOf([LTTouchEventTimestampFilter class]);
+  });
+
+  it(@"should use a touch event sequence splitter concatenated to the timestamp validator", ^{
+    LTTouchEventSequenceValidator *validator = view.touchEventView.delegate;
+    LTTouchEventTimestampFilter *filter = validator.delegate;
+    expect(filter.delegate).to.beKindOf([LTTouchEventSequenceSplitter class]);
+  });
+
+  it(@"should be the delegate of the touch event sequence splitter", ^{
+    LTTouchEventSequenceValidator *validator = view.touchEventView.delegate;
+    LTTouchEventTimestampFilter *filter = validator.delegate;
+    LTTouchEventSequenceSplitter *splitter = filter.delegate;
+    expect(splitter.delegate).to.beIdenticalTo(view);
+  });
+
+  itShouldBehaveLike(kLTTouchEventSequenceValidatorExamples, ^{
+    return @{kLTTouchEventSequenceValidatorExamplesDelegate: view.touchEventView.delegate};
   });
 });
 
