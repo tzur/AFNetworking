@@ -67,10 +67,6 @@ cv::Vec4f LTLTVector4ToVec4f(LTVector4 value);
 /// Uses nearest neighbor interpolation.
 cv::Mat LTRotateMat(const cv::Mat input, CGFloat angle);
 
-/// Rotates the given mat by 90 degrees around its center, \c rotations times. Positive values of
-/// \c rotations rotate clockwise and negative values counter clockwise.
-cv::Mat LTRotateHalfPiClockwise(cv::Mat input, NSInteger rotations);
-
 /// Returns a matrix of the given \c size containing delta at \c position.
 cv::Mat4b LTCreateDeltaMat(CGSize size, CGPoint position);
 
