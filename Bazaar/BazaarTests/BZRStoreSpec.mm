@@ -9,6 +9,7 @@
 #import "BZRCachedReceiptValidationStatusProvider.h"
 #import "BZRFakeAcquiredViaSubscriptionProvider.h"
 #import "BZRFakeCachedReceiptValidationStatusProvider.h"
+#import "BZRPeriodicReceiptValidatorActivator.h"
 #import "BZRProduct.h"
 #import "BZRProductContentManager.h"
 #import "BZRProductContentProvider.h"
@@ -74,10 +75,12 @@ __block BZRCachedReceiptValidationStatusProvider *receiptValidationStatusProvide
 __block BZRProductContentProvider *contentProvider;
 __block BZRAcquiredViaSubscriptionProvider *acquiredViaSubscriptionProvider;
 __block BZRStoreKitFacade *storeKitFacade;
+__block BZRPeriodicReceiptValidatorActivator *periodicValidatorActivator;
 __block NSBundle *bundle;
 __block NSFileManager *fileManager;
 __block RACSubject *receiptValidationStatusProviderErrorsSubject;
 __block RACSubject *acquiredViaSubscriptionProviderErrorsSubject;
+__block RACSubject *periodicReceiptValidatorActivatorErrorsSubject;
 __block BZRStoreConfiguration *configuration;
 __block BZRStore *store;
 __block NSString *productIdentifier;
@@ -89,6 +92,7 @@ beforeEach(^{
   contentProvider = OCMClassMock([BZRProductContentProvider class]);
   acquiredViaSubscriptionProvider = OCMClassMock([BZRAcquiredViaSubscriptionProvider class]);
   storeKitFacade = OCMClassMock([BZRStoreKitFacade class]);
+  periodicValidatorActivator = OCMClassMock([BZRPeriodicReceiptValidatorActivator class]);
   bundle = OCMClassMock([NSBundle class]);
   fileManager = OCMClassMock([NSFileManager class]);
   BZRStoreKitFacadeFactory *storeKitFacadeFactory = OCMClassMock([BZRStoreKitFacadeFactory class]);
@@ -97,10 +101,13 @@ beforeEach(^{
 
   receiptValidationStatusProviderErrorsSubject = [RACSubject subject];
   acquiredViaSubscriptionProviderErrorsSubject = [RACSubject subject];
+  periodicReceiptValidatorActivatorErrorsSubject = [RACSubject subject];
   OCMStub([receiptValidationStatusProvider nonCriticalErrorsSignal])
       .andReturn(receiptValidationStatusProviderErrorsSubject);
   OCMStub([acquiredViaSubscriptionProvider storageErrorsSignal])
       .andReturn(acquiredViaSubscriptionProviderErrorsSubject);
+  OCMStub([periodicValidatorActivator errorsSignal])
+      .andReturn(periodicReceiptValidatorActivatorErrorsSubject);
 
   configuration =
       [[BZRStoreConfiguration alloc] initWithProductsListJSONFilePath:[LTPath pathWithPath:@"foo"]];
@@ -110,10 +117,22 @@ beforeEach(^{
   configuration.contentProvider = contentProvider;
   configuration.acquiredViaSubscriptionProvider = acquiredViaSubscriptionProvider;
   configuration.storeKitFacadeFactory = storeKitFacadeFactory;
+  configuration.periodicValidatorActivator = periodicValidatorActivator;
   configuration.applicationReceiptBundle = bundle;
   configuration.fileManager = fileManager;
   store = [[BZRStore alloc] initWithConfiguration:configuration];
   productIdentifier = @"foo";
+});
+
+context(@"periodic receipt validation", ^{
+  it(@"should send error sent by periodic receipt validator activator", ^{
+    NSError *error = [NSError lt_errorWithCode:1337];
+
+    LLSignalTestRecorder *recorder = [store.errorsSignal testRecorder];
+    [periodicReceiptValidatorActivatorErrorsSubject sendNext:error];
+
+    expect(recorder).will.sendValues(@[error]);
+  });
 });
 
 context(@"getting path to content", ^{

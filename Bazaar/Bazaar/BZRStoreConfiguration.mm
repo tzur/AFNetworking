@@ -10,6 +10,8 @@
 #import "BZRKeychainStorage.h"
 #import "BZRLocalProductsProvider.h"
 #import "BZRModifiedExpiryReceiptValidationStatusProvider.h"
+#import "BZRPeriodicReceiptValidator.h"
+#import "BZRPeriodicReceiptValidatorActivator.h"
 #import "BZRProductContentFetcher.h"
 #import "BZRProductContentManager.h"
 #import "BZRProductContentMultiFetcher.h"
@@ -24,14 +26,24 @@ NS_ASSUME_NONNULL_BEGIN
 @implementation BZRStoreConfiguration
 
 - (instancetype)initWithProductsListJSONFilePath:(LTPath *)productsListJSONFilePath {
+  /// Number of days the user is allowed to use products acquired via subscription after its
+  /// subscription has expired.
+  static const NSUInteger kExpiredSubscriptionGracePeriod = 7;
+
+  /// Number of days the receipt can remain not validated until subscription marked as expired.
+  static const NSUInteger kNotValidatedGracePeriod = 5;
+
   return [self initWithProductsListJSONFilePath:productsListJSONFilePath keychainAccessGroup:nil
-                 expiredSubscriptionGracePeriod:7 applicationUserID:nil];
+                 expiredSubscriptionGracePeriod:kExpiredSubscriptionGracePeriod
+                              applicationUserID:nil
+                 notValidatedReceiptGracePeriod:kNotValidatedGracePeriod];
 }
 
 - (instancetype)initWithProductsListJSONFilePath:(LTPath *)productsListJSONFilePath
                              keychainAccessGroup:(nullable NSString *)keychainAccessGroup
                   expiredSubscriptionGracePeriod:(NSUInteger)expiredSubscriptionGracePeriod
-                               applicationUserID:(nullable NSString *)applicationUserID {
+                               applicationUserID:(nullable NSString *)applicationUserID
+                  notValidatedReceiptGracePeriod:(NSUInteger)notValidatedReceiptGracePeriod {
   if (self = [super init]) {
     _fileManager = [NSFileManager defaultManager];
     _productsProvider =
@@ -55,13 +67,22 @@ NS_ASSUME_NONNULL_BEGIN
          underlyingProvider:validatorProvider];
     _validationStatusProvider =
         [[BZRCachedReceiptValidationStatusProvider alloc] initWithKeychainStorage:keychainStorage
-         underlyingProvider:modifiedExpiryProvider];
+         timeProvider:timeProvider underlyingProvider:modifiedExpiryProvider];
 
     _acquiredViaSubscriptionProvider =
         [[BZRAcquiredViaSubscriptionProvider alloc] initWithKeychainStorage:keychainStorage];
     _applicationReceiptBundle = [NSBundle mainBundle];
     _storeKitFacadeFactory =
         [[BZRStoreKitFacadeFactory alloc] initWithApplicationUserID:applicationUserID];
+
+    BZRPeriodicReceiptValidator *periodicReceiptValidator =
+        [[BZRPeriodicReceiptValidator alloc]
+         initWithReceiptValidationProvider:self.validationStatusProvider];
+    _periodicValidatorActivator =
+        [[BZRPeriodicReceiptValidatorActivator alloc]
+         initWithPeriodicReceiptValidator:periodicReceiptValidator
+         validationStatusProvider:self.validationStatusProvider timeProvider:timeProvider
+         gracePeriod:notValidatedReceiptGracePeriod];
   }
   return self;
 }

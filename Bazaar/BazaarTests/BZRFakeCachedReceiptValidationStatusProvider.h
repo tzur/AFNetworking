@@ -17,6 +17,19 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, readwrite, nonatomic, nullable) BZRReceiptValidationStatus *
     receiptValidationStatus;
 
+/// A replaceable last receipt validation date.
+@property (strong, readwrite, nonatomic, nullable) NSDate *lastReceiptValidationDate;
+
+/// \c YES if \c fetchReceiptValidationStatus was called, \c NO otherwise.
+@property (readonly, nonatomic) BOOL wasFetchReceiptValidationStatusCalled;
+
+/// The signal that is returned from \c fetchReceiptValidationStatus. If \c nil,
+/// \c +[RACSignal empty] is returned.
+@property (strong, nonatomic, nullable) RACSignal *signalToReturnFromFetchReceiptValidationStatus;
+
+/// \c YES if \c expireSubscription was called, \c NO otherwise.
+@property (readonly, nonatomic) BOOL wasExpireSubscriptionCalled;
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -4,7 +4,8 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @class BZRAcquiredViaSubscriptionProvider, BZRCachedReceiptValidationStatusProvider,
-    BZRProductContentManager, BZRProductContentProvider, BZRStoreKitFacadeFactory, LTPath;
+    BZRPeriodicReceiptValidatorActivator, BZRProductContentManager, BZRProductContentProvider,
+    BZRStoreKitFacadeFactory, LTPath;
 
 @protocol BZRProductsProvider;
 
@@ -14,8 +15,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)init NS_UNAVAILABLE;
 
 /// Initializes the in-app store configuration with a new instance of \c BZRKeychainStorage with
-/// accessGroup set to \c nil, with \c expiredSubscriptionGracePeriod set to \c 7, and with
-/// \c applicationUserID set to \c nil.
+/// accessGroup set to \c nil. \c expiredSubscriptionGracePeriod is set to \c 7.
+/// \c applicationUserID is set to \c nil. \c notValidatedReceiptGracePeriod is set to \c 5.
 - (instancetype)initWithProductsListJSONFilePath:(LTPath *)productsListJSONFilePath;
 
 /// Initializes the in-app store configuration with default parameters. \c productsListJSONFilePath
@@ -23,7 +24,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// of data of a specific group from storage. \c expiredSubscriptionGracePeriod defines the number
 /// of days the user is allowed to use products acquired via subscription after its subscription has
 /// expired. \c applicationUserID is an optional unique identifer for the user's account, used for
-/// making purchases and restoring transactions.
+/// making purchases and restoring transactions. \c notValidatedReceiptGracePeriod determines the
+/// number of days the receipt can remain not validated until subscription marked as expired.
 ///
 /// \c productsProvider will be initialized with \c BZRLocalProductsProvider with the given
 /// \c productsListJSONFilePath.
@@ -50,10 +52,14 @@ NS_ASSUME_NONNULL_BEGIN
 /// \c fileManager will be initialized with \c +[NSFileManager defaultManager].
 ///
 /// \c storeKitFacadeFactory will be initialized using \c -[BZRStoreKitFacadeFactory init].
+///
+/// \c periodicValidatorActivator will be initialized with the default initializer of
+/// \c BZRPeriodicReceiptValidatorActivator.
 - (instancetype)initWithProductsListJSONFilePath:(LTPath *)productsListJSONFilePath
                              keychainAccessGroup:(nullable NSString *)keychainAccessGroup
                   expiredSubscriptionGracePeriod:(NSUInteger)expiredSubscriptionGracePeriod
                                applicationUserID:(nullable NSString *)applicationUserID
+                  notValidatedReceiptGracePeriod:(NSUInteger)notValidatedReceiptGracePeriod
     NS_DESIGNATED_INITIALIZER;
 
 /// Provider used to fetch product list.
@@ -79,6 +85,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Factory used to create \c BZRStoreKitFacade.
 @property (strong, nonatomic) BZRStoreKitFacadeFactory *storeKitFacadeFactory;
+
+/// Activator used to control the periodic receipt validation.
+@property (strong, nonatomic) BZRPeriodicReceiptValidatorActivator *periodicValidatorActivator;
 
 @end
 

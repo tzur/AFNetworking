@@ -7,10 +7,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation BZRTimeConversion
 
-+ (NSTimeInterval)numberOfSecondsInDays:(NSUInteger)days {
-  static const NSTimeInterval kNumberOfSecondsInDay = 24 * 60 * 60;
+static const NSTimeInterval kNumberOfSecondsInDay = 24 * 60 * 60;
 
++ (NSTimeInterval)numberOfSecondsInDays:(NSUInteger)days {
   return ((NSTimeInterval)days) * kNumberOfSecondsInDay;
+}
+
++ (NSInteger)numberOfDaysInSeconds:(NSTimeInterval)seconds {
+  return (NSInteger)std::round(seconds / kNumberOfSecondsInDay);
 }
 
 @end

@@ -19,7 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// Creates and returns an instance of \c NSError with the given error \c code. \c arhivePath
 /// is the path to the archive file that the failing archiving operation was executed on.
 /// \c failingItemPath is the path to the file or directory that caused the failure.
-/// \c underlyingError may be provided to specify an underlyign error. A custom error \c description
+/// \c underlyingError may be provided to specify an underlying error. A custom error \c description
 /// may be provided.
 + (instancetype)bzr_errorWithCode:(NSInteger)code
                       archivePath:(NSString *)archivePath
@@ -31,10 +31,22 @@ NS_ASSUME_NONNULL_BEGIN
 /// \c transaction.
 + (instancetype)bzr_errorWithCode:(NSInteger)code transaction:(SKPaymentTransaction *)transaction;
 
+
 /// Creates and returns an instance of \c NSError with \c domain set to \c LTErrorDomain, \c code
 /// set to \c BZRErrorCodeInvalidProductIdentifier and \c bzr_productIdentifiers set to the given
 /// \c productIdentifiers.
 + (instancetype)bzr_invalidProductsErrorWithIdentifers:(NSSet<NSString *> *)productIdentifiers;
+
+/// Creates and returns an instance of \c NSError with error code
+/// \c BZRErrorPeriodicReceiptValidationFailed. \c secondsUntilSubscriptionInvalidation is the
+/// number of seconds left until subscription is marked as expired. \c receiptLastValidationDate is
+/// the date of the last receipt validation. \c underlyingError specifies the reason for the failure
+/// in the periodic validation.
++ (instancetype)bzr_errorWithSecondsUntilSubscriptionInvalidation:
+    (NSNumber *)secondsUntilSubscriptionInvalidation
+    lastReceiptValidationDate:(NSDate *)lastReceiptValidationDate
+    underlyingError:(NSError *)underlyingError;
+
 
 /// Exception object wrapped by this error.
 @property (readonly, nonatomic, nullable) NSException *bzr_exception;
@@ -53,6 +65,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Invalid product identifiers related to the error.
 @property (readonly, nonatomic, nullable) NSSet<NSString *> *bzr_productIdentifiers;
+
+/// Seconds left until subscription is marked as expired. a negative value means the subscription
+/// was marked as expired already or will be marked as expired shortly.
+@property (readonly, nonatomic, nullable) NSNumber *bzr_secondsUntilSubscriptionInvalidation;
+
+/// Date of the last time receipt was validated.
+@property (readonly, nonatomic, nullable) NSDate *bzr_lastReceiptValidationDate;
 
 @end
 
