@@ -4,24 +4,24 @@
   <dict>
     <!-- Label under a photo album, describing the number of photos currently present in that
      album. -->
-    <key>%lu photos</key>
+    <key>%lu Photos</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
-      <string>%#@photos@</string>
-      <key>photos</key>
+      <string>%#@Photos@</string>
+      <key>Photos</key>
       <dict>
         <key>NSStringFormatSpecTypeKey</key>
         <string>NSStringPluralRuleType</string>
         <key>NSStringFormatValueTypeKey</key>
         <string>lu</string>
         <key>zero</key>
-        <string>Нет фото</string>
+        <string>Нет Фото</string>
         <key>one</key>
-        <string>1 фото</string>
+        <string>1 Фото</string>
         <key>many</key>
-        <string>%lu фото</string>
+        <string>%lu Фото</string>
         <key>other</key>
-        <string>%lu фото</string>
+        <string>%lu Фото</string>
       </dict>
     </dict>
   </dict>
