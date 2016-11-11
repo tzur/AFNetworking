@@ -852,7 +852,7 @@ context(@"getting product list", ^{
 
     expect(recorder).will.matchValue(0, ^BOOL(NSSet<BZRProduct *> *productList) {
       BZRProductPriceInfo *priceInfo = [productList allObjects].firstObject.priceInfo;
-      return [priceInfo.localizedPrice isEqualToString:@"1.337,37 €"] &&
+      return [priceInfo.localizedPrice isEqualToString:@"1.337 €"] &&
           [priceInfo.price isEqualToNumber:price];
     });
   });

@@ -23,6 +23,10 @@ NS_ASSUME_NONNULL_BEGIN
   [numberFormatter setFormatterBehavior:NSNumberFormatterBehavior10_4];
   [numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
   [numberFormatter setLocale:product.priceLocale];
+
+  // TODO:(dlahyani) This is a patch for dealing with high prices for the soft-launch, that is only
+  // released in the Russian AppStore. We should allow 2 fraction digits for most currencies though.
+  [numberFormatter setMaximumFractionDigits:0];
   return [numberFormatter stringFromNumber:product.price];
 }
 
