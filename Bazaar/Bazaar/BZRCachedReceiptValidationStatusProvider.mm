@@ -26,7 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
     receiptValidationStatus;
 
 /// Holds the date of the last receipt validation. \c nil if \c receiptValidationStatus is \c nil.
-@property (strong, readwrite, nonatomic) NSDate *lastReceiptValidationDate;
+@property (strong, readwrite, nonatomic, nullable) NSDate *lastReceiptValidationDate;
 
 /// Sends storage errors as values. The subject completes when the receiver is deallocated. The
 /// subject doesn't err.
@@ -40,11 +40,23 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize receiptValidationStatus = _receiptValidationStatus;
 @synthesize lastReceiptValidationDate = _lastReceiptValidationDate;
 
-/// Key to the \c receiptValidationStatus stored in the secure storage.
-NSString * const kValidationStatusStorageKey = @"validationStatus";
+/// Storage key to which the cached receipt validation status is stored to. Cached status is stored
+/// as an \c NSDictionary containg both the receipt validation status and the last receipt
+/// validation date.
+NSString * const kCachedReceiptValidationStatusStorageKey = @"receiptValidationStatus";
 
-/// Key for secure storage of the date of the last receipt validation.
-NSString * const kLastReceiptValidationDateKey = @"lastReceiptValidationDate";
+/// Key to a \c BZRReceiptValidationStatus in the cached receipt validation status.
+NSString * const kValidationStatusKey = @"validationStatus";
+
+/// Key to an \c NSDate in the cached receipt validation status specifying the time and date of the
+/// cached receipt validation status.
+NSString * const kValidationDateKey = @"validationDate";
+
+/// Key to the \c receiptValidationStatus stored in the secure storage used in previous versions.
+NSString * const kOldVersionValidationStatusStorageKey = @"validationStatus";
+
+/// Key for secure storage of the date of the last receipt validation used in previous versions.
+NSString * const kOldVersionValidationDateStorageKey = @"lastReceiptValidationDate";
 
 #pragma mark -
 #pragma mark Initialization
@@ -73,47 +85,61 @@ NSString * const kLastReceiptValidationDateKey = @"lastReceiptValidationDate";
 
 - (nullable BZRReceiptValidationStatus *)receiptValidationStatus {
   if (!_receiptValidationStatus) {
-    _receiptValidationStatus = [self loadValueOfClass:[BZRReceiptValidationStatus class]
-                                               forKey:kValidationStatusStorageKey];
+    [self loadReceiptValidationStatus];
   }
   return _receiptValidationStatus;
 }
 
 - (void)setReceiptValidationStatus:(nullable BZRReceiptValidationStatus *)receiptValidationStatus {
   _receiptValidationStatus = receiptValidationStatus;
-  BOOL success = [self storeValue:receiptValidationStatus forKey:kValidationStatusStorageKey];
-  if (success) {
-    [self storeLastReceiptValidationDate];
-  }
+  [self storeReceiptValidationStatus:receiptValidationStatus];
 }
-
-- (void)storeLastReceiptValidationDate {
-  @weakify(self);
-  [[self.timeProvider currentTime] subscribeNext:^(NSDate *currentTime) {
-    @strongify(self);
-    self.lastReceiptValidationDate = currentTime;
-    [self storeValue:self.lastReceiptValidationDate forKey:kLastReceiptValidationDateKey];
-  } error:^(NSError *error) {
-    @strongify(self);
-    [self.nonCriticalErrorsSubject sendNext:error];
-  }];
-}
-
-#pragma mark -
-#pragma mark Getting last validation date
-#pragma mark -
 
 - (nullable NSDate *)lastReceiptValidationDate {
-  if (!_lastReceiptValidationDate && self.receiptValidationStatus) {
-    _lastReceiptValidationDate =
-        [self loadValueOfClass:[NSDate class] forKey:kLastReceiptValidationDateKey];
+  if (!_lastReceiptValidationDate) {
+    [self loadReceiptValidationStatus];
   }
   return _lastReceiptValidationDate;
 }
 
 #pragma mark -
-#pragma mark Loading/store values
+#pragma mark Caching receipt validation
 #pragma mark -
+
+- (void)loadReceiptValidationStatus {
+  NSDictionary<NSString *, id> *cachedReceiptValidationStatus =
+      [self loadValueOfClass:[NSDictionary class] forKey:kCachedReceiptValidationStatusStorageKey];
+  if (!cachedReceiptValidationStatus) {
+    cachedReceiptValidationStatus = [self loadOldVersionCachedValidationStatusFormat];
+  }
+
+  if (!cachedReceiptValidationStatus) {
+    return;
+  }
+
+  _receiptValidationStatus = cachedReceiptValidationStatus[kValidationStatusKey];
+  _lastReceiptValidationDate = cachedReceiptValidationStatus[kValidationDateKey];
+}
+
+- (nullable NSDictionary<NSString *, id> *)loadOldVersionCachedValidationStatusFormat {
+  BZRReceiptValidationStatus *validationStatus =
+      [self loadValueOfClass:[BZRReceiptValidationStatus class]
+                      forKey:kOldVersionValidationStatusStorageKey];
+  if (!validationStatus) {
+    return nil;
+  }
+  
+  NSDate *validationDate = [self loadValueOfClass:[NSDate class]
+                                           forKey:kOldVersionValidationDateStorageKey];
+  if (!validationDate) {
+    return nil;
+  }
+
+  return @{
+    kValidationStatusKey: validationStatus,
+    kValidationDateKey: validationDate
+  };
+}
 
 - (nullable id)loadValueOfClass:(Class)valueClass forKey:(NSString *)key {
   NSError *error;
@@ -125,8 +151,35 @@ NSString * const kLastReceiptValidationDateKey = @"lastReceiptValidationDate";
   return value;
 }
 
+- (void)storeReceiptValidationStatus:
+    (nullable BZRReceiptValidationStatus *)receiptValidationStatus {
+  if (!receiptValidationStatus) {
+    [self storeValue:nil forKey:kCachedReceiptValidationStatusStorageKey];
+    return;
+  }
 
-- (BOOL)storeValue:(id)value forKey:(NSString *)key {
+  @weakify(self);
+  [[[[self.timeProvider currentTime]
+      doNext:^(NSDate *currentTime) {
+        self.lastReceiptValidationDate = currentTime;
+      }]
+      map:^NSDictionary<NSString *, id> *(NSDate *currentTime) {
+        return @{
+          kValidationStatusKey: receiptValidationStatus,
+          kValidationDateKey: currentTime
+        };
+      }]
+      subscribeNext:^(NSDictionary<NSString *, id> *receiptValidationStatusForCaching) {
+        @strongify(self);
+        [self storeValue:receiptValidationStatusForCaching
+                  forKey:kCachedReceiptValidationStatusStorageKey];
+      } error:^(NSError *error) {
+        @strongify(self);
+        [self.nonCriticalErrorsSubject sendNext:error];
+      }];
+}
+
+- (BOOL)storeValue:(nullable id)value forKey:(NSString *)key {
   NSError *error;
   BOOL success = [self.keychainStorage setValue:value forKey:key error:&error];
   if (!success) {
