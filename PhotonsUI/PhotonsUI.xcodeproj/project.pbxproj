@@ -56,6 +56,8 @@
 		84AB7E5D1C85DF2D008E254A /* PTUImageCellViewSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 84AB7E5C1C85DF2D008E254A /* PTUImageCellViewSpec.mm */; };
 		84AB7E771C85DF3A008E254A /* PTUImageCell.mm in Sources */ = {isa = PBXBuildFile; fileRef = 84AB7E751C85DF3A008E254A /* PTUImageCell.mm */; };
 		84AFE8A41D11863C0095C192 /* PTUCellSizingStrategy.mm in Sources */ = {isa = PBXBuildFile; fileRef = 84AFE8A31D11863C0095C192 /* PTUCellSizingStrategy.mm */; };
+		84B63E5C1DD8D73900ECF65B /* PTUFlattenningChangesetProvider.mm in Sources */ = {isa = PBXBuildFile; fileRef = 84B63E5B1DD8D73900ECF65B /* PTUFlattenningChangesetProvider.mm */; };
+		84B63E831DD8DCEB00ECF65B /* PTUFlattenningChangesetProviderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 84B63E821DD8DCEB00ECF65B /* PTUFlattenningChangesetProviderSpec.mm */; };
 		84BE48E11D2E43F60090105C /* PTUCollectionViewControllerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 84BE48DB1D2E43F60090105C /* PTUCollectionViewControllerSpec.mm */; };
 		84BE48E21D2E43F60090105C /* PTUDataSourceProviderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 84BE48DC1D2E43F60090105C /* PTUDataSourceProviderSpec.mm */; };
 		84BE48E31D2E43F60090105C /* PTUFakeDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 84BE48DE1D2E43F60090105C /* PTUFakeDataSource.m */; };
@@ -479,6 +481,9 @@
 		84AB7E751C85DF3A008E254A /* PTUImageCell.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PTUImageCell.mm; sourceTree = "<group>"; };
 		84AFE8A21D11863C0095C192 /* PTUCellSizingStrategy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTUCellSizingStrategy.h; sourceTree = "<group>"; };
 		84AFE8A31D11863C0095C192 /* PTUCellSizingStrategy.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PTUCellSizingStrategy.mm; sourceTree = "<group>"; };
+		84B63E5A1DD8D73900ECF65B /* PTUFlattenningChangesetProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTUFlattenningChangesetProvider.h; sourceTree = "<group>"; };
+		84B63E5B1DD8D73900ECF65B /* PTUFlattenningChangesetProvider.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PTUFlattenningChangesetProvider.mm; sourceTree = "<group>"; };
+		84B63E821DD8DCEB00ECF65B /* PTUFlattenningChangesetProviderSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = PTUFlattenningChangesetProviderSpec.mm; path = ../PhotonsUI/PTUFlattenningChangesetProviderSpec.mm; sourceTree = "<group>"; };
 		84BE48DB1D2E43F60090105C /* PTUCollectionViewControllerSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PTUCollectionViewControllerSpec.mm; sourceTree = "<group>"; };
 		84BE48DC1D2E43F60090105C /* PTUDataSourceProviderSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PTUDataSourceProviderSpec.mm; sourceTree = "<group>"; };
 		84BE48DD1D2E43F60090105C /* PTUFakeDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTUFakeDataSource.h; sourceTree = "<group>"; };
@@ -617,6 +622,7 @@
 			children = (
 				848E00061C591DD1001D8368 /* PhotonsUI.h */,
 				848E0A441C5921FE001D8368 /* Base */,
+				84B63E7F1DD8D79100ECF65B /* Changeset Provider */,
 				887267B91D7C3C5C00D4F2A6 /* Localization */,
 				848E001F1C591E7B001D8368 /* Supporting Files */,
 			);
@@ -671,30 +677,8 @@
 		848E00241C59208B001D8368 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				8428F3751C676A480007B0A5 /* PTUAlbumChangesetProviderSpec.mm */,
-				BE7B8C2C1D37ACB00013F1FC /* PTUArrayChangesetProviderSpec.mm */,
-				84F830DC1D11986E00A01882 /* PTUCellSizingStrategySpec.mm */,
-				8449B5F71D1AD6F10054272C /* PTUChangesetMetadataSpec.mm */,
-				84884C7E1C71D83000DBB987 /* PTUChangesetMoveSpec.mm */,
-				84765E331D29411500D3D5C5 /* PTUChangesetProviderReverserSpec.mm */,
-				8428F3AE1C68F7590007B0A5 /* PTUChangesetSpec.mm */,
-				8482E0311D2143860084D565 /* PTUCollectionViewConfigurationSpec.mm */,
-				84BE48DB1D2E43F60090105C /* PTUCollectionViewControllerSpec.mm */,
-				84AA15001D3A17C7002EE833 /* PTUCompoundChangesetProviderSpec.mm */,
-				84BE48DC1D2E43F60090105C /* PTUDataSourceProviderSpec.mm */,
-				8449EC351D10443E008FD345 /* PTUDataSourceSpec.mm */,
-				8414249F1D77126600968C36 /* PTUErrorViewProvider.mm */,
-				84BE48DD1D2E43F60090105C /* PTUFakeDataSource.h */,
-				84BE48DE1D2E43F60090105C /* PTUFakeDataSource.m */,
-				84CCAFAA1D64A8AF00BD7323 /* PTUFakeImageCellViewModel.h */,
-				84CCAFAB1D64A8AF00BD7323 /* PTUFakeImageCellViewModel.m */,
-				84CCAF871D64A6A900BD7323 /* PTUImageCellControllerSpec.mm */,
-				848D31501D0F06CE006BC52F /* PTUImageCellViewModelProviderSpec.mm */,
-				84A0DD0E1C874F3E005A98F3 /* PTUImageCellViewModelSpec.mm */,
-				84AB7E5C1C85DF2D008E254A /* PTUImageCellViewSpec.mm */,
-				84D741871C7A270500BCA294 /* PTUTestUtils.h */,
-				84D741881C7A270500BCA294 /* PTUTestUtils.mm */,
-				84765E311D293E2600D3D5C5 /* PTUReversedRandomAccessCollectionSpec.mm */,
+				84B63E801DD8DC8F00ECF65B /* Base */,
+				84B63E811DD8DC9500ECF65B /* Changeset Provider */,
 			);
 			name = Tests;
 			sourceTree = "<group>";
@@ -774,10 +758,6 @@
 		848E0A441C5921FE001D8368 /* Base */ = {
 			isa = PBXGroup;
 			children = (
-				8414ED571C624E6B00014DD1 /* PTUAlbumChangesetProvider.h */,
-				8414ED581C624E6B00014DD1 /* PTUAlbumChangesetProvider.m */,
-				BE7B8C0E1D37A5940013F1FC /* PTUArrayChangesetProvider.h */,
-				BE7B8C0F1D37A5940013F1FC /* PTUArrayChangesetProvider.mm */,
 				84AFE8A21D11863C0095C192 /* PTUCellSizingStrategy.h */,
 				84AFE8A31D11863C0095C192 /* PTUCellSizingStrategy.mm */,
 				8428F3AA1C68E6840007B0A5 /* PTUChangeset.h */,
@@ -787,12 +767,8 @@
 				84884C171C70E63500DBB987 /* PTUChangesetMove.h */,
 				84884C181C70E63500DBB987 /* PTUChangesetMove.m */,
 				846E18901C730F2100B94467 /* PTUChangesetProvider.h */,
-				84765E101D29393600D3D5C5 /* PTUChangesetProviderReverser.h */,
-				84765E111D29393600D3D5C5 /* PTUChangesetProviderReverser.m */,
 				84BE49001D2E44150090105C /* PTUCollectionViewController.h */,
 				84BE49011D2E44150090105C /* PTUCollectionViewController.mm */,
-				84A6CE1B1D392502003369E0 /* PTUCompoundChangesetProvider.h */,
-				84A6CE1C1D392502003369E0 /* PTUCompoundChangesetProvider.m */,
 				84BE49021D2E44150090105C /* PTUDataSourceProvider.h */,
 				84BE49031D2E44150090105C /* PTUDataSourceProvider.m */,
 				8414247B1D770FDC00968C36 /* PTUErrorViewProvider.h */,
@@ -813,8 +789,6 @@
 				84A0DC3B1C8747AE005A98F3 /* PTUImageCellViewModel.m */,
 				848D31321D0F0415006BC52F /* PTUImageCellViewModelProvider.h */,
 				848D31331D0F0415006BC52F /* PTUImageCellViewModelProvider.mm */,
-				84765E2E1D293A9E00D3D5C5 /* PTUReversedRandomAccessCollection.h */,
-				84765E2F1D293A9E00D3D5C5 /* PTUReversedRandomAccessCollection.m */,
 			);
 			name = Base;
 			sourceTree = "<group>";
@@ -901,6 +875,64 @@
 				8B0B9A281CA6C09000ED2334 /* DropboxSDK.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		84B63E7F1DD8D79100ECF65B /* Changeset Provider */ = {
+			isa = PBXGroup;
+			children = (
+				BE7B8C0E1D37A5940013F1FC /* PTUArrayChangesetProvider.h */,
+				BE7B8C0F1D37A5940013F1FC /* PTUArrayChangesetProvider.mm */,
+				8414ED571C624E6B00014DD1 /* PTUAlbumChangesetProvider.h */,
+				8414ED581C624E6B00014DD1 /* PTUAlbumChangesetProvider.m */,
+				84765E101D29393600D3D5C5 /* PTUChangesetProviderReverser.h */,
+				84765E111D29393600D3D5C5 /* PTUChangesetProviderReverser.m */,
+				84A6CE1B1D392502003369E0 /* PTUCompoundChangesetProvider.h */,
+				84A6CE1C1D392502003369E0 /* PTUCompoundChangesetProvider.m */,
+				84B63E5A1DD8D73900ECF65B /* PTUFlattenningChangesetProvider.h */,
+				84B63E5B1DD8D73900ECF65B /* PTUFlattenningChangesetProvider.mm */,
+				84765E2E1D293A9E00D3D5C5 /* PTUReversedRandomAccessCollection.h */,
+				84765E2F1D293A9E00D3D5C5 /* PTUReversedRandomAccessCollection.m */,
+			);
+			name = "Changeset Provider";
+			sourceTree = "<group>";
+		};
+		84B63E801DD8DC8F00ECF65B /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				84F830DC1D11986E00A01882 /* PTUCellSizingStrategySpec.mm */,
+				8449B5F71D1AD6F10054272C /* PTUChangesetMetadataSpec.mm */,
+				84884C7E1C71D83000DBB987 /* PTUChangesetMoveSpec.mm */,
+				8428F3AE1C68F7590007B0A5 /* PTUChangesetSpec.mm */,
+				8482E0311D2143860084D565 /* PTUCollectionViewConfigurationSpec.mm */,
+				84BE48DB1D2E43F60090105C /* PTUCollectionViewControllerSpec.mm */,
+				84BE48DC1D2E43F60090105C /* PTUDataSourceProviderSpec.mm */,
+				8449EC351D10443E008FD345 /* PTUDataSourceSpec.mm */,
+				8414249F1D77126600968C36 /* PTUErrorViewProvider.mm */,
+				84BE48DD1D2E43F60090105C /* PTUFakeDataSource.h */,
+				84BE48DE1D2E43F60090105C /* PTUFakeDataSource.m */,
+				84CCAFAA1D64A8AF00BD7323 /* PTUFakeImageCellViewModel.h */,
+				84CCAFAB1D64A8AF00BD7323 /* PTUFakeImageCellViewModel.m */,
+				84CCAF871D64A6A900BD7323 /* PTUImageCellControllerSpec.mm */,
+				848D31501D0F06CE006BC52F /* PTUImageCellViewModelProviderSpec.mm */,
+				84A0DD0E1C874F3E005A98F3 /* PTUImageCellViewModelSpec.mm */,
+				84AB7E5C1C85DF2D008E254A /* PTUImageCellViewSpec.mm */,
+				84D741871C7A270500BCA294 /* PTUTestUtils.h */,
+				84D741881C7A270500BCA294 /* PTUTestUtils.mm */,
+			);
+			name = Base;
+			sourceTree = "<group>";
+		};
+		84B63E811DD8DC9500ECF65B /* Changeset Provider */ = {
+			isa = PBXGroup;
+			children = (
+				8428F3751C676A480007B0A5 /* PTUAlbumChangesetProviderSpec.mm */,
+				BE7B8C2C1D37ACB00013F1FC /* PTUArrayChangesetProviderSpec.mm */,
+				84765E331D29411500D3D5C5 /* PTUChangesetProviderReverserSpec.mm */,
+				84AA15001D3A17C7002EE833 /* PTUCompoundChangesetProviderSpec.mm */,
+				84B63E821DD8DCEB00ECF65B /* PTUFlattenningChangesetProviderSpec.mm */,
+				84765E311D293E2600D3D5C5 /* PTUReversedRandomAccessCollectionSpec.mm */,
+			);
+			name = "Changeset Provider";
 			sourceTree = "<group>";
 		};
 		84F11CF21D2ECE5A002FA1CF /* WFTestUtils */ = {
@@ -1453,6 +1485,7 @@
 				848E09761C59212F001D8368 /* LLReactiveMatchersMessageBuilder.m in Sources */,
 				84A0DD0F1C874F3E005A98F3 /* PTUImageCellViewModelSpec.mm in Sources */,
 				8482E0321D2143860084D565 /* PTUCollectionViewConfigurationSpec.mm in Sources */,
+				84B63E831DD8DCEB00ECF65B /* PTUFlattenningChangesetProviderSpec.mm in Sources */,
 				84F467B01D0839F20060EFAA /* PTNFakeAssetDescriptor.m in Sources */,
 				848D31511D0F06CE006BC52F /* PTUImageCellViewModelProviderSpec.mm in Sources */,
 				848E0A411C59217D001D8368 /* LTTestUtils.mm in Sources */,
@@ -1485,6 +1518,7 @@
 				84AFE8A41D11863C0095C192 /* PTUCellSizingStrategy.mm in Sources */,
 				84FF72F51C8EED9800D1DA9F /* PTUChangeset.m in Sources */,
 				84BE49051D2E44150090105C /* PTUDataSourceProvider.m in Sources */,
+				84B63E5C1DD8D73900ECF65B /* PTUFlattenningChangesetProvider.mm in Sources */,
 				841FA8C91D6D966A009C44A9 /* PTUHeaderCell.m in Sources */,
 				887267BD1D7C3C8F00D4F2A6 /* PTULocalization.mm in Sources */,
 				84FF72F61C8EED9900D1DA9F /* PTUChangesetMove.m in Sources */,
