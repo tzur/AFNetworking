@@ -104,4 +104,40 @@ void LTCVPixelBufferPlaneImageForReading(CVPixelBufferRef pixelBuffer, size_t pl
 void LTCVPixelBufferPlaneImageForWriting(CVPixelBufferRef pixelBuffer, size_t planeIndex,
                                          LTCVPixelBufferWriteBlock block);
 
+/// Block for reading and writing pixels of a pixel buffer using \c cv::Mat. \c images is a vector
+/// of matrices, each representing a single plane, at the same index. For non planar pixel buffers,
+/// contains a single matrix.
+///
+/// @note \c images (and its matrices) must not be used outside of the block.
+typedef void (^LTCVPixelBufferImagesBlock)(const std::vector<cv::Mat> &images);
+
+/// Executes the given \c block with a vector of matrices, each wrapping the pixels of a plane with
+/// the same index. For non planar pixel buffers, the vector contains a single matrix. The pixel
+/// buffer is properly locked and unlocked, with the given \c lockFlags.
+///
+/// Raises \c LTGLException if locking or unlocking fails.
+///
+/// @note You must not modify pixels of the pixel buffer if it is being locked for reading
+/// (using \c kCVPixelBufferLock_ReadOnly flag).
+void LTCVPixelBufferImages(CVPixelBufferRef pixelBuffer, CVPixelBufferLockFlags lockFlags,
+                           LTCVPixelBufferImagesBlock block);
+
+/// Executes the given \c block with a vector of matrices, each wrapping the pixels of a plane with
+/// the same index. For non planar pixel buffers, the vector contains a single matrix. The pixel
+/// buffer is properly locked and unlocked for reading.
+///
+/// Raises \c LTGLException if locking or unlocking fails.
+///
+/// @note You must not modify pixels of the pixel buffer.
+void LTCVPixelBufferImagesForReading(CVPixelBufferRef pixelBuffer,
+                                     LTCVPixelBufferImagesBlock block);
+
+/// Executes the given \c block with a vector of matrices, each wrapping the pixels of a plane with
+/// the same index. For non planar pixel buffers, the vector contains a single matrix. The pixel
+/// buffer is properly locked and unlocked for writing.
+///
+/// Raises \c LTGLException if locking or unlocking fails.
+void LTCVPixelBufferImagesForWriting(CVPixelBufferRef pixelBuffer,
+                                     LTCVPixelBufferImagesBlock block);
+
 NS_ASSUME_NONNULL_END
