@@ -83,7 +83,6 @@ NS_ASSUME_NONNULL_BEGIN
 
   return [[[[[RACSignal
       return:url]
-      subscribeOn:[RACScheduler scheduler]]
       tryMap:^id(NSURL *url, NSError *__autoreleasing *error) {
         return [self requestFromURL:url error:error];
       }]
@@ -92,7 +91,8 @@ NS_ASSUME_NONNULL_BEGIN
       }]
       doNext:^(UIImage *image) {
         [self.cache setObject:image forKey:url];
-      }];
+      }]
+      subscribeOn:[RACScheduler scheduler]];
 }
 
 - (nullable WFPaintCodeImageRequest *)requestFromURL:(NSURL *)url
