@@ -99,6 +99,35 @@ it(@"should build view model with highlighted image and fixed size", ^{
   expect(viewModel.highlightedImage).to.equal(highlightedImage);
 });
 
+it(@"should build view model with image and defined line width", ^{
+  NSURL *imageURL = [NSURL URLWithString:@"image"];
+  NSURL *highlightedImageURL = [NSURL URLWithString:@"highlighted"];
+  UIImage *image = WFCreateBlankImage(1, 1);
+  UIImage *highlightedImage = WFCreateBlankImage(1, 1);
+
+  OCMExpect([imageProvider imageWithURL:[OCMArg checkWithBlock:^BOOL(NSURL *url) {
+    return [url.path isEqualToString:@"image"] &&
+        [url.lt_queryDictionary[@"lineWidth"] isEqualToString:@"1.5"];
+  }]]).andReturn([RACSignal return:image]);
+
+  OCMExpect([imageProvider imageWithURL:[OCMArg checkWithBlock:^BOOL(NSURL *url) {
+    return [url.path isEqualToString:@"highlighted"] &&
+    [url.lt_queryDictionary[@"lineWidth"] isEqualToString:@"1.5"];
+  }]]).andReturn([RACSignal return:highlightedImage]);
+
+  id<WFImageViewModel> viewModel =
+      [WFImageViewModelBuilder builderWithImageURL:imageURL]
+          .highlightedImageURL(highlightedImageURL)
+          .lineWidth(1.5)
+          .imageProvider(imageProvider)
+          .build();
+
+  OCMVerifyAll(imageProvider);
+
+  expect(viewModel.image).to.equal(image);
+  expect(viewModel.highlightedImage).to.equal(highlightedImage);
+});
+
 context(@"size of view bounds", ^{
   __block UIView *view;
 
@@ -320,6 +349,101 @@ context(@"color", ^{
   });
 });
 
+context(@"line width", ^{
+  it(@"should pass line width to image provider and highlighted image provider", ^{
+    CGFloat expectedLineWidth = 1.4;
+
+    OCMExpect([imageProvider imageWithURL:[OCMArg checkWithBlock:^BOOL(NSURL *url) {
+      CGFloat lineWidth = [url.lt_queryDictionary[@"lineWidth"] floatValue];
+      return [url.path isEqualToString:@"image"] && std::abs(expectedLineWidth - lineWidth) < 0.001;
+    }]]).andReturn([RACSignal never]);
+
+    OCMExpect([imageProvider imageWithURL:[OCMArg checkWithBlock:^BOOL(NSURL *url) {
+      CGFloat lineWidth = [url.lt_queryDictionary[@"lineWidth"] floatValue];
+      return [url.path isEqualToString:@"highlighted"] &&
+          std::abs(expectedLineWidth - lineWidth) < 0.001;
+    }]]).andReturn([RACSignal never]);
+
+    id<WFImageViewModel> __unused viewModel =
+        [WFImageViewModelBuilder builderWithImageURL:[NSURL URLWithString:@"image"]]
+            .highlightedImageURL([NSURL URLWithString:@"highlighted"])
+            .imageProvider(imageProvider)
+            .lineWidth(expectedLineWidth)
+            .build();
+
+    OCMVerifyAll(imageProvider);
+  });
+
+  it(@"should pass line width to colored image provider and highlighted image provider", ^{
+    CGFloat expectedLineWidth = 1.4;
+    UIColor *expectedColor = [UIColor wf_colorWithHex:@"#12345678"];
+    UIColor *expectedHighlightedColor = [UIColor wf_colorWithHex:@"#87654321"];
+
+    OCMExpect([imageProvider imageWithURL:[OCMArg checkWithBlock:^BOOL(NSURL *url) {
+      CGFloat lineWidth = [url.lt_queryDictionary[@"lineWidth"] floatValue];
+      UIColor *color = [UIColor wf_colorWithHex:url.lt_queryDictionary[@"color"]];
+
+      return [url.path isEqualToString:@"image"] &&
+          std::abs(expectedLineWidth - lineWidth) < 0.001 &&
+          [expectedColor isEqual:color];
+    }]]).andReturn([RACSignal never]);
+
+    OCMExpect([imageProvider imageWithURL:[OCMArg checkWithBlock:^BOOL(NSURL *url) {
+      CGFloat lineWidth = [url.lt_queryDictionary[@"lineWidth"] floatValue];
+      UIColor *color = [UIColor wf_colorWithHex:url.lt_queryDictionary[@"color"]];
+
+      return [url.path isEqualToString:@"highlighted"] &&
+          std::abs(expectedLineWidth - lineWidth) < 0.001 &&
+          [expectedHighlightedColor isEqual:color];
+    }]]).andReturn([RACSignal never]);
+
+    id<WFImageViewModel> __unused viewModel =
+        [WFImageViewModelBuilder builderWithImageURL:[NSURL URLWithString:@"image"]]
+            .highlightedImageURL([NSURL URLWithString:@"highlighted"])
+            .imageProvider(imageProvider)
+            .lineWidth(expectedLineWidth)
+            .color(expectedColor)
+            .highlightedColor(expectedHighlightedColor)
+            .build();
+
+    OCMVerifyAll(imageProvider);
+  });
+
+  it(@"should pass line width to colored image provider and inexplicitly set highlighted image "
+     "provider", ^{
+    CGFloat expectedLineWidth = 1.4;
+    UIColor *expectedColor = [UIColor wf_colorWithHex:@"#12345678"];
+    UIColor *expectedHighlightedColor = [UIColor wf_colorWithHex:@"#87654321"];
+
+    OCMExpect([imageProvider imageWithURL:[OCMArg checkWithBlock:^BOOL(NSURL *url) {
+      CGFloat lineWidth = [url.lt_queryDictionary[@"lineWidth"] floatValue];
+      UIColor *color = [UIColor wf_colorWithHex:url.lt_queryDictionary[@"color"]];
+
+      return [url.path isEqualToString:@"image"] &&
+          std::abs(expectedLineWidth - lineWidth) < 0.001 &&
+          [expectedColor isEqual:color];
+    }]]).andReturn([RACSignal never]);
+
+    OCMExpect([imageProvider imageWithURL:[OCMArg checkWithBlock:^BOOL(NSURL *url) {
+      CGFloat lineWidth = [url.lt_queryDictionary[@"lineWidth"] floatValue];
+      UIColor *color = [UIColor wf_colorWithHex:url.lt_queryDictionary[@"color"]];
+      return [url.path isEqualToString:@"image"] &&
+          std::abs(expectedLineWidth - lineWidth) < 0.001 &&
+          [expectedHighlightedColor isEqual:color];
+    }]]).andReturn([RACSignal never]);
+
+    id<WFImageViewModel> __unused viewModel =
+        [WFImageViewModelBuilder builderWithImageURL:[NSURL URLWithString:@"image"]]
+            .imageProvider(imageProvider)
+            .lineWidth(expectedLineWidth)
+            .color(expectedColor)
+            .highlightedColor(expectedHighlightedColor)
+            .build();
+
+    OCMVerifyAll(imageProvider);
+  });
+});
+
 context(@"errors", ^{
   it(@"should raise if built twice", ^{
     OCMStub([imageProvider imageWithURL:OCMOCK_ANY]).andReturn([RACSignal never]);
@@ -401,6 +525,31 @@ context(@"errors", ^{
 
     expect(^{
       builder.highlightedColor([UIColor whiteColor]);
+    }).to.raise(NSInvalidArgumentException);
+  });
+  
+  it(@"should raise if non-positive line width is set", ^{
+    WFImageViewModelBuilder *builder =
+        [WFImageViewModelBuilder builderWithImageURL:[NSURL URLWithString:@""]]
+            .imageProvider(imageProvider);
+
+    expect(^{
+      builder.lineWidth(0);
+    }).to.raise(NSInvalidArgumentException);
+
+    expect(^{
+      builder.lineWidth(-1.3);
+    }).to.raise(NSInvalidArgumentException);
+  });
+  
+  it(@"should raise if line width is set twice", ^{
+    WFImageViewModelBuilder *builder =
+        [WFImageViewModelBuilder builderWithImageURL:[NSURL URLWithString:@""]]
+            .imageProvider(imageProvider)
+            .lineWidth(1.4);
+
+    expect(^{
+      builder.lineWidth(3.2);
     }).to.raise(NSInvalidArgumentException);
   });
 });

@@ -13,6 +13,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Returns a new URL with query parameter \c color set to the given \c color.
 - (NSURL *)wf_URLWithImageColor:(UIColor *)color;
 
+/// Returns a new URL with query parameter \c lineWidth.
+- (NSURL *)wf_URLWithImageLineWidth:(CGFloat)lineWidth;
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -24,6 +24,12 @@ NS_ASSUME_NONNULL_BEGIN
   }];
 }
 
+- (NSURL *)wf_URLWithImageLineWidth:(CGFloat)lineWidth {
+  return [self lt_URLByAppendingQueryDictionary:@{
+    @"lineWidth": [@(lineWidth) stringValue]
+  }];
+}
+
 @end
 
 NS_ASSUME_NONNULL_END

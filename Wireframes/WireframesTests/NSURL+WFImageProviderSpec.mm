@@ -19,4 +19,10 @@ it(@"should append image color", ^{
   expect(urlWithSize.absoluteString).to.equal(@"foo?color=%2312345678");
 });
 
+it(@"should append line width", ^{
+  NSURL *url = [NSURL URLWithString:@"foo"];
+  NSURL *urlWithLineWidth = [url wf_URLWithImageLineWidth:1.5];
+  expect(urlWithLineWidth.absoluteString).to.equal(@"foo?lineWidth=1.5");
+});
+
 SpecEnd
