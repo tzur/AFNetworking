@@ -11,10 +11,14 @@ NS_ASSUME_NONNULL_BEGIN
 /// Provides the parameters for receipt validation to be used by \c BZRReciptValidator.
 - (nullable BZRReceiptValidationParameters *)receiptValidationParameters;
 
+/// AppStore locale.
+@property (strong, atomic, nullable) NSLocale *appStoreLocale;
+
 @end
 
 /// Default implementation of \c BZRReceiptValidationParametersProvider, provides the parameters
-/// provided by \c -[BZRReceiptValidationParameters defaultParameters].
+/// provided by \c -[BZRReceiptValidationParameters defaultParametersWithLocale:] with
+/// \c appStoreLocale.
 @interface BZRReceiptValidationParametersProvider :
     NSObject <BZRReceiptValidationParametersProvider>
 @end

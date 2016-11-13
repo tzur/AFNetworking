@@ -18,6 +18,7 @@
 #import "BZRProductsVariantSelector.h"
 #import "BZRProductsVariantSelectorFactory.h"
 #import "BZRReceiptModel.h"
+#import "BZRReceiptValidationParametersProvider.h"
 #import "BZRReceiptValidationStatus.h"
 #import "BZRStoreConfiguration.h"
 #import "BZRStoreKitFacade.h"
@@ -93,6 +94,7 @@ __block BZRAcquiredViaSubscriptionProvider *acquiredViaSubscriptionProvider;
 __block BZRStoreKitFacade *storeKitFacade;
 __block BZRPeriodicReceiptValidatorActivator *periodicValidatorActivator;
 __block id<BZRProductsVariantSelector> variantSelector;
+__block id<BZRReceiptValidationParametersProvider> validationParametersProvider;
 __block NSBundle *bundle;
 __block NSFileManager *fileManager;
 __block RACSubject *receiptValidationStatusProviderErrorsSubject;
@@ -111,6 +113,7 @@ beforeEach(^{
   storeKitFacade = OCMClassMock([BZRStoreKitFacade class]);
   periodicValidatorActivator = OCMClassMock([BZRPeriodicReceiptValidatorActivator class]);
   variantSelector = OCMProtocolMock(@protocol(BZRProductsVariantSelector));
+  validationParametersProvider = OCMClassMock([BZRReceiptValidationParametersProvider class]);
   bundle = OCMClassMock([NSBundle class]);
   fileManager = OCMClassMock([NSFileManager class]);
   BZRStoreKitFacadeFactory *storeKitFacadeFactory = OCMClassMock([BZRStoreKitFacadeFactory class]);
@@ -143,6 +146,7 @@ beforeEach(^{
   configuration.storeKitFacadeFactory = storeKitFacadeFactory;
   configuration.periodicValidatorActivator = periodicValidatorActivator;
   configuration.variantSelectorFactory = variantSelectorFactory;
+  configuration.validationParametersProvider = validationParametersProvider;
   configuration.applicationReceiptBundle = bundle;
   configuration.fileManager = fileManager;
   store = [[BZRStore alloc] initWithConfiguration:configuration];
@@ -965,6 +969,23 @@ context(@"getting product list", ^{
         return [productList count] == 1 &&
             [productList allObjects].firstObject.identifier == productIdentifier;
       });
+    });
+
+    it(@"should set app store locale from product price locale", ^{
+      OCMStub([variantSelector selectedVariantForProductWithIdentifier:productIdentifier])
+          .andReturn(productIdentifier);
+      NSLocale *locale = [[NSLocale alloc] initWithLocaleIdentifier:@"de_DE"];
+      NSDecimalNumber *price = [NSDecimalNumber decimalNumberWithString:@"1337.37"];
+      SKProductsResponse *response =
+          BZRProductsResponseWithProductWithProperties(productIdentifier, price, locale);
+      OCMStub([storeKitFacade fetchMetadataForProductsWithIdentifiers:OCMOCK_ANY])
+          .andReturn([RACSignal return:response]);
+      store = [[BZRStore alloc] initWithConfiguration:configuration];
+
+      LLSignalTestRecorder *recorder = [[store productList] testRecorder];
+
+      expect(recorder).will.complete();
+      OCMVerify([validationParametersProvider setAppStoreLocale:locale]);
     });
 
     it(@"should return empty set with product if facade returns a response with another product", ^{

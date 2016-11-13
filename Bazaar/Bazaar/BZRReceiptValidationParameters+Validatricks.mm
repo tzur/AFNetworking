@@ -11,6 +11,7 @@ NS_ASSUME_NONNULL_BEGIN
   static NSString * const kApplicationBundleIDKey = @"bundle";
   static NSString * const kDeviceIDKey = @"idForVendor";
   static NSString * const kReceiptKey = @"receipt";
+  static NSString * const kAppStoreCountryCodeKey = @"appStoreCountryCode";
 
   NSMutableDictionary *requestParameters = [NSMutableDictionary dictionary];
 
@@ -19,6 +20,11 @@ NS_ASSUME_NONNULL_BEGIN
       [self.receiptData base64EncodedStringWithOptions:(NSDataBase64EncodingOptions)0];
   if (self.deviceId) {
     requestParameters[kDeviceIDKey] = self.deviceId.UUIDString;
+  }
+
+  if (self.appStoreLocale) {
+    requestParameters[kAppStoreCountryCodeKey] =
+        [self.appStoreLocale objectForKey:NSLocaleCountryCode];
   }
 
   return requestParameters;

@@ -7,7 +7,8 @@ NS_ASSUME_NONNULL_BEGIN
     BZRPeriodicReceiptValidatorActivator, BZRProductContentManager, BZRProductContentProvider,
     BZRStoreKitFacadeFactory, LTPath;
 
-@protocol BZRProductsProvider, BZRProductsVariantSelectorFactory;
+@protocol BZRProductsProvider, BZRProductsVariantSelectorFactory,
+    BZRReceiptValidationParametersProvider;
 
 /// Object used to provide configuration objects for \c BZRStore.
 @interface BZRStoreConfiguration : NSObject
@@ -95,6 +96,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Factory used to create \c BZRProductsVariantSelector.
 @property (strong, nonatomic) id<BZRProductsVariantSelectorFactory> variantSelectorFactory;
+
+/// Provider used to provide validation parameters sent to the receipt validator.
+@property (strong, nonatomic) id<BZRReceiptValidationParametersProvider>
+    validationParametersProvider;
 
 @end
 

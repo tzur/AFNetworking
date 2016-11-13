@@ -18,6 +18,7 @@
 #import "BZRProductsVariantSelector.h"
 #import "BZRProductsVariantSelectorFactory.h"
 #import "BZRReceiptModel.h"
+#import "BZRReceiptValidationParametersProvider.h"
 #import "BZRReceiptValidationStatus.h"
 #import "BZRStoreConfiguration.h"
 #import "BZRStoreKitFacade.h"
@@ -72,6 +73,10 @@ typedef NSDictionary<id, BZRProductList *> BZRClassifiedProducts;
 /// selector was created successfully, \c variantSelector is set to that selector.
 @property (strong, atomic) id<BZRProductsVariantSelector> variantSelector;
 
+/// Provider used to provide validation parameters sent to validatricks.
+@property (readonly, nonatomic) id<BZRReceiptValidationParametersProvider>
+    validationParametersProvider;
+
 /// Subject used to send errors with.
 @property (readonly, nonatomic) RACSubject *errorsSubject;
 
@@ -111,6 +116,7 @@ typedef NSDictionary<id, BZRProductList *> BZRClassifiedProducts;
     _periodicValidatorActivator = configuration.periodicValidatorActivator;
     _variantSelectorFactory = configuration.variantSelectorFactory;
     _variantSelector = [[BZRProductsVariantSelector alloc] init];
+    _validationParametersProvider = configuration.validationParametersProvider;
 
     [self initializeCompletedTransactionsSignal];
     [self initializeErrorsSignal];
@@ -316,7 +322,7 @@ static NSNumber * const kNonAppStoreProductsLabel = @0;
   NSArray<NSString *> *identifiers =
       [products valueForKey:@instanceKeypath(BZRProduct, identifier)];
   @weakify(self);
-  return [[[self.storeKitFacade
+  return [[[[self.storeKitFacade
       fetchMetadataForProductsWithIdentifiers:[NSSet setWithArray:identifiers]]
       doNext:^(SKProductsResponse *response) {
         @strongify(self);
@@ -327,8 +333,16 @@ static NSNumber * const kNonAppStoreProductsLabel = @0;
           [self.errorsSubject sendNext:error];
         }
       }]
+      doNext:^(SKProductsResponse *response) {
+        self.validationParametersProvider.appStoreLocale =
+            response.products.firstObject.priceLocale;
+      }]
       map:^BZRProductDictionary *(SKProductsResponse *response) {
         @strongify(self);
+        if (![response.products count]) {
+          return @{};
+        }
+
         BZRProductDictionary *productDictionary = [NSDictionary dictionaryWithObjects:products
                                                                               forKeys:identifiers];
         return [self productDictionary:productDictionary withMetadataFromProductsResponse:response];

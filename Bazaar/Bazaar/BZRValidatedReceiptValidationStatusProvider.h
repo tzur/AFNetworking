@@ -11,10 +11,12 @@ NS_ASSUME_NONNULL_BEGIN
 @interface BZRValidatedReceiptValidationStatusProvider : NSObject
     <BZRReceiptValidationStatusProvider>
 
+- (instancetype)init NS_UNAVAILABLE;
+
 /// Initializes with \c receiptValidator set to \c [[BZRValidatricksReceiptValidator alloc] init]
-/// and with \c validationParametersProvider set to
-/// \c [[BZRReceiptValidationParametersProvider alloc] init].
-- (instancetype)init;
+/// and with \c validationParametersProvider.
+- (instancetype)initWithValidationParametersProvider:(id<BZRReceiptValidationParametersProvider>)
+    validationParametersProvider;
 
 /// Initializes \c receiptValidator is used to validate the receipt and return the latest
 /// \c BZRReceiptValidationStatus. \c validationParametersProvider is used to provide validation
