@@ -19,6 +19,9 @@ typedef BOOL (^CAMErrorReturnBlock)(NSError **errorPtr);
 /// @note This method is not safe to be called from multiple threads concurrently (on the same
 /// object), as that could lead to one thread unlocking the device before \c action ran on the
 /// other thread.
+///
+/// @note For some properties setting order is important. E.g. \c focusMode should be set after
+/// \c focusPointOfInterest else the focus point won't change (also for \c exposurePointOfInterest).
 - (BOOL)cam_performWhileLocked:(CAMErrorReturnBlock)action error:(NSError **)errorPtr;
 
 @end

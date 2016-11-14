@@ -415,11 +415,10 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
   return [device cam_performWhileLocked:^BOOL(NSError **errorPtr) {
     if ([device isFocusModeSupported:mode] &&
         (mode == AVCaptureFocusModeLocked || device.isFocusPointOfInterestSupported)) {
-      device.focusMode = mode;
-
       if (mode != AVCaptureFocusModeLocked) {
         device.focusPointOfInterest = point;
       }
+      device.focusMode = mode;
 
       return YES;
     } else {
@@ -505,10 +504,11 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
   return [device cam_performWhileLocked:^BOOL(NSError **errorPtr) {
     if ([device isExposureModeSupported:mode] &&
         (CGPointIsNull(point) || device.isExposurePointOfInterestSupported)) {
-      device.exposureMode = mode;
       if (!CGPointIsNull(point)) {
         device.exposurePointOfInterest = point;
       }
+      device.exposureMode = mode;
+
       return YES;
     } else {
       if (errorPtr) {
