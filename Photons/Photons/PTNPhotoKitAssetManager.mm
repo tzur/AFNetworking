@@ -344,11 +344,13 @@ NS_ASSUME_NONNULL_BEGIN
         return [self fetchAlbumWithIdentifier:url.ptn_photoKitAlbumIdentifier];
       case PTNPhotoKitURLTypeAlbumType:
         return [self fetchAlbumWithType:url.ptn_photoKitAlbumType
-                                subtype:url.ptn_photoKitAlbumSubtype];
+                                subtype:url.ptn_photoKitAlbumSubtype
+                                options:url.ptn_photoKitAlbumFetchOptions];
       case PTNPhotoKitURLTypeMetaAlbumType:
         return [self fetchMetaAlbumWithType:url.ptn_photoKitAlbumType
                                     subtype:url.ptn_photoKitAlbumSubtype
-                                  subalbums:url.ptn_photoKitAlbumSubalbums];
+                                  subalbums:url.ptn_photoKitAlbumSubalbums
+                                    options:url.ptn_photoKitAlbumFetchOptions];
     }
   }];
 }
@@ -411,14 +413,18 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark Album types
 #pragma mark -
 
-- (RACSignal *)fetchAlbumWithType:(NSNumber *)type subtype:(NSNumber *)subtype {
-  return [RACSignal return:[self fetchResultsWithCollectionType:type collectionSubtype:subtype]];
+- (RACSignal *)fetchAlbumWithType:(NSNumber *)type subtype:(NSNumber *)subtype
+                          options:(PHFetchOptions * _Nullable)options {
+  return [RACSignal return:[self fetchResultsWithCollectionType:type collectionSubtype:subtype
+                                                        options:options]];
 }
 
 - (RACSignal *)fetchMetaAlbumWithType:(NSNumber *)type subtype:(NSNumber *)subtype
-                            subalbums:(nullable NSArray<NSNumber *> *)subalbums {
+                            subalbums:(nullable NSArray<NSNumber *> *)subalbums
+                              options:(PHFetchOptions * _Nullable)options {
   PTNCollectionsFetchResult *fetchResults = [self fetchResultsWithCollectionType:type
-                                                               collectionSubtype:subtype];
+                                                               collectionSubtype:subtype
+                                                                         options:options];
   if (!subalbums) {
     return [RACSignal return:fetchResults];
   }
@@ -456,11 +462,12 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (PTNCollectionsFetchResult *)fetchResultsWithCollectionType:(NSNumber *)collectionType
-                                            collectionSubtype:(NSNumber *)collectionSubtype {
+                                            collectionSubtype:(NSNumber *)collectionSubtype
+                                                      options:(PHFetchOptions * _Nullable)options {
   PHAssetCollectionType type = (PHAssetCollectionType)collectionType.unsignedIntegerValue;
   PHAssetCollectionSubtype subtype =
       (PHAssetCollectionSubtype)collectionSubtype.unsignedIntegerValue;
-  return [self.fetcher fetchAssetCollectionsWithType:type subtype:subtype options:nil];
+  return [self.fetcher fetchAssetCollectionsWithType:type subtype:subtype options:options];
 }
 
 - (RACSignal *)fetchAlbumWithIdentifier:(NSString *)identifier {

@@ -30,6 +30,13 @@ static NSString * const kSubalbumsKey = @"subalbums";
 static NSString * const kTypeKey = @"type";
 static NSString * const kSubtypeKey = @"subtype";
 static NSString * const kFilterSubalbumsKey = @"filterSubalbums";
+static NSString * const kTitlePredicateKey = @"title";
+
+static BOOL PTNStringIsValidQuery(NSString *string) {
+  NSCharacterSet *querySet = [NSCharacterSet URLQueryAllowedCharacterSet];
+  NSString *trimmed = [string stringByTrimmingCharactersInSet:querySet];
+  return [trimmed isEqualToString:@""];
+}
 
 + (NSString *)ptn_photoKitScheme {
   return @"com.lightricks.Photons.PhotoKit";
@@ -122,6 +129,25 @@ static NSString * const kFilterSubalbumsKey = @"filterSubalbums";
                                                       (unsigned long)type]],
     [NSURLQueryItem queryItemWithName:kSubtypeKey
         value:[NSString stringWithFormat:@"%lu", (unsigned long)PHAssetCollectionSubtypeAny]]
+  ];
+
+  return components.URL;
+}
+
++ (NSURL *)ptn_photoKitUserAlbumsWithTitle:(NSString *)title {
+  NSURLComponents *components = [[NSURLComponents alloc] init];
+
+  components.scheme = [NSURL ptn_photoKitScheme];
+  components.host = kMetaAlbumTypeKey;
+
+  NSString *escapedTitle = [title stringByAddingPercentEncodingWithAllowedCharacters:
+                            [NSCharacterSet URLQueryAllowedCharacterSet]];
+  components.queryItems = @[
+    [NSURLQueryItem queryItemWithName:kTypeKey
+        value:[NSString stringWithFormat:@"%lu", (unsigned long)PHAssetCollectionTypeAlbum]],
+    [NSURLQueryItem queryItemWithName:kSubtypeKey
+        value:[NSString stringWithFormat:@"%lu", (unsigned long)PHAssetCollectionSubtypeAny]],
+    [NSURLQueryItem queryItemWithName:kTitlePredicateKey value:escapedTitle]
   ];
 
   return components.URL;
@@ -240,6 +266,22 @@ static NSString * const kFilterSubalbumsKey = @"filterSubalbums";
   return [self.lt_queryArrayDictionary[kSubalbumsKey] lt_map:^NSNumber *(NSString *string) {
     return @(string.integerValue);
   }] ?: @[];
+}
+
+- (nullable PHFetchOptions *)ptn_photoKitAlbumFetchOptions {
+  if (![self.ptn_photoKitURLType isEqual:$(PTNPhotoKitURLTypeMetaAlbumType)]) {
+    return nil;
+  }
+
+  NSString * _Nullable escapedTitlePredicate = self.lt_queryDictionary[kTitlePredicateKey];
+  if (!escapedTitlePredicate) {
+    return nil;
+  }
+
+  NSString *titlePredicate = [escapedTitlePredicate stringByRemovingPercentEncoding];
+  PHFetchOptions *options = [[PHFetchOptions alloc] init];
+  options.predicate = [NSPredicate predicateWithFormat:@"title=%@", titlePredicate];
+  return options;
 }
 
 @end

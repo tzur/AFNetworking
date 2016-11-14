@@ -17,6 +17,7 @@ it(@"should return valid object placeholder URL", ^{
   expect(url.ptn_photoKitAlbumType).to.beNil();
   expect(url.ptn_photoKitAlbumSubtype).to.beNil();
   expect(url.ptn_photoKitAlbumSubalbums).to.beNil();
+  expect(url.ptn_photoKitAlbumFetchOptions).to.beNil();
 });
 
 it(@"should return valid asset URL", ^{
@@ -29,6 +30,7 @@ it(@"should return valid asset URL", ^{
   expect(url.ptn_photoKitAlbumType).to.beNil();
   expect(url.ptn_photoKitAlbumSubtype).to.beNil();
   expect(url.ptn_photoKitAlbumSubalbums).to.beNil();
+  expect(url.ptn_photoKitAlbumFetchOptions).to.beNil();
 });
 
 it(@"should return valid album URL", ^{
@@ -41,6 +43,7 @@ it(@"should return valid album URL", ^{
   expect(url.ptn_photoKitAlbumType).to.beNil();
   expect(url.ptn_photoKitAlbumSubtype).to.beNil();
   expect(url.ptn_photoKitAlbumSubalbums).to.beNil();
+  expect(url.ptn_photoKitAlbumFetchOptions).to.beNil();
 });
 
 it(@"should return valid album type URL", ^{
@@ -52,6 +55,7 @@ it(@"should return valid album type URL", ^{
   expect(url.ptn_photoKitAlbumSubalbums).to.beNil();
   expect(url.ptn_photoKitAlbumIdentifier).to.beNil();
   expect(url.ptn_photoKitAssetIdentifier).to.beNil();
+  expect(url.ptn_photoKitAlbumFetchOptions).to.beNil();
 });
 
 it(@"should return valid meta album type URL", ^{
@@ -71,6 +75,7 @@ it(@"should return valid meta album type URL", ^{
   expect(url.ptn_photoKitAlbumSubalbums).to.equal(subalbums);
   expect(url.ptn_photoKitAlbumIdentifier).to.beNil();
   expect(url.ptn_photoKitAssetIdentifier).to.beNil();
+  expect(url.ptn_photoKitAlbumFetchOptions).to.beNil();
 });
 
 it(@"should filter subalbums even if subalbums set is empty", ^{
@@ -82,6 +87,34 @@ it(@"should filter subalbums even if subalbums set is empty", ^{
   expect(url.ptn_photoKitAlbumSubalbums).to.equal(@[]);
   expect(url.ptn_photoKitAlbumIdentifier).to.beNil();
   expect(url.ptn_photoKitAssetIdentifier).to.beNil();
+  expect(url.ptn_photoKitAlbumFetchOptions).to.beNil();
+});
+
+it(@"should return correct predicate for user albums with title filter", ^{
+  NSURL *url = [NSURL ptn_photoKitUserAlbumsWithTitle:@"foo"];
+  expect(url.ptn_photoKitURLType.value).to.equal(PTNPhotoKitURLTypeMetaAlbumType);
+  expect(url.ptn_photoKitAlbumType).to.equal(@(PHAssetCollectionTypeAlbum));
+  expect(url.ptn_photoKitAlbumSubtype).to.equal(@(PHAssetCollectionSubtypeAny));
+  expect(url.ptn_photoKitAlbumSubalbums).to.beNil();
+  expect(url.ptn_photoKitAlbumIdentifier).to.beNil();
+  expect(url.ptn_photoKitAssetIdentifier).to.beNil();
+
+  PHFetchOptions *options = url.ptn_photoKitAlbumFetchOptions;
+  expect(options.predicate).to.equal([NSPredicate predicateWithFormat:@"title=%@", @"foo"]);
+});
+
+it(@"should handle query invalid predicates", ^{
+  NSURL *url = [NSURL ptn_photoKitUserAlbumsWithTitle:@"foo? bar, &baz"];
+  expect(url.ptn_photoKitURLType.value).to.equal(PTNPhotoKitURLTypeMetaAlbumType);
+  expect(url.ptn_photoKitAlbumType).to.equal(@(PHAssetCollectionTypeAlbum));
+  expect(url.ptn_photoKitAlbumSubtype).to.equal(@(PHAssetCollectionSubtypeAny));
+  expect(url.ptn_photoKitAlbumSubalbums).to.beNil();
+  expect(url.ptn_photoKitAlbumIdentifier).to.beNil();
+  expect(url.ptn_photoKitAssetIdentifier).to.beNil();
+
+  PHFetchOptions *options = url.ptn_photoKitAlbumFetchOptions;
+  expect(options.predicate).to.equal([NSPredicate predicateWithFormat:@"title=%@",
+                                      @"foo? bar, &baz"]);
 });
 
 SpecEnd
