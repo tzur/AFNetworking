@@ -39,10 +39,10 @@ context(@"deallocating object", ^{
   });
 });
 
-context(@"validating receipt", ^{
+context(@"activation", ^{
   it(@"should validate receipt when validateReceiptSignal fires", ^{
-    [periodicReceiptValidator activatePeriodicValidationCheck:[RACSignal return:@"foo"]];
-
+    RACSignal *receiptValidationTrigger = [RACSignal return:[RACUnit defaultUnit]];
+    [periodicReceiptValidator activatePeriodicValidationCheck:receiptValidationTrigger];
     OCMVerify([receiptValidationStatusProvider fetchReceiptValidationStatus]);
   });
 
@@ -53,9 +53,50 @@ context(@"validating receipt", ^{
 
     LLSignalTestRecorder *recorder = [periodicReceiptValidator.errorsSignal testRecorder];
 
-    [periodicReceiptValidator activatePeriodicValidationCheck:[RACSignal return:@"foo"]];
+    RACSignal *receiptValidationTrigger = [RACSignal return:[RACUnit defaultUnit]];
+    [periodicReceiptValidator activatePeriodicValidationCheck:receiptValidationTrigger];
 
     expect(recorder).will.sendValues(@[error]);
+  });
+
+  it(@"should hold trigger signal strongly and keep subscription to it", ^{
+    OCMExpect([receiptValidationStatusProvider fetchReceiptValidationStatus]);
+    @autoreleasepool {
+      RACSignal *triggerSignal = [[RACSignal
+          return:[RACUnit defaultUnit]]
+          subscribeOn:[RACScheduler scheduler]];
+      [periodicReceiptValidator activatePeriodicValidationCheck:triggerSignal];
+    }
+
+    OCMVerifyAllWithDelay((id)receiptValidationStatusProvider, 0.1);
+  });
+
+  it(@"should unsubscribe from the trigger signal when reactivated with new trigger signal", ^{
+    RACSubject *triggerSignal = [RACSubject subject];
+    RACSignal *anotherTriggerSignal = [RACSignal never];
+
+    [periodicReceiptValidator activatePeriodicValidationCheck:triggerSignal];
+    [periodicReceiptValidator activatePeriodicValidationCheck:anotherTriggerSignal];
+
+    OCMReject([receiptValidationStatusProvider fetchReceiptValidationStatus]);
+    [triggerSignal sendNext:[RACUnit defaultUnit]];
+  });
+
+  it(@"should unsubscribe from the trigger signal when deallocated", ^{
+    RACSubject *triggerSignal = [RACSubject subject];
+    BZRPeriodicReceiptValidator __weak *weakPeriodicReceiptValidator;
+    @autoreleasepool {
+      BZRPeriodicReceiptValidator *periodicReceiptValidator =
+          [[BZRPeriodicReceiptValidator alloc]
+           initWithReceiptValidationProvider:receiptValidationStatusProvider];
+      weakPeriodicReceiptValidator = periodicReceiptValidator;
+      [periodicReceiptValidator activatePeriodicValidationCheck:triggerSignal];
+    }
+
+    expect(weakPeriodicReceiptValidator).to.beNil();
+
+    OCMReject([receiptValidationStatusProvider fetchReceiptValidationStatus]);
+    [triggerSignal sendNext:[RACUnit defaultUnit]];
   });
 });
 

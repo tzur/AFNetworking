@@ -35,6 +35,10 @@ NS_ASSUME_NONNULL_BEGIN
   return self;
 }
 
+- (void)dealloc {
+  [self deactivatePeriodicValidationCheck];
+}
+
 #pragma mark -
 #pragma mark Errors signal
 #pragma mark -
@@ -48,11 +52,14 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 - (void)activatePeriodicValidationCheck:(RACSignal *)validateReceiptSignal {
-  @weakify(self)
+  [self deactivatePeriodicValidationCheck];
+
+  @weakify(self);
   self.validationCheckSubscription = [validateReceiptSignal subscribeNext:^(id) {
     @strongify(self);
     [[self.receiptValidationProvider fetchReceiptValidationStatus]
         subscribeError:^(NSError *error) {
+          @strongify(self);
           [self.errorsSubject sendNext:error];
         }];
   }];
