@@ -14,6 +14,12 @@ NS_ASSUME_NONNULL_BEGIN
 /// @return <tt>RACSignal<NSArray<BZRProduct>></tt>
 - (RACSignal *)fetchProductList;
 
+/// Sends non-critical errors reported when fetching the product list. The signal completes when the
+/// receiver is deallocated. The signal doesn't err.
+///
+/// @return <tt>RACSignal<NSError></tt>
+@property (readonly, nonatomic) RACSignal *nonCriticalErrorsSignal;
+
 @end
 
 NS_ASSUME_NONNULL_END

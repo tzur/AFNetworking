@@ -5,7 +5,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class BZRAcquiredViaSubscriptionProvider, BZRCachedReceiptValidationStatusProvider,
     BZRPeriodicReceiptValidatorActivator, BZRProductContentManager, BZRProductContentProvider,
-    BZRStoreKitFacadeFactory, LTPath;
+    BZRProductsProviderFactory, BZRStoreKitFacadeFactory, LTPath;
 
 @protocol BZRProductsProvider, BZRProductsVariantSelectorFactory,
     BZRReceiptValidationParametersProvider;
@@ -31,8 +31,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// transactions. \c notValidatedReceiptGracePeriod determines the number of days the receipt can
 /// remain not validated until subscription marked as expired.
 ///
-/// \c productsProvider will be initialized with \c BZRProductsWithVariantsProvider which will be
-/// initialized with and underlying \c BZRLocalProductsProvider.
+/// \c productsProviderFactory will be initialized with \c BZRLocalProductsProviderFactory with the
+/// given \c productsListJSONFilePath and \c fileManager.
 ///
 /// \c contentManager will be initialized with the default parameters as provided by
 /// \c -[BZRProductContentManager initWithFileManager:].
@@ -67,8 +67,8 @@ NS_ASSUME_NONNULL_BEGIN
                   notValidatedReceiptGracePeriod:(NSUInteger)notValidatedReceiptGracePeriod
     NS_DESIGNATED_INITIALIZER;
 
-/// Provider used to fetch product list.
-@property (strong, nonatomic) id<BZRProductsProvider> productsProvider;
+/// Factory used to create a concrete instance of \c BZRProductsProvider.
+@property (strong, nonatomic) BZRProductsProviderFactory *productsProviderFactory;
 
 /// Manager used to extract, delete and find content directory with.
 @property (strong, nonatomic) BZRProductContentManager *contentManager;

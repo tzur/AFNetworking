@@ -47,6 +47,10 @@ NS_ASSUME_NONNULL_BEGIN
   }];
 }
 
+- (RACSignal *)nonCriticalErrorsSignal {
+  return [[RACSignal never] takeUntil:[self rac_willDeallocSignal]];
+}
+
 @end
 
 NS_ASSUME_NONNULL_END

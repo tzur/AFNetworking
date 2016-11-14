@@ -3,6 +3,8 @@
 
 #import "BZRTestUtils.h"
 
+#import <LTKit/NSArray+Functional.h>
+
 #import "BZRContentFetcherParameters.h"
 #import "BZRProduct.h"
 #import "BZRReceiptEnvironment.h"
@@ -71,6 +73,33 @@ BZRReceiptValidationStatus *BZRReceiptValidationStatusWithInAppPurchaseAndExpiry
   return [receiptValidationStatus
           modelByOverridingProperty:@keypath(receiptValidationStatus, receipt)
                           withValue:receipt];
+}
+
+static SKProduct *BZRSKProductWithIdentifier(NSString *productIdentifier) {
+  SKProduct *product = OCMClassMock([SKProduct class]);
+  OCMStub([product price]).andReturn([NSDecimalNumber one]);
+  OCMStub([product priceLocale]).andReturn([NSLocale currentLocale]);
+  OCMStub([product productIdentifier]).andReturn(productIdentifier);
+  return product;
+}
+
+SKProductsResponse *BZRProductsResponseWithSKProducts(NSArray<SKProduct *> *products) {
+  SKProductsResponse *response = OCMClassMock([SKProductsResponse class]);
+  OCMStub([response products]).andReturn(products);
+
+  return response;
+}
+
+SKProductsResponse *BZRProductsResponseWithProduct(NSString *productIdentifier) {
+  SKProduct *product = BZRSKProductWithIdentifier(productIdentifier);
+  return BZRProductsResponseWithSKProducts(@[product]);
+}
+
+SKProductsResponse *BZRProductsResponseWithProducts(NSArray<NSString *> *productsIdentifiers) {
+  NSArray<SKProduct *> *products = [productsIdentifiers lt_map:^SKProduct *(NSString *identifier) {
+    return BZRSKProductWithIdentifier(identifier);
+  }];
+  return BZRProductsResponseWithSKProducts(products);
 }
 
 NS_ASSUME_NONNULL_END
