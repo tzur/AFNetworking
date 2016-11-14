@@ -17,8 +17,10 @@ BZRProduct *BZRProductWithIdentifier(NSString *identifier);
 BZRProduct *BZRProductWithIdentifierAndParameters(NSString *identifier,
     BZRContentFetcherParameters * _Nullable parameters);
 
-/// Returns a \c BZRReceiptValidationStatus with \c subscription expiry set to \c expiry.
-BZRReceiptValidationStatus *BZRReceiptValidationStatusWithExpiry(BOOL expiry);
+/// Returns a \c BZRReceiptValidationStatus with \c subscription expiry set to \c expiry. If
+/// \c cancelled is \c YES then \c receip.subscription.cancellation date will be set to somewhen
+/// between now and the expiration date.
+BZRReceiptValidationStatus *BZRReceiptValidationStatusWithExpiry(BOOL expiry, BOOL cancelled = NO);
 
 /// Returns a \c BZRReceiptValidationStatus with an in-app purchase with identifier set to
 /// \c identifier and \c subscription expiry set to \c expiry.

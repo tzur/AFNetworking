@@ -33,12 +33,15 @@ BZRProduct *BZRProductWithIdentifierAndParameters(NSString *identifier,
   return [[BZRProduct alloc] initWithDictionary:dictionaryValue error:nil];
 }
 
-BZRReceiptValidationStatus *BZRReceiptValidationStatusWithExpiry(BOOL expiry) {
+BZRReceiptValidationStatus *BZRReceiptValidationStatusWithExpiry(BOOL expiry, BOOL cancelled) {
   BZRReceiptSubscriptionInfo *subscription = [BZRReceiptSubscriptionInfo modelWithDictionary:@{
     @instanceKeypath(BZRReceiptSubscriptionInfo, productId): @"foo",
     @instanceKeypath(BZRReceiptSubscriptionInfo, originalTransactionId): @"bar",
     @instanceKeypath(BZRReceiptSubscriptionInfo, originalPurchaseDateTime): [NSDate date],
-    @instanceKeypath(BZRReceiptSubscriptionInfo, expirationDateTime): [NSDate date],
+    @instanceKeypath(BZRReceiptSubscriptionInfo, expirationDateTime):
+        [NSDate dateWithTimeIntervalSinceNow:1337],
+    @instanceKeypath(BZRReceiptSubscriptionInfo, cancellationDateTime) :
+        cancelled ? [NSDate dateWithTimeIntervalSinceNow:1337 / 2] : [NSNull null],
     @instanceKeypath(BZRReceiptSubscriptionInfo, isExpired): @(expiry)
   } error:nil];
   BZRReceiptInfo *receipt = [BZRReceiptInfo modelWithDictionary:@{

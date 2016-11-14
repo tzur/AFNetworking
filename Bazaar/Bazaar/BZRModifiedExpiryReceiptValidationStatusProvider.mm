@@ -59,39 +59,59 @@ NS_ASSUME_NONNULL_BEGIN
   return [[[self.underlyingProvider fetchReceiptValidationStatus]
       flattenMap:^RACSignal *(BZRReceiptValidationStatus *receiptValidationStatus) {
         @strongify(self);
-        return [[[[self.timeProvider currentTime]
-            map:^BZRReceiptValidationStatus *(NSDate *currentTime) {
-              return [self extendedValidationStatusWithGracePeriod:receiptValidationStatus
-                                                       currentTime:currentTime];
-            }]
-            doError:^(NSError *error) {
-              [self.timeProviderErrorsSubject sendNext:error];
-            }]
-            catchTo:[RACSignal return:receiptValidationStatus]];
+        if (!receiptValidationStatus.receipt.subscription) {
+          return [RACSignal return:receiptValidationStatus];
+        }
+
+        if (receiptValidationStatus.receipt.subscription.cancellationDateTime) {
+          return [self cancelledSubscriptionModifier:receiptValidationStatus];
+        } else {
+          return [self extendedSubscriptionModifer:receiptValidationStatus];
+        }
       }]
       setNameWithFormat:@"%@ -fetchReceiptValidationStatus", self.description];
+}
+
+- (RACSignal *)cancelledSubscriptionModifier:(BZRReceiptValidationStatus *)receiptValidationStatus {
+  return [RACSignal return:[self receiptValidatioStatus:receiptValidationStatus withExpiry:YES]];
+}
+
+- (RACSignal *)extendedSubscriptionModifer:(BZRReceiptValidationStatus *)receiptValidationStatus {
+  return [[[[self.timeProvider currentTime] map:^BZRReceiptValidationStatus *(NSDate *currentTime) {
+    return [self extendedValidationStatusWithGracePeriod:receiptValidationStatus
+                                             currentTime:currentTime];
+  }]
+  doError:^(NSError *error) {
+    [self.timeProviderErrorsSubject sendNext:error];
+  }]
+  catchTo:[RACSignal return:receiptValidationStatus]];
 }
 
 - (BZRReceiptValidationStatus *)extendedValidationStatusWithGracePeriod:
     (BZRReceiptValidationStatus *)receiptValidationStatus
     currentTime:(NSDate *)currentTime {
-  if (!receiptValidationStatus.receipt.subscription) {
-    return receiptValidationStatus;
-  }
-
   BZRReceiptSubscriptionInfo *subscription = receiptValidationStatus.receipt.subscription;
   NSDate *expirationTimePlusGracePeriod =
       [subscription.expirationDateTime
        dateByAddingTimeInterval:self.expiredSubscriptionGracePeriodSeconds];
   BOOL isExpired = [expirationTimePlusGracePeriod compare:currentTime] == NSOrderedAscending;
-  subscription =
-      [subscription modelByOverridingProperty:@keypath(subscription, isExpired)
-                                    withValue:@(isExpired)];
+  return [self receiptValidatioStatus:receiptValidationStatus withExpiry:isExpired];
+}
+
+- (BZRReceiptValidationStatus *)
+    receiptValidatioStatus:(BZRReceiptValidationStatus *)receiptValidationStatus
+    withExpiry:(BOOL)isExpired {
+  BZRReceiptSubscriptionInfo *subscription =
+      [receiptValidationStatus.receipt.subscription
+       modelByOverridingProperty:@instanceKeypath(BZRReceiptSubscriptionInfo, isExpired)
+       withValue:@(isExpired)];
   BZRReceiptInfo *receipt =
-      [receiptValidationStatus.receipt modelByOverridingProperty:@keypath(receipt, subscription)
-                                                       withValue:subscription];
+      [receiptValidationStatus.receipt
+       modelByOverridingProperty:@instanceKeypath(BZRReceiptInfo, subscription)
+       withValue:subscription];
   return [receiptValidationStatus
-          modelByOverridingProperty:@keypath(receiptValidationStatus, receipt) withValue:receipt];
+          modelByOverridingProperty:@instanceKeypath(BZRReceiptValidationStatus, receipt)
+          withValue:receipt];
 }
 
 @end
