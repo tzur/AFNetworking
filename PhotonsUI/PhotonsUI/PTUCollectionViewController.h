@@ -29,7 +29,7 @@ typedef NS_ENUM(NSUInteger, PTUCollectionViewScrollPosition) {
 /// Scrolls the collection view contents until the specified \c item is visible in \c position and
 /// optionally animates the change. If \c item cannot be found in the collection the scrolling is
 /// deferred to until the item is successfully scrolled to or until a different scrolling is applied
-/// either programatically or via user interaction, at which point the scrolling action is
+/// either programmatically or via user interaction, at which point the scrolling action is
 /// discarded.
 - (void)scrollToItem:(id<PTNDescriptor>)item
     atScrollPosition:(PTUCollectionViewScrollPosition)position
@@ -88,7 +88,8 @@ typedef NS_ENUM(NSUInteger, PTUCollectionViewScrollPosition) {
 /// are created according to \c configuration if their respective section has a title, at least one
 /// item, and the entire collection has at least 2 sections with at least one item.
 ///
-/// The view controller contains views with the <tt>{CollectionView, Empty, Error}</tt>
+/// The view controller contains views with the <tt>{CollectionView, CollectionViewContainer, Empty,
+/// Error}</tt>
 /// accessibility identifiers.
 ///
 /// @note The \c title property of this view controller is bound to \c localizedTitle and should not
@@ -118,31 +119,31 @@ typedef NS_ENUM(NSUInteger, PTUCollectionViewScrollPosition) {
 /// @see initWithDataSourceProvider:initialConfiguration:.
 - (instancetype)initWithAssetManager:(id<PTNAssetManager>)assetManager albumURL:(NSURL *)url;
 
+/// View to display when the receiver's current \c PTUDataSource has no data, but did not err. The
+/// view will automatically track the size of the receiver's view. The default view contains a
+/// single \c UILabel containing the localized string "No photos".
+@property (strong, nonatomic) UIView *emptyView;
+
+/// Current view used to display when the receiver's current \c PTUDataSource declares that an error
+/// occurred. This property is set by \c errorViewProvider if given. The view will automatically
+/// track the size of the receiver's view. The default view contains a single \c UILabel containing
+/// the localized string \c "Error fetching data".
+@property (strong, nonatomic) UIView *errorView;
+
 /// View displayed behind the cells of this collection view controller's collection view, the view
 /// will automatically track the size of the receiver's view. Setting this view will add it the the
 /// receiver's view hierarchy. Setting this view to \c nil will result in no view to be displayed
 /// behind the collection view, which is the default behavior.
 @property (strong, nonatomic, nullable) UIView *backgroundView;
 
-/// Background color of the receiver's collection view, initial value is clear.
+/// Background color of the receiver's collection view container, initial value is clear.
 @property (strong, nonatomic) UIColor *backgroundColor;
-
-/// View to display when the receiver's current \c PTUDataSource has no data, but did not err. The
-/// view will automatically track the size of the receiver's view. The default view contains a
-/// single \c UILabel containing the localized string "No photos".
-@property (strong, nonatomic) UIView *emptyView;
 
 /// Provider of views to display when the receiver's current \c PTUDataSource declares that an error
 /// occurred. The provider will be queried upon error, and the view it returns will be set as the
-/// receiver's error view, automatically tracking the size of the receiver's view. The default
-/// provider provides a constant view with a single \c UILabel containing the localized string
-/// \c "Error fetching data" for every error and url pair.
-@property (strong, nonatomic) id<PTUErrorViewProvider> errorViewProvider;
-
-/// Current view used to display when the receiver's current \c PTUDataSource declares that an error
-/// occurred. This property is set by \c errorViewProvider. The view will automatically track the
-/// size of the receiver's view.
-@property (readonly, nonatomic, nullable) UIView *errorView;
+/// receiver's error view, automatically tracking the size of the receiver's view. If \c nil, the
+/// current \c errorView will remain unchanged.
+@property (strong, nonatomic, nullable) id<PTUErrorViewProvider> errorViewProvider;
 
 @end
 

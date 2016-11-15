@@ -12,6 +12,7 @@
 #import "PTUCellSizingStrategy.h"
 #import "PTUChangesetMetadata.h"
 #import "PTUChangesetProvider.h"
+#import "PTUCollectionView.h"
 #import "PTUCollectionViewConfiguration.h"
 #import "PTUDataSource.h"
 #import "PTUDataSourceProvider.h"
@@ -71,16 +72,18 @@ NS_ASSUME_NONNULL_BEGIN
 /// only those presented. Causing extremely large albums to take very long to load.
 @property (readonly, nonatomic) NSMutableDictionary *sectionItemSizeCache;
 
+/// View of this controller.
+@property (readonly, nonatomic) PTUCollectionView *view;
+
 @end
 
 @implementation PTUCollectionViewController
 
 @synthesize itemSelected = _itemSelected;
 @synthesize itemDeselected = _itemDeselected;
-@synthesize emptyView = _emptyView;
-@synthesize errorView = _errorView;
 @synthesize localizedTitle = _localizedTitle;
-@synthesize backgroundView = _backgroundView;
+
+@dynamic view;
 
 - (instancetype)initWithDataSourceProvider:(id<PTUDataSourceProvider>)dataSourceProvider
                       initialConfiguration:(PTUCollectionViewConfiguration *)initialConfiguration {
@@ -109,7 +112,6 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)setup {
-  [self setupCollectionView];
   [self setupTitleBinding];
   [self setupSectionItemSizeCache];
   [self setupSelectionSignals];
@@ -117,28 +119,8 @@ NS_ASSUME_NONNULL_BEGIN
   [self setupInfoViewBinding];
 }
 
-- (void)setupCollectionView {
-  UICollectionViewFlowLayout *layout = [self layoutFromCurrentConfiguration];
-  _collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:layout];
-  self.collectionView.accessibilityIdentifier = @"CollectionView";
-  self.collectionView.delegate = self;
-  self.collectionView.allowsMultipleSelection = YES;
-  self.collectionView.backgroundColor = [UIColor clearColor];
-  [self setConfiguration:self.configuration animated:NO];
-  [self configureDataSource];
-}
-
-- (void)configureDataSource {
-  self.dataSource = [self.dataSourceProvider dataSourceForCollectionView:self.collectionView];
-}
-
-- (void)viewDidLoad {
-  [super viewDidLoad];
-  [self.view addSubview:self.collectionView];
-  [self.collectionView mas_makeConstraints:^(MASConstraintMaker *make) {
-    make.edges.equalTo(self.view);
-  }];
-  [self setupDefaultInfoViews];
+- (void)loadView {
+  self.view = [[PTUCollectionView alloc] initWithFrame:CGRectZero];
 }
 
 - (void)setupTitleBinding {
@@ -329,15 +311,16 @@ NS_ASSUME_NONNULL_BEGIN
         return @(error == nil);
       }];
   
-  RAC(self, emptyView.hidden) = hideEmptyView;
-  RAC(self, errorView.hidden) = hideErrorView;
-  RAC(self, collectionView.hidden) = [RACSignal
+  RAC(self, view.emptyView.hidden) = hideEmptyView;
+  RAC(self, view.errorView.hidden) = hideErrorView;
+  RAC(self, view.collectionViewContainer.hidden) = [RACSignal
     combineLatest:@[hideEmptyView, hideErrorView]
     reduce:(id)^NSNumber *(NSNumber *hideEmpty, NSNumber *hideError) {
       return @(!hideEmpty.boolValue || !hideError.boolValue);
     }];
   
-  RAC(self, errorView) = [[[RACObserve(self, errorViewProvider)
+  RAC(self, view.errorView) = [[[[RACObserve(self, errorViewProvider)
+      ignore:nil]
       map:^RACSignal *(id<PTUErrorViewProvider> errorViewProvider) {
         @strongify(self);
         return [RACSignal combineLatest:@[
@@ -368,54 +351,6 @@ static NSURL * _Nullable PTUExtractAssociatedURL(NSError *error) {
   }
 }
 
-- (void)setupDefaultInfoViews {
-  if (!self.emptyView) {
-    self.emptyView = [self buildDefaultEmptyView];
-  }
-  if (!self.errorViewProvider) {
-    self.errorViewProvider = [[PTUErrorViewProvider alloc]
-                              initWithView:[self buildDefaultErrorView]];
-  }
-}
-
-- (UIView *)buildDefaultEmptyView {
-  UIView *emptyView = [[UIView alloc] initWithFrame:CGRectZero];
-
-  UILabel *noPhotosLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-  noPhotosLabel.text = _LDefault(@"No Photos", @"Label presented instead of content in an empty "
-                                 "album, indicating it has no photos");
-  noPhotosLabel.textAlignment = NSTextAlignmentCenter;
-  noPhotosLabel.font = [UIFont italicSystemFontOfSize:15];
-  noPhotosLabel.textColor = [UIColor lightGrayColor];
-
-  [emptyView addSubview:noPhotosLabel];
-  [noPhotosLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-    make.bottom.equalTo(emptyView.mas_top).with.offset(44);
-    make.centerX.equalTo(emptyView);
-  }];
-
-  return emptyView;
-}
-
-- (UIView *)buildDefaultErrorView {
-  UIView *errorView = [[UIView alloc] initWithFrame:CGRectZero];
-
-  UILabel *errorLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-  errorLabel.text = _LDefault(@"Error Fetching Data", @"Label presented instead of content in an "
-                              "album when it couldn't be fetched due to an error");
-  errorLabel.textAlignment = NSTextAlignmentCenter;
-  errorLabel.font = [UIFont italicSystemFontOfSize:15];
-  errorLabel.textColor = [UIColor lightGrayColor];
-
-  [errorView addSubview:errorLabel];
-  [errorLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-    make.bottom.equalTo(errorView.mas_top).with.offset(44);
-    make.centerX.equalTo(errorView);
-  }];
-
-  return errorView;
-}
-
 - (void)viewDidLayoutSubviews {
   [super viewDidLayoutSubviews];
   self.albumCellSize = [self.configuration.albumCellSizingStrategy
@@ -427,6 +362,33 @@ static NSURL * _Nullable PTUExtractAssociatedURL(NSError *error) {
   self.headerCellSize = [self.configuration.headerCellSizingStrategy
       cellSizeForViewSize:self.view.frame.size itemSpacing:self.configuration.minimumItemSpacing
               lineSpacing:self.configuration.minimumLineSpacing];
+
+  /// Collection view setup is deferred to this stage to avoid premature update queries. These
+  /// queries are both unnecessary and potentially destructive if sent before valid cell sizes were
+  /// set, possibly causing the collection view to attempt to load all cells of an album at once,
+  /// when fetching visible cells, resulting in a lack of memory termination.
+  if (!self.collectionView) {
+    [self setupCollectionView];
+    [self.view.collectionViewContainer addSubview:self.collectionView];
+    [self.collectionView mas_makeConstraints:^(MASConstraintMaker *make) {
+      make.edges.equalTo(self.view.collectionViewContainer);
+    }];
+  }
+}
+
+- (void)setupCollectionView {
+  UICollectionViewFlowLayout *layout = [self layoutFromCurrentConfiguration];
+  _collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:layout];
+  self.collectionView.accessibilityIdentifier = @"CollectionView";
+  self.collectionView.delegate = self;
+  self.collectionView.allowsMultipleSelection = YES;
+  self.collectionView.backgroundColor = [UIColor clearColor];
+  [self setConfiguration:self.configuration animated:NO];
+  [self configureDataSource];
+}
+
+- (void)configureDataSource {
+  self.dataSource = [self.dataSourceProvider dataSourceForCollectionView:self.collectionView];
 }
 
 #pragma mark -
@@ -434,45 +396,35 @@ static NSURL * _Nullable PTUExtractAssociatedURL(NSError *error) {
 #pragma mark -
 
 - (void)setEmptyView:(UIView *)emptyView {
-  [self.emptyView removeFromSuperview];
+  self.view.emptyView = emptyView;
+}
 
-  _emptyView = emptyView;
-  self.emptyView.accessibilityIdentifier = @"Empty";
-  [self.view insertSubview:self.emptyView aboveSubview:self.collectionView];
-  [self.emptyView mas_makeConstraints:^(MASConstraintMaker *make) {
-    make.edges.equalTo(self.view);
-  }];
+- (UIView *)emptyView {
+  return self.view.emptyView;
 }
 
 - (void)setErrorView:(UIView *)errorView {
-  [self.errorView removeFromSuperview];
-
-  _errorView = errorView;
-  self.errorView.accessibilityIdentifier = @"Error";
-  [self.view insertSubview:self.errorView aboveSubview:self.collectionView];
-  [self.errorView mas_makeConstraints:^(MASConstraintMaker *make) {
-    make.edges.equalTo(self.view);
-  }];
+  self.view.errorView = errorView;
 }
 
-- (void)setBackgroundColor:(UIColor *)color {
-  self.collectionView.backgroundColor = color;
-}
-
-- (UIColor *)backgroundColor {
-  return self.collectionView.backgroundColor;
+- (UIView *)errorView {
+  return self.view.errorView;
 }
 
 - (void)setBackgroundView:(nullable UIView *)backgroundView {
-  [_backgroundView removeFromSuperview];
+  self.view.backgroundView = backgroundView;
+}
 
-  if (backgroundView) {
-    [self.view insertSubview:backgroundView belowSubview:self.collectionView];
-    [backgroundView mas_makeConstraints:^(MASConstraintMaker *make) {
-      make.edges.equalTo(self.view);
-    }];
-  }
-  _backgroundView = backgroundView;
+- (nullable UIView *)backgroundView {
+  return self.view.backgroundView;
+}
+
+- (void)setBackgroundColor:(UIColor *)color {
+  self.view.backgroundColor = color;
+}
+
+- (UIColor *)backgroundColor {
+  return self.view.backgroundColor;
 }
 
 #pragma mark -

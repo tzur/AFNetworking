@@ -12,6 +12,7 @@
 		650BB33E1D465389008648A3 /* libLTKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 650BB3221D465335008648A3 /* libLTKit.a */; };
 		650BB33F1D465389008648A3 /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B425EE51CA6D218001C457E /* libOCMock.a */; };
 		650BB3401D465389008648A3 /* libSpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B425F021CA6D218001C457E /* libSpecta.a */; };
+		8405CF481DDB28A200CB638B /* PTUCollectionView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8405CF471DDB28A200CB638B /* PTUCollectionView.mm */; };
 		8414247D1D770FDC00968C36 /* PTUErrorViewProvider.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8414247C1D770FDC00968C36 /* PTUErrorViewProvider.mm */; };
 		841424A01D77126600968C36 /* PTUErrorViewProvider.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8414249F1D77126600968C36 /* PTUErrorViewProvider.mm */; };
 		841FA8C91D6D966A009C44A9 /* PTUHeaderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 841FA8C81D6D966A009C44A9 /* PTUHeaderCell.m */; };
@@ -376,6 +377,8 @@
 		650BB31C1D465335008648A3 /* LTKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LTKit.xcodeproj; path = ../LTKit/LTKit.xcodeproj; sourceTree = "<group>"; };
 		650BB3251D46533E008648A3 /* extobjc.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = extobjc.xcodeproj; path = ../third_party/libextobjc/extobjc.xcodeproj; sourceTree = "<group>"; };
 		650BB3341D465359008648A3 /* TestHost.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TestHost.xcodeproj; path = ../../Foundations/TestHost.xcodeproj; sourceTree = "<group>"; };
+		8405CF461DDB28A200CB638B /* PTUCollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTUCollectionView.h; sourceTree = "<group>"; };
+		8405CF471DDB28A200CB638B /* PTUCollectionView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PTUCollectionView.mm; sourceTree = "<group>"; };
 		8414247B1D770FDC00968C36 /* PTUErrorViewProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTUErrorViewProvider.h; sourceTree = "<group>"; };
 		8414247C1D770FDC00968C36 /* PTUErrorViewProvider.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PTUErrorViewProvider.mm; sourceTree = "<group>"; };
 		8414249F1D77126600968C36 /* PTUErrorViewProvider.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PTUErrorViewProvider.mm; sourceTree = "<group>"; };
@@ -767,6 +770,8 @@
 				84884C171C70E63500DBB987 /* PTUChangesetMove.h */,
 				84884C181C70E63500DBB987 /* PTUChangesetMove.m */,
 				846E18901C730F2100B94467 /* PTUChangesetProvider.h */,
+				8405CF461DDB28A200CB638B /* PTUCollectionView.h */,
+				8405CF471DDB28A200CB638B /* PTUCollectionView.mm */,
 				84BE49001D2E44150090105C /* PTUCollectionViewController.h */,
 				84BE49011D2E44150090105C /* PTUCollectionViewController.mm */,
 				84BE49021D2E44150090105C /* PTUDataSourceProvider.h */,
@@ -1523,6 +1528,7 @@
 				887267BD1D7C3C8F00D4F2A6 /* PTULocalization.mm in Sources */,
 				84FF72F61C8EED9900D1DA9F /* PTUChangesetMove.m in Sources */,
 				84FF72F41C8EED9600D1DA9F /* PTUAlbumChangesetProvider.m in Sources */,
+				8405CF481DDB28A200CB638B /* PTUCollectionView.mm in Sources */,
 				8414247D1D770FDC00968C36 /* PTUErrorViewProvider.mm in Sources */,
 				8449B5DB1D1AD5410054272C /* PTUChangesetMetadata.m in Sources */,
 				84765E121D29393600D3D5C5 /* PTUChangesetProviderReverser.m in Sources */,

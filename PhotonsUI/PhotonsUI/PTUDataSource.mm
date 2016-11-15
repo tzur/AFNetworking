@@ -111,7 +111,6 @@ NS_ASSUME_NONNULL_BEGIN
 
         if (!changeset.hasIncrementalChanges) {
           [self.collectionView reloadData];
-          [self.collectionView layoutIfNeeded];
           [self.didUpdateCollectionViewSubject sendNext:[RACUnit defaultUnit]];
           return;
         }
