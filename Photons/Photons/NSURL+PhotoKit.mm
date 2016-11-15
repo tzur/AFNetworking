@@ -32,12 +32,6 @@ static NSString * const kSubtypeKey = @"subtype";
 static NSString * const kFilterSubalbumsKey = @"filterSubalbums";
 static NSString * const kTitlePredicateKey = @"title";
 
-static BOOL PTNStringIsValidQuery(NSString *string) {
-  NSCharacterSet *querySet = [NSCharacterSet URLQueryAllowedCharacterSet];
-  NSString *trimmed = [string stringByTrimmingCharactersInSet:querySet];
-  return [trimmed isEqualToString:@""];
-}
-
 + (NSString *)ptn_photoKitScheme {
   return @"com.lightricks.Photons.PhotoKit";
 }
