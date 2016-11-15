@@ -64,6 +64,9 @@
 		8482E2B01D2260DA0084D565 /* LTValueObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 8482E2AE1D2260DA0084D565 /* LTValueObject.h */; };
 		8482E2B11D2260DA0084D565 /* LTValueObject.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8482E2AF1D2260DA0084D565 /* LTValueObject.mm */; };
 		8482E2DE1D22810D0084D565 /* LTValueObjectSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8482E2DD1D22810D0084D565 /* LTValueObjectSpec.mm */; };
+		84B63E3E1DD8B79900ECF65B /* LTCompoundRandomAccessCollection.h in Headers */ = {isa = PBXBuildFile; fileRef = 84B63E3C1DD8B79900ECF65B /* LTCompoundRandomAccessCollection.h */; };
+		84B63E3F1DD8B79900ECF65B /* LTCompoundRandomAccessCollection.mm in Sources */ = {isa = PBXBuildFile; fileRef = 84B63E3D1DD8B79900ECF65B /* LTCompoundRandomAccessCollection.mm */; };
+		84B63E591DD8C77E00ECF65B /* LTCompoundRandomAccessCollectionSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 84B63E581DD8C77E00ECF65B /* LTCompoundRandomAccessCollectionSpec.mm */; };
 		84F7AB261C3290BA00AA502F /* LTPath.h in Headers */ = {isa = PBXBuildFile; fileRef = 84F7AB241C3290BA00AA502F /* LTPath.h */; };
 		84F7AB271C3290BA00AA502F /* LTPath.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F7AB251C3290BA00AA502F /* LTPath.m */; };
 		84F7AB291C3290D600AA502F /* LTPathSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F7AB281C3290D600AA502F /* LTPathSpec.m */; };
@@ -466,6 +469,9 @@
 		8482E2AE1D2260DA0084D565 /* LTValueObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTValueObject.h; sourceTree = "<group>"; };
 		8482E2AF1D2260DA0084D565 /* LTValueObject.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTValueObject.mm; sourceTree = "<group>"; };
 		8482E2DD1D22810D0084D565 /* LTValueObjectSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTValueObjectSpec.mm; sourceTree = "<group>"; };
+		84B63E3C1DD8B79900ECF65B /* LTCompoundRandomAccessCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTCompoundRandomAccessCollection.h; sourceTree = "<group>"; };
+		84B63E3D1DD8B79900ECF65B /* LTCompoundRandomAccessCollection.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTCompoundRandomAccessCollection.mm; sourceTree = "<group>"; };
+		84B63E581DD8C77E00ECF65B /* LTCompoundRandomAccessCollectionSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTCompoundRandomAccessCollectionSpec.mm; sourceTree = "<group>"; };
 		84F7AB241C3290BA00AA502F /* LTPath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTPath.h; sourceTree = "<group>"; };
 		84F7AB251C3290BA00AA502F /* LTPath.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTPath.m; sourceTree = "<group>"; };
 		84F7AB281C3290D600AA502F /* LTPathSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTPathSpec.m; sourceTree = "<group>"; };
@@ -1077,6 +1083,7 @@
 				8BEE674519596F66005E4D53 /* LTBidirectionalMapSpec.mm */,
 				259FF7E61C14921800362CDD /* LTBipartiteGraphSpec.mm */,
 				5067222F19EA811A003AF8D2 /* LTBoundedQueueSpec.mm */,
+				84B63E581DD8C77E00ECF65B /* LTCompoundRandomAccessCollectionSpec.mm */,
 				84455E491CD0F35C00042CB7 /* LTFastEnumeratorSpec.mm */,
 				84455E4D1CD0FB1A00042CB7 /* LTMappingRandomAccessCollectionSpec.mm */,
 				255339421C3E54A900C478F9 /* LTTreeNodeSpec.mm */,
@@ -1096,6 +1103,8 @@
 				259FF7CE1C14920C00362CDD /* LTBipartiteGraph.mm */,
 				5067221419EA80B5003AF8D2 /* LTBoundedQueue.h */,
 				5067221519EA80B5003AF8D2 /* LTBoundedQueue.mm */,
+				84B63E3C1DD8B79900ECF65B /* LTCompoundRandomAccessCollection.h */,
+				84B63E3D1DD8B79900ECF65B /* LTCompoundRandomAccessCollection.mm */,
 				84455E421CD0F2AB00042CB7 /* LTFastEnumerator.h */,
 				84455E431CD0F2AB00042CB7 /* LTFastEnumerator.m */,
 				2553393E1C3E512300C478F9 /* LTTreeNode.h */,
@@ -1170,6 +1179,7 @@
 				8B8720341924A76500517F2E /* LTAssert.h in Headers */,
 				8B410E8D1CE1F01E007DFF42 /* NSArray+SelectorName.h in Headers */,
 				8B8720351924A76500517F2E /* LTCGExtensions.h in Headers */,
+				84B63E3E1DD8B79900ECF65B /* LTCompoundRandomAccessCollection.h in Headers */,
 				8B59AA9D1DABC54F0006CC22 /* LTEventBusLoggerTarget.h in Headers */,
 				28AA3EAE19A25BBE00518987 /* NSNumber+CGFloat.h in Headers */,
 				658CD3C61D50A79B00FF7FD6 /* LTProgress.h in Headers */,
@@ -1489,6 +1499,7 @@
 				8B7C6CA21B52829100B90DBE /* LTMMOutputFile.mm in Sources */,
 				85BD008B1DC0E0920000FE97 /* NSArray+NSSet.mm in Sources */,
 				6AB5182F1CC2993D00540CC6 /* NSURL+Query.mm in Sources */,
+				84B63E3F1DD8B79900ECF65B /* LTCompoundRandomAccessCollection.mm in Sources */,
 				8B87D5941C05AC630005410A /* NSErrorCodes+LTKit.mm in Sources */,
 				8B871FAF1923CEF800517F2E /* NSFileManager+LTKit.m in Sources */,
 				8BB01CB0196576D7002A8609 /* LTImageLoader.m in Sources */,
@@ -1556,6 +1567,7 @@
 				8BD7F5E91CF35EDA00EF2005 /* LTUnorderedMapSpec.mm in Sources */,
 				8B87D5CC1C05F2F80005410A /* LTErrorCodesRegistrySpec.mm in Sources */,
 				255339431C3E54A900C478F9 /* LTTreeNodeSpec.mm in Sources */,
+				84B63E591DD8C77E00ECF65B /* LTCompoundRandomAccessCollectionSpec.mm in Sources */,
 				28EA157318BB3F53003C00BF /* LTPropertyMacrosSpec.mm in Sources */,
 				8BEE674319596DE7005E4D53 /* LTEnumSpec.mm in Sources */,
 				650F73DC1C7A1A5500148CEC /* NSArray+FunctionalSpec.mm in Sources */,
