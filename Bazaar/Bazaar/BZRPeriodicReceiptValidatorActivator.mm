@@ -78,16 +78,40 @@ const NSUInteger kMaxPeriodicValidationInterval = 28;
   [RACObserve(self.validationStatusProvider, receiptValidationStatus)
       subscribeNext:^(BZRReceiptValidationStatus * _Nullable receiptValidationStatus) {
         @strongify(self);
-        BZRReceiptSubscriptionInfo *subscription = receiptValidationStatus.receipt.subscription;
-        if (subscription) {
-          [self activatePeriodicValidation:subscription];
+        if ([self shouldActivatePeriodicValidatorForValidationStatus:receiptValidationStatus]) {
+          [self activatePeriodicValidationForSubscription:
+           receiptValidationStatus.receipt.subscription];
         } else {
           [self.periodicReceiptValidator deactivatePeriodicValidationCheck];
         }
       }];
 }
 
-- (void)activatePeriodicValidation:(BZRReceiptSubscriptionInfo *)subscription {
+- (BOOL)shouldActivatePeriodicValidatorForValidationStatus:
+    (BZRReceiptValidationStatus *)receiptValidationStatus {
+  BZRReceiptSubscriptionInfo *subscription = receiptValidationStatus.receipt.subscription;
+
+  // If the user has no subscription there's no need to activate periodic validation.
+  if (!subscription) {
+    return NO;
+  }
+
+  // If the subscription is marked as expired because it was cancelled, no need to activate.
+  // If the subscription is marked as expired and the last validation occurred after the
+  // expiration date then the subscription is surely expired (and grace period is over), no
+  // need to activate.
+  if (subscription.isExpired && (subscription.cancellationDateTime ||
+      [subscription.expirationDateTime compare:receiptValidationStatus.validationDateTime] ==
+      NSOrderedAscending)) {
+    return NO;
+  }
+
+  // Subcription is either not marked as expired or marked as expired because the last successful
+  // validation occured too long ago. In these scenarios periodic validation is required.
+  return YES;
+}
+
+- (void)activatePeriodicValidationForSubscription:(BZRReceiptSubscriptionInfo *)subscription {
   @weakify(self);
   [[self.timeProvider currentTime] subscribeNext:^(NSDate *currentTime) {
     @strongify(self);
@@ -159,15 +183,16 @@ const NSUInteger kMaxPeriodicValidationInterval = 28;
                                       currentTime:(NSDate *)currentTime {
   NSDate *lastReceiptValidationDate = self.validationStatusProvider.lastReceiptValidationDate;
   if (!lastReceiptValidationDate) {
-    /// This case can happen only if \c receiptValidationStatus is not \c nil but
-    /// \c lastReceiptValidationDate is. This, in turn, is only possible if the
-    /// \c receiptValidationStatus was saved to secure storage but there was an error saving
-    /// \c lastReceiptValidationDate. In this case a storage error will be sent in
-    /// \c validationStatusProvider, so we don't need to send another error.
+    // This case can happen only if \c receiptValidationStatus is not \c nil but
+    // \c lastReceiptValidationDate is. This, in turn, is only possible if the
+    // \c receiptValidationStatus was saved to secure storage but there was an error saving
+    // \c lastReceiptValidationDate. In this case a storage error will be sent in
+    // \c validationStatusProvider, so we don't need to send another error.
     return nil;
   }
   NSTimeInterval secondsUntilInvalidation =
-      [[self dateOfInvalidation:lastReceiptValidationDate] timeIntervalSinceDate:currentTime];
+      [[self dateOfInvalidationForLastReceiptValidation:lastReceiptValidationDate]
+       timeIntervalSinceDate:currentTime];
 
   if (secondsUntilInvalidation < 0) {
     [self.validationStatusProvider expireSubscription];
@@ -178,7 +203,7 @@ const NSUInteger kMaxPeriodicValidationInterval = 28;
                                                     underlyingError:validationError];
 }
 
-- (NSDate *)dateOfInvalidation:(NSDate *)lastReceiptValidationDate {
+- (NSDate *)dateOfInvalidationForLastReceiptValidation:(NSDate *)lastReceiptValidationDate {
   return [[lastReceiptValidationDate
           dateByAddingTimeInterval:self.periodicValidationInterval]
           dateByAddingTimeInterval:self.gracePeriod];

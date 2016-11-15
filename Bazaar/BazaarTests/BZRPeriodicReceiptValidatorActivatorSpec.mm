@@ -7,6 +7,7 @@
 #import "BZRPeriodicReceiptValidator.h"
 #import "BZRReceiptModel.h"
 #import "BZRReceiptValidationStatus.h"
+#import "BZRTestUtils.h"
 #import "BZRTimeConversion.h"
 #import "BZRTimeProvider.h"
 #import "NSErrorCodes+Bazaar.h"
@@ -92,7 +93,7 @@ context(@"deallocating object", ^{
 });
 
 context(@"subscription doesn't exist", ^{
-  it(@"should deactivate when subscription doesn't exist", ^{
+  it(@"should deactivate periodic validator if subscription doesn't exist", ^{
     OCMReject([periodicReceiptValidator activatePeriodicValidationCheck:OCMOCK_ANY]);
     BZRReceiptValidationStatus *receiptValidationStatus =
         OCMClassMock([BZRReceiptValidationStatus class]);
@@ -104,7 +105,7 @@ context(@"subscription doesn't exist", ^{
     OCMVerify([periodicReceiptValidator deactivatePeriodicValidationCheck]);
   });
 
-  it(@"should deactivate when receipt validation status is nil", ^{
+  it(@"should deactivate periodic validator if receipt validation status is nil", ^{
     OCMReject([periodicReceiptValidator activatePeriodicValidationCheck:OCMOCK_ANY]);
 
     receiptValidationStatusProvider.receiptValidationStatus = nil;
@@ -122,8 +123,49 @@ context(@"subscription exists", ^{
     receiptValidationStatus = BZRReceiptValidationStatusWithSubscriptionPeriod(subscriptionPeriod);
   });
 
-  it(@"should activate timer when subscription exists", ^{
+  it(@"should deactivate the periodic validator if subscription is cancelled", ^{
+    OCMReject([periodicReceiptValidator activatePeriodicValidationCheck:OCMOCK_ANY]);
+    BZRReceiptValidationStatus *validationStatus = BZRReceiptValidationStatusWithExpiry(YES, YES);
+    LTAssert([validationStatus.receipt.subscription.expirationDateTime
+              compare:validationStatus.validationDateTime] == NSOrderedDescending,
+             @"Expected validation status with validation time prior to expiration time");
+
+    receiptValidationStatusProvider.receiptValidationStatus = validationStatus;
+
+    OCMVerify([periodicReceiptValidator deactivatePeriodicValidationCheck]);
+  });
+
+  it(@"should deactivate the periodic validator if subscription was marked as expired before last "
+     "validation", ^{
+    OCMReject([periodicReceiptValidator activatePeriodicValidationCheck:OCMOCK_ANY]);
+    receiptValidationStatus = BZRReceiptValidationStatusWithExpiry(YES, NO);
+    NSDate *postExpirationDateTime =
+        [receiptValidationStatus.receipt.subscription.expirationDateTime
+         dateByAddingTimeInterval:1];
+
+    receiptValidationStatusProvider.receiptValidationStatus =
+        [receiptValidationStatus
+         modelByOverridingProperty:@keypath(receiptValidationStatus, validationDateTime)
+         withValue:postExpirationDateTime];
+
+    OCMVerify([periodicReceiptValidator deactivatePeriodicValidationCheck]);
+  });
+
+  it(@"should activate the periodic validator if subscription exists and is not marked as "
+     "expired", ^{
     OCMReject([periodicReceiptValidator deactivatePeriodicValidationCheck]);
+    BZRStubLastValidationDate(receiptValidationStatusProvider, lastValidationDate);
+    BZRStubCurrentTimeOnce(timeProvider, lastValidationDate, activator.periodicValidationInterval);
+
+    receiptValidationStatusProvider.receiptValidationStatus = receiptValidationStatus;
+
+    OCMVerify([periodicReceiptValidator activatePeriodicValidationCheck:OCMOCK_ANY]);
+  });
+
+  it(@"should activate the periodic validator if subscription was marked as expired before "
+     "expiration", ^{
+    OCMReject([periodicReceiptValidator deactivatePeriodicValidationCheck]);
+    receiptValidationStatus = BZRReceiptValidationStatusWithExpiry(YES, NO);
     BZRStubLastValidationDate(receiptValidationStatusProvider, lastValidationDate);
     BZRStubCurrentTimeOnce(timeProvider, lastValidationDate, activator.periodicValidationInterval);
 
