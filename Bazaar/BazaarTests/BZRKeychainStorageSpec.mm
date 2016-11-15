@@ -1,17 +1,40 @@
 // Copyright (c) 2016 Lightricks. All rights reserved.
 // Created by Hagai Weinfeld.
 
-#import "BZRKeychainHandler.h"
-
 #import "BZRKeychainStorage.h"
+
+#import "BZRKeychainHandler.h"
 #import "NSErrorCodes+Bazaar.h"
+
+/// Fake handler that provides empty implementations to \c BZRKeychainHandler's methods.
+@interface BZRFakeKeychainHandler : NSObject <BZRKeychainHandler>
+@end
+
+@implementation BZRFakeKeychainHandler
+
+- (nullable NSData *)dataForKey:(NSString __unused *)key
+                          error:(NSError * __unused __autoreleasing *)error {
+  return nil;
+}
+
+- (BOOL)setData:(nullable NSData __unused *)data forKey:(NSString __unused *)key
+          error:(NSError * __unused __autoreleasing *)error {
+  return NO;
+}
+
+/// Bazaar namespace error for the given underlying class error.
++ (NSError *)errorForUnderlyingError:(NSError *)underlyingError {
+  return underlyingError;
+}
+
+@end
 
 SpecBegin(BZRKeychainStorage)
 
 __block id<BZRKeychainHandler> keychainHandler;
 
 beforeEach(^{
-  keychainHandler = OCMProtocolMock(@protocol(BZRKeychainHandler));
+  keychainHandler = OCMClassMock([BZRFakeKeychainHandler class]);
 });
 
 context(@"initialization", ^{

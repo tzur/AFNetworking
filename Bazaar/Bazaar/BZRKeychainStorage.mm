@@ -39,7 +39,7 @@ NS_ASSUME_NONNULL_BEGIN
   NSData *data = [self.keychainHandler dataForKey:key error:&underlyingError];
   if (!data) {
     if (underlyingError && error) {
-      *error = [self.keychainHandler errorForUnderlyingError:underlyingError];
+      *error = [self.keychainHandler.class errorForUnderlyingError:underlyingError];
     }
     return nil;
   }
@@ -72,7 +72,7 @@ NS_ASSUME_NONNULL_BEGIN
   if (!success) {
     if (error) {
       *error = underlyingError ?
-          [self.keychainHandler errorForUnderlyingError:underlyingError] :
+          [self.keychainHandler.class errorForUnderlyingError:underlyingError] :
           [NSError lt_errorWithCode:BZRErrorCodeKeychainStorageUnexpectedFailure];
     }
   }
