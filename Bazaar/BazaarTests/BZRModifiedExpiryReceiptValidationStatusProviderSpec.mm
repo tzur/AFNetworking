@@ -169,67 +169,87 @@ sharedExamplesFor(kModifiedExpiryProviderExamples, ^(NSDictionary *data) {
   });
 });
 
-context(@"subscription not expired", ^{
-  __block BZRReceiptValidationStatus *validationStatus;
+context(@"expiry modification", ^{
   __block NSTimeInterval gracePeriodSeconds;
+  __block NSDate *gracePeriodNotPassedTime;
+  __block NSDate *gracePeriodPassedTime;
+  __block BZRReceiptValidationStatus *expiredValidationStatus;
+  __block BZRReceiptValidationStatus *notExpiredValidationStatus;
+  __block BZRReceiptValidationStatus *cancelledValidationStatus;
 
   beforeEach(^{
-    validationStatus = BZRReceiptValidationStatusWithExpiry(NO);
     gracePeriodSeconds = [BZRTimeConversion numberOfSecondsInDays:gracePeriod];
-  });
+    notExpiredValidationStatus = BZRReceiptValidationStatusWithExpiry(NO);
+    expiredValidationStatus = BZRReceiptValidationStatusWithExpiry(YES);
+    cancelledValidationStatus = BZRReceiptValidationStatusWithExpiry(NO, YES);
 
-  itShouldBehaveLike(kModifiedExpiryProviderExamples, ^{
-    NSDate *gracePeriodNotPassedTime =
-        [validationStatus.receipt.subscription.expirationDateTime
+    gracePeriodNotPassedTime =
+        [notExpiredValidationStatus.receipt.subscription.expirationDateTime
          dateByAddingTimeInterval:(gracePeriodSeconds - 1)];
-    return @{
-      kModifiedExpiryProviderReceiptValidationStatusKey: validationStatus,
-      kModifiedExpiryProviderCurrentTimeKey: gracePeriodNotPassedTime,
-      kModifiedExpiryProviderExpectedIsExpiredValueKey: @NO
-    };
+    gracePeriodPassedTime =
+          [expiredValidationStatus.receipt.subscription.expirationDateTime
+           dateByAddingTimeInterval:(gracePeriodSeconds + 1)];
   });
 
-  itShouldBehaveLike(kModifiedExpiryProviderExamples, ^{
-    NSDate *gracePeriodPassedTime =
-        [validationStatus.receipt.subscription.expirationDateTime
-         dateByAddingTimeInterval:(gracePeriodSeconds + 1)];
-    return @{
-      kModifiedExpiryProviderReceiptValidationStatusKey: validationStatus,
-      kModifiedExpiryProviderCurrentTimeKey: gracePeriodPassedTime,
-      kModifiedExpiryProviderExpectedIsExpiredValueKey: @YES
-    };
-  });
-});
 
-context(@"subscription expired", ^{
-  __block BZRReceiptValidationStatus *validationStatus;
-  __block NSTimeInterval gracePeriodSeconds;
-
-  beforeEach(^{
-    validationStatus = BZRReceiptValidationStatusWithExpiry(YES);
-    gracePeriodSeconds = [BZRTimeConversion numberOfSecondsInDays:gracePeriod];
+  context(@"subscription not expired and grace period is not over", ^{
+    itShouldBehaveLike(kModifiedExpiryProviderExamples, ^{
+      return @{
+        kModifiedExpiryProviderReceiptValidationStatusKey: notExpiredValidationStatus,
+        kModifiedExpiryProviderCurrentTimeKey: gracePeriodNotPassedTime,
+        kModifiedExpiryProviderExpectedIsExpiredValueKey: @NO
+      };
+    });
   });
 
-  itShouldBehaveLike(kModifiedExpiryProviderExamples, ^{
-    NSDate *gracePeriodNotPassedTime =
-        [validationStatus.receipt.subscription.expirationDateTime
-         dateByAddingTimeInterval:(gracePeriodSeconds - 1)];
-    return @{
-      kModifiedExpiryProviderReceiptValidationStatusKey: validationStatus,
-      kModifiedExpiryProviderCurrentTimeKey: gracePeriodNotPassedTime,
-      kModifiedExpiryProviderExpectedIsExpiredValueKey: @NO
-    };
+  context(@"subscription not expired and grace period is over", ^{
+    itShouldBehaveLike(kModifiedExpiryProviderExamples, ^{
+      return @{
+        kModifiedExpiryProviderReceiptValidationStatusKey: notExpiredValidationStatus,
+        kModifiedExpiryProviderCurrentTimeKey: gracePeriodPassedTime,
+        kModifiedExpiryProviderExpectedIsExpiredValueKey: @YES
+      };
+    });
   });
 
-  itShouldBehaveLike(kModifiedExpiryProviderExamples, ^{
-    NSDate *gracePeriodPassedTime =
-        [validationStatus.receipt.subscription.expirationDateTime
-         dateByAddingTimeInterval:(gracePeriodSeconds + 1)];
-    return @{
-      kModifiedExpiryProviderReceiptValidationStatusKey: validationStatus,
-      kModifiedExpiryProviderCurrentTimeKey: gracePeriodPassedTime,
-      kModifiedExpiryProviderExpectedIsExpiredValueKey: @YES
-    };
+  context(@"subscription expired and grace period is not over", ^{
+    itShouldBehaveLike(kModifiedExpiryProviderExamples, ^{
+      return @{
+        kModifiedExpiryProviderReceiptValidationStatusKey: expiredValidationStatus,
+        kModifiedExpiryProviderCurrentTimeKey: gracePeriodNotPassedTime,
+        kModifiedExpiryProviderExpectedIsExpiredValueKey: @NO
+      };
+    });
+  });
+
+  context(@"subscription expired and grace period is over", ^{
+    itShouldBehaveLike(kModifiedExpiryProviderExamples, ^{
+      return @{
+        kModifiedExpiryProviderReceiptValidationStatusKey: expiredValidationStatus,
+        kModifiedExpiryProviderCurrentTimeKey: gracePeriodPassedTime,
+        kModifiedExpiryProviderExpectedIsExpiredValueKey: @YES
+      };
+    });
+  });
+
+  context(@"subscription cancelled and grace period is not over", ^{
+    itShouldBehaveLike(kModifiedExpiryProviderExamples, ^{
+      return @{
+        kModifiedExpiryProviderReceiptValidationStatusKey: cancelledValidationStatus,
+        kModifiedExpiryProviderCurrentTimeKey: gracePeriodNotPassedTime,
+        kModifiedExpiryProviderExpectedIsExpiredValueKey: @YES
+      };
+    });
+  });
+
+  context(@"subscription cancelled and grace period is over", ^{
+    itShouldBehaveLike(kModifiedExpiryProviderExamples, ^{
+      return @{
+        kModifiedExpiryProviderReceiptValidationStatusKey: cancelledValidationStatus,
+        kModifiedExpiryProviderCurrentTimeKey: gracePeriodPassedTime,
+        kModifiedExpiryProviderExpectedIsExpiredValueKey: @YES
+      };
+    });
   });
 });
 
