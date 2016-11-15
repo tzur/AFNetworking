@@ -68,6 +68,7 @@ context(@"handling errors", ^{
   });
 
   it(@"should send non critical error when failed to store receipt validation status", ^{
+    OCMStub([timeProvider currentTime]).andReturn([RACSignal return:[NSDate date]]);
     NSError *underlyingError = OCMClassMock([NSError class]);
     OCMStub([keychainStorage setValue:OCMOCK_ANY forKey:OCMOCK_ANY
                                 error:[OCMArg setTo:underlyingError]]);
@@ -83,27 +84,8 @@ context(@"handling errors", ^{
     });
   });
 
-  it(@"should send non critical error when failed to store last validation date", ^{
-    NSError *underlyingError = OCMClassMock([NSError class]);
-    OCMExpect([keychainStorage setValue:OCMOCK_ANY forKey:OCMOCK_ANY error:[OCMArg anyObjectRef]])
-          .andReturn(YES);
-    OCMStub([timeProvider currentTime]).andReturn([RACSignal return:[NSDate date]]);
-    OCMExpect([keychainStorage setValue:OCMOCK_ANY forKey:OCMOCK_ANY
-                                  error:[OCMArg setTo:underlyingError]]);
-    OCMStub([underlyingProvider fetchReceiptValidationStatus])
-        .andReturn([RACSignal return:receiptValidationStatus]);
-
-    LLSignalTestRecorder *recorder =
-        [validationStatusProvider.nonCriticalErrorsSignal testRecorder];
-    expect([validationStatusProvider fetchReceiptValidationStatus]).will.complete();
-    expect(recorder).will.matchValue(0, ^BOOL(NSError *error) {
-      return error.lt_isLTDomain && error.code == BZRErrorCodeStoringDataToStorageFailed &&
-          error.lt_underlyingError == underlyingError;
-    });
-    OCMVerifyAll((id)keychainStorage);
-  });
-
   it(@"should err when underlying receipt validitation status provider errs", ^{
+    OCMStub([timeProvider currentTime]).andReturn([RACSignal return:[NSDate date]]);
     NSError *error = OCMClassMock([NSError class]);
     OCMStub([underlyingProvider fetchReceiptValidationStatus]).andReturn([RACSignal error:error]);
 
@@ -118,21 +100,31 @@ context(@"handling errors", ^{
     OCMStub([timeProvider currentTime]).andReturn([RACSignal error:error]);
     OCMStub([underlyingProvider fetchReceiptValidationStatus])
         .andReturn([RACSignal return:receiptValidationStatus]);
-    OCMStub([keychainStorage setValue:OCMOCK_ANY forKey:OCMOCK_ANY error:[OCMArg anyObjectRef]])
-        .andReturn(YES);
-
+    
     LLSignalTestRecorder *recorder =
         [[validationStatusProvider nonCriticalErrorsSignal] testRecorder];
 
     expect([validationStatusProvider fetchReceiptValidationStatus]).will.complete();
     expect(recorder).will.sendValues(@[error]);
   });
+
+  it(@"should not cache the receipt if time provider failed", ^{
+    NSError *error = [NSError lt_errorWithCode:1337];
+    OCMStub([timeProvider currentTime]).andReturn([RACSignal error:error]);
+    OCMStub([underlyingProvider fetchReceiptValidationStatus])
+        .andReturn([RACSignal return:receiptValidationStatus]);
+    OCMReject([keychainStorage setValue:OCMOCK_ANY forKey:OCMOCK_ANY]);
+
+    expect([validationStatusProvider fetchReceiptValidationStatus]).will.complete();
+  });
 });
 
 context(@"fetching receipt validation status", ^{
   beforeEach(^{
-    OCMStub([underlyingProvider fetchReceiptValidationStatus])
-        .andReturn([RACSignal return:receiptValidationStatus]);
+    RACSignal *receiptValidationSignal = [RACSignal defer:^RACSignal *{
+      return [RACSignal return:receiptValidationStatus];
+    }];
+    OCMStub([underlyingProvider fetchReceiptValidationStatus]).andReturn(receiptValidationSignal);
   });
 
   it(@"should send receipt validation status sent by the underlying provider", ^{
@@ -143,13 +135,11 @@ context(@"fetching receipt validation status", ^{
     expect(validateSignal).will.sendValues(@[receiptValidationStatus]);
   });
 
-  it(@"should save receipt validation status and last validation date to storage", ^{
+  it(@"should save receipt validation status to storage", ^{
     NSDate *currentTime = [NSDate date];
     OCMStub([timeProvider currentTime]).andReturn([RACSignal return:currentTime]);
-    OCMExpect([keychainStorage setValue:receiptValidationStatus forKey:OCMOCK_ANY
+    OCMExpect([keychainStorage setValue:OCMOCK_ANY forKey:OCMOCK_ANY
                                   error:[OCMArg anyObjectRef]]).andReturn(YES);
-    OCMExpect([keychainStorage setValue:currentTime forKey:OCMOCK_ANY error:[OCMArg anyObjectRef]])
-        .andReturn(YES);
 
     RACSignal *validateSignal = [validationStatusProvider fetchReceiptValidationStatus];
 
@@ -162,47 +152,32 @@ context(@"fetching receipt validation status", ^{
                                 error:[OCMArg anyObjectRef]]).andReturn(YES);
     NSDate *currentTime = [NSDate date];
     OCMStub([timeProvider currentTime]).andReturn([RACSignal return:currentTime]);
-    RACSignal *validateSignal = [validationStatusProvider fetchReceiptValidationStatus];
+    LLSignalTestRecorder *validateSignal =
+        [[validationStatusProvider fetchReceiptValidationStatus] testRecorder];
 
     expect(validateSignal).will.complete();
     expect(validationStatusProvider.lastReceiptValidationDate).to.equal(currentTime);
-  });
-
-  it(@"should not save last validation date if failed to save receipt validation status", ^{
-    NSDate *currentTime = [NSDate date];
-    OCMStub([timeProvider currentTime]).andReturn([RACSignal return:currentTime]);
-    NSError *underlyingError = [NSError lt_errorWithCode:1337];
-    OCMStub([keychainStorage setValue:receiptValidationStatus forKey:OCMOCK_ANY
-                                error:[OCMArg setTo:underlyingError]]).andReturn(NO);
-    OCMReject([keychainStorage setValue:currentTime forKey:OCMOCK_ANY error:[OCMArg anyObjectRef]]);
-
-    LLSignalTestRecorder *recorder =
-        [validationStatusProvider.nonCriticalErrorsSignal testRecorder];
-    RACSignal *validateSignal = [validationStatusProvider fetchReceiptValidationStatus];
-
-    expect(validateSignal).will.complete();
-    expect(recorder).will.matchValue(0, ^BOOL(NSError *error) {
-      return error.lt_isLTDomain && error.code == BZRErrorCodeStoringDataToStorageFailed &&
-      error.lt_underlyingError == underlyingError;
-    });
   });
 });
 
 context(@"getting cached receipt validation status", ^{
   it(@"should return nil if no validation completed and failed to read from storage", ^{
     NSError *error = [NSError lt_errorWithCode:1337];
-    OCMStub([keychainStorage valueOfClass:OCMOCK_ANY forKey:OCMOCK_ANY error:[OCMArg setTo:error]]);
+    OCMStub([keychainStorage valueOfClass:[NSDictionary class] forKey:OCMOCK_ANY
+                                    error:[OCMArg setTo:error]]);
 
     LLSignalTestRecorder *recorder =
         [validationStatusProvider.nonCriticalErrorsSignal testRecorder];
 
     expect(validationStatusProvider.receiptValidationStatus).to.beNil();
-    expect(recorder).will.sendValues(@[error]);
+    expect(validationStatusProvider.lastReceiptValidationDate).to.beNil();
+    expect(recorder).will.sendValues(@[error, error]);
   });
 
   it(@"should not read from storage if validation status is not nil", ^{
     OCMStub([underlyingProvider fetchReceiptValidationStatus])
         .andReturn([RACSignal return:receiptValidationStatus]);
+    OCMStub([timeProvider currentTime]).andReturn([RACSignal return:[NSDate date]]);
 
     RACSignal *validateSignal = [validationStatusProvider fetchReceiptValidationStatus];
 
@@ -210,55 +185,46 @@ context(@"getting cached receipt validation status", ^{
     OCMReject([keychainStorage valueOfClass:OCMOCK_ANY forKey:OCMOCK_ANY
                                       error:[OCMArg anyObjectRef]]);
     expect(validationStatusProvider.receiptValidationStatus).notTo.beNil();
+    expect(validationStatusProvider.lastReceiptValidationDate).notTo.beNil();
   });
 
-  it(@"should read validation status from storage when receipt validation fails", ^{
-    OCMExpect([keychainStorage valueOfClass:OCMOCK_ANY forKey:OCMOCK_ANY
-        error:[OCMArg anyObjectRef]]).andReturn(receiptValidationStatus);
-    NSError *error = OCMClassMock([NSError class]);
-    OCMStub([underlyingProvider fetchReceiptValidationStatus])
-        .andReturn([RACSignal error:error]);
-
-    RACSignal *validateSignal = [validationStatusProvider fetchReceiptValidationStatus];
-
-    expect(validateSignal).will.sendError(error);
-    expect(validationStatusProvider.receiptValidationStatus).to.equal(receiptValidationStatus);
-    OCMVerifyAll((id)keychainStorage);
-  });
-});
-
-context(@"getting cached last validation date", ^{
-  it(@"should return nil last validation date if receipt validation status couldn't be loaded", ^{
-    NSError *error = [NSError lt_errorWithCode:1337];
-    OCMStub([keychainStorage valueOfClass:BZRReceiptValidationStatus.class forKey:OCMOCK_ANY
-                                    error:[OCMArg setTo:error]]);
-    OCMStub([keychainStorage valueOfClass:NSDate.class forKey:OCMOCK_ANY
-                                    error:[OCMArg anyObjectRef]]).andReturn([NSDate date]);
-    OCMReject([keychainStorage valueOfClass:OCMOCK_ANY forKey:OCMOCK_ANY
+  it(@"should load validation status from storage if receipt validation status is nil", ^{
+    OCMExpect([keychainStorage valueOfClass:[NSDictionary class] forKey:OCMOCK_ANY
+                                      error:[OCMArg anyObjectRef]]).andReturn(@{});
+    OCMReject([keychainStorage valueOfClass:[BZRReceiptValidationStatus class] forKey:OCMOCK_ANY
                                       error:[OCMArg anyObjectRef]]);
 
-    expect(validationStatusProvider.lastReceiptValidationDate).to.beNil();
+    BZRReceiptValidationStatus __unused *validationStatus =
+        validationStatusProvider.receiptValidationStatus;
+    OCMVerifyAll((id)keychainStorage);
   });
 
-  it(@"should return cached last validation date", ^{
-    NSDate *lastValidationDate = [NSDate date];
-    OCMExpect([keychainStorage valueOfClass:OCMOCK_ANY forKey:OCMOCK_ANY
-        error:[OCMArg anyObjectRef]]).andReturn(receiptValidationStatus);
-    OCMExpect([keychainStorage valueOfClass:OCMOCK_ANY forKey:OCMOCK_ANY
-                                      error:[OCMArg anyObjectRef]]).andReturn(lastValidationDate);
+  it(@"should load old format cached values if new format values are not available", ^{
+    BZRReceiptValidationStatus *validationStatus =
+        OCMClassMock([BZRReceiptValidationStatus class]);
+    NSDate *validationDate = [NSDate date];
+    OCMStub([keychainStorage valueOfClass:[BZRReceiptValidationStatus class] forKey:OCMOCK_ANY
+                                    error:[OCMArg anyObjectRef]]).andReturn(validationStatus);
+    OCMStub([keychainStorage valueOfClass:[NSDate class] forKey:OCMOCK_ANY
+                                    error:[OCMArg anyObjectRef]]).andReturn(validationDate);
 
-    expect(validationStatusProvider.lastReceiptValidationDate).to.equal(lastValidationDate);
+    expect(validationStatusProvider.receiptValidationStatus).to.equal(validationStatus);
+    expect(validationStatusProvider.lastReceiptValidationDate).to.equal(validationDate);
   });
 });
 
 context(@"expiring subscription", ^{
   it(@"should change subscription to expired", ^{
     receiptValidationStatus = BZRReceiptValidationStatusWithExpiry(NO);
-    OCMStub([keychainStorage valueOfClass:OCMOCK_ANY forKey:OCMOCK_ANY error:[OCMArg anyObjectRef]])
-        .andReturn(receiptValidationStatus);
+    OCMStub([underlyingProvider fetchReceiptValidationStatus])
+        .andReturn([RACSignal return:receiptValidationStatus]);
+    LLSignalTestRecorder *validationSignal =
+        [[validationStatusProvider fetchReceiptValidationStatus] testRecorder];
+
+    expect(validationSignal).will.complete();
+    expect(validationStatusProvider.receiptValidationStatus).to.equal(receiptValidationStatus);
 
     [validationStatusProvider expireSubscription];
-
     expect(validationStatusProvider.receiptValidationStatus.receipt.subscription.isExpired)
         .to.equal(YES);
   });
