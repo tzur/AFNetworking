@@ -5,6 +5,7 @@
 
 #import "BZRCachedReceiptValidationStatusProvider.h"
 #import "BZRPeriodicReceiptValidator.h"
+#import "BZRReceiptEnvironment.h"
 #import "BZRReceiptModel.h"
 #import "BZRReceiptValidationStatus.h"
 #import "BZRTimeConversion.h"
@@ -204,9 +205,11 @@ const NSUInteger kMaxPeriodicValidationInterval = 28;
 }
 
 - (NSDate *)dateOfInvalidationForLastReceiptValidation:(NSDate *)lastReceiptValidationDate {
-  return [[lastReceiptValidationDate
-          dateByAddingTimeInterval:self.periodicValidationInterval]
-          dateByAddingTimeInterval:self.gracePeriod];
+  NSDate *dateOfInvalidation =
+      [lastReceiptValidationDate dateByAddingTimeInterval:self.periodicValidationInterval];
+  return [self.validationStatusProvider.receiptValidationStatus.receipt.environment
+          isEqual:$(BZRReceiptEnvironmentSandbox)] ? dateOfInvalidation :
+      [dateOfInvalidation dateByAddingTimeInterval:self.gracePeriod];
 }
 
 @end

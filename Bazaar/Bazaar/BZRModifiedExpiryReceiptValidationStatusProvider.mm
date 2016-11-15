@@ -3,6 +3,7 @@
 
 #import "BZRModifiedExpiryReceiptValidationStatusProvider.h"
 
+#import "BZRReceiptEnvironment.h"
 #import "BZRReceiptModel.h"
 #import "BZRReceiptValidationStatus.h"
 #import "BZRTimeConversion.h"
@@ -90,11 +91,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (BZRReceiptValidationStatus *)extendedValidationStatusWithGracePeriod:
     (BZRReceiptValidationStatus *)receiptValidationStatus
     currentTime:(NSDate *)currentTime {
-  BZRReceiptSubscriptionInfo *subscription = receiptValidationStatus.receipt.subscription;
-  NSDate *expirationTimePlusGracePeriod =
-      [subscription.expirationDateTime
-       dateByAddingTimeInterval:self.expiredSubscriptionGracePeriodSeconds];
-  BOOL isExpired = [expirationTimePlusGracePeriod compare:currentTime] == NSOrderedAscending;
+  NSDate *expirationDateTime = [self expirationDate:receiptValidationStatus];
+  BOOL isExpired = [expirationDateTime compare:currentTime] == NSOrderedAscending;
   return [self receiptValidatioStatus:receiptValidationStatus withExpiry:isExpired];
 }
 
@@ -112,6 +110,13 @@ NS_ASSUME_NONNULL_BEGIN
   return [receiptValidationStatus
           modelByOverridingProperty:@instanceKeypath(BZRReceiptValidationStatus, receipt)
           withValue:receipt];
+}
+
+- (NSDate *)expirationDate:(BZRReceiptValidationStatus *)receiptValidationStatus {
+  NSDate *expirationDateTime = receiptValidationStatus.receipt.subscription.expirationDateTime;
+  return [receiptValidationStatus.receipt.environment isEqual:$(BZRReceiptEnvironmentSandbox)] ?
+      expirationDateTime :
+      [expirationDateTime dateByAddingTimeInterval:self.expiredSubscriptionGracePeriodSeconds];
 }
 
 @end

@@ -251,6 +251,43 @@ context(@"expiry modification", ^{
       };
     });
   });
+
+  context(@"sandbox environment", ^{
+    beforeEach(^{
+      BZRReceiptInfo *receipt =
+          [expiredValidationStatus.receipt
+           modelByOverridingProperty:@instanceKeypath(BZRReceiptInfo, environment)
+           withValue:$(BZRReceiptEnvironmentSandbox)];
+      expiredValidationStatus =
+          [expiredValidationStatus
+           modelByOverridingProperty:@instanceKeypath(BZRReceiptValidationStatus, receipt)
+           withValue:receipt];
+      notExpiredValidationStatus =
+          [notExpiredValidationStatus
+           modelByOverridingProperty:@instanceKeypath(BZRReceiptValidationStatus, receipt)
+           withValue:receipt];
+    });
+
+    context(@"subscription expired and grace period is not over", ^{
+      itShouldBehaveLike(kModifiedExpiryProviderExamples, ^{
+        return @{
+          kModifiedExpiryProviderReceiptValidationStatusKey: expiredValidationStatus,
+          kModifiedExpiryProviderCurrentTimeKey: gracePeriodNotPassedTime,
+          kModifiedExpiryProviderExpectedIsExpiredValueKey: @YES
+        };
+      });
+    });
+
+    context(@"subscription not expired and grace period is not over", ^{
+      itShouldBehaveLike(kModifiedExpiryProviderExamples, ^{
+        return @{
+          kModifiedExpiryProviderReceiptValidationStatusKey: notExpiredValidationStatus,
+          kModifiedExpiryProviderCurrentTimeKey: gracePeriodNotPassedTime,
+          kModifiedExpiryProviderExpectedIsExpiredValueKey: @YES
+        };
+      });
+    });
+  });
 });
 
 SpecEnd

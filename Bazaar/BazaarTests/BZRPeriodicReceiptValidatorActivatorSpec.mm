@@ -5,6 +5,7 @@
 
 #import "BZRFakeCachedReceiptValidationStatusProvider.h"
 #import "BZRPeriodicReceiptValidator.h"
+#import "BZRReceiptEnvironment.h"
 #import "BZRReceiptModel.h"
 #import "BZRReceiptValidationStatus.h"
 #import "BZRTestUtils.h"
@@ -95,12 +96,8 @@ context(@"deallocating object", ^{
 context(@"subscription doesn't exist", ^{
   it(@"should deactivate periodic validator if subscription doesn't exist", ^{
     OCMReject([periodicReceiptValidator activatePeriodicValidationCheck:OCMOCK_ANY]);
-    BZRReceiptValidationStatus *receiptValidationStatus =
-        OCMClassMock([BZRReceiptValidationStatus class]);
-    BZRReceiptInfo *receipt = OCMClassMock([BZRReceiptInfo class]);
-    OCMStub([receiptValidationStatus receipt]).andReturn(receipt);
-
-    receiptValidationStatusProvider.receiptValidationStatus = receiptValidationStatus;
+    receiptValidationStatusProvider.receiptValidationStatus =
+        BZRReceiptValidationStatusWithExpiry(NO);
 
     OCMVerify([periodicReceiptValidator deactivatePeriodicValidationCheck]);
   });
@@ -251,6 +248,9 @@ context(@"subscription exists", ^{
 context(@"periodic receipt validation failed", ^{
   beforeEach(^{
     BZRStubLastValidationDate(receiptValidationStatusProvider, lastValidationDate);
+
+    receiptValidationStatusProvider.receiptValidationStatus =
+        BZRReceiptValidationStatusWithExpiry(NO);
   });
 
   it(@"should not contain retain cycle", ^{
@@ -346,6 +346,54 @@ context(@"periodic receipt validation failed", ^{
     [periodicReceiptValidatorErrorsSubject sendNext:[NSError lt_errorWithCode:1337]];
 
     expect(receiptValidationStatusProvider.wasExpireSubscriptionCalled).to.beTruthy();
+  });
+
+  context(@"sandbox environment", ^{
+    beforeEach(^{
+      BZRReceiptInfo *receipt =
+          [receiptValidationStatusProvider.receiptValidationStatus.receipt
+           modelByOverridingProperty:@instanceKeypath(BZRReceiptInfo, environment)
+           withValue:$(BZRReceiptEnvironmentSandbox)];
+      receiptValidationStatusProvider.receiptValidationStatus =
+          [receiptValidationStatusProvider.receiptValidationStatus
+           modelByOverridingProperty:@instanceKeypath(BZRReceiptValidationStatus, receipt)
+           withValue:receipt];
+    });
+
+    it(@"should not count grace period in seconds left to invalidation", ^{
+      LLSignalTestRecorder *recorder = [[activator errorsSignal] testRecorder];
+
+      NSUInteger daysPastLastValidation =
+          [BZRTimeConversion numberOfDaysInSeconds:activator.periodicValidationInterval] + 4;
+      BZRStubCurrentTimeOnce(timeProvider, lastValidationDate,
+                     [BZRTimeConversion numberOfSecondsInDays:daysPastLastValidation]);
+      NSInteger expectedSecondsLeft =
+          activator.periodicValidationInterval -
+          [BZRTimeConversion numberOfSecondsInDays:daysPastLastValidation];
+
+      NSError *underlyingError = [NSError lt_errorWithCode:1337];
+      [periodicReceiptValidatorErrorsSubject sendNext:underlyingError];
+
+      expect(recorder).will.matchValue(0, ^BOOL(NSError *error) {
+        return error.lt_isLTDomain && error.code == BZRErrorCodePeriodicReceiptValidationFailed &&
+            [error.bzr_secondsUntilSubscriptionInvalidation integerValue] == expectedSecondsLeft &&
+            [error.bzr_lastReceiptValidationDate isEqualToDate:lastValidationDate] &&
+            error.lt_underlyingError == underlyingError;
+      });
+    });
+
+    it(@"should expire subscription if days past last validation has passed", ^{
+      NSUInteger daysPastLastValidation =
+          [BZRTimeConversion numberOfDaysInSeconds:activator.periodicValidationInterval] + 1;
+      BZRStubCurrentTimeOnce(timeProvider, lastValidationDate,
+                             [BZRTimeConversion numberOfSecondsInDays:daysPastLastValidation]);
+
+      [activator.errorsSignal subscribeNext:^(id) {}];
+
+      [periodicReceiptValidatorErrorsSubject sendNext:[NSError lt_errorWithCode:1337]];
+
+      expect(receiptValidationStatusProvider.wasExpireSubscriptionCalled).to.beTruthy();
+    });
   });
 });
 
