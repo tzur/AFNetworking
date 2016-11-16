@@ -48,6 +48,16 @@ NS_ASSUME_NONNULL_BEGIN
 ///     .build();
 /// @endcode
 ///
+/// Same as above, but the icon is drawn with line width of 1.5 points.
+/// @code
+/// WFImageViewModel([NSURL URLWithString:@"paintcode://Module/Icon"])
+///     .color([UIColor blueColor])
+///     .lineWidth(1.5)
+///     .highlightedColor([UIColor yellowColor])
+///     .fixedSize(CGSizeMake(44, 44))
+///     .build();
+/// @endcode
+///
 /// @see \c WFDynamicImageViewModel for the underlying view model implementation.
 @interface WFImageViewModelBuilder : NSObject
 
@@ -89,6 +99,10 @@ NS_ASSUME_NONNULL_BEGIN
 /// as the image to be colorized. This is useful when image and highlighted image differ only in
 /// color.
 - (WFImageViewModelBuilder *(^)(UIColor *color))highlightedColor;
+
+/// Images will be loaded with the given line width. The line width is given in points. The line
+/// width must be positive.
+- (WFImageViewModelBuilder *(^)(CGFloat value))lineWidth;
 
 /// Finalizes the builder and returns a new instance of the view model matching the built
 /// configuration.

@@ -45,6 +45,7 @@ static id<WFImageProvider> WFDefaultImageProvider() {
   NSURL * _Nullable _imageURL;
   NSURL * _Nullable _highlightedImageURL;
   RACSignal * _Nullable _sizeSignal;
+  CGFloat _lineWidth;
   UIColor * _Nullable _color;
   UIColor * _Nullable _highlightedColor;
   BOOL _isBuilt;
@@ -66,7 +67,7 @@ static id<WFImageProvider> WFDefaultImageProvider() {
 
 - (WFImageViewModelBuilder *(^)(id<WFImageProvider>))imageProvider {
   return ^(id<WFImageProvider> imageProvider) {
-    LTParameterAssert(!_isBuilt, "Builder can not be altered after the view model has already "
+    LTParameterAssert(!_isBuilt, @"Builder can not be altered after the view model has already "
                       "been built");
     LTParameterAssert(!_imageProvider, @"Image provider has already been specified");
     LTParameterAssert(imageProvider);
@@ -78,11 +79,11 @@ static id<WFImageProvider> WFDefaultImageProvider() {
 
 - (WFImageViewModelBuilder *(^)(NSURL * _Nullable))highlightedImageURL {
   return ^(NSURL * _Nullable highlightedImageURL) {
-    LTParameterAssert(!_isBuilt, "Builder can not be altered after the view model has already "
+    LTParameterAssert(!_isBuilt, @"Builder can not be altered after the view model has already "
                       "been built");
-    LTParameterAssert(!_highlightedImageURL, "URL for highlighted image has already been "
+    LTParameterAssert(!_highlightedImageURL, @"URL for highlighted image has already been "
                       "specified");
-    LTParameterAssert(highlightedImageURL, "URL must not be nil. If highlighted image is not "
+    LTParameterAssert(highlightedImageURL, @"URL must not be nil. If highlighted image is not "
                       "needed, don't use this function at all");
 
     _highlightedImageURL = highlightedImageURL;
@@ -92,7 +93,7 @@ static id<WFImageProvider> WFDefaultImageProvider() {
 
 - (WFImageViewModelBuilder *(^)(CGSize))fixedSize {
   return ^(CGSize size) {
-    LTParameterAssert(!_isBuilt, "Builder can not be altered after the view model has already "
+    LTParameterAssert(!_isBuilt, @"Builder can not be altered after the view model has already "
                       "been built");
     LTParameterAssert(!_sizeSignal, @"Size has already been specified");
     LTParameterAssert(size.width > 0 && size.height > 0, @"Size must be positive");
@@ -104,7 +105,7 @@ static id<WFImageProvider> WFDefaultImageProvider() {
 
 - (WFImageViewModelBuilder *(^)(RACSignal *))sizeSignal {
   return ^(RACSignal *sizeSignal) {
-    LTParameterAssert(!_isBuilt, "Builder can not be altered after the view model has already "
+    LTParameterAssert(!_isBuilt, @"Builder can not be altered after the view model has already "
                       "been built");
     LTParameterAssert(!_sizeSignal, @"Size has already been specified");
     LTParameterAssert(sizeSignal);
@@ -122,7 +123,7 @@ static id<WFImageProvider> WFDefaultImageProvider() {
 
 - (WFImageViewModelBuilder *(^)(UIView *))sizeToBounds {
   return ^(UIView *view) {
-    LTParameterAssert(!_isBuilt, "Builder can not be altered after the view model has already "
+    LTParameterAssert(!_isBuilt, @"Builder can not be altered after the view model has already "
                       "been built");
     LTParameterAssert(!_sizeSignal, @"Size has already been specified");
     LTParameterAssert(view);
@@ -134,7 +135,7 @@ static id<WFImageProvider> WFDefaultImageProvider() {
 
 - (WFImageViewModelBuilder *(^)(UIColor *))color {
   return ^(UIColor *color) {
-    LTParameterAssert(!_isBuilt, "Builder can not be altered after the view model has already "
+    LTParameterAssert(!_isBuilt, @"Builder can not be altered after the view model has already "
                       "been built");
     LTParameterAssert(!_color, @"Color has already been specified");
 
@@ -145,11 +146,23 @@ static id<WFImageProvider> WFDefaultImageProvider() {
 
 - (WFImageViewModelBuilder *(^)(UIColor *))highlightedColor {
   return ^(UIColor *highlightedColor) {
-    LTParameterAssert(!_isBuilt, "Builder can not be altered after the view model has already "
+    LTParameterAssert(!_isBuilt, @"Builder can not be altered after the view model has already "
                       "been built");
     LTParameterAssert(!_highlightedColor, @"Highlighted color has already been specified");
 
     _highlightedColor = highlightedColor;
+    return self;
+  };
+}
+
+- (WFImageViewModelBuilder *(^)(CGFloat))lineWidth {
+  return ^(CGFloat lineWidth) {
+    LTParameterAssert(!_isBuilt, @"Builder can not be altered after the view model has already "
+                      "been built");
+    LTParameterAssert(_lineWidth == 0, @"Line width has already been specified");
+    LTParameterAssert(lineWidth > 0, @"Line width must be positive");
+
+    _lineWidth = lineWidth;
     return self;
   };
 }
@@ -183,19 +196,35 @@ static id<WFImageProvider> WFDefaultImageProvider() {
 }
 
 - (nullable NSURL *)transformedImageURL {
-  return _color ? [_imageURL wf_URLWithImageColor:_color] : _imageURL;
+  NSURL *transformedImageURL = _imageURL;
+  
+  if (_color) {
+    transformedImageURL = [transformedImageURL wf_URLWithImageColor:_color];
+  }
+  if (_lineWidth > 0) {
+    transformedImageURL = [transformedImageURL wf_URLWithImageLineWidth:_lineWidth];
+  }
+
+  return transformedImageURL;
 }
 
 - (nullable NSURL *)transformedHighlightedImageURL {
+  NSURL *transformedImageURL;
+  
   if (!_highlightedColor) {
-    return _highlightedImageURL;
+    transformedImageURL = _highlightedImageURL;
   } else {
     if (_highlightedImageURL) {
-      return [_highlightedImageURL wf_URLWithImageColor:_highlightedColor];
+      transformedImageURL = [_highlightedImageURL wf_URLWithImageColor:_highlightedColor];
     } else {
-      return [_imageURL wf_URLWithImageColor:_highlightedColor];
+      transformedImageURL = [_imageURL wf_URLWithImageColor:_highlightedColor];
     }
   }
+  if (_lineWidth > 0) {
+    transformedImageURL = [transformedImageURL wf_URLWithImageLineWidth:_lineWidth];
+  }
+  
+  return transformedImageURL;
 }
 
 @end
