@@ -650,7 +650,7 @@ context(@"display link", ^{
   __block LTTouchEventView *view;
 
   beforeEach(^{
-    LTTestTouchEventDelegate *delegate = OCMProtocolMock(@protocol(LTTouchEventDelegate));
+    id delegate = OCMProtocolMock(@protocol(LTTouchEventDelegate));
     view = [[LTTouchEventView alloc] initWithFrame:CGRectZero delegate:delegate];
   });
 
@@ -678,6 +678,24 @@ context(@"display link", ^{
       expect(view.displayLink.paused).to.beTruthy();
     });
   });
+});
+
+it(@"should gracefully handle nil values for coalesced touch events by returning the main touch", ^{
+  LTTestTouchEventDelegate *delegate = [[LTTestTouchEventDelegate alloc] init];
+  LTTouchEventView *view = [[LTTouchEventView alloc] initWithFrame:CGRectZero delegate:delegate];
+  id touchMock = LTTouchEventViewCreateTouch(7);
+  NSSet<UITouch *> *touchMocks = [NSSet setWithArray:@[touchMock]];
+  id eventMock = OCMClassMock([UIEvent class]);
+
+  OCMExpect([eventMock respondsToSelector:@selector(coalescedTouchesForTouch:)]).andReturn(@YES);
+  OCMExpect([eventMock coalescedTouchesForTouch:touchMock]);
+
+  [view touchesBegan:touchMocks withEvent:eventMock];
+
+  expect(delegate.calls).to.haveACountOf(1);
+  expect(delegate.calls.firstObject.events).to.haveACountOf(1);
+  expect(delegate.calls.firstObject.events.firstObject.timestamp).to.equal(7);
+  OCMVerifyAll(eventMock);
 });
 
 itShouldBehaveLike(kLTTouchEventViewExamples,

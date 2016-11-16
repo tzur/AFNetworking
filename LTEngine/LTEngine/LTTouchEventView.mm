@@ -210,10 +210,10 @@ NS_ASSUME_NONNULL_BEGIN
     NSUInteger sequenceID = [boxedSequenceID unsignedIntegerValue];
     [self.delegate receivedTouchEvents:[self touchEventsForMainTouch:mainTouch
                                                       withSequenceID:sequenceID inEvent:event]
-                                 predictedEvents:[self predictedTouchEventsForMainTouch:mainTouch
-                                                                         withSequenceID:sequenceID
-                                                                                inEvent:event]
-                         touchEventSequenceState:state];
+                       predictedEvents:[self predictedTouchEventsForMainTouch:mainTouch
+                                                               withSequenceID:sequenceID
+                                                                      inEvent:event]
+               touchEventSequenceState:state];
   }
 }
 
@@ -229,7 +229,8 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (LTTouchEvents *)touchEventsForMainTouch:(UITouch *)mainTouch
-                            withSequenceID:(NSUInteger)sequenceID inEvent:(UIEvent *)event {
+                            withSequenceID:(NSUInteger)sequenceID
+                                   inEvent:(nullable UIEvent *)event {
   if (![event respondsToSelector:@selector(coalescedTouchesForTouch:)]) {
     return @[[LTTouchEvent touchEventWithPropertiesOfTouch:mainTouch sequenceID:sequenceID]];
   }
@@ -240,10 +241,21 @@ NS_ASSUME_NONNULL_BEGIN
   // with coalesced touches.
   //
   // @see https://developer.apple.com/videos/play/wwdc2015-233/ for more details.
+  //
+  // That said, in rare cases, the call to the \c coalescedTouchesForTouch: method returns \c nil,
+  // even when both the \c UIEvent on which the method is called and the \c UITouch provided as
+  // parameter are not \c nil. Hence, this case is specifically handled by returning an
+  // \c LTTouchEvent constructed from the main touch.
+  NSArray<UITouch *> * _Nullable coalescedTouches = [event coalescedTouchesForTouch:mainTouch];
 
-  NSArray<UITouch *> *sortedCoalescedTouches =
-      [self sortedTouches:[event coalescedTouchesForTouch:mainTouch]];
-  return [self touchEventsForTouches:sortedCoalescedTouches withSequenceID:sequenceID];
+  if (!coalescedTouches.count) {
+    LogDebug(@"No coalesced touches despite valid event (%@) and main touch (%@)", event,
+             mainTouch);
+    return @[[LTTouchEvent touchEventWithPropertiesOfTouch:mainTouch sequenceID:sequenceID]];
+  }
+
+  return [self touchEventsForTouches:[self sortedTouches:coalescedTouches]
+                      withSequenceID:sequenceID];
 }
 
 - (LTTouchEvents *)touchEventsForTouches:(NSArray<UITouch *> *)touches
@@ -260,7 +272,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (LTTouchEvents *)predictedTouchEventsForMainTouch:(UITouch *)mainTouch
                                      withSequenceID:(NSUInteger)sequenceID
-                                            inEvent:(UIEvent *)event {
+                                            inEvent:(nullable UIEvent *)event {
   if (![event respondsToSelector:@selector(predictedTouchesForTouch:)]) {
     return @[];
   }
