@@ -241,10 +241,21 @@ NS_ASSUME_NONNULL_BEGIN
   // with coalesced touches.
   //
   // @see https://developer.apple.com/videos/play/wwdc2015-233/ for more details.
+  //
+  // That said, in rare cases, the call to the \c coalescedTouchesForTouch: method returns \c nil,
+  // even when both the \c UIEvent on which the method is called and the \c UITouch provided as
+  // parameter are not \c nil. Hence, this case is specifically handled by returning an
+  // \c LTTouchEvent constructed from the main touch.
+  NSArray<UITouch *> * _Nullable coalescedTouches = [event coalescedTouchesForTouch:mainTouch];
 
-  NSArray<UITouch *> *sortedCoalescedTouches =
-      [self sortedTouches:[event coalescedTouchesForTouch:mainTouch]];
-  return [self touchEventsForTouches:sortedCoalescedTouches withSequenceID:sequenceID];
+  if (!coalescedTouches.count) {
+    LogDebug(@"No coalesced touches despite valid event (%@) and main touch (%@)", event,
+             mainTouch);
+    return @[[LTTouchEvent touchEventWithPropertiesOfTouch:mainTouch sequenceID:sequenceID]];
+  }
+
+  return [self touchEventsForTouches:[self sortedTouches:coalescedTouches]
+                      withSequenceID:sequenceID];
 }
 
 - (LTTouchEvents *)touchEventsForTouches:(NSArray<UITouch *> *)touches
