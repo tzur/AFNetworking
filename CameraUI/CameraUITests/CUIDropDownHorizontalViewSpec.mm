@@ -249,74 +249,103 @@ context(@"submenus", ^{
     expect(submenuView0.hidden).to.beTruthy();
     expect(submenuView2.hidden).to.beTruthy();
 
-    [MainBarItemButton0 sendActionsForControlEvents:UIControlEventTouchUpInside];
-    expect(submenuView0.hidden).to.beFalsy();
-    expect(submenuView2.hidden).to.beTruthy();
+    [UIView performWithoutAnimation:^{
+      [MainBarItemButton0 sendActionsForControlEvents:UIControlEventTouchUpInside];
+    }];
+    expect(submenuView0.hidden).will.beFalsy();
+    expect(submenuView2.hidden).will.beTruthy();
 
-    [MainBarItemButton0 sendActionsForControlEvents:UIControlEventTouchUpInside];
-    expect(submenuView0.hidden).to.beTruthy();
-    expect(submenuView2.hidden).to.beTruthy();
+    [UIView performWithoutAnimation:^{
+      [MainBarItemButton0 sendActionsForControlEvents:UIControlEventTouchUpInside];
+    }];
+    expect(submenuView0.hidden).will.beTruthy();
+    expect(submenuView2.hidden).will.beTruthy();
 
-    [MainBarItemButton2 sendActionsForControlEvents:UIControlEventTouchUpInside];
-    expect(submenuView0.hidden).to.beTruthy();
-    expect(submenuView2.hidden).to.beFalsy();
+    [UIView performWithoutAnimation:^{
+      [MainBarItemButton2 sendActionsForControlEvents:UIControlEventTouchUpInside];
+    }];
+    expect(submenuView0.hidden).will.beTruthy();
+    expect(submenuView2.hidden).will.beFalsy();
 
-    [MainBarItemButton2 sendActionsForControlEvents:UIControlEventTouchUpInside];
-    expect(submenuView0.hidden).to.beTruthy();
-    expect(submenuView2.hidden).to.beTruthy();
+    [UIView performWithoutAnimation:^{
+      [MainBarItemButton2 sendActionsForControlEvents:UIControlEventTouchUpInside];
+    }];
+    expect(submenuView0.hidden).will.beTruthy();
+    expect(submenuView2.hidden).will.beTruthy();
   });
 
   it(@"should be presented when their main bar buttons are pressed", ^{
     expect(submenuView0.hidden).to.beTruthy();
     expect(submenuView2.hidden).to.beTruthy();
 
-    [MainBarItemButton0 sendActionsForControlEvents:UIControlEventTouchUpInside];
-    expect(submenuView0.hidden).to.beFalsy();
-    expect(submenuView2.hidden).to.beTruthy();
+    [UIView performWithoutAnimation:^{
+      [MainBarItemButton0 sendActionsForControlEvents:UIControlEventTouchUpInside];
+    }];
+    expect(submenuView0.hidden).will.beFalsy();
+    expect(submenuView2.hidden).will.beTruthy();
 
-    [MainBarItemButton2 sendActionsForControlEvents:UIControlEventTouchUpInside];
-    expect(submenuView0.hidden).to.beTruthy();
-    expect(submenuView2.hidden).to.beFalsy();
+    [UIView performWithoutAnimation:^{
+      [MainBarItemButton2 sendActionsForControlEvents:UIControlEventTouchUpInside];
+    }];
+    expect(submenuView0.hidden).will.beTruthy();
+    expect(submenuView2.hidden).will.beFalsy();
 
-    [MainBarItemButton0 sendActionsForControlEvents:UIControlEventTouchUpInside];
-    expect(submenuView0.hidden).to.beFalsy();
-    expect(submenuView2.hidden).to.beTruthy();
+    [UIView performWithoutAnimation:^{
+      [MainBarItemButton0 sendActionsForControlEvents:UIControlEventTouchUpInside];
+    }];
+    expect(submenuView0.hidden).will.beFalsy();
+    expect(submenuView2.hidden).will.beTruthy();
   });
 
   it(@"should toggle their hidden state when their submenu buttons are pressed", ^{
     expect(submenuView0.hidden).to.beTruthy();
 
-    [MainBarItemButton0 sendActionsForControlEvents:UIControlEventTouchUpInside];
-    expect(submenuView0.hidden).to.beFalsy();
-    [submenuButton00 sendActionsForControlEvents:UIControlEventTouchUpInside];
-    expect(submenuView0.hidden).to.beTruthy();
+    [UIView performWithoutAnimation:^{
+      [MainBarItemButton0 sendActionsForControlEvents:UIControlEventTouchUpInside];
+    }];
+    expect(submenuView0.hidden).will.beFalsy();
+    [UIView performWithoutAnimation:^{
+      [submenuButton00 sendActionsForControlEvents:UIControlEventTouchUpInside];
+    }];
+    expect(submenuView0.hidden).will.beTruthy();
 
-    [MainBarItemButton0 sendActionsForControlEvents:UIControlEventTouchUpInside];
-    expect(submenuView0.hidden).to.beFalsy();
-    [submenuButton01 sendActionsForControlEvents:UIControlEventTouchUpInside];
-    expect(submenuView0.hidden).to.beTruthy();
+    [UIView performWithoutAnimation:^{
+      [MainBarItemButton0 sendActionsForControlEvents:UIControlEventTouchUpInside];
+    }];
+    expect(submenuView0.hidden).will.beFalsy();
+    [UIView performWithoutAnimation:^{
+      [submenuButton01 sendActionsForControlEvents:UIControlEventTouchUpInside];
+    }];
+    expect(submenuView0.hidden).will.beTruthy();
+    expect(submenuView2.hidden).will.beTruthy();
 
-    expect(submenuView2.hidden).to.beTruthy();
-
-    [MainBarItemButton2 sendActionsForControlEvents:UIControlEventTouchUpInside];
-    expect(submenuView2.hidden).to.beFalsy();
-    [submenuButton20 sendActionsForControlEvents:UIControlEventTouchUpInside];
-    expect(submenuView2.hidden).to.beTruthy();
+    [UIView performWithoutAnimation:^{
+      [MainBarItemButton2 sendActionsForControlEvents:UIControlEventTouchUpInside];
+    }];
+    expect(submenuView2.hidden).will.beFalsy();
+    [UIView performWithoutAnimation:^{
+      [submenuButton20 sendActionsForControlEvents:UIControlEventTouchUpInside];
+    }];
+    expect(submenuView2.hidden).will.beTruthy();
   });
 
   it(@"should be hidden after a call to hideDropDownViews", ^{
-    [dropDownView hideDropDownViews];
-    expect(submenuView0.hidden).to.beTruthy();
-    expect(submenuView2.hidden).to.beTruthy();
+    [UIView performWithoutAnimation:^{
+      [dropDownView hideDropDownViews];
+    }];
+    expect(submenuView0.hidden).will.beTruthy();
+    expect(submenuView2.hidden).will.beTruthy();
 
     submenuView0.hidden = NO;
     submenuView2.hidden = NO;
     expect(submenuView0.hidden).to.beFalsy();
     expect(submenuView2.hidden).to.beFalsy();
 
-    [dropDownView hideDropDownViews];
-    expect(submenuView0.hidden).to.beTruthy();
-    expect(submenuView2.hidden).to.beTruthy();
+    [UIView performWithoutAnimation:^{
+      [dropDownView hideDropDownViews];
+    }];
+    expect(submenuView0.hidden).will.beTruthy();
+    expect(submenuView2.hidden).will.beTruthy();
   });
 });
 

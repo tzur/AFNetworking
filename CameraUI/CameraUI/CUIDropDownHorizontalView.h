@@ -14,7 +14,8 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 /// The drop-down submenus are displayed horizontly with the same \c width and \c height as the
 /// main bar. The submenu items are displayed relatively to the main bar items, and the same sizing
-/// and distribution rules apply to them.
+/// and distribution rules apply to them. Submenu visibility change is animated with sliding down/up
+/// from the main bar.
 ///
 /// This view contains views with the accessibility identifiers "MainBarStackView",
 /// "SubmenuView#%d" where \c %d is the ordinal of its main bar item. Each submenu view has view

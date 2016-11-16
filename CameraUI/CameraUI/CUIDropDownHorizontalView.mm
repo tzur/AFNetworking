@@ -20,6 +20,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// View that serves as right margin for \c mainBarStackView.
 @property (readonly, nonatomic) UIView *rightMarginView;
 
+/// Container view for the sebmenus.
+@property (readonly, nonatomic) UIView *submenusContainerView;
+
 /// View that serves as left margin for the submenus.
 @property (readonly, nonatomic) UIView *submenuLeftMarginView;
 
@@ -45,6 +48,7 @@ static const CGFloat kDefaultMaxMainBarWidth = 450;
     _submenus = [NSMutableArray array];
     _maxMainBarWidth = kDefaultMaxMainBarWidth;
     self.submenuBackgroundColor = [UIColor clearColor];
+    [self setupSubmenusContainerView];
     [self setupMainBarStackView];
     [self setupMarginViews];
     [self remakeMainBarStackViewConstraints];
@@ -52,6 +56,20 @@ static const CGFloat kDefaultMaxMainBarWidth = 450;
     [self remakeSubmenuMarginViewsConstraints];
   }
   return self;
+}
+
+#pragma mark -
+#pragma mark Submenus container view
+#pragma mark -
+
+- (void)setupSubmenusContainerView {
+  _submenusContainerView = [[UIView alloc] initWithFrame:CGRectZero];
+  [self addSubview:self.submenusContainerView];
+  self.submenusContainerView.clipsToBounds = YES;
+  [self.submenusContainerView mas_remakeConstraints:^(MASConstraintMaker *make) {
+    make.left.right.height.equalTo(self);
+    make.top.equalTo(self.mas_bottom);
+  }];
 }
 
 #pragma mark -
@@ -125,8 +143,32 @@ static const CGFloat kDefaultMaxMainBarWidth = 450;
 
 - (void)handleSubmenusHiddenStateForSelectedSubmenu:(nullable UIView *)selectedSubmenu {
   for (UIView *submenu in self.submenus) {
-    submenu.hidden = (submenu != selectedSubmenu) ? YES : !submenu.hidden;
+    BOOL hide = (submenu != selectedSubmenu) ? YES : !submenu.hidden;
+    if (submenu.hidden != hide) {
+      [self placeSubmenu:submenu hide:hide];
+    }
   }
+}
+
+- (void)placeSubmenu:(UIView *)submenu hide:(BOOL)hide {
+  submenu.hidden = NO;
+  [UIView animateWithDuration:0.25 animations:^{
+    [self remakeSubmenuConstraints:submenu hide:hide];
+    [self layoutIfNeeded];
+  } completion:^(BOOL) {
+    submenu.hidden = hide;
+  }];
+}
+
+- (void)remakeSubmenuConstraints:(UIView *)submenu hide:(BOOL)hide {
+  [submenu mas_remakeConstraints:^(MASConstraintMaker *make) {
+    make.left.right.height.equalTo(self.submenusContainerView);
+    if (hide) {
+      make.bottom.equalTo(self.submenusContainerView.mas_top);
+    } else {
+      make.top.equalTo(self.submenusContainerView.mas_top);
+    }
+  }];
 }
 
 #pragma mark -
@@ -234,13 +276,10 @@ static const CGFloat kDefaultMaxMainBarWidth = 450;
   UIView *submenu = [[UIView alloc] init];
   submenu.accessibilityIdentifier =
       [NSString stringWithFormat:@"SubmenuView#%ld", (unsigned long)idx];
-  [self addSubview:submenu];
+  [self.submenusContainerView addSubview:submenu];
   [self.submenus addObject:submenu];
   submenu.hidden = YES;
-  [submenu mas_makeConstraints:^(MASConstraintMaker *make) {
-    make.left.right.height.equalTo(self);
-    make.top.equalTo(self.mas_bottom);
-  }];
+  [self remakeSubmenuConstraints:submenu hide:YES];
   RAC(submenu, backgroundColor) = RACObserve(self, submenuBackgroundColor);
   return submenu;
 }
