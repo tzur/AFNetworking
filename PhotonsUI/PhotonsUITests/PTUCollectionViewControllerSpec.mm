@@ -79,6 +79,7 @@ beforeEach(^{
       [[PTUCollectionViewController alloc] initWithDataSourceProvider:dataSourceProvider
                                                  initialConfiguration:configuration];
   asset = PTNCreateAssetDescriptor(@"foo");
+  [viewController.view layoutIfNeeded];
 });
 
 context(@"initialization", ^{
@@ -97,6 +98,16 @@ context(@"initialization", ^{
 
     expect([[PTUCollectionViewController alloc] initWithAssetManager:manager
                                                             albumURL:url]).toNot.beNil();
+  });
+
+  it(@"should not setup the collection view before the view was layed out", ^{
+    PTUCollectionViewController *controller =
+    [[PTUCollectionViewController alloc] initWithDataSourceProvider:dataSourceProvider
+                                               initialConfiguration:configuration];
+    expect([controller.view wf_viewForAccessibilityIdentifier:@"CollectionView"]).to.beNil();
+
+    [controller.view layoutIfNeeded];
+    expect([controller.view wf_viewForAccessibilityIdentifier:@"CollectionView"]).toNot.beNil();
   });
 });
 
@@ -119,33 +130,37 @@ it(@"should keep localizedTitle and title up to date with new data sources", ^{
   viewController =
       [[PTUCollectionViewController alloc] initWithDataSourceProvider:dataSourceProvider
                                                  initialConfiguration:configuration];
+  [viewController.view layoutIfNeeded];
   
   expect(viewController.title).to.beNil();
   expect(viewController.localizedTitle).to.beNil();
   
   dataSource.title = @"foo";
-  expect(viewController.title).to.equal(@"foo");
-  expect(viewController.localizedTitle).to.equal(@"foo");
+  expect(viewController.title).will.equal(@"foo");
+  expect(viewController.localizedTitle).will.equal(@"foo");
   
   [viewController reloadData];
   
-  expect(viewController.title).to.beNil();
-  expect(viewController.localizedTitle).to.beNil();
+  expect(viewController.title).will.beNil();
+  expect(viewController.localizedTitle).will.beNil();
   
   dataSource.title = @"bar";
   otherDataSource.title = @"baz";
 
-  expect(viewController.title).to.equal(@"baz");
-  expect(viewController.localizedTitle).to.equal(@"baz");
+  expect(viewController.title).will.equal(@"baz");
+  expect(viewController.localizedTitle).will.equal(@"baz");
 });
 
 context(@"collection view", ^{
   __block UICollectionView * _Nullable collectionView;
+  __block UIView *collectionViewContainer;
 
   beforeEach(^{
     collectionView = (UICollectionView *)
         [viewController.view wf_viewForAccessibilityIdentifier:@"CollectionView"];
     expect(collectionView).toNot.beNil();
+    collectionViewContainer =
+        [viewController.view wf_viewForAccessibilityIdentifier:@"CollectionViewContainer"];
     dataSource.collectionView = collectionView;
 
     viewController.view.frame = CGRectMake(0, 0, 200, 300);
@@ -731,21 +746,21 @@ context(@"collection view", ^{
     PTUCollectionViewController *controller =
         [[PTUCollectionViewController alloc] initWithDataSourceProvider:provider
         initialConfiguration:[PTUCollectionViewConfiguration defaultConfiguration]];
+    [controller.view layoutIfNeeded];
 
-    [controller reloadData];
     [controller reloadData];
 
     OCMVerify(provider);
   });
 
   it(@"should correctly set background color", ^{
-    expect(collectionView.backgroundColor).to.equal([UIColor clearColor]);
+    expect(collectionViewContainer.backgroundColor).to.equal([UIColor clearColor]);
     viewController.backgroundColor = [UIColor redColor];
-    expect(collectionView.backgroundColor).to.equal([UIColor redColor]);
+    expect(collectionViewContainer.backgroundColor).to.equal([UIColor redColor]);
   });
 
   it(@"should correctly get background color", ^{
-    collectionView.backgroundColor = [UIColor redColor];
+    collectionViewContainer.backgroundColor = [UIColor redColor];
     expect(viewController.backgroundColor).to.equal([UIColor redColor]);
   });
 
@@ -770,22 +785,22 @@ context(@"collection view", ^{
   
   it(@"should show the view when the data source has data and did not err", ^{
     dataSource.data = @[@[asset]];
-    expect(collectionView.isHidden || collectionView.alpha == 0).to.beFalsy();
+    expect(collectionViewContainer.isHidden || collectionViewContainer.alpha == 0).to.beFalsy();
   });
   
   it(@"should hide the view when the data source has no data", ^{
-    expect(collectionView.isHidden || collectionView.alpha == 0).to.beTruthy();
+    expect(collectionViewContainer.isHidden || collectionViewContainer.alpha == 0).to.beTruthy();
   });
   
   it(@"should hide the view when the data source has data but erred", ^{
     dataSource.data = @[@[asset]];
     dataSource.error = [NSError lt_errorWithCode:1337];
-    expect(collectionView.isHidden || collectionView.alpha == 0).to.beTruthy();
+    expect(collectionViewContainer.isHidden || collectionViewContainer.alpha == 0).to.beTruthy();
   });
   
   it(@"should hide the view when the data source has no data and erred", ^{
     dataSource.error = [NSError lt_errorWithCode:1337];
-    expect(collectionView.isHidden || collectionView.alpha == 0).to.beTruthy();
+    expect(collectionViewContainer.isHidden || collectionViewContainer.alpha == 0).to.beTruthy();
   });
 });
 
@@ -886,6 +901,7 @@ context(@"error view", ^{
       viewController =
           [[PTUCollectionViewController alloc] initWithDataSourceProvider:newDataSourceProvider
                                                      initialConfiguration:configuration];
+      [viewController.view layoutIfNeeded];
 
       viewController.errorViewProvider = errorViewProvider;
       dataSource.error = [NSError lt_errorWithCode:1337];
