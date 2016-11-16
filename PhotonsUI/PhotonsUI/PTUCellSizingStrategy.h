@@ -21,19 +21,33 @@ NS_ASSUME_NONNULL_BEGIN
 /// Returns a cell sizing strategy that always returns \c size.
 + (id<PTUCellSizingStrategy>)constant:(CGSize)size;
 
-/// Returns a cell sizing strategy that returns the minimum of \c size scaled up to \c maximumScale
-/// such that there exists a natural number of cells that will fill the width of the containing
-/// view exactly, or \c size of no such size exists without scaling beyond \c maximum scale.
+/// Returns a cell sizing strategy that returns the size closest to \c size by scaling up to or down
+/// to \c size * \c maximumScale such that there exists a natural number of cells that will fill
+/// the width of the containing view exactly, or \c size if no such width exists without scaling
+/// beyond \c maximumScale. \c If \c preserveAspectRatio is \c YES both dimensions of \c size will
+/// be scaled, otherwise just the width will be altered.
 ///
-/// @note Scale must be greater than or equal to 1.
-+ (id<PTUCellSizingStrategy>)adaptiveFitRow:(CGSize)size maximumScale:(CGFloat)maximumScale;
+/// @note The strategy thrives for the size closest to the given \c size. As such a strategy with
+/// a size of <tt>(100, 100)</tt> and a scaling of \c 1.5 and a strategy with a size of
+/// <tt>(150, 150)</tt> and a scaling of \c 0.66 will both return sizes in the range
+/// <tt>[100, 150]</tt>, but the first will choose the smallest value that fits perfectly within the
+/// content view, while the latter will choose the largest.
++ (id<PTUCellSizingStrategy>)adaptiveFitRow:(CGSize)size maximumScale:(CGFloat)maximumScale
+                        preserveAspectRatio:(BOOL)preserveAspectRatio;
 
-/// Returns a cell sizing strategy that returns the minimum of \c size scaled up to \c maximumScale
-/// such that there exists a natural number of cells that will fill the height of the containing
-/// view exactly, or \c size of no such size exists without scaling beyond \c maximum scale.
+/// Returns a cell sizing strategy that returns the size closest to \c size by scaling up to or down
+/// to \c size * \c maximumScale  such that there exists a natural number of cells that will fill
+/// the height of the containing view exactly, or \c size if no such height exists without scaling
+/// beyond \c maximumScale. \c If \c preserveAspectRatio is \c YES both dimensions of \c size will
+/// be scaled, otherwise just the height will be altered.
 ///
-/// @note Scale must be greater than or equal to 1.
-+ (id<PTUCellSizingStrategy>)adaptiveFitColumn:(CGSize)size maximumScale:(CGFloat)maximumScale;
+/// @note The strategy thrives for the size closest to the given \c size. As such a strategy with
+/// a size of <tt>(100, 100)</tt> and a scaling of \c 1.5 and a strategy with a size of
+/// <tt>(150, 150)</tt> and a scaling of \c 0.66 will both return sizes in the range
+/// <tt>[100, 150]</tt>, but the first will choose the smallest value that fits perfectly within the
+/// content view, while the latter will choose the largest.
++ (id<PTUCellSizingStrategy>)adaptiveFitColumn:(CGSize)size maximumScale:(CGFloat)maximumScale
+                           preserveAspectRatio:(BOOL)preserveAspectRatio;
 
 /// Returns a cell sizing strategy that returns cells as wide as the containing view size and as
 /// high as \c height.
@@ -69,13 +83,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)init NS_UNAVAILABLE;
 
 /// Initializes with \c size as the original size, \c maximumScale as the maximum scaling to apply
-/// in order for a natural number of cells to perfectly fit the width of the containing view.
-- (instancetype)initMatchingWidthWithSize:(CGSize)size maximumScale:(CGFloat)maximumScale
-   NS_DESIGNATED_INITIALIZER;
-
-/// Initializes with \c size as the original size, \c maximumScale as the maximum scaling to apply
-/// in order for a natural number of cells to perfectly fit the height of the containing view.
-- (instancetype)initMatchingHeightWithSize:(CGSize)size maximumScale:(CGFloat)maximumScale
+/// in order for a natural number of cells to perfectly fit the width or height of the containing
+/// view based on whether \c matchWidth is \c YES or \c NO respectively, and \c preserveAspectRatio
+/// determining whether to apply any scaling to both dimensions or just the fitted one.
+- (instancetype)initWithSize:(CGSize)size maximumScale:(CGFloat)maximumScale
+                  matchWidth:(BOOL)matchWidth preserveAspectRatio:(BOOL)preserveAspectRatio
     NS_DESIGNATED_INITIALIZER;
 
 @end

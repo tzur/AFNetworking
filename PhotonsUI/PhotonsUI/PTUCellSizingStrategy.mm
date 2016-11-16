@@ -13,14 +13,18 @@ NS_ASSUME_NONNULL_BEGIN
   return [[PTUConstantCellSizingStrategy alloc] initWithSize:size];
 }
 
-+ (id<PTUCellSizingStrategy>)adaptiveFitRow:(CGSize)size maximumScale:(CGFloat)maximumScale {
-  return [[PTUAdaptiveCellSizingStrategy alloc] initMatchingWidthWithSize:size
-                                                             maximumScale:maximumScale];
++ (id<PTUCellSizingStrategy>)adaptiveFitRow:(CGSize)size maximumScale:(CGFloat)maximumScale
+                        preserveAspectRatio:(BOOL)preserveAspectRatio {
+  return [[PTUAdaptiveCellSizingStrategy alloc] initWithSize:size maximumScale:maximumScale
+                                                  matchWidth:YES
+                                         preserveAspectRatio:preserveAspectRatio];
 }
 
-+ (id<PTUCellSizingStrategy>)adaptiveFitColumn:(CGSize)size maximumScale:(CGFloat)maximumScale {
-  return [[PTUAdaptiveCellSizingStrategy alloc] initMatchingHeightWithSize:size
-                                                              maximumScale:maximumScale];
++ (id<PTUCellSizingStrategy>)adaptiveFitColumn:(CGSize)size maximumScale:(CGFloat)maximumScale
+                           preserveAspectRatio:(BOOL)preserveAspectRatio {
+  return [[PTUAdaptiveCellSizingStrategy alloc] initWithSize:size maximumScale:maximumScale
+                                                  matchWidth:NO
+                                         preserveAspectRatio:preserveAspectRatio];
 }
 
 + (id<PTUCellSizingStrategy>)rowWithHeight:(CGFloat)height {
@@ -110,32 +114,24 @@ NS_ASSUME_NONNULL_BEGIN
 /// each column.
 @property (readonly, nonatomic) BOOL matchWidth;
 
+/// \c YES to apply any scaling to both dimensions instead of just the fitted one.
+@property (readonly, nonatomic) BOOL preserveAspectRatio;
+
 @end
 
 @implementation PTUAdaptiveCellSizingStrategy
 
-- (instancetype)initMatchingWidthWithSize:(CGSize)size maximumScale:(CGFloat)maximumScale {
+- (instancetype)initWithSize:(CGSize)size maximumScale:(CGFloat)maximumScale
+                  matchWidth:(BOOL)matchWidth preserveAspectRatio:(BOOL)preserveAspectRatio {
   LTParameterAssert(size.width > 0 && size.height > 0, @"Size must be positive, got: %@",
                     NSStringFromCGSize(size));
-  LTParameterAssert(maximumScale >= 1, @"Maximum scale must be greater to or equal to 1, got: %g",
+  LTParameterAssert(maximumScale > 0, @"Maximum scale must be greater than 0, got: %g",
                     maximumScale);
   if (self = [super init]) {
     _size = size;
     _maximumScale = maximumScale;
-    _matchWidth = YES;
-  }
-  return self;
-}
-
-- (instancetype)initMatchingHeightWithSize:(CGSize)size maximumScale:(CGFloat)maximumScale {
-  LTParameterAssert(size.width > 0 && size.height > 0, @"Size must be positive, got: %@",
-                    NSStringFromCGSize(size));
-  LTParameterAssert(maximumScale >= 1, @"Maximum scale must be greater to or equal to 1, got: %g",
-                    maximumScale);
-  if (self = [super init]) {
-    _size = size;
-    _maximumScale = maximumScale;
-    _matchWidth = NO;
+    _matchWidth = matchWidth;
+    _preserveAspectRatio = preserveAspectRatio;
   }
   return self;
 }
@@ -148,21 +144,28 @@ NS_ASSUME_NONNULL_BEGIN
 
   // Finds x such that (itemSize * x) + (itemSpacing * (x - 1)) = viewSize.
   // x is the number of items that will exactly fill the view with the given spacing between each
-  // item. Let y = floor(x) the closest natural number of items to the number that fills the view,
-  // find z such that (itemSize * z * y) + (itemSpacing * (y - 1)) = viewSize.
-  // z is the minimum scaling required to apply on itemSize for them to perfectly fit within
-  // viewSize with itemSpacing between them.
-  int fittingItems = std::floor((sizeToMatch + spacing) / (itemSize + spacing));
+  // item. Let y = floor(x) (or y = ceil(x) if max scaling is less than 1) be the closest natural
+  // number of items to the number that fills the view. find z such that
+  // (itemSize * z * y) + (itemSpacing * (y - 1)) = viewSize. z is the minimum scaling required to
+  // apply on itemSize for them to perfectly fit within viewSize with itemSpacing between them.
+  float fracturedFittingItems = (sizeToMatch + spacing) / (itemSize + spacing);
+  int fittingItems;
+  if (self.maximumScale >= 1) {
+    fittingItems = std::floor(fracturedFittingItems);
+  } else {
+    fittingItems = std::ceil(fracturedFittingItems);
+  }
   if (fittingItems <= 0) {
     return self.size;
   }
 
   CGFloat itemFittingSize = (sizeToMatch - (spacing * (fittingItems - 1))) / fittingItems;
-  if (itemFittingSize > itemSize * self.maximumScale) {
+  if ((self.maximumScale >= 1 && itemFittingSize > itemSize * self.maximumScale) ||
+      (self.maximumScale < 1 && itemFittingSize < itemSize * self.maximumScale)) {
     return self.size;
   }
 
-  CGFloat scale = itemFittingSize / itemSize;
+  CGFloat scale = self.preserveAspectRatio ? (itemFittingSize / itemSize) : 1;
   return self.matchWidth ?
       CGSizeMake(itemFittingSize, self.size.height * scale) :
       CGSizeMake(self.size.width * scale, itemFittingSize);
@@ -173,9 +176,9 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 - (NSString *)description {
-  return [NSString stringWithFormat:@"<%@: %p, size: %@, maximum scale: %g, %@>", self.class, self,
-          NSStringFromCGSize(self.size), self.maximumScale,
-          self.matchWidth ? @"fit row" : @"fit column"];
+  return [NSString stringWithFormat:@"<%@: %p, size: %@, maximum scale: %g, match width: %lu, "
+          "preserve aspect ratio: %lu>", self.class, self, NSStringFromCGSize(self.size),
+          self.maximumScale, self.matchWidth, self.preserveAspectRatio];
 }
 
 - (BOOL)isEqual:(PTUAdaptiveCellSizingStrategy *)object {
@@ -187,12 +190,13 @@ NS_ASSUME_NONNULL_BEGIN
   }
 
   return CGSizeEqualToSize(self.size, object.size) && self.maximumScale == object.maximumScale &&
-      self.matchWidth == object.matchWidth;
+      self.matchWidth == object.matchWidth &&
+      self.preserveAspectRatio == object.preserveAspectRatio;
 }
 
 - (NSUInteger)hash {
   return @(self.size.height).hash ^ @(self.size.width).hash ^ @(self.maximumScale).hash ^
-      @(self.matchWidth).hash;
+      @(self.matchWidth).hash ^ @(self.preserveAspectRatio).hash;
 }
 
 @end
