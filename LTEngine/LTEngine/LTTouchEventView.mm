@@ -229,7 +229,8 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (LTTouchEvents *)touchEventsForMainTouch:(UITouch *)mainTouch
-                            withSequenceID:(NSUInteger)sequenceID inEvent:(UIEvent *)event {
+                            withSequenceID:(NSUInteger)sequenceID
+                                   inEvent:(nullable UIEvent *)event {
   if (![event respondsToSelector:@selector(coalescedTouchesForTouch:)]) {
     return @[[LTTouchEvent touchEventWithPropertiesOfTouch:mainTouch sequenceID:sequenceID]];
   }
@@ -260,7 +261,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (LTTouchEvents *)predictedTouchEventsForMainTouch:(UITouch *)mainTouch
                                      withSequenceID:(NSUInteger)sequenceID
-                                            inEvent:(UIEvent *)event {
+                                            inEvent:(nullable UIEvent *)event {
   if (![event respondsToSelector:@selector(predictedTouchesForTouch:)]) {
     return @[];
   }
