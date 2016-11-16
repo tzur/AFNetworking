@@ -210,10 +210,10 @@ NS_ASSUME_NONNULL_BEGIN
     NSUInteger sequenceID = [boxedSequenceID unsignedIntegerValue];
     [self.delegate receivedTouchEvents:[self touchEventsForMainTouch:mainTouch
                                                       withSequenceID:sequenceID inEvent:event]
-                                 predictedEvents:[self predictedTouchEventsForMainTouch:mainTouch
-                                                                         withSequenceID:sequenceID
-                                                                                inEvent:event]
-                         touchEventSequenceState:state];
+                       predictedEvents:[self predictedTouchEventsForMainTouch:mainTouch
+                                                               withSequenceID:sequenceID
+                                                                      inEvent:event]
+               touchEventSequenceState:state];
   }
 }
 
