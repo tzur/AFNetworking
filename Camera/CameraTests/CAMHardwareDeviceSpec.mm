@@ -415,6 +415,7 @@ context(@"", ^{
         expect(recorder).to.complete();
         expect(videoDevice.focusMode).to.equal(AVCaptureFocusModeAutoFocus);
         expect(videoDevice.focusPointOfInterest).to.equal(kPoint);
+        expect(videoDevice.focusPointOfInterestDuringModeSet).to.equal(kPoint);
       });
 
       it(@"should set continuous focus", ^{
@@ -423,6 +424,7 @@ context(@"", ^{
         expect(recorder).to.complete();
         expect(videoDevice.focusMode).to.equal(AVCaptureFocusModeContinuousAutoFocus);
         expect(videoDevice.focusPointOfInterest).to.equal(kPoint);
+        expect(videoDevice.focusPointOfInterestDuringModeSet).to.equal(kPoint);
       });
 
       it(@"should lock focus", ^{
@@ -528,6 +530,7 @@ context(@"", ^{
         expect(recorder).to.complete();
         expect(videoDevice.exposureMode).to.equal(AVCaptureExposureModeAutoExpose);
         expect(videoDevice.exposurePointOfInterest).to.equal(kPoint);
+        expect(videoDevice.exposurePointOfInterestDuringModeSet).to.equal(kPoint);
       });
 
       it(@"should set continuous exposure", ^{
@@ -536,6 +539,7 @@ context(@"", ^{
         expect(recorder).to.complete();
         expect(videoDevice.exposureMode).to.equal(AVCaptureExposureModeContinuousAutoExposure);
         expect(videoDevice.exposurePointOfInterest).to.equal(kPoint);
+        expect(videoDevice.exposurePointOfInterestDuringModeSet).to.equal(kPoint);
       });
 
       it(@"should lock exposure", ^{
