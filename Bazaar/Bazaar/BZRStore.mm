@@ -11,6 +11,7 @@
 #import "BZRProduct+SKProduct.h"
 #import "BZRProductContentManager.h"
 #import "BZRProductContentProvider.h"
+#import "BZRProductDictionary.h"
 #import "BZRProductPriceInfo+SKProduct.h"
 #import "BZRProductPriceInfo.h"
 #import "BZRProductsProvider.h"
@@ -23,9 +24,6 @@
 #import "NSErrorCodes+Bazaar.h"
 
 NS_ASSUME_NONNULL_BEGIN
-
-/// Maps product identifiers to products.
-typedef NSDictionary<NSString *, BZRProduct *> BZRProductDictionary;
 
 /// Collection of \c BZRProducts.
 typedef NSArray<BZRProduct *> BZRProductList;
