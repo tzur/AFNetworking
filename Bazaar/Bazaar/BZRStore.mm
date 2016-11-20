@@ -15,6 +15,8 @@
 #import "BZRProductPriceInfo+SKProduct.h"
 #import "BZRProductPriceInfo.h"
 #import "BZRProductsProvider.h"
+#import "BZRProductsVariantSelector.h"
+#import "BZRProductsVariantSelectorFactory.h"
 #import "BZRReceiptModel.h"
 #import "BZRReceiptValidationStatus.h"
 #import "BZRStoreConfiguration.h"
@@ -22,6 +24,7 @@
 #import "BZRStoreKitFacadeFactory.h"
 #import "NSError+Bazaar.h"
 #import "NSErrorCodes+Bazaar.h"
+#import "NSString+Bazaar.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -60,6 +63,15 @@ typedef NSDictionary<id, BZRProductList *> BZRClassifiedProducts;
 /// Facade used to interact with Apple StoreKit.
 @property (readonly, nonatomic) BZRStoreKitFacade *storeKitFacade;
 
+/// Factory used to create \c BZRLocaleProductsvariantSelector.
+@property (readonly, nonatomic) id<BZRProductsVariantSelectorFactory> variantSelectorFactory;
+
+/// Selector used to select the active variant for each product. The selector is initialized with
+/// \c BZRProductsVariantSelector. When the list of products is fetched successfully,
+/// \c variantSelectorFactory is called which returns a new \c BZRProductsVariantSelector. If the
+/// selector was created successfully, \c variantSelector is set to that selector.
+@property (strong, atomic) id<BZRProductsVariantSelector> variantSelector;
+
 /// Subject used to send errors with.
 @property (readonly, nonatomic) RACSubject *errorsSubject;
 
@@ -97,6 +109,8 @@ typedef NSDictionary<id, BZRProductList *> BZRClassifiedProducts;
     _applicationReceiptBundle = configuration.applicationReceiptBundle;
     _fileManager = configuration.fileManager;
     _periodicValidatorActivator = configuration.periodicValidatorActivator;
+    _variantSelectorFactory = configuration.variantSelectorFactory;
+    _variantSelector = [[BZRProductsVariantSelector alloc] init];
 
     [self initializeCompletedTransactionsSignal];
     [self initializeErrorsSignal];
@@ -190,6 +204,7 @@ typedef NSDictionary<id, BZRProductList *> BZRClassifiedProducts;
       subscribeNext:^(BZRProductDictionary * _Nullable productDictionary) {
         @strongify(self);
         self.productDictionary = productDictionary;
+        [self createVariantSelectorWithProductDictionary:productDictionary];
       } error:^(NSError *underlyingError) {
         @strongify(self);
         NSError *error = [NSError lt_errorWithCode:BZRErrorCodeFetchingProductListFailed
@@ -213,6 +228,17 @@ typedef NSDictionary<id, BZRProductList *> BZRClassifiedProducts;
           return !product.contentFetcherParameters ||
               [self pathToContentOfProduct:product.identifier];
         }] valueForKey:@instanceKeypath(BZRProduct, identifier)]];
+  }
+}
+
+- (void)createVariantSelectorWithProductDictionary:(BZRProductDictionary *)productDictionary {
+  NSError *error;
+  id<BZRProductsVariantSelector> selector = [self.variantSelectorFactory
+      productsVariantSelectorWithProductDictionary:productDictionary error:&error];
+  if (error) {
+    [self.errorsSubject sendNext:error];
+  } else {
+    self.variantSelector = selector;
   }
 }
 
@@ -351,8 +377,12 @@ static NSNumber * const kNonAppStoreProductsLabel = @0;
   if (!inAppPurchases) {
     return [NSSet set];
   }
-  return [NSSet setWithArray:
-          [inAppPurchases valueForKey:@instanceKeypath(BZRReceiptInAppPurchaseInfo, productId)]];
+  NSArray<NSString *> *baseProductsIdentifiers =
+      [[inAppPurchases valueForKey:@instanceKeypath(BZRReceiptInAppPurchaseInfo, productId)]
+       lt_map:^NSString *(NSString *identifier) {
+         return [self baseProductForProductWithIdentifier:identifier];
+       }];
+  return [NSSet setWithArray:baseProductsIdentifiers];
 }
 
 - (NSSet<NSString *> *)acquiredViaSubscriptionProducts {
@@ -381,8 +411,11 @@ static NSNumber * const kNonAppStoreProductsLabel = @0;
 #pragma mark -
 
 - (RACSignal *)purchaseProduct:(NSString *)productIdentifier {
+  NSString *variantIdentifier =
+      [self.variantSelector selectedVariantForProductWithIdentifier:productIdentifier];
+
   @weakify(self);
-  return [[[[self isProductClearedForSale:productIdentifier]
+  return [[[[self isProductClearedForSale:variantIdentifier]
       tryMap:^id(NSNumber *isClearedForSale, NSError **error) {
         if (![isClearedForSale boolValue]) {
           if(error) {
@@ -395,11 +428,13 @@ static NSNumber * const kNonAppStoreProductsLabel = @0;
       then:^RACSignal *{
         @strongify(self);
         if ([self isUserSubscribed]) {
+          // Since there is no need to connect to StoreKit for a product that is bought/purchased by
+          // a subscriber, we don't save the variant but the base product's identifier.
           [self.acquiredViaSubscriptionProvider
            addAcquiredViaSubscriptionProduct:productIdentifier];
           return [RACSignal empty];
         }
-        return [self purchaseProductWithStoreKit:productIdentifier];
+        return [self purchaseProductWithStoreKit:variantIdentifier];
       }]
       setNameWithFormat:@"%@ -purchaseProduct", self];
 }
@@ -489,35 +524,48 @@ static NSNumber * const kNonAppStoreProductsLabel = @0;
 
 - (RACSignal *)productList {
   @weakify(self);
-  return [[[RACObserve(self, productDictionaryFetchInProgress)
+  return [[[[RACObserve(self, productDictionaryFetchInProgress)
       ignore:@YES]
       take:1]
       flattenMap:^RACStream *(NSNumber *) {
         @strongify(self);
-        return self.productDictionary ? [self prefetchedProductListSignal] :
+        return self.productDictionary ? [RACSignal return:self.productDictionary] :
             [self refetchProductListSignal];
+      }]
+      map:^NSSet<BZRProduct *> *(BZRProductDictionary *productDictionary) {
+        @strongify(self);
+        return [NSSet setWithArray:
+            [productDictionary.allValues lt_filter:^BOOL(BZRProduct *product) {
+              @strongify(self);
+              NSString *baseProductIdentifier =
+                  [self baseProductForProductWithIdentifier:product.identifier];
+              return [product.identifier isEqualToString:baseProductIdentifier];
+        }]];
       }];
 }
 
-- (RACSignal *)prefetchedProductListSignal {
-  return [RACSignal return:[NSSet setWithArray:self.productDictionary.allValues]];
+- (NSString *)baseProductForProductWithIdentifier:(NSString *)productIdentifier {
+  NSString *baseIdentifier = [productIdentifier bzr_baseProductIdentifier];
+  LTAssert(!self.productDictionary[productIdentifier] || self.productDictionary[baseIdentifier],
+           @"Got a request for base product that does not exist. This is probably a typo in the "
+           "base or the variant identifiers. The base identifier is: %@. The variant identifier "
+           "is: %@.", baseIdentifier, productIdentifier);
+  return baseIdentifier;
 }
 
 - (RACSignal *)refetchProductListSignal {
   @weakify(self);
-  return [[[[self fetchProductDictionary]
+  return [[[self fetchProductDictionary]
       doNext:^(BZRProductDictionary *productDictionary) {
         @strongify(self);
         self.productDictionary = productDictionary;
+        [self createVariantSelectorWithProductDictionary:productDictionary];
       }]
       doError:^(NSError *underlyingError) {
         @strongify(self);
         NSError *error = [NSError lt_errorWithCode:BZRErrorCodeFetchingProductListFailed
                                    underlyingError:underlyingError];
         [self.errorsSubject sendNext:error];
-      }]
-      map:^NSSet<BZRProduct *> *(BZRProductDictionary *productDictionary) {
-        return [NSSet setWithArray:productDictionary.allValues];
       }];
 }
 

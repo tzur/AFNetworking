@@ -49,17 +49,6 @@ NS_ASSUME_NONNULL_BEGIN
   return self.productDictionary[variantIdentifier] ? variantIdentifier : productIdentifier;
 }
 
-- (NSString *)baseProductForProductWithIdentifier:(NSString *)productIdentifier {
-  BZRProduct *product = self.productDictionary[productIdentifier];
-  LTParameterAssert(product, @"Got a request for base product of product that does not exist. "
-                    "Identifier: %@", productIdentifier);
-  NSString *baseIdentifier = [productIdentifier bzr_baseProductIdentifier];
-  LTAssert(self.productDictionary[baseIdentifier], @"Got a request for base product that does not "
-           "exist. This is probably a typo in the base or the variant identifiers. The base "
-           "identifier is: %@. The variant identifier is: %@.", baseIdentifier, productIdentifier);
-  return baseIdentifier;
-}
-
 @end
 
 NS_ASSUME_NONNULL_END

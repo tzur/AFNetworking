@@ -3,7 +3,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/// Selector that enables bi-directional selection from a product to its appropriate variant.
+/// Selector that enables selection from a product to its appropriate variant.
 @protocol BZRProductsVariantSelector <NSObject>
 
 /// Provides the selected variant for the product specified by \c productIdentifier. If an
@@ -11,12 +11,10 @@ NS_ASSUME_NONNULL_BEGIN
 /// specified by \c productIdentifier does not exist, an \c NSInvalidArgumentException is raised.
 - (NSString *)selectedVariantForProductWithIdentifier:(NSString *)productIdentifier;
 
-/// Provides the base product for the product specified by \c productIdentifier. If the product is
-/// a base product, \c productIdentifier is returned. If the product specified by
-/// \c productIdentifier does not exist, an \c NSInvalidArgumentException is raised. If the
-/// identifier of the base doesn't exist, an \c NSInternalConsistencyException is raised.
-- (NSString *)baseProductForProductWithIdentifier:(NSString *)productIdentifier;
+@end
 
+/// Default selector that returns the given product identifier.
+@interface BZRProductsVariantSelector : NSObject <BZRProductsVariantSelector>
 @end
 
 NS_ASSUME_NONNULL_END

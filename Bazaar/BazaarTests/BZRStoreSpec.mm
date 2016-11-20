@@ -15,6 +15,8 @@
 #import "BZRProductContentProvider.h"
 #import "BZRProductPriceInfo.h"
 #import "BZRProductsProvider.h"
+#import "BZRProductsVariantSelector.h"
+#import "BZRProductsVariantSelectorFactory.h"
 #import "BZRReceiptModel.h"
 #import "BZRReceiptValidationStatus.h"
 #import "BZRStoreConfiguration.h"
@@ -29,6 +31,9 @@ static SKProductsResponse *BZRProductsResponseWithProductWithProperties(NSString
 static SKProductsResponse *BZRProductsResponseWithProduct(NSString *productIdentifier);
 static void BZRStubProductDictionaryToReturnProduct(BZRProduct *product,
     id<BZRProductsProvider> productsProvider, BZRStoreKitFacade *storeKitFacade);
+static SKProduct *BZRSKProductWithIdentifier(NSString *identifier);
+static SKProduct *BZRSKProductWithProperties(NSString *productIdentifier, NSDecimalNumber *price,
+                                             NSLocale *locale);
 
 static void BZRStubProductDictionaryToReturnProductWithIdentifier(NSString *productIdentifier,
     id<BZRProductsProvider> productsProvider, BZRStoreKitFacade *storeKitFacade) {
@@ -57,14 +62,25 @@ static SKProductsResponse *BZRProductsResponseWithProduct(NSString *productIdent
 
 static SKProductsResponse *BZRProductsResponseWithProductWithProperties(NSString *productIdentifier,
     NSDecimalNumber *price, NSLocale *locale) {
-  SKProduct *product = OCMClassMock([SKProduct class]);
-  OCMStub([product price]).andReturn(price);
-  OCMStub([product priceLocale]).andReturn(locale);
-  OCMStub([product productIdentifier]).andReturn(productIdentifier);
+  SKProduct *product = BZRSKProductWithProperties(productIdentifier, price, locale);
   SKProductsResponse *response = OCMClassMock([SKProductsResponse class]);
   OCMStub([response products]).andReturn(@[product]);
 
   return response;
+}
+
+static SKProduct *BZRSKProductWithIdentifier(NSString *productIdentifier) {
+  return BZRSKProductWithProperties(productIdentifier, [NSDecimalNumber one],
+                                    [NSLocale currentLocale]);
+}
+
+static SKProduct *BZRSKProductWithProperties(NSString *productIdentifier, NSDecimalNumber *price,
+                                             NSLocale *locale) {
+  SKProduct *product = OCMClassMock([SKProduct class]);
+  OCMStub([product price]).andReturn(price);
+  OCMStub([product priceLocale]).andReturn(locale);
+  OCMStub([product productIdentifier]).andReturn(productIdentifier);
+  return product;
 }
 
 SpecBegin(BZRStore)
@@ -76,6 +92,7 @@ __block BZRProductContentProvider *contentProvider;
 __block BZRAcquiredViaSubscriptionProvider *acquiredViaSubscriptionProvider;
 __block BZRStoreKitFacade *storeKitFacade;
 __block BZRPeriodicReceiptValidatorActivator *periodicValidatorActivator;
+__block id<BZRProductsVariantSelector> variantSelector;
 __block NSBundle *bundle;
 __block NSFileManager *fileManager;
 __block RACSubject *receiptValidationStatusProviderErrorsSubject;
@@ -93,11 +110,17 @@ beforeEach(^{
   acquiredViaSubscriptionProvider = OCMClassMock([BZRAcquiredViaSubscriptionProvider class]);
   storeKitFacade = OCMClassMock([BZRStoreKitFacade class]);
   periodicValidatorActivator = OCMClassMock([BZRPeriodicReceiptValidatorActivator class]);
+  variantSelector = OCMProtocolMock(@protocol(BZRProductsVariantSelector));
   bundle = OCMClassMock([NSBundle class]);
   fileManager = OCMClassMock([NSFileManager class]);
   BZRStoreKitFacadeFactory *storeKitFacadeFactory = OCMClassMock([BZRStoreKitFacadeFactory class]);
   OCMStub([storeKitFacadeFactory storeKitFacadeWithUnfinishedTransactionsSubject:OCMOCK_ANY])
       .andReturn(storeKitFacade);
+  id<BZRProductsVariantSelectorFactory> variantSelectorFactory =
+      OCMProtocolMock(@protocol(BZRProductsVariantSelectorFactory));
+  OCMStub([variantSelectorFactory
+      productsVariantSelectorWithProductDictionary:OCMOCK_ANY error:[OCMArg anyObjectRef]])
+      .andReturn(variantSelector);
 
   receiptValidationStatusProviderErrorsSubject = [RACSubject subject];
   acquiredViaSubscriptionProviderErrorsSubject = [RACSubject subject];
@@ -110,7 +133,8 @@ beforeEach(^{
       .andReturn(periodicReceiptValidatorActivatorErrorsSubject);
 
   configuration =
-      [[BZRStoreConfiguration alloc] initWithProductsListJSONFilePath:[LTPath pathWithPath:@"foo"]];
+      [[BZRStoreConfiguration alloc] initWithProductsListJSONFilePath:[LTPath pathWithPath:@"foo"]
+                                          countryToTierDictionaryPath:[LTPath pathWithPath:@"bar"]];
   configuration.productsProvider = productsProvider;
   configuration.contentManager = contentManager;
   configuration.validationStatusProvider = receiptValidationStatusProvider;
@@ -118,6 +142,7 @@ beforeEach(^{
   configuration.acquiredViaSubscriptionProvider = acquiredViaSubscriptionProvider;
   configuration.storeKitFacadeFactory = storeKitFacadeFactory;
   configuration.periodicValidatorActivator = periodicValidatorActivator;
+  configuration.variantSelectorFactory = variantSelectorFactory;
   configuration.applicationReceiptBundle = bundle;
   configuration.fileManager = fileManager;
   store = [[BZRStore alloc] initWithConfiguration:configuration];
@@ -156,7 +181,7 @@ context(@"purhcased products", ^{
     OCMStub([receiptValidationStatusProvider receiptValidationStatus])
         .andReturn(receiptValidationStatus);
 
-    expect([store purchasedProducts]).to.equal([NSSet setWithObject:@"foo"]);
+    expect([store purchasedProducts]).to.equal([NSSet setWithObject:productIdentifier]);
   });
 });
 
@@ -180,7 +205,7 @@ context(@"acquired via subscription products", ^{
 
 context(@"acquired products", ^{
   it(@"should return in-app purchases unified with acquired via subscription", ^{
-    BZRReceiptValidationStatus *receiptValidationStatus = 
+    BZRReceiptValidationStatus *receiptValidationStatus =
         BZRReceiptValidationStatusWithInAppPurchaseAndExpiry(productIdentifier, NO);
     OCMStub([receiptValidationStatusProvider receiptValidationStatus])
         .andReturn(receiptValidationStatus);
@@ -282,6 +307,11 @@ context(@"downloaded products", ^{
 });
 
 context(@"purchasing products", ^{
+  beforeEach(^{
+    OCMStub([variantSelector selectedVariantForProductWithIdentifier:OCMOCK_ANY])
+        .andReturn(productIdentifier);
+  });
+
   it(@"should send error when product list is empty", ^{
     OCMStub([productsProvider fetchProductList]).andReturn([RACSignal empty]);
     expect([store purchaseProduct:productIdentifier]).will.matchError(^BOOL(NSError *error) {
@@ -289,14 +319,14 @@ context(@"purchasing products", ^{
     });
   });
 
-  it(@"should send error when product doesn't exist", ^{
+  it(@"should send error when product given by variant selector doesn't exist", ^{
     NSArray<BZRProduct *> *productList = @[
       BZRProductWithIdentifier(@"bar"),
       BZRProductWithIdentifier(@"baz")
     ];
 
     OCMStub([productsProvider fetchProductList]).andReturn([RACSignal return:productList]);
-    expect([store purchaseProduct:productIdentifier]).will.matchError(^BOOL(NSError *error) {
+    expect([store purchaseProduct:@"bar"]).will.matchError(^BOOL(NSError *error) {
       return error.lt_isLTDomain && error.code == BZRErrorCodeInvalidProductIdentifer;
     });
   });
@@ -416,13 +446,20 @@ context(@"fetching product content", ^{
   });
 
   it(@"should send path sent by content provider", ^{
+    BZRStubProductDictionaryToReturnProductWithIdentifier(productIdentifier, productsProvider,
+                                                          storeKitFacade);
+    store = [[BZRStore alloc] initWithConfiguration:configuration];
     LTPath *path = [LTPath pathWithPath:@"bar"];
-    OCMStub([contentProvider fetchProductContent:OCMOCK_ANY]).andReturn([RACSignal return:path]);
+    OCMExpect([contentProvider fetchProductContent:
+        [OCMArg checkWithBlock:^BOOL(BZRProduct *product) {
+          return [product.identifier isEqualToString:productIdentifier];
+        }]]).andReturn([RACSignal return:path]);
 
     LLSignalTestRecorder *recorder = [[store fetchProductContent:productIdentifier] testRecorder];
 
     expect(recorder).will.complete();
     expect(recorder).will.sendValues(@[path]);
+    OCMVerifyAll((id)contentProvider);
   });
 
   it(@"should update downloaded content products", ^{
@@ -448,10 +485,11 @@ context(@"deleting product content", ^{
   });
 
   it(@"should send complete when content manager completes", ^{
-    OCMStub([contentManager deleteContentDirectoryOfProduct:OCMOCK_ANY])
+    OCMExpect([contentManager deleteContentDirectoryOfProduct:productIdentifier])
         .andReturn([RACSignal empty]);
 
     expect([store deleteProductContent:productIdentifier]).will.complete();
+    OCMVerifyAll((id)contentProvider);
   });
 
   it(@"should update downloaded content products", ^{
@@ -643,6 +681,48 @@ context(@"getting product list", ^{
 
     OCMVerifyAll((id)productsProvider);
     OCMVerifyAll((id)storeKitFacade);
+  });
+
+  context(@"products variants", ^{
+    beforeEach(^{
+      BZRProduct *secondBaseProduct = BZRProductWithIdentifier(@"prod2");
+      NSString *firstVariantIdentifier = [productIdentifier stringByAppendingString:@".Variant.A"];
+      BZRProduct *firstVariant = BZRProductWithIdentifier(firstVariantIdentifier);
+      BZRProduct *secondVariant = BZRProductWithIdentifier(@"prod2.Variant.B");
+      RACSignal *productList =
+          [RACSignal return:@[product, secondBaseProduct, firstVariant, secondVariant]];
+      OCMStub([productsProvider fetchProductList]).andReturn(productList);
+
+      SKProduct *firstVariantSKProduct = BZRSKProductWithIdentifier(productIdentifier);
+      SKProduct *secondVariantSKProduct = BZRSKProductWithIdentifier(@"prod2");
+      SKProduct *firstBaseSKProduct = BZRSKProductWithIdentifier(firstVariantIdentifier);
+      SKProduct *secondBaseSKProduct = BZRSKProductWithIdentifier(@"prod2.Variant.B");
+      SKProductsResponse *response = OCMClassMock([SKProductsResponse class]);
+      NSArray<SKProduct *> *productListResponse =
+          @[firstVariantSKProduct, secondVariantSKProduct, firstBaseSKProduct, secondBaseSKProduct];
+      OCMStub([response products]).andReturn(productListResponse);
+
+      NSSet *productSet =
+          [NSSet setWithObjects:@"prod2", productIdentifier, firstVariantIdentifier,
+           @"prod2.Variant.B", nil];
+      OCMStub([storeKitFacade fetchMetadataForProductsWithIdentifiers:productSet])
+          .andReturn([RACSignal return:response]);
+      store = [[BZRStore alloc] initWithConfiguration:configuration];
+    });
+
+    it(@"should return variants returned by variant selector", ^{
+      LLSignalTestRecorder *recorder = [[store productList] testRecorder];
+
+      expect(recorder).to.complete();
+      expect(recorder).to.matchValue(0, ^BOOL(NSSet<BZRProduct *> *products) {
+        NSSet<NSString *> *productsIdentifiers =
+            [products valueForKey:@instanceKeypath(BZRProduct, identifier)];
+        return [products count] == 2 &&
+            [productsIdentifiers containsObject:productIdentifier] &&
+            [productsIdentifiers containsObject:@"prod2"];
+      });
+      OCMVerifyAll((id)variantSelector);
+    });
   });
 
   it(@"should cache the fetched product list", ^{
