@@ -32,6 +32,8 @@
 - (BOOL)setupStillOutputWithError:(NSError **)error;
 - (BOOL)setupAudioInputWithDevice:(AVCaptureDevice *)device error:(NSError **)error;
 - (BOOL)setupAudioOutputWithError:(NSError **)error;
+- (void)setVideoOutput:(AVCaptureVideoDataOutput *)videoOutput;
+- (void)setAudioOutput:(AVCaptureAudioDataOutput *)audioOutput;
 @end
 
 @interface CAMHardwareSessionFactory (ForTesting)
@@ -42,6 +44,79 @@
 SpecBegin(CAMHardwareSession)
 
 static NSError * const kError = [NSError lt_errorWithCode:123];
+
+context(@"dealloc", ^{
+  it(@"should not retain itself", ^{
+    __weak CAMHardwareSession *weakSession;
+    @autoreleasepool {
+      id sessionMock = OCMClassMock([AVCaptureSession class]);
+      CAMFakeFormatStrategy *formatStrategy = [[CAMFakeFormatStrategy alloc] init];
+      CAMDevicePreset *preset =
+          [[CAMDevicePreset alloc] initWithPixelFormat:$(CAMPixelFormatBGRA)
+                                                camera:$(CAMDeviceCameraBack)
+                                           enableAudio:NO
+                                        formatStrategy:formatStrategy
+                                           outputQueue:dispatch_get_main_queue()];
+      CAMHardwareSession *session = [[CAMHardwareSession alloc] initWithPreset:preset
+                                                                       session:sessionMock];
+      weakSession = session;
+      expect(weakSession).notTo.beNil();
+    }
+    expect(weakSession).to.beNil();
+  });
+
+  it(@"should clean up session", ^{
+    id sessionMock = OCMClassMock([AVCaptureSession class]);
+    OCMStub([sessionMock isRunning]).andReturn(YES);
+    NSArray *inputs =
+        @[OCMClassMock([AVCaptureInput class]), OCMClassMock([AVCaptureInput class])];
+    NSArray *outputs =
+        @[OCMClassMock([AVCaptureOutput class]), OCMClassMock([AVCaptureOutput class])];
+    OCMStub([sessionMock inputs]).andReturn(inputs);
+    OCMStub([sessionMock outputs]).andReturn(outputs);
+    id videoOutput = OCMClassMock([AVCaptureVideoDataOutput class]);
+    id audioOutput = OCMClassMock([AVCaptureAudioDataOutput class]);
+
+    @autoreleasepool {
+      CAMFakeFormatStrategy *formatStrategy = [[CAMFakeFormatStrategy alloc] init];
+      CAMDevicePreset *preset =
+          [[CAMDevicePreset alloc] initWithPixelFormat:$(CAMPixelFormatBGRA)
+                                                camera:$(CAMDeviceCameraBack)
+                                           enableAudio:NO
+                                        formatStrategy:formatStrategy
+                                           outputQueue:dispatch_get_main_queue()];
+      CAMHardwareSession *session = [[CAMHardwareSession alloc] initWithPreset:preset
+                                                                       session:sessionMock];
+      [session setVideoOutput:videoOutput];
+      [session setAudioOutput:audioOutput];
+    }
+
+    OCMVerify([sessionMock stopRunning]);
+    OCMVerify([sessionMock removeInput:inputs[0]]);
+    OCMVerify([sessionMock removeInput:inputs[1]]);
+    OCMVerify([sessionMock removeOutput:outputs[0]]);
+    OCMVerify([sessionMock removeOutput:outputs[1]]);
+    OCMVerify([videoOutput setSampleBufferDelegate:nil queue:NULL]);
+    OCMVerify([audioOutput setSampleBufferDelegate:nil queue:NULL]);
+  });
+
+  it(@"should not stop session if it's not running", ^{
+    id sessionMock = OCMClassMock([AVCaptureSession class]);
+    OCMReject([sessionMock stopRunning]);
+
+    @autoreleasepool {
+      CAMFakeFormatStrategy *formatStrategy = [[CAMFakeFormatStrategy alloc] init];
+      CAMDevicePreset *preset =
+          [[CAMDevicePreset alloc] initWithPixelFormat:$(CAMPixelFormatBGRA)
+                                                camera:$(CAMDeviceCameraBack)
+                                           enableAudio:NO
+                                        formatStrategy:formatStrategy
+                                           outputQueue:dispatch_get_main_queue()];
+      CAMHardwareSession * __unused session =
+          [[CAMHardwareSession alloc] initWithPreset:preset session:sessionMock];
+    }
+  });
+});
 
 context(@"session", ^{
   __block CAMHardwareSession *session;

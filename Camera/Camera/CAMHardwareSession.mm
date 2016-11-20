@@ -277,6 +277,24 @@ NS_ASSUME_NONNULL_BEGIN
   [self.session commitConfiguration];
 }
 
+- (void)dealloc {
+  if (self.session.running) {
+    [self.session stopRunning];
+  }
+
+  [self.videoOutput setSampleBufferDelegate:nil queue:NULL];
+  [self.audioOutput setSampleBufferDelegate:nil queue:NULL];
+
+  [self.session beginConfiguration];
+  for (AVCaptureInput *input in self.session.inputs) {
+    [self.session removeInput:input];
+  }
+  for (AVCaptureOutput *output in self.session.outputs) {
+    [self.session removeOutput:output];
+  }
+  [self.session commitConfiguration];
+}
+
 @end
 
 @implementation CAMHardwareSessionFactory
