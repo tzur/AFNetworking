@@ -326,6 +326,30 @@ context(@"focus", ^{
       [singleExposureSignal sendError:nil];
       expect(recorder).to.sendValues(@[kDefiniteFocusAtTapPoint, kHiddenFocus]);
     });
+
+    it(@"should not send definite focus with NaN position", ^{
+      LLSignalTestRecorder *recorder = [previewViewModel.focusModeAndPosition testRecorder];
+      id nanTapMock = OCMClassMock([UITapGestureRecognizer class]);
+      OCMStub([(UITapGestureRecognizer *)nanTapMock locationInView:OCMOCK_ANY]).
+          andReturn(CGPointMake(1, NAN));
+      expect(recorder).to.sendValues(@[]);
+      [previewViewModel previewTapped:nanTapMock];
+      expect(recorder).to.sendValues(@[]);
+      [previewViewModel previewTapped:tapMock];
+      expect(recorder).to.sendValues(@[kDefiniteFocusAtTapPoint]);
+    });
+
+    it(@"should not send definite focus with infinite position", ^{
+      LLSignalTestRecorder *recorder = [previewViewModel.focusModeAndPosition testRecorder];
+      id infiniteTapMock = OCMClassMock([UITapGestureRecognizer class]);
+      OCMStub([(UITapGestureRecognizer *)infiniteTapMock locationInView:OCMOCK_ANY]).
+          andReturn(CGPointMake(-INFINITY, 1));
+      expect(recorder).to.sendValues(@[]);
+      [previewViewModel previewTapped:infiniteTapMock];
+      expect(recorder).to.sendValues(@[]);
+      [previewViewModel previewTapped:tapMock];
+      expect(recorder).to.sendValues(@[kDefiniteFocusAtTapPoint]);
+    });
   });
 
   context(@"continuous focus", ^{
