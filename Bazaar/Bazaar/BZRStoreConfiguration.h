@@ -30,8 +30,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// transactions. \c notValidatedReceiptGracePeriod determines the number of days the receipt can
 /// remain not validated until subscription marked as expired.
 ///
-/// \c productsProvider will be initialized with \c BZRLocalProductsProvider with the given
-/// \c productsListJSONFilePath.
+/// \c productsProvider will be initialized with \c BZRProductsWithVariantsProvider which will be
+/// initialized with and underlying \c BZRLocalProductsProvider.
 ///
 /// \c contentManager will be initialized with the default parameters as provided by
 /// \c -[BZRProductContentManager initWithFileManager:].

@@ -36,10 +36,11 @@ context(@"initialization", ^{
   it(@"should correctly specifiy optional properties", ^{
     NSSet<NSString *> *optionalProperties = [BZRProduct optionalPropertyKeys];
 
-    expect(optionalProperties.count).to.equal(3);
+    expect(optionalProperties.count).to.equal(4);
     expect(optionalProperties).to.contain(@instanceKeypath(BZRProduct, contentFetcherParameters));
     expect(optionalProperties).to.contain(@instanceKeypath(BZRProduct, priceInfo));
     expect(optionalProperties).to.contain(@instanceKeypath(BZRProduct, isSubscribersOnly));
+    expect(optionalProperties).to.contain(@instanceKeypath(BZRProduct, variants));
   });
 });
 
@@ -47,11 +48,12 @@ context(@"conversion" , ^{
   it(@"should correctly convert BZRProduct instance to JSON dictionary", ^{
     BZRDummyContentFetcherParameters *contentFetcherParameters =
         [[BZRDummyContentFetcherParameters alloc] initWithValue:@"bar"];
-    NSDictionary *dictionaryValue =  @{
+    NSDictionary *dictionaryValue = @{
       @instanceKeypath(BZRProduct, identifier): @"foo",
       @instanceKeypath(BZRProduct, productType): $(BZRProductTypeNonConsumable),
       @instanceKeypath(BZRProduct, isSubscribersOnly): @YES,
-      @instanceKeypath(BZRProduct, contentFetcherParameters): contentFetcherParameters
+      @instanceKeypath(BZRProduct, contentFetcherParameters): contentFetcherParameters,
+      @instanceKeypath(BZRProduct, variants): @[@"TierA", @"TierB"]
     };
 
     NSError *error = nil;
@@ -63,6 +65,7 @@ context(@"conversion" , ^{
     expect(jsonDictionary[@instanceKeypath(BZRProduct, contentFetcherParameters)])
         .to.equal([MTLJSONAdapter JSONDictionaryFromModel:contentFetcherParameters]);
     expect(jsonDictionary[@instanceKeypath(BZRProduct, isSubscribersOnly)]).to.equal(@YES);
+    expect(jsonDictionary[@instanceKeypath(BZRProduct, variants)]).to.equal(@[@"TierA", @"TierB"]);
   });
 
   it(@"should correctly convert from JSON dictionary to BZRProduct", ^{
@@ -73,7 +76,8 @@ context(@"conversion" , ^{
         @"type": NSStringFromClass([BZRDummyContentFetcherParameters class]),
         @"value": @"foo"
       },
-      @"isSubscribersOnly": @NO
+      @"isSubscribersOnly": @NO,
+      @"variants": @[@"TierA", @"TierB"]
     };
     BZRDummyContentFetcherParameters *expectedParameters =
         [[BZRDummyContentFetcherParameters alloc] initWithValue:@"foo"];
@@ -86,6 +90,7 @@ context(@"conversion" , ^{
     expect(product.productType).to.equal($(BZRProductTypeNonRenewingSubscription));
     expect(product.contentFetcherParameters).to.equal(expectedParameters);
     expect(product.isSubscribersOnly).to.equal(NO);
+    expect(product.variants).to.equal(@[@"TierA", @"TierB"]);
   });
 });
 

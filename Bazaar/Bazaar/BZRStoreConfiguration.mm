@@ -17,6 +17,7 @@
 #import "BZRProductContentManager.h"
 #import "BZRProductContentMultiFetcher.h"
 #import "BZRProductContentProvider.h"
+#import "BZRProductsWithVariantsProvider.h"
 #import "BZRReceiptValidationStatusProvider.h"
 #import "BZRStoreKitFacadeFactory.h"
 #import "BZRTimeProvider.h"
@@ -50,9 +51,12 @@ NS_ASSUME_NONNULL_BEGIN
                   notValidatedReceiptGracePeriod:(NSUInteger)notValidatedReceiptGracePeriod {
   if (self = [super init]) {
     _fileManager = [NSFileManager defaultManager];
-    _productsProvider =
+
+    BZRLocalProductsProvider *localProductsProvider =
         [[BZRLocalProductsProvider alloc] initWithPath:productsListJSONFilePath
                                            fileManager:self.fileManager];
+    _productsProvider =
+        [[BZRProductsWithVariantsProvider alloc] initWithUnderlyingProvider:localProductsProvider];
     
     _contentManager = [[BZRProductContentManager alloc] initWithFileManager:self.fileManager];
     BZRProductContentMultiFetcher *contentFetcher = [[BZRProductContentMultiFetcher alloc] init];
