@@ -8,7 +8,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface LTEventBusObserver () <LTLoggerTarget>
+@interface LTEventBusObserver ()
 
 /// Container that saves logs.
 @property (readonly, nonatomic) id<LTMessageContainer> messageContainer;
@@ -68,14 +68,6 @@ NS_ASSUME_NONNULL_BEGIN
                        [self.dateFormatter stringFromDate:[NSDate date]],
                        event.class, event.description];
 
-  [self.messageContainer addMessage:message];
-}
-
-#pragma mark -
-#pragma mark LTLoggerTarget
-#pragma mark -
-
-- (void)outputString:(NSString *)message {
   [self.messageContainer addMessage:message];
 }
 
