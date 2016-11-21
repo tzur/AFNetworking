@@ -3,6 +3,8 @@
 
 #import "LTTouchEventView.h"
 
+#import <LTKit/NSArray+NSSet.h>
+
 #import "LTTouchEvent.h"
 #import "LTTouchEventDelegate.h"
 #import "LTTouchEventViewTestUtils.h"
@@ -28,6 +30,7 @@
 @property (strong, nonatomic) NSMutableArray<LTTestTouchEventDelegateCall *> *calls;
 @property (strong, nonatomic) NSSet<NSNumber *> *idsOfCancelledSequences;
 @property (nonatomic) LTTouchEventSequenceState terminationState;
+@property (strong, nonatomic) LTMutableTouchEvents *updatedTouchEvents;
 @end
 
 @implementation LTTestTouchEventDelegate
@@ -35,6 +38,7 @@
 - (instancetype)init {
   if (self = [super init]) {
     self.calls = [NSMutableArray array];
+    self.updatedTouchEvents = [NSMutableArray array];
   }
   return self;
 }
@@ -48,7 +52,8 @@
   }
 }
 
-- (void)receivedUpdatesOfTouchEvents:(LTTouchEvents __unused *)events {
+- (void)receivedUpdatesOfTouchEvents:(LTTouchEvents *)events {
+  [self.updatedTouchEvents addObjectsFromArray:events];
 }
 
 - (void)touchEventSequencesWithIDs:(NSSet<NSNumber *> *)sequenceIDs
@@ -684,7 +689,7 @@ it(@"should gracefully handle nil values for coalesced touch events by returning
   LTTestTouchEventDelegate *delegate = [[LTTestTouchEventDelegate alloc] init];
   LTTouchEventView *view = [[LTTouchEventView alloc] initWithFrame:CGRectZero delegate:delegate];
   id touchMock = LTTouchEventViewCreateTouch(7);
-  NSSet<UITouch *> *touchMocks = [NSSet setWithArray:@[touchMock]];
+  NSSet<UITouch *> *touchMocks = [@[touchMock] lt_set];
   id eventMock = OCMClassMock([UIEvent class]);
 
   OCMExpect([eventMock respondsToSelector:@selector(coalescedTouchesForTouch:)]).andReturn(@YES);
@@ -696,6 +701,38 @@ it(@"should gracefully handle nil values for coalesced touch events by returning
   expect(delegate.calls.firstObject.events).to.haveACountOf(1);
   expect(delegate.calls.firstObject.events.firstObject.timestamp).to.equal(7);
   OCMVerifyAll(eventMock);
+});
+
+context(@"estimated properties", ^{
+  it(@"should ignore property updates of touches belonging to already terminated sequences", ^{
+    id<LTTouchEventDelegate> delegateMock = OCMStrictProtocolMock(@protocol(LTTouchEventDelegate));
+    LTTouchEventView *view = [[LTTouchEventView alloc] initWithFrame:CGRectZero
+                                                            delegate:delegateMock];
+    id touchMock = LTTouchEventViewCreateTouch(7);
+    NSSet<UITouch *> *touchMocks = [@[touchMock] lt_set];
+
+    [view touchesEstimatedPropertiesUpdated:touchMocks];
+  });
+
+  it(@"should only forward property updates of touches belonging to occurring sequences", ^{
+    LTTestTouchEventDelegate *delegate = [[LTTestTouchEventDelegate alloc] init];
+    LTTouchEventView *view = [[LTTouchEventView alloc] initWithFrame:CGRectZero delegate:delegate];
+    id touchMock = LTTouchEventViewCreateTouch(7);
+    id anotherTouchMock = LTTouchEventViewCreateTouch(8);
+    NSSet<UITouch *> *touchMocks = [@[touchMock, anotherTouchMock] lt_set];
+    id eventMock = OCMClassMock([UIEvent class]);
+
+    [view touchesBegan:touchMocks withEvent:eventMock];
+
+    NSSet<UITouch *> *endedTouchMocks = [@[touchMock] lt_set];
+
+    [view touchesEnded:endedTouchMocks withEvent:eventMock];
+
+    [view touchesEstimatedPropertiesUpdated:touchMocks];
+
+    expect(delegate.updatedTouchEvents).to.haveACountOf(1);
+    expect(delegate.updatedTouchEvents.firstObject.timestamp).to.equal(8);
+  });
 });
 
 itShouldBehaveLike(kLTTouchEventViewExamples,
