@@ -100,19 +100,27 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)touchesEstimatedPropertiesUpdated:(NSSet<UITouch *> *)touches {
   [super touchesEstimatedPropertiesUpdated:touches];
 
+  if (!touches.count) {
+    return;
+  }
+
   NSArray<UITouch *> *sortedMainTouches = [self sortedTouches:[touches allObjects]];
 
   LTMutableTouchEvents *mutableTouchEvents =
       [NSMutableArray arrayWithCapacity:sortedMainTouches.count];
 
   for (UITouch *touch in sortedMainTouches) {
-    NSNumber *boxedSequenceID = [self.touchToSequenceID objectForKey:touch];
-    LTAssert(boxedSequenceID,
-             @"Touch (%@) belonging to a currently occurring touch sequence should exist in the "
-             "map table", touch);
+    NSNumber * _Nullable boxedSequenceID = [self.touchToSequenceID objectForKey:touch];
+    if (!boxedSequenceID) {
+      continue;
+    }
     NSUInteger sequenceID = [boxedSequenceID unsignedIntegerValue];
     [mutableTouchEvents addObject:[LTTouchEvent touchEventWithPropertiesOfTouch:touch
                                                                      sequenceID:sequenceID]];
+  }
+
+  if (!mutableTouchEvents.count) {
+    return;
   }
 
   [self.delegate receivedUpdatesOfTouchEvents:[mutableTouchEvents copy]];
