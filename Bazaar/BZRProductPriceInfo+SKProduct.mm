@@ -24,9 +24,11 @@ NS_ASSUME_NONNULL_BEGIN
   [numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
   [numberFormatter setLocale:product.priceLocale];
 
-  // TODO:(dlahyani) This is a patch for dealing with high prices for the soft-launch, that is only
-  // released in the Russian AppStore. We should allow 2 fraction digits for most currencies though.
-  [numberFormatter setMaximumFractionDigits:0];
+  // Truncate fraction digit in case the price is the price is an integer number to avoid prices
+  // like "500.00 RUB" for which the ".00" is redundant and may cause price labels text overflow.
+  if (std::floor([product.price doubleValue]) == [product.price doubleValue]) {
+    [numberFormatter setMaximumFractionDigits:0];
+  }
   return [numberFormatter stringFromNumber:product.price];
 }
 

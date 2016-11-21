@@ -841,7 +841,7 @@ context(@"getting product list", ^{
     BZRProduct *bazaarProduct = BZRProductWithIdentifier(productIdentifier);
     OCMStub([productsProvider fetchProductList]).andReturn([RACSignal return:@[bazaarProduct]]);
     NSLocale *locale = [[NSLocale alloc] initWithLocaleIdentifier:@"de_DE"];
-    NSDecimalNumber *price = [NSDecimalNumber decimalNumberWithString:@"1337.37"];
+    NSDecimalNumber *price = [NSDecimalNumber decimalNumberWithString:@"1337.1337"];
     SKProductsResponse *response =
         BZRProductsResponseWithProductWithProperties(productIdentifier, price, locale);
     OCMStub([storeKitFacade fetchMetadataForProductsWithIdentifiers:OCMOCK_ANY])
@@ -852,7 +852,7 @@ context(@"getting product list", ^{
 
     expect(recorder).will.matchValue(0, ^BOOL(NSSet<BZRProduct *> *productList) {
       BZRProductPriceInfo *priceInfo = [productList allObjects].firstObject.priceInfo;
-      return [priceInfo.localizedPrice isEqualToString:@"1.337 €"] &&
+      return [priceInfo.localizedPrice isEqualToString:@"1.337,13 €"] &&
           [priceInfo.price isEqualToNumber:price];
     });
   });
