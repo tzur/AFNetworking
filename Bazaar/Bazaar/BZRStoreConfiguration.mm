@@ -8,6 +8,7 @@
 #import "BZRAcquiredViaSubscriptionProvider.h"
 #import "BZRCachedReceiptValidationStatusProvider.h"
 #import "BZRKeychainStorage.h"
+#import "BZRLocaleBasedVariantSelectorFactory.h"
 #import "BZRLocalProductsProvider.h"
 #import "BZRModifiedExpiryReceiptValidationStatusProvider.h"
 #import "BZRPeriodicReceiptValidator.h"
@@ -16,6 +17,7 @@
 #import "BZRProductContentManager.h"
 #import "BZRProductContentMultiFetcher.h"
 #import "BZRProductContentProvider.h"
+#import "BZRProductsWithVariantsProvider.h"
 #import "BZRReceiptValidationStatusProvider.h"
 #import "BZRStoreKitFacadeFactory.h"
 #import "BZRTimeProvider.h"
@@ -25,7 +27,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation BZRStoreConfiguration
 
-- (instancetype)initWithProductsListJSONFilePath:(LTPath *)productsListJSONFilePath {
+- (instancetype)initWithProductsListJSONFilePath:(LTPath *)productsListJSONFilePath
+                     countryToTierDictionaryPath:(LTPath *)countryToTierDictionaryPath {
   /// Number of days the user is allowed to use products acquired via subscription after its
   /// subscription has expired.
   static const NSUInteger kExpiredSubscriptionGracePeriod = 7;
@@ -33,22 +36,27 @@ NS_ASSUME_NONNULL_BEGIN
   /// Number of days the receipt can remain not validated until subscription marked as expired.
   static const NSUInteger kNotValidatedGracePeriod = 5;
 
-  return [self initWithProductsListJSONFilePath:productsListJSONFilePath keychainAccessGroup:nil
+  return [self initWithProductsListJSONFilePath:productsListJSONFilePath
+                    countryToTierDictionaryPath:countryToTierDictionaryPath keychainAccessGroup:nil
                  expiredSubscriptionGracePeriod:kExpiredSubscriptionGracePeriod
                               applicationUserID:nil
                  notValidatedReceiptGracePeriod:kNotValidatedGracePeriod];
 }
 
 - (instancetype)initWithProductsListJSONFilePath:(LTPath *)productsListJSONFilePath
+                     countryToTierDictionaryPath:(LTPath *)countryToTierDictionaryPath
                              keychainAccessGroup:(nullable NSString *)keychainAccessGroup
                   expiredSubscriptionGracePeriod:(NSUInteger)expiredSubscriptionGracePeriod
                                applicationUserID:(nullable NSString *)applicationUserID
                   notValidatedReceiptGracePeriod:(NSUInteger)notValidatedReceiptGracePeriod {
   if (self = [super init]) {
     _fileManager = [NSFileManager defaultManager];
-    _productsProvider =
+
+    BZRLocalProductsProvider *localProductsProvider =
         [[BZRLocalProductsProvider alloc] initWithPath:productsListJSONFilePath
                                            fileManager:self.fileManager];
+    _productsProvider =
+        [[BZRProductsWithVariantsProvider alloc] initWithUnderlyingProvider:localProductsProvider];
     
     _contentManager = [[BZRProductContentManager alloc] initWithFileManager:self.fileManager];
     BZRProductContentMultiFetcher *contentFetcher = [[BZRProductContentMultiFetcher alloc] init];
@@ -83,6 +91,10 @@ NS_ASSUME_NONNULL_BEGIN
          initWithPeriodicReceiptValidator:periodicReceiptValidator
          validationStatusProvider:self.validationStatusProvider timeProvider:timeProvider
          gracePeriod:notValidatedReceiptGracePeriod];
+
+    _variantSelectorFactory =
+        [[BZRLocaleBasedVariantSelectorFactory alloc] initWithFileManager:self.fileManager
+         countryToTierPath:countryToTierDictionaryPath];
   }
   return self;
 }

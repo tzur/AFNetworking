@@ -7,7 +7,7 @@ NS_ASSUME_NONNULL_BEGIN
     BZRPeriodicReceiptValidatorActivator, BZRProductContentManager, BZRProductContentProvider,
     BZRStoreKitFacadeFactory, LTPath;
 
-@protocol BZRProductsProvider;
+@protocol BZRProductsProvider, BZRProductsVariantSelectorFactory;
 
 /// Object used to provide configuration objects for \c BZRStore.
 @interface BZRStoreConfiguration : NSObject
@@ -17,18 +17,21 @@ NS_ASSUME_NONNULL_BEGIN
 /// Initializes the in-app store configuration with a new instance of \c BZRKeychainStorage with
 /// accessGroup set to \c nil. \c expiredSubscriptionGracePeriod is set to \c 7.
 /// \c applicationUserID is set to \c nil. \c notValidatedReceiptGracePeriod is set to \c 5.
-- (instancetype)initWithProductsListJSONFilePath:(LTPath *)productsListJSONFilePath;
+- (instancetype)initWithProductsListJSONFilePath:(LTPath *)productsListJSONFilePath
+                     countryToTierDictionaryPath:(LTPath *)countryToTierDictionaryPath;
 
 /// Initializes the in-app store configuration with default parameters. \c productsListJSONFilePath
-/// is used to load products information with. \c keychainAccessGroup is a key to storing/loading
-/// of data of a specific group from storage. \c expiredSubscriptionGracePeriod defines the number
-/// of days the user is allowed to use products acquired via subscription after its subscription has
-/// expired. \c applicationUserID is an optional unique identifer for the user's account, used for
-/// making purchases and restoring transactions. \c notValidatedReceiptGracePeriod determines the
-/// number of days the receipt can remain not validated until subscription marked as expired.
+/// is used to load products information from. \c countryToTierDictionaryPath is used to load
+/// country to tier dictionary that is used to select products variants. \c keychainAccessGroup is a
+/// key to storing/loading of data of a specific group from storage.
+/// \c expiredSubscriptionGracePeriod defines the number of days the user is allowed to use products
+/// acquired via subscription after its subscription has expired. \c applicationUserID is an
+/// optional unique identifer for the user's account, used for making purchases and restoring
+/// transactions. \c notValidatedReceiptGracePeriod determines the number of days the receipt can
+/// remain not validated until subscription marked as expired.
 ///
-/// \c productsProvider will be initialized with \c BZRLocalProductsProvider with the given
-/// \c productsListJSONFilePath.
+/// \c productsProvider will be initialized with \c BZRProductsWithVariantsProvider which will be
+/// initialized with and underlying \c BZRLocalProductsProvider.
 ///
 /// \c contentManager will be initialized with the default parameters as provided by
 /// \c -[BZRProductContentManager initWithFileManager:].
@@ -56,6 +59,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// \c periodicValidatorActivator will be initialized with the default initializer of
 /// \c BZRPeriodicReceiptValidatorActivator.
 - (instancetype)initWithProductsListJSONFilePath:(LTPath *)productsListJSONFilePath
+                     countryToTierDictionaryPath:(LTPath *)countryToTierDictionaryPath
                              keychainAccessGroup:(nullable NSString *)keychainAccessGroup
                   expiredSubscriptionGracePeriod:(NSUInteger)expiredSubscriptionGracePeriod
                                applicationUserID:(nullable NSString *)applicationUserID
@@ -88,6 +92,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Activator used to control the periodic receipt validation.
 @property (strong, nonatomic) BZRPeriodicReceiptValidatorActivator *periodicValidatorActivator;
+
+/// Factory used to create \c BZRProductsVariantSelector.
+@property (strong, nonatomic) id<BZRProductsVariantSelectorFactory> variantSelectorFactory;
 
 @end
 

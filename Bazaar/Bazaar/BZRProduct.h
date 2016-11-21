@@ -41,6 +41,9 @@ LTEnumDeclare(NSUInteger, BZRProductType,
 /// Holds the price and the locale of the product.
 @property (readonly, nonatomic, nullable) BZRProductPriceInfo *priceInfo;
 
+/// Available variants of the product. \c nil signifies that the receiver is a variant. 
+@property (readonly, nonatomic, nullable) NSArray<NSString *> *variants;
+
 @end
 
 NS_ASSUME_NONNULL_END
