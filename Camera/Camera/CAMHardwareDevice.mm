@@ -110,8 +110,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)setupZoomProperties {
   RAC(self, hasZoom, @NO) = [RACSignal
       combineLatest:@[
-          RACObserve(self, minZoomFactor),
-          RACObserve(self, maxZoomFactor)
+        RACObserve(self, minZoomFactor),
+        RACObserve(self, maxZoomFactor)
       ] reduce:(id)^NSNumber *(NSNumber *minZoomFactor, NSNumber *maxZoomFactor) {
         return @([maxZoomFactor CGFloatValue] / [minZoomFactor CGFloatValue] > 1.1);
       }];
@@ -525,9 +525,11 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
     @strongify(self);
     AVCaptureDevice *device = self.session.videoDevice;
     LTParameterAssert(value <= device.maxExposureTargetBias,
-        @"Exposure compensation value above maximum");
+        @"Exposure compensation value %g is above the maximum (%g)", value,
+        device.maxExposureTargetBias);
     LTParameterAssert(value >= device.minExposureTargetBias,
-        @"Exposure compensation value below minimum");
+        @"Exposure compensation value %g is below the minimum (%g)", value,
+        device.minExposureTargetBias);
     NSError *error;
     BOOL success = [device cam_performWhileLocked:^BOOL(NSError **) {
       [device setExposureTargetBias:value completionHandler:^(CMTime __unused syncTime) {
@@ -641,8 +643,10 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
   return [RACSignal defer:^RACSignal *{
     @strongify(self);
     AVCaptureDevice *device = self.session.videoDevice;
-    LTParameterAssert(zoomFactor <= self.maxZoomFactor, @"Zoom factor above maximum");
-    LTParameterAssert(zoomFactor >= self.minZoomFactor, @"Zoom factor below minimum");
+    LTParameterAssert(zoomFactor <= self.maxZoomFactor,
+        @"Zoom factor %g is above the maximum (%g)", zoomFactor, self.maxZoomFactor);
+    LTParameterAssert(zoomFactor >= self.minZoomFactor,
+        @"Zoom factor %g is below the minimum (%g)", zoomFactor, self.minZoomFactor);
     NSError *error;
     BOOL success = [device cam_performWhileLocked:^BOOL(NSError **) {
       device.videoZoomFactor = zoomFactor;
@@ -657,8 +661,10 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
   return [RACSignal defer:^RACSignal *{
     @strongify(self);
     AVCaptureDevice *device = self.session.videoDevice;
-    LTParameterAssert(zoomFactor <= self.maxZoomFactor, @"Zoom factor above maximum");
-    LTParameterAssert(zoomFactor >= self.minZoomFactor, @"Zoom factor below minimum");
+    LTParameterAssert(zoomFactor <= self.maxZoomFactor,
+        @"Zoom factor %g is above the maximum (%g)", zoomFactor, self.maxZoomFactor);
+    LTParameterAssert(zoomFactor >= self.minZoomFactor,
+        @"Zoom factor %g is below the minimum (%g)", zoomFactor, self.minZoomFactor);
     NSError *error;
     BOOL success = [device cam_performWhileLocked:^BOOL(NSError **) {
       [device rampToVideoZoomFactor:zoomFactor withRate:rate];
@@ -717,8 +723,8 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
 - (BOOL)setTorchLevel:(float)torchLevel error:(NSError * __autoreleasing *)error {
   AVCaptureDevice *device = self.session.videoDevice;
   BOOL success = [device cam_performWhileLocked:^BOOL(NSError **errorPtr) {
-    LTParameterAssert(torchLevel <= 1, @"Torch level above maximum");
-    LTParameterAssert(torchLevel >= 0, @"Torch level below minimum");
+    LTParameterAssert(torchLevel <= 1, @"Torch level %g is above the maximum (1)", torchLevel);
+    LTParameterAssert(torchLevel >= 0, @"Torch level %g is below the minimum (0)", torchLevel);
     if (torchLevel == 0) {
       return [self setDeviceTorchOff:device error:errorPtr];
     } else {

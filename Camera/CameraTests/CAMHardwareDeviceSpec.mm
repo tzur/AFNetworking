@@ -931,7 +931,7 @@ context(@"", ^{
         expect(device.hasTorch).to.beTruthy();
       });
 
-      it(@"should rais for illegal level", ^{
+      it(@"should raise when torch level is out of bounds", ^{
         expect(^{
           [[device setTorchLevel:2] testRecorder];
         }).to.raise(NSInvalidArgumentException);
