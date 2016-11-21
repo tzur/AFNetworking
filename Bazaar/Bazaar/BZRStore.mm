@@ -534,13 +534,22 @@ static NSNumber * const kNonAppStoreProductsLabel = @0;
       }]
       map:^NSSet<BZRProduct *> *(BZRProductDictionary *productDictionary) {
         @strongify(self);
-        return [NSSet setWithArray:
-            [productDictionary.allValues lt_filter:^BOOL(BZRProduct *product) {
+        NSArray<BZRProduct *> *variantsWithBaseIdentifers =
+            [[productDictionary.allValues lt_filter:^BOOL(BZRProduct *product) {
               @strongify(self);
               NSString *baseProductIdentifier =
                   [self baseProductForProductWithIdentifier:product.identifier];
               return [product.identifier isEqualToString:baseProductIdentifier];
-        }]];
+            }]
+            lt_map:^BZRProduct *(BZRProduct *product) {
+              @strongify(self);
+              NSString *variantIdentifier =
+                  [self.variantSelector selectedVariantForProductWithIdentifier:product.identifier];
+              BZRProduct *variant = productDictionary[variantIdentifier];
+              return [variant modelByOverridingProperty:@keypath(variant, identifier)
+                                              withValue:product.identifier];
+        }];
+        return [NSSet setWithArray:variantsWithBaseIdentifers];
       }];
 }
 

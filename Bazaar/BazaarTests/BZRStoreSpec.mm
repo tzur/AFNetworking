@@ -276,6 +276,10 @@ context(@"subscription information", ^{
 });
 
 context(@"downloaded products", ^{
+  beforeEach(^{
+    OCMStub([variantSelector selectedVariantForProductWithIdentifier:productIdentifier])
+        .andReturn(productIdentifier);
+  });
   it(@"should treat product without content as downloaded", ^{
     BZRStubProductDictionaryToReturnProductWithIdentifier(productIdentifier, productsProvider,
                                                           storeKitFacade);
@@ -711,6 +715,11 @@ context(@"getting product list", ^{
     });
 
     it(@"should return variants returned by variant selector", ^{
+      OCMExpect([variantSelector selectedVariantForProductWithIdentifier:productIdentifier])
+          .andReturn([productIdentifier stringByAppendingString:@".Variant.A"]);
+      OCMExpect([variantSelector selectedVariantForProductWithIdentifier:@"prod2"])
+          .andReturn(@"prod2.Variant.B");
+
       LLSignalTestRecorder *recorder = [[store productList] testRecorder];
 
       expect(recorder).to.complete();
@@ -726,6 +735,8 @@ context(@"getting product list", ^{
   });
 
   it(@"should cache the fetched product list", ^{
+    OCMStub([variantSelector selectedVariantForProductWithIdentifier:productIdentifier])
+        .andReturn(productIdentifier);
     BZRStubProductDictionaryToReturnProduct(product, productsProvider, storeKitFacade);
     store = [[BZRStore alloc] initWithConfiguration:configuration];
 
@@ -741,6 +752,8 @@ context(@"getting product list", ^{
     OCMExpect([productsProvider fetchProductList]).andReturn([RACSignal error:error]);
     store = [[BZRStore alloc] initWithConfiguration:configuration];
 
+    OCMStub([variantSelector selectedVariantForProductWithIdentifier:productIdentifier])
+        .andReturn(productIdentifier);
     BZRStubProductDictionaryToReturnProduct(product, productsProvider, storeKitFacade);
     LLSignalTestRecorder *recorder = [[store productList] testRecorder];
 
@@ -827,6 +840,8 @@ context(@"getting product list", ^{
     });
 
     it(@"should not fetch metadata for subscribers only products", ^{
+      OCMStub([variantSelector selectedVariantForProductWithIdentifier:productIdentifier])
+          .andReturn(productIdentifier);
       OCMStub([productsProvider fetchProductList])
           .andReturn([RACSignal return:@[subscribersOnlyProduct]]);
       OCMReject([storeKitFacade fetchMetadataForProductsWithIdentifiers:OCMOCK_ANY]);
@@ -838,6 +853,12 @@ context(@"getting product list", ^{
     });
 
     it(@"should merge subscribers only products with products with price info", ^{
+      OCMStub([variantSelector selectedVariantForProductWithIdentifier:OCMOCK_ANY])
+          .andDo(^(NSInvocation *invocation) {
+            __unsafe_unretained NSString *identifier;
+            [invocation getArgument:&identifier atIndex:2];
+            [invocation setReturnValue:&identifier];
+          });
       BZRProduct *notForSubscribersOnlyProduct = BZRProductWithIdentifier(@"bar");
       RACSignal *productList =
           [RACSignal return:@[subscribersOnlyProduct, notForSubscribersOnlyProduct]];
@@ -890,6 +911,8 @@ context(@"getting product list", ^{
     });
 
     it(@"should return set with product if facade returns a response with the same product", ^{
+      OCMStub([variantSelector selectedVariantForProductWithIdentifier:productIdentifier])
+          .andReturn(productIdentifier);
       SKProductsResponse *response = BZRProductsResponseWithProduct(productIdentifier);
       OCMStub([storeKitFacade fetchMetadataForProductsWithIdentifiers:OCMOCK_ANY])
           .andReturn([RACSignal return:response]);
@@ -918,6 +941,8 @@ context(@"getting product list", ^{
   });
 
   it(@"should send price info correctly", ^{
+    OCMStub([variantSelector selectedVariantForProductWithIdentifier:productIdentifier])
+        .andReturn(productIdentifier);
     BZRProduct *bazaarProduct = BZRProductWithIdentifier(productIdentifier);
     OCMStub([productsProvider fetchProductList]).andReturn([RACSignal return:@[bazaarProduct]]);
     NSLocale *locale = [[NSLocale alloc] initWithLocaleIdentifier:@"de_DE"];
