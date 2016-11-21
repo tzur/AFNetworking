@@ -62,7 +62,9 @@ LTErrorCodesImplement(BazaarErrorCodeProductID,
   /// Fetching of product list has failed.
   BZRErrorCodeFetchingProductListFailed,
   /// The receipt validation has failed during the periodic check.
-  BZRErrorCodePeriodicReceiptValidationFailed
+  BZRErrorCodePeriodicReceiptValidationFailed,
+  /// Loading of file has failed
+  BZRErrorCodeLoadingFileFailed
 );
 
 NS_ASSUME_NONNULL_END
