@@ -427,7 +427,7 @@ static NSNumber * const kNonAppStoreProductsLabel = @0;
       }]
       then:^RACSignal *{
         @strongify(self);
-        if ([self isUserSubscribed]) {
+        if ([self isUserSubscribed] && ![self isSubscriptionProduct:variantIdentifier]) {
           // Since there is no need to connect to StoreKit for a product that is bought/purchased by
           // a subscriber, we don't save the variant but the base product's identifier.
           [self.acquiredViaSubscriptionProvider
@@ -449,6 +449,12 @@ static NSNumber * const kNonAppStoreProductsLabel = @0;
 
 - (BOOL)isUserSubscribed {
   return [self subscriptionInfo] && ![self subscriptionInfo].isExpired;
+}
+
+- (BOOL)isSubscriptionProduct:(NSString *)productIdentifier {
+  BZRProductType *productType = self.productDictionary[productIdentifier].productType;
+  return [productType isEqual:$(BZRProductTypeRenewableSubscription)] ||
+      [productType isEqual:$(BZRProductTypeNonRenewingSubscription)];
 }
 
 - (RACSignal *)purchaseProductWithStoreKit:(NSString *)productIdentifier {

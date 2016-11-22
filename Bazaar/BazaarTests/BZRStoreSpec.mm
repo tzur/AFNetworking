@@ -335,6 +335,46 @@ context(@"purchasing products", ^{
     });
   });
 
+  it(@"should purchase through store kit if product is a renewable subscription", ^{
+    BZRProduct *product = BZRProductWithIdentifier(productIdentifier);
+    product = [product modelByOverridingProperty:@keypath(product, productType)
+                                       withValue:$(BZRProductTypeRenewableSubscription)];
+    BZRStubProductDictionaryToReturnProduct(product, productsProvider, storeKitFacade);
+    store = [[BZRStore alloc] initWithConfiguration:configuration];
+
+    BZRReceiptValidationStatus *receiptValidationStatus =
+        BZRReceiptValidationStatusWithInAppPurchaseAndExpiry(productIdentifier, NO);
+    OCMStub([receiptValidationStatusProvider receiptValidationStatus])
+        .andReturn(receiptValidationStatus);
+
+    OCMReject([acquiredViaSubscriptionProvider
+               addAcquiredViaSubscriptionProduct:productIdentifier]);
+    OCMStub([storeKitFacade purchaseProduct:OCMOCK_ANY]).andReturn([RACSignal empty]);
+    OCMStub([receiptValidationStatusProvider fetchReceiptValidationStatus])
+        .andReturn([RACSignal empty]);
+    expect([store purchaseProduct:productIdentifier]).will.complete();
+  });
+
+  it(@"should purchase through store kit if product is a non renewing subscription", ^{
+    BZRProduct *product = BZRProductWithIdentifier(productIdentifier);
+    product = [product modelByOverridingProperty:@keypath(product, productType)
+                                       withValue:$(BZRProductTypeNonRenewingSubscription)];
+    BZRStubProductDictionaryToReturnProduct(product, productsProvider, storeKitFacade);
+    store = [[BZRStore alloc] initWithConfiguration:configuration];
+
+    BZRReceiptValidationStatus *receiptValidationStatus =
+        BZRReceiptValidationStatusWithInAppPurchaseAndExpiry(productIdentifier, NO);
+    OCMStub([receiptValidationStatusProvider receiptValidationStatus])
+        .andReturn(receiptValidationStatus);
+
+    OCMReject([acquiredViaSubscriptionProvider
+               addAcquiredViaSubscriptionProduct:productIdentifier]);
+    OCMStub([storeKitFacade purchaseProduct:OCMOCK_ANY]).andReturn([RACSignal empty]);
+    OCMStub([receiptValidationStatusProvider fetchReceiptValidationStatus])
+        .andReturn([RACSignal empty]);
+    expect([store purchaseProduct:productIdentifier]).will.complete();
+  });
+
   context(@"product exists", ^{
     beforeEach(^{
       BZRStubProductDictionaryToReturnProductWithIdentifier(productIdentifier, productsProvider,
