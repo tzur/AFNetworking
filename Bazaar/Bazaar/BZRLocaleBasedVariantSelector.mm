@@ -41,7 +41,9 @@ NS_ASSUME_NONNULL_BEGIN
   BZRProduct *product = self.productDictionary[productIdentifier];
   LTParameterAssert(product, @"Got a request for variant of product that does not exist. "
                     "Identifier: %@", productIdentifier);
-  NSString *tier = self.countryToTier[product.bzr_underlyingProduct.priceLocale.countryCode];
+  NSString *countryCode =
+      [product.bzr_underlyingProduct.priceLocale objectForKey:NSLocaleCountryCode];
+  NSString *tier = self.countryToTier[countryCode];
   if (!tier) {
     return productIdentifier;
   }
