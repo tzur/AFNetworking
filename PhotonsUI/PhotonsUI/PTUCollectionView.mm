@@ -53,8 +53,8 @@ NS_ASSUME_NONNULL_BEGIN
   UIView *errorView = [[UIView alloc] initWithFrame:CGRectZero];
 
   UILabel *errorLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-  errorLabel.text = _LDefault(@"Error Fetching Data", @"Label presented instead of content in an "
-                              "album when it couldn't be fetched due to an error");
+  errorLabel.text = _LDefault(@"Whoops! Something went wrong", @"Label presented instead of "
+                              "content in an album when it couldn't be fetched due to an error");
   errorLabel.textAlignment = NSTextAlignmentCenter;
   errorLabel.font = [UIFont italicSystemFontOfSize:15];
   errorLabel.textColor = [UIColor lightGrayColor];

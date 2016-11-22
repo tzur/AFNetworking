@@ -1,0 +1,11 @@
+/* Title of a section header in a list which contains albums */
+"Albums" = "相册";
+
+/* Label presented instead of content in an album when it couldn't be fetched due to an error */
+"Whoops! Something went wrong" = "糟糕！出错了";
+
+/* Label presented instead of content in an empty album, indicating it has no photos */
+"No Photos" = "无照片";
+
+/* Title of a section header in a list which contains photos */
+"Photos" = "照片";

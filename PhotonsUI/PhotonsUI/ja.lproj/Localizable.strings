@@ -1,0 +1,11 @@
+/* Title of a section header in a list which contains albums */
+"Albums" = "アルバム";
+
+/* Label presented instead of content in an album when it couldn't be fetched due to an error */
+"Whoops! Something went wrong" = "おや！何か問題が起きました";
+
+/* Label presented instead of content in an empty album, indicating it has no photos */
+"No Photos" = "写真がありません";
+
+/* Title of a section header in a list which contains photos */
+"Photos" = "写真";
