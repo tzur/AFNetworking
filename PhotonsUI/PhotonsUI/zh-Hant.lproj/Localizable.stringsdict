@@ -7,19 +7,19 @@
     <key>%lu Photos</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
-      <string>%#@photos@</string>
-      <key>photos</key>
+      <string>%#@Photos@</string>
+      <key>Photos</key>
       <dict>
         <key>NSStringFormatSpecTypeKey</key>
         <string>NSStringPluralRuleType</string>
         <key>NSStringFormatValueTypeKey</key>
         <string>lu</string>
         <key>zero</key>
-        <string>No Photos</string>
+        <string>沒有照片</string>
         <key>one</key>
-        <string>1 Photo</string>
+        <string>1張照片</string>
         <key>other</key>
-        <string>%lu Photos</string>
+        <string>%lu張照片</string>
       </dict>
     </dict>
   </dict>

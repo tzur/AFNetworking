@@ -1,0 +1,11 @@
+/* Title of a section header in a list which contains albums */
+"Albums" = "Albums";
+
+/* Label presented instead of content in an album when it couldn't be fetched due to an error */
+"Whoops! Something went wrong" = "Une anomalie s’est produite !";
+
+/* Label presented instead of content in an empty album, indicating it has no photos */
+"No Photos" = "Aucune photo";
+
+/* Title of a section header in a list which contains photos */
+"Photos" = "Photos";

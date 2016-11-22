@@ -7,8 +7,8 @@
     <key>%lu Photos</key>
     <dict>
       <key>NSStringLocalizedFormatKey</key>
-      <string>%#@photos@</string>
-      <key>photos</key>
+      <string>%#@Photos@</string>
+      <key>Photos</key>
       <dict>
         <key>NSStringFormatSpecTypeKey</key>
         <string>NSStringPluralRuleType</string>
