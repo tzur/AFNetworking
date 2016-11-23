@@ -90,12 +90,13 @@ typedef NSDictionary<id, BZRProductList *> BZRClassifiedProducts;
 @property (atomic) BOOL productDictionaryFetchInProgress;
 
 /// Set of products with downloaded content.
-@property (strong, nonatomic) NSSet<NSString *> *downloadedContentProducts;
+@property (strong, readwrite, nonatomic) NSSet<NSString *> *downloadedContentProducts;
 
 @end
 
 @implementation BZRStore
 
+@synthesize downloadedContentProducts = _downloadedContentProducts;
 @synthesize productDictionary = _productDictionary;
 @synthesize productDictionaryFetchInProgress = _productDictionaryFetchInProgress;
 @synthesize completedTransactionsSignal = _completedTransactionsSignal;
@@ -117,6 +118,7 @@ typedef NSDictionary<id, BZRProductList *> BZRClassifiedProducts;
     _variantSelectorFactory = configuration.variantSelectorFactory;
     _variantSelector = [[BZRProductsVariantSelector alloc] init];
     _validationParametersProvider = configuration.validationParametersProvider;
+    _downloadedContentProducts = [NSSet set];
 
     [self initializeCompletedTransactionsSignal];
     [self initializeErrorsSignal];
@@ -414,6 +416,18 @@ static NSNumber * const kNonAppStoreProductsLabel = @0;
 
 - (NSSet<NSString *> *)allowedProducts {
   return [self isUserSubscribed] ? self.acquiredProducts : self.purchasedProducts;
+}
+
+- (NSSet<NSString *> *)downloadedContentProducts {
+  @synchronized (self) {
+    return _downloadedContentProducts;
+  }
+}
+
+- (void)setDownloadedContentProducts:(NSSet<NSString *> *)downloadedContentProducts {
+  @synchronized (self) {
+    _downloadedContentProducts = downloadedContentProducts;
+  }
 }
 
 - (nullable BZRReceiptSubscriptionInfo *)subscriptionInfo {
