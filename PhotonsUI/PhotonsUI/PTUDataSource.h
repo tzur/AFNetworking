@@ -47,7 +47,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// \c changesetProvider and uses that signal to maintain the latest data and deliver appropriate
 /// updates as they arrive as well as the \c fetchChangesetMetadata signal to update the latest
 /// \c title property. \c cellViewModelProvder, \c cellClass and \c headerCellClass are used when
-/// configuring the given \c collectionView content.
+/// configuring the given \c collectionView content. The receiver applies incremental changes by
+/// first mapping them all to insert and remove operations, and then applying them all in a single
+/// batch operation.
 @interface PTUDataSource : NSObject <PTUDataSource>
 
 - (instancetype)init NS_UNAVAILABLE;

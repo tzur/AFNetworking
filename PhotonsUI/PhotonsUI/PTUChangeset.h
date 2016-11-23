@@ -24,7 +24,7 @@ typedef NSArray<PTUChangesetMove *> PTUChangesetMoves;
 /// \c updated indexes and \c moved representing incremental changes from \c beforeData to
 /// \c afterData. If \c deleted, \c inserted, \c updated or \c moved are \c nil it means that
 /// there are no deleted, inserted, updated or moved indexes in this changeset respectively, or that
-/// the changes in this changeset cannot be presented incerementally.
+/// the changes in this changeset cannot be presented incrementally.
 - (instancetype)initWithBeforeDataModel:(nullable PTUDataModel *)beforeDataModel
                          afterDataModel:(PTUDataModel *)afterDataModel
                                 deleted:(nullable NSArray<NSIndexPath *> *)deleted
@@ -55,16 +55,19 @@ typedef NSArray<PTUChangesetMove *> PTUChangesetMoves;
 /// moved.
 @property (readonly, nonatomic) BOOL hasIncrementalChanges;
 
-/// Array of deleted indexes.
+/// Array of deleted indexes. Relative to \c beforeDataModel.
 @property (readonly, nonatomic, nullable) NSArray<NSIndexPath *> *deletedIndexes;
 
-/// Array of inserted indexes.
+/// Array of inserted indexes. Relative to \c beforeDataModel after removing \c deletedIndexes.
 @property (readonly, nonatomic, nullable) NSArray<NSIndexPath *> *insertedIndexes;
 
-/// Array of updated indexes.
+/// Array of updated indexes. Relative to \c beforeDataModel after removing \c deletedIndexes and
+/// inserting \c insertedIndexes.
 @property (readonly, nonatomic, nullable) NSArray<NSIndexPath *> *updatedIndexes;
 
-/// Array of \c PTUChangesetMove objects representing moved indexes in the changeset.
+/// Array of \c PTUChangesetMove objects representing moved indexes in the changeset. \c fromIndexes
+/// are relative to \c beforeDataModel, \c toIndexes are relative to \c beforeDataModel after
+/// removing \c deletedIndexes, inserting \c insertedIndexes and updating \c updatedIndexes.
 @property (readonly, nonatomic, nullable) PTUChangesetMoves *movedIndexes;
 
 @end

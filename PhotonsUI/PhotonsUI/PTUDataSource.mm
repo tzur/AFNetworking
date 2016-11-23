@@ -5,6 +5,7 @@
 
 #import <LTKit/LTCGExtensions.h>
 #import <LTKit/LTRandomAccessCollection.h>
+#import <LTKit/NSArray+Functional.h>
 
 #import "PTUChangeset.h"
 #import "PTUChangesetMetadata.h"
@@ -48,7 +49,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) NSDictionary<NSNumber *, NSString *> *sectionTitles;
 
 /// \c YES if the latest value sent by the data signal provided by \c changesetProvider indicated
-/// the existance of at least one object. This property is KVO compliant.
+/// the existence of at least one object. This property is KVO compliant.
 @property (readwrite, nonatomic) BOOL hasData;
 
 /// Error sent on data signal provided by \c changesetProvider or \c nil of no such error was sent.
@@ -105,7 +106,8 @@ NS_ASSUME_NONNULL_BEGIN
       takeUntil:self.rac_willDeallocSignal]
       deliverOnMainThread]
       subscribeNext:^(PTUChangeset *changeset) {
-        @strongify(self)
+        @strongify(self);
+
         self.dataModel = changeset.afterDataModel;
         self.hasData = [self dataModelHasData];
 
@@ -115,28 +117,8 @@ NS_ASSUME_NONNULL_BEGIN
           return;
         }
 
-        // Deletions and insertions are performed as a single separate batch operation since they
-        // validate internal consistency using \c afterDataModel which already includes both
-        // operations.
         [self.collectionView performBatchUpdates:^{
-          // 1.a. Remove items at the indexes specified by the \c deletedIndexes property.
-          [self.collectionView deleteItemsAtIndexPaths:changeset.deletedIndexes];
-
-          // 1.b. Insert items at the indexes specified by the \c insertedIndexes property.
-          [self.collectionView insertItemsAtIndexPaths:changeset.insertedIndexes];
-        } completion:nil];
-
-        // Updates and moves indexes assume corresponding inserts and removes were already made and
-        // therefore cannot be made within the same batch operation.
-        [self.collectionView performBatchUpdates:^{
-          // 2.a. Update items specified by the \c updatedIndexes property.
-          [self.collectionView reloadItemsAtIndexPaths:changeset.updatedIndexes];
-
-          // 2.b. Iterate over the \c moves array in order and handle items whose locations have
-          //      changed.
-          for (PTUChangesetMove *move in changeset.movedIndexes) {
-            [self.collectionView moveItemAtIndexPath:move.fromIndex toIndexPath:move.toIndex];
-          }
+          [self performIncrementalUpdatesFromChangeset:changeset];
         } completion:^(BOOL) {
           [self.didUpdateCollectionViewSubject sendNext:[RACUnit defaultUnit]];
         }];
@@ -144,6 +126,98 @@ NS_ASSUME_NONNULL_BEGIN
         @strongify(self)
         self.error = error;
       }];
+}
+
+/// In a changeset the indexes are relative to different states of the data as follows:
+/// - deletion are relative to the original data.
+/// - insertions are relative to the original data after deletions were made.
+/// - updates are relative to the original data after deletions and insertions were made.
+/// - moves' from-indexes are relative to the original data and to-indexes are relative to
+///   the data after deletions, insertions and updates were made.
+///
+/// The data we set is after all changes were made, causing everything but deletions to have
+/// wrong indexes. Performing batch updates treats deletions according to the original data
+/// and inserts according to data after deletions made in that batch update, enabling correct
+/// indexes for both deletions and insertions. We then map and moves and updates to deletions and
+/// insertions and apply them all in a single batch update.
+///
+/// We can append indexes to the index path array in any order, as they are (most likely) ordered
+/// by the collectionO view prior to insertion.
+- (void)performIncrementalUpdatesFromChangeset:(PTUChangeset *)changeset {
+  // Backtrack insertion offsets to get inserts from updates.
+  NSArray<NSIndexPath *> *updateInserts = [self offsetIndexPaths:changeset.updatedIndexes
+                                                    byIndexPaths:changeset.insertedIndexes
+                                                         removed:NO];
+
+  // Backtrack deletion offsets to get deletions from update inserts.
+  NSArray<NSIndexPath *> *updateDeletions = [self offsetIndexPaths:updateInserts
+                                                      byIndexPaths:changeset.deletedIndexes
+                                                           removed:YES];
+
+  // Move indexes are already correct and require no offset application.
+  NSArray<NSIndexPath *> *moveFromIndexes = [changeset.movedIndexes
+      lt_map:^NSIndexPath *(PTUChangesetMove *move) {
+        return move.fromIndex;
+      }];
+  NSArray<NSIndexPath *> *moveToIndexes = [changeset.movedIndexes
+      lt_map:^NSIndexPath *(PTUChangesetMove *move) {
+        return move.toIndex;
+      }];
+
+  NSArray<NSIndexPath *> *deletions = [[(changeset.deletedIndexes ?: @[])
+    arrayByAddingObjectsFromArray:updateDeletions]
+    arrayByAddingObjectsFromArray:moveFromIndexes];
+  NSArray<NSIndexPath *> *insertions = [[(changeset.insertedIndexes ?: @[])
+    arrayByAddingObjectsFromArray:changeset.updatedIndexes]
+    arrayByAddingObjectsFromArray:moveToIndexes];
+
+  // Duplicates need to be removed since updates and moves can be sent in regard to the same
+  // indexes.
+  [self.collectionView deleteItemsAtIndexPaths:[self removeDuplicatesFromArray:deletions]];
+  [self.collectionView insertItemsAtIndexPaths:[self removeDuplicatesFromArray:insertions]];
+}
+
+- (NSArray<NSIndexPath *> *)offsetIndexPaths:(NSArray<NSIndexPath *> *)indexPaths
+                                byIndexPaths:(NSArray<NSIndexPath *> *)byIndexPaths
+                                     removed:(BOOL)removed {
+  // Offsetting index paths must be iterated in order. Ascending when removing, and decending when
+  // inserting.
+  NSArray<NSIndexPath *> *sortedByIndexes = [self sortedIndexPaths:byIndexPaths ascending:removed];
+
+  // Each shifting index applies an offset to multiple indexes, for example in the array [1, 2, 3]
+  // inserting 4 between 1 and 2 to result in [1, 4, 2, 3] will potentially offset both 2 and 3.
+  NSMutableArray<NSIndexPath *> *offsetIndexes = [indexPaths mutableCopy];
+  for (NSIndexPath *shiftingIndex in sortedByIndexes) {
+    for (NSUInteger i = 0; i < offsetIndexes.count; ++i) {
+      NSIndexPath *index = offsetIndexes[i];
+      if (shiftingIndex.section != index.section) {
+        continue;
+      }
+
+      // When an index is removed, as oppose to inserted, it can affect indexes equal to it, for
+      // example in the array [1, 2] turning into [2'] by removing 1 and updating 2, the original
+      // position of 2' is affected by the removal of 1, although they share the index 0.
+      if (shiftingIndex.item < index.item || (removed && shiftingIndex.item == index.item)) {
+        NSInteger item = index.item + (removed ? 1 : -1);
+        LTAssert(item >= 0, @"Given indexes %@ cannot be logically shifted by %@ indexes %@",
+                 indexPaths, removed ? @"removing" : @"inserting", byIndexPaths);
+
+        offsetIndexes[i] = [NSIndexPath indexPathForItem:item inSection:index.section];
+      }
+    }
+  }
+  return offsetIndexes;
+}
+
+- (NSArray<NSIndexPath *> *)sortedIndexPaths:(NSArray<NSIndexPath *> *)indexPaths
+                                   ascending:(BOOL)ascending {
+  NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"item"
+                                                                   ascending:ascending];
+  return [indexPaths sortedArrayUsingDescriptors:@[sortDescriptor]];
+}
+
+- (NSArray *)removeDuplicatesFromArray:(NSArray *)array {
+  return [NSSet setWithArray:array].rac_sequence.array;
 }
 
 - (BOOL)dataModelHasData {

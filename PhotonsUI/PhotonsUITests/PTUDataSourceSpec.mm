@@ -7,10 +7,12 @@
 #import "PTNTestUtils.h"
 #import "PTUChangeset.h"
 #import "PTUChangesetMetadata.h"
+#import "PTUChangesetMove.h"
 #import "PTUChangesetProvider.h"
 #import "PTUHeaderCell.h"
 #import "PTUImageCell.h"
 #import "PTUImageCellViewModelProvider.h"
+#import "PTUTestUtils.h"
 
 SpecBegin(PTUDataSource)
 
@@ -219,10 +221,73 @@ context(@"updates", ^{
   it(@"should update according to incremental changes if available", ^{
     [[(OCMockObject *)collectionView reject] reloadData];
 
-    NSArray *updated = @[[NSIndexPath indexPathForItem:0 inSection:0]];
+    NSArray *deleted = @[[NSIndexPath indexPathForItem:0 inSection:0]];
     NSArray *inserted = @[[NSIndexPath indexPathForItem:1 inSection:0]];
-    PTUChangeset *changeset = [[PTUChangeset alloc] initWithBeforeDataModel:@[@[@1]]
+    PTUChangeset *changeset = [[PTUChangeset alloc] initWithBeforeDataModel:@[@[@1, @2]]
                                                              afterDataModel:@[@[@2, @3]]
+                                                                    deleted:deleted
+                                                                   inserted:inserted
+                                                                    updated:nil
+                                                                      moved:nil];
+
+    OCMStub([collectionView performBatchUpdates:[OCMArg invokeBlock]
+                                     completion:([OCMArg invokeBlockWithArgs:@YES, nil])]);
+    [dataSignal sendNext:changeset];
+    OCMVerify([collectionView deleteItemsAtIndexPaths:deleted]);
+    OCMVerify([collectionView insertItemsAtIndexPaths:inserted]);
+  });
+
+  fit(@"should map incremental changes to corresponding inserts and removes", ^{
+    [[(OCMockObject *)collectionView reject] reloadData];
+
+    NSArray *deleted = @[[NSIndexPath indexPathForItem:1 inSection:0]];
+    NSArray *inserted = @[
+      [NSIndexPath indexPathForItem:0 inSection:0],
+      [NSIndexPath indexPathForItem:1 inSection:0]
+    ];
+    NSArray *updated = @[[NSIndexPath indexPathForItem:2 inSection:0]];
+    NSArray *moved = @[PTUCreateChangesetMove(2, 4, 0)];
+    PTUChangeset *changeset = [[PTUChangeset alloc] initWithBeforeDataModel:@[@[@1, @2, @3, @4]]
+                                                             afterDataModel:@[@[@5, @6, @7, @4, @3]]
+                                                                    deleted:deleted
+                                                                   inserted:inserted
+                                                                    updated:updated
+                                                                      moved:moved];
+
+    OCMStub([collectionView performBatchUpdates:[OCMArg invokeBlock]
+                                     completion:([OCMArg invokeBlockWithArgs:@YES, nil])]);
+    [dataSignal sendNext:changeset];
+    OCMVerify(([collectionView
+                deleteItemsAtIndexPaths:[OCMArg checkWithBlock:^BOOL(NSArray *removes) {
+      NSLog(@"removes: %@", removes);
+
+      return removes.count == 3 &&
+          [removes containsObject:[NSIndexPath indexPathForItem:0 inSection:0]] &&
+          [removes containsObject:[NSIndexPath indexPathForItem:1 inSection:0]] &&
+          [removes containsObject:[NSIndexPath indexPathForItem:2 inSection:0]];
+    }]]));
+    OCMVerify(([collectionView
+                insertItemsAtIndexPaths:[OCMArg checkWithBlock:^BOOL(NSArray *inserts) {
+      NSLog(@"inserts: %@", inserts);
+
+      return inserts.count == 4 &&
+          [inserts containsObject:[NSIndexPath indexPathForItem:0 inSection:0]] &&
+          [inserts containsObject:[NSIndexPath indexPathForItem:1 inSection:0]] &&
+          [inserts containsObject:[NSIndexPath indexPathForItem:2 inSection:0]] &&
+          [inserts containsObject:[NSIndexPath indexPathForItem:4 inSection:0]];
+    }]]));
+  });
+
+  it(@"should take into account changes made during the index update", ^{
+    [[(OCMockObject *)collectionView reject] reloadData];
+
+    NSArray *inserted = @[
+      [NSIndexPath indexPathForItem:0 inSection:0],
+      [NSIndexPath indexPathForItem:1 inSection:0]
+    ];
+    NSArray *updated = @[[NSIndexPath indexPathForItem:2 inSection:0]];
+    PTUChangeset *changeset = [[PTUChangeset alloc] initWithBeforeDataModel:@[@[@3]]
+                                                             afterDataModel:@[@[@1, @2, @33]]
                                                                     deleted:nil
                                                                    inserted:inserted
                                                                     updated:updated
@@ -231,8 +296,18 @@ context(@"updates", ^{
     OCMStub([collectionView performBatchUpdates:[OCMArg invokeBlock]
                                      completion:([OCMArg invokeBlockWithArgs:@YES, nil])]);
     [dataSignal sendNext:changeset];
-    OCMVerify([collectionView insertItemsAtIndexPaths:inserted]);
-    OCMVerify([collectionView reloadItemsAtIndexPaths:updated]);
+    OCMVerify(([collectionView
+                deleteItemsAtIndexPaths:[OCMArg checkWithBlock:^BOOL(NSArray *removes) {
+      return removes.count == 1 &&
+          [removes containsObject:[NSIndexPath indexPathForItem:0 inSection:0]];
+    }]]));
+    OCMVerify(([collectionView
+                insertItemsAtIndexPaths:[OCMArg checkWithBlock:^BOOL(NSArray *inserts) {
+      return inserts.count == 3 &&
+          [inserts containsObject:[NSIndexPath indexPathForItem:0 inSection:0]] &&
+          [inserts containsObject:[NSIndexPath indexPathForItem:1 inSection:0]] &&
+          [inserts containsObject:[NSIndexPath indexPathForItem:2 inSection:0]];
+    }]]));
   });
   
   it(@"should notify on data change due to reload", ^{
