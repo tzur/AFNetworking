@@ -67,6 +67,19 @@ NS_ASSUME_NONNULL_BEGIN
 /// \c flush.
 - (void)flushAged;
 
+#pragma mark -
+#pragma mark Properties
+#pragma mark -
+
+/// Pixel format of the pixel buffers in the pool.
+@property (readonly, nonatomic) OSType pixelFormat;
+
+/// Width in pixels of each pixel buffer in the pool.
+@property (readonly, nonatomic) size_t width;
+
+/// Height in pixels of each pixel buffer in the pool.
+@property (readonly, nonatomic) size_t height;
+
 @end
 
 NS_ASSUME_NONNULL_END

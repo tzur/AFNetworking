@@ -28,6 +28,9 @@ NS_ASSUME_NONNULL_BEGIN
   LTParameterAssert(height > 0);
 
   if (self = [super init]) {
+    _pixelFormat = pixelFormat;
+    _width = width;
+    _height = height;
     _pixelBufferPool = [self.class createPixelBufferPoolWithPixelFormat:pixelFormat
                                                                   width:width
                                                                  height:height
