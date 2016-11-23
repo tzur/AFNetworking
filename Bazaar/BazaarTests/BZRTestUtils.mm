@@ -45,7 +45,7 @@ BZRReceiptValidationStatus *BZRReceiptValidationStatusWithExpiry(BOOL expiry, BO
     @instanceKeypath(BZRReceiptSubscriptionInfo, isExpired): @(expiry)
   } error:nil];
   BZRReceiptInfo *receipt = [BZRReceiptInfo modelWithDictionary:@{
-    @instanceKeypath(BZRReceiptInfo, environment): $(BZRReceiptEnvironmentSandbox),
+    @instanceKeypath(BZRReceiptInfo, environment): $(BZRReceiptEnvironmentProduction),
     @instanceKeypath(BZRReceiptInfo, subscription): subscription
   } error:nil];
   return [BZRReceiptValidationStatus modelWithDictionary:@{
