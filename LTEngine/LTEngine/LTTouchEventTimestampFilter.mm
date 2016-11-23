@@ -68,7 +68,7 @@ NS_ASSUME_NONNULL_BEGIN
   NSUInteger sequenceID = touchEvents.firstObject.sequenceID;
 
   LTAssert(!self.sequenceIDToTimestamp[@(sequenceID)],
-           @"Entry for sequence with ID %lu already exists", sequenceID);
+           @"Entry for sequence with ID %lu already exists", (unsigned long)sequenceID);
   self.sequenceIDToTimestamp[@(sequenceID)] = @(touchEvents.firstObject.timestamp);
 
   [self.delegate receivedTouchEvents:touchEvents predictedEvents:predictedTouchEvents
@@ -79,7 +79,7 @@ NS_ASSUME_NONNULL_BEGIN
   NSUInteger sequenceID = touchEvents.firstObject.sequenceID;
 
   LTAssert(self.sequenceIDToTimestamp[@(sequenceID)],
-           @"Entry for sequence with ID %lu does not exist", sequenceID);
+           @"Entry for sequence with ID %lu does not exist", (unsigned long)sequenceID);
 
   NSTimeInterval timestamp = self.sequenceIDToTimestamp[@(sequenceID)].doubleValue;
 
@@ -109,7 +109,8 @@ NS_ASSUME_NONNULL_BEGIN
 
   for (NSNumber *sequenceID in sequenceIDs) {
     LTAssert(self.sequenceIDToTimestamp[sequenceID],
-             @"Entry for sequence with ID %lu does not exist", sequenceID.unsignedIntegerValue);
+             @"Entry for sequence with ID %lu does not exist",
+             (unsigned long)sequenceID.unsignedIntegerValue);
     [self.sequenceIDToTimestamp removeObjectForKey:sequenceID];
   }
 
