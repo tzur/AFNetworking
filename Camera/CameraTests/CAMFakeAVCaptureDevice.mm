@@ -23,6 +23,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readwrite, nonatomic) BOOL rampingVideoZoom;
 @property (readwrite, nonatomic) AVCaptureFlashMode flashMode;
 @property (readwrite, nonatomic) AVCaptureTorchMode torchMode;
+@property (readwrite, nonatomic) CGPoint focusPointOfInterestDuringModeSet;
+@property (readwrite, nonatomic) CGPoint exposurePointOfInterestDuringModeSet;
 @end
 
 @implementation CAMFakeAVCaptureDevice
@@ -78,6 +80,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)setFocusMode:(AVCaptureFocusMode)focusMode {
   _focusMode = focusMode;
+  self.focusPointOfInterestDuringModeSet = self.focusPointOfInterest;
   RAC(self, lensPosition) = [@[@0.5, @0.6].rac_sequence.signal delay:0.005];
   RAC(self, adjustingFocus) = [@[@YES, @NO].rac_sequence.signal delay:0.005];
 }
@@ -102,6 +105,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)setExposureMode:(AVCaptureExposureMode)exposureMode {
   _exposureMode = exposureMode;
+  self.exposurePointOfInterestDuringModeSet = self.exposurePointOfInterest;
   RAC(self, adjustingExposure) = [@[@YES, @NO].rac_sequence.signal delay:0.005];
 }
 

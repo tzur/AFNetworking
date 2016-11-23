@@ -70,6 +70,12 @@ NS_ASSUME_NONNULL_BEGIN
 /// Override to allow setting this property.
 @property (nonatomic) BOOL flashActive;
 
+/// \c focusPointOfInterest at the time \c setFocusMode: was last called.
+@property (readonly, nonatomic) CGPoint focusPointOfInterestDuringModeSet;
+
+/// \c exposurePointOfInterest at the time \c setExposureMode: was last called.
+@property (readonly, nonatomic) CGPoint exposurePointOfInterestDuringModeSet;
+
 @end
 
 NS_ASSUME_NONNULL_END
