@@ -4,7 +4,6 @@
 // Base.
 #import <LTKit/LTAssert.h>
 #import <LTKit/LTEnum.h>
-#import <LTKit/LTEnumRegistry.h>
 #import <LTKit/LTLogger.h>
 #import <LTKit/LTRandom.h>
 #import <LTKit/LTTimer.h>
