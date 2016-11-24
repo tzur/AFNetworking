@@ -111,7 +111,8 @@ NS_ASSUME_NONNULL_BEGIN
                         state == LTTouchEventSequenceStateContinuationStationary ||
                         state == LTTouchEventSequenceStateEnd ||
                         state == LTTouchEventSequenceStateCancellation,
-                        @"Invalid state (%lu) for previous state (%lu)", state, previousState);
+                        @"Invalid state (%lu) for previous state (%lu)", (unsigned long)state,
+                        (unsigned long)previousState);
       break;
     case LTTouchEventSequenceStateEnd:
       LTParameterAssert(NO, @"Additional method call for ended sequence with ID %lu",
