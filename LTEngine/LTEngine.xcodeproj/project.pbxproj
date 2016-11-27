@@ -725,6 +725,8 @@
 		50E998A51C075F67004F15C9 /* LTReparameterizedObject.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50E998A11C075F67004F15C9 /* LTReparameterizedObject.mm */; };
 		50E998A81C075F89004F15C9 /* LTReparameterizationSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50E998A61C075F89004F15C9 /* LTReparameterizationSpec.mm */; };
 		50E998A91C075F89004F15C9 /* LTReparameterizedObjectSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50E998A71C075F89004F15C9 /* LTReparameterizedObjectSpec.mm */; };
+		50E9B5D61DE706EC00390B69 /* LTContentLocationProvider.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50E9B5D51DE706EC00390B69 /* LTContentLocationProvider.mm */; };
+		50E9B60A1DE7077A00390B69 /* LTContentLocationProviderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50E9B6091DE7077A00390B69 /* LTContentLocationProviderSpec.mm */; };
 		50FD866B1D05A8DB0005C318 /* LTDynamicQuadDrawer.h in Headers */ = {isa = PBXBuildFile; fileRef = 50FD86691D05A8DB0005C318 /* LTDynamicQuadDrawer.h */; };
 		50FD866C1D05A8DB0005C318 /* LTDynamicQuadDrawer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50FD866A1D05A8DB0005C318 /* LTDynamicQuadDrawer.mm */; };
 		50FD868C1D05A8F80005C318 /* LTDynamicQuadDrawerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50FD868B1D05A8F80005C318 /* LTDynamicQuadDrawerSpec.mm */; };
@@ -2477,6 +2479,8 @@
 		50E998A11C075F67004F15C9 /* LTReparameterizedObject.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTReparameterizedObject.mm; sourceTree = "<group>"; };
 		50E998A61C075F89004F15C9 /* LTReparameterizationSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTReparameterizationSpec.mm; sourceTree = "<group>"; };
 		50E998A71C075F89004F15C9 /* LTReparameterizedObjectSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTReparameterizedObjectSpec.mm; sourceTree = "<group>"; };
+		50E9B5D51DE706EC00390B69 /* LTContentLocationProvider.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTContentLocationProvider.mm; sourceTree = "<group>"; };
+		50E9B6091DE7077A00390B69 /* LTContentLocationProviderSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTContentLocationProviderSpec.mm; sourceTree = "<group>"; };
 		50FD86691D05A8DB0005C318 /* LTDynamicQuadDrawer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTDynamicQuadDrawer.h; sourceTree = "<group>"; };
 		50FD866A1D05A8DB0005C318 /* LTDynamicQuadDrawer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTDynamicQuadDrawer.mm; sourceTree = "<group>"; };
 		50FD868B1D05A8F80005C318 /* LTDynamicQuadDrawerSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTDynamicQuadDrawerSpec.mm; sourceTree = "<group>"; };
@@ -4088,6 +4092,7 @@
 				50D672491D26B82F00005CC7 /* LTContentCoordinateConverter.h */,
 				50D6724A1D26B82F00005CC7 /* LTContentCoordinateConverter.mm */,
 				50D672471D26B81E00005CC7 /* LTContentLocationProvider.h */,
+				50E9B5D51DE706EC00390B69 /* LTContentLocationProvider.mm */,
 			);
 			name = Location;
 			sourceTree = "<group>";
@@ -4096,6 +4101,7 @@
 			isa = PBXGroup;
 			children = (
 				50D6724E1D26B84A00005CC7 /* LTContentCoordinateConverterSpec.mm */,
+				50E9B6091DE7077A00390B69 /* LTContentLocationProviderSpec.mm */,
 			);
 			name = Location;
 			sourceTree = "<group>";
@@ -6838,6 +6844,7 @@
 				2847921C186315D100A70AF5 /* LTGridDrawer.fsh in Sources */,
 				5002C9501A092917006C037C /* LTQuadCopyProcessor.mm in Sources */,
 				8B17A5951C32A232001713BB /* LTEAGLView.mm in Sources */,
+				50E9B5D61DE706EC00390B69 /* LTContentLocationProvider.mm in Sources */,
 				0368E6C619C0270200B99FF5 /* LTSmoothPyramidProcessor.mm in Sources */,
 				28C61C0318B23D430036D66E /* LTTouchCollectorTimeIntervalFilter.m in Sources */,
 				8BEBF3F918FAA1BD005A0DE9 /* LTPassthroughProcessor.mm in Sources */,
@@ -7141,6 +7148,7 @@
 				284ED12C1895662300414A8A /* LTLinearInterpolantSpec.mm in Sources */,
 				28A8C7A919209E8A00A38FDE /* LTCommonDrawableShapeStructs.mm in Sources */,
 				8BC465BB189956FA0094F7BC /* LTOperationsExecutorSpec.mm in Sources */,
+				50E9B60A1DE7077A00390B69 /* LTContentLocationProviderSpec.mm in Sources */,
 				8BAAC5DB18BB70A400A4B4DA /* LTPatchCompositorProcessorSpec.mm in Sources */,
 				03D516B518B3A6DB0026B56A /* LTProceduralVignettingSpec.mm in Sources */,
 				03AD29C11891426100516D14 /* LTBicubicResizeProcessorSpec.mm in Sources */,
