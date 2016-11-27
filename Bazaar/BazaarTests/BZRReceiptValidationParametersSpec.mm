@@ -37,6 +37,7 @@ context(@"default parameters", ^{
       expect(parameters.applicationBundleId).to.equal([[NSBundle mainBundle] bundleIdentifier]);
       expect(parameters.deviceId).to.equal([[UIDevice currentDevice] identifierForVendor]);
       expect(parameters.receiptData).to.equal(receiptData);
+      expect(parameters.appStoreLocale).to.beNil();
     });
   });
 
@@ -63,11 +64,13 @@ context(@"initialization with specific parameters", ^{
     NSUUID *deviceId = [NSUUID UUID];
     BZRReceiptValidationParameters *parameters =
         [[BZRReceiptValidationParameters alloc] initWithReceiptData:receiptData
-                                                applicationBundleId:bundleId deviceId:deviceId];
+                                                applicationBundleId:bundleId deviceId:deviceId
+                                                     appStoreLocale:[NSLocale currentLocale]];
 
     expect(parameters.receiptData).to.equal(receiptData);
     expect(parameters.applicationBundleId).to.equal(bundleId);
     expect(parameters.deviceId).to.equal(deviceId);
+    expect(parameters.appStoreLocale).to.equal([NSLocale currentLocale]);
   });
 });
 

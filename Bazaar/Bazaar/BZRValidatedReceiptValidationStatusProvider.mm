@@ -28,7 +28,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @synthesize nonCriticalErrorsSignal = _nonCriticalErrorsSignal;
 
-- (instancetype)init {
+- (instancetype)initWithValidationParametersProvider:
+    (id<BZRReceiptValidationParametersProvider>)validationParametersProvider {
   NSTimeInterval kInitialRetryDelay = 0.5;
   NSUInteger kNumberOfRetries = 5;
 
@@ -38,8 +39,6 @@ NS_ASSUME_NONNULL_BEGIN
       [[BZRRetryReceiptValidator alloc] initWithUnderlyingValidator:receiptValidator
                                                   initialRetryDelay:kInitialRetryDelay
                                                     numberOfRetries:kNumberOfRetries];
-  BZRReceiptValidationParametersProvider *validationParametersProvider =
-      [[BZRReceiptValidationParametersProvider alloc] init];
   return [self initWithReceiptValidator:retryValidator
            validationParametersProvider:validationParametersProvider];
 }

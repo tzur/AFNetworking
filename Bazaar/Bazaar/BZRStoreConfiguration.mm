@@ -18,6 +18,7 @@
 #import "BZRProductContentMultiFetcher.h"
 #import "BZRProductContentProvider.h"
 #import "BZRProductsWithVariantsProvider.h"
+#import "BZRReceiptValidationParametersProvider.h"
 #import "BZRReceiptValidationStatusProvider.h"
 #import "BZRStoreKitFacadeFactory.h"
 #import "BZRTimeProvider.h"
@@ -64,11 +65,14 @@ NS_ASSUME_NONNULL_BEGIN
         [[BZRProductContentProvider alloc] initWithContentFetcher:contentFetcher
                                                    contentManager:self.contentManager];
 
+    _validationParametersProvider = [[BZRReceiptValidationParametersProvider alloc] init];
+
     BZRKeychainStorage *keychainStorage =
         [[BZRKeychainStorage alloc] initWithAccessGroup:keychainAccessGroup];
     BZRTimeProvider *timeProvider = [[BZRTimeProvider alloc] init];
     BZRValidatedReceiptValidationStatusProvider *validatorProvider =
-        [[BZRValidatedReceiptValidationStatusProvider alloc] init];
+        [[BZRValidatedReceiptValidationStatusProvider alloc]
+         initWithValidationParametersProvider:self.validationParametersProvider];
     BZRModifiedExpiryReceiptValidationStatusProvider *modifiedExpiryProvider =
         [[BZRModifiedExpiryReceiptValidationStatusProvider alloc] initWithTimeProvider:timeProvider
          expiredSubscriptionGracePeriod:expiredSubscriptionGracePeriod

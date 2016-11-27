@@ -9,8 +9,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation BZRReceiptValidationParametersProvider
 
+@synthesize appStoreLocale = _appStoreLocale;
+
 - (nullable BZRReceiptValidationParameters *)receiptValidationParameters {
-  return [BZRReceiptValidationParameters defaultParameters];
+  return [BZRReceiptValidationParameters defaultParametersWithLocale:self.appStoreLocale];
 }
 
 @end

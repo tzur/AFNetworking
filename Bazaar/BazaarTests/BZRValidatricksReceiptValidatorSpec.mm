@@ -95,7 +95,8 @@ context(@"receipt validation", ^{
     NSData *receiptData = [@"foobar" dataUsingEncoding:NSUTF8StringEncoding];
     parameters = [[BZRReceiptValidationParameters alloc] initWithReceiptData:receiptData
                                                          applicationBundleId:@"foobar"
-                                                                    deviceId:nil];
+                                                                    deviceId:nil
+                                                              appStoreLocale:nil];
     requestParameters = [parameters validatricksRequestParameters];
     URLString = [BZRValidatricksReceiptValidator receiptValidationEndpoint];
 

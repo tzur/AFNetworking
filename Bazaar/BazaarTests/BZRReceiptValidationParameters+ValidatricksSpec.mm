@@ -8,6 +8,7 @@ SpecBegin(BZRReceiptValidationParameters_Validatricks)
 static NSString * const kReceiptDataKey = @"receipt";
 static NSString * const kBundleIdKey = @"bundle";
 static NSString * const kDeviceIdKey = @"idForVendor";
+static NSString * const kAppStoreCountryCodeKey = @"appStoreCountryCode";
 
 __block NSData *receiptData;
 __block NSString *bundleId;
@@ -22,7 +23,8 @@ beforeEach(^{
 it(@"should provide a dictionary with the specified parameters", ^{
   BZRReceiptValidationParameters *parameters =
       [[BZRReceiptValidationParameters alloc] initWithReceiptData:receiptData
-                                              applicationBundleId:bundleId deviceId:deviceId];
+                                              applicationBundleId:bundleId deviceId:deviceId
+                                                   appStoreLocale:[NSLocale currentLocale]];
   NSDictionary *validatricksRequestParameters = [parameters validatricksRequestParameters];
 
   expect([[NSData alloc] initWithBase64EncodedString:validatricksRequestParameters[kReceiptDataKey]
@@ -30,18 +32,22 @@ it(@"should provide a dictionary with the specified parameters", ^{
   expect(validatricksRequestParameters[kBundleIdKey]).to.equal(bundleId);
   expect([[NSUUID alloc] initWithUUIDString:validatricksRequestParameters[kDeviceIdKey]]).to
       .equal(deviceId);
+  expect(validatricksRequestParameters[kAppStoreCountryCodeKey]).to
+      .equal([[NSLocale currentLocale] objectForKey:NSLocaleCountryCode]);
 });
 
 it(@"should provide a dictionary with out id for vendor if no device id is specified", ^{
   BZRReceiptValidationParameters *parameters =
   [[BZRReceiptValidationParameters alloc] initWithReceiptData:receiptData
-                                          applicationBundleId:bundleId deviceId:nil];
+                                          applicationBundleId:bundleId deviceId:nil
+                                               appStoreLocale:nil];
   NSDictionary *validatricksRequestParameters = [parameters validatricksRequestParameters];
 
   expect([[NSData alloc] initWithBase64EncodedString:validatricksRequestParameters[kReceiptDataKey]
                                              options:0]).to.equal(receiptData);
   expect(validatricksRequestParameters[kBundleIdKey]).to.equal(bundleId);
   expect(validatricksRequestParameters[kDeviceIdKey]).to.beNil();
+  expect(validatricksRequestParameters[kAppStoreCountryCodeKey]).to.beNil();
 });
 
 SpecEnd
