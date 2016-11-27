@@ -98,6 +98,7 @@ __block NSFileManager *fileManager;
 __block RACSubject *receiptValidationStatusProviderErrorsSubject;
 __block RACSubject *acquiredViaSubscriptionProviderErrorsSubject;
 __block RACSubject *periodicReceiptValidatorActivatorErrorsSubject;
+__block RACSubject *unhandledTransactionsErrorsSubject;
 __block BZRStoreConfiguration *configuration;
 __block BZRStore *store;
 __block NSString *productIdentifier;
@@ -125,12 +126,15 @@ beforeEach(^{
   receiptValidationStatusProviderErrorsSubject = [RACSubject subject];
   acquiredViaSubscriptionProviderErrorsSubject = [RACSubject subject];
   periodicReceiptValidatorActivatorErrorsSubject = [RACSubject subject];
+  unhandledTransactionsErrorsSubject = [RACSubject subject];
   OCMStub([receiptValidationStatusProvider nonCriticalErrorsSignal])
       .andReturn(receiptValidationStatusProviderErrorsSubject);
   OCMStub([acquiredViaSubscriptionProvider storageErrorsSignal])
       .andReturn(acquiredViaSubscriptionProviderErrorsSubject);
   OCMStub([periodicValidatorActivator errorsSignal])
       .andReturn(periodicReceiptValidatorActivatorErrorsSubject);
+  OCMStub([storeKitFacade unhandledTransactionsErrorsSignal])
+      .andReturn(unhandledTransactionsErrorsSubject);
 
   configuration =
       [[BZRStoreConfiguration alloc] initWithProductsListJSONFilePath:[LTPath pathWithPath:@"foo"]
@@ -147,17 +151,6 @@ beforeEach(^{
   configuration.fileManager = fileManager;
   store = [[BZRStore alloc] initWithConfiguration:configuration];
   productIdentifier = @"foo";
-});
-
-context(@"periodic receipt validation", ^{
-  it(@"should send error sent by periodic receipt validator activator", ^{
-    NSError *error = [NSError lt_errorWithCode:1337];
-
-    LLSignalTestRecorder *recorder = [store.errorsSignal testRecorder];
-    [periodicReceiptValidatorActivatorErrorsSubject sendNext:error];
-
-    expect(recorder).will.sendValues(@[error]);
-  });
 });
 
 context(@"getting path to content", ^{
@@ -1083,6 +1076,14 @@ context(@"handling unfinished transactions", ^{
       OCMVerify([storeKitFacade finishTransaction:transaction]);
     });
 
+    it(@"should send failed transaction as error on errors signal", ^{
+      [unfinishedSubject sendNext:@[transaction]];
+      expect(errorsRecorder).will.matchValue(0, ^BOOL(NSError *error) {
+        return error.lt_isLTDomain && error.code == BZRErrorCodePurchaseFailed &&
+            error.bzr_transaction == transaction;
+      });
+    });
+
     it(@"should not send transaction as finished", ^{
       BZRStore * __weak weakStore;
       LLSignalTestRecorder *completedTransactionsRecorder;
@@ -1204,6 +1205,23 @@ context(@"errors signal", ^{
     NSError *error = OCMClassMock([NSError class]);
     LLSignalTestRecorder *recorder = [store.errorsSignal testRecorder];
     [acquiredViaSubscriptionProviderErrorsSubject sendNext:error];
+
+    expect(recorder).will.sendValues(@[error]);
+  });
+
+  it(@"should send error sent by periodic receipt validator activator", ^{
+    NSError *error = [NSError lt_errorWithCode:1337];
+
+    LLSignalTestRecorder *recorder = [store.errorsSignal testRecorder];
+    [periodicReceiptValidatorActivatorErrorsSubject sendNext:error];
+
+    expect(recorder).will.sendValues(@[error]);
+  });
+
+  it(@"should send error when an unhandled transaction error is sent via store kit facade", ^{
+    NSError *error = OCMClassMock([NSError class]);
+    LLSignalTestRecorder *recorder = [store.errorsSignal testRecorder];
+    [unhandledTransactionsErrorsSubject sendNext:error];
 
     expect(recorder).will.sendValues(@[error]);
   });

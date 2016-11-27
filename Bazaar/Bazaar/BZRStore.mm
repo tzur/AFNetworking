@@ -129,14 +129,12 @@ typedef NSDictionary<id, BZRProductList *> BZRClassifiedProducts;
 
 - (void)initializeErrorsSignal {
   _errorsSubject = [RACSubject subject];
-  _errorsSignal = [[[RACSignal merge:@[
+  _errorsSignal = [RACSignal merge:@[
     [self.errorsSubject replay],
     self.validationStatusProvider.nonCriticalErrorsSignal,
     self.acquiredViaSubscriptionProvider.storageErrorsSignal,
     self.periodicValidatorActivator.errorsSignal
-  ]]
-  takeUntil:[self rac_willDeallocSignal]]
-  setNameWithFormat:@"%@ -errorsSignal", self];
+  ]];
 }
 
 - (void)initializeStoreKitFacade:(BZRStoreKitFacadeFactory *)factory {
@@ -195,6 +193,12 @@ typedef NSDictionary<id, BZRProductList *> BZRClassifiedProducts;
 
   _storeKitFacade =
       [factory storeKitFacadeWithUnfinishedTransactionsSubject:unfinishedTransactionsSubject];
+  _errorsSignal = [[[RACSignal merge:@[
+    self.errorsSignal,
+    self.storeKitFacade.unhandledTransactionsErrorsSignal
+  ]]
+  takeUntil:[self rac_willDeallocSignal]]
+  setNameWithFormat:@"%@ -errorsSignal", self];
 }
 
 - (void)prefetchProductDictionary {
