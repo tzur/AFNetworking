@@ -30,7 +30,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)init {
   NSTimeInterval kInitialRetryDelay = 0.5;
-  NSUInteger kNumberOfRetries = 3;
+  NSUInteger kNumberOfRetries = 5;
 
   BZRValidatricksReceiptValidator *receiptValidator =
       [[BZRValidatricksReceiptValidator alloc] init];
