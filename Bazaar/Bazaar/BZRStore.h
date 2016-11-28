@@ -9,7 +9,7 @@ NS_ASSUME_NONNULL_BEGIN
 @class BZRStoreConfiguration;
 
 /// A unified interface for managing an application with in-app store purchases, configured with
-/// \c BZRStoreConfiguration.
+/// \c BZRStoreConfiguration. This class is thread safe.
 @interface BZRStore : NSObject <BZRProductsInfoProvider, BZRProductsManager>
 
 - (instancetype)init NS_UNAVAILABLE;

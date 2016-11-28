@@ -5,7 +5,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class BZRKeychainStorage;
 
-/// Provider that provides a set of products that were acquired via subscription.
+/// Provider that provides a set of products that were acquired via subscription. This class is
+/// thread safe.
 @interface BZRAcquiredViaSubscriptionProvider : NSObject
 
 - (instancetype)init NS_UNAVAILABLE;
@@ -23,7 +24,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// saves the set to storage.
 - (void)removeAcquiredViaSubscriptionProduct:(NSString *)productIdentifier;
 
-/// Set of products that were acquired via subscription. KVO compliant.
+/// Set of products that were acquired via subscription. KVO compliant. Changes may be delivered on
+/// an arbitrary thread.
 @property (readonly, nonatomic) NSSet<NSString *> *productsAcquiredViaSubscription;
 
 /// Sends storage errors as values. The signal completes when the receiver is deallocated. The

@@ -10,7 +10,7 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol BZRTimeProvider;
 
 /// Provider that provides the receipt validation status using an underlying provider and caches the
-/// receipt validation status to storage.
+/// receipt validation status to storage. This class is thread safe.
 @interface BZRCachedReceiptValidationStatusProvider : NSObject <BZRReceiptValidationStatusProvider>
 
 - (instancetype)init NS_UNAVAILABLE;
@@ -29,10 +29,11 @@ NS_ASSUME_NONNULL_BEGIN
 /// Holds the most recent receipt validation status that was fetched successfully. If
 /// \c fetchReceiptValidationStatus has never completed successfully, this holds the value loaded
 /// using \c keychainStorage. If the value doesn't exist in storage, this property will be \c nil.
-/// KVO compliant.
+/// KVO compliant. Changes may be delivered on an arbitrary thread.
 @property (readonly, nonatomic, nullable) BZRReceiptValidationStatus *receiptValidationStatus;
 
 /// Holds the date of the last receipt validation. \c nil if \c receiptValidationStatus is \c nil.
+/// KVO compliant. Changes may be delivered on an arbitrary thread.
 @property (readonly, nonatomic, nullable) NSDate *lastReceiptValidationDate;
 
 @end

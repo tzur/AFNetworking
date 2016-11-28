@@ -26,7 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)init {
   BZRKeychainStorage *keychainStorage = OCMClassMock([BZRKeychainStorage class]);
   id<BZRTimeProvider> timeProvider = OCMProtocolMock(@protocol(BZRTimeProvider));
-//  OCMStub([timeProvider currentTime]).andReturn([RACSignal return:[NSDate date]]);
+  OCMStub([timeProvider currentTime]).andReturn([RACSignal return:[NSDate date]]);
 
   id<BZRReceiptValidationStatusProvider> underlyingProvider =
       OCMProtocolMock(@protocol(BZRReceiptValidationStatusProvider));

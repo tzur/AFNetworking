@@ -84,22 +84,34 @@ NSString * const kOldVersionValidationDateStorageKey = @"lastReceiptValidationDa
 #pragma mark -
 
 - (nullable BZRReceiptValidationStatus *)receiptValidationStatus {
-  if (!_receiptValidationStatus) {
-    [self loadReceiptValidationStatus];
-  }
-  return _receiptValidationStatus;
+  @synchronized (self) {
+    if (!_receiptValidationStatus) {
+      [self loadReceiptValidationStatus];
+    }
+    return _receiptValidationStatus;
+  };
 }
 
 - (void)setReceiptValidationStatus:(nullable BZRReceiptValidationStatus *)receiptValidationStatus {
-  _receiptValidationStatus = receiptValidationStatus;
-  [self storeReceiptValidationStatus:receiptValidationStatus];
+  @synchronized (self) {
+    _receiptValidationStatus = receiptValidationStatus;
+    [self storeReceiptValidationStatus:receiptValidationStatus];
+  }
 }
 
 - (nullable NSDate *)lastReceiptValidationDate {
-  if (!_lastReceiptValidationDate) {
-    [self loadReceiptValidationStatus];
+  @synchronized (self) {
+    if (!_lastReceiptValidationDate) {
+      [self loadReceiptValidationStatus];
+    }
+    return _lastReceiptValidationDate;
   }
-  return _lastReceiptValidationDate;
+}
+
+- (void)setLastReceiptValidationDate:(nullable NSDate *)lastReceiptValidationDate {
+  @synchronized (self) {
+    _lastReceiptValidationDate = lastReceiptValidationDate;
+  }
 }
 
 #pragma mark -

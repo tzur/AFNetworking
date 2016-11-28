@@ -17,7 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly, nonatomic) RACSubject *storageErrorsSubject;
 
 /// Set of products that were acquired via subscription.
-@property (readwrite, nonatomic) NSSet<NSString *> *productsAcquiredViaSubscription;
+@property (strong, readwrite, nonatomic) NSSet<NSString *> *productsAcquiredViaSubscription;
 
 @end
 
@@ -60,25 +60,29 @@ NSString * const kProductsAcquiredViaSubscriptionSetKey = @"productsAcquiredViaS
 #pragma mark -
 
 - (void)setProductsAcquiredViaSubscription:(NSSet<NSString *> *)productsAcquiredViaSubscription {
-  _productsAcquiredViaSubscription = productsAcquiredViaSubscription;
-  NSError *error;
-  BOOL success = [self.keychainStorage setValue:productsAcquiredViaSubscription
-                                         forKey:kProductsAcquiredViaSubscriptionSetKey
-                                          error:&error];
-  if (!success) {
-    NSString *description =
-        @"Failed to store products acquired via subscription set to secure storage";
-    [self.storageErrorsSubject sendNext:
-        [NSError lt_errorWithCode:BZRErrorCodeStoringDataToStorageFailed
-                      description:description underlyingError:error]];
+  @synchronized (self) {
+    _productsAcquiredViaSubscription = productsAcquiredViaSubscription;
+    NSError *error;
+    BOOL success = [self.keychainStorage setValue:productsAcquiredViaSubscription
+                                           forKey:kProductsAcquiredViaSubscriptionSetKey
+                                            error:&error];
+    if (!success) {
+      NSString *description =
+          @"Failed to store products acquired via subscription set to secure storage";
+      [self.storageErrorsSubject sendNext:
+          [NSError lt_errorWithCode:BZRErrorCodeStoringDataToStorageFailed
+                        description:description underlyingError:error]];
+    }
   }
 }
 
 - (NSSet<NSString *> *)productsAcquiredViaSubscription {
-  if (!_productsAcquiredViaSubscription) {
-    _productsAcquiredViaSubscription = [self loadProductsAcquiredViaSubscriptionFromStorage];
+  @synchronized (self) {
+    if (!_productsAcquiredViaSubscription) {
+      _productsAcquiredViaSubscription = [self loadProductsAcquiredViaSubscriptionFromStorage];
+    }
+    return _productsAcquiredViaSubscription;
   }
-  return _productsAcquiredViaSubscription;
 }
 
 - (NSSet<NSString *> *)loadProductsAcquiredViaSubscriptionFromStorage {
