@@ -463,7 +463,7 @@ static NSURL * _Nullable PTUExtractAssociatedURL(NSError *error) {
   if (!indexPath) {
     return;
   }
-  
+
   [self.collectionView deselectItemAtIndexPath:indexPath animated:NO];
 }
 
@@ -474,6 +474,26 @@ static NSURL * _Nullable PTUExtractAssociatedURL(NSError *error) {
 #pragma mark -
 #pragma mark UICollectionViewDelegateFlowLayout
 #pragma mark -
+
+- (void)collectionView:(UICollectionView *)collectionView
+       willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath {
+  // With prefetching enabled in iOS 10, deselecting doesn't work for cells that are already loaded
+  // but not visible. These cells' selection status is not updated when they are not visible, much
+  // like before, but now they are not being reused either before displayed since they remain in the
+  // pre-fetch area ready to be shown again. Thus these cells remain selected until they are reused.
+  // To avoid this we make sure deselected cells are updated when displayed.
+  //
+  // Opened radar 29400223.
+  if (!cell.isSelected) {
+    return;
+  }
+
+  if ([[collectionView indexPathsForSelectedItems] containsObject:indexPath]) {
+    return;
+  }
+
+  cell.selected = NO;
+}
 
 - (CGSize)collectionView:(UICollectionView __unused *)collectionView
                   layout:(UICollectionViewLayout __unused *)collectionViewLayout
