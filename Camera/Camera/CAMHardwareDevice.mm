@@ -16,6 +16,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Underlying session that holds all AV inputs and outputs.
 @property (readonly, nonatomic) CAMHardwareSession *session;
 
+/// Scheduler to run all \c session mutations on.
+@property (readonly, nonatomic) RACScheduler *scheduler;
+
 /// Subject for sending video frames.
 @property (readonly, nonatomic) RACSubject *videoFramesSubject;
 
@@ -76,17 +79,27 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize interfaceOrientation = _interfaceOrientation;
 @synthesize gravityOrientation = _gravityOrientation;
 
-- (instancetype)initWithSession:(CAMHardwareSession *)session {
+- (instancetype)initWithSession:(CAMHardwareSession *)session
+                   sessionQueue:(dispatch_queue_t)sessionQueue {
   if (self = [super init]) {
     _session = session;
+    _scheduler = [[RACTargetQueueScheduler alloc] initWithName:nil targetQueue:sessionQueue];
     _videoFramesSubject = [RACSubject subject];
     _videoFramesErrorsSubject = [RACSubject subject];
     _audioFramesSubject = [RACSubject subject];
-    self.session.videoDelegate = self;
-    self.session.audioDelegate = self;
+    [self setupSessionDelegates];
     [self setupProperties];
   }
   return self;
+}
+
+- (void)setupSessionDelegates {
+  @weakify(self);
+  [self.scheduler schedule:^{
+    @strongify(self);
+    self.session.videoDelegate = self;
+    self.session.audioDelegate = self;
+  }];
 }
 
 - (void)setupProperties {
@@ -257,17 +270,17 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
 
 - (RACSignal *)setPixelFormat:(CAMPixelFormat *)pixelFormat {
   @weakify(self);
-  return [RACSignal defer:^RACSignal *{
+  return [[RACSignal defer:^RACSignal *{
     @strongify(self);
     self.session.videoOutput.videoSettings = pixelFormat.videoSettings;
     self.session.stillOutput.outputSettings = pixelFormat.videoSettings;
     return [RACSignal return:pixelFormat];
-  }];
+  }] subscribeOn:self.scheduler];
 }
 
 - (RACSignal *)stillFramesWithTrigger:(RACSignal *)trigger {
   @weakify(self);
-  RACSignal *captureStillImage = [RACSignal
+  RACSignal *captureStillImage = [[RACSignal
       createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
         @strongify(self);
         [self.session.stillOutput
@@ -285,7 +298,8 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
            }
          }];
         return nil;
-      }];
+      }]
+      subscribeOn:self.scheduler];
 
   return [[[trigger mapReplace:captureStillImage]
       concat]
@@ -401,12 +415,12 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
 
 - (RACSignal *)setFocusMode:(AVCaptureFocusMode)mode point:(CGPoint)point {
   @weakify(self);
-  return [RACSignal defer:^RACSignal *{
+  return [[RACSignal defer:^RACSignal *{
     @strongify(self);
     NSError *error;
     BOOL success = [self setFocusMode:mode point:point error:&error];
     return success ? [RACSignal empty] : [RACSignal error:error];
-  }];
+  }] subscribeOn:self.scheduler];
 }
 
 - (BOOL)setFocusMode:(AVCaptureFocusMode)mode point:(CGPoint)point
@@ -432,7 +446,7 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
 
 - (RACSignal *)setLockedFocusPosition:(CGFloat)lensPosition {
   @weakify(self);
-  return [RACSignal createSignal:^RACDisposable *(id <RACSubscriber> subscriber) {
+  return [[RACSignal createSignal:^RACDisposable *(id <RACSubscriber> subscriber) {
     @strongify(self);
     AVCaptureDevice *device = self.session.videoDevice;
     NSError *error;
@@ -457,7 +471,7 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
     }
 
     return nil;
-  }];
+  }] subscribeOn:self.scheduler];
 }
 
 #pragma mark -
@@ -490,12 +504,12 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
 
 - (RACSignal *)setExposureMode:(AVCaptureExposureMode)mode point:(CGPoint)point {
   @weakify(self);
-  return [RACSignal defer:^RACSignal *{
+  return [[RACSignal defer:^RACSignal *{
     @strongify(self);
     NSError *error;
     BOOL success = [self setExposureMode:mode point:point error:&error];
     return success ? [RACSignal empty] : [RACSignal error:error];
-  }];
+  }] subscribeOn:self.scheduler];
 }
 
 - (BOOL)setExposureMode:(AVCaptureExposureMode)mode point:(CGPoint)point
@@ -521,7 +535,7 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
 
 - (RACSignal *)setExposureCompensation:(float)value {
   @weakify(self);
-  return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+  return [[RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
     @strongify(self);
     AVCaptureDevice *device = self.session.videoDevice;
     LTParameterAssert(value <= device.maxExposureTargetBias,
@@ -544,7 +558,7 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
     }
 
     return nil;
-  }];
+  }] subscribeOn:self.scheduler];
 }
 
 #pragma mark -
@@ -577,12 +591,12 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
 
 - (RACSignal *)setWhiteBalanceMode:(AVCaptureWhiteBalanceMode)mode {
   @weakify(self);
-  return [RACSignal defer:^RACSignal *{
+  return [[RACSignal defer:^RACSignal *{
     @strongify(self);
     NSError *error;
     BOOL success = [self setWhiteBalanceMode:mode error:&error];
     return success ? [RACSignal empty] : [RACSignal error:error];
-  }];
+  }] subscribeOn:self.scheduler];
 }
 
 - (BOOL)setWhiteBalanceMode:(AVCaptureWhiteBalanceMode)mode
@@ -603,7 +617,7 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
 
 - (RACSignal *)setLockedWhiteBalanceWithTemperature:(float)temperature tint:(float)tint {
   @weakify(self);
-  return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+  return [[RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
     @strongify(self);
     AVCaptureDevice *device = self.session.videoDevice;
     NSError *error;
@@ -631,7 +645,7 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
     }
 
     return nil;
-  }];
+  }] subscribeOn:self.scheduler];
 }
 
 #pragma mark -
@@ -640,7 +654,7 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
 
 - (RACSignal *)setZoom:(CGFloat)zoomFactor {
   @weakify(self);
-  return [RACSignal defer:^RACSignal *{
+  return [[RACSignal defer:^RACSignal *{
     @strongify(self);
     AVCaptureDevice *device = self.session.videoDevice;
     LTParameterAssert(zoomFactor <= self.maxZoomFactor,
@@ -653,12 +667,12 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
       return YES;
     } error:&error];
     return success ? [RACSignal return:@(zoomFactor)] : [RACSignal error:error];
-  }];
+  }] subscribeOn:self.scheduler];
 }
 
 - (RACSignal *)setZoom:(CGFloat)zoomFactor rate:(float)rate {
   @weakify(self);
-  return [RACSignal defer:^RACSignal *{
+  return [[RACSignal defer:^RACSignal *{
     @strongify(self);
     AVCaptureDevice *device = self.session.videoDevice;
     LTParameterAssert(zoomFactor <= self.maxZoomFactor,
@@ -671,7 +685,7 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
       return YES;
     } error:&error];
     return success ? [[self rampingZoom:device] mapReplace:@(zoomFactor)] : [RACSignal error:error];
-  }];
+  }] subscribeOn:self.scheduler];
 }
 
 - (RACSignal *)rampingZoom:(AVCaptureDevice *)device {
@@ -687,7 +701,7 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
 
 - (RACSignal *)setFlashMode:(AVCaptureFlashMode)flashMode {
   @weakify(self);
-  return [RACSignal defer:^RACSignal *{
+  return [[RACSignal defer:^RACSignal *{
     @strongify(self);
     NSError *error;
     AVCaptureDevice *device = self.session.videoDevice;
@@ -703,7 +717,7 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
       }
     } error:&error];
     return success ? [RACSignal return:@(flashMode)] : [RACSignal error:error];
-  }];
+  }] subscribeOn:self.scheduler];
 }
 
 #pragma mark -
@@ -712,12 +726,12 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
 
 - (RACSignal *)setTorchLevel:(float)torchLevel {
   @weakify(self);
-  return [RACSignal defer:^RACSignal *{
+  return [[RACSignal defer:^RACSignal *{
     @strongify(self);
     NSError *error;
     BOOL success = [self setTorchLevel:torchLevel error:&error];
     return success ? [RACSignal return:@(torchLevel)] : [RACSignal error:error];
-  }];
+  }] subscribeOn:self.scheduler];
 }
 
 - (BOOL)setTorchLevel:(float)torchLevel error:(NSError * __autoreleasing *)error {
@@ -769,12 +783,12 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
 
 - (RACSignal *)setCamera:(CAMDeviceCamera *)camera {
   @weakify(self);
-  return [RACSignal defer:^RACSignal *{
+  return [[RACSignal defer:^RACSignal *{
     @strongify(self);
     NSError *error;
     BOOL success = [self.session setCamera:camera error:&error];
     return success ? [RACSignal return:camera] : [RACSignal error:error];
-  }];
+  }] subscribeOn:self.scheduler];
 }
 
 @end

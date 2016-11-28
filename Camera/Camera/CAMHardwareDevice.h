@@ -32,8 +32,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)init NS_UNAVAILABLE;
 
-/// Initializes with the given \c session.
-- (instancetype)initWithSession:(CAMHardwareSession *)session;
+/// Initializes with the given \c session and \c sessionQueue to run all \c session mutations on.
+- (instancetype)initWithSession:(CAMHardwareSession *)session
+                   sessionQueue:(dispatch_queue_t)sessionQueue NS_DESIGNATED_INITIALIZER;
 
 @end
 
