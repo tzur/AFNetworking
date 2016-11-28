@@ -98,4 +98,11 @@ context(@"operators", ^{
   });
 });
 
+context(@"hash", ^{
+  it(@"should return the same hash value for equal objects", ^{
+    expect(std::hash<lt::Ellipse>()(ellipse))
+        .to.equal(std::hash<lt::Ellipse>()(lt::Ellipse(ellipse)));
+  });
+});
+
 SpecEnd
