@@ -1,6 +1,8 @@
 // Copyright (c) 2016 Lightricks. All rights reserved.
 // Created by Amit Yitzhack.
 
+#import <LTKit/LTHashExtensions.h>
+
 #import "LTGLKitExtensions.h"
 #import "LTGeometry.h"
 
@@ -78,5 +80,17 @@ constexpr bool operator!=(const Ellipse &lhs, const Ellipse &rhs) {
 }
   
 } // namespace lt
+
+template <>
+struct ::std::hash<lt::Ellipse> {
+  inline size_t operator()(const lt::Ellipse &ellipse) const {
+    size_t seed = 0;
+    lt::hash_combine(seed, ellipse.center);
+    lt::hash_combine(seed, ellipse.angle);
+    lt::hash_combine(seed, ellipse.majorAxisLength);
+    lt::hash_combine(seed, ellipse.minorAxisLength);
+    return seed;
+  }
+};
 
 #endif
