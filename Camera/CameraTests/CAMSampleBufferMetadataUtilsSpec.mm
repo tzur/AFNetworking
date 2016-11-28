@@ -7,6 +7,7 @@
 #import <LTEngine/LTCVPixelBufferExtensions.h>
 
 #import "CAMTestUtils.h"
+#import "CAMDevicePreset.h"
 
 static NSDictionary *CAMSampleBufferMetadata(CMSampleBufferRef sampleBuffer,
                                              CMAttachmentMode attachmentMode) {
@@ -21,7 +22,7 @@ __block lt::Ref<CMSampleBufferRef> sampleBuffer;
 __block NSDictionary *metadataDictionary;
 
 beforeEach(^{
-  sampleBuffer = CAMCreateImageSampleBuffer(CGSizeMakeUniform(1));
+  sampleBuffer = CAMCreateImageSampleBuffer($(CAMPixelFormatBGRA), CGSizeMakeUniform(1));
   metadataDictionary = @{
     (__bridge NSString *)kCGImagePropertyExifWhiteBalance: @0,
     (__bridge NSString *)kCGImagePropertyDPIHeight: @72,
@@ -113,7 +114,7 @@ context(@"CAMCopyPropagatableMetadata", ^{
   __block lt::Ref<CMSampleBufferRef> sampleBuffer2;
 
   beforeEach(^{
-    sampleBuffer2 = CAMCreateImageSampleBuffer(CGSizeMakeUniform(1));
+    sampleBuffer2 = CAMCreateImageSampleBuffer($(CAMPixelFormatBGRA), CGSizeMakeUniform(1));
 
     NSDictionary *propagatableMetadata =
         CAMSampleBufferMetadata(sampleBuffer2.get(), kCMAttachmentMode_ShouldPropagate);

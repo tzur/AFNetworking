@@ -79,7 +79,8 @@ context(@"", ^{
       RACSubject *trigger = [RACSubject subject];
       RACSignal *stillFrames = [device stillFramesWithTrigger:trigger];
 
-      __block lt::Ref<CMSampleBufferRef> sampleBuffer(CAMCreateImageSampleBuffer(kSize));
+      __block lt::Ref<CMSampleBufferRef>
+          sampleBuffer(CAMCreateImageSampleBuffer($(CAMPixelFormatBGRA), kSize));
       CMSampleBufferRef sampleBufferRef = sampleBuffer.get();
       NSValue *boxedSampleBuffer = [NSValue value:&sampleBufferRef
                                      withObjCType:@encode(CMSampleBufferRef)];
@@ -117,8 +118,10 @@ context(@"", ^{
       __block LLSignalTestRecorder *recorder;
 
       beforeEach(^{
-        sampleBuffer = lt::Ref<CMSampleBufferRef>(CAMCreateImageSampleBuffer(kSize));
-        sampleBuffer2 = lt::Ref<CMSampleBufferRef>(CAMCreateImageSampleBuffer(kSize));
+        sampleBuffer = lt::Ref<CMSampleBufferRef>(CAMCreateImageSampleBuffer($(CAMPixelFormatBGRA),
+                                                                             kSize));
+        sampleBuffer2 = lt::Ref<CMSampleBufferRef>(CAMCreateImageSampleBuffer($(CAMPixelFormatBGRA),
+                                                                              kSize));
 
         output = OCMClassMock([AVCaptureVideoDataOutput class]);
         connection = OCMClassMock([AVCaptureConnection class]);

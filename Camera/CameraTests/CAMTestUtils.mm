@@ -5,6 +5,8 @@
 
 #import <LTEngine/LTCVPixelBufferExtensions.h>
 
+#import "CAMDevicePreset.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
 lt::Ref<CMSampleBufferRef> CAMCreateEmptySampleBuffer() {
@@ -26,9 +28,9 @@ CAMCreateVideoFormatDescription(CVImageBufferRef imageBuffer) {
   return lt::Ref<CMVideoFormatDescriptionRef>(videoFormat);
 }
 
-lt::Ref<CMSampleBufferRef> CAMCreateImageSampleBuffer(CGSize size) {
+lt::Ref<CMSampleBufferRef> CAMCreateImageSampleBuffer(CAMPixelFormat *format, CGSize size) {
   lt::Ref<CVImageBufferRef> imageBufferRef =
-      LTCVPixelBufferCreate((size_t)size.width, (size_t)size.height, kCVPixelFormatType_32BGRA);
+      LTCVPixelBufferCreate((size_t)size.width, (size_t)size.height, format.cvPixelFormat);
 
   lt::Ref<CMVideoFormatDescriptionRef> videoFormatRef =
       CAMCreateVideoFormatDescription(imageBufferRef.get());
@@ -46,18 +48,59 @@ lt::Ref<CMSampleBufferRef> CAMCreateImageSampleBuffer(CGSize size) {
   return lt::Ref<CMSampleBufferRef>(sampleBuffer);
 }
 
-lt::Ref<CMSampleBufferRef> CAMCreateSampleBufferForImage(const cv::Mat4b &image) {
+lt::Ref<CMSampleBufferRef> CAMCreateBGRASampleBufferForImage(const cv::Mat4b &image) {
   CMSampleTimingInfo sampleTiming = {kCMTimeZero, kCMTimeZero, kCMTimeZero};
-  return CAMCreateSampleBufferForImage(image, sampleTiming);
+  return CAMCreateBGRASampleBufferForImage(image, sampleTiming);
 }
 
-lt::Ref<CMSampleBufferRef> CAMCreateSampleBufferForImage(const cv::Mat4b &image,
-                                                         const CMSampleTimingInfo &sampleTiming) {
+lt::Ref<CMSampleBufferRef>
+CAMCreateBGRASampleBufferForImage(const cv::Mat4b &image, const CMSampleTimingInfo &sampleTiming) {
   __block lt::Ref<CVImageBufferRef> imageBufferRef =
       LTCVPixelBufferCreate(image.cols, image.rows, kCVPixelFormatType_32BGRA);
 
   LTCVPixelBufferImageForWriting(imageBufferRef.get(), ^(cv::Mat *mapped) {
     image.copyTo(*mapped);
+  });
+
+  lt::Ref<CMVideoFormatDescriptionRef> videoFormatRef =
+      CAMCreateVideoFormatDescription(imageBufferRef.get());
+
+  CMSampleBufferRef sampleBuffer;
+  OSStatus sampleBufferCreate =
+      CMSampleBufferCreateReadyWithImageBuffer(kCFAllocatorDefault, imageBufferRef.get(),
+                                               videoFormatRef.get(), &sampleTiming,
+                                               &sampleBuffer);
+  LTAssert(((int)sampleBufferCreate) == 0, @"CMSampleBufferCreateForImageBuffer failed, got: %d",
+           (int)sampleBufferCreate);
+
+  return lt::Ref<CMSampleBufferRef>(sampleBuffer);
+}
+
+lt::Ref<CMSampleBufferRef> CAMCreateYCbCr420SampleBufferForImage(const cv::Mat1b &yImage,
+                                                                 const cv::Mat2b &cbCrImage) {
+  CMSampleTimingInfo sampleTiming = {kCMTimeZero, kCMTimeZero, kCMTimeZero};
+  return CAMCreateYCbCr420SampleBufferForImage(yImage, cbCrImage, sampleTiming);
+}
+
+lt::Ref<CMSampleBufferRef>
+CAMCreateYCbCr420SampleBufferForImage(const cv::Mat1b &yImage, const cv::Mat2b &cbCrImage,
+                                      const CMSampleTimingInfo &sampleTiming) {
+  LTParameterAssert(cbCrImage.rows == std::ceil(yImage.rows / 2), @"The number of rows in the CbCr "
+                    "channel should be exactly half those in the Y channel. Expected:%d, got:%d.",
+                    (int)std::ceil(yImage.rows / 2), cbCrImage.rows);
+  LTParameterAssert(cbCrImage.cols == std::ceil(yImage.cols / 2), @"The number of cols in the CbCr "
+                    "channel should be exactly half those in the Y channel. Expected:%d, got:%d.",
+                    (int)std::ceil(yImage.cols / 2), cbCrImage.cols);
+
+  __block lt::Ref<CVImageBufferRef> imageBufferRef =
+      LTCVPixelBufferCreate(yImage.cols, yImage.rows,
+                            kCVPixelFormatType_420YpCbCr8BiPlanarFullRange);
+
+  LTCVPixelBufferPlaneImageForWriting(imageBufferRef.get(), 0, ^(cv::Mat *mapped) {
+    yImage.copyTo(*mapped);
+  });
+  LTCVPixelBufferPlaneImageForWriting(imageBufferRef.get(), 1, ^(cv::Mat *mapped) {
+    cbCrImage.copyTo(*mapped);
   });
 
   lt::Ref<CMVideoFormatDescriptionRef> videoFormatRef =

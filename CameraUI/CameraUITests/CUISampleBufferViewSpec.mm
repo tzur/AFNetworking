@@ -3,6 +3,7 @@
 
 #import "CUISampleBufferView.h"
 
+#import <Camera/CAMDevicePreset.h>
 #import <Camera/CAMVideoFrame.h>
 
 #import "CAMTestUtils.h"
@@ -12,7 +13,8 @@ SpecBegin(CUISampleBufferView)
 context(@"dealloc", ^{
   it(@"should dealloc when Signal is still running", ^{
     CGSize size = CGSizeMake(3, 6);
-    lt::Ref<CMSampleBufferRef> sampleBuffer = CAMCreateImageSampleBuffer(size);
+    lt::Ref<CMSampleBufferRef> sampleBuffer = CAMCreateImageSampleBuffer($(CAMPixelFormatBGRA),
+                                                                         size);
     CAMVideoFrame *frame = [[CAMVideoFrame alloc] initWithSampleBuffer:sampleBuffer.get()];
 
     RACSubject *frames = [RACSubject subject];

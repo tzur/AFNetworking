@@ -14,6 +14,12 @@ context(@"pixel format", ^{
                                     @(kCVPixelFormatType_420YpCbCr8BiPlanarFullRange)};
     expect(pixelFormat.videoSettings).to.equal(videoSettings);
   });
+
+  it(@"should return correct system pixel format", ^{
+    CAMPixelFormat *pixelFormat = $(CAMPixelFormat420f);
+    OSType expectedFormat = kCVPixelFormatType_420YpCbCr8BiPlanarFullRange;
+    expect(pixelFormat.cvPixelFormat).to.equal(expectedFormat);
+  });
 });
 
 context(@"physical device", ^{
