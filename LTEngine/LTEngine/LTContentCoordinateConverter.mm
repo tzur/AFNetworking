@@ -36,12 +36,28 @@ NS_ASSUME_NONNULL_BEGIN
   return CGPointApplyAffineTransform(point, self.contentToPresentationCoordinateTransform);
 }
 
+- (CGPoint)convertPointFromContentToPixelPresentationCoordinates:(CGPoint)point {
+  return CGPointApplyAffineTransform(point, self.contentToPixelPresentationCoordinateTransform);
+}
+
 - (CGPoint)convertPointFromPresentationToContentCoordinates:(CGPoint)point {
   return CGPointApplyAffineTransform(point, self.presentationToContentCoordinateTransform);
 }
 
+- (CGPoint)convertPointFromPixelPresentationToContentCoordinates:(CGPoint)point {
+  return CGPointApplyAffineTransform(point, self.pixelPresentationToContentCoordinateTransform);
+}
+
 - (CGAffineTransform)contentToPresentationCoordinateTransform {
   CGFloat scaleFactor = self.provider.zoomScale / self.provider.contentScaleFactor;
+  CGAffineTransform scaling = CGAffineTransformMakeScale(scaleFactor, scaleFactor);
+  return CGAffineTransformTranslate(scaling,
+                                    -self.provider.visibleContentRect.origin.x,
+                                    -self.provider.visibleContentRect.origin.y);
+}
+
+- (CGAffineTransform)contentToPixelPresentationCoordinateTransform {
+  CGFloat scaleFactor = self.provider.zoomScale;
   CGAffineTransform scaling = CGAffineTransformMakeScale(scaleFactor, scaleFactor);
   return CGAffineTransformTranslate(scaling,
                                     -self.provider.visibleContentRect.origin.x,
@@ -53,6 +69,14 @@ NS_ASSUME_NONNULL_BEGIN
       CGAffineTransformMakeTranslation(self.provider.visibleContentRect.origin.x,
                                        self.provider.visibleContentRect.origin.y);
   CGFloat scaleFactor = self.provider.contentScaleFactor / self.provider.zoomScale;
+  return CGAffineTransformScale(translation, scaleFactor, scaleFactor);
+}
+
+- (CGAffineTransform)pixelPresentationToContentCoordinateTransform {
+  CGAffineTransform translation =
+      CGAffineTransformMakeTranslation(self.provider.visibleContentRect.origin.x,
+                                       self.provider.visibleContentRect.origin.y);
+  CGFloat scaleFactor = 1 / self.provider.zoomScale;
   return CGAffineTransformScale(translation, scaleFactor, scaleFactor);
 }
 

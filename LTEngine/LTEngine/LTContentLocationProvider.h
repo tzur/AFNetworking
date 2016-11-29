@@ -36,4 +36,26 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
+/// Value class providing the location of a rectangle bounding pixel content that can be displayed
+/// inside a suitable presentation rectangle. The content rectangle is axis-aligned with the
+/// presentation rectangle.
+@interface LTContentLocationInfo : NSObject <LTContentLocationProvider>
+
+- (instancetype)init NS_UNAVAILABLE;
+
+/// Initializes with the given \c contentSize, \c contentScaleFactor, \c contentInset,
+/// \c visibleContentRect, \c maxZoomScale, and \c zoomScale.
+- (instancetype)initWithContentSize:(CGSize)contentSize
+                 contentScaleFactor:(CGFloat)contentScaleFactor
+                       contentInset:(UIEdgeInsets)contentInset
+                 visibleContentRect:(CGRect)visibleContentRect
+                       maxZoomScale:(CGFloat)maxZoomScale
+                          zoomScale:(CGFloat)zoomScale NS_DESIGNATED_INITIALIZER;
+
+/// Initializes with the \c contentSize, \c contentScaleFactor, \c contentInset,
+/// \c visibleContentRect, \c maxZoomScale, and \c zoomScale of the given \c provider.
+- (instancetype)initWithValuesOfContentLocationProvider:(id<LTContentLocationProvider>)provider;
+
+@end
+
 NS_ASSUME_NONNULL_END
