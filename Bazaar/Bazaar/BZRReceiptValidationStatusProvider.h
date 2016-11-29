@@ -14,11 +14,12 @@ NS_ASSUME_NONNULL_BEGIN
 /// @return <tt>RACSignal<BZRReceiptValidationStatus></tt>
 - (RACSignal *)fetchReceiptValidationStatus;
 
-/// Sends non-critical errors as values. The signal completes when the receiver is deallocated. The
-/// signal doesn't err.
+/// Sends messages of important events that occur throughout the receiver. The events can be
+/// informational or errors. The signal completes when the receiver is deallocated. The signal
+/// doesn't err.
 ///
-/// @return <tt>RACSignal<NSError></tt>
-@property (readonly, nonatomic) RACSignal *nonCriticalErrorsSignal;
+/// @return <tt>RACSignal<BZREvent></tt>
+@property (readonly, nonatomic) RACSignal *eventsSignal;
 
 @end
 

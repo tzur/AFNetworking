@@ -38,7 +38,7 @@ beforeEach(^{
 context(@"deallocating object", ^{
   it(@"should complete when object is deallocated", ^{
     BZRValidatedReceiptValidationStatusProvider __weak *weakValidationStatusProvider;
-    RACSignal *errorsSignal;
+    RACSignal *eventsSignal;
     RACSignal *fetchSignal;
 
     OCMStub([receiptValidator validateReceiptWithParameters:OCMOCK_ANY])
@@ -52,11 +52,11 @@ context(@"deallocating object", ^{
            initWithReceiptValidator:receiptValidator
            validationParametersProvider:receiptValidationParametersProvider];
       weakValidationStatusProvider = validationStatusProvider;
-      errorsSignal = validationStatusProvider.nonCriticalErrorsSignal;
+      eventsSignal = validationStatusProvider.eventsSignal;
       fetchSignal = [validationStatusProvider fetchReceiptValidationStatus];
     }
 
-    expect(errorsSignal).will.complete();
+    expect(eventsSignal).will.complete();
     expect(fetchSignal).will.finish();
     expect(weakValidationStatusProvider).to.beNil();
   });

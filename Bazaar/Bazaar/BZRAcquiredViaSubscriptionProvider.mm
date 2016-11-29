@@ -3,6 +3,7 @@
 
 #import "BZRAcquiredViaSubscriptionProvider.h"
 
+#import "BZREvent.h"
 #import "BZRKeychainStorage+TypeSafety.h"
 #import "NSErrorCodes+Bazaar.h"
 
@@ -103,8 +104,10 @@ NSString * const kProductsAcquiredViaSubscriptionSetKey = @"productsAcquiredViaS
 #pragma mark Storage errors
 #pragma mark -
 
-- (RACSignal *)storageErrorsSignal {
-  return self.storageErrorsSubject;
+- (RACSignal *)storageErrorEventsSignal {
+  return [self.storageErrorsSubject map:^BZREvent *(NSError *eventError) {
+    return [[BZREvent alloc] initWithType:$(BZREventTypeNonCriticalError) eventError:eventError];
+  }];
 }
 
 @end

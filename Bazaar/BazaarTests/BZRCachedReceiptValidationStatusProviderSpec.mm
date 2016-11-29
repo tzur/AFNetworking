@@ -3,6 +3,7 @@
 
 #import "BZRCachedReceiptValidationStatusProvider.h"
 
+#import "BZREvent.h"
 #import "BZRKeychainStorage+TypeSafety.h"
 #import "BZRReceiptModel.h"
 #import "BZRReceiptValidationStatus.h"
@@ -16,7 +17,7 @@ __block BZRKeychainStorage *keychainStorage;
 __block id<BZRTimeProvider> timeProvider;
 __block BZRReceiptValidationStatus *receiptValidationStatus;
 __block id<BZRReceiptValidationStatusProvider> underlyingProvider;
-__block RACSubject *underlyingNonCriticalErrorsSubject;
+__block RACSubject *underlyingEventsSubject;
 __block BZRCachedReceiptValidationStatusProvider *validationStatusProvider;
 
 beforeEach(^{
@@ -24,9 +25,8 @@ beforeEach(^{
   timeProvider = OCMProtocolMock(@protocol(BZRTimeProvider));
   receiptValidationStatus = OCMClassMock([BZRReceiptValidationStatus class]);
   underlyingProvider = OCMProtocolMock(@protocol(BZRReceiptValidationStatusProvider));
-  underlyingNonCriticalErrorsSubject = [RACSubject subject];
-  OCMStub([underlyingProvider nonCriticalErrorsSignal])
-      .andReturn(underlyingNonCriticalErrorsSubject);
+  underlyingEventsSubject = [RACSubject subject];
+  OCMStub([underlyingProvider eventsSignal]).andReturn(underlyingEventsSubject);
   validationStatusProvider =
       [[BZRCachedReceiptValidationStatusProvider alloc] initWithKeychainStorage:keychainStorage
                                                                    timeProvider:timeProvider
@@ -37,8 +37,8 @@ context(@"deallocating object", ^{
   it(@"should complete when object is deallocated", ^{
     BZRCachedReceiptValidationStatusProvider __weak *weakValidationStatusProvider;
     RACSignal *fetchSignal;
-    RACSignal *errorsSignal;
-    OCMStub([underlyingProvider nonCriticalErrorsSignal])
+    RACSignal *eventsSignal;
+    OCMStub([underlyingProvider eventsSignal])
         .andReturn([RACSignal empty]);
     OCMStub([underlyingProvider fetchReceiptValidationStatus])
         .andReturn([RACSignal return:receiptValidationStatus]);
@@ -49,25 +49,24 @@ context(@"deallocating object", ^{
            timeProvider:timeProvider underlyingProvider:underlyingProvider];
       weakValidationStatusProvider = validationStatusProvider;
       fetchSignal = [validationStatusProvider fetchReceiptValidationStatus];
-      errorsSignal = [validationStatusProvider nonCriticalErrorsSignal];
+      eventsSignal = [validationStatusProvider eventsSignal];
     }
 
-    expect(errorsSignal).will.complete();
+    expect(eventsSignal).will.complete();
     expect(fetchSignal).will.complete();
     expect(weakValidationStatusProvider).to.beNil();
   });
 });
 
 context(@"handling errors", ^{
-  it(@"should send non critical error sent by the underlying provider", ^{
-    LLSignalTestRecorder *recorder =
-        [validationStatusProvider.nonCriticalErrorsSignal testRecorder];
-    NSError *error = OCMClassMock([NSError class]);
-    [underlyingNonCriticalErrorsSubject sendNext:error];
-    expect(recorder).will.sendValues(@[error]);
+  it(@"should send event sent by the underlying provider", ^{
+    LLSignalTestRecorder *recorder = [validationStatusProvider.eventsSignal testRecorder];
+    BZREvent *event = OCMClassMock([BZREvent class]);
+    [underlyingEventsSubject sendNext:event];
+    expect(recorder).will.sendValues(@[event]);
   });
 
-  it(@"should send non critical error when failed to store receipt validation status", ^{
+  it(@"should send error event when failed to store receipt validation status", ^{
     OCMStub([timeProvider currentTime]).andReturn([RACSignal return:[NSDate date]]);
     NSError *underlyingError = OCMClassMock([NSError class]);
     OCMStub([keychainStorage setValue:OCMOCK_ANY forKey:OCMOCK_ANY
@@ -76,11 +75,13 @@ context(@"handling errors", ^{
         .andReturn([RACSignal return:receiptValidationStatus]);
 
     LLSignalTestRecorder *recorder =
-        [validationStatusProvider.nonCriticalErrorsSignal testRecorder];
+        [validationStatusProvider.eventsSignal testRecorder];
     expect([validationStatusProvider fetchReceiptValidationStatus]).will.complete();
-    expect(recorder).will.matchValue(0, ^BOOL(NSError *error) {
+    expect(recorder).will.matchValue(0, ^BOOL(BZREvent *event) {
+      NSError *error = event.eventError;
       return error.lt_isLTDomain && error.code == BZRErrorCodeStoringDataToStorageFailed &&
-          error.lt_underlyingError == underlyingError;
+          error.lt_underlyingError == underlyingError &&
+          [event.eventType isEqual:$(BZREventTypeNonCriticalError)];
     });
   });
 
@@ -95,17 +96,20 @@ context(@"handling errors", ^{
     expect(recorder).will.sendError(error);
   });
 
-  it(@"should err when time provider errs", ^{
+  it(@"should send error event when time provider errs", ^{
     NSError *error = [NSError lt_errorWithCode:1337];
     OCMStub([timeProvider currentTime]).andReturn([RACSignal error:error]);
     OCMStub([underlyingProvider fetchReceiptValidationStatus])
         .andReturn([RACSignal return:receiptValidationStatus]);
     
     LLSignalTestRecorder *recorder =
-        [[validationStatusProvider nonCriticalErrorsSignal] testRecorder];
+        [[validationStatusProvider eventsSignal] testRecorder];
 
     expect([validationStatusProvider fetchReceiptValidationStatus]).will.complete();
-    expect(recorder).will.sendValues(@[error]);
+    expect(recorder).will.matchValue(0, ^BOOL(BZREvent *event) {
+      return [event.eventType isEqual:$(BZREventTypeNonCriticalError)] &&
+          [event.eventError isEqual:error];
+    });
   });
 
   it(@"should not cache the receipt if time provider failed", ^{
@@ -167,11 +171,14 @@ context(@"getting cached receipt validation status", ^{
                                     error:[OCMArg setTo:error]]);
 
     LLSignalTestRecorder *recorder =
-        [validationStatusProvider.nonCriticalErrorsSignal testRecorder];
+        [validationStatusProvider.eventsSignal testRecorder];
 
     expect(validationStatusProvider.receiptValidationStatus).to.beNil();
     expect(validationStatusProvider.lastReceiptValidationDate).to.beNil();
-    expect(recorder).will.sendValues(@[error, error]);
+
+    BZREvent *event =
+        [[BZREvent alloc] initWithType:$(BZREventTypeNonCriticalError) eventError:error];
+    expect(recorder).will.sendValues(@[event, event]);
   });
 
   it(@"should not read from storage if validation status is not nil", ^{

@@ -5,6 +5,7 @@
 
 #import <LTKit/NSArray+Functional.h>
 
+#import "BZREvent.h"
 #import "BZRProduct+SKProduct.h"
 #import "BZRProductPriceInfo+SKProduct.h"
 #import "BZRStoreKitFacade.h"
@@ -24,14 +25,14 @@ SKProductsResponse *BZRProductsResponseWithProductWithProperties(NSString *produ
 SpecBegin(BZRProductsWithPriceInfoProvider)
 
 __block id<BZRProductsProvider> underlyingProvider;
-__block RACSubject *underlyingProviderErrorsSubject;
+__block RACSubject *underlyingProviderEventsSubject;
 __block BZRStoreKitFacade *storeKitFacade;
 __block BZRProductsWithPriceInfoProvider *productsProvider;
 
 beforeEach(^{
   underlyingProvider = OCMProtocolMock(@protocol(BZRProductsProvider));
-  underlyingProviderErrorsSubject = [RACSubject subject];
-  OCMStub([underlyingProvider nonCriticalErrorsSignal]).andReturn(underlyingProviderErrorsSubject);
+  underlyingProviderEventsSubject = [RACSubject subject];
+  OCMStub([underlyingProvider eventsSignal]).andReturn(underlyingProviderEventsSubject);
   storeKitFacade = OCMClassMock([BZRStoreKitFacade class]);
   productsProvider =
       [[BZRProductsWithPriceInfoProvider alloc] initWithUnderlyingProvider:underlyingProvider
@@ -53,10 +54,10 @@ context(@"getting product list", ^{
   });
 
   it(@"should send non critical error when underlying provider sends non critical error", ^{
-    LLSignalTestRecorder *recorder = [productsProvider.nonCriticalErrorsSignal testRecorder];
+    LLSignalTestRecorder *recorder = [productsProvider.eventsSignal testRecorder];
 
     NSError *error = [NSError lt_errorWithCode:1337];
-    [underlyingProviderErrorsSubject sendNext:error];
+    [underlyingProviderEventsSubject sendNext:error];
 
     expect(recorder).to.sendValues(@[error]);
   });
@@ -103,12 +104,14 @@ context(@"getting product list", ^{
     OCMStub([storeKitFacade fetchMetadataForProductsWithIdentifiers:OCMOCK_ANY])
         .andReturn([RACSignal return:response]);
 
-    LLSignalTestRecorder *recorder = [productsProvider.nonCriticalErrorsSignal testRecorder];
+    LLSignalTestRecorder *recorder = [productsProvider.eventsSignal testRecorder];
 
     [[productsProvider fetchProductList] subscribeNext:^(id) {}];
 
-    expect(recorder).will.matchValue(0, ^BOOL(NSError *error) {
-      return error.lt_isLTDomain && error.code == BZRErrorCodeInvalidProductIdentifer &&
+    expect(recorder).will.matchValue(0, ^BOOL(BZREvent *event) {
+      NSError *error = event.eventError;
+      return [event.eventType isEqual:$(BZREventTypeNonCriticalError)] && error.lt_isLTDomain &&
+          error.code == BZRErrorCodeInvalidProductIdentifer &&
           [error.bzr_productIdentifiers isEqual:[NSSet setWithObject:product.identifier]];
     });
   });

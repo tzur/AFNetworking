@@ -9,14 +9,14 @@
 SpecBegin(BZRCachedProductsProvider)
 
 __block id<BZRProductsProvider> underlyingProvider;
-__block RACSubject *underlyingProviderErrorsSubject;
+__block RACSubject *underlyingProviderEventsSubject;
 __block BZRCachedProductsProvider *productsProvider;
 __block BZRProduct *product;
 
 beforeEach(^{
   underlyingProvider = OCMProtocolMock(@protocol(BZRProductsProvider));
-  underlyingProviderErrorsSubject = [RACSubject subject];
-  OCMStub([underlyingProvider nonCriticalErrorsSignal]).andReturn(underlyingProviderErrorsSubject);
+  underlyingProviderEventsSubject = [RACSubject subject];
+  OCMStub([underlyingProvider eventsSignal]).andReturn(underlyingProviderEventsSubject);
   productsProvider =
       [[BZRCachedProductsProvider alloc] initWithUnderlyingProvider:underlyingProvider];
   product = BZRProductWithIdentifier(@"foo");
@@ -32,10 +32,10 @@ context(@"fetching product list", ^{
   });
 
   it(@"should send non critical error when underlying provider sends non critical error", ^{
-    LLSignalTestRecorder *recorder = [productsProvider.nonCriticalErrorsSignal testRecorder];
+    LLSignalTestRecorder *recorder = [productsProvider.eventsSignal testRecorder];
 
     NSError *error = [NSError lt_errorWithCode:1337];
-    [underlyingProviderErrorsSubject sendNext:error];
+    [underlyingProviderEventsSubject sendNext:error];
 
     expect(recorder).will.sendValues(@[error]);
   });

@@ -3,6 +3,7 @@
 
 #import "BZRPeriodicReceiptValidatorActivator.h"
 
+#import "BZREvent.h"
 #import "BZRCachedReceiptValidationStatusProvider.h"
 #import "BZRPeriodicReceiptValidator.h"
 #import "BZRReceiptEnvironment.h"
@@ -29,8 +30,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// expired.
 @property (readonly, nonatomic) NSTimeInterval gracePeriod;
 
-/// The other end of \c errorsSignal used to send errors with.
-@property (readonly, nonatomic) RACSubject *errorsSubject;
+/// Sends time provider as values. The subject completes when the receiver is deallocated. The
+/// subject doesn't err.
+@property (readonly, nonatomic) RACSubject *timeProviderErrorsSubject;
 
 /// Time between each periodic validation.
 @property (readwrite, nonatomic) NSTimeInterval periodicValidationInterval;
@@ -58,9 +60,14 @@ const NSUInteger kMaxPeriodicValidationInterval = 28;
     _periodicReceiptValidator = periodicReceiptValidator;
     _timeProvider = timeProvider;
     _gracePeriod = [BZRTimeConversion numberOfSecondsInDays:gracePeriod];
-    _errorsSubject = [RACSubject subject];
-    _errorsSignal = [[RACSignal merge:@[
-      self.errorsSubject,
+    _timeProviderErrorsSubject = [RACSubject subject];
+
+    RACSignal *timeProviderErrorsEvents =
+        [self.timeProviderErrorsSubject map:^BZREvent *(NSError *error) {
+          return [[BZREvent alloc] initWithType:$(BZREventTypeNonCriticalError) eventError:error];
+        }];
+    _errorEventsSignal = [[RACSignal merge:@[
+      timeProviderErrorsEvents,
       [[self periodicValidationErrorsSignal] replayLast]
     ]]
     takeUntil:[self rac_willDeallocSignal]];
@@ -120,7 +127,7 @@ const NSUInteger kMaxPeriodicValidationInterval = 28;
     [self activatePeriodicValidationWithTime:currentTime];
   } error:^(NSError *error) {
     @strongify(self);
-    [self.errorsSubject sendNext:error];
+    [self.timeProviderErrorsSubject sendNext:error];
   }];
 }
 
@@ -165,23 +172,25 @@ const NSUInteger kMaxPeriodicValidationInterval = 28;
 
 - (RACSignal *)periodicValidationErrorsSignal {
   @weakify(self);
-  return [[[[self.periodicReceiptValidator.errorsSignal
+  return [[[[[self.periodicReceiptValidator.errorsSignal
   flattenMap:^RACStream *(NSError *validationError) {
     @strongify(self);
     return [RACSignal zip:@[[RACSignal return:validationError], [self.timeProvider currentTime]]];
   }]
-  reduceEach:(id)^NSError *(NSError *validationError, NSDate *currentTime) {
+  reduceEach:(id)^BZREvent *(NSError *validationError, NSDate *currentTime) {
     @strongify(self);
     return [self sendPeriodicValidationError:validationError currentTime:currentTime];
   }]
   ignore:nil]
-  catch:^RACSignal *(NSError *error) {
-    return [RACSignal return:error];
-  }];
+  doError:^(NSError *error) {
+    @strongify(self);
+    [self.timeProviderErrorsSubject sendNext:error];
+  }]
+  catchTo:[RACSignal never]];
 }
 
-- (nullable NSError *)sendPeriodicValidationError:(NSError *)validationError
-                                      currentTime:(NSDate *)currentTime {
+- (nullable BZREvent *)sendPeriodicValidationError:(NSError *)validationError
+                                       currentTime:(NSDate *)currentTime {
   NSDate *lastReceiptValidationDate = self.validationStatusProvider.lastReceiptValidationDate;
   if (!lastReceiptValidationDate) {
     // This case can happen only if \c receiptValidationStatus is not \c nil but
@@ -199,9 +208,11 @@ const NSUInteger kMaxPeriodicValidationInterval = 28;
     [self.validationStatusProvider expireSubscription];
   }
 
-  return [NSError bzr_errorWithSecondsUntilSubscriptionInvalidation:@(secondsUntilInvalidation)
-                                          lastReceiptValidationDate:lastReceiptValidationDate
-                                                    underlyingError:validationError];
+  NSError *error =
+      [NSError bzr_errorWithSecondsUntilSubscriptionInvalidation:@(secondsUntilInvalidation)
+                                       lastReceiptValidationDate:lastReceiptValidationDate
+                                                 underlyingError:validationError];
+  return [[BZREvent alloc] initWithType:$(BZREventTypeNonCriticalError) eventError:error];
 }
 
 - (NSDate *)dateOfInvalidationForLastReceiptValidation:(NSDate *)lastReceiptValidationDate {

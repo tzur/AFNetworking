@@ -3,6 +3,7 @@
 
 #import "BZRModifiedExpiryReceiptValidationStatusProvider.h"
 
+#import "BZREvent.h"
 #import "BZRReceiptEnvironment.h"
 #import "BZRReceiptModel.h"
 #import "BZRReceiptValidationStatus.h"
@@ -15,7 +16,7 @@ SpecBegin(BZRModifiedExpiryReceiptValidationStatusProvider)
 __block id<BZRTimeProvider> timeProvider;
 __block NSUInteger gracePeriod;
 __block id<BZRReceiptValidationStatusProvider> underlyingProvider;
-__block RACSubject *underlyingNonCriticalErrorsSubject;
+__block RACSubject *underlyingEventsSubject;
 __block BZRModifiedExpiryReceiptValidationStatusProvider *modifiedReceiptProvider;
 
 beforeEach(^{
@@ -23,9 +24,8 @@ beforeEach(^{
   gracePeriod = 7;
   underlyingProvider =
       OCMProtocolMock(@protocol(BZRReceiptValidationStatusProvider));
-  underlyingNonCriticalErrorsSubject = [RACSubject subject];
-  OCMStub([underlyingProvider nonCriticalErrorsSignal])
-      .andReturn(underlyingNonCriticalErrorsSubject);
+  underlyingEventsSubject = [RACSubject subject];
+  OCMStub([underlyingProvider eventsSignal]).andReturn(underlyingEventsSubject);
   modifiedReceiptProvider =
       [[BZRModifiedExpiryReceiptValidationStatusProvider alloc] initWithTimeProvider:timeProvider
        expiredSubscriptionGracePeriod:gracePeriod underlyingProvider:underlyingProvider];
@@ -35,7 +35,7 @@ context(@"deallocating object", ^{
   it(@"should complete when object is deallocated", ^{
     BZRModifiedExpiryReceiptValidationStatusProvider __weak *weakModifiedReceiptProvider;
     RACSignal *fetchSignal;
-    RACSignal *errorsSignal;
+    RACSignal *eventsSignal;
 
     OCMStub([timeProvider currentTime]).andReturn([RACSignal return:[NSDate distantPast]]);
     BZRReceiptValidationStatus *receiptValidationStatus = BZRReceiptValidationStatusWithExpiry(YES);
@@ -50,23 +50,21 @@ context(@"deallocating object", ^{
 
       weakModifiedReceiptProvider = modifiedReceiptProvider;
       fetchSignal = [modifiedReceiptProvider fetchReceiptValidationStatus];
-      errorsSignal = [modifiedReceiptProvider nonCriticalErrorsSignal];
+      eventsSignal = [modifiedReceiptProvider eventsSignal];
     }
 
     expect(fetchSignal).will.complete();
-    expect(errorsSignal).will.complete();
+    expect(eventsSignal).will.complete();
     expect(weakModifiedReceiptProvider).to.beNil();
   });
 });
 
 context(@"handling errors", ^{
-  it(@"should send non critical error sent by underlying receipt validation status provider", ^{
-    LLSignalTestRecorder *recorder = [modifiedReceiptProvider.nonCriticalErrorsSignal testRecorder];
-
-    NSError *error = OCMClassMock([NSError class]);
-    [underlyingNonCriticalErrorsSubject sendNext:error];
-
-    expect(recorder).will.sendValues(@[error]);
+  it(@"should send event sent by the underlying provider", ^{
+    LLSignalTestRecorder *recorder = [underlyingProvider.eventsSignal testRecorder];
+    BZREvent *event = OCMClassMock([BZREvent class]);
+    [underlyingEventsSubject sendNext:event];
+    expect(recorder).will.sendValues(@[event]);
   });
 
   it(@"should err when underlying receipt validitation status provider errs", ^{
@@ -92,11 +90,14 @@ context(@"handling errors", ^{
           .andReturn([RACSignal return:receiptValidationStatus]);
     });
 
-    it(@"should treat time provider errors as non critical errors", ^{
+    it(@"should send error event when time provider errs", ^{
       LLSignalTestRecorder *recorder =
-          [modifiedReceiptProvider.nonCriticalErrorsSignal testRecorder];
+          [modifiedReceiptProvider.eventsSignal testRecorder];
       expect([modifiedReceiptProvider fetchReceiptValidationStatus]).will.complete();
-      expect(recorder).will.sendValues(@[error]);
+      expect(recorder).will.matchValue(0, ^BOOL(BZREvent *event) {
+        return [event.eventType isEqual:$(BZREventTypeNonCriticalError)] &&
+            [event.eventError isEqual:error];
+      });
     });
 
     it(@"should provide the underlying provider receipt validation status", ^{

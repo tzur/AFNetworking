@@ -3,6 +3,7 @@
 
 #import "BZRModifiedExpiryReceiptValidationStatusProvider.h"
 
+#import "BZREvent.h"
 #import "BZRReceiptEnvironment.h"
 #import "BZRReceiptModel.h"
 #import "BZRReceiptValidationStatus.h"
@@ -31,8 +32,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation BZRModifiedExpiryReceiptValidationStatusProvider
 
-@synthesize nonCriticalErrorsSignal = _nonCriticalErrorsSignal;
-
 #pragma mark -
 #pragma mark Initialization
 #pragma mark -
@@ -46,14 +45,25 @@ NS_ASSUME_NONNULL_BEGIN
         [BZRTimeConversion numberOfSecondsInDays:expiredSubscriptionGracePeriod];
     _underlyingProvider = underlyingProvider;
     _timeProviderErrorsSubject = [RACSubject subject];
-    _nonCriticalErrorsSignal = [[RACSignal merge:@[
-      self.timeProviderErrorsSubject,
-      self.underlyingProvider.nonCriticalErrorsSignal
-    ]]
-    takeUntil:[self rac_willDeallocSignal]];
   }
   return self;
 }
+
+#pragma mark -
+#pragma mark Sending events
+#pragma mark -
+
+- (RACSignal *)eventsSignal {
+  return [[RACSignal merge:@[
+    self.timeProviderErrorsSubject,
+    self.underlyingProvider.eventsSignal
+  ]]
+  takeUntil:[self rac_willDeallocSignal]];
+}
+
+#pragma mark -
+#pragma mark Fetching receipt validation status
+#pragma mark -
 
 - (RACSignal *)fetchReceiptValidationStatus {
   @weakify(self);
@@ -83,7 +93,8 @@ NS_ASSUME_NONNULL_BEGIN
                                              currentTime:currentTime];
   }]
   doError:^(NSError *error) {
-    [self.timeProviderErrorsSubject sendNext:error];
+    [self.timeProviderErrorsSubject sendNext:
+     [[BZREvent alloc] initWithType:$(BZREventTypeNonCriticalError) eventError:error]];
   }]
   catchTo:[RACSignal return:receiptValidationStatus]];
 }
