@@ -232,14 +232,35 @@ context(@"audio and video", ^{
 
   itShouldBehaveLike(@"retaining and completing", @{
     @"signalBlock": ^RACSignal *(CAMBlankDevice *device) {
-      return [device stillFramesWithTrigger:[RACSignal never]];
-    }
-  });
-
-  itShouldBehaveLike(@"retaining and completing", @{
-    @"signalBlock": ^RACSignal *(CAMBlankDevice *device) {
       return [device subjectAreaChanged];
     }
+  });
+});
+
+context(@"still frames signal", ^{
+  __block CAMBlankDevice *device;
+
+  beforeEach(^{
+    device = [[CAMBlankDevice alloc] init];
+  });
+
+  it(@"should not retain from signal", ^{
+    __weak CAMBlankDevice *weakDevice;
+    RACSignal *signal;
+    @autoreleasepool {
+      CAMBlankDevice *strongDevice = [[CAMBlankDevice alloc] init];
+      weakDevice = strongDevice;
+      signal = [strongDevice stillFramesWithTrigger:[RACSignal return:[RACUnit defaultUnit]]];
+    }
+    expect(signal).notTo.beNil();
+    expect(weakDevice).to.beNil();
+  });
+
+  it(@"should err", ^{
+    RACSignal *stillFrames =
+        [device stillFramesWithTrigger:[RACSignal return:[RACUnit defaultUnit]]];
+    NSError *expectedError = [NSError lt_errorWithCode:CAMErrorCodeFailedCapturingFromStillOutput];
+    expect(stillFrames).to.sendError(expectedError);
   });
 });
 
