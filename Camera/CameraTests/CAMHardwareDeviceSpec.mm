@@ -41,7 +41,8 @@ context(@"", ^{
 
   beforeEach(^{
     session = [[CAMHardwareSession alloc] initWithPreset:nil session:nil];
-    device = [[CAMHardwareDevice alloc] initWithSession:session];
+    device = [[CAMHardwareDevice alloc] initWithSession:session
+                                           sessionQueue:dispatch_get_main_queue()];
   });
 
   context(@"video", ^{
@@ -54,9 +55,12 @@ context(@"", ^{
       session.stillOutput = stillOutput;
 
       CAMPixelFormat *pixelFormat = $(CAMPixelFormat420f);
+      OCMExpect([videoOutput setVideoSettings:pixelFormat.videoSettings]);
+      OCMExpect([stillOutput setOutputSettings:pixelFormat.videoSettings]);
+
       LLSignalTestRecorder *recorder = [[device setPixelFormat:pixelFormat] testRecorder];
-      OCMVerify([videoOutput setVideoSettings:pixelFormat.videoSettings]);
-      OCMVerify([stillOutput setOutputSettings:pixelFormat.videoSettings]);
+      OCMVerifyAllWithDelay(videoOutput, 1);
+      OCMVerifyAllWithDelay(stillOutput, 1);
       expect(recorder).to.sendValues(@[pixelFormat]);
       expect(recorder).to.complete();
     });
@@ -92,18 +96,18 @@ context(@"", ^{
       LLSignalTestRecorder *recorder = [stillFrames testRecorder];
 
       [trigger sendNext:nil];
-      expect(recorder).to.sendValuesWithCount(1);
+      expect(recorder).will.sendValuesWithCount(1);
       expect(recorder).to.matchValue(0, ^BOOL(id<CAMVideoFrame> frame) {
         return [frame sampleBuffer].get() == sampleBuffer.get();
       });
       [trigger sendNext:nil];
-      expect(recorder).to.sendValuesWithCount(2);
+      expect(recorder).will.sendValuesWithCount(2);
       expect(recorder).to.matchValue(1, ^BOOL(id<CAMVideoFrame> frame) {
         return [frame sampleBuffer].get() == sampleBuffer.get();
       });
       expect(recorder).toNot.complete();
       [trigger sendCompleted];
-      expect(recorder).to.complete();
+      expect(recorder).will.complete();
 
       boxedSampleBuffer = nil;
     });
@@ -342,7 +346,7 @@ context(@"", ^{
 
       NSError *expected = [NSError lt_errorWithCode:CAMErrorCodeFailedCapturingFromStillOutput
                                     underlyingError:kError];
-      expect(recorder).to.sendError(expected);
+      expect(recorder).will.sendError(expected);
     });
   });
 
@@ -573,19 +577,6 @@ context(@"", ^{
         videoDevice.maxExposureTargetBias = 6;
         expect(device.maxExposureCompensation).will.equal(6);
       });
-
-      it(@"should raise when exposure compensation out of bounds", ^{
-        videoDevice.minExposureTargetBias = 2;
-        videoDevice.maxExposureTargetBias = 3;
-
-        expect(^{
-          __unused id x = [[device setExposureCompensation:1.9] testRecorder];
-        }).will.raise(NSInvalidArgumentException);
-
-        expect(^{
-          __unused id x = [[device setExposureCompensation:3.1] testRecorder];
-        }).will.raise(NSInvalidArgumentException);
-      });
     });
 
     context(@"require subscription", ^{
@@ -807,16 +798,6 @@ context(@"", ^{
         expect(device.maxZoomFactor).will.equal(3);
       });
 
-      it(@"should raise when zoom out of bounds", ^{
-        expect(^{
-          __unused id x = [[device setZoom:5] testRecorder];
-        }).will.raise(NSInvalidArgumentException);
-
-        expect(^{
-          __unused id x = [[device setZoom:0.2] testRecorder];
-        }).will.raise(NSInvalidArgumentException);
-      });
-
       it(@"should update hasZoom", ^{
         expect(device.hasZoom).to.beTruthy();
         format.videoMaxZoomFactorToReturn = 1;
@@ -915,7 +896,7 @@ context(@"", ^{
 
       it(@"should set torch level", ^{
         LLSignalTestRecorder *recorder = [[device setTorchLevel:kTorchLevel] testRecorder];
-        expect(recorder).to.sendValues(@[@(kTorchLevel)]);
+        expect(recorder).will.sendValues(@[@(kTorchLevel)]);
         expect(recorder).to.complete();
         expect(videoDevice.torchMode).to.equal(AVCaptureTorchModeOn);
         expect(videoDevice.torchLevel).to.equal(kTorchLevel);
@@ -923,12 +904,14 @@ context(@"", ^{
 
       it(@"should set torch on and off", ^{
         expect(videoDevice.torchMode).to.equal(AVCaptureTorchModeOff);
-        [[device setTorchLevel:1] subscribeNext:^(id) {}];
+        LLSignalTestRecorder *onRecorder = [[device setTorchLevel:1] testRecorder];
+        expect(onRecorder).will.sendValues(@[@1]);
+        expect(onRecorder).to.complete();
         expect(videoDevice.torchMode).to.equal(AVCaptureTorchModeOn);
-        expect(videoDevice.torchLevel).to.equal(1);
-        LLSignalTestRecorder *recorder = [[device setTorchLevel:0] testRecorder];
-        expect(recorder).to.sendValues(@[@(AVCaptureTorchModeOff)]);
-        expect(recorder).to.complete();
+
+        LLSignalTestRecorder *offRecorder = [[device setTorchLevel:0] testRecorder];
+        expect(offRecorder).will.sendValues(@[@0]);
+        expect(offRecorder).to.complete();
         expect(videoDevice.torchMode).to.equal(AVCaptureTorchModeOff);
       });
 
@@ -936,16 +919,6 @@ context(@"", ^{
         expect(device.hasTorch).to.beFalsy();
         videoDevice.hasTorch = YES;
         expect(device.hasTorch).to.beTruthy();
-      });
-
-      it(@"should raise when torch level is out of bounds", ^{
-        expect(^{
-          [[device setTorchLevel:2] testRecorder];
-        }).to.raise(NSInvalidArgumentException);
-
-        expect(^{
-          [[device setTorchLevel:-0.5] testRecorder];
-        }).to.raise(NSInvalidArgumentException);
       });
     });
 
@@ -962,17 +935,17 @@ context(@"", ^{
     });
 
     context(@"negative", ^{
-      it(@"should return error from torch mode", ^{
+      it(@"should return error when torch off is unsupported", ^{
         LLSignalTestRecorder *recorder = [[device setTorchLevel:0] testRecorder];
         NSError *expected = [NSError lt_errorWithCode:CAMErrorCodeTorchModeSettingUnsupported];
-        expect(recorder).to.sendError(expected);
+        expect(recorder).will.sendError(expected);
         expect(videoDevice.torchMode).toNot.equal(AVCaptureTorchModeAuto);
       });
 
-      it(@"should return error from torch level", ^{
+      it(@"should return error when torch on in unsupported", ^{
         LLSignalTestRecorder *recorder = [[device setTorchLevel:kTorchLevel] testRecorder];
         NSError *expected = [NSError lt_errorWithCode:CAMErrorCodeTorchModeSettingUnsupported];
-        expect(recorder).to.sendError(expected);
+        expect(recorder).will.sendError(expected);
         expect(videoDevice.torchMode).toNot.equal(AVCaptureTorchModeAuto);
       });
     });
@@ -985,7 +958,8 @@ context(@"flip", ^{
 
   beforeEach(^{
     session = OCMClassMock([CAMHardwareSession class]);
-    device = [[CAMHardwareDevice alloc] initWithSession:session];
+    device = [[CAMHardwareDevice alloc] initWithSession:session
+                                           sessionQueue:dispatch_get_main_queue()];
   });
 
   it(@"should set new camera", ^{
@@ -1015,7 +989,8 @@ context(@"lock", ^{
 
   beforeEach(^{
     session = [[CAMHardwareSession alloc] initWithPreset:nil session:nil];
-    device = [[CAMHardwareDevice alloc] initWithSession:session];
+    device = [[CAMHardwareDevice alloc] initWithSession:session
+                                           sessionQueue:dispatch_get_main_queue()];
     videoDevice = [[CAMFakeAVCaptureDevice alloc] init];
     session.videoDevice = videoDevice;
   });
@@ -1043,7 +1018,9 @@ context(@"retaining", ^{
   it(@"should not retain itself", ^{
     __weak id weakDevice;
     @autoreleasepool {
-      CAMHardwareDevice *device = [[CAMHardwareDevice alloc] initWithSession:session];
+      CAMHardwareDevice *device =
+          [[CAMHardwareDevice alloc] initWithSession:session
+                                        sessionQueue:dispatch_get_main_queue()];
       weakDevice = device;
     }
     expect(weakDevice).to.beNil();
@@ -1057,7 +1034,9 @@ context(@"retaining", ^{
       CAMSignalBlock signalBlock = data[@"signalBlock"];
       RACSignal *signal;
       @autoreleasepool {
-        CAMHardwareDevice *device = [[CAMHardwareDevice alloc] initWithSession:session];
+        CAMHardwareDevice *device =
+            [[CAMHardwareDevice alloc] initWithSession:session
+                                          sessionQueue:dispatch_get_main_queue()];
         weakDevice = device;
         signal = signalBlock(device);
       }
@@ -1159,14 +1138,15 @@ context(@"retaining", ^{
   }});
 });
 
-context(@"multiple setters", ^{
+context(@"threading", ^{
   __block CAMHardwareSession *session;
   __block CAMHardwareDevice *device;
   __block CAMFakeAVCaptureDevice *videoDevice;
 
   beforeEach(^{
     session = [[CAMHardwareSession alloc] initWithPreset:nil session:nil];
-    device = [[CAMHardwareDevice alloc] initWithSession:session];
+    device = [[CAMHardwareDevice alloc] initWithSession:session
+                                           sessionQueue:dispatch_get_main_queue()];
     videoDevice = [[CAMFakeAVCaptureDevice alloc] init];
     videoDevice.focusModeSupported = YES;
     videoDevice.focusPointOfInterestSupported = YES;
@@ -1178,13 +1158,26 @@ context(@"multiple setters", ^{
   it(@"should run multiple setters successfully", ^{
     RACSignal *setFocus = [device setContinuousFocusPoint:CGPointMake(0.3, 0.6)];
     RACSignal *setExposure = [device setSingleExposurePoint:CGPointMake(0.5, 0.5)];
-    RACSignal *setBoth = [RACSignal zip:@[setFocus, setExposure]];
+    RACSignal *setBoth = [RACSignal merge:@[setFocus, setExposure]];
 
     expect(setBoth).will.complete();
     expect(videoDevice.focusMode).to.equal(AVCaptureFocusModeContinuousAutoFocus);
     expect(videoDevice.focusPointOfInterest).to.equal(CGPointMake(0.3, 0.6));
     expect(videoDevice.exposureMode).to.equal(AVCaptureExposureModeAutoExpose);
     expect(videoDevice.exposurePointOfInterest).to.equal(CGPointMake(0.5, 0.5));
+  });
+
+  it(@"should run multiple setters on a single thread", ^{
+    expect(videoDevice.activeThreads.count).to.equal(0);
+
+    RACSignal *setFocus = [device setContinuousFocusPoint:CGPointMake(0.3, 0.6)];
+    RACSignal *setExposure = [[device setSingleExposurePoint:CGPointMake(0.5, 0.5)]
+        subscribeOn:[RACScheduler scheduler]];
+    RACSignal *setBoth = [RACSignal merge:@[setFocus, setExposure]];
+
+    expect(setBoth).will.complete();
+
+    expect(videoDevice.activeThreads.count).to.equal(1);
   });
 });
 

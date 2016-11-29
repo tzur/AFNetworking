@@ -28,6 +28,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Media types the receiver will report to "have", when queried using \c hasMediaType:.
 @property (copy, nonatomic) NSArray<NSString *> *mediaTypes;
 
+/// Threads on which various \c set* methods were called.
+@property (readonly, nonatomic) NSSet<NSThread *> *activeThreads;
+
 /// Value to return in \c isFocusModeSupported:.
 @property (nonatomic) BOOL focusModeSupported;
 
