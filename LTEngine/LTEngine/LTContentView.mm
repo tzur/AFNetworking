@@ -54,6 +54,8 @@ NS_ASSUME_NONNULL_BEGIN
 // LTContentCoordinateConverter protocol.
 @dynamic contentToPresentationCoordinateTransform;
 @dynamic presentationToContentCoordinateTransform;
+@dynamic contentToPixelPresentationCoordinateTransform;
+@dynamic pixelPresentationToContentCoordinateTransform;
 
 // LTContentInteractionManager protocol.
 @dynamic customGestureRecognizers;
@@ -339,8 +341,16 @@ NS_ASSUME_NONNULL_BEGIN
   return [self.converter convertPointFromContentToPresentationCoordinates:point];
 }
 
+- (CGPoint)convertPointFromContentToPixelPresentationCoordinates:(CGPoint)point {
+  return [self.converter convertPointFromContentToPixelPresentationCoordinates:point];
+}
+
 - (CGPoint)convertPointFromPresentationToContentCoordinates:(CGPoint)point {
   return [self.converter convertPointFromPresentationToContentCoordinates:point];
+}
+
+- (CGPoint)convertPointFromPixelPresentationToContentCoordinates:(CGPoint)point {
+  return [self.converter convertPointFromPixelPresentationToContentCoordinates:point];
 }
 
 #pragma mark -
