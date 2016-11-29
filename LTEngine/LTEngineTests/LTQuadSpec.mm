@@ -1019,54 +1019,99 @@ context(@"transformations", ^{
         scaleFactor = 2;
       });
 
-      it(@"should create a scaled copy", ^{
-        lt::Quad scaledQuad = quad.scaledBy(scaleFactor);
-        expect(scaledQuad.v0()).to.equal(CGPointMake(-0.5, -0.5));
-        expect(scaledQuad.v1()).to.equal(CGPointMake(1.5, -0.5));
-        expect(scaledQuad.v2()).to.equal(CGPointMake(1.5, 1.5));
-        expect(scaledQuad.v3()).to.equal(CGPointMake(-0.5, 1.5));
+      context(@"uniform scaling", ^{
+        it(@"should create a scaled copy", ^{
+          lt::Quad scaledQuad = quad.scaledBy(scaleFactor);
+          expect(scaledQuad.v0()).to.equal(CGPointMake(-0.5, -0.5));
+          expect(scaledQuad.v1()).to.equal(CGPointMake(1.5, -0.5));
+          expect(scaledQuad.v2()).to.equal(CGPointMake(1.5, 1.5));
+          expect(scaledQuad.v3()).to.equal(CGPointMake(-0.5, 1.5));
+        });
+
+        it(@"should create a copy with corners scaled around the origin", ^{
+          lt::Quad scaledQuad = quad.scaledAround(scaleFactor, CGPointZero);
+          expect(scaledQuad.v0()).to.equal(CGPointZero);
+          expect(scaledQuad.v1()).to.equal(CGPointMake(2, 0));
+          expect(scaledQuad.v2()).to.equal(CGPointMake(2, 2));
+          expect(scaledQuad.v3()).to.equal(CGPointMake(0, 2));
+        });
+
+        it(@"should create a copy with corners scaled around the quad center", ^{
+          lt::Quad scaledQuad = quad.scaledAround(scaleFactor, CGPointMake(0.5, 0.5));
+          expect(scaledQuad.v0()).to.equal(CGPointMake(-0.5, -0.5));
+          expect(scaledQuad.v1()).to.equal(CGPointMake(1.5, -0.5));
+          expect(scaledQuad.v2()).to.equal(CGPointMake(1.5, 1.5));
+          expect(scaledQuad.v3()).to.equal(CGPointMake(-0.5, 1.5));
+        });
+
+        it(@"should create a copy with corners scaled around an anchor point", ^{
+          lt::Quad scaledQuad = quad.scaledAround(scaleFactor, CGPointMake(0.5, 0));
+          expect(scaledQuad.v0()).to.equal(CGPointMake(-0.5, 0));
+          expect(scaledQuad.v1()).to.equal(CGPointMake(1.5, 0));
+          expect(scaledQuad.v2()).to.equal(CGPointMake(1.5, 2));
+          expect(scaledQuad.v3()).to.equal(CGPointMake(-0.5, 2));
+        });
+
+        it(@"should create a zero quad when scaling with factor of 0 around the quad center", ^{
+          CGPoint center = quad.center();
+          lt::Quad scaledQuad = quad.scaledBy(0);
+          expect(scaledQuad.v0()).to.equal(center);
+          expect(scaledQuad.v1()).to.equal(center);
+          expect(scaledQuad.v2()).to.equal(center);
+          expect(scaledQuad.v3()).to.equal(center);
+        });
+
+        it(@"should create a point quad when scaling with factor of 0 around an anchor point", ^{
+          CGPoint point = CGPointMake(1, 1);
+          lt::Quad scaledQuad = quad.scaledAround(0, point);
+          expect(scaledQuad.v0()).to.equal(point);
+          expect(scaledQuad.v1()).to.equal(point);
+          expect(scaledQuad.v2()).to.equal(point);
+          expect(scaledQuad.v3()).to.equal(point);
+        });
       });
 
-      it(@"should create a copy with corners scaled around the origin", ^{
-        lt::Quad scaledQuad = quad.scaledAround(scaleFactor, CGPointZero);
-        expect(scaledQuad.v0()).to.equal(CGPointZero);
-        expect(scaledQuad.v1()).to.equal(CGPointMake(2, 0));
-        expect(scaledQuad.v2()).to.equal(CGPointMake(2, 2));
-        expect(scaledQuad.v3()).to.equal(CGPointMake(0, 2));
-      });
+      context(@"non-uniform scaling", ^{
+        __block CGFloat verticalScaleFactor;
 
-      it(@"should create a copy with corners scaled around the quad center", ^{
-        lt::Quad scaledQuad = quad.scaledAround(scaleFactor, CGPointMake(0.5, 0.5));
-        expect(scaledQuad.v0()).to.equal(CGPointMake(-0.5, -0.5));
-        expect(scaledQuad.v1()).to.equal(CGPointMake(1.5, -0.5));
-        expect(scaledQuad.v2()).to.equal(CGPointMake(1.5, 1.5));
-        expect(scaledQuad.v3()).to.equal(CGPointMake(-0.5, 1.5));
-      });
+        beforeEach(^{
+          verticalScaleFactor = 0.5;
+        });
 
-      it(@"should create a copy with corners scaled around an anchor point", ^{
-        lt::Quad scaledQuad = quad.scaledAround(scaleFactor, CGPointMake(0.5, 0));
-        expect(scaledQuad.v0()).to.equal(CGPointMake(-0.5, 0));
-        expect(scaledQuad.v1()).to.equal(CGPointMake(1.5, 0));
-        expect(scaledQuad.v2()).to.equal(CGPointMake(1.5, 2));
-        expect(scaledQuad.v3()).to.equal(CGPointMake(-0.5, 2));
-      });
+        it(@"should create a scaled copy", ^{
+          lt::Quad scaledQuad = quad.scaledBy(LTVector2(scaleFactor, verticalScaleFactor));
+          expect(scaledQuad.v0()).to.equal(CGPointMake(-0.5, 0.25));
+          expect(scaledQuad.v1()).to.equal(CGPointMake(1.5, 0.25));
+          expect(scaledQuad.v2()).to.equal(CGPointMake(1.5, 0.75));
+          expect(scaledQuad.v3()).to.equal(CGPointMake(-0.5, 0.75));
+        });
 
-      it(@"should create a zero quad when scaling with factor of 0 around the quad center", ^{
-        CGPoint center = quad.center();
-        lt::Quad scaledQuad = quad.scaledBy(0);
-        expect(scaledQuad.v0()).to.equal(center);
-        expect(scaledQuad.v1()).to.equal(center);
-        expect(scaledQuad.v2()).to.equal(center);
-        expect(scaledQuad.v3()).to.equal(center);
-      });
+        it(@"should create a copy with corners scaled around the origin", ^{
+          lt::Quad scaledQuad = quad.scaledAround(LTVector2(scaleFactor, verticalScaleFactor),
+                                                  CGPointZero);
+          expect(scaledQuad.v0()).to.equal(CGPointZero);
+          expect(scaledQuad.v1()).to.equal(CGPointMake(2, 0));
+          expect(scaledQuad.v2()).to.equal(CGPointMake(2, 0.5));
+          expect(scaledQuad.v3()).to.equal(CGPointMake(0, 0.5));
+        });
 
-      it(@"should create a point quad when scaling with factor of 0 around an anchor point", ^{
-        CGPoint point = CGPointMake(1, 1);
-        lt::Quad scaledQuad = quad.scaledAround(0, point);
-        expect(scaledQuad.v0()).to.equal(point);
-        expect(scaledQuad.v1()).to.equal(point);
-        expect(scaledQuad.v2()).to.equal(point);
-        expect(scaledQuad.v3()).to.equal(point);
+        it(@"should create a copy with corners scaled around the quad center", ^{
+          lt::Quad scaledQuad = quad.scaledAround(LTVector2(scaleFactor, verticalScaleFactor),
+                                                  CGPointMake(0.5, 0.5));
+          expect(scaledQuad.v0()).to.equal(CGPointMake(-0.5, 0.25));
+          expect(scaledQuad.v1()).to.equal(CGPointMake(1.5, 0.25));
+          expect(scaledQuad.v2()).to.equal(CGPointMake(1.5, 0.75));
+          expect(scaledQuad.v3()).to.equal(CGPointMake(-0.5, 0.75));
+        });
+
+        it(@"should create a copy with corners scaled around an anchor point", ^{
+          lt::Quad scaledQuad = quad.scaledAround(LTVector2(scaleFactor, verticalScaleFactor),
+                                                  CGPointMake(0.5, 0));
+          expect(scaledQuad.v0()).to.equal(CGPointMake(-0.5, 0));
+          expect(scaledQuad.v1()).to.equal(CGPointMake(1.5, 0));
+          expect(scaledQuad.v2()).to.equal(CGPointMake(1.5, 0.5));
+          expect(scaledQuad.v3()).to.equal(CGPointMake(-0.5, 0.5));
+        });
       });
     });
 
@@ -1155,6 +1200,21 @@ context(@"transformations", ^{
           expect(translatedQuad.v2()).to.beCloseToPoint(v2 + translation);
           expect(CGPointIsNull(translatedQuad.v3())).to.beTruthy();
         });
+      });
+    });
+
+    context(@"affine transformation", ^{
+      it(@"should create copy transformed by affine transformation", ^{
+        lt::Quad quad({{v0, v1, v2, v3}});
+        CGPoint translation = CGPointMake(2, 5);
+        CGAffineTransform transformation =
+            CGAffineTransformConcat(CGAffineTransformMakeTranslation(2, 5),
+                                    CGAffineTransformMakeScale(2, 1));
+        quad = quad.transformedBy(transformation);
+        expect(quad.v0()).to.beCloseToPoint(CGPointMake(2, 1) * (v0 + translation));
+        expect(quad.v1()).to.beCloseToPoint(CGPointMake(2, 1) * (v1 + translation));
+        expect(quad.v2()).to.beCloseToPoint(CGPointMake(2, 1) * (v2 + translation));
+        expect(quad.v3()).to.beCloseToPoint(CGPointMake(2, 1) * (v3 + translation));
       });
     });
   });

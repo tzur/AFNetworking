@@ -294,11 +294,21 @@ struct Quad {
   /// \c angle, which is to be provided in radians, around the given \c anchorPoint.
   Quad rotatedAroundPoint(CGFloat angle, CGPoint anchorPoint) const noexcept;
 
-  /// Returns a new quad scaled by the given \c scaleFactor around the \c center of this quad.
+  /// Returns a new quad scaled uniformly by the given \c scaleFactor around the \c center of this
+  /// quad.
   Quad scaledBy(CGFloat scaleFactor) const noexcept;
 
-  /// Returns a new quad scaled by the given \c scaleFactor around the given \c anchorPoint.
+  /// Returns a new quad scaled non-uniformly by the given \c scaleFactor around the \c center of
+  /// this quad.
+  Quad scaledBy(LTVector2 scaleFactor) const noexcept;
+
+  /// Returns a new quad scaled uniformly by the given \c scaleFactor around the given
+  /// \c anchorPoint.
   Quad scaledAround(CGFloat scaleFactor, CGPoint anchorPoint) const noexcept;
+
+  /// Returns a new quad scaled non-uniformly by the given \c scaleFactor around the given
+  /// \c anchorPoint.
+  Quad scaledAround(LTVector2 scaleFactor, CGPoint anchorPoint) const noexcept;
 
   /// Returns a new quad translated by the given \c translation.
   Quad translatedBy(CGPoint translation) const noexcept;
@@ -306,6 +316,9 @@ struct Quad {
   /// Returns a new quad with the corners belonging to the given \c group translated by the given
   /// \c translation.
   Quad translatedBy(CGPoint translation, LTQuadCornerRegion group) const noexcept;
+
+  /// Returns a new quad with the corners transformed by the given \c transform.
+  Quad transformedBy(CGAffineTransform transform) const noexcept;
 
   /// Returns a new quad with corners corresponding to those of the given \c rect after transforming
   /// each of the rect corners using the \c transform of this quad. Returns a null quad if this quad
@@ -454,18 +467,33 @@ private:
 #pragma mark -
 
 inline Quad Quad::scaledBy(CGFloat scaleFactor) const noexcept {
+  return scaledAround(LTVector2(scaleFactor), center());
+}
+
+inline Quad Quad::scaledBy(LTVector2 scaleFactor) const noexcept {
   return scaledAround(scaleFactor, center());
 }
 
 inline Quad Quad::scaledAround(CGFloat scaleFactor, CGPoint anchorPoint) const noexcept {
-  return Quad(anchorPoint + scaleFactor * (_v[0] - anchorPoint),
-              anchorPoint + scaleFactor * (_v[1] - anchorPoint),
-              anchorPoint + scaleFactor * (_v[2] - anchorPoint),
-              anchorPoint + scaleFactor * (_v[3] - anchorPoint));
+  return scaledAround(LTVector2(scaleFactor), anchorPoint);
+}
+
+inline Quad Quad::scaledAround(LTVector2 scaleFactor, CGPoint anchorPoint) const noexcept {
+  return Quad(anchorPoint + (CGPoint)scaleFactor * (_v[0] - anchorPoint),
+              anchorPoint + (CGPoint)scaleFactor * (_v[1] - anchorPoint),
+              anchorPoint + (CGPoint)scaleFactor * (_v[2] - anchorPoint),
+              anchorPoint + (CGPoint)scaleFactor * (_v[3] - anchorPoint));
 }
 
 inline Quad Quad::translatedBy(CGPoint translation) const noexcept {
   return translatedBy(translation, LTQuadCornerRegionAll);
+}
+
+inline Quad Quad::transformedBy(CGAffineTransform transform) const noexcept {
+  return Quad(CGPointApplyAffineTransform(_v[0], transform),
+              CGPointApplyAffineTransform(_v[1], transform),
+              CGPointApplyAffineTransform(_v[2], transform),
+              CGPointApplyAffineTransform(_v[3], transform));
 }
 
 #pragma mark -
