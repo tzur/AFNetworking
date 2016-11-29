@@ -14,7 +14,7 @@ LTEnumImplement(NSUInteger, CAMPixelFormat,
 
 @implementation CAMPixelFormat (Utility)
 
-- (FourCharCode)cvPixelFormat {
+- (OSType)cvPixelFormat {
   switch (self.value) {
     case CAMPixelFormatBGRA:
       return kCVPixelFormatType_32BGRA;

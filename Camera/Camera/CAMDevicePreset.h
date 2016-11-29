@@ -22,6 +22,9 @@ LTEnumDeclare(NSUInteger, CAMPixelFormat,
 /// Category for adding utility methods for \c CAMPixelFormat.
 @interface CAMPixelFormat (Utility)
 
+/// Returns the pixel format in the corresponding system format.
+- (OSType)cvPixelFormat;
+
 /// Returns a video settings dictionary in the format expected by \c AVCaptureVideoDataOutput,
 /// which sets the receiver as the pixel format.
 - (NSDictionary *)videoSettings;

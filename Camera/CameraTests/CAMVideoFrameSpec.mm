@@ -25,7 +25,7 @@ beforeEach(^{
 
   sampleTiming = {kCMTimeZero, CMTimeMake(1, 60), kCMTimeZero};
 
-  sampleBuffer = CAMCreateSampleBufferForImage(image, sampleTiming);
+  sampleBuffer = CAMCreateBGRASampleBufferForImage(image, sampleTiming);
 });
 
 context(@"initialization and basic properties", ^{
@@ -40,7 +40,8 @@ context(@"initialization and basic properties", ^{
   });
 
   it(@"should retain sample buffer and release after dealloc", ^{
-    lt::Ref<CMSampleBufferRef> localSampleBuffer = CAMCreateImageSampleBuffer(CGSizeMake(3, 6));
+    lt::Ref<CMSampleBufferRef> localSampleBuffer = CAMCreateImageSampleBuffer($(CAMPixelFormatBGRA),
+                                                                              CGSizeMake(3, 6));
     CMSampleBufferRef sampleBufferRef = localSampleBuffer.get();
     NSInteger initialRetainCount = CFGetRetainCount(sampleBufferRef);
     @autoreleasepool {
@@ -66,7 +67,8 @@ context(@"initialization and basic properties", ^{
   });
 
   it(@"should not retain internal pixel buffer after deallocation", ^{
-    lt::Ref<CMSampleBufferRef> localSampleBuffer = CAMCreateImageSampleBuffer(CGSizeMake(3, 6));
+    lt::Ref<CMSampleBufferRef> localSampleBuffer = CAMCreateImageSampleBuffer($(CAMPixelFormatBGRA),
+                                                                              CGSizeMake(3, 6));
     CMSampleBufferRef sampleBufferRef = localSampleBuffer.get();
     CVPixelBufferRef pixelBufferRef = CMSampleBufferGetImageBuffer(localSampleBuffer.get());
     NSInteger initialRetainCount = CFGetRetainCount(pixelBufferRef);

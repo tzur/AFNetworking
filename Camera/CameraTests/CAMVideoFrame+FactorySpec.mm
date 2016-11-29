@@ -20,7 +20,7 @@ it(@"should initialize with new pixelBuffer and old CAMVideoFrame", ^{
   image(cv::Rect(5, 6, 5, 6)) = cv::Scalar(128, 128, 128, 255);
 
   CMSampleTimingInfo sampleTiming = {kCMTimeZero, CMTimeMake(1, 60), kCMTimeZero};
-  lt::Ref<CMSampleBufferRef> sampleBuffer = CAMCreateSampleBufferForImage(image, sampleTiming);
+  lt::Ref<CMSampleBufferRef> sampleBuffer = CAMCreateBGRASampleBufferForImage(image, sampleTiming);
   CAMVideoFrame *oldVideoFrame = [[CAMVideoFrame alloc] initWithSampleBuffer:sampleBuffer.get()];
 
   cv::Mat4b expectedImage = cv::Mat(8, 12, CV_8UC4);
