@@ -30,8 +30,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// Calling with any other signature will raise \c NSInvalidArgumentException. \c LTEventBus
 /// guarantees the selector will be called only with a subtype of the class it was registered with.
 ///
-/// \c target is held weakly. It is \b not required to unregister before \c dealloc. Deallocated
-/// targets are automatically removed.
+/// \c target is held weakly. It is \b not required to unregister before \c dealloc.
 - (void)addObserver:(id)target selector:(SEL)selector forClass:(Class)objClass;
 
 /// Registers to be notified when events of a specific protocol are posted. The target's selector
@@ -51,8 +50,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// guarantees the selector will be called only with an instance that conforms to a protocol that
 /// is a subprotocol of the protocol it registered with.
 ///
-/// \c target is held weakly. It is \b not required to unregister before \c dealloc. Deallocated
-/// targets are automatically removed.
+/// \c target is held weakly. It is \b not required to unregister before \c dealloc.
 - (void)addObserver:(id)target selector:(SEL)selector forProtocol:(Protocol *)protocol;
 
 /// Unregisters \c target from all events that are of class \c objClass or a subclass of it.
@@ -70,7 +68,9 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)removeObserver:(id)target forProtocol:(Protocol *)protocol;
 
 /// Posts an event. This method synchronously calls the registered selector of every target that
-/// registered for this event's class, any superclass, protocol or any superprotocol.
+/// registered for this event's class, any superclass, protocol or any superprotocol. This method is
+/// reentrant, therefore, events that are posted receiver from a registered selector upon handling
+/// \c object are posted immediately, and pause the posting of \c object, until done.
 - (void)post:(id)object;
 
 @end
