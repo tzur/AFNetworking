@@ -1138,7 +1138,7 @@ context(@"retaining", ^{
   }});
 });
 
-context(@"threading", ^{
+context(@"multiple setters", ^{
   __block CAMHardwareSession *session;
   __block CAMHardwareDevice *device;
   __block CAMFakeAVCaptureDevice *videoDevice;
@@ -1158,26 +1158,13 @@ context(@"threading", ^{
   it(@"should run multiple setters successfully", ^{
     RACSignal *setFocus = [device setContinuousFocusPoint:CGPointMake(0.3, 0.6)];
     RACSignal *setExposure = [device setSingleExposurePoint:CGPointMake(0.5, 0.5)];
-    RACSignal *setBoth = [RACSignal merge:@[setFocus, setExposure]];
+    RACSignal *setBoth = [RACSignal zip:@[setFocus, setExposure]];
 
     expect(setBoth).will.complete();
     expect(videoDevice.focusMode).to.equal(AVCaptureFocusModeContinuousAutoFocus);
     expect(videoDevice.focusPointOfInterest).to.equal(CGPointMake(0.3, 0.6));
     expect(videoDevice.exposureMode).to.equal(AVCaptureExposureModeAutoExpose);
     expect(videoDevice.exposurePointOfInterest).to.equal(CGPointMake(0.5, 0.5));
-  });
-
-  it(@"should run multiple setters on a single thread", ^{
-    expect(videoDevice.activeThreads.count).to.equal(0);
-
-    RACSignal *setFocus = [device setContinuousFocusPoint:CGPointMake(0.3, 0.6)];
-    RACSignal *setExposure = [[device setSingleExposurePoint:CGPointMake(0.5, 0.5)]
-        subscribeOn:[RACScheduler scheduler]];
-    RACSignal *setBoth = [RACSignal merge:@[setFocus, setExposure]];
-
-    expect(setBoth).will.complete();
-
-    expect(videoDevice.activeThreads.count).to.equal(1);
   });
 });
 
