@@ -3,6 +3,8 @@
 
 #import "CUISingleChoiceMenuViewController.h"
 
+#import <Wireframes/UIView+LayoutSignals.h>
+
 #import "CUIMenuItemsDataSource.h"
 #import "CUIMutableMenuItemView.h"
 
@@ -70,6 +72,13 @@ static NSString * const kCellClassIdentifier = @"cellClass";
   [self.collectionView mas_makeConstraints:^(MASConstraintMaker *make) {
     make.edges.equalTo(self.view);
   }];
+  @weakify(self);
+  [[self.collectionView.wf_positiveSizeSignal
+      skip:1]
+      subscribeNext:^(id) {
+        @strongify(self);
+        [self.collectionView.collectionViewLayout invalidateLayout];
+      }];
 }
 
 - (void)setItemsPerRow:(CGFloat)itemsPerRow {
