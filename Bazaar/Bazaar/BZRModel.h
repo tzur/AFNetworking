@@ -18,6 +18,11 @@ NS_ASSUME_NONNULL_BEGIN
 /// keys.
 + (NSSet<NSString *> *)optionalPropertyKeys;
 
+/// Returns the dictionary of property keys mapped to values which are the default values for this
+/// model class. The default return value is an empty set, subclasses should override this method
+/// and return their own set of default property values.
++ (NSDictionary<NSString *, id> *)defaultPropertyValues;
+
 /// Validates that the given \c dictionaryValue can be safely deserialized to an instance of the
 /// receiver class while preserving the nullability attributes of the model properties. All model
 /// properties are assumed to be mandatory except for those listed in \c optionalPropertyKeys. If
@@ -25,6 +30,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// object describing the error.
 + (BOOL)validateDictionaryValue:(NSDictionary *)dictionaryValue
        withOptionalPropertyKeys:(NSSet<NSString *> *)optionalPropertyKeys
+              withDefaultValues:(NSDictionary<NSString *, id> *)defaultPropertyValues
                           error:(NSError **)error;
 
 /// Returns a new \c BZRModel with the property named \c propertyName set to \c value.

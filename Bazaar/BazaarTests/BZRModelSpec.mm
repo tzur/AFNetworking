@@ -18,6 +18,9 @@ static const NSUInteger kValidationErrorCode = 1337;
 /// Optional property of a primitive type, its value can be omitted.
 @property (readonly, nonatomic) BOOL primitiveProperty;
 
+/// Property with default, its value can be omitted and determined by \c defaultPropertyValues.
+@property (strong, readonly, nonatomic, nonnull) NSString *propertyWithDefault;
+
 @end
 
 @implementation BZRDummyModel
@@ -27,6 +30,10 @@ static const NSUInteger kValidationErrorCode = 1337;
     @instanceKeypath(BZRDummyModel, optionalProperty),
     @instanceKeypath(BZRDummyModel, primitiveProperty),
   ]];
+}
+
++ (NSDictionary<NSString *, id> *)defaultPropertyValues {
+  return @{@instanceKeypath(BZRDummyModel, propertyWithDefault): @"foo"};
 }
 
 - (BOOL)validate:(NSError *__autoreleasing *)error {
@@ -52,17 +59,36 @@ context(@"optional properties", ^{
 context(@"dictionary validation", ^{
   __block NSError *error;
   __block NSSet<NSString *> *optionalPropertyKeys;
+  __block NSDictionary<NSString *, id> *defaultPropertyValues;
 
   beforeEach(^{
     error = nil;
     optionalPropertyKeys = [BZRDummyModel optionalPropertyKeys];
+    defaultPropertyValues = [BZRDummyModel defaultPropertyValues];
   });
 
   it(@"should succeed if dictionary is missing a value for optional properties", ^{
-    NSDictionary *dictionaryValue = @{@instanceKeypath(BZRDummyModel, requiredProperty): @"Foo"};
+    NSDictionary *dictionaryValue = @{
+      @instanceKeypath(BZRDummyModel, requiredProperty): @"Foo",
+      @instanceKeypath(BZRDummyModel, propertyWithDefault): @"Bar"
+    };
 
     BOOL isValid = [BZRDummyModel validateDictionaryValue:dictionaryValue
-                                 withOptionalPropertyKeys:optionalPropertyKeys error:&error];
+                                 withOptionalPropertyKeys:optionalPropertyKeys
+                                        withDefaultValues:defaultPropertyValues error:&error];
+    expect(isValid).to.beTruthy();
+    expect(error).to.beNil();
+  });
+
+  it(@"should succeed if dictionary is missing a value for default properties", ^{
+    NSDictionary *dictionaryValue = @{
+      @instanceKeypath(BZRDummyModel, requiredProperty): @"Foo",
+      @instanceKeypath(BZRDummyModel, optionalProperty): @"Bar"
+    };
+
+    BOOL isValid = [BZRDummyModel validateDictionaryValue:dictionaryValue
+                                 withOptionalPropertyKeys:optionalPropertyKeys
+                                        withDefaultValues:defaultPropertyValues error:&error];
     expect(isValid).to.beTruthy();
     expect(error).to.beNil();
   });
@@ -71,20 +97,36 @@ context(@"dictionary validation", ^{
     NSDictionary *dictionaryValue = @{@instanceKeypath(BZRDummyModel, optionalProperty): @"Foo"};
 
     BOOL isValid = [BZRDummyModel validateDictionaryValue:dictionaryValue
-                                 withOptionalPropertyKeys:optionalPropertyKeys error:&error];
+                                 withOptionalPropertyKeys:optionalPropertyKeys
+                                        withDefaultValues:defaultPropertyValues error:&error];
     expect(isValid).to.beFalsy();
     expect(error).toNot.beNil();
     expect(error.domain).to.equal(kLTErrorDomain);
     expect(error.code).to.equal(LTErrorCodeObjectCreationFailed);
   });
 
-  it(@"should fail validation if any property value is missing and no optional keys are allowed", ^{
+  it(@"should fail validation if any property value is missing and no optional keys supplied", ^{
     NSDictionary *dictionaryValue = @{
       @instanceKeypath(BZRDummyModel, requiredProperty): @"Foo"
     };
 
     BOOL isValid = [BZRDummyModel validateDictionaryValue:dictionaryValue
-                                 withOptionalPropertyKeys:[NSSet set] error:&error];
+                                 withOptionalPropertyKeys:[NSSet set]
+                                        withDefaultValues:defaultPropertyValues error:&error];
+    expect(isValid).to.beFalsy();
+    expect(error).toNot.beNil();
+    expect(error.domain).to.equal(kLTErrorDomain);
+    expect(error.code).to.equal(LTErrorCodeObjectCreationFailed);
+  });
+
+  it(@"should fail validation if any property value is missing and default values not supplied", ^{
+    NSDictionary *dictionaryValue = @{
+      @instanceKeypath(BZRDummyModel, requiredProperty): @"Foo"
+    };
+
+    BOOL isValid = [BZRDummyModel validateDictionaryValue:dictionaryValue
+                                 withOptionalPropertyKeys:optionalPropertyKeys withDefaultValues:@{}
+                                                    error:&error];
     expect(isValid).to.beFalsy();
     expect(error).toNot.beNil();
     expect(error.domain).to.equal(kLTErrorDomain);
@@ -112,6 +154,7 @@ context(@"safe initializer", ^{
     expect(model).toNot.beNil();
     expect(model.requiredProperty).to.equal(@"Foo");
     expect(model.optionalProperty).to.beNil();
+    expect(model.propertyWithDefault).to.equal(@"foo");
     expect(error).to.beNil();
   });
 

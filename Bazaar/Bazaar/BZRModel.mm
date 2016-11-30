@@ -23,15 +23,26 @@ NS_ASSUME_NONNULL_BEGIN
   return optionalPropertyKeys;
 }
 
++ (NSDictionary<NSString *, id> *)defaultPropertyValues {
+  static NSDictionary<NSString *, id> *defaultPropertyValues;
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    defaultPropertyValues = @{};
+  });
+
+  return defaultPropertyValues;
+}
+
 + (BOOL)validateDictionaryValue:(NSDictionary *)dictionaryValue
        withOptionalPropertyKeys:(NSSet<NSString *> *)optionalPropertyKeys
+              withDefaultValues:(NSDictionary<NSString *, id> *)defaultPropertyValues
                           error:(NSError * __autoreleasing *)error {
   for (NSString *key in [self propertyKeys]) {
     if ([optionalPropertyKeys containsObject:key]) {
       continue;
     }
 
-    id value = dictionaryValue[key];
+    id value = dictionaryValue[key] ?: defaultPropertyValues[key];
     if (!value || value == [NSNull null]) {
       if (error) {
         *error = [self integrityValidationErrorWithFailingKey:key];
@@ -55,13 +66,18 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithDictionary:(NSDictionary *)dictionaryValue
                              error:(NSError * __autoreleasing *)error {
-  if (![[self class] validateDictionaryValue:dictionaryValue
-                    withOptionalPropertyKeys:[[self class] optionalPropertyKeys] error:error]) {
-    return nil;
-  }
-
   @try {
-    if (self = [super initWithDictionary:dictionaryValue error:error]) {
+    NSDictionary *dictionaryWithDefaults =
+        [[[self class] defaultPropertyValues]
+         mtl_dictionaryByAddingEntriesFromDictionary:dictionaryValue];
+    if (self = [super initWithDictionary:dictionaryWithDefaults error:error]) {
+      if (![[self class] validateDictionaryValue:dictionaryValue
+                        withOptionalPropertyKeys:[[self class] optionalPropertyKeys]
+                               withDefaultValues:[[self class] defaultPropertyValues]
+                                           error:error]) {
+        self = nil;
+      }
+
       if (![self validate:error]) {
         self = nil;
       }
