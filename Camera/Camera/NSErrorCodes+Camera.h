@@ -45,6 +45,8 @@ LTErrorCodesDeclare(CameraErrorCodeProductID,
   CAMErrorCodeExposureSettingUnsupported,
   /// Caused when the requested white balance setting is not supported.
   CAMErrorCodeWhiteBalanceSettingUnsupported,
+  /// Caused when the requested zoom setting is not supported.
+  CAMErrorCodeZoomSettingUnsupported,
   /// Caused when the requested flash setting is not supported.
   CAMErrorCodeFlashModeSettingUnsupported,
   /// Caused when the requested torch setting is not supported.

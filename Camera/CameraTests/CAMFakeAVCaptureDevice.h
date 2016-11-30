@@ -70,6 +70,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Override to allow setting this property.
 @property (nonatomic) BOOL flashActive;
 
+/// Override to allow setting this property.
+@property (nonatomic) float maxWhiteBalanceGain;
+
 /// \c focusPointOfInterest at the time \c setFocusMode: was last called.
 @property (readonly, nonatomic) CGPoint focusPointOfInterestDuringModeSet;
 

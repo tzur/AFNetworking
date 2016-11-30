@@ -34,7 +34,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Instructs the camera to over- or under- expose frames. \c value will be added to the scene
 /// exposure metering before determining the exposure settings to use. Positive values result in
-/// over-exposed images. \c value is in EV units. Raises if \c value is not in the range
+/// over-exposed images. \c value is in EV units. \c value should be in the range
 /// <tt>[minExposureCompensation, maxExposureCompensation]</tt>.
 ///
 /// Returned signal sends the new exposure compensation value and completes when it is set, or errs

@@ -451,6 +451,16 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
     AVCaptureDevice *device = self.session.videoDevice;
     NSError *error;
     BOOL success = [device cam_performWhileLocked:^BOOL(NSError **errorPtr) {
+      if (lensPosition > 1 || lensPosition < 0 || !std::isfinite(lensPosition)) {
+        NSString *description =
+            [NSString stringWithFormat:@"Lens position %g is out of range [0, 1]", lensPosition];
+        if (errorPtr) {
+          *errorPtr = [NSError lt_errorWithCode:CAMErrorCodeFocusSettingUnsupported
+                                    description:description];
+        }
+        return NO;
+      }
+
       if ([device isFocusModeSupported:AVCaptureFocusModeLocked]) {
         [device setFocusModeLockedWithLensPosition:lensPosition
                                  completionHandler:^(CMTime __unused syncTime) {
@@ -538,14 +548,21 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
   return [[RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
     @strongify(self);
     AVCaptureDevice *device = self.session.videoDevice;
-    LTParameterAssert(value <= device.maxExposureTargetBias,
-        @"Exposure compensation value %g is above the maximum (%g)", value,
-        device.maxExposureTargetBias);
-    LTParameterAssert(value >= device.minExposureTargetBias,
-        @"Exposure compensation value %g is below the minimum (%g)", value,
-        device.minExposureTargetBias);
     NSError *error;
-    BOOL success = [device cam_performWhileLocked:^BOOL(NSError **) {
+    BOOL success = [device cam_performWhileLocked:^BOOL(NSError **errorPtr) {
+      if (value > device.maxExposureTargetBias || value < device.minExposureTargetBias ||
+          !std::isfinite(value)) {
+        NSString *description =
+            [NSString stringWithFormat:@"Exposure compensation value %g is out of range [%g, %g]",
+                                       value, device.minExposureTargetBias,
+                                       device.maxExposureTargetBias];
+        if (errorPtr) {
+          *errorPtr = [NSError lt_errorWithCode:CAMErrorCodeExposureSettingUnsupported
+                                    description:description];
+        }
+        return NO;
+      }
+
       [device setExposureTargetBias:value completionHandler:^(CMTime __unused syncTime) {
         [subscriber sendNext:@(value)];
         [subscriber sendCompleted];
@@ -625,6 +642,43 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
       if ([device isWhiteBalanceModeSupported:AVCaptureWhiteBalanceModeLocked]) {
         AVCaptureWhiteBalanceGains gains =
             [device deviceWhiteBalanceGainsForTemperatureAndTintValues:{temperature, tint}];
+
+        if (gains.redGain < 1 || gains.redGain > device.maxWhiteBalanceGain ||
+            !std::isfinite(gains.redGain)) {
+          NSString *description =
+              [NSString stringWithFormat:@"Red gain %g is out of range [1, %g]",
+                                         gains.redGain, device.maxWhiteBalanceGain];
+          if (errorPtr) {
+            *errorPtr = [NSError lt_errorWithCode:CAMErrorCodeWhiteBalanceSettingUnsupported
+                                      description:description];
+          }
+          return NO;
+        }
+
+        if (gains.greenGain < 1 || gains.greenGain > device.maxWhiteBalanceGain ||
+            !std::isfinite(gains.greenGain)) {
+          NSString *description =
+              [NSString stringWithFormat:@"Green gain %g is out of range [1, %g]",
+                                         gains.greenGain, device.maxWhiteBalanceGain];
+          if (errorPtr) {
+            *errorPtr = [NSError lt_errorWithCode:CAMErrorCodeWhiteBalanceSettingUnsupported
+                                      description:description];
+          }
+          return NO;
+        }
+
+        if (gains.blueGain < 1 || gains.blueGain > device.maxWhiteBalanceGain ||
+            !std::isfinite(gains.blueGain)) {
+          NSString *description =
+              [NSString stringWithFormat:@"Blue gain %g is out of range [1, %g]",
+                                         gains.blueGain, device.maxWhiteBalanceGain];
+          if (errorPtr) {
+            *errorPtr = [NSError lt_errorWithCode:CAMErrorCodeWhiteBalanceSettingUnsupported
+                                      description:description];
+          }
+          return NO;
+        }
+
         [device
          setWhiteBalanceModeLockedWithDeviceWhiteBalanceGains:gains
          completionHandler:^(CMTime) {
@@ -657,12 +711,20 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
   return [[RACSignal defer:^RACSignal *{
     @strongify(self);
     AVCaptureDevice *device = self.session.videoDevice;
-    LTParameterAssert(zoomFactor <= self.maxZoomFactor,
-        @"Zoom factor %g is above the maximum (%g)", zoomFactor, self.maxZoomFactor);
-    LTParameterAssert(zoomFactor >= self.minZoomFactor,
-        @"Zoom factor %g is below the minimum (%g)", zoomFactor, self.minZoomFactor);
     NSError *error;
-    BOOL success = [device cam_performWhileLocked:^BOOL(NSError **) {
+    BOOL success = [device cam_performWhileLocked:^BOOL(NSError **errorPtr) {
+      if (zoomFactor > self.maxZoomFactor || zoomFactor < self.minZoomFactor ||
+          !std::isfinite(zoomFactor)) {
+        NSString *description =
+            [NSString stringWithFormat:@"Zoom factor %g is out of range [%g, %g]",
+                                       zoomFactor, self.minZoomFactor, self.maxZoomFactor];
+        if (errorPtr) {
+          *errorPtr = [NSError lt_errorWithCode:CAMErrorCodeZoomSettingUnsupported
+                                    description:description];
+        }
+        return NO;
+      }
+
       device.videoZoomFactor = zoomFactor;
       return YES;
     } error:&error];
@@ -675,12 +737,20 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
   return [[RACSignal defer:^RACSignal *{
     @strongify(self);
     AVCaptureDevice *device = self.session.videoDevice;
-    LTParameterAssert(zoomFactor <= self.maxZoomFactor,
-        @"Zoom factor %g is above the maximum (%g)", zoomFactor, self.maxZoomFactor);
-    LTParameterAssert(zoomFactor >= self.minZoomFactor,
-        @"Zoom factor %g is below the minimum (%g)", zoomFactor, self.minZoomFactor);
     NSError *error;
-    BOOL success = [device cam_performWhileLocked:^BOOL(NSError **) {
+    BOOL success = [device cam_performWhileLocked:^BOOL(NSError **errorPtr) {
+      if (zoomFactor > self.maxZoomFactor || zoomFactor < self.minZoomFactor ||
+          !std::isfinite(zoomFactor)) {
+        NSString *description =
+            [NSString stringWithFormat:@"Zoom factor %g is out of range [%g, %g]",
+                                       zoomFactor, self.minZoomFactor, self.maxZoomFactor];
+        if (errorPtr) {
+          *errorPtr = [NSError lt_errorWithCode:CAMErrorCodeZoomSettingUnsupported
+                                    description:description];
+        }
+        return NO;
+      }
+
       [device rampToVideoZoomFactor:zoomFactor withRate:rate];
       return YES;
     } error:&error];
@@ -737,8 +807,16 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
 - (BOOL)setTorchLevel:(float)torchLevel error:(NSError * __autoreleasing *)error {
   AVCaptureDevice *device = self.session.videoDevice;
   BOOL success = [device cam_performWhileLocked:^BOOL(NSError **errorPtr) {
-    LTParameterAssert(torchLevel <= 1, @"Torch level %g is above the maximum (1)", torchLevel);
-    LTParameterAssert(torchLevel >= 0, @"Torch level %g is below the minimum (0)", torchLevel);
+    if (torchLevel > 1 || torchLevel < 0 || !std::isfinite(torchLevel)) {
+      NSString *description =
+          [NSString stringWithFormat:@"Torch level %g is out of range [0, 1]", torchLevel];
+      if (errorPtr) {
+        *errorPtr = [NSError lt_errorWithCode:CAMErrorCodeTorchModeSettingUnsupported
+                                  description:description];
+      }
+      return NO;
+    }
+
     if (torchLevel == 0) {
       return [self setDeviceTorchOff:device error:errorPtr];
     } else {
@@ -770,8 +848,10 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
   NSError *setLevelError;
   BOOL torchWasSet = [device setTorchModeOnWithLevel:torchLevel error:&setLevelError];
   if (setLevelError || !torchWasSet) {
-    *errorPtr = [NSError lt_errorWithCode:CAMErrorCodeTorchModeSettingUnsupported
-                          underlyingError:setLevelError];
+    if (errorPtr) {
+      *errorPtr = [NSError lt_errorWithCode:CAMErrorCodeTorchModeSettingUnsupported
+                            underlyingError:setLevelError];
+    }
     return NO;
   }
   return YES;

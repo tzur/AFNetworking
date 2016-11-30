@@ -30,7 +30,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// problem locking the focus. All events are sent on an arbitrary thread.
 - (RACSignal *)setLockedFocus;
 
-/// Instructs the camera to set the lens position to the given value. \c lensPosition must be in
+/// Instructs the camera to set the lens position to the given value. \c lensPosition should be in
 /// [0,1] range and maps \c 0 to the closest focus range and \c 1 to the furthest focus range.
 ///
 /// Returned signal sends the new \c lensPosition and completes when the new focus is set, or errs
