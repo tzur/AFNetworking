@@ -49,6 +49,15 @@ NS_ASSUME_NONNULL_BEGIN
                 toFetchResult:(PHFetchResult *)toResult
                changedObjects:(nullable NSArray<PHObject *> *)changedObjects;
 
+/// Registers given \c assets so they will be returned when querying for assets with given \c
+/// mediaType.
+- (void)registerAssets:(NSArray<PHAsset *> *)assets withMediaType:(PHAssetMediaType)mediaType;
+
+/// Registers given \c assetCollection so it will be returned when fetching asset collection
+/// from given\c fetchResult.
+- (void)registerAssetCollection:(PHAssetCollection *)assetCollection
+                withFetchResult:(PHFetchResult *)fetchResult;
+
 /// All threads from which calls to the receiver were made.
 @property (readonly, atomic) NSSet<NSThread *> *operatingThreads;
 

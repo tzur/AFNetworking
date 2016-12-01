@@ -37,6 +37,11 @@ NS_ASSUME_NONNULL_BEGIN
   return [PHAsset fetchAssetsWithLocalIdentifiers:identifiers options:options];
 }
 
+- (PTNAssetsFetchResult *)fetchAssetsWithMediaType:(PHAssetMediaType)mediaType
+                                           options:(nullable PHFetchOptions *)options {
+  return [PHAsset fetchAssetsWithMediaType:mediaType options:options];
+}
+
 - (nullable PTNAssetsFetchResult *)fetchKeyAssetsInAssetCollection:
     (PHAssetCollection *)assetCollection options:(nullable PHFetchOptions *)options {
   return [PHAsset fetchKeyAssetsInAssetCollection:assetCollection options:options];
@@ -47,6 +52,12 @@ NS_ASSUME_NONNULL_BEGIN
     changedObjects:(nullable NSArray<PHObject *> *)changedObjects {
   return [PHFetchResultChangeDetails changeDetailsFromFetchResult:fromResult toFetchResult:toResult
                                                    changedObjects:changedObjects];
+}
+
+- (PHAssetCollection *)
+    transientAssetCollectionWithAssetFetchResult:(PHFetchResult<PHAsset *> *)fetchResult
+                                                      title:(nullable NSString *)title {
+  return [PHAssetCollection transientAssetCollectionWithAssetFetchResult:fetchResult title:title];
 }
 
 @end

@@ -98,7 +98,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (RACSignal *)fetchAlbumWithURL:(NSURL *)url {
   if (![url.ptn_photoKitURLType isEqual:$(PTNPhotoKitURLTypeAlbum)] &&
       ![url.ptn_photoKitURLType isEqual:$(PTNPhotoKitURLTypeAlbumType)] &&
-      ![url.ptn_photoKitURLType isEqual:$(PTNPhotoKitURLTypeMetaAlbumType)]) {
+      ![url.ptn_photoKitURLType isEqual:$(PTNPhotoKitURLTypeMetaAlbumType)] &&
+      ![url.ptn_photoKitURLType isEqual:$(PTNPhotoKitURLTypeMediaAlbumType)]) {
     return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeInvalidURL url:url]];
   }
 
@@ -269,7 +270,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (BOOL)shouldFlattenAlbum:(NSURL *)url {
   return [url.ptn_photoKitURLType isEqual:$(PTNPhotoKitURLTypeAlbum)] ||
-      [url.ptn_photoKitURLType isEqual:$(PTNPhotoKitURLTypeAlbumType)];
+      [url.ptn_photoKitURLType isEqual:$(PTNPhotoKitURLTypeAlbumType)] ||
+      [url.ptn_photoKitURLType isEqual:$(PTNPhotoKitURLTypeMediaAlbumType)];
 }
 
 - (BOOL)shouldObserveChangesRecursively:(NSURL *)url {
@@ -284,7 +286,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (RACSignal *)fetchDescriptorWithURL:(NSURL *)url {
   if (![url.ptn_photoKitURLType isEqual:$(PTNPhotoKitURLTypeAsset)] &&
       ![url.ptn_photoKitURLType isEqual:$(PTNPhotoKitURLTypeAlbum)] &&
-      ![url.ptn_photoKitURLType isEqual:$(PTNPhotoKitURLTypeAlbumType)]) {
+      ![url.ptn_photoKitURLType isEqual:$(PTNPhotoKitURLTypeAlbumType)] &&
+      ![url.ptn_photoKitURLType isEqual:$(PTNPhotoKitURLTypeMediaAlbumType)]) {
     return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeInvalidURL url:url]];
   }
 
@@ -351,6 +354,9 @@ NS_ASSUME_NONNULL_BEGIN
                                     subtype:url.ptn_photoKitAlbumSubtype
                                   subalbums:url.ptn_photoKitAlbumSubalbums
                                     options:url.ptn_photoKitAlbumFetchOptions];
+      case PTNPhotoKitURLTypeMediaAlbumType:
+        return [self fetchAlbumWithMediaType:url.ptn_photoKitMediaAlbumMediaType
+                                     options:url.ptn_photoKitAlbumFetchOptions];
     }
   }];
 }
@@ -370,6 +376,8 @@ NS_ASSUME_NONNULL_BEGIN
       return url.ptn_photoKitAlbumType != nil && url.ptn_photoKitAlbumSubtype != nil;
     case PTNPhotoKitURLTypeMetaAlbumType:
       return url.ptn_photoKitAlbumType != nil && url.ptn_photoKitAlbumSubtype != nil;
+    case PTNPhotoKitURLTypeMediaAlbumType:
+      return url.ptn_photoKitMediaAlbumMediaType != PHAssetMediaTypeUnknown;
   }
 }
 
@@ -474,6 +482,15 @@ NS_ASSUME_NONNULL_BEGIN
   PTNCollectionsFetchResult *assetCollections =
       [self.fetcher fetchAssetCollectionsWithLocalIdentifiers:@[identifier] options:nil];
   return [RACSignal return:assetCollections];
+}
+
+- (RACSignal *)fetchAlbumWithMediaType:(PHAssetMediaType)mediaType
+                               options:(PHFetchOptions * _Nullable)options {
+  PHFetchResult<PHAsset *> * fetchResult = [self.fetcher fetchAssetsWithMediaType:mediaType
+                                                                          options:options];
+  PHAssetCollection *collection =
+      [self.fetcher transientAssetCollectionWithAssetFetchResult:fetchResult title:nil];
+  return [RACSignal return:@[collection]];
 }
 
 #pragma mark -

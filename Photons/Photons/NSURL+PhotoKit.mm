@@ -17,7 +17,9 @@ LTEnumImplement(NSUInteger, PTNPhotoKitURLType,
   /// URL of an album by type.
   PTNPhotoKitURLTypeAlbumType,
   /// URL of album of albums by type.
-  PTNPhotoKitURLTypeMetaAlbumType
+  PTNPhotoKitURLTypeMetaAlbumType,
+  /// URL of an album by media type.
+  PTNPhotoKitURLTypeMediaAlbumType
 );
 
 @implementation NSURL (PhotoKit)
@@ -31,6 +33,7 @@ static NSString * const kTypeKey = @"type";
 static NSString * const kSubtypeKey = @"subtype";
 static NSString * const kFilterSubalbumsKey = @"filterSubalbums";
 static NSString * const kTitlePredicateKey = @"title";
+static NSString * const kMediaTypeKey = @"mediaType";
 
 + (NSString *)ptn_photoKitScheme {
   return @"com.lightricks.Photons.PhotoKit";
@@ -147,6 +150,20 @@ static NSString * const kTitlePredicateKey = @"title";
   return components.URL;
 }
 
++ (NSURL *)ptn_photoKitAlbumWithMediaType:(PHAssetMediaType)mediaType {
+  NSURLComponents *components = [[NSURLComponents alloc] init];
+
+  components.scheme = [NSURL ptn_photoKitScheme];
+  components.host = kMediaTypeKey;
+
+  components.queryItems = @[
+    [NSURLQueryItem queryItemWithName:kTypeKey
+        value:[NSString stringWithFormat:@"%lu", (unsigned long)mediaType]]
+  ];
+
+  return components.URL;
+}
+
 #pragma mark -
 #pragma mark Convenience types
 #pragma mark -
@@ -206,6 +223,13 @@ static NSString * const kTitlePredicateKey = @"title";
     NSDictionary<NSString *, NSString *> *query = self.lt_queryDictionary;
     if (query[kTypeKey] && query[kSubtypeKey]) {
       return $(PTNPhotoKitURLTypeMetaAlbumType);
+    }
+
+    return nil;
+  } else if ([self.host isEqual:kMediaTypeKey]) {
+    NSDictionary<NSString *, NSString *> *query = self.lt_queryDictionary;
+    if (query[kTypeKey]) {
+      return $(PTNPhotoKitURLTypeMediaAlbumType);
     }
 
     return nil;
@@ -276,6 +300,15 @@ static NSString * const kTitlePredicateKey = @"title";
   PHFetchOptions *options = [[PHFetchOptions alloc] init];
   options.predicate = [NSPredicate predicateWithFormat:@"title=%@", titlePredicate];
   return options;
+}
+
+- (PHAssetMediaType)ptn_photoKitMediaAlbumMediaType {
+  if (![self.ptn_photoKitURLType isEqual:$(PTNPhotoKitURLTypeMediaAlbumType)]) {
+    return PHAssetMediaTypeUnknown;
+  }
+
+  NSString * _Nullable mediaType = self.lt_queryDictionary[kTypeKey];
+  return mediaType ? (PHAssetMediaType)mediaType.intValue : PHAssetMediaTypeUnknown;
 }
 
 @end

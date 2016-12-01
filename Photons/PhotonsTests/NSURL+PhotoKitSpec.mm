@@ -18,6 +18,7 @@ it(@"should return valid object placeholder URL", ^{
   expect(url.ptn_photoKitAlbumSubtype).to.beNil();
   expect(url.ptn_photoKitAlbumSubalbums).to.beNil();
   expect(url.ptn_photoKitAlbumFetchOptions).to.beNil();
+  expect(url.ptn_photoKitMediaAlbumMediaType).to.equal(PHAssetMediaTypeUnknown);
 });
 
 it(@"should return valid asset URL", ^{
@@ -31,6 +32,7 @@ it(@"should return valid asset URL", ^{
   expect(url.ptn_photoKitAlbumSubtype).to.beNil();
   expect(url.ptn_photoKitAlbumSubalbums).to.beNil();
   expect(url.ptn_photoKitAlbumFetchOptions).to.beNil();
+  expect(url.ptn_photoKitMediaAlbumMediaType).to.equal(PHAssetMediaTypeUnknown);
 });
 
 it(@"should return valid album URL", ^{
@@ -44,6 +46,7 @@ it(@"should return valid album URL", ^{
   expect(url.ptn_photoKitAlbumSubtype).to.beNil();
   expect(url.ptn_photoKitAlbumSubalbums).to.beNil();
   expect(url.ptn_photoKitAlbumFetchOptions).to.beNil();
+  expect(url.ptn_photoKitMediaAlbumMediaType).to.equal(PHAssetMediaTypeUnknown);
 });
 
 it(@"should return valid album type URL", ^{
@@ -56,6 +59,7 @@ it(@"should return valid album type URL", ^{
   expect(url.ptn_photoKitAlbumIdentifier).to.beNil();
   expect(url.ptn_photoKitAssetIdentifier).to.beNil();
   expect(url.ptn_photoKitAlbumFetchOptions).to.beNil();
+  expect(url.ptn_photoKitMediaAlbumMediaType).to.equal(PHAssetMediaTypeUnknown);
 });
 
 it(@"should return valid meta album type URL", ^{
@@ -76,6 +80,7 @@ it(@"should return valid meta album type URL", ^{
   expect(url.ptn_photoKitAlbumIdentifier).to.beNil();
   expect(url.ptn_photoKitAssetIdentifier).to.beNil();
   expect(url.ptn_photoKitAlbumFetchOptions).to.beNil();
+  expect(url.ptn_photoKitMediaAlbumMediaType).to.equal(PHAssetMediaTypeUnknown);
 });
 
 it(@"should filter subalbums even if subalbums set is empty", ^{
@@ -88,6 +93,7 @@ it(@"should filter subalbums even if subalbums set is empty", ^{
   expect(url.ptn_photoKitAlbumIdentifier).to.beNil();
   expect(url.ptn_photoKitAssetIdentifier).to.beNil();
   expect(url.ptn_photoKitAlbumFetchOptions).to.beNil();
+  expect(url.ptn_photoKitMediaAlbumMediaType).to.equal(PHAssetMediaTypeUnknown);
 });
 
 it(@"should return correct predicate for user albums with title filter", ^{
@@ -98,6 +104,7 @@ it(@"should return correct predicate for user albums with title filter", ^{
   expect(url.ptn_photoKitAlbumSubalbums).to.beNil();
   expect(url.ptn_photoKitAlbumIdentifier).to.beNil();
   expect(url.ptn_photoKitAssetIdentifier).to.beNil();
+  expect(url.ptn_photoKitMediaAlbumMediaType).to.equal(PHAssetMediaTypeUnknown);
 
   PHFetchOptions *options = url.ptn_photoKitAlbumFetchOptions;
   expect(options.predicate).to.equal([NSPredicate predicateWithFormat:@"title=%@", @"foo"]);
@@ -111,10 +118,24 @@ it(@"should handle query invalid predicates", ^{
   expect(url.ptn_photoKitAlbumSubalbums).to.beNil();
   expect(url.ptn_photoKitAlbumIdentifier).to.beNil();
   expect(url.ptn_photoKitAssetIdentifier).to.beNil();
+  expect(url.ptn_photoKitMediaAlbumMediaType).to.equal(PHAssetMediaTypeUnknown);
 
   PHFetchOptions *options = url.ptn_photoKitAlbumFetchOptions;
   expect(options.predicate).to.equal([NSPredicate predicateWithFormat:@"title=%@",
                                       @"foo? bar, &baz"]);
+});
+
+it(@"should return correct predicate for user albums with media type filter", ^{
+  PHAssetMediaType mediaType = PHAssetMediaTypeVideo;
+  NSURL *url = [NSURL ptn_photoKitAlbumWithMediaType:mediaType];
+  expect(url.ptn_photoKitURLType.value).to.equal(PTNPhotoKitURLTypeMediaAlbumType);
+  expect(url.ptn_photoKitAlbumType).to.beNil();
+  expect(url.ptn_photoKitAlbumSubtype).to.beNil();
+  expect(url.ptn_photoKitAlbumSubalbums).to.beNil();
+  expect(url.ptn_photoKitAlbumIdentifier).to.beNil();
+  expect(url.ptn_photoKitAssetIdentifier).to.beNil();
+  expect(url.ptn_photoKitAlbumFetchOptions).to.beNil();
+  expect(url.ptn_photoKitMediaAlbumMediaType).to.equal(mediaType);
 });
 
 SpecEnd
