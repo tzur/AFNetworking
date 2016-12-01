@@ -16,7 +16,9 @@ LTEnumDeclare(NSUInteger, PTNPhotoKitURLType,
   /// URL of an album by type.
   PTNPhotoKitURLTypeAlbumType,
   /// URL of album of albums by type.
-  PTNPhotoKitURLTypeMetaAlbumType
+  PTNPhotoKitURLTypeMetaAlbumType,
+  /// URL of an album by media type.
+  PTNPhotoKitURLTypeMediaAlbumType
 );
 
 /// Category for easy analysis and synthesis of URLs related to PhotoKit objects.
@@ -29,6 +31,7 @@ LTEnumDeclare(NSUInteger, PTNPhotoKitURLType,
 ///   - Album of albums with the given type, a possible ordered subtype filter and a title filter:
 ///       <photokit scheme>://metaAlbum/?type=<type>&subtype=<subType>[&filter&subalbums=<subtype1>
 ///       &subalbums=<subtype2>...][&title=<title>]
+///   - Media album identifier: <photokit scheme>://mediaType/?type=<mediaType>
 @interface NSURL (PhotoKit)
 
 /// The URL scheme associated with PhotoKit URLs.
@@ -67,13 +70,19 @@ LTEnumDeclare(NSUInteger, PTNPhotoKitURLType,
 /// @important serializing this URL does not guarantee consistent results across iOS versions.
 + (NSURL *)ptn_photoKitMetaAlbumWithType:(PHAssetCollectionType)type;
 
-/// Returns a URL for requesting an album which contains all the albums corresponding to the the
+/// Returns a URL for requesting an album which contains all the albums corresponding to the
 /// \c PHAssetCollectionTypeAlbum and the \c PHAssetCollectionSubtypeAny subtype with a title that
 /// matches \c title. The albums associated with this type of URL are expected to contain subalbums
 /// and no assets.
 ///
 /// @important serializing this URL does not guarantee consistent results across iOS versions.
 + (NSURL *)ptn_photoKitUserAlbumsWithTitle:(NSString *)title;
+
+/// Returns a URL for requesting an album which contains all the assets that matches the given media
+/// type.
+///
+/// @important serializing this URL does not guarantee consistent results across iOS versions.
++ (NSURL *)ptn_photoKitAlbumWithMediaType:(PHAssetMediaType)mediaType;
 
 /// Returns the camera roll album. This equivalent to calling \c +ptn_photoKitAlbumWithType:subtype:
 /// with \c PHAssetCollectionTypeSmartAlbums and \c PHAssetCollectionSubtypeSmartAlbumUserLibrary.
@@ -116,6 +125,10 @@ LTEnumDeclare(NSUInteger, PTNPhotoKitURLType,
 /// Fetch options to use when fetching an album with the receiver, or \c nil if the receiver is not
 /// a valid album url or does not require any fetch options.
 @property (readonly, nonatomic, nullable) PHFetchOptions *ptn_photoKitAlbumFetchOptions;
+
+/// Media type of the album's assets, or \c PHAssetMediaTypeUnknown if the URL is not of PhotoKit
+/// type media album type, or the media type is unknown.
+@property (readonly, nonatomic) PHAssetMediaType ptn_photoKitMediaAlbumMediaType;
 
 @end
 

@@ -38,6 +38,12 @@ NS_ASSUME_NONNULL_BEGIN
 /// Mock used to register change details between fetch results.
 @property (readonly, nonatomic) PTNPhotoKitFetcher *changeDetailsMock;
 
+/// Maps between media type to its matching assets.
+@property (strong, nonatomic) NSMutableDictionary *mediaTypeToAssets;
+
+/// Maps between fetch result to its matching asset collection.
+@property (strong, nonatomic) NSMutableDictionary *fetchResultToAssetCollection;
+
 @end
 
 @implementation PTNPhotoKitFakeFetcher
@@ -53,6 +59,8 @@ NS_ASSUME_NONNULL_BEGIN
     self.assetCollectionsToCollectionList = [NSMutableDictionary dictionary];
     self.operatingThreads = [NSSet set];
     _changeDetailsMock = OCMClassMock(PTNPhotoKitFetcher.class);
+    self.mediaTypeToAssets = [NSMutableDictionary dictionary];
+    self.fetchResultToAssetCollection = [NSMutableDictionary dictionary];
   }
   return self;
 }
@@ -110,6 +118,19 @@ NS_ASSUME_NONNULL_BEGIN
                changedObjects:(nullable NSArray<PHObject *> *)changedObjects {
   OCMStub([self.changeDetailsMock changeDetailsFromFetchResult:fromResult toFetchResult:toResult
       changedObjects:changedObjects]).andReturn(changeDetails);
+}
+
+- (void)registerAssets:(NSArray<PHAsset *> *)assets withMediaType:(PHAssetMediaType)mediaType {
+  @synchronized (self.mediaTypeToAssets) {
+    self.mediaTypeToAssets[@(mediaType)] = assets;
+  }
+}
+
+- (void)registerAssetCollection:(PHAssetCollection *)assetCollection
+                withFetchResult:(PHFetchResult *)fetchResult {
+  @synchronized (self.fetchResultToAssetCollection) {
+    self.mediaTypeToAssets[fetchResult] = assetCollection;
+  }
 }
 
 #pragma mark -
@@ -179,6 +200,17 @@ NS_ASSUME_NONNULL_BEGIN
   return fetchResult;
 }
 
+- (PTNAssetsFetchResult *)fetchAssetsWithMediaType:(PHAssetMediaType)mediaType
+                                           options:(nullable PHFetchOptions __unused *)options {
+  self.operatingThreads = [self.operatingThreads setByAddingObject:[NSThread currentThread]];
+  id fetchResult;
+  @synchronized (self.localIdentifierToAsset) {
+    fetchResult = self.mediaTypeToAssets[@(mediaType)];
+  }
+
+  return fetchResult;
+}
+
 - (nullable PTNAssetsFetchResult *)fetchKeyAssetsInAssetCollection:
     (PHAssetCollection *)assetCollection options:(nullable PHFetchOptions __unused *)options {
   self.operatingThreads = [self.operatingThreads setByAddingObject:[NSThread currentThread]];
@@ -197,6 +229,18 @@ NS_ASSUME_NONNULL_BEGIN
   self.operatingThreads = [self.operatingThreads setByAddingObject:[NSThread currentThread]];
   return [self.changeDetailsMock changeDetailsFromFetchResult:fromResult toFetchResult:toResult
                                                changedObjects:changedObjects];
+}
+
+- (PHAssetCollection *)
+    transientAssetCollectionWithAssetFetchResult:(PHFetchResult<PHAsset *> *)fetchResult
+                                           title:(nullable NSString __unused *)title {
+  self.operatingThreads = [self.operatingThreads setByAddingObject:[NSThread currentThread]];
+  id assetCollection;
+  @synchronized (self.fetchResultToAssetCollection) {
+    assetCollection = self.mediaTypeToAssets[fetchResult];
+  }
+
+  return assetCollection;
 }
 
 @end

@@ -276,6 +276,88 @@ context(@"album fetching", ^{
     });
   });
 
+  context(@"fetching album by media type", ^{
+    static const PHAssetMediaType kMediaType = PHAssetMediaTypeVideo;
+
+    __block id album;
+    __block id assets;
+    __block NSURL *url;
+
+    beforeEach(^{
+      album = PTNPhotoKitCreateAssetCollection(@"foo");
+      assets = @[PTNPhotoKitCreateAsset(@"bar")];
+
+      [fetcher registerAssets:assets withMediaType:kMediaType];
+      [fetcher registerAssetCollection:album withFetchResult:assets];
+      [fetcher registerAssets:assets withAssetCollection:album];
+
+      url = [NSURL ptn_photoKitAlbumWithMediaType:kMediaType];
+    });
+
+    context(@"initial value", ^{
+      it(@"should fetch initial results of an album", ^{
+        RACSignal *albumSignal = [manager fetchAlbumWithURL:url];
+
+        id<PTNAlbum> expectedAlbum = [[PTNPhotoKitAlbum alloc] initWithURL:url fetchResult:assets];
+        expect(albumSignal)
+            .will.sendValues(@[[PTNAlbumChangeset changesetWithAfterAlbum:expectedAlbum]]);
+      });
+    });
+
+    context(@"updates", ^{
+      __block id<PTNAlbum> initialAlbum;
+
+      __block id change;
+      __block id changeDetails;
+
+      beforeEach(^{
+        id newAlbum = PTNPhotoKitCreateAssetCollection(@"baz");
+        [fetcher registerAssets:assets withAssetCollection:newAlbum];
+
+        changeDetails = PTNPhotoKitCreateChangeDetailsForAssets(assets);
+        change = PTNPhotoKitCreateChangeForFetchDetails(changeDetails);
+
+        initialAlbum = [[PTNPhotoKitAlbum alloc] initWithURL:url fetchResult:assets];
+      });
+
+      it(@"should send new album upon update", ^{
+        LLSignalTestRecorder *recorder = [[manager fetchAlbumWithURL:url] testRecorder];
+        [observer sendChange:change];
+
+        expect(recorder.values).will.equal(@[
+          [PTNAlbumChangeset changesetWithAfterAlbum:initialAlbum],
+          [PTNAlbumChangeset changesetWithURL:url photoKitChangeDetails:changeDetails]
+        ]);
+      });
+    });
+
+    context(@"thread transitions", ^{
+      it(@"should not operate on the main thread", ^{
+        RACSignal *values = [manager fetchAlbumWithURL:url];
+        
+        expect(values).will.sendValuesWithCount(1);
+        expect(fetcher.operatingThreads).notTo.contain([NSThread mainThread]);
+      });
+    });
+
+    it(@"should error when not authorized", ^{
+      authorizationManager.authorizationStatus = $(PTNAuthorizationStatusNotDetermined);
+
+      expect([manager fetchAlbumWithURL:url]).will.matchError(^BOOL(NSError *error) {
+        return error.code == PTNErrorCodeNotAuthorized;
+      });
+    });
+
+    it(@"should err when failing to fetch album", ^{
+      url = [NSURL ptn_photoKitAlbumWithType:PHAssetCollectionTypeAlbum
+                                     subtype:PHAssetCollectionSubtypeSmartAlbumPanoramas];
+
+      expect([manager fetchAlbumWithURL:url]).will.matchError(^BOOL(NSError *error) {
+        return error.code == PTNErrorCodeAlbumNotFound;
+      });
+    });
+  });
+
   context(@"fetching meta album by type", ^{
     __block id albums;
     __block NSURL *url;

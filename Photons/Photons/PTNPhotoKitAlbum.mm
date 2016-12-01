@@ -32,7 +32,8 @@ NS_ASSUME_NONNULL_BEGIN
   PTNPhotoKitURLType * _Nullable type = url.ptn_photoKitURLType;
   LTParameterAssert([type isEqual:$(PTNPhotoKitURLTypeAlbum)] ||
                     [type isEqual:$(PTNPhotoKitURLTypeAlbumType)] ||
-                    [type isEqual:$(PTNPhotoKitURLTypeMetaAlbumType)],
+                    [type isEqual:$(PTNPhotoKitURLTypeMetaAlbumType)] ||
+                    [type isEqual:$(PTNPhotoKitURLTypeMediaAlbumType)],
                     @"Invalid URL type given: %@", url.ptn_photoKitURLType);
   if (self = [super init]) {
     self.url = url;

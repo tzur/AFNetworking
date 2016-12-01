@@ -54,6 +54,11 @@ typedef PHFetchResult<PHAssetCollection *> PTNAssetCollectionsFetchResult;
 - (PTNAssetsFetchResult *)fetchAssetsWithLocalIdentifiers:(NSArray<NSString *> *)identifiers
                                            options:(nullable PHFetchOptions *)options;
 
+/// Retrieves assets that match the specified media type and options.
+///
+/// @see [PHAsset fetchAssetsWithMediaType:options:].
+- (PTNAssetsFetchResult *)fetchAssetsWithMediaType:(PHAssetMediaType)mediaType
+                                           options:(nullable PHFetchOptions *)options;
 
 /// Retrieves assets marked as key assets in the specified asset collection, or \c nil if no objects
 /// match the request.
@@ -70,6 +75,14 @@ typedef PHFetchResult<PHAssetCollection *> PTNAssetCollectionsFetchResult;
 - (PHFetchResultChangeDetails *)changeDetailsFromFetchResult:(PHFetchResult *)fromResult
     toFetchResult:(PHFetchResult *)toResult
     changedObjects:(nullable NSArray<PHObject *> *)changedObjects;
+
+/// Creates a temporary asset collection containing the assets from the specified fetch result, and
+/// named with the specified title.
+///
+/// @see [PHAssetCollection transientAssetCollectionWithAssetFetchResult:title:]
+- (PHAssetCollection *)
+    transientAssetCollectionWithAssetFetchResult:(PHFetchResult<PHAsset *> *)fetchResult
+                                           title:(nullable NSString *)title;
 
 @end
 
