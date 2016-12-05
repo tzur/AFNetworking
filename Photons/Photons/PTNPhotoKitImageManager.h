@@ -8,9 +8,15 @@ NS_ASSUME_NONNULL_BEGIN
 /// Protocol to be implemented by PhotoKit image managers.
 @protocol PTNPhotoKitImageManager <NSObject>
 
-/// Handles successful or erroneous callbacks.
+/// Handles successful or erroneous callbacks of \c
+/// requestImageForAsset:targetSize:contentMode:options:resultHandler:.
 typedef void (^PTNPhotoKitImageManagerHandler)(UIImage * __nullable result,
                                                NSDictionary * __nullable info);
+
+/// Handles successful or erroneous callbacks of \c requestAVAssetForVideo:options:resultHandler:.
+typedef void (^PTNPhotoKitImageManagerAVAssetHandler)(AVAsset * __nullable asset,
+                                                      AVAudioMix * __nullable audioMix,
+                                                      NSDictionary * __nullable info);
 
 /// Requests an image representation for the specified asset.
 ///
@@ -25,6 +31,13 @@ typedef void (^PTNPhotoKitImageManagerHandler)(UIImage * __nullable result,
 ///
 /// @see -[PHImageManager cancelImageRequest:].
 - (void)cancelImageRequest:(PHImageRequestID)requestID;
+
+/// Requests an \c AVAsset for the specified asset.
+///
+/// @see -[PHImageManager requestAVAssetForVideo:options:resultHandler:].
+- (PHImageRequestID)requestAVAssetForVideo:(PHAsset *)asset
+                                   options:(PHVideoRequestOptions *)options
+                             resultHandler:(PTNPhotoKitImageManagerAVAssetHandler)resultHandler;
 
 @end
 
