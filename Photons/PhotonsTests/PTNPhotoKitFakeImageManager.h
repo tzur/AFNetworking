@@ -16,6 +16,11 @@ NS_ASSUME_NONNULL_BEGIN
              image:(UIImage *)image;
 
 /// Serves the given \c asset by sending the given \c progress reports (array of \c NSNumber
+/// values), and finally the given \c avasset and \c audioMix.
+- (void)serveAsset:(PHAsset *)asset withProgress:(NSArray<NSNumber *> *)progress
+           avasset:(AVAsset *)avasset audioMix:(AVAudioMix *)audioMix;
+
+/// Serves the given \c asset by sending the given \c progress reports (array of \c NSNumber
 /// values), and finally errs with the given \c error.
 - (void)serveAsset:(PHAsset *)asset withProgress:(NSArray<NSNumber *> *)progress
       finallyError:(NSError *)error;

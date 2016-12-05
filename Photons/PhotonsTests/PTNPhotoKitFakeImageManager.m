@@ -13,6 +13,12 @@ NS_ASSUME_NONNULL_BEGIN
 /// Maps asset identifier to image.
 @property (strong, nonatomic) NSMutableDictionary *identifierToImage;
 
+/// Maps asset identifier to \c AVAsset.
+@property (strong, nonatomic) NSMutableDictionary *identifierToAVAsset;
+
+/// Maps asset identifier to audio mix.
+@property (strong, nonatomic) NSMutableDictionary *identifierToAudioMix;
+
 /// Maps asset identifier to error.
 @property (strong, nonatomic) NSMutableDictionary *identifierToError;
 
@@ -39,6 +45,8 @@ NS_ASSUME_NONNULL_BEGIN
   if (self = [super init]) {
     self.identifierToProgress = [NSMutableDictionary dictionary];
     self.identifierToImage = [NSMutableDictionary dictionary];
+    self.identifierToAVAsset = [NSMutableDictionary dictionary];
+    self.identifierToAudioMix = [NSMutableDictionary dictionary];
     self.identifierToError = [NSMutableDictionary dictionary];
     self.identifierToProgressError = [NSMutableDictionary dictionary];
     self.requestToIdentifier = [NSMutableDictionary dictionary];
@@ -54,7 +62,15 @@ NS_ASSUME_NONNULL_BEGIN
 
   self.identifierToProgress[identifier] = progress;
   self.identifierToImage[identifier] = image;
+}
 
+- (void)serveAsset:(PHAsset *)asset withProgress:(NSArray<NSNumber *> *)progress
+           avasset:(AVAsset *)avasset audioMix:(AVAudioMix *)audioMix {
+  NSString *identifier = asset.localIdentifier;
+
+  self.identifierToProgress[identifier] = progress;
+  self.identifierToAVAsset[identifier] = avasset;
+  self.identifierToAudioMix[identifier] = audioMix;
 }
 
 - (void)serveAsset:(PHAsset *)asset withProgress:(NSArray<NSNumber *> *)progress
@@ -99,7 +115,7 @@ NS_ASSUME_NONNULL_BEGIN
       [self.identifierToProgress[identifier] enumerateObjectsUsingBlock:^(NSNumber *progress,
                                                                           NSUInteger idx,
                                                                           BOOL *stop) {
-        NSError *error = idx == [self.identifierToProgress[identifier] count] - 1 ?
+        NSError *error = (idx == [self.identifierToProgress[identifier] count] - 1) ?
             self.identifierToProgressError[identifier] : nil;
         options.progressHandler(progress.doubleValue, error, stop, nil);
       }];
@@ -129,6 +145,49 @@ NS_ASSUME_NONNULL_BEGIN
   if (self.requestToIdentifier[@(requestID)]) {
     [self.cancelledRequests addObject:self.requestToIdentifier[@(requestID)]];
   }
+}
+
+- (PHImageRequestID)requestAVAssetForVideo:(PHAsset *)asset options:(PHVideoRequestOptions *)options
+                             resultHandler:(PTNPhotoKitImageManagerAVAssetHandler)resultHandler {
+  NSString *identifier = asset.localIdentifier;
+
+  dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+    if (!self.identifierToProgress[identifier]) {
+      resultHandler(nil, nil, @{
+        PHImageErrorKey: [NSError errorWithDomain:@"foo" code:1337 userInfo:nil]
+      });
+      return;
+    }
+
+    if (options.progressHandler) {
+      [self.identifierToProgress[identifier] enumerateObjectsUsingBlock:^(NSNumber *progress,
+                                                                          NSUInteger idx,
+                                                                          BOOL *stop) {
+        NSError *error = (idx == [self.identifierToProgress[identifier] count] - 1) ?
+            self.identifierToProgressError[identifier] : nil;
+        options.progressHandler(progress.doubleValue, error, stop, nil);
+      }];
+    }
+
+    if (self.identifierToError[identifier]) {
+      resultHandler(nil, nil, @{
+        PHImageErrorKey: self.identifierToError[identifier]
+      });
+    } else if (self.identifierToProgressError[identifier]) {
+      resultHandler(nil, nil, @{
+        PHImageErrorKey: self.identifierToProgressError[identifier]
+      });
+    } else if (self.identifierToImage[identifier]) {
+      resultHandler(self.identifierToAVAsset[identifier], self.identifierToAudioMix[identifier],
+                    nil);
+    }
+  });
+
+  ++self.nextRequestIdentifier;
+  self.requestToIdentifier[@(self.nextRequestIdentifier)] = identifier;
+  [self.issuedRequests addObject:identifier];
+
+  return self.nextRequestIdentifier;
 }
 
 @end

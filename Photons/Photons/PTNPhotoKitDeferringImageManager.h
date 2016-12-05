@@ -47,6 +47,15 @@ typedef id<PTNPhotoKitImageManager> _Nonnull(^PTNPhotoKitImageManagerBlock)();
 /// @see -[PTNPhotoKitImageManager cancelImageRequest:].
 - (void)cancelImageRequest:(PHImageRequestID)requestID;
 
+/// Requests an \c AVAsset for the specified asset. Calling this method before receiving
+/// PhotoKit authorization will return a \c nil \c AVAsset and an appropriate error in the
+/// \c PHImageErrorKey of the \c info dictionary returned by \c resultHandler.
+///
+/// @see -[PTNPhotoKitImageManager requestAVAssetForVideo:options:resultHandler:].
+- (PHImageRequestID)requestAVAssetForVideo:(PHAsset *)asset
+                                   options:(PHVideoRequestOptions *)options
+                             resultHandler:(PTNPhotoKitImageManagerAVAssetHandler)resultHandler;
+
 @end
 
 NS_ASSUME_NONNULL_END
