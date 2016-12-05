@@ -45,7 +45,8 @@ NS_ASSUME_NONNULL_BEGIN
     runningIndex -= collection.count;
   }
   [[NSException exceptionWithName:NSRangeException
-                           reason:[NSString stringWithFormat:@"index %lu is out of bounds", idx]
+                           reason:[NSString stringWithFormat:@"index %lu is out of bounds",
+                                   (unsigned long)idx]
                          userInfo:nil] raise];
   __builtin_unreachable();
 }
