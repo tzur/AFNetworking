@@ -699,10 +699,11 @@ context(@"album fetching", ^{
       OCMStub([url ptn_photoKitAlbumSubtype]).andReturn(@(PHAssetCollectionSubtypeSmartAlbumBursts));
       OCMStub([url ptn_photoKitAlbumFetchOptions]).andReturn(options);
 
+      OCMExpect([fetcherMock fetchAssetCollectionsWithType:PHAssetCollectionTypeSmartAlbum
+                                                   subtype:PHAssetCollectionSubtypeSmartAlbumBursts
+                                                   options:options]);
       [[assetManager fetchAlbumWithURL:url] subscribeNext:^(id) {}];
 
-      OCMExpect([fetcherMock fetchAssetCollectionsWithType:PHAssetCollectionTypeSmartAlbum
-          subtype:PHAssetCollectionSubtypeSmartAlbumBursts options:options]);
       OCMVerifyAllWithDelay(fetcherMock, 1);
     });
 
@@ -714,11 +715,11 @@ context(@"album fetching", ^{
       OCMStub([url ptn_photoKitAlbumSubtype]).andReturn(@(PHAssetCollectionSubtypeAny));
       OCMStub([url ptn_photoKitAlbumFetchOptions]).andReturn(options);
 
-      [[assetManager fetchAlbumWithURL:url] subscribeNext:^(id) {}];
-
       OCMExpect([fetcherMock fetchAssetCollectionsWithType:PHAssetCollectionTypeSmartAlbum
                                                    subtype:PHAssetCollectionSubtypeAny
                                                    options:options]);
+      [[assetManager fetchAlbumWithURL:url] subscribeNext:^(id) {}];
+
       OCMVerifyAllWithDelay(fetcherMock, 1);
     });
   });
