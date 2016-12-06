@@ -290,6 +290,11 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
 #pragma mark -
 
 - (void)drawToBoundFramebuffer {
+  if ([self.drawDelegate respondsToSelector:@selector(drawContentForPresentationView:)] &&
+      [self.drawDelegate drawContentForPresentationView:self]) {
+    return;
+  }
+
   [self updateContent];
   
   [self.context clearWithColor:self.backgroundColor.lt_ltVector];

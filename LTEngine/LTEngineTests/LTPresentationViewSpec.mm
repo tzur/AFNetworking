@@ -422,11 +422,39 @@ context(@"draw delegate", ^{
     mock = nil;
     view = nil;
   });
-  
+
+  context(@"delegation of rendering of entire content", ^{
+    it(@"should call drawContentForPresentationView: method of delegate if implemented", ^{
+      OCMStub([mock drawContentForPresentationView:view]).andDo(^(NSInvocation *) {
+        [[LTGLContext currentContext] clearWithColor:LTVector4(0, 1, 0, 1)];
+      }).andReturn(YES);
+      expectedOutput = kGreen;
+
+      [view drawToFbo:fbo];
+
+      output = [outputTexture image];
+      expect($(output)).to.beCloseToMat($(expectedOutput));
+    });
+
+    it(@"should only call drawContentForPresentationView: method of delegate if implemented", ^{
+      id delegateMock = OCMStrictProtocolMock(@protocol(LTPresentationViewDrawDelegate));
+      view.drawDelegate = delegateMock;
+      OCMStub([delegateMock drawContentForPresentationView:view])
+          .andDo(^(NSInvocation *) {
+        [[LTGLContext currentContext] clearWithColor:LTVector4(0, 1, 0, 1)];
+      }).andReturn(YES);
+      expectedOutput = kGreen;
+
+      [view drawToFbo:fbo];
+
+      output = [outputTexture image];
+      expect($(output)).to.beCloseToMat($(expectedOutput));
+    });
+  });
+
   it(@"should use delegate to update content rect", ^{
     [[[mock stub] andDo:^(NSInvocation *) {
-      glClearColor(0, 1, 0, 1);
-      glClear(GL_COLOR_BUFFER_BIT);
+      [[LTGLContext currentContext] clearWithColor:LTVector4(0, 1, 0, 1)];
     }] presentationView:view updateContentInRect:kContentFrame];
     [view setNeedsDisplayContent];
     expectedOutput = view.backgroundColor.lt_cvVector;
@@ -466,8 +494,7 @@ context(@"draw delegate", ^{
       
       // Clear the framebuffer (should only affect the visible content rectangle according to the
       // defined scissor box.
-      glClearColor(0, 1, 0, 1);
-      glClear(GL_COLOR_BUFFER_BIT);
+      [[LTGLContext currentContext] clearWithColor:LTVector4(0, 1, 0, 1)];
     }] presentationView:view drawOverlayAboveContentWithTransform:CGAffineTransformIdentity];
 
     // The overlay should affect only the visible content rectangle (scissor box).
