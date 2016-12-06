@@ -23,8 +23,11 @@
 #import "PTNPhotoKitImageAsset.h"
 #import "PTNPhotoKitImageManager.h"
 #import "PTNPhotoKitTestUtils.h"
+#import "PTNPhotoKitVideoAsset.h"
 #import "PTNProgress.h"
 #import "PTNResizingStrategy.h"
+#import "PTNVideoAsset.h"
+#import "PTNVideoFetchOptions.h"
 #import "PhotoKit+Photons.h"
 
 SpecBegin(PTNPhotoKitAssetManager)
@@ -1096,6 +1099,112 @@ context(@"image fetching", ^{
          subscribeNext:^(id __unused x) {}];
         
         OCMVerifyAllWithDelay(imageManagerMock, 1);
+      });
+    });
+  });
+});
+
+context(@"video fetching", ^{
+  __block id asset;
+  __block PTNVideoFetchOptions *options;
+  __block id<PTNVideoAsset> videoAsset;
+  __block AVAsset *avasset;
+  __block AVAudioMix *audioMix;
+
+  __block NSError *defaultError;
+
+  beforeEach(^{
+    asset = PTNPhotoKitCreateAsset(@"foo");
+    [fetcher registerAsset:asset];
+
+    options = [PTNVideoFetchOptions optionsWithDeliveryMode:PTNVideoDeliveryModeFastFormat];
+
+    avasset = OCMClassMock([AVAsset class]);
+    audioMix = OCMClassMock([AVAudioMix class]);
+    videoAsset = [[PTNPhotoKitVideoAsset alloc] initWithAVAsset:avasset];
+
+    defaultError = [NSError errorWithDomain:@"foo" code:1337 userInfo:nil];
+  });
+
+  context(@"fetch video of asset", ^{
+    it(@"should fetch video", ^{
+      [imageManager serveAsset:asset withProgress:@[] avasset:avasset audioMix:audioMix];
+
+      RACSignal *values = [manager fetchVideoWithDescriptor:asset options:options];
+
+      expect(values).will.sendValues(@[[[PTNProgress alloc] initWithResult:videoAsset]]);
+    });
+
+    it(@"should complete after fetching a video", ^{
+      [imageManager serveAsset:asset withProgress:@[] avasset:avasset audioMix:audioMix];
+
+      RACSignal *values = [manager fetchVideoWithDescriptor:asset options:options];
+
+      expect(values).will.sendValuesWithCount(1);
+      expect(values).will.complete();
+    });
+
+    it(@"should fetch downloaded video with progress", ^{
+      [imageManager serveAsset:asset withProgress:@[@0.25, @0.5, @1] avasset:avasset
+                      audioMix:audioMix];
+
+      expect([manager fetchVideoWithDescriptor:asset options:options]).will.sendValues(@[
+        [[PTNProgress alloc] initWithProgress:@0.25],
+        [[PTNProgress alloc] initWithProgress:@0.5],
+        [[PTNProgress alloc] initWithProgress:@1],
+        [[PTNProgress alloc] initWithResult:videoAsset]
+      ]);
+    });
+
+    it(@"should cancel request upon disposal", ^{
+      RACSignal *values = [manager fetchVideoWithDescriptor:asset options:options];
+
+      RACDisposable *subscriber = [values subscribeNext:^(id) {}];
+      expect([imageManager isRequestIssuedForAsset:asset]).will.beTruthy();
+
+      [subscriber dispose];
+      expect([imageManager isRequestCancelledForAsset:asset]).will.beTruthy();
+    });
+
+    it(@"should err on error after progress finished", ^{
+      [imageManager serveAsset:asset withProgress:@[@0.25, @0.5, @1] finallyError:defaultError];
+
+      RACSignal *values = [manager fetchVideoWithDescriptor:asset options:options];
+
+      expect(values).will.sendValues(@[
+        [[PTNProgress alloc] initWithProgress:@0.25],
+        [[PTNProgress alloc] initWithProgress:@0.5],
+        [[PTNProgress alloc] initWithProgress:@1],
+      ]);
+
+      expect(values).will.matchError(^BOOL(NSError *error) {
+        return error.code == PTNErrorCodeAssetLoadingFailed && error.lt_underlyingError;
+      });
+    });
+
+    it(@"should err on progress download error", ^{
+      [imageManager serveAsset:asset withProgress:@[@0.25, @0.5, @1] errorInProgress:defaultError];
+
+      RACSignal *values = [manager fetchVideoWithDescriptor:asset options:options];
+
+      expect(values).will.sendValues(@[
+        [[PTNProgress alloc] initWithProgress:@0.25],
+        [[PTNProgress alloc] initWithProgress:@0.5]
+      ]);
+
+      expect(values).will.matchError(^BOOL(NSError *error) {
+        return error.code == PTNErrorCodeAssetLoadingFailed && error.lt_underlyingError;
+      });
+    });
+
+    context(@"thread transitions", ^{
+      it(@"should not operate on the main thread", ^{
+        [imageManager serveAsset:asset withProgress:@[]  avasset:avasset audioMix:audioMix];
+        
+        RACSignal *values = [manager fetchVideoWithDescriptor:asset options:options];
+
+        expect(values).will.sendValuesWithCount(1);
+        expect(fetcher.operatingThreads).notTo.contain([NSThread mainThread]);
       });
     });
   });

@@ -10,6 +10,7 @@
 #import "PTNNSURLTestUtils.h"
 #import "PTNResizingStrategy.h"
 #import "PTNTestUtils.h"
+#import "PTNVideoFetchOptions.h"
 
 SpecBegin(PTNMultiplexerAssetManager)
 
@@ -107,6 +108,27 @@ context(@"image fetching", ^{
     RACSignal *signal = [multiplexerManager fetchImageWithDescriptor:descriptorD
                                                     resizingStrategy:strategy
                                                              options:options];
+    expect(signal).to.matchError(^BOOL(NSError *error) {
+      return error.code == PTNErrorCodeUnrecognizedURLScheme;
+    });
+  });
+});
+
+context(@"video fetching", ^{
+  __block PTNVideoFetchOptions *options;
+
+  beforeEach(^{
+    options = OCMClassMock([PTNVideoFetchOptions class]);
+  });
+
+  it(@"should correctly forward video requests", ^{
+    RACSignal *signal = [multiplexerManager fetchVideoWithDescriptor:descriptorA options:options];
+    expect(signal).to.equal(returnSignalA);
+    OCMVerify([managerA fetchVideoWithDescriptor:descriptorA  options:options]);
+  });
+
+  it(@"should error on video requests with unconfigured scheme", ^{
+    RACSignal *signal = [multiplexerManager fetchVideoWithDescriptor:descriptorD options:options];
     expect(signal).to.matchError(^BOOL(NSError *error) {
       return error.code == PTNErrorCodeUnrecognizedURLScheme;
     });

@@ -100,6 +100,12 @@ NS_ASSUME_NONNULL_BEGIN
   return gatewayDescriptor.imageSignalBlock(resizingStrategy, options);
 }
 
+- (RACSignal *)fetchVideoWithDescriptor:(id<PTNDescriptor>)descriptor
+                                options:(PTNVideoFetchOptions __unused *)options {
+  return [RACSignal error:[NSError ptn_errorWithCode:PTNErrorCodeUnsupportedOperation
+                                associatedDescriptor:descriptor]];
+}
+
 #pragma mark -
 #pragma mark Descriptor mapping
 #pragma mark -

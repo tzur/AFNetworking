@@ -15,6 +15,8 @@
 #import "PTNProgress.h"
 #import "PTNResizingStrategy.h"
 #import "PTNTestUtils.h"
+#import "PTNVideoAsset.h"
+#import "PTNVideoFetchOptions.h"
 
 static BOOL PTNCollectionSemanticallyEqual(id<LTRandomAccessCollection> lhs,
                                     id<LTRandomAccessCollection> rhs) {
@@ -912,6 +914,45 @@ context(@"image fetching", ^{
                                  finallyError:error];
 
     expect(values).will.sendValues(@[progress]);
+    expect(values).will.error();
+    expect(values.error).will.equal(error);
+  });
+});
+
+context(@"video fetching", ^{
+  __block PTNVideoFetchOptions *options;
+  __block id<PTNDescriptor> descriptor;
+  __block PTNVideoRequest *request;
+  __block id<PTNVideoAsset> videoAsset;
+
+  beforeEach(^{
+    options = OCMClassMock([PTNImageFetchOptions class]);
+    descriptor = OCMProtocolMock(@protocol(PTNDescriptor));
+    videoAsset = OCMProtocolMock(@protocol(PTNVideoAsset));
+    request = [[PTNVideoRequest alloc] initWithDescriptor:descriptor options:options];
+  });
+
+  it(@"should forward values from underlying asset manager", ^{
+    LLSignalTestRecorder *values =
+        [[interceptingAssetManager fetchVideoWithDescriptor:descriptor options:options]
+         testRecorder];
+
+    [underlyingAssetManager serveVideoRequest:request withProgress:@[] videoAsset:videoAsset];
+
+    expect(values).will.sendValues(@[[[PTNProgress alloc] initWithResult:videoAsset]]);
+    expect(values).will.complete();
+  });
+
+  it(@"should forward errors from underlying asset manager", ^{
+    LLSignalTestRecorder *values =
+        [[interceptingAssetManager fetchVideoWithDescriptor:descriptor options:options]
+         testRecorder];
+
+    NSError *error = [NSError lt_errorWithCode:1337];
+
+    [underlyingAssetManager serveVideoRequest:request withProgress:@[@0.666] finallyError:error];
+
+    expect(values).will.sendValues(@[[[PTNProgress alloc] initWithProgress:@0.666]]);
     expect(values).will.error();
     expect(values.error).will.equal(error);
   });

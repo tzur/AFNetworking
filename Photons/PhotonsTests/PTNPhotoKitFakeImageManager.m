@@ -177,7 +177,7 @@ NS_ASSUME_NONNULL_BEGIN
       resultHandler(nil, nil, @{
         PHImageErrorKey: self.identifierToProgressError[identifier]
       });
-    } else if (self.identifierToImage[identifier]) {
+    } else if (self.identifierToAVAsset[identifier]) {
       resultHandler(self.identifierToAVAsset[identifier], self.identifierToAudioMix[identifier],
                     nil);
     }
