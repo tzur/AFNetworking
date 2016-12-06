@@ -53,19 +53,6 @@ context(@"initialization", ^{
       dvn::GeometryValues geometryValues(quads, {}, samples);
     }).to.raise(NSInvalidArgumentException);
   });
-
-  it(@"should raise when attempting to initialize with mismatching size of sampled values", ^{
-    CGFloats sampledParametricValues = {1, 2};
-    cv::Mat1g values = (cv::Mat1g(1, 2) << 7, 8);
-    LTParameterizationKeyToValues *mapping =
-        [[LTParameterizationKeyToValues alloc] initWithKeys:kKeys valuesPerKey:values];
-    LTSampleValues *invalidSamples =
-        [[LTSampleValues alloc] initWithSampledParametricValues:sampledParametricValues
-                                                        mapping:mapping];
-    expect(^{
-      dvn::GeometryValues geometryValues(quads, indices, invalidSamples);
-    }).to.raise(NSInvalidArgumentException);
-  });
 });
 
 context(@"move constructor", ^{

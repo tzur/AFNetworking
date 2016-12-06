@@ -15,8 +15,7 @@ namespace dvn {
     GeometryValues() noexcept : _quads({}), _indices({}), _samples(nil) {}
 
     /// Initializes with the given \c quads, \c indices and \c samples. The \c size() of the given
-    /// \c quads must equal both the \c size() of the given \c indices and the \c size() of the
-    /// \c sampledParametricValues of the given \c samples.
+    /// \c quads must equal to the \c size() of the given \c indices.
     explicit GeometryValues(const std::vector<lt::Quad> &quads,
                             const std::vector<NSUInteger> &indices,
                             id<LTSampleValues> samples);
