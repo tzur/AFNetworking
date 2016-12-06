@@ -17,7 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface DVNSplineRenderer () <DVNPipelineDelegate>
 
 /// Delegate informed about render events.
-@property (weak, readonly, nonatomic) id<DVNSplineRendererDelegate> delegate;
+@property (weak, readonly, nonatomic) id<DVNSplineRenderingDelegate> delegate;
 
 /// Pipeline performing the rendering based on the spline provided by the \c splineConstructor.
 @property (readonly, nonatomic) DVNPipeline *pipeline;
@@ -44,7 +44,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithType:(LTParameterizedObjectType *)type
                configuration:(DVNPipelineConfiguration *)configuration
-                    delegate:(nullable id<DVNSplineRendererDelegate>)delegate {
+                    delegate:(nullable id<DVNSplineRenderingDelegate>)delegate {
   LTParameterAssert(type);
   LTParameterAssert(configuration);
 
