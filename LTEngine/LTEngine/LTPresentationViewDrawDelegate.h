@@ -11,6 +11,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @optional
 
+/// Called by the given \c presentationView in order to delegate the rendering of the entire
+/// displayed content. If the instance conforming to this protocol implements this method and
+/// returns \c YES, no other delegate method will be called before or after this method.
+- (BOOL)drawContentForPresentationView:(LTPresentationView *)presentationView;
+
 /// This method will be used to update the content texture of the given \c presentationView, in the
 /// given rectangle.
 ///
