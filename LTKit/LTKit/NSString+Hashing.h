@@ -12,6 +12,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Hex string of the SHA1-160 of the receiver.
 - (NSString *)lt_SHA1;
 
+/// Hex string of the HMAC SHA-256 with the supplied \c key of the receiver.
+- (NSString *)lt_HMACSHA256WithKey:(NSString *)key;
+
 @end
 
 NS_ASSUME_NONNULL_END
