@@ -7,9 +7,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class DVNPipelineConfiguration, LTControlPointModel;
 
-/// Value class holding the information required by a \c DVNSplineRenderer to construct a spline
-/// from a given \c LTControlPointModel and perform a rendering of the sampled spline according to a
-/// given \c DVNPipelineConfiguration.
+/// Value class holding the information required by \c id<DVNSplineRendering> objects to construct a
+/// spline from a given \c LTControlPointModel and perform a rendering of the sampled spline
+/// according to a given \c DVNPipelineConfiguration.
 ///
 /// @note The model represents the entire spline and describes a way to render the entire spline
 ///       according to the associated configuration.
@@ -29,8 +29,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly, nonatomic) DVNPipelineConfiguration *configuration;
 
 /// End interval to use in the rendering of geometry created from the spline represented by the
-/// \c controlPointModel. Refer to the documentation of the \c DVNSplineRenderer for more
-/// information.
+/// \c controlPointModel. Refer to the documentation of the \c DVNSplineRenderingDelegate protocol
+/// for more information.
 @property (readonly, nonatomic) lt::Interval<CGFloat> endInterval;
 
 @end
