@@ -122,6 +122,16 @@ itShouldBehaveLike(kDVNGeometryProviderExamples, ^{
   DVNSquareProviderModel *model = [[DVNSquareProviderModel alloc] initWithEdgeLength:7
                                                                       xCoordinateKey:@"xKey"
                                                                       yCoordinateKey:@"yKey"];
+  return @{
+    kDVNGeometryProviderExamplesModel: model,
+    kDVNGeometryProviderExamplesSamples: samples
+  };
+});
+
+itShouldBehaveLike(kDVNDeterministicGeometryProviderExamples, ^{
+  DVNSquareProviderModel *model = [[DVNSquareProviderModel alloc] initWithEdgeLength:7
+                                                                      xCoordinateKey:@"xKey"
+                                                                      yCoordinateKey:@"yKey"];
   LTQuad *firstExpectedQuad = [LTQuad quadFromRect:CGRectCenteredAt(CGPointMake(1, 3),
                                                                     CGSizeMakeUniform(7))];
   LTQuad *secondExpectedQuad = [LTQuad quadFromRect:CGRectCenteredAt(CGPointMake(2, 4),

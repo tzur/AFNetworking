@@ -14,27 +14,19 @@ NSString * const kDVNGeometryProviderExamplesModel = @"DVNGeometryProviderExampl
 NSString * const kDVNGeometryProviderExamplesSamples = @"DVNGeometryProviderExamplesSamples";
 NSString * const kDVNGeometryProviderExamplesExpectedQuads =
     @"DVNGeometryProviderExamplesExpectedQuads";
-NSString * const kDVNGeometryProviderExamplesExpectedIndices =
-    @"DVNGeometryProviderExamplesExpectedIndices";
 
 SharedExamplesBegin(DVNGeometryProviderExamples)
 
 sharedExamplesFor(kDVNGeometryProviderExamples, ^(NSDictionary *data) {
   __block id<DVNGeometryProviderModel> model;
   __block id<LTSampleValues> samples;
-  __block NSArray<LTQuad *> *expectedQuads;
-  __block NSArray<NSNumber *> *expectedIndices;
 
   beforeEach(^{
     model = data[kDVNGeometryProviderExamplesModel];
     samples = data[kDVNGeometryProviderExamplesSamples];
-    expectedQuads = data[kDVNGeometryProviderExamplesExpectedQuads];
-    expectedIndices = data[kDVNGeometryProviderExamplesExpectedIndices];
   });
 
   afterEach(^{
-    expectedIndices = nil;
-    expectedQuads = nil;
     samples = nil;
     model = nil;
   });
@@ -61,13 +53,10 @@ sharedExamplesFor(kDVNGeometryProviderExamples, ^(NSDictionary *data) {
     });
 
     context(@"providing geometry", ^{
-      it(@"should provide the expected quads", ^{
-        dvn::GeometryValues values = [provider valuesFromSamples:samples end:NO];
-        expect(DVNConvertedQuadsFromQuads(values.quads())).to.equal(expectedQuads);
-        expect($(values.indices())).to.equal(expectedIndices);
-        expect(values.samples()).to.equal(samples);
+      it(@"should provide the correct samples", ^{
+        expect([provider valuesFromSamples:samples end:NO].samples()).to.equal(samples);
       });
-
+      
       it(@"should reproduce the same values when using the same model", ^{
         dvn::GeometryValues values = [provider valuesFromSamples:samples end:NO];
         id<DVNGeometryProvider> otherProvider = [model provider];
@@ -89,3 +78,39 @@ sharedExamplesFor(kDVNGeometryProviderExamples, ^(NSDictionary *data) {
 });
 
 SharedExamplesEnd
+
+NSString * const kDVNDeterministicGeometryProviderExamples =
+    @"DVNDeterministicGeometryProviderExamples";
+NSString * const kDVNGeometryProviderExamplesExpectedIndices =
+    @"DVNGeometryProviderExamplesExpectedIndices";
+
+SharedExamplesBegin(DVNDeterministicGeometryProviderExamples)
+
+sharedExamplesFor(kDVNDeterministicGeometryProviderExamples, ^(NSDictionary *data) {
+  __block id<LTSampleValues> samples;
+  __block NSArray<LTQuad *> *expectedQuads;
+  __block NSArray<NSNumber *> *expectedIndices;
+  __block id<DVNGeometryProvider> provider;
+  
+  beforeEach(^{
+    samples = data[kDVNGeometryProviderExamplesSamples];
+    expectedQuads = data[kDVNGeometryProviderExamplesExpectedQuads];
+    expectedIndices = data[kDVNGeometryProviderExamplesExpectedIndices];
+    provider = [data[kDVNGeometryProviderExamplesModel] provider];
+  });
+  
+  afterEach(^{
+    samples = nil;
+    expectedQuads = nil;
+    expectedIndices = nil;
+    provider = nil;
+  });
+
+  it(@"should provide the expected quads", ^{
+    dvn::GeometryValues values = [provider valuesFromSamples:samples end:NO];
+    expect($(values.indices())).to.equal(expectedIndices);
+    expect(DVNConvertedQuadsFromQuads(values.quads())).to.equal(expectedQuads);
+  });
+});
+
+SpecEnd
