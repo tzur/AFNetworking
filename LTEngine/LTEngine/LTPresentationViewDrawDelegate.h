@@ -22,9 +22,16 @@ NS_ASSUME_NONNULL_BEGIN
 /// @note The viewport for this drawing is mapped to the whole content bounds.
 - (void)presentationView:(LTPresentationView *)presentationView updateContentInRect:(CGRect)rect;
 
+/// This method is called before the content is drawn on the given \c presentationView, and can be
+/// used for drawing background and shadow below the content. The given \c rect, in non-normalized
+/// floating-point pixel units of the presentation coordinate system, indicates the region of the
+/// \c presentationView that will be covered by the content.
+- (void)presentationView:(LTPresentationView *)presentationView
+    drawBackgroundBelowContentAroundRect:(CGRect)rect;
+
 /// This method is called after the content is drawn on the given \c presentationView, and can be
-/// used for drawing overlays above the content. The given affine transform maps points in
-/// floating-point pixel units of the content coordinate system to the corresponding points in point
+/// used for drawing overlays above the content. The given affine \c transform maps points in
+/// floating-point pixel units of the content coordinate system to the corresponding points in pixel
 /// units of the presentation coordinate system.
 ///
 /// @note The viewport for this drawing is mapped to the view bounds.

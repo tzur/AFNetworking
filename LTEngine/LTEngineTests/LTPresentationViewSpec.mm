@@ -480,7 +480,25 @@ context(@"draw delegate", ^{
     [view drawToFbo:fbo];
     expect(delegateCalled).to.beFalsy();
   });
-  
+
+  it(@"should use delegate to draw background below content", ^{
+    CGRect rectBelowContent = CGRectMake(contentAreaInOutput.x, contentAreaInOutput.y,
+                                         contentAreaInOutput.width, contentAreaInOutput.height);
+    OCMStub([mock presentationView:view drawBackgroundBelowContentAroundRect:rectBelowContent])
+        .andDo(^(NSInvocation *) {
+      [[LTGLContext currentContext] clearWithColor:LTVector4(1, 0, 1, 1)];
+    });
+
+    expectedOutput = cv::Vec4b(255, 0, 255, 255);
+    cv::resize(inputContent, resizedContent, contentAreaInOutput.size(), 0, 0, cv::INTER_NEAREST);
+    cv::flip(resizedContent, resizedContent, 0);
+    resizedContent.copyTo(expectedOutput(contentAreaInOutput));
+
+    [view drawToFbo:fbo];
+    output = [outputTexture image];
+    expect($(output)).to.beCloseToMat($(expectedOutput));
+  });
+
   it(@"should use delegate to draw overlays above content", ^{
     [[[[mock stub] ignoringNonObjectArgs] andDo:^(NSInvocation *invocation) {
       CGAffineTransform transform;
