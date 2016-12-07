@@ -36,10 +36,6 @@
 		032DFC501A1A50FB002A4F69 /* Lena128BasicOilPainting.png in Resources */ = {isa = PBXBuildFile; fileRef = 032DFC4E1A1A50FB002A4F69 /* Lena128BasicOilPainting.png */; };
 		032DFC511A1A50FB002A4F69 /* MealBasicOilPainting.png in Resources */ = {isa = PBXBuildFile; fileRef = 032DFC4F1A1A50FB002A4F69 /* MealBasicOilPainting.png */; };
 		03329F1118D9D08E00CD61C2 /* MealBWProcessorNoisyFrame.png in Resources */ = {isa = PBXBuildFile; fileRef = 03329F1018D9D08E00CD61C2 /* MealBWProcessorNoisyFrame.png */; };
-		03329F7218ED54A200CD61C2 /* LTAnalogFilmProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03329F7118ED54A200CD61C2 /* LTAnalogFilmProcessor.mm */; };
-		03329F8218ED558300CD61C2 /* LTAnalogFilmProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03329F8118ED558300CD61C2 /* LTAnalogFilmProcessorSpec.mm */; };
-		03329F8318ED5A1A00CD61C2 /* LTAnalogFilm.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 03329F7F18ED54D000CD61C2 /* LTAnalogFilm.fsh */; };
-		03329F8418ED5A1A00CD61C2 /* LTAnalogFilm.vsh in Sources */ = {isa = PBXBuildFile; fileRef = 03329F8018ED54D000CD61C2 /* LTAnalogFilm.vsh */; };
 		033DCD8719F2B57A004BF795 /* NegativeHighlightsCurve.png in Resources */ = {isa = PBXBuildFile; fileRef = 033DCD8319F2B57A004BF795 /* NegativeHighlightsCurve.png */; };
 		033DCD8819F2B57A004BF795 /* NegativeShadowsCurve.png in Resources */ = {isa = PBXBuildFile; fileRef = 033DCD8419F2B57A004BF795 /* NegativeShadowsCurve.png */; };
 		033DCD8919F2B57A004BF795 /* PositiveHighlightsCurve.png in Resources */ = {isa = PBXBuildFile; fileRef = 033DCD8519F2B57A004BF795 /* PositiveHighlightsCurve.png */; };
@@ -76,7 +72,6 @@
 		039109A619A4BE4C009CDA43 /* LTColorRangeAdjustProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039109A519A4BE4C009CDA43 /* LTColorRangeAdjustProcessorSpec.mm */; };
 		039C95A31897E4A100F1E213 /* LTMultiscaleNoiseProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039C95A21897E4A000F1E213 /* LTMultiscaleNoiseProcessor.mm */; };
 		039C95B41897E91700F1E213 /* LTMultiscaleNoise.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 039C95B21897E84300F1E213 /* LTMultiscaleNoise.fsh */; };
-		03A094FC19ED453600BB542A /* Lena128AnalogProcessor.png in Resources */ = {isa = PBXBuildFile; fileRef = 03A094FB19ED453600BB542A /* Lena128AnalogProcessor.png */; };
 		03AD29A318910BF700516D14 /* SimulatorFractionalNoise.png in Resources */ = {isa = PBXBuildFile; fileRef = 03AD29A218910BF700516D14 /* SimulatorFractionalNoise.png */; };
 		03AD29AF18913E9400516D14 /* LTBicubicResizeProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03AD29AE18913E9400516D14 /* LTBicubicResizeProcessor.mm */; };
 		03AD29BE1891415B00516D14 /* LTBicubicResize.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 03AD29BC189140DA00516D14 /* LTBicubicResize.fsh */; };
@@ -928,7 +923,6 @@
 		8B871FD21924A75E00517F2E /* LTNextIterationPlacement.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BABFD67188C5A29004163DA /* LTNextIterationPlacement.h */; };
 		8B871FD31924A75E00517F2E /* LTOneShotProcessingStrategy.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BABFD60188C13FA004163DA /* LTOneShotProcessingStrategy.h */; };
 		8B871FD41924A75E00517F2E /* LTAdjustProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 03D516E718B5DB780026B56A /* LTAdjustProcessor.h */; };
-		8B871FD51924A75E00517F2E /* LTAnalogFilmProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 03329F7018ED54A200CD61C2 /* LTAnalogFilmProcessor.h */; };
 		8B871FD61924A75E00517F2E /* LTArithmeticProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BAE3A8E18B4D35D00DA79E1 /* LTArithmeticProcessor.h */; };
 		8B871FD71924A75E00517F2E /* LTBicubicResizeProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 03AD29AD18913E9400516D14 /* LTBicubicResizeProcessor.h */; };
 		8B871FD81924A75E00517F2E /* LTBilateralFilterProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BD685E61885402F00571E75 /* LTBilateralFilterProcessor.h */; };
@@ -1715,11 +1709,6 @@
 		032DFC4E1A1A50FB002A4F69 /* Lena128BasicOilPainting.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Lena128BasicOilPainting.png; path = Resources/Lena128BasicOilPainting.png; sourceTree = "<group>"; };
 		032DFC4F1A1A50FB002A4F69 /* MealBasicOilPainting.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = MealBasicOilPainting.png; path = Resources/MealBasicOilPainting.png; sourceTree = "<group>"; };
 		03329F1018D9D08E00CD61C2 /* MealBWProcessorNoisyFrame.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = MealBWProcessorNoisyFrame.png; path = Resources/MealBWProcessorNoisyFrame.png; sourceTree = "<group>"; };
-		03329F7018ED54A200CD61C2 /* LTAnalogFilmProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTAnalogFilmProcessor.h; sourceTree = "<group>"; };
-		03329F7118ED54A200CD61C2 /* LTAnalogFilmProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; lineEnding = 0; path = LTAnalogFilmProcessor.mm; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		03329F7F18ED54D000CD61C2 /* LTAnalogFilm.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTAnalogFilm.fsh; sourceTree = "<group>"; };
-		03329F8018ED54D000CD61C2 /* LTAnalogFilm.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTAnalogFilm.vsh; sourceTree = "<group>"; };
-		03329F8118ED558300CD61C2 /* LTAnalogFilmProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTAnalogFilmProcessorSpec.mm; sourceTree = "<group>"; };
 		033DCD8319F2B57A004BF795 /* NegativeHighlightsCurve.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = NegativeHighlightsCurve.png; path = Curves/NegativeHighlightsCurve.png; sourceTree = "<group>"; };
 		033DCD8419F2B57A004BF795 /* NegativeShadowsCurve.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = NegativeShadowsCurve.png; path = Curves/NegativeShadowsCurve.png; sourceTree = "<group>"; };
 		033DCD8519F2B57A004BF795 /* PositiveHighlightsCurve.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PositiveHighlightsCurve.png; path = Curves/PositiveHighlightsCurve.png; sourceTree = "<group>"; };
@@ -1760,7 +1749,6 @@
 		039C95A11897E4A000F1E213 /* LTMultiscaleNoiseProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTMultiscaleNoiseProcessor.h; sourceTree = "<group>"; };
 		039C95A21897E4A000F1E213 /* LTMultiscaleNoiseProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTMultiscaleNoiseProcessor.mm; sourceTree = "<group>"; };
 		039C95B21897E84300F1E213 /* LTMultiscaleNoise.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTMultiscaleNoise.fsh; sourceTree = "<group>"; };
-		03A094FB19ED453600BB542A /* Lena128AnalogProcessor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Lena128AnalogProcessor.png; path = Resources/Lena128AnalogProcessor.png; sourceTree = "<group>"; };
 		03AD29A218910BF700516D14 /* SimulatorFractionalNoise.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SimulatorFractionalNoise.png; path = Resources/SimulatorFractionalNoise.png; sourceTree = "<group>"; };
 		03AD29AD18913E9400516D14 /* LTBicubicResizeProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTBicubicResizeProcessor.h; sourceTree = "<group>"; };
 		03AD29AE18913E9400516D14 /* LTBicubicResizeProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTBicubicResizeProcessor.mm; sourceTree = "<group>"; };
@@ -3046,10 +3034,6 @@
 				03D516F618B5DBBD0026B56A /* LTAdjust.fsh */,
 				03D516E718B5DB780026B56A /* LTAdjustProcessor.h */,
 				03D516E818B5DB780026B56A /* LTAdjustProcessor.mm */,
-				03329F7F18ED54D000CD61C2 /* LTAnalogFilm.fsh */,
-				03329F8018ED54D000CD61C2 /* LTAnalogFilm.vsh */,
-				03329F7018ED54A200CD61C2 /* LTAnalogFilmProcessor.h */,
-				03329F7118ED54A200CD61C2 /* LTAnalogFilmProcessor.mm */,
 				8597AEAE1D748ECB008C96D2 /* LTAnisotropicDiffusion.fsh */,
 				8597AEAF1D748ECB008C96D2 /* LTAnisotropicDiffusionProcessor.h */,
 				8597AEB01D748ECB008C96D2 /* LTAnisotropicDiffusionProcessor.mm */,
@@ -3234,7 +3218,6 @@
 				85F372B91C8C88DA00E1D429 /* LT3DLUTProcessorSpec.mm */,
 				658788A51AC196F4007EDF71 /* LTSeparableImageProcessorSpec.mm */,
 				03D516F818B5DBEF0026B56A /* LTAdjustProcessorSpec.mm */,
-				03329F8118ED558300CD61C2 /* LTAnalogFilmProcessorSpec.mm */,
 				8597AEB41D748EF9008C96D2 /* LTAnisotropicDiffusionProcessorSpec.mm */,
 				8BC1C9F919FA5B0F00107580 /* LTAspectFillResizeProcessorSpec.mm */,
 				8BAE3A9F18B4D64E00DA79E1 /* LTArithmeticProcessorSpec.mm */,
@@ -4559,7 +4542,6 @@
 				8BBEE93719FC032300A2FA6B /* AspectFittedFlower.png */,
 				7C6C5B831D6DA6E400D9F269 /* AspectFittedHalfTransparent.png */,
 				038DDD8119EFD19D0018F9E4 /* Lena128CLAHE.png */,
-				03A094FB19ED453600BB542A /* Lena128AnalogProcessor.png */,
 				0317070419E9317100F4F975 /* Lena128BWProcessor.png */,
 				03FDEE3719E1B015002DC735 /* TonalGrain.png */,
 				03FB6B5519DAAC4E00255085 /* LenaClarity.png */,
@@ -5554,7 +5536,6 @@
 				85F3F9C31CC62D6900E5753E /* LTDisplacementMapDrawer.h in Headers */,
 				8BABF16E19BC3AC000AED760 /* LTPyramidProcessor.h in Headers */,
 				8B871FD41924A75E00517F2E /* LTAdjustProcessor.h in Headers */,
-				8B871FD51924A75E00517F2E /* LTAnalogFilmProcessor.h in Headers */,
 				8B871FD61924A75E00517F2E /* LTArithmeticProcessor.h in Headers */,
 				508C15611C1C84CB009ADA5C /* LTFloatSet.h in Headers */,
 				8B3831FB1B56906300620560 /* LTIZCompressor.h in Headers */,
@@ -6318,7 +6299,6 @@
 				8BABF18D19BC52C100AED760 /* PyramidGrid2.png in Resources */,
 				030CF6FC1898EE08000E9ED0 /* SimulatorMultiscaleNoise.png in Resources */,
 				03BCFD4B191FA6E200529AD6 /* SmoothBorder.png in Resources */,
-				03A094FC19ED453600BB542A /* Lena128AnalogProcessor.png in Resources */,
 				85CB44981D75DADD00519E37 /* LTAnisotropicDiffusion_non_guided_kernel_3_sigma_0_1.png in Resources */,
 				2839AA991AF10E030019EEE6 /* CircularPatchFlipped.png in Resources */,
 				03D5169A18B3344F0026B56A /* StraightBlackNoisyFrame.png in Resources */,
@@ -6657,8 +6637,6 @@
 				50D82E731BFCABFD002EDCBD /* LTCompoundParameterizedObjectFactory.mm in Sources */,
 				03AFC14E1906875C00F17063 /* LTDuo.fsh in Sources */,
 				8BFA8F4E191136F40088310E /* LTRectCopy.fsh in Sources */,
-				03329F8318ED5A1A00CD61C2 /* LTAnalogFilm.fsh in Sources */,
-				03329F8418ED5A1A00CD61C2 /* LTAnalogFilm.vsh in Sources */,
 				03C192AC18F511D800DC6CA6 /* LTDualMask.fsh in Sources */,
 				8BD688E81B6A8E2C003BDA34 /* LTTextureIZArchiver.mm in Sources */,
 				06F9EEE81D577D8C002D2726 /* LTBilateralFilterPyramidProcessor.mm in Sources */,
@@ -6861,7 +6839,6 @@
 				8BEBF3F918FAA1BD005A0DE9 /* LTPassthroughProcessor.mm in Sources */,
 				280F5A1A191A8CFE00F9F80B /* LTCommonDrawableShapeStructs.mm in Sources */,
 				282CF08D187B031800904F07 /* UIColor+Vector.mm in Sources */,
-				03329F7218ED54A200CD61C2 /* LTAnalogFilmProcessor.mm in Sources */,
 				2847921D186315D100A70AF5 /* LTGridDrawer.vsh in Sources */,
 				0367A4B018ACF45700B42E34 /* LTProceduralFrameProcessor.mm in Sources */,
 				8BBE89511838CA2C006C58AA /* LTArrayBuffer.mm in Sources */,
@@ -6966,7 +6943,6 @@
 				2839069F18C4DB0A00BD21CE /* LTEdgeAvoidingBrushSpec.mm in Sources */,
 				50B6BD521DD32D11005A448E /* LTTouchEventSequenceValidatorSpec.mm in Sources */,
 				8B3F94A7187AEA0200FAA265 /* Passthrough.fsh in Sources */,
-				03329F8218ED558300CD61C2 /* LTAnalogFilmProcessorSpec.mm in Sources */,
 				2843B78318ACC08B0044B87A /* LTTextureDrawerExamples.mm in Sources */,
 				8BAF8BF818BCB21D00C77C04 /* LTRectMappingSpec.mm in Sources */,
 				8B8E510E1863216E00821829 /* LTGLContextSpec.mm in Sources */,
