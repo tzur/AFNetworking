@@ -30,12 +30,11 @@ NS_ASSUME_NONNULL_BEGIN
   return [self lt_hexStringWithBytes:digest andSize:CC_SHA1_DIGEST_LENGTH];
 }
 
-- (NSString *)lt_HMACSHA256WithKey:(NSString *)key {
-  NSData *keyData = [key dataUsingEncoding:NSUTF8StringEncoding];
+- (NSString *)lt_HMACSHA256WithKey:(NSData *)key {
   NSData *stringData = [self dataUsingEncoding:NSUTF8StringEncoding];
 
   uint8_t digest[CC_SHA256_DIGEST_LENGTH];
-  CCHmac(kCCHmacAlgSHA256, keyData.bytes, (CC_LONG)keyData.length, stringData.bytes,
+  CCHmac(kCCHmacAlgSHA256, key.bytes, (CC_LONG)key.length, stringData.bytes,
          (CC_LONG)stringData.length, digest);
 
   return [self lt_hexStringWithBytes:digest andSize:CC_SHA256_DIGEST_LENGTH];
