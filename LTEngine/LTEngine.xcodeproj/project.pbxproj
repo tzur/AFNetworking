@@ -12,9 +12,6 @@
 		03045D7A19C5FBBD0075207D /* SmoothPyramidUpsampleGrid6.png in Resources */ = {isa = PBXBuildFile; fileRef = 03045D7719C5FBBD0075207D /* SmoothPyramidUpsampleGrid6.png */; };
 		03045D7C19C5FD9C0075207D /* SmoothPyramidUpsampleToOddGrid.png in Resources */ = {isa = PBXBuildFile; fileRef = 03045D7B19C5FD9C0075207D /* SmoothPyramidUpsampleToOddGrid.png */; };
 		030CF6FC1898EE08000E9ED0 /* SimulatorMultiscaleNoise.png in Resources */ = {isa = PBXBuildFile; fileRef = 030CF6FB1898EE08000E9ED0 /* SimulatorMultiscaleNoise.png */; };
-		030CF73518993574000E9ED0 /* LTBWTonalityProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 030CF73418993574000E9ED0 /* LTBWTonalityProcessor.mm */; };
-		030CF744189935AF000E9ED0 /* LTBWTonality.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 030CF74218993594000E9ED0 /* LTBWTonality.fsh */; };
-		030CF74618993BF1000E9ED0 /* LTBWTonalityProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 030CF74518993BF1000E9ED0 /* LTBWTonalityProcessorSpec.mm */; };
 		0313388F190FD0240095F99B /* TiltShiftDoubleLinear.png in Resources */ = {isa = PBXBuildFile; fileRef = 0313388D190FD0240095F99B /* TiltShiftDoubleLinear.png */; };
 		03133890190FD0240095F99B /* TiltShiftRadial.png in Resources */ = {isa = PBXBuildFile; fileRef = 0313388E190FD0240095F99B /* TiltShiftRadial.png */; };
 		031338BD19111E2A0095F99B /* LTProceduralFrame.vsh in Sources */ = {isa = PBXBuildFile; fileRef = 031338B019111DD20095F99B /* LTProceduralFrame.vsh */; };
@@ -913,7 +910,6 @@
 		8B871FD81924A75E00517F2E /* LTBilateralFilterProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BD685E61885402F00571E75 /* LTBilateralFilterProcessor.h */; };
 		8B871FD91924A75E00517F2E /* LTPatchBoundaryProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BAE3A0B18ACFEF700DA79E1 /* LTPatchBoundaryProcessor.h */; };
 		8B871FDA1924A75E00517F2E /* LTBoxFilterProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 03734AB9188E98AB008B4056 /* LTBoxFilterProcessor.h */; };
-		8B871FDC1924A75E00517F2E /* LTBWTonalityProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 030CF73318993574000E9ED0 /* LTBWTonalityProcessor.h */; };
 		8B871FDD1924A75E00517F2E /* LTColorGradient.h in Headers */ = {isa = PBXBuildFile; fileRef = 03BBB31E1887B7CB001E7703 /* LTColorGradient.h */; };
 		8B871FDE1924A75E00517F2E /* LTCurve.h in Headers */ = {isa = PBXBuildFile; fileRef = 03C192C918FA885F00DC6CA6 /* LTCurve.h */; };
 		8B871FDF1924A75E00517F2E /* LTDualMaskProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 03C1929918F5114100DC6CA6 /* LTDualMaskProcessor.h */; };
@@ -1666,10 +1662,6 @@
 		03045D7719C5FBBD0075207D /* SmoothPyramidUpsampleGrid6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SmoothPyramidUpsampleGrid6.png; path = Resources/SmoothPyramidUpsampleGrid6.png; sourceTree = "<group>"; };
 		03045D7B19C5FD9C0075207D /* SmoothPyramidUpsampleToOddGrid.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SmoothPyramidUpsampleToOddGrid.png; path = Resources/SmoothPyramidUpsampleToOddGrid.png; sourceTree = "<group>"; };
 		030CF6FB1898EE08000E9ED0 /* SimulatorMultiscaleNoise.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SimulatorMultiscaleNoise.png; path = Resources/SimulatorMultiscaleNoise.png; sourceTree = "<group>"; };
-		030CF73318993574000E9ED0 /* LTBWTonalityProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTBWTonalityProcessor.h; sourceTree = "<group>"; };
-		030CF73418993574000E9ED0 /* LTBWTonalityProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTBWTonalityProcessor.mm; sourceTree = "<group>"; };
-		030CF74218993594000E9ED0 /* LTBWTonality.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTBWTonality.fsh; sourceTree = "<group>"; };
-		030CF74518993BF1000E9ED0 /* LTBWTonalityProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTBWTonalityProcessorSpec.mm; sourceTree = "<group>"; };
 		0313388D190FD0240095F99B /* TiltShiftDoubleLinear.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = TiltShiftDoubleLinear.png; path = Resources/TiltShiftDoubleLinear.png; sourceTree = "<group>"; };
 		0313388E190FD0240095F99B /* TiltShiftRadial.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = TiltShiftRadial.png; path = Resources/TiltShiftRadial.png; sourceTree = "<group>"; };
 		031338B019111DD20095F99B /* LTProceduralFrame.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTProceduralFrame.vsh; sourceTree = "<group>"; };
@@ -3026,9 +3018,6 @@
 				03734ABD188E98B9008B4056 /* LTBoxFilter.vsh */,
 				03734AB9188E98AB008B4056 /* LTBoxFilterProcessor.h */,
 				03734ABA188E98AB008B4056 /* LTBoxFilterProcessor.mm */,
-				030CF74218993594000E9ED0 /* LTBWTonality.fsh */,
-				030CF73318993574000E9ED0 /* LTBWTonalityProcessor.h */,
-				030CF73418993574000E9ED0 /* LTBWTonalityProcessor.mm */,
 				038DDD6A19EFBEB80018F9E4 /* LTCLAHEProcessor.h */,
 				038DDD6B19EFBEB80018F9E4 /* LTCLAHEProcessor.mm */,
 				8527B3551CF306CA009CA3BB /* LTChannelsPackingProcessor.h */,
@@ -3181,7 +3170,6 @@
 				8BD685FE1885519700571E75 /* LTBilateralFilterProcessorSpec.mm */,
 				06F9EF1B1D57A7AC002D2726 /* LTBilateralFilterPyramidProcessorSpec.mm */,
 				03734AC1188E9F27008B4056 /* LTBoxFilterProcessorSpec.mm */,
-				030CF74518993BF1000E9ED0 /* LTBWTonalityProcessorSpec.mm */,
 				8527B54C1CF45F48009CA3BB /* LTChannelsPackingProcessorSpec.mm */,
 				28E7EFBA1AC41291007D1DAA /* LTCircularPatchProcessorSpec.mm */,
 				03C192EC18FABAC300DC6CA6 /* LTColorConversionProcessorSpec.mm */,
@@ -5503,7 +5491,6 @@
 				0391099019A482C4009CDA43 /* LTColorRangeAdjustProcessor.h in Headers */,
 				288419411BD3A04A00B09F6B /* LTTextureArchiverNonPersistentStorage.h in Headers */,
 				8B17A5941C32A232001713BB /* LTEAGLView.h in Headers */,
-				8B871FDC1924A75E00517F2E /* LTBWTonalityProcessor.h in Headers */,
 				8B871FDD1924A75E00517F2E /* LTColorGradient.h in Headers */,
 				03CA15C31965492C0040DB07 /* LTEdgesMaskProcessor.h in Headers */,
 				8B871FDE1924A75E00517F2E /* LTCurve.h in Headers */,
@@ -6628,7 +6615,6 @@
 				28C207791AE7B143007214A5 /* LTTextureArchiver.mm in Sources */,
 				28FC0E6C1D2A9FEC00237FF8 /* LTContentTouchEventAndPredicate.mm in Sources */,
 				8BF68A6F1D82E7FE0093910D /* NSData+Compression.mm in Sources */,
-				030CF744189935AF000E9ED0 /* LTBWTonality.fsh in Sources */,
 				8BB92FAE1906AE5400954124 /* LTMaskOverlayProcessor.mm in Sources */,
 				0367A4B518ACF7AA00B42E34 /* LTProceduralFrame.fsh in Sources */,
 				8B422A4E1C30468D00398F27 /* LTTexture+Sampling.mm in Sources */,
@@ -6751,7 +6737,6 @@
 				500677F51C6A1BF8002C6A24 /* LTDefaultBrushGeometryProvider.mm in Sources */,
 				85A8013E1D07128100E8CFAC /* LT3DLUTTextureAtlas.mm in Sources */,
 				2836F9EB1D33B9540078887C /* LTCompressionFormat.mm in Sources */,
-				030CF73518993574000E9ED0 /* LTBWTonalityProcessor.mm in Sources */,
 				509CE8AA1D3260B100D496D6 /* LTSplineControlPoint+AttributeKeys.mm in Sources */,
 				03734AB8188E7CF1008B4056 /* LTSeparableImageProcessor.mm in Sources */,
 				25AF174D1AD50BE00055E664 /* LTVGLines.mm in Sources */,
@@ -7136,7 +7121,6 @@
 				8BAED5401886D28B00BCACF7 /* TwoInputTextures.fsh in Sources */,
 				8BA8229B198805D300FBE68E /* LTJSONSerializationAdapterSpec.mm in Sources */,
 				8B329020192CACAA0010592E /* LTTextureContentsDataArchiverSpec.mm in Sources */,
-				030CF74618993BF1000E9ED0 /* LTBWTonalityProcessorSpec.mm in Sources */,
 				8B9D3FC51891116A001A964D /* LTEasyBoxing+LTEngineSpec.mm in Sources */,
 				06F9EF1C1D57A7AC002D2726 /* LTBilateralFilterPyramidProcessorSpec.mm in Sources */,
 				8BAD631B18A3D75900482564 /* ValueSetter.fsh in Sources */,
