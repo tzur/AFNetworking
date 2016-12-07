@@ -119,10 +119,6 @@
 		03C315271965798F00F742B1 /* LTEdgesMask.vsh in Sources */ = {isa = PBXBuildFile; fileRef = 03C315261965791500F742B1 /* LTEdgesMask.vsh */; };
 		03C3152C1965986F00F742B1 /* MacbethColorEdges.png in Resources */ = {isa = PBXBuildFile; fileRef = 03C3152A1965986F00F742B1 /* MacbethColorEdges.png */; };
 		03C3152D1965986F00F742B1 /* MacbethGreyEdges.png in Resources */ = {isa = PBXBuildFile; fileRef = 03C3152B1965986F00F742B1 /* MacbethGreyEdges.png */; };
-		03C7B68C18CEF76A00E728F5 /* LTBWProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03C7B68B18CEF76A00E728F5 /* LTBWProcessor.mm */; };
-		03C7B68E18CEF7AD00E728F5 /* LTBWProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03C7B68D18CEF7AD00E728F5 /* LTBWProcessorSpec.mm */; };
-		03C7B69118CEFBA400E728F5 /* LTBWProcessor.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 03C7B68F18CEFB7F00E728F5 /* LTBWProcessor.fsh */; };
-		03C7B6A618CF0EC500E728F5 /* LTBWProcessor.vsh in Sources */ = {isa = PBXBuildFile; fileRef = 03C7B69918CF0DE000E728F5 /* LTBWProcessor.vsh */; };
 		03C7B6C318CF124900E728F5 /* FillLightCurve.png in Resources */ = {isa = PBXBuildFile; fileRef = 03C7B6BB18CF124900E728F5 /* FillLightCurve.png */; };
 		03C7B6C518CF124900E728F5 /* IdentityCurve.png in Resources */ = {isa = PBXBuildFile; fileRef = 03C7B6BD18CF124900E728F5 /* IdentityCurve.png */; };
 		03C7B6C618CF124900E728F5 /* NegativeBrightnessCurve.png in Resources */ = {isa = PBXBuildFile; fileRef = 03C7B6BE18CF124900E728F5 /* NegativeBrightnessCurve.png */; };
@@ -928,7 +924,6 @@
 		8B871FD81924A75E00517F2E /* LTBilateralFilterProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BD685E61885402F00571E75 /* LTBilateralFilterProcessor.h */; };
 		8B871FD91924A75E00517F2E /* LTPatchBoundaryProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BAE3A0B18ACFEF700DA79E1 /* LTPatchBoundaryProcessor.h */; };
 		8B871FDA1924A75E00517F2E /* LTBoxFilterProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 03734AB9188E98AB008B4056 /* LTBoxFilterProcessor.h */; };
-		8B871FDB1924A75E00517F2E /* LTBWProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 03C7B68A18CEF76A00E728F5 /* LTBWProcessor.h */; };
 		8B871FDC1924A75E00517F2E /* LTBWTonalityProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 030CF73318993574000E9ED0 /* LTBWTonalityProcessor.h */; };
 		8B871FDD1924A75E00517F2E /* LTColorGradient.h in Headers */ = {isa = PBXBuildFile; fileRef = 03BBB31E1887B7CB001E7703 /* LTColorGradient.h */; };
 		8B871FDE1924A75E00517F2E /* LTCurve.h in Headers */ = {isa = PBXBuildFile; fileRef = 03C192C918FA885F00DC6CA6 /* LTCurve.h */; };
@@ -1805,11 +1800,6 @@
 		03C315261965791500F742B1 /* LTEdgesMask.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTEdgesMask.vsh; sourceTree = "<group>"; };
 		03C3152A1965986F00F742B1 /* MacbethColorEdges.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = MacbethColorEdges.png; path = Resources/MacbethColorEdges.png; sourceTree = "<group>"; };
 		03C3152B1965986F00F742B1 /* MacbethGreyEdges.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = MacbethGreyEdges.png; path = Resources/MacbethGreyEdges.png; sourceTree = "<group>"; };
-		03C7B68A18CEF76A00E728F5 /* LTBWProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTBWProcessor.h; sourceTree = "<group>"; };
-		03C7B68B18CEF76A00E728F5 /* LTBWProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; lineEnding = 0; path = LTBWProcessor.mm; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		03C7B68D18CEF7AD00E728F5 /* LTBWProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTBWProcessorSpec.mm; sourceTree = "<group>"; };
-		03C7B68F18CEFB7F00E728F5 /* LTBWProcessor.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTBWProcessor.fsh; sourceTree = "<group>"; };
-		03C7B69918CF0DE000E728F5 /* LTBWProcessor.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTBWProcessor.vsh; sourceTree = "<group>"; };
 		03C7B6BB18CF124900E728F5 /* FillLightCurve.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = FillLightCurve.png; path = Curves/FillLightCurve.png; sourceTree = "<group>"; };
 		03C7B6BD18CF124900E728F5 /* IdentityCurve.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = IdentityCurve.png; path = Curves/IdentityCurve.png; sourceTree = "<group>"; };
 		03C7B6BE18CF124900E728F5 /* NegativeBrightnessCurve.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = NegativeBrightnessCurve.png; path = Curves/NegativeBrightnessCurve.png; sourceTree = "<group>"; };
@@ -3060,10 +3050,6 @@
 				03734ABD188E98B9008B4056 /* LTBoxFilter.vsh */,
 				03734AB9188E98AB008B4056 /* LTBoxFilterProcessor.h */,
 				03734ABA188E98AB008B4056 /* LTBoxFilterProcessor.mm */,
-				03C7B68F18CEFB7F00E728F5 /* LTBWProcessor.fsh */,
-				03C7B69918CF0DE000E728F5 /* LTBWProcessor.vsh */,
-				03C7B68A18CEF76A00E728F5 /* LTBWProcessor.h */,
-				03C7B68B18CEF76A00E728F5 /* LTBWProcessor.mm */,
 				030CF74218993594000E9ED0 /* LTBWTonality.fsh */,
 				030CF73318993574000E9ED0 /* LTBWTonalityProcessor.h */,
 				030CF73418993574000E9ED0 /* LTBWTonalityProcessor.mm */,
@@ -3225,7 +3211,6 @@
 				8BD685FE1885519700571E75 /* LTBilateralFilterProcessorSpec.mm */,
 				06F9EF1B1D57A7AC002D2726 /* LTBilateralFilterPyramidProcessorSpec.mm */,
 				03734AC1188E9F27008B4056 /* LTBoxFilterProcessorSpec.mm */,
-				03C7B68D18CEF7AD00E728F5 /* LTBWProcessorSpec.mm */,
 				030CF74518993BF1000E9ED0 /* LTBWTonalityProcessorSpec.mm */,
 				8527B54C1CF45F48009CA3BB /* LTChannelsPackingProcessorSpec.mm */,
 				28E7EFBA1AC41291007D1DAA /* LTCircularPatchProcessorSpec.mm */,
@@ -5553,7 +5538,6 @@
 				85F154EB1D1283CF00967A90 /* LTPackingRectsProvider.h in Headers */,
 				0391099019A482C4009CDA43 /* LTColorRangeAdjustProcessor.h in Headers */,
 				288419411BD3A04A00B09F6B /* LTTextureArchiverNonPersistentStorage.h in Headers */,
-				8B871FDB1924A75E00517F2E /* LTBWProcessor.h in Headers */,
 				8B17A5941C32A232001713BB /* LTEAGLView.h in Headers */,
 				8B871FDC1924A75E00517F2E /* LTBWTonalityProcessor.h in Headers */,
 				8B871FDD1924A75E00517F2E /* LTColorGradient.h in Headers */,
@@ -6644,8 +6628,6 @@
 				50D82E941BFCAC30002EDCBD /* LTCompoundParameterizedObject.mm in Sources */,
 				03C192EE18FABDFE00DC6CA6 /* LTColorConversionProcessor.fsh in Sources */,
 				50D672451D26B7EB00005CC7 /* LTContentView.mm in Sources */,
-				03C7B6A618CF0EC500E728F5 /* LTBWProcessor.vsh in Sources */,
-				03C7B69118CEFBA400E728F5 /* LTBWProcessor.fsh in Sources */,
 				283906C918C6217A00BD21CE /* LTPainterMergeShader.fsh in Sources */,
 				85F1550D1D1283DA00967A90 /* LTHorizontalPackingRectsProvider.mm in Sources */,
 				8BB92FB01906AEB900954124 /* LTMaskOverlay.fsh in Sources */,
@@ -6797,7 +6779,6 @@
 				500CAA0D1D26B23C009CF19F /* LTPainter+Interaction.mm in Sources */,
 				038DDD6D19EFBEB80018F9E4 /* LTCLAHEProcessor.mm in Sources */,
 				502B1CC419FA91FB00985F30 /* LTQuadMapping.mm in Sources */,
-				03C7B68C18CEF76A00E728F5 /* LTBWProcessor.mm in Sources */,
 				507BDD171D11601400EF0997 /* LTSampleValues.mm in Sources */,
 				8BD0730F19A247B5005F2C37 /* LTImage+Texture.mm in Sources */,
 				502B1CAB19FA81B200985F30 /* LTQuadMixerProcessor.mm in Sources */,
@@ -7176,7 +7157,6 @@
 				8BAE3AA018B4D64E00DA79E1 /* LTArithmeticProcessorSpec.mm in Sources */,
 				8BA82190198668D000FBE68E /* LTVectorSpec.mm in Sources */,
 				28FC0E811D2AAECE00237FF8 /* LTContentTouchEventTimeIntervalPredicateSpec.mm in Sources */,
-				03C7B68E18CEF7AD00E728F5 /* LTBWProcessorSpec.mm in Sources */,
 				8BD0748319A614DF005F2C37 /* LTTestModule.mm in Sources */,
 				03C1933218FE530A00DC6CA6 /* LTColorGradient+ForTesting.mm in Sources */,
 				28B117D619C87DB2007E2F17 /* LTReshapeProcessorSpec.mm in Sources */,
