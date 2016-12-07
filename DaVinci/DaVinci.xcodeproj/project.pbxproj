@@ -40,7 +40,7 @@
 		28662D621DF57DD60051B9DA /* DVNPainter.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28662D611DF57DD60051B9DA /* DVNPainter.mm */; };
 		286C1C7F1DEC5A3000523F2E /* DVNPatternSamplingStageModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 286C1C7D1DEC5A3000523F2E /* DVNPatternSamplingStageModel.mm */; };
 		286C1C821DEC5A5200523F2E /* DVNPatternSamplingStageModelSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 286C1C811DEC5A5200523F2E /* DVNPatternSamplingStageModelSpec.mm */; };
-		286C1D6D1DED9A0C00523F2E /* DVNGeometryStageModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 286C1D6C1DED9A0C00523F2E /* DVNGeometryStageModel.mm */; };
+		286C1D6D1DED9A0C00523F2E /* DVNScatteredGeometryStageModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 286C1D6C1DED9A0C00523F2E /* DVNScatteredGeometryStageModel.mm */; };
 		286C1D901DED9A5E00523F2E /* DVNScatteredGeometryProviderModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 286C1D8F1DED9A5E00523F2E /* DVNScatteredGeometryProviderModel.mm */; };
 		28FA4D621DF05F7D00EE0B99 /* DVNScatteredGeometryProviderModelSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28FA4D611DF05F7D00EE0B99 /* DVNScatteredGeometryProviderModelSpec.mm */; };
 		28FA4D651DF4586000EE0B99 /* DVNTestGeometryProvider.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28FA4D641DF4586000EE0B99 /* DVNTestGeometryProvider.mm */; };
@@ -432,8 +432,8 @@
 		286C1C7D1DEC5A3000523F2E /* DVNPatternSamplingStageModel.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNPatternSamplingStageModel.mm; sourceTree = "<group>"; };
 		286C1C7E1DEC5A3000523F2E /* DVNPatternSamplingStageModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DVNPatternSamplingStageModel.h; sourceTree = "<group>"; };
 		286C1C811DEC5A5200523F2E /* DVNPatternSamplingStageModelSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNPatternSamplingStageModelSpec.mm; sourceTree = "<group>"; };
-		286C1D6B1DED9A0C00523F2E /* DVNGeometryStageModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DVNGeometryStageModel.h; sourceTree = "<group>"; };
-		286C1D6C1DED9A0C00523F2E /* DVNGeometryStageModel.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNGeometryStageModel.mm; sourceTree = "<group>"; };
+		286C1D6B1DED9A0C00523F2E /* DVNScatteredGeometryStageModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DVNScatteredGeometryStageModel.h; sourceTree = "<group>"; };
+		286C1D6C1DED9A0C00523F2E /* DVNScatteredGeometryStageModel.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNScatteredGeometryStageModel.mm; sourceTree = "<group>"; };
 		286C1D8E1DED9A5E00523F2E /* DVNScatteredGeometryProviderModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DVNScatteredGeometryProviderModel.h; sourceTree = "<group>"; };
 		286C1D8F1DED9A5E00523F2E /* DVNScatteredGeometryProviderModel.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNScatteredGeometryProviderModel.mm; sourceTree = "<group>"; };
 		28FA4D611DF05F7D00EE0B99 /* DVNScatteredGeometryProviderModelSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNScatteredGeometryProviderModelSpec.mm; sourceTree = "<group>"; };
@@ -781,8 +781,8 @@
 				286C1C7C1DEC5A0F00523F2E /* DVNPipelineStagesMutableModels.h */,
 				286C1C7E1DEC5A3000523F2E /* DVNPatternSamplingStageModel.h */,
 				286C1C7D1DEC5A3000523F2E /* DVNPatternSamplingStageModel.mm */,
-				286C1D6B1DED9A0C00523F2E /* DVNGeometryStageModel.h */,
-				286C1D6C1DED9A0C00523F2E /* DVNGeometryStageModel.mm */,
+				286C1D6B1DED9A0C00523F2E /* DVNScatteredGeometryStageModel.h */,
+				286C1D6C1DED9A0C00523F2E /* DVNScatteredGeometryStageModel.mm */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -1511,7 +1511,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				28662D621DF57DD60051B9DA /* DVNPainter.mm in Sources */,
-				286C1D6D1DED9A0C00523F2E /* DVNGeometryStageModel.mm in Sources */,
+				286C1D6D1DED9A0C00523F2E /* DVNScatteredGeometryStageModel.mm in Sources */,
 				500A3AE01D2D348700043E18 /* DVNRandomTexCoordProvider.mm in Sources */,
 				25AD67721D3553ED0092B3E4 /* DVNPipelineConfiguration.mm in Sources */,
 				500F77EF1D2D566700023343 /* DVNTextureMappingStageConfiguration+TextureAtlas.mm in Sources */,
