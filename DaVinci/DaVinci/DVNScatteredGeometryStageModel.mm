@@ -1,7 +1,7 @@
 // Copyright (c) 2016 Lightricks. All rights reserved.
 // Created by Amit Yitzhack.
 
-#import "DVNGeometryStageModel.h"
+#import "DVNScatteredGeometryStageModel.h"
 
 #import <LTKit/LTRandom.h>
 #import <LTKit/NSArray+NSSet.h>
@@ -11,7 +11,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@implementation DVNGeometryStageModel
+@implementation DVNScatteredGeometryStageModel
 
 #pragma mark -
 #pragma mark MTLModel
@@ -27,7 +27,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (NSSet<NSString *> *)propertyKeys {
   NSMutableSet *keys = [[super propertyKeys] mutableCopy];
-  [keys removeObject:@instanceKeypath(DVNGeometryStageModel, __diameterSet)];
+  [keys removeObject:@instanceKeypath(DVNScatteredGeometryStageModel, __diameterSet)];
   return [keys copy];
 }
 
@@ -46,15 +46,15 @@ NS_ASSUME_NONNULL_BEGIN
 - (id<DVNGeometryProviderModel>)geometryProviderModel {
   DVNSquareProviderModel *providerModel =
       [[DVNSquareProviderModel alloc] initWithEdgeLength:self.diameter];
-  lt::Interval<CGFloat> distance({self.minScatterDistance, self.maxScatterDistance},
+  lt::Interval<CGFloat> distance({self.minDistance, self.maxDistance},
                                  lt::Interval<CGFloat>::EndpointInclusion::Closed);
-  lt::Interval<CGFloat> angle({self.minScatterAngle, self.maxScatterAngle},
+  lt::Interval<CGFloat> angle({self.minAngle, self.maxAngle},
                               lt::Interval<CGFloat>::EndpointInclusion::Closed);
-  lt::Interval<CGFloat> scale({self.minScatterScale, self.maxScatterScale},
+  lt::Interval<CGFloat> scale({self.minScale, self.maxScale},
                               lt::Interval<CGFloat>::EndpointInclusion::Closed);
   return [[DVNScatteredGeometryProviderModel alloc]
           initWithGeometryProviderModel:providerModel randomState:[[LTRandomState alloc] init]
-          maximumCount:self.maxScatterCount distance:distance angle:angle scale:scale];
+          maximumCount:self.maxCount distance:distance angle:angle scale:scale];
 }
 
 @end
