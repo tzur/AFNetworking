@@ -59,10 +59,6 @@
 		038DDD6D19EFBEB80018F9E4 /* LTCLAHEProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 038DDD6B19EFBEB80018F9E4 /* LTCLAHEProcessor.mm */; };
 		038DDD8019EFBEF60018F9E4 /* LTCLAHEProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 038DDD7F19EFBEF60018F9E4 /* LTCLAHEProcessorSpec.mm */; };
 		038DDD8219EFD19D0018F9E4 /* Lena128CLAHE.png in Resources */ = {isa = PBXBuildFile; fileRef = 038DDD8119EFD19D0018F9E4 /* Lena128CLAHE.png */; };
-		0391099019A482C4009CDA43 /* LTColorRangeAdjustProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 0391098E19A482C4009CDA43 /* LTColorRangeAdjustProcessor.h */; };
-		0391099119A482C4009CDA43 /* LTColorRangeAdjustProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0391098F19A482C4009CDA43 /* LTColorRangeAdjustProcessor.mm */; };
-		039109A419A48DF0009CDA43 /* LTColorRangeAdjust.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 039109A219A48362009CDA43 /* LTColorRangeAdjust.fsh */; };
-		039109A619A4BE4C009CDA43 /* LTColorRangeAdjustProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039109A519A4BE4C009CDA43 /* LTColorRangeAdjustProcessorSpec.mm */; };
 		039C95A31897E4A100F1E213 /* LTMultiscaleNoiseProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039C95A21897E4A000F1E213 /* LTMultiscaleNoiseProcessor.mm */; };
 		039C95B41897E91700F1E213 /* LTMultiscaleNoise.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 039C95B21897E84300F1E213 /* LTMultiscaleNoise.fsh */; };
 		03AD29A318910BF700516D14 /* SimulatorFractionalNoise.png in Resources */ = {isa = PBXBuildFile; fileRef = 03AD29A218910BF700516D14 /* SimulatorFractionalNoise.png */; };
@@ -1713,10 +1709,6 @@
 		038DDD6B19EFBEB80018F9E4 /* LTCLAHEProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTCLAHEProcessor.mm; sourceTree = "<group>"; };
 		038DDD7F19EFBEF60018F9E4 /* LTCLAHEProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTCLAHEProcessorSpec.mm; sourceTree = "<group>"; };
 		038DDD8119EFD19D0018F9E4 /* Lena128CLAHE.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Lena128CLAHE.png; path = Resources/Lena128CLAHE.png; sourceTree = "<group>"; };
-		0391098E19A482C4009CDA43 /* LTColorRangeAdjustProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTColorRangeAdjustProcessor.h; sourceTree = "<group>"; };
-		0391098F19A482C4009CDA43 /* LTColorRangeAdjustProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; lineEnding = 0; path = LTColorRangeAdjustProcessor.mm; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		039109A219A48362009CDA43 /* LTColorRangeAdjust.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTColorRangeAdjust.fsh; sourceTree = "<group>"; };
-		039109A519A4BE4C009CDA43 /* LTColorRangeAdjustProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTColorRangeAdjustProcessorSpec.mm; sourceTree = "<group>"; };
 		039C95A11897E4A000F1E213 /* LTMultiscaleNoiseProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTMultiscaleNoiseProcessor.h; sourceTree = "<group>"; };
 		039C95A21897E4A000F1E213 /* LTMultiscaleNoiseProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTMultiscaleNoiseProcessor.mm; sourceTree = "<group>"; };
 		039C95B21897E84300F1E213 /* LTMultiscaleNoise.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTMultiscaleNoise.fsh; sourceTree = "<group>"; };
@@ -3138,9 +3130,6 @@
 				03FB6B8619DADBEE00255085 /* LTProcessorFillMode.h */,
 				2829F07D1991007B00DE1072 /* LTCropProcessor.h */,
 				2829F07E1991007B00DE1072 /* LTCropProcessor.mm */,
-				039109A219A48362009CDA43 /* LTColorRangeAdjust.fsh */,
-				0391098E19A482C4009CDA43 /* LTColorRangeAdjustProcessor.h */,
-				0391098F19A482C4009CDA43 /* LTColorRangeAdjustProcessor.mm */,
 				03045C3919C037540075207D /* LTSmoothPyramid.fsh */,
 				0368E6C319C0270200B99FF5 /* LTSmoothPyramidProcessor.h */,
 				0368E6C419C0270200B99FF5 /* LTSmoothPyramidProcessor.mm */,
@@ -3175,7 +3164,6 @@
 				03C192EC18FABAC300DC6CA6 /* LTColorConversionProcessorSpec.mm */,
 				8BAE3A8718B3B15A00DA79E1 /* LTColorGradientSpec.mm */,
 				2812D56519912B380081478F /* LTCropProcessorSpec.mm */,
-				039109A519A4BE4C009CDA43 /* LTColorRangeAdjustProcessorSpec.mm */,
 				03C192A818F5117D00DC6CA6 /* LTDualMaskProcessorSpec.mm */,
 				8BABF0CF19B8491800AED760 /* LTEAWProcessorSpec.mm */,
 				03CA15C71965498F0040DB07 /* LTEdgesMaskProcessorSpec.mm */,
@@ -5488,7 +5476,6 @@
 				25FBF7DC1C32D26D00E2E5BC /* LTTouchEventView.h in Headers */,
 				50A4793119FB7761005ABA65 /* LTMixerMaskMode.h in Headers */,
 				85F154EB1D1283CF00967A90 /* LTPackingRectsProvider.h in Headers */,
-				0391099019A482C4009CDA43 /* LTColorRangeAdjustProcessor.h in Headers */,
 				288419411BD3A04A00B09F6B /* LTTextureArchiverNonPersistentStorage.h in Headers */,
 				8B17A5941C32A232001713BB /* LTEAGLView.h in Headers */,
 				8B871FDD1924A75E00517F2E /* LTColorGradient.h in Headers */,
@@ -6529,7 +6516,6 @@
 				30DDD6A21CFC8A0700AE72B8 /* LTConsistentGaussianFilterProcessor.mm in Sources */,
 				288419421BD3A04A00B09F6B /* LTTextureArchiverNonPersistentStorage.mm in Sources */,
 				500CAA121D26B2A0009CF19F /* LTContentTouchEvent.mm in Sources */,
-				039109A419A48DF0009CDA43 /* LTColorRangeAdjust.fsh in Sources */,
 				256392561B0B4B3400DA934F /* LTMeshProcessor.mm in Sources */,
 				8BABF18219BC3EC400AED760 /* LTPyramidProcessor.vsh in Sources */,
 				503044FD1C3BCF5F00355B86 /* LTSplineControlPoint.mm in Sources */,
@@ -6596,7 +6582,6 @@
 				8BEBF3DD18FA9995005A0DE9 /* LTMixerProcessor.mm in Sources */,
 				28B8BBDC1B69092100CF9F73 /* LTSlidingWindowFilter.mm in Sources */,
 				8BEBF3EC18FA9CA5005A0DE9 /* LTMixer.fsh in Sources */,
-				0391099119A482C4009CDA43 /* LTColorRangeAdjustProcessor.mm in Sources */,
 				8BEBF3ED18FA9CA5005A0DE9 /* LTMixer.vsh in Sources */,
 				8BAE3A9E18B4D5A000DA79E1 /* LTArithmetic.fsh in Sources */,
 				03D516B318B3A6850026B56A /* LTProceduralVignetting.fsh in Sources */,
@@ -6960,7 +6945,6 @@
 				25BBC57C1CBCE93100C182B3 /* LTTriangleSpec.mm in Sources */,
 				8BAE1FB118573ED90075A5AB /* LTRectDrawerSpec.mm in Sources */,
 				85F155151D12844300967A90 /* LTHorizontalPackingRectsProviderSpec.mm in Sources */,
-				039109A619A4BE4C009CDA43 /* LTColorRangeAdjustProcessorSpec.mm in Sources */,
 				5070CA3219FE819800381A36 /* LTQuadMixerProcessorSpec.mm in Sources */,
 				50D82E961BFCAC54002EDCBD /* LTCompoundParameterizedObjectFactorySpec.mm in Sources */,
 				8BB4715B183B63D000CA1681 /* LTGPUStructSpec.mm in Sources */,
