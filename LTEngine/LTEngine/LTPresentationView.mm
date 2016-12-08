@@ -302,7 +302,10 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
   // Get the visible content rectangle, in floating-point pixel units of the content coordinate
   // system.
   CGRect visibleContentRect = self.contentLocationProvider.visibleContentRect;
-  
+
+  // Draw the background and anything that should be drawn below the content.
+  [self drawBackgroundForVisibleContentRect:visibleContentRect];
+
   [self.context executeAndPreserveState:^(LTGLContext *context) {
     // Set the scissor box to draw only inside the visible content rect.
     context.scissorTestEnabled = YES;
@@ -338,6 +341,17 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
     // Reset the rectToDraw.
     self.contentRectToUpdate = CGRectNull;
   }
+}
+
+- (void)drawBackgroundForVisibleContentRect:(CGRect)visibleContentRect {
+  if (![self.drawDelegate respondsToSelector:@selector(presentationView:
+                                                       drawBackgroundBelowContentAroundRect:)]) {
+    return;
+  }
+
+  CGAffineTransform transform = [self transformForVisibleContentRect:visibleContentRect];
+  CGRect rect = CGRectApplyAffineTransform(CGRectFromSize(self.contentTextureSize), transform);
+  [self.drawDelegate presentationView:self drawBackgroundBelowContentAroundRect:rect];
 }
 
 - (void)drawTransparencyBackground {
