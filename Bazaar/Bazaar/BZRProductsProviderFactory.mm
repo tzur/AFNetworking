@@ -5,6 +5,7 @@
 
 #import "BZRCachedProductsProvider.h"
 #import "BZRLocalProductsProvider.h"
+#import "BZRProductsWithDiscountsProvider.h"
 #import "BZRProductsWithPriceInfoProvider.h"
 #import "BZRProductsWithVariantsProvider.h"
 
@@ -35,8 +36,11 @@ NS_ASSUME_NONNULL_BEGIN
   BZRLocalProductsProvider *localProductsProvider =
       [[BZRLocalProductsProvider alloc] initWithPath:self.productsListJSONFilePath
                                          fileManager:self.fileManager];
+  BZRProductsWithDiscountsProvider *productsWithDiscountsProvider =
+      [[BZRProductsWithDiscountsProvider alloc] initWithUnderlyingProvider:localProductsProvider];
   BZRProductsWithVariantsProvider *productsWithVariantsProvider =
-      [[BZRProductsWithVariantsProvider alloc] initWithUnderlyingProvider:localProductsProvider];
+      [[BZRProductsWithVariantsProvider alloc]
+       initWithUnderlyingProvider:productsWithDiscountsProvider];
   BZRProductsWithPriceInfoProvider *productsWithPriceInfoProvider =
       [[BZRProductsWithPriceInfoProvider alloc]
        initWithUnderlyingProvider:productsWithVariantsProvider storeKitFacade:storeKitFacade];

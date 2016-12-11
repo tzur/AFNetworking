@@ -44,6 +44,11 @@ LTEnumDeclare(NSUInteger, BZRProductType,
 /// Available variants of the product. \c nil signifies that the receiver is a variant. 
 @property (readonly, nonatomic, nullable) NSArray<NSString *> *variants;
 
+/// Identifiers of discounted variants of the product. Each entry is the full identifier of the
+/// discounted product. \c nil signifies that the receiver is a discount or that it has no
+/// discounts.
+@property (readonly, nonatomic, nullable) NSArray<NSString *> *discountedProducts;
+
 @end
 
 NS_ASSUME_NONNULL_END

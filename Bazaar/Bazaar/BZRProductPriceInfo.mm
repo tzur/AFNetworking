@@ -11,7 +11,18 @@ NS_ASSUME_NONNULL_BEGIN
   return @{
     @instanceKeypath(BZRProductPriceInfo, price): @"price",
     @instanceKeypath(BZRProductPriceInfo, localeIdentifier): @"localeIdentifier",
+    @instanceKeypath(BZRProductPriceInfo, fullPrice): @"fullPrice"
   };
+}
+
++ (NSSet<NSString *> *)optionalPropertyKeys {
+  static NSSet<NSString *> *optionalPropertyKeys;
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    optionalPropertyKeys = [NSSet setWithObject:@instanceKeypath(BZRProductPriceInfo, fullPrice)];
+  });
+  
+  return optionalPropertyKeys;
 }
 
 @end

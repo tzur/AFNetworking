@@ -1,23 +1,23 @@
 // Copyright (c) 2016 Lightricks. All rights reserved.
 // Created by Ben Yohay.
 
-#import "BZRProductsWithVariantsProvider.h"
+#import "BZRProductsWithDiscountsProvider.h"
 
 #import <LTKit/NSArray+Functional.h>
 
 #import "BZRProduct.h"
-#import "NSString+Bazaar.h"
+#import "BZRProductTypedefs.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface BZRProductsWithVariantsProvider ()
+@interface BZRProductsWithDiscountsProvider ()
 
 /// Provider used to fetch product list.
 @property (readonly, nonatomic) id<BZRProductsProvider> underlyingProvider;
 
 @end
 
-@implementation BZRProductsWithVariantsProvider
+@implementation BZRProductsWithDiscountsProvider
 
 - (instancetype)initWithUnderlyingProvider:(id<BZRProductsProvider>)underlyingProvider {
   if (self = [super init]) {
@@ -28,22 +28,21 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (RACSignal *)fetchProductList {
   return [[self.underlyingProvider fetchProductList]
-      map:^NSArray<BZRProduct *> *(NSArray<BZRProduct *> *productList) {
+      map:^BZRProductList *(BZRProductList *productList) {
         NSMutableArray<BZRProduct *> *productListWithVariants = [NSMutableArray array];
         for (BZRProduct *product in productList) {
           [productListWithVariants addObject:product];
-          [productListWithVariants addObjectsFromArray:[self productVariantsForProduct:product]];
+          [productListWithVariants addObjectsFromArray:[self discountedProductsForProduct:product]];
         }
         return productListWithVariants;
       }];
 }
 
-- (NSArray<BZRProduct *> *)productVariantsForProduct:(BZRProduct *)product {
-  return [product.variants lt_map:^BZRProduct *(NSString *variantSuffix) {
-    NSString *variantIdentifier = [product.identifier bzr_variantWithSuffix:variantSuffix];
+- (BZRProductList *)discountedProductsForProduct:(BZRProduct *)product {
+  return [product.discountedProducts lt_map:^BZRProduct *(NSString *discountIdentifier) {
     return [[product
-        modelByOverridingProperty:@keypath(product, identifier) withValue:variantIdentifier]
-        modelByOverridingProperty:@keypath(product, variants) withValue:nil];
+        modelByOverridingProperty:@keypath(product, identifier) withValue:discountIdentifier]
+        modelByOverridingProperty:@keypath(product, discountedProducts) withValue:nil];
   }] ?: @[];
 }
 

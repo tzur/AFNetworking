@@ -97,7 +97,7 @@ static NSNumber * const kNonAppStoreProductsLabel = @0;
   NSArray<NSString *> *identifiers =
       [products valueForKey:@instanceKeypath(BZRProduct, identifier)];
   @weakify(self);
-  return [[[self.storeKitFacade
+  return [[[[self.storeKitFacade
       fetchMetadataForProductsWithIdentifiers:[NSSet setWithArray:identifiers]]
       doNext:^(SKProductsResponse *response) {
         @strongify(self);
@@ -114,6 +114,12 @@ static NSNumber * const kNonAppStoreProductsLabel = @0;
           return @[];
         }
         return [self productList:products withMetadataFromProductsResponse:response];
+      }]
+      map:^BZRProductList *(BZRProductList *productList) {
+        NSArray<NSString *> *identifiers =
+            [productList valueForKey:@instanceKeypath(BZRProduct, identifier)];
+        return [self productDictionaryWithFullPriceInfoForDiscountProducts:
+                [NSDictionary dictionaryWithObjects:productList forKeys:identifiers]].allValues;
       }];
 }
 
@@ -137,6 +143,38 @@ static NSNumber * const kNonAppStoreProductsLabel = @0;
                       withValue:product]];
     return value;
   } initial:[@[] mutableCopy]];
+}
+
+- (BZRProductDictionary *)productDictionaryWithFullPriceInfoForDiscountProducts:
+    (BZRProductDictionary *)productDictionary {
+  NSArray<BZRProduct *> *discountProductWithFullPriceInfo = [[[productDictionary.allValues
+      lt_filter:^BOOL(BZRProduct *product) {
+        return product.discountedProducts != nil;
+      }]
+      lt_map:^NSArray<BZRProduct *> *(BZRProduct *product) {
+        return [self discountProductsWithFullPriceInfo:productDictionary originalProduct:product];
+      }]
+      valueForKeyPath:@"@unionOfArrays.self"];
+  NSArray<NSString *> *identifiers =
+      [discountProductWithFullPriceInfo valueForKey:@instanceKeypath(BZRProduct, identifier)];
+  return [productDictionary mtl_dictionaryByAddingEntriesFromDictionary:
+          [NSDictionary dictionaryWithObjects:discountProductWithFullPriceInfo
+                                      forKeys:identifiers]];
+}
+
+- (NSArray<BZRProduct *> *)discountProductsWithFullPriceInfo:
+    (BZRProductDictionary *)productDictionary originalProduct:(BZRProduct *)product {
+  return [[product.discountedProducts
+      lt_filter:^BOOL(NSString *discountIdentifier) {
+        return productDictionary[discountIdentifier] != nil;
+      }]
+      lt_map:^BZRProduct *(NSString *discountIdentifier) {
+        BZRProductPriceInfo *priceInfo = [productDictionary[discountIdentifier].priceInfo
+                modelByOverridingProperty:@keypath(product.priceInfo, fullPrice)
+                withValue:product.priceInfo.price];
+        return [productDictionary[discountIdentifier]
+                modelByOverridingProperty:@keypath(product, priceInfo) withValue:priceInfo];
+      }];
 }
 
 @end
