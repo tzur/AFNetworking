@@ -29,19 +29,15 @@
 
 // Image Processing/Blocks.
 #import <LTEngine/LTAdjustProcessor.h>
-#import <LTEngine/LTAnalogFilmProcessor.h>
 #import <LTEngine/LTArithmeticProcessor.h>
 #import <LTEngine/LTAspectFillResizeProcessor.h>
 #import <LTEngine/LTBicubicResizeProcessor.h>
 #import <LTEngine/LTBilateralFilterProcessor.h>
 #import <LTEngine/LTBoxFilterProcessor.h>
-#import <LTEngine/LTBWProcessor.h>
 #import <LTEngine/LTCircularPatchProcessor.h>
-#import <LTEngine/LTClarityProcessor.h>
 #import <LTEngine/LTColorConversionProcessor.h>
 #import <LTEngine/LTColorGradient.h>
 #import <LTEngine/LTCropProcessor.h>
-#import <LTEngine/LTDuoProcessor.h>
 #import <LTEngine/LTEAWProcessor.h>
 #import <LTEngine/LTEdgesMaskProcessor.h>
 #import <LTEngine/LTFFTConvolutionProcessor.h>
