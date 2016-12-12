@@ -56,6 +56,15 @@ NS_ASSUME_NONNULL_BEGIN
 /// This property is KVO compliant.
 @property (strong, nonatomic, nullable) NSError *error;
 
+/// Queue used to process updates serially.
+@property (readonly, nonatomic) dispatch_queue_t updateQueue;
+
+/// Used to extend each update job to its whole execution, including completion block call.
+@property (readonly, nonatomic) dispatch_semaphore_t updateQueueSemaphore;
+
+/// Optimization used to flush the update queue when a reload update is received.
+@property (atomic) NSUInteger pendingReloads;
+
 @end
 
 @implementation PTUDataSource
@@ -78,6 +87,10 @@ NS_ASSUME_NONNULL_BEGIN
     _changesetProvider = changesetProvider;
     _cellClass = cellClass;
     _headerCellClass = headerCellClass;
+    _updateQueue = dispatch_queue_create("com.lightricks.PhotonsUI.dataSource",
+                                         DISPATCH_QUEUE_SERIAL);
+    _updateQueueSemaphore = dispatch_semaphore_create(0);
+    self.pendingReloads = 0;
     
     self.dataModel = @[];
     self.sectionTitles = @{};
@@ -102,26 +115,54 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)bindCollectionViewToDataSignal:(RACSignal *)dataSignal {
   @weakify(self)
-  [[[dataSignal
+  [[dataSignal
       takeUntil:self.rac_willDeallocSignal]
-      deliverOnMainThread]
       subscribeNext:^(PTUChangeset *changeset) {
         @strongify(self);
 
-        self.dataModel = changeset.afterDataModel;
-        self.hasData = [self dataModelHasData];
-
+        // Changes without incremental changes make all changes made before them obsolete, so the
+        // \c pendingReloads counter is used to flush the queue as quickly as possible.
         if (!changeset.hasIncrementalChanges) {
-          [self.collectionView reloadData];
-          [self.didUpdateCollectionViewSubject sendNext:[RACUnit defaultUnit]];
-          return;
+          ++self.pendingReloads;
         }
 
-        [self.collectionView performBatchUpdates:^{
-          [self performIncrementalUpdatesFromChangeset:changeset];
-        } completion:^(BOOL) {
-          [self.didUpdateCollectionViewSubject sendNext:[RACUnit defaultUnit]];
-        }];
+        /// Dispatching on a serial queue ensures we process updates serially, without ever blocking
+        /// the main thread.
+        dispatch_async(self.updateQueue, ^{
+          @strongify(self);
+
+          // Applying incremental changes when a reload is pending is wasteful, so if a reload is
+          // pending we try to clear the queue as quickly as possible.
+          if (changeset.hasIncrementalChanges && self.pendingReloads) {
+            return;
+          }
+
+          dispatch_async(dispatch_get_main_queue(), ^{
+            @strongify(self);
+
+            self.dataModel = changeset.afterDataModel;
+            self.hasData = [self dataModelHasData];
+
+            if (!changeset.hasIncrementalChanges) {
+              [self.collectionView reloadData];
+              [self.didUpdateCollectionViewSubject sendNext:[RACUnit defaultUnit]];
+              --self.pendingReloads;
+              dispatch_semaphore_signal(self.updateQueueSemaphore);
+              return;
+            }
+
+            [self.collectionView performBatchUpdates:^{
+              [self performIncrementalUpdatesFromChangeset:changeset];
+            } completion:^(BOOL) {
+              [self.didUpdateCollectionViewSubject sendNext:[RACUnit defaultUnit]];
+              dispatch_semaphore_signal(self.updateQueueSemaphore);
+            }];
+          });
+
+          // A semaphore is used to make each queued job wait for its corresponding update's
+          // asynchronous completion.
+          dispatch_semaphore_wait(self.updateQueueSemaphore, DISPATCH_TIME_FOREVER);
+        });
       } error:^(NSError *error) {
         @strongify(self)
         self.error = error;
