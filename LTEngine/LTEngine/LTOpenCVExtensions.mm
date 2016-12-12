@@ -124,6 +124,16 @@ void LTPreDivideMat(cv::Mat *mat) {
   });
 }
 
+void LTPreMultiplyMat(cv::Mat *mat) {
+  LTParameterAssert(mat->type() == CV_8UC4, @"preMultiply only works on byte RGBA images");
+  std::transform(mat->begin<cv::Vec4b>(), mat->end<cv::Vec4b>(), mat->begin<cv::Vec4b>(),
+                 [](const cv::Vec4b &color) -> cv::Vec4b {
+    LTVector3 rgb = LTVector3(color[0], color[1], color[2]) * (color[3] / 255.0);
+    rgb = std::min(std::round(rgb), LTVector3(UCHAR_MAX, UCHAR_MAX, UCHAR_MAX));
+    return cv::Vec4b(rgb.r(), rgb.g(), rgb.b(), color[3]);
+  });
+}
+
 UIImage *LTLoadImage(Class classInBundle, NSString *name) {
   NSString *path = [NSBundle lt_pathForResource:name nearClass:classInBundle];
   UIImage *image = [UIImage imageWithContentsOfFile:path];
