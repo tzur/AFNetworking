@@ -159,7 +159,7 @@ context(@"pre-divide", ^{
     expect($(mat)).to.equalMat($(expected));
   });
   
-  it(@"should fail when trying to pre-divide a non byte rgba mat", ^{
+  it(@"should fail when trying to pre-divide a non byte RGBA mat", ^{
     expect(^{
       cv::Mat4f mat1f(2, 2);
       LTPreDivideMat(&mat1f);
@@ -168,6 +168,41 @@ context(@"pre-divide", ^{
     expect(^{
       cv::Mat3b mat3b(2, 2);
       LTPreDivideMat(&mat3b);
+    }).to.raise(NSInvalidArgumentException);
+  });
+});
+
+context(@"pre-multiply", ^{
+  it(@"should pre-multiply correctly", ^{
+    cv::Mat4b mat(2, 2, cv::Vec4b(50, 100, 150, 51));
+    cv::Mat4b expected(2, 2, cv::Vec4b(10, 20, 30, 51));
+    LTPreMultiplyMat(&mat);
+    expect($(mat)).to.equalMat($(expected));
+  });
+  
+  it(@"should return black when alpha is zero", ^{
+    cv::Mat4b mat(2, 2, cv::Vec4b(10, 20, 30, 0));
+    cv::Mat4b expected(2, 2, cv::Vec4b(0, 0, 0, 0));
+    LTPreMultiplyMat(&mat);
+    expect($(mat)).to.equalMat($(expected));
+  });
+  
+  it(@"should return the same pixel values when alpha is 255", ^{
+    cv::Mat4b mat(2, 2, cv::Vec4b(10, 20, 30, 255));
+    cv::Mat4b expected(2, 2, cv::Vec4b(10, 20, 30, 255));
+    LTPreMultiplyMat(&mat);
+    expect($(mat)).to.equalMat($(expected));
+  });
+
+  it(@"should fail when trying to pre-multiply a non byte RGBA mat", ^{
+    expect(^{
+      cv::Mat4f mat1f(2, 2);
+      LTPreMultiplyMat(&mat1f);
+    }).to.raise(NSInvalidArgumentException);
+
+    expect(^{
+      cv::Mat3b mat3b(2, 2);
+      LTPreMultiplyMat(&mat3b);
     }).to.raise(NSInvalidArgumentException);
   });
 });

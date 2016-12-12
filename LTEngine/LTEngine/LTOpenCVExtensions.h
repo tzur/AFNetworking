@@ -53,6 +53,10 @@ void LTInPlaceFFTShift(cv::Mat *mat);
 /// one. Throws exception if the input format is not byte RGBA.
 void LTPreDivideMat(cv::Mat *mat);
 
+/// Performs a pre-multiply, to convert an image with non-premultiplied alpha into a premultiplied
+/// one. Throws exception if the input format is not byte RGBA.
+void LTPreMultiplyMat(cv::Mat *mat);
+
 /// Loads an image with the given \c name from the bundle that contains the given class. Throws
 /// exception if the image cannot be found or loaded.
 UIImage *LTLoadImage(Class classInBundle, NSString *name);
