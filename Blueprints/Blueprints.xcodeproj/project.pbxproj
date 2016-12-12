@@ -326,7 +326,7 @@
 		8B3CE8171C441329008E779B /* BLUNode+OperationSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "BLUNode+OperationSpec.mm"; sourceTree = "<group>"; };
 		8B3CE9641C4E57C9008E779B /* BLUModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLUModel.h; sourceTree = "<group>"; };
 		8B3CE9651C4E57C9008E779B /* BLUModel.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BLUModel.mm; sourceTree = "<group>"; };
-		8B3CE9DD1C4E5CEB008E779B /* ReactiveCocoa.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactiveCocoa.xcodeproj; path = ../Foundations/third_party/ReactiveCocoa/ReactiveCocoa.xcodeproj; sourceTree = "<group>"; };
+		8B3CE9DD1C4E5CEB008E779B /* ReactiveCocoa.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactiveCocoa.xcodeproj; path = ../third_party/ReactiveCocoa/ReactiveCocoa.xcodeproj; sourceTree = "<group>"; };
 		8B3CEA011C4E6BB7008E779B /* BLUModelNodeChange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLUModelNodeChange.h; sourceTree = "<group>"; };
 		8B3CEA021C4E6BB7008E779B /* BLUModelNodeChange.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLUModelNodeChange.m; sourceTree = "<group>"; };
 		8B3CEA051C4E6EF3008E779B /* NSErrorCodes+Blueprints.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSErrorCodes+Blueprints.h"; sourceTree = "<group>"; };
@@ -399,13 +399,13 @@
 		8BED80931C3A68080001C6F1 /* StaticLibrary.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = StaticLibrary.xcconfig; sourceTree = "<group>"; };
 		8BED80981C3A68290001C6F1 /* BlueprintsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BlueprintsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8BED809C1C3A68290001C6F1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		8BED80AA1C3A689B0001C6F1 /* LTKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LTKit.xcodeproj; path = ../Foundations/LTKit/LTKit.xcodeproj; sourceTree = "<group>"; };
+		8BED80AA1C3A689B0001C6F1 /* LTKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LTKit.xcodeproj; path = ../LTKit/LTKit.xcodeproj; sourceTree = "<group>"; };
 		8BED80C71C3A69850001C6F1 /* Blueprints-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Blueprints-Prefix.pch"; sourceTree = "<group>"; };
 		8BED80E91C3A6B930001C6F1 /* BlueprintsTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BlueprintsTests-Prefix.pch"; sourceTree = "<group>"; };
-		8BED818B1C3A71690001C6F1 /* Expecta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Expecta.xcodeproj; path = ../Foundations/third_party/Expecta/Expecta.xcodeproj; sourceTree = "<group>"; };
-		8BED81A61C3A71720001C6F1 /* Specta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Specta.xcodeproj; path = ../Foundations/third_party/Specta/Specta/Specta.xcodeproj; sourceTree = "<group>"; };
-		8BED81BB1C3A717B0001C6F1 /* OCMock.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = OCMock.xcodeproj; path = ../Foundations/third_party/OCMock/Source/OCMock.xcodeproj; sourceTree = "<group>"; };
-		8BED82C11C3BEDB00001C6F1 /* Mantle.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Mantle.xcodeproj; path = ../Foundations/third_party/Mantle/Mantle.xcodeproj; sourceTree = "<group>"; };
+		8BED818B1C3A71690001C6F1 /* Expecta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Expecta.xcodeproj; path = ../third_party/Expecta/Expecta.xcodeproj; sourceTree = "<group>"; };
+		8BED81A61C3A71720001C6F1 /* Specta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Specta.xcodeproj; path = ../third_party/Specta/Specta/Specta.xcodeproj; sourceTree = "<group>"; };
+		8BED81BB1C3A717B0001C6F1 /* OCMock.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = OCMock.xcodeproj; path = ../third_party/OCMock/Source/OCMock.xcodeproj; sourceTree = "<group>"; };
+		8BED82C11C3BEDB00001C6F1 /* Mantle.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Mantle.xcodeproj; path = ../third_party/Mantle/Mantle.xcodeproj; sourceTree = "<group>"; };
 		8BED82C31C3D32F80001C6F1 /* BLUNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLUNode.h; sourceTree = "<group>"; };
 		8BED82C41C3D32F80001C6F1 /* BLUNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLUNode.m; sourceTree = "<group>"; };
 		8BED82E21C3D66590001C6F1 /* BLUNodeSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BLUNodeSpec.mm; sourceTree = "<group>"; };
@@ -462,7 +462,7 @@
 				8B3CEA221C4E7438008E779B /* LLReactiveMatchersMessageBuilder.m */,
 			);
 			name = LLReactiveMatchers;
-			path = ../Foundations/third_party/LLReactiveMatchers/LLReactiveMatchers;
+			path = ../third_party/LLReactiveMatchers/LLReactiveMatchers;
 			sourceTree = "<group>";
 		};
 		8B3CEA161C4E7438008E779B /* Helpers */ = {
@@ -1168,8 +1168,8 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(SRCROOT)/../Foundations/LTKit/",
-					"$(SRCROOT)/../Foundations/third_party/libextobjc",
+					"$(SRCROOT)/../LTKit/",
+					"$(SRCROOT)/../third_party/libextobjc",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
@@ -1192,8 +1192,8 @@
 				GCC_NO_COMMON_BLOCKS = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(SRCROOT)/../Foundations/LTKit/",
-					"$(SRCROOT)/../Foundations/third_party/libextobjc",
+					"$(SRCROOT)/../LTKit/",
+					"$(SRCROOT)/../third_party/libextobjc",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
@@ -1231,10 +1231,10 @@
 				GCC_PREFIX_HEADER = "BlueprintsTests/BlueprintsTests-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(SRCROOT)/../Foundations/third_party/Expecta/src/**",
-					"$(SRCROOT)/../Foundations/third_party/Specta/Specta",
-					"$(SRCROOT)/../Foundations/third_party/LLReactiveMatchers",
-					"$(SRCROOT)/../Foundations/third_party/OCMock/Source",
+					"$(SRCROOT)/../third_party/Expecta/src/**",
+					"$(SRCROOT)/../third_party/Specta/Specta",
+					"$(SRCROOT)/../third_party/LLReactiveMatchers",
+					"$(SRCROOT)/../third_party/OCMock/Source",
 				);
 				INFOPLIST_FILE = BlueprintsTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -1250,10 +1250,10 @@
 				GCC_PREFIX_HEADER = "BlueprintsTests/BlueprintsTests-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(SRCROOT)/../Foundations/third_party/Expecta/src/**",
-					"$(SRCROOT)/../Foundations/third_party/Specta/Specta",
-					"$(SRCROOT)/../Foundations/third_party/LLReactiveMatchers",
-					"$(SRCROOT)/../Foundations/third_party/OCMock/Source",
+					"$(SRCROOT)/../third_party/Expecta/src/**",
+					"$(SRCROOT)/../third_party/Specta/Specta",
+					"$(SRCROOT)/../third_party/LLReactiveMatchers",
+					"$(SRCROOT)/../third_party/OCMock/Source",
 				);
 				INFOPLIST_FILE = BlueprintsTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
