@@ -14,6 +14,7 @@
 #import "PTNImageFetchOptions.h"
 #import "PTNIncrementalChanges.h"
 #import "PTNResizingStrategy.h"
+#import "PTNVideoFetchOptions.h"
 
 SpecBegin(PTNGatewayAssetManager)
 
@@ -183,6 +184,22 @@ context(@"image fetching", ^{
 
     expect(values).to.matchError(^BOOL(NSError *error) {
       return error.code == PTNErrorCodeInvalidURL;
+    });
+  });
+});
+
+context(@"video fetching", ^{
+  __block PTNVideoFetchOptions *options;
+
+  beforeEach(^{
+    options = OCMClassMock([PTNImageFetchOptions class]);
+  });
+
+  it(@"should err", ^{
+    RACSignal *values = [manager fetchVideoWithDescriptor:fooDescriptor options:options];
+
+    expect(values).will.matchError(^BOOL(NSError *error) {
+      return error.code == PTNErrorCodeUnsupportedOperation;
     });
   });
 });

@@ -7,7 +7,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol PTNAlbumDescriptor, PTNDescriptor, PTNResizingStrategy;
 
-@class PTNImageFetchOptions;
+@class PTNImageFetchOptions, PTNVideoFetchOptions;
 
 @protocol PTNAssetManager <NSObject>
 
@@ -62,6 +62,20 @@ NS_ASSUME_NONNULL_BEGIN
 - (RACSignal *)fetchImageWithDescriptor:(id<PTNDescriptor>)descriptor
                        resizingStrategy:(id<PTNResizingStrategy>)resizingStrategy
                                 options:(PTNImageFetchOptions *)options;
+
+/// Fetches the video which is backed by the given \c descriptor.
+///
+/// The returned signal sends \c PTNProgress objects on an arbitrary thread, completes once the
+/// final result is sent and errs if an error occurred while fetching the video. The result type
+/// will always be a \c PTNVideoAsset.
+///
+/// If the asset doesn't exist, the signal will err.
+///
+/// Disposal of the returned signal will abort the current video fetch operation, if in progress.
+///
+/// @return RACSignal<PTNProgress>.
+- (RACSignal *)fetchVideoWithDescriptor:(id<PTNDescriptor>)descriptor
+                                options:(PTNVideoFetchOptions *)options;
 
 @optional
 

@@ -19,6 +19,7 @@
 #import "PTNImageFetchOptions.h"
 #import "PTNProgress.h"
 #import "PTNResizingStrategy.h"
+#import "PTNVideoFetchOptions.h"
 
 SpecBegin(PTNFileSystemAssetManager)
 
@@ -254,6 +255,24 @@ context(@"image fetching", ^{
       expect(values).will.matchError(^BOOL(NSError *error) {
         return error.code == PTNErrorCodeInvalidDescriptor;
       });
+    });
+  });
+});
+
+context(@"video fetching", ^{
+  __block PTNVideoFetchOptions *options;
+  __block id<PTNDescriptor> asset;
+
+  beforeEach(^{
+    options = [PTNVideoFetchOptions optionsWithDeliveryMode:PTNVideoDeliveryModeFastFormat];
+    asset = PTNFileSystemFileFromString(@"foo.jpg");
+  });
+
+  it(@"should err", ^{
+    RACSignal *values = [manager fetchVideoWithDescriptor:asset options:options];
+    
+    expect(values).will.matchError(^BOOL(NSError *error) {
+      return error.code == PTNErrorCodeUnsupportedOperation;
     });
   });
 });

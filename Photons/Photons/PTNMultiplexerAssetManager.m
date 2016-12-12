@@ -58,6 +58,20 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 #pragma mark -
+#pragma mark Video fetching
+#pragma mark -
+
+- (RACSignal *)fetchVideoWithDescriptor:(id<PTNDescriptor>)descriptor
+                                options:(PTNVideoFetchOptions *)options {
+  id<PTNAssetManager> assetManager = self.mapping[descriptor.ptn_identifier.scheme];
+  if (!assetManager) {
+    return [RACSignal error:[NSError ptn_errorWithCode:PTNErrorCodeUnrecognizedURLScheme
+                                  associatedDescriptor:descriptor]];
+  }
+  return [assetManager fetchVideoWithDescriptor:descriptor options:options];
+}
+
+#pragma mark -
 #pragma mark Deletion
 #pragma mark -
 

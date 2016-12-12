@@ -23,6 +23,7 @@
 #import "PTNImageResizer.h"
 #import "PTNProgress.h"
 #import "PTNResizingStrategy.h"
+#import "PTNVideoFetchOptions.h"
 
 SpecBegin(PTNDropboxAssetManager)
 
@@ -401,6 +402,28 @@ context(@"image fetching", ^{
       expect(values).will.sendValues(@[
         [[PTNProgress alloc] initWithResult:imageAsset]
       ]);
+    });
+  });
+});
+
+context(@"video fetching", ^{
+  __block PTNVideoFetchOptions *options;
+  __block DBMetadata *metadata;
+  __block id<PTNDescriptor> asset;
+
+  static NSString * const kAssetPath = @"foo.jpg";
+
+  beforeEach(^{
+    options = [PTNVideoFetchOptions optionsWithDeliveryMode:PTNVideoDeliveryModeFastFormat];
+    metadata = PTNDropboxCreateFileMetadata(kAssetPath, nil);
+    asset = [[PTNDropboxFileDescriptor alloc] initWithMetadata:metadata];
+  });
+
+  it(@"should err", ^{
+    RACSignal *values = [manager fetchVideoWithDescriptor:asset options:options];
+
+    expect(values).will.matchError(^BOOL(NSError *error) {
+      return error.code == PTNErrorCodeUnsupportedOperation;
     });
   });
 });

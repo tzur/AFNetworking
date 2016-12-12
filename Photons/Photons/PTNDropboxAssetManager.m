@@ -251,6 +251,16 @@ NS_ASSUME_NONNULL_BEGIN
   }];
 }
 
+#pragma mark -
+#pragma mark Video fetching
+#pragma mark -
+
+- (RACSignal *)fetchVideoWithDescriptor:(id<PTNDescriptor>)descriptor
+                                options:(PTNVideoFetchOptions __unused *)options {
+  return [RACSignal error:[NSError ptn_errorWithCode:PTNErrorCodeUnsupportedOperation
+                                associatedDescriptor:descriptor]];
+}
+
 @end
 
 NS_ASSUME_NONNULL_END

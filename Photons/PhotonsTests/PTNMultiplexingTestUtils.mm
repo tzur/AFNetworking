@@ -25,6 +25,7 @@ id<PTNAssetManager> PTNCreateAcceptingManager(RACSignal * _Nullable value) {
   OCMStub([manager fetchDescriptorWithURL:OCMOCK_ANY]).andReturn(value);
   OCMStub([manager fetchImageWithDescriptor:OCMOCK_ANY resizingStrategy:OCMOCK_ANY
                                     options:OCMOCK_ANY]).andReturn(value);
+  OCMStub([manager fetchVideoWithDescriptor:OCMOCK_ANY options:OCMOCK_ANY]).andReturn(value);
   OCMStub([manager deleteDescriptors:OCMOCK_ANY]).andReturn(value);
   OCMStub([manager removeDescriptors:OCMOCK_ANY fromAlbum:OCMOCK_ANY]).andReturn(value);
   [[[[manager stub] ignoringNonObjectArgs] andReturn:value]

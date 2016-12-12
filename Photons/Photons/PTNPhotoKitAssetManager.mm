@@ -21,9 +21,11 @@
 #import "PTNPhotoKitImageAsset.h"
 #import "PTNPhotoKitImageManager.h"
 #import "PTNPhotoKitObserver.h"
+#import "PTNPhotoKitVideoAsset.h"
 #import "PTNProgress.h"
 #import "PTNResizingStrategy.h"
 #import "PTNSignalCache.h"
+#import "PTNVideoFetchOptions+PhotoKit.h"
 #import "PhotoKit+Photons.h"
 #import "RACSignal+Photons.h"
 #import "RACStream+Photons.h"
@@ -39,7 +41,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly, nonatomic) id<PTNPhotoKitFetcher> fetcher;
 
 /// Image manager used to request images.
-@property (readonly, nonatomic) PHImageManager *imageManager;
+@property (readonly, nonatomic) id<PTNPhotoKitImageManager> imageManager;
 
 /// Change manager used to request changes in the PhotoKit library.
 @property (readonly, nonatomic) id<PTNPhotoKitChangeManager> changeManager;
@@ -569,6 +571,59 @@ NS_ASSUME_NONNULL_BEGIN
                                                               targetSize:requestedSize
                                                              contentMode:contentMode options:options
                                                            resultHandler:resultHandler];
+
+    return [RACDisposable disposableWithBlock:^{
+      [self.imageManager cancelImageRequest:requestID];
+    }];
+  }];
+}
+
+#pragma mark -
+#pragma mark Video fetching
+#pragma mark -
+
+- (RACSignal *)fetchVideoWithDescriptor:(id<PTNDescriptor>)descriptor
+                                options:(PTNVideoFetchOptions *)options {
+  if (![descriptor isKindOfClass:[PHAsset class]]) {
+    return [RACSignal error:[NSError ptn_errorWithCode:PTNErrorCodeInvalidDescriptor
+                                  associatedDescriptor:descriptor]];
+  }
+
+  /// Although \c descriptor can only be a \c PHAsset, call to \c fetchAssetForDescriptor for its
+  /// authorization check.
+  return [[self fetchAssetForDescriptor:descriptor]
+      flattenMap:^(PHAsset *asset) {
+        return [self videoAssetForPhotoKitAsset:asset options:[options photoKitOptions]];
+      }];
+}
+
+- (RACSignal *)videoAssetForPhotoKitAsset:(PHAsset *)asset
+                                  options:(PHVideoRequestOptions *)options {
+  return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+    options.progressHandler = ^(double value, NSError *error, BOOL *, NSDictionary *) {
+      if (!error) {
+        PTNProgress *progress = [[PTNProgress alloc] initWithProgress:@(value)];
+        [subscriber sendNext:progress];
+      }
+    };
+
+    void (^resultHandler)(AVAsset *result, AVAudioMix *audioMix, NSDictionary *info) =
+       ^(AVAsset *result, AVAudioMix *, NSDictionary *info) {
+      if (!result || info[PHImageErrorKey]) {
+        NSError *wrappedError = [NSError lt_errorWithCode:PTNErrorCodeAssetLoadingFailed
+                                                      url:asset.ptn_identifier
+                                          underlyingError:info[PHImageErrorKey]];
+        [subscriber sendError:wrappedError];
+      } else {
+        PTNPhotoKitVideoAsset *videoAsset = [[PTNPhotoKitVideoAsset alloc] initWithAVAsset:result];
+        PTNProgress *progress = [[PTNProgress alloc] initWithResult:videoAsset];
+        [subscriber sendNext:progress];
+        [subscriber sendCompleted];
+      }
+    };
+
+    PHImageRequestID requestID = [self.imageManager requestAVAssetForVideo:asset options:options
+                                                             resultHandler:resultHandler];
 
     return [RACDisposable disposableWithBlock:^{
       [self.imageManager cancelImageRequest:requestID];
