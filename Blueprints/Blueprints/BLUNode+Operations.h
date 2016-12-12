@@ -1,0 +1,40 @@
+// Copyright (c) 2016 Lightricks. All rights reserved.
+// Created by Yaron Inger.
+
+#import "BLUNode.h"
+
+NS_ASSUME_NONNULL_BEGIN
+
+/// Operations that can be performed on the data of a single \c BLUNode.
+@interface BLUNode (Operations)
+
+/// Returns a new node with the same \c name and \c value, but with \c childNodes that do not
+/// contain the given \c nodes, or returns an unmodified node (either \c self or a copy) if \c nodes
+/// cannot be found.
+- (instancetype)nodeByRemovingChildNodes:(NSArray<BLUNode *> *)nodes;
+
+/// Returns a new node with the same \c name and \c value, but with \c childNodes that contain
+/// \c node at the given \c index. If \c index is larger than the number of elements of
+/// \c childNodes, an assert will be thrown.
+- (instancetype)nodeByInsertingChildNode:(BLUNode *)node atIndex:(NSUInteger)index;
+
+/// Returns a new node with the same \c name and \c value, but with \c childNodes that contains the
+/// given \c nodes inserted at the given \c indexes. Each node in \c nodes is inserted in turn at
+/// the corresponding location specified in \c indexes after earlier insertions have been made. If
+/// one of the indexes, at the time of the insert, exceeds <tt>[0..childNodes.count]</tt>, an
+/// exception will be raised.
+///
+/// @important \c indexes is a sorted collection, thus creating a non-sorted \c NSIndexSet and
+/// passing it to this method will produce unexpected results.
+- (instancetype)nodeByInsertingChildNodes:(NSArray<BLUNode *> *)nodes
+                                atIndexes:(NSIndexSet *)indexes;
+
+/// Returns a new node with the same \c name and \c value, but with \c childNodes at the given
+/// \c indexes replaced with \c nodes. The \c indexes are used in the same order as the order of the
+/// given \c nodes. The \c count of locations in \c indexes must be equal to the count of \c nodes.
+- (instancetype)nodeByReplacingChildNodesAtIndexes:(NSIndexSet *)indexes
+                                    withChildNodes:(NSArray<BLUNode *> *)nodes;
+
+@end
+
+NS_ASSUME_NONNULL_END

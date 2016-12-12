@@ -1,0 +1,27 @@
+// Copyright (c) 2016 Lightricks. All rights reserved.
+// Created by Yaron Inger.
+
+#import "Blueprints-Prefix.pch"
+
+#define EXP_SHORTHAND
+
+#import <XCTest/XCTest.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+  #import <Expecta/Expecta.h>
+  #import <OCMock/OCMock.h>
+  #import <Specta/Specta.h>
+#ifdef __cplusplus
+}
+#endif
+
+#ifdef __cplusplus
+  #import <LTKitTests/LTTestUtils.h>
+
+  // Matchers.
+  #import <LTKitTests/EXPMatchers+beCloseToPoint.h>
+  #import <LLReactiveMatchers/LLReactiveMatchers.h>
+  #import <LLReactiveMatchers/Matchers/EXPMatchers+error.h>
+#endif
