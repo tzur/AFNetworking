@@ -34,7 +34,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (instancetype)defaultConfiguration {
   id<PTUCellSizingStrategy> assetSizingStrategy =
-      [PTUCellSizingStrategy adaptiveFitRow:CGSizeMake(92, 92) maximumScale:1.2];
+      [PTUCellSizingStrategy adaptiveFitRow:CGSizeMake(92, 92) maximumScale:1.2
+                        preserveAspectRatio:YES];
   id<PTUCellSizingStrategy> albumSizingStrategy = [PTUCellSizingStrategy rowWithHeight:100];
   id<PTUCellSizingStrategy> headerSizingStrategy = [PTUCellSizingStrategy rowWithHeight:25];
   return [[PTUCollectionViewConfiguration alloc] initWithAssetCellSizingStrategy:assetSizingStrategy

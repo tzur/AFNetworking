@@ -36,7 +36,8 @@ it(@"should correctly initalize with default initializer", ^{
       [PTUCollectionViewConfiguration defaultConfiguration];
 
   id<PTUCellSizingStrategy> assetSizingStrategy =
-      [PTUCellSizingStrategy adaptiveFitRow:CGSizeMake(92, 92) maximumScale:1.2];
+      [PTUCellSizingStrategy adaptiveFitRow:CGSizeMake(92, 92) maximumScale:1.2
+                        preserveAspectRatio:YES];
   id<PTUCellSizingStrategy> albumSizingStrategy = [PTUCellSizingStrategy rowWithHeight:100];
   id<PTUCellSizingStrategy> headerSizingStrategy = [PTUCellSizingStrategy rowWithHeight:25];
   expect(configuration.assetCellSizingStrategy).to.equal(assetSizingStrategy);

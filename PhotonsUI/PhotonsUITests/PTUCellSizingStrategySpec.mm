@@ -16,7 +16,8 @@ context(@"factory", ^{
 
   it(@"should return correct adaptiveFitRow resizing strategy", ^{
     id<PTUCellSizingStrategy> strategy = [PTUCellSizingStrategy adaptiveFitRow:CGSizeMake(22, 22)
-                                                                  maximumScale:1.25];
+                                                                  maximumScale:1.25
+                                                           preserveAspectRatio:YES];
     expect([strategy cellSizeForViewSize:CGSizeMake(100, 200) itemSpacing:1.0 lineSpacing:2.0])
         .to.beCloseToPointWithin(CGSizeMake(24.25, 24.25), 0.1);
 
@@ -24,10 +25,11 @@ context(@"factory", ^{
   });
 
   it(@"should return correct adaptiveFitColumn resizing strategy", ^{
-    id<PTUCellSizingStrategy> strategy = [PTUCellSizingStrategy adaptiveFitRow:CGSizeMake(22, 22)
-                                                                  maximumScale:1.25];
+    id<PTUCellSizingStrategy> strategy = [PTUCellSizingStrategy adaptiveFitColumn:CGSizeMake(22, 22)
+                                                                     maximumScale:1.25
+                                                              preserveAspectRatio:NO];
     expect([strategy cellSizeForViewSize:CGSizeMake(100, 200) itemSpacing:1.0 lineSpacing:2.0])
-        .to.beCloseToPointWithin(CGSizeMake(24.25, 24.25), 0.1);
+        .to.beCloseToPointWithin(CGSizeMake(22, 23.25), 0.1);
 
     expect([strategy isKindOfClass:[PTUAdaptiveCellSizingStrategy class]]).to.beTruthy();
   });
@@ -105,58 +107,176 @@ context(@"PTUConstantCellSizingStrategy", ^{
 });
 
 context(@"PTUAdaptiveCellSizingStrategy", ^{
-  it(@"should correctly adapt to width", ^{
-    id<PTUCellSizingStrategy> strategy = [[PTUAdaptiveCellSizingStrategy alloc]
-        initMatchingWidthWithSize:CGSizeMake(20, 10) maximumScale:1.25];
+  context(@"greater than one scaling", ^{
+    it(@"should correctly adapt to width maintaining apsect ratio", ^{
+      id<PTUCellSizingStrategy> strategy = [[PTUAdaptiveCellSizingStrategy alloc]
+          initWithSize:CGSizeMake(20, 10) maximumScale:1.25 matchWidth:YES preserveAspectRatio:YES];
 
-    expect([strategy cellSizeForViewSize:CGSizeMake(200, 100) itemSpacing:0.0 lineSpacing:0.0])
-        .to.equal(CGSizeMake(20, 10));
-    expect([strategy cellSizeForViewSize:CGSizeMake(45, 100) itemSpacing:1.0 lineSpacing:0.0])
-        .to.beCloseToPointWithin(CGSizeMake(22, 11), 0.1);
-    expect([strategy cellSizeForViewSize:CGSizeMake(20, 100) itemSpacing:1.0 lineSpacing:0.0])
-        .to.beCloseToPointWithin(CGSizeMake(20, 10), 0.1);
-    expect([strategy cellSizeForViewSize:CGSizeMake(46, 100) itemSpacing:2.0 lineSpacing:0.0])
-        .to.beCloseToPointWithin(CGSizeMake(22, 11), 0.1);
+      expect([strategy cellSizeForViewSize:CGSizeMake(200, 100) itemSpacing:0.0 lineSpacing:0.0])
+          .to.equal(CGSizeMake(20, 10));
+      expect([strategy cellSizeForViewSize:CGSizeMake(45, 100) itemSpacing:1.0 lineSpacing:0.0])
+          .to.beCloseToPointWithin(CGSizeMake(22, 11), 0.1);
+      expect([strategy cellSizeForViewSize:CGSizeMake(20, 100) itemSpacing:1.0 lineSpacing:0.0])
+          .to.beCloseToPointWithin(CGSizeMake(20, 10), 0.1);
+      expect([strategy cellSizeForViewSize:CGSizeMake(46, 100) itemSpacing:2.0 lineSpacing:0.0])
+          .to.beCloseToPointWithin(CGSizeMake(22, 11), 0.1);
+    });
+
+    it(@"should correctly adapt to height maintaining apsect ratio", ^{
+      id<PTUCellSizingStrategy> strategy = [[PTUAdaptiveCellSizingStrategy alloc]
+          initWithSize:CGSizeMake(20, 10) maximumScale:1.25 matchWidth:NO preserveAspectRatio:YES];
+
+      expect([strategy cellSizeForViewSize:CGSizeMake(200, 100) itemSpacing:0.0 lineSpacing:0.0])
+          .to.equal(CGSizeMake(20, 10));
+      expect([strategy cellSizeForViewSize:CGSizeMake(200, 25) itemSpacing:0.0 lineSpacing:1.0])
+          .to.beCloseToPointWithin(CGSizeMake(24, 12), 0.1);
+      expect([strategy cellSizeForViewSize:CGSizeMake(200, 119) itemSpacing:0.0 lineSpacing:1.0])
+          .to.beCloseToPointWithin(CGSizeMake(22, 11), 0.1);
+      expect([strategy cellSizeForViewSize:CGSizeMake(200, 10) itemSpacing:0.0 lineSpacing:1.0])
+          .to.beCloseToPointWithin(CGSizeMake(20, 10), 0.1);
+      expect([strategy cellSizeForViewSize:CGSizeMake(200, 26) itemSpacing:0.0 lineSpacing:2.0])
+          .to.beCloseToPointWithin(CGSizeMake(24, 12), 0.1);
+    });
+
+    it(@"should correctly adapt to width without maintaining apsect ratio", ^{
+      id<PTUCellSizingStrategy> strategy = [[PTUAdaptiveCellSizingStrategy alloc]
+          initWithSize:CGSizeMake(20, 10) maximumScale:1.25 matchWidth:YES preserveAspectRatio:NO];
+
+      expect([strategy cellSizeForViewSize:CGSizeMake(200, 100) itemSpacing:0.0 lineSpacing:0.0])
+          .to.equal(CGSizeMake(20, 10));
+      expect([strategy cellSizeForViewSize:CGSizeMake(45, 100) itemSpacing:1.0 lineSpacing:0.0])
+          .to.beCloseToPointWithin(CGSizeMake(22, 10), 0.1);
+      expect([strategy cellSizeForViewSize:CGSizeMake(20, 100) itemSpacing:1.0 lineSpacing:0.0])
+          .to.beCloseToPointWithin(CGSizeMake(20, 10), 0.1);
+      expect([strategy cellSizeForViewSize:CGSizeMake(46, 100) itemSpacing:2.0 lineSpacing:0.0])
+          .to.beCloseToPointWithin(CGSizeMake(22, 10), 0.1);
+    });
+
+    it(@"should correctly adapt to height without maintaining apsect ratio", ^{
+      id<PTUCellSizingStrategy> strategy = [[PTUAdaptiveCellSizingStrategy alloc]
+          initWithSize:CGSizeMake(20, 10) maximumScale:1.25 matchWidth:NO preserveAspectRatio:NO];
+
+      expect([strategy cellSizeForViewSize:CGSizeMake(200, 100) itemSpacing:0.0 lineSpacing:0.0])
+          .to.equal(CGSizeMake(20, 10));
+      expect([strategy cellSizeForViewSize:CGSizeMake(200, 25) itemSpacing:0.0 lineSpacing:1.0])
+          .to.beCloseToPointWithin(CGSizeMake(20, 12), 0.1);
+      expect([strategy cellSizeForViewSize:CGSizeMake(200, 119) itemSpacing:0.0 lineSpacing:1.0])
+          .to.beCloseToPointWithin(CGSizeMake(20, 11), 0.1);
+      expect([strategy cellSizeForViewSize:CGSizeMake(200, 10) itemSpacing:0.0 lineSpacing:1.0])
+          .to.beCloseToPointWithin(CGSizeMake(20, 10), 0.1);
+      expect([strategy cellSizeForViewSize:CGSizeMake(200, 26) itemSpacing:0.0 lineSpacing:2.0])
+          .to.beCloseToPointWithin(CGSizeMake(20, 12), 0.1);
+    });
+
+    it(@"should return original size when can't adapt to width", ^{
+      id<PTUCellSizingStrategy> strategy = [[PTUAdaptiveCellSizingStrategy alloc]
+          initWithSize:CGSizeMake(20, 10) maximumScale:1.25 matchWidth:YES preserveAspectRatio:YES];
+
+      expect([strategy cellSizeForViewSize:CGSizeMake(30, 100) itemSpacing:1.0 lineSpacing:0.0])
+          .to.beCloseToPointWithin(CGSizeMake(20, 10), 0.1);
+      expect([strategy cellSizeForViewSize:CGSizeMake(10, 100) itemSpacing:1.0 lineSpacing:0.0])
+          .to.beCloseToPointWithin(CGSizeMake(20, 10), 0.1);
+      expect([strategy cellSizeForViewSize:CGSizeMake(20, 100) itemSpacing:1.0 lineSpacing:0.0])
+          .to.beCloseToPointWithin(CGSizeMake(20, 10), 0.1);
+    });
+
+    it(@"should return original size when can't adapt to height", ^{
+      id<PTUCellSizingStrategy> strategy = [[PTUAdaptiveCellSizingStrategy alloc]
+          initWithSize:CGSizeMake(20, 10) maximumScale:1.25 matchWidth:NO preserveAspectRatio:YES];
+
+      expect([strategy cellSizeForViewSize:CGSizeMake(200, 15) itemSpacing:0.0 lineSpacing:1.0])
+          .to.beCloseToPointWithin(CGSizeMake(20, 10), 0.1);
+      expect([strategy cellSizeForViewSize:CGSizeMake(200, 5) itemSpacing:0.0 lineSpacing:1.0])
+          .to.beCloseToPointWithin(CGSizeMake(20, 10), 0.1);
+      expect([strategy cellSizeForViewSize:CGSizeMake(200, 10) itemSpacing:0.0 lineSpacing:1.0])
+          .to.beCloseToPointWithin(CGSizeMake(20, 10), 0.1);
+    });
   });
 
-  it(@"should correctly adapt to height", ^{
-    id<PTUCellSizingStrategy> strategy = [[PTUAdaptiveCellSizingStrategy alloc]
-        initMatchingHeightWithSize:CGSizeMake(20, 10) maximumScale:1.25];
+  context(@"less than one scaling", ^{
+    it(@"should correctly adapt to width maintaining apsect ratio", ^{
+      id<PTUCellSizingStrategy> strategy = [[PTUAdaptiveCellSizingStrategy alloc]
+          initWithSize:CGSizeMake(20, 10) maximumScale:0.75 matchWidth:YES preserveAspectRatio:YES];
 
-    expect([strategy cellSizeForViewSize:CGSizeMake(200, 100) itemSpacing:0.0 lineSpacing:0.0])
-        .to.equal(CGSizeMake(20, 10));
-    expect([strategy cellSizeForViewSize:CGSizeMake(200, 25) itemSpacing:0.0 lineSpacing:1.0])
-        .to.beCloseToPointWithin(CGSizeMake(24, 12), 0.1);
-    expect([strategy cellSizeForViewSize:CGSizeMake(200, 119) itemSpacing:0.0 lineSpacing:1.0])
-        .to.beCloseToPointWithin(CGSizeMake(22, 11), 0.1);
-    expect([strategy cellSizeForViewSize:CGSizeMake(200, 10) itemSpacing:0.0 lineSpacing:1.0])
-        .to.beCloseToPointWithin(CGSizeMake(20, 10), 0.1);
-    expect([strategy cellSizeForViewSize:CGSizeMake(200, 26) itemSpacing:0.0 lineSpacing:2.0])
-        .to.beCloseToPointWithin(CGSizeMake(24, 12), 0.1);
-  });
+      expect([strategy cellSizeForViewSize:CGSizeMake(200, 100) itemSpacing:0.0 lineSpacing:0.0])
+          .to.equal(CGSizeMake(20, 10));
+      expect([strategy cellSizeForViewSize:CGSizeMake(35, 100) itemSpacing:1.0 lineSpacing:0.0])
+          .to.beCloseToPointWithin(CGSizeMake(17, 8.5), 0.1);
+      expect([strategy cellSizeForViewSize:CGSizeMake(20, 100) itemSpacing:1.0 lineSpacing:0.0])
+          .to.beCloseToPointWithin(CGSizeMake(20, 10), 0.1);
+      expect([strategy cellSizeForViewSize:CGSizeMake(34, 100) itemSpacing:2.0 lineSpacing:0.0])
+          .to.beCloseToPointWithin(CGSizeMake(16, 8), 0.1);
+    });
 
-  it(@"should return original size when can't adapt to width", ^{
-    id<PTUCellSizingStrategy> strategy = [[PTUAdaptiveCellSizingStrategy alloc]
-        initMatchingWidthWithSize:CGSizeMake(20, 10) maximumScale:1.25];
+    it(@"should correctly adapt to height maintaining apsect ratio", ^{
+      id<PTUCellSizingStrategy> strategy = [[PTUAdaptiveCellSizingStrategy alloc]
+          initWithSize:CGSizeMake(20, 10) maximumScale:0.75 matchWidth:NO preserveAspectRatio:YES];
 
-    expect([strategy cellSizeForViewSize:CGSizeMake(30, 100) itemSpacing:1.0 lineSpacing:0.0])
-        .to.beCloseToPointWithin(CGSizeMake(20, 10), 0.1);
-    expect([strategy cellSizeForViewSize:CGSizeMake(10, 100) itemSpacing:1.0 lineSpacing:0.0])
-        .to.beCloseToPointWithin(CGSizeMake(20, 10), 0.1);
-    expect([strategy cellSizeForViewSize:CGSizeMake(20, 100) itemSpacing:1.0 lineSpacing:0.0])
-        .to.beCloseToPointWithin(CGSizeMake(20, 10), 0.1);
-  });
+      expect([strategy cellSizeForViewSize:CGSizeMake(200, 100) itemSpacing:0.0 lineSpacing:0.0])
+          .to.equal(CGSizeMake(20, 10));
+      expect([strategy cellSizeForViewSize:CGSizeMake(200, 17) itemSpacing:0.0 lineSpacing:1.0])
+          .to.beCloseToPointWithin(CGSizeMake(16, 8), 0.1);
+      expect([strategy cellSizeForViewSize:CGSizeMake(200, 99) itemSpacing:0.0 lineSpacing:1.0])
+          .to.beCloseToPointWithin(CGSizeMake(18, 9), 0.1);
+      expect([strategy cellSizeForViewSize:CGSizeMake(200, 10) itemSpacing:0.0 lineSpacing:1.0])
+          .to.beCloseToPointWithin(CGSizeMake(20, 10), 0.1);
+      expect([strategy cellSizeForViewSize:CGSizeMake(200, 18) itemSpacing:0.0 lineSpacing:2.0])
+          .to.beCloseToPointWithin(CGSizeMake(16, 8), 0.1);
+    });
 
-  it(@"should return original size when can't adapt to height", ^{
-    id<PTUCellSizingStrategy> strategy = [[PTUAdaptiveCellSizingStrategy alloc]
-        initMatchingHeightWithSize:CGSizeMake(20, 10) maximumScale:1.25];
+    it(@"should correctly adapt to width without maintaining apsect ratio", ^{
+      id<PTUCellSizingStrategy> strategy = [[PTUAdaptiveCellSizingStrategy alloc]
+          initWithSize:CGSizeMake(20, 10) maximumScale:0.75 matchWidth:YES preserveAspectRatio:NO];
 
-    expect([strategy cellSizeForViewSize:CGSizeMake(200, 15) itemSpacing:0.0 lineSpacing:1.0])
-        .to.beCloseToPointWithin(CGSizeMake(20, 10), 0.1);
-    expect([strategy cellSizeForViewSize:CGSizeMake(200, 5) itemSpacing:0.0 lineSpacing:1.0])
-        .to.beCloseToPointWithin(CGSizeMake(20, 10), 0.1);
-    expect([strategy cellSizeForViewSize:CGSizeMake(200, 10) itemSpacing:0.0 lineSpacing:1.0])
-        .to.beCloseToPointWithin(CGSizeMake(20, 10), 0.1);
+      expect([strategy cellSizeForViewSize:CGSizeMake(200, 100) itemSpacing:0.0 lineSpacing:0.0])
+          .to.equal(CGSizeMake(20, 10));
+      expect([strategy cellSizeForViewSize:CGSizeMake(35, 100) itemSpacing:1.0 lineSpacing:0.0])
+          .to.beCloseToPointWithin(CGSizeMake(17, 10), 0.1);
+      expect([strategy cellSizeForViewSize:CGSizeMake(20, 100) itemSpacing:1.0 lineSpacing:0.0])
+          .to.beCloseToPointWithin(CGSizeMake(20, 10), 0.1);
+      expect([strategy cellSizeForViewSize:CGSizeMake(34, 100) itemSpacing:2.0 lineSpacing:0.0])
+          .to.beCloseToPointWithin(CGSizeMake(16, 10), 0.1);
+    });
+
+    it(@"should correctly adapt to height without maintaining apsect ratio", ^{
+      id<PTUCellSizingStrategy> strategy = [[PTUAdaptiveCellSizingStrategy alloc]
+          initWithSize:CGSizeMake(20, 10) maximumScale:0.75 matchWidth:NO preserveAspectRatio:NO];
+
+      expect([strategy cellSizeForViewSize:CGSizeMake(200, 100) itemSpacing:0.0 lineSpacing:0.0])
+          .to.equal(CGSizeMake(20, 10));
+      expect([strategy cellSizeForViewSize:CGSizeMake(200, 17) itemSpacing:0.0 lineSpacing:1.0])
+          .to.beCloseToPointWithin(CGSizeMake(20, 8), 0.1);
+      expect([strategy cellSizeForViewSize:CGSizeMake(200, 99) itemSpacing:0.0 lineSpacing:1.0])
+          .to.beCloseToPointWithin(CGSizeMake(20, 9), 0.1);
+      expect([strategy cellSizeForViewSize:CGSizeMake(200, 10) itemSpacing:0.0 lineSpacing:1.0])
+          .to.beCloseToPointWithin(CGSizeMake(20, 10), 0.1);
+      expect([strategy cellSizeForViewSize:CGSizeMake(200, 18) itemSpacing:0.0 lineSpacing:2.0])
+          .to.beCloseToPointWithin(CGSizeMake(20, 8), 0.1);
+    });
+
+    it(@"should return original size when can't adapt to width", ^{
+      id<PTUCellSizingStrategy> strategy = [[PTUAdaptiveCellSizingStrategy alloc]
+          initWithSize:CGSizeMake(20, 10) maximumScale:0.75 matchWidth:YES preserveAspectRatio:YES];
+
+      expect([strategy cellSizeForViewSize:CGSizeMake(30, 100) itemSpacing:1.0 lineSpacing:0.0])
+          .to.beCloseToPointWithin(CGSizeMake(20, 10), 0.1);
+      expect([strategy cellSizeForViewSize:CGSizeMake(10, 100) itemSpacing:1.0 lineSpacing:0.0])
+          .to.beCloseToPointWithin(CGSizeMake(20, 10), 0.1);
+      expect([strategy cellSizeForViewSize:CGSizeMake(20, 100) itemSpacing:1.0 lineSpacing:0.0])
+          .to.beCloseToPointWithin(CGSizeMake(20, 10), 0.1);
+    });
+
+    it(@"should return original size when can't adapt to height", ^{
+      id<PTUCellSizingStrategy> strategy = [[PTUAdaptiveCellSizingStrategy alloc]
+          initWithSize:CGSizeMake(20, 10) maximumScale:0.75 matchWidth:NO preserveAspectRatio:YES];
+
+      expect([strategy cellSizeForViewSize:CGSizeMake(200, 15) itemSpacing:0.0 lineSpacing:1.0])
+          .to.beCloseToPointWithin(CGSizeMake(20, 10), 0.1);
+      expect([strategy cellSizeForViewSize:CGSizeMake(200, 5) itemSpacing:0.0 lineSpacing:1.0])
+          .to.beCloseToPointWithin(CGSizeMake(20, 10), 0.1);
+      expect([strategy cellSizeForViewSize:CGSizeMake(200, 10) itemSpacing:0.0 lineSpacing:1.0])
+          .to.beCloseToPointWithin(CGSizeMake(20, 10), 0.1);
+    });
   });
 
   context(@"equality", ^{
@@ -166,11 +286,11 @@ context(@"PTUAdaptiveCellSizingStrategy", ^{
 
     beforeEach(^{
       firstStrategy = [[PTUAdaptiveCellSizingStrategy alloc]
-          initMatchingHeightWithSize:CGSizeMake(20, 10) maximumScale:1.25];
+          initWithSize:CGSizeMake(20, 10) maximumScale:1.25 matchWidth:NO preserveAspectRatio:YES];
       secondStrategy = [[PTUAdaptiveCellSizingStrategy alloc]
-          initMatchingHeightWithSize:CGSizeMake(20, 10) maximumScale:1.25];
+          initWithSize:CGSizeMake(20, 10) maximumScale:1.25 matchWidth:NO preserveAspectRatio:YES];
       otherStrategy = [[PTUAdaptiveCellSizingStrategy alloc]
-          initMatchingHeightWithSize:CGSizeMake(20, 15) maximumScale:1.4];
+          initWithSize:CGSizeMake(20, 15) maximumScale:1.4 matchWidth:NO preserveAspectRatio:YES];
     });
 
     it(@"should handle isEqual correctly", ^{
