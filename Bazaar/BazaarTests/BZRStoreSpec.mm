@@ -1035,13 +1035,16 @@ context(@"errors signal", ^{
 context(@"KVO-compliance", ^{
   __block BZRFakeCachedReceiptValidationStatusProvider *validationStatusProvider;
   __block BZRFakeAcquiredViaSubscriptionProvider *acquiredViaSubscriptionProvider;
+  __block BZRReceiptValidationParametersProvider *validationParametersProvider;
 
   beforeEach(^{
     validationStatusProvider = [[BZRFakeCachedReceiptValidationStatusProvider alloc] init];
     acquiredViaSubscriptionProvider =  [[BZRFakeAcquiredViaSubscriptionProvider alloc] init];
+    validationParametersProvider = [[BZRReceiptValidationParametersProvider alloc] init];
 
     configuration.validationStatusProvider = validationStatusProvider;
     configuration.acquiredViaSubscriptionProvider = acquiredViaSubscriptionProvider;
+    configuration.validationParametersProvider = validationParametersProvider;
 
     store = [[BZRStore alloc] initWithConfiguration:configuration];
   });
@@ -1192,6 +1195,19 @@ context(@"KVO-compliance", ^{
         [NSNull null],
         activeSubscriptionStatus,
         inactiveSubscriptionStatus
+      ]);
+    });
+  });
+
+  context(@"receipt validation parameters provider", ^{
+    it(@"should update when app store locale changes", ^{
+      RACSignal *appStoreLocaleSignal = [RACObserve(store, appStoreLocale) testRecorder];
+      NSLocale *locale = [[NSLocale alloc] initWithLocaleIdentifier:@"de_DE"];
+      validationParametersProvider.appStoreLocale = locale;
+
+      expect(appStoreLocaleSignal).to.sendValues(@[
+        [NSNull null],
+        locale
       ]);
     });
   });
