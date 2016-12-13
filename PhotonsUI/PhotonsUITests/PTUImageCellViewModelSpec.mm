@@ -98,17 +98,27 @@ context(@"PTNDescriptor", ^{
                                              imageFetchOptions:options];
     expect(cloudViewModel.traits).to.contain(kPTUImageCellViewModelTraitCloudBasedKey);
 
-    id<PTNDescriptor> cloudSessionAsset =
+    id<PTNDescriptor> videoAsset = PTNCreateDescriptor(nil, @"foo", 0,
+        [NSSet setWithObject:kPTNDescriptorTraitVideoKey]);
+    PTUImageCellViewModel *videoViewModel = [[PTUImageCellViewModel alloc]
+                                             initWithAssetManager:assetManager
+                                             descriptor:videoAsset
+                                             imageFetchOptions:options];
+    expect(videoViewModel.traits).to.contain(kPTUImageCellViewModelTraitVideoKey);
+
+    id<PTNDescriptor> multiTraitsAsset =
         PTNCreateDescriptor(nil, @"foo", 0, [NSSet setWithArray:@[
-          kPTUImageCellViewModelTraitSessionKey,
-          kPTUImageCellViewModelTraitCloudBasedKey
+          kPTNDescriptorTraitSessionKey,
+          kPTNDescriptorTraitCloudBasedKey,
+          kPTNDescriptorTraitVideoKey
         ]]);
-    PTUImageCellViewModel *cloudSessionViewModel = [[PTUImageCellViewModel alloc]
-                                                    initWithAssetManager:assetManager
-                                                    descriptor:cloudSessionAsset
-                                                    imageFetchOptions:options];
-    expect(cloudSessionViewModel.traits).to.contain(kPTUImageCellViewModelTraitSessionKey);
-    expect(cloudSessionViewModel.traits).to.contain(kPTUImageCellViewModelTraitCloudBasedKey);
+    PTUImageCellViewModel *muliTraitsViewModel = [[PTUImageCellViewModel alloc]
+                                                  initWithAssetManager:assetManager
+                                                  descriptor:multiTraitsAsset
+                                                  imageFetchOptions:options];
+    expect(muliTraitsViewModel.traits).to.contain(kPTUImageCellViewModelTraitSessionKey);
+    expect(muliTraitsViewModel.traits).to.contain(kPTUImageCellViewModelTraitCloudBasedKey);
+    expect(muliTraitsViewModel.traits).to.contain(kPTUImageCellViewModelTraitVideoKey);
   });
 });
 

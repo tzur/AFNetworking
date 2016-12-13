@@ -47,6 +47,20 @@ context(@"asset descriptor", ^{
     OCMStub(asset.sourceType).andReturn(PHAssetSourceTypeUserLibrary);
     expect(asset.descriptorTraits).to.equal([NSSet set]);
   });
+
+  it(@"should reveal video based traits when the underlying asset is video", ^{
+    PHAsset *videoAsset = OCMPartialMock([[PHAsset alloc] init]);
+    OCMStub(videoAsset.mediaType).andReturn(PHAssetMediaTypeVideo);
+    expect(videoAsset.descriptorTraits).to.contain(kPTNDescriptorTraitVideoKey);
+
+    PHAsset *imageAsset = OCMPartialMock([[PHAsset alloc] init]);
+    OCMStub(imageAsset.mediaType).andReturn(PHAssetMediaTypeImage);
+    expect(imageAsset.descriptorTraits).to.equal([NSSet set]);
+
+    PHAsset *asset = OCMPartialMock([[PHAsset alloc] init]);
+    OCMStub(asset.mediaType).andReturn(PHAssetMediaTypeUnknown);
+    expect(asset.descriptorTraits).to.equal([NSSet set]);
+  });
 });
 
 context(@"album descriptor", ^{

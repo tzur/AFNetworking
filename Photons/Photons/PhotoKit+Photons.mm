@@ -27,8 +27,14 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (NSSet<NSString *> *)descriptorTraits {
-  return self.sourceType == PHAssetSourceTypeCloudShared ?
-      [NSSet setWithObject:kPTNDescriptorTraitCloudBasedKey] : [NSSet set];
+  NSMutableSet *set = [NSMutableSet set];
+  if (self.sourceType == PHAssetSourceTypeCloudShared) {
+      [set addObject:kPTNDescriptorTraitCloudBasedKey];
+  }
+  if (self.mediaType == PHAssetMediaTypeVideo) {
+    [set addObject:kPTNDescriptorTraitVideoKey];
+  }
+  return set;
 }
 
 @end

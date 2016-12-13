@@ -40,6 +40,9 @@ extern NSString * const kPTNDescriptorTraitSessionKey;
 /// asset might be already downloaded and cached by the client.
 extern NSString * const kPTNDescriptorTraitCloudBasedKey;
 
+/// Descriptor that represents a video asset.
+extern NSString * const kPTNDescriptorTraitVideoKey;
+
 /// Descriptor that acts as a reference to a heavy object. The heavy object is either costly to
 /// fetch or to store in memory. Each descriptor has an identifier, which uniquely identifies the
 /// heavy object across all Photons' objects, and allows re-fetching the descriptor when needed, as
