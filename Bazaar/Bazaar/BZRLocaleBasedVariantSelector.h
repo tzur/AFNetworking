@@ -1,8 +1,9 @@
 // Copyright (c) 2016 Lightricks. All rights reserved.
 // Created by Ben Yohay.
 
-#import "BZRProductDictionary.h"
 #import "BZRProductsVariantSelector.h"
+
+#import "BZRProductTypedefs.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

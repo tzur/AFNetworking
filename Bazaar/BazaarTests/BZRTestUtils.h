@@ -27,4 +27,13 @@ BZRReceiptValidationStatus *BZRReceiptValidationStatusWithExpiry(BOOL expiry, BO
 BZRReceiptValidationStatus *BZRReceiptValidationStatusWithInAppPurchaseAndExpiry(
     NSString *identifier, BOOL expiry);
 
+/// Returns a \c SKProductsResponse with products set to \c products.
+SKProductsResponse *BZRProductsResponseWithSKProducts(NSArray<SKProduct *> *products);
+
+/// Returns a \c SKProductsResponse with a single \c SKProduct with identifier \c productIdentifier.
+SKProductsResponse *BZRProductsResponseWithProduct(NSString *productIdentifier);
+
+/// Returns a \c SKProductsResponse with \c SKProducts with identifiers \c productIdentifiers.
+SKProductsResponse *BZRProductsResponseWithProducts(NSArray<NSString *> *productsIdentifiers);
+
 NS_ASSUME_NONNULL_END

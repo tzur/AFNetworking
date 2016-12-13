@@ -5,3 +5,6 @@
 
 /// Maps product identifiers to products.
 typedef NSDictionary<NSString *, BZRProduct *> BZRProductDictionary;
+
+/// Collection of \c BZRProducts.
+typedef NSArray<BZRProduct *> BZRProductList;

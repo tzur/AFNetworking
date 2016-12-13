@@ -9,7 +9,6 @@
 #import "BZRCachedReceiptValidationStatusProvider.h"
 #import "BZRKeychainStorage.h"
 #import "BZRLocaleBasedVariantSelectorFactory.h"
-#import "BZRLocalProductsProvider.h"
 #import "BZRModifiedExpiryReceiptValidationStatusProvider.h"
 #import "BZRPeriodicReceiptValidator.h"
 #import "BZRPeriodicReceiptValidatorActivator.h"
@@ -17,6 +16,7 @@
 #import "BZRProductContentManager.h"
 #import "BZRProductContentMultiFetcher.h"
 #import "BZRProductContentProvider.h"
+#import "BZRProductsProviderFactory.h"
 #import "BZRProductsWithVariantsProvider.h"
 #import "BZRReceiptValidationParametersProvider.h"
 #import "BZRReceiptValidationStatusProvider.h"
@@ -53,12 +53,10 @@ NS_ASSUME_NONNULL_BEGIN
   if (self = [super init]) {
     _fileManager = [NSFileManager defaultManager];
 
-    BZRLocalProductsProvider *localProductsProvider =
-        [[BZRLocalProductsProvider alloc] initWithPath:productsListJSONFilePath
-                                           fileManager:self.fileManager];
-    _productsProvider =
-        [[BZRProductsWithVariantsProvider alloc] initWithUnderlyingProvider:localProductsProvider];
-    
+    _productsProviderFactory =
+        [[BZRProductsProviderFactory alloc]
+         initWithProductsListJSONFilePath:productsListJSONFilePath fileManager:self.fileManager];
+
     _contentManager = [[BZRProductContentManager alloc] initWithFileManager:self.fileManager];
     BZRProductContentMultiFetcher *contentFetcher = [[BZRProductContentMultiFetcher alloc] init];
     _contentProvider =
