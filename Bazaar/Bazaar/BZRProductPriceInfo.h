@@ -14,6 +14,10 @@ NS_ASSUME_NONNULL_BEGIN
 /// Identifier of the product's price locale.
 @property (readonly, nonatomic) NSString *localeIdentifier;
 
+/// In the case of a discount product, holds the price of the original product. \c nil in case the
+/// product is not a discount product.
+@property (readonly, nonatomic, nullable) NSDecimalNumber *fullPrice;
+
 @end
 
 NS_ASSUME_NONNULL_END

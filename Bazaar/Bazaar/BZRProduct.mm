@@ -41,7 +41,8 @@ LTEnumImplement(NSUInteger, BZRProductType,
     @instanceKeypath(BZRProduct, contentFetcherParameters): @"contentFetcherParameters",
     @instanceKeypath(BZRProduct, isSubscribersOnly): @"isSubscribersOnly",
     @instanceKeypath(BZRProduct, priceInfo): @"priceInfo",
-    @instanceKeypath(BZRProduct, variants): @"variants"
+    @instanceKeypath(BZRProduct, variants): @"variants",
+    @instanceKeypath(BZRProduct, discountedProducts): @"discountedProducts",
   };
 }
 
@@ -71,7 +72,8 @@ LTEnumImplement(NSUInteger, BZRProductType,
       @instanceKeypath(BZRProduct, contentFetcherParameters),
       @instanceKeypath(BZRProduct, priceInfo),
       @instanceKeypath(BZRProduct, isSubscribersOnly),
-      @instanceKeypath(BZRProduct, variants)
+      @instanceKeypath(BZRProduct, variants),
+      @instanceKeypath(BZRProduct, discountedProducts)
     ]];
   });
   

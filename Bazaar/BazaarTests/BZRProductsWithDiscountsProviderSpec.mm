@@ -1,25 +1,25 @@
 // Copyright (c) 2016 Lightricks. All rights reserved.
 // Created by Ben Yohay.
 
-#import "BZRProductsWithVariantsProvider.h"
+#import "BZRProductsWithDiscountsProvider.h"
 
 #import <LTKit/NSArray+Functional.h>
 
 #import "BZRProduct.h"
 #import "BZRTestUtils.h"
 
-SpecBegin(BZRProductsWithVariantsProvider)
+SpecBegin(BZRProductsWithDiscountsProvider)
 
 __block id<BZRProductsProvider> underlyingProvider;
-__block BZRProductsWithVariantsProvider *provider;
+__block BZRProductsWithDiscountsProvider *provider;
 
 beforeEach(^{
   underlyingProvider = OCMProtocolMock(@protocol(BZRProductsProvider));
   provider =
-      [[BZRProductsWithVariantsProvider alloc] initWithUnderlyingProvider:underlyingProvider];
+      [[BZRProductsWithDiscountsProvider alloc] initWithUnderlyingProvider:underlyingProvider];
 });
 
-context(@"creating variants as products", ^{
+context(@"creating discounts as products", ^{
   it(@"should err when underlying provider errs", ^{
     NSError *error = [NSError lt_errorWithCode:1337];
     OCMStub([underlyingProvider fetchProductList]).andReturn([RACSignal error:error]);
@@ -33,7 +33,7 @@ context(@"creating variants as products", ^{
     expect([provider fetchProductList]).will.complete();
   });
 
-  it(@"should not create variants for a product without variants", ^{
+  it(@"should not create discounted products for a product without discounts", ^{
     BZRProduct *product = BZRProductWithIdentifier(@"foo");
     OCMStub([underlyingProvider fetchProductList]).andReturn([RACSignal return:@[product]]);
 
@@ -45,32 +45,34 @@ context(@"creating variants as products", ^{
     });
   });
 
-  it(@"should create variant product with nil variants property", ^{
+  it(@"should create discount product with nil discounts property", ^{
     BZRProduct *product = BZRProductWithIdentifier(@"foo");
     product =
-        [product modelByOverridingProperty:@keypath(product, variants) withValue:@[@"A"]];
-    OCMStub([underlyingProvider fetchProductList]).andReturn([RACSignal return:@[product]]);
+        [product modelByOverridingProperty:@keypath(product, discountedProducts)
+                                 withValue:@[@"foo.bar"]];
+    NSArray<BZRProduct *> *productList = @[product];
+    OCMStub([underlyingProvider fetchProductList]).andReturn([RACSignal return:productList]);
 
     LLSignalTestRecorder *recorder = [[provider fetchProductList] testRecorder];
 
     expect(recorder).will.complete();
     expect(recorder).will.matchValue(0, ^BOOL(NSArray<BZRProduct *> *productList) {
       BZRProduct *variant = [productList lt_filter:^BOOL(BZRProduct *product) {
-        return [product.identifier isEqualToString:@"foo.Variant.A"];
+        return [product.identifier isEqualToString:@"foo.bar"];
       }].firstObject;
-      return !variant.variants;
+      return !variant.discountedProducts;
     });
   });
 
   it(@"should create products from the list of variants", ^{
     BZRProduct *firstProduct = BZRProductWithIdentifier(@"foo");
     firstProduct =
-        [firstProduct modelByOverridingProperty:@keypath(firstProduct, variants)
-                                      withValue:@[@"A", @"B"]];
+        [firstProduct modelByOverridingProperty:@keypath(firstProduct, discountedProducts)
+                                      withValue:@[@"foo.25Off", @"foo.75Off"]];
     BZRProduct *secondProduct = BZRProductWithIdentifier(@"bar");
     secondProduct =
-        [secondProduct modelByOverridingProperty:@keypath(secondProduct, variants)
-                                       withValue:@[@"C", @"D"]];
+        [secondProduct modelByOverridingProperty:@keypath(secondProduct, discountedProducts)
+                                       withValue:@[@"bar.25Off", @"bar.50Off"]];
     NSArray<BZRProduct *> *productList = @[firstProduct, secondProduct];
     OCMStub([underlyingProvider fetchProductList]).andReturn([RACSignal return:productList]);
 
@@ -82,8 +84,8 @@ context(@"creating variants as products", ^{
           [productList valueForKey:@instanceKeypath(BZRProduct, identifier)]];
       return [productList count] == 6 &&
           [productsIdentifiers isEqualToSet:
-           [NSSet setWithObjects:@"foo", @"foo.Variant.A", @"foo.Variant.B", @"bar",
-            @"bar.Variant.C", @"bar.Variant.D", nil]];
+           [NSSet setWithObjects:@"foo", @"foo.25Off", @"foo.75Off", @"bar", @"bar.25Off",
+            @"bar.50Off", nil]];
     });
   });
 });

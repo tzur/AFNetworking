@@ -5,8 +5,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/// Provider that returns products variants as \c BZRProduct along with the base products.
-@interface BZRProductsWithVariantsProvider : NSObject <BZRProductsProvider>
+/// Provider that wraps another provider and adds additional \c BZRProduct instances for discounted
+/// products specified by the product list provided by the underlying provider.
+@interface BZRProductsWithDiscountsProvider : NSObject <BZRProductsProvider>
 
 - (instancetype)init NS_UNAVAILABLE;
 
