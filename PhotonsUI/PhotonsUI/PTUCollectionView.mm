@@ -16,8 +16,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)buildViews {
   [self buildCollectionViewController];
-  self.emptyView = [self defaultEmptyView];
-  self.errorView = [self defaultErrorView];
+  self.emptyView = [PTUCollectionView defaultEmptyView];
+  self.errorView = [PTUCollectionView defaultErrorView];
 }
 
 - (void)buildCollectionViewController {
@@ -30,7 +30,7 @@ NS_ASSUME_NONNULL_BEGIN
   }];
 }
 
-- (UIView *)defaultEmptyView {
++ (UIView *)defaultEmptyView {
   UIView *emptyView = [[UIView alloc] initWithFrame:CGRectZero];
 
   UILabel *noPhotosLabel = [[UILabel alloc] initWithFrame:CGRectZero];
@@ -49,7 +49,7 @@ NS_ASSUME_NONNULL_BEGIN
   return emptyView;
 }
 
-- (UIView *)defaultErrorView {
++ (UIView *)defaultErrorView {
   UIView *errorView = [[UIView alloc] initWithFrame:CGRectZero];
 
   UILabel *errorLabel = [[UILabel alloc] initWithFrame:CGRectZero];

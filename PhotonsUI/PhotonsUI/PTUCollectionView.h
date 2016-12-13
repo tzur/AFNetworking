@@ -7,14 +7,21 @@ NS_ASSUME_NONNULL_BEGIN
 /// <tt>{CollectionView, CollectionViewContainer, Empty, Error}</tt> accessibility identifiers.
 @interface PTUCollectionView : UIView
 
-/// View to display when the receiver's has no data, but did not err. The view will automatically
-/// track the size of the receiver's view. The default view contains a single \c UILabel containing
+/// Creates a default empty view instance. The view contains a single \c UILabel containing
 /// the localized string "No photos".
++ (UIView *)defaultEmptyView;
+
+/// Creates a default error view instance. The view contains a single \c UILabel containing the
+/// localized string "Whoops! Something went wrong".
++ (UIView *)defaultErrorView;
+
+/// View to display when the receiver's has no data, but did not err. The view will automatically
+/// track the size of the receiver's view. The default view is
+/// <tt>[PTUCollectionView defaultEmptyView]</tt>.
 @property (strong, nonatomic) UIView *emptyView;
 
 /// View to display when the receiver's has erred. The view will automatically track the size of the
-/// receiver's view. The default view contains a single \c UILabel containing the localized string
-/// "Error fetching data".
+/// receiver's view. The default view is <tt>[PTUCollectionView defaultErrorView]</tt>.
 @property (strong, nonatomic) UIView *errorView;
 
 /// View displayed behind the \c collectionViewContainer, the view will automatically track the size
