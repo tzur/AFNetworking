@@ -88,6 +88,11 @@ extern NSString * const kPTNDescriptorTraitVideoKey;
 /// information is unavailable.
 @property (readonly, nonatomic, nullable) NSDate *modificationDate;
 
+/// Duration in seconds of the video or audio asset.
+///
+/// @note for photo assets, the duration is always zero.
+@property (readonly, nonatomic) NSTimeInterval duration;
+
 /// Capabilities supported by the asset backed by this descriptor.
 @property (readonly, nonatomic) PTNAssetDescriptorCapabilities assetDescriptorCapabilities;
 

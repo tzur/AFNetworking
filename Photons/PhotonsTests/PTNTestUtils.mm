@@ -44,6 +44,25 @@ id<PTNAssetDescriptor> PTNCreateAssetDescriptor(NSURL * _Nullable identifier,
           assetDescriptorCapabilities:assetCapabilities];
 }
 
+id<PTNAssetDescriptor> PTNCreateAssetDescriptor(NSURL * _Nullable identifier,
+                                                NSString * _Nullable localizedTitle,
+                                                PTNDescriptorCapabilities capabilities,
+                                                NSSet<NSString *> * _Nullable traits,
+                                                NSDate * _Nullable creationDate,
+                                                NSDate * _Nullable modificationDate,
+                                                NSTimeInterval duration,
+                                                PTNAssetDescriptorCapabilities assetCapabilities) {
+  return [[PTNFakeAssetDescriptor alloc]
+          initWithIdentifier:identifier ?: [NSURL URLWithString:@"fake://descriptor.asset"]
+          localizedTitle:localizedTitle
+          descriptorCapabilities:capabilities
+          descriptorTraits:traits ?: [NSSet set]
+          creationDate:creationDate
+          modificationDate:modificationDate
+          duration:duration
+          assetDescriptorCapabilities:assetCapabilities];
+}
+
 id<PTNAlbumDescriptor> PTNCreateAlbumDescriptor(NSURL * _Nullable identifier,
                                                 NSString * _Nullable localizedTitle,
                                                 PTNDescriptorCapabilities capabilities,
