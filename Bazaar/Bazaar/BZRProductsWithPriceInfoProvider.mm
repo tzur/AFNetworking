@@ -108,10 +108,16 @@ static NSNumber * const kNonAppStoreProductsLabel = @0;
           [self.nonCriticalErrorsSubject sendNext:error];
         }
       }]
-      map:^BZRProductList *(SKProductsResponse *response) {
+      tryMap:^BZRProductList * _Nullable
+          (SKProductsResponse *response, NSError * __autoreleasing *error) {
         @strongify(self);
         if (![response.products count]) {
-          return @[];
+          if (error) {
+            NSSet<NSString *> *productIdentifiers =
+                [NSSet setWithArray:response.invalidProductIdentifiers];
+            *error = [NSError bzr_invalidProductsErrorWithIdentifers:productIdentifiers];
+          }
+          return nil;
         }
         return [self productList:products withMetadataFromProductsResponse:response];
       }];

@@ -168,16 +168,18 @@ context(@"getting product list", ^{
       OCMStub([underlyingProvider fetchProductList]).andReturn([RACSignal return:@[product]]);
     });
 
-    it(@"should return empty list if facade returns a response without products", ^{
+    it(@"should send error if facade returns a response without products", ^{
       SKProductsResponse *response = OCMClassMock([SKProductsResponse class]);
       OCMStub([response products]).andReturn(@[]);
+      OCMStub([response invalidProductIdentifiers]).andReturn(@[@"foo"]);
       OCMStub([storeKitFacade fetchMetadataForProductsWithIdentifiers:OCMOCK_ANY])
           .andReturn([RACSignal return:response]);
 
       LLSignalTestRecorder *recorder = [[productsProvider fetchProductList] testRecorder];
 
-      expect(recorder).will.complete();
-      expect(recorder).will.sendValues(@[@[]]);
+      NSError *error =
+          [NSError bzr_invalidProductsErrorWithIdentifers:[NSSet setWithObject:@"foo"]];
+      expect(recorder).will.sendError(error);
     });
 
     it(@"should return set with product if facade returns a response with the same product", ^{
