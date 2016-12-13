@@ -79,11 +79,26 @@ LTVector3 LTVector3FromString(NSString *string) {
   if (![scanner isAtEnd]) return LTVector3();
   return LTVector3(x, y, z);
 }
- LTVector3 LTVector3::rgbToHsv() const {
-  cv::Mat3f rgbMat(1, 1, cv::Vec3f(x, y, z));
-  cv::Mat3f hsvMat(1, 1);
-  cv::cvtColor(rgbMat, hsvMat, CV_RGB2HSV);
-  return LTVector3(hsvMat(0, 0)[0] / 360, hsvMat(0, 0)[1], hsvMat(0, 0)[2]);
+
+LTVector3 LTVector3::rgbToHsv() const {
+  float v = std::max(*this);
+  float minRGB = std::min(*this);
+  float diffVminRGB = v - minRGB;
+  float denominator = diffVminRGB * 6;
+  float h;
+  if (v == x) {
+    h = denominator ? (y - z) / denominator : 0;
+  } else if (v == y) {
+    h = 1.0f / 3 + (z - x) / denominator;
+  } else {
+    h = 2.0f / 3 + (x - y) / denominator;
+  }
+
+  if (h < 0) {
+    h += 1;
+  }
+
+  return LTVector3(h, v ? diffVminRGB / v : 0, v);
 }
 
 LTVector3 LTVector3::hsvToRgb() const {
