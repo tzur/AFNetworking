@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		284FDEF01E018C270066AB93 /* UIView+RetrievalSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 284FDEEF1E018C270066AB93 /* UIView+RetrievalSpec.mm */; };
+		28FBDE491DFFE3E1006B1952 /* UIView+Retrieval.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BC7B5651CECA3B50047BEDE /* UIView+Retrieval.m */; };
 		65322E0B1D465494002D5F17 /* ReactiveCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6AD1304C1CC4FCAF003A5857 /* ReactiveCocoa.framework */; };
 		65322E0C1D4654A4002D5F17 /* libextobjc_iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 65322E061D465479002D5F17 /* libextobjc_iOS.a */; };
 		6A0C328C1CE7476800809579 /* WFImageViewModelBuilderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6A0C328B1CE7476800809579 /* WFImageViewModelBuilderSpec.mm */; };
@@ -67,7 +69,6 @@
 		8B2840021CBE33E100B745AE /* WFTransparentViewSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B2840011CBE33E100B745AE /* WFTransparentViewSpec.mm */; };
 		8BB234A91CDCB45B00057F11 /* WFGradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BB234A81CDCB45B00057F11 /* WFGradientView.m */; };
 		8BB234C41CDCB69D00057F11 /* WFGradientViewSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BB234C31CDCB69D00057F11 /* WFGradientViewSpec.mm */; };
-		8BC7B5661CECA3B50047BEDE /* UIView+Retrieval.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BC7B5651CECA3B50047BEDE /* UIView+Retrieval.m */; };
 		8BC7B64C1CF1D8330047BEDE /* Objection-iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BC7B6251CF1D6650047BEDE /* Objection-iOS.framework */; };
 		8BC7B64F1CF1E5020047BEDE /* WFLoggingImageProvider.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BC7B64E1CF1E5010047BEDE /* WFLoggingImageProvider.mm */; };
 		8BC7B6551CF1EE280047BEDE /* LTSpectaObjectionHook.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BC7B6541CF1EE280047BEDE /* LTSpectaObjectionHook.mm */; };
@@ -335,6 +336,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		284FDEEF1E018C270066AB93 /* UIView+RetrievalSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIView+RetrievalSpec.mm"; sourceTree = "<group>"; };
 		65322DFC1D465479002D5F17 /* extobjc.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = extobjc.xcodeproj; path = ../third_party/libextobjc/extobjc.xcodeproj; sourceTree = "<group>"; };
 		65322E0D1D4654BB002D5F17 /* TestHost.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TestHost.xcodeproj; path = ../Foundations/TestHost.xcodeproj; sourceTree = "<group>"; };
 		6A0C328B1CE7476800809579 /* WFImageViewModelBuilderSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = WFImageViewModelBuilderSpec.mm; sourceTree = "<group>"; };
@@ -448,8 +450,8 @@
 		8BB234A71CDCB45B00057F11 /* WFGradientView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WFGradientView.h; sourceTree = "<group>"; };
 		8BB234A81CDCB45B00057F11 /* WFGradientView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WFGradientView.m; sourceTree = "<group>"; };
 		8BB234C31CDCB69D00057F11 /* WFGradientViewSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = WFGradientViewSpec.mm; sourceTree = "<group>"; };
-		8BC7B5641CECA3B50047BEDE /* UIView+Retrieval.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Retrieval.h"; sourceTree = "<group>"; };
-		8BC7B5651CECA3B50047BEDE /* UIView+Retrieval.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Retrieval.m"; sourceTree = "<group>"; };
+		8BC7B5641CECA3B50047BEDE /* UIView+Retrieval.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIView+Retrieval.h"; path = "Wireframes/UIView+Retrieval.h"; sourceTree = SOURCE_ROOT; };
+		8BC7B5651CECA3B50047BEDE /* UIView+Retrieval.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIView+Retrieval.m"; path = "Wireframes/UIView+Retrieval.m"; sourceTree = SOURCE_ROOT; };
 		8BC7B6251CF1D6650047BEDE /* Objection-iOS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = "Objection-iOS.framework"; path = "../third_party/objection/Objection-iOS.framework"; sourceTree = "<group>"; };
 		8BC7B64D1CF1E5010047BEDE /* WFLoggingImageProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WFLoggingImageProvider.h; sourceTree = "<group>"; };
 		8BC7B64E1CF1E5010047BEDE /* WFLoggingImageProvider.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = WFLoggingImageProvider.mm; sourceTree = "<group>"; };
@@ -859,8 +861,6 @@
 				8BC7B6541CF1EE280047BEDE /* LTSpectaObjectionHook.mm */,
 				8B283F4F1CBA88E800B745AE /* LTTestUtils.h */,
 				8B283F501CBA88E800B745AE /* LTTestUtils.mm */,
-				8BC7B5641CECA3B50047BEDE /* UIView+Retrieval.h */,
-				8BC7B5651CECA3B50047BEDE /* UIView+Retrieval.m */,
 				8BC7B64D1CF1E5010047BEDE /* WFLoggingImageProvider.h */,
 				8BC7B64E1CF1E5010047BEDE /* WFLoggingImageProvider.mm */,
 				6AFCE0B01CDDE61D00FA8BF3 /* WFTestUtils.h */,
@@ -882,6 +882,8 @@
 				C99B8BB31D6F6DAD00897FF1 /* UIFont+Size.mm */,
 				C77A04071D40DA2800427AD7 /* UIFont+Utilities.h */,
 				C77A04081D40DA2800427AD7 /* UIFont+Utilities.mm */,
+				8BC7B5641CECA3B50047BEDE /* UIView+Retrieval.h */,
+				8BC7B5651CECA3B50047BEDE /* UIView+Retrieval.m */,
 				8B283F6E1CBA9C6E00B745AE /* UIViewController+Containment.h */,
 				8B283F6F1CBA9C6E00B745AE /* UIViewController+Containment.m */,
 			);
@@ -909,6 +911,7 @@
 				C99B8BB61D6F6E2C00897FF1 /* UIFont+SizeSpec.mm */,
 				C77A04231D40DAE700427AD7 /* UIFont+UtilitiesSpec.mm */,
 				8B283FA61CBA9E2900B745AE /* UIViewController+ContainmentSpec.mm */,
+				284FDEEF1E018C270066AB93 /* UIView+RetrievalSpec.mm */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -1282,6 +1285,7 @@
 				8B283FFF1CBE33B200B745AE /* WFTransparentView.m in Sources */,
 				8BB234A91CDCB45B00057F11 /* WFGradientView.m in Sources */,
 				6A34F6081CD7939E00B91A58 /* WFDynamicImageViewModel.m in Sources */,
+				28FBDE491DFFE3E1006B1952 /* UIView+Retrieval.m in Sources */,
 				6AAEDB8A1CD77B9800B3C62F /* UIButton+ViewModel.mm in Sources */,
 				6A7E53041CCE4236000AAAF3 /* NSErrorCodes+Wireframes.m in Sources */,
 				C77A04091D40DA2800427AD7 /* UIFont+Utilities.mm in Sources */,
@@ -1336,10 +1340,10 @@
 				C77A04241D40DAE700427AD7 /* UIFont+UtilitiesSpec.mm in Sources */,
 				6AB2AF5F1CC4E63E00BC2371 /* EXPExpect+LLReactiveMatchersExtensions.m in Sources */,
 				8B2840021CBE33E100B745AE /* WFTransparentViewSpec.mm in Sources */,
+				284FDEF01E018C270066AB93 /* UIView+RetrievalSpec.mm in Sources */,
 				8BC7B6551CF1EE280047BEDE /* LTSpectaObjectionHook.mm in Sources */,
 				6AB2AF601CC4E63E00BC2371 /* LLSignalTestRecorder.m in Sources */,
 				8B283F531CBA88E800B745AE /* LTTestUtils.mm in Sources */,
-				8BC7B5661CECA3B50047BEDE /* UIView+Retrieval.m in Sources */,
 				8B078FDC1D47B0AC00A8E9EB /* CATransaction+AnimationsSpec.mm in Sources */,
 				6AB2AF6A1CC4E63E00BC2371 /* EXPMatchers+matchValue.m in Sources */,
 				6AFCE0B21CDDE61D00FA8BF3 /* WFTestUtils.mm in Sources */,
