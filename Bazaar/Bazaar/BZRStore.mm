@@ -328,6 +328,10 @@ NS_ASSUME_NONNULL_BEGIN
   return self.validationStatusProvider.receiptValidationStatus;
 }
 
+- (nullable NSLocale *)appStoreLocale {
+  return self.validationParametersProvider.appStoreLocale;
+}
+
 #pragma mark -
 #pragma mark BZRProductsManager
 #pragma mark -
@@ -541,6 +545,11 @@ NS_ASSUME_NONNULL_BEGIN
 + (NSSet *)keyPathsForValuesAffectingReceiptValidationStatus {
   return [NSSet setWithObject:
       @instanceKeypath(BZRStore, validationStatusProvider.receiptValidationStatus)];
+}
+
++ (NSSet *)keyPathsForValuesAffectingAppStoreLocale {
+  return [NSSet setWithObject:
+      @instanceKeypath(BZRStore, validationParametersProvider.appStoreLocale)];
 }
 
 @end
