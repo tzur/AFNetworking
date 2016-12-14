@@ -7,7 +7,7 @@ SpecBegin(LTCompressionFormat)
 
 it(@"should return file extension for every compression format", ^{
   [LTCompressionFormat enumerateEnumUsingBlock:^(LTCompressionFormat *value) {
-    expect(value.fileExtension.length).to.beGreaterThan(0);
+    expect(value.fileExtension.length).to.equal(3);
   }];
 });
 
