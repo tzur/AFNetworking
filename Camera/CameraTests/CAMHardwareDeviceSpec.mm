@@ -512,6 +512,22 @@ context(@"", ^{
         expect(recorder).will.sendError(expected);
         expect(videoDevice.lensPosition).toNot.equal(0.25);
       });
+
+      it(@"should return error when lens position is invalid", ^{
+        videoDevice.focusModeSupported = YES;
+
+        LLSignalTestRecorder *highRecorder = [[device setLockedFocusPosition:2] testRecorder];
+        expect(highRecorder).will.error();
+        expect(highRecorder.error.code).to.equal(CAMErrorCodeFocusSettingUnsupported);
+
+        LLSignalTestRecorder *lowRecorder = [[device setLockedFocusPosition:-0.5] testRecorder];
+        expect(lowRecorder).will.error();
+        expect(lowRecorder.error.code).to.equal(CAMErrorCodeFocusSettingUnsupported);
+
+        LLSignalTestRecorder *nanRecorder = [[device setLockedFocusPosition:NAN] testRecorder];
+        expect(nanRecorder).will.error();
+        expect(nanRecorder.error.code).to.equal(CAMErrorCodeFocusSettingUnsupported);
+      });
     });
   });
 
@@ -633,6 +649,23 @@ context(@"", ^{
         NSError *expected = [NSError lt_errorWithCode:CAMErrorCodeExposureSettingUnsupported];
         expect(recorder).will.sendError(expected);
       });
+
+      it(@"should return error when exposure compensation is invalid", ^{
+        videoDevice.minExposureTargetBias = 2;
+        videoDevice.maxExposureTargetBias = 3;
+
+        LLSignalTestRecorder *highRecorder = [[device setExposureCompensation:3.1] testRecorder];
+        expect(highRecorder).will.error();
+        expect(highRecorder.error.code).to.equal(CAMErrorCodeExposureSettingUnsupported);
+
+        LLSignalTestRecorder *lowRecorder = [[device setExposureCompensation:1.9] testRecorder];
+        expect(lowRecorder).will.error();
+        expect(lowRecorder.error.code).to.equal(CAMErrorCodeExposureSettingUnsupported);
+
+        LLSignalTestRecorder *nanRecorder = [[device setExposureCompensation:NAN] testRecorder];
+        expect(nanRecorder).will.error();
+        expect(nanRecorder.error.code).to.equal(CAMErrorCodeExposureSettingUnsupported);
+      });
     });
   });
 
@@ -672,8 +705,10 @@ context(@"", ^{
       });
 
       it(@"should manual white balance", ^{
-        AVCaptureWhiteBalanceGains gains({0.1, 0.2, 0.3});
+        videoDevice.maxWhiteBalanceGain = 5;
+        AVCaptureWhiteBalanceGains gains({1.1, 1.2, 1.3});
         videoDevice.gainsToReturnFromConversion = gains;
+
         LLSignalTestRecorder *recorder =
             [[device setLockedWhiteBalanceWithTemperature:0.25 tint:0.5] testRecorder];
         expect(recorder).will.sendValues(@[RACTuplePack(@0.25, @0.5)]);
@@ -753,6 +788,32 @@ context(@"", ^{
         expect(recorder).will.sendError(expected);
         expect(videoDevice.deviceWhiteBalanceGains).toNot.equal(gains);
       });
+
+      it(@"should return error when temperature and tint are invalid", ^{
+        videoDevice.whiteBalanceModeSupported = YES;
+        videoDevice.maxWhiteBalanceGain = 2;
+        AVCaptureWhiteBalanceGains highGains({3.1, 1.2, 1.3});
+        AVCaptureWhiteBalanceGains lowGains({1.1, 0.5, 1.3});
+        AVCaptureWhiteBalanceGains nanGains({1.1, 1.2, NAN});
+
+        videoDevice.gainsToReturnFromConversion = highGains;
+        LLSignalTestRecorder *highRecorder =
+            [[device setLockedWhiteBalanceWithTemperature:3000 tint:0] testRecorder];
+        expect(highRecorder).will.error();
+        expect(highRecorder.error.code).to.equal(CAMErrorCodeWhiteBalanceSettingUnsupported);
+
+        videoDevice.gainsToReturnFromConversion = lowGains;
+        LLSignalTestRecorder *lowRecorder =
+            [[device setLockedWhiteBalanceWithTemperature:3000 tint:0] testRecorder];
+        expect(lowRecorder).will.error();
+        expect(lowRecorder.error.code).to.equal(CAMErrorCodeWhiteBalanceSettingUnsupported);
+
+        videoDevice.gainsToReturnFromConversion = nanGains;
+        LLSignalTestRecorder *nanRecorder =
+            [[device setLockedWhiteBalanceWithTemperature:3000 tint:0] testRecorder];
+        expect(nanRecorder).will.error();
+        expect(nanRecorder.error.code).to.equal(CAMErrorCodeWhiteBalanceSettingUnsupported);
+      });
     });
   });
 
@@ -817,6 +878,22 @@ context(@"", ^{
       it(@"should not set zoom ramped", ^{
         [device setZoom:0.25 rate:0.5];
         expect(videoDevice.videoZoomFactor).toNot.equal(0.25);
+      });
+    });
+
+    context(@"negative", ^{
+      it(@"should return error when zoom value is invalid", ^{
+        LLSignalTestRecorder *highRecorder = [[device setZoom:5] testRecorder];
+        expect(highRecorder).will.error();
+        expect(highRecorder.error.code).to.equal(CAMErrorCodeZoomSettingUnsupported);
+
+        LLSignalTestRecorder *lowRecorder = [[device setZoom:0.2] testRecorder];
+        expect(lowRecorder).will.error();
+        expect(lowRecorder.error.code).to.equal(CAMErrorCodeZoomSettingUnsupported);
+
+        LLSignalTestRecorder *nanRecorder = [[device setZoom:NAN] testRecorder];
+        expect(nanRecorder).will.error();
+        expect(nanRecorder.error.code).to.equal(CAMErrorCodeZoomSettingUnsupported);
       });
     });
   });
@@ -947,6 +1024,22 @@ context(@"", ^{
         NSError *expected = [NSError lt_errorWithCode:CAMErrorCodeTorchModeSettingUnsupported];
         expect(recorder).will.sendError(expected);
         expect(videoDevice.torchMode).toNot.equal(AVCaptureTorchModeAuto);
+      });
+
+      it(@"should return error when torch level is invalid", ^{
+        videoDevice.torchModeSupported = YES;
+
+        LLSignalTestRecorder *highRecorder = [[device setTorchLevel:2] testRecorder];
+        expect(highRecorder).will.error();
+        expect(highRecorder.error.code).to.equal(CAMErrorCodeTorchModeSettingUnsupported);
+
+        LLSignalTestRecorder *lowRecorder = [[device setTorchLevel:-0.5] testRecorder];
+        expect(lowRecorder).will.error();
+        expect(lowRecorder.error.code).to.equal(CAMErrorCodeTorchModeSettingUnsupported);
+
+        LLSignalTestRecorder *nanRecorder = [[device setTorchLevel:NAN] testRecorder];
+        expect(nanRecorder).will.error();
+        expect(nanRecorder.error.code).to.equal(CAMErrorCodeTorchModeSettingUnsupported);
       });
     });
   });

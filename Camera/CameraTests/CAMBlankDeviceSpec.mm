@@ -41,14 +41,10 @@ context(@"setters", ^{
       expect(recorder).to.complete();
     });
 
-    it(@"should raise when setting exposure compensation out of bounds", ^{
-      expect(^{
-        [device setExposureCompensation:device.maxExposureCompensation + 1];
-      }).to.raise(NSInvalidArgumentException);
-
-      expect(^{
-        [device setExposureCompensation:device.minExposureCompensation - 1];
-      }).to.raise(NSInvalidArgumentException);
+    it(@"should err when setting exposure compensation out of bounds", ^{
+      expect([device setExposureCompensation:device.maxExposureCompensation + 1]).to.error();
+      expect([device setExposureCompensation:device.maxExposureCompensation - 1]).to.error();
+      expect([device setExposureCompensation:NAN]).to.error();
     });
   });
 
@@ -110,14 +106,10 @@ context(@"setters", ^{
       expect(recorder).to.complete();
     });
 
-    it(@"should raise when setting manual focus out of bounds", ^{
-      expect(^{
-        [device setLockedFocusPosition:1.5];
-      }).to.raise(NSInvalidArgumentException);
-
-      expect(^{
-        [device setLockedFocusPosition:-0.5];
-      }).to.raise(NSInvalidArgumentException);
+    it(@"should err when setting manual focus out of bounds", ^{
+      expect([device setLockedFocusPosition:1.5]).to.error();
+      expect([device setLockedFocusPosition:-0.5]).to.error();
+      expect([device setLockedFocusPosition:NAN]).to.error();
     });
   });
 
@@ -167,22 +159,26 @@ context(@"setters", ^{
       expect(recorder).to.complete();
     });
 
-    it(@"should raise when setting zoom to any other value", ^{
-      expect(^{
-        [device setZoom:device.zoomFactor + 1];
-      }).to.raise(NSInvalidArgumentException);
+    it(@"should err when setting zoom to any other value", ^{
+      expect([device setZoom:device.zoomFactor + 1]).to.error();
+      expect([device setZoom:device.zoomFactor - 1]).to.error();
+      expect([device setZoom:device.zoomFactor + 1 rate:1]).to.error();
+      expect([device setZoom:device.zoomFactor - 1 rate:1]).to.error();
+      expect([device setZoom:NAN]).to.error();
+    });
+  });
 
-      expect(^{
-        [device setZoom:device.zoomFactor - 1];
-      }).to.raise(NSInvalidArgumentException);
+  context(@"torch", ^{
+    it(@"should not support torch", ^{
+      expect(device.hasTorch).to.beFalsy();
+    });
 
-      expect(^{
-        [device setZoom:device.zoomFactor + 1 rate:1];
-      }).to.raise(NSInvalidArgumentException);
-
-      expect(^{
-        [device setZoom:device.zoomFactor - 1 rate:1];
-      }).to.raise(NSInvalidArgumentException);
+    it(@"should err when setting torch", ^{
+      expect([device setTorchLevel:2]).to.error();
+      expect([device setTorchLevel:0.5]).to.error();
+      expect([device setTorchLevel:0]).to.error();
+      expect([device setTorchLevel:-0.5]).to.error();
+      expect([device setTorchLevel:NAN]).to.error();
     });
   });
 });

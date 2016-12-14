@@ -79,9 +79,11 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (RACSignal *)setLockedFocusPosition:(CGFloat)lensPosition {
-  LTParameterAssert(lensPosition <= 1, @"lensPosition above maximum");
-  LTParameterAssert(lensPosition >= 0, @"lensPosition below minimum");
-  return [RACSignal return:@(lensPosition)];
+  if (lensPosition < 0 || lensPosition > 1 || !std::isfinite(lensPosition)) {
+    return [RACSignal error:[NSError lt_errorWithCode:CAMErrorCodeFocusSettingUnsupported]];
+  } else {
+    return [RACSignal return:@(lensPosition)];
+  }
 }
 
 - (RACSignal *)setSingleExposurePoint:(CGPoint)exposurePoint {
@@ -97,11 +99,12 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (RACSignal *)setExposureCompensation:(float)value {
-  LTParameterAssert(value <= self.maxExposureCompensation,
-      @"Exposure compensation value above maximum");
-  LTParameterAssert(value >= self.minExposureCompensation,
-      @"Exposure compensation value below minimum");
-  return [RACSignal return:@(value)];
+  if (value < self.minExposureCompensation || value > self.maxExposureCompensation ||
+      !std::isfinite(value)) {
+    return [RACSignal error:[NSError lt_errorWithCode:CAMErrorCodeExposureSettingUnsupported]];
+  } else {
+    return [RACSignal return:@(value)];
+  }
 }
 
 - (RACSignal *)setSingleWhiteBalance {
@@ -121,15 +124,21 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (RACSignal *)setZoom:(CGFloat)zoomFactor {
-  LTParameterAssert(zoomFactor <= self.maxZoomFactor, @"Zoom factor above maximum");
-  LTParameterAssert(zoomFactor >= self.minZoomFactor, @"Zoom factor below minimum");
-  return [RACSignal return:@(zoomFactor)];
+  if (zoomFactor < self.minZoomFactor || zoomFactor > self.maxZoomFactor ||
+      !std::isfinite(zoomFactor)) {
+     return [RACSignal error:[NSError lt_errorWithCode:CAMErrorCodeExposureSettingUnsupported]];
+  } else {
+    return [RACSignal return:@(zoomFactor)];
+  }
 }
 
 - (RACSignal *)setZoom:(CGFloat)zoomFactor rate:(float __unused)rate {
-  LTParameterAssert(zoomFactor <= self.maxZoomFactor, @"Zoom factor above maximum");
-  LTParameterAssert(zoomFactor >= self.minZoomFactor, @"Zoom factor below minimum");
-  return [RACSignal return:@(zoomFactor)];
+  if (zoomFactor < self.minZoomFactor || zoomFactor > self.maxZoomFactor ||
+      !std::isfinite(zoomFactor)) {
+    return [RACSignal error:[NSError lt_errorWithCode:CAMErrorCodeExposureSettingUnsupported]];
+  } else {
+    return [RACSignal return:@(zoomFactor)];
+  }
 }
 
 - (RACSignal *)setFlashMode:(AVCaptureFlashMode __unused)flashMode {
