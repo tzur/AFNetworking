@@ -33,7 +33,7 @@ LTEnumImplement(NSUInteger, LTCompressionFormat,
     case LTCompressionFormatPNG:
       return @"png";
     case LTCompressionFormatTIFF:
-      return @"tiff";
+      return @"tif";
   }
 }
 
