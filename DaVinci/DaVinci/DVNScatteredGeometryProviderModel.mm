@@ -75,7 +75,7 @@ NS_ASSUME_NONNULL_BEGIN
   indices.reserve(originalQuads.size());
   
   for (NSUInteger index : values.indices()) {
-    NSUInteger count = [self.random randomUnsignedIntegerBelow:self.maximumCount];
+    NSUInteger count = [self.random randomUnsignedIntegerBelow:(uint)self.maximumCount];
     
     for (NSUInteger i = 0; i < count; ++i) {
       quads.push_back([self randomlyTransformedQuadFromQuad:originalQuads[index]]);
