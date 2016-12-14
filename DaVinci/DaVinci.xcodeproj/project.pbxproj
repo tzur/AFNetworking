@@ -81,6 +81,30 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
+		28D30BF41E0136B800DF0640 /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = com.apple.compilers.proxy.script;
+			filePatterns = "*.vsh";
+			fileType = pattern.proxy;
+			isEditable = 1;
+			outputFiles = (
+				"$(DERIVED_FILE_DIR)/$(arch)/LTShaderStorage+${INPUT_FILE_BASE}Vsh.m",
+				"$(DERIVED_FILE_DIR)/$(arch)/LTShaderStorage+${INPUT_FILE_BASE}Vsh.h",
+			);
+			script = "\"$PROJECT_DIR/../BuildTools/EncryptShader.py\" $SHADER_ENCRYPTION_KEY \"$INPUT_FILE_PATH\" \"$DERIVED_FILE_DIR/$arch\"";
+		};
+		28D30BF51E0136EB00DF0640 /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = com.apple.compilers.proxy.script;
+			filePatterns = "*.fsh";
+			fileType = pattern.proxy;
+			isEditable = 1;
+			outputFiles = (
+				"$(DERIVED_FILE_DIR)/$(arch)/LTShaderStorage+${INPUT_FILE_BASE}Fsh.m",
+				"$(DERIVED_FILE_DIR)/$(arch)/LTShaderStorage+${INPUT_FILE_BASE}Fsh.h",
+			);
+			script = "\"$PROJECT_DIR/../BuildTools/EncryptShader.py\" $SHADER_ENCRYPTION_KEY \"$INPUT_FILE_PATH\" \"$DERIVED_FILE_DIR/$arch\"";
+		};
 		50C90F3B1D3647530058A4F3 /* PBXBuildRule */ = {
 			isa = PBXBuildRule;
 			compilerSpec = com.apple.compilers.proxy.script;
@@ -1180,6 +1204,8 @@
 				250154641D1ACA1300420FA9 /* CopyFiles */,
 			);
 			buildRules = (
+				28D30BF51E0136EB00DF0640 /* PBXBuildRule */,
+				28D30BF41E0136B800DF0640 /* PBXBuildRule */,
 			);
 			dependencies = (
 				250154C81D1AED3E00420FA9 /* PBXTargetDependency */,
