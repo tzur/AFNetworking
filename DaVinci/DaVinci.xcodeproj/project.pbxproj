@@ -47,6 +47,14 @@
 		286C1C821DEC5A5200523F2E /* DVNPatternSamplingStageModelSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 286C1C811DEC5A5200523F2E /* DVNPatternSamplingStageModelSpec.mm */; };
 		286C1D6D1DED9A0C00523F2E /* DVNScatteredGeometryStageModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 286C1D6C1DED9A0C00523F2E /* DVNScatteredGeometryStageModel.mm */; };
 		286C1D901DED9A5E00523F2E /* DVNScatteredGeometryProviderModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 286C1D8F1DED9A5E00523F2E /* DVNScatteredGeometryProviderModel.mm */; };
+		28D30C801E0138F500DF0640 /* DVNMaskBrush.fsh in Resources */ = {isa = PBXBuildFile; fileRef = 28D30C7E1E0138F500DF0640 /* DVNMaskBrush.fsh */; };
+		28D30C811E0138F500DF0640 /* DVNMaskBrush.vsh in Resources */ = {isa = PBXBuildFile; fileRef = 28D30C7F1E0138F500DF0640 /* DVNMaskBrush.vsh */; };
+		28D30C821E01390200DF0640 /* DVNMaskBrush.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 28D30C7E1E0138F500DF0640 /* DVNMaskBrush.fsh */; };
+		28D30C831E01390200DF0640 /* DVNMaskBrush.vsh in Sources */ = {isa = PBXBuildFile; fileRef = 28D30C7F1E0138F500DF0640 /* DVNMaskBrush.vsh */; };
+		28D30C861E01393800DF0640 /* DVNMaskBrushConfigurationProvider.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28D30C851E01393800DF0640 /* DVNMaskBrushConfigurationProvider.mm */; };
+		28D30C8A1E0139A100DF0640 /* DVNQuadTransformAttributeProvider.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28D30C891E0139A100DF0640 /* DVNQuadTransformAttributeProvider.mm */; };
+		28D30C8D1E0139D100DF0640 /* DVNMaskBrushConfigurationProviderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28D30C8C1E0139D100DF0640 /* DVNMaskBrushConfigurationProviderSpec.mm */; };
+		28D30C8F1E0139E800DF0640 /* DVNQuadTransformAttributeProviderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28D30C8E1E0139E800DF0640 /* DVNQuadTransformAttributeProviderSpec.mm */; };
 		28FA4D621DF05F7D00EE0B99 /* DVNScatteredGeometryProviderModelSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28FA4D611DF05F7D00EE0B99 /* DVNScatteredGeometryProviderModelSpec.mm */; };
 		28FA4D651DF4586000EE0B99 /* DVNTestGeometryProvider.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28FA4D641DF4586000EE0B99 /* DVNTestGeometryProvider.mm */; };
 		28FA4D671DF4757C00EE0B99 /* DVNGeometryStageModelSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28FA4D661DF4757C00EE0B99 /* DVNGeometryStageModelSpec.mm */; };
@@ -81,6 +89,30 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
+		28D30BF41E0136B800DF0640 /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = com.apple.compilers.proxy.script;
+			filePatterns = "*.vsh";
+			fileType = pattern.proxy;
+			isEditable = 1;
+			outputFiles = (
+				"$(DERIVED_FILE_DIR)/$(arch)/LTShaderStorage+${INPUT_FILE_BASE}Vsh.m",
+				"$(DERIVED_FILE_DIR)/$(arch)/LTShaderStorage+${INPUT_FILE_BASE}Vsh.h",
+			);
+			script = "\"$PROJECT_DIR/../BuildTools/EncryptShader.py\" $SHADER_ENCRYPTION_KEY \"$INPUT_FILE_PATH\" \"$DERIVED_FILE_DIR/$arch\"";
+		};
+		28D30BF51E0136EB00DF0640 /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = com.apple.compilers.proxy.script;
+			filePatterns = "*.fsh";
+			fileType = pattern.proxy;
+			isEditable = 1;
+			outputFiles = (
+				"$(DERIVED_FILE_DIR)/$(arch)/LTShaderStorage+${INPUT_FILE_BASE}Fsh.m",
+				"$(DERIVED_FILE_DIR)/$(arch)/LTShaderStorage+${INPUT_FILE_BASE}Fsh.h",
+			);
+			script = "\"$PROJECT_DIR/../BuildTools/EncryptShader.py\" $SHADER_ENCRYPTION_KEY \"$INPUT_FILE_PATH\" \"$DERIVED_FILE_DIR/$arch\"";
+		};
 		50C90F3B1D3647530058A4F3 /* PBXBuildRule */ = {
 			isa = PBXBuildRule;
 			compilerSpec = com.apple.compilers.proxy.script;
@@ -439,7 +471,6 @@
 		28662D5E1DF57D970051B9DA /* DVNSplineRenderingExamples.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNSplineRenderingExamples.mm; sourceTree = "<group>"; };
 		28662D601DF57DD60051B9DA /* DVNPainter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DVNPainter.h; sourceTree = "<group>"; };
 		28662D611DF57DD60051B9DA /* DVNPainter.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNPainter.mm; sourceTree = "<group>"; };
-		286C1C7C1DEC5A0F00523F2E /* DVNPipelineStagesMutableModels.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DVNPipelineStagesMutableModels.h; sourceTree = SOURCE_ROOT; };
 		286C1C7D1DEC5A3000523F2E /* DVNPatternSamplingStageModel.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNPatternSamplingStageModel.mm; sourceTree = "<group>"; };
 		286C1C7E1DEC5A3000523F2E /* DVNPatternSamplingStageModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DVNPatternSamplingStageModel.h; sourceTree = "<group>"; };
 		286C1C811DEC5A5200523F2E /* DVNPatternSamplingStageModelSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNPatternSamplingStageModelSpec.mm; sourceTree = "<group>"; };
@@ -447,6 +478,16 @@
 		286C1D6C1DED9A0C00523F2E /* DVNScatteredGeometryStageModel.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNScatteredGeometryStageModel.mm; sourceTree = "<group>"; };
 		286C1D8E1DED9A5E00523F2E /* DVNScatteredGeometryProviderModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DVNScatteredGeometryProviderModel.h; sourceTree = "<group>"; };
 		286C1D8F1DED9A5E00523F2E /* DVNScatteredGeometryProviderModel.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNScatteredGeometryProviderModel.mm; sourceTree = "<group>"; };
+		28D30C7E1E0138F500DF0640 /* DVNMaskBrush.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = DVNMaskBrush.fsh; sourceTree = "<group>"; };
+		28D30C7F1E0138F500DF0640 /* DVNMaskBrush.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = DVNMaskBrush.vsh; sourceTree = "<group>"; };
+		28D30C841E01393800DF0640 /* DVNMaskBrushConfigurationProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DVNMaskBrushConfigurationProvider.h; sourceTree = "<group>"; };
+		28D30C851E01393800DF0640 /* DVNMaskBrushConfigurationProvider.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNMaskBrushConfigurationProvider.mm; sourceTree = "<group>"; };
+		28D30C871E01396600DF0640 /* DVNMaskBrushParametersProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DVNMaskBrushParametersProvider.h; sourceTree = "<group>"; };
+		28D30C881E0139A100DF0640 /* DVNQuadTransformAttributeProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DVNQuadTransformAttributeProvider.h; sourceTree = "<group>"; };
+		28D30C891E0139A100DF0640 /* DVNQuadTransformAttributeProvider.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNQuadTransformAttributeProvider.mm; sourceTree = "<group>"; };
+		28D30C8C1E0139D100DF0640 /* DVNMaskBrushConfigurationProviderSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNMaskBrushConfigurationProviderSpec.mm; sourceTree = "<group>"; };
+		28D30C8E1E0139E800DF0640 /* DVNQuadTransformAttributeProviderSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNQuadTransformAttributeProviderSpec.mm; sourceTree = "<group>"; };
+		28D30C901E013A8C00DF0640 /* DVNPipelineStagesMutableModels.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DVNPipelineStagesMutableModels.h; sourceTree = "<group>"; };
 		28FA4D611DF05F7D00EE0B99 /* DVNScatteredGeometryProviderModelSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNScatteredGeometryProviderModelSpec.mm; sourceTree = "<group>"; };
 		28FA4D631DF4586000EE0B99 /* DVNTestGeometryProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DVNTestGeometryProvider.h; sourceTree = "<group>"; };
 		28FA4D641DF4586000EE0B99 /* DVNTestGeometryProvider.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNTestGeometryProvider.mm; sourceTree = "<group>"; };
@@ -702,6 +743,8 @@
 			children = (
 				254C07B91D3F4D72009ECEEB /* DVNQuadAttributeProvider.h */,
 				254C07BA1D3F4D72009ECEEB /* DVNQuadAttributeProvider.mm */,
+				28D30C881E0139A100DF0640 /* DVNQuadTransformAttributeProvider.h */,
+				28D30C891E0139A100DF0640 /* DVNQuadTransformAttributeProvider.mm */,
 			);
 			name = Providers;
 			sourceTree = "<group>";
@@ -719,6 +762,7 @@
 			isa = PBXGroup;
 			children = (
 				254C07BE1D3F533B009ECEEB /* DVNQuadAttributeProviderSpec.mm */,
+				28D30C8E1E0139E800DF0640 /* DVNQuadTransformAttributeProviderSpec.mm */,
 			);
 			name = Providers;
 			sourceTree = "<group>";
@@ -768,6 +812,8 @@
 			isa = PBXGroup;
 			children = (
 				28662CF31DF57CBB0051B9DA /* Painter */,
+				28D30C7C1E01385700DF0640 /* Providers */,
+				28D30C7D1E0138E100DF0640 /* Shaders */,
 			);
 			name = "Brush Infrastrcuture";
 			sourceTree = "<group>";
@@ -785,6 +831,7 @@
 			isa = PBXGroup;
 			children = (
 				28662D5A1DF57D740051B9DA /* Painter */,
+				28D30C8B1E0139B400DF0640 /* Providers */,
 			);
 			name = "Brush Infrastructure";
 			sourceTree = "<group>";
@@ -800,9 +847,9 @@
 		286C1C5B1DEC59F500523F2E /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				286C1C7C1DEC5A0F00523F2E /* DVNPipelineStagesMutableModels.h */,
 				286C1C7E1DEC5A3000523F2E /* DVNPatternSamplingStageModel.h */,
 				286C1C7D1DEC5A3000523F2E /* DVNPatternSamplingStageModel.mm */,
+				28D30C901E013A8C00DF0640 /* DVNPipelineStagesMutableModels.h */,
 				286C1D6B1DED9A0C00523F2E /* DVNScatteredGeometryStageModel.h */,
 				286C1D6C1DED9A0C00523F2E /* DVNScatteredGeometryStageModel.mm */,
 			);
@@ -816,6 +863,33 @@
 				28FA4D661DF4757C00EE0B99 /* DVNGeometryStageModelSpec.mm */,
 			);
 			name = Models;
+			sourceTree = "<group>";
+		};
+		28D30C7C1E01385700DF0640 /* Providers */ = {
+			isa = PBXGroup;
+			children = (
+				28D30C841E01393800DF0640 /* DVNMaskBrushConfigurationProvider.h */,
+				28D30C851E01393800DF0640 /* DVNMaskBrushConfigurationProvider.mm */,
+				28D30C871E01396600DF0640 /* DVNMaskBrushParametersProvider.h */,
+			);
+			name = Providers;
+			sourceTree = "<group>";
+		};
+		28D30C7D1E0138E100DF0640 /* Shaders */ = {
+			isa = PBXGroup;
+			children = (
+				28D30C7E1E0138F500DF0640 /* DVNMaskBrush.fsh */,
+				28D30C7F1E0138F500DF0640 /* DVNMaskBrush.vsh */,
+			);
+			name = Shaders;
+			sourceTree = "<group>";
+		};
+		28D30C8B1E0139B400DF0640 /* Providers */ = {
+			isa = PBXGroup;
+			children = (
+				28D30C8C1E0139D100DF0640 /* DVNMaskBrushConfigurationProviderSpec.mm */,
+			);
+			name = Providers;
 			sourceTree = "<group>";
 		};
 		500F77CA1D2D35C600023343 /* API */ = {
@@ -1178,8 +1252,11 @@
 				250154621D1ACA1300420FA9 /* Sources */,
 				250154631D1ACA1300420FA9 /* Frameworks */,
 				250154641D1ACA1300420FA9 /* CopyFiles */,
+				28D30C7B1E0137D100DF0640 /* Copy Shader Storage Headers */,
 			);
 			buildRules = (
+				28D30BF51E0136EB00DF0640 /* PBXBuildRule */,
+				28D30BF41E0136B800DF0640 /* PBXBuildRule */,
 			);
 			dependencies = (
 				250154C81D1AED3E00420FA9 /* PBXTargetDependency */,
@@ -1527,17 +1604,39 @@
 			files = (
 				285A79081DFD69CD00095BF4 /* DVNBrushTipsRound16Hardness75.png in Resources */,
 				285A79091DFD69CD00095BF4 /* DVNBrushTipsRound32Hardness75.png in Resources */,
+				28D30C811E0138F500DF0640 /* DVNMaskBrush.vsh in Resources */,
 				285A790A1DFD69CD00095BF4 /* DVNBrushTipsRound64Hardness75.png in Resources */,
+				28D30C801E0138F500DF0640 /* DVNMaskBrush.fsh in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		28D30C7B1E0137D100DF0640 /* Copy Shader Storage Headers */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Shader Storage Headers";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "rsync -t \"$DERIVED_FILE_DIR\"/\"$arch\"/LTShaderStorage*.h \"$BUILT_PRODUCTS_DIR\"/include";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		250154621D1ACA1300420FA9 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				28D30C821E01390200DF0640 /* DVNMaskBrush.fsh in Sources */,
+				28D30C861E01393800DF0640 /* DVNMaskBrushConfigurationProvider.mm in Sources */,
+				28D30C831E01390200DF0640 /* DVNMaskBrush.vsh in Sources */,
 				28662D621DF57DD60051B9DA /* DVNPainter.mm in Sources */,
 				286C1D6D1DED9A0C00523F2E /* DVNScatteredGeometryStageModel.mm in Sources */,
 				500A3AE01D2D348700043E18 /* DVNRandomTexCoordProvider.mm in Sources */,
@@ -1557,6 +1656,7 @@
 				50163CCB1D3381FE00590860 /* DVNAttributeStageConfiguration.mm in Sources */,
 				507FEFA21D3A30CA002CB28E /* DVNGeometryTransformer.mm in Sources */,
 				254C07BB1D3F4D72009ECEEB /* DVNQuadAttributeProvider.mm in Sources */,
+				28D30C8A1E0139A100DF0640 /* DVNQuadTransformAttributeProvider.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1570,6 +1670,7 @@
 				5091E88B1D36484C00B14481 /* DVNTestShader.vsh in Sources */,
 				50073F8E1D363179009F7F48 /* EXPMatchers+equalMat.mm in Sources */,
 				500F77E51D2D4EB600023343 /* DVNTexCoordProviderExamples.mm in Sources */,
+				28D30C8D1E0139D100DF0640 /* DVNMaskBrushConfigurationProviderSpec.mm in Sources */,
 				500F77E71D2D522700023343 /* DVNCanonicalTexCoordProviderSpec.mm in Sources */,
 				25AD677C1D356A580092B3E4 /* DVNTestPipelineConfiguration.mm in Sources */,
 				286C1C821DEC5A5200523F2E /* DVNPatternSamplingStageModelSpec.mm in Sources */,
@@ -1588,6 +1689,7 @@
 				25AD67551D35527F0092B3E4 /* LTEqualityExamples.mm in Sources */,
 				50574AD21D2D60490076C60D /* LTSpectaOpenGLContextHook.mm in Sources */,
 				28662D5F1DF57D970051B9DA /* DVNSplineRenderingExamples.mm in Sources */,
+				28D30C8F1E0139E800DF0640 /* DVNQuadTransformAttributeProviderSpec.mm in Sources */,
 				503C579E1D3685A400C20B38 /* DVNSplineRenderModelSpec.mm in Sources */,
 				254C07BF1D3F533B009ECEEB /* DVNQuadAttributeProviderSpec.mm in Sources */,
 				257344F71D3792A300E852B2 /* DVNSquareProviderSpec.mm in Sources */,

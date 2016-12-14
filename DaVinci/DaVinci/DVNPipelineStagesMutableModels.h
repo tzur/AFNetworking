@@ -6,8 +6,10 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@protocol LTContinuousSamplerModel, DVNGeometryProviderModel, DVNTextureMappingStageConfiguration,
-    DVNAttributeStageConfiguration, DVNRenderStageConfiguration;
+@protocol LTContinuousSamplerModel, DVNGeometryProviderModel;
+
+@class DVNTextureMappingStageConfiguration, DVNAttributeStageConfiguration,
+    DVNRenderStageConfiguration;
 
 /// Protocol to be implemented by mutable serializable models that provide
 /// \c id<LTContinuousSamplerModel> objects for the sampling stage of the \c DVNPipeline.
@@ -33,7 +35,7 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol DVNTextureMappingStageModel <LTJSONSerializing, MTLJSONSerializing>
 
 /// Returns a texture mapping stage configuration derived from the current state of this instance.
-- (id<DVNTextureMappingStageConfiguration>)textureMappingStageConfiguration;
+- (DVNTextureMappingStageConfiguration *)textureMappingStageConfiguration;
 
 @end
 
@@ -42,7 +44,7 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol DVNAttributeStageModel <LTJSONSerializing, MTLJSONSerializing>
 
 /// Returns a attribute stage configuration derived from the current state of this instance.
-- (id<DVNAttributeStageConfiguration>)attributeStageConfiguration;
+- (DVNAttributeStageConfiguration *)attributeStageConfiguration;
 
 @end
 
@@ -51,7 +53,7 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol DVNRenderStageModel <LTJSONSerializing, MTLJSONSerializing>
 
 /// Returns a render stage configuration derived from the current state of this instance.
-- (id<DVNRenderStageConfiguration>)renderStageConfiguration;
+- (DVNRenderStageConfiguration *)renderStageConfiguration;
 
 @end
 
