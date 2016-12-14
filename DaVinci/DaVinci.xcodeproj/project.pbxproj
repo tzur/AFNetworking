@@ -1202,6 +1202,7 @@
 				250154621D1ACA1300420FA9 /* Sources */,
 				250154631D1ACA1300420FA9 /* Frameworks */,
 				250154641D1ACA1300420FA9 /* CopyFiles */,
+				28D30C7B1E0137D100DF0640 /* Copy Shader Storage Headers */,
 			);
 			buildRules = (
 				28D30BF51E0136EB00DF0640 /* PBXBuildRule */,
@@ -1558,6 +1559,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		28D30C7B1E0137D100DF0640 /* Copy Shader Storage Headers */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Shader Storage Headers";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "rsync -t \"$DERIVED_FILE_DIR\"/\"$arch\"/LTShaderStorage*.h \"$BUILT_PRODUCTS_DIR\"/include";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		250154621D1ACA1300420FA9 /* Sources */ = {
