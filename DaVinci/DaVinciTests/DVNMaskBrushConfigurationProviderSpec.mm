@@ -8,6 +8,7 @@
 #import <LTEngine/LTTexture+Factory.h>
 
 #import "DVNAttributeStageConfiguration.h"
+#import "DVNBrushTipsProvider.h"
 #import "DVNCanonicalTexCoordProvider.h"
 #import "DVNMaskBrushParametersProvider.h"
 #import "DVNPatternSamplingStageModel.h"
@@ -44,7 +45,9 @@
 SpecBegin(DVNMaskBrushConfigurationProvider)
 
 __block DVNFakeMaskBrushParametersProvider *parametersProvider;
+__block DVNBrushTipsProvider *brushTipsProvider;
 __block DVNMaskBrushConfigurationProvider *provider;
+__block LTTexture *texture;
 
 beforeEach(^{
   parametersProvider = [[DVNFakeMaskBrushParametersProvider alloc] init];
@@ -57,12 +60,20 @@ beforeEach(^{
   parametersProvider.channel = DVNMaskBrushChannelR;
   parametersProvider.edgeAvoidanceGuideTexture = [LTTexture textureWithImage:cv::Mat4b(10, 20)];
   
-  provider = [[DVNMaskBrushConfigurationProvider alloc] initWithProvider:parametersProvider];
+  texture = OCMClassMock([LTTexture class]);
+  brushTipsProvider = OCMClassMock([DVNBrushTipsProvider class]);
+  OCMStub([brushTipsProvider roundTipWithDimension:kMaskBrushDimension
+                                          hardness:parametersProvider.hardness]).andReturn(texture);
+  
+  provider = [[DVNMaskBrushConfigurationProvider alloc]
+              initWithParametersProvider:parametersProvider brushTipsProvider:brushTipsProvider];
 });
 
 afterEach(^{
   parametersProvider = nil;
   provider = nil;
+  texture = nil;
+  brushTipsProvider = nil;
 });
 
 context(@"initialization", ^{
@@ -126,8 +137,7 @@ context(@"provider", ^{
   it(@"should return a configuration with correct DVNTextureMappingStageConfiguration", ^{
     DVNTextureMappingStageConfiguration *textureMappingStageConfiguration =
         configuration.textureStageConfiguration;
-    expect($(textureMappingStageConfiguration.texture.image))
-        .to.equalMat($([LTTexture byteRGBATextureWithSize:CGSizeMakeUniform(1)].image));
+    expect(textureMappingStageConfiguration.texture).to.equal(texture);
     expect(textureMappingStageConfiguration.model)
         .to.beKindOf([DVNCanonicalTexCoordProviderModel class]);
   });
