@@ -3,6 +3,8 @@
 
 #import "LTVector.h"
 
+#import "UIColor+Vector.h"
+
 SpecBegin(LTVector)
 
 static const CGFloat kEpsilon = 1e-5;
@@ -487,6 +489,42 @@ context(@"LTVector3", ^{
     it(@"should convert from rgb to hsv", ^{
       LTVector3 expected = LTVector3(0, 1, 1);
       expect((LTVector3(1, 0, 0).rgbToHsv() - expected).length()).to.beCloseToWithin(0, 1e-4);
+    });
+
+    it(@"should convert from rgb to hsv when max channel value is red", ^{
+      LTVector3 rgb(0.97, 0.4, 0.5);
+      LTVector3 expected = [[UIColor lt_colorWithLTVector:LTVector4(rgb, 1)] lt_ltVectorHSVA].rgb();
+      expect((rgb.rgbToHsv() - expected).length()).to.beCloseToWithin(0, 1e-4);
+    });
+
+    it(@"should convert from rgb to hsv when max channel value is green", ^{
+      LTVector3 rgb(0.97, 0.99, 0.5);
+      LTVector3 expected = [[UIColor lt_colorWithLTVector:LTVector4(rgb, 1)] lt_ltVectorHSVA].rgb();
+      expect((rgb.rgbToHsv() - expected).length()).to.beCloseToWithin(0, 1e-4);
+    });
+
+    it(@"should convert from rgb to hsv when max channel value is blue", ^{
+      LTVector3 rgb(0.97, 0.4, 0.985);
+      LTVector3 expected = [[UIColor lt_colorWithLTVector:LTVector4(rgb, 1)] lt_ltVectorHSVA].rgb();
+      expect((rgb.rgbToHsv() - expected).length()).to.beCloseToWithin(0, 1e-4);
+    });
+
+    it(@"should convert from rgb to hsv with almost gray color", ^{
+      LTVector3 rgb(0.860001, 0.8600001, 0.8600002);
+      LTVector3 expected = [[UIColor lt_colorWithLTVector:LTVector4(rgb, 1)] lt_ltVectorHSVA].rgb();
+      expect((rgb.rgbToHsv() - expected).length()).to.beCloseToWithin(0, 1e-4);
+    });
+
+    it(@"should convert from rgb to hsv with gray color", ^{
+      LTVector3 rgb(0.86, 0.86, 0.86);
+      LTVector3 expected = [[UIColor lt_colorWithLTVector:LTVector4(rgb, 1)] lt_ltVectorHSVA].rgb();
+      expect((rgb.rgbToHsv() - expected).length()).to.beCloseToWithin(0, 1e-4);
+    });
+
+    it(@"should convert from rgb to hsv with black color", ^{
+      LTVector3 rgb(0, 0, 0);
+      LTVector3 expected = [[UIColor lt_colorWithLTVector:LTVector4(rgb, 1)] lt_ltVectorHSVA].rgb();
+      expect((rgb.rgbToHsv() - expected).length()).to.beCloseToWithin(0, 1e-4);
     });
 
     it(@"should convert from hsv to rgb", ^{
