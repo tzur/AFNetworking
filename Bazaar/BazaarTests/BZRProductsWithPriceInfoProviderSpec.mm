@@ -226,36 +226,64 @@ context(@"getting product list", ^{
   });
 
   context(@"setting full price for discount product", ^{
-    it(@"should set full price correctly", ^{
-      BZRProduct *bazaarProduct = BZRProductWithIdentifier(@"foo");
-      bazaarProduct =
-      [bazaarProduct modelByOverridingProperty:@keypath(bazaarProduct, discountedProducts)
-                                     withValue:@[@"bar"]];
-      BZRProduct *discountProduct = BZRProductWithIdentifier(@"bar");
-      NSArray<BZRProduct *> *products = @[bazaarProduct, discountProduct];
-      OCMStub([underlyingProvider fetchProductList]).andReturn([RACSignal return:products]);
+    __block BZRProduct *fullPriceProduct;
+    __block SKProduct *fullPriceUnderlyingProduct;
+    __block NSDecimalNumber *fullPrice;
+    __block BZRProduct *discountedProduct;
+    __block SKProduct *discountedUnderlyingProduct;
+    __block NSNumber *discountedPrice;
+    __block SKProductsResponse *productsResponse;
+    __block NSArray<BZRProduct *> *productList;
 
-      NSDecimalNumber *price = [NSDecimalNumber decimalNumberWithString:@"1337.1337"];
-      SKProduct *product = OCMClassMock([SKProduct class]);
-      OCMStub([product productIdentifier]).andReturn(@"foo");
-      OCMStub([product price]).andReturn(price);
-      OCMStub([product priceLocale]).andReturn([NSLocale currentLocale]);
+    beforeEach(^{
+      fullPriceProduct = BZRProductWithIdentifier(@"foo");
+      fullPriceProduct = [fullPriceProduct
+          modelByOverridingProperty:@keypath(fullPriceProduct, discountedProducts)
+          withValue:@[@"bar"]];
+      fullPrice = [NSDecimalNumber decimalNumberWithString:@"1337.1337"];
+      fullPriceUnderlyingProduct = OCMClassMock([SKProduct class]);
+      OCMStub([fullPriceUnderlyingProduct productIdentifier]).andReturn(@"foo");
+      OCMStub([fullPriceUnderlyingProduct price]).andReturn(fullPrice);
+      OCMStub([fullPriceUnderlyingProduct priceLocale]).andReturn([NSLocale currentLocale]);
 
-      SKProduct *discountSKProduct = OCMClassMock([SKProduct class]);
-      OCMStub([discountSKProduct productIdentifier]).andReturn(@"bar");
-      OCMStub([discountSKProduct price]).andReturn([NSDecimalNumber decimalNumberWithString:@"13"]);
-      OCMStub([discountSKProduct priceLocale]).andReturn([NSLocale currentLocale]);
+      discountedPrice = [NSDecimalNumber decimalNumberWithString:@"13"];
+      discountedProduct = BZRProductWithIdentifier(@"bar");
+      discountedProduct = [discountedProduct
+          modelByOverridingProperty:@keypath(discountedProduct, fullPriceProductIdentifier)
+          withValue:fullPriceProduct.identifier];
+      discountedUnderlyingProduct = OCMClassMock([SKProduct class]);
+      OCMStub([discountedUnderlyingProduct productIdentifier]).andReturn(@"bar");
+      OCMStub([discountedUnderlyingProduct price]).andReturn(discountedPrice);
+      OCMStub([discountedUnderlyingProduct priceLocale]).andReturn([NSLocale currentLocale]);
 
-      SKProductsResponse *response =
-      BZRProductsResponseWithSKProducts(@[product, discountSKProduct]);
+      productList = @[fullPriceProduct, discountedProduct];
+      OCMStub([underlyingProvider fetchProductList]).andReturn([RACSignal return:productList]);
+
+      productsResponse = BZRProductsResponseWithSKProducts(@[
+        fullPriceUnderlyingProduct,
+        discountedUnderlyingProduct
+      ]);
       OCMStub([storeKitFacade fetchMetadataForProductsWithIdentifiers:OCMOCK_ANY])
-      .andReturn([RACSignal return:response]);
+          .andReturn([RACSignal return:productsResponse]);
+    });
 
+    it(@"should set full price correctly", ^{
       LLSignalTestRecorder *recorder = [[productsProvider fetchProductList] testRecorder];
+
       expect(recorder).will.matchValue(0, ^BOOL(NSSet<BZRProduct *> *productList) {
         return [[productList.allObjects lt_filter:^BOOL(BZRProduct *product) {
           return [product.identifier isEqualToString:@"bar"];
-        }].firstObject.priceInfo.fullPrice isEqualToNumber:price];
+        }].firstObject.priceInfo.fullPrice isEqualToNumber:fullPrice];
+      });
+    });
+
+    it(@"should set underlying product correctly", ^{
+      LLSignalTestRecorder *recorder = [[productsProvider fetchProductList] testRecorder];
+
+      expect(recorder).will.matchValue(0, ^BOOL(NSSet<BZRProduct *> *productList) {
+        return [productList.allObjects lt_filter:^BOOL(BZRProduct *product) {
+          return [product.identifier isEqualToString:@"bar"];
+        }].firstObject.bzr_underlyingProduct == discountedUnderlyingProduct;
       });
     });
   });

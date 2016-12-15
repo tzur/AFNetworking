@@ -49,6 +49,10 @@ LTEnumDeclare(NSUInteger, BZRProductType,
 /// discounts.
 @property (readonly, nonatomic, nullable) NSArray<NSString *> *discountedProducts;
 
+/// Identifier of the product that this product is a discount variant of, or \c nil if this product
+/// is not a discount variant.
+@property (readonly, nonatomic, nullable) NSString *fullPriceProductIdentifier;
+
 @end
 
 NS_ASSUME_NONNULL_END

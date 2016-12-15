@@ -17,8 +17,6 @@
 #import "BZRProductContentMultiFetcher.h"
 #import "BZRProductContentProvider.h"
 #import "BZRProductsProviderFactory.h"
-#import "BZRProductsWithDiscountsProvider.h"
-#import "BZRProductsWithVariantsProvider.h"
 #import "BZRReceiptValidationParametersProvider.h"
 #import "BZRReceiptValidationStatusProvider.h"
 #import "BZRStoreKitFacadeFactory.h"

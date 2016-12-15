@@ -40,9 +40,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (BZRProductList *)discountedProductsForProduct:(BZRProduct *)product {
   return [product.discountedProducts lt_map:^BZRProduct *(NSString *discountIdentifier) {
-    return [[product
+    return [[[product
         modelByOverridingProperty:@keypath(product, identifier) withValue:discountIdentifier]
-        modelByOverridingProperty:@keypath(product, discountedProducts) withValue:nil];
+        modelByOverridingProperty:@keypath(product, discountedProducts) withValue:nil]
+        modelByOverridingProperty:@keypath(product, fullPriceProductIdentifier)
+        withValue:product.identifier];
   }] ?: @[];
 }
 
