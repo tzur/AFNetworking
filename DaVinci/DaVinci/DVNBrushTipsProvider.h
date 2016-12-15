@@ -9,7 +9,7 @@ NS_ASSUME_NONNULL_BEGIN
 extern const CGFloat kRoundTipGaussianSigma;
 
 /// Object that provides brush tip textures.
-@interface DVNBrushTips : NSObject
+@interface DVNBrushTipsProvider : NSObject
 
 /// Returns a single channel square texture with the given \c dimension, depicting a round brush tip
 /// with the given \c hardness. \c dimension specify the size of the returned squared texture, and
@@ -18,7 +18,7 @@ extern const CGFloat kRoundTipGaussianSigma;
 /// the texture will be constructed from a gaussian function with mean <tt>(dimension / 2,
 /// dimension / 2)</tt> and sigma \c kGaussianSigma, and if set to \c 1, texture will be constructed
 /// from circumscribing square with dimension that is equal to the given \c dimension.
-+ (LTGLTexture *)roundTipWithDimension:(NSUInteger)dimension hardness:(CGFloat)hardness;
+- (LTGLTexture *)roundTipWithDimension:(NSUInteger)dimension hardness:(CGFloat)hardness;
 
 @end
 

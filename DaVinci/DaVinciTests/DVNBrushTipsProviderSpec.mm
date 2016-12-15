@@ -1,38 +1,48 @@
 // Copyright (c) 2016 Lightricks. All rights reserved.
 // Created by Amit Yitzhack.
 
-#import "DVNBrushTips.h"
+#import "DVNBrushTipsProvider.h"
 
 #import <LTEngine/LTOpenCVExtensions.h>
 #import <LTEngine/LTTexture+Factory.h>
 #import <LTEngine/LTGLTexture.h>
 
-SpecBegin(DVNBrushTips)
+SpecBegin(DVNBrushTipsProvider)
+
+__block DVNBrushTipsProvider *provider;
+
+beforeEach(^{
+  provider = [[DVNBrushTipsProvider alloc] init];
+});
+
+afterEach(^{
+  provider = nil;
+});
 
 context(@"round tip", ^{
   context(@"invalid arguments", ^{
     it(@"should raise when attempting to call with dimension that is not power of 2", ^{
       expect(^{
-        LTGLTexture __unused *tip = [DVNBrushTips roundTipWithDimension:13 hardness:0];
+        LTGLTexture __unused *tip = [provider roundTipWithDimension:13 hardness:0];
       }).to.raise(NSInvalidArgumentException);
     });
     
     it(@"should raise when attempting to call with dimension that is less than 16", ^{
       expect(^{
-        LTGLTexture __unused *tip = [DVNBrushTips roundTipWithDimension:8 hardness:0];
+        LTGLTexture __unused *tip = [provider roundTipWithDimension:8 hardness:0];
       }).to.raise(NSInvalidArgumentException);
     });
     
     it(@"should raise when attempting to call with hardness that is out of [0, 1] range", ^{
       expect(^{
-        LTGLTexture __unused *tip = [DVNBrushTips roundTipWithDimension:16 hardness:1.5];
+        LTGLTexture __unused *tip = [provider roundTipWithDimension:16 hardness:1.5];
       }).to.raise(NSInvalidArgumentException);
     });
   });
   
   it(@"should return correct brush tip mat", ^{
     NSUInteger dimension = 64;
-    LTGLTexture *texture = [DVNBrushTips roundTipWithDimension:dimension hardness:0.75];
+    LTGLTexture *texture = [provider roundTipWithDimension:dimension hardness:0.75];
     expect(texture.pixelFormat).to.equal($(LTGLPixelFormatR16Float));
     
     for (NSUInteger i = 0; i < 3; ++i) {

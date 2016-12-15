@@ -1,7 +1,7 @@
 // Copyright (c) 2016 Lightricks. All rights reserved.
 // Created by Amit Yitzhack.
 
-#import "DVNBrushTips.h"
+#import "DVNBrushTipsProvider.h"
 
 #import <LTEngine/LTGLTexture.h>
 #import <LTEngine/LTMathUtils.h>
@@ -10,11 +10,11 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@implementation DVNBrushTips
+@implementation DVNBrushTipsProvider
 
 const CGFloat kRoundTipGaussianSigma = 0.3;
 
-+ (LTGLTexture *)roundTipWithDimension:(NSUInteger)dimension hardness:(CGFloat)hardness {
+- (LTGLTexture *)roundTipWithDimension:(NSUInteger)dimension hardness:(CGFloat)hardness {
   LTParameterAssert(LTIsPowerOfTwo(dimension), @"Provided dimension must be power of two, got: %lu",
                     dimension);
   LTParameterAssert(dimension >= 16, @"Provided dimension must greater or equal to 16, got: %lu",
