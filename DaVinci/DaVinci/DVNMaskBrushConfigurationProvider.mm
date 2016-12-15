@@ -6,6 +6,7 @@
 #import <LTEngine/LTTexture+Factory.h>
 
 #import "DVNAttributeStageConfiguration.h"
+#import "DVNBrushTipsProvider.h"
 #import "DVNCanonicalTexCoordProvider.h"
 #import "DVNMaskBrushParametersProvider.h"
 #import "DVNPatternSamplingStageModel.h"
@@ -19,10 +20,15 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+const CGFloat kMaskBrushDimension = 256;
+
 @interface DVNMaskBrushConfigurationProvider ()
 
 /// Provider of mask brush parameters, used to create pipeline configurations.
-@property (weak, nonatomic) id<DVNMaskBrushParametersProvider> provider;
+@property (weak, nonatomic) id<DVNMaskBrushParametersProvider> parametersProvider;
+
+/// Provider of brush tips, used to create mask brush tip textures.
+@property (readonly, nonatomic) DVNBrushTipsProvider *brushTipsProvider;
 
 /// Texture mapping stage configuration of the pipeline configurations returned by this instance.
 @property (readonly, nonatomic)
@@ -42,11 +48,14 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark Initialization
 #pragma mark -
 
-- (instancetype)initWithProvider:(id<DVNMaskBrushParametersProvider>)provider {
-  LTParameterAssert(provider);
+- (instancetype)initWithParametersProvider:(id<DVNMaskBrushParametersProvider>)parametersProvider
+                         brushTipsProvider:(DVNBrushTipsProvider *)brushTipsProvider {
+  LTParameterAssert(parametersProvider);
+  LTParameterAssert(brushTipsProvider);
   
   if (self = [super init]) {
-    _provider = provider;
+    _parametersProvider = parametersProvider;
+    _brushTipsProvider = brushTipsProvider;
     _samplingStageModel = [self createSamplingStageModel];
     _textureMappingStageConfiguration = [self createTextureMappingStageConfiguration];
     _attributeStageConfiguration = [self createAttributeStageConfiguration];
@@ -62,10 +71,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (DVNTextureMappingStageConfiguration *)createTextureMappingStageConfiguration {
   DVNCanonicalTexCoordProviderModel *model = [[DVNCanonicalTexCoordProviderModel alloc] init];
-  
-  // Provide dummy texture due to the fact that the \c DVNMaskBrush fragment shader computes the
-  // necessary Gaussian by itself.
-  LTTexture *texture = [LTTexture byteRGBATextureWithSize:CGSizeMakeUniform(1)];
+  LTTexture *texture = (LTTexture *)[self.brushTipsProvider
+                                     roundTipWithDimension:kMaskBrushDimension
+                                     hardness:self.parametersProvider.hardness];
   return [[DVNTextureMappingStageConfiguration alloc] initWithTexCoordProviderModel:model
                                                                             texture:texture];
 }
@@ -80,7 +88,7 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 - (DVNPipelineConfiguration *)configuration {
-  CGFloat spacing = self.provider.spacing;
+  CGFloat spacing = self.parametersProvider.spacing;
   self.samplingStageModel.spacing = spacing;
   self.samplingStageModel.sequenceDistance = spacing;
   
@@ -93,19 +101,19 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (DVNSquareProviderModel *)createSquareProviderModel {
-  return [[DVNSquareProviderModel alloc] initWithEdgeLength:self.provider.diameter];
+  return [[DVNSquareProviderModel alloc] initWithEdgeLength:self.parametersProvider.diameter];
 }
 
 - (DVNRenderStageConfiguration *)createRenderStageConfiguration {
   NSDictionary<NSString *, LTTexture *> *auxiliaryTextures = @{
-    [DVNMaskBrushFsh edgeAvoidanceGuideTexture]: self.provider.edgeAvoidanceGuideTexture
+    [DVNMaskBrushFsh edgeAvoidanceGuideTexture]: self.parametersProvider.edgeAvoidanceGuideTexture
   };
   NSDictionary<NSString *, NSValue *> *uniforms = @{
-    [DVNMaskBrushFsh channel]: @(self.provider.channel),
-    [DVNMaskBrushFsh mode]: @(self.provider.mode),
-    [DVNMaskBrushFsh flow]: @(self.provider.flow),
-    [DVNMaskBrushFsh hardness]: @(self.provider.hardness),
-    [DVNMaskBrushFsh edgeAvoidance]: @(self.provider.edgeAvoidance)
+    [DVNMaskBrushFsh channel]: @(self.parametersProvider.channel),
+    [DVNMaskBrushFsh mode]: @(self.parametersProvider.mode),
+    [DVNMaskBrushFsh flow]: @(self.parametersProvider.flow),
+    [DVNMaskBrushFsh hardness]: @(self.parametersProvider.hardness),
+    [DVNMaskBrushFsh edgeAvoidance]: @(self.parametersProvider.edgeAvoidance)
   };
   
   return [[DVNRenderStageConfiguration alloc] initWithVertexSource:[DVNMaskBrushVsh source]
@@ -114,9 +122,10 @@ NS_ASSUME_NONNULL_BEGIN
                                                           uniforms:uniforms];
 }
 
-- (nullable id<DVNMaskBrushParametersProvider>)provider {
-  LTAssert(_provider, @"Provider has been deallocated before this object was deallocated");
-  return _provider;
+- (nullable id<DVNMaskBrushParametersProvider>)parametersProvider {
+  LTAssert(_parametersProvider,
+           @"Provider has been deallocated before this object was deallocated");
+  return _parametersProvider;
 }
 
 @end
