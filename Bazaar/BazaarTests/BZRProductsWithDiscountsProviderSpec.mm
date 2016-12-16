@@ -41,7 +41,9 @@ context(@"creating discounts as products", ^{
 
     expect(recorder).will.complete();
     expect(recorder).will.matchValue(0, ^BOOL(NSArray<BZRProduct *> *productList) {
-      return productList.count == 1 && [productList.firstObject.identifier isEqualToString:@"foo"];
+      return productList.count == 1 &&
+          [productList.firstObject.identifier isEqualToString:@"foo"] &&
+          productList.firstObject.fullPriceProductIdentifier == nil;
     });
   });
 
@@ -57,10 +59,11 @@ context(@"creating discounts as products", ^{
 
     expect(recorder).will.complete();
     expect(recorder).will.matchValue(0, ^BOOL(NSArray<BZRProduct *> *productList) {
-      BZRProduct *variant = [productList lt_filter:^BOOL(BZRProduct *product) {
+      BZRProduct *discountedProduct = [productList lt_filter:^BOOL(BZRProduct *product) {
         return [product.identifier isEqualToString:@"foo.bar"];
       }].firstObject;
-      return !variant.discountedProducts;
+      return discountedProduct.discountedProducts == nil &&
+          [discountedProduct.fullPriceProductIdentifier isEqualToString:product.identifier];
     });
   });
 

@@ -36,12 +36,13 @@ context(@"initialization", ^{
   it(@"should correctly specifiy optional properties", ^{
     NSSet<NSString *> *optionalProperties = [BZRProduct optionalPropertyKeys];
 
-    expect(optionalProperties.count).to.equal(5);
+    expect(optionalProperties.count).to.equal(6);
     expect(optionalProperties).to.contain(@instanceKeypath(BZRProduct, contentFetcherParameters));
     expect(optionalProperties).to.contain(@instanceKeypath(BZRProduct, priceInfo));
     expect(optionalProperties).to.contain(@instanceKeypath(BZRProduct, isSubscribersOnly));
     expect(optionalProperties).to.contain(@instanceKeypath(BZRProduct, variants));
     expect(optionalProperties).to.contain(@instanceKeypath(BZRProduct, discountedProducts));
+    expect(optionalProperties).to.contain(@instanceKeypath(BZRProduct, fullPriceProductIdentifier));
   });
 });
 
