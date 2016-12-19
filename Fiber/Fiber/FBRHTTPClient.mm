@@ -68,7 +68,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (instancetype)clientWithSessionConfiguration:(FBRHTTPSessionConfiguration *)configuration
                                        baseURL:(nullable NSURL *)baseURL {
   id<FBRHTTPSession> session =
-      [[FBRAFNetworkingSessionAdapter alloc] initWithConfiguration:configuration];
+      [[FBRAFNetworkingSessionAdapter alloc] initWithBaseURL:baseURL configuration:configuration];
   return [[self alloc] initWithSession:session baseURL:baseURL];
 }
 

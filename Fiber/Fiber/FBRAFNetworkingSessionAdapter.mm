@@ -20,12 +20,13 @@ NS_ASSUME_NONNULL_BEGIN
 @implementation FBRAFNetworkingSessionAdapter
 
 - (instancetype)init {
-  return [self initWithConfiguration:[[FBRHTTPSessionConfiguration alloc] init]];
+  return [self initWithBaseURL:nil configuration:[[FBRHTTPSessionConfiguration alloc] init]];
 }
 
-- (instancetype)initWithConfiguration:(FBRHTTPSessionConfiguration *)configuration {
+- (instancetype)initWithBaseURL:(nullable NSURL *)baseURL
+                  configuration:(FBRHTTPSessionConfiguration *)configuration {
   AFHTTPSessionManager *sessionManager =
-      [AFHTTPSessionManager fbr_sessionManagerWithFiberConfiguration:configuration];
+      [AFHTTPSessionManager fbr_sessionManagerWithBaseURL:baseURL fiberConfiguration:configuration];
   return [self initWithSessionManager:sessionManager];
 }
 

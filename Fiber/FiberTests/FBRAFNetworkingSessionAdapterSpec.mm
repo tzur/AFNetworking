@@ -75,12 +75,14 @@ context(@"initialization with configuration", ^{
                                                            securityPolicy:securityPolicy];
   });
 
-  it(@"should initialize the session manager with the specified session configuration", ^{
+  it(@"should initialize the session manager with the specified configuration and base URL", ^{
+    NSURL *baseURL = [NSURL URLWithString:@"http://foo.bar"];
     id sessionManagerMock = OCMClassMock([AFHTTPSessionManager class]);
-    OCMStub([sessionManagerMock fbr_sessionManagerWithFiberConfiguration:configuration]).
-        andReturn(sessionManagerMock);
+    OCMStub([sessionManagerMock fbr_sessionManagerWithBaseURL:baseURL
+                                           fiberConfiguration:configuration])
+        .andReturn(sessionManagerMock);
     FBRAFNetworkingSessionAdapter *sessionAdapter =
-        [[FBRAFNetworkingSessionAdapter alloc] initWithConfiguration:configuration];
+        [[FBRAFNetworkingSessionAdapter alloc] initWithBaseURL:baseURL configuration:configuration];
 
     expect(sessionAdapter.sessionManager).to.beIdenticalTo(sessionManagerMock);
   });
