@@ -9,26 +9,20 @@
 
 SpecBegin(BZRValidatricksHTTPClientProvider)
 
-context(@"default server URL", ^{
-  it(@"should provide default server URL", ^{
-    expect([BZRValidatricksHTTPClientProvider defaultValidatricksServerURL]).toNot.beNil();
-  });
-});
-
 context(@"getting HTTP clients", ^{
   __block id client;
   __block id<FBRHTTPSessionConfigurationProvider> configurationProvider;
-  __block NSURL *serverURL;
+  __block NSString *hostName;
   __block BZRValidatricksHTTPClientProvider *clientProvider;
   __block FBRHTTPSessionConfiguration *sessionConfiguration;
 
   beforeEach(^{
     client = OCMClassMock([FBRHTTPClient class]);
     configurationProvider = OCMProtocolMock(@protocol(FBRHTTPSessionConfigurationProvider));
-    serverURL = [NSURL URLWithString:@"foo/bar/"];
+    hostName = @"foo.bar";
     clientProvider =
         [[BZRValidatricksHTTPClientProvider alloc]
-         initWithSessionConfigurationProvider:configurationProvider serverURL:serverURL];
+         initWithSessionConfigurationProvider:configurationProvider hostName:hostName];
 
     sessionConfiguration = OCMClassMock([FBRHTTPSessionConfiguration class]);
     OCMStub([configurationProvider HTTPSessionConfiguration]).andReturn(sessionConfiguration);
@@ -46,8 +40,8 @@ context(@"getting HTTP clients", ^{
     OCMVerifyAll(client);
   });
 
-  it(@"should return client with the given server URL as baseURL", ^{
-    OCMExpect([client clientWithSessionConfiguration:OCMOCK_ANY baseURL:serverURL]);
+  it(@"should return client with the server URL as baseURL", ^{
+    OCMExpect([client clientWithSessionConfiguration:OCMOCK_ANY baseURL:clientProvider.serverURL]);
 
     [clientProvider HTTPClient];
 
@@ -56,12 +50,8 @@ context(@"getting HTTP clients", ^{
 
   it(@"should return client with the default server URL as baseURL", ^{
     clientProvider = [[BZRValidatricksHTTPClientProvider alloc] init];
-    OCMExpect([client clientWithSessionConfiguration:OCMOCK_ANY
-        baseURL:[BZRValidatricksHTTPClientProvider defaultValidatricksServerURL]]);
 
-    [clientProvider HTTPClient];
-
-    OCMVerifyAll(client);
+    expect([clientProvider.serverURL.absoluteString hasPrefix:@"https://"]);
   });
 });
 
