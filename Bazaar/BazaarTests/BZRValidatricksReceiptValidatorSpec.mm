@@ -4,6 +4,7 @@
 #import "BZRValidatricksReceiptValidator.h"
 
 #import <Fiber/FBRHTTPClient.h>
+#import <Fiber/FBRHTTPClientProvider.h>
 #import <Fiber/FBRHTTPRequest.h>
 #import <Fiber/FBRHTTPResponse.h>
 #import <Fiber/FBRHTTPTaskProgress.h>
@@ -12,9 +13,7 @@
 #import "BZRReceiptValidationError.h"
 #import "BZRReceiptValidationParameters+Validatricks.h"
 #import "BZRValidatricksReceiptValidationStatus.h"
-#import "FBRHTTPClient+Validatricks.h"
 #import "NSErrorCodes+Bazaar.h"
-
 
 /// Generates and returns a \c FBRHTTPTaskProgress object wrapping an \c FBRHTTPResponse with the
 /// given \c responseData as its content. The returned object can be sent on an HTTPClient signals.
@@ -37,52 +36,15 @@ static FBRHTTPTaskProgress *BZRValidatricksResponseWithJSONObject
 SpecBegin(BZRValidatricksReceiptValidator)
 
 __block id client;
+__block id<FBRHTTPClientProvider> clientProvider;
 
 beforeEach(^{
   client = OCMClassMock([FBRHTTPClient class]);
+  clientProvider = OCMProtocolMock(@protocol(FBRHTTPClientProvider));
 });
-
-it(@"should provide default server URL", ^{
-  expect([BZRValidatricksReceiptValidator defaultValidatricksServerURL]).toNot.beNil();
-});
-
 
 it(@"should provide receipt validation endpoint", ^{
   expect([BZRValidatricksReceiptValidator receiptValidationEndpoint]).toNot.beNil();
-});
-
-it(@"should provide server URL and receipt validation endpoint that can be composed together", ^{
-  NSURL *serverURL = [BZRValidatricksReceiptValidator defaultValidatricksServerURL];
-  NSString *validatorEndpoint = [BZRValidatricksReceiptValidator receiptValidationEndpoint];
-  NSURL *compositeURL = [NSURL URLWithString:validatorEndpoint relativeToURL:serverURL];
-
-  expect(compositeURL.absoluteString).to.beginWith(serverURL.absoluteString);
-  expect([compositeURL.pathComponents lastObject]).to.equal(validatorEndpoint);
-});
-
-context(@"initialization", ^{
-  it(@"should initalize an HTTP client with the server URL", ^{
-    NSURL *serverURL = [BZRValidatricksReceiptValidator defaultValidatricksServerURL];
-    BZRValidatricksReceiptValidator __unused *validator =
-        [[BZRValidatricksReceiptValidator alloc] init];
-
-    expect(validator).toNot.beNil();
-    expect(validator.serverURL).to.equal(serverURL);
-  });
-
-  it(@"should initalize an HTTP client with the specified parameters", ^{
-    NSURL *serverURL = [NSURL URLWithString:@"https://foo.bar"];
-    NSString *APIKey = @"foo";
-    NSSet<NSData *> *certificates =
-        [NSSet setWithObject:[@"bar" dataUsingEncoding:NSUTF8StringEncoding]];
-    OCMExpect([client bzr_validatricksClientWithServerURL:serverURL APIKey:APIKey
-                                       pinnedCertificates:certificates]).andReturn(client);
-
-    BZRValidatricksReceiptValidator __unused *validator =
-        [[BZRValidatricksReceiptValidator alloc] initWithServerURL:serverURL APIKey:APIKey
-                                          pinnedServerCertificates:certificates];
-    OCMVerifyAll(client);
-  });
 });
 
 context(@"receipt validation", ^{
@@ -100,7 +62,8 @@ context(@"receipt validation", ^{
     requestParameters = [parameters validatricksRequestParameters];
     URLString = [BZRValidatricksReceiptValidator receiptValidationEndpoint];
 
-    validator = [[BZRValidatricksReceiptValidator alloc] initWithHTTPClient:client];
+    OCMStub([clientProvider HTTPClient]).andReturn(client);
+    validator = [[BZRValidatricksReceiptValidator alloc] initWithHTTPClientProvider:clientProvider];
   });
 
   it(@"should send a post request to the server with the correct url string and parameters", ^{
