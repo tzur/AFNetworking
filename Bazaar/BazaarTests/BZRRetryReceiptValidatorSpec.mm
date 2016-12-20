@@ -37,14 +37,10 @@ context(@"undelying validator succeeded", ^{
 
 context(@"underlying validator failed", ^{
   it(@"should return the value returned the second time after delay", ^{
-    __block NSUInteger timesCalled = 0;
-    RACSignal *varyingSignal = [RACSignal defer:^RACSignal *{
-      NSArray *signals = @[[RACSignal error:[NSError lt_errorWithCode:1337]],
-                           [RACSignal return:receiptValidationStatus]];
-      return signals[timesCalled++];
-    }];
-    OCMStub([underlyingValidator validateReceiptWithParameters:OCMOCK_ANY])
-        .andReturn(varyingSignal);
+    OCMExpect([underlyingValidator validateReceiptWithParameters:OCMOCK_ANY])
+        .andReturn([RACSignal error:[NSError lt_errorWithCode:1337]]);
+    OCMExpect([underlyingValidator validateReceiptWithParameters:OCMOCK_ANY])
+        .andReturn([RACSignal return:receiptValidationStatus]);
 
     RACSignal *receiptSignal = [validator validateReceiptWithParameters:
                                 OCMClassMock([BZRReceiptValidationParameters class])];
@@ -53,20 +49,18 @@ context(@"underlying validator failed", ^{
     [receiptSignal subscribeNext:^(BZRReceiptValidationStatus *receiptValidationStatus) {
       sentReceipt = receiptValidationStatus;
     }];
-    expect(timesCalled).will.equal(2);
-    expect(sentReceipt).to.equal(receiptValidationStatus);
+
+    expect(sentReceipt).will.equal(receiptValidationStatus);
+    OCMVerifyAll((id)underlyingValidator);
   });
 
   it(@"should return value returned the third time after exponential backoff delay", ^{
-    __block NSUInteger timesCalled = 0;
-    RACSignal *varyingSignal = [RACSignal defer:^RACSignal *{
-      NSArray *signals = @[[RACSignal error:OCMClassMock([NSError class])],
-                           [RACSignal error:OCMClassMock([NSError class])],
-                           [RACSignal return:receiptValidationStatus]];
-      return signals[timesCalled++];
-    }];
-    OCMStub([underlyingValidator validateReceiptWithParameters:OCMOCK_ANY])
-        .andReturn(varyingSignal);
+    OCMExpect([underlyingValidator validateReceiptWithParameters:OCMOCK_ANY])
+        .andReturn([RACSignal error:[NSError lt_errorWithCode:1337]]);
+    OCMExpect([underlyingValidator validateReceiptWithParameters:OCMOCK_ANY])
+        .andReturn([RACSignal error:[NSError lt_errorWithCode:1337]]);
+    OCMExpect([underlyingValidator validateReceiptWithParameters:OCMOCK_ANY])
+        .andReturn([RACSignal return:receiptValidationStatus]);
 
     RACSignal *receiptSignal = [validator validateReceiptWithParameters:
                                 OCMClassMock([BZRReceiptValidationParameters class])];
@@ -75,8 +69,9 @@ context(@"underlying validator failed", ^{
     [receiptSignal subscribeNext:^(BZRReceiptValidationStatus *receiptValidationStatus) {
       sentReceipt = receiptValidationStatus;
     }];
-    expect(timesCalled).will.equal(3);
-    expect(sentReceipt).to.equal(receiptValidationStatus);
+
+    expect(sentReceipt).will.equal(receiptValidationStatus);
+    OCMVerifyAll((id)underlyingValidator);
   });
 });
 

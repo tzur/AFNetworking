@@ -31,7 +31,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithValidationParametersProvider:
     (id<BZRReceiptValidationParametersProvider>)validationParametersProvider {
   NSTimeInterval kInitialRetryDelay = 0.5;
-  NSUInteger kNumberOfRetries = 5;
+  NSUInteger kNumberOfRetries = 4;
 
   BZRValidatricksReceiptValidator *receiptValidator =
       [[BZRValidatricksReceiptValidator alloc] init];

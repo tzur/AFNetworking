@@ -36,7 +36,13 @@ NS_ASSUME_NONNULL_BEGIN
     return [self.underlyingValidator validateReceiptWithParameters:parameters];
   }
   __block NSTimeInterval secondsUntilNextRetry = self.initialRetryDelay;
-  return [[[self.underlyingValidator validateReceiptWithParameters:parameters]
+
+  @weakify(self);
+  return [[[RACSignal
+      defer:^RACSignal *{
+        @strongify(self);
+        return [self.underlyingValidator validateReceiptWithParameters:parameters];
+      }]
       catch:^RACSignal *(NSError *error) {
         RACSignal *delaySignal = [[[RACSignal empty]
             delay:secondsUntilNextRetry]
