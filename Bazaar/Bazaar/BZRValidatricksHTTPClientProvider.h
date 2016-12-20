@@ -11,21 +11,20 @@ NS_ASSUME_NONNULL_BEGIN
 /// Validatricks.
 @interface BZRValidatricksHTTPClientProvider : NSObject <FBRHTTPClientProvider>
 
-/// Returns a URL to the latest version of Validatricks receipt validator. The returned URL is an
-/// HTTPS URL.
-+ (NSURL *)defaultValidatricksServerURL;
-
 /// Initializes with the default Validatricks session configuration provider which is
 /// \c BZRValidatricksSessionConfigurationProvider. \c serverURL will be initialized to be
 /// \c defaultValidatricksServerURL.
 - (instancetype)init;
 
 /// Initializes with \c sessionConfigurationProvider, used to provide the session configuration in
-/// order to create an HTTP client. \c serverURL is the URL to connect to by the returned HTTP
-/// clients.
+/// order to create an HTTP client. \c hostName is the name of the host to connect to by the
+/// returned HTTP clients.
 - (instancetype)initWithSessionConfigurationProvider:
     (id<FBRHTTPSessionConfigurationProvider>)sessionConfigurationProvider
-    serverURL:(NSURL *)serverURL NS_DESIGNATED_INITIALIZER;
+    hostName:(NSString *)hostName NS_DESIGNATED_INITIALIZER;
+
+/// Validatircks server URL.
+@property (readonly, nonatomic) NSURL *serverURL;
 
 @end
 

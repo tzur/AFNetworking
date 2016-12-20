@@ -16,9 +16,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly, nonatomic) id<FBRHTTPSessionConfigurationProvider>
     sessionConfigurationProvider;
 
-/// Validatircks server URL.
-@property (readonly, nonatomic) NSURL *serverURL;
-
 @end
 
 @implementation BZRValidatricksHTTPClientProvider
@@ -29,25 +26,24 @@ static NSString * const kValidatricksServerHostName = @"api.lightricks.com";
 /// Latest version of Validatricks receipt validator.
 static NSString * const kLatestValidatorVersion = @"v1";
 
-+ (NSURL *)defaultValidatricksServerURL {
-  NSString *serverURLString = [NSString stringWithFormat:@"https://%@/store/%@/",
-                               kValidatricksServerHostName, kLatestValidatorVersion];
-  return [NSURL URLWithString:serverURLString];
++ (NSURL *)serverURLFromHostName:(NSString *)hostName {
+  return [NSURL URLWithString:
+          [NSString stringWithFormat:@"https://%@/store/%@/", hostName, kLatestValidatorVersion]];
 }
 
 - (instancetype)init {
   BZRValidatricksSessionConfigurationProvider *sessionConfigurationProvider =
       [[BZRValidatricksSessionConfigurationProvider alloc] init];
   return [self initWithSessionConfigurationProvider:sessionConfigurationProvider
-                                          serverURL:[[self class] defaultValidatricksServerURL]];
+                                           hostName:kValidatricksServerHostName];
 }
 
 - (instancetype)initWithSessionConfigurationProvider:
     (id<FBRHTTPSessionConfigurationProvider>)sessionConfigurationProvider
-    serverURL:(NSURL *)serverURL {
+    hostName:(NSString *)hostName {
   if (self = [super init]) {
     _sessionConfigurationProvider = sessionConfigurationProvider;
-    _serverURL = serverURL;
+    _serverURL = [BZRValidatricksHTTPClientProvider serverURLFromHostName:hostName];
   }
   return self;
 }

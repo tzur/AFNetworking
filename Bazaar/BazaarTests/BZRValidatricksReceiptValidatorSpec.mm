@@ -62,15 +62,29 @@ context(@"receipt validation", ^{
     requestParameters = [parameters validatricksRequestParameters];
     URLString = [BZRValidatricksReceiptValidator receiptValidationEndpoint];
 
-    OCMStub([clientProvider HTTPClient]).andReturn(client);
     validator = [[BZRValidatricksReceiptValidator alloc] initWithHTTPClientProvider:clientProvider];
   });
 
   it(@"should send a post request to the server with the correct url string and parameters", ^{
+    OCMStub([clientProvider HTTPClient]).andReturn(client);
     OCMExpect([client POST:URLString withParameters:requestParameters]);
+
     [validator validateReceiptWithParameters:parameters];
 
     OCMVerifyAll(client);
+  });
+
+  it(@"should request another client if POST failed", ^{
+    OCMExpect([clientProvider HTTPClient]).andReturn(client);
+    OCMExpect([clientProvider HTTPClient]).andReturn(client);
+    NSError *error = [NSError lt_errorWithCode:1337];
+    OCMStub([client POST:URLString withParameters:requestParameters])
+        .andReturn([RACSignal error:error]);
+
+    expect([validator validateReceiptWithParameters:parameters]).will.finish();
+    expect([validator validateReceiptWithParameters:parameters]).will.finish();
+
+    OCMVerifyAll((id)clientProvider);
   });
 
   context(@"signal specifications", ^{
@@ -81,6 +95,7 @@ context(@"receipt validation", ^{
     beforeEach(^{
       subject = [RACSubject subject];
       OCMStub([client POST:URLString withParameters:requestParameters]).andReturn(subject);
+      OCMStub([clientProvider HTTPClient]).andReturn(client);
       recorder = [[validator validateReceiptWithParameters:parameters] testRecorder];
 
       JSONResponse = @{

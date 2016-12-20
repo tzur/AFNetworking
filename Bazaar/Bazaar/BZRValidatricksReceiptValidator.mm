@@ -12,7 +12,7 @@
 #import "NSErrorCodes+Bazaar.h"
 #import "RACSignal+Bazaar.h"
 
-#import "BZRValidatricksHTTPClientProvider.h"
+#import "BZRMultiHostValidatricksClientProvider.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -20,6 +20,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Provider used to provide HTTP clients.
 @property (readonly, nonatomic) id<FBRHTTPClientProvider> clientProvider;
+
+/// HTTP client used to send validation requests to Validatricks server.
+@property (strong, nonatomic, nullable) FBRHTTPClient *client;
 
 @end
 
@@ -33,7 +36,7 @@ static NSString * const kReceiptValidationEndpoint = @"validateReceipt";
 }
 
 - (instancetype)init {
-  return [self initWithHTTPClientProvider:[[BZRValidatricksHTTPClientProvider alloc] init]];
+  return [self initWithHTTPClientProvider:[[BZRMultiHostValidatricksClientProvider alloc] init]];
 }
 
 - (instancetype)initWithHTTPClientProvider:(id<FBRHTTPClientProvider>)clientProvider {
@@ -48,11 +51,23 @@ static NSString * const kReceiptValidationEndpoint = @"validateReceipt";
 #pragma mark -
 
 - (RACSignal *)validateReceiptWithParameters:(BZRReceiptValidationParameters *)parameters {
-  FBRHTTPRequestParameters *requestParameters = parameters.validatricksRequestParameters;
-  return [[[[self.clientProvider HTTPClient]
-      POST:kReceiptValidationEndpoint withParameters:requestParameters]
-      fbr_deserializeJSON]
-      bzr_deserializeModel:[BZRValidatricksReceiptValidationStatus class]];
+  @synchronized (self) {
+    if (!self.client) {
+      self.client =  [self.clientProvider HTTPClient];
+    }
+
+    @weakify(self);
+    FBRHTTPRequestParameters *requestParameters = parameters.validatricksRequestParameters;
+    return [[[[self.client POST:kReceiptValidationEndpoint withParameters:requestParameters]
+        fbr_deserializeJSON]
+        bzr_deserializeModel:[BZRValidatricksReceiptValidationStatus class]]
+        doError:^(NSError *) {
+          @strongify(self);
+          @synchronized (self) {
+            self.client = nil;
+          }
+        }];
+  }
 }
 
 @end
