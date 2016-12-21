@@ -178,7 +178,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSString *)description {
   return [NSString stringWithFormat:@"<%@: %p, size: %@, maximum scale: %g, match width: %lu, "
           "preserve aspect ratio: %lu>", self.class, self, NSStringFromCGSize(self.size),
-          self.maximumScale, self.matchWidth, self.preserveAspectRatio];
+          self.maximumScale, (unsigned long)self.matchWidth,
+          (unsigned long)self.preserveAspectRatio];
 }
 
 - (BOOL)isEqual:(PTUAdaptiveCellSizingStrategy *)object {
