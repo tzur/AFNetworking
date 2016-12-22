@@ -23,6 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 @implementation PTNDropboxFileDescriptor
 
 @synthesize modificationDate = _modificationDate;
+@synthesize duration = _duration;
 
 - (instancetype)initWithMetadata:(DBMetadata *)metadata {
   return [self initWithMetadata:metadata latestRevision:NO];

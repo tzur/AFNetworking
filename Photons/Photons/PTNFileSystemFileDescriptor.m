@@ -24,6 +24,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation PTNFileSystemFileDescriptor
 
+@synthesize duration = _duration;
+
 - (instancetype)initWithPath:(LTPath *)path {
   return [self initWithPath:path creationDate:nil modificationDate:nil];
 }

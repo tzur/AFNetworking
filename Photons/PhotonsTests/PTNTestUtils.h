@@ -23,13 +23,27 @@ id<PTNDescriptor> PTNCreateDescriptor(NSURL * _Nullable identifier,
 
 /// Creates and returns a \c PTNAssetDescriptor with \c identifier or \c nil for a default
 /// identifier of \c fake://descriptor.asset, \c localizedTitle, \c capabilities, \c traits or
-/// \c nil to support no traits, \c creationDate, \c modificationDate and \c assetCapabilities.
+/// \c nil to support no traits, \c creationDate, \c modificationDate, zero duration and \c
+/// assetCapabilities.
 id<PTNAssetDescriptor> PTNCreateAssetDescriptor(NSURL * _Nullable identifier,
                                                 NSString * _Nullable localizedTitle,
                                                 PTNDescriptorCapabilities capabilities,
                                                 NSSet<NSString *> * _Nullable traits,
                                                 NSDate * _Nullable creationDate,
                                                 NSDate * _Nullable modificationDate,
+                                                PTNAssetDescriptorCapabilities assetCapabilities);
+
+/// Creates and returns a \c PTNAssetDescriptor with \c identifier or \c nil for a default
+/// identifier of \c fake://descriptor.asset, \c localizedTitle, \c capabilities, \c traits or
+/// \c nil to support no traits, \c creationDate, \c modificationDate, \c duration and \c
+/// assetCapabilities.
+id<PTNAssetDescriptor> PTNCreateAssetDescriptor(NSURL * _Nullable identifier,
+                                                NSString * _Nullable localizedTitle,
+                                                PTNDescriptorCapabilities capabilities,
+                                                NSSet<NSString *> * _Nullable traits,
+                                                NSDate * _Nullable creationDate,
+                                                NSDate * _Nullable modificationDate,
+                                                NSTimeInterval duration,
                                                 PTNAssetDescriptorCapabilities assetCapabilities);
 
 /// Creates and returns a \c PTNAlbumDescriptor with \c identifier or \c nil for a default
