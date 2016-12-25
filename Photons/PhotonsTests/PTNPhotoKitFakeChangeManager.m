@@ -112,6 +112,14 @@ NS_ASSUME_NONNULL_BEGIN
   return self.changeRequest;
 }
 
+- (nullable PHAssetChangeRequest *)createAssetFromVideoAtFileURL:(NSURL *)fileURL {
+  LTAssert(!self.inChangeBlock, @"Attempting to create video at file URL %@ not within a change "
+           "block", fileURL);
+  
+  [self.assetsCreated addObject:fileURL];
+  return self.changeRequest;
+}
+
 - (void)creationRequestForAssetCollectionWithTitle:(NSString *)title {
   LTAssert(!self.inChangeBlock, @"Attempting to create album with title %@ not within a change "
            "block", title);

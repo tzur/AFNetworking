@@ -14,9 +14,15 @@ typedef void (^PTNChangeRequestCompletionBlock)(BOOL success, NSError * _Nullabl
 
 /// Requests that the image at the specified \c fileURL will be created. Returns the \c
 /// PHAssetChangeRequest instance associated with the request, or \c nil if \c fileURL is not a
-/// valid file URL. Call this method within a photo library change block to create image asset. For
-/// details on change blocks, see the \c PTNPhotoKitChangeManager protocol.
+/// valid file URL. Call this method within a photo library change block to create an image asset.
+/// For details on change blocks, see the \c PTNPhotoKitChangeManager protocol.
 - (nullable PHAssetChangeRequest *)createAssetFromImageAtFileURL:(NSURL *)fileURL;
+
+/// Requests that the video at the specified \c fileURL will be created. Returns the \c
+/// PHAssetChangeRequest instance associated with the request, or \c nil if \c fileURL is not a
+/// valid file URL. Call this method within a photo library change block to create a video asset.
+/// For details on change blocks, see the \c PTNPhotoKitChangeManager protocol.
+- (nullable PHAssetChangeRequest *)createAssetFromVideoAtFileURL:(NSURL *)fileURL;
 
 /// Requests that the specified \c assets be deleted. Call this method within a photo library change
 /// block to delete assets. For details on change blocks, see the \c PTNPhotoKitChangeManager
