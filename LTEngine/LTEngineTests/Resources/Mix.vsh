@@ -3,12 +3,12 @@
 
 uniform highp mat4 projection;
 
-attribute highp vec3 position;
-attribute highp vec2 texcoord;
+attribute highp vec4 position;
+attribute highp vec3 texcoord;
 
-varying highp vec2 vTexcoord;
+varying highp vec3 vTexcoord;
 
 void main() {
   vTexcoord = texcoord;
-  gl_Position = projection * vec4(position, 1);
+  gl_Position = projection * position;
 }

@@ -617,6 +617,15 @@
 		5054C6E41CC68D7B00976EA1 /* LTDynamicDrawer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5054C6E21CC68D7B00976EA1 /* LTDynamicDrawer.mm */; };
 		5054C72C1CC6956200976EA1 /* LTDynamicDrawerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5054C72B1CC6956200976EA1 /* LTDynamicDrawerSpec.mm */; };
 		505B464A1A093C820046C00C /* LTQuadCopyProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 505B46491A093C820046C00C /* LTQuadCopyProcessorSpec.mm */; };
+		506808181E0039B9003EF92A /* PerspectiveGeneralQuad.png in Resources */ = {isa = PBXBuildFile; fileRef = 5068080F1E0039B9003EF92A /* PerspectiveGeneralQuad.png */; };
+		506808191E0039B9003EF92A /* PerspectiveGeneralQuadWithQuadPortionOfTexture0.png in Resources */ = {isa = PBXBuildFile; fileRef = 506808101E0039B9003EF92A /* PerspectiveGeneralQuadWithQuadPortionOfTexture0.png */; };
+		5068081A1E0039B9003EF92A /* PerspectiveGeneralQuadWithQuadPortionOfTexture1.png in Resources */ = {isa = PBXBuildFile; fileRef = 506808111E0039B9003EF92A /* PerspectiveGeneralQuadWithQuadPortionOfTexture1.png */; };
+		5068081B1E0039B9003EF92A /* PerspectiveGeneralQuadWithRectPortionOfTexture.png in Resources */ = {isa = PBXBuildFile; fileRef = 506808121E0039B9003EF92A /* PerspectiveGeneralQuadWithRectPortionOfTexture.png */; };
+		5068081C1E0039B9003EF92A /* PerspectiveQuad0.png in Resources */ = {isa = PBXBuildFile; fileRef = 506808131E0039B9003EF92A /* PerspectiveQuad0.png */; };
+		5068081D1E0039B9003EF92A /* PerspectiveQuad1.png in Resources */ = {isa = PBXBuildFile; fileRef = 506808141E0039B9003EF92A /* PerspectiveQuad1.png */; };
+		5068081E1E0039B9003EF92A /* PerspectiveTextureQuad0.png in Resources */ = {isa = PBXBuildFile; fileRef = 506808151E0039B9003EF92A /* PerspectiveTextureQuad0.png */; };
+		5068081F1E0039B9003EF92A /* PerspectiveTextureQuad1.png in Resources */ = {isa = PBXBuildFile; fileRef = 506808161E0039B9003EF92A /* PerspectiveTextureQuad1.png */; };
+		506808201E0039B9003EF92A /* PerspectiveTextureQuad2.png in Resources */ = {isa = PBXBuildFile; fileRef = 506808171E0039B9003EF92A /* PerspectiveTextureQuad2.png */; };
 		506F826819FE5CFA00A15D9D /* LTQuadDrawer.h in Headers */ = {isa = PBXBuildFile; fileRef = 506F826619FE5CFA00A15D9D /* LTQuadDrawer.h */; };
 		506F826919FE5CFA00A15D9D /* LTQuadDrawer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 506F826719FE5CFA00A15D9D /* LTQuadDrawer.mm */; };
 		506F826B19FE5DD700A15D9D /* LTQuadDrawerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 506F826A19FE5DD700A15D9D /* LTQuadDrawerSpec.mm */; };
@@ -2337,6 +2346,15 @@
 		5054C6E21CC68D7B00976EA1 /* LTDynamicDrawer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTDynamicDrawer.mm; sourceTree = "<group>"; };
 		5054C72B1CC6956200976EA1 /* LTDynamicDrawerSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTDynamicDrawerSpec.mm; sourceTree = "<group>"; };
 		505B46491A093C820046C00C /* LTQuadCopyProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTQuadCopyProcessorSpec.mm; sourceTree = "<group>"; };
+		5068080F1E0039B9003EF92A /* PerspectiveGeneralQuad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PerspectiveGeneralQuad.png; path = Resources/PerspectiveGeneralQuad.png; sourceTree = "<group>"; };
+		506808101E0039B9003EF92A /* PerspectiveGeneralQuadWithQuadPortionOfTexture0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PerspectiveGeneralQuadWithQuadPortionOfTexture0.png; path = Resources/PerspectiveGeneralQuadWithQuadPortionOfTexture0.png; sourceTree = "<group>"; };
+		506808111E0039B9003EF92A /* PerspectiveGeneralQuadWithQuadPortionOfTexture1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PerspectiveGeneralQuadWithQuadPortionOfTexture1.png; path = Resources/PerspectiveGeneralQuadWithQuadPortionOfTexture1.png; sourceTree = "<group>"; };
+		506808121E0039B9003EF92A /* PerspectiveGeneralQuadWithRectPortionOfTexture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PerspectiveGeneralQuadWithRectPortionOfTexture.png; path = Resources/PerspectiveGeneralQuadWithRectPortionOfTexture.png; sourceTree = "<group>"; };
+		506808131E0039B9003EF92A /* PerspectiveQuad0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PerspectiveQuad0.png; path = Resources/PerspectiveQuad0.png; sourceTree = "<group>"; };
+		506808141E0039B9003EF92A /* PerspectiveQuad1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PerspectiveQuad1.png; path = Resources/PerspectiveQuad1.png; sourceTree = "<group>"; };
+		506808151E0039B9003EF92A /* PerspectiveTextureQuad0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PerspectiveTextureQuad0.png; path = Resources/PerspectiveTextureQuad0.png; sourceTree = "<group>"; };
+		506808161E0039B9003EF92A /* PerspectiveTextureQuad1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PerspectiveTextureQuad1.png; path = Resources/PerspectiveTextureQuad1.png; sourceTree = "<group>"; };
+		506808171E0039B9003EF92A /* PerspectiveTextureQuad2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PerspectiveTextureQuad2.png; path = Resources/PerspectiveTextureQuad2.png; sourceTree = "<group>"; };
 		506F826619FE5CFA00A15D9D /* LTQuadDrawer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTQuadDrawer.h; sourceTree = "<group>"; };
 		506F826719FE5CFA00A15D9D /* LTQuadDrawer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTQuadDrawer.mm; sourceTree = "<group>"; };
 		506F826A19FE5DD700A15D9D /* LTQuadDrawerSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTQuadDrawerSpec.mm; sourceTree = "<group>"; };
@@ -4507,6 +4525,15 @@
 				280E40D51990C2F6008C5BD9 /* PerspectiveHorizontal.png */,
 				280E40D61990C2F6008C5BD9 /* PerspectiveRotation.png */,
 				280E40D71990C2F6008C5BD9 /* PerspectiveVertical.png */,
+				5068080F1E0039B9003EF92A /* PerspectiveGeneralQuad.png */,
+				506808101E0039B9003EF92A /* PerspectiveGeneralQuadWithQuadPortionOfTexture0.png */,
+				506808111E0039B9003EF92A /* PerspectiveGeneralQuadWithQuadPortionOfTexture1.png */,
+				506808121E0039B9003EF92A /* PerspectiveGeneralQuadWithRectPortionOfTexture.png */,
+				506808131E0039B9003EF92A /* PerspectiveQuad0.png */,
+				506808141E0039B9003EF92A /* PerspectiveQuad1.png */,
+				506808151E0039B9003EF92A /* PerspectiveTextureQuad0.png */,
+				506808161E0039B9003EF92A /* PerspectiveTextureQuad1.png */,
+				506808171E0039B9003EF92A /* PerspectiveTextureQuad2.png */,
 				280108F8197EBB0F0015F62A /* BlueRedBorderRoundedCorners.png */,
 				85F372BF1C8C891600E1D429 /* LT3DLUTIdentity2x2x2.png */,
 				8BA820B91981572700FBE68E /* LTPatchProcessorSolution.png */,
@@ -6231,6 +6258,7 @@
 				03C192C318F6F3B200DC6CA6 /* DoubleLinearMaskTiltedOffCenter.png in Resources */,
 				8518E26A1C858D890051FAF3 /* NoiseGuidedSigma02Steps1.png in Resources */,
 				0313388F190FD0240095F99B /* TiltShiftDoubleLinear.png in Resources */,
+				5068081F1E0039B9003EF92A /* PerspectiveTextureQuad1.png in Resources */,
 				283BD0441922214300B68A90 /* ShapeDrawerPathShapeTwoSubpaths.png in Resources */,
 				2881CDA61AF107B10080847C /* CircularPatchDrawerSmoothingAlpha.png in Resources */,
 				A8BDC63E1AC9DA64005FC392 /* CircularPatchDrawerAlpha.png in Resources */,
@@ -6300,8 +6328,10 @@
 				8BBEE93819FC032300A2FA6B /* AspectFittedFlower.png in Resources */,
 				282AC69B1924B9BC006CAA2B /* ShapeDrawerTriangularMeshShapeTriangleWithShadowMask.png in Resources */,
 				06F9F2D51D59B558002D2726 /* HorizontalStepFunction32_bilateral_L1toL3.png in Resources */,
+				5068081B1E0039B9003EF92A /* PerspectiveGeneralQuadWithRectPortionOfTexture.png in Resources */,
 				286A932D18CF727300F203DF /* BristleBrushBristles.2.png in Resources */,
 				8BAED5331886D21D00BCACF7 /* TwoInputTextures.fsh in Resources */,
+				506808201E0039B9003EF92A /* PerspectiveTextureQuad2.png in Resources */,
 				28A612971934F15D00D005D8 /* GaussianSquare.png in Resources */,
 				8597AEBC1D748F25008C96D2 /* LTAnisotropicDiffusion_guided_kernel_5_sigma_0_8.png in Resources */,
 				8BA8C68B18699EB100E6F486 /* BlueTransparent.png in Resources */,
@@ -6317,7 +6347,10 @@
 				28A2546E19C9D84C0057E1A3 /* ReshapeProcessorUnwarpWithMask.png in Resources */,
 				8597AEBA1D748F25008C96D2 /* LTAnisotropicDiffusion_guided_kernel_3_sigma_0_1.png in Resources */,
 				8BAB99DF1869F73400D79554 /* QuadDownMirrored.jpg in Resources */,
+				506808191E0039B9003EF92A /* PerspectiveGeneralQuadWithQuadPortionOfTexture0.png in Resources */,
+				5068081D1E0039B9003EF92A /* PerspectiveQuad1.png in Resources */,
 				8518E2651C858D890051FAF3 /* NoiseBilateralSigma01Steps2.png in Resources */,
+				506808181E0039B9003EF92A /* PerspectiveGeneralQuad.png in Resources */,
 				8BAB99E51869F73400D79554 /* QuadUpMirrored.jpg in Resources */,
 				03045D7919C5FBBD0075207D /* SmoothPyramidUpsampleGrid5.png in Resources */,
 				A8BDC6401AC9DA64005FC392 /* CircularPatchDrawerDefault.png in Resources */,
@@ -6395,6 +6428,7 @@
 				03D5168818B26FA40026B56A /* StraightBlueFrame.png in Resources */,
 				03D516CC18B4AB840026B56A /* StraightWideVignetting.png in Resources */,
 				06372CF91D05A4690083AE49 /* SmoothPyramidUpsampleUpdateGrid6.png in Resources */,
+				5068081C1E0039B9003EF92A /* PerspectiveQuad0.png in Resources */,
 				8BFA8F47191111980088310E /* MixerPlacementRect.png in Resources */,
 				284AA2B51AC99DD1007F86DB /* CircularHealDefault.png in Resources */,
 				8BFA8F541917C97B0088310E /* MixerTilingComplex.png in Resources */,
@@ -6404,6 +6438,7 @@
 				03AFC18D190E813A00F17063 /* RadialMaskCenterNonSquare.png in Resources */,
 				25AF178A1AD50CBF0055E664 /* GlyphRunTest.png in Resources */,
 				28A366A319754475009F0A4D /* SemiTransparentGray.png in Resources */,
+				5068081A1E0039B9003EF92A /* PerspectiveGeneralQuadWithQuadPortionOfTexture1.png in Resources */,
 				A8BDC6411AC9DA64005FC392 /* CircularPatchDrawerHeal.png in Resources */,
 				30DDD6B71CFC8A7500AE72B8 /* ConsistentGaussianFilterLena384.png in Resources */,
 				28A4C9361973E3EA00CDA935 /* RedBorderOnClearBackground.png in Resources */,
@@ -6436,6 +6471,7 @@
 				8BAB99E21869F73400D79554 /* QuadRight.jpg in Resources */,
 				031DF21318FEB18E003FA627 /* Macbeth.jpg in Resources */,
 				64F1C9741D41106800AF2DA6 /* BlurIntensityMax.png in Resources */,
+				5068081E1E0039B9003EF92A /* PerspectiveTextureQuad0.png in Resources */,
 				8BAB99E41869F73400D79554 /* QuadUp.jpg in Resources */,
 				50D77CE71B6F5BC20001DA0C /* EdgeAvoiding.png in Resources */,
 				8BABF18E19BC52C100AED760 /* PyramidGrid3.png in Resources */,

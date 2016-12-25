@@ -455,7 +455,18 @@ static NSUInteger LTNumberOfNonLeftTurns(const lt::Quad::Corners &corners) {
   return result;
 }
 
+/// Quad representing the canonical square with origin <tt>(0, 0)</tt> and size <tt>(1, 1)</tt>.
+static const lt::Quad kCanonicalSquareQuad = lt::Quad(CGRectMake(0, 0, 1, 1));
+
 namespace lt {
+
+#pragma mark -
+#pragma mark Initialization
+#pragma mark -
+
+Quad Quad::canonicalSquare() noexcept {
+  return kCanonicalSquareQuad;
+}
 
 #pragma mark -
 #pragma mark Transformation
