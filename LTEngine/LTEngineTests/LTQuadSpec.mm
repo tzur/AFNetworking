@@ -938,7 +938,7 @@ context(@"vertex inclusion", ^{
 
 context(@"closest point computation", ^{
   it(@"should correctly compute the closest point on any of its edges from a given point", ^{
-    lt::Quad quad = lt::Quad(CGRectMake(0, 0, 1, 1));
+    lt::Quad quad = lt::Quad::canonicalSquare();
     CGPoint point = CGPointMake(-0.5, -0.5);
     expect(quad.pointOnEdgeClosestToPoint(point)).to.beCloseToPointWithin(quad.v0(), kEpsilon);
 
@@ -961,7 +961,7 @@ context(@"closest point computation", ^{
   });
 
   it(@"should correctly compute the points with minimum distance located on edges of two quads", ^{
-    lt::Quad quad = lt::Quad(CGRectMake(0, 0, 1, 1));
+    lt::Quad quad = lt::Quad::canonicalSquare();
     lt::Quad anotherQuad(CGRectMake(0.5, 1.5, 1, 1));
     CGPointPair result = quad.nearestPoints(anotherQuad);
     expect(result.first).to.beCloseToPointWithin(CGPointMake(1, 1), kEpsilon);
@@ -989,7 +989,7 @@ context(@"transformations", ^{
       __block CGFloat angle;
 
       beforeEach(^{
-        quad = lt::Quad(CGRectMake(0, 0, 1, 1));
+        quad = lt::Quad::canonicalSquare();
         angle = M_PI;
       });
 
@@ -1015,7 +1015,7 @@ context(@"transformations", ^{
       __block CGFloat scaleFactor;
 
       beforeEach(^{
-        quad = lt::Quad(CGRectMake(0, 0, 1, 1));
+        quad = lt::Quad::canonicalSquare();
         scaleFactor = 2;
       });
 
@@ -1369,7 +1369,7 @@ context(@"properties", ^{
   });
 
   it(@"should return the correct center", ^{
-    lt::Quad quad = lt::Quad(CGRectMake(0, 0, 1, 1));
+    lt::Quad quad = lt::Quad::canonicalSquare();
     expect(quad.center()).to.equal(CGPointMake(0.5, 0.5));
     lt::Quad::Corners corners{{v0, v1, v2, v3}};
     quad = lt::Quad(corners);

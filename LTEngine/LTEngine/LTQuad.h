@@ -287,6 +287,14 @@ struct Quad {
            rect.origin + CGPointMake(0, rect.size.height)}}) {};
 
 #pragma mark -
+#pragma mark Convenience Initialization
+#pragma mark -
+
+  /// Returns a new quad representing the canonical square with origin <tt>(0, 0)</tt> and size
+  /// <tt>(1, 1)</tt>.
+  static Quad canonicalSquare() noexcept;
+
+#pragma mark -
 #pragma mark Transformations
 #pragma mark -
 
