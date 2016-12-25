@@ -16,14 +16,18 @@ NS_ASSUME_NONNULL_BEGIN
 /// <tt>GLKMatrix4MakeOrtho(0, 1, 1, 0, -1, 1)</tt>, otherwise.
 extern NSString * const kLTQuadDrawerUniformProjection;
 
-/// Name of <tt>attribute vec3</tt> variable required to exist in any vertex shader source used as
+/// Name of <tt>attribute vec4</tt> variable required to exist in any vertex shader source used as
 /// initialization parameter of an \c LTDynamicQuadDrawer object, providing access to the vertex
-/// position used by the corresponding shader.
+/// position used by the corresponding shader. The vertex position is given in homogeneous
+/// coordinates and is computed from the corresponding quad in the \c quads provided to the drawer.
 extern NSString * const kLTQuadDrawerAttributePosition;
 
-/// Name of <tt>attribute vec2</tt> variable required to exist in any vertex shader source used as
+/// Name of <tt>attribute vec3</tt> variable required to exist in any vertex shader source used as
 /// initialization parameter of an \c LTDynamicQuadDrawer object, providing access to the texture
-/// coordinate position used by the corresponding shader.
+/// coordinate position used by the corresponding shader, in homogeneous coordinates. The texture
+/// coordinate position is computed from the corresponding quad in the \c textureMapQuads provided
+/// to the drawer. It is the responsibility of the fragment shader to divide by the \c z coordinate
+/// in order to return from homogeneous UV space to regular UV space.
 extern NSString * const kLTQuadDrawerAttributeTexCoord;
 
 /// Name of <tt>uniform sampler2D</tt> variable required to exist in any fragment shader used as
@@ -62,10 +66,12 @@ extern NSString * const kLTQuadDrawerGPUStructName;
 /// Draws the given \c quads, given in normalized coordinates, onto the currently bound framebuffer.
 ///
 /// The drawing is performed in a single draw call, drawing two triangles per quad. For a quad with
-/// vertices \c v0, \c v1, \c v2, the first triangle has vertices \c v0, \c v1, and \c v2, while the
-/// second triangle has vertices \c v0, \c v2, and \c v3. The z-coordinate is equal for every vertex
-/// of a quad, and increases in steps of <tt>1.0 / quads.size()<\tt> per quad. For the first quad of
-/// the given \c quads the z-coordinate \c 0 is used.
+/// vertices \c v0, \c v1, \c v2, the first triangle has vertices \c v0', \c v1', and \c v2', while
+/// the second triangle has vertices \c v0', \c v2', and \c v3', where \c vx' is the point, in
+/// four-dimensional, homogeneous coordinates, projected onto \c vx in the fragment shader. The
+/// z-coordinate is equal for every vertex of a quad, and increases in steps of
+/// <tt>1.0 / quads.size()<\tt> per quad. For the first quad of the given \c quads the z-coordinate
+/// \c 0 is used.
 ///
 /// For each quad in the given \c quads, the given \c texture is sampled using the corresponding
 /// quad of the \c textureMapQuads, creating the corresponding texture mapping. Hence, the

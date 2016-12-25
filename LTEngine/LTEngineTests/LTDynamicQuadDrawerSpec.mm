@@ -7,6 +7,7 @@
 #import "LTFbo.h"
 #import "LTGLContext.h"
 #import "LTGPUStruct.h"
+#import "LTOpenCVExtensions.h"
 #import "LTShaderStorage+MixFsh.h"
 #import "LTShaderStorage+MixVsh.h"
 #import "LTShaderStorage+MixWithAttributeFsh.h"
@@ -116,9 +117,9 @@ context(@"drawing", ^{
   static const cv::Vec4b kYellow(255, 255, 0, 255);
   static const cv::Vec4b kDarkYellow(128, 128, 0, 255);
 
-  static const CGFloat kWidth = 10;
+  static const CGFloat kWidth = 100;
   static const CGFloat kHalfWidth = kWidth / 2;
-  static const CGFloat kHeight = 20;
+  static const CGFloat kHeight = 200;
   static const CGFloat kHalfHeight = kHeight / 2;
 
   static const lt::Quad fullQuad(CGPointMake(0, 0),
@@ -316,6 +317,166 @@ context(@"drawing", ^{
       }];
 
       expect($(outputTexture.image)).to.equalMat($(expectedMat));
+    });
+  });
+
+  context(@"general quad drawing", ^{
+    __block LTTexture *checkerboardTexture;
+
+    beforeEach(^{
+      cv::Mat4b checkerboard =
+          LTCheckerboardPattern(CGSizeMakeUniform(8), 1, cv::Vec4b(0, 0, 0, 255),
+                                cv::Vec4b(255, 255, 255, 255));
+      checkerboardTexture = [LTTexture textureWithImage:checkerboard];
+      checkerboardTexture.magFilterInterpolation = LTTextureInterpolationNearest;
+      checkerboardTexture.minFilterInterpolation = LTTextureInterpolationNearest;
+    });
+
+    afterEach(^{
+      checkerboardTexture = nil;
+    });
+
+    context(@"general quad geometry", ^{
+      it(@"should draw a perspectively distorted quad", ^{
+        lt::Quad quad({{CGPointZero, CGPointMake(1, 0.4), CGPointMake(1, 0.6), CGPointMake(0, 1)}});
+        [fbo bindAndDraw:^{
+          [drawer drawQuads:{quad} textureMapQuads:{lt::Quad::canonicalSquare()} attributeData:@[]
+                    texture:checkerboardTexture auxiliaryTextures:@{} uniforms:@{}];
+        }];
+
+        cv::Mat expected(LTLoadMat([self class], @"PerspectiveQuad0.png"));
+        expect($([outputTexture image])).to.equalMat($(expected));
+      });
+
+      it(@"should draw another perspectively distorted quad", ^{
+        lt::Quad quad({{
+          CGPointMake(0.4, 0),
+          CGPointMake(0.6, 0),
+          CGPointMake(1, 1),
+          CGPointMake(0, 1)
+        }});
+        [fbo bindAndDraw:^{
+          [drawer drawQuads:{quad} textureMapQuads:{lt::Quad::canonicalSquare()} attributeData:@[]
+                    texture:checkerboardTexture auxiliaryTextures:@{} uniforms:@{}];
+        }];
+
+        cv::Mat expected(LTLoadMat([self class], @"PerspectiveQuad1.png"));
+        expect($([outputTexture image])).to.equalMat($(expected));
+      });
+
+      it(@"should draw a general quad", ^{
+        lt::Quad quad({{
+          CGPointZero,
+          CGPointMake(0.8, 0.2),
+          CGPointMake(0.9, 0.7),
+          CGPointMake(0.1, 0.3)
+        }});
+        [fbo bindAndDraw:^{
+          [drawer drawQuads:{quad} textureMapQuads:{lt::Quad::canonicalSquare()} attributeData:@[]
+                    texture:checkerboardTexture auxiliaryTextures:@{} uniforms:@{}];
+        }];
+
+        cv::Mat expected(LTLoadMat([self class], @"PerspectiveGeneralQuad.png"));
+        expect($([outputTexture image])).to.equalMat($(expected));
+      });
+    });
+
+    context(@"general texture quads", ^{
+      it(@"should draw with a quad portion of a texture", ^{
+        lt::Quad quad({{CGPointZero, CGPointMake(1, 0.4), CGPointMake(1, 0.6), CGPointMake(0, 1)}});
+        [fbo bindAndDraw:^{
+          [drawer drawQuads:{lt::Quad::canonicalSquare()} textureMapQuads:{quad} attributeData:@[]
+                    texture:checkerboardTexture auxiliaryTextures:@{} uniforms:@{}];
+        }];
+
+        cv::Mat expected(LTLoadMat([self class], @"PerspectiveTextureQuad0.png"));
+        expect($([outputTexture image])).to.equalMat($(expected));
+      });
+
+      it(@"should draw with another quad portion of a texture", ^{
+        lt::Quad quad({{
+          CGPointMake(0.4, 0),
+          CGPointMake(0.6, 0),
+          CGPointMake(1, 1),
+          CGPointMake(0, 1)
+        }});
+        [fbo bindAndDraw:^{
+          [drawer drawQuads:{lt::Quad::canonicalSquare()} textureMapQuads:{quad} attributeData:@[]
+                    texture:checkerboardTexture auxiliaryTextures:@{} uniforms:@{}];
+        }];
+
+        cv::Mat expected(LTLoadMat([self class], @"PerspectiveTextureQuad1.png"));
+        expect($([outputTexture image])).to.equalMat($(expected));
+      });
+
+      it(@"should draw with yet another quad portion of a texture", ^{
+        lt::Quad quad({{
+          CGPointZero,
+          CGPointMake(0.8, 0.2),
+          CGPointMake(0.9, 0.7),
+          CGPointMake(0.1, 0.3)
+        }});
+        [fbo bindAndDraw:^{
+          [drawer drawQuads:{lt::Quad::canonicalSquare()} textureMapQuads:{quad} attributeData:@[]
+                    texture:checkerboardTexture auxiliaryTextures:@{} uniforms:@{}];
+        }];
+
+        cv::Mat expected(LTLoadMat([self class], @"PerspectiveTextureQuad2.png"));
+        expect($([outputTexture image])).to.equalMat($(expected));
+      });
+    });
+
+    context(@"general quad geometry and general texture quads", ^{
+      __block lt::Quad quad;
+
+      beforeEach(^{
+        quad = lt::Quad({{
+          CGPointZero,
+          CGPointMake(0.8, 0.2),
+          CGPointMake(0.9, 0.7),
+          CGPointMake(0.1, 0.9)
+        }});
+      });
+
+      it(@"should draw a general quad with a rectangular subregion of a texture", ^{
+        lt::Quad rectangularQuad(CGRectMake(0, 0, 1.0 / 4.0, 1.0 / 4.0));
+        [fbo bindAndDraw:^{
+          [drawer drawQuads:{quad} textureMapQuads:{rectangularQuad} attributeData:@[]
+                    texture:checkerboardTexture auxiliaryTextures:@{} uniforms:@{}];
+        }];
+
+        cv::Mat expected(LTLoadMat([self class],
+                                   @"PerspectiveGeneralQuadWithRectPortionOfTexture.png"));
+        expect($([outputTexture image])).to.equalMat($(expected));
+      });
+
+      it(@"should draw a general quad with a quad portion of a texture", ^{
+        [fbo bindAndDraw:^{
+          [drawer drawQuads:{quad} textureMapQuads:{quad} attributeData:@[]
+                    texture:checkerboardTexture auxiliaryTextures:@{} uniforms:@{}];
+        }];
+
+        cv::Mat expected(LTLoadMat([self class],
+                                   @"PerspectiveGeneralQuadWithQuadPortionOfTexture0.png"));
+        expect($([outputTexture image])).to.equalMat($(expected));
+      });
+
+      it(@"should draw a general quad with another quad portion of a texture", ^{
+        lt::Quad textureQuad({{
+          CGPointMake(0.4, 0),
+          CGPointMake(0.6, 0),
+          CGPointMake(1, 1),
+          CGPointMake(0, 1)
+        }});
+        [fbo bindAndDraw:^{
+          [drawer drawQuads:{quad} textureMapQuads:{textureQuad} attributeData:@[]
+                    texture:checkerboardTexture auxiliaryTextures:@{} uniforms:@{}];
+        }];
+
+        cv::Mat expected(LTLoadMat([self class],
+                                   @"PerspectiveGeneralQuadWithQuadPortionOfTexture1.png"));
+        expect($([outputTexture image])).to.equalMat($(expected));
+      });
     });
   });
 

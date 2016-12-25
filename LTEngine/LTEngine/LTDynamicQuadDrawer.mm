@@ -13,8 +13,8 @@
 /// This allows some GPUs to optimize the drawing of overlapping triangles, and drawing only the top
 /// one.
 LTGPUStructMake(LTDynamicQuadDrawerVertex,
-                LTVector3, position,
-                LTVector2, texcoord);
+                LTVector4, position,
+                LTVector3, texcoord);
 
 NSString * const kLTQuadDrawerUniformProjection = @"projection";
 NSString * const kLTQuadDrawerAttributePosition = @"position";
@@ -109,28 +109,27 @@ auxiliaryTextures:(NSDictionary<NSString *, LTTexture *> *)uniformsToAuxiliaryTe
     lt::Quad targetQuad = quads[i];
     lt::Quad textureMapQuad = textureMapQuads[i];
 
-    CGPoint v0 = targetQuad.v0();
-    CGPoint v1 = targetQuad.v1();
-    CGPoint v2 = targetQuad.v2();
-    CGPoint v3 = targetQuad.v3();
+    std::array<GLKVector3, 4> vertices = [self verticesForQuad:targetQuad];
+    std::array<GLKVector3, 4> texcoords = [self verticesForQuad:textureMapQuad];
 
-    CGPoint t0 = textureMapQuad.v0();
-    CGPoint t1 = textureMapQuad.v1();
-    CGPoint t2 = textureMapQuad.v2();
-    CGPoint t3 = textureMapQuad.v3();
-
-    attributes.push_back({.position = LTVector3(v0.x, v0.y, z),
-                          .texcoord = LTVector2(t0.x, t0.y)});
-    attributes.push_back({.position = LTVector3(v1.x, v1.y, z),
-                          .texcoord = LTVector2(t1.x, t1.y)});
-    attributes.push_back({.position = LTVector3(v2.x, v2.y, z),
-                          .texcoord = LTVector2(t2.x, t2.y)});
-    attributes.push_back({.position = LTVector3(v0.x, v0.y, z),
-                          .texcoord = LTVector2(t0.x, t0.y)});
-    attributes.push_back({.position = LTVector3(v2.x, v2.y, z),
-                          .texcoord = LTVector2(t2.x, t2.y)});
-    attributes.push_back({.position = LTVector3(v3.x, v3.y, z),
-                          .texcoord = LTVector2(t3.x, t3.y)});
+    attributes.push_back({.position = LTVector4(vertices[0].x, vertices[0].y, z * vertices[0].z,
+                                                vertices[0].z),
+                          .texcoord = LTVector3(texcoords[0].x, texcoords[0].y, texcoords[0].z)});
+    attributes.push_back({.position = LTVector4(vertices[1].x, vertices[1].y, z * vertices[1].z,
+                                                vertices[1].z),
+                          .texcoord = LTVector3(texcoords[1].x, texcoords[1].y, texcoords[1].z)});
+    attributes.push_back({.position = LTVector4(vertices[2].x, vertices[2].y, z * vertices[2].z,
+                                                vertices[2].z),
+                          .texcoord = LTVector3(texcoords[2].x, texcoords[2].y, texcoords[2].z)});
+    attributes.push_back({.position = LTVector4(vertices[0].x, vertices[0].y, z * vertices[0].z,
+                                                vertices[0].z),
+                          .texcoord = LTVector3(texcoords[0].x, texcoords[0].y, texcoords[0].z)});
+    attributes.push_back({.position = LTVector4(vertices[2].x, vertices[2].y, z * vertices[2].z,
+                                                vertices[2].z),
+                          .texcoord = LTVector3(texcoords[2].x, texcoords[2].y, texcoords[2].z)});
+    attributes.push_back({.position = LTVector4(vertices[3].x, vertices[3].y, z * vertices[3].z,
+                                                vertices[3].z),
+                          .texcoord = LTVector3(texcoords[3].x, texcoords[3].y, texcoords[3].z)});
 
     z += 1.0 / numberOfQuads;
   }
@@ -138,6 +137,16 @@ auxiliaryTextures:(NSDictionary<NSString *, LTTexture *> *)uniformsToAuxiliaryTe
   NSData *data = [NSData dataWithBytes:&attributes[0]
                                 length:attributes.size() * sizeof(attributes[0])];
   return [[LTAttributeData alloc] initWithData:data inFormatOfGPUStruct:self.gpuStruct];
+}
+
+- (std::array<GLKVector3, 4>)verticesForQuad:(lt::Quad)quad {
+  GLKMatrix3 transform = GLKMatrix3Transpose(quad.transform());
+  return {{
+    GLKMatrix3MultiplyVector3(transform, GLKVector3Make(0, 0, 1)),
+    GLKMatrix3MultiplyVector3(transform, GLKVector3Make(1, 0, 1)),
+    GLKMatrix3MultiplyVector3(transform, GLKVector3Make(1, 1, 1)),
+    GLKMatrix3MultiplyVector3(transform, GLKVector3Make(0, 1, 1))
+  }};
 }
 
 - (NSDictionary<NSString *, LTTexture *> *)
