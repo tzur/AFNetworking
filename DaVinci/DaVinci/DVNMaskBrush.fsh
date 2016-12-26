@@ -18,9 +18,10 @@ uniform int mode;
 uniform int channel;
 
 uniform highp float flow;
-uniform highp float hardness;
 uniform highp float edgeAvoidance;
 
+varying highp vec3 vTexcoord;
+varying highp vec2 vImgcoord;
 varying highp vec2 vQuadTransform;
 varying highp vec2 vQuadCenter;
 varying highp vec2 vSamplePoint0;
@@ -36,7 +37,7 @@ highp float edgeAvoidanceFactor(in highp float strength, in sampler2D guideTextu
                                 in highp vec2 sampleCoords0, in highp vec2 sampleCoords1,
                                 in highp vec2 sampleCoords2, in highp vec2 sampleCoords3,
                                 in highp vec2 sampleCoords4) {
-  if (edgeAvoidance <= 0.0) {
+  if (strength <= 0.0) {
     return 1.0;
   }
   
