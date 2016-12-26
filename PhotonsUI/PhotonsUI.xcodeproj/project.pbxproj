@@ -93,7 +93,7 @@
 		BE8C7C741DFEA6F100FE1508 /* PTUAlbumViewModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = BE8C7C731DFEA6F100FE1508 /* PTUAlbumViewModel.mm */; };
 		BE8C7C981DFEA86900FE1508 /* PTUAlbumViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = BE8C7C971DFEA86900FE1508 /* PTUAlbumViewController.mm */; };
 		BE8C7C9A1DFECA4100FE1508 /* PTUAlbumViewModelSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = BE8C7C991DFECA4100FE1508 /* PTUAlbumViewModelSpec.mm */; };
-		BE8C7C9C1DFECAD500FE1508 /* PTUAlbumViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = BE8C7C9B1DFECAD500FE1508 /* PTUAlbumViewController.mm */; };
+		BE8C7C9C1DFECAD500FE1508 /* PTUAlbumViewControllerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = BE8C7C9B1DFECAD500FE1508 /* PTUAlbumViewControllerSpec.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -564,7 +564,7 @@
 		BE8C7C961DFEA86900FE1508 /* PTUAlbumViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTUAlbumViewController.h; sourceTree = "<group>"; };
 		BE8C7C971DFEA86900FE1508 /* PTUAlbumViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PTUAlbumViewController.mm; sourceTree = "<group>"; };
 		BE8C7C991DFECA4100FE1508 /* PTUAlbumViewModelSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PTUAlbumViewModelSpec.mm; sourceTree = "<group>"; };
-		BE8C7C9B1DFECAD500FE1508 /* PTUAlbumViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PTUAlbumViewController.mm; sourceTree = "<group>"; };
+		BE8C7C9B1DFECAD500FE1508 /* PTUAlbumViewControllerSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PTUAlbumViewControllerSpec.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -918,7 +918,7 @@
 		84B63E801DD8DC8F00ECF65B /* Base */ = {
 			isa = PBXGroup;
 			children = (
-				BE8C7C9B1DFECAD500FE1508 /* PTUAlbumViewController.mm */,
+				BE8C7C9B1DFECAD500FE1508 /* PTUAlbumViewControllerSpec.mm */,
 				BE8C7C991DFECA4100FE1508 /* PTUAlbumViewModelSpec.mm */,
 				84F830DC1D11986E00A01882 /* PTUCellSizingStrategySpec.mm */,
 				8449B5F71D1AD6F10054272C /* PTUChangesetMetadataSpec.mm */,
@@ -1487,7 +1487,7 @@
 				84AB7E5D1C85DF2D008E254A /* PTUImageCellViewSpec.mm in Sources */,
 				848E09801C59212F001D8368 /* EXPMatchers+sendEvents.m in Sources */,
 				84F11CF11D2EBDD7002FA1CF /* PTNFakeAssetManager.m in Sources */,
-				BE8C7C9C1DFECAD500FE1508 /* PTUAlbumViewController.mm in Sources */,
+				BE8C7C9C1DFECAD500FE1508 /* PTUAlbumViewControllerSpec.mm in Sources */,
 				8428F3AF1C68F7590007B0A5 /* PTUChangesetSpec.mm in Sources */,
 				84F830FB1D11A0B900A01882 /* EXPMatchers+beCloseToPoint.mm in Sources */,
 				848E097B1C59212F001D8368 /* EXPMatchers+finish.m in Sources */,
