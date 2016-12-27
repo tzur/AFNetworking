@@ -19,7 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// it concurrently will result in unexpected behavior.
 @interface PTNPhotoKitFakeChangeManager : NSObject <PTNPhotoKitChangeManager>
 
-/// Asset requested to be created by the manager.
+/// Asset requested to be created by the manager. This includes assets of all supported media types.
 @property (readonly, nonatomic) NSArray *assetCreationRequests;
 
 /// Asset requested to be deleted by the manager.
