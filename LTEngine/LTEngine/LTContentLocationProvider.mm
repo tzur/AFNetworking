@@ -3,6 +3,8 @@
 
 #import "LTContentLocationProvider.h"
 
+#import <LTKit/LTHashExtensions.h>
+
 NS_ASSUME_NONNULL_BEGIN
 
 @implementation LTContentLocationInfo
@@ -13,6 +15,10 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize visibleContentRect = _visibleContentRect;
 @synthesize maxZoomScale = _maxZoomScale;
 @synthesize zoomScale = _zoomScale;
+
+#pragma mark -
+#pragma mark Initialization
+#pragma mark -
 
 - (instancetype)initWithContentSize:(CGSize)contentSize
                  contentScaleFactor:(CGFloat)contentScaleFactor
@@ -37,6 +43,41 @@ NS_ASSUME_NONNULL_BEGIN
                       contentInset:provider.contentInset
                 visibleContentRect:provider.visibleContentRect maxZoomScale:provider.maxZoomScale
                          zoomScale:provider.zoomScale];
+}
+
+#pragma mark -
+#pragma mark NSObject
+#pragma mark -
+
+- (BOOL)isEqual:(LTContentLocationInfo *)locationInfo {
+  if (self == locationInfo) {
+    return YES;
+  }
+
+  if (![locationInfo isKindOfClass:[self class]]) {
+    return NO;
+  }
+
+  return locationInfo.contentSize == self.contentSize &&
+      locationInfo.contentScaleFactor == self.contentScaleFactor &&
+      locationInfo.contentInset == self.contentInset &&
+      locationInfo.visibleContentRect == self.visibleContentRect &&
+      locationInfo.maxZoomScale == self.maxZoomScale &&
+      locationInfo.zoomScale == self.zoomScale;
+}
+
+- (NSUInteger)hash {
+  size_t seed = 0;
+  lt::hash_combine(seed, self.contentSize);
+  lt::hash_combine(seed, self.contentScaleFactor);
+  lt::hash_combine(seed, self.contentInset.top);
+  lt::hash_combine(seed, self.contentInset.left);
+  lt::hash_combine(seed, self.contentInset.bottom);
+  lt::hash_combine(seed, self.contentInset.right);
+  lt::hash_combine(seed, self.visibleContentRect);
+  lt::hash_combine(seed, self.maxZoomScale);
+  lt::hash_combine(seed, self.zoomScale);
+  return seed;
 }
 
 @end

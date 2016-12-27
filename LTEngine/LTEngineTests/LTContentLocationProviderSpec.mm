@@ -3,6 +3,8 @@
 
 #import "LTContentLocationProvider.h"
 
+#import <LTKitTests/LTEqualityExamples.h>
+
 SpecBegin(LTContentLocationInfo)
 
 context(@"initialization", ^{
@@ -53,6 +55,69 @@ context(@"initialization", ^{
     expect(info.visibleContentRect).to.equal(visibleContentRect);
     expect(info.maxZoomScale).to.equal(maxZoomScale);
     expect(info.zoomScale).to.equal(zoomScale);
+  });
+
+  itShouldBehaveLike(kLTEqualityExamples, ^{
+    LTContentLocationInfo *info =
+        [[LTContentLocationInfo alloc] initWithContentSize:contentSize
+                                        contentScaleFactor:contentScaleFactor
+                                              contentInset:contentInset
+                                        visibleContentRect:visibleContentRect
+                                              maxZoomScale:maxZoomScale zoomScale:zoomScale];
+    LTContentLocationInfo *equalInfo =
+        [[LTContentLocationInfo alloc] initWithContentSize:contentSize
+                                        contentScaleFactor:contentScaleFactor
+                                              contentInset:contentInset
+                                        visibleContentRect:visibleContentRect
+                                              maxZoomScale:maxZoomScale zoomScale:zoomScale];
+    LTContentLocationInfo *infoWithDifferentContentSize =
+        [[LTContentLocationInfo alloc] initWithContentSize:contentSize + CGSizeMakeUniform(1)
+                                        contentScaleFactor:contentScaleFactor
+                                              contentInset:contentInset
+                                        visibleContentRect:visibleContentRect
+                                              maxZoomScale:maxZoomScale zoomScale:zoomScale];
+    LTContentLocationInfo *infoWithDifferentContentScaleFactor =
+        [[LTContentLocationInfo alloc] initWithContentSize:contentSize
+                                        contentScaleFactor:contentScaleFactor + 1
+                                              contentInset:contentInset
+                                        visibleContentRect:visibleContentRect
+                                              maxZoomScale:maxZoomScale zoomScale:zoomScale];
+    LTContentLocationInfo *infoWithDifferentContentInset =
+        [[LTContentLocationInfo alloc] initWithContentSize:contentSize
+                                        contentScaleFactor:contentScaleFactor
+                                              contentInset:UIEdgeInsetsMake(1, 2, 3, 4)
+                                        visibleContentRect:visibleContentRect
+                                              maxZoomScale:maxZoomScale zoomScale:zoomScale];
+    LTContentLocationInfo *infoWithDifferentVisibleContentRect =
+        [[LTContentLocationInfo alloc] initWithContentSize:contentSize
+                                        contentScaleFactor:contentScaleFactor
+                                              contentInset:contentInset
+                                        visibleContentRect:CGRectMake(0, 1, 2, 3)
+                                              maxZoomScale:maxZoomScale zoomScale:zoomScale];
+    LTContentLocationInfo *infoWithDifferentMaxZoomScale =
+        [[LTContentLocationInfo alloc] initWithContentSize:contentSize
+                                        contentScaleFactor:contentScaleFactor
+                                              contentInset:contentInset
+                                        visibleContentRect:visibleContentRect
+                                              maxZoomScale:maxZoomScale + 1 zoomScale:zoomScale];
+    LTContentLocationInfo *infoWithDifferentZoomScale =
+        [[LTContentLocationInfo alloc] initWithContentSize:contentSize
+                                        contentScaleFactor:contentScaleFactor
+                                              contentInset:contentInset
+                                        visibleContentRect:visibleContentRect
+                                              maxZoomScale:maxZoomScale zoomScale:zoomScale + 1];
+    return @{
+      kLTEqualityExamplesObject: info,
+      kLTEqualityExamplesEqualObject: equalInfo,
+      kLTEqualityExamplesDifferentObjects: @[
+          infoWithDifferentContentSize,
+          infoWithDifferentContentScaleFactor,
+          infoWithDifferentContentInset,
+          infoWithDifferentVisibleContentRect,
+          infoWithDifferentMaxZoomScale,
+          infoWithDifferentZoomScale
+      ]
+    };
   });
 });
 
