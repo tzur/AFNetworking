@@ -49,13 +49,15 @@ void LTConvertHalfFloat(const cv::Mat &input, cv::Mat *output, double alpha = 1)
 /// fourth.
 void LTInPlaceFFTShift(cv::Mat *mat);
 
-/// Performs a pre-divide, to convert an image with premultiplied alpha into a non-premultiplied
-/// one. Throws exception if the input format is not byte RGBA.
-void LTPreDivideMat(cv::Mat *mat);
+/// Converts an image with premultiplied alpha into one with non-premultiplied alpha. \c input and
+/// \c output must be of equal size and type, type must be CV_8UC4 or CV_32FC4. If \c input equals
+/// \c output, performs the operation in-place.
+void LTUnpremultiplyMat(const cv::Mat &input, cv::Mat *output);
 
-/// Performs a pre-multiply, to convert an image with non-premultiplied alpha into a premultiplied
-/// one. Throws exception if the input format is not byte RGBA.
-void LTPreMultiplyMat(cv::Mat *mat);
+/// Converts an image with non-premultiplied alpha into one with premultiplied alpha. \c input and
+/// \c output must be of equal size and type, type must be CV_8UC4 or CV_32FC4. If \c input equals
+/// \c output, performs the operation in-place.
+void LTPremultiplyMat(const cv::Mat &input, cv::Mat *output);
 
 /// Loads an image with the given \c name from the bundle that contains the given class. Throws
 /// exception if the image cannot be found or loaded.

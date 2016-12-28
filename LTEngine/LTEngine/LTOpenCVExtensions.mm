@@ -3,6 +3,7 @@
 
 #import "LTOpenCVExtensions.h"
 
+#import <Accelerate/Accelerate.h>
 #import <LTKit/NSBundle+Path.h>
 
 #import "LTGLKitExtensions.h"
@@ -111,27 +112,71 @@ void LTInPlaceFFTShift(cv::Mat *mat) {
   temp.copyTo(q2);
 }
 
-void LTPreDivideMat(cv::Mat *mat) {
-  LTParameterAssert(mat->type() == CV_8UC4, @"preDivide only works on byte RGBA images");
-  std::transform(mat->begin<cv::Vec4b>(), mat->end<cv::Vec4b>(), mat->begin<cv::Vec4b>(),
-                 [](const cv::Vec4b &color) -> cv::Vec4b {
-    if (!color[3]) {
-      return cv::Vec4b();
-    }
-    LTVector3 rgb = LTVector3(color[0], color[1], color[2]) / ((color[3] / 255.0) ?: 1.0);
-    rgb = std::min(std::round(rgb), LTVector3(UCHAR_MAX, UCHAR_MAX, UCHAR_MAX));
-    return cv::Vec4b(rgb.r(), rgb.g(), rgb.b(), color[3]);
-  });
+static inline vImage_Buffer LTConvertMatToVImageBuffer(const cv::Mat &mat) {
+  return {
+    .data = mat.data,
+    .height = (vImagePixelCount)mat.rows,
+    .width = (vImagePixelCount)mat.cols,
+    .rowBytes = mat.step[0]
+  };
 }
 
-void LTPreMultiplyMat(cv::Mat *mat) {
-  LTParameterAssert(mat->type() == CV_8UC4, @"preMultiply only works on byte RGBA images");
-  std::transform(mat->begin<cv::Vec4b>(), mat->end<cv::Vec4b>(), mat->begin<cv::Vec4b>(),
-                 [](const cv::Vec4b &color) -> cv::Vec4b {
-    LTVector3 rgb = LTVector3(color[0], color[1], color[2]) * (color[3] / 255.0);
-    rgb = std::min(std::round(rgb), LTVector3(UCHAR_MAX, UCHAR_MAX, UCHAR_MAX));
-    return cv::Vec4b(rgb.r(), rgb.g(), rgb.b(), color[3]);
-  });
+void LTUnpremultiplyMat(const cv::Mat &input, cv::Mat *output) {
+  LTParameterAssert(input.size() == output->size(),
+                    @"input size (%d, %d) must equal output size (%d, %d)", input.rows, input.cols,
+                    output->rows, output->cols);
+  LTParameterAssert(input.type() == output->type(),
+                    @"input type (%d) must equal output type (%d)", input.type(), output->type());
+  LTParameterAssert(input.type() == CV_32FC4 || input.type() == CV_8UC4,
+                    @"input must be of type CV_32FC4 or CV_8UC4, got: %d", input.type());
+
+  vImage_Buffer source = LTConvertMatToVImageBuffer(input);
+  vImage_Buffer destination = LTConvertMatToVImageBuffer(*output);
+
+  vImage_Error errorCode;
+
+  switch (input.depth()) {
+    case CV_8U:
+      errorCode = vImageUnpremultiplyData_RGBA8888(&source, &destination, NULL);
+      break;
+    case CV_32F:
+      errorCode = vImageUnpremultiplyData_RGBAFFFF(&source, &destination, NULL);
+      break;
+    default:
+      LTAssert(NO, @"Invalid input depth %d", input.depth());
+  }
+
+  LTParameterAssert(errorCode == kvImageNoError, @"vImageUnpremultiplyData failed with error %zd",
+                    errorCode);
+}
+
+void LTPremultiplyMat(const cv::Mat &input, cv::Mat *output) {
+  LTParameterAssert(input.size() == output->size(),
+                    @"input size (%d, %d) must equal output size (%d, %d)", input.rows, input.cols,
+                    output->rows, output->cols);
+  LTParameterAssert(input.type() == output->type(),
+                    @"input type (%d) must equal output type (%d)", input.type(), output->type());
+  LTParameterAssert(input.type() == CV_32FC4 || input.type() == CV_8UC4,
+                    @"input must be of type CV_32FC4 or CV_8UC4, got: %d", input.type());
+
+  vImage_Buffer source = LTConvertMatToVImageBuffer(input);
+  vImage_Buffer destination = LTConvertMatToVImageBuffer(*output);
+
+  vImage_Error errorCode;
+
+  switch (input.depth()) {
+    case CV_8U:
+      errorCode = vImagePremultiplyData_RGBA8888(&source, &destination, NULL);
+      break;
+    case CV_32F:
+      errorCode = vImagePremultiplyData_RGBAFFFF(&source, &destination, NULL);
+      break;
+    default:
+      LTAssert(NO, @"Invalid input depth %d", input.depth());
+  }
+
+  LTParameterAssert(errorCode == kvImageNoError, @"ImagePremultiplyData failed with error %zd",
+                    errorCode);
 }
 
 UIImage *LTLoadImage(Class classInBundle, NSString *name) {
@@ -145,7 +190,7 @@ UIImage *LTLoadImage(Class classInBundle, NSString *name) {
 cv::Mat LTMatFromImage(UIImage *image, BOOL preDivide) {
   cv::Mat mat = [[LTImage alloc] initWithImage:image].mat;
   if (preDivide) {
-    LTPreDivideMat(&mat);
+    LTUnpremultiplyMat(mat, &mat);
   }
   return mat;
 }
