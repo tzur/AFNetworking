@@ -187,26 +187,26 @@ UIImage *LTLoadImage(Class classInBundle, NSString *name) {
   return image;
 }
 
-cv::Mat LTMatFromImage(UIImage *image, BOOL preDivide) {
+cv::Mat LTMatFromImage(UIImage *image, BOOL unpremultiply) {
   cv::Mat mat = [[LTImage alloc] initWithImage:image].mat;
-  if (preDivide) {
+  if (unpremultiply) {
     LTUnpremultiplyMat(mat, &mat);
   }
   return mat;
 }
 
-cv::Mat LTLoadMat(Class classInBundle, NSString *name, BOOL preDivide) {
-  return LTMatFromImage(LTLoadImage(classInBundle, name), preDivide);
+cv::Mat LTLoadMat(Class classInBundle, NSString *name, BOOL unpremultiply) {
+  return LTMatFromImage(LTLoadImage(classInBundle, name), unpremultiply);
 }
 
-cv::Mat LTLoadMatFromMainBundle(NSString *name, BOOL preDivide) {
-  return LTMatFromImage([UIImage imageNamed:name], preDivide);
+cv::Mat LTLoadMatFromMainBundle(NSString *name, BOOL unpremultiply) {
+  return LTMatFromImage([UIImage imageNamed:name], unpremultiply);
 }
 
-cv::Mat LTLoadMatFromBundle(NSBundle *bundle, NSString *name, BOOL preDivide) {
+cv::Mat LTLoadMatFromBundle(NSBundle *bundle, NSString *name, BOOL unpremultiply) {
   NSString *path = [bundle lt_pathForResource:name];
   LTParameterAssert(path, @"Given image name '%@' cannot be found in the bundle %@", name, bundle);
-  return LTMatFromImage([UIImage imageWithContentsOfFile:path], preDivide);
+  return LTMatFromImage([UIImage imageWithContentsOfFile:path], unpremultiply);
 }
 
 static double LTNormalizationFactorForGaussianMat(const cv::Mat &mat, double sigma) {

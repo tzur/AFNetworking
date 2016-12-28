@@ -64,22 +64,22 @@ void LTPremultiplyMat(const cv::Mat &input, cv::Mat *output);
 UIImage *LTLoadImage(Class classInBundle, NSString *name);
 
 /// Loads an image to \c cv::Mat with the given \c name from the bundle that contains the given
-/// class. If \c preDivide is \c YES, the mat will be pre-divided to undo the alpha
+/// class. If \c unpremultiply is \c YES, the mat will be divided to undo the alpha
 /// premultiplication. Throws exception if the image cannot be found or loaded, or if trying to
-/// preDivide a non byte RGBA image.
-cv::Mat LTLoadMat(Class classInBundle, NSString *name, BOOL preDivide = NO);
+/// unpremultiply a non byte RGBA image.
+cv::Mat LTLoadMat(Class classInBundle, NSString *name, BOOL unpremultiply = NO);
 
 /// Loads an image from the main bundle to \c cv::Mat with the given \c name.
-/// If \c preDivide is \c YES, the mat will be pre-divided to undo the alpha premultiplication.
-/// Throws exception if the image cannot be found or loaded, or if trying to preDivide a non byte
-/// RGBA image.
-cv::Mat LTLoadMatFromMainBundle(NSString *name, BOOL preDivide = NO);
+/// If \c unpremultiply is \c YES, the mat will be divided to undo the alpha premultiplication.
+/// Throws exception if the image cannot be found or loaded, or if trying to unpremultiply a non
+/// byte RGBA image.
+cv::Mat LTLoadMatFromMainBundle(NSString *name, BOOL unpremultiply = NO);
 
 /// Loads an image from the main bundle to \c cv::Mat with the given \c name.
-/// If \c preDivide is \c YES, the mat will be pre-divided to undo the alpha premultiplication.
-/// Throws exception if the image cannot be found or loaded, or if trying to preDivide a non byte
-/// RGBA image.
-cv::Mat LTLoadMatFromBundle(NSBundle *bundle, NSString *name, BOOL preDivide = NO);
+/// If \c unpremultiply is \c YES, the mat will be divided to undo the alpha premultiplication.
+/// Throws exception if the image cannot be found or loaded, or if trying to unpremultiply a non
+/// byte RGBA image.
+cv::Mat LTLoadMatFromBundle(NSBundle *bundle, NSString *name, BOOL unpremultiply = NO);
 
 /// Generates a single-channel half-float matrix with the given size, containing a gaussian with
 /// the given sigma. If \c normalized is \c YES, the gaussian will be normalized such that its
