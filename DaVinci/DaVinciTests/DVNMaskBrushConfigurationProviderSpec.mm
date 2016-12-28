@@ -47,7 +47,10 @@ SpecBegin(DVNMaskBrushConfigurationProvider)
 __block DVNFakeMaskBrushParametersProvider *parametersProvider;
 __block DVNBrushTipsProvider *brushTipsProvider;
 __block DVNMaskBrushConfigurationProvider *provider;
-__block LTTexture *texture;
+__block LTTexture *smoothTipTexture;
+__block LTTexture *hardTipTexture;
+
+static const CGFloat kAdditiveChangeFactor = 0.1;
 
 beforeEach(^{
   parametersProvider = [[DVNFakeMaskBrushParametersProvider alloc] init];
@@ -60,10 +63,15 @@ beforeEach(^{
   parametersProvider.channel = DVNMaskBrushChannelR;
   parametersProvider.edgeAvoidanceGuideTexture = [LTTexture textureWithImage:cv::Mat4b(10, 20)];
   
-  texture = OCMClassMock([LTTexture class]);
+  smoothTipTexture = OCMClassMock([LTTexture class]);
+  hardTipTexture = OCMClassMock([LTTexture class]);
   brushTipsProvider = OCMClassMock([DVNBrushTipsProvider class]);
-  OCMStub([brushTipsProvider roundTipWithDimension:kMaskBrushDimension
-                                          hardness:parametersProvider.hardness]).andReturn(texture);
+  OCMStub([brushTipsProvider
+           roundTipWithDimension:kMaskBrushDimension
+           hardness:parametersProvider.hardness]).andReturn(smoothTipTexture);
+  OCMStub([brushTipsProvider
+           roundTipWithDimension:kMaskBrushDimension
+           hardness:parametersProvider.hardness + kAdditiveChangeFactor]).andReturn(hardTipTexture);
   
   provider = [[DVNMaskBrushConfigurationProvider alloc]
               initWithParametersProvider:parametersProvider brushTipsProvider:brushTipsProvider];
@@ -72,7 +80,8 @@ beforeEach(^{
 afterEach(^{
   parametersProvider = nil;
   provider = nil;
-  texture = nil;
+  smoothTipTexture = nil;
+  hardTipTexture = nil;
   brushTipsProvider = nil;
 });
 
@@ -97,7 +106,7 @@ context(@"provider", ^{
     expect(configuration).toNot.beNil();
   });
 
-  context(@"sampler", ^{
+  context(@"sampling stage configuration", ^{
     it(@"should return a configuration with sampler of correct class", ^{
       expect(configuration.samplingStageConfiguration).to.beKindOf([LTFloatSetSamplerModel class]);
     });
@@ -126,20 +135,36 @@ context(@"provider", ^{
     });
   });
 
-  it(@"should return a configuration with correct DVNGeometryProviderModel", ^{
-    expect(configuration.geometryStageConfiguration).to.beKindOf([DVNSquareProviderModel class]);
+  context(@"geometry stage configuration", ^{
+    it(@"should return a configuration with correct DVNGeometryProviderModel", ^{
+      expect(configuration.geometryStageConfiguration).to.beKindOf([DVNSquareProviderModel class]);
+      
+      DVNSquareProviderModel *model =
+          (DVNSquareProviderModel *)configuration.geometryStageConfiguration;
+      expect(model.edgeLength).to.equal(parametersProvider.diameter);
+    });
     
-    DVNSquareProviderModel *model =
-        (DVNSquareProviderModel *)configuration.geometryStageConfiguration;
-    expect(model.edgeLength).to.equal(parametersProvider.diameter);
+    it(@"should return correct configuration after diameter parameter has changed", ^{
+      parametersProvider.diameter += kAdditiveChangeFactor;
+      DVNSquareProviderModel *model =
+          (DVNSquareProviderModel *)[provider configuration].geometryStageConfiguration;
+      expect(model.edgeLength).to.equal(parametersProvider.diameter);
+    });
   });
   
-  it(@"should return a configuration with correct DVNTextureMappingStageConfiguration", ^{
-    DVNTextureMappingStageConfiguration *textureMappingStageConfiguration =
-        configuration.textureStageConfiguration;
-    expect(textureMappingStageConfiguration.texture).to.equal(texture);
-    expect(textureMappingStageConfiguration.model)
-        .to.beKindOf([DVNCanonicalTexCoordProviderModel class]);
+  context(@"texture mapping stage configuration", ^{
+    it(@"should return a configuration with correct DVNTextureMappingStageConfiguration", ^{
+      DVNTextureMappingStageConfiguration *textureMappingStageConfiguration =
+      configuration.textureStageConfiguration;
+      expect(textureMappingStageConfiguration.texture).to.equal(smoothTipTexture);
+      expect(textureMappingStageConfiguration.model)
+          .to.beKindOf([DVNCanonicalTexCoordProviderModel class]);
+    });
+    
+    it(@"should return correct configuration after hardness parameter has changed", ^{
+      parametersProvider.hardness += kAdditiveChangeFactor;
+      expect([provider configuration].textureStageConfiguration.texture).to.equal(hardTipTexture);
+    });
   });
   
   it(@"should return a configuration with correct DVNAttributeStageConfiguration", ^{
@@ -149,23 +174,47 @@ context(@"provider", ^{
         .to.equal(@[[[DVNQuadAttributeProviderModel alloc] init]]);
   });
   
-  it(@"should return a configuration with correct DVNRenderStageConfiguration", ^{
-    NSDictionary<NSString *, LTTexture *> *expectedAuxiliaryTextures = @{
-      @"edgeAvoidanceGuideTexture": parametersProvider.edgeAvoidanceGuideTexture
-    };
-    NSDictionary<NSString *, NSValue *> *expectedUniforms = @{
-      [DVNMaskBrushFsh channel]: @(parametersProvider.channel),
-      [DVNMaskBrushFsh mode]: @(parametersProvider.mode),
-      [DVNMaskBrushFsh flow]: @(parametersProvider.flow),
-      [DVNMaskBrushFsh hardness]: @(parametersProvider.hardness),
-      [DVNMaskBrushFsh edgeAvoidance]: @(parametersProvider.edgeAvoidance)
-    };
-    DVNRenderStageConfiguration *renderStageConfiguration =
-        configuration.renderStageConfiguration;
-    expect(renderStageConfiguration.vertexSource).to.equal([DVNMaskBrushVsh source]);
-    expect(renderStageConfiguration.fragmentSource).to.equal([DVNMaskBrushFsh source]);
-    expect(renderStageConfiguration.auxiliaryTextures).to.equal(expectedAuxiliaryTextures);
-    expect(renderStageConfiguration.uniforms).to.equal(expectedUniforms);
+  context(@"rendering stage configuration", ^{
+    it(@"should return a configuration with correct DVNRenderStageConfiguration", ^{
+      DVNRenderStageConfiguration *renderStageConfiguration =
+          configuration.renderStageConfiguration;
+      NSDictionary<NSString *, LTTexture *> *expectedAuxiliaryTextures = @{
+        [DVNMaskBrushFsh edgeAvoidanceGuideTexture]: parametersProvider.edgeAvoidanceGuideTexture
+      };
+      NSDictionary<NSString *, NSValue *> *expectedUniforms = @{
+        [DVNMaskBrushFsh channel]: @(parametersProvider.channel),
+        [DVNMaskBrushFsh mode]: @(parametersProvider.mode),
+        [DVNMaskBrushFsh flow]: @(parametersProvider.flow),
+        [DVNMaskBrushFsh edgeAvoidance]: @(parametersProvider.edgeAvoidance)
+      };
+      expect(renderStageConfiguration.vertexSource).to.equal([DVNMaskBrushVsh source]);
+      expect(renderStageConfiguration.fragmentSource).to.equal([DVNMaskBrushFsh source]);
+      expect(renderStageConfiguration.auxiliaryTextures).to.equal(expectedAuxiliaryTextures);
+      expect(renderStageConfiguration.uniforms).to.equal(expectedUniforms);
+    });
+    
+    it(@"should return correct configuration after parameters have changed", ^{
+      parametersProvider.channel = DVNMaskBrushChannelG;
+      parametersProvider.mode = DVNMaskBrushModeSubtract;
+      parametersProvider.flow += kAdditiveChangeFactor;
+      parametersProvider.edgeAvoidance += kAdditiveChangeFactor;
+      parametersProvider.edgeAvoidanceGuideTexture = OCMClassMock([LTTexture class]);
+      DVNRenderStageConfiguration *renderStageConfiguration =
+          [provider configuration].renderStageConfiguration;
+      NSDictionary<NSString *, LTTexture *> *expectedAuxiliaryTextures = @{
+        [DVNMaskBrushFsh edgeAvoidanceGuideTexture]: parametersProvider.edgeAvoidanceGuideTexture
+      };
+      NSDictionary<NSString *, NSValue *> *expectedUniforms = @{
+        [DVNMaskBrushFsh channel]: @(parametersProvider.channel),
+        [DVNMaskBrushFsh mode]: @(parametersProvider.mode),
+        [DVNMaskBrushFsh flow]: @(parametersProvider.flow),
+        [DVNMaskBrushFsh edgeAvoidance]: @(parametersProvider.edgeAvoidance)
+      };
+      expect(renderStageConfiguration.vertexSource).to.equal([DVNMaskBrushVsh source]);
+      expect(renderStageConfiguration.fragmentSource).to.equal([DVNMaskBrushFsh source]);
+      expect(renderStageConfiguration.auxiliaryTextures).to.equal(expectedAuxiliaryTextures);
+      expect(renderStageConfiguration.uniforms).to.equal(expectedUniforms);
+    });
   });
 });
 
