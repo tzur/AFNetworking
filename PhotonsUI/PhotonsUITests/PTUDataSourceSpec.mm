@@ -7,17 +7,19 @@
 #import "PTNTestUtils.h"
 #import "PTUChangeset.h"
 #import "PTUChangesetMetadata.h"
+#import "PTUChangesetMove.h"
 #import "PTUChangesetProvider.h"
 #import "PTUHeaderCell.h"
 #import "PTUImageCell.h"
 #import "PTUImageCellViewModelProvider.h"
+#import "PTUTestUtils.h"
 
 SpecBegin(PTUDataSource)
 
 __block PTUDataSource *dataSource;
 __block RACSubject *dataSignal;
 __block RACSubject *metadataSignal;
-__block UICollectionView *collectionView;
+__block id collectionView;
 __block id<UICollectionViewDataSource> collectionViewDataSource;
 __block id<PTUChangesetProvider> changesetProvider;
 __block id<PTUImageCellViewModelProvider> viewModelProvider;
@@ -72,23 +74,23 @@ it(@"should remain up to date with sent data", ^{
   PTUChangeset *changeset = [[PTUChangeset alloc] initWithAfterDataModel:@[@[@1], @[@2, @3]]];
   [dataSignal sendNext:changeset];
   expect([dataSource descriptorAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]])
-      .to.equal(@1);
+      .will.equal(@1);
   expect([dataSource descriptorAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:1]])
-      .to.equal(@2);
+      .will.equal(@2);
   expect([dataSource descriptorAtIndexPath:[NSIndexPath indexPathForItem:1 inSection:1]])
-      .to.equal(@3);
+      .will.equal(@3);
   expect([dataSource descriptorAtIndexPath:[NSIndexPath indexPathForItem:1 inSection:0]])
-      .to.beNil();
+      .will.beNil();
   expect([dataSource descriptorAtIndexPath:[NSIndexPath indexPathForItem:2 inSection:1]])
-      .to.beNil();
+      .will.beNil();
   expect([dataSource descriptorAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:2]])
-      .to.beNil();
+      .will.beNil();
   expect([dataSource indexPathOfDescriptor:(id<PTNDescriptor>)@1])
-      .to.equal([NSIndexPath indexPathForItem:0 inSection:0]);
+      .will.equal([NSIndexPath indexPathForItem:0 inSection:0]);
   expect([dataSource indexPathOfDescriptor:(id<PTNDescriptor>)@2])
-      .to.equal([NSIndexPath indexPathForItem:0 inSection:1]);
-  expect([dataSource indexPathOfDescriptor:(id<PTNDescriptor>)@4]).to.beNil();
-  expect(dataSource.hasData).to.beTruthy();
+      .will.equal([NSIndexPath indexPathForItem:0 inSection:1]);
+  expect([dataSource indexPathOfDescriptor:(id<PTNDescriptor>)@4]).will.beNil();
+  expect(dataSource.hasData).will.beTruthy();
 });
 
 it(@"should remain up to date with title of sent metadata", ^{
@@ -148,11 +150,12 @@ it(@"should correctly configure cells", ^{
   OCMStub([viewModelProvider viewModelForDescriptor:asset]).andReturn(viewModel);
   PTUChangeset *changeset = [[PTUChangeset alloc] initWithAfterDataModel:@[@[asset]]];
   [dataSignal sendNext:changeset];
+  expect(dataSource.hasData).will.beTruthy();
   
   NSIndexPath *indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
   OCMStub([collectionView dequeueReusableCellWithReuseIdentifier:OCMOCK_ANY
       forIndexPath:indexPath]).andReturn([[cellClass alloc] initWithFrame:CGRectZero]);
-  
+
   UICollectionViewCell<PTUImageCell> *cell =
       (UICollectionViewCell<PTUImageCell> *)[collectionViewDataSource collectionView:collectionView
       cellForItemAtIndexPath:indexPath];
@@ -205,24 +208,96 @@ context(@"updates", ^{
     PTUChangeset *changeset = [[PTUChangeset alloc] initWithAfterDataModel:@[@[@1], @[@2, @3]]];
     [dataSignal sendNext:changeset];
 
-    OCMVerify([collectionView reloadData]);
+    OCMExpect([collectionView reloadData]);
+    OCMVerifyAllWithDelay(collectionView, 1);
   });
 
-  it(@"should perfom updates colleciton view when no incremental changes are avilable", ^{
+  it(@"should reload collection view when no incremental changes are avilable", ^{
     PTUChangeset *changeset = [[PTUChangeset alloc] initWithAfterDataModel:@[@[@1], @[@2, @3]]];
     [dataSignal sendNext:changeset];
-    OCMVerify([collectionView reloadData]);
+    OCMExpect([collectionView reloadData]);
     [dataSignal sendNext:changeset];
-    OCMVerify([collectionView reloadData]);
+    OCMExpect([collectionView reloadData]);
+    OCMVerifyAllWithDelay(collectionView, 1);
+  });
+
+  it(@"should not reload data if incremental changes are given", ^{
+    [[collectionView reject] reloadData];
+
+    NSArray *deleted = @[[NSIndexPath indexPathForItem:0 inSection:0]];
+    NSArray *inserted = @[[NSIndexPath indexPathForItem:1 inSection:0]];
+    PTUChangeset *changeset = [[PTUChangeset alloc] initWithBeforeDataModel:@[@[@1, @2]]
+                                                             afterDataModel:@[@[@2, @3]]
+                                                                    deleted:deleted
+                                                                   inserted:inserted
+                                                                    updated:nil
+                                                                      moved:nil];
+    [dataSignal sendNext:changeset];
+    OCMVerifyAllWithDelay(collectionView, 1);
   });
 
   it(@"should update according to incremental changes if available", ^{
-    [[(OCMockObject *)collectionView reject] reloadData];
-
-    NSArray *updated = @[[NSIndexPath indexPathForItem:0 inSection:0]];
+    NSArray *deleted = @[[NSIndexPath indexPathForItem:0 inSection:0]];
     NSArray *inserted = @[[NSIndexPath indexPathForItem:1 inSection:0]];
-    PTUChangeset *changeset = [[PTUChangeset alloc] initWithBeforeDataModel:@[@[@1]]
+    PTUChangeset *changeset = [[PTUChangeset alloc] initWithBeforeDataModel:@[@[@1, @2]]
                                                              afterDataModel:@[@[@2, @3]]
+                                                                    deleted:deleted
+                                                                   inserted:inserted
+                                                                    updated:nil
+                                                                      moved:nil];
+
+    OCMStub([collectionView performBatchUpdates:[OCMArg invokeBlock]
+                                     completion:([OCMArg invokeBlockWithArgs:@YES, nil])]);
+    OCMExpect([collectionView deleteItemsAtIndexPaths:deleted]);
+    OCMExpect([collectionView insertItemsAtIndexPaths:inserted]);
+    [dataSignal sendNext:changeset];
+    OCMVerifyAllWithDelay(collectionView, 1);
+  });
+
+  it(@"should map incremental changes to corresponding inserts and removes", ^{
+    NSArray *deleted = @[[NSIndexPath indexPathForItem:1 inSection:0]];
+    NSArray *inserted = @[
+      [NSIndexPath indexPathForItem:0 inSection:0],
+      [NSIndexPath indexPathForItem:1 inSection:0]
+    ];
+    NSArray *updated = @[[NSIndexPath indexPathForItem:2 inSection:0]];
+    NSArray *moved = @[PTUCreateChangesetMove(2, 4, 0)];
+    PTUChangeset *changeset = [[PTUChangeset alloc] initWithBeforeDataModel:@[@[@1, @2, @3, @4]]
+                                                             afterDataModel:@[@[@5, @6, @7, @4, @3]]
+                                                                    deleted:deleted
+                                                                   inserted:inserted
+                                                                    updated:updated
+                                                                      moved:moved];
+
+    OCMStub([collectionView performBatchUpdates:[OCMArg invokeBlock]
+                                     completion:([OCMArg invokeBlockWithArgs:@YES, nil])]);
+    OCMExpect(([collectionView
+                deleteItemsAtIndexPaths:[OCMArg checkWithBlock:^BOOL(NSArray *removes) {
+      return removes.count == 3 &&
+          [removes containsObject:[NSIndexPath indexPathForItem:0 inSection:0]] &&
+          [removes containsObject:[NSIndexPath indexPathForItem:1 inSection:0]] &&
+          [removes containsObject:[NSIndexPath indexPathForItem:2 inSection:0]];
+    }]]));
+    OCMExpect(([collectionView
+                insertItemsAtIndexPaths:[OCMArg checkWithBlock:^BOOL(NSArray *inserts) {
+      return inserts.count == 4 &&
+          [inserts containsObject:[NSIndexPath indexPathForItem:0 inSection:0]] &&
+          [inserts containsObject:[NSIndexPath indexPathForItem:1 inSection:0]] &&
+          [inserts containsObject:[NSIndexPath indexPathForItem:2 inSection:0]] &&
+          [inserts containsObject:[NSIndexPath indexPathForItem:4 inSection:0]];
+    }]]));
+    [dataSignal sendNext:changeset];
+    OCMVerifyAllWithDelay(collectionView, 1);
+  });
+
+  it(@"should take into account changes made during the index update", ^{
+    NSArray *inserted = @[
+      [NSIndexPath indexPathForItem:0 inSection:0],
+      [NSIndexPath indexPathForItem:1 inSection:0]
+    ];
+    NSArray *updated = @[[NSIndexPath indexPathForItem:2 inSection:0]];
+    PTUChangeset *changeset = [[PTUChangeset alloc] initWithBeforeDataModel:@[@[@3]]
+                                                             afterDataModel:@[@[@1, @2, @33]]
                                                                     deleted:nil
                                                                    inserted:inserted
                                                                     updated:updated
@@ -230,22 +305,121 @@ context(@"updates", ^{
 
     OCMStub([collectionView performBatchUpdates:[OCMArg invokeBlock]
                                      completion:([OCMArg invokeBlockWithArgs:@YES, nil])]);
+    OCMExpect(([collectionView
+                deleteItemsAtIndexPaths:[OCMArg checkWithBlock:^BOOL(NSArray *removes) {
+      return removes.count == 1 &&
+          [removes containsObject:[NSIndexPath indexPathForItem:0 inSection:0]];
+    }]]));
+    OCMExpect(([collectionView
+                insertItemsAtIndexPaths:[OCMArg checkWithBlock:^BOOL(NSArray *inserts) {
+      return inserts.count == 3 &&
+          [inserts containsObject:[NSIndexPath indexPathForItem:0 inSection:0]] &&
+          [inserts containsObject:[NSIndexPath indexPathForItem:1 inSection:0]] &&
+          [inserts containsObject:[NSIndexPath indexPathForItem:2 inSection:0]];
+    }]]));
+
     [dataSignal sendNext:changeset];
-    OCMVerify([collectionView insertItemsAtIndexPaths:inserted]);
-    OCMVerify([collectionView reloadItemsAtIndexPaths:updated]);
+
+    OCMVerifyAllWithDelay(collectionView, 1);
+  });
+
+  it(@"should process updates serially", ^{
+    NSArray *inserts = @[[NSIndexPath indexPathForItem:1 inSection:0]];
+    PTUChangeset *changeset = [[PTUChangeset alloc] initWithBeforeDataModel:@[@[@1]]
+                                                             afterDataModel:@[@[@1, @2]]
+                                                                    deleted:nil
+                                                                   inserted:inserts
+                                                                    updated:nil
+                                                                      moved:nil];
+    NSArray *otherInserts = @[[NSIndexPath indexPathForItem:2 inSection:0]];
+    PTUChangeset *otherChangeset = [[PTUChangeset alloc] initWithBeforeDataModel:@[@[@1, @2]]
+                                                                  afterDataModel:@[@[@1, @2, @3]]
+                                                                         deleted:nil
+                                                                        inserted:otherInserts
+                                                                         updated:nil
+                                                                           moved:nil];
+
+    __block void(^completionBlock)(BOOL);
+    OCMStub([collectionView performBatchUpdates:[OCMArg invokeBlock]
+                                     completion:OCMOCK_ANY]).andDo(^(NSInvocation *invocation) {
+      __unsafe_unretained void(^completion)(BOOL);
+      [invocation getArgument:&completion atIndex:3];
+      completionBlock = completion;
+    });
+
+    [collectionView setExpectationOrderMatters:YES];
+    OCMExpect([collectionView insertItemsAtIndexPaths:inserts]);
+
+    [dataSignal sendNext:changeset];
+    [dataSignal sendNext:otherChangeset];
+
+    expect([collectionViewDataSource collectionView:collectionView
+                             numberOfItemsInSection:0]).will.equal(2);
+    OCMVerifyAllWithDelay(collectionView, 1);
+
+    OCMExpect([collectionView insertItemsAtIndexPaths:otherInserts]);
+    completionBlock(YES);
+
+    expect([collectionViewDataSource collectionView:collectionView
+                             numberOfItemsInSection:0]).will.equal(3);
+    OCMVerifyAllWithDelay(collectionView, 1);
+  });
+
+  it(@"should skip incremental updates if a changeset without incremental updates was sent", ^{
+    NSArray *inserts = @[[NSIndexPath indexPathForItem:1 inSection:0]];
+    PTUChangeset *changeset = [[PTUChangeset alloc] initWithBeforeDataModel:@[@[@1]]
+                                                             afterDataModel:@[@[@1, @2]]
+                                                                    deleted:nil
+                                                                   inserted:inserts
+                                                                    updated:nil
+                                                                      moved:nil];
+    NSArray *otherInserts = @[[NSIndexPath indexPathForItem:2 inSection:0]];
+    PTUChangeset *otherChangeset = [[PTUChangeset alloc] initWithBeforeDataModel:@[@[@1, @2]]
+                                                                  afterDataModel:@[@[@1, @2, @3]]
+                                                                         deleted:nil
+                                                                        inserted:otherInserts
+                                                                         updated:nil
+                                                                           moved:nil];
+    PTUChangeset *reloadingChangeset = [[PTUChangeset alloc] initWithAfterDataModel:@[]];
+
+    __block void(^completionBlock)(BOOL);
+    OCMStub([collectionView performBatchUpdates:[OCMArg invokeBlock]
+                                     completion:OCMOCK_ANY]).andDo(^(NSInvocation *invocation) {
+      __unsafe_unretained void(^completion)(BOOL);
+      [invocation getArgument:&completion atIndex:3];
+      completionBlock = completion;
+    });
+
+    [dataSignal sendNext:changeset];
+    expect([collectionViewDataSource collectionView:collectionView
+                             numberOfItemsInSection:0]).will.equal(2);
+
+    [[collectionView reject] insertItemsAtIndexPaths:otherInserts];
+    OCMExpect([collectionView reloadData]);
+
+    [dataSignal sendNext:otherChangeset];
+    [dataSignal sendNext:reloadingChangeset];
+
+    completionBlock(YES);
+
+    OCMVerifyAllWithDelay(collectionView, 1);
+    expect([collectionViewDataSource collectionView:collectionView
+                             numberOfItemsInSection:0]).will.equal(0);
   });
   
   it(@"should notify on data change due to reload", ^{
     LLSignalTestRecorder *recorder = [dataSource.didUpdateCollectionView testRecorder];
     
     PTUChangeset *changeset = [[PTUChangeset alloc] initWithAfterDataModel:@[@[], @[]]];
+    OCMExpect([collectionView reloadData]);
     [dataSignal sendNext:changeset];
-    OCMVerify([collectionView reloadData]);
-    expect(recorder).to.sendValues(@[[RACUnit defaultUnit]]);
+    OCMVerifyAllWithDelay(collectionView, 1);
+    expect(recorder).will.sendValues(@[[RACUnit defaultUnit]]);
     
+    OCMExpect([collectionView reloadData]);
     [dataSignal sendNext:changeset];
-    OCMVerify([collectionView reloadData]);
-    expect(recorder).to.sendValues(@[[RACUnit defaultUnit], [RACUnit defaultUnit]]);
+    OCMVerifyAllWithDelay(collectionView, 1);
+    expect(recorder).will.sendValues(@[[RACUnit defaultUnit], [RACUnit defaultUnit]]);
   });
 
   it(@"should notify on data change due batch updates", ^{
@@ -263,10 +437,10 @@ context(@"updates", ^{
     OCMStub([collectionView performBatchUpdates:[OCMArg invokeBlock]
                                      completion:([OCMArg invokeBlockWithArgs:@YES, nil])]);
     [dataSignal sendNext:changeset];
-    expect(recorder).to.sendValues(@[[RACUnit defaultUnit]]);
+    expect(recorder).will.sendValues(@[[RACUnit defaultUnit]]);
     
     [dataSignal sendNext:changeset];
-    expect(recorder).to.sendValues(@[[RACUnit defaultUnit], [RACUnit defaultUnit]]);
+    expect(recorder).will.sendValues(@[[RACUnit defaultUnit], [RACUnit defaultUnit]]);
   });
   
   it(@"should complete collection view update signal on dealloc", ^{
