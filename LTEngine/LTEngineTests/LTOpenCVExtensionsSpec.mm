@@ -137,73 +137,190 @@ context(@"fft shift", ^{
   });
 });
 
-context(@"pre-divide", ^{
-  it(@"should pre-divide correctly", ^{
-    cv::Mat4b mat(2, 2, cv::Vec4b(10, 20, 30, 51));
-    cv::Mat4b expected(2, 2, cv::Vec4b(50, 100, 150, 51));
-    LTPreDivideMat(&mat);
-    expect($(mat)).to.equalMat($(expected));
-  });
-  
-  it(@"should pre-divide and clamp to 255", ^{
-    cv::Mat4b mat(2, 2, cv::Vec4b(10, 20, 30, 1));
-    cv::Mat4b expected(2, 2, cv::Vec4b(255, 255, 255, 1));
-    LTPreDivideMat(&mat);
-    expect($(mat)).to.equalMat($(expected));
-  });
-  
-  it(@"should return black when alpha is zero", ^{
-    cv::Mat4b mat(2, 2, cv::Vec4b(10, 20, 30, 0));
-    cv::Mat4b expected(2, 2, cv::Vec4b());
-    LTPreDivideMat(&mat);
-    expect($(mat)).to.equalMat($(expected));
-  });
-  
-  it(@"should fail when trying to pre-divide a non byte RGBA mat", ^{
+context(@"unpremultiply", ^{
+  it(@"should raise on size mismatch", ^{
     expect(^{
-      cv::Mat4f mat1f(2, 2);
-      LTPreDivideMat(&mat1f);
+      cv::Mat4b input(cv::Size(1, 1));
+      cv::Mat4b output(cv::Size(1, 2));
+      LTUnpremultiplyMat(input, &output);
+    }).to.raise(NSInvalidArgumentException);
+  });
+
+  it(@"should raise on type mismatch", ^{
+    expect(^{
+      cv::Mat4b input(cv::Size(1, 1));
+      cv::Mat4f output(cv::Size(1, 1));
+      LTUnpremultiplyMat(input, &output);
+    }).to.raise(NSInvalidArgumentException);
+  });
+
+  it(@"should raise on invalid type", ^{
+    expect(^{
+      cv::Mat1f mat1f(2, 2);
+      LTUnpremultiplyMat(mat1f, &mat1f);
     }).to.raise(NSInvalidArgumentException);
 
     expect(^{
       cv::Mat3b mat3b(2, 2);
-      LTPreDivideMat(&mat3b);
+      LTUnpremultiplyMat(mat3b, &mat3b);
     }).to.raise(NSInvalidArgumentException);
+  });
+
+  it(@"should do in-place calculation with input equals output", ^{
+    cv::Mat4b mat(2, 2, cv::Vec4b(10, 20, 30, 51));
+    cv::Mat4b expected(2, 2, cv::Vec4b(50, 100, 150, 51));
+    LTUnpremultiplyMat(mat, &mat);
+
+    expect($(mat)).to.equalMat($(expected));
+  });
+
+  context(@"unpremultiply byte matrix", ^{
+    it(@"should un premultiply correctly", ^{
+      cv::Mat4b input(2, 2, cv::Vec4b(10, 20, 30, 51));
+      cv::Mat4b expected(2, 2, cv::Vec4b(50, 100, 150, 51));
+      cv::Mat4b output(input.size());
+      LTUnpremultiplyMat(input, &output);
+
+      expect($(output)).to.equalMat($(expected));
+    });
+
+    it(@"should return all zeros when alpha is zero", ^{
+      cv::Mat4b input(2, 2, cv::Vec4b(0, 0, 0, 0));
+      cv::Mat4b expected(2, 2, cv::Vec4b());
+      cv::Mat4b output(input.size());
+      LTUnpremultiplyMat(input, &output);
+
+      expect($(output)).to.equalMat($(expected));
+    });
+  });
+
+  context(@"unpremultiply float matrix", ^{
+    it(@"should unpremultiply correctly", ^{
+      cv::Mat4f input(2, 2, cv::Vec4f(0.1, 0.2, 0.3, 0.5));
+      cv::Mat4f expected(2, 2, cv::Vec4f(0.2, 0.4, 0.6, 0.5));
+      cv::Mat4f output(input.size());
+      LTUnpremultiplyMat(input, &output);
+
+      expect($(output)).to.equalMat($(expected));
+    });
+
+    it(@"should return all zeros when alpha is zero", ^{
+      cv::Mat4f input(2, 2, cv::Vec4f(0, 0, 0, 0));
+      cv::Mat4f expected(2, 2, cv::Vec4f());
+      cv::Mat4f output(input.size());
+      LTUnpremultiplyMat(input, &output);
+
+      expect($(output)).to.equalMat($(expected));
+    });
   });
 });
 
-context(@"pre-multiply", ^{
-  it(@"should pre-multiply correctly", ^{
-    cv::Mat4b mat(2, 2, cv::Vec4b(50, 100, 150, 51));
-    cv::Mat4b expected(2, 2, cv::Vec4b(10, 20, 30, 51));
-    LTPreMultiplyMat(&mat);
-    expect($(mat)).to.equalMat($(expected));
-  });
-  
-  it(@"should return black when alpha is zero", ^{
-    cv::Mat4b mat(2, 2, cv::Vec4b(10, 20, 30, 0));
-    cv::Mat4b expected(2, 2, cv::Vec4b(0, 0, 0, 0));
-    LTPreMultiplyMat(&mat);
-    expect($(mat)).to.equalMat($(expected));
-  });
-  
-  it(@"should return the same pixel values when alpha is 255", ^{
-    cv::Mat4b mat(2, 2, cv::Vec4b(10, 20, 30, 255));
-    cv::Mat4b expected(2, 2, cv::Vec4b(10, 20, 30, 255));
-    LTPreMultiplyMat(&mat);
-    expect($(mat)).to.equalMat($(expected));
+context(@"premultiply", ^{
+  it(@"should raise on size mismatch", ^{
+    expect(^{
+      cv::Mat4b input(cv::Size(1, 1));
+      cv::Mat4b output(cv::Size(1, 2));
+      LTPremultiplyMat(input, &output);
+    }).to.raise(NSInvalidArgumentException);
   });
 
-  it(@"should fail when trying to pre-multiply a non byte RGBA mat", ^{
+  it(@"should raise on type mismatch", ^{
     expect(^{
-      cv::Mat4f mat1f(2, 2);
-      LTPreMultiplyMat(&mat1f);
+      cv::Mat4b input(cv::Size(1, 1));
+      cv::Mat4f output(cv::Size(1, 1));
+      LTPremultiplyMat(input, &output);
+    }).to.raise(NSInvalidArgumentException);
+  });
+
+  it(@"should raise on invalid type", ^{
+    expect(^{
+      cv::Mat1f mat1f(2, 2);
+      LTPremultiplyMat(mat1f, &mat1f);
     }).to.raise(NSInvalidArgumentException);
 
     expect(^{
       cv::Mat3b mat3b(2, 2);
-      LTPreMultiplyMat(&mat3b);
+      LTPremultiplyMat(mat3b, &mat3b);
     }).to.raise(NSInvalidArgumentException);
+  });
+
+  it(@"should do in-place calculation when input equals output", ^{
+    cv::Mat4b mat(2, 2, cv::Vec4b(50, 100, 150, 51));
+    cv::Mat4b expected(2, 2, cv::Vec4b(10, 20, 30, 51));
+    LTPremultiplyMat(mat, &mat);
+
+    expect($(mat)).to.equalMat($(expected));
+  });
+
+  context(@"premultiply byte matrix", ^{
+    it(@"should premultiply correctly", ^{
+      cv::Mat4b input(2, 2, cv::Vec4b(50, 100, 150, 51));
+      cv::Mat4b expected(2, 2, cv::Vec4b(10, 20, 30, 51));
+      cv::Mat4b output(input.size());
+      LTPremultiplyMat(input, &output);
+
+      expect($(output)).to.equalMat($(expected));
+    });
+
+    it(@"should return all zeros when alpha is zero", ^{
+      cv::Mat4b input(2, 2, cv::Vec4b(10, 20, 30, 0));
+      cv::Mat4b expected(2, 2, cv::Vec4b(0, 0, 0, 0));
+      cv::Mat4b output(input.size());
+      LTPremultiplyMat(input, &output);
+
+      expect($(output)).to.equalMat($(expected));
+    });
+
+    it(@"should return the same pixel values when alpha is 255", ^{
+      cv::Mat4b input(2, 2, cv::Vec4b(10, 20, 30, 255));
+      cv::Mat4b expected(2, 2, cv::Vec4b(10, 20, 30, 255));
+      cv::Mat4b output(input.size());
+      LTPremultiplyMat(input, &output);
+
+      expect($(output)).to.equalMat($(expected));
+    });
+  });
+
+  context(@"premultiply float matrix", ^{
+    it(@"should premultiply correctly", ^{
+      cv::Mat4f input(2, 2, cv::Vec4f(0.1, 0.2, 0.3, 0.5));
+      cv::Mat4f expected(2, 2, cv::Vec4f(0.05, 0.1, 0.15, 0.5));
+      cv::Mat4f output(input.size());
+      LTPremultiplyMat(input, &output);
+
+      expect($(output)).to.equalMat($(expected));
+    });
+
+    it(@"should return all zeros when alpha is zero", ^{
+      cv::Mat4f input(2, 2, cv::Vec4f(0.1, 0.2, 0.3, 0));
+      cv::Mat4f expected(2, 2, cv::Vec4f(0, 0, 0, 0));
+      cv::Mat4f output(input.size());
+      LTPremultiplyMat(input, &output);
+
+      expect($(output)).to.equalMat($(expected));
+    });
+
+    it(@"should return the same pixel values when alpha is 1.0", ^{
+      cv::Mat4f input(2, 2, cv::Vec4f(0.1, 0.2, 0.3, 1.0));
+      cv::Mat4f expected(2, 2, cv::Vec4f(0.1, 0.2, 0.3, 1.0));
+      cv::Mat4f output(input.size());
+      LTPremultiplyMat(input, &output);
+
+      expect($(output)).to.equalMat($(expected));
+    });
+  });
+
+  it(@"should maintain acceptable accuracy after several iteration", ^{
+    cv::Mat4b left(2, 2, cv::Vec4b(1, 50, 100, 10));
+    cv::Mat4b right(left.size());
+    cv::Mat4b original = left.clone();
+
+    for (int i = 0; i < 10; ++i) {
+      LTPremultiplyMat(left, &right);
+      LTUnpremultiplyMat(right, &left);
+    }
+
+    expect($(left)).to.beCloseToMatWithin($(original), 2);
   });
 });
 
@@ -252,7 +369,7 @@ context(@"load image", ^{
     cv::Mat expected = LTLoadMat([self class], @"SemiTransparentGray.png");
     expect($(matWithoutPreDivision)).to.equalMat($(expected));
 
-    LTPreDivideMat(&expected);
+    LTUnpremultiplyMat(expected, &expected);
     expect($(matWithPreDivision)).to.equalMat($(expected));
   });
 });
