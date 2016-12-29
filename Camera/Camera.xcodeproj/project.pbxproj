@@ -32,7 +32,9 @@
 		6542A5701D4636DB00450B46 /* libExpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6542A5411D46369F00450B46 /* libExpecta.a */; };
 		6542A5711D4636DB00450B46 /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6542A5691D4636CE00450B46 /* libOCMock.a */; };
 		6542A5721D4636DB00450B46 /* libSpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6542A55A1D4636AE00450B46 /* libSpecta.a */; };
+		8336DDA91E1BB37D00B09323 /* CAMVolumeButtonsControllerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8336DDA81E1BB37D00B09323 /* CAMVolumeButtonsControllerSpec.mm */; };
 		834540351D7C002800D7D619 /* CAMBlankDeviceSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 834540341D7C002800D7D619 /* CAMBlankDeviceSpec.mm */; };
+		8350566D1E14EE520005D9C4 /* CAMVolumeButtonsController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8350566C1E14EE520005D9C4 /* CAMVolumeButtonsController.mm */; };
 		8351F9AD1CF6EDD800DEB376 /* NSErrorCodes+Camera.m in Sources */ = {isa = PBXBuildFile; fileRef = 8351F9AC1CF6EDD800DEB376 /* NSErrorCodes+Camera.m */; };
 		8351FB9B1CFC2ECC00DEB376 /* CAMFormatStrategy.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8351FB9A1CFC2ECC00DEB376 /* CAMFormatStrategy.mm */; };
 		8351FB9F1CFC2EDD00DEB376 /* CAMFormatStrategySpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8351FB9E1CFC2EDD00DEB376 /* CAMFormatStrategySpec.mm */; };
@@ -466,7 +468,10 @@
 		6542A55B1D4636CE00450B46 /* OCMock.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = OCMock.xcodeproj; path = ../third_party/OCMock/Source/OCMock.xcodeproj; sourceTree = "<group>"; };
 		654B9F3C1D48BE2B00F7609B /* TestHost.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TestHost.xcodeproj; path = ../Foundations/TestHost.xcodeproj; sourceTree = "<group>"; };
 		832F97671CD7559E001962A0 /* ReactiveCocoa.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactiveCocoa.xcodeproj; path = ../third_party/ReactiveCocoa/ReactiveCocoa.xcodeproj; sourceTree = "<group>"; };
+		8336DDA81E1BB37D00B09323 /* CAMVolumeButtonsControllerSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CAMVolumeButtonsControllerSpec.mm; sourceTree = "<group>"; };
 		834540341D7C002800D7D619 /* CAMBlankDeviceSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CAMBlankDeviceSpec.mm; sourceTree = "<group>"; };
+		8350566B1E14EE520005D9C4 /* CAMVolumeButtonsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAMVolumeButtonsController.h; sourceTree = "<group>"; };
+		8350566C1E14EE520005D9C4 /* CAMVolumeButtonsController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CAMVolumeButtonsController.mm; sourceTree = "<group>"; };
 		8351F9AB1CF6EDD800DEB376 /* NSErrorCodes+Camera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSErrorCodes+Camera.h"; sourceTree = "<group>"; };
 		8351F9AC1CF6EDD800DEB376 /* NSErrorCodes+Camera.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSErrorCodes+Camera.m"; sourceTree = "<group>"; };
 		8351FB991CFC2ECC00DEB376 /* CAMFormatStrategy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAMFormatStrategy.h; sourceTree = "<group>"; };
@@ -778,12 +783,29 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		8336DD841E1BB36400B09323 /* Volume Buttons */ = {
+			isa = PBXGroup;
+			children = (
+				8336DDA81E1BB37D00B09323 /* CAMVolumeButtonsControllerSpec.mm */,
+			);
+			name = "Volume Buttons";
+			sourceTree = "<group>";
+		};
 		834540101D7C001500D7D619 /* Blank */ = {
 			isa = PBXGroup;
 			children = (
 				834540341D7C002800D7D619 /* CAMBlankDeviceSpec.mm */,
 			);
 			name = Blank;
+			sourceTree = "<group>";
+		};
+		835056471E14EE3B0005D9C4 /* Volume Buttons */ = {
+			isa = PBXGroup;
+			children = (
+				8350566B1E14EE520005D9C4 /* CAMVolumeButtonsController.h */,
+				8350566C1E14EE520005D9C4 /* CAMVolumeButtonsController.mm */,
+			);
+			name = "Volume Buttons";
 			sourceTree = "<group>";
 		};
 		8351F9901CF6EDCE00DEB376 /* Base */ = {
@@ -991,6 +1013,7 @@
 				8351FB9D1CFC2ED600DEB376 /* Device */,
 				06C02F611D19518F00745557 /* Image Processing */,
 				8395AE6D1CFDCA4400C91C9E /* Utils */,
+				8336DD841E1BB36400B09323 /* Volume Buttons */,
 			);
 			name = Tests;
 			sourceTree = "<group>";
@@ -1067,6 +1090,7 @@
 				8395ADFB1CFDC9A700C91C9E /* Device */,
 				06C02EDD1D19384200745557 /* Image Processing */,
 				8395AE4E1CFDCA2C00C91C9E /* Utils */,
+				835056471E14EE3B0005D9C4 /* Volume Buttons */,
 				83B72D801CDA44B40090C0BF /* Supporting Files */,
 			);
 			path = Camera;
@@ -1516,6 +1540,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BE6375E81D8691A4004F3710 /* CAMDeviceLocation.mm in Sources */,
+				8350566D1E14EE520005D9C4 /* CAMVolumeButtonsController.mm in Sources */,
 				06C02EFC1D19389200745557 /* CAMExposureMap.fsh in Sources */,
 				83ACD9C41DCA4523008342F9 /* AVCaptureDeviceFormat+MediaProperties.mm in Sources */,
 				BE84C54E1D463BB10098DC1D /* CAMSampleTimingInfo.mm in Sources */,
@@ -1559,6 +1584,7 @@
 				BEB6EDCF1D325BE800E9D424 /* LTObjectionModule.mm in Sources */,
 				8352059D1D2A5B2700000EEC /* EXPMatchers+complete.m in Sources */,
 				06C02F631D1951DD00745557 /* CAMExposureMapProcessorSpec.mm in Sources */,
+				8336DDA91E1BB37D00B09323 /* CAMVolumeButtonsControllerSpec.mm in Sources */,
 				835205981D2A5B2700000EEC /* LLSignalTestRecorder.m in Sources */,
 				8395AE6F1CFDCA4E00C91C9E /* AVCaptureDevice+ConfigureSpec.mm in Sources */,
 				06C02F7E1D1974C000745557 /* NSValue+OpenCVExtensions.mm in Sources */,
