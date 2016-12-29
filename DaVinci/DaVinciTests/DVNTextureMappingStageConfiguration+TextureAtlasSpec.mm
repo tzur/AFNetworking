@@ -30,8 +30,10 @@ it(@"should create a configuration from a given texture atlas", ^{
   NSSet<LTQuad *> *quads =
       [NSSet setWithArray:@[[[LTQuad alloc] initWithCorners:model.textureMapQuads[0].corners()],
                             [[LTQuad alloc] initWithCorners:model.textureMapQuads[1].corners()]]];
-  NSSet<LTQuad *> *expectedQuads =
-      [NSSet setWithArray:@[[LTQuad quadFromRect:rect0], [LTQuad quadFromRect:rect1]]];
+  NSSet<LTQuad *> *expectedQuads = [NSSet setWithArray:@[
+    [LTQuad quadFromRectWithOrigin:CGPointMake(0, 0) andSize:CGSizeMake(0.5, 0.25)],
+    [LTQuad quadFromRectWithOrigin:CGPointMake(0.5, 0.25) andSize:CGSizeMake(0.5, 0.75)]
+  ]];
   expect(quads).to.equal(expectedQuads);
 });
 

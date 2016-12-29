@@ -3,6 +3,7 @@
 
 #import "DVNTextureMappingStageConfiguration+TextureAtlas.h"
 
+#import <LTEngine/LTTexture.h>
 #import <LTEngine/LTTextureAtlas.h>
 #import <LTKit/LTRandom.h>
 
@@ -18,10 +19,11 @@ NS_ASSUME_NONNULL_BEGIN
 
   std::vector<lt::Quad> quads;
   quads.reserve(areas.size());
-
+  CGSize size = textureAtlas.texture.size;
+  
   for (auto it = areas.begin(); it != areas.end(); ++it) {
     CGRect rect = it->second;
-    quads.push_back(lt::Quad(rect));
+    quads.push_back(lt::Quad(CGRectFromOriginAndSize(rect.origin / size, rect.size / size)));
   }
 
   DVNRandomTexCoordProviderModel *model =
