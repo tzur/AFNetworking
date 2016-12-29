@@ -30,10 +30,6 @@ const CGFloat kMaskBrushDimension = 256;
 /// Provider of brush tips, used to create mask brush tip textures.
 @property (readonly, nonatomic) DVNBrushTipsProvider *brushTipsProvider;
 
-/// Texture mapping stage configuration of the pipeline configurations returned by this instance.
-@property (readonly, nonatomic)
-    DVNTextureMappingStageConfiguration *textureMappingStageConfiguration;
-
 /// Attribute stage configuration of the pipeline configurations returned by this instance.
 @property (readonly, nonatomic) DVNAttributeStageConfiguration *attributeStageConfiguration;
 
@@ -57,7 +53,6 @@ const CGFloat kMaskBrushDimension = 256;
     _parametersProvider = parametersProvider;
     _brushTipsProvider = brushTipsProvider;
     _samplingStageModel = [self createSamplingStageModel];
-    _textureMappingStageConfiguration = [self createTextureMappingStageConfiguration];
     _attributeStageConfiguration = [self createAttributeStageConfiguration];
   }
   return self;
@@ -95,7 +90,7 @@ const CGFloat kMaskBrushDimension = 256;
   return [[DVNPipelineConfiguration alloc]
           initWithSamplingStageConfiguration:[self.samplingStageModel continuousSamplerModel]
           geometryStageConfiguration:[self createSquareProviderModel]
-          textureMappingStageConfiguration:self.textureMappingStageConfiguration
+          textureMappingStageConfiguration:[self createTextureMappingStageConfiguration]
           attributeStageConfiguration:self.attributeStageConfiguration
           renderStageConfiguration:[self createRenderStageConfiguration]];
 }
@@ -112,7 +107,6 @@ const CGFloat kMaskBrushDimension = 256;
     [DVNMaskBrushFsh channel]: @(self.parametersProvider.channel),
     [DVNMaskBrushFsh mode]: @(self.parametersProvider.mode),
     [DVNMaskBrushFsh flow]: @(self.parametersProvider.flow),
-    [DVNMaskBrushFsh hardness]: @(self.parametersProvider.hardness),
     [DVNMaskBrushFsh edgeAvoidance]: @(self.parametersProvider.edgeAvoidance)
   };
   
