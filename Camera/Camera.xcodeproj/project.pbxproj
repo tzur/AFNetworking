@@ -35,6 +35,7 @@
 		8336DDA91E1BB37D00B09323 /* CAMVolumeButtonsControllerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8336DDA81E1BB37D00B09323 /* CAMVolumeButtonsControllerSpec.mm */; };
 		834540351D7C002800D7D619 /* CAMBlankDeviceSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 834540341D7C002800D7D619 /* CAMBlankDeviceSpec.mm */; };
 		8350566D1E14EE520005D9C4 /* CAMVolumeButtonsController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8350566C1E14EE520005D9C4 /* CAMVolumeButtonsController.mm */; };
+		835057C21E1507950005D9C4 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 835057C11E1507950005D9C4 /* MediaPlayer.framework */; };
 		8351F9AD1CF6EDD800DEB376 /* NSErrorCodes+Camera.m in Sources */ = {isa = PBXBuildFile; fileRef = 8351F9AC1CF6EDD800DEB376 /* NSErrorCodes+Camera.m */; };
 		8351FB9B1CFC2ECC00DEB376 /* CAMFormatStrategy.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8351FB9A1CFC2ECC00DEB376 /* CAMFormatStrategy.mm */; };
 		8351FB9F1CFC2EDD00DEB376 /* CAMFormatStrategySpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8351FB9E1CFC2EDD00DEB376 /* CAMFormatStrategySpec.mm */; };
@@ -472,6 +473,7 @@
 		834540341D7C002800D7D619 /* CAMBlankDeviceSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CAMBlankDeviceSpec.mm; sourceTree = "<group>"; };
 		8350566B1E14EE520005D9C4 /* CAMVolumeButtonsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAMVolumeButtonsController.h; sourceTree = "<group>"; };
 		8350566C1E14EE520005D9C4 /* CAMVolumeButtonsController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CAMVolumeButtonsController.mm; sourceTree = "<group>"; };
+		835057C11E1507950005D9C4 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		8351F9AB1CF6EDD800DEB376 /* NSErrorCodes+Camera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSErrorCodes+Camera.h"; sourceTree = "<group>"; };
 		8351F9AC1CF6EDD800DEB376 /* NSErrorCodes+Camera.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSErrorCodes+Camera.m"; sourceTree = "<group>"; };
 		8351FB991CFC2ECC00DEB376 /* CAMFormatStrategy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAMFormatStrategy.h; sourceTree = "<group>"; };
@@ -616,6 +618,7 @@
 				83B730681CDB56870090C0BF /* CoreMedia.framework in Frameworks */,
 				BEB6EDF21D325D5F00E9D424 /* CoreMotion.framework in Frameworks */,
 				0627C4C11D1A6CED00EFEC6B /* Mantle.framework in Frameworks */,
+				835057C21E1507950005D9C4 /* MediaPlayer.framework in Frameworks */,
 				2804AAEA1D3BB5D20057F1A0 /* MobileCoreServices.framework in Frameworks */,
 				06C02F6A1D19568600745557 /* Objection-iOS.framework in Frameworks */,
 				83B72D351CDA421C0090C0BF /* opencv2.framework in Frameworks */,
@@ -716,6 +719,7 @@
 				83B730651CDB567B0090C0BF /* AssetsLibrary.framework */,
 				83B730671CDB56870090C0BF /* CoreMedia.framework */,
 				BEB6EDF11D325D5F00E9D424 /* CoreMotion.framework */,
+				835057C11E1507950005D9C4 /* MediaPlayer.framework */,
 				2804AAE91D3BB5D20057F1A0 /* MobileCoreServices.framework */,
 				06C02F691D19568600745557 /* Objection-iOS.framework */,
 				83B72D191CDA3F1E0090C0BF /* opencv2.framework */,
