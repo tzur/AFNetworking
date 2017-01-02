@@ -382,7 +382,7 @@ static void LTVerifyMipmapImages(const Matrices &images) {
     glGetIntegerv(GL_IMPLEMENTATION_COLOR_READ_TYPE, &type);
     if (([LTGLContext currentContext].version == LTGLVersion2 && type == GL_HALF_FLOAT_OES) ||
         ([LTGLContext currentContext].version == LTGLVersion3 && type == GL_HALF_FLOAT)) {
-      return CV_16U;
+      return CV_16F;
     } else {
       return CV_32F;
     }
