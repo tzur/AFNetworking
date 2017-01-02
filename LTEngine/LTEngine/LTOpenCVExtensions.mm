@@ -74,14 +74,11 @@ void LTConvertToSameNumberOfChannels(const cv::Mat &input, cv::Mat *output, int 
 }
 
 void LTConvertToSameDepth(const cv::Mat &input, cv::Mat *output, int type) {
-  if (input.depth() == CV_32F && CV_MAT_DEPTH(type) == CV_16F) {
-    LTConvertHalfFloat<float, half>(input, output);
-  } else if (input.depth() == CV_16F && CV_MAT_DEPTH(type) == CV_32F) {
-    LTConvertHalfFloat<half, float>(input, output);
-  } else if (input.depth() == CV_16F && CV_MAT_DEPTH(type) == CV_8U) {
-    LTConvertHalfFloat<half, uchar>(input, output, 255);
-  } else if (input.depth() == CV_16F || CV_MAT_DEPTH(type) == CV_16F) {
-    LTAssert(NO, @"Unsupported half-float conversion: %d to %d", input.depth(), CV_MAT_DEPTH(type));
+  output->create(input.size(), type);
+  if (CV_MAT_DEPTH(type) == CV_16F) {
+    LTConvertToHalfFloat(input, output);
+  } else if (input.depth() == CV_16F) {
+    LTConvertFromHalfFloat(input, output);
   } else {
     double alpha = 1;
     if (input.depth() == CV_32F && CV_MAT_DEPTH(type) == CV_8U) {
@@ -91,6 +88,76 @@ void LTConvertToSameDepth(const cv::Mat &input, cv::Mat *output, int type) {
     }
     input.convertTo(*output, type, alpha);
   }
+}
+
+static inline vImage_Buffer LTConvertMatToVImageBuffer(const cv::Mat &mat,
+                                                       BOOL usePixelCountAsWidth = NO) {
+  return {
+    .data = mat.data,
+    .height = (vImagePixelCount)mat.rows,
+    .width = (vImagePixelCount)mat.cols * (usePixelCountAsWidth ? mat.channels() : 1),
+    .rowBytes = mat.step[0]
+  };
+}
+
+void LTConvertToHalfFloat(const cv::Mat &input, cv::Mat *output) {
+  LTParameterAssert(input.size() == output->size(),
+                    @"Input size (%d, %d) must equal output size (%d, %d)",
+                    input.cols, input.rows, output->cols, output->rows);
+  LTParameterAssert(input.channels() == output->channels(),
+                    @"Input must have the same number of channels (%d) as output (%d)",
+                    input.channels(), output->channels());
+  LTParameterAssert(input.depth() == CV_8U || input.depth() == CV_32F,
+                    @"Input depth (%d) must be CV_8U or CV_32F", input.depth());
+  LTParameterAssert(output->depth() == CV_16F, @"Output depth (%d) must be CV_16F", input.depth());
+
+  vImage_Buffer source = LTConvertMatToVImageBuffer(input, YES);
+  vImage_Buffer destination = LTConvertMatToVImageBuffer(*output, YES);
+
+  vImage_Error errorCode;
+
+  switch (input.depth()) {
+    case CV_8U:
+      errorCode = vImageConvert_Planar8toPlanar16F(&source, &destination, NULL);
+      break;
+    case CV_32F:
+      errorCode = vImageConvert_PlanarFtoPlanar16F(&source, &destination, NULL);
+      break;
+    default:
+      LTAssert(NO, @"Invalid input depth %d", input.depth());
+  }
+
+  LTAssert(!errorCode, @"Failed to convert to half-float, with error code %zd", errorCode);
+}
+
+void LTConvertFromHalfFloat(const cv::Mat &input, cv::Mat *output) {
+  LTParameterAssert(input.size() == output->size(),
+                    @"Input size (%d, %d) must equal output size (%d, %d)",
+                    input.cols, input.rows, output->cols, output->rows);
+  LTParameterAssert(input.channels() == output->channels(),
+                    @"Input must have the same number of channels (%d) as output (%d)",
+                    input.channels(), output->channels());
+  LTParameterAssert(input.depth() == CV_16F, @"Input depth (%d) must be CV_16F", input.depth());
+  LTParameterAssert(output->depth() == CV_8U || output->depth() == CV_32F,
+                    @"Output depth (%d) must be CV_8U or CV_32F", input.type());
+
+  vImage_Buffer source = LTConvertMatToVImageBuffer(input, YES);
+  vImage_Buffer destination = LTConvertMatToVImageBuffer(*output, YES);
+
+  vImage_Error errorCode;
+
+  switch (output->depth()) {
+    case CV_8U:
+      errorCode = vImageConvert_Planar16FtoPlanar8(&source, &destination, NULL);
+      break;
+    case CV_32F:
+      errorCode = vImageConvert_Planar16FtoPlanarF(&source, &destination, NULL);
+      break;
+    default:
+      LTAssert(NO, @"Invalid input depth %d", input.depth());
+  }
+
+  LTAssert(!errorCode, @"Failed to convert from half-float, with error code %zd", errorCode);
 }
 
 void LTInPlaceFFTShift(cv::Mat *mat) {
@@ -112,23 +179,14 @@ void LTInPlaceFFTShift(cv::Mat *mat) {
   temp.copyTo(q2);
 }
 
-static inline vImage_Buffer LTConvertMatToVImageBuffer(const cv::Mat &mat) {
-  return {
-    .data = mat.data,
-    .height = (vImagePixelCount)mat.rows,
-    .width = (vImagePixelCount)mat.cols,
-    .rowBytes = mat.step[0]
-  };
-}
-
 void LTUnpremultiplyMat(const cv::Mat &input, cv::Mat *output) {
   LTParameterAssert(input.size() == output->size(),
-                    @"input size (%d, %d) must equal output size (%d, %d)", input.rows, input.cols,
+                    @"Input size (%d, %d) must equal output size (%d, %d)", input.rows, input.cols,
                     output->rows, output->cols);
   LTParameterAssert(input.type() == output->type(),
-                    @"input type (%d) must equal output type (%d)", input.type(), output->type());
+                    @"Input type (%d) must equal output type (%d)", input.type(), output->type());
   LTParameterAssert(input.type() == CV_32FC4 || input.type() == CV_8UC4,
-                    @"input must be of type CV_32FC4 or CV_8UC4, got: %d", input.type());
+                    @"Input must be of type CV_32FC4 or CV_8UC4, got: %d", input.type());
 
   vImage_Buffer source = LTConvertMatToVImageBuffer(input);
   vImage_Buffer destination = LTConvertMatToVImageBuffer(*output);
@@ -152,12 +210,12 @@ void LTUnpremultiplyMat(const cv::Mat &input, cv::Mat *output) {
 
 void LTPremultiplyMat(const cv::Mat &input, cv::Mat *output) {
   LTParameterAssert(input.size() == output->size(),
-                    @"input size (%d, %d) must equal output size (%d, %d)", input.rows, input.cols,
+                    @"Input size (%d, %d) must equal output size (%d, %d)", input.rows, input.cols,
                     output->rows, output->cols);
   LTParameterAssert(input.type() == output->type(),
-                    @"input type (%d) must equal output type (%d)", input.type(), output->type());
+                    @"Input type (%d) must equal output type (%d)", input.type(), output->type());
   LTParameterAssert(input.type() == CV_32FC4 || input.type() == CV_8UC4,
-                    @"input must be of type CV_32FC4 or CV_8UC4, got: %d", input.type());
+                    @"Input must be of type CV_32FC4 or CV_8UC4, got: %d", input.type());
 
   vImage_Buffer source = LTConvertMatToVImageBuffer(input);
   vImage_Buffer destination = LTConvertMatToVImageBuffer(*output);
