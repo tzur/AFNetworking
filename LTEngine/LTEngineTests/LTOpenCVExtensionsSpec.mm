@@ -380,7 +380,7 @@ context(@"generate mat", ^{
     cv::Mat mat = LTCreateGaussianMat(kTargetSize, 0.3);
     expect(mat.rows).to.equal(kTargetSize.height);
     expect(mat.cols).to.equal(kTargetSize.width);
-    expect(mat.type()).to.equal(CV_16U);
+    expect(mat.type()).to.equal(CV_16F);
 
     cv::Mat1b convertedGray(kTargetSize.height, kTargetSize.width);
     cv::Mat4b convertedRGB(kTargetSize.height, kTargetSize.width);
@@ -396,7 +396,7 @@ context(@"generate mat", ^{
     cv::Mat mat = LTCreateGaussianMat(kTargetSize, 0.3);
     expect(mat.rows).to.equal(kTargetSize.height);
     expect(mat.cols).to.equal(kTargetSize.width);
-    expect(mat.type()).to.equal(CV_16U);
+    expect(mat.type()).to.equal(CV_16F);
 
     cv::Mat1b convertedGray(kTargetSize.height, kTargetSize.width);
     cv::Mat4b convertedRGB(kTargetSize.height, kTargetSize.width);
@@ -412,7 +412,7 @@ context(@"generate mat", ^{
     cv::Mat mat = LTCreateGaussianMat(kTargetSize, 0.3, YES);
     expect(mat.rows).to.equal(kTargetSize.height);
     expect(mat.cols).to.equal(kTargetSize.width);
-    expect(mat.type()).to.equal(CV_16U);
+    expect(mat.type()).to.equal(CV_16F);
 
     cv::Mat1b convertedGray(kTargetSize.height, kTargetSize.width);
     cv::Mat4b convertedRGB(kTargetSize.height, kTargetSize.width);
