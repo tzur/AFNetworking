@@ -12,11 +12,11 @@
 ///     - Storing and retrieving values using element access.
 ///     - Using \c .setTo() to set value across the entire matrix.
 ///
-/// Since the underlying implementation handles the half-float data type as an unsigned short, avoid
+/// Since the underlying implementation handles the half-float data type as a signed short, avoid
 /// using OpenCV's methods that rely on type such as conversion operators and math operators. Your
-/// data will be probably handled as an unsigned short.
+/// data will be probably handled as a signed short.
 
-#define CV_16F CV_16U
+#define CV_16F CV_16S
 
 #define CV_16FC1 CV_MAKETYPE(CV_16F, 1)
 #define CV_16FC2 CV_MAKETYPE(CV_16F, 2)
