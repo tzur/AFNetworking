@@ -209,7 +209,7 @@ context(@"processing", ^{
     [processor process];
 
     cv::Mat4b expected = LTLoadMat([self class], @"LTPatchSolverProcessorSolution.png");
-    expect($(LTMembraneFromPatchSolverResult(output))).to.equalMat($(expected));
+    expect($(LTMembraneFromPatchSolverResult(output))).to.beCloseToMatWithin($(expected), 1);
   });
 
   it(@"should produce proper membrane for source, target and output with one channel", ^{
@@ -227,7 +227,8 @@ context(@"processing", ^{
 
     std::vector<cv::Mat1b> solutionRGBAChannels;
     cv::split(LTLoadMat([self class], @"LTPatchSolverProcessorSolution.png"), solutionRGBAChannels);
-    expect($(LTMembraneFromPatchSolverResult(output))).to.equalMat($(solutionRGBAChannels[0]));
+    expect($(LTMembraneFromPatchSolverResult(output)))
+        .to.beCloseToMatWithin($(solutionRGBAChannels[0]), 1);
   });
 
   it(@"should produce proper membrane for source, target and output with two channels", ^{
@@ -247,7 +248,7 @@ context(@"processing", ^{
     cv::split(LTLoadMat([self class], @"LTPatchSolverProcessorSolution.png"), solutionRGBAChannels);
     cv::Mat2b expected;
     cv::merge(std::vector<cv::Mat1b>{solutionRGBAChannels[0], solutionRGBAChannels[1]}, expected);
-    expect($(LTMembraneFromPatchSolverResult(output))).to.equalMat($(expected));
+    expect($(LTMembraneFromPatchSolverResult(output))).to.beCloseToMatWithin($(expected), 1);
   });
 
   it(@"should produce proper membrane for a custom mask boundary threshold", ^{
@@ -262,7 +263,7 @@ context(@"processing", ^{
     [processor process];
 
     cv::Mat4b expected = LTLoadMat([self class], @"LTPatchSolverProcessorSolution.png");
-    expect($(LTMembraneFromPatchSolverResult(output))).to.equalMat($(expected));
+    expect($(LTMembraneFromPatchSolverResult(output))).to.beCloseToMatWithin($(expected), 1);
   });
 
   it(@"should produce proper membrane for source and target with half float percision", ^{

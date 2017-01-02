@@ -50,7 +50,7 @@ context(@"round tip", ^{
       int expectedDimension = dimension / pow(2, i);
       cv::Mat1b convertedGray(expectedDimension, expectedDimension);
       cv::Mat4b convertedRGBA(expectedDimension, expectedDimension);
-      LTConvertHalfFloat<half_float::half, uchar>(tipAtLevel, &convertedGray, 255);
+      LTConvertFromHalfFloat(tipAtLevel, &convertedGray);
       cv::cvtColor(convertedGray, convertedRGBA, CV_GRAY2RGBA);
       NSString *filename =
           [NSString stringWithFormat:@"DVNBrushTipsRound%dHardness75.png", expectedDimension];

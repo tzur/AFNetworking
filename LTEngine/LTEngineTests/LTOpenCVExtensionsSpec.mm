@@ -126,6 +126,141 @@ context(@"mat conversion", ^{
   });
 });
 
+context(@"LTConvertToHalfFloat", ^{
+  __block cv::Size size;
+  __block cv::Mat input;
+  __block cv::Mat output;
+
+  beforeEach(^{
+    size = cv::Size(1, 1);
+    input = cv::Mat4b(size, cv::Scalar(1, 2, 3, 4));
+    output = cv::Mat4hf(size);
+  });
+
+  it(@"should raise if input and output size mismatch", ^{
+    cv::Mat4b badInput(size + cv::Size(1, 1));
+
+    expect(^{
+      LTConvertToHalfFloat(badInput, &output);
+    }).to.raise(NSInvalidArgumentException);
+  });
+
+  it(@"should raise if input and output number of channels differ", ^{
+    cv::Mat1b badInput(size);
+
+    expect(^{
+      LTConvertToHalfFloat(badInput, &output);
+    }).to.raise(NSInvalidArgumentException);
+  });
+
+  it(@"should raise on wrong input depth", ^{
+    cv::Mat4hf badInput(size);
+
+    expect(^{
+      LTConvertToHalfFloat(badInput, &output);
+    }).to.raise(NSInvalidArgumentException);
+  });
+
+  it(@"should raise on wrong output depth", ^{
+    __block cv::Mat badOutput = cv::Mat4f(size);
+
+    expect(^{
+      LTConvertToHalfFloat(input, &badOutput);
+    }).to.raise(NSInvalidArgumentException);
+  });
+
+  it(@"should convert from ubyte to half-float with scaling", ^{
+    cv::Vec4b value(0, 64, 128, 255);
+    cv::Mat4b input4b(size, value);
+
+    LTConvertToHalfFloat(input4b, &output);
+
+    cv::Mat4hf expected(size);
+    expected.setTo(cv::Vec4hf(half(0.0), half(0.25), half(0.5), half(1.0)));
+
+    expect($(output)).to.beCloseToMatWithin($(expected), 1.0 / 255);
+  });
+
+  it(@"should convert from float to half-float without scaling", ^{
+    cv::Vec4f value(0.5, -1.0, 0.5, 1.0);
+    cv::Mat4f input4f(size, value);
+
+    LTConvertToHalfFloat(input4f, &output);
+
+    cv::Mat4hf expected(size);
+    expected.setTo(cv::Vec4hf(half(0.5), half(-1.0), half(0.5), half(1.0)));
+
+    expect($(output)).to.beCloseToMatWithin($(expected), 1.0 / 255);
+  });
+});
+
+context(@"LTConvertFromHalfFloat", ^{
+  __block cv::Size size;
+  __block cv::Mat input;
+  __block cv::Mat output;
+
+  beforeEach(^{
+    size = cv::Size(1, 1);
+    input = cv::Mat4hf(size);
+    output - cv::Mat4b(size);
+  });
+
+  it(@"should raise if input and output size mismatch", ^{
+    cv::Mat4hf badInput(size + cv::Size(1, 1));
+
+    expect(^{
+      LTConvertFromHalfFloat(badInput, &output);
+    }).to.raise(NSInvalidArgumentException);
+  });
+
+  it(@"should raise if input and output number of channels differ", ^{
+    cv::Mat1hf badInput(size);
+
+    expect(^{
+      LTConvertFromHalfFloat(badInput, &output);
+    }).to.raise(NSInvalidArgumentException);
+  });
+
+  it(@"should raise on wrong input depth", ^{
+    cv::Mat4f badInput(size);
+
+    expect(^{
+      LTConvertFromHalfFloat(badInput, &output);
+    }).to.raise(NSInvalidArgumentException);
+  });
+
+  it(@"should raise on wrong output depth", ^{
+    __block cv::Mat badOutput = cv::Mat4hf(size);
+
+    expect(^{
+      LTConvertFromHalfFloat(input, &badOutput);
+    }).to.raise(NSInvalidArgumentException);
+  });
+
+  it(@"should convert to ubyte from half-float with scaling", ^{
+    input.setTo(cv::Vec4hf(half(0.0), half(0.25), half(0.5), half(1.0)));
+
+    cv::Mat4b output4b(size);
+    LTConvertFromHalfFloat(input, &output4b);
+
+    cv::Mat4b expected(size);
+    expected.setTo(cv::Vec4b(0, 64, 128, 255));
+
+    expect($(output4b)).to.equalMat($(expected));
+  });
+
+  it(@"should convert to float from half-float without scaling", ^{
+    input.setTo(cv::Vec4hf(half(0.0), half(-0.5), half(0.5), half(1.0)));
+    cv::Mat4f output4f(size);
+    LTConvertFromHalfFloat(input, &output4f);
+
+    cv::Mat4f expected(size);
+    expected.setTo(cv::Vec4f(0.0, -0.5, 0.5, 1.0));
+
+    expect($(output4f)).to.beCloseToMatWithin($(expected), 1.0 / 255);
+  });
+});
+
 context(@"fft shift", ^{
   it(@"should shift correctly", ^{
     cv::Mat1f mat = (cv::Mat1f(2, 2) << 1, 2, 3, 4);
@@ -384,7 +519,7 @@ context(@"generate mat", ^{
 
     cv::Mat1b convertedGray(kTargetSize.height, kTargetSize.width);
     cv::Mat4b convertedRGB(kTargetSize.height, kTargetSize.width);
-    LTConvertHalfFloat<half, uchar>(mat, &convertedGray, 255);
+    LTConvertFromHalfFloat(mat, &convertedGray);
     cv::cvtColor(convertedGray, convertedRGB, CV_GRAY2RGBA);
 
     cv::Mat expected = LTLoadMat([self class], @"GaussianSquare.png");
@@ -400,7 +535,7 @@ context(@"generate mat", ^{
 
     cv::Mat1b convertedGray(kTargetSize.height, kTargetSize.width);
     cv::Mat4b convertedRGB(kTargetSize.height, kTargetSize.width);
-    LTConvertHalfFloat<half, uchar>(mat, &convertedGray, 255);
+    LTConvertFromHalfFloat(mat, &convertedGray);
     cv::cvtColor(convertedGray, convertedRGB, CV_GRAY2RGBA);
 
     cv::Mat expected = LTLoadMat([self class], @"GaussianAnisotropic.png");
@@ -416,7 +551,7 @@ context(@"generate mat", ^{
 
     cv::Mat1b convertedGray(kTargetSize.height, kTargetSize.width);
     cv::Mat4b convertedRGB(kTargetSize.height, kTargetSize.width);
-    LTConvertHalfFloat<half, uchar>(mat, &convertedGray, 255);
+    LTConvertFromHalfFloat(mat, &convertedGray);
     cv::cvtColor(convertedGray, convertedRGB, CV_GRAY2RGBA);
 
     cv::Mat4b expected = LTLoadMat([self class], @"GaussianSquare.png");

@@ -37,12 +37,17 @@ namespace cv {
 /// If \c type is equal to \c input.type(), the data will be copied directly to the output.
 void LTConvertMat(const cv::Mat &input, cv::Mat *output, int type);
 
-/// Converts the given \c input mat to an \c output mat with an optional \c alpha scaling. Either \c
-/// input or \c output should be of half-float precision, and they cannot point to the same memory
-/// address. The \c _From and \c _To template parameters define the source matrix type and the
-/// target matrix type to convert to, accordingly.
-template <typename _From, typename _To>
-void LTConvertHalfFloat(const cv::Mat &input, cv::Mat *output, double alpha = 1);
+/// Updates the values of the given \c output matrix to be the values of the given \c input matrix,
+/// converted to half-float precision. \c input and \c output must have the same size and number of
+/// channels. \c input depth must be \c CV_16F. \c output depth can be \c CV_8U or \c CV_32F. If
+/// \c input depth is \c CV_8U, the values will be divided by 255.
+void LTConvertToHalfFloat(const cv::Mat &input, cv::Mat *output);
+
+/// Updates the values of the given \c output matrix to be the values of the given \c input matrix,
+/// converted from half-float precision to \c CV_8U or \c CV_32F. \c input and \c output must have
+/// the same size and number of channels. \c input depth must be \c CV_16F. \c output depth can be
+/// \c CV_8U or \c CV_32F. If \c output depth is \c CV_8U, the values will be multiplied by 255.
+void LTConvertFromHalfFloat(const cv::Mat &input, cv::Mat *output);
 
 /// Shifts the given \c mat, such that the zero-frequency component is moved to the center of the
 /// matrix. This is done by swapping the first quadrand with the third and the second with the
@@ -126,36 +131,5 @@ cv::Mat LTRotateHalfPiClockwise(const cv::Mat &input, NSInteger rotations,
 void LTRotateHalfPiClockwise(const cv::Mat &input, cv::Mat *output,
                              NSInteger rotations, BOOL mirrorHorizontal,
                              cv::Mat * _Nullable intermediate = NULL);
-
-#pragma mark -
-#pragma mark Details
-#pragma mark -
-
-template <typename _From, typename _To>
-void LTConvertHalfFloat(const cv::Mat &input, cv::Mat *output, double alpha) {
-  static_assert(cv::DataDepth<_From>::value == CV_16F ||
-                cv::DataDepth<_To>::value == CV_16F, "_From or _To must be of a half-float type");
-
-  LTParameterAssert(input.data != output->data, @"Input and output cannot point to the same data");
-
-  output->create(input.size(), CV_MAKETYPE(cv::DataDepth<_To>::value, input.channels()));
-
-  cv::Size size(input.size());
-  if (input.isContinuous() && output->isContinuous()) {
-    size.width *= size.height;
-    size.height = 1;
-  }
-  size.width *= input.channels();
-
-  // TODO:(yaron) performance can be increased by doing this in batch.
-  for (int i = 0; i < size.height; ++i) {
-    const _From *inputPtr = input.ptr<_From>(i);
-    _To *outputPtr = output->ptr<_To>(i);
-
-    for (int j = 0; j < size.width; ++j) {
-      outputPtr[j] = cv::saturate_cast<_To>(half_float::half(inputPtr[j]) * alpha);
-    }
-  }
-}
 
 NS_ASSUME_NONNULL_END
