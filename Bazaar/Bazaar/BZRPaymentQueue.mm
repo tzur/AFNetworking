@@ -40,16 +40,16 @@ static NSString * const kRestorationLabel = @"Restoration";
 #pragma mark Initialization
 #pragma mark -
 
-- (instancetype)initWithUnfinishedTransactionsSubject:(RACSubject *)unfinishedTransactionsSubject {
-  return [self initWithUnderlyingPaymentQueue:[SKPaymentQueue defaultQueue]
-                unfinishedTransactionsSubject:unfinishedTransactionsSubject];
+- (instancetype)init {
+  return [self initWithUnderlyingPaymentQueue:[SKPaymentQueue defaultQueue]];
 }
 
-- (instancetype)initWithUnderlyingPaymentQueue:(SKPaymentQueue *)underlyingPaymentQueue
-                 unfinishedTransactionsSubject:(RACSubject *)unfinishedTransactionsSubject {
+- (instancetype)initWithUnderlyingPaymentQueue:(SKPaymentQueue *)underlyingPaymentQueue {
   if (self = [super init]) {
     _underlyingPaymentQueue = underlyingPaymentQueue;
-    _unfinishedTransactionsSubject = unfinishedTransactionsSubject;
+    _unfinishedTransactionsSubject = [RACSubject subject];
+    _unfinishedTransactionsSignal =
+        [[self.unfinishedTransactionsSubject replay] takeUntil:[self rac_willDeallocSignal]];
     [self.underlyingPaymentQueue addTransactionObserver:self];
     self.shouldSendTransactionsAsUnfinished = YES;
   }

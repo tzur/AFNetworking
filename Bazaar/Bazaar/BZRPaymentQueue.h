@@ -35,32 +35,26 @@ NS_ASSUME_NONNULL_BEGIN
 @interface BZRPaymentQueue : NSObject <BZRDownloadsPaymentQueue, BZRPaymentsPaymentQueue,
                                        BZRRestorationPaymentQueue>
 
-- (instancetype)init NS_UNAVAILABLE;
-
-/// Initializes with \c underlyingPaymentQueue set to \c -[SKPaymentQueue defaultQueue], and with
-/// \c unfinishedTransactionsSubject set to \c unfinishedTransactionsSubject.
+/// Initializes with \c underlyingPaymentQueue set to \c -[SKPaymentQueue defaultQueue].
 ///
-/// @see initWithPaymentQueue:unfinishedTransactionsSubject:
-- (instancetype)initWithUnfinishedTransactionsSubject:(RACSubject *)unfinishedTransactionsSubject;
+/// @see \c initWithPaymentQueue:
+- (instancetype)init;
 
 /// Initializes with \c underlyingPaymentQueue, used to be notified of transactions and downloads
-/// updates, and with \c unfinishedTransactionsSubject, used to send an array of unfinished
-/// transactions.
-///
-/// \c SKPaymentQueue sends all transactions that weren't finished from the last run of the
-/// application when an observer is added to it. \c BZRPaymentQueue adds an observer to it at
-/// initialization, but \c BZRPaymentQueue's underlying delegates are \c nil. As a result, these
-/// transactions will never be handled. The solution is to pass a subject that should already be
-/// subscribed to, which will send the transactions as they arrive. The transactions will be sent to
-/// the delegates instead of the subject as soon as \c addPayment or
-/// \c restoreCompletedTransactionsWithApplicationUsername were called, because this is when the
-/// delegates start to expect transactions to arrive.
+/// updates.
 - (instancetype)initWithUnderlyingPaymentQueue:(SKPaymentQueue *)underlyingPaymentQueue
-                 unfinishedTransactionsSubject:(RACSubject *)unfinishedTransactionsSubject
     NS_DESIGNATED_INITIALIZER;
 
 /// Finishes a transaction. The transaction should no longer be used afterwards.
 - (void)finishTransaction:(SKPaymentTransaction *)transaction;
+
+/// Sends transactions of payments and restorations that were initiated on a previous run of the
+/// application and weren't finished. The \c SKPaymentTransaction can be either in a failed,
+/// purchased or restored state. The signal completes when the receiver is deallocated. The signal
+/// doesn't err.
+///
+/// @return <tt>RACSignal<NSArray<SKPaymentTransactions>></tt>
+@property (readonly, nonatomic) RACSignal *unfinishedTransactionsSignal;
 
 @end
 

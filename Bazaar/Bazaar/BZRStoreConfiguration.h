@@ -5,7 +5,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class BZRAcquiredViaSubscriptionProvider, BZRCachedReceiptValidationStatusProvider,
     BZRPeriodicReceiptValidatorActivator, BZRProductContentManager, BZRProductContentProvider,
-    BZRProductsProviderFactory, BZRStoreKitFacadeFactory, LTPath;
+    BZRStoreKitFacade, LTPath;
 
 @protocol BZRProductsProvider, BZRProductsVariantSelectorFactory,
     BZRReceiptValidationParametersProvider;
@@ -31,7 +31,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// transactions. \c notValidatedReceiptGracePeriod determines the number of days the receipt can
 /// remain not validated until subscription marked as expired.
 ///
-/// \c productsProviderFactory will be initialized with \c BZRLocalProductsProviderFactory with the
+/// \c productsProvider will be initialized with \c BZRCachedProductsProvider with the
 /// given \c productsListJSONFilePath and \c fileManager.
 ///
 /// \c contentManager will be initialized with the default parameters as provided by
@@ -55,7 +55,7 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 /// \c fileManager will be initialized with \c +[NSFileManager defaultManager].
 ///
-/// \c storeKitFacadeFactory will be initialized using \c -[BZRStoreKitFacadeFactory init].
+/// \c storeKitFacade will be initialized using \c -[BZRStoreKitFacade initApplicationUseID:].
 ///
 /// \c periodicValidatorActivator will be initialized with the default initializer of
 /// \c BZRPeriodicReceiptValidatorActivator.
@@ -67,8 +67,8 @@ NS_ASSUME_NONNULL_BEGIN
                   notValidatedReceiptGracePeriod:(NSUInteger)notValidatedReceiptGracePeriod
     NS_DESIGNATED_INITIALIZER;
 
-/// Factory used to create a concrete instance of \c BZRProductsProvider.
-@property (strong, nonatomic) BZRProductsProviderFactory *productsProviderFactory;
+/// Provider used to provide the list of products.
+@property (strong, nonatomic) id<BZRProductsProvider> productsProvider;
 
 /// Manager used to extract, delete and find content directory with.
 @property (strong, nonatomic) BZRProductContentManager *contentManager;
@@ -88,8 +88,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// Manager used to check if the URL to the receipt exists.
 @property (strong, nonatomic) NSFileManager *fileManager;
 
-/// Factory used to create \c BZRStoreKitFacade.
-@property (strong, nonatomic) BZRStoreKitFacadeFactory *storeKitFacadeFactory;
+/// Facade used to interact with Apple StoreKit.
+@property (strong, nonatomic) BZRStoreKitFacade *storeKitFacade;
 
 /// Activator used to control the periodic receipt validation.
 @property (strong, nonatomic) BZRPeriodicReceiptValidatorActivator *periodicValidatorActivator;
