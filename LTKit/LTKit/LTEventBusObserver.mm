@@ -5,6 +5,7 @@
 
 #import "LTEventBus.h"
 #import "LTMessageContainer.h"
+#import "NSDateFormatter+Formatters.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -32,19 +33,12 @@ NS_ASSUME_NONNULL_BEGIN
   if (self = [super init]) {
     _messageContainer = messageContainer;
     _eventFilter = eventFilter;
-    _dateFormatter = [self createDateFormatter];
+    _dateFormatter = [NSDateFormatter lt_UTCDateFormatter];
     _eventBus = eventBus;
 
     [self startObserving];
   }
   return self;
-}
-
-- (NSDateFormatter *)createDateFormatter {
-  NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-  dateFormatter.dateFormat = @"yyyy:MM:dd:HH:mm:ss.SSS";
-  dateFormatter.timeZone = [NSTimeZone timeZoneForSecondsFromGMT:0];
-  return dateFormatter;
 }
 
 - (void)dealloc {
