@@ -10,7 +10,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// Object that observes an event bus and saves all the events to a messageContainer container.
 ///
 /// Each received event will be converted to message in the format
-/// <tt><date> [<eventClass>] <eventDescription></tt>.
+/// <tt><date> [<eventClass>] <eventDescription></tt>. The <date> component has the format
+/// \c yyyy-MM-dd'T'HH:mm:ss.SSS'Z'.
 @interface LTEventBusObserver : NSObject
 
 - (instancetype)init NS_UNAVAILABLE;

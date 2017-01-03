@@ -5,6 +5,7 @@
 
 #import "LTEventBus.h"
 #import "LTMessageContainer.h"
+#import "NSDateFormatter+Formatters.h"
 
 @interface LTTestEvent : NSObject
 @end
@@ -59,6 +60,17 @@ it(@"should log a formatted event", ^{
   expect(separatedLog[1]).to.equal(
       [NSString stringWithFormat:@"[%@]", NSStringFromClass(LTTestEvent.class)]);
   expect(separatedLog[2]).to.equal(event.description);
+});
+
+it(@"should log an event with UTC formatted date", ^{
+  LTTestEvent *event = [[LTTestEvent alloc] init];
+  [eventBus post:event];
+
+  NSArray<NSString *> *separatedLog = [receivedLogs[0] componentsSeparatedByString:@" "];
+  NSString *dateString = separatedLog[0];
+  NSDateFormatter *dateFormatter = [NSDateFormatter lt_UTCDateFormatter];
+
+  expect([dateFormatter dateFromString:dateString]).notTo.beNil();
 });
 
 it(@"should not log filtered event", ^{

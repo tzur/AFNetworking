@@ -174,6 +174,9 @@
 		8BF7B1731949BC7500E67079 /* LTBidirectionalMap.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BF7B1711949BC7500E67079 /* LTBidirectionalMap.m */; };
 		8BF9A53B18F684AC00CCA084 /* LTTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BF9A53A18F684AC00CCA084 /* LTTimer.m */; };
 		8BF9A54918FA6B9100CCA084 /* LTTimerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BF9A54818FA6B9100CCA084 /* LTTimerSpec.mm */; };
+		A1006CFF1E026EFB0061D8BB /* NSDateFormatter+Formatters.h in Headers */ = {isa = PBXBuildFile; fileRef = A1006CFD1E026EFB0061D8BB /* NSDateFormatter+Formatters.h */; };
+		A1006D001E026EFB0061D8BB /* NSDateFormatter+Formatters.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1006CFE1E026EFB0061D8BB /* NSDateFormatter+Formatters.mm */; };
+		A1006D1A1E0271540061D8BB /* NSDateFormatter+FormattersSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1006D191E0271540061D8BB /* NSDateFormatter+FormattersSpec.mm */; };
 		C751B02B1D4881D7005DB5BB /* LTEventBusObserver.h in Headers */ = {isa = PBXBuildFile; fileRef = C751B0291D4881D7005DB5BB /* LTEventBusObserver.h */; };
 		C751B02C1D4881D7005DB5BB /* LTEventBusObserver.mm in Sources */ = {isa = PBXBuildFile; fileRef = C751B02A1D4881D7005DB5BB /* LTEventBusObserver.mm */; };
 		C751B0461D48879B005DB5BB /* LTEventBusObserverSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = C751B0451D48879B005DB5BB /* LTEventBusObserverSpec.mm */; };
@@ -594,6 +597,9 @@
 		8BF9A53918F684AC00CCA084 /* LTTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTTimer.h; sourceTree = "<group>"; };
 		8BF9A53A18F684AC00CCA084 /* LTTimer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTTimer.m; sourceTree = "<group>"; };
 		8BF9A54818FA6B9100CCA084 /* LTTimerSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTTimerSpec.mm; sourceTree = "<group>"; };
+		A1006CFD1E026EFB0061D8BB /* NSDateFormatter+Formatters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDateFormatter+Formatters.h"; sourceTree = "<group>"; };
+		A1006CFE1E026EFB0061D8BB /* NSDateFormatter+Formatters.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSDateFormatter+Formatters.mm"; sourceTree = "<group>"; };
+		A1006D191E0271540061D8BB /* NSDateFormatter+FormattersSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSDateFormatter+FormattersSpec.mm"; sourceTree = "<group>"; };
 		C751B0291D4881D7005DB5BB /* LTEventBusObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTEventBusObserver.h; sourceTree = "<group>"; };
 		C751B02A1D4881D7005DB5BB /* LTEventBusObserver.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTEventBusObserver.mm; sourceTree = "<group>"; };
 		C751B0451D48879B005DB5BB /* LTEventBusObserverSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTEventBusObserverSpec.mm; sourceTree = "<group>"; };
@@ -1134,6 +1140,8 @@
 				C751B3D31D48C178005DB5BB /* LTMessageContainer.h */,
 				C751B3D41D48C304005DB5BB /* LTVolatileMessageContainer.h */,
 				C751B3D51D48C304005DB5BB /* LTVolatileMessageContainer.mm */,
+				A1006CFD1E026EFB0061D8BB /* NSDateFormatter+Formatters.h */,
+				A1006CFE1E026EFB0061D8BB /* NSDateFormatter+Formatters.mm */,
 			);
 			name = Logging;
 			sourceTree = "<group>";
@@ -1145,6 +1153,7 @@
 				C751B0451D48879B005DB5BB /* LTEventBusObserverSpec.mm */,
 				8B85C798182A2EE5004C352E /* LTLoggerSpec.mm */,
 				C751B3D81D48C6C1005DB5BB /* LTVolatileMessageContainerSpec.mm */,
+				A1006D191E0271540061D8BB /* NSDateFormatter+FormattersSpec.mm */,
 			);
 			name = Logging;
 			sourceTree = "<group>";
@@ -1183,6 +1192,7 @@
 				8B59AA9D1DABC54F0006CC22 /* LTEventBusLoggerTarget.h in Headers */,
 				28AA3EAE19A25BBE00518987 /* NSNumber+CGFloat.h in Headers */,
 				658CD3C61D50A79B00FF7FD6 /* LTProgress.h in Headers */,
+				A1006CFF1E026EFB0061D8BB /* NSDateFormatter+Formatters.h in Headers */,
 				8B6A6EBE1CDA3ADC005FB7D9 /* LTRuntime.h in Headers */,
 				8B8720361924A76500517F2E /* LTEasyBoxing.h in Headers */,
 				8B7C6CA51B5282AC00B90DBE /* NSFileManager+LTKit.h in Headers */,
@@ -1523,6 +1533,7 @@
 				28362120186C58DC00665ED9 /* LTCGExtensions.m in Sources */,
 				8B59AA9E1DABC54F0006CC22 /* LTEventBusLoggerTarget.mm in Sources */,
 				835204ED1D2A43B300000EEC /* LTEventBus.m in Sources */,
+				A1006D001E026EFB0061D8BB /* NSDateFormatter+Formatters.mm in Sources */,
 				84455E4C1CD0F5E500042CB7 /* LTMappingRandomAccessCollection.m in Sources */,
 				28B8BBC41B67CF8600CF9F73 /* LTWeakContainer.mm in Sources */,
 				8B410E8E1CE1F01E007DFF42 /* NSArray+SelectorName.mm in Sources */,
@@ -1585,6 +1596,7 @@
 				500932B81DD472C40092BCF5 /* NSObject+NSSetSpec.mm in Sources */,
 				8B87D54E1C04BC2F0005410A /* NSBundle+PathSpec.mm in Sources */,
 				8B7C6CA81B52832600B90DBE /* LTMMInputFileSpec.mm in Sources */,
+				A1006D1A1E0271540061D8BB /* NSDateFormatter+FormattersSpec.mm in Sources */,
 				503442BD1A0FB95B008E0ED3 /* LTCFExtensionsSpec.mm in Sources */,
 				8B7C3CF31CDCD77700D03696 /* NSObject+DynamicDispatchSpec.mm in Sources */,
 				8B7C6CA91B52832600B90DBE /* LTMMOutputFileSpec.mm in Sources */,
