@@ -23,7 +23,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// State of the random number generator.
 @property (readonly, nonatomic) LTRandomState *randomState;
 
-/// Collection of quads from which quads for texture mapping can be chosen.
+/// Collection of quads, in normalized pixel units of the texture coordinate system, from which
+/// quads for texture mapping can be chosen.
 @property (readonly, nonatomic) std::vector<lt::Quad> textureMapQuads;
 
 @end
