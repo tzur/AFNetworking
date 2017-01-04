@@ -3,7 +3,7 @@
 
 #import "LTFbo.h"
 
-#import "LTFboAttachment.h"
+#import "LTFboAttachable.h"
 #import "LTFboWritableAttachment.h"
 #import "LTGLContext.h"
 #import "LTRenderbuffer+Writing.h"
@@ -130,13 +130,13 @@
 }
 
 - (void)attachAttachment {
-  switch (self.attachment.attachmentType) {
-    case LTFboAttachmentTypeTexture2D:
+  switch (self.attachment.attachableType) {
+    case LTFboAttachableTypeTexture2D:
       glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D,
                              self.attachment.name, self.level);
       LTGLCheck(@"Failed attaching texture to framebuffer (texture: %@)", self.attachment);
       break;
-    case LTFboAttachmentTypeRenderbuffer:
+    case LTFboAttachableTypeRenderbuffer:
       glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER,
                                 self.attachment.name);
       LTGLCheck(@"Failed attaching renderbuffer to framebuffer (renderbuffer: %@)",
@@ -157,11 +157,11 @@
 }
 
 - (void)detachAttachment {
-  switch (self.attachmentType) {
-    case LTFboAttachmentTypeRenderbuffer:
+  switch (self.attachableType) {
+    case LTFboAttachableTypeRenderbuffer:
       glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, 0);
       break;
-    case LTFboAttachmentTypeTexture2D:
+    case LTFboAttachableTypeTexture2D:
       glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, 0, self.level);
       break;
   }
@@ -256,7 +256,7 @@
   return self.framebuffer;
 }
 
-- (id<LTFboAttachment>)attachment {
+- (id<LTFboAttachable>)attachment {
   return self.writableAttachment;
 }
 
@@ -264,8 +264,8 @@
   return self.writableAttachment.size;
 }
 
-- (LTFboAttachmentType)attachmentType {
-  return self.writableAttachment.attachmentType;
+- (LTFboAttachableType)attachableType {
+  return self.writableAttachment.attachableType;
 }
 
 - (LTGLPixelFormat *)pixelFormat {

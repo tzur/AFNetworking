@@ -2683,7 +2683,7 @@
 		8B9D3FF318954605001A964D /* LTTexture+FactorySpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "LTTexture+FactorySpec.mm"; sourceTree = "<group>"; };
 		8B9F3BE41C15DC6800FEB7C4 /* LTRenderbuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTRenderbuffer.h; sourceTree = "<group>"; };
 		8B9F3BE51C15DC6800FEB7C4 /* LTRenderbuffer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTRenderbuffer.mm; sourceTree = "<group>"; };
-		8B9F3C051C16E0DF00FEB7C4 /* LTFboAttachment.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTFboAttachment.h; sourceTree = "<group>"; };
+		8B9F3C051C16E0DF00FEB7C4 /* LTFboAttachable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTFboAttachable.h; sourceTree = "<group>"; };
 		8B9F3C061C16FF4B00FEB7C4 /* LTGLPixelFormat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTGLPixelFormat.h; sourceTree = "<group>"; };
 		8B9F3C071C16FF4B00FEB7C4 /* LTGLPixelFormat.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTGLPixelFormat.mm; sourceTree = "<group>"; };
 		8BA11ADC183124CB00A5001D /* LTEngineTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "LTEngineTests-Prefix.pch"; sourceTree = "<group>"; };
@@ -4980,7 +4980,7 @@
 				8BB47135183A438300CA1681 /* LTDrawingContext.mm */,
 				288AB3F618351FFE00A11FA4 /* LTFbo.h */,
 				288AB3F718351FFE00A11FA4 /* LTFbo.mm */,
-				8B9F3C051C16E0DF00FEB7C4 /* LTFboAttachment.h */,
+				8B9F3C051C16E0DF00FEB7C4 /* LTFboAttachable.h */,
 				8B539FF21B4A882600036743 /* LTFboPool.h */,
 				8B539FF31B4A882600036743 /* LTFboPool.mm */,
 				8BC87EF81C2720640061BD00 /* LTFboWritableAttachment.h */,

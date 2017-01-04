@@ -56,7 +56,7 @@ sharedExamplesFor(kLTRenderbufferExamples, ^(NSDictionary *contextInfo) {
     });
 
     it(@"should return correct attachment type", ^{
-      expect(renderbuffer.attachmentType).to.equal(LTFboAttachmentTypeRenderbuffer);
+      expect(renderbuffer.attachableType).to.equal(LTFboAttachableTypeRenderbuffer);
     });
 
     it(@"should update generation ID upon writing", ^{
