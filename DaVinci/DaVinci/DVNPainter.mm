@@ -22,9 +22,6 @@ NS_ASSUME_NONNULL_BEGIN
 /// Provider of spline rendering information.
 @property (weak, readonly, nonatomic) id<DVNBrushRenderInfoProvider> renderInfoProvider;
 
-/// Delegate to be informed about spline rendering events.
-@property (weak, readonly, nonatomic) id<DVNPainterDelegate> delegate;
-
 /// Renderer used to render onto the \c texture. Is not \c nil only during a process sequence.
 @property (strong, nonatomic, nullable) DVNSplineRenderer *renderer;
 

@@ -178,6 +178,12 @@ context(@"initialization", ^{
                                      brushRenderInfoProvider:providerMock delegate:delegateMock];
     expect(painter).toNot.beNil();
   });
+  
+  it(@"should set the delegate with the one given upon initialization", ^{
+    DVNPainter *painter = [[DVNPainter alloc] initWithCanvas:canvas
+                                     brushRenderInfoProvider:providerMock delegate:delegateMock];
+    expect(painter.delegate).to.equal(delegateMock);
+  });
 });
 
 context(@"retrieval of data from DVNBrushRenderInfoProvider", ^{

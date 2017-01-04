@@ -75,6 +75,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// to \c YES at the beginning of a sequence and set to \c NO at the end of the sequence.
 @property (readonly, nonatomic) BOOL currentlyProcessingContentTouchEventSequence;
 
+/// Delegate to be informed about spline rendering and canvas clearing events.
+@property (weak, readonly, nonatomic) id<DVNPainterDelegate> delegate;
+
 @end
 
 NS_ASSUME_NONNULL_END
