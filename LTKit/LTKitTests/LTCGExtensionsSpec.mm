@@ -212,6 +212,36 @@ context(@"cgrect operations", ^{
     expect(CGRectOverlap(CGRectMake(1, 1, 1, 1), CGRectMake(0, 0, 2, 2))).to.equal(0.25);
     expect(CGRectOverlap(CGRectMake(0, 1, 2, 1), CGRectMake(0, 0, 2, 2))).to.equal(0.5);
   });
+  
+  context(@"CGRectRegularGrid", ^{
+    __block CGRect rect;
+    
+    beforeEach(^{
+      rect = CGRectMake(1, 2, 3, 4);
+    });
+    
+    it(@"should return the given rect if verticalCount is equal to 0", ^{
+      expect(CGRectRegularGrid(rect, 2, 0) == CGRects{rect}).to.beTruthy();
+    });
+    
+    it(@"should return the given rect if horizontalCount is equal to 0", ^{
+      expect(CGRectRegularGrid(rect, 0, 2) == CGRects{rect}).to.beTruthy();
+    });
+    
+    it(@"should return the correct rects for non-zero verticalCount and horizontalCount", ^{
+      CGRects rects = CGRectRegularGrid(rect, 2, 4);
+      CGSize size = CGSizeMake(1.5, 1);
+      
+      expect(rects[0] == CGRectFromOriginAndSize(CGPointMake(0, 0), size)).to.beTruthy();
+      expect(rects[1] == CGRectFromOriginAndSize(CGPointMake(0, 1), size)).to.beTruthy();
+      expect(rects[2] == CGRectFromOriginAndSize(CGPointMake(0, 2), size)).to.beTruthy();
+      expect(rects[3] == CGRectFromOriginAndSize(CGPointMake(0, 3), size)).to.beTruthy();
+      expect(rects[4] == CGRectFromOriginAndSize(CGPointMake(1.5, 0), size)).to.beTruthy();
+      expect(rects[5] == CGRectFromOriginAndSize(CGPointMake(1.5, 1), size)).to.beTruthy();
+      expect(rects[6] == CGRectFromOriginAndSize(CGPointMake(1.5, 2), size)).to.beTruthy();
+      expect(rects[7] == CGRectFromOriginAndSize(CGPointMake(1.5, 3), size)).to.beTruthy();
+    });
+  });
 });
 
 context(@"cgtriangle operations", ^{
