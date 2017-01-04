@@ -62,9 +62,13 @@ NS_ASSUME_NONNULL_BEGIN
 /// Adds convenience methods to create \c AFHTTPSessionManager with \c FBRHTTPSessionConfiguration.
 @interface AFHTTPSessionManager (Fiber)
 
-/// Creates and returns a new HTTP session manager with the given Fiber \c configuration. 
-+ (instancetype)fbr_sessionManagerWithFiberConfiguration:
-    (FBRHTTPSessionConfiguration *)configuration;
+/// Creates and returns a new HTTP session manager with the given \c baseURL and Fiber
+/// \c configuration.
+///
+/// @note If \c configuration specifies a security policy that requires SSL pinning \c baseURL must
+/// be an HTTPS URL.
++ (instancetype)fbr_sessionManagerWithBaseURL:(nullable NSURL *)baseURL
+                           fiberConfiguration:(FBRHTTPSessionConfiguration *)configuration;
 
 @end
 

@@ -121,10 +121,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation AFHTTPSessionManager (Fiber)
 
-+ (instancetype)fbr_sessionManagerWithFiberConfiguration:
-    (FBRHTTPSessionConfiguration *)configuration {
++ (instancetype)fbr_sessionManagerWithBaseURL:(nullable NSURL *)baseURL
+                           fiberConfiguration:(FBRHTTPSessionConfiguration *)configuration {
+  LTAssert(configuration.securityPolicy.validationMode == FBRCertificateValidationModeStandard ||
+           [baseURL.scheme.lowercaseString isEqualToString:@"https"],
+           @"Session SSL pinning is requested but base URL is not an HTTPS URL (%@)", baseURL);
+
   AFHTTPSessionManager *sessionManager =
-      [[AFHTTPSessionManager alloc] initWithBaseURL:nil
+      [[AFHTTPSessionManager alloc] initWithBaseURL:baseURL
                                sessionConfiguration:configuration.sessionConfiguration];
   sessionManager.securityPolicy =
       [AFSecurityPolicy fbr_securityPolicyWithFiberSecurityPolicy:configuration.securityPolicy];

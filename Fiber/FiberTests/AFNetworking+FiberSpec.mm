@@ -256,14 +256,16 @@ beforeEach(^{
                                                          securityPolicy:securityPolicy];
 });
 
-it(@"should create a session manager with the specified configuration", ^{
+it(@"should create a session manager with the specified base URL and configuration", ^{
+  NSURL *baseURL = [NSURL URLWithString:@"https://foo.bar"];
   AFHTTPSessionManager *sessionManager =
-      [AFHTTPSessionManager fbr_sessionManagerWithFiberConfiguration:configuration];
+      [AFHTTPSessionManager fbr_sessionManagerWithBaseURL:baseURL fiberConfiguration:configuration];
   AFHTTPRequestSerializer *expectedSerializer =
       [AFHTTPRequestSerializer fbr_serializerWithFiberRequestMarshalling:requestMarshalling];
   AFSecurityPolicy *expectedSecurityPolicy =
       [AFSecurityPolicy fbr_securityPolicyWithFiberSecurityPolicy:securityPolicy];
 
+  expect(sessionManager.baseURL).to.equal(baseURL);
   expect(sessionManager.session.configuration).to.equal(configuration.sessionConfiguration);
   expect(sessionManager.requestSerializer).to.beInstanceOf([expectedSerializer class]);
   expect(sessionManager.requestSerializer.HTTPRequestHeaders).to
@@ -273,6 +275,19 @@ it(@"should create a session manager with the specified configuration", ^{
   expect(sessionManager.securityPolicy.pinnedCertificates).to
       .equal(expectedSecurityPolicy.pinnedCertificates);
   expect(sessionManager.responseSerializer).to.beInstanceOf([AFHTTPResponseSerializer class]);
+});
+
+it(@"should raise exception if initialized with SSL pinning policy and non-HTTPS base URL", ^{
+  NSURL *baseURL = [NSURL URLWithString:@"http://foo.bar"];
+  expect(^{
+    [AFHTTPSessionManager fbr_sessionManagerWithBaseURL:baseURL fiberConfiguration:configuration];
+  }).to.raise(NSInternalInconsistencyException);
+});
+
+it(@"should raise exception if initialized with SSL pinning policy and no base URL", ^{
+  expect(^{
+    [AFHTTPSessionManager fbr_sessionManagerWithBaseURL:nil fiberConfiguration:configuration];
+  }).to.raise(NSInternalInconsistencyException);
 });
 
 SpecEnd

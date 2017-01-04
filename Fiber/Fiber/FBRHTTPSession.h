@@ -26,8 +26,11 @@ typedef void (^FBRHTTPTaskSuccessBlock)(FBRHTTPResponse *response);
 /// The \c error parameters specifies the error that occurred during task execution.
 typedef void (^FBRHTTPTaskFailureBlock)(NSError *error);
 
-/// Initializes the receiver with the given session \c configuration.
-- (instancetype)initWithConfiguration:(FBRHTTPSessionConfiguration *)configuration;
+/// Initializes the receiver with the given \c baseURL and session \c configuration. If \c baseURL
+/// is not \c nil all requests sent by the session will be prefixed with this \c baseURL, otherwise
+/// each request made using the session must specify a full URL and not a relative one.
+- (instancetype)initWithBaseURL:(nullable NSURL *)baseURL
+                  configuration:(FBRHTTPSessionConfiguration *)configuration;
 
 /// Initiates and returns a data task for the given HTTP \c request. Returns \c nil if failed to
 /// initiate a task, in that case the \c failure block will be invoked with the relevant error.
