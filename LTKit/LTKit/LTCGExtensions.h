@@ -367,6 +367,28 @@ CG_INLINE NSUInteger CGRectHash(const CGRect &rect) {
   return hashCode;
 }
 
+/// Returns an array of rects forming a regular grid bounded by the given \c rect. Each rect has
+/// size <tt>(rect.size.width / horizontalCount, rect.size.height / verticalCount)</tt>. The \c i'th
+/// rect of the returned array corresponds to the \c i'th cell of the grid, when traversing the grid
+/// cells by rows from top left to bottom right.
+CG_INLINE CGRects CGRectRegularGrid(CGRect rect, NSUInteger horizontalCount,
+                                    NSUInteger verticalCount) {
+  if (horizontalCount == 0 || verticalCount == 0) {
+    return {rect};
+  }
+  CGRects rects(horizontalCount * verticalCount);
+  CGSize size = CGSizeMake(rect.size.width / horizontalCount, rect.size.height / verticalCount);
+  NSUInteger k = 0;
+  
+  for (NSUInteger i = 0; i < horizontalCount; ++i) {
+    for (NSUInteger j = 0; j < verticalCount; ++j) {
+      rects[k] = CGRectFromOriginAndSize(CGPointMake(i * size.width, j * size.height), size);
+      ++k;
+    }
+  }
+  return rects;
+}
+
 #pragma mark -
 #pragma mark Distance
 #pragma mark -
