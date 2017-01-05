@@ -18,6 +18,7 @@
 		8328EE3F1D43615C008C5A19 /* CUITimerMenuViewModelSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8328EE3E1D43615C008C5A19 /* CUITimerMenuViewModelSpec.mm */; };
 		8328EE411D436169008C5A19 /* CUITimerModeViewModelSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8328EE401D436169008C5A19 /* CUITimerModeViewModelSpec.mm */; };
 		8328EE441D436E7E008C5A19 /* CUIFakeTimerContainer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8328EE431D436E7E008C5A19 /* CUIFakeTimerContainer.mm */; };
+		835057F01E150A750005D9C4 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 835057EF1E150A750005D9C4 /* MediaPlayer.framework */; };
 		836374061D3FBA9000C8D09D /* CUITimerModeViewModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 836374051D3FBA9000C8D09D /* CUITimerModeViewModel.mm */; };
 		836374091D3FBA9F00C8D09D /* CUITimerMenuViewModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 836374081D3FBA9F00C8D09D /* CUITimerMenuViewModel.mm */; };
 		8363740C1D3FBAAF00C8D09D /* CUIGridViewModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8363740B1D3FBAAF00C8D09D /* CUIGridViewModel.mm */; };
@@ -474,6 +475,7 @@
 		8328EE401D436169008C5A19 /* CUITimerModeViewModelSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUITimerModeViewModelSpec.mm; sourceTree = "<group>"; };
 		8328EE421D436E7E008C5A19 /* CUIFakeTimerContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUIFakeTimerContainer.h; sourceTree = "<group>"; };
 		8328EE431D436E7E008C5A19 /* CUIFakeTimerContainer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUIFakeTimerContainer.mm; sourceTree = "<group>"; };
+		835057EF1E150A750005D9C4 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		836374041D3FBA9000C8D09D /* CUITimerModeViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUITimerModeViewModel.h; sourceTree = "<group>"; };
 		836374051D3FBA9000C8D09D /* CUITimerModeViewModel.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUITimerModeViewModel.mm; sourceTree = "<group>"; };
 		836374071D3FBA9F00C8D09D /* CUITimerMenuViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUITimerMenuViewModel.h; sourceTree = "<group>"; };
@@ -657,6 +659,7 @@
 				BEA275981D3284A2001BB8ED /* CoreMotion.framework in Frameworks */,
 				65061A261D46397F003D45B1 /* Mantle.framework in Frameworks */,
 				BEC7B1B01D1FFF3C0012C286 /* Masonry.framework in Frameworks */,
+				835057F01E150A750005D9C4 /* MediaPlayer.framework in Frameworks */,
 				288E8EC21D3BEAEC000B7E69 /* MobileCoreServices.framework in Frameworks */,
 				F965C9DC1CF316F800005627 /* Objection-iOS.framework in Frameworks */,
 				83B731C41CDB92C00090C0BF /* opencv2.framework in Frameworks */,
@@ -686,6 +689,7 @@
 				83B731B01CDB92600090C0BF /* AVFoundation.framework */,
 				83B731B41CDB92670090C0BF /* CoreMedia.framework */,
 				BEA275971D3284A2001BB8ED /* CoreMotion.framework */,
+				835057EF1E150A750005D9C4 /* MediaPlayer.framework */,
 				288E8EC11D3BEAEC000B7E69 /* MobileCoreServices.framework */,
 				F965C9BF1CF316E100005627 /* Objection-iOS.framework */,
 				83B731C21CDB92A20090C0BF /* opencv2.framework */,
