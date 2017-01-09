@@ -185,7 +185,8 @@ static NSString *stringFromNSDecimalWithCurrentLocale(NSDecimal value) {
   
   // Create date string.
   NSDateFormatter *dateFormatter = [NSDateFormatter new];
-  [dateFormatter setDateFormat:@"HH:mm:ss.SSS"];
+  dateFormatter.dateFormat = @"HH:mm:ss.SSS";
+  dateFormatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
   
   NSString *logLevelString;
   switch (logLevel) {
