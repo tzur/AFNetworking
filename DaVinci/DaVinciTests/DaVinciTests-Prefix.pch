@@ -21,6 +21,7 @@ extern "C" {
   #import <LTEngine/LTOpenCVExtensions.h>
   #import <LTEngineTests/LTTestUtils+LTEngine.h>
   #import <LTKitTests/LTTestUtils.h>
+  #import <LTEngineTests/LTTestModule.h>
 
   // Matchers.
   #import <LTEngineTests/EXPMatchers+beCloseToGLKVector.h>
