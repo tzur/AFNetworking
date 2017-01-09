@@ -35,6 +35,7 @@
 		282EE7501D2A7A22002FA432 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 250154D81D1AEF1400420FA9 /* Accelerate.framework */; };
 		282EE7521D2A7A35002FA432 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 282EE7511D2A7A35002FA432 /* AssetsLibrary.framework */; };
 		282EE7551D2A7A62002FA432 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 250154DD1D1AEF5400420FA9 /* CoreMedia.framework */; };
+		28327A8C1E1CEA8E00CDE956 /* DVNJitteredColorAttributeProviderModelSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28327A8B1E1CEA8E00CDE956 /* DVNJitteredColorAttributeProviderModelSpec.mm */; };
 		285A78AD1DFD31AE00095BF4 /* DVNBrushTipsProvider.mm in Sources */ = {isa = PBXBuildFile; fileRef = 285A78AC1DFD31AE00095BF4 /* DVNBrushTipsProvider.mm */; };
 		285A78CF1DFD34F000095BF4 /* DVNBrushTipsProviderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 285A78CE1DFD34F000095BF4 /* DVNBrushTipsProviderSpec.mm */; };
 		285A79081DFD69CD00095BF4 /* DVNBrushTipsRound16Hardness75.png in Resources */ = {isa = PBXBuildFile; fileRef = 285A79051DFD69CD00095BF4 /* DVNBrushTipsRound16Hardness75.png */; };
@@ -47,6 +48,7 @@
 		286C1C821DEC5A5200523F2E /* DVNPatternSamplingStageModelSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 286C1C811DEC5A5200523F2E /* DVNPatternSamplingStageModelSpec.mm */; };
 		286C1D6D1DED9A0C00523F2E /* DVNScatteredGeometryStageModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 286C1D6C1DED9A0C00523F2E /* DVNScatteredGeometryStageModel.mm */; };
 		286C1D901DED9A5E00523F2E /* DVNScatteredGeometryProviderModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 286C1D8F1DED9A5E00523F2E /* DVNScatteredGeometryProviderModel.mm */; };
+		288674C71E1C00280007C326 /* DVNJitteredColorAttributeProviderModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 288674C61E1C00280007C326 /* DVNJitteredColorAttributeProviderModel.mm */; };
 		28D30C801E0138F500DF0640 /* DVNMaskBrush.fsh in Resources */ = {isa = PBXBuildFile; fileRef = 28D30C7E1E0138F500DF0640 /* DVNMaskBrush.fsh */; };
 		28D30C811E0138F500DF0640 /* DVNMaskBrush.vsh in Resources */ = {isa = PBXBuildFile; fileRef = 28D30C7F1E0138F500DF0640 /* DVNMaskBrush.vsh */; };
 		28D30C821E01390200DF0640 /* DVNMaskBrush.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 28D30C7E1E0138F500DF0640 /* DVNMaskBrush.fsh */; };
@@ -459,6 +461,7 @@
 		2804AB0D1D3BB6180057F1A0 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		282EE74C1D2A793E002FA432 /* DaVinciTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "DaVinciTests-Prefix.pch"; sourceTree = "<group>"; };
 		282EE7511D2A7A35002FA432 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
+		28327A8B1E1CEA8E00CDE956 /* DVNJitteredColorAttributeProviderModelSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNJitteredColorAttributeProviderModelSpec.mm; sourceTree = "<group>"; };
 		285A78AB1DFD31AE00095BF4 /* DVNBrushTipsProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DVNBrushTipsProvider.h; sourceTree = "<group>"; };
 		285A78AC1DFD31AE00095BF4 /* DVNBrushTipsProvider.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNBrushTipsProvider.mm; sourceTree = "<group>"; };
 		285A78CE1DFD34F000095BF4 /* DVNBrushTipsProviderSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNBrushTipsProviderSpec.mm; sourceTree = "<group>"; };
@@ -478,6 +481,8 @@
 		286C1D6C1DED9A0C00523F2E /* DVNScatteredGeometryStageModel.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNScatteredGeometryStageModel.mm; sourceTree = "<group>"; };
 		286C1D8E1DED9A5E00523F2E /* DVNScatteredGeometryProviderModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DVNScatteredGeometryProviderModel.h; sourceTree = "<group>"; };
 		286C1D8F1DED9A5E00523F2E /* DVNScatteredGeometryProviderModel.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNScatteredGeometryProviderModel.mm; sourceTree = "<group>"; };
+		288674C51E1C00280007C326 /* DVNJitteredColorAttributeProviderModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DVNJitteredColorAttributeProviderModel.h; sourceTree = "<group>"; };
+		288674C61E1C00280007C326 /* DVNJitteredColorAttributeProviderModel.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNJitteredColorAttributeProviderModel.mm; sourceTree = "<group>"; };
 		28D30C7E1E0138F500DF0640 /* DVNMaskBrush.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = DVNMaskBrush.fsh; sourceTree = "<group>"; };
 		28D30C7F1E0138F500DF0640 /* DVNMaskBrush.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = DVNMaskBrush.vsh; sourceTree = "<group>"; };
 		28D30C841E01393800DF0640 /* DVNMaskBrushConfigurationProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DVNMaskBrushConfigurationProvider.h; sourceTree = "<group>"; };
@@ -741,6 +746,8 @@
 		254C07B81D3F4D45009ECEEB /* Providers */ = {
 			isa = PBXGroup;
 			children = (
+				288674C51E1C00280007C326 /* DVNJitteredColorAttributeProviderModel.h */,
+				288674C61E1C00280007C326 /* DVNJitteredColorAttributeProviderModel.mm */,
 				254C07B91D3F4D72009ECEEB /* DVNQuadAttributeProvider.h */,
 				254C07BA1D3F4D72009ECEEB /* DVNQuadAttributeProvider.mm */,
 				28D30C881E0139A100DF0640 /* DVNQuadTransformAttributeProvider.h */,
@@ -761,6 +768,7 @@
 		254C07BD1D3F5310009ECEEB /* Providers */ = {
 			isa = PBXGroup;
 			children = (
+				28327A8B1E1CEA8E00CDE956 /* DVNJitteredColorAttributeProviderModelSpec.mm */,
 				254C07BE1D3F533B009ECEEB /* DVNQuadAttributeProviderSpec.mm */,
 				28D30C8E1E0139E800DF0640 /* DVNQuadTransformAttributeProviderSpec.mm */,
 			);
@@ -1657,6 +1665,7 @@
 				507FEFA21D3A30CA002CB28E /* DVNGeometryTransformer.mm in Sources */,
 				254C07BB1D3F4D72009ECEEB /* DVNQuadAttributeProvider.mm in Sources */,
 				28D30C8A1E0139A100DF0640 /* DVNQuadTransformAttributeProvider.mm in Sources */,
+				288674C71E1C00280007C326 /* DVNJitteredColorAttributeProviderModel.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1687,6 +1696,7 @@
 				25AD67791D355A9E0092B3E4 /* DVNPipelineSpec.mm in Sources */,
 				285A78CF1DFD34F000095BF4 /* DVNBrushTipsProviderSpec.mm in Sources */,
 				25AD67551D35527F0092B3E4 /* LTEqualityExamples.mm in Sources */,
+				28327A8C1E1CEA8E00CDE956 /* DVNJitteredColorAttributeProviderModelSpec.mm in Sources */,
 				50574AD21D2D60490076C60D /* LTSpectaOpenGLContextHook.mm in Sources */,
 				28662D5F1DF57D970051B9DA /* DVNSplineRenderingExamples.mm in Sources */,
 				28D30C8F1E0139E800DF0640 /* DVNQuadTransformAttributeProviderSpec.mm in Sources */,
