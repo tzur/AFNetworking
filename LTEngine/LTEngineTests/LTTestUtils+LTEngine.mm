@@ -74,6 +74,8 @@ BOOL LTCompareMat(const cv::Mat &expected, const cv::Mat &actual, std::vector<in
       return LTCompareMatCells<cv::Vec4hf>(expected, actual, cv::Vec4hf(half(0.f), half(0.f),
                                                                         half(0.f), half(0.f)),
                                            firstMismatch);
+    case CV_16U:
+      return LTCompareMatCells<ushort>(expected, actual, 0, firstMismatch);
     case CV_32S:
       return LTCompareMatCells<int>(expected, actual, 0, firstMismatch);
     case CV_32F:
@@ -108,6 +110,8 @@ BOOL LTFuzzyCompareMat(const cv::Mat &expected, const cv::Mat &actual, double ra
       return LTCompareMatCells<cv::Vec4hf>(expected, actual, cv::Vec4hf(half(range), half(range),
                                                                         half(range), half(range)),
                                            firstMismatch);
+    case CV_16U:
+      return LTCompareMatCells<ushort>(expected, actual, range, firstMismatch);
     case CV_32S:
       return LTCompareMatCells<int>(expected, actual, range, firstMismatch);
     case CV_32F:
@@ -164,6 +168,8 @@ NSString *LTMatValueAsString(const cv::Mat &mat, const std::vector<int> &positio
     case CV_16FC2:
     case CV_16FC4:
       return LTHalfFloatMatAsString(mat, position);
+    case CV_16U:
+      return LTMatAsString<ushort>(mat, position);
     case CV_32S:
       return LTMatAsString<int>(mat, position);
     case CV_32F:
@@ -563,6 +569,9 @@ static void LTWriteMat(const cv::Mat &mat, NSString *path) {
       cv::cvtColor(converted, bgrMat, CV_RGBA2BGRA);
       cv::imwrite([path cStringUsingEncoding:NSUTF8StringEncoding], bgrMat);
     } break;
+    case CV_16U:
+      cv::imwrite([path cStringUsingEncoding:NSUTF8StringEncoding], mat);
+      break;
     case CV_32S: {
       cv::Mat converted(mat.rows, mat.cols, CV_8UC4, mat.data, mat.step[0]);
       cv::imwrite([path cStringUsingEncoding:NSUTF8StringEncoding], converted);
