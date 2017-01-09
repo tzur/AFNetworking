@@ -4,7 +4,6 @@
 #import "LTSpectaObjectionHook.h"
 
 #import "LTObjectionModule.h"
-#import "LTTestModule.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

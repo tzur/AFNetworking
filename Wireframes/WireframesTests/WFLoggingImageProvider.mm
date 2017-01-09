@@ -4,6 +4,7 @@
 #import "WFLoggingImageProvider.h"
 
 #import <LTEngineTests/LTSpectaObjectionHook.h>
+#import <LTEngineTests/LTTestModule.h>
 #import <Wireframes/WFImageLoader.h>
 
 NS_ASSUME_NONNULL_BEGIN
