@@ -602,6 +602,18 @@ context(@"pixel value", ^{
     expect(expected).to.equal(actual);
   });
 
+  it(@"should return a correct pixel value on a single channel half float mat", ^{
+    cv::Mat1hf mat(2, 2);
+    mat(0, 0) = half(0.0);
+    mat(0, 1) = half(0.25);
+    mat(1, 0) = half(0.5);
+    mat(1, 1) = half(0.75);
+
+    LTVector4 actual = LTPixelValueFromImage(mat, kPoint);
+    LTVector4 expected = LTVector4(float(half(0.25)), 0, 0, 0);
+    expect(expected).to.equal(actual);
+  });
+
   it(@"should return a correct pixel value on a multi channel byte mat", ^{
     cv::Mat4b mat(2, 2);
     mat(0, 0) = cv::Vec4b(10, 20, 30, 40);
@@ -611,6 +623,19 @@ context(@"pixel value", ^{
 
     LTVector4 actual = LTPixelValueFromImage(mat, kPoint);
     LTVector4 expected = LTVector4(cv::Vec4b(50, 60, 70, 80));
+    expect(expected).to.equal(actual);
+  });
+
+  it(@"should return a correct pixel value on a multi channel half float mat", ^{
+    cv::Mat4hf mat(2, 2);
+    mat(0, 0) = cv::Vec4f(half(0.1), half(0.2), half(0.3), half(0.4));
+    mat(0, 1) = cv::Vec4f(half(0.2), half(0.3), half(0.4), half(0.5));
+    mat(1, 0) = cv::Vec4f(half(0.3), half(0.4), half(0.5), half(0.6));
+    mat(1, 1) = cv::Vec4f(half(0.4), half(0.5), half(0.6), half(0.7));
+
+    LTVector4 actual = LTPixelValueFromImage(mat, kPoint);
+    LTVector4 expected = LTVector4(float(half(0.2)), float(half(0.3)), float(half(0.4)),
+                                   float(half(0.5)));
     expect(expected).to.equal(actual);
   });
 
