@@ -63,6 +63,12 @@ cv::Vec4b LTLTVector4ToVec4b(LTVector4 value);
 /// Converts a \c LTVector4 to \c cv::Vec4f.
 cv::Vec4f LTLTVector4ToVec4f(LTVector4 value);
 
+/// Returns a \c cv::Vec4hf with all four values equal to \c scalar.
+cv::Vec4hf LTCVVec4hfFromScalar(float scalar);
+
+/// Returns a \c cv::Vec4hf with the given values.
+cv::Vec4hf LTCVVec4hf(float r, float g, float b, float a);
+
 /// Rotates (clockwise) the given mat by the given angle (in radians) around its center.
 /// Uses nearest neighbor interpolation.
 cv::Mat LTRotateMat(const cv::Mat input, CGFloat angle);
