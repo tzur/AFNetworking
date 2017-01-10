@@ -101,6 +101,16 @@ NS_ASSUME_NONNULL_BEGIN
                 allocateMemory:YES];
 }
 
++ (instancetype)halfFloatRGBATextureWithSize:(CGSize)size {
+  return [self textureWithSize:size pixelFormat:$(LTGLPixelFormatRGBA16Float) maxMipmapLevel:0
+                allocateMemory:YES];
+}
+
++ (instancetype)halfFloatRedTextureWithSize:(CGSize)size {
+  return [self textureWithSize:size pixelFormat:$(LTGLPixelFormatR16Float) maxMipmapLevel:0
+                allocateMemory:YES];
+}
+
 + (instancetype)textureWithPropertiesOf:(LTTexture *)texture {
   return [self textureWithSize:texture.size pixelFormat:texture.pixelFormat
                 maxMipmapLevel:texture.maxMipmapLevel

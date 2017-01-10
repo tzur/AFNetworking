@@ -59,6 +59,22 @@ it(@"should initialize as rgba texture", ^{
   expect(texture).to.beKindOf([LTTexture class]);
 });
 
+it(@"should initialize as half-float rgba texture", ^{
+  LTTexture *texture = [LTTexture halfFloatRGBATextureWithSize:CGSizeMake(1, 1)];
+
+  expect(texture).to.beKindOf([LTTexture class]);
+  expect(texture.size).to.equal(CGSizeMake(1, 1));
+  expect(texture.pixelFormat).to.equal($(LTGLPixelFormatRGBA16Float));
+});
+
+it(@"should initialize as single channel half-float texture", ^{
+  LTTexture *texture = [LTTexture halfFloatRedTextureWithSize:CGSizeMake(1, 1)];
+
+  expect(texture).to.beKindOf([LTTexture class]);
+  expect(texture.size).to.equal(CGSizeMake(1, 1));
+  expect(texture.pixelFormat).to.equal($(LTGLPixelFormatR16Float));
+});
+
 it(@"should initialize with properties of another texture", ^{
   LTTexture *another = [LTTexture byteRGBATextureWithSize:CGSizeMake(1, 1)];
   LTTexture *texture = [LTTexture textureWithPropertiesOf:another];
