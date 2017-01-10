@@ -4,6 +4,7 @@
 #import <GLKit/GLKit.h>
 
 #import "LTOpenCVCore.h"
+#import "LTOpenCVHalfFloat.h"
 
 #ifdef __cplusplus
 
@@ -708,6 +709,12 @@ struct LTVector4 {
     *this /= UCHAR_MAX;
   }
 
+  /// Initializes a new \c LTVector4 from \c cv::Vec4f.
+  explicit LTVector4(cv::Vec4f vector) : x(vector[0]), y(vector[1]), z(vector[2]), w(vector[3]) {}
+
+  /// Initializes a new \c LTVector4 from \c cv::Vec4hf.
+  explicit LTVector4(cv::Vec4hf vector) : x(vector[0]), y(vector[1]), z(vector[2]), w(vector[3]) {}
+
   /// Cast operator to \c GLKVector4.
   explicit constexpr operator GLKVector4() const {
     return {.x = x, .y = y, .z = z, .w = w};
@@ -722,6 +729,12 @@ struct LTVector4 {
   /// Cast operator to \c cv::Vec4f.
   explicit operator cv::Vec4f() const {
     return cv::Vec4f(x, y, z, w);
+  }
+
+  /// Cast operator to \c cv::Vec4hf.
+  explicit operator cv::Vec4hf() const {
+    return cv::Vec4f(half_float::half(x), half_float::half(y), half_float::half(z),
+                     half_float::half(w));
   }
 
   /// Initializes a new \c LTVector4 with \c x, \c y, \c z, and w elements.
