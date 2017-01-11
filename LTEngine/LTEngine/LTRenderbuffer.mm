@@ -118,8 +118,8 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark LTFboWritableAttachment
 #pragma mark -
 
-- (LTFboAttachmentType)attachmentType {
-  return LTFboAttachmentTypeRenderbuffer;
+- (LTFboAttachableType)attachableType {
+  return LTFboAttachableTypeRenderbuffer;
 }
 
 - (void)writeToAttachmentWithBlock:(LTVoidBlock)block {

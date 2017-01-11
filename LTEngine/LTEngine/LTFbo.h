@@ -1,7 +1,7 @@
 // Copyright (c) 2013 Lightricks. All rights reserved.
 // Created by Amit Goldstein.
 
-#import "LTFboAttachment.h"
+#import "LTFboAttachable.h"
 #import "LTGPUResource.h"
 
 @class LTGLContext, LTGLPixelFormat, LTRenderbuffer, LTTexture;
@@ -60,7 +60,7 @@
 @property (readonly, nonatomic) CGSize size;
 
 /// Attachment associated with the framebuffer.
-@property (readonly, nonatomic) id<LTFboAttachment> attachment;
+@property (readonly, nonatomic) id<LTFboAttachable> attachment;
 
 /// Pixel format of the attachment associated with this framebuffer.
 @property (readonly, nonatomic) LTGLPixelFormat *pixelFormat;

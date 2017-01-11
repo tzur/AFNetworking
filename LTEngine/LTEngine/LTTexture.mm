@@ -519,11 +519,11 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 #pragma mark -
-#pragma mark LTFboAttachment
+#pragma mark LTFboAttachable
 #pragma mark -
 
-- (LTFboAttachmentType)attachmentType {
-  return LTFboAttachmentTypeTexture2D;
+- (LTFboAttachableType)attachableType {
+  return LTFboAttachableTypeTexture2D;
 }
 
 #pragma mark -

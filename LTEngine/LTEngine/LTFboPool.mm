@@ -4,7 +4,7 @@
 #import "LTFboPool.h"
 
 #import "LTFbo.h"
-#import "LTFboAttachment.h"
+#import "LTFboAttachable.h"
 #import "LTGLContext.h"
 #import "LTRenderbuffer.h"
 #import "LTTexture.h"
@@ -18,11 +18,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Initializes a new attachment descriptor with the attachment type, the attachment's name and the
 /// level the framebuffer is attached to.
-- (instancetype)initWithType:(LTFboAttachmentType)type name:(GLuint)name
+- (instancetype)initWithType:(LTFboAttachableType)type name:(GLuint)name
                     andLevel:(NSUInteger)level NS_DESIGNATED_INITIALIZER;
 
 /// Type of binding.
-@property (readonly, nonatomic) LTFboAttachmentType type;
+@property (readonly, nonatomic) LTFboAttachableType type;
 
 /// Name of the texture.
 @property (readonly, nonatomic) GLuint name;
@@ -38,7 +38,7 @@ NS_ASSUME_NONNULL_BEGIN
   return nil;
 }
 
-- (instancetype)initWithType:(LTFboAttachmentType)type name:(GLuint)name
+- (instancetype)initWithType:(LTFboAttachableType)type name:(GLuint)name
                     andLevel:(NSUInteger)level {
   if (self = [super init]) {
     _type = type;
@@ -99,7 +99,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (LTFbo *)fboWithTexture:(LTTexture *)texture level:(NSUInteger)level {
   LTFboAttachmentDescriptor *descriptor = [[LTFboAttachmentDescriptor alloc]
-                                           initWithType:LTFboAttachmentTypeTexture2D
+                                           initWithType:LTFboAttachableTypeTexture2D
                                            name:texture.name
                                            andLevel:level];
 
@@ -116,7 +116,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (LTFbo *)fboWithRenderbuffer:(LTRenderbuffer *)renderbuffer {
   LTFboAttachmentDescriptor *descriptor = [[LTFboAttachmentDescriptor alloc]
-                                           initWithType:LTFboAttachmentTypeRenderbuffer
+                                           initWithType:LTFboAttachableTypeRenderbuffer
                                            name:renderbuffer.name
                                            andLevel:0];
 

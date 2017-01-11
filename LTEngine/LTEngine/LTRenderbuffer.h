@@ -1,7 +1,7 @@
 // Copyright (c) 2015 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
-#import "LTFboAttachment.h"
+#import "LTFboAttachable.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -11,7 +11,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// @important the renderbuffer storage cannot be changed after being allocated. If the drawable has
 /// changed its size, the current renderbuffer should be destroyed and a new renderbuffer should be
 /// allocated from the new drawable.
-@interface LTRenderbuffer : NSObject <LTFboAttachment>
+@interface LTRenderbuffer : NSObject <LTFboAttachable>
 
 - (instancetype)init NS_UNAVAILABLE;
 

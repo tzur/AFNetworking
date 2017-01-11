@@ -4,7 +4,7 @@
 #import <LTKit/LTTypedefs.h>
 #import <OpenGLES/ES2/glext.h>
 
-#import "LTFboAttachment.h"
+#import "LTFboAttachable.h"
 #import "LTGLPixelFormat.h"
 #import "LTTypedefs+LTEngine.h"
 
@@ -53,7 +53,7 @@ struct LTVector4;
 ///
 /// @note Binding texture objects binds them to the currently active texture unit in the OpenGL
 /// environment. Unbinding textures restores the state previous to the last \c bind call.
-@interface LTTexture : NSObject <LTFboAttachment> {
+@interface LTTexture : NSObject <LTFboAttachable> {
   // This is required to prevent redeclaring \c name in subclasses.
   @protected
   GLuint _name;
