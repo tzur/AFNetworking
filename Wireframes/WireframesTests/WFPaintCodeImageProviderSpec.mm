@@ -4,8 +4,8 @@
 #import "WFPaintCodeImageProvider.h"
 
 #import <LTKit/LTCGExtensions.h>
+#import <LTKit/UIColor+Utilities.h>
 
-#import "UIColor+Utilities.h"
 #import "WFFakePaintCodeModule.h"
 
 SpecBegin(WFPaintCodeImageProvider)
@@ -82,7 +82,7 @@ it(@"should send image with correct size", ^{
 });
 
 it(@"should pass correct query parameters", ^{
-  UIColor *expectedColor = [UIColor wf_colorWithHex:@"12345678"];
+  UIColor *expectedColor = [UIColor lt_colorWithHex:@"12345678"];
   OCMExpect([paintCodeModule drawImageCWithFrame:CGRectMake(0, 0, 2, 1) color:expectedColor
                                        lineWidth:10]);
   NSURL *url = [NSURL URLWithString:@"paintcode://WFFakePaintCodeModule/ImageC?"

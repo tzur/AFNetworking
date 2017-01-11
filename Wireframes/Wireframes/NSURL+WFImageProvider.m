@@ -4,8 +4,7 @@
 #import "NSURL+WFImageProvider.h"
 
 #import <LTKit/NSURL+Query.h>
-
-#import "UIColor+Utilities.h"
+#import <LTKit/UIColor+Utilities.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -20,7 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (NSURL *)wf_URLWithImageColor:(UIColor *)color {
   return [self lt_URLByAppendingQueryDictionary:@{
-    @"color": [color wf_hexString]
+    @"color": [color lt_hexString]
   }];
 }
 

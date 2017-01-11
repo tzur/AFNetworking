@@ -10,34 +10,34 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation UIColor (Utilities)
 
-+ (UIColor *)wf_colorWithHex:(NSString *)hex {
++ (UIColor *)lt_colorWithHex:(NSString *)hex {
   NSString *colorString = [hex characterAtIndex:0] == '#' ? [hex substringFromIndex:1] : hex;
 
   CGFloat alpha, red, blue, green;
   switch (colorString.length) {
     case 3: // #RGB.
       alpha = 1.0f;
-      red = [self wf_colorComponentFrom:colorString start:0 length:1];
-      green = [self wf_colorComponentFrom:colorString start:1 length:1];
-      blue = [self wf_colorComponentFrom:colorString start:2 length:1];
+      red = [self lt_colorComponentFrom:colorString start:0 length:1];
+      green = [self lt_colorComponentFrom:colorString start:1 length:1];
+      blue = [self lt_colorComponentFrom:colorString start:2 length:1];
       break;
     case 4: // #ARGB.
-      alpha = [self wf_colorComponentFrom:colorString start:0 length:1];
-      red = [self wf_colorComponentFrom:colorString start:1 length:1];
-      green = [self wf_colorComponentFrom:colorString start:2 length:1];
-      blue = [self wf_colorComponentFrom:colorString start:3 length:1];
+      alpha = [self lt_colorComponentFrom:colorString start:0 length:1];
+      red = [self lt_colorComponentFrom:colorString start:1 length:1];
+      green = [self lt_colorComponentFrom:colorString start:2 length:1];
+      blue = [self lt_colorComponentFrom:colorString start:3 length:1];
       break;
     case 6: // #RRGGBB.
       alpha = 1.0f;
-      red = [self wf_colorComponentFrom:colorString start:0 length:2];
-      green = [self wf_colorComponentFrom:colorString start:2 length:2];
-      blue = [self wf_colorComponentFrom:colorString start:4 length:2];
+      red = [self lt_colorComponentFrom:colorString start:0 length:2];
+      green = [self lt_colorComponentFrom:colorString start:2 length:2];
+      blue = [self lt_colorComponentFrom:colorString start:4 length:2];
       break;
     case 8: // #AARRGGBB.
-      alpha = [self wf_colorComponentFrom:colorString start:0 length:2];
-      red = [self wf_colorComponentFrom:colorString start:2 length:2];
-      green = [self wf_colorComponentFrom:colorString start:4 length:2];
-      blue = [self wf_colorComponentFrom:colorString start:6 length:2];
+      alpha = [self lt_colorComponentFrom:colorString start:0 length:2];
+      red = [self lt_colorComponentFrom:colorString start:2 length:2];
+      green = [self lt_colorComponentFrom:colorString start:4 length:2];
+      blue = [self lt_colorComponentFrom:colorString start:6 length:2];
       break;
     default:
       LTParameterAssert(NO, @"Given color value '%@' is invalid. It should be a hex value in one "
@@ -48,7 +48,7 @@ NS_ASSUME_NONNULL_BEGIN
   return [UIColor colorWithRed:red green:green blue:blue alpha:alpha];
 }
 
-+ (CGFloat)wf_colorComponentFrom:(NSString *)string start:(NSUInteger)start
++ (CGFloat)lt_colorComponentFrom:(NSString *)string start:(NSUInteger)start
                           length:(NSUInteger)length {
   NSString *substring = [string substringWithRange:NSMakeRange(start, length)];
   NSString *fullHex = length == 2 ? substring :
@@ -61,7 +61,7 @@ NS_ASSUME_NONNULL_BEGIN
   return hexComponent / 255.0;
 }
 
-- (NSString *)wf_hexString {
+- (NSString *)lt_hexString {
   static const uint8_t kMax = std::numeric_limits<uint8_t>::max();
 
   CGFloat r, g, b, a;
@@ -83,7 +83,7 @@ NS_ASSUME_NONNULL_BEGIN
           a8, r8, g8, b8];
 }
 
-+ (UIColor *)wf_lerpColorFrom:(UIColor *)start to:(UIColor *)end parameter:(CGFloat)t {
++ (UIColor *)lt_lerpColorFrom:(UIColor *)start to:(UIColor *)end parameter:(CGFloat)t {
   const CGFloat *startComponent = CGColorGetComponents(start.CGColor);
   const CGFloat *endComponent = CGColorGetComponents(end.CGColor);
 
