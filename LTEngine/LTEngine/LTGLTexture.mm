@@ -214,6 +214,8 @@ static void LTVerifyMipmapImages(const Matrices &images) {
     // Read pixels into the mutable data, according to the texture precision.
     glReadPixels(rect.origin.x, rect.origin.y, rect.size.width, rect.size.height,
                  format, precision, readImage.data);
+    LTGLCheckDbg(@"Failed to read pixels from rect: %@, format: %u, precision: %u",
+                 NSStringFromCGRect(rect), format, precision);
   }];
 
   // Convert read data to the output image's type, if needed.
@@ -269,6 +271,7 @@ static void LTVerifyMipmapImages(const Matrices &images) {
         glTexSubImage2D(GL_TEXTURE_2D, 0, rect.origin.x, rect.origin.y,
                         rect.size.width, rect.size.height, format, precision, storedImage.data);
       }
+      LTGLCheckDbg(@"Failed to load data to sub-image with rect %@", NSStringFromCGRect(rect));
     }];
   }];
 }
