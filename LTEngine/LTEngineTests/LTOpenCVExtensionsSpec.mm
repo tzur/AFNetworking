@@ -560,7 +560,7 @@ context(@"generate mat", ^{
     float factor = *std::max_element(expectedGray.begin(), expectedGray.end()) / 255.0;
     std::transform(expected.begin(), expected.end(), expected.end(),
                    [factor](const cv::Vec4b &pixel) {
-      return LTLTVector4ToVec4b(LTCVVec4bToLTVector4(pixel) / factor);
+      return LTLTVector4ToVec4b(LTVector4(pixel) / factor);
     });
     expect($(convertedRGB)).to.beCloseToMat($(expected));
   });

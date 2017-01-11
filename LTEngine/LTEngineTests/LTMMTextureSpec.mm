@@ -368,7 +368,7 @@ sharedExamplesFor(kLTMMTextureExamples, ^(NSDictionary *contextInfo) {
       });
 
       LTMMTexture *texture = [[LTMMTexture alloc] initWithPixelBuffer:pixelBuffer.get()];
-      LTVector4 expected = LTCVVec4bToLTVector4(kPixelValue);
+      LTVector4 expected = LTVector4(kPixelValue);
       LTVector4 actual = [texture pixelValue:CGPointMake(0, 0)];
       expect(actual).to.equal(expected);
     });
@@ -384,7 +384,7 @@ sharedExamplesFor(kLTMMTextureExamples, ^(NSDictionary *contextInfo) {
       // Cloning is done via GPU, thus clonned texture shows only data visible to GPU.
       LTTexture *cloned = [[[LTMMTexture alloc] initWithPixelBuffer:pixelBuffer.get()] clone];
 
-      LTVector4 expected = LTCVVec4bToLTVector4(kPixelValue);
+      LTVector4 expected = LTVector4(kPixelValue);
       LTVector4 actual = [cloned pixelValue:CGPointMake(0, 0)];
       expect(actual).to.equal(expected);
     });

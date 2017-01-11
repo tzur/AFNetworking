@@ -1,6 +1,8 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
+#ifdef __cplusplus
+
 #import "../../third_party/half/half.hpp"
 
 #import <opencv2/core/core.hpp>
@@ -59,3 +61,5 @@ namespace cv {
     };
   };
 }
+
+#endif

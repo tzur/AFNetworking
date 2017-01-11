@@ -50,12 +50,12 @@ context(@"from UIColor", ^{
   });
 
   it(@"should create cv::Vec4b with color", ^{
-    expect(LTCVVec4bToLTVector4([UIColor clearColor].lt_cvVector)).to.equal(kClear);
-    expect(LTCVVec4bToLTVector4([UIColor blackColor].lt_cvVector)).to.equal(kBlack);
-    expect(LTCVVec4bToLTVector4([UIColor whiteColor].lt_cvVector)).to.equal(kWhite);
-    expect(LTCVVec4bToLTVector4([UIColor redColor].lt_cvVector)).to.equal(kRed);
-    expect(LTCVVec4bToLTVector4([UIColor greenColor].lt_cvVector)).to.equal(kGreen);
-    expect(LTCVVec4bToLTVector4([UIColor blueColor].lt_cvVector)).to.equal(kBlue);
+    expect(LTVector4([UIColor clearColor].lt_cvVector)).to.equal(kClear);
+    expect(LTVector4([UIColor blackColor].lt_cvVector)).to.equal(kBlack);
+    expect(LTVector4([UIColor whiteColor].lt_cvVector)).to.equal(kWhite);
+    expect(LTVector4([UIColor redColor].lt_cvVector)).to.equal(kRed);
+    expect(LTVector4([UIColor greenColor].lt_cvVector)).to.equal(kGreen);
+    expect(LTVector4([UIColor blueColor].lt_cvVector)).to.equal(kBlue);
   });
 });
 

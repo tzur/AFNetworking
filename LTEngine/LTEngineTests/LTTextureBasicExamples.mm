@@ -212,7 +212,7 @@ sharedExamplesFor(kLTTextureBasicExamples, ^(NSDictionary *data) {
         CGPoint point = CGPointMake(1, 7);
 
         LTVector4 actual = [texture pixelValue:point];
-        LTVector4 expected = LTCVVec4bToLTVector4(image(point.y, point.x));
+        LTVector4 expected = LTVector4(image(point.y, point.x));
 
         expect(expected).to.equal(actual);
       });
@@ -221,7 +221,7 @@ sharedExamplesFor(kLTTextureBasicExamples, ^(NSDictionary *data) {
         CGPoint point = CGPointMake(-1, 49);
 
         LTVector4 actual = [texture pixelValue:point];
-        LTVector4 expected = LTCVVec4bToLTVector4(image(47, 1));
+        LTVector4 expected = LTVector4(image(47, 1));
 
         expect(expected).to.equal(actual);
       });
@@ -230,7 +230,7 @@ sharedExamplesFor(kLTTextureBasicExamples, ^(NSDictionary *data) {
         CGPoint point = CGPointMake(67, 48);
 
         LTVector4 actual = [texture pixelValue:point];
-        LTVector4 expected = LTCVVec4bToLTVector4(image(47, 66));
+        LTVector4 expected = LTVector4(image(47, 66));
 
         expect(expected).to.equal(actual);
       }); 
@@ -241,7 +241,7 @@ sharedExamplesFor(kLTTextureBasicExamples, ^(NSDictionary *data) {
         LTVector4s actual = [texture pixelValues:points];
         LTVector4s expected;
         for (const CGPoint &point : points) {
-          expected.push_back(LTCVVec4bToLTVector4(image(point.y, point.x)));
+          expected.push_back(LTVector4(image(point.y, point.x)));
         }
 
         expect(expected == actual).to.beTruthy();
@@ -252,9 +252,9 @@ sharedExamplesFor(kLTTextureBasicExamples, ^(NSDictionary *data) {
 
         LTVector4s actual = [texture pixelValues:points];
         LTVector4s expected{
-          LTCVVec4bToLTVector4(image(2, 1)),
-          LTCVVec4bToLTVector4(image(5, 2)),
-          LTCVVec4bToLTVector4(image(47, 1))
+          LTVector4(image(2, 1)),
+          LTVector4(image(5, 2)),
+          LTVector4(image(47, 1))
         };
 
         expect(expected == actual).to.beTruthy();
@@ -265,8 +265,8 @@ sharedExamplesFor(kLTTextureBasicExamples, ^(NSDictionary *data) {
 
         LTVector4s actual = [texture pixelValues:points];
         LTVector4s expected{
-          LTCVVec4bToLTVector4(image(0, 0)),
-          LTCVVec4bToLTVector4(image(47, 66))
+          LTVector4(image(0, 0)),
+          LTVector4(image(47, 66))
         };
 
         expect(expected == actual).to.beTruthy();

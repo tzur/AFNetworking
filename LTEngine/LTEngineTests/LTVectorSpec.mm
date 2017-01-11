@@ -9,6 +9,8 @@ SpecBegin(LTVector)
 
 static const CGFloat kEpsilon = 1e-5;
 
+using half_float::half;
+
 context(@"LTVector2", ^{
   it(@"should initialize correctly", ^{
     LTVector2 v1;
@@ -594,6 +596,18 @@ context(@"LTVector4", ^{
     expect(v6.y).to.equal(8.0 / UCHAR_MAX);
     expect(v6.z).to.equal(9.0 / UCHAR_MAX);
     expect(v6.w).to.equal(10.0 / UCHAR_MAX);
+
+    LTVector4 v7(cv::Vec4f(0.1, 0.2, 0.3, 0.4));
+    expect(v7.x).to.equal(0.1);
+    expect(v7.y).to.equal(0.2);
+    expect(v7.z).to.equal(0.3);
+    expect(v7.w).to.equal(0.4);
+
+    LTVector4 v8(cv::Vec4hf(half(0.1), half(0.2), half(0.3), half(0.4)));
+    expect(v8.x).to.equal((float)half(0.1));
+    expect(v8.y).to.equal((float)half(0.2));
+    expect(v8.z).to.equal((float)half(0.3));
+    expect(v8.w).to.equal((float)half(0.4));
 });
 
   it(@"should cast to GLKVector4", ^{
@@ -624,6 +638,16 @@ context(@"LTVector4", ^{
     expect(cvVector[1]).to.equal(ltVector.y);
     expect(cvVector[2]).to.equal(ltVector.z);
     expect(cvVector[3]).to.equal(ltVector.w);
+  });
+
+  it(@"should cast to cv::Vec4hf", ^{
+    LTVector4 ltVector = LTVector4(-0.5, 0.7, 0.9, -1.1);
+    cv::Vec4hf cvVector = (cv::Vec4hf)ltVector;
+
+    expect(float(cvVector[0])).to.equal(float(half(ltVector.x)));
+    expect(float(cvVector[1])).to.equal(float(half(ltVector.y)));
+    expect(float(cvVector[2])).to.equal(float(half(ltVector.z)));
+    expect(float(cvVector[3])).to.equal(float(half(ltVector.w)));
   });
 
   it(@"should perform math operations correctly", ^{
