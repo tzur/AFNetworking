@@ -95,8 +95,6 @@ cv::Mat1hf LTCreateGaussianMat(CGSize size, double sigma, BOOL normalized = NO);
 cv::Mat1f LTMatFromGLKMatrix3(GLKMatrix3 matrix);
 
 /// Returns the value of the given pixel in the given image.
-///
-/// @note Half-float images are not supported.
 LTVector4 LTPixelValueFromImage(const cv::Mat &image, cv::Point2i location);
 
 /// Returns a checkerboard with the given \c size. The tiles are colored alternately white

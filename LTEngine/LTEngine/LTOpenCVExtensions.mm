@@ -304,7 +304,6 @@ cv::Mat1f LTMatFromGLKMatrix3(GLKMatrix3 matrix) {
 }
 
 LTVector4 LTPixelValueFromImage(const cv::Mat &image, cv::Point2i location) {
-  // TODO: (yaron) implement a half-float <--> float converter when needed.
   switch (image.type()) {
     case CV_8U: {
       uchar value = image.at<uchar>(location.y, location.x);
@@ -313,6 +312,14 @@ LTVector4 LTPixelValueFromImage(const cv::Mat &image, cv::Point2i location) {
     case CV_8UC4: {
       cv::Vec4b value = image.at<cv::Vec4b>(location.y, location.x);
       return LTVector4(value(0) / 255.f, value(1) / 255.f, value(2) / 255.f, value(3) / 255.f);
+    }
+    case CV_16F: {
+      half value = image.at<half>(location.y, location.x);
+      return LTVector4(float(value), 0, 0, 0);
+    }
+    case CV_16FC4: {
+      cv::Vec4hf value = image.at<cv::Vec4hf>(location.y, location.x);
+      return LTVector4(float(value(0)), float(value(1)), float(value(2)), float(value(3)));
     }
     case CV_32F: {
       float value = image.at<float>(location.y, location.x);
