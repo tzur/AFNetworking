@@ -386,6 +386,14 @@ cv::Vec4f LTLTVector4ToVec4f(LTVector4 value) {
   return (cv::Vec4f)value;
 }
 
+cv::Vec4hf LTCVVec4hfFromScalar(float scalar) {
+  return cv::Vec4hf(half(scalar), half(scalar), half(scalar), half(scalar));
+}
+
+cv::Vec4hf LTCVVec4hf(float r, float g, float b, float a) {
+  return cv::Vec4hf(half(r), half(g), half(b), half(a));
+}
+
 cv::Mat4b LTCreateDeltaMat(CGSize size, CGPoint position) {
   LTParameterAssert(position.x >= 0 && position.y >= 0 && position.x < size.width &&
                     position.y < size.height, @"Position should be bounded by size");
