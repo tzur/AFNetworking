@@ -98,6 +98,9 @@ NS_ASSUME_NONNULL_BEGIN
   
   self.viewModel.assetSelected = [RACObserve(self, collectionViewController.itemSelected)
       switchToLatest];
+
+  self.viewModel.assetDeselected = [RACObserve(self, collectionViewController.itemDeselected)
+      switchToLatest];
   
   RACSignal *selectedAssets = [RACObserve(self, viewModel.selectedAssets) switchToLatest];
   [[[[RACObserve(self, collectionViewController)

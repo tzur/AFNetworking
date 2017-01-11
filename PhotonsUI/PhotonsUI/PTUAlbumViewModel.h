@@ -23,6 +23,10 @@ NS_ASSUME_NONNULL_BEGIN
 /// Hot signal that sends a corresponding \c id<PTNDescriptor> each time an asset is selected.
 @property (strong, nonatomic, nullable) RACSignal *assetSelected;
 
+/// Hot signal sending the appropriate \c id<PTNDescriptor> of each deselected item as it's being
+/// deselected.
+@property (strong, nonatomic) RACSignal *assetDeselected;
+
 /// Default title of the album view used whenever the underlying title is \c nil. If set to \c nil
 /// the title has no default value and remains \c nil.
 @property (readonly, nonatomic, nullable) NSString *defaultTitle;
