@@ -81,6 +81,24 @@ NS_ASSUME_NONNULL_BEGIN
 /// @endcode
 + (instancetype)byteRedTextureWithSize:(CGSize)size;
 
+/// Creates a new half-float precision, 4 channels RGBA texture with the given \c size and allocates
+/// its memory. This is a convenience method which is similar to calling:
+///
+/// @code
+/// [LTTexture textureWithSize:size pixelFormat:LTGLPixelFormatRGBA16Float maxMipmapLevel:0
+///             allocateMemory:YES];
+/// @endcode
++ (instancetype)halfFloatRGBATextureWithSize:(CGSize)size;
+
+/// Creates a new half-float precision, 1 channels R texture with the given \c size and allocates
+/// its memory. This is a convenience method which is similar to calling:
+///
+/// @code
+/// [LTTexture textureWithSize:size pixelFormat:LTGLPixelFormatRG16Float maxMipmapLevel:0
+///             allocateMemory:YES];
+/// @endcode
++ (instancetype)halfFloatRedTextureWithSize:(CGSize)size;
+
 /// Creates a new, allocated texture with \c size, \c pixelFormat and \c maxMipmapLevel similar to
 /// the given \c texture. This is a convenience method which is similar to calling:
 ///
