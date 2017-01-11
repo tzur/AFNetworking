@@ -33,6 +33,23 @@ static void PTUSimulateSelection(UICollectionView *collectionView, NSIndexPath *
   }
 }
 
+static void PTUSimulateDeselection(UICollectionView *collectionView, NSIndexPath *indexPath) {
+  id<UICollectionViewDelegate> delegate = collectionView.delegate;
+
+  if ([delegate respondsToSelector:@selector(collectionView:shouldDeselectItemAtIndexPath:)]) {
+    if (![collectionView.delegate collectionView:collectionView
+                     shouldDeselectItemAtIndexPath:indexPath]) {
+      return;
+    }
+  }
+
+  [collectionView deselectItemAtIndexPath:indexPath animated:NO];
+
+  if ([delegate respondsToSelector:@selector(collectionView:didDeselectItemAtIndexPath:)]) {
+    [collectionView.delegate collectionView:collectionView didDeselectItemAtIndexPath:indexPath];
+  }
+}
+
 @interface PTUAlbumViewController (ForTesting)
 @property (strong, nonatomic, nullable) PTUCollectionViewController *collectionViewController;
 @end
@@ -163,8 +180,9 @@ it(@"should initialize collection views with album configuration in factory init
   expect(layout.minimumInteritemSpacing).to.equal(configuration.minimumItemSpacing);
 });
 
-it(@"should populate selection signal", ^{
+it(@"should populate selection and deselction signals", ^{
   expect(viewModel.assetSelected).toNot.beNil();
+  expect(viewModel.assetDeselected).toNot.beNil();
 });
 
 it(@"should not load view on initialization", ^{
@@ -217,11 +235,11 @@ context(@"collection control", ^{
     expect(recorder).will.sendValues(@[asset, otherAsset]);
   });
   
-  it(@"should select assets when they are selected", ^{
-    LLSignalTestRecorder *recorder = [viewModel.assetSelected testRecorder];
+  it(@"should notify when assets are deselected", ^{
+    LLSignalTestRecorder *recorder = [viewModel.assetDeselected testRecorder];
 
-    PTUSimulateSelection(collectionView, [NSIndexPath indexPathForItem:2 inSection:0]);
-    PTUSimulateSelection(collectionView, [NSIndexPath indexPathForItem:0 inSection:0]);
+    PTUSimulateDeselection(collectionView, [NSIndexPath indexPathForItem:2 inSection:0]);
+    PTUSimulateDeselection(collectionView, [NSIndexPath indexPathForItem:0 inSection:0]);
 
     expect(recorder).will.sendValues(@[asset, otherAsset]);
   });
@@ -316,6 +334,21 @@ context(@"collection control", ^{
       PTUSimulateSelection(currentCollectionView, [NSIndexPath indexPathForItem:2 inSection:0]);
       PTUSimulateSelection(currentCollectionView, [NSIndexPath indexPathForItem:0 inSection:0]);
       
+      expect(recorder).will.sendValues(@[asset, otherAsset, otherAsset, asset]);
+    });
+
+    it(@"should continue to notify deselected assets", ^{
+      LLSignalTestRecorder *recorder = [viewModel.assetDeselected testRecorder];
+
+      PTUSimulateDeselection(collectionView, [NSIndexPath indexPathForItem:2 inSection:0]);
+      PTUSimulateDeselection(collectionView, [NSIndexPath indexPathForItem:0 inSection:0]);
+
+      [dataSourceProviderSignal sendNext:otherDataSourceProvider];
+      [albumView.view layoutIfNeeded];
+
+      PTUSimulateDeselection(currentCollectionView, [NSIndexPath indexPathForItem:2 inSection:0]);
+      PTUSimulateDeselection(currentCollectionView, [NSIndexPath indexPathForItem:0 inSection:0]);
+
       expect(recorder).will.sendValues(@[asset, otherAsset, otherAsset, asset]);
     });
 

@@ -11,6 +11,7 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize selectedAssets = _selectedAssets;
 @synthesize scrollToAsset = _scrollToAsset;
 @synthesize assetSelected = _assetSelected;
+@synthesize assetDeselected = _assetDeselected;
 @synthesize defaultTitle = _defaultTitle;
 @synthesize url = _url;
 
