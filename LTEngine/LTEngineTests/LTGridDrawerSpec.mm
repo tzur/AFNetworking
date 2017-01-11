@@ -176,14 +176,14 @@ context(@"drawing", ^{
   
   context(@"draw-affecting properties", ^{
     beforeEach(^{
-      [fbo clearWithColor:LTCVVec4bToLTVector4(kGray)];
+      [fbo clearWithColor:LTVector4(kGray)];
       expected = kGray;
     });
 
     it(@"should draw with a custom RGBA color", ^{
       cv::Vec4b rgba(10, 20, 30, 40);
       gridDrawer = [[LTGridDrawer alloc] initWithSize:CGSizeMake(1, 1)];
-      gridDrawer.color = LTCVVec4bToLTVector4(rgba);
+      gridDrawer.color = LTVector4(rgba);
       [gridDrawer drawSubGridInRegion:CGRectMake(0, 0, 1, 1) inFramebuffer:fbo];
       LTBlendBorder(expected, kGray, rgba);
       expect(LTCompareMat(expected, output.image)).to.beTruthy();
@@ -202,7 +202,7 @@ context(@"drawing", ^{
       cv::Vec4b rgba(16, 32, 64, 128);
       const CGFloat kOpacity = 0.5;
       gridDrawer = [[LTGridDrawer alloc] initWithSize:CGSizeMake(1, 1)];
-      gridDrawer.color = LTCVVec4bToLTVector4(rgba);
+      gridDrawer.color = LTVector4(rgba);
       gridDrawer.opacity = kOpacity;
       [gridDrawer drawSubGridInRegion:CGRectMake(0, 0, 1, 1) inFramebuffer:fbo];
       LTBlendBorder(expected, kGray, kOpacity * rgba);

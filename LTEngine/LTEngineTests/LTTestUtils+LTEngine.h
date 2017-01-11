@@ -48,15 +48,6 @@ cv::Vec4b LTBlend(const cv::Vec4b &oldColor, const cv::Vec4b &newColor, bool pre
 /// Converts a \c CGRect to OpenCV's \c cv::Rect.
 cv::Rect LTCVRectWithCGRect(CGRect rect);
 
-/// Converts a \c cv::Vec4b to \c LTVector4.
-LTVector4 LTCVVec4bToLTVector4(cv::Vec4b value);
-
-/// Converts a \c cv::Vec4hf to \c LTVector4.
-LTVector4 LTCVVec4hfToLTVector4(cv::Vec4hf value);
-
-/// Converts a \c cv::Vec4f to \c LTVector4.
-LTVector4 LTCVVec4fToLTVector4(cv::Vec4f value);
-
 /// Converts a \c LTVector4 to \c cv::Vec4b.
 cv::Vec4b LTLTVector4ToVec4b(LTVector4 value);
 

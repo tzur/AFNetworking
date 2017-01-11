@@ -295,8 +295,8 @@ LTVector4 LTBlendPlusDarker(const LTVector4 &src, const LTVector4 &dst) {
 
 cv::Vec4b LTBlend(const cv::Vec4b &oldColor, const cv::Vec4b &newColor, bool premultiplied,
                   LTBlendMode mode) {
-  LTVector4 src = LTCVVec4bToLTVector4(newColor);
-  LTVector4 dst = LTCVVec4bToLTVector4(oldColor);
+  LTVector4 src = LTVector4(newColor);
+  LTVector4 dst = LTVector4(oldColor);
 
   if (!premultiplied) {
     src = LTVector4(src.rgb() * src.a(), src.a());
@@ -352,30 +352,6 @@ cv::Vec4b LTBlend(const cv::Vec4b &oldColor, const cv::Vec4b &newColor, bool pre
 
 cv::Rect LTCVRectWithCGRect(CGRect rect) {
   return cv::Rect(rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
-}
-
-LTVector4 LTCVVec4bToLTVector4(cv::Vec4b value) {
-  LTVector4 result;
-  for (int i = 0; i < value.channels; ++i) {
-    result.data()[i] = value(i) / (float)UCHAR_MAX;
-  }
-  return result;
-}
-
-LTVector4 LTCVVec4hfToLTVector4(cv::Vec4hf value) {
-  LTVector4 result;
-  for (int i = 0; i < value.channels; ++i) {
-    result.data()[i] = (float)value(i);
-  }
-  return result;
-}
-
-LTVector4 LTCVVec4fToLTVector4(cv::Vec4f value) {
-  LTVector4 result;
-  for (int i = 0; i < value.channels; ++i) {
-    result.data()[i] = value(i);
-  }
-  return result;
 }
 
 cv::Vec4b LTLTVector4ToVec4b(LTVector4 value) {
