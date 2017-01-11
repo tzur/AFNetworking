@@ -37,6 +37,12 @@ sharedExamplesFor(@"having default opengl values", ^(NSDictionary *data) {
 
     expect(context.packAlignment).to.equal(4);
     expect(context.unpackAlignment).to.equal(4);
+
+    LTGLDepthRange mapping = context.depthRange;
+    expect(mapping.nearPlane).to.equal(0);
+    expect(mapping.farPlane).to.equal(1);
+    expect(context.depthMask).to.beTruthy();
+    expect(context.depthFunc).to.equal(GL_LESS);
   });
 });
 
@@ -277,6 +283,40 @@ context(@"context values", ^{
     glGetIntegerv(GL_UNPACK_ALIGNMENT, &unpackAlignment);
     expect(unpackAlignment).to.equal(1);
   });
+
+  it(@"should set depth range", ^{
+    LTGLDepthRange expected = {.nearPlane = 0.25, .farPlane = 0.5};
+    context.depthRange = expected;
+
+    LTGLDepthRange actual = context.depthRange;
+
+    expect(expected.nearPlane).to.equal(actual.nearPlane);
+    expect(expected.farPlane).to.equal(actual.farPlane);
+
+    GLfloat actualReadMapping[2];
+    glGetFloatv(GL_DEPTH_RANGE, actualReadMapping);
+    expect(expected.nearPlane).to.beCloseTo(actualReadMapping[0]);
+    expect(expected.farPlane).to.beCloseTo(actualReadMapping[1]);
+  });
+
+  it(@"should set depth mask", ^{
+    context.depthMask = NO;
+    expect(context.depthMask).to.beFalsy();
+
+    GLboolean enabled;
+    glGetBooleanv(GL_DEPTH_WRITEMASK, &enabled);
+    expect((BOOL)enabled).to.beFalsy();
+  });
+
+  it(@"should set depth func", ^{
+    LTGLFunction expected = LTGLFunctionNever;
+    context.depthFunc = expected;
+    expect(expected).to.equal(GL_NEVER);
+
+    GLint actual;
+    glGetIntegerv(GL_DEPTH_FUNC, &actual);
+    expect(expected).to.equal((LTGLFunction)actual);
+  });
 });
 
 context(@"execution", ^{
@@ -321,6 +361,10 @@ context(@"execution", ^{
 
       context.packAlignment = 1;
       context.unpackAlignment = 1;
+
+      context.depthRange = {.nearPlane = 0.25, .farPlane = 0.5};
+      context.depthMask = !context.depthMask;
+      context.depthFunc = LTGLFunctionEqual;
     }];
 
     return @{@"context": context};
