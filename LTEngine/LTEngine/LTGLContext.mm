@@ -51,6 +51,10 @@ typedef struct {
 
   GLint packAlignment;
   GLint unpackAlignment;
+
+  LTGLDepthRange depthRange;
+  BOOL depthMask;
+  LTGLFunction depthFunc;
 } LTGLContextValues;
 
 @interface LTGLContext () {
@@ -193,6 +197,7 @@ typedef struct {
   [self fetchFlagsState];
   [self fetchFrontFaceState];
   [self fetchAlignmentState];
+  [self fetchDepthState];
   LTGLCheckDbg(@"Failed retrieving context state");
 }
 
@@ -237,6 +242,18 @@ typedef struct {
   _unpackAlignment = unpackAlignment;
 }
 
+- (void)fetchDepthState {
+  GLboolean enabled;
+  glGetBooleanv(GL_DEPTH_WRITEMASK, &enabled);
+  _depthMask = enabled;
+
+  GLfloat mapping[2];
+  glGetFloatv(GL_DEPTH_RANGE, mapping);
+  _depthRange = {.nearPlane = mapping[0], .farPlane = mapping[1]};
+
+  glGetIntegerv(GL_DEPTH_FUNC, (GLint *)&_depthFunc);
+}
+
 #pragma mark -
 #pragma mark Storing and fetching internal state
 #pragma mark -
@@ -255,7 +272,10 @@ typedef struct {
     .ditheringEnabled = self.ditheringEnabled,
     .clockwiseFrontFacingPolygons = self.clockwiseFrontFacingPolygons,
     .packAlignment = self.packAlignment,
-    .unpackAlignment = self.unpackAlignment
+    .unpackAlignment = self.unpackAlignment,
+    .depthRange = self.depthRange,
+    .depthMask = self.depthMask,
+    .depthFunc = self.depthFunc
   };
 }
 
@@ -273,6 +293,9 @@ typedef struct {
   self.clockwiseFrontFacingPolygons = values.clockwiseFrontFacingPolygons;
   self.packAlignment = values.packAlignment;
   self.unpackAlignment = values.unpackAlignment;
+  self.depthRange = values.depthRange;
+  self.depthMask = values.depthMask;
+  self.depthFunc = values.depthFunc;
 }
 
 #pragma mark -
@@ -310,6 +333,17 @@ typedef struct {
   glClearColor(color.r(), color.g(), color.b(), color.a());
   glClear(GL_COLOR_BUFFER_BIT);
   glClearColor(previousColor.r(), previousColor.g(), previousColor.b(), previousColor.a());
+}
+
+- (void)clearWithColor:(LTVector4)color depth:(GLfloat)depthValue {
+  GLfloat oldDepthValue;
+  glGetFloatv(GL_DEPTH_CLEAR_VALUE, &oldDepthValue);
+
+  glClearDepthf(depthValue);
+  glClear(GL_DEPTH_BUFFER_BIT);
+  glClearDepthf(oldDepthValue);
+
+  [self clearWithColor:color];
 }
 
 #pragma mark -
@@ -417,6 +451,34 @@ typedef struct {
   [self verifyAlignment:unpackAlignment];
   _unpackAlignment = unpackAlignment;
   glPixelStorei(GL_UNPACK_ALIGNMENT, unpackAlignment);
+}
+
+- (void)setDepthRange:(LTGLDepthRange)depthRange {
+  if (_depthRange.nearPlane == depthRange.nearPlane &&
+      _depthRange.farPlane == depthRange.farPlane) {
+    return;
+  }
+  _depthRange = depthRange;
+  [self assertContextIsCurrentContext];
+  glDepthRangef(_depthRange.nearPlane, _depthRange.farPlane);
+}
+
+- (void)setDepthMask:(BOOL)depthMask {
+  if (_depthMask == depthMask) {
+    return;
+  }
+  _depthMask = depthMask;
+  [self assertContextIsCurrentContext];
+  glDepthMask(_depthMask);
+}
+
+- (void)setDepthFunc:(LTGLFunction)depthFunc {
+  if (_depthFunc == depthFunc) {
+    return;
+  }
+  _depthFunc = depthFunc;
+  [self assertContextIsCurrentContext];
+  glDepthFunc(_depthFunc);
 }
 
 - (void)verifyAlignment:(GLint)alignment {

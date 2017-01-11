@@ -36,6 +36,26 @@ typedef NS_ENUM(GLint, LTGLContextBlendEquation) {
   LTGLContextBlendEquationMax = GL_MAX_EXT
 };
 
+/// Supported OpenGL ES function's symbolic constants. It's used in \c depthFunc and \c stencilFunc.
+typedef NS_ENUM(GLenum, LTGLFunction) {
+  LTGLFunctionNever = GL_NEVER,
+  LTGLFunctionLess = GL_LESS,
+  LTGLFunctionLequal = GL_LEQUAL,
+  LTGLFunctionEqual = GL_EQUAL,
+  LTGLFunctionGreater = GL_GREATER,
+  LTGLFunctionGequal = GL_GEQUAL,
+  LTGLFunctionNotEqual = GL_NOTEQUAL,
+  LTGLFunctionAlways = GL_ALWAYS
+};
+
+/// Mapping of the depth values from normalized device coordinates to window coordinates.
+typedef struct {
+  /// Mapping of the near clipping plane to window coordinates.
+  GLfloat nearPlane;
+  /// Mapping of the far clipping plane to window coordinates.
+  GLfloat farPlane;
+} LTGLDepthRange;
+
 /// Set of arguments for setting the blend function.
 typedef struct {
   LTGLContextBlendFunc sourceRGB;
@@ -97,6 +117,10 @@ extern LTGLContextBlendEquationArgs kLTGLContextBlendEquationDefault;
 /// Fills the currently bound framebuffer with the given color.
 - (void)clearWithColor:(LTVector4)color;
 
+/// Fills the currently bound framebuffer with the given \c color and depth renderbuffer with the
+/// given \c depthValue.
+- (void)clearWithColor:(LTVector4)color depth:(GLfloat)depthValue;
+
 /// Current version of this context.
 @property (readonly, nonatomic) LTGLVersion version;
 
@@ -149,6 +173,16 @@ extern LTGLContextBlendEquationArgs kLTGLContextBlendEquationDefault;
 /// Alignment requirements for start of each pixel in memory, when writing data to OpenGL.
 /// Allowed values are {1, 2, 4, 8}.
 @property (nonatomic) GLint unpackAlignment;
+
+/// Mapping of clipping planes from normalized device coordinates to window coordinates.
+/// Default values are <tt>{.nearPlane = 0, .farPlane = 1}</tt>
+@property (nonatomic) LTGLDepthRange depthRange;
+
+/// \c YES if the depth buffer is writable.
+@property (nonatomic) BOOL depthMask;
+
+/// Depth buffer comparison function.
+@property (nonatomic) LTGLFunction depthFunc;
 
 #pragma mark -
 #pragma mark Capabilities
