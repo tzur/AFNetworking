@@ -15,6 +15,7 @@ attribute highp vec2 quadVertex2;
 attribute highp vec2 quadVertex3;
 attribute highp vec3 color;
 
+varying highp vec2 vPosition;
 varying highp vec3 vTexcoord;
 varying highp vec2 vQuadVertex0;
 varying highp vec2 vQuadVertex1;
@@ -29,6 +30,7 @@ void main() {
   } else {
     vColor = color;
   }
+  vPosition = position.xy;
   vTexcoord = texcoord;
   vQuadVertex0 = quadVertex0;
   vQuadVertex1 = quadVertex1;
