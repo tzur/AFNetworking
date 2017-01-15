@@ -22,13 +22,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)init NS_UNAVAILABLE;
 
-/// Initializes with the given \c unfinishedTransactionSubject, used to send an array of unfinished
-/// transactions. \c applicationUserID is an optional unique identifier for the user’s account.
+/// Initializes with \c applicationUserID is an optional unique identifier for the user’s account.
 /// \c paymentQueue will be initialized using
-/// \c -[BZRPaymentQueue initWithUnfinishedTransactionsSubject:]. \c purchaseManager will be
-/// initialized using \c -[BZRPurchaseManager initWithPaymentQueue:applicationUserID:].
-/// \c restorationManager will be initialized using
-/// \c [BZRTransactionRestorationManager initWithPaymentQueue:applicationUserID:].
+/// \c -[BZRPaymentQueue init]. \c purchaseManager will be initialized using
+/// \c -[BZRPurchaseManager initWithPaymentQueue:applicationUserID:]. \c restorationManager will be
+/// initialized using \c [BZRTransactionRestorationManager initWithPaymentQueue:applicationUserID:].
 /// \c downloadManager will be using \c [BZRProductDownloadManager initWithPaymentQueue:].
 /// \c storeKitRequestsFactory will be initialized using \c [BZRStoreKitRequestsFactory init].
 ///
@@ -44,8 +42,7 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 /// @see \c -[self initWithPaymentQueue:purchaseManager:restorationManager:downloadManager:
 ///           storeKitRequestsFactory:]
-- (instancetype)initWithUnfinishedTransactionsSubject:(RACSubject *)unfinishedTransactionsSubject
-                                    applicationUserID:(nullable NSString *)applicationUserID;
+- (instancetype)initWithApplicationUserID:(nullable NSString *)applicationUserID;
 
 /// Initializes with \c paymentQueue, used to observe an underlying \c SKPaymentQueue and pass calls
 /// from the \c SKPaymentQueue to \c paymentQueue's appropriate delegate. \c purchaseManager is used
@@ -172,12 +169,22 @@ NS_ASSUME_NONNULL_BEGIN
 /// starts.
 - (void)finishTransaction:(SKPaymentTransaction *)transaction;
 
-/// Sends errors encompassing transactions that are received by \c purchaseManager and are not
-/// associated with a purchase made using it. The signal completes when the receiver is deallocated.
-/// The signal doesn't err.
+/// Sends all transactions related errors as \c NSError. The error codes can be one of the
+/// following:
+/// \c BZRErrorCodeUnhandledTransactionReceived - when a transaction without an associated payment
+/// is received via \c purchaseManager.
+/// \c BZRErrorCodePurchaseFailed - when an unfinished failed transaction is received.
+/// The signal completes when the receiver is deallocated. The signal doesn't err.
 ///
 /// @return <tt>RACSubject<NSError></tt>
-@property (readonly, nonatomic) RACSignal *unhandledTransactionsErrorsSignal;
+@property (readonly, nonatomic) RACSignal *transactionsErrorsSignal;
+
+/// Sends array of successful transactions of payments and restorations that were initiated on a
+/// previous run of the application and weren't finished. The \c SKPaymentTransaction can be either
+/// in the purchased or restored state. The signal doesn't err.
+///
+/// @return <tt>RACSignal<NSArray<SKPaymentTransaction>></tt>
+@property (readonly, nonatomic) RACSignal *unfinishedSuccessfulTransactionsSignal;
 
 @end
 

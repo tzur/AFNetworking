@@ -6,9 +6,11 @@
 #import <LTKit/LTPath.h>
 
 #import "BZRAcquiredViaSubscriptionProvider.h"
+#import "BZRCachedProductsProvider.h"
 #import "BZRCachedReceiptValidationStatusProvider.h"
 #import "BZRKeychainStorage.h"
 #import "BZRLocaleBasedVariantSelectorFactory.h"
+#import "BZRLocalProductsProvider.h"
 #import "BZRModifiedExpiryReceiptValidationStatusProvider.h"
 #import "BZRPeriodicReceiptValidator.h"
 #import "BZRPeriodicReceiptValidatorActivator.h"
@@ -16,10 +18,12 @@
 #import "BZRProductContentManager.h"
 #import "BZRProductContentMultiFetcher.h"
 #import "BZRProductContentProvider.h"
-#import "BZRProductsProviderFactory.h"
+#import "BZRProductsWithDiscountsProvider.h"
+#import "BZRProductsWithPriceInfoProvider.h"
+#import "BZRProductsWithVariantsProvider.h"
 #import "BZRReceiptValidationParametersProvider.h"
 #import "BZRReceiptValidationStatusProvider.h"
-#import "BZRStoreKitFacadeFactory.h"
+#import "BZRStoreKitFacade.h"
 #import "BZRTimeProvider.h"
 #import "BZRValidatedReceiptValidationStatusProvider.h"
 
@@ -52,10 +56,6 @@ NS_ASSUME_NONNULL_BEGIN
   if (self = [super init]) {
     _fileManager = [NSFileManager defaultManager];
 
-    _productsProviderFactory =
-        [[BZRProductsProviderFactory alloc]
-         initWithProductsListJSONFilePath:productsListJSONFilePath fileManager:self.fileManager];
-
     _contentManager = [[BZRProductContentManager alloc] initWithFileManager:self.fileManager];
     BZRProductContentMultiFetcher *contentFetcher = [[BZRProductContentMultiFetcher alloc] init];
     _contentProvider =
@@ -81,8 +81,8 @@ NS_ASSUME_NONNULL_BEGIN
     _acquiredViaSubscriptionProvider =
         [[BZRAcquiredViaSubscriptionProvider alloc] initWithKeychainStorage:keychainStorage];
     _applicationReceiptBundle = [NSBundle mainBundle];
-    _storeKitFacadeFactory =
-        [[BZRStoreKitFacadeFactory alloc] initWithApplicationUserID:applicationUserID];
+    _storeKitFacade = [[BZRStoreKitFacade alloc] initWithApplicationUserID:applicationUserID];
+    _productsProvider = [self productsProviderWithJSONFilePath:productsListJSONFilePath];
 
     BZRPeriodicReceiptValidator *periodicReceiptValidator =
         [[BZRPeriodicReceiptValidator alloc]
@@ -98,6 +98,23 @@ NS_ASSUME_NONNULL_BEGIN
          countryToTierPath:countryToTierDictionaryPath];
   }
   return self;
+}
+
+- (id<BZRProductsProvider>)productsProviderWithJSONFilePath:(LTPath *)productsListJSONFilePath {
+    BZRLocalProductsProvider *localProductsProvider =
+        [[BZRLocalProductsProvider alloc] initWithPath:productsListJSONFilePath
+                                           fileManager:self.fileManager];
+    BZRProductsWithDiscountsProvider *productsWithDiscountsProvider =
+        [[BZRProductsWithDiscountsProvider alloc] initWithUnderlyingProvider:localProductsProvider];
+    BZRProductsWithVariantsProvider *productsWithVariantsProvider =
+        [[BZRProductsWithVariantsProvider alloc]
+         initWithUnderlyingProvider:productsWithDiscountsProvider];
+    BZRProductsWithPriceInfoProvider *productsWithPriceInfoProvider =
+        [[BZRProductsWithPriceInfoProvider alloc]
+         initWithUnderlyingProvider:productsWithVariantsProvider
+         storeKitFacade:self.storeKitFacade];
+    return [[BZRCachedProductsProvider alloc]
+            initWithUnderlyingProvider:productsWithPriceInfoProvider];
 }
 
 @end

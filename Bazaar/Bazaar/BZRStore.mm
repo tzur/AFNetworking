@@ -16,14 +16,12 @@
 #import "BZRProductsProvider.h"
 #import "BZRProductsVariantSelector.h"
 #import "BZRProductsVariantSelectorFactory.h"
-#import "BZRProductsProviderFactory.h"
 #import "BZRProductTypedefs.h"
 #import "BZRReceiptModel.h"
 #import "BZRReceiptValidationParametersProvider.h"
 #import "BZRReceiptValidationStatus.h"
 #import "BZRStoreConfiguration.h"
 #import "BZRStoreKitFacade.h"
-#import "BZRStoreKitFacadeFactory.h"
 #import "NSError+Bazaar.h"
 #import "NSErrorCodes+Bazaar.h"
 #import "NSString+Bazaar.h"
@@ -75,9 +73,6 @@ NS_ASSUME_NONNULL_BEGIN
 /// Subject used to send errors with.
 @property (readonly, nonatomic) RACSubject *errorsSubject;
 
-/// The other end of \c completedTransactionsSignal used to send completed transactions.
-@property (readonly, nonatomic) RACSubject *completedTransactionsSubject;
-
 /// Dictionary that maps fetched product identifier to \c BZRProduct.
 @property (strong, atomic, nullable) NSDictionary<NSString *, BZRProduct *> *productDictionary;
 
@@ -98,6 +93,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithConfiguration:(BZRStoreConfiguration *)configuration {
   if (self = [super init]) {
+    _productsProvider = configuration.productsProvider;
     _contentManager = configuration.contentManager;
     _contentProvider = configuration.contentProvider;
     _validationStatusProvider = configuration.validationStatusProvider;
@@ -105,6 +101,7 @@ NS_ASSUME_NONNULL_BEGIN
     _applicationReceiptBundle = configuration.applicationReceiptBundle;
     _fileManager = configuration.fileManager;
     _periodicValidatorActivator = configuration.periodicValidatorActivator;
+    _storeKitFacade = configuration.storeKitFacade;
     _variantSelectorFactory = configuration.variantSelectorFactory;
     _variantSelector = [[BZRProductsVariantSelector alloc] init];
     _validationParametersProvider = configuration.validationParametersProvider;
@@ -112,101 +109,55 @@ NS_ASSUME_NONNULL_BEGIN
 
     [self initializeCompletedTransactionsSignal];
     [self initializeErrorsSignal];
-    [self initializeStoreKitFacade:configuration.storeKitFacadeFactory];
-    [self initializeProductsProvider:configuration.productsProviderFactory];
+    [self finishUnfinishedTransactions];
+    [self fetchReceiptValidationStatusOnSuccessfulTransactions];
     [self prefetchProductDictionary];
   }
   return self;
 }
 
 - (void)initializeCompletedTransactionsSignal {
-  _completedTransactionsSubject = [RACSubject subject];
-  _completedTransactionsSignal = [[[self.completedTransactionsSubject replay]
+  _completedTransactionsSignal = [[[self.storeKitFacade.unfinishedSuccessfulTransactionsSignal
+      flattenMap:^RACStream *(NSArray<SKPaymentTransaction *> *transactions) {
+        return [transactions.rac_sequence signalWithScheduler:[RACScheduler immediateScheduler]];
+      }]
       takeUntil:[self rac_willDeallocSignal]]
       setNameWithFormat:@"%@ -finishedTransactionsSignal", self];
 }
 
 - (void)initializeErrorsSignal {
   _errorsSubject = [RACSubject subject];
-  _errorsSignal = [RACSignal merge:@[
+  _errorsSignal = [[[RACSignal merge:@[
     [self.errorsSubject replay],
     self.validationStatusProvider.nonCriticalErrorsSignal,
     self.acquiredViaSubscriptionProvider.storageErrorsSignal,
-    self.periodicValidatorActivator.errorsSignal
-  ]];
+    self.periodicValidatorActivator.errorsSignal,
+    self.storeKitFacade.transactionsErrorsSignal,
+    self.productsProvider.nonCriticalErrorsSignal
+  ]]
+  takeUntil:[self rac_willDeallocSignal]]
+  setNameWithFormat:@"%@ -errorsSignal", self];
 }
 
-- (void)initializeStoreKitFacade:(BZRStoreKitFacadeFactory *)factory {
-  RACSubject *unfinishedTransactionsSubject = [RACSubject subject];
+- (void)finishUnfinishedTransactions {
   @weakify(self);
-  [[[unfinishedTransactionsSubject
+  [[self.storeKitFacade.unfinishedSuccessfulTransactionsSignal
       flattenMap:^RACStream *(NSArray<SKPaymentTransaction *> *transactions) {
         return [transactions.rac_sequence signalWithScheduler:[RACScheduler immediateScheduler]];
-      }]
-      filter:^BOOL(SKPaymentTransaction *transaction) {
-        return transaction.transactionState == SKPaymentTransactionStateFailed;
-      }]
-      subscribeNext:^(SKPaymentTransaction *transaction) {
-        @strongify(self);
-        [self.errorsSubject sendNext:
-         [NSError bzr_errorWithCode:BZRErrorCodePurchaseFailed transaction:transaction]];
-      }];
-
-  [[[unfinishedTransactionsSubject
-      flattenMap:^RACStream *(NSArray<SKPaymentTransaction *> *transactions) {
-        return [transactions.rac_sequence signalWithScheduler:[RACScheduler immediateScheduler]];
-      }]
-      filter:^BOOL(SKPaymentTransaction *transaction) {
-        return transaction.transactionState == SKPaymentTransactionStatePurchased;
-      }]
-      subscribeNext:^(SKPaymentTransaction *transaction) {
-        @strongify(self);
-        [self.completedTransactionsSubject sendNext:transaction];
-      }];
-
-  [unfinishedTransactionsSubject
-      subscribeNext:^(NSArray <SKPaymentTransaction *> *transactions) {
-        @strongify(self);
-        NSArray <SKPaymentTransaction *> *purchasedTransactions =
-            [transactions lt_filter:^BOOL(SKPaymentTransaction *transaction) {
-              return transaction.transactionState == SKPaymentTransactionStatePurchased;
-            }];
-        if ([purchasedTransactions count]) {
-          [self.validationStatusProvider fetchReceiptValidationStatus];
-        }
-      }];
-
-  [[[unfinishedTransactionsSubject
-      flattenMap:^RACStream *(NSArray<SKPaymentTransaction *> *transactions) {
-        return [transactions.rac_sequence signalWithScheduler:[RACScheduler immediateScheduler]];
-      }]
-      filter:^BOOL(SKPaymentTransaction *transaction) {
-        return transaction.transactionState == SKPaymentTransactionStatePurchased ||
-            transaction.transactionState == SKPaymentTransactionStateFailed ||
-            transaction.transactionState == SKPaymentTransactionStateRestored;
       }]
       subscribeNext:^(SKPaymentTransaction *transaction) {
         @strongify(self);
         [self.storeKitFacade finishTransaction:transaction];
       }];
-
-  _storeKitFacade =
-      [factory storeKitFacadeWithUnfinishedTransactionsSubject:unfinishedTransactionsSubject];
-  _errorsSignal = [RACSignal merge:@[
-    self.errorsSignal,
-    self.storeKitFacade.unhandledTransactionsErrorsSignal
-  ]];
 }
 
-- (void)initializeProductsProvider:(BZRProductsProviderFactory *)productsProviderFactory {
-  _productsProvider =
-      [productsProviderFactory productsProviderWithStoreKitFacade:self.storeKitFacade];
-  _errorsSignal = [[[RACSignal merge:@[
-    self.errorsSignal,
-    self.productsProvider.nonCriticalErrorsSignal
-  ]]
-  takeUntil:[self rac_willDeallocSignal]]
-  setNameWithFormat:@"%@ -errorsSignal", self];
+- (void)fetchReceiptValidationStatusOnSuccessfulTransactions {
+  @weakify(self);
+  [self.storeKitFacade.unfinishedSuccessfulTransactionsSignal
+      subscribeNext:^(NSArray<SKPaymentTransaction *> *) {
+        @strongify(self);
+        [self.validationStatusProvider fetchReceiptValidationStatus];
+      }];
 }
 
 - (void)prefetchProductDictionary {

@@ -15,13 +15,11 @@
 #import "BZRProductsProvider.h"
 #import "BZRProductsVariantSelector.h"
 #import "BZRProductsVariantSelectorFactory.h"
-#import "BZRProductsProviderFactory.h"
 #import "BZRReceiptModel.h"
 #import "BZRReceiptValidationParametersProvider.h"
 #import "BZRReceiptValidationStatus.h"
 #import "BZRStoreConfiguration.h"
 #import "BZRStoreKitFacade.h"
-#import "BZRStoreKitFacadeFactory.h"
 #import "BZRTestUtils.h"
 #import "NSErrorCodes+Bazaar.h"
 #import "NSError+Bazaar.h"
@@ -63,7 +61,8 @@ __block RACSubject *productsProviderErrorsSubject;
 __block RACSubject *receiptValidationStatusProviderErrorsSubject;
 __block RACSubject *acquiredViaSubscriptionProviderErrorsSubject;
 __block RACSubject *periodicReceiptValidatorActivatorErrorsSubject;
-__block RACSubject *unhandledTransactionsErrorsSubject;
+__block RACSubject *transactionsErrorsSubject;
+__block RACSubject *unfinishedSuccessfulTransactionsSubject;
 __block BZRStoreConfiguration *configuration;
 __block BZRStore *store;
 __block NSString *productIdentifier;
@@ -80,24 +79,18 @@ beforeEach(^{
   validationParametersProvider = OCMClassMock([BZRReceiptValidationParametersProvider class]);
   bundle = OCMClassMock([NSBundle class]);
   fileManager = OCMClassMock([NSFileManager class]);
-  BZRStoreKitFacadeFactory *storeKitFacadeFactory = OCMClassMock([BZRStoreKitFacadeFactory class]);
-  OCMStub([storeKitFacadeFactory storeKitFacadeWithUnfinishedTransactionsSubject:OCMOCK_ANY])
-      .andReturn(storeKitFacade);
   id<BZRProductsVariantSelectorFactory> variantSelectorFactory =
       OCMProtocolMock(@protocol(BZRProductsVariantSelectorFactory));
   OCMStub([variantSelectorFactory
       productsVariantSelectorWithProductDictionary:OCMOCK_ANY error:[OCMArg anyObjectRef]])
       .andReturn(variantSelector);
-  BZRProductsProviderFactory *productsProviderFactory =
-      OCMClassMock([BZRProductsProviderFactory class]);
-  OCMStub([productsProviderFactory productsProviderWithStoreKitFacade:OCMOCK_ANY])
-      .andReturn(productsProvider);
 
   productsProviderErrorsSubject = [RACSubject subject];
   receiptValidationStatusProviderErrorsSubject = [RACSubject subject];
   acquiredViaSubscriptionProviderErrorsSubject = [RACSubject subject];
   periodicReceiptValidatorActivatorErrorsSubject = [RACSubject subject];
-  unhandledTransactionsErrorsSubject = [RACSubject subject];
+  transactionsErrorsSubject = [RACSubject subject];
+  unfinishedSuccessfulTransactionsSubject = [RACSubject subject];
   OCMStub([productsProvider nonCriticalErrorsSignal]).andReturn(productsProviderErrorsSubject);
   OCMStub([receiptValidationStatusProvider nonCriticalErrorsSignal])
       .andReturn(receiptValidationStatusProviderErrorsSubject);
@@ -105,18 +98,20 @@ beforeEach(^{
       .andReturn(acquiredViaSubscriptionProviderErrorsSubject);
   OCMStub([periodicValidatorActivator errorsSignal])
       .andReturn(periodicReceiptValidatorActivatorErrorsSubject);
-  OCMStub([storeKitFacade unhandledTransactionsErrorsSignal])
-      .andReturn(unhandledTransactionsErrorsSubject);
+  OCMStub([storeKitFacade transactionsErrorsSignal])
+      .andReturn(transactionsErrorsSubject);
+  OCMStub([storeKitFacade unfinishedSuccessfulTransactionsSignal])
+      .andReturn(unfinishedSuccessfulTransactionsSubject);
 
   configuration =
       [[BZRStoreConfiguration alloc] initWithProductsListJSONFilePath:[LTPath pathWithPath:@"foo"]
                                           countryToTierDictionaryPath:[LTPath pathWithPath:@"bar"]];
-  configuration.productsProviderFactory = productsProviderFactory;
+  configuration.productsProvider = productsProvider;
   configuration.contentManager = contentManager;
   configuration.validationStatusProvider = receiptValidationStatusProvider;
   configuration.contentProvider = contentProvider;
   configuration.acquiredViaSubscriptionProvider = acquiredViaSubscriptionProvider;
-  configuration.storeKitFacadeFactory = storeKitFacadeFactory;
+  configuration.storeKitFacade = storeKitFacade;
   configuration.periodicValidatorActivator = periodicValidatorActivator;
   configuration.variantSelectorFactory = variantSelectorFactory;
   configuration.validationParametersProvider = validationParametersProvider;
@@ -807,158 +802,84 @@ context(@"getting product list", ^{
   });
 });
 
-context(@"handling unfinished transactions", ^{
-  __block RACSubject *unfinishedSubject;
+context(@"handling unfinished completed transactions", ^{
   __block LLSignalTestRecorder *errorsRecorder;
   __block LLSignalTestRecorder *completedTransactionsRecorder;
 
   beforeEach(^{
-    BZRStoreKitFacadeFactory *storeKitFacadeFactory =
-        OCMClassMock([BZRStoreKitFacadeFactory class]);
-    OCMStub([storeKitFacadeFactory storeKitFacadeWithUnfinishedTransactionsSubject:OCMOCK_ANY])
-        .andDo(^(NSInvocation *invocation) {
-          __unsafe_unretained RACSubject *subject;
-          [invocation getArgument:&subject atIndex:2];
-          unfinishedSubject = subject;
-        })
-        .andReturn(storeKitFacade);
-    configuration.storeKitFacadeFactory = storeKitFacadeFactory;
-    store = [[BZRStore alloc] initWithConfiguration:configuration];
-    OCMStub([receiptValidationStatusProvider fetchReceiptValidationStatus])
-        .andReturn([RACSignal empty]);
-    OCMStub([storeKitFacade restoreCompletedTransactions]).andReturn([RACSignal empty]);
     errorsRecorder = [store.errorsSignal testRecorder];
     completedTransactionsRecorder = [store.completedTransactionsSignal testRecorder];
   });
 
-  it(@"should completed when object is deallocated", ^{
+  it(@"should complete when object is deallocated", ^{
     BZRStore * __weak weakStore;
-    RACSignal *completedTransactionsSignal;
 
     @autoreleasepool {
       BZRStore *store = [[BZRStore alloc] initWithConfiguration:configuration];
       weakStore = store;
-      completedTransactionsSignal = store.completedTransactionsSignal;
+      completedTransactionsRecorder = [store.completedTransactionsSignal testRecorder];
     }
-    expect(completedTransactionsSignal).will.complete();
+    expect(completedTransactionsRecorder).will.complete();
   });
 
-  context(@"purchasing transaction", ^{
-    __block SKPaymentTransaction *transaction;
+  it(@"should call fetch receipt validation status once for each transactions array", ^{
+    OCMExpect([receiptValidationStatusProvider fetchReceiptValidationStatus]);
+    OCMReject([receiptValidationStatusProvider fetchReceiptValidationStatus]);
 
-    beforeEach(^{
-      transaction = OCMClassMock([SKPaymentTransaction class]);
-      OCMStub([transaction transactionState]).andReturn(SKPaymentTransactionStatePurchasing);
-    });
+    SKPaymentTransaction *transaction = OCMClassMock([SKPaymentTransaction class]);
+    OCMStub([transaction transactionState]).andReturn(SKPaymentTransactionStatePurchased);
+    NSArray<SKPaymentTransaction *> *transactions = @[transaction, transaction, transaction];
+    [unfinishedSuccessfulTransactionsSubject sendNext:transactions];
 
-    it(@"should not finish nor fetch receipt validation status", ^{
-      OCMReject([storeKitFacade finishTransaction:OCMOCK_ANY]);
-      OCMReject([receiptValidationStatusProvider fetchReceiptValidationStatus]);
-
-      [unfinishedSubject sendNext:@[transaction]];
-    });
-
-    it(@"should not send transaction as finished", ^{
-      BZRStore * __weak weakStore;
-      LLSignalTestRecorder *completedTransactionsRecorder;
-
-      @autoreleasepool {
-        BZRStore *store = [[BZRStore alloc] initWithConfiguration:configuration];
-        weakStore = store;
-        completedTransactionsRecorder = [store.completedTransactionsSignal testRecorder];
-        [unfinishedSubject sendNext:@[transaction]];
-      }
-      expect(completedTransactionsRecorder).will.complete();
-      expect(completedTransactionsRecorder).will.sendValuesWithCount(0);
-    });
-  });
-
-  context(@"failed transaction", ^{
-    __block SKPaymentTransaction *transaction;
-
-    beforeEach(^{
-      transaction = OCMClassMock([SKPaymentTransaction class]);
-      OCMStub([transaction transactionState]).andReturn(SKPaymentTransactionStateFailed);
-    });
-
-    it(@"should finish and not fetch receipt validation status", ^{
-      OCMReject([receiptValidationStatusProvider fetchReceiptValidationStatus]);
-      [unfinishedSubject sendNext:@[transaction]];
-      OCMVerify([storeKitFacade finishTransaction:transaction]);
-    });
-
-    it(@"should send failed transaction as error on errors signal", ^{
-      [unfinishedSubject sendNext:@[transaction]];
-      expect(errorsRecorder).will.matchValue(0, ^BOOL(NSError *error) {
-        return error.lt_isLTDomain && error.code == BZRErrorCodePurchaseFailed &&
-            error.bzr_transaction == transaction;
-      });
-    });
-
-    it(@"should not send transaction as finished", ^{
-      BZRStore * __weak weakStore;
-      LLSignalTestRecorder *completedTransactionsRecorder;
-
-      @autoreleasepool {
-        BZRStore *store = [[BZRStore alloc] initWithConfiguration:configuration];
-        weakStore = store;
-        completedTransactionsRecorder = [store.completedTransactionsSignal testRecorder];
-        [unfinishedSubject sendNext:@[transaction]];
-      }
-      expect(completedTransactionsRecorder).will.complete();
-      expect(completedTransactionsRecorder).will.sendValuesWithCount(0);
-    });
+    OCMVerifyAll((id)receiptValidationStatusProvider);
   });
 
   context(@"purchased transaction", ^{
     __block SKPaymentTransaction *transaction;
 
     beforeEach(^{
+      OCMStub([receiptValidationStatusProvider fetchReceiptValidationStatus])
+          .andReturn([RACSignal empty]);
       transaction = OCMClassMock([SKPaymentTransaction class]);
       OCMStub([transaction transactionState]).andReturn(SKPaymentTransactionStatePurchased);
     });
 
     it(@"should finish and fetch receipt validation status", ^{
-      [unfinishedSubject sendNext:@[transaction]];
+      [unfinishedSuccessfulTransactionsSubject sendNext:@[transaction]];
       OCMVerify([storeKitFacade finishTransaction:transaction]);
       OCMVerify([receiptValidationStatusProvider fetchReceiptValidationStatus]);
     });
 
-    it(@"should send transaction as finished", ^{
-      BZRStore * __weak weakStore;
-      LLSignalTestRecorder *completedTransactionsRecorder;
-
-      @autoreleasepool {
-        BZRStore *store = [[BZRStore alloc] initWithConfiguration:configuration];
-        weakStore = store;
-        completedTransactionsRecorder = [store.completedTransactionsSignal testRecorder];
-        [unfinishedSubject sendNext:@[transaction]];
-      }
-
-      expect(completedTransactionsRecorder).will.complete();
+    it(@"should send transaction on completed transactions signal", ^{
+      LLSignalTestRecorder *completedTransactionsRecorder =
+          [store.completedTransactionsSignal testRecorder];
+      [unfinishedSuccessfulTransactionsSubject sendNext:@[transaction]];
       expect(completedTransactionsRecorder).will.sendValues(@[transaction]);
     });
   });
 
-  it(@"should call fetch receipt validation status once for each transactions array", ^{
-    SKPaymentTransaction *transaction = OCMClassMock([SKPaymentTransaction class]);
-    OCMStub([transaction transactionState]).andReturn(SKPaymentTransactionStatePurchased);
-    NSArray *transactions = @[transaction, transaction, transaction];
-    [unfinishedSubject sendNext:transactions];
+  context(@"restored transaction", ^{
+    __block SKPaymentTransaction *transaction;
 
-    OCMExpect([receiptValidationStatusProvider fetchReceiptValidationStatus]);
-    OCMVerify([receiptValidationStatusProvider fetchReceiptValidationStatus]);
-  });
+    beforeEach(^{
+      transaction = OCMClassMock([SKPaymentTransaction class]);
+      OCMStub([transaction transactionState]).andReturn(SKPaymentTransactionStateRestored);
+    });
 
-  it(@"should receive finished transactions when new subscriber subscribes", ^{
-    SKPaymentTransaction *transaction = OCMClassMock([SKPaymentTransaction class]);
-    OCMStub([transaction transactionState]).andReturn(SKPaymentTransactionStatePurchased);
-    NSArray *transactions = @[transaction, transaction, transaction];
-    [unfinishedSubject sendNext:transactions];
+    it(@"should finish and not fetch receipt validation status", ^{
+      [unfinishedSuccessfulTransactionsSubject sendNext:@[transaction]];
+      OCMVerify([storeKitFacade finishTransaction:transaction]);
+      OCMVerify([receiptValidationStatusProvider fetchReceiptValidationStatus]);
+    });
 
-    LLSignalTestRecorder *recorder = [store.completedTransactionsSignal testRecorder];
-
-    expect(recorder).will.sendValues(transactions);
+    it(@"should send transaction on completed transactions signal", ^{
+      OCMStub([receiptValidationStatusProvider fetchReceiptValidationStatus])
+          .andReturn([RACSignal empty]);
+      LLSignalTestRecorder *completedTransactionsRecorder =
+          [store.completedTransactionsSignal testRecorder];
+      [unfinishedSuccessfulTransactionsSubject sendNext:@[transaction]];
+      expect(completedTransactionsRecorder).will.sendValues(@[transaction]);
+    });
   });
 });
 
@@ -988,7 +909,7 @@ context(@"errors signal", ^{
       });
     });
 
-    it(@"should non critical error when products provider sends it", ^{
+    it(@"should send non critical error when products provider sends it", ^{
       LLSignalTestRecorder *recorder = [store.errorsSignal testRecorder];
 
       NSError *error = [NSError lt_errorWithCode:1337];
@@ -1023,10 +944,10 @@ context(@"errors signal", ^{
     expect(recorder).will.sendValues(@[error]);
   });
 
-  it(@"should send error when an unhandled transaction error is sent via store kit facade", ^{
+  it(@"should send error sent by store kit facade", ^{
     NSError *error = OCMClassMock([NSError class]);
     LLSignalTestRecorder *recorder = [store.errorsSignal testRecorder];
-    [unhandledTransactionsErrorsSubject sendNext:error];
+    [transactionsErrorsSubject sendNext:error];
 
     expect(recorder).will.sendValues(@[error]);
   });

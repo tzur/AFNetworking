@@ -23,7 +23,6 @@ NSArray *BZRZipArrays(NSArray *anArray, NSArray *anotherArray) {
 SpecBegin(BZRPaymentQueue)
 
 __block SKPaymentQueue *underlyingPaymentQueue;
-__block RACSubject *subject;
 __block id paymentsDelegate;
 __block id restorationDelegate;
 __block id downloadsDelegate;
@@ -31,13 +30,11 @@ __block BZRPaymentQueue *paymentQueue;
 
 beforeEach(^{
   underlyingPaymentQueue = OCMClassMock([SKPaymentQueue class]);
-  subject = [RACSubject subject];
   paymentsDelegate = OCMStrictProtocolMock(@protocol(BZRPaymentQueuePaymentsDelegate));
   restorationDelegate = OCMStrictProtocolMock(@protocol(BZRPaymentQueueRestorationDelegate));
   downloadsDelegate = OCMStrictProtocolMock(@protocol(BZRPaymentQueueDownloadsDelegate));
 
-  paymentQueue = [[BZRPaymentQueue alloc] initWithUnderlyingPaymentQueue:underlyingPaymentQueue
-                                           unfinishedTransactionsSubject:subject];
+  paymentQueue = [[BZRPaymentQueue alloc] initWithUnderlyingPaymentQueue:underlyingPaymentQueue];
   paymentQueue.paymentsDelegate = paymentsDelegate;
   paymentQueue.restorationDelegate = restorationDelegate;
   paymentQueue.downloadsDelegate = downloadsDelegate;
@@ -47,8 +44,7 @@ context(@"deallocating object", ^{
   it(@"should dealloc when all strong references are relinquished", ^{
     BZRPaymentQueue __weak *weakPaymentQueue;
     @autoreleasepool {
-      BZRPaymentQueue *paymentQueue =
-          [[BZRPaymentQueue alloc] initWithUnfinishedTransactionsSubject:[RACSubject subject]];
+      BZRPaymentQueue *paymentQueue = [[BZRPaymentQueue alloc] init];
       weakPaymentQueue = paymentQueue;
     }
     expect(weakPaymentQueue).to.beNil();
@@ -82,43 +78,67 @@ context(@"transactions", ^{
   });
 
   context(@"sending transactions to right place", ^{
-    it(@"should send transactions with subject and not call delegate", ^{
+    it(@"should send transactions through signal and not call delegate", ^{
       OCMReject([paymentsDelegate paymentQueue:paymentQueue
                     paymentTransactionsUpdated:paymentTransactions]);
-      LLSignalTestRecorder *recorder = [subject testRecorder];
+      LLSignalTestRecorder *recorder = [paymentQueue.unfinishedTransactionsSignal testRecorder];
 
       [paymentQueue paymentQueue:underlyingPaymentQueue updatedTransactions:paymentTransactions];
 
       expect(recorder).will.sendValues(@[paymentTransactions]);
     });
 
+    it(@"should send transactions when new subscriber subscribes", ^{
+      [paymentQueue paymentQueue:underlyingPaymentQueue updatedTransactions:paymentTransactions];
+
+      LLSignalTestRecorder *recorder = [paymentQueue.unfinishedTransactionsSignal testRecorder];
+
+      expect(recorder).will.sendValues(@[paymentTransactions]);
+    });
+
     it(@"should send transactions to delegates if restore completed transactions with username was "
        "called", ^{
+      BZRPaymentQueue * __weak weakPaymentQueue;
+      LLSignalTestRecorder *recorder;
       OCMExpect([paymentsDelegate paymentQueue:paymentQueue
                     paymentTransactionsUpdated:paymentTransactions]);
       OCMExpect([restorationDelegate paymentQueue:paymentQueue
                              transactionsRestored:restorationTransactions]);
-      LLSignalTestRecorder *recorder = [subject testRecorder];
 
-      [paymentQueue restoreCompletedTransactionsWithApplicationUserID:@"foo"];
-      [paymentQueue paymentQueue:underlyingPaymentQueue updatedTransactions:paymentTransactions];
-      [subject sendCompleted];
+      @autoreleasepool {
+        BZRPaymentQueue *paymentQueue = [[BZRPaymentQueue alloc] init];
+        weakPaymentQueue = paymentQueue;
+        recorder = [weakPaymentQueue.unfinishedTransactionsSignal testRecorder];
+
+        [paymentQueue restoreCompletedTransactionsWithApplicationUserID:@"foo"];
+        [paymentQueue paymentQueue:underlyingPaymentQueue updatedTransactions:paymentTransactions];
+      }
 
       expect(recorder).will.complete();
-      expect(recorder).will.sendValuesWithCount(0);
+      expect(recorder).to.sendValuesWithCount(0);
     });
 
     it(@"should send transactions to delegates if add payment was called", ^{
+      BZRPaymentQueue * __weak weakPaymentQueue;
+      LLSignalTestRecorder *recorder;
+      SKPayment *payment = OCMClassMock([SKPayment class]);
+      OCMStub([payment productIdentifier]).andReturn(@"foo");
+      OCMStub([payment quantity]).andReturn(1);
+
       OCMExpect([paymentsDelegate paymentQueue:paymentQueue
                     paymentTransactionsUpdated:paymentTransactions]);
-      LLSignalTestRecorder *recorder = [subject testRecorder];
 
-      [paymentQueue addPayment:OCMClassMock([SKPayment class])];
-      [paymentQueue paymentQueue:underlyingPaymentQueue updatedTransactions:paymentTransactions];
-      [subject sendCompleted];
+      @autoreleasepool {
+        BZRPaymentQueue *paymentQueue = [[BZRPaymentQueue alloc] init];
+        weakPaymentQueue = paymentQueue;
+        recorder = [weakPaymentQueue.unfinishedTransactionsSignal testRecorder];
+
+        [paymentQueue addPayment:payment];
+        [paymentQueue paymentQueue:underlyingPaymentQueue updatedTransactions:paymentTransactions];
+      }
 
       expect(recorder).will.complete();
-      expect(recorder).will.sendValuesWithCount(0);
+      expect(recorder).to.sendValuesWithCount(0);
     });
   });
 

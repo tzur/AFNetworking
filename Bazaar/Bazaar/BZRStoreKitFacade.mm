@@ -3,6 +3,8 @@
 
 #import "BZRStoreKitFacade.h"
 
+#import <LTKit/NSArray+Functional.h>
+
 #import "BZRPaymentQueue.h"
 #import "BZRProductDownloadManager.h"
 #import "BZRPurchaseManager.h"
@@ -40,10 +42,8 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark Initialization
 #pragma mark -
 
-- (instancetype)initWithUnfinishedTransactionsSubject:(RACSubject *)unfinishedTransactionsSubject
-                                    applicationUserID:(nullable NSString *)applicationUserID {
-  BZRPaymentQueue *paymentQueue =
-      [[BZRPaymentQueue alloc] initWithUnfinishedTransactionsSubject:unfinishedTransactionsSubject];
+- (instancetype)initWithApplicationUserID:(nullable NSString *)applicationUserID {
+  BZRPaymentQueue *paymentQueue = [[BZRPaymentQueue alloc] init];
   BZRPurchaseManager *purchaseManager =
       [[BZRPurchaseManager alloc] initWithPaymentQueue:paymentQueue
                                      applicationUserID:applicationUserID];
@@ -70,6 +70,8 @@ NS_ASSUME_NONNULL_BEGIN
     _restorationManager = restorationManager;
     _downloadManager = downloadManager;
     _storeKitRequestsFactory = storeKitRequestsFactory;
+
+    [self finishFailedTransactions];
   }
   return self;
 }
@@ -121,12 +123,60 @@ NS_ASSUME_NONNULL_BEGIN
   [self.paymentQueue finishTransaction:transaction];
 }
 
-- (RACSignal *)unhandledTransactionsErrorsSignal {
+#pragma mark -
+#pragma mark Handling transactions errors
+#pragma mark -
+
+- (RACSignal *)transactionsErrorsSignal {
+  return [[[RACSignal merge:@[
+    [self unfinishedFailedTransactionsErrors],
+    [self unhandledTransactionsErrors]
+  ]]
+  takeUntil:[self rac_willDeallocSignal]]
+  setNameWithFormat:@"%@ -transactionsErrorsSignal", self];
+}
+
+- (RACSignal *)unhandledTransactionsErrors {
   return [self.purchaseManager.unhandledTransactionsSignal
-      map:^id(SKPaymentTransaction *transaction) {
+      map:^NSError *(SKPaymentTransaction *transaction) {
         return [NSError bzr_errorWithCode:BZRErrorCodeUnhandledTransactionReceived
                               transaction:transaction];
       }];
+}
+
+- (RACSignal *)unfinishedFailedTransactionsErrors {
+  return [[[self.paymentQueue.unfinishedTransactionsSignal
+      flattenMap:^RACSignal *(NSArray<SKPaymentTransaction *> *transaction) {
+        return [transaction.rac_sequence signalWithScheduler:[RACScheduler immediateScheduler]];
+      }]
+      filter:^BOOL(SKPaymentTransaction *transaction) {
+        return transaction.transactionState == SKPaymentTransactionStateFailed;
+      }]
+      map:^NSError *(SKPaymentTransaction *transaction) {
+        return [NSError bzr_errorWithCode:BZRErrorCodePurchaseFailed transaction:transaction];
+      }];
+}
+
+#pragma mark -
+#pragma mark Handling unfinished transactions
+#pragma mark -
+
+- (void)finishFailedTransactions {
+  @weakify(self);
+  [[self unfinishedFailedTransactionsErrors] subscribeNext:^(NSError *error) {
+    @strongify(self);
+    [self finishTransaction:error.bzr_transaction];
+  }];
+}
+
+- (RACSignal *)unfinishedSuccessfulTransactionsSignal {
+    return [self.paymentQueue.unfinishedTransactionsSignal
+        map:^NSArray<SKPaymentTransaction *> *(NSArray<SKPaymentTransaction *> *transactions) {
+          return [transactions lt_filter:^BOOL(SKPaymentTransaction *transaction) {
+            return transaction.transactionState == SKPaymentTransactionStatePurchased ||
+                transaction.transactionState == SKPaymentTransactionStateRestored;
+          }];
+        }];
 }
 
 @end
