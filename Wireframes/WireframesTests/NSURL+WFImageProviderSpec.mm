@@ -3,7 +3,7 @@
 
 #import "NSURL+WFImageProvider.h"
 
-#import "UIColor+Utilities.h"
+#import <LTKit/UIColor+Utilities.h>
 
 SpecBegin(NSURL_WFImageProvider)
 
@@ -15,7 +15,7 @@ it(@"should append image size", ^{
 
 it(@"should append image color", ^{
   NSURL *url = [NSURL URLWithString:@"foo"];
-  NSURL *urlWithSize = [url wf_URLWithImageColor:[UIColor wf_colorWithHex:@"12345678"]];
+  NSURL *urlWithSize = [url wf_URLWithImageColor:[UIColor lt_colorWithHex:@"12345678"]];
   expect(urlWithSize.absoluteString).to.equal(@"foo?color=%2312345678");
 });
 

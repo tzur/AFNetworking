@@ -4,9 +4,9 @@
 #import "WFPaintCodeImageProvider.h"
 
 #import <LTKit/LTCGExtensions.h>
+#import <LTKit/UIColor+Utilities.h>
 
 #import "NSErrorCodes+Wireframes.h"
-#import "UIColor+Utilities.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -115,7 +115,7 @@ NS_ASSUME_NONNULL_BEGIN
     } else if ([item.name isEqualToString:@"height"]) {
       size.height = [item.value doubleValue];
     } else if ([item.name isEqualToString:@"color"]) {
-      request.color = [UIColor wf_colorWithHex:item.value];
+      request.color = [UIColor lt_colorWithHex:item.value];
     } else if ([item.name isEqualToString:@"lineWidth"]) {
       request.lineWidth = @([item.value doubleValue]);
     } else {

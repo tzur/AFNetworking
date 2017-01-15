@@ -4,8 +4,8 @@
 #import "WFImageViewModelBuilder.h"
 
 #import <LTKit/NSURL+Query.h>
+#import <LTKit/UIColor+Utilities.h>
 
-#import "UIColor+Utilities.h"
 #import "WFImageProvider.h"
 #import "WFImageViewModel.h"
 
@@ -283,10 +283,10 @@ context(@"size signal", ^{
 
 context(@"color", ^{
   it(@"should pass color to image provider", ^{
-    UIColor *expectedColor = [UIColor wf_colorWithHex:@"#12345678"];
+    UIColor *expectedColor = [UIColor lt_colorWithHex:@"#12345678"];
 
     OCMExpect([imageProvider imageWithURL:[OCMArg checkWithBlock:^BOOL(NSURL *url) {
-      UIColor *color = [UIColor wf_colorWithHex:url.lt_queryDictionary[@"color"]];
+      UIColor *color = [UIColor lt_colorWithHex:url.lt_queryDictionary[@"color"]];
       return [url.path isEqualToString:@"image"] && [expectedColor isEqual:color];
     }]]).andReturn([RACSignal never]);
 
@@ -300,16 +300,16 @@ context(@"color", ^{
   });
 
   it(@"should pass highlighted color to image provider", ^{
-    UIColor *expectedColor = [UIColor wf_colorWithHex:@"#12345678"];
-    UIColor *expectedHighlightedColor = [UIColor wf_colorWithHex:@"#87654321"];
+    UIColor *expectedColor = [UIColor lt_colorWithHex:@"#12345678"];
+    UIColor *expectedHighlightedColor = [UIColor lt_colorWithHex:@"#87654321"];
 
     OCMExpect([imageProvider imageWithURL:[OCMArg checkWithBlock:^BOOL(NSURL *url) {
-      UIColor *color = [UIColor wf_colorWithHex:url.lt_queryDictionary[@"color"]];
+      UIColor *color = [UIColor lt_colorWithHex:url.lt_queryDictionary[@"color"]];
       return [url.path isEqualToString:@"image"] && [expectedColor isEqual:color];
     }]]).andReturn([RACSignal never]);
 
     OCMExpect([imageProvider imageWithURL:[OCMArg checkWithBlock:^BOOL(NSURL *url) {
-      UIColor *color = [UIColor wf_colorWithHex:url.lt_queryDictionary[@"color"]];
+      UIColor *color = [UIColor lt_colorWithHex:url.lt_queryDictionary[@"color"]];
       return [url.path isEqualToString:@"highlighted"] && [expectedHighlightedColor isEqual:color];
     }]]).andReturn([RACSignal never]);
 
@@ -325,16 +325,16 @@ context(@"color", ^{
   });
 
   it(@"should use image url with highlighted color", ^{
-    UIColor *expectedColor = [UIColor wf_colorWithHex:@"#12345678"];
-    UIColor *expectedHighlightedColor = [UIColor wf_colorWithHex:@"#87654321"];
+    UIColor *expectedColor = [UIColor lt_colorWithHex:@"#12345678"];
+    UIColor *expectedHighlightedColor = [UIColor lt_colorWithHex:@"#87654321"];
 
     OCMExpect([imageProvider imageWithURL:[OCMArg checkWithBlock:^BOOL(NSURL *url) {
-      UIColor *color = [UIColor wf_colorWithHex:url.lt_queryDictionary[@"color"]];
+      UIColor *color = [UIColor lt_colorWithHex:url.lt_queryDictionary[@"color"]];
       return [url.path isEqualToString:@"image"] && [expectedColor isEqual:color];
     }]]).andReturn([RACSignal never]);
 
     OCMExpect([imageProvider imageWithURL:[OCMArg checkWithBlock:^BOOL(NSURL *url) {
-      UIColor *color = [UIColor wf_colorWithHex:url.lt_queryDictionary[@"color"]];
+      UIColor *color = [UIColor lt_colorWithHex:url.lt_queryDictionary[@"color"]];
       return [url.path isEqualToString:@"image"] && [expectedHighlightedColor isEqual:color];
     }]]).andReturn([RACSignal never]);
 
@@ -376,12 +376,12 @@ context(@"line width", ^{
 
   it(@"should pass line width to colored image provider and highlighted image provider", ^{
     CGFloat expectedLineWidth = 1.4;
-    UIColor *expectedColor = [UIColor wf_colorWithHex:@"#12345678"];
-    UIColor *expectedHighlightedColor = [UIColor wf_colorWithHex:@"#87654321"];
+    UIColor *expectedColor = [UIColor lt_colorWithHex:@"#12345678"];
+    UIColor *expectedHighlightedColor = [UIColor lt_colorWithHex:@"#87654321"];
 
     OCMExpect([imageProvider imageWithURL:[OCMArg checkWithBlock:^BOOL(NSURL *url) {
       CGFloat lineWidth = [url.lt_queryDictionary[@"lineWidth"] floatValue];
-      UIColor *color = [UIColor wf_colorWithHex:url.lt_queryDictionary[@"color"]];
+      UIColor *color = [UIColor lt_colorWithHex:url.lt_queryDictionary[@"color"]];
 
       return [url.path isEqualToString:@"image"] &&
           std::abs(expectedLineWidth - lineWidth) < 0.001 &&
@@ -390,7 +390,7 @@ context(@"line width", ^{
 
     OCMExpect([imageProvider imageWithURL:[OCMArg checkWithBlock:^BOOL(NSURL *url) {
       CGFloat lineWidth = [url.lt_queryDictionary[@"lineWidth"] floatValue];
-      UIColor *color = [UIColor wf_colorWithHex:url.lt_queryDictionary[@"color"]];
+      UIColor *color = [UIColor lt_colorWithHex:url.lt_queryDictionary[@"color"]];
 
       return [url.path isEqualToString:@"highlighted"] &&
           std::abs(expectedLineWidth - lineWidth) < 0.001 &&
@@ -412,12 +412,12 @@ context(@"line width", ^{
   it(@"should pass line width to colored image provider and inexplicitly set highlighted image "
      "provider", ^{
     CGFloat expectedLineWidth = 1.4;
-    UIColor *expectedColor = [UIColor wf_colorWithHex:@"#12345678"];
-    UIColor *expectedHighlightedColor = [UIColor wf_colorWithHex:@"#87654321"];
+    UIColor *expectedColor = [UIColor lt_colorWithHex:@"#12345678"];
+    UIColor *expectedHighlightedColor = [UIColor lt_colorWithHex:@"#87654321"];
 
     OCMExpect([imageProvider imageWithURL:[OCMArg checkWithBlock:^BOOL(NSURL *url) {
       CGFloat lineWidth = [url.lt_queryDictionary[@"lineWidth"] floatValue];
-      UIColor *color = [UIColor wf_colorWithHex:url.lt_queryDictionary[@"color"]];
+      UIColor *color = [UIColor lt_colorWithHex:url.lt_queryDictionary[@"color"]];
 
       return [url.path isEqualToString:@"image"] &&
           std::abs(expectedLineWidth - lineWidth) < 0.001 &&
@@ -426,7 +426,7 @@ context(@"line width", ^{
 
     OCMExpect([imageProvider imageWithURL:[OCMArg checkWithBlock:^BOOL(NSURL *url) {
       CGFloat lineWidth = [url.lt_queryDictionary[@"lineWidth"] floatValue];
-      UIColor *color = [UIColor wf_colorWithHex:url.lt_queryDictionary[@"color"]];
+      UIColor *color = [UIColor lt_colorWithHex:url.lt_queryDictionary[@"color"]];
       return [url.path isEqualToString:@"image"] &&
           std::abs(expectedLineWidth - lineWidth) < 0.001 &&
           [expectedHighlightedColor isEqual:color];
