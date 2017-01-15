@@ -3,6 +3,8 @@
 
 #import "LTLogger.h"
 
+#import "NSDateFormatter+Formatters.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark -
@@ -12,10 +14,13 @@ NS_ASSUME_NONNULL_BEGIN
 @interface LTLogger ()
 
 /// Targets for logging.
-@property (strong, nonatomic) NSMutableSet<id<LTLoggerTarget>> *targets;
+@property (readonly, nonatomic) NSMutableSet<id<LTLoggerTarget>> *targets;
 
 /// Lock for ensuring thread-safety when logging from multiple threads.
-@property (strong, nonatomic) NSLock *lock;
+@property (readonly, nonatomic) NSLock *lock;
+
+/// Date formatter for outputting string date in log messages.
+@property (readonly, nonatomic) NSDateFormatter *dateFormatter;
 
 @end
 
@@ -27,8 +32,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)init {
   if (self = [super init]) {
-    self.targets = [NSMutableSet set];
-    self.lock = [[NSLock alloc] init];
+    _targets = [NSMutableSet set];
+    _lock = [[NSLock alloc] init];
+    _dateFormatter = [NSDateFormatter lt_deviceTimezoneDateFormatter];
   }
   return self;
 }
@@ -183,11 +189,6 @@ static NSString *stringFromNSDecimalWithCurrentLocale(NSDecimal value) {
     return;
   }
   
-  // Create date string.
-  NSDateFormatter *dateFormatter = [NSDateFormatter new];
-  dateFormatter.dateFormat = @"HH:mm:ss.SSS";
-  dateFormatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
-  
   NSString *logLevelString;
   switch (logLevel) {
     case LTLogLevelDebug:
@@ -205,7 +206,7 @@ static NSString *stringFromNSDecimalWithCurrentLocale(NSDecimal value) {
   }
   
   format = [NSString stringWithFormat:@"%@ [%@] [%s:%d] %@",
-            [dateFormatter stringFromDate:[NSDate date]], logLevelString, file, line, format];
+            [self.dateFormatter stringFromDate:[NSDate date]], logLevelString, file, line, format];
   
   va_list args;
   
