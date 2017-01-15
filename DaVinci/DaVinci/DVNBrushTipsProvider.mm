@@ -16,9 +16,9 @@ const CGFloat kRoundTipGaussianSigma = 0.3;
 
 - (LTGLTexture *)roundTipWithDimension:(NSUInteger)dimension hardness:(CGFloat)hardness {
   LTParameterAssert(LTIsPowerOfTwo(dimension), @"Provided dimension must be power of two, got: %lu",
-                    dimension);
+                    (unsigned long)dimension);
   LTParameterAssert(dimension >= 16, @"Provided dimension must greater or equal to 16, got: %lu",
-                    dimension);
+                    (unsigned long)dimension);
   LTParameterAssert(hardness >= 0 && hardness <= 1,
                     @"Provided hardness must be in range [0, 1], got: %g", hardness);
   Matrices levels;
