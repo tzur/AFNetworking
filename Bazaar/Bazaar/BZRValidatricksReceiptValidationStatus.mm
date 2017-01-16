@@ -16,7 +16,20 @@ NS_ASSUME_NONNULL_BEGIN
     @instanceKeypath(BZRReceiptValidationStatus, error): @"reason",
     @instanceKeypath(BZRReceiptValidationStatus, validationDateTime): @"currentDateTime",
     @instanceKeypath(BZRReceiptValidationStatus, receipt): @"receipt",
+    @instanceKeypath(BZRValidatricksReceiptValidationStatus, requestId): @"requestId"
   };
+}
+
++ (NSDictionary<NSString *, id> *)defaultPropertyValues {
+  static NSDictionary<NSString *, id> *defaultPropertyValues;
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    defaultPropertyValues = @{
+      @instanceKeypath(BZRValidatricksReceiptValidationStatus, requestId): @""
+    };
+  });
+
+  return defaultPropertyValues;
 }
 
 + (NSValueTransformer *)errorJSONTransformer {

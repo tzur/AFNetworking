@@ -23,7 +23,17 @@ NS_ASSUME_NONNULL_BEGIN
   return optionalPropertyKeys;
 }
 
-+ (BOOL)validateDictionaryValue:(NSDictionary *)dictionaryValue
++ (NSDictionary<NSString *, id> *)defaultPropertyValues {
+  static NSDictionary<NSString *, id> *defaultPropertyValues;
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    defaultPropertyValues = @{};
+  });
+
+  return defaultPropertyValues;
+}
+
++ (BOOL)validateDictionaryValue:(NSDictionary<NSString *, id> *)dictionaryValue
        withOptionalPropertyKeys:(NSSet<NSString *> *)optionalPropertyKeys
                           error:(NSError * __autoreleasing *)error {
   for (NSString *key in [self propertyKeys]) {
@@ -55,13 +65,15 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithDictionary:(NSDictionary *)dictionaryValue
                              error:(NSError * __autoreleasing *)error {
-  if (![[self class] validateDictionaryValue:dictionaryValue
+  NSDictionary<NSString *, id> *dictionaryWithDefaults = [[[self class] defaultPropertyValues]
+       mtl_dictionaryByAddingEntriesFromDictionary:dictionaryValue];
+  if (![[self class] validateDictionaryValue:dictionaryWithDefaults
                     withOptionalPropertyKeys:[[self class] optionalPropertyKeys] error:error]) {
     return nil;
   }
 
   @try {
-    if (self = [super initWithDictionary:dictionaryValue error:error]) {
+    if (self = [super initWithDictionary:dictionaryWithDefaults error:error]) {
       if (![self validate:error]) {
         self = nil;
       }

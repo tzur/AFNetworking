@@ -101,7 +101,8 @@ context(@"receipt validation", ^{
       JSONResponse = @{
         @"valid": @NO,
         @"reason": @"invalidJson",
-        @"currentDateTime": @1337
+        @"currentDateTime": @1337,
+        @"requestId": @"id"
       };
     });
 
