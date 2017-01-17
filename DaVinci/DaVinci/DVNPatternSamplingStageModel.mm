@@ -5,6 +5,7 @@
 
 #import <LTEngine/LTFloatSetSampler.h>
 #import <LTEngine/LTPeriodicFloatSet.h>
+#import <LTKit/NSArray+Functional.h>
 #import <LTKit/NSArray+NSSet.h>
 
 NS_ASSUME_NONNULL_BEGIN
@@ -24,13 +25,11 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 + (NSSet<NSString *> *)propertyKeys {
-  NSMutableSet *keys = [[super propertyKeys] mutableCopy];
-  [keys minusSet:[@[
-    @instanceKeypath(DVNPatternSamplingStageModel, __sequenceDistanceSet),
-    @instanceKeypath(DVNPatternSamplingStageModel, __numberOfSamplesPerSequenceSet),
-    @instanceKeypath(DVNPatternSamplingStageModel, __spacingSet)
-  ] lt_set]];
-  return [keys copy];
+  return [[[[super propertyKeys] allObjects]
+      lt_filter:^BOOL(NSString *key) {
+        return ![key hasPrefix:@"__"];
+      }]
+      lt_set];
 }
 
 #pragma mark -
@@ -55,6 +54,14 @@ NS_ASSUME_NONNULL_BEGIN
                                  lt::Interval<CGFloat>::EndpointInclusion::Closed);
   return [[LTFloatSetSamplerModel alloc] initWithFloatSet:floatSet interval:interval];
 }
+
+#pragma mark -
+#pragma mark Properties
+#pragma mark -
+
+DVNProperty(CGFloat, spacing, Spacing, 0.01, CGFLOAT_MAX, 1);
+DVNProperty(CGFloat, sequenceDistance, SequenceDistance, 0.01, CGFLOAT_MAX, 1);
+DVNProperty(NSUInteger, numberOfSamplesPerSequence, NumberOfSamplesPerSequence, 1, NSUIntegerMax, 1);
 
 @end
 
