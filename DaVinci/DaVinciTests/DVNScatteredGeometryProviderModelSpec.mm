@@ -19,7 +19,7 @@ SpecBegin(DVNScatteredGeometryProviderModel)
 __block id<LTSampleValues> samples;
 __block DVNTestGeometryProviderModel *underlyingProviderModel;
 __block LTRandomState *randomState;
-__block NSUInteger maximumCount;
+__block lt::Interval<NSUInteger> count;
 __block lt::Interval<CGFloat> distance;
 __block lt::Interval<CGFloat> angle;
 __block lt::Interval<CGFloat> scale;
@@ -28,7 +28,7 @@ __block DVNScatteredGeometryProviderModel *model;
 beforeEach(^{
   underlyingProviderModel = [[DVNTestGeometryProviderModel alloc] initWithState:0];
   randomState = [[LTRandom alloc] init].engineState;
-  maximumCount = 500;
+  count = lt::Interval<NSUInteger>({300, 500}, lt::Interval<NSUInteger>::EndpointInclusion::Closed);
   distance = lt::Interval<CGFloat>({1, 5}, lt::Interval<CGFloat>::EndpointInclusion::Closed);
   angle = lt::Interval<CGFloat>({M_PI_4, M_PI}, lt::Interval<CGFloat>::EndpointInclusion::Closed);
   scale = lt::Interval<CGFloat>({0.5, 1.5}, lt::Interval<CGFloat>::EndpointInclusion::Closed);
@@ -41,7 +41,7 @@ beforeEach(^{
   
   model = [[DVNScatteredGeometryProviderModel alloc]
            initWithGeometryProviderModel:underlyingProviderModel randomState:randomState
-           maximumCount:maximumCount distance:distance angle:angle scale:scale];
+           count:count distance:distance angle:angle scale:scale];
 });
 
 afterEach(^{
@@ -54,30 +54,28 @@ context(@"initialization", ^{
     expect(model).toNot.beNil();
     expect(model.geometryProviderModel).to.equal(underlyingProviderModel);
     expect(model.randomState).to.equal(randomState);
-    expect(model.maximumCount).to.equal(maximumCount);
+    expect(model.count == count).to.beTruthy();
     expect(model.distance == distance).to.beTruthy();
     expect(model.angle == angle).to.beTruthy();
     expect(model.scale == scale).to.beTruthy();
-  });
-  
-  context(@"invalid initialization attempts", ^{
-    
   });
 });
 
 itShouldBehaveLike(kLTEqualityExamples, ^{
   DVNScatteredGeometryProviderModel *model = [[DVNScatteredGeometryProviderModel alloc]
                                               initWithGeometryProviderModel:underlyingProviderModel
-                                              randomState:randomState maximumCount:maximumCount
-                                              distance:distance angle:angle scale:scale];
+                                              randomState:randomState count:count distance:distance
+                                              angle:angle scale:scale];
   DVNScatteredGeometryProviderModel *equalModel =
       [[DVNScatteredGeometryProviderModel alloc]
-       initWithGeometryProviderModel:underlyingProviderModel randomState:randomState
-       maximumCount:maximumCount distance:distance angle:angle scale:scale];
+       initWithGeometryProviderModel:underlyingProviderModel randomState:randomState count:count
+       distance:distance angle:angle scale:scale];
+  lt::Interval<NSUInteger> differentCount =
+      lt::Interval<NSUInteger>({200, 300}, lt::Interval<NSUInteger>::EndpointInclusion::Closed);
   DVNScatteredGeometryProviderModel *differentModel =
       [[DVNScatteredGeometryProviderModel alloc]
        initWithGeometryProviderModel:underlyingProviderModel randomState:randomState
-       maximumCount:maximumCount + 1 distance:distance angle:angle scale:scale];
+       count:differentCount distance:distance angle:angle scale:scale];
   return @{
     kLTEqualityExamplesObject: model,
     kLTEqualityExamplesEqualObject: equalModel,
@@ -88,8 +86,8 @@ itShouldBehaveLike(kLTEqualityExamples, ^{
 itShouldBehaveLike(kDVNGeometryProviderExamples, ^{
   DVNScatteredGeometryProviderModel *model = [[DVNScatteredGeometryProviderModel alloc]
                                               initWithGeometryProviderModel:underlyingProviderModel
-                                              randomState:randomState maximumCount:maximumCount
-                                              distance:distance angle:angle scale:scale];
+                                              randomState:randomState count:count distance:distance
+                                              angle:angle scale:scale];
   return @{
     kDVNGeometryProviderExamplesModel: model,
     kDVNGeometryProviderExamplesSamples: samples
@@ -105,7 +103,7 @@ context(@"provider", ^{
       
       expect(model.geometryProviderModel).toNot.equal(currentModel.geometryProviderModel);
       expect(model.randomState).toNot.equal(currentModel.randomState);
-      expect(model.maximumCount).to.equal(currentModel.maximumCount);
+      expect(model.count == currentModel.count).to.beTruthy();
       expect(model.distance == currentModel.distance).to.beTruthy();
       expect(model.angle == currentModel.angle).to.beTruthy();
       expect(model.scale == currentModel.scale).to.beTruthy();
