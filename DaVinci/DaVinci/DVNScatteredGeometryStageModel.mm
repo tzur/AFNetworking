@@ -4,6 +4,7 @@
 #import "DVNScatteredGeometryStageModel.h"
 
 #import <LTKit/LTRandom.h>
+#import <LTKit/NSArray+Functional.h>
 #import <LTKit/NSArray+NSSet.h>
 
 #import "DVNScatteredGeometryProviderModel.h"
@@ -26,9 +27,11 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 + (NSSet<NSString *> *)propertyKeys {
-  NSMutableSet *keys = [[super propertyKeys] mutableCopy];
-  [keys removeObject:@instanceKeypath(DVNScatteredGeometryStageModel, __diameterSet)];
-  return [keys copy];
+  return [[[[super propertyKeys] allObjects]
+      lt_filter:^BOOL(NSString *key) {
+        return ![key hasPrefix:@"__"];
+      }]
+      lt_set];
 }
 
 #pragma mark -
@@ -52,10 +55,26 @@ NS_ASSUME_NONNULL_BEGIN
                               lt::Interval<CGFloat>::EndpointInclusion::Closed);
   lt::Interval<CGFloat> scale({self.minScale, self.maxScale},
                               lt::Interval<CGFloat>::EndpointInclusion::Closed);
+  lt::Interval<NSUInteger> count({self.minCount, self.maxCount},
+                                 lt::Interval<NSUInteger>::EndpointInclusion::Closed);
   return [[DVNScatteredGeometryProviderModel alloc]
           initWithGeometryProviderModel:providerModel randomState:[[LTRandomState alloc] init]
-          maximumCount:self.maxCount distance:distance angle:angle scale:scale];
+          count:count distance:distance angle:angle scale:scale];
 }
+
+#pragma mark -
+#pragma mark Properties
+#pragma mark -
+
+DVNProperty(CGFloat, diameter, Diameter, 0.01, CGFLOAT_MAX, 1);
+DVNProperty(NSUInteger, minCount, MinCount, 0, NSUIntegerMax, 1);
+DVNProperty(NSUInteger, maxCount, MaxCount, 0, NSUIntegerMax, 1);
+DVNProperty(CGFloat, minDistance, MinDistance, 0, CGFLOAT_MAX, 0);
+DVNProperty(CGFloat, maxDistance, MaxDistance, 0, CGFLOAT_MAX, 0);
+DVNProperty(CGFloat, minAngle, MinAngle, 0, M_PI * 2, 0);
+DVNProperty(CGFloat, maxAngle, MaxAngle, 0, M_PI * 2, 0);
+DVNProperty(CGFloat, minScale, MinScale, 0, CGFLOAT_MAX, 1);
+DVNProperty(CGFloat, maxScale, MaxScale, 0, CGFLOAT_MAX, 1);
 
 @end
 
