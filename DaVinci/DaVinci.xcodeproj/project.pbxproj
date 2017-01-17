@@ -474,6 +474,7 @@
 		285A79071DFD69CD00095BF4 /* DVNBrushTipsRound64Hardness75.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = DVNBrushTipsRound64Hardness75.png; path = Resources/DVNBrushTipsRound64Hardness75.png; sourceTree = "<group>"; };
 		285FB4C91E1D17EB0021A116 /* DVNBrush.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = DVNBrush.fsh; sourceTree = "<group>"; };
 		285FB4CA1E1D17EB0021A116 /* DVNBrush.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = DVNBrush.vsh; sourceTree = "<group>"; };
+		285FB7261E1E4AF20021A116 /* DVNPropertyMacros.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DVNPropertyMacros.h; sourceTree = "<group>"; };
 		28662D381DF57D2C0051B9DA /* DVNSplineRendering.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DVNSplineRendering.h; sourceTree = "<group>"; };
 		28662D5B1DF57D8A0051B9DA /* DVNPainterSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNPainterSpec.mm; sourceTree = "<group>"; };
 		28662D5D1DF57D970051B9DA /* DVNSplineRenderingExamples.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DVNSplineRenderingExamples.h; sourceTree = "<group>"; };
@@ -861,6 +862,7 @@
 		286C1C5B1DEC59F500523F2E /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				285FB7261E1E4AF20021A116 /* DVNPropertyMacros.h */,
 				286C1C7E1DEC5A3000523F2E /* DVNPatternSamplingStageModel.h */,
 				286C1C7D1DEC5A3000523F2E /* DVNPatternSamplingStageModel.mm */,
 				28D30C901E013A8C00DF0640 /* DVNPipelineStagesMutableModels.h */,
