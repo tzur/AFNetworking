@@ -9,13 +9,15 @@ NS_ASSUME_NONNULL_BEGIN
 typedef NS_ENUM(NSUInteger, LTGLPixelComponents) {
   LTGLPixelComponentsR,
   LTGLPixelComponentsRG,
-  LTGLPixelComponentsRGBA
+  LTGLPixelComponentsRGBA,
+  LTGLPixelComponentsDepth
 };
 
 /// Bit depth of each component of a pixel format.
 typedef NS_ENUM(NSUInteger, LTGLPixelBitDepth) {
   LTGLPixelBitDepth8,
   LTGLPixelBitDepth16,
+  LTGLPixelBitDepth16Depth,
   LTGLPixelBitDepth32
 };
 
@@ -39,12 +41,13 @@ NS_ENUM(GLenum) {
 /// \c LTTexture or \c LTRenderbuffer objects.
 LTEnumDeclare(NSUInteger, LTGLPixelFormat,
   LTGLPixelFormatR8Unorm, 
-  LTGLPixelFormatR16Float, 
-  LTGLPixelFormatR32Float, 
-  LTGLPixelFormatRG8Unorm, 
-  LTGLPixelFormatRG16Float, 
-  LTGLPixelFormatRG32Float, 
-  LTGLPixelFormatRGBA8Unorm, 
+  LTGLPixelFormatDepth16,
+  LTGLPixelFormatR16Float,
+  LTGLPixelFormatR32Float,
+  LTGLPixelFormatRG8Unorm,
+  LTGLPixelFormatRG16Float,
+  LTGLPixelFormatRG32Float,
+  LTGLPixelFormatRGBA8Unorm,
   LTGLPixelFormatRGBA16Float,
   LTGLPixelFormatRGBA32Float
 );

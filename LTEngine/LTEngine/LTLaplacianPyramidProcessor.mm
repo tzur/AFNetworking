@@ -63,6 +63,7 @@ NS_ASSUME_NONNULL_BEGIN
   }
   switch (format.components) {
     case LTGLPixelComponentsR:
+    case LTGLPixelComponentsDepth:
       return $(LTGLPixelFormatR16Float);
     case LTGLPixelComponentsRG:
       return $(LTGLPixelFormatRG16Float);

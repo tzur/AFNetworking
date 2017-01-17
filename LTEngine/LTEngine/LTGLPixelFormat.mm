@@ -11,12 +11,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 LTEnumImplement(NSUInteger, LTGLPixelFormat,
   LTGLPixelFormatR8Unorm, 
+  LTGLPixelFormatDepth16,
   LTGLPixelFormatR16Float, 
-  LTGLPixelFormatR32Float, 
-  LTGLPixelFormatRG8Unorm, 
-  LTGLPixelFormatRG16Float, 
-  LTGLPixelFormatRG32Float, 
-  LTGLPixelFormatRGBA8Unorm, 
+  LTGLPixelFormatR32Float,
+  LTGLPixelFormatRG8Unorm,
+  LTGLPixelFormatRG16Float,
+  LTGLPixelFormatRG32Float,
+  LTGLPixelFormatRGBA8Unorm,
   LTGLPixelFormatRGBA16Float,
   LTGLPixelFormatRGBA32Float
 );
@@ -32,6 +33,8 @@ typedef std::tuple<LTGLPixelComponents, LTGLPixelBitDepth, LTGLPixelDataType> LT
 static const LTUnorderedMap<_LTGLPixelFormat, LTDescriptorTuple> kFormatToDescriptor{
   {LTGLPixelFormatR8Unorm,
     {LTGLPixelComponentsR, LTGLPixelBitDepth8, LTGLPixelDataTypeUnorm}},
+  {LTGLPixelFormatDepth16,
+    {LTGLPixelComponentsDepth, LTGLPixelBitDepth16Depth, LTGLPixelDataTypeUnorm}},
   {LTGLPixelFormatR16Float,
     {LTGLPixelComponentsR, LTGLPixelBitDepth16, LTGLPixelDataTypeFloat}},
   {LTGLPixelFormatR32Float,
@@ -66,7 +69,9 @@ static const LTUnorderedMap<LTPixelComponentsPair, GLenum> kComponentsToFormat{
   {{LTGLVersion2, LTGLPixelComponentsRG}, GL_RG_EXT},
   {{LTGLVersion3, LTGLPixelComponentsRG}, GL_RG},
   {{LTGLVersion2, LTGLPixelComponentsRGBA}, GL_RGBA},
-  {{LTGLVersion3, LTGLPixelComponentsRGBA}, GL_RGBA}
+  {{LTGLVersion3, LTGLPixelComponentsRGBA}, GL_RGBA},
+  {{LTGLVersion2, LTGLPixelComponentsDepth}, GL_DEPTH_COMPONENT},
+  {{LTGLVersion3, LTGLPixelComponentsDepth}, GL_DEPTH_COMPONENT}
 };
 
 /// Pair of (version, bit depth).
@@ -80,6 +85,7 @@ static const LTUnorderedMap<LTPixelBitDepthPair, GLenum> kBitDepthToPrecision{
   {{LTGLVersion3, LTGLPixelBitDepth8}, GL_UNSIGNED_BYTE},
   {{LTGLVersion2, LTGLPixelBitDepth16}, GL_HALF_FLOAT_OES},
   {{LTGLVersion3, LTGLPixelBitDepth16}, GL_HALF_FLOAT},
+  {{LTGLVersion3, LTGLPixelBitDepth16Depth}, GL_UNSIGNED_INT},
   {{LTGLVersion2, LTGLPixelBitDepth32}, GL_FLOAT},
   {{LTGLVersion3, LTGLPixelBitDepth32}, GL_FLOAT}
 };
@@ -93,6 +99,8 @@ typedef std::pair<LTGLVersion, _LTGLPixelFormat> LTPixelFormatPair;
 static const LTUnorderedMap<LTPixelFormatPair, GLenum> kFormatToTextureInternalFormat{
   {{LTGLVersion2, LTGLPixelFormatR8Unorm}, GL_RED_EXT},
   {{LTGLVersion3, LTGLPixelFormatR8Unorm}, GL_R8},
+  {{LTGLVersion2, LTGLPixelFormatDepth16}, GL_DEPTH_COMPONENT16},
+  {{LTGLVersion3, LTGLPixelFormatDepth16}, GL_DEPTH_COMPONENT16},
   {{LTGLVersion2, LTGLPixelFormatR16Float}, GL_RED_EXT},
   {{LTGLVersion3, LTGLPixelFormatR16Float}, GL_R16F},
   {{LTGLVersion2, LTGLPixelFormatR32Float}, GL_RED_EXT},
@@ -116,7 +124,9 @@ static const LTUnorderedMap<LTPixelFormatPair, GLenum> kFormatToTextureInternalF
 /// number of supported OpenGL versions.
 static const LTUnorderedMap<LTPixelFormatPair, GLenum> kFormatToRenderbufferInternalFormat{
   {{LTGLVersion2, LTGLPixelFormatRGBA8Unorm}, GL_RGBA8_OES},
+  {{LTGLVersion2, LTGLPixelFormatDepth16}, GL_DEPTH_COMPONENT16},
   {{LTGLVersion3, LTGLPixelFormatRGBA8Unorm}, GL_RGBA8},
+  {{LTGLVersion3, LTGLPixelFormatDepth16}, GL_DEPTH_COMPONENT16}
 };
 
 /// Returns the pixel format that corresponds to the given texture \c internalFormat and \c version.
@@ -150,6 +160,7 @@ static _LTGLPixelFormat LTGLPixelFormatForRenderbufferInternalFormat(GLenum inte
 /// Maps between \c cv::Mat \c type to pixel format.
 static const std::unordered_map<int, _LTGLPixelFormat> kMatTypeToPixelFormat{
   {CV_8UC1, LTGLPixelFormatR8Unorm},
+  {CV_16UC1, LTGLPixelFormatDepth16},
   {CV_16FC1, LTGLPixelFormatR16Float},
   {CV_32FC1, LTGLPixelFormatR32Float},
   {CV_8UC2, LTGLPixelFormatRG8Unorm},
@@ -171,6 +182,7 @@ static _LTGLPixelFormat LTGLPixelFormatForMatType(int type) {
 /// Maps between CoreVideo pixel format (CVPixelFormatType) to pixel format.
 static const std::unordered_map<OSType, _LTGLPixelFormat> kCVPixelFormatTypeToPixelFormat{
   {kCVPixelFormatType_OneComponent8, LTGLPixelFormatR8Unorm},
+  {kCVPixelFormatType_16Gray, LTGLPixelFormatDepth16},
   {kCVPixelFormatType_OneComponent16Half, LTGLPixelFormatR16Float},
   {kCVPixelFormatType_OneComponent32Float, LTGLPixelFormatR32Float},
   {kCVPixelFormatType_TwoComponent8, LTGLPixelFormatRG8Unorm},
@@ -229,7 +241,8 @@ static const std::unordered_map<int, CIFormat> kMatTypeToCIFormat{
   {CV_32FC2, kCIFormatRGf},
   {CV_8UC4, kCIFormatRGBA8},
   {CV_16FC4, kCIFormatRGBAh},
-  {CV_32FC4, kCIFormatRGBAf}
+  {CV_32FC4, kCIFormatRGBAf},
+  {CV_16UC1, kCIFormatR16}
 };
 
 /// Maps between CoreVideo pixel format (CVPixelFormatType) to \c CIFormat.
@@ -242,7 +255,8 @@ static const std::unordered_map<OSType, CIFormat> kCVPixelBufferTypeToCIFormat{
   {kCVPixelFormatType_TwoComponent32Float, kCIFormatRGf},
   {kCVPixelFormatType_32BGRA, kCIFormatBGRA8},
   {kCVPixelFormatType_64RGBAHalf, kCIFormatRGBAh},
-  {kCVPixelFormatType_128RGBAFloat, kCIFormatRGBAf}
+  {kCVPixelFormatType_128RGBAFloat, kCIFormatRGBAf},
+  {kCVPixelFormatType_16Gray, kCIFormatR16}
 };
 
 @implementation LTGLPixelFormat (Additions)
@@ -367,6 +381,7 @@ static const std::unordered_map<OSType, CIFormat> kCVPixelBufferTypeToCIFormat{
 - (NSUInteger)channels {
   switch (self.components) {
     case LTGLPixelComponentsR:
+    case LTGLPixelComponentsDepth:
       return 1;
     case LTGLPixelComponentsRG:
       return 2;

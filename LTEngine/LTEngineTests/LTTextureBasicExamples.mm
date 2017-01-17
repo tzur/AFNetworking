@@ -58,6 +58,11 @@ sharedExamplesFor(kLTTextureBasicExamples, ^(NSDictionary *data) {
   // This will be executed when the test suite runs and generate execution of the shared examples
   // for each for the pixel formats.
   [LTGLPixelFormat enumerateEnumUsingBlock:^(LTGLPixelFormat *pixelFormat) {
+    // @note: \c LTGLPixelFormatDepth16 format is not supported when creating memory mapped
+    // textures, or GL 2 textures.
+    if (pixelFormat.value == LTGLPixelFormatDepth16) {
+      return;
+    }
     itShouldBehaveLike(kLTTextureBasicExamplesPrecisionAndFormat,
                        @{@"pixelFormat": pixelFormat});
   }];

@@ -400,6 +400,7 @@ static void LTVerifyMipmapImages(const Matrices &images) {
 - (int)matChannelsForReading {
   switch ([self bestSupportedReadingComponents]) {
     case LTGLPixelComponentsR:
+    case LTGLPixelComponentsDepth:
       return 1;
     case LTGLPixelComponentsRG:
       return 2;
@@ -411,6 +412,7 @@ static void LTVerifyMipmapImages(const Matrices &images) {
 - (LTGLPixelComponents)bestSupportedReadingComponents {
   switch (self.components) {
     case LTGLPixelComponentsR:
+    case LTGLPixelComponentsDepth:
     case LTGLPixelComponentsRG:
       // Get the minimal number of channels available.
       GLint format;
@@ -434,6 +436,7 @@ static void LTVerifyMipmapImages(const Matrices &images) {
 - (int)matTypeForWriting {
   switch (self.components) {
     case LTGLPixelComponentsR:
+    case LTGLPixelComponentsDepth:
     case LTGLPixelComponentsRG:
       if ([LTGLContext currentContext].supportsRGTextures) {
         return [self matType];
