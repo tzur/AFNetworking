@@ -22,12 +22,6 @@ context(@"initialization", ^{
 });
 
 context(@"DVNSamplingStageModel", ^{
-  beforeEach(^{
-    model.spacing = 1;
-    model.numberOfSamplesPerSequence = 2;
-    model.sequenceDistance = 3;
-  });
-  
   it(@"should return LTFloatSetSamplerModel sampler model", ^{
     id<LTContinuousSamplerModel> samplerModel = [model continuousSamplerModel];
     expect(samplerModel).to.beKindOf([LTFloatSetSamplerModel class]);
@@ -37,14 +31,27 @@ context(@"DVNSamplingStageModel", ^{
     LTFloatSetSamplerModel *samplerModel = [model continuousSamplerModel];
     expect(samplerModel.floatSet).to.beKindOf([LTPeriodicFloatSet class]);
   });
-  
-  it(@"should return sampler with correct periodic float set", ^{
+
+  it(@"should return sampler with correct periodic float set using default properties", ^{
     LTFloatSetSamplerModel *samplerModel = [model continuousSamplerModel];
     LTPeriodicFloatSet *floatSet = samplerModel.floatSet;
     expect(floatSet.pivotValue).to.equal(0);
-    expect(floatSet.numberOfValuesPerSequence).to.equal(2);
-    expect(floatSet.valueDistance).to.equal(1);
-    expect(floatSet.sequenceDistance).to.equal(3);
+    expect(floatSet.numberOfValuesPerSequence).to.equal(model.numberOfSamplesPerSequence);
+    expect(floatSet.valueDistance).to.equal(model.spacing);
+    expect(floatSet.sequenceDistance).to.equal(model.sequenceDistance);
+  });
+  
+  it(@"should return sampler with correct periodic float set using non-default properties", ^{
+    model.numberOfSamplesPerSequence = 5;
+    model.spacing = 6;
+    model.sequenceDistance = 7;
+    
+    LTFloatSetSamplerModel *samplerModel = [model continuousSamplerModel];
+    LTPeriodicFloatSet *floatSet = samplerModel.floatSet;
+    expect(floatSet.pivotValue).to.equal(0);
+    expect(floatSet.numberOfValuesPerSequence).to.equal(model.numberOfSamplesPerSequence);
+    expect(floatSet.valueDistance).to.equal(model.spacing);
+    expect(floatSet.sequenceDistance).to.equal(model.sequenceDistance);
   });
   
   it(@"should return sampler with correct interval", ^{
@@ -63,18 +70,18 @@ context(@"de/serialization", ^{
   
   beforeEach(^{
     dictionary = @{
-      @instanceKeypath(DVNPatternSamplingStageModel, spacing): @1,
-      @instanceKeypath(DVNPatternSamplingStageModel, defaultSpacing): @2,
-      @instanceKeypath(DVNPatternSamplingStageModel, minSpacing): @3,
-      @instanceKeypath(DVNPatternSamplingStageModel, maxSpacing): @4,
-      @instanceKeypath(DVNPatternSamplingStageModel, numberOfSamplesPerSequence): @5,
-      @instanceKeypath(DVNPatternSamplingStageModel, defaultNumberOfSamplesPerSequence): @6,
-      @instanceKeypath(DVNPatternSamplingStageModel, minNumberOfSamplesPerSequence): @7,
-      @instanceKeypath(DVNPatternSamplingStageModel, maxNumberOfSamplesPerSequence): @8,
-      @instanceKeypath(DVNPatternSamplingStageModel, sequenceDistance): @9,
-      @instanceKeypath(DVNPatternSamplingStageModel, defaultSequenceDistance): @10,
-      @instanceKeypath(DVNPatternSamplingStageModel, minSequenceDistance): @11,
-      @instanceKeypath(DVNPatternSamplingStageModel, maxSequenceDistance): @12
+      @instanceKeypath(DVNPatternSamplingStageModel, softMinSpacing): @1,
+      @instanceKeypath(DVNPatternSamplingStageModel, spacing): @2,
+      @instanceKeypath(DVNPatternSamplingStageModel, defaultSpacing): @3,
+      @instanceKeypath(DVNPatternSamplingStageModel, softMaxSpacing): @4,
+      @instanceKeypath(DVNPatternSamplingStageModel, softMinNumberOfSamplesPerSequence): @5,
+      @instanceKeypath(DVNPatternSamplingStageModel, numberOfSamplesPerSequence): @6,
+      @instanceKeypath(DVNPatternSamplingStageModel, defaultNumberOfSamplesPerSequence): @7,
+      @instanceKeypath(DVNPatternSamplingStageModel, softMaxNumberOfSamplesPerSequence): @8,
+      @instanceKeypath(DVNPatternSamplingStageModel, softMinSequenceDistance): @9,
+      @instanceKeypath(DVNPatternSamplingStageModel, sequenceDistance): @10,
+      @instanceKeypath(DVNPatternSamplingStageModel, defaultSequenceDistance): @11,
+      @instanceKeypath(DVNPatternSamplingStageModel, softMaxSequenceDistance): @12
     };
     model = [MTLJSONAdapter modelOfClass:[DVNPatternSamplingStageModel class]
                       fromJSONDictionary:dictionary error:&error];
@@ -86,18 +93,18 @@ context(@"de/serialization", ^{
     });
     
     it(@"should deserialize correctly", ^{
-      expect(model.spacing).to.equal(1);
-      expect(model.defaultSpacing).to.equal(2);
-      expect(model.minSpacing).to.equal(3);
-      expect(model.maxSpacing).to.equal(4);
-      expect(model.numberOfSamplesPerSequence).to.equal(5);
-      expect(model.defaultNumberOfSamplesPerSequence).to.equal(6);
-      expect(model.minNumberOfSamplesPerSequence).to.equal(7);
-      expect(model.maxNumberOfSamplesPerSequence).to.equal(8);
-      expect(model.sequenceDistance).to.equal(9);
-      expect(model.defaultSequenceDistance).to.equal(10);
-      expect(model.minSequenceDistance).to.equal(11);
-      expect(model.maxSequenceDistance).to.equal(12);
+      expect(model.softMinSpacing).to.equal(1);
+      expect(model.spacing).to.equal(2);
+      expect(model.defaultSpacing).to.equal(3);
+      expect(model.softMaxSpacing).to.equal(4);
+      expect(model.softMinNumberOfSamplesPerSequence).to.equal(5);
+      expect(model.numberOfSamplesPerSequence).to.equal(6);
+      expect(model.defaultNumberOfSamplesPerSequence).to.equal(7);
+      expect(model.softMaxNumberOfSamplesPerSequence).to.equal(8);
+      expect(model.softMinSequenceDistance).to.equal(9);
+      expect(model.sequenceDistance).to.equal(10);
+      expect(model.defaultSequenceDistance).to.equal(11);
+      expect(model.softMaxSequenceDistance).to.equal(12);
     });
   });
   

@@ -1,9 +1,8 @@
 // Copyright (c) 2016 Lightricks. All rights reserved.
 // Created by Amit Yitzhack.
 
-#import <Mantle/MTLModel.h>
-
 #import "DVNPipelineStagesMutableModels.h"
+#import "DVNPropertyMacros.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -12,18 +11,18 @@ NS_ASSUME_NONNULL_BEGIN
 /// have an upper bound on the \c maxParametricValue of the sampled parameterized object.
 @interface DVNPatternSamplingStageModel : MTLModel <DVNSamplingStageModel>
 
-/// Distance between successive samples inside any sequence. Must be greater than \c 0.
-@property (nonatomic) CGFloat spacing;
-LTPropertyDeclare(CGFloat, spacing, Spacing);
+/// Distance between successive samples inside any sequence. Must be in <tt>[0.01, CGFLOAT_MAX]</tt>
+/// range. Default value is \c 1.
+DVNPropertyDeclare(CGFloat, spacing, Spacing);
 
-/// Number of samples inside any sequence. Must be greater than \c 0.
-@property (nonatomic) CGFloat numberOfSamplesPerSequence;
-LTPropertyDeclare(CGFloat, numberOfSamplesPerSequence, NumberOfSamplesPerSequence);
+/// Number of samples inside any sequence. Must be in <tt>[1, NSUIntegerMax]</tt> range. Default
+/// value is \c 1.
+DVNPropertyDeclare(NSUInteger, numberOfSamplesPerSequence, NumberOfSamplesPerSequence);
 
 /// Length of the gap between two consecutive sequences. In other words, distance between the last
-/// sample of a sequence and the first sample of the next sequence. Must be greater than \c 0.
-@property (nonatomic) CGFloat sequenceDistance;
-LTPropertyDeclare(CGFloat, sequenceDistance, SequenceDistance);
+/// sample of a sequence and the first sample of the next sequence. Must be in
+/// <tt>[0.01, CGFLOAT_MAX]</tt> range. Default value is \c 1.
+DVNPropertyDeclare(CGFloat, sequenceDistance, SequenceDistance);
 
 @end
 

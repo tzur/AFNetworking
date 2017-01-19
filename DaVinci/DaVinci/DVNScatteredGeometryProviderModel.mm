@@ -12,11 +12,11 @@ NS_ASSUME_NONNULL_BEGIN
 /// Geometry provider constructible from \c DVNScatteredGeometryProviderModel objects.
 @interface DVNScatteredGeometryProvider : NSObject <DVNGeometryProvider>
 
-/// Initializes with the given \c geometryProvider, \c randomState, \c maximumCount, \c distance,
-/// \c angle and \c scale.
+/// Initializes with the given \c geometryProvider, \c randomState, \c count, \c distance, \c angle
+/// and \c scale.
 - (instancetype)initWithGeometryProvider:(id<DVNGeometryProvider>)geometryProvider
                              randomState:(LTRandomState *)randomState
-                            maximumCount:(NSUInteger)maximumCount
+                                   count:(lt::Interval<NSUInteger>)count
                                 distance:(lt::Interval<CGFloat>)distance
                                    angle:(lt::Interval<CGFloat>)angle
                                    scale:(lt::Interval<CGFloat>)scale;
@@ -28,9 +28,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Underlying geometry provider of this instance.
 @property (readonly, nonatomic) id<DVNGeometryProvider> geometryProvider;
 
-/// Upper bound of the support of the discrete uniform distribution used to draw values specify
-/// number of instances to create for each quad.
-@property (readonly, nonatomic) NSUInteger maximumCount;
+/// Support of the discrete uniform distribution used to draw values specify number of instances to
+/// create for each quad.
+@property (readonly, nonatomic) lt::Interval<NSUInteger> count;
 
 /// Support of the uniform distribution used to draw values specify the translation. Must be in
 /// range <tt>[0, inf)</tt>.
@@ -51,14 +51,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithGeometryProvider:(id<DVNGeometryProvider>)geometryProvider
                              randomState:(LTRandomState *)randomState
-                            maximumCount:(NSUInteger)maximumCount
+                                   count:(lt::Interval<NSUInteger>)count
                                 distance:(lt::Interval<CGFloat>)distance
                                    angle:(lt::Interval<CGFloat>)angle
                                    scale:(lt::Interval<CGFloat>)scale {
   if (self = [super init]) {
     _random = [[LTRandom alloc] initWithState:randomState];
     _geometryProvider = geometryProvider;
-    _maximumCount = maximumCount;
+    _count = count;
     _distance = distance;
     _angle = angle;
     _scale = scale;
@@ -75,7 +75,8 @@ NS_ASSUME_NONNULL_BEGIN
   indices.reserve(originalQuads.size());
   
   for (NSUInteger index : values.indices()) {
-    NSUInteger count = [self.random randomUnsignedIntegerBelow:(uint)self.maximumCount];
+    NSUInteger count = [self.random randomIntegerBetweenMin:(int)self.count.min()
+                                                        max:(int)self.count.max()];
     
     for (NSUInteger i = 0; i < count; ++i) {
       quads.push_back([self randomlyTransformedQuadFromQuad:originalQuads[index]]);
@@ -103,7 +104,7 @@ NS_ASSUME_NONNULL_BEGIN
   LTRandomState *randomState = self.random.engineState;
   return [[DVNScatteredGeometryProviderModel alloc] initWithGeometryProviderModel:model
                                                                       randomState:randomState
-                                                                     maximumCount:self.maximumCount
+                                                                            count:self.count
                                                                          distance:self.distance
                                                                             angle:self.angle
                                                                             scale:self.scale];
@@ -119,7 +120,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithGeometryProviderModel:(id<DVNGeometryProviderModel>)geometryProviderModel
                                   randomState:(LTRandomState *)randomState
-                                 maximumCount:(NSUInteger)maximumCount
+                                        count:(lt::Interval<NSUInteger>)count
                                      distance:(lt::Interval<CGFloat>)distance
                                         angle:(lt::Interval<CGFloat>)angle
                                         scale:(lt::Interval<CGFloat>)scale {
@@ -128,7 +129,7 @@ NS_ASSUME_NONNULL_BEGIN
   if (self = [super init]) {
     _geometryProviderModel = geometryProviderModel;
     _randomState = randomState;
-    _maximumCount = maximumCount;
+    _count = count;
     _distance = distance;
     _angle = angle;
     _scale = scale;
@@ -141,19 +142,19 @@ NS_ASSUME_NONNULL_BEGIN
   lt::Interval<CGFloat> validInterval({0, CGFLOAT_MAX},
                                       lt::Interval<CGFloat>::EndpointInclusion::Closed);
   LTParameterAssert(distance.intersects(validInterval),
-                    @"Interval ([%g, %g]) outside valid distance interval ([0, inf))",
+                    @"Interval ([%g, %g]) outside valid distance interval ([0, CGFLOAT_MAX))",
                     distance.min(), distance.max());
   validInterval = lt::Interval<CGFloat>({0, 2 * M_PI},
                                         lt::Interval<CGFloat>::EndpointInclusion::Closed,
-                                        lt::Interval<CGFloat>::EndpointInclusion::Open);
+                                        lt::Interval<CGFloat>::EndpointInclusion::Closed);
   LTParameterAssert(angle.intersects(validInterval),
-                    @"Interval ([%g, %g]) outside valid angle interval ([0, 2 * PI))",
+                    @"Interval ([%g, %g]) outside valid angle interval ([0, 2 * PI])",
                     angle.min(), angle.max());
   validInterval = lt::Interval<CGFloat>({0, CGFLOAT_MAX},
                                         lt::Interval<CGFloat>::EndpointInclusion::Open,
                                         lt::Interval<CGFloat>::EndpointInclusion::Closed);
   LTParameterAssert(scale.intersects(validInterval),
-                    @"Interval ([%g, %g]) outside valid scaling interval ([0, CGFLOAT_MAX))",
+                    @"Interval ([%g, %g]) outside valid scaling interval ((0, CGFLOAT_MAX))",
                     scale.min(), scale.max());
 }
 
@@ -171,16 +172,15 @@ NS_ASSUME_NONNULL_BEGIN
   }
   
   return [self.geometryProviderModel isEqual:model.geometryProviderModel] &&
-      [self.randomState isEqual:model.randomState] &&
-      self.maximumCount == model.maximumCount && self.distance == model.distance &&
-      self.angle == model.angle && self.scale == model.scale;
+      [self.randomState isEqual:model.randomState] && self.count == model.count &&
+      self.distance == model.distance && self.angle == model.angle && self.scale == model.scale;
 }
 
 - (NSUInteger)hash {
   size_t seed = 0;
   lt::hash_combine(seed, [self.geometryProviderModel hash]);
   lt::hash_combine(seed, [self.randomState hash]);
-  lt::hash_combine(seed, self.maximumCount);
+  lt::hash_combine(seed, self.count.hash());
   lt::hash_combine(seed, self.distance.hash());
   lt::hash_combine(seed, self.angle.hash());
   lt::hash_combine(seed, self.scale.hash());
@@ -203,7 +203,7 @@ NS_ASSUME_NONNULL_BEGIN
   id<DVNGeometryProvider> provider = [self.geometryProviderModel provider];
   return [[DVNScatteredGeometryProvider alloc] initWithGeometryProvider:provider
                                                             randomState:self.randomState
-                                                           maximumCount:self.maximumCount
+                                                                  count:self.count
                                                                distance:self.distance
                                                                   angle:self.angle
                                                                   scale:self.scale];
