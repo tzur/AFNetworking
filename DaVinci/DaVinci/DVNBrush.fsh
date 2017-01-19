@@ -4,12 +4,12 @@
 #extension GL_EXT_shader_framebuffer_fetch : require
 
 uniform mediump sampler2D sourceTexture;
-uniform mediump sampler2D auxiliaryTexture;
+uniform mediump sampler2D overlayTexture;
 uniform mediump sampler2D edgeAvoidanceGuideTexture;
 uniform highp float opacity;
 uniform highp float edgeAvoidance;
 uniform bool singleChannel;
-uniform bool sampleFromAuxiliaryTexture;
+uniform bool sampleFromOverlayTexture;
 
 varying highp vec3 vColor;
 varying highp vec2 vPosition;
@@ -60,8 +60,8 @@ void main() {
   if (singleChannel) {
     highp float alpha = opacity * src.r;
     
-    if (sampleFromAuxiliaryTexture) {
-      src = texture2D(auxiliaryTexture, vPosition);
+    if (sampleFromOverlayTexture) {
+      src = texture2D(overlayTexture, vPosition);
       src.a *= alpha;
     } else {
       src = vec4(vColor, alpha);
