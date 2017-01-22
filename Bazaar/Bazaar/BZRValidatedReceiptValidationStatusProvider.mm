@@ -97,7 +97,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (RACSignal *)eventsSignal {
-  return [[RACSignal never] takeUntil:[self rac_willDeallocSignal]];
+  return self.receiptValidator.eventsSignal;
 }
 
 @end

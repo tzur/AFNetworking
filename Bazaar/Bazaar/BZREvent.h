@@ -9,7 +9,7 @@ NS_ASSUME_NONNULL_BEGIN
 LTEnumDeclare(NSUInteger, BZREventType,
   BZREventTypeNonCriticalError,
   BZREventTypeCriticalError,
-  BZREventTypePurchaseStatus
+  BZREventTypeReceiptValidationStatusReceived
 );
 
 /// Represents a single event that is sent from Bazaar.

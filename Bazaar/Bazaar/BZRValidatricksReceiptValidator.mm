@@ -7,6 +7,7 @@
 #import <Fiber/FBRHTTPClientProvider.h>
 #import <Fiber/RACSignal+Fiber.h>
 
+#import "BZREvent+AdditionalInfo.h"
 #import "BZRReceiptValidationParameters+Validatricks.h"
 #import "BZRValidatricksReceiptValidationStatus.h"
 #import "NSErrorCodes+Bazaar.h"
@@ -23,6 +24,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// HTTP client used to send validation requests to Validatricks server.
 @property (strong, nonatomic, nullable) FBRHTTPClient *client;
+
+/// The other end of \c eventsSignal;
+@property (readonly, nonatomic) RACSubject *eventsSubject;
 
 @end
 
@@ -42,6 +46,7 @@ static NSString * const kReceiptValidationEndpoint = @"validateReceipt";
 - (instancetype)initWithHTTPClientProvider:(id<FBRHTTPClientProvider>)clientProvider {
   if (self = [super init]) {
     _clientProvider = clientProvider;
+    _eventsSubject = [RACSubject subject];
   }
   return self;
 }
@@ -58,7 +63,7 @@ static NSString * const kReceiptValidationEndpoint = @"validateReceipt";
 
     @weakify(self);
     FBRHTTPRequestParameters *requestParameters = parameters.validatricksRequestParameters;
-    return [[[[self.client POST:kReceiptValidationEndpoint withParameters:requestParameters]
+    return [[[[[self.client POST:kReceiptValidationEndpoint withParameters:requestParameters]
         fbr_deserializeJSON]
         bzr_deserializeModel:[BZRValidatricksReceiptValidationStatus class]]
         doError:^(NSError *) {
@@ -66,8 +71,17 @@ static NSString * const kReceiptValidationEndpoint = @"validateReceipt";
           @synchronized (self) {
             self.client = nil;
           }
+        }]
+        doNext:^(BZRValidatricksReceiptValidationStatus *receiptValidationStatus) {
+          @strongify(self);
+          [self.eventsSubject sendNext:
+           [BZREvent receiptValidationStatusReceivedEvent:receiptValidationStatus.requestId]];
         }];
   }
+}
+
+- (RACSignal *)eventsSignal {
+  return [self.eventsSubject takeUntil:[self rac_willDeallocSignal]];
 }
 
 @end

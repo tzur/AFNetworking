@@ -10,6 +10,7 @@
 #import <Fiber/FBRHTTPTaskProgress.h>
 #import <Fiber/NSErrorCodes+Fiber.h>
 
+#import "BZREvent+AdditionalInfo.h"
 #import "BZRReceiptValidationError.h"
 #import "BZRReceiptValidationParameters+Validatricks.h"
 #import "BZRValidatricksReceiptValidationStatus.h"
@@ -52,6 +53,7 @@ context(@"receipt validation", ^{
   __block FBRHTTPRequestParameters *requestParameters;
   __block NSString *URLString;
   __block BZRValidatricksReceiptValidator *validator;
+  __block NSDictionary *JSONResponse;
 
   beforeEach(^{
     NSData *receiptData = [@"foobar" dataUsingEncoding:NSUTF8StringEncoding];
@@ -63,6 +65,13 @@ context(@"receipt validation", ^{
     URLString = [BZRValidatricksReceiptValidator receiptValidationEndpoint];
 
     validator = [[BZRValidatricksReceiptValidator alloc] initWithHTTPClientProvider:clientProvider];
+
+    JSONResponse = @{
+      @"valid": @NO,
+      @"reason": @"invalidJson",
+      @"currentDateTime": @1337,
+      @"requestId": @"id"
+    };
   });
 
   it(@"should send a post request to the server with the correct url string and parameters", ^{
@@ -90,20 +99,12 @@ context(@"receipt validation", ^{
   context(@"signal specifications", ^{
     __block RACSubject *subject;
     __block LLSignalTestRecorder *recorder;
-    __block NSDictionary *JSONResponse;
 
     beforeEach(^{
       subject = [RACSubject subject];
       OCMStub([client POST:URLString withParameters:requestParameters]).andReturn(subject);
       OCMStub([clientProvider HTTPClient]).andReturn(client);
       recorder = [[validator validateReceiptWithParameters:parameters] testRecorder];
-
-      JSONResponse = @{
-        @"valid": @NO,
-        @"reason": @"invalidJson",
-        @"currentDateTime": @1337,
-        @"requestId": @"id"
-      };
     });
 
     it(@"should send the deserialized validation response and then complete", ^{
@@ -167,6 +168,24 @@ context(@"receipt validation", ^{
       expect(recorder).to.matchError(^BOOL(NSError *error) {
         return error.lt_isLTDomain && error.code == BZRErrorCodeModelJSONDeserializationFailed;
       });
+    });
+  });
+
+  context(@"events signal", ^{
+    __block LLSignalTestRecorder *recorder;
+
+    beforeEach(^{
+      recorder = [validator.eventsSignal testRecorder];
+    });
+
+    it(@"should send BZREvent with the request id from receipt validation status", ^{
+      RACSignal *responseSignal =
+          [RACSignal return:BZRValidatricksResponseWithJSONObject(JSONResponse)];
+      OCMStub([client POST:URLString withParameters:requestParameters]).andReturn(responseSignal);
+      OCMStub([clientProvider HTTPClient]).andReturn(client);
+
+      expect([validator validateReceiptWithParameters:parameters]).will.complete();
+      expect(recorder).to.sendValues(@[[BZREvent receiptValidationStatusReceivedEvent:@"id"]]);
     });
   });
 });

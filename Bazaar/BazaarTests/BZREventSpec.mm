@@ -17,7 +17,8 @@ context(@"initialization", ^{
   it(@"should fail initialization if initialized with error without an error event type", ^{
     expect(^{
       BZREvent __unused *event =
-          [[BZREvent alloc] initWithType:$(BZREventTypePurchaseStatus) eventError:eventError];
+          [[BZREvent alloc] initWithType:$(BZREventTypeReceiptValidationStatusReceived)
+                              eventError:eventError];
     }).to.raise(NSInternalInconsistencyException);
   });
 
@@ -32,7 +33,8 @@ context(@"initialization", ^{
      "type", ^{
     expect(^{
       BZREvent __unused *event =
-          [[BZREvent alloc] initWithType:$(BZREventTypePurchaseStatus) eventInfo:eventInfo];
+          [[BZREvent alloc] initWithType:$(BZREventTypeReceiptValidationStatusReceived)
+                               eventInfo:eventInfo];
     }).toNot.raiseAny();
   });
 
