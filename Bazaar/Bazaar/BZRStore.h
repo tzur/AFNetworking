@@ -20,13 +20,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithConfiguration:(BZRStoreConfiguration *)configuration
     NS_DESIGNATED_INITIALIZER;
 
-/// Sends messages of important events that occur in the receiver. The events can be
-/// informational or errors. The signal completes when the receiver is deallocated. The signal
-/// doesn't err.
-///
-/// @return <tt>RACSignal<BZREvent></tt>
-@property (readonly, nonatomic) RACSignal *eventsSignal;
-
 @end
 
 NS_ASSUME_NONNULL_END

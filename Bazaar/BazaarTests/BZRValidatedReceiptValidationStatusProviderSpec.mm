@@ -3,6 +3,7 @@
 
 #import "BZRValidatedReceiptValidationStatusProvider.h"
 
+#import "BZREvent.h"
 #import "BZRReceiptModel.h"
 #import "BZRReceiptValidationError.h"
 #import "BZRReceiptValidationParameters.h"
@@ -27,12 +28,17 @@ SpecBegin(BZRValidatedReceiptValidationStatusProvider)
 __block id<BZRReceiptValidator> receiptValidator;
 __block BZRReceiptValidationParameters *receiptValidationParameters;
 __block id<BZRReceiptValidationParametersProvider> receiptValidationParametersProvider;
+__block BZRValidatedReceiptValidationStatusProvider *validationStatusProvider;
 
 beforeEach(^{
   receiptValidator = OCMProtocolMock(@protocol(BZRReceiptValidator));
   receiptValidationParameters = OCMClassMock([BZRReceiptValidationParameters class]);
   receiptValidationParametersProvider =
       OCMProtocolMock(@protocol(BZRReceiptValidationParametersProvider));
+  validationStatusProvider =
+      [[BZRValidatedReceiptValidationStatusProvider alloc]
+       initWithReceiptValidator:receiptValidator
+       validationParametersProvider:receiptValidationParametersProvider];
 });
 
 context(@"deallocating object", ^{
@@ -56,22 +62,12 @@ context(@"deallocating object", ^{
       fetchSignal = [validationStatusProvider fetchReceiptValidationStatus];
     }
 
-    expect(eventsSignal).will.complete();
     expect(fetchSignal).will.finish();
     expect(weakValidationStatusProvider).to.beNil();
   });
 });
 
 context(@"fetching receipt validation status", ^{
-  __block BZRValidatedReceiptValidationStatusProvider *validationStatusProvider;
-
-  beforeEach(^{
-    validationStatusProvider =
-        [[BZRValidatedReceiptValidationStatusProvider alloc]
-         initWithReceiptValidator:receiptValidator
-         validationParametersProvider:receiptValidationParametersProvider];
-  });
-
   it(@"should send error when receipt validation parameters are nil", ^{
     RACSignal *validateSignal = [validationStatusProvider fetchReceiptValidationStatus];
 
@@ -117,6 +113,21 @@ context(@"fetching receipt validation status", ^{
       expect(recorder).will.complete();
       expect(recorder).will.sendValues(@[receiptValidationStatus]);
     });
+  });
+});
+
+context(@"events signal", ^{
+  it(@"should send event sent by receipt validator", ^{
+    RACSubject *receiptValidatorEventsSubject = [RACSubject subject];
+    OCMStub([receiptValidator eventsSignal]).andReturn(receiptValidatorEventsSubject);
+
+    LLSignalTestRecorder *recorder = [validationStatusProvider.eventsSignal testRecorder];
+
+    BZREvent *event = [[BZREvent alloc] initWithType:$(BZREventTypeReceiptValidationStatusReceived)
+                                           eventInfo:@{}];
+    [receiptValidatorEventsSubject sendNext:event];
+
+    expect(recorder).will.sendValues(@[event]);
   });
 });
 

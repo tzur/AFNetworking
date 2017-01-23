@@ -1,6 +1,8 @@
 // Copyright (c) 2016 Lightricks. All rights reserved.
 // Created by Ben Yohay.
 
+#import "BZREventEmitter.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
 /// A unified interface for managing an products. The products manager provides methods for:
@@ -12,7 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 ///   - Fetching/deleting products' content.
 ///
 ///   - Getting the list of products that was last fetched.
-@protocol BZRProductsManager <NSObject>
+@protocol BZRProductsManager <BZREventEmitter>
 
 /// Makes a purchase of the product specified by \c productIdentifier.
 ///

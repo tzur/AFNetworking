@@ -1,10 +1,12 @@
 // Copyright (c) 2016 Lightricks. All rights reserved.
 // Created by Ben Yohay.
 
+#import "BZREventEmitter.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
 /// Protocol for fetching a list of products.
-@protocol BZRProductsProvider
+@protocol BZRProductsProvider <BZREventEmitter>
 
 /// Returns the list of available products for the application.
 ///
@@ -13,13 +15,6 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 /// @return <tt>RACSignal<NSArray<BZRProduct>></tt>
 - (RACSignal *)fetchProductList;
-
-/// Sends messages of important events that occur throughout the receiver. The events can be
-/// informational or errors. The signal completes when the receiver is deallocated. The signal
-/// doesn't err.
-///
-/// @return <tt>RACSignal<BZREvent></tt>
-@property (readonly, nonatomic) RACSignal *eventsSignal;
 
 @end
 

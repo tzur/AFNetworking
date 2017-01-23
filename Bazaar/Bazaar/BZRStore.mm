@@ -86,6 +86,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @synthesize downloadedContentProducts = _downloadedContentProducts;
 @synthesize productDictionary = _productDictionary;
+@synthesize eventsSignal = _eventsSignal;
 
 #pragma mark -
 #pragma mark Initialization

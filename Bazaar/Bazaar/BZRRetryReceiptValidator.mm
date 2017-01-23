@@ -53,6 +53,10 @@ NS_ASSUME_NONNULL_BEGIN
       retry:self.numberOfRetries];
 }
 
+- (RACSignal *)eventsSignal {
+  return self.underlyingValidator.eventsSignal;
+}
+
 @end
 
 NS_ASSUME_NONNULL_END
