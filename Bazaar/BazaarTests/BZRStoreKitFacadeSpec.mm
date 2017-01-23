@@ -3,6 +3,7 @@
 
 #import "BZRStoreKitFacade.h"
 
+#import "BZREvent.h"
 #import "BZRPaymentQueue.h"
 #import "BZRProductDownloadManager.h"
 #import "BZRPurchaseManager.h"
@@ -183,7 +184,7 @@ context(@"finishing transactions", ^{
 context(@"sending unhandled transactions errors", ^{
   it(@"should complete when object is deallocated", ^{
     BZRStoreKitFacade * __weak weakStoreKitFacade;
-    RACSignal *transactionsErrorsSignal;
+    RACSignal *transactionsErrorEventsSignal;
 
     @autoreleasepool {
       BZRStoreKitFacade *storeKitFacade =
@@ -192,19 +193,21 @@ context(@"sending unhandled transactions errors", ^{
            downloadManager:downloadManager storeKitRequestsFactory:storeKitRequestsFactory];
       weakStoreKitFacade = storeKitFacade;
 
-      transactionsErrorsSignal = storeKitFacade.transactionsErrorsSignal;
+      transactionsErrorEventsSignal = storeKitFacade.transactionsErrorEventsSignal;
     }
     expect(weakStoreKitFacade).to.beNil();
-    expect(transactionsErrorsSignal).will.complete();
+    expect(transactionsErrorEventsSignal).will.complete();
   });
 
   it(@"should send error wrapping an unhandled transaction when purchase manager sends it", ^{
-    LLSignalTestRecorder *recorder = [storeKitFacade.transactionsErrorsSignal testRecorder];
+    LLSignalTestRecorder *recorder = [storeKitFacade.transactionsErrorEventsSignal testRecorder];
     SKPaymentTransaction *transaction = OCMClassMock([SKPaymentTransaction class]);
     [unhandledTransactionsSubject sendNext:transaction];
 
-    expect(recorder).will.matchValue(0, ^BOOL(NSError *error) {
-      return error.lt_isLTDomain && error.code == BZRErrorCodeUnhandledTransactionReceived &&
+    expect(recorder).will.matchValue(0, ^BOOL(BZREvent *event) {
+      NSError *error = event.eventError;
+      return [event.eventType isEqual:$(BZREventTypeNonCriticalError)] && error.lt_isLTDomain &&
+          error.code == BZRErrorCodeUnhandledTransactionReceived &&
           error.bzr_transaction == transaction;
     });
   });
@@ -253,14 +256,15 @@ context(@"handling unfinished transactions", ^{
     });
 
     it(@"should send error wrapping a failed transaction", ^{
-      LLSignalTestRecorder *recorder = [storeKitFacade.transactionsErrorsSignal testRecorder];
+      LLSignalTestRecorder *recorder = [storeKitFacade.transactionsErrorEventsSignal testRecorder];
       SKPaymentTransaction *transaction = OCMClassMock([SKPaymentTransaction class]);
       OCMStub([transaction transactionState]).andReturn(SKPaymentTransactionStateFailed);
       [unfinishedTransactionsSubject sendNext:@[transaction]];
 
-      expect(recorder).will.matchValue(0, ^BOOL(NSError *error) {
-        return error.lt_isLTDomain && error.code == BZRErrorCodePurchaseFailed &&
-            error.bzr_transaction == transaction;
+      expect(recorder).will.matchValue(0, ^BOOL(BZREvent *event) {
+        NSError *error = event.eventError;
+        return [event.eventType isEqual:$(BZREventTypeCriticalError)] && error.lt_isLTDomain &&
+            error.code == BZRErrorCodePurchaseFailed && error.bzr_transaction == transaction;
       });
     });
 

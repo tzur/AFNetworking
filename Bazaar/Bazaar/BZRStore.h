@@ -16,15 +16,16 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Initializes with \c configuration, used to configure this class with configuration objects.
 /// Upon initializiation, fetching of product list is performed. If there was an error while
-/// fetching, it will be sent with \c errorsSignal.
+/// fetching, it will be sent as an error event with \c eventsSignal.
 - (instancetype)initWithConfiguration:(BZRStoreConfiguration *)configuration
     NS_DESIGNATED_INITIALIZER;
 
-/// Sends errors reported by underlying modules used by the receiver. The signal completes when the
-/// receiver is deallocated. The signal doesn't err.
+/// Sends messages of important events that occur in the receiver. The events can be
+/// informational or errors. The signal completes when the receiver is deallocated. The signal
+/// doesn't err.
 ///
-/// @return <tt>RACSignal<NSError></tt>
-@property (readonly, nonatomic) RACSignal *errorsSignal;
+/// @return <tt>RACSignal<BZREvent></tt>
+@property (readonly, nonatomic) RACSignal *eventsSignal;
 
 @end
 

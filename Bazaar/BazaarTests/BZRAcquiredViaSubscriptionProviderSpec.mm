@@ -3,6 +3,7 @@
 
 #import "BZRAcquiredViaSubscriptionProvider.h"
 
+#import "BZREvent.h"
 #import "BZRKeychainStorage+TypeSafety.h"
 #import "NSErrorCodes+Bazaar.h"
 
@@ -61,22 +62,25 @@ context(@"storage errors", ^{
     NSError *error = OCMClassMock([NSError class]);
     OCMStub([keychainStorage valueOfClass:OCMOCK_ANY forKey:OCMOCK_ANY error:[OCMArg setTo:error]]);
 
-    LLSignalTestRecorder *recorder = [provider.storageErrorsSignal testRecorder];
+    LLSignalTestRecorder *recorder = [provider.storageErrorEventsSignal testRecorder];
 
     expect([provider.productsAcquiredViaSubscription count]).to.equal(0);
-    expect(recorder).will.sendValue(0, error);
+    expect(recorder).will.matchValue(0, ^BOOL(BZREvent *event) {
+      return [event.eventType isEqual:$(BZREventTypeNonCriticalError)] && event.eventError == error;
+    });
   });
 
   it(@"should send storage error when saving set to storage has failed", ^{
     NSError *underlyingError = OCMClassMock([NSError class]);
     OCMStub([keychainStorage setValue:OCMOCK_ANY forKey:OCMOCK_ANY
                                 error:[OCMArg setTo:underlyingError]]);
-    LLSignalTestRecorder *recorder = [provider.storageErrorsSignal testRecorder];
+    LLSignalTestRecorder *recorder = [provider.storageErrorEventsSignal testRecorder];
 
     [provider addAcquiredViaSubscriptionProduct:@"foo"];
-
-    expect(recorder).will.matchValue(0, ^BOOL(NSError *error) {
-      return error.lt_isLTDomain && error.code == BZRErrorCodeStoringDataToStorageFailed &&
+    expect(recorder).will.matchValue(0, ^BOOL(BZREvent *event) {
+      NSError *error = event.eventError;
+      return [event.eventType isEqual:$(BZREventTypeNonCriticalError)] && error.lt_isLTDomain &&
+          error.code == BZRErrorCodeStoringDataToStorageFailed &&
           error.lt_underlyingError == underlyingError;
     });
   });

@@ -26,12 +26,13 @@ NS_ASSUME_NONNULL_BEGIN
     timeProvider:(id<BZRTimeProvider>)timeProvider gracePeriod:(NSUInteger)gracePeriod
     NS_DESIGNATED_INITIALIZER;
 
-/// Sends errors when a periodic validation failed or when other errors occurred. In case of
+/// Sends error events when periodic validation failed or when other errors occurred. In case of
 /// periodic validation error, the days until subscription expiration and the last validation date
-/// will be sent. The signal completes when the receiver is deallocated. The signal doesn't err.
+/// will be sent in \c error property. The signal completes when the receiver is deallocated. The
+/// signal doesn't err.
 ///
-/// @return <tt>RACSignal<NSError></tt>
-@property (readonly, nonatomic) RACSignal *errorsSignal;
+/// @return <tt>RACSignal<BZREvent></tt>
+@property (readonly, nonatomic) RACSignal *errorEventsSignal;
 
 @end
 

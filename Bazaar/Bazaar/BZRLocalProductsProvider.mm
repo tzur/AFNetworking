@@ -63,7 +63,7 @@ NS_ASSUME_NONNULL_BEGIN
       setNameWithFormat:@"%@ -fetchProductList", self.description];
 }
 
-- (RACSignal *)nonCriticalErrorsSignal {
+- (RACSignal *)eventsSignal {
   return [[RACSignal never] takeUntil:[self rac_willDeallocSignal]];
 }
 

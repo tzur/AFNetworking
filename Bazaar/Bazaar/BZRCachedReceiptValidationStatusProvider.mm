@@ -3,6 +3,7 @@
 
 #import "BZRCachedReceiptValidationStatusProvider.h"
 
+#import "BZREvent.h"
 #import "BZRKeychainStorage+TypeSafety.h"
 #import "BZRReceiptModel.h"
 #import "BZRReceiptValidationStatus.h"
@@ -28,15 +29,13 @@ NS_ASSUME_NONNULL_BEGIN
 /// Holds the date of the last receipt validation. \c nil if \c receiptValidationStatus is \c nil.
 @property (strong, readwrite, nonatomic, nullable) NSDate *lastReceiptValidationDate;
 
-/// Sends storage errors as values. The subject completes when the receiver is deallocated. The
-/// subject doesn't err.
-@property (readonly, nonatomic) RACSubject *nonCriticalErrorsSubject;
+/// Subject used to send events with.
+@property (readonly, nonatomic) RACSubject *eventsSubject;
 
 @end
 
 @implementation BZRCachedReceiptValidationStatusProvider
 
-@synthesize nonCriticalErrorsSignal = _nonCriticalErrorsSignal;
 @synthesize receiptValidationStatus = _receiptValidationStatus;
 @synthesize lastReceiptValidationDate = _lastReceiptValidationDate;
 
@@ -69,14 +68,21 @@ NSString * const kOldVersionValidationDateStorageKey = @"lastReceiptValidationDa
     _keychainStorage = keychainStorage;
     _timeProvider = timeProvider;
     _underlyingProvider = underlyingProvider;
-    _nonCriticalErrorsSubject = [RACSubject subject];
-    _nonCriticalErrorsSignal = [[RACSignal merge:@[
-      self.nonCriticalErrorsSubject,
-      self.underlyingProvider.nonCriticalErrorsSignal
-    ]]
-    takeUntil:[self rac_willDeallocSignal]];
+    _eventsSubject = [RACSubject subject];
   }
   return self;
+}
+
+#pragma mark -
+#pragma mark Sending events
+#pragma mark -
+
+- (RACSignal *)eventsSignal {
+  return [[RACSignal merge:@[
+    self.eventsSubject,
+    self.underlyingProvider.eventsSignal
+  ]]
+  takeUntil:[self rac_willDeallocSignal]];
 }
 
 #pragma mark -
@@ -157,7 +163,8 @@ NSString * const kOldVersionValidationDateStorageKey = @"lastReceiptValidationDa
   NSError *error;
   id value = [self.keychainStorage valueOfClass:valueClass forKey:key error:&error];
   if (error) {
-    [self.nonCriticalErrorsSubject sendNext:error];
+    [self.eventsSubject sendNext:
+     [[BZREvent alloc] initWithType:$(BZREventTypeNonCriticalError) eventError:error]];
     return nil;
   }
   return value;
@@ -186,17 +193,20 @@ NSString * const kOldVersionValidationDateStorageKey = @"lastReceiptValidationDa
         [self storeValue:receiptValidationStatusForCaching
                   forKey:kCachedReceiptValidationStatusStorageKey];
       } error:^(NSError *error) {
-        @strongify(self);
-        [self.nonCriticalErrorsSubject sendNext:error];
+        [self.eventsSubject sendNext:
+         [[BZREvent alloc] initWithType:$(BZREventTypeNonCriticalError) eventError:error]];
       }];
 }
 
 - (BOOL)storeValue:(nullable id)value forKey:(NSString *)key {
-  NSError *error;
-  BOOL success = [self.keychainStorage setValue:value forKey:key error:&error];
+  NSError *storageError;
+  BOOL success = [self.keychainStorage setValue:value forKey:key error:&storageError];
   if (!success) {
-    [self.nonCriticalErrorsSubject sendNext:
-     [NSError lt_errorWithCode:BZRErrorCodeStoringDataToStorageFailed underlyingError:error]];
+    NSError *error =
+        [NSError lt_errorWithCode:BZRErrorCodeStoringDataToStorageFailed
+                  underlyingError:storageError];
+    [self.eventsSubject sendNext:
+     [[BZREvent alloc] initWithType:$(BZREventTypeNonCriticalError) eventError:error]];
   }
 
   return success;

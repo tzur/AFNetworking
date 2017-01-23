@@ -91,7 +91,7 @@ context(@"dictionary validation", ^{
     NSDictionary *dictionaryValue = @{@instanceKeypath(BZRDummyModel, optionalProperty): @"Foo"};
 
     BOOL isValid = [BZRDummyModel validateDictionaryValue:dictionaryValue
-                                 withOptionalPropertyKeys:optionalPropertyKeys error:&error];
+                                  withOptionalPropertyKeys:optionalPropertyKeys error:&error];
     expect(isValid).to.beFalsy();
     expect(error).toNot.beNil();
     expect(error.domain).to.equal(kLTErrorDomain);

@@ -109,8 +109,8 @@ NS_ASSUME_NONNULL_BEGIN
   }];
 }
 
-- (RACSignal *)nonCriticalErrorsSignal {
-  return [self.underlyingProvider.nonCriticalErrorsSignal takeUntil:[self rac_willDeallocSignal]];
+- (RACSignal *)eventsSignal {
+  return self.underlyingProvider.eventsSignal;
 }
 
 @end

@@ -5,6 +5,7 @@
 
 #import <LTKit/NSArray+Functional.h>
 
+#import "BZREvent.h"
 #import "BZRProduct+SKProduct.h"
 #import "BZRProductPriceInfo+SKProduct.h"
 #import "BZRProductTypedefs.h"
@@ -22,13 +23,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly, nonatomic) BZRStoreKitFacade *storeKitFacade;
 
 /// Subject used to send errors with.
-@property (readonly, nonatomic) RACSubject *nonCriticalErrorsSubject;
+@property (readonly, nonatomic) RACSubject *nonCriticalErrorEventsSubject;
 
 @end
 
 @implementation BZRProductsWithPriceInfoProvider
-
-@synthesize nonCriticalErrorsSignal = _nonCriticalErrorsSignal;
 
 #pragma mark -
 #pragma mark Initialization
@@ -39,12 +38,7 @@ NS_ASSUME_NONNULL_BEGIN
   if (self = [super init]) {
     _underlyingProvider = underlyingProvider;
     _storeKitFacade = storeKitFacade;
-    _nonCriticalErrorsSubject = [RACSubject subject];
-    _nonCriticalErrorsSignal = [[RACSignal merge:@[
-        self.nonCriticalErrorsSubject,
-        self.underlyingProvider.nonCriticalErrorsSignal
-    ]]
-    takeUntil:[self rac_willDeallocSignal]];
+    _nonCriticalErrorEventsSubject = [RACSubject subject];
   }
   return self;
 }
@@ -105,7 +99,8 @@ static NSNumber * const kNonAppStoreProductsLabel = @0;
           NSSet<NSString *> *productIdentifiers =
               [NSSet setWithArray:response.invalidProductIdentifiers];
           NSError *error = [NSError bzr_invalidProductsErrorWithIdentifers:productIdentifiers];
-          [self.nonCriticalErrorsSubject sendNext:error];
+          [self.nonCriticalErrorEventsSubject sendNext:
+           [[BZREvent alloc] initWithType:$(BZREventTypeNonCriticalError) eventError:error]];
         }
       }]
       tryMap:^BZRProductList * _Nullable
@@ -184,6 +179,14 @@ static NSNumber * const kNonAppStoreProductsLabel = @0;
       withValue:priceInfoWithFullPrice]
       modelByOverridingProperty:@keypath(discountedProduct, bzr_underlyingProduct)
       withValue:discountedProduct.bzr_underlyingProduct];
+}
+
+- (RACSignal *)eventsSignal {
+  return [[RACSignal merge:@[
+      self.nonCriticalErrorEventsSubject,
+      self.underlyingProvider.eventsSignal
+  ]]
+  takeUntil:[self rac_willDeallocSignal]];
 }
 
 @end

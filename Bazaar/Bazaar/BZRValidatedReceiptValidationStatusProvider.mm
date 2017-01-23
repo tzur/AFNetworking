@@ -26,8 +26,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation BZRValidatedReceiptValidationStatusProvider
 
-@synthesize nonCriticalErrorsSignal = _nonCriticalErrorsSignal;
-
 - (instancetype)initWithValidationParametersProvider:
     (id<BZRReceiptValidationParametersProvider>)validationParametersProvider {
   NSTimeInterval kInitialRetryDelay = 0.5;
@@ -49,7 +47,6 @@ NS_ASSUME_NONNULL_BEGIN
   if (self = [super init]) {
     _receiptValidator = receiptValidator;
     _validationParametersProvider = validationParametersProvider;
-    _nonCriticalErrorsSignal = [[RACSignal never] takeUntil:[self rac_willDeallocSignal]];
   }
   return self;
 }
@@ -97,6 +94,10 @@ NS_ASSUME_NONNULL_BEGIN
         }
         return receiptValidationStatus;
       }];
+}
+
+- (RACSignal *)eventsSignal {
+  return [[RACSignal never] takeUntil:[self rac_willDeallocSignal]];
 }
 
 @end

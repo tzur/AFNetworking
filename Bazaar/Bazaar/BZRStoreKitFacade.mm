@@ -5,6 +5,7 @@
 
 #import <LTKit/NSArray+Functional.h>
 
+#import "BZREvent.h"
 #import "BZRPaymentQueue.h"
 #import "BZRProductDownloadManager.h"
 #import "BZRPurchaseManager.h"
@@ -127,7 +128,7 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark Handling transactions errors
 #pragma mark -
 
-- (RACSignal *)transactionsErrorsSignal {
+- (RACSignal *)transactionsErrorEventsSignal {
   return [[[RACSignal merge:@[
     [self unfinishedFailedTransactionsErrors],
     [self unhandledTransactionsErrors]
@@ -138,9 +139,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (RACSignal *)unhandledTransactionsErrors {
   return [self.purchaseManager.unhandledTransactionsSignal
-      map:^NSError *(SKPaymentTransaction *transaction) {
-        return [NSError bzr_errorWithCode:BZRErrorCodeUnhandledTransactionReceived
-                              transaction:transaction];
+      map:^BZREvent *(SKPaymentTransaction *transaction) {
+        return [[BZREvent alloc]
+                initWithType:$(BZREventTypeNonCriticalError)
+                eventError:[NSError bzr_errorWithCode:BZRErrorCodeUnhandledTransactionReceived
+                                          transaction:transaction]];
       }];
 }
 
@@ -152,8 +155,10 @@ NS_ASSUME_NONNULL_BEGIN
       filter:^BOOL(SKPaymentTransaction *transaction) {
         return transaction.transactionState == SKPaymentTransactionStateFailed;
       }]
-      map:^NSError *(SKPaymentTransaction *transaction) {
-        return [NSError bzr_errorWithCode:BZRErrorCodePurchaseFailed transaction:transaction];
+      map:^BZREvent *(SKPaymentTransaction *transaction) {
+        return [[BZREvent alloc] initWithType:$(BZREventTypeCriticalError)
+                                   eventError:[NSError bzr_errorWithCode:BZRErrorCodePurchaseFailed
+                                                             transaction:transaction]];
       }];
 }
 
@@ -163,9 +168,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)finishFailedTransactions {
   @weakify(self);
-  [[self unfinishedFailedTransactionsErrors] subscribeNext:^(NSError *error) {
+  [[self unfinishedFailedTransactionsErrors] subscribeNext:^(BZREvent *event) {
     @strongify(self);
-    [self finishTransaction:error.bzr_transaction];
+    [self finishTransaction:event.eventError.bzr_transaction];
   }];
 }
 

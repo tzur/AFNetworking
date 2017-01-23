@@ -30,7 +30,7 @@ NS_ASSUME_NONNULL_BEGIN
 
   id<BZRReceiptValidationStatusProvider> underlyingProvider =
       OCMProtocolMock(@protocol(BZRReceiptValidationStatusProvider));
-  OCMStub([underlyingProvider nonCriticalErrorsSignal]).andReturn([RACSignal empty]);
+  OCMStub([underlyingProvider eventsSignal]).andReturn([RACSignal empty]);
 
   return [super initWithKeychainStorage:keychainStorage timeProvider:timeProvider
                      underlyingProvider:underlyingProvider];

@@ -169,15 +169,15 @@ NS_ASSUME_NONNULL_BEGIN
 /// starts.
 - (void)finishTransaction:(SKPaymentTransaction *)transaction;
 
-/// Sends all transactions related errors as \c NSError. The error codes can be one of the
-/// following:
-/// \c BZRErrorCodeUnhandledTransactionReceived - when a transaction without an associated payment
+/// Sends all transactions related errors as \c BZREvent encompassing an \c NSError. The events can
+/// can be one of the following:
+/// \c BZREventTypeUnhandledTransactionReceived - when a transaction without an associated payment
 /// is received via \c purchaseManager.
-/// \c BZRErrorCodePurchaseFailed - when an unfinished failed transaction is received.
+/// \c BZREventTypePurchaseFailed - when an unfinished failed transaction is received.
 /// The signal completes when the receiver is deallocated. The signal doesn't err.
 ///
-/// @return <tt>RACSubject<NSError></tt>
-@property (readonly, nonatomic) RACSignal *transactionsErrorsSignal;
+/// @return <tt>RACSubject<BZREvent></tt>
+@property (readonly, nonatomic) RACSignal *transactionsErrorEventsSignal;
 
 /// Sends array of successful transactions of payments and restorations that were initiated on a
 /// previous run of the application and weren't finished. The \c SKPaymentTransaction can be either

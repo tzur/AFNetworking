@@ -6,6 +6,7 @@
 #import <LTKit/NSArray+Functional.h>
 
 #import "BZRAcquiredViaSubscriptionProvider.h"
+#import "BZREvent.h"
 #import "BZRCachedReceiptValidationStatusProvider.h"
 #import "BZRPeriodicReceiptValidatorActivator.h"
 #import "BZRProduct+SKProduct.h"
@@ -70,8 +71,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly, nonatomic) id<BZRReceiptValidationParametersProvider>
     validationParametersProvider;
 
-/// Subject used to send errors with.
-@property (readonly, nonatomic) RACSubject *errorsSubject;
+/// Subject used to send events with.
+@property (readonly, nonatomic) RACSubject *eventsSubject;
 
 /// Dictionary that maps fetched product identifier to \c BZRProduct.
 @property (strong, atomic, nullable) NSDictionary<NSString *, BZRProduct *> *productDictionary;
@@ -85,7 +86,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @synthesize downloadedContentProducts = _downloadedContentProducts;
 @synthesize productDictionary = _productDictionary;
-@synthesize completedTransactionsSignal = _completedTransactionsSignal;
 
 #pragma mark -
 #pragma mark Initialization
@@ -107,8 +107,7 @@ NS_ASSUME_NONNULL_BEGIN
     _validationParametersProvider = configuration.validationParametersProvider;
     _downloadedContentProducts = [NSSet set];
 
-    [self initializeCompletedTransactionsSignal];
-    [self initializeErrorsSignal];
+    [self initializeEventsSignal];
     [self finishUnfinishedTransactions];
     [self fetchReceiptValidationStatusOnSuccessfulTransactions];
     [self prefetchProductDictionary];
@@ -116,27 +115,19 @@ NS_ASSUME_NONNULL_BEGIN
   return self;
 }
 
-- (void)initializeCompletedTransactionsSignal {
-  _completedTransactionsSignal = [[[self.storeKitFacade.unfinishedSuccessfulTransactionsSignal
-      flattenMap:^RACStream *(NSArray<SKPaymentTransaction *> *transactions) {
-        return [transactions.rac_sequence signalWithScheduler:[RACScheduler immediateScheduler]];
-      }]
-      takeUntil:[self rac_willDeallocSignal]]
-      setNameWithFormat:@"%@ -finishedTransactionsSignal", self];
-}
+- (void)initializeEventsSignal {
+  _eventsSubject = [RACSubject subject];
 
-- (void)initializeErrorsSignal {
-  _errorsSubject = [RACSubject subject];
-  _errorsSignal = [[[RACSignal merge:@[
-    [self.errorsSubject replay],
-    self.validationStatusProvider.nonCriticalErrorsSignal,
-    self.acquiredViaSubscriptionProvider.storageErrorsSignal,
-    self.periodicValidatorActivator.errorsSignal,
-    self.storeKitFacade.transactionsErrorsSignal,
-    self.productsProvider.nonCriticalErrorsSignal
+  _eventsSignal = [[[RACSignal merge:@[
+    [self.eventsSubject replay],
+    self.validationStatusProvider.eventsSignal,
+    self.acquiredViaSubscriptionProvider.storageErrorEventsSignal,
+    self.periodicValidatorActivator.errorEventsSignal,
+    self.storeKitFacade.transactionsErrorEventsSignal,
+    self.productsProvider.eventsSignal
   ]]
   takeUntil:[self rac_willDeallocSignal]]
-  setNameWithFormat:@"%@ -errorsSignal", self];
+  setNameWithFormat:@"%@ -eventsSignal", self];
 }
 
 - (void)finishUnfinishedTransactions {
@@ -171,7 +162,7 @@ NS_ASSUME_NONNULL_BEGIN
         @strongify(self);
         NSError *error = [NSError lt_errorWithCode:BZRErrorCodeFetchingProductListFailed
                                    underlyingError:underlyingError];
-        [self.errorsSubject sendNext:error];
+        [self sendErrorEventOfType:$(BZREventTypeCriticalError) error:error];
       }];
 }
 
@@ -218,7 +209,7 @@ NS_ASSUME_NONNULL_BEGIN
   id<BZRProductsVariantSelector> selector = [self.variantSelectorFactory
       productsVariantSelectorWithProductDictionary:productDictionary error:&error];
   if (error) {
-    [self.errorsSubject sendNext:error];
+    [self sendErrorEventOfType:$(BZREventTypeNonCriticalError) error:error];
   } else {
     self.variantSelector = selector;
   }
@@ -436,7 +427,7 @@ NS_ASSUME_NONNULL_BEGIN
         @strongify(self);
         NSError *error = [NSError lt_errorWithCode:BZRErrorCodeFetchingProductListFailed
                                    underlyingError:underlyingError];
-        [self.errorsSubject sendNext:error];
+        [self sendErrorEventOfType:$(BZREventTypeCriticalError) error:error];
       }];
 }
 
@@ -458,6 +449,23 @@ NS_ASSUME_NONNULL_BEGIN
                                         withValue:product.identifier];
   }];
   return [NSSet setWithArray:variantsWithBaseIdentifers];
+}
+
+- (RACSignal *)completedTransactionsSignal {
+  return [[[self.storeKitFacade.unfinishedSuccessfulTransactionsSignal
+      flattenMap:^RACStream *(NSArray<SKPaymentTransaction *> *transactions) {
+        return [transactions.rac_sequence signalWithScheduler:[RACScheduler immediateScheduler]];
+      }]
+      takeUntil:[self rac_willDeallocSignal]]
+      setNameWithFormat:@"%@ -completedTransactionsSignal", self];
+}
+
+#pragma mark -
+#pragma mark Sending events
+#pragma mark -
+
+- (void)sendErrorEventOfType:(BZREventType *)eventType error:(NSError *)error {
+  [self.eventsSubject sendNext:[[BZREvent alloc] initWithType:eventType eventError:error]];
 }
 
 #pragma mark -

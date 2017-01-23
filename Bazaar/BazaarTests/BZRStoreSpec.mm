@@ -5,6 +5,7 @@
 
 #import "BZRAcquiredViaSubscriptionProvider.h"
 #import "BZRCachedReceiptValidationStatusProvider.h"
+#import "BZREvent.h"
 #import "BZRFakeAcquiredViaSubscriptionProvider.h"
 #import "BZRFakeCachedReceiptValidationStatusProvider.h"
 #import "BZRPeriodicReceiptValidatorActivator.h"
@@ -57,11 +58,11 @@ __block id<BZRProductsVariantSelector> variantSelector;
 __block id<BZRReceiptValidationParametersProvider> validationParametersProvider;
 __block NSBundle *bundle;
 __block NSFileManager *fileManager;
-__block RACSubject *productsProviderErrorsSubject;
-__block RACSubject *receiptValidationStatusProviderErrorsSubject;
-__block RACSubject *acquiredViaSubscriptionProviderErrorsSubject;
-__block RACSubject *periodicReceiptValidatorActivatorErrorsSubject;
-__block RACSubject *transactionsErrorsSubject;
+__block RACSubject *productsProviderEventsSubject;
+__block RACSubject *receiptValidationStatusProviderEventsSubject;
+__block RACSubject *acquiredViaSubscriptionProviderEventsSubject;
+__block RACSubject *periodicReceiptValidatorActivatorEventsSubject;
+__block RACSubject *transactionsErrorEventsSubject;
 __block RACSubject *unfinishedSuccessfulTransactionsSubject;
 __block BZRStoreConfiguration *configuration;
 __block BZRStore *store;
@@ -85,21 +86,22 @@ beforeEach(^{
       productsVariantSelectorWithProductDictionary:OCMOCK_ANY error:[OCMArg anyObjectRef]])
       .andReturn(variantSelector);
 
-  productsProviderErrorsSubject = [RACSubject subject];
-  receiptValidationStatusProviderErrorsSubject = [RACSubject subject];
-  acquiredViaSubscriptionProviderErrorsSubject = [RACSubject subject];
-  periodicReceiptValidatorActivatorErrorsSubject = [RACSubject subject];
-  transactionsErrorsSubject = [RACSubject subject];
+  productsProviderEventsSubject = [RACSubject subject];
+  receiptValidationStatusProviderEventsSubject = [RACSubject subject];
+  acquiredViaSubscriptionProviderEventsSubject = [RACSubject subject];
+  periodicReceiptValidatorActivatorEventsSubject = [RACSubject subject];
+  transactionsErrorEventsSubject = [RACSubject subject];
   unfinishedSuccessfulTransactionsSubject = [RACSubject subject];
-  OCMStub([productsProvider nonCriticalErrorsSignal]).andReturn(productsProviderErrorsSubject);
-  OCMStub([receiptValidationStatusProvider nonCriticalErrorsSignal])
-      .andReturn(receiptValidationStatusProviderErrorsSubject);
-  OCMStub([acquiredViaSubscriptionProvider storageErrorsSignal])
-      .andReturn(acquiredViaSubscriptionProviderErrorsSubject);
-  OCMStub([periodicValidatorActivator errorsSignal])
-      .andReturn(periodicReceiptValidatorActivatorErrorsSubject);
-  OCMStub([storeKitFacade transactionsErrorsSignal])
-      .andReturn(transactionsErrorsSubject);
+  OCMStub([productsProvider eventsSignal])
+      .andReturn(productsProviderEventsSubject);
+  OCMStub([receiptValidationStatusProvider eventsSignal])
+      .andReturn(receiptValidationStatusProviderEventsSubject);
+  OCMStub([acquiredViaSubscriptionProvider storageErrorEventsSignal])
+      .andReturn(acquiredViaSubscriptionProviderEventsSubject);
+  OCMStub([periodicValidatorActivator errorEventsSignal])
+      .andReturn(periodicReceiptValidatorActivatorEventsSubject);
+  OCMStub([storeKitFacade transactionsErrorEventsSignal])
+      .andReturn(transactionsErrorEventsSubject);
   OCMStub([storeKitFacade unfinishedSuccessfulTransactionsSignal])
       .andReturn(unfinishedSuccessfulTransactionsSubject);
 
@@ -770,8 +772,10 @@ context(@"getting product list", ^{
     @autoreleasepool {
       BZRStore *store = [[BZRStore alloc] initWithConfiguration:configuration];
       weakStore = store;
-      expect([store errorsSignal]).will.matchValue(0, ^BOOL(NSError *error) {
-        return error.lt_isLTDomain && error.code == BZRErrorCodeFetchingProductListFailed;
+      expect(store.eventsSignal).will.matchValue(0, ^BOOL(BZREvent *event) {
+        NSError *error = event.eventError;
+        return error.lt_isLTDomain && error.code == BZRErrorCodeFetchingProductListFailed &&
+            [event.eventType isEqual:$(BZREventTypeCriticalError)];
       });
 
       OCMExpect([productsProvider fetchProductList]).andReturn([RACSignal return:@[product]]);
@@ -807,7 +811,7 @@ context(@"handling unfinished completed transactions", ^{
   __block LLSignalTestRecorder *completedTransactionsRecorder;
 
   beforeEach(^{
-    errorsRecorder = [store.errorsSignal testRecorder];
+    errorsRecorder = [store.eventsSignal testRecorder];
     completedTransactionsRecorder = [store.completedTransactionsSignal testRecorder];
   });
 
@@ -883,71 +887,71 @@ context(@"handling unfinished completed transactions", ^{
   });
 });
 
-context(@"errors signal", ^{
+context(@"events signal", ^{
+  __block BZREvent *event;
+  __block LLSignalTestRecorder *recorder;
+
+  beforeEach(^{
+    NSError *error = [NSError lt_errorWithCode:1337];
+    event = [[BZREvent alloc] initWithType:$(BZREventTypeCriticalError) eventError:error];
+    recorder = [store.eventsSignal testRecorder];
+  });
+
   it(@"should complete when object is deallocated", ^{
     BZRStore * __weak weakStore;
-    RACSignal *errorsSignal;
+    RACSignal *eventsSignal;
 
     @autoreleasepool {
       BZRStore *store = [[BZRStore alloc] initWithConfiguration:configuration];
       weakStore = store;
-      errorsSignal = store.errorsSignal;
+      eventsSignal = store.eventsSignal;
     }
-    expect(errorsSignal).will.complete();
+    expect(eventsSignal).will.complete();
   });
 
   context(@"errors while fetching product list", ^{
-    it(@"should send error when products provider errs", ^{
+    it(@"should send error event when products provider errs", ^{
       NSError *underlyingError = OCMClassMock([NSError class]);
       OCMStub([productsProvider fetchProductList]).andReturn([RACSignal error:underlyingError]);
       store = [[BZRStore alloc] initWithConfiguration:configuration];
-      LLSignalTestRecorder *recorder = [store.errorsSignal testRecorder];
 
-      expect(recorder).will.matchValue(0, ^BOOL(NSError *error) {
+      expect(store.eventsSignal).will.matchValue(0, ^BOOL(BZREvent *event) {
+        NSError *error = event.eventError;
         return error.lt_isLTDomain && error.code == BZRErrorCodeFetchingProductListFailed &&
             error.lt_underlyingError == underlyingError;
       });
     });
 
-    it(@"should send non critical error when products provider sends it", ^{
-      LLSignalTestRecorder *recorder = [store.errorsSignal testRecorder];
+    it(@"should send event when products provider sends it", ^{
+      LLSignalTestRecorder *recorder = [store.eventsSignal testRecorder];
 
       NSError *error = [NSError lt_errorWithCode:1337];
-      [productsProviderErrorsSubject sendNext:error];
+      [productsProviderEventsSubject sendNext:error];
 
       expect(recorder).will.sendValues(@[error]);
     });
   });
 
-  it(@"should send error when receipt validation status provider sends error", ^{
-    NSError *error = OCMClassMock([NSError class]);
-    LLSignalTestRecorder *recorder = [store.errorsSignal testRecorder];
-    [receiptValidationStatusProviderErrorsSubject sendNext:error];
-
-    expect(recorder).will.sendValues(@[error]);
+  it(@"should send event sent by receipt validation status provider", ^{
+    [receiptValidationStatusProviderEventsSubject sendNext:event];
+    expect(recorder).will.sendValues(@[event]);
   });
 
-  it(@"should send error when acquired via subscription provider sends error", ^{
-    NSError *error = OCMClassMock([NSError class]);
-    LLSignalTestRecorder *recorder = [store.errorsSignal testRecorder];
-    [acquiredViaSubscriptionProviderErrorsSubject sendNext:error];
-
-    expect(recorder).will.sendValues(@[error]);
+  it(@"should send event sent by acquired via subscription provider", ^{
+    BZREvent *event = OCMClassMock([BZREvent class]);
+    [acquiredViaSubscriptionProviderEventsSubject sendNext:event];
+    expect(recorder).will.sendValue(0, event);
   });
 
-  it(@"should send error sent by periodic receipt validator activator", ^{
-    NSError *error = [NSError lt_errorWithCode:1337];
-
-    LLSignalTestRecorder *recorder = [store.errorsSignal testRecorder];
-    [periodicReceiptValidatorActivatorErrorsSubject sendNext:error];
-
-    expect(recorder).will.sendValues(@[error]);
+  it(@"should send event sent by periodic receipt validator activator", ^{
+    [periodicReceiptValidatorActivatorEventsSubject sendNext:event];
+    expect(recorder).will.sendValues(@[event]);
   });
 
   it(@"should send error sent by store kit facade", ^{
     NSError *error = OCMClassMock([NSError class]);
-    LLSignalTestRecorder *recorder = [store.errorsSignal testRecorder];
-    [transactionsErrorsSubject sendNext:error];
+    LLSignalTestRecorder *recorder = [store.eventsSignal testRecorder];
+    [transactionsErrorEventsSubject sendNext:error];
 
     expect(recorder).will.sendValues(@[error]);
   });
