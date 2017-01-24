@@ -14,8 +14,8 @@
 
 struct LTVector2;
 
-inline LTVector2 operator*(LTVector2 lhs, const LTVector2 &rhs);
-inline LTVector2 operator/(LTVector2 lhs, const CGFloat rhs);
+inline LTVector2 operator*(LTVector2 lhs, LTVector2 rhs);
+inline LTVector2 operator/(LTVector2 lhs, CGFloat rhs);
 
 /// Represents a 2 element vector.
 struct LTVector2 {
@@ -52,56 +52,56 @@ struct LTVector2 {
   }
 
   /// Adds the given vector element wise to this vector.
-  LTVector2 &operator+=(const LTVector2 &rhs) {
+  LTVector2 &operator+=(LTVector2 rhs) {
     x += rhs.x;
     y += rhs.y;
     return *this;
   }
 
   /// Adds each element of this vector ro the given \c rhs.
-  LTVector2 &operator+=(const float &rhs) {
+  LTVector2 &operator+=(float rhs) {
     x += rhs;
     y += rhs;
     return *this;
   }
 
   /// Subtracts the given vector element wise from this vector.
-  LTVector2 &operator-=(const LTVector2 &rhs) {
+  LTVector2 &operator-=(LTVector2 rhs) {
     x -= rhs.x;
     y -= rhs.y;
     return *this;
   }
 
   /// Subtracts each element of this vector from the given \c rhs.
-  LTVector2 &operator-=(const float &rhs) {
+  LTVector2 &operator-=(float rhs) {
     x -= rhs;
     y -= rhs;
     return *this;
   }
 
   /// Multiplies the given vector element wise with this vector.
-  LTVector2 &operator*=(const LTVector2 &rhs) {
+  LTVector2 &operator*=(LTVector2 rhs) {
     x *= rhs.x;
     y *= rhs.y;
     return *this;
   }
   
   /// Multiplies each element of this vector with the given \c rhs.
-  LTVector2 &operator*=(const float rhs) {
+  LTVector2 &operator*=(float rhs) {
     x *= rhs;
     y *= rhs;
     return *this;
   }
 
   /// Divides the given vector element wise with this vector.
-  LTVector2 &operator/=(const LTVector2 &rhs) {
+  LTVector2 &operator/=(LTVector2 rhs) {
     x /= rhs.x;
     y /= rhs.y;
     return *this;
   }
   
   /// Divides each element of this vector with the given \c rhs.
-  LTVector2 &operator/=(const float rhs) {
+  LTVector2 &operator/=(float rhs) {
     x /= rhs;
     y /= rhs;
     return *this;
@@ -143,18 +143,18 @@ struct LTVector2 {
   }
 
   /// Returns the dot product between this vector and the given \c vector.
-  inline float dot(const LTVector2 &vector) const {
+  inline float dot(LTVector2 vector) const {
     return (*this * vector).sum();
   }
 
   /// Returns the determinant of this vector and the given \c vector.
-  inline float determinant(const LTVector2 &vector) const {
+  inline float determinant(LTVector2 vector) const {
     return this->x * vector.y - this->y * vector.x;
   }
 
   /// Returns the counter-clockwise angle (in bottom-left origin coordinate system) between this
   /// vector and the given \c vector. The result is guaranteed to be in the range [0, 2 * PI).
-  inline CGFloat angle(const LTVector2 &vector) const {
+  inline CGFloat angle(LTVector2 vector) const {
     return CGNormalizedAngle(std::atan2(this->determinant(vector), this->dot(vector)));
   }
 
@@ -208,11 +208,11 @@ constexpr bool operator==(LTVector2 lhs, LTVector2 rhs) {
   return lhs.x == rhs.x && lhs.y == rhs.y;
 }
 
-constexpr bool operator>=(const LTVector2 &lhs, const LTVector2 &rhs) {
+constexpr bool operator>=(LTVector2 lhs, LTVector2 rhs) {
   return lhs.x >= rhs.x && lhs.y >= rhs.y;
 }
 
-constexpr bool operator<=(const LTVector2 &lhs, const LTVector2 &rhs) {
+constexpr bool operator<=(LTVector2 lhs, LTVector2 rhs) {
   return lhs.x <= rhs.x && lhs.y <= rhs.y;
 }
 
@@ -220,138 +220,138 @@ constexpr bool operator!=(LTVector2 lhs, LTVector2 rhs) {
   return !(lhs == rhs);
 }
 
-constexpr LTVector2 operator-(const LTVector2 &vector) {
+constexpr LTVector2 operator-(LTVector2 vector) {
   return LTVector2(-vector.x, -vector.y);
 }
 
-inline LTVector2 operator+(LTVector2 lhs, const LTVector2 &rhs) {
+inline LTVector2 operator+(LTVector2 lhs, LTVector2 rhs) {
   lhs += rhs;
   return lhs;
 }
 
-inline LTVector2 operator-(LTVector2 lhs, const LTVector2 &rhs) {
+inline LTVector2 operator-(LTVector2 lhs, LTVector2 rhs) {
   lhs -= rhs;
   return lhs;
 }
 
-inline LTVector2 operator*(LTVector2 lhs, const LTVector2 &rhs) {
+inline LTVector2 operator*(LTVector2 lhs, LTVector2 rhs) {
   lhs *= rhs;
   return lhs;
 }
 
-inline LTVector2 operator*(LTVector2 lhs, const CGFloat rhs) {
+inline LTVector2 operator*(LTVector2 lhs, CGFloat rhs) {
   lhs *= rhs;
   return lhs;
 }
 
-inline LTVector2 operator*(const CGFloat lhs, LTVector2 rhs) {
+inline LTVector2 operator*(CGFloat lhs, LTVector2 rhs) {
   rhs *= lhs;
   return rhs;
 }
 
-inline LTVector2 operator/(LTVector2 lhs, const LTVector2 &rhs) {
+inline LTVector2 operator/(LTVector2 lhs, LTVector2 rhs) {
   lhs /= rhs;
   return lhs;
 }
 
-inline LTVector2 operator/(LTVector2 lhs, const CGFloat rhs) {
+inline LTVector2 operator/(LTVector2 lhs, CGFloat rhs) {
   lhs /= rhs;
   return lhs;
 }
 
-inline LTVector2 operator/(const CGFloat lhs, LTVector2 rhs) {
+inline LTVector2 operator/(CGFloat lhs, LTVector2 rhs) {
   return LTVector2(lhs) / rhs;
 }
 
 namespace std {
   /// Constrains point elements to lie between two points elements.
-  inline LTVector2 clamp(const LTVector2 &point, const LTVector2 &a, const LTVector2 &b) {
+  inline LTVector2 clamp(LTVector2 point, LTVector2 a, LTVector2 b) {
     return LTVector2(clamp(point.x, a.x, b.x), clamp(point.y, a.y, b.y));
   }
 
   /// Constrains point elements to lie between two scalars.
-  inline LTVector2 clamp(const LTVector2 &point, const float &a, const float &b) {
+  inline LTVector2 clamp(LTVector2 point, float a, float b) {
     return clamp(point, LTVector2(a), LTVector2(b));
   }
 
   /// Constrains point to lie inside the given rect.
-  inline LTVector2 clamp(const LTVector2 &point, const CGRect &rect) {
+  inline LTVector2 clamp(LTVector2 point, CGRect rect) {
     return LTVector2(clamp(point.x, rect.origin.x, rect.origin.x + rect.size.width),
                      clamp(point.y, rect.origin.y, rect.origin.y + rect.size.height));
   }
 
   /// Round the elements.
-  inline LTVector2 round(const LTVector2 &v) {
+  inline LTVector2 round(LTVector2 v) {
     return LTVector2(round(v.x), round(v.y));
   }
 
   /// Returns element-wise minimal vector.
-  inline LTVector2 min(const LTVector2 &a, const LTVector2 &b) {
+  inline LTVector2 min(LTVector2 a, LTVector2 b) {
     return LTVector2(min(a.x, b.x), min(a.y, b.y));
   }
 
   /// Returns the minimal element of the vector.
-  inline float min(const LTVector2 &a) {
+  inline float min(LTVector2 a) {
     return min(a.x, a.y);
   }
 
   /// Return element-wise maximal vector.
-  inline LTVector2 max(const LTVector2 &a, const LTVector2 &b) {
+  inline LTVector2 max(LTVector2 a, LTVector2 b) {
     return LTVector2(max(a.x, b.x), max(a.y, b.y));
   }
 
   /// Returns the maximal element of the vector.
-  inline float max(const LTVector2 &a) {
+  inline float max(LTVector2 a) {
     return max(a.x, a.y);
   }
 
   /// Returns the absolute value of each element of the vector.
-  inline LTVector2 abs(const LTVector2 &v) {
+  inline LTVector2 abs(LTVector2 v) {
     return LTVector2(abs(v.x), abs(v.y));
   }
 
   /// Returns the square root of each element of the vector.
-  inline LTVector2 sqrt(const LTVector2 &v) {
+  inline LTVector2 sqrt(LTVector2 v) {
     return LTVector2(sqrt(v.x), sqrt(v.y));
   }
 
   /// Returns the raised to the power value of each element of the vector.
-  inline LTVector2 pow(const LTVector2 &base, CGFloat power) {
+  inline LTVector2 pow(LTVector2 base, CGFloat power) {
     return LTVector2(pow(base.x, power), pow(base.y, power));
   }
 
   /// Returns element-wise raised to the power vector.
-  inline LTVector2 pow(const LTVector2 &base, const LTVector2 &power) {
+  inline LTVector2 pow(LTVector2 base, LTVector2 power) {
     return LTVector2(pow(base.x, power.x), pow(base.y, power.y));
   }
 
   /// Returns a linear interpolation between two values using a scalar.
-  inline LTVector2 mix(const LTVector2 &a, const LTVector2 &b, float alpha) {
+  inline LTVector2 mix(LTVector2 a, LTVector2 b, float alpha) {
     return (1 - alpha) * a + alpha * b;
   }
 
   /// Returns a linear interpolation between two values using an element wise interpolation vector.
-  inline LTVector2 mix(const LTVector2 &a, const LTVector2 &b, const LTVector2 &alpha) {
+  inline LTVector2 mix(LTVector2 a, LTVector2 b, LTVector2 alpha) {
     return (LTVector2::ones() - alpha) * a + alpha * b;
   }
 
   /// Returns a vector with the result of an element wise comparison between a given vector to an
   /// edge vector. For element \c i of the return value, \c 0 is returned if <tt>v[i] < edge[i]</tt>
   /// and \c 1 is returned otherwise.
-  inline LTVector2 step(const LTVector2 &edge, const LTVector2 &v) {
+  inline LTVector2 step(LTVector2 edge, LTVector2 v) {
     return LTVector2(v.x >= edge.x, v.y >= edge.y);
   }
   
   /// Returns a vector with the result of an element wise comparison between a given vector to an
   /// edge scalar. For element \c i of the return value, \c 0 is returned if <tt>v[i] < edge</tt>
   /// and \c 1 is returned otherwise.
-  inline LTVector2 step(float edge, const LTVector2 &v) {
+  inline LTVector2 step(float edge, LTVector2 v) {
     return step(LTVector2(edge), v);
   }
 }
 
 /// Returns an \c NSString representation of the given vector.
-NSString *NSStringFromLTVector2(const LTVector2 &vector);
+NSString *NSStringFromLTVector2(LTVector2 vector);
 
 /// Returns a vector from its string representation. The representation should be in the format
 /// \c @"(%g, %g), where %g can also be nan/inf/-inf". In case an invalid format is given, an
@@ -364,8 +364,8 @@ LTVector2 LTVector2FromString(NSString *string);
 
 struct LTVector3;
 
-inline LTVector3 operator*(LTVector3 lhs, const LTVector3 &rhs);
-inline LTVector3 operator/(LTVector3 lhs, const CGFloat rhs);
+inline LTVector3 operator*(LTVector3 lhs, LTVector3 rhs);
+inline LTVector3 operator/(LTVector3 lhs, CGFloat rhs);
 
 /// Represents a 3 element vector.
 struct LTVector3 {
@@ -398,7 +398,7 @@ struct LTVector3 {
   }
 
   /// Adds the given vector element wise to this vector.
-  LTVector3 &operator+=(const LTVector3 &rhs) {
+  LTVector3 &operator+=(LTVector3 rhs) {
     x += rhs.x;
     y += rhs.y;
     z += rhs.z;
@@ -406,7 +406,7 @@ struct LTVector3 {
   }
 
   /// Adds each element of this vector ro the given \c rhs.
-  LTVector3 &operator+=(const float &rhs) {
+  LTVector3 &operator+=(float rhs) {
     x += rhs;
     y += rhs;
     z += rhs;
@@ -414,7 +414,7 @@ struct LTVector3 {
   }
 
   /// Subtracts the given vector element wise from this vector.
-  LTVector3 &operator-=(const LTVector3 &rhs) {
+  LTVector3 &operator-=(LTVector3 rhs) {
     x -= rhs.x;
     y -= rhs.y;
     z -= rhs.z;
@@ -422,7 +422,7 @@ struct LTVector3 {
   }
 
   /// Subtracts each element of this vector from the given \c rhs.
-  LTVector3 &operator-=(const float &rhs) {
+  LTVector3 &operator-=(float rhs) {
     x -= rhs;
     y -= rhs;
     z -= rhs;
@@ -430,7 +430,7 @@ struct LTVector3 {
   }
 
   /// Multiplies the given vector element wise with this vector.
-  LTVector3 &operator*=(const LTVector3 &rhs) {
+  LTVector3 &operator*=(LTVector3 rhs) {
     x *= rhs.x;
     y *= rhs.y;
     z *= rhs.z;
@@ -438,7 +438,7 @@ struct LTVector3 {
   }
 
   /// Multiplies each element of this vector with the given \c rhs.
-  LTVector3 &operator*=(const float rhs) {
+  LTVector3 &operator*=(float rhs) {
     x *= rhs;
     y *= rhs;
     z *= rhs;
@@ -446,7 +446,7 @@ struct LTVector3 {
   }
   
   /// Divides the given vector element wise with this vector.
-  LTVector3 &operator/=(const LTVector3 &rhs) {
+  LTVector3 &operator/=(LTVector3 rhs) {
     x /= rhs.x;
     y /= rhs.y;
     z /= rhs.z;
@@ -454,7 +454,7 @@ struct LTVector3 {
   }
 
   /// Divides each element of this vector with the given \c rhs.
-  LTVector3 &operator/=(const float rhs) {
+  LTVector3 &operator/=(float rhs) {
     x /= rhs;
     y /= rhs;
     z /= rhs;
@@ -507,7 +507,7 @@ struct LTVector3 {
   }
 
   /// Returns the dot product between this vector and the given \c vector.
-  inline float dot(const LTVector3 &vector) const {
+  inline float dot(LTVector3 vector) const {
     return (*this * vector).sum();
   }
 
@@ -552,148 +552,148 @@ struct LTVector3 {
   float z;
 };
 
-constexpr bool operator==(const LTVector3 &lhs, const LTVector3 &rhs) {
+constexpr bool operator==(LTVector3 lhs, LTVector3 rhs) {
   return lhs.x == rhs.x && lhs.y == rhs.y && lhs.z == rhs.z;
 }
 
-constexpr bool operator>=(const LTVector3 &lhs, const LTVector3 &rhs) {
+constexpr bool operator>=(LTVector3 lhs, LTVector3 rhs) {
   return lhs.x >= rhs.x && lhs.y >= rhs.y && lhs.z >= rhs.z;
 }
 
-constexpr bool operator<=(const LTVector3 &lhs, const LTVector3 &rhs) {
+constexpr bool operator<=(LTVector3 lhs, LTVector3 rhs) {
   return lhs.x <= rhs.x && lhs.y <= rhs.y && lhs.z <= rhs.z;
 }
 
-constexpr bool operator!=(const LTVector3 &lhs, const LTVector3 &rhs) {
+constexpr bool operator!=(LTVector3 lhs, LTVector3 rhs) {
   return !(lhs == rhs);
 }
 
-constexpr LTVector3 operator-(const LTVector3 &vector) {
+constexpr LTVector3 operator-(LTVector3 vector) {
   return LTVector3(-vector.x, -vector.y, -vector.z);
 }
 
-inline LTVector3 operator+(LTVector3 lhs, const LTVector3 &rhs) {
+inline LTVector3 operator+(LTVector3 lhs, LTVector3 rhs) {
   lhs += rhs;
   return lhs;
 }
 
-inline LTVector3 operator-(LTVector3 lhs, const LTVector3 &rhs) {
+inline LTVector3 operator-(LTVector3 lhs, LTVector3 rhs) {
   lhs -= rhs;
   return lhs;
 }
 
-inline LTVector3 operator*(LTVector3 lhs, const LTVector3 &rhs) {
+inline LTVector3 operator*(LTVector3 lhs, LTVector3 rhs) {
   lhs *= rhs;
   return lhs;
 }
 
-inline LTVector3 operator*(LTVector3 lhs, const CGFloat rhs) {
+inline LTVector3 operator*(LTVector3 lhs, CGFloat rhs) {
   lhs *= rhs;
   return lhs;
 }
 
-inline LTVector3 operator*(const CGFloat lhs, LTVector3 rhs) {
+inline LTVector3 operator*(CGFloat lhs, LTVector3 rhs) {
   rhs *= lhs;
   return rhs;
 }
 
-inline LTVector3 operator/(LTVector3 lhs, const LTVector3 &rhs) {
+inline LTVector3 operator/(LTVector3 lhs, LTVector3 rhs) {
   lhs /= rhs;
   return lhs;
 }
 
-inline LTVector3 operator/(LTVector3 lhs, const CGFloat rhs) {
+inline LTVector3 operator/(LTVector3 lhs, CGFloat rhs) {
   lhs /= rhs;
   return lhs;
 }
 
-inline LTVector3 operator/(const CGFloat lhs, LTVector3 rhs) {
+inline LTVector3 operator/(CGFloat lhs, LTVector3 rhs) {
   return LTVector3(lhs) / rhs;
 }
 
 namespace std {
   /// Round the elements.
-  inline LTVector3 round(const LTVector3 &v) {
+  inline LTVector3 round(LTVector3 v) {
     return LTVector3(round(v.x), round(v.y), round(v.z));
   }
 
   /// Return element-wise minimal vector.
-  inline LTVector3 min(const LTVector3 &a, const LTVector3 &b) {
+  inline LTVector3 min(LTVector3 a, LTVector3 b) {
     return LTVector3(min(a.x, b.x), min(a.y, b.y), min(a.z, b.z));
   }
 
   /// Returns the minimal element of the vector.
-  inline float min(const LTVector3 &a) {
+  inline float min(LTVector3 a) {
     return min(min(a.x, a.y), a.z);
   }
 
   /// Return element-wise maximal vector.
-  inline LTVector3 max(const LTVector3 &a, const LTVector3 &b) {
+  inline LTVector3 max(LTVector3 a, LTVector3 b) {
     return LTVector3(max(a.x, b.x), max(a.y, b.y), max(a.z, b.z));
   }
 
   /// Returns the maximal element of the vector.
-  inline float max(const LTVector3 &a) {
+  inline float max(LTVector3 a) {
     return max(max(a.x, a.y), a.z);
   }
 
   /// Returns the absolute value of each element of the vector.
-  inline LTVector3 abs(const LTVector3 &v) {
+  inline LTVector3 abs(LTVector3 v) {
     return LTVector3(abs(v.x), abs(v.y), abs(v.z));
   }
 
   /// Returns the square root of each element of the vector.
-  inline LTVector3 sqrt(const LTVector3 &v) {
+  inline LTVector3 sqrt(LTVector3 v) {
     return LTVector3(sqrt(v.x), sqrt(v.y), sqrt(v.z));
   }
 
   /// Returns the raised to the power value of each element of the vector.
-  inline LTVector3 pow(const LTVector3 &base, CGFloat power) {
+  inline LTVector3 pow(LTVector3 base, CGFloat power) {
     return LTVector3(pow(base.x, power), pow(base.y, power), pow(base.z, power));
   }
 
   /// Returns element-wise raised to the power vector.
-  inline LTVector3 pow(const LTVector3 &base, const LTVector3 &power) {
+  inline LTVector3 pow(LTVector3 base, LTVector3 power) {
     return LTVector3(pow(base.x, power.x), pow(base.y, power.y), pow(base.z, power.z));
   }
 
   /// Constrains vector elements to lie between two vectors elements.
-  inline LTVector3 clamp(const LTVector3 &point, const LTVector3 &a, const LTVector3 &b) {
+  inline LTVector3 clamp(LTVector3 point, LTVector3 a, LTVector3 b) {
     return LTVector3(clamp(point.x, a.x, b.x), clamp(point.y, a.y, b.y), clamp(point.z, a.z, b.z));
   }
 
   /// Constrains vector elements to lie between two scalars.
-  inline LTVector3 clamp(const LTVector3 &v, const float &a, const float &b) {
+  inline LTVector3 clamp(LTVector3 v, float a, float b) {
     return clamp(v, LTVector3(a), LTVector3(b));
   }
 
   /// Returns a linear interpolation between two values using a scalar.
-  inline LTVector3 mix(const LTVector3 &a, const LTVector3 &b, float alpha) {
+  inline LTVector3 mix(LTVector3 a, LTVector3 b, float alpha) {
     return (1 - alpha) * a + alpha * b;
   }
 
   /// Returns a linear interpolation between two values using an element wise interpolation vector.
-  inline LTVector3 mix(const LTVector3 &a, const LTVector3 &b, const LTVector3 &alpha) {
+  inline LTVector3 mix(LTVector3 a, LTVector3 b, LTVector3 alpha) {
     return (LTVector3::ones() - alpha) * a + alpha * b;
   }
 
   /// Returns a vector with the result of an element wise comparison between a given vector to an
   /// edge vector. For element \c i of the return value, \c 0 is returned if <tt>v[i] < edge[i]</tt>
   /// and \c 1 is returned otherwise.
-  inline LTVector3 step(const LTVector3 &edge, const LTVector3 &v) {
+  inline LTVector3 step(LTVector3 edge, LTVector3 v) {
     return LTVector3(v.x >= edge.x, v.y >= edge.y, v.z >= edge.z);
   }
   
   /// Returns a vector with the result of an element wise comparison between a given vector to an
   /// edge scalar. For element \c i of the return value, \c 0 is returned if <tt>v[i] < edge</tt>
   /// and \c 1 is returned otherwise.
-  inline LTVector3 step(float edge, const LTVector3 &v) {
+  inline LTVector3 step(float edge, LTVector3 v) {
     return step(LTVector3(edge), v);
   }
 }
 
 /// Returns an \c NSString representation of the given vector.
-NSString *NSStringFromLTVector3(const LTVector3 &vector);
+NSString *NSStringFromLTVector3(LTVector3 vector);
 
 /// Returns a vector from its string representation. The representation should be in the format
 /// \c @"(%g, %g, %g), where %g can also be nan/inf/-inf". In case an invalid format is given, an
@@ -706,8 +706,8 @@ LTVector3 LTVector3FromString(NSString *string);
 
 struct LTVector4;
 
-inline LTVector4 operator*(LTVector4 lhs, const LTVector4 &rhs);
-inline LTVector4 operator/(LTVector4 lhs, const CGFloat rhs);
+inline LTVector4 operator*(LTVector4 lhs, LTVector4 rhs);
+inline LTVector4 operator/(LTVector4 lhs, CGFloat rhs);
 
 /// Represents a 4 element vector.
 struct LTVector4 {
@@ -761,7 +761,7 @@ struct LTVector4 {
   constexpr LTVector4(float x, float y, float z, float w) : x(x), y(y), z(z), w(w) {}
 
   /// Adds the given vector element wise to this vector.
-  LTVector4 &operator+=(const LTVector4 &rhs) {
+  LTVector4 &operator+=(LTVector4 rhs) {
     x += rhs.x;
     y += rhs.y;
     z += rhs.z;
@@ -770,7 +770,7 @@ struct LTVector4 {
   }
 
   /// Adds each element of this vector ro the given \c rhs.
-  LTVector4 &operator+=(const float &rhs) {
+  LTVector4 &operator+=(float rhs) {
     x += rhs;
     y += rhs;
     z += rhs;
@@ -779,7 +779,7 @@ struct LTVector4 {
   }
 
   /// Subtracts the given vector element wise from this vector.
-  LTVector4 &operator-=(const LTVector4 &rhs) {
+  LTVector4 &operator-=(LTVector4 rhs) {
     x -= rhs.x;
     y -= rhs.y;
     z -= rhs.z;
@@ -788,7 +788,7 @@ struct LTVector4 {
   }
 
   /// Subtracts each element of this vector from the given \c rhs.
-  LTVector4 &operator-=(const float &rhs) {
+  LTVector4 &operator-=(float rhs) {
     x -= rhs;
     y -= rhs;
     z -= rhs;
@@ -797,7 +797,7 @@ struct LTVector4 {
   }
 
   /// Multiplies the given vector element wise with this vector.
-  LTVector4 &operator*=(const LTVector4 &rhs) {
+  LTVector4 &operator*=(LTVector4 rhs) {
     x *= rhs.x;
     y *= rhs.y;
     z *= rhs.z;
@@ -806,7 +806,7 @@ struct LTVector4 {
   }
   
   /// Multiplies each element of this vector with the given \c rhs.
-  LTVector4 &operator*=(const float rhs) {
+  LTVector4 &operator*=(float rhs) {
     x *= rhs;
     y *= rhs;
     z *= rhs;
@@ -815,7 +815,7 @@ struct LTVector4 {
   }
 
   /// Divides the given vector element wise with this vector.
-  LTVector4 &operator/=(const LTVector4 &rhs) {
+  LTVector4 &operator/=(LTVector4 rhs) {
     x /= rhs.x;
     y /= rhs.y;
     z /= rhs.z;
@@ -824,7 +824,7 @@ struct LTVector4 {
   }
   
   /// Divides each element of this vector with the given \c rhs.
-  LTVector4 &operator/=(const float rhs) {
+  LTVector4 &operator/=(float rhs) {
     x /= rhs;
     y /= rhs;
     z /= rhs;
@@ -893,7 +893,7 @@ struct LTVector4 {
   }
 
   /// Returns the dot product between this vector and the given \c vector.
-  inline float dot(const LTVector4 &vector) const {
+  inline float dot(LTVector4 vector) const {
     return (*this * vector).sum();
   }
 
@@ -947,148 +947,148 @@ constexpr bool operator!=(LTVector4 lhs, LTVector4 rhs) {
   return !(lhs == rhs);
 }
 
-constexpr LTVector4 operator-(const LTVector4 &vector) {
+constexpr LTVector4 operator-(LTVector4 vector) {
   return LTVector4(-vector.x, -vector.y, -vector.z, -vector.w);
 }
 
-constexpr bool operator>=(const LTVector4 &lhs, const LTVector4 &rhs) {
+constexpr bool operator>=(LTVector4 lhs, LTVector4 rhs) {
   return lhs.x >= rhs.x && lhs.y >= rhs.y && lhs.z >= rhs.z && lhs.w >= rhs.w;
 }
 
-constexpr bool operator<=(const LTVector4 &lhs, const LTVector4 &rhs) {
+constexpr bool operator<=(LTVector4 lhs, LTVector4 rhs) {
   return lhs.x <= rhs.x && lhs.y <= rhs.y && lhs.z <= rhs.z && lhs.w <= rhs.w;
 }
 
-inline LTVector4 operator+(LTVector4 lhs, const LTVector4 &rhs) {
+inline LTVector4 operator+(LTVector4 lhs, LTVector4 rhs) {
   lhs += rhs;
   return lhs;
 }
 
-inline LTVector4 operator+(LTVector4 lhs, const CGFloat rhs) {
+inline LTVector4 operator+(LTVector4 lhs, CGFloat rhs) {
   lhs += rhs;
   return lhs;
 }
 
-inline LTVector4 operator-(LTVector4 lhs, const LTVector4 &rhs) {
+inline LTVector4 operator-(LTVector4 lhs, LTVector4 rhs) {
   lhs -= rhs;
   return lhs;
 }
 
-inline LTVector4 operator*(LTVector4 lhs, const LTVector4 &rhs) {
+inline LTVector4 operator*(LTVector4 lhs, LTVector4 rhs) {
   lhs *= rhs;
   return lhs;
 }
 
-inline LTVector4 operator*(LTVector4 lhs, const CGFloat rhs) {
+inline LTVector4 operator*(LTVector4 lhs, CGFloat rhs) {
   lhs *= rhs;
   return lhs;
 }
 
-inline LTVector4 operator*(const CGFloat lhs, LTVector4 rhs) {
+inline LTVector4 operator*(CGFloat lhs, LTVector4 rhs) {
   rhs *= lhs;
   return rhs;
 }
 
-inline LTVector4 operator/(LTVector4 lhs, const LTVector4 &rhs) {
+inline LTVector4 operator/(LTVector4 lhs, LTVector4 rhs) {
   lhs /= rhs;
   return lhs;
 }
 
-inline LTVector4 operator/(LTVector4 lhs, const CGFloat rhs) {
+inline LTVector4 operator/(LTVector4 lhs, CGFloat rhs) {
   lhs /= rhs;
   return lhs;
 }
 
-inline LTVector4 operator/(const CGFloat lhs, LTVector4 rhs) {
+inline LTVector4 operator/(CGFloat lhs, LTVector4 rhs) {
   return LTVector4(lhs) / rhs;
 }
 
 namespace std {
   /// Round the elements.
-  inline LTVector4 round(const LTVector4 &v) {
+  inline LTVector4 round(LTVector4 v) {
     return LTVector4(round(v.x), round(v.y), round(v.z), round(v.w));
   }
 
   /// Return element-wise minimal vector.
-  inline LTVector4 min(const LTVector4 &a, const LTVector4 &b) {
+  inline LTVector4 min(LTVector4 a, LTVector4 b) {
     return LTVector4(min(a.x, b.x), min(a.y, b.y), min(a.z, b.z), min(a.w, b.w));
   }
 
   /// Returns the minimal element of the vector.
-  inline float min(const LTVector4 &a) {
+  inline float min(LTVector4 a) {
     return min(min(min(a.x, a.y), a.z), a.w);
   }
 
   /// Return element-wise maximal vector.
-  inline LTVector4 max(const LTVector4 &a, const LTVector4 &b) {
+  inline LTVector4 max(LTVector4 a, LTVector4 b) {
     return LTVector4(max(a.x, b.x), max(a.y, b.y), max(a.z, b.z), max(a.w, b.w));
   }
 
   /// Returns the maximal element of the vector.
-  inline float max(const LTVector4 &a) {
+  inline float max(LTVector4 a) {
     return max(max(max(a.x, a.y), a.z), a.w);
   }
 
   /// Returns the absolute value of each element of the vector.
-  inline LTVector4 abs(const LTVector4 &v) {
+  inline LTVector4 abs(LTVector4 v) {
     return LTVector4(abs(v.x), abs(v.y), abs(v.z), abs(v.w));
   }
 
   /// Returns the square root of each element of the vector.
-  inline LTVector4 sqrt(const LTVector4 &v) {
+  inline LTVector4 sqrt(LTVector4 v) {
     return LTVector4(sqrt(v.x), sqrt(v.y), sqrt(v.z), sqrt(v.w));
   }
 
   /// Returns the raised to the power value of each element of the vector.
-  inline LTVector4 pow(const LTVector4 &base, CGFloat power) {
+  inline LTVector4 pow(LTVector4 base, CGFloat power) {
     return LTVector4(pow(base.x, power), pow(base.y, power), pow(base.z, power),
                      pow(base.w, power));
   }
 
   /// Returns element-wise raised to the power vector.
-  inline LTVector4 pow(const LTVector4 &base, const LTVector4 &power) {
+  inline LTVector4 pow(LTVector4 base, LTVector4 power) {
     return LTVector4(pow(base.x, power.x), pow(base.y, power.y), pow(base.z, power.z),
                      pow(base.w, power.w));
   }
 
   /// Constrains vector elements to lie between two vectors elements.
-  inline LTVector4 clamp(const LTVector4 &point, const LTVector4 &a, const LTVector4 &b) {
+  inline LTVector4 clamp(LTVector4 point, LTVector4 a, LTVector4 b) {
     return LTVector4(clamp(point.x, a.x, b.x), clamp(point.y, a.y, b.y), clamp(point.z, a.z, b.z),
                      clamp(point.w, a.w, b.w));
   }
 
   /// Constrains vector elements to lie between two scalars.
-  inline LTVector4 clamp(const LTVector4 &v, const float &a, const float &b) {
+  inline LTVector4 clamp(LTVector4 v, float a, float b) {
     return clamp(v, LTVector4(a), LTVector4(b));
   }
 
   /// Returns a linear interpolation between two values using a scalar.
-  inline LTVector4 mix(const LTVector4 &a, const LTVector4 &b, float alpha) {
+  inline LTVector4 mix(LTVector4 a, LTVector4 b, float alpha) {
     return (1 - alpha) * a + alpha * b;
   }
 
   /// Returns a linear interpolation between two values using an element wise interpolation vector.
-  inline LTVector4 mix(const LTVector4 &a, const LTVector4 &b, const LTVector4 &alpha) {
+  inline LTVector4 mix(LTVector4 a, LTVector4 b, LTVector4 alpha) {
     return (LTVector4::ones() - alpha) * a + alpha * b;
   }
 
   /// Returns a vector with the result of an element wise comparison between a given vector to an
   /// edge vector. For element \c i of the return value, \c 0 is returned if <tt>v[i] < edge[i]</tt>
   /// and \c 1 is returned otherwise.
-  inline LTVector4 step(const LTVector4 &edge, const LTVector4 &v) {
+  inline LTVector4 step(LTVector4 edge, LTVector4 v) {
     return LTVector4(v.x >= edge.x, v.y >= edge.y, v.z >= edge.z, v.w >= edge.w);
   }
   
   /// Returns a vector with the result of an element wise comparison between a given vector to an
   /// edge scalar. For element \c i of the return value, \c 0 is returned if <tt>v[i] < edge</tt>
   /// and \c 1 is returned otherwise.
-  inline LTVector4 step(float edge, const LTVector4 &v) {
+  inline LTVector4 step(float edge, LTVector4 v) {
     return step(LTVector4(edge), v);
   }
 }
 
 /// Returns an \c NSString representation of the given vector.
-NSString *NSStringFromLTVector4(const LTVector4 &vector);
+NSString *NSStringFromLTVector4(LTVector4 vector);
 
 /// Returns a vector from its string representation. The representation should be in the format
 /// \c @"(%g, %g, %g, %g), where %g can also be nan/inf/-inf". In case an invalid format is given,
