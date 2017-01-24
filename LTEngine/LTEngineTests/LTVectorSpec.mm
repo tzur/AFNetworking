@@ -224,6 +224,16 @@ context(@"LTVector2", ^{
       expect(std::sqrt(LTVector2(0, 4))).to.equal(LTVector2(0, 2));
     });
 
+    it(@"should return each element raised to the power", ^{
+      expect(std::pow(LTVector2(1, 2), 2)).to.equal(LTVector2(1, 4));
+      expect(std::pow(LTVector2(4, 16), 0.5)).to.equal(LTVector2(2, 4));
+    });
+
+    it(@"should return each element raised to the power element-wise", ^{
+      expect(std::pow(LTVector2(1, 4), LTVector2(0, 2)))
+          .to.equal(LTVector2(1, 16));
+    });
+
     it(@"should mix using a given scalar", ^{
       LTVector2 vector1(2, 4);
       LTVector2 vector2(4, 8);
@@ -427,6 +437,16 @@ context(@"LTVector3", ^{
 
     it(@"should return square root of each element", ^{
       expect(std::sqrt(LTVector3(0, 4, 9))).to.equal(LTVector3(0, 2, 3));
+    });
+
+    it(@"should return each element raised to the power", ^{
+      expect(std::pow(LTVector3(1, 2, 0.5), 2)).to.equal(LTVector3(1, 4, 0.25));
+      expect(std::pow(LTVector3(1, 4, 16), 0.5)).to.equal(LTVector3(1, 2, 4));
+    });
+
+    it(@"should return each element raised to the power element-wise", ^{
+      expect(std::pow(LTVector3(1, 2, 4), LTVector3(0, 2, 0.5)))
+          .to.equal(LTVector3(1, 4, 2));
     });
 
     it(@"should clamp vector elements between two vectors elements", ^{
@@ -739,6 +759,16 @@ context(@"LTVector4", ^{
 
     it(@"should return square root of each element", ^{
       expect(std::sqrt(LTVector4(0, 4, 9, 16))).to.equal(LTVector4(0, 2, 3, 4));
+    });
+
+    it(@"should return each element raised to the power", ^{
+      expect(std::pow(LTVector4(0, 4, 9, 16), 2)).to.equal(LTVector4(0, 16, 81, 256));
+      expect(std::pow(LTVector4(0, 4, 9, 16), 0.5)).to.equal(LTVector4(0, 2, 3, 4));
+    });
+
+    it(@"should return each element raised to the power element-wise", ^{
+      expect(std::pow(LTVector4(0, 4, 9, 16), LTVector4(0, 1, 2, 0.5)))
+          .to.equal(LTVector4(1, 4, 81, 4));
     });
 
     it(@"should clamp vector elements between two vectors elements", ^{

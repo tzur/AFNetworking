@@ -42,7 +42,7 @@
 #pragma mark LTVector2
 #pragma mark -
 
-NSString *NSStringFromLTVector2(const LTVector2 &vector) {
+NSString *NSStringFromLTVector2(LTVector2 vector) {
   return [NSString stringWithFormat:@"(%g, %g)", vector.x, vector.y];
 }
 
@@ -62,7 +62,7 @@ LTVector2 LTVector2FromString(NSString *string) {
 #pragma mark LTVector3
 #pragma mark -
 
-NSString *NSStringFromLTVector3(const LTVector3 &vector) {
+NSString *NSStringFromLTVector3(LTVector3 vector) {
   return [NSString stringWithFormat:@"(%g, %g, %g)", vector.x, vector.y, vector.z];
 }
 
@@ -112,7 +112,7 @@ LTVector3 LTVector3::hsvToRgb() const {
 #pragma mark LTVector4
 #pragma mark -
 
-NSString *NSStringFromLTVector4(const LTVector4 &vector) {
+NSString *NSStringFromLTVector4(LTVector4 vector) {
   return [NSString stringWithFormat:@"(%g, %g, %g, %g)", vector.x, vector.y, vector.z, vector.w];
 }
 
