@@ -11,6 +11,7 @@
 #import "BZRProductTypedefs.h"
 #import "BZRStoreKitFacade.h"
 #import "NSError+Bazaar.h"
+#import "NSString+Bazaar.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -128,19 +129,25 @@ static NSNumber * const kNonAppStoreProductsLabel = @0;
   NSDictionary<NSString *, BZRProduct *> *productDictionary =
       [NSDictionary dictionaryWithObjects:productList forKeys:identifiers];
   return [productsResponse.products lt_reduce:^NSMutableArray<BZRProduct *> *
-          (NSMutableArray<BZRProduct *> *value, SKProduct *product) {
+          (NSMutableArray<BZRProduct *> *productListSoFar, SKProduct *product) {
     BZRProduct *bazaarProduct = productDictionary[product.productIdentifier];
-    if (!bazaarProduct) {
-      return value;
+    if (!bazaarProduct || [self isProduct:[bazaarProduct.identifier bzr_baseProductIdentifier]
+                markedAsInvalidByResponse:productsResponse]) {
+      return productListSoFar;
     }
 
     BZRProductPriceInfo *priceInfo = [BZRProductPriceInfo productPriceInfoWithSKProduct:product];
-    [value addObject:[[bazaarProduct
+    [productListSoFar addObject:[[bazaarProduct
         modelByOverridingProperty:@keypath(bazaarProduct, priceInfo) withValue:priceInfo]
         modelByOverridingProperty:@keypath(bazaarProduct, bzr_underlyingProduct)
                         withValue:product]];
-    return value;
+    return productListSoFar;
   } initial:[@[] mutableCopy]];
+}
+
+- (BOOL)isProduct:(NSString *)productIdentifier
+    markedAsInvalidByResponse:(SKProductsResponse *)response {
+  return [response.invalidProductIdentifiers containsObject:productIdentifier];
 }
 
 - (BZRProductList *)productListWithFullPriceInfoForDiscountProducts:(BZRProductList *)products {
