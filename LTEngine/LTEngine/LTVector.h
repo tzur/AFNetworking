@@ -315,6 +315,16 @@ namespace std {
     return LTVector2(sqrt(v.x), sqrt(v.y));
   }
 
+  /// Returns the raised to the power value of each element of the vector.
+  inline LTVector2 pow(const LTVector2 &base, CGFloat power) {
+    return LTVector2(pow(base.x, power), pow(base.y, power));
+  }
+
+  /// Returns element-wise raised to the power vector.
+  inline LTVector2 pow(const LTVector2 &base, const LTVector2 &power) {
+    return LTVector2(pow(base.x, power.x), pow(base.y, power.y));
+  }
+
   /// Returns a linear interpolation between two values using a scalar.
   inline LTVector2 mix(const LTVector2 &a, const LTVector2 &b, float alpha) {
     return (1 - alpha) * a + alpha * b;
@@ -635,6 +645,16 @@ namespace std {
   /// Returns the square root of each element of the vector.
   inline LTVector3 sqrt(const LTVector3 &v) {
     return LTVector3(sqrt(v.x), sqrt(v.y), sqrt(v.z));
+  }
+
+  /// Returns the raised to the power value of each element of the vector.
+  inline LTVector3 pow(const LTVector3 &base, CGFloat power) {
+    return LTVector3(pow(base.x, power), pow(base.y, power), pow(base.z, power));
+  }
+
+  /// Returns element-wise raised to the power vector.
+  inline LTVector3 pow(const LTVector3 &base, const LTVector3 &power) {
+    return LTVector3(pow(base.x, power.x), pow(base.y, power.y), pow(base.z, power.z));
   }
 
   /// Constrains vector elements to lie between two vectors elements.
@@ -1017,6 +1037,18 @@ namespace std {
   /// Returns the square root of each element of the vector.
   inline LTVector4 sqrt(const LTVector4 &v) {
     return LTVector4(sqrt(v.x), sqrt(v.y), sqrt(v.z), sqrt(v.w));
+  }
+
+  /// Returns the raised to the power value of each element of the vector.
+  inline LTVector4 pow(const LTVector4 &base, CGFloat power) {
+    return LTVector4(pow(base.x, power), pow(base.y, power), pow(base.z, power),
+                     pow(base.w, power));
+  }
+
+  /// Returns element-wise raised to the power vector.
+  inline LTVector4 pow(const LTVector4 &base, const LTVector4 &power) {
+    return LTVector4(pow(base.x, power.x), pow(base.y, power.y), pow(base.z, power.z),
+                     pow(base.w, power.w));
   }
 
   /// Constrains vector elements to lie between two vectors elements.
