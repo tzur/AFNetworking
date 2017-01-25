@@ -37,6 +37,8 @@ NSString * const kProductsAcquiredViaSubscriptionSetKey = @"productsAcquiredViaS
   if (self = [super init]) {
     _keychainStorage = keychainStorage;
     _storageErrorsSubject = [RACSubject subject];
+    _productsAcquiredViaSubscription = [NSSet set];
+    [self refreshProductsAcquiredViaSubscription:nil];
   }
   return self;
 }
@@ -76,27 +78,40 @@ NSString * const kProductsAcquiredViaSubscriptionSetKey = @"productsAcquiredViaS
   }
 }
 
-- (NSSet<NSString *> *)productsAcquiredViaSubscription {
+- (nullable NSSet<NSString *> *)refreshProductsAcquiredViaSubscription:
+    (NSError * __autoreleasing *)error {
   @synchronized (self) {
-    if (!_productsAcquiredViaSubscription) {
-      _productsAcquiredViaSubscription = [self loadProductsAcquiredViaSubscriptionFromStorage];
+    NSSet<NSString *> *productsAcquiredViaSubscription =
+        [self productsAcquiredViaSubscriptionFromCache:error];
+
+    if (productsAcquiredViaSubscription) {
+      [self willChangeValueForKey:@keypath(self, productsAcquiredViaSubscription)];
+      _productsAcquiredViaSubscription = productsAcquiredViaSubscription;
+      [self didChangeValueForKey:@keypath(self, productsAcquiredViaSubscription)];
+      return productsAcquiredViaSubscription;
     }
-    return _productsAcquiredViaSubscription;
+
+    return nil;
   }
 }
 
-- (NSSet<NSString *> *)loadProductsAcquiredViaSubscriptionFromStorage {
-  NSError *error;
-  NSSet<NSString *> * _Nullable productsAcquiredViaSubscription =
+- (nullable NSSet<NSString *> *)productsAcquiredViaSubscriptionFromCache:
+    (NSError * __autoreleasing *)error {
+  NSError *underlyingError;
+  NSSet<NSString *> *productsAcquiredViaSubscription =
       [self.keychainStorage valueOfClass:[NSSet class]
-                                  forKey:kProductsAcquiredViaSubscriptionSetKey error:&error];
-  if (error) {
-    [self.storageErrorsSubject sendNext:error];
-    return [NSSet set];
-  } else if (!productsAcquiredViaSubscription) {
-    return [NSSet set];
+                                  forKey:kProductsAcquiredViaSubscriptionSetKey
+                                   error:&underlyingError];
+  if (underlyingError) {
+    [self.storageErrorsSubject sendNext:underlyingError];
+    if (error) {
+      *error = underlyingError;
+    }
+
+    return nil;
   }
-  return productsAcquiredViaSubscription;
+
+  return productsAcquiredViaSubscription ?: [NSSet set];
 }
 
 #pragma mark -
