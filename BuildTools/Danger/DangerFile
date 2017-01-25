@@ -1,0 +1,61 @@
+# Copyright (c) 2016 Lightricks. All rights reserved.
+
+COMMIT_SUBJECT_MAX_CHARACTERS = 72
+COMMIT_BODY_MAX_CHARACTERS = 72
+
+# Lint commits.
+git.commits.each do |commit|
+  (subject, empty_line, *body_arr) = commit.message.split("\n")
+  body = !body_arr.empty? ? body_arr.join("\n") : nil
+  if subject !~ /(\S+: \S+|\+\+\S+)/
+    warn "Commit #{commit.sha} subject must be in the form \"Component: What changed.\" or "\
+         '++Submodule.'
+  end
+
+  if empty_line && !empty_line.empty?
+    warn "Commit #{commit.sha} must separate subject and body with two newlines"
+  end
+
+  unless subject.end_with? '.'
+    warn "Commit #{commit.sha} subject doesn't end with a period"
+  end
+
+  if subject.length > COMMIT_SUBJECT_MAX_CHARACTERS
+    warn "Commit #{commit.sha} subject is longer than #{COMMIT_SUBJECT_MAX_CHARACTERS} characters"
+  end
+
+  if body && !body.end_with?('.')
+    warn "Commit #{commit.sha} body doesn't end with a period"
+  end
+
+  if body && body.length > COMMIT_BODY_MAX_CHARACTERS
+    warn "Commit #{commit.sha} body is longer than #{COMMIT_BODY_MAX_CHARACTERS} characters"
+  end
+
+  unless commit.author.email.downcase.end_with? '@lightricks.com'
+    warn "Commit #{commit.sha} author has non Lightricks email address"
+  end
+end
+
+changed_files = (git.added_files + git.modified_files).uniq
+
+# Make sure all json files are valid.
+require 'jsonlint'
+json_linter = JsonLint::Linter.new
+
+changed_json_files = changed_files.select do |file|
+  file.downcase.end_with? '.json'
+end
+json_linter.check_all(changed_json_files)
+if json_linter.errors?
+  warn 'Found invalid JSON files'
+  message = "### JSON files issues\n"
+  message << "| File | Error |\n"
+  message << "| ---- | ----- |\n"
+  json_linter.errors .each do |path, errors|
+    errors.each do |err|
+      message << "| #{github.html_link(path)} |  #{err} |\n"
+    end
+  end
+  markdown message
+end
