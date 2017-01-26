@@ -50,16 +50,18 @@ NSString *LTSystemErrorMessageForError(int error);
 + (instancetype)lt_errorWithCode:(NSInteger)code
                 underlyingErrors:(NSArray<NSError *> *)underlyingErrors;
 
-/// Creates an error with Lightricks' domain, given error code and the given error description.
-+ (instancetype)lt_errorWithCode:(NSInteger)code description:(NSString *)description;
+/// Creates an error with Lightricks' domain, given error code and the given error description in
+/// string format form.
++ (instancetype)lt_errorWithCode:(NSInteger)code description:(NSString *)description,
+                 ... NS_FORMAT_FUNCTION(2, 3);
 
 /// Creates an error with Lightricks' domain, given error code and the given related file path.
 + (instancetype)lt_errorWithCode:(NSInteger)code path:(NSString *)path;
 
-/// Creates an error with Lightricks' domain, given error code, error description, and underlying
-/// error.
+/// Creates an error with Lightricks' domain, given error code, error description in string format
+/// form and underlying error.
 + (instancetype)lt_errorWithCode:(NSInteger)code description:(NSString *)description
-                 underlyingError:(nullable NSError *)underlyingError;
+                 underlyingError:(nullable NSError *)underlyingError, ... NS_FORMAT_FUNCTION(2, 4);
 
 /// Creates an error with Lightricks' domain, given error code, related file path and underlying
 /// error.
