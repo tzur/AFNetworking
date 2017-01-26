@@ -24,13 +24,13 @@ NS_ASSUME_NONNULL_BEGIN
 //
 // To perform logging, use any of the following function calls in your code:
 //
-// LogDebug(fmt, ...)	- recommended for temporary use during debugging.
+// LogDebug(fmt, ...) - recommended for temporary use during debugging.
 //
-// LogInfo(fmt, ...)	- recommended for general, infrequent, information messages.
+// LogInfo(fmt, ...) - recommended for general, infrequent, information messages.
 //
-// LogWarning(fmt, ...)	- recommended for use only when there is an warning to be logged.
+// LogWarning(fmt, ...) - recommended for use only when there is an warning to be logged.
 //
-// LogError(fmt, ...)	- recommended for use only when there is an error to be logged.
+// LogError(fmt, ...) - recommended for use only when there is an error to be logged.
 //
 // In each case, the functions follow the general NSLog/printf template, where the first argument
 // "fmt" is an NSString that optionally includes embedded Format Specifiers, and subsequent optional
@@ -56,17 +56,22 @@ typedef NS_ENUM(NSUInteger, LTLogLevel) {
   LTLogLevelError
 };
 
+/// Returns a string describing \c logLevel.
+NSString *NSStringFromLTLogLevel(LTLogLevel logLevel);
+
 /// Represents a logging target, such as standard output or a file. Classes conforming to this
-/// protocol should register themselves in \c LTLogger to start recieving messages.
+/// protocol should register themselves in \c LTLogger to start receiving messages.
 @protocol LTLoggerTarget <NSObject>
 
-/// Logs the message to the implemented endpoint.
-- (void)outputString:(NSString *)message;
+/// Logs the message including originating file name, line number and log level to the implemented
+/// endpoint.
+- (void)outputString:(NSString *)message file:(const char *)file line:(int)line
+            logLevel:(LTLogLevel)logLevel;
 
 @end
 
 /// Global logger for LT projects. This logger supports multiple logging levels, as well as multiple
-/// output targets for logging.  Call this class directly only for configuration, but use the
+/// output targets for logging. Call this class directly only for configuration, but use the
 /// logging macros for the logging itself.
 ///
 /// Logging is thread-safe, meaning it's possible to call the various \c logWith... methods from
@@ -80,17 +85,11 @@ typedef NS_ENUM(NSUInteger, LTLogLevel) {
 /// type. If the type cannot be parsed, \c nil is returned.
 + (nullable NSString *)descriptionFromTypeCode:(const char *)type andValue:(void *)value;
 
-/// Registers the given logger target to start recieving messages to log.
+/// Registers the given logger target to start receiving messages to log.
 - (void)registerTarget:(id<LTLoggerTarget>)target;
 
 /// Unregisters the given logger target.
 - (void)unregisterTarget:(id<LTLoggerTarget>)target;
-
-/// Logs the message to all selected targets.
-- (void)logWithFormat:(NSString *)format, ... NS_FORMAT_FUNCTION(1, 2);
-
-/// Logs the message to all selected targets.
-- (void)logWithFormat:(NSString *)format arguments:(va_list)argList NS_FORMAT_FUNCTION(1, 0);
 
 /// Logs the message, including originating file name, line number and log level to all selected
 /// targets.

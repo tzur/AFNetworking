@@ -3,23 +3,18 @@
 
 #import "LTLogger.h"
 
-#define LTNoFormatWarningBegin \
-  _Pragma("clang diagnostic push") \
-  _Pragma("clang diagnostic ignored \"-Wformat-security\"") \
-
-#define LTNoFormatWarningEnd \
-  _Pragma("clang diagnostic pop")
-
 SpecBegin(LTLogger)
 
-__block LTLogger *logger = nil;
-__block id mockTarget = nil;
+static NSString * const kMessage = @"Hey!";
+static const char *kFile = "myFile.mm";
+static int kLine = 1337;
+
+__block id mockTarget;
+__block LTLogger *logger;
 
 beforeEach(^{
+  mockTarget = OCMProtocolMock(@protocol(LTLoggerTarget));
   logger = [[LTLogger alloc] init];
-
-  mockTarget = [OCMockObject mockForProtocol:@protocol(LTLoggerTarget)];
-  
   [logger registerTarget:mockTarget];
 });
 
@@ -27,21 +22,11 @@ context(@"log contents", ^{
   it(@"should contain log data", ^{
     logger.minimalLogLevel = LTLogLevelDebug;
 
-    NSString *message = @"Hey!";
-    const char *file = "myFile.mm";
-    int line = 1337;
+    [logger logWithFormat:kMessage file:kFile line:kLine logLevel:LTLogLevelDebug];
 
-    [[mockTarget expect] outputString:[OCMArg checkWithBlock:^BOOL(NSString *log) {
-      return [log rangeOfString:message].location != NSNotFound &&
-          [log rangeOfString:[NSString stringWithUTF8String:file]].location != NSNotFound &&
-          [log rangeOfString:[NSString stringWithFormat:@"%d", line]].location != NSNotFound;
-    }]];
-
-LTNoFormatWarningBegin
-    [logger logWithFormat:message file:file line:line logLevel:LTLogLevelDebug];
-LTNoFormatWarningEnd
-
-    OCMVerifyAll(mockTarget);
+    OCMVerify([mockTarget outputString:[OCMArg checkWithBlock:^BOOL(NSString *log) {
+      return [log rangeOfString:kMessage].location != NSNotFound;
+    }] file:kFile line:kLine logLevel:LTLogLevelDebug]);
   });
 });
 
@@ -49,25 +34,18 @@ context(@"log levels", ^{
   it(@"should log minimal log level", ^{
     logger.minimalLogLevel = LTLogLevelDebug;
 
-    [[mockTarget expect] outputString:[OCMArg any]];
+    [logger logWithFormat:kMessage file:kFile line:kLine logLevel:LTLogLevelDebug];
 
-    NSString *message = @"Hey!";
-LTNoFormatWarningBegin
-    [logger logWithFormat:message file:__FILE__ line:__LINE__ logLevel:LTLogLevelDebug];
-LTNoFormatWarningEnd
-
-    OCMVerifyAll(mockTarget);
+    OCMVerify([mockTarget outputString:OCMOCK_ANY file:kFile line:kLine logLevel:LTLogLevelDebug]);
   });
 
   it(@"should not log below minimal log level", ^{
     logger.minimalLogLevel = LTLogLevelInfo;
 
-    NSString *message = @"Hey!";
-LTNoFormatWarningBegin
-    [logger logWithFormat:message file:__FILE__ line:__LINE__ logLevel:LTLogLevelDebug];
-LTNoFormatWarningEnd
+    OCMReject([[mockTarget ignoringNonObjectArgs]
+        outputString:OCMOCK_ANY file:kFile line:kLine logLevel:LTLogLevelDebug]);
 
-    OCMVerifyAll(mockTarget);
+    [logger logWithFormat:kMessage file:kFile line:kLine logLevel:LTLogLevelDebug];
   });
 });
 
@@ -76,14 +54,10 @@ it(@"should unregister a logger target", ^{
 
   logger.minimalLogLevel = LTLogLevelDebug;
 
-  OCMReject([mockTarget outputString:[OCMArg any]]);
+  OCMReject([[mockTarget ignoringNonObjectArgs]
+      outputString:OCMOCK_ANY file:kFile line:kLine logLevel:LTLogLevelDebug]);
 
-  NSString *message = @"Hey!";
-LTNoFormatWarningBegin
-  [logger logWithFormat:message file:__FILE__ line:__LINE__ logLevel:LTLogLevelDebug];
-LTNoFormatWarningEnd
-
-  OCMVerifyAll(mockTarget);
+  [logger logWithFormat:kMessage file:kFile line:kLine logLevel:LTLogLevelDebug];
 });
 
 SpecEnd
