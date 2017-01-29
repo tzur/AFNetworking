@@ -36,6 +36,7 @@
 		282EE7521D2A7A35002FA432 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 282EE7511D2A7A35002FA432 /* AssetsLibrary.framework */; };
 		282EE7551D2A7A62002FA432 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 250154DD1D1AEF5400420FA9 /* CoreMedia.framework */; };
 		28327A8C1E1CEA8E00CDE956 /* DVNJitteredColorAttributeProviderModelSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28327A8B1E1CEA8E00CDE956 /* DVNJitteredColorAttributeProviderModelSpec.mm */; };
+		283625C51E38E8A80014406E /* DVNBlendMode.mm in Sources */ = {isa = PBXBuildFile; fileRef = 283625C41E38E8A80014406E /* DVNBlendMode.mm */; };
 		285A78AD1DFD31AE00095BF4 /* DVNBrushTipsProvider.mm in Sources */ = {isa = PBXBuildFile; fileRef = 285A78AC1DFD31AE00095BF4 /* DVNBrushTipsProvider.mm */; };
 		285A78CF1DFD34F000095BF4 /* DVNBrushTipsProviderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 285A78CE1DFD34F000095BF4 /* DVNBrushTipsProviderSpec.mm */; };
 		285A79081DFD69CD00095BF4 /* DVNBrushTipsRound16Hardness75.png in Resources */ = {isa = PBXBuildFile; fileRef = 285A79051DFD69CD00095BF4 /* DVNBrushTipsRound16Hardness75.png */; };
@@ -460,6 +461,8 @@
 		282EE74C1D2A793E002FA432 /* DaVinciTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "DaVinciTests-Prefix.pch"; sourceTree = "<group>"; };
 		282EE7511D2A7A35002FA432 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		28327A8B1E1CEA8E00CDE956 /* DVNJitteredColorAttributeProviderModelSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNJitteredColorAttributeProviderModelSpec.mm; sourceTree = "<group>"; };
+		283625C31E38E8A80014406E /* DVNBlendMode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DVNBlendMode.h; sourceTree = "<group>"; };
+		283625C41E38E8A80014406E /* DVNBlendMode.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNBlendMode.mm; sourceTree = "<group>"; };
 		285A78AB1DFD31AE00095BF4 /* DVNBrushTipsProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DVNBrushTipsProvider.h; sourceTree = "<group>"; };
 		285A78AC1DFD31AE00095BF4 /* DVNBrushTipsProvider.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNBrushTipsProvider.mm; sourceTree = "<group>"; };
 		285A78CE1DFD34F000095BF4 /* DVNBrushTipsProviderSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNBrushTipsProviderSpec.mm; sourceTree = "<group>"; };
@@ -801,6 +804,15 @@
 			name = Examples;
 			sourceTree = "<group>";
 		};
+		283625C61E38F67E0014406E /* Auxiliaries */ = {
+			isa = PBXGroup;
+			children = (
+				283625C31E38E8A80014406E /* DVNBlendMode.h */,
+				283625C41E38E8A80014406E /* DVNBlendMode.mm */,
+			);
+			name = Auxiliaries;
+			sourceTree = "<group>";
+		};
 		285A78FE1DFD692B00095BF4 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -870,6 +882,7 @@
 		28D30C7D1E0138E100DF0640 /* Shaders */ = {
 			isa = PBXGroup;
 			children = (
+				283625C61E38F67E0014406E /* Auxiliaries */,
 				285FB4C91E1D17EB0021A116 /* DVNBrush.fsh */,
 				285FB4CA1E1D17EB0021A116 /* DVNBrush.vsh */,
 			);
@@ -1622,6 +1635,7 @@
 				285FB4EE1E1D180C0021A116 /* DVNBrush.vsh in Sources */,
 				28662D621DF57DD60051B9DA /* DVNPainter.mm in Sources */,
 				286C1D6D1DED9A0C00523F2E /* DVNScatteredGeometryStageModel.mm in Sources */,
+				283625C51E38E8A80014406E /* DVNBlendMode.mm in Sources */,
 				500A3AE01D2D348700043E18 /* DVNRandomTexCoordProvider.mm in Sources */,
 				285A78AD1DFD31AE00095BF4 /* DVNBrushTipsProvider.mm in Sources */,
 				25AD67721D3553ED0092B3E4 /* DVNPipelineConfiguration.mm in Sources */,
