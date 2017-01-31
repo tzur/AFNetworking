@@ -56,9 +56,14 @@ NSString *LTSystemErrorMessageForError(int error) {
   }];
 }
 
-+ (instancetype)lt_errorWithCode:(NSInteger)code description:(NSString *)description {
++ (instancetype)lt_errorWithCode:(NSInteger)code description:(NSString *)description, ... {
+  va_list argList;
+  va_start(argList, description);
+  NSString *formattedDescription = [[NSString alloc] initWithFormat:description arguments:argList];
+  va_end(argList);
+
   return [NSError lt_errorWithCode:code userInfo:@{
-    kLTErrorDescriptionKey: description ?: [NSNull null]
+    kLTErrorDescriptionKey: formattedDescription ?: [NSNull null]
   }];
 }
 
@@ -69,9 +74,14 @@ NSString *LTSystemErrorMessageForError(int error) {
 }
 
 + (instancetype)lt_errorWithCode:(NSInteger)code description:(NSString *)description
-                 underlyingError:(nullable NSError *)underlyingError {
+                 underlyingError:(nullable NSError *)underlyingError, ... {
+  va_list argList;
+  va_start(argList, underlyingError);
+  NSString *formattedDescription = [[NSString alloc] initWithFormat:description arguments:argList];
+  va_end(argList);
+
   return [NSError lt_errorWithCode:code userInfo:@{
-    kLTErrorDescriptionKey: description ?: [NSNull null],
+    kLTErrorDescriptionKey: formattedDescription ?: [NSNull null],
     NSUnderlyingErrorKey: underlyingError ?: [NSError lt_nullValueGivenError]
   }];
 }
