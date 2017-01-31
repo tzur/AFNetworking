@@ -5,7 +5,6 @@
 
 SpecBegin(NSError_LTKit)
 
-static NSString * const kDescription = @"Foo Bar Baz";
 static NSString * const kPath = @"/foo.txt";
 static NSURL * const kURL = [NSURL URLWithString:@"http://www.lightricks.com"];
 
@@ -157,12 +156,12 @@ it(@"should create error with path and underlyingErrors", ^{
 
 it(@"should create error with path and description", ^{
   NSError *error = [NSError lt_errorWithCode:LTErrorCodeFileNotFound path:kPath
-                                 description:kDescription];
+                                 description:@"%@ %05d", @"baz", 8];
 
   expect(error.domain).to.equal(kLTErrorDomain);
   expect(error.code).to.equal(LTErrorCodeFileNotFound);
   expect(error.lt_path).to.equal(kPath);
-  expect(error.lt_description).to.equal(kDescription);
+  expect(error.lt_description).to.equal(@"baz 00008");
 });
 
 it(@"should create error with url", ^{
@@ -175,12 +174,12 @@ it(@"should create error with url", ^{
 
 it(@"should create error with url and description", ^{
   NSError *error = [NSError lt_errorWithCode:LTErrorCodeFileNotFound url:kURL
-                                 description:kDescription];
+                                 description:@"%@ %04d", @"bar", 4];
 
   expect(error.domain).to.equal(kLTErrorDomain);
   expect(error.code).to.equal(LTErrorCodeFileNotFound);
   expect(error.lt_url).to.equal(kURL);
-  expect(error.lt_description).to.equal(kDescription);
+  expect(error.lt_description).to.equal(@"bar 0004");
 });
 
 it(@"should create error with url and underlyingError", ^{

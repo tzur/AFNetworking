@@ -103,10 +103,15 @@ NSString *LTSystemErrorMessageForError(int error) {
 }
 
 + (instancetype)lt_errorWithCode:(NSInteger)code path:(NSString *)path
-                     description:(NSString *)description {
+                     description:(NSString *)description, ... {
+  va_list argList;
+  va_start(argList, description);
+  NSString *formattedDescription = [[NSString alloc] initWithFormat:description arguments:argList];
+  va_end(argList);
+
   return [NSError lt_errorWithCode:code userInfo:@{
     NSFilePathErrorKey: path ?: [NSNull null],
-    kLTErrorDescriptionKey: description ?: [NSNull null]
+    kLTErrorDescriptionKey: formattedDescription ?: [NSNull null]
   }];
 }
 
@@ -117,10 +122,15 @@ NSString *LTSystemErrorMessageForError(int error) {
 }
 
 + (instancetype)lt_errorWithCode:(NSInteger)code url:(NSURL *)url
-                     description:(NSString *)description {
+                     description:(NSString *)description, ... {
+  va_list argList;
+  va_start(argList, description);
+  NSString *formattedDescription = [[NSString alloc] initWithFormat:description arguments:argList];
+  va_end(argList);
+
   return [NSError lt_errorWithCode:code userInfo:@{
     NSURLErrorKey: url ?: [NSNull null],
-    kLTErrorDescriptionKey: description ?: [NSNull null]
+    kLTErrorDescriptionKey: formattedDescription ?: [NSNull null]
   }];
 }
 
