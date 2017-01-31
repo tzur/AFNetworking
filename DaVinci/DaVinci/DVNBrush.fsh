@@ -10,6 +10,7 @@ uniform highp float opacity;
 uniform highp float edgeAvoidance;
 uniform bool singleChannel;
 uniform bool sampleFromOverlayTexture;
+uniform int blendMode;
 
 varying highp vec3 vColor;
 varying highp vec2 vPosition;
@@ -20,10 +21,110 @@ varying highp vec2 vSamplePoint1;
 varying highp vec2 vSamplePoint2;
 varying highp vec2 vSamplePoint3;
 
-highp vec4 blend(highp vec4 src, highp vec4 dst) {
-  highp float outA = src.a + dst.a * (1.0 - src.a);
-  highp vec3 outRGB = (src.rgb * src.a + dst.rgb * dst.a * (1.0 - src.a)) / outA;
+const int kBlendModeNormal = 0;
+const int kBlendModeDarken = 1;
+const int kBlendModeMultiply = 2;
+const int kBlendModeHardLight = 3;
+const int kBlendModeSoftLight = 4;
+const int kBlendModeLighten = 5;
+const int kBlendModeScreen = 6;
+const int kBlendModeColorBurn = 7;
+const int kBlendModeOverlay = 8;
+const int kBlendModeAddition = 9;
+
+highp vec4 normal(highp vec4 src, highp vec4 dst) {
+  return vec4(src.rgb + dst.rgb * (1.0 - src.a), src.a + dst.a * (1.0 - src.a));
+}
+
+highp vec4 darken(highp vec4 src, highp vec4 dst) {
+  highp float outA = src.a + dst.a - src.a * dst.a;
+  highp vec3 outRGB = min(src.rgb * dst.a, dst.rgb * src.a) + src.rgb * (1.0 - dst.a) + dst.rgb *
+      (1.0 - src.a);
   return vec4(outRGB, outA);
+}
+
+highp vec4 multiply(highp vec4 src, highp vec4 dst) {
+  highp float outA = src.a + dst.a - src.a * dst.a;
+  highp vec3 outRGB = src.rgb * dst.rgb + src.rgb * (1.0 - dst.a) + dst.rgb * (1.0 - src.a);
+  return vec4(outRGB, outA);
+}
+
+highp vec4 hardLight(highp vec4 src, highp vec4 dst) {
+  mediump vec3 below = 2.0 * src.rgb * dst.rgb + src.rgb * (1.0 - dst.a) + dst.rgb * (1.0 - src.a);
+  mediump vec3 above = src.rgb * (1.0 + dst.a) + dst.rgb * (1.0 + src.a) - src.a * dst.a - 2.0 *
+      src.rgb * dst.rgb;
+  return vec4(mix(below, above, step(0.5 * src.a, src.rgb)), src.a + dst.a - src.a * dst.a);
+}
+
+highp vec4 softLight(highp vec4 src, highp vec4 dst) {
+  mediump float safeA = dst.a + step(dst.a, 0.0);
+  mediump vec3 below = 2.0 * src.rgb * dst.rgb + dst.rgb * (dst.rgb / safeA) *
+      (src.a - 2.0 * src.rgb) + src.rgb * (1.0 - dst.a) + dst.rgb * (1.0 - src.a);
+  mediump vec3 above = 2.0 * dst.rgb * (src.a - src.rgb) + sqrt(dst.rgb * dst.a) *
+      (2.0 * src.rgb - src.a) + src.rgb * (1.0 - dst.a) + dst.rgb * (1.0 - src.a);
+  return vec4(mix(below, above, step(0.5 * src.a, src.rgb)), src.a + dst.a - src.a * dst.a);
+}
+
+highp vec4 lighten(highp vec4 src, highp vec4 dst) {
+  highp float outA = src.a + dst.a - src.a * dst.a;
+  highp vec3 outRGB = max(src.rgb * dst.a, dst.rgb * src.a) + src.rgb * (1.0 - dst.a) + dst.rgb *
+      (1.0 - src.a);
+  return vec4(outRGB, outA);
+}
+
+highp vec4 screen(highp vec4 src, highp vec4 dst) {
+  return vec4(src.rgb + dst.rgb - src.rgb * dst.rgb, src.a + dst.a - src.a * dst.a);
+}
+
+highp vec4 colorBurn(highp vec4 src, highp vec4 dst) {
+  mediump float safeA = dst.a + step(dst.a, 0.0);
+  mediump vec3 stepRGB = step(src.rgb, vec3(0.0));
+  mediump vec3 safeRGB = src.rgb + stepRGB;
+  mediump vec3 zero = src.rgb * (1.0 - dst.a) + dst.rgb * (1.0 - src.a);
+  mediump vec3 nonzero = src.a * dst.a * (vec3(1.0) - min(vec3(1.0), (1.0 - dst.rgb / safeA) *
+      src.a / safeRGB)) + src.rgb * (1.0 - dst.a) + dst.rgb * (1.0 - src.a);
+  return vec4(mix(zero, nonzero, 1.0 - stepRGB), src.a + dst.a - src.a * dst.a);
+}
+
+highp vec4 overlay(highp vec4 src, highp vec4 dst) {
+  mediump vec3 below = 2.0 * src.rgb * dst.rgb + src.rgb * (1.0 - dst.a) + dst.rgb * (1.0 - src.a);
+  mediump vec3 above = src.rgb * (1.0 + dst.a) + dst.rgb * (1.0 + src.a) - 2.0 * dst.rgb * src.rgb -
+      dst.a * src.a;
+  return vec4(mix(below, above, step(0.5 * dst.a, dst.rgb)), src.a + dst.a - src.a * dst.a);
+}
+
+highp vec4 addition(highp vec4 src, highp vec4 dst) {
+  return vec4(src.rgb + dst.rgb, src.a + dst.a);
+}
+
+highp vec4 blend(mediump vec4 src, highp vec4 dst, int mode) {
+  src.rgb *= src.a;
+  dst.rgb *= dst.a;
+  highp vec4 outputColor = dst;
+  
+  if (blendMode == kBlendModeNormal) {
+    outputColor = normal(src, dst);
+  } else if (blendMode == kBlendModeDarken) {
+    outputColor = darken(src, dst);
+  } else if (blendMode == kBlendModeMultiply) {
+    outputColor = multiply(src, dst);
+  } else if (blendMode == kBlendModeHardLight) {
+    outputColor = hardLight(src, dst);
+  } else if (blendMode == kBlendModeSoftLight) {
+    outputColor = softLight(src, dst);
+  } else if (blendMode == kBlendModeLighten) {
+    outputColor = lighten(src, dst);
+  } else if (blendMode == kBlendModeScreen) {
+    outputColor = screen(src, dst);
+  } else if (blendMode == kBlendModeColorBurn) {
+    outputColor = colorBurn(src, dst);
+  } else if (blendMode == kBlendModeOverlay) {
+    outputColor = overlay(src, dst);
+  } else if (blendMode == kBlendModeAddition) {
+    outputColor = addition(src, dst);
+  }
+  outputColor.rgb /= outputColor.a;
+  return outputColor;
 }
 
 highp float edgeAvoidanceFactor(in highp float spatialFactor) {
@@ -68,5 +169,5 @@ void main() {
     }
   }
   highp vec4 dst = gl_LastFragData[0];
-  gl_FragColor = mix(dst, blend(src, dst), opacity * edgeAvoidanceFactor(length(src)));
+  gl_FragColor = mix(dst, blend(src, dst, blendMode), opacity * edgeAvoidanceFactor(length(src)));
 }
