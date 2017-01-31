@@ -28,7 +28,6 @@
 #import <LTEngine/LTScreenProcessing.h>
 
 // Image Processing/Blocks.
-#import <LTEngine/LTAdjustProcessor.h>
 #import <LTEngine/LTArithmeticProcessor.h>
 #import <LTEngine/LTAspectFillResizeProcessor.h>
 #import <LTEngine/LTBicubicResizeProcessor.h>
