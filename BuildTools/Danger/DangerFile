@@ -1,7 +1,7 @@
 # Copyright (c) 2016 Lightricks. All rights reserved.
 
 COMMIT_SUBJECT_MAX_CHARACTERS = 72
-COMMIT_BODY_MAX_CHARACTERS = 72
+COMMIT_BODY_MAX_LINE_CHARACTERS = 72
 
 # Lint commits.
 git.commits.each do |commit|
@@ -24,12 +24,17 @@ git.commits.each do |commit|
     warn "Commit #{commit.sha} subject is longer than #{COMMIT_SUBJECT_MAX_CHARACTERS} characters"
   end
 
-  if body && !body.end_with?('.')
-    warn "Commit #{commit.sha} body doesn't end with a period"
-  end
+  if body
+    unless body.end_with?('.')
+      warn "Commit #{commit.sha} body doesn't end with a period"
+    end
 
-  if body && body.length > COMMIT_BODY_MAX_CHARACTERS
-    warn "Commit #{commit.sha} body is longer than #{COMMIT_BODY_MAX_CHARACTERS} characters"
+    body.split("\n").each_with_index do |body_line, index|
+      if body_line.chomp.length > COMMIT_BODY_MAX_LINE_CHARACTERS
+        warn "Commit #{commit.sha} body line number #{index + 1} is longer than "\
+             "#{COMMIT_BODY_MAX_LINE_CHARACTERS} characters"
+      end
+    end
   end
 
   unless commit.author.email.downcase.end_with? '@lightricks.com'
