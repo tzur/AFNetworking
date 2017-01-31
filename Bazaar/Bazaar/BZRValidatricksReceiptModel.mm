@@ -80,6 +80,8 @@ NS_ASSUME_NONNULL_BEGIN
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
   return @{
     @instanceKeypath(BZRValidatricksReceiptInfo, environment): @"environment",
+    @instanceKeypath(BZRValidatricksReceiptInfo, originalPurchaseDateTime):
+        @"originalPurchaseDateTime",
     @instanceKeypath(BZRValidatricksReceiptInfo, inAppPurchases): @"inAppPurchases",
     @instanceKeypath(BZRValidatricksReceiptInfo, subscription): @"subscription"
   };
@@ -87,6 +89,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (NSValueTransformer *)environmentJSONTransformer {
   return [NSValueTransformer bzr_validatricksReceiptEnvironmentValueTransformer];
+}
+
++ (NSValueTransformer *)originalPurchaseDateTimeJSONTransformer {
+  return [NSValueTransformer bzr_validatricksDateTimeValueTransformer];
 }
 
 + (NSValueTransformer *)inAppPurchasesJSONTransformer {

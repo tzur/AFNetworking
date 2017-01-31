@@ -53,6 +53,7 @@ NS_ASSUME_NONNULL_BEGIN
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
     optionalPropertyKeys = [NSSet setWithArray:@[
+      @instanceKeypath(BZRReceiptInfo, originalPurchaseDateTime),
       @instanceKeypath(BZRReceiptInfo, inAppPurchases),
       @instanceKeypath(BZRReceiptInfo, subscription)
     ]];

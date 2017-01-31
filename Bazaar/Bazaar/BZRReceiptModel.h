@@ -20,7 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// ID of the transaction in which the user has purchased the IAP.
 @property (readonly, nonatomic) NSString *originalTransactionId;
 
-/// Date and time when the IAP were originaly purchased.
+/// Date and time when the IAP was originally purchased.
 @property (readonly, nonatomic) NSDate *originalPurchaseDateTime;
 
 @end
@@ -38,7 +38,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// ID of the transaction in which the user has purchased the subscription.
 @property (readonly, nonatomic) NSString *originalTransactionId;
 
-/// Date and time when the subscription were originaly purchased.
+/// Date and time when the subscription was originally purchased.
 @property (readonly, nonatomic) NSDate *originalPurchaseDateTime;
 
 /// Date and time of the latest subscription renewal or \c nil if no renewals issued.
@@ -47,7 +47,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// Date and time of the subscription expiration.
 @property (readonly, nonatomic) NSDate *expirationDateTime;
 
-/// Date and time of the subscription cancallation or \c nil if it was not cancelled.
+/// Date and time of the subscription cancellation or \c nil if it was not cancelled.
 @property (readonly, nonatomic, nullable) NSDate *cancellationDateTime;
 
 /// \c YES if the subscription has already expired.
@@ -64,6 +64,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// The environment that the receipt was issued for.
 @property (readonly, nonatomic) BZRReceiptEnvironment *environment;
+
+/// Date and time the application was originally acquired from the AppStore.
+@property (readonly, nonatomic, nullable) NSDate *originalPurchaseDateTime;
 
 /// List of all non-subscription in-app purchases made by the user.
 @property (readonly, nonatomic, nullable) NSArray<BZRReceiptInAppPurchaseInfo *> *inAppPurchases;
