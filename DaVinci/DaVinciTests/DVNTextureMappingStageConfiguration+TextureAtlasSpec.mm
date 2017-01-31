@@ -6,6 +6,7 @@
 #import <LTEngine/LTQuad.h>
 #import <LTEngine/LTTexture+Factory.h>
 #import <LTEngine/LTTextureAtlas.h>
+#import <LTKit/LTRandom.h>
 
 #import "DVNRandomTexCoordProvider.h"
 #import "DVNTexCoordProvider.h"
@@ -19,13 +20,16 @@ it(@"should create a configuration from a given texture atlas", ^{
   lt::unordered_map<NSString *, CGRect> areas{{@"0", rect0}, {@"1", rect1}};
   LTTextureAtlas *atlas =
       [[LTTextureAtlas alloc] initWithAtlasTexture:texture imageAreas:areas];
+  LTRandomState *randomState = OCMClassMock([LTRandomState class]);
 
   DVNTextureMappingStageConfiguration *configuration =
-      [DVNTextureMappingStageConfiguration configurationFromTextureAtlas:atlas];
+      [DVNTextureMappingStageConfiguration configurationFromTextureAtlas:atlas
+                                                             randomState:randomState];
 
   expect(configuration.texture).to.beIdenticalTo(atlas.texture);
   DVNRandomTexCoordProviderModel *model = configuration.model;
   expect(model).to.beKindOf([DVNRandomTexCoordProviderModel class]);
+  expect(model.randomState).to.equal(randomState);
   expect(model.textureMapQuads.size()).to.equal(2);
   NSSet<LTQuad *> *quads =
       [NSSet setWithArray:@[[[LTQuad alloc] initWithCorners:model.textureMapQuads[0].corners()],
