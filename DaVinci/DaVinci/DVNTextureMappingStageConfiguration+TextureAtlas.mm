@@ -13,8 +13,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation DVNTextureMappingStageConfiguration (TextureAtlas)
 
-+ (instancetype)configurationFromTextureAtlas:(LTTextureAtlas *)textureAtlas {
-  LTRandomState *randomState = [[LTRandom alloc] init].engineState;
++ (instancetype)configurationFromTextureAtlas:(LTTextureAtlas *)textureAtlas
+                                  randomState:(LTRandomState *)randomState {
   lt::unordered_map<NSString *, CGRect> areas = textureAtlas.areas;
 
   std::vector<lt::Quad> quads;
