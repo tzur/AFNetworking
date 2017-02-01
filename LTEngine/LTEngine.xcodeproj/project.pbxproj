@@ -1205,6 +1205,9 @@
 		A8BDC6421AC9DA64005FC392 /* CircularPatchDrawerMirror.png in Resources */ = {isa = PBXBuildFile; fileRef = A8BDC63B1AC9DA64005FC392 /* CircularPatchDrawerMirror.png */; };
 		A8BDC6431AC9DA64005FC392 /* CircularPatchDrawerPatch.png in Resources */ = {isa = PBXBuildFile; fileRef = A8BDC63C1AC9DA64005FC392 /* CircularPatchDrawerPatch.png */; };
 		A8BDC6441AC9DA64005FC392 /* CircularPatchDrawerRotation.png in Resources */ = {isa = PBXBuildFile; fileRef = A8BDC63D1AC9DA64005FC392 /* CircularPatchDrawerRotation.png */; };
+		B467099F1E07F57F000CD9F5 /* LTFboAttachmentInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = B467099D1E07F57F000CD9F5 /* LTFboAttachmentInfo.h */; };
+		B46709A01E07F57F000CD9F5 /* LTFboAttachmentInfo.mm in Sources */ = {isa = PBXBuildFile; fileRef = B467099E1E07F57F000CD9F5 /* LTFboAttachmentInfo.mm */; };
+		B4F1DEB21E2CB3430042DB2A /* LTFboAttachmentInfoSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = B4F1DEB11E2CB3430042DB2A /* LTFboAttachmentInfoSpec.mm */; };
 		BEB7BEB61E26804B007EAB73 /* NSValueTransformer+LTEngine.h in Headers */ = {isa = PBXBuildFile; fileRef = BEB7BEB41E26804B007EAB73 /* NSValueTransformer+LTEngine.h */; };
 		BEB7BEB71E26804B007EAB73 /* NSValueTransformer+LTEngine.mm in Sources */ = {isa = PBXBuildFile; fileRef = BEB7BEB51E26804B007EAB73 /* NSValueTransformer+LTEngine.mm */; };
 		BEB7BEEC1E2680DB007EAB73 /* LTTestMTLModel.m in Sources */ = {isa = PBXBuildFile; fileRef = BEB7BEEB1E2680DB007EAB73 /* LTTestMTLModel.m */; };
@@ -2930,6 +2933,9 @@
 		A8BDC63B1AC9DA64005FC392 /* CircularPatchDrawerMirror.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = CircularPatchDrawerMirror.png; path = Resources/CircularPatchDrawerMirror.png; sourceTree = "<group>"; };
 		A8BDC63C1AC9DA64005FC392 /* CircularPatchDrawerPatch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = CircularPatchDrawerPatch.png; path = Resources/CircularPatchDrawerPatch.png; sourceTree = "<group>"; };
 		A8BDC63D1AC9DA64005FC392 /* CircularPatchDrawerRotation.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = CircularPatchDrawerRotation.png; path = Resources/CircularPatchDrawerRotation.png; sourceTree = "<group>"; };
+		B467099D1E07F57F000CD9F5 /* LTFboAttachmentInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTFboAttachmentInfo.h; sourceTree = "<group>"; };
+		B467099E1E07F57F000CD9F5 /* LTFboAttachmentInfo.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTFboAttachmentInfo.mm; sourceTree = "<group>"; };
+		B4F1DEB11E2CB3430042DB2A /* LTFboAttachmentInfoSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTFboAttachmentInfoSpec.mm; sourceTree = "<group>"; };
 		BEB7BEB41E26804B007EAB73 /* NSValueTransformer+LTEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSValueTransformer+LTEngine.h"; sourceTree = "<group>"; };
 		BEB7BEB51E26804B007EAB73 /* NSValueTransformer+LTEngine.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSValueTransformer+LTEngine.mm"; sourceTree = "<group>"; };
 		BEB7BEEA1E2680DB007EAB73 /* LTTestMTLModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTTestMTLModel.h; sourceTree = "<group>"; };
@@ -4984,6 +4990,8 @@
 				288AB3F618351FFE00A11FA4 /* LTFbo.h */,
 				288AB3F718351FFE00A11FA4 /* LTFbo.mm */,
 				8B9F3C051C16E0DF00FEB7C4 /* LTFboAttachable.h */,
+				B467099D1E07F57F000CD9F5 /* LTFboAttachmentInfo.h */,
+				B467099E1E07F57F000CD9F5 /* LTFboAttachmentInfo.mm */,
 				8B539FF21B4A882600036743 /* LTFboPool.h */,
 				8B539FF31B4A882600036743 /* LTFboPool.mm */,
 				8BC87EF81C2720640061BD00 /* LTFboWritableAttachment.h */,
@@ -5063,6 +5071,7 @@
 				8BAA727618437BD0007B5F9A /* LTDrawingContextSpec.mm */,
 				6A4444711B4AC5E200B9C710 /* LTFboPoolSpec.mm */,
 				288AB4021835203300A11FA4 /* LTFboSpec.mm */,
+				B4F1DEB11E2CB3430042DB2A /* LTFboAttachmentInfoSpec.mm */,
 				8B8E510D1863216E00821829 /* LTGLContextSpec.mm */,
 				8BC87EAE1C22CD3C0061BD00 /* LTGLPixelFormatSpec.mm */,
 				8B5A0E05189AA91C0098399C /* LTGLTextureSpec.mm */,
@@ -5505,6 +5514,7 @@
 				500CA9E81D26B031009CF19F /* LTContentInteraction.h in Headers */,
 				507BDD391D116D3C00EF0997 /* LTContinuousSampler.h in Headers */,
 				8B871FD81924A75E00517F2E /* LTBilateralFilterProcessor.h in Headers */,
+				B467099F1E07F57F000CD9F5 /* LTFboAttachmentInfo.h in Headers */,
 				8B871FD91924A75E00517F2E /* LTPatchBoundaryProcessor.h in Headers */,
 				509CE8A81D325F2700D496D6 /* LTSplineControlPoint+AttributeKeys.h in Headers */,
 				28FC0E731D2AA27000237FF8 /* LTContentTouchEventDistancePredicate.h in Headers */,
@@ -6719,6 +6729,7 @@
 				85F3F9C41CC62D6900E5753E /* LTDisplacementMapDrawer.mm in Sources */,
 				50FD866C1D05A8DB0005C318 /* LTDynamicQuadDrawer.mm in Sources */,
 				8BB47158183B5FBA00CA1681 /* LTGPUStruct.m in Sources */,
+				B46709A01E07F57F000CD9F5 /* LTFboAttachmentInfo.mm in Sources */,
 				85E2B6611C58C5FA006AD39C /* LTSolidRectsDrawer.mm in Sources */,
 				BEB7BEB71E26804B007EAB73 /* NSValueTransformer+LTEngine.mm in Sources */,
 				8BD685E81885402F00571E75 /* LTBilateralFilterProcessor.mm in Sources */,
@@ -7014,6 +7025,7 @@
 				50501ABE1C34381A005FFDEB /* LTTouchEventViewTestUtils.mm in Sources */,
 				8BD0733A19A2604A005F2C37 /* LTImage+TextureSpec.mm in Sources */,
 				5024E6BB19FCEC4600A46E21 /* LTSingleQuadDrawerSpec.mm in Sources */,
+				B4F1DEB21E2CB3430042DB2A /* LTFboAttachmentInfoSpec.mm in Sources */,
 				0368E6D819C027A700B99FF5 /* LTSmoothPyramidProcessorSpec.mm in Sources */,
 				284791F61862E71500A70AF5 /* LTGridDrawerSpec.mm in Sources */,
 				8B3667E3184754BD002A1833 /* LTGPUResourceExamples.mm in Sources */,
