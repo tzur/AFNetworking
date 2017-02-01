@@ -117,7 +117,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// Throws \c LTGLException with \c kLTOpenGLRuntimeErrorException if the texture cannot be created
 /// or if image loading has failed.
 ///
-/// @param image base level mipmap image. Each dimension of the image must be a power of two.
+/// @param image base level mipmap image. Each dimension of the image must be a power of two on
+/// OpenGL ES versions lower than 3.0.
 + (instancetype)textureWithBaseLevelMipmapImage:(const cv::Mat &)image;
 
 /// Allocates a texture with the \c size, \c precision and \c channels properties of the given \c
@@ -126,9 +127,11 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 /// @param images images to load to the mipmap. All images must have the same \c precision and \c
 /// channels. Let \c (w[0], h[0]) be the dimensions of the base level, and \c (w[i], h[i]) the
-/// dimensions of level \c i, then \c w[0] and \c h[0] must be a power of two, and the relation
-/// \c w[i] = w[i - 1] / 2 and \c h[i] = h[i - 1] / 2 must hold. The given images may not create a
-/// complete mipmap, hence the number of images can be lower or equal to \c log2(MAX(w[0], h[0])).
+/// dimensions of level \c i, then the following relations <tt>w[i] = floor(w[i - 1] / 2)</tt> and
+/// <tt>h[i] = floor(h[i - 1] / 2)</tt> must hold. The given images may not create a complete
+/// mipmap, hence the number of images can be lower or equal to \c log2(MAX(w[0], h[0])).
+///
+/// @note \c w[0] and \c h[0] must be a power of two on OpenGL ES versions lower than 3.0.
 ///
 /// Throws \c LTGLException with \c kLTOpenGLRuntimeErrorException if the texture cannot be created
 /// or if image loading has failed.
