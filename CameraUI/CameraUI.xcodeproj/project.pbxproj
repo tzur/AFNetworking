@@ -1919,7 +1919,8 @@
 					"$(SRCROOT)/../LTEngine/LTEngine",
 					"$(SRCROOT)/../LTKit/LTKit",
 					"$(SRCROOT)/../Wireframes/Wireframes",
-					"$(SRCROOT)/../third_party/LLReactiveMatchers/**",
+					"$(SRCROOT)/../third_party/LLReactiveMatchers",
+					"$(SRCROOT)/../third_party/LLReactiveMatchers/LLReactiveMatchers",
 					"$(SRCROOT)/../third_party/OCMock/Source",
 					"$(SRCROOT)/../third_party/Specta/Specta",
 				);
@@ -1941,7 +1942,8 @@
 					"$(SRCROOT)/../LTEngine/LTEngine",
 					"$(SRCROOT)/../LTKit/LTKit",
 					"$(SRCROOT)/../Wireframes/Wireframes",
-					"$(SRCROOT)/../third_party/LLReactiveMatchers/**",
+					"$(SRCROOT)/../third_party/LLReactiveMatchers",
+					"$(SRCROOT)/../third_party/LLReactiveMatchers/LLReactiveMatchers",
 					"$(SRCROOT)/../third_party/OCMock/Source",
 					"$(SRCROOT)/../third_party/Specta/Specta",
 				);
