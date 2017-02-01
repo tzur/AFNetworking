@@ -228,6 +228,24 @@ context(@"getting product list", ^{
     });
   });
 
+  it(@"should not include variants if thier base product's metadata can't be fetched", ^{
+    SKProductsResponse *response = BZRProductsResponseWithProducts(@[@"foo.Variant.bar"]);
+    OCMStub([response invalidProductIdentifiers]).andReturn(@[@"foo"]);
+    OCMStub([storeKitFacade fetchMetadataForProductsWithIdentifiers:OCMOCK_ANY])
+        .andReturn([RACSignal return:response]);
+
+    product = [product modelByOverridingProperty:@keypath(product, variants)
+                                       withValue:@[@"foo.Variant.bar"]];
+    NSArray<BZRProduct *> *products = @[product, BZRProductWithIdentifier(@"foo.Variant.bar")];
+    OCMStub([underlyingProvider fetchProductList]).andReturn([RACSignal return:products]);
+
+    LLSignalTestRecorder *recorder = [[productsProvider fetchProductList] testRecorder];
+
+    expect(recorder).will.matchValue(0, ^BOOL(NSSet<BZRProduct *> *productList) {
+      return [productList count] == 0;
+    });
+  });
+
   context(@"setting full price for discount product", ^{
     __block BZRProduct *fullPriceProduct;
     __block SKProduct *fullPriceUnderlyingProduct;
