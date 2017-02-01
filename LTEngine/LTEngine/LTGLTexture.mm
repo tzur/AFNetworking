@@ -21,7 +21,11 @@ static void LTVerifyMipmapImages(const Matrices &images) {
 
   const cv::Mat &baseImage = images.front();
   CGSize currentLevelSize = CGSizeMake(baseImage.cols, baseImage.rows);
-  LTParameterAssert(LTIsPowerOfTwo(currentLevelSize), @"Base image must be a power of two");
+
+  if ([LTGLContext currentContext].version == LTGLVersion2) {
+    LTParameterAssert(LTIsPowerOfTwo(currentLevelSize), @"Base image must be a power of two, "
+                      "got: %@", NSStringFromCGSize(currentLevelSize));
+  }
 
   for (Matrices::size_type i = 1; i < images.size(); ++i) {
     LTParameterAssert(images[i].type() == baseImage.type(), @"Image type for level %zu (%d) "
@@ -30,12 +34,10 @@ static void LTVerifyMipmapImages(const Matrices &images) {
     CGSize previousLevelSize = currentLevelSize;
     currentLevelSize = CGSizeMake(images[i].cols, images[i].rows);
 
-    LTParameterAssert(currentLevelSize.width * 2 == previousLevelSize.width &&
-                      currentLevelSize.height * 2 == previousLevelSize.height,
-                      @"Given image at level %zu doesn't has a size of (%g, %g), which is not a"
-                      "dyadic downsampling from its parent of size (%g, %g)", i,
-                      currentLevelSize.width, currentLevelSize.height,
-                      previousLevelSize.width, previousLevelSize.height);
+    LTParameterAssert(currentLevelSize == std::floor(previousLevelSize / 2),
+                      @"Given image at level %zu doesn't has a size of %@, which is not a "
+                      "floor(previousSize / 2) from its previous level of size %@", i,
+                      NSStringFromCGSize(currentLevelSize), NSStringFromCGSize(previousLevelSize));
   }
 }
 

@@ -42,15 +42,6 @@ sharedExamplesFor(kLTGLTextureExamples, ^(NSDictionary *contextInfo) {
         }).toNot.raiseAny();
       });
 
-      it(@"should not initialize with a non-power-of-two single image", ^{
-        cv::Mat4b image(127, 64);
-        image.setTo(cv::Vec4b(255, 255, 255, 255));
-
-        expect(^{
-          __unused LTGLTexture *texture = [[LTGLTexture alloc] initWithBaseLevelMipmapImage:image];
-        }).to.raise(NSInvalidArgumentException);
-      });
-
       it(@"should set correct number of mipmap levels", ^{
         cv::Mat4b image(128, 64);
         image.setTo(cv::Vec4b(255, 255, 255, 255));
@@ -82,15 +73,6 @@ sharedExamplesFor(kLTGLTextureExamples, ^(NSDictionary *contextInfo) {
         })).to.raise(NSInvalidArgumentException);
       });
       
-      it(@"should not initialize with a non-power-of-two image", ^{
-        cv::Mat4b image(127, 64);
-        image.setTo(cv::Vec4b(255, 255, 255, 255));
-
-        expect((^{
-          __unused LTGLTexture *texture = [[LTGLTexture alloc] initWithMipmapImages:{image}];
-        })).to.raise(NSInvalidArgumentException);
-      });
-
       it(@"should not initialize with non dyadic downscaling of previous image", ^{
         expect((^{
           __unused LTGLTexture *texture = [[LTGLTexture alloc] initWithMipmapImages:{
@@ -319,5 +301,61 @@ sharedExamplesFor(kLTGLTextureExamples, ^(NSDictionary *contextInfo) {
 
 itShouldBehaveLike(kLTGLTextureExamples, @{@"version": @(LTGLVersion2)});
 itShouldBehaveLike(kLTGLTextureExamples, @{@"version": @(LTGLVersion3)});
+
+context(@"non power of two mipmapping", ^{
+  context(@"OpenGL ES 2", ^{
+    beforeEach(^{
+      auto context = [[LTGLContext alloc] initWithSharegroup:nil version:LTGLVersion2];
+      [LTGLContext setCurrentContext:context];
+    });
+
+    it(@"should not initialize with a non-power-of-two single image", ^{
+      cv::Mat4b image(127, 64);
+      image.setTo(cv::Vec4b(255, 255, 255, 255));
+
+      expect(^{
+        __unused LTGLTexture *texture = [[LTGLTexture alloc] initWithBaseLevelMipmapImage:image];
+      }).to.raise(NSInvalidArgumentException);
+    });
+
+    it(@"should not initialize with a non-power-of-two image", ^{
+      cv::Mat4b image(127, 64);
+      image.setTo(cv::Vec4b(255, 255, 255, 255));
+
+      expect((^{
+        __unused LTGLTexture *texture = [[LTGLTexture alloc] initWithMipmapImages:{image}];
+      })).to.raise(NSInvalidArgumentException);
+    });
+  });
+
+  context(@"OpenGL ES 3", ^{
+    beforeEach(^{
+      auto context = [[LTGLContext alloc] initWithSharegroup:nil version:LTGLVersion3];
+      [LTGLContext setCurrentContext:context];
+    });
+
+    it(@"should initialize with a non-power-of-two single image", ^{
+      cv::Mat4b image(127, 64);
+      image.setTo(cv::Vec4b(255, 255, 255, 255));
+
+      __block LTGLTexture *texture;
+      expect(^{
+        texture = [[LTGLTexture alloc] initWithBaseLevelMipmapImage:image];
+      }).notTo.raiseAny();
+      expect(texture).notTo.beNil();
+    });
+
+    it(@"should initialize with a non-power-of-two image", ^{
+      cv::Mat4b image(127, 64);
+      image.setTo(cv::Vec4b(255, 255, 255, 255));
+
+      __block LTGLTexture *texture;
+      expect((^{
+        texture = [[LTGLTexture alloc] initWithMipmapImages:{image}];
+      })).notTo.raiseAny();
+      expect(texture).notTo.beNil();
+    });
+  });
+});
 
 SpecEnd
