@@ -132,8 +132,7 @@ LTPropertyDeclare(CGFloat, smoothingAlpha, SmoothingAlpha);
 - (void)createMembraneTexture {
   LTGLPixelFormat *membranePixelFormat = [[LTGLPixelFormat alloc]
                                           initWithComponents:self.source.pixelFormat.components
-                                          bitDepth:LTGLPixelBitDepth16
-                                          dataType:LTGLPixelDataTypeFloat];
+                                          dataType:LTGLPixelDataType16Float];
 
   self.membrane = [LTTexture textureWithSize:[self maskSizeForCurrentWorkingSize]
                                  pixelFormat:membranePixelFormat allocateMemory:YES];

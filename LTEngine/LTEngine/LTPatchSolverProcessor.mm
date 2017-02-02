@@ -87,10 +87,9 @@
 - (instancetype)initWithMask:(LTTexture *)mask maskBoundaryThreshold:(CGFloat)maskBoundaryThreshold
                       source:(LTTexture *)source target:(LTTexture *)target
                       output:(LTTexture *)output {
-  LTParameterAssert(mask.dataType == LTGLPixelDataTypeUnorm && mask.bitDepth == LTGLPixelBitDepth8,
+  LTParameterAssert(mask.dataType == LTGLPixelDataType8Unorm,
                     @"Mask texture must be of byte precision, got %@", mask.pixelFormat);
-  LTParameterAssert(output.bitDepth == LTGLPixelBitDepth16 &&
-                    output.dataType == LTGLPixelDataTypeFloat,
+  LTParameterAssert(output.dataType == LTGLPixelDataType16Float,
                     @"Output texture must be of half-float precision, got: %@", output.pixelFormat);
   LTParameterAssert(maskBoundaryThreshold >= 0 && maskBoundaryThreshold <= 1,
                     @"maskBoundaryThreshold (%g) must be in [0, 1]", maskBoundaryThreshold);

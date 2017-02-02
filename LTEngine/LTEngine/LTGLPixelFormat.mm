@@ -10,47 +10,37 @@
 NS_ASSUME_NONNULL_BEGIN
 
 LTEnumImplement(NSUInteger, LTGLPixelFormat,
-  LTGLPixelFormatR8Unorm, 
-  LTGLPixelFormatDepth16,
-  LTGLPixelFormatR16Float, 
+  LTGLPixelFormatR8Unorm,
+  LTGLPixelFormatR16Float,
   LTGLPixelFormatR32Float,
   LTGLPixelFormatRG8Unorm,
   LTGLPixelFormatRG16Float,
   LTGLPixelFormatRG32Float,
   LTGLPixelFormatRGBA8Unorm,
   LTGLPixelFormatRGBA16Float,
-  LTGLPixelFormatRGBA32Float
+  LTGLPixelFormatRGBA32Float,
+  LTGLPixelFormatDepth16Unorm
 );
 
 /// Unordered map with \c lt::hash as hashing function.
 template <typename K, typename V>
 using LTUnorderedMap = std::unordered_map<K, V, std::hash<K>>;
 
-/// Tuple of (components, bit depth, data type) that describes the pixel format.
-typedef std::tuple<LTGLPixelComponents, LTGLPixelBitDepth, LTGLPixelDataType> LTDescriptorTuple;
+/// Tuple of (components, data type) that describes the pixel format.
+typedef std::tuple<LTGLPixelComponents, LTGLPixelDataType> LTDescriptorTuple;
 
 /// Maps from pixel format to its descriptor.
 static const LTUnorderedMap<_LTGLPixelFormat, LTDescriptorTuple> kFormatToDescriptor{
-  {LTGLPixelFormatR8Unorm,
-    {LTGLPixelComponentsR, LTGLPixelBitDepth8, LTGLPixelDataTypeUnorm}},
-  {LTGLPixelFormatDepth16,
-    {LTGLPixelComponentsDepth, LTGLPixelBitDepth16Depth, LTGLPixelDataTypeUnorm}},
-  {LTGLPixelFormatR16Float,
-    {LTGLPixelComponentsR, LTGLPixelBitDepth16, LTGLPixelDataTypeFloat}},
-  {LTGLPixelFormatR32Float,
-    {LTGLPixelComponentsR, LTGLPixelBitDepth32, LTGLPixelDataTypeFloat}},
-  {LTGLPixelFormatRG8Unorm,
-    {LTGLPixelComponentsRG, LTGLPixelBitDepth8, LTGLPixelDataTypeUnorm}},
-  {LTGLPixelFormatRG16Float,
-    {LTGLPixelComponentsRG, LTGLPixelBitDepth16, LTGLPixelDataTypeFloat}},
-  {LTGLPixelFormatRG32Float,
-    {LTGLPixelComponentsRG, LTGLPixelBitDepth32, LTGLPixelDataTypeFloat}},
-  {LTGLPixelFormatRGBA8Unorm,
-    {LTGLPixelComponentsRGBA, LTGLPixelBitDepth8, LTGLPixelDataTypeUnorm}},
-  {LTGLPixelFormatRGBA16Float,
-    {LTGLPixelComponentsRGBA, LTGLPixelBitDepth16, LTGLPixelDataTypeFloat}},
-  {LTGLPixelFormatRGBA32Float,
-    {LTGLPixelComponentsRGBA, LTGLPixelBitDepth32, LTGLPixelDataTypeFloat}}
+  {LTGLPixelFormatR8Unorm, {LTGLPixelComponentsR, LTGLPixelDataType8Unorm}},
+  {LTGLPixelFormatR16Float, {LTGLPixelComponentsR, LTGLPixelDataType16Float}},
+  {LTGLPixelFormatR32Float, {LTGLPixelComponentsR, LTGLPixelDataType32Float}},
+  {LTGLPixelFormatRG8Unorm, {LTGLPixelComponentsRG, LTGLPixelDataType8Unorm}},
+  {LTGLPixelFormatRG16Float, {LTGLPixelComponentsRG, LTGLPixelDataType16Float}},
+  {LTGLPixelFormatRG32Float, {LTGLPixelComponentsRG, LTGLPixelDataType32Float}},
+  {LTGLPixelFormatRGBA8Unorm, {LTGLPixelComponentsRGBA, LTGLPixelDataType8Unorm}},
+  {LTGLPixelFormatRGBA16Float, {LTGLPixelComponentsRGBA, LTGLPixelDataType16Float}},
+  {LTGLPixelFormatRGBA32Float, {LTGLPixelComponentsRGBA, LTGLPixelDataType32Float}},
+  {LTGLPixelFormatDepth16Unorm, {LTGLPixelComponentsDepth, LTGLPixelDataType16Unorm}},
 };
 
 /// Pair of (version, components).
@@ -74,20 +64,18 @@ static const LTUnorderedMap<LTPixelComponentsPair, GLenum> kComponentsToFormat{
   {{LTGLVersion3, LTGLPixelComponentsDepth}, GL_DEPTH_COMPONENT}
 };
 
-/// Pair of (version, bit depth).
-typedef std::pair<LTGLVersion, LTGLPixelBitDepth> LTPixelBitDepthPair;
+/// Pair of (version, data type).
+typedef std::pair<LTGLVersion, LTGLPixelDataType> LTPixelDataTypePair;
 
-/// Maps from bit depth pair to OpenGL precision. Note that when a new pixel format is added, the
-/// number of entries that will added to this table should be equal to the number of supported
-/// OpenGL versions.
-static const LTUnorderedMap<LTPixelBitDepthPair, GLenum> kBitDepthToPrecision{
-  {{LTGLVersion2, LTGLPixelBitDepth8}, GL_UNSIGNED_BYTE},
-  {{LTGLVersion3, LTGLPixelBitDepth8}, GL_UNSIGNED_BYTE},
-  {{LTGLVersion2, LTGLPixelBitDepth16}, GL_HALF_FLOAT_OES},
-  {{LTGLVersion3, LTGLPixelBitDepth16}, GL_HALF_FLOAT},
-  {{LTGLVersion3, LTGLPixelBitDepth16Depth}, GL_UNSIGNED_INT},
-  {{LTGLVersion2, LTGLPixelBitDepth32}, GL_FLOAT},
-  {{LTGLVersion3, LTGLPixelBitDepth32}, GL_FLOAT}
+/// Maps from data type pair to OpenGL type, which specifies the data type of pixel's data.
+static const LTUnorderedMap<LTPixelDataTypePair, GLenum> kBitDepthToPrecision{
+  {{LTGLVersion2, LTGLPixelDataType8Unorm}, GL_UNSIGNED_BYTE},
+  {{LTGLVersion3, LTGLPixelDataType8Unorm}, GL_UNSIGNED_BYTE},
+  {{LTGLVersion2, LTGLPixelDataType16Float}, GL_HALF_FLOAT_OES},
+  {{LTGLVersion3, LTGLPixelDataType16Float}, GL_HALF_FLOAT},
+  {{LTGLVersion3, LTGLPixelDataType16Unorm}, GL_UNSIGNED_INT},
+  {{LTGLVersion2, LTGLPixelDataType32Float}, GL_FLOAT},
+  {{LTGLVersion3, LTGLPixelDataType32Float}, GL_FLOAT}
 };
 
 /// Pair of (version, pixel format).
@@ -99,8 +87,8 @@ typedef std::pair<LTGLVersion, _LTGLPixelFormat> LTPixelFormatPair;
 static const LTUnorderedMap<LTPixelFormatPair, GLenum> kFormatToTextureInternalFormat{
   {{LTGLVersion2, LTGLPixelFormatR8Unorm}, GL_RED_EXT},
   {{LTGLVersion3, LTGLPixelFormatR8Unorm}, GL_R8},
-  {{LTGLVersion2, LTGLPixelFormatDepth16}, GL_DEPTH_COMPONENT16},
-  {{LTGLVersion3, LTGLPixelFormatDepth16}, GL_DEPTH_COMPONENT16},
+  {{LTGLVersion2, LTGLPixelFormatDepth16Unorm}, GL_DEPTH_COMPONENT16},
+  {{LTGLVersion3, LTGLPixelFormatDepth16Unorm}, GL_DEPTH_COMPONENT16},
   {{LTGLVersion2, LTGLPixelFormatR16Float}, GL_RED_EXT},
   {{LTGLVersion3, LTGLPixelFormatR16Float}, GL_R16F},
   {{LTGLVersion2, LTGLPixelFormatR32Float}, GL_RED_EXT},
@@ -124,9 +112,9 @@ static const LTUnorderedMap<LTPixelFormatPair, GLenum> kFormatToTextureInternalF
 /// number of supported OpenGL versions.
 static const LTUnorderedMap<LTPixelFormatPair, GLenum> kFormatToRenderbufferInternalFormat{
   {{LTGLVersion2, LTGLPixelFormatRGBA8Unorm}, GL_RGBA8_OES},
-  {{LTGLVersion2, LTGLPixelFormatDepth16}, GL_DEPTH_COMPONENT16},
   {{LTGLVersion3, LTGLPixelFormatRGBA8Unorm}, GL_RGBA8},
-  {{LTGLVersion3, LTGLPixelFormatDepth16}, GL_DEPTH_COMPONENT16}
+  {{LTGLVersion2, LTGLPixelFormatDepth16Unorm}, GL_DEPTH_COMPONENT16},
+  {{LTGLVersion3, LTGLPixelFormatDepth16Unorm}, GL_DEPTH_COMPONENT16}
 };
 
 /// Returns the pixel format that corresponds to the given texture \c internalFormat and \c version.
@@ -160,7 +148,7 @@ static _LTGLPixelFormat LTGLPixelFormatForRenderbufferInternalFormat(GLenum inte
 /// Maps between \c cv::Mat \c type to pixel format.
 static const std::unordered_map<int, _LTGLPixelFormat> kMatTypeToPixelFormat{
   {CV_8UC1, LTGLPixelFormatR8Unorm},
-  {CV_16UC1, LTGLPixelFormatDepth16},
+  {CV_16UC1, LTGLPixelFormatDepth16Unorm},
   {CV_16FC1, LTGLPixelFormatR16Float},
   {CV_32FC1, LTGLPixelFormatR32Float},
   {CV_8UC2, LTGLPixelFormatRG8Unorm},
@@ -182,7 +170,7 @@ static _LTGLPixelFormat LTGLPixelFormatForMatType(int type) {
 /// Maps between CoreVideo pixel format (CVPixelFormatType) to pixel format.
 static const std::unordered_map<OSType, _LTGLPixelFormat> kCVPixelFormatTypeToPixelFormat{
   {kCVPixelFormatType_OneComponent8, LTGLPixelFormatR8Unorm},
-  {kCVPixelFormatType_16Gray, LTGLPixelFormatDepth16},
+  {kCVPixelFormatType_16Gray, LTGLPixelFormatDepth16Unorm},
   {kCVPixelFormatType_OneComponent16Half, LTGLPixelFormatR16Float},
   {kCVPixelFormatType_OneComponent32Float, LTGLPixelFormatR32Float},
   {kCVPixelFormatType_TwoComponent8, LTGLPixelFormatRG8Unorm},
@@ -291,16 +279,14 @@ static const std::unordered_map<OSType, CIFormat> kCVPixelBufferTypeToCIFormat{
 }
 
 - (instancetype)initWithComponents:(LTGLPixelComponents)components
-                          bitDepth:(LTGLPixelBitDepth)bitDepth
                           dataType:(LTGLPixelDataType)dataType {
   for (const auto &pair : kFormatToDescriptor) {
-    if (pair.second == LTDescriptorTuple{components, bitDepth, dataType}) {
+    if (pair.second == LTDescriptorTuple{components, dataType}) {
       return [self initWithValue:pair.first];
     }
   }
-  LTAssert(NO, @"No pixel format value was found for the given components (%lu), bitDepth (%lu)  "
-           "and dataType (%lu)", (unsigned long)components, (unsigned long)bitDepth,
-           (unsigned long)dataType);
+  LTAssert(NO, @"No pixel format value was found for the given components (%lu) and dataType (%lu)",
+           (unsigned long)components, (unsigned long)dataType);
 }
 
 + (LTGLPixelFormatSupportedMatTypes)supportedMatTypes {
@@ -355,7 +341,7 @@ static const std::unordered_map<OSType, CIFormat> kCVPixelBufferTypeToCIFormat{
 }
 
 - (GLenum)precisionForVersion:(LTGLVersion)version {
-  const auto it = kBitDepthToPrecision.find({version, self.bitDepth});
+  const auto it = kBitDepthToPrecision.find({version, self.dataType});
   return it != kBitDepthToPrecision.cend() ? it->second : LTGLInvalidEnum;
 }
 
@@ -390,12 +376,8 @@ static const std::unordered_map<OSType, CIFormat> kCVPixelBufferTypeToCIFormat{
   }
 }
 
-- (LTGLPixelBitDepth)bitDepth {
-  return std::get<1>(self.descriptor);
-}
-
 - (LTGLPixelDataType)dataType {
-  return std::get<2>(self.descriptor);
+  return std::get<1>(self.descriptor);
 }
 
 - (int)matType {

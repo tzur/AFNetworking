@@ -18,11 +18,9 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 + (CIFormat)lt_ciContextWorkingFormatForPixelFormat:(LTGLPixelFormat *)pixelFormat {
-  if (pixelFormat.bitDepth == LTGLPixelBitDepth8 &&
-      pixelFormat.dataType == LTGLPixelDataTypeUnorm) {
+  if (pixelFormat.dataType == LTGLPixelDataType8Unorm) {
     return kCIFormatRGBA8;
-  } else if (pixelFormat.bitDepth == LTGLPixelBitDepth16 &&
-             pixelFormat.dataType == LTGLPixelDataTypeFloat) {
+  } else if (pixelFormat.dataType == LTGLPixelDataType16Float) {
     return kCIFormatRGBAh;
   }
 

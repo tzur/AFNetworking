@@ -89,17 +89,15 @@
 }
 
 - (void)verifyTextureAsRenderTarget:(LTTexture *)texture withContext:(LTGLContext *)context {
-  if (texture.dataType == LTGLPixelDataTypeUnorm && texture.bitDepth == LTGLPixelBitDepth8) {
+  if (texture.dataType == LTGLPixelDataType8Unorm) {
     // Rendering to byte precision is always available by the spec of OpenGL ES 2.0 and 3.0.
     return;
-  } else if (texture.dataType == LTGLPixelDataTypeFloat &&
-             texture.bitDepth == LTGLPixelBitDepth16) {
+  } else if (texture.dataType == LTGLPixelDataType16Float) {
     if (!context.canRenderToHalfFloatTextures) {
       [LTGLException raise:kLTFboInvalidAttachmentException format:@"Given texture has a pixel "
        "format %@, which is unsupported as a render target on this device", texture.pixelFormat];
     }
-  } else if (texture.dataType == LTGLPixelDataTypeFloat &&
-             texture.bitDepth == LTGLPixelBitDepth32) {
+  } else if (texture.dataType == LTGLPixelDataType32Float) {
     if (!context.canRenderToFloatTextures) {
       [LTGLException raise:kLTFboInvalidAttachmentException format:@"Given texture has pixel "
        "format %@, which is unsupported as a render target on this device", texture.pixelFormat];

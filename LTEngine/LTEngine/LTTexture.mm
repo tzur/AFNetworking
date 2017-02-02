@@ -608,10 +608,6 @@ NS_ASSUME_NONNULL_BEGIN
   _maxMipmapLevel = maxMipmapLevel;
 }
 
-- (LTGLPixelBitDepth)bitDepth {
-  return self.pixelFormat.bitDepth;
-}
-
 - (LTGLPixelComponents)components {
   return self.pixelFormat.components;
 }

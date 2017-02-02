@@ -376,10 +376,10 @@ static void LTVerifyMipmapImages(const Matrices &images) {
 }
 
 - (int)matDepthForReading {
-  if (self.dataType == LTGLPixelDataTypeUnorm && self.bitDepth == LTGLPixelBitDepth8) {
+  if (self.dataType == LTGLPixelDataType8Unorm) {
     // GL_UNSIGNED_BYTE is always supported for byte textures.
     return CV_8U;
-  } else if (self.dataType == LTGLPixelDataTypeFloat && self.bitDepth == LTGLPixelBitDepth16) {
+  } else if (self.dataType == LTGLPixelDataType16Float) {
     // GL_HALF_FLOAT is only supported on device.
     GLint type;
     glGetIntegerv(GL_IMPLEMENTATION_COLOR_READ_TYPE, &type);
@@ -389,7 +389,7 @@ static void LTVerifyMipmapImages(const Matrices &images) {
     } else {
       return CV_32F;
     }
-  } else if (self.dataType == LTGLPixelDataTypeFloat && self.bitDepth == LTGLPixelBitDepth32) {
+  } else if (self.dataType == LTGLPixelDataType32Float) {
     // If reading is possible, then support for GL_FLOAT is guaranteed.
     return CV_32F;
   } else {

@@ -17,8 +17,8 @@ NS_ASSUME_NONNULL_BEGIN
                             outputTexture:(LTTexture *)outputTexture {
   LTParameterAssert(baseLevel.size == outputTexture.size,
                     @"Output texture and base gaussin level must be of the same size");
-  LTParameterAssert(outputTexture.dataType == LTGLPixelDataTypeFloat,
-                    @"Output texture should be of floating precision");
+  LTParameterAssert(outputTexture.dataType == LTGLPixelDataType16Float,
+                    @"Output texture should be of float precision");
   LTParameterAssert(higherLevel.minFilterInterpolation == LTTextureInterpolationNearest,
                     @"Higher gaussian level min interpolation method must be Nearest Neighbour");
   LTParameterAssert(higherLevel.magFilterInterpolation == LTTextureInterpolationNearest,

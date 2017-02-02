@@ -301,9 +301,6 @@ typedef CIImage * _Nullable(^LTTextureCoreImageBlock)();
 #pragma mark Properties
 #pragma mark -
 
-/// Bit depth of the underlying pixel buffer, derived from \c pixelFormat.
-@property (readonly, nonatomic) LTGLPixelBitDepth bitDepth;
-
 /// Components of the underlying pixel buffer, derived from \c pixelFormat.
 @property (readonly, nonatomic) LTGLPixelComponents components;
 

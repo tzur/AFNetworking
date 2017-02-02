@@ -40,8 +40,7 @@ NS_ASSUME_NONNULL_BEGIN
   LTParameterAssert(level <= maxLevel,
                     @"level cannot be larger than %lu", (unsigned long)maxLevel);
 
-  LTGLPixelFormat *hfFormat = [LTLaplacianPyramidProcessor
-                               floatPrecisionPixelFormatFromAnyPixelFormat:input.pixelFormat];
+  LTGLPixelFormat *hfFormat = [[self class] halfFloatPixelFormatFromPixelFormat:input.pixelFormat];
 
   NSMutableArray *outputLevels = [NSMutableArray arrayWithCapacity:level];
   for (NSUInteger i = 0; i < level; ++i) {
@@ -55,10 +54,8 @@ NS_ASSUME_NONNULL_BEGIN
   return [outputLevels copy];
 }
 
-/// Converts any \c LTGLPixelDataType to a Floating Point \c LTGLPixelDataType with the closest
-/// BitDepth.
-+ (LTGLPixelFormat *)floatPrecisionPixelFormatFromAnyPixelFormat:(LTGLPixelFormat *)format {
-  if (format.dataType == LTGLPixelDataTypeFloat) {
++ (LTGLPixelFormat *)halfFloatPixelFormatFromPixelFormat:(LTGLPixelFormat *)format {
+  if (format.dataType == LTGLPixelDataType16Float) {
     return format;
   }
   switch (format.components) {
