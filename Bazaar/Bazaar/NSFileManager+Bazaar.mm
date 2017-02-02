@@ -18,11 +18,10 @@ NS_ASSUME_NONNULL_BEGIN
         NSNumber *fileSize = fileAttributes[NSFileSize];
         if (!fileSize) {
           if (error) {
-            NSString *description =
-                [NSString stringWithFormat:@"File size is not specified in attributes for item at "
-                 "path %@, item type is %@", filePath, fileAttributes[NSFileType]];
             *error = [NSError lt_errorWithCode:BZRErrorCodeFileAttributesRetrievalFailed
-                                          path:filePath description:description];
+                                          path:filePath
+                                   description:@"File size is not specified in attributes for item "
+                      "at path %@, item type is %@", filePath, fileAttributes[NSFileType]];
           }
           return nil;
         }
@@ -85,20 +84,18 @@ NS_ASSUME_NONNULL_BEGIN
   BOOL isDirectory;
   if (![self fileExistsAtPath:path isDirectory:&isDirectory] || !isDirectory) {
     if (error) {
-      NSString *description =
-          [NSString stringWithFormat:@"Item at path %@ does not exist or is not a directory", path];
       *error = [NSError lt_errorWithCode:BZRErrorCodeDirectoryEnumrationFailed path:path
-                             description:description];
+                             description:@"Item at path %@ does not exist or is not a directory",
+                path];
     }
     return nil;
   }
 
   NSDirectoryEnumerator<NSString *> *enumerator = [self enumeratorAtPath:path];
   if (!enumerator && error) {
-    NSString *description =
-      [NSString stringWithFormat:@"Failed to create enumartor for directory at path %@", path];
     *error = [NSError lt_errorWithCode:BZRErrorCodeDirectoryEnumrationFailed path:path
-                           description:description];
+                           description:@"Failed to create enumartor for directory at path %@",
+              path];
   }
   return enumerator;
 }

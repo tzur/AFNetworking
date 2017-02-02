@@ -57,7 +57,7 @@ NS_ASSUME_NONNULL_BEGIN
   _Nullable id<PTNAuthorizationManager> authorizationManager = self.sourceMapping[scheme];
   if (!authorizationManager) {
     return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeUnrecognizedURLScheme
-        description:[NSString stringWithFormat:@"Unsupported scheme: %@", scheme]]];
+                                          description:@"Unsupported scheme: %@", scheme]];
   }
   
   return [authorizationManager requestAuthorizationFromViewController:viewController];
@@ -67,7 +67,7 @@ NS_ASSUME_NONNULL_BEGIN
   _Nullable id<PTNAuthorizationManager> authorizationManager = self.sourceMapping[scheme];
   if (![authorizationManager respondsToSelector:@selector(revokeAuthorization)]) {
     return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeUnrecognizedURLScheme
-        description:[NSString stringWithFormat:@"Unsupported scheme: %@", scheme]]];
+                                          description:@"Unsupported scheme: %@", scheme]];
   }
   
   return [authorizationManager revokeAuthorization];
@@ -77,7 +77,7 @@ NS_ASSUME_NONNULL_BEGIN
   _Nullable id<PTNAuthorizationManager> authorizationManager = self.sourceMapping[scheme];
   if (!authorizationManager) {
     return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeUnrecognizedURLScheme
-        description:[NSString stringWithFormat:@"Unsupported scheme: %@", scheme]]];
+                                          description:@"Unsupported scheme: %@", scheme]];
   }
 
   return RACObserve(authorizationManager, authorizationStatus);

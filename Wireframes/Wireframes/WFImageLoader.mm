@@ -45,8 +45,8 @@ NS_ASSUME_NONNULL_BEGIN
   id<WFImageProvider> _Nullable provider = self.providers[scheme];
   if (!provider) {
     NSError *error = [NSError lt_errorWithCode:WFErrorCodeUnrecognizedURLScheme url:url
-                                   description:[NSString stringWithFormat:@"No image provider "
-                                                "could be found for scheme \'%@\'", scheme]];
+                                   description:@"No image provider could be found for scheme "
+                      "\'%@\'", scheme];
     return [RACSignal error:error];
   }
 

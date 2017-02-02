@@ -59,8 +59,7 @@ NS_ASSUME_NONNULL_BEGIN
     if (!bundle) {
       if (error) {
         *error = [NSError lt_errorWithCode:WFErrorCodeAssetNotFound url:originalURL
-                               description:[NSString stringWithFormat:
-                                            @"No bundle could be loaded at %@", bundleURL]];
+                               description:@"No bundle could be loaded at %@", bundleURL];
       }
       return nil;
     }
@@ -70,8 +69,8 @@ NS_ASSUME_NONNULL_BEGIN
                     compatibleWithTraitCollection:nil];
   if (!image && error) {
     *error = [NSError lt_errorWithCode:WFErrorCodeAssetNotFound url:originalURL
-                           description:[NSString stringWithFormat:@"Asset named %@ was not found "
-                                        "in %@", name, (bundleURL ?: @"(main bundle)")]];
+                           description:@"Asset named %@ was not found in %@", name,
+              (bundleURL ?: @"(main bundle)")];
   }
 
   return image;

@@ -330,11 +330,10 @@ objection_requires_sel(@selector(fileManager));
     return YES;
   }
 
-  NSString *description =
-      [NSString stringWithFormat:@"Could not create UIImage from %@: invalid pixel format %@",
-       path.path, metadata.pixelFormat.name];
   if (error) {
-    *error = [NSError lt_errorWithCode:LTErrorCodeObjectCreationFailed description:description];
+    *error = [NSError lt_errorWithCode:LTErrorCodeObjectCreationFailed
+                           description:@"Could not create UIImage from %@: invalid pixel format %@",
+              path.path, metadata.pixelFormat.name];
   }
   return NO;
 }

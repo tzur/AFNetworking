@@ -53,10 +53,10 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 + (NSError *)integrityValidationErrorWithFailingKey:(NSString *)failingKey {
-  NSString *description = [NSString stringWithFormat:@"Invalid dictionary value for model %@, "
-                           "dictionary is lacking a required value or specified null value for a "
-                           "required property key: '%@'", self, failingKey];
-  return [NSError lt_errorWithCode:LTErrorCodeObjectCreationFailed description:description];
+  return [NSError lt_errorWithCode:LTErrorCodeObjectCreationFailed
+                       description:@"Invalid dictionary value for model %@, dictionary is lacking "
+          "a required value or specified null value for a required property key: '%@'", self,
+          failingKey];
 }
 
 #pragma mark -

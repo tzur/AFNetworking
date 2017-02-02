@@ -452,11 +452,10 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
     NSError *error;
     BOOL success = [device cam_performWhileLocked:^BOOL(NSError **errorPtr) {
       if (lensPosition > 1 || lensPosition < 0 || !std::isfinite(lensPosition)) {
-        NSString *description =
-            [NSString stringWithFormat:@"Lens position %g is out of range [0, 1]", lensPosition];
         if (errorPtr) {
           *errorPtr = [NSError lt_errorWithCode:CAMErrorCodeFocusSettingUnsupported
-                                    description:description];
+                                    description:@"Lens position %g is out of range [0, 1]",
+                       lensPosition];
         }
         return NO;
       }
@@ -645,36 +644,30 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
 
         if (gains.redGain < 1 || gains.redGain > device.maxWhiteBalanceGain ||
             !std::isfinite(gains.redGain)) {
-          NSString *description =
-              [NSString stringWithFormat:@"Red gain %g is out of range [1, %g]",
-                                         gains.redGain, device.maxWhiteBalanceGain];
           if (errorPtr) {
             *errorPtr = [NSError lt_errorWithCode:CAMErrorCodeWhiteBalanceSettingUnsupported
-                                      description:description];
+                                      description:@"Red gain %g is out of range [1, %g]",
+                         gains.redGain, device.maxWhiteBalanceGain];
           }
           return NO;
         }
 
         if (gains.greenGain < 1 || gains.greenGain > device.maxWhiteBalanceGain ||
             !std::isfinite(gains.greenGain)) {
-          NSString *description =
-              [NSString stringWithFormat:@"Green gain %g is out of range [1, %g]",
-                                         gains.greenGain, device.maxWhiteBalanceGain];
           if (errorPtr) {
             *errorPtr = [NSError lt_errorWithCode:CAMErrorCodeWhiteBalanceSettingUnsupported
-                                      description:description];
+                                      description:@"Green gain %g is out of range [1, %g]",
+                         gains.greenGain, device.maxWhiteBalanceGain];
           }
           return NO;
         }
 
         if (gains.blueGain < 1 || gains.blueGain > device.maxWhiteBalanceGain ||
             !std::isfinite(gains.blueGain)) {
-          NSString *description =
-              [NSString stringWithFormat:@"Blue gain %g is out of range [1, %g]",
-                                         gains.blueGain, device.maxWhiteBalanceGain];
           if (errorPtr) {
             *errorPtr = [NSError lt_errorWithCode:CAMErrorCodeWhiteBalanceSettingUnsupported
-                                      description:description];
+                                      description:@"Blue gain %g is out of range [1, %g]",
+                         gains.blueGain, device.maxWhiteBalanceGain];
           }
           return NO;
         }
@@ -715,12 +708,10 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
     BOOL success = [device cam_performWhileLocked:^BOOL(NSError **errorPtr) {
       if (zoomFactor > self.maxZoomFactor || zoomFactor < self.minZoomFactor ||
           !std::isfinite(zoomFactor)) {
-        NSString *description =
-            [NSString stringWithFormat:@"Zoom factor %g is out of range [%g, %g]",
-                                       zoomFactor, self.minZoomFactor, self.maxZoomFactor];
         if (errorPtr) {
           *errorPtr = [NSError lt_errorWithCode:CAMErrorCodeZoomSettingUnsupported
-                                    description:description];
+                                    description:@"Zoom factor %g is out of range [%g, %g]",
+                       zoomFactor, self.minZoomFactor, self.maxZoomFactor];
         }
         return NO;
       }
@@ -741,12 +732,10 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
     BOOL success = [device cam_performWhileLocked:^BOOL(NSError **errorPtr) {
       if (zoomFactor > self.maxZoomFactor || zoomFactor < self.minZoomFactor ||
           !std::isfinite(zoomFactor)) {
-        NSString *description =
-            [NSString stringWithFormat:@"Zoom factor %g is out of range [%g, %g]",
-                                       zoomFactor, self.minZoomFactor, self.maxZoomFactor];
         if (errorPtr) {
           *errorPtr = [NSError lt_errorWithCode:CAMErrorCodeZoomSettingUnsupported
-                                    description:description];
+                                    description:@"Zoom factor %g is out of range [%g, %g]",
+                       zoomFactor, self.minZoomFactor, self.maxZoomFactor];
         }
         return NO;
       }
@@ -808,11 +797,9 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
   AVCaptureDevice *device = self.session.videoDevice;
   BOOL success = [device cam_performWhileLocked:^BOOL(NSError **errorPtr) {
     if (torchLevel > 1 || torchLevel < 0 || !std::isfinite(torchLevel)) {
-      NSString *description =
-          [NSString stringWithFormat:@"Torch level %g is out of range [0, 1]", torchLevel];
       if (errorPtr) {
         *errorPtr = [NSError lt_errorWithCode:CAMErrorCodeTorchModeSettingUnsupported
-                                  description:description];
+                                  description:@"Torch level %g is out of range [0, 1]", torchLevel];
       }
       return NO;
     }

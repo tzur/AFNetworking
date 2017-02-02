@@ -53,9 +53,9 @@ NS_ASSUME_NONNULL_BEGIN
   BOOL finalized = CGImageDestinationFinalize(destination.get());
   if (!finalized) {
     if (error) {
-      NSString *description =
-          [NSString stringWithFormat:@"Failed creating image %@ with metadata %@", image, metadata];
-      *error = [NSError lt_errorWithCode:LTErrorCodeObjectCreationFailed description:description];
+      *error = [NSError lt_errorWithCode:LTErrorCodeObjectCreationFailed
+                             description:@"Failed creating image %@ with metadata %@", image,
+                metadata];
     }
     return nil;
   }
