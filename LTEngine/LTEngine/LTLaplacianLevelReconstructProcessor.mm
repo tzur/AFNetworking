@@ -12,21 +12,22 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation LTLaplacianLevelReconstructProcessor
 
-- (instancetype) initWithBaseLaplacianLevel:(LTTexture *)baseLaplacianLevel
-                        higherGaussianLevel:(LTTexture *)higherGaussianLevel
-                              outputTexture:(LTTexture *)outputTexture {
+- (instancetype)initWithBaseLaplacianLevel:(LTTexture *)baseLaplacianLevel
+                       higherGaussianLevel:(LTTexture *)higherGaussianLevel
+                             outputTexture:(LTTexture *)outputTexture {
   return [self initWithBaseLaplacianLevel:baseLaplacianLevel baseLaplacianLevelBoost:1.0
                       higherGaussianLevel:higherGaussianLevel outputTexture:outputTexture];
 }
 
-- (instancetype) initWithBaseLaplacianLevel:(LTTexture *)baseLaplacianLevel
-                    baseLaplacianLevelBoost:(CGFloat)baseLevelBoost
-                        higherGaussianLevel:(LTTexture *)higherGaussianLevel
-                              outputTexture:(LTTexture *)outputTexture {
+- (instancetype)initWithBaseLaplacianLevel:(LTTexture *)baseLaplacianLevel
+                   baseLaplacianLevelBoost:(CGFloat)baseLevelBoost
+                       higherGaussianLevel:(LTTexture *)higherGaussianLevel
+                             outputTexture:(LTTexture *)outputTexture {
   LTParameterAssert(baseLaplacianLevel.size == outputTexture.size,
                     @"output texture should be the same size as base Laplacian level");
-  LTParameterAssert(baseLaplacianLevel.dataType == LTGLPixelDataTypeFloat,
-                    @"base Laplacian level should be of floating precision");
+  LTParameterAssert(baseLaplacianLevel.dataType == LTGLPixelDataType16Float ||
+                    baseLaplacianLevel.dataType == LTGLPixelDataType32Float,
+                    @"base Laplacian level should be of float precision");
   LTParameterAssert(higherGaussianLevel.minFilterInterpolation == LTTextureInterpolationNearest,
                     @"Higher gaussian level min interpolation method must be Nearest Neighbour");
   LTParameterAssert(higherGaussianLevel.magFilterInterpolation == LTTextureInterpolationNearest,

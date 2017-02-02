@@ -47,14 +47,11 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 + (BOOL)pixelFormatSupportedByMemoryMappedTexture:(LTGLPixelFormat *)pixelFormat {
-  if (pixelFormat.bitDepth == LTGLPixelBitDepth8 &&
-      pixelFormat.dataType == LTGLPixelDataTypeUnorm) {
+  if (pixelFormat.dataType == LTGLPixelDataType8Unorm) {
     return YES;
-  } else if (pixelFormat.bitDepth == LTGLPixelBitDepth16 &&
-             pixelFormat.dataType == LTGLPixelDataTypeFloat) {
+  } else if (pixelFormat.dataType == LTGLPixelDataType16Float) {
     return [LTGLContext currentContext].canRenderToHalfFloatTextures;
-  } else if (pixelFormat.bitDepth == LTGLPixelBitDepth32 &&
-             pixelFormat.dataType == LTGLPixelDataTypeFloat) {
+  } else if (pixelFormat.dataType == LTGLPixelDataType32Float) {
     return [LTGLContext currentContext].canRenderToFloatTextures;
   } else {
     // Unknown pixel format, assume that LTMMTexture cannot handle it.

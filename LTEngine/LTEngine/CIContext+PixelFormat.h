@@ -20,9 +20,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// requesting a context on the same thread for the same \c pixelFormat twice will only create a
 /// single context.
 ///
-/// @note Supported pixel format must have either \c LTGLPixelBitDepth8 and
-/// \c LTGLPixelDataTypeUnorm or \c LTGLPixelBitDepth16 and \c LTGLPixelDataTypeFloat. Will raise an
-/// exception otherwise.
+/// @note Supported pixel format data type must be \c LTGLPixelDataType8Unorm or
+/// \c LTGLPixelDataType16Float.
 + (instancetype)lt_contextWithPixelFormat:(LTGLPixelFormat *)pixelFormat;
 
 /// Clears the global context cache.

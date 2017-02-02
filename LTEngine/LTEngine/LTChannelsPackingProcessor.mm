@@ -55,8 +55,8 @@ NS_ASSUME_NONNULL_BEGIN
     LTParameterAssert(inputs[i].components == LTGLPixelComponentsR, @"input textures must have "
                       "only 1 channel but input texture pixel format at index %lu is %@",
                       (unsigned long)i, inputs[i].pixelFormat);
-    LTParameterAssert(inputs[i].bitDepth == output.bitDepth, @"input textures and output texture "
-                      "must have the same bit depth but input texture pixel format at index %lu is "
+    LTParameterAssert(inputs[i].dataType == output.dataType, @"input textures and output texture "
+                      "must have the same data type but input texture pixel format at index %lu is "
                       "%@ and output texture pixel format is %@",
                       (unsigned long)i, inputs[i].pixelFormat, output.pixelFormat);
   }

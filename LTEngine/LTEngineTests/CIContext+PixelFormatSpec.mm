@@ -22,7 +22,7 @@ SpecBegin(CIContext_PixelFormat)
 context(@"create context with correct working format precision", ^{
   xit(@"should use half float precision working format for half float precision pixel format", ^{
     [LTGLPixelFormat enumerateEnumUsingBlock:^(LTGLPixelFormat *format) {
-      if (format.bitDepth != LTGLPixelBitDepth16 || format.dataType != LTGLPixelDataTypeFloat) {
+      if (format.dataType != LTGLPixelDataType16Float) {
         return;
       }
 
@@ -33,7 +33,7 @@ context(@"create context with correct working format precision", ^{
 
   xit(@"should use byte precision working format for byte precision pixel format", ^{
     [LTGLPixelFormat enumerateEnumUsingBlock:^(LTGLPixelFormat *format) {
-      if (format.bitDepth != LTGLPixelBitDepth8 || format.dataType != LTGLPixelDataTypeUnorm) {
+      if (format.dataType != LTGLPixelDataType8Unorm) {
         return;
       }
 
@@ -45,8 +45,8 @@ context(@"create context with correct working format precision", ^{
 
 it(@"should raise when creating context with an invalid pixel format", ^{
     [LTGLPixelFormat enumerateEnumUsingBlock:^(LTGLPixelFormat *format) {
-      if ((format.bitDepth == LTGLPixelBitDepth8 && format.dataType == LTGLPixelDataTypeUnorm) ||
-          (format.bitDepth == LTGLPixelBitDepth16 && format.dataType == LTGLPixelDataTypeFloat)) {
+      if (format.dataType == LTGLPixelDataType8Unorm ||
+          format.dataType == LTGLPixelDataType16Float) {
         return;
       }
 

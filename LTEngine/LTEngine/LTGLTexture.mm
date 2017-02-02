@@ -378,10 +378,10 @@ static void LTVerifyMipmapImages(const Matrices &images) {
 }
 
 - (int)matDepthForReading {
-  if (self.dataType == LTGLPixelDataTypeUnorm && self.bitDepth == LTGLPixelBitDepth8) {
+  if (self.dataType == LTGLPixelDataType8Unorm) {
     // GL_UNSIGNED_BYTE is always supported for byte textures.
     return CV_8U;
-  } else if (self.dataType == LTGLPixelDataTypeFloat && self.bitDepth == LTGLPixelBitDepth16) {
+  } else if (self.dataType == LTGLPixelDataType16Float) {
     // GL_HALF_FLOAT is only supported on device.
     GLint type;
     glGetIntegerv(GL_IMPLEMENTATION_COLOR_READ_TYPE, &type);
@@ -391,7 +391,7 @@ static void LTVerifyMipmapImages(const Matrices &images) {
     } else {
       return CV_32F;
     }
-  } else if (self.dataType == LTGLPixelDataTypeFloat && self.bitDepth == LTGLPixelBitDepth32) {
+  } else if (self.dataType == LTGLPixelDataType32Float) {
     // If reading is possible, then support for GL_FLOAT is guaranteed.
     return CV_32F;
   } else {
@@ -402,6 +402,7 @@ static void LTVerifyMipmapImages(const Matrices &images) {
 - (int)matChannelsForReading {
   switch ([self bestSupportedReadingComponents]) {
     case LTGLPixelComponentsR:
+    case LTGLPixelComponentsDepth:
       return 1;
     case LTGLPixelComponentsRG:
       return 2;
@@ -413,6 +414,7 @@ static void LTVerifyMipmapImages(const Matrices &images) {
 - (LTGLPixelComponents)bestSupportedReadingComponents {
   switch (self.components) {
     case LTGLPixelComponentsR:
+    case LTGLPixelComponentsDepth:
     case LTGLPixelComponentsRG:
       // Get the minimal number of channels available.
       GLint format;
@@ -436,6 +438,7 @@ static void LTVerifyMipmapImages(const Matrices &images) {
 - (int)matTypeForWriting {
   switch (self.components) {
     case LTGLPixelComponentsR:
+    case LTGLPixelComponentsDepth:
     case LTGLPixelComponentsRG:
       if ([LTGLContext currentContext].supportsRGTextures) {
         return [self matType];

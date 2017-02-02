@@ -9,20 +9,16 @@ NS_ASSUME_NONNULL_BEGIN
 typedef NS_ENUM(NSUInteger, LTGLPixelComponents) {
   LTGLPixelComponentsR,
   LTGLPixelComponentsRG,
-  LTGLPixelComponentsRGBA
+  LTGLPixelComponentsRGBA,
+  LTGLPixelComponentsDepth
 };
 
-/// Bit depth of each component of a pixel format.
-typedef NS_ENUM(NSUInteger, LTGLPixelBitDepth) {
-  LTGLPixelBitDepth8,
-  LTGLPixelBitDepth16,
-  LTGLPixelBitDepth32
-};
-
-/// Data type of each component of a pixel format.
+/// Data type for each component of a pixel format, which contains its bit depth and type.
 typedef NS_ENUM(NSUInteger, LTGLPixelDataType) {
-  LTGLPixelDataTypeUnorm,
-  LTGLPixelDataTypeFloat
+  LTGLPixelDataType8Unorm,
+  LTGLPixelDataType16Unorm,
+  LTGLPixelDataType16Float,
+  LTGLPixelDataType32Float
 };
 
 NS_ENUM(int) {
@@ -38,15 +34,16 @@ NS_ENUM(GLenum) {
 /// Describes the organization of color, depth, or stencil data storage in individual pixels of an
 /// \c LTTexture or \c LTRenderbuffer objects.
 LTEnumDeclare(NSUInteger, LTGLPixelFormat,
-  LTGLPixelFormatR8Unorm, 
-  LTGLPixelFormatR16Float, 
-  LTGLPixelFormatR32Float, 
-  LTGLPixelFormatRG8Unorm, 
-  LTGLPixelFormatRG16Float, 
-  LTGLPixelFormatRG32Float, 
-  LTGLPixelFormatRGBA8Unorm, 
+  LTGLPixelFormatR8Unorm,
+  LTGLPixelFormatR16Float,
+  LTGLPixelFormatR32Float,
+  LTGLPixelFormatRG8Unorm,
+  LTGLPixelFormatRG16Float,
+  LTGLPixelFormatRG32Float,
+  LTGLPixelFormatRGBA8Unorm,
   LTGLPixelFormatRGBA16Float,
-  LTGLPixelFormatRGBA32Float
+  LTGLPixelFormatRGBA32Float,
+  LTGLPixelFormatDepth16Unorm
 );
 
 /// Holds \c cv::Mat types that are supported by \c LTGLPixelFormat.
@@ -89,9 +86,8 @@ typedef std::vector<OSType> LTGLPixelFormatSupportedCVPixelFormatTypes;
 - (instancetype)initWithPlanarCVPixelFormatType:(OSType)cvPixelFormatType
                                      planeIndex:(size_t)planeIndex;
 
-/// Initializes a pixel format from \c components, \c bitDepth and \c dataType.
+/// Initializes a pixel format from \c components and \c dataType.
 - (instancetype)initWithComponents:(LTGLPixelComponents)components
-                          bitDepth:(LTGLPixelBitDepth)bitDepth
                           dataType:(LTGLPixelDataType)dataType;
 
 /// Returns a vector of the supported \c cv::Mat types via \c -[LTGLPixelFormat initWithMatType:].
@@ -126,9 +122,6 @@ typedef std::vector<OSType> LTGLPixelFormatSupportedCVPixelFormatTypes;
 
 /// Returns the number of channels of the pixel format.
 @property (readonly, nonatomic) NSUInteger channels;
-
-/// Bit depth of each component of the pixel format.
-@property (readonly, nonatomic) LTGLPixelBitDepth bitDepth;
 
 /// Data type of each component of the pixel format.
 @property (readonly, nonatomic) LTGLPixelDataType dataType;

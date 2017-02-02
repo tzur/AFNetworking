@@ -7,7 +7,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class LTTexture;
 
-/// Processor for packing several single cahnnel textures into a single RGBA texture.
+/// Processor for packing several single channel textures into a single RGBA texture.
 /// If there are less than 4 input textures, the processor fills the rest of the channels in the
 /// output texture with zeros.
 @interface LTChannelsPackingProcessor : LTOneShotImageProcessor
@@ -35,7 +35,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Initializes the processor with given \c inputs textures and an \c output texture. \c inputs must
 /// contain between 1 to 4 single channel textures of the same size and the same pixel format. \c
-/// output texture must be an RGBA texture with equal size and \c bitDepth to the input textures
+/// output texture must be an RGBA texture with equal size and \c dataType to the input textures
 /// ones.
 - (instancetype)initWithInputs:(NSArray<LTTexture *> *)inputs output:(LTTexture *)output
     NS_DESIGNATED_INITIALIZER;

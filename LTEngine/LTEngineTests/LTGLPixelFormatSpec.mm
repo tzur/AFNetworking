@@ -36,7 +36,6 @@ sharedExamplesFor(kLTGLPixelFormatExamples, ^(NSDictionary *contextInfo) {
   it(@"should initialize with components, bit depth and data type correctly", ^{
     [LTGLPixelFormat enumerateEnumUsingBlock:^(LTGLPixelFormat *expected) {
       LTGLPixelFormat *pixelFormat = [[LTGLPixelFormat alloc] initWithComponents:expected.components
-                                                                        bitDepth:expected.bitDepth
                                                                         dataType:expected.dataType];
       expect(pixelFormat).to.equal(expected);
     }];
@@ -45,12 +44,6 @@ sharedExamplesFor(kLTGLPixelFormatExamples, ^(NSDictionary *contextInfo) {
   it(@"should return valid OpenGL format for all pixel formats", ^{
     [LTGLPixelFormat enumerateEnumUsingBlock:^(LTGLPixelFormat *pixelFormat) {
       expect([pixelFormat formatForVersion:version]).notTo.equal(LTGLInvalidEnum);
-    }];
-  });
-
-  it(@"should return valid OpenGL precision for all pixel formats", ^{
-    [LTGLPixelFormat enumerateEnumUsingBlock:^(LTGLPixelFormat *pixelFormat) {
-      expect([pixelFormat precisionForVersion:version]).notTo.equal(LTGLInvalidEnum);
     }];
   });
 
@@ -111,6 +104,7 @@ sharedExamplesFor(kLTGLPixelFormatExamples, ^(NSDictionary *contextInfo) {
       NSUInteger expectedChannels;
       switch (pixelFormat.components) {
         case LTGLPixelComponentsR:
+        case LTGLPixelComponentsDepth:
           expectedChannels = 1;
           break;
         case LTGLPixelComponentsRG:

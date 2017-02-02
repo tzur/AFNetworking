@@ -73,9 +73,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)verifyTexture:(LTTexture *)texture {
   LTParameterAssert(texture);
-  LTParameterAssert(texture.bitDepth == LTGLPixelBitDepth8,
+  LTParameterAssert(texture.dataType == LTGLPixelDataType8Unorm,
                     @"JPEG compression supports only byte precision textures: %lu",
-                    (unsigned long)texture.bitDepth);
+                    (unsigned long)texture.dataType);
   LTParameterAssert(!texture.usingAlphaChannel,
                     @"JPEG compression does not support textures using their alpha channel");
 }
