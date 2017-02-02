@@ -80,10 +80,9 @@ NS_ASSUME_NONNULL_BEGIN
     id<BZRProductContentFetcher> contentFetcher = self.contentFetchers[contentFetcherName];
     if (!contentFetcher) {
       NSError *error;
-      NSString *errorDescription = [NSString stringWithFormat:@"Contentfetcher with name %@ "
-                                    "is not registered.", contentFetcherName];
       error = [NSError lt_errorWithCode:BZRErrorCodeProductContentFetcherNotRegistered
-                            description:errorDescription];
+                            description:@"Contentfetcher with name %@ is not registered.",
+               contentFetcherName];
       [subscriber sendError:error];
     } else {
       [subscriber sendNext:contentFetcher];

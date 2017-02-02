@@ -121,8 +121,7 @@ NS_ASSUME_NONNULL_BEGIN
     } else {
       if (error) {
         *error = [NSError lt_errorWithCode:WFErrorCodeInvalidURL url:url
-                               description:[NSString stringWithFormat:@"Unsupported parameter %@",
-                                            item.name]];
+                               description:@"Unsupported parameter %@", item.name];
       }
       return nil;
     }
@@ -131,8 +130,7 @@ NS_ASSUME_NONNULL_BEGIN
   if (size.width <= 0 || size.height <= 0) {
     if (error) {
       *error = [NSError lt_errorWithCode:WFErrorCodeInvalidURL url:url
-                             description:[NSString stringWithFormat:@"Illegal image size (%g, %g)",
-                                          size.width, size.height]];
+                             description:@"Illegal image size (%g, %g)", size.width, size.height];
     }
     return nil;
   }
@@ -147,8 +145,8 @@ NS_ASSUME_NONNULL_BEGIN
   if (!target) {
     if (error) {
       *error = [NSError lt_errorWithCode:WFErrorCodeAssetNotFound url:request.url
-                             description:[NSString stringWithFormat:@"Requested PaintCode module "
-                                          "%@ not found", request.moduleName]];
+                             description:@"Requested PaintCode module %@ not found",
+                request.moduleName];
     }
     return nil;
   }
@@ -158,9 +156,8 @@ NS_ASSUME_NONNULL_BEGIN
   if (![target respondsToSelector:selector] || !methodSignature) {
     if (error) {
       *error = [NSError lt_errorWithCode:WFErrorCodeAssetNotFound url:request.url
-                             description:[NSString stringWithFormat:@"Requested selector %@ not "
-                                          "found in module %@", NSStringFromSelector(selector),
-                                          request.moduleName]];
+                             description:@"Requested selector %@ not found in module %@",
+                NSStringFromSelector(selector), request.moduleName];
     }
     return nil;
   }
@@ -208,8 +205,7 @@ NS_ASSUME_NONNULL_BEGIN
   if (![url.scheme isEqualToString:@"paintcode"]) {
     if (error) {
       *error = [NSError lt_errorWithCode:WFErrorCodeInvalidURL url:url
-                             description:[NSString stringWithFormat:@"Unexpected URL scheme %@",
-                                          url.scheme]];
+                             description:@"Unexpected URL scheme %@", url.scheme];
     }
     return NO;
   }

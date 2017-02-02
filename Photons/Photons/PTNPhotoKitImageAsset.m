@@ -102,11 +102,10 @@ NS_ASSUME_NONNULL_BEGIN
     return [[PTNImageMetadata alloc] init];
   } else {
     if (error) {
-      NSString *description = [NSString stringWithFormat:@"Unsupported media type given: %lu",
-                               (unsigned long)input.mediaType];
       *error = [NSError lt_errorWithCode:PTNErrorCodeAssetMetadataLoadingFailed
                                      url:self.asset.ptn_identifier
-                             description:description];
+                             description:@"Unsupported media type given: %lu",
+                (unsigned long)input.mediaType];
     }
     return nil;
   };

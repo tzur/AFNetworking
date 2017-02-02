@@ -14,20 +14,18 @@ NS_ASSUME_NONNULL_BEGIN
   NSError *underlyingError;
   NSObject *loadedValue = (NSObject *)[self valueForKey:key error:&underlyingError];
   if (!loadedValue && underlyingError) {
-    NSString *description =
-        [NSString stringWithFormat:@"Failed to load value with key=%@ from keychain storage", key];
     *error =
         [NSError lt_errorWithCode:BZRErrorCodeLoadingDataFromStorageFailed
-                      description:description underlyingError:underlyingError];
+                      description:@"Failed to load value with key=%@ from keychain storage"
+                  underlyingError:underlyingError, key];
     return nil;
   } else if (!loadedValue) {
     return nil;
   } else if (![loadedValue isKindOfClass:valueClass]) {
-    NSString *description =
-        [NSString stringWithFormat:@"Value loaded with key=%@ from keychain storage is not of the"
-         "right type, expected %@ got %@", key, valueClass, [loadedValue class]];
     *error =
-        [NSError lt_errorWithCode:BZRErrorCodeLoadingDataFromStorageFailed description:description];
+    [NSError lt_errorWithCode:BZRErrorCodeLoadingDataFromStorageFailed
+                  description:@"Value loaded with key=%@ from keychain storage is not of the right "
+     "type, expected %@ got %@", key, valueClass, [loadedValue class]];
     return nil;
   }
   return loadedValue;

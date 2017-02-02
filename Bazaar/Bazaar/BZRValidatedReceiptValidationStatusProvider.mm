@@ -57,9 +57,8 @@ NS_ASSUME_NONNULL_BEGIN
       tryMap:^BZRReceiptValidationParameters * _Nullable(
           BZRReceiptValidationParameters * _Nullable receiptValidationParameters, NSError **error) {
         if (!receiptValidationParameters && error) {
-          NSString *description = @"Receipt validation parameters are nil";
           *error = [NSError lt_errorWithCode:BZRErrorCodeReceiptValidationFailed
-                                 description:description];
+                                 description:@"Receipt validation parameters are nil"];
         }
         return receiptValidationParameters;
       }]
@@ -85,10 +84,9 @@ NS_ASSUME_NONNULL_BEGIN
           (BZRReceiptValidationStatus *receiptValidationStatus, NSError **error) {
         if (!receiptValidationStatus.isValid) {
           if (error) {
-            NSString *description = [NSString stringWithFormat:@"Failed to validate receipt, "
-                                     "reason: %@", receiptValidationStatus.error];
             *error = [NSError lt_errorWithCode:BZRErrorCodeReceiptValidationFailed
-                                   description:description];
+                                   description:@"Failed to validate receipt, reason: %@",
+                      receiptValidationStatus.error];
           }
           return nil;
         }
