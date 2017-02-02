@@ -14,9 +14,6 @@
 /// High priority queue for management tasks such as queue suspension.
 @property (strong, nonatomic) dispatch_queue_t highPriorityQueue;
 
-/// Dispatch group for all currently running tasks.
-@property (strong, nonatomic) dispatch_group_t group;
-
 /// OpenGL context that is used on given blocks.
 @property (strong, nonatomic) LTGLContext *context;
 
@@ -48,7 +45,6 @@ objection_register_singleton([LTGPUQueue class]);
     [self createQueues];
     [self createOpenGLContextWithSharegroup:context.context.sharegroup];
 
-    self.group = dispatch_group_create();
     self.completionQueue = dispatch_get_main_queue();
     self.failureQueue = dispatch_get_main_queue();
   }
@@ -109,11 +105,9 @@ objection_register_singleton([LTGPUQueue class]);
 
   @synchronized(self) {
     if (dispatch_get_specific(kLTGPULowPriorityQueueKey)) {
-      dispatch_group_enter(self.group);
       [self executeAsyncBlock:block completion:completion failure:failure];
-      dispatch_group_leave(self.group);
     } else {
-      dispatch_group_async(self.group, self.lowPriorityQueue, ^{
+      dispatch_async(self.lowPriorityQueue, ^{
         [self executeAsyncBlock:block completion:completion failure:failure];
       });
     }
@@ -172,9 +166,6 @@ objection_register_singleton([LTGPUQueue class]);
       return NO;
     }
 
-    // Since there's no dispatch_group_sync, simulate task enqueuing to the dispatch group.
-    dispatch_group_enter(self.group);
-
     __block NSError *error = nil;
 
     if (dispatch_get_specific(kLTGPULowPriorityQueueKey)) {
@@ -184,8 +175,6 @@ objection_register_singleton([LTGPUQueue class]);
         [self executeSyncBlock:block error:&error];
       });
     }
-
-    dispatch_group_leave(self.group);
 
     if (error) {
       [self handleSyncError:error failure:failure];
