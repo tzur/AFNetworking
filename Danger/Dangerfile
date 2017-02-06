@@ -1,0 +1,19 @@
+# Copyright (c) 2017 Lightricks. All rights reserved.
+
+danger.import_plugin(File.join(File.dirname(__FILE__), '*plugin.rb'))
+
+EXCLUDES ||= []
+raise StandardError, "Dangerfile must have EXCLUDES array" unless EXCLUDES.kind_of?(Array)
+print "Excluding #{EXCLUDES}\n"
+
+def is_excluded(filepath)
+  EXCLUDES.any? { |excluded_path| File.fnmatch?(excluded_path, filepath, File::FNM_DOTMATCH) }
+end
+
+commit_linter.lint
+
+# If file was moved it can be in the format foo/{bar/a.b => baz/c.d}.
+modified_files = git.modified_files.map { |path| path.gsub(/{(.*) => (.*)}/, '\2') }
+changed_files = (git.added_files + modified_files).uniq.select { |filepath| !is_excluded(filepath) }
+
+warn 'Found invalid JSON files' if json_linter.lint(changed_files)
