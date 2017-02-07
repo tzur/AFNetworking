@@ -60,8 +60,8 @@ NSString *LTSystemErrorMessageForError(int error);
 
 /// Creates an error with Lightricks' domain, given error code, error description in string format
 /// form and underlying error.
-+ (instancetype)lt_errorWithCode:(NSInteger)code description:(NSString *)description
-                 underlyingError:(nullable NSError *)underlyingError, ... NS_FORMAT_FUNCTION(2, 4);
++ (instancetype)lt_errorWithCode:(NSInteger)code underlyingError:(nullable NSError *)underlyingError
+                     description:(NSString *)description, ... NS_FORMAT_FUNCTION(3, 4);
 
 /// Creates an error with Lightricks' domain, given error code, related file path and underlying
 /// error.

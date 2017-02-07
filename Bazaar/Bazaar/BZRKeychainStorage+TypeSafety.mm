@@ -16,8 +16,8 @@ NS_ASSUME_NONNULL_BEGIN
   if (!loadedValue && underlyingError) {
     *error =
         [NSError lt_errorWithCode:BZRErrorCodeLoadingDataFromStorageFailed
-                      description:@"Failed to load value with key=%@ from keychain storage"
-                  underlyingError:underlyingError, key];
+                  underlyingError:underlyingError
+                      description:@"Failed to load value with key=%@ from keychain storage", key];
     return nil;
   } else if (!loadedValue) {
     return nil;

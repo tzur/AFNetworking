@@ -73,10 +73,10 @@ NSString *LTSystemErrorMessageForError(int error) {
   }];
 }
 
-+ (instancetype)lt_errorWithCode:(NSInteger)code description:(NSString *)description
-                 underlyingError:(nullable NSError *)underlyingError, ... {
++ (instancetype)lt_errorWithCode:(NSInteger)code underlyingError:(nullable NSError *)underlyingError
+                     description:(NSString *)description, ... {
   va_list argList;
-  va_start(argList, underlyingError);
+  va_start(argList, description);
   NSString *formattedDescription = [[NSString alloc] initWithFormat:description arguments:argList];
   va_end(argList);
 
