@@ -90,7 +90,7 @@ NS_ASSUME_NONNULL_BEGIN
 
     return metadata;
   } else if (input.mediaType == PHAssetMediaTypeVideo) {
-    if (!input.avAsset) {
+    if (!input.audiovisualAsset) {
       if (error) {
         *error = [NSError lt_errorWithCode:PTNErrorCodeAssetMetadataLoadingFailed
                                        url:self.asset.ptn_identifier
