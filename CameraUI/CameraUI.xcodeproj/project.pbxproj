@@ -87,6 +87,7 @@
 		BEEE6D3E1D21385D00579F5D /* EXPMatchers+sendValuesWithCount.m in Sources */ = {isa = PBXBuildFile; fileRef = BEEE6D2D1D21385D00579F5D /* EXPMatchers+sendValuesWithCount.m */; };
 		BEFF88011D22682200DEAA97 /* CUIFlashMenuViewModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = BEFF87FE1D22682200DEAA97 /* CUIFlashMenuViewModel.mm */; };
 		BEFF88021D22682200DEAA97 /* CUIFlashModeViewModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = BEFF88001D22682200DEAA97 /* CUIFlashModeViewModel.mm */; };
+		E4829F401E49D024009F3355 /* libOpenEXR.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E4829F3F1E49D024009F3355 /* libOpenEXR.a */; };
 		F925C2AC1D378BC100C95F46 /* CUIFocusIconMode.mm in Sources */ = {isa = PBXBuildFile; fileRef = F925C2AB1D378BC100C95F46 /* CUIFocusIconMode.mm */; };
 		F925C2D11D37B31E00C95F46 /* CUIFocusIconModeSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = F925C2D01D37B31E00C95F46 /* CUIFocusIconModeSpec.mm */; };
 		F9262E571D23A91A00CA60E7 /* CUIPreviewViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = F9262E541D23A91A00CA60E7 /* CUIPreviewViewController.mm */; };
@@ -603,6 +604,7 @@
 		BEFF87FE1D22682200DEAA97 /* CUIFlashMenuViewModel.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUIFlashMenuViewModel.mm; sourceTree = "<group>"; };
 		BEFF87FF1D22682200DEAA97 /* CUIFlashModeViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUIFlashModeViewModel.h; sourceTree = "<group>"; };
 		BEFF88001D22682200DEAA97 /* CUIFlashModeViewModel.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUIFlashModeViewModel.mm; sourceTree = "<group>"; };
+		E4829F3F1E49D024009F3355 /* libOpenEXR.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libOpenEXR.a; path = "../third_party/openexr-binaries/lib/libOpenEXR.a"; sourceTree = "<group>"; };
 		F908F6441D2A5B50007A988B /* CUIMenuViewModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CUIMenuViewModel.h; sourceTree = "<group>"; };
 		F925C2AA1D378BC100C95F46 /* CUIFocusIconMode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUIFocusIconMode.h; sourceTree = "<group>"; };
 		F925C2AB1D378BC100C95F46 /* CUIFocusIconMode.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUIFocusIconMode.mm; sourceTree = "<group>"; };
@@ -692,6 +694,7 @@
 				F965C9E91CF3183100005627 /* libLTEngine.a in Frameworks */,
 				65061A061D463938003D45B1 /* libLTKit.a in Frameworks */,
 				83B729E21CD8D7CC0090C0BF /* libOCMock.a in Frameworks */,
+				E4829F401E49D024009F3355 /* libOpenEXR.a in Frameworks */,
 				83B729E01CD8D7BA0090C0BF /* libSpecta.a in Frameworks */,
 				F9F42B0E1CF47E740050877E /* libWireframes.a in Frameworks */,
 				65061A261D46397F003D45B1 /* Mantle.framework in Frameworks */,
@@ -723,6 +726,7 @@
 				8861FD461E5A294F00CA1436 /* GLKit.framework */,
 				8861FD441E5A293B00CA1436 /* CoreImage.framework */,
 				8861FD181E5A290300CA1436 /* CoreGraphics.framework */,
+				E4829F3F1E49D024009F3355 /* libOpenEXR.a */,
 				8BF68AA41D82E8200093910D /* libcompression.tbd */,
 				F965C9EC1CF318CE00005627 /* Accelerate.framework */,
 				83B731B21CDB92640090C0BF /* AssetsLibrary.framework */,
@@ -1944,6 +1948,10 @@
 				);
 				INFOPLIST_FILE = CameraUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../third_party/openexr-binaries/lib",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.lightricks.CameraUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
@@ -1967,6 +1975,10 @@
 				);
 				INFOPLIST_FILE = CameraUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../third_party/openexr-binaries/lib",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.lightricks.CameraUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";

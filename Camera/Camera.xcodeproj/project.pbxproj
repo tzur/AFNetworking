@@ -107,6 +107,7 @@
 		BED6929D1D32311000061BB5 /* CAMDeviceOrientationSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = BED6929C1D32311000061BB5 /* CAMDeviceOrientationSpec.mm */; };
 		BEEDB2101D91ABDD00406926 /* UIDevice+CameraMake.mm in Sources */ = {isa = PBXBuildFile; fileRef = BEEDB20F1D91ABDD00406926 /* UIDevice+CameraMake.mm */; };
 		BEEDB2351D91B09F00406926 /* UIDevice+CameraMakeSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = BEEDB2341D91B09F00406926 /* UIDevice+CameraMakeSpec.mm */; };
+		E4829EF11E49CF7D009F3355 /* libOpenEXR.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E4829EF01E49CF7D009F3355 /* libOpenEXR.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -617,6 +618,7 @@
 		BEEDB20E1D91ABDD00406926 /* UIDevice+CameraMake.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDevice+CameraMake.h"; sourceTree = "<group>"; };
 		BEEDB20F1D91ABDD00406926 /* UIDevice+CameraMake.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIDevice+CameraMake.mm"; sourceTree = "<group>"; };
 		BEEDB2341D91B09F00406926 /* UIDevice+CameraMakeSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIDevice+CameraMakeSpec.mm"; sourceTree = "<group>"; };
+		E4829EF01E49CF7D009F3355 /* libOpenEXR.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libOpenEXR.a; path = "../third_party/openexr-binaries/lib/libOpenEXR.a"; sourceTree = "<group>"; };
 		F90A1F651D4898B600AC9C22 /* CAMTorchDevice.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CAMTorchDevice.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -661,6 +663,7 @@
 				8861FD171E5A28BD00CA1436 /* QuartzCore.framework in Frameworks */,
 				836C662B1CD7711900BE4496 /* ReactiveCocoa.framework in Frameworks */,
 				8861FD0D1E5A285200CA1436 /* UIKit.framework in Frameworks */,
+				E4829EF11E49CF7D009F3355 /* libOpenEXR.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -750,6 +753,7 @@
 				8861FD081E5A27F600CA1436 /* CoreImage.framework */,
 				8861FD061E5A27EE00CA1436 /* GLKit.framework */,
 				8861FCE11E5A27E600CA1436 /* CoreGraphics.framework */,
+				E4829EF01E49CF7D009F3355 /* libOpenEXR.a */,
 				8BF68AF61D82E9690093910D /* libcompression.tbd */,
 				6542A5241D46364400450B46 /* libExpecta.a */,
 				6542A5251D46364400450B46 /* libOCMock.a */,
@@ -1809,6 +1813,10 @@
 				);
 				INFOPLIST_FILE = CameraTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../third_party/openexr-binaries/lib",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.lightricks.CameraTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
@@ -1828,6 +1836,10 @@
 				);
 				INFOPLIST_FILE = CameraTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../third_party/openexr-binaries/lib",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.lightricks.CameraTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";

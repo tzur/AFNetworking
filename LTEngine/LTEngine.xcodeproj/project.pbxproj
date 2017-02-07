@@ -1226,6 +1226,7 @@
 		C7E0B02F1E41E34600E88244 /* ImageZeroVersion1Test.iz in Resources */ = {isa = PBXBuildFile; fileRef = C7E0B02D1E41E34600E88244 /* ImageZeroVersion1Test.iz */; };
 		C7E0B0301E41E34600E88244 /* ImageZeroVersion1Test.iz.1 in Resources */ = {isa = PBXBuildFile; fileRef = C7E0B02E1E41E34600E88244 /* ImageZeroVersion1Test.iz.1 */; };
 		C7E0B0321E41E94800E88244 /* SemiTransparentLena.png in Resources */ = {isa = PBXBuildFile; fileRef = C7E0B0311E41E94800E88244 /* SemiTransparentLena.png */; };
+		E4CEAF5B1E432BEC008FA38E /* libOpenEXR.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E4CEAC461E41DCC9008FA38E /* libOpenEXR.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -2961,6 +2962,7 @@
 		C7E0B02D1E41E34600E88244 /* ImageZeroVersion1Test.iz */ = {isa = PBXFileReference; lastKnownFileType = file; name = ImageZeroVersion1Test.iz; path = Resources/ImageZeroVersion1Test.iz; sourceTree = "<group>"; };
 		C7E0B02E1E41E34600E88244 /* ImageZeroVersion1Test.iz.1 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.man; name = ImageZeroVersion1Test.iz.1; path = Resources/ImageZeroVersion1Test.iz.1; sourceTree = "<group>"; };
 		C7E0B0311E41E94800E88244 /* SemiTransparentLena.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SemiTransparentLena.png; path = Resources/SemiTransparentLena.png; sourceTree = "<group>"; };
+		E4CEAC461E41DCC9008FA38E /* libOpenEXR.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libOpenEXR.a; path = "../third_party/openexr-binaries/lib/libOpenEXR.a"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2998,6 +3000,7 @@
 				8B3DEBFC18296B6100EA0C1A /* libLTEngine.a in Frameworks */,
 				8B368E971CA69D63003E34CF /* libLTKit.a in Frameworks */,
 				656155BA1D464A5F009E701C /* libOCMock.a in Frameworks */,
+				E4CEAF5B1E432BEC008FA38E /* libOpenEXR.a in Frameworks */,
 				656155BB1D464A65009E701C /* libSpecta.a in Frameworks */,
 				656155C41D464B6D009E701C /* Mantle.framework in Frameworks */,
 				8B4E494B19E950C800B3F55D /* MobileCoreServices.framework in Frameworks */,
@@ -4411,6 +4414,7 @@
 			children = (
 				8861FC5E1E5A263000CA1436 /* CoreImage.framework */,
 				8861FC2A1E5A261500CA1436 /* CoreText.framework */,
+				E4CEAC461E41DCC9008FA38E /* libOpenEXR.a */,
 				8BF68B1B1D82E99A0093910D /* libcompression.tbd */,
 				8BA8C68718699D9A00E6F486 /* Accelerate.framework */,
 				8B3C0A5A1832953E000845BA /* AssetsLibrary.framework */,
@@ -7270,10 +7274,11 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../LTKit",
+					"$(SRCROOT)/../third_party/half",
 					"$(SRCROOT)/../third_party/libextobjc/extobjc",
 					"$(SRCROOT)/../third_party/libextobjc",
-					"$(SRCROOT)/../third_party/half",
 					"$(SRCROOT)/../third_party/Mantle/",
+					"$(SRCROOT)/../third_party/openexr-binaries/include",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				ONLY_ACTIVE_ARCH = YES;
@@ -7304,6 +7309,7 @@
 					"$(SRCROOT)/../third_party/libextobjc",
 					"$(SRCROOT)/../third_party/half",
 					"$(SRCROOT)/../third_party/Mantle/",
+					"$(SRCROOT)/../third_party/openexr-binaries/include",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				SDKROOT = iphoneos;
@@ -7349,8 +7355,13 @@
 					"$(SRCROOT)/../third_party/Expecta/src/**",
 					"$(SRCROOT)/../third_party/OCMock/Source",
 					"$(SRCROOT)/../third_party/Specta/Specta",
+					"$(SRCROOT)/../third_party/openexr-binaries/include",
 				);
 				INFOPLIST_FILE = "LTEngineTests/LTEngineTests-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../third_party/openexr-binaries/lib",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.Lightricks.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRIP_PNG_TEXT = NO;
@@ -7377,8 +7388,13 @@
 					"$(SRCROOT)/../third_party/Expecta/src/**",
 					"$(SRCROOT)/../third_party/OCMock/Source",
 					"$(SRCROOT)/../third_party/Specta/Specta",
+					"$(SRCROOT)/../third_party/openexr-binaries/include",
 				);
 				INFOPLIST_FILE = "LTEngineTests/LTEngineTests-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../third_party/openexr-binaries/lib",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.Lightricks.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRIP_PNG_TEXT = NO;
