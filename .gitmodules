@@ -44,3 +44,6 @@
 [submodule "Danger"]
 	path = Danger
 	url = https://github.com/Lightricks/Dangerfile.git
+[submodule "third_party/openexr-binaries"]
+	path = third_party/openexr-binaries
+	url = https://github.com/Lightricks/openexr-binaries.git
