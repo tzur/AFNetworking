@@ -110,8 +110,8 @@ it(@"should create error with path", ^{
 });
 
 it(@"should create error with description and underlyingError", ^{
-  NSError *error = [NSError lt_errorWithCode:LTErrorCodeFileNotFound description:@"%@ %05d"
-                             underlyingError:underlyingError, @"Bar", 9];
+  NSError *error = [NSError lt_errorWithCode:LTErrorCodeFileNotFound underlyingError:underlyingError
+                                 description:@"%@ %05d", @"Bar", 9];
 
   expect(error.domain).to.equal(kLTErrorDomain);
   expect(error.code).to.equal(LTErrorCodeFileNotFound);

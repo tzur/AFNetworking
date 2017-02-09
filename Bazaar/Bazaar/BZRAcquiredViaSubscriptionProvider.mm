@@ -69,9 +69,9 @@ NSString * const kProductsAcquiredViaSubscriptionSetKey = @"productsAcquiredViaS
                                             error:&error];
     if (!success) {
       [self.storageErrorsSubject sendNext:
-          [NSError lt_errorWithCode:BZRErrorCodeStoringDataToStorageFailed
+          [NSError lt_errorWithCode:BZRErrorCodeStoringDataToStorageFailed underlyingError:error
                         description:@"Failed to store products acquired via subscription set to "
-           "secure storage" underlyingError:error]];
+           "secure storage" ]];
     }
   }
 }

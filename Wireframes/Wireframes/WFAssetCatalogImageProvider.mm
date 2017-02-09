@@ -51,7 +51,7 @@ NS_ASSUME_NONNULL_BEGIN
     @catch (NSException *exception) {
       if (error) {
         *error = [NSError lt_errorWithCode:WFErrorCodeAssetNotFound url:originalURL
-                               description:exception.debugDescription];
+                               description:@"%@", exception.debugDescription];
       }
       return nil;
     }

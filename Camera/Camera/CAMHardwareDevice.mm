@@ -188,7 +188,8 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
        fromConnection:(AVCaptureConnection __unused *)connection {
   NSString *dropReason = (__bridge NSString *)(CFStringRef)
       CMGetAttachment(sampleBuffer, kCMSampleBufferAttachmentKey_DroppedFrameReason, NULL);
-  NSError *error = [NSError lt_errorWithCode:CAMErrorCodeDroppedFrame description:dropReason];
+  NSError *error = [NSError lt_errorWithCode:CAMErrorCodeDroppedFrame
+                                 description:@"%@", dropReason];
   [self.videoFramesErrorsSubject sendNext:error];
 }
 
@@ -557,7 +558,7 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
                                        device.maxExposureTargetBias];
         if (errorPtr) {
           *errorPtr = [NSError lt_errorWithCode:CAMErrorCodeExposureSettingUnsupported
-                                    description:description];
+                                    description:@"%@", description];
         }
         return NO;
       }
