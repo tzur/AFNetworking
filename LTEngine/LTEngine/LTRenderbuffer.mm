@@ -37,12 +37,24 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithDrawable:(id<EAGLDrawable>)drawable {
   if (self = [super init]) {
+    _fillColor = LTVector4::null();
+
+    [self updateGenerationID];
     [self createRenderbuffer];
     [self allocateRenderbufferStorageForDrawable:drawable];
     [self derivePixelFormat];
+  }
+  return self;
+}
 
+- (instancetype)initWithSize:(CGSize)size pixelFormat:(LTGLPixelFormat *)format {
+  if (self = [super init]) {
     _fillColor = LTVector4::null();
+    _pixelFormat = format;
+
     [self updateGenerationID];
+    [self createRenderbuffer];
+    [self allocateRenderbufferStorageWithSize:size];
   }
   return self;
 }
@@ -61,6 +73,16 @@ NS_ASSUME_NONNULL_BEGIN
   }];
 
   LTAssert(storageCreated, @"Renderbuffer storage creation failed for drawable %@", drawable);
+}
+
+- (void)allocateRenderbufferStorageWithSize:(CGSize)size {
+  [self bindAndExecute:^{
+    auto contextVersion = [LTGLContext currentContext].version;
+    auto internalFormat = [self.pixelFormat renderbufferInternalFormatForVersion:contextVersion];
+    glRenderbufferStorage(GL_RENDERBUFFER, internalFormat, size.width, size.height);
+    LTGLCheckDbg(@"Error when allocating renderbuffer storage with size: %@, format: %@",
+                 NSStringFromCGSize(size), self.pixelFormat);
+  }];
 }
 
 - (void)derivePixelFormat {
@@ -168,8 +190,8 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 - (NSString *)description {
-  return [NSString stringWithFormat:@"<%@: %p, name: %lu, size: %@>", self.class, self,
-          (unsigned long)self.name, NSStringFromCGSize(self.size)];
+  return [NSString stringWithFormat:@"<%@: %p, name: %u, pixelFormat: %@, fillColor: %@>",
+          self.class, self, self.name, self.pixelFormat, NSStringFromLTVector4(self.fillColor)];
 }
 
 @end
