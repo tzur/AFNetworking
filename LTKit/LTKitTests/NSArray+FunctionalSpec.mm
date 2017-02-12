@@ -35,7 +35,7 @@ context(@"reduce", ^{
 });
 
 context(@"filter", ^{
-  it(@"should return all and only those items that the filter block has returned yes for", ^{
+  it(@"should return all and only those items that the filter block has returned YES for", ^{
     NSArray<NSNumber *> *array = @[@3, @1, @3, @3, @7];
     NSArray<NSNumber *> *filteredArray = [array lt_filter:^BOOL(NSNumber *object) {
       return ![object isEqual:@3];
@@ -44,13 +44,33 @@ context(@"filter", ^{
     expect(filteredArray).to.equal(@[@1, @7]);
   });
 
-  it(@"should return empty array if block returns no for all items", ^{
+  it(@"should return empty array if block returns NO for all items", ^{
     NSArray<NSNumber *> *array = @[@3, @1, @3, @3, @7];
     NSArray<NSNumber *> *filteredArray = [array lt_filter:^BOOL(NSNumber *) {
       return NO;
     }];
 
     expect(filteredArray).to.equal(@[]);
+  });
+});
+
+context(@"find", ^{
+  it(@"should return the first item that the filter block has returned YES for", ^{
+    NSArray<NSNumber *> *array = @[@3, @1, @4, @3, @7];
+    NSNumber *foundItem = [array lt_find:^BOOL(NSNumber *object) {
+      return [object integerValue] > 3;
+    }];
+
+    expect(foundItem).to.equal(@4);
+  });
+
+  it(@"should return nil if block returns NO for all items", ^{
+    NSArray<NSNumber *> *array = @[@3, @1, @3, @3, @7];
+    NSNumber *foundItem = [array lt_find:^BOOL(NSNumber *object) {
+      return [object integerValue] > 10;
+    }];
+
+    expect(foundItem).to.beNil();
   });
 });
 
