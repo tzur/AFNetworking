@@ -29,6 +29,8 @@
 		25AD677C1D356A580092B3E4 /* DVNTestPipelineConfiguration.mm in Sources */ = {isa = PBXBuildFile; fileRef = 25AD677B1D356A580092B3E4 /* DVNTestPipelineConfiguration.mm */; };
 		25C3DCAE1D37AD410056E47A /* DVNEasyQuadVectorBoxing.mm in Sources */ = {isa = PBXBuildFile; fileRef = 25C3DCAD1D37AD410056E47A /* DVNEasyQuadVectorBoxing.mm */; };
 		2804AB0E1D3BB6180057F1A0 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2804AB0D1D3BB6180057F1A0 /* MobileCoreServices.framework */; };
+		281503991E51E4C300C51462 /* DVNProjectiveGeometryTransformerModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 281503981E51E4C300C51462 /* DVNProjectiveGeometryTransformerModel.mm */; };
+		281503BB1E51E7E800C51462 /* DVNProjectiveGeometryTransformerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 281503BA1E51E7E800C51462 /* DVNProjectiveGeometryTransformerSpec.mm */; };
 		282EE74D1D2A79EA002FA432 /* Objection-iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 250154DF1D1AF07C00420FA9 /* Objection-iOS.framework */; };
 		282EE74E1D2A79FA002FA432 /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 250154E11D1AF0A100420FA9 /* opencv2.framework */; };
 		282EE74F1D2A7A14002FA432 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 250154DB1D1AEF4700420FA9 /* AVFoundation.framework */; };
@@ -458,6 +460,9 @@
 		25C3DC921D37ACD60056E47A /* DVNEasyQuadVectorBoxing.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DVNEasyQuadVectorBoxing.h; sourceTree = "<group>"; };
 		25C3DCAD1D37AD410056E47A /* DVNEasyQuadVectorBoxing.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNEasyQuadVectorBoxing.mm; sourceTree = "<group>"; };
 		2804AB0D1D3BB6180057F1A0 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
+		281503971E51E4C300C51462 /* DVNProjectiveGeometryTransformerModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DVNProjectiveGeometryTransformerModel.h; sourceTree = "<group>"; };
+		281503981E51E4C300C51462 /* DVNProjectiveGeometryTransformerModel.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNProjectiveGeometryTransformerModel.mm; sourceTree = "<group>"; };
+		281503BA1E51E7E800C51462 /* DVNProjectiveGeometryTransformerSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNProjectiveGeometryTransformerSpec.mm; sourceTree = "<group>"; };
 		282EE74C1D2A793E002FA432 /* DaVinciTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "DaVinciTests-Prefix.pch"; sourceTree = "<group>"; };
 		282EE7511D2A7A35002FA432 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		28327A8B1E1CEA8E00CDE956 /* DVNJitteredColorAttributeProviderModelSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNJitteredColorAttributeProviderModelSpec.mm; sourceTree = "<group>"; };
@@ -787,6 +792,7 @@
 			children = (
 				257344FB1D3795D800E852B2 /* Examples */,
 				507FEFBD1D3A30E3002CB28E /* DVNGeometryTransformerSpec.mm */,
+				281503BA1E51E7E800C51462 /* DVNProjectiveGeometryTransformerSpec.mm */,
 				28FA4D611DF05F7D00EE0B99 /* DVNScatteredGeometryProviderModelSpec.mm */,
 				257344F61D3792A300E852B2 /* DVNSquareProviderSpec.mm */,
 				28FA4D631DF4586000EE0B99 /* DVNTestGeometryProvider.h */,
@@ -1109,6 +1115,8 @@
 			children = (
 				507FEFA01D3A30CA002CB28E /* DVNGeometryTransformer.h */,
 				507FEFA11D3A30CA002CB28E /* DVNGeometryTransformer.mm */,
+				281503971E51E4C300C51462 /* DVNProjectiveGeometryTransformerModel.h */,
+				281503981E51E4C300C51462 /* DVNProjectiveGeometryTransformerModel.mm */,
 				286C1D8E1DED9A5E00523F2E /* DVNScatteredGeometryProviderModel.h */,
 				286C1D8F1DED9A5E00523F2E /* DVNScatteredGeometryProviderModel.mm */,
 				503C577B1D36731A00C20B38 /* DVNSquareProvider.h */,
@@ -1635,6 +1643,7 @@
 				285FB4EE1E1D180C0021A116 /* DVNBrush.vsh in Sources */,
 				28662D621DF57DD60051B9DA /* DVNPainter.mm in Sources */,
 				286C1D6D1DED9A0C00523F2E /* DVNScatteredGeometryStageModel.mm in Sources */,
+				281503991E51E4C300C51462 /* DVNProjectiveGeometryTransformerModel.mm in Sources */,
 				283625C51E38E8A80014406E /* DVNBlendMode.mm in Sources */,
 				500A3AE01D2D348700043E18 /* DVNRandomTexCoordProvider.mm in Sources */,
 				285A78AD1DFD31AE00095BF4 /* DVNBrushTipsProvider.mm in Sources */,
@@ -1662,6 +1671,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				281503BB1E51E7E800C51462 /* DVNProjectiveGeometryTransformerSpec.mm in Sources */,
 				28FA4D651DF4586000EE0B99 /* DVNTestGeometryProvider.mm in Sources */,
 				5091E88A1D36484C00B14481 /* DVNTestShader.fsh in Sources */,
 				257494EA1D3775090046F89B /* DVNSplineRendererSpec.mm in Sources */,
