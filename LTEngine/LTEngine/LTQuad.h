@@ -233,8 +233,8 @@ typedef NS_ENUM(NSUInteger, LTQuadCornersValidity) {
 /// \c YES if this quad is self-intersecting.
 @property (readonly, nonatomic) BOOL isSelfIntersecting;
 
-/// Transformation required to transform a rectangle with origin at (0, 0) and size (1, 1) such that
-/// its projected corners coincide with the vertices of this quad.
+/// Transpose of the transformation required to transform a rectangle with origin at (0, 0) and size
+/// (1, 1) such that its projected corners coincide with the vertices of this quad.
 @property (readonly, nonatomic) GLKMatrix3 transform;
 
 /// Length of the shortest edge of this \c quad.
@@ -421,8 +421,9 @@ struct Quad {
   /// Length of the longest edge of this quad.
   CGFloat maximumEdgeLength() const noexcept;
 
-  /// Transformation required to transform a rectangle with origin at <tt>(0, 0)</tt> and size
-  /// <tt>(1, 1)</tt> such that its projected corners coincide with the vertices of this quad.
+  /// Transpose of the transformation required to transform a rectangle with origin at
+  /// <tt>(0, 0)</tt> and size <tt>(1, 1)</tt> such that its projected corners coincide with the
+  /// vertices of this quad.
   GLKMatrix3 transform() const noexcept;
 
   /// First vertex of this quad. Corresponds to \c corners()[0].
