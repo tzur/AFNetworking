@@ -435,6 +435,11 @@ context(@"protocols", ^{
                                         contentTexture:texture navigationState:nil];
     });
 
+    afterEach(^{
+      view = nil;
+      otherView = nil;
+    });
+
     itShouldBehaveLike(kLTContentNavigationManagerExamples, ^{
       return @{
         kLTContentNavigationManager: view,
