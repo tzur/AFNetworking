@@ -84,8 +84,7 @@ beforeEach(^{
 
 it(@"should initially set title according to inital title of view model", ^{
   PTUAlbumViewController *viewController =
-      [[PTUAlbumViewController alloc] initWithViewModel:viewModel
-                                          configuration:configuration];
+      [[PTUAlbumViewController alloc] initWithViewModel:viewModel configuration:configuration];
   expect(viewController.title).to.equal(@"default");
   expect(viewController.localizedTitle).to.equal(@"default");
 });
@@ -193,6 +192,21 @@ it(@"should not load view on initialization", ^{
   [dataSourceProviderSignal sendNext:dataSourceProvider];
   
   expect(viewController.isViewLoaded).to.beFalsy();
+});
+
+it(@"should update configuration of collection view controller", ^{
+  PTUAlbumViewController *albumView = [PTUAlbumViewController photoStripWithViewModel:viewModel];
+  [dataSourceProviderSignal sendNext:dataSourceProvider];
+
+  expect(albumView.collectionViewController.configuration)
+      .to.equal([PTUCollectionViewConfiguration photoStrip]);
+
+  PTUCollectionViewConfiguration *configuration =
+      [PTUCollectionViewConfiguration defaultConfiguration];
+  [albumView setConfiguration:configuration animated:NO];
+
+  expect(albumView.collectionViewController.configuration)
+      .to.equal(configuration);
 });
 
 context(@"collection control", ^{

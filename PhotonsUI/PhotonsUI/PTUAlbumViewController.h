@@ -38,6 +38,10 @@ NS_ASSUME_NONNULL_BEGIN
 /// @see -initWithViewModel:configuration:.
 + (instancetype)albumWithViewModel:(id<PTUAlbumViewModel>)viewModel;
 
+/// Sets \c configuration as the receiver's current configuration. Calling this method changes the
+/// underlying collection layout and possibly changes the offset of the scrolled content.
+- (void)setConfiguration:(PTUCollectionViewConfiguration *)configuration animated:(BOOL)animated;
+
 /// View model that controls this view controller.
 @property (readonly, nonatomic) id<PTUAlbumViewModel> viewModel;
 
