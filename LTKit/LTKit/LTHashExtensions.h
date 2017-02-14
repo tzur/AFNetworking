@@ -112,6 +112,71 @@ struct ::std::hash<CGAffineTransform> {
 };
 
 #pragma mark -
+#pragma mark GLKMatrix2
+#pragma mark -
+
+template <>
+struct ::std::hash<GLKMatrix2> {
+  inline size_t operator()(GLKMatrix2 t) const {
+    size_t seed = 0;
+    lt::hash_combine(seed, t.m00);
+    lt::hash_combine(seed, t.m01);
+    lt::hash_combine(seed, t.m10);
+    lt::hash_combine(seed, t.m11);
+    return seed;
+  }
+};
+
+#pragma mark -
+#pragma mark GLKMatrix3
+#pragma mark -
+
+template <>
+struct ::std::hash<GLKMatrix3> {
+  inline size_t operator()(GLKMatrix3 t) const {
+    size_t seed = 0;
+    lt::hash_combine(seed, t.m00);
+    lt::hash_combine(seed, t.m01);
+    lt::hash_combine(seed, t.m02);
+    lt::hash_combine(seed, t.m10);
+    lt::hash_combine(seed, t.m11);
+    lt::hash_combine(seed, t.m12);
+    lt::hash_combine(seed, t.m20);
+    lt::hash_combine(seed, t.m21);
+    lt::hash_combine(seed, t.m22);
+    return seed;
+  }
+};
+
+#pragma mark -
+#pragma mark GLKMatrix4
+#pragma mark -
+
+template <>
+struct ::std::hash<GLKMatrix4> {
+  inline size_t operator()(GLKMatrix4 t) const {
+    size_t seed = 0;
+    lt::hash_combine(seed, t.m00);
+    lt::hash_combine(seed, t.m01);
+    lt::hash_combine(seed, t.m02);
+    lt::hash_combine(seed, t.m03);
+    lt::hash_combine(seed, t.m10);
+    lt::hash_combine(seed, t.m11);
+    lt::hash_combine(seed, t.m12);
+    lt::hash_combine(seed, t.m13);
+    lt::hash_combine(seed, t.m20);
+    lt::hash_combine(seed, t.m21);
+    lt::hash_combine(seed, t.m22);
+    lt::hash_combine(seed, t.m23);
+    lt::hash_combine(seed, t.m30);
+    lt::hash_combine(seed, t.m31);
+    lt::hash_combine(seed, t.m32);
+    lt::hash_combine(seed, t.m33);
+    return seed;
+  }
+};
+
+#pragma mark -
 #pragma mark CATransform3D
 #pragma mark -
 
