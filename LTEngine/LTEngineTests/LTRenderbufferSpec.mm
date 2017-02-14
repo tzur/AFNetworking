@@ -10,28 +10,30 @@
 
 SpecBegin(LTRenderbuffer)
 
+/// Shared examples types.
 static NSString * const kLTRenderbufferExamples = @"LTRenderbufferExamples";
+static NSString * const kLTRenderbufferInitExamples = @"LTRenderbufferInitExamples";
 
-static const CGSize kDrawableSize = CGSizeMake(7, 5);
+/// Shared examples dictionary supported keys.
+static NSString * const kVersionKey = @"versionKey";
+static NSString * const kRenderbufferKey = @"renderbufferKey";
+static NSString * const kExpectedPixelFromatKey = @"expectedPixelFormatKey";
 
-sharedExamplesFor(kLTRenderbufferExamples, ^(NSDictionary *contextInfo) {
-  __block CAEAGLLayer *drawable;
-  __block LTRenderbuffer *renderbuffer = nil;
+/// Renderbuffer size.
+static const CGSize kSize = CGSizeMake(7, 5);
+
+sharedExamplesFor(kLTRenderbufferExamples, ^(NSDictionary *info) {
+  __block LTRenderbuffer *renderbuffer;
+  __block LTGLPixelFormat *expectedPixelFormat;
 
   beforeEach(^{
-    LTGLVersion version = (LTGLVersion)[contextInfo[@"version"] unsignedIntegerValue];
-    LTGLContext *context = [[LTGLContext alloc] initWithSharegroup:nil version:version];
-    [LTGLContext setCurrentContext:context];
-
-    drawable = [CAEAGLLayer layer];
-    drawable.frame = CGRectMake(0, 0, kDrawableSize.width, kDrawableSize.height);
-
-    renderbuffer = [[LTRenderbuffer alloc] initWithDrawable:drawable];
+    expectedPixelFormat = (LTGLPixelFormat *)info[kExpectedPixelFromatKey];
+    renderbuffer = (LTRenderbuffer *)info[kRenderbufferKey];
   });
 
   afterEach(^{
-    drawable = nil;
     renderbuffer = nil;
+    expectedPixelFormat = nil;
   });
 
   context(@"writable framebuffer attachment", ^{
@@ -40,11 +42,11 @@ sharedExamplesFor(kLTRenderbufferExamples, ^(NSDictionary *contextInfo) {
     });
 
     it(@"should have a valid size", ^{
-      expect(renderbuffer.size).to.equal(kDrawableSize);
+      expect(renderbuffer.size).to.equal(kSize);
     });
 
     it(@"should return correct pixel format", ^{
-      expect(renderbuffer.pixelFormat).to.equal($(LTGLPixelFormatRGBA8Unorm));
+      expect(renderbuffer.pixelFormat).to.equal(expectedPixelFormat);
     });
 
     it(@"should have a valid generation ID after initialization", ^{
@@ -83,7 +85,45 @@ sharedExamplesFor(kLTRenderbufferExamples, ^(NSDictionary *contextInfo) {
   });
 });
 
-itShouldBehaveLike(kLTRenderbufferExamples, @{@"version": @(LTGLVersion2)});
-itShouldBehaveLike(kLTRenderbufferExamples, @{@"version": @(LTGLVersion3)});
+sharedExamplesFor(kLTRenderbufferInitExamples, ^(NSDictionary *info) {
+  context(@"initialization", ^{
+    __block LTGLContext *context;
+
+    beforeEach(^{
+      auto version = (LTGLVersion)[info[kVersionKey] unsignedIntegerValue];
+      context = [[LTGLContext alloc] initWithSharegroup:nil version:version];
+      [LTGLContext setCurrentContext:context];
+    });
+
+    afterEach(^{
+      [LTGLContext setCurrentContext:nil];
+      context = nil;
+    });
+
+    itShouldBehaveLike(kLTRenderbufferExamples, ^{
+      LTRenderbuffer *renderbuffer = [[LTRenderbuffer alloc] initWithSize:kSize
+                                              pixelFormat:$(LTGLPixelFormatRGBA8Unorm)];
+
+      return @{
+        kRenderbufferKey: renderbuffer,
+        kExpectedPixelFromatKey:$(LTGLPixelFormatRGBA8Unorm)
+      };
+    });
+
+    itShouldBehaveLike(kLTRenderbufferExamples, ^{
+      auto drawable = [CAEAGLLayer layer];
+      drawable.frame = CGRectMake(0, 0, kSize.width, kSize.height);
+      LTRenderbuffer *renderbuffer = [[LTRenderbuffer alloc] initWithDrawable:drawable];
+
+      return @{
+        kRenderbufferKey: renderbuffer,
+        kExpectedPixelFromatKey: $(LTGLPixelFormatRGBA8Unorm)
+      };
+    });
+  });
+});
+
+itShouldBehaveLike(kLTRenderbufferInitExamples, @{kVersionKey: @(LTGLVersion2)});
+itShouldBehaveLike(kLTRenderbufferInitExamples, @{kVersionKey: @(LTGLVersion3)});
 
 SpecEnd
