@@ -33,7 +33,7 @@ NS_ASSUME_NONNULL_BEGIN
 
   __block BOOL success;
   [texture mappedImageForReading:^(const cv::Mat &mapped, BOOL) {
-    success = [self.compressor compressImage:mapped toPath:path error:error];
+    success = [self.compressor compressImage:mapped toPath:path error:error withAlpha:NO];
   }];
   
   return success;

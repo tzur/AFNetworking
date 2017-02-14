@@ -26,6 +26,9 @@ static const size_t kMaxCodeValue = 1 << kMaxCodeBits;
 /// Initial context value, used both for encoding and decoding.
 static const uint32_t kInitialContextValue = 7;
 
+/// Size in bytes of version 1 of the header.
+static const uint16_t kVersion1HeaderSize = 18;
+
 /// Number of bits to use for each value for (previous, next) contexts pair.
 static const uint32_t kBitCountTable[1 << (2 * kContextBits)] = {
   1, 3, 2, 5, 5, 6, 6, 6, 6, 0, 0, 0, 0, 0, 0, 0,
@@ -124,7 +127,7 @@ typedef uint64_t LTBitCache;
 static const size_t kCodeBits = sizeof(LTIZCodeWord) * CHAR_BIT;
 
 /// Version of the Image Zero format.
-static const uint16_t kImageZeroVersion = 1;
+static const uint16_t kImageZeroVersion = 2;
 
 #pragma mark -
 #pragma mark Input verification
@@ -166,6 +169,38 @@ static const uint16_t kImageZeroVersion = 1;
   data += bpp; \
 }
 
+/// Encodes a single RGBA pixel pointed by \c data with the given \c predictor.
+#define LTEncodeRGBAPixel(predictor) { \
+  int32_t r = data[0]; \
+  int32_t g = data[1]; \
+  int32_t b = data[2]; \
+  int32_t a = data[3]; \
+  \
+  int32_t pr = r - predictor(data, bpp, bpr); \
+  int32_t pg = g - predictor(data + 1, bpp, bpr); \
+  int32_t pb = b - predictor(data + 2, bpp, bpr); \
+  int32_t pa = a - predictor(data + 3, bpp, bpr); \
+  \
+  uint32_t upr = LTSignedToUnsigned((int8_t)(pr - pg)); \
+  uint32_t upg = LTSignedToUnsigned((int8_t)pg); \
+  uint32_t upb = LTSignedToUnsigned((int8_t)(pb - pg)); \
+  uint32_t upa = LTSignedToUnsigned((int8_t)pa); \
+  \
+  uint32_t bitCount = LTNumberOfBits(upr | upg | upb | upa); \
+  context = (context << kContextBits) + bitCount; \
+  \
+  LTEncoderWriteBits(kEncodeTable[context & LTBitMask(2 * kContextBits)], \
+  kBitCountTable[context & LTBitMask(2 * kContextBits)]); \
+  LTEncoderWriteBits(upg, bitCount); \
+  LTEncoderWriteBits(upr, bitCount); \
+  LTEncoderWriteBits(upb, bitCount); \
+  LTEncoderFlushSingleCodeWord(); \
+  LTEncoderWriteBits(upa, bitCount); \
+  LTEncoderFlushSingleCodeWord(); \
+  \
+  data += bpp; \
+}
+
 /// Encodes a single grayscale pixel pointed by \c data with the given \c predictor.
 #define LTEncodeGrayscalePixel(predictor) { \
   int32_t v = data[0]; \
@@ -187,6 +222,11 @@ static const uint16_t kImageZeroVersion = 1;
 
 /// Initializes the encoder's bit cache.
 #define LTEncoderInitialize() \
+  size_t bpr = shard.step[0]; \
+  size_t bpp = shard.elemSize(); \
+  size_t runLength = (shard.cols - 1) * bpp; \
+  const uchar *data = shard.data; \
+  uint32_t context = kInitialContextValue; \
   LTBitCache bitCache = 0; \
   uint32_t length = 0
 
@@ -215,11 +255,13 @@ static const uint16_t kImageZeroVersion = 1;
   *output++ = (value)
 
 - (BOOL)compressImage:(const cv::Mat &)image toPath:(NSString *)path
-                error:(NSError *__autoreleasing *)error {
+                error:(NSError *__autoreleasing *)error withAlpha:(BOOL)withAlpha {
   [self.class verifyInputImage:image];
   LTParameterAssert(image.rows < std::pow(2, 16) && image.cols < std::pow(2, 16), @"Input image "
                     "width and height must be less than 65535, got: (%d, %d)", image.rows,
                     image.cols);
+  LTParameterAssert(!withAlpha || image.type() == CV_8UC4, @"withAlpha can only be YES for images "
+                    "of type CV_8UC4, got type %d", image.type());
 
   __block NSLock *lock = [[NSLock alloc] init];
   __block uint32_t success = YES;
@@ -232,9 +274,9 @@ static const uint16_t kImageZeroVersion = 1;
 
                   NSString *shardPath = [self shardPathForBasePath:path shardIndex:shardIndex];
                   BOOL compressedShard = [self compressShard:shard toPath:shardPath
-                                                   imageSize:image.size()
-                                                  shardIndex:shardIndex shardCount:shardCount
-                                                       error:&shardError];
+                                                   imageSize:image.size() shardIndex:shardIndex
+                                                  shardCount:shardCount error:&shardError
+                                                   withAlpha:withAlpha];
 
                   if (!compressedShard) {
                     [lock lock];
@@ -258,8 +300,8 @@ static const uint16_t kImageZeroVersion = 1;
             imageSize:(cv::Size)imageSize
            shardIndex:(NSUInteger)shardIndex
            shardCount:(NSUInteger)shardCount
-                error:(NSError *__autoreleasing *)error {
-  size_t outputSize = [[self class] maximalCompressedSizeForImage:shard];
+                error:(NSError *__autoreleasing *)error withAlpha:(BOOL)withAlpha {
+  size_t outputSize = [[self class] maximalCompressedSizeForImage:shard withAlpha:withAlpha];
   LTMMOutputFile *file = [[LTMMOutputFile alloc] initWithPath:path
                                                          size:outputSize
                                                          mode:0644 error:error];
@@ -268,10 +310,12 @@ static const uint16_t kImageZeroVersion = 1;
   }
 
   // Write file header.
-  uint8_t actualChannelCount = [self.class compressedChannelsForInputChannels:shard.channels()];
+  uint8_t actualChannelCount = [self.class compressedChannelsForInputChannels:shard.channels()
+                                                                    withAlpha:withAlpha];
   LTIZHeader header = [self headerForChannelCount:actualChannelCount
                                         imageSize:imageSize shardSize:shard.size()
-                                       shardIndex:shardIndex shardCount:shardCount];
+                                       shardIndex:shardIndex shardCount:shardCount
+                                        withAlpha:withAlpha];
   memcpy(file.data, &header, sizeof(LTIZHeader));
 
   if (!shard.total()) {
@@ -283,7 +327,11 @@ static const uint16_t kImageZeroVersion = 1;
 
   LTIZCodeWord *newOutput;
   if (shard.type() == CV_8UC4) {
-    newOutput = [self compressRGBShard:shard toOutput:output];
+    if (withAlpha) {
+      newOutput = [self compressRGBAShard:shard toOutput:output];
+    } else {
+      newOutput = [self compressRGBShard:shard toOutput:output];
+    }
   } else if (shard.type() == CV_8UC1) {
     newOutput = [self compressGrayscaleShard:shard toOutput:output];
   } else {
@@ -297,14 +345,6 @@ static const uint16_t kImageZeroVersion = 1;
 }
 
 - (LTIZCodeWord *)compressRGBShard:(const cv::Mat4b &)shard toOutput:(LTIZCodeWord *)output {
-  size_t bpr = shard.step[0];
-  size_t bpp = shard.elemSize();
-  size_t runLength = (shard.cols - 1) * bpp;
-
-  const uchar *data = shard.data;
-
-  uint32_t context = kInitialContextValue;
-
   LTEncoderInitialize();
 
   // First pixel has a zero predictor, since it has no top, left or diagonal neighbours.
@@ -333,15 +373,36 @@ static const uint16_t kImageZeroVersion = 1;
   return output;
 }
 
+- (LTIZCodeWord *)compressRGBAShard:(const cv::Mat4b &)shard toOutput:(LTIZCodeWord *)output {
+  LTEncoderInitialize();
+
+  // First pixel has a zero predictor, since it has no top, left or diagonal neighbours.
+  LTEncodeRGBAPixel(LTIZPredict0);
+
+  const uchar * const endFirstLine = data + runLength;
+  while (data != endFirstLine) {
+    // Pixels in the first row only have a left neighbour.
+    LTEncodeRGBAPixel(LTIZPredict1x);
+  }
+
+  for (int row = 1; row < shard.rows; ++row) {
+    // First pixels in non-top row only have a top neighbour.
+    data = shard.ptr<uchar>(row);
+    LTEncodeRGBAPixel(LTIZPredict1y);
+
+    const uchar *endLine = data + runLength;
+    while (data != endLine) {
+      // General pixels have top, left and diagonal neighbours.
+      LTEncodeRGBAPixel(LTIZPredict3);
+    }
+  }
+
+  LTEncoderFlushAll();
+
+  return output;
+}
+
 - (LTIZCodeWord *)compressGrayscaleShard:(const cv::Mat1b &)shard toOutput:(LTIZCodeWord *)output {
-  size_t bpr = shard.step[0];
-  size_t bpp = shard.elemSize();
-  size_t runLength = (shard.cols - 1) * bpp;
-
-  const uchar *data = shard.data;
-
-  uint32_t context = kInitialContextValue;
-
   LTEncoderInitialize();
 
   // First pixel has a zero predictor, since it has no top, left or diagonal neighbours.
@@ -370,33 +431,35 @@ static const uint16_t kImageZeroVersion = 1;
   return output;
 }
 
-- (LTIZHeader)headerForChannelCount:(uint8_t)channelCount
-                          imageSize:(cv::Size)imageSize
-                          shardSize:(cv::Size)shardSize
-                         shardIndex:(uint8_t)shardIndex
-                         shardCount:(uint8_t)shardCount {
+- (LTIZHeader)headerForChannelCount:(uint8_t)channelCount imageSize:(cv::Size)imageSize
+                          shardSize:(cv::Size)shardSize shardIndex:(uint8_t)shardIndex
+                         shardCount:(uint8_t)shardCount withAlpha:(BOOL)withAlpha {
   return {
     .signature = kLTIZHeaderSignature,
     .version = kImageZeroVersion,
+    .size = sizeof(LTIZHeader),
     .channels = channelCount,
     .totalWidth = (uint16_t)imageSize.width,
     .totalHeight = (uint16_t)imageSize.height,
     .shardWidth = (uint16_t)shardSize.width,
     .shardHeight = (uint16_t)shardSize.height,
     .shardIndex = shardIndex,
-    .shardCount = shardCount
+    .shardCount = shardCount,
+    .alphaChannelStored = (uint8_t)(withAlpha ? 1 : 0)
   };
 }
 
-+ (size_t)maximalCompressedSizeForImage:(const cv::Mat &)image {
++ (size_t)maximalCompressedSizeForImage:(const cv::Mat &)image withAlpha:(BOOL)withAlpha {
   [self verifyInputImage:image];
 
-  size_t maximalSizeWithoutHeader = [self maximalSizeOfCompressedImageWithoutHeaderForImage:image];
+  size_t maximalSizeWithoutHeader =
+      [self maximalSizeOfCompressedImageWithoutHeaderForImage:image withAlpha:withAlpha];
   return sizeof(LTIZHeader) + maximalSizeWithoutHeader;
 }
 
-+ (size_t)maximalSizeOfCompressedImageWithoutHeaderForImage:(const cv::Mat &)image {
-  double minimalCompressionRatio = [self minimalCompressionRatioForImage:image];
++ (size_t)maximalSizeOfCompressedImageWithoutHeaderForImage:(const cv::Mat &)image
+                                                  withAlpha:(BOOL)withAlpha {
+  double minimalCompressionRatio = [self minimalCompressionRatioForImage:image withAlpha:withAlpha];
 
   // Ceiling is required for upper bound.
   size_t size = std::ceil(image.total() * image.elemSize() * minimalCompressionRatio);
@@ -412,24 +475,28 @@ static const uint16_t kImageZeroVersion = 1;
   return size + (alignment - (size % alignment));
 }
 
-+ (double)minimalCompressionRatioForImage:(const cv::Mat &)image {
++ (double)minimalCompressionRatioForImage:(const cv::Mat &)image withAlpha:(BOOL)withAlpha {
   // The minimal compression ratio is the ratio between the maximal number of bits in the encoded
   // element to the number of bits in the input. The maximal number of bits in the encoded element
   // is calculated by: <max encoded pixel bit count> + <channels per pixel> *
   // <max bit count per channel>. The maximal bit count per channel is 8, since the value written
-  // can occupy all the ranges of uint8_t. For RGB images: 6 + 3 * 8 = 30 bits, for grayscale
-  // images: 6 + 1 * 8 = 14 bits.
+  // can occupy all the ranges of uint8_t. For RGB images: 6 + 3 * 8 = 30, for RGBA images:
+  // 6 + 4 * 8 = 38 bits, and for grayscale images: 6 + 1 * 8 = 14 bits.
   //
-  // This means in the worst case, for each element in the input, we store 30 bits for RGB images or
-  // 14 for grayscale images. The size of each element is 32 bits for RGB images (since there's an
-  // alpha channel that is discarded) and 8 bits for grayscale.
-  uint8_t channelsUsed = [self compressedChannelsForInputChannels:image.channels()];
+  // This means in the worst case, for each element in the input, we store 30 bits for RGB images,
+  // 38 bits for RGBA images or 14 for grayscale images. The size of each element is 32 bits for RGB
+  // and RGBA images, and 8 bits for grayscale.
+  uint8_t channelsUsed = [self compressedChannelsForInputChannels:image.channels()
+                                                        withAlpha:withAlpha];
   uint8_t maximalNumberOfEncodedBits = kMaxCodeBits + channelsUsed * CHAR_BIT;
   uint8_t numberOfInputBits = image.elemSize() * CHAR_BIT;
   return (double)maximalNumberOfEncodedBits / numberOfInputBits;
 }
 
-+ (int)compressedChannelsForInputChannels:(int)channels {
++ (int)compressedChannelsForInputChannels:(int)channels withAlpha:(BOOL)withAlpha {
+  if (withAlpha) {
+    return 4;
+  }
   return channels == 4 ? 3 : channels;
 }
 
@@ -461,6 +528,33 @@ static const uint16_t kImageZeroVersion = 1;
   data += bpp; \
 }
 
+/// Decodes a single RGBA pixel to \c data with the given \c predictor.
+#define LTDecodeRGBAPixel(predictor) { \
+  LTDecoderFillCache(); \
+  \
+  bitCount = kDecodeTable[previousBitCount][LTDecoderPeekBits(kMaxCodeBits)]; \
+  LTDecoderSkipBits(kBitCountTable[previousBitCount << kContextBits | bitCount]); \
+  previousBitCount = bitCount; \
+  \
+  uint32_t upg = LTDecoderReadBits(bitCount); \
+  uint32_t upr = LTDecoderReadBits(bitCount); \
+  uint32_t upb = LTDecoderReadBits(bitCount); \
+  LTDecoderFillCache(); \
+  uint32_t upa = LTDecoderReadBits(bitCount); \
+  \
+  int32_t pg = LTUnsignedToSigned(upg); \
+  int32_t pr = LTUnsignedToSigned(upr) + pg; \
+  int32_t pb = LTUnsignedToSigned(upb) + pg; \
+  int32_t pa = LTUnsignedToSigned(upa); \
+  \
+  data[0] = pr + predictor(data, bpp, bpr); \
+  data[1] = pg + predictor(data + 1, bpp, bpr); \
+  data[2] = pb + predictor(data + 2, bpp, bpr); \
+  data[3] = pa + predictor(data + 3, bpp, bpr); \
+  \
+  data += bpp; \
+}
+
 /// Decodes a single grayscale pixel to \c data with the given \c predictor.
 #define LTDecodeGrayscalePixel(predictor) { \
   LTDecoderFillCache(); \
@@ -486,7 +580,13 @@ static const uint16_t kImageZeroVersion = 1;
   if ((uchar *)(code + 1) <= fileEnd) { \
     bitCache = LTDecoderFetchCodeWord(); \
     length = (uint32_t)kCodeBits; \
-  }
+  } \
+  size_t bpr = shard->step[0]; \
+  size_t bpp = shard->elemSize(); \
+  size_t runLength = (shard->cols - 1) * bpp; \
+  uint32_t bitCount; \
+  uint32_t previousBitCount = kInitialContextValue; \
+  uchar *data = shard->data;
 
 /// Reads the given number of bits from the bit cache.
 #define LTDecoderReadBits(bitCount) ({ \
@@ -526,19 +626,11 @@ static const uint16_t kImageZeroVersion = 1;
     return NO;
   }
 
-  if (file.size < sizeof(LTIZHeader)) {
-    if (error) {
-      *error = [NSError lt_errorWithCode:LTErrorCodeFileReadFailed userInfo:@{
-        NSFilePathErrorKey: path ?: [NSNull null],
-        kLTErrorDescriptionKey: @"File is smaller than ImageZero's header size"
-      }];
-    }
+  LTIZHeader header;
+  if (![self header:&header fromFile:file path:path error:error]) {
     return NO;
   }
-
-  // Read and verify file header.
-  LTIZHeader *header = (LTIZHeader *)file.data;
-  if (![self verifyHeader:*header forFileInPath:path withImageSize:image->size() error:error]) {
+  if (![self verifyHeader:header forFileInPath:path withImageSize:image->size() error:error]) {
     return NO;
   }
 
@@ -551,7 +643,7 @@ static const uint16_t kImageZeroVersion = 1;
   __block NSMutableArray *errors = [NSMutableArray array];
 
   LTMatParallelDispatcher *dispatcher = [[LTMatParallelDispatcher alloc]
-                                         initWithMaxShardCount:header->shardCount];
+                                         initWithMaxShardCount:header.shardCount];
   [dispatcher processMatAndWait:image processingBlock:^(NSUInteger shardIndex,
                                                         NSUInteger shardCount,
                                                         cv::Mat shard) {
@@ -559,7 +651,7 @@ static const uint16_t kImageZeroVersion = 1;
     NSError *shardError;
 
     if (!shardIndex) {
-      decompressedShard = [self decompressFromFile:file toShard:&shard
+      decompressedShard = [self decompressFromFile:file path:path toShard:&shard
                                          imageSize:image->size()
                                         shardCount:shardCount error:&shardError];
     } else {
@@ -596,38 +688,36 @@ static const uint16_t kImageZeroVersion = 1;
     return NO;
   }
 
-  return [self decompressFromFile:file toShard:shard imageSize:imageSize
+  return [self decompressFromFile:file path:path toShard:shard imageSize:imageSize
                        shardCount:shardCount error:error];
 }
 
-- (BOOL)decompressFromFile:(LTMMInputFile *)file toShard:(cv::Mat *)shard
-                 imageSize:(cv::Size)imageSize
-                shardCount:(NSUInteger)shardCount
+- (BOOL)decompressFromFile:(LTMMInputFile *)file path:(NSString *)path toShard:(cv::Mat *)shard
+                 imageSize:(cv::Size)imageSize shardCount:(NSUInteger)shardCount
                      error:(NSError *__autoreleasing *)error {
-  if (file.size < sizeof(LTIZHeader)) {
-    if (error) {
-      *error = [NSError lt_errorWithCode:LTErrorCodeFileReadFailed userInfo:@{
-        NSFilePathErrorKey: file.path ?: [NSNull null],
-        kLTErrorDescriptionKey: @"File is smaller than ImageZero's header size"
-      }];
-    }
+  LTIZHeader header;
+  if (![self header:&header fromFile:file path:path error:error]) {
     return NO;
   }
 
-  // Read and verify file header.
-  LTIZHeader *header = (LTIZHeader *)file.data;
-  uint8_t actualChannelCount = [self.class compressedChannelsForInputChannels:shard->channels()];
-  if (![self verifyShardHeader:*header forFileInPath:file.path
+  uint8_t actualChannelCount =
+      [self.class compressedChannelsForInputChannels:shard->channels()
+                                           withAlpha:header.alphaChannelStored];
+  if (![self verifyShardHeader:header forFileInPath:file.path
                  withImageSize:imageSize channelCount:actualChannelCount
                      shardSize:shard->size() andShardCount:shardCount error:error]) {
     return NO;
   }
 
   const uchar *fileEnd = file.data + file.size;
-  LTIZCodeWord *code = (LTIZCodeWord *)(file.data + sizeof(LTIZHeader));
+  LTIZCodeWord *code = (LTIZCodeWord *)(file.data + header.size);
 
   if (shard->type() == CV_8UC4) {
-    [self decompressToRGBAShard:static_cast<cv::Mat4b *>(shard) fromCode:code fileEnd:fileEnd];
+    if (header.alphaChannelStored) {
+      [self decompressToRGBAShard:static_cast<cv::Mat4b *>(shard) fromCode:code fileEnd:fileEnd];
+    } else {
+      [self decompressToRGBShard:static_cast<cv::Mat4b *>(shard) fromCode:code fileEnd:fileEnd];
+    }
   } else if (shard->type() == CV_8UC1) {
     [self decompressToGrayscaleShard:static_cast<cv::Mat1b *>(shard) fromCode:code fileEnd:fileEnd];
   } else {
@@ -637,18 +727,9 @@ static const uint16_t kImageZeroVersion = 1;
   return YES;
 }
 
-- (void)decompressToRGBAShard:(cv::Mat4b *)shard fromCode:(LTIZCodeWord *)code
+- (void)decompressToRGBShard:(cv::Mat4b *)shard fromCode:(LTIZCodeWord *)code
                       fileEnd:(const uchar *)fileEnd {
   LTDecoderInitialize();
-
-  size_t bpr = shard->step[0];
-  size_t bpp = shard->elemSize();
-  size_t runLength = (shard->cols - 1) * bpp;
-
-  uint32_t bitCount;
-  uint32_t previousBitCount = kInitialContextValue;
-
-  uchar *data = shard->data;
 
   // First pixel has a zero predictor, since it has no top, left or diagonal neighbours.
   LTDecodeRGBPixel(LTIZPredict0);
@@ -672,18 +753,35 @@ static const uint16_t kImageZeroVersion = 1;
   }
 }
 
+- (void)decompressToRGBAShard:(cv::Mat4b *)shard fromCode:(LTIZCodeWord *)code
+                     fileEnd:(const uchar *)fileEnd {
+  LTDecoderInitialize();
+
+  // First pixel has a zero predictor, since it has no top, left or diagonal neighbours.
+  LTDecodeRGBAPixel(LTIZPredict0);
+
+  const uchar *endFirstLine = data + runLength;
+  while (data != endFirstLine) {
+    // Pixels in the first row only have a left neighbour.
+    LTDecodeRGBAPixel(LTIZPredict1x);
+  }
+
+  for (int row = 1; row < shard->rows; ++row) {
+    data = shard->ptr<uchar>(row);
+    // First pixels in non-top row only have a top neighbour.
+    LTDecodeRGBAPixel(LTIZPredict1y);
+
+    const uchar *endLine = data + runLength;
+    while (data != endLine) {
+      // General pixels have top, left and diagonal neighbours.
+      LTDecodeRGBAPixel(LTIZPredict3);
+    }
+  }
+}
+
 - (void)decompressToGrayscaleShard:(cv::Mat1b *)shard fromCode:(LTIZCodeWord *)code
                            fileEnd:(const uchar *)fileEnd {
   LTDecoderInitialize();
-
-  size_t bpr = shard->step[0];
-  size_t bpp = shard->elemSize();
-  size_t runLength = (shard->cols - 1) * bpp;
-
-  uint32_t bitCount;
-  uint32_t previousBitCount = kInitialContextValue;
-
-  uchar *data = shard->data;
 
   // First pixel has a zero predictor, since it has no top, left or diagonal neighbours.
   LTDecodeGrayscalePixel(LTIZPredict0);
@@ -707,6 +805,43 @@ static const uint16_t kImageZeroVersion = 1;
   }
 }
 
+- (BOOL)header:(LTIZHeader *)header fromFile:(LTMMInputFile *)file path:(NSString *)path
+         error:(NSError * __autoreleasing *)error {
+  if (file.size < kVersion1HeaderSize) {
+    if (error) {
+      *error = [NSError lt_errorWithCode:LTErrorCodeFileReadFailed path:path
+                             description:@"File size (%lu) is smaller than the minimal number of "
+                                          "bytes needed to read an ImageZero header (%hu)",
+                file.size, kVersion1HeaderSize];
+    }
+    return NO;
+  }
+
+  size_t readBytes = sizeof(header->version) + sizeof(header->signature);
+  uint8_t *writeAddress = (uint8_t *)header + readBytes + sizeof(header->size);
+  memcpy(header, file.data, readBytes);
+  if (header->version == 1) {
+    header->size = kVersion1HeaderSize;
+    header->alphaChannelStored = 0;
+  } else {
+    memcpy((uint8_t *)header + readBytes, file.data + readBytes, sizeof(header->size));
+    readBytes += sizeof(header->size);
+  }
+
+  if (header->size < kVersion1HeaderSize || header->size > file.size) {
+    if (error) {
+      *error = [NSError lt_errorWithCode:LTErrorCodeBadHeader
+                             description:@"Header size should be in the range [%hu, %lu], got: %hu",
+                kVersion1HeaderSize, file.size, header->size];
+    }
+    return NO;
+  }
+
+  memcpy(writeAddress, (uint8_t *)file.data + readBytes, header->size - readBytes);
+
+  return YES;
+}
+
 - (BOOL)verifyHeader:(const LTIZHeader &)header forFileInPath:(NSString *)path
                error:(NSError *__autoreleasing *)error {
   if (header.signature != kLTIZHeaderSignature) {
@@ -721,7 +856,7 @@ static const uint16_t kImageZeroVersion = 1;
     return NO;
   }
 
-  if (header.version != kImageZeroVersion) {
+  if (header.version > kImageZeroVersion) {
     if (error) {
       NSString *description = [NSString stringWithFormat:@"Unsupported header version given: %hu",
                                header.version];
@@ -733,7 +868,19 @@ static const uint16_t kImageZeroVersion = 1;
     return NO;
   }
 
-  if (header.channels != 1 && header.channels != 3) {
+  if (header.size < kVersion1HeaderSize) {
+    if (error) {
+      NSString *description = [NSString stringWithFormat:@"Unsupported header size given: %hu",
+                               header.size];
+      *error = [NSError lt_errorWithCode:LTErrorCodeBadHeader userInfo:@{
+        NSFilePathErrorKey: path ?: [NSNull null],
+        kLTErrorDescriptionKey: description
+      }];
+    }
+    return NO;
+  }
+
+  if (header.channels != 1 && header.channels != 3 && header.channels != 4) {
     if (error) {
       NSString *description = [NSString stringWithFormat:@"Unsupported channel count given: %hu",
                                header.channels];
@@ -861,35 +1008,24 @@ static const uint16_t kImageZeroVersion = 1;
     return nil;
   }
 
-  if (file.size < sizeof(LTIZHeader)) {
-    if (error) {
-      *error = [NSError lt_errorWithCode:LTErrorCodeFileReadFailed userInfo:@{
-        NSFilePathErrorKey: file.path ?: [NSNull null],
-        kLTErrorDescriptionKey: @"File is smaller than ImageZero's header size"
-      }];
-    }
+  LTIZHeader header;
+  if (![self header:&header fromFile:file path:path error:error]) {
+    return nil;
+  }
+  if (![self verifyHeader:header forFileInPath:path error:error]) {
     return nil;
   }
 
-  LTIZHeader *header = (LTIZHeader *)file.data;
-  if (![self verifyHeader:*header forFileInPath:path error:error]) {
-    return nil;
-  }
-
-  if (header->shardIndex != 0) {
-    NSString *description = [NSString stringWithFormat:@"Expecting shardIndex of 0, got: %d",
-                             header->shardIndex];
+  if (header.shardIndex != 0) {
     if (error) {
-      *error = [NSError lt_errorWithCode:LTErrorCodeBadHeader userInfo:@{
-        NSFilePathErrorKey: path ?: [NSNull null],
-        kLTErrorDescriptionKey: description
-      }];
+      *error = [NSError lt_errorWithCode:LTErrorCodeBadHeader path:path
+                             description:@"Expecting shardIndex of 0, got: %d", header.shardIndex];
     }
     return nil;
   }
 
   NSMutableArray *paths = [NSMutableArray array];
-  for (NSUInteger i = 0; i < header->shardCount; ++i) {
+  for (NSUInteger i = 0; i < header.shardCount; ++i) {
     [paths addObject:[self shardPathForBasePath:path shardIndex:i]];
   }
   return [paths copy];
