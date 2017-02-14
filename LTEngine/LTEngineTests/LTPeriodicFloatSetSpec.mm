@@ -224,6 +224,21 @@ context(@"LTFloatSet protocol", ^{
       };
     });
   });
+  
+  context(@"set with sequence of size 100 and pivot value equaling minimum value of interval", ^{
+    beforeEach(^{
+      set = [[LTPeriodicFloatSet alloc] initWithPivotValue:0 numberOfValuesPerSequence:100
+                                             valueDistance:10 sequenceDistance:100];
+    });
+
+    itShouldBehaveLike(kLTFloatSetExamples, ^{
+      return @{
+        kLTFloatSetObject: set,
+        kLTFloatSetInterval: boxedInterval,
+        kLTFloatSetExpectedValues: @[@0, @10]
+      };
+    });
+  });
 });
 
 SpecEnd
