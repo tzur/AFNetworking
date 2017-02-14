@@ -3,6 +3,8 @@
 
 #import "LTQuad.h"
 
+#import <LTEngine/LTGLKitExtensions.h>
+
 #import "LTOpenCVExtensions.h"
 #import "LTRotatedRect.h"
 
@@ -1203,19 +1205,47 @@ context(@"transformations", ^{
       });
     });
 
-    context(@"affine transformation", ^{
-      it(@"should create copy transformed by affine transformation", ^{
-        lt::Quad quad({{v0, v1, v2, v3}});
-        CGPoint translation = CGPointMake(2, 5);
-        CGAffineTransform transformation =
-            CGAffineTransformConcat(CGAffineTransformMakeTranslation(2, 5),
-                                    CGAffineTransformMakeScale(2, 1));
-        quad = quad.transformedBy(transformation);
+    context(@"affine transformations", ^{
+      __block CGPoint translation;
+      __block CGAffineTransform transformation;
+      
+      beforeEach(^{
+        translation = CGPointMake(2, 5);
+        transformation = CGAffineTransformConcat(CGAffineTransformMakeTranslation(2, 5),
+                                                 CGAffineTransformMakeScale(2, 1));
+      });
+      
+      it(@"should create copy transformed by CGAffineTransform", ^{
+        lt::Quad quad = lt::Quad({{v0, v1, v2, v3}}).transformedBy(transformation);
         expect(quad.v0()).to.beCloseToPoint(CGPointMake(2, 1) * (v0 + translation));
         expect(quad.v1()).to.beCloseToPoint(CGPointMake(2, 1) * (v1 + translation));
         expect(quad.v2()).to.beCloseToPoint(CGPointMake(2, 1) * (v2 + translation));
         expect(quad.v3()).to.beCloseToPoint(CGPointMake(2, 1) * (v3 + translation));
       });
+      
+      it(@"should create copy transformed by GLKMatrix3", ^{
+        lt::Quad quad =
+            lt::Quad({{v0, v1, v2, v3}}).transformedBy(GLKMatrix3WithTransform(transformation));
+        expect(quad.v0()).to.beCloseToPointWithin(CGPointMake(2, 1) * (v0 + translation), kEpsilon);
+        expect(quad.v1()).to.beCloseToPointWithin(CGPointMake(2, 1) * (v1 + translation), kEpsilon);
+        expect(quad.v2()).to.beCloseToPointWithin(CGPointMake(2, 1) * (v2 + translation), kEpsilon);
+        expect(quad.v3()).to.beCloseToPointWithin(CGPointMake(2, 1) * (v3 + translation), kEpsilon);
+      });
+    });
+    
+    it(@"should create copy transformed by perspective transformation", ^{
+      lt::Quad quad = lt::Quad({{
+        CGPointZero,
+        CGPointMake(1, 0),
+        CGPointMake(20, 35),
+        CGPointMake(0, 10)
+      }});
+      GLKMatrix3 transform = GLKMatrix3Invert(GLKMatrix3Transpose(quad.transform()), NULL);
+      lt::Quad transformedQuad = quad.transformedBy(transform);
+      expect(transformedQuad.v0()).to.beCloseToPointWithin(CGPointZero, kEpsilon);
+      expect(transformedQuad.v1()).to.beCloseToPointWithin(CGPointMake(1, 0), kEpsilon);
+      expect(transformedQuad.v2()).to.beCloseToPointWithin(CGPointMake(1, 1), kEpsilon);
+      expect(transformedQuad.v3()).to.beCloseToPointWithin(CGPointMake(0, 1), kEpsilon);
     });
   });
 

@@ -233,8 +233,8 @@ typedef NS_ENUM(NSUInteger, LTQuadCornersValidity) {
 /// \c YES if this quad is self-intersecting.
 @property (readonly, nonatomic) BOOL isSelfIntersecting;
 
-/// Transformation required to transform a rectangle with origin at (0, 0) and size (1, 1) such that
-/// its projected corners coincide with the vertices of this quad.
+/// Transpose of the transformation required to transform a rectangle with origin at (0, 0) and size
+/// (1, 1) such that its projected corners coincide with the vertices of this quad.
 @property (readonly, nonatomic) GLKMatrix3 transform;
 
 /// Length of the shortest edge of this \c quad.
@@ -327,6 +327,9 @@ struct Quad {
 
   /// Returns a new quad with the corners transformed by the given \c transform.
   Quad transformedBy(CGAffineTransform transform) const noexcept;
+  
+  /// Returns a new quad with the corners transformed by the given \c transform.
+  Quad transformedBy(GLKMatrix3 transform) const noexcept;
 
   /// Returns a new quad with corners corresponding to those of the given \c rect after transforming
   /// each of the rect corners using the \c transform of this quad. Returns a null quad if this quad
@@ -418,8 +421,9 @@ struct Quad {
   /// Length of the longest edge of this quad.
   CGFloat maximumEdgeLength() const noexcept;
 
-  /// Transformation required to transform a rectangle with origin at <tt>(0, 0)</tt> and size
-  /// <tt>(1, 1)</tt> such that its projected corners coincide with the vertices of this quad.
+  /// Transpose of the transformation required to transform a rectangle with origin at
+  /// <tt>(0, 0)</tt> and size <tt>(1, 1)</tt> such that its projected corners coincide with the
+  /// vertices of this quad.
   GLKMatrix3 transform() const noexcept;
 
   /// First vertex of this quad. Corresponds to \c corners()[0].
@@ -502,6 +506,15 @@ inline Quad Quad::transformedBy(CGAffineTransform transform) const noexcept {
               CGPointApplyAffineTransform(_v[1], transform),
               CGPointApplyAffineTransform(_v[2], transform),
               CGPointApplyAffineTransform(_v[3], transform));
+}
+  
+inline Quad Quad::transformedBy(GLKMatrix3 transform) const noexcept {
+  GLKVector3 v0 = GLKMatrix3MultiplyVector3(transform, GLKVector3Make(_v[0].x, _v[0].y, 1));
+  GLKVector3 v1 = GLKMatrix3MultiplyVector3(transform, GLKVector3Make(_v[1].x, _v[1].y, 1));
+  GLKVector3 v2 = GLKMatrix3MultiplyVector3(transform, GLKVector3Make(_v[2].x, _v[2].y, 1));
+  GLKVector3 v3 = GLKMatrix3MultiplyVector3(transform, GLKVector3Make(_v[3].x, _v[3].y, 1));
+  return Quad(CGPointMake(v0.x / v0.z, v0.y / v0.z), CGPointMake(v1.x / v1.z, v1.y / v1.z),
+              CGPointMake(v2.x / v2.z, v2.y / v2.z), CGPointMake(v3.x / v3.z, v3.y / v3.z));
 }
 
 #pragma mark -
