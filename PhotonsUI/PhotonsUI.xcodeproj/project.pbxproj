@@ -94,6 +94,8 @@
 		BE8C7C981DFEA86900FE1508 /* PTUAlbumViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = BE8C7C971DFEA86900FE1508 /* PTUAlbumViewController.mm */; };
 		BE8C7C9A1DFECA4100FE1508 /* PTUAlbumViewModelSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = BE8C7C991DFECA4100FE1508 /* PTUAlbumViewModelSpec.mm */; };
 		BE8C7C9C1DFECAD500FE1508 /* PTUAlbumViewControllerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = BE8C7C9B1DFECAD500FE1508 /* PTUAlbumViewControllerSpec.mm */; };
+		BE9486FD1E54588900EF80D5 /* PTUTimeFormatter.mm in Sources */ = {isa = PBXBuildFile; fileRef = BE9486FC1E54588900EF80D5 /* PTUTimeFormatter.mm */; };
+		BE9487201E545CD900EF80D5 /* PTUTimeFormatterSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = BE94871F1E545CD900EF80D5 /* PTUTimeFormatterSpec.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -565,6 +567,9 @@
 		BE8C7C971DFEA86900FE1508 /* PTUAlbumViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PTUAlbumViewController.mm; sourceTree = "<group>"; };
 		BE8C7C991DFECA4100FE1508 /* PTUAlbumViewModelSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PTUAlbumViewModelSpec.mm; sourceTree = "<group>"; };
 		BE8C7C9B1DFECAD500FE1508 /* PTUAlbumViewControllerSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PTUAlbumViewControllerSpec.mm; sourceTree = "<group>"; };
+		BE9486FB1E54588900EF80D5 /* PTUTimeFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTUTimeFormatter.h; sourceTree = "<group>"; };
+		BE9486FC1E54588900EF80D5 /* PTUTimeFormatter.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PTUTimeFormatter.mm; sourceTree = "<group>"; };
+		BE94871F1E545CD900EF80D5 /* PTUTimeFormatterSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PTUTimeFormatterSpec.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -808,6 +813,8 @@
 				84A0DC3B1C8747AE005A98F3 /* PTUImageCellViewModel.m */,
 				848D31321D0F0415006BC52F /* PTUImageCellViewModelProvider.h */,
 				848D31331D0F0415006BC52F /* PTUImageCellViewModelProvider.mm */,
+				BE9486FB1E54588900EF80D5 /* PTUTimeFormatter.h */,
+				BE9486FC1E54588900EF80D5 /* PTUTimeFormatter.mm */,
 			);
 			name = Base;
 			sourceTree = "<group>";
@@ -939,6 +946,7 @@
 				84AB7E5C1C85DF2D008E254A /* PTUImageCellViewSpec.mm */,
 				84D741871C7A270500BCA294 /* PTUTestUtils.h */,
 				84D741881C7A270500BCA294 /* PTUTestUtils.mm */,
+				BE94871F1E545CD900EF80D5 /* PTUTimeFormatterSpec.mm */,
 			);
 			name = Base;
 			sourceTree = "<group>";
@@ -1515,6 +1523,7 @@
 				848E09721C59212F001D8368 /* EXPExpect+LLReactiveMatchersExtensions.m in Sources */,
 				84765E321D293E2600D3D5C5 /* PTUReversedRandomAccessCollectionSpec.mm in Sources */,
 				848E09811C59212F001D8368 /* EXPMatchers+sendValues.m in Sources */,
+				BE9487201E545CD900EF80D5 /* PTUTimeFormatterSpec.mm in Sources */,
 				84F830DD1D11986E00A01882 /* PTUCellSizingStrategySpec.mm in Sources */,
 				84BE48E11D2E43F60090105C /* PTUCollectionViewControllerSpec.mm in Sources */,
 				848E097E1C59212F001D8368 /* EXPMatchers+matchValues.m in Sources */,
@@ -1551,6 +1560,7 @@
 				8414247D1D770FDC00968C36 /* PTUErrorViewProvider.mm in Sources */,
 				8449B5DB1D1AD5410054272C /* PTUChangesetMetadata.m in Sources */,
 				BE8C7C741DFEA6F100FE1508 /* PTUAlbumViewModel.mm in Sources */,
+				BE9486FD1E54588900EF80D5 /* PTUTimeFormatter.mm in Sources */,
 				84765E121D29393600D3D5C5 /* PTUChangesetProviderReverser.m in Sources */,
 				84A0DC3D1C8747AE005A98F3 /* PTUImageCellViewModel.m in Sources */,
 				8482E0151D2143690084D565 /* PTUCollectionViewConfiguration.mm in Sources */,
