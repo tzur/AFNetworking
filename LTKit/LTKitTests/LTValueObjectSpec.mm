@@ -140,7 +140,7 @@
 }
 
 - (nullable NSString *)myString {
-  return [NSString stringWithFormat:@"%ld %g", self.myInteger, self.myDouble];
+  return [NSString stringWithFormat:@"%ld %g", (long)self.myInteger, self.myDouble];
 }
 
 @end
