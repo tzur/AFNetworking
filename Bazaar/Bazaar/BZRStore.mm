@@ -8,6 +8,7 @@
 #import "BZRAcquiredViaSubscriptionProvider.h"
 #import "BZRCachedReceiptValidationStatusProvider.h"
 #import "BZREvent.h"
+#import "BZRExternalTriggerReceiptValidator.h"
 #import "BZRPeriodicReceiptValidatorActivator.h"
 #import "BZRProduct+SKProduct.h"
 #import "BZRProductContentManager.h"
@@ -50,6 +51,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Facade used to interact with Apple StoreKit.
 @property (readonly, nonatomic) BZRStoreKitFacade *storeKitFacade;
+
+/// Validator used to validate receipt on initialization if required.
+@property (readonly, nonatomic) BZRExternalTriggerReceiptValidator *startupReceiptValidator;
 
 /// Factory used to create \c BZRLocaleProductsvariantSelector.
 @property (readonly, nonatomic) id<BZRProductsVariantSelectorFactory> variantSelectorFactory;
@@ -98,10 +102,12 @@ NS_ASSUME_NONNULL_BEGIN
     _variantSelector = [[BZRProductsVariantSelector alloc] init];
     _validationParametersProvider = configuration.validationParametersProvider;
     _downloadedContentProducts = [NSSet set];
+    _startupReceiptValidator = [[BZRExternalTriggerReceiptValidator alloc]
+                                initWithValidationStatusProvider:self.validationStatusProvider];
 
     [self initializeEventsSignal];
     [self finishUnfinishedTransactions];
-    [self fetchReceiptValidationStatusOnSuccessfulTransactions];
+    [self activateStartupValidation];
     [self prefetchProductDictionary];
   }
   return self;
@@ -116,7 +122,8 @@ NS_ASSUME_NONNULL_BEGIN
     self.acquiredViaSubscriptionProvider.storageErrorEventsSignal,
     self.periodicValidatorActivator.errorEventsSignal,
     self.storeKitFacade.transactionsErrorEventsSignal,
-    self.productsProvider.eventsSignal
+    self.productsProvider.eventsSignal,
+    [self.startupReceiptValidator.eventsSignal replay]
   ]]
   takeUntil:[self rac_willDeallocSignal]]
   setNameWithFormat:@"%@ -eventsSignal", self];
@@ -134,13 +141,13 @@ NS_ASSUME_NONNULL_BEGIN
       }];
 }
 
-- (void)fetchReceiptValidationStatusOnSuccessfulTransactions {
-  @weakify(self);
-  [self.storeKitFacade.unfinishedSuccessfulTransactionsSignal
-      subscribeNext:^(NSArray<SKPaymentTransaction *> *) {
-        @strongify(self);
-        [self.validationStatusProvider fetchReceiptValidationStatus];
-      }];
+- (void)activateStartupValidation {
+  RACSignal *triggerSignal = [self.storeKitFacade.unfinishedSuccessfulTransactionsSignal
+      deliverOn:[RACScheduler scheduler]];
+  if (!self.receiptValidationStatus) {
+    triggerSignal = [triggerSignal startWith:[RACUnit defaultUnit]];
+  }
+  [self.startupReceiptValidator activateWithTrigger:triggerSignal];
 }
 
 - (void)prefetchProductDictionary {
