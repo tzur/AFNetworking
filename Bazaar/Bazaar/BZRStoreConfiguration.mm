@@ -12,7 +12,6 @@
 #import "BZRLocaleBasedVariantSelectorFactory.h"
 #import "BZRLocalProductsProvider.h"
 #import "BZRModifiedExpiryReceiptValidationStatusProvider.h"
-#import "BZRPeriodicReceiptValidator.h"
 #import "BZRPeriodicReceiptValidatorActivator.h"
 #import "BZRProductContentFetcher.h"
 #import "BZRProductContentManager.h"
@@ -90,13 +89,9 @@ NS_ASSUME_NONNULL_BEGIN
     _storeKitFacade = [[BZRStoreKitFacade alloc] initWithApplicationUserID:applicationUserID];
     _productsProvider = [self productsProviderWithJSONFilePath:productsListJSONFilePath];
 
-    BZRPeriodicReceiptValidator *periodicReceiptValidator =
-        [[BZRPeriodicReceiptValidator alloc]
-         initWithReceiptValidationProvider:self.validationStatusProvider];
     _periodicValidatorActivator =
         [[BZRPeriodicReceiptValidatorActivator alloc]
-         initWithPeriodicReceiptValidator:periodicReceiptValidator
-         validationStatusProvider:self.validationStatusProvider timeProvider:timeProvider
+         initWithValidationStatusProvider:self.validationStatusProvider timeProvider:timeProvider
          gracePeriod:notValidatedReceiptGracePeriod];
 
     _variantSelectorFactory =
