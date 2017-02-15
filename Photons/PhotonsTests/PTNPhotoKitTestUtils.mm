@@ -69,7 +69,7 @@ PHContentEditingInput *PTNPhotoKitCreateImageContentEditingInput(NSURL * _Nullab
 
 PHContentEditingInput *PTNPhotoKitCreateVideoContentEditingInput(AVAsset * _Nullable avAsset) {
   PHContentEditingInput *contentEditingInput = OCMClassMock([PHContentEditingInput class]);
-  OCMStub(contentEditingInput.avAsset).andReturn(avAsset);
+  OCMStub(contentEditingInput.audiovisualAsset).andReturn(avAsset);
   OCMStub(contentEditingInput.mediaType).andReturn(PHAssetMediaTypeVideo);
   return contentEditingInput;
 }
