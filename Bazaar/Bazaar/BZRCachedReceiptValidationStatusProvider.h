@@ -23,6 +23,15 @@ NS_ASSUME_NONNULL_BEGIN
                      underlyingProvider:(id<BZRReceiptValidationStatusProvider>)underlyingProvider
     NS_DESIGNATED_INITIALIZER;
 
+/// Loads the receipt validation status from storage and saves it to \c receiptValidationStatus.
+/// In addition, the last receipt validation date is loaded from storage and saved to
+/// \c lastReceiptValidationDate. If an error occurred while loading from cache,
+/// \c receiptValidationStatus is not modified, \c error is populated with error information and
+/// \c nil is returned.
+/// Returns the loaded \c receiptValidationStatus or \c nil if no validation status is stored in the
+/// cache.
+- (nullable BZRReceiptValidationStatus *)refreshReceiptValidationStatus:(NSError **)error;
+
 /// Expires the subscription of the user.
 - (void)expireSubscription;
 

@@ -24,6 +24,13 @@ NS_ASSUME_NONNULL_BEGIN
 /// saves the set to storage.
 - (void)removeAcquiredViaSubscriptionProduct:(NSString *)productIdentifier;
 
+/// Loads the set of products that were acquired via subscription set from storage and saves it in
+/// \c productsAcquiredViaSubscription. If an error occurred while loading from cache,
+/// \c productsAcquiredViaSubscription is not modified, \c error is populated with error information
+/// and \c nil is returned.
+/// Returns the loaded \c productsAcquiredViaSubscription, or \c nil in case of an error.
+- (nullable NSSet<NSString *> *)refreshProductsAcquiredViaSubscription:(NSError **)error;
+
 /// Set of products that were acquired via subscription. KVO compliant. Changes may be delivered on
 /// an arbitrary thread.
 @property (readonly, nonatomic) NSSet<NSString *> *productsAcquiredViaSubscription;
