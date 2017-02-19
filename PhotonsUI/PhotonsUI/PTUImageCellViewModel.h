@@ -3,7 +3,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@protocol PTNAssetManager, PTNDescriptor, PTNImageFetchOptions;
+@protocol PTNAssetManager, PTNDescriptor, PTNImageFetchOptions, PTUTimeFormatter;
 
 /// Cell that represents an editing session.
 extern NSString * const kPTUImageCellViewModelTraitSessionKey;
@@ -46,17 +46,25 @@ extern NSString * const kPTUImageCellViewModelTraitVideoKey;
 
 - (instancetype)init NS_UNAVAILABLE;
 
-/// Initializes with \c assetManager, \c descriptor and \c imageFetchOptions, using them to fetch
-/// the image and properties associated with \c descriptor.
+/// Initializes with \c assetManager, \c descriptor, \c imageFetchOptions and default \c
+/// PTUTimeFormatter.
+- (instancetype)initWithAssetManager:(id<PTNAssetManager>)assetManager
+                          descriptor:(id<PTNDescriptor>)descriptor
+                   imageFetchOptions:(PTNImageFetchOptions *)imageFetchOptions;
+
+/// Initializes with \c assetManager, \c descriptor, \c imageFetchOptions and \c timeFormatter,
+/// using them to fetch the image and properties associated with \c descriptor.
 ///   - Signal returned by \c imageSignalForCellSize: delivers the image of the given descriptor,
 ///     fetched using \c imageFetchOptions in the given \c cellSize using \c aspectFill resizing
 ///     strategy.
 ///   - \c titleSignal delivers the \c localizedTitle of the given descriptor.
 ///   - \c subtitleSignal delivers the number of photos in the corresponding album for
-///     \c PTNAlbumDescriptor objects and is not set for other \c PTNDescriptor objects.
+///     \c PTNAlbumDescriptor objects. For a descriptor of a video asset, it delivers the video's
+///     duration. It is not set for other \c PTNDescriptor objects.
 - (instancetype)initWithAssetManager:(id<PTNAssetManager>)assetManager
                           descriptor:(id<PTNDescriptor>)descriptor
                    imageFetchOptions:(PTNImageFetchOptions *)imageFetchOptions
+                       timeFormatter:(id<PTUTimeFormatter>)timeFormatter
     NS_DESIGNATED_INITIALIZER;
 
 /// Asset manager used to fetch image and asset backed by \c descriptor.

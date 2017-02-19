@@ -3,16 +3,20 @@
 
 #import "PTUImageCellViewModel.h"
 
+#import <AVFoundation/AVAsset.h>
 #import <LTKit/LTRandomAccessCollection.h>
 #import <Photons/PTNAlbum.h>
 #import <Photons/PTNImageAsset.h>
 #import <Photons/PTNImageFetchOptions.h>
 #import <Photons/PTNProgress.h>
 #import <Photons/PTNResizingStrategy.h>
+#import <Photons/PTNVideoAsset.h>
+#import <Photons/PTNVideoFetchOptions.h>
 
 #import "PTNFakeAssetManager.h"
 #import "PTNTestUtils.h"
 #import "PTUImageCellViewModel.h"
+#import "PTUTimeFormatter.h"
 
 SpecBegin(PTUImageCellViewModel)
 
@@ -160,6 +164,30 @@ context(@"PTNAlbumDescriptor", ^{
     [assetManager serveAlbumURL:url withAlbum:album];
 
     expect(values).to.sendValuesWithCount(2);
+  });
+});
+
+context(@"video", ^{
+  __block id<PTNDescriptor> videoDescriptor;
+  __block PTUTimeFormatter *timeFormatter;
+  __block NSTimeInterval duration;
+
+  beforeEach(^{
+    duration = 11;
+    videoDescriptor = PTNCreateAssetDescriptor(nil, @"foo", 0,
+                                               [NSSet setWithObject:kPTNDescriptorTraitVideoKey],
+                                               nil, nil, duration, 0);
+    timeFormatter = [[PTUTimeFormatter alloc] init];
+  });
+
+  it(@"should deliver video duration string on subtitle signal", ^{
+    PTUImageCellViewModel *videoViewModel =
+        [[PTUImageCellViewModel alloc] initWithAssetManager:assetManager descriptor:videoDescriptor
+                                          imageFetchOptions:options timeFormatter:timeFormatter];
+
+    LLSignalTestRecorder *recorder = [videoViewModel.subtitleSignal testRecorder];
+
+    expect(recorder.values).to.equal(@[[timeFormatter timeStringForTimeInterval:duration]]);
   });
 });
 
