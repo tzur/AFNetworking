@@ -107,6 +107,13 @@
 		65F3F7061D5A68F7008E3C3A /* BZRValidatricksSessionConfigurationProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = 6527D6001D39411600A3AB29 /* BZRValidatricksSessionConfigurationProvider.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		65F3F7071D5A68F7008E3C3A /* NSValueTransformer+Validatricks.h in Headers */ = {isa = PBXBuildFile; fileRef = 65C538D51D34F521004C91D4 /* NSValueTransformer+Validatricks.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		8414201A1D76C33000968C36 /* libextobjc_iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6529F85F1CEB65E900FBABFE /* libextobjc_iOS.a */; };
+		8861FC7C1E5A269B00CA1436 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8861FC7B1E5A269B00CA1436 /* Security.framework */; };
+		8861FCAB1E5A26B600CA1436 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8861FCAA1E5A26B600CA1436 /* UIKit.framework */; };
+		8861FCAD1E5A26E000CA1436 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8861FCAC1E5A26E000CA1436 /* StoreKit.framework */; };
+		8861FCAE1E5A26F700CA1436 /* ReactiveCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65743EB01D32456A00A17D11 /* ReactiveCocoa.framework */; };
+		8861FCB01E5A272500CA1436 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8861FCAF1E5A272400CA1436 /* GLKit.framework */; };
+		8861FCB21E5A273600CA1436 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8861FCB11E5A273600CA1436 /* CoreGraphics.framework */; };
+		8861FCB41E5A274500CA1436 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8861FCB31E5A274500CA1436 /* QuartzCore.framework */; };
 		8B54E9E01D89926800104102 /* BZRProductPriceInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = B97E6CCC1D41103200C02863 /* BZRProductPriceInfo.h */; };
 		9FD3A75C1D3DF26100967F8D /* UICKeyChainStore+SecureStorage.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9FD3A75B1D3DF26100967F8D /* UICKeyChainStore+SecureStorage.mm */; };
 		9FE7D4F11D3F5D1000685F19 /* UICKeyChainStore+SecureStorageSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9FE7D4F01D3F5D1000685F19 /* UICKeyChainStore+SecureStorageSpec.mm */; };
@@ -777,6 +784,12 @@
 		65F03B6A1CFC3E0C008B1847 /* BZRModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRModel.h; sourceTree = "<group>"; };
 		65F03B6B1CFC3E0C008B1847 /* BZRModel.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRModel.mm; sourceTree = "<group>"; };
 		65FA32981CE2185D00901304 /* libBazaar.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libBazaar.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		8861FC7B1E5A269B00CA1436 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		8861FCAA1E5A26B600CA1436 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		8861FCAC1E5A26E000CA1436 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		8861FCAF1E5A272400CA1436 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
+		8861FCB11E5A273600CA1436 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		8861FCB31E5A274500CA1436 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		9FD3A7581D3D423500967F8D /* BZRKeychainHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BZRKeychainHandler.h; sourceTree = "<group>"; };
 		9FD3A75A1D3DF26100967F8D /* UICKeyChainStore+SecureStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UICKeyChainStore+SecureStorage.h"; sourceTree = "<group>"; };
 		9FD3A75B1D3DF26100967F8D /* UICKeyChainStore+SecureStorage.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UICKeyChainStore+SecureStorage.mm"; sourceTree = "<group>"; };
@@ -933,17 +946,24 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8414201A1D76C33000968C36 /* libextobjc_iOS.a in Frameworks */,
 				65D91BC01D39A48B000D6A3B /* AFNetworking.framework in Frameworks */,
-				FA3C38161D35265F004A2673 /* libUICKeyChainStore.a in Frameworks */,
-				657FAFA21CEF2DA500111BD0 /* Mantle.framework in Frameworks */,
-				65D189381D4E46B6005987F9 /* ZipArchive.framework in Frameworks */,
+				8861FCB21E5A273600CA1436 /* CoreGraphics.framework in Frameworks */,
+				8861FCB01E5A272500CA1436 /* GLKit.framework in Frameworks */,
 				6501C2471CE22D610061BD9E /* libBazaar.a in Frameworks */,
 				6501C2211CE22AD90061BD9E /* libExpecta.a in Frameworks */,
+				8414201A1D76C33000968C36 /* libextobjc_iOS.a in Frameworks */,
 				65D91BC11D39A490000D6A3B /* libFiber.a in Frameworks */,
 				6599B4301CFA4C5900525BB7 /* libLTKit.a in Frameworks */,
 				6501C2231CE22AEE0061BD9E /* libOCMock.a in Frameworks */,
 				6501C2221CE22ADF0061BD9E /* libSpecta.a in Frameworks */,
+				FA3C38161D35265F004A2673 /* libUICKeyChainStore.a in Frameworks */,
+				657FAFA21CEF2DA500111BD0 /* Mantle.framework in Frameworks */,
+				8861FCB41E5A274500CA1436 /* QuartzCore.framework in Frameworks */,
+				8861FCAE1E5A26F700CA1436 /* ReactiveCocoa.framework in Frameworks */,
+				8861FC7C1E5A269B00CA1436 /* Security.framework in Frameworks */,
+				8861FCAD1E5A26E000CA1436 /* StoreKit.framework in Frameworks */,
+				8861FCAB1E5A26B600CA1436 /* UIKit.framework in Frameworks */,
+				65D189381D4E46B6005987F9 /* ZipArchive.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1536,6 +1556,7 @@
 				654B1EB31CE21975001F36FA /* Configuration */,
 				654B1F1D1CE22222001F36FA /* Libraries */,
 				65FA32991CE2185E00901304 /* Products */,
+				8861FC7A1E5A269B00CA1436 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1560,6 +1581,19 @@
 				654B1F041CE21F6D001F36FA /* Supporting Files */,
 			);
 			path = Bazaar;
+			sourceTree = "<group>";
+		};
+		8861FC7A1E5A269B00CA1436 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				8861FCB31E5A274500CA1436 /* QuartzCore.framework */,
+				8861FCB11E5A273600CA1436 /* CoreGraphics.framework */,
+				8861FCAF1E5A272400CA1436 /* GLKit.framework */,
+				8861FCAC1E5A26E000CA1436 /* StoreKit.framework */,
+				8861FCAA1E5A26B600CA1436 /* UIKit.framework */,
+				8861FC7B1E5A269B00CA1436 /* Security.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		B9484B221D50A06600910066 /* Content Fetching */ = {
