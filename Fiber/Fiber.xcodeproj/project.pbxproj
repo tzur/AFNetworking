@@ -72,6 +72,10 @@
 		65C62C121D047727000FCE99 /* EXPMatchers+sendValuesWithCount.m in Sources */ = {isa = PBXBuildFile; fileRef = 65C62C011D047727000FCE99 /* EXPMatchers+sendValuesWithCount.m */; };
 		65F5139F1D1C19FC000687A7 /* FBRCompare.mm in Sources */ = {isa = PBXBuildFile; fileRef = 65F5139E1D1C19FC000687A7 /* FBRCompare.mm */; };
 		65F513A21D1C1C7D000687A7 /* FBRCompareSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 65F513A11D1C1C7D000687A7 /* FBRCompareSpec.mm */; };
+		8861FCB71E5A277300CA1436 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8861FCB61E5A277300CA1436 /* UIKit.framework */; };
+		8861FCDC1E5A277D00CA1436 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8861FCDB1E5A277D00CA1436 /* CoreGraphics.framework */; };
+		8861FCDE1E5A278600CA1436 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8861FCDD1E5A278600CA1436 /* QuartzCore.framework */; };
+		8861FCE01E5A279D00CA1436 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8861FCDF1E5A279D00CA1436 /* GLKit.framework */; };
 		B918A90E1E06CBC700970070 /* FBRHTTPClientProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = B918A90C1E06CBC700970070 /* FBRHTTPClientProvider.h */; };
 		B918A9341E06CBD300970070 /* FBRHTTPSessionConfigurationProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = B918A9331E06CBD300970070 /* FBRHTTPSessionConfigurationProvider.h */; };
 /* End PBXBuildFile section */
@@ -475,6 +479,10 @@
 		65F5139D1D1C19FC000687A7 /* FBRCompare.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBRCompare.h; sourceTree = "<group>"; };
 		65F5139E1D1C19FC000687A7 /* FBRCompare.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FBRCompare.mm; sourceTree = "<group>"; };
 		65F513A11D1C1C7D000687A7 /* FBRCompareSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FBRCompareSpec.mm; sourceTree = "<group>"; };
+		8861FCB61E5A277300CA1436 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		8861FCDB1E5A277D00CA1436 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		8861FCDD1E5A278600CA1436 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		8861FCDF1E5A279D00CA1436 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
 		B918A90C1E06CBC700970070 /* FBRHTTPClientProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBRHTTPClientProvider.h; sourceTree = "<group>"; };
 		B918A9331E06CBD300970070 /* FBRHTTPSessionConfigurationProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBRHTTPSessionConfigurationProvider.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -492,13 +500,17 @@
 			buildActionMask = 2147483647;
 			files = (
 				659F3B611D2437BD0097F3D0 /* AFNetworking.framework in Frameworks */,
-				6535FE5C1D047973002EEB8F /* ReactiveCocoa.framework in Frameworks */,
+				8861FCDC1E5A277D00CA1436 /* CoreGraphics.framework in Frameworks */,
+				8861FCE01E5A279D00CA1436 /* GLKit.framework in Frameworks */,
 				6535FE3F1D047777002EEB8F /* libExpecta.a in Frameworks */,
 				65BDFC2C1D0EC58800C86D36 /* libextobjc_iOS.a in Frameworks */,
 				65892E661D16EF630049815D /* libFiber.a in Frameworks */,
 				65A694241D06F521001DE328 /* libLTKit.a in Frameworks */,
 				6535FE401D04777E002EEB8F /* libOCMock.a in Frameworks */,
 				6535FE3E1D047770002EEB8F /* libSpecta.a in Frameworks */,
+				8861FCDE1E5A278600CA1436 /* QuartzCore.framework in Frameworks */,
+				6535FE5C1D047973002EEB8F /* ReactiveCocoa.framework in Frameworks */,
+				8861FCB71E5A277300CA1436 /* UIKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -637,6 +649,7 @@
 				65C62B871D0474D5000FCE99 /* FiberTests */,
 				65C62B941D0476BB000FCE99 /* Libraries */,
 				65AE67511D0461350083D1CE /* Products */,
+				8861FCB51E5A277300CA1436 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -909,6 +922,17 @@
 				65F513A11D1C1C7D000687A7 /* FBRCompareSpec.mm */,
 			);
 			name = "Internal Utils";
+			sourceTree = "<group>";
+		};
+		8861FCB51E5A277300CA1436 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				8861FCDF1E5A279D00CA1436 /* GLKit.framework */,
+				8861FCDD1E5A278600CA1436 /* QuartzCore.framework */,
+				8861FCDB1E5A277D00CA1436 /* CoreGraphics.framework */,
+				8861FCB61E5A277300CA1436 /* UIKit.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

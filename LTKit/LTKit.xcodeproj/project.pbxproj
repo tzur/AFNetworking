@@ -74,6 +74,7 @@
 		85BD008B1DC0E0920000FE97 /* NSArray+NSSet.mm in Sources */ = {isa = PBXBuildFile; fileRef = 85BD00891DC0E0920000FE97 /* NSArray+NSSet.mm */; };
 		85BD00A51DC0E0A30000FE97 /* NSArray+NSSetSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 85BD00A41DC0E0A30000FE97 /* NSArray+NSSetSpec.mm */; };
 		885E975F1D72D3A800A117A2 /* LocalizationTest.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 885E975E1D72D3A800A117A2 /* LocalizationTest.bundle */; };
+		8861FC611E5A266000CA1436 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8861FC601E5A266000CA1436 /* GLKit.framework */; };
 		88C67F5A1D72C7B800A0E0FC /* LTLocalizationTable.h in Headers */ = {isa = PBXBuildFile; fileRef = 88C67F581D72C7B800A0E0FC /* LTLocalizationTable.h */; };
 		88C67F5B1D72C7B800A0E0FC /* LTLocalizationTable.mm in Sources */ = {isa = PBXBuildFile; fileRef = 88C67F591D72C7B800A0E0FC /* LTLocalizationTable.mm */; };
 		88C67F5E1D72CE0500A0E0FC /* LTLocalizationTableSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 88C67F5D1D72CE0500A0E0FC /* LTLocalizationTableSpec.mm */; };
@@ -485,6 +486,7 @@
 		85BD00891DC0E0920000FE97 /* NSArray+NSSet.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSArray+NSSet.mm"; sourceTree = "<group>"; };
 		85BD00A41DC0E0A30000FE97 /* NSArray+NSSetSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSArray+NSSetSpec.mm"; sourceTree = "<group>"; };
 		885E975E1D72D3A800A117A2 /* LocalizationTest.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = LocalizationTest.bundle; sourceTree = "<group>"; };
+		8861FC601E5A266000CA1436 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
 		88C67F581D72C7B800A0E0FC /* LTLocalizationTable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTLocalizationTable.h; sourceTree = "<group>"; };
 		88C67F591D72C7B800A0E0FC /* LTLocalizationTable.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTLocalizationTable.mm; sourceTree = "<group>"; };
 		88C67F5D1D72CE0500A0E0FC /* LTLocalizationTableSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTLocalizationTableSpec.mm; sourceTree = "<group>"; };
@@ -632,21 +634,22 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8B0B99721CA6BADF00ED2334 /* libextobjc_iOS.a in Frameworks */,
-				8B0B99821CA6BB3D00ED2334 /* libExpecta.a in Frameworks */,
-				8B0B99731CA6BADF00ED2334 /* libOCMock.a in Frameworks */,
-				8B0B99741CA6BADF00ED2334 /* libSpecta.a in Frameworks */,
-				8B3DEBFC18296B6100EA0C1A /* libLTKit.a in Frameworks */,
 				8BA8C68918699D9F00E6F486 /* Accelerate.framework in Frameworks */,
 				8B3C0A5B1832953E000845BA /* AssetsLibrary.framework in Frameworks */,
 				8B3C0A5518329524000845BA /* AVFoundation.framework in Frameworks */,
 				8B3C0A561832952A000845BA /* CoreGraphics.framework in Frameworks */,
 				8B3C0A5918329538000845BA /* CoreMedia.framework in Frameworks */,
 				8B3C0A5718329531000845BA /* CoreVideo.framework in Frameworks */,
+				8B3DEBF718296B6100EA0C1A /* Foundation.framework in Frameworks */,
+				8861FC611E5A266000CA1436 /* GLKit.framework in Frameworks */,
 				8B4E493819E950C500B3F55D /* ImageIO.framework in Frameworks */,
+				8B0B99821CA6BB3D00ED2334 /* libExpecta.a in Frameworks */,
+				8B0B99721CA6BADF00ED2334 /* libextobjc_iOS.a in Frameworks */,
+				8B3DEBFC18296B6100EA0C1A /* libLTKit.a in Frameworks */,
+				8B0B99731CA6BADF00ED2334 /* libOCMock.a in Frameworks */,
+				8B0B99741CA6BADF00ED2334 /* libSpecta.a in Frameworks */,
 				8B4E494B19E950C800B3F55D /* MobileCoreServices.framework in Frameworks */,
 				8BA3E118182A437300FDD95A /* QuartzCore.framework in Frameworks */,
-				8B3DEBF718296B6100EA0C1A /* Foundation.framework in Frameworks */,
 				8BA3E119182A437300FDD95A /* UIKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -786,6 +789,7 @@
 		8B3DEBE618296B6100EA0C1A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				8861FC601E5A266000CA1436 /* GLKit.framework */,
 				8B4E494A19E950C800B3F55D /* MobileCoreServices.framework */,
 				8B4E493719E950C500B3F55D /* ImageIO.framework */,
 				8BA8C68718699D9A00E6F486 /* Accelerate.framework */,

@@ -52,6 +52,10 @@
 		6AB518DE1CCA420B00540CC6 /* WFImageLoaderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6AB518DD1CCA420B00540CC6 /* WFImageLoaderSpec.mm */; };
 		6AB518E11CCA454300540CC6 /* WFFakePaintCodeModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AB518E01CCA454300540CC6 /* WFFakePaintCodeModule.m */; };
 		6AFCE0B21CDDE61D00FA8BF3 /* WFTestUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6AFCE0B11CDDE61D00FA8BF3 /* WFTestUtils.mm */; };
+		8861FD571E5A29DE00CA1436 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8861FD561E5A29DE00CA1436 /* UIKit.framework */; };
+		8861FD761E5A29F800CA1436 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8861FD751E5A29F800CA1436 /* QuartzCore.framework */; };
+		8861FD781E5A2A1C00CA1436 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8861FD771E5A2A1C00CA1436 /* CoreGraphics.framework */; };
+		8861FD7A1E5A2A3F00CA1436 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8861FD791E5A2A3F00CA1436 /* GLKit.framework */; };
 		8B078FDC1D47B0AC00A8E9EB /* CATransaction+AnimationsSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B078FDB1D47B0AC00A8E9EB /* CATransaction+AnimationsSpec.mm */; };
 		8B283E751CBA814100B745AE /* libWireframes.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B283E171CBA7EED00B745AE /* libWireframes.a */; };
 		8B283F131CBA83A900B745AE /* libLTKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B283EF21CBA838900B745AE /* libLTKit.a */; };
@@ -414,6 +418,10 @@
 		6AD130401CC4FCAF003A5857 /* ReactiveCocoa.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactiveCocoa.xcodeproj; path = ../third_party/ReactiveCocoa/ReactiveCocoa.xcodeproj; sourceTree = "<group>"; };
 		6AFCE0B01CDDE61D00FA8BF3 /* WFTestUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WFTestUtils.h; sourceTree = "<group>"; };
 		6AFCE0B11CDDE61D00FA8BF3 /* WFTestUtils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = WFTestUtils.mm; sourceTree = "<group>"; };
+		8861FD561E5A29DE00CA1436 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		8861FD751E5A29F800CA1436 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		8861FD771E5A2A1C00CA1436 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		8861FD791E5A2A3F00CA1436 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
 		8B078FDB1D47B0AC00A8E9EB /* CATransaction+AnimationsSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "CATransaction+AnimationsSpec.mm"; sourceTree = "<group>"; };
 		8B283E171CBA7EED00B745AE /* libWireframes.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libWireframes.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B283E621CBA811100B745AE /* Common.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Common.xcconfig; sourceTree = "<group>"; };
@@ -479,14 +487,18 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8BC7B64C1CF1D8330047BEDE /* Objection-iOS.framework in Frameworks */,
-				65322E0B1D465494002D5F17 /* ReactiveCocoa.framework in Frameworks */,
+				8861FD781E5A2A1C00CA1436 /* CoreGraphics.framework in Frameworks */,
+				8861FD7A1E5A2A3F00CA1436 /* GLKit.framework in Frameworks */,
 				8B283F141CBA84EA00B745AE /* libExpecta.a in Frameworks */,
 				65322E0C1D4654A4002D5F17 /* libextobjc_iOS.a in Frameworks */,
+				8B283F131CBA83A900B745AE /* libLTKit.a in Frameworks */,
 				8B283F151CBA84EA00B745AE /* libOCMock.a in Frameworks */,
 				8B283F161CBA84EA00B745AE /* libSpecta.a in Frameworks */,
-				8B283F131CBA83A900B745AE /* libLTKit.a in Frameworks */,
 				8B283E751CBA814100B745AE /* libWireframes.a in Frameworks */,
+				8BC7B64C1CF1D8330047BEDE /* Objection-iOS.framework in Frameworks */,
+				8861FD761E5A29F800CA1436 /* QuartzCore.framework in Frameworks */,
+				65322E0B1D465494002D5F17 /* ReactiveCocoa.framework in Frameworks */,
+				8861FD571E5A29DE00CA1436 /* UIKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -496,6 +508,10 @@
 		65322DE21D46544F002D5F17 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				8861FD791E5A2A3F00CA1436 /* GLKit.framework */,
+				8861FD771E5A2A1C00CA1436 /* CoreGraphics.framework */,
+				8861FD751E5A29F800CA1436 /* QuartzCore.framework */,
+				8861FD561E5A29DE00CA1436 /* UIKit.framework */,
 				8BC7B6251CF1D6650047BEDE /* Objection-iOS.framework */,
 			);
 			name = Frameworks;

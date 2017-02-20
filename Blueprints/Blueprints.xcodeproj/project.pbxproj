@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8861FC031E5A225500CA1436 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8861FC021E5A225500CA1436 /* UIKit.framework */; };
+		8861FC211E5A227B00CA1436 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8861FC201E5A227B00CA1436 /* CoreGraphics.framework */; };
+		8861FC231E5A22B800CA1436 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8861FC221E5A22B800CA1436 /* GLKit.framework */; };
+		8861FC241E5A22DF00CA1436 /* ReactiveCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B5E6CA91CC6472F00E6A9BC /* ReactiveCocoa.framework */; };
+		8861FC261E5A22F000CA1436 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8861FC251E5A22F000CA1436 /* QuartzCore.framework */; };
 		8B0E4D761CC65DED0031B743 /* BLUNode+Builder.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B0E4D741CC65DED0031B743 /* BLUNode+Builder.h */; };
 		8B0E4D771CC65DED0031B743 /* BLUNode+Builder.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B0E4D751CC65DED0031B743 /* BLUNode+Builder.m */; };
 		8B0E4D951CC65E310031B743 /* BLUNode+BuilderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B0E4D941CC65E310031B743 /* BLUNode+BuilderSpec.mm */; };
@@ -311,6 +316,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		8861FC021E5A225500CA1436 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		8861FC201E5A227B00CA1436 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		8861FC221E5A22B800CA1436 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
+		8861FC251E5A22F000CA1436 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		8B0E4D741CC65DED0031B743 /* BLUNode+Builder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BLUNode+Builder.h"; sourceTree = "<group>"; };
 		8B0E4D751CC65DED0031B743 /* BLUNode+Builder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "BLUNode+Builder.m"; sourceTree = "<group>"; };
 		8B0E4D941CC65E310031B743 /* BLUNode+BuilderSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "BLUNode+BuilderSpec.mm"; sourceTree = "<group>"; };
@@ -422,12 +431,17 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8861FC211E5A227B00CA1436 /* CoreGraphics.framework in Frameworks */,
+				8861FC231E5A22B800CA1436 /* GLKit.framework in Frameworks */,
 				8BED809D1C3A68290001C6F1 /* libBlueprints.a in Frameworks */,
 				8B5E6D0F1CC64F3900E6A9BC /* libExpecta.a in Frameworks */,
+				8B5E6CC21CC6478B00E6A9BC /* libextobjc_iOS.a in Frameworks */,
 				8B5E6CC31CC647E700E6A9BC /* libLTKit.a in Frameworks */,
 				8B5E6CBF1CC6478B00E6A9BC /* libOCMock.a in Frameworks */,
 				8B5E6CC01CC6478B00E6A9BC /* libSpecta.a in Frameworks */,
-				8B5E6CC21CC6478B00E6A9BC /* libextobjc_iOS.a in Frameworks */,
+				8861FC261E5A22F000CA1436 /* QuartzCore.framework in Frameworks */,
+				8861FC241E5A22DF00CA1436 /* ReactiveCocoa.framework in Frameworks */,
+				8861FC031E5A225500CA1436 /* UIKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -701,6 +715,10 @@
 		8BED80E21C3A6A5B0001C6F1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				8861FC251E5A22F000CA1436 /* QuartzCore.framework */,
+				8861FC221E5A22B800CA1436 /* GLKit.framework */,
+				8861FC201E5A227B00CA1436 /* CoreGraphics.framework */,
+				8861FC021E5A225500CA1436 /* UIKit.framework */,
 				8B5E6D0E1CC64F3900E6A9BC /* libExpecta.a */,
 				8B3CEA151C4E741D008E779B /* LLReactiveMatchers */,
 				8BED818B1C3A71690001C6F1 /* Expecta.xcodeproj */,
