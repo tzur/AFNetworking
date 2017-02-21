@@ -85,9 +85,16 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 + (BOOL)hasAlpha:(UIImage *)image {
-  CGImageAlphaInfo alphaInfo = CGImageGetAlphaInfo(image.CGImage);
-  return !((alphaInfo & kCGImageAlphaNone) && (alphaInfo & kCGImageAlphaNoneSkipLast) &&
-      (alphaInfo & kCGImageAlphaNoneSkipFirst));
+  static const std::set<CGImageAlphaInfo> kAlphaInfoWithAlpha = {
+    kCGImageAlphaPremultipliedLast,
+    kCGImageAlphaPremultipliedFirst,
+    kCGImageAlphaLast,
+    kCGImageAlphaFirst,
+    kCGImageAlphaOnly
+  };
+  
+  auto alphaInfo = CGImageGetAlphaInfo(image.CGImage);
+  return kAlphaInfoWithAlpha.find(alphaInfo) != kAlphaInfoWithAlpha.cend();
 }
 
 + (CGColorSpaceRef)newBitmapColorSpaceFromColorSpace:(CGColorSpaceRef)colorSpace {
