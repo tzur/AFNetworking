@@ -41,3 +41,6 @@
 [submodule "third_party/opencv"]
 	path = third_party/opencv
 	url = https://github.com/Lightricks/opencv-ios.git
+[submodule "Danger"]
+	path = Danger
+	url = https://github.com/Lightricks/Dangerfile.git
