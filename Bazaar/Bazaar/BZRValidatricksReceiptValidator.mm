@@ -75,7 +75,8 @@ static NSString * const kReceiptValidationEndpoint = @"validateReceipt";
         doNext:^(BZRValidatricksReceiptValidationStatus *receiptValidationStatus) {
           @strongify(self);
           [self.eventsSubject sendNext:
-           [BZREvent receiptValidationStatusReceivedEvent:receiptValidationStatus.requestId]];
+           [BZREvent receiptValidationStatusReceivedEvent:receiptValidationStatus
+                                                requestId:receiptValidationStatus.requestId]];
         }];
   }
 }

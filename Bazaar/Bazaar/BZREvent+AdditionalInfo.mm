@@ -3,19 +3,31 @@
 
 #import "BZREvent+AdditionalInfo.h"
 
+#import "BZRReceiptValidationStatus.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
-NSString * const kBZREventRequestIdKey = @"BZREventRequestId";
+NSString * const kBZREventReceiptValidationStatusKey = @"BZREventReceiptValidationStatus";
+NSString * const kBZREventReceiptValidationRequestIdKey = @"BZREventReceiptValidationRequestId";
 
 @implementation BZREvent (AdditionalInfo)
 
-+ (instancetype)receiptValidationStatusReceivedEvent:(nullable NSString *)requestId {
++ (instancetype)receiptValidationStatusReceivedEvent:
+    (BZRReceiptValidationStatus *)receiptValidationStatus
+    requestId:(nullable NSString *)requestId {
   return [[BZREvent alloc] initWithType:$(BZREventTypeReceiptValidationStatusReceived)
-                              eventInfo:@{kBZREventRequestIdKey: requestId}];
+      eventInfo:@{
+        kBZREventReceiptValidationRequestIdKey: requestId,
+        kBZREventReceiptValidationStatusKey: receiptValidationStatus
+      }];
 }
 
-- (nullable NSString *)requestId {
-  return self.eventInfo[kBZREventRequestIdKey];
+- (nullable BZRReceiptValidationStatus *)receiptValidationStatus {
+  return self.eventInfo[kBZREventReceiptValidationStatusKey];
+}
+
+- (nullable NSString *)receiptValidationRequestId {
+  return self.eventInfo[kBZREventReceiptValidationRequestIdKey];
 }
 
 @end
