@@ -135,4 +135,14 @@ context(@"periodic validation errors", ^{
   });
 });
 
+context(@"purchased product not in receipt error", ^{
+  it(@"should return an error with identifier of the given product", ^{
+    NSError *error = [NSError bzr_purchasedProductNotFoundInReceipt:@"foo"];
+
+    expect(error.domain).to.equal(kLTErrorDomain);
+    expect(error.code).to.equal(BZRErrorCodePurchasedProductNotFoundInReceipt);
+    expect(error.bzr_purchasedProductIdentifier).to.equal(@"foo");
+  });
+});
+
 SpecEnd

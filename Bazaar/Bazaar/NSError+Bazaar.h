@@ -47,6 +47,11 @@ NS_ASSUME_NONNULL_BEGIN
     lastReceiptValidationDate:(NSDate *)lastReceiptValidationDate
     underlyingError:(NSError *)underlyingError;
 
+/// Creates and returns an instance of \c NSError with \c code set to
+/// \c BZRErrorCodePurchasedProductNotFoundInReceipt and \c bzr_purchasedProductIdentifier set to
+/// the given \c productIdentifier.
++ (instancetype)bzr_purchasedProductNotFoundInReceipt:(NSString *)productIdentifier;
+
 
 /// Exception object wrapped by this error.
 @property (readonly, nonatomic, nullable) NSException *bzr_exception;
@@ -72,6 +77,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Date of the last time receipt was validated.
 @property (readonly, nonatomic, nullable) NSDate *bzr_lastReceiptValidationDate;
+
+/// Identifier of the product that was purchased but not found in the receipt.
+@property (readonly, nonatomic, nullable) NSString *bzr_purchasedProductIdentifier;
 
 @end
 

@@ -18,7 +18,7 @@
 #import "BZRProductsVariantSelector.h"
 #import "BZRProductsVariantSelectorFactory.h"
 #import "BZRProductTypedefs.h"
-#import "BZRReceiptModel.h"
+#import "BZRReceiptModel+ProductPurchased.h"
 #import "BZRReceiptValidationParametersProvider.h"
 #import "BZRReceiptValidationStatus.h"
 #import "BZRStoreConfiguration.h"
@@ -340,7 +340,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (RACSignal *)purchaseProductWithStoreKit:(NSString *)productIdentifier {
   SKProduct *product = self.productDictionary[productIdentifier].bzr_underlyingProduct;
   @weakify(self);
-  return [[[[[self.storeKitFacade purchaseProduct:product]
+  return [[[[[[self.storeKitFacade purchaseProduct:product]
       filter:^BOOL(SKPaymentTransaction *transaction) {
         return transaction.transactionState == SKPaymentTransactionStatePurchased;
       }]
@@ -354,8 +354,28 @@ NS_ASSUME_NONNULL_BEGIN
       }]
       then:^RACSignal *{
         @strongify(self);
-        return [[self.validationStatusProvider fetchReceiptValidationStatus] ignoreValues];
+        return [self.validationStatusProvider fetchReceiptValidationStatus];
+      }]
+      flattenMap:^RACSignal *(BZRReceiptValidationStatus *receiptValidationStatus) {
+        @strongify(self);
+        BZRReceiptInfo *receipt = receiptValidationStatus.receipt;
+        if (![receipt wasProductPurchased:productIdentifier] &&
+            ![receipt.subscription.productId isEqualToString:productIdentifier]) {
+          return [self handlePurchasedProductNotFoundInReceipt:productIdentifier];
+        }
+
+        return [RACSignal empty];
       }];
+}
+
+- (RACSignal *)handlePurchasedProductNotFoundInReceipt:(NSString *)productIdentifier {
+  NSError *error = [NSError bzr_purchasedProductNotFoundInReceipt:productIdentifier];
+  [self sendErrorEventOfType:$(BZREventTypeCriticalError) error:error];
+
+  RACSignal *fetchReceiptSignal = [self.validationStatusProvider fetchReceiptValidationStatus];
+  return [[[self.storeKitFacade refreshReceipt]
+      concat:fetchReceiptSignal]
+      ignoreValues];
 }
 
 - (RACSignal *)fetchProductContent:(NSString *)productIdentifier {
