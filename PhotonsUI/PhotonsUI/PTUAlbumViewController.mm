@@ -104,7 +104,7 @@ NS_ASSUME_NONNULL_BEGIN
   
   RACSignal *selectedAssets = [RACObserve(self, viewModel.selectedAssets) switchToLatest];
   [[[[RACObserve(self, collectionViewController)
-      map:^RACSignal *(PTUCollectionViewConfiguration *viewController) {
+      map:^RACSignal *(PTUCollectionViewController *viewController) {
         // Start new previous retention for each collectionViewController, as its replacement
         // already deselects all assets. Previous selected assets are used to deselect the
         // previously selected assets, prior to selecting the new - avoiding aggregation of
@@ -175,6 +175,14 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)setErrorViewProvider:(nullable id<PTUErrorViewProvider>)errorViewProvider {
   _errorViewProvider = errorViewProvider;
   self.collectionViewController.errorViewProvider = errorViewProvider;
+}
+
+- (void)setConfiguration:(PTUCollectionViewConfiguration *)configuration animated:(BOOL)animated {
+  if (self.configuration == configuration) {
+    return;
+  }
+  _configuration = configuration;
+  [self.collectionViewController setConfiguration:configuration animated:animated];
 }
 
 @end
