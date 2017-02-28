@@ -1,7 +1,7 @@
 // Copyright (c) 2015 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
-#import "LTRenderBuffer.h"
+#import "LTRenderbuffer.h"
 
 #import "LTFboWritableAttachment.h"
 #import "LTGLContext.h"
