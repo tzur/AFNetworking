@@ -7,18 +7,12 @@ namespace cv {
   class Mat;
 }
 
-/// Possible depth for \c LTImage.
-typedef NS_ENUM(NSUInteger, LTImageDepth) {
-  LTImageDepthGrayscale,
-  LTImageDepthRGBA
-};
-
 /// Represents a CPU-based image. This class makes it easier to load an image to an accessible
 /// bitmap, and export them back to disk  or to parallel \c UIKit objects.
 ///
 /// All images are represented in premultiplied alpha, if an alpha channel exists.
 ///
-/// @note loaded images will be of byte depth with either single or four channels, depending on the
+/// @note loaded images will be backed by mat of byte depth with either single or four channels, depending on the
 /// input image. Images with wider depth will be converted to byte in the loading process.
 @interface LTImage : NSObject
 
@@ -57,9 +51,6 @@ typedef NS_ENUM(NSUInteger, LTImageDepth) {
 
 /// Image contents.
 @property (readonly, nonatomic) const cv::Mat &mat;
-
-/// Depth of the image.
-@property (readonly, nonatomic) LTImageDepth depth;
 
 @end
 

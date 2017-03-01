@@ -184,20 +184,6 @@ context(@"image properties", ^{
 
     expect(image.size).to.equal(jpeg.size);
   });
-
-  it(@"should have correct depth for rgba images", ^{
-    UIImage *jpeg = LTLoadImage([self class], @"White.jpg");
-    LTImage *image = [[LTImage alloc] initWithImage:jpeg];
-
-    expect(image.depth).to.equal(LTImageDepthRGBA);
-  });
-
-  it(@"should have correct depth for grayscale images", ^{
-    UIImage *jpeg = LTLoadImage([self class], @"Gray.jpg");
-    LTImage *image = [[LTImage alloc] initWithImage:jpeg];
-
-    expect(image.depth).to.equal(LTImageDepthGrayscale);
-  });
 });
 
 context(@"uiimage conversion", ^{
