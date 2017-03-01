@@ -36,10 +36,11 @@ context(@"initialization", ^{
   it(@"should correctly specifiy optional properties", ^{
     NSSet<NSString *> *optionalProperties = [BZRProduct optionalPropertyKeys];
 
-    expect(optionalProperties.count).to.equal(6);
+    expect(optionalProperties.count).to.equal(7);
     expect(optionalProperties).to.contain(@instanceKeypath(BZRProduct, contentFetcherParameters));
     expect(optionalProperties).to.contain(@instanceKeypath(BZRProduct, priceInfo));
     expect(optionalProperties).to.contain(@instanceKeypath(BZRProduct, isSubscribersOnly));
+    expect(optionalProperties).to.contain(@instanceKeypath(BZRProduct, preAcquiredViaSubscription));
     expect(optionalProperties).to.contain(@instanceKeypath(BZRProduct, variants));
     expect(optionalProperties).to.contain(@instanceKeypath(BZRProduct, discountedProducts));
     expect(optionalProperties).to.contain(@instanceKeypath(BZRProduct, fullPriceProductIdentifier));
@@ -54,6 +55,7 @@ context(@"conversion" , ^{
       @instanceKeypath(BZRProduct, identifier): @"foo",
       @instanceKeypath(BZRProduct, productType): $(BZRProductTypeNonConsumable),
       @instanceKeypath(BZRProduct, isSubscribersOnly): @YES,
+      @instanceKeypath(BZRProduct, preAcquiredViaSubscription): @YES,
       @instanceKeypath(BZRProduct, contentFetcherParameters): contentFetcherParameters,
       @instanceKeypath(BZRProduct, variants): @[@"TierA", @"TierB"]
     };
@@ -67,6 +69,7 @@ context(@"conversion" , ^{
     expect(jsonDictionary[@instanceKeypath(BZRProduct, contentFetcherParameters)])
         .to.equal([MTLJSONAdapter JSONDictionaryFromModel:contentFetcherParameters]);
     expect(jsonDictionary[@instanceKeypath(BZRProduct, isSubscribersOnly)]).to.equal(@YES);
+    expect(jsonDictionary[@instanceKeypath(BZRProduct, preAcquiredViaSubscription)]).to.equal(YES);
     expect(jsonDictionary[@instanceKeypath(BZRProduct, variants)]).to.equal(@[@"TierA", @"TierB"]);
   });
 
@@ -92,6 +95,7 @@ context(@"conversion" , ^{
     expect(product.productType).to.equal($(BZRProductTypeNonRenewingSubscription));
     expect(product.contentFetcherParameters).to.equal(expectedParameters);
     expect(product.isSubscribersOnly).to.equal(NO);
+    expect(product.preAcquiredViaSubscription).to.equal(NO);
     expect(product.variants).to.equal(@[@"TierA", @"TierB"]);
   });
 });
