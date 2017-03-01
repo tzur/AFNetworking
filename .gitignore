@@ -29,3 +29,6 @@ DerivedData
 
 # AppCode
 .idea/
+
+# Local ruby gems
+/ruby/
