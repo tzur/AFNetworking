@@ -526,6 +526,29 @@ NS_ASSUME_NONNULL_BEGIN
   return LTFboAttachableTypeTexture2D;
 }
 
+- (void)writeToAttachableWithBlock:(LTVoidBlock)block {
+  LTParameterAssert(block);
+  [self beginWritingWithGPU];
+  block();
+  [self endWritingWithGPU];
+}
+
+- (void)clearAttachableWithColor:(LTVector4)color block:(LTVoidBlock)block {
+  [self writeToAttachableWithBlock:block];
+
+  // Not a mipmap - fill color applies to the entire texture.
+  if (!self.maxMipmapLevel) {
+    self.fillColor = color;
+    return;
+  }
+
+  // Mipmap - unset fill color if one of the levels were cleared with a different color than the
+  // current fill color.
+  if (self.fillColor != color) {
+    self.fillColor = LTVector4::null();
+  }
+}
+
 #pragma mark -
 #pragma mark Properties
 #pragma mark -

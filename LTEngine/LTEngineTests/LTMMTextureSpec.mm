@@ -5,7 +5,7 @@
 
 #import "LTCVPixelBufferExtensions.h"
 #import "LTFbo.h"
-#import "LTFboWritableAttachment.h"
+#import "LTFboAttachable.h"
 #import "LTGLContext.h"
 #import "LTGLTexture.h"
 #import "LTOpenCVExtensions.h"

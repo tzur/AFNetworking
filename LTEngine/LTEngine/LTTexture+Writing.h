@@ -1,14 +1,14 @@
 // Copyright (c) 2015 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
-#import "LTFboWritableAttachment.h"
+#import "LTFboAttachable.h"
 #import "LTTexture.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 /// Class extension that adds the private protocol \c LTFboWritableAttachable over
 /// \c LTTexture.
-@interface LTTexture (Writing) <LTFboWritableAttachment>
+@interface LTTexture (Writing)
 
 #pragma mark -
 #pragma mark Abstract methods

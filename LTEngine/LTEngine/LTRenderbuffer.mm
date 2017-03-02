@@ -3,10 +3,9 @@
 
 #import "LTRenderbuffer.h"
 
-#import "LTFboWritableAttachment.h"
+#import "LTFboAttachable.h"
 #import "LTGLContext.h"
 #import "LTGLPixelFormat.h"
-#import "LTRenderbuffer+Writing.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

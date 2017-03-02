@@ -4,9 +4,8 @@
 #import "LTFbo.h"
 
 #import "LTFboAttachable.h"
-#import "LTFboWritableAttachment.h"
 #import "LTGLContext.h"
-#import "LTRenderbuffer+Writing.h"
+#import "LTRenderbuffer.h"
 #import "LTTexture+Writing.h"
 
 @interface LTFbo ()

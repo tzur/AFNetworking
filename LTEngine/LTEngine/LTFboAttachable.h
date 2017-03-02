@@ -21,6 +21,25 @@ typedef NS_ENUM(NSUInteger, LTFboAttachableType) {
 /// provide methods for writing to it and clearing it with a specific color.
 @protocol LTFboAttachable <LTGPUResource>
 
+/// Executes \c block which writes using the GPU to the attachable, allowing the attachable to
+/// execute relevant code before and after the actual write. Binding to the attachable, if required,
+/// should be done by the caller, either inside \c block or before it is called by this method.
+///
+/// Calling this method will update the generation ID of the attachable and will set its
+/// \c fillColor to \c LTVector4::null().
+///
+/// @note All GPU-based writes should be executed via this method.
+- (void)writeToAttachableWithBlock:(LTVoidBlock)block;
+
+/// Executes \c block which clears the attachable with color \c color, allowing the attachable to
+/// execute relevant code before and after the write.
+///
+/// Calling this method will update the generation ID of the attachable and set its \c fillColor to
+/// \c color.
+///
+/// @note All GPU-based clears should be executed via this method.
+- (void)clearAttachableWithColor:(LTVector4)color block:(LTVoidBlock)block;
+
 /// Type of framebuffer attachable.
 @property (readonly, nonatomic) LTFboAttachableType attachableType;
 

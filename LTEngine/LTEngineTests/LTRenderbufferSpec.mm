@@ -6,7 +6,6 @@
 #import "LTGLContext.h"
 #import "LTGLPixelFormat.h"
 #import "LTGPUResourceExamples.h"
-#import "LTRenderbuffer+Writing.h"
 
 SpecBegin(LTRenderbuffer)
 
