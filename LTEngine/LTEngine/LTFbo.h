@@ -4,13 +4,44 @@
 #import "LTFboAttachable.h"
 #import "LTGPUResource.h"
 
-@class LTGLContext, LTGLPixelFormat, LTRenderbuffer, LTTexture;
+NS_ASSUME_NONNULL_BEGIN
 
-/// Object for encapsulating an OpenGL framebuffer, used for drawing to and reading from an
-/// attachment, which could be either a Renderbuffer or a 2D Texture.
+@class LTFboAttachmentInfo, LTGLContext, LTGLPixelFormat, LTRenderbuffer, LTTexture;
+
+/// Framebuffer's attachment points.
+typedef NS_ENUM(GLenum, LTFboAttachmentPoint) {
+  /// Color attachment points.
+  LTFboAttachmentPointColor0 = GL_COLOR_ATTACHMENT0,
+  LTFboAttachmentPointColor1 = GL_COLOR_ATTACHMENT1,
+  LTFboAttachmentPointColor2 = GL_COLOR_ATTACHMENT2,
+  LTFboAttachmentPointColor3 = GL_COLOR_ATTACHMENT3,
+  /// Depth attachment point.
+  LTFboAttachmentPointDepth = GL_DEPTH_ATTACHMENT,
+};
+
+/// Object for encapsulating an OpenGL framebuffer, used for drawing to and reading from multiple
+/// attachables. Attachable could be either a Renderbuffer or a 2D Texture.
+///
+/// @note for \c size, \c attachable, \c pixelFormat and \c level properties the queried
+/// attachable is first attachable in following order: \c LTFboAttachmentPointColorN
+/// (\c N is in <tt>{0, 1, ...}<\tt>), \c LTFboAttachmentPointDepth.
+///
+/// @note \c LTGLPixelFormatDepth16Unorm is the only pixel format supported for the
+/// \c LTFboAttachable of type \c LTFboAttachableTypeTexture2D attached at
+/// \c LTFboAttachmentPointDepth.
 @interface LTFbo : NSObject <LTGPUResource>
 
-/// Creates an FBO with the given \c texture as an attachment. The texture is not cleared in the
+- (instancetype)init NS_UNAVAILABLE;
+
+/// Initializes with the given non empty \c infos, which maps \c LTFboAttachmentPoint to
+/// \c LTFboAttachmentInfo.
+- (instancetype)initWithAttachmentInfos:(NSDictionary<NSNumber *, LTFboAttachmentInfo *> *)infos;
+
+/// Initializes with the given non empty \c attachables, which maps \c LTFboAttachmentPoint
+/// to \c LTFboAttachmentPoint. All \c attachables will be attached with \c level set to \c 0.
+- (instancetype)initWithAttachables:(NSDictionary<NSNumber *, id<LTFboAttachable>> *)attachables;
+
+/// Creates an FBO with the given \c texture as an attachable. The texture is not cleared in the
 /// process. If the given texture is invalid, an \c LTGLException named
 /// \c kLTFboInvalidAttachmentException will be thrown.
 ///
@@ -56,7 +87,12 @@
 /// Fills all color attachables bound to this FBO with the given color.
 - (void)clearWithColor:(LTVector4)color;
 
-/// Size of the attachment associated with this framebuffer.
+/// Fills the attachable attached to \c LTFboAttachmentPointDepth (if exists) with the given
+/// \c value. If there's no depth attachable attached, this method has no effect.
+- (void)clearDepth:(GLfloat)value;
+
+/// Size of the attachable associated with this framebuffer. Attachable selection policy is
+/// described in this class documentation.
 @property (readonly, nonatomic) CGSize size;
 
 /// Attachable associated with the framebuffer. Attachable selection policy is described in this
@@ -80,9 +116,8 @@
 
 @interface LTFbo (ForTesting)
 
-/// Designated initializer: create an FBO with a target texture (without clearing it in the
-/// process). If the given texture is invalid, an \c LTGLException named \c
-/// kLTFboInvalidAttachmentException will be thrown.
+/// Creates an FBO with a target texture (without clearing it in the process). If the given texture
+/// is invalid, an \c LTGLException named \c kLTFboInvalidAttachmentException will be thrown.
 ///
 /// @param texture texture to set as a render target. The texture must be of non-zero size, loaded
 /// (\c name which is non-zero) and with a precision that is valid as a render target.
@@ -92,8 +127,15 @@
 /// specific color.
 - (instancetype)initWithTexture:(LTTexture *)texture context:(LTGLContext *)context;
 
+/// Initializes with the given \c context and the given non empty \c infos, which maps
+/// \c LTFboAttachmentPoint to \c LTFboAttachmentInfo.
+- (instancetype)initWithContext:(LTGLContext *)context
+                attachmentInfos:(NSDictionary<NSNumber *, LTFboAttachmentInfo *> *)infos;
+
 /// Executes the given block while the receiver is bound to the active context, and \c LTGLContext's
-/// \c renderingToScreen is set to YES. 
+/// \c renderingToScreen is set to YES.
 - (void)bindAndDrawOnScreen:(LTVoidBlock)block;
 
 @end
+
+NS_ASSUME_NONNULL_END

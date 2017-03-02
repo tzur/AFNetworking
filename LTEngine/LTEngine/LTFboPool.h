@@ -3,7 +3,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class LTFbo, LTRenderbuffer, LTTexture;
+@class LTFbo, LTFboAttachmentInfo, LTRenderbuffer, LTTexture;
+
+@protocol LTFboAttachable;
 
 /// Represents a pool of OpenGL framebuffers. Framebuffers may be reused for better performance and
 /// to avoid OpenGL errors.
@@ -45,6 +47,14 @@ NS_ASSUME_NONNULL_BEGIN
 /// @param renderbuffer renderbuffer to set as an attachable. The renderbuffer must be of non-zero
 /// size and valid \c name which is non-zero.
 - (LTFbo *)fboWithRenderbuffer:(LTRenderbuffer *)renderbuffer;
+
+/// Returns an FBO initialized with the given non empty \c attachables, which maps
+/// \c LTFboAttachmentPoint to \c LTFboAttachable.
+- (LTFbo *)fboWithAttachables:(NSDictionary<NSNumber *, id<LTFboAttachable>> *)attachables;
+
+/// Returns an FBO initialized with the given non empty \c infos, which maps
+/// \c LTFboAttachmentPoint to \c LTFboAttachmentInfo.
+- (LTFbo *)fboWithAttachmentInfos:(NSDictionary<NSNumber *, LTFboAttachmentInfo *> *)infos;
 
 @end
 
