@@ -169,7 +169,7 @@ static void LTVerifyMipmapImages(const Matrices &images) {
 - (cv::Mat)imageAtLevel:(NSUInteger)level {
   LTParameterAssert((GLint)level <= self.maxMipmapLevel);
   __block cv::Mat image;
-  LTFbo *fbo = [[LTFboPool currentPool] fboWithTexture:self level:level];
+  LTFbo *fbo = [[LTFboPool currentPool] fboWithTexture:self level:(GLint)level];
   [fbo bindAndExecute:^{
     [self readRect:CGRectFromSize(self.size / std::pow(2, level)) toImage:&image];
   }];

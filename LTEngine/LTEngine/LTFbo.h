@@ -32,7 +32,7 @@
 /// texture's \c maxMipmapLevel.
 ///
 /// @note The texture will not be cleared. Use \c clear to clear the texture.
-- (instancetype)initWithTexture:(LTTexture *)texture level:(NSUInteger)level;
+- (instancetype)initWithTexture:(LTTexture *)texture level:(GLint)level;
 
 /// Creates an FBO with a target renderbuffer. If the given renderbuffer is invalid, an
 /// \c LTGLException named \c kLTFboInvalidAttachmentException will be thrown.

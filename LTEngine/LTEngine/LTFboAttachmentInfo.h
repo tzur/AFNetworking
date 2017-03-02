@@ -18,14 +18,15 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Initializes with the given \c attachable and the given \c level.
 ///
-/// @note \c attachable.attachableType must be \c LTFboAttachableTypeTexture2D.
-+ (instancetype)withAttachable:(id<LTFboAttachable>)attachable level:(NSUInteger)level;
+/// @note \c attachable.attachableType must be \c LTFboAttachableTypeTexture2D. \c level must be
+/// not greater than texture's \c maxMipmapLevel.
++ (instancetype)withAttachable:(id<LTFboAttachable>)attachable level:(GLint)level;
 
 /// Framebuffer's attachable.
 @property (readonly, nonatomic) id<LTFboAttachable> attachable;
 
 /// Mipmap level of an attachable. Only valid for texture attachable.
-@property (readonly, nonatomic) NSUInteger level;
+@property (readonly, nonatomic) GLint level;
 
 @end
 

@@ -40,7 +40,7 @@
   return [self initWithTexture:texture level:0];
 }
 
-- (instancetype)initWithTexture:(LTTexture *)texture level:(NSUInteger)level {
+- (instancetype)initWithTexture:(LTTexture *)texture level:(GLint)level {
   return [self initWithTexture:texture level:level context:[LTGLContext currentContext]];
 }
 
@@ -48,7 +48,7 @@
   return [self initWithTexture:texture level:0 context:context];
 }
 
-- (instancetype)initWithTexture:(LTTexture *)texture level:(NSUInteger)level
+- (instancetype)initWithTexture:(LTTexture *)texture level:(GLint)level
                         context:(LTGLContext *)context {
   if (self = [super init]) {
     LTParameterAssert(texture);
@@ -172,7 +172,7 @@
   if (self.bound) {
     return;
   }
-  
+
   glGetIntegerv(GL_FRAMEBUFFER_BINDING, &_previousFramebuffer);
   GLint viewport[4];
   glGetIntegerv(GL_VIEWPORT, viewport);
