@@ -305,7 +305,7 @@ typedef struct {
 - (void)executeAndPreserveState:(LTGLContextBlock)execute {
   LTParameterAssert(execute);
   [self assertContextIsCurrentContext];
-  
+
   self.contextStack.emplace([self valuesForCurrentState]);
   execute(self);
   [self setCurrentStateFromValues:self.contextStack.top()];

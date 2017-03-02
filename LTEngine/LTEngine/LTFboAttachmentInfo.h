@@ -24,7 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// Framebuffer's attachable.
 @property (readonly, nonatomic) id<LTFboAttachable> attachable;
 
-/// Mipmap level of an attachments. Only valid for textures and \c 0 otherwise.
+/// Mipmap level of an attachable. Only valid for texture attachable.
 @property (readonly, nonatomic) NSUInteger level;
 
 @end

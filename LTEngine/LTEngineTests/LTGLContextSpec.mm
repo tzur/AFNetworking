@@ -209,12 +209,12 @@ context(@"context values", ^{
     CGRect scissorBoxRect = CGRectMake(scissorBox[0], scissorBox[1], scissorBox[2], scissorBox[3]);
     expect(scissorBoxRect).to.equal(expected);
   });
-  
+
   it(@"should set rendering to screen", ^{
     context.renderingToScreen = YES;
     expect(context.renderingToScreen).to.beTruthy();
   });
-  
+
   it(@"should set blending", ^{
     context.blendEnabled = YES;
 
@@ -256,7 +256,7 @@ context(@"context values", ^{
     expect(context.ditheringEnabled).to.beFalsy();
     expect(glIsEnabled(GL_DITHER)).to.beFalsy();
   });
-  
+
   it(@"should set front facing polygon direction", ^{
     context.clockwiseFrontFacingPolygons = YES;
 
@@ -349,7 +349,7 @@ context(@"execution", ^{
       context.blendEquation = blendEquation;
 
       context.scissorBox = CGRectMake(1, 2, 3, 4);
-      
+
       context.renderingToScreen = !context.renderingToScreen;
       context.blendEnabled = !context.blendEnabled;
       context.faceCullingEnabled = !context.faceCullingEnabled;
@@ -384,7 +384,7 @@ context(@"execution", ^{
 
     expect(context.blendEnabled).to.beFalsy();
   });
-  
+
   it(@"should clear the color buffers", ^{
     cv::Mat4b mat(10, 10);
     cv::Vec4b red(255, 0, 0, 255);
@@ -401,7 +401,7 @@ context(@"execution", ^{
                        cv::Vec4b(charBlue.r(), charBlue.g(), charBlue.b(), charBlue.a()));
     expect(LTFuzzyCompareMat(expected, [texture image])).to.beTruthy();
   });
-  
+
   it(@"should clear the color buffers leaving the clearColor unchanged", ^{
     const LTVector4 kColor1 = LTVector4(1, 0, 0, 1);
     const LTVector4 kColor2 = LTVector4(0, 1, 0, 1);

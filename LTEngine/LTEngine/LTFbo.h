@@ -14,18 +14,18 @@
 /// process. If the given texture is invalid, an \c LTGLException named
 /// \c kLTFboInvalidAttachmentException will be thrown.
 ///
-/// @param texture texture to set as an attachment. The texture must be of non-zero size, loaded
-/// (\c name which is non-zero) and with a precision that is valid as a attachment.
+/// @param texture texture to set as an attachable. The texture must be of non-zero size, loaded
+/// (\c name which is non-zero) and with a precision that is valid as a attachable.
 ///
 /// @note The texture will not be cleared. Use \c clear to clear the texture.
 - (instancetype)initWithTexture:(LTTexture *)texture;
 
-/// Creates an FBO with the given \c texture and a mipmap level as an attachment. The texture is not
+/// Creates an FBO with the given \c texture and a mipmap level as an attachable. The texture is not
 /// cleared in the process. If the given texture is invalid, an \c LTGLException named
 /// \c kLTFboInvalidAttachmentException will be thrown.
 ///
-/// @param texture texture to set as an attachment. The texture must be of non-zero size, loaded
-/// (\c name which is non-zero) and with a precision that is valid as a attachment.
+/// @param texture texture to set as an attachable. The texture must be of non-zero size, loaded
+/// (\c name which is non-zero) and with a precision that is valid as a attachable.
 ///
 /// @param level level of the mipmap texture to set as a render target. For non mipmap textures,
 /// this value must be 0, and for mipmap textures this value must be less than or equal the
@@ -37,36 +37,39 @@
 /// Creates an FBO with a target renderbuffer. If the given renderbuffer is invalid, an
 /// \c LTGLException named \c kLTFboInvalidAttachmentException will be thrown.
 ///
-/// @param renderbuffer renderbuffer to set as an attachment. The renderbuffer must be of non-zero
+/// @param renderbuffer renderbuffer to set as an attachable. The renderbuffer must be of non-zero
 /// size and valid \c name which is non-zero.
 - (instancetype)initWithRenderbuffer:(LTRenderbuffer *)renderbuffer;
 
 /// Executes the given block while the receiver is bound to the active context, while locking the
-/// framebuffer's attachment when the block is executed. If the receiver is not already bound, this
+/// framebuffer's attachable when the block is executed. If the receiver is not already bound, this
 /// will automatically \c bind and \c unbind the receiver before and after the block, accordingly.
 /// If the receiver is bound, the block will execute, but no binding and unbinding will be executed.
 /// Making recursive calls to \c bindAndDraw: is possible without loss of context.
 ///
-/// @note use this method when drawing into the framebuffer's attachment, instead of
+/// @note use this method when drawing into the framebuffer's attachable, instead of
 /// \c bindAndExecute:.
 ///
 /// @param block The block to execute after binding the resource. This parameter cannot be nil.
 - (void)bindAndDraw:(LTVoidBlock)block;
 
-/// Fills the attachment bound to this FBO with the given color.
+/// Fills all color attachables bound to this FBO with the given color.
 - (void)clearWithColor:(LTVector4)color;
 
 /// Size of the attachment associated with this framebuffer.
 @property (readonly, nonatomic) CGSize size;
 
-/// Attachment associated with the framebuffer.
+/// Attachable associated with the framebuffer. Attachable selection policy is described in this
+/// class documentation.
 @property (readonly, nonatomic) id<LTFboAttachable> attachment;
 
-/// Pixel format of the attachment associated with this framebuffer.
+/// Pixel format of the attachable associated with this framebuffer. Attachable selection policy is
+/// described in this class documentation.
 @property (readonly, nonatomic) LTGLPixelFormat *pixelFormat;
 
-/// Mipmap level of the the attachment bound to the FBO. In case the attachment is not a mipmap
-/// texture, the value will be \c 0.
+/// Mipmap level of the the attachable bound to the FBO. In case the attachable is not a mipmap
+/// texture, the value will be \c 0. Attachable selection policy is described in this class
+/// documentation.
 @property (readonly, nonatomic) GLint level;
 
 @end

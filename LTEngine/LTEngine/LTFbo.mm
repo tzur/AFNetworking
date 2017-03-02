@@ -34,7 +34,7 @@
 @implementation LTFbo
 
 #pragma mark -
-#pragma mark Initialization and Setup
+#pragma mark Initialization
 #pragma mark -
 
 - (instancetype)initWithTexture:(LTTexture *)texture {

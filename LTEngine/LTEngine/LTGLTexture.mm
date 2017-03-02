@@ -366,7 +366,7 @@ static void LTVerifyMipmapImages(const Matrices &images) {
 - (void)writeWithBlock:(LTVoidBlock)block {
   // LTGLTexture doesn't support memory mapping, therefore any write should be treated as write via
   // framebuffer.
-  [self writeToAttachmentWithBlock:block];
+  [self writeToAttachableWithBlock:block];
 }
 
 #pragma mark -

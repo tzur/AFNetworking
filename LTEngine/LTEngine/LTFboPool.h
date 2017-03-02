@@ -15,22 +15,22 @@ NS_ASSUME_NONNULL_BEGIN
 /// with the current thread.
 + (nullable instancetype)currentPool;
 
-/// Returns an FBO with the given \c texture as an attachment. The texture is not cleared in the
+/// Returns an FBO with the given \c texture as an attachable. The texture is not cleared in the
 /// process. If the given texture is invalid, an \c LTGLException named
 /// \c kLTFboInvalidAttachmentException will be thrown.
 ///
-/// @param texture texture to set as an attachment. The texture must be of non-zero size, loaded
-/// (\c name which is non-zero) and with a precision that is valid as a attachment.
+/// @param texture texture to set as an attachable. The texture must be of non-zero size, loaded
+/// (\c name which is non-zero) and with a precision that is valid as a attachable.
 ///
 /// @note The texture will not be cleared. Use \c clear to clear the texture.
 - (LTFbo *)fboWithTexture:(LTTexture *)texture;
 
-/// Returns an FBO with the given \c texture and a mipmap level as an attachment. The texture is not
+/// Returns an FBO with the given \c texture and a mipmap level as an attachable. The texture is not
 /// cleared in the process. If the given texture is invalid, an \c LTGLException named
 /// \c kLTFboInvalidAttachmentException will be thrown.
 ///
-/// @param texture texture to set as an attachment. The texture must be of non-zero size, loaded
-/// (\c name which is non-zero) and with a precision that is valid as a attachment.
+/// @param texture texture to set as an attachable. The texture must be of non-zero size, loaded
+/// (\c name which is non-zero) and with a precision that is valid as a attachable.
 ///
 /// @param level level of the mipmap texture to set as a render target. For non mipmap textures,
 /// this value must be 0, and for mipmap textures this value must be less than or equal the
@@ -42,7 +42,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// Returns an FBO with a target renderbuffer. If the given renderbuffer is invalid, an
 /// \c LTGLException named \c kLTFboInvalidAttachmentException will be thrown.
 ///
-/// @param renderbuffer renderbuffer to set as an attachment. The renderbuffer must be of non-zero
+/// @param renderbuffer renderbuffer to set as an attachable. The renderbuffer must be of non-zero
 /// size and valid \c name which is non-zero.
 - (LTFbo *)fboWithRenderbuffer:(LTRenderbuffer *)renderbuffer;
 

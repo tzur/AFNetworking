@@ -21,7 +21,7 @@ afterEach(^{
   glContext = nil;
 });
 
-context(@"texture attachment", ^{
+context(@"texture attachable", ^{
   context(@"initialization", ^{
     it(@"should init with RGBA byte texture", ^{
       LTTexture *texture = [LTTexture byteRGBATextureWithSize:CGSizeMake(1, 1)];
@@ -125,7 +125,7 @@ context(@"texture attachment", ^{
   });
 });
 
-context(@"renderbuffer attachment", ^{
+context(@"renderbuffer attachable", ^{
   context(@"initialization", ^{
     __block CAEAGLLayer *drawable;
     __block LTRenderbuffer *renderbuffer;

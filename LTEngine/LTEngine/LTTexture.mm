@@ -62,10 +62,10 @@ NS_ASSUME_NONNULL_BEGIN
 /// OpenGL identifier of the texture.
 @property (readwrite, nonatomic) GLuint name;
 
-/// Pixel format of the attachment.
+/// Pixel format of the attachable.
 @property (strong, readwrite, nonatomic) LTGLPixelFormat *pixelFormat;
 
-/// Size of the attachment.
+/// Size of the attachable.
 @property (nonatomic) CGSize size;
 
 /// While \c YES, the \c generationID property will not be updated.
