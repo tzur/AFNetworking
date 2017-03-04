@@ -200,11 +200,13 @@ typedef void (^LTImageCGImageBlock)(CGImageRef imageRef);
 }
 
 - (lt::Ref<CGColorSpaceRef>)newColorSpaceForImage {
-  switch (self.depth) {
-    case LTImageDepthGrayscale:
+  switch (self.mat.channels()) {
+    case 1:
       return lt::Ref<CGColorSpaceRef>(CGColorSpaceCreateDeviceGray());
-    case LTImageDepthRGBA:
+    case 4:
       return lt::Ref<CGColorSpaceRef>(CGColorSpaceCreateDeviceRGB());
+    default:
+      LTAssert(NO, @"Invalid number of image channels: %d", self.mat.channels());
   }
 }
 
@@ -260,21 +262,6 @@ typedef void (^LTImageCGImageBlock)(CGImageRef imageRef);
 
 - (CGImageDestinationRef)newImageDestinationWithURL:(NSURL *)url {
   return CGImageDestinationCreateWithURL((CFURLRef)url, kUTTypeJPEG, 1, NULL);
-}
-
-#pragma mark -
-#pragma mark Image properties
-#pragma mark -
-
-- (LTImageDepth)depth {
-  switch (self.mat.channels()) {
-    case 1:
-      return LTImageDepthGrayscale;
-    case 4:
-      return LTImageDepthRGBA;
-    default:
-      LTAssert(NO, @"Invalid number of image channels: %d", self.mat.channels());
-  }
 }
 
 #pragma mark -
