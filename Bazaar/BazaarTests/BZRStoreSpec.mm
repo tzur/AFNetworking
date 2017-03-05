@@ -157,6 +157,22 @@ context(@"acquired via subscription products", ^{
     expect(store.acquiredViaSubscriptionProducts).to.equal(acquiredViaSubscription);
   });
 
+  it(@"should add products that marked in the product list as pre acquired", ^{
+    BZRProduct *notPreAcquiredProduct = BZRProductWithIdentifier(@"notPreAcquired");
+    BZRProduct *preAcquiredProduct = BZRProductWithIdentifier(@"preAcquired");
+    preAcquiredProduct = [preAcquiredProduct
+        modelByOverridingProperty:@keypath(preAcquiredProduct, preAcquiredViaSubscription)
+                        withValue:@YES];
+
+    RACSignal *productList = [RACSignal return:@[notPreAcquiredProduct, preAcquiredProduct]];
+    OCMStub([productsProvider fetchProductList]).andReturn(productList);
+
+    OCMReject([acquiredViaSubscriptionProvider
+               addAcquiredViaSubscriptionProduct:@"notPreAcquired"]);
+    store = [[BZRStore alloc] initWithConfiguration:configuration];
+    OCMVerify([acquiredViaSubscriptionProvider addAcquiredViaSubscriptionProduct:@"preAcquired"]);
+  });
+
   it(@"should return empty set if acquired via subscription products is empty", ^{
     NSSet *acquiredViaSubscription = [NSSet set];
     OCMStub([acquiredViaSubscriptionProvider productsAcquiredViaSubscription])
@@ -190,15 +206,13 @@ context(@"allowed products", ^{
         .andReturn(acquiredViaSubscription);
   });
 
-  it(@"should return purchased product when subsciption doesn't exist", ^{
+  it(@"should return purchased product when subscription doesn't exist", ^{
     BZRReceiptValidationStatus *receiptValidationStatus =
         BZRReceiptValidationStatusWithInAppPurchaseAndExpiry(productIdentifier, NO);
-    BZRReceiptInfo *receipt =
-        [receiptValidationStatus.receipt
+    BZRReceiptInfo *receipt = [receiptValidationStatus.receipt
          modelByOverridingProperty:@keypath(receiptValidationStatus.receipt, subscription)
                          withValue:nil];
-    receiptValidationStatus =
-        [receiptValidationStatus
+    receiptValidationStatus = [receiptValidationStatus
          modelByOverridingProperty:@keypath(receiptValidationStatus, receipt) withValue:receipt];
     OCMStub([receiptValidationStatusProvider receiptValidationStatus])
         .andReturn(receiptValidationStatus);
@@ -206,7 +220,7 @@ context(@"allowed products", ^{
     expect(store.allowedProducts).to.equal([NSSet setWithObject:productIdentifier]);
   });
 
-  it(@"should return purchased product when subsciption is expired", ^{
+  it(@"should return purchased product when subscription is expired", ^{
     BZRReceiptValidationStatus *receiptValidationStatus =
         BZRReceiptValidationStatusWithInAppPurchaseAndExpiry(productIdentifier, YES);
     OCMStub([receiptValidationStatusProvider receiptValidationStatus])
@@ -748,7 +762,7 @@ context(@"getting product list", ^{
     expect(recorder).will.sendError(error);
   });
 
-  it(@"should refetch product list if an error occured during prefetch", ^{
+  it(@"should refetch product list if an error occurred during prefetch", ^{
     NSError *error = [NSError lt_errorWithCode:1337];
     OCMExpect([productsProvider fetchProductList]).andReturn([RACSignal error:error]);
     store = [[BZRStore alloc] initWithConfiguration:configuration];
@@ -1051,7 +1065,7 @@ context(@"KVO-compliance", ^{
       ]);
     });
 
-    it(@"should remove acquired via subscription products when subscribption expires", ^{
+    it(@"should remove acquired via subscription products when subscription expires", ^{
       validationStatusProvider.receiptValidationStatus = BZRReceiptValidationStatusWithExpiry(NO);
       acquiredViaSubscriptionProvider.productsAcquiredViaSubscription =
           [NSSet setWithObject:@"foo"];
@@ -1068,7 +1082,7 @@ context(@"KVO-compliance", ^{
       ]);
     });
 
-    it(@"should add acquried via subscription products when subscription renews", ^{
+    it(@"should add acquired via subscription products when subscription renews", ^{
       validationStatusProvider.receiptValidationStatus = BZRReceiptValidationStatusWithExpiry(YES);
       acquiredViaSubscriptionProvider.productsAcquiredViaSubscription =
           [NSSet setWithObject:@"foo"];

@@ -38,6 +38,10 @@ LTEnumDeclare(NSUInteger, BZRProductType,
 /// \c NO.
 @property (readonly, nonatomic) BOOL isSubscribersOnly;
 
+/// \c YES if the product should be available for subscribers immediately after purchasing a
+/// subscription, \c NO otherwise. Optional, the default value is \c NO.
+@property (readonly, nonatomic) BOOL preAcquiredViaSubscription;
+
 /// Holds the price and the locale of the product.
 @property (readonly, nonatomic, nullable) BZRProductPriceInfo *priceInfo;
 

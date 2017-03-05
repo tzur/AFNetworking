@@ -193,6 +193,7 @@ NS_ASSUME_NONNULL_BEGIN
         }] valueForKey:@instanceKeypath(BZRProduct, identifier)]];
     [self updateAppStoreLocaleFromProductDictionary:productDictionary];
     [self createVariantSelectorWithProductDictionary:productDictionary];
+    [self addPreAcquiredProductsToAcquiredViaSubscription:productDictionary];
   }
 }
 
@@ -213,6 +214,16 @@ NS_ASSUME_NONNULL_BEGIN
     [self sendErrorEventOfType:$(BZREventTypeNonCriticalError) error:error];
   } else {
     self.variantSelector = selector;
+  }
+}
+
+- (void)addPreAcquiredProductsToAcquiredViaSubscription:(BZRProductDictionary *)productDictionary {
+  BZRProductList *preAcquiredViaSubscriptionProducts = [[productDictionary allValues]
+      lt_filter:^BOOL(BZRProduct *product) {
+        return product.preAcquiredViaSubscription;
+      }];
+  for (BZRProduct *product in preAcquiredViaSubscriptionProducts) {
+    [self.acquiredViaSubscriptionProvider addAcquiredViaSubscriptionProduct:product.identifier];
   }
 }
 
