@@ -196,7 +196,7 @@ context(@"renderbuffer attachable", ^{
       auto texture1 = [LTTexture byteRGBATextureWithSize:size1];
 
       auto fbo = [[LTFbo alloc] initWithAttachables:@{
-        @(LTFboAttachmentPointColor1): texture0,
+        @(LTFboAttachmentPointColor0): texture0,
         @(LTFboAttachmentPointColor2): texture1
       }];
 
