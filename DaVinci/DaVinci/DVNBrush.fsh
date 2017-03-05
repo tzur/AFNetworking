@@ -167,6 +167,8 @@ void main() {
     } else {
       src = vec4(vColor, alpha);
     }
+  } else {
+    src.rgb *= vColor;
   }
   highp vec4 dst = gl_LastFragData[0];
   gl_FragColor = mix(dst, blend(src, dst, blendMode), opacity * edgeAvoidanceFactor(length(src)));
