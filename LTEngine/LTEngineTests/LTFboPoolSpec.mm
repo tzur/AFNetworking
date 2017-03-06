@@ -4,6 +4,7 @@
 #import "LTFboPool.h"
 
 #import "LTFbo.h"
+#import "LTFboAttachmentInfo.h"
 #import "LTGLContext.h"
 #import "LTRenderbuffer.h"
 #import "LTTexture+Factory.h"
@@ -88,6 +89,103 @@ context(@"fbo creation", ^{
       expect(fbo2.name).to.equal(fbo.name);
 
       expect($([texture image])).to.equalMat($(image));
+    });
+  });
+
+  context(@"multiple attachables", ^{
+    __block LTTexture *texture;
+    __block LTTexture *mipmapTexture;
+    __block LTRenderbuffer *renderbuffer;
+    __block LTRenderbuffer *depthRenderbuffer;
+
+    beforeEach(^{
+      texture = [LTTexture textureWithImage:cv::Mat4b(3,3)];
+      mipmapTexture = [LTTexture textureWithMipmapImages:{
+        cv::Mat4b(4, 4), cv::Mat4b(2, 2), cv::Mat4b(1, 1)
+      }];
+      renderbuffer = [[LTRenderbuffer alloc] initWithSize:CGSizeMake(2, 3)
+                                              pixelFormat:$(LTGLPixelFormatRGBA8Unorm)];
+      depthRenderbuffer = [[LTRenderbuffer alloc] initWithSize:CGSizeMake(3, 2)
+                                                   pixelFormat:$(LTGLPixelFormatDepth16Unorm)];
+    });
+
+    afterEach(^{
+      texture = nil;
+      mipmapTexture = nil;
+      renderbuffer = nil;
+      depthRenderbuffer = nil;
+    });
+
+    it(@"should reuse fbo with same multiple attachables", ^{
+      auto fbo = [fboPool fboWithAttachables:@{
+        @(LTFboAttachmentPointColor0): texture,
+        @(LTFboAttachmentPointColor1): mipmapTexture,
+        @(LTFboAttachmentPointColor2): renderbuffer,
+        @(LTFboAttachmentPointDepth): depthRenderbuffer
+      }];
+      auto fbo2 = [fboPool fboWithAttachables:@{
+        @(LTFboAttachmentPointColor0): texture,
+        @(LTFboAttachmentPointColor1): mipmapTexture,
+        @(LTFboAttachmentPointColor2): renderbuffer,
+        @(LTFboAttachmentPointDepth): depthRenderbuffer
+      }];
+      
+      expect(fbo.name).to.equal(fbo2.name);
+    });
+
+    it(@"should return different fbo for different multiple attachables", ^{
+      auto fbo = [fboPool fboWithAttachables:@{
+        @(LTFboAttachmentPointColor0): texture,
+        @(LTFboAttachmentPointColor1): mipmapTexture,
+        @(LTFboAttachmentPointColor2): renderbuffer,
+        @(LTFboAttachmentPointDepth): depthRenderbuffer
+      }];
+      auto fbo2 = [fboPool fboWithAttachables:@{
+        @(LTFboAttachmentPointColor0): mipmapTexture,
+        @(LTFboAttachmentPointColor1): texture,
+        @(LTFboAttachmentPointColor2): renderbuffer,
+        @(LTFboAttachmentPointDepth): depthRenderbuffer
+      }];
+      
+      expect(fbo.name).notTo.equal(fbo2.name);
+    });
+
+    it(@"should reuse fbo with same multiple attachment infos", ^{
+      auto fbo = [fboPool fboWithAttachmentInfos:@{
+        @(LTFboAttachmentPointColor0): [LTFboAttachmentInfo withAttachable:texture],
+        @(LTFboAttachmentPointColor1): [LTFboAttachmentInfo withAttachable:mipmapTexture level:1],
+        @(LTFboAttachmentPointColor2): [LTFboAttachmentInfo withAttachable:mipmapTexture level:2],
+        @(LTFboAttachmentPointColor3): [LTFboAttachmentInfo withAttachable:renderbuffer],
+        @(LTFboAttachmentPointDepth): [LTFboAttachmentInfo withAttachable:depthRenderbuffer]
+      }];
+      auto fbo2 = [fboPool fboWithAttachmentInfos:@{
+        @(LTFboAttachmentPointColor0): [LTFboAttachmentInfo withAttachable:texture],
+        @(LTFboAttachmentPointColor1): [LTFboAttachmentInfo withAttachable:mipmapTexture level:1],
+        @(LTFboAttachmentPointColor2): [LTFboAttachmentInfo withAttachable:mipmapTexture level:2],
+        @(LTFboAttachmentPointColor3): [LTFboAttachmentInfo withAttachable:renderbuffer],
+        @(LTFboAttachmentPointDepth): [LTFboAttachmentInfo withAttachable:depthRenderbuffer]
+      }];
+
+      expect(fbo.name).to.equal(fbo2.name);
+    });
+
+    it(@"should return different fbo for different multiple attachment infos", ^{
+      auto fbo = [fboPool fboWithAttachmentInfos:@{
+        @(LTFboAttachmentPointColor0): [LTFboAttachmentInfo withAttachable:texture],
+        @(LTFboAttachmentPointColor1): [LTFboAttachmentInfo withAttachable:mipmapTexture level:1],
+        @(LTFboAttachmentPointColor2): [LTFboAttachmentInfo withAttachable:mipmapTexture level:2],
+        @(LTFboAttachmentPointColor3): [LTFboAttachmentInfo withAttachable:renderbuffer],
+        @(LTFboAttachmentPointDepth): [LTFboAttachmentInfo withAttachable:depthRenderbuffer]
+      }];
+      auto fbo2 = [fboPool fboWithAttachmentInfos:@{
+        @(LTFboAttachmentPointColor0): [LTFboAttachmentInfo withAttachable:texture],
+        @(LTFboAttachmentPointColor1): [LTFboAttachmentInfo withAttachable:mipmapTexture level:2],
+        @(LTFboAttachmentPointColor2): [LTFboAttachmentInfo withAttachable:mipmapTexture level:1],
+        @(LTFboAttachmentPointColor3): [LTFboAttachmentInfo withAttachable:renderbuffer],
+        @(LTFboAttachmentPointDepth): [LTFboAttachmentInfo withAttachable:depthRenderbuffer]
+      }];
+      
+      expect(fbo.name).notTo.equal(fbo2.name);
     });
   });
 

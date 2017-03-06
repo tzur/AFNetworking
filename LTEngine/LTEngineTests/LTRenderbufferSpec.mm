@@ -6,7 +6,6 @@
 #import "LTGLContext.h"
 #import "LTGLPixelFormat.h"
 #import "LTGPUResourceExamples.h"
-#import "LTRenderbuffer+Writing.h"
 
 SpecBegin(LTRenderbuffer)
 
@@ -36,7 +35,7 @@ sharedExamplesFor(kLTRenderbufferExamples, ^(NSDictionary *info) {
     expectedPixelFormat = nil;
   });
 
-  context(@"writable framebuffer attachment", ^{
+  context(@"writable framebuffer attachable", ^{
     it(@"should have a valid name", ^{
       expect(renderbuffer.name).to.beGreaterThan(0);
     });
@@ -57,20 +56,20 @@ sharedExamplesFor(kLTRenderbufferExamples, ^(NSDictionary *info) {
       expect(renderbuffer.fillColor.isNull()).to.beTruthy();
     });
 
-    it(@"should return correct attachment type", ^{
+    it(@"should return correct attachable type", ^{
       expect(renderbuffer.attachableType).to.equal(LTFboAttachableTypeRenderbuffer);
     });
 
     it(@"should update generation ID upon writing", ^{
       NSString *generationID = renderbuffer.generationID;
-      [renderbuffer writeToAttachmentWithBlock:^{}];
+      [renderbuffer writeToAttachableWithBlock:^{}];
 
       expect(renderbuffer.generationID).toNot.equal(generationID);
     });
 
     it(@"should set clear color and update generation ID upon clearing", ^{
       NSString *generationID = renderbuffer.generationID;
-      [renderbuffer clearAttachmentWithColor:LTVector4::ones() block:^{}];
+      [renderbuffer clearAttachableWithColor:LTVector4::ones() block:^{}];
 
       expect(renderbuffer.fillColor).to.equal(LTVector4::ones());
       expect(renderbuffer.generationID).toNot.equal(generationID);

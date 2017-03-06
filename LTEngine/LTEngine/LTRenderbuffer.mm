@@ -3,10 +3,9 @@
 
 #import "LTRenderbuffer.h"
 
-#import "LTFboWritableAttachment.h"
+#import "LTFboAttachable.h"
 #import "LTGLContext.h"
 #import "LTGLPixelFormat.h"
-#import "LTRenderbuffer+Writing.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -21,10 +20,10 @@ NS_ASSUME_NONNULL_BEGIN
 /// Set to the previously bound renderbuffer, or \c 0 if renderbuffer is not bound.
 @property (nonatomic) GLint previousRenderbuffer;
 
-/// Pixel format of the attachment.
+/// Pixel format of the attachable.
 @property (readwrite, nonatomic) LTGLPixelFormat *pixelFormat;
 
-/// Current generation ID of the attachment.
+/// Current generation ID of the attachable.
 @property (readwrite, nonatomic) NSString *generationID;
 
 /// Color the renderbuffed is filled with, or \c LTVector4::null() if the fill color is
@@ -137,14 +136,14 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 #pragma mark -
-#pragma mark LTFboWritableAttachment
+#pragma mark LTFboWritableAttachable
 #pragma mark -
 
 - (LTFboAttachableType)attachableType {
   return LTFboAttachableTypeRenderbuffer;
 }
 
-- (void)writeToAttachmentWithBlock:(LTVoidBlock)block {
+- (void)writeToAttachableWithBlock:(LTVoidBlock)block {
   LTParameterAssert(block);
 
   block();
@@ -152,7 +151,7 @@ NS_ASSUME_NONNULL_BEGIN
   [self updateGenerationID];
 }
 
-- (void)clearAttachmentWithColor:(LTVector4)color block:(LTVoidBlock)block {
+- (void)clearAttachableWithColor:(LTVector4)color block:(LTVoidBlock)block {
   block();
   self.fillColor = color;
   [self updateGenerationID];
