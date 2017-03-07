@@ -46,12 +46,6 @@ NS_ASSUME_NONNULL_BEGIN
 /// Provider used to provide list of products that were acquired via subsription.
 @property (readonly, nonatomic) BZRAcquiredViaSubscriptionProvider *acquiredViaSubscriptionProvider;
 
-/// Bundle used to check whether the receipt URL exists.
-@property (readonly, nonatomic) NSBundle *applicationReceiptBundle;
-
-/// Manager used to check if the receipt file exists.
-@property (readonly, nonatomic) NSFileManager *fileManager;
-
 /// Activator used to control the periodic validation.
 @property (readonly, nonatomic) BZRPeriodicReceiptValidatorActivator *periodicValidatorActivator;
 
@@ -99,8 +93,6 @@ NS_ASSUME_NONNULL_BEGIN
     _contentProvider = configuration.contentProvider;
     _validationStatusProvider = configuration.validationStatusProvider;
     _acquiredViaSubscriptionProvider = configuration.acquiredViaSubscriptionProvider;
-    _applicationReceiptBundle = configuration.applicationReceiptBundle;
-    _fileManager = configuration.fileManager;
     _periodicValidatorActivator = configuration.periodicValidatorActivator;
     _storeKitFacade = configuration.storeKitFacade;
     _variantSelectorFactory = configuration.variantSelectorFactory;
@@ -386,15 +378,9 @@ NS_ASSUME_NONNULL_BEGIN
   @weakify(self);
   return [[RACSignal defer:^RACSignal *{
     @strongify(self);
-    return [self isReceiptAvailable] ? [self restoreCompletedTransactions] :
-            [[self.storeKitFacade refreshReceipt] concat:[self restoreCompletedTransactions]];
+    return [[self.storeKitFacade refreshReceipt] concat:[self restoreCompletedTransactions]];
   }]
   setNameWithFormat:@"%@ -refreshReceipt", self];
-}
-
-- (BOOL)isReceiptAvailable {
-  NSURL *receiptURL = [self.applicationReceiptBundle appStoreReceiptURL];
-  return receiptURL && [self.fileManager fileExistsAtPath:receiptURL.path];
 }
 
 - (RACSignal *)restoreCompletedTransactions {
