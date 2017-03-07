@@ -1,0 +1,5 @@
+// Copyright (c) 2017 Lightricks. All rights reserved.
+// Created by Boris Talesnik.
+
+// iOS Frameworks.
+#import <Foundation/Foundation.h>
