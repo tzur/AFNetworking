@@ -184,4 +184,71 @@ context(@"access to planar pixel data", ^{
   });
 });
 
+context(@"unified access", ^{
+  context(@"non planar", ^{
+    __block lt::Ref<CVPixelBufferRef> pixelBuffer;
+
+    beforeEach(^{
+      pixelBuffer = LTCVPixelBufferCreate(17, 19, kCVPixelFormatType_32BGRA);
+    });
+
+    afterEach(^{
+      pixelBuffer.release();
+    });
+
+    it(@"should pass single matrix with buffers data", ^{
+      __block BOOL executed = NO;
+      LTCVPixelBufferImages(pixelBuffer.get(), 0, ^(const std::vector<cv::Mat> &images) {
+        expect(images.size()).to.equal(1);
+        expect(images[0].cols).to.equal(17);
+        expect(images[0].rows).to.equal(19);
+        expect(images[0].type()).to.equal(CV_8UC4);
+
+        cv::Mat m = images[0];
+
+        char *baseAddress = (char *)CVPixelBufferGetBaseAddress(pixelBuffer.get());
+        expect(images[0].data).to.equal(baseAddress);
+
+        executed = YES;
+      });
+      expect(executed).to.beTruthy();
+    });
+  });
+
+  context(@"planar", ^{
+    __block lt::Ref<CVPixelBufferRef> pixelBuffer;
+
+    beforeEach(^{
+      pixelBuffer = LTCVPixelBufferCreate(20, 10, kCVPixelFormatType_420YpCbCr8BiPlanarFullRange);
+    });
+
+    afterEach(^{
+      pixelBuffer.release();
+    });
+
+    it(@"should get correct planar images", ^{
+      __block BOOL executed = NO;
+      LTCVPixelBufferImages(pixelBuffer.get(), 0, ^(const std::vector<cv::Mat> &images) {
+        expect(images.size()).to.equal(2);
+        expect(images[0].cols).to.equal(20);
+        expect(images[0].rows).to.equal(10);
+        expect(images[0].type()).to.equal(CV_8UC1);
+
+        char *baseOfPlane0 = (char *)CVPixelBufferGetBaseAddressOfPlane(pixelBuffer.get(), 0);
+        expect(images[0].data).to.equal(baseOfPlane0);
+
+        expect(images[1].cols).to.equal(10);
+        expect(images[1].rows).to.equal(5);
+        expect(images[1].type()).to.equal(CV_8UC2);
+
+        char *baseOfPlane1 = (char *)CVPixelBufferGetBaseAddressOfPlane(pixelBuffer.get(), 1);
+        expect(images[1].data).to.equal(baseOfPlane1);
+
+        executed = YES;
+      });
+      expect(executed).to.beTruthy();
+    });
+  });
+});
+
 SpecEnd

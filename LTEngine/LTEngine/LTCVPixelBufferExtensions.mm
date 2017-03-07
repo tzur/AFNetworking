@@ -114,4 +114,52 @@ void LTCVPixelBufferPlaneImageForWriting(CVPixelBufferRef pixelBuffer, size_t pl
   LTCVPixelBufferPlaneImage(pixelBuffer, planeIndex, 0, block);
 }
 
+void LTCVPixelBufferImages(CVPixelBufferRef pixelBuffer, CVPixelBufferLockFlags lockFlags,
+                           LTCVPixelBufferImagesBlock block) {
+  LTParameterAssert(block);
+
+  if (!CVPixelBufferIsPlanar(pixelBuffer)) {
+    LTCVPixelBufferImage(pixelBuffer, lockFlags, ^(cv::Mat *image) {
+      block({*image});
+    });
+  } else {
+    const size_t planeCount = CVPixelBufferGetPlaneCount(pixelBuffer);
+    OSType pixelFormat = CVPixelBufferGetPixelFormatType(pixelBuffer);
+
+    LTCVPixelBufferLockAndExecute(pixelBuffer, lockFlags, ^{
+      std::vector<cv::Mat> images;
+
+      for (size_t planeIndex = 0; planeIndex < planeCount; ++planeIndex) {
+        LTGLPixelFormat *planeFormat =
+            [[LTGLPixelFormat alloc] initWithPlanarCVPixelFormatType:pixelFormat
+                                                          planeIndex:planeIndex];
+
+        void *base = CVPixelBufferGetBaseAddressOfPlane(pixelBuffer, planeIndex);
+        size_t width = CVPixelBufferGetWidthOfPlane(pixelBuffer, planeIndex);
+        size_t height = CVPixelBufferGetHeightOfPlane(pixelBuffer, planeIndex);
+        size_t bytesPerRow = CVPixelBufferGetBytesPerRowOfPlane(pixelBuffer, planeIndex);
+
+        images.emplace_back((int)height, (int)width, planeFormat.matType, base, bytesPerRow);
+      }
+
+      block(images);
+    });
+  }
+}
+
+void LTCVPixelBufferImagesForReading(CVPixelBufferRef pixelBuffer,
+                                     LTCVPixelBufferImagesBlock block) {
+  LTCVPixelBufferImages(pixelBuffer, kCVPixelBufferLock_ReadOnly,
+                        ^(const std::vector<cv::Mat> &images) {
+    block(images);
+  });
+}
+
+void LTCVPixelBufferImagesForWriting(CVPixelBufferRef pixelBuffer,
+                                     LTCVPixelBufferImagesBlock block) {
+  LTCVPixelBufferImages(pixelBuffer, 0, ^(const std::vector<cv::Mat> &images) {
+    block(images);
+  });
+}
+
 NS_ASSUME_NONNULL_END
