@@ -25,7 +25,7 @@ LTErrorCodesDeclare(BazaarErrorCodeProductID,
   BZRErrorCodeKeychainStorageInvalidArguments,
   /// Failure during keychain access.
   BZRErrorCodeKeychainStorageAccessFailed,
-  /// Unexpected failure occured.
+  /// Unexpected failure occurred.
   BZRErrorCodeKeychainStorageUnexpectedFailure,
   /// Failure during data conversion.
   BZRErrorCodeKeychainStorageConversionFailed,
@@ -61,14 +61,16 @@ LTErrorCodesDeclare(BazaarErrorCodeProductID,
   BZRErrorCodePurchaseFailed,
   /// Received a transaction that isn't associated with a payment.
   BZRErrorCodeUnhandledTransactionReceived,
-  /// Received a purchase request with invalid product identifer.
+  /// Received a purchase request with invalid product identifier.
   BZRErrorCodeInvalidProductIdentifer,
   /// Fetching of product list has failed.
   BZRErrorCodeFetchingProductListFailed,
   /// The receipt validation has failed during the periodic check.
   BZRErrorCodePeriodicReceiptValidationFailed,
-  /// Loading of file has failed
-  BZRErrorCodeLoadingFileFailed
+  /// Loading of file has failed.
+  BZRErrorCodeLoadingFileFailed,
+  /// Product was purchased successfully but not found in the receipt.
+  BZRErrorCodePurchasedProductNotFoundInReceipt
 );
 
 NS_ASSUME_NONNULL_END

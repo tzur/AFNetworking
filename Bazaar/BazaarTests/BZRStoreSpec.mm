@@ -349,7 +349,7 @@ context(@"purchasing products", ^{
     expect([store purchaseProduct:productIdentifier]).will.complete();
   });
 
-  context(@"product exists", ^{
+  context(@"product exists in product list", ^{
     beforeEach(^{
       BZRStubProductDictionaryToReturnProductWithIdentifier(productIdentifier, productsProvider);
       store = [[BZRStore alloc] initWithConfiguration:configuration];
@@ -367,8 +367,10 @@ context(@"purchasing products", ^{
     });
 
     context(@"purchasing through store kit", ^{
+      __block BZRReceiptValidationStatus *receiptValidationStatus;
+
       beforeEach(^{
-        BZRReceiptValidationStatus *receiptValidationStatus =
+        receiptValidationStatus =
             BZRReceiptValidationStatusWithInAppPurchaseAndExpiry(productIdentifier, YES);
         OCMStub([receiptValidationStatusProvider receiptValidationStatus])
             .andReturn(receiptValidationStatus);
@@ -395,8 +397,11 @@ context(@"purchasing products", ^{
         BZRStore *store = [[BZRStore alloc] initWithConfiguration:configuration];
 
         OCMExpect([storeKitFacade purchaseProduct:underlyingProduct]).andReturn([RACSignal empty]);
+
+        BZRReceiptValidationStatus *receiptValidationWithPurchasedProduct =
+            BZRReceiptValidationStatusWithInAppPurchaseAndExpiry(@"bar", YES);
         OCMStub([receiptValidationStatusProvider fetchReceiptValidationStatus])
-            .andReturn([RACSignal empty]);
+            .andReturn([RACSignal return:receiptValidationWithPurchasedProduct]);
 
         expect([store purchaseProduct:@"bar"]).will.complete();
         OCMVerifyAll((id)storeKitFacade);
@@ -405,10 +410,60 @@ context(@"purchasing products", ^{
       it(@"should call validate receipt when store kit signal finishes", ^{
         OCMStub([storeKitFacade purchaseProduct:OCMOCK_ANY]).andReturn([RACSignal empty]);
         OCMStub([receiptValidationStatusProvider fetchReceiptValidationStatus])
-            .andReturn([RACSignal empty]);
+            .andReturn([RACSignal return:receiptValidationStatus]);
 
         expect([store purchaseProduct:productIdentifier]).will.complete();
         OCMVerify([receiptValidationStatusProvider fetchReceiptValidationStatus]);
+      });
+
+      it(@"should not refresh receipt when product is found in receipt after purchasing", ^{
+        OCMStub([storeKitFacade purchaseProduct:OCMOCK_ANY]).andReturn([RACSignal empty]);
+        OCMStub([receiptValidationStatusProvider fetchReceiptValidationStatus])
+            .andReturn([RACSignal return:receiptValidationStatus]);
+
+        OCMReject([storeKitFacade refreshReceipt]);
+        expect([store purchaseProduct:productIdentifier]).will.complete();
+      });
+
+      context(@"product not found in receipt after purchasing", ^{
+        beforeEach(^{
+          BZRProduct *bazaarProduct = BZRProductWithIdentifier(@"bar");
+          bazaarProduct = [bazaarProduct
+              modelByOverridingProperty:@instanceKeypath(BZRProduct, bzr_underlyingProduct)
+              withValue:OCMClassMock([SKProduct class])];
+          OCMStub([variantSelector selectedVariantForProductWithIdentifier:@"bar"])
+              .andReturn(@"bar");
+          BZRStubProductDictionaryToReturnProduct(bazaarProduct, productsProvider);
+          store = [[BZRStore alloc] initWithConfiguration:configuration];
+
+          OCMStub([storeKitFacade purchaseProduct:OCMOCK_ANY]).andReturn([RACSignal empty]);
+        });
+
+        it(@"should refresh receipt when product is not found in receipt after purchasing", ^{
+          OCMExpect([receiptValidationStatusProvider fetchReceiptValidationStatus])
+              .andReturn([RACSignal return:receiptValidationStatus]);
+          OCMExpect([receiptValidationStatusProvider fetchReceiptValidationStatus])
+              .andReturn([RACSignal return:receiptValidationStatus]);
+          OCMReject([receiptValidationStatusProvider fetchReceiptValidationStatus]);
+
+          expect([store purchaseProduct:@"bar"]).will.complete();
+          OCMVerify([storeKitFacade refreshReceipt]);
+        });
+
+        it(@"should send error event when product is not found in receipt after purchasing", ^{
+          LLSignalTestRecorder *recorder = [store.eventsSignal testRecorder];
+
+          OCMStub([receiptValidationStatusProvider fetchReceiptValidationStatus])
+              .andReturn([RACSignal return:receiptValidationStatus]);
+
+          expect([store purchaseProduct:@"bar"]).will.complete();
+          expect(recorder).will.matchValue(0, ^BOOL(BZREvent *event) {
+            return event.eventError.lt_isLTDomain &&
+                event.eventError.code == BZRErrorCodePurchasedProductNotFoundInReceipt &&
+                [event.eventError.bzr_purchasedProductIdentifier isEqualToString:@"bar"] &&
+                [event.eventType isEqual:$(BZREventTypeCriticalError)];
+          });
+        });
       });
 
       it(@"should call finish transaction when received a transaction with state purchased", ^{
