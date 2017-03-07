@@ -35,6 +35,8 @@
 				654BA76B1D4BFEA4003DCC5F /* PBXTargetDependency */,
 				65BAF43A1D48B1C5009BBB6F /* PBXTargetDependency */,
 				654BA76D1D4BFEA4003DCC5F /* PBXTargetDependency */,
+				A14176C41E6EBE9E005DBEFF /* PBXTargetDependency */,
+				A14176C61E6EBE9E005DBEFF /* PBXTargetDependency */,
 			);
 			name = Foundations;
 			productName = Foundations;
@@ -371,6 +373,34 @@
 			remoteGlobalIDString = 8872656E1D772D7B00D4F2A6;
 			remoteInfo = PhotonsUIBundle;
 		};
+		A14176BC1E6EBE8C005DBEFF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A14176B21E6EBE8C005DBEFF /* Intelligence.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = A14171A11E6EAA93005DBEFF;
+			remoteInfo = Intelligence;
+		};
+		A14176BE1E6EBE8C005DBEFF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A14176B21E6EBE8C005DBEFF /* Intelligence.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = A14171C11E6EAC0D005DBEFF;
+			remoteInfo = IntelligenceTests;
+		};
+		A14176C31E6EBE9E005DBEFF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A14176B21E6EBE8C005DBEFF /* Intelligence.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = A14171A01E6EAA93005DBEFF;
+			remoteInfo = Intelligence;
+		};
+		A14176C51E6EBE9E005DBEFF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A14176B21E6EBE8C005DBEFF /* Intelligence.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = A14171C01E6EAC0D005DBEFF;
+			remoteInfo = IntelligenceTests;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -386,6 +416,7 @@
 		65BAF1521D47F9EA009BBB6F /* Wireframes.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Wireframes.xcodeproj; path = ../Wireframes/Wireframes.xcodeproj; sourceTree = "<group>"; };
 		65BAF2BC1D4801B1009BBB6F /* TestHost.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = TestHost.xcodeproj; sourceTree = "<group>"; };
 		6A089D601DFEE26E00AC10A9 /* Blueprints.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Blueprints.xcodeproj; path = ../Blueprints/Blueprints.xcodeproj; sourceTree = "<group>"; };
+		A14176B21E6EBE8C005DBEFF /* Intelligence.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Intelligence.xcodeproj; path = ../Intelligence/Intelligence.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -406,6 +437,7 @@
 				65BAF1101D47F9A7009BBB6F /* CameraUI.xcodeproj */,
 				65BAF1191D47F9B3009BBB6F /* DaVinci.xcodeproj */,
 				65BAF1221D47F9B9009BBB6F /* Fiber.xcodeproj */,
+				A14176B21E6EBE8C005DBEFF /* Intelligence.xcodeproj */,
 				65BAF12B1D47F9C9009BBB6F /* LTEngine.xcodeproj */,
 				65BAF1371D47F9D2009BBB6F /* LTKit.xcodeproj */,
 				65BAF1401D47F9DC009BBB6F /* Photons.xcodeproj */,
@@ -524,6 +556,15 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		A14176B31E6EBE8C005DBEFF /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A14176BD1E6EBE8C005DBEFF /* libIntelligence.a */,
+				A14176BF1E6EBE8C005DBEFF /* IntelligenceTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXProject section */
@@ -572,6 +613,10 @@
 				{
 					ProductGroup = 65BAF1231D47F9B9009BBB6F /* Products */;
 					ProjectRef = 65BAF1221D47F9B9009BBB6F /* Fiber.xcodeproj */;
+				},
+				{
+					ProductGroup = A14176B31E6EBE8C005DBEFF /* Products */;
+					ProjectRef = A14176B21E6EBE8C005DBEFF /* Intelligence.xcodeproj */;
 				},
 				{
 					ProductGroup = 65BAF12C1D47F9C9009BBB6F /* Products */;
@@ -781,6 +826,20 @@
 			remoteRef = 8B54EAFB1D89938A00104102 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		A14176BD1E6EBE8C005DBEFF /* libIntelligence.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libIntelligence.a;
+			remoteRef = A14176BC1E6EBE8C005DBEFF /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		A14176BF1E6EBE8C005DBEFF /* IntelligenceTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = IntelligenceTests.xctest;
+			remoteRef = A14176BE1E6EBE8C005DBEFF /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXTargetDependency section */
@@ -893,6 +952,16 @@
 			isa = PBXTargetDependency;
 			name = BlueprintsTests;
 			targetProxy = 6A089D6E1DFEE29400AC10A9 /* PBXContainerItemProxy */;
+		};
+		A14176C41E6EBE9E005DBEFF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Intelligence;
+			targetProxy = A14176C31E6EBE9E005DBEFF /* PBXContainerItemProxy */;
+		};
+		A14176C61E6EBE9E005DBEFF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = IntelligenceTests;
+			targetProxy = A14176C51E6EBE9E005DBEFF /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 

@@ -278,6 +278,16 @@
                ReferencedContainer = "container:../Wireframes/Wireframes.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "A14171C01E6EAC0D005DBEFF"
+               BuildableName = "IntelligenceTests.xctest"
+               BlueprintName = "IntelligenceTests"
+               ReferencedContainer = "container:../Intelligence/Intelligence.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
