@@ -23,6 +23,9 @@
       location = "group:../Fiber/Fiber.xcodeproj">
    </FileRef>
    <FileRef
+      location = "group:../Intelligence/Intelligence.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:../LTEngine/LTEngine.xcodeproj">
    </FileRef>
    <FileRef
