@@ -29,6 +29,13 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@interface BZRStoreConfiguration ()
+
+/// Manager used to read and write files from the file system.
+@property (strong, nonatomic) NSFileManager *fileManager;
+
+@end
+
 @implementation BZRStoreConfiguration
 
 - (instancetype)initWithProductsListJSONFilePath:(LTPath *)productsListJSONFilePath
@@ -80,7 +87,6 @@ NS_ASSUME_NONNULL_BEGIN
 
     _acquiredViaSubscriptionProvider =
         [[BZRAcquiredViaSubscriptionProvider alloc] initWithKeychainStorage:keychainStorage];
-    _applicationReceiptBundle = [NSBundle mainBundle];
     _storeKitFacade = [[BZRStoreKitFacade alloc] initWithApplicationUserID:applicationUserID];
     _productsProvider = [self productsProviderWithJSONFilePath:productsListJSONFilePath];
 
