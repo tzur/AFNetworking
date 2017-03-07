@@ -1213,6 +1213,7 @@
 		B41BF0911EB22DCB00A1FA79 /* NSScanner+MathSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = B41BF0901EB22DCB00A1FA79 /* NSScanner+MathSpec.mm */; };
 		B467099F1E07F57F000CD9F5 /* LTFboAttachmentInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = B467099D1E07F57F000CD9F5 /* LTFboAttachmentInfo.h */; };
 		B46709A01E07F57F000CD9F5 /* LTFboAttachmentInfo.mm in Sources */ = {isa = PBXBuildFile; fileRef = B467099E1E07F57F000CD9F5 /* LTFboAttachmentInfo.mm */; };
+		B4755A981E76A51B0018FF0A /* IndexedColor.png in Resources */ = {isa = PBXBuildFile; fileRef = B4755A971E76A51B0018FF0A /* IndexedColor.png */; };
 		B4947F061DFD4FF500872FBE /* UIImage+Factory.h in Headers */ = {isa = PBXBuildFile; fileRef = B4947F041DFD4FF500872FBE /* UIImage+Factory.h */; };
 		B4947F071DFD4FF500872FBE /* UIImage+Factory.mm in Sources */ = {isa = PBXBuildFile; fileRef = B4947F051DFD4FF500872FBE /* UIImage+Factory.mm */; };
 		B4947F3B1DFD670000872FBE /* UIImage+FactorySpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = B4947F3A1DFD670000872FBE /* UIImage+FactorySpec.mm */; };
@@ -2958,6 +2959,7 @@
 		B41BF0901EB22DCB00A1FA79 /* NSScanner+MathSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSScanner+MathSpec.mm"; sourceTree = "<group>"; };
 		B467099D1E07F57F000CD9F5 /* LTFboAttachmentInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTFboAttachmentInfo.h; sourceTree = "<group>"; };
 		B467099E1E07F57F000CD9F5 /* LTFboAttachmentInfo.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTFboAttachmentInfo.mm; sourceTree = "<group>"; };
+		B4755A971E76A51B0018FF0A /* IndexedColor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = IndexedColor.png; path = Resources/IndexedColor.png; sourceTree = "<group>"; };
 		B4947F041DFD4FF500872FBE /* UIImage+Factory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Factory.h"; sourceTree = "<group>"; };
 		B4947F051DFD4FF500872FBE /* UIImage+Factory.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIImage+Factory.mm"; sourceTree = "<group>"; };
 		B4947F3A1DFD670000872FBE /* UIImage+FactorySpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIImage+FactorySpec.mm"; sourceTree = "<group>"; };
@@ -4723,6 +4725,7 @@
 				8BAB99DD1869F73400D79554 /* QuadUpMirrored.jpg */,
 				8B8720BF1925167400517F2E /* TextureContentsImage.png */,
 				8BAB99C81869DBF600D79554 /* White.jpg */,
+				B4755A971E76A51B0018FF0A /* IndexedColor.png */,
 				8BF4D39C1DA55F320080BB1C /* White16.png */,
 				507B92B219FE731500BA7EC9 /* SingleQuadDrawerTest0.png */,
 				A8BDC6371AC9DA64005FC392 /* CircularPatchDrawerAlpha.png */,
@@ -6590,6 +6593,7 @@
 				2856D2871A00E10B008FC29F /* PerspectiveOverflow.png in Resources */,
 				2840186719C704730003A064 /* FlowerOutput0.5.png in Resources */,
 				06F9F2DA1D59B558002D2726 /* VerticalStepFunction33_bilateral_L1toL3toL1.png in Resources */,
+				B4755A981E76A51B0018FF0A /* IndexedColor.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

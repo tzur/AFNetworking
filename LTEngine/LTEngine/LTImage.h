@@ -12,18 +12,43 @@ namespace cv {
 ///
 /// All images are represented in premultiplied alpha, if an alpha channel exists.
 ///
-/// @note loaded images will be backed by mat of byte depth with either single or four channels, depending on the
-/// input image. Images with wider depth will be converted to byte in the loading process.
+/// @note loaded images will be backed by mat of byte depth with either one or four channels,
+/// depending on the input image. Images with wider depth will be converted to byte in the loading
+/// process.
 @interface LTImage : NSObject
 
-/// Initializes the image with a given \c UIImage object. If the image has an orientation different
-/// than \c UIImageOrientationPortrait, the image will be rotated to have this orientation. The
-/// given \c image cannot be \c nil.
+/// Initializes with a given \c image. If \c image has an orientation different than
+/// \c UIImageOrientationPortrait, \c image will be rotated to portrait orientation. \c colorSpace
+/// property will be deduced from \c image's color space model and set as follows:
+/// @code
+/// | image color space model      | colorSpace property            |
+/// |------------------------------+--------------------------------|
+/// | kCGColorSpaceModelMonochrome | CGColorSpaceCreateDeviceGray() |
+/// | kCGColorSpaceModelRGB        | CGColorSpaceCreateDeviceRGB()  |
+/// | kCGColorSpaceModelIndexed    | CGColorSpaceCreateDeviceRGB()  |
+/// | anything else                | Assertion failure              |
+/// @endcode
 - (instancetype)initWithImage:(UIImage *)image;
 
-/// Designated initializer: initializes with a given \c cv::Mat object. If \c copy is \c YES, the
-/// \c mat will be duplicated.
+/// Initializes with the given \c image. This instance will be loaded to \c images's color space if
+/// \c loadColorSpace is \c YES. Otherwise this instance's color space will be deduced as described
+/// in \c initWithImage: method.
+- (instancetype)initWithImage:(UIImage *)image loadColorSpace:(BOOL)loadColorSpace;
+
+/// Initializes with the given \c image and \c colorSpace as target color space the image will be
+/// loaded to, which will be retained by this instance.
+- (instancetype)initWithImage:(UIImage *)image targetColorSpace:(CGColorSpaceRef)colorSpace;
+
+/// Initializes with a given \c cv::Mat. If \c copy is \c YES, \c mat will be cloned.
+/// \c colorSpace property will be set to \c NULL.
 - (instancetype)initWithMat:(const cv::Mat &)mat copy:(BOOL)copy;
+
+/// Initializes with the given \c mat with color data in the given \c colorspace. If \c copy is
+/// \c YES, the \c mat will be cloned. For unknown color space set \c colorSpace to \c NULL.
+- (instancetype)initWithMat:(const cv::Mat &)mat copy:(BOOL)copy
+                 colorSpace:(nullable CGColorSpaceRef)colorSpace NS_DESIGNATED_INITIALIZER;
+
+- (instancetype)init NS_UNAVAILABLE;
 
 /// Returns a \c UIImage representation of the current image with a scale of 1 pixel per point.
 ///
@@ -46,11 +71,17 @@ namespace cv {
 /// otherwise error is populated with an error object.
 - (BOOL)writeToPath:(NSString *)path error:(NSError **)error;
 
+/// Returns the color space of the image. \c NULL means the color space is unknown.
+- (nullable CGColorSpaceRef)colorSpace NS_RETURNS_INNER_POINTER CF_RETURNS_NOT_RETAINED;
+
 /// Size of the image.
 @property (readonly, nonatomic) CGSize size;
 
 /// Image contents.
 @property (readonly, nonatomic) const cv::Mat &mat;
+
+/// Color space of the image. \c NULL means the color space is unknown.
+@property (readonly, nonatomic, nullable) CGColorSpaceRef colorSpace;
 
 @end
 
