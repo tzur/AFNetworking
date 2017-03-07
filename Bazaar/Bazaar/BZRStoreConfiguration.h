@@ -51,10 +51,6 @@ NS_ASSUME_NONNULL_BEGIN
 /// \c -[BZRProductsAcquiredViaSubscriptionProvider initWithKeychainStorage:] with the given
 /// \c keychainStorage.
 ///
-/// \c applicationReceiptBundle will be initialized with \c +[NSBunsdle mainBundle].
-///
-/// \c fileManager will be initialized with \c +[NSFileManager defaultManager].
-///
 /// \c storeKitFacade will be initialized using \c -[BZRStoreKitFacade initApplicationUseID:].
 ///
 /// \c periodicValidatorActivator will be initialized with the default initializer of
@@ -81,12 +77,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Provider used to provide list of acquired via subsription products.
 @property (strong, nonatomic) BZRAcquiredViaSubscriptionProvider *acquiredViaSubscriptionProvider;
-
-/// Bundle used to get the URL to the receipt.
-@property (strong, nonatomic) NSBundle *applicationReceiptBundle;
-
-/// Manager used to check if the URL to the receipt exists.
-@property (strong, nonatomic) NSFileManager *fileManager;
 
 /// Facade used to interact with Apple StoreKit.
 @property (strong, nonatomic) BZRStoreKitFacade *storeKitFacade;
