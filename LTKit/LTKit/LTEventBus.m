@@ -37,6 +37,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Dictionary mapping event protocol to an array of its observers.
 @property (readonly, nonatomic) NSMutableDictionary *protocolObservers;
 
+/// Dispatch queue for thread safe reading and writing to the observer arrays.
+@property (readonly, nonatomic) dispatch_queue_t readWriteQueue;
+
 @end
 
 @implementation LTEventBus
@@ -45,27 +48,30 @@ NS_ASSUME_NONNULL_BEGIN
   if (self = [super init]) {
     _classObservers = [NSMutableDictionary dictionary];
     _protocolObservers = [NSMutableDictionary dictionary];
+    _readWriteQueue = dispatch_queue_create("com.lightricks.LTKit.EventBus",
+                                            DISPATCH_QUEUE_CONCURRENT);
   }
   return self;
 }
 
 - (void)addObserver:(id)target selector:(SEL)selector forClass:(Class)objClass {
-  LTParameterAssert(objClass, @"Attempting to observe nil class. Use NSObject to observe all");
-  LTParameterAssert(object_isClass(objClass), @"Attempting to observe instance, not class");
-  [self verifySelector:selector forTarget:target];
-
-  LTEventObserver *observer = [[LTEventObserver alloc] initWithTarget:target selector:selector];
-
-  [self addObserver:observer toClass:objClass];
+  [self addObserver:target selector:selector withKey:objClass toDictionary:self.classObservers];
 }
 
 - (void)addObserver:(id)target selector:(SEL)selector forProtocol:(Protocol *)protocol {
-  LTParameterAssert(protocol, @"Attempting to observe nil protocol.");
+  [self addObserver:target selector:selector withKey:NSStringFromProtocol(protocol)
+       toDictionary:self.protocolObservers];
+}
+
+- (void)addObserver:(id)target selector:(SEL)selector withKey:(id)key
+       toDictionary:(NSMutableDictionary *)dictionary {
   [self verifySelector:selector forTarget:target];
-  
+
   LTEventObserver *observer = [[LTEventObserver alloc] initWithTarget:target selector:selector];
-  
-  [self addObserver:observer toProtocol:protocol];
+
+  dispatch_barrier_sync(self.readWriteQueue, ^{
+    [self addObserver:observer withKey:key toDictionary:dictionary];
+  });
 }
 
 - (void)verifySelector:(SEL)selector forTarget:(id)target {
@@ -90,103 +96,76 @@ NS_ASSUME_NONNULL_BEGIN
       @"Selector %@ must return void", selectorString);
 }
 
-- (void)addObserver:(LTEventObserver *)observer toClass:(Class)objClass {
-  NSMutableArray *classObservers = self.classObservers[objClass];
-  if (!classObservers) {
-    classObservers = [NSMutableArray array];
-    // Class objects conform to NSCopying even though they don't declare it - see for more info:
-    // http://stackoverflow.com/a/769627/1074055
-    self.classObservers[(id<NSCopying>)objClass] = classObservers;
+- (void)addObserver:(LTEventObserver *)observer withKey:(id)key
+       toDictionary:(NSMutableDictionary *)dictionary {
+  NSMutableArray * _Nullable observers = dictionary[key];
+  if (observers) {
+    [observers addObject:observer];
+  } else {
+    dictionary[key] = [@[observer] mutableCopy];
   }
-  [classObservers addObject:observer];
-}
-
-- (void)addObserver:(LTEventObserver *)observer toProtocol:(Protocol *)protocol {
-  NSMutableArray *protocolObservers = self.protocolObservers[NSStringFromProtocol(protocol)];
-  if (!protocolObservers) {
-    protocolObservers = [NSMutableArray array];
-    self.protocolObservers[NSStringFromProtocol(protocol)] = protocolObservers;
-  }
-  [protocolObservers addObject:observer];
 }
 
 - (void)removeObserver:(id)target forClass:(Class)objClass {
-  for (Class observedClass in self.classObservers) {
-    if (objClass && ![observedClass isSubclassOfClass:objClass]) {
-      continue;
+  dispatch_barrier_sync(self.readWriteQueue, ^{
+    for (Class observedClass in self.classObservers) {
+      if ([observedClass isSubclassOfClass:objClass]) {
+        [self removeObserver:target withKey:observedClass fromDictionary:self.classObservers];
+      }
     }
-    [self removeObserver:target forKey:observedClass from:self.classObservers];
-  }
+  });
 }
 
-- (void)removeObserver:(id)target forProtocol:(nonnull Protocol *)protocol {
-  for (NSString *observedProtocol in self.protocolObservers) {
-    if (protocol && !protocol_conformsToProtocol(NSProtocolFromString(observedProtocol),
-                                                 protocol)) {
-      continue;
+- (void)removeObserver:(id)target forProtocol:(Protocol *)protocol {
+  dispatch_barrier_sync(self.readWriteQueue, ^{
+    for (NSString *observedProtocol in self.protocolObservers) {
+      if (protocol_conformsToProtocol(NSProtocolFromString(observedProtocol), protocol)) {
+        [self removeObserver:target withKey:observedProtocol fromDictionary:self.protocolObservers];
+      }
     }
-    [self removeObserver:target forKey:observedProtocol from:self.protocolObservers];
-  }
+  });
 }
 
-- (void)removeObserver:(id)target forKey:(id)key from:(NSMutableDictionary *)dictionary {
-  NSMutableArray *toDiscard = [NSMutableArray array];
-  for (LTEventObserver *observer in dictionary[key]) {
-    if (target == observer.target) {
-      [toDiscard addObject:observer];
+- (void)removeObserver:(id)target withKey:(id)key fromDictionary:(NSDictionary *)dictionary {
+    NSMutableArray *toRemove = [NSMutableArray array];
+    for (LTEventObserver *observer in dictionary[key]) {
+      if (target == observer.target) {
+        [toRemove addObject:observer];
+      }
     }
-  }
-  [dictionary[key] removeObjectsInArray:toDiscard];
+    [dictionary[key] removeObjectsInArray:toRemove];
 }
 
 - (void)post:(id)object {
-  LTParameterAssert(object, @"Attempting to post a nil object");
-  for (Class observedClass in self.classObservers) {
-    if (![object isKindOfClass:observedClass]) {
-      continue;
+  NSMutableArray<LTEventObserver *> *toNotify = [NSMutableArray array];
+
+  dispatch_sync(self.readWriteQueue, ^{
+    for (Class observedClass in self.classObservers) {
+      if ([object isKindOfClass:observedClass]) {
+        [toNotify addObjectsFromArray:self.classObservers[observedClass]];
+      }
     }
-    [self post:object toObservers:self.classObservers[observedClass]];
-  }
-  for (NSString *observedProtocol in self.protocolObservers) {
-    if (![object conformsToProtocol:NSProtocolFromString(observedProtocol)]) {
-      continue;
+    for (NSString *observedProtocol in self.protocolObservers) {
+      if ([object conformsToProtocol:NSProtocolFromString(observedProtocol)]) {
+        [toNotify addObjectsFromArray:self.protocolObservers[observedProtocol]];
+      }
     }
-    [self post:object toObservers:self.protocolObservers[observedProtocol]];
-  }
+  });
+
+  [self post:object toObservers:toNotify];
 }
 
-- (void)post:(id)object toObservers:(NSMutableArray *)observers {
-  NSMutableArray *toDiscard = [NSMutableArray array];
-  NSMutableArray *toNotify = [NSMutableArray array];
+- (void)post:(id)object toObservers:(NSArray<LTEventObserver *> *)observers {
   for (LTEventObserver *observer in observers) {
-    if (observer.target) {
-      [toNotify addObject:observer];
-    } else {
-      [toDiscard addObject:observer];
-    }
-  }
-  for (LTEventObserver *observer in toNotify) {
-    [self post:object toObserver:observer];
-  }
-  [observers removeObjectsInArray:toDiscard];
-}
+    id strongTarget = observer.target;
 
-- (void)post:(id)object toObserver:(LTEventObserver *)observer {
-  id strongTarget = observer.target;
-  if (!strongTarget) {
-    // Observers hold a weak reference to their target, and while we did check that it's not nil
-    // earlier, it's still possible it will become nil, so we perform this final check, to make
-    // sure we don't send invocation to a stale pointer.
-    // (If target did dealloc, the observer will be discarded the next time post:info: is called.)
-    return;
-  }
-
-  // The selector is guaranteed to exist (and be valid) because we already tested it above in
-  // \c verifySelector:forTarget:.
+    // The selector is guaranteed to exist (and be valid) because we already tested it above in
+    // \c verifySelector:forTarget:.
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-  [strongTarget performSelector:observer.selector withObject:object];
+    [strongTarget performSelector:observer.selector withObject:object];
 #pragma clang diagnostic pop
+  }
 }
 
 @end

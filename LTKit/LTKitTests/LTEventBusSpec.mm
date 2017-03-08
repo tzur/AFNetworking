@@ -14,7 +14,7 @@
 @protocol LTEventBusSubSubBaseProtocol <LTEventBusSubBaseProtocol>
 @end
 
-@protocol LTEventButOtherProtocol <NSObject>
+@protocol LTEventBusOtherProtocol <NSObject>
 @end
 
 @interface LTEventBusBaseProtocol : NSObject <LTEventBusBaseProtocol>
@@ -26,7 +26,7 @@
 @interface LTEventBusSubSubBaseProtocol : NSObject <LTEventBusSubSubBaseProtocol>
 @end
 
-@interface LTEventButOtherProtocol : NSObject <LTEventButOtherProtocol>
+@interface LTEventBusOtherProtocol : NSObject <LTEventBusOtherProtocol>
 @end
 
 @implementation LTEventBusBaseProtocol
@@ -38,7 +38,19 @@
 @implementation LTEventBusSubSubBaseProtocol
 @end
 
-@implementation LTEventButOtherProtocol
+@implementation LTEventBusOtherProtocol
+@end
+
+@interface LTDynamicEventHandler : NSObject
+@property (strong, nonatomic, nullable) void (^handleEventBlock)(id);
+@end
+
+@implementation LTDynamicEventHandler
+- (void)handleEvent:(id)event {
+  if (self.handleEventBlock) {
+    self.handleEventBlock(event);
+  }
+}
 @end
 
 SpecBegin(LTEventBus)
@@ -57,15 +69,15 @@ static NSString * const kOtherInstance = @"abc";
 static Protocol * const kBaseProtocol = @protocol(LTEventBusBaseProtocol);
 static Protocol * const kSubBaseProtocol = @protocol(LTEventBusSubBaseProtocol);
 static Protocol * const kSubSubBaseProtocol = @protocol(LTEventBusSubSubBaseProtocol);
-static Protocol * const kOtherProtocol = @protocol(LTEventButOtherProtocol);
+static Protocol * const kOtherProtocol = @protocol(LTEventBusOtherProtocol);
 
 static LTEventBusBaseProtocol * const kBaseProtocolInstance = [[LTEventBusBaseProtocol alloc] init];
 static LTEventBusSubBaseProtocol * const kSubBaseProtocolInstance =
     [[LTEventBusSubBaseProtocol alloc] init];
 static LTEventBusSubSubBaseProtocol * const kSubSubBaseProtocolInstance =
     [[LTEventBusSubSubBaseProtocol alloc] init];
-static LTEventButOtherProtocol * const kOtherProtocolInstance =
-    [[LTEventButOtherProtocol alloc] init];
+static LTEventBusOtherProtocol * const kOtherProtocolInstance =
+    [[LTEventBusOtherProtocol alloc] init];
 
 __block LTEventBus *eventBus;
 
@@ -222,7 +234,7 @@ context(@"protocol unregistering", ^{
     expect(target.counter).to.equal(0);
     expect(target.object).to.beNil();
   });
-  
+
   it(@"should still observe after unregistering subprotocol", ^{
     [eventBus addObserver:target selector:@selector(handleEvent:) forProtocol:kSubBaseProtocol];
     [eventBus removeObserver:target forProtocol:kSubSubBaseProtocol];
@@ -230,7 +242,7 @@ context(@"protocol unregistering", ^{
     expect(target.counter).to.equal(1);
     expect(target.object).toNot.beNil();
   });
-  
+
   it(@"should still observe after unregistering other protocol", ^{
     [eventBus addObserver:target selector:@selector(handleEvent:) forProtocol:kSubBaseProtocol];
     [eventBus removeObserver:target forProtocol:kOtherProtocol];
@@ -378,7 +390,7 @@ context(@"dealloc", ^{
 
     [eventBus addObserver:target selector:@selector(handleEvent:) forClass:kSubBaseClass];
     [eventBus addObserver:target selector:@selector(handleEvent:) forProtocol:kSubBaseProtocol];
-    
+
     target = nil;
 
     expect(weakTarget).to.beNil();
@@ -412,60 +424,115 @@ context(@"api verification", ^{
   it(@"should not accept a wrong selector", ^{
     expect(^{
       [eventBus addObserver:target selector:@selector(badSelector) forClass:kSubBaseClass];
-    }).to.raiseAny();
+    }).to.raise(NSInvalidArgumentException);
 
     expect(^{
       [eventBus addObserver:target selector:@selector(badSelector2:) forClass:kSubBaseClass];
-    }).to.raiseAny();
+    }).to.raise(NSInvalidArgumentException);
 
     expect(^{
       [eventBus addObserver:target selector:@selector(badSelector3:withValue:)
                    forClass:kSubBaseClass];
-    }).to.raiseAny();
+    }).to.raise(NSInvalidArgumentException);
 
     expect(^{
       [eventBus addObserver:target selector:@selector(badSelector4:withAnother:)
                    forClass:kSubBaseClass];
-    }).to.raiseAny();
-    
+    }).to.raise(NSInvalidArgumentException);
+
     expect(^{
       [eventBus addObserver:target selector:@selector(badSelector) forProtocol:kSubBaseProtocol];
-    }).to.raiseAny();
-    
+    }).to.raise(NSInvalidArgumentException);
+
     expect(^{
       [eventBus addObserver:target selector:@selector(badSelector2:) forProtocol:kSubBaseProtocol];
-    }).to.raiseAny();
-    
+    }).to.raise(NSInvalidArgumentException);
+
     expect(^{
       [eventBus addObserver:target selector:@selector(badSelector3:withValue:)
                 forProtocol:kSubBaseProtocol];
-    }).to.raiseAny();
-    
+    }).to.raise(NSInvalidArgumentException);
+
     expect(^{
       [eventBus addObserver:target selector:@selector(badSelector4:withAnother:)
                 forProtocol:kSubBaseProtocol];
-    }).to.raiseAny();
+    }).to.raise(NSInvalidArgumentException);
+  });
+});
+
+context(@"nested events", ^{
+  __block LTDynamicEventHandler *dynamicHandler;
+  __block LTDynamicEventHandler *otherDynamicHandler;
+
+  beforeEach(^{
+    dynamicHandler = [[LTDynamicEventHandler alloc] init];
+    otherDynamicHandler = [[LTDynamicEventHandler alloc] init];
   });
 
-  it(@"should not accept nil objects", ^{
-    expect(^{
-      id object = nil;
-      [eventBus post:object];
-    }).to.raiseAny();
+  it(@"should complete posting nested events before the original event", ^{
+    static NSString * const kString = @"foo";
+    static NSNumber * const kNumber = @12;
+    
+    __block NSMutableArray *receivedObjects = [NSMutableArray array];
+
+    dynamicHandler.handleEventBlock = ^(id value) {
+      [eventBus post:kString];
+      [receivedObjects addObject:value];
+    };
+    
+    otherDynamicHandler.handleEventBlock = ^(id value) {
+      [receivedObjects addObject:value];
+    };
+
+    [eventBus addObserver:dynamicHandler selector:@selector(handleEvent:)
+                 forClass:[NSNumber class]];
+    [eventBus addObserver:otherDynamicHandler selector:@selector(handleEvent:)
+                 forClass:[NSString class]];
+    [eventBus post:kNumber];
+
+    expect(receivedObjects).to.equal(@[kString, kNumber]);
+  });
+});
+
+context(@"synchronized posting", ^{
+  __block LTDynamicEventHandler *dynamicHandler;
+
+  beforeEach(^{
+    dynamicHandler = [[LTDynamicEventHandler alloc] init];
   });
 
-  it(@"should not accept nil classes", ^{
-    expect(^{
-      Class someClass = nil;
-      [eventBus addObserver:target selector:@selector(handleEvent:) forClass:someClass];
-    }).to.raiseAny();
+  it(@"should notify observers on the same queue an object was posted", ^{
+    dispatch_queue_t postQueue = dispatch_queue_create("com.lightricks.LTKit.EventBusTests",
+                                                       DISPATCH_QUEUE_SERIAL);
+    __block NSString *postQueueName;
+    dynamicHandler.handleEventBlock = ^(id) {
+      postQueueName =
+          [NSString stringWithUTF8String:dispatch_queue_get_label(DISPATCH_CURRENT_QUEUE_LABEL)];
+    };
+
+    [eventBus addObserver:dynamicHandler selector:@selector(handleEvent:)
+                 forClass:[NSString class]];
+    dispatch_sync(postQueue, ^{
+      [eventBus post:@""];
+    });
+    NSString *expectedQueueName =
+        [NSString stringWithUTF8String:dispatch_queue_get_label(postQueue)];
+
+    expect(postQueueName).to.equal(expectedQueueName);
   });
-  
-  it(@"should not accept nil protocols", ^{
-    expect(^{
-      Protocol *someProtocol = nil;
-      [eventBus addObserver:target selector:@selector(handleEvent:) forProtocol:someProtocol];
-    }).to.raiseAny();
+
+  it(@"should notify observers on the same thread an object was posted", ^{
+    __block NSThread *postThread;
+    dynamicHandler.handleEventBlock = ^(id) {
+      postThread = [NSThread currentThread];
+    };
+
+    [eventBus addObserver:dynamicHandler selector:@selector(handleEvent:)
+                 forClass:[NSString class]];
+    [eventBus post:@""];
+    NSThread *currentThread = [NSThread currentThread];
+
+    expect(postThread).to.equal(currentThread);
   });
 });
 
