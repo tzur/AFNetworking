@@ -14,7 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// \c description is implemented by iterating the class property list, and concatenating a string
 /// in the format of <tt><[class name]: [pointer value], [p1 name]: [p1 description](, ...)></tt>
 /// where <tt>(, ...)</tt> represents one or more additional properties in the format
-/// <tt>, [p name]: [p description]<tt>, and \c description inidicates the property's \c description
+/// <tt>, [p name]: [p description]</tt>, and \c description indicates the property's \c description
 /// method.
 ///
 /// \c isEqual: is implemented by iterating the class property list, comparing each value by both
