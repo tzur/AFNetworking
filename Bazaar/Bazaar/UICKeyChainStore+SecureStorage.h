@@ -3,7 +3,7 @@
 
 #import <UICKeyChainStore/UICKeyChainStore.h>
 
-#import "BZRKeyChainHandler.h"
+#import "BZRKeychainHandler.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
