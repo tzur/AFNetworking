@@ -129,9 +129,9 @@ static const NSUInteger kSourceIndexKey = 1;
 static const NSUInteger kSourceCurrentValuesKey = 2;
 
 typedef NSUInteger (^LTFastEnumeratorOperationBlock)(NSFastEnumerationState *state,
-                                                      __unsafe_unretained id sourceItems[],
-                                                      __strong id outputItems[],
-                                                      NSUInteger outputItemsCount);
+                                                     __unsafe_unretained id _Nonnull sourceItems[],
+                                                     __strong id _Nonnull outputItems[],
+                                                     NSUInteger outputItemsCount);
 
 @interface LTFastEnumerator ()
 
@@ -205,9 +205,9 @@ typedef NSUInteger (^LTFastEnumeratorOperationBlock)(NSFastEnumerationState *sta
 
 - (LTFastEnumerator *)map:(LTFastMapEnumerationBlock)block {
   LTFastEnumeratorOperationBlock map = ^NSUInteger(NSFastEnumerationState *state,
-                                                    __unsafe_unretained id sourceItems[],
-                                                    __strong id outputItems[],
-                                                    NSUInteger outputItemsCount) {
+                                                   __unsafe_unretained id _Nonnull sourceItems[],
+                                                   __strong id _Nonnull outputItems[],
+                                                   NSUInteger outputItemsCount) {
     NSUInteger count = 0;
     NSUInteger sourceIndex = state->extra[kSourceIndexKey];
 
@@ -230,9 +230,8 @@ typedef NSUInteger (^LTFastEnumeratorOperationBlock)(NSFastEnumerationState *sta
   __block _Nullable id<NSFastEnumeration> currentValues;
 
   LTFastEnumeratorOperationBlock flatMap = ^NSUInteger(NSFastEnumerationState *state,
-                                                        __unsafe_unretained id sourceItems[],
-                                                        __strong id outputItems[],
-                                                        NSUInteger outputItemsCount) {
+      __unsafe_unretained id _Nonnull sourceItems[], __strong id _Nonnull outputItems[],
+      NSUInteger outputItemsCount) {
     NSUInteger count = 0;
     NSUInteger currentValuesIndex = 0;
     NSUInteger sourceIndex = state->extra[kSourceIndexKey];

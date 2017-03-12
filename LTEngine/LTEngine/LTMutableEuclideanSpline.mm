@@ -8,7 +8,7 @@
 #import "LTCompoundParameterizedObject.h"
 #import "LTCompoundParameterizedObjectFactory.h"
 #import "LTParameterizedObjectStack.h"
-#import "LTReparameterization+Arclength.h"
+#import "LTReparameterization+ArcLength.h"
 #import "LTReparameterizedObject.h"
 #import "LTSplineControlPoint.h"
 

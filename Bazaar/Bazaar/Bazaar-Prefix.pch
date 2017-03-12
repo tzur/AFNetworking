@@ -15,7 +15,7 @@
 #import <LTKit/LTAssert.h>
 #import <LTKit/LTEasyBoxing.h>
 #import <LTKit/LTEnum.h>
-#import <LTKit/LTKeypathCoding.h>
+#import <LTKit/LTKeyPathCoding.h>
 #import <LTKit/LTPath.h>
 #import <LTKit/LTTypedefs.h>
 #import <LTKit/NSError+LTKit.h>
