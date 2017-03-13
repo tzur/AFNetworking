@@ -178,14 +178,19 @@ context(@"receipt validation", ^{
       recorder = [validator.eventsSignal testRecorder];
     });
 
-    it(@"should send BZREvent with the request id from receipt validation status", ^{
+    it(@"should send BZREvent when receipt validation status is received", ^{
+      BZRValidatricksReceiptValidationStatus *status =
+          [MTLJSONAdapter modelOfClass:[BZRValidatricksReceiptValidationStatus class]
+                    fromJSONDictionary:JSONResponse error:nil];
       RACSignal *responseSignal =
           [RACSignal return:BZRValidatricksResponseWithJSONObject(JSONResponse)];
       OCMStub([client POST:URLString withParameters:requestParameters]).andReturn(responseSignal);
       OCMStub([clientProvider HTTPClient]).andReturn(client);
 
       expect([validator validateReceiptWithParameters:parameters]).will.complete();
-      expect(recorder).to.sendValues(@[[BZREvent receiptValidationStatusReceivedEvent:@"id"]]);
+      expect(recorder).to.sendValues(@[
+          [BZREvent receiptValidationStatusReceivedEvent:status requestId:status.requestId]
+      ]);
     });
   });
 });

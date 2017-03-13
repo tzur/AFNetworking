@@ -170,7 +170,6 @@
 		B959B75E1E363AF90011DF54 /* BZREvent+AdditionalInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = B959B75C1E363AF90011DF54 /* BZREvent+AdditionalInfo.h */; };
 		B959B75F1E363AF90011DF54 /* BZREvent+AdditionalInfo.mm in Sources */ = {isa = PBXBuildFile; fileRef = B959B75D1E363AF90011DF54 /* BZREvent+AdditionalInfo.mm */; };
 		B959B7E01E363B7C0011DF54 /* BZREventEmitter.h in Headers */ = {isa = PBXBuildFile; fileRef = B959B7DF1E363B7C0011DF54 /* BZREventEmitter.h */; };
-		B959B8561E3640A30011DF54 /* BZREvent+AdditionalInfoSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = B959B8551E3640A30011DF54 /* BZREvent+AdditionalInfoSpec.mm */; };
 		B961AD791DEF4F0700757429 /* BZRProductTypedefs.h in Headers */ = {isa = PBXBuildFile; fileRef = B961AD781DEF4F0700757429 /* BZRProductTypedefs.h */; };
 		B973487C1D8C35CB006CF28A /* BZRStoreSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = B973487B1D8C35CB006CF28A /* BZRStoreSpec.mm */; };
 		B97969F11DC5DDC700E2D3AA /* BZRRetryReceiptValidator.h in Headers */ = {isa = PBXBuildFile; fileRef = B97969EF1DC5DDC700E2D3AA /* BZRRetryReceiptValidator.h */; };
@@ -850,7 +849,6 @@
 		B959B75C1E363AF90011DF54 /* BZREvent+AdditionalInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BZREvent+AdditionalInfo.h"; sourceTree = "<group>"; };
 		B959B75D1E363AF90011DF54 /* BZREvent+AdditionalInfo.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "BZREvent+AdditionalInfo.mm"; sourceTree = "<group>"; };
 		B959B7DF1E363B7C0011DF54 /* BZREventEmitter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZREventEmitter.h; sourceTree = "<group>"; };
-		B959B8551E3640A30011DF54 /* BZREvent+AdditionalInfoSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "BZREvent+AdditionalInfoSpec.mm"; sourceTree = "<group>"; };
 		B961AD781DEF4F0700757429 /* BZRProductTypedefs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRProductTypedefs.h; sourceTree = "<group>"; };
 		B973487B1D8C35CB006CF28A /* BZRStoreSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRStoreSpec.mm; sourceTree = "<group>"; };
 		B97969EF1DC5DDC700E2D3AA /* BZRRetryReceiptValidator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRRetryReceiptValidator.h; sourceTree = "<group>"; };
@@ -1639,7 +1637,6 @@
 			isa = PBXGroup;
 			children = (
 				B9B7C2DC1E2FA3C400593CE3 /* BZREventSpec.mm */,
-				B959B8551E3640A30011DF54 /* BZREvent+AdditionalInfoSpec.mm */,
 			);
 			name = Events;
 			sourceTree = "<group>";
@@ -2424,7 +2421,6 @@
 				B98505C31D85B479002ABF72 /* BZRAcquiredViaSubscriptionProviderSpec.mm in Sources */,
 				B99972BD1DFD60A2008CCD98 /* BZRProductsWithDiscountsProviderSpec.mm in Sources */,
 				B9B7C2DD1E2FA3C400593CE3 /* BZREventSpec.mm in Sources */,
-				B959B8561E3640A30011DF54 /* BZREvent+AdditionalInfoSpec.mm in Sources */,
 				B9F0882C1D8EBB4300381E29 /* BZRFakeAcquiredViaSubscriptionProvider.mm in Sources */,
 				B9484B5F1D50A09F00910066 /* BZRLocalContentFetcherSpec.mm in Sources */,
 				656210741D377D1200E12FAF /* BZRValidatricksReceiptModelSpec.mm in Sources */,
