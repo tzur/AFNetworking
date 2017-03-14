@@ -15,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark Initialization
 #pragma mark -
 
-- (instancetype)initWithAttachable:(id<LTFboAttachable>)attachable level:(GLint)level {
+- (instancetype)initWithAttachable:(id<LTFboAttachable>)attachable level:(NSUInteger)level {
   if (self = [super init]) {
     _attachable = attachable;
     _level = level;
@@ -27,12 +27,9 @@ NS_ASSUME_NONNULL_BEGIN
   return [[self alloc] initWithAttachable:attachable level:0];
 }
 
-+ (instancetype)withAttachable:(id<LTFboAttachable>)attachable level:(GLint)level {
++ (instancetype)withAttachable:(id<LTFboAttachable>)attachable level:(NSUInteger)level {
   LTParameterAssert(attachable.attachableType == LTFboAttachableTypeTexture2D,
                     @"Attachable (%@) must be of LTFboAttachableTypeTexture2D type", attachable);
-  auto texture = (LTTexture *)attachable;
-  LTParameterAssert(level <= texture.maxMipmapLevel,
-                    @"Attachable level %d must not greater than %d", level, texture.maxMipmapLevel);
   return [[self alloc] initWithAttachable:attachable level:level];
 }
 

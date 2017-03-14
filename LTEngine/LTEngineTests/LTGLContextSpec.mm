@@ -4,12 +4,8 @@
 #import "LTGLContext.h"
 
 #import "LTFbo.h"
-#import "LTFboAttachmentInfo.h"
 #import "LTGLKitExtensions.h"
 #import "LTGLTexture.h"
-#import "LTOpenCVExtensions.h"
-#import "LTPassthroughProcessor.h"
-#import "LTTexture+Factory.h"
 
 SpecBegin(LTGLContext)
 
@@ -213,12 +209,12 @@ context(@"context values", ^{
     CGRect scissorBoxRect = CGRectMake(scissorBox[0], scissorBox[1], scissorBox[2], scissorBox[3]);
     expect(scissorBoxRect).to.equal(expected);
   });
-
+  
   it(@"should set rendering to screen", ^{
     context.renderingToScreen = YES;
     expect(context.renderingToScreen).to.beTruthy();
   });
-
+  
   it(@"should set blending", ^{
     context.blendEnabled = YES;
 
@@ -260,7 +256,7 @@ context(@"context values", ^{
     expect(context.ditheringEnabled).to.beFalsy();
     expect(glIsEnabled(GL_DITHER)).to.beFalsy();
   });
-
+  
   it(@"should set front facing polygon direction", ^{
     context.clockwiseFrontFacingPolygons = YES;
 
@@ -353,7 +349,7 @@ context(@"execution", ^{
       context.blendEquation = blendEquation;
 
       context.scissorBox = CGRectMake(1, 2, 3, 4);
-
+      
       context.renderingToScreen = !context.renderingToScreen;
       context.blendEnabled = !context.blendEnabled;
       context.faceCullingEnabled = !context.faceCullingEnabled;
@@ -388,86 +384,32 @@ context(@"execution", ^{
 
     expect(context.blendEnabled).to.beFalsy();
   });
-
+  
   it(@"should clear the color buffers", ^{
+    cv::Mat4b mat(10, 10);
+    cv::Vec4b red(255, 0, 0, 255);
     const LTVector4 kBlue(0, 0, 1, 1);
-
-    auto texture = [[LTGLTexture alloc] initWithImage:cv::Mat4b(1, 1, cv::Vec4b(255, 0, 0, 255))];
-    auto fbo = [[LTFbo alloc] initWithTexture:texture];
+    mat = red;
+    LTTexture *texture = [[LTGLTexture alloc] initWithImage:mat];
+    LTFbo *fbo = [[LTFbo alloc] initWithTexture:texture];
     [fbo bindAndDraw:^{
       [[LTGLContext currentContext] clearWithColor:kBlue];
     }];
 
     LTVector4 charBlue(kBlue * 255);
-    cv::Mat4b expected(texture.image.rows, texture.image.cols,
+    cv::Mat4b expected(mat.rows, mat.cols,
                        cv::Vec4b(charBlue.r(), charBlue.g(), charBlue.b(), charBlue.a()));
     expect(LTFuzzyCompareMat(expected, [texture image])).to.beTruthy();
   });
-
+  
   it(@"should clear the color buffers leaving the clearColor unchanged", ^{
     const LTVector4 kColor1 = LTVector4(1, 0, 0, 1);
     const LTVector4 kColor2 = LTVector4(0, 1, 0, 1);
     LTVector4 clearColor;
-
-    auto texture = [LTTexture textureWithImage:cv::Mat4b(1, 1, cv::Vec4b(255, 0, 0, 255))];
-    auto fbo = [[LTFbo alloc] initWithTexture:texture];
-
     glClearColor(kColor1.r(), kColor1.g(), kColor1.b(), kColor1.a());
-    [fbo bindAndDraw:^{
-      [[LTGLContext currentContext] clearWithColor:kColor2];
-    }];
-
+    [[LTGLContext currentContext] clearWithColor:kColor2];
     glGetFloatv(GL_COLOR_CLEAR_VALUE, clearColor.data());
     expect(clearColor).to.equal(kColor1);
-  });
-
-  it(@"should clear depth buffer", ^{
-    CGSize size = CGSizeMake(1, 1);
-    auto depthTexture = [LTTexture textureWithSize:size pixelFormat:$(LTGLPixelFormatDepth16Unorm)
-                                    allocateMemory:YES];
-    auto fbo = [[LTFbo alloc] initWithContext:context attachmentInfos:@{
-      @(LTFboAttachmentPointDepth): [LTFboAttachmentInfo withAttachable:depthTexture]
-    }];
-
-    auto readTexture = [LTTexture textureWithSize:size pixelFormat:$(LTGLPixelFormatR16Float)
-                                   allocateMemory:YES];
-    [readTexture clearWithColor:LTVector4::zeros()];
-
-    GLfloat clearValue = 0.5;
-    cv::Mat1hf expected = cv::Mat1hf(size.height, size.width) << half_float::half(clearValue);
-
-    context.depthTestEnabled = YES;
-    [fbo bindAndExecute:^{
-      [context clearDepth:clearValue];
-    }];
-
-    // Note depth texture can not be read due to its pixel format, hence need to convert it into
-    // texture with readable pixel format.
-    auto processor = [[LTPassthroughProcessor alloc] initWithInput:depthTexture output:readTexture];
-    [processor process];
-
-    expect($([readTexture image])).to.equalMat($(expected));
-  });
-
-  it(@"should clear the depth buffer leaving the depth clear value unchanged", ^{
-    const GLfloat kValue1 = 0.5;
-    const GLfloat kValue2 = 0.25;
-    GLfloat clearValue;
-
-    auto texture = [LTTexture textureWithSize:CGSizeMake(1, 1)
-                                  pixelFormat:$(LTGLPixelFormatDepth16Unorm)
-                               allocateMemory:YES];
-    auto fbo = [[LTFbo alloc] initWithContext:context attachmentInfos:@{
-      @(LTFboAttachmentPointDepth): [LTFboAttachmentInfo withAttachable:texture]
-    }];
-
-    glClearDepthf(kValue1);
-    [fbo bindAndExecute:^{
-      [context clearDepth:kValue2];
-    }];
-
-    glGetFloatv(GL_DEPTH_CLEAR_VALUE, &clearValue);
-    expect(clearValue).to.equal(kValue1);
   });
 });
 

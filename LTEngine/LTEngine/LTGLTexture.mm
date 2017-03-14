@@ -169,7 +169,7 @@ static void LTVerifyMipmapImages(const Matrices &images) {
 - (cv::Mat)imageAtLevel:(NSUInteger)level {
   LTParameterAssert((GLint)level <= self.maxMipmapLevel);
   __block cv::Mat image;
-  LTFbo *fbo = [[LTFboPool currentPool] fboWithTexture:self level:(GLint)level];
+  LTFbo *fbo = [[LTFboPool currentPool] fboWithTexture:self level:level];
   [fbo bindAndExecute:^{
     [self readRect:CGRectFromSize(self.size / std::pow(2, level)) toImage:&image];
   }];
@@ -366,7 +366,7 @@ static void LTVerifyMipmapImages(const Matrices &images) {
 - (void)writeWithBlock:(LTVoidBlock)block {
   // LTGLTexture doesn't support memory mapping, therefore any write should be treated as write via
   // framebuffer.
-  [self writeToAttachableWithBlock:block];
+  [self writeToAttachmentWithBlock:block];
 }
 
 #pragma mark -

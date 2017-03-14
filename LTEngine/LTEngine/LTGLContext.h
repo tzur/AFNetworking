@@ -114,15 +114,12 @@ extern LTGLContextBlendEquationArgs kLTGLContextBlendEquationDefault;
 /// must not be \c nil.
 - (void)executeForOpenGLES2:(LTVoidBlock)openGLES2 openGLES3:(LTVoidBlock)openGLES3;
 
-/// Fills the currently bound framebuffer with the given \c colorValue and depth renderbuffer with
-/// the given \c depthValue.
-- (void)clearWithColor:(LTVector4)colorValue depth:(GLfloat)depthValue;
-
-/// Fills all color attachables of the currently bound framebuffer with the given \c color.
+/// Fills the currently bound framebuffer with the given color.
 - (void)clearWithColor:(LTVector4)color;
 
-/// Fills the depth attachable to the currently bound framebuffer with the given \c depth.
-- (void)clearDepth:(GLfloat)depth;
+/// Fills the currently bound framebuffer with the given \c color and depth renderbuffer with the
+/// given \c depthValue.
+- (void)clearWithColor:(LTVector4)color depth:(GLfloat)depthValue;
 
 /// Current version of this context.
 @property (readonly, nonatomic) LTGLVersion version;
@@ -208,9 +205,6 @@ extern LTGLContextBlendEquationArgs kLTGLContextBlendEquationDefault;
 /// Maximum number of individual 4-vectors of floating-point, integer, or boolean values that can be
 /// held in uniform variable storage by the device GPU for a fragment shader.
 @property (readonly, nonatomic) GLint maxNumberOfFragmentUniforms;
-
-/// Maximum number of color attachment points that can be used on the device's GPU.
-@property (readonly, nonatomic) GLint maxNumberOfColorAttachmentPoints;
 
 /// \c YES if writing to half-float textures is supported.
 @property (readonly, nonatomic) BOOL canRenderToHalfFloatTextures;

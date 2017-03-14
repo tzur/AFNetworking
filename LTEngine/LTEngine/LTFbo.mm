@@ -4,17 +4,18 @@
 #import "LTFbo.h"
 
 #import "LTFboAttachable.h"
-#import "LTFboAttachmentInfo.h"
+#import "LTFboWritableAttachment.h"
 #import "LTGLContext.h"
-#import "LTRenderbuffer.h"
+#import "LTRenderbuffer+Writing.h"
 #import "LTTexture+Writing.h"
-
-NS_ASSUME_NONNULL_BEGIN
 
 @interface LTFbo ()
 
-/// Dictionary mapping LTFboAttachmentPoint to \c LTFboAttachmentInfo.
-@property (readonly, nonatomic) NSDictionary<NSNumber *, LTFboAttachmentInfo *> *attachmentInfos;
+/// Writable attachment attached to this framebuffer.
+@property (strong, readwrite, nonatomic) id<LTFboWritableAttachment> writableAttachment;
+
+/// Mip map level of the the texture attached to this framebuffer.
+@property (nonatomic) GLint level;
 
 /// Framebuffer identifier.
 @property (nonatomic) GLuint framebuffer;
@@ -33,125 +34,78 @@ NS_ASSUME_NONNULL_BEGIN
 @implementation LTFbo
 
 #pragma mark -
-#pragma mark Initialization
+#pragma mark Initialization and Setup
 #pragma mark -
-
-- (instancetype)initWithAttachmentInfos:(NSDictionary<NSNumber *, LTFboAttachmentInfo *> *)infos {
-  return [self initWithContext:[LTGLContext currentContext] attachmentInfos:infos];
-}
-
-- (instancetype)initWithAttachables:(NSDictionary<NSNumber *, id<LTFboAttachable>> *)attachables {
-  auto infos = [NSMutableDictionary<NSNumber *, LTFboAttachmentInfo *> dictionary];
-  for (NSNumber *attachmentPoint in attachables) {
-    infos[attachmentPoint] = [LTFboAttachmentInfo withAttachable:attachables[attachmentPoint]];
-  }
-  return [self initWithAttachmentInfos:[infos copy]];
-}
 
 - (instancetype)initWithTexture:(LTTexture *)texture {
   return [self initWithTexture:texture level:0];
 }
 
-- (instancetype)initWithTexture:(LTTexture *)texture level:(GLint)level {
+- (instancetype)initWithTexture:(LTTexture *)texture level:(NSUInteger)level {
   return [self initWithTexture:texture level:level context:[LTGLContext currentContext]];
-}
-
-- (instancetype)initWithRenderbuffer:(LTRenderbuffer *)renderbuffer {
-  return [self initWithAttachmentInfos:@{
-    @(LTFboAttachmentPointColor0):[LTFboAttachmentInfo withAttachable:renderbuffer]
-  }];
 }
 
 - (instancetype)initWithTexture:(LTTexture *)texture context:(LTGLContext *)context {
   return [self initWithTexture:texture level:0 context:context];
 }
 
-- (instancetype)initWithTexture:(LTTexture *)texture level:(GLint)level
+- (instancetype)initWithTexture:(LTTexture *)texture level:(NSUInteger)level
                         context:(LTGLContext *)context {
-  return [self initWithContext:context attachmentInfos:@{
-    @(LTFboAttachmentPointColor0): [LTFboAttachmentInfo withAttachable:texture level:level]
-  }];
-}
-
-- (instancetype)initWithContext:(LTGLContext *)context
-                attachmentInfos:(NSDictionary<NSNumber *, LTFboAttachmentInfo *> *)infos {
   if (self = [super init]) {
-    LTParameterAssert(infos.count, @"No attachables given");
-    _attachmentInfos = infos;
+    LTParameterAssert(texture);
+    LTParameterAssert((GLint)level <= texture.maxMipmapLevel);
+
+    if (CGSizeEqualToSize(texture.size, CGSizeZero)) {
+      [LTGLException raise:kLTFboInvalidAttachmentException
+                    format:@"Given texture's size is (0, 0)"];
+    }
+
+    [self verifyTextureAsRenderTarget:texture withContext:context];
+
     self.previousViewport = CGRectNull;
-    [self verifyAttachablesWithContext:context];
+    self.writableAttachment = texture;
+    self.level = (GLint)level;
+
     [self createFramebuffer];
   }
   return self;
 }
 
-- (void)verifyAttachablesWithContext:(LTGLContext *)context {
-  LTParameterAssert((GLint)[self colorAttachablesCount] <= context.maxNumberOfColorAttachmentPoints,
-                    @"%lu exceeds max number of color attachables %d",
-                    (unsigned long)[self colorAttachablesCount],
-                    context.maxNumberOfColorAttachmentPoints);
+- (instancetype)initWithRenderbuffer:(LTRenderbuffer *)renderbuffer {
+  if (self = [super init]) {
+    LTParameterAssert(renderbuffer);
 
-  [self enumerateAttachablesWithBlock:^(NSNumber *attachmentPoint, LTFboAttachmentInfo *info,
-                                        BOOL *) {
-    [self verifySizeOfAttachableInfo:info atPoint:attachmentPoint];
-    [self verifyAsRenderTargetAttachableInfo:info atPoint:attachmentPoint withContext:context];
-    [self verifyLevelOfAttachableInfo:info];
-  }];
-}
+    if (CGSizeEqualToSize(renderbuffer.size, CGSizeZero)) {
+      [LTGLException raise:kLTFboInvalidAttachmentException
+                    format:@"Given renderbuffer's size is (0, 0)"];
+    }
 
-- (void)verifySizeOfAttachableInfo:(LTFboAttachmentInfo *)info atPoint:(NSNumber *)attachmentPoint {
-  if (info.attachable.size == CGSizeZero) {
-    [LTGLException raise:kLTFboInvalidAttachmentException format:@"Size of an attachable (%@)"
-     " at attachmentPoint %ld is (0, 0)", info, (long)attachmentPoint.integerValue];
+    self.previousViewport = CGRectNull;
+    self.writableAttachment = renderbuffer;
+
+    [self createFramebuffer];
   }
+  return self;
 }
 
-- (void)verifyLevelOfAttachableInfo:(LTFboAttachmentInfo *)info {
-  if (info.attachable.attachableType != LTFboAttachableTypeTexture2D) {
-    return;
-  };
-
-  auto texture = (LTTexture *)info.attachable;
-  if (info.level > texture.maxMipmapLevel) {
-    [LTGLException raise:NSInvalidArgumentException format:@"Texture (%@) attachable level %ld "
-     "must be less than or equal to %d", texture, (unsigned long)info.level,
-     texture.maxMipmapLevel];
-  };
-}
-
-- (NSUInteger)colorAttachablesCount {
-  __block NSUInteger count = 0;
-  [self enumerateColorAttachablesWithBlock:^(NSNumber *, LTFboAttachmentInfo *, BOOL *) {
-    count++;
-  }];
-  return count;
-}
-
-- (void)verifyAsRenderTargetAttachableInfo:(LTFboAttachmentInfo *)info
-                                   atPoint:(NSNumber *)attachmentPoint
-                               withContext:(LTGLContext *)context {
-  if (attachmentPoint.unsignedIntegerValue == LTFboAttachmentPointDepth) {
-    return;
-  }
-
-  auto attachable = info.attachable;
-  if (attachable.pixelFormat.dataType == LTGLPixelDataType8Unorm) {
+- (void)verifyTextureAsRenderTarget:(LTTexture *)texture withContext:(LTGLContext *)context {
+  if (texture.dataType == LTGLPixelDataType8Unorm) {
     // Rendering to byte precision is always available by the spec of OpenGL ES 2.0 and 3.0.
     return;
-  } else if (attachable.pixelFormat.dataType == LTGLPixelDataType16Float) {
+  } else if (texture.dataType == LTGLPixelDataType16Float) {
     if (!context.canRenderToHalfFloatTextures) {
-      [LTGLException raise:kLTFboInvalidAttachmentException format:@"Given attachable has a pixel "
-       "format %@, which is unsupported as a render target on this device", attachable.pixelFormat];
+      [LTGLException raise:kLTFboInvalidAttachmentException format:@"Given texture has a pixel "
+       "format %@, which is unsupported as a render target on this device", texture.pixelFormat];
     }
-  } else if (attachable.pixelFormat.dataType == LTGLPixelDataType32Float) {
+  } else if (texture.dataType == LTGLPixelDataType32Float) {
     if (!context.canRenderToFloatTextures) {
-      [LTGLException raise:kLTFboInvalidAttachmentException format:@"Given attachable has pixel "
-       "format %@, which is unsupported as a render target on this device", attachable.pixelFormat];
+      [LTGLException raise:kLTFboInvalidAttachmentException format:@"Given texture has pixel "
+       "format %@, which is unsupported as a render target on this device", texture.pixelFormat];
     }
   } else {
-    [LTGLException raise:kLTFboInvalidAttachmentException format:@"Given attachable has an "
+    [LTGLException raise:kLTFboInvalidAttachmentException format:@"Given texture has an "
      "unsupported pixel format %@, which is unsupported as a render target on this device",
-     attachable.pixelFormat];
+     texture.pixelFormat];
   }
 }
 
@@ -160,34 +114,31 @@ NS_ASSUME_NONNULL_BEGIN
   LTGLCheck(@"Framebuffer creation failed");
 
   [self bindAndExecute:^{
-    for (NSNumber *attachmentPoint in self.attachmentInfos) {
-      [self attachUsingAttachableInfo:self.attachmentInfos[attachmentPoint]
-                              atPoint:(LTFboAttachmentPoint)attachmentPoint.integerValue];
-    }
+    [self attachAttachment];
 
     GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
     if (status != GL_FRAMEBUFFER_COMPLETE) {
       [LTGLException raise:kLTFboCreationFailedException format:@"Failed creating framebuffer "
-       "(status: 0x%x, framebuffer: %d, attachmentInfos %@)", status, self.framebuffer,
-       self.attachmentInfos];
+       "(status: 0x%x, framebuffer: %d, attachment: %@, level: %d)", status, self.framebuffer,
+       self.attachment, self.level];
     }
 
     LTGLCheck(@"Error while creating framebuffer");
   }];
 }
 
-- (void)attachUsingAttachableInfo:(LTFboAttachmentInfo *)info
-                          atPoint:(LTFboAttachmentPoint)attachmentPoint {
-  switch (info.attachable.attachableType) {
+- (void)attachAttachment {
+  switch (self.attachment.attachableType) {
     case LTFboAttachableTypeTexture2D:
-      glFramebufferTexture2D(GL_FRAMEBUFFER, attachmentPoint, GL_TEXTURE_2D, info.attachable.name,
-                             info.level);
-      LTGLCheck(@"Failed attaching attachable (%@) to framebuffer (%@)", info.attachable, self);
+      glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D,
+                             self.attachment.name, self.level);
+      LTGLCheck(@"Failed attaching texture to framebuffer (texture: %@)", self.attachment);
       break;
     case LTFboAttachableTypeRenderbuffer:
-      glFramebufferRenderbuffer(GL_FRAMEBUFFER, attachmentPoint, GL_RENDERBUFFER,
-                                info.attachable.name);
-      LTGLCheck(@"Failed attaching renderbuffer (%@) to framebuffer (%@)", info.attachable, self);
+      glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER,
+                                self.attachment.name);
+      LTGLCheck(@"Failed attaching renderbuffer to framebuffer (renderbuffer: %@)",
+                self.attachment);
       break;
   }
 }
@@ -195,7 +146,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)dealloc {
   if (self.framebuffer) {
     [self bindAndExecute:^{
-      [self detachAttachables];
+      [self detachAttachment];
     }];
 
     glDeleteFramebuffers(1, &_framebuffer);
@@ -203,19 +154,14 @@ NS_ASSUME_NONNULL_BEGIN
   }
 }
 
-- (void)detachAttachables {
-  for (NSNumber *attachmentInfo in self.attachmentInfos) {
-    auto info = (LTFboAttachmentInfo *)self.attachmentInfos[attachmentInfo];
-    auto attachmentPoint = (LTFboAttachmentPoint)attachmentInfo.integerValue;
-
-    switch (info.attachable.attachableType) {
-      case LTFboAttachableTypeRenderbuffer:
-        glFramebufferRenderbuffer(GL_FRAMEBUFFER, attachmentPoint, GL_RENDERBUFFER, 0);
-        break;
-      case LTFboAttachableTypeTexture2D:
-        glFramebufferTexture2D(GL_FRAMEBUFFER, attachmentPoint, GL_TEXTURE_2D, 0, info.level);
-        break;
-    }
+- (void)detachAttachment {
+  switch (self.attachableType) {
+    case LTFboAttachableTypeRenderbuffer:
+      glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, 0);
+      break;
+    case LTFboAttachableTypeTexture2D:
+      glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, 0, self.level);
+      break;
   }
 }
 
@@ -227,7 +173,7 @@ NS_ASSUME_NONNULL_BEGIN
   if (self.bound) {
     return;
   }
-
+  
   glGetIntegerv(GL_FRAMEBUFFER_BINDING, &_previousFramebuffer);
   GLint viewport[4];
   glGetIntegerv(GL_VIEWPORT, viewport);
@@ -278,26 +224,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)bindAndDraw:(LTVoidBlock)block {
   LTParameterAssert(block);
   [self bindAndExecute:^{
-    [self writeToAttachablesStartingAtIndex:0 withBlock:block];
+    [self.writableAttachment writeToAttachmentWithBlock:block];
   }];
-}
-
-- (void)writeToAttachablesStartingAtIndex:(NSUInteger)index withBlock:(LTVoidBlock)block {
-  if (index == [[self class] attachmentPoints].count) {
-    block();
-    return;
-  }
-
-  auto attachmentPoint = [[self class] attachmentPoints][index];
-  auto attachmentInfo = self.attachmentInfos[attachmentPoint];
-
-  if (attachmentInfo) {
-    [attachmentInfo.attachable writeToAttachableWithBlock:^{
-      [self writeToAttachablesStartingAtIndex:index+1 withBlock:block];
-    }];
-  } else {
-    [self writeToAttachablesStartingAtIndex:index+1 withBlock:block];
-  }
 }
 
 - (void)bindAndDrawOnScreen:(LTVoidBlock)block {
@@ -311,48 +239,11 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 - (void)clearWithColor:(LTVector4)color {
-  // Below each attachable is being cleared (to update its generation id). Later this instance is
-  // being cleared using clearWithColor:, which clears with color all color attachables attached to
-  // this instance.
-  [self enumerateColorAttachablesWithBlock:^(NSNumber *, LTFboAttachmentInfo *info, BOOL *) {
-    [self bindAndExecute:^{
-      [info.attachable clearAttachableWithColor:color block:^{}];
+  [self bindAndExecute:^{
+    [self.writableAttachment clearAttachmentWithColor:color block:^{
+      [[LTGLContext currentContext] clearWithColor:color];
     }];
   }];
-
-  [self bindAndExecute:^{
-    [[LTGLContext currentContext] clearWithColor:color];
-  }];
-}
-
-- (void)clearDepth:(GLfloat)value {
-  if (!self.attachmentInfos[@(LTFboAttachmentPointDepth)]) {
-    return;
-  }
-
-  [self bindAndExecute:^{
-    auto attachable = self.attachmentInfos[@(LTFboAttachmentPointDepth)].attachable;
-    [attachable clearAttachableWithColor:LTVector4(value) block:^{
-      [[LTGLContext currentContext] clearDepth:value];
-    }];
-  }];
-}
-
-#pragma mark -
-#pragma mark NSObject
-#pragma mark -
-
-- (NSString *)description {
-  auto descriptions = [NSMutableArray<NSString *> array];
-  [descriptions addObject:[NSString stringWithFormat:@"%@: %p, framebuffer: %d, bound: %d",
-                           [self class], self, self.framebuffer, self.bound]];
-
-  for (NSNumber *attachmentPoint in self.attachmentInfos) {
-    [descriptions addObject:[NSString stringWithFormat:@"attachment: %@",
-                             self.attachmentInfos[attachmentPoint]]];
-  }
-
-  return [NSString stringWithFormat:@"<%@>", [descriptions componentsJoinedByString:@", "]];
 }
 
 #pragma mark -
@@ -363,94 +254,24 @@ NS_ASSUME_NONNULL_BEGIN
   return self.framebuffer;
 }
 
-- (CGSize)size {
-  return self.attachment.size;
+- (id<LTFboAttachable>)attachment {
+  return self.writableAttachment;
 }
 
-- (id<LTFboAttachable>)attachment {
-  __block id<LTFboAttachable> attachable;
+- (CGSize)size {
+  return self.writableAttachment.size;
+}
 
-  [self enumerateAttachablesWithBlock:^(NSNumber *, LTFboAttachmentInfo *info, BOOL *stop) {
-    attachable = info.attachable;
-    *stop = YES;
-  }];
-
-  return attachable;
+- (LTFboAttachableType)attachableType {
+  return self.writableAttachment.attachableType;
 }
 
 - (LTGLPixelFormat *)pixelFormat {
-  return self.attachment.pixelFormat;
+  return self.writableAttachment.pixelFormat;
 }
 
-- (GLint)level {
-  __block GLint level;
-
-  [self enumerateAttachablesWithBlock:^(NSNumber *, LTFboAttachmentInfo *info, BOOL *stop) {
-    level = info.level;
-    *stop = YES;
-  }];
-
-  return level;
-}
-
-/// Enumeration block of \c LTFbo's attachables. The given \c attachmentPoint and \c info
-/// corresponds to \c LTFbo's attachable. Enumeration stops when \c stop is set to YES.
-typedef void (^LTFboAttachableEnumerationBlock)(NSNumber *attachmentPoint,
-    LTFboAttachmentInfo *info, BOOL *stop);
-
-/// Enumerates all attachables in the priority order, skipping non existing attachables, and calls
-/// the given \c block.
-- (void)enumerateAttachablesWithBlock:(LTFboAttachableEnumerationBlock)block {
-  [self enumerateAttachablesUsingIndices:[[self class] attachmentPoints] block:block];
-}
-
-/// Enumerates all color attachables in the priority order, skipping non existing attachables,
-/// and calls the given \c block.
-- (void)enumerateColorAttachablesWithBlock:(LTFboAttachableEnumerationBlock)block {
-  [self enumerateAttachablesUsingIndices:[[self class] colorAttachmentPoints] block:block];
-}
-
-- (void)enumerateAttachablesUsingIndices:(NSArray<NSNumber *> *)indices
-                                   block:(LTFboAttachableEnumerationBlock)block {
-  BOOL stop = NO;
-  for (NSNumber *index in indices) {
-    if (!self.attachmentInfos[index]) {
-      continue;
-    }
-    block(index, self.attachmentInfos[index], &stop);
-    if (stop) {
-      break;
-    }
-  }
-}
-
-+ (NSArray<NSNumber *> *)colorAttachmentPoints {
-  static NSArray<NSNumber *> *colorAttachmentPoints;
-  static dispatch_once_t onceToken;
-
-  dispatch_once(&onceToken, ^{
-    colorAttachmentPoints = @[
-      @(LTFboAttachmentPointColor0),
-      @(LTFboAttachmentPointColor1),
-      @(LTFboAttachmentPointColor2),
-      @(LTFboAttachmentPointColor3)
-    ];
-  });
-
-  return colorAttachmentPoints;
-}
-
-+ (NSArray<NSNumber *> *)attachmentPoints {
-  static NSArray<NSNumber *> *attachmentPoints;
-  static dispatch_once_t onceToken;
-
-  dispatch_once(&onceToken, ^{
-    auto colorAttachments = [[self class] colorAttachmentPoints];
-    attachmentPoints = [colorAttachments
-                        arrayByAddingObjectsFromArray:@[@(LTFboAttachmentPointDepth)]];
-  });
-
-  return attachmentPoints;
+- (LTVector4)fillColor {
+  return self.writableAttachment.fillColor;
 }
 
 #pragma mark -
@@ -466,5 +287,3 @@ typedef void (^LTFboAttachableEnumerationBlock)(NSNumber *attachmentPoint,
 }
 
 @end
-
-NS_ASSUME_NONNULL_END

@@ -86,9 +86,6 @@ typedef struct {
 /// held in uniform variable storage by the device GPU for a fragment shader.
 @property (readwrite, nonatomic) GLint maxNumberOfFragmentUniforms;
 
-/// Maximum number of color attachments that can be used on the device's GPU.
-@property (readwrite, nonatomic) GLint maxNumberOfColorAttachmentPoints;
-
 @end
 
 @implementation LTGLContext
@@ -308,7 +305,7 @@ typedef struct {
 - (void)executeAndPreserveState:(LTGLContextBlock)execute {
   LTParameterAssert(execute);
   [self assertContextIsCurrentContext];
-
+  
   self.contextStack.emplace([self valuesForCurrentState]);
   execute(self);
   [self setCurrentStateFromValues:self.contextStack.top()];
@@ -329,11 +326,6 @@ typedef struct {
   }
 }
 
-- (void)clearWithColor:(LTVector4)colorValue depth:(GLfloat)depthValue {
-  [self clearDepth:depthValue];
-  [self clearWithColor:colorValue];
-}
-
 - (void)clearWithColor:(LTVector4)color {
   LTVector4 previousColor;
   glGetFloatv(GL_COLOR_CLEAR_VALUE, previousColor.data());
@@ -343,13 +335,15 @@ typedef struct {
   glClearColor(previousColor.r(), previousColor.g(), previousColor.b(), previousColor.a());
 }
 
-- (void)clearDepth:(GLfloat)depth {
+- (void)clearWithColor:(LTVector4)color depth:(GLfloat)depthValue {
   GLfloat oldDepthValue;
   glGetFloatv(GL_DEPTH_CLEAR_VALUE, &oldDepthValue);
 
-  glClearDepthf(depth);
+  glClearDepthf(depthValue);
   glClear(GL_DEPTH_BUFFER_BIT);
   glClearDepthf(oldDepthValue);
+
+  [self clearWithColor:color];
 }
 
 #pragma mark -
@@ -580,13 +574,6 @@ typedef struct {
 
   }
   return _maxNumberOfFragmentUniforms;
-}
-
-- (GLint)maxNumberOfColorAttachmentPoints {
-  if (!_maxNumberOfColorAttachmentPoints) {
-    glGetIntegerv(GL_MAX_COLOR_ATTACHMENTS, &_maxNumberOfColorAttachmentPoints);
-  }
-  return _maxNumberOfColorAttachmentPoints;
 }
 
 - (BOOL)canRenderToHalfFloatTextures {

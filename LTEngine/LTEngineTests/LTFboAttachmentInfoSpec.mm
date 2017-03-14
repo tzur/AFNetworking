@@ -6,7 +6,7 @@
 #import "LTRenderbuffer.h"
 #import "LTTexture+Factory.h"
 
-SpecBegin(LTFboAttachableInfoSpec)
+SpecBegin(LTFboAttachmentInfoSpec)
 
 it(@"should raise when initializing with renderbuffer with nonzero level", ^{
   auto drawable = [CAEAGLLayer layer];
@@ -18,14 +18,6 @@ it(@"should raise when initializing with renderbuffer with nonzero level", ^{
     info = [LTFboAttachmentInfo withAttachable:renderbuffer level:1];
   }).to.raise(NSInvalidArgumentException);
   expect(info).to.beNil();
-});
-
-it(@"should raise when initializing texture with level greater than maxMipmapLevel", ^{
-  auto texture = [LTTexture textureWithImage:cv::Mat(2, 3, CV_8UC1)];
-
-  expect(^{
-    auto __unused info = [LTFboAttachmentInfo withAttachable:texture level:1];
-  }).to.raise(NSInvalidArgumentException);
 });
 
 it(@"should initialize properly with attachable", ^{

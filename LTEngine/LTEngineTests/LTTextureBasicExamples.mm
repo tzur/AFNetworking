@@ -821,8 +821,8 @@ sharedExamplesFor(kLTTextureBasicExamples, ^(NSDictionary *data) {
         generationID = nil;
       });
 
-      it(@"should change generation ID after writing via writeToAttachableWithBlock", ^{
-        [texture writeToAttachableWithBlock:^{
+      it(@"should change generation ID after writing via writeToAttachmentWithBlock", ^{
+        [texture writeToAttachmentWithBlock:^{
         }];
         expect(texture.generationID).toNot.equal(generationID);
       });
