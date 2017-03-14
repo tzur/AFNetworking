@@ -3,6 +3,8 @@
 
 #import "LTQuad.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 #pragma mark -
 #pragma mark Canonical Square to Normalized Convex Quad in Homogeneous 3D space
 #pragma mark -
@@ -82,3 +84,5 @@ GLKMatrix4 LTMatrix4ForQuad(const lt::Quad &quad);
 static inline GLKMatrix4 LTMatrix4ForQuad(LTQuad *quad) {
   return LTMatrix4ForQuad(quad.quad);
 }
+
+NS_ASSUME_NONNULL_END

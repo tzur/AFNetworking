@@ -3,6 +3,8 @@
 
 #import "LTQuadMapping.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 GLKMatrix3 LTMatrix3ForNormalizedQuad(const lt::Quad &quad, CGSize size) {
   GLKMatrix3 scale = GLKMatrix3MakeScale(1 / size.width, 1 / size.height, 1);
   return GLKMatrix3Multiply(scale, LTMatrix3ForQuad(quad));
@@ -30,3 +32,5 @@ GLKMatrix4 LTMatrix4ForQuad(const lt::Quad &quad) {
                         0, 0, 1, 0,
                         matrix3D.m20, matrix3D.m21, 0, matrix3D.m22);
 }
+
+NS_ASSUME_NONNULL_END
