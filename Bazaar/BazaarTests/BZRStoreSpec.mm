@@ -22,8 +22,8 @@
 #import "BZRStoreConfiguration.h"
 #import "BZRStoreKitFacade.h"
 #import "BZRTestUtils.h"
-#import "NSErrorCodes+Bazaar.h"
 #import "NSError+Bazaar.h"
+#import "NSErrorCodes+Bazaar.h"
 
 static void BZRStubProductDictionaryToReturnProduct(BZRProduct *product,
                                                     id<BZRProductsProvider> productsProvider);
@@ -577,14 +577,26 @@ context(@"deleting product content", ^{
 });
 
 context(@"refreshing receipt", ^{
+  it(@"should send error event when refresh receipt errs", ^{
+    NSError *error = [NSError lt_errorWithCode:1337];
+    OCMStub([storeKitFacade refreshReceipt]).andReturn([RACSignal error:error]);
+
+    LLSignalTestRecorder *recorder = [[store eventsSignal] testRecorder];
+    [[store refreshReceipt] subscribeNext:^(id) {}];
+
+    expect(recorder).will.sendValues(@[
+      [[BZREvent alloc] initWithType:$(BZREventTypeNonCriticalError) eventError:error]
+    ]);
+  });
+
   context(@"transaction restoration", ^{
     beforeEach(^{
+      OCMStub([storeKitFacade refreshReceipt]).andReturn([RACSignal empty]);
       OCMStub([receiptValidationStatusProvider fetchReceiptValidationStatus])
           .andReturn([RACSignal empty]);
     });
 
-    it(@"should use StoreKit to restore completed transactions and refresh receipt.", ^{
-      OCMExpect([storeKitFacade refreshReceipt]).andReturn([RACSignal empty]);
+    it(@"should use StoreKit to restore completed transactions.", ^{
       OCMExpect([storeKitFacade restoreCompletedTransactions]).andReturn([RACSignal empty]);
 
       expect([store refreshReceipt]).will.complete();
@@ -592,7 +604,6 @@ context(@"refreshing receipt", ^{
     });
 
     it(@"should filter out transaction values", ^{
-      OCMStub([storeKitFacade refreshReceipt]).andReturn([RACSignal empty]);
       OCMStub([storeKitFacade restoreCompletedTransactions])
           .andReturn([RACSignal return:OCMClassMock([SKPaymentTransaction class])]);
 
@@ -607,7 +618,6 @@ context(@"refreshing receipt", ^{
         OCMClassMock([SKPaymentTransaction class]),
         OCMClassMock([SKPaymentTransaction class])
       ];
-      OCMStub([storeKitFacade refreshReceipt]).andReturn([RACSignal empty]);
       OCMStub([storeKitFacade restoreCompletedTransactions])
           .andReturn(transactions.rac_sequence.signal);
 
@@ -622,12 +632,23 @@ context(@"refreshing receipt", ^{
 
     it(@"should err if transaction restoration errs", ^{
       NSError *error = [NSError lt_errorWithCode:1337];
-      OCMExpect([storeKitFacade refreshReceipt]).andReturn([RACSignal empty]);
       OCMExpect([storeKitFacade restoreCompletedTransactions]).andReturn([RACSignal error:error]);
 
       LLSignalTestRecorder *recorder = [[store refreshReceipt] testRecorder];
 
       expect(recorder).will.sendError(error);
+    });
+
+    it(@"should send error event when transaction restoration errs", ^{
+      NSError *error = [NSError lt_errorWithCode:1337];
+      OCMStub([storeKitFacade restoreCompletedTransactions]).andReturn([RACSignal error:error]);
+
+      LLSignalTestRecorder *recorder = [[store eventsSignal] testRecorder];
+      [[store refreshReceipt] subscribeNext:^(id) {}];
+
+      expect(recorder).will.sendValues(@[
+        [[BZREvent alloc] initWithType:$(BZREventTypeNonCriticalError) eventError:error]
+      ]);
     });
   });
 
@@ -635,12 +656,12 @@ context(@"refreshing receipt", ^{
     __block BZRReceiptValidationStatus *receiptValidationStatus;
 
     beforeEach(^{
+      OCMStub([storeKitFacade refreshReceipt]).andReturn([RACSignal empty]);
       OCMStub([storeKitFacade restoreCompletedTransactions]).andReturn([RACSignal empty]);
       receiptValidationStatus = OCMClassMock([BZRReceiptValidationStatus class]);
     });
 
     it(@"should validate the receipt if restoration completed successfully", ^{
-      OCMExpect([storeKitFacade refreshReceipt]).andReturn([RACSignal empty]);
       OCMExpect([receiptValidationStatusProvider fetchReceiptValidationStatus])
           .andReturn([RACSignal return:receiptValidationStatus]);
 
@@ -649,8 +670,7 @@ context(@"refreshing receipt", ^{
     });
 
     it(@"should filter out receipt validation status values", ^{
-      OCMExpect([storeKitFacade refreshReceipt]).andReturn([RACSignal empty]);
-      OCMExpect([receiptValidationStatusProvider fetchReceiptValidationStatus])
+      OCMStub([receiptValidationStatusProvider fetchReceiptValidationStatus])
           .andReturn([RACSignal return:receiptValidationStatus]);
 
       LLSignalTestRecorder *recorder = [[store refreshReceipt] testRecorder];
@@ -661,13 +681,25 @@ context(@"refreshing receipt", ^{
 
     it(@"should err if receipt validation failed", ^{
       NSError *error = [NSError lt_errorWithCode:1337];
-      OCMExpect([storeKitFacade refreshReceipt]).andReturn([RACSignal empty]);
-      OCMExpect([receiptValidationStatusProvider fetchReceiptValidationStatus])
+      OCMStub([receiptValidationStatusProvider fetchReceiptValidationStatus])
           .andReturn([RACSignal error:error]);
 
       LLSignalTestRecorder *recorder = [[store refreshReceipt] testRecorder];
 
       expect(recorder).will.sendError(error);
+    });
+
+    it(@"should send error event when fetch receipt validation status failed", ^{
+      NSError *error = [NSError lt_errorWithCode:1337];
+      OCMStub([receiptValidationStatusProvider fetchReceiptValidationStatus])
+          .andReturn([RACSignal error:error]);
+
+      LLSignalTestRecorder *recorder = [[store eventsSignal] testRecorder];
+      [[store refreshReceipt] subscribeNext:^(id) {}];
+
+      expect(recorder).will.sendValues(@[
+        [[BZREvent alloc] initWithType:$(BZREventTypeNonCriticalError) eventError:error]
+      ]);
     });
   });
 });
@@ -1100,7 +1132,6 @@ context(@"KVO-compliance", ^{
           BZRReceiptValidationStatusWithInAppPurchaseAndExpiry(@"foo", YES);
       validationStatusProvider.receiptValidationStatus = activeSubscriptionStatus;
       validationStatusProvider.receiptValidationStatus = inactiveSubscriptionStatus;
-
 
       expect(subscriptionSignal).to.sendValues(@[
         [NSNull null],
