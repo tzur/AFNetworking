@@ -24,6 +24,10 @@
 /// Size of the front texture to draw.
 @property (nonatomic) CGSize frontSize;
 
+/// If \c YES, the \c frontQuad of the \c internalProcessor must be updated during the next call to
+/// the \c preprocess method of this instance.
+@property (nonatomic) BOOL requiresUpdateOfFrontQuad;
+
 @end
 
 @implementation LTMixerProcessor
@@ -105,11 +109,18 @@
 #pragma mark Processing
 #pragma mark -
 
+- (void)preprocess {
+  [self updateFrontQuad];
+  self.requiresUpdateOfFrontQuad = NO;
+}
+
 - (void)processToFramebufferWithSize:(CGSize)size outputRect:(CGRect)rect {
+  [self preprocess];
   [self.internalProcessor processToFramebufferWithSize:size outputRect:rect];
 }
 
 - (void)process {
+  [self preprocess];
   [self.internalProcessor process];
 }
 
@@ -127,29 +138,31 @@
 
 - (void)setFrontTranslation:(CGPoint)frontTranslation {
   _frontTranslation = frontTranslation;
-  [self updateFrontTargetRect];
+  [self setNeedsFrontQuadUpdate];
+}
+
+- (void)setNeedsFrontQuadUpdate {
+  self.requiresUpdateOfFrontQuad = YES;
 }
 
 - (void)setFrontScaling:(float)frontScaling {
   LTParameterAssert(frontScaling > 0, @"frontScaling (%f) must be positive", frontScaling);
   _frontScaling = frontScaling;
-  [self updateFrontTargetRect];
+  [self setNeedsFrontQuadUpdate];
 }
 
 - (void)setFrontRotation:(float)frontRotation {
   _frontRotation = frontRotation;
-  [self updateFrontTargetRect];
+  [self setNeedsFrontQuadUpdate];
 }
 
-- (void)updateFrontTargetRect {
+- (void)updateFrontQuad {
   LTQuad *frontQuad;
-  if (self.frontScaling) {
-    LTRotatedRect *frontTargetRect = [LTRotatedRect rectWithSize:self.frontSize
-                                                     translation:self.frontTranslation
-                                                         scaling:self.frontScaling
-                                                     andRotation:self.frontRotation];
-    frontQuad = [LTQuad quadFromRotatedRect:frontTargetRect];
-  }
+  LTRotatedRect *frontTargetRect =
+      [LTRotatedRect rectWithSize:self.frontSize translation:self.frontTranslation
+                          scaling:self.frontScaling
+                      andRotation:self.frontRotation];
+  frontQuad = [LTQuad quadFromRotatedRect:frontTargetRect];
   self.internalProcessor.frontQuad = frontQuad;
 }
 
