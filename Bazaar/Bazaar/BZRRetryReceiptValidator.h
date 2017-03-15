@@ -5,7 +5,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/// Validator that retries validation if it has failed, using exponential back-off algorithm.
+/// Validator that retries validation if it has failed, using exponential back-off algorithm. An
+/// error event will be delivered on \c eventsSignal for any failing validation.
 @interface BZRRetryReceiptValidator : NSObject <BZRReceiptValidator>
 
 - (instancetype)init NS_UNAVAILABLE;

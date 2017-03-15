@@ -24,13 +24,16 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
+/// Delay of the second try to fetch the receipt validation status after the first try has failed.
+static const NSTimeInterval kInitialRetryDelay = 0.5;
+
+/// Number of times to retry receipt validation status fetching.
+static const NSUInteger kNumberOfRetries = 4;
+
 @implementation BZRValidatedReceiptValidationStatusProvider
 
 - (instancetype)initWithValidationParametersProvider:
     (id<BZRReceiptValidationParametersProvider>)validationParametersProvider {
-  NSTimeInterval kInitialRetryDelay = 0.5;
-  NSUInteger kNumberOfRetries = 4;
-
   BZRValidatricksReceiptValidator *receiptValidator =
       [[BZRValidatricksReceiptValidator alloc] init];
   BZRRetryReceiptValidator *retryValidator =
