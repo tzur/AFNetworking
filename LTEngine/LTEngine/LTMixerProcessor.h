@@ -1,10 +1,9 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
-#import "LTOneShotImageProcessor.h"
-
 #import "LTBlendMode.h"
 #import "LTMixerMaskMode.h"
+#import "LTOneShotImageProcessor.h"
 
 /// Processor for mixing two different textures, back (bottom) and front (top), with an additional
 /// mask on the front (default) or back texture. The back texture is fixed, while the front texture
@@ -37,7 +36,7 @@
 /// Default front scaling value (\c 1).
 @property (readonly, nonatomic) float defaultFrontScaling;
 
-/// Uniform scaling of the front texture around its center. The default value is \c 1.
+/// Uniform scaling of the front texture around its center. Must be positive. Default value is \c 1.
 @property (nonatomic) float frontScaling;
 
 /// Default front rotation value (\c 0).
