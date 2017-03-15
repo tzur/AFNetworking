@@ -84,6 +84,14 @@ context(@"initialization", ^{
   });
 });
 
+context(@"properties", ^{
+  it(@"should raise when attempting to use non-positive value of frontScaling", ^{
+    expect(^{
+      processor.frontScaling = 0;
+    }).to.raise(NSInvalidArgumentException);
+  });
+});
+
 context(@"front placement", ^{
   it(@"should blend with correct translation placement", ^{
     processor.frontTranslation = CGPointMake(1.0, 1.0);

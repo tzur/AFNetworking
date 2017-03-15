@@ -36,7 +36,7 @@
 /// Default front scaling value (\c 1).
 @property (readonly, nonatomic) float defaultFrontScaling;
 
-/// Uniform scaling of the front texture around its center. The default value is \c 1.
+/// Uniform scaling of the front texture around its center. Must be positive. Default value is \c 1.
 @property (nonatomic) float frontScaling;
 
 /// Default front rotation value (\c 0).

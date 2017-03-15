@@ -131,6 +131,7 @@
 }
 
 - (void)setFrontScaling:(float)frontScaling {
+  LTParameterAssert(frontScaling > 0, @"frontScaling (%f) must be positive", frontScaling);
   _frontScaling = frontScaling;
   [self updateFrontTargetRect];
 }
