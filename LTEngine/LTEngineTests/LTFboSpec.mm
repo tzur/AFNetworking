@@ -13,18 +13,18 @@
 
 SpecBegin(LTFbo)
 
-__block id glContext;
-
-beforeEach(^{
-  glContext = OCMPartialMock([LTGLContext currentContext]);
-});
-
-afterEach(^{
-  glContext = nil;
-});
-
 context(@"texture attachable", ^{
   context(@"initialization", ^{
+    __block id glContext;
+
+    beforeEach(^{
+      glContext = OCMPartialMock([LTGLContext currentContext]);
+    });
+
+    afterEach(^{
+      glContext = nil;
+    });
+
     it(@"should init with RGBA byte texture", ^{
       LTTexture *texture = [LTTexture byteRGBATextureWithSize:CGSizeMake(1, 1)];
       LTFbo *fbo = [[LTFbo alloc] initWithTexture:texture];
@@ -149,6 +149,31 @@ context(@"texture attachable", ^{
       }).to.raise(NSInvalidArgumentException);
     });
   });
+});
+
+it(@"should let attachables deallocate when not held strongly", ^{
+  __weak LTTexture *weakTexture;
+  __weak LTRenderbuffer *weakRenderbuffer;
+  __weak LTFbo *weakFbo;
+
+  @autoreleasepool {
+    auto texture = [LTTexture textureWithSize:CGSizeMake(1, 2)
+                                  pixelFormat:$(LTGLPixelFormatRGBA8Unorm)
+                               allocateMemory:YES];
+    auto renderbuffer = [[LTRenderbuffer alloc] initWithSize:CGSizeMake(1, 1)
+                                                 pixelFormat:$(LTGLPixelFormatDepth16Unorm)];
+    auto fbo = [[LTFbo alloc] initWithAttachables:@{
+      @(LTFboAttachmentPointColor0): texture,
+      @(LTFboAttachmentPointDepth): renderbuffer
+    }];
+    weakTexture = texture;
+    weakRenderbuffer = renderbuffer;
+    weakFbo = fbo;
+  }
+
+  expect(weakTexture).to.beNil();
+  expect(weakRenderbuffer).to.beNil();
+  expect(weakFbo).to.beNil();
 });
 
 context(@"renderbuffer attachable", ^{
