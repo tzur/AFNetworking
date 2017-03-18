@@ -194,9 +194,16 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)dealloc {
   if (self.framebuffer) {
-    [self bindAndExecute:^{
-      [self detachAttachables];
-    }];
+    // The attachables held by this object, if not held by any other object, are required to be
+    // deallocated immediately after this object deallocates. However, the detaching code may add
+    // them to the autorelease pool, hence deferring their deallocation to a later time. Wrapping
+    // the detaching code in an \c @autoreleasepool guarantees that they will be released if an
+    // \c -autorelease message is sent to them. For more details, see https://goo.gl/p3wtCL.
+    @autoreleasepool {
+      [self bindAndExecute:^{
+        [self detachAttachables];
+      }];
+    }
 
     glDeleteFramebuffers(1, &_framebuffer);
     LTGLCheckDbg(@"Failed to delete framebuffer: %d", self.framebuffer);
