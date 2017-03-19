@@ -6,14 +6,13 @@
 #import <LTKit/NSArray+Functional.h>
 
 #import "BZRAcquiredViaSubscriptionProvider.h"
-#import "BZREvent.h"
 #import "BZRCachedReceiptValidationStatusProvider.h"
+#import "BZREvent.h"
 #import "BZRPeriodicReceiptValidatorActivator.h"
 #import "BZRProduct+SKProduct.h"
 #import "BZRProductContentManager.h"
 #import "BZRProductContentProvider.h"
 #import "BZRProductPriceInfo+SKProduct.h"
-#import "BZRProductPriceInfo.h"
 #import "BZRProductsProvider.h"
 #import "BZRProductsVariantSelector.h"
 #import "BZRProductsVariantSelectorFactory.h"
@@ -396,9 +395,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (RACSignal *)refreshReceipt {
   @weakify(self);
-  return [[RACSignal defer:^RACSignal *{
+  return [[[RACSignal defer:^RACSignal *{
     @strongify(self);
     return [[self.storeKitFacade refreshReceipt] concat:[self restoreCompletedTransactions]];
+  }]
+  doError:^(NSError *error) {
+    [self sendErrorEventOfType:$(BZREventTypeNonCriticalError) error:error];
   }]
   setNameWithFormat:@"%@ -refreshReceipt", self];
 }
