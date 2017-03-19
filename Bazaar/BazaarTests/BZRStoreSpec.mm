@@ -235,6 +235,48 @@ context(@"allowed products", ^{
     expect(store.allowedProducts).to
         .equal([acquiredViaSubscription setByAddingObject:productIdentifier]);
   });
+
+  context(@"pre acquired products", ^{
+    __block BZRProduct *notPreAcquiredProduct;
+    __block BZRProduct *preAcquiredProduct;
+
+    beforeEach(^{
+      notPreAcquiredProduct = BZRProductWithIdentifier(@"notPreAcquired");
+      preAcquiredProduct = BZRProductWithIdentifier(@"preAcquired");
+      preAcquiredProduct =
+          [preAcquiredProduct modelByOverridingProperty:@keypath(preAcquiredProduct, preAcquired)
+                                              withValue:@YES];
+
+      RACSignal *productList = [RACSignal return:@[notPreAcquiredProduct, preAcquiredProduct]];
+      OCMStub([productsProvider fetchProductList]).andReturn(productList);
+      store = [[BZRStore alloc] initWithConfiguration:configuration];
+    });
+
+    it(@"should include pre acquired products when subscription doesn't exist", ^{
+      expect(store.allowedProducts).to.equal([NSSet setWithObject:preAcquiredProduct.identifier]);
+    });
+
+    it(@"should include pre acquired products when subscription exists", ^{
+      BZRReceiptValidationStatus *receiptValidationStatus =
+          BZRReceiptValidationStatusWithExpiry(NO, NO);
+      OCMStub([receiptValidationStatusProvider receiptValidationStatus])
+          .andReturn(receiptValidationStatus);
+
+      NSSet *expectedAllowedProducts =
+          [acquiredViaSubscription setByAddingObject:preAcquiredProduct.identifier];
+      expect(store.allowedProducts).to.equal(expectedAllowedProducts);
+    });
+
+    it(@"should include pre acquired products when subscription exists and is expired", ^{
+      BZRReceiptValidationStatus *receiptValidationStatus =
+          BZRReceiptValidationStatusWithExpiry(YES, NO);
+      OCMStub([receiptValidationStatusProvider receiptValidationStatus])
+          .andReturn(receiptValidationStatus);
+
+      NSSet *expectedAllowedProducts = [NSSet setWithObject:preAcquiredProduct.identifier];
+      expect(store.allowedProducts).to.equal(expectedAllowedProducts);
+    });
+  });
 });
 
 context(@"subscription information", ^{
@@ -1085,6 +1127,27 @@ context(@"KVO-compliance", ^{
       expect(productsSignal).to.sendValues(@[
         [NSSet set],
         [NSSet setWithObjects:@"foo", nil]
+      ]);
+    });
+
+    it(@"should update when products dictionary is changed", ^{
+      BZRProduct *notPreAcquiredProduct = BZRProductWithIdentifier(@"notPreAcquired");
+      BZRProduct *preAcquiredProduct = BZRProductWithIdentifier(@"preAcquired");
+      preAcquiredProduct =
+          [preAcquiredProduct modelByOverridingProperty:@keypath(preAcquiredProduct, preAcquired)
+                                              withValue:@YES];
+      NSArray<BZRProduct *> *productList = @[notPreAcquiredProduct, preAcquiredProduct];
+
+      RACSubject *productsProviderSubject = [RACSubject subject];
+      OCMStub([productsProvider fetchProductList]).andReturn(productsProviderSubject);
+      store = [[BZRStore alloc] initWithConfiguration:configuration];
+      RACSignal *productsSignal = [RACObserve(store, allowedProducts) testRecorder];
+
+      [productsProviderSubject sendNext:productList];
+
+      expect(productsSignal).to.sendValues(@[
+        [NSSet set],
+        [NSSet setWithObject:preAcquiredProduct.identifier]
       ]);
     });
 
