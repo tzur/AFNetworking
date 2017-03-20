@@ -1,11 +1,12 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
-#import "LTOneShotBaseImageProcessor+Protected.h"
+#import "LTOneShotBaseImageProcessor.h"
 
-#import "LTGLContext.h"
 #import "LTFbo.h"
+#import "LTGLContext.h"
 #import "LTGPUImageProcessor+Protected.h"
+#import "LTOneShotBaseImageProcessor+Protected.h"
 #import "LTOneShotProcessingStrategy.h"
 #import "LTTexture.h"
 

@@ -3,10 +3,10 @@
 
 #import "LTMutableEuclideanSpline.h"
 
+#import "LTBasicParameterizedObjectFactories.h"
 #import "LTCompoundParameterizedObjectFactory.h"
 #import "LTMutableEuclideanSplineTestUtils.h"
 #import "LTParameterizationKeyToValues.h"
-#import "LTBasicParameterizedObjectFactories.h"
 
 static const CGFloat kEpsilon = 3e-6;
 

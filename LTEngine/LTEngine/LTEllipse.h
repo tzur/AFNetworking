@@ -3,8 +3,8 @@
 
 #import <LTKit/LTHashExtensions.h>
 
-#import "LTGLKitExtensions.h"
 #import "LTGeometry.h"
+#import "LTGLKitExtensions.h"
 
 #ifdef __cplusplus
 

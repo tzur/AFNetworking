@@ -4,10 +4,10 @@
 #import "LTSeparableImageProcessor.h"
 
 #import "LTProgram.h"
-#import "LTShaderStorage+PassthroughVsh.h"
 #import "LTShaderStorage+PassthroughFsh.h"
-#import "LTShaderStorage+TexelOffsetVsh.h"
+#import "LTShaderStorage+PassthroughVsh.h"
 #import "LTShaderStorage+TexelOffsetFsh.h"
+#import "LTShaderStorage+TexelOffsetVsh.h"
 #import "LTTexture+Factory.h"
 
 SpecBegin(LTSeprableImageProcessor)

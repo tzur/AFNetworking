@@ -3,8 +3,8 @@
 
 #import "LTPainterStrokeSegment.h"
 
-#import "LTPolynomialInterpolant.h"
 #import "LTPainterPoint.h"
+#import "LTPolynomialInterpolant.h"
 
 @interface LTPainterStrokeSegment () {
   CGFloats _distances;

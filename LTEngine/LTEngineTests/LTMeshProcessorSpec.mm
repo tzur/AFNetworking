@@ -5,13 +5,12 @@
 
 #import <LTKit/LTRandom.h>
 
+#import "LTFbo.h"
+#import "LTMeshBaseDrawer.h"
+#import "LTMeshDrawer.h"
 #import "LTOpenCVExtensions.h"
 #import "LTShaderStorage+PassthroughFsh.h"
 #import "LTTexture+Factory.h"
-
-#import "LTMeshDrawer.h"
-#import "LTMeshBaseDrawer.h"
-#import "LTFbo.h"
 
 SpecBegin(LTMeshProcessor)
 

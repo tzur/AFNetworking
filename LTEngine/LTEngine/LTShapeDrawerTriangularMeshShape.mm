@@ -9,8 +9,8 @@
 #import "LTGLContext.h"
 #import "LTGLKitExtensions.h"
 #import "LTProgram.h"
-#import "LTShaderStorage+LTShapeDrawerTriangularMeshShapeVsh.h"
 #import "LTShaderStorage+LTShapeDrawerTriangularMeshShapeFsh.h"
+#import "LTShaderStorage+LTShapeDrawerTriangularMeshShapeVsh.h"
 #import "LTShapeDrawerParams.h"
 #import "LTVertexArray.h"
 

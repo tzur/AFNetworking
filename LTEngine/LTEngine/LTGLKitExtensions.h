@@ -1,8 +1,8 @@
 // Copyright (c) 2013 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
-#import <GLKit/GLKMath.h>
 #import <cmath>
+#import <GLKit/GLKMath.h>
 
 #import "LTOpenCVCore.h"
 

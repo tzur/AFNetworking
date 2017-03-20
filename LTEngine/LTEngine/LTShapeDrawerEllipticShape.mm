@@ -9,10 +9,10 @@
 #import "LTGLContext.h"
 #import "LTGLKitExtensions.h"
 #import "LTProgram.h"
+#import "LTRotatedRect.h"
 #import "LTShaderStorage+LTCommonDrawableShapeVsh.h"
 #import "LTShaderStorage+LTShapeDrawerEllipticShapeFsh.h"
 #import "LTShapeDrawerParams.h"
-#import "LTRotatedRect.h"
 
 @interface LTShapeDrawerEllipticShape ()
 

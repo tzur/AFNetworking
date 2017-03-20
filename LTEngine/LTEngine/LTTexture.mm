@@ -1,7 +1,7 @@
 // Copyright (c) 2013 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
-#import "LTTexture+Protected.h"
+#import "LTTexture.h"
 
 #import "CIContext+PixelFormat.h"
 #import "CIImage+Swizzle.h"
@@ -11,8 +11,8 @@
 #import "LTFboPool.h"
 #import "LTGLContext.h"
 #import "LTImage.h"
-#import "LTOpenCVExtensions.h"
 #import "LTMathUtils.h"
+#import "LTOpenCVExtensions.h"
 #import "LTTexture+Protected.h"
 #import "LTTextureContentsDataArchiver.h"
 

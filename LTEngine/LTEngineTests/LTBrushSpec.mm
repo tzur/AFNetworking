@@ -1,8 +1,7 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Amit Goldstein.
 
-#import "LTBrushEffectExamples.h"
-#import "LTBrushSpec.h"
+#import "LTBrush.h"
 
 #import <LTEngine/LTBrushColorDynamicsEffect.h>
 #import <LTEngine/LTBrushRandomState.h>
@@ -17,6 +16,9 @@
 #import <LTEngine/LTRotatedRect.h>
 #import <LTEngine/LTTexture+Factory.h>
 #import <LTKit/LTRandom.h>
+
+#import "LTBrushEffectExamples.h"
+#import "LTBrushSpec.h"
 
 NSString * const kLTBrushExamples = @"LTBrushExamples";
 NSString * const kLTBrushClass = @"LTBrushClass";

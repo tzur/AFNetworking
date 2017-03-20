@@ -5,8 +5,8 @@
 
 #import <LTKit/LTRandom.h>
 
-#import "LTTexture.h"
 #import "LTRotatedRect.h"
+#import "LTTexture.h"
 #import "UIColor+Vector.h"
 
 @implementation LTBrushColorDynamicsEffect

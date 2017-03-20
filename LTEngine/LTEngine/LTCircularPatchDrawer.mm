@@ -13,8 +13,8 @@
 #import "LTProgramFactory.h"
 #import "LTRectMapping.h"
 #import "LTRotatedRect.h"
-#import "LTShaderStorage+LTCircularPatchVsh.h"
 #import "LTShaderStorage+LTCircularPatchFsh.h"
+#import "LTShaderStorage+LTCircularPatchVsh.h"
 #import "LTTexture.h"
 #import "LTVertexArray.h"
 

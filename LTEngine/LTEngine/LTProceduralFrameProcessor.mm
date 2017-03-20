@@ -7,8 +7,8 @@
 #import "LTGPUImageProcessor+Protected.h"
 #import "LTMathUtils.h"
 #import "LTProgram.h"
-#import "LTShaderStorage+LTProceduralFrameVsh.h"
 #import "LTShaderStorage+LTProceduralFrameFsh.h"
+#import "LTShaderStorage+LTProceduralFrameVsh.h"
 #import "LTTexture+Factory.h"
 
 @implementation LTProceduralFrameProcessor

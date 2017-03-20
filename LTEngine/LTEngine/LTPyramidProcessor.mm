@@ -4,8 +4,8 @@
 #import "LTPyramidProcessor.h"
 
 #import "LTGPUImageProcessor+Protected.h"
-#import "LTShaderStorage+LTPyramidProcessorVsh.h"
 #import "LTShaderStorage+LTPassthroughShaderFsh.h"
+#import "LTShaderStorage+LTPyramidProcessorVsh.h"
 #import "LTTexture+Factory.h"
 
 @implementation LTPyramidProcessor

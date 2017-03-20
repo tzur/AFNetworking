@@ -1,7 +1,7 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Amit Goldstein.
 
-#import "LTRoundBrushSpec.h"
+#import "LTRoundBrush.h"
 
 #import <LTEngine/LTFbo.h>
 #import <LTEngine/LTGLContext.h>
@@ -11,6 +11,7 @@
 
 #import "LTBrushEffectExamples.h"
 #import "LTBrushSpec.h"
+#import "LTRoundBrushSpec.h"
 
 NSString * const kLTRoundBrushExamples = @"LTRoundBrushExamples";
 NSString * const kLTRoundBrushClass = @"LTRoundBrushClass";

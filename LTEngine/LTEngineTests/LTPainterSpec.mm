@@ -1,12 +1,13 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Amit Goldstein.
 
-#import "LTPainter+Interaction.h"
+#import "LTPainter.h"
 
 #import "LTBrush.h"
 #import "LTCatmullRomInterpolant.h"
 #import "LTContentTouchEventDelegate.h"
 #import "LTLinearInterpolant.h"
+#import "LTPainter+Interaction.h"
 #import "LTPainterPoint.h"
 #import "LTPainterStroke.h"
 #import "LTRotatedRect.h"

@@ -4,8 +4,8 @@
 #import "LTImageBorderProcessor.h"
 
 #import "LTGPUImageProcessor+Protected.h"
-#import "LTShaderStorage+LTPassthroughShaderVsh.h"
 #import "LTShaderStorage+LTImageBorderFsh.h"
+#import "LTShaderStorage+LTPassthroughShaderVsh.h"
 #import "LTTexture+Factory.h"
 
 @implementation LTImageBorderProcessor

@@ -5,8 +5,8 @@
 
 #import "LTBicubicResizeProcessor.h"
 #import "LTDualMaskProcessor.h"
-#import "LTGPUImageProcessor+Protected.h"
 #import "LTGLKitExtensions.h"
+#import "LTGPUImageProcessor+Protected.h"
 #import "LTMaskedBlurProcessor.h"
 #import "LTProgram.h"
 #import "LTShaderStorage+LTPassthroughShaderVsh.h"

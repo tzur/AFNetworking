@@ -4,9 +4,8 @@
 #import "LTMultiTextureBrush.h"
 
 #import "LTBrushEffectExamples.h"
-#import "LTTextureBrushExamples.h"
-
 #import "LTTexture+Factory.h"
+#import "LTTextureBrushExamples.h"
 
 SpecBegin(LTMultiTextureBrush)
 

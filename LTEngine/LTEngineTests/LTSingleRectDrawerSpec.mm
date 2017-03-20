@@ -1,14 +1,15 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Amit Goldstein.
 
-#import "LTSingleRectDrawerSpec.h"
+#import "LTSingleRectDrawer.h"
 
 #import "LTFbo.h"
 #import "LTGLContext.h"
 #import "LTProgram.h"
 #import "LTRotatedRect.h"
-#import "LTShaderStorage+PassthroughVsh.h"
 #import "LTShaderStorage+PassthroughFsh.h"
+#import "LTShaderStorage+PassthroughVsh.h"
+#import "LTSingleRectDrawerSpec.h"
 #import "LTTexture+Factory.h"
 #import "LTTextureDrawerExamples.h"
 

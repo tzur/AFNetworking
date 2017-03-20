@@ -5,11 +5,11 @@
 
 #import "LTContentInteraction.h"
 #import "LTInteractionMode.h"
+#import "LTPainterPoint.h"
 #import "LTTouchCollectorDistanceFilter.h"
 #import "LTTouchCollectorFilter.h"
 #import "LTTouchCollectorTimeIntervalFilter.h"
 #import "LTTouchEvent.h"
-#import "LTPainterPoint.h"
 
 @interface LTTouchCollector ()
 

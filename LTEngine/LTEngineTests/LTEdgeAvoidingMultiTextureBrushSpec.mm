@@ -4,12 +4,11 @@
 #import "LTEdgeAvoidingMultiTextureBrush.h"
 
 #import "LTBrushEffectExamples.h"
-#import "LTTextureBrushExamples.h"
-
 #import "LTFbo.h"
 #import "LTGLKitExtensions.h"
 #import "LTPainterPoint.h"
 #import "LTTexture+Factory.h"
+#import "LTTextureBrushExamples.h"
 
 SpecBegin(LTEdgeAvoidingMultiTextureBrush)
 
