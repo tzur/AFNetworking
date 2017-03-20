@@ -101,7 +101,7 @@ static PTUChangesetMoves * _Nullable PTUMovesWithFlattenedOffset
   if (!moves) {
     return nil;
   }
-  
+
   return [moves.rac_sequence map:^PTUChangesetMove *(PTUChangesetMove *move) {
     NSUInteger flattendFromOffset = move.fromIndex.section > 0 ?
         itemsUpToSection[move.fromIndex.section - 1].unsignedIntegerValue : 0;

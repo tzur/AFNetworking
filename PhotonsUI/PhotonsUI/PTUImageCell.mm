@@ -39,7 +39,7 @@ NS_ASSUME_NONNULL_BEGIN
   _imageCellView = [[PTUImageCellView alloc] initWithFrame:self.contentView.bounds];
   self.imageCellView.autoresizingMask = UIViewAutoresizingFlexibleWidth |
       UIViewAutoresizingFlexibleHeight;
-  
+
   [self.contentView addSubview:self.imageCellView];
 }
 
@@ -47,7 +47,7 @@ NS_ASSUME_NONNULL_BEGIN
   _highlightingView = [[UIView alloc] initWithFrame:self.contentView.bounds];
   self.highlightingView.autoresizingMask = UIViewAutoresizingFlexibleWidth |
       UIViewAutoresizingFlexibleHeight;
-  
+
   [self.contentView addSubview:self.highlightingView];
   [self updateHighlightingViewVisibility];
 }

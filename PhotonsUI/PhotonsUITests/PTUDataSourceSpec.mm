@@ -134,12 +134,12 @@ it(@"should properly update error and error flag on metadata fetch error", ^{
 it(@"should dequeue cells from collection view", ^{
   PTUChangeset *changeset = [[PTUChangeset alloc] initWithAfterDataModel:@[@[@1]]];
   [dataSignal sendNext:changeset];
-  
+
   id cell = [[cellClass alloc] initWithFrame:CGRectZero];
   NSIndexPath *indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
   OCMStub([collectionView dequeueReusableCellWithReuseIdentifier:OCMOCK_ANY
                                                     forIndexPath:indexPath]).andReturn(cell);
-  
+
   expect([collectionViewDataSource collectionView:collectionView
                            cellForItemAtIndexPath:indexPath]).to.equal(cell);
 });
@@ -151,7 +151,7 @@ it(@"should correctly configure cells", ^{
   PTUChangeset *changeset = [[PTUChangeset alloc] initWithAfterDataModel:@[@[asset]]];
   [dataSignal sendNext:changeset];
   expect(dataSource.hasData).will.beTruthy();
-  
+
   NSIndexPath *indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
   OCMStub([collectionView dequeueReusableCellWithReuseIdentifier:OCMOCK_ANY
       forIndexPath:indexPath]).andReturn([[cellClass alloc] initWithFrame:CGRectZero]);
@@ -159,7 +159,7 @@ it(@"should correctly configure cells", ^{
   UICollectionViewCell<PTUImageCell> *cell =
       (UICollectionViewCell<PTUImageCell> *)[collectionViewDataSource collectionView:collectionView
       cellForItemAtIndexPath:indexPath];
-  
+
   expect(cell).to.beKindOf(cellClass);
   expect(cell).to.conformTo(@protocol(PTUImageCell));
   expect(cell.viewModel).to.equal(viewModel);
@@ -168,13 +168,13 @@ it(@"should correctly configure cells", ^{
 it(@"should dequeue header cells from collection view", ^{
   PTUChangeset *changeset = [[PTUChangeset alloc] initWithAfterDataModel:@[@[]]];
   [dataSignal sendNext:changeset];
-  
+
   id headerCell = [[headerCellClass alloc] initWithFrame:CGRectZero];
   NSIndexPath *indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
   OCMStub([collectionView
       dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader
       withReuseIdentifier:OCMOCK_ANY forIndexPath:indexPath]).andReturn(headerCell);
-  
+
   expect([collectionViewDataSource collectionView:collectionView
       viewForSupplementaryElementOfKind:UICollectionElementKindSectionHeader
                                       atIndexPath:indexPath]).to.equal(headerCell);
@@ -186,18 +186,18 @@ it(@"should correctly configure headers", ^{
   [metadataSignal sendNext:changesetMetadata];
   PTUChangeset *changeset = [[PTUChangeset alloc] initWithAfterDataModel:@[@[]]];
   [dataSignal sendNext:changeset];
-  
+
   NSIndexPath *indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
   OCMStub([collectionView
       dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader
       withReuseIdentifier:OCMOCK_ANY forIndexPath:indexPath])
       .andReturn([[headerCellClass alloc] initWithFrame:CGRectZero]);
-  
+
   UICollectionReusableView<PTUHeaderCell> *headerCell =
       (UICollectionReusableView<PTUHeaderCell> *)[collectionViewDataSource
       collectionView:collectionView
       viewForSupplementaryElementOfKind:UICollectionElementKindSectionHeader atIndexPath:indexPath];
-  
+
   expect(headerCell).to.beKindOf(headerCellClass);
   expect(headerCell).to.conformTo(@protocol(PTUHeaderCell));
   expect(headerCell.title).to.equal(@"foo");
@@ -406,16 +406,16 @@ context(@"updates", ^{
     expect([collectionViewDataSource collectionView:collectionView
                              numberOfItemsInSection:0]).will.equal(0);
   });
-  
+
   it(@"should notify on data change due to reload", ^{
     LLSignalTestRecorder *recorder = [dataSource.didUpdateCollectionView testRecorder];
-    
+
     PTUChangeset *changeset = [[PTUChangeset alloc] initWithAfterDataModel:@[@[], @[]]];
     OCMExpect([collectionView reloadData]);
     [dataSignal sendNext:changeset];
     OCMVerifyAllWithDelay(collectionView, 1);
     expect(recorder).will.sendValues(@[[RACUnit defaultUnit]]);
-    
+
     OCMExpect([collectionView reloadData]);
     [dataSignal sendNext:changeset];
     OCMVerifyAllWithDelay(collectionView, 1);
@@ -424,7 +424,7 @@ context(@"updates", ^{
 
   it(@"should notify on data change due batch updates", ^{
     LLSignalTestRecorder *recorder = [dataSource.didUpdateCollectionView testRecorder];
-    
+
     NSArray *updated = @[[NSIndexPath indexPathForItem:0 inSection:0]];
     NSArray *inserted = @[[NSIndexPath indexPathForItem:1 inSection:0]];
     PTUChangeset *changeset = [[PTUChangeset alloc] initWithBeforeDataModel:@[@[@1]]
@@ -438,15 +438,15 @@ context(@"updates", ^{
                                      completion:([OCMArg invokeBlockWithArgs:@YES, nil])]);
     [dataSignal sendNext:changeset];
     expect(recorder).will.sendValues(@[[RACUnit defaultUnit]]);
-    
+
     [dataSignal sendNext:changeset];
     expect(recorder).will.sendValues(@[[RACUnit defaultUnit], [RACUnit defaultUnit]]);
   });
-  
+
   it(@"should complete collection view update signal on dealloc", ^{
     __weak id<PTUDataSource> weakDataSource;
     __block LLSignalTestRecorder *recorder;
-    
+
     @autoreleasepool {
       UICollectionViewLayout *layout = OCMClassMock(UICollectionViewLayout.class);
       UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero
@@ -459,7 +459,7 @@ context(@"updates", ^{
       weakDataSource = dataSource;
       recorder = [dataSource.didUpdateCollectionView testRecorder];
     }
-    
+
     expect(weakDataSource).to.beNil();
     expect(recorder).to.complete();
   });

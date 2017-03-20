@@ -63,7 +63,7 @@ NS_ASSUME_NONNULL_BEGIN
   if (index == NSNotFound) {
     return index;
   }
-  
+
   return self.collection.count - index - 1;
 }
 

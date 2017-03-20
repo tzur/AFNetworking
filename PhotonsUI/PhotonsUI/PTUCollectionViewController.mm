@@ -201,7 +201,7 @@ NS_ASSUME_NONNULL_BEGIN
         [self.collectionView selectItemAtIndexPath:indexPath animated:NO
                                     scrollPosition:UICollectionViewScrollPositionNone];
       }];
-  
+
   [[[[[[[self rac_signalForSelector:@selector(scrollToItem:atScrollPosition:animated:)
                        fromProtocol:@protocol(PTUCollectionViewController)]
       map:^RACSignal *(RACTuple *value) {
@@ -229,7 +229,7 @@ NS_ASSUME_NONNULL_BEGIN
             (PTUCollectionViewScrollPosition)position.unsignedIntegerValue;
         UICollectionViewScrollPosition nativeScrollPosition =
             [self collectionViewScrollPosition:scrollPosition];
-        
+
         return RACTuplePack(indexPath, @(nativeScrollPosition), animated);
       }]
       filter:^BOOL(RACTuple *scrollToItem) {
@@ -242,7 +242,7 @@ NS_ASSUME_NONNULL_BEGIN
             scrollToItem;
         PTUCollectionViewScrollPosition scrollPosition =
             (PTUCollectionViewScrollPosition)position.unsignedIntegerValue;
-        
+
         [self.collectionView scrollToItemAtIndexPath:indexPath
                                     atScrollPosition:scrollPosition
                                             animated:animated.boolValue];
@@ -312,7 +312,7 @@ NS_ASSUME_NONNULL_BEGIN
         return @(error == nil);
       }]
       deliverOnMainThread];
-  
+
   RAC(self, view.emptyView.hidden) = hideEmptyView;
   RAC(self, view.errorView.hidden) = hideErrorView;
   RAC(self, view.collectionViewContainer.hidden) = [RACSignal
@@ -320,7 +320,7 @@ NS_ASSUME_NONNULL_BEGIN
     reduce:(id)^NSNumber *(NSNumber *hideEmpty, NSNumber *hideError) {
       return @(!hideEmpty.boolValue || !hideError.boolValue);
     }];
-  
+
   RAC(self, view.errorView) = [[[[[RACObserve(self, errorViewProvider)
       ignore:nil]
       map:^RACSignal *(id<PTUErrorViewProvider> errorViewProvider) {
@@ -437,7 +437,7 @@ static NSURL * _Nullable PTUExtractAssociatedURL(NSError *error) {
 - (void)setConfiguration:(PTUCollectionViewConfiguration *)configuration animated:(BOOL)animated {
   _configuration = configuration;
   PTUCollectionViewFlowLayout *layout = [self layoutFromCurrentConfiguration];
-  
+
   self.collectionView.showsHorizontalScrollIndicator = configuration.showsHorizontalScrollIndicator;
   self.collectionView.showsVerticalScrollIndicator = configuration.showsVerticalScrollIndicator;
   self.collectionView.pagingEnabled = configuration.enablePaging;

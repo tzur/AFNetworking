@@ -49,7 +49,7 @@ NS_ASSUME_NONNULL_BEGIN
         return [[provider fetchChangeset]
             startWith:[[PTUChangeset alloc] initWithAfterDataModel:@[]]];
       }].array;
-  
+
   return [self combinedDataSignals:changesetSignalsStartEmpty];
 }
 
@@ -59,7 +59,7 @@ NS_ASSUME_NONNULL_BEGIN
       map:^PTUChangeset *(RACTuple *changesetsWithIndex) {
         RACTupleUnpack(NSArray<PTUChangeset *> *changesets,
                        NSNumber *changeIndex) = changesetsWithIndex;
-        
+
         NSMutableArray *beforeDataModel = [NSMutableArray array];
         NSMutableArray *afterDataModel = [NSMutableArray array];
         NSMutableArray *deleted = [NSMutableArray array];
@@ -71,10 +71,10 @@ NS_ASSUME_NONNULL_BEGIN
           if (changeIndex && changeIndex.unsignedIntegerValue == i) {
             NSUInteger afterOffset = afterDataModel.count;
             NSUInteger beforeOffset = beforeDataModel.count;
-            
+
             [beforeDataModel addObjectsFromArray:changesets[i].beforeDataModel];
             [afterDataModel addObjectsFromArray:changesets[i].afterDataModel];
-            
+
             [deleted addObjectsFromArray:
                 PTUIndexPathsWithSectionOffset(changesets[i].deletedIndexes, beforeOffset)];
             [inserted addObjectsFromArray:
@@ -88,7 +88,7 @@ NS_ASSUME_NONNULL_BEGIN
             [afterDataModel addObjectsFromArray:changesets[i].afterDataModel];
           }
         }
-        
+
         return [[PTUChangeset alloc]
                 initWithBeforeDataModel:changeIndex ? beforeDataModel : nil
                 afterDataModel:afterDataModel
@@ -108,7 +108,7 @@ static NSArray<NSIndexPath *> * _Nullable PTUIndexPathsWithSectionOffset
   if (!indexPaths) {
     return nil;
   }
-  
+
   return [indexPaths.rac_sequence map:^id(NSIndexPath *indexPath) {
     return [NSIndexPath indexPathForItem:indexPath.item
                                inSection:indexPath.section + sectionOffset];
@@ -120,7 +120,7 @@ static PTUChangesetMoves * _Nullable PTUMovesWithSectionOffset(PTUChangesetMoves
   if (!moves) {
     return nil;
   }
-  
+
   return [moves.rac_sequence map:^id(PTUChangesetMove *move) {
     NSIndexPath *from = [NSIndexPath indexPathForItem:move.fromIndex.item
                                             inSection:move.fromIndex.section + sectionOffset];

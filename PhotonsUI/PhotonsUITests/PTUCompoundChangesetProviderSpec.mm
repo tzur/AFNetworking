@@ -25,7 +25,7 @@ beforeEach(^{
     @0: @"bar",
     @5: @"baz"
   }];
-  
+
   provider = [[PTUCompoundChangesetProvider alloc]
               initWithChangesetProviders:@[providerA, providerB] changesetMetadata:metadata];
 });
@@ -35,7 +35,7 @@ context(@"metadata", ^{
     expect([provider fetchChangesetMetadata]).will.sendValues(@[metadata]);
     expect([provider fetchChangesetMetadata]).will.sendValues(@[metadata]);
   });
-  
+
   it(@"should complete after sending metadata", ^{
     LLSignalTestRecorder *recorder = [[provider fetchChangesetMetadata] testRecorder];
 
@@ -46,15 +46,15 @@ context(@"metadata", ^{
 
 context(@"changeset", ^{
   __block LLSignalTestRecorder *recorder;
-  
+
   beforeEach(^{
     recorder = [[provider fetchChangeset] testRecorder];
   });
-  
+
   it(@"start with an empty data model", ^{
     expect(recorder).will.sendValues(@[[[PTUChangeset alloc] initWithAfterDataModel:@[]]]);
   });
-  
+
   it(@"send a concatinated data model on each change to the underlying data", ^{
     [fetchChangesetA sendNext:[[PTUChangeset alloc] initWithAfterDataModel:@[@[@"foo"]]]];
     [fetchChangesetB sendNext:[[PTUChangeset alloc]
@@ -81,7 +81,7 @@ context(@"changeset", ^{
           ] deleted:nil inserted:nil updated:nil moved:nil],
     ]);
   });
-  
+
   it(@"should send mapped insertions from the latest change", ^{
     [fetchChangesetB sendNext:[[PTUChangeset alloc] initWithBeforeDataModel:@[]
         afterDataModel:@[@[@"foo"]] deleted:nil
@@ -104,7 +104,7 @@ context(@"changeset", ^{
           inserted:@[[NSIndexPath indexPathForItem:1 inSection:2]] updated:nil moved:nil]
     ]);
   });
-  
+
   it(@"should send mapped deletions from the latest change", ^{
     [fetchChangesetB sendNext:[[PTUChangeset alloc]
         initWithBeforeDataModel:@[
@@ -135,7 +135,7 @@ context(@"changeset", ^{
           ] inserted:nil updated:nil moved:nil]
     ]);
   });
-  
+
   it(@"should send mapped updates from the latest change", ^{
     [fetchChangesetB sendNext:[[PTUChangeset alloc] initWithBeforeDataModel:@[@[@"foo"]]
         afterDataModel:@[@[@"bar"]] deleted:nil inserted:nil
@@ -159,7 +159,7 @@ context(@"changeset", ^{
           inserted:nil updated:@[[NSIndexPath indexPathForItem:0 inSection:2]] moved:nil]
     ]);
   });
-  
+
   it(@"should send mapped moves from the latest change", ^{
     [fetchChangesetB sendNext:[[PTUChangeset alloc] initWithBeforeDataModel:@[@[@"foo", @"bar"]]
         afterDataModel:@[@[@"bar", @"foo"]] deleted:nil inserted:nil updated:nil
@@ -183,7 +183,7 @@ context(@"changeset", ^{
           updated:nil moved:@[PTUCreateChangesetMove(0, 1, 2)]]
     ]);
   });
-  
+
   it(@"should send mapped incremental changes from the latest change", ^{
     [fetchChangesetB sendNext:[[PTUChangeset alloc] initWithBeforeDataModel:@[
       @[@"foo", @"bar", @"baz", @"gaz", @"qux"]
@@ -234,14 +234,14 @@ context(@"changeset", ^{
           moved:@[PTUCreateChangesetMove(1, 4, 2)]]
     ]);
   });
-  
+
   it(@"should complete when all underlying changeset providers complete", ^{
     [fetchChangesetA sendCompleted];
     expect(recorder).notTo.complete();
     [fetchChangesetB sendCompleted];
     expect(recorder).to.complete();
   });
-  
+
   it(@"should err when any of the underlying changeset providers err", ^{
     NSError *error = [NSError lt_errorWithCode:1337];
     [fetchChangesetA sendError:error];
