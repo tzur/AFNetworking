@@ -1,5 +1,5 @@
-/// Copyright (c) 2016 Lightricks. All rights reserved.
-/// Created by Shachar Langbeheim.
+// Copyright (c) 2016 Lightricks. All rights reserved.
+// Created by Shachar Langbeheim.
 
 #import "LTAdjustOperations.h"
 
