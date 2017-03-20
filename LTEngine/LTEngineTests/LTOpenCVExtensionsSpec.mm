@@ -73,6 +73,24 @@ context(@"mat conversion", ^{
       expect(LTFuzzyCompareMatWithValue(convertedValue, output)).to.beTruthy();
     });
 
+    it(@"should scale from ubyte to double", ^{
+      cv::Mat4b input = (cv::Mat4b(1, 1) << cv::Vec4b(255, 0, 128, 255));
+      cv::Mat output;
+      LTConvertMat(input, &output, CV_64FC4);
+      cv::Scalar convertedValue(1, 0, 0.5, 1);
+
+      expect(LTFuzzyCompareMatWithValue(convertedValue, output, 1.0 / 255.0)).to.beTruthy();
+    });
+
+    it(@"should scale from double to ubyte", ^{
+      cv::Mat4d input = (cv::Mat4d(1, 1) << cv::Vec4d(1, 0, 0.5, 1));
+      cv::Mat output;
+      LTConvertMat(input, &output, CV_8UC4);
+      cv::Scalar convertedValue(255, 0, 128, 255);
+
+      expect(LTFuzzyCompareMatWithValue(convertedValue, output)).to.beTruthy();
+    });
+
     it(@"should convert half-float to float", ^{
       cv::Vec4hf value(half(0.5), half(-1.0), half(0.5), half(1.0));
       cv::Mat4hf input(16, 16);
@@ -96,6 +114,46 @@ context(@"mat conversion", ^{
       expected.setTo(cv::Vec4hf(half(0.5), half(-1.0), half(0.5), half(1.0)));
       
       expect(LTFuzzyCompareMat(expected, output, 1.0/255.0)).to.beTruthy();
+    });
+
+    it(@"should scale from ushort to float", ^{
+      auto max = std::numeric_limits<ushort>::max();
+      cv::Mat4w input = (cv::Mat4w(1, 1) << cv::Vec4w(max, 0, max / 2, max));
+      cv::Mat output;
+      LTConvertMat(input, &output, CV_32FC4);
+      cv::Scalar convertedValue(1, 0, 0.5, 1);
+
+      expect(LTFuzzyCompareMatWithValue(convertedValue, output, 1.0 / max)).to.beTruthy();
+    });
+
+    it(@"should scale from float to ushort", ^{
+      auto max = std::numeric_limits<ushort>::max();
+      cv::Mat4f input = (cv::Mat4f(1, 1) << cv::Vec4f(1, 0, 0.5, 1));
+      cv::Mat output;
+      LTConvertMat(input, &output, CV_16UC4);
+      cv::Scalar convertedValue(max, 0, max / 2, max);
+
+      expect(LTFuzzyCompareMatWithValue(convertedValue, output)).to.beTruthy();
+    });
+
+    it(@"should scale from ushort to double", ^{
+      auto max = std::numeric_limits<ushort>::max();
+      cv::Mat4w input = (cv::Mat4w(1, 1) << cv::Vec4w(max, 0, max / 2, max));
+      cv::Mat output;
+      LTConvertMat(input, &output, CV_64FC4);
+      cv::Scalar convertedValue(1, 0, 0.5, 1);
+
+      expect(LTFuzzyCompareMatWithValue(convertedValue, output, 1.0 / max)).to.beTruthy();
+    });
+
+    it(@"should scale from double to ushort", ^{
+      auto max = std::numeric_limits<ushort>::max();
+      cv::Mat4d input = (cv::Mat4d(1, 1) << cv::Vec4d(1, 0, 0.5, 1));
+      cv::Mat output;
+      LTConvertMat(input, &output, CV_16UC4);
+      cv::Scalar convertedValue(max, 0, max / 2, max);
+
+      expect(LTFuzzyCompareMatWithValue(convertedValue, output)).to.beTruthy();
     });
   });
 
