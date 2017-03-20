@@ -11,7 +11,7 @@
               baselineOrigin:(CGPoint)baselineOrigin;
 
 /// Path representation of this instance. Owned by this instance.
-@property (readonly, nonatomic) CGPathRef path;
+@property (readonly, nonatomic) CGPathRef path NS_RETURNS_INNER_POINTER CF_RETURNS_NOT_RETAINED;
 
 /// Index of the glyph represented by this instance, according to the internal glyph table for the
 /// used \c font.
