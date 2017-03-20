@@ -43,6 +43,16 @@ NS_ASSUME_NONNULL_BEGIN
 /// Returns a new \c BZRModel with the property named \c propertyName set to \c value.
 - (instancetype)modelByOverridingProperty:(NSString *)propertyName withValue:(nullable id)value;
 
+/// Returns a new \c BZRModel with the property at \c keypath set to \c value. \c keypath
+/// supports specifying index of an object in an array property, e.g.
+/// "arrayProperty[1].primitiveProperty".
+///
+/// An \c NSInternalInconsistencyException is raised if there was an error while creating the
+/// modified model and an \c NSInvalidArgumentException is raised if the given \c keypath is
+/// invalid. Any component in the path except for the last one must be a \c BZRModel or an \c
+/// NSArray of \c BZRModels..
+- (instancetype)modelByOverridingPropertyAtKeypath:(NSString *)keypath withValue:(nullable id)value;
+
 @end
 
 NS_ASSUME_NONNULL_END
