@@ -15,7 +15,7 @@ varying mediump vec2 vSampleCoords[SAMPLE_COUNT];
 
 void main() {
   texture;
-  
+
   gl_Position = projection * modelview * position;
 
   int step = 0;

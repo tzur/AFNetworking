@@ -23,11 +23,11 @@ context(@"initialization", ^{
   });
 });
 
-context(@"properties", ^{  
+context(@"properties", ^{
   beforeEach(^{
     effect = [[LTBrushShapeDynamicsEffect alloc] init];
   });
-  
+
   it(@"should have default properties", ^{
     expect(effect.sizeJitter).to.equal(0);
     expect(effect.minimumDiameter).to.equal(0.5);
@@ -35,35 +35,35 @@ context(@"properties", ^{
     expect(effect.roundnessJitter).to.equal(0);
     expect(effect.minimumRoundness).to.equal(0.25);
   });
-  
+
   it(@"should set sizeJitter", ^{
     CGFloat newValue = 0.5;
     expect(effect.sizeJitter).notTo.equal(newValue);
     effect.sizeJitter = newValue;
     expect(effect.sizeJitter).to.equal(newValue);
   });
-  
+
   it(@"should set minimumDiameter", ^{
     CGFloat newValue = 0.75;
     expect(effect.minimumDiameter).notTo.equal(newValue);
     effect.minimumDiameter = newValue;
     expect(effect.minimumDiameter).to.equal(newValue);
   });
-  
+
   it(@"should set angleJitter", ^{
     CGFloat newValue = 0.5;
     expect(effect.angleJitter).notTo.equal(newValue);
     effect.angleJitter = newValue;
     expect(effect.angleJitter).to.equal(newValue);
   });
-  
+
   it(@"should set roundnessJitter", ^{
     CGFloat newValue = 0.5;
     expect(effect.roundnessJitter).notTo.equal(newValue);
     effect.roundnessJitter = newValue;
     expect(effect.roundnessJitter).to.equal(newValue);
   });
-  
+
   it(@"should set minimumRoundness", ^{
     CGFloat newValue = 0.5;
     expect(effect.minimumRoundness).notTo.equal(newValue);
@@ -75,7 +75,7 @@ context(@"properties", ^{
 context(@"effect", ^{
   __block NSMutableArray *sourceRects;
   __block NSArray *dynamicRects;
-  
+
   beforeEach(^{
     LTRandom *random = [JSObjection defaultInjector][[LTRandom class]];
     effect = [[LTBrushShapeDynamicsEffect alloc] initWithRandom:random];
@@ -89,11 +89,11 @@ context(@"effect", ^{
                               angle:[random randomDoubleBetweenMin:0 max:2 * M_PI]]];
     }
   });
-  
+
   it(@"should return an empty array if the input is an empty array", ^{
     expect([effect dynamicRectsFromRects:@[]].count).to.equal(0);
   });
-  
+
   it(@"should return the same rects when sizeJitter, angleJitter, roundnessJitter are all 0", ^{
     dynamicRects = [effect dynamicRectsFromRects:sourceRects];
     expect(dynamicRects.count).to.equal(sourceRects.count);
@@ -101,7 +101,7 @@ context(@"effect", ^{
       expect(dynamicRects[i]).to.equal(sourceRects[i]);
     }
   });
-  
+
   it(@"should return dynamic rects according to the sizeJitter property", ^{
     effect.sizeJitter = 1;
     dynamicRects = [effect dynamicRectsFromRects:sourceRects];
@@ -118,7 +118,7 @@ context(@"effect", ^{
       expect(dynamicRect.rect.size.height).to.beLessThanOrEqualTo(sourceRect.rect.size.height);
     }
   });
-  
+
   it(@"should return dynamic rects according to the minimumDiameter property", ^{
     effect.sizeJitter = 1;
     effect.minimumDiameter = 1;
@@ -136,7 +136,7 @@ context(@"effect", ^{
       CGSize sourceSize = sourceRect.rect.size;
       CGSize dynamicSize = dynamicRect.rect.size;
       CGSize minimumSize = sourceSize * effect.minimumDiameter;
-      
+
       expect(CGPointDistance(dynamicRect.center, sourceRect.center)).to.beLessThan(1e-4);
       expect(dynamicRect.angle).to.equal(sourceRect.angle);
       expect(dynamicSize).notTo.equal(sourceSize);
@@ -160,7 +160,7 @@ context(@"effect", ^{
       expect(angleDiff).to.beLessThanOrEqualTo(M_PI * effect.angleJitter);
     }
   });
-  
+
   it(@"should return dynamic rects according to the roundnessJitter property", ^{
     effect.roundnessJitter = 1;
     dynamicRects = [effect dynamicRectsFromRects:sourceRects];
@@ -174,7 +174,7 @@ context(@"effect", ^{
       expect(dynamicRect.rect.size.height).to.beLessThan(sourceRect.rect.size.height);
     }
   });
-  
+
   it(@"should return dynamic rects according to the minimumRoundness property", ^{
     effect.roundnessJitter = 1;
     effect.minimumRoundness = 1;

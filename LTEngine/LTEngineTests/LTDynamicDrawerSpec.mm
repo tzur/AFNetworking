@@ -264,7 +264,7 @@ context(@"execution", ^{
           [drawer drawWithAttributeData:@[attributeData] samplerUniformsToTextures:mapping
                                uniforms:@{@"factor": @0.5, @"projection": $(kProjection)}];
         }];
-        
+
         expect($(outputTexture.image)).to.equalMat($(expectedMat));
       });
     });

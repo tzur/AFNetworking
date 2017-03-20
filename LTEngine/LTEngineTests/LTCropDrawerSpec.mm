@@ -36,7 +36,7 @@ context(@"initialization", ^{
       drawer = [[LTCropDrawer alloc] initWithTexture:inputTexture];
     }).notTo.raiseAny();
   });
-  
+
   it(@"should raise when initializing without a texture", ^{
     expect(^{
       drawer = [[LTCropDrawer alloc] initWithTexture:nil];
@@ -50,16 +50,16 @@ context(@"drawing", ^{
   __block LTTexture *outputTexture;
   __block LTCropDrawerRect targetRect;
   __block LTCropDrawerRect sourceRect;
-  
+
   beforeEach(^{
     drawer = [[LTCropDrawer alloc] initWithTexture:inputTexture];
   });
-  
+
   afterEach(^{
     fbo = nil;
     outputTexture = nil;
   });
-  
+
   context(@"target texture of the same size", ^{
     beforeEach(^{
       outputTexture = [LTTexture textureWithPropertiesOf:inputTexture];
@@ -102,7 +102,7 @@ context(@"drawing", ^{
       expect($(outputTexture.image)).to.equalMat($(expected));
     });
   });
-  
+
   context(@"should draw subrect of input to entire output", ^{
     beforeEach(^{
       outputTexture = [LTTexture textureWithPropertiesOf:inputTexture];
@@ -144,7 +144,7 @@ context(@"drawing", ^{
       expect($(outputTexture.image)).to.equalMat($(expected));
     });
   });
-  
+
   context(@"should draw all input to subrect of output", ^{
     beforeEach(^{
       outputTexture = [LTTexture textureWithPropertiesOf:inputTexture];
@@ -195,7 +195,7 @@ context(@"drawing", ^{
       expect($(outputTexture.image)).to.equalMat($(expected));
     });
   });
-  
+
   context(@"should draw subrect of input to subrect of output", ^{
     beforeEach(^{
       outputTexture = [LTTexture textureWithPropertiesOf:inputTexture];
@@ -242,7 +242,7 @@ context(@"drawing", ^{
       expect($(outputTexture.image)).to.equalMat($(expected));
     });
   });
-  
+
   context(@"should draw to bound framebuffer", ^{
     beforeEach(^{
       outputTexture = [LTTexture textureWithPropertiesOf:inputTexture];

@@ -12,7 +12,7 @@ void main() {
   mediump vec4 sample2 = texture2D(sourceTexture, vTexcoord + vec2(0, texelStep.y));
   mediump vec4 sample3 = texture2D(sourceTexture, vTexcoord - vec2(texelStep.x, 0));
   mediump vec4 sample4 = texture2D(sourceTexture, vTexcoord - vec2(0, texelStep.y));
-  
+
   gl_FragColor = 0.2 * (sample0 + sample1 + sample2 + sample3 + sample4);
 }
 

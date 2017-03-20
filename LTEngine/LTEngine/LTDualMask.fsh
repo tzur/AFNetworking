@@ -28,10 +28,10 @@ varying highp vec2 vTexcoord;
 
 void main() {
   sourceTexture;
-  
+
   mediump vec2 coords = (vTexcoord - center) * aspectRatioCorrection;
   mediump float dist;
-  
+
   // Distance field.
   if (maskType == kMaskTypeRadial) {
     mediump vec2 coordsRotated = rotation * coords;
@@ -47,7 +47,7 @@ void main() {
   // Mask.
   dist = dist * 2.0 - shift;
   dist = smoothstep(1.0 + spread, 0.0 - spread, dist);
-  
+
   if (invert) {
     dist = 1.0 - dist;
   }

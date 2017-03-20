@@ -18,7 +18,7 @@
       initWithPosition:0.75 color:LTVector3(0.75 * redScale, 0.75, 0.75)];
   LTColorGradientControlPoint *controlPoint4 = [[LTColorGradientControlPoint alloc]
       initWithPosition:1.0 color:LTVector3(1.0 * redScale, 1.0, 1.0)];
-  
+
   NSArray *controlPoints = @[controlPoint0, controlPoint1, controlPoint2, controlPoint3,
                              controlPoint4];
   return [[LTColorGradient alloc] initWithControlPoints:controlPoints];
@@ -37,7 +37,7 @@
       initWithPosition:0.8 color:LTVector3(0.92, 0.77, 0.39)];
   LTColorGradientControlPoint *controlPoint5 = [[LTColorGradientControlPoint alloc]
       initWithPosition:1.0 color:LTVector3(1.00, 0.95, 0.23)];
-  
+
   NSArray *controlPoints = @[controlPoint0, controlPoint1, controlPoint2, controlPoint3,
                              controlPoint4, controlPoint5];
   return [[LTColorGradient alloc] initWithControlPoints:controlPoints];
@@ -48,7 +48,7 @@
       initWithPosition:0.0 color:LTVector3(1.0, 0.0, 0.0)];
   LTColorGradientControlPoint *controlPoint1 = [[LTColorGradientControlPoint alloc]
       initWithPosition:1.0 color:LTVector3(1.0, 0.0, 0.0)];
-  
+
   return [[LTColorGradient alloc] initWithControlPoints:@[controlPoint0, controlPoint1]];
 }
 

@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
                           imageAreas:(const lt::unordered_map<NSString *, CGRect> &)areas {
   LTParameterAssert(texture);
   LTParameterAssert(areas.size(), @"areas dictionary cannot be empty");
-  
+
   [LTTextureAtlas assertAreas:areas areInsideTexture:texture];
 
   if (self = [super init]) {

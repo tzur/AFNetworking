@@ -44,7 +44,7 @@ varying highp vec2 vTexcoord;
 mediump vec3 overlay(in mediump vec3 Sca, in mediump vec3 Dca) {
   mediump vec3 below = 2.0 * Sca * Dca;
   mediump vec3 above = Sca * 2.0 + Dca * 2.0 - 2.0 * Dca * Sca - 1.0;
-  
+
   return mix(below, above, step(0.5, Dca));
 }
 

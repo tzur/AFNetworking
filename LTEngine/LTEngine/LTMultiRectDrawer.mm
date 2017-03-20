@@ -43,7 +43,7 @@ LTGPUStructMake(LTMultiRectDrawerVertex,
 
 - (LTDrawingContext *)createDrawingContext {
   LTVertexArray *vertexArray = [self createVertexArray];
-  
+
   LTDrawingContext *context = [[LTDrawingContext alloc] initWithProgram:self.program
                                                             vertexArray:vertexArray
                                                        uniformToTexture:self.uniformToTexture];
@@ -89,7 +89,7 @@ LTGPUStructMake(LTMultiRectDrawerVertex,
   if (!targetRects.count) {
     return;
   }
-  
+
   // In case of a screen framebuffer, we're using a flipped projection matrix so the original order
   // of the vertices will generate a back-faced polygon, as the test is performed on the projected
   // coordinates. Therefore we use the clockwise front facying polygon mode when drawing to a
@@ -101,7 +101,7 @@ LTGPUStructMake(LTMultiRectDrawerVertex,
   self.program[@"projection"] = screenTarget ?
       $(GLKMatrix4MakeOrtho(0, size.width, size.height, 0, -1, 1)) :
       $(GLKMatrix4MakeOrtho(0, size.width, 0, size.height, -1, 1));
-  
+
   [[LTGLContext currentContext] executeAndPreserveState:^(LTGLContext *context) {
     context.clockwiseFrontFacingPolygons = screenTarget;
     [self.context drawWithMode:LTDrawingContextDrawModeTriangles];
@@ -132,12 +132,12 @@ LTGPUStructMake(LTMultiRectDrawerVertex,
   CGPoint v1 = targetRect.v1;
   CGPoint v2 = targetRect.v2;
   CGPoint v3 = targetRect.v3;
-  
+
   CGPoint t0 = sourceRect.v0 / sourceSize;
   CGPoint t1 = sourceRect.v1 / sourceSize;
   CGPoint t2 = sourceRect.v2 / sourceSize;
   CGPoint t3 = sourceRect.v3 / sourceSize;
-  
+
   triangles->push_back({.position = LTVector3(v0.x, v0.y, z),
                         .texcoord = LTVector2(t0.x, t0.y)});
   triangles->push_back({.position = LTVector3(v1.x, v1.y, z),

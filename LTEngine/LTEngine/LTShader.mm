@@ -46,11 +46,11 @@
 - (void)compileSource:(NSString *)source {
   self.name = glCreateShader(self.type);
   LTGLCheck(@"Shader creation failed");
-  
+
   const char *cSource = [source cStringUsingEncoding:NSUTF8StringEncoding];
   glShaderSource(self.name, 1, &cSource, NULL);
   glCompileShader(self.name);
-  
+
 #ifdef DEBUG
   GLint logLength;
   glGetShaderiv(self.name, GL_INFO_LOG_LENGTH, &logLength);
@@ -62,7 +62,7 @@
                          log.get(), (int)self.type, [self formattedSourceFromSource:source]];
   }
 #endif
-  
+
   GLint status;
   glGetShaderiv(self.name, GL_COMPILE_STATUS, &status);
   if (status == GL_FALSE) {

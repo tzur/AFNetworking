@@ -24,7 +24,7 @@ void main() {
   lowp vec3 medium = texture2D(mediumTexture, vTexcoord).rgb;
   lowp vec3 coarse = texture2D(coarseTexture, vTexcoord).rgb;
   lowp vec3 veryCoarse = texture2D(veryCoarseTexture, vTexcoord).rgb;
-  
+
   mediump float dualMask = texture2D(dualMaskTexture, vTexcoord).r;
   dualMask = 1.0 - clamp(dualMask * 2.0, 0.0, 1.0);
 

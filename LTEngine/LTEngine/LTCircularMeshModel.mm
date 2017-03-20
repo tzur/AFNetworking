@@ -34,10 +34,10 @@ static const NSUInteger kRootNodeRank = 8;
 - (void)createCircularMesh {
   _vertices.clear();
   _indices.clear();
-  
+
   // Create root node (level 0).
   _vertices.push_back(LTVector2::zeros());
-  
+
   // Create sub-root nodes (level 1).
   CGFloat currentRadius = [self vertexRadius:1];
   CGFloat theta = 0;
@@ -52,7 +52,7 @@ static const NSUInteger kRootNodeRank = 8;
     _indices.push_back((uint)_vertices.size() - 1);
     _indices.push_back((i == kRootNodeRank - 1) ? 1 : (uint)_vertices.size());
   }
-  
+
   NSUInteger numberOfParents = kRootNodeRank;
   for (NSUInteger i = 2; i < kNumberOfVertexLevels; ++i) {
     // Last level radius will always be on the boundary (=1).
@@ -77,18 +77,18 @@ static const NSUInteger kRootNodeRank = 8;
   NSUInteger numberOfChildren = 2 * numberOfParents;
   NSUInteger originalNumberOfVertices = _vertices.size();
   _vertices.resize(_vertices.size() + numberOfChildren);
-  
+
   // Initial offset should place child between two parents.
   CGFloat theta = [self angleFromPolar:_vertices[originalNumberOfVertices - numberOfParents]
                             centeredAt:CGPointZero] - ((2 * M_PI) / (2 * numberOfParents));
   CGFloat deltaTheta = (2 * M_PI) / numberOfChildren;
-  
+
   // Create all children.
   for (NSUInteger i = 0; i < numberOfChildren; ++i) {
     _vertices[originalNumberOfVertices + i] = LTVector2PolarMake(CGPointZero, radius, theta);
     theta += deltaTheta;
   }
-  
+
   // Create three triangles for each parent vertex.
   for (NSUInteger index = (originalNumberOfVertices - numberOfParents), i = 0;
        index < originalNumberOfVertices; ++index, ++i) {

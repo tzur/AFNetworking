@@ -61,19 +61,19 @@ GLKMatrix4 LTTonalTransformMatrix(CGFloat temperature, CGFloat tint, CGFloat sat
   GLKMatrix4 temperatureAndTint = GLKMatrix4Identity;
   temperatureAndTint.m31 = LTRemappedTemperature(temperature);
   temperatureAndTint.m32 = LTRemappedTint(tint);
-  
+
   GLKMatrix4 saturationMatrix = GLKMatrix4Identity;
   saturation = LTRemappedSaturation(saturation);
   saturationMatrix.m11 = saturation;
   saturationMatrix.m22 = saturation;
-  
+
   GLKMatrix4 hueMatrix = GLKMatrix4MakeXRotation(hue * M_PI);
-  
+
   GLKMatrix4 tonalTranform = GLKMatrix4Multiply(hueMatrix, kRGBtoYIQ);
   tonalTranform = GLKMatrix4Multiply(temperatureAndTint, tonalTranform);
   tonalTranform = GLKMatrix4Multiply(saturationMatrix, tonalTranform);
   tonalTranform = GLKMatrix4Multiply(kYIQtoRGB, tonalTranform);
-  
+
   return tonalTranform;
 }
 
@@ -81,18 +81,18 @@ cv::Mat1b LTLuminanceCurve(CGFloat brightness, CGFloat contrast, CGFloat exposur
                            CGFloat exposureExponent, CGFloat offset) {
   cv::Mat1b brightnessCurve(1, kLutSize);
   brightnessCurve = brightness >= 0 ? [LTCurve positiveBrightness] : [LTCurve negativeBrightness];
-  
+
   cv::Mat1b contrastCurve(1, kLutSize);
   contrastCurve = contrast >= 0 ? [LTCurve positiveContrast] : [LTCurve negativeContrast];
-  
+
   CGFloat absBrightness = std::abs(brightness);
   CGFloat absContrast = std::abs(contrast);
-  
+
   cv::Mat1b toneCurve(1, kLutSize);
   cv::LUT((1.0 - absContrast) * [LTCurve identity] + absContrast * contrastCurve,
           (1.0 - absBrightness) * [LTCurve identity] + absBrightness * brightnessCurve,
           toneCurve);
-  
+
   return toneCurve * std::pow(exposureBase, exposureExponent) + offset * 255;
 }
 

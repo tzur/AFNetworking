@@ -82,7 +82,7 @@ static const CGFloat kSizeToSamplingFactor = 50;
   CGPoint sample2 = (CGRectCenter(rect) + CGSizeMake(-offset.width, offset.height)) / size;
   CGPoint sample3 = (CGRectCenter(rect) + CGSizeMake(offset.width, -offset.height)) / size;
   CGPoint sample4 = (CGRectCenter(rect) + CGSizeMake(offset.width, offset.height)) / size;
-  
+
   self.program[[LTEdgeAvoidingBrushFsh samplePoint0]] = $(LTVector2(sample0));
   self.program[[LTEdgeAvoidingBrushFsh samplePoint1]] = $(LTVector2(sample1));
   self.program[[LTEdgeAvoidingBrushFsh samplePoint2]] = $(LTVector2(sample2));

@@ -148,7 +148,7 @@ static const CGFloat kBristleSigma = 0.4;
     [bristles addObject:[LTRotatedRect rectWithCenter:center + self.texture.size / 2
                                                  size:bristleSize angle:-angle]];
   }
-  
+
   return bristles;
 }
 

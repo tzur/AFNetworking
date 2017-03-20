@@ -76,7 +76,7 @@ context(@"rotated rect", ^{
   const GLKVector3 kTopRight = GLKVector3Make(2.14644647, 6.47487354, 1);
 
   const double kRange = 1e-4;
-  
+
   it(@"should create correct matrix 3 texture mapping", ^{
     CGSize textureSize = CGSizeMake(8, 12);
     GLKMatrix3 matrix = LTTextureMatrix3ForRotatedRect(kRect, textureSize);

@@ -18,7 +18,7 @@ context(@"initialization", ^{
     LTPainterPoint *point = [[LTPainterPoint alloc] init];
     interpolant = [[LTDegenerateInterpolant alloc] initWithKeyFrames:@[point]];
   });
-  
+
   it(@"should initailize with valid arguments", ^{
     segment = [[LTPainterStrokeSegment alloc] initWithSegmentIndex:1
                                                  distanceFromStart:1
@@ -26,7 +26,7 @@ context(@"initialization", ^{
     expect(segment.index).to.equal(1);
     expect(segment.distanceFromStart).to.equal(1);
   });
-  
+
   it(@"should raise an exception when initializing with invalid arguments", ^{
     expect(^{
       segment = [[LTPainterStrokeSegment alloc] initWithSegmentIndex:1
@@ -108,7 +108,7 @@ context(@"points with interval", ^{
       expect([points.firstObject distanceFromStart]).to.equal(segment.distanceFromStart);
     });
   });
-  
+
   context(@"linear segment", ^{
     __block LTPainterPoint *startPoint;
     __block LTPainterPoint *endPoint;
@@ -155,7 +155,7 @@ context(@"points with interval", ^{
       }
     });
   });
-  
+
   // The expected values for these tests were calculated in matlab for the current points.
   // Script is available at: lightricks-research/common/interpolation/CatmullRomLength.m.
   context(@"catmull-rom segment", ^{
@@ -199,7 +199,7 @@ context(@"points with interval", ^{
       expect([p[5] contentPosition]).to.beCloseToPointWithin(CGPointMake(54.5585, 64.4900), 1e-1);
       expect([p[6] contentPosition]).to.beCloseToPointWithin(CGPointMake(59.4653, 63.5518), 1e-1);
       expect([p[7] contentPosition]).to.beCloseToPointWithin(CGPointMake(64.0209, 61.5235), 1e-1);
-      
+
       p = [segment pointsWithInterval:5 startingAtOffset:3];
       expect([p[0] contentPosition]).to.beCloseToPointWithin(CGPointMake(33.4380, 59.7463), 1e-1);
       expect([p[1] contentPosition]).to.beCloseToPointWithin(CGPointMake(37.8907, 62.0074), 1e-1);

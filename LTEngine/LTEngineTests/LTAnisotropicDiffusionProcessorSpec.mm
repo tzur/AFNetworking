@@ -202,7 +202,7 @@ context(@"processing", ^{
         LTLoadMat([self class], @"LTAnisotropicDiffusion_non_guided_kernel_5_sigma_0_8.png");
     expect($([output image])).to.equalMat($(expected));
   });
-  
+
   it(@"should apply guided diffusion with different sigams and kernel sizes correctly", ^{
     LTTexture *guide = LTAnisotropicDiffusionTestGuide();
     LTTexture *output = [LTTexture textureWithPropertiesOf:guide];

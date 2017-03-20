@@ -72,7 +72,7 @@ sharedExamplesFor(kLTGLTextureExamples, ^(NSDictionary *contextInfo) {
           __unused LTGLTexture *texture = [[LTGLTexture alloc] initWithMipmapImages:{}];
         })).to.raise(NSInvalidArgumentException);
       });
-      
+
       it(@"should not initialize with non dyadic downscaling of previous image", ^{
         expect((^{
           __unused LTGLTexture *texture = [[LTGLTexture alloc] initWithMipmapImages:{

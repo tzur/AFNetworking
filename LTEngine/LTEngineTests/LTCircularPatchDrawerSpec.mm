@@ -18,7 +18,7 @@ beforeEach(^{
   inputTexture = [LTTexture textureWithImage:LTLoadMat([self class], @"Lena128.png")];
   inputTexture.magFilterInterpolation = LTTextureInterpolationNearest;
   inputTexture.minFilterInterpolation = LTTextureInterpolationNearest;
-  
+
   drawer =
       [[LTCircularPatchDrawer alloc] initWithProgramFactory:[[LTBasicProgramFactory alloc] init]
                                               sourceTexture:inputTexture];
@@ -55,7 +55,7 @@ context(@"drawing", ^{
   __block LTTexture *outputTexture;
   __block LTFbo *fbo;
   __block CGSize textureSize;
-  
+
   beforeEach(^{
     outputTexture = [LTTexture textureWithImage:LTLoadMat([self class], @"Lena128.png")];
     outputTexture.magFilterInterpolation = LTTextureInterpolationNearest;
@@ -64,12 +64,12 @@ context(@"drawing", ^{
     fbo = [[LTFbo alloc] initWithTexture:outputTexture];
     textureSize = outputTexture.size;
   });
-  
+
   afterEach(^{
     fbo = nil;
     outputTexture = nil;
   });
-  
+
   it(@"should draw with default values", ^{
     CGPoint sourceOrigin = CGPointMake(textureSize.width * 0.25, textureSize.height * 0.25);
     CGPoint targetOrigin = CGPointMake(textureSize.width * 0.5, textureSize.height * 0.5);
@@ -94,7 +94,7 @@ context(@"drawing", ^{
     cv::Mat expected = LTLoadMat([self class], @"CircularPatchDrawerRotation.png");
     expect($(outputTexture.image)).to.equalMat($(expected));
   });
-  
+
   it(@"should draw with alpha", ^{
     CGPoint sourceOrigin = CGPointMake(textureSize.width * 0.25, textureSize.height * 0.25);
     CGPoint targetOrigin = CGPointMake(textureSize.width * 0.5, textureSize.height * 0.5);
@@ -163,7 +163,7 @@ context(@"drawing", ^{
     cv::Mat expected = LTLoadMat([self class], @"CircularPatchDrawerMirror.png");
     expect($(outputTexture.image)).to.equalMat($(expected));
   });
-  
+
   it(@"should draw with different modes", ^{
     CGPoint sourceOrigin = CGPointMake(textureSize.width * 0.3, textureSize.height * 0.3);
     CGPoint targetOrigin = CGPointMake(textureSize.width * 0.1, textureSize.height * 0.1);

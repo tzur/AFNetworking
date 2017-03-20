@@ -75,12 +75,12 @@
   segment.src1.position = LTVector2(rect.v1);
   segment.dst0.position = LTVector2(rect.v3);
   segment.dst1.position = LTVector2(rect.v2);
-  
+
   segment.src0.offset = segment.src0.position;
   segment.src1.offset = segment.src1.position;
   segment.dst0.offset = segment.dst0.position;
   segment.dst1.offset = segment.dst1.position;
-  
+
   LTAddSegment(segment, &self.strokeVertices, &self.shadowVertices);
 }
 
@@ -89,7 +89,7 @@
   static const CGFloat kMaxSegments = 1000;
   CGFloat segments = MIN(kMaxSegments, MAX(kMinSegments, 2 * M_PI * std::max(self.size)));
   float step = 2.0 * M_PI / segments;
-  
+
   CGFloat offset = 1.0 + self.params.lineRadius + self.params.shadowWidth;
   CGSize radius = self.size / 2;
   for (NSUInteger i = 0; i < segments - 1; ++i) {
@@ -140,7 +140,7 @@
     [self updateBuffer];
     self.paramsForExistingVertices = [self.params copy];
   }
-  
+
   [self setUniforms];
   [[LTGLContext currentContext] executeAndPreserveState:^(LTGLContext *context) {
     context.clockwiseFrontFacingPolygons = cwffPolygons;
@@ -152,7 +152,7 @@
   GLKMatrix4 modelview =
       GLKMatrix4Rotate(GLKMatrix4MakeTranslation(self.translation.x, self.translation.y, 0),
                        self.rotationAngle, 0, 0, 1);
-  
+
   self.program[[LTCommonDrawableShapeVsh modelview]] = $(modelview);
   self.program[[LTShapeDrawerEllipticShapeFsh opacity]] = @(self.opacity);
   self.program[[LTShapeDrawerEllipticShapeFsh filled]] = @(self.filled);

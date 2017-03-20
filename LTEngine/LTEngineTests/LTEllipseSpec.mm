@@ -39,7 +39,7 @@ context(@"transformations", ^{
     expect(scaledEllipse.center).to.equal(center);
     expect(scaledEllipse.angle).to.equal(angle);
   });
-  
+
   it(@"should rotate around center correctly", ^{
     lt::Ellipse rotatedEllipse = ellipse.rotatedBy(M_PI_2);
 
@@ -48,7 +48,7 @@ context(@"transformations", ^{
     expect(rotatedEllipse.center).to.equal(center);
     expect(rotatedEllipse.angle).to.equal(M_PI);
   });
-  
+
   it(@"should rotate around zero point correctly", ^{
     lt::Ellipse rotatedEllipse = ellipse.rotatedAroundPointBy(CGPointZero, M_PI_2);
 
@@ -58,7 +58,7 @@ context(@"transformations", ^{
     expect(rotatedEllipse.center.y).to.beCloseToWithin(20, kEpsilon);
     expect(rotatedEllipse.angle).to.equal(M_PI);
   });
-  
+
   it(@"should translate correctly", ^{
     CGPoint translation = CGPointMake(5, 10);
     lt::Ellipse translatedEllipse = ellipse.translatedBy(translation);
@@ -92,7 +92,7 @@ context(@"operators", ^{
   it(@"should return YES when ellipses are equal", ^{
     expect(ellipse == lt::Ellipse(ellipse)).to.beTruthy();
   });
-  
+
   it(@"should return NO when ellipses are not equal", ^{
     expect(ellipse != lt::Ellipse()).to.beTruthy();
   });

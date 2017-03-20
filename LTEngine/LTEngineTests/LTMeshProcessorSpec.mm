@@ -170,7 +170,7 @@ context(@"processing", ^{
       expect($([output image])).to.equalMat($(expected));
     });
   });
-  
+
   context(@"custom fragment shader", ^{
     static NSString * const kFragmentRedFilter =
         @"uniform sampler2D sourceTexture;"
@@ -209,7 +209,7 @@ context(@"processing", ^{
         mapped->col(mapped->cols - 2).setTo(cv::Vec2hf(half(0.5 / kMeshSize.width), half(0)));
       }];
       [processor process];
-      
+
       cv::Mat4b expected = [input image];
       cv::Mat4b expectedUnpadded = expected(LTCVRectWithCGRect(displacementSourceRect));
       expectedUnpadded.colRange(cellSize.width, cellSize.width + cellRadius.width)

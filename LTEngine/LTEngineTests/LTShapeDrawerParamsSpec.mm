@@ -23,21 +23,21 @@ context(@"initialization", ^{
 
 context(@"properties", ^{
   __block LTShapeDrawerParams *otherParams;
-  
+
   beforeEach(^{
     params = [[LTShapeDrawerParams alloc] init];
     otherParams = [[LTShapeDrawerParams alloc] init];
   });
-  
+
   afterEach(^{
     otherParams = nil;
   });
-  
+
   it(@"should be equal", ^{
     expect(params).notTo.beIdenticalTo(otherParams);
     expect(params).to.equal(otherParams);
   });
-            
+
   it(@"should have default properties", ^{
     expect(params.lineWidth).to.equal(1);
     expect(params.shadowWidth).to.equal(0);
@@ -45,7 +45,7 @@ context(@"properties", ^{
     expect(params.strokeColor).to.equal(LTVector4::ones());
     expect(params.shadowColor).to.equal(LTVector4(0, 0, 0, 1));
   });
-  
+
   it(@"should update lineWidth", ^{
     CGFloat newValue = 2;
     expect(params.lineWidth).notTo.equal(newValue);
@@ -53,7 +53,7 @@ context(@"properties", ^{
     expect(params.lineWidth).to.equal(newValue);
     expect(params).notTo.equal(otherParams);
   });
-  
+
   it(@"should update shadowWidth", ^{
     CGFloat newValue = 1;
     expect(params.shadowWidth).notTo.equal(newValue);
@@ -61,7 +61,7 @@ context(@"properties", ^{
     expect(params.shadowWidth).to.equal(newValue);
     expect(params).notTo.equal(otherParams);
   });
-  
+
   it(@"should update fillColor", ^{
     LTVector4 newValue = LTVector4::ones() * 0.5;
     expect(params.fillColor).notTo.equal(newValue);
@@ -69,7 +69,7 @@ context(@"properties", ^{
     expect(params.fillColor).to.equal(newValue);
     expect(params).notTo.equal(otherParams);
   });
-  
+
   it(@"should update strokeColor", ^{
     LTVector4 newValue = LTVector4::ones() * 0.5;
     expect(params.strokeColor).notTo.equal(newValue);
@@ -77,7 +77,7 @@ context(@"properties", ^{
     expect(params.strokeColor).to.equal(newValue);
     expect(params).notTo.equal(otherParams);
   });
-  
+
   it(@"should update shadowColor", ^{
     LTVector4 newValue = LTVector4::ones() * 0.5;
     expect(params.shadowColor).notTo.equal(newValue);
@@ -85,14 +85,14 @@ context(@"properties", ^{
     expect(params.shadowColor).to.equal(newValue);
     expect(params).notTo.equal(otherParams);
   });
-  
+
   it(@"should return lineRadius", ^{
     params.lineWidth = 2;
     expect(params.lineRadius).to.beCloseTo(0.5 * params.lineWidth);
     params.lineWidth = 3;
     expect(params.lineRadius).to.beCloseTo(0.5 * params.lineWidth);
   });
-  
+
   it(@"should copy", ^{
     params.lineWidth += 1;
     params.shadowWidth += 1;

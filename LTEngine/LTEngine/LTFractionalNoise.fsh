@@ -16,6 +16,6 @@ void main() {
   highp float noise = fract(sin(dot(vTexcoord, vec2(9.0 + horizontalSeed, 99.0 + verticalSeed))) *
                             91390.0 + velocitySeed);
   noise = 0.5 + amplitude * (noise - 0.5);
-  
+
   gl_FragColor = vec4(noise, noise, noise, 1.0);
 }

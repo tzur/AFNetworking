@@ -15,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (Class)textureClass {
   static Class activeClass;
-  
+
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
 #if TARGET_OS_SIMULATOR

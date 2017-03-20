@@ -29,11 +29,11 @@ SharedExamplesBegin(LTBrushExamples)
 
 sharedExamplesFor(kLTBrushExamples, ^(NSDictionary *data) {
   __block Class brushClass;
-  
+
   beforeEach(^{
     brushClass = data[kLTBrushClass];
   });
-  
+
   context(@"initialization", ^{
     it(@"should initailize with default initializer", ^{
       LTBrush *brush = [[brushClass alloc] init];
@@ -46,7 +46,7 @@ sharedExamplesFor(kLTBrushExamples, ^(NSDictionary *data) {
       expect(brush.random).to.beIdenticalTo(random);
     });
   });
-  
+
   context(@"properties", ^{
     const CGFloat kEpsilon = 1e-6;
     __block LTBrush *brush;
@@ -71,7 +71,7 @@ sharedExamplesFor(kLTBrushExamples, ^(NSDictionary *data) {
       expect(brush.scale).notTo.equal(newValue);
       brush.scale = newValue;
       expect(brush.scale).to.equal(newValue);
-      
+
       expect(^{
         brush.scale = brush.minScale - kEpsilon;
       }).to.raise(NSInvalidArgumentException);
@@ -85,7 +85,7 @@ sharedExamplesFor(kLTBrushExamples, ^(NSDictionary *data) {
       expect(brush.angle).notTo.equal(newValue);
       brush.angle = newValue;
       expect(brush.angle).to.equal(newValue);
-      
+
       expect(brush.minAngle).to.equal(0);
       expect(brush.maxAngle).to.equal(2 * M_PI);
       brush.angle = brush.minAngle - kEpsilon;
@@ -99,7 +99,7 @@ sharedExamplesFor(kLTBrushExamples, ^(NSDictionary *data) {
       expect(brush.spacing).notTo.equal(newValue);
       brush.spacing = newValue;
       expect(brush.spacing).to.equal(newValue);
-      
+
       expect(^{
         brush.spacing = brush.minSpacing - kEpsilon;
       }).to.raise(NSInvalidArgumentException);
@@ -113,7 +113,7 @@ sharedExamplesFor(kLTBrushExamples, ^(NSDictionary *data) {
       expect(brush.opacity).notTo.equal(newValue);
       brush.opacity = newValue;
       expect(brush.opacity).to.equal(newValue);
-      
+
       expect(^{
         brush.opacity = brush.minOpacity - kEpsilon;
       }).to.raise(NSInvalidArgumentException);
@@ -127,7 +127,7 @@ sharedExamplesFor(kLTBrushExamples, ^(NSDictionary *data) {
       expect(brush.flow).notTo.equal(newValue);
       brush.flow = newValue;
       expect(brush.flow).to.equal(newValue);
-      
+
       expect(^{
         brush.flow = brush.minFlow - kEpsilon;
       }).to.raise(NSInvalidArgumentException);
@@ -141,7 +141,7 @@ sharedExamplesFor(kLTBrushExamples, ^(NSDictionary *data) {
       expect(brush.intensity).notTo.equal(newValue);
       brush.intensity = newValue;
       expect(brush.intensity).to.equal(newValue);
-      
+
       for (NSUInteger i = 0; i < 4; ++i) {
         LTVector4 newValue = brush.minIntensity;
         newValue.data()[i] -= kEpsilon;
@@ -287,15 +287,15 @@ itShouldBehaveLike(kLTBrushEffectLTBrushExamples, @{kLTBrushClass: [LTBrush clas
 
 context(@"properties", ^{
   __block LTBrush *brush;
-  
+
   beforeEach(^{
     brush = [[LTBrush alloc] init];
   });
-  
+
   afterEach(^{
     brush = nil;
   });
-  
+
   it(@"should have default properties", ^{
     expect(brush.baseDiameter).to.beGreaterThan(0);
     expect(brush.scale).to.equal(1);
@@ -329,7 +329,7 @@ context(@"drawing", ^{
   const CGSize kBaseBrushSize = CGSizeMakeUniform(kBaseBrushDiameter);
   const CGSize kOutputSize = 2 * kBaseBrushSize;
   const CGPoint kOutputCenter = CGPointMake(kOutputSize.width / 2, kOutputSize.height / 2);
-  
+
   beforeEach(^{
     brush = [[LTBrush alloc] init];
     brush.baseDiameter = kBaseBrushDiameter;
@@ -351,13 +351,13 @@ context(@"drawing", ^{
                                                     andInterpolant:spline];
     centerPoint = [spline valueAtKey:0.5];
   });
-  
+
   afterEach(^{
     fbo = nil;
     output = nil;
     brush = nil;
   });
-  
+
   it(@"should draw a point", ^{
     [brush drawPoint:centerPoint inFramebuffer:fbo];
     CGRect targetRect = CGRectCenteredAt(kOutputCenter, kBaseBrushSize * brush.scale);
@@ -382,7 +382,7 @@ context(@"drawing", ^{
     expected(LTCVRectWithCGRect(targetRect)).setTo(cv::Vec4b(255, 255, 255, 255));
     expect($(output.image)).to.equalMat($(expected));
   });
-  
+
   it(@"should draw a segment with respect to previous point", ^{
     LTPainterPoint *centerPoint = [spline valueAtKey:0.5];
     centerPoint.distanceFromStart = kOutputSize.width / 2;
@@ -393,7 +393,7 @@ context(@"drawing", ^{
     expected(LTCVRectWithCGRect(targetRect)).setTo(cv::Vec4b(255, 255, 255, 255));
     expect($(output.image)).to.equalMat($(expected));
   });
-  
+
   it(@"should draw a segment and store the last drawn point as output argument", ^{
     LTPainterPoint *lastDrawnPoint;
     [brush drawStrokeSegment:segment fromPreviousPoint:nil
@@ -402,7 +402,7 @@ context(@"drawing", ^{
     expect(lastDrawnPoint.contentPosition.x).to.beCloseToWithin(kOutputSize.width,
                                                                 kTargetBrushDiameter);
   });
-  
+
   it(@"should draw with replaced texture", ^{
     const CGSize kSize = CGSizeMakeUniform(kTargetBrushDiameter);
     const CGSize kHalf = kSize / 2;
@@ -421,7 +421,7 @@ context(@"drawing", ^{
     cv::cvtColor(expectedSingle, expected, CV_GRAY2RGBA);
     expect($(output.image)).to.equalMat($(expected));
   });
-  
+
   it(@"drawing should be additive", ^{
     [fbo clearWithColor:LTVector4(0, 0, 0, 0)];
     [brush.texture mappedImageForWriting:^(cv::Mat *mapped, BOOL) {
@@ -436,7 +436,7 @@ context(@"drawing", ^{
     expected(LTCVRectWithCGRect(targetRect)).setTo(cv::Vec4b(6, 6, 6, 6));
     expect($(output.image)).to.equalMat($(expected));
   });
-  
+
   it(@"should draw with updated scale", ^{
     brush.scale *= 2;
     [brush drawPoint:centerPoint inFramebuffer:fbo];
@@ -444,7 +444,7 @@ context(@"drawing", ^{
     expected(LTCVRectWithCGRect(targetRect)).setTo(cv::Vec4b(255, 255, 255, 255));
     expect($(output.image)).to.equalMat($(expected));
   });
-  
+
   it(@"should draw with updated angle", ^{
     brush.angle = M_PI_4;
     [brush drawPoint:centerPoint inFramebuffer:fbo];
@@ -453,14 +453,14 @@ context(@"drawing", ^{
     expected = LTRotateMat(expected, brush.angle);
     expect($(output.image)).to.equalMat($(expected));
   });
-  
+
   it(@"should draw with updated spacing", ^{
     brush.spacing = 2;
     [brush drawStrokeSegment:segment fromPreviousPoint:nil
                inFramebuffer:fbo saveLastDrawnPointTo:nil];
 
     for (int center = 0; center < expected.cols; center += 2 * kTargetBrushDiameter) {
-      
+
       CGRect targetRect = CGRectCenteredAt(CGPointMake(center, kOutputCenter.y),
                                            CGSizeMakeUniform(kTargetBrushDiameter));
       targetRect = CGRectIntersection(targetRect, CGRectFromSize(kOutputSize));
@@ -468,7 +468,7 @@ context(@"drawing", ^{
     }
     expect($(output.image)).to.equalMat($(expected));
   });
-  
+
   it(@"should draw with updated opacity", ^{
     [brush.texture mappedImageForWriting:^(cv::Mat *mapped, BOOL) {
       mapped->setTo(100);
@@ -484,7 +484,7 @@ context(@"drawing", ^{
     [brush drawPoint:centerPoint inFramebuffer:fbo];
     expect($(output.image)).to.beCloseToMat($(expected));
   });
-  
+
   it(@"should draw with updated flow", ^{
     brush.flow = 0.25;
     [brush drawPoint:centerPoint inFramebuffer:fbo];
@@ -498,7 +498,7 @@ context(@"drawing", ^{
     expected(LTCVRectWithCGRect(targetRect)).setTo(cv::Vec4b(191, 191, 191, 255));
     expect($(output.image)).to.beCloseToMat($(expected));
   });
-  
+
   it(@"should draw with updated intensity", ^{
     [fbo clearWithColor:LTVector4(0, 0, 0, 0)];
     const LTVector4 kIntensity = LTVector4(0.1, 0.2, 0.3, 0.4);

@@ -195,7 +195,7 @@ sharedExamplesFor(kLTMutableEuclideanSplineExamples, ^(NSDictionary *data) {
                                                                    xCoordinateOfLocation)];
           expect(value).to.equal(startPoint.xCoordinateOfLocation);
         });
-        
+
         it(@"should return the correct float values for given parametric values and key", ^{
           CGFloats expectedValues = {startPoint.xCoordinateOfLocation,
                                      endPoint.xCoordinateOfLocation};
@@ -279,7 +279,7 @@ sharedExamplesFor(kLTMutableEuclideanSplineExamples, ^(NSDictionary *data) {
                                                                    xCoordinateOfLocation)];
           expect(value).to.equal(startPoint.xCoordinateOfLocation);
         });
-        
+
         it(@"should return the correct float values for given parametric values and key", ^{
           CGFloats expectedValues = {startPoint.xCoordinateOfLocation,
                                      endPoint.xCoordinateOfLocation};

@@ -27,12 +27,12 @@ const highp float kGaussianSigma = 0.3;
 
 void main() {
   sourceTexture;
-  
+
   // Multiply the point with the aspect ratio to get accurate euclidean distances based on the real
   // texture dimensions (since we're working with normalized coordinates here).
   highp vec2 lastFrag = gl_LastFragData[0].rg;
   highp vec2 currentPointWithOffset = (vTexcoord + lastFrag) * aspectFactor;
-  
+
   // Calculate the squared distance (normalized by the brush diameter).
   highp vec2 diff = currentPointWithOffset - center;
   highp float normalizedSquaredDistance = dot(diff, diff) / (0.25 * diameter * diameter);
@@ -57,7 +57,7 @@ void main() {
   } else {
     delta = vec2(0.0);
   }
-  
+
   // Dampen the transformation by 50% if the target vertex (after the transformation) is inside the
   // mask. Repeat to get more accurate results and avoid a step edge in transformed areas near the
   // boundary of the mask.
@@ -67,7 +67,7 @@ void main() {
   delta *= 0.5 + 0.5 * maskTarget;
   maskTarget = texture2D(maskTexture, vTexcoord + lastFrag + delta).r;
   delta *= 0.5 + 0.5 * maskTarget;
-  
+
   // Dampen the transformation if the source vertex (before the transformation) is inside the mask.
   highp float maskSource = texture2D(maskTexture, vTexcoord + lastFrag).r;
   delta *= maskSource;

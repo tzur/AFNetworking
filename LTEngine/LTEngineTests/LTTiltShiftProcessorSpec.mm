@@ -66,7 +66,7 @@ context(@"rendering", ^{
     output = [LTTexture byteRGBATextureWithSize:std::round(input.size * 0.1)];
     processor = [[LTTiltShiftProcessor alloc] initWithInput:input output:output];
   });
-  
+
   sit(@"should apply radial tilt-shift pattern", ^{
     processor.center = LTVector2(output.size.width / 2, output.size.height / 2);
     processor.diameter = output.size.width / 2;
@@ -91,7 +91,7 @@ context(@"rendering", ^{
     processor.diameter = 8;
     expect($(output.image)).to.beCloseToMatWithin($(image), 1);
   });
-  
+
   sit(@"should apply linear tilt-shift pattern", ^{
     processor.maskType = LTDualMaskTypeDoubleLinear;
     processor.center = LTVector2(output.size.width / 2, output.size.height / 2);

@@ -30,7 +30,7 @@ beforeEach(^{
   output = [LTTexture byteRGBATextureWithSize:kOutputSize];
   auxTexture = [LTTexture textureWithImage:cv::Mat4b(kInputSize.height, kInputSize.width,
                                                      cv::Vec4b(16, 0, 0, 255))];
-  
+
   drawer = [OCMockObject niceMockForProtocol:@protocol(LTTextureDrawer)];
 });
 
@@ -48,7 +48,7 @@ context(@"intialization", ^{
                                                     auxiliaryTextures:nil andOutput:output];
     }).notTo.raiseAny();
   });
-  
+
   it(@"should initialize with auxiliary textures", ^{
     expect(^{
       NSDictionary *auxiliaryTextures = @{kAuxiliaryTextureName: auxTexture};
@@ -57,7 +57,7 @@ context(@"intialization", ^{
                                                             andOutput:output];
     }).notTo.raiseAny();
   });
-  
+
   it(@"should raise when initializing without a drawer", ^{
     expect(^{
       NSDictionary *auxiliaryTextures = @{kAuxiliaryTextureName: auxTexture};
@@ -73,7 +73,7 @@ context(@"properties", ^{
     processor = [[LTOneShotBaseImageProcessor alloc] initWithDrawer:drawer sourceTexture:input
                                                   auxiliaryTextures:nil andOutput:output];
   });
-  
+
   it(@"should return correct textures and sizes", ^{
     expect(processor.inputTexture).to.beIdenticalTo(input);
     expect(processor.outputTexture).to.beIdenticalTo(output);
@@ -97,11 +97,11 @@ context(@"processing", ^{
                                                           andOutput:output];
     processor[[AdderFsh value]] = @0.5;
   });
-  
+
   context(@"full rect processing", ^{
     it(@"should produce correct output", ^{
       [processor process];
-      
+
       cv::Scalar expected(144, 128, 128, 255);
       expect($([output image])).to.beCloseToScalar($(expected));
     });
@@ -109,17 +109,17 @@ context(@"processing", ^{
     it(@"should produce correct output twice", ^{
       [processor process];
       [processor process];
-      
+
       cv::Scalar expected(144, 128, 128, 255);
       expect($([output image])).to.beCloseToScalar($(expected));
     });
 
   });
-  
+
   context(@"subrect processing", ^{
     beforeEach(^{
       [output clearWithColor:LTVector4(0, 0, 0, 1)];
-      
+
       cv::Mat4b image(16, 16, cv::Vec4b(16, 0, 0, 255));
       image(cv::Rect(0, 0, 8, 8)).setTo(cv::Vec4b(0, 16, 0, 255));
       [auxTexture load:image];
@@ -130,51 +130,51 @@ context(@"processing", ^{
       [fbo bindAndDraw:^{
         [processor processToFramebufferWithSize:fbo.size outputRect:CGRectFromSize(output.size)];
       }];
-      
+
       cv::Mat4b expected(16, 16, cv::Vec4b(144, 128, 128, 255));
       expected(cv::Rect(0, 0, 8, 8)).setTo(cv::Vec4b(128, 144, 128, 255));
-      
+
       expect($([output image])).to.beCloseToMat($(expected));
     });
 
     it(@"should process subrect of the output", ^{
       input.magFilterInterpolation = LTTextureInterpolationNearest;
       auxTexture.magFilterInterpolation = LTTextureInterpolationNearest;
-      
+
       LTFbo *fbo = [[LTFbo alloc] initWithTexture:output];
       [fbo bindAndDraw:^{
         [processor processToFramebufferWithSize:fbo.size outputRect:CGRectMake(7, 7, 4, 4)];
       }];
-      
+
       cv::Mat4b expected(16, 16, cv::Vec4b(144, 128, 128, 255));
       expected(cv::Rect(0, 0, 4, 4)).setTo(cv::Vec4b(128, 144, 128, 255));
-      
+
       expect($([output image])).to.beCloseToMat($(expected));
     });
 
     it(@"should process subrect when output is of different size", ^{
       input.magFilterInterpolation = LTTextureInterpolationNearest;
       auxTexture.magFilterInterpolation = LTTextureInterpolationNearest;
-      
+
       LTTexture *fboTexture = [LTTexture byteRGBATextureWithSize:input.size / 2];
       [fboTexture clearWithColor:LTVector4(0, 0, 0, 1)];
       LTFbo *fbo = [[LTFbo alloc] initWithTexture:fboTexture];
       [fbo bindAndDraw:^{
         [processor processToFramebufferWithSize:fbo.size outputRect:CGRectMake(6, 6, 4, 4)];
       }];
-      
+
       cv::Mat4b expected(8, 8, cv::Vec4b(144, 128, 128, 255));
       expected(cv::Rect(0, 0, 4, 4)).setTo(cv::Vec4b(128, 144, 128, 255));
-      
+
       expect($([fboTexture image])).to.beCloseToMat($(expected));
     });
 
     it(@"should process in rect", ^{
       [processor processInRect:CGRectMake(0, 0, 8, 8)];
-      
+
       cv::Mat4b expected(16, 16, cv::Vec4b(0, 0, 0, 255));
       expected(cv::Rect(0, 0, 8, 8)).setTo(cv::Vec4b(128, 144, 128, 255));
-      
+
       expect($([output image])).to.beCloseToMat($(expected));
     });
   });

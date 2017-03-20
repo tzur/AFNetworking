@@ -39,7 +39,7 @@ void main() {
   } else {
     sourceColor = texture2D(sourceTexture, boundaryConditionForCoordinate(vSourceCoord));
   }
-  
+
   lowp vec4 targetColor = texture2D(sourceTexture, boundaryConditionForCoordinate(vTargetCoord));
   gl_FragColor = vec4(mix(targetColor.rgb, vMembraneColor.rgb * membraneAlpha + sourceColor.rgb,
                           vMembraneColor.a * alpha), 1.0);

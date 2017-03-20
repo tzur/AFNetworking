@@ -45,7 +45,7 @@ context(@"intialization", ^{
                  initWithVertexSource:[PassthroughVsh source] fragmentSource:[AdderFsh source]
                  sourceTexture:input auxiliaryTextures:auxiliaryTextures andOutput:output];
   });
-  
+
   it(@"should create rect drawer based on given arguments", ^{
     NSDictionary *auxiliaryTextures = @{kAuxiliaryTextureName: auxTexture};
     processor = [[LTOneShotImageProcessor alloc]

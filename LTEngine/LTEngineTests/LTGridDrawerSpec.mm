@@ -54,28 +54,28 @@ context(@"drawing", ^{
   __block LTFbo *fbo;
   __block LTTexture *output;
   __block LTGridDrawer *gridDrawer;
-  
+
   const CGSize kFramebufferSize = CGSizeMake(128, 128);
   const cv::Vec4b kBlack(0, 0, 0, UCHAR_MAX);
   const cv::Vec4b kWhite(UCHAR_MAX, UCHAR_MAX, UCHAR_MAX, UCHAR_MAX);
   const cv::Vec4b kRed(UCHAR_MAX, 0, 0, UCHAR_MAX);
   const cv::Vec4b kGray(128, 128, 128, 128);
-  
+
   __block cv::Mat4b expected(kFramebufferSize.height, kFramebufferSize.width);
-  
+
   beforeEach(^{
     output = [LTTexture byteRGBATextureWithSize:kFramebufferSize];
     fbo = [[LTFbo alloc] initWithTexture:output];
     [fbo clearWithColor:LTVector4(0, 0, 0, 1)];
     expected = kBlack;
   });
-  
+
   afterEach(^{
     fbo = nil;
     output = nil;
     gridDrawer = nil;
   });
-  
+
   context(@"grid correctness", ^{
     beforeEach(^{
       expected.row(0) = kWhite;
@@ -120,7 +120,7 @@ context(@"drawing", ^{
       gridDrawer = [[LTGridDrawer alloc] initWithSize:halfSize];
       [gridDrawer drawSubGridInRegion:CGRectMake(0, 0, halfSize.width, halfSize.height)
                         inFramebuffer:fbo];
-      
+
       expected = kWhite;
       expect(LTCompareMat(expected, output.image)).to.beTruthy();
     });
@@ -133,7 +133,7 @@ context(@"drawing", ^{
       gridDrawer = [[LTGridDrawer alloc] initWithSize:doubleSize];
       [gridDrawer drawSubGridInRegion:CGRectMake(0, 0, regionSize.width, regionSize.height)
                         inFramebuffer:fbo];
-      
+
       expected = kBlack;
       for (int row = 0; row < expected.rows; row += kRegionFactor) {
         expected.row(row) = kWhite;
@@ -173,7 +173,7 @@ context(@"drawing", ^{
       expect(LTCompareMat(expected, output.image)).to.beTruthy();
     });
   });
-  
+
   context(@"draw-affecting properties", ^{
     beforeEach(^{
       [fbo clearWithColor:LTVector4(kGray)];

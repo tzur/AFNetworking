@@ -236,7 +236,7 @@ static const CGFloat kMinimalScreenDistanceForDisablingNavigation = 30;
               filterWithMinimalTimeInterval:kMinimalTimeIntervalForInitialMovement],
           [LTTouchCollectorDistanceFilter
               filterWithMinimalScreenDistance:kMinimalScreenDistanceForInitialMovement]]];
-  
+
   return [[LTTouchCollectorAndFilter alloc] initWithFilters:@[initialMovementFilter, self.filter]];
 }
 

@@ -129,7 +129,7 @@ context(@"fbo creation", ^{
         @(LTFboAttachmentPointColor2): renderbuffer,
         @(LTFboAttachmentPointDepth): depthRenderbuffer
       }];
-      
+
       expect(fbo.name).to.equal(fbo2.name);
     });
 
@@ -146,7 +146,7 @@ context(@"fbo creation", ^{
         @(LTFboAttachmentPointColor2): renderbuffer,
         @(LTFboAttachmentPointDepth): depthRenderbuffer
       }];
-      
+
       expect(fbo.name).notTo.equal(fbo2.name);
     });
 
@@ -184,7 +184,7 @@ context(@"fbo creation", ^{
         @(LTFboAttachmentPointColor3): [LTFboAttachmentInfo withAttachable:renderbuffer],
         @(LTFboAttachmentPointDepth): [LTFboAttachmentInfo withAttachable:depthRenderbuffer]
       }];
-      
+
       expect(fbo.name).notTo.equal(fbo2.name);
     });
   });

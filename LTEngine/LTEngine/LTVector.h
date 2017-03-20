@@ -46,7 +46,7 @@ struct LTVector2 {
   explicit constexpr operator CGPoint() const {
     return {.x = x, .y = y};
   }
-  
+
   explicit constexpr operator CGSize() const {
     return {.width = x, .height = y};
   }
@@ -85,7 +85,7 @@ struct LTVector2 {
     y *= rhs.y;
     return *this;
   }
-  
+
   /// Multiplies each element of this vector with the given \c rhs.
   LTVector2 &operator*=(float rhs) {
     x *= rhs;
@@ -99,7 +99,7 @@ struct LTVector2 {
     y /= rhs.y;
     return *this;
   }
-  
+
   /// Divides each element of this vector with the given \c rhs.
   LTVector2 &operator/=(float rhs) {
     x /= rhs;
@@ -194,7 +194,7 @@ struct LTVector2 {
   constexpr static LTVector2 null() {
     return LTVector2(NAN);
   }
-  
+
   /// Returns a unit vector in the direction specified by the given \c angle.
   inline static LTVector2 angle(float angle) {
     return LTVector2(std::cosf(angle), std::sinf(angle));
@@ -341,7 +341,7 @@ namespace std {
   inline LTVector2 step(LTVector2 edge, LTVector2 v) {
     return LTVector2(v.x >= edge.x, v.y >= edge.y);
   }
-  
+
   /// Returns a vector with the result of an element wise comparison between a given vector to an
   /// edge scalar. For element \c i of the return value, \c 0 is returned if <tt>v[i] < edge</tt>
   /// and \c 1 is returned otherwise.
@@ -444,7 +444,7 @@ struct LTVector3 {
     z *= rhs;
     return *this;
   }
-  
+
   /// Divides the given vector element wise with this vector.
   LTVector3 &operator/=(LTVector3 rhs) {
     x /= rhs.x;
@@ -460,7 +460,7 @@ struct LTVector3 {
     z /= rhs;
     return *this;
   }
-  
+
   /// Returns YES if the vector is LTVector3::null().
   inline bool isNull() const {
     return isnan(x) && isnan(y) && isnan(z);
@@ -520,7 +520,7 @@ struct LTVector3 {
   inline float *data() {
     return reinterpret_cast<float *>(this);
   }
-  
+
   /// Returns pointer to the first element of the vector.
   inline const float *data() const {
     return reinterpret_cast<const float *>(this);
@@ -683,7 +683,7 @@ namespace std {
   inline LTVector3 step(LTVector3 edge, LTVector3 v) {
     return LTVector3(v.x >= edge.x, v.y >= edge.y, v.z >= edge.z);
   }
-  
+
   /// Returns a vector with the result of an element wise comparison between a given vector to an
   /// edge scalar. For element \c i of the return value, \c 0 is returned if <tt>v[i] < edge</tt>
   /// and \c 1 is returned otherwise.
@@ -713,7 +713,7 @@ inline LTVector4 operator/(LTVector4 lhs, CGFloat rhs);
 struct LTVector4 {
   /// Initializes a new \c LTVector4 with two zero elements.
   constexpr LTVector4() : x(0), y(0), z(0), w(0) {}
-  
+
   /// Initializes a new \c LTVector4 with \c x, y, z and \c w elements equal to the given scalar.
   explicit constexpr LTVector4(float scalar) : x(scalar), y(scalar), z(scalar), w(scalar) {}
 
@@ -739,7 +739,7 @@ struct LTVector4 {
   explicit constexpr operator GLKVector4() const {
     return {.x = x, .y = y, .z = z, .w = w};
   }
-  
+
   /// Cast operator to \c cv::Vec4b, mapping range \c [0,1] to \c [0,255].
   explicit operator cv::Vec4b() const {
     return cv::Vec4b(std::round(x * UCHAR_MAX), std::round(y * UCHAR_MAX),
@@ -804,7 +804,7 @@ struct LTVector4 {
     w *= rhs.w;
     return *this;
   }
-  
+
   /// Multiplies each element of this vector with the given \c rhs.
   LTVector4 &operator*=(float rhs) {
     x *= rhs;
@@ -822,7 +822,7 @@ struct LTVector4 {
     w /= rhs.w;
     return *this;
   }
-  
+
   /// Divides each element of this vector with the given \c rhs.
   LTVector4 &operator/=(float rhs) {
     x /= rhs;
@@ -1078,7 +1078,7 @@ namespace std {
   inline LTVector4 step(LTVector4 edge, LTVector4 v) {
     return LTVector4(v.x >= edge.x, v.y >= edge.y, v.z >= edge.z, v.w >= edge.w);
   }
-  
+
   /// Returns a vector with the result of an element wise comparison between a given vector to an
   /// edge scalar. For element \c i of the return value, \c 0 is returned if <tt>v[i] < edge</tt>
   /// and \c 1 is returned otherwise.

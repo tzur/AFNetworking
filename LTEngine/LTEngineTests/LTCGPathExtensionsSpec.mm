@@ -280,7 +280,7 @@ context(@"creation", ^{
     expect(evaluation.numberOfPoints).to.equal(evaluation.numberOfPointsToExpect);
     expect(evaluation.numberOfClosedSubPaths).to.equal(evaluation.numberOfClosedSubPathsToExpect);
   });
-  
+
   it(@"should create path for given acyclic smoothened polyline with coinciding points", ^{
     CGPoints points{CGPointMake(0, 0), CGPointMake(1, 0), CGPointMake(1, 0), CGPointMake(1, 0),
         CGPointMake(1, 0), CGPointMake(1, 0), CGPointMake(1, 0), CGPointMake(1, 1)};

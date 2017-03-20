@@ -65,9 +65,9 @@ context(@"processing", ^{
   __block LTTexture *target;
   __block LTTexture *output;
   __block LTPatchCompositorProcessor *processor;
-  
+
   beforeEach(^{
-   
+
     // Since this is a bit complex, here's a scenario description:
     // - Source is a 32x32 texture, with four quads with different colors at (0, 0, 16, 16).
     // - Target is a 32x32 constant blue image.
@@ -86,27 +86,27 @@ context(@"processing", ^{
     sourceImage(cv::Rect(8, 8, 8, 8)) = cv::Vec4b(255, 255, 0, 255);
     source = [LTTexture textureWithImage:sourceImage];
     source.magFilterInterpolation = LTTextureInterpolationNearest;
-    
+
     cv::Mat4b targetImage = cv::Mat4b(32, 32, cv::Vec4b(0, 0, 255, 255));
     target = [LTTexture textureWithImage:targetImage];
-    
+
     cv::Mat4f membraneImage(8, 8, cv::Vec4f(0, 0.5, 0, 0));
     LTTexture *membrane = [LTTexture textureWithImage:membraneImage];
-    
+
     cv::Mat1b maskImage(cv::Mat1b::zeros(16, 16));
     maskImage(cv::Rect(0, 0, 8, 8)) = 255;
     mask = [LTTexture textureWithImage:maskImage];
     mask.magFilterInterpolation = LTTextureInterpolationNearest;
-    
+
     output = [LTTexture textureWithPropertiesOf:target];
-    
-    
+
+
     processor = [[LTPatchCompositorProcessor alloc] initWithSource:source target:target
         membrane:membrane mask:mask output:output];
     processor.sourceRect = [LTRotatedRect rect:CGRectMake(0, 0, 16, 16)];
     processor.targetRect = [LTRotatedRect rect:CGRectMake(0, 0, 32, 32)];
   });
-  
+
   afterEach(^{
     processor = nil;
     mask = nil;
@@ -114,47 +114,47 @@ context(@"processing", ^{
     target = nil;
     output = nil;
   });
-  
+
   it(@"should composite correctly without flipping", ^{
     processor.sourceOpacity = 0.5;
     processor.flip = NO;
-    
+
     [processor process];
-    
+
     // Set initially to target.
     cv::Mat4b expected([target image]);
     // Source + membrane.
     expected(cv::Rect(0, 0, 16, 16)) = cv::Vec4b(128, 64, 128, 255);
-    
+
     expect($([output image])).to.beCloseToMat($(expected));
   });
-  
+
   it(@"should composite correctly with flipping", ^{
     processor.sourceOpacity = 0.5;
-    
+
     processor.flip = YES;
     [processor process];
-    
+
     // Set initially to target.
     cv::Mat4b expected([target image]);
     // Source + membrane.
     expected(cv::Rect(0, 0, 16, 16)) = cv::Vec4b(0, 191, 128, 255);
-    
+
     expect($([output image])).to.beCloseToMat($(expected));
   });
-  
+
   it(@"should composite correctly with smoothing", ^{
     processor.sourceOpacity = 0.5;
     processor.smoothingAlpha = 0.5;
     processor.flip = YES;
-    
+
     [processor process];
-    
+
     // Set initially to target.
     cv::Mat4b expected([target image]);
    // Source + membrane.
     expected(cv::Rect(0, 0, 16, 16)) = cv::Vec4b(0, 191, 128, 255);
-    
+
     expect($([output image])).to.beCloseToMat($(expected));
   });
 });

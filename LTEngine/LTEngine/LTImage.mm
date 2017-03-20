@@ -79,7 +79,7 @@ NS_ASSUME_NONNULL_BEGIN
     [image drawInRect:rect blendMode:kCGBlendModeCopy alpha:1.0];
   }
   UIGraphicsPopContext();
-  
+
   CGContextRelease(context);
   CGColorSpaceRelease(colorSpace);
 }
@@ -92,7 +92,7 @@ NS_ASSUME_NONNULL_BEGIN
     kCGImageAlphaFirst,
     kCGImageAlphaOnly
   };
-  
+
   auto alphaInfo = CGImageGetAlphaInfo(image.CGImage);
   return kAlphaInfoWithAlpha.find(alphaInfo) != kAlphaInfoWithAlpha.cend();
 }

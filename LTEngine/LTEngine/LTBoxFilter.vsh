@@ -15,9 +15,9 @@ varying mediump vec2 vSampleCoords[SAMPLE_COUNT];
 
 void main() {
   texture;
-  
+
   gl_Position = projection * modelview * position;
-  
+
   int step = 0;
   for (lowp int i = 0; i < SAMPLE_COUNT; i++) {
     // Step will get discrete values of [(SAMPLE_COUNT - 1) / 2, (SAMPLE_COUNT + 1) / 2].

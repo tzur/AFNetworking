@@ -56,10 +56,10 @@ mediump vec3 updateColorBand(mediump vec3 hsv, mediump vec3 newHsv, mediump floa
 
 void main() {
   sourceTexture;
-  
+
   mediump vec3 hsv = texture2D(hsvTexture, vTexcoord).rgb;
   mediump float luminanceCorrection = smoothstep(0.0, 0.5, hsv.b);
-  
+
   mediump vec3 newHsv;
   newHsv = updateColorBand(hsv, hsv, 0.0, luminanceCorrection, redHue, redSaturation, redLuminance);
   newHsv = updateColorBand(hsv, newHsv, 0.0833, luminanceCorrection, orangeHue, orangeSaturation,
@@ -72,6 +72,6 @@ void main() {
                            cyanLuminance);
   newHsv = updateColorBand(hsv, newHsv, 0.6667, luminanceCorrection, blueHue, blueSaturation,
                            blueLuminance);
-  
+
   gl_FragColor = vec4(HSVToRGB(clamp(newHsv, 0.0, 1.0)), 1.0);
 }

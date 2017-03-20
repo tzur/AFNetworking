@@ -54,7 +54,7 @@
 - (void)validateInputs:(NSArray *)controlPoints {
   LTParameterAssert(controlPoints.count >= 2,
                     @"At least two points are required to construct the color gradient");
-  
+
   [controlPoints enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *) {
     LTParameterAssert([obj isKindOfClass:[LTColorGradientControlPoint class]],
                       @"Given object is not of type LTColorGradientControlPoint");
@@ -117,7 +117,7 @@
   LTColorGradientControlPoint *controlPoint1 = [[LTColorGradientControlPoint alloc]
                                                 initWithPosition:1.0
                                                 color:LTVector3(1.0, 1.0, 1.0)];
-  
+
   NSArray *controlPoints = @[controlPoint0, controlPoint1];
   return [[LTColorGradient alloc] initWithControlPoints:controlPoints];
 }

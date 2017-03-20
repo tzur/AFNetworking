@@ -40,7 +40,7 @@ context(@"properties", ^{
     expect(brush.thickness).to.equal(0.2);
     expect(brush.spacing).to.equal(0.01);
   });
-  
+
   it(@"should set bristles", ^{
     NSUInteger newValue = 10;
     brush.bristles = newValue;
@@ -53,7 +53,7 @@ context(@"properties", ^{
       brush.bristles = brush.maxBristles + 1;
     }).to.raise(NSInvalidArgumentException);
   });
-  
+
   it(@"should set thickness", ^{
     const CGFloat newValue = 0.5;
     expect(brush.thickness).notTo.equal(newValue);
@@ -79,14 +79,14 @@ context(@"drawing", ^{
   __block LTTexture *output;
   __block LTFbo *fbo;
   __block LTPainterPoint *point;
-  
+
   const LTVector4 kBackground = LTVector4(0, 0, 0, 1);
   const CGFloat kBaseBrushDiameter = 64;
   const CGFloat kTargetBrushDiameter = 64;
   const CGSize kBaseBrushSize = CGSizeMakeUniform(kBaseBrushDiameter);
   const CGSize kOutputSize = kBaseBrushSize;
   const CGPoint kOutputCenter = CGPointMake(kOutputSize.width / 2, kOutputSize.height / 2);
-  
+
   beforeEach(^{
     brush.baseDiameter = kBaseBrushDiameter;
     brush.scale = kTargetBrushDiameter / kBaseBrushDiameter;
@@ -100,7 +100,7 @@ context(@"drawing", ^{
     point = [[LTPainterPoint alloc] init];
     point.contentPosition = kOutputCenter;
   });
-  
+
   afterEach(^{
     fbo = nil;
     output = nil;
@@ -177,7 +177,7 @@ context(@"drawing", ^{
     expected = LTLoadMat([self class], @"BristleBrushBristles.20.png");
     expect($(output.image)).to.beCloseToMatWithin($(expected), 6);
   });
-  
+
   it(@"should update the brush texture according to the thickness property", ^{
     brush.bristles = 2;
 

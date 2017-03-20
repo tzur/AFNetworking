@@ -23,31 +23,31 @@ context(@"initialization", ^{
   });
 });
 
-context(@"properties", ^{  
+context(@"properties", ^{
   beforeEach(^{
     effect = [[LTBrushScatterEffect alloc] init];
   });
-  
+
   it(@"should have default properties", ^{
     expect(effect.scatter).to.equal(0);
     expect(effect.count).to.equal(1);
     expect(effect.countJitter).to.equal(0);
   });
-  
+
   it(@"should set scatter", ^{
     CGFloat newValue = 2;
     expect(effect.scatter).notTo.equal(newValue);
     effect.scatter = newValue;
     expect(effect.scatter).to.equal(newValue);
   });
-  
+
   it(@"should set count", ^{
     NSUInteger newValue = 2;
     expect(effect.count).notTo.equal(newValue);
     effect.count = newValue;
     expect(effect.count).to.equal(newValue);
   });
-  
+
   it(@"should set countJitter", ^{
     CGFloat newValue = 0.5;
     expect(effect.countJitter).notTo.equal(newValue);
@@ -59,7 +59,7 @@ context(@"properties", ^{
 context(@"effect", ^{
   __block NSArray *sourceRects;
   __block NSArray *scatteredRects;
-  
+
   beforeEach(^{
     effect = [[LTBrushScatterEffect alloc] init];
     sourceRects = @[
@@ -68,11 +68,11 @@ context(@"effect", ^{
         [LTRotatedRect rectWithCenter:CGPointMake(2, 2) size:CGSizeMakeUniform(3) angle:M_PI_2],
     ];
   });
-  
+
   it(@"should return an empty array if the input is an empty array", ^{
     expect([effect scatteredRectsFromRects:@[]].count).to.equal(0);
   });
-  
+
   it(@"should return the same rects when scatter is 0, count is 1, and countJitter is 0", ^{
     effect.count = 1;
     scatteredRects = [effect scatteredRectsFromRects:sourceRects];
@@ -81,7 +81,7 @@ context(@"effect", ^{
       expect(scatteredRects[i]).to.equal(sourceRects[i]);
     }
   });
-  
+
   it(@"should return scattered rects according to the scatter property", ^{
     effect.scatter = 1;
     effect.count = 1;
@@ -99,7 +99,7 @@ context(@"effect", ^{
           .to.beLessThanOrEqualTo(sourceRect.rect.size.height);
     }
   });
-  
+
   it(@"should return scattered rects according to the count property", ^{
     effect.count = 10;
     scatteredRects = [effect scatteredRectsFromRects:sourceRects];
@@ -110,7 +110,7 @@ context(@"effect", ^{
       }
     }
   });
-  
+
   it(@"should return scattered rects according to the countJitter property", ^{
     effect.count = 10;
     NSMutableArray *manyRects = [NSMutableArray array];

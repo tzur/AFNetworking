@@ -209,7 +209,7 @@ context(@"processing", ^{
 
     expect($([output image])).to.beCloseToMat($(expected));
   });
-  
+
   it(@"should consider smoothing when cloning", ^{
     cv::Rect maskROI(0, 0, 8, 8);
     [mask mappedImageForWriting:^(cv::Mat *mapped, BOOL) {
@@ -220,18 +220,18 @@ context(@"processing", ^{
       mapped->setTo(cv::Vec4b(125, 125, 125, 125));
       (*mapped)(maskROI).setTo(cv::Vec4b(255, 0, 0, 255));
     }];
-    
+
     mask.minFilterInterpolation = LTTextureInterpolationNearest;
     mask.magFilterInterpolation = LTTextureInterpolationNearest;
-    
+
     processor.smoothingAlpha = 0.5;
     [processor process];
-    
+
     cv::Mat4b expected = cv::Mat4b::zeros(kTargetSize.height, kTargetSize.width);
     cv::Rect roi(processor.targetRect.rect.origin.x,
                  processor.targetRect.rect.origin.y, kSourceSize.width, kSourceSize.height);
     expected(roi) = cv::Vec4b(0, 0, 255, 255);
-    
+
     expect($([output image])).to.beCloseToMat($(expected));
   });
 
@@ -242,24 +242,24 @@ context(@"processing", ^{
     cv::Vec4b blue(0, 0, 255, 255);
     sourceImage(cv::Rect(0, 0, 4, 8)) = red;
     sourceImage(cv::Rect(4, 0, 4, 8)) = blue;
-    
+
     [source load:sourceImage];
     source.minFilterInterpolation = LTTextureInterpolationNearest;
     source.magFilterInterpolation = LTTextureInterpolationNearest;
-    
+
     processor.sourceRect = [LTRotatedRect rect:CGRectMake(0, 0, 8, 8)];
     processor.flip = YES;
     [processor process];
-    
+
     cv::Mat outputMat = [output image];
-    
+
     CGRect targetRect = processor.targetRect.rect;
     CGPoint origin = targetRect.origin;
-    
+
     cv::Vec4b outputLeftValue = outputMat.at<cv::Vec4b>(origin.y, origin.x);
     cv::Vec4b outputRightValue = outputMat.at<cv::Vec4b>(origin.y,
                                                          origin.x + targetRect.size.width  - 1);
-    
+
     expect(outputRightValue == blue).to.beTruthy();
     expect(outputLeftValue == blue).to.beTruthy();
   });

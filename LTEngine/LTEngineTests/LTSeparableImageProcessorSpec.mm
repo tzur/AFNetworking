@@ -38,7 +38,7 @@ context(@"initialization", ^{
                                                           outputs:@[output0]];
     }).to.raise(NSInvalidArgumentException);
   });
-  
+
   it(@"should initialize on correct program", ^{
     expect(^{
       __unused LTSeparableImageProcessor *processor =

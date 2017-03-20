@@ -145,7 +145,7 @@ context(@"filtering", ^{
                     withTouchSequenceState:LTTouchEventSequenceStateStart];
         }).to.raise(NSInvalidArgumentException);
       });
-      
+
       it(@"should not filter LTTouchEventSequenceStateEnd event regardless of predicates", ^{
         LTContentTouchEvents *events = LTContentTouchEventMocks(1);
         LTContentTouchEvents *filteredEvents =
@@ -315,7 +315,7 @@ context(@"filtering", ^{
                     withTouchSequenceState:LTTouchEventSequenceStateStart];
         }).to.raise(NSInvalidArgumentException);
       });
-      
+
       it(@"should not filter LTTouchEventSequenceStateEnd event regardless of predicates", ^{
         LTContentTouchEvents *events = LTContentTouchEventMocks(1);
         LTContentTouchEvents *filteredEvents =

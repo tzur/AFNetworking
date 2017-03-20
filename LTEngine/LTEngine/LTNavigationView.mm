@@ -30,7 +30,7 @@ NS_ASSUME_NONNULL_BEGIN
   if (![object isKindOfClass:[self class]]) {
     return NO;
   }
-  
+
   return self.visibleContentRectInPoints == object.visibleContentRectInPoints &&
          self.scrollViewContentOffset == object.scrollViewContentOffset &&
          self.scrollViewContentInset == object.scrollViewContentInset &&
@@ -170,15 +170,15 @@ static const NSUInteger kDefaultDoubleTapLevels = 3;
   self.scrollView.contentSize = self.contentSize / self.contentScaleFactor;
   self.scrollView.autoresizingMask =
       UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-  
+
   // Make the scrollview bounce even if the image fits the screen.
   self.scrollView.alwaysBounceHorizontal = YES;
   self.scrollView.alwaysBounceVertical = YES;
-  
+
   // Configure the zoom limits, and set oursevels as the scrollview delegate.
   [self configureScrollViewZoomLimits];
   self.scrollView.delegate = self;
-  
+
   // Hide the scroll indicators and set the background color to be transparent.
   self.scrollView.backgroundColor = [UIColor clearColor];
   self.scrollView.showsHorizontalScrollIndicator = NO;
@@ -277,7 +277,7 @@ static const NSUInteger kDefaultDoubleTapLevels = 3;
   // Setting the delegate to nil is necessary to avoid crashing in case the view is deallocated
   // while the user is in a state that will cause a zoom bounce.
   self.scrollView.delegate = nil;
-  
+
   [self unregisterAnimationNotification];
   [self.scrollView removeFromSuperview];
   [self.contentView removeFromSuperview];
@@ -308,12 +308,12 @@ static const NSUInteger kDefaultDoubleTapLevels = 3;
   CGSize scrollViewSize = UIEdgeInsetsInsetRect(self.bounds, self.contentInset).size;
   CGSize scrollViewContentSize = self.contentSize / self.contentScaleFactor;
   CGFloat minimumZoomScale = std::min(scrollViewSize / scrollViewContentSize);
-  
+
   // End case - if the minimal zoom scale is going to be larger than the maximal zoom scale, set the
   // maximal zoom scale to be the minimal one. This is relevant to small images and will prevent
   // any zooming of the image.
   CGFloat maximumZoomScale = MAX(self.maxZoomScale, minimumZoomScale);
-  
+
   // Set the minimal zoom scale, and update the current scale to be in the new range.
   self.scrollView.minimumZoomScale = minimumZoomScale;
   self.scrollView.maximumZoomScale = maximumZoomScale;
@@ -329,17 +329,17 @@ static const NSUInteger kDefaultDoubleTapLevels = 3;
 /// http://developer.apple.com/library/ios/#samplecode/ScrollViewSuite/Introduction/Intro.html
 - (CGRect)zoomRectForScale:(float)scale withCenter:(CGPoint)center {
   CGRect zoomRect;
-  
+
   // The zoom rect is in the content view's coordinates. At a zoom scale of 1.0, it would be the
   // size of the bounds. As the zoom scale decreases, so more content is visible, the size of the
   // rect grows.
   zoomRect.size.height = self.scrollView.frame.size.height / scale;
   zoomRect.size.width = self.scrollView.frame.size.width / scale;
-  
+
   // Choose an origin so as to get the right center.
   zoomRect.origin.x = center.x - (zoomRect.size.width / 2.0);
   zoomRect.origin.y = center.y - (zoomRect.size.height / 2.0);
-  
+
   return zoomRect;
 }
 
@@ -383,7 +383,7 @@ static const NSUInteger kDefaultDoubleTapLevels = 3;
 
   __block NSUInteger animationFrames = 0;
   __block BOOL addedZoomBounceCenteringAnimation = NO;
-  
+
   // Otherwise, create an animation for updating the content rectangle according to the state of the
   /// \c scrollView.
   @weakify(self);
@@ -626,17 +626,17 @@ static const NSTimeInterval kZoomToRectAnimationDuration = 0.4;
 
 - (void)centerContentViewInScrollViewWithAnimationDuration:(NSTimeInterval)duration {
   UIOffset inset = UIOffsetZero;
-  
+
   // Center horizontally.
   if (self.contentView.frame.size.width < self.scrollView.bounds.size.width) {
     inset.horizontal = (self.scrollView.bounds.size.width - self.contentView.frame.size.width) / 2;
   }
-  
+
   // Center vertically.
   if (self.contentView.frame.size.height < self.scrollView.bounds.size.height) {
     inset.vertical = (self.scrollView.bounds.size.height - self.contentView.frame.size.height) / 2;
   }
-  
+
   UIEdgeInsets insets = UIEdgeInsetsMake(inset.vertical, inset.horizontal,
                                          inset.vertical, inset.horizontal);
   if (duration > 0) {
@@ -659,7 +659,7 @@ static const NSTimeInterval kZoomToRectAnimationDuration = 0.4;
 - (CGRect)visibleContentRectFromLayers {
   CALayer *contentLayer = [self.contentView.layer presentationLayer];
   CALayer *scrollLayer = [self.layer presentationLayer];
-  
+
   // Make sure the layers exist, otherwise, fall back to using the scroll view. (This might happen
   // during initialization).
   if (contentLayer && scrollLayer) {
@@ -690,21 +690,21 @@ static const NSTimeInterval kZoomToRectAnimationDuration = 0.4;
   if (contentInset == _contentInset) {
     return;
   }
-  
+
   // In case we were at the minimal zoom level, we'll have to update the zoom to reflect the
   // updated padding.
   BOOL shouldUpdateZoom = (self.scrollView.zoomScale == self.scrollView.minimumZoomScale);
-  
+
   // Update the padding, the scrollview's frame, and recalculate the zoom limits.
   _contentInset = contentInset;
   self.scrollView.frame = UIEdgeInsetsInsetRect(self.bounds, _contentInset);
   [self configureScrollViewZoomLimits];
-  
+
   // Update the zoom scale if necessary.
   if (shouldUpdateZoom) {
     self.scrollView.zoomScale = self.scrollView.minimumZoomScale;
   }
-  
+
   // Re-center the content view, and update the visible content rect.
   [self centerContentViewInScrollView];
   self.visibleContentRectInPoints = [self visibleContentRectFromScrollView];
@@ -712,13 +712,13 @@ static const NSTimeInterval kZoomToRectAnimationDuration = 0.4;
 
 - (void)setFrame:(CGRect)frame {
   [super setFrame:frame];
-  
+
   BOOL atMinimalScale = (self.scrollView.zoomScale == self.scrollView.minimumZoomScale);
   [self configureScrollViewZoomLimits];
   if (atMinimalScale) {
     self.scrollView.zoomScale = self.scrollView.minimumZoomScale;
   }
-  
+
   [self centerContentViewInScrollView];
   self.visibleContentRectInPoints = [self visibleContentRectFromScrollView];
 }
@@ -754,7 +754,7 @@ static const NSTimeInterval kZoomToRectAnimationDuration = 0.4;
   if (_contentSize == contentSize) {
     return;
   }
-  
+
   _contentSize = contentSize;
   CGFloat previousMinimumZoomscale = self.scrollView.minimumZoomScale;
   self.scrollView.minimumZoomScale = 1;

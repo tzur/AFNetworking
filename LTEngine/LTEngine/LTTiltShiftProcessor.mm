@@ -69,7 +69,7 @@ static const CGFloat kMaskScalingFactor = 4.0;
 
 + (NSSet *)inputModelPropertyKeys {
   static NSSet *properties;
-  
+
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
     properties = [NSSet setWithArray:@[
@@ -83,7 +83,7 @@ static const CGFloat kMaskScalingFactor = 4.0;
       @instanceKeypath(LTTiltShiftProcessor, intensity)
     ]];
   });
-  
+
   return properties;
 }
 

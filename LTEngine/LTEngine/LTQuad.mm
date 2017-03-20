@@ -702,7 +702,7 @@ Quad::Type Quad::type() const noexcept {
 
   return *_quadType;
 }
-  
+
 } // namespace lt
 
 NS_ASSUME_NONNULL_END

@@ -444,7 +444,7 @@ static BOOL LTCompareMatCells(const cv::Mat &expected, const cv::Mat &actual, co
   if (!expected.dims) {
     return YES;
   }
-  
+
   cv::MatConstIterator_<T> expectedIterator = expected.begin<T>();
   auto actualIterator = actual.begin<T>();
   cv::MatConstIterator_<T> endIterator = expected.end<T>();
@@ -525,7 +525,7 @@ static NSString *LTMatPathForNameAndIndex(NSString *name, NSUInteger index) {
 static void LTWriteMat(const cv::Mat &mat, NSString *path) {
   LTParameterAssert(mat.dims == 2, "Non 2-dimenional matrices don't have writing support. "
                     @"Input matrix is %d-dimensional.", mat.dims);
-  
+
   switch (mat.type()) {
     case CV_8UC1:
       cv::imwrite([path cStringUsingEncoding:NSUTF8StringEncoding], mat);

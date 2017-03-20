@@ -24,7 +24,7 @@ sharedExamplesFor(kLTArrayBufferInitializationExamples, ^(NSDictionary *dict) {
     expect(buffer.size).to.equal(data.length);
     expect([buffer data]).to.equal(data);
   });
-  
+
   it(@"should add initial data by concatenating buffers", ^{
     LTArrayBuffer *buffer = dict[@"buffer"];
     NSData *data = dict[@"data"];
@@ -74,7 +74,7 @@ sharedExamplesFor(kLTArrayBufferModificationExamples, ^(NSDictionary *dict) {
     expect(buffer.size).to.equal(otherData.length);
     expect([buffer data]).to.equal(otherData);
   });
-  
+
   it(@"should update data with concatenated buffers of different size", ^{
     LTArrayBuffer *buffer = dict[@"buffer"];
     NSData *data = dict[@"data"];

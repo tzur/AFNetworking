@@ -22,7 +22,7 @@ beforeEach(^{
 
 context(@"adding vertices", ^{
   __block LTCommonDrawableShapeVertex vertex;
-  
+
   beforeEach(^{
     vertex.position = LTVector2::ones();
     vertex.offset = LTVector2::ones() * 2;
@@ -31,7 +31,7 @@ context(@"adding vertices", ^{
     vertex.color = LTVector4::ones() * 0.5;
     vertex.shadowColor = LTVector4::ones() * 0.25;
   });
-  
+
   it(@"should add shadow vertex", ^{
     LTAddShadowVertex(vertex, &shadowVertices);
     expect(LTAreVerticesEqual(vertex, shadowVertices.front())).to.beFalsy();
@@ -42,13 +42,13 @@ context(@"adding vertices", ^{
     expect(LTAreVerticesEqual(vertex, shadowVertices.back())).to.beTruthy();
     expect(shadowVertices.size()).to.equal(2);
   });
-  
+
   it(@"should assert when adding shadow vertex if vector is nil", ^{
     expect(^{
       LTAddShadowVertex(vertex, nil);
     }).to.raise(NSInvalidArgumentException);
   });
-  
+
   it(@"should add stroke vertex", ^{
     LTAddStrokeVertex(vertex, &strokeVertices);
     expect(LTAreVerticesEqual(vertex, strokeVertices.front())).to.beFalsy();
@@ -59,7 +59,7 @@ context(@"adding vertices", ^{
     expect(LTAreVerticesEqual(vertex, strokeVertices.back())).to.beTruthy();
     expect(strokeVertices.size()).to.equal(2);
   });
-  
+
   it(@"should assert when adding stroke vertex if vector is nil", ^{
     expect(^{
       LTAddStrokeVertex(vertex, nil);
@@ -69,7 +69,7 @@ context(@"adding vertices", ^{
 
 context(@"adding segments", ^{
   __block LTCommonDrawableShapeSegment segment;
-  
+
   beforeEach(^{
     for (LTCommonDrawableShapeVertex &vertex : segment.v) {
       vertex.offset = LTVector2::ones() * 2;
@@ -83,7 +83,7 @@ context(@"adding segments", ^{
     segment.dst0.position = LTVector2(1, 0);
     segment.dst1.position = LTVector2(1, 1);
   });
-  
+
   it(@"should add segment with shadow vertices", ^{
     LTAddSegment(segment, &strokeVertices, &shadowVertices);
     expect(strokeVertices.size()).to.equal(6);
@@ -109,7 +109,7 @@ context(@"adding segments", ^{
     expect(strokeVertices[4].position).to.beCloseToGLKVector(segment.dst1.position);
     expect(strokeVertices[5].position).to.beCloseToGLKVector(segment.dst0.position);
   });
-  
+
   it(@"should add segment without shadow vertices", ^{
     LTAddSegment(segment, &strokeVertices, nil);
     expect(strokeVertices.size()).to.equal(6);
@@ -128,7 +128,7 @@ context(@"adding segments", ^{
     expect(strokeVertices[4].position).to.beCloseToGLKVector(segment.dst1.position);
     expect(strokeVertices[5].position).to.beCloseToGLKVector(segment.dst0.position);
   });
-  
+
   it(@"should assert when adding segment if stroke vector is nil", ^{
     expect(^{
       LTAddSegment(segment, nil, &shadowVertices);

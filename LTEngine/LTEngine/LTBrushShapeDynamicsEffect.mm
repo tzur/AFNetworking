@@ -28,11 +28,11 @@
 
   CGFloat randomRoundnessJitter = [self.random randomDoubleBetweenMin:0 max:self.roundnessJitter];
   newSize.height = newSize.height * (1 - randomRoundnessJitter * (1 - self.minimumRoundness));
-  
+
   CGFloat randomAngleJitter =
       [self.random randomDoubleBetweenMin:-self.angleJitter * M_PI max:self.angleJitter * M_PI];
   CGFloat newAngle = rect.angle + randomAngleJitter;
-  
+
   LTRotatedRect *newRect = [LTRotatedRect rectWithCenter:rect.center size:newSize angle:newAngle];
   return newRect;
 }

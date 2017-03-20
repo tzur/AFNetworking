@@ -35,7 +35,7 @@ context(@"initialization", ^{
     expect(shape.translation).to.equal(CGPointZero);
     expect(shape.rotationAngle).to.equal(0);
   });
-  
+
   it(@"should initialize with params", ^{
     LTShapeDrawerParams *params = [[LTShapeDrawerParams alloc] init];
     params.lineWidth += 1;
@@ -53,28 +53,28 @@ context(@"properties", ^{
   beforeEach(^{
     shape = [[LTShapeDrawerPathShape alloc] initWithParams:nil];
   });
-  
+
   it(@"should set opacity", ^{
     CGFloat newValue = 0.5;
     expect(shape.opacity).notTo.equal(newValue);
     shape.opacity = newValue;
     expect(shape.opacity).to.equal(newValue);
   });
-  
+
   it(@"should set translation", ^{
     CGPoint newValue = CGPointMake(-4, 8);;
     expect(shape.translation).notTo.equal(newValue);
     shape.translation = newValue;
     expect(shape.translation).to.equal(newValue);
   });
-  
+
   it(@"should set rotationAngle", ^{
     CGFloat newValue = M_PI_4;
     expect(shape.rotationAngle).notTo.equal(newValue);
     shape.rotationAngle = newValue;
     expect(shape.rotationAngle).to.equal(newValue);
   });
-  
+
   it(@"should update current point according to drawing", ^{
     [shape addLineToPoint:CGPointMake(1, 1)];
     expect(shape.currentPoint).to.equal(CGPointMake(1, 1));
@@ -93,17 +93,17 @@ context(@"drawing", ^{
   __block cv::Mat4b expected;
   __block LTShapeDrawerPathShape *shape;
   __block LTShapeDrawerParams *params;
-  
+
   static const CGSize kOutputSize = CGSizeMake(64, 128);
   static const CGPoint kOutputCenter = CGPointZero + kOutputSize / 2;;
   static const LTVector4 kBackground = LTVector4(0.5, 0.5, 0.5, 1);
-  
+
   /// A large difference is allowed since there might be a difference between the output on the
   /// simulator and on devices. There's no real good solution here, as sometimes there might be 2-3
   /// pixels with a noticable difference, and sometimes more pixels but the differences won't be
   /// noticable.
   static const NSUInteger kAcceptedDistance = 10;
-  
+
   beforeEach(^{
     // Prepare output framebuffer.
     output = [LTTexture byteRGBATextureWithSize:kOutputSize];
@@ -116,13 +116,13 @@ context(@"drawing", ^{
     params.shadowWidth = 8;
     shape = [[LTShapeDrawerPathShape alloc] initWithParams:params];
   });
-  
+
   afterEach(^{
     fbo = nil;
     output = nil;
     shape = nil;
   });
-  
+
   it(@"should draw a line from the initial point", ^{
     [shape addLineToPoint:kOutputCenter];
 
@@ -132,7 +132,7 @@ context(@"drawing", ^{
     expected = LTLoadMat([self class], @"ShapeDrawerPathShapeLineFromOrigin.png");
     expect($(output.image)).to.beCloseToMatWithin($(expected), kAcceptedDistance);
   });
-  
+
   it(@"should move to a point and draw a line from there", ^{
     [shape moveToPoint:kOutputCenter];
     [shape addLineToPoint:kOutputCenter + CGSizeMake(kOutputSize.width / 2, 0)];
@@ -157,7 +157,7 @@ context(@"drawing", ^{
     expected = LTLoadMat([self class], @"ShapeDrawerPathShapeCloseSubpath.png");
     expect($(output.image)).to.beCloseToMatWithin($(expected), kAcceptedDistance);
   });
-  
+
   it(@"should draw to seperate subpaths", ^{
     [shape moveToPoint:CGPointMake(kOutputSize.width / 4, 0)];
     [shape addLineToPoint:shape.currentPoint + CGSizeMake(kOutputSize.width / 2, 0)];
@@ -177,7 +177,7 @@ context(@"drawing", ^{
     expected = LTLoadMat([self class], @"ShapeDrawerPathShapeTwoSubpaths.png");
     expect($(output.image)).to.beCloseToMatWithin($(expected), kAcceptedDistance);
   });
-  
+
   it(@"should draw path with translation", ^{
     [shape addLineToPoint:shape.currentPoint + CGSizeMake(kOutputSize.width / 2, 0)];
     shape.translation = kOutputCenter;
@@ -188,7 +188,7 @@ context(@"drawing", ^{
     expected = LTLoadMat([self class], @"ShapeDrawerPathShapeTranslation.png");
     expect($(output.image)).to.beCloseToMatWithin($(expected), kAcceptedDistance);
   });
-  
+
   it(@"should draw a path with rotation", ^{
     [shape addLineToPoint:shape.currentPoint + CGSizeMake(kOutputSize.width / 2, 0)];
     shape.rotationAngle = M_PI / 6;

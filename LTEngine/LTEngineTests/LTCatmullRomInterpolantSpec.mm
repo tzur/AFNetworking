@@ -21,7 +21,7 @@ context(@"should perform correct catmull-rom interpolation", ^{
   __block InterpolatedObject *p3;
   __block InterpolatedObject *interpolated;
   __block LTCatmullRomInterpolant *interpolant;
-  
+
   beforeEach(^{
     p0 = [[InterpolatedObject alloc] init];
     p1 = [[InterpolatedObject alloc] init];
@@ -37,17 +37,17 @@ context(@"should perform correct catmull-rom interpolation", ^{
     p3.doubleToInterpolate = p0.floatToInterpolate;
     interpolant = [[LTCatmullRomInterpolant alloc] initWithKeyFrames:@[p0, p1, p2, p3]];
   });
-  
+
   it(@"should return object equal to second keyframe for key 0", ^{
     interpolated = [interpolant valueAtKey:0];
     expect(interpolated).to.equal(p1);
   });
-  
+
   it(@"should return object equal to third keyframe for key 1", ^{
     interpolated = [interpolant valueAtKey:1];
     expect(interpolated).to.equal(p2);
   });
-  
+
   // Target values were calculated in matlab.
   it(@"should return the correct interpolation for values between [0,1]", ^{
     interpolated = [interpolant valueAtKey:0.25];

@@ -48,7 +48,7 @@ context(@"processing", ^{
 
     expect($([image image])).to.beCloseToMat($(expected));
   });
-  
+
   it(@"should use framebuffer as input", ^{
     processor = [[LTMaskOverlayProcessor alloc] initWithImage:image mask:mask];
     LTTexture *texture = [LTTexture textureWithPropertiesOf:image];

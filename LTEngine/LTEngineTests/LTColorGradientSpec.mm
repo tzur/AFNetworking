@@ -40,14 +40,14 @@ context(@"LTColorGradientControlPoint intialization", ^{
           initWithPosition:2.0 color:LTVector3(0.0, 0.0, 1.0)];
     }).to.raise(NSInvalidArgumentException);
   });
-  
+
   it(@"should initialize on position within the range", ^{
     expect(^{
       __unused LTColorGradientControlPoint *controlPoint = [[LTColorGradientControlPoint alloc]
           initWithPosition:0.5 color:LTVector3(0.0, 0.0, 1.0)];
     }).toNot.raiseAny();
   });
-  
+
   it(@"should initialize using class method on position within the range", ^{
     expect(^{
       LTVector3 whiteColor = LTVector3(1.0, 1.0, 1.0);
@@ -55,7 +55,7 @@ context(@"LTColorGradientControlPoint intialization", ^{
           [LTColorGradientControlPoint controlPointWithPosition:0.5 color:whiteColor];
     }).toNot.raiseAny();
   });
-  
+
   it(@"should not initialize using class method on position out the range", ^{
     expect(^{
       LTVector4 blueColor = LTVector4(0.0, 0.0, 1.0, 1.0);
@@ -71,28 +71,28 @@ context(@"LTColorGradient intialization", ^{
       __unused LTColorGradient *colorGradient = [[LTColorGradient alloc] initWithControlPoints:nil];
     }).to.raise(NSInvalidArgumentException);
   });
-  
+
   it(@"should not initialize on one control point", ^{
     expect(^{
       __unused LTColorGradient *colorGradient =
           [[LTColorGradient alloc] initWithControlPoints:oneControlPoint];
     }).to.raise(NSInvalidArgumentException);
   });
-  
+
   it(@"should not initialize on non-monotonically increasing control points", ^{
     expect(^{
       __unused LTColorGradient *colorGradient =
           [[LTColorGradient alloc] initWithControlPoints:nonIncreasingPoints];
     }).to.raise(NSInvalidArgumentException);
   });
-  
+
   it(@"should initialize on two control points", ^{
     expect(^{
       __unused LTColorGradient *colorGradient =
           [[LTColorGradient alloc] initWithControlPoints:twoControlPoints];
     }).toNot.raiseAny();
   });
-  
+
   it(@"should initialize on three control points", ^{
     expect(^{
       __unused LTColorGradient *colorGradient =
@@ -110,7 +110,7 @@ context(@"writing gradient values to mat", ^{
     grid(0, 1) = cv::Vec4b(255, 255, 255, 255);
     expect($(identity)).to.equalMat($(grid));
   });
-  
+
   it(@"should be equal to [0-1] linear gradient with three points", ^{
     cv::Mat4b identity = [[LTColorGradient identityGradient] matWithSamplingPoints:3];
     cv::Mat4b grid(1, 3);
@@ -120,7 +120,7 @@ context(@"writing gradient values to mat", ^{
     grid(0, 2) = cv::Vec4b(255, 255, 255, 255);
     expect($(identity)).to.equalMat($(grid));
   });
-  
+
   it(@"should be equal to pre-computed red gradient", ^{
     LTColorGradient *gradient = [[LTColorGradient alloc] initWithControlPoints:redControlPoints];
     cv::Mat4b mat = [gradient matWithSamplingPoints:256];
@@ -128,7 +128,7 @@ context(@"writing gradient values to mat", ^{
     cv::Mat image = LTLoadMat([self class], @"RedGradient.png");
     expect($(mat)).to.beCloseToMat($(image));
   });
-  
+
   it(@"should be equal to pre-computed red/blue gradient", ^{
     LTColorGradient *gradient = [[LTColorGradient alloc] initWithControlPoints:redBlueControlPoints];
     cv::Mat4b mat = [gradient matWithSamplingPoints:256];
@@ -136,7 +136,7 @@ context(@"writing gradient values to mat", ^{
     cv::Mat image = LTLoadMat([self class], @"RedBlueGradient.png");
     expect($(mat)).to.beCloseToMatWithin($(image), 3);
   });
-  
+
   it(@"should be equal to semi-transparent grdient", ^{
     LTColorGradientControlPoint *transparentBlack = [[LTColorGradientControlPoint alloc]
         initWithPosition:0.0 colorWithAlpha:LTVector4(0.0, 0.0, 0.0, 0.0)];

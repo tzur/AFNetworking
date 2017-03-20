@@ -46,7 +46,7 @@ context(@"recycling", ^{
   it(@"should not delete active programs when flushing the pool", ^{
     GLuint name1 = [pool nameForIdentifier:@"foo"];
     [pool flush];
-    
+
     expect(glIsProgram(name1)).to.equal(GL_TRUE);
   });
 });

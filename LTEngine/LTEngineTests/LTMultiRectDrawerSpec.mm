@@ -19,7 +19,7 @@ SharedExamplesBegin(LTMultiRectDrawerExamples)
 
 sharedExamplesFor(kLTMultiRectDrawerExamples, ^(NSDictionary *data) {
   __block Class drawerClass;
-  
+
   beforeEach(^{
     drawerClass = data[kLTMultiRectDrawerClass];
     LTGLContext *context = [[LTGLContext alloc] init];
@@ -28,16 +28,16 @@ sharedExamplesFor(kLTMultiRectDrawerExamples, ^(NSDictionary *data) {
     // Make sure that everything is properly drawn when face culling is enabled.
     context.faceCullingEnabled = YES;
   });
-  
+
   afterEach(^{
     [LTGLContext setCurrentContext:nil];
   });
-  
+
   __block LTTexture *texture;
   __block cv::Mat image;
-  
+
   CGSize inputSize = CGSizeMake(16, 16);
-  
+
   beforeEach(^{
     short width = inputSize.width / 2;
     short height = inputSize.height / 2;
@@ -53,11 +53,11 @@ sharedExamplesFor(kLTMultiRectDrawerExamples, ^(NSDictionary *data) {
     texture.magFilterInterpolation = LTTextureInterpolationNearest;
     texture.minFilterInterpolation = LTTextureInterpolationNearest;
   });
-  
+
   afterEach(^{
     texture = nil;
   });
-  
+
   context(@"drawing", ^{
     __block LTProgram *program;
     __block id<LTMultiRectDrawer> rectDrawer;
@@ -68,9 +68,9 @@ sharedExamplesFor(kLTMultiRectDrawerExamples, ^(NSDictionary *data) {
       program = [[LTProgram alloc] initWithVertexSource:[PassthroughVsh source]
                                          fragmentSource:[PassthroughFsh source]];
       rectDrawer = [[drawerClass alloc] initWithProgram:program sourceTexture:texture];
-      
+
       output = [LTTexture byteRGBATextureWithSize:inputSize];
-      
+
       fbo = [[LTFbo alloc] initWithTexture:output];
     });
 
@@ -97,19 +97,19 @@ sharedExamplesFor(kLTMultiRectDrawerExamples, ^(NSDictionary *data) {
                        inFramebuffer:fbo
                     fromRotatedRects:@[[LTRotatedRect rect:sourceRect withAngle:sourceAngle],
                                        [LTRotatedRect rect:sourceRect withAngle:sourceAngle]]];
-        
+
         cv::Mat expected(inputSize.width, inputSize.height, CV_8UC4);
         expected.setTo(cv::Vec4b(0, 0, 0, 255));
-        
+
         cv::Mat subrect =
         LTRotatedSubrect(image, [LTRotatedRect rect:sourceRect withAngle:sourceAngle]);
-        
+
         subrect.copyTo(expected(LTCVRectWithCGRect(targetRect0)));
         subrect.copyTo(expected(LTCVRectWithCGRect(targetRect1)));
-        
+
         expect(LTCompareMat(expected, output.image)).to.beTruthy();
       });
-      
+
       it(@"should draw an array of subrects of input to an array of rotated subrects of output", ^{
         [fbo clearWithColor:LTVector4(0, 0, 0, 1)];
         CGRect targetRect0 = CGRectMake(inputSize.width / 8, inputSize.height / 8,
@@ -124,15 +124,15 @@ sharedExamplesFor(kLTMultiRectDrawerExamples, ^(NSDictionary *data) {
                        inFramebuffer:fbo
                     fromRotatedRects:@[[LTRotatedRect rect:sourceRect],
                                        [LTRotatedRect rect:sourceRect]]];
-        
+
         cv::Mat expected(inputSize.width, inputSize.height, CV_8UC4);
         expected.setTo(cv::Vec4b(0, 0, 0, 255));
-        
+
         cv::Mat4b tempMat(inputSize.width, inputSize.height);
         tempMat.setTo(cv::Vec4b(0, 0, 0, 255));
         image(LTCVRectWithCGRect(sourceRect)).copyTo(tempMat(LTCVRectWithCGRect(sourceRect)));
         tempMat = LTRotateMat(tempMat, targetAngle);
-        
+
         CGSize tempSize = inputSize / 2;
         CGRect tempRoi = CGRectMake(inputSize.width / 4, inputSize.height / 4,
                                     inputSize.width / 2, inputSize.height / 2);
@@ -140,10 +140,10 @@ sharedExamplesFor(kLTMultiRectDrawerExamples, ^(NSDictionary *data) {
         CGRect targetRoi1 = CGRectFromOriginAndSize(CGPointZero + tempSize, tempSize);
         tempMat(LTCVRectWithCGRect(tempRoi)).copyTo(expected(LTCVRectWithCGRect(targetRoi0)));
         tempMat(LTCVRectWithCGRect(tempRoi)).copyTo(expected(LTCVRectWithCGRect(targetRoi1)));
-        
+
         expect(LTCompareMat(expected, output.image)).to.beTruthy();
       });
-      
+
       it(@"should draw an array of rotated subrects of input to an array of rotated subrects of "
          "output", ^{
            [fbo clearWithColor:LTVector4(0, 0, 0, 1)];
@@ -161,11 +161,10 @@ sharedExamplesFor(kLTMultiRectDrawerExamples, ^(NSDictionary *data) {
                           inFramebuffer:fbo
                        fromRotatedRects:@[[LTRotatedRect rect:sourceRect withAngle:sourceAngle0],
                                           [LTRotatedRect rect:sourceRect withAngle:sourceAngle1]]];
-           
+
            cv::Mat expected(inputSize.width, inputSize.height, CV_8UC4);
            expected.setTo(cv::Vec4b(0, 0, 0, 255));
-           
-           
+
            cv::Mat4b tempMat0(inputSize.width, inputSize.height);
            cv::Mat4b tempMat1(inputSize.width, inputSize.height);
            tempMat0.setTo(cv::Vec4b(0, 0, 0, 255));
@@ -176,7 +175,7 @@ sharedExamplesFor(kLTMultiRectDrawerExamples, ^(NSDictionary *data) {
               copyTo(tempMat1(LTCVRectWithCGRect(sourceRect)));
            tempMat0 = LTRotateMat(tempMat0, targetAngle);
            tempMat1 = LTRotateMat(tempMat1, targetAngle);
-           
+
            CGSize tempSize = inputSize / 2;
            CGRect tempRoi = CGRectMake(inputSize.width / 4, inputSize.height / 4,
                                        inputSize.width / 2, inputSize.height / 2);
@@ -184,30 +183,30 @@ sharedExamplesFor(kLTMultiRectDrawerExamples, ^(NSDictionary *data) {
            CGRect targetRoi1 = CGRectFromOriginAndSize(CGPointZero + tempSize, tempSize);
            tempMat0(LTCVRectWithCGRect(tempRoi)).copyTo(expected(LTCVRectWithCGRect(targetRoi0)));
            tempMat1(LTCVRectWithCGRect(tempRoi)).copyTo(expected(LTCVRectWithCGRect(targetRoi1)));
-           
+
            expect(LTCompareMat(expected, output.image)).to.beTruthy();
        });
     });
-  
+
     /// Things are different when rendering to a screen framebuffer, since the output is actually
     /// different, tests were added to verify its correctness.
     context(@"screen framebuffer", ^{
       __block LTTexture *expectedTexture;
       __block LTFbo *expectedFbo;
       __block cv::Mat4b expected;
-      
+
       beforeEach(^{
         expectedTexture = [LTTexture textureWithPropertiesOf:output];
         expectedFbo = [[LTFbo alloc] initWithTexture:expectedTexture];
         [expectedFbo clearWithColor:LTVector4(0, 0, 0, 1)];
         expected.create(expectedTexture.size.height, expectedTexture.size.width);
       });
-      
+
       afterEach(^{
         expectedFbo = nil;
         expectedTexture = nil;
       });
-      
+
       it(@"should draw an array of rotated subrects of input to an array of subrects of output", ^{
         [fbo clearWithColor:LTVector4(0, 0, 0, 1)];
         CGRect targetRect0 = CGRectMake(0, 0, inputSize.width / 2, inputSize.height / 2);
@@ -216,7 +215,7 @@ sharedExamplesFor(kLTMultiRectDrawerExamples, ^(NSDictionary *data) {
         CGRect sourceRect = CGRectMake(inputSize.width / 4, inputSize.height / 4,
                                        inputSize.width / 2, inputSize.height / 2);
         CGFloat sourceAngle = M_PI / 6;
-        
+
         [fbo bindAndDrawOnScreen:^{
           [rectDrawer drawRotatedRects:@[[LTRotatedRect rect:targetRect0],
                                          [LTRotatedRect rect:targetRect1]]
@@ -224,17 +223,17 @@ sharedExamplesFor(kLTMultiRectDrawerExamples, ^(NSDictionary *data) {
                       fromRotatedRects:@[[LTRotatedRect rect:sourceRect withAngle:sourceAngle],
                                          [LTRotatedRect rect:sourceRect withAngle:sourceAngle]]];
         }];
-        
+
         [rectDrawer drawRotatedRects:@[[LTRotatedRect rect:targetRect0],
                                        [LTRotatedRect rect:targetRect1]]
                        inFramebuffer:expectedFbo
                     fromRotatedRects:@[[LTRotatedRect rect:sourceRect withAngle:sourceAngle],
                                        [LTRotatedRect rect:sourceRect withAngle:sourceAngle]]];
         cv::flip(expectedTexture.image, expected, 0);
-        
+
         expect(LTCompareMat(expected, output.image)).to.beTruthy();
       });
-      
+
       it(@"should draw an array of subrects of input to an array of rotated subrects of output", ^{
         [fbo clearWithColor:LTVector4(0, 0, 0, 1)];
         CGRect targetRect0 = CGRectMake(inputSize.width / 8, inputSize.height / 8,
@@ -244,7 +243,7 @@ sharedExamplesFor(kLTMultiRectDrawerExamples, ^(NSDictionary *data) {
         CGRect sourceRect = CGRectMake(3 * inputSize.width / 8, 3 * inputSize.height / 8,
                                        inputSize.width / 4, inputSize.height / 4);
         CGFloat targetAngle = M_PI / 6;
-        
+
         [fbo bindAndDrawOnScreen:^{
           [rectDrawer drawRotatedRects:@[[LTRotatedRect rect:targetRect0 withAngle:targetAngle],
                                          [LTRotatedRect rect:targetRect1 withAngle:targetAngle]]
@@ -252,17 +251,17 @@ sharedExamplesFor(kLTMultiRectDrawerExamples, ^(NSDictionary *data) {
                       fromRotatedRects:@[[LTRotatedRect rect:sourceRect],
                                          [LTRotatedRect rect:sourceRect]]];
         }];
-        
+
         [rectDrawer drawRotatedRects:@[[LTRotatedRect rect:targetRect0 withAngle:targetAngle],
                                        [LTRotatedRect rect:targetRect1 withAngle:targetAngle]]
                        inFramebuffer:expectedFbo
                     fromRotatedRects:@[[LTRotatedRect rect:sourceRect],
                                        [LTRotatedRect rect:sourceRect]]];
         cv::flip(expectedTexture.image, expected, 0);
-        
+
         expect(LTCompareMat(expected, output.image)).to.beTruthy();
       });
-      
+
       it(@"should draw an array of rotated subrects of input to an array of rotated subrects of "
          "output", ^{
         [fbo clearWithColor:LTVector4(0, 0, 0, 1)];
@@ -283,14 +282,14 @@ sharedExamplesFor(kLTMultiRectDrawerExamples, ^(NSDictionary *data) {
                       fromRotatedRects:@[[LTRotatedRect rect:sourceRect withAngle:sourceAngle0],
                                          [LTRotatedRect rect:sourceRect withAngle:sourceAngle1]]];
         }];
-           
+
         [rectDrawer drawRotatedRects:@[[LTRotatedRect rect:targetRect0 withAngle:targetAngle],
                                         [LTRotatedRect rect:targetRect1 withAngle:targetAngle]]
                        inFramebuffer:expectedFbo
                     fromRotatedRects:@[[LTRotatedRect rect:sourceRect withAngle:sourceAngle0],
                                        [LTRotatedRect rect:sourceRect withAngle:sourceAngle1]]];
         cv::flip(expectedTexture.image, expected, 0);
-        
+
         expect(LTCompareMat(expected, output.image)).to.beTruthy();
       });
     });

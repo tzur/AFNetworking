@@ -40,13 +40,13 @@ context(@"properties", ^{
 
     expect(LTFuzzyCompareMat(processor.noise.image, defaultNoise)).to.beTruthy();
   });
-  
+
   it(@"should fail on invalid spread parameter", ^{
     expect(^{
       processor.spread = 1000;
     }).to.raise(NSInvalidArgumentException);
   });
-  
+
   it(@"should fail on invalid corner parameter", ^{
     expect(^{
       processor.corner = 1.5;
@@ -58,18 +58,18 @@ context(@"properties", ^{
       processor.transition = -0.1;
     }).to.raise(NSInvalidArgumentException);
   });
-  
+
   it(@"should fail on invalid noise amplitude", ^{
     expect(^{
       processor.noiseAmplitude = -1;
     }).to.raise(NSInvalidArgumentException);
   });
-  
+
   it(@"should return normalized noise channel mixer property", ^{
     processor.noiseChannelMixer = LTVector3(-1.0, 0.0, 0.0);
     expect(processor.noiseChannelMixer).to.beCloseToGLKVector(LTVector3(1.0, 0.0, 0.0));
   });
-  
+
   it(@"should not fail on correct input", ^{
     expect(^{
       processor.spread = 25.0;
@@ -93,7 +93,7 @@ context(@"processing", ^{
         [LTTexture textureWithImage:LTLoadMat([self class], @"RoundWideVignetting.png")];
     expect($(precomputedVignette.image)).to.beCloseToMat($(vignetteTexture.image));
   });
-  
+
   it(@"should return rounded rect vignetting pattern", ^{
     LTTexture *vignetteTexture = [LTTexture byteRGBATextureWithSize:CGSizeMake(16, 32)];
     LTProceduralVignetting *processor =
@@ -105,7 +105,7 @@ context(@"processing", ^{
         [LTTexture textureWithImage:LTLoadMat([self class], @"StraightWideVignetting.png")];
     expect($(precomputedVignette.image)).to.beCloseToMat($(vignetteTexture.image));
   });
-  
+
   pending(@"should test tiled noise when implemented");
 });
 

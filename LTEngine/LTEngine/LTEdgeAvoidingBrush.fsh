@@ -49,7 +49,7 @@ void main() {
   highp vec3 sampleDiff2 = inputImagePixel - texture2D(inputImage, samplePoint2).rgb;
   highp vec3 sampleDiff3 = inputImagePixel - texture2D(inputImage, samplePoint3).rgb;
   highp vec3 sampleDiff4 = inputImagePixel - texture2D(inputImage, samplePoint4).rgb;
-  
+
   highp float rgbDist0 = dot(sampleDiff0, sampleDiff0);
   highp float rgbDist1 = dot(sampleDiff1, sampleDiff1);
   highp float rgbDist2 = dot(sampleDiff2, sampleDiff2);

@@ -18,6 +18,6 @@ void main() {
   vTexcoord = (texture * vec3(texcoord.xy, 1.0)).xy;
   vSampleCoords[0] = vTexcoord + vec2(1.0, 0.0) * texelOffset;
   vSampleCoords[1] = vTexcoord + vec2(0.0, 1.0) * texelOffset;
-  
+
   gl_Position = projection * modelview * position;
 }

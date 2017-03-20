@@ -53,7 +53,7 @@
   for (NSString *propertyName in [self.keyFrames.firstObject propertiesToInterpolate]) {
     properties[propertyName] = @([self valueOfPropertyNamed:propertyName atKey:key]);
   }
-  
+
   if ([self.keyFrames.firstObject respondsToSelector:@selector(initWithInterpolatedProperties:)]) {
     return [[[self.keyFrames.firstObject class] alloc] initWithInterpolatedProperties:properties];
   } else {
@@ -78,7 +78,7 @@
   for (NSNumber *coefficient in coefficientsForProperty) {
     coefficients.push_back([coefficient doubleValue]);
   }
-  
+
   CGFloats values;
   for (const CGFloat &key : keys) {
     double value = 0;
@@ -87,7 +87,7 @@
     }
     values.push_back(value);
   }
-  
+
   return values;
 }
 

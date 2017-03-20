@@ -572,11 +572,11 @@ NS_ASSUME_NONNULL_BEGIN
              minFilterInterpolation == LTTextureInterpolationLinear,
              @"Min filter interpolation for mipmaps is valid for mipmap textures only");
   }
-  
+
   [self bindAndExecute:^{
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, minFilterInterpolation);
   }];
-  
+
   _minFilterInterpolation = minFilterInterpolation;
 }
 
@@ -592,7 +592,7 @@ NS_ASSUME_NONNULL_BEGIN
   [self bindAndExecute:^{
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, magFilterInterpolation);
   }];
-  
+
   _magFilterInterpolation = magFilterInterpolation;
 }
 
@@ -600,18 +600,18 @@ NS_ASSUME_NONNULL_BEGIN
   if (!self.name) {
     return;
   }
-  
+
   // When changing the mode to repeat, make sure the texture is POT.
   if (wrap == LTTextureWrapRepeat && !LTIsPowerOfTwo(self.size)) {
     LogWarning(@"Trying to change texture wrap method to repeat for NPOT texture");
     return;
   }
-  
+
   [self bindAndExecute:^{
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrap);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrap);
   }];
-  
+
   _wrap = wrap;
 }
 

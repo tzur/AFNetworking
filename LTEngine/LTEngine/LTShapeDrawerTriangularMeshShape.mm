@@ -96,7 +96,7 @@ typedef union {
     edges = [self edgesFromTriangle:triangle];
     edgeMask = newMask;
   }
-  
+
   // Expand the triangle (to include room for the shadows), and generate its vertices.
   triangle = [self expandedTriangleFromEdges:edges];
   LTShapeDrawerTriangle vertices =
@@ -177,7 +177,7 @@ typedef union {
   GLKMatrix4 modelview =
       GLKMatrix4Rotate(GLKMatrix4MakeTranslation(self.translation.x, self.translation.y, 0),
                        self.rotationAngle, 0, 0, 1);
-  
+
   self.program[[LTShapeDrawerTriangularMeshShapeVsh modelview]] = $(modelview);
   self.program[[LTShapeDrawerTriangularMeshShapeFsh opacity]] = @(self.opacity);
 }

@@ -76,7 +76,7 @@ context(@"half gaussian", ^{
       LTCreateHalfGaussian(5, -1, NO);
     }).to.raise(NSInvalidArgumentException);
   });
-  
+
   it(@"should create half gaussian with the given radius", ^{
     CGFloats gaussian = LTCreateHalfGaussian(4, 2, NO);
     expect(gaussian.size()).to.equal(5);

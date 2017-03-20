@@ -162,7 +162,7 @@ context(@"packing", ^{
             [[LTChannelsPackingProcessor alloc] initWithInputs:@[input1, input2, input3]
                                                         output:output];
         [channelPackingProcessor process];
-        
+
         cv::Mat4b expected (2, 2, cv::Vec4b(64, 128, 192, 0));
         expect($([output image])).to.equalMat($(expected));
       });

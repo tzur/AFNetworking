@@ -14,6 +14,6 @@ void main() {
     // Sum the neigbourhood pixels.
     colorSum += texture2D(sourceTexture, vSampleCoords[i]);
   }
-  
+
   gl_FragColor = colorSum / SAMPLE_COUNT_FLOAT;
 }

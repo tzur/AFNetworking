@@ -37,7 +37,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Returns a parameterized object represented by the given \c model, or \c nil if the number of
 /// control points of the given \c model is smaller than the \c numberOfRequiredValues of the
-/// factory described by the \c type of the given \c model. 
+/// factory described by the \c type of the given \c model.
 + (nullable id<LTParameterizedObject>)parameterizedObjectFromModel:(LTControlPointModel *)model;
 
 /// Iteratively constructed parameterized object. Is \c nil as long as the total number of control

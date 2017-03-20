@@ -54,7 +54,7 @@ static NSMutableDictionary *cachedPrograms;
   dispatch_once(&onceToken, ^{
     cachedPrograms = [NSMutableDictionary dictionary];
   });
-  
+
   if (self = [super init]) {
     self.params = params ? [params copy] : [[LTShapeDrawerParams alloc] init];
     self.opacity = self.defaultOpacity;

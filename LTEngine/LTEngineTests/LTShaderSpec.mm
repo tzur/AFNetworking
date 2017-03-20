@@ -18,34 +18,34 @@ context(@"shader compilation", ^{
 
     expect(shader).notTo.beNil();
   });
-  
+
   it(@"should compile fragment shader with an empty source", ^{
     LTShader *shader = [[LTShader alloc] initWithType:LTShaderTypeFragment andSource:@""];
 
     expect(shader).notTo.beNil();
   });
-  
+
   it(@"should fail compiling invalid vertex shader source", ^{
     expect(^{
       __unused LTShader *share = [[LTShader alloc] initWithType:LTShaderTypeVertex
                                                       andSource:kInvalidVertexSource];
     }).to.raise(kLTShaderCompilationFailedException);
   });
-  
+
   it(@"should fail compiling invalid fragment shader source", ^{
     expect(^{
       __unused LTShader *share = [[LTShader alloc] initWithType:LTShaderTypeFragment
                                                       andSource:kInvalidFragmentSource];
     }).to.raise(kLTShaderCompilationFailedException);
   });
-  
+
   it(@"should compile basic vertex shader", ^{
     LTShader *shader = [[LTShader alloc] initWithType:LTShaderTypeVertex
                                             andSource:kBasicVertexSource];
 
     expect(shader).notTo.beNil();
   });
-  
+
   it(@"should compile basic fragment shader", ^{
     LTShader *shader = [[LTShader alloc] initWithType:LTShaderTypeFragment
                                             andSource:kBasicFragmentSource];

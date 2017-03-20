@@ -61,15 +61,15 @@ void main() {
     highp vec4 shadow = vec4(vShadowColor.rgb, vShadowColor.a * shadowFactor);
     src = mix(shadow, color, vec4(colorFactor));
   }
-  
+
   // Apply the flow factor on the alpha channel, and use the opacity as an upper bound.
   src.a = min(src.a, opacity);
-  
+
   // Blend the source and the target according to the normal alpha blending formula:
   // http://en.wikipedia.org/wiki/Alpha_compositing#Alpha_blending
   highp float a = dst.a + (1.0 - dst.a) * src.a;
   highp vec3 rgb = src.rgb * src.a + (1.0 - src.a) * dst.a * dst.rgb;
-  
+
   // If the result alpha is 0, the result rgb should be 0 as well.
   // safeA = (a <= 0) ? 1 : a;
   // gl_FragColor = (a <= 0) ? 0 : vec4(rgb / a, a);

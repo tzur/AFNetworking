@@ -67,7 +67,7 @@
   //    of the framebuffers and the second is the scaling ratio between the framebuffer size and the
   //    size of the rect we're drawing to (see \c size calculation).
   CGPoint origin = -1 * rect.origin * (framebufferSize / rect.size);
-  
+
   // Size is calculated by measuring the ratio between the original framebuffer size and the rect
   // we're drawing to, and applying this factor to the framebuffer size we're rendering into.
   CGSize size = framebufferSize * (originalFramebufferSize / rect.size);
@@ -77,7 +77,7 @@
 
 - (void)processInRect:(CGRect)rect {
   [self preprocess];
-  
+
   [self processWithPlacement:^(LTNextIterationPlacement *placement) {
     [self.drawer setSourceTexture:placement.sourceTexture];
 

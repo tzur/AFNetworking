@@ -6,6 +6,6 @@ uniform highp vec4 color;
 
 void main() {
   sourceTexture;
-  
+
   gl_FragColor = color;
 }

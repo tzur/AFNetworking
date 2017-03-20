@@ -180,7 +180,7 @@ NSString * const kLTModelValueTransformerEnumNameKey = @"name";
 
 + (NSDateFormatter *)lt_UTCDateFormatter {
   static NSDateFormatter *dateFormatter;
-  
+
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
     dateFormatter = [[NSDateFormatter alloc] init];
@@ -188,7 +188,7 @@ NSString * const kLTModelValueTransformerEnumNameKey = @"name";
     dateFormatter.timeZone = [NSTimeZone timeZoneWithName:@"UTC"];
     dateFormatter.dateFormat = @"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
   });
-  
+
   return dateFormatter;
 }
 

@@ -19,7 +19,7 @@ context(@"should perform correct linear interpolation", ^{
   __block InterpolatedObject *second;
   __block InterpolatedObject *interpolated;
   __block LTLinearInterpolant *interpolant;
-  
+
   beforeEach(^{
     first = [[InterpolatedObject alloc] init];
     second = [[InterpolatedObject alloc] init];
@@ -29,17 +29,17 @@ context(@"should perform correct linear interpolation", ^{
     second.doubleToInterpolate = 5;
     interpolant = [[LTLinearInterpolant alloc] initWithKeyFrames:@[first, second]];
   });
-  
+
   it(@"should return object equal to first keyframe for key 0", ^{
     interpolated = [interpolant valueAtKey:0];
     expect(interpolated).to.equal(first);
   });
-  
+
   it(@"should return object equal to second keyframe for key 1", ^{
     interpolated = [interpolant valueAtKey:1];
     expect(interpolated).to.equal(second);
   });
-  
+
   it(@"should return linear combination for values between [0,1]", ^{
     interpolated = [interpolant valueAtKey:0.25];
     expect(interpolated.floatToInterpolate).to.beCloseTo(1.25);

@@ -262,7 +262,7 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
     context.renderingToScreen = YES;
     [self drawToBoundFramebuffer];
   }];
-  
+
   // We don't need the \c LTEAGLView buffers for the next draw, so hint that they can be discarded.
   // (Since we clear the buffers at the beginning of each draw cycle).
   const std::array<GLenum, 2> discards{{GL_COLOR_ATTACHMENT0, GL_DEPTH_ATTACHMENT}};
@@ -296,9 +296,9 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
   }
 
   [self updateContent];
-  
+
   [self.context clearWithColor:self.backgroundColor.lt_ltVector];
-  
+
   // Get the visible content rectangle, in floating-point pixel units of the content coordinate
   // system.
   CGRect visibleContentRect = self.contentLocationProvider.visibleContentRect;
@@ -368,7 +368,7 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
     .sourceAlpha = LTGLContextBlendFuncOne,
     .destinationAlpha = LTGLContextBlendFuncZero
   };
-  
+
   [self.context executeAndPreserveState:^(LTGLContext *context) {
     context.blendEnabled = YES;
     context.blendFunc = kLTGLContextBlendFuncChecker;
@@ -404,7 +404,7 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
                                                  drawProcessedContent:textureToDraw
                                                withVisibleContentRect:visibleContentRect];
       }
-      
+
       // Otherwise, use the default rectDrawer to draw the content.
       if (!didDrawProcessedContent && textureToDraw) {
         [self.rectDrawer setSourceTexture:textureToDraw];
@@ -417,7 +417,7 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
 
 - (void)drawOverlayForVisibleContentRect:(CGRect)visibleContentRect {
   [self.pixelGrid drawContentRegion:visibleContentRect toFramebufferWithSize:self.framebufferSize];
-  
+
   if ([self.drawDelegate
           respondsToSelector:@selector(presentationView:drawOverlayAboveContentWithTransform:)]) {
     CGAffineTransform transform = [self transformForVisibleContentRect:visibleContentRect];
@@ -441,11 +441,11 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
   // system into point units of the presentation coordinate system.
   CGRect visibleBox = CGRectApplyAffineTransform(self.contentBounds,
                                                  [self transformForVisibleContentRect:rect]);
-  
+
   UIEdgeInsets insets = self.contentLocationProvider.contentInset * self.contentScaleFactor;
   CGRect paddingBox = UIEdgeInsetsInsetRect(self.framebufferBounds, insets);
   CGRect box = CGRectIntersection(visibleBox, paddingBox);
-  
+
   // Flip vertically, since the scissor box is defined in openGL coordinates ((0,0) on bottom left).
   box = CGRectFromEdges(CGRectGetMinX(box), self.framebufferSize.height - CGRectGetMaxY(box),
                         CGRectGetMaxX(box), self.framebufferSize.height - CGRectGetMinY(box));

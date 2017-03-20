@@ -39,20 +39,20 @@ cv::Mat4b LTRotatedSubrect(const cv::Mat4b input, LTRotatedRect *subrect) {
   cv::Mat1b inputG(input.rows, input.cols);
   cv::Mat1b inputB(input.rows, input.cols);
   cv::Mat1b inputA(input.rows, input.cols);
-  
+
   cv::Mat mixIn[] = {input};
   cv::Mat mixOut[] = {inputR, inputG, inputB, inputA};
   int fromTo[] = {0, 0, 1, 1, 2, 2, 3, 3};
   cv::mixChannels(mixIn, 1, mixOut, 4, fromTo, 4);
-  
+
   cv::Mat1b rotatedR, rotatedG, rotatedB, rotatedA;
   cv::Mat1b croppedR, croppedG, croppedB, croppedA;
-  
+
   cv::warpAffine(inputR, rotatedR, R, inputR.size(), cv::INTER_NEAREST, cv::BORDER_CONSTANT, 0);
   cv::warpAffine(inputG, rotatedG, R, inputR.size(), cv::INTER_NEAREST, cv::BORDER_CONSTANT, 0);
   cv::warpAffine(inputB, rotatedB, R, inputR.size(), cv::INTER_NEAREST, cv::BORDER_CONSTANT, 0);
   cv::warpAffine(inputA, rotatedA, R, inputR.size(), cv::INTER_NEAREST, cv::BORDER_CONSTANT, 255);
-  
+
   cv::getRectSubPix(rotatedR, size, rect.center, croppedR);
   cv::getRectSubPix(rotatedG, size, rect.center, croppedG);
   cv::getRectSubPix(rotatedB, size, rect.center, croppedB);
@@ -111,7 +111,7 @@ static NSString * const kFragmentWithThreeSamplersSource =
 
 sharedExamplesFor(kLTTextureDrawerExamples, ^(NSDictionary *data) {
   __block Class drawerClass;
-  
+
   beforeEach(^{
     drawerClass = data[kLTTextureDrawerClass];
     LTGLContext *context = [[LTGLContext alloc] init];
@@ -120,16 +120,16 @@ sharedExamplesFor(kLTTextureDrawerExamples, ^(NSDictionary *data) {
     // Make sure that everything is properly drawn when face culling is enabled.
     context.faceCullingEnabled = YES;
   });
-  
+
   afterEach(^{
     [LTGLContext setCurrentContext:nil];
   });
-  
+
   __block LTTexture *texture;
   __block cv::Mat image;
-  
+
   CGSize inputSize = CGSizeMake(16, 16);
-  
+
   beforeEach(^{
     short width = inputSize.width / 2;
     short height = inputSize.height / 2;
@@ -143,16 +143,16 @@ sharedExamplesFor(kLTTextureDrawerExamples, ^(NSDictionary *data) {
     texture.minFilterInterpolation = LTTextureInterpolationNearest;
     texture.magFilterInterpolation = LTTextureInterpolationNearest;
   });
-  
+
   afterEach(^{
     texture = nil;
   });
-  
+
   context(@"initialization", ^{
     it(@"should initialize with valid program", ^{
       LTProgram *program = [[LTProgram alloc] initWithVertexSource:[PassthroughVsh source]
                                                     fragmentSource:[PassthroughFsh source]];
-      
+
       expect(^{
         __unused id drawer = [[drawerClass alloc] initWithProgram:program
                                                     sourceTexture:texture];
@@ -162,14 +162,14 @@ sharedExamplesFor(kLTTextureDrawerExamples, ^(NSDictionary *data) {
     it(@"should not initialize with program with missing uniforms", ^{
       LTProgram *program = [[LTProgram alloc] initWithVertexSource:kMissingVertexSource
                                                     fragmentSource:[PassthroughFsh source]];
-      
+
       expect(^{
         __unused id drawer = [[drawerClass alloc] initWithProgram:program
                                                     sourceTexture:texture];
       }).to.raise(NSInvalidArgumentException);
     });
   });
-  
+
   context(@"drawing", ^{
     __block LTProgram *program;
     __block id<LTTextureDrawer> drawer;
@@ -180,9 +180,9 @@ sharedExamplesFor(kLTTextureDrawerExamples, ^(NSDictionary *data) {
       program = [[LTProgram alloc] initWithVertexSource:[PassthroughVsh source]
                                          fragmentSource:[PassthroughFsh source]];
       drawer = [[drawerClass alloc] initWithProgram:program sourceTexture:texture];
-      
+
       output = [LTTexture byteRGBATextureWithSize:inputSize];
-      
+
       fbo = [[LTFbo alloc] initWithTexture:output];
     });
 
@@ -197,53 +197,53 @@ sharedExamplesFor(kLTTextureDrawerExamples, ^(NSDictionary *data) {
       it(@"should draw to target texture of the same size", ^{
         [drawer drawRect:CGRectMake(0, 0, inputSize.width, inputSize.height) inFramebuffer:fbo
                 fromRect:CGRectMake(0, 0, inputSize.width, inputSize.height)];
-        
+
         expect(LTCompareMat(output.image, image)).to.beTruthy();
       });
-      
+
       it(@"should draw subrect of input to entire output", ^{
         [drawer drawRect:CGRectMake(0, 0, inputSize.width, inputSize.height) inFramebuffer:fbo
                 fromRect:CGRectMake(inputSize.width / 2, 0,
                                     inputSize.width / 2, inputSize.height / 2)];
-        
+
         cv::Mat expected(inputSize.height, inputSize.width, CV_8UC4);
         expected.setTo(image.at<cv::Vec4b>(0, inputSize.width / 2));
         expect(LTCompareMat(expected, output.image)).to.beTruthy();
       });
-      
+
       it(@"should draw all input to subrect of output", ^{
         [fbo clearWithColor:LTVector4(0, 0, 0, 1)];
         [drawer drawRect:CGRectMake(inputSize.width / 2, 0,
                                     inputSize.width / 2, inputSize.height / 2)
            inFramebuffer:fbo fromRect:CGRectMake(0, 0, inputSize.width, inputSize.height)];
-        
+
         // Actual image should be a resized version at (0, w/2). Prepare the resized version and put
         // it where it belongs.
         cv::Mat resized;
         cv::resize(image, resized, cv::Size(), 0.5, 0.5, cv::INTER_NEAREST);
-        
+
         cv::Mat expected(inputSize.width, inputSize.height, CV_8UC4);
         expected.setTo(cv::Vec4b(0, 0, 0, 255));
-        
+
         cv::Rect roi(inputSize.width / 2, 0, inputSize.width / 2, inputSize.height / 2);
         resized.copyTo(expected(roi));
-        
+
         expect(LTCompareMat(expected, output.image)).to.beTruthy();
       });
-      
+
       it(@"should draw subrect of input to subrect of output", ^{
         [fbo clearWithColor:LTVector4(0, 0, 0, 1)];
         [drawer drawRect:CGRectMake(inputSize.width / 2, 0,
                                     inputSize.width / 2, inputSize.height / 2)
            inFramebuffer:fbo fromRect:CGRectMake(0, 0, inputSize.width / 2, inputSize.height / 2)];
-        
+
         cv::Mat expected(inputSize.width, inputSize.height, CV_8UC4);
         expected.setTo(cv::Vec4b(0, 0, 0, 255));
-        
+
         cv::Rect targetRoi(inputSize.width / 2, 0, inputSize.width / 2, inputSize.height / 2);
         cv::Rect sourceRoi(0, 0, inputSize.width / 2, inputSize.height / 2);
         image(sourceRoi).copyTo(expected(targetRoi));
-        
+
         expect(LTCompareMat(expected, output.image)).to.beTruthy();
       });
     });
@@ -256,7 +256,7 @@ sharedExamplesFor(kLTTextureDrawerExamples, ^(NSDictionary *data) {
           [drawer drawRect:CGRectMake(0, 0, inputSize.width, inputSize.height)
          inFramebufferWithSize:fbo.size fromRect:subrect];
         }];
-        
+
         // Actual image should be a resized version of the subimage at the given range, flipped
         // across the x-axis.
         cv::Mat expected(inputSize.height, inputSize.width, CV_8UC4);
@@ -267,7 +267,7 @@ sharedExamplesFor(kLTTextureDrawerExamples, ^(NSDictionary *data) {
         cv::flip(expected, expected, 0);
         expect(LTCompareMat(expected, output.image)).to.beTruthy();
       });
-      
+
       it(@"should draw all input to subrect of output", ^{
         const CGRect subrect = CGRectMake(2 * inputSize.width / 16, 3 * inputSize.height / 16,
                                           inputSize.width / 2, inputSize.height / 2);
@@ -276,7 +276,7 @@ sharedExamplesFor(kLTTextureDrawerExamples, ^(NSDictionary *data) {
           [drawer drawRect:subrect inFramebufferWithSize:fbo.size
                       fromRect:CGRectMake(0, 0, inputSize.width, inputSize.height)];
         }];
-        
+
         // Actual image should be a resized version positioned at the given subrect.
         cv::Mat resized;
         cv::resize(image, resized, cv::Size(), 0.5, 0.5, cv::INTER_NEAREST);
@@ -287,7 +287,7 @@ sharedExamplesFor(kLTTextureDrawerExamples, ^(NSDictionary *data) {
         cv::flip(expected, expected, 0);
         expect(LTCompareMat(expected, output.image)).to.beTruthy();
       });
-      
+
       it(@"should draw subrect of input to subrect of output", ^{
         const CGRect inRect = CGRectMake(6 * inputSize.width / 16, 7 * inputSize.height / 16,
                                          inputSize.width / 4, inputSize.height / 4);
@@ -297,7 +297,7 @@ sharedExamplesFor(kLTTextureDrawerExamples, ^(NSDictionary *data) {
         [fbo bindAndDrawOnScreen:^{
           [drawer drawRect:outRect inFramebufferWithSize:fbo.size fromRect:inRect];
         }];
-        
+
         // Actual image should be a resized version of the subimage at inputSubrect positioned at
         // the given outputSubrect.
         cv::Mat resized;
@@ -305,7 +305,7 @@ sharedExamplesFor(kLTTextureDrawerExamples, ^(NSDictionary *data) {
                                           inRect.size.width, inRect.size.height));
         cv::resize(subimage, resized,
                    cv::Size(outRect.size.width, outRect.size.height), 0, 0, cv::INTER_NEAREST);
-        
+
         cv::Mat expected(inputSize.width, inputSize.height, CV_8UC4);
         expected.setTo(cv::Vec4b(0, 0, 0, 255));
         resized.copyTo(expected(cv::Rect(outRect.origin.x, outRect.origin.y,
@@ -319,13 +319,13 @@ sharedExamplesFor(kLTTextureDrawerExamples, ^(NSDictionary *data) {
       it(@"should switch source texture", ^{
         cv::Mat expected(inputSize.height, inputSize.width, CV_8UC4);
         expected.setTo(cv::Vec4b(137, 137, 0, 255));
-        
+
         LTTexture *secondTexture = [LTTexture textureWithImage:expected];
         [drawer setSourceTexture:secondTexture];
-        
+
         CGRect rect = CGRectMake(0, 0, inputSize.width, inputSize.height);
         [drawer drawRect:rect inFramebuffer:fbo fromRect:rect];
-        
+
         expect(LTCompareMat(expected, output.image)).to.beTruthy();
       });
 
@@ -336,7 +336,7 @@ sharedExamplesFor(kLTTextureDrawerExamples, ^(NSDictionary *data) {
       });
     });
   });
-  
+
   context(@"auxiliary texture inputs", ^{
     __block LTProgram *program;
     __block id<LTTextureDrawer> drawer;
@@ -349,10 +349,10 @@ sharedExamplesFor(kLTTextureDrawerExamples, ^(NSDictionary *data) {
                                          fragmentSource:kFragmentWithThreeSamplersSource];
       drawer = [[drawerClass alloc] initWithProgram:program sourceTexture:texture
                                   auxiliaryTextures:@{@"otherTexture": texture}];
-      
+
       output = [LTTexture byteRGBATextureWithSize:inputSize];
       clearTexture = [LTTexture textureWithImage:cv::Mat4b::zeros(image.rows, image.cols)];
-      
+
       fbo = [[LTFbo alloc] initWithTexture:output];
     });
 
@@ -366,10 +366,10 @@ sharedExamplesFor(kLTTextureDrawerExamples, ^(NSDictionary *data) {
     it(@"should contain initial auxiliary texture", ^{
       expect(^{
         [drawer setAuxiliaryTexture:texture withName:@"anotherTexture"];
-        
+
         CGRect rect = CGRectMake(0, 0, inputSize.width, inputSize.height);
         [drawer drawRect:rect inFramebuffer:fbo fromRect:rect];
-        
+
         expect(LTCompareMat([texture image], [output image])).to.beTruthy();
       });
     });
@@ -401,14 +401,14 @@ sharedExamplesFor(kLTTextureDrawerExamples, ^(NSDictionary *data) {
     it(@"should draw multiple inputs correctly", ^{
       [drawer setAuxiliaryTexture:texture withName:@"anotherTexture"];
       [drawer setAuxiliaryTexture:clearTexture withName:@"otherTexture"];
-      
+
       CGRect rect = CGRectMake(0, 0, inputSize.width, inputSize.height);
       [drawer drawRect:rect inFramebuffer:fbo fromRect:rect];
-      
+
       expect(LTCompareMatWithValue(cv::Scalar(0, 0, 0, 0), [output image])).to.beTruthy();
     });
   });
-  
+
   context(@"custom uniforms", ^{
     __block LTProgram *program;
     __block id<LTTextureDrawer> drawer;
@@ -419,9 +419,9 @@ sharedExamplesFor(kLTTextureDrawerExamples, ^(NSDictionary *data) {
       program = [[LTProgram alloc] initWithVertexSource:[PassthroughVsh source]
                                          fragmentSource:kFragmentWithUniformSource];
       drawer = [[drawerClass alloc] initWithProgram:program sourceTexture:texture];
-      
+
       output = [LTTexture byteRGBATextureWithSize:inputSize];
-      
+
       fbo = [[LTFbo alloc] initWithTexture:output];
     });
 
@@ -436,20 +436,20 @@ sharedExamplesFor(kLTTextureDrawerExamples, ^(NSDictionary *data) {
       LTVector4 outputColor = LTVector4(1, 0, 0, 1);
       NSValue *value = $(outputColor);
       drawer[@"outputColor"] = value;
-      
+
       expect(drawer[@"outputColor"]).to.equal(value);
     });
 
     it(@"should draw given color to target", ^{
       LTVector4 outputColor = LTVector4(1, 0, 0, 1);
       drawer[@"outputColor"] = $(outputColor);
-      
+
       [drawer drawRect:CGRectMake(0, 0, inputSize.width, inputSize.height) inFramebuffer:fbo
               fromRect:CGRectMake(0, 0, inputSize.width, inputSize.height)];
-      
+
       cv::Mat expected(inputSize.height, inputSize.width, CV_8UC4);
       expected.setTo(LTLTVector4ToVec4b(outputColor));
-      
+
       expect(LTCompareMat(expected, output.image)).to.beTruthy();
     });
   });

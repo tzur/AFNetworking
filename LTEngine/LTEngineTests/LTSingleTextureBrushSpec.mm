@@ -24,11 +24,11 @@ context(@"properties", ^{
   beforeEach(^{
     brush = [[LTSingleTextureBrush alloc] init];
   });
-  
+
   afterEach(^{
     brush = nil;
   });
-  
+
   it(@"should have default properties", ^{
     cv::Mat4b expected(1, 1);
     expected.setTo(cv::Vec4b(255, 255, 255, 255));
@@ -50,7 +50,7 @@ context(@"properties", ^{
     brush.texture = floatTexture;
     expect(brush.texture).to.beIdenticalTo(floatTexture);
   });
-  
+
   it(@"should not set non rgba textures", ^{
     expect(^{
       LTTexture *redTexture = [LTTexture textureWithSize:kSize

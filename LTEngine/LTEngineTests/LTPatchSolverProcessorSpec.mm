@@ -90,7 +90,7 @@ context(@"initialization", ^{
                                                     output:output];
     }).toNot.raiseAny();
   });
-  
+
   it(@"should raise with non byte mask texture", ^{
     LTTexture *invalidMask = [LTTexture textureWithSize:CGSizeMake(17, 16)
                                             pixelFormat:$(LTGLPixelFormatRGBA16Float)

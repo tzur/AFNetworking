@@ -101,7 +101,7 @@ NSString * const kLTSourceTextureUniform = @"sourceTexture";
     return;
   }
   self.uniformToTexture[name] = texture;
-  
+
   [self.context attachUniform:name toTexture:texture];
 }
 
@@ -109,7 +109,7 @@ NSString * const kLTSourceTextureUniform = @"sourceTexture";
   LTAssert(![name isEqualToString:@"position"] &&
            ![name isEqualToString:@"texcoord"], @"Uniform name cannot be one of %@",
            self.mandatoryUniforms);
-  
+
   self.program[name] = value;
 }
 
@@ -127,13 +127,13 @@ NSString * const kLTSourceTextureUniform = @"sourceTexture";
 
 - (NSSet *)mandatoryUniforms {
   static NSSet *uniforms;
-  
+
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
     uniforms = [NSSet setWithArray:@[@"projection", @"modelview", @"texture",
                                      kLTSourceTextureUniform]];
   });
-  
+
   return uniforms;
 }
 

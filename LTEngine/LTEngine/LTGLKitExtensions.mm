@@ -21,7 +21,7 @@ GLKVector3 GLKLineEquation(const GLKVector2 &source, const GLKVector2 &target) {
   if (source == target) {
     return GLKVector3Zero;
   }
-  
+
   GLKVector2 normal = GLKVector2NormalTo(target - source);
   GLKVector3 line;
   if (source == GLKVector2Zero) {
@@ -37,7 +37,7 @@ GLKVector4 GLKRGBA2HSVA(const GLKVector4 &rgba) {
   float min = MIN(rgba.r, MIN(rgba.g, rgba.b));
   float max = MAX(rgba.r, MAX(rgba.g, rgba.b));
   delta = max - min;
-  
+
   v = max;
   if (max <= 0) {
     return GLKVector4Make(0, 0, 0, rgba.a);
@@ -45,7 +45,7 @@ GLKVector4 GLKRGBA2HSVA(const GLKVector4 &rgba) {
   if (delta <= 0) {
     return GLKVector4Make(0, 0, v, rgba.a);
   }
-  
+
   s = delta / max;
   if (rgba.r == max) {
     // Between yellow & magenta.

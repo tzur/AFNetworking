@@ -38,27 +38,27 @@ highp vec4 filter(sampler2D texture, highp vec2 texcoord, highp vec2 texscale) {
   highp float fy = fract(texcoord.y);
   texcoord.x -= fx;
   texcoord.y -= fy;
-  
+
   // Construct B-Spline in each dimension.
   highp vec4 xcubic = cubic(fx);
   highp vec4 ycubic = cubic(fy);
-  
+
   // Compute the offests.
   highp vec4 c = vec4(texcoord.x - 0.5, texcoord.x + 1.5, texcoord.y - 0.5, texcoord.y + 1.5);
   highp vec4 s = vec4(xcubic.x + xcubic.y, xcubic.z + xcubic.w, ycubic.x + ycubic.y,
                       ycubic.z + ycubic.w);
   highp vec4 offset = c + vec4(xcubic.y, xcubic.w, ycubic.y, ycubic.w) / s;
-  
+
   // Sample using bilinear interpolation. Won't produce correct results if nearest neighbour is
   // defined for the source texture.
   highp vec4 sample0 = texture2D(texture, vec2(offset.x, offset.z) * texscale);
   highp vec4 sample1 = texture2D(texture, vec2(offset.y, offset.z) * texscale);
   highp vec4 sample2 = texture2D(texture, vec2(offset.x, offset.w) * texscale);
   highp vec4 sample3 = texture2D(texture, vec2(offset.y, offset.w) * texscale);
-  
+
   highp float sx = s.x / (s.x + s.y);
   highp float sy = s.z / (s.z + s.w);
-  
+
   return mix(mix(sample3, sample2, sx), mix(sample1, sample0, sx), sy);
 }
 

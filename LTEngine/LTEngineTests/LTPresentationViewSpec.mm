@@ -97,7 +97,7 @@ beforeEach(^{
   inputContent(cv::Rect(0, height, width, height)).setTo(kBlue);
   inputContent(cv::Rect(width, height, width, height)).setTo(kYellow);
   contentTexture = [LTTexture textureWithImage:inputContent];
-  
+
   output = cv::Mat4b(framebufferSize.height, framebufferSize.width);
   outputTexture = [LTTexture textureWithImage:output];
   fbo = [[LTFbo alloc] initWithTexture:outputTexture];
@@ -124,11 +124,11 @@ context(@"initialization", ^{
                              contentLocationProvider:contentLocationProvider];
     [view layoutIfNeeded];
   });
-  
+
   afterEach(^{
     view = nil;
   });
-  
+
   it(@"should have default values", ^{
     expect(view.contentScaleFactor).to.equal(contentLocationProvider.contentScaleFactor);
     expect(view.framebufferSize).to.equal(view.bounds.size * view.contentScaleFactor);
@@ -136,7 +136,7 @@ context(@"initialization", ^{
     expect(view.checkerboardPattern).to.beFalsy();
     expect(view.backgroundColor).to.equal([UIColor blackColor]);
   });
-  
+
   it(@"should set contentTransparency", ^{
     view.contentTransparency = YES;
     expect(view.contentTransparency).to.beTruthy();
@@ -252,7 +252,7 @@ context(@"drawing", ^{
     output = [outputTexture image];
     expect($(output)).to.beCloseToMat($(expectedOutput));
   });
-  
+
   it(@"should draw background color outside the content", ^{
     UIColor *backgroundColor = [UIColor redColor];
     view.backgroundColor = backgroundColor;
@@ -265,7 +265,7 @@ context(@"drawing", ^{
     output = [outputTexture image];
     expect($(output)).to.beCloseToMat($(expectedOutput));
   });
-  
+
   it(@"should draw transparent pixels as black if contentTransparency is NO", ^{
     view.contentTransparency = NO;
     [contentTexture mappedImageForWriting:^(cv::Mat *mapped, BOOL) {
@@ -336,7 +336,7 @@ context(@"drawing", ^{
       contentLocationProvider.visibleContentRect = targetInPixels;
       contentLocationProvider.zoomScale = zoomFactor;
       view.pixelGrid = nil;
-      
+
       cv::resize(inputContent(LTCVRectWithCGRect(targetInPixels)), expectedOutput,
                  cv::Size(expectedOutput.cols, expectedOutput.rows), 0, 0, expectedInterpolation);
       cv::flip(expectedOutput, expectedOutput, 0);
@@ -354,15 +354,15 @@ context(@"drawing", ^{
       testInterpolation(4, cv::INTER_NEAREST);
     });
   });
-  
+
   pending(@"should draw background", ^{
     // TODO:(amit) implement when the background is determined.
   });
-  
+
   pending(@"should draw shadows", ^{
     // TODO:(amit) implement when the shadows are determined.
   });
-  
+
   it(@"should replace content", ^{
     CGSize newSize = kViewSize * view.contentScaleFactor;
     cv::Mat4b newMat(newSize.height, newSize.width);
@@ -408,7 +408,7 @@ context(@"public interface", ^{
 context(@"draw delegate", ^{
   __block LTPresentationView *view;
   __block id mock;
-  
+
   beforeEach(^{
     mock = [OCMockObject niceMockForProtocol:@protocol(LTPresentationViewDrawDelegate)];
     view = [[LTPresentationView alloc] initWithFrame:kViewFrame context:[LTGLContext currentContext]
@@ -417,7 +417,7 @@ context(@"draw delegate", ^{
     [view layoutIfNeeded];
     view.drawDelegate = mock;
   });
-  
+
   afterEach(^{
     mock = nil;
     view = nil;
@@ -509,7 +509,7 @@ context(@"draw delegate", ^{
       CGRect expectedRect = CGRectMake(contentAreaInOutput.x, contentAreaInOutput.y,
                                        contentAreaInOutput.width, contentAreaInOutput.height);
       expect(visibleContentRect).to.equal(expectedRect);
-      
+
       // Clear the framebuffer (should only affect the visible content rectangle according to the
       // defined scissor box.
       [[LTGLContext currentContext] clearWithColor:LTVector4(0, 1, 0, 1)];
@@ -536,7 +536,7 @@ context(@"draw delegate", ^{
     output = [outputTexture image];
     expect($(output)).to.beCloseToMat($(expectedOutput));
   });
-  
+
   it(@"should use content texture if alternative content texture is nil", ^{
     OCMStub([mock alternativeTextureForView:view]);
 
@@ -584,7 +584,7 @@ context(@"draw delegate", ^{
     output = [outputTexture image];
     expect($(output)).to.beCloseToMat($(expectedOutput));
   });
-  
+
   it(@"should draw the unprocessed content texture if drawProcessedContent returns NO", ^{
     [[[[mock stub] ignoringNonObjectArgs] andReturnValue:@NO]
      presentationView:view drawProcessedContent:contentTexture withVisibleContentRect:CGRectZero];

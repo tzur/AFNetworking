@@ -20,22 +20,22 @@ itShouldBehaveLike(kLTRoundBrushExamples, @{kLTRoundBrushClass: [LTEdgeAvoidingB
 context(@"properties", ^{
   const CGFloat kEpsilon = 1e-6;
   __block LTEdgeAvoidingBrush *brush;
-  
+
   beforeEach(^{
     brush = [[LTEdgeAvoidingBrush alloc] init];
   });
-  
+
   afterEach(^{
     brush = nil;
   });
-  
+
   it(@"should have default properties", ^{
     expect(brush.sigma).to.equal(0.5);
     cv::Mat4b expectedInputTexture(1, 1);
     expectedInputTexture = cv::Vec4b(0, 0, 0, 0);
     expect($(brush.inputTexture.image)).to.equalMat($(expectedInputTexture));
   });
-  
+
   it(@"should set sigma", ^{
     const CGFloat newValue = 1;
     expect(brush.sigma).notTo.equal(newValue);
@@ -49,7 +49,7 @@ context(@"properties", ^{
       brush.sigma = brush.maxSigma + kEpsilon;
     }).to.raise(NSInvalidArgumentException);
   });
-  
+
   it(@"should set inputTexture", ^{
     cv::Mat4b newInputTexture(1, 1);
     newInputTexture = cv::Vec4b(1, 2, 3, 4);
@@ -65,13 +65,13 @@ context(@"non-edge avoiding drawing", ^{
   __block LTTexture *output;
   __block LTFbo *fbo;
   __block LTPainterPoint *point;
-  
+
   const CGFloat kBaseBrushDiameter = 4;
   const CGFloat kTargetBrushDiameter = 4;
   const CGSize kBaseBrushSize = CGSizeMakeUniform(kBaseBrushDiameter);
   const CGSize kOutputSize = kBaseBrushSize;
   const CGPoint kOutputCenter = CGPointMake(kOutputSize.width / 2, kOutputSize.height / 2);
-  
+
   beforeEach(^{
     brush = [[LTEdgeAvoidingBrush alloc] init];
     brush.baseDiameter = kBaseBrushDiameter;
@@ -87,13 +87,13 @@ context(@"non-edge avoiding drawing", ^{
     point = [[LTPainterPoint alloc] init];
     point.contentPosition = kOutputCenter;
   });
-  
+
   afterEach(^{
     fbo = nil;
     output = nil;
     brush = nil;
   });
-  
+
   it(@"should draw a point", ^{
     [brush startNewStrokeAtPoint:point];
     [brush drawPoint:point inFramebuffer:fbo];
@@ -101,7 +101,7 @@ context(@"non-edge avoiding drawing", ^{
     expected.colRange(1, 3).setTo(255);
     expect($(output.image)).to.equalMat($(expected));
   });
-  
+
   context(@"round brush properties", ^{
     it(@"should draw with updated hardness", ^{
       brush.hardness = 0.5;
@@ -113,7 +113,7 @@ context(@"non-edge avoiding drawing", ^{
       expect($(output.image)).to.beCloseToMat($(expected));
     });
   });
-  
+
   context(@"brush properties related to the shader", ^{
     context(@"painting mode", ^{
       it(@"drawing should be additive", ^{
@@ -126,7 +126,7 @@ context(@"non-edge avoiding drawing", ^{
         expected(cv::Rect(1, 1, 2, 2)).setTo(255);
         expect($(output.image)).to.beCloseToMat($(expected));
       });
-      
+
       it(@"should draw with updated opacity", ^{
         brush.opacity = 0.1;
         [brush startNewStrokeAtPoint:point];
@@ -135,7 +135,7 @@ context(@"non-edge avoiding drawing", ^{
         expected.colRange(1, 3).setTo(26);
         expect($(output.image)).to.beCloseToMat($(expected));
       });
-      
+
       it(@"should draw with updated flow", ^{
         brush.flow = 0.1;
         [brush startNewStrokeAtPoint:point];
@@ -148,7 +148,7 @@ context(@"non-edge avoiding drawing", ^{
         expected.colRange(1, 3).setTo(52);
         expect($(output.image)).to.beCloseToMatWithin($(expected), 2);
       });
-      
+
       it(@"should draw with updated intensity", ^{
         const LTVector4 kIntensity = LTVector4(0.1, 0.2, 0.3, 0.4);
         brush.intensity = kIntensity;
@@ -166,7 +166,7 @@ context(@"non-edge avoiding drawing", ^{
         expected.setTo(cv::Vec4b(255, 255, 255, 255));
         brush.mode = LTRoundBrushModeEraseDirect;
       });
-      
+
       it(@"drawing should be additive", ^{
         brush.hardness = 0.5;
         [brush startNewStrokeAtPoint:point];
@@ -177,7 +177,7 @@ context(@"non-edge avoiding drawing", ^{
         expected(cv::Rect(1, 1, 2, 2)).setTo(0);
         expect($(output.image)).to.beCloseToMat($(expected));
       });
-      
+
       it(@"should draw with updated opacity", ^{
         brush.opacity = 0.1;
         [brush startNewStrokeAtPoint:point];
@@ -186,7 +186,7 @@ context(@"non-edge avoiding drawing", ^{
         expected.colRange(1, 3).setTo(255 - 26);
         expect($(output.image)).to.beCloseToMat($(expected));
       });
-      
+
       it(@"should draw with updated flow", ^{
         brush.flow = 0.1;
         [brush startNewStrokeAtPoint:point];
@@ -199,7 +199,7 @@ context(@"non-edge avoiding drawing", ^{
         expected.colRange(1, 3).setTo(255 - 52);
         expect($(output.image)).to.beCloseToMatWithin($(expected), 2);
       });
-      
+
       it(@"should draw with updated intensity", ^{
         const LTVector4 kIntensity = LTVector4(0.1, 0.2, 0.3, 0.4);
         brush.intensity = kIntensity;
@@ -213,24 +213,24 @@ context(@"non-edge avoiding drawing", ^{
 
     context(@"indirect erasing mode", ^{
       using half_float::half;
-      
+
       const cv::Vec4hf kBlack(half(0), half(0), half(0), half(0));
       const cv::Vec4hf kWhite(half(1), half(1), half(1), half(1));
-      
+
       __block cv::Mat4hf expected;
-      
+
       beforeEach(^{
         output = [LTTexture textureWithSize:kOutputSize pixelFormat:$(LTGLPixelFormatRGBA16Float)
                              allocateMemory:YES];
         fbo = [[LTFbo alloc] initWithTexture:output];
         [fbo clearWithColor:LTVector4::zeros()];
-        
+
         expected.create(kOutputSize.height, kOutputSize.width);
         expected.setTo(kBlack);
-        
+
         brush.mode = LTRoundBrushModeEraseIndirect;
       });
-      
+
       it(@"drawing should be additive", ^{
         brush.hardness = 0.5;
         [brush startNewStrokeAtPoint:point];
@@ -241,7 +241,7 @@ context(@"non-edge avoiding drawing", ^{
         expected(cv::Rect(1, 1, 2, 2)).setTo(-kWhite);
         expect($(output.image)).to.beCloseToMat($(expected));
       });
-      
+
       it(@"should draw with updated opacity", ^{
         brush.opacity = 0.1;
         [brush startNewStrokeAtPoint:point];
@@ -250,7 +250,7 @@ context(@"non-edge avoiding drawing", ^{
         expected.colRange(1, 3).setTo(-cv::Vec4hf(half(0.1), half(0.1), half(0.1), half(0.1)));
         expect($(output.image)).to.beCloseToMat($(expected));
       });
-      
+
       it(@"should draw with updated flow", ^{
         brush.flow = 0.1;
         [brush startNewStrokeAtPoint:point];
@@ -263,7 +263,7 @@ context(@"non-edge avoiding drawing", ^{
         expected.colRange(1, 3).setTo(-cv::Vec4hf(half(0.2), half(0.2), half(0.2), half(0.2)));
         expect($(output.image)).to.beCloseToMat($(expected));
       });
-      
+
       it(@"should draw with updated intensity", ^{
         const LTVector4 kIntensity = LTVector4(0.1, 0.2, 0.3, 0.4);
         brush.intensity = kIntensity;
@@ -278,7 +278,7 @@ context(@"non-edge avoiding drawing", ^{
     context(@"blending mode", ^{
       const LTVector4 kColor(0.25, 0.5, 0.75, 1);
       const cv::Vec4b kCvColor = LTLTVector4ToVec4b(kColor);
-      
+
       beforeEach(^{
         [fbo clearWithColor:kColor];
         expected.setTo(kCvColor);
@@ -341,14 +341,14 @@ context(@"edge avoiding drawing", ^{
   __block LTTexture *inputTexture;
   __block LTFbo *fbo;
   __block LTPainterPoint *point;
-  
+
   const LTVector4 kBackgroundColor = LTVector4(0, 0, 0, 0);
   const CGFloat kBaseBrushDiameter = 16;
   const CGFloat kTargetBrushDiameter = 16;
   const CGSize kBaseBrushSize = CGSizeMakeUniform(kBaseBrushDiameter);
   const CGSize kOutputSize = kBaseBrushSize;
   const CGPoint kOutputCenter = CGPointMake(kOutputSize.width / 2, kOutputSize.height / 2);
-  
+
   beforeEach(^{
     cv::Mat4b inputMat(kOutputSize.height, kOutputSize.width, cv::Vec4b(0, 0, 0, 255));
     similarSubrect = CGRectMake(kOutputSize.width / 4, kOutputSize.height / 4,
@@ -370,14 +370,14 @@ context(@"edge avoiding drawing", ^{
     point = [[LTPainterPoint alloc] init];
     point.contentPosition = kOutputCenter;
   });
-  
+
   afterEach(^{
     inputTexture = nil;
     fbo = nil;
     output = nil;
     brush = nil;
   });
-  
+
   it(@"should have edge avoiding effect", ^{
     [brush startNewStrokeAtPoint:point];
     [brush drawPoint:point inFramebuffer:fbo];
@@ -393,7 +393,7 @@ context(@"edge avoiding drawing", ^{
     [brush drawPoint:point inFramebuffer:fbo];
     expect($(output.image)).to.beCloseToMat($(expected));
   });
-  
+
   it(@"setting the inputTexture to nil should disable the edge-avoiding effect", ^{
     LTRoundBrush *roundBrush = [[LTRoundBrush alloc] init];
     roundBrush.baseDiameter = brush.baseDiameter;
@@ -409,7 +409,7 @@ context(@"edge avoiding drawing", ^{
     [brush drawPoint:point inFramebuffer:fbo];
     expect($(output.image)).to.beCloseToMat($(roundBrushOutput));
   });
-  
+
   it(@"bigger sigma should weaken the edge avoiding effect", ^{
     brush.sigma = brush.minSigma;
     [brush startNewStrokeAtPoint:point];

@@ -32,11 +32,11 @@ context(@"initialization", ^{
   beforeEach(^{
     processor = [[LTLinearProcessor alloc] initWithInput:input output:output];
   });
-  
+
   afterEach(^{
     processor = nil;
   });
-  
+
   it(@"should initialize correctly", ^{
     expect(processor).toNot.beNil();
     expect($(processor.matrix)).to.equal($(GLKMatrix4Identity));
@@ -63,10 +63,10 @@ context(@"processing", ^{
       cv::Mat expectedResult = (cv::Mat_<CGFloat>(4, 1) << 230, 204, 179, 230);
       expectedResult.convertTo(expectedResult, CV_8UC1);
       expectedResult = expectedResult.reshape(4);
-      
+
       processor.constant = kConstant;
       [processor process];
-      
+
       expect($(output.image)).to.equalMat($(expectedResult));
     });
 
@@ -74,10 +74,10 @@ context(@"processing", ^{
       cv::Mat expectedResult = (cv::Mat_<CGFloat>(4, 1) << 71, 82, 92, 102);
       expectedResult.convertTo(expectedResult, CV_8UC1);
       expectedResult = expectedResult.reshape(4);
-      
+
       processor.matrix = kMatrix;
       [processor process];
-      
+
       expect($(output.image)).to.equalMat($(expectedResult));
     });
 
@@ -85,15 +85,15 @@ context(@"processing", ^{
       cv::Mat expectedResult = (cv::Mat_<CGFloat>(4, 1) << 46, 31, 15, 76);
       expectedResult.convertTo(expectedResult, CV_8UC1);
       expectedResult = expectedResult.reshape(4);
-      
+
       processor.matrix = kMatrix;
       processor.constant = kConstant;
       [processor process];
-      
+
       expect($(output.image)).to.equalMat($(expectedResult));
     });
   });
-  
+
   context(@"in situ", ^{
     beforeEach(^{
       processor = [[LTLinearProcessor alloc] initWithInput:input output:input];
@@ -105,9 +105,9 @@ context(@"processing", ^{
 
     it(@"should produce the input texture as output on default", ^{
       LTTexture *originalTexture = [input clone];
-      
+
       [processor process];
-      
+
       expect($(input.image)).to.equalMat($(originalTexture.image));
     });
 
@@ -115,10 +115,10 @@ context(@"processing", ^{
       cv::Mat expectedResult = (cv::Mat_<CGFloat>(4, 1) << 230, 204, 179, 230);
       expectedResult.convertTo(expectedResult, CV_8UC1);
       expectedResult = expectedResult.reshape(4);
-      
+
       processor.constant = kConstant;
       [processor process];
-      
+
       expect($(input.image)).to.equalMat($(expectedResult));
     });
 
@@ -126,10 +126,10 @@ context(@"processing", ^{
       cv::Mat expectedResult = (cv::Mat_<CGFloat>(4, 1) << 71, 82, 92, 102);
       expectedResult.convertTo(expectedResult, CV_8UC1);
       expectedResult = expectedResult.reshape(4);
-      
+
       processor.matrix = kMatrix;
       [processor process];
-      
+
       expect($(input.image)).to.equalMat($(expectedResult));
     });
 
@@ -137,11 +137,11 @@ context(@"processing", ^{
       cv::Mat expectedResult = (cv::Mat_<CGFloat>(4, 1) << 46, 31, 15, 76);
       expectedResult.convertTo(expectedResult, CV_8UC1);
       expectedResult = expectedResult.reshape(4);
-      
+
       processor.matrix = kMatrix;
       processor.constant = kConstant;
       [processor process];
-      
+
       expect($(input.image)).to.equalMat($(expectedResult));
     });
   });

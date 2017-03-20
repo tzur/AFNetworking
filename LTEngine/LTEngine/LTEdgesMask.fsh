@@ -16,7 +16,7 @@ void main() {
   mediump vec3 color = texture2D(sourceTexture, vTexcoord).rgb;
   mediump vec3 edge = abs(color - texture2D(sourceTexture, vSampleCoords[0]).rgb);
   edge += abs(color - texture2D(sourceTexture, vSampleCoords[1]).rgb);
-  
+
   if (edgesMode == kEdgesModeColor) {
     color = edge;
   } else if (edgesMode == kEdgesModeGrey) {

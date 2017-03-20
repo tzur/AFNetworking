@@ -29,7 +29,7 @@ context(@"properties", ^{
   beforeEach(^{
     effect = [[LTBrushColorDynamicsEffect alloc] init];
   });
-  
+
   it(@"should have default properties", ^{
     expect(effect.hueJitter).to.equal(0);
     expect(effect.saturationJitter).to.equal(0);
@@ -38,14 +38,14 @@ context(@"properties", ^{
     expect(effect.secondaryColor).to.beNil();
     expect(effect.baseColorTexture).beNil();
   });
-  
+
   it(@"should set hueJitter", ^{
     CGFloat newValue = 0.5;
     expect(effect.hueJitter).notTo.equal(newValue);
     effect.hueJitter = newValue;
     expect(effect.hueJitter).to.equal(newValue);
   });
-  
+
   it(@"should set saturationJitter", ^{
     CGFloat newValue = 0.5;
     expect(effect.saturationJitter).notTo.equal(newValue);
@@ -100,7 +100,7 @@ context(@"effect", ^{
   __block NSArray *colors;
   __block UIColor *baseColor;
   __block CGFloat baseHue, baseSaturation, baseBrightness, baseAlpha;
-  
+
   beforeEach(^{
     LTRandom *random = [JSObjection defaultInjector][[LTRandom class]];
     effect = [[LTBrushColorDynamicsEffect alloc] initWithRandom:random];
@@ -120,11 +120,11 @@ context(@"effect", ^{
     baseColor = [UIColor colorWithHue:baseHue saturation:baseSaturation
                            brightness:baseBrightness alpha:baseAlpha];
   });
-  
+
   it(@"should return an empty array if the input is an empty array", ^{
     expect([effect colorsFromRects:@[] baseColor:baseColor].count).to.equal(0);
   });
-  
+
   it(@"should return the baseColor when hueJitter, saturationJitter, brightnessJitter are all 0", ^{
     colors = [effect colorsFromRects:sourceRects baseColor:baseColor];
     expect(colors.count).to.equal(sourceRects.count);
@@ -132,7 +132,7 @@ context(@"effect", ^{
       expect(color).to.equal(baseColor);
     }
   });
-  
+
   it(@"should return colors according to the hueJitter property", ^{
     effect.hueJitter = 0.5;
     colors = [effect colorsFromRects:sourceRects baseColor:baseColor];
@@ -153,7 +153,7 @@ context(@"effect", ^{
     expect(maxDistance).to.beCloseToWithin(effect.hueJitter, 1e-2);
     expect(sumDistance / sourceRects.count).to.beCloseToWithin(effect.hueJitter / 2, 5e-2);
   });
-  
+
   it(@"should return colors according to the saturationJitter property", ^{
     effect.saturationJitter = 0.5;
     colors = [effect colorsFromRects:sourceRects baseColor:baseColor];
@@ -173,7 +173,7 @@ context(@"effect", ^{
     expect(maxDistance).to.beCloseToWithin(effect.saturationJitter, 1e-2);
     expect(sumDistance / sourceRects.count).to.beCloseToWithin(effect.saturationJitter / 2, 5e-2);
   });
-  
+
   it(@"should return colors according to the brightnessJitter property", ^{
     effect.brightnessJitter = 0.5;
     colors = [effect colorsFromRects:sourceRects baseColor:baseColor];
@@ -272,7 +272,7 @@ context(@"effect", ^{
       __block CGFloat hue;
       [colors[i] getHue:&hue saturation:nil brightness:nil alpha:nil];
       LTRotatedRect *rect = sourceRects[i];
-      
+
       if (CGRectContainsPoint(CGRectMake(0, 0, 0.5, 0.5), rect.center)) {
         expect(MIN(hue, 1 - hue)).to.beCloseToWithin(kRedHue, 1e-4);
       } else if (CGRectContainsPoint(CGRectMake(0.5, 0, 0.5, 0.5), rect.center)) {

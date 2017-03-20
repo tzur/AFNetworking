@@ -93,7 +93,7 @@ typedef struct {
       numberOfRemainingValues = self.numberOfValuesPerSequence;
     }
   }
-  
+
   return result;
 }
 
@@ -113,7 +113,7 @@ typedef struct {
   // Solving for \c k: p + k * d + m * s <= interval.min() <=> k <= (interval.min() - p - m * s) / d
   NSInteger k = std::floor(interval.min() - firstValueOfSequence) / self.valueDistance;
   LTAssert(k >= 0, @"Computed value (%ld) must be non-negative", (long)k);
-  
+
   if ((NSUInteger)k >= self.numberOfValuesPerSequence) {
     return {
       .startValue = firstValueOfSequence,

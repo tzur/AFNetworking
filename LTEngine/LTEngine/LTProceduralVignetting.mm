@@ -13,7 +13,7 @@
 
 @implementation LTProceduralVignetting
 
-- (instancetype)initWithOutput:(LTTexture *)output { 
+- (instancetype)initWithOutput:(LTTexture *)output {
   return [self initWithVertexSource:[LTPassthroughShaderVsh source]
                      fragmentSource:[LTProceduralVignettingFsh source] andOutput:output];
 }
@@ -41,7 +41,7 @@
 
 + (NSSet *)inputModelPropertyKeys {
   static NSSet *properties;
-  
+
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
     properties = [NSSet setWithArray:@[
@@ -53,7 +53,7 @@
       @instanceKeypath(LTProceduralVignetting, noiseAmplitude)
     ]];
   });
-  
+
   return properties;
 }
 

@@ -11,7 +11,7 @@
   if (![object isKindOfClass:[self class]]) {
     return NO;
   }
-  
+
   LTShapeDrawerParams *other = object;
   return self.lineWidth == other.lineWidth &&
          self.shadowWidth == other.shadowWidth &&

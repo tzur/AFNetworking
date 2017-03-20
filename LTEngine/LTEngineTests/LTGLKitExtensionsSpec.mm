@@ -34,7 +34,7 @@ context(@"GLKMatrix2", ^{
     expect(a != b).to.beTruthy();
     expect(a != c).to.beFalsy();
   });
-  
+
   it(@"should make rotation matrix", ^{
     GLKMatrix2 m = GLKMatrix2MakeRotation(M_PI_4);
 
@@ -43,7 +43,7 @@ context(@"GLKMatrix2", ^{
     expect(m.m01).to.beCloseTo(1 / sqrt(2));
     expect(m.m11).to.beCloseTo(1 / sqrt(2));
   });
-  
+
   it(@"should make scale matrix", ^{
     GLKMatrix2 m = GLKMatrix2MakeScale(3, -2);
     expect(m.m00).to.beCloseTo(3);
@@ -58,7 +58,7 @@ context(@"GLKMatrix2", ^{
 
     expect(GLKMatrix2Multiply(m1, m2) == GLKMatrix2Make(23, 34, 31, 46)).to.beTruthy();
   });
-  
+
   it(@"should multiply vector correctly", ^{
     GLKMatrix2 m = {{1, 2, 3, 4}};
     GLKVector2 v = {{1, 2}};
@@ -107,7 +107,7 @@ context(@"GLKMatrix3", ^{
     expect(a == b).to.beFalsy();
     expect(a == c).to.beTruthy();
   });
-  
+
   it(@"not equal", ^{
     GLKMatrix3 a = {{1, 2, 3, 4, 5, 6, 7, 8, 9}};
     GLKMatrix3 b = {{9, 8, 7, 6, 5, 4, 3, 2, 1}};
@@ -128,7 +128,7 @@ context(@"GLKMatrix3", ^{
     expect(GLKMatrix3Determinant(b)).to.equal(0);
     expect(GLKMatrix3Determinant(c)).to.beCloseToWithin(92.279884, kEpsilon);
   });
-  
+
   it(@"should construct a correct matrix from affine transform", ^{
     CGAffineTransform transform = CGAffineTransformMake(1, 2, 3, 4, 5, 6);
     GLKMatrix3 result = GLKMatrix3WithTransform(transform);
@@ -162,7 +162,7 @@ context(@"GLKMatrix4", ^{
     expect(a == b).to.beFalsy();
     expect(a == c).to.beTruthy();
   });
-  
+
   it(@"not equal", ^{
     GLKMatrix4 a = {{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16}};
     GLKMatrix4 b = {{16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1}};
@@ -202,7 +202,7 @@ context(@"GLKVector2 operations", ^{
   it(@"element-wise multiply", ^{
     expect(GLKVector2Make(1, 2) * GLKVector2Make(3, 4)).to.beCloseToGLKVector(GLKVector2Make(3, 8));
   });
-  
+
   it(@"division", ^{
     expect(GLKVector2Make(2, 4) / 2.f == GLKVector2Make(1, 2)).to.beTruthy();
   });
@@ -215,7 +215,7 @@ context(@"GLKVector2 operations", ^{
     GLKVector2 vec = GLKVector2Make(1.5, 2.7);
     expect(std::floor(vec) == GLKVector2Make(1, 2)).to.beTruthy();
   });
-  
+
   it(@"round", ^{
     expect(std::round(GLKVector2Make(1.5, 2.7)) == GLKVector2Make(2, 3)).to.beTruthy();
   });
@@ -247,12 +247,12 @@ context(@"GLKVector3 operations", ^{
     expect(GLKVector3Make(1, 2, 3) >= GLKVector3Make(1, 2.1, 3)).to.beFalsy();
     expect(GLKVector3Make(1, 2, 3) >= GLKVector3Make(1, 2, 3.1)).to.beFalsy();
   });
-  
+
   it(@"uniform", ^{
     expect(GLKVector3Make(1) == GLKVector3Make(1, 1, 1)).to.beTruthy();
     expect(GLKVector3Make(2) == GLKVector3Make(2, 2, 2)).to.beTruthy();
   });
-  
+
   it(@"add", ^{
     expect(GLKVector3Make(1, 2, 3) + GLKVector3Make(4, 5, 6) ==
            GLKVector3Make(5, 7, 9)).to.beTruthy();
@@ -272,7 +272,7 @@ context(@"GLKVector3 operations", ^{
     expect(GLKVector3Make(1, 2, 3) * GLKVector3Make(4, 5, 6))
         .to.beCloseToGLKVector(GLKVector3Make(4, 10, 18));
   });
-  
+
   it(@"division", ^{
     expect(GLKVector3Make(2, 4, 6) / 2.f == GLKVector3Make(1, 2, 3)).to.beTruthy();
   });
@@ -292,12 +292,12 @@ context(@"GLKVector3 operations", ^{
   it(@"round", ^{
     expect(std::round(GLKVector3Make(1.5, 2.7, 3.2)) == GLKVector3Make(2, 3, 3)).to.beTruthy();
   });
-  
+
   it(@"min", ^{
     expect(std::min(GLKVector3Make(1, 2, 3), GLKVector3Make(1, 0, 7)) ==
            GLKVector3Make(1, 0, 3)).to.beTruthy();
   });
-  
+
   it(@"max", ^{
     expect(std::max(GLKVector3Make(1, 2, 3), GLKVector3Make(1, 0, 7)) ==
            GLKVector3Make(1, 2, 7)).to.beTruthy();
@@ -334,12 +334,12 @@ context(@"GLKVector4 operations", ^{
     expect(GLKVector4Make(1, 2, 3, 4) >= GLKVector4Make(1, 2, 3.1, 4)).to.beFalsy();
     expect(GLKVector4Make(1, 2, 3, 4) >= GLKVector4Make(1, 2, 3, 4.1)).to.beFalsy();
   });
-  
+
   it(@"uniform", ^{
     expect(GLKVector4Make(1) == GLKVector4Make(1, 1, 1, 1)).to.beTruthy();
     expect(GLKVector4Make(2) == GLKVector4Make(2, 2, 2, 2)).to.beTruthy();
   });
-  
+
   it(@"add", ^{
     expect(GLKVector4Make(1, 2, 3, 4) + GLKVector4Make(5, 6, 7, 8) ==
            GLKVector4Make(6, 8, 10, 12)).to.beTruthy();
@@ -359,7 +359,7 @@ context(@"GLKVector4 operations", ^{
     expect(GLKVector4Make(1, 2, 3, 4) * GLKVector4Make(5, 6, 7, 8))
     .to.beCloseToGLKVector(GLKVector4Make(5, 12, 21, 32));
   });
-  
+
   it(@"division", ^{
     expect(GLKVector4Make(2, 4, 6, 8) / 2.f == GLKVector4Make(1, 2, 3, 4)).to.beTruthy();
   });
@@ -418,7 +418,7 @@ context(@"standard line equation", ^{
     expect(GLKVector3DotProduct(line, GLKVector3Make(0, 0, 1))).to.equal(0);
     expect(GLKVector3DotProduct(line, GLKVector3Make(p1.x, p1.y, 1))).to.equal(0);
   });
-  
+
   it(@"should calculate line equations from GLKVector2s", ^{
     CGPoint p0 = CGPointMake(-2, 0);
     CGPoint p1 = CGPointMake(4, -5);
@@ -445,7 +445,7 @@ context(@"standard line equation", ^{
 
 context(@"colorspace conversion", ^{
   __block GLKVector4s pixels;
-  
+
   it(@"should convert from rgb to hsv", ^{
     for (float r = 0; r <= 1.0; r += 0.1) {
       for (float g = 0; g <= 1.0; g += 0.1) {
@@ -465,7 +465,7 @@ context(@"colorspace conversion", ^{
       expect(hsva).to.beCloseToGLKVectorWithin(GLKVector4Make(h, s, v, rgba.a), 1e-4);
     }
   });
-  
+
   it(@"should convert from rgb to yiq", ^{
     GLKVector3 yiq = GLKRGB2YIQ(GLKVector3Make(1, 1, 1));
     expect(yiq).to.beCloseToGLKVectorWithin(GLKVector3Make(1, 0 , 0), 1e-4);

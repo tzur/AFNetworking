@@ -22,7 +22,7 @@ EXPMatcherImplementationBegin(_beCloseToGLKVectorWithin, (id expected, id length
   __block NSString *prerequisiteErrorMessage;
   __block std::vector<double> expectedVector;
   __block std::vector<double> actualVector;
-  
+
   prerequisite(^BOOL{
     if (!(([expected isKindOfClass:[EXPFloatTuple class]] &&
            [actual isKindOfClass:[EXPFloatTuple class]]) ||
@@ -34,7 +34,7 @@ EXPMatcherImplementationBegin(_beCloseToGLKVectorWithin, (id expected, id length
           }
     return !prerequisiteErrorMessage;
   });
-  
+
   match(^BOOL{
     double range = within ? [within doubleValue] : kDefaultWithinValue;
     if ([expected isKindOfClass:[EXPFloatTuple class]]) {
@@ -60,7 +60,7 @@ EXPMatcherImplementationBegin(_beCloseToGLKVectorWithin, (id expected, id length
     }
     return YES;
   });
-  
+
   failureMessageForTo(^NSString *{
     if (prerequisiteErrorMessage) {
       return prerequisiteErrorMessage;
@@ -74,7 +74,7 @@ EXPMatcherImplementationBegin(_beCloseToGLKVectorWithin, (id expected, id length
               descriptionOf(actualVector), descriptionOf(expectedVector)];
     }
   });
-  
+
   failureMessageForNotTo(^NSString *{
     if (prerequisiteErrorMessage) {
       return prerequisiteErrorMessage;

@@ -24,7 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
     LTImage *image = [[LTImage alloc] initWithMat:mapped copy:NO];
     success = [image writeToPath:path error:error];
   }];
-  
+
   return success;
 }
 

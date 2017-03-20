@@ -57,7 +57,7 @@
   }
 
   CGSize inputSize = inputTexture.size;
-  
+
   // If texture uses a nearest neigbour interpolation, texelOffset and texelScaling are set to
   // ensure (1:2:end) sampling pattern (in Matlab notation) for downsampling.
   // In case of bilinear interpolation texelOffset is set to zero and texelScaling to one. This will
@@ -87,7 +87,7 @@
       texelOffset = LTVector2::zeros();
       break;
   }
-  
+
   self[[LTPyramidProcessorVsh texelOffset]] = $(texelOffset);
   self[[LTPyramidProcessorVsh texelScaling]] = $(texelScaling);
 }

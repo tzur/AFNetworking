@@ -47,33 +47,33 @@ context(@"processing", ^{
     cv::Mat4b expected = LTRotateHalfPiClockwise(inputTexture.image, processor.rotations);
     expect($(processor.outputTexture.image)).to.equalMat($(expected));
   });
-  
+
   it(@"should rotate by 90 degrees", ^{
     processor.rotations = 1;
     [processor process];
     cv::Mat4b expected = LTRotateHalfPiClockwise(inputTexture.image, processor.rotations);
     expect($(processor.outputTexture.image)).to.equalMat($(expected));
   });
-  
+
   it(@"should rotate by 180 degrees", ^{
     processor.rotations = 2;
     [processor process];
     cv::Mat4b expected = LTRotateHalfPiClockwise(inputTexture.image, processor.rotations);
     expect($(processor.outputTexture.image)).to.equalMat($(expected));
   });
-  
+
   it(@"should rotate by 270 degrees", ^{
     processor.rotations = 3;
     [processor process];
     cv::Mat4b expected = LTRotateHalfPiClockwise(inputTexture.image, processor.rotations);
     expect($(processor.outputTexture.image)).to.equalMat($(expected));
   });
-  
+
   it(@"should rotate counter-clockwise for negative values", ^{
     for (NSInteger i = 0; i < 8; ++i) {
       processor.rotations = -i;
       [processor process];
-      
+
       LTCropProcessor *otherProcessor = [[LTCropProcessor alloc] initWithInput:inputTexture];
       otherProcessor.rotations = 4 - (i % 4);
       [otherProcessor process];
@@ -85,14 +85,14 @@ context(@"processing", ^{
     for (NSInteger i = 4; i < 8; ++i) {
       processor.rotations = i;
       [processor process];
-      
+
       LTCropProcessor *otherProcessor = [[LTCropProcessor alloc] initWithInput:inputTexture];
       otherProcessor.rotations = i % 4;
       [otherProcessor process];
       expect($(processor.outputTexture.image)).to.equalMat($(otherProcessor.outputTexture.image));
     }
   });
-  
+
   it(@"should flip horizontally", ^{
     processor.flipHorizontal = YES;
     [processor process];
@@ -100,7 +100,7 @@ context(@"processing", ^{
     cv::flip(expected, expected, 1);
     expect($(processor.outputTexture.image)).to.equalMat($(expected));
   });
-  
+
   it(@"should flip vertically", ^{
     processor.flipVertical = YES;
     [processor process];
@@ -115,10 +115,10 @@ context(@"processing", ^{
         processor = [[LTCropProcessor alloc] initWithInput:inputTexture];
         processor.rotations = i;
         [processor process];
-        
+
         cv::Mat4b expected = processor.outputTexture.image;
         cv::flip(expected, expected, 1);
-        
+
         processor.flipHorizontal = YES;
         [processor process];
         expect($(processor.outputTexture.image)).to.equalMat($(expected));
@@ -130,10 +130,10 @@ context(@"processing", ^{
         processor = [[LTCropProcessor alloc] initWithInput:inputTexture];
         processor.rotations = i;
         [processor process];
-        
+
         cv::Mat4b expected = processor.outputTexture.image;
         cv::flip(expected, expected, 0);
-        
+
         processor.flipVertical = YES;
         [processor process];
         expect($(processor.outputTexture.image)).to.equalMat($(expected));
@@ -145,10 +145,10 @@ context(@"processing", ^{
         processor = [[LTCropProcessor alloc] initWithInput:inputTexture];
         processor.rotations = i;
         [processor process];
-        
+
         cv::Mat4b expected = processor.outputTexture.image;
         cv::flip(expected, expected, -1);
-        
+
         processor.flipHorizontal = YES;
         processor.flipVertical = YES;
         [processor process];
@@ -156,7 +156,7 @@ context(@"processing", ^{
       }
     });
   });
-  
+
   context(@"rotate after flip", ^{
     it(@"should rotate after horizontal flip", ^{
       for (NSUInteger i = 0; i < 4; ++i) {
@@ -164,7 +164,7 @@ context(@"processing", ^{
         processor.flipHorizontal = YES;
         [processor process];
         cv::Mat4b expected = LTRotateHalfPiClockwise(processor.outputTexture.image, i);
-        
+
         processor.rotations = i;
         [processor process];
         expect($(processor.outputTexture.image)).to.equalMat($(expected));
@@ -177,7 +177,7 @@ context(@"processing", ^{
         processor.flipVertical = YES;
         [processor process];
         cv::Mat4b expected = LTRotateHalfPiClockwise(processor.outputTexture.image, i);
-        
+
         processor.rotations = i;
         [processor process];
         expect($(processor.outputTexture.image)).to.equalMat($(expected));
@@ -191,14 +191,14 @@ context(@"processing", ^{
         processor.flipVertical = YES;
         [processor process];
         cv::Mat4b expected = LTRotateHalfPiClockwise(processor.outputTexture.image, i);
-        
+
         processor.rotations = i;
         [processor process];
         expect($(processor.outputTexture.image)).to.equalMat($(expected));
       }
     });
   });
-  
+
   context(@"crop", ^{
     beforeEach(^{
       cv::Mat4b input = LTLoadMat([self class], @"CropInput.png");
@@ -208,23 +208,23 @@ context(@"processing", ^{
 
     it(@"should not crop if applyCrop is NO", ^{
       CGRect kTarget = CGRectMake(5, 47, 122, 80);
-      
+
       processor.cropRectangle = LTRect(kTarget);
       expect(processor.cropRectangle).to.equal(kTarget);
-      
+
       processor.applyCrop = NO;
       [processor process];
-      
+
       cv::Mat4b expected = inputTexture.image;
       expect($(processor.outputTexture.image)).to.equalMat($(expected));
     });
 
     it(@"should crop according to cropRectangle", ^{
       CGRect kTarget = CGRectMake(5, 47, 122, 80);
-      
+
       processor.cropRectangle = LTRect(kTarget);
       expect(processor.cropRectangle).to.equal(kTarget);
-      
+
       processor.applyCrop = YES;
       [processor process];
 
@@ -239,10 +239,10 @@ context(@"processing", ^{
       processor.rotations = 1;
       processor.cropRectangle = LTRect(kTarget);
       expect(processor.cropRectangle).to.equal(kTarget);
-      
+
       processor.applyCrop = YES;
       [processor process];
-      
+
       cv::Mat4b expected = inputTexture.image;
       expected = LTRotateHalfPiClockwise(expected, processor.rotations);
       expected = expected(LTCVRectWithCGRect(kTarget));
@@ -251,15 +251,15 @@ context(@"processing", ^{
 
     it(@"should crop when setting rectangle after flip", ^{
       CGRect kTarget = CGRectMake(3, 51, 122, 80);
-      
+
       processor.flipHorizontal = YES;
       processor.flipVertical = YES;
       processor.cropRectangle = LTRect(kTarget);
       expect(processor.cropRectangle).to.equal(kTarget);
-      
+
       processor.applyCrop = YES;
       [processor process];
-      
+
       cv::Mat4b expected = inputTexture.image;
       cv::flip(expected, expected, -1);
       expected = expected(LTCVRectWithCGRect(kTarget));
@@ -277,7 +277,7 @@ context(@"processing", ^{
 
       processor.applyCrop = YES;
       [processor process];
-      
+
       cv::Mat4b expected = inputTexture.image;
       cv::flip(expected, expected, -1);
       expected = LTRotateHalfPiClockwise(expected, processor.rotations);

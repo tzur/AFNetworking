@@ -25,13 +25,13 @@ context(@"initialization", ^{
     expect(array.type).to.equal(LTIndicesBufferTypeByte);
     expect(array.arrayBuffer).to.beIdenticalTo(buffer);
   });
-  
+
   it(@"should raise when initializing without buffer", ^{
     expect(^{
       array = [[LTIndicesArray alloc] initWithType:LTIndicesBufferTypeByte arrayBuffer:nil];
     }).to.raise(NSInvalidArgumentException);
   });
-  
+
   it(@"should raise when initializing with buffer of wrong type", ^{
     expect(^{
       [(LTArrayBuffer *)[[buffer stub] andReturnValue:@(LTArrayBufferTypeGeneric)] type];
@@ -51,19 +51,19 @@ context(@"properties", ^{
     expect(array.count).to.equal(16);
     OCMVerifyAll(buffer);
  });
-  
+
   it(@"should return correct count for short indices", ^{
     array = [[LTIndicesArray alloc] initWithType:LTIndicesBufferTypeShort arrayBuffer:buffer];
     expect(array.count).to.equal(8);
     OCMVerifyAll(buffer);
   });
-  
+
   it(@"should return correct count for integer indices", ^{
     array = [[LTIndicesArray alloc] initWithType:LTIndicesBufferTypeInteger arrayBuffer:buffer];
     expect(array.count).to.equal(4);
     OCMVerifyAll(buffer);
   });
-  
+
   it(@"count should reflect the current buffer size", ^{
     array = [[LTIndicesArray alloc] initWithType:LTIndicesBufferTypeByte arrayBuffer:buffer];
     expect(array.count).to.equal(16);

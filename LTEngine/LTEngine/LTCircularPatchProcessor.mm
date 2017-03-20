@@ -25,7 +25,7 @@
   LTParameterAssert(input);
   LTParameterAssert(output);
   LTParameterAssert(input.size == output.size);
-  
+
   LTCircularPatchDrawer *drawer =
       [[LTCircularPatchDrawer alloc] initWithProgramFactory:[[self class] programFactory]
                                               sourceTexture:input];
@@ -147,7 +147,7 @@ static const NSUInteger kInLevelAveragingCount = 5;
       LTVector4s averagedColor(numVerticesInCurrentLevel);
       for (NSUInteger i = 0; i < numVerticesInCurrentLevel; ++i) {
         NSUInteger currentIndex = offsetOfCurrentLevel + i;
-        
+
         LTVector4 left = i > 0 ? membraneColors[currentIndex - 1] :
             membraneColors[offsetOfCurrentLevel + numVerticesInCurrentLevel - 1];
         LTVector4 ego = membraneColors[currentIndex];
@@ -158,7 +158,7 @@ static const NSUInteger kInLevelAveragingCount = 5;
       std::copy(averagedColor.begin(), averagedColor.end(), &membraneColors[offsetOfCurrentLevel]);
     }
   }
-  
+
   // Level 0 (root) color (mean of its rootNodeRank children).
   membraneColors[0] = LTVector4(0, 0, 0, 1);
   NSUInteger numVerticesInLevel1 = [self.model numOfVerticesInLevel:1];
@@ -225,7 +225,7 @@ static const CGFloat kBoundaryAlpha = 0.1;
                     color.a() = alpha;
                   });
   }
-  
+
   // Root node.
   membraneColors[0].a() = 1;
 }
