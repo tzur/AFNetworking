@@ -827,6 +827,17 @@ context(@"empty view", ^{
     dataSource.data = @[@[], @[]];
     expect(!emptyView.isHidden && emptyView.alpha == 1).to.beTruthy();
   });
+
+  it(@"should not update empty view visibility outside the main thread", ^{
+    LLSignalTestRecorder *recorder = [RACObserve(viewController, emptyView.hidden) testRecorder];
+
+      dispatch_async(dispatch_queue_create(NULL, NULL), ^{
+        dataSource.data = @[@[], @[]];
+      });
+
+    expect(recorder).will.sendValuesWithCount(2);
+    expect(recorder.operatingThreads).to.equal([NSSet setWithObject:[NSThread mainThread]]);
+  });
   
   it(@"should bind new empty views and set them according to the current value", ^{
     UIView *newEmptyView = [[UIView alloc] init];
@@ -854,6 +865,17 @@ context(@"error view", ^{
   it(@"should show the view when the data source did err", ^{
     dataSource.error = [NSError lt_errorWithCode:1337];
     expect(!viewController.errorView.isHidden && viewController.errorView.alpha == 1).to.beTruthy();
+  });
+      
+  it(@"should not update error view visibility outside the main thread", ^{
+    LLSignalTestRecorder *recorder = [RACObserve(viewController, errorView.hidden) testRecorder];
+
+      dispatch_async(dispatch_queue_create(NULL, NULL), ^{
+        dataSource.error = [NSError lt_errorWithCode:1337];
+      });
+
+    expect(recorder).will.sendValuesWithCount(2);
+    expect(recorder.operatingThreads).to.equal([NSSet setWithObject:[NSThread mainThread]]);
   });
 
   context(@"error view provider", ^{

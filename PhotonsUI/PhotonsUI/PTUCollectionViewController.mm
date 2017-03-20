@@ -290,7 +290,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)setupInfoViewBinding {
   @weakify(self);
-  RACSignal *hideEmptyView = [[[[RACObserve(self, emptyView)
+  RACSignal *hideEmptyView = [[[[[RACObserve(self, emptyView)
       map:^RACStream *(id) {
         @strongify(self);
         return RACObserve(self, dataSource.hasData);
@@ -299,9 +299,10 @@ NS_ASSUME_NONNULL_BEGIN
       combineLatestWith:RACObserve(self, dataSource.error)]
       reduceEach:(id)^NSNumber *(NSNumber * _Nullable hasData, NSError * _Nullable error) {
         return @(hasData.boolValue || error != nil);
-      }];
+      }]
+      deliverOnMainThread];
 
-  RACSignal *hideErrorView = [[[RACObserve(self, errorView)
+  RACSignal *hideErrorView = [[[[RACObserve(self, errorView)
       map:^RACStream *(id) {
         @strongify(self);
         return RACObserve(self, dataSource.error);
@@ -309,7 +310,8 @@ NS_ASSUME_NONNULL_BEGIN
       switchToLatest]
       map:^NSNumber *(NSError * _Nullable error) {
         return @(error == nil);
-      }];
+      }]
+      deliverOnMainThread];
   
   RAC(self, view.emptyView.hidden) = hideEmptyView;
   RAC(self, view.errorView.hidden) = hideErrorView;
@@ -319,7 +321,7 @@ NS_ASSUME_NONNULL_BEGIN
       return @(!hideEmpty.boolValue || !hideError.boolValue);
     }];
   
-  RAC(self, view.errorView) = [[[[RACObserve(self, errorViewProvider)
+  RAC(self, view.errorView) = [[[[[RACObserve(self, errorViewProvider)
       ignore:nil]
       map:^RACSignal *(id<PTUErrorViewProvider> errorViewProvider) {
         @strongify(self);
@@ -329,6 +331,7 @@ NS_ASSUME_NONNULL_BEGIN
         ]];
       }]
       switchToLatest]
+      deliverOnMainThread]
       reduceEach:(id)^UIView *(id<PTUErrorViewProvider> errorViewProvider, NSError *error) {
         return [errorViewProvider errorViewForError:error
                                       associatedURL:PTUExtractAssociatedURL(error)];
