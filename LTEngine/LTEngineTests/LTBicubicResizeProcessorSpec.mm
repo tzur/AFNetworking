@@ -26,7 +26,6 @@ afterEach(^{
   processor = nil;
 });
 
-
 context(@"initialization", ^{
   it(@"should initialize with single input and output", ^{
     expect(^{

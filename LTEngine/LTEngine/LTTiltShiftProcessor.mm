@@ -138,7 +138,6 @@ static const CGFloat kMaskScalingFactor = 4.0;
   [self.maskedBlurProcessor processInRect:rect];
 }
 
-
 - (void)setNeedsDualMaskUpdate {
   self.needsDualMaskProcessing = YES;
 }

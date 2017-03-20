@@ -30,7 +30,6 @@
   return params;
 }
 
-
 - (CGFloat)lineRadius {
   return 0.5 * self.lineWidth;
 }

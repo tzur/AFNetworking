@@ -100,7 +100,6 @@ context(@"processing", ^{
 
     output = [LTTexture textureWithPropertiesOf:target];
 
-
     processor = [[LTPatchCompositorProcessor alloc] initWithSource:source target:target
         membrane:membrane mask:mask output:output];
     processor.sourceRect = [LTRotatedRect rect:CGRectMake(0, 0, 16, 16)];

@@ -37,7 +37,6 @@
   return newRect;
 }
 
-
 #pragma mark -
 #pragma mark Properties
 #pragma mark -
