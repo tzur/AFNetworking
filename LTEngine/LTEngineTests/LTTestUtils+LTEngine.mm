@@ -63,6 +63,8 @@ BOOL LTCompareMat(const cv::Mat &expected, const cv::Mat &actual, std::vector<in
       return LTCompareMatCells<uchar>(expected, actual, 0, firstMismatch);
     case CV_8UC2:
       return LTCompareMatCells<cv::Vec2b>(expected, actual, 0, firstMismatch);
+    case CV_8UC3:
+      return LTCompareMatCells<cv::Vec3b>(expected, actual, 0, firstMismatch);
     case CV_8UC4:
       return LTCompareMatCells<cv::Vec4b>(expected, actual, cv::Vec4b(0, 0, 0, 0), firstMismatch);
     case CV_16UC4:
@@ -84,6 +86,10 @@ BOOL LTCompareMat(const cv::Mat &expected, const cv::Mat &actual, std::vector<in
       return LTCompareMatCells<float>(expected, actual, 0.f, firstMismatch);
     case CV_32FC4:
       return LTCompareMatCells<cv::Vec4f>(expected, actual, cv::Vec4f(0, 0, 0, 0), firstMismatch);
+    case CV_64F:
+      return LTCompareMatCells<double>(expected, actual, 0.f, firstMismatch);
+    case CV_64FC4:
+      return LTCompareMatCells<cv::Vec4d>(expected, actual, cv::Vec4d(0, 0, 0, 0), firstMismatch);
     default:
       LTAssert(NO, @"Unsupported mat type for comparison: %d", expected.type());
   }
@@ -164,6 +170,8 @@ NSString *LTMatValueAsString(const cv::Mat &mat, const std::vector<int> &positio
       return LTMatAsString<uchar>(mat, position);
     case CV_8UC2:
       return LTMatAsString<cv::Vec2b>(mat, position);
+    case CV_8UC3:
+      return LTMatAsString<cv::Vec3b>(mat, position);
     case CV_8UC4:
       return LTMatAsString<cv::Vec4b>(mat, position);
     case CV_16UC4:
@@ -180,6 +188,10 @@ NSString *LTMatValueAsString(const cv::Mat &mat, const std::vector<int> &positio
       return LTMatAsString<float>(mat, position);
     case CV_32FC4:
       return LTMatAsString<cv::Vec4f>(mat, position);
+    case CV_64F:
+      return LTMatAsString<double>(mat, position);
+    case CV_64FC4:
+      return LTMatAsString<cv::Vec4d>(mat, position);
     default:
       LTAssert(NO, @"Unsupported mat type to retrieve value from: %d", mat.type());
   }
@@ -444,7 +456,7 @@ static BOOL LTCompareMatCells(const cv::Mat &expected, const cv::Mat &actual, co
   if (!expected.dims) {
     return YES;
   }
-  
+
   cv::MatConstIterator_<T> expectedIterator = expected.begin<T>();
   auto actualIterator = actual.begin<T>();
   cv::MatConstIterator_<T> endIterator = expected.end<T>();
@@ -525,7 +537,7 @@ static NSString *LTMatPathForNameAndIndex(NSString *name, NSUInteger index) {
 static void LTWriteMat(const cv::Mat &mat, NSString *path) {
   LTParameterAssert(mat.dims == 2, "Non 2-dimenional matrices don't have writing support. "
                     @"Input matrix is %d-dimensional.", mat.dims);
-  
+
   switch (mat.type()) {
     case CV_8UC1:
       cv::imwrite([path cStringUsingEncoding:NSUTF8StringEncoding], mat);
@@ -539,6 +551,11 @@ static void LTWriteMat(const cv::Mat &mat, NSString *path) {
       Matrices outputs{paddedMat};
       cv::mixChannels(inputs, outputs, fromTo, 4);
       cv::imwrite([path cStringUsingEncoding:NSUTF8StringEncoding], paddedMat);
+    } break;
+    case CV_8UC3: {
+      cv::Mat bgrMat;
+      cv::cvtColor(mat, bgrMat, CV_RGB2BGR);
+      cv::imwrite([path cStringUsingEncoding:NSUTF8StringEncoding], bgrMat);
     } break;
     case CV_8UC4:
     case CV_16UC4: {
@@ -565,12 +582,14 @@ static void LTWriteMat(const cv::Mat &mat, NSString *path) {
       cv::Mat converted(mat.rows, mat.cols, CV_8UC4, mat.data, mat.step[0]);
       cv::imwrite([path cStringUsingEncoding:NSUTF8StringEncoding], converted);
     } break;
-    case CV_32F: {
+    case CV_32F:
+    case CV_64F: {
       cv::Mat converted;
       mat.convertTo(converted, CV_8U, 255.0);
       cv::imwrite([path cStringUsingEncoding:NSUTF8StringEncoding], converted);
     } break;
-    case CV_32FC4: {
+    case CV_32FC4:
+    case CV_64FC4: {
       cv::Mat converted;
       mat.convertTo(converted, CV_8UC4, 255.0);
       cv::Mat bgrMat;
