@@ -76,9 +76,9 @@ context(@"processing", ^{
     // - Opacity is set to 0.5, which is later multiplied with the mask.
     //
     // When compositing, only the 16x16 top left corner of source is used, and it is copied to the
-    // entire target rect. The mask (after resizing to target rect coordinates) specifies only the top
-    // left 16x16 rect as one that should be written as source + membrane, while the rest is written
-    // as target.
+    // entire target rect. The mask (after resizing to target rect coordinates) specifies only the
+    // top left 16x16 rect as one that should be written as source + membrane, while the rest is
+    // written as target.
     cv::Mat4b sourceImage(cv::Mat4b::zeros(32, 32));
     sourceImage(cv::Rect(0, 0, 8, 8)) = cv::Vec4b(255, 0, 0, 255);
     sourceImage(cv::Rect(8, 0, 8, 8)) = cv::Vec4b(0, 255, 0, 255);

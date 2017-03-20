@@ -421,7 +421,7 @@ sharedExamplesFor(kLTTextureBasicExamples, ^(NSDictionary *data) {
         expect(texture.fillColor.isNull()).to.beFalsy();
       });
 
-        it(@"should have initial fill color of null when initializing with properties of texture", ^{
+      it(@"should have initial fill color of null when initializing with properties of texture", ^{
         [texture clearWithColor:LTVector4::ones()];
         expect(texture.fillColor.isNull()).to.beFalsy();
         LTTexture *other = [[[texture class] alloc] initWithPropertiesOf:texture];

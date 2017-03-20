@@ -345,8 +345,8 @@ static NSUInteger LTIndexOfConcavePointInQuad(const lt::Quad &quad) {
   for (NSUInteger i = 0; i < lt::Quad::kNumQuadCorners; i++) {
     CGPoint origin = corners[i];
     CGPoint direction = corners[(i + 1) % lt::Quad::kNumQuadCorners] - origin;
-    if (LTPointLocationRelativeToRay(corners[(i + 2) % lt::Quad::kNumQuadCorners], origin, direction) ==
-        LTPointLocationLeftOfRay) {
+    if (LTPointLocationRelativeToRay(corners[(i + 2) % lt::Quad::kNumQuadCorners], origin,
+                                     direction) == LTPointLocationLeftOfRay) {
       return (i + 1) % lt::Quad::kNumQuadCorners;
     }
   }

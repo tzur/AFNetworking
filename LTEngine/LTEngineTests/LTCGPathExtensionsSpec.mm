@@ -455,7 +455,8 @@ context(@"creation", ^{
     points = CGPoints{CGPointZero, CGPointMake(0, 1), CGPointMake(0.26521644, 1),
         CGPointMake(0.51957041, 0.894643127), CGPointMake(M_SQRT1_2, M_SQRT1_2)};
 
-    circularSectorPath = LTCGPathCreateWithCircularSector(LTVector2::zeros(), 1, M_PI_2, M_PI_4, YES);
+    circularSectorPath = LTCGPathCreateWithCircularSector(LTVector2::zeros(), 1, M_PI_2, M_PI_4,
+                                                          YES);
     evaluation.points = points;
     evaluation.numberOfPointsToExpect = points.size();
     evaluation.numberOfClosedSubPathsToExpect = 1;
