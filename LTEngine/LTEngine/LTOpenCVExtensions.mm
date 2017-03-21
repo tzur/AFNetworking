@@ -81,10 +81,25 @@ void LTConvertToSameDepth(const cv::Mat &input, cv::Mat *output, int type) {
     LTConvertFromHalfFloat(input, output);
   } else {
     double alpha = 1;
-    if (input.depth() == CV_32F && CV_MAT_DEPTH(type) == CV_8U) {
-      alpha = 255;
-    } else if (input.depth() == CV_8U && CV_MAT_DEPTH(type) == CV_32F) {
-      alpha = 1.0 / 255.0;
+    switch (input.depth()) {
+      case CV_8U:
+        if (CV_MAT_DEPTH(type) == CV_32F || CV_MAT_DEPTH(type) == CV_64F) {
+          alpha = 1.0 / std::numeric_limits<uchar>::max();
+        }
+        break;
+      case CV_16U:
+        if (CV_MAT_DEPTH(type) == CV_32F || CV_MAT_DEPTH(type) == CV_64F) {
+          alpha = 1.0 / std::numeric_limits<ushort>::max();
+        }
+        break;
+      case CV_32F:
+      case CV_64F:
+        if (CV_MAT_DEPTH(type) == CV_8U) {
+          alpha = std::numeric_limits<uchar>::max();
+        } else if (CV_MAT_DEPTH(type) == CV_16U){
+          alpha = std::numeric_limits<ushort>::max();
+        }
+        break;
     }
     input.convertTo(*output, type, alpha);
   }
