@@ -117,7 +117,7 @@ context(@"fetching receipt validation status", ^{
 });
 
 context(@"events signal", ^{
-  it(@"should send event sent by receipt validator", ^{
+  it(@"should send events sent by the underlying receipt validator", ^{
     RACSubject *receiptValidatorEventsSubject = [RACSubject subject];
     OCMStub([receiptValidator eventsSignal]).andReturn(receiptValidatorEventsSubject);
 
