@@ -1215,7 +1215,7 @@
 		B4947F061DFD4FF500872FBE /* UIImage+Factory.h in Headers */ = {isa = PBXBuildFile; fileRef = B4947F041DFD4FF500872FBE /* UIImage+Factory.h */; };
 		B4947F071DFD4FF500872FBE /* UIImage+Factory.mm in Sources */ = {isa = PBXBuildFile; fileRef = B4947F051DFD4FF500872FBE /* UIImage+Factory.mm */; };
 		B4947F3B1DFD670000872FBE /* UIImage+FactorySpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = B4947F3A1DFD670000872FBE /* UIImage+FactorySpec.mm */; };
-		B4F1DEB21E2CB3430042DB2A /* LTFboAttachmentInfoSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = B4F1DEB11E2CB3430042DB2A /* LTFboAttachmentInfoSpec.mm */; };
+		B4F1DEB21E2CB3430042DB2A /* LTFboAttachableInfoSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = B4F1DEB11E2CB3430042DB2A /* LTFboAttachableInfoSpec.mm */; };
 		BEB7BEB61E26804B007EAB73 /* NSValueTransformer+LTEngine.h in Headers */ = {isa = PBXBuildFile; fileRef = BEB7BEB41E26804B007EAB73 /* NSValueTransformer+LTEngine.h */; };
 		BEB7BEB71E26804B007EAB73 /* NSValueTransformer+LTEngine.mm in Sources */ = {isa = PBXBuildFile; fileRef = BEB7BEB51E26804B007EAB73 /* NSValueTransformer+LTEngine.mm */; };
 		BEB7BEEC1E2680DB007EAB73 /* LTTestMTLModel.m in Sources */ = {isa = PBXBuildFile; fileRef = BEB7BEEB1E2680DB007EAB73 /* LTTestMTLModel.m */; };
@@ -2751,7 +2751,6 @@
 		8BAAC5D918BB6A2200A4B4DA /* LTPatchCompositor.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTPatchCompositor.vsh; sourceTree = "<group>"; };
 		8BAAC5DA18BB70A400A4B4DA /* LTPatchCompositorProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; lineEnding = 0; path = LTPatchCompositorProcessorSpec.mm; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		8BAB32091C28273E00DEA2A4 /* LTRenderbufferSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTRenderbufferSpec.mm; sourceTree = "<group>"; };
-		8BAB32281C282BF300DEA2A4 /* LTRenderbuffer+Writing.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "LTRenderbuffer+Writing.h"; sourceTree = "<group>"; };
 		8BAB7C3218C4BEBD005BE12A /* LTMathUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTMathUtils.h; sourceTree = "<group>"; };
 		8BAB7C5118C60065005BE12A /* LTMathUtilsSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTMathUtilsSpec.mm; sourceTree = "<group>"; };
 		8BAB7C5318C61853005BE12A /* LTPatchProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; lineEnding = 0; path = LTPatchProcessorSpec.mm; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
@@ -2882,7 +2881,6 @@
 		8BC465C218995DB80094F7BC /* LTGPUBlockSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTGPUBlockSpec.mm; sourceTree = "<group>"; };
 		8BC87E5E1C21D25D0061BD00 /* LTGLEnums.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTGLEnums.h; sourceTree = "<group>"; };
 		8BC87EAE1C22CD3C0061BD00 /* LTGLPixelFormatSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTGLPixelFormatSpec.mm; sourceTree = "<group>"; };
-		8BC87EF81C2720640061BD00 /* LTFboWritableAttachment.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTFboWritableAttachment.h; sourceTree = "<group>"; };
 		8BCA66F3182FB5E2003FCB65 /* LTGLException.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTGLException.h; sourceTree = "<group>"; };
 		8BCA66F4182FB5E2003FCB65 /* LTGLException.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTGLException.m; sourceTree = "<group>"; };
 		8BCA67361830B7AC003FCB65 /* NSValue+GLKitExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSValue+GLKitExtensions.h"; sourceTree = "<group>"; };
@@ -2951,7 +2949,7 @@
 		B4947F041DFD4FF500872FBE /* UIImage+Factory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Factory.h"; sourceTree = "<group>"; };
 		B4947F051DFD4FF500872FBE /* UIImage+Factory.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIImage+Factory.mm"; sourceTree = "<group>"; };
 		B4947F3A1DFD670000872FBE /* UIImage+FactorySpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIImage+FactorySpec.mm"; sourceTree = "<group>"; };
-		B4F1DEB11E2CB3430042DB2A /* LTFboAttachmentInfoSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTFboAttachmentInfoSpec.mm; sourceTree = "<group>"; };
+		B4F1DEB11E2CB3430042DB2A /* LTFboAttachableInfoSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTFboAttachableInfoSpec.mm; sourceTree = "<group>"; };
 		BEB7BEB41E26804B007EAB73 /* NSValueTransformer+LTEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSValueTransformer+LTEngine.h"; sourceTree = "<group>"; };
 		BEB7BEB51E26804B007EAB73 /* NSValueTransformer+LTEngine.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSValueTransformer+LTEngine.mm"; sourceTree = "<group>"; };
 		BEB7BEEA1E2680DB007EAB73 /* LTTestMTLModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTTestMTLModel.h; sourceTree = "<group>"; };
@@ -5019,7 +5017,6 @@
 				B467099E1E07F57F000CD9F5 /* LTFboAttachmentInfo.mm */,
 				8B539FF21B4A882600036743 /* LTFboPool.h */,
 				8B539FF31B4A882600036743 /* LTFboPool.mm */,
-				8BC87EF81C2720640061BD00 /* LTFboWritableAttachment.h */,
 				8BA3E140182A707200FDD95A /* LTGLCheck.h */,
 				8B8E51031861F54600821829 /* LTGLContext.h */,
 				8B8E51041861F54600821829 /* LTGLContext.mm */,
@@ -5054,7 +5051,6 @@
 				85ECD6551D44020A007C9056 /* LTRegularGridMesh.mm */,
 				8B9F3BE41C15DC6800FEB7C4 /* LTRenderbuffer.h */,
 				8B9F3BE51C15DC6800FEB7C4 /* LTRenderbuffer.mm */,
-				8BAB32281C282BF300DEA2A4 /* LTRenderbuffer+Writing.h */,
 				8BA3E13C182A606600FDD95A /* LTShader.h */,
 				8BA3E13D182A606600FDD95A /* LTShader.mm */,
 				8B8E50E81861AA8900821829 /* LTShaderStorage.h */,
@@ -5096,7 +5092,7 @@
 				8BAA727618437BD0007B5F9A /* LTDrawingContextSpec.mm */,
 				6A4444711B4AC5E200B9C710 /* LTFboPoolSpec.mm */,
 				288AB4021835203300A11FA4 /* LTFboSpec.mm */,
-				B4F1DEB11E2CB3430042DB2A /* LTFboAttachmentInfoSpec.mm */,
+				B4F1DEB11E2CB3430042DB2A /* LTFboAttachableInfoSpec.mm */,
 				8B8E510D1863216E00821829 /* LTGLContextSpec.mm */,
 				8BC87EAE1C22CD3C0061BD00 /* LTGLPixelFormatSpec.mm */,
 				8B5A0E05189AA91C0098399C /* LTGLTextureSpec.mm */,
@@ -7064,7 +7060,7 @@
 				50501ABE1C34381A005FFDEB /* LTTouchEventViewTestUtils.mm in Sources */,
 				8BD0733A19A2604A005F2C37 /* LTImage+TextureSpec.mm in Sources */,
 				5024E6BB19FCEC4600A46E21 /* LTSingleQuadDrawerSpec.mm in Sources */,
-				B4F1DEB21E2CB3430042DB2A /* LTFboAttachmentInfoSpec.mm in Sources */,
+				B4F1DEB21E2CB3430042DB2A /* LTFboAttachableInfoSpec.mm in Sources */,
 				0368E6D819C027A700B99FF5 /* LTSmoothPyramidProcessorSpec.mm in Sources */,
 				284791F61862E71500A70AF5 /* LTGridDrawerSpec.mm in Sources */,
 				8B3667E3184754BD002A1833 /* LTGPUResourceExamples.mm in Sources */,

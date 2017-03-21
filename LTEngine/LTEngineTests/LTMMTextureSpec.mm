@@ -5,7 +5,7 @@
 
 #import "LTCVPixelBufferExtensions.h"
 #import "LTFbo.h"
-#import "LTFboWritableAttachment.h"
+#import "LTFboAttachable.h"
 #import "LTGLContext.h"
 #import "LTGLTexture.h"
 #import "LTOpenCVExtensions.h"
@@ -179,7 +179,7 @@ sharedExamplesFor(kLTMMTextureExamples, ^(NSDictionary *contextInfo) {
     it(@"should not allow sampling while writing", ^{
       __block BOOL inRead = NO;
 
-      [texture writeToAttachmentWithBlock:^{
+      [texture writeToAttachableWithBlock:^{
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
           [texture sampleWithGPUWithBlock:^{
             inRead = YES;
@@ -195,7 +195,7 @@ sharedExamplesFor(kLTMMTextureExamples, ^(NSDictionary *contextInfo) {
 
       [texture sampleWithGPUWithBlock:^{
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-          [texture writeToAttachmentWithBlock:^{
+          [texture writeToAttachableWithBlock:^{
             inWrite = YES;
           }];
         });

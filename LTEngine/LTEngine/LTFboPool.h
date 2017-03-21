@@ -3,7 +3,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class LTFbo, LTRenderbuffer, LTTexture;
+@class LTFbo, LTFboAttachmentInfo, LTRenderbuffer, LTTexture;
+
+@protocol LTFboAttachable;
 
 /// Represents a pool of OpenGL framebuffers. Framebuffers may be reused for better performance and
 /// to avoid OpenGL errors.
@@ -15,36 +17,44 @@ NS_ASSUME_NONNULL_BEGIN
 /// with the current thread.
 + (nullable instancetype)currentPool;
 
-/// Returns an FBO with the given \c texture as an attachment. The texture is not cleared in the
+/// Returns an FBO with the given \c texture as an attachable. The texture is not cleared in the
 /// process. If the given texture is invalid, an \c LTGLException named
 /// \c kLTFboInvalidAttachmentException will be thrown.
 ///
-/// @param texture texture to set as an attachment. The texture must be of non-zero size, loaded
-/// (\c name which is non-zero) and with a precision that is valid as a attachment.
+/// @param texture texture to set as an attachable. The texture must be of non-zero size, loaded
+/// (\c name which is non-zero) and with a precision that is valid as a attachable.
 ///
 /// @note The texture will not be cleared. Use \c clear to clear the texture.
 - (LTFbo *)fboWithTexture:(LTTexture *)texture;
 
-/// Returns an FBO with the given \c texture and a mipmap level as an attachment. The texture is not
+/// Returns an FBO with the given \c texture and a mipmap level as an attachable. The texture is not
 /// cleared in the process. If the given texture is invalid, an \c LTGLException named
 /// \c kLTFboInvalidAttachmentException will be thrown.
 ///
-/// @param texture texture to set as an attachment. The texture must be of non-zero size, loaded
-/// (\c name which is non-zero) and with a precision that is valid as a attachment.
+/// @param texture texture to set as an attachable. The texture must be of non-zero size, loaded
+/// (\c name which is non-zero) and with a precision that is valid as a attachable.
 ///
 /// @param level level of the mipmap texture to set as a render target. For non mipmap textures,
 /// this value must be 0, and for mipmap textures this value must be less than or equal the
 /// texture's \c maxMipmapLevel.
 ///
 /// @note The texture will not be cleared. Use \c clear to clear the texture.
-- (LTFbo *)fboWithTexture:(LTTexture *)texture level:(NSUInteger)level;
+- (LTFbo *)fboWithTexture:(LTTexture *)texture level:(GLint)level;
 
 /// Returns an FBO with a target renderbuffer. If the given renderbuffer is invalid, an
 /// \c LTGLException named \c kLTFboInvalidAttachmentException will be thrown.
 ///
-/// @param renderbuffer renderbuffer to set as an attachment. The renderbuffer must be of non-zero
+/// @param renderbuffer renderbuffer to set as an attachable. The renderbuffer must be of non-zero
 /// size and valid \c name which is non-zero.
 - (LTFbo *)fboWithRenderbuffer:(LTRenderbuffer *)renderbuffer;
+
+/// Returns an FBO initialized with the given non empty \c attachables, which maps
+/// \c LTFboAttachmentPoint to \c LTFboAttachable.
+- (LTFbo *)fboWithAttachables:(NSDictionary<NSNumber *, id<LTFboAttachable>> *)attachables;
+
+/// Returns an FBO initialized with the given non empty \c infos, which maps
+/// \c LTFboAttachmentPoint to \c LTFboAttachmentInfo.
+- (LTFbo *)fboWithAttachmentInfos:(NSDictionary<NSNumber *, LTFboAttachmentInfo *> *)infos;
 
 @end
 

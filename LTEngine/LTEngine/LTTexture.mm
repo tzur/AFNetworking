@@ -62,10 +62,10 @@ NS_ASSUME_NONNULL_BEGIN
 /// OpenGL identifier of the texture.
 @property (readwrite, nonatomic) GLuint name;
 
-/// Pixel format of the attachment.
+/// Pixel format of the attachable.
 @property (strong, readwrite, nonatomic) LTGLPixelFormat *pixelFormat;
 
-/// Size of the attachment.
+/// Size of the attachable.
 @property (nonatomic) CGSize size;
 
 /// While \c YES, the \c generationID property will not be updated.
@@ -524,6 +524,29 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (LTFboAttachableType)attachableType {
   return LTFboAttachableTypeTexture2D;
+}
+
+- (void)writeToAttachableWithBlock:(LTVoidBlock)block {
+  LTParameterAssert(block);
+  [self beginWritingWithGPU];
+  block();
+  [self endWritingWithGPU];
+}
+
+- (void)clearAttachableWithColor:(LTVector4)color block:(LTVoidBlock)block {
+  [self writeToAttachableWithBlock:block];
+
+  // Not a mipmap - fill color applies to the entire texture.
+  if (!self.maxMipmapLevel) {
+    self.fillColor = color;
+    return;
+  }
+
+  // Mipmap - unset fill color if one of the levels were cleared with a different color than the
+  // current fill color.
+  if (self.fillColor != color) {
+    self.fillColor = LTVector4::null();
+  }
 }
 
 #pragma mark -
