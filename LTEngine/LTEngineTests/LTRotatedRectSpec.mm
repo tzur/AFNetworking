@@ -27,7 +27,7 @@ context(@"initializers and factory methods", ^{
       expect(rotatedRect.center).to.equal(kCenter);
     });
   });
-  
+
   context(@"class Methods", ^{
     it(@"should create rect with angle", ^{
       rotatedRect = [LTRotatedRect rect:kRect withAngle:kAngle];
@@ -67,11 +67,11 @@ context(@"initializers and factory methods", ^{
 // Script is available at: lightricks-research/ltkit/LTRotatedRect/LTRotatedRect.m.
 context(@"properties", ^{
   const CGFloat kAcceptedDifference = 1e-3;
-  
+
   beforeEach(^{
     rotatedRect = [LTRotatedRect rect:kRect withAngle:kAngle];
   });
-  
+
   it(@"should return correct vertices", ^{
     const CGPoint expectedV0 = CGPointMake(2.8536, 1.5251);
     const CGPoint expectedV1 = CGPointMake(4.9749, 3.6464);
@@ -87,7 +87,7 @@ context(@"properties", ^{
     expect(rotatedRect.v3.x).to.beCloseToWithin(expectedV3.x, kAcceptedDifference);
     expect(rotatedRect.v3.y).to.beCloseToWithin(expectedV3.y, kAcceptedDifference);
   });
-  
+
   it(@"should return correct transform", ^{
     expect(rotatedRect.transform.a).to.beCloseToWithin(std::cos(kAngle), kAcceptedDifference);
     expect(rotatedRect.transform.b).to.beCloseToWithin(std::sin(kAngle), kAcceptedDifference);

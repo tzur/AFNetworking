@@ -95,13 +95,13 @@ sharedExamplesFor(kLTResourceExamples, ^(NSDictionary *data) {
     }];
     expect(didExecute).to.beTruthy();
   });
-  
+
   it(@"should raise exception when trying to execute a nil block", ^{
     expect(^{
       [resource bindAndExecute:nil];
     }).to.raise(NSInvalidArgumentException);
   });
-  
+
   it(@"should raise exception when trying to execute a nil block when already bound", ^{
     expect(^{
       [resource bind];

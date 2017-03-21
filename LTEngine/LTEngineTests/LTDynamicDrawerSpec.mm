@@ -256,7 +256,8 @@ context(@"execution", ^{
         cv::Mat4b expectedMat(kHeight, kWidth);
         expectedMat.setTo(cv::Vec4b::zeros());
         expectedMat(cv::Rect(0, 0, kHalfWidth, kHalfHeight)) = kDarkRed;
-        expectedMat(cv::Rect(kHalfWidth / 2, kHalfHeight / 2, kHalfWidth, kHalfHeight)) = kDarkGreen;
+        expectedMat(cv::Rect(kHalfWidth / 2, kHalfHeight / 2, kHalfWidth,
+                             kHalfHeight)) = kDarkGreen;
 
         mapping = @{@"texture": mappedTexture, @"anotherTexture": anotherMappedTexture};
 
@@ -264,7 +265,7 @@ context(@"execution", ^{
           [drawer drawWithAttributeData:@[attributeData] samplerUniformsToTextures:mapping
                                uniforms:@{@"factor": @0.5, @"projection": $(kProjection)}];
         }];
-        
+
         expect($(outputTexture.image)).to.equalMat($(expectedMat));
       });
     });
@@ -466,7 +467,8 @@ context(@"execution", ^{
         cv::Mat4b expectedMat(kHeight, kWidth);
         expectedMat.setTo(cv::Vec4b::zeros());
         expectedMat(cv::Rect(0, 0, kHalfWidth, kHalfHeight)) = kDarkRed;
-        expectedMat(cv::Rect(kHalfWidth / 2, kHalfHeight / 2, kHalfWidth, kHalfHeight)) = kDarkGreen;
+        expectedMat(cv::Rect(kHalfWidth / 2, kHalfHeight / 2, kHalfWidth,
+                             kHalfHeight)) = kDarkGreen;
 
         mapping = @{@"texture": mappedTexture, @"anotherTexture": anotherMappedTexture};
 

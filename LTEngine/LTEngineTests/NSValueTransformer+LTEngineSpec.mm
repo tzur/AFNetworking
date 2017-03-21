@@ -397,35 +397,35 @@ context(@"transformer composition", ^{
 
 context(@"color value transformer", ^{
   __block NSValueTransformer *transformer;
-  
+
   beforeEach(^{
     transformer = [NSValueTransformer valueTransformerForName:kLTColorValueTransformer];
   });
-  
+
   it(@"should have a valid transformer", ^{
     expect(transformer).notTo.beNil();
   });
-  
+
   it(@"should perform forward transform", ^{
     expect([transformer transformedValue:@"#FFFF0000"]).to.equal([UIColor redColor]);
   });
-  
+
   it(@"should perform reverse transform", ^{
     expect([transformer reverseTransformedValue:[UIColor blackColor]]).to.equal(@"#FF000000");
   });
-  
+
   it(@"should raise if received object for forward transform isn't a string", ^{
     expect(^{
       [transformer transformedValue:[UIColor blackColor]];
     }).to.raise(NSInvalidArgumentException);
   });
-  
+
   it(@"should raise if received string for forward transform isn't formatted correctly", ^{
     expect(^{
       [transformer transformedValue:@"00000"];
     }).to.raise(NSInvalidArgumentException);
   });
-  
+
   it(@"should raise if received object for reverse transform isn't a color", ^{
     expect(^{
       [transformer reverseTransformedValue:@"#000000"];
@@ -435,34 +435,34 @@ context(@"color value transformer", ^{
 
 context(@"uuid value transformer", ^{
   __block NSValueTransformer *transformer;
-  
+
   beforeEach(^{
     transformer = [NSValueTransformer valueTransformerForName:kLTUUIDValueTransformer];
   });
-  
+
   it(@"should have a valid transformer", ^{
     expect(transformer).notTo.beNil();
   });
-  
+
   it(@"should perform forward transform", ^{
     expect([transformer transformedValue:@"123e4567-e89b-12d3-a456-426655440000"]).
         to.equal([[NSUUID alloc] initWithUUIDString:@"123e4567-e89b-12d3-a456-426655440000"]);
     expect([transformer transformedValue:nil]).to.beNil();
   });
-  
+
   it(@"should perform reverse transform", ^{
     NSUUID *uuid = [[NSUUID alloc] initWithUUIDString:@"123e4567-e89b-12d3-a456-426655440000"];
     expect([transformer reverseTransformedValue:uuid]).
                 to.equal(@"123E4567-E89B-12D3-A456-426655440000");
     expect([transformer reverseTransformedValue:nil]).to.beNil();
   });
-  
+
   it(@"should raise if received object for forward transform isn't a string", ^{
     expect(^{
       [transformer transformedValue:[UIColor blackColor]];
     }).to.raise(NSInvalidArgumentException);
   });
-  
+
   it(@"should raise if received string for forward transform isn't formatted correctly", ^{
     expect(^{
       [transformer transformedValue:@"00000-weew3434-sdwe-34-3333333"];
@@ -471,7 +471,7 @@ context(@"uuid value transformer", ^{
       [transformer transformedValue:@"123e4567-e89b-12d3-a456-4266554400009"];
     }).to.raise(NSInvalidArgumentException);
   });
-  
+
   it(@"should raise if received object for reverse transform isn't a uuid", ^{
     expect(^{
       [transformer reverseTransformedValue:[UIColor blackColor]];
@@ -481,7 +481,7 @@ context(@"uuid value transformer", ^{
 
 context(@"standard date value transformer", ^{
   __block NSValueTransformer *transformer;
-  
+
   beforeEach(^{
     transformer = [NSValueTransformer valueTransformerForName:kLTUTCDateValueTransformer];
   });
@@ -489,29 +489,29 @@ context(@"standard date value transformer", ^{
   it(@"should have a valid transformer", ^{
     expect(transformer).notTo.beNil();
   });
-  
+
   it(@"should perform forward transform", ^{
     expect([transformer transformedValue:@"1970-01-01T00:00:30.000Z"]).
         to.equal([NSDate dateWithTimeIntervalSince1970:30]);
   });
-  
+
   it(@"should perform reverse transform", ^{
     NSDate *date = [NSDate dateWithTimeIntervalSince1970:30];
     expect([transformer reverseTransformedValue:date]).to.equal(@"1970-01-01T00:00:30.000Z");
   });
-  
+
   it(@"should raise if received object for forward transform isn't a string", ^{
     expect(^{
       [transformer transformedValue:[UIColor blackColor]];
     }).to.raise(NSInvalidArgumentException);
   });
-  
+
   it(@"should raise if received string for forward transform isn't formatted correctly", ^{
     expect(^{
       [transformer transformedValue:@"19700101 00:00:30.00043"];
     }).to.raise(NSInvalidArgumentException);
   });
-  
+
   it(@"should raise if received object for reverse transform isn't a date", ^{
     expect(^{
       [transformer reverseTransformedValue:[UIColor blackColor]];
@@ -521,39 +521,39 @@ context(@"standard date value transformer", ^{
 
 context(@"time zone value transformer", ^{
   __block NSValueTransformer *transformer;
-  
+
   beforeEach(^{
     transformer = [NSValueTransformer valueTransformerForName:kLTTimeZoneValueTransformer];
   });
-  
+
   it(@"should have a valid transformer", ^{
     expect(transformer).notTo.beNil();
   });
-  
+
   it(@"should perform forward transform", ^{
     NSString *timeZoneName = [NSTimeZone knownTimeZoneNames][0];
     expect([transformer transformedValue:timeZoneName]).
         to.equal([[NSTimeZone alloc] initWithName:timeZoneName]);
   });
-  
+
   it(@"should perform reverse transform", ^{
     NSString *timeZoneName = [NSTimeZone knownTimeZoneNames][0];
     NSTimeZone *timeZone = [[NSTimeZone alloc] initWithName:timeZoneName];
     expect([transformer reverseTransformedValue:timeZone]).to.equal(timeZoneName);
   });
-  
+
   it(@"should raise if received object for forward transform isn't a string", ^{
     expect(^{
       [transformer transformedValue:[UIColor blackColor]];
     }).to.raise(NSInvalidArgumentException);
   });
-  
+
   it(@"should raise if received string for forward transform isn't formatted correctly", ^{
     expect(^{
       [transformer transformedValue:@"ABC"];
     }).to.raise(NSInvalidArgumentException);
   });
-  
+
   it(@"should raise if received object for reverse transform isn't a time zone", ^{
     expect(^{
       [transformer reverseTransformedValue:[UIColor blackColor]];
@@ -563,11 +563,11 @@ context(@"time zone value transformer", ^{
 
 context(@"LTPath value transformer", ^{
   __block NSValueTransformer *transformer;
-  
+
   beforeEach(^{
     transformer = [NSValueTransformer valueTransformerForName:kLTLTPathValueTransformer];
   });
-  
+
   it(@"should have a valid transformer", ^{
     expect(transformer).notTo.beNil();
   });
@@ -577,7 +577,7 @@ context(@"LTPath value transformer", ^{
                                  andRelativePath:@"foo/bar"];
     expect([transformer transformedValue:path.relativeURL.absoluteString]).to.equal(path);
   });
-  
+
   it(@"should perform reverse transform", ^{
     LTPath *path = [LTPath pathWithBaseDirectory:LTPathBaseDirectoryTemp
                                  andRelativePath:@"foo/bar"];
@@ -589,13 +589,13 @@ context(@"LTPath value transformer", ^{
       [transformer transformedValue:[UIColor blackColor]];
     }).to.raise(NSInvalidArgumentException);
   });
-  
+
   it(@"should raise if received string for forward transform isn't formatted correctly", ^{
     expect(^{
       [transformer transformedValue:@"ABC"];
     }).to.raise(NSInvalidArgumentException);
   });
-  
+
   it(@"should raise if received object for reverse transform isn't an LTPath", ^{
     expect(^{
       [transformer reverseTransformedValue:[UIColor blackColor]];

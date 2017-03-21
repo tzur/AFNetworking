@@ -75,7 +75,7 @@ static CGSize kDefaultTextureSize = CGSizeMake(1, 1);
   if (premultipliedAlpha == _premultipliedAlpha) {
     return;
   }
-  
+
   _premultipliedAlpha = premultipliedAlpha;
   [self updateProgramForCurrentProperties];
 }

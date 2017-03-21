@@ -25,13 +25,13 @@ varying highp vec2 vGrainTexcoord;
 
 void main() {
   sourceTexture;
-  
+
   // 1. Prepare the coordinate system.
   highp vec2 center = abs(vTexcoord - 0.5) * 2.0; // [0, 1] to [-1, 1].
   // Aspect ratio correction: nullify the longer dimension near the center, so total non-zero length
   // of both dimensions is equal. Normalize it back to [-1, 1].
   center = clamp(center - distanceShift, 0.0, 1.0) / (1.0 - distanceShift);
-  
+
   // 2. Create distance field.
   highp float dist;
   if (corner == 0.0) {
@@ -44,12 +44,12 @@ void main() {
   }
   // Create transition region and clamp everywhere else.
   dist = smoothstep(edge1, edge0, dist);
-  
+
   // 3. Add noise in the transition area.
   // Read noise and make it zero mean.
   highp vec3 noiseTriplet = texture2D(noiseTexture, vGrainTexcoord).rgb - 0.5;
   highp float noise = dot(noiseTriplet, noiseChannelMixer) * noiseAmplitude;
-  
+
   highp float contrastScalingFactor = 1.0 - 2.0 * abs(dist - 0.5);
   // Instead of using if-statement to add noise only for dist values in 0<dist<1 range, optimize
   // using mix-and-step statement.

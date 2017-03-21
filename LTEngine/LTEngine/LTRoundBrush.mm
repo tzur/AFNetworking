@@ -58,13 +58,13 @@ static const CGFloat kBrushGaussianSigma = 0.3;
 
 - (void)updateBrushForCurrentProperties {
   LTParameterAssert(LTIsPowerOfTwo(kBaseLevelDiameter));
-  
+
   self.shouldUpdateBrush = NO;
   Matrices levels;
   for (uint diameter = kBaseLevelDiameter; diameter > 16; diameter /= 2) {
     levels.push_back([self createBrushMatForDiameter:diameter]);
   }
-  
+
   self.texture = [LTGLTexture textureWithMipmapImages:levels];
   self.texture.minFilterInterpolation = LTTextureInterpolationLinearMipmapLinear;
   self.texture.magFilterInterpolation = LTTextureInterpolationLinear;
@@ -86,7 +86,7 @@ static const CGFloat kBrushGaussianSigma = 0.3;
       CGFloat x = (j - radius + 0.5) / radius;
       CGFloat squaredDistance = x * x + y * y;
       CGFloat arg = -squaredDistance * inv2SigmaSquare;
-      
+
       /// The brush hardness parameter controls the solidness of the brush (1 for completly solid).
       /// The edgeFactor smoothes the edges of the brush.
       CGFloat value = std::exp((1 - self.hardness) * arg);

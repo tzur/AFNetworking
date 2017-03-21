@@ -34,7 +34,7 @@ context(@"initialization", ^{
     expect(shape.translation).to.equal(CGPointZero);
     expect(shape.rotationAngle).to.equal(0);
   });
-  
+
   it(@"should initialize with params", ^{
     LTShapeDrawerParams *params = [[LTShapeDrawerParams alloc] init];
     params.lineWidth += 1;
@@ -51,21 +51,21 @@ context(@"properties", ^{
   beforeEach(^{
     shape = [[LTShapeDrawerTriangularMeshShape alloc] initWithParams:nil];
   });
-  
+
   it(@"should set opacity", ^{
     CGFloat newValue = 0.5;
     expect(shape.opacity).notTo.equal(newValue);
     shape.opacity = newValue;
     expect(shape.opacity).to.equal(newValue);
   });
-  
+
   it(@"should set translation", ^{
     CGPoint newValue = CGPointMake(-4, 8);;
     expect(shape.translation).notTo.equal(newValue);
     shape.translation = newValue;
     expect(shape.translation).to.equal(newValue);
   });
-  
+
   it(@"should set rotationAngle", ^{
     CGFloat newValue = M_PI_4;
     expect(shape.rotationAngle).notTo.equal(newValue);
@@ -83,11 +83,11 @@ context(@"drawing", ^{
   __block CGTriangle triangle;
   __block CGTriangle arrowLeftHalf;
   __block CGTriangle arrowRightHalf;
-  
+
   static const CGSize kOutputSize = CGSizeMake(64, 128);
   static const CGPoint kOutputCenter = CGPointZero + kOutputSize / 2;;
   static const LTVector4 kBackground = LTVector4(0.5, 0.5, 0.5, 1);
-  
+
   /// A large difference is allowed since there might be a difference between the output on the
   /// simulator and on devices. There's no real good solution here, as sometimes there might be 2-3
   /// pixels with a noticable difference, and sometimes more pixels but the differences won't be
@@ -117,13 +117,13 @@ context(@"drawing", ^{
     arrowRightHalf = CGTriangleMake(CGPointZero, CGPointZero + CGSizeMake(0, -30),
                                     CGPointZero + CGSizeMake(15, 15));
   });
-  
+
   afterEach(^{
     fbo = nil;
     output = nil;
     shape = nil;
   });
-  
+
   it(@"should fill a triangle", ^{
     [shape fillTriangle:triangle withShadowOnEdges:CGTriangleEdgeAll];
 
@@ -133,7 +133,7 @@ context(@"drawing", ^{
     expected = LTLoadMat([self class], @"ShapeDrawerTriangularMeshShapeTriangle.png");
     expect($(output.image)).to.beCloseToMatWithin($(expected), kAcceptedDistance);
   });
-  
+
   it(@"should fill a triangle with shadows according to edge mask", ^{
     [shape fillTriangle:triangle withShadowOnEdges:CGTriangleEdgeBC];
 
@@ -159,7 +159,7 @@ context(@"drawing", ^{
     expected = LTLoadMat([self class], @"ShapeDrawerTriangularMeshShapeMultipleTriangles.png");
     expect($(output.image)).to.beCloseToMatWithin($(expected), kAcceptedDistance);
   });
-  
+
   it(@"should draw a triangle with translation", ^{
     [shape fillTriangle:arrowLeftHalf withShadowOnEdges:CGTriangleEdgeBC | CGTriangleEdgeCA];
     [shape fillTriangle:arrowRightHalf withShadowOnEdges:CGTriangleEdgeBC | CGTriangleEdgeCA];
@@ -171,7 +171,7 @@ context(@"drawing", ^{
     expected = LTLoadMat([self class], @"ShapeDrawerTriangularMeshShapeTranslation.png");
     expect($(output.image)).to.beCloseToMatWithin($(expected), kAcceptedDistance);
   });
-  
+
   it(@"should draw a triangle with rotation", ^{
     [shape fillTriangle:arrowLeftHalf withShadowOnEdges:CGTriangleEdgeNone];
     [shape fillTriangle:arrowRightHalf withShadowOnEdges:CGTriangleEdgeNone];
@@ -184,7 +184,7 @@ context(@"drawing", ^{
     expected = LTLoadMat([self class], @"ShapeDrawerTriangularMeshShapeRotation.png");
     expect($(output.image)).to.beCloseToMatWithin($(expected), kAcceptedDistance);
   });
-  
+
   it(@"should draw to screen framebuffer", ^{
     [shape fillTriangle:arrowLeftHalf withShadowOnEdges:CGTriangleEdgeNone];
     [shape fillTriangle:arrowRightHalf withShadowOnEdges:CGTriangleEdgeNone];

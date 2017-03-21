@@ -24,7 +24,7 @@ context(@"intialization", ^{
       __unused LTFractionalNoise *noise = [[LTFractionalNoise alloc] initWithOutput:nil];
     }).to.raise(NSInvalidArgumentException);
   });
-  
+
   it(@"should initialize on correct input", ^{
     expect(^{
       __unused LTFractionalNoise *noise = [[LTFractionalNoise alloc] initWithOutput:output];
@@ -39,7 +39,7 @@ context(@"processing", ^{
       noise.amplitude = -0.1;
     }).to.raise(NSInvalidArgumentException);
   });
-  
+
   sit(@"should create noise", ^{
     LTFractionalNoise *noise = [[LTFractionalNoise alloc] initWithOutput:output];
     noise.amplitude = 0.5;

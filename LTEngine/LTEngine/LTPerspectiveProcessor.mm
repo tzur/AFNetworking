@@ -91,7 +91,7 @@ struct LTTrapezoid2 {
 
 + (NSSet *)inputModelPropertyKeys {
   static NSSet *properties;
-  
+
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
     properties = [NSSet setWithArray:@[
@@ -102,7 +102,7 @@ struct LTTrapezoid2 {
       @instanceKeypath(LTPerspectiveProcessor, distortion),
     ]];
   });
-  
+
   return properties;
 }
 
@@ -141,7 +141,7 @@ struct LTTrapezoid2 {
   point = point + self.translation;
   point = point * 2.0 - CGSizeMakeUniform(1);
   point = point / self.scale;
-  
+
   GLKVector3 v = GLKVector3Make(point.x, point.y, 1.0);
   v = GLKMatrix3MultiplyVector3(self.matrix, v);
   v = v / v.z;
@@ -214,7 +214,7 @@ struct LTTrapezoid2 {
     GLKVector3Make(-1, 1, 1),
     GLKVector3Make(1, 1, 1)
   };
-  
+
   GLKMatrix3MultiplyVector3Array(self.inverseMatrix, trapezoid, 4);
   for (GLKVector3 &corner : trapezoid) {
     corner = corner / corner.z;
@@ -224,7 +224,7 @@ struct LTTrapezoid2 {
     corner.x = 0.5 + 0.5 * corner.x;
     corner.y = 0.5 + 0.5 * corner.y;
   }
-  
+
   return LTTrapezoid2(LTVector2(trapezoid[0].x, trapezoid[0].y),
                       LTVector2(trapezoid[1].x, trapezoid[1].y),
                       LTVector2(trapezoid[2].x, trapezoid[2].y),

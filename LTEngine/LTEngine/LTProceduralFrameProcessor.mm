@@ -7,8 +7,8 @@
 #import "LTGPUImageProcessor+Protected.h"
 #import "LTMathUtils.h"
 #import "LTProgram.h"
-#import "LTShaderStorage+LTProceduralFrameVsh.h"
 #import "LTShaderStorage+LTProceduralFrameFsh.h"
+#import "LTShaderStorage+LTProceduralFrameVsh.h"
 #import "LTTexture+Factory.h"
 
 @implementation LTProceduralFrameProcessor
@@ -69,7 +69,7 @@
   CGFloat edge0 = std::abs((self.width / 100.0 - 0.5) * 2.0); // [-1, 1]
   // Distance field value on the edge between the transition and the background.
   CGFloat edge1 = std::abs(((self.width + self.spread) / 100.0 - 0.5) * 2.0); // [-1, 1];
-  
+
   self[[LTProceduralFrameFsh edge0]] = @(edge0);
   self[[LTProceduralFrameFsh edge1]] = @(edge1);
 }

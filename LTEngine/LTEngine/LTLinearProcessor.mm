@@ -35,7 +35,7 @@ NS_ASSUME_NONNULL_BEGIN
                     @"Provided input texture size (%g, %g) and output texture size (%g, %g) must be"
                     "of the same size",
                     input.size.height, input.size.width, output.size.height, output.size.width);
-  
+
   if (self = [super initWithVertexSource:[LTPassthroughShaderVsh source]
                           fragmentSource:[LTLinearFsh source] input:input andOutput:output]) {
     self[[LTLinearFsh inSituProcessing]] = @(input == output);
@@ -50,7 +50,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (NSSet *)inputModelPropertyKeys {
   static NSSet *properties;
-  
+
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
     properties = [NSSet setWithArray:@[
@@ -58,7 +58,7 @@ NS_ASSUME_NONNULL_BEGIN
       @instanceKeypath(LTLinearProcessor, constant)
     ]];
   });
-  
+
   return properties;
 }
 
@@ -79,7 +79,7 @@ NS_ASSUME_NONNULL_BEGIN
     self[[LTLinearFsh matrix]] = $(self.matrix);
     self.shouldUpdateMatrix = NO;
   }
-  
+
   if (self.shouldUpdateConstant) {
     self[[LTLinearFsh constant]] = $(self.constant);
     self.shouldUpdateConstant = NO;
@@ -102,7 +102,7 @@ NS_ASSUME_NONNULL_BEGIN
   if (_matrix == matrix) {
     return;
   }
-  
+
   _matrix = matrix;
   self.shouldUpdateMatrix = YES;
 }
@@ -111,7 +111,7 @@ NS_ASSUME_NONNULL_BEGIN
   if (_constant == constant) {
     return;
   }
-  
+
   _constant = constant;
   self.shouldUpdateConstant = YES;
 }

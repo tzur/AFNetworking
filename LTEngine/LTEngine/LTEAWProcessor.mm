@@ -153,7 +153,7 @@
 
 - (void)setLevels:(NSArray *)levels {
   _levels = levels;
-  
+
   for (LTTexture *level in levels) {
     [self applyNearestInterpolation:level];
   }

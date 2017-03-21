@@ -105,7 +105,7 @@
   if (dataArray.count == 1) {
     return dataArray.firstObject;
   }
-  
+
   NSMutableData *result = [NSMutableData dataWithCapacity:[self lengthOfDataInArray:dataArray]];
   for (NSData *data in dataArray) {
     [result appendData:data];
@@ -172,7 +172,7 @@
                   format:@"glMapBuffer[OES|Range]() returned NULL pointer"];
     return;
   }
-  
+
   NSUInteger offset = 0;
   for (NSData *data in dataArray) {
     memcpy(mappedBuffer + offset, data.bytes, data.length);

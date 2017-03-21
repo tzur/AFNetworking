@@ -7,7 +7,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Class for drawing a warped texture on a target framebuffer. The warp applied is according to
 /// the displacement texture containing the offsets (in normalized texture coordinates) of the mesh
-/// vertices covering the texture. The displacement can be mapped to a specific subarea on the 
+/// vertices covering the texture. The displacement can be mapped to a specific subarea on the
 /// source texture using a given mesh source rect. The rest of the source texture area will be drawn
 /// without displacement.
 @interface LTMeshDrawer : NSObject <LTTextureDrawer>

@@ -377,7 +377,7 @@ typedef LTTextureMappedWriteBlock LTTextureMappedBlock;
   //
   // TODO:(Rouven) Remove this line once the bug is fixed.
   glFlush();
-  
+
   __block GLenum waitResult;
   [[LTGLContext currentContext] executeForOpenGLES2:^{
     waitResult = glClientWaitSyncAPPLE(self.syncObject, GL_SYNC_FLUSH_COMMANDS_BIT, kMaxTimeout);
@@ -425,7 +425,7 @@ typedef LTTextureMappedWriteBlock LTTextureMappedBlock;
 
 - (void)drawWithCoreImage:(LTTextureCoreImageBlock)block {
   LTParameterAssert(block);
-  
+
 #if TARGET_OS_SIMULATOR
   // Simulator does not support rendering to certain target types of less than four channels, so
   // let the superclass handle this.

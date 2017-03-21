@@ -5,8 +5,8 @@
 
 #import <LTKit/LTRandom.h>
 
-#import "LTTexture.h"
 #import "LTRotatedRect.h"
+#import "LTTexture.h"
 #import "UIColor+Vector.h"
 
 @implementation LTBrushColorDynamicsEffect
@@ -46,7 +46,7 @@ static const CGRect kNormalRect = CGRectMake(0, 0, 1, 1);
   if (![color getHue:&h saturation:&s brightness:&b alpha:&a]) {
     return color;
   }
-  
+
   // Hue should be cyclic, while saturation and brightness are clamped in [0,1].
   CGFloat newHue = h + randomHueJitter;
   return [UIColor colorWithHue:(newHue >= 0) ? newHue - std::floor(newHue) : 1.0 + newHue
@@ -59,7 +59,7 @@ static const CGRect kNormalRect = CGRectMake(0, 0, 1, 1);
   if (!self.baseColorTexture) {
     return nil;
   }
-  
+
   // We're sampling at pixel centers, so size is multiplied by the texture size - 1.
   CGPoints targets;
   CGSize textureSize = self.baseColorTexture.size - CGSizeMakeUniform(1);

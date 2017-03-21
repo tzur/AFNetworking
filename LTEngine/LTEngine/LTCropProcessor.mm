@@ -67,7 +67,7 @@
 
 - (void)process {
   [self prepareOutputTexture];
-  
+
   LTFbo *fbo = [[LTFboPool currentPool] fboWithTexture:self.outputTexture];
   [self.inputTexture executeAndPreserveParameters:^{
     self.inputTexture.minFilterInterpolation = LTTextureInterpolationNearest;
@@ -88,7 +88,7 @@
                                      allocateMemory:YES];
   }
 }
-   
+
 - (LTCropDrawerRect)sourceRectangleForDrawer {
   LTCropDrawerRect rect =
       self.applyCrop ? self.normalizedCropRectangle : [self uncroppedSourceRectangle];
@@ -130,7 +130,7 @@
   if (flipHorizontal == _flipHorizontal) {
     return;
   }
-  
+
   _flipHorizontal = flipHorizontal;
   self.transform = GLKMatrix2Multiply(GLKMatrix2MakeScale(-1, 1), self.transform);
 }
@@ -139,7 +139,7 @@
   if (flipVertical == _flipVertical) {
     return;
   }
-  
+
   _flipVertical = flipVertical;
   self.transform = GLKMatrix2Multiply(GLKMatrix2MakeScale(1, -1), self.transform);
 }
@@ -178,7 +178,7 @@
     self.cachedCropRectangle = LTRect(rect);
     self.cachedTransform = self.transform;
   }
-  
+
   return self.cachedCropRectangle;
 }
 

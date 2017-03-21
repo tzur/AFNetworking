@@ -40,7 +40,7 @@ inline void LTGLCheck(NSString *format, ...) {
   while ((error = glGetError()) != GL_NO_ERROR) {
     [errors addObject:LTGLErrorToString(error)];
   }
-  
+
   if (errors.count) {
     va_list args;
     va_start(args, format);

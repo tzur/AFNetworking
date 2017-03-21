@@ -13,8 +13,8 @@
 #import "LTProgramFactory.h"
 #import "LTRectMapping.h"
 #import "LTRotatedRect.h"
-#import "LTShaderStorage+LTCircularPatchVsh.h"
 #import "LTShaderStorage+LTCircularPatchFsh.h"
+#import "LTShaderStorage+LTCircularPatchVsh.h"
 #import "LTTexture.h"
 #import "LTVertexArray.h"
 
@@ -140,7 +140,7 @@ typedef std::vector<LTCircularPatchDrawerColor> LTCircularPatchDrawerColors;
     LTVector2 normalizedPosition = LTVector2(vertex.x + 1, vertex.y + 1) / 2;
     vertexData[index] = {.position = normalizedPosition, .texcoord = normalizedPosition};
   }
-  
+
   LTArrayBuffer *arrayBuffer = [[LTArrayBuffer alloc] initWithType:LTArrayBufferTypeGeneric
                                                              usage:LTArrayBufferUsageStaticDraw];
   NSUInteger length = vertexData.size() * sizeof(LTCircularPatchDrawerVertex);
@@ -154,7 +154,7 @@ typedef std::vector<LTCircularPatchDrawerColor> LTCircularPatchDrawerColors;
   for (GLuints::size_type index = 0; index < indices.size(); ++index) {
     indicesData[index] = indices[index];
   }
-  
+
   LTArrayBuffer *arrayBuffer = [[LTArrayBuffer alloc] initWithType:LTArrayBufferTypeElement
                                                              usage:LTArrayBufferUsageStaticDraw];
   NSData *data = [NSData dataWithBytesNoCopy:&indicesData[0]
@@ -179,7 +179,7 @@ typedef std::vector<LTCircularPatchDrawerColor> LTCircularPatchDrawerColors;
     self.program[[LTCircularPatchVsh modelview]] = $(modelview);
     GLKMatrix3 texture = GLKMatrix3Identity;
     self.program[[LTCircularPatchVsh texture]] = $(texture);
-  
+
     CGSize textureSize = [(LTTexture *)self.uniformToTexture[kLTSourceTextureUniform] size];
     LTRotatedRect *rotatedRect = [LTRotatedRect rect:sourceRect withAngle:-self.rotation];
     GLKMatrix3 sourceModelview = LTTextureMatrix3ForRotatedRect(rotatedRect, textureSize);
@@ -192,7 +192,7 @@ typedef std::vector<LTCircularPatchDrawerColor> LTCircularPatchDrawerColors;
 
 - (void)framebufferWithSize:(CGSize)size drawBlock:(LTVoidBlock)block {
   LTParameterAssert(block);
-  
+
   // In case of a screen framebuffer, we're using a flipped projection matrix so the original order
   // of the vertices will generate a back-faced polygon, as the test is performed on the projected
   // coordinates. Therefore we use the clockwise front facying polygon mode when drawing to a
@@ -201,7 +201,7 @@ typedef std::vector<LTCircularPatchDrawerColor> LTCircularPatchDrawerColors;
   self.program[[LTCircularPatchVsh projection]] = screenTarget ?
       $(GLKMatrix4MakeOrtho(0, size.width, size.height, 0, -1, 1)) :
       $(GLKMatrix4MakeOrtho(0, size.width, 0, size.height, -1, 1));
-  
+
   [[LTGLContext currentContext] executeAndPreserveState:^(LTGLContext *context) {
     context.clockwiseFrontFacingPolygons = screenTarget;
     block();

@@ -46,19 +46,19 @@ context(@"properties", ^{
   beforeEach(^{
     drawer = [[LTShapeDrawer alloc] init];
   });
-  
+
   it(@"should have default parameters", ^{
     expect(drawer.drawingParameters).to.equal([[LTShapeDrawerParams alloc] init]);
     expect(drawer.opacity).to.equal(1);
   });
-  
+
   it(@"should update opacity", ^{
     CGFloat newValue = 0.5;
     expect(drawer.opacity).notTo.equal(newValue);
     drawer.opacity = newValue;
     expect(drawer.opacity).to.equal(newValue);
   });
-  
+
   it(@"should return copy of shapes", ^{
     id shape = [drawer addPathWithTranslation:CGPointZero rotation:0];
     expect(drawer.shapes.count).to.equal(1);
@@ -75,7 +75,7 @@ context(@"shapes", ^{
 
   const CGPoint kTranslation = CGPointMake(1, 2);
   const CGFloat kRotationAngle = M_PI_4;
-  
+
   context(@"path shapes", ^{
     it(@"should add path", ^{
       id shape = [drawer addPathWithTranslation:kTranslation rotation:kRotationAngle];
@@ -106,7 +106,7 @@ context(@"shapes", ^{
       OCMVerifyAll(secondMock);
     });
   });
-  
+
   context(@"triangular mesh shapes", ^{
     it(@"should add triangular mesh", ^{
       id shape = [drawer addTriangularMeshWithTranslation:kTranslation rotation:kRotationAngle];
@@ -128,7 +128,7 @@ context(@"shapes", ^{
       OCMVerifyAll(secondMock);
     });
   });
-  
+
   context(@"elliptic shapes", ^{
     const CGSize kSize = CGSizeMake(1, 2);
     const CGFloat kRadius = 1;
@@ -181,7 +181,7 @@ context(@"shapes", ^{
       expect(drawer.shapes.firstObject).to.beIdenticalTo(shape);
     });
   });
-  
+
   context(@"updating shapes", ^{
     it(@"should remove all shapes", ^{
       [drawer addPathWithTranslation:kTranslation rotation:kRotationAngle];
@@ -261,7 +261,7 @@ context(@"drawing", ^{
   __block LTTexture *output;
   __block LTFbo *fbo;
   __block cv::Mat4b expected;
-  
+
   static const CGSize kOutputSize = CGSizeMake(128, 256);
   static const CGPoint kOutputCenter = CGPointZero + kOutputSize / 2;;
   static const LTVector4 kBackground = LTVector4(0.5, 0.5, 0.5, 1);
@@ -275,12 +275,12 @@ context(@"drawing", ^{
     fbo = [[LTFbo alloc] initWithTexture:output];
     [fbo clearWithColor:kBackground];
   });
-  
+
   afterEach(^{
     fbo = nil;
     output = nil;
   });
-  
+
   context(@"call draw methods of shapes", ^{
     __block id firstMock;
     __block id secondMock;
@@ -315,7 +315,7 @@ context(@"drawing", ^{
       OCMVerifyAll(secondMock);
     });
   });
-  
+
   context(@"actual drawing", ^{
     static const NSUInteger kAcceptedDistance = 10;
 
@@ -323,29 +323,29 @@ context(@"drawing", ^{
       CGTriangle leftTriangle =
       CGTriangleMake(CGPointZero, CGPointZero + 2 * CGSizeMake(-10, 10),
                      CGPointZero + 2*CGSizeMake(0, -20));
-      
+
       CGTriangle rightTriangle =
       CGTriangleMake(CGPointZero, CGPointZero + 2 * CGSizeMake(10, 10),
                      CGPointZero + 2*CGSizeMake(0, -20));
-      
+
       drawer.drawingParameters.shadowWidth = 3;
       drawer.drawingParameters.lineWidth = 2;
-      
+
       id path = [drawer addPathWithTranslation:kOutputCenter rotation:0];
       [drawer addLineToPoint:CGPointZero + CGSizeMake(0, 50)];
       id mesh = [drawer addTriangularMeshWithTranslation:kOutputCenter rotation:0];
       [drawer fillTriangle:leftTriangle withShadowOnEdges:CGTriangleEdgeAB | CGTriangleEdgeBC];
       [drawer fillTriangle:rightTriangle withShadowOnEdges:CGTriangleEdgeAB | CGTriangleEdgeBC];
       [drawer drawInFramebuffer:fbo];
-      
+
       expected = LTLoadMat([self class], @"ShapeDrawerActualDrawingOriginal.png");
       expect($(output.image)).to.beCloseToMatWithin($(expected), kAcceptedDistance);
-      
+
       [fbo clearWithColor:kBackground];
       [drawer updateShape:mesh setRotation:M_PI];
       [drawer updateShape:path setTranslation:kOutputCenter - CGSizeMake(0, 50)];
       [drawer drawInFramebuffer:fbo];
-      
+
       expected = LTLoadMat([self class], @"ShapeDrawerActualDrawingUpdated.png");
       expect($(output.image)).to.beCloseToMatWithin($(expected), kAcceptedDistance);
     });

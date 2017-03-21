@@ -326,7 +326,7 @@ static void LTVerifyMipmapImages(const Matrices &images) {
                                                                 self.pixelFormat.cvPixelFormatType);
 
   LTCVPixelBufferImageForWriting(pixelBuffer.get(), ^(cv::Mat *image) {
-    // -storeRect:toImage does not work with non continuous matrices. 
+    // -storeRect:toImage does not work with non continuous matrices.
     if (image->isContinuous()) {
       [self storeRect:CGRectMake(0, 0, self.size.width, self.size.height) toImage:image];
     } else {

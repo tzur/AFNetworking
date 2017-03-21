@@ -80,7 +80,7 @@ context(@"processing", ^{
     cv::Mat image = LTLoadMat([self class], @"MealBasicOilPainting.png");
     expect($(output.image)).to.beCloseToMat($(image));
   });
-  
+
   it(@"should copy alpha values from input", ^{
     cv::Mat1b alphaValues = (cv::Mat1b(3, 3) << 10, 100, 50, 20, 200, 15, 1, 75, 0);
     cv::Mat4b input(3, 3, cv::Vec4b(0, 0, 0, 0));

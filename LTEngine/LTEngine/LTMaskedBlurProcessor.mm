@@ -57,7 +57,7 @@ NS_ASSUME_NONNULL_BEGIN
       @instanceKeypath(LTMaskedBlurProcessor, intensity)
     ]];
   });
-  
+
   return properties;
 }
 

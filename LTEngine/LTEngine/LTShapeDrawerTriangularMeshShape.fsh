@@ -29,7 +29,7 @@ void main() {
   // Smooth the triangle edges.
   highp vec3 edgeFactors = smoothstep(vec3(0.5), vec3(0.0), distances);
   highp float colorFactor = min(edgeFactors.x, min(edgeFactors.y, edgeFactors.z));
-  
+
   // Smooth shadows around the triangle edges.
   highp float shadowWidth = vShadowMaskAndWidth.w;
   highp vec3 dBarycentric = fwidth(vBarycentric);
@@ -40,20 +40,20 @@ void main() {
   // Discard shadows on edges without shadow (according to the shadow mask).
   highp vec3 noShadowMask = vec3(lessThan(vShadowMaskAndWidth.xyz, vec3(0.5)));
   shadowFactor *= 1.0 - float(any(greaterThan(distances * noShadowMask, vec3(0.0))));
-  
+
   // Mix the color and shadow.
   highp vec4 color = vec4(vColor.rgb, vColor.a * colorFactor);
   highp vec4 shadow = vec4(vShadowColor.rgb, vShadowColor.a * shadowFactor);
   src = mix(shadow, color, vec4(colorFactor));
-  
+
   // Apply the flow factor on the alpha channel, and use the opacity as an upper bound.
   src.a = min(src.a, opacity);
-  
+
   // Blend the source and the target according to the normal alpha blending formula:
   // http://en.wikipedia.org/wiki/Alpha_compositing#Alpha_blending
   highp float a = dst.a + (1.0 - dst.a) * src.a;
   highp vec3 rgb = src.rgb * src.a + (1.0 - src.a) * dst.a * dst.rgb;
-  
+
   // If the result alpha is 0, the result rgb should be 0 as well.
   // safeA = (a <= 0) ? 1 : a;
   // gl_FragColor = (a <= 0) ? 0 : vec4(rgb / a, a);

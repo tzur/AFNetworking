@@ -113,7 +113,7 @@ context(@"NSObject protocol", ^{
 
 context(@"LTFloatSet protocol", ^{
   __block NSValue *boxedInterval;
-  
+
   beforeEach(^{
     lt::Interval<CGFloat> interval({0, 10}, lt::Interval<CGFloat>::Closed);
     boxedInterval = [NSValue valueWithBytes:&interval objCType:@encode(lt::Interval<CGFloat>)];
@@ -224,7 +224,7 @@ context(@"LTFloatSet protocol", ^{
       };
     });
   });
-  
+
   context(@"set with sequence of size 100 and pivot value equaling minimum value of interval", ^{
     beforeEach(^{
       set = [[LTPeriodicFloatSet alloc] initWithPivotValue:0 numberOfValuesPerSequence:100

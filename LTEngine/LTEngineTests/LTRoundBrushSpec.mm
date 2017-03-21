@@ -1,7 +1,7 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Amit Goldstein.
 
-#import "LTRoundBrushSpec.h"
+#import "LTRoundBrush.h"
 
 #import <LTEngine/LTFbo.h>
 #import <LTEngine/LTGLContext.h>
@@ -11,6 +11,7 @@
 
 #import "LTBrushEffectExamples.h"
 #import "LTBrushSpec.h"
+#import "LTRoundBrushSpec.h"
 
 NSString * const kLTRoundBrushExamples = @"LTRoundBrushExamples";
 NSString * const kLTRoundBrushClass = @"LTRoundBrushClass";
@@ -25,7 +26,7 @@ sharedExamplesFor(kLTRoundBrushExamples, ^(NSDictionary *data) {
     LTGLContext *context = [[LTGLContext alloc] init];
     [LTGLContext setCurrentContext:context];
   });
-  
+
   afterEach(^{
     [LTGLContext setCurrentContext:nil];
   });
@@ -47,7 +48,7 @@ sharedExamplesFor(kLTRoundBrushExamples, ^(NSDictionary *data) {
       expect(brush.hardness).notTo.equal(newValue);
       brush.hardness = newValue;
       expect(brush.hardness).to.equal(newValue);
-      
+
       expect(^{
         brush.hardness = brush.minHardness - kEpsilon;
       }).to.raise(NSInvalidArgumentException);
@@ -79,15 +80,15 @@ afterEach(^{
 
 context(@"properties", ^{
   __block LTRoundBrush *brush;
-  
+
   beforeEach(^{
     brush = [[LTRoundBrush alloc] init];
   });
-  
+
   afterEach(^{
     brush = nil;
   });
-  
+
   it(@"should have default properties", ^{
     expect(brush.hardness).to.equal(1);
   });
@@ -105,7 +106,7 @@ context(@"drawing", ^{
   const CGSize kBaseBrushSize = CGSizeMakeUniform(kBaseBrushDiameter);
   const CGSize kOutputSize = kBaseBrushSize;
   const CGPoint kOutputCenter = CGPointMake(kOutputSize.width / 2, kOutputSize.height / 2);
-  
+
   beforeEach(^{
     brush = [[LTRoundBrush alloc] init];
     brush.baseDiameter = kBaseBrushDiameter;
@@ -120,7 +121,7 @@ context(@"drawing", ^{
     point = [[LTPainterPoint alloc] init];
     point.contentPosition = kOutputCenter;
   });
-  
+
   afterEach(^{
     fbo = nil;
     output = nil;
@@ -146,7 +147,7 @@ context(@"drawing", ^{
       expect($(output.image)).to.beCloseToMat($(expected));
     });
   });
-  
+
   context(@"brush properties related to the shader", ^{
     context(@"painting mode", ^{
       it(@"drawing should be additive", ^{
@@ -159,7 +160,7 @@ context(@"drawing", ^{
         expected(cv::Rect(1, 1, 2, 2)).setTo(255);
         expect($(output.image)).to.beCloseToMat($(expected));
       });
-      
+
       it(@"should draw with updated opacity", ^{
         brush.opacity = 0.1;
         [brush startNewStrokeAtPoint:point];
@@ -168,7 +169,7 @@ context(@"drawing", ^{
         expected.colRange(1, 3).setTo(26);
         expect($(output.image)).to.beCloseToMat($(expected));
       });
-      
+
       it(@"should draw with updated flow", ^{
         brush.flow = 0.1;
         [brush startNewStrokeAtPoint:point];
@@ -181,7 +182,7 @@ context(@"drawing", ^{
         expected.colRange(1, 3).setTo(52);
         expect($(output.image)).to.beCloseToMatWithin($(expected), 2);
       });
-      
+
       it(@"should draw with updated intensity", ^{
         const LTVector4 kIntensity = LTVector4(0.1, 0.2, 0.3, 0.4);
         brush.intensity = kIntensity;
@@ -199,7 +200,7 @@ context(@"drawing", ^{
         expected.setTo(cv::Vec4b(255, 255, 255, 255));
         brush.mode = LTRoundBrushModeEraseDirect;
       });
-      
+
       it(@"drawing should be additive", ^{
         brush.hardness = 0.5;
         [brush startNewStrokeAtPoint:point];
@@ -210,7 +211,7 @@ context(@"drawing", ^{
         expected(cv::Rect(1, 1, 2, 2)).setTo(0);
         expect($(output.image)).to.beCloseToMat($(expected));
       });
-      
+
       it(@"should draw with updated opacity", ^{
         brush.opacity = 0.1;
         [brush startNewStrokeAtPoint:point];
@@ -219,7 +220,7 @@ context(@"drawing", ^{
         expected.colRange(1, 3).setTo(255 - 26);
         expect($(output.image)).to.beCloseToMat($(expected));
       });
-      
+
       it(@"should draw with updated flow", ^{
         brush.flow = 0.1;
         [brush startNewStrokeAtPoint:point];
@@ -232,7 +233,7 @@ context(@"drawing", ^{
         expected.colRange(1, 3).setTo(255 - 52);
         expect($(output.image)).to.beCloseToMatWithin($(expected), 2);
       });
-      
+
       it(@"should draw with updated intensity", ^{
         const LTVector4 kIntensity = LTVector4(0.1, 0.2, 0.3, 0.4);
         brush.intensity = kIntensity;
@@ -246,24 +247,24 @@ context(@"drawing", ^{
 
     context(@"indirect erasing mode", ^{
       using half_float::half;
-      
+
       const cv::Vec4hf kBlack(half(0), half(0), half(0), half(0));
       const cv::Vec4hf kWhite(half(1), half(1), half(1), half(1));
 
       __block cv::Mat4hf expected;
-      
+
       beforeEach(^{
         output = [LTTexture textureWithSize:kOutputSize pixelFormat:$(LTGLPixelFormatRGBA16Float)
                              allocateMemory:YES];
         fbo = [[LTFbo alloc] initWithTexture:output];
         [fbo clearWithColor:LTVector4::zeros()];
-        
+
         expected.create(kOutputSize.height, kOutputSize.width);
         expected.setTo(kBlack);
-        
+
         brush.mode = LTRoundBrushModeEraseIndirect;
       });
-      
+
       it(@"drawing should be additive", ^{
         brush.hardness = 0.5;
         [brush startNewStrokeAtPoint:point];
@@ -274,7 +275,7 @@ context(@"drawing", ^{
         expected(cv::Rect(1, 1, 2, 2)).setTo(-kWhite);
         expect($(output.image)).to.beCloseToMat($(expected));
       });
-      
+
       it(@"should draw with updated opacity", ^{
         brush.opacity = 0.1;
         [brush startNewStrokeAtPoint:point];
@@ -283,7 +284,7 @@ context(@"drawing", ^{
         expected.colRange(1, 3).setTo(-cv::Vec4hf(half(0.1), half(0.1), half(0.1), half(0.1)));
         expect($(output.image)).to.beCloseToMat($(expected));
       });
-      
+
       it(@"should draw with updated flow", ^{
         brush.flow = 0.1;
         [brush startNewStrokeAtPoint:point];
@@ -296,7 +297,7 @@ context(@"drawing", ^{
         expected.colRange(1, 3).setTo(-cv::Vec4hf(half(0.2), half(0.2), half(0.2), half(0.2)));
         expect($(output.image)).to.beCloseToMat($(expected));
       });
-      
+
       it(@"should draw with updated intensity", ^{
         const LTVector4 kIntensity = LTVector4(0.1, 0.2, 0.3, 0.4);
         brush.intensity = kIntensity;

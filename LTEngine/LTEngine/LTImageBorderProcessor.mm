@@ -4,8 +4,8 @@
 #import "LTImageBorderProcessor.h"
 
 #import "LTGPUImageProcessor+Protected.h"
-#import "LTShaderStorage+LTPassthroughShaderVsh.h"
 #import "LTShaderStorage+LTImageBorderFsh.h"
+#import "LTShaderStorage+LTPassthroughShaderVsh.h"
 #import "LTTexture+Factory.h"
 
 @implementation LTImageBorderProcessor
@@ -71,7 +71,7 @@
 
 + (NSSet *)inputModelPropertyKeys {
   static NSSet *properties;
-  
+
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
     properties = [NSSet setWithArray:@[
@@ -79,7 +79,7 @@
       @instanceKeypath(LTImageBorderProcessor, spread),
       @instanceKeypath(LTImageBorderProcessor, color),
       @instanceKeypath(LTImageBorderProcessor, opacity),
-       
+
       @instanceKeypath(LTImageBorderProcessor, frontTexture),
       @instanceKeypath(LTImageBorderProcessor, backTexture),
 
@@ -94,7 +94,7 @@
       @instanceKeypath(LTImageBorderProcessor, backFlipVertical)
     ]];
   });
-  
+
   return properties;
 }
 

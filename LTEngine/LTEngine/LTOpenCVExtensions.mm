@@ -366,7 +366,7 @@ cv::Mat LTRowSubset(const cv::Mat &mat, const std::vector<int> &indices) {
   for (int index : indices) {
     LTParameterAssert(index >= 0 && index < mat.rows, @"Indices must be in the range [0, %d], "
                       "got: %d", mat.rows - 1, index);
-    
+
     const uchar *start = mat.ptr(index);
     const uchar *end = start + mat.elemSize() * mat.cols;
 

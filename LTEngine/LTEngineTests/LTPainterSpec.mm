@@ -1,12 +1,13 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Amit Goldstein.
 
-#import "LTPainter+Interaction.h"
+#import "LTPainter.h"
 
 #import "LTBrush.h"
 #import "LTCatmullRomInterpolant.h"
 #import "LTContentTouchEventDelegate.h"
 #import "LTLinearInterpolant.h"
+#import "LTPainter+Interaction.h"
 #import "LTPainterPoint.h"
 #import "LTPainterStroke.h"
 #import "LTRotatedRect.h"
@@ -55,14 +56,14 @@ context(@"initialization", ^{
     expect(painter.mode).to.equal(LTPainterTargetModeSandboxedStroke);
     expect(painter.strokeTexture.size).to.equal(canvas.size);
   });
-  
+
   it(@"should initialize with direct stroke mode", ^{
     canvas = [LTTexture byteRGBATextureWithSize:kCanvasSize];
     painter = [[LTPainter alloc] initWithMode:LTPainterTargetModeDirectStroke canvasTexture:canvas];
     expect(painter.mode).to.equal(LTPainterTargetModeDirectStroke);
     expect(painter.strokeTexture.size).to.equal(CGSizeMakeUniform(1));
   });
-  
+
   it(@"should raise when initializing without a canvas", ^{
     expect(^{
       painter = [[LTPainter alloc] initWithMode:LTPainterTargetModeDirectStroke canvasTexture:nil];
@@ -86,26 +87,26 @@ context(@"properties", ^{
     expect(painter.strokes).notTo.beNil();
     expect(painter.strokes.count).to.equal(0);
   });
-  
+
   it(@"should set delegate", ^{
     id delegate = [[NSObject alloc] init];
     painter.delegate = delegate;
     expect(painter.delegate).to.beIdenticalTo(delegate);
   });
-  
+
   it(@"should set brush", ^{
     LTRoundBrush *brush = [[LTRoundBrush alloc] init];
     painter.brush = brush;
     expect(painter.brush).to.beIdenticalTo(brush);
   });
-  
+
   it(@"should set splineFactory", ^{
     id<LTPolynomialInterpolantFactory> factory =
         [[LTCatmullRomInterpolantFactory alloc] init];
     painter.splineFactory = factory;
     expect(painter.splineFactory).to.beIdenticalTo(factory);
   });
-  
+
   it(@"should set airbrush mode", ^{
     expect(painter.airbrush).to.beFalsy();
     painter.airbrush = YES;
@@ -119,13 +120,13 @@ context(@"painting", ^{
   __block cv::Mat4b expected;
   __block cv::Mat4b background;
   __block cv::Mat4b clear;
-  
+
   const cv::Vec4b kBlack(0, 0, 0, 255);
   const cv::Vec4b kClear(0, 0, 0, 0);
   const cv::Vec4b kWhite(255, 255, 255, 255);
   const CGPoint kCanvasCenter = CGPointMake(kCanvasSize.width / 2, kCanvasSize.height / 2);
   const CGRect kCenterRect = CGRectFromOriginAndSize(kCanvasCenter / 2, kCanvasSize / 2);
-  
+
   beforeEach(^{
     canvas = [LTTexture byteRGBATextureWithSize:kCanvasSize];
     painter = [[LTPainter alloc] initWithMode:LTPainterTargetModeSandboxedStroke
@@ -137,7 +138,7 @@ context(@"painting", ^{
     expected.setTo(kBlack);
     clear.setTo(kClear);
   });
-  
+
   it(@"should clear with the given color", ^{
     [painter clearWithColor:LTVector4(1, 1, 1, 1)];
     expected.setTo(kWhite);
@@ -147,7 +148,7 @@ context(@"painting", ^{
     expected.setTo(kBlack);
     expect($(canvas.image)).to.equalMat($(expected));
   });
-  
+
   it(@"should clear array of strokes", ^{
     id touchCollector = [OCMockObject niceMockForClass:[LTTouchCollector class]];
     [painter ltTouchCollector:touchCollector startedStrokeAt:LTPointAt(CGPointZero)];
@@ -312,7 +313,7 @@ context(@"painting", ^{
 
     context(@"delegate", ^{
       __block id delegate;
-      
+
       beforeEach(^{
         delegate = [OCMockObject niceMockForProtocol:@protocol(LTPainterDelegate)];
         painter.delegate = delegate;
@@ -321,7 +322,7 @@ context(@"painting", ^{
       afterEach(^{
         delegate = nil;
       });
-      
+
       it(@"should update delegate on paint", ^{
         [[[delegate stub] andReturnValue:$(CGAffineTransformIdentity)]
             alternativeCoordinateSystemTransform];
@@ -339,7 +340,7 @@ context(@"painting", ^{
 
         OCMVerifyAll(delegate);
       });
-      
+
       it(@"should update delegate on stroke begin and end", ^{
         [[[delegate stub] andReturnValue:$(CGAffineTransformIdentity)]
             alternativeCoordinateSystemTransform];
@@ -359,7 +360,7 @@ context(@"painting", ^{
 
         OCMVerifyAll(delegate);
       });
-      
+
       it(@"should use the alternativeCoordinateSystemTransform", ^{
         CGAffineTransform transform =
             CGAffineTransformScale(CGAffineTransformMakeTranslation(0, kCanvasSize.height), 1, -1);
@@ -376,7 +377,7 @@ context(@"painting", ^{
 
         OCMVerifyAll(delegate);
       });
-      
+
       it(@"should use the alternativeZoomScale", ^{
         [[[delegate stub] andReturnValue:$(CGAffineTransformIdentity)]
             alternativeCoordinateSystemTransform];

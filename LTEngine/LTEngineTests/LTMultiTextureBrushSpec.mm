@@ -4,9 +4,8 @@
 #import "LTMultiTextureBrush.h"
 
 #import "LTBrushEffectExamples.h"
-#import "LTTextureBrushExamples.h"
-
 #import "LTTexture+Factory.h"
+#import "LTTextureBrushExamples.h"
 
 SpecBegin(LTMultiTextureBrush)
 
@@ -20,22 +19,22 @@ __block LTMultiTextureBrush *brush;
 
 context(@"properties", ^{
   const CGSize kSize = CGSizeMakeUniform(2);
-  
+
   beforeEach(^{
     brush = [[LTMultiTextureBrush alloc] init];
   });
-  
+
   afterEach(^{
     brush = nil;
   });
-  
+
   it(@"should have default properties", ^{
     cv::Mat4b expected(1, 1);
     expected.setTo(cv::Vec4b(255, 255, 255, 255));
     expect(brush.textures.count).to.equal(1);
     expect($([(LTTexture *)brush.textures.firstObject image])).to.equalMat($(expected));
   });
-  
+
   it(@"should set textures", ^{
     LTTexture *byteTexture = [LTTexture textureWithSize:kSize
                                             pixelFormat:$(LTGLPixelFormatRGBA8Unorm)
@@ -54,7 +53,7 @@ context(@"properties", ^{
       expect(brush.textures[i]).to.beIdenticalTo(textures[i]);
     }
   });
-  
+
   it(@"should not set non rgba textures", ^{
     expect(^{
       LTTexture *redTexture = [LTTexture textureWithSize:kSize

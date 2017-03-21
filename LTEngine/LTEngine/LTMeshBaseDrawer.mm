@@ -75,7 +75,7 @@ LTGPUStructMake(LTMeshDrawerVertex,
                     @"source texture must contain the mesh source rect but input source texture "
                     "size is %@ and input mesh source rect is %@",
                     NSStringFromCGSize(sourceTexture.size), NSStringFromCGRect(meshSourceRect));
-  
+
   if (self = [super initWithProgram:[self createProgramWithFragmentSource:fragmentSource]
                       sourceTexture:sourceTexture
                   auxiliaryTextures:@{[LTMeshBaseDrawerVsh meshTexture]: meshTexture}]) {
@@ -86,7 +86,7 @@ LTGPUStructMake(LTMeshDrawerVertex,
     self[[LTMeshBaseDrawerVsh meshPosition]] =
         $(GLKMatrix3Invert(LTTextureMatrix3ForRect(meshSourceRect, self.sourceSize), NULL));
   }
-  
+
   return self;
 }
 

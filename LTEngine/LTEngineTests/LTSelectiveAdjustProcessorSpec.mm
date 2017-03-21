@@ -51,7 +51,7 @@ context(@"properties", ^{
     expect(processor.blueLuminance).to.equal(0);
     expect(processor.blueHue).to.equal(0);
   });
-  
+
   it(@"should fail on incorrect input", ^{
     expect(^{
       processor.redSaturation = -1.1;
@@ -113,29 +113,29 @@ context(@"properties", ^{
       processor.blueHue = 1.1;
     }).to.raise(NSInvalidArgumentException);
   });
-  
+
   it(@"should not fail on correct tone input", ^{
     expect(^{
       processor.redSaturation = -1.0;
       processor.redLuminance = -1.0;
       processor.redHue = 1.0;
-      
+
       processor.orangeSaturation = -1.0;
       processor.orangeLuminance = -1.0;
       processor.orangeHue = 1.0;
-      
+
       processor.yellowSaturation = -1.0;
       processor.yellowLuminance = -1.0;
       processor.yellowHue = -1.0;
-      
+
       processor.greenSaturation = 1.0;
       processor.greenLuminance = 1.0;
       processor.greenHue = 1.0;
-      
+
       processor.cyanSaturation = 1.0;
       processor.cyanLuminance = 1.0;
       processor.cyanHue = -1.0;
-      
+
       processor.blueSaturation = 1.0;
       processor.blueLuminance = 1.0;
       processor.blueHue = 1.0;
@@ -157,7 +157,7 @@ context(@"processing", ^{
     cv::Mat image = LTLoadMat([self class], @"MacbethDesaturatedGreenAndBlue.png");
     expect($(output.image)).to.beCloseToMat($(image));
   });
-  
+
   sit(@"should reduce saturation of reds and oranges and increase their luminance", ^{
     LTTexture *input = [LTTexture textureWithImage:LTLoadMat([self class], @"Macbeth.jpg")];
     LTTexture *output = [LTTexture byteRGBATextureWithSize:std::round(input.size * 0.05)];
@@ -173,7 +173,7 @@ context(@"processing", ^{
     cv::Mat image = LTLoadMat([self class], @"MacbethSaturatedBrightenedRedAndOrange.png");
     expect($(output.image)).to.beCloseToMat($(image));
   });
-  
+
   sit(@"should change the hues of reds and blues", ^{
     LTTexture *input = [LTTexture textureWithImage:LTLoadMat([self class], @"Macbeth.jpg")];
     LTTexture *output = [LTTexture byteRGBATextureWithSize:std::round(input.size * 0.05)];

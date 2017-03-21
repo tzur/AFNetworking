@@ -74,7 +74,7 @@ LTGPUStructMake(LTRegularGridMeshVertex,
       indicesData[idx++] = topLeft;
     }
   }
-  
+
   _triangularIndices = [LTIndicesData dataWithIntegerIndices:indicesData];
 }
 
@@ -109,7 +109,7 @@ LTGPUStructMake(LTRegularGridMeshVertex,
       indicesData[idx++] = topLeft;
     }
   }
-  
+
   _wireframeIndices = [LTIndicesData dataWithIntegerIndices:indicesData];
 }
 

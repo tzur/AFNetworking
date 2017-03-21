@@ -1,10 +1,11 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
-#import "LTOneShotImageProcessor+Protected.h"
+#import "LTOneShotImageProcessor.h"
 
 #import "LTFbo.h"
 #import "LTGPUImageProcessor+Protected.h"
+#import "LTOneShotImageProcessor+Protected.h"
 #import "LTProgram.h"
 #import "LTShaderStorage+AdderFsh.h"
 #import "LTShaderStorage+PassthroughVsh.h"
@@ -45,7 +46,7 @@ context(@"intialization", ^{
                  initWithVertexSource:[PassthroughVsh source] fragmentSource:[AdderFsh source]
                  sourceTexture:input auxiliaryTextures:auxiliaryTextures andOutput:output];
   });
-  
+
   it(@"should create rect drawer based on given arguments", ^{
     NSDictionary *auxiliaryTextures = @{kAuxiliaryTextureName: auxTexture};
     processor = [[LTOneShotImageProcessor alloc]

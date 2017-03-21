@@ -60,16 +60,16 @@ context(@"initialization", ^{
 
 context(@"properties", ^{
   __block LTNavigationView *view;
-  
+
   beforeEach(^{
     view = [[LTNavigationView alloc] initWithFrame:kViewFrame contentSize:kContentSize
                                 contentScaleFactor:kContentScaleFactor navigationState:nil];
   });
-  
+
   afterEach(^{
     view = nil;
   });
-  
+
   it(@"should have default values", ^{
     expect(view.contentSize).to.equal(kContentSize);
     expect(view.interactionModeProvider).to.beNil();
@@ -89,7 +89,7 @@ context(@"properties", ^{
     expect(view.bounceToAspectFit).to.beFalsy();
     expect(view.navigationState).toNot.beNil();
   });
-  
+
   it(@"should set the content size", ^{
     CGFloat oldZoomScale = view.zoomScale;
     expect(oldZoomScale).to.beLessThan(1);

@@ -112,26 +112,26 @@ sharedExamplesFor(LTPolynomialInterpolantFactoryExamples, ^(NSDictionary *data) 
   __block Class expectedInterpolationRoutineClass;
   __block InterpolatedObject *keyObject;
   __block NSUInteger expectedKeyFrames;
-  
+
   beforeEach(^{
     factory = data[LTPolynomialInterpolantFactory];
     expectedInterpolationRoutineClass = data[LTPolynomialInterpolantClass];
     expectedKeyFrames = [factory expectedKeyFrames];
     keyObject = [[InterpolatedObject alloc] init];
   });
-  
+
   it(@"should initialize with the expected number of keyframes", ^{
     NSArray *keyFrames = LTArrayWithInstancesOfObject(keyObject, expectedKeyFrames);
     LTPolynomialInterpolant *interpolant = [factory interpolantWithKeyFrames:keyFrames];
     expect([interpolant isKindOfClass:expectedInterpolationRoutineClass]).to.beTruthy();
   });
-  
+
   it(@"expected number of keyframes should match the instance's expected number of keyframes", ^{
     NSArray *keyFrames = LTArrayWithInstancesOfObject(keyObject, expectedKeyFrames);
     LTPolynomialInterpolant *interpolant = [factory interpolantWithKeyFrames:keyFrames];
     expect([factory expectedKeyFrames]).to.equal([[interpolant class] expectedKeyFrames]);
   });
-  
+
   it(@"range of interval in window should match the instance's range", ^{
     NSArray *keyFrames = LTArrayWithInstancesOfObject(keyObject, expectedKeyFrames);
     LTPolynomialInterpolant *interpolant = [factory interpolantWithKeyFrames:keyFrames];
@@ -146,7 +146,7 @@ sharedExamplesFor(LTPolynomialInterpolantExamples, ^(NSDictionary *data) {
   __block Class interpolantClass;
   __block InterpolatedObject *keyObject;
   __block NSUInteger expectedKeyFrames;
-  
+
   beforeEach(^{
     interpolantClass = data[LTPolynomialInterpolantClass];
     expectedKeyFrames = [interpolantClass expectedKeyFrames];
@@ -156,7 +156,7 @@ sharedExamplesFor(LTPolynomialInterpolantExamples, ^(NSDictionary *data) {
     keyObject.doubleToInterpolate = 1;
     keyObject.pointToInterpolate = CGPointMake(2, 3);
   });
-  
+
   context(@"initialization", ^{
     it(@"should initialize with the correct number of key frames", ^{
       expect(^{
@@ -182,7 +182,7 @@ sharedExamplesFor(LTPolynomialInterpolantExamples, ^(NSDictionary *data) {
       }).to.raise(NSInvalidArgumentException);
     });
   });
-  
+
   context(@"interpolation", ^{
     __block LTPolynomialInterpolant *interpolant;
     __block InterpolatedObject *interpolated;
@@ -223,7 +223,7 @@ sharedExamplesFor(LTPolynomialInterpolantExamples, ^(NSDictionary *data) {
       for (NSNumber *key in keys) {
         keysVector.push_back([key doubleValue]);
       }
-      
+
       CGFloats values = [interpolant valuesOfPropertyNamed:@"pointToInterpolateX"
                                                     atKeys:keysVector];
       expect(values.size()).to.equal(keysVector.size());
@@ -259,7 +259,7 @@ sharedExamplesFor(LTPolynomialInterpolantExamples, ^(NSDictionary *data) {
       InterpolatedObjectWithOptionalInitializer *keyObject =
           [[InterpolatedObjectWithOptionalInitializer alloc] init];
       expect(keyObject.didUseInitWithInterpolatedProperties).to.beFalsy();
-      
+
       NSArray *keyFrames = LTArrayWithInstancesOfObject(keyObject, expectedKeyFrames);
       interpolant = [[interpolantClass alloc] initWithKeyFrames:keyFrames];
       InterpolatedObjectWithOptionalInitializer *interpolated = [interpolant valueAtKey:0.5];

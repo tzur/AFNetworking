@@ -238,7 +238,7 @@ sharedExamplesFor(kLTTextureBasicExamples, ^(NSDictionary *data) {
         LTVector4 expected = LTVector4(image(47, 66));
 
         expect(expected).to.equal(actual);
-      }); 
+      });
 
       it(@"should return correct pixel values inside texture", ^{
         CGPoints points{CGPointMake(1, 2), CGPointMake(2, 5), CGPointMake(7, 3)};
@@ -320,9 +320,9 @@ sharedExamplesFor(kLTTextureBasicExamples, ^(NSDictionary *data) {
 
       dit(@"should clone itself to an existing texture", ^{
         LTTexture *cloned = [(LTTexture *)[textureClass alloc] initWithPropertiesOf:texture];
-        
+
         [texture cloneTo:cloned];
-        
+
         expect($([cloned image])).to.equalMat($(image));
         expect(cloned.generationID).to.equal(texture.generationID);
       });
@@ -421,7 +421,7 @@ sharedExamplesFor(kLTTextureBasicExamples, ^(NSDictionary *data) {
         expect(texture.fillColor.isNull()).to.beFalsy();
       });
 
-        it(@"should have initial fill color of null when initializing with properties of texture", ^{
+      it(@"should have initial fill color of null when initializing with properties of texture", ^{
         [texture clearWithColor:LTVector4::ones()];
         expect(texture.fillColor.isNull()).to.beFalsy();
         LTTexture *other = [[[texture class] alloc] initWithPropertiesOf:texture];

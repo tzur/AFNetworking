@@ -18,11 +18,11 @@ varying highp vec2 vBaseTexcoord;
 void main() {
   vec3 texcoord3 = vec3(texcoord.xy, 1.0);
   vec3 flippedTexCoord = texcoord3;
-  
+
   if (flipSourceTextureCoordinates) {
     flippedTexCoord.x = 1.0 - flippedTexCoord.x;
   }
-  
+
   vSourceTexcoord = (texture * flippedTexCoord).xy;
   vTargetTexcoord = (targetTextureMat * texcoord3).xy;
   vBaseTexcoord = texcoord.xy;

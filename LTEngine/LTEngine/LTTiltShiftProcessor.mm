@@ -5,8 +5,8 @@
 
 #import "LTBicubicResizeProcessor.h"
 #import "LTDualMaskProcessor.h"
-#import "LTGPUImageProcessor+Protected.h"
 #import "LTGLKitExtensions.h"
+#import "LTGPUImageProcessor+Protected.h"
 #import "LTMaskedBlurProcessor.h"
 #import "LTProgram.h"
 #import "LTShaderStorage+LTPassthroughShaderVsh.h"
@@ -69,7 +69,7 @@ static const CGFloat kMaskScalingFactor = 4.0;
 
 + (NSSet *)inputModelPropertyKeys {
   static NSSet *properties;
-  
+
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
     properties = [NSSet setWithArray:@[
@@ -83,7 +83,7 @@ static const CGFloat kMaskScalingFactor = 4.0;
       @instanceKeypath(LTTiltShiftProcessor, intensity)
     ]];
   });
-  
+
   return properties;
 }
 
@@ -137,7 +137,6 @@ static const CGFloat kMaskScalingFactor = 4.0;
 
   [self.maskedBlurProcessor processInRect:rect];
 }
-
 
 - (void)setNeedsDualMaskUpdate {
   self.needsDualMaskProcessing = YES;

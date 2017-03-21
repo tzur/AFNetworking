@@ -200,7 +200,7 @@ context(@"glyph modification", ^{
         }];
     expect(result).to.equal(lines);
   });
-  
+
   it(@"should raise if no block is provided", ^{
     expect(^{
       [lines linesWithGlyphsTransformedUsingBlock:nil];

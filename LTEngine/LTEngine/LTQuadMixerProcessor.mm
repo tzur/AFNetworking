@@ -79,7 +79,7 @@
       @instanceKeypath(LTQuadMixerProcessor, blendMode),
       @instanceKeypath(LTQuadMixerProcessor, frontOpacity),
       @instanceKeypath(LTQuadMixerProcessor, frontQuad),
-    ]]; 
+    ]];
   });
 
   return properties;

@@ -16,7 +16,7 @@ __block LTBicubicResizeProcessor *processor;
 beforeEach(^{
   input = [LTTexture textureWithImage:LTCreateDeltaMat(CGSizeMakeUniform(8))];
   output = [LTTexture byteRGBATextureWithSize:input.size * 2.0];
-  
+
   processor = [[LTBicubicResizeProcessor alloc] initWithInput:input output:output];
 });
 
@@ -25,7 +25,6 @@ afterEach(^{
   output = nil;
   processor = nil;
 });
-
 
 context(@"initialization", ^{
   it(@"should initialize with single input and output", ^{

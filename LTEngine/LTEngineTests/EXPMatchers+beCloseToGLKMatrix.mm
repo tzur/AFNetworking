@@ -76,7 +76,7 @@ EXPMatcherImplementationBegin(_beCloseToGLKMatrixWithin, (NSValue *expected, id 
   __block LTMatrixNameAndValue expectedMat;
   __block LTMatrixNameAndValue actualMat;
   __block NSString *prerequisiteErrorMessage;
-  
+
   prerequisite(^BOOL{
     if (![expected isKindOfClass:NSValue.class]) {
       prerequisiteErrorMessage = @"Expected type is not NSValue";
@@ -103,7 +103,7 @@ EXPMatcherImplementationBegin(_beCloseToGLKMatrixWithin, (NSValue *expected, id 
     }
     return true;
   });
-  
+
   match(^BOOL{
     if ([actual isEqual:expected]) {
       return YES;
@@ -111,7 +111,7 @@ EXPMatcherImplementationBegin(_beCloseToGLKMatrixWithin, (NSValue *expected, id 
       return LTCompareGLKMatrixWithin(expectedMat, actualMat, range, &firstMismatch);
     }
   });
-  
+
   failureMessageForTo(^NSString *{
     if (prerequisiteErrorMessage) {
       return prerequisiteErrorMessage;
@@ -123,7 +123,7 @@ EXPMatcherImplementationBegin(_beCloseToGLKMatrixWithin, (NSValue *expected, id 
             expectedMat.second[firstMismatch], currentRange, (unsigned long)firstMismatch,
             actualMat.second[firstMismatch]];
   });
-  
+
   failureMessageForNotTo(^NSString *{
     if (prerequisiteErrorMessage) {
       return prerequisiteErrorMessage;

@@ -4,12 +4,11 @@
 #import "LTEdgeAvoidingMultiTextureBrush.h"
 
 #import "LTBrushEffectExamples.h"
-#import "LTTextureBrushExamples.h"
-
 #import "LTFbo.h"
 #import "LTGLKitExtensions.h"
 #import "LTPainterPoint.h"
 #import "LTTexture+Factory.h"
+#import "LTTextureBrushExamples.h"
 
 SpecBegin(LTEdgeAvoidingMultiTextureBrush)
 
@@ -26,15 +25,15 @@ __block LTEdgeAvoidingMultiTextureBrush *brush;
 context(@"properties", ^{
   const CGFloat kEpsilon = 1e-6;
   const CGSize kSize = CGSizeMakeUniform(2);
-  
+
   beforeEach(^{
     brush = [[LTEdgeAvoidingMultiTextureBrush alloc] init];
   });
-  
+
   afterEach(^{
     brush = nil;
   });
-  
+
   it(@"should have default properties", ^{
     cv::Mat4b expectedTexture(1, 1);
     cv::Mat4b expectedInputTexture(1, 1);
@@ -45,7 +44,7 @@ context(@"properties", ^{
     expect(brush.sigma).to.equal(1.0);
     expect(brush.inputTexture).to.beNil();
   });
-  
+
   it(@"should set textures", ^{
     LTTexture *byteTexture = [LTTexture byteRGBATextureWithSize:kSize];
     LTTexture *halfTexture = [LTTexture textureWithSize:kSize
@@ -62,7 +61,7 @@ context(@"properties", ^{
       expect(brush.textures[i]).to.beIdenticalTo(textures[i]);
     }
   });
-  
+
   it(@"should not set non rgba textures", ^{
     expect(^{
       LTTexture *redTexture = [LTTexture byteRedTextureWithSize:kSize];
@@ -75,7 +74,7 @@ context(@"properties", ^{
       brush.textures = @[rgTexture];
     }).to.raise(NSInvalidArgumentException);
   });
-  
+
   it(@"should set sigma", ^{
     const CGFloat newValue = 0.5;
     expect(brush.sigma).notTo.equal(newValue);
@@ -89,7 +88,7 @@ context(@"properties", ^{
       brush.sigma = brush.maxSigma + kEpsilon;
     }).to.raise(NSInvalidArgumentException);
   });
-  
+
   it(@"should set inputTexture", ^{
     cv::Mat4b newInputTexture(1, 1);
     newInputTexture = cv::Vec4b(1, 2, 3, 4);
@@ -109,14 +108,14 @@ context(@"edge avoiding drawing", ^{
   __block LTTexture *inputTexture;
   __block LTFbo *fbo;
   __block LTPainterPoint *point;
-  
+
   const LTVector4 kBackgroundColor = LTVector4(0, 0, 0, 0);
   const CGFloat kBaseBrushDiameter = 16;
   const CGFloat kTargetBrushDiameter = 16;
   const CGSize kBaseBrushSize = CGSizeMakeUniform(kBaseBrushDiameter);
   const CGSize kOutputSize = kBaseBrushSize;
   const CGPoint kOutputCenter = CGPointMake(kOutputSize.width / 2, kOutputSize.height / 2);
-  
+
   beforeEach(^{
     cv::Mat4b inputMat(kOutputSize.height, kOutputSize.width);
     inputMat = cv::Vec4b(0, 0, 0, 255);
@@ -139,14 +138,14 @@ context(@"edge avoiding drawing", ^{
     point = [[LTPainterPoint alloc] init];
     point.contentPosition = kOutputCenter;
   });
-  
+
   afterEach(^{
     inputTexture = nil;
     fbo = nil;
     output = nil;
     brush = nil;
   });
-  
+
   it(@"should disable the edge-avoiding effect when setting sigma to 1.0", ^{
     brush.intensity = LTVector4::ones();
     brush.sigma = 1.0;
@@ -155,7 +154,7 @@ context(@"edge avoiding drawing", ^{
     expected.setTo(255);
     expect($(output.image)).to.beCloseToMat($(expected));
   });
-  
+
   it(@"should have edge avoiding effect when sigma < 1.0", ^{
     brush.intensity = LTVector4::ones();
     brush.sigma = 1.0;

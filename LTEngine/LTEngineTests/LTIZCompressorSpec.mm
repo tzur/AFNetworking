@@ -426,7 +426,7 @@ context(@"header parsing", ^{
     expect(error.domain).to.equal(kLTErrorDomain);
     expect(error.code).to.equal(LTErrorCodeBadHeader);
   });
-  
+
   it(@"should err when decompressing to mat with invalid image size", ^{
     LTIZHeader header = {
       .signature = kLTIZHeaderSignature,

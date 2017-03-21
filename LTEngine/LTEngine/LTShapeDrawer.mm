@@ -153,7 +153,7 @@
   if (![self.mutableShapes containsObject:shape]) {
     return;
   }
-  
+
   LTParameterAssert([[shape class] conformsToProtocol:@protocol(LTDrawableShape)]);
   [(id<LTDrawableShape>)shape setTranslation:translation];
 }
@@ -162,7 +162,7 @@
   if (![self.mutableShapes containsObject:shape]) {
     return;
   }
-  
+
   LTParameterAssert([[shape class] conformsToProtocol:@protocol(LTDrawableShape)]);
   [(id<LTDrawableShape>)shape setRotationAngle:angle];
 }

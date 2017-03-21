@@ -143,64 +143,64 @@ sharedExamplesFor(kLTDrawingContextExamples, ^(NSDictionary *contextInfo) {
           [usedIndices addObject:number];
           return YES;
         }];
-        
+
         [[programMock expect] setObject:valueCheck forKeyedSubscript:[OCMArg any]];
         [[programMock expect] setObject:valueCheck forKeyedSubscript:[OCMArg any]];
-        
+
         [fbo bindAndDraw:^{
           [drawingContext drawWithMode:LTDrawingContextDrawModeTriangles];
         }];
-        
+
         OCMVerifyAll(programMock);
-        
+
         // Verify given indices are unique.
         expect(usedIndices.count).to.equal([NSSet setWithArray:usedIndices].count);
       });
-      
+
       it(@"should bind to textures", ^{
         [[textureA expect] bind];
         [[textureB expect] bind];
-        
+
         [fbo bindAndDraw:^{
           [drawingContext drawWithMode:LTDrawingContextDrawModeTriangles];
         }];
-        
+
         OCMVerifyAll(textureA);
         OCMVerifyAll(textureB);
       });
-      
+
       it(@"should unbind from textures", ^{
         [[textureA expect] unbind];
         [[textureB expect] unbind];
-        
+
         [fbo bindAndDraw:^{
           [drawingContext drawWithMode:LTDrawingContextDrawModeTriangles];
         }];
-        
+
         OCMVerifyAll(textureA);
         OCMVerifyAll(textureB);
       });
-      
+
       it(@"should mark begin sampling from texture", ^{
         [[textureA expect] beginSamplingWithGPU];
         [[textureB expect] beginSamplingWithGPU];
-        
+
         [fbo bindAndDraw:^{
           [drawingContext drawWithMode:LTDrawingContextDrawModeTriangles];
         }];
-        
+
         OCMVerifyAll(textureA);
         OCMVerifyAll(textureB);
       });
-      
+
       it(@"should mark end sampling from texture", ^{
         [[textureA expect] endSamplingWithGPU];
         [[textureB expect] endSamplingWithGPU];
-        
+
         [fbo bindAndDraw:^{
           [drawingContext drawWithMode:LTDrawingContextDrawModeTriangles];
         }];
-        
+
         OCMVerifyAll(textureA);
         OCMVerifyAll(textureB);
       });
@@ -208,11 +208,11 @@ sharedExamplesFor(kLTDrawingContextExamples, ^(NSDictionary *contextInfo) {
 
     context(@"draw elements with mode", ^{
       __block id indicesArray;
-      
+
       beforeEach(^{
         indicesArray = [OCMockObject mockForClass:[LTIndicesArray class]];
       });
-      
+
       it(@"should set unique texture unit values as shader uniforms", ^{
         // Record used indices when setting sampler index.
         __block NSMutableArray *usedIndices = [NSMutableArray array];
@@ -220,64 +220,64 @@ sharedExamplesFor(kLTDrawingContextExamples, ^(NSDictionary *contextInfo) {
           [usedIndices addObject:number];
           return YES;
         }];
-        
+
         [[programMock expect] setObject:valueCheck forKeyedSubscript:[OCMArg any]];
         [[programMock expect] setObject:valueCheck forKeyedSubscript:[OCMArg any]];
-        
+
         [fbo bindAndDraw:^{
           [drawingContext drawElements:indicesArray withMode:LTDrawingContextDrawModeTriangles];
         }];
-        
+
         OCMVerifyAll(programMock);
-        
+
         // Verify given indices are unique.
         expect(usedIndices.count).to.equal([NSSet setWithArray:usedIndices].count);
       });
-      
+
       it(@"should bind to textures", ^{
         [[textureA expect] bind];
         [[textureB expect] bind];
-        
+
         [fbo bindAndDraw:^{
           [drawingContext drawElements:indicesArray withMode:LTDrawingContextDrawModeTriangles];
         }];
-        
+
         OCMVerifyAll(textureA);
         OCMVerifyAll(textureB);
       });
-      
+
       it(@"should unbind from textures", ^{
         [[textureA expect] unbind];
         [[textureB expect] unbind];
-        
+
         [fbo bindAndDraw:^{
           [drawingContext drawElements:indicesArray withMode:LTDrawingContextDrawModeTriangles];
         }];
-        
+
         OCMVerifyAll(textureA);
         OCMVerifyAll(textureB);
       });
-      
+
       it(@"should mark begin sampling from texture", ^{
         [[textureA expect] beginSamplingWithGPU];
         [[textureB expect] beginSamplingWithGPU];
-        
+
         [fbo bindAndDraw:^{
           [drawingContext drawElements:indicesArray withMode:LTDrawingContextDrawModeTriangles];
         }];
-        
+
         OCMVerifyAll(textureA);
         OCMVerifyAll(textureB);
       });
-      
+
       it(@"should mark end sampling from texture", ^{
         [[textureA expect] endSamplingWithGPU];
         [[textureB expect] endSamplingWithGPU];
-        
+
         [fbo bindAndDraw:^{
           [drawingContext drawElements:indicesArray withMode:LTDrawingContextDrawModeTriangles];
         }];
-        
+
         OCMVerifyAll(textureA);
         OCMVerifyAll(textureB);
       });

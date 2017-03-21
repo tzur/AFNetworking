@@ -3,8 +3,8 @@
 
 #import "LTPainterStrokeSegment.h"
 
-#import "LTPolynomialInterpolant.h"
 #import "LTPainterPoint.h"
+#import "LTPolynomialInterpolant.h"
 
 @interface LTPainterStrokeSegment () {
   CGFloats _distances;
@@ -66,7 +66,7 @@ static const NSUInteger kNumSamplesForLengthEstimation = 500;
   CGFloats xPositions = [self.interpolant valuesOfPropertyNamed:@"contentPositionX" atKeys:keys];
   CGFloats yPositions = [self.interpolant valuesOfPropertyNamed:@"contentPositionY" atKeys:keys];
   LTAssert(xPositions.size() == yPositions.size());
-  
+
   CGFloat length = 0;
   CGPoint previousPoint = self.startPoint.contentPosition;
   distances->clear();
@@ -107,7 +107,7 @@ static const NSUInteger kNumSamplesForLengthEstimation = 500;
       prevDistance = distance;
     }
   }
-  
+
   return points;
 }
 

@@ -49,7 +49,7 @@ NS_ASSUME_NONNULL_BEGIN
   NSDictionary *combinedOptions = [self optionsByMerging:metadata to:self.options];
   CGImageDestinationAddImage(destination.get(), image.CGImage,
                              (__bridge CFDictionaryRef)combinedOptions);
-  
+
   BOOL finalized = CGImageDestinationFinalize(destination.get());
   if (!finalized) {
     if (error) {

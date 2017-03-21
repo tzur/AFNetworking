@@ -9,6 +9,6 @@ varying highp vec2 vTexcoord;
 void main() {
   sourceTexture;
   vTexcoord;
-  
+
   gl_FragColor = vec4(value);
 }

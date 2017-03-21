@@ -80,7 +80,7 @@
 
       // Map sampler to the texture unit.
       self.program[uniform] = @(index);
-      
+
       [textureStack addObject:texture];
       ++index;
     }

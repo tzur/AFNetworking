@@ -46,7 +46,7 @@
 
 - (LTPainterStrokeSegment *)addSegmentTo:(LTPainterPoint *)point {
   [self.controlPoints addObject:point];
-  
+
   // Use the default factory, but fall back to a linear interpolation factory in case there aren't
   // enough control points.
   id<LTPolynomialInterpolantFactory> factory = self.factory;
@@ -56,7 +56,7 @@
   } else if (self.controlPoints.count < factory.expectedKeyFrames) {
     return nil;
   }
-  
+
   NSUInteger neededPoints = factory.expectedKeyFrames;
   NSArray *keyPoints = [self.controlPoints subarrayWithRange:
                         NSMakeRange(self.controlPoints.count - neededPoints, neededPoints)];

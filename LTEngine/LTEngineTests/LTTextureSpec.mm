@@ -66,19 +66,19 @@ sharedExamplesFor(kLTTextureExamples, ^(NSDictionary *contextInfo) {
         return @{kLTResourceExamplesSUTValue: [NSValue valueWithNonretainedObject:texture],
                  kLTResourceExamplesOpenGLParameterName: @GL_TEXTURE_BINDING_2D};
       });
-      
+
       it(@"should bind and unbind from the same texture unit", ^{
         glActiveTexture(GL_TEXTURE0);
         [texture bind];
         glActiveTexture(GL_TEXTURE1);
         [texture unbind];
-        
+
         glActiveTexture(GL_TEXTURE0);
         GLint currentTexture;
         glGetIntegerv(GL_TEXTURE_BINDING_2D, &currentTexture);
         expect(currentTexture).to.equal(0);
       });
-      
+
       it(@"should bind and execute block", ^{
         __block GLint currentTexture;
         __block BOOL didExecute = NO;
@@ -118,7 +118,7 @@ sharedExamplesFor(kLTTextureExamples, ^(NSDictionary *contextInfo) {
         }];
         expect(didExecute).to.beTruthy();
       });
-      
+
       it(@"should raise exception when trying to execute a nil block", ^{
   #pragma clang diagnostic push
   #pragma clang diagnostic ignored "-Wnonnull"

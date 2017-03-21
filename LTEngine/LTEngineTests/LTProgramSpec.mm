@@ -49,15 +49,15 @@ context(@"getting and setting uniforms and attributes", ^{
   __block NSNumber *boolValue;
   __block NSNumber *intValue;
   __block NSNumber *floatValue;
-  
+
   __block NSValue *vec2;
   __block NSValue *vec3;
   __block NSValue *vec4;
-  
+
   __block NSValue *mat2;
   __block NSValue *mat3;
   __block NSValue *mat4;
-  
+
   beforeEach(^{
     program = [[LTProgram alloc] initWithVertexSource:kUniformTypesVertexSource
                                        fragmentSource:kBasicFragmentSource];
@@ -87,7 +87,7 @@ context(@"getting and setting uniforms and attributes", ^{
     mat3 = $(m3);
     mat4 = $(m4);
   });
-  
+
   it(@"should set and get uniform values", ^{
     program[@"uBool"] = boolValue;
     program[@"uInt"] = intValue;
@@ -111,13 +111,13 @@ context(@"getting and setting uniforms and attributes", ^{
     expect([program[@"uMat3"] isEqualToValue:mat3]).to.beTruthy();
     expect([program[@"uMat4"] isEqualToValue:mat4]).to.beTruthy();
   });
-  
+
   context(@"uniform type validation", ^{
     it(@"should not set uniform booleans with invalid values", ^{
       expect(^{
         program[@"uBool"] = floatValue;
       }).to.raise(NSInvalidArgumentException);
-      
+
       expect(^{
         program[@"uBool"] = vec2;
       }).to.raise(NSInvalidArgumentException);
@@ -127,7 +127,7 @@ context(@"getting and setting uniforms and attributes", ^{
       expect(^{
         program[@"uInt"] = floatValue;
       }).to.raise(NSInvalidArgumentException);
-      
+
       expect(^{
         program[@"uInt"] = vec2;
       }).to.raise(NSInvalidArgumentException);
@@ -137,35 +137,35 @@ context(@"getting and setting uniforms and attributes", ^{
       expect(^{
         program[@"uInt"] = @(INT_MIN);
       }).toNot.raise(NSInvalidArgumentException);
-      
+
       expect(^{
         program[@"uInt"] = @(12345);
       }).toNot.raise(NSInvalidArgumentException);
-      
+
       expect(^{
         program[@"uInt"] = @(INT_MAX);
       }).toNot.raise(NSInvalidArgumentException);
-      
+
       expect(^{
         program[@"uInt"] = @(LONG_MIN);
       }).toNot.raise(NSInvalidArgumentException);
-      
+
       expect(^{
         program[@"uInt"] = @(123456789);
       }).toNot.raise(NSInvalidArgumentException);
-      
+
       expect(^{
         program[@"uInt"] = @(LONG_MAX);
       }).toNot.raise(NSInvalidArgumentException);
-      
+
       expect(^{
         program[@"uInt"] = @(LONG_LONG_MIN);
       }).toNot.raise(NSInvalidArgumentException);
-      
+
       expect(^{
         program[@"uInt"] = @(1234567890123456789);
       }).toNot.raise(NSInvalidArgumentException);
-      
+
       expect(^{
         program[@"uInt"] = @(LONG_LONG_MAX);
       }).toNot.raise(NSInvalidArgumentException);
@@ -175,7 +175,7 @@ context(@"getting and setting uniforms and attributes", ^{
       expect(^{
         program[@"uSampler"] = floatValue;
       }).to.raise(NSInvalidArgumentException);
-      
+
       expect(^{
         program[@"uSampler"] = vec2;
       }).to.raise(NSInvalidArgumentException);
@@ -191,11 +191,11 @@ context(@"getting and setting uniforms and attributes", ^{
       expect(^{
         program[@"uVec2"] = floatValue;
       }).to.raise(NSInvalidArgumentException);
-      
+
       expect(^{
         program[@"uVec2"] = vec3;
       }).to.raise(NSInvalidArgumentException);
-      
+
       expect(^{
         program[@"uVec2"] = mat3;
       }).to.raise(NSInvalidArgumentException);
@@ -205,11 +205,11 @@ context(@"getting and setting uniforms and attributes", ^{
       expect(^{
         program[@"uVec3"] = floatValue;
       }).to.raise(NSInvalidArgumentException);
-      
+
       expect(^{
         program[@"uVec3"] = vec2;
       }).to.raise(NSInvalidArgumentException);
-      
+
       expect(^{
         program[@"uVec3"] = mat3;
       }).to.raise(NSInvalidArgumentException);
@@ -219,11 +219,11 @@ context(@"getting and setting uniforms and attributes", ^{
       expect(^{
         program[@"uVec4"] = floatValue;
       }).to.raise(NSInvalidArgumentException);
-      
+
       expect(^{
         program[@"uVec4"] = vec3;
       }).to.raise(NSInvalidArgumentException);
-      
+
       expect(^{
         program[@"uVec4"] = mat3;
       }).to.raise(NSInvalidArgumentException);
@@ -233,11 +233,11 @@ context(@"getting and setting uniforms and attributes", ^{
       expect(^{
         program[@"uMat2"] = floatValue;
       }).to.raise(NSInvalidArgumentException);
-      
+
       expect(^{
         program[@"uMat2"] = vec2;
       }).to.raise(NSInvalidArgumentException);
-      
+
       expect(^{
         program[@"uMat2"] = mat3;
       }).to.raise(NSInvalidArgumentException);
@@ -247,11 +247,11 @@ context(@"getting and setting uniforms and attributes", ^{
       expect(^{
         program[@"uMat3"] = floatValue;
       }).to.raise(NSInvalidArgumentException);
-      
+
       expect(^{
         program[@"uMat3"] = vec2;
       }).to.raise(NSInvalidArgumentException);
-      
+
       expect(^{
         program[@"uMat3"] = mat2;
       }).to.raise(NSInvalidArgumentException);
@@ -261,11 +261,11 @@ context(@"getting and setting uniforms and attributes", ^{
       expect(^{
         program[@"uMat4"] = floatValue;
       }).to.raise(NSInvalidArgumentException);
-      
+
       expect(^{
         program[@"uMat4"] = vec2;
       }).to.raise(NSInvalidArgumentException);
-      
+
       expect(^{
         program[@"uMat4"] = mat3;
       }).to.raise(NSInvalidArgumentException);
@@ -283,14 +283,14 @@ context(@"compiling shaders", ^{
 
     expect(program).toNot.beNil();
   });
-  
+
   it(@"should fail compiling matching varyings", ^{
     LTProgram *program = [[LTProgram alloc] initWithVertexSource:kComplexVertexSource
                                                   fragmentSource:kComplexFragmentSource];
 
     expect(program).toNot.beNil();
   });
-  
+
   it(@"should fail compiling with non matching varyings", ^{
     NSString *vertexSource = @"varying highp vec2 myVarying; "
     "uniform highp mat4 myUniform; "
@@ -309,24 +309,24 @@ context(@"compiling shaders", ^{
 
 context(@"uniforms and attributes presence", ^{
   __block LTProgram *program = nil;
-  
+
   beforeEach(^{
     program = [[LTProgram alloc] initWithVertexSource:kComplexVertexSource
                                        fragmentSource:kComplexFragmentSource];
   });
-  
+
   it(@"should contain valid attribute", ^{
     expect([program containsAttribute:@"myAttr"]).to.equal(YES);
   });
-  
+
   it(@"should not contain invalid attribute", ^{
     expect([program containsAttribute:@"myAttrFoo"]).to.equal(NO);
   });
-  
+
   it(@"should contain valid uniform", ^{
     expect([program containsUniform:@"myUniform"]).to.equal(YES);
   });
-  
+
   it(@"should not contain invalid uniform", ^{
     expect([program containsUniform:@"myUniformFoo"]).to.equal(NO);
   });

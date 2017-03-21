@@ -2,18 +2,18 @@
 // Created by Zeev Farbman.
 
 #import "LTProceduralVignetting.h"
-#import "LTProceduralVignetting+Protected.h"
 
 #import "LTGLKitExtensions.h"
 #import "LTGPUImageProcessor+Protected.h"
+#import "LTProceduralVignetting+Protected.h"
 #import "LTProgram.h"
-#import "LTShaderStorage+LTProceduralVignettingFsh.h"
 #import "LTShaderStorage+LTPassthroughShaderVsh.h"
+#import "LTShaderStorage+LTProceduralVignettingFsh.h"
 #import "LTTexture+Factory.h"
 
 @implementation LTProceduralVignetting
 
-- (instancetype)initWithOutput:(LTTexture *)output { 
+- (instancetype)initWithOutput:(LTTexture *)output {
   return [self initWithVertexSource:[LTPassthroughShaderVsh source]
                      fragmentSource:[LTProceduralVignettingFsh source] andOutput:output];
 }
@@ -41,7 +41,7 @@
 
 + (NSSet *)inputModelPropertyKeys {
   static NSSet *properties;
-  
+
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
     properties = [NSSet setWithArray:@[
@@ -53,7 +53,7 @@
       @instanceKeypath(LTProceduralVignetting, noiseAmplitude)
     ]];
   });
-  
+
   return properties;
 }
 

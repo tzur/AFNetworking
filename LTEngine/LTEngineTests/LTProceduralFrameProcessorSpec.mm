@@ -35,41 +35,41 @@ context(@"properties", ^{
     expect(frame.noiseMapping).to.equal(LTProceduralFrameNoiseMappingStretch);
     expect(frame.color).to.equal(LTVector3(1, 1, 1));
   });
-  
+
   it(@"should return default noise texture correctly", ^{
     cv::Mat4b defaultNoise(1, 1, cv::Vec4b(128, 128, 128, 255));
     LTProceduralFrameProcessor *frame = [[LTProceduralFrameProcessor alloc] initWithOutput:output];
     expect(LTFuzzyCompareMat(frame.noise.image, defaultNoise)).to.beTruthy();
   });
-  
+
   it(@"should fail on invalid width parameter", ^{
     LTProceduralFrameProcessor *frame = [[LTProceduralFrameProcessor alloc] initWithOutput:output];
     expect(^{
       frame.width = -10;
     }).to.raise(NSInvalidArgumentException);
   });
-  
+
   it(@"should fail on invalid spread parameter", ^{
     LTProceduralFrameProcessor *frame = [[LTProceduralFrameProcessor alloc] initWithOutput:output];
     expect(^{
       frame.spread = 1000;
     }).to.raise(NSInvalidArgumentException);
   });
-  
+
   it(@"should fail on invalid corner parameter", ^{
     LTProceduralFrameProcessor *frame = [[LTProceduralFrameProcessor alloc] initWithOutput:output];
     expect(^{
       frame.corner = -1;
     }).to.raise(NSInvalidArgumentException);
   });
-  
+
   it(@"should fail on invalid noise amplitude", ^{
     LTProceduralFrameProcessor *frame = [[LTProceduralFrameProcessor alloc] initWithOutput:output];
     expect(^{
       frame.noiseAmplitude = -1;
     }).to.raise(NSInvalidArgumentException);
   });
-  
+
   it(@"should fail on invalid noise coordinates offset", ^{
     LTProceduralFrameProcessor *frame = [[LTProceduralFrameProcessor alloc] initWithOutput:output];
     expect(^{
@@ -83,14 +83,14 @@ context(@"properties", ^{
       frame.width = -10;
     }).to.raise(NSInvalidArgumentException);
   });
-  
+
   it(@"should fail on negative color", ^{
     LTProceduralFrameProcessor *frame = [[LTProceduralFrameProcessor alloc] initWithOutput:output];
     expect(^{
       frame.color = LTVector3(-0.1, 0.9, 0.2);
     }).to.raise(NSInvalidArgumentException);
   });
-  
+
   it(@"should fail on non-tilable texture if tileable mapping is set", ^{
     LTProceduralFrameProcessor *frame = [[LTProceduralFrameProcessor alloc] initWithOutput:output];
     expect(^{
@@ -99,13 +99,13 @@ context(@"properties", ^{
       frame.noise = [LTTexture byteRGBATextureWithSize:CGSizeMake(4, 3)];
     }).to.raise(NSInvalidArgumentException);
   });
-  
+
   it(@"should return normalized noise channel mixer property", ^{
     LTProceduralFrameProcessor *frame = [[LTProceduralFrameProcessor alloc] initWithOutput:output];
     frame.noiseChannelMixer = LTVector3(-1.0, 0.0, 0.0);
     expect(frame.noiseChannelMixer).to.beCloseToGLKVector(LTVector3(1.0, 0.0, 0.0));
   });
-  
+
   it(@"should not fail on correct input", ^{
     LTProceduralFrameProcessor *frame = [[LTProceduralFrameProcessor alloc] initWithOutput:output];
     expect(^{
@@ -135,7 +135,7 @@ context(@"processing", ^{
         [LTTexture textureWithImage:LTLoadMat([self class], @"RoundWhiteFrame.png")];
     expect(LTFuzzyCompareMat(frameTexture.image, precomputedFrame.image)).to.beTruthy();
   });
-  
+
   it(@"should return straight red frame with abrupt transition and no noise", ^{
     LTTexture *frameTexture = [LTTexture byteRGBATextureWithSize:CGSizeMake(16, 32)];
     LTProceduralFrameProcessor *frame =
@@ -151,7 +151,7 @@ context(@"processing", ^{
         [LTTexture textureWithImage:LTLoadMat([self class], @"StraightRedFrame.png")];
     expect(LTFuzzyCompareMat(frameTexture.image, precomputedFrame.image)).to.beTruthy();
   });
-  
+
   it(@"should return straight blue frame with abrupt transition and no noise", ^{
     LTTexture *frameTexture = [LTTexture byteRGBATextureWithSize:CGSizeMake(32, 16)];
     LTProceduralFrameProcessor *frame =
@@ -167,7 +167,7 @@ context(@"processing", ^{
         [LTTexture textureWithImage:LTLoadMat([self class], @"StraightBlueFrame.png")];
     expect(LTFuzzyCompareMat(frameTexture.image, precomputedFrame.image)).to.beTruthy();
   });
-  
+
   it(@"should return rounded black frame with thin transition and no noise", ^{
     LTTexture *frameTexture = [LTTexture byteRGBATextureWithSize:CGSizeMake(32, 32)];
     LTProceduralFrameProcessor *frame =
@@ -183,7 +183,7 @@ context(@"processing", ^{
         [LTTexture textureWithImage:LTLoadMat([self class], @"RoundishBlackFrame.png")];
     expect(LTFuzzyCompareMat(frameTexture.image, precomputedFrame.image)).to.beTruthy();
   });
-  
+
   it(@"should return straight, black, noisy frame", ^{
     LTTexture *frameTexture = [LTTexture byteRGBATextureWithSize:CGSizeMake(64, 64)];
     LTTexture *tiledNoise =
@@ -204,7 +204,7 @@ context(@"processing", ^{
         @"StraightBlackNoisyFrame.png")];
     expect(LTFuzzyCompareMat(frameTexture.image, precomputedFrame.image)).to.beTruthy();
   });
-  
+
   sit(@"should return a frame where noise is a shifted tilable checkerboard pattern", ^{
     LTTexture *frameTexture = [LTTexture byteRGBATextureWithSize:CGSizeMake(64, 64)];
     LTTexture *tiledNoise =
@@ -224,7 +224,7 @@ context(@"processing", ^{
     LTTexture *precomputedFrame = [LTTexture textureWithImage:LTLoadMat([self class],
         @"ShiftedTiledFrame.png")];
     expect(LTFuzzyCompareMat(frameTexture.image, precomputedFrame.image)).to.beTruthy();
-  });  
+  });
 });
 
 SpecEnd

@@ -28,7 +28,7 @@ void main() {
   // Apply the per-channel intensity on all channels.
   mediump vec4 dst = gl_LastFragData[0];
   highp vec4 src = texture2D(sourceTexture, vTexcoord) * intensity;
-  
+
   // Calculate the rgb distance according to the useAuxiliaryTexture flag: either the distance
   // between the intensity and the auxiliary texture, or the intensity and the target framebuffer.
   highp vec3 rgbDiff;
@@ -37,7 +37,7 @@ void main() {
   } else {
     rgbDiff = dst.rgb - intensity.rgb;
   }
-  
+
   // Apply the edge-avoiding factor, if applicable.
   highp float factor = 1.0;
   if (sigma < 1.0) {

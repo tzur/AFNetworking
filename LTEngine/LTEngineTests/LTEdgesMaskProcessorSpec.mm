@@ -32,7 +32,7 @@ context(@"processing", ^{
     cv::Mat image = LTLoadMat([self class], @"MacbethGreyEdges.png");
     expect($(output.image)).to.beCloseToMat($(image));
   });
-  
+
   sit(@"should return color edges", ^{
     output = [LTTexture byteRGBATextureWithSize:input.size];
     processor = [[LTEdgesMaskProcessor alloc] initWithInput:input output:output];

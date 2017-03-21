@@ -73,19 +73,19 @@ context(@"properties", ^{
     point.timestamp = -DBL_EPSILON;
     expect(point.timestamp).to.equal(0);
   });
-  
+
   it(@"should set screenPosition", ^{
     CGPoint newValue = CGPointMake(1, 1);
     point.screenPosition = newValue;
     expect(point.screenPosition).to.equal(newValue);
   });
-  
+
   it(@"should set contentPosition", ^{
     CGPoint newValue = CGPointMake(1, 1);
     point.contentPosition = newValue;
     expect(point.contentPosition).to.equal(newValue);
   });
-  
+
   it(@"should set zoomScale", ^{
     CGFloat newValue = 2;
     point.zoomScale = newValue;
@@ -94,7 +94,7 @@ context(@"properties", ^{
     point.zoomScale = -FLT_EPSILON;
     expect(point.zoomScale).to.equal(0);
   });
-  
+
   it(@"should set touchRadius", ^{
     CGFloat newValue = 2;
     point.touchRadius = newValue;
@@ -103,7 +103,7 @@ context(@"properties", ^{
     point.touchRadius = -FLT_EPSILON;
     expect(point.touchRadius).to.equal(0);
   });
-  
+
   it(@"should set touchRadiusTolerance", ^{
     CGFloat newValue = 2;
     point.touchRadiusTolerance = newValue;
@@ -112,7 +112,7 @@ context(@"properties", ^{
     point.touchRadiusTolerance = -FLT_EPSILON;
     expect(point.touchRadiusTolerance).to.equal(0);
   });
-  
+
   it(@"should set distanceFromStart", ^{
     CGFloat newValue = 1;
     point.distanceFromStart = newValue;
@@ -121,7 +121,7 @@ context(@"properties", ^{
     point.distanceFromStart = -FLT_EPSILON;
     expect(point.distanceFromStart).to.equal(0);
   });
-  
+
   it(@"should set diameter", ^{
     CGFloat newValue = 1;
     point.diameter = newValue;
@@ -134,7 +134,7 @@ context(@"properties", ^{
 
 context(@"copying", ^{
   __block LTPainterPoint *point;
-  
+
   beforeEach(^{
     point = [[LTPainterPoint alloc] init];
     point.timestamp = 1;
@@ -146,7 +146,7 @@ context(@"copying", ^{
     point.touchRadius = 6;
     point.touchRadiusTolerance = 7;
   });
-  
+
   it(@"should copy", ^{
     LTPainterPoint *copy = [point copy];
     expect(copy).notTo.beIdenticalTo(point);
@@ -159,7 +159,7 @@ context(@"copying", ^{
     expect(copy.touchRadius).to.equal(point.touchRadius);
     expect(copy.touchRadiusTolerance).to.equal(point.touchRadiusTolerance);
   });
-  
+
   it(@"should copy with zone", ^{
     LTPainterPoint *copy = [point copyWithZone:nil];
     expect(copy).notTo.beIdenticalTo(point);

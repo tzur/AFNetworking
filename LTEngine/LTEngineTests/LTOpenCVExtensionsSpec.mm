@@ -94,7 +94,7 @@ context(@"mat conversion", ^{
 
       cv::Mat4hf expected(input.size());
       expected.setTo(cv::Vec4hf(half(0.5), half(-1.0), half(0.5), half(1.0)));
-      
+
       expect(LTFuzzyCompareMat(expected, output, 1.0/255.0)).to.beTruthy();
     });
   });
@@ -495,7 +495,7 @@ context(@"load image", ^{
     expect(mat.rows).to.equal(16);
     expect(mat.cols).to.equal(16);
   });
-  
+
   it(@"should load mat and pre-divide it", ^{
     cv::Mat matWithoutPreDivision = LTLoadMat([self class], @"SemiTransparentGray.png", NO);
     cv::Mat matWithPreDivision = LTLoadMat([self class], @"SemiTransparentGray.png", YES);
@@ -525,7 +525,7 @@ context(@"generate mat", ^{
     cv::Mat expected = LTLoadMat([self class], @"GaussianSquare.png");
     expect($(convertedRGB)).to.beCloseToMat($(expected));
   });
-  
+
   it(@"should generate anisotropic gaussian mat", ^{
     const CGSize kTargetSize = CGSizeMake(512, 256);
     cv::Mat mat = LTCreateGaussianMat(kTargetSize, 0.3);
@@ -811,7 +811,7 @@ context(@"rotate half pi clockwise and mirror", ^{
     it(@"should rotate and mirror correctly", ^{
       NSInteger cwRotations = [data[kLTOpenCVExtensionsRotationRotationKey] integerValue];
       BOOL mirror = [data[kLTOpenCVExtensionsRotationMirrorKey] boolValue];
-      
+
       cv::Mat4b result = LTRotateHalfPiClockwise(inputImage, cwRotations, mirror);
 
       cv::Scalar upperLeftColor = [data[kLTOpenCVExtensionsRotationUpperLeftColorKey] scalarValue];

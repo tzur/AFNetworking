@@ -43,7 +43,7 @@ context(@"processing", ^{
 
     expect($(output.image)).to.beCloseToMatWithin($(image), 1);
   });
-  
+
   it(@"should create stretched radial mask correctly", ^{
     processor.maskType = LTDualMaskTypeRadial;
     processor.center = LTVector2(8, 8);
@@ -67,7 +67,7 @@ context(@"processing", ^{
 
     expect($(output.image)).to.beCloseToMatWithin($(image), 1);
   });
-  
+
   it(@"should invert stretched radial mask correctly", ^{
     processor.maskType = LTDualMaskTypeRadial;
     processor.center = LTVector2(8, 8);
@@ -80,7 +80,7 @@ context(@"processing", ^{
 
     expect($(output.image)).to.beCloseToMatWithin($(image), 1);
   });
-  
+
   it(@"should create corner radial mask correctly", ^{
     processor.maskType = LTDualMaskTypeRadial;
     processor.center = LTVector2(0.0, 0.0);
@@ -92,7 +92,7 @@ context(@"processing", ^{
 
     expect($(output.image)).to.beCloseToMatWithin($(image), 1);
   });
-  
+
   it(@"should create corner stretched radial mask correctly", ^{
     processor.maskType = LTDualMaskTypeRadial;
     processor.center = LTVector2(0.0, 0.0);
@@ -105,7 +105,7 @@ context(@"processing", ^{
 
     expect($(output.image)).to.beCloseToMatWithin($(image), 1);
   });
-  
+
   it(@"should create tilted linear mask correctly", ^{
     processor.maskType = LTDualMaskTypeLinear;
     processor.center = LTVector2(8, 8);
@@ -117,7 +117,7 @@ context(@"processing", ^{
 
     expect($(output.image)).to.beCloseToMatWithin($(image), 1);
   });
-  
+
   it(@"should create tilted double mask correctly", ^{
     processor.maskType = LTDualMaskTypeDoubleLinear;
     processor.center = LTVector2(8, 8);
@@ -130,7 +130,7 @@ context(@"processing", ^{
 
     expect($(output.image)).to.beCloseToMatWithin($(image), 1);
   });
-  
+
   it(@"should create tilted double mask correctly", ^{
     processor.maskType = LTDualMaskTypeDoubleLinear;
     processor.center = LTVector2(0.0, 8);
@@ -152,7 +152,7 @@ context(@"processing", ^{
 
     expect($(output.image)).to.beCloseToMatWithin($(image), 1);
   });
-  
+
   it(@"should create default radial mask correctly on non-square image", ^{
     output = [LTTexture byteRGBATextureWithSize:CGSizeMake(16, 32)];
     processor = [[LTDualMaskProcessor alloc] initWithOutput:output];
@@ -165,7 +165,7 @@ context(@"processing", ^{
 
     expect($(output.image)).to.beCloseToMatWithin($(image), 1);
   });
-  
+
   it(@"should create default stretched radial mask correctly on non-square image", ^{
     output = [LTTexture byteRGBATextureWithSize:CGSizeMake(16, 32)];
     processor = [[LTDualMaskProcessor alloc] initWithOutput:output];

@@ -7,7 +7,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Object forwarding calls to the \c receivedTouchEvents:predictedEvents:touchEventSequenceState:
 /// method to an \c id<LTTouchEventDelegate> provided upon initialization, in the following way:
-/// 
+///
 /// If the touch events belong to a non-terminating touch event sequence (i.e. the state of the
 /// sequence is neither \c LTTouchEventSequenceStateEnd nor
 /// \c LTTouchEventSequenceStateCancellation), the call is forwarded to the delegate without any

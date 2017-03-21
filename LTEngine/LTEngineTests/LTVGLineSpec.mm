@@ -83,7 +83,7 @@ context(@"path", ^{
     shapeLayer = [CAShapeLayer layer];
     shapeLayer.fillColor = [UIColor redColor].CGColor;
   });
-  
+
   it(@"should create a correct path", ^{
     lt::Ref<CGPathRef> path = [line pathWithTrackingFactor:0];
     shapeLayer.path = path.get();

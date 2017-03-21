@@ -54,7 +54,7 @@ context(@"execution", ^{
       expect(values).to.equal(@[@1]);
     });
   });
-  
+
   context(@"execution is not allowed", ^{
     it(@"should not execute added operations", ^{
       [executor executeAll];

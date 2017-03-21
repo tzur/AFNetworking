@@ -50,23 +50,23 @@
   self.redSaturation = self.defaultRedSaturation;
   self.redLuminance = self.defaultRedLuminance;
   self.redSaturation = self.defaultRedSaturation;
-  
+
   self.orangeSaturation = self.defaultOrangeSaturation;
   self.orangeLuminance = self.defaultOrangeLuminance;
   self.orangeSaturation = self.defaultOrangeSaturation;
-  
+
   self.yellowSaturation = self.defaultYellowSaturation;
   self.yellowLuminance = self.defaultYellowLuminance;
   self.yellowSaturation = self.defaultYellowSaturation;
-  
+
   self.greenSaturation = self.defaultGreenSaturation;
   self.greenLuminance = self.defaultGreenLuminance;
   self.greenSaturation = self.defaultGreenSaturation;
-  
+
   self.cyanSaturation = self.defaultCyanSaturation;
   self.cyanLuminance = self.defaultCyanLuminance;
   self.cyanSaturation = self.defaultCyanSaturation;
-  
+
   self.blueSaturation = self.defaultBlueSaturation;
   self.blueLuminance = self.defaultBlueLuminance;
   self.blueSaturation = self.defaultBlueSaturation;

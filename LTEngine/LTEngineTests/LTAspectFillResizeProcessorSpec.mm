@@ -12,7 +12,7 @@ __block LTTexture *outputTexture;
 
 beforeEach(^{
   cv::Mat image(LTLoadMat([self class], @"Flower.png"));
-  
+
   LTTexture *inputTexture = [LTTexture textureWithImage:image];
   outputTexture = [LTTexture byteRGBATextureWithSize:CGSizeMakeUniform(32)];
 

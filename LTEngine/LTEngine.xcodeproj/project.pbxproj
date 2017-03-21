@@ -448,7 +448,7 @@
 		28A612871934EF6400D005D8 /* LTEdgeAvoidingMultiTextureBrushSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28A612861934EF6400D005D8 /* LTEdgeAvoidingMultiTextureBrushSpec.mm */; };
 		28A612961934F15D00D005D8 /* GaussianAnisotropic.png in Resources */ = {isa = PBXBuildFile; fileRef = 28A612941934F15D00D005D8 /* GaussianAnisotropic.png */; };
 		28A612971934F15D00D005D8 /* GaussianSquare.png in Resources */ = {isa = PBXBuildFile; fileRef = 28A612951934F15D00D005D8 /* GaussianSquare.png */; };
-		28A8C7A919209E8A00A38FDE /* LTCommonDrawableShapeStructs.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28A8C7A819209E8A00A38FDE /* LTCommonDrawableShapeStructs.mm */; };
+		28A8C7A919209E8A00A38FDE /* LTCommonDrawableShapeStructsSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28A8C7A819209E8A00A38FDE /* LTCommonDrawableShapeStructsSpec.mm */; };
 		28B117A219C8586A007E2F17 /* LTOneShotImageProcessor+Protected.h in Headers */ = {isa = PBXBuildFile; fileRef = 28B3347A19C831B1004B6191 /* LTOneShotImageProcessor+Protected.h */; };
 		28B117A319C8587E007E2F17 /* LTOneShotBaseImageProcessor+Protected.h in Headers */ = {isa = PBXBuildFile; fileRef = 288F14D119A61B9500E1C6F9 /* LTOneShotBaseImageProcessor+Protected.h */; };
 		28B117A419C85C40007E2F17 /* LTPartialProcessing.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BACB32F199CEFAF000F9238 /* LTPartialProcessing.h */; };
@@ -2179,7 +2179,7 @@
 		28A612941934F15D00D005D8 /* GaussianAnisotropic.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GaussianAnisotropic.png; path = Resources/GaussianAnisotropic.png; sourceTree = "<group>"; };
 		28A612951934F15D00D005D8 /* GaussianSquare.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GaussianSquare.png; path = Resources/GaussianSquare.png; sourceTree = "<group>"; };
 		28A84EE818953EDB00D8AB6C /* LTInterpolatableObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTInterpolatableObject.h; sourceTree = "<group>"; };
-		28A8C7A819209E8A00A38FDE /* LTCommonDrawableShapeStructs.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTCommonDrawableShapeStructs.mm; sourceTree = "<group>"; };
+		28A8C7A819209E8A00A38FDE /* LTCommonDrawableShapeStructsSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTCommonDrawableShapeStructsSpec.mm; sourceTree = "<group>"; };
 		28B117D519C87DB2007E2F17 /* LTReshapeProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTReshapeProcessorSpec.mm; sourceTree = "<group>"; };
 		28B3346619C826D3004B6191 /* LTOneShotImageProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTOneShotImageProcessor.h; sourceTree = "<group>"; };
 		28B3346719C826D3004B6191 /* LTOneShotImageProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTOneShotImageProcessor.mm; sourceTree = "<group>"; };
@@ -3472,7 +3472,7 @@
 			children = (
 				280F5A14191A8CDF00F9F80B /* Shapes */,
 				280F5A1F191A8D5C00F9F80B /* LTShapeDrawerParamsSpec.mm */,
-				28A8C7A819209E8A00A38FDE /* LTCommonDrawableShapeStructs.mm */,
+				28A8C7A819209E8A00A38FDE /* LTCommonDrawableShapeStructsSpec.mm */,
 				28BB81A81924DF650071CB0B /* LTShapeDrawerSpec.mm */,
 				85E2B6831C58C61D006AD39C /* LTSolidRectsDrawerSpec.mm */,
 			);
@@ -7134,7 +7134,7 @@
 				8B16C9CC1BAF01C5002FB750 /* EXPMatchers+beCloseToPoint.mm in Sources */,
 				50E998A81C075F89004F15C9 /* LTReparameterizationSpec.mm in Sources */,
 				284ED12C1895662300414A8A /* LTLinearInterpolantSpec.mm in Sources */,
-				28A8C7A919209E8A00A38FDE /* LTCommonDrawableShapeStructs.mm in Sources */,
+				28A8C7A919209E8A00A38FDE /* LTCommonDrawableShapeStructsSpec.mm in Sources */,
 				8BC465BB189956FA0094F7BC /* LTOperationsExecutorSpec.mm in Sources */,
 				50E9B60A1DE7077A00390B69 /* LTContentLocationProviderSpec.mm in Sources */,
 				8BAAC5DB18BB70A400A4B4DA /* LTPatchCompositorProcessorSpec.mm in Sources */,

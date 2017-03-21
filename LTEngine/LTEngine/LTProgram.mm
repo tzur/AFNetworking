@@ -115,7 +115,7 @@ NS_ASSUME_NONNULL_BEGIN
                                           andSource:vertexSource];
   LTShader *fragment = [[LTShader alloc] initWithType:LTShaderTypeFragment
                                             andSource:fragmentSource];
-    
+
   // Attach vertex and fragment shaders to program.
   [vertex attachToProgram:self andExecute:^{
     [fragment attachToProgram:self andExecute:^{
@@ -154,7 +154,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)linkProgram {
   glLinkProgram(self.name);
-  
+
 #ifdef DEBUG
   GLint logLength;
   glGetProgramiv(_name, GL_INFO_LOG_LENGTH, &logLength);
@@ -164,7 +164,7 @@ NS_ASSUME_NONNULL_BEGIN
     LogWarning(@"Shader compilation info log: %s", log.get());
   }
 #endif
-  
+
   GLint status;
   glGetProgramiv(_name, GL_LINK_STATUS, &status);
   if (!status) {
@@ -174,7 +174,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (BOOL)isProgramValid {
   glValidateProgram(self.name);
-  
+
 #ifdef DEBUG
   GLint logLength;
   glGetProgramiv(self.name, GL_INFO_LOG_LENGTH, &logLength);
@@ -184,30 +184,30 @@ NS_ASSUME_NONNULL_BEGIN
     LogDebug(@"Program validate log: %s", log.get());
   }
 #endif
-  
+
   GLint status;
   glGetProgramiv(self.name, GL_VALIDATE_STATUS, &status);
   if (status == 0) {
     return NO;
   }
-  
+
   return YES;
 }
 
 - (LTProgramObject *)uniformObjectForIndex:(GLuint)index maxNameLength:(GLint)maxLength {
   GLint size;
   GLenum type;
-  
+
   std::unique_ptr<GLchar[]> name(new GLchar[maxLength]);
   glGetActiveUniform(self.name, index, maxLength, NULL, &size, &type, name.get());
   LTGLCheckDbg(@"Error retrieving active uniform info");
-  
+
   int uniformLocation = glGetUniformLocation(self.name, name.get());
   if (uniformLocation == -1) {
     // This should technically never happen, since we get the uniform name directly from OpenGL.
     LTAssert(NO, @"Failed to retrieve uniform location for \"%s\"", name.get());
   }
-  
+
   return [[LTProgramObject alloc] initWithIndex:uniformLocation
                                            name:[NSString stringWithUTF8String:name.get()]
                                            size:size type:type];;
@@ -220,13 +220,13 @@ NS_ASSUME_NONNULL_BEGIN
   std::unique_ptr<GLchar[]> name(new GLchar[maxLength]);
   glGetActiveAttrib(self.name, index, maxLength, NULL, &size, &type, name.get());
   LTGLCheckDbg(@"Error retrieving active attribute info");
-  
+
   int attribLocation = glGetAttribLocation(self.name, name.get());
   if (attribLocation == -1) {
     // This should technically never happen, since we get the attribute name directly from OpenGL.
     LTAssert(NO, @"Failed to retrieve attribute location for \"%s\"", name.get());
   }
-  
+
   return [[LTProgramObject alloc] initWithIndex:attribLocation
                                            name:[NSString stringWithUTF8String:name.get()]
                                            size:size type:type];;
@@ -329,7 +329,7 @@ static const LTTypeToTypeEncodingsMap kTypeToValidTypeEncodings = {
 - (void)setUniform:(NSString *)name withValue:(id)value {
   LTProgramObject *object = self.uniformToObject[name];
   [self verifyUniform:object value:value];
-  
+
   [self bindAndExecute:^{
     switch (object.type) {
       case GL_BOOL:
@@ -373,11 +373,11 @@ static const LTTypeToTypeEncodingsMap kTypeToValidTypeEncodings = {
 - (void)verifyUniform:(LTProgramObject *)uniform value:(id)value {
   LTParameterAssert(uniform.size == 1,
       @"Object '%@' is of an array type, which is currently not supported", uniform.name);
-  
+
   LTParameterAssert([value isKindOfClass:[NSValue class]],
       @"Tried to set uniform '%@' and got class of type %@ instead of NSValue", uniform.name,
       [value class]);
-  
+
   const std::string valueType([value objCType]);
   const LTTypeEncodings validValueTypes = kTypeToValidTypeEncodings.at(uniform.type);
   LTParameterAssert(std::find(validValueTypes.cbegin(), validValueTypes.cend(), valueType) !=
@@ -398,7 +398,7 @@ static const LTTypeToTypeEncodingsMap kTypeToValidTypeEncodings = {
 
 - (id)uniformValue:(NSString *)name {
   LTProgramObject *object = self.uniformToObject[name];
-  
+
   if (object.size != 1) {
     LTAssert(NO, @"Object '%@' is of an array type, which is currently not supported", name);
   }

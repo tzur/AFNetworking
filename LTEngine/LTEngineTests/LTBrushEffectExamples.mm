@@ -31,17 +31,17 @@ SharedExamplesBegin(LTBrushEffectExamples)
 sharedExamplesFor(kLTBrushEffectSubclassExamples, ^(NSDictionary *data) {
   __block Class effectClass;
   __block LTBrushEffect *effect;
-  
+
   beforeEach(^{
     effectClass = data[kLTBrushEffectClass];
     LTGLContext *context = [[LTGLContext alloc] init];
     [LTGLContext setCurrentContext:context];
   });
-  
+
   afterEach(^{
     [LTGLContext setCurrentContext:nil];
   });
-  
+
   context(@"initialization", ^{
     it(@"should initialize with default initializer", ^{
       effect = [[effectClass alloc] init];
@@ -58,17 +58,17 @@ sharedExamplesFor(kLTBrushEffectSubclassExamples, ^(NSDictionary *data) {
 
 sharedExamplesFor(kLTBrushEffectLTBrushExamples, ^(NSDictionary *data) {
   __block Class brushClass;
-  
+
   beforeEach(^{
     brushClass = data[kLTBrushClass];
     LTGLContext *context = [[LTGLContext alloc] init];
     [LTGLContext setCurrentContext:context];
   });
-  
+
   afterEach(^{
     [LTGLContext setCurrentContext:nil];
   });
-  
+
   context(@"properties", ^{
     __block LTBrush *brush;
 
@@ -98,7 +98,7 @@ sharedExamplesFor(kLTBrushEffectLTBrushExamples, ^(NSDictionary *data) {
       expect(brush.colorDynamicsEffect).to.beIdenticalTo(effect);
     });
   });
-  
+
   context(@"drawing", ^{
     __block cv::Mat4b expected;
     __block LTBrush *brush;
@@ -118,20 +118,20 @@ sharedExamplesFor(kLTBrushEffectLTBrushExamples, ^(NSDictionary *data) {
       brush = [[brushClass alloc] init];
       brush.baseDiameter = kBaseBrushDiameter;
       brush.scale = kTargetBrushDiameter / kBaseBrushDiameter;
-      
+
       output = [LTTexture byteRGBATextureWithSize:kOutputSize];
       fbo = [[LTFbo alloc] initWithTexture:output];
       [fbo clearWithColor:LTVector4(0, 0, 0, 1)];
-      
+
       expected.create(kOutputSize.height, kOutputSize.width);
       expected = cv::Vec4b(0, 0, 0, 255);
-      
+
       point = [[LTPainterPoint alloc] init];
       point.contentPosition = kOutputCenter;
       interpolant = [[LTDegenerateInterpolant alloc] initWithKeyFrames:@[point]];
       segment = [[LTPainterStrokeSegment alloc] initWithSegmentIndex:0 distanceFromStart:0
                                                       andInterpolant:interpolant];
-      
+
       [brush startNewStrokeAtPoint:point];
       [brush.texture clearWithColor:LTVector4(1, 1, 1, 1)];
     });
@@ -153,13 +153,13 @@ sharedExamplesFor(kLTBrushEffectLTBrushExamples, ^(NSDictionary *data) {
         CGRect targetRect = CGRectCenteredAt(kOutputCenter, kBaseBrushSize * brush.scale);
         expected(LTCVRectWithCGRect(targetRect)).setTo(cv::Vec4b(255, 255, 255, 255));
       });
-      
+
       it(@"should apply when drawing a point", ^{
         [brush startNewStrokeAtPoint:point];
         [brush drawPoint:point inFramebuffer:fbo];
         expect($(output.image)).to.beCloseToMat($(expected));
       });
-      
+
       it(@"should apply when drawing a segment", ^{
         [brush startNewStrokeAtPoint:point];
         [brush drawStrokeSegment:segment fromPreviousPoint:nil inFramebuffer:fbo
@@ -179,7 +179,7 @@ sharedExamplesFor(kLTBrushEffectLTBrushExamples, ^(NSDictionary *data) {
         brush.shapeDynamicsEffect.roundnessJitter = 1;
         brush.shapeDynamicsEffect.minimumRoundness = 0;
       });
-      
+
       it(@"should apply when drawing a point", ^{
         // This is performed multiple times since the random jitter might be small enough to leave
         // the target rectangle at the same number pixels. The chances of this happening more 100
@@ -189,7 +189,7 @@ sharedExamplesFor(kLTBrushEffectLTBrushExamples, ^(NSDictionary *data) {
           [fbo clearWithColor:LTVector4(0, 0, 0, 1)];
           [brush startNewStrokeAtPoint:point];
           [brush drawPoint:point inFramebuffer:fbo];
-          
+
           LTVector4 color = [output pixelValue:targetRect.origin];
           if (color == kBlack) {
             numBlack++;
@@ -197,7 +197,7 @@ sharedExamplesFor(kLTBrushEffectLTBrushExamples, ^(NSDictionary *data) {
         }
         expect(numBlack).to.beGreaterThan(0);
       });
-      
+
       it(@"should apply when drawing a segment", ^{
         // This is performed multiple times since the random jitter might be small enough to leave
         // the target rectangle at the same number pixels. The chances of this happening more 100
@@ -208,7 +208,7 @@ sharedExamplesFor(kLTBrushEffectLTBrushExamples, ^(NSDictionary *data) {
           [brush startNewStrokeAtPoint:point];
           [brush drawStrokeSegment:segment fromPreviousPoint:nil inFramebuffer:fbo
               saveLastDrawnPointTo:nil];
-          
+
           LTVector4 color = [output pixelValue:targetRect.origin];
           if (color == kBlack) {
             numBlack++;
@@ -223,7 +223,7 @@ sharedExamplesFor(kLTBrushEffectLTBrushExamples, ^(NSDictionary *data) {
         brush.colorDynamicsEffect = [[LTBrushColorDynamicsEffect alloc] init];
         brush.colorDynamicsEffect.brightnessJitter = 1;
       });
-      
+
       it(@"should apply when drawing a point", ^{
         // This is performed multiple times, since the jitter might increase the brightness (which
         // is already at the maximum value). This will fail if this happens 100 times (1/2^100).
@@ -232,7 +232,7 @@ sharedExamplesFor(kLTBrushEffectLTBrushExamples, ^(NSDictionary *data) {
           [fbo clearWithColor:LTVector4(0, 0, 0, 1)];
           [brush startNewStrokeAtPoint:point];
           [brush drawPoint:point inFramebuffer:fbo];
-          
+
           __block UIColor *color = [UIColor lt_colorWithLTVector:[output pixelValue:kOutputCenter]];
           __block CGFloat brightness;
           expect([color getHue:nil saturation:nil brightness:&brightness alpha:nil]).to.beTruthy();
@@ -250,7 +250,7 @@ sharedExamplesFor(kLTBrushEffectLTBrushExamples, ^(NSDictionary *data) {
           [brush startNewStrokeAtPoint:point];
           [brush drawStrokeSegment:segment fromPreviousPoint:nil inFramebuffer:fbo
               saveLastDrawnPointTo:nil];
-          
+
           __block UIColor *color = [UIColor lt_colorWithLTVector:[output pixelValue:kOutputCenter]];
           __block CGFloat brightness;
           expect([color getHue:nil saturation:nil brightness:&brightness alpha:nil]).to.beTruthy();

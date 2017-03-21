@@ -324,7 +324,7 @@ LTPropertyProxy(CGFloat, smoothingAlpha, SmoothingAlpha, self.compositor);
   if (self.didProcessAtLeastOnce) {
     [self.rectCopyProcessor process];
   }
-  
+
   [self.workingSizeToProcessor[$(self.workingSize)] process];
 
   [self updateRectCopyProcessorRects];
@@ -380,7 +380,7 @@ LTPropertyWithoutSetter(CGFloat, sourceOpacity, SourceOpacity, 0, 1, 1);
 LTPropertyWithoutSetter(CGFloat, smoothingAlpha, SmoothingAlpha, 0, 1, 1);
 - (void)setSmoothingAlpha:(CGFloat)smoothingAlpha {
   [self _verifyAndSetSmoothingAlpha:smoothingAlpha];
-  
+
   for (LTInternalPatchProcessor *processor in self.workingSizeToProcessor.allValues) {
     processor.smoothingAlpha = smoothingAlpha;
   }

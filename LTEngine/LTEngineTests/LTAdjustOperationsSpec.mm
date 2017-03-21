@@ -18,7 +18,7 @@ context(@"tonal adjustment", ^{
     GLKVector4 result = GLKMatrix4MultiplyVector4(tonalTransform, input);
     expect(result).to.beCloseToGLKVectorWithin(expectedOutput, 1);
   });
-  
+
   it(@"should return a matrix processing hue correctly", ^{
     GLKVector4 input = GLKVector4Make(128, 0, 0, 255);
     GLKVector4 expectedOutput = GLKVector4Make(-51, 76, 76, 255);
@@ -27,7 +27,7 @@ context(@"tonal adjustment", ^{
     GLKVector4 result = GLKMatrix4MultiplyVector4(tonalTransform, input);
     expect(result).to.beCloseToGLKVectorWithin(expectedOutput, 1);
   });
-  
+
   it(@"should return a matrix processing saturation correctly", ^{
     GLKVector4 input = GLKVector4Make(0, 128, 255, 255);
     GLKVector4 expectedOutput = GLKVector4Make(104, 104, 104, 255);
@@ -36,7 +36,7 @@ context(@"tonal adjustment", ^{
     GLKVector4 result = GLKMatrix4MultiplyVector4(tonalTransform, input);
     expect(result).to.beCloseToGLKVectorWithin(expectedOutput, 1);
   });
-  
+
   it(@"should return a matrix processing temperature correctly", ^{
     GLKVector4 input = GLKVector4Make(51, 77, 102, 255);
     GLKVector4 expectedOutput = GLKVector4Make(65, 72, 85, 255);
@@ -45,7 +45,7 @@ context(@"tonal adjustment", ^{
     GLKVector4 result = GLKMatrix4MultiplyVector4(tonalTransform, input);
     expect(result).to.beCloseToGLKVectorWithin(expectedOutput, 1);
   });
-  
+
   it(@"should return a matrix processing tint correctly", ^{
     GLKVector4 input = GLKVector4Make(51, 77, 102, 255);
     GLKVector4 expectedOutput = GLKVector4Make(61, 67, 128, 255);
@@ -54,7 +54,7 @@ context(@"tonal adjustment", ^{
     GLKVector4 result = GLKMatrix4MultiplyVector4(tonalTransform, input);
     expect(result).to.beCloseToGLKVectorWithin(expectedOutput, 1);
   });
-  
+
   it(@"should return a matrix processing color correctly", ^{
     GLKVector4 input = GLKVector4Make(51, 77, 102, 255);
     // See lightricks-research/enlight/Adjust/runmeAdjustColorTest.m to reproduce this result.
@@ -84,7 +84,7 @@ context(@"luminance adjustment", ^{
                                      luminanceCurve(0,64), 255));
     expect($(output)).to.beCloseToMat($(expectedOutput));
   });
-  
+
   it(@"should return a curve processing offset correctly", ^{
     cv::Mat4b expectedOutput(1, 1, cv::Vec4b(128, 128, 128, 255));
 
@@ -93,7 +93,7 @@ context(@"luminance adjustment", ^{
                                      255));
     expect($(output)).to.beCloseToMat($(expectedOutput));
   });
-  
+
   it(@"should return a curve processing exposure correctly", ^{
     cv::Mat4b expectedOutput(1, 1, cv::Vec4b(255, 255, 255, 255));
 

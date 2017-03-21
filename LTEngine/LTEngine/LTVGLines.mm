@@ -79,7 +79,7 @@
 - (LTVGLines *)linesWithGlyphsTransformedUsingBlock:(LTVGGlyph *(^)(LTVGGlyph *glyph))block {
   LTParameterAssert(block);
   NSMutableArray *correctedLines = [NSMutableArray array];
-  
+
   for (LTVGLine *line in self.lines) {
     NSMutableArray *updatedRuns = [NSMutableArray array];
     for (LTVGGlyphRun *run in line.glyphRuns) {
@@ -91,7 +91,7 @@
     }
     [correctedLines addObject:[[LTVGLine alloc] initWithGlyphRuns:updatedRuns]];
   }
-  
+
   return [[LTVGLines alloc] initWithLines:correctedLines attributedString:self.attributedString];
 }
 

@@ -29,19 +29,19 @@ context(@"multi filter", ^{
 
 context(@"and filter", ^{
   __block LTTouchCollectorAndFilter *filter;
-  
+
   it(@"should accept if no filters are provided", ^{
     filter = [[LTTouchCollectorAndFilter alloc] initWithFilters:@[]];
     expect([filter acceptNewPoint:nil withOldPoint:nil]).to.beTruthy();
     expect([filter acceptNewPoint:point withOldPoint:point]).to.beTruthy();
   });
-  
+
   it(@"should accept if all filters accept", ^{
     filter = [[LTTouchCollectorAndFilter alloc] initWithFilters:@[acceptFilter, acceptFilter]];
     expect([filter acceptNewPoint:nil withOldPoint:nil]).to.beTruthy();
     expect([filter acceptNewPoint:point withOldPoint:point]).to.beTruthy();
   });
-  
+
   it(@"should reject if one or more filters reject", ^{
     filter = [[LTTouchCollectorAndFilter alloc] initWithFilters:@[acceptFilter, rejectFilter]];
     expect([filter acceptNewPoint:nil withOldPoint:nil]).to.beFalsy();
@@ -57,13 +57,13 @@ context(@"or filter", ^{
     expect([filter acceptNewPoint:nil withOldPoint:nil]).to.beTruthy();
     expect([filter acceptNewPoint:point withOldPoint:point]).to.beTruthy();
   });
-  
+
   it(@"should accept if one or more filters accept", ^{
     filter = [[LTTouchCollectorOrFilter alloc] initWithFilters:@[acceptFilter, rejectFilter]];
     expect([filter acceptNewPoint:nil withOldPoint:nil]).to.beTruthy();
     expect([filter acceptNewPoint:point withOldPoint:point]).to.beTruthy();
   });
-  
+
   it(@"should reject if all filters reject", ^{
     filter = [[LTTouchCollectorOrFilter alloc] initWithFilters:@[rejectFilter, rejectFilter]];
     expect([filter acceptNewPoint:nil withOldPoint:nil]).to.beFalsy();

@@ -13,12 +13,12 @@ uniform highp vec4 constant;
 
 void main() {
   highp vec4 color;
-  
+
   if (inSituProcessing) {
     color = gl_LastFragData[0];
   } else {
     color = texture2D(sourceTexture, vTexcoord);
   }
-  
+
   gl_FragColor = matrix * color + constant;
 }

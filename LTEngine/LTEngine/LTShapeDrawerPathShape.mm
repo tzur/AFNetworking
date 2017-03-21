@@ -64,7 +64,7 @@
   CGFloat lineLength = (target - source).length();
   LTVector4 offset = LTVector4(1.0 + shadowWidth, 1.0 + shadowWidth + lineRadius,
                                      1.0 + shadowWidth, 1.0 + shadowWidth + lineRadius);
-  
+
   LTCommonDrawableShapeSegment segment;
   for (NSUInteger i = 0; i < 4; ++i) {
     segment.v[i].lineBounds =
@@ -74,20 +74,20 @@
     segment.v[i].color = self.params.strokeColor;
     segment.v[i].shadowColor = self.params.shadowColor;
   }
-  
+
   source = source - direction * offset.x;
   target = target + direction * offset.z;
-  
+
   segment.src0.position = source - normal * offset.y;
   segment.src1.position = source + normal * offset.w;
   segment.dst0.position = target - normal * offset.y;
   segment.dst1.position = target + normal * offset.w;
-  
+
   segment.src0.offset = LTVector2(-0.5 * lineLength - offset.x, -offset.y);
   segment.src1.offset = LTVector2(-0.5 * lineLength - offset.x, offset.w);
   segment.dst0.offset = LTVector2(0.5 * lineLength + offset.z, -offset.y);
   segment.dst1.offset = LTVector2(0.5 * lineLength + offset.z, offset.w);
-  
+
   return segment;
 }
 
@@ -118,7 +118,7 @@
   GLKMatrix4 modelview =
       GLKMatrix4Rotate(GLKMatrix4MakeTranslation(self.translation.x, self.translation.y, 0),
                        self.rotationAngle, 0, 0, 1);
-  
+
   self.program[[LTCommonDrawableShapeVsh modelview]] = $(modelview);
   self.program[[LTShapeDrawerPathShapeFsh opacity]] = @(self.opacity);
 }

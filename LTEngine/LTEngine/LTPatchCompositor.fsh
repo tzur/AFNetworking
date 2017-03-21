@@ -28,6 +28,6 @@ void main() {
   if (smoothingAlpha * mask.r > 0.0) {
     feathering = (1.0 - smoothingAlpha) + smoothingAlpha * mask.r;
   }
-  
+
   gl_FragColor = vec4(mix(target.rgb, source.rgb + membrane.rgb, feathering * sourceOpacity), 1.0);
 }

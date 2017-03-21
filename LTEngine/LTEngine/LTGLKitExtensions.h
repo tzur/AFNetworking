@@ -1,8 +1,8 @@
 // Copyright (c) 2013 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
-#import <GLKit/GLKMath.h>
 #import <cmath>
+#import <GLKit/GLKMath.h>
 
 #import "LTOpenCVCore.h"
 
@@ -39,7 +39,7 @@ GLK_INLINE GLKMatrix2 GLKMatrix2Multiply(GLKMatrix2 matrixLeft, GLKMatrix2 matri
   GLKMatrix2 m;
   m.m[0] = matrixLeft.m[0] * matrixRight.m[0] + matrixLeft.m[2] * matrixRight.m[1];
   m.m[2] = matrixLeft.m[0] * matrixRight.m[2] + matrixLeft.m[2] * matrixRight.m[3];
-  
+
   m.m[1] = matrixLeft.m[1] * matrixRight.m[0] + matrixLeft.m[3] * matrixRight.m[1];
   m.m[3] = matrixLeft.m[1] * matrixRight.m[2] + matrixLeft.m[3] * matrixRight.m[3];
   return m;
@@ -371,48 +371,48 @@ namespace std {
   GLK_INLINE GLKVector2 floor(const GLKVector2 &vector) {
     return GLKVector2Make(floor(vector.x), floor(vector.y));
   }
-  
+
   /// Find a sum of the components.
   CG_INLINE float sum(const GLKVector3 &v) {
     return v.x + v.y + v.z;
   }
-  
+
   /// Find a sum of the components.
   CG_INLINE float sum(const GLKVector4 &v) {
     return v.x + v.y + v.z + v.w;
   }
-  
+
   /// Round the elements.
   CG_INLINE GLKVector2 round(const GLKVector2 &v) {
     return GLKVector2Make(round(v.x), round(v.y));
   }
-  
+
   /// Round the elements.
   CG_INLINE GLKVector3 round(const GLKVector3 &v) {
     return GLKVector3Make(round(v.x), round(v.y), round(v.z));
   }
-  
+
   /// Round the elements.
   CG_INLINE GLKVector4 round(const GLKVector4 &v) {
     return GLKVector4Make(round(v.x), round(v.y), round(v.z), round(v.w));
   }
-  
+
   /// Element-wise minimum.
   GLK_INLINE GLKVector3 min(const GLKVector3 &lhs, const GLKVector3 &rhs) {
     return GLKVector3Make(min(lhs.x, rhs.x), min(lhs.y, rhs.y), min(lhs.z, rhs.z));
   }
-  
+
   /// Element-wise maximum.
   GLK_INLINE GLKVector3 max(const GLKVector3 &lhs, const GLKVector3 &rhs) {
     return GLKVector3Make(max(lhs.x, rhs.x), max(lhs.y, rhs.y), max(lhs.z, rhs.z));
   }
-  
+
   /// Element-wise minimum.
   GLK_INLINE GLKVector4 min(const GLKVector4 &lhs, const GLKVector4 &rhs) {
     return
         GLKVector4Make(min(lhs.x, rhs.x), min(lhs.y, rhs.y), min(lhs.z, rhs.z), min(lhs.w, rhs.w));
   }
-  
+
   /// Element-wise maximum.
   GLK_INLINE GLKVector4 max(const GLKVector4 &lhs, const GLKVector4 &rhs) {
     return

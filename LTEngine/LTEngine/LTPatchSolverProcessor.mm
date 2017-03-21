@@ -107,7 +107,7 @@
     self.output = output;
 
     _maskBoundaryThreshold = maskBoundaryThreshold;
-    
+
     // TODO:(yaron) working dimension can be different than the closest power of two. As discussed
     // in vDSP_create_fftsetup: "Parameter __vDSP_Log2N is a base-two exponent and specifies that
     // the largest transform length that can processed using the resulting setup structure is

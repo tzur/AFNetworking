@@ -45,7 +45,7 @@ context(@"initialization", ^{
       processor = [[LTPerspectiveProcessor alloc] initWithInput:nil andOutput:outputTexture];
     }).to.raise(NSInvalidArgumentException);
   });
-  
+
   it(@"should raise when initializing without output texture", ^{
     expect(^{
       processor = [[LTPerspectiveProcessor alloc] initWithInput:inputTexture andOutput:nil];
@@ -61,19 +61,19 @@ context(@"properties", ^{
     expect(processor.distortion).to.equal(0);
     expect(processor.scaleMode).to.equal(LTPerspectiveProcessorScaleModeFit);
   });
-  
+
   it(@"should set horizontal", ^{
     CGFloat newValue = processor.maxHorizontal / 2;
     processor.horizontal = newValue;
     expect(processor.horizontal).to.equal(newValue);
   });
-  
+
   it(@"should set vertical", ^{
     CGFloat newValue = processor.maxVertical / 2;
     processor.vertical = newValue;
     expect(processor.vertical).to.equal(newValue);
   });
-  
+
   it(@"should set rotationAngle", ^{
     CGFloat newValue = processor.maxRotationAngle / 2;
     processor.rotationAngle = newValue;
@@ -89,14 +89,14 @@ context(@"properties", ^{
 
 context(@"processing", ^{
   __block cv::Mat4b expected;
-  
+
   it(@"should apply horizontal projection", ^{
     processor.horizontal = M_PI / 180 * 15;
     [processor process];
     expected = LTLoadMat([self class], @"PerspectiveHorizontal.png");
     expect($(outputTexture.image)).to.beCloseToMatWithin($(expected), 5);
   });
-  
+
   it(@"should apply vertical projection", ^{
     processor.vertical = M_PI / 180 * 15;
     [processor process];
@@ -160,7 +160,7 @@ context(@"processing", ^{
     expected = LTLoadMat([self class], @"PerspectiveCompound.png");
     expect($(outputTexture.image)).to.beCloseToMatWithin($(expected), 5);
   });
-  
+
   it(@"should scale according to mode", ^{
     processor.rotationAngle = -M_PI / 180 * 20;
 
@@ -187,21 +187,21 @@ context(@"projection data", ^{
     processor.vertical = M_PI / 180 * 15;
     processor.rotationAngle = -M_PI / 180 * 20;
   });
-  
+
   it(@"should return the corners mapped to the corners of the projected texture", ^{
     expect((CGPoint)processor.topLeft).to.beCloseToPointWithin(CGPointMake(0.364, 0.164), 0.01);
     expect((CGPoint)processor.topRight).to.beCloseToPointWithin(CGPointMake(0.695, 0.000), 0.01);
     expect((CGPoint)processor.bottomLeft).to.beCloseToPointWithin(CGPointMake(0.197, 0.995), 0.01);
     expect((CGPoint)processor.bottomRight).to.beCloseToPointWithin(CGPointMake(0.803, 0.291), 0.01);
   });
-  
+
   it(@"should return the bounding rect of the projected corners", ^{
     CGRect boundingRect = processor.boundingRect;
     expect(boundingRect.origin).to.beCloseToPointWithin(CGPointMake(0.197, 0.000), 0.01);
     expect(boundingRect.origin + boundingRect.size)
         .to.beCloseToPointWithin(CGPointMake(0.803, 0.995), 0.01);
   });
-  
+
   it(@"should set scale and translation to fit the projected texture in the output texture", ^{
     [inputTexture clearWithColor:LTVector4::ones()];
     [processor process];
@@ -223,7 +223,7 @@ context(@"projection data", ^{
     expect(insets.top).to.beCloseToWithin(insets.bottom, 1);
     expect(MIN(MIN(insets.left, insets.right), MIN(insets.top, insets.bottom))).to.equal(0);
   });
-  
+
   it(@"should return if point is inside the projected texture", ^{
     [processor process];
 

@@ -1,10 +1,10 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Rouven Strauss.
 
-#import "LTGeometry.h"
-
-#import <LTKit/LTHashExtensions.h>
 #import <experimental/optional>
+#import <LTKit/LTHashExtensions.h>
+
+#import "LTGeometry.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -327,7 +327,7 @@ struct Quad {
 
   /// Returns a new quad with the corners transformed by the given \c transform.
   Quad transformedBy(CGAffineTransform transform) const noexcept;
-  
+
   /// Returns a new quad with the corners transformed by the given \c transform.
   Quad transformedBy(GLKMatrix3 transform) const noexcept;
 
@@ -507,7 +507,7 @@ inline Quad Quad::transformedBy(CGAffineTransform transform) const noexcept {
               CGPointApplyAffineTransform(_v[2], transform),
               CGPointApplyAffineTransform(_v[3], transform));
 }
-  
+
 inline Quad Quad::transformedBy(GLKMatrix3 transform) const noexcept {
   GLKVector3 v0 = GLKMatrix3MultiplyVector3(transform, GLKVector3Make(_v[0].x, _v[0].y, 1));
   GLKVector3 v1 = GLKMatrix3MultiplyVector3(transform, GLKVector3Make(_v[1].x, _v[1].y, 1));

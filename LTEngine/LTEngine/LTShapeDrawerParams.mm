@@ -11,7 +11,7 @@
   if (![object isKindOfClass:[self class]]) {
     return NO;
   }
-  
+
   LTShapeDrawerParams *other = object;
   return self.lineWidth == other.lineWidth &&
          self.shadowWidth == other.shadowWidth &&
@@ -29,7 +29,6 @@
   params.shadowColor = self.shadowColor;
   return params;
 }
-
 
 - (CGFloat)lineRadius {
   return 0.5 * self.lineWidth;

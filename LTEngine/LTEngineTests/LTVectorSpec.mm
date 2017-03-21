@@ -61,7 +61,7 @@ context(@"LTVector2", ^{
     expect(size.width).to.equal(vector.x);
     expect(size.height).to.equal(vector.y);
   });
-  
+
   it(@"should perform math operations correctly", ^{
     LTVector2 v1(10, 8);
     LTVector2 v2(5, 4);
@@ -96,7 +96,7 @@ context(@"LTVector2", ^{
     expect(v2.isNull()).to.beFalsy();
     expect(v3.isNull()).to.beFalsy();
   });
-  
+
   it(@"should return a unit vector specified by an angle", ^{
     LTVector2 vector = LTVector2::angle(M_PI);
     expect(vector.x).to.beCloseToWithin(-1, kEpsilon);
@@ -109,7 +109,7 @@ context(@"LTVector2", ^{
     v.g() = 8;
     expect(v).to.equal(LTVector2(5, 8));
   });
-  
+
   it(@"should sum the vector components correctly", ^{
     LTVector2 v(1, 2);
     expect(v.sum()).to.equal(3);
@@ -391,7 +391,7 @@ context(@"LTVector3", ^{
     v.b() = 2;
     expect(v).to.equal(LTVector3(5, 8, 2));
   });
-  
+
   it(@"should sum the vector components correctly", ^{
     LTVector3 v(1, 2, 3);
     expect(v.sum()).to.equal(6);

@@ -96,7 +96,7 @@ context(@"archiving", ^{
     expect(LTLoadIntoMat(@"archive.mat", &stored)).to.beTruthy();
     expect($(stored)).to.beCloseToMat($(texture.image));
   });
-  
+
   it(@"should archive half float texture", ^{
     LTTexture *halfFloatTexture = [LTTexture textureWithSize:texture.size
                                                  pixelFormat:$(LTGLPixelFormatRGBA16Float)
@@ -162,7 +162,7 @@ context(@"unarchiving", ^{
     expect(error).to.beNil();
     expect($(texture.image)).to.beCloseToMat($(mat));
   });
-  
+
   it(@"should unarchive half float texture", ^{
     using half_float::half;
     cv::Mat4hf mat(32, 16);

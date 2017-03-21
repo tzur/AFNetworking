@@ -40,7 +40,7 @@ context(@"initialization", ^{
     expect(predicate.type).to.equal(LTContentTouchEventDistancePredicateTypeContent);
     expect(predicate.minimumDistance).to.equal(1);
   });
-  
+
   it(@"should raise when initialized with negative minimum distance", ^{
     expect(^{
       LTContentTouchEventDistancePredicate __unused *predicate =

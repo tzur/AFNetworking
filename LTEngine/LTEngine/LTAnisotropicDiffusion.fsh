@@ -23,11 +23,11 @@ void main() {
   highp vec4 colorSum = vec4(0.0);
   highp vec2 samplingCoords;
   highp float coordsAreInSamplingBounds;
-  
+
   for (int i = (1 - kernelSize) / 2; i < (kernelSize + 1) / 2; ++i) {
     samplingCoords = vTexcoord + float(i) * texelOffset;
     coordsAreInSamplingBounds = float(checkCoordsAreInSamplingBounds(samplingCoords));
-    
+
     neighbourColor = texture2D(guideTexture, samplingCoords);
     currentWeight = exp(-distance(guideColor.rgb, neighbourColor.rgb) / rangeSigma);
     weightedSum += mix(0.0, currentWeight, coordsAreInSamplingBounds);

@@ -140,7 +140,7 @@ context(@"properties", ^{
   it(@"should have default properties", ^{
     expect(drawer.drawWireframe).to.beFalsy();
   });
-  
+
   it(@"should set drawWireframe", ^{
     drawer.drawWireframe = YES;
     expect(drawer.drawWireframe).to.beTruthy();
@@ -400,7 +400,7 @@ context(@"drawing on the entire source texture", ^{
       }];
       [drawer drawRect:CGRectFromSize(fbo.size) inFramebuffer:fbo
               fromRect:CGRectFromSize(inputTexture.size)];
-      
+
       cv::Mat4b expected = [inputTexture image];
       expected.colRange(cellSize.width, cellSize.width + cellRadius.width)
           .copyTo(expected.colRange(cellRadius.width, cellSize.width));
@@ -529,12 +529,12 @@ context(@"drawing on a custom mesh source rect", ^{
           mapped->col(1).setTo(cv::Vec2hf(half(-0.5 / kMeshSize.width), half(0)));
           mapped->col(mapped->cols - 2).setTo(cv::Vec2hf(half(0.5 / kMeshSize.width), half(0)));
         }];
-        
+
         [drawer drawRect:CGRectFromSize(fbo.size) inFramebuffer:fbo fromRect:meshSourceRect];
         warped = [output image];
         [output clearWithColor:LTVector4::zeros()];
       });
-      
+
       context(@"framebuffer", ^{
         it(@"should draw a subrect of input to the entire output", ^{
           CGRect targetRect = CGRectFromSize(fbo.size);
@@ -550,12 +550,12 @@ context(@"drawing on a custom mesh source rect", ^{
           cv::resize(subrect, expected, expected.size(), 0, 0, cv::INTER_NEAREST);
           expect($([output image])).to.equalMat($(expected));
         });
-        
+
         it(@"should draw all input to a subrect of the output", ^{
           CGRect targetRect = CGRectFromOriginAndSize(CGPointZero + fbo.size / 4, fbo.size / 2);
           CGRect sourceRect = CGRectFromOriginAndSize(meshSourceRect.origin, kUnpaddedInputSize);
           [drawer drawRect:targetRect inFramebuffer:fbo fromRect:sourceRect];
-          
+
           cv::Mat4b subrect(targetRect.size.height, targetRect.size.width);
           cv::resize(warped, subrect, subrect.size(), 0, 0, cv::INTER_NEAREST);
           cv::Mat4b expected(output.size.height, output.size.width, cv::Vec4b(0, 0, 0, 0));
@@ -578,7 +578,7 @@ context(@"drawing on a custom mesh source rect", ^{
           expect($([output image])).to.equalMat($(expected));
         });
       });
-      
+
       context(@"screen framebuffer", ^{
         it(@"should draw a subrect of the input to the entire output", ^{
           CGRect targetRect = CGRectFromSize(fbo.size);
@@ -597,14 +597,14 @@ context(@"drawing on a custom mesh source rect", ^{
           cv::flip(expected, expected, 0);
           expect($([output image])).to.equalMat($(expected));
         });
-        
+
         it(@"should draw all input to a subrect of the output", ^{
           CGRect targetRect = CGRectFromOriginAndSize(CGPointZero + fbo.size / 4, fbo.size / 2);
           CGRect sourceRect = CGRectFromOriginAndSize(meshSourceRect.origin, kUnpaddedInputSize);
           [fbo bindAndDrawOnScreen:^{
             [drawer drawRect:targetRect inFramebufferWithSize:fbo.size fromRect:sourceRect];
           }];
-          
+
           cv::Mat4b subrect(targetRect.size.height, targetRect.size.width);
           cv::resize(warped, subrect, subrect.size(), 0, 0, cv::INTER_NEAREST);
           cv::Mat4b expected(output.size.height, output.size.width, cv::Vec4b(0, 0, 0, 0));
@@ -612,7 +612,7 @@ context(@"drawing on a custom mesh source rect", ^{
           cv::flip(expected, expected, 0);
           expect($([output image])).to.equalMat($(expected));
         });
-        
+
         it(@"should draw a subrect of the input to a subrect of the output", ^{
           CGRect targetRect = CGRectFromOriginAndSize(CGPointZero + fbo.size / 4, fbo.size / 2);
           CGRect sourceRect = CGRectFromOriginAndSize(meshSourceRect.origin +
@@ -667,7 +667,7 @@ context(@"drawing on a custom mesh source rect", ^{
         mapped->col(mapped->cols - 2).setTo(cv::Vec2hf(half(0.5 / kMeshSize.width), half(0)));
       }];
       [drawer drawRect:CGRectFromSize(fbo.size) inFramebuffer:fbo fromRect:meshSourceRect];
-      
+
       cv::Mat4b expected = [inputTexture image](LTCVRectWithCGRect(meshSourceRect));
       expected.colRange(cellSize.width, cellSize.width + cellRadius.width)
           .copyTo(expected.colRange(cellRadius.width, cellSize.width));

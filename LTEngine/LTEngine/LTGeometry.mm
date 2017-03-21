@@ -420,20 +420,20 @@ CGPoint LTPointOnPolylineNearestToPoint(const CGPoints &polyline, CGPoint point)
 
   CGPoint result = CGPointNull;
   CGFloat minDistance = CGFLOAT_MAX;
-  
+
   for(CGPoints::size_type i = 0; i + 1 < polyline.size(); ++i) {
     CGPoint p0 = polyline[i];
     CGPoint p1 = polyline[i + 1];
-    
+
     CGPoint closestPoint = p0 != p1 ? LTPointOnEdgeClosestToPoint(p0, p1, point) : p0;
     CGFloat distance = CGPointDistance(closestPoint, point);
-    
+
     if (distance < minDistance) {
       result = closestPoint;
       minDistance = distance;
     }
   }
-  
+
   return result;
 }
 

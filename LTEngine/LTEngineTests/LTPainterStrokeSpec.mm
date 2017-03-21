@@ -19,11 +19,11 @@ SpecBegin(LTPainterStroke)
 
 context(@"initialization", ^{
   __block id<LTPolynomialInterpolantFactory> factory;
-  
+
   beforeEach(^{
     factory = [[LTDegenerateInterpolantFactory alloc] init];
   });
-  
+
   it(@"should initialize with valid arguments", ^{
     LTPainterPoint *startingPoint = [[LTPainterPoint alloc] init];
     LTPainterStroke *stroke =
@@ -31,7 +31,7 @@ context(@"initialization", ^{
     expect(stroke.startingPoint).to.beIdenticalTo(startingPoint);
     expect(stroke.segments.count).to.equal(0);
   });
-  
+
   it(@"should raise an exception with nil factory", ^{
     expect(^{
       LTPainterPoint *startingPoint = [[LTPainterPoint alloc] init];
@@ -39,7 +39,7 @@ context(@"initialization", ^{
           [[LTPainterStroke alloc] initWithInterpolantFactory:nil startingPoint:startingPoint];
     }).to.raise(NSInvalidArgumentException);
   });
-  
+
   it(@"should raise an exception with nil starting point", ^{
     expect(^{
       LTPainterStroke __unused *stroke =
@@ -59,7 +59,7 @@ context(@"adding points and segments", ^{
     newPoint = [[LTPainterPoint alloc] init];
     newPoint.contentPosition = CGPointMake(1, 1);
   });
-  
+
   it(@"should add point", ^{
     stroke = [[LTPainterStroke alloc]
               initWithInterpolantFactory:[[LTLinearInterpolantFactory alloc] init]
@@ -68,7 +68,7 @@ context(@"adding points and segments", ^{
     expect(stroke.segments.count).to.equal(1);
     expect(stroke.segments.firstObject).to.beIdenticalTo(newPoint);
   });
-  
+
   context(@"degenerate interpolation factory", ^{
     beforeEach(^{
       factory = [[LTDegenerateInterpolantFactory alloc] init];
@@ -88,7 +88,7 @@ context(@"adding points and segments", ^{
                                                                  startingPoint.contentPosition));
     });
   });
-  
+
   context(@"linear interpolation factory", ^{
     beforeEach(^{
       factory = [[LTLinearInterpolantFactory alloc] init];
@@ -104,17 +104,17 @@ context(@"adding points and segments", ^{
       LTPainterStrokeSegment *segment = [stroke addSegmentTo:newPoint];
       expect(segment.startPoint.contentPosition).to.equal(startingPoint.contentPosition);
       expect(segment.endPoint.contentPosition).to.equal(newPoint.contentPosition);
-      
+
       CGFloat distance = CGPointDistance(startingPoint.contentPosition, newPoint.contentPosition);
       expect(segment.distanceFromStart).to.equal(0);
       expect(segment.length).to.beCloseToWithin(distance, 1e-2);
-      
+
       segment = [stroke addSegmentTo:newPoint];
       expect(segment.distanceFromStart).to.beCloseToWithin(distance, 1e-2);
       expect(segment.length).to.equal(0);
     });
   });
-  
+
   context(@"catmull-rom interpolation factory", ^{
     __block NSMutableArray *newPoints;
 
@@ -146,7 +146,7 @@ context(@"adding points and segments", ^{
       [stroke addSegmentTo:newPoints[1]];
       [stroke addSegmentTo:newPoints[2]];
       [stroke addSegmentTo:newPoints[3]];
-      
+
       [stroke.segments enumerateObjectsUsingBlock:^(LTPainterStrokeSegment *segment,
                                                     NSUInteger idx, BOOL *) {
         if (idx) {
@@ -159,7 +159,7 @@ context(@"adding points and segments", ^{
       }];
     });
   });
-  
+
   it(@"should be able to add mixed points and segments", ^{
     LTPainterPoint *p1 = [[LTPainterPoint alloc] init];
     LTPainterPoint *p2 = [[LTPainterPoint alloc] init];

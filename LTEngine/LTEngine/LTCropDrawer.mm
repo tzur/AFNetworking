@@ -70,7 +70,7 @@ LTGPUStructMake(LTCropDrawerVertex,
 
 - (LTVertexArray *)createVertexArray {
   self.arrayBuffer = [self createArrayBuffer];
-  
+
   NSSet<LTVertexArrayElement *> *elements =
       [NSSet setWithObject:[self createVertexArrayElementWithArrayBuffer:self.arrayBuffer]];
 
@@ -112,7 +112,7 @@ LTGPUStructMake(LTCropDrawerVertex,
   self.program[[LTPassthroughShaderVsh projection]] = screenTarget ?
       $(GLKMatrix4MakeOrtho(0, size.width, size.height, 0, -1, 1)) :
       $(GLKMatrix4MakeOrtho(0, size.width, 0, size.height, -1, 1));
-  
+
   [[LTGLContext currentContext] executeAndPreserveState:^(LTGLContext *context) {
     context.faceCullingEnabled = NO;
     context.clockwiseFrontFacingPolygons = screenTarget;
@@ -126,7 +126,7 @@ LTGPUStructMake(LTCropDrawerVertex,
   LTVector2 v1 = targetRect.topRight;
   LTVector2 v2 = targetRect.bottomRight;
   LTVector2 v3 = targetRect.bottomLeft;
-  
+
   sourceRect /= LTVector2(self.texture.size);
   LTVector2 t0 = sourceRect.topLeft;
   LTVector2 t1 = sourceRect.topRight;

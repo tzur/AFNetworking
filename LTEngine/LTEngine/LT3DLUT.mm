@@ -31,7 +31,7 @@ NS_ASSUME_NONNULL_BEGIN
     _latticeSize = {lattice.size[2], lattice.size[1], lattice.size[0]};
     _mat = lattice.clone();
   }
-  
+
   return self;
 }
 

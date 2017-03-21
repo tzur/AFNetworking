@@ -1208,13 +1208,13 @@ context(@"transformations", ^{
     context(@"affine transformations", ^{
       __block CGPoint translation;
       __block CGAffineTransform transformation;
-      
+
       beforeEach(^{
         translation = CGPointMake(2, 5);
         transformation = CGAffineTransformConcat(CGAffineTransformMakeTranslation(2, 5),
                                                  CGAffineTransformMakeScale(2, 1));
       });
-      
+
       it(@"should create copy transformed by CGAffineTransform", ^{
         lt::Quad quad = lt::Quad({{v0, v1, v2, v3}}).transformedBy(transformation);
         expect(quad.v0()).to.beCloseToPoint(CGPointMake(2, 1) * (v0 + translation));
@@ -1222,7 +1222,7 @@ context(@"transformations", ^{
         expect(quad.v2()).to.beCloseToPoint(CGPointMake(2, 1) * (v2 + translation));
         expect(quad.v3()).to.beCloseToPoint(CGPointMake(2, 1) * (v3 + translation));
       });
-      
+
       it(@"should create copy transformed by GLKMatrix3", ^{
         lt::Quad quad =
             lt::Quad({{v0, v1, v2, v3}}).transformedBy(GLKMatrix3WithTransform(transformation));
@@ -1232,7 +1232,7 @@ context(@"transformations", ^{
         expect(quad.v3()).to.beCloseToPointWithin(CGPointMake(2, 1) * (v3 + translation), kEpsilon);
       });
     });
-    
+
     it(@"should create copy transformed by perspective transformation", ^{
       lt::Quad quad = lt::Quad({{
         CGPointZero,
@@ -1664,7 +1664,7 @@ context(@"equality", ^{
     lt::Quad::Corners permutatedCorners{{v1, v2, v3, v0}};
     expect(lt::Quad(corners) == lt::Quad(permutatedCorners)).to.beFalsy();
   });
-  
+
   it(@"should consider two quads inequal if their corners() are inequal", ^{
     lt::Quad::Corners corners{{v0, v1, v2, v3}};
     expect(lt::Quad(corners) != lt::Quad(corners)).to.beFalsy();
