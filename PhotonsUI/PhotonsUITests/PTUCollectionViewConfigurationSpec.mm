@@ -53,7 +53,7 @@ it(@"should correctly initalize with default initializer", ^{
 
 it(@"should correctly initalize with photo strip initializer", ^{
   PTUCollectionViewConfiguration *configuration = [PTUCollectionViewConfiguration photoStrip];
-  
+
   id<PTUCellSizingStrategy> assetSizingStrategy = [PTUCellSizingStrategy gridWithItemsPerColumn:1];
   id<PTUCellSizingStrategy> albumSizingStrategy = [PTUCellSizingStrategy gridWithItemsPerColumn:1];
   id<PTUCellSizingStrategy> headerSizingStrategy = [PTUCellSizingStrategy constant:CGSizeZero];

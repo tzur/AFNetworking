@@ -25,7 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
   if (leftOffset == _leftOffset) {
     return;
   }
-  
+
   _leftOffset = leftOffset;
   [self.titleLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
     make.centerY.equalTo(self);

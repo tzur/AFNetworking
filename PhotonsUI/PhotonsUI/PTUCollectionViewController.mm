@@ -201,7 +201,7 @@ NS_ASSUME_NONNULL_BEGIN
         [self.collectionView selectItemAtIndexPath:indexPath animated:NO
                                     scrollPosition:UICollectionViewScrollPositionNone];
       }];
-  
+
   [[[[[[[self rac_signalForSelector:@selector(scrollToItem:atScrollPosition:animated:)
                        fromProtocol:@protocol(PTUCollectionViewController)]
       map:^RACSignal *(RACTuple *value) {
@@ -229,7 +229,7 @@ NS_ASSUME_NONNULL_BEGIN
             (PTUCollectionViewScrollPosition)position.unsignedIntegerValue;
         UICollectionViewScrollPosition nativeScrollPosition =
             [self collectionViewScrollPosition:scrollPosition];
-        
+
         return RACTuplePack(indexPath, @(nativeScrollPosition), animated);
       }]
       filter:^BOOL(RACTuple *scrollToItem) {
@@ -242,7 +242,7 @@ NS_ASSUME_NONNULL_BEGIN
             scrollToItem;
         PTUCollectionViewScrollPosition scrollPosition =
             (PTUCollectionViewScrollPosition)position.unsignedIntegerValue;
-        
+
         [self.collectionView scrollToItemAtIndexPath:indexPath
                                     atScrollPosition:scrollPosition
                                             animated:animated.boolValue];
@@ -290,7 +290,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)setupInfoViewBinding {
   @weakify(self);
-  RACSignal *hideEmptyView = [[[[RACObserve(self, emptyView)
+  RACSignal *hideEmptyView = [[[[[RACObserve(self, emptyView)
       map:^RACStream *(id) {
         @strongify(self);
         return RACObserve(self, dataSource.hasData);
@@ -299,9 +299,10 @@ NS_ASSUME_NONNULL_BEGIN
       combineLatestWith:RACObserve(self, dataSource.error)]
       reduceEach:(id)^NSNumber *(NSNumber * _Nullable hasData, NSError * _Nullable error) {
         return @(hasData.boolValue || error != nil);
-      }];
+      }]
+      deliverOnMainThread];
 
-  RACSignal *hideErrorView = [[[RACObserve(self, errorView)
+  RACSignal *hideErrorView = [[[[RACObserve(self, errorView)
       map:^RACStream *(id) {
         @strongify(self);
         return RACObserve(self, dataSource.error);
@@ -309,8 +310,9 @@ NS_ASSUME_NONNULL_BEGIN
       switchToLatest]
       map:^NSNumber *(NSError * _Nullable error) {
         return @(error == nil);
-      }];
-  
+      }]
+      deliverOnMainThread];
+
   RAC(self, view.emptyView.hidden) = hideEmptyView;
   RAC(self, view.errorView.hidden) = hideErrorView;
   RAC(self, view.collectionViewContainer.hidden) = [RACSignal
@@ -318,8 +320,8 @@ NS_ASSUME_NONNULL_BEGIN
     reduce:(id)^NSNumber *(NSNumber *hideEmpty, NSNumber *hideError) {
       return @(!hideEmpty.boolValue || !hideError.boolValue);
     }];
-  
-  RAC(self, view.errorView) = [[[[RACObserve(self, errorViewProvider)
+
+  RAC(self, view.errorView) = [[[[[RACObserve(self, errorViewProvider)
       ignore:nil]
       map:^RACSignal *(id<PTUErrorViewProvider> errorViewProvider) {
         @strongify(self);
@@ -329,6 +331,7 @@ NS_ASSUME_NONNULL_BEGIN
         ]];
       }]
       switchToLatest]
+      deliverOnMainThread]
       reduceEach:(id)^UIView *(id<PTUErrorViewProvider> errorViewProvider, NSError *error) {
         return [errorViewProvider errorViewForError:error
                                       associatedURL:PTUExtractAssociatedURL(error)];
@@ -434,7 +437,7 @@ static NSURL * _Nullable PTUExtractAssociatedURL(NSError *error) {
 - (void)setConfiguration:(PTUCollectionViewConfiguration *)configuration animated:(BOOL)animated {
   _configuration = configuration;
   PTUCollectionViewFlowLayout *layout = [self layoutFromCurrentConfiguration];
-  
+
   self.collectionView.showsHorizontalScrollIndicator = configuration.showsHorizontalScrollIndicator;
   self.collectionView.showsVerticalScrollIndicator = configuration.showsVerticalScrollIndicator;
   self.collectionView.pagingEnabled = configuration.enablePaging;

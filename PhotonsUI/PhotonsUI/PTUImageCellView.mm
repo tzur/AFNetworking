@@ -149,7 +149,7 @@ NS_ASSUME_NONNULL_BEGIN
   if (!CGRectGetHeight(self.frame)) {
     return NO;
   }
-  
+
   return (self.frame.size.width / self.frame.size.height) < 2.0;
 }
 

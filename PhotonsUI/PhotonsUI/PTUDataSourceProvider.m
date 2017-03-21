@@ -46,7 +46,7 @@ NS_ASSUME_NONNULL_BEGIN
       [[PTUAlbumChangesetProvider alloc] initWithManager:assetManager albumURL:url];
   PTUImageCellViewModelProvider *viewModelProvider =
       [[PTUImageCellViewModelProvider alloc] initWithAssetManager:assetManager];
-  
+
   return [self initWithChangesetProvider:changesetProvider cellViewModelProvider:viewModelProvider
                                cellClass:PTUImageCell.class headerCellClass:PTUHeaderCell.class];
 }

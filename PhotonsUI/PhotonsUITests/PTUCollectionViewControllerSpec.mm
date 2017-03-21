@@ -26,7 +26,7 @@ static void PTUSimulateSelection(UICollectionView *collectionView, NSIndexPath *
 
   [collectionView selectItemAtIndexPath:indexPath animated:NO
                          scrollPosition:UITableViewScrollPositionNone];
-  
+
   if ([delegate respondsToSelector:@selector(collectionView:didSelectItemAtIndexPath:)]) {
     [collectionView.delegate collectionView:collectionView didSelectItemAtIndexPath:indexPath];
   }
@@ -41,7 +41,7 @@ static void PTUSimulateDeselection(UICollectionView *collectionView, NSIndexPath
       return;
     }
   }
-  
+
   [collectionView deselectItemAtIndexPath:indexPath animated:NO];
 
   if ([delegate respondsToSelector:@selector(collectionView:didDeselectItemAtIndexPath:)]) {
@@ -114,7 +114,7 @@ context(@"initialization", ^{
 it(@"should keep localizedTitle and title up to date with data source", ^{
   expect(viewController.title).to.beNil();
   expect(viewController.localizedTitle).to.beNil();
-  
+
   dataSource.title = @"foo";
   expect(viewController.title).to.equal(@"foo");
   expect(viewController.localizedTitle).to.equal(@"foo");
@@ -131,19 +131,19 @@ it(@"should keep localizedTitle and title up to date with new data sources", ^{
       [[PTUCollectionViewController alloc] initWithDataSourceProvider:dataSourceProvider
                                                  initialConfiguration:configuration];
   [viewController.view layoutIfNeeded];
-  
+
   expect(viewController.title).to.beNil();
   expect(viewController.localizedTitle).to.beNil();
-  
+
   dataSource.title = @"foo";
   expect(viewController.title).will.equal(@"foo");
   expect(viewController.localizedTitle).will.equal(@"foo");
-  
+
   [viewController reloadData];
-  
+
   expect(viewController.title).will.beNil();
   expect(viewController.localizedTitle).will.beNil();
-  
+
   dataSource.title = @"bar";
   otherDataSource.title = @"baz";
 
@@ -166,7 +166,7 @@ context(@"collection view", ^{
     viewController.view.frame = CGRectMake(0, 0, 200, 300);
     [viewController.view layoutIfNeeded];
   });
-  
+
   it(@"should correctly apply initial configuration", ^{
     UICollectionViewFlowLayout *layout =
         (UICollectionViewFlowLayout *)collectionView.collectionViewLayout;
@@ -179,7 +179,7 @@ context(@"collection view", ^{
     expect(collectionView.showsVerticalScrollIndicator).to.beFalsy();
     expect(collectionView.pagingEnabled).to.beFalsy();
   });
-  
+
   it(@"should correctly apply new configuration", ^{
     PTUCollectionViewConfiguration *configuration =
         [[PTUCollectionViewConfiguration alloc]
@@ -227,7 +227,7 @@ context(@"collection view", ^{
     expect([collectionView cellForItemAtIndexPath:indexPath].frame.size)
         .to.equal(CGSizeMake(200, 100));
   });
-  
+
   it(@"should size header cells according to strategy", ^{
     dataSource.data = @[@[asset], @[asset]];
     dataSource.sectionTitles = @{@0: @"", @1: @""};
@@ -276,7 +276,7 @@ context(@"collection view", ^{
             layoutAttributesForSupplementaryElementOfKind:UICollectionElementKindSectionHeader
             atIndexPath:assetIndexPath].frame.size).to.equal(CGSizeMake(314, 25));
   });
-  
+
   context(@"section headers", ^{
     beforeEach(^{
       dataSource.sectionTitles = @{@0: @"foo", @1: @"bar", @2: @"baz"};
@@ -286,28 +286,28 @@ context(@"collection view", ^{
       dataSource.data = @[@[]];
       [collectionView reloadData];
       [collectionView layoutIfNeeded];
-      
+
       NSIndexPath *indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
       expect([collectionView numberOfSections]).to.equal(1);
       expect([collectionView supplementaryViewForElementKind:UICollectionElementKindSectionHeader
                                                  atIndexPath:indexPath]).to.beNil();
     });
-    
+
     it(@"should not show headers when there is a single section", ^{
       dataSource.data = @[@[asset]];
       [collectionView reloadData];
       [collectionView layoutIfNeeded];
-      
+
       NSIndexPath *indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
       expect([collectionView supplementaryViewForElementKind:UICollectionElementKindSectionHeader
                                                  atIndexPath:indexPath]).to.beNil();
     });
-    
+
     it(@"should not show headers when there is a single active section", ^{
       dataSource.data = @[@[asset], @[], @[]];
       [collectionView reloadData];
       [collectionView layoutIfNeeded];
-      
+
       NSIndexPath *indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
       expect([collectionView supplementaryViewForElementKind:UICollectionElementKindSectionHeader
                                                  atIndexPath:indexPath]).to.beNil();
@@ -331,12 +331,12 @@ context(@"collection view", ^{
               layoutAttributesForSupplementaryElementOfKind:UICollectionElementKindSectionHeader
               atIndexPath:thirdIndexPath].frame.size).to.equal(CGSizeMake(0, 0));
     });
-    
+
     it(@"should show headers only for active sections", ^{
       dataSource.data = @[@[], @[asset], @[asset]];
       [collectionView reloadData];
       [collectionView layoutIfNeeded];
-      
+
       NSIndexPath *firstIndexPath = [NSIndexPath indexPathForItem:0 inSection:0];
       NSIndexPath *secondIndexPath = [NSIndexPath indexPathForItem:0 inSection:1];
       NSIndexPath *thirdIndexPath = [NSIndexPath indexPathForItem:0 inSection:2];
@@ -357,19 +357,19 @@ context(@"collection view", ^{
       [collectionView reloadData];
       [dataSource.didUpdateCollectionView sendNext:[RACUnit defaultUnit]];
       [collectionView layoutIfNeeded];
-      
+
       NSIndexPath *indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
       expect([collectionView cellForItemAtIndexPath:indexPath].isSelected).to.beFalsy();
       [viewController selectItem:asset];
       expect([collectionView cellForItemAtIndexPath:indexPath].isSelected).to.beTruthy();
     });
-    
+
     context(@"deferring", ^{
       __block id<PTNDescriptor> otherAsset;
       __block id<PTNDescriptor> anotherAsset;
       __block NSIndexPath *indexPath;
       __block NSIndexPath *otherIndexPath;
-      
+
       beforeEach(^{
         otherAsset = PTNCreateAssetDescriptor(@"bar");
         anotherAsset = PTNCreateAssetDescriptor(@"baz");
@@ -380,42 +380,42 @@ context(@"collection view", ^{
         [collectionView reloadData];
         [collectionView layoutIfNeeded];
       });
-      
+
       it(@"should defer selection when collection doesn't contain item", ^{
         [viewController selectItem:otherAsset];
-        
+
         expect([collectionView cellForItemAtIndexPath:indexPath].isSelected).to.beFalsy();
-        
+
         dataSource.data = @[@[asset, otherAsset]];
         [collectionView reloadData];
         [collectionView layoutIfNeeded];
         [dataSource.didUpdateCollectionView sendNext:[RACUnit defaultUnit]];
         expect([collectionView cellForItemAtIndexPath:otherIndexPath].isSelected).to.beTruthy();
       });
-      
+
       it(@"should defer only the latest selection", ^{
         [viewController selectItem:otherAsset];
         [viewController selectItem:anotherAsset];
-        
+
         expect([collectionView cellForItemAtIndexPath:indexPath].isSelected).to.beFalsy();
-        
+
         dataSource.data = @[@[otherAsset, asset]];
         [dataSource.didUpdateCollectionView sendNext:[RACUnit defaultUnit]];
         expect([collectionView cellForItemAtIndexPath:indexPath].isSelected).to.beFalsy();
         expect([collectionView cellForItemAtIndexPath:otherIndexPath].isSelected).to.beFalsy();
-        
+
         dataSource.data = @[@[anotherAsset, otherAsset]];
         [dataSource.didUpdateCollectionView sendNext:[RACUnit defaultUnit]];
         expect([collectionView cellForItemAtIndexPath:indexPath].isSelected).to.beTruthy();
         expect([collectionView cellForItemAtIndexPath:otherIndexPath].isSelected).to.beFalsy();
       });
-      
+
       it(@"should stop deferring when another asset was selected", ^{
         [viewController selectItem:otherAsset];
         [viewController selectItem:asset];
-        
+
         expect([collectionView cellForItemAtIndexPath:indexPath].isSelected).to.beTruthy();
-        
+
         dataSource.data = @[@[otherAsset, asset]];
         [collectionView reloadData];
         [collectionView layoutIfNeeded];
@@ -423,23 +423,23 @@ context(@"collection view", ^{
         expect([collectionView cellForItemAtIndexPath:indexPath].isSelected).to.beFalsy();
         expect([collectionView cellForItemAtIndexPath:otherIndexPath].isSelected).to.beTruthy();
       });
-      
+
       it(@"should defer until selected", ^{
         [viewController selectItem:otherAsset];
-        
+
         dataSource.data = @[@[anotherAsset, asset]];
         [collectionView reloadData];
         [collectionView layoutIfNeeded];
         [dataSource.didUpdateCollectionView sendNext:[RACUnit defaultUnit]];
-        
+
         expect([collectionView cellForItemAtIndexPath:indexPath].isSelected).to.beFalsy();
         expect([collectionView cellForItemAtIndexPath:otherIndexPath].isSelected).to.beFalsy();
-        
+
         dataSource.data = @[@[otherAsset, asset]];
         [collectionView reloadData];
         [collectionView layoutIfNeeded];
         [dataSource.didUpdateCollectionView sendNext:[RACUnit defaultUnit]];
-        
+
         expect([collectionView cellForItemAtIndexPath:indexPath].isSelected).to.beTruthy();
         expect([collectionView cellForItemAtIndexPath:otherIndexPath].isSelected).to.beFalsy();
       });
@@ -449,7 +449,7 @@ context(@"collection view", ^{
       dataSource.data = @[@[asset]];
       [collectionView reloadData];
       [collectionView layoutIfNeeded];
-      
+
       NSIndexPath *indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
       [collectionView selectItemAtIndexPath:indexPath animated:NO
                              scrollPosition:UICollectionViewScrollPositionNone];
@@ -511,7 +511,7 @@ context(@"collection view", ^{
 
   context(@"scrolling", ^{
     __block id<PTNDescriptor> otherAsset;
-    
+
     beforeEach(^{
       otherAsset = PTNCreateAssetDescriptor(@"bar");
       dataSource.data = @[@[
@@ -608,24 +608,24 @@ context(@"collection view", ^{
         expect(collectionView.contentOffset).to.equal(CGPointMake(100, 0));
       });
     });
-    
+
     context(@"deferring", ^{
       __block id<PTNDescriptor> bazAsset;
       __block id<PTNDescriptor> gazAsset;
-      
+
       beforeEach(^{
         viewController.view.frame = CGRectMake(0, 0, 100, 300);
         [viewController.view layoutIfNeeded];
         bazAsset = PTNCreateDescriptor(@"baz");
         gazAsset = PTNCreateDescriptor(@"gaz");
       });
-      
+
       it(@"should defer scrolling when item isn't in the collection", ^{
         [viewController scrollToItem:bazAsset
                     atScrollPosition:PTUCollectionViewScrollPositionCenter
                             animated:NO];
         expect(collectionView.contentOffset).to.equal(CGPointMake(0, 0));
-        
+
         dataSource.data = @[@[
           otherAsset,
           otherAsset,
@@ -636,10 +636,10 @@ context(@"collection view", ^{
           otherAsset
         ]];
         [dataSource.didUpdateCollectionView sendNext:[RACUnit defaultUnit]];
-        
+
         expect(collectionView.contentOffset).to.equal(CGPointMake(0, 200));
       });
-      
+
       it(@"should defer only the latest scroll", ^{
         [viewController scrollToItem:bazAsset
                     atScrollPosition:PTUCollectionViewScrollPositionCenter
@@ -650,7 +650,7 @@ context(@"collection view", ^{
                     atScrollPosition:PTUCollectionViewScrollPositionCenter
                             animated:NO];
         expect(collectionView.contentOffset).to.equal(CGPointMake(0, 0));
-        
+
         dataSource.data = @[@[
           otherAsset,
           bazAsset,
@@ -663,7 +663,7 @@ context(@"collection view", ^{
         [dataSource.didUpdateCollectionView sendNext:[RACUnit defaultUnit]];
         expect(collectionView.contentOffset).to.equal(CGPointMake(0, 200));
       });
-      
+
       it(@"should stop deferring when a new asset is scrolled to", ^{
         [viewController scrollToItem:bazAsset
                     atScrollPosition:PTUCollectionViewScrollPositionCenter
@@ -685,17 +685,17 @@ context(@"collection view", ^{
           otherAsset
         ]];
         [dataSource.didUpdateCollectionView sendNext:[RACUnit defaultUnit]];
-        
+
         expect(collectionView.contentOffset).to.equal(CGPointMake(0, 200));
       });
-      
+
       it(@"should stop deferring when scrolling is manually applied", ^{
         [viewController scrollToItem:bazAsset
                     atScrollPosition:PTUCollectionViewScrollPositionCenter
                             animated:NO];
-        
+
         collectionView.contentOffset = CGPointMake(0, 1);
-        
+
         dataSource.data = @[@[
           otherAsset,
           otherAsset,
@@ -706,23 +706,23 @@ context(@"collection view", ^{
           bazAsset
         ]];
         [dataSource.didUpdateCollectionView sendNext:[RACUnit defaultUnit]];
-        
+
         expect(collectionView.contentOffset).to.equal(CGPointMake(0, 1));
       });
-      
+
       it(@"should defer scrolling until applied", ^{
         [viewController scrollToItem:gazAsset
                     atScrollPosition:PTUCollectionViewScrollPositionCenter
                             animated:NO];
         expect(collectionView.contentOffset).to.equal(CGPointMake(0, 0));
-        
+
         dataSource.data = @[@[
           otherAsset,
           otherAsset
         ]];
         [dataSource.didUpdateCollectionView sendNext:[RACUnit defaultUnit]];
         expect(collectionView.contentOffset).to.equal(CGPointMake(0, 0));
-        
+
         dataSource.data = @[@[
           otherAsset,
           otherAsset,
@@ -782,22 +782,22 @@ context(@"collection view", ^{
     viewController.backgroundView = view;
     expect(viewController.backgroundView).to.equal(view);
   });
-  
+
   it(@"should show the view when the data source has data and did not err", ^{
     dataSource.data = @[@[asset]];
     expect(collectionViewContainer.isHidden || collectionViewContainer.alpha == 0).to.beFalsy();
   });
-  
+
   it(@"should hide the view when the data source has no data", ^{
     expect(collectionViewContainer.isHidden || collectionViewContainer.alpha == 0).to.beTruthy();
   });
-  
+
   it(@"should hide the view when the data source has data but erred", ^{
     dataSource.data = @[@[asset]];
     dataSource.error = [NSError lt_errorWithCode:1337];
     expect(collectionViewContainer.isHidden || collectionViewContainer.alpha == 0).to.beTruthy();
   });
-  
+
   it(@"should hide the view when the data source has no data and erred", ^{
     dataSource.error = [NSError lt_errorWithCode:1337];
     expect(collectionViewContainer.isHidden || collectionViewContainer.alpha == 0).to.beTruthy();
@@ -827,7 +827,18 @@ context(@"empty view", ^{
     dataSource.data = @[@[], @[]];
     expect(!emptyView.isHidden && emptyView.alpha == 1).to.beTruthy();
   });
-  
+
+  it(@"should not update empty view visibility outside the main thread", ^{
+    LLSignalTestRecorder *recorder = [RACObserve(viewController, emptyView.hidden) testRecorder];
+
+      dispatch_async(dispatch_queue_create(NULL, NULL), ^{
+        dataSource.data = @[@[], @[]];
+      });
+
+    expect(recorder).will.sendValuesWithCount(2);
+    expect(recorder.operatingThreads).to.equal([NSSet setWithObject:[NSThread mainThread]]);
+  });
+
   it(@"should bind new empty views and set them according to the current value", ^{
     UIView *newEmptyView = [[UIView alloc] init];
 
@@ -850,10 +861,21 @@ context(@"error view", ^{
   it(@"should hide the view when the data source did not err", ^{
     expect(viewController.errorView.isHidden || viewController.errorView.alpha == 0).to.beTruthy();
   });
-  
+
   it(@"should show the view when the data source did err", ^{
     dataSource.error = [NSError lt_errorWithCode:1337];
     expect(!viewController.errorView.isHidden && viewController.errorView.alpha == 1).to.beTruthy();
+  });
+
+  it(@"should not update error view visibility outside the main thread", ^{
+    LLSignalTestRecorder *recorder = [RACObserve(viewController, errorView.hidden) testRecorder];
+
+      dispatch_async(dispatch_queue_create(NULL, NULL), ^{
+        dataSource.error = [NSError lt_errorWithCode:1337];
+      });
+
+    expect(recorder).will.sendValuesWithCount(2);
+    expect(recorder.operatingThreads).to.equal([NSSet setWithObject:[NSThread mainThread]]);
   });
 
   context(@"error view provider", ^{

@@ -34,7 +34,7 @@ NS_ASSUME_NONNULL_BEGIN
   if (self.imageSize == imageSize) {
     return;
   }
-  
+
   _imageSize = imageSize;
   [self replaceImageSignalBindingWithoutClearing];
 }
@@ -127,7 +127,7 @@ NS_ASSUME_NONNULL_BEGIN
   if (self.imageSize == CGSizeZero) {
     return;
   }
-  
+
   self.imageSignalDisposable = [[[self.viewModel imageSignalForCellSize:self.imageSize]
       deliverOnMainThread]
       subscribeNext:^(UIImage *image) {

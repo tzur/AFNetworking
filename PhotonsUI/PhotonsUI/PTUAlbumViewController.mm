@@ -55,7 +55,7 @@ NS_ASSUME_NONNULL_BEGIN
         return [[PTUCollectionViewController alloc] initWithDataSourceProvider:dataSourceProvider
                                                           initialConfiguration:self.configuration];
       }];
-  
+
   RACSignal *collectionViewControllerTitle = RACObserve(self, collectionViewController.title);
   RAC(self, localizedTitle, self.viewModel.defaultTitle) = collectionViewControllerTitle;
   RAC(self, title, self.viewModel.defaultTitle) = collectionViewControllerTitle;
@@ -63,7 +63,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)viewDidLoad {
   [super viewDidLoad];
-  
+
   [self bindViews];
 }
 
@@ -79,7 +79,7 @@ NS_ASSUME_NONNULL_BEGIN
         RACTupleUnpack(PTUCollectionViewController *previous,
                        PTUCollectionViewController *current) = controllers;
         [previous.view removeFromSuperview];
-        
+
         if (!current) {
           return;
         }
@@ -95,13 +95,13 @@ NS_ASSUME_NONNULL_BEGIN
           make.edges.equalTo(self.view);
         }];
       }];
-  
+
   self.viewModel.assetSelected = [RACObserve(self, collectionViewController.itemSelected)
       switchToLatest];
 
   self.viewModel.assetDeselected = [RACObserve(self, collectionViewController.itemDeselected)
       switchToLatest];
-  
+
   RACSignal *selectedAssets = [RACObserve(self, viewModel.selectedAssets) switchToLatest];
   [[[[RACObserve(self, collectionViewController)
       map:^RACSignal *(PTUCollectionViewController *viewController) {
@@ -115,7 +115,7 @@ NS_ASSUME_NONNULL_BEGIN
                                NSArray<id<PTNDescriptor>> *current) {
               return RACTuplePack(previous, current);
             }];
-        
+
         return [RACSignal combineLatest:@[
           [RACSignal return:viewController],
           selectedAssetsWithPrevious
@@ -128,16 +128,16 @@ NS_ASSUME_NONNULL_BEGIN
                        RACTuple *selectedAssets) = controllerAndSelectedAssets;
         RACTupleUnpack(NSArray<id<PTNDescriptor>> *previousSelectedAssets,
                        NSArray<id<PTNDescriptor>> *currentSelectedAssets) = selectedAssets;
-        
+
         for (id<PTNDescriptor> asset in previousSelectedAssets) {
           [collectionViewController deselectItem:asset];
         }
-        
+
         for (id<PTNDescriptor> asset in currentSelectedAssets) {
           [collectionViewController selectItem:asset];
         }
       }];
-  
+
   RACSignal *scrollToAsset = [[RACObserve(self, viewModel.scrollToAsset)
       switchToLatest]
       replayLast];

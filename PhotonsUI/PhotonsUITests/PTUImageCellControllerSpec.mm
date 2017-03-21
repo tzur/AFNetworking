@@ -29,7 +29,7 @@ beforeEach(^{
                                                          titleSignal:titleSubject
                                                       subtitleSignal:subtitleSubject
                                                               traits:nil];
-  
+
   delegate = OCMProtocolMock(@protocol(PTUImageCellControllerDelegate));
   imageCellController = [[PTUImageCellController alloc] init];
   imageCellController.delegate = delegate;
@@ -46,7 +46,7 @@ it(@"should not fetch images when given cell size is zero", ^{
 it(@"should update image according to view model", ^{
   imageCellController.imageSize = CGSizeMake(10, 10);
   UIImage *otherImage = [[UIImage alloc] init];
-  
+
   [imageSubject sendNext:image];
   OCMVerify([delegate imageCellController:imageCellController loadedImage:image]);
   [imageSubject sendNext:otherImage];
@@ -104,7 +104,7 @@ it(@"should stop taking values from previous view model once changed", ^{
 
   PTUFakeImageCellViewModel *otherViewModel = [[PTUFakeImageCellViewModel alloc] init];
   imageCellController.viewModel = otherViewModel;
-  
+
   [imageSubject sendNext:image];
   [titleSubject sendNext:@"foo"];
   [subtitleSubject sendNext:@"bar"];
@@ -121,11 +121,11 @@ it(@"should take values from new view model once changed", ^{
                                               subtitleSignal:newSubtitleSubject
                                                       traits:nil];
   imageCellController.viewModel = otherViewModel;
-  
+
   [newImageSubject sendNext:image];
   [newTitleSubject sendNext:@"foo"];
   [newSubtitleSubject sendNext:@"bar"];
-  
+
   OCMVerify([delegate imageCellController:imageCellController loadedImage:image]);
   OCMVerify([delegate imageCellController:imageCellController loadedTitle:@"foo"]);
   OCMVerify([delegate imageCellController:imageCellController loadedSubtitle:@"bar"]);
@@ -143,7 +143,7 @@ context(@"memory management", ^{
   __block PTNDisposableRetainingSignal *titleSignal;
   __block PTNDisposableRetainingSignal *subtitleSignal;
   __block PTUFakeImageCellViewModel *disposableViewModel;
-  
+
   beforeEach(^{
     imageSignal = PTNCreateDisposableRetainingSignal();
     titleSignal = PTNCreateDisposableRetainingSignal();
@@ -156,14 +156,14 @@ context(@"memory management", ^{
 
   it(@"should dispose subscriptions when changing view model", ^{
     imageCellController.viewModel = disposableViewModel;
-    
+
     expect(imageSignal.disposables.count).to.equal(1);
     expect(titleSignal.disposables.count).to.equal(1);
     expect(subtitleSignal.disposables.count).to.equal(1);
     expect(imageSignal.disposables.firstObject.disposed).to.beFalsy();
     expect(titleSignal.disposables.firstObject.disposed).to.beFalsy();
     expect(subtitleSignal.disposables.firstObject.disposed).to.beFalsy();
-    
+
     imageCellController.viewModel = viewModel;
     expect(imageSignal.disposables.firstObject.disposed).to.beTruthy();
     expect(titleSignal.disposables.firstObject.disposed).to.beTruthy();
@@ -172,12 +172,12 @@ context(@"memory management", ^{
 
   it(@"should dispose subscriptions when deallocated", ^{
     __weak PTUImageCellController *weakController;
-    
+
     @autoreleasepool {
       PTUImageCellController *controller = [[PTUImageCellController alloc] init];
       controller.imageSize = CGSizeMake(10, 10);
       weakController = controller;
-      
+
       controller.viewModel = disposableViewModel;
       expect(imageSignal.disposables.count).to.equal(1);
       expect(titleSignal.disposables.count).to.equal(1);
@@ -186,7 +186,7 @@ context(@"memory management", ^{
       expect(titleSignal.disposables.firstObject.disposed).to.beFalsy();
       expect(subtitleSignal.disposables.firstObject.disposed).to.beFalsy();
     }
-    
+
     expect(weakController).to.beNil();
     expect(imageSignal.disposables.firstObject.disposed).to.beTruthy();
     expect(titleSignal.disposables.firstObject.disposed).to.beTruthy();
@@ -195,15 +195,15 @@ context(@"memory management", ^{
 
   it(@"should not reatin cells even if the view model signals do not complete", ^{
     __weak PTUImageCellController *weakController;
-    
+
     PTUFakeImageCellViewModel *viewModel = [[PTUFakeImageCellViewModel alloc] init];
     @autoreleasepool {
       PTUImageCellController *controller = [[PTUImageCellController alloc] init];
       weakController = controller;
-      
+
       controller.viewModel = viewModel;
     }
-    
+
     expect(weakController).to.beNil();
   });
 });

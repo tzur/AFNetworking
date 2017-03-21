@@ -47,7 +47,7 @@ it(@"should raise when given index is out of bounds", ^{
   expect(^{
     [reversedCollection objectAtIndex:4];
   }).to.raise(NSRangeException);
-  
+
   expect(^{
     [reversedCollection objectAtIndex:-1];
   }).to.raise(NSRangeException);
@@ -81,7 +81,7 @@ it(@"should correctly handle copying", ^{
   NSMutableArray *mutableCollection = [@[@1, @2] mutableCopy];
   id<LTRandomAccessCollection> copiedReversedCollection =
       [[[PTUReversedRandomAccessCollection alloc] initWithCollection:mutableCollection] copy];
-  
+
   [mutableCollection addObject:@3];
 
   expect(copiedReversedCollection.count).to.equal(2);

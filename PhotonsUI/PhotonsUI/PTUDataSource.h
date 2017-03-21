@@ -33,11 +33,12 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly, nonatomic, nullable) NSString *title;
 
 /// \c YES if the data source currently represents data of at least one section with at least one
-/// item. This property is KVO compliant.
+/// item. This property is KVO compliant and changes on an arbitrary thread.
 @property (readonly, nonatomic) BOOL hasData;
 
 /// Error that occurred while fetching data, fetching metadata or applying updates to the collection
-/// view, or \c nil if no such error occurred. This property is KVO compliant.
+/// view, or \c nil if no such error occurred. This property is KVO compliant and changes on an
+/// arbitrary thread.
 @property (readonly, nonatomic, nullable) NSError *error;
 
 @end

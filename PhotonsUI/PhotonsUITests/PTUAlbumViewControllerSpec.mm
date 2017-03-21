@@ -9,25 +9,25 @@
 #import "PTUAlbumViewModel.h"
 #import "PTUCollectionViewConfiguration.h"
 #import "PTUCollectionViewController.h"
-#import "PTUDataSourceProvider.h"
 #import "PTUDataSource.h"
+#import "PTUDataSourceProvider.h"
 #import "PTUErrorViewProvider.h"
 #import "PTUFakeDataSource.h"
 #import "UIView+Retrieval.h"
 
 static void PTUSimulateSelection(UICollectionView *collectionView, NSIndexPath *indexPath) {
   id<UICollectionViewDelegate> delegate = collectionView.delegate;
-  
+
   if ([delegate respondsToSelector:@selector(collectionView:shouldSelectItemAtIndexPath:)]) {
     if (![collectionView.delegate collectionView:collectionView
                      shouldSelectItemAtIndexPath:indexPath]) {
       return;
     }
   }
-  
+
   [collectionView selectItemAtIndexPath:indexPath animated:NO
                          scrollPosition:UITableViewScrollPositionNone];
-  
+
   if ([delegate respondsToSelector:@selector(collectionView:didSelectItemAtIndexPath:)]) {
     [collectionView.delegate collectionView:collectionView didSelectItemAtIndexPath:indexPath];
   }
@@ -75,7 +75,7 @@ beforeEach(^{
                                                      selectedAssets:selectedAssets
                                                       scrollToAsset:scrollToAsset
                                                        defaultTitle:@"default" url:nil];
-  
+
   albumView = [[PTUAlbumViewController alloc] initWithViewModel:viewModel
                                                   configuration:configuration];
   [albumView loadViewIfNeeded];
@@ -101,7 +101,7 @@ it(@"should initialize a new collection view controller for each data source pro
   [albumView.view layoutIfNeeded];
 
   UIView *collectionView = [albumView.view wf_viewForAccessibilityIdentifier:@"CollectionView"];
-  
+
   [dataSourceProviderSignal sendNext:OCMProtocolMock(@protocol(PTUDataSourceProvider))];
   expect([albumView.view wf_viewForAccessibilityIdentifier:@"CollectionView"])
       .toNot.equal(collectionView);
@@ -110,7 +110,7 @@ it(@"should initialize a new collection view controller for each data source pro
 it(@"should initialize collection views with the given configuration", ^{
   [dataSourceProviderSignal sendNext:dataSourceProvider];
   [albumView.view layoutIfNeeded];
-  
+
   UICollectionView *collectionView =
       (UICollectionView *)[albumView.view wf_viewForAccessibilityIdentifier:@"CollectionView"];
 
@@ -120,7 +120,7 @@ it(@"should initialize collection views with the given configuration", ^{
   expect(collectionView.showsHorizontalScrollIndicator)
       .to.equal(configuration.showsHorizontalScrollIndicator);
   expect(collectionView.collectionViewLayout).beAKindOf([UICollectionViewFlowLayout class]);
-  
+
   UICollectionViewFlowLayout *layout =
       (UICollectionViewFlowLayout *)collectionView.collectionViewLayout;
   expect(layout.scrollDirection).to.equal(configuration.scrollDirection);
@@ -133,10 +133,10 @@ it(@"should initialize collection views with photoStrip configuration in factory
   [albumView loadViewIfNeeded];
   [dataSourceProviderSignal sendNext:dataSourceProvider];
   [albumView.view layoutIfNeeded];
-  
+
   UICollectionView *collectionView =
       (UICollectionView *)[albumView.view wf_viewForAccessibilityIdentifier:@"CollectionView"];
-  
+
   PTUCollectionViewConfiguration *configuration = [PTUCollectionViewConfiguration photoStrip];
 
   expect(collectionView.collectionViewLayout).toNot.beNil();
@@ -145,7 +145,7 @@ it(@"should initialize collection views with photoStrip configuration in factory
   expect(collectionView.showsHorizontalScrollIndicator)
       .to.equal(configuration.showsHorizontalScrollIndicator);
   expect(collectionView.collectionViewLayout).beAKindOf([UICollectionViewFlowLayout class]);
-  
+
   UICollectionViewFlowLayout *layout =
       (UICollectionViewFlowLayout *)collectionView.collectionViewLayout;
   expect(layout.scrollDirection).to.equal(configuration.scrollDirection);
@@ -158,10 +158,10 @@ it(@"should initialize collection views with album configuration in factory init
   [albumView loadViewIfNeeded];
   [dataSourceProviderSignal sendNext:dataSourceProvider];
   [albumView.view layoutIfNeeded];
-  
+
   UICollectionView *collectionView =
       (UICollectionView *)[albumView.view wf_viewForAccessibilityIdentifier:@"CollectionView"];
-  
+
   PTUCollectionViewConfiguration *configuration =
       [PTUCollectionViewConfiguration defaultConfiguration];
 
@@ -171,7 +171,7 @@ it(@"should initialize collection views with album configuration in factory init
   expect(collectionView.showsHorizontalScrollIndicator)
       .to.equal(configuration.showsHorizontalScrollIndicator);
   expect(collectionView.collectionViewLayout).beAKindOf([UICollectionViewFlowLayout class]);
-  
+
   UICollectionViewFlowLayout *layout =
       (UICollectionViewFlowLayout *)collectionView.collectionViewLayout;
   expect(layout.scrollDirection).to.equal(configuration.scrollDirection);
@@ -190,7 +190,7 @@ it(@"should not load view on initialization", ^{
   PTUFakeDataSource *dataSource = [[PTUFakeDataSource alloc] init];
   OCMStub([dataSourceProvider dataSourceForCollectionView:OCMOCK_ANY]).andReturn(dataSource);
   [dataSourceProviderSignal sendNext:dataSourceProvider];
-  
+
   expect(viewController.isViewLoaded).to.beFalsy();
 });
 
@@ -213,9 +213,9 @@ context(@"collection control", ^{
   __block PTUFakeDataSource *dataSource;
   __block id<PTNDescriptor> asset;
   __block id<PTNDescriptor> otherAsset;
-  
+
   __block UICollectionView *collectionView;
-  
+
   beforeEach(^{
     dataSource = [[PTUFakeDataSource alloc] init];
     asset = PTNCreateDescriptor(@"foo");
@@ -239,7 +239,7 @@ context(@"collection control", ^{
 
     [dataSource.didUpdateCollectionView sendNext:[RACUnit defaultUnit]];
   });
-  
+
   it(@"should notify when assets are selected", ^{
     LLSignalTestRecorder *recorder = [viewModel.assetSelected testRecorder];
 
@@ -248,7 +248,7 @@ context(@"collection control", ^{
 
     expect(recorder).will.sendValues(@[asset, otherAsset]);
   });
-  
+
   it(@"should notify when assets are deselected", ^{
     LLSignalTestRecorder *recorder = [viewModel.assetDeselected testRecorder];
 
@@ -257,7 +257,7 @@ context(@"collection control", ^{
 
     expect(recorder).will.sendValues(@[asset, otherAsset]);
   });
-  
+
   it(@"should select assets", ^{
     expect([collectionView indexPathsForSelectedItems]).to.equal(@[]);
 
@@ -271,7 +271,7 @@ context(@"collection control", ^{
       [NSIndexPath indexPathForItem:2 inSection:0]
     ]);
   });
-  
+
   it(@"should deselect assets", ^{
     expect([collectionView indexPathsForSelectedItems]).to.equal(@[]);
 
@@ -288,7 +288,7 @@ context(@"collection control", ^{
     [selectedAssets sendNext:@[]];
     expect([collectionView indexPathsForSelectedItems]).to.equal(@[]);
   });
-  
+
   it(@"should scroll to assets", ^{
     expect([collectionView contentOffset]).to.equal(CGPointZero);
 
@@ -308,7 +308,7 @@ context(@"collection control", ^{
                                          @(PTUCollectionViewScrollPositionBottomRight))];
     expect([collectionView contentOffset]).to.equal(CGPointZero);
   });
-  
+
   context(@"data source provider replacement", ^{
     __block PTUFakeDataSource *otherDataSource;
     __block id<PTUDataSourceProvider> otherDataSourceProvider;
@@ -330,7 +330,7 @@ context(@"collection control", ^{
     it(@"should replace collection view", ^{
       [dataSourceProviderSignal sendNext:otherDataSourceProvider];
       [albumView.view layoutIfNeeded];
-      
+
       expect(currentCollectionView)
           .to.equal([albumView.view wf_viewForAccessibilityIdentifier:@"CollectionView"]);
       expect(currentCollectionView).toNot.equal(collectionView);
@@ -338,16 +338,16 @@ context(@"collection control", ^{
 
     it(@"should continue to notify selected assets", ^{
       LLSignalTestRecorder *recorder = [viewModel.assetSelected testRecorder];
-      
+
       PTUSimulateSelection(collectionView, [NSIndexPath indexPathForItem:2 inSection:0]);
       PTUSimulateSelection(collectionView, [NSIndexPath indexPathForItem:0 inSection:0]);
 
       [dataSourceProviderSignal sendNext:otherDataSourceProvider];
       [albumView.view layoutIfNeeded];
-      
+
       PTUSimulateSelection(currentCollectionView, [NSIndexPath indexPathForItem:2 inSection:0]);
       PTUSimulateSelection(currentCollectionView, [NSIndexPath indexPathForItem:0 inSection:0]);
-      
+
       expect(recorder).will.sendValues(@[asset, otherAsset, otherAsset, asset]);
     });
 
@@ -368,26 +368,26 @@ context(@"collection control", ^{
 
     it(@"should continue to select assets", ^{
       expect([collectionView indexPathsForSelectedItems]).to.equal(@[]);
-      
+
       [selectedAssets sendNext:@[asset]];
       expect([collectionView indexPathsForSelectedItems])
           .to.equal(@[[NSIndexPath indexPathForItem:2 inSection:0]]);
-      
+
       [selectedAssets sendNext:@[asset, otherAsset]];
       expect([collectionView indexPathsForSelectedItems]).to.equal(@[
         [NSIndexPath indexPathForItem:0 inSection:0],
         [NSIndexPath indexPathForItem:2 inSection:0]
       ]);
-      
+
       [dataSourceProviderSignal sendNext:otherDataSourceProvider];
       [albumView.view layoutIfNeeded];
       [otherDataSource.didUpdateCollectionView sendNext:[RACUnit defaultUnit]];
       expect([currentCollectionView indexPathsForSelectedItems]).to.equal(@[]);
-      
+
       [selectedAssets sendNext:@[asset]];
       expect([currentCollectionView indexPathsForSelectedItems])
           .to.equal(@[[NSIndexPath indexPathForItem:0 inSection:0]]);
-      
+
       [selectedAssets sendNext:@[asset, otherAsset]];
       expect([currentCollectionView indexPathsForSelectedItems]).to.equal(@[
         [NSIndexPath indexPathForItem:1 inSection:0],
@@ -397,35 +397,35 @@ context(@"collection control", ^{
 
     it(@"should continue to deselect assets", ^{
       expect([collectionView indexPathsForSelectedItems]).to.equal(@[]);
-      
+
       [selectedAssets sendNext:@[asset, otherAsset]];
       expect([collectionView indexPathsForSelectedItems]).to.equal(@[
         [NSIndexPath indexPathForItem:0 inSection:0],
         [NSIndexPath indexPathForItem:2 inSection:0]
       ]);
-      
+
       [selectedAssets sendNext:@[otherAsset]];
       expect([collectionView indexPathsForSelectedItems])
           .to.equal(@[[NSIndexPath indexPathForItem:0 inSection:0]]);
-      
+
       [selectedAssets sendNext:@[]];
       expect([collectionView indexPathsForSelectedItems]).to.equal(@[]);
-      
+
       [dataSourceProviderSignal sendNext:otherDataSourceProvider];
       [albumView.view layoutIfNeeded];
       [otherDataSource.didUpdateCollectionView sendNext:[RACUnit defaultUnit]];
       expect([collectionView indexPathsForSelectedItems]).to.equal(@[]);
-      
+
       [selectedAssets sendNext:@[asset, otherAsset]];
       expect([currentCollectionView indexPathsForSelectedItems]).to.equal(@[
         [NSIndexPath indexPathForItem:1 inSection:0],
         [NSIndexPath indexPathForItem:0 inSection:0]
       ]);
-      
+
       [selectedAssets sendNext:@[otherAsset]];
       expect([currentCollectionView indexPathsForSelectedItems])
           .to.equal(@[[NSIndexPath indexPathForItem:1 inSection:0]]);
-      
+
       [selectedAssets sendNext:@[]];
       expect([currentCollectionView indexPathsForSelectedItems]).to.equal(@[]);
     });
@@ -436,14 +436,14 @@ context(@"collection control", ^{
       [scrollToAsset sendNext:RACTuplePack((id<NSObject>)asset,
                                            @(PTUCollectionViewScrollPositionCenter))];
       expect([collectionView contentOffset]).to.equal(CGPointMake(0, 101));
-      
+
       [scrollToAsset sendNext:RACTuplePack((id<NSObject>)asset,
                                            @(PTUCollectionViewScrollPositionTopLeft))];
       expect([collectionView contentOffset]).to.equal(CGPointMake(0, 202));
-      
+
       [dataSourceProviderSignal sendNext:otherDataSourceProvider];
       [albumView.view layoutIfNeeded];
-      
+
       expect([currentCollectionView contentOffset]).to.equal(CGPointZero);
       expect(currentCollectionView.frame).to.equal(CGRectMake(0, 0, 100, 302));
 
@@ -469,7 +469,7 @@ context(@"collection control", ^{
       expect(albumView.localizedTitle).to.equal(@"baz");
     });
   });
-  
+
   it(@"should not send selection after change of selection not done by user", ^{
     LLSignalTestRecorder *recorder = [viewModel.assetSelected testRecorder];
     [selectedAssets sendNext:@[asset]];
@@ -553,14 +553,14 @@ context(@"subviews", ^{
 
 it(@"should deallocate regardless of view model signals' lifetime", ^{
   __weak PTUAlbumViewController *weakViewController;
-  
+
   @autoreleasepool {
     PTUAlbumViewController *viewController =
         [[PTUAlbumViewController alloc] initWithViewModel:viewModel configuration:configuration];
     [viewController loadViewIfNeeded];
     weakViewController = viewController;
   }
-  
+
   expect(weakViewController).to.beNil();
 });
 

@@ -70,7 +70,7 @@ NS_ASSUME_NONNULL_BEGIN
   if (!_didUpdateCollectionView) {
     _didUpdateCollectionView = [RACSubject subject];
   }
-  
+
   return _didUpdateCollectionView;
 }
 

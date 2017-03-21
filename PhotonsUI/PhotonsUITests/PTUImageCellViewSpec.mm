@@ -34,7 +34,7 @@ beforeEach(^{
 it(@"should not fetch images before initial layout", ^{
   PTUImageCellView *cellView = [[PTUImageCellView alloc] initWithFrame:CGRectMake(0, 0, 40, 10)];
   cellView.viewModel = viewModel;
-  
+
   [imageSubject sendNext:image];
   expect(cellView.image).to.beNil();
 

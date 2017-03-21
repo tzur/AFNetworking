@@ -91,7 +91,7 @@ NS_ASSUME_NONNULL_BEGIN
                                          DISPATCH_QUEUE_SERIAL);
     _updateQueueSemaphore = dispatch_semaphore_create(0);
     self.pendingReloads = 0;
-    
+
     self.dataModel = @[];
     self.sectionTitles = @{};
     _didUpdateCollectionViewSubject = [RACSubject subject];
@@ -267,7 +267,7 @@ NS_ASSUME_NONNULL_BEGIN
       return YES;
     }
   }
-  
+
   return NO;
 }
 
@@ -352,15 +352,15 @@ NS_ASSUME_NONNULL_BEGIN
   if (![kind isEqualToString:UICollectionElementKindSectionHeader]) {
     return [[UICollectionReusableView alloc] initWithFrame:CGRectZero];
   }
-  
+
   NSString *title = self.sectionTitles[@(indexPath.section)];
-  
+
   UICollectionReusableView<PTUHeaderCell> *headerCell =
       [collectionView dequeueReusableSupplementaryViewOfKind:kind
                                          withReuseIdentifier:NSStringFromClass(self.headerCellClass)
                                                 forIndexPath:indexPath];
   headerCell.title = title;
-  
+
   return headerCell;
 }
 

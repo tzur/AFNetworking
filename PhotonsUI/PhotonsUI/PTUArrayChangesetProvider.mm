@@ -33,7 +33,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (RACSignal *)fetchChangeset {
   return [RACSignal return:[[PTUChangeset alloc] initWithAfterDataModel:@[self.descriptors]]];
 }
-  
+
 - (RACSignal *)fetchChangesetMetadata {
   return [RACSignal return:[[PTUChangesetMetadata alloc] initWithTitle:self.changesetTitle
                                                          sectionTitles:@{}]];

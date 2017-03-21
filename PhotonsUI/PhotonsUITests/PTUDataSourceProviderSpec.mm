@@ -15,14 +15,14 @@ it(@"should correctly initialize with convenience initializer", ^{
   NSURL *url = [NSURL URLWithString:@"http://www.foo.com"];
   PTUDataSourceProvider *provider = [[PTUDataSourceProvider alloc] initWithAssetManager:assetManager
                                                                                albumURL:url];
-  
+
   expect(provider).toNot.beNil();
 });
 
 context(@"designated initializer", ^{
   __block PTUDataSourceProvider *provider;
   __block UICollectionView *collectionView;
-  
+
   beforeEach(^{
     id<PTUChangesetProvider> changesetProvider = OCMProtocolMock(@protocol(PTUChangesetProvider));
     id<PTUImageCellViewModelProvider> cellViewModelProvider =
@@ -34,12 +34,12 @@ context(@"designated initializer", ^{
 
     collectionView = OCMClassMock([UICollectionView class]);
   });
-  
+
   it(@"should return instances of PTUDataSource", ^{
     expect([provider dataSourceForCollectionView:collectionView])
         .to.beInstanceOf([PTUDataSource class]);
   });
-  
+
   it(@"should return a new instance on every call", ^{
     expect([provider dataSourceForCollectionView:collectionView])
         .toNot.equal([provider dataSourceForCollectionView:collectionView]);
