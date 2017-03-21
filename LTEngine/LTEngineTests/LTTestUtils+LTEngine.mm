@@ -120,12 +120,20 @@ BOOL LTFuzzyCompareMat(const cv::Mat &expected, const cv::Mat &actual, double ra
                                            firstMismatch);
     case CV_16U:
       return LTCompareMatCells<ushort>(expected, actual, range, firstMismatch);
+    case CV_16UC4:
+      return LTCompareMatCells<cv::Vec4w>(expected, actual, cv::Vec4w(range, range, range, range),
+                                          firstMismatch);
     case CV_32S:
       return LTCompareMatCells<int>(expected, actual, range, firstMismatch);
     case CV_32F:
       return LTCompareMatCells<float>(expected, actual, range, firstMismatch);
     case CV_32FC4:
       return LTCompareMatCells<cv::Vec4f>(expected, actual, cv::Vec4f(range, range, range, range),
+                                          firstMismatch);
+    case CV_64F:
+      return LTCompareMatCells<double>(expected, actual, range, firstMismatch);
+    case CV_64FC4:
+      return LTCompareMatCells<cv::Vec4d>(expected, actual, cv::Vec4d(range, range, range, range),
                                           firstMismatch);
     default:
       LTAssert(NO, @"Unsupported mat type for comparison: %d", expected.type());
