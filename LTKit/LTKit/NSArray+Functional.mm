@@ -37,6 +37,15 @@ NS_ASSUME_NONNULL_BEGIN
   return [self filteredArrayUsingPredicate:predicate];
 }
 
+- (nullable id)lt_find:(LTArrayFilterBlock)block {
+  LTParameterAssert(block);
+
+  NSUInteger index = [self indexOfObjectPassingTest:^BOOL(id object, NSUInteger, BOOL *) {
+    return block(object);
+  }];
+  return index != NSNotFound ? [self objectAtIndex:index] : nil;
+}
+
 - (NSDictionary<id<NSCopying>, NSArray<id> *> *)lt_classify:(LTArrayClassifierBlock)block {
   LTParameterAssert(block);
 

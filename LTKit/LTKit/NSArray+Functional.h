@@ -48,6 +48,12 @@ typedef BOOL (^LTArrayFilterBlock)(ObjectType _Nonnull object);
 /// returned \c YES for.
 - (NSArray<ObjectType> *)lt_filter:(LTArrayFilterBlock)block;
 
+/// Finds the first item in the array that passed the specified filter \c block.
+///
+/// Returns a single object that is the first item that \c block has returned \c YES for, or \c nil
+/// if \c block has returned \c NO for all array's elements.
+- (nullable ObjectType)lt_find:(LTArrayFilterBlock)block;
+
 /// Callback block used to classify objects of an array.
 ///
 /// \c object is the array element to classify. The block returns a label for that item. The
