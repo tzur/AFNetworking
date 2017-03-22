@@ -66,13 +66,9 @@ BZRReceiptValidationStatus *BZRReceiptValidationStatusWithInAppPurchaseAndExpiry
     @instanceKeypath(BZRReceiptInAppPurchaseInfo, originalTransactionId): @"bar",
     @instanceKeypath(BZRReceiptInAppPurchaseInfo, originalPurchaseDateTime): [NSDate date],
   } error:nil];
-  BZRReceiptInfo *receipt =
-      [receiptValidationStatus.receipt
-       modelByOverridingProperty:@keypath(receiptValidationStatus.receipt, inAppPurchases)
-                       withValue:@[inAppPurchase]];
   return [receiptValidationStatus
-          modelByOverridingProperty:@keypath(receiptValidationStatus, receipt)
-                          withValue:receipt];
+      modelByOverridingPropertyAtKeypath:@keypath(receiptValidationStatus, receipt.inAppPurchases)
+                               withValue:@[inAppPurchase]];
 }
 
 static SKProduct *BZRSKProductWithIdentifier(NSString *productIdentifier) {
