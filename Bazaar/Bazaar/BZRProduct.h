@@ -38,6 +38,10 @@ LTEnumDeclare(NSUInteger, BZRProductType,
 /// \c NO.
 @property (readonly, nonatomic) BOOL isSubscribersOnly;
 
+/// \c YES if the product should be always available immediately without any purchasing action,
+/// \c NO otherwise. Optional, the default value is \c NO.
+@property (readonly, nonatomic) BOOL preAcquired;
+
 /// \c YES if the product should be available for subscribers immediately after purchasing a
 /// subscription, \c NO otherwise. Optional, the default value is \c NO.
 @property (readonly, nonatomic) BOOL preAcquiredViaSubscription;
@@ -45,7 +49,7 @@ LTEnumDeclare(NSUInteger, BZRProductType,
 /// Holds the price and the locale of the product.
 @property (readonly, nonatomic, nullable) BZRProductPriceInfo *priceInfo;
 
-/// Available variants of the product. \c nil signifies that the receiver is a variant. 
+/// Available variants of the product. \c nil signifies that the receiver is a variant itself.
 @property (readonly, nonatomic, nullable) NSArray<NSString *> *variants;
 
 /// Identifiers of discounted variants of the product. Each entry is the full identifier of the

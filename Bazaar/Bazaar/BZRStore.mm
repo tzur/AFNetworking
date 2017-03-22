@@ -250,7 +250,20 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (NSSet<NSString *> *)allowedProducts {
-  return [self isUserSubscribed] ? self.acquiredProducts : self.purchasedProducts;
+  return [[self preAcquiredProducts] setByAddingObjectsFromSet:
+          [self isUserSubscribed] ? self.acquiredProducts : self.purchasedProducts];
+}
+
+- (NSSet<NSString *> *)preAcquiredProducts {
+  NSArray <BZRProduct *> *preAcquriedProducts = [[self.productDictionary.allValues
+    lt_filter:^BOOL(BZRProduct *product) {
+      return product.preAcquired;
+    }]
+    lt_map:^NSString *(BZRProduct *product) {
+      return product.identifier;
+    }];
+
+  return [NSSet setWithArray:preAcquriedProducts];
 }
 
 - (NSSet<NSString *> *)downloadedContentProducts {
@@ -513,6 +526,7 @@ NS_ASSUME_NONNULL_BEGIN
   return [NSSet setWithObjects:
       @instanceKeypath(BZRStore, validationStatusProvider.receiptValidationStatus),
       @instanceKeypath(BZRStore, acquiredViaSubscriptionProvider.productsAcquiredViaSubscription),
+      @instanceKeypath(BZRStore, productDictionary),
       nil];
 }
 
