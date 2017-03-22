@@ -105,6 +105,7 @@
 		BE8C7C9C1DFECAD500FE1508 /* PTUAlbumViewControllerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = BE8C7C9B1DFECAD500FE1508 /* PTUAlbumViewControllerSpec.mm */; };
 		BE9486FD1E54588900EF80D5 /* PTUTimeFormatter.mm in Sources */ = {isa = PBXBuildFile; fileRef = BE9486FC1E54588900EF80D5 /* PTUTimeFormatter.mm */; };
 		BE9487201E545CD900EF80D5 /* PTUTimeFormatterSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = BE94871F1E545CD900EF80D5 /* PTUTimeFormatterSpec.mm */; };
+		CDE00B221E82AE65007AFD5E /* libcompression.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = CDE00B211E82AE65007AFD5E /* libcompression.tbd */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -588,6 +589,7 @@
 		BE9486FB1E54588900EF80D5 /* PTUTimeFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTUTimeFormatter.h; sourceTree = "<group>"; };
 		BE9486FC1E54588900EF80D5 /* PTUTimeFormatter.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PTUTimeFormatter.mm; sourceTree = "<group>"; };
 		BE94871F1E545CD900EF80D5 /* PTUTimeFormatterSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PTUTimeFormatterSpec.mm; sourceTree = "<group>"; };
+		CDE00B211E82AE65007AFD5E /* libcompression.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libcompression.tbd; path = usr/lib/libcompression.tbd; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -595,6 +597,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CDE00B221E82AE65007AFD5E /* libcompression.tbd in Frameworks */,
 				8861FE0D1E5A2CE200CA1436 /* CoreGraphics.framework in Frameworks */,
 				8861FE091E5A2CAA00CA1436 /* CoreLocation.framework in Frameworks */,
 				8861FDDE1E5A2C0C00CA1436 /* CoreMedia.framework in Frameworks */,
@@ -925,6 +928,7 @@
 		848EFFE21C591C0D001D8368 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CDE00B211E82AE65007AFD5E /* libcompression.tbd */,
 				8861FE0E1E5A2CF100CA1436 /* QuartzCore.framework */,
 				8861FE0C1E5A2CE200CA1436 /* CoreGraphics.framework */,
 				8861FE0A1E5A2CC800CA1436 /* GLKit.framework */,

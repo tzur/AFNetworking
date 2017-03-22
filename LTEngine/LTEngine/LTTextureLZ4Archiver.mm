@@ -5,10 +5,10 @@
 
 #import <LTKit/LTMMInputFile.h>
 #import <LTKit/LTMMOutputFile.h>
+#import <LTKit/NSData+Compression.h>
 #import <LTKit/NSError+LTKit.h>
 
 #import "LTTexture.h"
-#import "NSData+Compression.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

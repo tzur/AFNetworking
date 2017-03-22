@@ -3,7 +3,7 @@
 
 #import "NSData+Compression.h"
 
-#import "NSErrorCodes+LTEngine.h"
+#import "NSErrorCodes+LTKit.h"
 
 SpecBegin(NSData_Compression)
 

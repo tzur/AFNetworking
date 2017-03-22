@@ -79,6 +79,7 @@
 		8BED83081C3D87480001C6F1 /* BLUNode+Operations.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BED83061C3D87480001C6F1 /* BLUNode+Operations.h */; };
 		8BED83091C3D87480001C6F1 /* BLUNode+Operations.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BED83071C3D87480001C6F1 /* BLUNode+Operations.m */; };
 		8BED830B1C3E84DB0001C6F1 /* BLUNode+TreeSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BED830A1C3E84DB0001C6F1 /* BLUNode+TreeSpec.mm */; };
+		CDE00A8E1E82AD4A007AFD5E /* libcompression.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = CDE00A701E82AC04007AFD5E /* libcompression.tbd */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -424,6 +425,7 @@
 		8BED83061C3D87480001C6F1 /* BLUNode+Operations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BLUNode+Operations.h"; sourceTree = "<group>"; };
 		8BED83071C3D87480001C6F1 /* BLUNode+Operations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "BLUNode+Operations.m"; sourceTree = "<group>"; };
 		8BED830A1C3E84DB0001C6F1 /* BLUNode+TreeSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "BLUNode+TreeSpec.mm"; sourceTree = "<group>"; };
+		CDE00A701E82AC04007AFD5E /* libcompression.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libcompression.tbd; path = usr/lib/libcompression.tbd; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -431,6 +433,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CDE00A8E1E82AD4A007AFD5E /* libcompression.tbd in Frameworks */,
 				8861FC211E5A227B00CA1436 /* CoreGraphics.framework in Frameworks */,
 				8861FC231E5A22B800CA1436 /* GLKit.framework in Frameworks */,
 				8BED809D1C3A68290001C6F1 /* libBlueprints.a in Frameworks */,
@@ -715,6 +718,7 @@
 		8BED80E21C3A6A5B0001C6F1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CDE00A701E82AC04007AFD5E /* libcompression.tbd */,
 				8861FC251E5A22F000CA1436 /* QuartzCore.framework */,
 				8861FC221E5A22B800CA1436 /* GLKit.framework */,
 				8861FC201E5A227B00CA1436 /* CoreGraphics.framework */,

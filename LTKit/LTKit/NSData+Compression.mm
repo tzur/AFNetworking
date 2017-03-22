@@ -5,7 +5,7 @@
 
 #import <compression.h>
 
-#import "NSErrorCodes+LTEngine.h"
+#import "NSErrorCodes+LTKit.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

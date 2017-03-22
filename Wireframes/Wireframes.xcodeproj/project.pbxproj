@@ -82,6 +82,7 @@
 		C9133DAB1D357524009E796B /* CALayer+EnumerationSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = C9133DAA1D357524009E796B /* CALayer+EnumerationSpec.m */; };
 		C99B8BB41D6F6DAD00897FF1 /* UIFont+Size.mm in Sources */ = {isa = PBXBuildFile; fileRef = C99B8BB31D6F6DAD00897FF1 /* UIFont+Size.mm */; };
 		C99B8BB71D6F6E2C00897FF1 /* UIFont+SizeSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = C99B8BB61D6F6E2C00897FF1 /* UIFont+SizeSpec.mm */; };
+		CDE00AE41E82AE1F007AFD5E /* libcompression.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = CDE00AE31E82AE1F007AFD5E /* libcompression.tbd */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -473,6 +474,7 @@
 		C99B8BB21D6F6DAD00897FF1 /* UIFont+Size.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIFont+Size.h"; sourceTree = "<group>"; };
 		C99B8BB31D6F6DAD00897FF1 /* UIFont+Size.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIFont+Size.mm"; sourceTree = "<group>"; };
 		C99B8BB61D6F6E2C00897FF1 /* UIFont+SizeSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIFont+SizeSpec.mm"; sourceTree = "<group>"; };
+		CDE00AE31E82AE1F007AFD5E /* libcompression.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libcompression.tbd; path = usr/lib/libcompression.tbd; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -487,6 +489,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CDE00AE41E82AE1F007AFD5E /* libcompression.tbd in Frameworks */,
 				8861FD781E5A2A1C00CA1436 /* CoreGraphics.framework in Frameworks */,
 				8861FD7A1E5A2A3F00CA1436 /* GLKit.framework in Frameworks */,
 				8B283F141CBA84EA00B745AE /* libExpecta.a in Frameworks */,
@@ -508,6 +511,7 @@
 		65322DE21D46544F002D5F17 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CDE00AE31E82AE1F007AFD5E /* libcompression.tbd */,
 				8861FD791E5A2A3F00CA1436 /* GLKit.framework */,
 				8861FD771E5A2A1C00CA1436 /* CoreGraphics.framework */,
 				8861FD751E5A29F800CA1436 /* QuartzCore.framework */,
