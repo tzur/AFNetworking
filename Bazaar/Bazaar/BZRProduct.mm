@@ -40,6 +40,7 @@ LTEnumImplement(NSUInteger, BZRProductType,
     @instanceKeypath(BZRProduct, productType): @"productType",
     @instanceKeypath(BZRProduct, contentFetcherParameters): @"contentFetcherParameters",
     @instanceKeypath(BZRProduct, isSubscribersOnly): @"isSubscribersOnly",
+    @instanceKeypath(BZRProduct, preAcquired): @"preAcquired",
     @instanceKeypath(BZRProduct, preAcquiredViaSubscription): @"preAcquiredViaSubscription",
     @instanceKeypath(BZRProduct, priceInfo): @"priceInfo",
     @instanceKeypath(BZRProduct, variants): @"variants",
@@ -74,13 +75,13 @@ LTEnumImplement(NSUInteger, BZRProductType,
       @instanceKeypath(BZRProduct, contentFetcherParameters),
       @instanceKeypath(BZRProduct, priceInfo),
       @instanceKeypath(BZRProduct, isSubscribersOnly),
+      @instanceKeypath(BZRProduct, preAcquired),
       @instanceKeypath(BZRProduct, preAcquiredViaSubscription),
       @instanceKeypath(BZRProduct, variants),
       @instanceKeypath(BZRProduct, discountedProducts),
       @instanceKeypath(BZRProduct, fullPriceProductIdentifier)
     ]];
   });
-  
   return optionalPropertyKeys;
 }
 
