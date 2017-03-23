@@ -35,7 +35,7 @@ context(@"texture attachable", ^{
     });
 
     it(@"should init with half-float RGBA texture on capable devices", ^{
-      [[[glContext stub] andReturnValue:@(YES)] canRenderToHalfFloatTextures];
+      [[[glContext stub] andReturnValue:@(YES)] canRenderToHalfFloatColorBuffers];
 
       LTTexture *texture = [LTTexture textureWithSize:CGSizeMake(1, 1)
                                           pixelFormat:$(LTGLPixelFormatRGBA16Float)
@@ -48,7 +48,7 @@ context(@"texture attachable", ^{
     });
 
     it(@"should raise with half-float RGBA texture on incapable devices", ^{
-      [[[glContext stub] andReturnValue:@(NO)] canRenderToHalfFloatTextures];
+      [[[glContext stub] andReturnValue:@(NO)] canRenderToHalfFloatColorBuffers];
 
       LTTexture *texture = [LTTexture textureWithSize:CGSizeMake(1, 1)
                                           pixelFormat:$(LTGLPixelFormatRGBA16Float)
@@ -60,7 +60,7 @@ context(@"texture attachable", ^{
     });
 
     it(@"should init with float RGBA texture on capable devices", ^{
-      [[[glContext stub] andReturnValue:@(YES)] canRenderToFloatTextures];
+      [[[glContext stub] andReturnValue:@(YES)] canRenderToFloatColorBuffers];
 
       LTTexture *texture = [LTTexture textureWithSize:CGSizeMake(1, 1)
                                           pixelFormat:$(LTGLPixelFormatRGBA32Float)
@@ -73,7 +73,7 @@ context(@"texture attachable", ^{
     });
 
     it(@"should raise with float RGBA texture on incapable devices", ^{
-      [[[glContext stub] andReturnValue:@(NO)] canRenderToFloatTextures];
+      [[[glContext stub] andReturnValue:@(NO)] canRenderToFloatColorBuffers];
 
       LTTexture *texture = [LTTexture textureWithSize:CGSizeMake(1, 1)
                                           pixelFormat:$(LTGLPixelFormatRGBA32Float)

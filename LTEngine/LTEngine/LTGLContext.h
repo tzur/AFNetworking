@@ -213,11 +213,11 @@ extern LTGLContextBlendEquationArgs kLTGLContextBlendEquationDefault;
 /// Maximum number of color attachment points that can be used on the device's GPU.
 @property (readonly, nonatomic) GLint maxNumberOfColorAttachmentPoints;
 
-/// \c YES if writing to half-float textures is supported.
-@property (readonly, nonatomic) BOOL canRenderToHalfFloatTextures;
+/// \c YES if rendering to half-float color buffers is supported.
+@property (readonly, nonatomic) BOOL canRenderToHalfFloatColorBuffers;
 
-/// \c YES if writing to float textures is supported.
-@property (readonly, nonatomic) BOOL canRenderToFloatTextures;
+/// \c YES if rednering to float color buffers is supported.
+@property (readonly, nonatomic) BOOL canRenderToFloatColorBuffers;
 
 /// \c YES if creating and rendering \c RED or \c RG textures is supported.
 @property (readonly, nonatomic) BOOL supportsRGTextures;

@@ -50,9 +50,9 @@ NS_ASSUME_NONNULL_BEGIN
   if (pixelFormat.dataType == LTGLPixelDataType8Unorm) {
     return YES;
   } else if (pixelFormat.dataType == LTGLPixelDataType16Float) {
-    return [LTGLContext currentContext].canRenderToHalfFloatTextures;
+    return [LTGLContext currentContext].canRenderToHalfFloatColorBuffers;
   } else if (pixelFormat.dataType == LTGLPixelDataType32Float) {
-    return [LTGLContext currentContext].canRenderToFloatTextures;
+    return [LTGLContext currentContext].canRenderToFloatColorBuffers;
   } else {
     // Unknown pixel format, assume that LTMMTexture cannot handle it.
     return NO;
