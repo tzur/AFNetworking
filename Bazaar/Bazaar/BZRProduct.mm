@@ -45,7 +45,8 @@ LTEnumImplement(NSUInteger, BZRProductType,
     @instanceKeypath(BZRProduct, priceInfo): @"priceInfo",
     @instanceKeypath(BZRProduct, variants): @"variants",
     @instanceKeypath(BZRProduct, discountedProducts): @"discountedProducts",
-    @instanceKeypath(BZRProduct, fullPriceProductIdentifier): @"fullPriceProductIdentifier"
+    @instanceKeypath(BZRProduct, fullPriceProductIdentifier): @"fullPriceProductIdentifier",
+    @instanceKeypath(BZRProduct, enablesProducts): @"enablesProducts"
   };
 }
 
@@ -79,7 +80,8 @@ LTEnumImplement(NSUInteger, BZRProductType,
       @instanceKeypath(BZRProduct, preAcquiredViaSubscription),
       @instanceKeypath(BZRProduct, variants),
       @instanceKeypath(BZRProduct, discountedProducts),
-      @instanceKeypath(BZRProduct, fullPriceProductIdentifier)
+      @instanceKeypath(BZRProduct, fullPriceProductIdentifier),
+      @instanceKeypath(BZRProduct, enablesProducts)
     ]];
   });
   return optionalPropertyKeys;

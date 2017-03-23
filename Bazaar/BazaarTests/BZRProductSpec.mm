@@ -36,7 +36,7 @@ context(@"initialization", ^{
   it(@"should correctly specifiy optional properties", ^{
     NSSet<NSString *> *optionalProperties = [BZRProduct optionalPropertyKeys];
 
-    expect(optionalProperties.count).to.equal(8);
+    expect(optionalProperties.count).to.equal(9);
     expect(optionalProperties).to.contain(@instanceKeypath(BZRProduct, contentFetcherParameters));
     expect(optionalProperties).to.contain(@instanceKeypath(BZRProduct, priceInfo));
     expect(optionalProperties).to.contain(@instanceKeypath(BZRProduct, isSubscribersOnly));
@@ -45,6 +45,7 @@ context(@"initialization", ^{
     expect(optionalProperties).to.contain(@instanceKeypath(BZRProduct, variants));
     expect(optionalProperties).to.contain(@instanceKeypath(BZRProduct, discountedProducts));
     expect(optionalProperties).to.contain(@instanceKeypath(BZRProduct, fullPriceProductIdentifier));
+    expect(optionalProperties).to.contain(@instanceKeypath(BZRProduct, enablesProducts));
   });
 });
 
@@ -59,7 +60,8 @@ context(@"conversion" , ^{
       @instanceKeypath(BZRProduct, preAcquiredViaSubscription): @YES,
       @instanceKeypath(BZRProduct, preAcquired): @YES,
       @instanceKeypath(BZRProduct, contentFetcherParameters): contentFetcherParameters,
-      @instanceKeypath(BZRProduct, variants): @[@"TierA", @"TierB"]
+      @instanceKeypath(BZRProduct, variants): @[@"TierA", @"TierB"],
+      @instanceKeypath(BZRProduct, enablesProducts): @[@"foo.bar", @"baz"]
     };
 
     NSError *error = nil;
@@ -74,6 +76,8 @@ context(@"conversion" , ^{
     expect(jsonDictionary[@instanceKeypath(BZRProduct, preAcquiredViaSubscription)]).to.equal(YES);
     expect(jsonDictionary[@instanceKeypath(BZRProduct, preAcquired)]).to.equal(YES);
     expect(jsonDictionary[@instanceKeypath(BZRProduct, variants)]).to.equal(@[@"TierA", @"TierB"]);
+    expect(jsonDictionary[@instanceKeypath(BZRProduct, enablesProducts)])
+        .to.equal(@[@"foo.bar", @"baz"]);
   });
 
   it(@"should correctly convert from JSON dictionary to BZRProduct", ^{
@@ -85,7 +89,8 @@ context(@"conversion" , ^{
         @"value": @"foo"
       },
       @"isSubscribersOnly": @NO,
-      @"variants": @[@"TierA", @"TierB"]
+      @"variants": @[@"TierA", @"TierB"],
+      @"enablesProducts": @[@"foo.bar", @"baz"]
     };
     BZRDummyContentFetcherParameters *expectedParameters =
         [[BZRDummyContentFetcherParameters alloc] initWithValue:@"foo"];
@@ -101,6 +106,7 @@ context(@"conversion" , ^{
     expect(product.preAcquiredViaSubscription).to.equal(NO);
     expect(product.preAcquired).to.equal(NO);
     expect(product.variants).to.equal(@[@"TierA", @"TierB"]);
+    expect(product.enablesProducts).to.equal(@[@"foo.bar", @"baz"]);
   });
 });
 

@@ -61,6 +61,11 @@ LTEnumDeclare(NSUInteger, BZRProductType,
 /// is not a discount variant.
 @property (readonly, nonatomic, nullable) NSString *fullPriceProductIdentifier;
 
+/// Specifies the prefix of product identifiers that should be enabled when this product is
+/// purchased. If this is a subscription product, \c nil signifies that this product enables all
+/// products. Otherwise, \c nil signifies that this product does not enable any other products.
+@property (readonly, nonatomic, nullable) NSArray<NSString *> *enablesProducts;
+
 @end
 
 NS_ASSUME_NONNULL_END
