@@ -94,7 +94,7 @@ highp vec4 overlay(highp vec4 src, highp vec4 dst) {
 }
 
 highp vec4 addition(highp vec4 src, highp vec4 dst) {
-  return vec4(src.rgb + dst.rgb, src.a + dst.a);
+  return vec4(clamp(src.rgb + dst.rgb, 0.0, 1.0), clamp(src.a + dst.a, 0.0, 1.0));
 }
 
 highp vec4 blend(mediump vec4 src, highp vec4 dst, int mode) {
