@@ -93,7 +93,7 @@ LTGPUStructMake(LTSingleQuadDrawerVertex,
 #pragma mark Drawing (LTQuad)
 #pragma mark -
 
-- (void)framebufferWithSize:(CGSize)size drawBlock:(LTVoidBlock)block {
+- (void)framebufferWithSize:(CGSize)size drawBlock:(NS_NOESCAPE LTVoidBlock)block {
   LTParameterAssert(block);
 
   // In case of a screen framebuffer, we're using a flipped projection matrix so the original order

@@ -29,7 +29,7 @@ typedef NS_ENUM(NSUInteger, LTShaderType) {
 
 /// Attaches to the given program, executes the block and detaches afterwards. Making recursive
 /// calls to \c attachToProgram:andExecute: is possible without loss of context.
-- (void)attachToProgram:(LTProgram *)program andExecute:(LTVoidBlock)block;
+- (void)attachToProgram:(LTProgram *)program andExecute:(NS_NOESCAPE LTVoidBlock)block;
 
 /// Type of the shader.
 @property (readonly, nonatomic) LTShaderType type;

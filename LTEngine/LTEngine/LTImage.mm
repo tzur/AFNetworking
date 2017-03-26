@@ -171,7 +171,7 @@ NS_ASSUME_NONNULL_BEGIN
 typedef void (^LTImageCGImageBlock)(CGImageRef imageRef);
 
 - (void)createImageWithDataProvider:(CGDataProviderRef)dataProvider
-                              andDo:(LTImageCGImageBlock)block {
+                              andDo:(NS_NOESCAPE LTImageCGImageBlock)block {
   size_t bitsPerComponent = self.mat.elemSize1() * 8;
   size_t bitsPerPixel = self.mat.elemSize() * 8;
   lt::Ref<CGColorSpaceRef> colorSpace = [self newColorSpaceForImage];

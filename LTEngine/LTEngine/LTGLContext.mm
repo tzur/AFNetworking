@@ -305,7 +305,7 @@ typedef struct {
 #pragma mark Execution
 #pragma mark -
 
-- (void)executeAndPreserveState:(LTGLContextBlock)execute {
+- (void)executeAndPreserveState:(NS_NOESCAPE LTGLContextBlock)execute {
   LTParameterAssert(execute);
   [self assertContextIsCurrentContext];
 
@@ -315,7 +315,8 @@ typedef struct {
   self.contextStack.pop();
 }
 
-- (void)executeForOpenGLES2:(LTVoidBlock)openGLES2 openGLES3:(LTVoidBlock)openGLES3 {
+- (void)executeForOpenGLES2:(NS_NOESCAPE LTVoidBlock)openGLES2
+                  openGLES3:(NS_NOESCAPE LTVoidBlock)openGLES3 {
   LTParameterAssert(openGLES2);
   LTParameterAssert(openGLES3);
 

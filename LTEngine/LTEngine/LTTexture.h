@@ -195,7 +195,7 @@ typedef void (^LTTextureMappedWriteBlock)(cv::Mat *mapped, BOOL isCopy);
 /// it should be made outside the block.
 ///
 /// @see LTTextureMappedReadBlock for more information about the \c block.
-- (void)mappedImageForReading:(LTTextureMappedReadBlock)block;
+- (void)mappedImageForReading:(NS_NOESCAPE LTTextureMappedReadBlock)block;
 
 /// Calls the given \c block with an image with the texture's contents, which can be modified inside
 /// the block. When the method returns, the texture's contents will contain the updated image
@@ -205,7 +205,7 @@ typedef void (^LTTextureMappedWriteBlock)(cv::Mat *mapped, BOOL isCopy);
 /// it should be made outside the block.
 ///
 /// @see LTTextureMappedWriteBlock for more information about the \c block.
-- (void)mappedImageForWriting:(LTTextureMappedWriteBlock)block;
+- (void)mappedImageForWriting:(NS_NOESCAPE LTTextureMappedWriteBlock)block;
 
 /// Block for transferring texture contents as a \c CGImageRef for reading. If \c isCopy is \c YES,
 /// the given image is a copy of the texture and its reference can be stored outside the context of
@@ -217,7 +217,7 @@ typedef void (^LTTextureMappedCGImageBlock)(CGImageRef imageRef, BOOL isCopy);
 ///
 /// @note current implementation allows to create a image of textures of 1 or 4 channels only. An
 /// assert will be thrown for other types of textures.
-- (void)mappedCGImage:(LTTextureMappedCGImageBlock)block;
+- (void)mappedCGImage:(NS_NOESCAPE LTTextureMappedCGImageBlock)block;
 
 /// Block for transferring a core graphics bitmap context which is bound to the texture's data. The
 /// context is only valid in this block and should not be retained. Information about the context
@@ -234,7 +234,7 @@ typedef void (^LTTextureCoreGraphicsBlock)(CGContextRef context);
 /// be thrown for other types of textures.
 ///
 /// @see LTTextureCoreGraphicsBlock for more information about the \c block.
-- (void)drawWithCoreGraphics:(LTTextureCoreGraphicsBlock)block;
+- (void)drawWithCoreGraphics:(NS_NOESCAPE LTTextureCoreGraphicsBlock)block;
 
 /// Block for transferring texture contents as a \c CIImage for reading. The given image should not
 /// be stored or used outside the context of the block.
@@ -256,7 +256,7 @@ typedef CIImage * _Nullable(^LTTextureCoreImageBlock)();
 /// texture is left unchanged.
 ///
 /// @note: On simulator, it is currently possible to draw only to textures of byte precision.
-- (void)drawWithCoreImage:(LTTextureCoreImageBlock)block;
+- (void)drawWithCoreImage:(NS_NOESCAPE LTTextureCoreImageBlock)block;
 
 /// Returns pixel value at the given location, with symmetric boundary condition. The returned
 /// value is an RBGA value of the texture pixel at the given location.
@@ -290,7 +290,7 @@ typedef CIImage * _Nullable(^LTTextureCoreImageBlock)();
 /// Executes the given block while recording changes to the texture's openGL parameters (such as
 /// \c minFilterInterpolation, \c magFilterInterpolation, and \c wrap). Any change to the parameters
 /// inside this block will be recorded and reverted after the block completes executing.
-- (void)executeAndPreserveParameters:(LTVoidBlock)execute;
+- (void)executeAndPreserveParameters:(NS_NOESCAPE LTVoidBlock)execute;
 
 /// Clears the texture with the given \c color. In case this is a mipmap texture, all its levels
 /// will be cleared with the given \c color. This will set the texture's \c fillColor to the given

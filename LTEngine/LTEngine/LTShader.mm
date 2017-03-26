@@ -103,12 +103,16 @@
   self.boundProgram = nil;
 }
 
-- (void)attachToProgram:(LTProgram *)program andExecute:(LTVoidBlock)block {
+- (void)attachToProgram:(LTProgram *)program andExecute:(NS_NOESCAPE LTVoidBlock)block {
   if (self.boundProgram) {
-    if (block) block();
+    if (block) {
+      block();
+    }
   } else {
     [self attachToProgram:program];
-    if (block) block();
+    if (block) {
+      block();
+    }
     [self detach];
   }
 }

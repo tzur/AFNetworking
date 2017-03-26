@@ -63,7 +63,7 @@
   }];
 }
 
-- (void)drawUsingBlock:(LTVoidBlock)block {
+- (void)drawUsingBlock:(NS_NOESCAPE LTVoidBlock)block {
   LTParameterAssert(block);
 
   [self.program bindAndExecute:^{

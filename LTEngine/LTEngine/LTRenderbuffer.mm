@@ -124,7 +124,7 @@ NS_ASSUME_NONNULL_BEGIN
   self.bound = NO;
 }
 
-- (void)bindAndExecute:(LTVoidBlock)block {
+- (void)bindAndExecute:(NS_NOESCAPE LTVoidBlock)block {
   LTParameterAssert(block);
   if (self.bound) {
     block();
@@ -143,7 +143,7 @@ NS_ASSUME_NONNULL_BEGIN
   return LTFboAttachableTypeRenderbuffer;
 }
 
-- (void)writeToAttachableWithBlock:(LTVoidBlock)block {
+- (void)writeToAttachableWithBlock:(NS_NOESCAPE LTVoidBlock)block {
   LTParameterAssert(block);
 
   block();
@@ -151,7 +151,7 @@ NS_ASSUME_NONNULL_BEGIN
   [self updateGenerationID];
 }
 
-- (void)clearAttachableWithColor:(LTVector4)color block:(LTVoidBlock)block {
+- (void)clearAttachableWithColor:(LTVector4)color block:(NS_NOESCAPE LTVoidBlock)block {
   block();
   self.fillColor = color;
   [self updateGenerationID];

@@ -213,7 +213,7 @@ NS_ASSUME_NONNULL_BEGIN
   glBindTexture(GL_TEXTURE_2D, state.previousTexture);
 }
 
-- (void)bindAndExecute:(LTVoidBlock)block {
+- (void)bindAndExecute:(NS_NOESCAPE LTVoidBlock)block {
   LTParameterAssert(block);
   if ([self alreadyBoundToCurrentTextureUnit]) {
     block();
@@ -239,14 +239,14 @@ NS_ASSUME_NONNULL_BEGIN
   return NO;
 }
 
-- (void)mappedImageForReading:(LTTextureMappedReadBlock)block {
+- (void)mappedImageForReading:(NS_NOESCAPE LTTextureMappedReadBlock)block {
   LTParameterAssert(block);
 
   cv::Mat image([self image]);
   block(image, YES);
 }
 
-- (void)mappedImageForWriting:(LTTextureMappedWriteBlock)block {
+- (void)mappedImageForWriting:(NS_NOESCAPE LTTextureMappedWriteBlock)block {
   LTParameterAssert(block);
 
   cv::Mat image([self image]);
@@ -257,7 +257,7 @@ NS_ASSUME_NONNULL_BEGIN
   [self load:image];
 }
 
-- (void)mappedCGImage:(LTTextureMappedCGImageBlock)block {
+- (void)mappedCGImage:(NS_NOESCAPE LTTextureMappedCGImageBlock)block {
   LTParameterAssert(block);
 
   [self mappedImageForReading:^(const cv::Mat &mapped, BOOL isCopy) {
@@ -276,7 +276,7 @@ NS_ASSUME_NONNULL_BEGIN
   }];
 }
 
-- (void)drawWithCoreGraphics:(LTTextureCoreGraphicsBlock)block {
+- (void)drawWithCoreGraphics:(NS_NOESCAPE LTTextureCoreGraphicsBlock)block {
   LTParameterAssert(block);
 
   [self mappedImageForWriting:^(cv::Mat *mapped, BOOL) {
@@ -322,7 +322,7 @@ NS_ASSUME_NONNULL_BEGIN
   }
 }
 
-- (void)mappedCIImage:(LTTextureMappedCIImageBlock)block {
+- (void)mappedCIImage:(NS_NOESCAPE LTTextureMappedCIImageBlock)block {
   LTParameterAssert(block);
 
   [self mappedImageForReading:^(const cv::Mat &mapped, BOOL) {
@@ -349,7 +349,7 @@ NS_ASSUME_NONNULL_BEGIN
   }];
 }
 
-- (void)drawWithCoreImage:(LTTextureCoreImageBlock)block {
+- (void)drawWithCoreImage:(NS_NOESCAPE LTTextureCoreImageBlock)block {
   LTParameterAssert(block);
 
   @autoreleasepool {
@@ -460,7 +460,7 @@ NS_ASSUME_NONNULL_BEGIN
   return image;
 }
 
-- (void)executeAndPreserveParameters:(LTVoidBlock)execute {
+- (void)executeAndPreserveParameters:(NS_NOESCAPE LTVoidBlock)execute {
   LTParameterAssert(execute);
   LTTextureParameters *parameters = [self currentParameters];
   execute();
@@ -510,7 +510,7 @@ NS_ASSUME_NONNULL_BEGIN
   self.generationID = [NSUUID UUID].UUIDString;
 }
 
-- (void)performWithoutUpdatingGenerationID:(LTVoidBlock)block {
+- (void)performWithoutUpdatingGenerationID:(NS_NOESCAPE LTVoidBlock)block {
   LTParameterAssert(block);
   BOOL locked = self.isGenerationIDLocked;
   self.isGenerationIDLocked = YES;
@@ -526,14 +526,14 @@ NS_ASSUME_NONNULL_BEGIN
   return LTFboAttachableTypeTexture2D;
 }
 
-- (void)writeToAttachableWithBlock:(LTVoidBlock)block {
+- (void)writeToAttachableWithBlock:(NS_NOESCAPE LTVoidBlock)block {
   LTParameterAssert(block);
   [self beginWritingWithGPU];
   block();
   [self endWritingWithGPU];
 }
 
-- (void)clearAttachableWithColor:(LTVector4)color block:(LTVoidBlock)block {
+- (void)clearAttachableWithColor:(LTVector4)color block:(NS_NOESCAPE LTVoidBlock)block {
   [self writeToAttachableWithBlock:block];
 
   // Not a mipmap - fill color applies to the entire texture.

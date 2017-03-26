@@ -108,11 +108,12 @@ extern LTGLContextBlendEquationArgs kLTGLContextBlendEquationDefault;
 
 /// Executes the given block while recording changes to the state. Any change to the state inside
 /// this block will be recorded and reverted after the block completes executing.
-- (void)executeAndPreserveState:(LTGLContextBlock)execute;
+- (void)executeAndPreserveState:(NS_NOESCAPE LTGLContextBlock)execute;
 
 /// Executes either \c openGLES2 or \c openGLES3, depending on the current API version. Both blocks
 /// must not be \c nil.
-- (void)executeForOpenGLES2:(LTVoidBlock)openGLES2 openGLES3:(LTVoidBlock)openGLES3;
+- (void)executeForOpenGLES2:(NS_NOESCAPE LTVoidBlock)openGLES2
+                  openGLES3:(NS_NOESCAPE LTVoidBlock)openGLES3;
 
 /// Fills the currently bound framebuffer with the given \c colorValue and depth renderbuffer with
 /// the given \c depthValue.

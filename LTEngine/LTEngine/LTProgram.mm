@@ -254,7 +254,7 @@ NS_ASSUME_NONNULL_BEGIN
   self.bound = NO;
 }
 
-- (void)bindAndExecute:(LTVoidBlock)block {
+- (void)bindAndExecute:(NS_NOESCAPE LTVoidBlock)block {
   LTParameterAssert(block);
   if (self.bound) {
     block();

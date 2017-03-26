@@ -307,7 +307,7 @@
   return _lock;
 }
 
-- (void)lockTextureAndExecute:(LTVoidBlock)block {
+- (void)lockTextureAndExecute:(NS_NOESCAPE LTVoidBlock)block {
   @try {
     [self.lock lock];
     block();
@@ -322,7 +322,7 @@
 
 typedef LTTextureMappedWriteBlock LTTextureMappedBlock;
 
-- (void)mappedImageForReading:(LTTextureMappedReadBlock)block {
+- (void)mappedImageForReading:(NS_NOESCAPE LTTextureMappedReadBlock)block {
   LTParameterAssert(block);
 
   [self mappedImageWithBlock:^(cv::Mat *mapped, BOOL isCopy) {
@@ -330,13 +330,14 @@ typedef LTTextureMappedWriteBlock LTTextureMappedBlock;
   } withFlags:kCVPixelBufferLock_ReadOnly];
 }
 
-- (void)mappedImageForWriting:(LTTextureMappedWriteBlock)block {
+- (void)mappedImageForWriting:(NS_NOESCAPE LTTextureMappedWriteBlock)block {
   self.fillColor = LTVector4::null();
   [self mappedImageWithBlock:block withFlags:0];
   [self updateGenerationID];
 }
 
-- (void)mappedImageWithBlock:(LTTextureMappedBlock)block withFlags:(CVOptionFlags)lockFlags {
+- (void)mappedImageWithBlock:(NS_NOESCAPE LTTextureMappedBlock)block
+                   withFlags:(CVOptionFlags)lockFlags {
   LTParameterAssert(block);
 
   [self lockTextureAndExecute:^{
@@ -403,7 +404,7 @@ typedef LTTextureMappedWriteBlock LTTextureMappedBlock;
   _syncObject = syncObject;
 }
 
-- (void)mappedCIImage:(LTTextureMappedCIImageBlock)block {
+- (void)mappedCIImage:(NS_NOESCAPE LTTextureMappedCIImageBlock)block {
   LTParameterAssert(block);
 
   [self mappedImageForReading:^(const cv::Mat &, BOOL) {
@@ -423,7 +424,7 @@ typedef LTTextureMappedWriteBlock LTTextureMappedBlock;
   }];
 }
 
-- (void)drawWithCoreImage:(LTTextureCoreImageBlock)block {
+- (void)drawWithCoreImage:(NS_NOESCAPE LTTextureCoreImageBlock)block {
   LTParameterAssert(block);
 
 #if TARGET_OS_SIMULATOR

@@ -21,7 +21,7 @@
 /// without loss of context.
 ///
 /// @param block The block to execute after binding the resource. Must not be \c nil.
-- (void)bindAndExecute:(LTVoidBlock)block;
+- (void)bindAndExecute:(NS_NOESCAPE LTVoidBlock)block;
 
 /// OpenGL name of the resource.
 @property (readonly, nonatomic) GLuint name;

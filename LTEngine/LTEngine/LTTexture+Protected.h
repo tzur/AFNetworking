@@ -17,7 +17,7 @@ typedef std::vector<cv::Point2i> LTTextureSamplingPoints;
 - (void)updateGenerationID;
 
 /// Executes the given block while keeping the texture's \c generationID unchanged.
-- (void)performWithoutUpdatingGenerationID:(LTVoidBlock)block;
+- (void)performWithoutUpdatingGenerationID:(NS_NOESCAPE LTVoidBlock)block;
 
 /// Returns \c YES if the given rect is completely inside the texture.
 - (BOOL)inTextureRect:(CGRect)rect;
