@@ -216,8 +216,9 @@ typedef void (^LTTextureMappedCGImageBlock)(CGImageRef imageRef, BOOL isCopy);
 
 /// Calls the given \c block with a valid \c CGImageRef as a wrapper for the texture's data.
 ///
-/// @note current implementation allows to create a image of textures of 1 or 4 channels only. An
-/// assert will be thrown for other types of textures.
+/// @note current implementation allows to create a image of textures of 1 or 4 channels only
+/// (otherwise assertion fires). Half float pixel format is supported, however it's assumed pixel
+/// values are pre multiplied with alpha.
 - (void)mappedCGImage:(NS_NOESCAPE LTTextureMappedCGImageBlock)block;
 
 /// Block for transferring a core graphics bitmap context which is bound to the texture's data. The

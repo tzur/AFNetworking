@@ -311,15 +311,31 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (CGBitmapInfo)bitmapInfoForMat:(const cv::Mat &)mat {
+  CGBitmapInfo bitmapFlags = 0;
+
   switch (mat.channels()) {
     case 1:
-      return kCGImageAlphaNone | kCGBitmapByteOrderDefault;
+      bitmapFlags |= kCGImageAlphaNone;
+      break;
     case 4:
-      return kCGImageAlphaPremultipliedLast | kCGBitmapByteOrderDefault;
+      bitmapFlags |= kCGImageAlphaPremultipliedLast;
+      break;
     default:
       LTAssert(NO, @"Texture has %d channels, which is not supported for a CGBitmapContext",
                mat.channels());
   }
+
+  if (mat.depth() == CV_16F) {
+    // CGContext initializes successfully, when running on simulator and device, with float
+    // components only with kCGBitmapByteOrder16Little set. This requirement is documented only in
+    // the reported error (which occurs when trying to initialize the context with default byte
+    // ordering).
+    bitmapFlags |= kCGBitmapFloatComponents | kCGBitmapByteOrder16Little;
+  } else {
+    bitmapFlags |= kCGBitmapByteOrderDefault;
+  }
+
+  return bitmapFlags;
 }
 
 - (void)mappedCIImage:(NS_NOESCAPE LTTextureMappedCIImageBlock)block {
