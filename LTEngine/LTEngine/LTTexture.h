@@ -140,8 +140,8 @@ struct LTVector4;
 /// device) or regular precision. Half-float precision textures will be converted to unsigned byte
 /// precision if no support for half-float color buffers is available.
 ///
-/// TODO:(yaron) the final precision is controlled by \c LTFbo, and as discussed with Amit, shouldn't
-/// change since we can always use the slow cloning path.
+/// TODO:(yaron) the final precision is controlled by \c LTFbo, and as discussed with Amit,
+/// shouldn't change since we can always use the slow cloning path.
 - (LTTexture *)clone;
 
 /// Clones the texture into the given texture. The target \c texture must be of the same size of the
@@ -175,10 +175,11 @@ struct LTVector4;
 /// they don't match, an \c LTGLException with \c kLTOpenGLRuntimeErrorException will be thrown.
 - (void)load:(const cv::Mat &)image;
 
-/// Block for transferring the texture contents while allowing read-only access. If \c isCopy is \c
-/// YES, the given image is a copy of the texture and its reference can be stored outside the context
-/// of the block. Otherwise, the memory is directly mapped to the texture's memory and \c mapped
-/// should not be referenced outside this block (unless it is duplicated to a new \c cv::Mat).
+/// Block for transferring the texture contents while allowing read-only access. If \c isCopy is
+/// \c YES, the given image is a copy of the texture and its reference can be stored outside the
+/// context of the block. Otherwise, the memory is directly mapped to the texture's memory and
+/// \c mapped should not be referenced outside this block (unless it is duplicated to a new
+/// \c cv::Mat).
 typedef void (^LTTextureMappedReadBlock)(const cv::Mat &mapped, BOOL isCopy);
 
 /// Block for transferring the texture contents and allow updates. If \c isCopy is \c YES, the given

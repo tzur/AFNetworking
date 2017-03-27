@@ -96,7 +96,8 @@ void LTCGPathInspectWithBlock(CGPathRef path, LTPathInspectionBlock block) {
   CGPathApply(path, (__bridge void *)block, &LTCGPathIteration);
 }
 
-lt::Ref<CGPathRef> LTCGPathCreateCopyByTransformingPath(CGPathRef path, GLKMatrix3 &transformation) {
+lt::Ref<CGPathRef> LTCGPathCreateCopyByTransformingPath(CGPathRef path,
+                                                        GLKMatrix3 &transformation) {
   CGMutablePathRef result = CGPathCreateMutable();
 
   LTPathModificationData data;
