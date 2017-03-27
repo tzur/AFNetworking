@@ -530,7 +530,6 @@ typedef struct {
            @"Trying to modify context while not set as current context");
 }
 
-
 #pragma mark -
 #pragma mark Capabilities
 #pragma mark -
