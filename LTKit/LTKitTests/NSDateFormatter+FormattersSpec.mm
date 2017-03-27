@@ -41,7 +41,8 @@ context(@"UTC date formatter", ^{
 
 context(@"device timezone date formatter", ^{
   itShouldBehaveLike(@"formatting", ^{
-    NSInteger timezoneOffset = [[NSTimeZone systemTimeZone] secondsFromGMT];
+    NSTimeZone *timezone = [NSTimeZone systemTimeZone];
+    NSInteger timezoneOffset = [timezone secondsFromGMT] - [timezone daylightSavingTimeOffset];
     NSDate *date = [NSDate dateWithTimeIntervalSince1970:60];
 
     return @{
