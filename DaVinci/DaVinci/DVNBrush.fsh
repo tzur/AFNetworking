@@ -123,8 +123,9 @@ highp vec4 blend(mediump vec4 src, highp vec4 dst, int mode) {
   } else if (blendMode == kBlendModeAddition) {
     outputColor = addition(src, dst);
   }
-  outputColor.rgb /= outputColor.a;
-  return outputColor;
+  
+  highp float safeA = outputColor.a + step(outputColor.a, 0.0);
+  return vec4(outputColor.rgb / safeA, outputColor.a);
 }
 
 highp float edgeAvoidanceFactor(in highp float spatialFactor) {
@@ -171,5 +172,9 @@ void main() {
     src.rgb *= vColor;
   }
   highp vec4 dst = gl_LastFragData[0];
-  gl_FragColor = mix(dst, blend(src, dst, blendMode), opacity * edgeAvoidanceFactor(length(src)));
+
+  if (!sampleFromOverlayTexture) {
+    src = blend(src, dst, blendMode);
+  }
+  gl_FragColor = mix(dst, src, opacity * edgeAvoidanceFactor(length(src)));
 }
