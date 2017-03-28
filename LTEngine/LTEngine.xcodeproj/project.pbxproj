@@ -1226,6 +1226,10 @@
 		C7E0B02F1E41E34600E88244 /* ImageZeroVersion1Test.iz in Resources */ = {isa = PBXBuildFile; fileRef = C7E0B02D1E41E34600E88244 /* ImageZeroVersion1Test.iz */; };
 		C7E0B0301E41E34600E88244 /* ImageZeroVersion1Test.iz.1 in Resources */ = {isa = PBXBuildFile; fileRef = C7E0B02E1E41E34600E88244 /* ImageZeroVersion1Test.iz.1 */; };
 		C7E0B0321E41E94800E88244 /* SemiTransparentLena.png in Resources */ = {isa = PBXBuildFile; fileRef = C7E0B0311E41E94800E88244 /* SemiTransparentLena.png */; };
+		E4CEAF5B1E432BEC008FA38E /* libOpenEXR.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E4CEAC461E41DCC9008FA38E /* libOpenEXR.a */; };
+		E4F061FC1E49B46D00FDE0B0 /* LTOpenExrPizCompressor.h in Headers */ = {isa = PBXBuildFile; fileRef = E4F061FA1E49B46D00FDE0B0 /* LTOpenExrPizCompressor.h */; };
+		E4F061FD1E49B46D00FDE0B0 /* LTOpenExrPizCompressor.mm in Sources */ = {isa = PBXBuildFile; fileRef = E4F061FB1E49B46D00FDE0B0 /* LTOpenExrPizCompressor.mm */; };
+		E4F062851E49B89800FDE0B0 /* LTOpenExrPizCompressorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = E4F062841E49B89800FDE0B0 /* LTOpenExrPizCompressorSpec.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -2961,6 +2965,10 @@
 		C7E0B02D1E41E34600E88244 /* ImageZeroVersion1Test.iz */ = {isa = PBXFileReference; lastKnownFileType = file; name = ImageZeroVersion1Test.iz; path = Resources/ImageZeroVersion1Test.iz; sourceTree = "<group>"; };
 		C7E0B02E1E41E34600E88244 /* ImageZeroVersion1Test.iz.1 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.man; name = ImageZeroVersion1Test.iz.1; path = Resources/ImageZeroVersion1Test.iz.1; sourceTree = "<group>"; };
 		C7E0B0311E41E94800E88244 /* SemiTransparentLena.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SemiTransparentLena.png; path = Resources/SemiTransparentLena.png; sourceTree = "<group>"; };
+		E4CEAC461E41DCC9008FA38E /* libOpenEXR.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libOpenEXR.a; path = "../third_party/openexr-binaries/lib/libOpenEXR.a"; sourceTree = "<group>"; };
+		E4F061FA1E49B46D00FDE0B0 /* LTOpenExrPizCompressor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTOpenExrPizCompressor.h; sourceTree = "<group>"; };
+		E4F061FB1E49B46D00FDE0B0 /* LTOpenExrPizCompressor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTOpenExrPizCompressor.mm; sourceTree = "<group>"; };
+		E4F062841E49B89800FDE0B0 /* LTOpenExrPizCompressorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTOpenExrPizCompressorSpec.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2993,11 +3001,12 @@
 				8BAE1F86184F5DEE0075A5AB /* GLKit.framework in Frameworks */,
 				8B4E493819E950C500B3F55D /* ImageIO.framework in Frameworks */,
 				8BF68B1C1D82E99A0093910D /* libcompression.tbd in Frameworks */,
-				656155B91D464A58009E701C /* libExpecta.a in Frameworks */,
+				656155B91D464A58009E701C /* libExpecta in Frameworks */,
 				8B0B98F91CA6B9CC00ED2334 /* libextobjc_iOS.a in Frameworks */,
 				8B3DEBFC18296B6100EA0C1A /* libLTEngine.a in Frameworks */,
 				8B368E971CA69D63003E34CF /* libLTKit.a in Frameworks */,
 				656155BA1D464A5F009E701C /* libOCMock.a in Frameworks */,
+				E4CEAF5B1E432BEC008FA38E /* libOpenEXR.a in Frameworks */,
 				656155BB1D464A65009E701C /* libSpecta.a in Frameworks */,
 				656155C41D464B6D009E701C /* Mantle.framework in Frameworks */,
 				8B4E494B19E950C800B3F55D /* MobileCoreServices.framework in Frameworks */,
@@ -3769,6 +3778,7 @@
 			children = (
 				8B3831F41B568FC800620560 /* ImageZero */,
 				8B3831F31B568FB300620560 /* Interfaces */,
+				E4F061C71E49B44100FDE0B0 /* OpenEXR */,
 				8BF68A6C1D82E7FE0093910D /* NSData+Compression.h */,
 				8BF68A6D1D82E7FE0093910D /* NSData+Compression.mm */,
 			);
@@ -4357,6 +4367,7 @@
 			children = (
 				8B3831F61B56903200620560 /* ImageZero */,
 				8B3831F71B56903600620560 /* Interfaces */,
+				E4F062831E49B88500FDE0B0 /* OpenEXR */,
 				8BF68AA21D82E8160093910D /* NSData+CompressionSpec.mm */,
 			);
 			name = Compression;
@@ -4411,6 +4422,7 @@
 			children = (
 				8861FC5E1E5A263000CA1436 /* CoreImage.framework */,
 				8861FC2A1E5A261500CA1436 /* CoreText.framework */,
+				E4CEAC461E41DCC9008FA38E /* libOpenEXR.a */,
 				8BF68B1B1D82E99A0093910D /* libcompression.tbd */,
 				8BA8C68718699D9A00E6F486 /* Accelerate.framework */,
 				8B3C0A5A1832953E000845BA /* AssetsLibrary.framework */,
@@ -5478,6 +5490,23 @@
 			name = ImageZero;
 			sourceTree = "<group>";
 		};
+		E4F061C71E49B44100FDE0B0 /* OpenEXR */ = {
+			isa = PBXGroup;
+			children = (
+				E4F061FA1E49B46D00FDE0B0 /* LTOpenExrPizCompressor.h */,
+				E4F061FB1E49B46D00FDE0B0 /* LTOpenExrPizCompressor.mm */,
+			);
+			name = OpenEXR;
+			sourceTree = "<group>";
+		};
+		E4F062831E49B88500FDE0B0 /* OpenEXR */ = {
+			isa = PBXGroup;
+			children = (
+				E4F062841E49B89800FDE0B0 /* LTOpenExrPizCompressorSpec.mm */,
+			);
+			name = OpenEXR;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -5518,6 +5547,7 @@
 				500CA9FE1D26B11F009CF19F /* LTPresentationView.h in Headers */,
 				8B871FD11924A75E00517F2E /* LTIterativeProcessingStrategy.h in Headers */,
 				253F607A1B3FC979009C6A5F /* LTBrushRandomState.h in Headers */,
+				E4F061FC1E49B46D00FDE0B0 /* LTOpenExrPizCompressor.h in Headers */,
 				282B9BF81D34D01000071AB2 /* LTContentTouchEventStateFilter.h in Headers */,
 				2897A892197EE3CC004EE8B5 /* LTPerspectiveProcessor.h in Headers */,
 				64F1C94D1D41100D00AF2DA6 /* LTMaskedBlurProcessor.h in Headers */,
@@ -6886,6 +6916,7 @@
 				6AB997061D5B3ABB0059863F /* LTPixelBufferPool.mm in Sources */,
 				254DD74F1BF9FA2000972C0A /* LTBasicParameterizedObjectFactories.mm in Sources */,
 				28A0C70A1AC0188D00FBC803 /* LTCircularMeshModel.mm in Sources */,
+				E4F061FD1E49B46D00FDE0B0 /* LTOpenExrPizCompressor.mm in Sources */,
 				03BBB375188C0675001E7703 /* LTFractionalNoise.mm in Sources */,
 				28A0C7021AC00C3500FBC803 /* LTCircularPatchDrawer.mm in Sources */,
 				8B18BB7819235F4200DA4B64 /* LTTextureContentsFileArchiver.mm in Sources */,
@@ -7201,6 +7232,7 @@
 				5004CAF01CCBD0FB00D1CE7A /* LTParameterizedObjectConstructorSpec.mm in Sources */,
 				8BB92F9B1906601B00954124 /* LTInverseTransformSamplerSpec.mm in Sources */,
 				8BAED5401886D28B00BCACF7 /* TwoInputTextures.fsh in Sources */,
+				E4F062851E49B89800FDE0B0 /* LTOpenExrPizCompressorSpec.mm in Sources */,
 				8BA8229B198805D300FBE68E /* LTJSONSerializationAdapterSpec.mm in Sources */,
 				8B329020192CACAA0010592E /* LTTextureContentsDataArchiverSpec.mm in Sources */,
 				8B9D3FC51891116A001A964D /* LTEasyBoxing+LTEngineSpec.mm in Sources */,
@@ -7270,10 +7302,11 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../LTKit",
+					"$(SRCROOT)/../third_party/half",
 					"$(SRCROOT)/../third_party/libextobjc/extobjc",
 					"$(SRCROOT)/../third_party/libextobjc",
-					"$(SRCROOT)/../third_party/half",
 					"$(SRCROOT)/../third_party/Mantle/",
+					"$(SRCROOT)/../third_party/openexr-binaries/include",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				ONLY_ACTIVE_ARCH = YES;
@@ -7304,6 +7337,7 @@
 					"$(SRCROOT)/../third_party/libextobjc",
 					"$(SRCROOT)/../third_party/half",
 					"$(SRCROOT)/../third_party/Mantle/",
+					"$(SRCROOT)/../third_party/openexr-binaries/include",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				SDKROOT = iphoneos;
@@ -7349,8 +7383,13 @@
 					"$(SRCROOT)/../third_party/Expecta/src/**",
 					"$(SRCROOT)/../third_party/OCMock/Source",
 					"$(SRCROOT)/../third_party/Specta/Specta",
+					"$(SRCROOT)/../third_party/openexr-binaries/include",
 				);
 				INFOPLIST_FILE = "LTEngineTests/LTEngineTests-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../third_party/openexr-binaries/lib",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.Lightricks.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRIP_PNG_TEXT = NO;
@@ -7377,8 +7416,13 @@
 					"$(SRCROOT)/../third_party/Expecta/src/**",
 					"$(SRCROOT)/../third_party/OCMock/Source",
 					"$(SRCROOT)/../third_party/Specta/Specta",
+					"$(SRCROOT)/../third_party/openexr-binaries/include",
 				);
 				INFOPLIST_FILE = "LTEngineTests/LTEngineTests-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../third_party/openexr-binaries/lib",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.Lightricks.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRIP_PNG_TEXT = NO;
