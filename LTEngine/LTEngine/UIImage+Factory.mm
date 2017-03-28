@@ -11,7 +11,13 @@ NS_ASSUME_NONNULL_BEGIN
 @implementation UIImage (Factory)
 
 + (UIImage *)lt_imageWithTexture:(LTTexture *)texture {
-  return [UIImage lt_imageWithMat:texture.image];
+  __block UIImage *image;
+
+  [texture mappedImageForReading:^(const cv::Mat &mapped, BOOL) {
+    image = [self lt_imageWithMat:mapped];
+  }];
+
+  return image;
 }
 
 + (UIImage *)lt_imageWithMat:(const cv::Mat &)mat {
