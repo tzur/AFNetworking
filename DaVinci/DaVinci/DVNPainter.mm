@@ -3,11 +3,11 @@
 
 #import "DVNPainter.h"
 
-#import "DVNSplineRenderer.h"
-
 #import <LTEngine/LTFbo.h>
 #import <LTEngine/LTFboPool.h>
 #import <LTEngine/LTTexture.h>
+
+#import "DVNSplineRenderer.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -88,7 +88,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (void)processModels:(NSArray<DVNSplineRenderModel *> *)models
           usingCanvas:(LTTexture *)canvas {
   LTFbo *fbo = [[LTFboPool currentPool] fboWithTexture:canvas];
-  [fbo bindAndExecute:^{
+  [fbo bindAndDraw:^{
     for (DVNSplineRenderModel *model in models) {
       [DVNSplineRenderer processModel:model];
     }
@@ -98,7 +98,6 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 #pragma mark DVNSplineRenderingDelegate
 #pragma mark -
-
 
 - (void)renderingOfSplineRendererWillStart:(id<DVNSplineRendering>)renderer {
   [self validateRenderer:renderer];

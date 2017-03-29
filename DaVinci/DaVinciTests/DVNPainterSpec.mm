@@ -3,9 +3,11 @@
 
 #import "DVNPainter.h"
 
+#import <LTEngine/LTControlPointModel.h>
 #import <LTEngine/LTParameterizedObjectType.h>
 #import <LTEngine/LTTexture+Factory.h>
 
+#import "DVNSplineRenderModel.h"
 #import "DVNTestPipelineConfiguration.h"
 
 @interface DVNTestSplineRenderInfoProvider : NSObject <DVNBrushRenderInfoProvider>
@@ -58,7 +60,8 @@ sharedExamplesFor(kDVNBrushRenderInfoProviderExamples, ^(NSDictionary *data) {
       OCMVerifyAll(providerMock);
     });
 
-    it(@"should request parameterized object type from provider for every process sequence start", ^{
+    it(@"should request parameterized object type from provider for every process sequence "
+       "start", ^{
       OCMStub([providerMock pipelineConfigurationForBrushRendering]).andReturn(configuration);
 
       // First process sequence.
@@ -178,7 +181,7 @@ context(@"initialization", ^{
                                      brushRenderInfoProvider:providerMock delegate:delegateMock];
     expect(painter).toNot.beNil();
   });
-  
+
   it(@"should set the delegate with the one given upon initialization", ^{
     DVNPainter *painter = [[DVNPainter alloc] initWithCanvas:canvas
                                      brushRenderInfoProvider:providerMock delegate:delegateMock];
@@ -192,6 +195,22 @@ context(@"retrieval of data from DVNBrushRenderInfoProvider", ^{
       kLTParameterizedObjectType: value
     });
   }];
+});
+
+it(@"should cause the generation ID of the canvas to update when processing models", ^{
+  LTControlPointModel *controlPointModel =
+      [[LTControlPointModel alloc] initWithType:$(LTParameterizedObjectTypeLinear)];
+  DVNSplineRenderModel *model =
+      [[DVNSplineRenderModel alloc] initWithControlPointModel:controlPointModel
+                                                configuration:DVNTestPipelineConfiguration()
+                                                  endInterval:lt::Interval<CGFloat>()];
+
+  LTTexture *canvas = [LTTexture byteRGBATextureWithSize:CGSizeMake(1, 1)];
+  NSString *generationID = canvas.generationID;
+
+  [DVNPainter processModels:@[model] usingCanvas:canvas];
+
+  expect(canvas.generationID).toNot.equal(generationID);
 });
 
 SpecEnd
