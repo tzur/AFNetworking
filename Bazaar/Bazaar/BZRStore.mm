@@ -299,7 +299,7 @@ NS_ASSUME_NONNULL_BEGIN
       [self.variantSelector selectedVariantForProductWithIdentifier:productIdentifier];
 
   @weakify(self);
-  return [[[[self isProductClearedForSale:variantIdentifier]
+  return [[[[[self isProductClearedForSale:variantIdentifier]
       tryMap:^id(NSNumber *isClearedForSale, NSError **error) {
         if (![isClearedForSale boolValue]) {
           if(error) {
@@ -308,6 +308,10 @@ NS_ASSUME_NONNULL_BEGIN
           return nil;
         }
         return isClearedForSale;
+      }]
+      doError:^(NSError *error) {
+        @strongify(self);
+        [self sendErrorEventOfType:$(BZREventTypeNonCriticalError) error:error];
       }]
       then:^RACSignal *{
         @strongify(self);
@@ -355,10 +359,15 @@ NS_ASSUME_NONNULL_BEGIN
       doError:^(NSError *error) {
         @strongify(self);
         [self.storeKitFacade finishTransaction:error.bzr_transaction];
+        [self sendErrorEventOfType:$(BZREventTypeNonCriticalError) error:error];
       }]
       then:^RACSignal *{
         @strongify(self);
-        return [self.validationStatusProvider fetchReceiptValidationStatus];
+        return [[self.validationStatusProvider fetchReceiptValidationStatus]
+            doError:^(NSError *error) {
+              @strongify(self);
+              [self sendErrorEventOfType:$(BZREventTypeCriticalError) error:error];
+            }];
       }]
       flattenMap:^RACSignal *(BZRReceiptValidationStatus *receiptValidationStatus) {
         @strongify(self);

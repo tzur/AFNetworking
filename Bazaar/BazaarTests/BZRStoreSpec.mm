@@ -347,6 +347,23 @@ context(@"purchasing products", ^{
     });
   });
 
+  it(@"should send non-critical error event when product given by variant selector doesn't "
+     "exist", ^{
+    LLSignalTestRecorder *recorder = [store.eventsSignal testRecorder];
+    NSArray<BZRProduct *> *productList = @[
+      BZRProductWithIdentifier(@"bar"),
+      BZRProductWithIdentifier(@"baz")
+    ];
+
+    OCMStub([productsProvider fetchProductList]).andReturn([RACSignal return:productList]);
+    [[store purchaseProduct:@"bar"] subscribeNext:^(id) {}];
+    expect(recorder).will.matchValue(0, ^BOOL(BZREvent *event) {
+      return event.eventError.lt_isLTDomain &&
+          event.eventError.code == BZRErrorCodeInvalidProductIdentifer &&
+          [event.eventType isEqual:$(BZREventTypeNonCriticalError)];
+    });
+  });
+
   it(@"should purchase through store kit if product is a renewable subscription", ^{
     BZRProduct *product = BZRProductWithIdentifier(productIdentifier);
     product = [product modelByOverridingProperty:@keypath(product, productType)
@@ -412,6 +429,32 @@ context(@"purchasing products", ^{
             BZRReceiptValidationStatusWithInAppPurchaseAndExpiry(productIdentifier, YES);
         OCMStub([receiptValidationStatusProvider receiptValidationStatus])
             .andReturn(receiptValidationStatus);
+      });
+
+      it(@"should send non-critical error event when store kit facade fails", ^{
+        LLSignalTestRecorder *recorder = [store.eventsSignal testRecorder];
+        NSError *error = [NSError lt_errorWithCode:1337];
+        OCMStub([storeKitFacade purchaseProduct:OCMOCK_ANY]).andReturn([RACSignal error:error]);
+
+        [[store purchaseProduct:productIdentifier] subscribeNext:^(id) {}];
+        expect(recorder).will.matchValue(0, ^BOOL(BZREvent *event) {
+          return event.eventError.lt_isLTDomain && event.eventError == error &&
+              [event.eventType isEqual:$(BZREventTypeNonCriticalError)];
+        });
+      });
+
+      it(@"should send critical error event when receipt validation fails", ^{
+        LLSignalTestRecorder *recorder = [store.eventsSignal testRecorder];
+        NSError *error = [NSError lt_errorWithCode:1337];
+        OCMStub([storeKitFacade purchaseProduct:OCMOCK_ANY]).andReturn([RACSignal empty]);
+        OCMStub([receiptValidationStatusProvider fetchReceiptValidationStatus])
+            .andReturn([RACSignal error:error]);
+
+        [[store purchaseProduct:productIdentifier] subscribeNext:^(id) {}];
+        expect(recorder).will.matchValue(0, ^BOOL(BZREvent *event) {
+          return event.eventError.lt_isLTDomain && event.eventError == error &&
+              [event.eventType isEqual:$(BZREventTypeCriticalError)];
+        });
       });
 
       it(@"should not add product to acquired via subscription if subscription is expired", ^{
