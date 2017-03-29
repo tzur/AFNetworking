@@ -51,8 +51,6 @@ NS_ASSUME_NONNULL_BEGIN
     return _##name; \
   } \
   - (void)set##Name:(type)name { \
-    LTParameterAssert(name >= self.softMin##Name); \
-    LTParameterAssert(name <= self.softMax##Name); \
     _##name = name; \
     ___##name##Set = YES; \
   } \
@@ -64,8 +62,6 @@ NS_ASSUME_NONNULL_BEGIN
     return _default##Name; \
   } \
   - (void)setDefault##Name:(type)default##Name { \
-    LTParameterAssert(default##Name >= self.softMin##Name); \
-    LTParameterAssert(default##Name <= self.softMax##Name); \
     _default##Name = default##Name; \
     ___default##Name##Set = YES; \
   } \
@@ -77,8 +73,6 @@ NS_ASSUME_NONNULL_BEGIN
     return _softMin##Name; \
   } \
   - (void)setSoftMin##Name:(type)softMin##Name { \
-    LTParameterAssert(softMin##Name >= self.min##Name); \
-    LTParameterAssert(softMin##Name <= self.softMax##Name); \
     _softMin##Name = softMin##Name; \
     ___softMin##Name##Set = YES; \
   } \
@@ -90,8 +84,6 @@ NS_ASSUME_NONNULL_BEGIN
     return _softMax##Name; \
   } \
   - (void)setSoftMax##Name:(type)softMax##Name { \
-    LTParameterAssert(softMax##Name >= self.softMin##Name); \
-    LTParameterAssert(softMax##Name <= self.max##Name); \
     _softMax##Name = softMax##Name; \
     ___softMax##Name##Set = YES; \
   }
