@@ -13,7 +13,7 @@ uniform bool sampleFromOverlayTexture;
 uniform int blendMode;
 
 varying highp vec3 vColor;
-varying highp vec2 vPosition;
+varying highp vec4 vPosition;
 varying highp vec3 vTexcoord;
 varying highp vec2 vQuadCenter;
 varying highp vec2 vSamplePoint0;
@@ -123,8 +123,9 @@ highp vec4 blend(mediump vec4 src, highp vec4 dst, int mode) {
   } else if (blendMode == kBlendModeAddition) {
     outputColor = addition(src, dst);
   }
-  outputColor.rgb /= outputColor.a;
-  return outputColor;
+  
+  highp float safeA = outputColor.a + step(outputColor.a, 0.0);
+  return vec4(outputColor.rgb / safeA, outputColor.a);
 }
 
 highp float edgeAvoidanceFactor(in highp float spatialFactor) {
@@ -133,7 +134,7 @@ highp float edgeAvoidanceFactor(in highp float spatialFactor) {
   if (edgeAvoidance <= 0.0) {
     return 1.0;
   }
-  highp vec3 targetPixel = texture2D(edgeAvoidanceGuideTexture, vPosition).rgb;
+  highp vec3 targetPixel = texture2D(edgeAvoidanceGuideTexture, (vPosition / vPosition.w).xy).rgb;
   
   highp vec3 sampleDiff0 = targetPixel - texture2D(edgeAvoidanceGuideTexture, vQuadCenter).rgb;
   highp vec3 sampleDiff1 = targetPixel - texture2D(edgeAvoidanceGuideTexture, vSamplePoint0).rgb;
@@ -162,7 +163,7 @@ void main() {
     highp float alpha = opacity * src.r;
     
     if (sampleFromOverlayTexture) {
-      src = texture2D(overlayTexture, vPosition);
+      src = texture2D(overlayTexture, (vPosition / vPosition.w).xy);
       src.a *= alpha;
     } else {
       src = vec4(vColor, alpha);
@@ -171,5 +172,9 @@ void main() {
     src.rgb *= vColor;
   }
   highp vec4 dst = gl_LastFragData[0];
-  gl_FragColor = mix(dst, blend(src, dst, blendMode), opacity * edgeAvoidanceFactor(length(src)));
+
+  if (!sampleFromOverlayTexture) {
+    src = blend(src, dst, blendMode);
+  }
+  gl_FragColor = mix(dst, src, opacity * edgeAvoidanceFactor(length(src)));
 }
