@@ -104,5 +104,7 @@ LTErrorCodesDeclare(LTKitErrorCodeProductID,
   /// Caused when bad file header has been read.
   LTErrorCodeBadHeader,
   /// Caused when a nonnull value was expected but null was provided.
-  LTErrorCodeNullValueGiven
+  LTErrorCodeNullValueGiven,
+  /// Caused when a decryption of encrypted data has failed.
+  LTErrorCodeDecryptionFailed
 );
