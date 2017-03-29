@@ -46,6 +46,9 @@
 /// Shard paths given path.
 @property (readonly, nonatomic) NSString *shardPathsPath;
 
+/// \c YES if the image was sent to compression with alpha channel.
+@property (readonly, nonatomic) BOOL compressedWithAlphaChannel;
+
 @end
 
 @implementation LTFakeIZCompressor
@@ -63,9 +66,10 @@
 }
 
 - (BOOL)compressImage:(const cv::Mat &)image toPath:(NSString *)path
-                error:(NSError * __autoreleasing *)error withAlpha:(BOOL __unused)withAlpha {
+                error:(NSError * __autoreleasing *)error withAlpha:(BOOL)withAlpha {
   _compressedImage = image.clone();
   _compressedPath = path;
+  _compressedWithAlphaChannel = withAlpha;
 
   if (self.compressionError) {
     if (error) {
@@ -146,6 +150,23 @@ context(@"archiving", ^{
 
     expect(compressor.compressedPath).to.equal(kPath);
     expect($(compressor.compressedImage)).to.equalMat($([texture image]));
+    expect(compressor.compressedWithAlphaChannel).to.beFalsy();
+  });
+
+  it(@"should archive a valid input with alpha channel correctly", ^{
+    texture.usingAlphaChannel = YES;
+    [texture mappedImageForWriting:^(cv::Mat *mapped, BOOL) {
+      mapped->rowRange(0, 8).setTo(cv::Vec4b(255, 0, 0, 128));
+      mapped->rowRange(8, 16).setTo(cv::Vec4b(0, 255, 0, 200));
+    }];
+
+    BOOL result = [archiver archiveTexture:texture inPath:kPath error:&error];
+
+    expect(error).to.beNil();
+    expect(result).to.beTruthy();
+    expect(compressor.compressedPath).to.equal(kPath);
+    expect($(compressor.compressedImage)).to.equalMat($([texture image]));
+    expect(compressor.compressedWithAlphaChannel).to.beTruthy();
   });
 
   it(@"should raise if trying to archive half float precision texture", ^{
@@ -164,14 +185,6 @@ context(@"archiving", ^{
                                           allocateMemory:YES];
     expect(^{
       [archiver archiveTexture:floatTexture inPath:kPath error:&error];
-    }).to.raise(NSInvalidArgumentException);
-    expect(compressor.compressedPath).to.beNil();
-  });
-
-  it(@"should raise if trying to archive texture using the alpha channel", ^{
-    texture.usingAlphaChannel = YES;
-    expect(^{
-      [archiver archiveTexture:texture inPath:kPath error:&error];
     }).to.raise(NSInvalidArgumentException);
     expect(compressor.compressedPath).to.beNil();
   });
@@ -209,11 +222,21 @@ context(@"unarchiving", ^{
     expect(error).to.beNil();
 
     expect(compressor.decompressedPath).to.equal(kPath);
-    expect(compressor.decompressedImage.cols).to.equal(8);
-    expect(compressor.decompressedImage.rows).to.equal(16);
+    expect($(compressor.decompressedImage)).to.equalMat($(texture.image));
   });
 
-  it(@"should raise if trying to archive half float precision texture", ^{
+  it(@"should unarchive a valid input correctly with usingAlphaChannel set to YES", ^{
+    texture.usingAlphaChannel = YES;
+    BOOL result = [archiver unarchiveToTexture:texture fromPath:kPath error:&error];
+
+    expect(result).to.beTruthy();
+    expect(error).to.beNil();
+
+    expect(compressor.decompressedPath).to.equal(kPath);
+    expect($(compressor.decompressedImage)).to.equalMat($(texture.image));
+  });
+
+  it(@"should raise if trying to unarchive half float precision texture", ^{
     LTTexture *halfFloatTexture = [LTTexture textureWithSize:texture.size
                                                  pixelFormat:$(LTGLPixelFormatRGBA16Float)
                                               allocateMemory:YES];
@@ -223,20 +246,12 @@ context(@"unarchiving", ^{
     expect(compressor.compressedPath).to.beNil();
   });
 
-  it(@"should raise if trying to archive float precision texture", ^{
+  it(@"should raise if trying to unarchive float precision texture", ^{
     LTTexture *floatTexture = [LTTexture textureWithSize:texture.size
                                              pixelFormat:$(LTGLPixelFormatRGBA32Float)
                                           allocateMemory:YES];
     expect(^{
       [archiver unarchiveToTexture:floatTexture fromPath:kPath error:&error];
-    }).to.raise(NSInvalidArgumentException);
-    expect(compressor.compressedPath).to.beNil();
-  });
-
-  it(@"should raise if trying to archive texture using the alpha channel", ^{
-    texture.usingAlphaChannel = YES;
-    expect(^{
-      [archiver unarchiveToTexture:texture fromPath:kPath error:&error];
     }).to.raise(NSInvalidArgumentException);
     expect(compressor.compressedPath).to.beNil();
   });
