@@ -7,6 +7,7 @@
 #import "BZRCachedReceiptValidationStatusProvider.h"
 #import "BZREvent.h"
 #import "BZRFakeAcquiredViaSubscriptionProvider.h"
+#import "BZRFakeAllowedProductsProvider.h"
 #import "BZRFakeCachedReceiptValidationStatusProvider.h"
 #import "BZRPeriodicReceiptValidatorActivator.h"
 #import "BZRProduct+SKProduct.h"
@@ -56,6 +57,7 @@ __block BZRStoreKitFacade *storeKitFacade;
 __block BZRPeriodicReceiptValidatorActivator *periodicValidatorActivator;
 __block id<BZRProductsVariantSelector> variantSelector;
 __block id<BZRReceiptValidationParametersProvider> validationParametersProvider;
+__block BZRFakeAllowedProductsProvider *allowedProductsProvider;
 __block NSBundle *bundle;
 __block RACSubject *productsProviderEventsSubject;
 __block RACSubject *receiptValidationStatusProviderEventsSubject;
@@ -77,6 +79,7 @@ beforeEach(^{
   periodicValidatorActivator = OCMClassMock([BZRPeriodicReceiptValidatorActivator class]);
   variantSelector = OCMProtocolMock(@protocol(BZRProductsVariantSelector));
   validationParametersProvider = OCMClassMock([BZRReceiptValidationParametersProvider class]);
+  allowedProductsProvider = [[BZRFakeAllowedProductsProvider alloc] init];
   bundle = OCMClassMock([NSBundle class]);
   id<BZRProductsVariantSelectorFactory> variantSelectorFactory =
       OCMProtocolMock(@protocol(BZRProductsVariantSelectorFactory));
@@ -103,23 +106,19 @@ beforeEach(^{
   OCMStub([storeKitFacade unfinishedSuccessfulTransactionsSignal])
       .andReturn(unfinishedSuccessfulTransactionsSubject);
 
-  configuration =
-      [[BZRStoreConfiguration alloc] initWithProductsListJSONFilePath:[LTPath pathWithPath:@"foo"]
-                                          countryToTierDictionaryPath:[LTPath pathWithPath:@"bar"]
-                                                  keychainAccessGroup:nil
-                                       expiredSubscriptionGracePeriod:7
-                                                    applicationUserID:nil
-                                       notValidatedReceiptGracePeriod:5];
+  configuration = OCMClassMock([BZRStoreConfiguration class]);
+  OCMStub([configuration productsProvider]).andReturn(productsProvider);
+  OCMStub([configuration contentManager]).andReturn(contentManager);
+  OCMStub([configuration validationStatusProvider]).andReturn(receiptValidationStatusProvider);
+  OCMStub([configuration contentProvider]).andReturn(contentProvider);
+  OCMStub([configuration acquiredViaSubscriptionProvider])
+      .andReturn(acquiredViaSubscriptionProvider);
+  OCMStub([configuration storeKitFacade]).andReturn(storeKitFacade);
+  OCMStub([configuration periodicValidatorActivator]).andReturn(periodicValidatorActivator);
+  OCMStub([configuration variantSelectorFactory]).andReturn(variantSelectorFactory);
+  OCMStub([configuration validationParametersProvider]).andReturn(validationParametersProvider);
+  OCMStub([configuration allowedProductsProvider]).andReturn(allowedProductsProvider);
 
-  configuration.productsProvider = productsProvider;
-  configuration.contentManager = contentManager;
-  configuration.validationStatusProvider = receiptValidationStatusProvider;
-  configuration.contentProvider = contentProvider;
-  configuration.acquiredViaSubscriptionProvider = acquiredViaSubscriptionProvider;
-  configuration.storeKitFacade = storeKitFacade;
-  configuration.periodicValidatorActivator = periodicValidatorActivator;
-  configuration.variantSelectorFactory = variantSelectorFactory;
-  configuration.validationParametersProvider = validationParametersProvider;
   store = [[BZRStore alloc] initWithConfiguration:configuration];
   productIdentifier = @"foo";
 });
@@ -232,46 +231,11 @@ context(@"acquired products", ^{
 });
 
 context(@"allowed products", ^{
-  __block NSSet *acquiredViaSubscription;
+  it(@"should return allowed products provided by allowedProductsProvider", ^{
+    NSSet<NSString *> *allowedProducts = [NSSet setWithArray:@[@"foo", @"bar"]];
+    allowedProductsProvider.allowedProducts = allowedProducts;
 
-  beforeEach(^{
-    acquiredViaSubscription = [NSSet setWithObject:@"bar"];
-    OCMStub([acquiredViaSubscriptionProvider productsAcquiredViaSubscription])
-        .andReturn(acquiredViaSubscription);
-  });
-
-  it(@"should return purchased product when subscription doesn't exist", ^{
-    BZRReceiptValidationStatus *receiptValidationStatus =
-        BZRReceiptValidationStatusWithInAppPurchaseAndExpiry(productIdentifier, NO);
-    BZRReceiptInfo *receipt = [receiptValidationStatus.receipt
-         modelByOverridingProperty:@keypath(receiptValidationStatus.receipt, subscription)
-                         withValue:nil];
-    receiptValidationStatus = [receiptValidationStatus
-         modelByOverridingProperty:@keypath(receiptValidationStatus, receipt) withValue:receipt];
-    OCMStub([receiptValidationStatusProvider receiptValidationStatus])
-        .andReturn(receiptValidationStatus);
-
-    expect(store.allowedProducts).to.equal([NSSet setWithObject:productIdentifier]);
-  });
-
-  it(@"should return purchased product when subscription is expired", ^{
-    BZRReceiptValidationStatus *receiptValidationStatus =
-        BZRReceiptValidationStatusWithInAppPurchaseAndExpiry(productIdentifier, YES);
-    OCMStub([receiptValidationStatusProvider receiptValidationStatus])
-        .andReturn(receiptValidationStatus);
-
-    expect(store.allowedProducts).to.equal([NSSet setWithObject:productIdentifier]);
-  });
-
-  it(@"should return in-app purchases unified with acquired via subscription when subsciption is "
-      "not expired", ^{
-    BZRReceiptValidationStatus *receiptValidationStatus =
-        BZRReceiptValidationStatusWithInAppPurchaseAndExpiry(productIdentifier, NO);
-    OCMStub([receiptValidationStatusProvider receiptValidationStatus])
-        .andReturn(receiptValidationStatus);
-
-    expect(store.allowedProducts).to
-        .equal([acquiredViaSubscription setByAddingObject:productIdentifier]);
+    expect(store.allowedProducts).to.equal(allowedProducts);
   });
 
   context(@"pre acquired products", ^{
@@ -300,8 +264,7 @@ context(@"allowed products", ^{
       OCMStub([receiptValidationStatusProvider receiptValidationStatus])
           .andReturn(receiptValidationStatus);
 
-      NSSet *expectedAllowedProducts =
-          [acquiredViaSubscription setByAddingObject:preAcquiredProduct.identifier];
+      NSSet *expectedAllowedProducts = [NSSet setWithObject:preAcquiredProduct.identifier];
       expect(store.allowedProducts).to.equal(expectedAllowedProducts);
     });
 
@@ -1137,9 +1100,17 @@ context(@"KVO-compliance", ^{
     acquiredViaSubscriptionProvider =  [[BZRFakeAcquiredViaSubscriptionProvider alloc] init];
     validationParametersProvider = [[BZRReceiptValidationParametersProvider alloc] init];
 
-    configuration.validationStatusProvider = validationStatusProvider;
-    configuration.acquiredViaSubscriptionProvider = acquiredViaSubscriptionProvider;
-    configuration.validationParametersProvider = validationParametersProvider;
+    configuration = OCMClassMock([BZRStoreConfiguration class]);
+    OCMStub([configuration productsProvider]).andReturn(productsProvider);
+    OCMStub([configuration contentManager]).andReturn(contentManager);
+    OCMStub([configuration validationStatusProvider]).andReturn(validationStatusProvider);
+    OCMStub([configuration contentProvider]).andReturn(contentProvider);
+    OCMStub([configuration acquiredViaSubscriptionProvider])
+        .andReturn(acquiredViaSubscriptionProvider);
+    OCMStub([configuration storeKitFacade]).andReturn(storeKitFacade);
+    OCMStub([configuration periodicValidatorActivator]).andReturn(periodicValidatorActivator);
+    OCMStub([configuration validationParametersProvider]).andReturn(validationParametersProvider);
+    OCMStub([configuration allowedProductsProvider]).andReturn(allowedProductsProvider);
 
     store = [[BZRStore alloc] initWithConfiguration:configuration];
   });
@@ -1197,27 +1168,14 @@ context(@"KVO-compliance", ^{
   });
 
   context(@"allowed products", ^{
-    it(@"should update when acquired via subscription list is changed", ^{
-      validationStatusProvider.receiptValidationStatus = BZRReceiptValidationStatusWithExpiry(NO);
-      RACSignal *productsSignal = [RACObserve(store, allowedProducts) testRecorder];
-      acquiredViaSubscriptionProvider.productsAcquiredViaSubscription =
-          [NSSet setWithObjects:@"foo", @"bar", nil];
+    it(@"should update when allowed products set is changed", ^{
+      LLSignalTestRecorder *productsSignal = [RACObserve(store, allowedProducts) testRecorder];
+
+      allowedProductsProvider.allowedProducts = [NSSet setWithArray:@[@"foo", @"bar"]];
 
       expect(productsSignal).to.sendValues(@[
         [NSSet set],
         [NSSet setWithObjects:@"foo", @"bar", nil]
-      ]);
-    });
-
-    it(@"should update when purchased products is changed", ^{
-      validationStatusProvider.receiptValidationStatus = BZRReceiptValidationStatusWithExpiry(NO);
-      RACSignal *productsSignal = [RACObserve(store, allowedProducts) testRecorder];
-      validationStatusProvider.receiptValidationStatus =
-          BZRReceiptValidationStatusWithInAppPurchaseAndExpiry(@"foo", NO);
-
-      expect(productsSignal).to.sendValues(@[
-        [NSSet set],
-        [NSSet setWithObjects:@"foo", nil]
       ]);
     });
 
@@ -1239,40 +1197,6 @@ context(@"KVO-compliance", ^{
       expect(productsSignal).to.sendValues(@[
         [NSSet set],
         [NSSet setWithObject:preAcquiredProduct.identifier]
-      ]);
-    });
-
-    it(@"should remove acquired via subscription products when subscription expires", ^{
-      validationStatusProvider.receiptValidationStatus = BZRReceiptValidationStatusWithExpiry(NO);
-      acquiredViaSubscriptionProvider.productsAcquiredViaSubscription =
-          [NSSet setWithObject:@"foo"];
-      RACSignal *productsSignal = [RACObserve(store, allowedProducts) testRecorder];
-      validationStatusProvider.receiptValidationStatus =
-          BZRReceiptValidationStatusWithInAppPurchaseAndExpiry(@"bar", NO);
-      validationStatusProvider.receiptValidationStatus =
-          BZRReceiptValidationStatusWithInAppPurchaseAndExpiry(@"bar", YES);
-
-      expect(productsSignal).to.sendValues(@[
-        [NSSet setWithObject:@"foo"],
-        [NSSet setWithObjects:@"foo", @"bar", nil],
-        [NSSet setWithObject:@"bar"]
-      ]);
-    });
-
-    it(@"should add acquired via subscription products when subscription renews", ^{
-      validationStatusProvider.receiptValidationStatus = BZRReceiptValidationStatusWithExpiry(YES);
-      acquiredViaSubscriptionProvider.productsAcquiredViaSubscription =
-          [NSSet setWithObject:@"foo"];
-      RACSignal *productsSignal = [RACObserve(store, allowedProducts) testRecorder];
-      validationStatusProvider.receiptValidationStatus =
-          BZRReceiptValidationStatusWithInAppPurchaseAndExpiry(@"bar", YES);
-      validationStatusProvider.receiptValidationStatus =
-          BZRReceiptValidationStatusWithInAppPurchaseAndExpiry(@"bar", NO);
-
-      expect(productsSignal).to.sendValues(@[
-        [NSSet set],
-        [NSSet setWithObject:@"bar"],
-        [NSSet setWithObjects:@"foo", @"bar", nil]
       ]);
     });
   });

@@ -6,6 +6,7 @@
 #import <LTKit/LTPath.h>
 
 #import "BZRAcquiredViaSubscriptionProvider.h"
+#import "BZRAllowedProductsProvider.h"
 #import "BZRCachedProductsProvider.h"
 #import "BZRCachedReceiptValidationStatusProvider.h"
 #import "BZRKeychainStorage.h"
@@ -32,6 +33,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Manager used to read and write files from the file system.
 @property (strong, nonatomic) NSFileManager *fileManager;
+
+/// Provider used to provide product list without any alterations.
+@property (strong, nonatomic) id<BZRProductsProvider> nethermostProductsProvider;
 
 @end
 
@@ -109,16 +113,22 @@ NS_ASSUME_NONNULL_BEGIN
     _variantSelectorFactory =
         [[BZRLocaleBasedVariantSelectorFactory alloc] initWithFileManager:self.fileManager
          countryToTierPath:countryToTierDictionaryPath];
+
+    _allowedProductsProvider =
+        [[BZRAllowedProductsProvider alloc] initWithProductsProvider:self.nethermostProductsProvider
+         validationStatusProvider:self.validationStatusProvider
+         acquiredViaSubscriptionProvider:self.acquiredViaSubscriptionProvider];
   }
   return self;
 }
 
 - (id<BZRProductsProvider>)productsProviderWithJSONFilePath:(LTPath *)productsListJSONFilePath {
-    BZRLocalProductsProvider *localProductsProvider =
+    _nethermostProductsProvider =
         [[BZRLocalProductsProvider alloc] initWithPath:productsListJSONFilePath
                                            fileManager:self.fileManager];
     BZRProductsWithDiscountsProvider *productsWithDiscountsProvider =
-        [[BZRProductsWithDiscountsProvider alloc] initWithUnderlyingProvider:localProductsProvider];
+        [[BZRProductsWithDiscountsProvider alloc]
+         initWithUnderlyingProvider:self.nethermostProductsProvider];
     BZRProductsWithVariantsProvider *productsWithVariantsProvider =
         [[BZRProductsWithVariantsProvider alloc]
          initWithUnderlyingProvider:productsWithDiscountsProvider];
