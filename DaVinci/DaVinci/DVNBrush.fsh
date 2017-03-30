@@ -31,6 +31,7 @@ const int kBlendModeScreen = 6;
 const int kBlendModeColorBurn = 7;
 const int kBlendModeOverlay = 8;
 const int kBlendModeAddition = 9;
+const int kBlendModeSubtract = 10;
 
 highp vec4 normal(highp vec4 src, highp vec4 dst) {
   return vec4(src.rgb + dst.rgb * (1.0 - src.a), src.a + dst.a * (1.0 - src.a));
@@ -94,7 +95,11 @@ highp vec4 overlay(highp vec4 src, highp vec4 dst) {
 }
 
 highp vec4 addition(highp vec4 src, highp vec4 dst) {
-  return vec4(clamp(src.rgb + dst.rgb, 0.0, 1.0), clamp(src.a + dst.a, 0.0, 1.0));
+  return clamp(dst + src, vec4(0.0), vec4(1.0));
+}
+
+highp vec4 subtract(highp vec4 src, highp vec4 dst) {
+  return clamp(dst - src, vec4(0.0), vec4(1.0));
 }
 
 highp vec4 blend(mediump vec4 src, highp vec4 dst, int mode) {
@@ -122,6 +127,8 @@ highp vec4 blend(mediump vec4 src, highp vec4 dst, int mode) {
     outputColor = overlay(src, dst);
   } else if (blendMode == kBlendModeAddition) {
     outputColor = addition(src, dst);
+  } else if (blendMode == kBlendModeSubtract) {
+    outputColor = subtract(src, dst);
   }
   
   highp float safeA = outputColor.a + step(outputColor.a, 0.0);
