@@ -11,12 +11,17 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize transactionState = _transactionState;
 @synthesize downloads = _downloads;
 @synthesize error = _error;
+@synthesize transactionDate = _transactionDate;
+@synthesize transactionIdentifier = _transactionIdentifier;
+@synthesize originalTransaction = _originalTransaction;
 
 - (instancetype)init {
-  return [self initWithPayment:nil];
+  SKProduct *product = OCMClassMock([SKProduct class]);
+  OCMStub([product productIdentifier]).andReturn(@"foo");
+  return [self initWithPayment:[SKPayment paymentWithProduct:product]];
 }
 
-- (instancetype)initWithPayment:(nullable SKPayment *)payment {
+- (instancetype)initWithPayment:(SKPayment *)payment {
   if (self = [super init]) {
     _payment = payment;
     _downloads = @[];

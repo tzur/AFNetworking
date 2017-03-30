@@ -4,8 +4,17 @@
 #import "NSError+Bazaar.h"
 
 #import <LTKit/NSError+LTKit.h>
+
 #import "BZRFakePaymentTransaction.h"
 #import "NSErrorCodes+Bazaar.h"
+
+/// Category that adds method for getting a description of the transaction.
+@interface SKPaymentTransaction (Bazaar)
+
+/// Returns a description of the transaction with some of its proerties.
+- (NSString *)bzr_description;
+
+@end
 
 SpecBegin(NSError_Bazaar)
 
@@ -100,6 +109,42 @@ context(@"transaction error", ^{
     expect(error.lt_isLTDomain).to.beTruthy();
     expect(error.code).to.equal(1337);
     expect(error.lt_underlyingError).to.beNil();
+  });
+
+  it(@"should return an error with description that has the transaction's description", ^{
+    BZRFakePaymentTransaction *transaction = [[BZRFakePaymentTransaction alloc] init];
+    transaction.transactionState = SKPaymentTransactionStatePurchased;
+    transaction.transactionDate = [NSDate date];
+    transaction.transactionIdentifier = @"bar";
+
+    BZRFakePaymentTransaction *originalTransaction = [[BZRFakePaymentTransaction alloc] init];
+    originalTransaction.transactionIdentifier = @"foofoo";
+    transaction.originalTransaction = originalTransaction;
+
+    NSError *error = [NSError bzr_errorWithCode:1337 transaction:transaction];
+
+    NSString *productIdentifierDescription =
+        [NSString stringWithFormat:@"%@ = %@", @keypath(transaction.payment, productIdentifier),
+         transaction.payment.productIdentifier];
+    NSString *dateDescription =
+        [NSString stringWithFormat:@"%@ = \"%@\"", @keypath(transaction, transactionDate),
+         transaction.transactionDate];
+    NSString *transactionIdentifierDescription =
+        [NSString stringWithFormat:@"%@ = %@", @keypath(transaction, transactionIdentifier),
+         transaction.transactionIdentifier];
+    NSString *stateDescription =
+        [NSString stringWithFormat:@"%@ = %@", @keypath(transaction, transactionState),
+         @"SKPaymentTransactionStatePurchased"];
+    NSString *originalTransactionIdentiferDescription =
+        [NSString stringWithFormat:@"%@ = %@",
+         @keypath(originalTransaction, transactionIdentifier),
+         originalTransaction.transactionIdentifier];
+
+    expect(error.description).to.contain(productIdentifierDescription);
+    expect(error.description).to.contain(dateDescription);
+    expect(error.description).to.contain(transactionIdentifierDescription);
+    expect(error.description).to.contain(stateDescription);
+    expect(error.description).to.contain(originalTransactionIdentiferDescription);
   });
 });
 

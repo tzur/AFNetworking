@@ -10,7 +10,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)init;
 
 /// Intiializes with \c payment.
-- (instancetype)initWithPayment:(nullable SKPayment *)payment NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithPayment:(SKPayment *)payment NS_DESIGNATED_INITIALIZER;
 
 /// State of the transaction.
 @property (readwrite, nonatomic) SKPaymentTransactionState transactionState;
@@ -19,7 +19,16 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readwrite, nonatomic) NSArray<SKDownload *> *downloads;
 
 /// Error that indicates failure in the transaction.
-@property (readwrite, nonatomic) NSError *error;
+@property (readwrite, nonatomic, nullable) NSError *error;
+
+/// Date of the transaction.
+@property (readwrite, nonatomic, nullable) NSDate *transactionDate;
+
+/// Transaction identifier.
+@property (readwrite, nonatomic, nullable) NSString *transactionIdentifier;
+
+/// Original transaction.
+@property (readwrite, nonatomic, nullable) SKPaymentTransaction *originalTransaction;
 
 @end
 
