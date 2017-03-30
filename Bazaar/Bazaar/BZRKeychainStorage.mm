@@ -20,9 +20,14 @@ NS_ASSUME_NONNULL_BEGIN
 @implementation BZRKeychainStorage
 
 - (instancetype)initWithAccessGroup:(nullable NSString *)accessGroup {
+  return [self initWithAccessGroup:accessGroup service:[UICKeyChainStore defaultService]];
+}
+
+- (instancetype)initWithAccessGroup:(nullable NSString *)accessGroup
+                            service:(NSString *)service {
   UICKeyChainStore *keychainStore =
-      [[UICKeyChainStore alloc] initWithService:[UICKeyChainStore defaultService]
-                                    accessGroup:accessGroup];
+      [[UICKeyChainStore alloc] initWithService:service accessGroup:accessGroup];
+
   return [self initWithKeychainHandler:keychainStore];
 }
 

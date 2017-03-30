@@ -105,7 +105,12 @@ beforeEach(^{
 
   configuration =
       [[BZRStoreConfiguration alloc] initWithProductsListJSONFilePath:[LTPath pathWithPath:@"foo"]
-                                          countryToTierDictionaryPath:[LTPath pathWithPath:@"bar"]];
+                                          countryToTierDictionaryPath:[LTPath pathWithPath:@"bar"]
+                                                  keychainAccessGroup:nil
+                                       expiredSubscriptionGracePeriod:7
+                                                    applicationUserID:nil
+                                       notValidatedReceiptGracePeriod:5];
+
   configuration.productsProvider = productsProvider;
   configuration.contentManager = contentManager;
   configuration.validationStatusProvider = receiptValidationStatusProvider;
