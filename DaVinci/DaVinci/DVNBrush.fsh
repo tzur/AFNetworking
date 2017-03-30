@@ -158,13 +158,13 @@ highp float edgeAvoidanceFactor(in highp float spatialFactor) {
 
 void main() {
   mediump vec4 src = texture2D(sourceTexture, vTexcoord.xy / vTexcoord.z);
+  highp float alpha = opacity * src.a;
   
   if (singleChannel) {
-    highp float alpha = opacity * src.r;
+    alpha = opacity * src.r;
     
     if (sampleFromOverlayTexture) {
       src = texture2D(overlayTexture, (vPosition / vPosition.w).xy);
-      src.a *= alpha;
     } else {
       src = vec4(vColor, alpha);
     }
@@ -176,5 +176,5 @@ void main() {
   if (!sampleFromOverlayTexture) {
     src = blend(src, dst, blendMode);
   }
-  gl_FragColor = mix(dst, src, opacity * edgeAvoidanceFactor(length(src)));
+  gl_FragColor = mix(dst, src, alpha * edgeAvoidanceFactor(length(src)));
 }
