@@ -33,7 +33,8 @@ NS_ASSUME_NONNULL_BEGIN
 
   __block BOOL success;
   [texture mappedImageForReading:^(const cv::Mat &mapped, BOOL) {
-    success = [self.compressor compressImage:mapped toPath:path error:error withAlpha:NO];
+    success = [self.compressor compressImage:mapped toPath:path error:error
+                                   withAlpha:texture.usingAlphaChannel];
   }];
 
   return success;
@@ -68,7 +69,6 @@ NS_ASSUME_NONNULL_BEGIN
                     texture.pixelFormat.value == LTGLPixelFormatRGBA8Unorm,
                     @"ImageZero compression supports only byte precision R or RGBA textures: %@",
                     texture.pixelFormat.name);
-  LTParameterAssert(!texture.usingAlphaChannel);
 }
 
 @end

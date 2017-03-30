@@ -6,8 +6,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /// Archiver that can be used for saving textures as ImageZero files. This archiver supports only
-/// textures with pixel format of \c LTGLPixelFormatR8Unorm and \c LTGLPixelFormatRGBA8Unorm, with
-/// \c usingAlphaChannel of \c NO.
+/// textures with pixel format of \c LTGLPixelFormatR8Unorm and \c LTGLPixelFormatRGBA8Unorm.
 @interface LTTextureIZArchiver : NSObject <LTTextureBaseArchiver>
 @end
 
