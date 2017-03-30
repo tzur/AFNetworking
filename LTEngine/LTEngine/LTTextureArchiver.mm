@@ -15,6 +15,7 @@
 #import "LTTextureArchiveType.h"
 #import "LTTextureBaseArchiver.h"
 #import "LTTextureMetadata.h"
+#import "LTTextureRepository.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -26,22 +27,27 @@ NS_ASSUME_NONNULL_BEGIN
 /// Used for file operations by the texture archiver.
 @property (strong, nonatomic) NSFileManager *fileManager;
 
+/// Texture repository that can act as a cache for unarchiving textures.
+@property (strong, nonatomic) LTTextureRepository *textureRepository;
+
 @end
 
 @implementation LTTextureArchiver
 
-objection_initializer(initWithStorage:);
+objection_initializer(initWithStorage:textureRepository:);
 objection_requires_sel(@selector(fileManager));
 
 - (instancetype)init {
   return nil;
 }
 
-- (instancetype)initWithStorage:(id<LTTextureArchiverStorage>)storage {
+- (instancetype)initWithStorage:(id<LTTextureArchiverStorage>)storage
+              textureRepository:(LTTextureRepository *)textureRepository {
   LTParameterAssert(storage);
   if (self = [super init]) {
     [self injectDependencies];
     self.storage = storage;
+    _textureRepository = textureRepository;
   }
   return self;
 }
@@ -83,6 +89,7 @@ objection_requires_sel(@selector(fileManager));
     return NO;
   }
 
+  [self.textureRepository addTexture:texture];
   return YES;
 }
 
@@ -262,7 +269,8 @@ objection_requires_sel(@selector(fileManager));
     return NO;
   }
 
-  if ([texture.generationID isEqualToString:archiveMetadata.textureMetadata.generationID]) {
+  NSString *archivedGenerationId = archiveMetadata.textureMetadata.generationID;
+  if ([texture.generationID isEqualToString:archivedGenerationId]) {
     return YES;
   }
 
@@ -275,6 +283,14 @@ objection_requires_sel(@selector(fileManager));
                      error:(NSError *__autoreleasing *)error {
   LTParameterAssert(texture.size == metadata.size);
   LTParameterAssert([texture.pixelFormat isEqual:metadata.pixelFormat]);
+
+  [self.textureRepository addTexture:texture];
+  NSString *generationID = metadata.generationID;
+  LTTexture *cachedTexture = [self.textureRepository textureWithGenerationID:generationID];
+  if (cachedTexture) {
+    [cachedTexture cloneTo:texture];
+    return YES;
+  }
 
   __block BOOL success = YES;
   texture.generationID = metadata.generationID;
@@ -380,6 +396,7 @@ objection_requires_sel(@selector(fileManager));
   }
 
   LTTextureMetadata *textureMetadata = archiveMetadata.textureMetadata;
+
   if (textureMetadata.fillColor.isNull()) {
     LTTextureArchiveType *type = archiveMetadata.archiveType;
     NSString *storageKey = [self storageKeyForTextureMetadata:textureMetadata archiveType:type];

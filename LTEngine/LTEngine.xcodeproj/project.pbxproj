@@ -1223,6 +1223,9 @@
 		C72539C71C7DBA19008399A3 /* LTAdjustOperationsSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = C72539C61C7DBA19008399A3 /* LTAdjustOperationsSpec.mm */; };
 		C72539EB1C7DBA2A008399A3 /* LTAdjustOperations.h in Headers */ = {isa = PBXBuildFile; fileRef = C72539E91C7DBA2A008399A3 /* LTAdjustOperations.h */; };
 		C72539EC1C7DBA2A008399A3 /* LTAdjustOperations.mm in Sources */ = {isa = PBXBuildFile; fileRef = C72539EA1C7DBA2A008399A3 /* LTAdjustOperations.mm */; };
+		C76F130C1E8A8363003E0CB3 /* LTTextureRepository.h in Headers */ = {isa = PBXBuildFile; fileRef = C76F130A1E8A8363003E0CB3 /* LTTextureRepository.h */; };
+		C76F130D1E8A8363003E0CB3 /* LTTextureRepository.mm in Sources */ = {isa = PBXBuildFile; fileRef = C76F130B1E8A8363003E0CB3 /* LTTextureRepository.mm */; };
+		C7DE6D4D1E8A89CE00DC8937 /* LTTextureRepositorySpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = C7DE6D4C1E8A89CE00DC8937 /* LTTextureRepositorySpec.mm */; };
 		C7E0B02F1E41E34600E88244 /* ImageZeroVersion1Test.iz in Resources */ = {isa = PBXBuildFile; fileRef = C7E0B02D1E41E34600E88244 /* ImageZeroVersion1Test.iz */; };
 		C7E0B0301E41E34600E88244 /* ImageZeroVersion1Test.iz.1 in Resources */ = {isa = PBXBuildFile; fileRef = C7E0B02E1E41E34600E88244 /* ImageZeroVersion1Test.iz.1 */; };
 		C7E0B0321E41E94800E88244 /* SemiTransparentLena.png in Resources */ = {isa = PBXBuildFile; fileRef = C7E0B0311E41E94800E88244 /* SemiTransparentLena.png */; };
@@ -2965,6 +2968,9 @@
 		C72539C61C7DBA19008399A3 /* LTAdjustOperationsSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTAdjustOperationsSpec.mm; sourceTree = "<group>"; };
 		C72539E91C7DBA2A008399A3 /* LTAdjustOperations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTAdjustOperations.h; sourceTree = "<group>"; };
 		C72539EA1C7DBA2A008399A3 /* LTAdjustOperations.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTAdjustOperations.mm; sourceTree = "<group>"; };
+		C76F130A1E8A8363003E0CB3 /* LTTextureRepository.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTTextureRepository.h; sourceTree = "<group>"; };
+		C76F130B1E8A8363003E0CB3 /* LTTextureRepository.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTTextureRepository.mm; sourceTree = "<group>"; };
+		C7DE6D4C1E8A89CE00DC8937 /* LTTextureRepositorySpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTTextureRepositorySpec.mm; sourceTree = "<group>"; };
 		C7E0B02D1E41E34600E88244 /* ImageZeroVersion1Test.iz */ = {isa = PBXFileReference; lastKnownFileType = file; name = ImageZeroVersion1Test.iz; path = Resources/ImageZeroVersion1Test.iz; sourceTree = "<group>"; };
 		C7E0B02E1E41E34600E88244 /* ImageZeroVersion1Test.iz.1 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.man; name = ImageZeroVersion1Test.iz.1; path = Resources/ImageZeroVersion1Test.iz.1; sourceTree = "<group>"; };
 		C7E0B0311E41E94800E88244 /* SemiTransparentLena.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SemiTransparentLena.png; path = Resources/SemiTransparentLena.png; sourceTree = "<group>"; };
@@ -3699,6 +3705,8 @@
 				2884193E1BD3A04A00B09F6B /* LTTextureArchiverNonPersistentStorage.mm */,
 				28C2074D1AE67DAB007214A5 /* LTTextureMetadata.h */,
 				28C2074E1AE67DAB007214A5 /* LTTextureMetadata.mm */,
+				C76F130A1E8A8363003E0CB3 /* LTTextureRepository.h */,
+				C76F130B1E8A8363003E0CB3 /* LTTextureRepository.mm */,
 			);
 			name = Storage;
 			sourceTree = "<group>";
@@ -3730,6 +3738,7 @@
 				285B5ECA1C565FF200F7F641 /* LTTextureArchiverNonPersistentStorageSpec.mm */,
 				28C207AF1AEF696E007214A5 /* LTTextureArchiverSpec.mm */,
 				28C207AB1AEF694F007214A5 /* LTTextureMetadataSpec.mm */,
+				C7DE6D4C1E8A89CE00DC8937 /* LTTextureRepositorySpec.mm */,
 			);
 			name = Storage;
 			sourceTree = "<group>";
@@ -5555,6 +5564,7 @@
 				50802FC71C2402E1008607C7 /* LTTouchEvent.h in Headers */,
 				500CA9FE1D26B11F009CF19F /* LTPresentationView.h in Headers */,
 				8B871FD11924A75E00517F2E /* LTIterativeProcessingStrategy.h in Headers */,
+				C76F130C1E8A8363003E0CB3 /* LTTextureRepository.h in Headers */,
 				253F607A1B3FC979009C6A5F /* LTBrushRandomState.h in Headers */,
 				E4F061FC1E49B46D00FDE0B0 /* LTOpenExrPizCompressor.h in Headers */,
 				282B9BF81D34D01000071AB2 /* LTContentTouchEventStateFilter.h in Headers */,
@@ -6833,6 +6843,7 @@
 				8BCA67381830B7AC003FCB65 /* NSValue+GLKitExtensions.m in Sources */,
 				28B3346919C826D3004B6191 /* LTOneShotImageProcessor.mm in Sources */,
 				25AF17571AD50BE00055E664 /* LTVGTypesetter.mm in Sources */,
+				C76F130D1E8A8363003E0CB3 /* LTTextureRepository.mm in Sources */,
 				288419401BD3A04A00B09F6B /* LTTextureArchiveMetadata.mm in Sources */,
 				8BAAC5B518BB446E00A4B4DA /* LTRectCopyProcessor.mm in Sources */,
 				286A041B1D5CADE900DAC4F3 /* CIImage+Swizzle.m in Sources */,
@@ -7203,6 +7214,7 @@
 				85F155171D12845900967A90 /* LTTextureAtlasFromMatsProviderSpec.mm in Sources */,
 				500677711C69E437002C6A24 /* LTFloatSetParametricValueProviderSpec.mm in Sources */,
 				5050F05B1D2A7CBD0075BDEB /* LTContentNavigationManagerExamples.mm in Sources */,
+				C7DE6D4D1E8A89CE00DC8937 /* LTTextureRepositorySpec.mm in Sources */,
 				28C207AE1AEF695B007214A5 /* LTTextureArchiveTypeSpec.mm in Sources */,
 				500CAA091D26B18F009CF19F /* LTGridDrawingManagerSpec.mm in Sources */,
 				03AFC181190E24F600F17063 /* LTTiltShiftProcessorSpec.mm in Sources */,
