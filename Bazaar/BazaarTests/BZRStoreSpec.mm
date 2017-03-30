@@ -124,6 +124,39 @@ beforeEach(^{
   productIdentifier = @"foo";
 });
 
+context(@"initial receipt validation", ^{
+  it(@"should fetch receipt on initialization if receipt validation status is nil", ^{
+    OCMExpect([receiptValidationStatusProvider fetchReceiptValidationStatus])
+        .andReturn([RACSignal return:OCMClassMock([BZRReceiptValidationStatus class])]);
+
+    store = [[BZRStore alloc] initWithConfiguration:configuration];
+
+    OCMVerifyAll((id)receiptValidationStatusProvider);
+  });
+
+  it(@"should not fetch receipt on initialization if receipt validation status is not nil", ^{
+    OCMReject([receiptValidationStatusProvider fetchReceiptValidationStatus]);
+    OCMStub([receiptValidationStatusProvider receiptValidationStatus])
+        .andReturn(OCMClassMock([BZRReceiptValidationStatus class]));
+
+    store = [[BZRStore alloc] initWithConfiguration:configuration];
+  });
+
+  it(@"should send error event if initial receipt validation failed", ^{
+    NSError *error = OCMClassMock([NSError class]);
+    OCMStub([receiptValidationStatusProvider fetchReceiptValidationStatus])
+        .andReturn([RACSignal error:error]);
+
+    store = [[BZRStore alloc] initWithConfiguration:configuration];
+    LLSignalTestRecorder *eventsRecorder = [[store eventsSignal] testRecorder];
+
+    expect(eventsRecorder).will.matchValue(0, ^BOOL(BZREvent *event) {
+      return [event.eventType isEqual:$(BZREventTypeNonCriticalError)] &&
+          event.eventError == error;
+    });
+  });
+});
+
 context(@"getting path to content", ^{
   it(@"should delegate path to content to content manager", ^{
     LTPath *path = [LTPath pathWithPath:@"bar"];
@@ -897,6 +930,12 @@ context(@"handling unfinished completed transactions", ^{
   beforeEach(^{
     errorsRecorder = [store.eventsSignal testRecorder];
     completedTransactionsRecorder = [store.completedTransactionsSignal testRecorder];
+
+    // Re-initialize store with cahced validation status in order to avoid initial receipt
+    // validation due to missing receipt validation status.
+    OCMStub([receiptValidationStatusProvider receiptValidationStatus])
+        .andReturn(OCMClassMock([BZRReceiptValidationStatus class]));
+    store = [[BZRStore alloc] initWithConfiguration:configuration];
   });
 
   it(@"should complete when object is deallocated", ^{
@@ -911,15 +950,19 @@ context(@"handling unfinished completed transactions", ^{
   });
 
   it(@"should call fetch receipt validation status once for each transactions array", ^{
-    OCMExpect([receiptValidationStatusProvider fetchReceiptValidationStatus]);
+    OCMExpect([receiptValidationStatusProvider fetchReceiptValidationStatus])
+        .andReturn([RACSignal return:OCMClassMock([BZRReceiptValidationStatus class])]);
+    OCMExpect([receiptValidationStatusProvider fetchReceiptValidationStatus])
+        .andReturn([RACSignal return:OCMClassMock([BZRReceiptValidationStatus class])]);
     OCMReject([receiptValidationStatusProvider fetchReceiptValidationStatus]);
 
     SKPaymentTransaction *transaction = OCMClassMock([SKPaymentTransaction class]);
     OCMStub([transaction transactionState]).andReturn(SKPaymentTransactionStatePurchased);
     NSArray<SKPaymentTransaction *> *transactions = @[transaction, transaction, transaction];
     [unfinishedSuccessfulTransactionsSubject sendNext:transactions];
+    [unfinishedSuccessfulTransactionsSubject sendNext:transactions];
 
-    OCMVerifyAll((id)receiptValidationStatusProvider);
+    OCMVerifyAllWithDelay((id)receiptValidationStatusProvider, 0.01);
   });
 
   context(@"purchased transaction", ^{

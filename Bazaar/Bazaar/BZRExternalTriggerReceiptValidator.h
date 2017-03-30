@@ -8,9 +8,15 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol BZRReceiptValidationStatusProvider;
 
 /// Validator that once activated with a trigger signal initiates receipt validation whenever the
-/// trigger signal fires.
+/// trigger signal fires, until the validator is deactivated. The validator will deacivate itself if
+/// the tirgger signal completes or errs, alternatively it can be deactivated manually using the
+/// \c deactivate method.
 ///
-/// The validator conforms to \c BZREventEmitter and reports on valdation errors thrgouh the
+/// @note The validator must be held strongly even after activation in order for the validation to
+/// actually take place when the trigger signal fires, failing to do so will cause the validator to
+/// dealloc and deactivate it self.
+///
+/// The validator conforms to \c BZREventEmitter and reports valdation errors through its
 /// \c eventsSignal.
 @interface BZRExternalTriggerReceiptValidator : NSObject <BZREventEmitter>
 
