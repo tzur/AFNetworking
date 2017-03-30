@@ -11,10 +11,11 @@
 #import "LTImage.h"
 #import "LTTexture+Factory.h"
 #import "LTTextureArchiveMetadata.h"
-#import "LTTextureArchiveType.h"
 #import "LTTextureArchiverNonPersistentStorage.h"
+#import "LTTextureArchiveType.h"
 #import "LTTextureBaseArchiver.h"
 #import "LTTextureMetadata.h"
+#import "LTTextureRepository.h"
 
 static LTPath *LTPathMake(NSString *relativePath) {
   relativePath = [[@__FILE__ lastPathComponent] stringByAppendingPathComponent:relativePath];
@@ -54,6 +55,7 @@ __block LTTextureArchiverNonPersistentStorage *storage;
 __block id mock;
 __block id fileManager;
 __block LTPath *archivePath;
+__block LTTextureRepository *textureRepository;
 
 static NSError * const kFakeError = [NSError errorWithDomain:@"foo" code:1337 userInfo:nil];
 
@@ -61,11 +63,12 @@ beforeEach(^{
   fileManager = OCMPartialMock([NSFileManager defaultManager]);
   LTBindObjectToClass(fileManager, [NSFileManager class]);
   storage = [[LTTextureArchiverNonPersistentStorage alloc] init];
+
   mock = OCMPartialMock(storage);
-
-
+  textureRepository = OCMClassMock([LTTextureRepository class]);
   LTPath *path = LTPathMake(@"");
-  archiver = [[LTTextureArchiver alloc] initWithStorage:storage];
+  archiver = [[LTTextureArchiver alloc] initWithStorage:storage
+                                      textureRepository:textureRepository];
   [fileManager removeItemAtPath:path.path error:nil];
   [fileManager createDirectoryAtPath:path.path withIntermediateDirectories:NO
                           attributes:nil error:nil];
@@ -352,6 +355,13 @@ context(@"unarchiving", ^{
       expect($(otherTexture.image)).to.equalMat($(mat));
     });
 
+    it(@"should add target texture to texture repository", ^{
+      LTTexture *otherTexture = [LTTexture textureWithPropertiesOf:texture];
+      [archiver unarchiveToTexture:otherTexture fromPath:archivePath error:&error];
+
+      OCMVerify([textureRepository addTexture:otherTexture]);
+    });
+
     it(@"should raise if trying to unarchive to a wrong texture type", ^{
       expect(^{
         [archiver unarchiveToTexture:[LTTexture byteRGBATextureWithSize:texture.size * 2]
@@ -473,6 +483,12 @@ context(@"unarchiving", ^{
       expect(otherTexture.metadata).to.equal(texture.metadata);
       expect(otherTexture.generationID).to.equal(texture.generationID);
       expect($(otherTexture.image)).to.equalMat($(mat));
+    });
+
+    it(@"should add returned texture to texture repository", ^{
+      LTTexture *otherTexture = [archiver unarchiveTextureFromPath:archivePath error:&error];
+
+      OCMVerify([textureRepository addTexture:otherTexture]);
     });
 
     it(@"should return nil if archive does not exist", ^{
@@ -799,6 +815,72 @@ context(@"maintenance", ^{
     expect([storage.dictionary allValues]).to.haveCountOf(1);
     expect([storage.dictionary allValues].firstObject).to.haveCountOf(3);
   });
+});
+
+context(@"texture repository", ^{
+  __block cv::Mat4b mat;
+  __block NSString *generationID;
+
+  beforeEach(^{
+    mat.create(8, 4);
+    mat.rowRange(0, 4).setTo(cv::Vec4b(255, 0, 0, 255));
+    mat.rowRange(4, 8).setTo(cv::Vec4b(0, 255, 0, 255));
+    texture = [LTTexture textureWithImage:mat];
+    result = [archiver archiveTexture:texture inPath:archivePath
+                      withArchiveType:$(LTTextureArchiveTypeUncompressedMat) error:&error];
+    generationID = texture.generationID;
+    OCMStub([textureRepository textureWithGenerationID:generationID]).andReturn(texture);
+
+    NSString *contentPath = [archivePath pathByAppendingPathComponent:@"content.mat"].path;
+    result = [fileManager removeItemAtPath:contentPath error:&error];
+  });
+
+  it(@"should add archived texture to repository", ^{
+    result = [archiver archiveTexture:texture inPath:archivePath
+                      withArchiveType:$(LTTextureArchiveTypeJPEG) error:&error];
+
+    OCMVerify([textureRepository addTexture:texture]);
+  });
+
+  it(@"should clone from a texture in the repository when unarchiving to texture", ^{
+    LTTexture *otherTexture = [LTTexture textureWithPropertiesOf:texture];
+    result = [archiver unarchiveToTexture:otherTexture fromPath:archivePath error:&error];
+
+    expect(result).to.beTruthy();
+    expect(error).to.beNil();
+    expect(otherTexture.metadata).to.equal(texture.metadata);
+    expect(otherTexture.generationID).to.equal(texture.generationID);
+    expect($(otherTexture.image)).to.equalMat($(mat));
+    OCMVerify([textureRepository addTexture:otherTexture]);
+  });
+
+  it(@"should return a clone of texture from repository when unarchiving", ^{
+    LTTexture *otherTexture = [archiver unarchiveTextureFromPath:archivePath error:&error];
+
+    expect(result).to.beTruthy();
+    expect(error).to.beNil();
+    expect(otherTexture.metadata).to.equal(texture.metadata);
+    expect(otherTexture).toNot.beIdenticalTo(texture);
+    expect(otherTexture.generationID).to.equal(texture.generationID);
+    expect($(otherTexture.image)).to.equalMat($(mat));
+    OCMVerify([textureRepository addTexture:otherTexture]);
+  });
+});
+
+it(@"should not retain archived texture", ^{
+  __weak LTTexture *weakTexture;
+
+  // needed so the mock won't keep a reference to the texture.
+  archiver = [[LTTextureArchiver alloc] initWithStorage:storage
+                                      textureRepository:[[LTTextureRepository alloc] init]];
+  @autoreleasepool {
+    LTTexture *newTexture = [LTTexture byteRedTextureWithSize:CGSizeMake(1, 2)];
+    weakTexture = newTexture;
+    result = [archiver archiveTexture:newTexture inPath:archivePath
+                      withArchiveType:$(LTTextureArchiveTypeJPEG) error:&error];
+  }
+
+  expect(weakTexture).to.beNil();
 });
 
 SpecEnd
