@@ -6,6 +6,7 @@
 #import "LTTextureIZArchiver.h"
 #import "LTTextureJpegArchiver.h"
 #import "LTTextureLZ4Archiver.h"
+#import "LTTextureOpenExrArchiver.h"
 #import "LTTextureUncompressedMatArchiver.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -14,7 +15,8 @@ LTEnumImplement(NSUInteger, LTTextureArchiveType,
   LTTextureArchiveTypeUncompressedMat,
   LTTextureArchiveTypeJPEG,
   LTTextureArchiveTypeIZ,
-  LTTextureArchiveTypeLZ4
+  LTTextureArchiveTypeLZ4,
+  LTTextureArchiveTypeOpenExr
 );
 
 @implementation LTTextureArchiveType (LTTextureArchiveType)
@@ -23,7 +25,8 @@ static NSArray * const kArchivers = @[
   [LTTextureUncompressedMatArchiver class],
   [LTTextureJpegArchiver class],
   [LTTextureIZArchiver class],
-  [LTTextureLZ4Archiver class]
+  [LTTextureLZ4Archiver class],
+  [LTTextureOpenExrArchiver class]
 ];
 
 - (id<LTTextureBaseArchiver>)archiver {
@@ -34,7 +37,8 @@ static NSArray * const kFileExtensions = @[
   @"mat",
   @"jpg",
   @"iz",
-  @"lz4"
+  @"lz4",
+  @"exr"
 ];
 
 - (NSString *)fileExtension {
