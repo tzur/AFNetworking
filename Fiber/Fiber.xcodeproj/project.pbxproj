@@ -78,6 +78,7 @@
 		8861FCE01E5A279D00CA1436 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8861FCDF1E5A279D00CA1436 /* GLKit.framework */; };
 		B918A90E1E06CBC700970070 /* FBRHTTPClientProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = B918A90C1E06CBC700970070 /* FBRHTTPClientProvider.h */; };
 		B918A9341E06CBD300970070 /* FBRHTTPSessionConfigurationProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = B918A9331E06CBD300970070 /* FBRHTTPSessionConfigurationProvider.h */; };
+		CDE00ABF1E82ADED007AFD5E /* libcompression.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = CDE00ABE1E82ADED007AFD5E /* libcompression.tbd */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -485,6 +486,7 @@
 		8861FCDF1E5A279D00CA1436 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
 		B918A90C1E06CBC700970070 /* FBRHTTPClientProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBRHTTPClientProvider.h; sourceTree = "<group>"; };
 		B918A9331E06CBD300970070 /* FBRHTTPSessionConfigurationProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBRHTTPSessionConfigurationProvider.h; sourceTree = "<group>"; };
+		CDE00ABE1E82ADED007AFD5E /* libcompression.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libcompression.tbd; path = usr/lib/libcompression.tbd; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -499,6 +501,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CDE00ABF1E82ADED007AFD5E /* libcompression.tbd in Frameworks */,
 				659F3B611D2437BD0097F3D0 /* AFNetworking.framework in Frameworks */,
 				8861FCDC1E5A277D00CA1436 /* CoreGraphics.framework in Frameworks */,
 				8861FCE01E5A279D00CA1436 /* GLKit.framework in Frameworks */,
@@ -927,6 +930,7 @@
 		8861FCB51E5A277300CA1436 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CDE00ABE1E82ADED007AFD5E /* libcompression.tbd */,
 				8861FCDF1E5A279D00CA1436 /* GLKit.framework */,
 				8861FCDD1E5A278600CA1436 /* QuartzCore.framework */,
 				8861FCDB1E5A277D00CA1436 /* CoreGraphics.framework */,

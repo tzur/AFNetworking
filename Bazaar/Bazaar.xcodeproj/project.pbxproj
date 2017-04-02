@@ -250,6 +250,7 @@
 		B9FD09D21D64571D00523BB4 /* BZRReceiptModel+ProductPurchased.h in Headers */ = {isa = PBXBuildFile; fileRef = B9FD09D01D64571D00523BB4 /* BZRReceiptModel+ProductPurchased.h */; };
 		B9FD09D31D64571D00523BB4 /* BZRReceiptModel+ProductPurchased.mm in Sources */ = {isa = PBXBuildFile; fileRef = B9FD09D11D64571D00523BB4 /* BZRReceiptModel+ProductPurchased.mm */; };
 		B9FD0A021D645DBF00523BB4 /* BZRTimeProviderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = B9FD0A011D645DBF00523BB4 /* BZRTimeProviderSpec.mm */; };
+		CDE00A901E82AD5E007AFD5E /* libcompression.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = CDE00A8F1E82AD5E007AFD5E /* libcompression.tbd */; };
 		FA1B88541D338A8600097AD0 /* BZRKeychainStorage.mm in Sources */ = {isa = PBXBuildFile; fileRef = FA1B88531D338A8600097AD0 /* BZRKeychainStorage.mm */; };
 		FA1B885D1D33B2BC00097AD0 /* BZRKeychainStorageSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = FA1B885C1D33B2BC00097AD0 /* BZRKeychainStorageSpec.mm */; };
 		FA3C38161D35265F004A2673 /* libUICKeyChainStore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FA8D434B1D3517CC006FF5DB /* libUICKeyChainStore.a */; };
@@ -933,6 +934,7 @@
 		B9FD09D01D64571D00523BB4 /* BZRReceiptModel+ProductPurchased.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BZRReceiptModel+ProductPurchased.h"; sourceTree = "<group>"; };
 		B9FD09D11D64571D00523BB4 /* BZRReceiptModel+ProductPurchased.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "BZRReceiptModel+ProductPurchased.mm"; sourceTree = "<group>"; };
 		B9FD0A011D645DBF00523BB4 /* BZRTimeProviderSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRTimeProviderSpec.mm; sourceTree = "<group>"; };
+		CDE00A8F1E82AD5E007AFD5E /* libcompression.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libcompression.tbd; path = usr/lib/libcompression.tbd; sourceTree = SDKROOT; };
 		FA1B88521D338A8600097AD0 /* BZRKeychainStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRKeychainStorage.h; sourceTree = "<group>"; };
 		FA1B88531D338A8600097AD0 /* BZRKeychainStorage.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRKeychainStorage.mm; sourceTree = "<group>"; };
 		FA1B885C1D33B2BC00097AD0 /* BZRKeychainStorageSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; lineEnding = 0; path = BZRKeychainStorageSpec.mm; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
@@ -944,6 +946,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CDE00A901E82AD5E007AFD5E /* libcompression.tbd in Frameworks */,
 				65D91BC01D39A48B000D6A3B /* AFNetworking.framework in Frameworks */,
 				8861FCB21E5A273600CA1436 /* CoreGraphics.framework in Frameworks */,
 				8861FCB01E5A272500CA1436 /* GLKit.framework in Frameworks */,
@@ -1584,6 +1587,7 @@
 		8861FC7A1E5A269B00CA1436 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CDE00A8F1E82AD5E007AFD5E /* libcompression.tbd */,
 				8861FCB31E5A274500CA1436 /* QuartzCore.framework */,
 				8861FCB11E5A273600CA1436 /* CoreGraphics.framework */,
 				8861FCAF1E5A272400CA1436 /* GLKit.framework */,

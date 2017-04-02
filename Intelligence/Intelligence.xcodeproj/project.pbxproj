@@ -19,6 +19,7 @@
 		A1417AAA1E6ED9D0005DBEFF /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1417AA91E6ED9D0005DBEFF /* CoreGraphics.framework */; };
 		A1417AAC1E6ED9D5005DBEFF /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1417AAB1E6ED9D5005DBEFF /* QuartzCore.framework */; };
 		A1417AAE1E6EDA31005DBEFF /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1417AAD1E6EDA31005DBEFF /* GLKit.framework */; };
+		CDE00B451E82AE82007AFD5E /* libcompression.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = CDE00B441E82AE82007AFD5E /* libcompression.tbd */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -237,6 +238,7 @@
 		A1417AA91E6ED9D0005DBEFF /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		A1417AAB1E6ED9D5005DBEFF /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		A1417AAD1E6EDA31005DBEFF /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
+		CDE00B441E82AE82007AFD5E /* libcompression.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libcompression.tbd; path = usr/lib/libcompression.tbd; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -251,6 +253,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CDE00B451E82AE82007AFD5E /* libcompression.tbd in Frameworks */,
 				A1417AAA1E6ED9D0005DBEFF /* CoreGraphics.framework in Frameworks */,
 				A1417AAE1E6EDA31005DBEFF /* GLKit.framework in Frameworks */,
 				A14173401E6EB59F005DBEFF /* libExpecta.a in Frameworks */,
@@ -437,6 +440,7 @@
 		A14175B41E6EBE37005DBEFF /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CDE00B441E82AE82007AFD5E /* libcompression.tbd */,
 				A1417AA91E6ED9D0005DBEFF /* CoreGraphics.framework */,
 				A1417AAD1E6EDA31005DBEFF /* GLKit.framework */,
 				A1417AAB1E6ED9D5005DBEFF /* QuartzCore.framework */,

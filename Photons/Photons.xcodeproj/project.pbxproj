@@ -202,6 +202,7 @@
 		BE742B751DF43010009AAFAB /* PTNPhotoKitVideoAssetSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = BE742B741DF43010009AAFAB /* PTNPhotoKitVideoAssetSpec.mm */; };
 		C7E5B44E1CE9CE5F00A8ADE7 /* PTNPhotoKitAuthorizationManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8414EA5D1C5A389B00014DD1 /* PTNPhotoKitAuthorizationManager.mm */; };
 		C7E5B4681CE9CEF700A8ADE7 /* PTNPhotoKitAuthorizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 8428F4061C69D5520007B0A5 /* PTNPhotoKitAuthorizer.m */; };
+		CDE00B031E82AE40007AFD5E /* libcompression.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = CDE00B021E82AE40007AFD5E /* libcompression.tbd */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -790,6 +791,7 @@
 		BE742B711DF4115E009AAFAB /* PTNPhotoKitVideoAsset.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNPhotoKitVideoAsset.h; sourceTree = "<group>"; };
 		BE742B721DF4115E009AAFAB /* PTNPhotoKitVideoAsset.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PTNPhotoKitVideoAsset.mm; sourceTree = "<group>"; };
 		BE742B741DF43010009AAFAB /* PTNPhotoKitVideoAssetSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PTNPhotoKitVideoAssetSpec.mm; sourceTree = "<group>"; };
+		CDE00B021E82AE40007AFD5E /* libcompression.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libcompression.tbd; path = usr/lib/libcompression.tbd; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -804,6 +806,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CDE00B031E82AE40007AFD5E /* libcompression.tbd in Frameworks */,
 				8861FDDA1E5A2BA800CA1436 /* AVFoundation.framework in Frameworks */,
 				8861FDCE1E5A2B5100CA1436 /* CoreGraphics.framework in Frameworks */,
 				8861FDD21E5A2B7100CA1436 /* CoreLocation.framework in Frameworks */,
@@ -830,6 +833,7 @@
 		49F615BDE58178359DAFCD59 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CDE00B021E82AE40007AFD5E /* libcompression.tbd */,
 				8861FDDB1E5A2BC000CA1436 /* ImageIO.framework */,
 				8861FDD91E5A2BA800CA1436 /* AVFoundation.framework */,
 				8861FDD71E5A2B9D00CA1436 /* QuartzCore.framework */,

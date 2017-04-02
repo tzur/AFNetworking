@@ -25,6 +25,8 @@ LTErrorCodesImplement(LTKitErrorCodeProductID,
   LTErrorCodeBadHeader,
   /// Caused when a nonnull value was expected but null was provided.
   LTErrorCodeNullValueGiven,
+  /// Caused when the compression process has failed.
+  LTErrorCodeCompressionFailed,
   /// Caused when a decryption of encrypted data has failed.
   LTErrorCodeDecryptionFailed
 );
