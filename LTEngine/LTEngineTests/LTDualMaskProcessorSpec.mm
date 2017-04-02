@@ -27,6 +27,7 @@ context(@"properties", ^{
     expect(processor.center).to.equal(LTVector2::zeros());
     expect(processor.diameter).to.equal(0);
     expect(processor.spread).to.equal(0);
+    expect(processor.stretch).to.equal(1);
     expect(processor.angle).to.equal(0);
     expect(processor.invert).to.beFalsy();
   });

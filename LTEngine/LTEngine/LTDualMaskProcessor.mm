@@ -80,6 +80,10 @@
   return 0;
 }
 
+- (CGFloat)defaultStretch {
+  return 1;
+}
+
 - (CGFloat)defaultAngle {
   return 0;
 }
@@ -123,9 +127,9 @@ LTPropertyWithoutSetter(CGFloat, spread, Spread, -1, 1, 0);
   self[[LTDualMaskFsh spread]] = @([self remapSpread:spread]);
 }
 
-LTPropertyWithoutSetter(CGFloat, stretch, Stretch, 0.1, 10, 1);
 - (void)setStretch:(CGFloat)stretch {
-  [self _verifyAndSetStretch:stretch];
+  LTParameterAssert(stretch > 0, @"Stretch (%g) must be positive", stretch);
+  _stretch = stretch;
   self[[LTDualMaskFsh stretchInversed]] = @(1 / stretch);
 }
 
