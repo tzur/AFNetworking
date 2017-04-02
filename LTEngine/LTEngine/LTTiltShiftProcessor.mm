@@ -103,6 +103,10 @@ static const CGFloat kMaskScalingFactor = 4.0;
   return 0;
 }
 
+- (CGFloat)defaultStretch {
+  return self.dualMaskProcessor.defaultStretch;
+}
+
 - (CGFloat)defaultAngle {
   return 0;
 }
@@ -184,7 +188,10 @@ LTPropertyWithoutSetter(CGFloat, spread, Spread, -1, 1, 0);
   [self setNeedsDualMaskUpdate];
 }
 
-LTPropertyProxyWithoutSetter(CGFloat, stretch, Stretch, self.dualMaskProcessor);
+- (CGFloat)stretch {
+  return self.dualMaskProcessor.stretch;
+}
+
 - (void)setStretch:(CGFloat)stretch {
   self.dualMaskProcessor.stretch = stretch;
   [self setNeedsDualMaskUpdate];
