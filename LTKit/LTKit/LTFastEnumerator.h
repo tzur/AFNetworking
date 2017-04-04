@@ -23,14 +23,14 @@ NS_ASSUME_NONNULL_BEGIN
 typedef id _Nonnull(^LTFastMapEnumerationBlock)(id value);
 
 /// Maps each item in the enumeration to another item. The mapping is defined by the given \c block.
-- (LTFastEnumerator *)map:(LTFastMapEnumerationBlock)block;
+- (LTFastEnumerator *)map:(NS_NOESCAPE LTFastMapEnumerationBlock)block;
 
 /// Block that maps a value to a fast enumeration object.
 typedef id<NSFastEnumeration> _Nonnull(^LTFastFlatMapEnumerationBlock)(id value);
 
 /// Maps each item in the enumeration to an \c id<NSFastEnumeration>, then flattens it to a single
 /// enumeration.
-- (LTFastEnumerator *)flatMap:(LTFastFlatMapEnumerationBlock)block;
+- (LTFastEnumerator *)flatMap:(NS_NOESCAPE LTFastFlatMapEnumerationBlock)block;
 
 /// Flattens the current enumeration of enumerations to a single enumeration.
 - (LTFastEnumerator *)flatten;

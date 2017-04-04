@@ -35,13 +35,13 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 - (void)enumerateObjectsWithTraversalOrder:(LTTreeTraversalOrder)traversalOrder
-                                usingBlock:(LTTreeTraversalBlock)block {
+                                usingBlock:(NS_NOESCAPE LTTreeTraversalBlock)block {
   __block BOOL stop = NO;
   [self enumerateObjectsWithTraversalOrder:traversalOrder usingBlock:block stop:&stop node:self];
 }
 
 - (void)enumerateObjectsWithTraversalOrder:(LTTreeTraversalOrder)traversalOrder
-                                usingBlock:(LTTreeTraversalBlock)block
+                                usingBlock:(NS_NOESCAPE LTTreeTraversalBlock)block
                                       stop:(BOOL *)stop node:(nullable LTTreeNode *)node {
   if (!node) {
     return;

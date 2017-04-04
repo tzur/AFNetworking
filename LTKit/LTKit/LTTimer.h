@@ -15,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithTimeProvider:(id<LTTimeProvider>)timeProvider NS_DESIGNATED_INITIALIZER;
 
 /// Returns the time took to execute the given block.
-+ (CFTimeInterval)timeForBlock:(LTVoidBlock)block;
++ (CFTimeInterval)timeForBlock:(NS_NOESCAPE LTVoidBlock)block;
 
 /// Starts the timer. If the timer is already started, the call is ignored.
 - (void)start;

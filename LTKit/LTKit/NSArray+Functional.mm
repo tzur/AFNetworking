@@ -17,7 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
   return mapped;
 }
 
-- (id)lt_reduce:(LTArrayReduceBlock)block initial:(id)initialValue {
+- (id)lt_reduce:(NS_NOESCAPE LTArrayReduceBlock)block initial:(id)initialValue {
   LTParameterAssert(block);
 
   id currentValue = initialValue;
@@ -27,7 +27,7 @@ NS_ASSUME_NONNULL_BEGIN
   return currentValue;
 }
 
-- (NSArray *)lt_filter:(LTArrayFilterBlock)block {
+- (NSArray *)lt_filter:(NS_NOESCAPE LTArrayFilterBlock)block {
   LTParameterAssert(block);
 
   NSPredicate *predicate =
@@ -37,7 +37,7 @@ NS_ASSUME_NONNULL_BEGIN
   return [self filteredArrayUsingPredicate:predicate];
 }
 
-- (nullable id)lt_find:(LTArrayFilterBlock)block {
+- (nullable id)lt_find:(NS_NOESCAPE LTArrayFilterBlock)block {
   LTParameterAssert(block);
 
   NSUInteger index = [self indexOfObjectPassingTest:^BOOL(id object, NSUInteger, BOOL *) {
@@ -46,7 +46,8 @@ NS_ASSUME_NONNULL_BEGIN
   return index != NSNotFound ? [self objectAtIndex:index] : nil;
 }
 
-- (NSDictionary<id<NSCopying>, NSArray<id> *> *)lt_classify:(LTArrayClassifierBlock)block {
+- (NSDictionary<id<NSCopying>, NSArray<id> *> *)
+    lt_classify:(NS_NOESCAPE LTArrayClassifierBlock)block {
   LTParameterAssert(block);
 
   NSMutableDictionary<id<NSCopying>, NSMutableArray *> *classified =

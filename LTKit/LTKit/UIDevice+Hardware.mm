@@ -173,7 +173,7 @@ typedef NS_ENUM(NSUInteger, UIDeviceScreenType) {
 #pragma mark Device idioms
 #pragma mark -
 
-- (void)lt_iPad:(LTVoidBlock)block {
+- (void)lt_iPad:(NS_NOESCAPE LTVoidBlock)block {
   LTParameterAssert(block);
 
   if (self.lt_isPadIdiom) {
