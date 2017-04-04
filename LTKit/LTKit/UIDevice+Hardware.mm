@@ -252,7 +252,7 @@ typedef NS_ENUM(NSUInteger, UIDeviceScreenType) {
       return deviceType;
     }
   }
-  
+
   for (NSString *substring in kUnknownPlatformSubstringToUIDeviceKind) {
     if ([platformName hasPrefix:substring]) {
       return (UIDeviceKind)[kUnknownPlatformSubstringToUIDeviceKind[substring]
