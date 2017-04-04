@@ -2,7 +2,6 @@
 // Created by Amit Goldstein.
 
 #import "LTTexture.h"
-
 #import "LTTexture+Sampling.h"
 #import "LTTexture+Writing.h"
 
