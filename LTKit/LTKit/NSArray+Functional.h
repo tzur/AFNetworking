@@ -37,7 +37,7 @@ typedef id _Nonnull(^LTArrayReduceBlock)(id _Nonnull value, ObjectType object);
 /// } initialValue:@0];
 /// // sum = 0 + 1 + 2 + ... + 10
 /// @endcode
-- (id)lt_reduce:(LTArrayReduceBlock)block initial:(id)initialValue;
+- (id)lt_reduce:(NS_NOESCAPE LTArrayReduceBlock)block initial:(id)initialValue;
 
 /// Callback block used with \c lt_filter:.
 typedef BOOL (^LTArrayFilterBlock)(ObjectType _Nonnull object);
@@ -46,13 +46,13 @@ typedef BOOL (^LTArrayFilterBlock)(ObjectType _Nonnull object);
 ///
 /// Returns a filtered array containing all and only the items of the receiver that \c block has
 /// returned \c YES for.
-- (NSArray<ObjectType> *)lt_filter:(LTArrayFilterBlock)block;
+- (NSArray<ObjectType> *)lt_filter:(NS_NOESCAPE LTArrayFilterBlock)block;
 
 /// Finds the first item in the array that passed the specified filter \c block.
 ///
 /// Returns a single object that is the first item that \c block has returned \c YES for, or \c nil
 /// if \c block has returned \c NO for all array's elements.
-- (nullable ObjectType)lt_find:(LTArrayFilterBlock)block;
+- (nullable ObjectType)lt_find:(NS_NOESCAPE LTArrayFilterBlock)block;
 
 /// Callback block used to classify objects of an array.
 ///
@@ -78,7 +78,8 @@ typedef id<NSCopying> _Nonnull(^LTArrayClassifierBlock)(ObjectType _Nonnull obje
 /// //   @NO: @[@-5, @-4, @-3, @-2 ,@-1]
 /// // }
 /// @endcode
-- (NSDictionary<id<NSCopying>, NSArray<ObjectType> *> *)lt_classify:(LTArrayClassifierBlock)block;
+- (NSDictionary<id<NSCopying>, NSArray<ObjectType> *> *)
+    lt_classify:(NS_NOESCAPE LTArrayClassifierBlock)block;
 
 @end
 

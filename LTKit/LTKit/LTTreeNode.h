@@ -38,7 +38,7 @@ typedef void (^LTTreeTraversalBlock)(LTTreeNode *node, BOOL * stop);
 ///
 /// Time complexity: \c O(n), where \c is the number of vertices in this instance.
 - (void)enumerateObjectsWithTraversalOrder:(LTTreeTraversalOrder)traversalOrder
-                                usingBlock:(LTTreeTraversalBlock)block;
+                                usingBlock:(NS_NOESCAPE LTTreeTraversalBlock)block;
 
 /// Returns \c YES if the given \c node is of class \c LTTreeNode with an equal \c object and equal
 /// \c children.

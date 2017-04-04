@@ -80,15 +80,15 @@ typedef NS_ENUM(NSUInteger, UIDeviceKind) {
 
 /// Runs the block if currently running with a pad idiom. Note that an app might run on an iPad as
 /// an iPhone app in 'simulation mode'. In such a case, the block won't execute.
-- (void)lt_iPad:(LTVoidBlock)block;
+- (void)lt_iPad:(NS_NOESCAPE LTVoidBlock)block;
 
 /// Runs the block if currently running with a phone idiom. Note that an app might run on an iPad as
 /// an iPhone app in 'simulation mode'. In such a case, the block will execute.
-- (void)lt_iPhone:(LTVoidBlock)block;
+- (void)lt_iPhone:(NS_NOESCAPE LTVoidBlock)block;
 
 /// Runs \c iPhoneBlock if running with a phone idiom, or \c iPadBlock if running with a pad idiom.
 /// If the idiom is unspecified, no block will run.
-- (void)lt_iPhone:(LTVoidBlock)iPhoneBlock iPad:(LTVoidBlock)iPadBlock;
+- (void)lt_iPhone:(NS_NOESCAPE LTVoidBlock)iPhoneBlock iPad:(NS_NOESCAPE LTVoidBlock)iPadBlock;
 
 /// \c YES if currently running with a pad user interface idiom.
 @property (readonly, nonatomic) BOOL lt_isPadIdiom;

@@ -203,7 +203,7 @@ typedef NSUInteger (^LTFastEnumeratorOperationBlock)(NSFastEnumerationState *sta
   return count;
 }
 
-- (LTFastEnumerator *)map:(LTFastMapEnumerationBlock)block {
+- (LTFastEnumerator *)map:(NS_NOESCAPE LTFastMapEnumerationBlock)block {
   LTFastEnumeratorOperationBlock map = ^NSUInteger(NSFastEnumerationState *state,
                                                    __unsafe_unretained id _Nonnull sourceItems[],
                                                    __strong id _Nonnull outputItems[],
@@ -225,7 +225,7 @@ typedef NSUInteger (^LTFastEnumeratorOperationBlock)(NSFastEnumerationState *sta
   return [[LTFastEnumerator alloc] initWithSource:self operation:map];
 }
 
-- (LTFastEnumerator *)flatMap:(LTFastFlatMapEnumerationBlock)block {
+- (LTFastEnumerator *)flatMap:(NS_NOESCAPE LTFastFlatMapEnumerationBlock)block {
   // Holds the current enumeration that is being flattened.
   __block _Nullable id<NSFastEnumeration> currentValues;
 

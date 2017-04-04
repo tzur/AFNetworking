@@ -45,7 +45,7 @@ NS_ASSUME_NONNULL_BEGIN
   return self;
 }
 
-+ (CFTimeInterval)timeForBlock:(LTVoidBlock)block {
++ (CFTimeInterval)timeForBlock:(NS_NOESCAPE LTVoidBlock)block {
   LTParameterAssert(block);
 
   LTTimer *timer = [[LTTimer alloc] init];
