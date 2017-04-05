@@ -3,6 +3,7 @@
 
 #import "LTDualMaskProcessor.h"
 
+#import "LTGLKitExtensions.h"
 #import "LTOpenCVExtensions.h"
 #import "LTTexture+Factory.h"
 
@@ -29,6 +30,7 @@ context(@"properties", ^{
     expect(processor.spread).to.equal(0);
     expect(processor.angle).to.equal(0);
     expect(processor.invert).to.beFalsy();
+    expect($(processor.transform)).to.equal($(GLKMatrix3Identity));
   });
 });
 
@@ -38,6 +40,18 @@ context(@"processing", ^{
     processor.center = LTVector2(8, 8);
     processor.diameter = 8;
     cv::Mat image = LTLoadMat([self class], @"RadialMaskCenter.png");
+
+    [processor process];
+
+    expect($(output.image)).to.beCloseToMatWithin($(image), 1);
+  });
+
+  it(@"should create mask with transform", ^{
+    processor.maskType = LTDualMaskTypeRadial;
+    processor.center = LTVector2(8, 8);
+    processor.transform = GLKMatrix3MakeScale(0.75, 1.25, 1);
+    processor.diameter = 4;
+    cv::Mat image = LTLoadMat([self class], @"RadialMaskTransformed.png");
 
     [processor process];
 

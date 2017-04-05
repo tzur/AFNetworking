@@ -10,6 +10,13 @@
 #import "LTShaderStorage+LTPassthroughShaderVsh.h"
 #import "LTTexture+Factory.h"
 
+@interface LTDualMaskProcessor()
+
+/// Boxed matrix used as a \c transform proxy.
+@property (strong, nonatomic) NSValue *boxedTransform;
+
+@end
+
 @implementation LTDualMaskProcessor
 
 - (instancetype)initWithOutput:(LTTexture *)output {
@@ -57,7 +64,8 @@
       @instanceKeypath(LTDualMaskProcessor, spread),
       @instanceKeypath(LTDualMaskProcessor, stretch),
       @instanceKeypath(LTDualMaskProcessor, angle),
-      @instanceKeypath(LTDualMaskProcessor, invert)
+      @instanceKeypath(LTDualMaskProcessor, invert),
+      @instanceKeypath(LTDualMaskProcessor, boxedTransform)
     ]];
   });
 
@@ -82,6 +90,18 @@
 
 - (CGFloat)defaultAngle {
   return 0;
+}
+
+- (NSValue *)boxedTransform {
+  return $(self.transform);
+}
+
+- (void)setBoxedTransform:(NSValue *)boxedTransform {
+  self.transform = boxedTransform.GLKMatrix3Value;
+}
+
+- (NSValue *)defaultBoxedTransform {
+  return $(GLKMatrix3Identity);
 }
 
 #pragma mark -
@@ -115,6 +135,11 @@
 - (void)setDiameter:(CGFloat)diameter {
   _diameter = diameter;
   [self updateDiameterWith:diameter];
+}
+
+- (void)setTransform:(GLKMatrix3)transform {
+  _transform = transform;
+  self[[LTDualMaskFsh transform]] = $(transform);
 }
 
 LTPropertyWithoutSetter(CGFloat, spread, Spread, -1, 1, 0);

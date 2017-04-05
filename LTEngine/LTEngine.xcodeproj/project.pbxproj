@@ -533,6 +533,7 @@
 		28FC0FD61D2E967C00237FF8 /* LTContentTouchEventFilter.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28FC0FD41D2E967C00237FF8 /* LTContentTouchEventFilter.mm */; };
 		28FC0FF61D2E969200237FF8 /* LTContentTouchEventFilterSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28FC0FF51D2E969200237FF8 /* LTContentTouchEventFilterSpec.mm */; };
 		28FDD64518D5F90200066B7E /* LTRotatedRect+UIColor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28FDD64418D5F90200066B7E /* LTRotatedRect+UIColor.mm */; };
+		307C4B5A1E965EC800BAB302 /* RadialMaskTransformed.png in Resources */ = {isa = PBXBuildFile; fileRef = 307C4B591E965EC800BAB302 /* RadialMaskTransformed.png */; };
 		30DDD6A11CFC8A0700AE72B8 /* LTConsistentGaussianFilterProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 30DDD6991CFC8A0700AE72B8 /* LTConsistentGaussianFilterProcessor.h */; };
 		30DDD6A21CFC8A0700AE72B8 /* LTConsistentGaussianFilterProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 30DDD69A1CFC8A0700AE72B8 /* LTConsistentGaussianFilterProcessor.mm */; };
 		30DDD6A31CFC8A0700AE72B8 /* LTGaussianConvolutionDivider.h in Headers */ = {isa = PBXBuildFile; fileRef = 30DDD69B1CFC8A0700AE72B8 /* LTGaussianConvolutionDivider.h */; };
@@ -2275,6 +2276,7 @@
 		28FC0FF51D2E969200237FF8 /* LTContentTouchEventFilterSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; lineEnding = 0; path = LTContentTouchEventFilterSpec.mm; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		28FDD64318D5F90200066B7E /* LTRotatedRect+UIColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "LTRotatedRect+UIColor.h"; sourceTree = "<group>"; };
 		28FDD64418D5F90200066B7E /* LTRotatedRect+UIColor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "LTRotatedRect+UIColor.mm"; sourceTree = "<group>"; };
+		307C4B591E965EC800BAB302 /* RadialMaskTransformed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = RadialMaskTransformed.png; path = Resources/RadialMaskTransformed.png; sourceTree = "<group>"; };
 		30DDD6991CFC8A0700AE72B8 /* LTConsistentGaussianFilterProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTConsistentGaussianFilterProcessor.h; sourceTree = "<group>"; };
 		30DDD69A1CFC8A0700AE72B8 /* LTConsistentGaussianFilterProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTConsistentGaussianFilterProcessor.mm; sourceTree = "<group>"; };
 		30DDD69B1CFC8A0700AE72B8 /* LTGaussianConvolutionDivider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTGaussianConvolutionDivider.h; sourceTree = "<group>"; };
@@ -4638,6 +4640,7 @@
 				280A8B9F1CBD234100157507 /* RadialMaskCenterNonSquareStretched.png */,
 				280A8BA01CBD234100157507 /* RadialMaskCenterStretched.png */,
 				280A8BA11CBD234100157507 /* RadialMaskOffCenterStretched.png */,
+				307C4B591E965EC800BAB302 /* RadialMaskTransformed.png */,
 				03329F1018D9D08E00CD61C2 /* MealBWProcessorNoisyFrame.png */,
 				03BA8C1318D82A0200625068 /* MealBWProcessorWideFrame.png */,
 				03B3765618D612830017B705 /* MealBWProcessor.png */,
@@ -6549,6 +6552,7 @@
 				8BAD630E18A3D70100482564 /* ValueSetter.fsh in Resources */,
 				06F9F2D81D59B558002D2726 /* Lena128_bilateral_L1toL3toL1.png in Resources */,
 				28FB00ED1A0AB46D004490AF /* BristleBrushBristles.FlatBlunt.png in Resources */,
+				307C4B5A1E965EC800BAB302 /* RadialMaskTransformed.png in Resources */,
 				06B5C1F61D181A9400401556 /* HorizontalStepFunction33.png in Resources */,
 				280F5A2E191A975500F9F80B /* ShapeDrawerEllipticShapeEllipse.png in Resources */,
 				03BA8C1418D82A0200625068 /* MealBWProcessorWideFrame.png in Resources */,
