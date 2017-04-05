@@ -23,7 +23,7 @@ typedef void (^LTProcessWithPlacementBlock)(LTNextIterationPlacement *placement)
 /// Executes the processor's strategy and calls the given \c block with a placement configuration.
 /// The block should process the source texture to the target framebuffer. For multi-pass
 /// strategies, the block may be called multiple times with different placements.
-- (void)processWithPlacement:(LTProcessWithPlacementBlock)block;
+- (void)processWithPlacement:(NS_NOESCAPE LTProcessWithPlacementBlock)block;
 
 /// Dictionary of \c NSString to \c LTTexture of axiliary textures to use to assist processing.
 @property (strong, nonatomic) NSDictionary *auxiliaryTextures;

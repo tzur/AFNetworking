@@ -29,7 +29,7 @@ typedef NS_ENUM(NSUInteger, LTFboAttachableType) {
 /// \c fillColor to \c LTVector4::null().
 ///
 /// @note All GPU-based writes should be executed via this method.
-- (void)writeToAttachableWithBlock:(LTVoidBlock)block;
+- (void)writeToAttachableWithBlock:(NS_NOESCAPE LTVoidBlock)block;
 
 /// Executes \c block which clears the attachable with color \c color, allowing the attachable to
 /// execute relevant code before and after the write.
@@ -38,7 +38,7 @@ typedef NS_ENUM(NSUInteger, LTFboAttachableType) {
 /// \c color.
 ///
 /// @note All GPU-based clears should be executed via this method.
-- (void)clearAttachableWithColor:(LTVector4)color block:(LTVoidBlock)block;
+- (void)clearAttachableWithColor:(LTVector4)color block:(NS_NOESCAPE LTVoidBlock)block;
 
 /// Type of framebuffer attachable.
 @property (readonly, nonatomic) LTFboAttachableType attachableType;

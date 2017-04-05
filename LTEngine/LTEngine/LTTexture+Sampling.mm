@@ -13,7 +13,7 @@
   LTMethodNotImplemented();
 }
 
-- (void)sampleWithGPUWithBlock:(LTVoidBlock)block {
+- (void)sampleWithGPUWithBlock:(NS_NOESCAPE LTVoidBlock)block {
   LTParameterAssert(block);
   [self beginSamplingWithGPU];
   block();

@@ -32,7 +32,7 @@
   [self.drawer setAuxiliaryTexture:texture withName:name];
 }
 
-- (void)processWithPlacement:(LTProcessWithPlacementBlock)block {
+- (void)processWithPlacement:(NS_NOESCAPE LTProcessWithPlacementBlock)block {
   [self.strategy processingWillBegin];
 
   while ([self.strategy hasMoreIterations]) {

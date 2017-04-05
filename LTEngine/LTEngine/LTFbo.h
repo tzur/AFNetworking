@@ -82,7 +82,7 @@ typedef NS_ENUM(GLenum, LTFboAttachmentPoint) {
 /// \c bindAndExecute:.
 ///
 /// @param block The block to execute after binding the resource. This parameter cannot be nil.
-- (void)bindAndDraw:(LTVoidBlock)block;
+- (void)bindAndDraw:(NS_NOESCAPE LTVoidBlock)block;
 
 /// Fills all color attachables bound to this FBO with the given color.
 - (void)clearWithColor:(LTVector4)color;
@@ -134,7 +134,7 @@ typedef NS_ENUM(GLenum, LTFboAttachmentPoint) {
 
 /// Executes the given block while the receiver is bound to the active context, and \c LTGLContext's
 /// \c renderingToScreen is set to YES.
-- (void)bindAndDrawOnScreen:(LTVoidBlock)block;
+- (void)bindAndDrawOnScreen:(NS_NOESCAPE LTVoidBlock)block;
 
 @end
 

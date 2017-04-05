@@ -25,7 +25,7 @@ lt::Ref<CVPixelBufferRef> LTCVPixelBufferCreate(size_t width, size_t height,
 }
 
 void LTCVPixelBufferLockAndExecute(CVPixelBufferRef pixelBuffer, CVPixelBufferLockFlags lockFlags,
-                                   LTVoidBlock block) {
+                                   NS_NOESCAPE LTVoidBlock block) {
   LTParameterAssert(block);
 
   CVReturn lockResult = CVPixelBufferLockBaseAddress(pixelBuffer, lockFlags);
@@ -48,7 +48,7 @@ void LTCVPixelBufferLockAndExecute(CVPixelBufferRef pixelBuffer, CVPixelBufferLo
 }
 
 void LTCVPixelBufferImage(CVPixelBufferRef pixelBuffer, CVPixelBufferLockFlags lockFlags,
-                          LTCVPixelBufferWriteBlock block) {
+                          NS_NOESCAPE LTCVPixelBufferWriteBlock block) {
   LTParameterAssert(block);
   LTParameterAssert(!CVPixelBufferIsPlanar(pixelBuffer),
                     @"The given pixel buffer must not be planar");
@@ -67,18 +67,21 @@ void LTCVPixelBufferImage(CVPixelBufferRef pixelBuffer, CVPixelBufferLockFlags l
   });
 }
 
-void LTCVPixelBufferImageForReading(CVPixelBufferRef pixelBuffer, LTCVPixelBufferReadBlock block) {
+void LTCVPixelBufferImageForReading(CVPixelBufferRef pixelBuffer,
+                                    NS_NOESCAPE LTCVPixelBufferReadBlock block) {
   LTCVPixelBufferImage(pixelBuffer, kCVPixelBufferLock_ReadOnly, ^(cv::Mat *image) {
     block(*image);
   });
 }
 
-void LTCVPixelBufferImageForWriting(CVPixelBufferRef pixelBuffer, LTCVPixelBufferWriteBlock block) {
+void LTCVPixelBufferImageForWriting(CVPixelBufferRef pixelBuffer,
+                                    NS_NOESCAPE LTCVPixelBufferWriteBlock block) {
   LTCVPixelBufferImage(pixelBuffer, 0, block);
 }
 
 void LTCVPixelBufferPlaneImage(CVPixelBufferRef pixelBuffer, size_t planeIndex,
-                               CVPixelBufferLockFlags lockFlags, LTCVPixelBufferWriteBlock block) {
+                               CVPixelBufferLockFlags lockFlags,
+                               NS_NOESCAPE LTCVPixelBufferWriteBlock block) {
   LTParameterAssert(block);
   LTParameterAssert(CVPixelBufferIsPlanar(pixelBuffer), @"The given pixel buffer must be planar");
 
@@ -102,7 +105,7 @@ void LTCVPixelBufferPlaneImage(CVPixelBufferRef pixelBuffer, size_t planeIndex,
 }
 
 void LTCVPixelBufferPlaneImageForReading(CVPixelBufferRef pixelBuffer, size_t planeIndex,
-                                         LTCVPixelBufferReadBlock block) {
+                                         NS_NOESCAPE LTCVPixelBufferReadBlock block) {
   LTCVPixelBufferPlaneImage(pixelBuffer, planeIndex, kCVPixelBufferLock_ReadOnly,
                             ^(cv::Mat *image) {
     block(*image);
@@ -110,12 +113,12 @@ void LTCVPixelBufferPlaneImageForReading(CVPixelBufferRef pixelBuffer, size_t pl
 }
 
 void LTCVPixelBufferPlaneImageForWriting(CVPixelBufferRef pixelBuffer, size_t planeIndex,
-                                         LTCVPixelBufferWriteBlock block) {
+                                         NS_NOESCAPE LTCVPixelBufferWriteBlock block) {
   LTCVPixelBufferPlaneImage(pixelBuffer, planeIndex, 0, block);
 }
 
 void LTCVPixelBufferImages(CVPixelBufferRef pixelBuffer, CVPixelBufferLockFlags lockFlags,
-                           LTCVPixelBufferImagesBlock block) {
+                           NS_NOESCAPE LTCVPixelBufferImagesBlock block) {
   LTParameterAssert(block);
 
   if (!CVPixelBufferIsPlanar(pixelBuffer)) {
@@ -148,7 +151,7 @@ void LTCVPixelBufferImages(CVPixelBufferRef pixelBuffer, CVPixelBufferLockFlags 
 }
 
 void LTCVPixelBufferImagesForReading(CVPixelBufferRef pixelBuffer,
-                                     LTCVPixelBufferImagesBlock block) {
+                                     NS_NOESCAPE LTCVPixelBufferImagesBlock block) {
   LTCVPixelBufferImages(pixelBuffer, kCVPixelBufferLock_ReadOnly,
                         ^(const std::vector<cv::Mat> &images) {
     block(images);
@@ -156,7 +159,7 @@ void LTCVPixelBufferImagesForReading(CVPixelBufferRef pixelBuffer,
 }
 
 void LTCVPixelBufferImagesForWriting(CVPixelBufferRef pixelBuffer,
-                                     LTCVPixelBufferImagesBlock block) {
+                                     NS_NOESCAPE LTCVPixelBufferImagesBlock block) {
   LTCVPixelBufferImages(pixelBuffer, 0, ^(const std::vector<cv::Mat> &images) {
     block(images);
   });

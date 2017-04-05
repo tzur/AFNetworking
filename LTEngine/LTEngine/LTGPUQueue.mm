@@ -218,7 +218,7 @@ objection_register_singleton([LTGPUQueue class]);
 #pragma mark Execution
 #pragma mark -
 
-- (void)executeBlock:(LTVoidBlock)block {
+- (void)executeBlock:(NS_NOESCAPE LTVoidBlock)block {
   // GCD queues drain their autoreleasepools only when the GCD thread is idle, therefore objects may
   // be released after their context is unset, causing a crash. Wrapping the block with
   // @autoreleasepool enforces objects that are created in the block to deallocate after the block

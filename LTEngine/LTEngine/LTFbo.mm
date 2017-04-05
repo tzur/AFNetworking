@@ -262,7 +262,8 @@ NS_ASSUME_NONNULL_BEGIN
   self.bound = NO;
 }
 
-- (void)setContextWithRenderingToScreen:(BOOL)renderingToScreen andDraw:(LTVoidBlock)block {
+- (void)setContextWithRenderingToScreen:(BOOL)renderingToScreen
+                                andDraw:(NS_NOESCAPE LTVoidBlock)block {
   [[LTGLContext currentContext] executeAndPreserveState:^(LTGLContext *context) {
     context.renderingToScreen = renderingToScreen;
     // New framebuffer is attached, there's no point of keeping the previous scissor tests.
@@ -271,7 +272,7 @@ NS_ASSUME_NONNULL_BEGIN
   }];
 }
 
-- (void)bindAndExecute:(LTVoidBlock)block {
+- (void)bindAndExecute:(NS_NOESCAPE LTVoidBlock)block {
   LTParameterAssert(block);
   if (self.bound) {
     block();
@@ -282,14 +283,15 @@ NS_ASSUME_NONNULL_BEGIN
   }
 }
 
-- (void)bindAndDraw:(LTVoidBlock)block {
+- (void)bindAndDraw:(NS_NOESCAPE LTVoidBlock)block {
   LTParameterAssert(block);
   [self bindAndExecute:^{
     [self writeToAttachablesStartingAtIndex:0 withBlock:block];
   }];
 }
 
-- (void)writeToAttachablesStartingAtIndex:(NSUInteger)index withBlock:(LTVoidBlock)block {
+- (void)writeToAttachablesStartingAtIndex:(NSUInteger)index
+                                withBlock:(NS_NOESCAPE LTVoidBlock)block {
   if (index == [[self class] attachmentPoints].count) {
     block();
     return;
@@ -307,7 +309,7 @@ NS_ASSUME_NONNULL_BEGIN
   }
 }
 
-- (void)bindAndDrawOnScreen:(LTVoidBlock)block {
+- (void)bindAndDrawOnScreen:(NS_NOESCAPE LTVoidBlock)block {
   [self bindAndDraw:^{
     [self setContextWithRenderingToScreen:YES andDraw:block];
   }];
@@ -407,18 +409,18 @@ typedef void (^LTFboAttachableEnumerationBlock)(NSNumber *attachmentPoint,
 
 /// Enumerates all attachables in the priority order, skipping non existing attachables, and calls
 /// the given \c block.
-- (void)enumerateAttachablesWithBlock:(LTFboAttachableEnumerationBlock)block {
+- (void)enumerateAttachablesWithBlock:(NS_NOESCAPE LTFboAttachableEnumerationBlock)block {
   [self enumerateAttachablesUsingIndices:[[self class] attachmentPoints] block:block];
 }
 
 /// Enumerates all color attachables in the priority order, skipping non existing attachables,
 /// and calls the given \c block.
-- (void)enumerateColorAttachablesWithBlock:(LTFboAttachableEnumerationBlock)block {
+- (void)enumerateColorAttachablesWithBlock:(NS_NOESCAPE LTFboAttachableEnumerationBlock)block {
   [self enumerateAttachablesUsingIndices:[[self class] colorAttachmentPoints] block:block];
 }
 
 - (void)enumerateAttachablesUsingIndices:(NSArray<NSNumber *> *)indices
-                                   block:(LTFboAttachableEnumerationBlock)block {
+                                   block:(NS_NOESCAPE LTFboAttachableEnumerationBlock)block {
   BOOL stop = NO;
   for (NSNumber *index in indices) {
     if (!self.attachmentInfos[index]) {

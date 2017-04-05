@@ -38,7 +38,7 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 /// @note all texture samplings that are GPU based should be executed via this method, or be wrapped
 /// with \c beginSamplingWithGPU and \c endSamplingWithGPU calls.
-- (void)sampleWithGPUWithBlock:(LTVoidBlock)block;
+- (void)sampleWithGPUWithBlock:(NS_NOESCAPE LTVoidBlock)block;
 
 @end
 
