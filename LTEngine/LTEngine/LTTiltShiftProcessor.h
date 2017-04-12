@@ -1,11 +1,10 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Zeev Farbman.
 
-#import "LTImageProcessor.h"
-#import "LTScreenProcessing.h"
-#import "LTPartialProcessing.h"
-
 #import "LTDualMaskProcessor.h"
+#import "LTImageProcessor.h"
+#import "LTPartialProcessing.h"
+#import "LTScreenProcessing.h"
 
 /// Add a tilt shift effect to the image. Tilt shift effect created by locally blurring the image
 /// using radial, linear or double linear pattern. This local application of the blur is used to
@@ -46,14 +45,16 @@
 @property (nonatomic) CGFloat spread;
 LTPropertyDeclare(CGFloat, spread, Spread);
 
-/// Stretch factor of the mask along the direction vector specified by \c angle. Must be in
-/// <tt>[0.1, 10]</tt> range. Default value is \c 1.
+/// Stretch factor of the mask along the direction vector specified by \c angle. Must be in greater
+/// than \c 0. Initial value is \c defaultStretch.
 ///
 /// @attention Only radial mask is affected by this parameter since every other mask is scaling
 /// invariant along the direction vector specified by \c angle. A value of \c 1 yields a mask in
 /// form of circle, while values different from \c 1 yield a mask in form of a general ellipse.
 @property (nonatomic) CGFloat stretch;
-LTPropertyDeclare(CGFloat, stretch, Stretch);
+
+/// Default stretch factor. Is \c 1.
+@property (readonly, nonatomic) CGFloat defaultStretch;
 
 /// Angle in radians which tilts the mask.
 /// @attention Radial mask is rotationally invariant, thus this parameter doesn't affect the mask.
