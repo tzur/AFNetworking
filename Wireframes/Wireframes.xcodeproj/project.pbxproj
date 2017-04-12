@@ -1470,7 +1470,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 8B283E6B1CBA811100B745AE /* StaticLibrary.xcconfig */;
 			buildSettings = {
-				GCC_PREFIX_HEADER = "Wireframes/Wireframes-prefix.pch";
+				GCC_PREFIX_HEADER = "Wireframes/Wireframes-Prefix.pch";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -1481,7 +1481,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 8B283E6B1CBA811100B745AE /* StaticLibrary.xcconfig */;
 			buildSettings = {
-				GCC_PREFIX_HEADER = "Wireframes/Wireframes-prefix.pch";
+				GCC_PREFIX_HEADER = "Wireframes/Wireframes-Prefix.pch";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
