@@ -6,6 +6,7 @@
 #import <LTKit/NSArray+Functional.h>
 
 #import "BZRAcquiredViaSubscriptionProvider.h"
+#import "BZRAllowedProductsProvider.h"
 #import "BZRCachedReceiptValidationStatusProvider.h"
 #import "BZREvent.h"
 #import "BZRExternalTriggerReceiptValidator.h"
@@ -68,6 +69,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly, nonatomic) id<BZRReceiptValidationParametersProvider>
     validationParametersProvider;
 
+/// Provider used to provide products the user is allowed to use.
+@property (readonly, nonatomic) BZRAllowedProductsProvider *allowedProductsProvider;
+
 /// Subject used to send events with.
 @property (readonly, nonatomic) RACSubject *eventsSubject;
 
@@ -101,6 +105,7 @@ NS_ASSUME_NONNULL_BEGIN
     _variantSelectorFactory = configuration.variantSelectorFactory;
     _variantSelector = [[BZRProductsVariantSelector alloc] init];
     _validationParametersProvider = configuration.validationParametersProvider;
+    _allowedProductsProvider = configuration.allowedProductsProvider;
     _downloadedContentProducts = [NSSet set];
     _startupReceiptValidator = [[BZRExternalTriggerReceiptValidator alloc]
                                 initWithValidationStatusProvider:self.validationStatusProvider];
@@ -258,7 +263,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (NSSet<NSString *> *)allowedProducts {
   return [[self preAcquiredProducts] setByAddingObjectsFromSet:
-          [self isUserSubscribed] ? self.acquiredProducts : self.purchasedProducts];
+          self.allowedProductsProvider.allowedProducts];
 }
 
 - (NSSet<NSString *> *)preAcquiredProducts {
@@ -540,8 +545,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (NSSet *)keyPathsForValuesAffectingAllowedProducts {
   return [NSSet setWithObjects:
-      @instanceKeypath(BZRStore, validationStatusProvider.receiptValidationStatus),
-      @instanceKeypath(BZRStore, acquiredViaSubscriptionProvider.productsAcquiredViaSubscription),
+      @instanceKeypath(BZRStore, allowedProductsProvider.allowedProducts),
       @instanceKeypath(BZRStore, productDictionary),
       nil];
 }
