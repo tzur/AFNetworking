@@ -5,6 +5,7 @@
 
 #import "BZREvent.h"
 #import "BZRKeychainStorage+TypeSafety.h"
+#import "BZRKeychainStorageMigrator.h"
 #import "NSErrorCodes+Bazaar.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -122,6 +123,16 @@ NSString * const kProductsAcquiredViaSubscriptionSetKey = @"productsAcquiredViaS
   return [self.storageErrorsSubject map:^BZREvent *(NSError *eventError) {
     return [[BZREvent alloc] initWithType:$(BZREventTypeNonCriticalError) eventError:eventError];
   }];
+}
+
+#pragma mark -
+#pragma mark Migration
+#pragma mark -
+
++ (BOOL)migrateProductsAcquiredViaSubscriptionWithMigrator:(BZRKeychainStorageMigrator *)migrator
+                                                     error:(NSError * __autoreleasing *)error {
+  return [migrator migrateValueForKey:kProductsAcquiredViaSubscriptionSetKey ofClass:[NSSet class]
+                                error:error];
 }
 
 @end

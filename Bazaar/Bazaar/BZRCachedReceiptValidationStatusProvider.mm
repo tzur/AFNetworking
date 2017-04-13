@@ -5,6 +5,7 @@
 
 #import "BZREvent.h"
 #import "BZRKeychainStorage+TypeSafety.h"
+#import "BZRKeychainStorageMigrator.h"
 #import "BZRReceiptModel.h"
 #import "BZRReceiptValidationStatus.h"
 #import "BZRTimeProvider.h"
@@ -161,7 +162,7 @@ NSString * const kOldVersionValidationDateStorageKey = @"lastReceiptValidationDa
         *error = underlyingError;
       }
       return nil;
-    } 
+    }
 
     [self willChangeValueForKey:@keypath(self, receiptValidationStatus)];
     _receiptValidationStatus = cachedReceiptValidationStatus[kValidationStatusKey];
@@ -181,7 +182,7 @@ NSString * const kOldVersionValidationDateStorageKey = @"lastReceiptValidationDa
   if (!validationStatus) {
     return nil;
   }
-  
+
   NSDate *validationDate = [self loadValueOfClass:[NSDate class]
                                            forKey:kOldVersionValidationDateStorageKey
                                             error:error];
@@ -241,6 +242,16 @@ NSString * const kOldVersionValidationDateStorageKey = @"lastReceiptValidationDa
       [receipt modelByOverridingProperty:@keypath(receipt, subscription) withValue:subscription];
   self.receiptValidationStatus = [self.receiptValidationStatus
       modelByOverridingProperty:@keypath(self.receiptValidationStatus, receipt) withValue:receipt];
+}
+
+#pragma mark -
+#pragma mark Migration
+#pragma mark -
+
++ (BOOL)migrateReceiptValidationStatusWithMigrator:(BZRKeychainStorageMigrator *)migrator
+                                             error:(NSError * __autoreleasing *)error {
+  return [migrator migrateValueForKey:kCachedReceiptValidationStatusStorageKey
+                              ofClass:[NSDictionary class] error:error];
 }
 
 @end
