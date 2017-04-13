@@ -11,6 +11,7 @@
 #import "BZREvent.h"
 #import "BZRExternalTriggerReceiptValidator.h"
 #import "BZRPeriodicReceiptValidatorActivator.h"
+#import "BZRProduct+EnablesProduct.h"
 #import "BZRProduct+SKProduct.h"
 #import "BZRProductContentManager.h"
 #import "BZRProductContentProvider.h"
@@ -327,7 +328,9 @@ NS_ASSUME_NONNULL_BEGIN
       }]
       then:^RACSignal *{
         @strongify(self);
-        if ([self isUserSubscribed] && ![self isSubscriptionProduct:variantIdentifier]) {
+        BZRProduct *subscriptionProduct = self.productDictionary[self.subscriptionInfo.productId];
+        if ([self isUserSubscribed] && ![self isSubscriptionProduct:variantIdentifier] &&
+            [subscriptionProduct doesProductEnablesProductWithIdentifier:productIdentifier]) {
           // Since there is no need to connect to StoreKit for a product that is bought/purchased by
           // a subscriber, we don't save the variant but the base product's identifier.
           [self.acquiredViaSubscriptionProvider
