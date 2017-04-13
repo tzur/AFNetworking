@@ -5,13 +5,20 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class BZRKeychainStorage, BZRReceiptValidationStatus;
+@class BZRKeychainStorage, BZRReceiptValidationStatus, BZRKeychainStorageMigrator;
 
 @protocol BZRTimeProvider;
 
 /// Provider that provides the receipt validation status using an underlying provider and caches the
 /// receipt validation status to storage. This class is thread safe.
 @interface BZRCachedReceiptValidationStatusProvider : NSObject <BZRReceiptValidationStatusProvider>
+
+/// Copies the receipt validation status from source storage to target storage that specefied in
+/// \c migrator. Returns \c YES in a case of successful migration or if the target storage is
+/// already holding receipt validation status, otherwise returns \c NO and \c error is set with an
+/// appropriate error.
++ (BOOL)migrateReceiptValidationStatusWithMigrator:(BZRKeychainStorageMigrator *)migrator
+                                             error:(NSError **)error;
 
 - (instancetype)init NS_UNAVAILABLE;
 
