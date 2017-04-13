@@ -254,6 +254,9 @@
 		B9FD09D31D64571D00523BB4 /* BZRReceiptModel+ProductPurchased.mm in Sources */ = {isa = PBXBuildFile; fileRef = B9FD09D11D64571D00523BB4 /* BZRReceiptModel+ProductPurchased.mm */; };
 		B9FD0A021D645DBF00523BB4 /* BZRTimeProviderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = B9FD0A011D645DBF00523BB4 /* BZRTimeProviderSpec.mm */; };
 		B9FF3C6E1E9ACD0900AED751 /* BZRFakeAllowedProductsProvider.mm in Sources */ = {isa = PBXBuildFile; fileRef = B9FF3C6D1E9ACD0900AED751 /* BZRFakeAllowedProductsProvider.mm */; };
+		CD81DFAC1E93BA940061C12D /* BZRKeychainStorageMigrator.h in Headers */ = {isa = PBXBuildFile; fileRef = CD81DFAA1E93BA940061C12D /* BZRKeychainStorageMigrator.h */; };
+		CD81DFAD1E93BA940061C12D /* BZRKeychainStorageMigrator.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD81DFAB1E93BA940061C12D /* BZRKeychainStorageMigrator.mm */; };
+		CD81E0C51E93D7C70061C12D /* BZRKeychainStorageMigratorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD81E0C41E93D7C70061C12D /* BZRKeychainStorageMigratorSpec.mm */; };
 		CDE00A901E82AD5E007AFD5E /* libcompression.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = CDE00A8F1E82AD5E007AFD5E /* libcompression.tbd */; };
 		FA1B88541D338A8600097AD0 /* BZRKeychainStorage.mm in Sources */ = {isa = PBXBuildFile; fileRef = FA1B88531D338A8600097AD0 /* BZRKeychainStorage.mm */; };
 		FA1B885D1D33B2BC00097AD0 /* BZRKeychainStorageSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = FA1B885C1D33B2BC00097AD0 /* BZRKeychainStorageSpec.mm */; };
@@ -943,6 +946,9 @@
 		B9FD0A011D645DBF00523BB4 /* BZRTimeProviderSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRTimeProviderSpec.mm; sourceTree = "<group>"; };
 		B9FF3C6C1E9ACD0900AED751 /* BZRFakeAllowedProductsProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRFakeAllowedProductsProvider.h; sourceTree = "<group>"; };
 		B9FF3C6D1E9ACD0900AED751 /* BZRFakeAllowedProductsProvider.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRFakeAllowedProductsProvider.mm; sourceTree = "<group>"; };
+		CD81DFAA1E93BA940061C12D /* BZRKeychainStorageMigrator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRKeychainStorageMigrator.h; sourceTree = "<group>"; };
+		CD81DFAB1E93BA940061C12D /* BZRKeychainStorageMigrator.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRKeychainStorageMigrator.mm; sourceTree = "<group>"; };
+		CD81E0C41E93D7C70061C12D /* BZRKeychainStorageMigratorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRKeychainStorageMigratorSpec.mm; sourceTree = "<group>"; };
 		CDE00A8F1E82AD5E007AFD5E /* libcompression.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libcompression.tbd; path = usr/lib/libcompression.tbd; sourceTree = SDKROOT; };
 		FA1B88521D338A8600097AD0 /* BZRKeychainStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRKeychainStorage.h; sourceTree = "<group>"; };
 		FA1B88531D338A8600097AD0 /* BZRKeychainStorage.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRKeychainStorage.mm; sourceTree = "<group>"; };
@@ -1768,6 +1774,8 @@
 				9FD3A7581D3D423500967F8D /* BZRKeychainHandler.h */,
 				FA1B88521D338A8600097AD0 /* BZRKeychainStorage.h */,
 				FA1B88531D338A8600097AD0 /* BZRKeychainStorage.mm */,
+				CD81DFAA1E93BA940061C12D /* BZRKeychainStorageMigrator.h */,
+				CD81DFAB1E93BA940061C12D /* BZRKeychainStorageMigrator.mm */,
 				B9FD07FC1D61B38E00523BB4 /* BZRKeychainStorage+TypeSafety.h */,
 				B9FD07FD1D61B38E00523BB4 /* BZRKeychainStorage+TypeSafety.mm */,
 				9FD3A75A1D3DF26100967F8D /* UICKeyChainStore+SecureStorage.h */,
@@ -1781,6 +1789,7 @@
 			children = (
 				B9FD082D1D61B40B00523BB4 /* BZRKeychainStorage+TypeSafetySpec.mm */,
 				FA1B885C1D33B2BC00097AD0 /* BZRKeychainStorageSpec.mm */,
+				CD81E0C41E93D7C70061C12D /* BZRKeychainStorageMigratorSpec.mm */,
 				9FE7D4F01D3F5D1000685F19 /* UICKeyChainStore+SecureStorageSpec.mm */,
 			);
 			name = "Secure Storage";
@@ -1803,6 +1812,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CD81DFAC1E93BA940061C12D /* BZRKeychainStorageMigrator.h in Headers */,
 				B9256BFD1D7331CD00490815 /* BZRRestorationPaymentQueue.h in Headers */,
 				65F3F7031D5A68F7008E3C3A /* BZRReceiptValidationParameters+Validatricks.h in Headers */,
 				65F3F7041D5A68F7008E3C3A /* BZRValidatricksReceiptModel.h in Headers */,
@@ -2424,6 +2434,7 @@
 				65332E701D3392C200920C32 /* LLSignalTestRecorder.m in Sources */,
 				B9A81B671D90676500168258 /* BZRProductPriceInfo+SKProductSpec.mm in Sources */,
 				65C538B11D34EB68004C91D4 /* RACSignal+BazaarSpec.mm in Sources */,
+				CD81E0C51E93D7C70061C12D /* BZRKeychainStorageMigratorSpec.mm in Sources */,
 				6501EF6D1D5B4EA9007B76CC /* LTProgress+BazaarSpec.mm in Sources */,
 				6562104F1D3779FB00E12FAF /* BZRReceiptValidationParameters+ValidatricksSpec.mm in Sources */,
 				9FE7D4F11D3F5D1000685F19 /* UICKeyChainStore+SecureStorageSpec.mm in Sources */,
@@ -2495,6 +2506,7 @@
 				6502EFCE1D34D581000CD68B /* RACSignal+Bazaar.mm in Sources */,
 				6502EFA51D341809000CD68B /* BZRValidatricksReceiptValidationStatus.mm in Sources */,
 				B9ED1F4C1D53682C00932EE8 /* BZRContentFetcherParameters.mm in Sources */,
+				CD81DFAD1E93BA940061C12D /* BZRKeychainStorageMigrator.mm in Sources */,
 				B9A851941DE24768001AA37C /* BZRProductsWithVariantsProvider.mm in Sources */,
 				65D90B971D5BB56D00BEB74C /* BZRPaymentQueue.mm in Sources */,
 				B9A84FF41DE1DA60001AA37C /* BZRLocaleBasedVariantSelectorFactory.mm in Sources */,
