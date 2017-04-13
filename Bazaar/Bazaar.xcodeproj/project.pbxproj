@@ -213,6 +213,9 @@
 		B9A851961DE24A45001AA37C /* BZRProductsWithVariantsProviderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = B9A851951DE24A45001AA37C /* BZRProductsWithVariantsProviderSpec.mm */; };
 		B9A851AC1DE2E9BA001AA37C /* NSString+BazaarSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = B9A851AB1DE2E9BA001AA37C /* NSString+BazaarSpec.mm */; };
 		B9A8528E1DE300A0001AA37C /* BZRProductsVariantSelectorFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = B9A8528D1DE300A0001AA37C /* BZRProductsVariantSelectorFactory.h */; };
+		B9AB0C621E9FB14300D6EA08 /* BZRProduct+EnablesProduct.h in Headers */ = {isa = PBXBuildFile; fileRef = B9AB0C601E9FB14300D6EA08 /* BZRProduct+EnablesProduct.h */; };
+		B9AB0C631E9FB14300D6EA08 /* BZRProduct+EnablesProduct.mm in Sources */ = {isa = PBXBuildFile; fileRef = B9AB0C611E9FB14300D6EA08 /* BZRProduct+EnablesProduct.mm */; };
+		B9AB0C921E9FB27800D6EA08 /* BZRProduct+EnablesProductSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = B9AB0C911E9FB27800D6EA08 /* BZRProduct+EnablesProductSpec.mm */; };
 		B9ABD1061D7D75AB004D2877 /* BZRProductsInfoProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = B9ABD1021D7D75AB004D2877 /* BZRProductsInfoProvider.h */; };
 		B9ABD1071D7D75AB004D2877 /* BZRProductsManager.h in Headers */ = {isa = PBXBuildFile; fileRef = B9ABD1031D7D75AB004D2877 /* BZRProductsManager.h */; };
 		B9ABD1081D7D75AB004D2877 /* BZRStore.h in Headers */ = {isa = PBXBuildFile; fileRef = B9ABD1041D7D75AB004D2877 /* BZRStore.h */; };
@@ -900,6 +903,9 @@
 		B9A851951DE24A45001AA37C /* BZRProductsWithVariantsProviderSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRProductsWithVariantsProviderSpec.mm; sourceTree = "<group>"; };
 		B9A851AB1DE2E9BA001AA37C /* NSString+BazaarSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSString+BazaarSpec.mm"; sourceTree = "<group>"; };
 		B9A8528D1DE300A0001AA37C /* BZRProductsVariantSelectorFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRProductsVariantSelectorFactory.h; sourceTree = "<group>"; };
+		B9AB0C601E9FB14300D6EA08 /* BZRProduct+EnablesProduct.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BZRProduct+EnablesProduct.h"; sourceTree = "<group>"; };
+		B9AB0C611E9FB14300D6EA08 /* BZRProduct+EnablesProduct.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "BZRProduct+EnablesProduct.mm"; sourceTree = "<group>"; };
+		B9AB0C911E9FB27800D6EA08 /* BZRProduct+EnablesProductSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "BZRProduct+EnablesProductSpec.mm"; sourceTree = "<group>"; };
 		B9ABD1021D7D75AB004D2877 /* BZRProductsInfoProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRProductsInfoProvider.h; sourceTree = "<group>"; };
 		B9ABD1031D7D75AB004D2877 /* BZRProductsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRProductsManager.h; sourceTree = "<group>"; };
 		B9ABD1041D7D75AB004D2877 /* BZRStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRStore.h; sourceTree = "<group>"; };
@@ -1456,6 +1462,8 @@
 				B9A81B601D9060CA00168258 /* BZRProductPriceInfo+SKProduct.h */,
 				B9A81B611D9060CA00168258 /* BZRProductPriceInfo+SKProduct.mm */,
 				B961AD781DEF4F0700757429 /* BZRProductTypedefs.h */,
+				B9AB0C601E9FB14300D6EA08 /* BZRProduct+EnablesProduct.h */,
+				B9AB0C611E9FB14300D6EA08 /* BZRProduct+EnablesProduct.mm */,
 			);
 			name = Base;
 			sourceTree = "<group>";
@@ -1506,6 +1514,7 @@
 			children = (
 				B9A81B661D90676500168258 /* BZRProductPriceInfo+SKProductSpec.mm */,
 				B97A86BB1D460FB0004390FC /* BZRProductSpec.mm */,
+				B9AB0C911E9FB27800D6EA08 /* BZRProduct+EnablesProductSpec.mm */,
 			);
 			name = Base;
 			sourceTree = "<group>";
@@ -1860,6 +1869,7 @@
 				B9256BFC1D7331CD00490815 /* BZRPaymentsPaymentQueue.h in Headers */,
 				B9A84FBD1DE1B018001AA37C /* BZRLocaleBasedVariantSelector.h in Headers */,
 				B93F67031DD8E0F8009E9D5D /* BZRProductsWithPriceInfoProvider.h in Headers */,
+				B9AB0C621E9FB14300D6EA08 /* BZRProduct+EnablesProduct.h in Headers */,
 				B9EE58AD1D5DFAD7008B4448 /* BZRTimeProvider.h in Headers */,
 				B97E6C241D40F44800C02863 /* BZRProductContentFetcher.h in Headers */,
 				65F3F6D31D5A67BE008E3C3A /* BZRContentFetcherParameters.h in Headers */,
@@ -2432,6 +2442,7 @@
 				B9D520911D8A9D0D009C8F9E /* BZRCachedReceiptValidationStatusProviderSpec.mm in Sources */,
 				B9FD082E1D61B40B00523BB4 /* BZRKeychainStorage+TypeSafetySpec.mm in Sources */,
 				65332E6F1D3392C200920C32 /* EXPExpect+LLReactiveMatchersExtensions.m in Sources */,
+				B9AB0C921E9FB27800D6EA08 /* BZRProduct+EnablesProductSpec.mm in Sources */,
 				B9484A0D1D508FA900910066 /* BZRTestUtils.mm in Sources */,
 				65332E7D1D3392C200920C32 /* EXPMatchers+sendEvents.m in Sources */,
 				B9A851961DE24A45001AA37C /* BZRProductsWithVariantsProviderSpec.mm in Sources */,
@@ -2520,6 +2531,7 @@
 				B93FC72E1D59F14B00A2170C /* BZRReceiptValidationParametersProvider.mm in Sources */,
 				B959B75F1E363AF90011DF54 /* BZREvent+AdditionalInfo.mm in Sources */,
 				B9A81B631D9060CA00168258 /* BZRProductPriceInfo+SKProduct.mm in Sources */,
+				B9AB0C631E9FB14300D6EA08 /* BZRProduct+EnablesProduct.mm in Sources */,
 				B9584ED71E82D08B00AFF6B0 /* BZRAllowedProductsProvider.mm in Sources */,
 				650D7D401D324AAD003CE646 /* SKProductsRequest+RACSignalSupport.mm in Sources */,
 				B9A84FBE1DE1B018001AA37C /* BZRLocaleBasedVariantSelector.mm in Sources */,

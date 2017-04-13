@@ -7,7 +7,7 @@
 
 #import "BZRAcquiredViaSubscriptionProvider.h"
 #import "BZRCachedReceiptValidationStatusProvider.h"
-#import "BZRProduct.h"
+#import "BZRProduct+EnablesProduct.h"
 #import "BZRProductsProvider.h"
 #import "BZRProductTypedefs.h"
 #import "BZRReceiptModel.h"
@@ -67,7 +67,7 @@ NS_ASSUME_NONNULL_BEGIN
     BZRReceiptInfo * _Nullable receipt = receiptValidationStatus.receipt;
     NSMutableSet<NSString *> *enabledProducts =
         [self enabledProducts:receipt productList:productList];
-    NSArray<NSString *> *purchasedProducts = receipt ?
+    NSArray<NSString *> *purchasedProducts = receipt.inAppPurchases ?
         [receipt.inAppPurchases
          valueForKey:@instanceKeypath(BZRReceiptInAppPurchaseInfo, productId)] : @[];
 
@@ -99,7 +99,7 @@ NS_ASSUME_NONNULL_BEGIN
   return [[productList
       lt_filter:^BOOL(BZRProduct *product) {
         return ![self isSubscriptionProduct:product] &&
-            [self doesSubscriptionProduct:subscriptionProduct enablesProduct:product];
+            [subscriptionProduct doesProductEnablesProductWithIdentifier:product.identifier];
       }]
       valueForKey:@instanceKeypath(BZRProduct, identifier)];
 }
@@ -107,14 +107,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (BOOL)isSubscriptionProduct:(BZRProduct *)product {
   return [product.productType isEqual:$(BZRProductTypeRenewableSubscription)] &&
       [product.productType isEqual:$(BZRProductTypeNonRenewingSubscription)];
-}
-
-- (BOOL)doesSubscriptionProduct:(BZRProduct *)subscriptionProduct
-                 enablesProduct:(BZRProduct *)product {
-  return !subscriptionProduct.enablesProducts ||
-      [subscriptionProduct.enablesProducts lt_find:^BOOL(NSString *productsPrefix) {
-        return [product.identifier hasPrefix:productsPrefix];
-      }] != nil;
 }
 
 @end

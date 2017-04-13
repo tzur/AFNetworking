@@ -405,6 +405,25 @@ context(@"purchasing products", ^{
     expect([store purchaseProduct:productIdentifier]).will.complete();
   });
 
+  it(@"should not add product to acquired via subscription if subscription does not enable "
+     "product", ^{
+    BZRReceiptValidationStatus *receiptValidationStatus =
+        BZRReceiptValidationStatusWithInAppPurchaseAndExpiry(productIdentifier, NO);
+    OCMStub([receiptValidationStatusProvider receiptValidationStatus])
+        .andReturn(receiptValidationStatus);
+
+    BZRProduct *product = BZRProductWithIdentifier(productIdentifier);
+    BZRProduct *subscriptionProduct = [BZRProductWithIdentifier(@"subscriptionProduct")
+        modelByOverridingProperty:@instanceKeypath(BZRProduct, enablesProducts) withValue:@[]];
+    NSArray<BZRProduct *> *productList = @[product, subscriptionProduct];
+    OCMStub([productsProvider fetchProductList]).andReturn([RACSignal return:productList]);
+
+    OCMReject([acquiredViaSubscriptionProvider
+              addAcquiredViaSubscriptionProduct:productIdentifier]);
+
+    expect([store purchaseProduct:productIdentifier]).will.finish();
+  });
+
   context(@"product exists in product list", ^{
     beforeEach(^{
       BZRStubProductDictionaryToReturnProductWithIdentifier(productIdentifier, productsProvider);
