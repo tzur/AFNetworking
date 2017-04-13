@@ -1821,7 +1821,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 848EFFB71C591B91001D8368 /* StaticLibrary.xcconfig */;
 			buildSettings = {
-				GCC_PREFIX_HEADER = "PhotonsUI/PhotonsUI-prefix.pch";
+				GCC_PREFIX_HEADER = "PhotonsUI/PhotonsUI-Prefix.pch";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -1832,7 +1832,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 848EFFB71C591B91001D8368 /* StaticLibrary.xcconfig */;
 			buildSettings = {
-				GCC_PREFIX_HEADER = "PhotonsUI/PhotonsUI-prefix.pch";
+				GCC_PREFIX_HEADER = "PhotonsUI/PhotonsUI-Prefix.pch";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
