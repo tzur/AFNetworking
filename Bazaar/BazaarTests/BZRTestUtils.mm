@@ -71,6 +71,22 @@ BZRReceiptValidationStatus *BZRReceiptValidationStatusWithInAppPurchaseAndExpiry
                                withValue:@[inAppPurchase]];
 }
 
+BZRReceiptValidationStatus *BZRReceiptValidationStatusWithSubscriptionIdentifier
+    (NSString *subscriptionIdentifier) {
+  BZRReceiptValidationStatus *receiptValidationStatus = BZRReceiptValidationStatusWithExpiry(NO);
+  BZRReceiptSubscriptionInfo *subscription = [BZRReceiptSubscriptionInfo modelWithDictionary:@{
+    @instanceKeypath(BZRReceiptSubscriptionInfo, productId): subscriptionIdentifier,
+    @instanceKeypath(BZRReceiptSubscriptionInfo, originalTransactionId): @"bar",
+    @instanceKeypath(BZRReceiptSubscriptionInfo, originalPurchaseDateTime): [NSDate date],
+    @instanceKeypath(BZRReceiptSubscriptionInfo, expirationDateTime):
+        [NSDate dateWithTimeIntervalSinceNow:1337],
+    @instanceKeypath(BZRReceiptSubscriptionInfo, isExpired): @NO
+  } error:nil];
+  return [receiptValidationStatus
+          modelByOverridingPropertyAtKeypath:@keypath(receiptValidationStatus, receipt.subscription)
+                                   withValue:subscription];
+}
+
 static SKProduct *BZRSKProductWithIdentifier(NSString *productIdentifier) {
   SKProduct *product = OCMClassMock([SKProduct class]);
   OCMStub([product price]).andReturn([NSDecimalNumber one]);
