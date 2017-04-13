@@ -3,11 +3,18 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class BZRKeychainStorage;
+@class BZRKeychainStorage, BZRKeychainStorageMigrator;
 
 /// Provider that provides a set of products that were acquired via subscription. This class is
 /// thread safe.
 @interface BZRAcquiredViaSubscriptionProvider : NSObject
+
+/// Copies the set of products that were acquired via subscription from source storage to target
+/// storage that specefied in \c migrator. Returns \c YES in a case of successful migration or if
+/// the target storage is already holding the products set, otherwise returns \c NO and \c error is
+/// set with an appropriate error.
++ (BOOL)migrateProductsAcquiredViaSubscriptionWithMigrator:(BZRKeychainStorageMigrator *)migrator
+                                                     error:(NSError **)error;
 
 - (instancetype)init NS_UNAVAILABLE;
 
