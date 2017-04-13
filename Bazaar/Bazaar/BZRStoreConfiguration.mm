@@ -34,8 +34,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// Manager used to read and write files from the file system.
 @property (strong, nonatomic) NSFileManager *fileManager;
 
-/// Provider used to provide product list without any alterations.
-@property (strong, nonatomic) id<BZRProductsProvider> nethermostProductsProvider;
+/// Provider used to provide product list before getting their price info from StoreKit.
+@property (strong, nonatomic) id<BZRProductsProvider> netherProductsProvider;
 
 @end
 
@@ -115,7 +115,7 @@ NS_ASSUME_NONNULL_BEGIN
          countryToTierPath:countryToTierDictionaryPath];
 
     _allowedProductsProvider =
-        [[BZRAllowedProductsProvider alloc] initWithProductsProvider:self.nethermostProductsProvider
+        [[BZRAllowedProductsProvider alloc] initWithProductsProvider:self.netherProductsProvider
          validationStatusProvider:self.validationStatusProvider
          acquiredViaSubscriptionProvider:self.acquiredViaSubscriptionProvider];
   }
@@ -123,18 +123,18 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (id<BZRProductsProvider>)productsProviderWithJSONFilePath:(LTPath *)productsListJSONFilePath {
-    _nethermostProductsProvider =
+    BZRLocalProductsProvider *localProductsProvider =
         [[BZRLocalProductsProvider alloc] initWithPath:productsListJSONFilePath
                                            fileManager:self.fileManager];
     BZRProductsWithDiscountsProvider *productsWithDiscountsProvider =
         [[BZRProductsWithDiscountsProvider alloc]
-         initWithUnderlyingProvider:self.nethermostProductsProvider];
-    BZRProductsWithVariantsProvider *productsWithVariantsProvider =
+         initWithUnderlyingProvider:localProductsProvider];
+    _netherProductsProvider =
         [[BZRProductsWithVariantsProvider alloc]
          initWithUnderlyingProvider:productsWithDiscountsProvider];
     BZRProductsWithPriceInfoProvider *productsWithPriceInfoProvider =
         [[BZRProductsWithPriceInfoProvider alloc]
-         initWithUnderlyingProvider:productsWithVariantsProvider
+         initWithUnderlyingProvider:self.netherProductsProvider
          storeKitFacade:self.storeKitFacade];
     return [[BZRCachedProductsProvider alloc]
             initWithUnderlyingProvider:productsWithPriceInfoProvider];
