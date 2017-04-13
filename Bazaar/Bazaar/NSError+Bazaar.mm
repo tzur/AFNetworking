@@ -2,6 +2,7 @@
 // Created by Daniel Lahyani.
 
 #import "NSError+Bazaar.h"
+
 #import "NSErrorCodes+Bazaar.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -16,6 +17,38 @@ NSString * const kBZRErrorSecondsUntilSubscriptionInvalidationKey =
     @"BZRErrorSecondsUntilSubscriptionInvalidation";
 NSString * const kBZRErrorLastReceiptValidationDateKey = @"BZRErrorLastReceiptValidationDate";
 NSString * const kBZRErrorPurchasedProductIdentifierKey = @"BZRErrorPurchasedProductIdentifier";
+
+/// Category that adds method for getting a description of the transaction.
+@interface SKPaymentTransaction (Bazaar)
+
+/// Returns a description of the transaction with some of its proerties.
+- (NSString *)bzr_description;
+
+@end
+
+#define BZREnumToStringMapping(enum_value) @(enum_value): @#enum_value
+
+@implementation SKPaymentTransaction (Bazaar)
+
+- (NSString *)bzr_description {
+  static const NSDictionary<NSNumber *, NSString *> *transactionStateStringMapping = @{
+    BZREnumToStringMapping(SKPaymentTransactionStatePurchasing),
+    BZREnumToStringMapping(SKPaymentTransactionStatePurchased),
+    BZREnumToStringMapping(SKPaymentTransactionStateFailed),
+    BZREnumToStringMapping(SKPaymentTransactionStateRestored),
+    BZREnumToStringMapping(SKPaymentTransactionStateDeferred)
+  };
+
+  return @{
+    @keypath(self.payment, productIdentifier): self.payment.productIdentifier,
+    @keypath(self, transactionDate): self.transactionDate ?: [NSNull null],
+    @keypath(self, transactionIdentifier): self.transactionIdentifier ?: [NSNull null],
+    @keypath(self, transactionState): transactionStateStringMapping[@(self.transactionState)],
+    @keypath(self, originalTransaction): self.originalTransaction.bzr_description ? : [NSNull null]
+  }.description;
+}
+
+@end
 
 @implementation NSError (Bazaar)
 
@@ -63,6 +96,7 @@ NSString * const kBZRErrorPurchasedProductIdentifierKey = @"BZRErrorPurchasedPro
                       transaction:(SKPaymentTransaction *)transaction {
   NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
   userInfo[kBZRErrorTransactionKey] = transaction;
+  userInfo[kLTErrorDescriptionKey] = transaction.bzr_description;
   if (transaction.transactionState == SKPaymentTransactionStateFailed) {
     userInfo[NSUnderlyingErrorKey] = transaction.error;
   }
