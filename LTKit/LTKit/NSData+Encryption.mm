@@ -28,6 +28,11 @@ NS_ASSUME_NONNULL_BEGIN
                                       length:self.length - kCCBlockSizeAES128 freeWhenDone:NO];
 
   NSMutableData *decryptedData = [NSMutableData dataWithLength:data.length];
+  // rdar://31626540: on iOS 10.3 and 32-bit systems, CCCrypt returns kCCBufferTooSmall for
+  // decrypted data of length 0.
+  if (!decryptedData.length) {
+    return decryptedData;
+  }
 
   size_t length;
   CCCryptorStatus status = CCCrypt(kCCDecrypt, kCCAlgorithmAES128, kCCOptionPKCS7Padding,
