@@ -15,21 +15,36 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)init NS_UNAVAILABLE;
 
-/// Initializes the in-app store configuration with a new instance of \c BZRKeychainStorage with
-/// accessGroup set to \c nil. \c expiredSubscriptionGracePeriod is set to \c 7.
-/// \c applicationUserID is set to \c nil. \c notValidatedReceiptGracePeriod is set to \c 5.
+/// Initializes the in-app store configuration with Lightricks' default shared keychain access group
+/// as provided by \c + [BZRKeychainStorage defaultSharedAccessGroup].
+/// \c expiredSubscriptionGracePeriod is set to \c 7. \c applicationUserID is set to \c nil.
+/// \c notValidatedReceiptGracePeriod is set to \c 5.
+///
+/// @note In order to use the default shared keychain access group AppIdentifierPrefix has to be
+/// defined in the application's main bundle plist, if it is not defined an
+/// \c NSInternalInconsistencyException is raised.
 - (instancetype)initWithProductsListJSONFilePath:(LTPath *)productsListJSONFilePath
                      countryToTierDictionaryPath:(LTPath *)countryToTierDictionaryPath;
 
-/// Initializes the in-app store configuration with default parameters. \c productsListJSONFilePath
-/// is used to load products information from. \c countryToTierDictionaryPath is used to load
-/// country to tier dictionary that is used to select products variants. \c keychainAccessGroup is a
-/// key to storing/loading of data of a specific group from storage.
+/// Initializes the in-app store configuration with default parameters.
+///
+/// \c productsListJSONFilePath is used to load products information from.
+///
+/// \c countryToTierDictionaryPath is used to load country to tier dictionary that is used to select
+/// products variants.
+///
+/// \c keychainAccessGroup is the access group of the keychain storage used for storing sensitive
+/// user data. If \c nil is provided the access group will default to the application's main bundle
+/// identifier prefixed with the team ID.
+///
 /// \c expiredSubscriptionGracePeriod defines the number of days the user is allowed to use products
-/// acquired via subscription after its subscription has expired. \c applicationUserID is an
-/// optional unique identifer for the user's account, used for making purchases and restoring
-/// transactions. \c notValidatedReceiptGracePeriod determines the number of days the receipt can
-/// remain not validated until subscription marked as expired.
+/// acquired via subscription after its subscription has expired.
+///
+/// \c applicationUserID is an optional unique identifier for the user's account, used for making
+/// purchases and restoring transactions.
+///
+/// \c notValidatedReceiptGracePeriod determines the number of days the receipt can remain not
+/// validated until subscription marked as expired.
 ///
 /// \c productsProvider will be initialized with \c BZRCachedProductsProvider with the
 /// given \c productsListJSONFilePath and \c fileManager.

@@ -4,6 +4,7 @@
 #import "BZRKeychainStorageMigrator.h"
 
 #import "BZREvent.h"
+#import "BZRKeychainStorage.h"
 #import "BZRKeychainStorage+TypeSafety.h"
 #import "NSErrorCodes+Bazaar.h"
 
@@ -61,17 +62,12 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 + (BZRKeychainStorageMigrator *)migratorFromPrivateToSharedAcccessGroup {
-  NSString *appIdentiferPrefix =
-      [[NSBundle mainBundle] objectForInfoDictionaryKey:@"AppIdentifierPrefix"];
-  NSString *privateAccessGroup =
-      [appIdentiferPrefix stringByAppendingString:[NSBundle mainBundle].bundleIdentifier];
-  NSString *sharedAccessGroup =
-      [appIdentiferPrefix stringByAppendingString:@"com.lightricks.shared"];
+  NSString *privateAccessGroup = [BZRKeychainStorage accessGroupWithAppIdentifierPrefix:
+                                  [NSBundle mainBundle].bundleIdentifier];
+  NSString *sharedAccessGroup = [BZRKeychainStorage defaultSharedAccessGroup];
 
-  BZRKeychainStorage *sourceKeychainStorage = [[BZRKeychainStorage alloc]
-                                               initWithAccessGroup:privateAccessGroup];
-  BZRKeychainStorage *targetKeychainStorage = [[BZRKeychainStorage alloc]
-                                               initWithAccessGroup:sharedAccessGroup];
+  auto *sourceKeychainStorage = [[BZRKeychainStorage alloc] initWithAccessGroup:privateAccessGroup];
+  auto *targetKeychainStorage = [[BZRKeychainStorage alloc] initWithAccessGroup:sharedAccessGroup];
 
   return [[BZRKeychainStorageMigrator alloc] initWithSourceKeychainStorage:sourceKeychainStorage
                                                      targetKeychainStorage:targetKeychainStorage];

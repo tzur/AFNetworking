@@ -66,7 +66,7 @@ context(@"keychain storage", ^{
     expect(error).to.beNil();
     OCMVerifyAll((id)keychainHandler);
   });
-  
+
   it(@"should read values correctly", ^{
     NSString *key = @"key";
     NSString *value = @"value";
@@ -90,7 +90,7 @@ context(@"keychain storage", ^{
     expect(error).to.beNil();
     OCMVerifyAll((id)keychainHandler);
   });
-  
+
   it(@"should return nil for non-existing values", ^{
     NSString *nonExistingKey = @"nonExistingKey";
     NSError *error;
@@ -111,7 +111,7 @@ context(@"keychain storage", ^{
     expect(value).to.beNil();
     expect(error).to.equal(bazaarError);
   });
-  
+
   it(@"should proxy write errors correctly", ^{
     NSError *underlyingError = OCMClassMock([NSError class]);
     NSError *bazaarError = OCMClassMock([NSError class]);
@@ -125,7 +125,7 @@ context(@"keychain storage", ^{
     expect(success).to.beFalsy();
     expect(error).to.equal(bazaarError);
   });
-  
+
   it(@"should return nil and err for values not archived appropriately", ^{
     NSString *key = @"key";
     OCMStub([keychainHandler dataForKey:key error:[OCMArg anyObjectRef]])
@@ -135,8 +135,55 @@ context(@"keychain storage", ^{
     expect(storedValue).to.beNil();
     expect(error.code).to.equal(BZRErrorCodeKeychainStorageArchivingError);
   });
-  
+
   pending(@"should return nil and err for invalid archive data");
+});
+
+context(@"shared keychain access group", ^{
+  context(@"application identifier prefix is defined", ^{
+    static NSString * const kAppIdentifierPrefix = @"ABC123";
+
+    __block NSBundle *mainBundle;
+
+    beforeEach(^{
+      mainBundle = OCMPartialMock([NSBundle mainBundle]);
+      OCMStub([mainBundle objectForInfoDictionaryKey:@"AppIdentifierPrefix"])
+          .andReturn(kAppIdentifierPrefix);
+    });
+
+    afterEach(^{
+      mainBundle = nil;
+    });
+
+    it(@"should prepend the application identifier prefix", ^{
+      NSString *accessGroup = @"com.lightricks.storage";
+      NSString *sharedAccessGroup =
+          [BZRKeychainStorage accessGroupWithAppIdentifierPrefix:accessGroup];
+
+      expect(sharedAccessGroup).to
+          .equal([kAppIdentifierPrefix stringByAppendingString:accessGroup]);
+    });
+
+    it(@"should return the default shared access group", ^{
+      expect([BZRKeychainStorage defaultSharedAccessGroup]).toNot.beNil();
+    });
+  });
+
+  context(@"application identifier prefix is not defined", ^{
+    it(@"should return nil instead of the shared access group", ^{
+      NSString *accessGroup = @"com.lightricks.storage";
+      NSString *sharedAccessGroup =
+          [BZRKeychainStorage accessGroupWithAppIdentifierPrefix:accessGroup];
+
+      expect(sharedAccessGroup).to.beNil();
+    });
+
+    it(@"should raise an exception when try to get the default shared access group", ^{
+      expect(^{
+        [BZRKeychainStorage defaultSharedAccessGroup];
+      }).to.raise(NSInternalInconsistencyException);
+    });
+  });
 });
 
 SpecEnd
