@@ -102,15 +102,6 @@ context(@"allowed products provider", ^{
     expect(allowedProvider.allowedProducts).to.equal([NSSet set]);
   });
 
-  context(@"subscription is expired", ^{
-    it(@"should provide only the purchased products", ^{
-      validationStatusProvider.receiptValidationStatus =
-          BZRReceiptValidationStatusWithInAppPurchaseAndExpiry(purchasedProductIdentifier, YES);
-      expect(allowedProvider.allowedProducts).to
-          .equal([NSSet setWithObject:purchasedProductIdentifier]);
-    });
-  });
-
   context(@"full subscription", ^{
     beforeEach(^{
       BZRReceiptSubscriptionInfo *subscription =
@@ -132,6 +123,19 @@ context(@"allowed products provider", ^{
           @[purchasedProductIdentifier, filterProductIdentifier, nonFilterProductIdentifier];
       expect(allowedProvider.allowedProducts).will
           .equal([NSSet setWithArray:expectedAllowedProducts]);
+    });
+
+    it(@"should provide only the purchased products if subscription is expired", ^{
+      NSString *isExiredKeypath =
+          @instanceKeypath(BZRReceiptValidationStatus, receipt.subscription.isExpired);
+      validationStatusProvider.receiptValidationStatus =
+          [validationStatusProvider.receiptValidationStatus
+           modelByOverridingPropertyAtKeypath:isExiredKeypath withValue:@YES];
+      acquiredViaSubscriptionProvider.productsAcquiredViaSubscription =
+          [NSSet setWithObjects:filterProductIdentifier, nonFilterProductIdentifier, nil];
+
+      expect(allowedProvider.allowedProducts).to
+          .equal([NSSet setWithObject:purchasedProductIdentifier]);
     });
 
     it(@"should not allow products that were not acquired", ^{

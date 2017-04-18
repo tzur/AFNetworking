@@ -79,7 +79,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (NSMutableSet<NSString *> *)enabledProducts:(nullable BZRReceiptInfo *)receipt
                                   productList:(nullable BZRProductList *)productList {
-  if (!receipt.subscription || !productList) {
+  if (!receipt.subscription || receipt.subscription.isExpired || !productList) {
     return [NSMutableSet set];
   }
 
