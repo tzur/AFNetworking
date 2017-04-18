@@ -60,17 +60,18 @@ NS_ASSUME_NONNULL_BEGIN
   return YES;
 }
 
-+ (BZRKeychainStorageMigrator *)migratorWithBazaarKeychains {
-  // TODO: export \c appIdentiferPrefix and \c keychainAccessGroup to a common category.
++ (BZRKeychainStorageMigrator *)migratorFromPrivateToSharedAcccessGroup {
   NSString *appIdentiferPrefix =
       [[NSBundle mainBundle] objectForInfoDictionaryKey:@"AppIdentifierPrefix"];
-
-  NSString *keychainAccessGroup =
+  NSString *privateAccessGroup =
+      [appIdentiferPrefix stringByAppendingString:[NSBundle mainBundle].bundleIdentifier];
+  NSString *sharedAccessGroup =
       [appIdentiferPrefix stringByAppendingString:@"com.lightricks.shared"];
 
-  BZRKeychainStorage *sourceKeychainStorage = [[BZRKeychainStorage alloc] initWithAccessGroup:nil];
+  BZRKeychainStorage *sourceKeychainStorage = [[BZRKeychainStorage alloc]
+                                               initWithAccessGroup:privateAccessGroup];
   BZRKeychainStorage *targetKeychainStorage = [[BZRKeychainStorage alloc]
-                                               initWithAccessGroup:keychainAccessGroup];
+                                               initWithAccessGroup:sharedAccessGroup];
 
   return [[BZRKeychainStorageMigrator alloc] initWithSourceKeychainStorage:sourceKeychainStorage
                                                      targetKeychainStorage:targetKeychainStorage];
