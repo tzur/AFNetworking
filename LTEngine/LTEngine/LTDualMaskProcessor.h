@@ -71,4 +71,8 @@ LTPropertyDeclare(CGFloat, spread, Spread);
 @property (nonatomic) BOOL invert;
 LTPropertyDeclare(BOOL, invert, Invert);
 
+/// Transformation applied to homogeneous UV texture coordinates. Default value is
+/// \c GLKMatrix3Identity.
+@property (nonatomic) GLKMatrix3 transform;
+
 @end

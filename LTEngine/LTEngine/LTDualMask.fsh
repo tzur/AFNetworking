@@ -21,6 +21,7 @@ uniform mediump float spread;
 uniform mediump float stretchInversed;
 uniform mediump vec2 normal;
 uniform mediump mat2 rotation;
+uniform highp mat3 transform;
 
 uniform bool invert;
 
@@ -29,7 +30,10 @@ varying highp vec2 vTexcoord;
 void main() {
   sourceTexture;
 
-  mediump vec2 coords = (vTexcoord - center) * aspectRatioCorrection;
+  mediump vec3 transformedTexcoord = transform * vec3(vTexcoord, 1.0);
+  mediump vec2 coords = (transformedTexcoord.xy / transformedTexcoord.z - center) *
+      aspectRatioCorrection;
+
   mediump float dist;
 
   // Distance field.
