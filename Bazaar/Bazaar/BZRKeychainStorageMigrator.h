@@ -22,10 +22,11 @@ NS_ASSUME_NONNULL_BEGIN
 /// error. After successful migration the copied value is deleted from \c sourceKeychainStorage.
 - (BOOL)migrateValueForKey:(NSString *)key ofClass:(Class)valueClass error:(NSError **)error;
 
-/// Creates a migrator using an instance of \c BZRKeychainStorage initialized with \c nil access
-/// group as the \c sourceKeychainStorage, and another instance of \c BZRKeychainStorage initialized
-/// with Lightricks shared access group as \c targetKeychainStorage.
-+ (BZRKeychainStorageMigrator *)migratorWithBazaarKeychains;
+/// Creates a migrator using an instance of \c BZRKeychainStorage initialized with
+/// bundle identifer access group as the \c sourceKeychainStorage, and another instance of
+/// \c BZRKeychainStorage initialized with Lightricks shared access group as
+// \c targetKeychainStorage.
++ (BZRKeychainStorageMigrator *)migratorFromPrivateToSharedAcccessGroup;
 
 @end
 
