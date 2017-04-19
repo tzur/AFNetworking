@@ -86,4 +86,25 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
+@implementation BZRKeychainStorage (SharedKeychain)
+
++ (NSString *)defaultSharedAccessGroup {
+  NSString *sharedAccessGroup = [self accessGroupWithAppIdentifierPrefix:@"com.lightricks.shared"];
+  LTAssert(sharedAccessGroup, @"Can not initialize the default shared keychain access group. Make "
+           "sure AppIdentifierPrefix is correctly defined in the application's main bundle plist");
+  return sharedAccessGroup;
+}
+
++ (nullable NSString *)accessGroupWithAppIdentifierPrefix:(NSString *)accessGroup {
+  /// Key in the application's main bundle plist file, mapping to the application identifier prefix,
+  /// which is actually the Apple developer team ID.
+  static NSString * const kAppIdentifierPrefixKey = @"AppIdentifierPrefix";
+
+  NSString *appIdentiferPrefix =
+      [[NSBundle mainBundle] objectForInfoDictionaryKey:kAppIdentifierPrefixKey];
+  return [appIdentiferPrefix stringByAppendingString:accessGroup];
+}
+
+@end
+
 NS_ASSUME_NONNULL_END

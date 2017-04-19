@@ -36,4 +36,38 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
+/// Category for assisting with creation of shared keychain storage. In order for an application to
+/// share a keychain with another application they both need to meet these terms:
+///
+/// * Signed with the same team identifier.
+///
+/// * KeyChain Sharing capability must be enabled.
+///
+/// * Add a common shared access group to the list of shared keychain groups.
+///
+/// Only keychains with access group that was added to the shared access groups list can be shared.
+@interface BZRKeychainStorage (SharedKeychain)
+
+/// Returns Lightricks' default shared keychain access group prepended with the application
+/// identifier prefix.
+///
+/// If failed to initialize the shared access group with the AppIdentifierPrefix an
+/// \c NSInternalInconsistencyException is raised.
++ (NSString *)defaultSharedAccessGroup;
+
+/// Prepends the given \c accessGroup with the application identifier prefix, which is actually the
+/// Team ID of the application vendor. This method will read the \c AppIdentifierPrefix from the
+/// application's main bundle file. If this method fails to read the prefix from the application's
+/// main bundle \c nil is returned.
+///
+/// @note When adding a shared access group an item is added to the application's entitlement file
+/// under the key \c keychain-access-groups specifying the shared keychain access group. However the
+/// access group added in the Capabilities section is not complete, the one that is added to the
+/// entitlements file is prefixed with "$(AppIdentifierPrefix)". \c AppIdentifierPrefix is a
+/// variable defined by Xcode and availabe at build time, it contains the Team ID used by Xcode to
+/// sign the product.
++ (nullable NSString *)accessGroupWithAppIdentifierPrefix:(NSString *)accessGroup;
+
+@end
+
 NS_ASSUME_NONNULL_END
