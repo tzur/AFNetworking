@@ -66,7 +66,9 @@ LTErrorCodesImplement(BazaarErrorCodeProductID,
   /// Loading of file has failed.
   BZRErrorCodeLoadingFileFailed,
   /// Product was purchased successfully but not found in the receipt.
-  BZRErrorCodePurchasedProductNotFoundInReceipt
+  BZRErrorCodePurchasedProductNotFoundInReceipt,
+  /// Received request to purchase product that is not valid for purchasing.
+  BZRErrorCodeInvalidProductForPurchasing
 );
 
 NS_ASSUME_NONNULL_END

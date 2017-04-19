@@ -332,7 +332,7 @@ context(@"purchasing products", ^{
   it(@"should send error when product list is empty", ^{
     OCMStub([productsProvider fetchProductList]).andReturn([RACSignal empty]);
     expect([store purchaseProduct:productIdentifier]).will.matchError(^BOOL(NSError *error) {
-      return error.lt_isLTDomain && error.code == BZRErrorCodeInvalidProductIdentifer;
+      return error.lt_isLTDomain && error.code == BZRErrorCodeInvalidProductForPurchasing;
     });
   });
 
@@ -344,7 +344,7 @@ context(@"purchasing products", ^{
 
     OCMStub([productsProvider fetchProductList]).andReturn([RACSignal return:productList]);
     expect([store purchaseProduct:@"bar"]).will.matchError(^BOOL(NSError *error) {
-      return error.lt_isLTDomain && error.code == BZRErrorCodeInvalidProductIdentifer;
+      return error.lt_isLTDomain && error.code == BZRErrorCodeInvalidProductForPurchasing;
     });
   });
 
@@ -360,7 +360,7 @@ context(@"purchasing products", ^{
     [[store purchaseProduct:@"bar"] subscribeNext:^(id) {}];
     expect(recorder).will.matchValue(0, ^BOOL(BZREvent *event) {
       return event.eventError.lt_isLTDomain &&
-          event.eventError.code == BZRErrorCodeInvalidProductIdentifer &&
+          event.eventError.code == BZRErrorCodeInvalidProductForPurchasing &&
           [event.eventType isEqual:$(BZREventTypeNonCriticalError)];
     });
   });
@@ -405,10 +405,10 @@ context(@"purchasing products", ^{
     expect([store purchaseProduct:productIdentifier]).will.complete();
   });
 
-  it(@"should not add product to acquired via subscription if subscription does not enable "
+  it(@"should not add product to acquired via subscription if the subscription doesn't enable the "
      "product", ^{
     BZRReceiptValidationStatus *receiptValidationStatus =
-        BZRReceiptValidationStatusWithInAppPurchaseAndExpiry(productIdentifier, NO);
+        BZRReceiptValidationStatusWithSubscriptionIdentifier(@"subscriptionProduct");
     OCMStub([receiptValidationStatusProvider receiptValidationStatus])
         .andReturn(receiptValidationStatus);
 
@@ -417,11 +417,35 @@ context(@"purchasing products", ^{
         modelByOverridingProperty:@instanceKeypath(BZRProduct, enablesProducts) withValue:@[]];
     NSArray<BZRProduct *> *productList = @[product, subscriptionProduct];
     OCMStub([productsProvider fetchProductList]).andReturn([RACSignal return:productList]);
+    store = [[BZRStore alloc] initWithConfiguration:configuration];
 
     OCMReject([acquiredViaSubscriptionProvider
               addAcquiredViaSubscriptionProduct:productIdentifier]);
+    OCMStub([storeKitFacade purchaseProduct:OCMOCK_ANY]).andReturn([RACSignal empty]);
+    OCMStub([receiptValidationStatusProvider fetchReceiptValidationStatus])
+        .andReturn([RACSignal empty]);
 
-    expect([store purchaseProduct:productIdentifier]).will.finish();
+    expect([store purchaseProduct:productIdentifier]).will.complete();
+  });
+
+  it(@"should send error if product is a subscribers only product and user doesn't have a"
+     "subscription that enables this product", ^{
+    BZRReceiptValidationStatus *receiptValidationStatus =
+        BZRReceiptValidationStatusWithSubscriptionIdentifier(@"subscriptionProduct");
+    OCMStub([receiptValidationStatusProvider receiptValidationStatus])
+        .andReturn(receiptValidationStatus);
+
+    BZRProduct *product = [BZRProductWithIdentifier(productIdentifier)
+        modelByOverridingProperty:@instanceKeypath(BZRProduct, isSubscribersOnly) withValue:@YES];
+    BZRProduct *subscriptionProduct = [BZRProductWithIdentifier(@"subscriptionProduct")
+        modelByOverridingProperty:@instanceKeypath(BZRProduct, enablesProducts) withValue:@[]];
+    NSArray<BZRProduct *> *productList = @[product, subscriptionProduct];
+    OCMStub([productsProvider fetchProductList]).andReturn([RACSignal return:productList]);
+    store = [[BZRStore alloc] initWithConfiguration:configuration];
+
+    expect([store purchaseProduct:productIdentifier]).will.matchError(^BOOL(NSError *error) {
+      return error.lt_isLTDomain && error.code == BZRErrorCodeInvalidProductForPurchasing;
+    });
   });
 
   context(@"product exists in product list", ^{

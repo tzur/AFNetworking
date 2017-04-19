@@ -4,7 +4,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @class BZRContentFetcherParameters, BZRProduct, BZRReceiptInAppPurchaseInfo,
-    BZRReceiptValidationStatus;
+    BZRReceiptSubscriptionInfo, BZRReceiptValidationStatus;
 
 /// Returns a \c BZRProduct with identifier set to \c identifier with content.
 BZRProduct *BZRProductWithIdentifierAndContent(NSString *identifier);
@@ -26,6 +26,11 @@ BZRReceiptValidationStatus *BZRReceiptValidationStatusWithExpiry(BOOL expiry, BO
 /// \c identifier and \c subscription expiry set to \c expiry.
 BZRReceiptValidationStatus *BZRReceiptValidationStatusWithInAppPurchaseAndExpiry(
     NSString *identifier, BOOL expiry);
+
+/// Returns a \c BZRReceiptValidationStatus with a not expired subscription with an identifier set
+/// to \c subscriptionIdentifier.
+BZRReceiptValidationStatus *BZRReceiptValidationStatusWithSubscriptionIdentifier
+    (NSString *subscriptionIdentifier);
 
 /// Returns a \c SKProductsResponse with products set to \c products.
 SKProductsResponse *BZRProductsResponseWithSKProducts(NSArray<SKProduct *> *products);

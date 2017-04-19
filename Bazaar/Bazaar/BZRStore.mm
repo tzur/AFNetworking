@@ -316,7 +316,9 @@ NS_ASSUME_NONNULL_BEGIN
       tryMap:^id(NSNumber *isClearedForSale, NSError **error) {
         if (![isClearedForSale boolValue]) {
           if(error) {
-            *error = [NSError lt_errorWithCode:BZRErrorCodeInvalidProductIdentifer];
+            *error = [NSError lt_errorWithCode:BZRErrorCodeInvalidProductForPurchasing
+                                   description:@"Received a request to purchase a product that "
+                      "doesn't exist. Product id: %@", variantIdentifier];
           }
           return nil;
         }
@@ -328,14 +330,19 @@ NS_ASSUME_NONNULL_BEGIN
       }]
       then:^RACSignal *{
         @strongify(self);
-        BZRProduct *subscriptionProduct = self.productDictionary[self.subscriptionInfo.productId];
         if ([self isUserSubscribed] && ![self isSubscriptionProduct:variantIdentifier] &&
-            [subscriptionProduct doesProductEnablesProductWithIdentifier:productIdentifier]) {
+            [self doesSubscriptionEnablesProductWithIdentifier:variantIdentifier]) {
           // Since there is no need to connect to StoreKit for a product that is bought/purchased by
           // a subscriber, we don't save the variant but the base product's identifier.
           [self.acquiredViaSubscriptionProvider
            addAcquiredViaSubscriptionProduct:productIdentifier];
           return [RACSignal empty];
+        } else if (self.productDictionary[variantIdentifier].isSubscribersOnly) {
+          NSError *error =
+              [NSError lt_errorWithCode:BZRErrorCodeInvalidProductForPurchasing
+                            description:@"Received a request to purchase a subscribers-only "
+               "product while the user is not a subscriber. Product id: %@", variantIdentifier];
+          return [RACSignal error:error];
         }
         return [self purchaseProductWithStoreKit:variantIdentifier];
       }]
@@ -358,6 +365,11 @@ NS_ASSUME_NONNULL_BEGIN
   BZRProductType *productType = self.productDictionary[productIdentifier].productType;
   return [productType isEqual:$(BZRProductTypeRenewableSubscription)] ||
       [productType isEqual:$(BZRProductTypeNonRenewingSubscription)];
+}
+
+- (BOOL)doesSubscriptionEnablesProductWithIdentifier:(NSString *)productIdentifier {
+  BZRProduct *subscriptionProduct = self.productDictionary[self.subscriptionInfo.productId];
+  return [subscriptionProduct doesProductEnablesProductWithIdentifier:productIdentifier];
 }
 
 - (RACSignal *)purchaseProductWithStoreKit:(NSString *)productIdentifier {
