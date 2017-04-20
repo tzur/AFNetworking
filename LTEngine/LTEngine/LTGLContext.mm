@@ -8,6 +8,8 @@
 #import "LTFboPool.h"
 #import "LTProgramPool.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 /// OpenGL default blend function.
 LTGLContextBlendFuncArgs kLTGLContextBlendFuncDefault = {
   .sourceRGB = LTGLContextBlendFuncOne,
@@ -101,18 +103,19 @@ typedef struct {
   return [self initWithSharegroup:nil];
 }
 
-- (instancetype)initWithSharegroup:(EAGLSharegroup *)sharegroup {
-  if (self = [super init]) {
-    _context = [self createEAGLContextWithSharegroup:sharegroup];
-    _fboPool = [[LTFboPool alloc] init];
-    _programPool = [[LTProgramPool alloc] init];
-  }
-  return self;
+- (instancetype)initWithSharegroup:(nullable EAGLSharegroup *)sharegroup {
+  return [self initWithSharegroup:sharegroup versionNumber:nil];
 }
 
-- (instancetype)initWithSharegroup:(EAGLSharegroup *)sharegroup version:(LTGLVersion)version {
+- (instancetype)initWithSharegroup:(nullable EAGLSharegroup *)sharegroup
+                           version:(LTGLVersion)version {
+  return [self initWithSharegroup:sharegroup versionNumber:@(version)];
+}
+
+- (instancetype)initWithSharegroup:(nullable EAGLSharegroup *)sharegroup
+                     versionNumber:(nullable NSNumber *)versionNumber {
   if (self = [super init]) {
-    _context = [self createEAGLContextWithSharegroup:sharegroup version:version];
+    _context = [self createEAGLContextWithSharegroup:sharegroup versionNumber:versionNumber];
     if (!self.context) {
       return nil;
     }
@@ -122,7 +125,12 @@ typedef struct {
   return self;
 }
 
-- (EAGLContext *)createEAGLContextWithSharegroup:(EAGLSharegroup *)sharegroup {
+- (EAGLContext *)createEAGLContextWithSharegroup:(EAGLSharegroup *)sharegroup
+                                   versionNumber:(nullable NSNumber *)versionNumber {
+  if (versionNumber) {
+    return [self createEAGLContextWithSharegroup:sharegroup
+                                         version:(LTGLVersion)versionNumber.unsignedIntegerValue];
+  }
   EAGLContext *context = [self createEAGLContextWithSharegroup:sharegroup version:LTGLVersion3];
   if (!context) {
     context = [self createEAGLContextWithSharegroup:sharegroup version:LTGLVersion2];
@@ -131,8 +139,8 @@ typedef struct {
   return context;
 }
 
-- (EAGLContext *)createEAGLContextWithSharegroup:(EAGLSharegroup *)sharegroup
-                                         version:(LTGLVersion)version {
+- (nullable EAGLContext *)createEAGLContextWithSharegroup:(EAGLSharegroup *)sharegroup
+                                                  version:(LTGLVersion)version {
   return [[EAGLContext alloc] initWithAPI:(EAGLRenderingAPI)version
                                sharegroup:sharegroup];
 }
@@ -152,7 +160,7 @@ typedef struct {
   return [[NSThread currentThread] threadDictionary][kCurrentContextKey];
 }
 
-+ (void)setCurrentContext:(LTGLContext *)context {
++ (void)setCurrentContext:(nullable LTGLContext *)context {
   if (context) {
     [[self class] setContextForCurrentThread:context];
   } else {
@@ -603,3 +611,5 @@ typedef struct {
 }
 
 @end
+
+NS_ASSUME_NONNULL_END
