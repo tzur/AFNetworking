@@ -108,6 +108,40 @@ extern NSString * const kLTPathValueTransformer;
 /// \c NSInvalidArgumentException will be raised.
 extern NSString * const kLTURLValueTransformer;
 
+/// Returns a reversible transformer that converts an \c NSString path representation to its
+/// corresponding \c NSValue boxed \c LTVector2 and vice versa.
+///
+/// The input to the forward transformer must be an \c NSString with the format: <tt>(x, y)</tt>.
+///
+/// The input to the reverse transformer must be a boxed \c LTVector2 as \c NSValue.
+///
+/// If the input is \c nil, or not one of these types, or the specific type conditions fail,
+/// \c NSInvalidArgumentException will be raised.
+extern NSString * const kLTVector2ValueTransformer;
+
+/// Returns a reversible transformer that converts an \c NSString path representation to its
+/// corresponding \c NSValue boxed \c LTVector3 and vice versa.
+///
+/// The input to the forward transformer must be an \c NSString with the format: <tt>(x, y, z)</tt>.
+///
+/// The input to the reverse transformer must be a boxed \c LTVector3 as \c NSValue.
+///
+/// If the input is \c nil, or not one of these types, or the specific type conditions fail,
+/// \c NSInvalidArgumentException will be raised.
+extern NSString * const kLTVector3ValueTransformer;
+
+/// Returns a reversible transformer that converts an \c NSString path representation to its
+/// corresponding \c NSValue boxed \c LTVector4 and vice versa.
+///
+/// The input to the forward transformer must be an \c NSString with the format:
+/// <tt>(x, y, z, w)</tt>.
+///
+/// The input to the reverse transformer must be a boxed \c LTVector4 as \c NSValue.
+///
+/// If the input is \c nil, or not one of these types, or the specific type conditions fail,
+/// \c NSInvalidArgumentException will be raised.
+extern NSString * const kLTVector4ValueTransformer;
+
 @interface NSValueTransformer (LTEngine)
 
 /// Reversible transformer that accepts a JSON dictionary with \c NSString as keys and
