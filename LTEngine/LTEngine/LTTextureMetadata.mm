@@ -7,7 +7,7 @@
 #import "LTJSONSerializationAdapter.h"
 #import "LTTexture+Factory.h"
 #import "LTTexture+Protected.h"
-#import "LTTransformers.h"
+#import "NSValueTransformer+LTEngine.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -53,7 +53,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 + (NSValueTransformer *)pixelFormatJSONTransformer {
-  return [LTTransformers transformerForClass:LTGLPixelFormat.class];
+  return [NSValueTransformer lt_enumNameTransformerForClass:LTGLPixelFormat.class];
 }
 
 + (NSValueTransformer *)sizeJSONTransformer {
@@ -65,7 +65,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 + (NSValueTransformer *)fillColorJSONTransformer {
-  return [LTTransformers transformerForTypeEncoding:@(@encode(LTVector4))];
+  return [NSValueTransformer valueTransformerForName:kLTVector4ValueTransformer];
 }
 
 @end
