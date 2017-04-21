@@ -15,7 +15,7 @@ NSString * const kLTColorValueTransformer = @"LTColorValueTransformer";
 NSString * const kLTUUIDValueTransformer = @"LTUUIDValueTransformer";
 NSString * const kLTUTCDateValueTransformer = @"LTStandardDateValueTransformer";
 NSString * const kLTTimeZoneValueTransformer = @"LTTimeZoneValueTransformer";
-NSString * const kLTLTPathValueTransformer = @"LTLTPathValueTransformer";
+NSString * const kLTPathValueTransformer = @"LTPathValueTransformer";
 NSString * const kLTURLValueTransformer = @"LTURLValueTransformer";
 
 NSString * const kLTModelValueTransformerClassKey = @"_class";
@@ -41,9 +41,9 @@ NSString * const kLTModelValueTransformerEnumNameKey = @"name";
                                     forName:kLTUTCDateValueTransformer];
     [NSValueTransformer setValueTransformer:[self lt_timeZoneValueTransformer]
                                     forName:kLTTimeZoneValueTransformer];
-    [NSValueTransformer setValueTransformer:[self lt_ltPathValueTransformer]
-                                    forName:kLTLTPathValueTransformer];
-    [NSValueTransformer setValueTransformer:[self lt_ltURLValueTransformer]
+    [NSValueTransformer setValueTransformer:[self lt_pathValueTransformer]
+                                    forName:kLTPathValueTransformer];
+    [NSValueTransformer setValueTransformer:[self lt_URLValueTransformer]
                                     forName:kLTURLValueTransformer];
   }
 }
@@ -193,8 +193,8 @@ NSString * const kLTModelValueTransformerEnumNameKey = @"name";
 }
 
 + (NSValueTransformer *)lt_timeZoneValueTransformer {
-  return
-      [MTLValueTransformer reversibleTransformerWithForwardBlock:^NSTimeZone *(NSString *string) {
+  return [MTLValueTransformer
+          reversibleTransformerWithForwardBlock:^NSTimeZone *(NSString *string) {
     LTParameterAssert([string isKindOfClass:NSString.class],
                       @"Expected a NSString, got: %@", string.class);
     NSTimeZone *result = [NSTimeZone timeZoneWithName:string];
@@ -207,7 +207,7 @@ NSString * const kLTModelValueTransformerEnumNameKey = @"name";
   }];
 }
 
-+ (NSValueTransformer *)lt_ltPathValueTransformer {
++ (NSValueTransformer *)lt_pathValueTransformer {
   return [MTLValueTransformer reversibleTransformerWithForwardBlock:^LTPath *(NSString *string) {
     LTParameterAssert([string isKindOfClass:NSString.class],
                       @"Expected a NSString, got: %@", string.class);
@@ -221,9 +221,9 @@ NSString * const kLTModelValueTransformerEnumNameKey = @"name";
   }];
 }
 
-+ (NSValueTransformer *)lt_ltURLValueTransformer {
++ (NSValueTransformer *)lt_URLValueTransformer {
   return [MTLValueTransformer reversibleTransformerWithForwardBlock:
-      ^NSURL * _Nullable (NSString *string) {
+      ^NSURL * _Nullable(NSString *string) {
         LTParameterAssert([string isKindOfClass:NSString.class],
                           @"Expected a NSString, got: %@", string.class);
         NSString *escapedUrl = [string stringByAddingPercentEncodingWithAllowedCharacters:

@@ -565,7 +565,7 @@ context(@"LTPath value transformer", ^{
   __block NSValueTransformer *transformer;
 
   beforeEach(^{
-    transformer = [NSValueTransformer valueTransformerForName:kLTLTPathValueTransformer];
+    transformer = [NSValueTransformer valueTransformerForName:kLTPathValueTransformer];
   });
 
   it(@"should have a valid transformer", ^{
