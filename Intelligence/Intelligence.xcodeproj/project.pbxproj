@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		A14171C61E6EAC0D005DBEFF /* libIntelligence.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A14171A11E6EAA93005DBEFF /* libIntelligence.a */; };
-		A14172BE1E6EB19D005DBEFF /* INTIntelligenceSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = A14172BD1E6EB19D005DBEFF /* INTIntelligenceSpec.mm */; };
 		A14173401E6EB59F005DBEFF /* libExpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A141728A1E6EAEE7005DBEFF /* libExpecta.a */; };
 		A14173411E6EB59F005DBEFF /* libLTKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A141726F1E6EADDF005DBEFF /* libLTKit.a */; };
 		A14173421E6EB59F005DBEFF /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A141729D1E6EAF03005DBEFF /* libOCMock.a */; };
@@ -20,6 +19,9 @@
 		A1417AAC1E6ED9D5005DBEFF /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1417AAB1E6ED9D5005DBEFF /* QuartzCore.framework */; };
 		A1417AAE1E6EDA31005DBEFF /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1417AAD1E6EDA31005DBEFF /* GLKit.framework */; };
 		CDE00B451E82AE82007AFD5E /* libcompression.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = CDE00B441E82AE82007AFD5E /* libcompression.tbd */; };
+		A1417C801E6EF77C005DBEFF /* INTEventMetadata.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1417C7F1E6EF77C005DBEFF /* INTEventMetadata.mm */; };
+		A1417C8D1E6F012E005DBEFF /* INTDataStructures.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1417C8C1E6F012E005DBEFF /* INTDataStructures.mm */; };
+		A1D136E91E78F4C200B1EA8D /* INTDataStructuresSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1D136E81E78F4C200B1EA8D /* INTDataStructuresSpec.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -229,7 +231,6 @@
 		A14172A41E6EAF0D005DBEFF /* Specta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Specta.xcodeproj; path = ../third_party/Specta/Specta/Specta.xcodeproj; sourceTree = "<group>"; };
 		A14172BB1E6EB07E005DBEFF /* Intelligence-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Intelligence-Prefix.pch"; sourceTree = "<group>"; };
 		A14172BC1E6EB0CA005DBEFF /* IntelligenceTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "IntelligenceTests-Prefix.pch"; sourceTree = "<group>"; };
-		A14172BD1E6EB19D005DBEFF /* INTIntelligenceSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = INTIntelligenceSpec.mm; sourceTree = "<group>"; };
 		A14172D71E6EB2FF005DBEFF /* TestHost.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TestHost.xcodeproj; path = ../Foundations/TestHost.xcodeproj; sourceTree = "<group>"; };
 		A14175B51E6EBE37005DBEFF /* libextobjc_iOS.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libextobjc_iOS.a; path = "../../../Library/Developer/Xcode/DerivedData/Intelligence-ggssnmdkwphyujhcqihvnrvvwwol/Build/Products/Debug-iphonesimulator/libextobjc_iOS.a"; sourceTree = "<group>"; };
 		A14177A01E6EC276005DBEFF /* INTIntelligence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INTIntelligence.h; sourceTree = "<group>"; };
@@ -239,6 +240,11 @@
 		A1417AAB1E6ED9D5005DBEFF /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		A1417AAD1E6EDA31005DBEFF /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
 		CDE00B441E82AE82007AFD5E /* libcompression.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libcompression.tbd; path = usr/lib/libcompression.tbd; sourceTree = SDKROOT; };
+		A1417C7E1E6EF77C005DBEFF /* INTEventMetadata.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INTEventMetadata.h; sourceTree = "<group>"; };
+		A1417C7F1E6EF77C005DBEFF /* INTEventMetadata.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = INTEventMetadata.mm; sourceTree = "<group>"; };
+		A1417C8B1E6F012E005DBEFF /* INTDataStructures.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INTDataStructures.h; sourceTree = "<group>"; };
+		A1417C8C1E6F012E005DBEFF /* INTDataStructures.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = INTDataStructures.mm; sourceTree = "<group>"; };
+		A1D136E81E78F4C200B1EA8D /* INTDataStructuresSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = INTDataStructuresSpec.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -294,6 +300,7 @@
 		A14171A31E6EAA93005DBEFF /* Intelligence */ = {
 			isa = PBXGroup;
 			children = (
+				A1417C8A1E6EFFE3005DBEFF /* Base */,
 				A14172BA1E6EB04F005DBEFF /* Supporting Files */,
 				A14177A01E6EC276005DBEFF /* INTIntelligence.h */,
 				A14177A11E6EC276005DBEFF /* INTIntelligence.mm */,
@@ -432,7 +439,7 @@
 		A14173471E6EB62C005DBEFF /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				A14172BD1E6EB19D005DBEFF /* INTIntelligenceSpec.mm */,
+				A1D136EA1E78FDF400B1EA8D /* Base */,
 			);
 			name = Tests;
 			sourceTree = "<group>";
@@ -448,6 +455,25 @@
 				A14175B51E6EBE37005DBEFF /* libextobjc_iOS.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		A1417C8A1E6EFFE3005DBEFF /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				A1417C8B1E6F012E005DBEFF /* INTDataStructures.h */,
+				A1417C8C1E6F012E005DBEFF /* INTDataStructures.mm */,
+				A1417C7E1E6EF77C005DBEFF /* INTEventMetadata.h */,
+				A1417C7F1E6EF77C005DBEFF /* INTEventMetadata.mm */,
+			);
+			name = Base;
+			sourceTree = "<group>";
+		};
+		A1D136EA1E78FDF400B1EA8D /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				A1D136E81E78F4C200B1EA8D /* INTDataStructuresSpec.mm */,
+			);
+			name = Base;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -729,6 +755,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A1417C801E6EF77C005DBEFF /* INTEventMetadata.mm in Sources */,
+				A1417C8D1E6F012E005DBEFF /* INTDataStructures.mm in Sources */,
 				A14177A21E6EC276005DBEFF /* INTIntelligence.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -737,7 +765,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A14172BE1E6EB19D005DBEFF /* INTIntelligenceSpec.mm in Sources */,
+				A1D136E91E78F4C200B1EA8D /* INTDataStructuresSpec.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
