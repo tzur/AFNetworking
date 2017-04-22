@@ -589,11 +589,11 @@ typedef struct {
   return _maxNumberOfColorAttachmentPoints;
 }
 
-- (BOOL)canRenderToHalfFloatTextures {
+- (BOOL)canRenderToHalfFloatColorBuffers {
   return [self.supportedExtensions containsObject:@"GL_EXT_color_buffer_half_float"];
 }
 
-- (BOOL)canRenderToFloatTextures {
+- (BOOL)canRenderToFloatColorBuffers {
   return [self.supportedExtensions containsObject:@"GL_EXT_color_buffer_float"];
 }
 

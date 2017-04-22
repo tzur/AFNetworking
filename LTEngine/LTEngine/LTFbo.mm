@@ -139,12 +139,12 @@ NS_ASSUME_NONNULL_BEGIN
     // Rendering to byte precision is always available by the spec of OpenGL ES 2.0 and 3.0.
     return;
   } else if (attachable.pixelFormat.dataType == LTGLPixelDataType16Float) {
-    if (!context.canRenderToHalfFloatTextures) {
+    if (!context.canRenderToHalfFloatColorBuffers) {
       [LTGLException raise:kLTFboInvalidAttachmentException format:@"Given attachable has a pixel "
        "format %@, which is unsupported as a render target on this device", attachable.pixelFormat];
     }
   } else if (attachable.pixelFormat.dataType == LTGLPixelDataType32Float) {
-    if (!context.canRenderToFloatTextures) {
+    if (!context.canRenderToFloatColorBuffers) {
       [LTGLException raise:kLTFboInvalidAttachmentException format:@"Given attachable has pixel "
        "format %@, which is unsupported as a render target on this device", attachable.pixelFormat];
     }
