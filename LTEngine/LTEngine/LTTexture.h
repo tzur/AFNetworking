@@ -139,9 +139,6 @@ struct LTVector4;
 /// original. Float precision textures will always be converted to half-float (if supported by
 /// device) or regular precision. Half-float precision textures will be converted to unsigned byte
 /// precision if no support for half-float color buffers is available.
-///
-/// TODO:(yaron) the final precision is controlled by \c LTFbo, and as discussed with Amit,
-/// shouldn't change since we can always use the slow cloning path.
 - (LTTexture *)clone;
 
 /// Clones the texture into the given texture. The target \c texture must be of the same size of the
