@@ -10,6 +10,7 @@
 #import "PTNAlbumChangeset+PhotoKit.h"
 #import "PTNAuthorizationManager.h"
 #import "PTNAuthorizationStatus.h"
+#import "PTNImageDataAsset.h"
 #import "PTNImageFetchOptions+PhotoKit.h"
 #import "PTNImageMetadata.h"
 #import "PTNPhotoKitAlbum.h"
@@ -637,8 +638,51 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 - (RACSignal *)fetchImageDataWithDescriptor:(id<PTNDescriptor>)descriptor {
-    return [RACSignal error:[NSError ptn_errorWithCode:PTNErrorCodeUnsupportedOperation
+  if (![descriptor isKindOfClass:[PHAsset class]]) {
+    return [RACSignal error:[NSError ptn_errorWithCode:PTNErrorCodeInvalidDescriptor
                                   associatedDescriptor:descriptor]];
+  }
+
+  return [[self fetchAssetForDescriptor:descriptor]
+      flattenMap:^(PHAsset *asset) {
+        return [self imageDataForPhotoKitAsset:asset];
+      }];
+}
+
+- (RACSignal *)imageDataForPhotoKitAsset:(PHAsset *)asset {
+  return [[RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+    PHImageRequestOptions *options = [[PHImageRequestOptions alloc] init];
+    options.progressHandler = ^(double value, NSError *error, BOOL *, NSDictionary *) {
+      if (!error) {
+        PTNProgress *progress = [[PTNProgress alloc] initWithProgress:@(value)];
+        [subscriber sendNext:progress];
+      }
+    };
+
+    auto resultHandler = ^(NSData * _Nullable imageData, NSString * _Nullable dataUTI,
+                           UIImageOrientation orientation, NSDictionary * _Nullable info) {
+      if (!imageData) {
+        NSError *wrappedError = [NSError lt_errorWithCode:PTNErrorCodeAssetLoadingFailed
+                                                      url:asset.ptn_identifier
+                                          underlyingError:info[PHImageErrorKey]];
+        [subscriber sendError:wrappedError];
+        return;
+      }
+
+      id<PTNImageDataAsset> rawImageAsset = [[PTNImageDataAsset alloc] initWithData:imageData
+                                                              uniformTypeIdentifier:dataUTI
+                                                                        orientation:orientation];
+      [subscriber sendNext:[[PTNProgress alloc] initWithResult:rawImageAsset]];
+      [subscriber sendCompleted];
+    };
+
+    PHImageRequestID requestID = [self.imageManager requestImageDataForAsset:asset options:options
+                                                               resultHandler:resultHandler];
+
+    return [RACDisposable disposableWithBlock:^{
+      [self.imageManager cancelImageRequest:requestID];
+    }];
+  }] subscribeOn:RACScheduler.scheduler];
 }
 
 #pragma mark -
