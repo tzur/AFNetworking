@@ -16,7 +16,7 @@ static NSString * const kLTRenderbufferInitExamples = @"LTRenderbufferInitExampl
 /// Shared examples dictionary supported keys.
 static NSString * const kVersionKey = @"versionKey";
 static NSString * const kRenderbufferKey = @"renderbufferKey";
-static NSString * const kExpectedPixelFromatKey = @"expectedPixelFormatKey";
+static NSString * const kExpectedPixelFormatKey = @"expectedPixelFormatKey";
 
 /// Renderbuffer size.
 static const CGSize kSize = CGSizeMake(7, 5);
@@ -26,7 +26,7 @@ sharedExamplesFor(kLTRenderbufferExamples, ^(NSDictionary *info) {
   __block LTGLPixelFormat *expectedPixelFormat;
 
   beforeEach(^{
-    expectedPixelFormat = (LTGLPixelFormat *)info[kExpectedPixelFromatKey];
+    expectedPixelFormat = (LTGLPixelFormat *)info[kExpectedPixelFormatKey];
     renderbuffer = (LTRenderbuffer *)info[kRenderbufferKey];
   });
 
@@ -78,8 +78,9 @@ sharedExamplesFor(kLTRenderbufferExamples, ^(NSDictionary *info) {
 
   context(@"binding", ^{
     itShouldBehaveLike(kLTResourceExamples, ^{
-      return @{kLTResourceExamplesSUTValue: [NSValue valueWithNonretainedObject:renderbuffer],
-               kLTResourceExamplesOpenGLParameterName: @GL_RENDERBUFFER_BINDING};
+      return @{
+        kLTResourceExamplesSUTValue: [NSValue valueWithNonretainedObject:renderbuffer],
+        kLTResourceExamplesOpenGLParameterName: @GL_RENDERBUFFER_BINDING};
     });
   });
 });
@@ -105,7 +106,7 @@ sharedExamplesFor(kLTRenderbufferInitExamples, ^(NSDictionary *info) {
 
       return @{
         kRenderbufferKey: renderbuffer,
-        kExpectedPixelFromatKey:$(LTGLPixelFormatRGBA8Unorm)
+        kExpectedPixelFormatKey: $(LTGLPixelFormatRGBA8Unorm)
       };
     });
 
@@ -116,7 +117,7 @@ sharedExamplesFor(kLTRenderbufferInitExamples, ^(NSDictionary *info) {
 
       return @{
         kRenderbufferKey: renderbuffer,
-        kExpectedPixelFromatKey: $(LTGLPixelFormatRGBA8Unorm)
+        kExpectedPixelFormatKey: $(LTGLPixelFormatRGBA8Unorm)
       };
     });
   });
