@@ -80,7 +80,7 @@ NS_ASSUME_NONNULL_BEGIN
   id<PTNPhotoKitImageManager> imageManager =
       [[PTNPhotoKitDeferringImageManager alloc] initWithAuthorizationManager:authorizationManager];
   id<PTNPhotoKitChangeManager> changeManager = [[PTNPhotoKitChangeManager alloc] init];
-  
+
   return [self initWithFetcher:fetcher observer:observer imageManager:imageManager
           authorizationManager:authorizationManager changeManager:changeManager];
 }
@@ -89,7 +89,7 @@ NS_ASSUME_NONNULL_BEGIN
   PTNPhotoKitAuthorizer *authorizer = [[PTNPhotoKitAuthorizer alloc] init];
   PTNPhotoKitAuthorizationManager *authorizationManager =
       [[PTNPhotoKitAuthorizationManager alloc] initWithPhotoKitAuthorizer:authorizer];
-  
+
   return [self initWithAuthorizationManager:authorizationManager];
 }
 
@@ -265,7 +265,7 @@ NS_ASSUME_NONNULL_BEGIN
           RACSignal *signal = [[[self fetchAlbumWithURL:subalbumURL] skip:1] mapReplace:collection];
           [signals addObject:signal];
         }
-         
+
         return [RACSignal merge:signals];
     }];
 }
@@ -317,9 +317,10 @@ NS_ASSUME_NONNULL_BEGIN
         }]
         concat];
 
-    // The operator ptn_identicallyDistinctUntilChanged is required because PHFetchResult objects are
-    // equal if they back the same asset, even if the asset has changed. This makes sure that only new
-    // fetch results are provided, but avoid sending the same fetch result over and over again.
+    // The operator ptn_identicallyDistinctUntilChanged is required because PHFetchResult objects
+    // are equal if they back the same asset, even if the asset has changed. This makes sure that
+    // only new fetch results are provided, but avoid sending the same fetch result over and over
+    // again.
     return [[[RACSignal
         concat:@[initialFetchResult, nextFetchResults]]
         ptn_identicallyDistinctUntilChanged]
@@ -629,6 +630,15 @@ NS_ASSUME_NONNULL_BEGIN
       [self.imageManager cancelImageRequest:requestID];
     }];
   }];
+}
+
+#pragma mark -
+#pragma mark Image data fetching
+#pragma mark -
+
+- (RACSignal *)fetchImageDataWithDescriptor:(id<PTNDescriptor>)descriptor {
+    return [RACSignal error:[NSError ptn_errorWithCode:PTNErrorCodeUnsupportedOperation
+                                  associatedDescriptor:descriptor]];
 }
 
 #pragma mark -

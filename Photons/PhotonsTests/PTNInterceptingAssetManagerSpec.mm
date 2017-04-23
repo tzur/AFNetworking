@@ -10,6 +10,7 @@
 #import "PTNAlbum.h"
 #import "PTNAlbumChangeset.h"
 #import "PTNFakeAssetManager.h"
+#import "PTNImageDataAsset.h"
 #import "PTNImageFetchOptions.h"
 #import "PTNIncrementalChanges.h"
 #import "PTNProgress.h"
@@ -120,7 +121,6 @@ context(@"album fetching", ^{
 
     [underlyingAssetManager serveAlbumURL:albumURL withAlbum:album];
 
-
     NSArray *assets = @[interceptingDescriptor, otherDescriptor];
     id<PTNAlbum> interceptedAlbum = [[PTNAlbum alloc] initWithURL:albumURL
                                                         subalbums:album.subalbums
@@ -141,7 +141,6 @@ context(@"album fetching", ^{
                                     testRecorder];
 
     [underlyingAssetManager serveAlbumURL:albumURL withAlbum:album];
-
 
     NSArray *assets = @[interceptingDescriptor, otherDescriptor];
     id<PTNAlbum> interceptedAlbum = [[PTNAlbum alloc] initWithURL:albumURL
@@ -485,7 +484,6 @@ context(@"album fetching", ^{
                                   irrelevantURL: irrelevantDescriptor}];
       [underlyingAssetManager serveDescriptorURL:irrelevantURL withDescriptor:irrelevantDescriptor];
 
-
       [interceptionMap sendNext:@{assetDescriptorURL: interceptingDescriptor,
                                   subalbumDescriptorURL: interceptingDescriptor}];
       [underlyingAssetManager serveDescriptorURL:subalbumDescriptorURL
@@ -527,7 +525,7 @@ context(@"album fetching", ^{
       PTNAlbumChangeset *newChangeset = [PTNAlbumChangeset changesetWithBeforeAlbum:album
           afterAlbum:newAlbum subalbumChanges:nil assetChanges:mappingChanges];
       [underlyingAssetManager serveAlbumURL:albumURL withAlbumChangeset:newChangeset];
-      
+
       [underlyingAssetManager serveDescriptorURL:assetDescriptorURL
                                   withDescriptor:updatedDescriptor];
 
@@ -953,6 +951,42 @@ context(@"video fetching", ^{
     [underlyingAssetManager serveVideoRequest:request withProgress:@[@0.666] finallyError:error];
 
     expect(values).will.sendValues(@[[[PTNProgress alloc] initWithProgress:@0.666]]);
+    expect(values).will.error();
+    expect(values.error).will.equal(error);
+  });
+});
+
+context(@"image data fetching", ^{
+  __block id<PTNAssetDescriptor> descriptor;
+  __block id<PTNImageDataAsset> imageDataAsset;
+  __block PTNImageDataRequest *request;
+
+  beforeEach(^{
+    descriptor = OCMProtocolMock(@protocol(PTNDescriptor));
+    imageDataAsset = OCMProtocolMock(@protocol(PTNImageDataAsset));
+    request = [[PTNImageDataRequest alloc] initWithAssetDescriptor:descriptor];
+  });
+
+  it(@"should forward values from underlying asset manager", ^{
+    LLSignalTestRecorder *values =
+        [[interceptingAssetManager fetchImageDataWithDescriptor:descriptor] testRecorder];
+
+    [underlyingAssetManager serveImageDataRequest:request withProgress:@[]
+                                   imageDataAsset:imageDataAsset];
+
+    expect(values).will.sendValues(@[[[PTNProgress alloc] initWithResult:imageDataAsset]]);
+    expect(values).will.complete();
+  });
+
+  it(@"should forward errors from underlying asset manager", ^{
+    LLSignalTestRecorder *values =
+        [[interceptingAssetManager fetchImageDataWithDescriptor:descriptor] testRecorder];
+
+    NSError *error = [NSError lt_errorWithCode:1337];
+    [underlyingAssetManager serveImageDataRequest:request withProgress:@[@0.123]
+                                     finallyError:error];
+
+    expect(values).will.sendValues(@[[[PTNProgress alloc] initWithProgress:@0.123]]);
     expect(values).will.error();
     expect(values.error).will.equal(error);
   });

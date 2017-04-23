@@ -8,6 +8,7 @@
 #import "PTNAlbumChangeset.h"
 #import "PTNDescriptor.h"
 #import "PTNImageAsset.h"
+#import "PTNImageDataAsset.h"
 #import "PTNImageFetchOptions.h"
 #import "PTNProgress.h"
 #import "PTNResizingStrategy.h"
@@ -45,6 +46,17 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
+@implementation PTNImageDataRequest
+
+- (instancetype)initWithAssetDescriptor:(nullable id<PTNDescriptor>)descriptor {
+  if (self = [super init]) {
+    _descriptor = descriptor;
+  }
+  return self;
+}
+
+@end
+
 @interface PTNFakeAssetManager ()
 
 /// Mapping of \c PTNImageRequest to the \c RACSubject returned for an image request with those
@@ -54,6 +66,10 @@ NS_ASSUME_NONNULL_BEGIN
 /// Mapping of \c PTNVideoRequest to the \c RACSubject returned for a video request with those
 /// parameters.
 @property (readonly, nonatomic) NSMapTable<PTNVideoRequest *, RACSubject *> *videoRequests;
+
+/// Mapping of \c PTNImageDataRequest to the \c RACSubject returned for a imdage data request with
+/// those parameters.
+@property (readonly, nonatomic) NSMapTable<PTNImageDataRequest *, RACSubject *> *imageDataRequests;
 
 /// Mapping of \c NSURL to the \c RACSubject returned an asset request with that url.
 @property (readonly, nonatomic) NSMutableDictionary<NSURL *, RACSubject *> *descriptorRequests;
@@ -69,6 +85,7 @@ NS_ASSUME_NONNULL_BEGIN
   if (self = [super init]) {
     _imageRequests = [NSMapTable strongToStrongObjectsMapTable];
     _videoRequests = [NSMapTable strongToStrongObjectsMapTable];
+    _imageDataRequests = [NSMapTable strongToStrongObjectsMapTable];
     _descriptorRequests = [NSMutableDictionary dictionary];
     _albumRequests = [NSMutableDictionary dictionary];
   }
@@ -117,6 +134,16 @@ NS_ASSUME_NONNULL_BEGIN
   }
 
   return [self.videoRequests objectForKey:request];
+}
+
+- (RACSignal *)fetchImageDataWithDescriptor:(id<PTNDescriptor>)descriptor {
+  PTNImageDataRequest *request =
+      [[PTNImageDataRequest alloc] initWithAssetDescriptor:descriptor];
+  if (![self.imageDataRequests objectForKey:request]) {
+    [self.imageDataRequests setObject:[RACSubject subject] forKey:request];
+  }
+
+  return [self.imageDataRequests objectForKey:request];
 }
 
 #pragma mark -
@@ -229,6 +256,56 @@ NS_ASSUME_NONNULL_BEGIN
       map:^RACSubject *(PTNVideoRequest *request) {
         return [self.videoRequests objectForKey:request];
       }].array;
+}
+
+#pragma mark -
+#pragma mark Image data serving
+#pragma mark -
+
+- (void)serveImageDataRequest:(PTNImageDataRequest *)imageDataRequest
+                 withProgress:(NSArray<NSNumber *> *)progress
+               imageDataAsset:(id<PTNImageDataAsset>)imageDataAsset {
+  NSArray *progressObjects = [[progress lt_map:^PTNProgress *(NSNumber *progressValue) {
+    return [[PTNProgress alloc] initWithProgress:progressValue];
+  }] arrayByAddingObject:[[PTNProgress alloc] initWithResult:imageDataAsset]];
+
+  [self serveImageDataRequest:imageDataRequest withProgressObjects:progressObjects then:nil];
+}
+
+- (void)serveImageDataRequest:(PTNImageDataRequest *)imageDataRequest
+                 withProgress:(NSArray<NSNumber *> *)progress finallyError:(NSError *)error {
+  NSArray *progressObjects = [progress lt_map:^PTNProgress *(NSNumber *progressValue) {
+    return [[PTNProgress alloc] initWithProgress:progressValue];
+  }];
+
+  [self serveImageDataRequest:imageDataRequest withProgressObjects:progressObjects then:error];
+}
+
+- (void)serveImageDataRequest:(PTNImageDataRequest *)imageDataRequest
+          withProgressObjects:(NSArray<PTNProgress *> *)progress then:(nullable NSError *)error {
+  for (RACSubject *signal in [self requestsMatchingImageDataRequest:imageDataRequest]) {
+    for (PTNProgress *progressObject in progress) {
+      [signal sendNext:progressObject];
+    }
+
+    if (error) {
+      [signal sendError:error];
+    } else {
+      [signal sendCompleted];
+    }
+  }
+}
+
+- (NSArray<RACSubject *> *)requestsMatchingImageDataRequest:
+    (PTNImageDataRequest *)imageDataRequest {
+  return [[self.imageDataRequests.keyEnumerator.rac_sequence
+    filter:^BOOL(PTNImageDataRequest *request) {
+      return (imageDataRequest.descriptor == nil ||
+              [imageDataRequest.descriptor isEqual:request.descriptor]);
+    }]
+    map:^RACSubject *(PTNImageDataRequest *request) {
+      return [self.imageDataRequests objectForKey:request];
+    }].array;
 }
 
 #pragma mark -

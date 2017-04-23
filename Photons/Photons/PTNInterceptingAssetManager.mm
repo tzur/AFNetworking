@@ -232,6 +232,14 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 #pragma mark -
+#pragma mark Image data fetching
+#pragma mark -
+
+- (RACSignal *)fetchImageDataWithDescriptor:(id<PTNDescriptor>)descriptor {
+  return [self.assetManager fetchImageDataWithDescriptor:descriptor];
+}
+
+#pragma mark -
 #pragma mark Proxying optional methods
 #pragma mark -
 

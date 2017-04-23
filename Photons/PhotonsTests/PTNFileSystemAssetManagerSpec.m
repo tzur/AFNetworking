@@ -15,8 +15,8 @@
 #import "PTNFileSystemFakeFileManager.h"
 #import "PTNFileSystemFileDescriptor.h"
 #import "PTNFileSystemTestUtils.h"
-#import "PTNImageResizer.h"
 #import "PTNImageFetchOptions.h"
+#import "PTNImageResizer.h"
 #import "PTNProgress.h"
 #import "PTNResizingStrategy.h"
 #import "PTNVideoFetchOptions.h"
@@ -85,11 +85,11 @@ context(@"album fetching", ^{
       expect(values).willNot.deliverValuesOnMainThread();
     });
   });
-  
+
   context(@"fetching errors", ^{
     it(@"should error on invalid URL", ^{
       NSURL *url = [NSURL URLWithString:@"http://www.foo.com"];
-      
+
       expect([manager fetchAlbumWithURL:url]).will.matchError(^BOOL(NSError *error) {
         return error.code == PTNErrorCodeInvalidURL;
       });
@@ -251,7 +251,7 @@ context(@"image fetching", ^{
       RACSignal *values = [manager fetchImageWithDescriptor:invalidAsset
                                            resizingStrategy:resizingStrategy
                                                     options:options];
-      
+
       expect(values).will.matchError(^BOOL(NSError *error) {
         return error.code == PTNErrorCodeInvalidDescriptor;
       });
@@ -270,10 +270,19 @@ context(@"video fetching", ^{
 
   it(@"should err", ^{
     RACSignal *values = [manager fetchVideoWithDescriptor:asset options:options];
-    
+
     expect(values).will.matchError(^BOOL(NSError *error) {
       return error.code == PTNErrorCodeUnsupportedOperation;
     });
+  });
+});
+
+it(@"should err when fetching image data", ^{
+  id<PTNDescriptor> asset = PTNFileSystemFileFromString(@"foo.jpg");
+  RACSignal *values = [manager fetchImageDataWithDescriptor:asset];
+
+  expect(values).will.matchError(^BOOL(NSError *error) {
+    return error.code == PTNErrorCodeUnsupportedOperation;
   });
 });
 

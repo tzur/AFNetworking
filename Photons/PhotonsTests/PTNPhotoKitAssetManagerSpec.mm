@@ -11,6 +11,7 @@
 #import "PTNAuthorizationStatus.h"
 #import "PTNDescriptor.h"
 #import "PTNImageAsset.h"
+#import "PTNImageDataAsset.h"
 #import "PTNImageFetchOptions+PhotoKit.h"
 #import "PTNIncrementalChanges.h"
 #import "PTNPhotoKitAlbum.h"
@@ -68,7 +69,6 @@ static BOOL PTNPHFetchOptionsEquals(PHFetchOptions *lhs, PHFetchOptions *rhs) {
 SpecBegin(PTNPhotoKitAssetManager)
 
 __block PTNPhotoKitAssetManager *manager;
-
 __block PTNPhotoKitFakeFetcher *fetcher;
 __block PTNPhotoKitFakeObserver *observer;
 __block PTNPhotoKitFakeImageManager *imageManager;
@@ -1225,6 +1225,14 @@ context(@"video fetching", ^{
         expect(fetcher.operatingThreads).notTo.contain([NSThread mainThread]);
       });
     });
+  });
+});
+
+it(@"should err when fetching image data", ^{
+  RACSignal *values = [manager fetchImageDataWithDescriptor:PTNPhotoKitCreateAsset(@"foo")];
+
+  expect(values).will.matchError(^BOOL(NSError *error) {
+    return error.code == PTNErrorCodeUnsupportedOperation;
   });
 });
 
