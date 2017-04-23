@@ -245,6 +245,7 @@
 		A1417C8B1E6F012E005DBEFF /* INTDataStructures.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INTDataStructures.h; sourceTree = "<group>"; };
 		A1417C8C1E6F012E005DBEFF /* INTDataStructures.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = INTDataStructures.mm; sourceTree = "<group>"; };
 		A1D136E81E78F4C200B1EA8D /* INTDataStructuresSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = INTDataStructuresSpec.mm; sourceTree = "<group>"; };
+		A172A9BF1EAC112D00A12B86 /* INTEventLogger.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = INTEventLogger.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -301,6 +302,7 @@
 			isa = PBXGroup;
 			children = (
 				A1417C8A1E6EFFE3005DBEFF /* Base */,
+				A172A9A81EAC111600A12B86 /* Event Logging */,
 				A14172BA1E6EB04F005DBEFF /* Supporting Files */,
 				A14177A01E6EC276005DBEFF /* INTIntelligence.h */,
 				A14177A11E6EC276005DBEFF /* INTIntelligence.mm */,
@@ -474,6 +476,14 @@
 				A1D136E81E78F4C200B1EA8D /* INTDataStructuresSpec.mm */,
 			);
 			name = Base;
+			sourceTree = "<group>";
+		};
+		A172A9A81EAC111600A12B86 /* Event Logging */ = {
+			isa = PBXGroup;
+			children = (
+				A172A9BF1EAC112D00A12B86 /* INTEventLogger.h */,
+			);
+			name = "Event Logging";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
