@@ -5,22 +5,16 @@
 
 #import "INTEventMetadata.h"
 
-@interface INTFakeEvent : NSObject
-@end
-
-@implementation INTFakeEvent
-@end
-
 SpecBegin(INTDataStructures)
 
 __block INTEventMetadata *metadata;
-__block INTFakeEvent *event;
+__block NSObject *event;
 __block INTAppContext *context;
 
 beforeEach(^{
   metadata = [[INTEventMetadata alloc] initWithTotalRunTime:1 foregroundRunTime:1
                                             deviceTimestamp:[NSDate date] eventID:[NSUUID UUID]];
-  event = [[INTFakeEvent alloc] init];
+  event = [[NSObject alloc] init];
   context = @{
     @"foo": @"bar",
     @"baz": @1

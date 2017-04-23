@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A10165011E7006AA009596E1 /* INTEventTransformer.mm in Sources */ = {isa = PBXBuildFile; fileRef = A10165001E7006AA009596E1 /* INTEventTransformer.mm */; };
+		A101680B1E713D8B009596E1 /* INTEventTransformerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = A101680A1E713D8B009596E1 /* INTEventTransformerSpec.mm */; };
 		A10EEB891EAC783400791FF4 /* INTTransformerBlock.mm in Sources */ = {isa = PBXBuildFile; fileRef = A10EEB881EAC783400791FF4 /* INTTransformerBlock.mm */; };
 		A14171C61E6EAC0D005DBEFF /* libIntelligence.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A14171A11E6EAA93005DBEFF /* libIntelligence.a */; };
 		A14173401E6EB59F005DBEFF /* libExpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A141728A1E6EAEE7005DBEFF /* libExpecta.a */; };
@@ -216,6 +218,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		A10164FF1E7006AA009596E1 /* INTEventTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INTEventTransformer.h; sourceTree = "<group>"; };
+		A10165001E7006AA009596E1 /* INTEventTransformer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = INTEventTransformer.mm; sourceTree = "<group>"; };
+		A101680A1E713D8B009596E1 /* INTEventTransformerSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = INTEventTransformerSpec.mm; sourceTree = "<group>"; };
 		A10EEB871EAC783400791FF4 /* INTTransformerBlock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INTTransformerBlock.h; sourceTree = "<group>"; };
 		A14171A11E6EAA93005DBEFF /* libIntelligence.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libIntelligence.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		A14171C11E6EAC0D005DBEFF /* IntelligenceTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = IntelligenceTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -282,7 +287,17 @@
 		A10164CA1E700424009596E1 /* Event Aggregation */ = {
 			isa = PBXGroup;
 			children = (
+				A10164FF1E7006AA009596E1 /* INTEventTransformer.h */,
+				A10165001E7006AA009596E1 /* INTEventTransformer.mm */,
 				A10EEB871EAC783400791FF4 /* INTTransformerBlock.h */,
+			);
+			name = "Event Aggregation";
+			sourceTree = "<group>";
+		};
+		A10167F31E713D72009596E1 /* Event Aggregation */ = {
+			isa = PBXGroup;
+			children = (
+				A101680A1E713D8B009596E1 /* INTEventTransformerSpec.mm */,
 			);
 			name = "Event Aggregation";
 			sourceTree = "<group>";
@@ -453,6 +468,7 @@
 			isa = PBXGroup;
 			children = (
 				A1D136EA1E78FDF400B1EA8D /* Base */,
+				A10167F31E713D72009596E1 /* Event Aggregation */,
 			);
 			name = Tests;
 			sourceTree = "<group>";
@@ -778,6 +794,7 @@
 			files = (
 				A1417C801E6EF77C005DBEFF /* INTEventMetadata.mm in Sources */,
 				A1417C8D1E6F012E005DBEFF /* INTDataStructures.mm in Sources */,
+				A10165011E7006AA009596E1 /* INTEventTransformer.mm in Sources */,
 				A14177A21E6EC276005DBEFF /* INTIntelligence.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -787,6 +804,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A1D136E91E78F4C200B1EA8D /* INTDataStructuresSpec.mm in Sources */,
+				A101680B1E713D8B009596E1 /* INTEventTransformerSpec.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
