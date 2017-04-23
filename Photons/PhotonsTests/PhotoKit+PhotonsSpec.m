@@ -1,9 +1,15 @@
 // Copyright (c) 2015 Lightricks. All rights reserved.
 // Created by Barak Yoresh.
 
-#import "Photokit+Photons.h"
+#import "PhotoKit+Photons.h"
+
+#import <MobileCoreServices/MobileCoreServices.h>
 
 #import "PTNDescriptor.h"
+
+@interface PHAsset (UniformTypeIdentifier)
+- (NSString *)uniformTypeIdentifier;
+@end
 
 SpecBegin(PhotoKit_Photons)
 
@@ -59,6 +65,19 @@ context(@"asset descriptor", ^{
 
     PHAsset *asset = OCMPartialMock([[PHAsset alloc] init]);
     OCMStub(asset.mediaType).andReturn(PHAssetMediaTypeUnknown);
+    expect(asset.descriptorTraits).to.equal([NSSet set]);
+  });
+
+  it(@"should reveal raw traits when the underlying asset is raw", ^{
+    PHAsset *rawAsset = OCMPartialMock([[PHAsset alloc] init]);
+    OCMStub([rawAsset uniformTypeIdentifier]).andReturn(@"com.adobe.raw-image");
+    expect(rawAsset.descriptorTraits).to.contain(kPTNDescriptorTraitRawKey);
+
+    PHAsset *jpegAsset = OCMPartialMock([[PHAsset alloc] init]);
+    OCMStub([jpegAsset uniformTypeIdentifier]).andReturn(@"public.image");
+    expect(jpegAsset.descriptorTraits).to.equal([NSSet set]);
+
+    PHAsset *asset = OCMPartialMock([[PHAsset alloc] init]);
     expect(asset.descriptorTraits).to.equal([NSSet set]);
   });
 });

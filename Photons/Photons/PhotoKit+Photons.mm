@@ -3,9 +3,22 @@
 
 #import "PhotoKit+Photons.h"
 
+#import <MobileCoreServices/MobileCoreServices.h>
+
 #import "NSURL+PhotoKit.h"
 
 NS_ASSUME_NONNULL_BEGIN
+
+/// Category used to seamlessly access undocumented API.
+@interface PHAsset (UniformTypeIdentifier)
+
+/// Undocumented method returning the UTI of this asset. In case where the asset has multiple
+/// resources, it returns the UTI of the first resource. That means that assets that have multiple
+/// resources like both JPEG and RAW resources, will have the UTI of the first resources. Other
+/// resources will be ignored.
+- (NSString *)uniformTypeIdentifier;
+
+@end
 
 @implementation PHAsset (Photons)
 
@@ -34,7 +47,17 @@ NS_ASSUME_NONNULL_BEGIN
   if (self.mediaType == PHAssetMediaTypeVideo) {
     [set addObject:kPTNDescriptorTraitVideoKey];
   }
+  if ([self ptn_isRaw]) {
+    [set addObject:kPTNDescriptorTraitRawKey];
+  }
   return set;
+}
+
+- (BOOL)ptn_isRaw {
+  if ([self respondsToSelector:@selector(uniformTypeIdentifier)]) {
+    return (UTTypeConformsTo((__bridge CFStringRef)self.uniformTypeIdentifier, kUTTypeRawImage));
+  }
+  return NO;
 }
 
 @end
@@ -49,7 +72,7 @@ NS_ASSUME_NONNULL_BEGIN
   if (![self isKindOfClass:[PHAssetCollection class]]) {
     return PTNNotFound;
   }
-  
+
   NSUInteger estimatedAssetCount = [(PHAssetCollection *)self estimatedAssetCount];
   return estimatedAssetCount != NSNotFound ? estimatedAssetCount : PTNNotFound;
 }
