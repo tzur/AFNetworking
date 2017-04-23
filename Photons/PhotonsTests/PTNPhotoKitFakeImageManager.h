@@ -1,9 +1,9 @@
 // Copyright (c) 2015 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
-#import "PTNPhotoKitImageManager.h"
-
 #import <Photos/Photos.h>
+
+#import "PTNPhotoKitImageManager.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -19,6 +19,12 @@ NS_ASSUME_NONNULL_BEGIN
 /// values), and finally the given \c avasset and \c audioMix.
 - (void)serveAsset:(PHAsset *)asset withProgress:(NSArray<NSNumber *> *)progress
            avasset:(AVAsset *)avasset audioMix:(AVAudioMix *)audioMix;
+
+/// Serves the given \c asset by sending the given \c progress reports (array of \c NSNumber
+/// values), and finally the given \c imageData, \c dataUTI, and \c orientation.
+- (void)serveAsset:(PHAsset *)asset withProgress:(NSArray<NSNumber *> *)progress
+         imageData:(NSData *)imageData dataUTI:(NSString *)dataUTI
+       orientation:(UIImageOrientation)orientation;
 
 /// Serves the given \c asset by sending the given \c progress reports (array of \c NSNumber
 /// values), and finally errs with the given \c error.

@@ -23,7 +23,7 @@ beforeEach(^{
       deferredImageManager:^id<PTNPhotoKitImageManager>{
         return underlyingImageManger;
       }];
-  
+
   asset = OCMClassMock([PHAsset class]);
 });
 
@@ -49,13 +49,13 @@ context(@"image request", ^{
   beforeEach(^{
     options = OCMClassMock([PHImageRequestOptions class]);
   });
-  
+
   it(@"should return error for image requests when used before authorized", ^{
     OCMStub([authorizationManager authorizationStatus]).andReturn($(PTNAuthorizationStatusDenied));
     OCMReject([underlyingImageManger requestImageForAsset:OCMOCK_ANY targetSize:CGSizeZero
                                               contentMode:PHImageContentModeDefault
                                                   options:OCMOCK_ANY resultHandler:OCMOCK_ANY]);
-    
+
     __block NSError *error;
     [imageManager requestImageForAsset:asset targetSize:CGSizeZero
                            contentMode:PHImageContentModeDefault options:options
@@ -64,7 +64,7 @@ context(@"image request", ^{
       expect(result).to.beNil();
       error = info[PHImageErrorKey];
     }];
-    
+
     expect(error).toNot.beNil();
     expect(error.code).to.equal(PTNErrorCodeNotAuthorized);
   });
@@ -73,11 +73,11 @@ context(@"image request", ^{
     UIImage *image = [[UIImage alloc] init];
     OCMStub([authorizationManager authorizationStatus])
         .andReturn($(PTNAuthorizationStatusAuthorized));
-    
+
     OCMStub([underlyingImageManger requestImageForAsset:asset targetSize:CGSizeZero
         contentMode:PHImageContentModeDefault options:options
         resultHandler:([OCMArg invokeBlockWithArgs:image, @{}, nil])]).andReturn(1337);
-    
+
     PHImageRequestID requestID = [imageManager requestImageForAsset:asset targetSize:CGSizeZero
                            contentMode:PHImageContentModeDefault options:options
                          resultHandler:^(UIImage * _Nullable result,
@@ -85,7 +85,7 @@ context(@"image request", ^{
       expect(result).to.equal(image);
       expect(info).to.equal(@{});
     }];
-    
+
     expect(requestID).to.equal(1337);
   });
 
@@ -97,14 +97,14 @@ context(@"image request", ^{
           calledBlock = YES;
           return underlyingImageManger;
         }];
-    
+
     OCMStub([authorizationManager authorizationStatus])
         .andReturn($(PTNAuthorizationStatusRestricted));
     [imageManager requestImageForAsset:asset targetSize:CGSizeZero
         contentMode:PHImageContentModeDefault options:options
         resultHandler:^(UIImage *, NSDictionary *) {}];
     [imageManager cancelImageRequest:1337];
-    
+
     expect(calledBlock).to.beFalsy();
   });
 
@@ -116,24 +116,24 @@ context(@"image request", ^{
           ++managersRequested;
           return underlyingImageManger;
         }];
-    
+
     OCMStub([authorizationManager authorizationStatus])
         .andReturn($(PTNAuthorizationStatusAuthorized));
     [imageManager requestImageForAsset:asset targetSize:CGSizeZero
         contentMode:PHImageContentModeDefault options:options
         resultHandler:^(UIImage *, NSDictionary *) {}];
     [imageManager cancelImageRequest:1337];
-    
+
     [imageManager requestImageForAsset:asset targetSize:CGSizeZero
         contentMode:PHImageContentModeDefault options:options
         resultHandler:^(UIImage *, NSDictionary *) {}];
     [imageManager cancelImageRequest:1337];
-    
+
     [imageManager requestImageForAsset:asset targetSize:CGSizeZero
         contentMode:PHImageContentModeDefault options:options
         resultHandler:^(UIImage *, NSDictionary *) {}];
     [imageManager cancelImageRequest:1337];
-    
+
     expect(managersRequested).to.equal(1);
   });
 });
@@ -159,7 +159,7 @@ context(@"avasset request", ^{
     OCMReject([underlyingImageManger requestImageForAsset:OCMOCK_ANY targetSize:CGSizeZero
                                               contentMode:PHImageContentModeDefault
                                                   options:OCMOCK_ANY resultHandler:OCMOCK_ANY]);
-    
+
     __block NSError *error;
     [imageManager requestAVAssetForVideo:asset options:options
                            resultHandler:^(AVAsset * __nullable asset,
@@ -169,7 +169,7 @@ context(@"avasset request", ^{
       expect(audioMix).to.beNil();
       error = info[PHImageErrorKey];
     }];
-    
+
     expect(error).toNot.beNil();
     expect(error.code).to.equal(PTNErrorCodeNotAuthorized);
   });
@@ -178,10 +178,10 @@ context(@"avasset request", ^{
     id avasset = OCMClassMock([AVAsset class]);
     OCMStub([authorizationManager authorizationStatus])
         .andReturn($(PTNAuthorizationStatusAuthorized));
-    
+
     OCMStub([underlyingImageManger requestAVAssetForVideo:asset options:options
         resultHandler:([OCMArg invokeBlockWithArgs:avasset, audioMix, @{}, nil])]).andReturn(1337);
-    
+
     PHImageRequestID requestID =
         [imageManager requestAVAssetForVideo:asset options:options
                                resultHandler:^(AVAsset * __nullable asset,
@@ -191,7 +191,7 @@ context(@"avasset request", ^{
       expect(audioMix).to.equal(audioMix);
       expect(info).to.equal(@{});
     }];
-    
+
     expect(requestID).to.equal(1337);
   });
 
@@ -203,13 +203,13 @@ context(@"avasset request", ^{
           calledBlock = YES;
           return underlyingImageManger;
         }];
-    
+
     OCMStub([authorizationManager authorizationStatus])
         .andReturn($(PTNAuthorizationStatusRestricted));
     [imageManager requestAVAssetForVideo:asset options:options
                            resultHandler:^(AVAsset *, AVAudioMix *,  NSDictionary *) {}];
     [imageManager cancelImageRequest:1337];
-    
+
     expect(calledBlock).to.beFalsy();
   });
 
@@ -221,21 +221,125 @@ context(@"avasset request", ^{
           ++managersRequested;
           return underlyingImageManger;
         }];
-    
+
     OCMStub([authorizationManager authorizationStatus])
         .andReturn($(PTNAuthorizationStatusAuthorized));
     [imageManager requestAVAssetForVideo:asset options:options
                            resultHandler:^(AVAsset *, AVAudioMix *,  NSDictionary *) {}];
     [imageManager cancelImageRequest:1337];
-    
+
     [imageManager requestAVAssetForVideo:asset options:options
                            resultHandler:^(AVAsset *, AVAudioMix *,  NSDictionary *) {}];
     [imageManager cancelImageRequest:1337];
-    
+
     [imageManager requestAVAssetForVideo:asset options:options
                            resultHandler:^(AVAsset *, AVAudioMix *,  NSDictionary *) {}];
     [imageManager cancelImageRequest:1337];
-    
+
+    expect(managersRequested).to.equal(1);
+  });
+});
+
+context(@"image data request", ^{
+  __block PHImageRequestOptions *options;
+
+  beforeEach(^{
+    options = OCMClassMock([PHVideoRequestOptions class]);
+  });
+
+  it(@"should assert when received nil request handler block", ^{
+    PTNPhotoKitImageManagerImageDataHandler handler = nil;
+    expect(^{
+      [imageManager requestImageDataForAsset:asset options:options resultHandler:handler];
+    }).to.raise(NSInvalidArgumentException);
+  });
+
+  it(@"should return error for image data requests when used before authorized", ^{
+    OCMStub([authorizationManager authorizationStatus]).andReturn($(PTNAuthorizationStatusDenied));
+    OCMReject([underlyingImageManger requestImageDataForAsset:OCMOCK_ANY options:OCMOCK_ANY
+                                                resultHandler:OCMOCK_ANY]);
+    __block NSError *error;
+    [imageManager requestImageDataForAsset:asset options:options
+                             resultHandler:^(NSData * _Nullable imageData,
+                                             NSString * _Nullable dataUTI,
+                                             UIImageOrientation, NSDictionary * _Nullable info) {
+                               expect(imageData).to.beNil();
+                               expect(dataUTI).to.beNil();
+                               error = info[PHImageErrorKey];
+                             }];
+
+    expect(error).toNot.beNil();
+    expect(error.code).to.equal(PTNErrorCodeNotAuthorized);
+  });
+
+  it(@"should forward image data requests when used after authorization", ^{
+    char buffer[] = { 0x1, 0x2, 0x3, 0x4 };
+    NSData *data = [NSData dataWithBytes:buffer length:sizeof(buffer)];
+    OCMStub([authorizationManager authorizationStatus])
+        .andReturn($(PTNAuthorizationStatusAuthorized));
+
+    OCMStub([underlyingImageManger requestImageDataForAsset:asset options:options
+        resultHandler:([OCMArg invokeBlockWithArgs:data, @"publc.type", @(UIImageOrientationUp),
+                        @{}, nil])]).andReturn(3389);
+
+    PHImageRequestID requestID =
+        [imageManager requestImageDataForAsset:asset options:options
+                                 resultHandler:^(NSData * _Nullable imageData,
+                                                 NSString * _Nullable dataUTI,
+                                                 UIImageOrientation orientation,
+                                                 NSDictionary * _Nullable info) {
+                                   expect(imageData).to.equal(data);
+                                   expect(dataUTI).to.equal(@"publc.type");
+                                   expect(orientation).to.equal(UIImageOrientationUp);
+                                   expect(info).to.equal(@{});
+                                 }];
+
+    expect(requestID).to.equal(3389);
+  });
+
+  it(@"should not call image manager block before authorized", ^{
+    __block BOOL calledBlock = NO;
+    imageManager =
+        [[PTNPhotoKitDeferringImageManager alloc] initWithAuthorizationManager:authorizationManager
+        deferredImageManager:^id<PTNPhotoKitImageManager> {
+          calledBlock = YES;
+          return underlyingImageManger;
+        }];
+
+    OCMStub([authorizationManager authorizationStatus])
+        .andReturn($(PTNAuthorizationStatusRestricted));
+    [imageManager requestImageDataForAsset:asset options:options
+                             resultHandler:^(NSData * _Nullable, NSString * _Nullable,
+                                             UIImageOrientation, NSDictionary * _Nullable) {}];
+    [imageManager cancelImageRequest:3389];
+
+    expect(calledBlock).to.beFalsy();
+  });
+
+  it(@"should call image manager block only once authorized", ^{
+    __block NSUInteger managersRequested = 0;
+    imageManager =
+        [[PTNPhotoKitDeferringImageManager alloc] initWithAuthorizationManager:authorizationManager
+        deferredImageManager:^id<PTNPhotoKitImageManager> {
+          ++managersRequested;
+          return underlyingImageManger;
+        }];
+
+    OCMStub([authorizationManager authorizationStatus])
+        .andReturn($(PTNAuthorizationStatusAuthorized));
+    [imageManager requestImageDataForAsset:asset options:options
+                             resultHandler:^(NSData * _Nullable, NSString * _Nullable,
+                                             UIImageOrientation, NSDictionary * _Nullable) {}];
+    [imageManager cancelImageRequest:3389];
+    [imageManager requestImageDataForAsset:asset options:options
+                             resultHandler:^(NSData * _Nullable, NSString * _Nullable,
+                                             UIImageOrientation, NSDictionary * _Nullable) {}];
+    [imageManager cancelImageRequest:3389];
+    [imageManager requestImageDataForAsset:asset options:options
+                             resultHandler:^(NSData * _Nullable, NSString * _Nullable,
+                                             UIImageOrientation, NSDictionary * _Nullable) {}];
+    [imageManager cancelImageRequest:3389];
+
     expect(managersRequested).to.equal(1);
   });
 });
