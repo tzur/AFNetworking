@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A10165011E7006AA009596E1 /* INTEventTransformer.mm in Sources */ = {isa = PBXBuildFile; fileRef = A10165001E7006AA009596E1 /* INTEventTransformer.mm */; };
+		A101680B1E713D8B009596E1 /* INTEventTransformerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = A101680A1E713D8B009596E1 /* INTEventTransformerSpec.mm */; };
+		A10EEB891EAC783400791FF4 /* INTTransformerBlock.mm in Sources */ = {isa = PBXBuildFile; fileRef = A10EEB881EAC783400791FF4 /* INTTransformerBlock.mm */; };
 		A14171C61E6EAC0D005DBEFF /* libIntelligence.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A14171A11E6EAA93005DBEFF /* libIntelligence.a */; };
 		A14173401E6EB59F005DBEFF /* libExpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A141728A1E6EAEE7005DBEFF /* libExpecta.a */; };
 		A14173411E6EB59F005DBEFF /* libLTKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A141726F1E6EADDF005DBEFF /* libLTKit.a */; };
@@ -18,10 +21,10 @@
 		A1417AAA1E6ED9D0005DBEFF /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1417AA91E6ED9D0005DBEFF /* CoreGraphics.framework */; };
 		A1417AAC1E6ED9D5005DBEFF /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1417AAB1E6ED9D5005DBEFF /* QuartzCore.framework */; };
 		A1417AAE1E6EDA31005DBEFF /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1417AAD1E6EDA31005DBEFF /* GLKit.framework */; };
-		CDE00B451E82AE82007AFD5E /* libcompression.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = CDE00B441E82AE82007AFD5E /* libcompression.tbd */; };
 		A1417C801E6EF77C005DBEFF /* INTEventMetadata.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1417C7F1E6EF77C005DBEFF /* INTEventMetadata.mm */; };
 		A1417C8D1E6F012E005DBEFF /* INTDataStructures.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1417C8C1E6F012E005DBEFF /* INTDataStructures.mm */; };
 		A1D136E91E78F4C200B1EA8D /* INTDataStructuresSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1D136E81E78F4C200B1EA8D /* INTDataStructuresSpec.mm */; };
+		CDE00B451E82AE82007AFD5E /* libcompression.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = CDE00B441E82AE82007AFD5E /* libcompression.tbd */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -215,6 +218,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		A10164FF1E7006AA009596E1 /* INTEventTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INTEventTransformer.h; sourceTree = "<group>"; };
+		A10165001E7006AA009596E1 /* INTEventTransformer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = INTEventTransformer.mm; sourceTree = "<group>"; };
+		A101680A1E713D8B009596E1 /* INTEventTransformerSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = INTEventTransformerSpec.mm; sourceTree = "<group>"; };
+		A10EEB871EAC783400791FF4 /* INTTransformerBlock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INTTransformerBlock.h; sourceTree = "<group>"; };
 		A14171A11E6EAA93005DBEFF /* libIntelligence.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libIntelligence.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		A14171C11E6EAC0D005DBEFF /* IntelligenceTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = IntelligenceTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A14171C51E6EAC0D005DBEFF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -239,13 +246,13 @@
 		A1417AA91E6ED9D0005DBEFF /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		A1417AAB1E6ED9D5005DBEFF /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		A1417AAD1E6EDA31005DBEFF /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
-		CDE00B441E82AE82007AFD5E /* libcompression.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libcompression.tbd; path = usr/lib/libcompression.tbd; sourceTree = SDKROOT; };
 		A1417C7E1E6EF77C005DBEFF /* INTEventMetadata.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INTEventMetadata.h; sourceTree = "<group>"; };
 		A1417C7F1E6EF77C005DBEFF /* INTEventMetadata.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = INTEventMetadata.mm; sourceTree = "<group>"; };
 		A1417C8B1E6F012E005DBEFF /* INTDataStructures.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INTDataStructures.h; sourceTree = "<group>"; };
 		A1417C8C1E6F012E005DBEFF /* INTDataStructures.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = INTDataStructures.mm; sourceTree = "<group>"; };
-		A1D136E81E78F4C200B1EA8D /* INTDataStructuresSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = INTDataStructuresSpec.mm; sourceTree = "<group>"; };
 		A172A9BF1EAC112D00A12B86 /* INTEventLogger.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = INTEventLogger.h; sourceTree = "<group>"; };
+		A1D136E81E78F4C200B1EA8D /* INTDataStructuresSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = INTDataStructuresSpec.mm; sourceTree = "<group>"; };
+		CDE00B441E82AE82007AFD5E /* libcompression.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libcompression.tbd; path = usr/lib/libcompression.tbd; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -277,6 +284,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A10164CA1E700424009596E1 /* Event Aggregation */ = {
+			isa = PBXGroup;
+			children = (
+				A10164FF1E7006AA009596E1 /* INTEventTransformer.h */,
+				A10165001E7006AA009596E1 /* INTEventTransformer.mm */,
+				A10EEB871EAC783400791FF4 /* INTTransformerBlock.h */,
+			);
+			name = "Event Aggregation";
+			sourceTree = "<group>";
+		};
+		A10167F31E713D72009596E1 /* Event Aggregation */ = {
+			isa = PBXGroup;
+			children = (
+				A101680A1E713D8B009596E1 /* INTEventTransformerSpec.mm */,
+			);
+			name = "Event Aggregation";
+			sourceTree = "<group>";
+		};
 		A14171981E6EAA93005DBEFF = {
 			isa = PBXGroup;
 			children = (
@@ -302,6 +327,7 @@
 			isa = PBXGroup;
 			children = (
 				A1417C8A1E6EFFE3005DBEFF /* Base */,
+				A10164CA1E700424009596E1 /* Event Aggregation */,
 				A172A9A81EAC111600A12B86 /* Event Logging */,
 				A14172BA1E6EB04F005DBEFF /* Supporting Files */,
 				A14177A01E6EC276005DBEFF /* INTIntelligence.h */,
@@ -442,6 +468,7 @@
 			isa = PBXGroup;
 			children = (
 				A1D136EA1E78FDF400B1EA8D /* Base */,
+				A10167F31E713D72009596E1 /* Event Aggregation */,
 			);
 			name = Tests;
 			sourceTree = "<group>";
@@ -470,20 +497,20 @@
 			name = Base;
 			sourceTree = "<group>";
 		};
-		A1D136EA1E78FDF400B1EA8D /* Base */ = {
-			isa = PBXGroup;
-			children = (
-				A1D136E81E78F4C200B1EA8D /* INTDataStructuresSpec.mm */,
-			);
-			name = Base;
-			sourceTree = "<group>";
-		};
 		A172A9A81EAC111600A12B86 /* Event Logging */ = {
 			isa = PBXGroup;
 			children = (
 				A172A9BF1EAC112D00A12B86 /* INTEventLogger.h */,
 			);
 			name = "Event Logging";
+			sourceTree = "<group>";
+		};
+		A1D136EA1E78FDF400B1EA8D /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				A1D136E81E78F4C200B1EA8D /* INTDataStructuresSpec.mm */,
+			);
+			name = Base;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -767,6 +794,7 @@
 			files = (
 				A1417C801E6EF77C005DBEFF /* INTEventMetadata.mm in Sources */,
 				A1417C8D1E6F012E005DBEFF /* INTDataStructures.mm in Sources */,
+				A10165011E7006AA009596E1 /* INTEventTransformer.mm in Sources */,
 				A14177A21E6EC276005DBEFF /* INTIntelligence.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -776,6 +804,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A1D136E91E78F4C200B1EA8D /* INTDataStructuresSpec.mm in Sources */,
+				A101680B1E713D8B009596E1 /* INTEventTransformerSpec.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

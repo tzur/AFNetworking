@@ -3,3 +3,6 @@
 
 // iOS Frameworks.
 #import <Foundation/Foundation.h>
+
+// Lightricks Libraries.
+#import <LTKit/LTKit-Prefix.pch>
