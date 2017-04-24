@@ -7,6 +7,8 @@
 #import <LTKit/UIColor+Utilities.h>
 #import <Mantle/Mantle.h>
 
+#import "LTVector.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
 NSString * const kLTClassValueTransformer = @"LTClassValueTransformer";
@@ -15,8 +17,11 @@ NSString * const kLTColorValueTransformer = @"LTColorValueTransformer";
 NSString * const kLTUUIDValueTransformer = @"LTUUIDValueTransformer";
 NSString * const kLTUTCDateValueTransformer = @"LTStandardDateValueTransformer";
 NSString * const kLTTimeZoneValueTransformer = @"LTTimeZoneValueTransformer";
-NSString * const kLTLTPathValueTransformer = @"LTLTPathValueTransformer";
+NSString * const kLTPathValueTransformer = @"LTPathValueTransformer";
 NSString * const kLTURLValueTransformer = @"LTURLValueTransformer";
+NSString * const kLTVector2ValueTransformer = @"LTVector2ValueTransformer";
+NSString * const kLTVector3ValueTransformer = @"LTVector3ValueTransformer";
+NSString * const kLTVector4ValueTransformer = @"LTVector4ValueTransformer";
 
 NSString * const kLTModelValueTransformerClassKey = @"_class";
 NSString * const kLTModelValueTransformerEnumNameKey = @"name";
@@ -41,10 +46,16 @@ NSString * const kLTModelValueTransformerEnumNameKey = @"name";
                                     forName:kLTUTCDateValueTransformer];
     [NSValueTransformer setValueTransformer:[self lt_timeZoneValueTransformer]
                                     forName:kLTTimeZoneValueTransformer];
-    [NSValueTransformer setValueTransformer:[self lt_ltPathValueTransformer]
-                                    forName:kLTLTPathValueTransformer];
-    [NSValueTransformer setValueTransformer:[self lt_ltURLValueTransformer]
+    [NSValueTransformer setValueTransformer:[self lt_pathValueTransformer]
+                                    forName:kLTPathValueTransformer];
+    [NSValueTransformer setValueTransformer:[self lt_URLValueTransformer]
                                     forName:kLTURLValueTransformer];
+    [NSValueTransformer setValueTransformer:[self lt_LTVector2ValueTransformer]
+                                    forName:kLTVector2ValueTransformer];
+    [NSValueTransformer setValueTransformer:[self lt_LTVector3ValueTransformer]
+                                    forName:kLTVector3ValueTransformer];
+    [NSValueTransformer setValueTransformer:[self lt_LTVector4ValueTransformer]
+                                    forName:kLTVector4ValueTransformer];
   }
 }
 
@@ -193,8 +204,8 @@ NSString * const kLTModelValueTransformerEnumNameKey = @"name";
 }
 
 + (NSValueTransformer *)lt_timeZoneValueTransformer {
-  return
-      [MTLValueTransformer reversibleTransformerWithForwardBlock:^NSTimeZone *(NSString *string) {
+  return [MTLValueTransformer
+          reversibleTransformerWithForwardBlock:^NSTimeZone *(NSString *string) {
     LTParameterAssert([string isKindOfClass:NSString.class],
                       @"Expected a NSString, got: %@", string.class);
     NSTimeZone *result = [NSTimeZone timeZoneWithName:string];
@@ -207,7 +218,7 @@ NSString * const kLTModelValueTransformerEnumNameKey = @"name";
   }];
 }
 
-+ (NSValueTransformer *)lt_ltPathValueTransformer {
++ (NSValueTransformer *)lt_pathValueTransformer {
   return [MTLValueTransformer reversibleTransformerWithForwardBlock:^LTPath *(NSString *string) {
     LTParameterAssert([string isKindOfClass:NSString.class],
                       @"Expected a NSString, got: %@", string.class);
@@ -221,9 +232,9 @@ NSString * const kLTModelValueTransformerEnumNameKey = @"name";
   }];
 }
 
-+ (NSValueTransformer *)lt_ltURLValueTransformer {
++ (NSValueTransformer *)lt_URLValueTransformer {
   return [MTLValueTransformer reversibleTransformerWithForwardBlock:
-      ^NSURL * _Nullable (NSString *string) {
+      ^NSURL * _Nullable(NSString *string) {
         LTParameterAssert([string isKindOfClass:NSString.class],
                           @"Expected a NSString, got: %@", string.class);
         NSString *escapedUrl = [string stringByAddingPercentEncodingWithAllowedCharacters:
@@ -235,6 +246,29 @@ NSString * const kLTModelValueTransformerEnumNameKey = @"name";
     return url.absoluteString;
   }];
 }
+
+#define LTMakeStructValueTransformer(STRUCT_NAME) \
+  + (NSValueTransformer *)lt_##STRUCT_NAME##ValueTransformer { \
+    return [MTLValueTransformer \
+            reversibleTransformerWithForwardBlock:^NSValue *(NSString *string) { \
+      LTParameterAssert([string isKindOfClass:NSString.class], \
+                        @"Expected a NSString, got: %@", string.class); \
+      return $(STRUCT_NAME ## FromString(string)); \
+    } reverseBlock:^NSString *(NSValue *value) { \
+      LTParameterAssert([value isKindOfClass:NSValue.class], \
+                        @"Expected an NSValue, got: %@", value.class); \
+      LTParameterAssert(strcmp(value.objCType, @encode(STRUCT_NAME)) == 0, \
+                        @"Expected an NSValue that boxes the type %@, got: %@", \
+                        @(@encode(STRUCT_NAME)), @(value.objCType)); \
+      return NSStringFrom ## STRUCT_NAME([value STRUCT_NAME ## Value]); \
+    }]; \
+  }
+
+LTMakeStructValueTransformer(LTVector2);
+LTMakeStructValueTransformer(LTVector3);
+LTMakeStructValueTransformer(LTVector4);
+
+#undef LTMakeStructValueTransformer
 
 #pragma mark -
 #pragma mark Transformer methods

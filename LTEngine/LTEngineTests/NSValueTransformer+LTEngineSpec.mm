@@ -8,6 +8,7 @@
 #import <LTKit/UIColor+Utilities.h>
 
 #import "LTTestMTLModel.h"
+#import "LTVector.h"
 
 @interface LTTestNonJSONMTLModel : MTLModel
 @end
@@ -565,7 +566,7 @@ context(@"LTPath value transformer", ^{
   __block NSValueTransformer *transformer;
 
   beforeEach(^{
-    transformer = [NSValueTransformer valueTransformerForName:kLTLTPathValueTransformer];
+    transformer = [NSValueTransformer valueTransformerForName:kLTPathValueTransformer];
   });
 
   it(@"should have a valid transformer", ^{
@@ -640,6 +641,129 @@ context(@"URL value transformer", ^{
   it(@"should raise if received object for reverse transform isn't a NSURL", ^{
     expect(^{
       [transformer reverseTransformedValue:[UIColor blackColor]];
+    }).to.raise(NSInvalidArgumentException);
+  });
+});
+
+context(@"LTVector2 transformer", ^{
+  __block NSValueTransformer *transformer;
+
+  beforeEach(^{
+    transformer = [NSValueTransformer valueTransformerForName:kLTVector2ValueTransformer];
+  });
+
+  it(@"should perform forward transform", ^{
+    expect([transformer transformedValue:@"(-0.5, 1)"]).to.equal($(LTVector2(-0.5, 1)));
+  });
+
+  it(@"should perform reverse transform", ^{
+    expect([transformer reverseTransformedValue:$(LTVector2(-0.5, 1))]).to.equal(@"(-0.5, 1)");
+  });
+
+  it(@"should raise when transforming an invalid class", ^{
+    expect(^{
+      [transformer transformedValue:@5];
+    }).to.raise(NSInvalidArgumentException);
+  });
+
+  it(@"should raise when transforming a nil value", ^{
+    expect(^{
+      [transformer transformedValue:nil];
+    }).to.raise(NSInvalidArgumentException);
+  });
+
+  it(@"should raise when reverse transforming a nil value", ^{
+    expect(^{
+      [transformer reverseTransformedValue:nil];
+    }).to.raise(NSInvalidArgumentException);
+  });
+
+  it(@"should raise when reverse transforming a non-vector value", ^{
+    expect(^{
+      [transformer reverseTransformedValue:@5];
+    }).to.raise(NSInvalidArgumentException);
+  });
+});
+
+context(@"LTVector3 transformer", ^{
+  __block NSValueTransformer *transformer;
+
+  beforeEach(^{
+    transformer = [NSValueTransformer valueTransformerForName:kLTVector3ValueTransformer];
+  });
+
+  it(@"should perform forward transform", ^{
+    expect([transformer transformedValue:@"(-0.5, 1, 2)"]).to.equal($(LTVector3(-0.5, 1, 2)));
+  });
+
+  it(@"should perform reverse transform", ^{
+    expect([transformer reverseTransformedValue:$(LTVector3(-0.5, 1, 2))])
+        .to.equal(@"(-0.5, 1, 2)");
+  });
+
+  it(@"should raise when transforming an invalid class", ^{
+    expect(^{
+      [transformer transformedValue:@5];
+    }).to.raise(NSInvalidArgumentException);
+  });
+
+  it(@"should raise when transforming a nil value", ^{
+    expect(^{
+      [transformer transformedValue:nil];
+    }).to.raise(NSInvalidArgumentException);
+  });
+
+  it(@"should raise when reverse transforming a nil value", ^{
+    expect(^{
+      [transformer reverseTransformedValue:nil];
+    }).to.raise(NSInvalidArgumentException);
+  });
+
+  it(@"should raise when reverse transforming a non-vector value", ^{
+    expect(^{
+      [transformer reverseTransformedValue:@5];
+    }).to.raise(NSInvalidArgumentException);
+  });
+});
+
+context(@"LTVector4 transformer", ^{
+  __block NSValueTransformer *transformer;
+
+  beforeEach(^{
+    transformer = [NSValueTransformer valueTransformerForName:kLTVector4ValueTransformer];
+  });
+
+  it(@"should perform forward transform", ^{
+    expect([transformer transformedValue:@"(-0.5, 1, 2, -2)"])
+        .to.equal($(LTVector4(-0.5, 1, 2, -2)));
+  });
+
+  it(@"should perform reverse transform", ^{
+    expect([transformer reverseTransformedValue:$(LTVector4(-0.5, 1, 2, -2))])
+        .to.equal(@"(-0.5, 1, 2, -2)");
+  });
+
+  it(@"should raise when transforming an invalid class", ^{
+    expect(^{
+      [transformer transformedValue:@5];
+    }).to.raise(NSInvalidArgumentException);
+  });
+
+  it(@"should raise when transforming a nil value", ^{
+    expect(^{
+      [transformer transformedValue:nil];
+    }).to.raise(NSInvalidArgumentException);
+  });
+
+  it(@"should raise when reverse transforming a nil value", ^{
+    expect(^{
+      [transformer reverseTransformedValue:nil];
+    }).to.raise(NSInvalidArgumentException);
+  });
+
+  it(@"should raise when reverse transforming a non-vector value", ^{
+    expect(^{
+      [transformer reverseTransformedValue:@5];
     }).to.raise(NSInvalidArgumentException);
   });
 });

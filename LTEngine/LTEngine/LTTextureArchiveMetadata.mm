@@ -5,7 +5,7 @@
 
 #import "LTTextureArchiveType.h"
 #import "LTTextureMetadata.h"
-#import "LTTransformers.h"
+#import "NSValueTransformer+LTEngine.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -35,7 +35,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 + (NSValueTransformer *)archiveTypeJSONTransformer {
-  return [LTTransformers transformerForClass:[LTTextureArchiveType class]];
+  return [NSValueTransformer lt_enumNameTransformerForClass:[LTTextureArchiveType class]];
 }
 
 + (NSValueTransformer *)textureMetadataJSONTransformer {

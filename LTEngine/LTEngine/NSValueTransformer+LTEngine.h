@@ -33,6 +33,7 @@ extern NSString * const kLTModelValueTransformerEnumNameKey;
 
 /// Reversible transformer that converts \c NSString color representation to its corresponding
 /// \c UIColor object or vice versa.
+///
 /// The input to the forward transformer must be a \c NSString in the following formats:
 /// #RGB, #ARGB, #RRGGBB, or #AARRGGBB.
 ///
@@ -42,11 +43,13 @@ extern NSString * const kLTModelValueTransformerEnumNameKey;
 /// \c NSInvalidArgumentException will be raised.
 extern NSString * const kLTColorValueTransformer;
 
-/// Returns a reversible transformer that converts a \c NSUUID to a \c NSString and vice versa.
-/// The input to the forward transformer must be a \c NSString with the following format:
+/// Returns a reversible transformer that converts \c NSString UUID representation to its
+/// corresponding \c NSUUID and vice versa.
+///
+/// The input to the forward transformer must be an \c NSString with the following format:
 /// \c 123e4567-e89b-12d3-a456-426655440000.
 ///
-/// The input to the reverse transformer must be a \c NSUUID.
+/// The input to the reverse transformer must be an \c NSUUID.
 ///
 /// If the input is \c nil, returns \c nil. If the specific type conditions fail,
 /// \c NSInvalidArgumentException will be raised.
@@ -54,7 +57,9 @@ extern NSString * const kLTColorValueTransformer;
 /// @note The output of the transformation from \c NSUUID to \c NSString is upper case.
 extern NSString * const kLTUUIDValueTransformer;
 
-/// Returns a reversible transformer that converts a \c NSDate to a \c NSString and vice versa.
+/// Returns a reversible transformer that converts \c NSString date representation to its
+/// corresponding \c NSDate and vice versa.
+///
 /// The input to the forward transformer must be a \c NSString with the following format:
 /// <tt>yyyy-MM-dd'T'HH:mm:ss.SSS'Z'</tt>.
 ///
@@ -64,7 +69,9 @@ extern NSString * const kLTUUIDValueTransformer;
 /// \c NSInvalidArgumentException will be raised.
 extern NSString * const kLTUTCDateValueTransformer;
 
-/// Returns a reversible transformer that converts a \c NSTimeZone to a \c NSString of its name.
+/// Returns a reversible transformer that converts \c NSString of a timezone name to its
+/// corresponding \c NSTimeZone and vice versa.
+///
 /// The input to the forward transformer must be a \c NSString from:
 ///
 /// @code
@@ -77,24 +84,63 @@ extern NSString * const kLTUTCDateValueTransformer;
 /// \c NSInvalidArgumentException will be raised.
 extern NSString * const kLTTimeZoneValueTransformer;
 
-/// Returns a reversible transformer that converts an \c LTPath to an \c NSString representing it.
-/// The input to the forward transformer must be an \c NSString. The input to the reverse
-/// transformer must be an \c LTPath.
+/// Returns a reversible transformer that converts an \c NSString path representation to its
+/// corresponding \c LTPath and vice versa.
+///
+/// The input to the forward transformer must be an \c NSString.
+///
+/// The input to the reverse transformer must be an \c LTPath.
 ///
 /// If the input is \c nil, or not one of these types, or the specific type conditions fail,
 /// \c NSInvalidArgumentException will be raised.
-extern NSString * const kLTLTPathValueTransformer;
+extern NSString * const kLTPathValueTransformer;
 
-/// Returns a reversible transformer that converts a \c NSURL to a \c NSString. The forward
-/// transformer supports all unicode characters and percent encodes them as needed.
+/// Returns a reversible transformer that converts an \c NSString URL representation to its
+/// corresponding \c NSURL and vice versa.
 ///
-/// The input to the forward transformer must be a \c NSString describing a URL.
+/// The input to the forward transformer must be an \c NSString describing a URL. The string may
+/// contain unicode and characters that must be percent encoded. The output will contain percent
+/// encoded characters only for characters which are in \c URLQueryAllowedCharacterSet.
 ///
-/// @note Not all characters are percent encoded. The transformer uses
-/// \c URLQueryAllowedCharacterSet to percent encode.
+/// The input to the reverse transformer must an \c NSURL.
 ///
-/// The input to the reverse transformer must a \c NSURL.
+/// If the input is \c nil, or not one of these types, or the specific type conditions fail,
+/// \c NSInvalidArgumentException will be raised.
 extern NSString * const kLTURLValueTransformer;
+
+/// Returns a reversible transformer that converts an \c NSString path representation to its
+/// corresponding \c NSValue boxed \c LTVector2 and vice versa.
+///
+/// The input to the forward transformer must be an \c NSString with the format: <tt>(x, y)</tt>.
+///
+/// The input to the reverse transformer must be a boxed \c LTVector2 as \c NSValue.
+///
+/// If the input is \c nil, or not one of these types, or the specific type conditions fail,
+/// \c NSInvalidArgumentException will be raised.
+extern NSString * const kLTVector2ValueTransformer;
+
+/// Returns a reversible transformer that converts an \c NSString path representation to its
+/// corresponding \c NSValue boxed \c LTVector3 and vice versa.
+///
+/// The input to the forward transformer must be an \c NSString with the format: <tt>(x, y, z)</tt>.
+///
+/// The input to the reverse transformer must be a boxed \c LTVector3 as \c NSValue.
+///
+/// If the input is \c nil, or not one of these types, or the specific type conditions fail,
+/// \c NSInvalidArgumentException will be raised.
+extern NSString * const kLTVector3ValueTransformer;
+
+/// Returns a reversible transformer that converts an \c NSString path representation to its
+/// corresponding \c NSValue boxed \c LTVector4 and vice versa.
+///
+/// The input to the forward transformer must be an \c NSString with the format:
+/// <tt>(x, y, z, w)</tt>.
+///
+/// The input to the reverse transformer must be a boxed \c LTVector4 as \c NSValue.
+///
+/// If the input is \c nil, or not one of these types, or the specific type conditions fail,
+/// \c NSInvalidArgumentException will be raised.
+extern NSString * const kLTVector4ValueTransformer;
 
 @interface NSValueTransformer (LTEngine)
 

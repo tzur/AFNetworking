@@ -125,7 +125,7 @@ it(@"should merge json values to object", ^{
   NSDictionary *values = @{
     @"floatValue": @10.5,
     @"stringValue": @"bar",
-    @"enumValue": @{@"type": @"LTTestSerializableEnum", @"name": @"LTTestSerializableEnumB"},
+    @"enumValue": @"LTTestSerializableEnumB",
     @"jsonValue": @{@"array": @[@"c", @"d"], @"key": @2},
     @"mantleValue": @{@"json_field": @"eulav"},
     @"ignoredValue": @42

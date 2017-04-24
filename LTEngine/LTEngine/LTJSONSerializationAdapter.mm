@@ -3,7 +3,7 @@
 
 #import "LTJSONSerializationAdapter.h"
 
-#import "LTTransformers.h"
+#import "NSValueTransformer+LTEngine.h"
 
 @implementation LTJSONSerializationAdapter
 
@@ -125,7 +125,7 @@
   }
 
   // Transform object manually.
-  NSValueTransformer *transformer = [LTTransformers transformerForClass:classObj];
+  NSValueTransformer *transformer = [self transformerForClass:classObj];
   LTParameterAssert(transformer, @"Object is not serializable and no transformer found: %@",
                     object);
   return [transformer transformedValue:object];
@@ -138,7 +138,7 @@
   }
 
   // Transform object manually.
-  NSValueTransformer *transformer = [LTTransformers transformerForTypeEncoding:typeEncoding];
+  NSValueTransformer *transformer = [self transformerForTypeEncoding:typeEncoding];
   LTParameterAssert(transformer, @"No transformer is available for type encoding %@", typeEncoding);
   return [transformer transformedValue:object];
 }
@@ -170,11 +170,37 @@
 
 + (NSValueTransformer *)transformerForObject:(id)object {
   if ([object isKindOfClass:[NSValue class]]) {
-    return [LTTransformers transformerForTypeEncoding:@([object objCType])];
+    return [self transformerForTypeEncoding:@([object objCType])];
   } else {
-    return [LTTransformers transformerForClass:[object class]];
+    return [self transformerForClass:[object class]];
+  }
+}
+
++ (NSValueTransformer *)transformerForClass:(Class)classObj {
+  if ([classObj conformsToProtocol:@protocol(LTEnum)]) {
+    return [NSValueTransformer lt_enumNameTransformerForClass:classObj];
   }
   return nil;
+}
+
++ (NSValueTransformer *)transformerForTypeEncoding:(NSString *)typeEncoding {
+  auto _Nullable name = [self typeEncodingToTransformerName][typeEncoding];
+  return name ? [NSValueTransformer valueTransformerForName:name] : nil;
+}
+
++ (NSDictionary<NSString *, NSString *> *)typeEncodingToTransformerName {
+  static NSDictionary<NSString *, NSString *> *mapping;
+
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    mapping = @{
+      @(@encode(LTVector2)): kLTVector2ValueTransformer,
+      @(@encode(LTVector3)): kLTVector3ValueTransformer,
+      @(@encode(LTVector4)): kLTVector4ValueTransformer
+    };
+  });
+
+  return mapping;
 }
 
 @end
