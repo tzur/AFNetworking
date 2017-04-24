@@ -59,8 +59,17 @@ NS_ASSUME_NONNULL_BEGIN
 /// Returns a signal that send the list of products as \c BZRProduct and completes. The signal errs
 /// if there was an error while fetching the list of products.
 ///
-/// @return <tt><RACSignal<NSSet<BZRProduct>></tt>
+/// @return <tt>RACSignal<NSSet<BZRProduct>></tt>
 - (RACSignal *)productList;
+
+/// Validates the receipt.
+///
+/// Returns a signal that validates the receipt. If validation is completed successfully, the latest
+/// receipt from Apple is received and the receipt validation status is sent. The signal completes
+/// when the validation is completed successfully. Otherwise the signal errs.
+///
+/// @return <tt>RACSignal<BZRReceiptValidationStatus></tt>
+- (RACSignal *)validateReceipt;
 
 /// Sends transactions of purchases that were completed successfully but were not finished in the
 /// last run of the application, and are finished in this run. Every \c SKPaymentTransaction object

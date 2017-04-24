@@ -972,6 +972,28 @@ context(@"getting product list", ^{
   });
 });
 
+context(@"validating receipt", ^{
+  it(@"should send error when fetching receipt validation status sends error ", ^{
+    NSError *error = [NSError lt_errorWithCode:1337];
+    OCMStub([receiptValidationStatusProvider fetchReceiptValidationStatus])
+        .andReturn([RACSignal error:error]);
+
+    expect([store validateReceipt]).to.sendError(error);
+  });
+
+  it(@"should complete when fetching receipt validation status completes", ^{
+    BZRReceiptValidationStatus *receiptValidationStatus =
+        OCMClassMock([BZRReceiptValidationStatus class]);
+    OCMStub([receiptValidationStatusProvider fetchReceiptValidationStatus])
+        .andReturn([RACSignal return:receiptValidationStatus]);
+
+    LLSignalTestRecorder *recorder = [[store validateReceipt] testRecorder];
+
+    expect(recorder).to.complete();
+    expect(recorder).to.sendValues(@[receiptValidationStatus]);
+  });
+});
+
 context(@"handling unfinished completed transactions", ^{
   __block LLSignalTestRecorder *errorsRecorder;
   __block LLSignalTestRecorder *completedTransactionsRecorder;
