@@ -139,9 +139,6 @@ struct LTVector4;
 /// original. Float precision textures will always be converted to half-float (if supported by
 /// device) or regular precision. Half-float precision textures will be converted to unsigned byte
 /// precision if no support for half-float color buffers is available.
-///
-/// TODO:(yaron) the final precision is controlled by \c LTFbo, and as discussed with Amit,
-/// shouldn't change since we can always use the slow cloning path.
 - (LTTexture *)clone;
 
 /// Clones the texture into the given texture. The target \c texture must be of the same size of the
@@ -216,8 +213,9 @@ typedef void (^LTTextureMappedCGImageBlock)(CGImageRef imageRef, BOOL isCopy);
 
 /// Calls the given \c block with a valid \c CGImageRef as a wrapper for the texture's data.
 ///
-/// @note current implementation allows to create a image of textures of 1 or 4 channels only. An
-/// assert will be thrown for other types of textures.
+/// @note current implementation allows to create a image of textures of 1 or 4 channels only
+/// (otherwise assertion fires). Half float pixel format is supported, however it's assumed pixel
+/// values are pre multiplied with alpha.
 - (void)mappedCGImage:(NS_NOESCAPE LTTextureMappedCGImageBlock)block;
 
 /// Block for transferring a core graphics bitmap context which is bound to the texture's data. The

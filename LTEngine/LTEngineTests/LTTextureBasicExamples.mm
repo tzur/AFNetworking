@@ -472,6 +472,25 @@ sharedExamplesFor(kLTTextureBasicExamples, ^(NSDictionary *data) {
         expected(cv::Rect(0, 0, 4, 4)).setTo(cv::Vec4b(255, 0, 0, 255));
         expect($([texture image])).to.equalMat($(expected));
       });
+
+      it(@"should draw with core graphics to 4 channel half float premultiplied texture", ^{
+        LTTexture *texture = [(LTTexture *)[textureClass alloc] initWithSize:CGSizeMake(2, 2)
+                              pixelFormat:$(LTGLPixelFormatRGBA16Float) allocateMemory:YES];
+
+        [texture drawWithCoreGraphics:^(CGContextRef context) {
+          UIGraphicsPushContext(context); {
+            [[UIColor colorWithRed:0 green:0 blue:0 alpha:1] setFill];
+            CGContextFillRect(context, CGRectFromOriginAndSize(CGPointZero, texture.size));
+            [[UIColor colorWithRed:0.5 green:0.5 blue:0.5 alpha:0.5] setFill];
+            CGContextFillRect(context, CGRectFromOriginAndSize(CGPointZero, CGSizeMake(1, 1)));
+          } UIGraphicsPopContext();
+        }];
+        auto gray = LTCVVec4hf(0.25, 0.25, 0.25, 1);
+        auto black = LTCVVec4hf(0, 0, 0, 1);
+        cv::Mat4hf expected = (cv::Mat4hf(texture.size.height, texture.size.width) << gray, black,
+                               black, black);
+        expect($([texture image])).to.equalMat($(expected));
+      });
     });
 
     context(@"reading contents as CGImageRef", ^{
