@@ -16,10 +16,10 @@
 #import "BZRProductContentManager.h"
 #import "BZRProductContentProvider.h"
 #import "BZRProductPriceInfo+SKProduct.h"
+#import "BZRProductTypedefs.h"
 #import "BZRProductsProvider.h"
 #import "BZRProductsVariantSelector.h"
 #import "BZRProductsVariantSelectorFactory.h"
-#import "BZRProductTypedefs.h"
 #import "BZRReceiptModel+ProductPurchased.h"
 #import "BZRReceiptValidationParametersProvider.h"
 #import "BZRReceiptValidationStatus.h"
@@ -518,6 +518,10 @@ NS_ASSUME_NONNULL_BEGIN
                                         withValue:product.identifier];
   }];
   return [NSSet setWithArray:variantsWithBaseIdentifers];
+}
+
+- (RACSignal *)validateReceipt {
+  return [self.validationStatusProvider fetchReceiptValidationStatus];
 }
 
 - (RACSignal *)completedTransactionsSignal {
