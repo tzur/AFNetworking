@@ -94,6 +94,7 @@
 		887265951D772D8300D4F2A6 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 88FAF8F21D7727820023AF7A /* Localizable.strings */; };
 		887265961D772D8700D4F2A6 /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = 88FAF9151D7727890023AF7A /* Localizable.stringsdict */; };
 		887267BD1D7C3C8F00D4F2A6 /* PTULocalization.mm in Sources */ = {isa = PBXBuildFile; fileRef = 887267BC1D7C3C8F00D4F2A6 /* PTULocalization.mm */; };
+		88EE8DD61EACD5C100D3126A /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88EE8DD51EACD5C100D3126A /* MobileCoreServices.framework */; };
 		8B0B9A1D1CA6BF6900ED2334 /* ReactiveCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B368F771CA6AC53003E34CF /* ReactiveCocoa.framework */; };
 		8B0B9A2A1CA6C09D00ED2334 /* DropboxSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B0B9A281CA6C09000ED2334 /* DropboxSDK.framework */; };
 		8B368FAB1CA6ACB3003E34CF /* Masonry.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B368F401CA6ABF8003E34CF /* Masonry.framework */; };
@@ -573,6 +574,7 @@
 		887265701D772D7B00D4F2A6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		887267BB1D7C3C8F00D4F2A6 /* PTULocalization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTULocalization.h; sourceTree = "<group>"; };
 		887267BC1D7C3C8F00D4F2A6 /* PTULocalization.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PTULocalization.mm; sourceTree = "<group>"; };
+		88EE8DD51EACD5C100D3126A /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		88FAF8F31D7727820023AF7A /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
 		88FAF9161D7727890023AF7A /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = Base; path = Base.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		8B0B9A281CA6C09000ED2334 /* DropboxSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DropboxSDK.framework; path = "../third_party/dropbox-ios-sdk/DropboxSDK.framework"; sourceTree = "<group>"; };
@@ -597,26 +599,27 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CDE00B221E82AE65007AFD5E /* libcompression.tbd in Frameworks */,
 				8861FE0D1E5A2CE200CA1436 /* CoreGraphics.framework in Frameworks */,
 				8861FE091E5A2CAA00CA1436 /* CoreLocation.framework in Frameworks */,
 				8861FDDE1E5A2C0C00CA1436 /* CoreMedia.framework in Frameworks */,
 				8B0B9A2A1CA6C09D00ED2334 /* DropboxSDK.framework in Frameworks */,
 				8861FE0B1E5A2CC800CA1436 /* GLKit.framework in Frameworks */,
 				8861FE071E5A2C6300CA1436 /* ImageIO.framework in Frameworks */,
-				650BB33C1D465389008648A3 /* libExpecta.a in Frameworks */,
-				650BB33D1D465389008648A3 /* libextobjc_iOS.a in Frameworks */,
-				650BB33E1D465389008648A3 /* libLTKit.a in Frameworks */,
-				650BB33F1D465389008648A3 /* libOCMock.a in Frameworks */,
-				84FF72F81C8EEFA000D1DA9F /* libPhotons.a in Frameworks */,
-				84FF72F71C8EEF9600D1DA9F /* libPhotonsUI.a in Frameworks */,
-				650BB3401D465389008648A3 /* libSpecta.a in Frameworks */,
 				8B368FAB1CA6ACB3003E34CF /* Masonry.framework in Frameworks */,
+				88EE8DD61EACD5C100D3126A /* MobileCoreServices.framework in Frameworks */,
 				8861FE031E5A2C1D00CA1436 /* Photos.framework in Frameworks */,
 				8861FE0F1E5A2CF100CA1436 /* QuartzCore.framework in Frameworks */,
 				8B0B9A1D1CA6BF6900ED2334 /* ReactiveCocoa.framework in Frameworks */,
 				8861FE051E5A2C4B00CA1436 /* Security.framework in Frameworks */,
 				8861FE011E5A2C1300CA1436 /* UIKit.framework in Frameworks */,
+				650BB33C1D465389008648A3 /* libExpecta.a in Frameworks */,
+				650BB33E1D465389008648A3 /* libLTKit.a in Frameworks */,
+				650BB33F1D465389008648A3 /* libOCMock.a in Frameworks */,
+				84FF72F81C8EEFA000D1DA9F /* libPhotons.a in Frameworks */,
+				84FF72F71C8EEF9600D1DA9F /* libPhotonsUI.a in Frameworks */,
+				650BB3401D465389008648A3 /* libSpecta.a in Frameworks */,
+				CDE00B221E82AE65007AFD5E /* libcompression.tbd in Frameworks */,
+				650BB33D1D465389008648A3 /* libextobjc_iOS.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -928,17 +931,18 @@
 		848EFFE21C591C0D001D8368 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				CDE00B211E82AE65007AFD5E /* libcompression.tbd */,
-				8861FE0E1E5A2CF100CA1436 /* QuartzCore.framework */,
 				8861FE0C1E5A2CE200CA1436 /* CoreGraphics.framework */,
-				8861FE0A1E5A2CC800CA1436 /* GLKit.framework */,
 				8861FE081E5A2CAA00CA1436 /* CoreLocation.framework */,
-				8861FE061E5A2C6300CA1436 /* ImageIO.framework */,
-				8861FE041E5A2C4B00CA1436 /* Security.framework */,
-				8861FE021E5A2C1D00CA1436 /* Photos.framework */,
-				8861FE001E5A2C1300CA1436 /* UIKit.framework */,
 				8861FDDD1E5A2C0C00CA1436 /* CoreMedia.framework */,
 				8B0B9A281CA6C09000ED2334 /* DropboxSDK.framework */,
+				8861FE0A1E5A2CC800CA1436 /* GLKit.framework */,
+				8861FE061E5A2C6300CA1436 /* ImageIO.framework */,
+				88EE8DD51EACD5C100D3126A /* MobileCoreServices.framework */,
+				8861FE021E5A2C1D00CA1436 /* Photos.framework */,
+				8861FE0E1E5A2CF100CA1436 /* QuartzCore.framework */,
+				8861FE041E5A2C4B00CA1436 /* Security.framework */,
+				8861FE001E5A2C1300CA1436 /* UIKit.framework */,
+				CDE00B211E82AE65007AFD5E /* libcompression.tbd */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";

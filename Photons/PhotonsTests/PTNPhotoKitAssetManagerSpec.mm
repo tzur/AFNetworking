@@ -30,6 +30,41 @@
 #import "PTNVideoFetchOptions.h"
 #import "PhotoKit+Photons.h"
 
+static BOOL PTNNSPredicateEquals(NSPredicate *lhs, NSPredicate *rhs) {
+  return [lhs.predicateFormat isEqual:rhs.predicateFormat];
+}
+
+static BOOL PTNNSSortDescriptorEquals(NSSortDescriptor *lhs, NSSortDescriptor *rhs) {
+  return [lhs.key isEqual:rhs.key] && lhs.ascending == rhs.ascending &&
+          lhs.selector == rhs.selector;
+}
+
+static BOOL PTNPHFetchOptionsEquals(PHFetchOptions *lhs, PHFetchOptions *rhs) {
+  if (lhs == rhs) {
+    return YES;
+  }
+
+  if (!PTNNSPredicateEquals(lhs.predicate, rhs.predicate)) {
+    return NO;
+  }
+
+  if (lhs.sortDescriptors.count != rhs.sortDescriptors.count) {
+    return NO;
+  }
+
+  for (NSUInteger i = 0; i < lhs.sortDescriptors.count; i++) {
+    if (!PTNNSSortDescriptorEquals(lhs.sortDescriptors[i], rhs.sortDescriptors[i])) {
+      return NO;
+    }
+  }
+
+  return lhs.includeHiddenAssets == rhs.includeHiddenAssets &&
+         lhs.includeAllBurstAssets == rhs.includeAllBurstAssets &&
+         lhs.includeAssetSourceTypes == rhs.includeAssetSourceTypes &&
+         lhs.fetchLimit == rhs.fetchLimit &&
+         lhs.wantsIncrementalChangeDetails == rhs.wantsIncrementalChangeDetails;
+}
+
 SpecBegin(PTNPhotoKitAssetManager)
 
 __block PTNPhotoKitAssetManager *manager;
@@ -59,7 +94,7 @@ context(@"convenience initializers", ^{
         [[PTNPhotoKitAssetManager alloc] initWithAuthorizationManager:authorizationManager];
     expect(manager).toNot.beNil();
   });
-  
+
   it(@"should correctly initialize with default initializer", ^{
     PTNPhotoKitAssetManager *manager = [[PTNPhotoKitAssetManager alloc] init];
     expect(manager).toNot.beNil();
@@ -183,7 +218,7 @@ context(@"album fetching", ^{
     context(@"thread transitions", ^{
       it(@"should not operate on the main thread", ^{
         RACSignal *values = [manager fetchAlbumWithURL:url];
-        
+
         expect(values).will.sendValuesWithCount(1);
         expect(fetcher.operatingThreads).notTo.contain([NSThread mainThread]);
       });
@@ -255,7 +290,7 @@ context(@"album fetching", ^{
     context(@"thread transitions", ^{
       it(@"should not operate on the main thread", ^{
         RACSignal *values = [manager fetchAlbumWithURL:url];
-        
+
         expect(values).will.sendValuesWithCount(1);
         expect(fetcher.operatingThreads).notTo.contain([NSThread mainThread]);
       });
@@ -337,7 +372,7 @@ context(@"album fetching", ^{
     context(@"thread transitions", ^{
       it(@"should not operate on the main thread", ^{
         RACSignal *values = [manager fetchAlbumWithURL:url];
-        
+
         expect(values).will.sendValuesWithCount(1);
         expect(fetcher.operatingThreads).notTo.contain([NSThread mainThread]);
       });
@@ -531,7 +566,7 @@ context(@"album fetching", ^{
         NSArray *assets = @[asset];
         [fetcher registerAssets:assets withAssetCollection:favoritesCollection];
         [fetcher registerAssets:assets withAssetCollection:cameraRollCollection];
-        
+
         NSArray *otherAssets = @[PTNPhotoKitCreateAsset(nil)];
         [fetcher registerAssets:otherAssets withAssetCollection:userCollection];
 
@@ -562,7 +597,7 @@ context(@"album fetching", ^{
 
         [fetcher registerAssetCollection:firstCollection];
         [fetcher registerAssetCollection:secondCollection];
-        
+
         [fetcher registerAssets:@[PTNPhotoKitCreateAsset(nil)]
             withAssetCollection:firstCollection];
         [fetcher registerAssets:@[PTNPhotoKitCreateAsset(nil)]
@@ -610,7 +645,7 @@ context(@"album fetching", ^{
     context(@"thread transitions", ^{
       it(@"should not operate on the main thread", ^{
         RACSignal *values = [manager fetchAlbumWithURL:url];
-        
+
         expect(values).will.sendValuesWithCount(1);
         expect(fetcher.operatingThreads).notTo.contain([NSThread mainThread]);
       });
@@ -694,36 +729,19 @@ context(@"album fetching", ^{
                                                         changeManager:changeManager];
     });
 
-    it(@"should fetch album type with fetch options", ^{
-      PHFetchOptions *options = OCMClassMock(PHFetchOptions.class);
-      NSURL *url = OCMClassMock(NSURL.class);
-      OCMStub([url ptn_photoKitURLType]).andReturn($(PTNPhotoKitURLTypeAlbumType));
-      OCMStub([url ptn_photoKitAlbumType]).andReturn(@(PHAssetCollectionTypeSmartAlbum));
-      OCMStub([url ptn_photoKitAlbumSubtype]).andReturn(@(PHAssetCollectionSubtypeSmartAlbumBursts));
-      OCMStub([url ptn_photoKitAlbumFetchOptions]).andReturn(options);
-
-      OCMExpect([fetcherMock fetchAssetCollectionsWithType:PHAssetCollectionTypeSmartAlbum
-                                                   subtype:PHAssetCollectionSubtypeSmartAlbumBursts
-                                                   options:options]);
-      [[assetManager fetchAlbumWithURL:url] subscribeNext:^(id) {}];
-
-      OCMVerifyAllWithDelay(fetcherMock, 1);
-    });
-
     it(@"should fetch meta album type with fetch options", ^{
-      PHFetchOptions *options = OCMClassMock(PHFetchOptions.class);
-      NSURL *url = OCMClassMock(NSURL.class);
-      OCMStub([url ptn_photoKitURLType]).andReturn($(PTNPhotoKitURLTypeMetaAlbumType));
-      OCMStub([url ptn_photoKitAlbumType]).andReturn(@(PHAssetCollectionTypeSmartAlbum));
-      OCMStub([url ptn_photoKitAlbumSubtype]).andReturn(@(PHAssetCollectionSubtypeAny));
-      OCMStub([url ptn_photoKitAlbumFetchOptions]).andReturn(options);
+      NSURL *url = [NSURL ptn_photoKitUserAlbumsWithTitle:@"bar"];
 
-      OCMExpect([fetcherMock fetchAssetCollectionsWithType:PHAssetCollectionTypeSmartAlbum
-                                                   subtype:PHAssetCollectionSubtypeAny
-                                                   options:options]);
-      [[assetManager fetchAlbumWithURL:url] subscribeNext:^(id) {}];
+      OCMExpect([fetcherMock
+                 fetchAssetCollectionsWithType:PHAssetCollectionTypeAlbum
+                 subtype:PHAssetCollectionSubtypeAny
+                 options:[OCMArg checkWithBlock:^BOOL(PHFetchOptions *options) {
+                   return PTNPHFetchOptionsEquals(url.ptn_photoKitAlbumFetchOptions, options);
+                 }]]).andReturn(@[PTNPhotoKitCreateAsset(@"foo")]);
 
-      OCMVerifyAllWithDelay(fetcherMock, 1);
+      expect([assetManager fetchAlbumWithURL:url]).will.sendValuesWithCount(1);
+
+      OCMVerifyAll(fetcherMock);
     });
   });
 });
@@ -838,9 +856,9 @@ context(@"asset fetching", ^{
   context(@"thread transitions", ^{
     it(@"should not operate on the main thread", ^{
       NSURL *url = [NSURL ptn_photoKitAssetURLWithAsset:asset];
-      
+
       RACSignal *values = [manager fetchDescriptorWithURL:url];
-      
+
       expect(values).will.sendValuesWithCount(1);
       expect(fetcher.operatingThreads).notTo.contain([NSThread mainThread]);
     });
@@ -936,7 +954,7 @@ context(@"image fetching", ^{
     context(@"thread transitions", ^{
       it(@"should not operate on the main thread", ^{
         [imageManager serveAsset:asset withProgress:@[] image:image];
-        
+
         RACSignal *values = [manager fetchImageWithDescriptor:asset
                                              resizingStrategy:resizingStrategy
                                                       options:options];
@@ -1003,7 +1021,7 @@ context(@"image fetching", ^{
       });
     });
   });
-  
+
   it(@"should error on non-PhotoKit asset", ^{
     id invalidAsset = OCMProtocolMock(@protocol(PTNDescriptor));
 
@@ -1067,7 +1085,7 @@ context(@"image fetching", ^{
 
         [[manager fetchImageWithDescriptor:asset resizingStrategy:resizingStrategy options:options]
          subscribeNext:^(id __unused x) {}];
-        
+
         OCMVerifyAllWithDelay(imageManagerMock, 1);
       });
     });
@@ -1097,7 +1115,7 @@ context(@"image fetching", ^{
 
         [[manager fetchImageWithDescriptor:asset resizingStrategy:resizingStrategy options:options]
          subscribeNext:^(id __unused x) {}];
-        
+
         OCMVerifyAllWithDelay(imageManagerMock, 1);
       });
     });
@@ -1200,7 +1218,7 @@ context(@"video fetching", ^{
     context(@"thread transitions", ^{
       it(@"should not operate on the main thread", ^{
         [imageManager serveAsset:asset withProgress:@[]  avasset:avasset audioMix:audioMix];
-        
+
         RACSignal *values = [manager fetchVideoWithDescriptor:asset options:options];
 
         expect(values).will.sendValuesWithCount(1);

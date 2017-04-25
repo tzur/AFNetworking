@@ -43,6 +43,13 @@ extern NSString * const kPTNDescriptorTraitCloudBasedKey;
 /// Descriptor that represents a video asset.
 extern NSString * const kPTNDescriptorTraitVideoKey;
 
+/// Descriptor that represnts a RAW image asset.
+///
+/// @note PhotoKit assets may contain multiple resources, for example, Video resources may have both
+/// a video file and an image. In the case where an asset has both JPEG image and RAW image as
+/// resource, this trait will be present only if the RAW image is the first resource.
+extern NSString * const kPTNDescriptorTraitRawKey;
+
 /// Descriptor that acts as a reference to a heavy object. The heavy object is either costly to
 /// fetch or to store in memory. Each descriptor has an identifier, which uniquely identifies the
 /// heavy object across all Photons' objects, and allows re-fetching the descriptor when needed, as
