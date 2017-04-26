@@ -3,40 +3,7 @@
 
 #import "LTVector.h"
 
-#pragma mark -
-#pragma mark NSScanner (NonNumberFloats)
-#pragma mark -
-
-/// Category adding the ability to scan floats while correctly handling valid non-numeric values.
-@interface NSScanner (NonNumberFloats)
-@end
-
-@implementation NSScanner (NonNumberFloats)
-
-/// Scans for a float value, returning a found value by reference. This method correctly handles
-/// non-numeric values such as NaN, Infinity and -Infinity.
-- (BOOL)lt_scanFloat:(float *)result {
-  if ([self scanString:@"nan" intoString:NULL]) {
-    if (result) {
-      *result = NAN;
-    }
-    return YES;
-  } else if ([self scanString:@"inf" intoString:NULL]) {
-    if (result) {
-      *result = INFINITY;
-    }
-    return YES;
-  } else if ([self scanString:@"-inf" intoString:NULL]) {
-    if (result) {
-      *result = -INFINITY;
-    }
-    return YES;
-  }
-
-  return [self scanFloat:result];
-}
-
-@end
+#import "NSScanner+Math.h"
 
 #pragma mark -
 #pragma mark LTVector2
