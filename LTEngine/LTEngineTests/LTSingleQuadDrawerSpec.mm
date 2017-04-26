@@ -1,7 +1,7 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Rouven Strauss.
 
-#import "LTSingleQuadDrawerSpec.h"
+#import "LTSingleQuadDrawer.h"
 
 #import "LTFbo.h"
 #import "LTGLContext.h"
@@ -9,9 +9,9 @@
 #import "LTProgram.h"
 #import "LTQuad.h"
 #import "LTRotatedRect.h"
-#import "LTShaderStorage+PassthroughVsh.h"
 #import "LTShaderStorage+PassthroughFsh.h"
-#import "LTSingleQuadDrawer.h"
+#import "LTShaderStorage+PassthroughVsh.h"
+#import "LTSingleQuadDrawerSpec.h"
 #import "LTTexture+Factory.h"
 #import "LTTextureDrawerExamples.h"
 

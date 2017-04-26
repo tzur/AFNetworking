@@ -2,6 +2,7 @@
 // Created by Michael Kupchick.
 
 #import "LTMaskedBlurProcessor.h"
+
 #import "LTOpenCVExtensions.h"
 #import "LTTexture+Factory.h"
 #import "LTVector.h"
