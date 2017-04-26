@@ -419,7 +419,7 @@ sharedExamplesFor(kLTMMTextureExamples, ^(NSDictionary *contextInfo) {
       auto pixelBuffer = LTCVPixelBufferCreate(1, 1, kCVPixelFormatType_32BGRA);
       LTMMTexture *texture = [[LTMMTexture alloc] initWithPixelBuffer:pixelBuffer.get()];
 
-      [texture clearWithColor:LTVector4(0.5, 0.5, 0.5, 1)];
+      [texture clearColor:LTVector4(0.5, 0.5, 0.5, 1)];
       expect(texture.syncObject).notTo.beNil();
 
       auto returnedPixelBuffer = [texture pixelBuffer];

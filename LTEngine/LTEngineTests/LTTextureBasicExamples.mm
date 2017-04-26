@@ -342,7 +342,7 @@ sharedExamplesFor(kLTTextureBasicExamples, ^(NSDictionary *data) {
     context(@"clearing texture", ^{
       dit(@"should clear texture with color", ^{
         LTVector4 color = LTVector4(1.0, 0.0, 0.0, 1.0);
-        [texture clearWithColor:color];
+        [texture clearColor:color];
 
         cv::Scalar expected(color.r() * 255, color.g() * 255, color.b() * 255, color.a() * 255);
         expect($([texture image])).to.equalScalar($(expected));
@@ -380,29 +380,29 @@ sharedExamplesFor(kLTTextureBasicExamples, ^(NSDictionary *data) {
         expect(texture.fillColor.isNull()).to.beTruthy();
       });
 
-      it(@"should set fill color on clearWithColor", ^{
-        [texture clearWithColor:LTVector4::ones()];
+      it(@"should set fill color on clearColor", ^{
+        [texture clearColor:LTVector4::ones()];
         expect(texture.fillColor).to.equal(LTVector4::ones());
-        [texture clearWithColor:LTVector4::zeros()];;
+        [texture clearColor:LTVector4::zeros()];;
         expect(texture.fillColor).to.equal(LTVector4::zeros());
       });
 
       it(@"should set fill color to null on load", ^{
-        [texture clearWithColor:LTVector4::ones()];
+        [texture clearColor:LTVector4::ones()];
         expect(texture.fillColor.isNull()).to.beFalsy();
         [texture load:cv::Mat4b(16, 16)];
         expect(texture.fillColor.isNull()).to.beTruthy();
       });
 
       it(@"should set fill color to null on loadRect:fromImage", ^{
-        [texture clearWithColor:LTVector4::ones()];
+        [texture clearColor:LTVector4::ones()];
         expect(texture.fillColor.isNull()).to.beFalsy();
         [texture loadRect:CGRectMake(0, 0, 8, 8) fromImage:cv::Mat4b(8, 8)];
         expect(texture.fillColor.isNull()).to.beTruthy();
       });
 
       it(@"should set fill color to null on mappedForWriting", ^{
-        [texture clearWithColor:LTVector4::ones()];
+        [texture clearColor:LTVector4::ones()];
         expect(texture.fillColor.isNull()).to.beFalsy();
         [texture mappedImageForWriting:^(cv::Mat *mapped, BOOL) {
           expect(mapped->rows).to.equal(texture.size.height);
@@ -412,7 +412,7 @@ sharedExamplesFor(kLTTextureBasicExamples, ^(NSDictionary *data) {
       });
 
       it(@"should not set fill color to null on mappedForReading", ^{
-        [texture clearWithColor:LTVector4::ones()];
+        [texture clearColor:LTVector4::ones()];
         expect(texture.fillColor.isNull()).to.beFalsy();
         [texture mappedImageForReading:^(const cv::Mat &mapped, BOOL) {
           expect(mapped.rows).to.equal(texture.size.height);
@@ -422,18 +422,18 @@ sharedExamplesFor(kLTTextureBasicExamples, ^(NSDictionary *data) {
       });
 
       it(@"should have initial fill color of null when initializing with properties of texture", ^{
-        [texture clearWithColor:LTVector4::ones()];
+        [texture clearColor:LTVector4::ones()];
         expect(texture.fillColor.isNull()).to.beFalsy();
         LTTexture *other = [[[texture class] alloc] initWithPropertiesOf:texture];
         expect(other.fillColor.isNull()).to.beTruthy();
       });
 
-      it(@"should use clearWithColor when cloning a texture with fill color", ^{
-        [texture clearWithColor:LTVector4::ones()];
+      it(@"should use clearColor when cloning a texture with fill color", ^{
+        [texture clearColor:LTVector4::ones()];
         LTTexture *other = [[[texture class] alloc] initWithPropertiesOf:texture];
         id mock = OCMPartialMock(other);
         [texture cloneTo:other];
-        OCMVerify([mock clearWithColor:LTVector4::ones()]);
+        OCMVerify([mock clearColor:LTVector4::ones()]);
         expect(other.fillColor).to.equal(texture.fillColor);
       });
     });
@@ -663,13 +663,13 @@ sharedExamplesFor(kLTTextureBasicExamples, ^(NSDictionary *data) {
         LTTexture *texture = [(LTTexture *)[textureClass alloc]
                               initWithSize:CGSizeMake(65, 47)
                               pixelFormat:$(LTGLPixelFormatRGBA16Float) allocateMemory:YES];
-        [texture clearWithColor:kColor];
+        [texture clearColor:kColor];
 
         LTTexture *output = [[textureClass alloc]
                              initWithSize:CGSizeMakeUniform(1)
                              pixelFormat:texture.pixelFormat allocateMemory:YES];
         LTTexture *expectedOutput = [[textureClass alloc] initWithPropertiesOf:output];
-        [expectedOutput clearWithColor:kColor];
+        [expectedOutput clearColor:kColor];
 
         [texture mappedCIImage:^(CIImage *image) {
           [output drawWithCoreImage:^CIImage *{
@@ -816,7 +816,7 @@ sharedExamplesFor(kLTTextureBasicExamples, ^(NSDictionary *data) {
         const std::array<float, 5> values = {{0, 0.25, 0.5, 0.75, 1.0}};
 
         for (float value : values) {
-          [texture clearWithColor:LTVector4(value, value, value, value)];
+          [texture clearColor:LTVector4(value, value, value, value)];
           lt::Ref<CVPixelBufferRef> pixelBuffer = [texture pixelBuffer];
           LTCVPixelBufferImageForReading(pixelBuffer.get(), ^(const cv::Mat &image) {
             cv::Mat4b expected = cv::Mat4b(texture.size.height, texture.size.width,
@@ -893,8 +893,8 @@ sharedExamplesFor(kLTTextureBasicExamples, ^(NSDictionary *data) {
         expect(texture.generationID).to.equal(generationID);
       });
 
-      it(@"should change generation ID after clearWithColor", ^{
-        [texture clearWithColor:LTVector4::zeros()];
+      it(@"should change generation ID after clearColor", ^{
+        [texture clearColor:LTVector4::zeros()];
         expect(texture.generationID).notTo.equal(generationID);
       });
 

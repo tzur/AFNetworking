@@ -59,7 +59,7 @@ context(@"processing", ^{
   beforeEach(^{
     parameterizedObject = OCMProtocolMock(@protocol(LTParameterizedObject));
     renderTarget = [LTTexture byteRGBATextureWithSize:CGSizeMakeUniform(16)];
-    [renderTarget clearWithColor:LTVector4::ones()];
+    [renderTarget clearColor:LTVector4::ones()];
     fbo = [[LTFbo alloc] initWithTexture:renderTarget];
   });
 

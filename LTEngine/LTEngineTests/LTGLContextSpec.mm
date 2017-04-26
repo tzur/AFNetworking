@@ -431,7 +431,7 @@ context(@"execution", ^{
 
     auto readTexture = [LTTexture textureWithSize:size pixelFormat:$(LTGLPixelFormatR16Float)
                                    allocateMemory:YES];
-    [readTexture clearWithColor:LTVector4::zeros()];
+    [readTexture clearColor:LTVector4::zeros()];
 
     GLfloat clearValue = 0.5;
     cv::Mat1hf expected = cv::Mat1hf(size.height, size.width) << half_float::half(clearValue);

@@ -294,7 +294,7 @@ typedef CIImage * _Nullable(^LTTextureCoreImageBlock)();
 /// Clears the texture with the given \c color. In case this is a mipmap texture, all its levels
 /// will be cleared with the given \c color. This will set the texture's \c fillColor to the given
 /// color.
-- (void)clearWithColor:(LTVector4)color;
+- (void)clearColor:(LTVector4)color;
 
 #pragma mark -
 #pragma mark Properties

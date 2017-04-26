@@ -133,7 +133,7 @@ sharedExamplesFor(kLTBrushEffectLTBrushExamples, ^(NSDictionary *data) {
                                                       andInterpolant:interpolant];
 
       [brush startNewStrokeAtPoint:point];
-      [brush.texture clearWithColor:LTVector4(1, 1, 1, 1)];
+      [brush.texture clearColor:LTVector4(1, 1, 1, 1)];
     });
 
     afterEach(^{

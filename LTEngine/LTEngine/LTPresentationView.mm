@@ -561,7 +561,7 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
 - (void)setBackgroundColor:(nullable UIColor *)backgroundColor {
   backgroundColor = [backgroundColor colorWithAlphaComponent:1] ?: [self defaultBackgroundColor];
   super.backgroundColor = backgroundColor;
-  [self.backgroundTexture clearWithColor:[backgroundColor lt_ltVector]];
+  [self.backgroundTexture clearColor:[backgroundColor lt_ltVector]];
 }
 
 - (UIColor *)defaultBackgroundColor {

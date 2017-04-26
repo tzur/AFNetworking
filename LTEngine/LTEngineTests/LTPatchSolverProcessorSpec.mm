@@ -181,9 +181,9 @@ context(@"processing", ^{
   it(@"should produce constant membrane on constant inputs", ^{
     LTTexture *source = [LTTexture byteRGBATextureWithSize:CGSizeMakeUniform(kTextureWidth)];
     LTTexture *target = [LTTexture byteRGBATextureWithSize:CGSizeMakeUniform(kTextureWidth)];
-    [source clearWithColor:LTVector4(0.75, 0.75, 0.75, 1)];
-    [target clearWithColor:LTVector4(0.5, 0.5, 0.5, 1)];
-    [mask clearWithColor:LTVector4(1, 1, 1, 1)];
+    [source clearColor:LTVector4(0.75, 0.75, 0.75, 1)];
+    [target clearColor:LTVector4(0.5, 0.5, 0.5, 1)];
+    [mask clearColor:LTVector4(1, 1, 1, 1)];
 
     LTPatchSolverProcessor *processor =
         [[LTPatchSolverProcessor alloc] initWithMask:mask source:source target:target
@@ -201,7 +201,7 @@ context(@"processing", ^{
     LTTexture *source = LTPatchByteTextureWithSize(kTextureWidth, 4);
     mask = LTPatchMask(kTextureWidth, 0, 255);
     LTTexture *target = [LTTexture textureWithPropertiesOf:source];
-    [target clearWithColor:LTVector4(0.5, 0.5, 0.5, 1)];
+    [target clearColor:LTVector4(0.5, 0.5, 0.5, 1)];
 
     LTPatchSolverProcessor *processor =
         [[LTPatchSolverProcessor alloc] initWithMask:mask source:source target:target
@@ -216,7 +216,7 @@ context(@"processing", ^{
     LTTexture *source = LTPatchByteTextureWithSize(kTextureWidth, 1);
     mask = LTPatchMask(kTextureWidth, 0, 255);
     LTTexture *target = [LTTexture textureWithPropertiesOf:source];
-    [target clearWithColor:LTVector4(0.5, 0.5, 0.5, 1)];
+    [target clearColor:LTVector4(0.5, 0.5, 0.5, 1)];
     output = [LTTexture textureWithSize:CGSizeMakeUniform(kTextureWidth)
                             pixelFormat:$(LTGLPixelFormatR16Float) allocateMemory:YES];
 
@@ -235,7 +235,7 @@ context(@"processing", ^{
     LTTexture *source = LTPatchByteTextureWithSize(kTextureWidth, 2);
     mask = LTPatchMask(kTextureWidth, 0, 255);
     LTTexture *target = [LTTexture textureWithPropertiesOf:source];
-    [target clearWithColor:LTVector4(0.5, 0.5, 0.5, 1)];
+    [target clearColor:LTVector4(0.5, 0.5, 0.5, 1)];
     output = [LTTexture textureWithSize:CGSizeMakeUniform(kTextureWidth)
                             pixelFormat:$(LTGLPixelFormatRG16Float) allocateMemory:YES];
 
@@ -255,7 +255,7 @@ context(@"processing", ^{
     LTTexture *source = LTPatchByteTextureWithSize(kTextureWidth, 4);
     mask = LTPatchMask(kTextureWidth, 100, 200);
     LTTexture *target = [LTTexture textureWithPropertiesOf:source];
-    [target clearWithColor:LTVector4(0.5, 0.5, 0.5, 1)];
+    [target clearColor:LTVector4(0.5, 0.5, 0.5, 1)];
 
     LTPatchSolverProcessor *processor =
         [[LTPatchSolverProcessor alloc] initWithMask:mask maskBoundaryThreshold:0.5 source:source
@@ -278,7 +278,7 @@ context(@"processing", ^{
     LTTexture *source = [LTTexture textureWithImage:sourceMat];
     mask = LTPatchMask(kTextureWidth, 0, 255);
     LTTexture *target = [LTTexture textureWithPropertiesOf:source];;
-    [target clearWithColor:LTVector4(0.5, 0.5, 0.5, 1)];
+    [target clearColor:LTVector4(0.5, 0.5, 0.5, 1)];
 
     LTPatchSolverProcessor *processor =
         [[LTPatchSolverProcessor alloc] initWithMask:mask source:source target:target

@@ -174,7 +174,7 @@ context(@"LTEAGLViewDelegate", ^{
 
   it(@"should perform drawing when requested", ^{
     LTTexture *texture = [LTTexture byteRGBATextureWithSize:CGSizeMakeUniform(1)];
-    [texture clearWithColor:LTVector4::zeros()];
+    [texture clearColor:LTVector4::zeros()];
 
     [[[LTFboPool currentPool] fboWithTexture:texture] bindAndDraw:^{
       [view eaglView:OCMClassMock([LTEAGLView class]) drawInRect:CGRectZero];
@@ -185,7 +185,7 @@ context(@"LTEAGLViewDelegate", ^{
 
   it(@"should use its context when performing drawing", ^{
     LTTexture *texture = [LTTexture byteRGBATextureWithSize:CGSizeMakeUniform(1)];
-    [texture clearWithColor:LTVector4::zeros()];
+    [texture clearColor:LTVector4::zeros()];
 
     id contextMock = OCMClassMock([LTGLContext class]);
     view.context = contextMock;

@@ -35,8 +35,8 @@ typedef std::vector<cv::Point2i> LTTextureSamplingPoints;
 
 /// Returns the color the entire texture is filled with, or \c LTVector4Null in case it is uncertain
 /// that the texture is filled with a single color. This property is updated when the texture is
-/// cleared using \c clearWithColor, and set to \c LTVector4Null whenever the texture is updated by
-/// any other method.
+/// cleared using \c clearColor, and set to \c LTVector4Null whenever the texture is updated by any
+/// other method.
 @property (readwrite, nonatomic) LTVector4 fillColor;
 
 /// Current generation ID of this texture. The generation ID changes whenever the texture is

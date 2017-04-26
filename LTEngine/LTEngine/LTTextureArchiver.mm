@@ -296,7 +296,7 @@ objection_requires_sel(@selector(fileManager));
   texture.generationID = metadata.generationID;
   [texture performWithoutUpdatingGenerationID:^{
     if (!metadata.fillColor.isNull()) {
-      [texture clearWithColor:metadata.fillColor];
+      [texture clearColor:metadata.fillColor];
     } else {
       NSString *contentPath =
           [self contentPathForArchiveFolderPath:path fileExtension:type.fileExtension];

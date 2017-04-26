@@ -315,7 +315,7 @@ context(@"clearing", ^{
     }];
 
     [fbo clearDepth:depthClearValue];
-    [readTexture clearWithColor:LTVector4::zeros()];
+    [readTexture clearColor:LTVector4::zeros()];
 
     context.depthTestEnabled = YES;
 

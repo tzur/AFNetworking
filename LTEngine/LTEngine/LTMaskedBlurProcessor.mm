@@ -23,7 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithInput:(LTTexture *)input blurMask:(nullable LTTexture *)blurMask
                        output:(LTTexture *)output {
   LTTexture *mask = [LTTexture byteRedTextureWithSize:CGSizeMakeUniform(1)];
-  [mask clearWithColor:LTVector4::ones()];
+  [mask clearColor:LTVector4::ones()];
 
   return [self initWithInput:input mask:mask blurMask:blurMask output:output];
 }
@@ -44,7 +44,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (LTTexture *)emptyBlurMask {
   LTTexture *texture = [LTTexture byteRedTextureWithSize:CGSizeMakeUniform(1)];
-  [texture clearWithColor:LTVector4::ones()];
+  [texture clearColor:LTVector4::ones()];
   return texture;
 }
 

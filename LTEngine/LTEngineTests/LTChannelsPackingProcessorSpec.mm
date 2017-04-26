@@ -121,7 +121,7 @@ context(@"packing", ^{
 
     beforeEach(^{
       output = [LTTexture byteRGBATextureWithSize:CGSizeMakeUniform(2)];
-      [output clearWithColor:LTVector4::ones()];
+      [output clearColor:LTVector4::ones()];
     });
 
     afterEach(^{

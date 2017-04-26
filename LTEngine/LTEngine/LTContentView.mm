@@ -107,7 +107,7 @@ NS_ASSUME_NONNULL_BEGIN
 
   if (!contentTexture) {
     contentTexture = [LTTexture byteRGBATextureWithSize:CGSizeMakeUniform(1)];
-    [contentTexture clearWithColor:LTVector4::zeros()];
+    [contentTexture clearColor:LTVector4::zeros()];
   }
 
   if (self = [super initWithFrame:frame]) {

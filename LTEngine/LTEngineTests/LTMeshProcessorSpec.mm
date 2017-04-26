@@ -27,7 +27,7 @@ beforeEach(^{
   input = [LTTexture byteRGBATextureWithSize:kInputSize];
   meshTexture = [LTTexture textureWithSize:kMeshSize + CGSizeMakeUniform(1)
                                pixelFormat:$(LTGLPixelFormatRG16Float) allocateMemory:YES];
-  [meshTexture clearWithColor:LTVector4::zeros()];
+  [meshTexture clearColor:LTVector4::zeros()];
   output = [LTTexture byteRGBATextureWithSize:kInputSize];
 });
 
@@ -129,7 +129,7 @@ context(@"processing", ^{
     cellSize = kUnpaddedInputSize / kMeshSize;
     cellRadius = cellSize / 2;
 
-    [input clearWithColor:LTVector4::ones()];
+    [input clearColor:LTVector4::ones()];
     input.magFilterInterpolation = LTTextureInterpolationNearest;
     input.minFilterInterpolation = LTTextureInterpolationNearest;
     cv::Mat4b cellsMat = LTGenerateCellsMat(kUnpaddedInputSize, cellSize);

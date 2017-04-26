@@ -33,7 +33,7 @@
 
 - (LTTexture *)defaultBorderTexture {
   LTTexture *greyTexture = [LTTexture byteRedTextureWithSize:CGSizeMake(1, 1)];
-  [greyTexture clearWithColor:LTVector4(0.5)];
+  [greyTexture clearColor:LTVector4(0.5)];
   return greyTexture;
 }
 

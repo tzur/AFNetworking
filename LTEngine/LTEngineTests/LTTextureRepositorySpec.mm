@@ -22,7 +22,7 @@ it(@"should return saved texture", ^{
 
 it(@"should return texture after its generation ID has changed", ^{
   [repository addTexture:texture];
-  [texture clearWithColor:LTVector4(0.1)];
+  [texture clearColor:LTVector4(0.1)];
 
   expect([repository textureWithGenerationID:texture.generationID]).to.equal(texture);
 });

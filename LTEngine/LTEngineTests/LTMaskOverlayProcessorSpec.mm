@@ -54,7 +54,7 @@ context(@"processing", ^{
     LTTexture *texture = [LTTexture textureWithPropertiesOf:image];
     [image cloneTo:texture];
     LTFbo *fbo = [[LTFbo alloc] initWithTexture:texture];
-    [image clearWithColor:LTVector4::zeros()];
+    [image clearColor:LTVector4::zeros()];
     [fbo bindAndDraw:^{
       [processor processToFramebufferWithSize:fbo.size outputRect:CGRectFromSize(fbo.size)];
     }];

@@ -178,12 +178,12 @@ context(@"drawing", ^{
     mappedTexture.minFilterInterpolation = LTTextureInterpolationNearest;
 
     anotherMappedTexture = [LTTexture textureWithPropertiesOf:mappedTexture];
-    [anotherMappedTexture clearWithColor:LTVector4(0, 0, 0, 1)];
+    [anotherMappedTexture clearColor:LTVector4(0, 0, 0, 1)];
 
     outputTexture = [LTTexture byteRGBATextureWithSize:CGSizeMake(kWidth, kHeight)];
     outputTexture.magFilterInterpolation = LTTextureInterpolationNearest;
     outputTexture.minFilterInterpolation = LTTextureInterpolationNearest;
-    [outputTexture clearWithColor:LTVector4::zeros()];
+    [outputTexture clearColor:LTVector4::zeros()];
     fbo = [[LTFbo alloc] initWithTexture:outputTexture];
   });
 

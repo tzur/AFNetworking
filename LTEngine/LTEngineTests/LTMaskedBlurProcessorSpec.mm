@@ -52,14 +52,14 @@ context(@"tests", ^{
 
       /// blurMask is inverted and values above 0.5 are clipped.
       it(@"should apply no blur when blurMask contains ones", ^{
-        [mask clearWithColor:LTVector4::ones()];
+        [mask clearColor:LTVector4::ones()];
 
         [processor process];
         expect($(output.image)).to.beCloseToMat($(input.image));
       });
 
       it(@"should apply maximum blur when blurMask contains zeros", ^{
-        [mask clearWithColor:LTVector4::zeros()];
+        [mask clearColor:LTVector4::zeros()];
 
         [processor process];
 

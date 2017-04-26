@@ -133,7 +133,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)clearCanvasWithColor:(LTVector4)color {
   if (!self.currentlyProcessingContentTouchEventSequence) {
-    [self.texture clearWithColor:color];
+    [self.texture clearColor:color];
     if ([self.delegate respondsToSelector:@selector(painter:clearedCanvasWithColor:)]) {
       [self.delegate painter:self clearedCanvasWithColor:color];
     }
