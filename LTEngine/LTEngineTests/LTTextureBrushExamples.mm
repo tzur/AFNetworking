@@ -71,7 +71,7 @@ sharedExamplesFor(kLTTextureBrushExamples, ^(NSDictionary *data) {
       brush.scale = kTargetBrushDiameter / kBaseBrushDiameter;
       output = [LTTexture byteRGBATextureWithSize:kOutputSize];
       fbo = [[LTFbo alloc] initWithTexture:output];
-      [fbo clearWithColor:LTVector4(0, 0, 0, 0)];
+      [fbo clearColor:LTVector4(0, 0, 0, 0)];
 
       expected.create(kOutputSize.height, kOutputSize.width);
       expected = cv::Vec4b(0, 0, 0, 0);
@@ -215,7 +215,7 @@ sharedExamplesFor(kLTTextureBrushExamples, ^(NSDictionary *data) {
         });
 
         it(@"blending with zero result opacity should result in zero rgb as well", ^{
-          [fbo clearWithColor:LTVector4(1, 1, 1, 0)];
+          [fbo clearColor:LTVector4(1, 1, 1, 0)];
           brush.intensity = LTVector4(1, 1, 1, 0);
           [brush startNewStrokeAtPoint:point];
           [brush drawPoint:point inFramebuffer:fbo];
@@ -226,7 +226,7 @@ sharedExamplesFor(kLTTextureBrushExamples, ^(NSDictionary *data) {
         it(@"should blend with single channel target", ^{
           LTTexture *singleOutput = [LTTexture byteRedTextureWithSize:output.size];
           LTFbo *singleFbo = [[LTFbo alloc] initWithTexture:singleOutput];
-          [singleFbo clearWithColor:LTVector4(0.5)];
+          [singleFbo clearColor:LTVector4(0.5)];
 
           cv::Mat4b brushTexture(1, 1, cv::Vec4b(128, 128, 128, 128));
           [brush setSingleTexture:[LTTexture textureWithImage:brushTexture]];
@@ -314,7 +314,7 @@ sharedExamplesFor(kLTTextureBrushExamples, ^(NSDictionary *data) {
         });
 
         it(@"blending with zero result opacity should result in zero rgb as well", ^{
-          [fbo clearWithColor:LTVector4(0, 0, 0, 0)];
+          [fbo clearColor:LTVector4(0, 0, 0, 0)];
           brush.intensity = LTVector4(1, 1, 1, 0);
           [brush startNewStrokeAtPoint:point];
           [brush drawPoint:point inFramebuffer:fbo];
@@ -325,7 +325,7 @@ sharedExamplesFor(kLTTextureBrushExamples, ^(NSDictionary *data) {
         it(@"should blend with single channel target", ^{
           LTTexture *singleOutput = [LTTexture byteRedTextureWithSize:output.size];
           LTFbo *singleFbo = [[LTFbo alloc] initWithTexture:singleOutput];
-          [singleFbo clearWithColor:LTVector4(0.5)];
+          [singleFbo clearColor:LTVector4(0.5)];
 
           cv::Mat4b brushTexture(1, 1, cv::Vec4b(128, 128, 128, 128));
           [brush setSingleTexture:[LTTexture textureWithImage:brushTexture]];

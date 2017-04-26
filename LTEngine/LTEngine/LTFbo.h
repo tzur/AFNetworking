@@ -85,7 +85,7 @@ typedef NS_ENUM(GLenum, LTFboAttachmentPoint) {
 - (void)bindAndDraw:(NS_NOESCAPE LTVoidBlock)block;
 
 /// Fills all color attachables bound to this FBO with the given color.
-- (void)clearWithColor:(LTVector4)color;
+- (void)clearColor:(LTVector4)color;
 
 /// Fills the attachable attached to \c LTFboAttachmentPointDepth (if exists) with the given
 /// \c value. If there's no depth attachable attached, this method has no effect.

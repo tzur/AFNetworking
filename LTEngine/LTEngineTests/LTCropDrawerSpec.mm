@@ -152,7 +152,7 @@ context(@"drawing", ^{
       targetRect = CGRectFromSize(CGSizeMake(fbo.size.width / 2, fbo.size.height));
       sourceRect = CGRectFromSize(inputTexture.size);
       expected.create(outputTexture.size.height, outputTexture.size.width);
-      [fbo clearWithColor:LTVector4::zeros()];
+      [fbo clearColor:LTVector4::zeros()];
       expected.setTo(0);
     });
 
@@ -204,7 +204,7 @@ context(@"drawing", ^{
       sourceRect = CGRectFromSize(CGSizeMake(inputTexture.size.width,
                                              inputTexture.size.height / 2));
       expected.create(outputTexture.size.height, outputTexture.size.width);
-      [fbo clearWithColor:LTVector4::zeros()];
+      [fbo clearColor:LTVector4::zeros()];
       expected.setTo(0);
     });
 

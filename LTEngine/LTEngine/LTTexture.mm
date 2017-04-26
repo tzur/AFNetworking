@@ -489,7 +489,7 @@ NS_ASSUME_NONNULL_BEGIN
 
   for (GLint i = 0; i <= self.maxMipmapLevel; ++i) {
     LTFbo *fbo = [[LTFboPool currentPool] fboWithTexture:self level:i];
-    [fbo clearWithColor:color];
+    [fbo clearColor:color];
   }
 }
 

@@ -174,7 +174,7 @@ context(@"drawing on the entire source texture", ^{
 
     output = [LTTexture byteRGBATextureWithSize:inputTexture.size];
     fbo = [[LTFbo alloc] initWithTexture:output];
-    [fbo clearWithColor:LTVector4::zeros()];
+    [fbo clearColor:LTVector4::zeros()];
   });
 
   afterEach(^{
@@ -453,7 +453,7 @@ context(@"drawing on a custom mesh source rect", ^{
 
     output = [LTTexture byteRGBATextureWithSize:kUnpaddedInputSize];
     fbo = [[LTFbo alloc] initWithTexture:output];
-    [fbo clearWithColor:LTVector4::zeros()];
+    [fbo clearColor:LTVector4::zeros()];
   });
 
   afterEach(^{

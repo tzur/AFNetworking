@@ -130,7 +130,7 @@ context(@"edge avoiding drawing", ^{
     brush.inputTexture = inputTexture;
     output = [LTTexture byteRGBATextureWithSize:kOutputSize];
     fbo = [[LTFbo alloc] initWithTexture:output];
-    [fbo clearWithColor:kBackgroundColor];
+    [fbo clearColor:kBackgroundColor];
 
     expected.create(kOutputSize.height, kOutputSize.width);
     expected = cv::Scalar(0);
@@ -166,7 +166,7 @@ context(@"edge avoiding drawing", ^{
     expected.rowRange(kOutputSize.height * 0.75, kOutputSize.height).setTo(0);
     expected.colRange(kOutputSize.width * 0.75, kOutputSize.width).setTo(0);
 
-    [fbo clearWithColor:kBackgroundColor];
+    [fbo clearColor:kBackgroundColor];
     brush.sigma = brush.minSigma;
     [brush startNewStrokeAtPoint:point];
     [brush drawPoint:point inFramebuffer:fbo];

@@ -120,7 +120,7 @@ static const CGFloat kBristleSigma = 0.4;
     context.blendEnabled = YES;
     context.blendFunc = kLTGLContextBlendFuncNormal;
     for (LTFbo *fbo in self.brushFbos) {
-      [fbo clearWithColor:LTVector4(0, 0, 0, 1)];
+      [fbo clearColor:LTVector4(0, 0, 0, 1)];
       [self.bristleDrawer drawRotatedRects:bristles inFramebuffer:fbo
                           fromRotatedRects:sources];
     }

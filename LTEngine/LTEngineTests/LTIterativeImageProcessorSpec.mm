@@ -170,7 +170,7 @@ context(@"processing", ^{
 
   beforeEach(^{
     LTFbo *fbo = [[LTFbo alloc] initWithTexture:input];
-    [fbo clearWithColor:LTVector4(0, 0, 0, 1)];
+    [fbo clearColor:LTVector4(0, 0, 0, 1)];
   });
 
   afterEach(^{

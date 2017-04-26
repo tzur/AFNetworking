@@ -212,7 +212,7 @@ sharedExamplesFor(kLTTextureDrawerExamples, ^(NSDictionary *data) {
       });
 
       it(@"should draw all input to subrect of output", ^{
-        [fbo clearWithColor:LTVector4(0, 0, 0, 1)];
+        [fbo clearColor:LTVector4(0, 0, 0, 1)];
         [drawer drawRect:CGRectMake(inputSize.width / 2, 0,
                                     inputSize.width / 2, inputSize.height / 2)
            inFramebuffer:fbo fromRect:CGRectMake(0, 0, inputSize.width, inputSize.height)];
@@ -232,7 +232,7 @@ sharedExamplesFor(kLTTextureDrawerExamples, ^(NSDictionary *data) {
       });
 
       it(@"should draw subrect of input to subrect of output", ^{
-        [fbo clearWithColor:LTVector4(0, 0, 0, 1)];
+        [fbo clearColor:LTVector4(0, 0, 0, 1)];
         [drawer drawRect:CGRectMake(inputSize.width / 2, 0,
                                     inputSize.width / 2, inputSize.height / 2)
            inFramebuffer:fbo fromRect:CGRectMake(0, 0, inputSize.width / 2, inputSize.height / 2)];
@@ -271,7 +271,7 @@ sharedExamplesFor(kLTTextureDrawerExamples, ^(NSDictionary *data) {
       it(@"should draw all input to subrect of output", ^{
         const CGRect subrect = CGRectMake(2 * inputSize.width / 16, 3 * inputSize.height / 16,
                                           inputSize.width / 2, inputSize.height / 2);
-        [fbo clearWithColor:LTVector4(0, 0, 0, 1)];
+        [fbo clearColor:LTVector4(0, 0, 0, 1)];
         [fbo bindAndDrawOnScreen:^{
           [drawer drawRect:subrect inFramebufferWithSize:fbo.size
                       fromRect:CGRectMake(0, 0, inputSize.width, inputSize.height)];
@@ -293,7 +293,7 @@ sharedExamplesFor(kLTTextureDrawerExamples, ^(NSDictionary *data) {
                                          inputSize.width / 4, inputSize.height / 4);
         const CGRect outRect = CGRectMake(2 * inputSize.width / 16, 3 * inputSize.height / 16,
                                           inputSize.width / 2, inputSize.height / 2);
-        [fbo clearWithColor:LTVector4(0, 0, 0, 1)];
+        [fbo clearColor:LTVector4(0, 0, 0, 1)];
         [fbo bindAndDrawOnScreen:^{
           [drawer drawRect:outRect inFramebufferWithSize:fbo.size fromRect:inRect];
         }];
