@@ -91,6 +91,15 @@ GLK_EXTERN const GLKVector3 GLKVector3One;
 /// The "one" vector, equivalent to GLKVector2Make(1, 1).
 GLK_EXTERN const GLKVector2 GLKVector2One;
 
+/// The "zero" matrix, equivalent to GLKMatrix2Make(0, 0, 0, 0).
+GLK_EXTERN const GLKMatrix2 GLKMatrix2Zero;
+
+/// The "zero" matrix, equivalent to GLKMatrix3Make(0, 0, 0, 0, 0, 0, 0, 0, 0).
+GLK_EXTERN const GLKMatrix3 GLKMatrix3Zero;
+
+/// The "zero" matrix, equivalent to GLKMatrix4Make(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0).
+GLK_EXTERN const GLKMatrix4 GLKMatrix4Zero;
+
 /// Returns a new three-component vector with the same value for each component.
 GLK_INLINE GLKVector3 GLKVector3Make(float value) {
   return GLKVector3Make(value, value, value);
