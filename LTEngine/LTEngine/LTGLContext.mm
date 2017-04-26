@@ -330,7 +330,7 @@ typedef struct {
   }
 }
 
-- (void)clearWithColor:(LTVector4)colorValue depth:(GLfloat)depthValue {
+- (void)clearColor:(LTVector4)colorValue depth:(GLfloat)depthValue {
   [self clearDepth:depthValue];
   [self clearColor:colorValue];
 }
