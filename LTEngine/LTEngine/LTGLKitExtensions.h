@@ -1,8 +1,8 @@
 // Copyright (c) 2013 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
-#import <cmath>
 #import <GLKit/GLKMath.h>
+#import <cmath>
 
 #import "LTOpenCVCore.h"
 
@@ -374,6 +374,22 @@ GLKVector3 GLKLineEquation(const GLKVector2 &source, const GLKVector2 &target);
 GLK_INLINE GLKVector3 GLKLineEquation(const CGPoint &source, const CGPoint &target) {
   return GLKLineEquation(GLKVector2FromCGPoint(source), GLKVector2FromCGPoint(target));
 }
+
+/// Returns a matrix from its \c NSString representation. The representation should be in the row
+/// major format i.e. <tt>@"{{m00, m01}, {m10, m11}}"</tt>, where \c mij can also be
+/// <tt>nan/inf/-inf</tt>. In case an invalid format is given, a \c GLKMatrix2Zero will be returned.
+GLKMatrix2 GLKMatrix2FromString(NSString *string);
+
+/// Returns a matrix from its c NSString representation. The representation should be in the row
+/// major format i.e. <tt>@"{{m00, m01, m02}, {m10, m11, m12}, ...}"</tt>, where \c mij can also be
+/// <tt>nan/inf/-inf</tt>. In case an invalid format is given, a \c GLKMatrix3Zero will be returned.
+GLKMatrix3 GLKMatrix3FromString(NSString *string);
+
+/// Returns a matrix from its \c NSString representation. The representation should be in the row
+/// major format i.e. <tt>@"{{m00, m01, m02, m03}, {m10, m11, m12, m13}, ...}"</tt>, where \c mij
+/// can also be <tt>nan/inf/-inf</tt>. In case an invalid format is given, a \c GLKMatrix4Zero will
+/// be returned.
+GLKMatrix4 GLKMatrix4FromString(NSString *string);
 
 namespace std {
   /// Floors the given GLKVector2, coordinate-wise.

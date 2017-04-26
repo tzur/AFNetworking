@@ -9,13 +9,13 @@ const GLKVector2 GLKVector2Zero = {{0, 0}};
 
 const GLKVector3 GLKVector3Zero = {{0, 0, 0}};
 
-const GLKVector2 GLKVector2Zero = {{0, 0}};
+const GLKVector4 GLKVector4Zero = {{0, 0, 0, 0}};
 
-const GLKVector4 GLKVector4One = {{1, 1, 1, 1}};
+const GLKVector2 GLKVector2One = {{1, 1}};
 
 const GLKVector3 GLKVector3One = {{1, 1, 1}};
 
-const GLKVector2 GLKVector2One = {{1, 1}};
+const GLKVector4 GLKVector4One = {{1, 1, 1, 1}};
 
 const GLKMatrix2 GLKMatrix2Identity = {{1, 0, 0, 1}};
 
