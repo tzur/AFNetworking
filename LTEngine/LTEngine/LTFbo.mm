@@ -321,7 +321,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)clearWithColor:(LTVector4)color {
   // Below each attachable is being cleared (to update its generation id). Later this instance is
-  // being cleared using clearWithColor:, which clears with color all color attachables attached to
+  // being cleared using clearColor:, which clears with color all color attachables attached to
   // this instance.
   [self enumerateColorAttachablesWithBlock:^(NSNumber *, LTFboAttachmentInfo *info, BOOL *) {
     [self bindAndExecute:^{
@@ -330,7 +330,7 @@ NS_ASSUME_NONNULL_BEGIN
   }];
 
   [self bindAndExecute:^{
-    [[LTGLContext currentContext] clearWithColor:color];
+    [[LTGLContext currentContext] clearColor:color];
   }];
 }
 

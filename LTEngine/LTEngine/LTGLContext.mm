@@ -332,10 +332,10 @@ typedef struct {
 
 - (void)clearWithColor:(LTVector4)colorValue depth:(GLfloat)depthValue {
   [self clearDepth:depthValue];
-  [self clearWithColor:colorValue];
+  [self clearColor:colorValue];
 }
 
-- (void)clearWithColor:(LTVector4)color {
+- (void)clearColor:(LTVector4)color {
   LTVector4 previousColor;
   glGetFloatv(GL_COLOR_CLEAR_VALUE, previousColor.data());
 

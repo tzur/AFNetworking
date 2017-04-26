@@ -297,7 +297,7 @@ static const NSUInteger kDefaultPixelsPerCheckerboardSquare = 8;
 
   [self updateContent];
 
-  [self.context clearWithColor:self.backgroundColor.lt_ltVector];
+  [self.context clearColor:self.backgroundColor.lt_ltVector];
 
   // Get the visible content rectangle, in floating-point pixel units of the content coordinate
   // system.

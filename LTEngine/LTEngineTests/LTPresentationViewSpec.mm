@@ -426,7 +426,7 @@ context(@"draw delegate", ^{
   context(@"delegation of rendering of entire content", ^{
     it(@"should call drawContentForPresentationView: method of delegate if implemented", ^{
       OCMStub([mock drawContentForPresentationView:view]).andDo(^(NSInvocation *) {
-        [[LTGLContext currentContext] clearWithColor:LTVector4(0, 1, 0, 1)];
+        [[LTGLContext currentContext] clearColor:LTVector4(0, 1, 0, 1)];
       }).andReturn(YES);
       expectedOutput = kGreen;
 
@@ -441,7 +441,7 @@ context(@"draw delegate", ^{
       view.drawDelegate = delegateMock;
       OCMStub([delegateMock drawContentForPresentationView:view])
           .andDo(^(NSInvocation *) {
-        [[LTGLContext currentContext] clearWithColor:LTVector4(0, 1, 0, 1)];
+        [[LTGLContext currentContext] clearColor:LTVector4(0, 1, 0, 1)];
       }).andReturn(YES);
       expectedOutput = kGreen;
 
@@ -454,7 +454,7 @@ context(@"draw delegate", ^{
 
   it(@"should use delegate to update content rect", ^{
     [[[mock stub] andDo:^(NSInvocation *) {
-      [[LTGLContext currentContext] clearWithColor:LTVector4(0, 1, 0, 1)];
+      [[LTGLContext currentContext] clearColor:LTVector4(0, 1, 0, 1)];
     }] presentationView:view updateContentInRect:kContentFrame];
     [view setNeedsDisplayContent];
     expectedOutput = view.backgroundColor.lt_cvVector;
@@ -486,7 +486,7 @@ context(@"draw delegate", ^{
                                          contentAreaInOutput.width, contentAreaInOutput.height);
     OCMStub([mock presentationView:view drawBackgroundBelowContentAroundRect:rectBelowContent])
         .andDo(^(NSInvocation *) {
-      [[LTGLContext currentContext] clearWithColor:LTVector4(1, 0, 1, 1)];
+      [[LTGLContext currentContext] clearColor:LTVector4(1, 0, 1, 1)];
     });
 
     expectedOutput = cv::Vec4b(255, 0, 255, 255);
@@ -512,7 +512,7 @@ context(@"draw delegate", ^{
 
       // Clear the framebuffer (should only affect the visible content rectangle according to the
       // defined scissor box.
-      [[LTGLContext currentContext] clearWithColor:LTVector4(0, 1, 0, 1)];
+      [[LTGLContext currentContext] clearColor:LTVector4(0, 1, 0, 1)];
     }] presentationView:view drawOverlayAboveContentWithTransform:CGAffineTransformIdentity];
 
     // The overlay should affect only the visible content rectangle (scissor box).

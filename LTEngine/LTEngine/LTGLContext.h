@@ -120,7 +120,7 @@ extern LTGLContextBlendEquationArgs kLTGLContextBlendEquationDefault;
 - (void)clearWithColor:(LTVector4)colorValue depth:(GLfloat)depthValue;
 
 /// Fills all color attachables of the currently bound framebuffer with the given \c color.
-- (void)clearWithColor:(LTVector4)color;
+- (void)clearColor:(LTVector4)color;
 
 /// Fills the depth attachable to the currently bound framebuffer with the given \c depth.
 - (void)clearDepth:(GLfloat)depth;
