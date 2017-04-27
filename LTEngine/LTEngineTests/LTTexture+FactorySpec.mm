@@ -80,6 +80,19 @@ it(@"should initialize with properties of another texture", ^{
   LTTexture *texture = [LTTexture textureWithPropertiesOf:another];
 
   expect(texture).to.beKindOf([LTTexture class]);
+  expect(texture.maxMipmapLevel).to.equal(another.maxMipmapLevel);
+  expect(texture.pixelFormat).to.equal(another.pixelFormat);
+});
+
+it(@"should initialize with properties of another texture and size", ^{
+  CGSize size = CGSizeMake(1, 1);
+  LTTexture *another = [LTTexture halfFloatRGBATextureWithSize:CGSizeMake(2, 2)];
+  LTTexture *texture = [LTTexture textureWithSize:size andPropertiesOfTexture:another];
+
+  expect(texture).to.beKindOf([LTTexture class]);
+  expect(texture.size).to.equal(size);
+  expect(texture.maxMipmapLevel).to.equal(texture.maxMipmapLevel);
+  expect(texture.pixelFormat).to.equal(another.pixelFormat);
 });
 
 it(@"should initialize mipmap with base image", ^{

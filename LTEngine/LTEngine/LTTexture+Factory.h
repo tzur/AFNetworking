@@ -109,6 +109,16 @@ NS_ASSUME_NONNULL_BEGIN
 /// @endcode
 + (instancetype)textureWithPropertiesOf:(LTTexture *)texture;
 
+/// Creates a new, allocated texture with the given \c size. \c pixelFormat and \c maxMipmapLevel
+/// are similar to the given \c texture. This is a convenience method which is similar to calling:
+///
+/// @code
+/// return [self textureWithSize:size pixelFormat:texture.pixelFormat
+///               maxMipmapLevel:texture.maxMipmapLevel
+///               allocateMemory:YES];
+/// @endcode
++ (instancetype)textureWithSize:(CGSize)size andPropertiesOfTexture:(LTTexture *)texture;
+
 /// Allocates a texture with the \c size, \c precision and \c channels properties of the given \c
 /// image, and loads the \c image to the texture as the base level (0).
 /// The mipmap will be automatically generated based on the given \c image with number of levels
