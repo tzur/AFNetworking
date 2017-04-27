@@ -235,7 +235,7 @@ context(@"drawing", ^{
                                              kUnpaddedInputSize);
     meshTexture = [LTTexture textureWithSize:kMeshSize + CGSizeMakeUniform(1)
                                  pixelFormat:$(LTGLPixelFormatRG16Float) allocateMemory:YES];
-    [meshTexture clearWithColor:LTVector4::zeros()];
+    [meshTexture clearColor:LTVector4::zeros()];
     [meshTexture mappedImageForWriting:^(cv::Mat *mapped, BOOL) {
       mapped->setTo(cv::Vec2hf(half(0)));
       mapped->col(1).setTo(cv::Vec2hf(half(-0.5 / kMeshSize.width), half(0)));
@@ -243,7 +243,7 @@ context(@"drawing", ^{
     }];
 
     inputTexture = [LTTexture byteRGBATextureWithSize:kInputSize];
-    [inputTexture clearWithColor:LTVector4::ones()];
+    [inputTexture clearColor:LTVector4::ones()];
     inputTexture.magFilterInterpolation = LTTextureInterpolationNearest;
     inputTexture.minFilterInterpolation = LTTextureInterpolationNearest;
     cv::Mat4b cellsMat(kUnpaddedInputSize.height, kUnpaddedInputSize.width);

@@ -85,7 +85,7 @@ typedef NS_ENUM(GLenum, LTFboAttachmentPoint) {
 - (void)bindAndDraw:(NS_NOESCAPE LTVoidBlock)block;
 
 /// Fills all color attachables bound to this FBO with the given color.
-- (void)clearWithColor:(LTVector4)color;
+- (void)clearColor:(LTVector4)color;
 
 /// Fills the attachable attached to \c LTFboAttachmentPointDepth (if exists) with the given
 /// \c value. If there's no depth attachable attached, this method has no effect.
@@ -123,8 +123,8 @@ typedef NS_ENUM(GLenum, LTFboAttachmentPoint) {
 /// (\c name which is non-zero) and with a precision that is valid as a render target.
 /// @param context LTGLContext class used to determine if the texture is legible as a render target.
 ///
-/// @note The texture will not be cleared. Use \c clearWithColor: to clear the texture with a
-/// specific color.
+/// @note The texture will not be cleared. Use \c clearColor: to clear the texture with a specific
+/// color.
 - (instancetype)initWithTexture:(LTTexture *)texture context:(LTGLContext *)context;
 
 /// Initializes with the given \c context and the given non empty \c infos, which maps

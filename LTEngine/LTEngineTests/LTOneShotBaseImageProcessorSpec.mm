@@ -118,7 +118,7 @@ context(@"processing", ^{
 
   context(@"subrect processing", ^{
     beforeEach(^{
-      [output clearWithColor:LTVector4(0, 0, 0, 1)];
+      [output clearColor:LTVector4(0, 0, 0, 1)];
 
       cv::Mat4b image(16, 16, cv::Vec4b(16, 0, 0, 255));
       image(cv::Rect(0, 0, 8, 8)).setTo(cv::Vec4b(0, 16, 0, 255));
@@ -157,7 +157,7 @@ context(@"processing", ^{
       auxTexture.magFilterInterpolation = LTTextureInterpolationNearest;
 
       LTTexture *fboTexture = [LTTexture byteRGBATextureWithSize:input.size / 2];
-      [fboTexture clearWithColor:LTVector4(0, 0, 0, 1)];
+      [fboTexture clearColor:LTVector4(0, 0, 0, 1)];
       LTFbo *fbo = [[LTFbo alloc] initWithTexture:fboTexture];
       [fbo bindAndDraw:^{
         [processor processToFramebufferWithSize:fbo.size outputRect:CGRectMake(6, 6, 4, 4)];

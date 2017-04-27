@@ -142,7 +142,7 @@ typedef NS_ENUM(NSUInteger, LTReshapeAdjustmentMode) {
 }
 
 - (void)resetDisplacementMap {
-  [self.displacementMap clearWithColor:LTVector4::zeros()];
+  [self.displacementMap clearColor:LTVector4::zeros()];
 }
 
 #pragma mark -

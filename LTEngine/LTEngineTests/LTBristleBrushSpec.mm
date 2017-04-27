@@ -91,7 +91,7 @@ context(@"drawing", ^{
     brush.scale = kTargetBrushDiameter / kBaseBrushDiameter;
     output = [LTTexture byteRGBATextureWithSize:kOutputSize];
     fbo = [[LTFbo alloc] initWithTexture:output];
-    [fbo clearWithColor:kBackground];
+    [fbo clearColor:kBackground];
 
     expected.create(kOutputSize.height, kOutputSize.width);
     expected = LTLTVector4ToVec4b(kBackground);
@@ -111,42 +111,42 @@ context(@"drawing", ^{
     brush.thickness = 2;
 
     brush.shape = LTBristleBrushShapeRoundBlunt;
-    [fbo clearWithColor:kBackground];
+    [fbo clearColor:kBackground];
     [brush startNewStrokeAtPoint:point];
     [brush drawPoint:point inFramebuffer:fbo];
     expected = LTLoadMat([self class], @"BristleBrushBristles.RoundBlunt.png");
     expect($(output.image)).to.beCloseToMatWithin($(expected), 6);
 
     brush.shape = LTBristleBrushShapeRoundPoint;
-    [fbo clearWithColor:kBackground];
+    [fbo clearColor:kBackground];
     [brush startNewStrokeAtPoint:point];
     [brush drawPoint:point inFramebuffer:fbo];
     expected = LTLoadMat([self class], @"BristleBrushBristles.RoundPoint.png");
     expect($(output.image)).to.beCloseToMatWithin($(expected), 6);
 
     brush.shape = LTBristleBrushShapeRoundFan;
-    [fbo clearWithColor:kBackground];
+    [fbo clearColor:kBackground];
     [brush startNewStrokeAtPoint:point];
     [brush drawPoint:point inFramebuffer:fbo];
     expected = LTLoadMat([self class], @"BristleBrushBristles.RoundFan.png");
     expect($(output.image)).to.beCloseToMatWithin($(expected), 6);
 
     brush.shape = LTBristleBrushShapeFlatBlunt;
-    [fbo clearWithColor:kBackground];
+    [fbo clearColor:kBackground];
     [brush startNewStrokeAtPoint:point];
     [brush drawPoint:point inFramebuffer:fbo];
     expected = LTLoadMat([self class], @"BristleBrushBristles.FlatBlunt.png");
     expect($(output.image)).to.beCloseToMatWithin($(expected), 6);
 
     brush.shape = LTBristleBrushShapeFlatPoint;
-    [fbo clearWithColor:kBackground];
+    [fbo clearColor:kBackground];
     [brush startNewStrokeAtPoint:point];
     [brush drawPoint:point inFramebuffer:fbo];
     expected = LTLoadMat([self class], @"BristleBrushBristles.FlatPoint.png");
     expect($(output.image)).to.beCloseToMatWithin($(expected), 6);
 
     brush.shape = LTBristleBrushShapeFlatFan;
-    [fbo clearWithColor:kBackground];
+    [fbo clearColor:kBackground];
     [brush startNewStrokeAtPoint:point];
     [brush drawPoint:point inFramebuffer:fbo];
     expected = LTLoadMat([self class], @"BristleBrushBristles.FlatFan.png");
@@ -163,14 +163,14 @@ context(@"drawing", ^{
     expect($(output.image)).to.beCloseToMatWithin($(expected), 6);
 
     brush.bristles = 4;
-    [fbo clearWithColor:kBackground];
+    [fbo clearColor:kBackground];
     [brush startNewStrokeAtPoint:point];
     [brush drawPoint:point inFramebuffer:fbo];
     expected = LTLoadMat([self class], @"BristleBrushBristles.4.png");
     expect($(output.image)).to.beCloseToMatWithin($(expected), 6);
 
     brush.bristles = 20;
-    [fbo clearWithColor:kBackground];
+    [fbo clearColor:kBackground];
     [brush startNewStrokeAtPoint:point];
     [brush drawPoint:point inFramebuffer:fbo];
     expected = LTLoadMat([self class], @"BristleBrushBristles.20.png");
@@ -187,14 +187,14 @@ context(@"drawing", ^{
     expect($(output.image)).to.beCloseToMatWithin($(expected), 6);
 
     brush.thickness = 0.75;
-    [fbo clearWithColor:kBackground];
+    [fbo clearColor:kBackground];
     [brush startNewStrokeAtPoint:point];
     [brush drawPoint:point inFramebuffer:fbo];
     expected = LTLoadMat([self class], @"BristleBrushThickness.0.75.png");
     expect($(output.image)).to.beCloseToMatWithin($(expected), 6);
 
     brush.thickness = 0.1;
-    [fbo clearWithColor:kBackground];
+    [fbo clearColor:kBackground];
     [brush startNewStrokeAtPoint:point];
     [brush drawPoint:point inFramebuffer:fbo];
     expected = LTLoadMat([self class], @"BristleBrushThickness.0.1.png");

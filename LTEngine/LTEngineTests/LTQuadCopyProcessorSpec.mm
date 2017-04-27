@@ -98,7 +98,7 @@ context(@"processing", ^{
 
     beforeEach(^{
       framebufferTexture = [LTTexture byteRGBATextureWithSize:output.size / 2];
-      [framebufferTexture clearWithColor:LTVector4::zeros()];
+      [framebufferTexture clearColor:LTVector4::zeros()];
       fbo = [[LTFbo alloc] initWithTexture:framebufferTexture];
       outputRect = CGRectCenteredAt(CGPointFromSize(output.size / 2 + CGSizeMakeUniform(1)),
                                     output.size / 4);

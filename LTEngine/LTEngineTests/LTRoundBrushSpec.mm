@@ -113,7 +113,7 @@ context(@"drawing", ^{
     brush.scale = kTargetBrushDiameter / kBaseBrushDiameter;
     output = [LTTexture byteRGBATextureWithSize:kOutputSize];
     fbo = [[LTFbo alloc] initWithTexture:output];
-    [fbo clearWithColor:LTVector4::zeros()];
+    [fbo clearColor:LTVector4::zeros()];
 
     expected.create(kOutputSize.height, kOutputSize.width);
     expected = cv::Vec4b(0, 0, 0, 0);
@@ -196,7 +196,7 @@ context(@"drawing", ^{
 
     context(@"direct erasing mode", ^{
       beforeEach(^{
-        [fbo clearWithColor:LTVector4::ones()];
+        [fbo clearColor:LTVector4::ones()];
         expected.setTo(cv::Vec4b(255, 255, 255, 255));
         brush.mode = LTRoundBrushModeEraseDirect;
       });
@@ -257,7 +257,7 @@ context(@"drawing", ^{
         output = [LTTexture textureWithSize:kOutputSize pixelFormat:$(LTGLPixelFormatRGBA16Float)
                              allocateMemory:YES];
         fbo = [[LTFbo alloc] initWithTexture:output];
-        [fbo clearWithColor:LTVector4::zeros()];
+        [fbo clearColor:LTVector4::zeros()];
 
         expected.create(kOutputSize.height, kOutputSize.width);
         expected.setTo(kBlack);
@@ -314,7 +314,7 @@ context(@"drawing", ^{
       const cv::Vec4b kCvColor = LTLTVector4ToVec4b(kColor);
 
       beforeEach(^{
-        [fbo clearWithColor:kColor];
+        [fbo clearColor:kColor];
         expected.setTo(kCvColor);
         brush.mode = LTRoundBrushModeBlend;
       });

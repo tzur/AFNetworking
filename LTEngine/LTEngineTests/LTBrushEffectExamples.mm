@@ -121,7 +121,7 @@ sharedExamplesFor(kLTBrushEffectLTBrushExamples, ^(NSDictionary *data) {
 
       output = [LTTexture byteRGBATextureWithSize:kOutputSize];
       fbo = [[LTFbo alloc] initWithTexture:output];
-      [fbo clearWithColor:LTVector4(0, 0, 0, 1)];
+      [fbo clearColor:LTVector4(0, 0, 0, 1)];
 
       expected.create(kOutputSize.height, kOutputSize.width);
       expected = cv::Vec4b(0, 0, 0, 255);
@@ -133,7 +133,7 @@ sharedExamplesFor(kLTBrushEffectLTBrushExamples, ^(NSDictionary *data) {
                                                       andInterpolant:interpolant];
 
       [brush startNewStrokeAtPoint:point];
-      [brush.texture clearWithColor:LTVector4(1, 1, 1, 1)];
+      [brush.texture clearColor:LTVector4(1, 1, 1, 1)];
     });
 
     afterEach(^{
@@ -186,7 +186,7 @@ sharedExamplesFor(kLTBrushEffectLTBrushExamples, ^(NSDictionary *data) {
         // times are < 1/2^100.
         NSUInteger numBlack = 0;
         for (NSUInteger i = 0; i < 100; ++i) {
-          [fbo clearWithColor:LTVector4(0, 0, 0, 1)];
+          [fbo clearColor:LTVector4(0, 0, 0, 1)];
           [brush startNewStrokeAtPoint:point];
           [brush drawPoint:point inFramebuffer:fbo];
 
@@ -204,7 +204,7 @@ sharedExamplesFor(kLTBrushEffectLTBrushExamples, ^(NSDictionary *data) {
         // times are < 1/2^100.
         NSUInteger numBlack = 0;
         for (NSUInteger i = 0; i < 100; ++i) {
-          [fbo clearWithColor:LTVector4(0, 0, 0, 1)];
+          [fbo clearColor:LTVector4(0, 0, 0, 1)];
           [brush startNewStrokeAtPoint:point];
           [brush drawStrokeSegment:segment fromPreviousPoint:nil inFramebuffer:fbo
               saveLastDrawnPointTo:nil];
@@ -229,7 +229,7 @@ sharedExamplesFor(kLTBrushEffectLTBrushExamples, ^(NSDictionary *data) {
         // is already at the maximum value). This will fail if this happens 100 times (1/2^100).
         __block CGFloat minBrightness = 1;
         for (NSUInteger i = 0; i < 100; ++i) {
-          [fbo clearWithColor:LTVector4(0, 0, 0, 1)];
+          [fbo clearColor:LTVector4(0, 0, 0, 1)];
           [brush startNewStrokeAtPoint:point];
           [brush drawPoint:point inFramebuffer:fbo];
 
@@ -246,7 +246,7 @@ sharedExamplesFor(kLTBrushEffectLTBrushExamples, ^(NSDictionary *data) {
         // is already at the maximum value). This will fail if this happens 100 times (1/2^100).
         __block CGFloat minBrightness = 1;
         for (NSUInteger i = 0; i < 100; ++i) {
-          [fbo clearWithColor:LTVector4(0, 0, 0, 1)];
+          [fbo clearColor:LTVector4(0, 0, 0, 1)];
           [brush startNewStrokeAtPoint:point];
           [brush drawStrokeSegment:segment fromPreviousPoint:nil inFramebuffer:fbo
               saveLastDrawnPointTo:nil];

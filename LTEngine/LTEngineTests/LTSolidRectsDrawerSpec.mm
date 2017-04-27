@@ -18,7 +18,7 @@ __block LTFbo *target;
 
 beforeEach(^{
   outputTexture = [LTTexture byteRGBATextureWithSize:kTextureSize];
-  [outputTexture clearWithColor:LTVector4(0, 0, 1, 1)];
+  [outputTexture clearColor:LTVector4(0, 0, 1, 1)];
   target = [[LTFbo alloc] initWithTexture:outputTexture];
 });
 

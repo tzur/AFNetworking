@@ -76,7 +76,7 @@ NS_ASSUME_NONNULL_BEGIN
   LTTexture *atlasTexture = [LTTexture textureWithSize:[self boundingSizeOfRects:packingRects]
                                            pixelFormat:self.atlasTexturePixelFormat
                                         allocateMemory:YES];
-  [atlasTexture clearWithColor:LTVector4::zeros()];
+  [atlasTexture clearColor:LTVector4::zeros()];
   [atlasTexture mappedImageForWriting:^(cv::Mat *mapped, BOOL) {
     for (const auto &keyValue : _matrices) {
       NSString *key = keyValue.first;

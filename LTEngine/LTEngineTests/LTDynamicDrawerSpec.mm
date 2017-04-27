@@ -133,12 +133,12 @@ context(@"execution", ^{
     mappedTexture.minFilterInterpolation = LTTextureInterpolationNearest;
 
     anotherMappedTexture = [LTTexture textureWithPropertiesOf:mappedTexture];
-    [anotherMappedTexture clearWithColor:LTVector4(0, 0, 0, 1)];
+    [anotherMappedTexture clearColor:LTVector4(0, 0, 0, 1)];
 
     outputTexture = [LTTexture byteRGBATextureWithSize:CGSizeMake(kWidth, kHeight)];
     outputTexture.magFilterInterpolation = LTTextureInterpolationNearest;
     outputTexture.minFilterInterpolation = LTTextureInterpolationNearest;
-    [outputTexture clearWithColor:LTVector4::zeros()];
+    [outputTexture clearColor:LTVector4::zeros()];
     fbo = [[LTFbo alloc] initWithTexture:outputTexture];
 
     mapping = @{@"texture": mappedTexture};
@@ -383,7 +383,7 @@ context(@"execution", ^{
         }];
         expect($(outputTexture.image)).to.equalMat($(leftQuadExpectedMat));
 
-        [outputTexture clearWithColor:LTVector4::zeros()];
+        [outputTexture clearColor:LTVector4::zeros()];
         cv::Mat4b rightQuadExpectedMat(kHeight, kWidth, cv::Vec4b(0, 0, 0, 0));
         rightQuadExpectedMat(cv::Rect(kHalfWidth, 0, kHalfWidth, kHalfHeight)) = kGreen;
         rightQuadExpectedMat(cv::Rect(kHalfWidth, kHalfHeight, kHalfWidth, kHalfHeight)) = kYellow;
@@ -396,7 +396,7 @@ context(@"execution", ^{
         }];
         expect($(outputTexture.image)).to.equalMat($(rightQuadExpectedMat));
 
-        [outputTexture clearWithColor:LTVector4::zeros()];
+        [outputTexture clearColor:LTVector4::zeros()];
         cv::Mat4b fullQuadExpectedMat(kHeight, kWidth);
         fullQuadExpectedMat(cv::Rect(0, 0, kHalfWidth, kHalfHeight)) = kRed;
         fullQuadExpectedMat(cv::Rect(0, kHalfHeight, kHalfWidth, kHalfHeight)) = kBlue;

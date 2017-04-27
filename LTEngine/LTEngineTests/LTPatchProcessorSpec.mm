@@ -135,10 +135,10 @@ context(@"processing", ^{
     target = [LTTexture byteRGBATextureWithSize:kTargetSize];
     output = [LTTexture byteRGBATextureWithSize:kTargetSize];
 
-    [mask clearWithColor:LTVector4(1, 1, 1, 1)];
-    [source clearWithColor:LTVector4(0.5, 0, 0, 1)];
-    [target clearWithColor:LTVector4(0, 0, 1, 1)];
-    [output clearWithColor:LTVector4(0, 0, 0, 0)];
+    [mask clearColor:LTVector4(1, 1, 1, 1)];
+    [source clearColor:LTVector4(0.5, 0, 0, 1)];
+    [target clearColor:LTVector4(0, 0, 1, 1)];
+    [output clearColor:LTVector4(0, 0, 0, 0)];
 
     processor = [[LTPatchProcessor alloc] initWithWorkingSizes:kWorkingSizes mask:mask
                                                         source:source target:target output:output];
@@ -325,12 +325,12 @@ context(@"processing", ^{
 
     it(@"should process one channel source and target textures correctly", ^{
       LTTexture *source = [LTTexture byteRedTextureWithSize:kSourceSize];
-      [source clearWithColor:LTVector4(0.5, 0, 0, 1)];
+      [source clearColor:LTVector4(0.5, 0, 0, 1)];
       [source mappedImageForWriting:^(cv::Mat *mapped, BOOL) {
         (*mapped)(cv::Rect(0, 0, kSourceSize.height / 2, kSourceSize.width / 2)).setTo(0);
       }];
       LTTexture *target = [LTTexture byteRedTextureWithSize:kTargetSize];
-      [target clearWithColor:LTVector4(0, 0, 1, 1)];
+      [target clearColor:LTVector4(0, 0, 1, 1)];
 
       processor = [[LTPatchProcessor alloc] initWithWorkingSizes:kWorkingSizes mask:mask
                                                         source:source target:target output:output];
@@ -346,14 +346,14 @@ context(@"processing", ^{
     it(@"should process two channels source and target textures correctly", ^{
       LTTexture *source = [LTTexture textureWithSize:kSourceSize
                                          pixelFormat:$(LTGLPixelFormatRG8Unorm) allocateMemory:YES];
-      [source clearWithColor:LTVector4(0.5, 0, 0, 1)];
+      [source clearColor:LTVector4(0.5, 0, 0, 1)];
       [source mappedImageForWriting:^(cv::Mat *mapped, BOOL) {
         (*mapped)(cv::Rect(0, 0, kSourceSize.height / 2, kSourceSize.width / 2))
             .setTo(cv::Vec2b(0, 255));
       }];
       LTTexture *target = [LTTexture textureWithSize:kTargetSize
                                          pixelFormat:$(LTGLPixelFormatRG8Unorm) allocateMemory:YES];
-      [target clearWithColor:LTVector4(0, 0, 1, 1)];
+      [target clearColor:LTVector4(0, 0, 1, 1)];
 
       processor = [[LTPatchProcessor alloc] initWithWorkingSizes:kWorkingSizes mask:mask
                                                           source:source target:target output:output];

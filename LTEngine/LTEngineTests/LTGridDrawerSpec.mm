@@ -66,7 +66,7 @@ context(@"drawing", ^{
   beforeEach(^{
     output = [LTTexture byteRGBATextureWithSize:kFramebufferSize];
     fbo = [[LTFbo alloc] initWithTexture:output];
-    [fbo clearWithColor:LTVector4(0, 0, 0, 1)];
+    [fbo clearColor:LTVector4(0, 0, 0, 1)];
     expected = kBlack;
   });
 
@@ -176,7 +176,7 @@ context(@"drawing", ^{
 
   context(@"draw-affecting properties", ^{
     beforeEach(^{
-      [fbo clearWithColor:LTVector4(kGray)];
+      [fbo clearColor:LTVector4(kGray)];
       expected = kGray;
     });
 

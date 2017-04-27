@@ -169,9 +169,9 @@
   self.maskResized = [LTTexture byteRGBATextureWithSize:self.workingSize];
 
   static const LTVector4 kBlack = LTVector4(0, 0, 0, 0);
-  [self.sourceResized clearWithColor:kBlack];
-  [self.targetResized clearWithColor:kBlack];
-  [self.maskResized clearWithColor:kBlack];
+  [self.sourceResized clearColor:kBlack];
+  [self.targetResized clearColor:kBlack];
+  [self.maskResized clearColor:kBlack];
 
   self.sourceResizer = [[LTRectCopyProcessor alloc] initWithInput:self.source
                                                            output:self.sourceResized];

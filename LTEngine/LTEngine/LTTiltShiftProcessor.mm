@@ -39,7 +39,7 @@ static const CGFloat kMaskScalingFactor = 4.0;
 
 - (instancetype)initWithInput:(LTTexture *)input output:(LTTexture *)output {
   LTTexture *mask = [LTTexture byteRedTextureWithSize:CGSizeMakeUniform(1)];
-  [mask clearWithColor:LTVector4(1)];
+  [mask clearColor:LTVector4(1)];
   return [self initWithInput:input mask:mask output:output];
 }
 

@@ -12,7 +12,7 @@
 static void LTSetMaskToHalfOnesHalfZeros(LTTexture *mask) {
   using half_float::half;
 
-  [mask clearWithColor:LTVector4::ones()];
+  [mask clearColor:LTVector4::ones()];
   [mask mappedImageForWriting:^(cv::Mat *mapped, BOOL) {
     cv::Mat1hf mat = mapped->rowRange(mapped->rows / 2, mapped->rows - 1);
     std::fill(mat.begin(), mat.end(), half(0));
@@ -31,7 +31,7 @@ static const CGSize kDeformedAreaSize = CGSizeMake(64, 128);
 beforeEach(^{
   displacementMap = [LTTexture textureWithSize:CGSizeMake(9, 17)
                                    pixelFormat:$(LTGLPixelFormatRGBA16Float) allocateMemory:YES];
-  [displacementMap clearWithColor:LTVector4::zeros()];
+  [displacementMap clearColor:LTVector4::zeros()];
 
   mask = [LTTexture textureWithSize:kDeformedAreaSize pixelFormat:$(LTGLPixelFormatR16Float)
                      allocateMemory:YES];
@@ -85,7 +85,7 @@ context(@"sanity checks", ^{
 
   context(@"with mask", ^{
      beforeEach(^{
-       [mask clearWithColor:LTVector4::zeros()];
+       [mask clearColor:LTVector4::zeros()];
        drawer = [[LTDisplacementMapDrawer alloc] initWithDisplacementMap:displacementMap mask:mask
                                                         deformedAreaSize:kDeformedAreaSize];
      });
@@ -163,7 +163,7 @@ context(@"transformations", ^{
     it(@"should reset", ^{
       using half_float::half;
 
-      [drawer.displacementMap clearWithColor:LTVector4::ones()];
+      [drawer.displacementMap clearColor:LTVector4::ones()];
       [drawer resetDisplacementMap];
 
       cv::Mat4hf expected(displacementMap.size.height, displacementMap.size.width,
@@ -216,7 +216,7 @@ context(@"transformations", ^{
     it(@"should reset ignoring mask", ^{
       using half_float::half;
 
-      [drawer.displacementMap clearWithColor:LTVector4::ones()];
+      [drawer.displacementMap clearColor:LTVector4::ones()];
       [drawer resetDisplacementMap];
 
       cv::Mat4hf expected(displacementMap.size.height, displacementMap.size.width,
@@ -246,7 +246,7 @@ context(@"transformations", ^{
 
     it(@"should unwarp ignoring mask", ^{
       cv::Mat1hf previousMask = mask.image;
-      [mask clearWithColor:LTVector4::ones()];
+      [mask clearColor:LTVector4::ones()];
       [drawer resizeWithCenter:CGPointMake(0.5, 0.5) scale:1.5 brushParams:params];
       [mask load:previousMask];
       [drawer unwarpWithCenter:CGPointMake(0.75, 0.75) brushParams:params];

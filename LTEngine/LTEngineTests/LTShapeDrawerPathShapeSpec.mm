@@ -108,7 +108,7 @@ context(@"drawing", ^{
     // Prepare output framebuffer.
     output = [LTTexture byteRGBATextureWithSize:kOutputSize];
     fbo = [[LTFbo alloc] initWithTexture:output];
-    [fbo clearWithColor:kBackground];
+    [fbo clearColor:kBackground];
 
     // Prepare shape drawer params.
     params = [[LTShapeDrawerParams alloc] init];

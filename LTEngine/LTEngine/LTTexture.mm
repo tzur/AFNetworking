@@ -483,13 +483,13 @@ NS_ASSUME_NONNULL_BEGIN
   [self setCurrentParameters:parameters];
 }
 
-- (void)clearWithColor:(LTVector4)color {
+- (void)clearColor:(LTVector4)color {
   // Set the fillColor first to avoid it changing multiple times across the clearing process.
   self.fillColor = color;
 
   for (GLint i = 0; i <= self.maxMipmapLevel; ++i) {
     LTFbo *fbo = [[LTFboPool currentPool] fboWithTexture:self level:i];
-    [fbo clearWithColor:color];
+    [fbo clearColor:color];
   }
 }
 

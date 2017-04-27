@@ -197,7 +197,7 @@ context(@"protocols", ^{
 
       it(@"should provide snapshot", ^{
         LTTexture *texture = [LTTexture byteRGBATextureWithSize:CGSizeMakeUniform(1)];
-        [texture clearWithColor:LTVector4(1, 0, 0, 1)];
+        [texture clearColor:LTVector4(1, 0, 0, 1)];
 
         [view replaceContentWith:texture];
 
@@ -207,7 +207,7 @@ context(@"protocols", ^{
 
     it(@"should replace content texture", ^{
       LTTexture *texture = [LTTexture byteRGBATextureWithSize:CGSizeMakeUniform(1)];
-      [texture clearWithColor:LTVector4(1, 0, 0, 1)];
+      [texture clearColor:LTVector4(1, 0, 0, 1)];
 
       [view replaceContentWith:texture];
 
@@ -261,7 +261,7 @@ context(@"protocols", ^{
       it(@"should not use content transparency if required", ^{
         LTTexture *texture = [LTTexture byteRGBATextureWithSize:CGSizeMakeUniform(1)];
         // Use premultiplied alpha values.
-        [texture clearWithColor:LTVector4(0.5, 0.5, 0.5, 0.5)];
+        [texture clearColor:LTVector4(0.5, 0.5, 0.5, 0.5)];
         [view replaceContentWith:texture];
         // TODO:(rouven) The alpha value should be 255 rather than 128. This must be fixed when
         // performing a general overhaul of the code, for the sake of correct transparency handling.
@@ -276,7 +276,7 @@ context(@"protocols", ^{
       it(@"should use content transparency if required", ^{
         LTTexture *texture = [LTTexture byteRGBATextureWithSize:CGSizeMakeUniform(1)];
         // Use premultiplied alpha values.
-        [texture clearWithColor:LTVector4(0.5, 0.5, 0.5, 0.5)];
+        [texture clearColor:LTVector4(0.5, 0.5, 0.5, 0.5)];
         [view replaceContentWith:texture];
         cv::Mat4b expectedMat(1, 1, cv::Vec4b(128, 128, 128, 255));
 
@@ -295,7 +295,7 @@ context(@"protocols", ^{
       it(@"should not use checkerboard pattern if required", ^{
         LTTexture *texture = [LTTexture byteRGBATextureWithSize:CGSizeMakeUniform(1)];
         // Use premultiplied alpha values.
-        [texture clearWithColor:LTVector4(0.5, 0.5, 0.5, 0.5)];
+        [texture clearColor:LTVector4(0.5, 0.5, 0.5, 0.5)];
         [view replaceContentWith:texture];
         cv::Mat4b expectedMat(1, 1, cv::Vec4b(128, 128, 128, 255));
 
@@ -314,7 +314,7 @@ context(@"protocols", ^{
         cv::Mat4b expectedMat = LTWhiteGrayCheckerboardPattern(CGSizeMakeUniform(32), 16);
         LTTexture *texture = [LTTexture byteRGBATextureWithSize:CGSizeMake(32, 32)];
         // Use premultiplied alpha values.
-        [texture clearWithColor:LTVector4(0, 0, 0, 0)];
+        [texture clearColor:LTVector4(0, 0, 0, 0)];
         [view replaceContentWith:texture];
 
         view.contentTransparency = YES;

@@ -339,7 +339,7 @@ context(@"drawing", ^{
     brush.spacing = 0.5;
     output = [LTTexture byteRGBATextureWithSize:kOutputSize];
     fbo = [[LTFbo alloc] initWithTexture:output];
-    [fbo clearWithColor:LTVector4(0, 0, 0, 1)];
+    [fbo clearColor:LTVector4(0, 0, 0, 1)];
 
     expected.create(kOutputSize.height, kOutputSize.width);
     expected = cv::Vec4b(0, 0, 0, 255);
@@ -425,7 +425,7 @@ context(@"drawing", ^{
   });
 
   it(@"drawing should be additive", ^{
-    [fbo clearWithColor:LTVector4(0, 0, 0, 0)];
+    [fbo clearColor:LTVector4(0, 0, 0, 0)];
     [brush.texture mappedImageForWriting:^(cv::Mat *mapped, BOOL) {
       mapped->setTo(3);
     }];
@@ -502,7 +502,7 @@ context(@"drawing", ^{
   });
 
   it(@"should draw with updated intensity", ^{
-    [fbo clearWithColor:LTVector4(0, 0, 0, 0)];
+    [fbo clearColor:LTVector4(0, 0, 0, 0)];
     const LTVector4 kIntensity = LTVector4(0.1, 0.2, 0.3, 0.4);
     brush.intensity = kIntensity;
     [brush drawPoint:centerPoint inFramebuffer:fbo];
@@ -526,7 +526,7 @@ context(@"drawing", ^{
     });
 
     it(@"should render given rotated rects", ^{
-      [fbo clearWithColor:LTVector4::zeros()];
+      [fbo clearColor:LTVector4::zeros()];
       [fbo bindAndExecute:^{
         [brush renderRotatedRects:rotatedRects inFramebufferWithSize:fbo.size];
       }];
@@ -629,7 +629,7 @@ context(@"drawing", ^{
                      inFramebuffer:fbo saveLastDrawnPointTo:nil];
           expect($(output.image)).to.equalMat($(expected));
 
-          [fbo clearWithColor:LTVector4(0, 0, 0, 1)];
+          [fbo clearColor:LTVector4(0, 0, 0, 1)];
 
           CGRect targetRect1 =
               CGRectCenteredAt(kOutputCenter, CGSizeMake(kOutputSize.width,
@@ -653,7 +653,7 @@ context(@"drawing", ^{
                      inFramebuffer:fbo saveLastDrawnPointTo:nil];
           expect($(output.image)).to.equalMat($(expected));
 
-          [fbo clearWithColor:LTVector4(0, 0, 0, 1)];
+          [fbo clearColor:LTVector4(0, 0, 0, 1)];
 
           [brush drawStrokeSegment:segment1 fromPreviousPoint:nil
                      inFramebuffer:fbo saveLastDrawnPointTo:nil];
@@ -698,7 +698,7 @@ context(@"drawing", ^{
                      inFramebuffer:fbo saveLastDrawnPointTo:nil];
           expect($(output.image)).to.equalMat($(expected));
 
-          [fbo clearWithColor:LTVector4(0, 0, 0, 1)];
+          [fbo clearColor:LTVector4(0, 0, 0, 1)];
 
           CGRect targetRect1 =
               CGRectCenteredAt(kOutputCenter, CGSizeMake(kOutputSize.width,
@@ -722,7 +722,7 @@ context(@"drawing", ^{
                      inFramebuffer:fbo saveLastDrawnPointTo:nil];
           expect($(output.image)).to.equalMat($(expected));
 
-          [fbo clearWithColor:LTVector4(0, 0, 0, 1)];
+          [fbo clearColor:LTVector4(0, 0, 0, 1)];
 
           [brush drawStrokeSegment:segment1 fromPreviousPoint:nil
                      inFramebuffer:fbo saveLastDrawnPointTo:nil];

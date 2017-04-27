@@ -395,7 +395,7 @@ context(@"execution", ^{
     auto texture = [[LTGLTexture alloc] initWithImage:cv::Mat4b(1, 1, cv::Vec4b(255, 0, 0, 255))];
     auto fbo = [[LTFbo alloc] initWithTexture:texture];
     [fbo bindAndDraw:^{
-      [[LTGLContext currentContext] clearWithColor:kBlue];
+      [[LTGLContext currentContext] clearColor:kBlue];
     }];
 
     LTVector4 charBlue(kBlue * 255);
@@ -414,7 +414,7 @@ context(@"execution", ^{
 
     glClearColor(kColor1.r(), kColor1.g(), kColor1.b(), kColor1.a());
     [fbo bindAndDraw:^{
-      [[LTGLContext currentContext] clearWithColor:kColor2];
+      [[LTGLContext currentContext] clearColor:kColor2];
     }];
 
     glGetFloatv(GL_COLOR_CLEAR_VALUE, clearColor.data());
@@ -431,7 +431,7 @@ context(@"execution", ^{
 
     auto readTexture = [LTTexture textureWithSize:size pixelFormat:$(LTGLPixelFormatR16Float)
                                    allocateMemory:YES];
-    [readTexture clearWithColor:LTVector4::zeros()];
+    [readTexture clearColor:LTVector4::zeros()];
 
     GLfloat clearValue = 0.5;
     cv::Mat1hf expected = cv::Mat1hf(size.height, size.width) << half_float::half(clearValue);

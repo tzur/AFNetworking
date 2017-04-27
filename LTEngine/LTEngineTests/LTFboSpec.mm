@@ -296,7 +296,7 @@ context(@"clearing", ^{
                                         pixelFormat:$(LTGLPixelFormatRGBA8Unorm)
                                      allocateMemory:YES];
     LTFbo *fbo = [[LTFbo alloc] initWithTexture:texture];
-    [fbo clearWithColor:value];
+    [fbo clearColor:value];
 
     cv::Mat image = [texture image];
 
@@ -315,7 +315,7 @@ context(@"clearing", ^{
     }];
 
     [fbo clearDepth:depthClearValue];
-    [readTexture clearWithColor:LTVector4::zeros()];
+    [readTexture clearColor:LTVector4::zeros()];
 
     context.depthTestEnabled = YES;
 
@@ -331,7 +331,7 @@ context(@"clearing", ^{
     LTTexture *texture = [LTTexture byteRGBATextureWithSize:CGSizeMakeUniform(16)];
     LTFbo *fbo = [[LTFbo alloc] initWithTexture:texture];
     expect(texture.fillColor.isNull()).to.beTruthy();
-    [fbo clearWithColor:LTVector4::zeros()];
+    [fbo clearColor:LTVector4::zeros()];
     expect(texture.fillColor).to.equal(LTVector4::zeros());
   });
 

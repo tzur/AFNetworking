@@ -170,11 +170,11 @@ context(@"drawing on the entire source texture", ^{
 
     meshTexture = [LTTexture textureWithSize:kMeshSize + CGSizeMakeUniform(1)
                                  pixelFormat:$(LTGLPixelFormatRG16Float) allocateMemory:YES];
-    [meshTexture clearWithColor:LTVector4::zeros()];
+    [meshTexture clearColor:LTVector4::zeros()];
 
     output = [LTTexture byteRGBATextureWithSize:inputTexture.size];
     fbo = [[LTFbo alloc] initWithTexture:output];
-    [fbo clearWithColor:LTVector4::zeros()];
+    [fbo clearColor:LTVector4::zeros()];
   });
 
   afterEach(^{
@@ -248,7 +248,7 @@ context(@"drawing on the entire source texture", ^{
           .copyTo(expected.colRange(cellRadius.width, cellSize.width + 1));
       expect($([output image])).to.equalMat($(expected));
 
-      [output clearWithColor:LTVector4::zeros()];
+      [output clearColor:LTVector4::zeros()];
       [meshTexture mappedImageForWriting:^(cv::Mat *mapped, BOOL) {
         mapped->setTo(cv::Vec2hf(half(0)));
         mapped->row(1).setTo(cv::Vec2hf(half(0), half(-0.5 / kMeshSize.height)));
@@ -275,7 +275,7 @@ context(@"drawing on the entire source texture", ^{
         [drawer drawRect:CGRectFromSize(fbo.size) inFramebuffer:fbo
                 fromRect:CGRectFromSize(inputTexture.size)];
         warped = [output image];
-        [output clearWithColor:LTVector4::zeros()];
+        [output clearColor:LTVector4::zeros()];
       });
 
       context(@"framebuffer", ^{
@@ -449,11 +449,11 @@ context(@"drawing on a custom mesh source rect", ^{
 
     meshTexture = [LTTexture textureWithSize:kMeshSize + CGSizeMakeUniform(1)
                                  pixelFormat:$(LTGLPixelFormatRG16Float) allocateMemory:YES];
-    [meshTexture clearWithColor:LTVector4::zeros()];
+    [meshTexture clearColor:LTVector4::zeros()];
 
     output = [LTTexture byteRGBATextureWithSize:kUnpaddedInputSize];
     fbo = [[LTFbo alloc] initWithTexture:output];
-    [fbo clearWithColor:LTVector4::zeros()];
+    [fbo clearColor:LTVector4::zeros()];
   });
 
   afterEach(^{
@@ -532,7 +532,7 @@ context(@"drawing on a custom mesh source rect", ^{
 
         [drawer drawRect:CGRectFromSize(fbo.size) inFramebuffer:fbo fromRect:meshSourceRect];
         warped = [output image];
-        [output clearWithColor:LTVector4::zeros()];
+        [output clearColor:LTVector4::zeros()];
       });
 
       context(@"framebuffer", ^{

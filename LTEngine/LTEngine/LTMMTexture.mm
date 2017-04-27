@@ -222,7 +222,7 @@
 
   [texture performWithoutUpdatingGenerationID:^{
     if (!self.fillColor.isNull()) {
-      [texture clearWithColor:self.fillColor];
+      [texture clearColor:self.fillColor];
     } else {
       LTFbo *fbo = [[LTFboPool currentPool] fboWithTexture:texture];
       [self cloneToFramebuffer:fbo];

@@ -38,7 +38,7 @@ beforeEach(^{
   mask = [LTTexture byteRedTextureWithSize:CGSizeMake(8, 8)];
   output = [LTTexture byteRGBATextureWithSize:CGSizeMake(16, 16)];
 
-  [mask clearWithColor:LTVector4(maskColor, maskColor, maskColor, maskColor)];
+  [mask clearColor:LTVector4(maskColor, maskColor, maskColor, maskColor)];
 
   processor = [[LTMixerProcessor alloc] initWithBack:back front:front mask:mask output:output];
 });
@@ -254,9 +254,9 @@ context(@"blending", ^{
     it(@"should yield correct results in all channels for color burn blend mode", ^{
       cv::Vec4b newBackColor(0, 128, 255, 255);
       cv::Vec4b newFrontColor(0, 192, 255, 255);
-      [back clearWithColor:LTVector4(newBackColor)];
-      [front clearWithColor:LTVector4(newFrontColor)];
-      [mask clearWithColor:LTVector4::ones()];
+      [back clearColor:LTVector4(newBackColor)];
+      [front clearColor:LTVector4(newFrontColor)];
+      [mask clearColor:LTVector4::ones()];
 
       processor.blendMode = LTBlendModeColorBurn;
       [processor process];

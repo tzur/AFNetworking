@@ -31,7 +31,7 @@ beforeEach(^{
   texture.magFilterInterpolation = LTTextureInterpolationNearest;
   texture.minFilterInterpolation = LTTextureInterpolationNearest;
   targetTexture = [LTTexture byteRGBATextureWithSize:kTargetTextureSize];
-  [targetTexture clearWithColor:LTVector4(0, 0, 0, 1)];
+  [targetTexture clearColor:LTVector4(0, 0, 0, 1)];
   targetFBO = [[LTFboPool currentPool] fboWithTexture:targetTexture];
   expectedImage = cv::Mat(kTargetTextureSize.height, kTargetTextureSize.width, CV_8UC4);
 });

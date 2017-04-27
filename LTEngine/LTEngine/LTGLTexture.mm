@@ -294,7 +294,7 @@ static void LTVerifyMipmapImages(const Matrices &images) {
 
   [texture performWithoutUpdatingGenerationID:^{
     if (!self.fillColor.isNull()) {
-      [texture clearWithColor:self.fillColor];
+      [texture clearColor:self.fillColor];
     } else {
       for (GLint i = 0; i <= self.maxMipmapLevel; ++i) {
         LTFbo *fbo = [[LTFboPool currentPool] fboWithTexture:texture level:i];

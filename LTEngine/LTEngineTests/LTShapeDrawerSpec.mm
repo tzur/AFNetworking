@@ -273,7 +273,7 @@ context(@"drawing", ^{
     // Prepare output framebuffer.
     output = [LTTexture byteRGBATextureWithSize:kOutputSize];
     fbo = [[LTFbo alloc] initWithTexture:output];
-    [fbo clearWithColor:kBackground];
+    [fbo clearColor:kBackground];
   });
 
   afterEach(^{
@@ -341,7 +341,7 @@ context(@"drawing", ^{
       expected = LTLoadMat([self class], @"ShapeDrawerActualDrawingOriginal.png");
       expect($(output.image)).to.beCloseToMatWithin($(expected), kAcceptedDistance);
 
-      [fbo clearWithColor:kBackground];
+      [fbo clearColor:kBackground];
       [drawer updateShape:mesh setRotation:M_PI];
       [drawer updateShape:path setTranslation:kOutputCenter - CGSizeMake(0, 50)];
       [drawer drawInFramebuffer:fbo];

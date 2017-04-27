@@ -1,7 +1,7 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Rouven Strauss.
 
-#import "LTSingleQuadDrawerSpec.h"
+#import "LTSingleQuadDrawer.h"
 
 #import "LTFbo.h"
 #import "LTGLContext.h"
@@ -9,9 +9,9 @@
 #import "LTProgram.h"
 #import "LTQuad.h"
 #import "LTRotatedRect.h"
-#import "LTShaderStorage+PassthroughVsh.h"
 #import "LTShaderStorage+PassthroughFsh.h"
-#import "LTSingleQuadDrawer.h"
+#import "LTShaderStorage+PassthroughVsh.h"
+#import "LTSingleQuadDrawerSpec.h"
 #import "LTTexture+Factory.h"
 #import "LTTextureDrawerExamples.h"
 
@@ -92,7 +92,7 @@ sharedExamplesFor(kLTSingleQuadDrawerExamples, ^(NSDictionary *data) {
             CGPointMake(inputSize.width, inputSize.height),
             CGPointMake(0, inputSize.height / 2)}};
 
-        [fbo clearWithColor:LTVector4(0, 0, 0, 1)];
+        [fbo clearColor:LTVector4(0, 0, 0, 1)];
         CGRect sourceRect = CGRectFromSize(inputSize);
         [quadDrawer drawQuad:[[LTQuad alloc] initWithCorners:sourceCorners]
                inFramebuffer:fbo
@@ -114,7 +114,7 @@ sharedExamplesFor(kLTSingleQuadDrawerExamples, ^(NSDictionary *data) {
       beforeEach(^{
         expectedTexture = [LTTexture textureWithPropertiesOf:output];
         expectedFbo = [[LTFbo alloc] initWithTexture:expectedTexture];
-        [expectedFbo clearWithColor:LTVector4(0, 0, 0, 1)];
+        [expectedFbo clearColor:LTVector4(0, 0, 0, 1)];
         expected.create(expectedTexture.size.height, expectedTexture.size.width);
       });
 
@@ -129,7 +129,7 @@ sharedExamplesFor(kLTSingleQuadDrawerExamples, ^(NSDictionary *data) {
           CGPointMake(inputSize.width, inputSize.height),
           CGPointMake(0, inputSize.height / 2)}};
 
-        [fbo clearWithColor:LTVector4(0, 0, 0, 1)];
+        [fbo clearColor:LTVector4(0, 0, 0, 1)];
         CGRect sourceRect = CGRectFromSize(inputSize);
         [fbo bindAndDrawOnScreen:^{
           [quadDrawer drawQuad:[[LTQuad alloc] initWithCorners:sourceCorners]

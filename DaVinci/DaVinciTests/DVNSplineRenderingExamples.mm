@@ -84,7 +84,7 @@ sharedExamples(kDVNSplineRenderingExamples, ^(NSDictionary *data) {
       renderer = values[kDVNSplineRenderingExamplesRendererWithoutDelegate];
       parameterizedObject = OCMProtocolMock(@protocol(LTParameterizedObject));
       renderTarget = values[kDVNSplineRenderingExamplesTexture];
-      [renderTarget clearWithColor:LTVector4::ones()];
+      [renderTarget clearColor:LTVector4::ones()];
       fbo = [[LTFbo alloc] initWithTexture:renderTarget];
       initialMat = renderTarget.image;
       expectedMatForSingleRenderCall = DVNTestSingleProcessResult();

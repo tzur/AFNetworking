@@ -79,7 +79,7 @@ context(@"non-edge avoiding drawing", ^{
     brush.hardness = 1;
     output = [LTTexture byteRGBATextureWithSize:kOutputSize];
     fbo = [[LTFbo alloc] initWithTexture:output];
-    [fbo clearWithColor:LTVector4::zeros()];
+    [fbo clearColor:LTVector4::zeros()];
 
     expected.create(kOutputSize.height, kOutputSize.width);
     expected = cv::Vec4b(0, 0, 0, 0);
@@ -162,7 +162,7 @@ context(@"non-edge avoiding drawing", ^{
 
     context(@"direct erasing mode", ^{
       beforeEach(^{
-        [fbo clearWithColor:LTVector4::ones()];
+        [fbo clearColor:LTVector4::ones()];
         expected.setTo(cv::Vec4b(255, 255, 255, 255));
         brush.mode = LTRoundBrushModeEraseDirect;
       });
@@ -223,7 +223,7 @@ context(@"non-edge avoiding drawing", ^{
         output = [LTTexture textureWithSize:kOutputSize pixelFormat:$(LTGLPixelFormatRGBA16Float)
                              allocateMemory:YES];
         fbo = [[LTFbo alloc] initWithTexture:output];
-        [fbo clearWithColor:LTVector4::zeros()];
+        [fbo clearColor:LTVector4::zeros()];
 
         expected.create(kOutputSize.height, kOutputSize.width);
         expected.setTo(kBlack);
@@ -280,7 +280,7 @@ context(@"non-edge avoiding drawing", ^{
       const cv::Vec4b kCvColor = LTLTVector4ToVec4b(kColor);
 
       beforeEach(^{
-        [fbo clearWithColor:kColor];
+        [fbo clearColor:kColor];
         expected.setTo(kCvColor);
         brush.mode = LTRoundBrushModeBlend;
       });
@@ -362,7 +362,7 @@ context(@"edge avoiding drawing", ^{
     brush.inputTexture = inputTexture;
     output = [LTTexture byteRGBATextureWithSize:kOutputSize];
     fbo = [[LTFbo alloc] initWithTexture:output];
-    [fbo clearWithColor:kBackgroundColor];
+    [fbo clearColor:kBackgroundColor];
 
     expected.create(kOutputSize.height, kOutputSize.width);
     expected = cv::Scalar(0);
@@ -387,7 +387,7 @@ context(@"edge avoiding drawing", ^{
     expected.rowRange(kOutputSize.height * 0.75, kOutputSize.height).setTo(0);
     expected.colRange(kOutputSize.width * 0.75, kOutputSize.width).setTo(0);
 
-    [fbo clearWithColor:kBackgroundColor];
+    [fbo clearColor:kBackgroundColor];
     brush.sigma = brush.minSigma;
     [brush startNewStrokeAtPoint:point];
     [brush drawPoint:point inFramebuffer:fbo];
@@ -403,7 +403,7 @@ context(@"edge avoiding drawing", ^{
     [roundBrush drawPoint:point inFramebuffer:fbo];
     cv::Mat4b roundBrushOutput = output.image;
 
-    [fbo clearWithColor:kBackgroundColor];
+    [fbo clearColor:kBackgroundColor];
     brush.inputTexture = nil;
     [brush startNewStrokeAtPoint:point];
     [brush drawPoint:point inFramebuffer:fbo];
@@ -416,7 +416,7 @@ context(@"edge avoiding drawing", ^{
     [brush drawPoint:point inFramebuffer:fbo];
     cv::Mat4b minSigma = output.image;
 
-    [fbo clearWithColor:kBackgroundColor];
+    [fbo clearColor:kBackgroundColor];
     brush.sigma = 0.5;
     [brush startNewStrokeAtPoint:point];
     [brush drawPoint:point inFramebuffer:fbo];
@@ -425,7 +425,7 @@ context(@"edge avoiding drawing", ^{
     expect($(midSigma(LTCVRectWithCGRect(similarSubrect))))
         .to.beCloseToMat($(minSigma(LTCVRectWithCGRect(similarSubrect))));
 
-    [fbo clearWithColor:kBackgroundColor];
+    [fbo clearColor:kBackgroundColor];
     brush.sigma = brush.maxSigma;
     [brush startNewStrokeAtPoint:point];
     [brush drawPoint:point inFramebuffer:fbo];
@@ -435,7 +435,7 @@ context(@"edge avoiding drawing", ^{
     expect($(maxSigma(LTCVRectWithCGRect(similarSubrect))))
         .to.beCloseToMat($(minSigma(LTCVRectWithCGRect(similarSubrect))));
 
-    [fbo clearWithColor:kBackgroundColor];
+    [fbo clearColor:kBackgroundColor];
     brush.inputTexture = nil;
     brush.sigma = brush.maxSigma;
     [brush startNewStrokeAtPoint:point];
@@ -445,7 +445,7 @@ context(@"edge avoiding drawing", ^{
 
   context(@"blending mode", ^{
     beforeEach(^{
-      [fbo clearWithColor:LTVector4(LTVector3::zeros(), 1)];
+      [fbo clearColor:LTVector4(LTVector3::zeros(), 1)];
       brush.mode = LTRoundBrushModeBlend;
     });
 

@@ -41,7 +41,7 @@ beforeEach(^{
   mask = [LTTexture byteRedTextureWithSize:CGSizeMake(8, 8)];
   output = [LTTexture byteRGBATextureWithSize:CGSizeMake(16, 16)];
 
-  [mask clearWithColor:LTVector4(maskColor)];
+  [mask clearColor:LTVector4(maskColor)];
 
   processor = [[LTQuadMixerProcessor alloc] initWithBack:back front:front mask:mask output:output
                                                 maskMode:LTMixerMaskModeFront];
@@ -90,7 +90,7 @@ context(@"initialization", ^{
   });
 
   it(@"should use the last frag data when initialized with identical back and output textures", ^{
-    [mask clearWithColor:LTVector4::ones()];
+    [mask clearColor:LTVector4::ones()];
     LTTexture *anotherFront = [LTTexture textureWithImage:cv::Mat4b(8, 8, anotherFrontColor)];
     LTQuadMixerProcessor *anotherProcessor =
         [[LTQuadMixerProcessor alloc] initWithBack:output front:anotherFront mask:mask output:output
@@ -280,9 +280,9 @@ context(@"blending", ^{
     it(@"should yield correct results in all channels for color burn blend mode", ^{
       cv::Vec4b newBackColor(0, 128, 255, 255);
       cv::Vec4b newFrontColor(0, 192, 255, 255);
-      [back clearWithColor:LTVector4(newBackColor)];
-      [front clearWithColor:LTVector4(newFrontColor)];
-      [mask clearWithColor:LTVector4::ones()];
+      [back clearColor:LTVector4(newBackColor)];
+      [front clearColor:LTVector4(newFrontColor)];
+      [mask clearColor:LTVector4::ones()];
 
       processor.blendMode = LTBlendModeColorBurn;
       [processor process];
@@ -341,7 +341,7 @@ context(@"opacity", ^{
 
 context(@"masking", ^{
   it(@"should correctly apply the mask to the front", ^{
-    [mask clearWithColor:LTVector4(1, 1, 1, 1)];
+    [mask clearColor:LTVector4(1, 1, 1, 1)];
     [mask mappedImageForWriting:^(cv::Mat *mapped, BOOL) {
       mapped->at<cv::Vec4b>(0, 0) = cv::Vec4b(0, 0, 0, 0);
     }];
@@ -381,7 +381,7 @@ context(@"masking", ^{
                                                   maskMode:LTMixerMaskModeBack];
     processor.frontQuad = [LTQuad quadFromRect:CGRectMake(0, 0, 8, 8)];
 
-    [mask clearWithColor:LTVector4(1, 1, 1, 1)];
+    [mask clearColor:LTVector4(1, 1, 1, 1)];
     [mask mappedImageForWriting:^(cv::Mat *mapped, BOOL) {
       mapped->at<cv::Vec4b>(0, 0) = cv::Vec4b(0, 0, 0, 0);
     }];
@@ -422,7 +422,7 @@ context(@"output size different than back size", ^{
     mask = [LTTexture byteRedTextureWithSize:CGSizeMake(16, 16)];
     output = [LTTexture byteRGBATextureWithSize:CGSizeMake(12, 12)];
 
-    [mask clearWithColor:LTVector4(maskColor)];
+    [mask clearColor:LTVector4(maskColor)];
 
     processor = [[LTQuadMixerProcessor alloc] initWithBack:back front:front mask:mask output:output
                                                   maskMode:LTMixerMaskModeBack];
@@ -449,7 +449,7 @@ context(@"output size different than back size", ^{
   });
 
   it(@"should stretch the back texture onto the output texture", ^{
-    [mask clearWithColor:LTVector4::zeros()];
+    [mask clearColor:LTVector4::zeros()];
 
     cv::Mat4b expected(output.size.height, output.size.width, backColor);
     expected(cv::Rect(0, 0, output.size.width / 2, output.size.height / 2)) = secondBackColor;
