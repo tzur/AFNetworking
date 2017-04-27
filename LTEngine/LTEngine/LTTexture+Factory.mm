@@ -114,6 +114,11 @@ NS_ASSUME_NONNULL_BEGIN
                 allocateMemory:YES];
 }
 
++ (instancetype)textureWithSize:(CGSize)size andPropertiesOfTexture:(LTTexture *)texture {
+  return [self textureWithSize:size pixelFormat:texture.pixelFormat
+                maxMipmapLevel:texture.maxMipmapLevel allocateMemory:YES];
+}
+
 + (instancetype)textureWithBaseLevelMipmapImage:(const cv::Mat &)image {
   return [[LTGLTexture alloc] initWithBaseLevelMipmapImage:image];
 }
