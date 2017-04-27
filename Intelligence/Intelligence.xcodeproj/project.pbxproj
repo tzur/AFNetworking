@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		A10165011E7006AA009596E1 /* INTEventTransformer.mm in Sources */ = {isa = PBXBuildFile; fileRef = A10165001E7006AA009596E1 /* INTEventTransformer.mm */; };
 		A101680B1E713D8B009596E1 /* INTEventTransformerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = A101680A1E713D8B009596E1 /* INTEventTransformerSpec.mm */; };
-		A10EEB891EAC783400791FF4 /* INTTransformerBlock.mm in Sources */ = {isa = PBXBuildFile; fileRef = A10EEB881EAC783400791FF4 /* INTTransformerBlock.mm */; };
 		A14171C61E6EAC0D005DBEFF /* libIntelligence.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A14171A11E6EAA93005DBEFF /* libIntelligence.a */; };
 		A14173401E6EB59F005DBEFF /* libExpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A141728A1E6EAEE7005DBEFF /* libExpecta.a */; };
 		A14173411E6EB59F005DBEFF /* libLTKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A141726F1E6EADDF005DBEFF /* libLTKit.a */; };
@@ -28,6 +27,7 @@
 		A1541B0F1EAF1CC300B4F064 /* INTRecorderLogger.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1541B0D1EAF1CC300B4F064 /* INTRecorderLogger.mm */; };
 		A1541B8C1EAF2D1400B4F064 /* INTAppLifecycleTimer.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1541B8B1EAF2D1400B4F064 /* INTAppLifecycleTimer.mm */; };
 		A1541C0A1EAF405100B4F064 /* INTAppLifecycleTimerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1541C091EAF405100B4F064 /* INTAppLifecycleTimerSpec.mm */; };
+		A1B373BF1EA6511F008E5195 /* INTEventTransformationExecutor.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1B373BE1EA6511F008E5195 /* INTEventTransformationExecutor.mm */; };
 		A1D136E91E78F4C200B1EA8D /* INTDataStructuresSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1D136E81E78F4C200B1EA8D /* INTDataStructuresSpec.mm */; };
 		CDE00B451E82AE82007AFD5E /* libcompression.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = CDE00B441E82AE82007AFD5E /* libcompression.tbd */; };
 /* End PBXBuildFile section */
@@ -264,6 +264,8 @@
 		A1541B8B1EAF2D1400B4F064 /* INTAppLifecycleTimer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; lineEnding = 0; path = INTAppLifecycleTimer.mm; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		A1541C091EAF405100B4F064 /* INTAppLifecycleTimerSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; lineEnding = 0; path = INTAppLifecycleTimerSpec.mm; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		A172A9BF1EAC112D00A12B86 /* INTEventLogger.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = INTEventLogger.h; sourceTree = "<group>"; };
+		A1B373BD1EA6511F008E5195 /* INTEventTransformationExecutor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INTEventTransformationExecutor.h; sourceTree = "<group>"; };
+		A1B373BE1EA6511F008E5195 /* INTEventTransformationExecutor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = INTEventTransformationExecutor.mm; sourceTree = "<group>"; };
 		A1D136E81E78F4C200B1EA8D /* INTDataStructuresSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = INTDataStructuresSpec.mm; sourceTree = "<group>"; };
 		CDE00B441E82AE82007AFD5E /* libcompression.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libcompression.tbd; path = usr/lib/libcompression.tbd; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
@@ -318,6 +320,8 @@
 		A113424A1EB5AD870042ABA8 /* Test Utils */ = {
 			isa = PBXGroup;
 			children = (
+				A1B373BD1EA6511F008E5195 /* INTEventTransformationExecutor.h */,
+				A1B373BE1EA6511F008E5195 /* INTEventTransformationExecutor.mm */,
 				A1541B0C1EAF1CC300B4F064 /* INTRecorderLogger.h */,
 				A1541B0D1EAF1CC300B4F064 /* INTRecorderLogger.mm */,
 			);
@@ -854,6 +858,7 @@
 				A1541C0A1EAF405100B4F064 /* INTAppLifecycleTimerSpec.mm in Sources */,
 				A1541B0F1EAF1CC300B4F064 /* INTRecorderLogger.mm in Sources */,
 				A1D136E91E78F4C200B1EA8D /* INTDataStructuresSpec.mm in Sources */,
+				A1B373BF1EA6511F008E5195 /* INTEventTransformationExecutor.mm in Sources */,
 				A101680B1E713D8B009596E1 /* INTEventTransformerSpec.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
