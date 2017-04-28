@@ -18,6 +18,12 @@ typedef void (^PTNPhotoKitImageManagerAVAssetHandler)(AVAsset * __nullable asset
                                                       AVAudioMix * __nullable audioMix,
                                                       NSDictionary * __nullable info);
 
+/// Handles successful or erroneous callbacks of \c requestImageDataForAsset:options:resultHandler:.
+typedef void (^PTNPhotoKitImageManagerImageDataHandler)(NSData *__nullable imageData,
+                                                        NSString *__nullable dataUTI,
+                                                        UIImageOrientation orientation,
+                                                        NSDictionary *__nullable info);
+
 /// Requests an image representation for the specified asset.
 ///
 /// @see -[PHImageManager requestImageForAsset:targetSize:contentMode:options:resultHandler:].
@@ -38,6 +44,13 @@ typedef void (^PTNPhotoKitImageManagerAVAssetHandler)(AVAsset * __nullable asset
 - (PHImageRequestID)requestAVAssetForVideo:(PHAsset *)asset
                                    options:(PHVideoRequestOptions *)options
                              resultHandler:(PTNPhotoKitImageManagerAVAssetHandler)resultHandler;
+
+/// Requests a full-fized image data for the specified asset.
+///
+/// @see -[PHImageManager requestImageDataForAsset:options:resultHandler:].
+- (PHImageRequestID)requestImageDataForAsset:(PHAsset *)asset
+                                     options:(PHImageRequestOptions *)options
+                               resultHandler:(PTNPhotoKitImageManagerImageDataHandler)resultHandler;
 
 @end
 

@@ -59,11 +59,12 @@ NS_ASSUME_NONNULL_BEGIN
                              contentMode:(PHImageContentMode)contentMode
                                  options:(PHImageRequestOptions *)options
                            resultHandler:(PTNPhotoKitImageManagerHandler)resultHandler {
-  if (![self.authorizationManager.authorizationStatus isEqual:$(PTNAuthorizationStatusAuthorized)]) {
+  if (![self.authorizationManager.authorizationStatus
+        isEqual:$(PTNAuthorizationStatusAuthorized)]) {
     resultHandler(nil, @{PHImageErrorKey: [NSError lt_errorWithCode:PTNErrorCodeNotAuthorized]});
     return 0;
   }
-  
+
   [self instantiateImageManagerIfNeeded];
   return [self.imageManager requestImageForAsset:asset targetSize:targetSize
                                      contentMode:contentMode options:options
@@ -71,10 +72,11 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)cancelImageRequest:(PHImageRequestID)requestID {
-  if (![self.authorizationManager.authorizationStatus isEqual:$(PTNAuthorizationStatusAuthorized)]) {
+  if (![self.authorizationManager.authorizationStatus
+        isEqual:$(PTNAuthorizationStatusAuthorized)]) {
     return;
   }
-  
+
   [self instantiateImageManagerIfNeeded];
   return [self.imageManager cancelImageRequest:requestID];
 }
@@ -83,15 +85,32 @@ NS_ASSUME_NONNULL_BEGIN
                                    options:(PHVideoRequestOptions *)options
                              resultHandler:(PTNPhotoKitImageManagerAVAssetHandler)resultHandler {
   LTParameterAssert(resultHandler, "resultHandler block cannot be nil");
-  if (![self.authorizationManager.authorizationStatus isEqual:$(PTNAuthorizationStatusAuthorized)]) {
+  if (![self.authorizationManager.authorizationStatus
+        isEqual:$(PTNAuthorizationStatusAuthorized)]) {
     resultHandler(nil, nil,
                   @{PHImageErrorKey: [NSError lt_errorWithCode:PTNErrorCodeNotAuthorized]});
     return 0;
   }
-  
+
   [self instantiateImageManagerIfNeeded];
   return [self.imageManager requestAVAssetForVideo:asset options:options
                                      resultHandler:resultHandler];
+}
+
+- (PHImageRequestID)requestImageDataForAsset:(PHAsset *)asset
+    options:(PHImageRequestOptions *)options
+    resultHandler:(PTNPhotoKitImageManagerImageDataHandler)resultHandler {
+  LTParameterAssert(resultHandler, "resultHandler block cannot be nil");
+  if (![self.authorizationManager.authorizationStatus
+        isEqual:$(PTNAuthorizationStatusAuthorized)]) {
+    resultHandler(nil, nil, UIImageOrientationUp,
+                  @{PHImageErrorKey: [NSError lt_errorWithCode:PTNErrorCodeNotAuthorized]});
+    return 0;
+  }
+
+  [self instantiateImageManagerIfNeeded];
+  return [self.imageManager requestImageDataForAsset:asset options:options
+                                       resultHandler:resultHandler];
 }
 
 @end
