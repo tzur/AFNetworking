@@ -114,7 +114,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (BOOL)isSubscriptionProduct:(BZRProduct *)product {
-  return [product.productType isEqual:$(BZRProductTypeRenewableSubscription)] &&
+  return [product.productType isEqual:$(BZRProductTypeRenewableSubscription)] ||
       [product.productType isEqual:$(BZRProductTypeNonRenewingSubscription)];
 }
 
