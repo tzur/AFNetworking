@@ -5,7 +5,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@protocol PTNAlbum, PTNImageAsset, PTNImageDataAsset, PTNVideoAsset;
+@protocol PTNAlbum, PTNAudiovisualAsset, PTNImageAsset, PTNImageDataAsset;
 
 @class PTNAlbumChangeset, PTNImageFetchOptions, PTNProgress, PTNVideoFetchOptions;
 
@@ -105,7 +105,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// completes. If any properties of \c videoRequest are \c nil, that property will be treated as a
 /// wildcard, matching all values from that property.
 - (void)serveVideoRequest:(PTNVideoRequest *)videoRequest
-             withProgress:(NSArray<NSNumber *> *)progress videoAsset:(id<PTNVideoAsset>)videoAsset;
+             withProgress:(NSArray<NSNumber *> *)progress
+               videoAsset:(id<PTNAudiovisualAsset>)videoAsset;
 
 /// Serves the given \c videoRequest by sending the given \c progress reports (array of \c NSNumber
 /// values) all wrapped in a \c PTNProgress objects, and finally the given \c error. If any

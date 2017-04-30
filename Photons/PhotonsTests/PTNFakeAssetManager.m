@@ -6,13 +6,13 @@
 #import <LTKit/NSArray+Functional.h>
 
 #import "PTNAlbumChangeset.h"
+#import "PTNAudiovisualAsset.h"
 #import "PTNDescriptor.h"
 #import "PTNImageAsset.h"
 #import "PTNImageDataAsset.h"
 #import "PTNImageFetchOptions.h"
 #import "PTNProgress.h"
 #import "PTNResizingStrategy.h"
-#import "PTNVideoAsset.h"
 #import "PTNVideoFetchOptions.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -213,7 +213,8 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 - (void)serveVideoRequest:(PTNVideoRequest *)videoRequest
-             withProgress:(NSArray<NSNumber *> *)progress videoAsset:(id<PTNVideoAsset>)videoAsset {
+             withProgress:(NSArray<NSNumber *> *)progress
+               videoAsset:(id<PTNAudiovisualAsset>)videoAsset {
   NSArray *progressObjects = [[progress lt_map:^PTNProgress *(NSNumber *progressValue) {
     return [[PTNProgress alloc] initWithProgress:progressValue];
   }] arrayByAddingObject:[[PTNProgress alloc] initWithResult:videoAsset]];

@@ -107,9 +107,34 @@ NS_ASSUME_NONNULL_BEGIN
         NSString *filePath = [path stringByAppendingPathComponent:file.name];
         PTNFakeFileResourceURL *fileURL = [[PTNFakeFileResourceURL alloc]
                                            initFileURLWithPath:filePath];
-        fileURL.resources = @{NSURLNameKey: file.name, NSURLIsDirectoryKey: @(file.isDirectory)};
+        if ([[self videoExtensions] containsObject:filePath.pathExtension.lowercaseString]) {
+          fileURL.resources = @{
+            NSURLNameKey: file.name,
+            NSURLIsDirectoryKey: @(file.isDirectory),
+            NSURLTypeIdentifierKey: @"public.mpeg-4"
+          };
+        } else if ([[self imageExtensions] containsObject:filePath.pathExtension.lowercaseString]) {
+          fileURL.resources = @{
+            NSURLNameKey: file.name,
+            NSURLIsDirectoryKey: @(file.isDirectory),
+            NSURLTypeIdentifierKey: @"public.jpeg"
+          };
+        } else {
+          fileURL.resources = @{
+            NSURLNameKey: file.name,
+            NSURLIsDirectoryKey: @(file.isDirectory)
+          };
+        }
         return fileURL;
       }].array;
+}
+
+- (NSArray<NSString *> *)videoExtensions {
+  return @[@"mp4", @"qt", @"m4v", @"mov"];
+}
+
+- (NSArray<NSString *> *)imageExtensions {
+  return @[@"jpg", @"jpeg", @"tiff", @"png"];
 }
 
 @end

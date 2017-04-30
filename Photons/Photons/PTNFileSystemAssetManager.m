@@ -3,13 +3,16 @@
 
 #import "PTNFileSystemAssetManager.h"
 
+#import <AVFoundation/AVFoundation.h>
 #import <LTKit/LTPath.h>
 #import <LTKit/LTRandomAccessCollection.h>
 
 #import "NSError+Photons.h"
 #import "NSURL+FileSystem.h"
+#import "PTNAVImageAsset.h"
 #import "PTNAlbum.h"
 #import "PTNAlbumChangeset.h"
+#import "PTNAudiovisualAsset.h"
 #import "PTNFileBackedImageAsset.h"
 #import "PTNFileSystemDirectoryDescriptor.h"
 #import "PTNFileSystemFileDescriptor.h"
@@ -82,51 +85,59 @@ NS_ASSUME_NONNULL_BEGIN
   }] subscribeOn:[RACScheduler scheduler]];
 }
 
-- (NSArray *)subdirectoriesFromContents:(NSArray *)contents withPath:(LTPath *)path {
-  return [[self pathSequenceFromContents:contents withPath:path keepDirectories:YES]
-      map:^(LTPath *path) {
-        return [[PTNFileSystemDirectoryDescriptor alloc] initWithPath:path];
+- (NSArray *)subdirectoriesFromContents:(NSArray<NSURL *> *)contents withPath:(LTPath *)path {
+  return [[self urlSequenceFromContents:contents keepDirectories:YES]
+      map:^(NSURL *item) {
+        LTPath *descriptorPath = [self descriptorPathFromContentURL:item andPath:path];
+        return [[PTNFileSystemDirectoryDescriptor alloc] initWithPath:descriptorPath];
       }].array;
 }
 
-- (NSArray *)imageFilesFromContents:(NSArray *)contents withPath:(LTPath *)path {
-  return [[[self pathSequenceFromContents:contents withPath:path keepDirectories:NO]
-      filter:^BOOL(LTPath *path) {
-        return [[self.class imageFileExtensions]
-                containsObject:path.path.pathExtension.lowercaseString];
+- (NSArray *)imageFilesFromContents:(NSArray<NSURL *> *)contents withPath:(LTPath *)path {
+  return [[[self urlSequenceFromContents:contents keepDirectories:NO]
+      filter:^BOOL(NSURL *item) {
+        NSString * _Nullable UTI;
+        BOOL success = [item getResourceValue:&UTI forKey:NSURLTypeIdentifierKey error:nil];
+        return (success && [[self.class supportedUTIs] containsObject:UTI]);
       }]
-      map:^(LTPath *path) {
-        return [[PTNFileSystemFileDescriptor alloc] initWithPath:path];
+      map:^(NSURL *item) {
+        LTPath *descriptorPath = [self descriptorPathFromContentURL:item andPath:path];
+        return [[PTNFileSystemFileDescriptor alloc] initWithPath:descriptorPath];
       }].array;
 }
 
-- (RACSequence *)pathSequenceFromContents:(NSArray *)contents withPath:(LTPath *)path
-                          keepDirectories:(BOOL)keepDirectories {
-  return [[contents.rac_sequence
+- (RACSequence *)urlSequenceFromContents:(NSArray<NSURL *> *)contents
+                         keepDirectories:(BOOL)keepDirectories {
+  return [contents.rac_sequence
       filter:^BOOL(NSURL *item) {
         NSNumber *isDirectory;
         [item getResourceValue:&isDirectory forKey:NSURLIsDirectoryKey error:nil];
 
         return keepDirectories ? isDirectory.boolValue : !isDirectory.boolValue;
-      }] map:^LTPath *(NSURL *item) {
-        NSString *name;
-        [item getResourceValue:&name forKey:NSURLNameKey error:nil];
-
-        NSString *relativePath = [path.relativePath stringByAppendingPathComponent:name];
-
-        return [LTPath pathWithBaseDirectory:path.baseDirectory andRelativePath:relativePath];
       }];
 }
 
-+ (NSArray *)imageFileExtensions {
-  static NSArray *extensions;
+- (LTPath *)descriptorPathFromContentURL:(NSURL *)URL andPath:(LTPath *)path {
+  NSString *name;
+  [URL getResourceValue:&name forKey:NSURLNameKey error:nil];
+  NSString *relativePath = [path.relativePath stringByAppendingPathComponent:name];
+
+  return [LTPath pathWithBaseDirectory:path.baseDirectory andRelativePath:relativePath];
+}
+
++ (NSArray *)supportedUTIs {
+  static NSArray *supportedUTIs;
 
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
-    extensions = @[@"jpg", @"jpeg", @"png", @"tiff"];
+    supportedUTIs = [[AVURLAsset audiovisualTypes] arrayByAddingObjectsFromArray:@[
+      @"public.jpeg",
+      @"public.tiff",
+      @"public.png"
+    ]];
   });
 
-  return extensions;
+  return supportedUTIs;
 }
 
 #pragma mark -
@@ -226,11 +237,24 @@ NS_ASSUME_NONNULL_BEGIN
     return [RACSignal error:error];
   }
 
+  if ([descriptor.descriptorTraits containsObject:kPTNDescriptorTraitVideoKey]) {
+    return [self imageForVideoAssetWithDescriptor:descriptor resizingStrategy:resizingStrategy];
+  }
+
   PTNFileBackedImageAsset *imageAsset =
       [[PTNFileBackedImageAsset alloc] initWithFilePath:filePath fileManager:self.fileManager
                                            imageResizer:self.imageResizer
                                        resizingStrategy:resizingStrategy];
 
+  return [RACSignal return:[[PTNProgress alloc] initWithResult:imageAsset]];
+}
+
+- (RACSignal *)imageForVideoAssetWithDescriptor:(id<PTNDescriptor>)descriptor
+                               resizingStrategy:(id<PTNResizingStrategy>)resizingStrategy {
+  LTPath *filePath = descriptor.ptn_identifier.ptn_fileSystemAssetPath;
+  AVAsset *videoAsset = [AVAsset assetWithURL:filePath.url];
+  PTNAVImageAsset *imageAsset =
+      [[PTNAVImageAsset alloc] initWithAsset:videoAsset resizingStrategy:resizingStrategy];
   return [RACSignal return:[[PTNProgress alloc] initWithResult:imageAsset]];
 }
 
@@ -254,8 +278,16 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (RACSignal *)fetchVideoWithDescriptor:(id<PTNDescriptor>)descriptor
                                 options:(PTNVideoFetchOptions __unused *)options {
-  return [RACSignal error:[NSError ptn_errorWithCode:PTNErrorCodeUnsupportedOperation
-                                associatedDescriptor:descriptor]];
+  if (![descriptor.descriptorTraits containsObject:kPTNDescriptorTraitVideoKey]) {
+    NSError *error = [NSError ptn_errorWithCode:PTNErrorCodeInvalidDescriptor
+                           associatedDescriptor:descriptor];
+    return [RACSignal error:error];
+  }
+
+  LTPath *filePath = descriptor.ptn_identifier.ptn_fileSystemAssetPath;
+  PTNAudiovisualAsset *videoAsset =
+      [[PTNAudiovisualAsset alloc] initWithAVAsset:[AVAsset assetWithURL:filePath.url]];
+  return [RACSignal return:[[PTNProgress alloc] initWithResult:videoAsset]];
 }
 
 #pragma mark -
