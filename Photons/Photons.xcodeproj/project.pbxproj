@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0DF1515F1EAF7330009F3080 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DF1515E1EAF7330009F3080 /* CoreMedia.framework */; };
+		0DF155D31EB1DC38009F3080 /* libcompression.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = CDE00B021E82AE40007AFD5E /* libcompression.tbd */; };
 		655DCB3F1D4651BB00E44DAA /* libExpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B0B99E31CA6BF2200ED2334 /* libExpecta.a */; };
 		655DCB401D4651BB00E44DAA /* libextobjc_iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 655DCB081D46506700E44DAA /* libextobjc_iOS.a */; };
 		655DCB411D4651BB00E44DAA /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B0B9A0E1CA6BF2200ED2334 /* libOCMock.a */; };
@@ -205,7 +207,6 @@
 		BE742B751DF43010009AAFAB /* PTNPhotoKitVideoAssetSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = BE742B741DF43010009AAFAB /* PTNPhotoKitVideoAssetSpec.mm */; };
 		C7E5B44E1CE9CE5F00A8ADE7 /* PTNPhotoKitAuthorizationManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8414EA5D1C5A389B00014DD1 /* PTNPhotoKitAuthorizationManager.mm */; };
 		C7E5B4681CE9CEF700A8ADE7 /* PTNPhotoKitAuthorizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 8428F4061C69D5520007B0A5 /* PTNPhotoKitAuthorizer.m */; };
-		CDE00B031E82AE40007AFD5E /* libcompression.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = CDE00B021E82AE40007AFD5E /* libcompression.tbd */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -462,6 +463,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0DF1515E1EAF7330009F3080 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		655DCAFE1D46506700E44DAA /* extobjc.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = extobjc.xcodeproj; path = ../third_party/libextobjc/extobjc.xcodeproj; sourceTree = "<group>"; };
 		655DCB371D46518300E44DAA /* TestHost.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TestHost.xcodeproj; path = ../Foundations/TestHost.xcodeproj; sourceTree = "<group>"; };
 		84013BB01CBFB07D00C40E42 /* PTNTestUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNTestUtils.h; sourceTree = "<group>"; };
@@ -816,6 +818,7 @@
 				8861FDDA1E5A2BA800CA1436 /* AVFoundation.framework in Frameworks */,
 				8861FDCE1E5A2B5100CA1436 /* CoreGraphics.framework in Frameworks */,
 				8861FDD21E5A2B7100CA1436 /* CoreLocation.framework in Frameworks */,
+				0DF1515F1EAF7330009F3080 /* CoreMedia.framework in Frameworks */,
 				8B0B99C01CA6BEB600ED2334 /* DropboxSDK.framework in Frameworks */,
 				8861FDD61E5A2B8F00CA1436 /* GLKit.framework in Frameworks */,
 				8861FDDC1E5A2BC000CA1436 /* ImageIO.framework in Frameworks */,
@@ -830,7 +833,7 @@
 				655DCB411D4651BB00E44DAA /* libOCMock.a in Frameworks */,
 				84FF72CB1C8EEC3F00D1DA9F /* libPhotons.a in Frameworks */,
 				655DCB421D4651BB00E44DAA /* libSpecta.a in Frameworks */,
-				CDE00B031E82AE40007AFD5E /* libcompression.tbd in Frameworks */,
+				0DF155D31EB1DC38009F3080 /* libcompression.tbd in Frameworks */,
 				655DCB401D4651BB00E44DAA /* libextobjc_iOS.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -841,6 +844,7 @@
 		49F615BDE58178359DAFCD59 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0DF1515E1EAF7330009F3080 /* CoreMedia.framework */,
 				8861FDD91E5A2BA800CA1436 /* AVFoundation.framework */,
 				8861FDCD1E5A2B5100CA1436 /* CoreGraphics.framework */,
 				8861FDD11E5A2B7100CA1436 /* CoreLocation.framework */,
