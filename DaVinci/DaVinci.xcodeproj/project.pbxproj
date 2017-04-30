@@ -1853,7 +1853,7 @@
 			baseConfigurationReference = 50FF1A5A1D2CDFF400E24B4D /* StaticLibrary.xcconfig */;
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "DaVinci/DaVinci-prefix.pch";
+				GCC_PREFIX_HEADER = "DaVinci/DaVinci-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../LTEngine",
@@ -1872,7 +1872,7 @@
 			baseConfigurationReference = 50FF1A5A1D2CDFF400E24B4D /* StaticLibrary.xcconfig */;
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "DaVinci/DaVinci-prefix.pch";
+				GCC_PREFIX_HEADER = "DaVinci/DaVinci-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../LTEngine",
