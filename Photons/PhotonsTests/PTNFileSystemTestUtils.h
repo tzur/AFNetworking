@@ -14,3 +14,7 @@ PTNFileSystemFileDescriptor *PTNFileSystemFileFromString(NSString *path);
 /// Creates a \c PTNFileSystemDirectoryDescriptor with its path set to
 /// \c PTNFileSystemPathFromString(path).
 PTNFileSystemDirectoryDescriptor *PTNFileSystemDirectoryFromString(NSString *path);
+
+/// Returns \c NSString that is a path for video with 16x16 dimensions and approximately 1 second
+/// duration.
+NSURL *PTNOneSecondVideoPath();

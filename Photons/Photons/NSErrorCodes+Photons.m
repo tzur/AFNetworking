@@ -36,5 +36,7 @@ LTErrorCodesImplement(PhotonsErrorCodeProductID,
   // Caused when removal of assets has from an album has failed.
   PTNErrorCodeAssetRemovalFromAlbumFailed,
   // Caused when attemping to make an unsupported operation.
-  PTNErrorCodeUnsupportedOperation
+  PTNErrorCodeUnsupportedOperation,
+  // Caused when extracting image from asset has failed.
+  PTNErrorCodeAVImageAssetFetchImageFailed
 );
