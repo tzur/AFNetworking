@@ -8,6 +8,7 @@
 #import "NSError+Photons.h"
 #import "NSURL+PhotoKit.h"
 #import "PTNAlbumChangeset+PhotoKit.h"
+#import "PTNAudiovisualAsset.h"
 #import "PTNAuthorizationManager.h"
 #import "PTNAuthorizationStatus.h"
 #import "PTNImageDataAsset.h"
@@ -22,7 +23,6 @@
 #import "PTNPhotoKitImageAsset.h"
 #import "PTNPhotoKitImageManager.h"
 #import "PTNPhotoKitObserver.h"
-#import "PTNPhotoKitVideoAsset.h"
 #import "PTNProgress.h"
 #import "PTNResizingStrategy.h"
 #import "PTNSignalCache.h"
@@ -617,7 +617,7 @@ NS_ASSUME_NONNULL_BEGIN
                                           underlyingError:info[PHImageErrorKey]];
         [subscriber sendError:wrappedError];
       } else {
-        PTNPhotoKitVideoAsset *videoAsset = [[PTNPhotoKitVideoAsset alloc] initWithAVAsset:result];
+        PTNAudiovisualAsset *videoAsset = [[PTNAudiovisualAsset alloc] initWithAVAsset:result];
         PTNProgress *progress = [[PTNProgress alloc] initWithResult:videoAsset];
         [subscriber sendNext:progress];
         [subscriber sendCompleted];

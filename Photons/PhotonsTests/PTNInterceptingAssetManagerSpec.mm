@@ -9,6 +9,7 @@
 #import "NSErrorCodes+Photons.h"
 #import "PTNAlbum.h"
 #import "PTNAlbumChangeset.h"
+#import "PTNAudiovisualAsset.h"
 #import "PTNFakeAssetManager.h"
 #import "PTNImageDataAsset.h"
 #import "PTNImageFetchOptions.h"
@@ -16,7 +17,6 @@
 #import "PTNProgress.h"
 #import "PTNResizingStrategy.h"
 #import "PTNTestUtils.h"
-#import "PTNVideoAsset.h"
 #import "PTNVideoFetchOptions.h"
 
 static BOOL PTNCollectionSemanticallyEqual(id<LTRandomAccessCollection> lhs,
@@ -921,12 +921,12 @@ context(@"video fetching", ^{
   __block PTNVideoFetchOptions *options;
   __block id<PTNDescriptor> descriptor;
   __block PTNVideoRequest *request;
-  __block id<PTNVideoAsset> videoAsset;
+  __block id<PTNAudiovisualAsset> videoAsset;
 
   beforeEach(^{
     options = OCMClassMock([PTNImageFetchOptions class]);
     descriptor = OCMProtocolMock(@protocol(PTNDescriptor));
-    videoAsset = OCMProtocolMock(@protocol(PTNVideoAsset));
+    videoAsset = OCMProtocolMock(@protocol(PTNAudiovisualAsset));
     request = [[PTNVideoRequest alloc] initWithDescriptor:descriptor options:options];
   });
 
