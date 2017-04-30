@@ -23,6 +23,11 @@
 		A1417AAE1E6EDA31005DBEFF /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1417AAD1E6EDA31005DBEFF /* GLKit.framework */; };
 		A1417C801E6EF77C005DBEFF /* INTEventMetadata.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1417C7F1E6EF77C005DBEFF /* INTEventMetadata.mm */; };
 		A1417C8D1E6F012E005DBEFF /* INTDataStructures.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1417C8C1E6F012E005DBEFF /* INTDataStructures.mm */; };
+		A1541AF41EAF1CB000B4F064 /* INTEventsPipeline.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1541AF31EAF1CB000B4F064 /* INTEventsPipeline.mm */; };
+		A1541B0E1EAF1CC300B4F064 /* INTEventsPipelineSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1541B0B1EAF1CC300B4F064 /* INTEventsPipelineSpec.mm */; };
+		A1541B0F1EAF1CC300B4F064 /* INTRecorderLogger.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1541B0D1EAF1CC300B4F064 /* INTRecorderLogger.mm */; };
+		A1541B8C1EAF2D1400B4F064 /* INTAppLifecycleTimer.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1541B8B1EAF2D1400B4F064 /* INTAppLifecycleTimer.mm */; };
+		A1541C0A1EAF405100B4F064 /* INTAppLifecycleTimerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1541C091EAF405100B4F064 /* INTAppLifecycleTimerSpec.mm */; };
 		A1D136E91E78F4C200B1EA8D /* INTDataStructuresSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1D136E81E78F4C200B1EA8D /* INTDataStructuresSpec.mm */; };
 		CDE00B451E82AE82007AFD5E /* libcompression.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = CDE00B441E82AE82007AFD5E /* libcompression.tbd */; };
 /* End PBXBuildFile section */
@@ -250,6 +255,14 @@
 		A1417C7F1E6EF77C005DBEFF /* INTEventMetadata.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = INTEventMetadata.mm; sourceTree = "<group>"; };
 		A1417C8B1E6F012E005DBEFF /* INTDataStructures.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INTDataStructures.h; sourceTree = "<group>"; };
 		A1417C8C1E6F012E005DBEFF /* INTDataStructures.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = INTDataStructures.mm; sourceTree = "<group>"; };
+		A1541AF21EAF1CB000B4F064 /* INTEventsPipeline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INTEventsPipeline.h; sourceTree = "<group>"; };
+		A1541AF31EAF1CB000B4F064 /* INTEventsPipeline.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; lineEnding = 0; path = INTEventsPipeline.mm; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		A1541B0B1EAF1CC300B4F064 /* INTEventsPipelineSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = INTEventsPipelineSpec.mm; sourceTree = "<group>"; };
+		A1541B0C1EAF1CC300B4F064 /* INTRecorderLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INTRecorderLogger.h; sourceTree = "<group>"; };
+		A1541B0D1EAF1CC300B4F064 /* INTRecorderLogger.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = INTRecorderLogger.mm; sourceTree = "<group>"; };
+		A1541B8A1EAF2C4300B4F064 /* INTAppLifecycleTimer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = INTAppLifecycleTimer.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		A1541B8B1EAF2D1400B4F064 /* INTAppLifecycleTimer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; lineEnding = 0; path = INTAppLifecycleTimer.mm; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		A1541C091EAF405100B4F064 /* INTAppLifecycleTimerSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; lineEnding = 0; path = INTAppLifecycleTimerSpec.mm; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		A172A9BF1EAC112D00A12B86 /* INTEventLogger.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = INTEventLogger.h; sourceTree = "<group>"; };
 		A1D136E81E78F4C200B1EA8D /* INTDataStructuresSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = INTDataStructuresSpec.mm; sourceTree = "<group>"; };
 		CDE00B441E82AE82007AFD5E /* libcompression.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libcompression.tbd; path = usr/lib/libcompression.tbd; sourceTree = SDKROOT; };
@@ -302,6 +315,15 @@
 			name = "Event Aggregation";
 			sourceTree = "<group>";
 		};
+		A113424A1EB5AD870042ABA8 /* Test Utils */ = {
+			isa = PBXGroup;
+			children = (
+				A1541B0C1EAF1CC300B4F064 /* INTRecorderLogger.h */,
+				A1541B0D1EAF1CC300B4F064 /* INTRecorderLogger.mm */,
+			);
+			name = "Test Utils";
+			sourceTree = "<group>";
+		};
 		A14171981E6EAA93005DBEFF = {
 			isa = PBXGroup;
 			children = (
@@ -330,6 +352,9 @@
 				A10164CA1E700424009596E1 /* Event Aggregation */,
 				A172A9A81EAC111600A12B86 /* Event Logging */,
 				A14172BA1E6EB04F005DBEFF /* Supporting Files */,
+				A1541C071EAF400400B4F064 /* Utils */,
+				A1541AF21EAF1CB000B4F064 /* INTEventsPipeline.h */,
+				A1541AF31EAF1CB000B4F064 /* INTEventsPipeline.mm */,
 				A14177A01E6EC276005DBEFF /* INTIntelligence.h */,
 				A14177A11E6EC276005DBEFF /* INTIntelligence.mm */,
 			);
@@ -349,6 +374,7 @@
 		A14171C21E6EAC0D005DBEFF /* IntelligenceTests */ = {
 			isa = PBXGroup;
 			children = (
+				A113424A1EB5AD870042ABA8 /* Test Utils */,
 				A14173471E6EB62C005DBEFF /* Tests */,
 				A14172B91E6EB006005DBEFF /* Supporting Files */,
 			);
@@ -469,6 +495,8 @@
 			children = (
 				A1D136EA1E78FDF400B1EA8D /* Base */,
 				A10167F31E713D72009596E1 /* Event Aggregation */,
+				A1541C081EAF400D00B4F064 /* Utils */,
+				A1541B0B1EAF1CC300B4F064 /* INTEventsPipelineSpec.mm */,
 			);
 			name = Tests;
 			sourceTree = "<group>";
@@ -495,6 +523,23 @@
 				A1417C7F1E6EF77C005DBEFF /* INTEventMetadata.mm */,
 			);
 			name = Base;
+			sourceTree = "<group>";
+		};
+		A1541C071EAF400400B4F064 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				A1541B8A1EAF2C4300B4F064 /* INTAppLifecycleTimer.h */,
+				A1541B8B1EAF2D1400B4F064 /* INTAppLifecycleTimer.mm */,
+			);
+			name = Utils;
+			sourceTree = "<group>";
+		};
+		A1541C081EAF400D00B4F064 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				A1541C091EAF405100B4F064 /* INTAppLifecycleTimerSpec.mm */,
+			);
+			name = Utils;
 			sourceTree = "<group>";
 		};
 		A172A9A81EAC111600A12B86 /* Event Logging */ = {
@@ -793,8 +838,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				A1417C801E6EF77C005DBEFF /* INTEventMetadata.mm in Sources */,
+				A1541AF41EAF1CB000B4F064 /* INTEventsPipeline.mm in Sources */,
 				A1417C8D1E6F012E005DBEFF /* INTDataStructures.mm in Sources */,
 				A10165011E7006AA009596E1 /* INTEventTransformer.mm in Sources */,
+				A1541B8C1EAF2D1400B4F064 /* INTAppLifecycleTimer.mm in Sources */,
 				A14177A21E6EC276005DBEFF /* INTIntelligence.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -803,6 +850,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A1541B0E1EAF1CC300B4F064 /* INTEventsPipelineSpec.mm in Sources */,
+				A1541C0A1EAF405100B4F064 /* INTAppLifecycleTimerSpec.mm in Sources */,
+				A1541B0F1EAF1CC300B4F064 /* INTRecorderLogger.mm in Sources */,
 				A1D136E91E78F4C200B1EA8D /* INTDataStructuresSpec.mm in Sources */,
 				A101680B1E713D8B009596E1 /* INTEventTransformerSpec.mm in Sources */,
 			);

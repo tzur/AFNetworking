@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)logEvent:(id)event;
 
 /// Returns \c YES if \c event is supported and can be logged by the receiver.
-- (BOOL)isEventSupported:(id)event
+- (BOOL)isEventSupported:(id)event;
 
 @end
 
