@@ -79,8 +79,9 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (NSString *)description {
-  return [NSString stringWithFormat:@"<%@: %p, data legnth: %lu, UTI: %@, Orientation %ld>",
-          self.class, self, self.data.length, self.uniformTypeIdentifier, (long)self.orientation];
+  return [NSString stringWithFormat:@"<%@: %p, data length: %lu, UTI: %@, orientation %ld>",
+          self.class, self, (unsigned long)self.data.length, self.uniformTypeIdentifier,
+          (long)self.orientation];
 }
 
 @end
