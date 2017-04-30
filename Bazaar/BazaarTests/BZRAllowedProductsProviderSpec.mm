@@ -72,23 +72,27 @@ context(@"allowed products provider", ^{
         BZRReceiptValidationStatusWithInAppPurchaseAndExpiry(purchasedProductIdentifier, NO);
   });
 
-  it(@"should raise an exception if the subscription from the receipt was not found in product "
-     "list", ^{
+  it(@"should allow all acquired products if the subscription from the receipt was not found in "
+     "product list", ^{
     productsProvider = OCMProtocolMock(@protocol(BZRProductsProvider));
-    OCMStub([productsProvider fetchProductList]).andReturn([RACSignal return:@[]]);
+    BZRProduct *filterProduct = BZRProductWithIdentifier(filterProductIdentifier);
+    BZRProduct *nonFilterProduct = BZRProductWithIdentifier(nonFilterProductIdentifier);
+    NSArray<BZRProduct *> *productList = @[filterProduct, nonFilterProduct];
+    OCMStub([productsProvider fetchProductList]).andReturn([RACSignal return:productList]);
     BZRReceiptSubscriptionInfo *subscription = BZRSubscriptionWithIdentifier(@"fullSubscription");
     validationStatusProvider.receiptValidationStatus =
         [validationStatusProvider.receiptValidationStatus
          modelByOverridingPropertyAtKeypath:
          @instanceKeypath(BZRReceiptValidationStatus, receipt.subscription)
          withValue:subscription];
+    NSSet<NSString *> *acquiredViaSubscriptionProducts =
+        [NSSet setWithObjects:filterProductIdentifier, nonFilterProductIdentifier, nil];
+    acquiredViaSubscriptionProvider.productsAcquiredViaSubscription =
+        acquiredViaSubscriptionProducts;
 
-    expect(^{
-      allowedProvider =
-          [[BZRAllowedProductsProvider alloc] initWithProductsProvider:productsProvider
-           validationStatusProvider:validationStatusProvider
-           acquiredViaSubscriptionProvider:acquiredViaSubscriptionProvider];
-    }).to.raise(NSInternalInconsistencyException);
+    NSArray<NSString *> *expectedAllowedProducts =
+        @[purchasedProductIdentifier, filterProductIdentifier, nonFilterProductIdentifier];
+    expect(allowedProvider.allowedProducts).to.equal([NSSet setWithArray:expectedAllowedProducts]);
   });
 
   it(@"should return empty set if the receipt is nil", ^{

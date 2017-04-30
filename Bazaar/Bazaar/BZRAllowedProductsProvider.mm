@@ -8,8 +8,8 @@
 #import "BZRAcquiredViaSubscriptionProvider.h"
 #import "BZRCachedReceiptValidationStatusProvider.h"
 #import "BZRProduct+EnablesProduct.h"
-#import "BZRProductsProvider.h"
 #import "BZRProductTypedefs.h"
+#import "BZRProductsProvider.h"
 #import "BZRReceiptModel.h"
 #import "BZRReceiptValidationStatus.h"
 
@@ -87,8 +87,17 @@ NS_ASSUME_NONNULL_BEGIN
   BZRProduct *subscriptionProduct = [productList lt_find:^BOOL(BZRProduct *product) {
     return [product.identifier isEqualToString:subscriptionIdentifier];
   }];
-  LTAssert(subscriptionProduct, @"The subscription from the receipt does not exist in product "
-           "list. Subscription identifier is: %@", subscriptionIdentifier);
+
+  if (!subscriptionProduct) {
+    LogError(@"The subscription from the receipt does not exist in product "
+             "list. Subscription identifier is: %@", subscriptionIdentifier);
+
+    NSArray<NSString *> *allNonSubscriptionProducts =
+        [[productList lt_filter:^BOOL(BZRProduct *product) {
+          return ![self isSubscriptionProduct:product];
+        }] valueForKey:@instanceKeypath(BZRProduct, identifier)];
+    return [NSMutableSet setWithArray:allNonSubscriptionProducts];
+  }
 
   return [NSMutableSet setWithArray:
           [self productsEnabledBySubscription:subscriptionProduct productList:productList]];
@@ -105,7 +114,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (BOOL)isSubscriptionProduct:(BZRProduct *)product {
-  return [product.productType isEqual:$(BZRProductTypeRenewableSubscription)] &&
+  return [product.productType isEqual:$(BZRProductTypeRenewableSubscription)] ||
       [product.productType isEqual:$(BZRProductTypeNonRenewingSubscription)];
 }
 
