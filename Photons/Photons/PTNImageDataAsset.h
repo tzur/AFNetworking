@@ -4,7 +4,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /// Protocol for an image in an \c NSData format, enabling fetching of image data and metadata.
-@protocol PTNImageDataAsset
+@protocol PTNImageDataAsset <NSObject>
 
 /// Fetches the data of the image backed up by this asset. The returned signal sends a single
 /// \c NSData object on an arbitrary thread, and completes. If data can't be fetched the signal errs

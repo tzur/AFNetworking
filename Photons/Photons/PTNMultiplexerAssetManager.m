@@ -22,7 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 - (RACSignal *)fetchAlbumWithURL:(NSURL *)url {
-  id<PTNAssetManager> assetManager = self.mapping[url.scheme];
+  id<PTNAssetManager> _Nullable assetManager = self.mapping[url.scheme];
   if (!assetManager) {
     return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeUnrecognizedURLScheme url:url]];
   }
@@ -34,7 +34,7 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 - (RACSignal *)fetchDescriptorWithURL:(NSURL *)url {
-  id<PTNAssetManager> assetManager = self.mapping[url.scheme];
+  id<PTNAssetManager> _Nullable assetManager = self.mapping[url.scheme];
   if (!assetManager) {
     return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeUnrecognizedURLScheme url:url]];
   }
@@ -48,7 +48,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (RACSignal *)fetchImageWithDescriptor:(id<PTNDescriptor>)descriptor
                        resizingStrategy:(id<PTNResizingStrategy>)resizingStrategy
                                 options:(PTNImageFetchOptions *)options {
-  id<PTNAssetManager> assetManager = self.mapping[descriptor.ptn_identifier.scheme];
+  id<PTNAssetManager> _Nullable assetManager = self.mapping[descriptor.ptn_identifier.scheme];
   if (!assetManager) {
     return [RACSignal error:[NSError ptn_errorWithCode:PTNErrorCodeUnrecognizedURLScheme
                                   associatedDescriptor:descriptor]];
@@ -63,12 +63,25 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (RACSignal *)fetchVideoWithDescriptor:(id<PTNDescriptor>)descriptor
                                 options:(PTNVideoFetchOptions *)options {
-  id<PTNAssetManager> assetManager = self.mapping[descriptor.ptn_identifier.scheme];
+  id<PTNAssetManager> _Nullable assetManager = self.mapping[descriptor.ptn_identifier.scheme];
   if (!assetManager) {
     return [RACSignal error:[NSError ptn_errorWithCode:PTNErrorCodeUnrecognizedURLScheme
                                   associatedDescriptor:descriptor]];
   }
   return [assetManager fetchVideoWithDescriptor:descriptor options:options];
+}
+
+#pragma mark -
+#pragma mark Image data fetching
+#pragma mark -
+
+- (RACSignal *)fetchImageDataWithDescriptor:(id<PTNDescriptor>)descriptor {
+  id<PTNAssetManager> _Nullable assetManager = self.mapping[descriptor.ptn_identifier.scheme];
+  if (!assetManager) {
+    return [RACSignal error:[NSError ptn_errorWithCode:PTNErrorCodeUnrecognizedURLScheme
+                                  associatedDescriptor:descriptor]];
+  }
+  return [assetManager fetchImageDataWithDescriptor:descriptor];
 }
 
 #pragma mark -

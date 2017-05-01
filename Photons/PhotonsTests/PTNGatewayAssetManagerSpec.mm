@@ -204,4 +204,12 @@ context(@"video fetching", ^{
   });
 });
 
+it(@"should err when fetching image data", ^{
+  RACSignal *values = [manager fetchImageDataWithDescriptor:fooDescriptor];
+
+  expect(values).will.matchError(^BOOL(NSError *error) {
+    return error.code == PTNErrorCodeUnsupportedOperation;
+  });
+});
+
 SpecEnd

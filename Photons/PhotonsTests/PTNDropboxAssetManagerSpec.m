@@ -14,9 +14,9 @@
 #import "PTNDropboxEntry.h"
 #import "PTNDropboxFakeRestClient.h"
 #import "PTNDropboxFileDescriptor.h"
+#import "PTNDropboxRestClient.h"
 #import "PTNDropboxTestUtils.h"
 #import "PTNDropboxThumbnail.h"
-#import "PTNDropboxRestClient.h"
 #import "PTNFileBackedImageAsset.h"
 #import "PTNImageAsset.h"
 #import "PTNImageFetchOptions.h"
@@ -71,7 +71,7 @@ context(@"album fetching", ^{
   context(@"fetching errors", ^{
     it(@"should error on invalid URL", ^{
       NSURL *url = [NSURL URLWithString:@"http://www.foo.com"];
-      
+
       expect([manager fetchAlbumWithURL:url]).will.matchError(^BOOL(NSError *error) {
         return error.code == PTNErrorCodeInvalidURL;
       });
@@ -425,6 +425,16 @@ context(@"video fetching", ^{
     expect(values).will.matchError(^BOOL(NSError *error) {
       return error.code == PTNErrorCodeUnsupportedOperation;
     });
+  });
+});
+
+it(@"should err when fetching image data", ^{
+  DBMetadata *metadata = PTNDropboxCreateFileMetadata(@"foo.jpg", nil);
+  id<PTNDescriptor> asset = [[PTNDropboxFileDescriptor alloc] initWithMetadata:metadata];
+  RACSignal *values = [manager fetchImageDataWithDescriptor:asset];
+
+  expect(values).will.matchError(^BOOL(NSError *error) {
+    return error.code == PTNErrorCodeUnsupportedOperation;
   });
 });
 

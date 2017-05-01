@@ -11,6 +11,7 @@
 #import "PTNAuthorizationStatus.h"
 #import "PTNDescriptor.h"
 #import "PTNImageAsset.h"
+#import "PTNImageDataAsset.h"
 #import "PTNImageFetchOptions+PhotoKit.h"
 #import "PTNIncrementalChanges.h"
 #import "PTNPhotoKitAlbum.h"
@@ -68,7 +69,6 @@ static BOOL PTNPHFetchOptionsEquals(PHFetchOptions *lhs, PHFetchOptions *rhs) {
 SpecBegin(PTNPhotoKitAssetManager)
 
 __block PTNPhotoKitAssetManager *manager;
-
 __block PTNPhotoKitFakeFetcher *fetcher;
 __block PTNPhotoKitFakeObserver *observer;
 __block PTNPhotoKitFakeImageManager *imageManager;
@@ -1220,6 +1220,118 @@ context(@"video fetching", ^{
         [imageManager serveAsset:asset withProgress:@[]  avasset:avasset audioMix:audioMix];
 
         RACSignal *values = [manager fetchVideoWithDescriptor:asset options:options];
+
+        expect(values).will.sendValuesWithCount(1);
+        expect(fetcher.operatingThreads).notTo.contain([NSThread mainThread]);
+      });
+    });
+  });
+});
+
+context(@"image data fetching", ^{
+  __block id asset;
+  __block id<PTNImageDataAsset> imageDataAsset;
+  __block NSData *imageData;
+  __block NSString *uniformTypeIdentifier;
+  __block UIImageOrientation orientation;
+  __block NSError *defaultError;
+
+  beforeEach(^{
+    asset = PTNPhotoKitCreateAsset(@"foo");
+    OCMStub([asset descriptorTraits]).andReturn([NSSet setWithObject:kPTNDescriptorTraitRawKey]);
+
+    [fetcher registerAsset:asset];
+
+    uniformTypeIdentifier = @"public.cool.raw.format";
+    orientation = UIImageOrientationRight;
+    uint8_t buffer[] = { 0x1, 0x2, 0x3, 0x4 };
+    imageData = [NSData dataWithBytes:buffer length:sizeof(buffer)];
+    imageDataAsset = [[PTNImageDataAsset alloc] initWithData:imageData
+                                       uniformTypeIdentifier:uniformTypeIdentifier
+                                                 orientation:orientation];
+
+    defaultError = [NSError errorWithDomain:@"foo" code:1337 userInfo:nil];
+  });
+
+  context(@"fetch raw image of asset", ^{
+    it(@"should fetch raw image", ^{
+      [imageManager serveAsset:asset withProgress:@[] imageData:imageData
+                       dataUTI:uniformTypeIdentifier orientation:orientation];
+
+      RACSignal *values = [manager fetchImageDataWithDescriptor:asset];
+
+      expect(values).will.sendValues(@[[[PTNProgress alloc] initWithResult:imageDataAsset]]);
+    });
+
+    it(@"should complete after fetching a raw image", ^{
+      [imageManager serveAsset:asset withProgress:@[] imageData:imageData
+                       dataUTI:uniformTypeIdentifier orientation:orientation];
+
+      RACSignal *values = [manager fetchImageDataWithDescriptor:asset];
+
+      expect(values).will.sendValuesWithCount(1);
+      expect(values).will.complete();
+    });
+
+    it(@"should fetch downloaded raw image with progress", ^{
+      [imageManager serveAsset:asset withProgress:@[@0.25, @0.5, @1] imageData:imageData
+                       dataUTI:uniformTypeIdentifier orientation:orientation];
+
+      expect([manager fetchImageDataWithDescriptor:asset]).will.sendValues(@[
+        [[PTNProgress alloc] initWithProgress:@0.25],
+        [[PTNProgress alloc] initWithProgress:@0.5],
+        [[PTNProgress alloc] initWithProgress:@1],
+        [[PTNProgress alloc] initWithResult:imageDataAsset]
+      ]);
+    });
+
+    it(@"should cancel request upon disposal", ^{
+      RACSignal *values = [manager fetchImageDataWithDescriptor:asset];
+
+      RACDisposable *subscriber = [values subscribeNext:^(id) {}];
+      expect([imageManager isRequestIssuedForAsset:asset]).will.beTruthy();
+
+      [subscriber dispose];
+      expect([imageManager isRequestCancelledForAsset:asset]).will.beTruthy();
+    });
+
+    it(@"should err on error after progress finished", ^{
+      [imageManager serveAsset:asset withProgress:@[@0.25, @0.5, @1] finallyError:defaultError];
+
+      RACSignal *values = [manager fetchImageDataWithDescriptor:asset];
+
+      expect(values).will.sendValues(@[
+        [[PTNProgress alloc] initWithProgress:@0.25],
+        [[PTNProgress alloc] initWithProgress:@0.5],
+        [[PTNProgress alloc] initWithProgress:@1],
+      ]);
+
+      expect(values).will.matchError(^BOOL(NSError *error) {
+        return error.code == PTNErrorCodeAssetLoadingFailed && error.lt_underlyingError;
+      });
+    });
+
+    it(@"should err on progress download error", ^{
+      [imageManager serveAsset:asset withProgress:@[@0.25, @0.5, @1] errorInProgress:defaultError];
+
+      RACSignal *values = [manager fetchImageDataWithDescriptor:asset];
+
+      expect(values).will.sendValues(@[
+        [[PTNProgress alloc] initWithProgress:@0.25],
+        [[PTNProgress alloc] initWithProgress:@0.5]
+      ]);
+
+      expect(values).will.matchError(^BOOL(NSError *error) {
+        return error.code == PTNErrorCodeAssetLoadingFailed && error.lt_underlyingError;
+      });
+    });
+
+    context(@"thread transitions", ^{
+      it(@"should not operate on the main thread", ^{
+        [imageManager serveAsset:asset withProgress:@[] imageData:imageData
+                         dataUTI:uniformTypeIdentifier orientation:orientation];
+
+        RACSignal *values = [manager fetchImageDataWithDescriptor:asset];
 
         expect(values).will.sendValuesWithCount(1);
         expect(fetcher.operatingThreads).notTo.contain([NSThread mainThread]);

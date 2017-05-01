@@ -225,7 +225,7 @@ NS_ASSUME_NONNULL_BEGIN
                            associatedDescriptor:descriptor];
     return [RACSignal error:error];
   }
-  
+
   PTNFileBackedImageAsset *imageAsset =
       [[PTNFileBackedImageAsset alloc] initWithFilePath:filePath fileManager:self.fileManager
                                            imageResizer:self.imageResizer
@@ -254,6 +254,15 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (RACSignal *)fetchVideoWithDescriptor:(id<PTNDescriptor>)descriptor
                                 options:(PTNVideoFetchOptions __unused *)options {
+  return [RACSignal error:[NSError ptn_errorWithCode:PTNErrorCodeUnsupportedOperation
+                                associatedDescriptor:descriptor]];
+}
+
+#pragma mark -
+#pragma mark Image data fetching
+#pragma mark -
+
+- (RACSignal *)fetchImageDataWithDescriptor:(id<PTNDescriptor>)descriptor {
   return [RACSignal error:[NSError ptn_errorWithCode:PTNErrorCodeUnsupportedOperation
                                 associatedDescriptor:descriptor]];
 }

@@ -5,7 +5,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@protocol PTNAlbumDescriptor, PTNDescriptor, PTNResizingStrategy;
+@protocol PTNAlbumDescriptor, PTNAssetDescriptor, PTNDescriptor, PTNResizingStrategy;
 
 @class PTNImageFetchOptions, PTNVideoFetchOptions;
 
@@ -58,7 +58,7 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 /// Disposal of the returned signal will abort the current image fetch operation, if in progress.
 ///
-/// @return RACSignal<PTNProgress>.
+/// @return RACSignal<PTNProgress<PTNImageAsset>>.
 - (RACSignal *)fetchImageWithDescriptor:(id<PTNDescriptor>)descriptor
                        resizingStrategy:(id<PTNResizingStrategy>)resizingStrategy
                                 options:(PTNImageFetchOptions *)options;
@@ -73,9 +73,24 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 /// Disposal of the returned signal will abort the current video fetch operation, if in progress.
 ///
-/// @return RACSignal<PTNProgress>.
+/// @return RACSignal<PTNProgress<PTNVideoAsset>>.
 - (RACSignal *)fetchVideoWithDescriptor:(id<PTNDescriptor>)descriptor
                                 options:(PTNVideoFetchOptions *)options;
+
+/// Fetches the image data which is backed by the given \c descriptor. The returned signal will err
+/// if \c descriptor is not an asset descriptor.
+///
+/// The returned signal sends \c PTNProgress objects on a arbitrary thread, complete once the final
+/// result is sent and errs if an error occures while fetching the image. The result type will
+/// always be a \c PTNImageDataAsset.
+///
+/// If the asset doesn't exist, the signal will err.
+///
+/// Disposal of the returned signal will abort the current image data fetch operation, if in
+/// progress.
+///
+/// @return RACSignal<PTNProgress<PTNImageDataAsset>>.
+- (RACSignal *)fetchImageDataWithDescriptor:(id<PTNDescriptor>)descriptor;
 
 @optional
 

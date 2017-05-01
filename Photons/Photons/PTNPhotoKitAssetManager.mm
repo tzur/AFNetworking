@@ -10,6 +10,7 @@
 #import "PTNAlbumChangeset+PhotoKit.h"
 #import "PTNAuthorizationManager.h"
 #import "PTNAuthorizationStatus.h"
+#import "PTNImageDataAsset.h"
 #import "PTNImageFetchOptions+PhotoKit.h"
 #import "PTNImageMetadata.h"
 #import "PTNPhotoKitAlbum.h"
@@ -80,7 +81,7 @@ NS_ASSUME_NONNULL_BEGIN
   id<PTNPhotoKitImageManager> imageManager =
       [[PTNPhotoKitDeferringImageManager alloc] initWithAuthorizationManager:authorizationManager];
   id<PTNPhotoKitChangeManager> changeManager = [[PTNPhotoKitChangeManager alloc] init];
-  
+
   return [self initWithFetcher:fetcher observer:observer imageManager:imageManager
           authorizationManager:authorizationManager changeManager:changeManager];
 }
@@ -89,7 +90,7 @@ NS_ASSUME_NONNULL_BEGIN
   PTNPhotoKitAuthorizer *authorizer = [[PTNPhotoKitAuthorizer alloc] init];
   PTNPhotoKitAuthorizationManager *authorizationManager =
       [[PTNPhotoKitAuthorizationManager alloc] initWithPhotoKitAuthorizer:authorizer];
-  
+
   return [self initWithAuthorizationManager:authorizationManager];
 }
 
@@ -265,7 +266,7 @@ NS_ASSUME_NONNULL_BEGIN
           RACSignal *signal = [[[self fetchAlbumWithURL:subalbumURL] skip:1] mapReplace:collection];
           [signals addObject:signal];
         }
-         
+
         return [RACSignal merge:signals];
     }];
 }
@@ -317,9 +318,10 @@ NS_ASSUME_NONNULL_BEGIN
         }]
         concat];
 
-    // The operator ptn_identicallyDistinctUntilChanged is required because PHFetchResult objects are
-    // equal if they back the same asset, even if the asset has changed. This makes sure that only new
-    // fetch results are provided, but avoid sending the same fetch result over and over again.
+    // The operator ptn_identicallyDistinctUntilChanged is required because PHFetchResult objects
+    // are equal if they back the same asset, even if the asset has changed. This makes sure that
+    // only new fetch results are provided, but avoid sending the same fetch result over and over
+    // again.
     return [[[RACSignal
         concat:@[initialFetchResult, nextFetchResults]]
         ptn_identicallyDistinctUntilChanged]
@@ -629,6 +631,58 @@ NS_ASSUME_NONNULL_BEGIN
       [self.imageManager cancelImageRequest:requestID];
     }];
   }];
+}
+
+#pragma mark -
+#pragma mark Image data fetching
+#pragma mark -
+
+- (RACSignal *)fetchImageDataWithDescriptor:(id<PTNDescriptor>)descriptor {
+  if (![descriptor isKindOfClass:[PHAsset class]]) {
+    return [RACSignal error:[NSError ptn_errorWithCode:PTNErrorCodeInvalidDescriptor
+                                  associatedDescriptor:descriptor]];
+  }
+
+  return [[self fetchAssetForDescriptor:descriptor]
+      flattenMap:^(PHAsset *asset) {
+        return [self imageDataForPhotoKitAsset:asset];
+      }];
+}
+
+- (RACSignal *)imageDataForPhotoKitAsset:(PHAsset *)asset {
+  return [[RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+    PHImageRequestOptions *options = [[PHImageRequestOptions alloc] init];
+    options.progressHandler = ^(double value, NSError *error, BOOL *, NSDictionary *) {
+      if (!error) {
+        PTNProgress *progress = [[PTNProgress alloc] initWithProgress:@(value)];
+        [subscriber sendNext:progress];
+      }
+    };
+
+    auto resultHandler = ^(NSData * _Nullable imageData, NSString * _Nullable dataUTI,
+                           UIImageOrientation orientation, NSDictionary * _Nullable info) {
+      if (!imageData) {
+        NSError *wrappedError = [NSError lt_errorWithCode:PTNErrorCodeAssetLoadingFailed
+                                                      url:asset.ptn_identifier
+                                          underlyingError:info[PHImageErrorKey]];
+        [subscriber sendError:wrappedError];
+        return;
+      }
+
+      id<PTNImageDataAsset> rawImageAsset = [[PTNImageDataAsset alloc] initWithData:imageData
+                                                              uniformTypeIdentifier:dataUTI
+                                                                        orientation:orientation];
+      [subscriber sendNext:[[PTNProgress alloc] initWithResult:rawImageAsset]];
+      [subscriber sendCompleted];
+    };
+
+    PHImageRequestID requestID = [self.imageManager requestImageDataForAsset:asset options:options
+                                                               resultHandler:resultHandler];
+
+    return [RACDisposable disposableWithBlock:^{
+      [self.imageManager cancelImageRequest:requestID];
+    }];
+  }] subscribeOn:RACScheduler.scheduler];
 }
 
 #pragma mark -

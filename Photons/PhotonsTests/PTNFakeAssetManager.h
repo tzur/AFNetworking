@@ -5,7 +5,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@protocol PTNAlbum, PTNImageAsset, PTNVideoAsset;
+@protocol PTNAlbum, PTNImageAsset, PTNImageDataAsset, PTNVideoAsset;
 
 @class PTNAlbumChangeset, PTNImageFetchOptions, PTNProgress, PTNVideoFetchOptions;
 
@@ -46,6 +46,20 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Fetch options used for the video request.
 @property (readonly, nonatomic, nullable) PTNVideoFetchOptions *options;
+
+@end
+
+/// Value object representing an image data request with the required parameter for it.
+@interface PTNImageDataRequest : NSObject
+
+- (instancetype)init NS_UNAVAILABLE;
+
+/// Initializes with \c descriptor.
+- (instancetype)initWithAssetDescriptor:(nullable id<PTNDescriptor>)descriptor
+    NS_DESIGNATED_INITIALIZER;
+
+/// Descriptor used for the image data request.
+@property (readonly, nonatomic, nullable) id<PTNDescriptor> descriptor;
 
 @end
 
@@ -99,6 +113,25 @@ NS_ASSUME_NONNULL_BEGIN
 /// all values from that property.
 - (void)serveVideoRequest:(PTNVideoRequest *)videoRequest
              withProgress:(NSArray<NSNumber *> *)progress finallyError:(NSError *)error;
+
+#pragma mark -
+#pragma mark Image Data Serving
+#pragma mark -
+
+/// Serves the given \c imageDataRequest by sending the given \c progress reports (array of
+/// \c NSNumber values), followed by the given \c imageDataRequest, all wrapped in a \c PTNProgress
+/// objects and then completes. If any properties of \c imageDataRequest are \c nil, that property
+/// will be treated as a wildcard, matching all values from that property.
+- (void)serveImageDataRequest:(PTNImageDataRequest *)imageDataRequest
+                 withProgress:(NSArray<NSNumber *> *)progress
+               imageDataAsset:(id<PTNImageDataAsset>)imageDataAsset;
+
+/// Serves the given \c imageDataRequest by sending the given \c progress reports (array of
+/// \c NSNumber values) all wrapped in a \c PTNProgress objects, and finally the given \c error. If
+/// any properties of \c imageDataRequest are \c nil, that property will be treated as a wildcard,
+/// matching all values from that property.
+- (void)serveImageDataRequest:(PTNImageDataRequest *)imageDataRequest
+                 withProgress:(NSArray<NSNumber *> *)progress finallyError:(NSError *)error;
 
 #pragma mark -
 #pragma mark Descriptor Serving

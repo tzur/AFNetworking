@@ -135,6 +135,21 @@ context(@"video fetching", ^{
   });
 });
 
+context(@"image data fetching", ^{
+  it(@"should forward image data requests", ^{
+    RACSignal *signal = [multiplexerManager fetchImageDataWithDescriptor:descriptorA];
+    expect(signal).to.equal(returnSignalA);
+    OCMVerify([managerA fetchImageDataWithDescriptor:descriptorA]);
+  });
+
+  it(@"should error on image data requests with unconfigured scheme", ^{
+    RACSignal *signal = [multiplexerManager fetchImageDataWithDescriptor:descriptorD];
+    expect(signal).to.matchError(^BOOL(NSError *error) {
+      return error.code == PTNErrorCodeUnrecognizedURLScheme;
+    });
+  });
+});
+
 context(@"changes", ^{
   context(@"asset deletion", ^{
     it(@"should forward delete requests to underlying managers", ^{
