@@ -106,6 +106,57 @@ context(@"allowed products provider", ^{
     expect(allowedProvider.allowedProducts).to.equal([NSSet set]);
   });
 
+  it(@"should return only purchased products if the product list is empty", ^{
+    productsProvider = OCMProtocolMock(@protocol(BZRProductsProvider));
+    OCMStub([productsProvider fetchProductList]).andReturn([RACSignal return:@[]]);
+
+    acquiredViaSubscriptionProvider.productsAcquiredViaSubscription =
+        [NSSet setWithObject:filterProductIdentifier];
+    allowedProvider =
+        [[BZRAllowedProductsProvider alloc] initWithProductsProvider:productsProvider
+         validationStatusProvider:validationStatusProvider
+         acquiredViaSubscriptionProvider:acquiredViaSubscriptionProvider];
+
+    expect(allowedProvider.allowedProducts).to
+        .equal([NSSet setWithObject:purchasedProductIdentifier]);
+  });
+
+  it(@"should return purchased products and acquired products if failed to fetch product list and "
+     "the user has an active subscription", ^{
+    NSError *fetchingError = [NSError lt_errorWithCode:1337];
+    productsProvider = OCMProtocolMock(@protocol(BZRProductsProvider));
+    OCMStub([productsProvider fetchProductList]).andReturn([RACSignal error:fetchingError]);
+
+    acquiredViaSubscriptionProvider.productsAcquiredViaSubscription =
+        [NSSet setWithObject:filterProductIdentifier];
+    allowedProvider =
+        [[BZRAllowedProductsProvider alloc] initWithProductsProvider:productsProvider
+         validationStatusProvider:validationStatusProvider
+         acquiredViaSubscriptionProvider:acquiredViaSubscriptionProvider];
+
+    expect(allowedProvider.allowedProducts).to
+        .equal([NSSet setWithObjects:purchasedProductIdentifier, filterProductIdentifier, nil]);
+  });
+
+  it(@"should return only purchased product if failed to fetch product list and the user has no "
+     "active subscription", ^{
+    NSError *fetchingError = [NSError lt_errorWithCode:1337];
+    validationStatusProvider.receiptValidationStatus =
+        BZRReceiptValidationStatusWithInAppPurchaseAndExpiry(purchasedProductIdentifier, YES);
+    productsProvider = OCMProtocolMock(@protocol(BZRProductsProvider));
+    OCMStub([productsProvider fetchProductList]).andReturn([RACSignal error:fetchingError]);
+
+    acquiredViaSubscriptionProvider.productsAcquiredViaSubscription =
+        [NSSet setWithObject:filterProductIdentifier];
+    allowedProvider =
+        [[BZRAllowedProductsProvider alloc] initWithProductsProvider:productsProvider
+         validationStatusProvider:validationStatusProvider
+         acquiredViaSubscriptionProvider:acquiredViaSubscriptionProvider];
+
+    expect(allowedProvider.allowedProducts).to
+        .equal([NSSet setWithObject:purchasedProductIdentifier]);
+  });
+
   context(@"full subscription", ^{
     beforeEach(^{
       BZRReceiptSubscriptionInfo *subscription =
