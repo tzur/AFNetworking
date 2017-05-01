@@ -36,4 +36,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
+/// Returns an \c INTEventMetadata initialized with the given \c totalRunTime, \c foregroundRunTime,
+/// \c deviceTimestamp and \c eventID. If \c eventID is \c nil a new \c NSUUID is created. If
+/// \c deviceTimestamp is \c nil a new \c NSDate is created.
+INTEventMetadata *INTCreateEventMetadata(NSTimeInterval totalRunTime = 0,
+                                         NSTimeInterval foregroundRunTime = 0,
+                                         NSDate * _Nullable deviceTimestamp = nil,
+                                         NSUUID * _Nullable eventID = nil);
+
 NS_ASSUME_NONNULL_END
