@@ -52,7 +52,7 @@ public:
   AggregationBlock(INTPartialAggregationBlock block) :
       AggregationBlock(^(NSDictionary<NSString *, id> *aggregatedData, id event,
                          INTEventMetadata *metadata, INTAppContext *) {
-        return block(aggregatedData, metadata, event);
+        return block(aggregatedData, event, metadata);
       }) {}
 
   /// Initializes with the given \c block. \c block is used as an underlying block for a full
