@@ -6,6 +6,7 @@
 #import <LTKit/LTPath.h>
 
 #import "NSURL+FileSystem.h"
+#import "PTNFileSystemTestUtils.h"
 
 SpecBegin(PTNFileSystemFileDescriptor)
 
@@ -29,9 +30,9 @@ it(@"should initialize with path", ^{
 it(@"should use last path component for localized title", ^{
   LTPath *path = [LTPath pathWithBaseDirectory:LTPathBaseDirectoryTemp
                                andRelativePath:@"/foo/bar.jpg"];
-  PTNFileSystemFileDescriptor *descriptor = [[PTNFileSystemFileDescriptor alloc]
-                                             initWithPath:path];
-  
+  PTNFileSystemFileDescriptor *descriptor =
+      [[PTNFileSystemFileDescriptor alloc] initWithPath:path];
+
   expect(descriptor.localizedTitle).to.equal(@"bar.jpg");
 });
 
@@ -69,6 +70,22 @@ context(@"equality", ^{
 
   it(@"should create proper hash", ^{
     expect(firstFile.hash).to.equal(secondFile.hash);
+  });
+});
+
+context(@"video descriptor", ^{
+ it(@"should have underlying asset's duration", ^{
+    LTPath *oneSecondVideoPath = [LTPath pathWithPath:PTNOneSecondVideoPath().path];
+    PTNFileSystemFileDescriptor *descriptor =
+        [[PTNFileSystemFileDescriptor alloc] initWithPath:oneSecondVideoPath];
+    expect(round(descriptor.duration)).to.equal(1);
+  });
+
+  it(@"should have video descriptor key in descriptor traits", ^{
+    LTPath *oneSecondVideoPath = [LTPath pathWithPath:PTNOneSecondVideoPath().path];
+    PTNFileSystemFileDescriptor *descriptor =
+        [[PTNFileSystemFileDescriptor alloc] initWithPath:oneSecondVideoPath];
+    expect(descriptor.descriptorTraits).to.equal([NSSet setWithObject:kPTNDescriptorTraitVideoKey]);
   });
 });
 

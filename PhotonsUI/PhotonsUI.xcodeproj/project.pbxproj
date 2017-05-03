@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0DF151CC1EAF79DB009F3080 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DF151CB1EAF79DB009F3080 /* AVFoundation.framework */; };
+		0DF155F51EB1DCA6009F3080 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8861FE0E1E5A2CF100CA1436 /* QuartzCore.framework */; };
 		650BB33C1D465389008648A3 /* libExpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B425ED31CA6D218001C457E /* libExpecta.a */; };
 		650BB33D1D465389008648A3 /* libextobjc_iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 650BB32F1D46533E008648A3 /* libextobjc_iOS.a */; };
 		650BB33E1D465389008648A3 /* libLTKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 650BB3221D465335008648A3 /* libLTKit.a */; };
@@ -90,7 +92,6 @@
 		8861FE091E5A2CAA00CA1436 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8861FE081E5A2CAA00CA1436 /* CoreLocation.framework */; };
 		8861FE0B1E5A2CC800CA1436 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8861FE0A1E5A2CC800CA1436 /* GLKit.framework */; };
 		8861FE0D1E5A2CE200CA1436 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8861FE0C1E5A2CE200CA1436 /* CoreGraphics.framework */; };
-		8861FE0F1E5A2CF100CA1436 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8861FE0E1E5A2CF100CA1436 /* QuartzCore.framework */; };
 		887265951D772D8300D4F2A6 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 88FAF8F21D7727820023AF7A /* Localizable.strings */; };
 		887265961D772D8700D4F2A6 /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = 88FAF9151D7727890023AF7A /* Localizable.stringsdict */; };
 		887267BD1D7C3C8F00D4F2A6 /* PTULocalization.mm in Sources */ = {isa = PBXBuildFile; fileRef = 887267BC1D7C3C8F00D4F2A6 /* PTULocalization.mm */; };
@@ -391,6 +392,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0DF151CB1EAF79DB009F3080 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		650BB31C1D465335008648A3 /* LTKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LTKit.xcodeproj; path = ../LTKit/LTKit.xcodeproj; sourceTree = "<group>"; };
 		650BB3251D46533E008648A3 /* extobjc.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = extobjc.xcodeproj; path = ../third_party/libextobjc/extobjc.xcodeproj; sourceTree = "<group>"; };
 		650BB3341D465359008648A3 /* TestHost.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TestHost.xcodeproj; path = ../../Foundations/TestHost.xcodeproj; sourceTree = "<group>"; };
@@ -599,6 +601,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0DF151CC1EAF79DB009F3080 /* AVFoundation.framework in Frameworks */,
 				8861FE0D1E5A2CE200CA1436 /* CoreGraphics.framework in Frameworks */,
 				8861FE091E5A2CAA00CA1436 /* CoreLocation.framework in Frameworks */,
 				8861FDDE1E5A2C0C00CA1436 /* CoreMedia.framework in Frameworks */,
@@ -608,7 +611,7 @@
 				8B368FAB1CA6ACB3003E34CF /* Masonry.framework in Frameworks */,
 				88EE8DD61EACD5C100D3126A /* MobileCoreServices.framework in Frameworks */,
 				8861FE031E5A2C1D00CA1436 /* Photos.framework in Frameworks */,
-				8861FE0F1E5A2CF100CA1436 /* QuartzCore.framework in Frameworks */,
+				0DF155F51EB1DCA6009F3080 /* QuartzCore.framework in Frameworks */,
 				8B0B9A1D1CA6BF6900ED2334 /* ReactiveCocoa.framework in Frameworks */,
 				8861FE051E5A2C4B00CA1436 /* Security.framework in Frameworks */,
 				8861FE011E5A2C1300CA1436 /* UIKit.framework in Frameworks */,
@@ -931,6 +934,7 @@
 		848EFFE21C591C0D001D8368 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0DF151CB1EAF79DB009F3080 /* AVFoundation.framework */,
 				8861FE0C1E5A2CE200CA1436 /* CoreGraphics.framework */,
 				8861FE081E5A2CAA00CA1436 /* CoreLocation.framework */,
 				8861FDDD1E5A2C0C00CA1436 /* CoreMedia.framework */,

@@ -8,6 +8,7 @@
 #import "NSError+Photons.h"
 #import "NSURL+PhotoKit.h"
 #import "PTNAlbumChangeset+PhotoKit.h"
+#import "PTNAudiovisualAsset.h"
 #import "PTNAuthorizationStatus.h"
 #import "PTNDescriptor.h"
 #import "PTNImageAsset.h"
@@ -24,10 +25,8 @@
 #import "PTNPhotoKitImageAsset.h"
 #import "PTNPhotoKitImageManager.h"
 #import "PTNPhotoKitTestUtils.h"
-#import "PTNPhotoKitVideoAsset.h"
 #import "PTNProgress.h"
 #import "PTNResizingStrategy.h"
-#import "PTNVideoAsset.h"
 #import "PTNVideoFetchOptions.h"
 #import "PhotoKit+Photons.h"
 
@@ -729,6 +728,23 @@ context(@"album fetching", ^{
                                                         changeManager:changeManager];
     });
 
+    it(@"should fetch album type with fetch options", ^{
+      PHFetchOptions *options = OCMClassMock(PHFetchOptions.class);
+      NSURL *url = OCMClassMock(NSURL.class);
+      OCMStub([url ptn_photoKitURLType]).andReturn($(PTNPhotoKitURLTypeAlbumType));
+      OCMStub([url ptn_photoKitAlbumType]).andReturn(@(PHAssetCollectionTypeSmartAlbum));
+      OCMStub([url ptn_photoKitAlbumSubtype])
+          .andReturn(@(PHAssetCollectionSubtypeSmartAlbumBursts));
+      OCMStub([url ptn_photoKitAlbumFetchOptions]).andReturn(options);
+
+      OCMExpect([fetcherMock fetchAssetCollectionsWithType:PHAssetCollectionTypeSmartAlbum
+                                                   subtype:PHAssetCollectionSubtypeSmartAlbumBursts
+                                                   options:options]);
+      [[assetManager fetchAlbumWithURL:url] subscribeNext:^(id) {}];
+
+      OCMVerifyAllWithDelay(fetcherMock, 1);
+    });
+
     it(@"should fetch meta album type with fetch options", ^{
       NSURL *url = [NSURL ptn_photoKitUserAlbumsWithTitle:@"bar"];
 
@@ -1125,8 +1141,8 @@ context(@"image fetching", ^{
 context(@"video fetching", ^{
   __block id asset;
   __block PTNVideoFetchOptions *options;
-  __block id<PTNVideoAsset> videoAsset;
-  __block AVAsset *avasset;
+  __block id<PTNAudiovisualAsset> videoAsset;
+  __block AVURLAsset *avasset;
   __block AVAudioMix *audioMix;
 
   __block NSError *defaultError;
@@ -1137,9 +1153,10 @@ context(@"video fetching", ^{
 
     options = [PTNVideoFetchOptions optionsWithDeliveryMode:PTNVideoDeliveryModeFastFormat];
 
-    avasset = OCMClassMock([AVAsset class]);
+    avasset = OCMClassMock([AVURLAsset class]);
+    OCMStub([avasset URL]).andReturn(@"foo");
     audioMix = OCMClassMock([AVAudioMix class]);
-    videoAsset = [[PTNPhotoKitVideoAsset alloc] initWithAVAsset:avasset];
+    videoAsset = [[PTNAudiovisualAsset alloc] initWithAVAsset:avasset];
 
     defaultError = [NSError errorWithDomain:@"foo" code:1337 userInfo:nil];
   });

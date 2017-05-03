@@ -3,13 +3,17 @@
 
 #import "PTNFileSystemAssetManager.h"
 
+#import <AVFoundation/AVFoundation.h>
 #import <LTKit/LTPath.h>
 #import <LTKit/LTRandomAccessCollection.h>
+#import <LTKit/NSBundle+Path.h>
 
 #import "NSError+Photons.h"
 #import "NSURL+FileSystem.h"
+#import "PTNAVImageAsset.h"
 #import "PTNAlbum.h"
 #import "PTNAlbumChangeset.h"
+#import "PTNAudiovisualAsset.h"
 #import "PTNFileBackedImageAsset.h"
 #import "PTNFileSystemDirectoryDescriptor.h"
 #import "PTNFileSystemFakeFileManager.h"
@@ -35,10 +39,21 @@ beforeEach(^{
     [[PTNFileSystemFakeFileManagerFile alloc] initWithName:@"foo.jpg" path:@"/baz" isDirectory:NO],
     [[PTNFileSystemFakeFileManagerFile alloc] initWithName:@"baz" path:@"/" isDirectory:YES],
     [[PTNFileSystemFakeFileManagerFile alloc] initWithName:@"foo.png" path:@"/baz" isDirectory:NO],
+    [[PTNFileSystemFakeFileManagerFile alloc] initWithName:@"foo.xml" path:@"/baz" isDirectory:NO],
     [[PTNFileSystemFakeFileManagerFile alloc] initWithName:@"foo.tiff" path:@"/baz" isDirectory:NO],
     [[PTNFileSystemFakeFileManagerFile alloc] initWithName:@"foo.jpeg" path:@"/baz" isDirectory:NO],
     [[PTNFileSystemFakeFileManagerFile alloc] initWithName:@"foo.zip" path:@"/" isDirectory:NO],
-    [[PTNFileSystemFakeFileManagerFile alloc] initWithName:@"qux" path:@"/" isDirectory:YES]
+    [[PTNFileSystemFakeFileManagerFile alloc] initWithName:@"qux" path:@"/" isDirectory:YES],
+    [[PTNFileSystemFakeFileManagerFile alloc] initWithName:@"foo.mp4" path:@"/" isDirectory:NO],
+    [[PTNFileSystemFakeFileManagerFile alloc] initWithName:@"foo.mp4" path:@"/baz" isDirectory:NO],
+    [[PTNFileSystemFakeFileManagerFile alloc] initWithName:@"foo.mov" path:@"/baz" isDirectory:NO],
+    [[PTNFileSystemFakeFileManagerFile alloc] initWithName:@"foo.m4v" path:@"/baz" isDirectory:NO],
+    [[PTNFileSystemFakeFileManagerFile alloc] initWithName:@"foo.qt" path:@"/baz" isDirectory:NO],
+    [[PTNFileSystemFakeFileManagerFile alloc] initWithName:@"baz1" path:@"/" isDirectory:YES],
+    [[PTNFileSystemFakeFileManagerFile alloc] initWithName:@"foo1.jpg" path:@"/baz1"
+                                               isDirectory:NO],
+    [[PTNFileSystemFakeFileManagerFile alloc] initWithName:@"" path:PTNOneSecondVideoPath().path
+                                               isDirectory:NO],
   ]];
   imageResizer = OCMClassMock([PTNImageResizer class]);
   manager = [[PTNFileSystemAssetManager alloc] initWithFileManager:fileManager
@@ -46,30 +61,36 @@ beforeEach(^{
 });
 
 context(@"album fetching", ^{
-  it(@"should fetch current results of an album", ^{
+ it(@"should fetch current results of an album", ^{
     NSURL *url = [NSURL ptn_fileSystemAlbumURLWithPath:PTNFileSystemPathFromString(@"/")];
     RACSignal *values = [manager fetchAlbumWithURL:url];
     NSArray *directories = @[
       PTNFileSystemDirectoryFromString(@"baz"),
-      PTNFileSystemDirectoryFromString(@"qux")
+      PTNFileSystemDirectoryFromString(@"qux"),
+      PTNFileSystemDirectoryFromString(@"baz1")
     ];
     NSArray *files = @[
       PTNFileSystemFileFromString(@"foo.jpg"),
-      PTNFileSystemFileFromString(@"bar.jpg")
+      PTNFileSystemFileFromString(@"bar.jpg"),
+      PTNFileSystemFileFromString(@"foo.mp4"),
     ];
     id<PTNAlbum> album = [[PTNAlbum alloc] initWithURL:url subalbums:directories assets:files];
 
     expect(values).will.sendValues(@[[PTNAlbumChangeset changesetWithAfterAlbum:album]]);
   });
 
-  it(@"should only fetch files of type {'jpg', 'png', 'jpeg', 'tiff'}", ^{
+  it(@"should only fetch supported UTI files", ^{
     NSURL *url = [NSURL ptn_fileSystemAlbumURLWithPath:PTNFileSystemPathFromString(@"baz")];
     RACSignal *values = [manager fetchAlbumWithURL:url];
     NSArray *files = @[
       PTNFileSystemFileFromString(@"baz/foo.jpg"),
       PTNFileSystemFileFromString(@"baz/foo.png"),
       PTNFileSystemFileFromString(@"baz/foo.tiff"),
-      PTNFileSystemFileFromString(@"baz/foo.jpeg")
+      PTNFileSystemFileFromString(@"baz/foo.jpeg"),
+      PTNFileSystemFileFromString(@"baz/foo.mp4"),
+      PTNFileSystemFileFromString(@"baz/foo.mov"),
+      PTNFileSystemFileFromString(@"baz/foo.m4v"),
+      PTNFileSystemFileFromString(@"baz/foo.qt")
     ];
     id<PTNAlbum> album = [[PTNAlbum alloc] initWithURL:url subalbums:@[] assets:files];
 
@@ -212,14 +233,14 @@ context(@"image fetching", ^{
   context(@"fetch image of asset collection", ^{
     beforeEach(^{
       imageAsset =
-          [[PTNFileBackedImageAsset alloc] initWithFilePath:[LTPath pathWithPath:@"baz/foo.jpeg"]
+          [[PTNFileBackedImageAsset alloc] initWithFilePath:[LTPath pathWithPath:@"baz1/foo1.jpg"]
                                                 fileManager:fileManager
                                                imageResizer:imageResizer
                                            resizingStrategy:resizingStrategy];
     });
 
     it(@"should fetch asset collection representative image", ^{
-      id<PTNDescriptor> directoryDesc = PTNFileSystemDirectoryFromString(@"baz");
+      id<PTNDescriptor> directoryDesc = PTNFileSystemDirectoryFromString(@"baz1");
       RACSignal *values = [manager fetchImageWithDescriptor:directoryDesc
                                            resizingStrategy:resizingStrategy
                                                     options:options];
@@ -257,22 +278,67 @@ context(@"image fetching", ^{
       });
     });
   });
+
+  it(@"should fetch image from video descriptor", ^{
+    id<PTNDescriptor> descriptor =
+        [[PTNFileSystemFileDescriptor alloc]
+         initWithPath:[LTPath pathWithPath:PTNOneSecondVideoPath().path]];
+
+    id<PTNResizingStrategy> resizing = [PTNResizingStrategy identity];
+    PTNImageFetchOptions *imageOptions =
+        [PTNImageFetchOptions optionsWithDeliveryMode:PTNImageDeliveryModeHighQuality
+                                           resizeMode:PTNImageResizeModeFast];
+
+    RACSignal *values = [manager fetchImageWithDescriptor:descriptor resizingStrategy:resizing
+                                                  options:imageOptions];
+    AVAsset *videoAsset =
+        [AVAsset assetWithURL:descriptor.ptn_identifier.ptn_fileSystemAssetPath.url];
+    PTNAVImageAsset *expectedImage = [[PTNAVImageAsset alloc]
+                                      initWithAsset:videoAsset
+                                      resizingStrategy:resizing];
+    expect(values).to.sendValues(@[[[PTNProgress alloc] initWithResult:expectedImage]]);
+  });
 });
 
 context(@"video fetching", ^{
   __block PTNVideoFetchOptions *options;
-  __block id<PTNDescriptor> asset;
+  __block id<PTNDescriptor> descriptor;
+  __block LTPath *descriptorPath;
+  __block PTNAudiovisualAsset *expectedAsset;
 
   beforeEach(^{
-    options = [PTNVideoFetchOptions optionsWithDeliveryMode:PTNVideoDeliveryModeFastFormat];
-    asset = PTNFileSystemFileFromString(@"foo.jpg");
+    options = [PTNVideoFetchOptions optionsWithDeliveryMode:PTNVideoDeliveryModeAutomatic];
+    descriptorPath = PTNFileSystemPathFromString(PTNOneSecondVideoPath().path);
+    descriptor = [[PTNFileSystemFileDescriptor alloc]
+                  initWithPath:[LTPath pathWithPath:PTNOneSecondVideoPath().path]];
+    AVAsset *underlyingAsset = [AVAsset assetWithURL:PTNOneSecondVideoPath()];
+    expectedAsset = [[PTNAudiovisualAsset alloc] initWithAVAsset:underlyingAsset];
   });
 
-  it(@"should err", ^{
-    RACSignal *values = [manager fetchVideoWithDescriptor:asset options:options];
+  it(@"should fetch video", ^{
+    RACSignal *values = [manager fetchVideoWithDescriptor:descriptor options:options] ;
+    expect(values).to.sendValues(@[[[PTNProgress alloc] initWithResult:expectedAsset]]);
+  });
 
+  it(@"should complete after fetching an video", ^{
+    RACSignal *values = [manager fetchVideoWithDescriptor:descriptor options:options];
+    expect(values).will.sendValuesWithCount(1);
+    expect(values).will.complete();
+  });
+
+  it(@"should error on non-existing assets", ^{
+    descriptor = PTNFileSystemFileFromString(@"/foo/bar/baz.mp4");
+    RACSignal *values = [manager fetchVideoWithDescriptor:descriptor options:options];
     expect(values).will.matchError(^BOOL(NSError *error) {
-      return error.code == PTNErrorCodeUnsupportedOperation;
+      return error.code == PTNErrorCodeInvalidDescriptor;
+    });
+  });
+
+  it(@"should error on image descriptor", ^{
+    descriptor = PTNFileSystemFileFromString(@"/foo.jpg");
+    RACSignal *values = [manager fetchVideoWithDescriptor:descriptor options:options];
+    expect(values).will.matchError(^BOOL(NSError *error) {
+      return error.code == PTNErrorCodeInvalidDescriptor;
     });
   });
 });

@@ -13,7 +13,6 @@
 #import <Photons/PTNImageFetchOptions.h>
 #import <Photons/PTNProgress.h>
 #import <Photons/PTNResizingStrategy.h>
-#import <Photons/PTNVideoAsset.h>
 #import <Photons/PTNVideoFetchOptions.h>
 
 #import "PTUTimeFormatter.h"

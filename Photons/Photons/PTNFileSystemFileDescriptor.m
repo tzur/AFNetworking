@@ -3,6 +3,7 @@
 
 #import "PTNFileSystemFileDescriptor.h"
 
+#import <AVFoundation/AVFoundation.h>
 #import <LTKit/LTPath.h>
 
 #import "NSURL+FileSystem.h"
@@ -19,6 +20,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Date the file represented by this descriptor was last modified.
 @property (strong, nonatomic, nullable) NSDate *modificationDate;
+
+/// \c YES if duration was already fetched \c NO otherwise.
+@property (nonatomic) BOOL fetchedDuration;
 
 @end
 
@@ -57,7 +61,35 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (NSSet<NSString *> *)descriptorTraits {
-  return [NSSet set];
+  NSString * _Nullable UTI;
+  BOOL success = [self.path.url getResourceValue:&UTI forKey:NSURLTypeIdentifierKey error:nil];
+  if (!success || ![[self.class videoFileUTIs] containsObject:UTI]) {
+    return [NSSet set];
+  }
+
+  return [NSSet setWithObject:kPTNDescriptorTraitVideoKey];
+}
+
++ (NSArray *)videoFileUTIs {
+  static NSArray *types;
+
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    types = [AVURLAsset audiovisualTypes];
+  });
+
+  return types;
+}
+
+- (NSTimeInterval)duration {
+  if (self.fetchedDuration) {
+    return _duration;
+  }
+
+  self.fetchedDuration = YES;
+  AVAsset *asset = [AVAsset assetWithURL:self.path.url];
+  _duration = CMTimeGetSeconds(asset.duration);
+  return _duration;
 }
 
 #pragma mark -
@@ -82,7 +114,7 @@ NS_ASSUME_NONNULL_BEGIN
        [self.creationDate isEqualToDate:object.creationDate];
   BOOL equalModificationDate = (self.modificationDate == object.modificationDate) ||
        [self.modificationDate isEqualToDate:object.modificationDate];
-  
+
   return [self.path isEqual:object.path] && equalCreationDate && equalModificationDate;
 }
 

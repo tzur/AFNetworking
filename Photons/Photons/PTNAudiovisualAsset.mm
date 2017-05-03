@@ -1,18 +1,20 @@
 // Copyright (c) 2016 Lightricks. All rights reserved.
 // Created by Reuven Siman Tov.
 
-#import "PTNPhotoKitVideoAsset.h"
+#import "PTNAudiovisualAsset.h"
+
+#import <AVFoundation/AVFoundation.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface PTNPhotoKitVideoAsset ()
+@interface PTNAudiovisualAsset ()
 
 /// \c AVAsset that this object is backed by.
 @property (readonly, nonatomic) AVAsset *asset;
 
 @end
 
-@implementation PTNPhotoKitVideoAsset
+@implementation PTNAudiovisualAsset
 
 - (instancetype)initWithAVAsset:(AVAsset *)asset {
   if (self = [super init]) {
@@ -29,7 +31,7 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark NSObject
 #pragma mark -
 
-- (BOOL)isEqual:(PTNPhotoKitVideoAsset *)object {
+- (BOOL)isEqual:(PTNAudiovisualAsset *)object {
   if (object == self) {
     return YES;
   }
@@ -37,11 +39,17 @@ NS_ASSUME_NONNULL_BEGIN
     return NO;
   }
 
+  if ([self.asset isKindOfClass:AVURLAsset.class] &&
+      [object.asset isKindOfClass:AVURLAsset.class]) {
+    return [((AVURLAsset *)self.asset).URL isEqual:((AVURLAsset *)object.asset).URL];
+  }
+
   return [self.asset isEqual:object.asset];
 }
 
 - (NSUInteger)hash {
-  return self.asset.hash;
+  return [self.asset isKindOfClass:AVURLAsset.class] ? ((AVURLAsset *)self.asset).URL.hash :
+      self.asset.hash;
 }
 
 - (NSString *)description {
