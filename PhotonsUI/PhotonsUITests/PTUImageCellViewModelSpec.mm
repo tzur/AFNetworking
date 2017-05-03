@@ -81,46 +81,66 @@ context(@"PTNDescriptor", ^{
     expect(values).will.sendValues(@[image, otherImage]);
   });
 
-  it(@"should expose traits according to underlying descriptor", ^{
-    expect(viewModel.traits).to.equal([NSSet set]);
+  context(@"traits", ^{
+    it(@"should expose session trait if underlying descriptor has session trait", ^{
+      expect(viewModel.traits).to.equal([NSSet set]);
 
-    id<PTNDescriptor> sessionAsset = PTNCreateDescriptor(nil, @"foo", 0,
-        [NSSet setWithObject:kPTNDescriptorTraitSessionKey]);
-    PTUImageCellViewModel *sessionViewModel = [[PTUImageCellViewModel alloc]
+      id<PTNDescriptor> sessionAsset = PTNCreateDescriptor(nil, @"foo", 0,
+          [NSSet setWithObject:kPTNDescriptorTraitSessionKey]);
+      PTUImageCellViewModel *sessionViewModel = [[PTUImageCellViewModel alloc]
+                                                 initWithAssetManager:assetManager
+                                                 descriptor:sessionAsset
+                                                 imageFetchOptions:options];
+      expect(sessionViewModel.traits).to.contain(kPTUImageCellViewModelTraitSessionKey);
+    });
+
+    it(@"should expose cloud based trait if underlying descriptor has cloud based trait", ^{
+      id<PTNDescriptor> cloudAsset = PTNCreateDescriptor(nil, @"foo", 0,
+          [NSSet setWithObject:kPTNDescriptorTraitCloudBasedKey]);
+      PTUImageCellViewModel *cloudViewModel = [[PTUImageCellViewModel alloc]
                                                initWithAssetManager:assetManager
-                                               descriptor:sessionAsset
+                                               descriptor:cloudAsset
                                                imageFetchOptions:options];
-    expect(sessionViewModel.traits).to.contain(kPTUImageCellViewModelTraitSessionKey);
+      expect(cloudViewModel.traits).to.contain(kPTUImageCellViewModelTraitCloudBasedKey);
+    });
 
-    id<PTNDescriptor> cloudAsset = PTNCreateDescriptor(nil, @"foo", 0,
-        [NSSet setWithObject:kPTNDescriptorTraitCloudBasedKey]);
-    PTUImageCellViewModel *cloudViewModel = [[PTUImageCellViewModel alloc]
+    it(@"should expose video trait if underlying descriptor has video trait", ^{
+      id<PTNDescriptor> videoAsset = PTNCreateDescriptor(nil, @"foo", 0,
+          [NSSet setWithObject:kPTNDescriptorTraitVideoKey]);
+      PTUImageCellViewModel *videoViewModel = [[PTUImageCellViewModel alloc]
+                                               initWithAssetManager:assetManager
+                                               descriptor:videoAsset
+                                               imageFetchOptions:options];
+      expect(videoViewModel.traits).to.contain(kPTUImageCellViewModelTraitVideoKey);
+    });
+
+    it(@"should expose raw trait if underlying descriptor has raw trait", ^{
+      id<PTNDescriptor> rawAsset = PTNCreateDescriptor(nil, @"foo", 0,
+          [NSSet setWithObject:kPTNDescriptorTraitRawKey]);
+      PTUImageCellViewModel *rawViewModel = [[PTUImageCellViewModel alloc]
                                              initWithAssetManager:assetManager
-                                             descriptor:cloudAsset
+                                             descriptor:rawAsset
                                              imageFetchOptions:options];
-    expect(cloudViewModel.traits).to.contain(kPTUImageCellViewModelTraitCloudBasedKey);
+      expect(rawViewModel.traits).to.contain(kPTUImageCellViewModelTraitRawKey);
+    });
 
-    id<PTNDescriptor> videoAsset = PTNCreateDescriptor(nil, @"foo", 0,
-        [NSSet setWithObject:kPTNDescriptorTraitVideoKey]);
-    PTUImageCellViewModel *videoViewModel = [[PTUImageCellViewModel alloc]
-                                             initWithAssetManager:assetManager
-                                             descriptor:videoAsset
-                                             imageFetchOptions:options];
-    expect(videoViewModel.traits).to.contain(kPTUImageCellViewModelTraitVideoKey);
-
-    id<PTNDescriptor> multiTraitsAsset =
+    it(@"should expose multiple traits", ^{
+      id<PTNDescriptor> multiTraitsAsset =
         PTNCreateDescriptor(nil, @"foo", 0, [NSSet setWithArray:@[
           kPTNDescriptorTraitSessionKey,
           kPTNDescriptorTraitCloudBasedKey,
-          kPTNDescriptorTraitVideoKey
+          kPTNDescriptorTraitVideoKey,
+          kPTNDescriptorTraitRawKey
         ]]);
-    PTUImageCellViewModel *muliTraitsViewModel = [[PTUImageCellViewModel alloc]
-                                                  initWithAssetManager:assetManager
-                                                  descriptor:multiTraitsAsset
-                                                  imageFetchOptions:options];
-    expect(muliTraitsViewModel.traits).to.contain(kPTUImageCellViewModelTraitSessionKey);
-    expect(muliTraitsViewModel.traits).to.contain(kPTUImageCellViewModelTraitCloudBasedKey);
-    expect(muliTraitsViewModel.traits).to.contain(kPTUImageCellViewModelTraitVideoKey);
+      PTUImageCellViewModel *multiTraitsViewModel = [[PTUImageCellViewModel alloc]
+                                                     initWithAssetManager:assetManager
+                                                     descriptor:multiTraitsAsset
+                                                     imageFetchOptions:options];
+      expect(multiTraitsViewModel.traits).to.contain(kPTUImageCellViewModelTraitSessionKey);
+      expect(multiTraitsViewModel.traits).to.contain(kPTUImageCellViewModelTraitCloudBasedKey);
+      expect(multiTraitsViewModel.traits).to.contain(kPTUImageCellViewModelTraitVideoKey);
+      expect(multiTraitsViewModel.traits).to.contain(kPTUImageCellViewModelTraitRawKey);
+    });
   });
 });
 

@@ -22,6 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
 NSString * const kPTUImageCellViewModelTraitSessionKey = @"Session";
 NSString * const kPTUImageCellViewModelTraitCloudBasedKey = @"Cloud";
 NSString * const kPTUImageCellViewModelTraitVideoKey = @"Video";
+NSString * const kPTUImageCellViewModelTraitRawKey = @"Raw";
 
 @interface PTUImageCellViewModel ()
 
@@ -116,6 +117,9 @@ NSString * const kPTUImageCellViewModelTraitVideoKey = @"Video";
   }
   if ([self.descriptor.descriptorTraits containsObject:kPTNDescriptorTraitVideoKey]) {
     [traits addObject:kPTUImageCellViewModelTraitVideoKey];
+  }
+  if ([self.descriptor.descriptorTraits containsObject:kPTNDescriptorTraitRawKey]) {
+    [traits addObject:kPTUImageCellViewModelTraitRawKey];
   }
   return traits;
 }
