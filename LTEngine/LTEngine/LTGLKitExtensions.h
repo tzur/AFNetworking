@@ -73,23 +73,23 @@ GLK_INLINE GLKMatrix3 GLKMatrix3WithTransform(CGAffineTransform transform) {
 
 #ifdef __cplusplus
 
-/// The "zero" vector, equivalent to GLKVector4Make(0, 0, 0, 0).
-GLK_EXTERN const GLKVector4 GLKVector4Zero;
+/// The "zero" vector, equivalent to GLKVector2Make(0, 0).
+GLK_EXTERN const GLKVector2 GLKVector2Zero;
 
 /// The "zero" vector, equivalent to GLKVector3Make(0, 0, 0).
 GLK_EXTERN const GLKVector3 GLKVector3Zero;
 
-/// The "zero" vector, equivalent to GLKVector2Make(0, 0).
-GLK_EXTERN const GLKVector2 GLKVector2Zero;
+/// The "zero" vector, equivalent to GLKVector4Make(0, 0, 0, 0).
+GLK_EXTERN const GLKVector4 GLKVector4Zero;
 
-/// The "one" vector, equivalent to GLKVector4Make(1, 1, 1, 1).
-GLK_EXTERN const GLKVector4 GLKVector4One;
+/// The "one" vector, equivalent to GLKVector2Make(1, 1).
+GLK_EXTERN const GLKVector2 GLKVector2One;
 
 /// The "one" vector, equivalent to GLKVector3Make(1, 1, 1).
 GLK_EXTERN const GLKVector3 GLKVector3One;
 
-/// The "one" vector, equivalent to GLKVector2Make(1, 1).
-GLK_EXTERN const GLKVector2 GLKVector2One;
+/// The "one" vector, equivalent to GLKVector4Make(1, 1, 1, 1).
+GLK_EXTERN const GLKVector4 GLKVector4One;
 
 /// The "zero" matrix, equivalent to GLKMatrix2Make(0, 0, 0, 0).
 GLK_EXTERN const GLKMatrix2 GLKMatrix2Zero;
