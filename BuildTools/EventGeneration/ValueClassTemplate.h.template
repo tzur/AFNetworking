@@ -1,0 +1,19 @@
+// Copyright (c) @YEAR@ Lightricks. All rights reserved.
+// Created by @SCRIPT_NAME@.
+
+#import <LTKit/LTValueObject.h>
+
+#import @JSON_SERIALIZABLE_PROTOCOL_HEADER@
+
+NS_ASSUME_NONNULL_BEGIN
+
+@CLASS_DOC@
+@interface @CLASS_OBJC_NAME@ : LTValueObject <INTJSONSerializable>
+@INITIALIZER_DECLARATIONS@
+/// Returns a dictionary according to the local, non-referenced properties, as defined in
+/// @JSON_FILE_NAME@
+- (NSDictionary<NSString *, id> *)properties;
+@PROPERTIES_DECLARATION@
+@end
+
+NS_ASSUME_NONNULL_END

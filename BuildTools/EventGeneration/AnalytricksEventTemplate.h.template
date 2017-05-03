@@ -1,0 +1,41 @@
+// Copyright (c) @YEAR@ Lightricks. All rights reserved.
+// Created by @SCRIPT_NAME@.
+
+#import <LTKit/LTValueObject.h>
+
+#import @ANALYTRICKS_FILE_IMPORT@
+
+NS_ASSUME_NONNULL_BEGIN
+@CUSTOM_CLASS_DECLARATION@
+
+/// Protocol implemented by objects that provide a JSON serializable dictionary, containing unique
+/// event data for an \c @EVENT_OBJC_NAME.
+@protocol @EVENT_OBJC_NAME@DataProvider
+
+/// Dictionary representing the receiver's current properties assignments that can be serialized
+/// into JSON. Must contain the key "event" with an \c NSString value, representing the event type
+/// as defined by the Lightricks backend.
+@property (readonly, nonatomic) NSDictionary<NSString *, id> *properties;
+
+@end
+
+@EVENT_DOC@
+@interface @EVENT_OBJC_NAME@ : LTValueObject <INTAnalytricksEvent>
+
+- (instancetype)init NS_UNAVAILABLE;
+
+/// Initializes with the given parameters.
+- (instancetype)initWithDataProvider:(id<@EVENT_OBJC_NAME@DataProvider>)dataProvider
+    @INITIALIZER_ARGUMENTS@ NS_DESIGNATED_INITIALIZER;
+
+@PROPERTIES_DECLARATION@
+
+@property (readonly, nonatomic) id<@EVENT_OBJC_NAME@DataProvider> dataProvider;
+
+/// Returns a flattened dictionary that is the result of a merge between -[dataProvider properties]
+/// and a valid dictionary for the schema @JSON_FILE_NAME@
+- (NSDictionary<NSString *, id> *)properties;
+
+@end
+
+NS_ASSUME_NONNULL_END

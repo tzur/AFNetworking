@@ -1,0 +1,44 @@
+// Copyright (c) @YEAR@ Lightricks. All rights reserved.
+// Created by @SCRIPT_NAME@.
+
+#import "@EVENT_FILE_NAME@.h"
+
+#import <LTKit/NSArray+Functional.h>
+#import <LTKit/NSDateFormatter+Formatters.h>
+
+#import @JSON_SERIALIZABLE_PROTOCOL_HEADER@
+
+NS_ASSUME_NONNULL_BEGIN
+
+@implementation @EVENT_OBJC_NAME@
+
+- (instancetype)initWithDataProvider:(id<@EVENT_OBJC_NAME@DataProvider>)dataProvider
+    @INITIALIZER_ARGUMENTS@ {
+  if (self = [super init]) {
+    _dataProvider = dataProvider;
+    @PROPERTIES_ASSIGNMENT@
+  }
+
+  return self;
+}
+
+- (NSDictionary<NSString *, id> *)properties {
+  NSMutableDictionary *properties = [NSMutableDictionary dictionary];
+  NSArray<id<INTJSONSerializable>> *JSONProviders = @[@JSON_PROVIDERS@];
+
+  for (id<INTJSONSerializable> JSONProvider in JSONProviders) {
+    [properties addEntriesFromDictionary:JSONProvider.properties];
+  }
+
+  [properties addEntriesFromDictionary:@{
+    @JSON_ASSIGNMENTS@
+  }];
+
+  [properties addEntriesFromDictionary:self.dataProvider.properties];
+
+  return [properties copy];
+}
+
+@end
+
+NS_ASSUME_NONNULL_END
