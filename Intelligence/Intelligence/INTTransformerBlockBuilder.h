@@ -6,11 +6,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/// Returns an \c NSString describing an \c event. The resulting string is considered as the event
-/// type. Returns \c nil if an \c event is unsupported or if the block logic failed to produce an
-/// identifier for it. The block must be a pure deterministic function without side effects.
-typedef NSString * _Nullable(^INTEventIdentifierBlock)(id event);
-
 /// Builder of \c INTTransformerBlock blocks. The resulting \c INTTransformerBlock aggregates event
 /// data with supplied aggregation blocks and completes the transformation with supplied transform
 /// completion blocks. The resulting block aggregates and transforms data in the following fashion:
