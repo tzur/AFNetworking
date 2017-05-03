@@ -37,6 +37,34 @@
 		CDE00B451E82AE82007AFD5E /* libcompression.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = CDE00B441E82AE82007AFD5E /* libcompression.tbd */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXBuildRule section */
+		A108A0441EBA19430037B6BE /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = com.apple.compilers.proxy.script;
+			filePatterns = "*/EventSchemas/*.json";
+			fileType = pattern.proxy;
+			isEditable = 1;
+			outputFiles = (
+				"$(DERIVED_FILE_DIR)/$(arch)/${INPUT_FILE_BASE}.mm",
+				"$(DERIVED_FILE_DIR)/$(arch)/${INPUT_FILE_BASE}.h",
+			);
+			script = "sh \"$PROJECT_DIR/../BuildTools/EventGeneration/EventGeneration.sh\" \"$PROJECT_DIR/../BuildTools\" \"$SRCROOT/$TARGET_NAME/EventSchemas\"";
+		};
+		A132A37F1EBCD442001F70A6 /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = com.apple.compilers.proxy.script;
+			filePatterns = "*IntelligenceTests/EventSchemas/*.json";
+			fileType = pattern.proxy;
+			isEditable = 1;
+			name = "Testing event schema generation";
+			outputFiles = (
+				"$(DERIVED_FILE_DIR)/$(arch)/${INPUT_FILE_BASE}.h",
+				"$(DERIVED_FILE_DIR)/$(arch)/${INPUT_FILE_BASE}.mm",
+			);
+			script = "sh \"$PROJECT_DIR/../BuildTools/EventGeneration/EventGeneration.sh\" \"$SRCROOT/$TARGET_NAME/EventSchemas\"";
+		};
+/* End PBXBuildRule section */
+
 /* Begin PBXContainerItemProxy section */
 		A14171C71E6EAC0D005DBEFF /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -233,8 +261,8 @@
 		A101680A1E713D8B009596E1 /* INTEventTransformerSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = INTEventTransformerSpec.mm; sourceTree = "<group>"; };
 		A1089F6A1EB76EFB0037B6BE /* NSDictionary+Merge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+Merge.h"; sourceTree = "<group>"; };
 		A1089F6B1EB76EFB0037B6BE /* NSDictionary+Merge.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSDictionary+Merge.mm"; sourceTree = "<group>"; };
-		A108A0411EBA129C0037B6BE /* INTJSONSerializable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INTJSONSerializable.h; sourceTree = "<group>"; };
 		A108A0401EBA129C0037B6BE /* INTAnalytricksEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INTAnalytricksEvent.h; sourceTree = "<group>"; };
+		A108A0411EBA129C0037B6BE /* INTJSONSerializable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INTJSONSerializable.h; sourceTree = "<group>"; };
 		A10EEB871EAC783400791FF4 /* INTTransformerBlock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INTTransformerBlock.h; sourceTree = "<group>"; };
 		A113411E1EB0D1E30042ABA8 /* INTTransformerBlockBuilderSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = INTTransformerBlockBuilderSpec.mm; sourceTree = "<group>"; };
 		A132A0CB1EB8C297001F70A6 /* INTCycleTransformerBlockBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INTCycleTransformerBlockBuilder.h; sourceTree = "<group>"; };
@@ -609,6 +637,7 @@
 				A141719F1E6EAA93005DBEFF /* CopyFiles */,
 			);
 			buildRules = (
+				A108A0441EBA19430037B6BE /* PBXBuildRule */,
 			);
 			dependencies = (
 			);
@@ -626,6 +655,7 @@
 				A14171BF1E6EAC0D005DBEFF /* Resources */,
 			);
 			buildRules = (
+				A132A37F1EBCD442001F70A6 /* PBXBuildRule */,
 			);
 			dependencies = (
 				A14171C81E6EAC0D005DBEFF /* PBXTargetDependency */,
