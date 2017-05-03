@@ -4,6 +4,7 @@
 #import "LTEventBusLoggerTarget.h"
 
 #import "LTEventBus.h"
+#import "NSDate+Formatting.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -38,8 +39,13 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark LTLoggerTarget
 #pragma mark -
 
-- (void)outputString:(NSString *)message {
-  [self.eventBus post:[[LTLoggerEvent alloc] initWithMessage:message]];
+- (void)outputString:(NSString *)message file:(const char *)file line:(int)line
+            logLevel:(LTLogLevel)logLevel {
+  NSString *formattedMessage = [NSString stringWithFormat:@"%@ [%@] [%s:%d] %@",
+                                [[NSDate date] lt_deviceTimezoneString],
+                                NSStringFromLTLogLevel(logLevel),
+                                file, line, message];
+  [self.eventBus post:[[LTLoggerEvent alloc] initWithMessage:formattedMessage]];
 }
 
 @end

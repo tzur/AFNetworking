@@ -3,9 +3,22 @@
 
 #import "LTLogger.h"
 
-#import "NSDateFormatter+Formatters.h"
+#import "NSDate+Formatting.h"
 
 NS_ASSUME_NONNULL_BEGIN
+
+NSString *NSStringFromLTLogLevel(LTLogLevel logLevel) {
+  switch (logLevel) {
+    case LTLogLevelDebug:
+      return @"DEBUG";
+    case LTLogLevelInfo:
+      return @"INFO";
+    case LTLogLevelWarning:
+      return @"WARNING";
+    case LTLogLevelError:
+      return @"ERROR";
+  }
+}
 
 #pragma mark -
 #pragma mark LTLogger
@@ -19,9 +32,6 @@ NS_ASSUME_NONNULL_BEGIN
 /// Lock for ensuring thread-safety when logging from multiple threads.
 @property (readonly, nonatomic) NSLock *lock;
 
-/// Date formatter for outputting string date in log messages.
-@property (readonly, nonatomic) NSDateFormatter *dateFormatter;
-
 @end
 
 @implementation LTLogger
@@ -34,13 +44,12 @@ NS_ASSUME_NONNULL_BEGIN
   if (self = [super init]) {
     _targets = [NSMutableSet set];
     _lock = [[NSLock alloc] init];
-    _dateFormatter = [NSDateFormatter lt_deviceTimezoneDateFormatter];
   }
   return self;
 }
 
 + (LTLogger *)sharedLogger {
-  static LTLogger *instance = nil;
+  static LTLogger *instance;
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
     instance = [[LTLogger alloc] init];
@@ -101,7 +110,7 @@ NS_ASSUME_NONNULL_BEGIN
 #else
   MATCH_TYPE_AND_FORMAT_STRING(id, @"%@");
 #endif
-  
+
   if ([[self class] isCharArray:typeCode]) {
     return [NSString stringWithFormat:@"%s", (char *)value];
   }
@@ -162,57 +171,23 @@ static NSString *stringFromNSDecimalWithCurrentLocale(NSDecimal value) {
   [self.targets removeObject:target];
 }
 
-- (void)logWithFormat:(NSString *)format, ... {
-  va_list argList;
-  
-  // Initialize logging string with variable number of arguments.
-  va_start(argList, format);
-  [self logWithFormat:format arguments:argList];
-  va_end(argList);
-}
-
-- (void)logWithFormat:(NSString *)format arguments:(va_list)argList {
-  NSString *logString = [[NSString alloc] initWithFormat:format arguments:argList];
-  
-  // Write to targets.
-  [self.lock lock];
-  for (id<LTLoggerTarget> target in self.targets) {
-    [target outputString:logString];
-  }
-  [self.lock unlock];
-}
-
 - (void)logWithFormat:(NSString *)format file:(const char *)file line:(int)line
              logLevel:(LTLogLevel)logLevel, ... {
-  // Do not log messages below the minimal log level.
   if (logLevel < self.minimalLogLevel) {
     return;
   }
-  
-  NSString *logLevelString;
-  switch (logLevel) {
-    case LTLogLevelDebug:
-      logLevelString = @"DEBUG";
-      break;
-    case LTLogLevelInfo:
-      logLevelString = @"INFO";
-      break;
-    case LTLogLevelWarning:
-      logLevelString = @"WARNING";
-      break;
-    case LTLogLevelError:
-      logLevelString = @"ERROR";
-      break;
-  }
-  
-  format = [NSString stringWithFormat:@"%@ [%@] [%s:%d] %@",
-            [self.dateFormatter stringFromDate:[NSDate date]], logLevelString, file, line, format];
-  
+
   va_list args;
-  
-  // Initialize logging string with variable number of arguments.
   va_start(args, logLevel);
-  [self logWithFormat:format arguments:args];
+
+  NSString *logString = [[NSString alloc] initWithFormat:format arguments:args];
+
+  [self.lock lock];
+  for (id<LTLoggerTarget> target in self.targets) {
+    [target outputString:logString file:file line:line logLevel:logLevel];
+  }
+  [self.lock unlock];
+
   va_end(args);
 }
 
@@ -224,8 +199,13 @@ static NSString *stringFromNSDecimalWithCurrentLocale(NSDecimal value) {
 
 @implementation LTOutputLogger
 
-- (void)outputString:(NSString *)message {
-  puts([message UTF8String]);
+- (void)outputString:(NSString *)message file:(const char *)file line:(int)line
+            logLevel:(LTLogLevel)logLevel {
+  NSString *formattedMessage = [NSString stringWithFormat:@"%@ [%@] [%s:%d] %@",
+                                [[NSDate date] lt_deviceTimezoneString],
+                                NSStringFromLTLogLevel(logLevel),
+                                file, line, message];
+  puts([formattedMessage UTF8String]);
 }
 
 @end

@@ -6,30 +6,30 @@ NS_ASSUME_NONNULL_BEGIN
 /// Logging is disabled by default. To enable, add LOGGING=1 to the GCC_PREPROCESSOR_DEFINITIONS
 /// build variable.
 #ifndef LOGGING
-  #define LOGGING	0
+  #define LOGGING 0
 #endif
 
 /// Log levels are enabled by default. To disable, add LOGGING_LEVEL_<level>=1 to the
 /// GCC_PREPROCESSOR_DEFINITIONS build variable.
 /// For these settings to be effective, LOGGING must also be defined and non-zero.
 #ifndef LOGGING_LEVEL_DEBUG
-  #define LOGGING_LEVEL_DEBUG		1
+  #define LOGGING_LEVEL_DEBUG 1
 #endif
 #ifndef LOGGING_LEVEL_INFO
-  #define LOGGING_LEVEL_INFO		1
+  #define LOGGING_LEVEL_INFO 1
 #endif
 #ifndef LOGGING_LEVEL_WARNING
-  #define LOGGING_LEVEL_WARNING	1
+  #define LOGGING_LEVEL_WARNING 1
 #endif
 #ifndef LOGGING_LEVEL_ERROR
-  #define LOGGING_LEVEL_ERROR		1
+  #define LOGGING_LEVEL_ERROR 1
 #endif
 
 #if !(defined(LOGGING) && LOGGING)
-	#undef LOGGING_LEVEL_DEBUG
+  #undef LOGGING_LEVEL_DEBUG
+  #undef LOGGING_LEVEL_INFO
   #undef LOGGING_LEVEL_WARNING
   #undef LOGGING_LEVEL_ERROR
-  #undef LOGGING_LEVEL_INFO
 #endif
 
 /// Formats the format string, level and varargs to an Objective-C call to \c LTLogger.
@@ -47,9 +47,9 @@ NS_ASSUME_NONNULL_BEGIN
 #endif
 
 #if defined(LOGGING_LEVEL_INFO) && LOGGING_LEVEL_INFO
-	#define _LogInfo(fmt, ...) LT_LOG_FORMAT(fmt, LTLogLevelInfo, ##__VA_ARGS__)
+  #define _LogInfo(fmt, ...) LT_LOG_FORMAT(fmt, LTLogLevelInfo, ##__VA_ARGS__)
 #else
-	#define _LogInfo(fmt, ...)
+  #define _LogInfo(fmt, ...)
 #endif
 
 #if defined(LOGGING_LEVEL_WARNING) && LOGGING_LEVEL_WARNING
@@ -59,9 +59,9 @@ NS_ASSUME_NONNULL_BEGIN
 #endif
 
 #if defined(LOGGING_LEVEL_ERROR) && LOGGING_LEVEL_ERROR
-	#define _LogError(fmt, ...) LT_LOG_FORMAT(fmt, LTLogLevelError, ##__VA_ARGS__)
+  #define _LogError(fmt, ...) LT_LOG_FORMAT(fmt, LTLogLevelError, ##__VA_ARGS__)
 #else
-	#define _LogError(...)
+  #define _LogError(...)
 #endif
 
 /// Based on http://vgable.com/blog/2010/08/19/the-most-useful-objective-c-code-ive-ever-written/
