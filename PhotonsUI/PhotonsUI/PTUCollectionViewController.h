@@ -38,8 +38,8 @@ typedef NS_ENUM(NSUInteger, PTUCollectionViewScrollPosition) {
 /// Sets \c item to be selected. Calling this method will not trigger values on the \c itemSelected
 /// signal, or apply any scrolling. If \c item is already selected this has no effect. If \c item
 /// cannot be found in the collection the selection is deferred to until the item is successfully
-/// selected or until a different selection is applied, at which point the selection action is
-/// discarded.
+/// selected or until a different selection or deselection is applied, at which point the selection
+/// action is discarded.
 - (void)selectItem:(id<PTNDescriptor>)item;
 
 /// Sets \c item to be deselected. Calling this method will not trigger values on the

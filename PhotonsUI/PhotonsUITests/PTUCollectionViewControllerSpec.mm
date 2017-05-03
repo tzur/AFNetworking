@@ -424,6 +424,19 @@ context(@"collection view", ^{
         expect([collectionView cellForItemAtIndexPath:otherIndexPath].isSelected).to.beTruthy();
       });
 
+      it(@"should stop deferring when an asset is deselected", ^{
+        [viewController selectItem:otherAsset];
+        [viewController deselectItem:asset];
+
+        expect([collectionView cellForItemAtIndexPath:otherIndexPath].isSelected).to.beFalsy();
+
+        dataSource.data = @[@[asset, otherAsset]];
+        [collectionView reloadData];
+        [collectionView layoutIfNeeded];
+        [dataSource.didUpdateCollectionView sendNext:[RACUnit defaultUnit]];
+        expect([collectionView cellForItemAtIndexPath:otherIndexPath].isSelected).to.beFalsy();
+      });
+
       it(@"should defer until selected", ^{
         [viewController selectItem:otherAsset];
 

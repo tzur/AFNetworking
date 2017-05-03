@@ -181,18 +181,25 @@ NS_ASSUME_NONNULL_BEGIN
   // the collection view, which is guaranteed only on appearance. This isn't a requirement for
   // selection but its added to it as well for good measure, as reselecting an already selected
   // asset has no effect.
-  [[[[[RACSignal
-      combineLatest:@[
-        [self rac_signalForSelector:@selector(selectItem:)],
-        [[RACObserve(self, dataSource.didUpdateCollectionView)
-            switchToLatest]
-            startWith:[RACUnit defaultUnit]],
-        [[self rac_signalForSelector:@selector(viewDidAppear:)]
-            startWith:[RACUnit defaultUnit]]
-      ]]
-      reduceEach:(id)^NSIndexPath * _Nullable (RACTuple *selectedItem, NSNumber *) {
+  RACSignal *sampleDeferred = [RACSignal merge:@[
+    [RACObserve(self, dataSource.didUpdateCollectionView) switchToLatest],
+    [self rac_signalForSelector:@selector(viewDidAppear:)]
+  ]];
+
+  RACSignal *stopDeferring = [[self rac_signalForSelector:@selector(deselectItem:)]
+      mapReplace:[RACUnit defaultUnit]];
+
+  [[[[[[[self rac_signalForSelector:@selector(selectItem:)]
+      reduceEach:(id)^RACStream *(id<PTNDescriptor> descriptor) {
+        return [[[sampleDeferred
+            mapReplace:descriptor]
+            startWith:descriptor]
+            takeUntil:stopDeferring];
+      }]
+      switchToLatest]
+      map:^NSIndexPath * _Nullable(id<PTNDescriptor> descriptor) {
         @strongify(self);
-        return [self.dataSource indexPathOfDescriptor:selectedItem.first];
+        return [self.dataSource indexPathOfDescriptor:descriptor];
       }]
       ignore:nil]
       takeUntil:self.rac_willDeallocSignal]
