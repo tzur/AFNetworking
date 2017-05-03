@@ -234,6 +234,7 @@
 		A1089F6A1EB76EFB0037B6BE /* NSDictionary+Merge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+Merge.h"; sourceTree = "<group>"; };
 		A1089F6B1EB76EFB0037B6BE /* NSDictionary+Merge.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSDictionary+Merge.mm"; sourceTree = "<group>"; };
 		A108A0411EBA129C0037B6BE /* INTJSONSerializable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INTJSONSerializable.h; sourceTree = "<group>"; };
+		A108A0401EBA129C0037B6BE /* INTAnalytricksEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INTAnalytricksEvent.h; sourceTree = "<group>"; };
 		A10EEB871EAC783400791FF4 /* INTTransformerBlock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INTTransformerBlock.h; sourceTree = "<group>"; };
 		A113411E1EB0D1E30042ABA8 /* INTTransformerBlockBuilderSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = INTTransformerBlockBuilderSpec.mm; sourceTree = "<group>"; };
 		A132A0CB1EB8C297001F70A6 /* INTCycleTransformerBlockBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INTCycleTransformerBlockBuilder.h; sourceTree = "<group>"; };
@@ -339,6 +340,14 @@
 			name = "Event Aggregation";
 			sourceTree = "<group>";
 		};
+		A108A0291EBA126A0037B6BE /* Analytricks Events */ = {
+			isa = PBXGroup;
+			children = (
+				A108A0401EBA129C0037B6BE /* INTAnalytricksEvent.h */,
+			);
+			name = "Analytricks Events";
+			sourceTree = "<group>";
+		};
 		A113424A1EB5AD870042ABA8 /* Test Utils */ = {
 			isa = PBXGroup;
 			children = (
@@ -374,6 +383,7 @@
 		A14171A31E6EAA93005DBEFF /* Intelligence */ = {
 			isa = PBXGroup;
 			children = (
+				A108A0291EBA126A0037B6BE /* Analytricks Events */,
 				A1417C8A1E6EFFE3005DBEFF /* Base */,
 				A10164CA1E700424009596E1 /* Event Aggregation */,
 				A172A9A81EAC111600A12B86 /* Event Logging */,
