@@ -233,6 +233,7 @@
 		A101680A1E713D8B009596E1 /* INTEventTransformerSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = INTEventTransformerSpec.mm; sourceTree = "<group>"; };
 		A1089F6A1EB76EFB0037B6BE /* NSDictionary+Merge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+Merge.h"; sourceTree = "<group>"; };
 		A1089F6B1EB76EFB0037B6BE /* NSDictionary+Merge.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSDictionary+Merge.mm"; sourceTree = "<group>"; };
+		A108A0411EBA129C0037B6BE /* INTJSONSerializable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INTJSONSerializable.h; sourceTree = "<group>"; };
 		A10EEB871EAC783400791FF4 /* INTTransformerBlock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INTTransformerBlock.h; sourceTree = "<group>"; };
 		A113411E1EB0D1E30042ABA8 /* INTTransformerBlockBuilderSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = INTTransformerBlockBuilderSpec.mm; sourceTree = "<group>"; };
 		A132A0CB1EB8C297001F70A6 /* INTCycleTransformerBlockBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INTCycleTransformerBlockBuilder.h; sourceTree = "<group>"; };
@@ -546,6 +547,7 @@
 				A1417C8C1E6F012E005DBEFF /* INTDataStructures.mm */,
 				A1417C7E1E6EF77C005DBEFF /* INTEventMetadata.h */,
 				A1417C7F1E6EF77C005DBEFF /* INTEventMetadata.mm */,
+				A108A0411EBA129C0037B6BE /* INTJSONSerializable.h */,
 			);
 			name = Base;
 			sourceTree = "<group>";
