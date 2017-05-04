@@ -3,9 +3,9 @@
 
 #import "LTLaplacianLevelConstructProcessor.h"
 
-#import "LTPyramidTestUtils.h"
 #import "LTHatPyramidProcessor.h"
 #import "LTOpenCVExtensions.h"
+#import "LTPyramidTestUtils.h"
 #import "LTTexture+Factory.h"
 
 SpecBegin(LTLaplacianLevelConstructProcessor)
@@ -112,7 +112,7 @@ sharedExamples(kLaplacianLevelConstructionExamples, ^(NSDictionary *data) {
 
       cv::Mat inputFloat;
       LTConvertMat(inputImage, &inputFloat, CV_MAKETYPE(CV_32F, inputImage.channels()));
-      std::vector<cv::Mat> expectedLaplacianPyramid = LTLaplacianPyramidOpenCV(inputFloat);
+      std::vector<cv::Mat> expectedLaplacianPyramid = LTLaplacianPyramidOpenCV(inputFloat, 2);
       cv::Mat expected = expectedLaplacianPyramid[0](roi);
 
       expect($(outputFloat)).to.beCloseToMatWithin($(expected), 1 / 255.0);
