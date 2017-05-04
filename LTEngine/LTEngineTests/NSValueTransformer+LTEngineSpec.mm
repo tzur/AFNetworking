@@ -7,6 +7,7 @@
 #import <LTKit/LTPath.h>
 #import <LTKit/UIColor+Utilities.h>
 
+#import "LTGLKitExtensions.h"
 #import "LTTestMTLModel.h"
 #import "LTVector.h"
 
@@ -741,6 +742,138 @@ context(@"LTVector4 transformer", ^{
   it(@"should perform reverse transform", ^{
     expect([transformer reverseTransformedValue:$(LTVector4(-0.5, 1, 2, -2))])
         .to.equal(@"(-0.5, 1, 2, -2)");
+  });
+
+  it(@"should raise when transforming an invalid class", ^{
+    expect(^{
+      [transformer transformedValue:@5];
+    }).to.raise(NSInvalidArgumentException);
+  });
+
+  it(@"should raise when transforming a nil value", ^{
+    expect(^{
+      [transformer transformedValue:nil];
+    }).to.raise(NSInvalidArgumentException);
+  });
+
+  it(@"should raise when reverse transforming a nil value", ^{
+    expect(^{
+      [transformer reverseTransformedValue:nil];
+    }).to.raise(NSInvalidArgumentException);
+  });
+
+  it(@"should raise when reverse transforming a non-vector value", ^{
+    expect(^{
+      [transformer reverseTransformedValue:@5];
+    }).to.raise(NSInvalidArgumentException);
+  });
+});
+
+context(@"GLKMatrix2 transformer", ^{
+  __block NSValueTransformer *transformer;
+
+  beforeEach(^{
+    transformer = [NSValueTransformer valueTransformerForName:kGLKMatrix2ValueTransformer];
+  });
+
+  it(@"should perform forward transform", ^{
+    auto value =  @"{{inf, nan}, {-1.5, 4}}";
+    auto mat = GLKMatrix2Make(INFINITY, NAN, -1.5, 4);
+    expect([transformer transformedValue:value]).to.equal($(mat));
+  });
+
+  it(@"should perform reverse transform", ^{
+    auto value =  @"{{-inf, 1}, {15, 0}}";
+    auto mat = GLKMatrix2Make(-INFINITY, 1.000, 15, 0.00);
+    expect([transformer reverseTransformedValue:$(mat)]).to.equal(value);
+  });
+
+  it(@"should raise when transforming an invalid class", ^{
+    expect(^{
+      [transformer transformedValue:@5];
+    }).to.raise(NSInvalidArgumentException);
+  });
+
+  it(@"should raise when transforming a nil value", ^{
+    expect(^{
+      [transformer transformedValue:nil];
+    }).to.raise(NSInvalidArgumentException);
+  });
+
+  it(@"should raise when reverse transforming a nil value", ^{
+    expect(^{
+      [transformer reverseTransformedValue:nil];
+    }).to.raise(NSInvalidArgumentException);
+  });
+
+  it(@"should raise when reverse transforming a non-vector value", ^{
+    expect(^{
+      [transformer reverseTransformedValue:@5];
+    }).to.raise(NSInvalidArgumentException);
+  });
+});
+
+context(@"GLKMatrix3 transformer", ^{
+  __block NSValueTransformer *transformer;
+
+  beforeEach(^{
+    transformer = [NSValueTransformer valueTransformerForName:kGLKMatrix3ValueTransformer];
+  });
+
+  it(@"should perform forward transform", ^{
+    auto value =  @"{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}}";
+    auto mat = GLKMatrix3Make(1, 2, 3, 4, 5, 6, 7, 8, 9);
+    expect([transformer transformedValue:value]).to.equal($(mat));
+  });
+
+  it(@"should perform reverse transform", ^{
+    auto value =  @"{{9, 8, 7}, {6, 5, 4}, {3, 2, 1}}";
+    auto mat = GLKMatrix3Make(9, 8, 7, 6, 5, 4, 3, 2, 1);
+    expect([transformer reverseTransformedValue:$(mat)]).to.equal(value);
+  });
+
+  it(@"should raise when transforming an invalid class", ^{
+    expect(^{
+      [transformer transformedValue:@5];
+    }).to.raise(NSInvalidArgumentException);
+  });
+
+  it(@"should raise when transforming a nil value", ^{
+    expect(^{
+      [transformer transformedValue:nil];
+    }).to.raise(NSInvalidArgumentException);
+  });
+
+  it(@"should raise when reverse transforming a nil value", ^{
+    expect(^{
+      [transformer reverseTransformedValue:nil];
+    }).to.raise(NSInvalidArgumentException);
+  });
+
+  it(@"should raise when reverse transforming a non-vector value", ^{
+    expect(^{
+      [transformer reverseTransformedValue:@5];
+    }).to.raise(NSInvalidArgumentException);
+  });
+});
+
+context(@"GLKMatrix4 transformer", ^{
+  __block NSValueTransformer *transformer;
+
+  beforeEach(^{
+    transformer = [NSValueTransformer valueTransformerForName:kGLKMatrix4ValueTransformer];
+  });
+
+  it(@"should perform forward transform", ^{
+    auto value =  @"{{1, 2, 3, 4}, {5, 6, 7, 8}, {9, 10, 11, 12}, {13, 14, 15, 16}}";
+    auto mat = GLKMatrix4Make(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16);
+    expect([transformer transformedValue:value]).to.equal($(mat));
+  });
+
+  it(@"should perform reverse transform", ^{
+    auto value =  @"{{16, 15, 14, 13}, {12, 11, 10, 9}, {8, 7, 6, 5}, {4, 3, 2, 1}}";
+    auto mat = GLKMatrix4Make(16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1);
+    expect([transformer reverseTransformedValue:$(mat)]).to.equal(value);
   });
 
   it(@"should raise when transforming an invalid class", ^{

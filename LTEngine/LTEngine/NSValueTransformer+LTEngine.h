@@ -142,6 +142,42 @@ extern NSString * const kLTVector3ValueTransformer;
 /// \c NSInvalidArgumentException will be raised.
 extern NSString * const kLTVector4ValueTransformer;
 
+/// Returns a reversible transformer that converts an \c NSString path representation to its
+/// corresponding \c NSValue boxed \c GLKMatrix2 and vice versa.
+///
+/// The input to the forward transformer must be an \c NSString with the format:
+/// <tt>{{a, b}, {c, d}}</tt>.
+///
+/// The input to the reverse transformer must be a boxed \c GLKMatrix2 as \c NSValue.
+///
+/// If the input is \c nil, or not one of these types, or the specific type conditions fail,
+/// \c NSInvalidArgumentException will be raised.
+extern NSString * const kGLKMatrix2ValueTransformer;
+
+/// Returns a reversible transformer that converts an \c NSString path representation to its
+/// corresponding \c NSValue boxed \c GLKMatrix3 and vice versa.
+///
+/// The input to the forward transformer must be an \c NSString with the format:
+/// <tt>{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}}</tt>.
+///
+/// The input to the reverse transformer must be a boxed \c GLKMatrix3 as \c NSValue.
+///
+/// If the input is \c nil, or not one of these types, or the specific type conditions fail,
+/// \c NSInvalidArgumentException will be raised.
+extern NSString * const kGLKMatrix3ValueTransformer;
+
+/// Returns a reversible transformer that converts an \c NSString path representation to its
+/// corresponding \c NSValue boxed \c GLKMatrix4 and vice versa.
+///
+/// The input to the forward transformer must be an \c NSString with the format:
+/// <tt>{{1, 2, 3, 4}, {5, 6, 7, 8}, {9, 10, 11, 12}, {13, 14, 15, 16}}</tt>.
+///
+/// The input to the reverse transformer must be a boxed \c GLKMatrix4 as \c NSValue.
+///
+/// If the input is \c nil, or not one of these types, or the specific type conditions fail,
+/// \c NSInvalidArgumentException will be raised.
+extern NSString * const kGLKMatrix4ValueTransformer;
+
 @interface NSValueTransformer (LTEngine)
 
 /// Reversible transformer that accepts a JSON dictionary with \c NSString as keys and
