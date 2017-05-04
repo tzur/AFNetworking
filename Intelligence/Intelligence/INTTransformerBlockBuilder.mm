@@ -7,9 +7,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/// A mapping from event identifiers to arrays of \c INTAggregationBlock blocks.
-typedef NSMutableDictionary<NSString *, NSArray<INTAggregationBlock> *> INTAggregationBlocks;
-
 /// A mapping from event identifiers to arrays of \c INTTransformCompletionBlock blocks.
 typedef NSMutableDictionary<NSString *, NSArray<INTTransformCompletionBlock> *>
     INTTransformCompletionBlocks;

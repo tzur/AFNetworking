@@ -36,6 +36,14 @@ typedef NSArray * _Nonnull(^INTTransformCompletionBlock)
 typedef NSArray * _Nonnull(^INTAggregationTransformCompletionBlock)
     (NSDictionary<NSString *, id> *aggregatedData);
 
+/// Returns an \c NSString describing an \c event. The resulting string is considered as the event
+/// type. Returns \c nil if an \c event is unsupported or if the block logic failed to produce an
+/// identifier for it. The block must be a pure deterministic function without side effects.
+typedef NSString * _Nullable(^INTEventIdentifierBlock)(id event);
+
+/// A mapping from event identifiers to arrays of \c INTAggregationBlock blocks.
+typedef NSMutableDictionary<NSString *, NSArray<INTAggregationBlock> *> INTAggregationBlocks;
+
 namespace intl {
 
 /// Class for transforming from different types of aggregation blocks to \c INTAggregationBlock.
@@ -52,7 +60,7 @@ public:
   AggregationBlock(INTPartialAggregationBlock block) :
       AggregationBlock(^(NSDictionary<NSString *, id> *aggregatedData, id event,
                          INTEventMetadata *metadata, INTAppContext *) {
-        return block(aggregatedData, metadata, event);
+        return block(aggregatedData, event, metadata);
       }) {}
 
   /// Initializes with the given \c block. \c block is used as an underlying block for a full
