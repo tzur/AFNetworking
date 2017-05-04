@@ -1,8 +1,8 @@
 // Copyright (c) 2013 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
-#import <cmath>
 #import <GLKit/GLKMath.h>
+#import <cmath>
 
 #import "LTOpenCVCore.h"
 
@@ -73,23 +73,32 @@ GLK_INLINE GLKMatrix3 GLKMatrix3WithTransform(CGAffineTransform transform) {
 
 #ifdef __cplusplus
 
-/// The "zero" vector, equivalent to GLKVector4Make(0, 0, 0, 0).
-GLK_EXTERN const GLKVector4 GLKVector4Zero;
+/// The "zero" vector, equivalent to GLKVector2Make(0, 0).
+GLK_EXTERN const GLKVector2 GLKVector2Zero;
 
 /// The "zero" vector, equivalent to GLKVector3Make(0, 0, 0).
 GLK_EXTERN const GLKVector3 GLKVector3Zero;
 
-/// The "zero" vector, equivalent to GLKVector2Make(0, 0).
-GLK_EXTERN const GLKVector2 GLKVector2Zero;
+/// The "zero" vector, equivalent to GLKVector4Make(0, 0, 0, 0).
+GLK_EXTERN const GLKVector4 GLKVector4Zero;
 
-/// The "one" vector, equivalent to GLKVector4Make(1, 1, 1, 1).
-GLK_EXTERN const GLKVector4 GLKVector4One;
+/// The "one" vector, equivalent to GLKVector2Make(1, 1).
+GLK_EXTERN const GLKVector2 GLKVector2One;
 
 /// The "one" vector, equivalent to GLKVector3Make(1, 1, 1).
 GLK_EXTERN const GLKVector3 GLKVector3One;
 
-/// The "one" vector, equivalent to GLKVector2Make(1, 1).
-GLK_EXTERN const GLKVector2 GLKVector2One;
+/// The "one" vector, equivalent to GLKVector4Make(1, 1, 1, 1).
+GLK_EXTERN const GLKVector4 GLKVector4One;
+
+/// The "zero" matrix, equivalent to GLKMatrix2Make(0, 0, 0, 0).
+GLK_EXTERN const GLKMatrix2 GLKMatrix2Zero;
+
+/// The "zero" matrix, equivalent to GLKMatrix3Make(0, 0, 0, 0, 0, 0, 0, 0, 0).
+GLK_EXTERN const GLKMatrix3 GLKMatrix3Zero;
+
+/// The "zero" matrix, equivalent to GLKMatrix4Make(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0).
+GLK_EXTERN const GLKMatrix4 GLKMatrix4Zero;
 
 /// Returns a new three-component vector with the same value for each component.
 GLK_INLINE GLKVector3 GLKVector3Make(float value) {
@@ -365,6 +374,22 @@ GLKVector3 GLKLineEquation(const GLKVector2 &source, const GLKVector2 &target);
 GLK_INLINE GLKVector3 GLKLineEquation(const CGPoint &source, const CGPoint &target) {
   return GLKLineEquation(GLKVector2FromCGPoint(source), GLKVector2FromCGPoint(target));
 }
+
+/// Returns a matrix from its \c NSString representation. The representation should be in the row
+/// major format i.e. <tt>@"{{m00, m01}, {m10, m11}}"</tt>, where \c mij can also be
+/// <tt>nan/inf/-inf</tt>. In case an invalid format is given, a \c GLKMatrix2Zero will be returned.
+GLKMatrix2 GLKMatrix2FromString(NSString *string);
+
+/// Returns a matrix from its c NSString representation. The representation should be in the row
+/// major format i.e. <tt>@"{{m00, m01, m02}, {m10, m11, m12}, ...}"</tt>, where \c mij can also be
+/// <tt>nan/inf/-inf</tt>. In case an invalid format is given, a \c GLKMatrix3Zero will be returned.
+GLKMatrix3 GLKMatrix3FromString(NSString *string);
+
+/// Returns a matrix from its \c NSString representation. The representation should be in the row
+/// major format i.e. <tt>@"{{m00, m01, m02, m03}, {m10, m11, m12, m13}, ...}"</tt>, where \c mij
+/// can also be <tt>nan/inf/-inf</tt>. In case an invalid format is given, a \c GLKMatrix4Zero will
+/// be returned.
+GLKMatrix4 GLKMatrix4FromString(NSString *string);
 
 namespace std {
   /// Floors the given GLKVector2, coordinate-wise.

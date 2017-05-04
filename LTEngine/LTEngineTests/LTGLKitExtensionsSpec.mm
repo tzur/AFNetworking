@@ -65,6 +65,56 @@ context(@"GLKMatrix2", ^{
 
     expect(GLKMatrix2MultiplyVector2(m, v) == GLKVector2Make(7, 10)).to.beTruthy();
   });
+
+  context(@"GLKMatrix2 conversions", ^{
+    it(@"should convert from string", ^{
+      auto mat = GLKMatrix2FromString(@"{{1.5, 2.5}, {3, 4}}");
+      expect(mat.m00).to.equal(1.5);
+      expect(mat.m01).to.equal(2.5);
+      expect(mat.m10).to.equal(3);
+      expect(mat.m11).to.equal(4);
+    });
+
+    it(@"should be agnostic to spaces when converting from string", ^{
+      auto mat = GLKMatrix2FromString(@"        { {   1 ,  2  }, {3  ,   4 }   }   ");
+      expect(mat.m00).to.equal(1);
+      expect(mat.m01).to.equal(2);
+      expect(mat.m10).to.equal(3);
+      expect(mat.m11).to.equal(4);
+    });
+
+    it(@"should convert from string with non-numeric values", ^{
+      auto mat = GLKMatrix2FromString(@"{{nan, inf}, {-inf, nan}}");
+      expect(std::isnan(mat.m00)).to.beTruthy();
+      expect(std::isinf(mat.m01) && mat.m01 > 0).to.beTruthy();
+      expect(std::isinf(mat.m10) && mat.m10 < 0).to.beTruthy();
+      expect(std::isnan(mat.m11)).to.beTruthy();
+    });
+
+    it(@"should return zero matrix on invalid string", ^{
+      expect(GLKMatrix2FromString(@"{1, 2, 3, 4]")).to.equal(GLKMatrix2Zero);
+      expect(GLKMatrix2FromString(@"1, 2, 3, 4")).to.equal(GLKMatrix2Zero);
+      expect(GLKMatrix2FromString(@"{{1, 2}, 3, 4}")).to.equal(GLKMatrix2Zero);
+      expect(GLKMatrix2FromString(@"{1, 2, {3, 4}}")).to.equal(GLKMatrix2Zero);
+      expect(GLKMatrix2FromString(@"{1, 2}, {3, 4}")).to.equal(GLKMatrix2Zero);
+      expect(GLKMatrix2FromString(@"{{1, 2}, {3, 4}")).to.equal(GLKMatrix2Zero);
+      expect(GLKMatrix2FromString(@"((1, 2), (3, 4))")).to.equal(GLKMatrix2Zero);
+      expect(GLKMatrix2FromString(@"1, 2}, 3, 4}")).to.equal(GLKMatrix2Zero);
+      expect(GLKMatrix2FromString(@"{{3, 4}}")).to.equal(GLKMatrix2Zero);
+      expect(GLKMatrix2FromString(@"{{a, 2}, {3, 4}}")).to.equal(GLKMatrix2Zero);
+    });
+
+    it(@"should return correct string representation for a matrix", ^{
+      auto mat = GLKMatrix2Make(1.1, INFINITY, NAN, -4.4);
+      auto matString = NSStringFromGLKMatrix2(mat);
+      expect(matString).to.equal(@"{{1.1, inf}, {nan, -4.4}}");
+    });
+
+    it(@"should serialize and deserialize successfully", ^{
+      auto mat = GLKMatrix2Make(-1.2e-5, INFINITY, NAN, 5.5);
+      expect(GLKMatrix2FromString(NSStringFromGLKMatrix2(mat)) == mat).to.beTruthy();
+    });
+  });
 });
 
 context(@"GLKMatrix3", ^{
@@ -151,6 +201,46 @@ context(@"GLKMatrix3", ^{
     expect(resultVector.y).to.equal(resultPoint.y);
     expect(resultVector.z).to.equal(1);
   });
+
+  context(@"GLKMatrix3 conversions", ^{
+    it(@"should convert from string with non-numeric values", ^{
+      auto mat = GLKMatrix3FromString(@"{{1.5, 2.5, inf}, {3, 4, nan}, {5, 6, -inf}}");
+      expect(mat.m00).to.equal(1.5);
+      expect(mat.m01).to.equal(2.5);
+      expect(std::isinf(mat.m02) && mat.m02 > 0).to.beTruthy();
+      expect(mat.m10).to.equal(3);
+      expect(mat.m11).to.equal(4);
+      expect(std::isnan(mat.m12)).to.beTruthy();
+      expect(mat.m20).to.equal(5);
+      expect(mat.m21).to.equal(6);
+      expect(std::isinf(mat.m22) && mat.m22 < 0).to.beTruthy();
+    });
+
+    it(@"should return zero matrix on invalid string", ^{
+      expect(GLKMatrix3FromString(@"1, 2, 3, 4, 5, 6, 7, 8, 9") == GLKMatrix3Zero).to.beTruthy();
+      expect(GLKMatrix3FromString(@"{1, 2, 3, 4, 5, 6, 7, 8, 9}") == GLKMatrix3Zero).to.beTruthy();
+      expect(GLKMatrix3FromString(@"((1, 2, 3), (4, 5, 6), (7, 8, 9))") == GLKMatrix3Zero)
+          .to.beTruthy();
+      expect(GLKMatrix3FromString(@"{{a, 2, 3}, {4, 5, 6}, {7, 8, 9}}") == GLKMatrix3Zero)
+          .to.beTruthy();
+      expect(GLKMatrix3FromString(@"1, 2, 3}, {4, 5, 6}, {7, 8, 9}}") == GLKMatrix3Zero)
+          .to.beTruthy();
+      expect(GLKMatrix3FromString(@"{{1 2 3} {4 5 6} {7 8 9}}") == GLKMatrix3Zero).to.beTruthy();
+      expect(GLKMatrix3FromString(@"{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}") == GLKMatrix3Zero)
+          .to.beTruthy();
+    });
+
+    it(@"should return correct string representation for a matrix", ^{
+      auto mat = GLKMatrix3Make(1.1, INFINITY, NAN, -4.4, 5, 6, 7, 8, -INFINITY);
+      auto matString = NSStringFromGLKMatrix3(mat);
+      expect(matString).to.equal(@"{{1.1, inf, nan}, {-4.4, 5, 6}, {7, 8, -inf}}");
+    });
+
+    it(@"should serialize and deserialize successfully", ^{
+      auto mat = GLKMatrix3Make(-1.2e-5, INFINITY, NAN, 4, 5.5, 6, 7, 8, -INFINITY);
+      expect(GLKMatrix3FromString(NSStringFromGLKMatrix3(mat)) == mat).to.beTruthy();
+    });
+  });
 });
 
 context(@"GLKMatrix4", ^{
@@ -170,6 +260,62 @@ context(@"GLKMatrix4", ^{
 
     expect(a != b).to.beTruthy();
     expect(a != c).to.beFalsy();
+  });
+
+  context(@"GLKMatrix4 conversions", ^{
+    it(@"should convert from string with non-numeric values", ^{
+      auto value = @"{{1.5, 2.5, inf, 35}, {3, 4, nan, 70}, {5, 6, -inf, -100}, {13, 14, 15, 16}}";
+      auto mat = GLKMatrix4FromString(value);
+      expect(mat.m00).to.equal(1.5);
+      expect(mat.m01).to.equal(2.5);
+      expect(std::isinf(mat.m02) and mat.m02 > 0).to.beTruthy();
+      expect(mat.m03).to.equal(35);
+      expect(mat.m10).to.equal(3);
+      expect(mat.m11).to.equal(4);
+      expect(std::isnan(mat.m12)).to.beTruthy();
+      expect(mat.m13).to.equal(70);
+      expect(mat.m20).to.equal(5);
+      expect(mat.m21).to.equal(6);
+      expect(std::isinf(mat.m22) && mat.m22 < 0).to.beTruthy();
+      expect(mat.m23).to.equal(-100);
+      expect(mat.m30).to.equal(13);
+      expect(mat.m31).to.equal(14);
+      expect(mat.m32).to.equal(15);
+      expect(mat.m33).to.equal(16);
+    });
+
+    it(@"should return zero matrix on invalid string", ^{
+      expect(GLKMatrix4FromString(@"1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,"
+                                  " 13, 14, 15, 16") == GLKMatrix4Zero).to.beTruthy();
+      expect(GLKMatrix4FromString(@"{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,"
+                                  " 13, 14, 15, 16}") == GLKMatrix4Zero).to.beTruthy();
+      expect(GLKMatrix4FromString(@"((1, 2, 3, 4), (5, 6, 7, 8), (9, 10, 11, 12),"
+                                  " (13, 14, 15, 16))") == GLKMatrix4Zero).to.beTruthy();
+      expect(GLKMatrix4FromString(@"{{a, 2, 3, 4}, {5, 6, 7, 8}, {9, 10, 11, 12},"
+                                  " {13, 14, 15, 16}}") == GLKMatrix4Zero).to.beTruthy();
+      expect(GLKMatrix4FromString(@"1, 2, 3, 4}, {5, 6, 7, 8}, {9, 10, 11, 12},"
+                                  " {13, 14, 15, 16}}") == GLKMatrix4Zero).to.beTruthy();
+      expect(GLKMatrix4FromString(@"{{1, 2, 3, 4}, {5, 6, 7, 8}, {9, 10, 11, 12},"
+                                  " {13, 14, 15, 16") == GLKMatrix4Zero).to.beTruthy();
+      expect(GLKMatrix4FromString(@"{{1 2 3 4} {5 6 7 8} {9 10 11 12}"
+                                  " {13 14 15 16}}") == GLKMatrix4Zero).to.beTruthy();
+      expect(GLKMatrix4FromString(@"{{1, 2, 3, 4}, {5, 6, 7, 8}, {9, 10, 11, 12},"
+                                  " {13, 14, 15, 16}") == GLKMatrix4Zero).to.beTruthy();
+    });
+
+    it(@"should return correct string representation for a matrix", ^{
+      auto mat = GLKMatrix4Make(1.1, INFINITY, NAN, -4.4, 5, 6, 7, 8, -INFINITY, 10, 11, 12,
+                                13, 14, 15, 16);
+      auto matString = NSStringFromGLKMatrix4(mat);
+      expect(matString).to.equal(@"{{1.1, inf, nan, -4.4}, {5, 6, 7, 8}, {-inf, 10, 11, 12},"
+                                 " {13, 14, 15, 16}}");
+    });
+
+    it(@"should serialize and deserialize successfully", ^{
+      auto mat = GLKMatrix4Make(-1.2e-5, INFINITY, NAN, 4, 5.5, 6, 7, 8, -INFINITY, 10, 11, 12, 13,
+                                14, 15, 16);
+      expect(GLKMatrix4FromString(NSStringFromGLKMatrix4(mat)) == mat).to.beTruthy();
+    });
   });
 });
 

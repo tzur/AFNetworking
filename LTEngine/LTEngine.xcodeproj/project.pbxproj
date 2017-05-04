@@ -1203,6 +1203,9 @@
 		A8BDC6421AC9DA64005FC392 /* CircularPatchDrawerMirror.png in Resources */ = {isa = PBXBuildFile; fileRef = A8BDC63B1AC9DA64005FC392 /* CircularPatchDrawerMirror.png */; };
 		A8BDC6431AC9DA64005FC392 /* CircularPatchDrawerPatch.png in Resources */ = {isa = PBXBuildFile; fileRef = A8BDC63C1AC9DA64005FC392 /* CircularPatchDrawerPatch.png */; };
 		A8BDC6441AC9DA64005FC392 /* CircularPatchDrawerRotation.png in Resources */ = {isa = PBXBuildFile; fileRef = A8BDC63D1AC9DA64005FC392 /* CircularPatchDrawerRotation.png */; };
+		B41BF08E1EB22D9800A1FA79 /* NSScanner+Math.h in Headers */ = {isa = PBXBuildFile; fileRef = B41BF08C1EB22D9800A1FA79 /* NSScanner+Math.h */; };
+		B41BF08F1EB22D9800A1FA79 /* NSScanner+Math.mm in Sources */ = {isa = PBXBuildFile; fileRef = B41BF08D1EB22D9800A1FA79 /* NSScanner+Math.mm */; };
+		B41BF0911EB22DCB00A1FA79 /* NSScanner+MathSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = B41BF0901EB22DCB00A1FA79 /* NSScanner+MathSpec.mm */; };
 		B467099F1E07F57F000CD9F5 /* LTFboAttachmentInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = B467099D1E07F57F000CD9F5 /* LTFboAttachmentInfo.h */; };
 		B46709A01E07F57F000CD9F5 /* LTFboAttachmentInfo.mm in Sources */ = {isa = PBXBuildFile; fileRef = B467099E1E07F57F000CD9F5 /* LTFboAttachmentInfo.mm */; };
 		B4947F061DFD4FF500872FBE /* UIImage+Factory.h in Headers */ = {isa = PBXBuildFile; fileRef = B4947F041DFD4FF500872FBE /* UIImage+Factory.h */; };
@@ -2940,6 +2943,9 @@
 		A8BDC63B1AC9DA64005FC392 /* CircularPatchDrawerMirror.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = CircularPatchDrawerMirror.png; path = Resources/CircularPatchDrawerMirror.png; sourceTree = "<group>"; };
 		A8BDC63C1AC9DA64005FC392 /* CircularPatchDrawerPatch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = CircularPatchDrawerPatch.png; path = Resources/CircularPatchDrawerPatch.png; sourceTree = "<group>"; };
 		A8BDC63D1AC9DA64005FC392 /* CircularPatchDrawerRotation.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = CircularPatchDrawerRotation.png; path = Resources/CircularPatchDrawerRotation.png; sourceTree = "<group>"; };
+		B41BF08C1EB22D9800A1FA79 /* NSScanner+Math.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSScanner+Math.h"; sourceTree = "<group>"; };
+		B41BF08D1EB22D9800A1FA79 /* NSScanner+Math.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSScanner+Math.mm"; sourceTree = "<group>"; };
+		B41BF0901EB22DCB00A1FA79 /* NSScanner+MathSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSScanner+MathSpec.mm"; sourceTree = "<group>"; };
 		B467099D1E07F57F000CD9F5 /* LTFboAttachmentInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTFboAttachmentInfo.h; sourceTree = "<group>"; };
 		B467099E1E07F57F000CD9F5 /* LTFboAttachmentInfo.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTFboAttachmentInfo.mm; sourceTree = "<group>"; };
 		B4947F041DFD4FF500872FBE /* UIImage+Factory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Factory.h"; sourceTree = "<group>"; };
@@ -4822,6 +4828,8 @@
 				8BA5DC1218A11F1E00A60A15 /* LTOpenCVExtensions.h */,
 				8BA5DC1318A11F1E00A60A15 /* LTOpenCVExtensions.mm */,
 				8B9D3FD018912E74001A964D /* LTOpenCVHalfFloat.h */,
+				B41BF08C1EB22D9800A1FA79 /* NSScanner+Math.h */,
+				B41BF08D1EB22D9800A1FA79 /* NSScanner+Math.mm */,
 				282CF08B187B031800904F07 /* UIColor+Vector.h */,
 				282CF08C187B031800904F07 /* UIColor+Vector.mm */,
 			);
@@ -4880,6 +4888,7 @@
 				8B4890D318A126C500598AEE /* LTOpenCVExtensionsSpec.mm */,
 				8B9D3FDF189130F1001A964D /* LTOpenCVHalfFloatSpec.mm */,
 				8BFA8F86191A2F9F0088310E /* LTGLKitExtensionsSpec.mm */,
+				B41BF0901EB22DCB00A1FA79 /* NSScanner+MathSpec.mm */,
 				2843721B19F5918C003F3B4A /* UIColor+VectorSpec.mm */,
 				280E06C51D6DE27700E2D2AA /* CIContext+PixelFormatSpec.mm */,
 			);
@@ -5608,6 +5617,7 @@
 				064F3FA51CF4792500E6D358 /* LTMeanShaderGenerator.h in Headers */,
 				85F155121D12840800967A90 /* LTTextureAtlasFromMatsProvider.h in Headers */,
 				8B871FE91924A75F00517F2E /* LTMultiscaleNoiseProcessor.h in Headers */,
+				B41BF08E1EB22D9800A1FA79 /* NSScanner+Math.h in Headers */,
 				8B871FEA1924A75F00517F2E /* LTPassthroughProcessor.h in Headers */,
 				8B871FEB1924A75F00517F2E /* LTProceduralVignetting.h in Headers */,
 				85F1550C1D1283DA00967A90 /* LTHorizontalPackingRectsProvider.h in Headers */,
@@ -6645,6 +6655,7 @@
 				2897A8C6197F041E004EE8B5 /* LTPerspectiveProcessor.fsh in Sources */,
 				2881A1A6196BDD2C00E7F523 /* LTRoundBrush.fsh in Sources */,
 				03C315271965798F00F742B1 /* LTEdgesMask.vsh in Sources */,
+				B41BF08F1EB22D9800A1FA79 /* NSScanner+Math.mm in Sources */,
 				03C3152419654E1900F742B1 /* LTEdgesMask.fsh in Sources */,
 				282AC6B11924B9F2006CAA2B /* LTShapeDrawerTriangularMeshShape.vsh in Sources */,
 				282AC6B01924B9EE006CAA2B /* LTShapeDrawerTriangularMeshShape.fsh in Sources */,
@@ -7148,6 +7159,7 @@
 				8BABF0D019B8491800AED760 /* LTEAWProcessorSpec.mm in Sources */,
 				85CDE56E1CFEF89900229787 /* LTForegroundBackgroundDrawerSpec.mm in Sources */,
 				508C156C1C1C84F5009ADA5C /* LTPeriodicFloatSetSpec.mm in Sources */,
+				B41BF0911EB22DCB00A1FA79 /* NSScanner+MathSpec.mm in Sources */,
 				85E2B6841C58C61D006AD39C /* LTSolidRectsDrawerSpec.mm in Sources */,
 				30DDD6AD1CFC8A5700AE72B8 /* LTConsistentGaussianFilterProcessorSpec.mm in Sources */,
 				038DDD8019EFBEF60018F9E4 /* LTCLAHEProcessorSpec.mm in Sources */,

@@ -3,19 +3,27 @@
 
 #import "LTGLKitExtensions.h"
 
-const GLKVector4 GLKVector4Zero = {{0, 0, 0, 0}};
-
-const GLKVector3 GLKVector3Zero = {{0, 0, 0}};
+#import "NSScanner+Math.h"
 
 const GLKVector2 GLKVector2Zero = {{0, 0}};
 
-const GLKVector4 GLKVector4One = {{1, 1, 1, 1}};
+const GLKVector3 GLKVector3Zero = {{0, 0, 0}};
 
-const GLKVector3 GLKVector3One = {{1, 1, 1}};
+const GLKVector4 GLKVector4Zero = {{0, 0, 0, 0}};
 
 const GLKVector2 GLKVector2One = {{1, 1}};
 
+const GLKVector3 GLKVector3One = {{1, 1, 1}};
+
+const GLKVector4 GLKVector4One = {{1, 1, 1, 1}};
+
 const GLKMatrix2 GLKMatrix2Identity = {{1, 0, 0, 1}};
+
+const GLKMatrix2 GLKMatrix2Zero = {{0, 0, 0, 0}};
+
+const GLKMatrix3 GLKMatrix3Zero = {{0, 0, 0, 0, 0, 0, 0, 0, 0}};
+
+const GLKMatrix4 GLKMatrix4Zero = {{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}};
 
 GLKVector3 GLKLineEquation(const GLKVector2 &source, const GLKVector2 &target) {
   if (source == target) {
@@ -71,4 +79,31 @@ GLKVector3 GLKRGB2YIQ(const GLKVector3 &rgb) {
                                                      0.587, -0.274, -0.523,
                                                      0.114, -0.322, 0.311);
   return GLKMatrix3MultiplyVector3(kRGBtoYIQ, rgb);
+}
+
+GLKMatrix2 GLKMatrix2FromString(NSString *string) {
+  auto scanner = [NSScanner scannerWithString:string];
+  GLKMatrix2 matrix;
+  if (![scanner lt_scanFloatMatrix:matrix.m rows:2 cols:2]) {
+    return GLKMatrix2Zero;
+  }
+  return matrix;
+}
+
+GLKMatrix3 GLKMatrix3FromString(NSString *string) {
+  auto scanner = [NSScanner scannerWithString:string];
+  GLKMatrix3 matrix;
+  if (![scanner lt_scanFloatMatrix:matrix.m rows:3 cols:3]) {
+    return GLKMatrix3Zero;
+  }
+  return matrix;
+}
+
+GLKMatrix4 GLKMatrix4FromString(NSString *string) {
+  auto scanner = [NSScanner scannerWithString:string];
+  GLKMatrix4 matrix;
+  if (![scanner lt_scanFloatMatrix:matrix.m rows:4 cols:4]) {
+    return GLKMatrix4Zero;
+  }
+  return matrix;
 }
