@@ -7,6 +7,7 @@
 #import <LTKit/UIColor+Utilities.h>
 #import <Mantle/Mantle.h>
 
+#import "LTGLKitExtensions.h"
 #import "LTVector.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -22,6 +23,9 @@ NSString * const kLTURLValueTransformer = @"LTURLValueTransformer";
 NSString * const kLTVector2ValueTransformer = @"LTVector2ValueTransformer";
 NSString * const kLTVector3ValueTransformer = @"LTVector3ValueTransformer";
 NSString * const kLTVector4ValueTransformer = @"LTVector4ValueTransformer";
+NSString * const kGLKMatrix2ValueTransformer = @"GLKMatrix2ValueTransformer";
+NSString * const kGLKMatrix3ValueTransformer = @"GLKMatrix3ValueTransformer";
+NSString * const kGLKMatrix4ValueTransformer = @"GLKMatrix4ValueTransformer";
 
 NSString * const kLTModelValueTransformerClassKey = @"_class";
 NSString * const kLTModelValueTransformerEnumNameKey = @"name";
@@ -56,6 +60,12 @@ NSString * const kLTModelValueTransformerEnumNameKey = @"name";
                                     forName:kLTVector3ValueTransformer];
     [NSValueTransformer setValueTransformer:[self lt_LTVector4ValueTransformer]
                                     forName:kLTVector4ValueTransformer];
+    [NSValueTransformer setValueTransformer:[self lt_GLKMatrix2ValueTransformer]
+                                    forName:kGLKMatrix2ValueTransformer];
+    [NSValueTransformer setValueTransformer:[self lt_GLKMatrix3ValueTransformer]
+                                    forName:kGLKMatrix3ValueTransformer];
+    [NSValueTransformer setValueTransformer:[self lt_GLKMatrix4ValueTransformer]
+                                    forName:kGLKMatrix4ValueTransformer];
   }
 }
 
@@ -267,6 +277,9 @@ NSString * const kLTModelValueTransformerEnumNameKey = @"name";
 LTMakeStructValueTransformer(LTVector2);
 LTMakeStructValueTransformer(LTVector3);
 LTMakeStructValueTransformer(LTVector4);
+LTMakeStructValueTransformer(GLKMatrix2);
+LTMakeStructValueTransformer(GLKMatrix3);
+LTMakeStructValueTransformer(GLKMatrix4);
 
 #undef LTMakeStructValueTransformer
 
