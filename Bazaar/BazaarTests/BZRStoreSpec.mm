@@ -1244,6 +1244,12 @@ context(@"KVO-compliance", ^{
       ]);
     });
 
+    it(@"should return base product when a variant is found in allowed products", ^{
+      allowedProductsProvider.allowedProducts = [NSSet setWithArray:@[@"foo", @"bar.Variant.C"]];
+
+      expect(store.allowedProducts).to.equal([NSSet setWithArray:@[@"foo", @"bar"]]);
+    });
+
     it(@"should update when products dictionary is changed", ^{
       BZRProduct *notPreAcquiredProduct = BZRProductWithIdentifier(@"notPreAcquired");
       BZRProduct *preAcquiredProduct = BZRProductWithIdentifier(@"preAcquired");

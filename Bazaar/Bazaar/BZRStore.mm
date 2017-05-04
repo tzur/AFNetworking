@@ -263,8 +263,13 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (NSSet<NSString *> *)allowedProducts {
+  NSArray<NSString *> *allowedProductsIdentifiers =
+      [[self.allowedProductsProvider.allowedProducts allObjects]
+          lt_map:^NSString *(NSString *identifier) {
+            return [identifier bzr_baseProductIdentifier];
+          }];
   return [[self preAcquiredProducts] setByAddingObjectsFromSet:
-          self.allowedProductsProvider.allowedProducts];
+          [NSSet setWithArray:allowedProductsIdentifiers]];
 }
 
 - (NSSet<NSString *> *)preAcquiredProducts {
