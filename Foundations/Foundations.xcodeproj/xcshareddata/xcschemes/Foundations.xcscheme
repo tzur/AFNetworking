@@ -160,6 +160,20 @@
                ReferencedContainer = "container:../Wireframes/Wireframes.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "NO"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "A14171C01E6EAC0D005DBEFF"
+               BuildableName = "LaboratoryTests.xctest"
+               BlueprintName = "LaboratoryTests"
+               ReferencedContainer = "container:../Laboratory/Laboratory.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
@@ -286,6 +300,16 @@
                BuildableName = "IntelligenceTests.xctest"
                BlueprintName = "IntelligenceTests"
                ReferencedContainer = "container:../Intelligence/Intelligence.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "A14171C01E6EAC0D005DBEFF"
+               BuildableName = "LaboratoryTests.xctest"
+               BlueprintName = "LaboratoryTests"
+               ReferencedContainer = "container:../Laboratory/Laboratory.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>

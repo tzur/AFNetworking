@@ -366,6 +366,20 @@
 			remoteGlobalIDString = 8BED80971C3A68290001C6F1;
 			remoteInfo = BlueprintsTests;
 		};
+		884961D61EBA21CB007B3AE8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 884961A61EBA1E9B007B3AE8 /* Laboratory.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = A14171A11E6EAA93005DBEFF;
+			remoteInfo = Laboratory;
+		};
+		884961D81EBA21CB007B3AE8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 884961A61EBA1E9B007B3AE8 /* Laboratory.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = A14171C11E6EAC0D005DBEFF;
+			remoteInfo = LaboratoryTests;
+		};
 		8B54EAFB1D89938A00104102 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 65BAF1491D47F9E1009BBB6F /* PhotonsUI.xcodeproj */;
@@ -416,6 +430,7 @@
 		65BAF1521D47F9EA009BBB6F /* Wireframes.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Wireframes.xcodeproj; path = ../Wireframes/Wireframes.xcodeproj; sourceTree = "<group>"; };
 		65BAF2BC1D4801B1009BBB6F /* TestHost.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = TestHost.xcodeproj; sourceTree = "<group>"; };
 		6A089D601DFEE26E00AC10A9 /* Blueprints.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Blueprints.xcodeproj; path = ../Blueprints/Blueprints.xcodeproj; sourceTree = "<group>"; };
+		884961A61EBA1E9B007B3AE8 /* Laboratory.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Laboratory.xcodeproj; path = ../Laboratory/Laboratory.xcodeproj; sourceTree = "<group>"; };
 		A14176B21E6EBE8C005DBEFF /* Intelligence.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Intelligence.xcodeproj; path = ../Intelligence/Intelligence.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -438,6 +453,7 @@
 				65BAF1191D47F9B3009BBB6F /* DaVinci.xcodeproj */,
 				65BAF1221D47F9B9009BBB6F /* Fiber.xcodeproj */,
 				A14176B21E6EBE8C005DBEFF /* Intelligence.xcodeproj */,
+				884961A61EBA1E9B007B3AE8 /* Laboratory.xcodeproj */,
 				65BAF12B1D47F9C9009BBB6F /* LTEngine.xcodeproj */,
 				65BAF1371D47F9D2009BBB6F /* LTKit.xcodeproj */,
 				65BAF1401D47F9DC009BBB6F /* Photons.xcodeproj */,
@@ -556,6 +572,15 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		884961D21EBA21CB007B3AE8 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				884961D71EBA21CB007B3AE8 /* libLaboratory.a */,
+				884961D91EBA21CB007B3AE8 /* LaboratoryTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		A14176B31E6EBE8C005DBEFF /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -617,6 +642,10 @@
 				{
 					ProductGroup = A14176B31E6EBE8C005DBEFF /* Products */;
 					ProjectRef = A14176B21E6EBE8C005DBEFF /* Intelligence.xcodeproj */;
+				},
+				{
+					ProductGroup = 884961D21EBA21CB007B3AE8 /* Products */;
+					ProjectRef = 884961A61EBA1E9B007B3AE8 /* Laboratory.xcodeproj */;
 				},
 				{
 					ProductGroup = 65BAF12C1D47F9C9009BBB6F /* Products */;
@@ -817,6 +846,20 @@
 			fileType = wrapper.cfbundle;
 			path = BlueprintsTests.xctest;
 			remoteRef = 6A089D671DFEE26F00AC10A9 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		884961D71EBA21CB007B3AE8 /* libLaboratory.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libLaboratory.a;
+			remoteRef = 884961D61EBA21CB007B3AE8 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		884961D91EBA21CB007B3AE8 /* LaboratoryTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = LaboratoryTests.xctest;
+			remoteRef = 884961D81EBA21CB007B3AE8 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		8B54EAFC1D89938A00104102 /* PhotonsUIBundle.bundle */ = {
