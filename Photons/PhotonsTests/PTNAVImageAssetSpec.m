@@ -77,10 +77,11 @@ it(@"should be deallocated when fetch image completes", ^{
     PTNAVImageAsset *imageAsset =
         [[PTNAVImageAsset alloc] initWithAsset:demoAsset
                               resizingStrategy:[PTNResizingStrategy identity]];
-    weakImage = imageAsset;
     expect([imageAsset fetchImage]).will.complete();
   }
-  expect(weakImage).to.beNil();
+  // Will is beeing used since weakImage can still be retained due to the fact that the fetchImage
+  // method retains itself using GCD.
+  expect(weakImage).will.beNil();
 });
 
 SpecEnd
