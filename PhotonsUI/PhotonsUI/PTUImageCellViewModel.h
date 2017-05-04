@@ -15,6 +15,9 @@ extern NSString * const kPTUImageCellViewModelTraitCloudBasedKey;
 /// Cell that represents a video asset.
 extern NSString * const kPTUImageCellViewModelTraitVideoKey;
 
+/// Cell that represents a raw image asset.
+extern NSString * const kPTUImageCellViewModelTraitRawKey;
+
 @class PTNImageFetchOptions;
 
 /// Protocol for collection view image cells view models to conform to in order to be used by the
