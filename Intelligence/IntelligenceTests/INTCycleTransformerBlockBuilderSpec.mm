@@ -60,22 +60,27 @@ it(@"should not complete transformation if cycle had not started", ^{
 it(@"should recover after an unbalanced end event arrival", ^{
   auto transformerBlock = INTCycleTransformerBuilder(kNSStringEventIdentifier)
       .cycle(@"baz", @"que")
-      .appendDuration(@"duration")
       .onCycleEnd(^(NSDictionary<NSString *, id> *aggregatedData) {
-        return @[aggregatedData[@"duration"]];
+        return @[
+          aggregatedData[kINTCycleDurationKey],
+          aggregatedData[kINTStartMetadataKey],
+          aggregatedData[kINTStartContextKey]
+        ];
       })
       .build();
 
+  auto startMetadata = INTCreateEventMetadata(2);
+  auto startContext = @{@"que": @4};
   auto eventSequence = @[
     INTEventTransformerArgs(@"que", INTCreateEventMetadata(1), @{}),
-    INTEventTransformerArgs(@"baz", INTCreateEventMetadata(2), @{}),
+    INTEventTransformerArgs(@"baz", startMetadata, startContext),
     INTEventTransformerArgs(@"que", INTCreateEventMetadata(4), @{})
   ];
 
   auto executor =
       [[INTEventTransformationExecutor alloc] initWithTransformerBlock:transformerBlock];
 
-  expect([executor transformEventSequence:eventSequence]).equal(@[@2]);
+  expect([executor transformEventSequence:eventSequence]).equal(@[@2, startMetadata, startContext]);
 });
 
 it(@"should aggregate data using aggregation blocks", ^{
@@ -89,14 +94,20 @@ it(@"should aggregate data using aggregation blocks", ^{
         NSUInteger counter = [aggregatedData[@"counter"] unsignedIntegerValue];
         return @{@"counter": @(counter + 1)};
       })
-      .appendDuration(@"fooToBaz")
       .onCycleEnd(^(NSDictionary<NSString *, id> *aggregatedData) {
-        return @[aggregatedData[@"counter"], aggregatedData[@"fooToBaz"]];
+        return @[
+          aggregatedData[@"counter"],
+          aggregatedData[kINTCycleDurationKey],
+          aggregatedData[kINTStartMetadataKey],
+          aggregatedData[kINTStartContextKey]
+        ];
       })
       .build();
 
+  auto startMetadata = INTCreateEventMetadata();
+  auto startContext = @{@"que": @4};
   auto eventSequence = @[
-    INTEventTransformerArgs(@"foo", INTCreateEventMetadata()),
+    INTEventTransformerArgs(@"foo", startMetadata, startContext),
     INTEventTransformerArgs(@"bar", INTCreateEventMetadata(1)),
     INTEventTransformerArgs(@"bar", INTCreateEventMetadata(2)),
     INTEventTransformerArgs(@"baz", INTCreateEventMetadata(5)),
@@ -105,7 +116,8 @@ it(@"should aggregate data using aggregation blocks", ^{
   auto executor =
       [[INTEventTransformationExecutor alloc] initWithTransformerBlock:transformerBlock];
 
-  expect([executor transformEventSequence:eventSequence]).to.equal(@[@3, @5]);
+  auto expected = @[@3, @5, startMetadata, startContext];
+  expect([executor transformEventSequence:eventSequence]).to.equal(expected);
 });
 
 it(@"should pass metadata to aggregation blocks", ^{
@@ -169,9 +181,8 @@ it(@"should pass application context to aggregation blocks", ^{
 it(@"should time event cycle", ^{
   auto transformerBlock = INTCycleTransformerBuilder(kNSStringEventIdentifier)
       .cycle(@"foo", @"bar")
-      .appendDuration(@"baz")
       .onCycleEnd(^(NSDictionary<NSString *, id> *aggregatedData) {
-        return @[aggregatedData[@"baz"]];
+        return @[aggregatedData[kINTCycleDurationKey]];
       })
       .build();
 
@@ -186,6 +197,56 @@ it(@"should time event cycle", ^{
       [[INTEventTransformationExecutor alloc] initWithTransformerBlock:transformerBlock];
 
   auto expected = @[@4, @4.5];
+
+  expect([executor transformEventSequence:eventSequence]).to.equal(expected);
+});
+
+it(@"should aggregate start event context", ^{
+  auto transformerBlock = INTCycleTransformerBuilder(kNSStringEventIdentifier)
+      .cycle(@"foo", @"bar")
+      .onCycleEnd(^(NSDictionary<NSString *, id> *aggregatedData) {
+        return @[aggregatedData[kINTStartContextKey]];
+      })
+      .build();
+
+  auto startContext1 = @{@"baz": @1};
+  auto startContext2 = @{@"que": @4};
+  auto eventSequence = @[
+    INTEventTransformerArgs(@"foo", INTCreateEventMetadata(), startContext1),
+    INTEventTransformerArgs(@"bar", INTCreateEventMetadata()),
+    INTEventTransformerArgs(@"foo", INTCreateEventMetadata(), startContext2),
+    INTEventTransformerArgs(@"bar", INTCreateEventMetadata())
+  ];
+
+  auto executor =
+      [[INTEventTransformationExecutor alloc] initWithTransformerBlock:transformerBlock];
+
+  auto expected = @[startContext1, startContext2];
+
+  expect([executor transformEventSequence:eventSequence]).to.equal(expected);
+});
+
+it(@"should aggregate start event metadata", ^{
+  auto transformerBlock = INTCycleTransformerBuilder(kNSStringEventIdentifier)
+      .cycle(@"foo", @"bar")
+      .onCycleEnd(^(NSDictionary<NSString *, id> *aggregatedData) {
+        return @[aggregatedData[kINTStartMetadataKey]];
+      })
+      .build();
+
+  auto startMetadata1 = INTCreateEventMetadata(45);
+  auto startMetadata2 = INTCreateEventMetadata(33, 56);
+  auto eventSequence = @[
+    INTEventTransformerArgs(@"foo", startMetadata1),
+    INTEventTransformerArgs(@"bar", INTCreateEventMetadata(7)),
+    INTEventTransformerArgs(@"foo", startMetadata2),
+    INTEventTransformerArgs(@"bar", INTCreateEventMetadata(13))
+  ];
+
+  auto executor =
+      [[INTEventTransformationExecutor alloc] initWithTransformerBlock:transformerBlock];
+
+  auto expected = @[startMetadata1, startMetadata2];
 
   expect([executor transformEventSequence:eventSequence]).to.equal(expected);
 });

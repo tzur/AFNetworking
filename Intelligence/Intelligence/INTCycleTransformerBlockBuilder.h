@@ -6,6 +6,17 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/// Key for an \c INTAppContext of the start event of a cycle. Applicable in an \c aggregatedData.
+extern NSString * const kINTStartContextKey;
+
+/// Key for an \c INTEventMetadata of the start event of a cycle. Applicable in an
+/// \c aggregatedData.
+extern NSString * const kINTStartMetadataKey;
+
+/// Key for an \c NSNumber representing the duration of a cycle from the start to the end event.
+/// Applicable in an \c aggregatedData.
+extern NSString * const kINTCycleDurationKey;
+
 /// Builder of \c INTTransformerBlock blocks. The resulting \c INTTransformerBlock aggregates event
 /// data in a cycle, starting and completing a transformation on a start and end event types,
 /// respectively. The block may aggregate data on other event types during an active cycle, as
@@ -103,10 +114,9 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 /// INTTransformerBlock block = INTCycleTransformerBlockBuilder(stringEventIdentifier)
 ///     .cycle(@"foreground", @"background")
-///     .appendDuration(@"foregroundDuration")
 ///     .onCycleEnd(^(NSDictionary<NSString *, id> *aggregationData) {
 ///       auto event = [[INTAppDidEnterBackground alloc] init];
-///       event.foregroundDuration = [aggregationData[@"foregroundDuration"] doubleValue];
+///       event.foregroundDuration = [aggregationData[kINTCycleDurationKey] doubleValue];
 ///       return @[event];
 ///     })
 ///     .build();
@@ -146,15 +156,14 @@ NS_ASSUME_NONNULL_BEGIN
 /// when invoked. Events returned from the block are be considered hight level events, as defined by
 /// the \C INTTransformerBlock documentation and are returned by the resulting
 /// \c INTTransformerBlock when an event of type \c eventType is processed.
-/// \c intl::TransformCompletionBlock must supply a pure function. only one completion block can be
-/// set for a cycle, the last set competion block will be used in the resulting
-/// \c INTTransformerBlock. This step is mandatory.
+/// \c intl::TransformCompletionBlock must supply a pure function. The \c aggregatedData argument
+/// of the completion block is guaranteed to contain the following keys:
+///
+/// {kINTStartContextKey, kINTStartMetadataKey, kINTCycleDurationKey}.
+///
+/// Only one completion block can be set for a cycle. The last set competion block will be used in
+/// the resulting \c INTTransformerBlock. This step is mandatory.
 - (INTCycleTransformerBlockBuilder *(^)(intl::TransformCompletionBlock))onCycleEnd;
-
-/// Returns a block that adds a the key in which the cycle duration will be counted. The cycle
-/// duration is calculated according to \c totalRuntime passed in the \c metadata parameter. This
-/// step is optional.
-- (INTCycleTransformerBlockBuilder *(^)(NSString *key))appendDuration;
 
 /// Builds a transformer block with the set parameters. If
 /// <tt>-[INTCycleTransformerBlockBuilder cycle]</tt> or

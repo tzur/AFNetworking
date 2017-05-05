@@ -9,6 +9,12 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+NSString * const kINTStartContextKey = @"_INTStartContext";
+
+NSString * const kINTStartMetadataKey = @"_INTStartMetadata";
+
+NSString * const kINTCycleDurationKey = @"_INTCycleDuration";
+
 @interface INTCycleTransformerBlockBuilder ()
 
 /// Event that starts an aggregation cycle.
@@ -148,39 +154,46 @@ static NSString * const kKeyForCycleAggregations = @"CycleAggregations";
 }
 
 - (INTTransformerBlock)internalTransformerBlock {
-  __block INTTransformerBlockBuilder *internalBlockBuilder;
+  __block INTTransformerBlockBuilder *internalBlockBuilder =
+      [self builderWithCycleDurationForStartEvent:self.startEvent endEvent:self.endEvent];
 
-  if (self.cycleDurationKey) {
-    internalBlockBuilder = [self builderWithCycleDurationForStartEvent:self.startEvent
-                                                              endEvent:self.endEvent
-                                                                   key:self.cycleDurationKey];
-  } else {
-    internalBlockBuilder = INTTransformerBuilder(self.eventIdentifier);
-  }
+  [self.aggregationBlocks enumerateKeysAndObjectsUsingBlock:^(NSString *eventType,
+                                                              NSArray<INTAggregationBlock> *blocks,
+                                                              BOOL *) {
+    for (INTAggregationBlock aggregationBlock in blocks) {
+      internalBlockBuilder = internalBlockBuilder.aggregate(eventType, aggregationBlock);
+    }
+  }];
 
-   [self.aggregationBlocks enumerateKeysAndObjectsUsingBlock:^(NSString *eventType,
-                                                               NSArray<INTAggregationBlock> *blocks,
-                                                               BOOL *) {
-     for (INTAggregationBlock aggregationBlock in blocks) {
-       internalBlockBuilder = internalBlockBuilder.aggregate(eventType, aggregationBlock);
-     }
-   }];
+  INTAggregationBlock aggregateContext =
+      ^(NSDictionary<NSString *, id> *, id, INTEventMetadata *, INTAppContext *appContext) {
+        return @{kINTStartContextKey: appContext};
+      };
+
+  internalBlockBuilder = internalBlockBuilder.aggregate(self.startEvent, aggregateContext);
+
+  INTPartialAggregationBlock aggregateMetadata =
+      ^(NSDictionary<NSString *,id> *, id, INTEventMetadata *metadata) {
+        return @{kINTStartMetadataKey: metadata};
+      };
+
+  internalBlockBuilder = internalBlockBuilder.aggregate(self.startEvent, aggregateMetadata);
 
   return internalBlockBuilder.transform(self.endEvent, self.cycleCompletion).build();
 }
 
 - (INTTransformerBlockBuilder *)builderWithCycleDurationForStartEvent:(NSString *)startEvent
-                                                             endEvent:(NSString *)endEvent
-                                                                  key:(NSString *)key {
+                                                             endEvent:(NSString *)endEvent {
   INTPartialAggregationBlock durationStart =
       ^(NSDictionary<NSString *,id> *, id, INTEventMetadata *metadata) {
-        return @{key: @(metadata.totalRunTime)};
+        return @{kINTCycleDurationKey: @(metadata.totalRunTime)};
       };
 
   INTPartialAggregationBlock durationEnd =
       ^(NSDictionary<NSString *,id> *aggregationData, id, INTEventMetadata *metadata) {
-        auto duration = metadata.totalRunTime - [aggregationData[key] doubleValue];
-        return @{key: @(duration)};
+        auto duration = metadata.totalRunTime -
+            [aggregationData[kINTCycleDurationKey] doubleValue];
+        return @{kINTCycleDurationKey: @(duration)};
       };
 
   return INTTransformerBuilder(self.eventIdentifier)
