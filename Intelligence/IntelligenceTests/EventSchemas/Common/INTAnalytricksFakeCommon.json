@@ -1,0 +1,38 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "description": "Fake Common Data",
+  "type": "object",
+  "properties": {
+    "string_property": {
+      "description": "String property",
+      "type": "string"
+    },
+    "uuid_property": {
+      "description": "UUID property",
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{8}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{12}$"
+    },
+    "number_property": {
+      "description": "Number property",
+      "type": "number"
+    },
+    "integer_property": {
+      "description": "Integer property",
+      "type": "integer"
+    },
+    "boolean_property": {
+      "description": "Boolean property",
+      "type": "boolean"
+    },
+    "date_property": {
+      "description": "Date property",
+      "type": "string",
+      "format": "date-time"
+    },
+    "nullable_string": {
+      "description": "Nullable string property",
+      "type": ["string", "null"]
+    }
+  },
+  "required": ["string_property", "uuid_property", "number_property", "integer_property", "boolean_property", "date_property", "nullable_string"]
+}

@@ -13,6 +13,15 @@
 		A113411F1EB0D1E30042ABA8 /* INTTransformerBlockBuilderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = A113411E1EB0D1E30042ABA8 /* INTTransformerBlockBuilderSpec.mm */; };
 		A132A0CD1EB8C297001F70A6 /* INTCycleTransformerBlockBuilder.mm in Sources */ = {isa = PBXBuildFile; fileRef = A132A0CC1EB8C297001F70A6 /* INTCycleTransformerBlockBuilder.mm */; };
 		A132A0E51EB8C2A5001F70A6 /* INTCycleTransformerBlockBuilderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = A132A0E41EB8C2A5001F70A6 /* INTCycleTransformerBlockBuilderSpec.mm */; };
+		A132A3601EBCCDF3001F70A6 /* INTAnalytricksFakeBase.json in Resources */ = {isa = PBXBuildFile; fileRef = A132A3451EBCCDF3001F70A6 /* INTAnalytricksFakeBase.json */; };
+		A132A3621EBCCDF3001F70A6 /* INTAnalytricksFakeCommon.json in Resources */ = {isa = PBXBuildFile; fileRef = A132A3481EBCCDF3001F70A6 /* INTAnalytricksFakeCommon.json */; };
+		A132A3661EBCCDF3001F70A6 /* INTAnalytricksFakeConcrete.json in Resources */ = {isa = PBXBuildFile; fileRef = A132A34D1EBCCDF3001F70A6 /* INTAnalytricksFakeConcrete.json */; };
+		A132A36E1EBCCDF3001F70A6 /* INTFakeInternalEvent.json in Resources */ = {isa = PBXBuildFile; fileRef = A132A3561EBCCDF3001F70A6 /* INTFakeInternalEvent.json */; };
+		A132A3781EBCD08D001F70A6 /* INTAnalytricksFakeBase.json in Sources */ = {isa = PBXBuildFile; fileRef = A132A3451EBCCDF3001F70A6 /* INTAnalytricksFakeBase.json */; };
+		A132A3791EBCD08D001F70A6 /* INTAnalytricksFakeCommon.json in Sources */ = {isa = PBXBuildFile; fileRef = A132A3481EBCCDF3001F70A6 /* INTAnalytricksFakeCommon.json */; };
+		A132A37A1EBCD08D001F70A6 /* INTAnalytricksFakeConcrete.json in Sources */ = {isa = PBXBuildFile; fileRef = A132A34D1EBCCDF3001F70A6 /* INTAnalytricksFakeConcrete.json */; };
+		A132A37B1EBCD08D001F70A6 /* INTFakeInternalEvent.json in Sources */ = {isa = PBXBuildFile; fileRef = A132A3561EBCCDF3001F70A6 /* INTFakeInternalEvent.json */; };
+		A132A37D1EBCD200001F70A6 /* INTEventCodeGenerationSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = A132A37C1EBCD200001F70A6 /* INTEventCodeGenerationSpec.mm */; };
 		A14171C61E6EAC0D005DBEFF /* libIntelligence.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A14171A11E6EAA93005DBEFF /* libIntelligence.a */; };
 		A14173401E6EB59F005DBEFF /* libExpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A141728A1E6EAEE7005DBEFF /* libExpecta.a */; };
 		A14173411E6EB59F005DBEFF /* libLTKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A141726F1E6EADDF005DBEFF /* libLTKit.a */; };
@@ -53,7 +62,7 @@
 		A132A37F1EBCD442001F70A6 /* PBXBuildRule */ = {
 			isa = PBXBuildRule;
 			compilerSpec = com.apple.compilers.proxy.script;
-			filePatterns = "*IntelligenceTests/EventSchemas/*.json";
+			filePatterns = "*EventSchemas/*.json";
 			fileType = pattern.proxy;
 			isEditable = 1;
 			name = "Testing event schema generation";
@@ -61,7 +70,7 @@
 				"$(DERIVED_FILE_DIR)/$(arch)/${INPUT_FILE_BASE}.h",
 				"$(DERIVED_FILE_DIR)/$(arch)/${INPUT_FILE_BASE}.mm",
 			);
-			script = "sh \"$PROJECT_DIR/../BuildTools/EventGeneration/EventGeneration.sh\" \"$SRCROOT/$TARGET_NAME/EventSchemas\"";
+			script = "sh \"$PROJECT_DIR/../BuildTools/EventGeneration/EventGeneration.sh\" \"$PROJECT_DIR/../BuildTools\" \"$SRCROOT/$TARGET_NAME/EventSchemas\"";
 		};
 /* End PBXBuildRule section */
 
@@ -268,6 +277,11 @@
 		A132A0CB1EB8C297001F70A6 /* INTCycleTransformerBlockBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INTCycleTransformerBlockBuilder.h; sourceTree = "<group>"; };
 		A132A0CC1EB8C297001F70A6 /* INTCycleTransformerBlockBuilder.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = INTCycleTransformerBlockBuilder.mm; sourceTree = "<group>"; };
 		A132A0E41EB8C2A5001F70A6 /* INTCycleTransformerBlockBuilderSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = INTCycleTransformerBlockBuilderSpec.mm; sourceTree = "<group>"; };
+		A132A3451EBCCDF3001F70A6 /* INTAnalytricksFakeBase.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = INTAnalytricksFakeBase.json; path = AbstractEvents/INTAnalytricksFakeBase.json; sourceTree = "<group>"; };
+		A132A3481EBCCDF3001F70A6 /* INTAnalytricksFakeCommon.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = INTAnalytricksFakeCommon.json; path = Common/INTAnalytricksFakeCommon.json; sourceTree = "<group>"; };
+		A132A34D1EBCCDF3001F70A6 /* INTAnalytricksFakeConcrete.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = INTAnalytricksFakeConcrete.json; path = ConcreteEvents/INTAnalytricksFakeConcrete.json; sourceTree = "<group>"; };
+		A132A3561EBCCDF3001F70A6 /* INTFakeInternalEvent.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = INTFakeInternalEvent.json; path = InternalEvents/INTFakeInternalEvent.json; sourceTree = "<group>"; };
+		A132A37C1EBCD200001F70A6 /* INTEventCodeGenerationSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = INTEventCodeGenerationSpec.mm; sourceTree = "<group>"; };
 		A14171A11E6EAA93005DBEFF /* libIntelligence.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libIntelligence.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		A14171C11E6EAC0D005DBEFF /* IntelligenceTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = IntelligenceTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A14171C51E6EAC0D005DBEFF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -385,6 +399,27 @@
 				A1541B0D1EAF1CC300B4F064 /* INTRecorderLogger.mm */,
 			);
 			name = "Test Utils";
+			sourceTree = "<group>";
+		};
+		A132A32C1EBCCDD6001F70A6 /* Event Code Generation */ = {
+			isa = PBXGroup;
+			children = (
+				A132A3431EBCCDF3001F70A6 /* Event Schemas */,
+				A132A37C1EBCD200001F70A6 /* INTEventCodeGenerationSpec.mm */,
+			);
+			name = "Event Code Generation";
+			sourceTree = "<group>";
+		};
+		A132A3431EBCCDF3001F70A6 /* Event Schemas */ = {
+			isa = PBXGroup;
+			children = (
+				A132A3451EBCCDF3001F70A6 /* INTAnalytricksFakeBase.json */,
+				A132A3481EBCCDF3001F70A6 /* INTAnalytricksFakeCommon.json */,
+				A132A34D1EBCCDF3001F70A6 /* INTAnalytricksFakeConcrete.json */,
+				A132A3561EBCCDF3001F70A6 /* INTFakeInternalEvent.json */,
+			);
+			name = "Event Schemas";
+			path = EventSchemas;
 			sourceTree = "<group>";
 		};
 		A14171981E6EAA93005DBEFF = {
@@ -559,6 +594,7 @@
 			children = (
 				A1D136EA1E78FDF400B1EA8D /* Base */,
 				A10167F31E713D72009596E1 /* Event Aggregation */,
+				A132A32C1EBCCDD6001F70A6 /* Event Code Generation */,
 				A1541C081EAF400D00B4F064 /* Utils */,
 				A1541B0B1EAF1CC300B4F064 /* INTEventsPipelineSpec.mm */,
 			);
@@ -896,6 +932,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A132A36E1EBCCDF3001F70A6 /* INTFakeInternalEvent.json in Resources */,
+				A132A3661EBCCDF3001F70A6 /* INTAnalytricksFakeConcrete.json in Resources */,
+				A132A3621EBCCDF3001F70A6 /* INTAnalytricksFakeCommon.json in Resources */,
+				A132A3601EBCCDF3001F70A6 /* INTAnalytricksFakeBase.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -922,8 +962,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A132A3781EBCD08D001F70A6 /* INTAnalytricksFakeBase.json in Sources */,
+				A132A3791EBCD08D001F70A6 /* INTAnalytricksFakeCommon.json in Sources */,
+				A132A37A1EBCD08D001F70A6 /* INTAnalytricksFakeConcrete.json in Sources */,
+				A132A37B1EBCD08D001F70A6 /* INTFakeInternalEvent.json in Sources */,
 				A1541B0E1EAF1CC300B4F064 /* INTEventsPipelineSpec.mm in Sources */,
 				A132A0E51EB8C2A5001F70A6 /* INTCycleTransformerBlockBuilderSpec.mm in Sources */,
+				A132A37D1EBCD200001F70A6 /* INTEventCodeGenerationSpec.mm in Sources */,
 				A1541C0A1EAF405100B4F064 /* INTAppLifecycleTimerSpec.mm in Sources */,
 				A1541B0F1EAF1CC300B4F064 /* INTRecorderLogger.mm in Sources */,
 				A1D136E91E78F4C200B1EA8D /* INTDataStructuresSpec.mm in Sources */,
