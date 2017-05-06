@@ -35,6 +35,7 @@
 		A1417AAE1E6EDA31005DBEFF /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1417AAD1E6EDA31005DBEFF /* GLKit.framework */; };
 		A1417C801E6EF77C005DBEFF /* INTEventMetadata.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1417C7F1E6EF77C005DBEFF /* INTEventMetadata.mm */; };
 		A1417C8D1E6F012E005DBEFF /* INTDataStructures.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1417C8C1E6F012E005DBEFF /* INTDataStructures.mm */; };
+		A149BB561EBE56D000DA82B7 /* INTAnalytricksContext+Merge.mm in Sources */ = {isa = PBXBuildFile; fileRef = A149BB551EBE56D000DA82B7 /* INTAnalytricksContext+Merge.mm */; };
 		A1541AF41EAF1CB000B4F064 /* INTEventsPipeline.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1541AF31EAF1CB000B4F064 /* INTEventsPipeline.mm */; };
 		A1541B0E1EAF1CC300B4F064 /* INTEventsPipelineSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1541B0B1EAF1CC300B4F064 /* INTEventsPipelineSpec.mm */; };
 		A1541B0F1EAF1CC300B4F064 /* INTRecorderLogger.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1541B0D1EAF1CC300B4F064 /* INTRecorderLogger.mm */; };
@@ -316,6 +317,8 @@
 		A1417C7F1E6EF77C005DBEFF /* INTEventMetadata.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = INTEventMetadata.mm; sourceTree = "<group>"; };
 		A1417C8B1E6F012E005DBEFF /* INTDataStructures.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INTDataStructures.h; sourceTree = "<group>"; };
 		A1417C8C1E6F012E005DBEFF /* INTDataStructures.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = INTDataStructures.mm; sourceTree = "<group>"; };
+		A149BB541EBE56D000DA82B7 /* INTAnalytricksContext+Merge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "INTAnalytricksContext+Merge.h"; sourceTree = "<group>"; };
+		A149BB551EBE56D000DA82B7 /* INTAnalytricksContext+Merge.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "INTAnalytricksContext+Merge.mm"; sourceTree = "<group>"; };
 		A1541AF21EAF1CB000B4F064 /* INTEventsPipeline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INTEventsPipeline.h; sourceTree = "<group>"; };
 		A1541AF31EAF1CB000B4F064 /* INTEventsPipeline.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; lineEnding = 0; path = INTEventsPipeline.mm; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		A1541B0B1EAF1CC300B4F064 /* INTEventsPipelineSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = INTEventsPipelineSpec.mm; sourceTree = "<group>"; };
@@ -469,6 +472,7 @@
 			isa = PBXGroup;
 			children = (
 				A1417C8A1E6EFFE3005DBEFF /* Base */,
+				A149BB531EBE56AB00DA82B7 /* Context Generetors */,
 				A10164CA1E700424009596E1 /* Event Aggregation */,
 				A172A9A81EAC111600A12B86 /* Event Logging */,
 				A132A26F1EBCA089001F70A6 /* Events */,
@@ -646,6 +650,15 @@
 				A108A0411EBA129C0037B6BE /* INTJSONSerializable.h */,
 			);
 			name = Base;
+			sourceTree = "<group>";
+		};
+		A149BB531EBE56AB00DA82B7 /* Context Generetors */ = {
+			isa = PBXGroup;
+			children = (
+				A149BB541EBE56D000DA82B7 /* INTAnalytricksContext+Merge.h */,
+				A149BB551EBE56D000DA82B7 /* INTAnalytricksContext+Merge.mm */,
+			);
+			name = "Context Generetors";
 			sourceTree = "<group>";
 		};
 		A1541C071EAF400400B4F064 /* Utils */ = {
@@ -1014,6 +1027,7 @@
 				A1C943361EBB358E00BECAB4 /* INTScreenDisplayedEvent.json in Sources */,
 				A1C943391EBB358E00BECAB4 /* INTAnalytricksContext.json in Sources */,
 				A1C9433A1EBB358E00BECAB4 /* INTAnalytricksMetadata.json in Sources */,
+				A149BB561EBE56D000DA82B7 /* INTAnalytricksContext+Merge.mm in Sources */,
 				A1417C801E6EF77C005DBEFF /* INTEventMetadata.mm in Sources */,
 				A1541AF41EAF1CB000B4F064 /* INTEventsPipeline.mm in Sources */,
 				A132A0CD1EB8C297001F70A6 /* INTCycleTransformerBlockBuilder.mm in Sources */,
