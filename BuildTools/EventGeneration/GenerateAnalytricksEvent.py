@@ -46,6 +46,8 @@ class AnalytricksEventGenerator(object):
             properties.append(OBJCProperty(property_name, property_class, objc_object.description,
                                            False))
 
+        properties.sort(key=lambda x: x.objc_name)
+
         return properties
 
     @property

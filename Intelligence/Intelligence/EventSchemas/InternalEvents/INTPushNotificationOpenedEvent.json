@@ -1,0 +1,16 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "description": "App received a push notification",
+  "type": "object",
+  "properties": {
+    "push_id": {
+      "description": "push notification id",
+      "type": "string"
+    },
+    "deep_link": {
+      "description": "deep link within the push notification, if available",
+      "type": ["string", "null"]
+    }
+  },
+  "required": ["push_id", "deep_link"]
+}

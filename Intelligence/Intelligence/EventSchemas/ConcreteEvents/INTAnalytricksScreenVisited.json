@@ -1,0 +1,22 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "description": "An app screen was displayed and dismissed",
+  "type": "object",
+  "allOf": [
+    {"$ref": "../AbstractEvents/INTAnalytricksBaseUsage.json"},
+    {
+      "properties": {
+        "screen_duration": {
+          "description": "Screen duration",
+          "type": "number",
+          "minimum": 0
+        },
+        "dismiss_action": {
+          "description": "The action that was taken in order to dismiss the screen",
+          "type": ["string", "null"]
+        }
+      },
+      "required": ["screen_duration", "dismiss_action"]
+    }
+  ]
+}
