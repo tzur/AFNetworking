@@ -36,6 +36,8 @@
 		A1417C801E6EF77C005DBEFF /* INTEventMetadata.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1417C7F1E6EF77C005DBEFF /* INTEventMetadata.mm */; };
 		A1417C8D1E6F012E005DBEFF /* INTDataStructures.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1417C8C1E6F012E005DBEFF /* INTDataStructures.mm */; };
 		A149BB561EBE56D000DA82B7 /* INTAnalytricksContext+Merge.mm in Sources */ = {isa = PBXBuildFile; fileRef = A149BB551EBE56D000DA82B7 /* INTAnalytricksContext+Merge.mm */; };
+		A149BB591EBE572500DA82B7 /* INTAnalytricksContextGenerators.mm in Sources */ = {isa = PBXBuildFile; fileRef = A149BB581EBE572500DA82B7 /* INTAnalytricksContextGenerators.mm */; };
+		A149BB5C1EBE574900DA82B7 /* INTAnalytricksContextGeneratorsSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = A149BB5B1EBE574900DA82B7 /* INTAnalytricksContextGeneratorsSpec.mm */; };
 		A1541AF41EAF1CB000B4F064 /* INTEventsPipeline.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1541AF31EAF1CB000B4F064 /* INTEventsPipeline.mm */; };
 		A1541B0E1EAF1CC300B4F064 /* INTEventsPipelineSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1541B0B1EAF1CC300B4F064 /* INTEventsPipelineSpec.mm */; };
 		A1541B0F1EAF1CC300B4F064 /* INTRecorderLogger.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1541B0D1EAF1CC300B4F064 /* INTRecorderLogger.mm */; };
@@ -319,6 +321,9 @@
 		A1417C8C1E6F012E005DBEFF /* INTDataStructures.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = INTDataStructures.mm; sourceTree = "<group>"; };
 		A149BB541EBE56D000DA82B7 /* INTAnalytricksContext+Merge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "INTAnalytricksContext+Merge.h"; sourceTree = "<group>"; };
 		A149BB551EBE56D000DA82B7 /* INTAnalytricksContext+Merge.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "INTAnalytricksContext+Merge.mm"; sourceTree = "<group>"; };
+		A149BB571EBE572500DA82B7 /* INTAnalytricksContextGenerators.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INTAnalytricksContextGenerators.h; sourceTree = "<group>"; };
+		A149BB581EBE572500DA82B7 /* INTAnalytricksContextGenerators.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = INTAnalytricksContextGenerators.mm; sourceTree = "<group>"; };
+		A149BB5B1EBE574900DA82B7 /* INTAnalytricksContextGeneratorsSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = INTAnalytricksContextGeneratorsSpec.mm; sourceTree = "<group>"; };
 		A1541AF21EAF1CB000B4F064 /* INTEventsPipeline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INTEventsPipeline.h; sourceTree = "<group>"; };
 		A1541AF31EAF1CB000B4F064 /* INTEventsPipeline.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; lineEnding = 0; path = INTEventsPipeline.mm; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		A1541B0B1EAF1CC300B4F064 /* INTEventsPipelineSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = INTEventsPipelineSpec.mm; sourceTree = "<group>"; };
@@ -472,7 +477,7 @@
 			isa = PBXGroup;
 			children = (
 				A1417C8A1E6EFFE3005DBEFF /* Base */,
-				A149BB531EBE56AB00DA82B7 /* Context Generetors */,
+				A149BB531EBE56AB00DA82B7 /* Context Generators */,
 				A10164CA1E700424009596E1 /* Event Aggregation */,
 				A172A9A81EAC111600A12B86 /* Event Logging */,
 				A132A26F1EBCA089001F70A6 /* Events */,
@@ -619,6 +624,7 @@
 			isa = PBXGroup;
 			children = (
 				A1D136EA1E78FDF400B1EA8D /* Base */,
+				A149BB5A1EBE573100DA82B7 /* Context Generators */,
 				A10167F31E713D72009596E1 /* Event Aggregation */,
 				A132A32C1EBCCDD6001F70A6 /* Event Code Generation */,
 				A1541C081EAF400D00B4F064 /* Utils */,
@@ -652,13 +658,23 @@
 			name = Base;
 			sourceTree = "<group>";
 		};
-		A149BB531EBE56AB00DA82B7 /* Context Generetors */ = {
+		A149BB531EBE56AB00DA82B7 /* Context Generators */ = {
 			isa = PBXGroup;
 			children = (
 				A149BB541EBE56D000DA82B7 /* INTAnalytricksContext+Merge.h */,
 				A149BB551EBE56D000DA82B7 /* INTAnalytricksContext+Merge.mm */,
+				A149BB571EBE572500DA82B7 /* INTAnalytricksContextGenerators.h */,
+				A149BB581EBE572500DA82B7 /* INTAnalytricksContextGenerators.mm */,
 			);
-			name = "Context Generetors";
+			name = "Context Generators";
+			sourceTree = "<group>";
+		};
+		A149BB5A1EBE573100DA82B7 /* Context Generators */ = {
+			isa = PBXGroup;
+			children = (
+				A149BB5B1EBE574900DA82B7 /* INTAnalytricksContextGeneratorsSpec.mm */,
+			);
+			name = "Context Generators";
 			sourceTree = "<group>";
 		};
 		A1541C071EAF400400B4F064 /* Utils */ = {
@@ -1025,6 +1041,7 @@
 				A1C943311EBB358E00BECAB4 /* INTProjectUnloadedEvent.json in Sources */,
 				A1C943331EBB358E00BECAB4 /* INTProjectLoadedEvent.json in Sources */,
 				A1C943361EBB358E00BECAB4 /* INTScreenDisplayedEvent.json in Sources */,
+				A149BB591EBE572500DA82B7 /* INTAnalytricksContextGenerators.mm in Sources */,
 				A1C943391EBB358E00BECAB4 /* INTAnalytricksContext.json in Sources */,
 				A1C9433A1EBB358E00BECAB4 /* INTAnalytricksMetadata.json in Sources */,
 				A149BB561EBE56D000DA82B7 /* INTAnalytricksContext+Merge.mm in Sources */,
@@ -1044,6 +1061,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A149BB5C1EBE574900DA82B7 /* INTAnalytricksContextGeneratorsSpec.mm in Sources */,
 				A132A3781EBCD08D001F70A6 /* INTAnalytricksFakeBase.json in Sources */,
 				A132A3791EBCD08D001F70A6 /* INTAnalytricksFakeCommon.json in Sources */,
 				A132A37A1EBCD08D001F70A6 /* INTAnalytricksFakeConcrete.json in Sources */,
