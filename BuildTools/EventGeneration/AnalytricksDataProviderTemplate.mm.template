@@ -1,0 +1,26 @@
+// Copyright (c) @YEAR@ Lightricks. All rights reserved.
+// Created by @SCRIPT_NAME@.
+
+#import "@EVENT_FILE_NAME@.h"
+
+#import <LTKit/NSArray+Functional.h>
+#import <LTKit/NSDateFormatter+Formatters.h>
+
+NS_ASSUME_NONNULL_BEGIN
+
+NSString * const k@EVENT_OBJC_NAME@Name = @"@EVENT_NAME@";
+
+@implementation @EVENT_OBJC_NAME@
+
+@INITIALIZER_IMPLEMENTATIONS@
+
+- (NSDictionary<NSString *, id> *)properties {
+  return @{
+    @"event": k@EVENT_OBJC_NAME@Name,
+    @JSON_ASSIGNMENTS@
+  };
+}
+
+@end
+
+NS_ASSUME_NONNULL_END

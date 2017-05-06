@@ -1,0 +1,18 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "description": "Fake analytricks event",
+  "type": "object",
+  "allOf": [
+    {"$ref": "../AbstractEvents/INTAnalytricksFakeBase.json"},
+    {
+      "properties": {
+        "foo": {
+          "description": "Fake foo",
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{8}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{12}$"
+        }
+      },
+      "required": ["foo"]
+    }
+  ]
+}

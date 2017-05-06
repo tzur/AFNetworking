@@ -1,0 +1,22 @@
+// Copyright (c) @YEAR@ Lightricks. All rights reserved.
+// Created by @SCRIPT_NAME@.
+
+#import "@CLASS_HEADER_FILE_NAME@.h"
+
+#import <LTKit/NSArray+Functional.h>
+#import <LTKit/NSDateFormatter+Formatters.h>
+
+NS_ASSUME_NONNULL_BEGIN
+
+@implementation @CLASS_OBJC_NAME@
+
+@INITIALIZER_IMPLEMENTATIONS@
+- (NSDictionary<NSString *, id> *)properties {
+  return @{
+    @JSON_ASSIGNMENTS@
+  };
+}
+
+@end
+
+NS_ASSUME_NONNULL_END

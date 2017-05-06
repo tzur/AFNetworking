@@ -1,0 +1,26 @@
+// Copyright (c) @YEAR@ Lightricks. All rights reserved.
+// Created by @SCRIPT_NAME@.
+
+#import <LTKit/LTValueObject.h>
+
+#import @ANALYTRICKS_BASE_FILE@
+
+NS_ASSUME_NONNULL_BEGIN
+
+/// Event name.
+extern NSString * const k@EVENT_OBJC_NAME@Name;
+
+@EVENT_DOC@
+@interface @EVENT_OBJC_NAME@ : LTValueObject <@ANALYTRICKS_BASE_OBJC_NAME@DataProvider>
+
+@INITIALIZER_DECLARATIONS@
+
+@PROPERTIES_DECLARATION@
+
+/// Returns a dictionary according to the local, non-referenced properties, as defined in
+/// @JSON_FILE_NAME@
+- (NSDictionary<NSString *, id> *)properties;
+
+@end
+
+NS_ASSUME_NONNULL_END
