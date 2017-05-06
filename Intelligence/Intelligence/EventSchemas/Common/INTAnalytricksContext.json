@@ -1,0 +1,32 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "description": "Event context",
+  "type": "object",
+  "properties": {
+    "run_id": {
+      "description": "Application run ID, unique per app run",
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{8}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{12}$"
+    },
+    "session_id": {
+      "description": "Application session ID, unique per app session",
+      "type": ["string", "null"],
+      "pattern": "^[A-Fa-f0-9]{8}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{12}$"
+    },
+    "screen_usage_id": {
+      "description": "Screen usage ID, unique per each usage of any screen",
+      "type": ["string", "null"],
+      "pattern": "^[A-Fa-f0-9]{8}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{12}$"
+    },
+    "screen_name": {
+      "description": "Current screen name",
+      "type": ["string", "null"]
+    },
+    "open_project_id": {
+      "description": "ID of the current open project",
+      "type": ["string", "null"],
+      "pattern": "^[A-Fa-f0-9]{8}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{12}$"
+    }
+  },
+  "required": ["run_id", "session_id", "screen_usage_id", "screen_name", "open_project_id"]
+}

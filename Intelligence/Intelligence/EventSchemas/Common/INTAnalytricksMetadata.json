@@ -1,0 +1,39 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "description": "Event metadata",
+    "type": "object",
+    "properties": {
+      "event": {
+        "description": "Event name",
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 256
+      },
+      "event_id": {
+        "description": "Event ID",
+        "type": "string",
+        "pattern": "^[A-Fa-f0-9]{8}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{12}$"
+      },
+      "device_timestamp": {
+        "description": "Local device date in which the event was created, in UTC timezone",
+        "type": "string",
+        "format": "date-time"
+      },
+      "app_total_run_time": {
+        "description": "Time spent in foreground and background since the app started, at the time the event was created",
+        "type": "number",
+        "minimum": 0
+      },
+      "lt_device_id": {
+        "description": "Lightricks unique device id",
+        "type": "string",
+        "pattern": "^[A-Fa-f0-9]{8}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{12}$"
+      },
+      "device_info_id": {
+        "description": "Identifier of the device info instance at the creation of the event",
+        "type": "string",
+        "pattern": "^[A-Fa-f0-9]{8}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{12}$"
+      }
+    },
+    "required": ["event", "event_id", "device_timestamp", "app_total_run_time", "lt_device_id", "device_info_id"]
+}
