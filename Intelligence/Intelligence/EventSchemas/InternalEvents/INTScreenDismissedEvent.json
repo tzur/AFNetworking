@@ -1,0 +1,16 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "description": "Event marking a dismiss of a screen in the application",
+  "properties": {
+    "screen_name": {
+      "description": "Name of the dismissed screen",
+      "type": "string"
+    },
+    "dismiss_action": {
+      "description": "The action that was taken in order to dismiss the screen",
+      "type": ["string", "null"]
+    }
+  },
+  "required": ["screen_name", "dismiss_action"]
+}

@@ -1,0 +1,21 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "description": "App was moved to foreground whether by starting it or by restoring it from background",
+  "type": "object",
+  "allOf": [
+    {"$ref": "../AbstractEvents/INTAnalytricksBaseUsage.json"},
+    {
+      "properties": {
+        "source": {
+          "description": "Source of the foreground",
+          "type": "string"
+        },
+        "is_launch": {
+          "description": "True if the app was just started",
+          "type": "boolean"
+        }
+      },
+      "required": ["source", "is_launch"]
+    }
+  ]
+}

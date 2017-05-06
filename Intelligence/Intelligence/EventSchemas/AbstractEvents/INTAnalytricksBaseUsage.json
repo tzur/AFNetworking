@@ -1,0 +1,9 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "description": "Analytricks base event",
+    "type": "object",
+    "allOf": [
+      {"$ref": "../Common/INTAnalytricksMetadata.json"},
+      {"$ref": "../Common/INTAnalytricksContext.json"}
+    ]
+}
