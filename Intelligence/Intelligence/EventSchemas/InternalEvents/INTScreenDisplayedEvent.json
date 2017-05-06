@@ -1,0 +1,12 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "description": "Event marking a display of a screen in the application",
+  "properties": {
+    "screen_name": {
+      "description": "Name of the displayed screen",
+      "type": "string"
+    }
+  },
+  "required": ["screen_name"]
+}

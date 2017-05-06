@@ -1,0 +1,12 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "description": "Event marking an upcoming appearance of the application on the devices' foreground",
+  "properties": {
+    "is_launch": {
+      "description": "\\c YES if the foreground event is the result of a launch",
+      "type": "boolean"
+    }
+  },
+  "required": ["is_launch"]
+}

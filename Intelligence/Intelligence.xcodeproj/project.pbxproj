@@ -42,6 +42,12 @@
 		A1541C0A1EAF405100B4F064 /* INTAppLifecycleTimerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1541C091EAF405100B4F064 /* INTAppLifecycleTimerSpec.mm */; };
 		A1541C4C1EAF8BF900B4F064 /* INTTransformerBlockBuilder.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1541C4B1EAF8BF900B4F064 /* INTTransformerBlockBuilder.mm */; };
 		A1B373BF1EA6511F008E5195 /* INTEventTransformationExecutor.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1B373BE1EA6511F008E5195 /* INTEventTransformationExecutor.mm */; };
+		A1C9432F1EBB358E00BECAB4 /* INTAppWillEnterForegroundEvent.json in Sources */ = {isa = PBXBuildFile; fileRef = A1C943251EBB357800BECAB4 /* INTAppWillEnterForegroundEvent.json */; };
+		A1C943311EBB358E00BECAB4 /* INTProjectUnloadedEvent.json in Sources */ = {isa = PBXBuildFile; fileRef = A1C943271EBB357800BECAB4 /* INTProjectUnloadedEvent.json */; };
+		A1C943331EBB358E00BECAB4 /* INTProjectLoadedEvent.json in Sources */ = {isa = PBXBuildFile; fileRef = A1C943291EBB357800BECAB4 /* INTProjectLoadedEvent.json */; };
+		A1C943361EBB358E00BECAB4 /* INTScreenDisplayedEvent.json in Sources */ = {isa = PBXBuildFile; fileRef = A1C9432C1EBB357800BECAB4 /* INTScreenDisplayedEvent.json */; };
+		A1C943391EBB358E00BECAB4 /* INTAnalytricksContext.json in Sources */ = {isa = PBXBuildFile; fileRef = A1C942FF1EBB356900BECAB4 /* INTAnalytricksContext.json */; };
+		A1C9433A1EBB358E00BECAB4 /* INTAnalytricksMetadata.json in Sources */ = {isa = PBXBuildFile; fileRef = A1C943001EBB356900BECAB4 /* INTAnalytricksMetadata.json */; };
 		A1D136E91E78F4C200B1EA8D /* INTDataStructuresSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1D136E81E78F4C200B1EA8D /* INTDataStructuresSpec.mm */; };
 		CDE00B451E82AE82007AFD5E /* libcompression.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = CDE00B441E82AE82007AFD5E /* libcompression.tbd */; };
 /* End PBXBuildFile section */
@@ -323,6 +329,12 @@
 		A172A9BF1EAC112D00A12B86 /* INTEventLogger.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = INTEventLogger.h; sourceTree = "<group>"; };
 		A1B373BD1EA6511F008E5195 /* INTEventTransformationExecutor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INTEventTransformationExecutor.h; sourceTree = "<group>"; };
 		A1B373BE1EA6511F008E5195 /* INTEventTransformationExecutor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = INTEventTransformationExecutor.mm; sourceTree = "<group>"; };
+		A1C942FF1EBB356900BECAB4 /* INTAnalytricksContext.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = INTAnalytricksContext.json; sourceTree = "<group>"; };
+		A1C943001EBB356900BECAB4 /* INTAnalytricksMetadata.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = INTAnalytricksMetadata.json; sourceTree = "<group>"; };
+		A1C943251EBB357800BECAB4 /* INTAppWillEnterForegroundEvent.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = INTAppWillEnterForegroundEvent.json; sourceTree = "<group>"; };
+		A1C943271EBB357800BECAB4 /* INTProjectUnloadedEvent.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = INTProjectUnloadedEvent.json; sourceTree = "<group>"; };
+		A1C943291EBB357800BECAB4 /* INTProjectLoadedEvent.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = INTProjectLoadedEvent.json; sourceTree = "<group>"; };
+		A1C9432C1EBB357800BECAB4 /* INTScreenDisplayedEvent.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = INTScreenDisplayedEvent.json; sourceTree = "<group>"; };
 		A1D136E81E78F4C200B1EA8D /* INTDataStructuresSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = INTDataStructuresSpec.mm; sourceTree = "<group>"; };
 		A1DA6A641EB6022C0085011B /* INTTransformerBlockBuilderStructures.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INTTransformerBlockBuilderStructures.h; sourceTree = "<group>"; };
 		CDE00B441E82AE82007AFD5E /* libcompression.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libcompression.tbd; path = usr/lib/libcompression.tbd; sourceTree = SDKROOT; };
@@ -382,12 +394,13 @@
 			name = "Event Aggregation";
 			sourceTree = "<group>";
 		};
-		A108A0291EBA126A0037B6BE /* Analytricks Events */ = {
+		A108A0291EBA126A0037B6BE /* Analytricks */ = {
 			isa = PBXGroup;
 			children = (
+				A1C942FE1EBB356900BECAB4 /* Common */,
 				A108A0401EBA129C0037B6BE /* INTAnalytricksEvent.h */,
 			);
-			name = "Analytricks Events";
+			name = Analytricks;
 			sourceTree = "<group>";
 		};
 		A113424A1EB5AD870042ABA8 /* Test Utils */ = {
@@ -399,6 +412,15 @@
 				A1541B0D1EAF1CC300B4F064 /* INTRecorderLogger.mm */,
 			);
 			name = "Test Utils";
+			sourceTree = "<group>";
+		};
+		A132A26F1EBCA089001F70A6 /* Events */ = {
+			isa = PBXGroup;
+			children = (
+				A108A0291EBA126A0037B6BE /* Analytricks */,
+				A1C943221EBB357800BECAB4 /* Internal */,
+			);
+			name = Events;
 			sourceTree = "<group>";
 		};
 		A132A32C1EBCCDD6001F70A6 /* Event Code Generation */ = {
@@ -446,10 +468,10 @@
 		A14171A31E6EAA93005DBEFF /* Intelligence */ = {
 			isa = PBXGroup;
 			children = (
-				A108A0291EBA126A0037B6BE /* Analytricks Events */,
 				A1417C8A1E6EFFE3005DBEFF /* Base */,
 				A10164CA1E700424009596E1 /* Event Aggregation */,
 				A172A9A81EAC111600A12B86 /* Event Logging */,
+				A132A26F1EBCA089001F70A6 /* Events */,
 				A14172BA1E6EB04F005DBEFF /* Supporting Files */,
 				A1541C071EAF400400B4F064 /* Utils */,
 				A1541AF21EAF1CB000B4F064 /* INTEventsPipeline.h */,
@@ -653,6 +675,28 @@
 			name = "Event Logging";
 			sourceTree = "<group>";
 		};
+		A1C942FE1EBB356900BECAB4 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				A1C942FF1EBB356900BECAB4 /* INTAnalytricksContext.json */,
+				A1C943001EBB356900BECAB4 /* INTAnalytricksMetadata.json */,
+			);
+			name = Common;
+			path = EventSchemas/Common;
+			sourceTree = "<group>";
+		};
+		A1C943221EBB357800BECAB4 /* Internal */ = {
+			isa = PBXGroup;
+			children = (
+				A1C943251EBB357800BECAB4 /* INTAppWillEnterForegroundEvent.json */,
+				A1C943271EBB357800BECAB4 /* INTProjectUnloadedEvent.json */,
+				A1C943291EBB357800BECAB4 /* INTProjectLoadedEvent.json */,
+				A1C9432C1EBB357800BECAB4 /* INTScreenDisplayedEvent.json */,
+			);
+			name = Internal;
+			path = EventSchemas/InternalEvents;
+			sourceTree = "<group>";
+		};
 		A1D136EA1E78FDF400B1EA8D /* Base */ = {
 			isa = PBXGroup;
 			children = (
@@ -671,6 +715,7 @@
 				A141719D1E6EAA93005DBEFF /* Sources */,
 				A141719E1E6EAA93005DBEFF /* Frameworks */,
 				A141719F1E6EAA93005DBEFF /* CopyFiles */,
+				A149BB3B1EBE542400DA82B7 /* Cope Event Headers */,
 			);
 			buildRules = (
 				A108A0441EBA19430037B6BE /* PBXBuildRule */,
@@ -941,11 +986,34 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		A149BB3B1EBE542400DA82B7 /* Cope Event Headers */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Cope Event Headers";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "mkdir -p \"$BUILT_PRODUCTS_DIR\"/include/\"$PRODUCT_NAME\"\nrsync -t \"$DERIVED_FILE_DIR\"/\"$arch\"/INTAnalytricks*.h \"$BUILT_PRODUCTS_DIR\"/include/\"$PRODUCT_NAME\"\n\nrsync -t \"$DERIVED_FILE_DIR\"/\"$arch\"/INT*Event.h \"$BUILT_PRODUCTS_DIR\"/include/\"$PRODUCT_NAME\"";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		A141719D1E6EAA93005DBEFF /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A1C9432F1EBB358E00BECAB4 /* INTAppWillEnterForegroundEvent.json in Sources */,
+				A1C943311EBB358E00BECAB4 /* INTProjectUnloadedEvent.json in Sources */,
+				A1C943331EBB358E00BECAB4 /* INTProjectLoadedEvent.json in Sources */,
+				A1C943361EBB358E00BECAB4 /* INTScreenDisplayedEvent.json in Sources */,
+				A1C943391EBB358E00BECAB4 /* INTAnalytricksContext.json in Sources */,
+				A1C9433A1EBB358E00BECAB4 /* INTAnalytricksMetadata.json in Sources */,
 				A1417C801E6EF77C005DBEFF /* INTEventMetadata.mm in Sources */,
 				A1541AF41EAF1CB000B4F064 /* INTEventsPipeline.mm in Sources */,
 				A132A0CD1EB8C297001F70A6 /* INTCycleTransformerBlockBuilder.mm in Sources */,
