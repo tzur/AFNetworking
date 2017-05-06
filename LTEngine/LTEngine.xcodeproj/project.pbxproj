@@ -130,6 +130,11 @@
 		03F99DB8189632B700B77136 /* DeltaBicubic.png in Resources */ = {isa = PBXBuildFile; fileRef = 03F99DB7189632B700B77136 /* DeltaBicubic.png */; };
 		03FB6B8819DADBEE00255085 /* LTProcessorFillMode.h in Headers */ = {isa = PBXBuildFile; fileRef = 03FB6B8619DADBEE00255085 /* LTProcessorFillMode.h */; };
 		03FDEE3819E1B016002DC735 /* TonalGrain.png in Resources */ = {isa = PBXBuildFile; fileRef = 03FDEE3719E1B015002DC735 /* TonalGrain.png */; };
+		061DF9221EBB101A006BBF1F /* LTLaplacianLevelFusionProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 061DF9201EBB101A006BBF1F /* LTLaplacianLevelFusionProcessor.h */; };
+		061DF9231EBB101A006BBF1F /* LTLaplacianLevelFusionProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 061DF9211EBB101A006BBF1F /* LTLaplacianLevelFusionProcessor.mm */; };
+		061DF9561EBB1053006BBF1F /* LTLaplacianLevelFusion.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 061DF91E1EBB101A006BBF1F /* LTLaplacianLevelFusion.fsh */; };
+		061DF9571EBB105B006BBF1F /* LTLaplacianLevelFusionLastLevel.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 061DF91F1EBB101A006BBF1F /* LTLaplacianLevelFusionLastLevel.fsh */; };
+		061DF9591EBB10BB006BBF1F /* LTLaplacianLevelFusionProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 061DF9581EBB10BB006BBF1F /* LTLaplacianLevelFusionProcessorSpec.mm */; };
 		0627C5281D1A953C00EFEC6B /* LTPyramidTestUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0627C5271D1A953C00EFEC6B /* LTPyramidTestUtils.mm */; };
 		06372CF71D05A4690083AE49 /* SmoothPyramidUpsampleUpdateGrid4.png in Resources */ = {isa = PBXBuildFile; fileRef = 06372CF41D05A4690083AE49 /* SmoothPyramidUpsampleUpdateGrid4.png */; };
 		06372CF81D05A4690083AE49 /* SmoothPyramidUpsampleUpdateGrid5.png in Resources */ = {isa = PBXBuildFile; fileRef = 06372CF51D05A4690083AE49 /* SmoothPyramidUpsampleUpdateGrid5.png */; };
@@ -1820,6 +1825,11 @@
 		03F99DB7189632B700B77136 /* DeltaBicubic.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = DeltaBicubic.png; path = Resources/DeltaBicubic.png; sourceTree = "<group>"; };
 		03FB6B8619DADBEE00255085 /* LTProcessorFillMode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTProcessorFillMode.h; sourceTree = "<group>"; };
 		03FDEE3719E1B015002DC735 /* TonalGrain.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = TonalGrain.png; path = Resources/TonalGrain.png; sourceTree = "<group>"; };
+		061DF91E1EBB101A006BBF1F /* LTLaplacianLevelFusion.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTLaplacianLevelFusion.fsh; sourceTree = "<group>"; };
+		061DF91F1EBB101A006BBF1F /* LTLaplacianLevelFusionLastLevel.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTLaplacianLevelFusionLastLevel.fsh; sourceTree = "<group>"; };
+		061DF9201EBB101A006BBF1F /* LTLaplacianLevelFusionProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTLaplacianLevelFusionProcessor.h; sourceTree = "<group>"; };
+		061DF9211EBB101A006BBF1F /* LTLaplacianLevelFusionProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTLaplacianLevelFusionProcessor.mm; sourceTree = "<group>"; };
+		061DF9581EBB10BB006BBF1F /* LTLaplacianLevelFusionProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTLaplacianLevelFusionProcessorSpec.mm; sourceTree = "<group>"; };
 		0627C5261D1A953C00EFEC6B /* LTPyramidTestUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTPyramidTestUtils.h; sourceTree = "<group>"; };
 		0627C5271D1A953C00EFEC6B /* LTPyramidTestUtils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTPyramidTestUtils.mm; sourceTree = "<group>"; };
 		06372CF41D05A4690083AE49 /* SmoothPyramidUpsampleUpdateGrid4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SmoothPyramidUpsampleUpdateGrid4.png; path = Resources/SmoothPyramidUpsampleUpdateGrid4.png; sourceTree = "<group>"; };
@@ -3114,6 +3124,10 @@
 				06B5C2571D181CEC00401556 /* LTLaplacianLevelConstruct.fsh */,
 				06B5C2581D181CEC00401556 /* LTLaplacianLevelConstructProcessor.h */,
 				06B5C2591D181CEC00401556 /* LTLaplacianLevelConstructProcessor.mm */,
+				061DF91E1EBB101A006BBF1F /* LTLaplacianLevelFusion.fsh */,
+				061DF91F1EBB101A006BBF1F /* LTLaplacianLevelFusionLastLevel.fsh */,
+				061DF9201EBB101A006BBF1F /* LTLaplacianLevelFusionProcessor.h */,
+				061DF9211EBB101A006BBF1F /* LTLaplacianLevelFusionProcessor.mm */,
 				06E8E1211D225FED00C60DAC /* LTLaplacianLevelReconstruct.fsh */,
 				06E8E1221D225FED00C60DAC /* LTLaplacianLevelReconstructProcessor.h */,
 				06E8E1231D225FED00C60DAC /* LTLaplacianLevelReconstructProcessor.mm */,
@@ -3229,6 +3243,7 @@
 				06B5C1EF1D181A7300401556 /* LTHatPyramidProcessorSpec.mm */,
 				031338E119127A640095F99B /* LTImageBorderProcessorSpec.mm */,
 				06B5C2371D181CCB00401556 /* LTLaplacianLevelConstructProcessorSpec.mm */,
+				061DF9581EBB10BB006BBF1F /* LTLaplacianLevelFusionProcessorSpec.mm */,
 				06E8E1451D22612900C60DAC /* LTLaplacianLevelReconstructProcessorSpec.mm */,
 				06B5C2891D181DCB00401556 /* LTLaplacianPyramidProcessorSpec.mm */,
 				28F3CAA11D004B59007FC2E9 /* LTLinearProcessorSpec.mm */,
@@ -5796,6 +5811,7 @@
 				500AB3FA19D1B2C7000DC814 /* LTGeometry.h in Headers */,
 				8B8720331924A76500517F2E /* LTOperationsExecutor.h in Headers */,
 				8B328FE0192B598A0010592E /* LTTextureContentsDataArchiver.h in Headers */,
+				061DF9221EBB101A006BBF1F /* LTLaplacianLevelFusionProcessor.h in Headers */,
 				284574781D411070006B0817 /* LTContentTouchEventStateFilter+DefaultFilters.h in Headers */,
 				8B8720371924A76500517F2E /* LTOpenCVExtensions.h in Headers */,
 				8B8720381924A76500517F2E /* LTOpenCVHalfFloat.h in Headers */,
@@ -6618,6 +6634,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				061DF9571EBB105B006BBF1F /* LTLaplacianLevelFusionLastLevel.fsh in Sources */,
+				061DF9561EBB1053006BBF1F /* LTLaplacianLevelFusion.fsh in Sources */,
 				8597AEB31D748EDB008C96D2 /* LTAnisotropicDiffusion.fsh in Sources */,
 				06E8E1441D22607C00C60DAC /* LTLaplacianLevelReconstruct.fsh in Sources */,
 				30DDD6A71CFC8A1E00AE72B8 /* LTGaussianFilterProcessor.vsh in Sources */,
@@ -6948,6 +6966,7 @@
 				8BD685FC18854F0200571E75 /* LTBilateralFilter.vsh in Sources */,
 				8BABFD5F188C0E9B004163DA /* LTIterativeProcessingStrategy.mm in Sources */,
 				8BAAC5D818BB64C200A4B4DA /* LTPatchCompositor.fsh in Sources */,
+				061DF9231EBB101A006BBF1F /* LTLaplacianLevelFusionProcessor.mm in Sources */,
 				2868B7391933546300E1BF0F /* LTEdgeAvoidingMultiTextureBrush.mm in Sources */,
 				8BAAC5DC18BB789800A4B4DA /* LTPatchCompositor.vsh in Sources */,
 			);
@@ -7145,6 +7164,7 @@
 				8B7C6CC81B52860600B90DBE /* LTMatParallelDispatcherSpec.mm in Sources */,
 				28BB81A91924DF650071CB0B /* LTShapeDrawerSpec.mm in Sources */,
 				8BD688FB1B6E00FA003BDA34 /* LTTextureIZArchiverSpec.mm in Sources */,
+				061DF9591EBB10BB006BBF1F /* LTLaplacianLevelFusionProcessorSpec.mm in Sources */,
 				2812D56619912B380081478F /* LTCropProcessorSpec.mm in Sources */,
 				50B6BD511DD32D11005A448E /* LTTouchEventSequenceValidatorExamples.mm in Sources */,
 				8B38318F1B551E1400620560 /* LTIZFastMathSpec.mm in Sources */,
