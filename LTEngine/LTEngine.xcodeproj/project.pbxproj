@@ -136,6 +136,10 @@
 		061DF9571EBB105B006BBF1F /* LTLaplacianLevelFusionLastLevel.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 061DF91F1EBB101A006BBF1F /* LTLaplacianLevelFusionLastLevel.fsh */; };
 		061DF9591EBB10BB006BBF1F /* LTLaplacianLevelFusionProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 061DF9581EBB10BB006BBF1F /* LTLaplacianLevelFusionProcessorSpec.mm */; };
 		0627C5281D1A953C00EFEC6B /* LTPyramidTestUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0627C5271D1A953C00EFEC6B /* LTPyramidTestUtils.mm */; };
+		062D3E041EBF66A6009BFC09 /* LTLaplacianPyramidReconstructProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 062D3E021EBF66A6009BFC09 /* LTLaplacianPyramidReconstructProcessor.h */; };
+		062D3E051EBF66A6009BFC09 /* LTLaplacianPyramidReconstructProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 062D3E031EBF66A6009BFC09 /* LTLaplacianPyramidReconstructProcessor.mm */; };
+		062D3E391EBF66CC009BFC09 /* LTLaplacianPyramidReconstructProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 062D3E381EBF66CC009BFC09 /* LTLaplacianPyramidReconstructProcessorSpec.mm */; };
+		062D3E3B1EBF66F4009BFC09 /* LenaCrop.png in Resources */ = {isa = PBXBuildFile; fileRef = 062D3E3A1EBF66F4009BFC09 /* LenaCrop.png */; };
 		06372CF71D05A4690083AE49 /* SmoothPyramidUpsampleUpdateGrid4.png in Resources */ = {isa = PBXBuildFile; fileRef = 06372CF41D05A4690083AE49 /* SmoothPyramidUpsampleUpdateGrid4.png */; };
 		06372CF81D05A4690083AE49 /* SmoothPyramidUpsampleUpdateGrid5.png in Resources */ = {isa = PBXBuildFile; fileRef = 06372CF51D05A4690083AE49 /* SmoothPyramidUpsampleUpdateGrid5.png */; };
 		06372CF91D05A4690083AE49 /* SmoothPyramidUpsampleUpdateGrid6.png in Resources */ = {isa = PBXBuildFile; fileRef = 06372CF61D05A4690083AE49 /* SmoothPyramidUpsampleUpdateGrid6.png */; };
@@ -1832,6 +1836,10 @@
 		061DF9581EBB10BB006BBF1F /* LTLaplacianLevelFusionProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTLaplacianLevelFusionProcessorSpec.mm; sourceTree = "<group>"; };
 		0627C5261D1A953C00EFEC6B /* LTPyramidTestUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTPyramidTestUtils.h; sourceTree = "<group>"; };
 		0627C5271D1A953C00EFEC6B /* LTPyramidTestUtils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTPyramidTestUtils.mm; sourceTree = "<group>"; };
+		062D3E021EBF66A6009BFC09 /* LTLaplacianPyramidReconstructProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTLaplacianPyramidReconstructProcessor.h; sourceTree = "<group>"; };
+		062D3E031EBF66A6009BFC09 /* LTLaplacianPyramidReconstructProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTLaplacianPyramidReconstructProcessor.mm; sourceTree = "<group>"; };
+		062D3E381EBF66CC009BFC09 /* LTLaplacianPyramidReconstructProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTLaplacianPyramidReconstructProcessorSpec.mm; sourceTree = "<group>"; };
+		062D3E3A1EBF66F4009BFC09 /* LenaCrop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = LenaCrop.png; path = Resources/LenaCrop.png; sourceTree = "<group>"; };
 		06372CF41D05A4690083AE49 /* SmoothPyramidUpsampleUpdateGrid4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SmoothPyramidUpsampleUpdateGrid4.png; path = Resources/SmoothPyramidUpsampleUpdateGrid4.png; sourceTree = "<group>"; };
 		06372CF51D05A4690083AE49 /* SmoothPyramidUpsampleUpdateGrid5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SmoothPyramidUpsampleUpdateGrid5.png; path = Resources/SmoothPyramidUpsampleUpdateGrid5.png; sourceTree = "<group>"; };
 		06372CF61D05A4690083AE49 /* SmoothPyramidUpsampleUpdateGrid6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SmoothPyramidUpsampleUpdateGrid6.png; path = Resources/SmoothPyramidUpsampleUpdateGrid6.png; sourceTree = "<group>"; };
@@ -3133,6 +3141,8 @@
 				06E8E1231D225FED00C60DAC /* LTLaplacianLevelReconstructProcessor.mm */,
 				06B5C2671D181DB500401556 /* LTLaplacianPyramidProcessor.h */,
 				06B5C2681D181DB500401556 /* LTLaplacianPyramidProcessor.mm */,
+				062D3E021EBF66A6009BFC09 /* LTLaplacianPyramidReconstructProcessor.h */,
+				062D3E031EBF66A6009BFC09 /* LTLaplacianPyramidReconstructProcessor.mm */,
 				28F3CA7D1D004B20007FC2E9 /* LTLinear.fsh */,
 				28F3CA9D1D004B2B007FC2E9 /* LTLinearProcessor.h */,
 				28F3CA9E1D004B2B007FC2E9 /* LTLinearProcessor.mm */,
@@ -3246,6 +3256,7 @@
 				061DF9581EBB10BB006BBF1F /* LTLaplacianLevelFusionProcessorSpec.mm */,
 				06E8E1451D22612900C60DAC /* LTLaplacianLevelReconstructProcessorSpec.mm */,
 				06B5C2891D181DCB00401556 /* LTLaplacianPyramidProcessorSpec.mm */,
+				062D3E381EBF66CC009BFC09 /* LTLaplacianPyramidReconstructProcessorSpec.mm */,
 				28F3CAA11D004B59007FC2E9 /* LTLinearProcessorSpec.mm */,
 				8BB92FE3190E2C3200954124 /* LTMaskOverlayProcessorSpec.mm */,
 				8BAE3A3318AD28AB00DA79E1 /* LTMaskedArithmeticProcessorSpec.mm */,
@@ -4771,6 +4782,7 @@
 				06E3C6831D9725D900FCD007 /* VerticalStepFunction33_bilateral_guided_upsample_L1toL3toL1.png */,
 				06F9F2D31D59B558002D2726 /* VerticalStepFunction33_bilateral_L1toL3.png */,
 				06F9F2D41D59B558002D2726 /* VerticalStepFunction33_bilateral_L1toL3toL1.png */,
+				062D3E3A1EBF66F4009BFC09 /* LenaCrop.png */,
 			);
 			name = Images;
 			sourceTree = "<group>";
@@ -5591,6 +5603,7 @@
 				8BABF16E19BC3AC000AED760 /* LTPyramidProcessor.h in Headers */,
 				8B871FD61924A75E00517F2E /* LTArithmeticProcessor.h in Headers */,
 				508C15611C1C84CB009ADA5C /* LTFloatSet.h in Headers */,
+				062D3E041EBF66A6009BFC09 /* LTLaplacianPyramidReconstructProcessor.h in Headers */,
 				8B3831FB1B56906300620560 /* LTIZCompressor.h in Headers */,
 				8B871FD71924A75E00517F2E /* LTBicubicResizeProcessor.h in Headers */,
 				50D1C9D01E546995005093E5 /* NSValue+LTQuad.h in Headers */,
@@ -6389,6 +6402,7 @@
 				034871891A5C1ED000B25EF5 /* TiltShiftRadialInverse.png in Resources */,
 				06372CF81D05A4690083AE49 /* SmoothPyramidUpsampleUpdateGrid5.png in Resources */,
 				03C192C518F6F3B200DC6CA6 /* RadialMaskOffCenter.png in Resources */,
+				062D3E3B1EBF66F4009BFC09 /* LenaCrop.png in Resources */,
 				85F599A91CDF2166009A47B4 /* LTDisplacementMapDrawerReshapedWithMask.png in Resources */,
 				06F9F2D61D59B558002D2726 /* HorizontalStepFunction32_bilateral_L1toL3toL1.png in Resources */,
 				280A8BA51CBD234100157507 /* RadialMaskOffCenterStretched.png in Resources */,
@@ -6754,6 +6768,7 @@
 				03AD29BE1891415B00516D14 /* LTBicubicResize.fsh in Sources */,
 				03BBB386188CF732001E7703 /* LTFractionalNoise.fsh in Sources */,
 				03C192FD18FADC5C00DC6CA6 /* LTSelectiveAdjustProcessor.mm in Sources */,
+				062D3E051EBF66A6009BFC09 /* LTLaplacianPyramidReconstructProcessor.mm in Sources */,
 				8BAE3A0D18ACFEF700DA79E1 /* LTPatchBoundaryProcessor.mm in Sources */,
 				85F155131D12840800967A90 /* LTTextureAtlasFromMatsProvider.mm in Sources */,
 				280B14C218B3C9AE0091B3D7 /* LTPainterStrokeSegment.mm in Sources */,
@@ -7271,6 +7286,7 @@
 				5006785B1C6A2A54002C6A24 /* LTDefaultBrushGeometryProviderSpec.mm in Sources */,
 				06B5C1F01D181A7300401556 /* LTHatPyramidProcessorSpec.mm in Sources */,
 				25AF17641AD50C250055E664 /* LTVGGlyphRunSpec.mm in Sources */,
+				062D3E391EBF66CC009BFC09 /* LTLaplacianPyramidReconstructProcessorSpec.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

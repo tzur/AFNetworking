@@ -128,7 +128,7 @@ itBehavesLike(kLaplacianLevelConstructionExamples, @{@"fileName": @"HorizontalSt
                                                      @"boundaryPixelsForRemoval": @0});
 itBehavesLike(kLaplacianLevelConstructionExamples, @{@"fileName": @"HorizontalStepFunction32.png",
                                                      @"boundaryPixelsForRemoval": @0});
-itBehavesLike(kLaplacianLevelConstructionExamples, @{@"fileName": @"Lena.png",
+itBehavesLike(kLaplacianLevelConstructionExamples, @{@"fileName": @"LenaCrop.png",
                                                      @"boundaryPixelsForRemoval": @5});
 
 SpecEnd
