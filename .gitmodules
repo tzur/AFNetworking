@@ -47,3 +47,6 @@
 [submodule "third_party/openexr-binaries"]
 	path = third_party/openexr-binaries
 	url = https://github.com/Lightricks/openexr-binaries.git
+[submodule "third_party/alooma-ios-sdk"]
+	path = third_party/alooma-ios-sdk
+	url = https://github.com/Lightricks/alooma-ios-sdk.git
