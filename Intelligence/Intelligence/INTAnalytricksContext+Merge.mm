@@ -36,7 +36,7 @@ NS_ASSUME_NONNULL_BEGIN
     return nil;
   }
 
-  if (!newValue || [newValue isKindOfClass:classObj]) {
+  if ([newValue isKindOfClass:classObj]) {
     return newValue;
   }
 
