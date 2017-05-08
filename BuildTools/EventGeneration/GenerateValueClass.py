@@ -124,9 +124,6 @@ class ValueClassGenerator(object):
 
     @staticmethod
     def __json_provider_protocol_import_file():
-        if "PROJECT_NAME" in os.environ and os.environ["PROJECT_NAME"].startswith("Intelligence"):
-            return "\"INTJSONSerializable.h\""
-
         return "<Intelligence/INTJSONSerializable.h>"
 
     def write_to(self, output_directory):

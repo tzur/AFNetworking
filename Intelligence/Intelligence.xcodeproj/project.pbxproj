@@ -1350,7 +1350,10 @@
 			buildSettings = {
 				DEVELOPMENT_TEAM = KG6GWND6BG;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/$(TARGET_NAME)/$(TARGET_NAME)-Prefix.pch";
-				HEADER_SEARCH_PATHS = "$(inherited)";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)",
+				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -1363,7 +1366,10 @@
 			buildSettings = {
 				DEVELOPMENT_TEAM = KG6GWND6BG;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/$(TARGET_NAME)/$(TARGET_NAME)-Prefix.pch";
-				HEADER_SEARCH_PATHS = "$(inherited)";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)",
+				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -1380,6 +1386,7 @@
 				GCC_PREFIX_HEADER = "$(SRCROOT)/$(TARGET_NAME)/$(TARGET_NAME)-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
+					"$(SRCROOT)/../Intelligence",
 					"$(SRCROOT)/../third_party/Expecta",
 					"$(SRCROOT)/../third_party/OCMock/Source",
 					"$(SRCROOT)/../third_party/Specta/Specta",
@@ -1402,6 +1409,7 @@
 				GCC_PREFIX_HEADER = "$(SRCROOT)/$(TARGET_NAME)/$(TARGET_NAME)-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
+					"$(SRCROOT)/../Intelligence",
 					"$(SRCROOT)/../third_party/Expecta",
 					"$(SRCROOT)/../third_party/OCMock/Source",
 					"$(SRCROOT)/../third_party/Specta/Specta",

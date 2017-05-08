@@ -153,16 +153,10 @@ class AnalytricksEventGenerator(object):
 
     @staticmethod
     def __analytricks_protocol_import_file():
-        if "PROJECT_NAME" in os.environ and os.environ["PROJECT_NAME"].startswith("Intelligence"):
-            return "\"INTAnalytricksEvent.h\""
-
         return "<Intelligence/INTAnalytricksEvent.h>"
 
     @staticmethod
     def __json_provider_protocol_import_file():
-        if "PROJECT_NAME" in os.environ and os.environ["PROJECT_NAME"].startswith("Intelligence"):
-            return "\"INTJSONSerializable.h\""
-
         return "<Intelligence/INTJSONSerializable.h>"
 
 
