@@ -65,6 +65,13 @@
 		A1C943391EBB358E00BECAB4 /* INTAnalytricksContext.json in Sources */ = {isa = PBXBuildFile; fileRef = A1C942FF1EBB356900BECAB4 /* INTAnalytricksContext.json */; };
 		A1C9433A1EBB358E00BECAB4 /* INTAnalytricksMetadata.json in Sources */ = {isa = PBXBuildFile; fileRef = A1C943001EBB356900BECAB4 /* INTAnalytricksMetadata.json */; };
 		A1D136E91E78F4C200B1EA8D /* INTDataStructuresSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1D136E81E78F4C200B1EA8D /* INTDataStructuresSpec.mm */; };
+		A1F24CA41EC07FC20050D534 /* Alooma.m in Sources */ = {isa = PBXBuildFile; fileRef = A1F24CA01EC07FC20050D534 /* Alooma.m */; settings = {COMPILER_FLAGS = "-Wno-unused-parameter -Wno-deprecated-declarations -Wno-assign-enum"; }; };
+		A1F24CA51EC07FC20050D534 /* NSData+AloomaBase64.m in Sources */ = {isa = PBXBuildFile; fileRef = A1F24CA31EC07FC20050D534 /* NSData+AloomaBase64.m */; settings = {COMPILER_FLAGS = "-Wno-char-subscripts"; }; };
+		A1F24CBF1EC0802D0050D534 /* INTAloomaLogger.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1F24CBE1EC0802D0050D534 /* INTAloomaLogger.mm */; };
+		A1F24CC31EC082DC0050D534 /* INTAloomaLoggerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1F24CC21EC082DC0050D534 /* INTAloomaLoggerSpec.mm */; };
+		A1F24D0E1EC0AEA30050D534 /* INTFakeAnalytricksEvent.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1F24D0D1EC0AEA30050D534 /* INTFakeAnalytricksEvent.mm */; };
+		A1F24D101EC0BFBD0050D534 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1F24D0F1EC0BFBD0050D534 /* SystemConfiguration.framework */; };
+		A1F24D121EC0C0B50050D534 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1F24D111EC0C0B50050D534 /* CoreTelephony.framework */; };
 		CDE00B451E82AE82007AFD5E /* libcompression.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = CDE00B441E82AE82007AFD5E /* libcompression.tbd */; };
 /* End PBXBuildFile section */
 
@@ -372,6 +379,18 @@
 		A1C9432C1EBB357800BECAB4 /* INTScreenDisplayedEvent.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = INTScreenDisplayedEvent.json; sourceTree = "<group>"; };
 		A1D136E81E78F4C200B1EA8D /* INTDataStructuresSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = INTDataStructuresSpec.mm; sourceTree = "<group>"; };
 		A1DA6A641EB6022C0085011B /* INTTransformerBlockBuilderStructures.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INTTransformerBlockBuilderStructures.h; sourceTree = "<group>"; };
+		A1F24C9F1EC07FC20050D534 /* Alooma.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Alooma.h; path = "../../third_party/alooma-ios-sdk/Alooma-iOS/Alooma.h"; sourceTree = "<group>"; };
+		A1F24CA01EC07FC20050D534 /* Alooma.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Alooma.m; path = "../../third_party/alooma-ios-sdk/Alooma-iOS/Alooma.m"; sourceTree = "<group>"; };
+		A1F24CA11EC07FC20050D534 /* AloomaLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AloomaLogger.h; path = "../../third_party/alooma-ios-sdk/Alooma-iOS/AloomaLogger.h"; sourceTree = "<group>"; };
+		A1F24CA21EC07FC20050D534 /* NSData+AloomaBase64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSData+AloomaBase64.h"; path = "../../third_party/alooma-ios-sdk/Alooma-iOS/NSData+AloomaBase64.h"; sourceTree = "<group>"; };
+		A1F24CA31EC07FC20050D534 /* NSData+AloomaBase64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSData+AloomaBase64.m"; path = "../../third_party/alooma-ios-sdk/Alooma-iOS/NSData+AloomaBase64.m"; sourceTree = "<group>"; };
+		A1F24CBD1EC0802D0050D534 /* INTAloomaLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INTAloomaLogger.h; sourceTree = "<group>"; };
+		A1F24CBE1EC0802D0050D534 /* INTAloomaLogger.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = INTAloomaLogger.mm; sourceTree = "<group>"; };
+		A1F24CC21EC082DC0050D534 /* INTAloomaLoggerSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = INTAloomaLoggerSpec.mm; sourceTree = "<group>"; };
+		A1F24D0C1EC0AEA30050D534 /* INTFakeAnalytricksEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INTFakeAnalytricksEvent.h; sourceTree = "<group>"; };
+		A1F24D0D1EC0AEA30050D534 /* INTFakeAnalytricksEvent.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = INTFakeAnalytricksEvent.mm; sourceTree = "<group>"; };
+		A1F24D0F1EC0BFBD0050D534 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		A1F24D111EC0C0B50050D534 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		CDE00B441E82AE82007AFD5E /* libcompression.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libcompression.tbd; path = usr/lib/libcompression.tbd; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -387,17 +406,19 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CDE00B451E82AE82007AFD5E /* libcompression.tbd in Frameworks */,
+				A1F24D121EC0C0B50050D534 /* CoreTelephony.framework in Frameworks */,
 				A1417AAA1E6ED9D0005DBEFF /* CoreGraphics.framework in Frameworks */,
 				A1417AAE1E6EDA31005DBEFF /* GLKit.framework in Frameworks */,
+				A1417AAC1E6ED9D5005DBEFF /* QuartzCore.framework in Frameworks */,
+				A1F24D101EC0BFBD0050D534 /* SystemConfiguration.framework in Frameworks */,
+				A1417A921E6ED9CB005DBEFF /* UIKit.framework in Frameworks */,
+				CDE00B451E82AE82007AFD5E /* libcompression.tbd in Frameworks */,
 				A14173401E6EB59F005DBEFF /* libExpecta.a in Frameworks */,
 				A14171C61E6EAC0D005DBEFF /* libIntelligence.a in Frameworks */,
 				A14173411E6EB59F005DBEFF /* libLTKit.a in Frameworks */,
 				A14173421E6EB59F005DBEFF /* libOCMock.a in Frameworks */,
 				A14173431E6EB59F005DBEFF /* libSpecta.a in Frameworks */,
 				A14175B61E6EBE37005DBEFF /* libextobjc_iOS.a in Frameworks */,
-				A1417AAC1E6ED9D5005DBEFF /* QuartzCore.framework in Frameworks */,
-				A1417A921E6ED9CB005DBEFF /* UIKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -510,6 +531,7 @@
 				A10164CA1E700424009596E1 /* Event Aggregation */,
 				A172A9A81EAC111600A12B86 /* Event Logging */,
 				A132A26F1EBCA089001F70A6 /* Events */,
+				A1F24CC01EC082AE0050D534 /* Loggers */,
 				A14172BA1E6EB04F005DBEFF /* Supporting Files */,
 				A149BC2D1EBE6B7200DA82B7 /* Transformers */,
 				A1541C071EAF400400B4F064 /* Utils */,
@@ -657,6 +679,7 @@
 				A149BB5A1EBE573100DA82B7 /* Context Generators */,
 				A10167F31E713D72009596E1 /* Event Aggregation */,
 				A132A32C1EBCCDD6001F70A6 /* Event Code Generation */,
+				A1F24CC11EC082C30050D534 /* Loggers */,
 				A149BC311EBE6B8E00DA82B7 /* Transformers */,
 				A1541C081EAF400D00B4F064 /* Utils */,
 				A1541B0B1EAF1CC300B4F064 /* INTEventsPipelineSpec.mm */,
@@ -667,6 +690,8 @@
 		A14175B41E6EBE37005DBEFF /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A1F24D111EC0C0B50050D534 /* CoreTelephony.framework */,
+				A1F24D0F1EC0BFBD0050D534 /* SystemConfiguration.framework */,
 				CDE00B441E82AE82007AFD5E /* libcompression.tbd */,
 				A1417AA91E6ED9D0005DBEFF /* CoreGraphics.framework */,
 				A1417AAD1E6EDA31005DBEFF /* GLKit.framework */,
@@ -807,6 +832,38 @@
 				A1D136E81E78F4C200B1EA8D /* INTDataStructuresSpec.mm */,
 			);
 			name = Base;
+			sourceTree = "<group>";
+		};
+		A1F24CBC1EC07FCD0050D534 /* Alooma */ = {
+			isa = PBXGroup;
+			children = (
+				A1F24C9F1EC07FC20050D534 /* Alooma.h */,
+				A1F24CA01EC07FC20050D534 /* Alooma.m */,
+				A1F24CA11EC07FC20050D534 /* AloomaLogger.h */,
+				A1F24CBD1EC0802D0050D534 /* INTAloomaLogger.h */,
+				A1F24CBE1EC0802D0050D534 /* INTAloomaLogger.mm */,
+				A1F24CA21EC07FC20050D534 /* NSData+AloomaBase64.h */,
+				A1F24CA31EC07FC20050D534 /* NSData+AloomaBase64.m */,
+			);
+			name = Alooma;
+			sourceTree = "<group>";
+		};
+		A1F24CC01EC082AE0050D534 /* Loggers */ = {
+			isa = PBXGroup;
+			children = (
+				A1F24CBC1EC07FCD0050D534 /* Alooma */,
+			);
+			name = Loggers;
+			sourceTree = "<group>";
+		};
+		A1F24CC11EC082C30050D534 /* Loggers */ = {
+			isa = PBXGroup;
+			children = (
+				A1F24CC21EC082DC0050D534 /* INTAloomaLoggerSpec.mm */,
+				A1F24D0C1EC0AEA30050D534 /* INTFakeAnalytricksEvent.h */,
+				A1F24D0D1EC0AEA30050D534 /* INTFakeAnalytricksEvent.mm */,
+			);
+			name = Loggers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1117,9 +1174,11 @@
 				A149BC291EBE6B2C00DA82B7 /* INTAppBackgroundedEvent.json in Sources */,
 				A149BC301EBE6B8900DA82B7 /* INTAnalytricksTransformerBlocks.mm in Sources */,
 				A149BC2A1EBE6B2C00DA82B7 /* INTDeepLinkOpenedEvent.json in Sources */,
+				A1F24CBF1EC0802D0050D534 /* INTAloomaLogger.mm in Sources */,
 				A149BC2B1EBE6B2C00DA82B7 /* INTPushNotificationOpenedEvent.json in Sources */,
 				A149BC2C1EBE6B2C00DA82B7 /* INTScreenDismissedEvent.json in Sources */,
 				A149BC1D1EBE6AC200DA82B7 /* INTAnalytricksBaseUsage.json in Sources */,
+				A1F24CA51EC07FC20050D534 /* NSData+AloomaBase64.m in Sources */,
 				A149BC1E1EBE6AC200DA82B7 /* INTAnalytricksAppBackgrounded.json in Sources */,
 				A149BC1F1EBE6AC200DA82B7 /* INTAnalytricksAppForegrounded.json in Sources */,
 				A149BC201EBE6AC200DA82B7 /* INTAnalytricksScreenVisited.json in Sources */,
@@ -1129,6 +1188,7 @@
 				A1C943361EBB358E00BECAB4 /* INTScreenDisplayedEvent.json in Sources */,
 				A149BB591EBE572500DA82B7 /* INTAnalytricksContextGenerators.mm in Sources */,
 				A1C943391EBB358E00BECAB4 /* INTAnalytricksContext.json in Sources */,
+				A1F24CA41EC07FC20050D534 /* Alooma.m in Sources */,
 				A1C9433A1EBB358E00BECAB4 /* INTAnalytricksMetadata.json in Sources */,
 				A149BB561EBE56D000DA82B7 /* INTAnalytricksContext+Merge.mm in Sources */,
 				A1417C801E6EF77C005DBEFF /* INTEventMetadata.mm in Sources */,
@@ -1150,6 +1210,7 @@
 				A149BB5C1EBE574900DA82B7 /* INTAnalytricksContextGeneratorsSpec.mm in Sources */,
 				A132A3781EBCD08D001F70A6 /* INTAnalytricksFakeBase.json in Sources */,
 				A132A3791EBCD08D001F70A6 /* INTAnalytricksFakeCommon.json in Sources */,
+				A1F24D0E1EC0AEA30050D534 /* INTFakeAnalytricksEvent.mm in Sources */,
 				A132A37A1EBCD08D001F70A6 /* INTAnalytricksFakeConcrete.json in Sources */,
 				A132A37B1EBCD08D001F70A6 /* INTFakeInternalEvent.json in Sources */,
 				A1541B0E1EAF1CC300B4F064 /* INTEventsPipelineSpec.mm in Sources */,
@@ -1161,6 +1222,7 @@
 				A1541B0F1EAF1CC300B4F064 /* INTRecorderLogger.mm in Sources */,
 				A1D136E91E78F4C200B1EA8D /* INTDataStructuresSpec.mm in Sources */,
 				A1B373BF1EA6511F008E5195 /* INTEventTransformationExecutor.mm in Sources */,
+				A1F24CC31EC082DC0050D534 /* INTAloomaLoggerSpec.mm in Sources */,
 				A101680B1E713D8B009596E1 /* INTEventTransformerSpec.mm in Sources */,
 				A113411F1EB0D1E30042ABA8 /* INTTransformerBlockBuilderSpec.mm in Sources */,
 			);
@@ -1225,6 +1287,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/../LTKit",
+					"$(SRCROOT)/../third_party/alooma-ios-sdk",
 					"$(SRCROOT)/../third_party/libextobjc",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
@@ -1271,6 +1334,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/../LTKit",
+					"$(SRCROOT)/../third_party/alooma-ios-sdk",
 					"$(SRCROOT)/../third_party/libextobjc",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
@@ -1286,6 +1350,7 @@
 			buildSettings = {
 				DEVELOPMENT_TEAM = KG6GWND6BG;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/$(TARGET_NAME)/$(TARGET_NAME)-Prefix.pch";
+				HEADER_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -1298,6 +1363,7 @@
 			buildSettings = {
 				DEVELOPMENT_TEAM = KG6GWND6BG;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/$(TARGET_NAME)/$(TARGET_NAME)-Prefix.pch";
+				HEADER_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -1313,11 +1379,10 @@
 				DEVELOPMENT_TEAM = KG6GWND6BG;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/$(TARGET_NAME)/$(TARGET_NAME)-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
-					"$(SRCROOT)/../LTKit",
+					"$(inherited)",
 					"$(SRCROOT)/../third_party/Expecta",
 					"$(SRCROOT)/../third_party/OCMock/Source",
 					"$(SRCROOT)/../third_party/Specta/Specta",
-					"$(SRCROOT)/../third_party/libextobjc",
 				);
 				INFOPLIST_FILE = IntelligenceTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -1336,11 +1401,10 @@
 				DEVELOPMENT_TEAM = KG6GWND6BG;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/$(TARGET_NAME)/$(TARGET_NAME)-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
-					"$(SRCROOT)/../LTKit",
+					"$(inherited)",
 					"$(SRCROOT)/../third_party/Expecta",
 					"$(SRCROOT)/../third_party/OCMock/Source",
 					"$(SRCROOT)/../third_party/Specta/Specta",
-					"$(SRCROOT)/../third_party/libextobjc",
 				);
 				INFOPLIST_FILE = IntelligenceTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
