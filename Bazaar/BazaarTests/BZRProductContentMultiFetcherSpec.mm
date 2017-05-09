@@ -3,11 +3,27 @@
 
 #import "BZRProductContentMultiFetcher.h"
 
-#import "BZRContentFetcherParameters.h"
+#import "BZRDummyContentFetcherParameters.h"
 #import "BZRProduct.h"
 #import "BZRProductContentMultiFetcherParameters.h"
 #import "BZRTestUtils.h"
 #import "NSErrorCodes+Bazaar.h"
+
+/// Dummy concrete implementation of \c BZRProductContentFetcher used for testing.
+@interface BZRDummyContentFetcher : NSObject <BZRProductContentFetcher>
+@end
+
+@implementation BZRDummyContentFetcher
+
+- (RACSignal *)fetchContentForProduct:(BZRProduct * __unused)product {
+  return [RACSignal empty];
+}
+
++ (Class)expectedParametersClass {
+  return [BZRDummyContentFetcherParameters class];
+}
+
+@end
 
 /// Creates a new \c BZRProductContentMultiFetcherParameters with \c fetcherName as the key to an
 /// entry of a fetcher in the collection of fetchers of \c BZRProductContentMultiFetcher.
@@ -32,29 +48,35 @@ context(@"expected parameters class", ^{
 
 context(@"fetching with underlying content fetcher", ^{
   __block NSString *contentFetcherName;
-  __block NSDictionary<NSString *, id<BZRProductContentFetcher>> *contentFetchers;
+  __block BZRProduct *product;
   __block id<BZRProductContentFetcher> underlyingContentFetcher;
+  __block NSDictionary<NSString *, id<BZRProductContentFetcher>> *contentFetchers;
   __block BZRProductContentMultiFetcher *multiFetcher;
 
   beforeEach(^{
     contentFetcherName = @"foo";
-    underlyingContentFetcher = OCMProtocolMock(@protocol(BZRProductContentFetcher));
+    BZRProductContentMultiFetcherParameters *multiFetcherParameters =
+        BZRMultiFetcherParametersWithUnderlyingFetcherName(contentFetcherName);
+    product = BZRProductWithIdentifierAndParameters(@"baz", multiFetcherParameters);
+
+    underlyingContentFetcher = OCMClassMock([BZRDummyContentFetcher class]);
+    contentFetchers = @{contentFetcherName: underlyingContentFetcher};
+    multiFetcher = [[BZRProductContentMultiFetcher alloc] initWithContentFetchers:contentFetchers];
   });
 
-  it(@"should raise exception for invalid content fetcher parameters", ^{
-    BZRProduct *product = BZRProductWithIdentifierAndParameters(@"baz",
+  it(@"should send error when content fetcher parameters is invalid", ^{
+    BZRProduct *productWithInvalidParameters = BZRProductWithIdentifierAndParameters(@"baz",
         OCMClassMock([BZRContentFetcherParameters class]));
     multiFetcher = [[BZRProductContentMultiFetcher alloc] initWithContentFetchers:@{}];
-    expect(^{
-      [multiFetcher fetchContentForProduct:product];
-    }).to.raise(NSInvalidArgumentException);
+    RACSignal *signal = [multiFetcher fetchContentForProduct:productWithInvalidParameters];
+
+    expect(signal).will.matchError(^BOOL(NSError *error) {
+      return error.lt_isLTDomain &&
+          error.code == BZRErrorCodeUnexpectedContentFetcherParametersClass;
+    });
   });
 
   it(@"should send error when content fetcher not found", ^{
-    BZRProductContentMultiFetcherParameters *multiFetcherParameters =
-        BZRMultiFetcherParametersWithUnderlyingFetcherName(contentFetcherName);
-    BZRProduct *product = BZRProductWithIdentifierAndParameters(@"baz", multiFetcherParameters);
-
     multiFetcher = [[BZRProductContentMultiFetcher alloc] initWithContentFetchers:@{}];
     RACSignal *signal = [multiFetcher fetchContentForProduct:product];
 
@@ -67,91 +89,48 @@ context(@"fetching with underlying content fetcher", ^{
     NSError *underlyingError = OCMClassMock([NSError class]);
     BZRProduct *product = OCMClassMock([BZRProduct class]);
     OCMStub([product productWithContentFetcherParameters:OCMOCK_ANY
-                                                    error:[OCMArg setTo:underlyingError]]);
+                                                   error:[OCMArg setTo:underlyingError]]);
     BZRProductContentMultiFetcherParameters *multiFetcherParameters =
         BZRMultiFetcherParametersWithUnderlyingFetcherName(contentFetcherName);
     OCMStub([product contentFetcherParameters]).andReturn(multiFetcherParameters);
 
-    contentFetchers = @{contentFetcherName: underlyingContentFetcher};
-    multiFetcher =
-        [[BZRProductContentMultiFetcher alloc] initWithContentFetchers:contentFetchers];
     RACSignal *signal = [multiFetcher fetchContentForProduct:product];
 
     expect(signal).will.matchError(^BOOL(NSError *error) {
-      return error.lt_isLTDomain &&
-          error.code == BZRErrorCodeInvalidContentFetcherParameters &&
+      return error.lt_isLTDomain && error.code == BZRErrorCodeInvalidContentFetcherParameters &&
           error.lt_underlyingError == underlyingError;
     });
   });
 
   it(@"should send error when received underlying content fetcher parameters don't match the "
      "parameters' class expected by the underlying content fetcher", ^{
-    BZRProductContentMultiFetcherParameters *multiFetcherParameters =
-        BZRMultiFetcherParametersWithUnderlyingFetcherName(contentFetcherName);
-    BZRProduct *product = BZRProductWithIdentifierAndParameters(@"baz", multiFetcherParameters);
-
-    contentFetchers = @{contentFetcherName: underlyingContentFetcher};
-    multiFetcher =
-        [[BZRProductContentMultiFetcher alloc] initWithContentFetchers:contentFetchers];
     RACSignal *signal = [multiFetcher fetchContentForProduct:product];
 
     expect(signal).will.matchError(^BOOL(NSError *error) {
       return error.lt_isLTDomain &&
-      error.code == BZRErrorCodeUnexpectedContentFetcherParametersClass;
+          error.code == BZRErrorCodeUnexpectedContentFetcherParametersClass;
     });
   });
 
   it(@"should send same values as underlying content fetcher's signal", ^{
-    BZRProductContentMultiFetcherParameters *multiFetcherParameters =
-        BZRMultiFetcherParametersWithUnderlyingFetcherName(contentFetcherName);
-    BZRProduct *product = BZRProductWithIdentifierAndParameters(@"baz", multiFetcherParameters);
-    RACSignal *signal = [RACSignal return:@"bar"];
     OCMStub([underlyingContentFetcher fetchContentForProduct:OCMOCK_ANY])
-        .andReturn(signal);
+        .andReturn([RACSignal return:@"bar"]);
     OCMStub([underlyingContentFetcher expectedParametersClass])
         .andReturn([OCMClassMock([BZRContentFetcherParameters class]) class]);
 
-    contentFetchers = @{contentFetcherName: underlyingContentFetcher};
-    multiFetcher =
-        [[BZRProductContentMultiFetcher alloc] initWithContentFetchers:contentFetchers];
     LLSignalTestRecorder *recorder = [[multiFetcher fetchContentForProduct:product] testRecorder];
 
     expect(recorder).will.complete();
     expect(recorder).will.sendValues(@[@"bar"]);
   });
 
-  it(@"should send complete when underlying content fetcher's signal completes", ^{
-    BZRProductContentMultiFetcherParameters *multiFetcherParameters =
-        BZRMultiFetcherParametersWithUnderlyingFetcherName(contentFetcherName);
-    BZRProduct *product = BZRProductWithIdentifierAndParameters(@"baz", multiFetcherParameters);
-    OCMStub([underlyingContentFetcher fetchContentForProduct:OCMOCK_ANY])
-        .andReturn([RACSignal empty]);
-    OCMStub([underlyingContentFetcher expectedParametersClass])
-        .andReturn([OCMClassMock([BZRContentFetcherParameters class]) class]);
-
-    contentFetchers = @{contentFetcherName: underlyingContentFetcher};
-    multiFetcher =
-        [[BZRProductContentMultiFetcher alloc] initWithContentFetchers:contentFetchers];
-    LLSignalTestRecorder *recorder = [[multiFetcher fetchContentForProduct:product] testRecorder];
-
-    expect(recorder).will.complete();
-    expect(recorder).will.sendValuesWithCount(0);
-  });
-
   it(@"should send error when underlying content fetcher's signal sends error", ^{
-    BZRProductContentMultiFetcherParameters *multiFetcherParameters =
-        BZRMultiFetcherParametersWithUnderlyingFetcherName(contentFetcherName);
-    BZRProduct *product = BZRProductWithIdentifierAndParameters(@"baz", multiFetcherParameters);
-    NSError *error = OCMClassMock([NSError class]);
-    RACSignal *signal = [RACSignal error:error];
+    NSError *error = [NSError lt_errorWithCode:1337];
     OCMStub([underlyingContentFetcher fetchContentForProduct:OCMOCK_ANY])
-        .andReturn(signal);
+        .andReturn([RACSignal error:error]);
     OCMStub([underlyingContentFetcher expectedParametersClass])
         .andReturn([OCMClassMock([BZRContentFetcherParameters class]) class]);
 
-    contentFetchers = @{contentFetcherName: underlyingContentFetcher};
-    multiFetcher =
-        [[BZRProductContentMultiFetcher alloc] initWithContentFetchers:contentFetchers];
     LLSignalTestRecorder *recorder = [[multiFetcher fetchContentForProduct:product] testRecorder];
 
     expect(recorder).will.sendError(error);

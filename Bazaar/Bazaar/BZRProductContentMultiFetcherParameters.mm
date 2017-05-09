@@ -20,6 +20,11 @@ NS_ASSUME_NONNULL_BEGIN
   }];
 }
 
++ (NSValueTransformer *)parametersForContentFetcherJSONTransformer {
+  return [NSValueTransformer
+          mtl_JSONDictionaryTransformerWithModelClass:[BZRContentFetcherParameters class]];
+}
+
 #pragma mark -
 #pragma mark BZRModel
 #pragma mark -
@@ -32,7 +37,7 @@ NS_ASSUME_NONNULL_BEGIN
       @instanceKeypath(BZRProductContentMultiFetcherParameters, parametersForContentFetcher)
     ]];
   });
-  
+
   return optionalPropertyKeys;
 }
 
