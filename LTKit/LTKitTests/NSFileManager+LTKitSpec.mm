@@ -17,13 +17,13 @@ context(@"plist dictionaries", ^{
   static NSString * const kPath = @"/a/b/file";
   static NSError * const kError = [NSError lt_errorWithCode:1337];
 
-  __block id mock;
+  __block id mockedManager;
   __block NSError *error;
   __block NSDictionary *validDictionary;
   __block NSDictionary *invalidDictionary;
 
   beforeEach(^{
-    mock = OCMPartialMock(fileManager);
+    mockedManager = OCMPartialMock(fileManager);
 
     validDictionary = @{
       @"bool": @YES,
@@ -45,12 +45,12 @@ context(@"plist dictionaries", ^{
   });
 
   afterEach(^{
-    mock = nil;
+    mockedManager = nil;
     error = nil;
   });
 
   it(@"should write a dictionary containing a valid plist", ^{
-    OCMExpect([mock lt_writeData:[OCMArg checkWithBlock:^BOOL(NSData *data) {
+    OCMExpect([mockedManager lt_writeData:[OCMArg checkWithBlock:^BOOL(NSData *data) {
       NSError *error;
       NSPropertyListFormat format;
       NSDictionary *dictionary = [NSPropertyListSerialization
@@ -64,22 +64,22 @@ context(@"plist dictionaries", ^{
 
     expect(success).to.beTruthy();
     expect(error).to.beNil();
-    OCMVerifyAll(mock);
+    OCMVerifyAll(mockedManager);
   });
 
   it(@"should return no and populate error when trying to write an invalid dictionary", ^{
-    [[mock reject] lt_writeData:[OCMArg any] toFile:kPath
+    [[mockedManager reject] lt_writeData:[OCMArg any] toFile:kPath
                         options:NSDataWritingAtomic error:[OCMArg anyObjectRef]];
 
     BOOL success = [fileManager lt_writeDictionary:invalidDictionary toFile:kPath error:&error];
 
     expect(success).to.beFalsy();
     expect(error).notTo.beNil();
-    OCMVerifyAll(mock);
+    OCMVerifyAll(mockedManager);
   });
 
   it(@"should return no and populate error if failed to write a valid dictionary", ^{
-    OCMExpect([mock lt_writeData:[OCMArg any] toFile:kPath options:NSDataWritingAtomic
+    OCMExpect([mockedManager lt_writeData:[OCMArg any] toFile:kPath options:NSDataWritingAtomic
                            error:[OCMArg setTo:kError]]).andReturn(NO);
 
     BOOL success = [fileManager lt_writeDictionary:validDictionary toFile:kPath error:&error];
@@ -87,31 +87,31 @@ context(@"plist dictionaries", ^{
     expect(success).to.beFalsy();
     expect(error).notTo.beNil();
     expect(error.lt_underlyingError).to.beIdenticalTo(kError);
-    OCMVerifyAll(mock);
+    OCMVerifyAll(mockedManager);
   });
 
   it(@"should read a file containing a valid plist", ^{
     __block NSData *serializedData;
-    OCMExpect([mock lt_writeData:[OCMArg checkWithBlock:^BOOL(NSData *data) {
+    OCMExpect([mockedManager lt_writeData:[OCMArg checkWithBlock:^BOOL(NSData *data) {
       serializedData = data;
       return YES;
     }] toFile:kPath options:NSDataWritingAtomic error:[OCMArg anyObjectRef]]).andReturn(YES);
     [fileManager lt_writeDictionary:validDictionary toFile:kPath error:&error];
     expect(serializedData).notTo.beNil();
-    OCMVerifyAll(mock);
+    OCMVerifyAll(mockedManager);
 
-    OCMExpect([mock lt_dataWithContentsOfFile:kPath options:NSDataReadingUncached
+    OCMExpect([mockedManager lt_dataWithContentsOfFile:kPath options:NSDataReadingUncached
                                         error:[OCMArg anyObjectRef]]).andReturn(serializedData);
 
     NSDictionary *dictionary = [fileManager lt_dictionaryWithContentsOfFile:kPath error:&error];
 
     expect(dictionary).to.equal(validDictionary);
     expect(error).to.beNil();
-    OCMVerifyAll(mock);
+    OCMVerifyAll(mockedManager);
   });
 
   it(@"should return nil and populate error if failed to read the file at the given path", ^{
-    OCMExpect([mock lt_dataWithContentsOfFile:kPath options:NSDataReadingUncached
+    OCMExpect([mockedManager lt_dataWithContentsOfFile:kPath options:NSDataReadingUncached
                                         error:[OCMArg setTo:kError]]);
 
     NSDictionary *dictionary = [fileManager lt_dictionaryWithContentsOfFile:kPath error:&error];
@@ -119,19 +119,19 @@ context(@"plist dictionaries", ^{
     expect(dictionary).to.beNil();
     expect(error).notTo.beNil();
     expect(error.lt_underlyingError).to.beIdenticalTo(kError);
-    OCMVerifyAll(mock);
+    OCMVerifyAll(mockedManager);
   });
 
   it(@"should return nil and populate error if failed to deserialize the file into a dictionary", ^{
     NSData *invalidData = [@"<xml><a></b></xml>" dataUsingEncoding:NSUTF8StringEncoding];
-    OCMExpect([mock lt_dataWithContentsOfFile:kPath options:NSDataReadingUncached
+    OCMExpect([mockedManager lt_dataWithContentsOfFile:kPath options:NSDataReadingUncached
                                       error:[OCMArg anyObjectRef]]).andReturn(invalidData);
 
     NSDictionary *dictionary = [fileManager lt_dictionaryWithContentsOfFile:kPath error:&error];
 
     expect(dictionary).to.beNil();
     expect(error).notTo.beNil();
-    OCMVerifyAll(mock);
+    OCMVerifyAll(mockedManager);
   });
 });
 
@@ -336,6 +336,154 @@ context(@"common directories", ^{
 
     [fileManager removeItemAtPath:LTTemporaryPath() error:nil];
     expect([fileManager lt_directoryExistsAtPath:LTTemporaryPath()]).to.beFalsy();
+  });
+});
+
+context(@"size of directory", ^{
+  static NSError * const kError = [NSError lt_errorWithCode:1];
+
+  __block NSArray<NSFileAttributeKey> *keys;
+  __block NSFileManager *mockedManager;
+  __block NSMutableArray<NSURL *> *fileURLs;
+  __block NSURL *path;
+  __block NSError *error;
+
+  beforeEach(^{
+    keys = @[
+      NSURLFileResourceIdentifierKey,
+      NSURLFileSizeKey
+    ];
+    mockedManager = OCMPartialMock(fileManager);
+    fileURLs = [NSMutableArray array];
+    path = OCMClassMock([NSURL class]);
+    OCMStub([path path]).andReturn(@"foo");
+    OCMStub([mockedManager lt_directoryExistsAtPath:@"foo"]).andReturn(YES);
+  });
+
+  afterEach(^{
+    [(id)mockedManager stopMocking];
+    mockedManager = nil;
+  });
+
+  it(@"should return the correct size of files", ^{
+    OCMStub([mockedManager enumeratorAtURL:path includingPropertiesForKeys:keys options:0
+                              errorHandler:OCMOCK_ANY]).andReturn(fileURLs);
+
+    NSURL *file1URL = OCMClassMock([NSURL class]);
+    OCMStub([file1URL resourceValuesForKeys:keys error:[OCMArg anyObjectRef]]).andReturn((@{
+      NSURLFileSizeKey: @2,
+      NSURLFileResourceIdentifierKey: @1
+    }));
+    [fileURLs addObject:file1URL];
+
+    NSURL *file2URL = OCMClassMock([NSURL class]);
+    OCMStub([file2URL resourceValuesForKeys:keys error:[OCMArg anyObjectRef]]).andReturn((@{
+      NSURLFileSizeKey: @1,
+      NSURLFileResourceIdentifierKey: @2
+    }));
+
+    [fileURLs addObject:file2URL];
+
+    uint64_t size = [mockedManager lt_sizeOfDirectoryAtPath:path error:&error];
+
+    expect(error).to.beNil();
+    expect(size).to.equal(3);
+  });
+
+  it(@"should not count hard links twice", ^{
+    OCMStub([mockedManager enumeratorAtURL:path includingPropertiesForKeys:keys options:0
+                              errorHandler:OCMOCK_ANY]).andReturn(fileURLs);
+    NSURL *file1URL = OCMClassMock([NSURL class]);
+    NSDictionary<NSURLResourceKey, NSNumber *> *values = @{
+      NSURLFileSizeKey: @2,
+      NSURLFileResourceIdentifierKey: @1
+    };
+    OCMStub([file1URL resourceValuesForKeys:keys error:[OCMArg anyObjectRef]]).andReturn(values);
+    [fileURLs addObject:file1URL];
+
+    values = @{
+      NSURLFileSizeKey: @2,
+      NSURLFileResourceIdentifierKey: @1
+    };
+    NSURL *file2URL = OCMClassMock([NSURL class]);
+    OCMStub([file2URL resourceValuesForKeys:keys error:[OCMArg anyObjectRef]]).andReturn(values);
+    [fileURLs addObject:file2URL];
+
+    uint64_t size = [mockedManager lt_sizeOfDirectoryAtPath:path error:&error];
+
+    expect(error).to.beNil();
+    expect(size).to.equal(2);
+  });
+
+  it(@"should pass on errors from getting the enumerator and continue", ^{
+    NSURL *fileURL = OCMClassMock([NSURL class]);
+    NSDictionary<NSURLResourceKey, NSNumber *> *values = @{
+      NSURLFileSizeKey: @5,
+      NSURLFileResourceIdentifierKey: @1
+    };
+    OCMStub([fileURL resourceValuesForKeys:keys error:[OCMArg anyObjectRef]]).andReturn(values);
+    [fileURLs addObject:fileURL];
+
+    OCMStub([mockedManager enumeratorAtURL:path includingPropertiesForKeys:keys options:0
+                              errorHandler:([OCMArg invokeBlockWithArgs:path, kError, nil])])
+        .andReturn(fileURLs);
+
+    uint64_t size = [mockedManager lt_sizeOfDirectoryAtPath:path error:&error];
+
+    expect(error.lt_underlyingErrors.count).to.equal(1);
+    expect(error.lt_underlyingErrors[0].lt_underlyingError).to.equal(kError);
+    expect(error.lt_underlyingErrors[0].lt_url).to.equal(path);
+    expect(size).to.equal(5);
+  });
+
+  it(@"should pass on errors from getting resource values and continue", ^{
+    OCMStub([mockedManager enumeratorAtURL:path includingPropertiesForKeys:keys options:0
+                              errorHandler:OCMOCK_ANY]).andReturn(fileURLs);
+    NSURL *file1URL = OCMClassMock([NSURL class]);
+    NSDictionary<NSURLResourceKey, NSNumber *> *values = @{
+      NSURLFileSizeKey: @1,
+      NSURLFileResourceIdentifierKey: @1
+    };
+    OCMStub([file1URL resourceValuesForKeys:keys error:[OCMArg setTo:kError]]).andReturn(values);
+    [fileURLs addObject:file1URL];
+
+    values = @{
+      NSURLFileSizeKey: @2,
+      NSURLFileResourceIdentifierKey: @2
+    };
+    NSURL *file2URL = OCMClassMock([NSURL class]);
+    OCMStub([file2URL resourceValuesForKeys:keys error:[OCMArg anyObjectRef]]).andReturn(values);
+    [fileURLs addObject:file2URL];
+
+    uint64_t size = [mockedManager lt_sizeOfDirectoryAtPath:path error:&error];
+
+    expect(error.lt_underlyingErrors.count).to.equal(1);
+    expect(error.lt_underlyingErrors[0].lt_underlyingError).to.equal(kError);
+    expect(error.lt_underlyingErrors[0].lt_url).to.beIdenticalTo(file1URL);
+    expect(size).to.equal(2);
+  });
+
+  it(@"should populate error if file enumeration failed", ^{
+    OCMStub([mockedManager enumeratorAtURL:path includingPropertiesForKeys:keys options:0
+                              errorHandler:OCMOCK_ANY]);
+
+    uint64_t size = [mockedManager lt_sizeOfDirectoryAtPath:path error:&error];
+
+    expect(error.lt_underlyingErrors).toNot.beNil();
+    expect(error).toNot.beNil();
+    expect(size).to.equal(0);
+  });
+
+  it(@"should populate error if path does not lead to a directory", ^{
+    NSURL *errorPath = OCMClassMock([NSURL class]);
+    OCMStub([errorPath absoluteString]).andReturn(@"bar");
+    OCMStub([mockedManager enumeratorAtURL:errorPath includingPropertiesForKeys:keys options:0
+                              errorHandler:OCMOCK_ANY]);
+
+    uint64_t size = [mockedManager lt_sizeOfDirectoryAtPath:errorPath error:&error];
+
+    expect(error.lt_url).to.equal(errorPath);
+    expect(size).to.equal(0);
   });
 });
 

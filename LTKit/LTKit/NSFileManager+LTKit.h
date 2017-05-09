@@ -22,7 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// Writes the given dictionary to the file specified by the given path. Returns \c YES if the file
 /// is written successfully, otherwise returns \c NO and populates \c error. The plist is saved in
 /// the XML property list format (\c NSPropertyListXMLFormat_v1_0), and the file is written
-/// atomically. 
+/// atomically.
 ///
 /// This method recursively validates that all the contained objects are property list objects
 /// (instances of \c NSData, \c NSDate, \c NSNumber, \c NSString, \c NSArray, or \c NSDictionary)
@@ -69,6 +69,18 @@ NS_ASSUME_NONNULL_BEGIN
 /// attribute setup completed successfully, otherwise returns \c NO and populates the given \c
 /// error.
 - (BOOL)lt_skipBackup:(BOOL)skipBackup forItemAtURL:(NSURL *)url error:(NSError **)error;
+
+/// Returns the size of all files in in directory at the given \c path. The returned value is the
+/// accumulated size of all files in the directory and all of its subdirectories. In case of an
+/// error in reading the size of any file, \c error will be populated and the returned size will be
+/// the sum of successfully read files sizes. In case the given \c path does not lead to a directory
+/// the returned value will be \c 0 and \c error will be populated.
+///
+/// @note The size of a file with multiple hard links will be counted once.
+///
+/// @note The size of symbolic links will only be the size of the link, not the size of the file
+/// they link to.
+- (uint64_t)lt_sizeOfDirectoryAtPath:(NSURL *)path error:(NSError **)error;
 
 /// Total storage (in bytes) on the device. This property is not KVO compliant.
 @property (readonly, nonatomic) uint64_t lt_totalStorage;
