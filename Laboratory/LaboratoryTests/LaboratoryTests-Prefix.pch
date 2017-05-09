@@ -1,0 +1,17 @@
+// Copyright (c) 2017 Lightricks. All rights reserved.
+// Created by Barak Weiss.
+
+#import "Laboratory-Prefix.pch"
+
+#define EXP_SHORTHAND
+
+// Third party.
+#ifdef __cplusplus
+extern "C" {
+#endif
+  #import <Expecta/Expecta.h>
+  #import <OCMock/OCMock.h>
+  #import <Specta/Specta.h>
+#ifdef __cplusplus
+}
+#endif
