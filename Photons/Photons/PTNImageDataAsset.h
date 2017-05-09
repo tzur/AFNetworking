@@ -23,10 +23,10 @@ NS_ASSUME_NONNULL_BEGIN
 /// The uniform type identifier of the data or \c nil if UTI was not specified.
 ///
 /// @see https://developer.apple.com/library/content/documentation/Miscellaneous/Reference/UTIRef/Articles/System-DeclaredUniformTypeIdentifiers.html
-@property (copy, nonatomic, nullable) NSString *uniformTypeIdentifier;
+@property (readonly, nonatomic, nullable) NSString *uniformTypeIdentifier;
 
 /// The orientation of the image.
-@property (nonatomic) UIImageOrientation orientation;
+@property (readonly, nonatomic) UIImageOrientation orientation;
 
 @end
 
