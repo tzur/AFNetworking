@@ -13,6 +13,14 @@ NS_ASSUME_NONNULL_BEGIN
   }];
 }
 
++ (NSValueTransformer *)URLJSONTransformer {
+  return [MTLValueTransformer reversibleTransformerWithForwardBlock:^NSURL *(NSString *string) {
+    return [NSURL URLWithString:string];
+  } reverseBlock:^NSString *(NSURL *URL) {
+    return URL.absoluteString;
+  }];
+}
+
 @end
 
 NS_ASSUME_NONNULL_END

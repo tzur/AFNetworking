@@ -39,14 +39,15 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (RACSignal *)fetchContentForProduct:(BZRProduct *)product {
-  LTParameterAssert([product.contentFetcherParameters
-                     isKindOfClass:[BZRProductContentMultiFetcher expectedParametersClass]],
-                    @"The product's contentFetcherParameters must be of class %@, got %@",
-                    [BZRProductContentMultiFetcher expectedParametersClass],
-                    [product.contentFetcherParameters class]);
+  if (![product.contentFetcherParameters
+        isKindOfClass:[BZRProductContentMultiFetcher expectedParametersClass]]) {
+    return [RACSignal error:
+            [NSError lt_errorWithCode:BZRErrorCodeUnexpectedContentFetcherParametersClass]];
+  }
+
   BZRProductContentMultiFetcherParameters *contentFetcherParameters =
     (BZRProductContentMultiFetcherParameters *)product.contentFetcherParameters;
-  
+
   RACSignal *contentFetcherSignal =
       [[self contentFetcherFromName:contentFetcherParameters.contentFetcherName] replayLast];
 
@@ -58,7 +59,7 @@ NS_ASSUME_NONNULL_BEGIN
         RACTupleUnpack(id<BZRProductContentFetcher> contentFetcher,
                        BZRProduct *productForUnderlyingContentFetcher) = tuple;
         if (![productForUnderlyingContentFetcher.contentFetcherParameters
-              isKindOfClass:[contentFetcher expectedParametersClass]]) {
+              isKindOfClass:[[contentFetcher class] expectedParametersClass]]) {
           if (error) {
             *error = [NSError lt_errorWithCode:BZRErrorCodeUnexpectedContentFetcherParametersClass];
           }

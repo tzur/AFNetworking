@@ -3,32 +3,7 @@
 
 #import "BZRProduct.h"
 
-#import "BZRContentFetcherParameters.h"
-
-/// Dummy concrete implemenation of \c BZRContentFetcherParameters used for testing.
-@interface BZRDummyContentFetcherParameters : BZRContentFetcherParameters
-
-/// Value to be passed to content fetcher.
-@property (readonly, nonatomic) NSString *value;
-
-@end
-
-@implementation BZRDummyContentFetcherParameters
-
-- (instancetype)initWithValue:(NSString *)value {
-  if (self = [super init]) {
-    _value = [value copy];
-  }
-  return self;
-}
-
-+ (NSDictionary *)JSONKeyPathsByPropertyKey {
-  return @{
-    @instanceKeypath(BZRDummyContentFetcherParameters, value): @"value"
-  };
-}
-
-@end
+#import "BZRDummyContentFetcherParameters.h"
 
 SpecBegin(BZRProduct)
 
