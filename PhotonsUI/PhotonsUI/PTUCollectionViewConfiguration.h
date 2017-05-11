@@ -48,6 +48,25 @@ NS_ASSUME_NONNULL_BEGIN
 ///   - \c enablePaging set to \c NO.
 + (instancetype)photoStrip;
 
+/// Creates and returns a \c PTUCollectionViewConfiguration adjusted for iPad devices.
+///   - \c assetSizingStrategy is set to
+///     \c [PTUCellSizingStrategy adaptiveFitRow:(140, 140) maximumScale:1.6 preserveAspectRatio:YES
+///   - \c albumSizingStrategy of \c adaptiveFitRow:CGSizeMake(683, 150) maximumScale:0.3
+///     preserveAspectRatio:NO].
+///   - \c headerSizingStrategy of \c [PTUCellSizingStrategy rowWithHeight:25].
+///   - \c itemSpacing of \c 1.
+///   - \c lineSpacing of \c 1.
+///   - \c scrollDirection set to \c UICollectionViewScrollDirectionVertical.
+///   - \c showVerticalScrollIndicator set to \c YES.
+///   - \c showHorizontalScrollIndicator set to \c NO.
+///   - \c enablePaging set to \c NO.
++ (instancetype)defaultIPadConfiguration;
+
+/// Creates and returns a \c PTUCollectionViewConfiguration based on the device idiom at runtime -
+/// if the device is an iPad the \c defaultIPadConfiguration is returned, otherwise the
+/// \c defaultConfiguration will be returned.
++ (instancetype)deviceAdjustableConfiguration;
+
 /// Cell sizing strategy to determine the size of cells representing descriptors conforming to
 /// \c PTNAssetDescriptor.
 @property (readonly, nonatomic) id<PTUCellSizingStrategy> assetCellSizingStrategy;
