@@ -26,7 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// Current generation ID of the attachable.
 @property (readwrite, nonatomic) NSString *generationID;
 
-/// Color the renderbuffed is filled with, or \c LTVector4::null() if the fill color is
+/// Color the renderbuffer is filled with, or \c LTVector4::null() if the fill color is
 /// undetermined.
 @property (readwrite, nonatomic) LTVector4 fillColor;
 

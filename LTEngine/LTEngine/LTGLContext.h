@@ -5,6 +5,8 @@
 
 #import "LTGLEnums.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class LTFboPool, LTGLContext, LTProgramPool;
 
 struct LTVector;
@@ -91,7 +93,7 @@ extern LTGLContextBlendEquationArgs kLTGLContextBlendEquationDefault;
 
 /// Makes the specified context the current rendering context for the calling thread. If the given
 /// \c context is \c nil, the rendering context will be unbound from any context.
-+ (void)setCurrentContext:(LTGLContext *)context;
++ (void)setCurrentContext:(nullable LTGLContext *)context;
 
 /// Initializes a context with a new \c EAGLContext and a new \c EAGLSharegroup. On supported
 /// devices, the API version will be ES3, otherwise it will be ES2.
@@ -99,11 +101,11 @@ extern LTGLContextBlendEquationArgs kLTGLContextBlendEquationDefault;
 
 /// Initializes a context with a new \c EAGLContext and the given \c sharegroup. On supported
 /// devices, the API version will be ES3, otherwise it will be ES2.
-- (instancetype)initWithSharegroup:(EAGLSharegroup *)sharegroup;
+- (instancetype)initWithSharegroup:(nullable EAGLSharegroup *)sharegroup;
 
 /// Initializes a context with a new \c EAGLContext of version \c version using the given \c
 /// sharegroup. If \c version is not supported, this initializer will return \c nil.
-- (instancetype)initWithSharegroup:(EAGLSharegroup *)sharegroup
+- (instancetype)initWithSharegroup:(nullable EAGLSharegroup *)sharegroup
                            version:(LTGLVersion)version;
 
 /// Executes the given block while recording changes to the state. Any change to the state inside
@@ -223,3 +225,5 @@ extern LTGLContextBlendEquationArgs kLTGLContextBlendEquationDefault;
 @property (readonly, nonatomic) BOOL supportsRGTextures;
 
 @end
+
+NS_ASSUME_NONNULL_END
