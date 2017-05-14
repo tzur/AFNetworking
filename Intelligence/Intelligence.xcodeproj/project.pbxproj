@@ -64,6 +64,7 @@
 		A1C943361EBB358E00BECAB4 /* INTScreenDisplayedEvent.json in Sources */ = {isa = PBXBuildFile; fileRef = A1C9432C1EBB357800BECAB4 /* INTScreenDisplayedEvent.json */; };
 		A1C943391EBB358E00BECAB4 /* INTAnalytricksContext.json in Sources */ = {isa = PBXBuildFile; fileRef = A1C942FF1EBB356900BECAB4 /* INTAnalytricksContext.json */; };
 		A1C9433A1EBB358E00BECAB4 /* INTAnalytricksMetadata.json in Sources */ = {isa = PBXBuildFile; fileRef = A1C943001EBB356900BECAB4 /* INTAnalytricksMetadata.json */; };
+		A1C945601EBF3AE800BECAB4 /* INTAnalytricksContext+MergeSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1C9455F1EBF3AE800BECAB4 /* INTAnalytricksContext+MergeSpec.mm */; };
 		A1D136E91E78F4C200B1EA8D /* INTDataStructuresSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1D136E81E78F4C200B1EA8D /* INTDataStructuresSpec.mm */; };
 		A1F24CA41EC07FC20050D534 /* Alooma.m in Sources */ = {isa = PBXBuildFile; fileRef = A1F24CA01EC07FC20050D534 /* Alooma.m */; settings = {COMPILER_FLAGS = "-Wno-unused-parameter -Wno-deprecated-declarations -Wno-assign-enum"; }; };
 		A1F24CA51EC07FC20050D534 /* NSData+AloomaBase64.m in Sources */ = {isa = PBXBuildFile; fileRef = A1F24CA31EC07FC20050D534 /* NSData+AloomaBase64.m */; settings = {COMPILER_FLAGS = "-Wno-char-subscripts"; }; };
@@ -377,6 +378,7 @@
 		A1C943271EBB357800BECAB4 /* INTProjectUnloadedEvent.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = INTProjectUnloadedEvent.json; sourceTree = "<group>"; };
 		A1C943291EBB357800BECAB4 /* INTProjectLoadedEvent.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = INTProjectLoadedEvent.json; sourceTree = "<group>"; };
 		A1C9432C1EBB357800BECAB4 /* INTScreenDisplayedEvent.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = INTScreenDisplayedEvent.json; sourceTree = "<group>"; };
+		A1C9455F1EBF3AE800BECAB4 /* INTAnalytricksContext+MergeSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "INTAnalytricksContext+MergeSpec.mm"; sourceTree = "<group>"; };
 		A1D136E81E78F4C200B1EA8D /* INTDataStructuresSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = INTDataStructuresSpec.mm; sourceTree = "<group>"; };
 		A1DA6A641EB6022C0085011B /* INTTransformerBlockBuilderStructures.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INTTransformerBlockBuilderStructures.h; sourceTree = "<group>"; };
 		A1F24C9F1EC07FC20050D534 /* Alooma.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Alooma.h; path = "../../third_party/alooma-ios-sdk/Alooma-iOS/Alooma.h"; sourceTree = "<group>"; };
@@ -728,6 +730,7 @@
 		A149BB5A1EBE573100DA82B7 /* Context Generators */ = {
 			isa = PBXGroup;
 			children = (
+				A1C9455F1EBF3AE800BECAB4 /* INTAnalytricksContext+MergeSpec.mm */,
 				A149BB5B1EBE574900DA82B7 /* INTAnalytricksContextGeneratorsSpec.mm */,
 			);
 			name = "Context Generators";
@@ -1223,6 +1226,7 @@
 				A1D136E91E78F4C200B1EA8D /* INTDataStructuresSpec.mm in Sources */,
 				A1B373BF1EA6511F008E5195 /* INTEventTransformationExecutor.mm in Sources */,
 				A1F24CC31EC082DC0050D534 /* INTAloomaLoggerSpec.mm in Sources */,
+				A1C945601EBF3AE800BECAB4 /* INTAnalytricksContext+MergeSpec.mm in Sources */,
 				A101680B1E713D8B009596E1 /* INTEventTransformerSpec.mm in Sources */,
 				A113411F1EB0D1E30042ABA8 /* INTTransformerBlockBuilderSpec.mm in Sources */,
 			);
@@ -1350,7 +1354,10 @@
 			buildSettings = {
 				DEVELOPMENT_TEAM = KG6GWND6BG;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/$(TARGET_NAME)/$(TARGET_NAME)-Prefix.pch";
-				HEADER_SEARCH_PATHS = "$(inherited)";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)",
+				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -1363,7 +1370,10 @@
 			buildSettings = {
 				DEVELOPMENT_TEAM = KG6GWND6BG;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/$(TARGET_NAME)/$(TARGET_NAME)-Prefix.pch";
-				HEADER_SEARCH_PATHS = "$(inherited)";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)",
+				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -1380,6 +1390,7 @@
 				GCC_PREFIX_HEADER = "$(SRCROOT)/$(TARGET_NAME)/$(TARGET_NAME)-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
+					"$(SRCROOT)/../Intelligence",
 					"$(SRCROOT)/../third_party/Expecta",
 					"$(SRCROOT)/../third_party/OCMock/Source",
 					"$(SRCROOT)/../third_party/Specta/Specta",
@@ -1402,6 +1413,7 @@
 				GCC_PREFIX_HEADER = "$(SRCROOT)/$(TARGET_NAME)/$(TARGET_NAME)-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
+					"$(SRCROOT)/../Intelligence",
 					"$(SRCROOT)/../third_party/Expecta",
 					"$(SRCROOT)/../third_party/OCMock/Source",
 					"$(SRCROOT)/../third_party/Specta/Specta",
