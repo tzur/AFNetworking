@@ -33,7 +33,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (instancetype)photoStripWithViewModel:(id<PTUAlbumViewModel>)viewModel;
 
 /// Creates and returns an \c FPTUAlbumViewController initialized with \c viewModel and
-/// <tt>[PTUCollectionViewConfiguration defaultConfiguration]</tt> configuration.
+/// <tt>[PTUCollectionViewConfiguration deviceAdjustableConfiguration]</tt> configuration.
 ///
 /// @see -initWithViewModel:configuration:.
 + (instancetype)albumWithViewModel:(id<PTUAlbumViewModel>)viewModel;
