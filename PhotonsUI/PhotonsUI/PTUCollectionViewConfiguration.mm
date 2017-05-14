@@ -3,6 +3,8 @@
 
 #import "PTUCollectionViewConfiguration.h"
 
+#import <LTKit/UIDevice+Hardware.h>
+
 #import "PTUCellSizingStrategy.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -54,6 +56,26 @@ NS_ASSUME_NONNULL_BEGIN
       minimumItemSpacing:0 minimumLineSpacing:1
       scrollDirection:UICollectionViewScrollDirectionHorizontal showVerticalScrollIndicator:NO
       showHorizontalScrollIndicator:NO enablePaging:NO];
+}
+
++ (instancetype)defaultIPadConfiguration {
+  id<PTUCellSizingStrategy> assetSizingStrategy =
+      [PTUCellSizingStrategy adaptiveFitRow:CGSizeMake(140, 140) maximumScale:1.6
+                        preserveAspectRatio:YES];
+  id<PTUCellSizingStrategy> albumSizingStrategy =
+      [PTUCellSizingStrategy adaptiveFitRow:CGSizeMake(683, 150) maximumScale:0.3
+                        preserveAspectRatio:NO];
+  id<PTUCellSizingStrategy> headerSizingStrategy = [PTUCellSizingStrategy rowWithHeight:25];
+  return [[PTUCollectionViewConfiguration alloc] initWithAssetCellSizingStrategy:assetSizingStrategy
+      albumCellSizingStrategy:albumSizingStrategy headerCellSizingStrategy:headerSizingStrategy
+      minimumItemSpacing:1 minimumLineSpacing:1
+      scrollDirection:UICollectionViewScrollDirectionVertical showVerticalScrollIndicator:YES
+      showHorizontalScrollIndicator:NO enablePaging:NO];
+}
+
++ (instancetype)deviceAdjustableConfiguration {
+  return [[UIDevice currentDevice] lt_isPadIdiom] ?
+      [self defaultIPadConfiguration] : [self defaultConfiguration];
 }
 
 #pragma mark -

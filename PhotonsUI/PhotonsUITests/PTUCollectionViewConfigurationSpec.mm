@@ -3,6 +3,8 @@
 
 #import "PTUCollectionViewConfiguration.h"
 
+#import <LTKit/UIDevice+Hardware.h>
+
 #import "PTUCellSizingStrategy.h"
 
 SpecBegin(PTUCollectionViewConfiguration)
@@ -66,6 +68,60 @@ it(@"should correctly initalize with photo strip initializer", ^{
   expect(configuration.showsVerticalScrollIndicator).to.beFalsy();
   expect(configuration.showsHorizontalScrollIndicator).to.beFalsy();
   expect(configuration.enablePaging).to.beFalsy();
+});
+
+it(@"should correctly initalize with default iPad initializer", ^{
+  PTUCollectionViewConfiguration *configuration =
+      [PTUCollectionViewConfiguration defaultIPadConfiguration];
+
+  id<PTUCellSizingStrategy> assetSizingStrategy =
+      [PTUCellSizingStrategy adaptiveFitRow:CGSizeMake(140, 140) maximumScale:1.6
+                        preserveAspectRatio:YES];
+  id<PTUCellSizingStrategy> albumSizingStrategy =
+      [PTUCellSizingStrategy adaptiveFitRow:CGSizeMake(683, 150) maximumScale:0.3
+                        preserveAspectRatio:NO];
+  id<PTUCellSizingStrategy> headerSizingStrategy = [PTUCellSizingStrategy rowWithHeight:25];
+  expect(configuration.assetCellSizingStrategy).to.equal(assetSizingStrategy);
+  expect(configuration.albumCellSizingStrategy).to.equal(albumSizingStrategy);
+  expect(configuration.headerCellSizingStrategy).to.equal(headerSizingStrategy);
+  expect(configuration.minimumItemSpacing).to.equal(1);
+  expect(configuration.minimumLineSpacing).to.equal(1);
+  expect(configuration.scrollDirection).to.equal(UICollectionViewScrollDirectionVertical);
+  expect(configuration.showsVerticalScrollIndicator).to.beTruthy();
+  expect(configuration.showsHorizontalScrollIndicator).to.beFalsy();
+  expect(configuration.enablePaging).to.beFalsy();
+});
+
+context(@"device adjustable configuration", ^{
+  __block UIDevice *deviceMock;
+
+  beforeEach(^{
+    deviceMock = OCMClassMock([UIDevice class]);
+    OCMStub([(id)deviceMock currentDevice]).andReturn(deviceMock);
+  });
+
+  afterEach(^{
+    [(id)deviceMock stopMocking];
+    deviceMock = nil;
+  });
+
+  it(@"should correctly initalize with default configuration on iPhone", ^{
+    OCMStub([deviceMock lt_isPadIdiom]).andReturn(NO);
+
+    PTUCollectionViewConfiguration *configuration =
+        [PTUCollectionViewConfiguration deviceAdjustableConfiguration];
+
+    expect(configuration).to.equal([PTUCollectionViewConfiguration defaultConfiguration]);
+  });
+
+  it(@"should correctly initalize with default iPad configuration on iPad", ^{
+    OCMStub([deviceMock lt_isPadIdiom]).andReturn(YES);
+
+    PTUCollectionViewConfiguration *configuration =
+        [PTUCollectionViewConfiguration deviceAdjustableConfiguration];
+
+    expect(configuration).to.equal([PTUCollectionViewConfiguration defaultIPadConfiguration]);
+  });
 });
 
 context(@"equality", ^{
