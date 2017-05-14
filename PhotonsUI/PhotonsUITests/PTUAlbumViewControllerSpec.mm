@@ -3,6 +3,7 @@
 
 #import "PTUAlbumViewController.h"
 
+#import <LTKit/UIDevice+Hardware.h>
 #import <Photons/PTNDescriptor.h>
 
 #import "PTNTestUtils.h"
@@ -128,55 +129,44 @@ it(@"should initialize collection views with the given configuration", ^{
   expect(layout.minimumInteritemSpacing).to.equal(configuration.minimumItemSpacing);
 });
 
-it(@"should initialize collection views with photoStrip configuration in factory initialzer", ^{
-  PTUAlbumViewController *albumView = [PTUAlbumViewController photoStripWithViewModel:viewModel];
-  [albumView loadViewIfNeeded];
-  [dataSourceProviderSignal sendNext:dataSourceProvider];
-  [albumView.view layoutIfNeeded];
+context(@"default configurations", ^{
+  __block UIDevice *deviceMock;
 
-  UICollectionView *collectionView =
-      (UICollectionView *)[albumView.view wf_viewForAccessibilityIdentifier:@"CollectionView"];
+  beforeEach(^{
+    deviceMock = OCMClassMock([UIDevice class]);
+    OCMStub([(id)deviceMock currentDevice]).andReturn(deviceMock);
+  });
 
-  PTUCollectionViewConfiguration *configuration = [PTUCollectionViewConfiguration photoStrip];
+  afterEach(^{
+    [(id)deviceMock stopMocking];
+    deviceMock = nil;
+  });
 
-  expect(collectionView.collectionViewLayout).toNot.beNil();
-  expect(collectionView.showsVerticalScrollIndicator)
-      .to.equal(configuration.showsVerticalScrollIndicator);
-  expect(collectionView.showsHorizontalScrollIndicator)
-      .to.equal(configuration.showsHorizontalScrollIndicator);
-  expect(collectionView.collectionViewLayout).beAKindOf([UICollectionViewFlowLayout class]);
+  it(@"should initialize collection views with photoStrip configuration in factory initialzer", ^{
+    PTUAlbumViewController *albumView = [PTUAlbumViewController photoStripWithViewModel:viewModel];
+    [dataSourceProviderSignal sendNext:dataSourceProvider];
 
-  UICollectionViewFlowLayout *layout =
-      (UICollectionViewFlowLayout *)collectionView.collectionViewLayout;
-  expect(layout.scrollDirection).to.equal(configuration.scrollDirection);
-  expect(layout.minimumLineSpacing).to.equal(configuration.minimumLineSpacing);
-  expect(layout.minimumInteritemSpacing).to.equal(configuration.minimumItemSpacing);
-});
+    expect(albumView.collectionViewController.configuration)
+        .to.equal([PTUCollectionViewConfiguration photoStrip]);
+  });
 
-it(@"should initialize collection views with album configuration in factory initialzer", ^{
-  PTUAlbumViewController *albumView = [PTUAlbumViewController albumWithViewModel:viewModel];
-  [albumView loadViewIfNeeded];
-  [dataSourceProviderSignal sendNext:dataSourceProvider];
-  [albumView.view layoutIfNeeded];
+  it(@"should initialize collection views with album configuration in factory initialzer", ^{
+    OCMStub([deviceMock lt_isPadIdiom]).andReturn(NO);
+    PTUAlbumViewController *albumView = [PTUAlbumViewController albumWithViewModel:viewModel];
+    [dataSourceProviderSignal sendNext:dataSourceProvider];
 
-  UICollectionView *collectionView =
-      (UICollectionView *)[albumView.view wf_viewForAccessibilityIdentifier:@"CollectionView"];
+    expect(albumView.collectionViewController.configuration)
+        .to.equal([PTUCollectionViewConfiguration defaultConfiguration]);
+  });
 
-  PTUCollectionViewConfiguration *configuration =
-      [PTUCollectionViewConfiguration defaultConfiguration];
+  it(@"should initialize collection views with iPad album configuration in factory initialzer", ^{
+    OCMStub([deviceMock lt_isPadIdiom]).andReturn(YES);
+    PTUAlbumViewController *albumView = [PTUAlbumViewController albumWithViewModel:viewModel];
+    [dataSourceProviderSignal sendNext:dataSourceProvider];
 
-  expect(collectionView.collectionViewLayout).toNot.beNil();
-  expect(collectionView.showsVerticalScrollIndicator)
-      .to.equal(configuration.showsVerticalScrollIndicator);
-  expect(collectionView.showsHorizontalScrollIndicator)
-      .to.equal(configuration.showsHorizontalScrollIndicator);
-  expect(collectionView.collectionViewLayout).beAKindOf([UICollectionViewFlowLayout class]);
-
-  UICollectionViewFlowLayout *layout =
-      (UICollectionViewFlowLayout *)collectionView.collectionViewLayout;
-  expect(layout.scrollDirection).to.equal(configuration.scrollDirection);
-  expect(layout.minimumLineSpacing).to.equal(configuration.minimumLineSpacing);
-  expect(layout.minimumInteritemSpacing).to.equal(configuration.minimumItemSpacing);
+    expect(albumView.collectionViewController.configuration)
+        .to.equal([PTUCollectionViewConfiguration defaultIPadConfiguration]);
+  });
 });
 
 it(@"should populate selection and deselction signals", ^{

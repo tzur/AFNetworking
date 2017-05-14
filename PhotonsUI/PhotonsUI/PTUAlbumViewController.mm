@@ -43,7 +43,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (instancetype)albumWithViewModel:(id<PTUAlbumViewModel>)viewModel {
   return [[PTUAlbumViewController alloc] initWithViewModel:viewModel
-      configuration:[PTUCollectionViewConfiguration defaultConfiguration]];
+      configuration:[PTUCollectionViewConfiguration deviceAdjustableConfiguration]];
 }
 
 - (void)bindViewController {
