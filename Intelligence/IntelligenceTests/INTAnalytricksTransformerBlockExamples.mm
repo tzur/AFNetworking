@@ -5,10 +5,10 @@
 
 #import <Intelligence/INTAnalytricksBaseUsage.h>
 #import <Intelligence/INTAnalytricksContext.h>
+#import <Intelligence/INTAnalytricksContextGenerators.h>
 #import <Intelligence/INTAnalytricksMetadata.h>
 #import <LTKit/NSArray+Functional.h>
 
-#import "INTAnalytricksContextGenerators.h"
 #import "INTEventTransformationExecutor.h"
 
 NS_ASSUME_NONNULL_BEGIN

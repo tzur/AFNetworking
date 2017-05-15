@@ -466,6 +466,8 @@
 		A113424A1EB5AD870042ABA8 /* Test Utils */ = {
 			isa = PBXGroup;
 			children = (
+				A149BC321EBE6BB400DA82B7 /* INTAnalytricksTransformerBlockExamples.h */,
+				A149BC331EBE6BB400DA82B7 /* INTAnalytricksTransformerBlockExamples.mm */,
 				A1B373BD1EA6511F008E5195 /* INTEventTransformationExecutor.h */,
 				A1B373BE1EA6511F008E5195 /* INTEventTransformationExecutor.mm */,
 				A1541B0C1EAF1CC300B4F064 /* INTRecorderLogger.h */,
@@ -768,8 +770,6 @@
 		A149BC311EBE6B8E00DA82B7 /* Transformers */ = {
 			isa = PBXGroup;
 			children = (
-				A149BC321EBE6BB400DA82B7 /* INTAnalytricksTransformerBlockExamples.h */,
-				A149BC331EBE6BB400DA82B7 /* INTAnalytricksTransformerBlockExamples.mm */,
 				A149BC341EBE6BB400DA82B7 /* INTAnalytricksTransformerBlocksSpec.mm */,
 			);
 			name = Transformers;

@@ -1,9 +1,9 @@
 // Copyright (c) 2017 Lightricks. All rights reserved.
 // Created by Boris Talesnik.
 
-#import "INTDataStructures.h"
-#import "INTEventMetadata.h"
-#import "INTEventTransformer.h"
+#import <Intelligence/INTDataStructures.h>
+#import <Intelligence/INTEventMetadata.h>
+#import <Intelligence/INTEventTransformer.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
