@@ -15,6 +15,10 @@ extern NSString * const kLTClassValueTransformer;
 ///   - \c LTEnum: a JSON dictionary that must contain the keys \c _class and \c name with an
 ///     \c NSString value of the enum class name and the enum field name, accordingly.
 ///
+///   - \c UIColor: a JSON dictionary that must contain the keys \c _class and \c color with
+///     \c NSString values of "UIColor" and the hexadecimal representation of the given color,
+///     respectively.
+///
 ///   - \c NSDictionary: a JSON dictionary of an \c MTLModel to the appropriate model object. The
 ///     dictionary must contain the key \c _class with an \c NSString value of the model class name,
 ///     which must be a subclass of \c MTLModel and conform to \c MTLJSONSerializing.

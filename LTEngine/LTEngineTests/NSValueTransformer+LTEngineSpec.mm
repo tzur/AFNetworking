@@ -84,6 +84,13 @@ context(@"model value transformer", ^{
     }]).to.equal($(LTTestEnumFoo));
   });
 
+  it(@"should perform forward transform for colors", ^{
+    expect([transformer transformedValue:@{
+      @"_class": NSStringFromClass(UIColor.class),
+      @"color": [[UIColor colorWithRed:0.2 green:0.4 blue:0.6 alpha:0.8] lt_hexString]
+    }]).to.equal([UIColor colorWithRed:0.2 green:0.4 blue:0.6 alpha:0.8]);
+  });
+
   it(@"should perform forward transform for model", ^{
     expect([transformer transformedValue:@{
       @instanceKeypath(LTTestMTLModel, name): @"foo",
@@ -104,6 +111,14 @@ context(@"model value transformer", ^{
     expect([transformer reverseTransformedValue:$(LTTestEnumFoo)]).to.equal(@{
       @"_class": NSStringFromClass(LTTestEnum.class),
       @"name": $(LTTestEnumFoo).name
+    });
+  });
+
+  it(@"should perform reverse transform for colors", ^{
+    UIColor *color = [UIColor colorWithRed:0.2 green:0.4 blue:0.6 alpha:0.8];
+    expect([transformer reverseTransformedValue:color]).to.equal(@{
+      @"_class": NSStringFromClass(color.class),
+      @"color": [color lt_hexString]
     });
   });
 

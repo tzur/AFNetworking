@@ -29,6 +29,7 @@ NSString * const kGLKMatrix4ValueTransformer = @"GLKMatrix4ValueTransformer";
 
 NSString * const kLTModelValueTransformerClassKey = @"_class";
 NSString * const kLTModelValueTransformerEnumNameKey = @"name";
+NSString * const kLTModelValueTransformerColorKey = @"color";
 
 @implementation NSValueTransformer (LTEngine)
 
@@ -109,6 +110,13 @@ NSString * const kLTModelValueTransformerEnumNameKey = @"name";
               transformedValue:value[kLTModelValueTransformerEnumNameKey]];
     }
 
+    if ([modelClass isEqual:UIColor.class]) {
+      LTParameterAssert(value[kLTModelValueTransformerColorKey], @"Given dictionary doesn't define "
+                        "color key '%@', got: %@", kLTModelValueTransformerColorKey, value);
+      return [[self lt_colorValueTransformer]
+              transformedValue:value[kLTModelValueTransformerColorKey]];
+    }
+
     LTParameterAssert([modelClass conformsToProtocol:@protocol(MTLJSONSerializing)],
                       @"Given model class '%@' doesn't conform to MTLJSONSerializing", modelClass);
     LTParameterAssert([modelClass isSubclassOfClass:[MTLModel class]],
@@ -131,6 +139,14 @@ NSString * const kLTModelValueTransformerEnumNameKey = @"name";
       return @{
         kLTModelValueTransformerClassKey: NSStringFromClass(model.class),
         kLTModelValueTransformerEnumNameKey: [transformer reverseTransformedValue:model]
+      };
+    }
+
+    if ([model isKindOfClass:[UIColor class]]) {
+      return @{
+        kLTModelValueTransformerClassKey: NSStringFromClass(model.class),
+        kLTModelValueTransformerColorKey: [[self lt_colorValueTransformer]
+                                           reverseTransformedValue:model]
       };
     }
 
