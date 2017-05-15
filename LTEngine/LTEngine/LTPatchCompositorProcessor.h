@@ -34,8 +34,8 @@ LTPropertyDeclare(CGFloat, sourceOpacity, SourceOpacity);
 LTPropertyDeclare(BOOL, flip, Flip);
 
 /// Interpolation factor used to compute the strength of source smoothing. If \c 1, a fully smoothed
-/// version of source is used, yielding a seamless patching effect. If \c 0, the source is used directly,
-/// without any smoothing. Default value is \c 1.
+/// version of source is used, yielding a seamless patching effect. If \c 0, the source is used
+/// directly, without any smoothing. Default value is \c 1.
 @property (nonatomic) CGFloat smoothingAlpha;
 LTPropertyDeclare(CGFloat, smoothingAlpha, SmoothingAlpha);
 
