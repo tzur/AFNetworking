@@ -30,15 +30,15 @@ static lt::Ref<CGImageRef> LTCreatHalfFloatCGImage(size_t width, size_t height,
   size_t bitsPerComponent = mat.elemSize1() * CHAR_BIT;
   CGBitmapInfo bitmapInfo = kCGImageAlphaPremultipliedLast | kCGBitmapByteOrder16Little |
       kCGBitmapFloatComponents;
-  lt::Ref<CGContextRef> context(CGBitmapContextCreate(mat.data, width, height, bitsPerComponent,
-                                mat.step[0], colorSpace, bitmapInfo));
+  auto context = lt::makeRef(CGBitmapContextCreate(mat.data, width, height, bitsPerComponent,
+                                                   mat.step[0], colorSpace, bitmapInfo));
   LTAssert(context, @"Context not created");
 
   // Draw.
   CGContextSetRGBFillColor(context.get(), color.r(), color.g(), color.b(), color.a());
   CGContextFillRect(context.get(), CGRectMake(0, 0, width, height));
 
-  return lt::Ref<CGImageRef>(CGBitmapContextCreateImage(context.get()));
+  return lt::makeRef(CGBitmapContextCreateImage(context.get()));
 }
 
 static cv::Vec4b LTConvertRGBAComponents(const CGFloat *components,
@@ -46,8 +46,8 @@ static cv::Vec4b LTConvertRGBAComponents(const CGFloat *components,
   auto uiSourceColor = [UIColor colorWithRed:components[0] green:components[1]
                                         blue:components[2] alpha:components[3]];
   auto cgDestColorRef =
-      lt::Ref<CGColorRef>(CGColorCreateCopyByMatchingToColorSpace(colorSpace, intent,
-                                                                  uiSourceColor.CGColor, NULL));
+      lt::makeRef(CGColorCreateCopyByMatchingToColorSpace(colorSpace, intent, uiSourceColor.CGColor,
+                                                          NULL));
   const CGFloat *destComponents = CGColorGetComponents(cgDestColorRef.get());
 
   return cv::Vec4b(destComponents[0] * 255, destComponents[1] * 255, destComponents[2] * 255,
@@ -55,6 +55,9 @@ static cv::Vec4b LTConvertRGBAComponents(const CGFloat *components,
 }
 
 SpecBegin(LTImage)
+
+static NSString * const kLTImageInitializationExamples = @"LTImageInitializationExamples";
+static NSString * const kLTImageNameKey = @"LTImageNameKey";
 
 context(@"loading images", ^{
   __block cv::Mat mat;
@@ -181,6 +184,87 @@ context(@"loading images", ^{
     expect(CGColorSpaceGetModel(ltImage.colorSpace)).to.equal(kCGColorSpaceModelRGB);
   });
 
+  sharedExamplesFor(kLTImageInitializationExamples, ^(NSDictionary *data) {
+    __block UIImage *uiImage;
+    __block cv::Size size;
+
+    beforeEach(^{
+      uiImage = LTLoadImage([self class], (NSString *)data[kLTImageNameKey]);
+      size = cv::Size(uiImage.size.height, uiImage.size.width);
+    });
+
+    it(@"should load as SRGB image", ^{
+      auto colorSpace = lt::makeRef(CGColorSpaceCreateWithName(kCGColorSpaceSRGB));
+      auto image = [[LTImage alloc] initWithImage:uiImage imageFormat:LTImageFormatRGBA8U
+                                       colorSpace:colorSpace.get()];
+      cv::Mat4b expected = (cv::Mat4b(size) <<
+                            cv::Vec4b(255, 255, 255, 255), cv::Vec4b(0, 0, 0, 255),
+                            cv::Vec4b(255, 255, 255, 255), cv::Vec4b(0, 0, 0, 255));
+      expect($(image.mat)).to.equalMat($(expected));
+      if (@available(iOS 11.0, *)) {
+        expect(CGColorSpaceGetName(image.colorSpace)).to.equal(kCGColorSpaceSRGB);
+      }
+    });
+
+    it(@"should load as SRGB half float image", ^{
+      auto colorSpace = lt::makeRef(CGColorSpaceCreateWithName(kCGColorSpaceSRGB));
+      auto image = [[LTImage alloc] initWithImage:uiImage imageFormat:LTImageFormatRGBA16F
+                                       colorSpace:colorSpace.get()];
+      cv::Mat4hf expected = (cv::Mat4hf(image.size.height, image.size.width) <<
+                             LTCVVec4hf(1, 1, 1, 1), LTCVVec4hf(0, 0, 0, 1),
+                             LTCVVec4hf(1, 1, 1, 1), LTCVVec4hf(0, 0, 0, 1));
+      expect($(image.mat)).to.equalMat($(expected));
+      if (@available(iOS 11.0, *)) {
+        expect(CGColorSpaceGetName(image.colorSpace)).to.equal(kCGColorSpaceSRGB);
+      }
+    });
+
+    if (@available(iOS 9.3, *)) {
+      auto colorSpace = lt::makeRef(CGColorSpaceCreateWithName(kCGColorSpaceDisplayP3));
+      it(@"should load as P3 image", ^{
+        auto image = [[LTImage alloc] initWithImage:uiImage imageFormat:LTImageFormatRGBA8U
+                                         colorSpace:colorSpace.get()];
+        cv::Mat4b expected = (cv::Mat4b(size) <<
+                              cv::Vec4b(255, 255, 255, 255), cv::Vec4b(0, 0, 0, 255),
+                              cv::Vec4b(255, 255, 255, 255), cv::Vec4b(0, 0, 0, 255));
+        expect($(image.mat)).to.equalMat($(expected));
+        if (@available(iOS 11.0, *)) {
+          expect(CGColorSpaceGetName(image.colorSpace)).to.equal(kCGColorSpaceDisplayP3);
+        }
+      });
+    }
+  });
+
+  itShouldBehaveLike(kLTImageInitializationExamples, @{
+    kLTImageNameKey: @"HorizontalStep8bitRGBA.png"
+  });
+
+  itShouldBehaveLike(kLTImageInitializationExamples, @{
+    kLTImageNameKey: @"HorizontalStep16bitRGBA.png"
+  });
+
+  it(@"should load 8 bit single channel to RGBA image", ^{
+    auto uiImage = LTLoadImage([self class], @"GrayTones8bit.png");
+    auto colorSpace = lt::makeRef(CGColorSpaceCreateWithName(kCGColorSpaceSRGB));
+    auto ltImage = [[LTImage alloc] initWithImage:uiImage imageFormat:LTImageFormatRGBA8U
+                                       colorSpace:colorSpace.get()];
+    cv::Mat4b expected = (cv::Mat4b(cv::Size(uiImage.size.height, uiImage.size.width)) <<
+                          cv::Vec4b(127, 127, 127, 255), cv::Vec4b(63, 63, 63, 255),
+                          cv::Vec4b(31, 31, 31, 255), cv::Vec4b(15, 15, 15, 255));
+    expect($(ltImage.mat)).to.equalMat($(expected));
+  });
+
+  it(@"should load 8 bit 2 channels image", ^{
+    auto png = LTLoadImage([self class], @"Black8bitRA.png");
+    auto colorSpace = lt::makeRef(CGColorSpaceCreateWithName(kCGColorSpaceSRGB));
+    auto image = [[LTImage alloc] initWithImage:png imageFormat:LTImageFormatRGBA8U
+                                     colorSpace:colorSpace.get()];
+    cv::Mat expected(image.size.height, image.size.width, CV_8UC4);
+    expected.setTo(cv::Vec4b(0, 0, 0, 0));
+
+    expect($(image.mat)).to.equalMat($(expected));
+  });
+
   context(@"load rotated images as portrait", ^{
     __block LTImage *expected;
 
@@ -269,7 +353,7 @@ context(@"image properties", ^{
 
   if (@available(iOS 9.3, *)) {
     it(@"should load wide gamut color space", ^{
-      lt::Ref<CGColorSpaceRef> colorSpace(CGColorSpaceCreateWithName(kCGColorSpaceSRGB));
+      auto colorSpace = lt::makeRef(CGColorSpaceCreateWithName(kCGColorSpaceSRGB));
 
       const CGFloat sourceComponents[] = {0.5, 0.75, 0.25, 1.0};
       auto cgImageRef = LTCreatHalfFloatCGImage(2, 2, colorSpace.get(),
@@ -277,7 +361,7 @@ context(@"image properties", ^{
                     sourceComponents[3]));
       auto uiImage = [[UIImage alloc] initWithCGImage:cgImageRef.get()];
 
-      lt::Ref<CGColorSpaceRef> p3ColorSpace(CGColorSpaceCreateWithName(kCGColorSpaceDisplayP3));
+      auto p3ColorSpace = lt::makeRef(CGColorSpaceCreateWithName(kCGColorSpaceDisplayP3));
 
       cv::Vec4b expectedColor = LTConvertRGBAComponents(
           sourceComponents, p3ColorSpace.get(), CGImageGetRenderingIntent(cgImageRef.get()));
@@ -301,7 +385,7 @@ context(@"image properties", ^{
   });
 
   it(@"should load with image's color space", ^{
-    lt::Ref<CGColorSpaceRef> colorSpace(CGColorSpaceCreateWithName(kCGColorSpaceSRGB));
+    auto colorSpace = lt::makeRef(CGColorSpaceCreateWithName(kCGColorSpaceSRGB));
 
     auto cgImageRef = LTCreatHalfFloatCGImage(2, 2, colorSpace.get(),
         LTVector4(0.5, 0.75, 0.25, 1.0));
