@@ -562,6 +562,7 @@
 		30DDD6B51CFC8A7500AE72B8 /* GaussianFilterDelta51.png in Resources */ = {isa = PBXBuildFile; fileRef = 30DDD6B11CFC8A7500AE72B8 /* GaussianFilterDelta51.png */; };
 		30DDD6B61CFC8A7500AE72B8 /* GaussianFilterLena256.png in Resources */ = {isa = PBXBuildFile; fileRef = 30DDD6B21CFC8A7500AE72B8 /* GaussianFilterLena256.png */; };
 		30DDD6B71CFC8A7500AE72B8 /* ConsistentGaussianFilterLena384.png in Resources */ = {isa = PBXBuildFile; fileRef = 30DDD6B31CFC8A7500AE72B8 /* ConsistentGaussianFilterLena384.png */; };
+		30DF5C441EC9C7F00039A57C /* LTPatchCompositorProcessorSolution.png in Resources */ = {isa = PBXBuildFile; fileRef = 30DF5C431EC9C7F00039A57C /* LTPatchCompositorProcessorSolution.png */; };
 		30DF5DDB1ECAE39D0039A57C /* LTPatchSolvertProcessorPerspectiveSolution.png in Resources */ = {isa = PBXBuildFile; fileRef = 30DF5DDA1ECAE39D0039A57C /* LTPatchSolvertProcessorPerspectiveSolution.png */; };
 		5002C94F1A092917006C037C /* LTQuadCopyProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 5002C94D1A092917006C037C /* LTQuadCopyProcessor.h */; };
 		5002C9501A092917006C037C /* LTQuadCopyProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5002C94E1A092917006C037C /* LTQuadCopyProcessor.mm */; };
@@ -2320,6 +2321,7 @@
 		30DDD6B11CFC8A7500AE72B8 /* GaussianFilterDelta51.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GaussianFilterDelta51.png; path = Resources/GaussianFilterDelta51.png; sourceTree = "<group>"; };
 		30DDD6B21CFC8A7500AE72B8 /* GaussianFilterLena256.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GaussianFilterLena256.png; path = Resources/GaussianFilterLena256.png; sourceTree = "<group>"; };
 		30DDD6B31CFC8A7500AE72B8 /* ConsistentGaussianFilterLena384.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ConsistentGaussianFilterLena384.png; path = Resources/ConsistentGaussianFilterLena384.png; sourceTree = "<group>"; };
+		30DF5C431EC9C7F00039A57C /* LTPatchCompositorProcessorSolution.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = LTPatchCompositorProcessorSolution.png; path = Resources/LTPatchCompositorProcessorSolution.png; sourceTree = "<group>"; };
 		30DF5DDA1ECAE39D0039A57C /* LTPatchSolvertProcessorPerspectiveSolution.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = LTPatchSolvertProcessorPerspectiveSolution.png; path = Resources/LTPatchSolvertProcessorPerspectiveSolution.png; sourceTree = "<group>"; };
 		5002C94D1A092917006C037C /* LTQuadCopyProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTQuadCopyProcessor.h; sourceTree = "<group>"; };
 		5002C94E1A092917006C037C /* LTQuadCopyProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTQuadCopyProcessor.mm; sourceTree = "<group>"; };
@@ -4624,6 +4626,7 @@
 				506808171E0039B9003EF92A /* PerspectiveTextureQuad2.png */,
 				280108F8197EBB0F0015F62A /* BlueRedBorderRoundedCorners.png */,
 				85F372BF1C8C891600E1D429 /* LT3DLUTIdentity2x2x2.png */,
+				30DF5C431EC9C7F00039A57C /* LTPatchCompositorProcessorSolution.png */,
 				8BA820B91981572700FBE68E /* LTPatchProcessorSolution.png */,
 				2828016A1B20AF1300596FD4 /* LTPatchSolverProcessorSolution.png */,
 				30DF5DDA1ECAE39D0039A57C /* LTPatchSolvertProcessorPerspectiveSolution.png */,
@@ -6390,6 +6393,7 @@
 				65057CC31B7773BC0029A164 /* Meal.png in Resources */,
 				284AA2B11AC99DD1007F86DB /* CircularCloneDefault.png in Resources */,
 				284AA2BD1AC99DD1007F86DB /* CircularPatchVisibleTarget.png in Resources */,
+				30DF5C441EC9C7F00039A57C /* LTPatchCompositorProcessorSolution.png in Resources */,
 				280E40DB1990C2F6008C5BD9 /* PerspectiveVertical.png in Resources */,
 				8597AEBB1D748F25008C96D2 /* LTAnisotropicDiffusion_guided_kernel_3_sigma_0_8.png in Resources */,
 				03C192C318F6F3B200DC6CA6 /* DoubleLinearMaskTiltedOffCenter.png in Resources */,

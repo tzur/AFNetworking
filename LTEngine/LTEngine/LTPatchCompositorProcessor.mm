@@ -7,8 +7,10 @@
 #import "LTNextIterationPlacement.h"
 #import "LTOneShotImageProcessor+Protected.h"
 #import "LTProgram.h"
-#import "LTRectMapping.h"
-#import "LTRotatedRect.h"
+#import "LTProgramFactory.h"
+#import "LTQuad.h"
+#import "LTQuadDrawer.h"
+#import "LTQuadMapping.h"
 #import "LTShaderStorage+LTPatchCompositorFsh.h"
 #import "LTShaderStorage+LTPatchCompositorVsh.h"
 #import "LTTexture.h"
@@ -25,14 +27,18 @@
                         output:(LTTexture *)output {
   LTParameterAssert(target.size == output.size,
                     @"Target and output textures should have the same size");
+  LTProgram *program =
+      [[[self class] programFactory] programWithVertexSource:[LTPatchCompositorVsh source]
+                                              fragmentSource:[LTPatchCompositorFsh source]];
   NSDictionary *auxiliaryTextures = @{
     [LTPatchCompositorFsh targetTexture]: target,
     [LTPatchCompositorFsh membraneTexture]: membrane,
     [LTPatchCompositorFsh maskTexture]: mask
   };
-  if (self = [super initWithVertexSource:[LTPatchCompositorVsh source]
-                          fragmentSource:[LTPatchCompositorFsh source] sourceTexture:source
-                       auxiliaryTextures:auxiliaryTextures andOutput:output]) {
+  LTQuadDrawer *drawer = [[LTQuadDrawer alloc] initWithProgram:program sourceTexture:source
+                                             auxiliaryTextures:auxiliaryTextures];
+  if (self = [super initWithDrawer:drawer sourceTexture:source auxiliaryTextures:auxiliaryTextures
+                         andOutput:output]) {
     self.source = source;
     self.target = target;
     [self setDefaultValues];
@@ -41,22 +47,30 @@
 }
 
 - (void)setDefaultValues {
-  self.sourceRect = [LTRotatedRect rect:CGRectFromOriginAndSize(CGPointZero, self.source.size)];
-  self.targetRect = [LTRotatedRect rect:CGRectFromOriginAndSize(CGPointZero, self.target.size)];
+  self.sourceQuad = [LTQuad quadFromRectWithOrigin:CGPointZero andSize:self.source.size];
+  self.targetQuad = [LTQuad quadFromRectWithOrigin:CGPointZero andSize:self.target.size];
   self.sourceOpacity = self.defaultSourceOpacity;
   self.flip = NO;
   self.smoothingAlpha = self.defaultSmoothingAlpha;
 }
 
+#pragma mark -
+#pragma mark LTGPUImageProcessor
+#pragma mark -
+
 - (void)drawWithPlacement:(LTNextIterationPlacement *)placement {
-  [self.drawer drawRotatedRect:self.targetRect inFramebuffer:placement.targetFbo
-               fromRotatedRect:self.sourceRect];
+  [((LTQuadDrawer *)self.drawer) drawQuad:self.targetQuad inFramebuffer:placement.targetFbo
+                                 fromQuad:self.sourceQuad];
 }
 
-- (void)setTargetRect:(LTRotatedRect *)targetRect {
-  _targetRect = targetRect;
+#pragma mark -
+#pragma mark Properties
+#pragma mark -
 
-  GLKMatrix3 targetTextureMat = LTTextureMatrix3ForRotatedRect(targetRect, self.target.size);
+- (void)setTargetQuad:(LTQuad *)targetQuad {
+  _targetQuad = targetQuad;
+
+  GLKMatrix3 targetTextureMat = LTTextureMatrix3ForQuad(targetQuad, self.target.size);
   self[[LTPatchCompositorVsh targetTextureMat]] = $(targetTextureMat);
 }
 
