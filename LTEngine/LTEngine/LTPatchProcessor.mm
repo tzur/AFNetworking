@@ -150,8 +150,8 @@ LTPropertyDeclare(CGFloat, smoothingAlpha, SmoothingAlpha);
   self.compositor = [[LTPatchCompositorProcessor alloc]
                      initWithSource:self.source target:self.target membrane:self.membrane
                      mask:self.mask output:self.output];
-  self.compositor.sourceRect = self.sourceRect;
-  self.compositor.targetRect = self.targetRect;
+  self.compositor.sourceQuad = [LTQuad quadFromRotatedRect:self.sourceRect];
+  self.compositor.targetQuad = [LTQuad quadFromRotatedRect:self.targetRect];
   self.compositor.sourceOpacity = self.sourceOpacity;
   self.compositor.smoothingAlpha = self.smoothingAlpha;
 }
@@ -168,13 +168,13 @@ LTPropertyProxy(CGFloat, smoothingAlpha, SmoothingAlpha, self.compositor);
 - (void)setSourceRect:(LTRotatedRect *)sourceRect {
   _sourceRect = sourceRect;
   self.solver.sourceQuad = [LTQuad quadFromRotatedRect:sourceRect];
-  self.compositor.sourceRect = sourceRect;
+  self.compositor.sourceQuad = [LTQuad quadFromRotatedRect:sourceRect];
 }
 
 - (void)setTargetRect:(LTRotatedRect *)targetRect {
   _targetRect = targetRect;
   self.solver.targetQuad = [LTQuad quadFromRotatedRect:targetRect];
-  self.compositor.targetRect = targetRect;
+  self.compositor.targetQuad = [LTQuad quadFromRotatedRect:targetRect];
 }
 
 - (BOOL)flip {
