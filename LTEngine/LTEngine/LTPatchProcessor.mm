@@ -7,6 +7,7 @@
 #import "LTOpenCVExtensions.h"
 #import "LTPatchCompositorProcessor.h"
 #import "LTPatchSolverProcessor.h"
+#import "LTQuad.h"
 #import "LTRectCopyProcessor.h"
 #import "LTRotatedRect.h"
 #import "LTTexture+Factory.h"
@@ -141,8 +142,8 @@ LTPropertyDeclare(CGFloat, smoothingAlpha, SmoothingAlpha);
 - (void)createSolver {
   self.solver = [[LTPatchSolverProcessor alloc] initWithMask:self.mask source:self.source
                                                       target:self.target output:self.membrane];
-  self.solver.sourceRect = self.sourceRect;
-  self.solver.targetRect = self.targetRect;
+  self.solver.sourceQuad = [LTQuad quadFromRotatedRect:self.sourceRect];
+  self.solver.targetQuad = [LTQuad quadFromRotatedRect:self.targetRect];
 }
 
 - (void)createCompositor {
@@ -166,13 +167,13 @@ LTPropertyProxy(CGFloat, smoothingAlpha, SmoothingAlpha, self.compositor);
 
 - (void)setSourceRect:(LTRotatedRect *)sourceRect {
   _sourceRect = sourceRect;
-  self.solver.sourceRect = sourceRect;
+  self.solver.sourceQuad = [LTQuad quadFromRotatedRect:sourceRect];
   self.compositor.sourceRect = sourceRect;
 }
 
 - (void)setTargetRect:(LTRotatedRect *)targetRect {
   _targetRect = targetRect;
-  self.solver.targetRect = targetRect;
+  self.solver.targetQuad = [LTQuad quadFromRotatedRect:targetRect];
   self.compositor.targetRect = targetRect;
 }
 
