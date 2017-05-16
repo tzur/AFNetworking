@@ -5,6 +5,7 @@
 
 #import "LTGLContext.h"
 #import "LTOpenCVExtensions.h"
+#import "LTQuad.h"
 #import "LTTexture+Factory.h"
 
 static LTTexture *LTPatchByteTextureWithSize(CGFloat sourceSize, int channels) {
@@ -286,6 +287,31 @@ context(@"processing", ^{
     [processor process];
 
     cv::Mat4b expected = LTLoadMat([self class], @"LTPatchSolverProcessorSolution.png");
+    expect($(LTMembraneFromPatchSolverResult(output))).to.beCloseToMatWithin($(expected), 1);
+  });
+
+  it(@"should produce proper membrane for perspectively transformed quads", ^{
+    using half_float::half;
+
+    cv::Mat4hf sourceMat = cv::Mat4hf(kTextureWidth, kTextureWidth);
+    sourceMat(cv::Rect(0, 0, kTextureWidth / 2, kTextureWidth))
+        .setTo(cv::Vec4hf(half(0), half(0), half(0), half(1)));
+    sourceMat(cv::Rect(kTextureWidth / 2, 0, kTextureWidth / 2, kTextureWidth))
+        .setTo(cv::Vec4hf(half(1), half(1), half(1), half(1)));
+
+    LTTexture *source = [LTTexture textureWithImage:sourceMat];
+    mask = LTPatchMask(kTextureWidth, 0, 255);
+    LTTexture *target = [LTTexture textureWithPropertiesOf:source];;
+    [target clearColor:LTVector4(0.5, 0.5, 0.5, 1)];
+
+    LTPatchSolverProcessor *processor =
+        [[LTPatchSolverProcessor alloc] initWithMask:mask source:source target:target
+                                          output:output];
+    processor.sourceQuad = [[LTQuad alloc] initWithCorners:{{{8, 0}, {16, 0}, {16, 16}, {0, 16}}}];
+    processor.targetQuad = [[LTQuad alloc] initWithCorners:{{{0, 0}, {16, 0}, {8, 16}, {0, 16}}}];
+    [processor process];
+
+    cv::Mat4b expected = LTLoadMat([self class], @"LTPatchSolvertProcessorPerspectiveSolution.png");
     expect($(LTMembraneFromPatchSolverResult(output))).to.beCloseToMatWithin($(expected), 1);
   });
 });

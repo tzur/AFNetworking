@@ -3,7 +3,7 @@
 
 #import "LTImageProcessor.h"
 
-@class LTRotatedRect, LTTexture;
+@class LTQuad, LTTexture;
 
 /// Processor for solving the Poisson equation. The processor is given a mask, source and target
 /// textures, and calculates a result to the equation given the boundary condition T - S on the
@@ -33,17 +33,17 @@
                       source:(LTTexture *)source target:(LTTexture *)target
                       output:(LTTexture *)output NS_DESIGNATED_INITIALIZER;
 
-/// Rotated rect defining a region of interest in the source texture, which the data is copied from.
-/// The default value is an axis aligned rect of (0, 0, source.width, source.height).
-@property (strong, nonatomic) LTRotatedRect *sourceRect;
+/// Quad defining a region of interest in the source texture, which the data is copied from.
+/// The default value is an axis aligned (0, 0, source.width, source.height) rect.
+@property (strong, nonatomic) LTQuad *sourceQuad;
 
-/// Rotated rect defining a region of interest in the target texture, where the data is copied to.
-/// Note that the size and orientation of the rect can be different than \c sourceRect, which will
-/// cause a warping of the source rect to this rect. The default value is an axis aligned rect of
-/// (0, 0, source.width, source.height).
-@property (strong, nonatomic) LTRotatedRect *targetRect;
+/// Quad defining a region of interest in the target texture, where the data is copied to.
+/// (0, 0, source.width, source.height) rect.
+/// Note that the value of this property might differ from the \c sourceQuad of this instance,
+/// causing the corresponding perspective transformation from the \c sourceQuad to this quad value.
+@property (strong, nonatomic) LTQuad *targetQuad;
 
-/// \c YES if the \c sourceRect should be used in a mirrored way. The mirroring is performed along
+/// \c YES if the \c sourceQuad should be used in a mirrored way. The mirroring is performed along
 /// the vertical line with <tt>x = 0.5</tt>, in texture coordinate space.
 @property (nonatomic) BOOL flip;
 

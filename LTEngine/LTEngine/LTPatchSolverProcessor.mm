@@ -11,8 +11,8 @@
 #import "LTOpenCVExtensions.h"
 #import "LTPatchBoundaryProcessor.h"
 #import "LTPatchKernel.h"
-#import "LTRectCopyProcessor.h"
-#import "LTRotatedRect.h"
+#import "LTQuad.h"
+#import "LTQuadCopyProcessor.h"
 #import "LTSplitComplexMat.h"
 #import "LTTexture+Factory.h"
 
@@ -26,7 +26,7 @@
   cv::Mat1f _paddedChi;
 }
 
-/// Mask used to select part of \c sourceRect to copy.
+/// Mask used to select part of \c sourceQuad to copy.
 @property (strong, nonatomic) LTTexture *mask;
 
 /// Threshold between the pixel values considered to be inside the mask and the pixel values
@@ -56,13 +56,13 @@
 @property (nonatomic) id lastProcessedMaskGenerationID;
 
 /// Resizer of source to working size.
-@property (strong, nonatomic) LTRectCopyProcessor *sourceResizer;
+@property (strong, nonatomic) LTQuadCopyProcessor *sourceResizer;
 
 /// Resizer of target to working size.
-@property (strong, nonatomic) LTRectCopyProcessor *targetResizer;
+@property (strong, nonatomic) LTQuadCopyProcessor *targetResizer;
 
 /// Resizer of mask to working size.
-@property (strong, nonatomic) LTRectCopyProcessor *maskResizer;
+@property (strong, nonatomic) LTQuadCopyProcessor *maskResizer;
 
 /// FFT result of the padded kernel.
 @property (strong, nonatomic) LTSplitComplexMat *paddedTransformedKernel;
@@ -127,8 +127,8 @@
 }
 
 - (void)setDefaultValues {
-  self.sourceRect = [LTRotatedRect rect:CGRectFromSize(self.source.size)];
-  self.targetRect = [LTRotatedRect rect:CGRectFromSize(self.source.size)];
+  self.sourceQuad = [LTQuad quadFromRect:CGRectFromSize(self.source.size)];
+  self.targetQuad = [LTQuad quadFromRect:CGRectFromSize(self.source.size)];
   self.flip = NO;
 }
 
@@ -173,18 +173,18 @@
   [self.targetResized clearColor:kBlack];
   [self.maskResized clearColor:kBlack];
 
-  self.sourceResizer = [[LTRectCopyProcessor alloc] initWithInput:self.source
+  self.sourceResizer = [[LTQuadCopyProcessor alloc] initWithInput:self.source
                                                            output:self.sourceResized];
-  self.targetResizer = [[LTRectCopyProcessor alloc] initWithInput:self.target
+  self.targetResizer = [[LTQuadCopyProcessor alloc] initWithInput:self.target
                                                            output:self.targetResized];
-  self.maskResizer = [[LTRectCopyProcessor alloc] initWithInput:self.mask
+  self.maskResizer = [[LTQuadCopyProcessor alloc] initWithInput:self.mask
                                                          output:self.maskResized];
 
-  self.sourceResizer.inputRect = self.sourceRect;
-  self.sourceResizer.outputRect = [LTRotatedRect rect:self.maskWorkingRect];
-  self.targetResizer.inputRect = self.targetRect;
-  self.targetResizer.outputRect = [LTRotatedRect rect:self.maskWorkingRect];
-  self.maskResizer.outputRect = [LTRotatedRect rect:self.maskWorkingRect];
+  self.sourceResizer.inputQuad = self.sourceQuad;
+  self.sourceResizer.outputQuad = [LTQuad quadFromRect:self.maskWorkingRect];
+  self.targetResizer.inputQuad = self.targetQuad;
+  self.targetResizer.outputQuad = [LTQuad quadFromRect:self.maskWorkingRect];
+  self.maskResizer.outputQuad = [LTQuad quadFromRect:self.maskWorkingRect];
 }
 
 #pragma mark -
@@ -219,6 +219,10 @@
 #pragma mark -
 
 - (void)process {
+  if (!self.sourceQuad || !self.targetQuad) {
+    return;
+  }
+
   [self processMaskIfNeeded];
 
   // TODO: (yaron) optional performance boost: process textures that their rect has been changed
@@ -312,17 +316,17 @@
 }
 
 #pragma mark -
-#pragma mark Source and target rects
+#pragma mark Source and target quads
 #pragma mark -
 
-- (void)setSourceRect:(LTRotatedRect *)sourceRect {
-  _sourceRect = sourceRect;
-  self.sourceResizer.inputRect = sourceRect;
+- (void)setSourceQuad:(LTQuad *)sourceQuad {
+  _sourceQuad = sourceQuad;
+  self.sourceResizer.inputQuad = sourceQuad;
 }
 
-- (void)setTargetRect:(LTRotatedRect *)targetRect {
-  _targetRect = targetRect;
-  self.targetResizer.inputRect = targetRect;
+- (void)setTargetQuad:(LTQuad *)targetQuad {
+  _targetQuad = targetQuad;
+  self.targetResizer.inputQuad = targetQuad;
 }
 
 #pragma mark -
