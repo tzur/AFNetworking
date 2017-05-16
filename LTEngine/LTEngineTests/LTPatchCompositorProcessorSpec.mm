@@ -3,7 +3,8 @@
 
 #import "LTPatchCompositorProcessor.h"
 
-#import "LTRotatedRect.h"
+#import "LTOpenCVExtensions.h"
+#import "LTQuad.h"
 #import "LTTexture+Factory.h"
 
 SpecBegin(LTPatchCompositorProcessor)
@@ -46,13 +47,13 @@ context(@"initialization", ^{
                                              initWithSource:source target:target
                                              membrane:membrane mask:mask output:output];
 
-    LTRotatedRect *expectedSourceRect = [LTRotatedRect rect:CGRectMake(0, 0, source.size.width,
-                                                                       source.size.height)];
-    LTRotatedRect *expectedTargetRect = [LTRotatedRect rect:CGRectMake(0, 0, target.size.width,
-                                                                       target.size.height)];
+    LTQuad *expectedSourceQuad = [LTQuad quadFromRect:CGRectMake(0, 0, source.size.width,
+                                                                 source.size.height)];
+    LTQuad *expectedTargetQuad = [LTQuad quadFromRect:CGRectMake(0, 0, target.size.width,
+                                                                 target.size.height)];
 
-    expect(processor.sourceRect).to.equal(expectedSourceRect);
-    expect(processor.targetRect).to.equal(expectedTargetRect);
+    expect(processor.sourceQuad).to.equal(expectedSourceQuad);
+    expect(processor.targetQuad).to.equal(expectedTargetQuad);
     expect(processor.flip).to.equal(NO);
     expect(processor.sourceOpacity).to.equal(1.0);
     expect(processor.smoothingAlpha).to.equal(1.0);
@@ -76,7 +77,7 @@ context(@"processing", ^{
     // - Opacity is set to 0.5, which is later multiplied with the mask.
     //
     // When compositing, only the 16x16 top left corner of source is used, and it is copied to the
-    // entire target rect. The mask (after resizing to target rect coordinates) specifies only the
+    // entire target quad. The mask (after resizing to target quad coordinates) specifies only the
     // top left 16x16 rect as one that should be written as source + membrane, while the rest is
     // written as target.
     cv::Mat4b sourceImage(cv::Mat4b::zeros(32, 32));
@@ -99,11 +100,12 @@ context(@"processing", ^{
     mask.magFilterInterpolation = LTTextureInterpolationNearest;
 
     output = [LTTexture textureWithPropertiesOf:target];
+    [output clearColor:LTVector4::zeros()];
 
     processor = [[LTPatchCompositorProcessor alloc] initWithSource:source target:target
         membrane:membrane mask:mask output:output];
-    processor.sourceRect = [LTRotatedRect rect:CGRectMake(0, 0, 16, 16)];
-    processor.targetRect = [LTRotatedRect rect:CGRectMake(0, 0, 32, 32)];
+    processor.sourceQuad = [LTQuad quadFromRect:CGRectMake(0, 0, 16, 16)];
+    processor.targetQuad = [LTQuad quadFromRect:CGRectMake(0, 0, 32, 32)];
   });
 
   afterEach(^{
@@ -154,6 +156,21 @@ context(@"processing", ^{
    // Source + membrane.
     expected(cv::Rect(0, 0, 16, 16)) = cv::Vec4b(0, 191, 128, 255);
 
+    expect($([output image])).to.beCloseToMat($(expected));
+  });
+
+  it(@"should composite correctly with perspectively transformed quads", ^{
+    processor.sourceOpacity = 0.5;
+    processor.smoothingAlpha = 0.5;
+    processor.flip = YES;
+    processor.sourceQuad = [[LTQuad alloc] initWithCorners:{{{0, 8}, {16, 0}, {16, 16}, {0, 16}}}];
+    processor.targetQuad = [[LTQuad alloc] initWithCorners:{{{0, 16}, {32, 0}, {32, 32}, {0, 32}}}];
+
+    [processor process];
+
+    // Set initially to target.
+    cv::Mat4b expected = LTLoadMat([self class], @"LTPatchCompositorProcessorSolution.png");
+    // Source + membrane.
     expect($([output image])).to.beCloseToMat($(expected));
   });
 });
