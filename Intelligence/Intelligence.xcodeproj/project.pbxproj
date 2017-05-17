@@ -15,6 +15,9 @@
 		A11723691ECC76620039177C /* INTDeviceInfo.mm in Sources */ = {isa = PBXBuildFile; fileRef = A11723661ECC76620039177C /* INTDeviceInfo.mm */; };
 		A11722531ECC556B0039177C /* INTDeviceInfoSource.mm in Sources */ = {isa = PBXBuildFile; fileRef = A11722521ECC556B0039177C /* INTDeviceInfoSource.mm */; };
 		A117235F1ECC60230039177C /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A117235E1ECC60230039177C /* AdSupport.framework */; };
+		A117235B1ECC5C890039177C /* INTFakeDeviceInfoSource.mm in Sources */ = {isa = PBXBuildFile; fileRef = A117235A1ECC5C890039177C /* INTFakeDeviceInfoSource.mm */; };
+		A117235D1ECC5D4F0039177C /* INTDeviceInfoObserverSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = A117235C1ECC5D4F0039177C /* INTDeviceInfoObserverSpec.mm */; };
+		A117236A1ECC76620039177C /* INTDeviceInfoObserver.mm in Sources */ = {isa = PBXBuildFile; fileRef = A11723681ECC76620039177C /* INTDeviceInfoObserver.mm */; };
 		A117236D1ECC767C0039177C /* NSUUID+Zero.mm in Sources */ = {isa = PBXBuildFile; fileRef = A117236C1ECC767C0039177C /* NSUUID+Zero.mm */; };
 		A132A0CD1EB8C297001F70A6 /* INTCycleTransformerBlockBuilder.mm in Sources */ = {isa = PBXBuildFile; fileRef = A132A0CC1EB8C297001F70A6 /* INTCycleTransformerBlockBuilder.mm */; };
 		A132A0E51EB8C2A5001F70A6 /* INTCycleTransformerBlockBuilderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = A132A0E41EB8C2A5001F70A6 /* INTCycleTransformerBlockBuilderSpec.mm */; };
@@ -351,10 +354,15 @@
 		A11722511ECC556B0039177C /* INTDeviceInfoSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INTDeviceInfoSource.h; sourceTree = "<group>"; };
 		A11722521ECC556B0039177C /* INTDeviceInfoSource.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = INTDeviceInfoSource.mm; sourceTree = "<group>"; };
 		A11722CE1ECC5A950039177C /* Mantle.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Mantle.xcodeproj; path = ../third_party/Mantle/Mantle.xcodeproj; sourceTree = "<group>"; };
+		A11723591ECC5C890039177C /* INTFakeDeviceInfoSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INTFakeDeviceInfoSource.h; sourceTree = "<group>"; };
+		A117235A1ECC5C890039177C /* INTFakeDeviceInfoSource.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = INTFakeDeviceInfoSource.mm; sourceTree = "<group>"; };
+		A117235C1ECC5D4F0039177C /* INTDeviceInfoObserverSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = INTDeviceInfoObserverSpec.mm; sourceTree = "<group>"; };
 		A117235E1ECC60230039177C /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		A11723611ECC65880039177C /* INTStorage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = INTStorage.h; sourceTree = "<group>"; };
 		A11723651ECC76620039177C /* INTDeviceInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INTDeviceInfo.h; sourceTree = "<group>"; };
 		A11723661ECC76620039177C /* INTDeviceInfo.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = INTDeviceInfo.mm; sourceTree = "<group>"; };
+		A11723671ECC76620039177C /* INTDeviceInfoObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INTDeviceInfoObserver.h; sourceTree = "<group>"; };
+		A11723681ECC76620039177C /* INTDeviceInfoObserver.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = INTDeviceInfoObserver.mm; sourceTree = "<group>"; };
 		A117236B1ECC767C0039177C /* NSUUID+Zero.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSUUID+Zero.h"; sourceTree = "<group>"; };
 		A117236C1ECC767C0039177C /* NSUUID+Zero.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSUUID+Zero.mm"; sourceTree = "<group>"; };
 		A132A0CB1EB8C297001F70A6 /* INTCycleTransformerBlockBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INTCycleTransformerBlockBuilder.h; sourceTree = "<group>"; };
@@ -548,6 +556,8 @@
 			children = (
 				A11723651ECC76620039177C /* INTDeviceInfo.h */,
 				A11723661ECC76620039177C /* INTDeviceInfo.mm */,
+				A11723671ECC76620039177C /* INTDeviceInfoObserver.h */,
+				A11723681ECC76620039177C /* INTDeviceInfoObserver.mm */,
 				A11722511ECC556B0039177C /* INTDeviceInfoSource.h */,
 				A11722521ECC556B0039177C /* INTDeviceInfoSource.mm */,
 			);
@@ -563,6 +573,16 @@
 				A11722DC1ECC5A950039177C /* Mantle-iOSTests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		A11723581ECC5C6F0039177C /* Device Info */ = {
+			isa = PBXGroup;
+			children = (
+				A117235C1ECC5D4F0039177C /* INTDeviceInfoObserverSpec.mm */,
+				A11723591ECC5C890039177C /* INTFakeDeviceInfoSource.h */,
+				A117235A1ECC5C890039177C /* INTFakeDeviceInfoSource.mm */,
+			);
+			name = "Device Info";
 			sourceTree = "<group>";
 		};
 		A132A26F1EBCA089001F70A6 /* Events */ = {
@@ -772,6 +792,7 @@
 			children = (
 				A1D136EA1E78FDF400B1EA8D /* Base */,
 				A149BB5A1EBE573100DA82B7 /* Context Generators */,
+				A11723581ECC5C6F0039177C /* Device Info */,
 				A10167F31E713D72009596E1 /* Event Aggregation */,
 				A132A32C1EBCCDD6001F70A6 /* Event Code Generation */,
 				A1F24CC11EC082C30050D534 /* Loggers */,
@@ -1310,6 +1331,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A117236A1ECC76620039177C /* INTDeviceInfoObserver.mm in Sources */,
 				A149BC281EBE6B2C00DA82B7 /* INTAppBecameActiveEvent.json in Sources */,
 				A149BC291EBE6B2C00DA82B7 /* INTAppBackgroundedEvent.json in Sources */,
 				A149BC301EBE6B8900DA82B7 /* INTAnalytricksTransformerBlocks.mm in Sources */,
@@ -1363,6 +1385,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A149BB5C1EBE574900DA82B7 /* INTAnalytricksContextGeneratorsSpec.mm in Sources */,
+				A117235B1ECC5C890039177C /* INTFakeDeviceInfoSource.mm in Sources */,
 				A132A3781EBCD08D001F70A6 /* INTAnalytricksFakeBase.json in Sources */,
 				A132A3791EBCD08D001F70A6 /* INTAnalytricksFakeCommon.json in Sources */,
 				A132A37A1EBCD08D001F70A6 /* INTAnalytricksFakeConcrete.json in Sources */,
@@ -1378,6 +1401,7 @@
 				A1B373BF1EA6511F008E5195 /* INTEventTransformationExecutor.mm in Sources */,
 				A1F24CC31EC082DC0050D534 /* INTAloomaLoggerSpec.mm in Sources */,
 				A1C945601EBF3AE800BECAB4 /* INTAnalytricksContext+MergeSpec.mm in Sources */,
+				A117235D1ECC5D4F0039177C /* INTDeviceInfoObserverSpec.mm in Sources */,
 				A101680B1E713D8B009596E1 /* INTEventTransformerSpec.mm in Sources */,
 				A113411F1EB0D1E30042ABA8 /* INTTransformerBlockBuilderSpec.mm in Sources */,
 			);
