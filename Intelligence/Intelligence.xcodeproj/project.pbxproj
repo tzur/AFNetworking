@@ -19,6 +19,7 @@
 		A117235D1ECC5D4F0039177C /* INTDeviceInfoObserverSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = A117235C1ECC5D4F0039177C /* INTDeviceInfoObserverSpec.mm */; };
 		A117236A1ECC76620039177C /* INTDeviceInfoObserver.mm in Sources */ = {isa = PBXBuildFile; fileRef = A11723681ECC76620039177C /* INTDeviceInfoObserver.mm */; };
 		A117236D1ECC767C0039177C /* NSUUID+Zero.mm in Sources */ = {isa = PBXBuildFile; fileRef = A117236C1ECC767C0039177C /* NSUUID+Zero.mm */; };
+		A11723701ECC787E0039177C /* INTDeviceInfoLoadedEvent.mm in Sources */ = {isa = PBXBuildFile; fileRef = A117236F1ECC787E0039177C /* INTDeviceInfoLoadedEvent.mm */; };
 		A132A0CD1EB8C297001F70A6 /* INTCycleTransformerBlockBuilder.mm in Sources */ = {isa = PBXBuildFile; fileRef = A132A0CC1EB8C297001F70A6 /* INTCycleTransformerBlockBuilder.mm */; };
 		A132A0E51EB8C2A5001F70A6 /* INTCycleTransformerBlockBuilderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = A132A0E41EB8C2A5001F70A6 /* INTCycleTransformerBlockBuilderSpec.mm */; };
 		A132A3601EBCCDF3001F70A6 /* INTAnalytricksFakeBase.json in Resources */ = {isa = PBXBuildFile; fileRef = A132A3451EBCCDF3001F70A6 /* INTAnalytricksFakeBase.json */; };
@@ -365,6 +366,8 @@
 		A11723681ECC76620039177C /* INTDeviceInfoObserver.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = INTDeviceInfoObserver.mm; sourceTree = "<group>"; };
 		A117236B1ECC767C0039177C /* NSUUID+Zero.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSUUID+Zero.h"; sourceTree = "<group>"; };
 		A117236C1ECC767C0039177C /* NSUUID+Zero.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSUUID+Zero.mm"; sourceTree = "<group>"; };
+		A117236E1ECC787E0039177C /* INTDeviceInfoLoadedEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = INTDeviceInfoLoadedEvent.h; path = Intelligence/INTDeviceInfoLoadedEvent.h; sourceTree = SOURCE_ROOT; };
+		A117236F1ECC787E0039177C /* INTDeviceInfoLoadedEvent.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = INTDeviceInfoLoadedEvent.mm; path = Intelligence/INTDeviceInfoLoadedEvent.mm; sourceTree = SOURCE_ROOT; };
 		A132A0CB1EB8C297001F70A6 /* INTCycleTransformerBlockBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INTCycleTransformerBlockBuilder.h; sourceTree = "<group>"; };
 		A132A0CC1EB8C297001F70A6 /* INTCycleTransformerBlockBuilder.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = INTCycleTransformerBlockBuilder.mm; sourceTree = "<group>"; };
 		A132A0E41EB8C2A5001F70A6 /* INTCycleTransformerBlockBuilderSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = INTCycleTransformerBlockBuilderSpec.mm; sourceTree = "<group>"; };
@@ -946,6 +949,8 @@
 				A17E08F61ED1E087007940A0 /* INTMediaExportEndedEvent.json */,
 				A17E08F11ED1D8C1007940A0 /* INTMediaImportedEvent.json */,
 				A149BC231EBE6AE300DA82B7 /* INTDeepLinkOpenedEvent.json */,
+				A117236E1ECC787E0039177C /* INTDeviceInfoLoadedEvent.h */,
+				A117236F1ECC787E0039177C /* INTDeviceInfoLoadedEvent.mm */,
 				A17E0A8F1ED45B78007940A0 /* INTProjectDeletedEvent.json */,
 				A1C943291EBB357800BECAB4 /* INTProjectLoadedEvent.json */,
 				A1C943271EBB357800BECAB4 /* INTProjectUnloadedEvent.json */,
@@ -1368,6 +1373,7 @@
 				A1C9433A1EBB358E00BECAB4 /* INTAnalytricksMetadata.json in Sources */,
 				A149BB561EBE56D000DA82B7 /* INTAnalytricksContext+Merge.mm in Sources */,
 				A1417C801E6EF77C005DBEFF /* INTEventMetadata.mm in Sources */,
+				A11723701ECC787E0039177C /* INTDeviceInfoLoadedEvent.mm in Sources */,
 				A117236D1ECC767C0039177C /* NSUUID+Zero.mm in Sources */,
 				A1541AF41EAF1CB000B4F064 /* INTEventsPipeline.mm in Sources */,
 				A132A0CD1EB8C297001F70A6 /* INTCycleTransformerBlockBuilder.mm in Sources */,
