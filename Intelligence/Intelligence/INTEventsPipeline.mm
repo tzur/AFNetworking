@@ -3,6 +3,7 @@
 
 #import "INTEventsPipeline.h"
 
+#import "INTDeviceInfoLoadedEvent.h"
 #import "INTEventLogger.h"
 #import "INTEventMetadata.h"
 #import "INTEventTransformer.h"
@@ -82,6 +83,19 @@ NS_ASSUME_NONNULL_BEGIN
       [eventLogger logEvent:event];
     }
   }
+}
+
+#pragma mark -
+#pragma mark INTDeviceInfoManagerDelegate
+#pragma mark -
+
+- (void)deviceInfoObserver:(INTDeviceInfoObserver * __unused)deviceInfoObserver
+          loadedDeviceInfo:(INTDeviceInfo *)deviceInfo
+      deviceInfoRevisionID:(NSUUID *)deviceInfoRevisionID
+             isNewRevision:(BOOL)isNewRevision {
+  [self reportLowLevelEvent:[[INTDeviceInfoLoadedEvent alloc]
+                             initWithDeviceInfo:deviceInfo deviceInfoRevisionID:deviceInfoRevisionID
+                             isNewRevision:isNewRevision]];
 }
 
 @end

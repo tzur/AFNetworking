@@ -3,6 +3,7 @@
 
 #import "INTAppLifecycleTimer.h"
 #import "INTDataStructures.h"
+#import "INTDeviceInfoObserver.h"
 #import "INTTransformerBlock.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -56,6 +57,18 @@ typedef struct {
 /// a serial queue, so it make take some time between the call to the receiver has returned to a log
 /// of a generated high level events.
 - (void)reportLowLevelEvent:(id)event;
+
+@end
+
+/// Protocol for observing \c INTDeviceInfo that are reported by an \c INTDeviceInfoManager.
+@interface INTEventsPipeline (DeviceInfoManagerDelegate) <INTDeviceInfoObserverDelegate>
+
+/// Reports an \c INTDeviceInfoLoadedEvent with \c deviceInfo, deviceInfoRevisionID and
+/// \c isNewRevision.
+- (void)deviceInfoObserver:(INTDeviceInfoObserver *)deviceInfoObserver
+          loadedDeviceInfo:(INTDeviceInfo *)deviceInfo
+      deviceInfoRevisionID:(NSUUID *)deviceInfoRevisionID
+             isNewRevision:(BOOL)isNewRevision;
 
 @end
 
