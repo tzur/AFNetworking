@@ -11,6 +11,8 @@
 		A101680B1E713D8B009596E1 /* INTEventTransformerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = A101680A1E713D8B009596E1 /* INTEventTransformerSpec.mm */; };
 		A1089F6C1EB76EFB0037B6BE /* NSDictionary+Merge.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1089F6B1EB76EFB0037B6BE /* NSDictionary+Merge.mm */; };
 		A113411F1EB0D1E30042ABA8 /* INTTransformerBlockBuilderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = A113411E1EB0D1E30042ABA8 /* INTTransformerBlockBuilderSpec.mm */; };
+		A11722DD1ECC5AA90039177C /* Mantle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A11722DA1ECC5A950039177C /* Mantle.framework */; };
+		A11723691ECC76620039177C /* INTDeviceInfo.mm in Sources */ = {isa = PBXBuildFile; fileRef = A11723661ECC76620039177C /* INTDeviceInfo.mm */; };
 		A132A0CD1EB8C297001F70A6 /* INTCycleTransformerBlockBuilder.mm in Sources */ = {isa = PBXBuildFile; fileRef = A132A0CC1EB8C297001F70A6 /* INTCycleTransformerBlockBuilder.mm */; };
 		A132A0E51EB8C2A5001F70A6 /* INTCycleTransformerBlockBuilderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = A132A0E41EB8C2A5001F70A6 /* INTCycleTransformerBlockBuilderSpec.mm */; };
 		A132A3601EBCCDF3001F70A6 /* INTAnalytricksFakeBase.json in Resources */ = {isa = PBXBuildFile; fileRef = A132A3451EBCCDF3001F70A6 /* INTAnalytricksFakeBase.json */; };
@@ -115,6 +117,34 @@
 /* End PBXBuildRule section */
 
 /* Begin PBXContainerItemProxy section */
+		A11722D51ECC5A950039177C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A11722CE1ECC5A950039177C /* Mantle.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D042FC3C15F72B23004E8054;
+			remoteInfo = "Mantle-Mac";
+		};
+		A11722D71ECC5A950039177C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A11722CE1ECC5A950039177C /* Mantle.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D042FC5415F72B23004E8054;
+			remoteInfo = "Mantle-MacTests";
+		};
+		A11722D91ECC5A950039177C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A11722CE1ECC5A950039177C /* Mantle.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D0E9C35719F6DB38000D427D;
+			remoteInfo = "Mantle-iOS";
+		};
+		A11722DB1ECC5A950039177C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A11722CE1ECC5A950039177C /* Mantle.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D0E9C36119F6DB38000D427D;
+			remoteInfo = "Mantle-iOSTests";
+		};
 		A14171C71E6EAC0D005DBEFF /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = A14171991E6EAA93005DBEFF /* Project object */;
@@ -314,7 +344,10 @@
 		A108A0411EBA129C0037B6BE /* INTJSONSerializable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INTJSONSerializable.h; sourceTree = "<group>"; };
 		A10EEB871EAC783400791FF4 /* INTTransformerBlock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INTTransformerBlock.h; sourceTree = "<group>"; };
 		A113411E1EB0D1E30042ABA8 /* INTTransformerBlockBuilderSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = INTTransformerBlockBuilderSpec.mm; sourceTree = "<group>"; };
+		A11722CE1ECC5A950039177C /* Mantle.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Mantle.xcodeproj; path = ../third_party/Mantle/Mantle.xcodeproj; sourceTree = "<group>"; };
 		A11723611ECC65880039177C /* INTStorage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = INTStorage.h; sourceTree = "<group>"; };
+		A11723651ECC76620039177C /* INTDeviceInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INTDeviceInfo.h; sourceTree = "<group>"; };
+		A11723661ECC76620039177C /* INTDeviceInfo.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = INTDeviceInfo.mm; sourceTree = "<group>"; };
 		A132A0CB1EB8C297001F70A6 /* INTCycleTransformerBlockBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INTCycleTransformerBlockBuilder.h; sourceTree = "<group>"; };
 		A132A0CC1EB8C297001F70A6 /* INTCycleTransformerBlockBuilder.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = INTCycleTransformerBlockBuilder.mm; sourceTree = "<group>"; };
 		A132A0E41EB8C2A5001F70A6 /* INTCycleTransformerBlockBuilderSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = INTCycleTransformerBlockBuilderSpec.mm; sourceTree = "<group>"; };
@@ -431,6 +464,7 @@
 				A1F24D121EC0C0B50050D534 /* CoreTelephony.framework in Frameworks */,
 				A1417AAA1E6ED9D0005DBEFF /* CoreGraphics.framework in Frameworks */,
 				A1417AAE1E6EDA31005DBEFF /* GLKit.framework in Frameworks */,
+				A11722DD1ECC5AA90039177C /* Mantle.framework in Frameworks */,
 				A1417AAC1E6ED9D5005DBEFF /* QuartzCore.framework in Frameworks */,
 				A1F24D101EC0BFBD0050D534 /* SystemConfiguration.framework in Frameworks */,
 				A1417A921E6ED9CB005DBEFF /* UIKit.framework in Frameworks */,
@@ -497,6 +531,26 @@
 			name = "Test Utils";
 			sourceTree = "<group>";
 		};
+		A11721D31ECC36290039177C /* Device Info */ = {
+			isa = PBXGroup;
+			children = (
+				A11723651ECC76620039177C /* INTDeviceInfo.h */,
+				A11723661ECC76620039177C /* INTDeviceInfo.mm */,
+			);
+			name = "Device Info";
+			sourceTree = "<group>";
+		};
+		A11722CF1ECC5A950039177C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A11722D61ECC5A950039177C /* Mantle.framework */,
+				A11722D81ECC5A950039177C /* Mantle-MacTests.xctest */,
+				A11722DA1ECC5A950039177C /* Mantle.framework */,
+				A11722DC1ECC5A950039177C /* Mantle-iOSTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		A132A26F1EBCA089001F70A6 /* Events */ = {
 			isa = PBXGroup;
 			children = (
@@ -553,6 +607,7 @@
 			children = (
 				A1417C8A1E6EFFE3005DBEFF /* Base */,
 				A149BB531EBE56AB00DA82B7 /* Context Generators */,
+				A11721D31ECC36290039177C /* Device Info */,
 				A10164CA1E700424009596E1 /* Event Aggregation */,
 				A172A9A81EAC111600A12B86 /* Event Logging */,
 				A132A26F1EBCA089001F70A6 /* Events */,
@@ -593,6 +648,7 @@
 			children = (
 				A14172741E6EAEE7005DBEFF /* Expecta.xcodeproj */,
 				A14172691E6EADDF005DBEFF /* LTKit.xcodeproj */,
+				A11722CE1ECC5A950039177C /* Mantle.xcodeproj */,
 				A141728F1E6EAF03005DBEFF /* OCMock.xcodeproj */,
 				A14172A41E6EAF0D005DBEFF /* Specta.xcodeproj */,
 				A14172D71E6EB2FF005DBEFF /* TestHost.xcodeproj */,
@@ -982,6 +1038,10 @@
 					ProjectRef = A14172691E6EADDF005DBEFF /* LTKit.xcodeproj */;
 				},
 				{
+					ProductGroup = A11722CF1ECC5A950039177C /* Products */;
+					ProjectRef = A11722CE1ECC5A950039177C /* Mantle.xcodeproj */;
+				},
+				{
 					ProductGroup = A14172901E6EAF03005DBEFF /* Products */;
 					ProjectRef = A141728F1E6EAF03005DBEFF /* OCMock.xcodeproj */;
 				},
@@ -1003,6 +1063,34 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		A11722D61ECC5A950039177C /* Mantle.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Mantle.framework;
+			remoteRef = A11722D51ECC5A950039177C /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		A11722D81ECC5A950039177C /* Mantle-MacTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "Mantle-MacTests.xctest";
+			remoteRef = A11722D71ECC5A950039177C /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		A11722DA1ECC5A950039177C /* Mantle.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Mantle.framework;
+			remoteRef = A11722D91ECC5A950039177C /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		A11722DC1ECC5A950039177C /* Mantle-iOSTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "Mantle-iOSTests.xctest";
+			remoteRef = A11722DB1ECC5A950039177C /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		A141726F1E6EADDF005DBEFF /* libLTKit.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -1210,6 +1298,7 @@
 				A1F24CBF1EC0802D0050D534 /* INTAloomaLogger.mm in Sources */,
 				A149BC2B1EBE6B2C00DA82B7 /* INTPushNotificationOpenedEvent.json in Sources */,
 				A17E08F91ED1E16E007940A0 /* INTAnalytricksMediaExported.json in Sources */,
+				A11723691ECC76620039177C /* INTDeviceInfo.mm in Sources */,
 				A149BC2C1EBE6B2C00DA82B7 /* INTScreenDismissedEvent.json in Sources */,
 				A149BC1D1EBE6AC200DA82B7 /* INTAnalytricksBaseUsage.json in Sources */,
 				A1F24CA51EC07FC20050D534 /* NSData+AloomaBase64.m in Sources */,
@@ -1331,6 +1420,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/../LTKit",
+					"$(SRCROOT)/../third_party/Mantle",
 					"$(SRCROOT)/../third_party/alooma-ios-sdk",
 					"$(SRCROOT)/../third_party/libextobjc",
 				);
@@ -1378,6 +1468,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/../LTKit",
+					"$(SRCROOT)/../third_party/Mantle",
 					"$(SRCROOT)/../third_party/alooma-ios-sdk",
 					"$(SRCROOT)/../third_party/libextobjc",
 				);
