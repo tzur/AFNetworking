@@ -13,17 +13,29 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (instancetype)videoFrameWithPixelBuffer:(lt::Ref<CVPixelBufferRef>)pixelBuffer
                   withPropertiesFromFrame:(CAMVideoFrame *)otherFrame {
+    CMSampleTimingInfo timingInfo = [otherFrame timingInfo];
+
+    NSDictionary * _Nullable propagatableMetadata =
+        CAMGetPropagatableMetadata([otherFrame sampleBuffer].get());
+
+    return [self videoFrameWithPixelBuffer:std::move(pixelBuffer)
+                            withTimingInfo:timingInfo
+                  withPropagatableMetadata:propagatableMetadata];
+}
+
++ (instancetype)videoFrameWithPixelBuffer:(lt::Ref<CVPixelBufferRef>)pixelBuffer
+                           withTimingInfo:(CMSampleTimingInfo)timingInfo
+                 withPropagatableMetadata:(nullable NSDictionary *)propagatableMetadata {
   @autoreleasepool {
     CMVideoFormatDescriptionRef videoFormat;
     CVReturn videoFormatCreate = CMVideoFormatDescriptionCreateForImageBuffer(NULL,
                                                                               pixelBuffer.get(),
                                                                               &videoFormat);
+
     LTAssert(videoFormatCreate == kCVReturnSuccess,
              @"Video format creation failed with code %d", videoFormatCreate);
     lt::Ref<CMVideoFormatDescriptionRef> videoFormatRef(videoFormat);
-
     CMSampleBufferRef sampleBuffer;
-    CMSampleTimingInfo timingInfo = [otherFrame timingInfo];
     OSStatus sampleBufferCreate = CMSampleBufferCreateReadyWithImageBuffer(kCFAllocatorDefault,
                                                                            pixelBuffer.get(),
                                                                            videoFormat,
@@ -33,7 +45,9 @@ NS_ASSUME_NONNULL_BEGIN
              @"CMSampleBuffer creation failed with code %d", (int)sampleBufferCreate);
     lt::Ref<CMSampleBufferRef> sampleBufferRef(sampleBuffer);
 
-    CAMCopyPropagatableMetadata([otherFrame sampleBuffer].get(), sampleBuffer);
+    if (propagatableMetadata != nil) {
+      CAMSetPropagatableMetadata(sampleBuffer, propagatableMetadata);
+    }
 
     return [[CAMVideoFrame alloc] initWithSampleBuffer:sampleBuffer];
   }
