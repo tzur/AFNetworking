@@ -258,7 +258,7 @@ typedef void (^LTImageCGImageBlock)(CGImageRef imageRef);
     NSDictionary *properties = @{
       (__bridge NSString *)kCGImageDestinationLossyCompressionQuality: @1
     };
-    CGImageDestinationAddImage(destination.get(), imageRef, (CFDictionaryRef)properties);
+    CGImageDestinationAddImage(destination.get(), imageRef, (__bridge CFDictionaryRef)properties);
 
     BOOL writtenSuccessfully = CGImageDestinationFinalize(destination.get());
     if (!writtenSuccessfully) {
@@ -284,7 +284,7 @@ typedef void (^LTImageCGImageBlock)(CGImageRef imageRef);
 }
 
 - (CGImageDestinationRef)newImageDestinationWithURL:(NSURL *)url {
-  return CGImageDestinationCreateWithURL((CFURLRef)url, kUTTypeJPEG, 1, NULL);
+  return CGImageDestinationCreateWithURL((__bridge CFURLRef)url, kUTTypeJPEG, 1, NULL);
 }
 
 #pragma mark -
