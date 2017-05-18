@@ -177,6 +177,63 @@ NS_ASSUME_NONNULL_BEGIN
   return [url setResourceValue:@(skipBackup) forKey:NSURLIsExcludedFromBackupKey error:error];
 }
 
+- (uint64_t)lt_sizeOfDirectoryAtPath:(NSURL *)path
+                               error:(NSError * __autoreleasing *)error {
+  if (![self lt_directoryExistsAtPath:path.path]) {
+    if (error) {
+      *error = [NSError lt_errorWithCode:LTErrorCodeFileNotFound url:path];
+    }
+    return 0;
+  }
+
+  NSMutableArray<NSError *> *errors = [NSMutableArray array];
+  NSArray<NSURLResourceKey> *keys = @[NSURLFileResourceIdentifierKey, NSURLFileSizeKey];
+  NSDirectoryEnumerator * _Nullable enumerator =
+      [self enumeratorAtURL:path includingPropertiesForKeys:keys
+                    options:(NSDirectoryEnumerationOptions)0
+               errorHandler:^BOOL(NSURL *url, NSError *error) {
+    if (error) {
+      [errors addObject:[NSError lt_errorWithCode:LTErrorCodeFileUnknownError url:url
+                                  underlyingError:error]];
+    }
+
+    return YES;
+  }];
+
+  uint64_t size = 0;
+  if (!enumerator) {
+    if (error) {
+      *error = [NSError lt_errorWithCode:LTErrorCodeFileNotFound underlyingErrors:errors];
+    }
+    return 0;
+  }
+
+  NSMutableSet<NSString *> *examinedFiles = [NSMutableSet set];
+  for (NSURL *fileURL in enumerator) {
+    NSError *fileError;
+    NSDictionary *resourceValues = [fileURL resourceValuesForKeys:keys error:&fileError];
+    if (fileError) {
+      [errors addObject:[NSError lt_errorWithCode:LTErrorCodeFileUnknownError url:fileURL
+                                  underlyingError:fileError]];
+      continue;
+    }
+
+    NSString *identifier = resourceValues[NSURLFileResourceIdentifierKey];
+    if ([examinedFiles containsObject:identifier]) {
+      continue;
+    }
+    NSNumber *fileSize = resourceValues[NSURLFileSizeKey];
+    [examinedFiles addObject:identifier];
+    size += [fileSize unsignedLongLongValue];
+  }
+
+  if (errors.count && error) {
+    *error = [NSError lt_errorWithCode:LTErrorCodeFileUnknownError underlyingErrors:errors];
+  }
+
+  return size;
+}
+
 - (uint64_t)lt_totalStorage {
   return [[[self storageDictionary] objectForKey:NSFileSystemSize] unsignedLongLongValue];
 }
