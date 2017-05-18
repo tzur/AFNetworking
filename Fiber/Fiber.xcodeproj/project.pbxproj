@@ -78,6 +78,10 @@
 		8861FCE01E5A279D00CA1436 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8861FCDF1E5A279D00CA1436 /* GLKit.framework */; };
 		B918A90E1E06CBC700970070 /* FBRHTTPClientProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = B918A90C1E06CBC700970070 /* FBRHTTPClientProvider.h */; };
 		B918A9341E06CBD300970070 /* FBRHTTPSessionConfigurationProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = B918A9331E06CBD300970070 /* FBRHTTPSessionConfigurationProvider.h */; };
+		CD98433A1ECD80E1007CBCBC /* NSBundle+OnDemandResourcesSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD9843391ECD80E1007CBCBC /* NSBundle+OnDemandResourcesSpec.mm */; };
+		CDCD37551EC979E700AFB954 /* FBROnDemandResource.h in Headers */ = {isa = PBXBuildFile; fileRef = CDCD37531EC979E700AFB954 /* FBROnDemandResource.h */; };
+		CDCD39401EC9F57E00AFB954 /* NSBundle+OnDemandResources.h in Headers */ = {isa = PBXBuildFile; fileRef = CDCD393E1EC9F57E00AFB954 /* NSBundle+OnDemandResources.h */; };
+		CDCD39411EC9F57E00AFB954 /* NSBundle+OnDemandResources.mm in Sources */ = {isa = PBXBuildFile; fileRef = CDCD393F1EC9F57E00AFB954 /* NSBundle+OnDemandResources.mm */; };
 		CDE00ABF1E82ADED007AFD5E /* libcompression.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = CDE00ABE1E82ADED007AFD5E /* libcompression.tbd */; };
 /* End PBXBuildFile section */
 
@@ -486,6 +490,10 @@
 		8861FCDF1E5A279D00CA1436 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
 		B918A90C1E06CBC700970070 /* FBRHTTPClientProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBRHTTPClientProvider.h; sourceTree = "<group>"; };
 		B918A9331E06CBD300970070 /* FBRHTTPSessionConfigurationProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBRHTTPSessionConfigurationProvider.h; sourceTree = "<group>"; };
+		CD9843391ECD80E1007CBCBC /* NSBundle+OnDemandResourcesSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSBundle+OnDemandResourcesSpec.mm"; sourceTree = "<group>"; };
+		CDCD37531EC979E700AFB954 /* FBROnDemandResource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBROnDemandResource.h; sourceTree = "<group>"; };
+		CDCD393E1EC9F57E00AFB954 /* NSBundle+OnDemandResources.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSBundle+OnDemandResources.h"; sourceTree = "<group>"; };
+		CDCD393F1EC9F57E00AFB954 /* NSBundle+OnDemandResources.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSBundle+OnDemandResources.mm"; sourceTree = "<group>"; };
 		CDE00ABE1E82ADED007AFD5E /* libcompression.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libcompression.tbd; path = usr/lib/libcompression.tbd; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -668,6 +676,7 @@
 		65AE67521D0461350083D1CE /* Fiber */ = {
 			isa = PBXGroup;
 			children = (
+				CDCD372F1EC9795800AFB954 /* On Demand Resources */,
 				65079A241D7D93DD0022CB11 /* Certificate Pinning */,
 				659F3AB91D23DD750097F3D0 /* Errors */,
 				65A694351D081FA1001DE328 /* HTTP Session */,
@@ -784,6 +793,7 @@
 		65C62B931D04753A000FCE99 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				CD9843151ECD80A2007CBCBC /* On Demand Resources */,
 				65B5FA371D7DBFFC005FDA21 /* Certificate Pinning */,
 				659F3BD81D24598F0097F3D0 /* Errors */,
 				65892E461D16EC250049815D /* HTTP Session */,
@@ -939,6 +949,24 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		CD9843151ECD80A2007CBCBC /* On Demand Resources */ = {
+			isa = PBXGroup;
+			children = (
+				CD9843391ECD80E1007CBCBC /* NSBundle+OnDemandResourcesSpec.mm */,
+			);
+			name = "On Demand Resources";
+			sourceTree = "<group>";
+		};
+		CDCD372F1EC9795800AFB954 /* On Demand Resources */ = {
+			isa = PBXGroup;
+			children = (
+				CDCD37531EC979E700AFB954 /* FBROnDemandResource.h */,
+				CDCD393E1EC9F57E00AFB954 /* NSBundle+OnDemandResources.h */,
+				CDCD393F1EC9F57E00AFB954 /* NSBundle+OnDemandResources.mm */,
+			);
+			name = "On Demand Resources";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -957,6 +985,8 @@
 				65C53DB51D39B6F400B38E62 /* FBRHTTPTaskProgress.h in Headers */,
 				B918A9341E06CBD300970070 /* FBRHTTPSessionConfigurationProvider.h in Headers */,
 				65C53DB61D39B6F900B38E62 /* RACSignal+Fiber.h in Headers */,
+				CDCD37551EC979E700AFB954 /* FBROnDemandResource.h in Headers */,
+				CDCD39401EC9F57E00AFB954 /* NSBundle+OnDemandResources.h in Headers */,
 				65C53D8C1D39B6C500B38E62 /* NSError+Fiber.h in Headers */,
 				65C53DB01D39B6C900B38E62 /* NSErrorCodes+Fiber.h in Headers */,
 			);
@@ -1358,6 +1388,7 @@
 			files = (
 				65892EC81D19606D0049815D /* FBRHTTPSessionConfiguration.mm in Sources */,
 				6507943A1D255E8700187A5D /* FBRHTTPResponse.mm in Sources */,
+				CDCD39411EC9F57E00AFB954 /* NSBundle+OnDemandResources.mm in Sources */,
 				65892E721D16F8F70049815D /* FBRHTTPSessionSecurityPolicy.mm in Sources */,
 				65892FA91D1ACFB80049815D /* FBRAFNetworkingSessionAdapter.mm in Sources */,
 				65892F681D1AAF510049815D /* FBRHTTPRequest.mm in Sources */,
@@ -1395,6 +1426,7 @@
 				65C62C041D047727000FCE99 /* RACSignal+LLSubscriptionCounting.m in Sources */,
 				65C3C2501D2987A700C8F288 /* AFNetworking+FiberSpec.mm in Sources */,
 				65C62C031D047727000FCE99 /* LLSignalTestRecorder.m in Sources */,
+				CD98433A1ECD80E1007CBCBC /* NSBundle+OnDemandResourcesSpec.mm in Sources */,
 				65C62C0A1D047727000FCE99 /* EXPMatchers+error.m in Sources */,
 				650794591D25646800187A5D /* FBRHTTPResponseSpec.mm in Sources */,
 				65C62C091D047727000FCE99 /* EXPMatchers+deliverValuesOnThread.m in Sources */,
