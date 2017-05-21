@@ -37,6 +37,9 @@ NS_ASSUME_NONNULL_BEGIN
                            withTimingInfo:(CMSampleTimingInfo)timingInfo
                  withPropagatableMetadata:(nullable NSDictionary *)propagatableMetadata;
 
+/// Creates a new \c CAMVideoFrame as a deep copy of \c sourceFrame.
++ (instancetype)videoFrameWithVideoFrame:(CAMVideoFrame *)sourceFrame;
+
 @end
 
 NS_ASSUME_NONNULL_END
