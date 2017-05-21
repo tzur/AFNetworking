@@ -3,7 +3,7 @@
 
 #import "LTImageProcessor.h"
 
-@class LTRotatedRect, LTTexture;
+@class LTQuad, LTTexture;
 
 /// Processor for executing a patch operation. The operation copies a desired area from the \c
 /// source texture, identified by the \c mask texture, to an area in the \c target texture while
@@ -28,36 +28,36 @@
                               source:(LTTexture *)source target:(LTTexture *)target
                               output:(LTTexture *)output;
 
-/// Rotated rect defining a region of interest in the source texture, which the data is copied from.
-/// The default value is an axis aligned rect of (0, 0, source.width, source.height).
-@property (strong, nonatomic) LTRotatedRect *sourceRect;
+/// Quad defining a region of interest in the source texture, which the data is copied from. Default
+/// value is <tt>[LTQuad quadFromRect:CGRectFromSize(source.size)]</tt>.
+@property (strong, nonatomic) LTQuad *sourceQuad;
 
-/// Rotated rect defining a region of interest in the target texture, where the data is copied to.
-/// Note that the size and orientation of the rect can be different than \c sourceRect, which will
-/// cause a warping of the source rect to this rect. The default value is an axis aligned rect of
-/// (0, 0, source.width, source.height).
-@property (strong, nonatomic) LTRotatedRect *targetRect;
+/// Quad defining a region of interest in the target texture, where the data is copied to.
+/// Note that the shape of the quad can be different than \c sourceQuad, which will cause a warping
+/// of the source quad to this quad. Default value is
+/// <tt>[LTQuad quadFromRect:CGRectFromSize(target.size)]</tt>.
+@property (strong, nonatomic) LTQuad *targetQuad;
 
 /// Size that the patch calculations is done at. Making this size smaller will give a boost in
 /// performance, but will yield a less accurate result. Given size must be one of the sizes given in
-/// the initializer. The default value is the first working size given in the initializer.
+/// the initializer. Default value is the first working size given in the initializer.
 @property (nonatomic) CGSize workingSize;
 
 /// Set of possible working sizes.
 @property (readonly, nonatomic) CGSizes workingSizes;
 
-/// Opacity of the source texture in the range [0, 1]. Default value is \c 1.
+/// Opacity of the source texture in the range <tt>[0, 1]</tt>. Default value is \c 1.
 @property (nonatomic) CGFloat sourceOpacity;
 LTPropertyDeclare(CGFloat, sourceOpacity, SourceOpacity);
 
-/// \c YES if the \c sourceRect should be used in a mirrored way. The mirroring is performed along
+/// \c YES if the \c sourceQuad should be used in a mirrored way. The mirroring is performed along
 /// the vertical line with <tt>x = 0.5</tt>, in texture coordinate space.
 @property (nonatomic) BOOL flip;
 LTPropertyDeclare(BOOL, flip, Flip);
 
 /// Interpolation factor used to compute the strength of source smoothing. If \c 1, a fully smoothed
-/// version of source is used, yielding a seamless patching effect. If \c 0, the source is used directly,
-/// without any smoothing. Default value is \c 1.
+/// version of source is used, yielding a seamless patching effect. If \c 0, the source is used
+/// directly, without any smoothing. Default value is \c 1.
 @property (nonatomic) CGFloat smoothingAlpha;
 LTPropertyDeclare(CGFloat, smoothingAlpha, SmoothingAlpha);
 
