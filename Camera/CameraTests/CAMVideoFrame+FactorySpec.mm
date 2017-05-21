@@ -64,4 +64,15 @@ it(@"should initialize with new pixelBuffer and metadata of the old CAMVideoFram
   expect([newVideoFrame pixelFormat]).to.equal($(CAMPixelFormatBGRA));
 });
 
+it(@"should create a copy of CAMVideoFrame", ^{
+  CAMVideoFrame *newVideoFrame = [CAMVideoFrame videoFrameWithVideoFrame:oldVideoFrame];
+
+  expect(CAMSampleTimingInfoIsEqual([newVideoFrame timingInfo], [oldVideoFrame timingInfo])).to.
+      beTruthy();
+  expect($([[newVideoFrame textureAtPlaneIndex:0] image])).to.equalMat($(image));
+  expect([newVideoFrame pixelFormat]).to.equal($(CAMPixelFormatBGRA));
+
+  expect(oldVideoFrame.pixelBuffer.get()).toNot.equal(newVideoFrame.pixelBuffer.get());
+});
+
 SpecEnd

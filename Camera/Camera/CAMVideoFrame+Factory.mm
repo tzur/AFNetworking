@@ -53,6 +53,28 @@ NS_ASSUME_NONNULL_BEGIN
   }
 }
 
++ (instancetype)videoFrameWithVideoFrame:(CAMVideoFrame *)sourceFrame {
+  CVPixelBufferRef sourceBuffer = sourceFrame.pixelBuffer.get();
+  OSType pixelFormatType = CVPixelBufferGetPixelFormatType(sourceBuffer);
+  lt::Ref<CVPixelBufferRef> destinationBufferRef =
+      LTCVPixelBufferCreate(sourceFrame.size.width, sourceFrame.size.height, pixelFormatType);
+  CVPixelBufferRef destinationBuffer = destinationBufferRef.get();
+
+  LTCVPixelBufferImagesForReading(sourceBuffer, ^(const Matrices &sourcePlanes) {
+    LTCVPixelBufferImagesForWriting(destinationBuffer, ^(const Matrices &destinationPlanes) {
+      for (size_t i = 0; i < std::min(sourcePlanes.size(), destinationPlanes.size()); ++i) {
+        LTAssert(sourcePlanes[i].size == destinationPlanes[i].size, @"Source plane size (%d, %d) "
+                 "differs from destination plane size (%d, %d)", sourcePlanes[i].cols,
+                 sourcePlanes[i].rows, destinationPlanes[i].cols, destinationPlanes[i].rows);
+        sourcePlanes[i].copyTo(destinationPlanes[i]);
+      }
+    });
+  });
+
+  return [self videoFrameWithPixelBuffer:std::move(destinationBufferRef)
+                 withPropertiesFromFrame:sourceFrame];
+}
+
 @end
 
 NS_ASSUME_NONNULL_END
