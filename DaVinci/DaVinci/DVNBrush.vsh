@@ -26,17 +26,17 @@ varying highp vec2 vSamplePoint0;
 varying highp vec2 vSamplePoint1;
 varying highp vec2 vSamplePoint2;
 varying highp vec2 vSamplePoint3;
-varying highp vec3 vColor;
+varying highp vec4 vColor;
 
 const float kSamplePointsDistanceFromCenter = 0.6;
 
 void main() {
   vQuadCenter = 0.25 * (quadVertex0 + quadVertex1 + quadVertex2 + quadVertex3);
-  
+
   if (sampleUniformColorFromColorTexture) {
-    vColor = texture2D(colorTexture, vQuadCenter).rgb;
+    vColor = texture2D(colorTexture, vQuadCenter);
   } else {
-    vColor = color;
+    vColor = vec4(color, 1.0);
   }
   vPosition = position;
   vTexcoord = texcoord;

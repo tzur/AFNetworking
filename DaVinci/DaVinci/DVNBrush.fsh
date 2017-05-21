@@ -12,7 +12,7 @@ uniform bool singleChannel;
 uniform bool sampleFromOverlayTexture;
 uniform int blendMode;
 
-varying highp vec3 vColor;
+varying highp vec4 vColor;
 varying highp vec4 vPosition;
 varying highp vec3 vTexcoord;
 varying highp vec2 vQuadCenter;
@@ -173,10 +173,10 @@ void main() {
     if (sampleFromOverlayTexture) {
       src = texture2D(overlayTexture, (vPosition / vPosition.w).xy);
     } else {
-      src = vec4(vColor, alpha);
+      src = vec4(vColor.rgb, vColor.a * alpha);
     }
   } else {
-    src.rgb *= vColor;
+    src *= vColor;
   }
   highp vec4 dst = gl_LastFragData[0];
 
