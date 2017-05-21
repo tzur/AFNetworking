@@ -7,20 +7,21 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		882D1F161EC19998007F39F5 /* LABPlaceholder.m in Sources */ = {isa = PBXBuildFile; fileRef = 882D1F151EC19998007F39F5 /* LABPlaceholder.m */; };
 		882D1F181EC19A2C007F39F5 /* libcompression.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 882D1F171EC19A2C007F39F5 /* libcompression.tbd */; };
 		882D1F2C1EC1AC92007F39F5 /* libextobjc_iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 882D1F271EC1AC6E007F39F5 /* libextobjc_iOS.a */; };
 		882D1F2E1EC1C497007F39F5 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 882D1F2D1EC1C497007F39F5 /* CoreGraphics.framework */; };
 		882D1F301EC1C49C007F39F5 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 882D1F2F1EC1C49C007F39F5 /* GLKit.framework */; };
 		882D1F321EC1C54F007F39F5 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 882D1F311EC1C54F007F39F5 /* QuartzCore.framework */; };
 		882D20181EC9A967007F39F5 /* ReactiveCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 882D20051EC996D4007F39F5 /* ReactiveCocoa.framework */; };
+		883235851ED861EA0090787D /* NSError+Laboratory.mm in Sources */ = {isa = PBXBuildFile; fileRef = 883235821ED861EA0090787D /* NSError+Laboratory.mm */; };
+		883235861ED861EA0090787D /* NSErrorCodes+Laboratory.mm in Sources */ = {isa = PBXBuildFile; fileRef = 883235841ED861EA0090787D /* NSErrorCodes+Laboratory.mm */; };
+		883235881ED861F30090787D /* NSErrorCodes+LaboratorySpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 883235871ED861F30090787D /* NSErrorCodes+LaboratorySpec.mm */; };
 		884962181EBA226E007B3AE8 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1417A911E6ED9CB005DBEFF /* UIKit.framework */; };
 		A14171C61E6EAC0D005DBEFF /* libLaboratory.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A14171A11E6EAA93005DBEFF /* libLaboratory.a */; };
 		A14173401E6EB59F005DBEFF /* libExpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A141728A1E6EAEE7005DBEFF /* libExpecta.a */; };
 		A14173411E6EB59F005DBEFF /* libLTKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A141726F1E6EADDF005DBEFF /* libLTKit.a */; };
 		A14173421E6EB59F005DBEFF /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A141729D1E6EAF03005DBEFF /* libOCMock.a */; };
 		A14173431E6EB59F005DBEFF /* libSpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A14172B81E6EAF0D005DBEFF /* libSpecta.a */; };
-		A1541B0E1EAF1CC300B4F064 /* LABPlaceholderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1541B0B1EAF1CC300B4F064 /* LABPlaceholderSpec.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -270,14 +271,17 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		882D1F141EC19998007F39F5 /* LABPlaceholder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LABPlaceholder.h; sourceTree = "<group>"; };
-		882D1F151EC19998007F39F5 /* LABPlaceholder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LABPlaceholder.m; sourceTree = "<group>"; };
 		882D1F171EC19A2C007F39F5 /* libcompression.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libcompression.tbd; path = usr/lib/libcompression.tbd; sourceTree = SDKROOT; };
 		882D1F1D1EC1AC6E007F39F5 /* extobjc.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = extobjc.xcodeproj; path = ../third_party/libextobjc/extobjc.xcodeproj; sourceTree = "<group>"; };
 		882D1F2D1EC1C497007F39F5 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		882D1F2F1EC1C49C007F39F5 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
 		882D1F311EC1C54F007F39F5 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		882D1FE51EC996D4007F39F5 /* ReactiveCocoa.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactiveCocoa.xcodeproj; path = ../third_party/ReactiveCocoa/ReactiveCocoa.xcodeproj; sourceTree = "<group>"; };
+		883235811ED861EA0090787D /* NSError+Laboratory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSError+Laboratory.h"; sourceTree = "<group>"; };
+		883235821ED861EA0090787D /* NSError+Laboratory.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSError+Laboratory.mm"; sourceTree = "<group>"; };
+		883235831ED861EA0090787D /* NSErrorCodes+Laboratory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSErrorCodes+Laboratory.h"; sourceTree = "<group>"; };
+		883235841ED861EA0090787D /* NSErrorCodes+Laboratory.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSErrorCodes+Laboratory.mm"; sourceTree = "<group>"; };
+		883235871ED861F30090787D /* NSErrorCodes+LaboratorySpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSErrorCodes+LaboratorySpec.mm"; sourceTree = "<group>"; };
 		A14171A11E6EAA93005DBEFF /* libLaboratory.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libLaboratory.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		A14171C11E6EAC0D005DBEFF /* LaboratoryTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LaboratoryTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A14171C51E6EAC0D005DBEFF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -296,7 +300,6 @@
 		A14172BC1E6EB0CA005DBEFF /* LaboratoryTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "LaboratoryTests-Prefix.pch"; sourceTree = "<group>"; };
 		A14172D71E6EB2FF005DBEFF /* TestHost.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TestHost.xcodeproj; path = ../Foundations/TestHost.xcodeproj; sourceTree = "<group>"; };
 		A1417A911E6ED9CB005DBEFF /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
-		A1541B0B1EAF1CC300B4F064 /* LABPlaceholderSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LABPlaceholderSpec.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -351,6 +354,25 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		883235611ED861CD0090787D /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				883235811ED861EA0090787D /* NSError+Laboratory.h */,
+				883235821ED861EA0090787D /* NSError+Laboratory.mm */,
+				883235831ED861EA0090787D /* NSErrorCodes+Laboratory.h */,
+				883235841ED861EA0090787D /* NSErrorCodes+Laboratory.mm */,
+			);
+			name = Base;
+			sourceTree = "<group>";
+		};
+		883235801ED861DB0090787D /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				883235871ED861F30090787D /* NSErrorCodes+LaboratorySpec.mm */,
+			);
+			name = Base;
+			sourceTree = "<group>";
+		};
 		A113424A1EB5AD870042ABA8 /* Test Utils */ = {
 			isa = PBXGroup;
 			children = (
@@ -382,9 +404,8 @@
 		A14171A31E6EAA93005DBEFF /* Laboratory */ = {
 			isa = PBXGroup;
 			children = (
+				883235611ED861CD0090787D /* Base */,
 				A14172BA1E6EB04F005DBEFF /* Supporting Files */,
-				882D1F141EC19998007F39F5 /* LABPlaceholder.h */,
-				882D1F151EC19998007F39F5 /* LABPlaceholder.m */,
 			);
 			path = Laboratory;
 			sourceTree = "<group>";
@@ -523,8 +544,8 @@
 		A14173471E6EB62C005DBEFF /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				883235801ED861DB0090787D /* Base */,
 				A1541C081EAF400D00B4F064 /* Utils */,
-				A1541B0B1EAF1CC300B4F064 /* LABPlaceholderSpec.mm */,
 			);
 			name = Tests;
 			sourceTree = "<group>";
@@ -535,7 +556,6 @@
 				882D1F2D1EC1C497007F39F5 /* CoreGraphics.framework */,
 				882D1F2F1EC1C49C007F39F5 /* GLKit.framework */,
 				882D1F311EC1C54F007F39F5 /* QuartzCore.framework */,
-				882D20161EC99EE0007F39F5 /* Taplytics.framework */,
 				A1417A911E6ED9CB005DBEFF /* UIKit.framework */,
 				882D1F171EC19A2C007F39F5 /* libcompression.tbd */,
 			);
@@ -892,7 +912,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				882D1F161EC19998007F39F5 /* LABPlaceholder.m in Sources */,
+				883235851ED861EA0090787D /* NSError+Laboratory.mm in Sources */,
+				883235861ED861EA0090787D /* NSErrorCodes+Laboratory.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -900,7 +921,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A1541B0E1EAF1CC300B4F064 /* LABPlaceholderSpec.mm in Sources */,
+				883235881ED861F30090787D /* NSErrorCodes+LaboratorySpec.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
