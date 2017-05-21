@@ -55,6 +55,25 @@ NS_ASSUME_NONNULL_BEGIN
 /// used by this transformer are of the cycles' end.
 + (INTTransformerBlock)screenVisitedEventTransformer;
 
+/// Transformer that produces an \c INTAnalytricksBaseUsage event with \c dataProvider set to
+/// an \c INTAnalytricksDeepLinkOpened from INTDeepLinkOpenedEvent.
++ (INTTransformerBlock)deepLinkOpenedEventTransformer;
+
+/// Transformer that produces an \c INTAnalytricksBaseUsage event with \c dataProvider set to
+/// an \c INTAnalytricksPushNotificationOpened from INTPushNotificationOpenedEvent.
++ (INTTransformerBlock)pushNotificationOpenedEventTransformer;
+
+/// Transformer that produces an \c INTAnalytricksBaseUsage event with \c dataProvider set to
+/// an \c INTAnalytricksAssetImported from INTAssetImportedEvent.
++ (INTTransformerBlock)mediaImportedEventTransformer;
+
+/// Transformer that produces an \c INTAnalytricksBaseUsage event with \c dataProvider set to
+/// an \c INTAnalytricksMediaExported. The transformer observes the low level events with
+/// \c INTMediaExportStartedEvent and \c INTMediaExportEndedEvent. When an
+/// \c INTMediaExportEndedEvent is observed, a \c dataProvider is created for each observed
+/// \c INTMediaExportStartedEvent with the same \c exportID.
++ (INTTransformerBlock)mediaExportedEventTransformer;
+
 @end
 
 NS_ASSUME_NONNULL_END
