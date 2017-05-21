@@ -57,6 +57,13 @@
 		A1541B8C1EAF2D1400B4F064 /* INTAppLifecycleTimer.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1541B8B1EAF2D1400B4F064 /* INTAppLifecycleTimer.mm */; };
 		A1541C0A1EAF405100B4F064 /* INTAppLifecycleTimerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1541C091EAF405100B4F064 /* INTAppLifecycleTimerSpec.mm */; };
 		A1541C4C1EAF8BF900B4F064 /* INTTransformerBlockBuilder.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1541C4B1EAF8BF900B4F064 /* INTTransformerBlockBuilder.mm */; };
+		A17E08ED1ED1D47A007940A0 /* INTAnalytricksDeepLinkOpened.json in Sources */ = {isa = PBXBuildFile; fileRef = A17E08D61ED1D30A007940A0 /* INTAnalytricksDeepLinkOpened.json */; };
+		A17E08EF1ED1D6E4007940A0 /* INTAnalytricksPushNotificationOpened.json in Sources */ = {isa = PBXBuildFile; fileRef = A17E08EE1ED1D632007940A0 /* INTAnalytricksPushNotificationOpened.json */; };
+		A17E08F21ED1D9CA007940A0 /* INTAnalytricksMediaImported.json in Sources */ = {isa = PBXBuildFile; fileRef = A17E08F01ED1D79A007940A0 /* INTAnalytricksMediaImported.json */; };
+		A17E08F31ED1D9D0007940A0 /* INTMediaImportedEvent.json in Sources */ = {isa = PBXBuildFile; fileRef = A17E08F11ED1D8C1007940A0 /* INTMediaImportedEvent.json */; };
+		A17E08F71ED1E166007940A0 /* INTMediaExportEndedEvent.json in Sources */ = {isa = PBXBuildFile; fileRef = A17E08F61ED1E087007940A0 /* INTMediaExportEndedEvent.json */; };
+		A17E08F81ED1E167007940A0 /* INTMediaExportStartedEvent.json in Sources */ = {isa = PBXBuildFile; fileRef = A17E08F51ED1DF4F007940A0 /* INTMediaExportStartedEvent.json */; };
+		A17E08F91ED1E16E007940A0 /* INTAnalytricksMediaExported.json in Sources */ = {isa = PBXBuildFile; fileRef = A17E08F41ED1DE30007940A0 /* INTAnalytricksMediaExported.json */; };
 		A1B373BF1EA6511F008E5195 /* INTEventTransformationExecutor.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1B373BE1EA6511F008E5195 /* INTEventTransformationExecutor.mm */; };
 		A1C9432F1EBB358E00BECAB4 /* INTAppWillEnterForegroundEvent.json in Sources */ = {isa = PBXBuildFile; fileRef = A1C943251EBB357800BECAB4 /* INTAppWillEnterForegroundEvent.json */; };
 		A1C943311EBB358E00BECAB4 /* INTProjectUnloadedEvent.json in Sources */ = {isa = PBXBuildFile; fileRef = A1C943271EBB357800BECAB4 /* INTProjectUnloadedEvent.json */; };
@@ -370,6 +377,13 @@
 		A1541C4A1EAF8BF900B4F064 /* INTTransformerBlockBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INTTransformerBlockBuilder.h; sourceTree = "<group>"; };
 		A1541C4B1EAF8BF900B4F064 /* INTTransformerBlockBuilder.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = INTTransformerBlockBuilder.mm; sourceTree = "<group>"; };
 		A172A9BF1EAC112D00A12B86 /* INTEventLogger.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = INTEventLogger.h; sourceTree = "<group>"; };
+		A17E08D61ED1D30A007940A0 /* INTAnalytricksDeepLinkOpened.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = INTAnalytricksDeepLinkOpened.json; sourceTree = "<group>"; };
+		A17E08EE1ED1D632007940A0 /* INTAnalytricksPushNotificationOpened.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = INTAnalytricksPushNotificationOpened.json; sourceTree = "<group>"; };
+		A17E08F01ED1D79A007940A0 /* INTAnalytricksMediaImported.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = INTAnalytricksMediaImported.json; sourceTree = "<group>"; };
+		A17E08F11ED1D8C1007940A0 /* INTMediaImportedEvent.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = INTMediaImportedEvent.json; sourceTree = "<group>"; };
+		A17E08F41ED1DE30007940A0 /* INTAnalytricksMediaExported.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = INTAnalytricksMediaExported.json; sourceTree = "<group>"; };
+		A17E08F51ED1DF4F007940A0 /* INTMediaExportStartedEvent.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = INTMediaExportStartedEvent.json; sourceTree = "<group>"; };
+		A17E08F61ED1E087007940A0 /* INTMediaExportEndedEvent.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = INTMediaExportEndedEvent.json; sourceTree = "<group>"; };
 		A1B373BD1EA6511F008E5195 /* INTEventTransformationExecutor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INTEventTransformationExecutor.h; sourceTree = "<group>"; };
 		A1B373BE1EA6511F008E5195 /* INTEventTransformationExecutor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = INTEventTransformationExecutor.mm; sourceTree = "<group>"; };
 		A1C942FF1EBB356900BECAB4 /* INTAnalytricksContext.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = INTAnalytricksContext.json; sourceTree = "<group>"; };
@@ -752,6 +766,10 @@
 			children = (
 				A149BC041EBE6A9E00DA82B7 /* INTAnalytricksAppBackgrounded.json */,
 				A149BC051EBE6A9E00DA82B7 /* INTAnalytricksAppForegrounded.json */,
+				A17E08F41ED1DE30007940A0 /* INTAnalytricksMediaExported.json */,
+				A17E08F01ED1D79A007940A0 /* INTAnalytricksMediaImported.json */,
+				A17E08D61ED1D30A007940A0 /* INTAnalytricksDeepLinkOpened.json */,
+				A17E08EE1ED1D632007940A0 /* INTAnalytricksPushNotificationOpened.json */,
 				A149BC061EBE6A9E00DA82B7 /* INTAnalytricksScreenVisited.json */,
 			);
 			name = Concrete;
@@ -818,6 +836,9 @@
 				A149BC211EBE6AE300DA82B7 /* INTAppBackgroundedEvent.json */,
 				A149BC221EBE6AE300DA82B7 /* INTAppBecameActiveEvent.json */,
 				A1C943251EBB357800BECAB4 /* INTAppWillEnterForegroundEvent.json */,
+				A17E08F51ED1DF4F007940A0 /* INTMediaExportStartedEvent.json */,
+				A17E08F61ED1E087007940A0 /* INTMediaExportEndedEvent.json */,
+				A17E08F11ED1D8C1007940A0 /* INTMediaImportedEvent.json */,
 				A149BC231EBE6AE300DA82B7 /* INTDeepLinkOpenedEvent.json */,
 				A1C943271EBB357800BECAB4 /* INTProjectUnloadedEvent.json */,
 				A1C943291EBB357800BECAB4 /* INTProjectLoadedEvent.json */,
@@ -1179,15 +1200,22 @@
 				A149BC2A1EBE6B2C00DA82B7 /* INTDeepLinkOpenedEvent.json in Sources */,
 				A1F24CBF1EC0802D0050D534 /* INTAloomaLogger.mm in Sources */,
 				A149BC2B1EBE6B2C00DA82B7 /* INTPushNotificationOpenedEvent.json in Sources */,
+				A17E08F91ED1E16E007940A0 /* INTAnalytricksMediaExported.json in Sources */,
 				A149BC2C1EBE6B2C00DA82B7 /* INTScreenDismissedEvent.json in Sources */,
 				A149BC1D1EBE6AC200DA82B7 /* INTAnalytricksBaseUsage.json in Sources */,
 				A1F24CA51EC07FC20050D534 /* NSData+AloomaBase64.m in Sources */,
+				A17E08F21ED1D9CA007940A0 /* INTAnalytricksMediaImported.json in Sources */,
+				A17E08EF1ED1D6E4007940A0 /* INTAnalytricksPushNotificationOpened.json in Sources */,
 				A149BC1E1EBE6AC200DA82B7 /* INTAnalytricksAppBackgrounded.json in Sources */,
 				A149BC1F1EBE6AC200DA82B7 /* INTAnalytricksAppForegrounded.json in Sources */,
+				A17E08F31ED1D9D0007940A0 /* INTMediaImportedEvent.json in Sources */,
+				A17E08ED1ED1D47A007940A0 /* INTAnalytricksDeepLinkOpened.json in Sources */,
 				A149BC201EBE6AC200DA82B7 /* INTAnalytricksScreenVisited.json in Sources */,
+				A17E08F81ED1E167007940A0 /* INTMediaExportStartedEvent.json in Sources */,
 				A1C9432F1EBB358E00BECAB4 /* INTAppWillEnterForegroundEvent.json in Sources */,
 				A1C943311EBB358E00BECAB4 /* INTProjectUnloadedEvent.json in Sources */,
 				A1C943331EBB358E00BECAB4 /* INTProjectLoadedEvent.json in Sources */,
+				A17E08F71ED1E166007940A0 /* INTMediaExportEndedEvent.json in Sources */,
 				A1C943361EBB358E00BECAB4 /* INTScreenDisplayedEvent.json in Sources */,
 				A149BB591EBE572500DA82B7 /* INTAnalytricksContextGenerators.mm in Sources */,
 				A1C943391EBB358E00BECAB4 /* INTAnalytricksContext.json in Sources */,

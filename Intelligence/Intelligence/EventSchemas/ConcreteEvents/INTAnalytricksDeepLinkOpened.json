@@ -1,0 +1,17 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "description": "App was brought to foreground, following a deep link open",
+  "type": "object",
+  "allOf": [
+    {"$ref": "../AbstractEvents/INTAnalytricksBaseUsage.json"},
+    {
+      "properties": {
+        "deep_link": {
+          "description": "The deep link that was opened",
+          "type": "string"
+        }
+      },
+      "required": ["deep_link"]
+    }
+  ]
+}

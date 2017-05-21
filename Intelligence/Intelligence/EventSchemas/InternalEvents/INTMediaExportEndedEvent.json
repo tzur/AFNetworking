@@ -1,0 +1,17 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "description": "A media export operation ended",
+  "type": "object",
+  "properties": {
+    "export_id": {
+      "description": "ID of the export operation",
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{8}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{12}$"
+    },
+    "is_successful": {
+      "description": "True if the export was successful",
+      "type": "boolean"
+    }
+  },
+  "required": ["export_id", "is_successful"]
+}
