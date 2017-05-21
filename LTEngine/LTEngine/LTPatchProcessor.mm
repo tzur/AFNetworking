@@ -59,14 +59,14 @@
 /// the initializer. The default value is the first working size given in the initializer.
 @property (nonatomic) CGSize workingSize;
 
-/// Quad defining a region of interest in the source texture, which the data is copied from. The
-/// default value is an axis aligned rect of (0, 0, source.width, source.height).
+/// Quad defining a region of interest in the source texture, which the data is copied from. Default
+/// value is <tt>[LTQuad quadFromRect:CGRectFromSize(source.size)]</tt>.
 @property (strong, nonatomic) LTQuad *sourceQuad;
 
 /// Quad defining a region of interest in the target texture, where the data is copied to.
 /// Note that the shape of the quad can be different than \c sourceQuad, which will cause a warping
-/// of the source quad to this quad. The default value is an axis aligned rect of
-/// (0, 0, source.width, source.height).
+/// of the source quad to this quad. Default value is
+/// <tt>[LTQuad quadFromRect:CGRectFromSize(target.size)]</tt>.
 @property (strong, nonatomic) LTQuad *targetQuad;
 
 /// Opacity of the source texture in the range [0, 1]. Default value is \c 1.

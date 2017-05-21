@@ -33,14 +33,14 @@
                       source:(LTTexture *)source target:(LTTexture *)target
                       output:(LTTexture *)output NS_DESIGNATED_INITIALIZER;
 
-/// Quad defining a region of interest in the source texture, which the data is copied from.
-/// The default value is an axis aligned (0, 0, source.width, source.height) rect.
+/// Quad defining a region of interest in the source texture, which the data is copied from. Default
+/// value is <tt>[LTQuad quadFromRect:CGRectFromSize(source.size)]</tt>.
 @property (strong, nonatomic) LTQuad *sourceQuad;
 
 /// Quad defining a region of interest in the target texture, where the data is copied to.
-/// (0, 0, source.width, source.height) rect.
-/// Note that the value of this property might differ from the \c sourceQuad of this instance,
-/// causing the corresponding perspective transformation from the \c sourceQuad to this quad value.
+/// Note that the shape of the quad can be different than \c sourceQuad, which will cause a warping
+/// of the source quad to this quad. Default value is
+/// <tt>[LTQuad quadFromRect:CGRectFromSize(target)]</tt>.
 @property (strong, nonatomic) LTQuad *targetQuad;
 
 /// \c YES if the \c sourceQuad should be used in a mirrored way. The mirroring is performed along
