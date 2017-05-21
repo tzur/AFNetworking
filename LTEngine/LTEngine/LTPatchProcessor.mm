@@ -8,8 +8,7 @@
 #import "LTPatchCompositorProcessor.h"
 #import "LTPatchSolverProcessor.h"
 #import "LTQuad.h"
-#import "LTRectCopyProcessor.h"
-#import "LTRotatedRect.h"
+#import "LTQuadCopyProcessor.h"
 #import "LTTexture+Factory.h"
 
 #pragma mark -
@@ -60,15 +59,15 @@
 /// the initializer. The default value is the first working size given in the initializer.
 @property (nonatomic) CGSize workingSize;
 
-/// Rotated rect defining a region of interest in the source texture, which the data is copied from.
-/// The default value is an axis aligned rect of (0, 0, source.width, source.height).
-@property (strong, nonatomic) LTRotatedRect *sourceRect;
+/// Quad defining a region of interest in the source texture, which the data is copied from. Default
+/// value is <tt>[LTQuad quadFromRect:CGRectFromSize(source.size)]</tt>.
+@property (strong, nonatomic) LTQuad *sourceQuad;
 
-/// Rotated rect defining a region of interest in the target texture, where the data is copied to.
-/// Note that the size and orientation of the rect can be different than \c sourceRect, which will
-/// cause a warping of the source rect to this rect. The default value is an axis aligned rect of
-/// (0, 0, source.width, source.height).
-@property (strong, nonatomic) LTRotatedRect *targetRect;
+/// Quad defining a region of interest in the target texture, where the data is copied to.
+/// Note that the shape of the quad can be different than \c sourceQuad, which will cause a warping
+/// of the source quad to this quad. Default value is
+/// <tt>[LTQuad quadFromRect:CGRectFromSize(target.size)]</tt>.
+@property (strong, nonatomic) LTQuad *targetQuad;
 
 /// Opacity of the source texture in the range [0, 1]. Default value is \c 1.
 @property (nonatomic) CGFloat sourceOpacity;
@@ -112,8 +111,8 @@ LTPropertyDeclare(CGFloat, smoothingAlpha, SmoothingAlpha);
 }
 
 - (void)setDefaultValues {
-  self.sourceRect = [LTRotatedRect rect:CGRectFromSize(self.source.size)];
-  self.targetRect = [LTRotatedRect rect:CGRectFromSize(self.source.size)];
+  self.sourceQuad = [LTQuad quadFromRect:CGRectFromSize(self.source.size)];
+  self.targetQuad = [LTQuad quadFromRect:CGRectFromSize(self.source.size)];
   self.flip = NO;
 }
 
@@ -142,16 +141,16 @@ LTPropertyDeclare(CGFloat, smoothingAlpha, SmoothingAlpha);
 - (void)createSolver {
   self.solver = [[LTPatchSolverProcessor alloc] initWithMask:self.mask source:self.source
                                                       target:self.target output:self.membrane];
-  self.solver.sourceQuad = [LTQuad quadFromRotatedRect:self.sourceRect];
-  self.solver.targetQuad = [LTQuad quadFromRotatedRect:self.targetRect];
+  self.solver.sourceQuad = self.sourceQuad;
+  self.solver.targetQuad = self.targetQuad;
 }
 
 - (void)createCompositor {
   self.compositor = [[LTPatchCompositorProcessor alloc]
                      initWithSource:self.source target:self.target membrane:self.membrane
                      mask:self.mask output:self.output];
-  self.compositor.sourceQuad = [LTQuad quadFromRotatedRect:self.sourceRect];
-  self.compositor.targetQuad = [LTQuad quadFromRotatedRect:self.targetRect];
+  self.compositor.sourceQuad = self.sourceQuad;
+  self.compositor.targetQuad = self.targetQuad;
   self.compositor.sourceOpacity = self.sourceOpacity;
   self.compositor.smoothingAlpha = self.smoothingAlpha;
 }
@@ -165,16 +164,16 @@ LTPropertyProxy(CGFloat, sourceOpacity, SourceOpacity, self.compositor);
 
 LTPropertyProxy(CGFloat, smoothingAlpha, SmoothingAlpha, self.compositor);
 
-- (void)setSourceRect:(LTRotatedRect *)sourceRect {
-  _sourceRect = sourceRect;
-  self.solver.sourceQuad = [LTQuad quadFromRotatedRect:sourceRect];
-  self.compositor.sourceQuad = [LTQuad quadFromRotatedRect:sourceRect];
+- (void)setSourceQuad:(LTQuad *)sourceQuad {
+  _sourceQuad = sourceQuad;
+  self.solver.sourceQuad = sourceQuad;
+  self.compositor.sourceQuad = sourceQuad;
 }
 
-- (void)setTargetRect:(LTRotatedRect *)targetRect {
-  _targetRect = targetRect;
-  self.solver.targetQuad = [LTQuad quadFromRotatedRect:targetRect];
-  self.compositor.targetQuad = [LTQuad quadFromRotatedRect:targetRect];
+- (void)setTargetQuad:(LTQuad *)targetQuad {
+  _targetQuad = targetQuad;
+  self.solver.targetQuad = targetQuad;
+  self.compositor.targetQuad = targetQuad;
 }
 
 - (BOOL)flip {
@@ -212,8 +211,8 @@ LTPropertyProxy(CGFloat, smoothingAlpha, SmoothingAlpha, self.compositor);
 /// Set of possible working sizes.
 @property (readwrite, nonatomic) CGSizes workingSizes;
 
-/// Rect copy processor used to copy previous patched rect before drawing a new one.
-@property (strong, nonatomic) LTRectCopyProcessor *rectCopyProcessor;
+/// Quad copy processor used to copy previous patched quad before drawing a new one.
+@property (strong, nonatomic) LTQuadCopyProcessor *quadCopyProcessor;
 
 /// \c YES if processed at least once.
 @property (nonatomic) BOOL didProcessAtLeastOnce;
@@ -243,8 +242,8 @@ LTPropertyProxy(CGFloat, smoothingAlpha, SmoothingAlpha, self.compositor);
     self.output = output;
 
     [self createInternalProcessors];
-    [self setRectsForSize:source.size];
-    [self createRectCopyProcessor];
+    [self setQuadsForSize:source.size];
+    [self createQuadCopyProcessor];
 
     self.workingSize = workingSizes.front();
   }
@@ -262,13 +261,13 @@ LTPropertyProxy(CGFloat, smoothingAlpha, SmoothingAlpha, self.compositor);
   }
 }
 
-- (void)setRectsForSize:(CGSize)size {
-  self.sourceRect = [LTRotatedRect rect:CGRectFromSize(size)];
-  self.targetRect = [LTRotatedRect rect:CGRectFromSize(size)];
+- (void)setQuadsForSize:(CGSize)size {
+  self.sourceQuad = [LTQuad quadFromRect:CGRectFromSize(size)];
+  self.targetQuad = [LTQuad quadFromRect:CGRectFromSize(size)];
 }
 
-- (void)createRectCopyProcessor {
-  self.rectCopyProcessor = [[LTRectCopyProcessor alloc] initWithInput:self.target
+- (void)createQuadCopyProcessor {
+  self.quadCopyProcessor = [[LTQuadCopyProcessor alloc] initWithInput:self.target
                                                                output:self.output];
 }
 
@@ -282,8 +281,8 @@ LTPropertyProxy(CGFloat, smoothingAlpha, SmoothingAlpha, self.compositor);
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
     properties = [NSSet setWithArray:@[
-      @instanceKeypath(LTPatchProcessor, sourceRect),
-      @instanceKeypath(LTPatchProcessor, targetRect),
+      @instanceKeypath(LTPatchProcessor, sourceQuad),
+      @instanceKeypath(LTPatchProcessor, targetQuad),
       @instanceKeypath(LTPatchProcessor, workingSize),
       @instanceKeypath(LTPatchProcessor, sourceOpacity),
       @instanceKeypath(LTPatchCompositorProcessor, flip),
@@ -323,35 +322,35 @@ LTPropertyProxy(CGFloat, smoothingAlpha, SmoothingAlpha, self.compositor);
 
 - (void)process {
   if (self.didProcessAtLeastOnce) {
-    [self.rectCopyProcessor process];
+    [self.quadCopyProcessor process];
   }
 
   [self.workingSizeToProcessor[$(self.workingSize)] process];
 
-  [self updateRectCopyProcessorRects];
+  [self updateQuadCopyProcessorQuads];
 }
 
-- (void)updateRectCopyProcessorRects {
-  self.rectCopyProcessor.inputRect = self.targetRect;
-  self.rectCopyProcessor.outputRect = self.targetRect;
+- (void)updateQuadCopyProcessorQuads {
+  self.quadCopyProcessor.inputQuad = self.targetQuad;
+  self.quadCopyProcessor.outputQuad = self.targetQuad;
   self.didProcessAtLeastOnce = YES;
 }
 
 #pragma mark -
-#pragma mark Source and target rects
+#pragma mark Source and target quads
 #pragma mark -
 
-- (void)setSourceRect:(LTRotatedRect *)sourceRect {
-  _sourceRect = sourceRect;
+- (void)setSourceQuad:(LTQuad *)sourceQuad {
+  _sourceQuad = sourceQuad;
   for (LTInternalPatchProcessor *processor in self.workingSizeToProcessor.allValues) {
-    processor.sourceRect = sourceRect;
+    processor.sourceQuad = sourceQuad;
   }
 }
 
-- (void)setTargetRect:(LTRotatedRect *)targetRect {
-  _targetRect = targetRect;
+- (void)setTargetQuad:(LTQuad *)targetQuad {
+  _targetQuad = targetQuad;
   for (LTInternalPatchProcessor *processor in self.workingSizeToProcessor.allValues) {
-    processor.targetRect = targetRect;
+    processor.targetQuad = targetQuad;
   }
 }
 

@@ -16,12 +16,12 @@
                       membrane:(LTTexture *)membrane mask:(LTTexture *)mask
                         output:(LTTexture *)output;
 
-/// Region of interest in the source texture, defined in source texture coordinates. The default
-/// value is an axis aligned (0, 0, source.width, source.height) rect.
+/// Region of interest in the source texture, defined in source texture coordinates. Default value
+/// is <tt>[LTQuad quadFromRect:CGRectFromSize(source.size)]</tt>.
 @property (strong, nonatomic) LTQuad *sourceQuad;
 
-/// Region of interest in the target texture, defined in target texture coordinates. The default
-/// value is an axis aligned (0, 0, target.width, target.height) rect.
+/// Region of interest in the target texture, defined in target texture coordinates. Default value
+/// is <tt>[LTQuad quadFromRect:CGRectFromSize(target)]</tt>.
 @property (strong, nonatomic) LTQuad *targetQuad;
 
 /// Opacity of the source texture in the range [0, 1]. Default value is \c 1.

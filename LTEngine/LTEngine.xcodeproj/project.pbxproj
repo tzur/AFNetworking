@@ -564,6 +564,7 @@
 		30DDD6B71CFC8A7500AE72B8 /* ConsistentGaussianFilterLena384.png in Resources */ = {isa = PBXBuildFile; fileRef = 30DDD6B31CFC8A7500AE72B8 /* ConsistentGaussianFilterLena384.png */; };
 		30DF5C441EC9C7F00039A57C /* LTPatchCompositorProcessorSolution.png in Resources */ = {isa = PBXBuildFile; fileRef = 30DF5C431EC9C7F00039A57C /* LTPatchCompositorProcessorSolution.png */; };
 		30DF5DDB1ECAE39D0039A57C /* LTPatchSolvertProcessorPerspectiveSolution.png in Resources */ = {isa = PBXBuildFile; fileRef = 30DF5DDA1ECAE39D0039A57C /* LTPatchSolvertProcessorPerspectiveSolution.png */; };
+		30FE29381ED163770065F6F7 /* LTPatchProcessorPerspectiveSolution.png in Resources */ = {isa = PBXBuildFile; fileRef = 30FE29371ED163770065F6F7 /* LTPatchProcessorPerspectiveSolution.png */; };
 		5002C94F1A092917006C037C /* LTQuadCopyProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 5002C94D1A092917006C037C /* LTQuadCopyProcessor.h */; };
 		5002C9501A092917006C037C /* LTQuadCopyProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5002C94E1A092917006C037C /* LTQuadCopyProcessor.mm */; };
 		5004CAC91CC92BD400D1CE7A /* LTControlPointModel.h in Headers */ = {isa = PBXBuildFile; fileRef = 5004CAC71CC92BD400D1CE7A /* LTControlPointModel.h */; };
@@ -2323,6 +2324,7 @@
 		30DDD6B31CFC8A7500AE72B8 /* ConsistentGaussianFilterLena384.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ConsistentGaussianFilterLena384.png; path = Resources/ConsistentGaussianFilterLena384.png; sourceTree = "<group>"; };
 		30DF5C431EC9C7F00039A57C /* LTPatchCompositorProcessorSolution.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = LTPatchCompositorProcessorSolution.png; path = Resources/LTPatchCompositorProcessorSolution.png; sourceTree = "<group>"; };
 		30DF5DDA1ECAE39D0039A57C /* LTPatchSolvertProcessorPerspectiveSolution.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = LTPatchSolvertProcessorPerspectiveSolution.png; path = Resources/LTPatchSolvertProcessorPerspectiveSolution.png; sourceTree = "<group>"; };
+		30FE29371ED163770065F6F7 /* LTPatchProcessorPerspectiveSolution.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = LTPatchProcessorPerspectiveSolution.png; path = Resources/LTPatchProcessorPerspectiveSolution.png; sourceTree = "<group>"; };
 		5002C94D1A092917006C037C /* LTQuadCopyProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTQuadCopyProcessor.h; sourceTree = "<group>"; };
 		5002C94E1A092917006C037C /* LTQuadCopyProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTQuadCopyProcessor.mm; sourceTree = "<group>"; };
 		5004CAC71CC92BD400D1CE7A /* LTControlPointModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTControlPointModel.h; sourceTree = "<group>"; };
@@ -4627,6 +4629,7 @@
 				280108F8197EBB0F0015F62A /* BlueRedBorderRoundedCorners.png */,
 				85F372BF1C8C891600E1D429 /* LT3DLUTIdentity2x2x2.png */,
 				30DF5C431EC9C7F00039A57C /* LTPatchCompositorProcessorSolution.png */,
+				30FE29371ED163770065F6F7 /* LTPatchProcessorPerspectiveSolution.png */,
 				8BA820B91981572700FBE68E /* LTPatchProcessorSolution.png */,
 				2828016A1B20AF1300596FD4 /* LTPatchSolverProcessorSolution.png */,
 				30DF5DDA1ECAE39D0039A57C /* LTPatchSolvertProcessorPerspectiveSolution.png */,
@@ -6551,6 +6554,7 @@
 				28842E9119DB2E4900BD8FEE /* PerspectiveBarrelCorrection.png in Resources */,
 				8BABF19019BC52C100AED760 /* PyramidGrid5.png in Resources */,
 				286A932E18CF727300F203DF /* BristleBrushBristles.4.png in Resources */,
+				30FE29381ED163770065F6F7 /* LTPatchProcessorPerspectiveSolution.png in Resources */,
 				8BA820BA1981572700FBE68E /* LTPatchProcessorSolution.png in Resources */,
 				85CB44991D75DADD00519E37 /* LTAnisotropicDiffusion_non_guided_kernel_3_sigma_0_8.png in Resources */,
 				286A934118CF743200F203DF /* BristleBrushThickness.1.5.png in Resources */,

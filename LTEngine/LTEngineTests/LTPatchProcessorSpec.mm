@@ -4,7 +4,7 @@
 #import "LTPatchProcessor.h"
 
 #import "LTOpenCVExtensions.h"
-#import "LTRotatedRect.h"
+#import "LTQuad.h"
 #import "LTTexture+Factory.h"
 
 SpecBegin(LTPatchProcessor)
@@ -24,6 +24,7 @@ context(@"initialization", ^{
     source = [LTTexture byteRGBATextureWithSize:kSize];
     target = [LTTexture byteRGBATextureWithSize:kSize];
     output = [LTTexture byteRGBATextureWithSize:kSize];
+    [output clearColor:LTVector4::zeros()];
   });
 
   afterEach(^{
@@ -107,10 +108,8 @@ context(@"initialization", ^{
                                                                           source:source
                                                                           target:target
                                                                           output:output];
-    expect(processor.sourceRect).to.equal([LTRotatedRect
-                                           rect:CGRectFromOriginAndSize(CGPointZero, source.size)]);
-    expect(processor.targetRect).to.equal([LTRotatedRect
-                                           rect:CGRectFromOriginAndSize(CGPointZero, target.size)]);
+    expect(processor.sourceQuad).to.equal([LTQuad quadFromRect:CGRectFromSize(source.size)]);
+    expect(processor.targetQuad).to.equal([LTQuad quadFromRect:CGRectFromSize(target.size)]);
     expect(processor.workingSize).to.equal(kWorkingSizes.front());
     expect(processor.flip).to.equal(NO);
     expect(processor.sourceOpacity).to.equal(1.0);
@@ -142,8 +141,8 @@ context(@"processing", ^{
 
     processor = [[LTPatchProcessor alloc] initWithWorkingSizes:kWorkingSizes mask:mask
                                                         source:source target:target output:output];
-    processor.targetRect = [LTRotatedRect rect:CGRectMake(8, 8,
-                                                          kSourceSize.width, kSourceSize.height)];
+    processor.targetQuad =
+        [LTQuad quadFromRect:CGRectMake(8, 8, kSourceSize.width, kSourceSize.height)];
   });
 
   afterEach(^{
@@ -158,14 +157,14 @@ context(@"processing", ^{
     [processor process];
 
     cv::Mat4b expected = cv::Mat4b::zeros(kTargetSize.height, kTargetSize.width);
-    cv::Rect roi(processor.targetRect.rect.origin.x,
-                 processor.targetRect.rect.origin.y, kSourceSize.width, kSourceSize.height);
+    cv::Rect roi(processor.targetQuad.boundingRect.origin.x,
+                 processor.targetQuad.boundingRect.origin.y, kSourceSize.width, kSourceSize.height);
     expected(roi) = cv::Vec4b(0, 0, 255, 255);
 
     expect($([output image])).to.beCloseToMat($(expected));
   });
 
-  it(@"should consider source rect when cloning", ^{
+  it(@"should consider source quads when cloning", ^{
     // Fill (0, 0, 8, 8) with constant data and the rest with random junk.
     cv::Mat4b sourceImage(kSourceSize.height, kSourceSize.width);
     cv::randu(sourceImage, 0, 255);
@@ -175,12 +174,12 @@ context(@"processing", ^{
     source.minFilterInterpolation = LTTextureInterpolationNearest;
     source.magFilterInterpolation = LTTextureInterpolationNearest;
 
-    processor.sourceRect = [LTRotatedRect rect:CGRectMake(0, 0, 8, 8)];
+    processor.sourceQuad = [LTQuad quadFromRect:CGRectMake(0, 0, 8, 8)];
     [processor process];
 
     cv::Mat4b expected = cv::Mat4b::zeros(kTargetSize.height, kTargetSize.width);
-    cv::Rect roi(processor.targetRect.rect.origin.x,
-                 processor.targetRect.rect.origin.y, kSourceSize.width, kSourceSize.height);
+    cv::Rect roi(processor.targetQuad.boundingRect.origin.x,
+                 processor.targetQuad.boundingRect.origin.y, kSourceSize.width, kSourceSize.height);
     expected(roi) = cv::Vec4b(0, 0, 255, 255);
 
     expect($([output image])).to.beCloseToMat($(expected));
@@ -203,8 +202,8 @@ context(@"processing", ^{
     [processor process];
 
     cv::Mat4b expected = cv::Mat4b::zeros(kTargetSize.height, kTargetSize.width);
-    cv::Rect roi(processor.targetRect.rect.origin.x,
-                 processor.targetRect.rect.origin.y, kSourceSize.width, kSourceSize.height);
+    cv::Rect roi(processor.targetQuad.boundingRect.origin.x,
+                 processor.targetQuad.boundingRect.origin.y, kSourceSize.width, kSourceSize.height);
     expected(roi) = cv::Vec4b(0, 0, 255, 255);
 
     expect($([output image])).to.beCloseToMat($(expected));
@@ -228,8 +227,8 @@ context(@"processing", ^{
     [processor process];
 
     cv::Mat4b expected = cv::Mat4b::zeros(kTargetSize.height, kTargetSize.width);
-    cv::Rect roi(processor.targetRect.rect.origin.x,
-                 processor.targetRect.rect.origin.y, kSourceSize.width, kSourceSize.height);
+    cv::Rect roi(processor.targetQuad.boundingRect.origin.x,
+                 processor.targetQuad.boundingRect.origin.y, kSourceSize.width, kSourceSize.height);
     expected(roi) = cv::Vec4b(0, 0, 255, 255);
 
     expect($([output image])).to.beCloseToMat($(expected));
@@ -247,13 +246,13 @@ context(@"processing", ^{
     source.minFilterInterpolation = LTTextureInterpolationNearest;
     source.magFilterInterpolation = LTTextureInterpolationNearest;
 
-    processor.sourceRect = [LTRotatedRect rect:CGRectMake(0, 0, 8, 8)];
+    processor.sourceQuad = [LTQuad quadFromRect:CGRectMake(0, 0, 8, 8)];
     processor.flip = YES;
     [processor process];
 
     cv::Mat outputMat = [output image];
 
-    CGRect targetRect = processor.targetRect.rect;
+    CGRect targetRect = processor.targetQuad.boundingRect;
     CGPoint origin = targetRect.origin;
 
     cv::Vec4b outputLeftValue = outputMat.at<cv::Vec4b>(origin.y, origin.x);
@@ -281,6 +280,17 @@ context(@"processing", ^{
       expect($([output image])).to.beCloseToMat($(expected));
     });
 
+    it(@"should correctly process with perspectively transformed quads", ^{
+      processor.sourceQuad =
+          [[LTQuad alloc] initWithCorners:{{{0, 8}, {16, 0}, {16, 16}, {0, 16}}}];
+      processor.targetQuad =
+          [[LTQuad alloc] initWithCorners:{{{0, 16}, {32, 0}, {32, 32}, {0, 32}}}];
+      [processor process];
+
+      cv::Mat expected(LTLoadMat([self class], @"LTPatchProcessorPerspectiveSolution.png"));
+      expect($([output image])).to.beCloseToMat($(expected));
+    });
+
     it(@"should consider opacity when cloning", ^{
       processor.sourceOpacity = 0.5;
       [processor process];
@@ -299,8 +309,8 @@ context(@"processing", ^{
       [target cloneTo:output];
 
       [processor process];
-      processor.targetRect = [LTRotatedRect
-                              rect:CGRectMake(0, 0, kSourceSize.width, kSourceSize.height)];
+      processor.targetQuad =
+          [LTQuad quadFromRect:CGRectMake(0, 0, kSourceSize.width, kSourceSize.height)];
       [processor process];
 
       // Copy the rect from (8, 8, 8, 8) to (0, 0, 8, 8) as it should be there after the second
@@ -334,8 +344,8 @@ context(@"processing", ^{
 
       processor = [[LTPatchProcessor alloc] initWithWorkingSizes:kWorkingSizes mask:mask
                                                         source:source target:target output:output];
-      processor.targetRect = [LTRotatedRect rect:CGRectMake(8, 8,
-                                                            kSourceSize.width, kSourceSize.height)];
+      processor.targetQuad =
+          [LTQuad quadFromRect:CGRectMake(8, 8, kSourceSize.width, kSourceSize.height)];
       [processor process];
 
       std::vector<cv::Mat1b> outputChannels;
@@ -357,8 +367,8 @@ context(@"processing", ^{
 
       processor = [[LTPatchProcessor alloc] initWithWorkingSizes:kWorkingSizes mask:mask
                                                           source:source target:target output:output];
-      processor.targetRect = [LTRotatedRect rect:CGRectMake(8, 8,
-                                                            kSourceSize.width, kSourceSize.height)];
+      processor.targetQuad =
+          [LTQuad quadFromRect:CGRectMake(8, 8, kSourceSize.width, kSourceSize.height)];
       [processor process];
 
       std::vector<cv::Mat1b> outputChannels;
