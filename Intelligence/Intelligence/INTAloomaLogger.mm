@@ -5,8 +5,6 @@
 
 #import <Alooma-iOS/Alooma.h>
 
-#import "INTAnalytricksEvent.h"
-
 NS_ASSUME_NONNULL_BEGIN
 
 @interface INTAloomaLogger ()
@@ -35,16 +33,16 @@ static NSString * const kAloomaServerURL = @"https://inputs.alooma.com";
   return self;
 }
 
-- (void)logEvent:(id<INTAnalytricksEvent>)event {
+- (void)logEvent:(NSDictionary *)event {
   if (![self isEventSupported:event]) {
     return;
   }
 
-  [self.aloomaRecorder trackCustomEvent:event.properties];
+  [self.aloomaRecorder trackCustomEvent:event];
 }
 
-- (BOOL)isEventSupported:(id)event {
-  return [event conformsToProtocol:@protocol(INTAnalytricksEvent)];
+- (BOOL)isEventSupported:(NSDictionary *)event {
+  return [event isKindOfClass:NSDictionary.class] && event[@"event"];
 }
 
 @end
