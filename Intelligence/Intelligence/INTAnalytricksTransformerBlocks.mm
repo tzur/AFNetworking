@@ -11,7 +11,11 @@
 #import "INTAnalytricksBaseUsage.h"
 #import "INTAnalytricksContext.h"
 #import "INTAnalytricksContextGenerators.h"
+#import "INTAnalytricksDeepLinkOpened.h"
+#import "INTAnalytricksMediaExported.h"
+#import "INTAnalytricksMediaImported.h"
 #import "INTAnalytricksMetadata.h"
+#import "INTAnalytricksPushNotificationOpened.h"
 #import "INTAnalytricksScreenVisited.h"
 #import "INTAppBackgroundedEvent.h"
 #import "INTAppBecameActiveEvent.h"
@@ -19,9 +23,14 @@
 #import "INTCycleTransformerBlockBuilder.h"
 #import "INTDeepLinkOpenedEvent.h"
 #import "INTEventMetadata.h"
+#import "INTMediaExportEndedEvent.h"
+#import "INTMediaExportStartedEvent.h"
+#import "INTMediaImportedEvent.h"
 #import "INTPushNotificationOpenedEvent.h"
 #import "INTScreenDismissedEvent.h"
 #import "INTScreenDisplayedEvent.h"
+#import "INTTransformerBlockBuilder.h"
+#import "NSDictionary+Merge.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -146,6 +155,105 @@ INTTransformCompletionBlock
         };
       })
       .onCycleEnd(completionBlock)
+      .build();
+}
+
++ (INTTransformerBlock)deepLinkOpenedEventTransformer {
+  INTTransformCompletionBlock providerCompletion =
+      ^(NSDictionary<NSString *, id> *, INTDeepLinkOpenedEvent *event, INTEventMetadata *,
+        INTAppContext *) {
+          return @[[[INTAnalytricksDeepLinkOpened alloc] initWithDeepLink:event.deepLink]];
+      };
+
+  auto completionBlock = INTAnalytricksBaseUsageTransformCompletion(providerCompletion);
+
+  return INTTransformerBuilder()
+      .transform(NSStringFromClass(INTDeepLinkOpenedEvent.class), completionBlock)
+      .build();
+}
+
++ (INTTransformerBlock)pushNotificationOpenedEventTransformer {
+  INTTransformCompletionBlock providerCompletion =
+      ^(NSDictionary<NSString *, id> *, INTPushNotificationOpenedEvent *event, INTEventMetadata *,
+        INTAppContext *) {
+          return @[[[INTAnalytricksPushNotificationOpened alloc]
+                    initWithPushID:event.pushID deepLink:event.deepLink]];
+      };
+
+  auto completionBlock = INTAnalytricksBaseUsageTransformCompletion(providerCompletion);
+
+  return INTTransformerBuilder()
+      .transform(NSStringFromClass(INTPushNotificationOpenedEvent.class), completionBlock)
+      .build();
+}
+
++ (INTTransformerBlock)mediaImportedEventTransformer {
+  INTTransformCompletionBlock providerCompletion =
+      ^(NSDictionary<NSString *, id> *, INTMediaImportedEvent *event, INTEventMetadata *,
+        INTAppContext *) {
+          return @[[[INTAnalytricksMediaImported alloc]
+                    initWithAssetType:event.assetType format:event.format
+                    assetWidth:event.assetWidth assetHeight:event.assetHeight
+                    assetDuration:event.assetDuration importSource:event.importSource
+                    assetID:event.assetID isFromBundle:event.isFromBundle]];
+      };
+
+  auto completionBlock = INTAnalytricksBaseUsageTransformCompletion(providerCompletion);
+
+  return INTTransformerBuilder()
+      .transform(NSStringFromClass(INTMediaImportedEvent.class), completionBlock)
+      .build();
+}
+
++ (INTTransformerBlock)mediaExportedEventTransformer {
+  static NSString * const kOngoingExportsKey = @"_ongoingExports";
+  static NSString * const kFinishedExportKey = @"_finishedExport";
+
+  INTTransformCompletionBlock providerCompletion =
+      ^(NSDictionary<NSString *, id> *aggregatedData, INTMediaExportEndedEvent *event,
+        INTEventMetadata *, INTAppContext *) {
+        NSArray<INTMediaExportStartedEvent *> *exportStarted =
+            aggregatedData[kFinishedExportKey] ?: @[];
+
+        return [exportStarted lt_map:^(INTMediaExportStartedEvent *exportStarted) {
+          return [[INTAnalytricksMediaExported alloc]
+                  initWithExportID:event.exportID assetType:exportStarted.assetType
+                  format:exportStarted.format assetWidth:exportStarted.assetWidth
+                  assetHeight:exportStarted.assetHeight assetDuration:exportStarted.assetDuration
+                  exportTarget:exportStarted.exportTarget assetID:exportStarted.assetID
+                  projectID:exportStarted.projectID isSuccessful:event.isSuccessful];
+        }];
+      };
+
+  auto completionBlock = INTAnalytricksBaseUsageTransformCompletion(providerCompletion);
+
+  return INTTransformerBuilder()
+      .aggregate(NSStringFromClass(INTMediaExportStartedEvent.class),
+                 ^(NSDictionary<NSString *, id> *aggregatedData,
+                   INTMediaExportStartedEvent *event) {
+        NSDictionary *ongoingExportsMap = aggregatedData[kOngoingExportsKey] ?:
+            [NSDictionary dictionary];
+        NSMutableArray *ongoingExports = [ongoingExportsMap[event.exportID] mutableCopy] ?:
+            [NSMutableArray array];
+        [ongoingExports addObject:event];
+
+        return @{kOngoingExportsKey:
+                   [ongoingExportsMap int_mergeUpdates:@{event.exportID: ongoingExports}]};
+      })
+      .aggregate(NSStringFromClass(INTMediaExportEndedEvent.class),
+                 ^(NSDictionary<NSString *, id> *aggregatedData,
+                   INTMediaExportStartedEvent *event) {
+        NSDictionary *ongoingExports = aggregatedData[kOngoingExportsKey] ?:
+            [NSDictionary dictionary];
+
+        return @{
+          kOngoingExportsKey: [ongoingExports int_mergeUpdates:@{
+            event.exportID: [NSNull null]
+          }],
+          kFinishedExportKey: ongoingExports[event.exportID] ?: [NSNull null]
+        };
+      })
+      .transform(NSStringFromClass(INTMediaExportEndedEvent.class), completionBlock)
       .build();
 }
 

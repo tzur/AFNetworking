@@ -1,0 +1,49 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "description": "A media object was imported",
+  "type": "object",
+  "allOf": [
+    {"$ref": "../AbstractEvents/INTAnalytricksBaseUsage.json"},
+    {
+      "properties": {
+        "asset_type": {
+          "description": "Asset type i.e. image, video",
+          "type": "string"
+        },
+        "format": {
+          "description": "Asset file format i.e. png, gif, mp4",
+          "type": "string"
+        },
+        "asset_width": {
+          "description": "Asset width, in pixels",
+          "type": "integer",
+          "minimum": 1
+        },
+        "asset_height": {
+          "description": "Asset height, in pixels",
+          "type": "integer",
+          "minimum": 1
+        },
+        "asset_duration": {
+          "description": "Asset duration in seconds",
+          "type": ["number", "null"],
+          "minimum": 0
+        },
+        "import_source": {
+          "description": "Import source of the asset. Examples: Camera, HD, Facebook",
+          "type": "string"
+        },
+        "asset_id": {
+          "description": "Unique Asset ID, as defined by the app",
+          "type": "string"
+        },
+        "is_from_bundle": {
+          "description": "\\c YES if the asset is from the application's bundle",
+          "type": ["boolean", "null"]
+        }
+      },
+      "required": ["asset_type", "format", "asset_width", "asset_height", "asset_duration",
+        "import_source", "asset_id", "is_from_bundle"]
+    }
+  ]
+}
