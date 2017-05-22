@@ -49,7 +49,7 @@
 		A149BC2B1EBE6B2C00DA82B7 /* INTPushNotificationOpenedEvent.json in Sources */ = {isa = PBXBuildFile; fileRef = A149BC251EBE6AE300DA82B7 /* INTPushNotificationOpenedEvent.json */; };
 		A149BC2C1EBE6B2C00DA82B7 /* INTScreenDismissedEvent.json in Sources */ = {isa = PBXBuildFile; fileRef = A149BC261EBE6AFE00DA82B7 /* INTScreenDismissedEvent.json */; };
 		A149BC301EBE6B8900DA82B7 /* INTAnalytricksTransformerBlocks.mm in Sources */ = {isa = PBXBuildFile; fileRef = A149BC2F1EBE6B8900DA82B7 /* INTAnalytricksTransformerBlocks.mm */; };
-		A149BC351EBE6BB400DA82B7 /* INTAnalytricksTransformerBlockExamples.mm in Sources */ = {isa = PBXBuildFile; fileRef = A149BC331EBE6BB400DA82B7 /* INTAnalytricksTransformerBlockExamples.mm */; };
+		A149BC351EBE6BB400DA82B7 /* INTTransformerBlockExamples.mm in Sources */ = {isa = PBXBuildFile; fileRef = A149BC331EBE6BB400DA82B7 /* INTTransformerBlockExamples.mm */; };
 		A149BC361EBE6BB400DA82B7 /* INTAnalytricksTransformerBlocksSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = A149BC341EBE6BB400DA82B7 /* INTAnalytricksTransformerBlocksSpec.mm */; };
 		A1541AF41EAF1CB000B4F064 /* INTEventsPipeline.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1541AF31EAF1CB000B4F064 /* INTEventsPipeline.mm */; };
 		A1541B0E1EAF1CC300B4F064 /* INTEventsPipelineSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1541B0B1EAF1CC300B4F064 /* INTEventsPipelineSpec.mm */; };
@@ -363,8 +363,8 @@
 		A149BC261EBE6AFE00DA82B7 /* INTScreenDismissedEvent.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = INTScreenDismissedEvent.json; sourceTree = "<group>"; };
 		A149BC2E1EBE6B8900DA82B7 /* INTAnalytricksTransformerBlocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INTAnalytricksTransformerBlocks.h; sourceTree = "<group>"; };
 		A149BC2F1EBE6B8900DA82B7 /* INTAnalytricksTransformerBlocks.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = INTAnalytricksTransformerBlocks.mm; sourceTree = "<group>"; };
-		A149BC321EBE6BB400DA82B7 /* INTAnalytricksTransformerBlockExamples.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INTAnalytricksTransformerBlockExamples.h; sourceTree = "<group>"; };
-		A149BC331EBE6BB400DA82B7 /* INTAnalytricksTransformerBlockExamples.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = INTAnalytricksTransformerBlockExamples.mm; sourceTree = "<group>"; };
+		A149BC321EBE6BB400DA82B7 /* INTTransformerBlockExamples.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INTTransformerBlockExamples.h; sourceTree = "<group>"; };
+		A149BC331EBE6BB400DA82B7 /* INTTransformerBlockExamples.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = INTTransformerBlockExamples.mm; sourceTree = "<group>"; };
 		A149BC341EBE6BB400DA82B7 /* INTAnalytricksTransformerBlocksSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = INTAnalytricksTransformerBlocksSpec.mm; sourceTree = "<group>"; };
 		A1541AF21EAF1CB000B4F064 /* INTEventsPipeline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INTEventsPipeline.h; sourceTree = "<group>"; };
 		A1541AF31EAF1CB000B4F064 /* INTEventsPipeline.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; lineEnding = 0; path = INTEventsPipeline.mm; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
@@ -480,8 +480,8 @@
 		A113424A1EB5AD870042ABA8 /* Test Utils */ = {
 			isa = PBXGroup;
 			children = (
-				A149BC321EBE6BB400DA82B7 /* INTAnalytricksTransformerBlockExamples.h */,
-				A149BC331EBE6BB400DA82B7 /* INTAnalytricksTransformerBlockExamples.mm */,
+				A149BC321EBE6BB400DA82B7 /* INTTransformerBlockExamples.h */,
+				A149BC331EBE6BB400DA82B7 /* INTTransformerBlockExamples.mm */,
 				A1B373BD1EA6511F008E5195 /* INTEventTransformationExecutor.h */,
 				A1B373BE1EA6511F008E5195 /* INTEventTransformationExecutor.mm */,
 				A1541B0C1EAF1CC300B4F064 /* INTRecorderLogger.h */,
@@ -1245,7 +1245,7 @@
 				A1541B0E1EAF1CC300B4F064 /* INTEventsPipelineSpec.mm in Sources */,
 				A132A0E51EB8C2A5001F70A6 /* INTCycleTransformerBlockBuilderSpec.mm in Sources */,
 				A132A37D1EBCD200001F70A6 /* INTEventCodeGenerationSpec.mm in Sources */,
-				A149BC351EBE6BB400DA82B7 /* INTAnalytricksTransformerBlockExamples.mm in Sources */,
+				A149BC351EBE6BB400DA82B7 /* INTTransformerBlockExamples.mm in Sources */,
 				A1541C0A1EAF405100B4F064 /* INTAppLifecycleTimerSpec.mm in Sources */,
 				A149BC361EBE6BB400DA82B7 /* INTAnalytricksTransformerBlocksSpec.mm in Sources */,
 				A1541B0F1EAF1CC300B4F064 /* INTRecorderLogger.mm in Sources */,
