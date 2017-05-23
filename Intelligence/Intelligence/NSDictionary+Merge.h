@@ -11,6 +11,11 @@ NS_ASSUME_NONNULL_BEGIN
 /// removing keys from the receiver having an \c NSNull value in \c updates.
 - (NSDictionary *)int_mergeUpdates:(NSDictionary *)updates;
 
+/// Returns an new dictionary after committing key/value pairs from \c dictionary to the receiver.
+/// The merge is done by replacing values for keys in receiver with values for the same keys from
+/// \c dictionary.
+- (NSDictionary *)int_dictionaryByAddingEntriesFromDictionary:(NSDictionary *)dictionary;
+
 @end
 
 NS_ASSUME_NONNULL_END
