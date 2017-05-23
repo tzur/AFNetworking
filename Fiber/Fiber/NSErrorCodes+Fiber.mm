@@ -20,7 +20,9 @@ LTErrorCodesImplement(FiberErrorCodeProductID,
   /// Deserialization of an HTTP response failed.
   FBRErrorCodeHTTPResponseDeserializationFailed,
   /// Deserialization of a JSON object failed.
-  FBRErrorCodeJSONDeserializationFailed
+  FBRErrorCodeJSONDeserializationFailed,
+  /// On demand resources request failed.
+  FBRErrorCodeOnDemandResourcesRequestFailed
 );
 
 NS_ASSUME_NONNULL_END
