@@ -89,23 +89,25 @@ static BOOL LTReplaceVoidSelector(SEL selector, LTVoidBlock block) {
 BOOL LTInstallUIKitMainThreadGuard(LTVoidBlock block) {
   LTAssert(block);
 
-  static BOOL isInstalled = NO;
-  if (isInstalled) {
+  __block BOOL isFirstRun = NO;
+  __block BOOL success = YES;
+
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    isFirstRun = YES;
+
+    @autoreleasepool {
+      success &= LTReplaceVoidSelector(@selector(setNeedsLayout), block);
+      success &= LTReplaceVoidSelector(@selector(setNeedsDisplay), block);
+      success &= LTReplaceCGRectSelector(@selector(setNeedsDisplayInRect:), block);
+    }
+  });
+
+  if (!isFirstRun) {
     LogWarning(@"LTInstallUIKitMainThreadGuard was already called, ignoring");
     return NO;
   }
 
-  static dispatch_once_t onceToken;
-  dispatch_once(&onceToken, ^{
-    isInstalled = YES;
-  });
-
-  BOOL success = YES;
-  @autoreleasepool {
-    success &= LTReplaceVoidSelector(@selector(setNeedsLayout), block);
-    success &= LTReplaceVoidSelector(@selector(setNeedsDisplay), block);
-    success &= LTReplaceCGRectSelector(@selector(setNeedsDisplayInRect:), block);
-  }
   return success;
 }
 
