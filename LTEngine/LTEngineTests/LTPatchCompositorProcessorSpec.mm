@@ -188,6 +188,17 @@ context(@"processing", ^{
     // Source + membrane.
     expect($([output image])).to.beCloseToMat($(expected));
   });
+
+  it(@"should not composite when source alpha is zero", ^{
+    [source clearColor:LTVector4(1, 1, 1, 0)];
+
+    [processor process];
+
+    // Set initially to target.
+    cv::Mat4b expected([target image]);
+
+    expect($([output image])).to.beCloseToMat($(expected));
+  });
 });
 
 SpecEnd

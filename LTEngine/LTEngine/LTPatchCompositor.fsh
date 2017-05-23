@@ -29,6 +29,6 @@ void main() {
     feathering = (1.0 - smoothingAlpha) + smoothingAlpha * mask.r;
   }
 
-  gl_FragColor = vec4(mix(target.rgb, source.rgb + membrane.rgb, feathering * sourceOpacity),
-                      target.a);
+  highp float blendingAlpha = source.a * feathering * sourceOpacity;
+  gl_FragColor = vec4(mix(target.rgb, source.rgb + membrane.rgb, blendingAlpha), target.a);
 }
