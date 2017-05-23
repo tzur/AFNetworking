@@ -199,6 +199,17 @@ context(@"processing", ^{
 
     expect($([output image])).to.beCloseToMat($(expected));
   });
+
+  it(@"should not composite when source outside rect", ^{
+    processor.sourceQuad = [LTQuad quadFromRect:CGRectMake(-8, 8, 8, 8)];
+
+    [processor process];
+
+    // Set initially to target.
+    cv::Mat4b expected([target image]);
+
+    expect($([output image])).to.beCloseToMat($(expected));
+  });
 });
 
 SpecEnd

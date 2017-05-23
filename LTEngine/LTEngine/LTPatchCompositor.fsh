@@ -13,12 +13,8 @@ varying highp vec2 vSourceTexcoord;
 varying highp vec2 vTargetTexcoord;
 varying highp vec2 vBaseTexcoord;
 
-highp vec2 wrapCoordinatesMirror(highp vec2 coordinates) {
-  return 1.0 - abs(mod(coordinates, 2.0) - 1.0);
-}
-
 void main() {
-  lowp vec4 source = texture2D(sourceTexture, wrapCoordinatesMirror(vSourceTexcoord));
+  lowp vec4 source = texture2D(sourceTexture, vSourceTexcoord);
   lowp vec4 target = texture2D(targetTexture, vTargetTexcoord);
   lowp vec4 membrane = texture2D(membraneTexture, vBaseTexcoord);
   lowp vec4 mask = texture2D(maskTexture, vBaseTexcoord);
@@ -30,5 +26,10 @@ void main() {
   }
 
   highp float blendingAlpha = source.a * feathering * sourceOpacity;
-  gl_FragColor = vec4(mix(target.rgb, source.rgb + membrane.rgb, blendingAlpha), target.a);
+
+  if (clamp(vSourceTexcoord, vec2(0.0), vec2(1.0)) != vSourceTexcoord) {
+    gl_FragColor = target;
+  } else {
+    gl_FragColor = vec4(mix(target.rgb, source.rgb + membrane.rgb, blendingAlpha), target.a);
+  }
 }
