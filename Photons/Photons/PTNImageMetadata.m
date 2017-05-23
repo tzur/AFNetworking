@@ -328,7 +328,7 @@ static void PTNSetError(NSError *__autoreleasing *error, NSInteger errorCode, NS
     speed = [gps[BRIDGE(kCGImagePropertyGPSSpeed)] doubleValue] / 3.6;
   }
 
-  NSDate *time = [self gpdDateFrom:gps[BRIDGE(kCGImagePropertyGPSDateStamp)]
+  NSDate *time = [self gpsDateFrom:gps[BRIDGE(kCGImagePropertyGPSDateStamp)]
                               time:gps[BRIDGE(kCGImagePropertyGPSTimeStamp)]];
 
   return [[CLLocation alloc] initWithCoordinate:coordinate altitude:altitude
@@ -390,7 +390,7 @@ static void PTNSetError(NSError *__autoreleasing *error, NSInteger errorCode, NS
   return [[self dateFormatterWithFormat:@"yyyy:MM:dd HH:mm:ss.SSS"] dateFromString:fullDate];
 }
 
-- (NSDate *)gpdDateFrom:(NSString *)date time:(NSString *)time {
+- (NSDate *)gpsDateFrom:(NSString *)date time:(NSString *)time {
   NSString *fullDate = [NSString stringWithFormat:@"%@ %@", date, time];
   NSDate *gpsDate =
       [[self utcDateFormatterWithFormat:@"yyyy:MM:dd HH:mm:ss.SSSSSS"] dateFromString:fullDate];
