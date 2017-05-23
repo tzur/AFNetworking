@@ -130,6 +130,21 @@ context(@"processing", ^{
     expect($([output image])).to.beCloseToMat($(expected));
   });
 
+  it(@"should composite correctly when target alpha is not one", ^{
+    processor.sourceOpacity = 0.5;
+    processor.flip = NO;
+    [target clearColor:LTVector4(0, 0, 1, 0.75)];
+
+    [processor process];
+
+    // Set initially to target.
+    cv::Mat4b expected([target image]);
+    // Source + membrane.
+    expected(cv::Rect(0, 0, 16, 16)) = cv::Vec4b(128, 64, 128, 191);
+
+    expect($([output image])).to.beCloseToMat($(expected));
+  });
+
   it(@"should composite correctly with flipping", ^{
     processor.sourceOpacity = 0.5;
 
