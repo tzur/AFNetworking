@@ -47,8 +47,8 @@
 }
 
 - (void)setDefaultValues {
-  self.sourceQuad = [LTQuad quadFromRectWithOrigin:CGPointZero andSize:self.source.size];
-  self.targetQuad = [LTQuad quadFromRectWithOrigin:CGPointZero andSize:self.target.size];
+  self.sourceQuad = [LTQuad quadFromRect:CGRectFromSize(self.source.size)];
+  self.targetQuad = [LTQuad quadFromRect:CGRectFromSize(self.target.size)];
   self.sourceOpacity = self.defaultSourceOpacity;
   self.flip = NO;
   self.smoothingAlpha = self.defaultSmoothingAlpha;
