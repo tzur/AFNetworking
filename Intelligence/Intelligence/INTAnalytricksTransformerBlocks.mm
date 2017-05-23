@@ -34,65 +34,51 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-INTTransformCompletionBlock
-    INTAnalytricksBaseUsageTransformCompletion(intl::TransformCompletionBlock providerCompletion,
-                                               BOOL useStartMetadata = NO,
-                                               BOOL useStartContext = NO) {
-  return ^(NSDictionary<NSString *, id> *aggregatedData, id event, INTEventMetadata *metadata,
-           INTAppContext *context) {
-    auto providers = providerCompletion.getFullBlock()(aggregatedData, event, metadata, context);
-    auto providerIndices = [providers indexesOfObjectsPassingTest:^BOOL(id obj, NSUInteger,
-                                                                        BOOL *) {
-      return [obj conformsToProtocol:@protocol(INTAnalytricksBaseUsageDataProvider)];
-    }];
+@implementation INTAnalytricksTransformerBlocks
 
-    providers = [providers objectsAtIndexes:providerIndices];
++ (INTEventEnrichmentBlock)analytricksContextEnrichementBlock {
+  return ^(NSArray *events, INTAppContext *appContext,
+                                              INTEventMetadata *) {
+    NSDictionary *analytricksContext =
+        [appContext[kINTAppContextAnalytricksContextKey] properties] ?: @{};
 
-    INTAppContext *appContext =
-        useStartContext ? aggregatedData[kINTStartContextKey] : context;
+    return [events lt_map:^(NSDictionary *event) {
+      if (![event isKindOfClass:NSDictionary.class]) {
+        return event;
+      }
 
-    INTAnalytricksContext * _Nullable analytricksContext =
-        appContext[kINTAppContextAnalytricksContextKey];
-
-    NSUUID * _Nullable ltDeviceID = appContext[kINTAppContextDeviceIDKey];
-    NSUUID * _Nullable deviceInfoID = appContext[kINTAppContextDeviceInfoIDKey];
-
-    if (!(analytricksContext && ltDeviceID && deviceInfoID)) {
-      return @[];
-    }
-
-    INTEventMetadata *eventMetadata =
-        useStartMetadata ? aggregatedData[kINTStartMetadataKey] : metadata;
-
-    auto analytricksMetadata =
-        [[INTAnalytricksMetadata alloc]
-         initWithEventID:eventMetadata.eventID deviceTimestamp:eventMetadata.deviceTimestamp
-         appTotalRunTime:@(eventMetadata.totalRunTime) ltDeviceID:ltDeviceID
-         deviceInfoID:deviceInfoID];
-
-    return [providers lt_map:^(id<INTAnalytricksBaseUsageDataProvider> provider) {
-      return [[INTAnalytricksBaseUsage alloc] initWithDataProvider:provider
-                                             INTAnalytricksContext:analytricksContext
-                                            INTAnalytricksMetadata:analytricksMetadata];
+      return [analytricksContext int_dictionaryByAddingEntriesFromDictionary:event];
     }];
   };
 }
 
-@implementation INTAnalytricksBaseUsageTransformerBlocks
++ (INTEventEnrichmentBlock)analytricksMetadataEnrichementBlock {
+  return ^(NSArray *events, INTAppContext *appContext, INTEventMetadata *eventMetadata) {
+    NSUUID * _Nullable ltDeviceID = appContext[kINTAppContextDeviceIDKey];
+    NSUUID * _Nullable deviceInfoID = appContext[kINTAppContextDeviceInfoIDKey];
+
+    NSDictionary *analytricksMetadata;
+
+    if (!ltDeviceID || !deviceInfoID) {
+      analytricksMetadata = @{};
+    } else {
+      analytricksMetadata = [[INTAnalytricksMetadata alloc]
+         initWithEventID:eventMetadata.eventID deviceTimestamp:eventMetadata.deviceTimestamp
+         appTotalRunTime:@(eventMetadata.totalRunTime) ltDeviceID:ltDeviceID
+         deviceInfoID:deviceInfoID].properties;
+    }
+
+    return [events lt_map:^(NSDictionary *event) {
+      if (![event isKindOfClass:NSDictionary.class]) {
+        return event;
+      }
+
+      return [analytricksMetadata int_dictionaryByAddingEntriesFromDictionary:event];
+    }];
+  };
+}
 
 + (INTTransformerBlock)foregroundEventTransformer {
-  INTAggregationTransformCompletionBlock providerCompletion =
-      ^(NSDictionary<NSString *, id> *aggregatedData) {
-        BOOL isLaunch =
-            [aggregatedData[@instanceKeypath(INTAnalytricksAppForegrounded, isLaunch)] boolValue];
-        NSString *source =
-            aggregatedData[@instanceKeypath(INTAnalytricksAppForegrounded, source)];
-
-        return @[[[INTAnalytricksAppForegrounded alloc] initWithSource:source isLaunch:isLaunch]];
-      };
-
-  auto completionBlock = INTAnalytricksBaseUsageTransformCompletion(providerCompletion, YES, YES);
-
   return INTCycleTransformerBuilder()
       .cycle(NSStringFromClass(INTAppWillEnterForegroundEvent.class),
              NSStringFromClass(INTAppBecameActiveEvent.class))
@@ -111,39 +97,30 @@ INTTransformCompletionBlock
                  ^(NSDictionary<NSString *, id> *, id) {
         return @{@instanceKeypath(INTAnalytricksAppForegrounded, source): @"push_notification"};
       })
-      .onCycleEnd(completionBlock)
+      .onCycleEnd(^(NSDictionary<NSString *, id> *aggregatedData) {
+        BOOL isLaunch =
+            [aggregatedData[@instanceKeypath(INTAnalytricksAppForegrounded, isLaunch)] boolValue];
+        NSString *source =
+            aggregatedData[@instanceKeypath(INTAnalytricksAppForegrounded, source)];
+
+        return @[[[INTAnalytricksAppForegrounded alloc] initWithSource:source
+                                                              isLaunch:isLaunch].properties];
+      })
       .build();
 }
 
 + (INTTransformerBlock)backgroundEventTransformer {
-  INTAggregationTransformCompletionBlock providerCompletion =
-      ^(NSDictionary<NSString *, id> *aggregatedData) {
-        return @[[[INTAnalytricksAppBackgrounded alloc]
-                  initWithForegroundDuration:aggregatedData[kINTCycleDurationKey]]];
-      };
-
-  auto completionBlock = INTAnalytricksBaseUsageTransformCompletion(providerCompletion);
-
   return INTCycleTransformerBuilder()
       .cycle(NSStringFromClass(INTAppWillEnterForegroundEvent.class),
              NSStringFromClass(INTAppBackgroundedEvent.class))
-      .onCycleEnd(completionBlock)
+      .onCycleEnd(^(NSDictionary<NSString *, id> *aggregatedData) {
+        return @[[[INTAnalytricksAppBackgrounded alloc]
+                  initWithForegroundDuration:aggregatedData[kINTCycleDurationKey]].properties];
+      })
       .build();
 }
 
 + (INTTransformerBlock)screenVisitedEventTransformer {
-  INTAggregationTransformCompletionBlock providerCompletion =
-      ^(NSDictionary<NSString *, id> *aggregatedData) {
-        NSString *dismissAction =
-        aggregatedData[@instanceKeypath(INTAnalytricksScreenVisited, dismissAction)];
-
-        return @[[[INTAnalytricksScreenVisited alloc]
-                  initWithScreenDuration:aggregatedData[kINTCycleDurationKey]
-                  dismissAction:dismissAction]];
-      };
-
-  auto completionBlock = INTAnalytricksBaseUsageTransformCompletion(providerCompletion);
-
   return INTCycleTransformerBuilder()
       .cycle(NSStringFromClass(INTScreenDisplayedEvent.class),
              NSStringFromClass(INTScreenDismissedEvent.class))
@@ -154,78 +131,55 @@ INTTransformCompletionBlock
                event.dismissAction ?: [NSNull null]
         };
       })
-      .onCycleEnd(completionBlock)
+      .onCycleEnd(^(NSDictionary<NSString *, id> *aggregatedData) {
+        NSString *dismissAction =
+            aggregatedData[@instanceKeypath(INTAnalytricksScreenVisited, dismissAction)];
+
+        return @[[[INTAnalytricksScreenVisited alloc]
+                  initWithScreenDuration:aggregatedData[kINTCycleDurationKey]
+                  dismissAction:dismissAction].properties];
+      })
       .build();
 }
 
 + (INTTransformerBlock)deepLinkOpenedEventTransformer {
-  INTTransformCompletionBlock providerCompletion =
-      ^(NSDictionary<NSString *, id> *, INTDeepLinkOpenedEvent *event, INTEventMetadata *,
-        INTAppContext *) {
-          return @[[[INTAnalytricksDeepLinkOpened alloc] initWithDeepLink:event.deepLink]];
-      };
-
-  auto completionBlock = INTAnalytricksBaseUsageTransformCompletion(providerCompletion);
-
   return INTTransformerBuilder()
-      .transform(NSStringFromClass(INTDeepLinkOpenedEvent.class), completionBlock)
+      .transform(NSStringFromClass(INTDeepLinkOpenedEvent.class),
+                 ^(NSDictionary<NSString *, id> *, INTDeepLinkOpenedEvent *event,
+                   INTEventMetadata *, INTAppContext *) {
+        return @[[[INTAnalytricksDeepLinkOpened alloc] initWithDeepLink:event.deepLink].properties];
+      })
       .build();
 }
 
 + (INTTransformerBlock)pushNotificationOpenedEventTransformer {
-  INTTransformCompletionBlock providerCompletion =
-      ^(NSDictionary<NSString *, id> *, INTPushNotificationOpenedEvent *event, INTEventMetadata *,
-        INTAppContext *) {
-          return @[[[INTAnalytricksPushNotificationOpened alloc]
-                    initWithPushID:event.pushID deepLink:event.deepLink]];
-      };
-
-  auto completionBlock = INTAnalytricksBaseUsageTransformCompletion(providerCompletion);
-
   return INTTransformerBuilder()
-      .transform(NSStringFromClass(INTPushNotificationOpenedEvent.class), completionBlock)
+      .transform(NSStringFromClass(INTPushNotificationOpenedEvent.class),
+                 ^(NSDictionary<NSString *, id> *, INTPushNotificationOpenedEvent *event,
+                   INTEventMetadata *, INTAppContext *) {
+        return @[[[INTAnalytricksPushNotificationOpened alloc]
+                  initWithPushID:event.pushID deepLink:event.deepLink].properties];
+      })
       .build();
 }
 
 + (INTTransformerBlock)mediaImportedEventTransformer {
-  INTTransformCompletionBlock providerCompletion =
-      ^(NSDictionary<NSString *, id> *, INTMediaImportedEvent *event, INTEventMetadata *,
-        INTAppContext *) {
-          return @[[[INTAnalytricksMediaImported alloc]
-                    initWithAssetType:event.assetType format:event.format
-                    assetWidth:event.assetWidth assetHeight:event.assetHeight
-                    assetDuration:event.assetDuration importSource:event.importSource
-                    assetID:event.assetID isFromBundle:event.isFromBundle]];
-      };
-
-  auto completionBlock = INTAnalytricksBaseUsageTransformCompletion(providerCompletion);
-
   return INTTransformerBuilder()
-      .transform(NSStringFromClass(INTMediaImportedEvent.class), completionBlock)
+      .transform(NSStringFromClass(INTMediaImportedEvent.class),
+                 ^(NSDictionary<NSString *, id> *, INTMediaImportedEvent *event, INTEventMetadata *,
+                   INTAppContext *) {
+        return @[[[INTAnalytricksMediaImported alloc]
+                  initWithAssetType:event.assetType format:event.format
+                  assetWidth:event.assetWidth assetHeight:event.assetHeight
+                  assetDuration:event.assetDuration importSource:event.importSource
+                  assetID:event.assetID isFromBundle:event.isFromBundle].properties];
+      })
       .build();
 }
 
 + (INTTransformerBlock)mediaExportedEventTransformer {
   static NSString * const kOngoingExportsKey = @"_ongoingExports";
   static NSString * const kFinishedExportKey = @"_finishedExport";
-
-  INTTransformCompletionBlock providerCompletion =
-      ^(NSDictionary<NSString *, id> *aggregatedData, INTMediaExportEndedEvent *event,
-        INTEventMetadata *, INTAppContext *) {
-        NSArray<INTMediaExportStartedEvent *> *exportStarted =
-            aggregatedData[kFinishedExportKey] ?: @[];
-
-        return [exportStarted lt_map:^(INTMediaExportStartedEvent *exportStarted) {
-          return [[INTAnalytricksMediaExported alloc]
-                  initWithExportID:event.exportID assetType:exportStarted.assetType
-                  format:exportStarted.format assetWidth:exportStarted.assetWidth
-                  assetHeight:exportStarted.assetHeight assetDuration:exportStarted.assetDuration
-                  exportTarget:exportStarted.exportTarget assetID:exportStarted.assetID
-                  projectID:exportStarted.projectID isSuccessful:event.isSuccessful];
-        }];
-      };
-
-  auto completionBlock = INTAnalytricksBaseUsageTransformCompletion(providerCompletion);
 
   return INTTransformerBuilder()
       .aggregate(NSStringFromClass(INTMediaExportStartedEvent.class),
@@ -253,7 +207,21 @@ INTTransformCompletionBlock
           kFinishedExportKey: ongoingExports[event.exportID] ?: [NSNull null]
         };
       })
-      .transform(NSStringFromClass(INTMediaExportEndedEvent.class), completionBlock)
+      .transform(NSStringFromClass(INTMediaExportEndedEvent.class),
+                 ^(NSDictionary<NSString *, id> *aggregatedData, INTMediaExportEndedEvent *event,
+        INTEventMetadata *, INTAppContext *) {
+        NSArray<INTMediaExportStartedEvent *> *exportStarted =
+            aggregatedData[kFinishedExportKey] ?: @[];
+
+        return [exportStarted lt_map:^(INTMediaExportStartedEvent *exportStarted) {
+          return [[INTAnalytricksMediaExported alloc]
+                  initWithExportID:event.exportID assetType:exportStarted.assetType
+                  format:exportStarted.format assetWidth:exportStarted.assetWidth
+                  assetHeight:exportStarted.assetHeight assetDuration:exportStarted.assetDuration
+                  exportTarget:exportStarted.exportTarget assetID:exportStarted.assetID
+                  projectID:exportStarted.projectID isSuccessful:event.isSuccessful].properties;
+        }];
+      })
       .build();
 }
 

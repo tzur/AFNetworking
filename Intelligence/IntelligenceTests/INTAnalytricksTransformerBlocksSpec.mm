@@ -23,13 +23,182 @@
 #import <Intelligence/INTScreenDismissedEvent.h>
 #import <Intelligence/INTScreenDisplayedEvent.h>
 #import <LTKit/NSArray+Functional.h>
+#import <LTKit/NSDateFormatter+Formatters.h>
 
-#import "INTAnalytricksTransformerBlockExamples.h"
+#import "INTAnalytricksContextGenerators.h"
 #import "INTCycleTransformerBlockBuilder.h"
 #import "INTEventMetadata.h"
 #import "INTEventTransformationExecutor.h"
+#import "INTTransformerBlockExamples.h"
+#import "NSDictionary+Merge.h"
 
 SpecBegin(INTAnalytricksTransformerBlocks)
+
+context(@"analytricks context enricher", ^{
+  __block INTEventEnrichmentBlock block;
+
+  beforeEach(^{
+    block = [INTAnalytricksTransformerBlocks analytricksContextEnrichementBlock];
+  });
+
+  it(@"should enrich dictionary events", ^{
+    auto runID = [NSUUID UUID];
+    auto sessionID = [NSUUID UUID];
+    auto screenUsageID = [NSUUID UUID];
+    auto openProjectID = [NSUUID UUID];
+
+    auto analytricksContext =
+        [[INTAnalytricksContext alloc] initWithRunID:runID sessionID:sessionID
+                      screenUsageID:screenUsageID screenName:@"foo" openProjectID:openProjectID];
+    auto events = @[@{@"foo": @"bar"}, @{@"foo": @"baz"}];
+    auto enrichedEvents = block(events, @{
+      kINTAppContextAnalytricksContextKey: analytricksContext
+    }, INTCreateEventMetadata());
+
+    auto expectedEnrichment = @{
+      @"run_id": runID.UUIDString,
+      @"session_id": sessionID.UUIDString,
+      @"screen_usage_id": screenUsageID.UUIDString,
+      @"screen_name": @"foo",
+      @"open_project_id": openProjectID.UUIDString
+    };
+
+    auto expectedEvents = [events lt_map:^(NSDictionary *event) {
+      return [expectedEnrichment int_dictionaryByAddingEntriesFromDictionary:event];
+    }];
+
+    expect(enrichedEvents).to.equal(expectedEvents);
+  });
+
+  it(@"should prioritize event keys when enriching", ^{
+    auto analytricksContext1 =
+        [[INTAnalytricksContext alloc] initWithRunID:[NSUUID UUID] sessionID:[NSUUID UUID]
+                      screenUsageID:[NSUUID UUID] screenName:@"foo" openProjectID:[NSUUID UUID]];
+    auto analytricksContext2 =
+        [[INTAnalytricksContext alloc] initWithRunID:[NSUUID UUID] sessionID:[NSUUID UUID]
+                      screenUsageID:[NSUUID UUID] screenName:@"bar" openProjectID:[NSUUID UUID]];
+    auto events = @[analytricksContext1.properties];
+    auto enrichedEvents = block(events, @{
+      kINTAppContextAnalytricksContextKey: analytricksContext2
+    }, INTCreateEventMetadata());
+
+    expect(enrichedEvents).to.equal(events);
+  });
+
+  it(@"should not enrich dictionary events if analytricks context is missing", ^{
+    auto events = @[@{@"foo": @"bar"}, @{@"foo": @"baz"}];
+    auto enrichedEvents = block(events, @{}, INTCreateEventMetadata());
+
+    expect(enrichedEvents).to.equal(events);
+  });
+
+  it(@"should not enrich non dictionary events", ^{
+    auto analytricksContext =
+        [[INTAnalytricksContext alloc] initWithRunID:[NSUUID UUID] sessionID:[NSUUID UUID]
+                      screenUsageID:[NSUUID UUID] screenName:@"foo" openProjectID:[NSUUID UUID]];
+    auto events = @[@"foo", @{}];
+    auto enrichedEvents = block(events, @{
+      kINTAppContextAnalytricksContextKey: analytricksContext
+    }, INTCreateEventMetadata());
+
+    expect(enrichedEvents).to.equal(@[@"foo", analytricksContext.properties]);
+  });
+});
+
+context(@"analytricks metadata enricher", ^{
+  __block INTEventEnrichmentBlock block;
+
+  beforeEach(^{
+    block = [INTAnalytricksTransformerBlocks analytricksMetadataEnrichementBlock];
+  });
+
+  it(@"should enrich dictionary events", ^{
+    auto deviceID = [NSUUID UUID];
+    auto deviceInfoID = [NSUUID UUID];
+    auto metadata = INTCreateEventMetadata(3);
+
+    auto events = @[@{@"foo": @"bar"}, @{@"foo": @"baz"}];
+    auto enrichedEvents = block(events, @{
+      kINTAppContextDeviceIDKey: deviceID,
+      kINTAppContextDeviceInfoIDKey: deviceInfoID
+    }, metadata);
+
+    auto expectedEnrichment = @{
+      @"event_id": metadata.eventID.UUIDString,
+      @"device_timestamp": [[NSDateFormatter lt_UTCDateFormatter]
+                            stringFromDate:metadata.deviceTimestamp],
+      @"app_total_run_time": @(3),
+      @"lt_device_id": deviceID.UUIDString,
+      @"device_info_id": deviceInfoID.UUIDString
+      };
+
+    auto expectedEvents = [events lt_map:^(NSDictionary *event) {
+      return [expectedEnrichment int_dictionaryByAddingEntriesFromDictionary:event];
+    }];
+
+    expect(enrichedEvents).to.equal(expectedEvents);
+  });
+
+  it(@"should prioritize event keys when enriching", ^{
+    auto deviceID = [NSUUID UUID];
+    auto deviceInfoID = [NSUUID UUID];
+    auto metadata = INTCreateEventMetadata(3);
+
+    auto events = @[@{
+      @"event_id": metadata.eventID.UUIDString,
+      @"device_timestamp": [[NSDateFormatter lt_UTCDateFormatter]
+                            stringFromDate:metadata.deviceTimestamp],
+      @"app_total_run_time": @(3),
+      @"lt_device_id": deviceID.UUIDString,
+      @"device_info_id": deviceInfoID.UUIDString
+    }];
+
+    auto enrichedEvents = block(events, @{
+      kINTAppContextDeviceIDKey: deviceID,
+      kINTAppContextDeviceInfoIDKey: deviceInfoID
+    }, metadata);
+
+    expect(enrichedEvents).to.equal(events);
+  });
+
+  it(@"should not enrich dictionary events if device ID is missing", ^{
+    auto events = @[@{@"foo": @"bar"}, @{@"foo": @"baz"}];
+    auto enrichedEvents = block(events, @{
+      kINTAppContextDeviceInfoIDKey: [NSUUID UUID]
+    }, INTCreateEventMetadata());
+
+    expect(enrichedEvents).to.equal(events);
+  });
+
+  it(@"should not enrich dictionary events if device info ID is missing", ^{
+    auto events = @[@{@"foo": @"bar"}, @{@"foo": @"baz"}];
+    auto enrichedEvents = block(events, @{
+      kINTAppContextDeviceInfoIDKey: [NSUUID UUID]
+    }, INTCreateEventMetadata());
+
+    expect(enrichedEvents).to.equal(events);
+  });
+
+  it(@"should not enrich non dictionary events", ^{
+    auto deviceID = [NSUUID UUID];
+    auto deviceInfoID = [NSUUID UUID];
+    auto metadata = INTCreateEventMetadata(3);
+
+    auto events = @[@"foo", @{}];
+    auto enrichedEvents = block(events, @{
+      kINTAppContextDeviceIDKey: deviceID,
+      kINTAppContextDeviceInfoIDKey: deviceInfoID
+    }, metadata);
+
+    auto analytricksMetadata =
+        [[INTAnalytricksMetadata alloc] initWithEventID:metadata.eventID
+                                        deviceTimestamp:metadata.deviceTimestamp
+                                        appTotalRunTime:@(3)
+                                             ltDeviceID:deviceID deviceInfoID:deviceInfoID];
+
+    expect(enrichedEvents).to.equal(@[@"foo", analytricksMetadata.properties]);
+  });
+});
 
 context(@"analytricks foreground event transformer", ^{
   __block INTAppWillEnterForegroundEvent *appWillForegroundEvent;
@@ -39,64 +208,54 @@ context(@"analytricks foreground event transformer", ^{
   beforeEach(^{
     appWillForegroundEvent = [[INTAppWillEnterForegroundEvent alloc] initWithIsLaunch:YES];
     appBecameActiveEvent = [[INTAppBecameActiveEvent alloc] init];
-    auto block = [INTAnalytricksBaseUsageTransformerBlocks foregroundEventTransformer];
-    sharedExampleDict = @{
-      kINTAnalytricksBaseUsageTransformerBlock: block,
-      kINTShouldUseStartContext: @YES,
-      kINTShouldUseStartMetadata: @YES
-    };
+    auto block = [INTAnalytricksTransformerBlocks foregroundEventTransformer];
+    sharedExampleDict = @{kINTTransformerBlockExamplesTransformerBlock: block};
   });
 
-  itShouldBehaveLike(kINTAnalytricksBaseUsageTransformerBlockExamples, ^{
-    auto dataProvider = [[INTAnalytricksAppForegrounded alloc]
-                         initWithSource:@"app_launcher" isLaunch:YES];
-    NSMutableDictionary *exampleData = [sharedExampleDict mutableCopy];
-    [exampleData addEntriesFromDictionary:@{
-      kINTAnalytricksEventTransformerArgumentsSequence: @[
+  itShouldBehaveLike(kINTTransformerBlockExamples, ^{
+    auto expectedEvent = [[INTAnalytricksAppForegrounded alloc]
+                         initWithSource:@"app_launcher" isLaunch:YES].properties;
+
+    return [sharedExampleDict int_mergeUpdates:@{
+      kINTTransformerBlockExamplesArgumentsSequence: @[
         INTEventTransformerArgs(appWillForegroundEvent, INTCreateEventMetadata()),
         INTEventTransformerArgs(appBecameActiveEvent, INTCreateEventMetadata(2))
       ],
-      kINTExpectedAnalytricksBaseUsageDataProviders: @[dataProvider]
+      kINTTransformerBlockExamplesExpectedEvents: @[expectedEvent]
     }];
-
-    return [exampleData copy];
   });
 
-  itShouldBehaveLike(kINTAnalytricksBaseUsageTransformerBlockExamples, ^{
+  itShouldBehaveLike(kINTTransformerBlockExamples, ^{
     auto pushNotificationEvent = [[INTPushNotificationOpenedEvent alloc]
                                   initWithPushID:@"foo" deepLink:nil];
 
-    auto dataProvider = [[INTAnalytricksAppForegrounded alloc]
-                         initWithSource:@"push_notification" isLaunch:YES];
-    NSMutableDictionary *exampleData = [sharedExampleDict mutableCopy];
-    [exampleData addEntriesFromDictionary:@{
-      kINTAnalytricksEventTransformerArgumentsSequence: @[
+    auto expectedEvent = [[INTAnalytricksAppForegrounded alloc]
+                         initWithSource:@"push_notification" isLaunch:YES].properties;
+
+    return [sharedExampleDict int_mergeUpdates:@{
+      kINTTransformerBlockExamplesArgumentsSequence: @[
         INTEventTransformerArgs(appWillForegroundEvent, INTCreateEventMetadata()),
         INTEventTransformerArgs(pushNotificationEvent, INTCreateEventMetadata(1)),
         INTEventTransformerArgs(appBecameActiveEvent, INTCreateEventMetadata(2))
       ],
-      kINTExpectedAnalytricksBaseUsageDataProviders: @[dataProvider]
+      kINTTransformerBlockExamplesExpectedEvents: @[expectedEvent]
     }];
-
-    return [exampleData copy];
   });
 
-  itShouldBehaveLike(kINTAnalytricksBaseUsageTransformerBlockExamples, ^{
+  itShouldBehaveLike(kINTTransformerBlockExamples, ^{
     auto deepLinkEvent = [[INTDeepLinkOpenedEvent alloc] initWithDeepLink:@"foo://bar.com"];
 
-    auto dataProvider = [[INTAnalytricksAppForegrounded alloc]
-                         initWithSource:@"deep_link" isLaunch:YES];
-    NSMutableDictionary *exampleData = [sharedExampleDict mutableCopy];
-    [exampleData addEntriesFromDictionary:@{
-      kINTAnalytricksEventTransformerArgumentsSequence: @[
+    auto expectedEvent = [[INTAnalytricksAppForegrounded alloc]
+                         initWithSource:@"deep_link" isLaunch:YES].properties;
+
+    return [sharedExampleDict int_mergeUpdates:@{
+      kINTTransformerBlockExamplesArgumentsSequence: @[
         INTEventTransformerArgs(appWillForegroundEvent, INTCreateEventMetadata()),
         INTEventTransformerArgs(deepLinkEvent, INTCreateEventMetadata(1)),
         INTEventTransformerArgs(appBecameActiveEvent, INTCreateEventMetadata(2))
       ],
-      kINTExpectedAnalytricksBaseUsageDataProviders: @[dataProvider]
+      kINTTransformerBlockExamplesExpectedEvents: @[expectedEvent]
     }];
-
-    return [exampleData copy];
   });
 });
 
@@ -108,26 +267,25 @@ context(@"analytricks foreground event transformer", ^{
   beforeEach(^{
     appWillForegroundEvent = [[INTAppWillEnterForegroundEvent alloc] initWithIsLaunch:YES];
     appBackgroundedEvent = [[INTAppBackgroundedEvent alloc] init];
-    auto block = [INTAnalytricksBaseUsageTransformerBlocks backgroundEventTransformer];
-    sharedExampleDict = @{kINTAnalytricksBaseUsageTransformerBlock: block};
+    auto block = [INTAnalytricksTransformerBlocks backgroundEventTransformer];
+    sharedExampleDict = @{kINTTransformerBlockExamplesTransformerBlock: block};
   });
 
-  itShouldBehaveLike(kINTAnalytricksBaseUsageTransformerBlockExamples, ^{
-    auto dataProviders = @[
-      [[INTAnalytricksAppBackgrounded alloc] initWithForegroundDuration:@2],
-      [[INTAnalytricksAppBackgrounded alloc] initWithForegroundDuration:@83]
+  itShouldBehaveLike(kINTTransformerBlockExamples, ^{
+    auto events = @[
+      [[INTAnalytricksAppBackgrounded alloc] initWithForegroundDuration:@2].properties,
+      [[INTAnalytricksAppBackgrounded alloc] initWithForegroundDuration:@83].properties
     ];
     NSMutableDictionary *exampleData = [sharedExampleDict mutableCopy];
     [exampleData addEntriesFromDictionary:@{
-      kINTAnalytricksEventTransformerArgumentsSequence: @[
+      kINTTransformerBlockExamplesArgumentsSequence: @[
         INTEventTransformerArgs(appWillForegroundEvent, INTCreateEventMetadata()),
         INTEventTransformerArgs(appBackgroundedEvent, INTCreateEventMetadata(2)),
         INTEventTransformerArgs(appBackgroundedEvent, INTCreateEventMetadata(5)),
         INTEventTransformerArgs(appWillForegroundEvent, INTCreateEventMetadata(7)),
         INTEventTransformerArgs(appBackgroundedEvent, INTCreateEventMetadata(90))
       ],
-      kINTCycleStartIndices: @[@0, @3],
-      kINTExpectedAnalytricksBaseUsageDataProviders: dataProviders
+      kINTTransformerBlockExamplesExpectedEvents: events
     }];
 
     return [exampleData copy];
@@ -143,28 +301,29 @@ context(@"analytricks screen visited event transformer", ^{
     screenDisplayedEvent = [[INTScreenDisplayedEvent alloc] initWithScreenName:@"foo"];
     screenDismissedEvent = [[INTScreenDismissedEvent alloc] initWithScreenName:@"foo"
                                                                  dismissAction:@"baz"];
-    auto block = [INTAnalytricksBaseUsageTransformerBlocks screenVisitedEventTransformer];
+    auto block = [INTAnalytricksTransformerBlocks screenVisitedEventTransformer];
     sharedExampleDict = @{
-      kINTAnalytricksBaseUsageTransformerBlock: block
+      kINTTransformerBlockExamplesTransformerBlock: block
     };
   });
 
-  itShouldBehaveLike(kINTAnalytricksBaseUsageTransformerBlockExamples, ^{
+  itShouldBehaveLike(kINTTransformerBlockExamples, ^{
     auto dataProviders = @[
-      [[INTAnalytricksScreenVisited alloc] initWithScreenDuration:@2 dismissAction:@"baz"],
-      [[INTAnalytricksScreenVisited alloc] initWithScreenDuration:@43 dismissAction:@"baz"]
+      [[INTAnalytricksScreenVisited alloc]
+       initWithScreenDuration:@2 dismissAction:@"baz"].properties,
+      [[INTAnalytricksScreenVisited alloc]
+       initWithScreenDuration:@43 dismissAction:@"baz"].properties
     ];
     NSMutableDictionary *exampleData = [sharedExampleDict mutableCopy];
     [exampleData addEntriesFromDictionary:@{
-      kINTAnalytricksEventTransformerArgumentsSequence: @[
+      kINTTransformerBlockExamplesArgumentsSequence: @[
         INTEventTransformerArgs(screenDisplayedEvent, INTCreateEventMetadata()),
         INTEventTransformerArgs(screenDismissedEvent, INTCreateEventMetadata(2)),
         INTEventTransformerArgs(screenDismissedEvent, INTCreateEventMetadata(6)),
         INTEventTransformerArgs(screenDisplayedEvent, INTCreateEventMetadata(7)),
         INTEventTransformerArgs(screenDismissedEvent, INTCreateEventMetadata(50))
       ],
-      kINTCycleStartIndices: @[@0, @3],
-      kINTExpectedAnalytricksBaseUsageDataProviders: dataProviders
+      kINTTransformerBlockExamplesExpectedEvents: dataProviders
     }];
 
     return [exampleData copy];
@@ -172,37 +331,38 @@ context(@"analytricks screen visited event transformer", ^{
 });
 
 context(@"analytricks deep link opened event transformer", ^{
-  itShouldBehaveLike(kINTAnalytricksBaseUsageTransformerBlockExamples, ^{
+  itShouldBehaveLike(kINTTransformerBlockExamples, ^{
     auto dataProviders = @[
-      [[INTAnalytricksDeepLinkOpened alloc] initWithDeepLink:@"http://foo.bar"],
-      [[INTAnalytricksDeepLinkOpened alloc] initWithDeepLink:@"http://baz.foo"]
+      [[INTAnalytricksDeepLinkOpened alloc] initWithDeepLink:@"http://foo.bar"].properties,
+      [[INTAnalytricksDeepLinkOpened alloc] initWithDeepLink:@"http://baz.foo"].properties
     ];
 
     return @{
-      kINTAnalytricksBaseUsageTransformerBlock: [INTAnalytricksBaseUsageTransformerBlocks
-                                                 deepLinkOpenedEventTransformer],
-      kINTAnalytricksEventTransformerArgumentsSequence: @[
+      kINTTransformerBlockExamplesTransformerBlock: [INTAnalytricksTransformerBlocks
+                                                     deepLinkOpenedEventTransformer],
+      kINTTransformerBlockExamplesArgumentsSequence: @[
         INTEventTransformerArgs([[INTDeepLinkOpenedEvent alloc] initWithDeepLink:@"http://foo.bar"],
                                 INTCreateEventMetadata()),
         INTEventTransformerArgs([[INTDeepLinkOpenedEvent alloc] initWithDeepLink:@"http://baz.foo"],
                                 INTCreateEventMetadata()),
       ],
-      kINTExpectedAnalytricksBaseUsageDataProviders: dataProviders
+      kINTTransformerBlockExamplesExpectedEvents: dataProviders
     };
   });
 });
 
 context(@"analytricks push notification received event transformer", ^{
-  itShouldBehaveLike(kINTAnalytricksBaseUsageTransformerBlockExamples, ^{
+  itShouldBehaveLike(kINTTransformerBlockExamples, ^{
     auto dataProviders = @[
-      [[INTAnalytricksPushNotificationOpened alloc] initWithPushID:@"foo" deepLink:nil],
-      [[INTAnalytricksPushNotificationOpened alloc] initWithPushID:@"bar" deepLink:@"http://foo"]
+      [[INTAnalytricksPushNotificationOpened alloc] initWithPushID:@"foo" deepLink:nil].properties,
+      [[INTAnalytricksPushNotificationOpened alloc]
+       initWithPushID:@"bar" deepLink:@"http://foo"].properties
     ];
 
     return @{
-      kINTAnalytricksBaseUsageTransformerBlock: [INTAnalytricksBaseUsageTransformerBlocks
+      kINTTransformerBlockExamplesTransformerBlock: [INTAnalytricksTransformerBlocks
                                                  pushNotificationOpenedEventTransformer],
-      kINTAnalytricksEventTransformerArgumentsSequence: @[
+      kINTTransformerBlockExamplesArgumentsSequence: @[
         INTEventTransformerArgs([[INTPushNotificationOpenedEvent alloc]
                                  initWithPushID:@"foo" deepLink:nil],
                                 INTCreateEventMetadata()),
@@ -210,20 +370,20 @@ context(@"analytricks push notification received event transformer", ^{
                                  initWithPushID:@"bar" deepLink:@"http://foo"],
                                 INTCreateEventMetadata()),
       ],
-      kINTExpectedAnalytricksBaseUsageDataProviders: dataProviders
+      kINTTransformerBlockExamplesExpectedEvents: dataProviders
     };
   });
 });
 
 context(@"analytricks media imported event transformer", ^{
-  itShouldBehaveLike(kINTAnalytricksBaseUsageTransformerBlockExamples, ^{
+  itShouldBehaveLike(kINTTransformerBlockExamples, ^{
     auto dataProviders = @[
       [[INTAnalytricksMediaImported alloc]
        initWithAssetType:@"image" format:@"png" assetWidth:345 assetHeight:32 assetDuration:nil
-       importSource:@"Camera Roll" assetID:@"foo.bar.baz" isFromBundle:@YES],
+       importSource:@"Camera Roll" assetID:@"foo.bar.baz" isFromBundle:@YES].properties,
       [[INTAnalytricksMediaImported alloc]
        initWithAssetType:@"video" format:@"mp4" assetWidth:345 assetHeight:24 assetDuration:@3
-       importSource:@"Camera Roll" assetID:@"foo.bar.baz.thud" isFromBundle:@NO],
+       importSource:@"Camera Roll" assetID:@"foo.bar.baz.thud" isFromBundle:@NO].properties,
     ];
 
     auto args = [@[
@@ -238,23 +398,23 @@ context(@"analytricks media imported event transformer", ^{
     }];
 
     return @{
-      kINTAnalytricksBaseUsageTransformerBlock: [INTAnalytricksBaseUsageTransformerBlocks
-                                                 mediaImportedEventTransformer],
-      kINTAnalytricksEventTransformerArgumentsSequence: args,
-      kINTExpectedAnalytricksBaseUsageDataProviders: dataProviders
+      kINTTransformerBlockExamplesTransformerBlock: [INTAnalytricksTransformerBlocks
+                                                     mediaImportedEventTransformer],
+      kINTTransformerBlockExamplesArgumentsSequence: args,
+      kINTTransformerBlockExamplesExpectedEvents: dataProviders
     };
   });
 });
 
 context(@"analytricks media imported event transformer", ^{
-  itShouldBehaveLike(kINTAnalytricksBaseUsageTransformerBlockExamples, ^{
+  itShouldBehaveLike(kINTTransformerBlockExamples, ^{
     auto dataProviders = @[
       [[INTAnalytricksMediaImported alloc]
        initWithAssetType:@"image" format:@"png" assetWidth:345 assetHeight:32 assetDuration:nil
-       importSource:@"Camera Roll" assetID:@"foo.bar.baz" isFromBundle:@YES],
+       importSource:@"Camera Roll" assetID:@"foo.bar.baz" isFromBundle:@YES].properties,
       [[INTAnalytricksMediaImported alloc]
        initWithAssetType:@"video" format:@"mp4" assetWidth:345 assetHeight:24 assetDuration:@3
-       importSource:@"Camera Roll" assetID:@"foo.bar.baz.thud" isFromBundle:@NO],
+       importSource:@"Camera Roll" assetID:@"foo.bar.baz.thud" isFromBundle:@NO].properties,
     ];
 
     auto args = [@[
@@ -269,16 +429,16 @@ context(@"analytricks media imported event transformer", ^{
     }];
 
     return @{
-      kINTAnalytricksBaseUsageTransformerBlock: [INTAnalytricksBaseUsageTransformerBlocks
-                                                 mediaImportedEventTransformer],
-      kINTAnalytricksEventTransformerArgumentsSequence: args,
-      kINTExpectedAnalytricksBaseUsageDataProviders: dataProviders
+      kINTTransformerBlockExamplesTransformerBlock: [INTAnalytricksTransformerBlocks
+                                                     mediaImportedEventTransformer],
+      kINTTransformerBlockExamplesArgumentsSequence: args,
+      kINTTransformerBlockExamplesExpectedEvents: dataProviders
     };
   });
 });
 
 context(@"analytricks media exported event transformer", ^{
-  itShouldBehaveLike(kINTAnalytricksBaseUsageTransformerBlockExamples, ^{
+  itShouldBehaveLike(kINTTransformerBlockExamples, ^{
     auto exportID1 = [NSUUID UUID];
     auto exportID2 = [NSUUID UUID];
     auto projectID = [NSUUID UUID];
@@ -286,15 +446,15 @@ context(@"analytricks media exported event transformer", ^{
       [[INTAnalytricksMediaExported alloc]
        initWithExportID:exportID1 assetType:@"image" format:@"png" assetWidth:234 assetHeight:443
        assetDuration:@34 exportTarget:@"Facebook" assetID:@"foo.bar" projectID:projectID
-       isSuccessful:YES],
+       isSuccessful:YES].properties,
       [[INTAnalytricksMediaExported alloc]
        initWithExportID:exportID1 assetType:@"image" format:@"png" assetWidth:234 assetHeight:44
        assetDuration:@34 exportTarget:@"Facebook" assetID:@"foo.bar1" projectID:projectID
-       isSuccessful:YES],
+       isSuccessful:YES].properties,
       [[INTAnalytricksMediaExported alloc]
        initWithExportID:exportID2 assetType:@"video" format:@"mp4" assetWidth:234 assetHeight:443
        assetDuration:@34 exportTarget:@"Camera Roll" assetID:@"foo.bar" projectID:projectID
-       isSuccessful:NO]
+       isSuccessful:NO].properties
     ];
 
     auto args = [@[
@@ -316,14 +476,14 @@ context(@"analytricks media exported event transformer", ^{
     }];
 
     return @{
-      kINTAnalytricksBaseUsageTransformerBlock: [INTAnalytricksBaseUsageTransformerBlocks
-                                                 mediaExportedEventTransformer],
-      kINTAnalytricksEventTransformerArgumentsSequence: args,
-      kINTExpectedAnalytricksBaseUsageDataProviders: dataProviders
+      kINTTransformerBlockExamplesTransformerBlock: [INTAnalytricksTransformerBlocks
+                                                     mediaExportedEventTransformer],
+      kINTTransformerBlockExamplesArgumentsSequence: args,
+      kINTTransformerBlockExamplesExpectedEvents: dataProviders
     };
   });
 
-  itShouldBehaveLike(kINTAnalytricksBaseUsageTransformerBlockExamples, ^{
+  itShouldBehaveLike(kINTTransformerBlockExamples, ^{
     auto projectID = [NSUUID UUID];
 
     auto args = [@[
@@ -337,10 +497,10 @@ context(@"analytricks media exported event transformer", ^{
     }];
 
     return @{
-      kINTAnalytricksBaseUsageTransformerBlock: [INTAnalytricksBaseUsageTransformerBlocks
+      kINTTransformerBlockExamplesTransformerBlock: [INTAnalytricksTransformerBlocks
                                                  mediaExportedEventTransformer],
-      kINTAnalytricksEventTransformerArgumentsSequence: args,
-      kINTExpectedAnalytricksBaseUsageDataProviders: @[]
+      kINTTransformerBlockExamplesArgumentsSequence: args,
+      kINTTransformerBlockExamplesExpectedEvents: @[]
     };
   });
 });

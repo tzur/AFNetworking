@@ -7,8 +7,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class Alooma;
 
-/// Logs events to an Alooma service endpoint. The current supported events are of
-/// \c INTAnalytricksEvent class.
+/// Logs events to an Alooma service endpoint. The current supported events are \c NSDictionary
+/// instances containing the key "event".
 @interface INTAloomaLogger : NSObject <INTEventLogger>
 
 - (instancetype)init NS_UNAVAILABLE;

@@ -24,6 +24,17 @@ NS_ASSUME_NONNULL_BEGIN
   return [updatedDictionary copy];
 }
 
+- (NSDictionary *)int_dictionaryByAddingEntriesFromDictionary:(NSDictionary *)dictionary {
+  if (!dictionary.count) {
+    return self;
+  }
+
+  NSMutableDictionary *newDictionary = [self mutableCopy];
+  [newDictionary addEntriesFromDictionary:dictionary];
+
+  return [newDictionary copy];
+}
+
 @end
 
 NS_ASSUME_NONNULL_END

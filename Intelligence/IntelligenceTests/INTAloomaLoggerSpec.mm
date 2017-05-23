@@ -5,8 +5,6 @@
 
 #import <Alooma-iOS/Alooma.h>
 
-#import "INTFakeAnalytricksEvent.h"
-
 SpecBegin(INTAloomaLogger)
 
 __block Alooma *alooma;
@@ -17,16 +15,16 @@ beforeEach(^{
   logger = [[INTAloomaLogger alloc] initWithAlooma:alooma];
 });
 
-it(@"should log INTAnalytricsEvent to Alooma", ^{
-  auto event = [[INTFakeAnalytricksEvent alloc] initWithProperties:@{@"foo": @"bar"}];
-  [logger logEvent:event];
+it(@"should log dictionaries with the event key to Alooma", ^{
+  [logger logEvent:@{@"event": @"bar"}];
 
-  OCMVerify([alooma trackCustomEvent:@{@"foo": @"bar"}]);
+  OCMVerify([alooma trackCustomEvent:@{@"event": @"bar"}]);
 });
 
-it(@"should accept INTAnalytricksEvent", ^{
-  auto event = [[INTFakeAnalytricksEvent alloc] initWithProperties:@{}];
-  expect([logger isEventSupported:event]).to.beTruthy();
+it(@"should accept only dictionaries with the event key", ^{
+  expect([logger isEventSupported:@{@"event": @"bar"}]).to.beTruthy();
+  expect([logger isEventSupported:@{}]).to.beFalsy();
+  expect([logger isEventSupported:@"foo"]).to.beFalsy();
 });
 
 SpecEnd

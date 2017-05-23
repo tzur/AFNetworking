@@ -78,4 +78,15 @@ typedef intl::TransformerBlockResult(^INTTransformerBlock)
     (NSDictionary<NSString *, id> *aggregatedData, INTAppContext *appContext,
      INTEventMetadata *eventMetadata, id event);
 
+/// Block defining an enrichements of \c events, with data from \c appContext and \c metadata.
+typedef NSArray * _Nonnull(^INTEventEnrichmentBlock)(NSArray *events, INTAppContext *appContext,
+    INTEventMetadata *metadata);
+
+/// Returns a composed \c INTTransformerBlock. The resulting \c INTTransformerBlock invokes
+/// \c transformerBlock with \c aggregatedData, \c appContext, \c eventMetadata and \c event, and
+/// invokes \c enrichmentBlock on resulting \c highLevelEvents. Returns the \c aggregatedData
+/// returned from transformer and the enriched \c highLevelEvents.
+INTTransformerBlock INTEnrichTransformer(INTTransformerBlock transformerBlock,
+                                         INTEventEnrichmentBlock enrichmentBlock);
+
 NS_ASSUME_NONNULL_END
