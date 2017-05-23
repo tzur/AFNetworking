@@ -8,7 +8,8 @@
 #import "LTPatchCompositorProcessor.h"
 #import "LTPatchSolverProcessor.h"
 #import "LTQuad.h"
-#import "LTQuadCopyProcessor.h"
+#import "LTRectCopyProcessor.h"
+#import "LTRotatedRect.h"
 #import "LTTexture+Factory.h"
 
 #pragma mark -
@@ -211,8 +212,8 @@ LTPropertyProxy(CGFloat, smoothingAlpha, SmoothingAlpha, self.compositor);
 /// Set of possible working sizes.
 @property (readwrite, nonatomic) CGSizes workingSizes;
 
-/// Quad copy processor used to copy previous patched quad before drawing a new one.
-@property (strong, nonatomic) LTQuadCopyProcessor *quadCopyProcessor;
+/// Rect copy processor used to copy previous patched quad before drawing a new one.
+@property (strong, nonatomic) LTRectCopyProcessor *rectCopyProcessor;
 
 /// \c YES if processed at least once.
 @property (nonatomic) BOOL didProcessAtLeastOnce;
@@ -243,7 +244,7 @@ LTPropertyProxy(CGFloat, smoothingAlpha, SmoothingAlpha, self.compositor);
 
     [self createInternalProcessors];
     [self setQuadsForSize:source.size];
-    [self createQuadCopyProcessor];
+    [self createRectCopyProcessor];
 
     self.workingSize = workingSizes.front();
   }
@@ -266,8 +267,8 @@ LTPropertyProxy(CGFloat, smoothingAlpha, SmoothingAlpha, self.compositor);
   self.targetQuad = [LTQuad quadFromRect:CGRectFromSize(size)];
 }
 
-- (void)createQuadCopyProcessor {
-  self.quadCopyProcessor = [[LTQuadCopyProcessor alloc] initWithInput:self.target
+- (void)createRectCopyProcessor {
+  self.rectCopyProcessor = [[LTRectCopyProcessor alloc] initWithInput:self.target
                                                                output:self.output];
 }
 
@@ -322,17 +323,17 @@ LTPropertyProxy(CGFloat, smoothingAlpha, SmoothingAlpha, self.compositor);
 
 - (void)process {
   if (self.didProcessAtLeastOnce) {
-    [self.quadCopyProcessor process];
+    [self.rectCopyProcessor process];
   }
 
   [self.workingSizeToProcessor[$(self.workingSize)] process];
 
-  [self updateQuadCopyProcessorQuads];
+  [self updateRectCopyProcessorQuads];
 }
 
-- (void)updateQuadCopyProcessorQuads {
-  self.quadCopyProcessor.inputQuad = self.targetQuad;
-  self.quadCopyProcessor.outputQuad = self.targetQuad;
+- (void)updateRectCopyProcessorQuads {
+  self.rectCopyProcessor.inputRect = [LTRotatedRect rect:self.targetQuad.boundingRect];
+  self.rectCopyProcessor.outputRect = [LTRotatedRect rect:self.targetQuad.boundingRect];
   self.didProcessAtLeastOnce = YES;
 }
 
