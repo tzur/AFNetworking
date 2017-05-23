@@ -125,6 +125,9 @@
 		8B6A6ED91CDA3B60005FB7D9 /* LTRuntimeSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B6A6ED81CDA3B60005FB7D9 /* LTRuntimeSpec.mm */; };
 		8B7622E51DABD6A90032999E /* LTEventBusLoggerTargetSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B7622E41DABD6A90032999E /* LTEventBusLoggerTargetSpec.mm */; };
 		8B78CFDE197654A900684B1D /* LTEnum.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B78CFDC197654A900684B1D /* LTEnum.h */; };
+		8B7AAA891DECA70D003BB7EB /* LTUIKitMainThreadGuard.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B7AAA871DECA70D003BB7EB /* LTUIKitMainThreadGuard.h */; };
+		8B7AAA8A1DECA70D003BB7EB /* LTUIKitMainThreadGuard.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B7AAA881DECA70D003BB7EB /* LTUIKitMainThreadGuard.mm */; };
+		8B7AAAA41DEE11F1003BB7EB /* LTUIKitMainThreadGuardSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B7AAAA31DEE11F1003BB7EB /* LTUIKitMainThreadGuardSpec.mm */; };
 		8B7C3CF31CDCD77700D03696 /* NSObject+DynamicDispatchSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B7C3CF21CDCD77700D03696 /* NSObject+DynamicDispatchSpec.mm */; };
 		8B7C6CA01B52829100B90DBE /* LTMMInputFile.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B7C6C9C1B52829100B90DBE /* LTMMInputFile.mm */; };
 		8B7C6CA21B52829100B90DBE /* LTMMOutputFile.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B7C6C9E1B52829100B90DBE /* LTMMOutputFile.mm */; };
@@ -563,6 +566,9 @@
 		8B7883641BDF70790051CCD1 /* StaticLibrary.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = StaticLibrary.xcconfig; sourceTree = "<group>"; };
 		8B7883651BDF70790051CCD1 /* Common.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Common.xcconfig; path = ../Configuration/Common.xcconfig; sourceTree = "<group>"; };
 		8B78CFDC197654A900684B1D /* LTEnum.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTEnum.h; sourceTree = "<group>"; };
+		8B7AAA871DECA70D003BB7EB /* LTUIKitMainThreadGuard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTUIKitMainThreadGuard.h; sourceTree = "<group>"; };
+		8B7AAA881DECA70D003BB7EB /* LTUIKitMainThreadGuard.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTUIKitMainThreadGuard.mm; sourceTree = "<group>"; };
+		8B7AAAA31DEE11F1003BB7EB /* LTUIKitMainThreadGuardSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTUIKitMainThreadGuardSpec.mm; sourceTree = "<group>"; };
 		8B7C3CF21CDCD77700D03696 /* NSObject+DynamicDispatchSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSObject+DynamicDispatchSpec.mm"; sourceTree = "<group>"; };
 		8B7C6C9B1B52829100B90DBE /* LTMMInputFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTMMInputFile.h; sourceTree = "<group>"; };
 		8B7C6C9C1B52829100B90DBE /* LTMMInputFile.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTMMInputFile.mm; sourceTree = "<group>"; };
@@ -861,6 +867,8 @@
 				8B3DEBEB18296B6100EA0C1A /* LTKit-Prefix.pch */,
 				8BB47155183B5A8C00CA1681 /* LTMetaMacros.h */,
 				28EA156518B9E217003C00BF /* LTPropertyMacros.h */,
+				8B7AAA871DECA70D003BB7EB /* LTUIKitMainThreadGuard.h */,
+				8B7AAA881DECA70D003BB7EB /* LTUIKitMainThreadGuard.mm */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -1010,6 +1018,7 @@
 			isa = PBXGroup;
 			children = (
 				28EA157218BB3F53003C00BF /* LTPropertyMacrosSpec.mm */,
+				8B7AAAA31DEE11F1003BB7EB /* LTUIKitMainThreadGuardSpec.mm */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -1259,6 +1268,7 @@
 				85BD008A1DC0E0920000FE97 /* NSArray+NSSet.h in Headers */,
 				503442A71A0FB8AF008E0ED3 /* LTCFExtensions.h in Headers */,
 				835204EC1D2A43B300000EEC /* LTEventBus.h in Headers */,
+				8B7AAA891DECA70D003BB7EB /* LTUIKitMainThreadGuard.h in Headers */,
 				255339401C3E512300C478F9 /* LTTreeNode.h in Headers */,
 				8BB236C21CDCD5C500057F11 /* NSObject+DynamicDispatch.h in Headers */,
 				8BB01CAF196576D7002A8609 /* LTImageLoader.h in Headers */,
@@ -1612,6 +1622,7 @@
 				658CD3C71D50A79B00FF7FD6 /* LTProgress.mm in Sources */,
 				28ABE005187153AD005A5DEC /* LTAnimation.m in Sources */,
 				8482E2B11D2260DA0084D565 /* LTValueObject.mm in Sources */,
+				8B7AAA8A1DECA70D003BB7EB /* LTUIKitMainThreadGuard.mm in Sources */,
 				5067221919EA80B5003AF8D2 /* LTBoundedQueue.mm in Sources */,
 				83C2EABF1EB73E4400A3085D /* NSDate+Formatting.mm in Sources */,
 				84455E451CD0F2AB00042CB7 /* LTFastEnumerator.m in Sources */,
@@ -1666,6 +1677,7 @@
 				C751B0461D48879B005DB5BB /* LTEventBusObserverSpec.mm in Sources */,
 				8B2840291CBE393000B745AE /* LTStructBoxingSpec.mm in Sources */,
 				5067223119EA811A003AF8D2 /* LTBoundedQueueSpec.mm in Sources */,
+				8B7AAAA41DEE11F1003BB7EB /* LTUIKitMainThreadGuardSpec.mm in Sources */,
 				8B85C799182A2EE5004C352E /* LTLoggerSpec.mm in Sources */,
 				84F7AB291C3290D600AA502F /* LTPathSpec.m in Sources */,
 				84455E4A1CD0F35C00042CB7 /* LTFastEnumeratorSpec.mm in Sources */,
