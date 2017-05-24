@@ -260,9 +260,11 @@
 		CD81DFAC1E93BA940061C12D /* BZRKeychainStorageMigrator.h in Headers */ = {isa = PBXBuildFile; fileRef = CD81DFAA1E93BA940061C12D /* BZRKeychainStorageMigrator.h */; };
 		CD81DFAD1E93BA940061C12D /* BZRKeychainStorageMigrator.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD81DFAB1E93BA940061C12D /* BZRKeychainStorageMigrator.mm */; };
 		CD81E0C51E93D7C70061C12D /* BZRKeychainStorageMigratorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD81E0C41E93D7C70061C12D /* BZRKeychainStorageMigratorSpec.mm */; };
+		CD984D3D1ED559F0007CBCBC /* BZRContentFetcherParametersSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD984D3C1ED559F0007CBCBC /* BZRContentFetcherParametersSpec.mm */; };
+		CDA913F71EC83CAD00A6C5C6 /* BZRDummyContentFetcher.h in Sources */ = {isa = PBXBuildFile; fileRef = CDB63CDC1EB0C038004884D8 /* BZRDummyContentFetcher.h */; };
+		CDA913F81EC83CAD00A6C5C6 /* BZRDummyContentFetcher.mm in Sources */ = {isa = PBXBuildFile; fileRef = CDB63CDD1EB0C038004884D8 /* BZRDummyContentFetcher.mm */; };
 		CDE00A901E82AD5E007AFD5E /* libcompression.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = CDE00A8F1E82AD5E007AFD5E /* libcompression.tbd */; };
 		CD2AFDCD1E966A6200A68F3A /* BZRLocalContentFetcherParametersSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD2AFDCC1E966A6200A68F3A /* BZRLocalContentFetcherParametersSpec.mm */; };
-		CDB63CDE1EB0C038004884D8 /* BZRDummyContentFetcherParameters.mm in Sources */ = {isa = PBXBuildFile; fileRef = CDB63CDD1EB0C038004884D8 /* BZRDummyContentFetcherParameters.mm */; };
 		FA1B88541D338A8600097AD0 /* BZRKeychainStorage.mm in Sources */ = {isa = PBXBuildFile; fileRef = FA1B88531D338A8600097AD0 /* BZRKeychainStorage.mm */; };
 		FA1B885D1D33B2BC00097AD0 /* BZRKeychainStorageSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = FA1B885C1D33B2BC00097AD0 /* BZRKeychainStorageSpec.mm */; };
 		FA3C38161D35265F004A2673 /* libUICKeyChainStore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FA8D434B1D3517CC006FF5DB /* libUICKeyChainStore.a */; };
@@ -957,10 +959,11 @@
 		CD81DFAA1E93BA940061C12D /* BZRKeychainStorageMigrator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRKeychainStorageMigrator.h; sourceTree = "<group>"; };
 		CD81DFAB1E93BA940061C12D /* BZRKeychainStorageMigrator.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRKeychainStorageMigrator.mm; sourceTree = "<group>"; };
 		CD81E0C41E93D7C70061C12D /* BZRKeychainStorageMigratorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRKeychainStorageMigratorSpec.mm; sourceTree = "<group>"; };
+		CD984D3C1ED559F0007CBCBC /* BZRContentFetcherParametersSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRContentFetcherParametersSpec.mm; sourceTree = "<group>"; };
+		CDB63CDC1EB0C038004884D8 /* BZRDummyContentFetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRDummyContentFetcher.h; sourceTree = "<group>"; };
+		CDB63CDD1EB0C038004884D8 /* BZRDummyContentFetcher.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRDummyContentFetcher.mm; sourceTree = "<group>"; };
 		CDE00A8F1E82AD5E007AFD5E /* libcompression.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libcompression.tbd; path = usr/lib/libcompression.tbd; sourceTree = SDKROOT; };
 		CD2AFDCC1E966A6200A68F3A /* BZRLocalContentFetcherParametersSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRLocalContentFetcherParametersSpec.mm; sourceTree = "<group>"; };
-		CDB63CDC1EB0C038004884D8 /* BZRDummyContentFetcherParameters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRDummyContentFetcherParameters.h; sourceTree = "<group>"; };
-		CDB63CDD1EB0C038004884D8 /* BZRDummyContentFetcherParameters.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRDummyContentFetcherParameters.mm; sourceTree = "<group>"; };
 		FA1B88521D338A8600097AD0 /* BZRKeychainStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRKeychainStorage.h; sourceTree = "<group>"; };
 		FA1B88531D338A8600097AD0 /* BZRKeychainStorage.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRKeychainStorage.mm; sourceTree = "<group>"; };
 		FA1B885C1D33B2BC00097AD0 /* BZRKeychainStorageSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; lineEnding = 0; path = BZRKeychainStorageSpec.mm; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
@@ -1656,8 +1659,9 @@
 				B9484B5E1D50A09F00910066 /* BZRLocalContentFetcherSpec.mm */,
 				B9484B541D50A08700910066 /* BZRProductContentMultiFetcherSpec.mm */,
 				CD2AFDCC1E966A6200A68F3A /* BZRLocalContentFetcherParametersSpec.mm */,
-				CDB63CDC1EB0C038004884D8 /* BZRDummyContentFetcherParameters.h */,
-				CDB63CDD1EB0C038004884D8 /* BZRDummyContentFetcherParameters.mm */,
+				CDB63CDC1EB0C038004884D8 /* BZRDummyContentFetcher.h */,
+				CDB63CDD1EB0C038004884D8 /* BZRDummyContentFetcher.mm */,
+				CD984D3C1ED559F0007CBCBC /* BZRContentFetcherParametersSpec.mm */,
 			);
 			name = "Content Fetching";
 			sourceTree = "<group>";
@@ -2431,7 +2435,6 @@
 				B9A84FED1DE1C042001AA37C /* BZRLocaleBasedVariantSelectorSpec.mm in Sources */,
 				B97A87461D4610C1004390FC /* BZRRemoteProductsProviderSpec.mm in Sources */,
 				B93D98AB1D8E931D0012B976 /* BZRFakeCachedReceiptValidationStatusProvider.mm in Sources */,
-				CDB63CDE1EB0C038004884D8 /* BZRDummyContentFetcherParameters.mm in Sources */,
 				65332E761D3392C200920C32 /* EXPMatchers+deliverValuesOnThread.m in Sources */,
 				65332E461D33903E00920C32 /* SKProductsRequest+RACSignalSupportSpec.mm in Sources */,
 				9FE7D5D01D3F6B4400685F19 /* BZRPurchaseManagerSpec.mm in Sources */,
@@ -2477,6 +2480,7 @@
 				B9F0882C1D8EBB4300381E29 /* BZRFakeAcquiredViaSubscriptionProvider.mm in Sources */,
 				B9484B5F1D50A09F00910066 /* BZRLocalContentFetcherSpec.mm in Sources */,
 				656210741D377D1200E12FAF /* BZRValidatricksReceiptModelSpec.mm in Sources */,
+				CD984D3D1ED559F0007CBCBC /* BZRContentFetcherParametersSpec.mm in Sources */,
 				65D90BC61D5BB6E500BEB74C /* BZRPaymentQueueSpec.mm in Sources */,
 				65332E771D3392C200920C32 /* EXPMatchers+error.m in Sources */,
 				65332E781D3392C200920C32 /* EXPMatchers+finish.m in Sources */,
@@ -2487,6 +2491,8 @@
 				65C74D041D5352D000D7518C /* BZRZipArchiveFactorySpec.mm in Sources */,
 				65C74D061D5352D000D7518C /* BZRZipFileArchiverSpec.mm in Sources */,
 				B973487C1D8C35CB006CF28A /* BZRStoreSpec.mm in Sources */,
+				CDA913F71EC83CAD00A6C5C6 /* BZRDummyContentFetcher.h in Sources */,
+				CDA913F81EC83CAD00A6C5C6 /* BZRDummyContentFetcher.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

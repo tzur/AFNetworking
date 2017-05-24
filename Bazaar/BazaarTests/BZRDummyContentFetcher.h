@@ -2,8 +2,13 @@
 // Created by Neria Saada.
 
 #import "BZRContentFetcherParameters.h"
+#import "BZRProductContentFetcher.h"
 
 NS_ASSUME_NONNULL_BEGIN
+
+/// Dummy concrete implementation of \c BZRProductContentFetcher used for testing.
+@interface BZRDummyContentFetcher : NSObject <BZRProductContentFetcher>
+@end
 
 /// Dummy concrete implementation of \c BZRContentFetcherParameters used for testing.
 @interface BZRDummyContentFetcherParameters : BZRContentFetcherParameters
