@@ -6,3 +6,6 @@
 
 // Lightricks Libraries.
 #import <LTKit/LTKit-Prefix.pch>
+
+// Third Party.
+#import <Mantle/Mantle.h>

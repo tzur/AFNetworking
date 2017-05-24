@@ -6,6 +6,8 @@
 #import <LTKit/NSArray+Functional.h>
 
 #import "INTAppLifecycleTimer.h"
+#import "INTDeviceInfo.h"
+#import "INTDeviceInfoLoadedEvent.h"
 #import "INTEventMetadata.h"
 #import "INTRecorderLogger.h"
 
@@ -185,6 +187,34 @@ it(@"should store returned context from context generator", ^{
   [intelligenceEvents reportLowLevelEvent:@"foo"];
 
   expect(logger.eventsLogged).will.equal(@[@1, @2]);
+});
+
+it(@"should report device info loaded events", ^{
+  auto passThroughTransformerBlock =
+      ^(NSDictionary<NSString *, id> *, INTAppContext *, INTEventMetadata *, id event) {
+        return intl::TransformerBlockResult(nil, @[event]);
+      };
+
+  auto intelligenceEvents = [[INTEventsPipeline alloc] initWithConfiguration:{
+    .contextGeneratorBlock = INTIdentityAppContextGenerator(),
+    .transformerBlocks = {
+      passThroughTransformerBlock
+    },
+    .eventLoggers = @[logger],
+    .appLifecycleTimer = timer
+  }];
+
+  INTDeviceInfo *deviceInfo = OCMClassMock(INTDeviceInfo.class);
+  auto deviceInfoRevisionID = [NSUUID UUID];
+
+  [intelligenceEvents deviceInfoObserver:OCMClassMock(INTDeviceInfoObserver.class)
+                        loadedDeviceInfo:deviceInfo deviceInfoRevisionID:deviceInfoRevisionID
+                           isNewRevision:YES];
+
+  auto expected = @[[[INTDeviceInfoLoadedEvent alloc] initWithDeviceInfo:deviceInfo
+                                                    deviceInfoRevisionID:deviceInfoRevisionID
+                                                           isNewRevision:YES]];
+  expect(logger.eventsLogged).will.equal(expected);
 });
 
 SpecEnd
