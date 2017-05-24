@@ -31,7 +31,7 @@ extern NSString * const kINTAppContextDeviceInfoIDKey;
 /// 2. INTScreenDisplayedEvent - the \c screenUsageID is set to a new value, and \c screenName is
 ///    set to the <tt>-[INTScreenDisplayedEvent screenName]</tt>.
 /// 3. INTProjectLoadedEvent - the \c openProjectID is set to
-///    <tt>-[INTProjectLoadedEvent screenName]</tt>.
+///    <tt>-[INTProjectLoadedEvent openProjectID]</tt>.
 /// 3. INTProjectClosedEvent - the \c openProjectID is set \c nil.
 ///
 /// @attention for options {1a, 2, 3, 4} updates are made only if the input \c context has a

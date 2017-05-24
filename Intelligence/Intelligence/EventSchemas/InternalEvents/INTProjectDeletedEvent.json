@@ -1,0 +1,12 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "description": "Event marking a project deletion",
+  "properties": {
+    "project_id": {
+      "description": "Project ID",
+      "type": "string"
+    }
+  },
+  "required": ["project_id"]
+}

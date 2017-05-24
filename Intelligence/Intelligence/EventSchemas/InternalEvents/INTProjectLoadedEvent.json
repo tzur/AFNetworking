@@ -5,8 +5,7 @@
   "properties": {
     "project_id": {
       "description": "Project ID",
-      "type": "string",
-      "pattern": "^[A-Fa-f0-9]{8}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{12}$"
+      "type": "string"
     },
     "is_new": {
       "description": "\\c YES if the project was loaded for the first time ever, on any device",

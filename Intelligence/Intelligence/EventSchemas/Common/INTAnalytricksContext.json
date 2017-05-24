@@ -24,8 +24,7 @@
     },
     "open_project_id": {
       "description": "ID of the current open project",
-      "type": ["string", "null"],
-      "pattern": "^[A-Fa-f0-9]{8}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{12}$"
+      "type": ["string", "null"]
     }
   },
   "required": ["run_id", "session_id", "screen_usage_id", "screen_name", "open_project_id"]

@@ -1,0 +1,35 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "description": "A project was loaded modified and unloaded",
+  "type": "object",
+  "allOf": [
+    {"$ref": "../AbstractEvents/INTAnalytricksBaseUsage.json"},
+    {
+      "properties": {
+        "project_id": {
+          "description": "Project id",
+          "type": "string"
+        },
+        "is_new": {
+          "description": "True if the project was created and loaded in the same time",
+          "type": "boolean"
+        },
+        "usage_duration": {
+          "description": "Duration of the project usage",
+          "type": "number",
+          "minimum": 0
+        },
+        "disk_space_on_unload": {
+          "description": "Disk space usge of the project after it's use",
+          "type": ["number", "null"],
+          "minimum": 0
+        },
+        "was_deleted": {
+          "description": "True if the project was deleted at the end of it's use",
+          "type": "boolean"
+        }
+      },
+      "required": ["project_id", "is_new", "usage_duration", "disk_space_on_unload", "was_deleted"]
+    }
+  ]
+}
