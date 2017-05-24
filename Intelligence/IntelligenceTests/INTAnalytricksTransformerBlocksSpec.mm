@@ -10,6 +10,8 @@
 #import <Intelligence/INTAnalytricksMediaExported.h>
 #import <Intelligence/INTAnalytricksMediaImported.h>
 #import <Intelligence/INTAnalytricksMetadata.h>
+#import <Intelligence/INTAnalytricksProjectDeleted.h>
+#import <Intelligence/INTAnalytricksProjectModified.h>
 #import <Intelligence/INTAnalytricksPushNotificationOpened.h>
 #import <Intelligence/INTAnalytricksScreenVisited.h>
 #import <Intelligence/INTAppBackgroundedEvent.h>
@@ -19,6 +21,9 @@
 #import <Intelligence/INTMediaExportEndedEvent.h>
 #import <Intelligence/INTMediaExportStartedEvent.h>
 #import <Intelligence/INTMediaImportedEvent.h>
+#import <Intelligence/INTProjectDeletedEvent.h>
+#import <Intelligence/INTProjectLoadedEvent.h>
+#import <Intelligence/INTProjectUnloadedEvent.h>
 #import <Intelligence/INTPushNotificationOpenedEvent.h>
 #import <Intelligence/INTScreenDismissedEvent.h>
 #import <Intelligence/INTScreenDisplayedEvent.h>
@@ -97,7 +102,8 @@ context(@"analytricks context enricher", ^{
   it(@"should not enrich non dictionary events", ^{
     auto analytricksContext =
         [[INTAnalytricksContext alloc] initWithRunID:[NSUUID UUID] sessionID:[NSUUID UUID]
-                      screenUsageID:[NSUUID UUID] screenName:@"foo" openProjectID:@"foo"];
+                                       screenUsageID:[NSUUID UUID] screenName:@"foo"
+                                       openProjectID:@"foo"];
     auto events = @[@"foo", @{}];
     auto enrichedEvents = block(events, @{
       kINTAppContextAnalytricksContextKey: analytricksContext
@@ -503,6 +509,104 @@ context(@"analytricks media exported event transformer", ^{
                                                  mediaExportedEventTransformer],
       kINTTransformerBlockExamplesArgumentsSequence: args,
       kINTTransformerBlockExamplesExpectedEvents: @[]
+    };
+  });
+});
+
+context(@"analytricks project deleted event transformer", ^{
+  itShouldBehaveLike(kINTTransformerBlockExamples, ^{
+    auto args = [@[
+      [[INTProjectDeletedEvent alloc] initWithProjectID:@"foo"],
+      [[INTProjectDeletedEvent alloc] initWithProjectID:@"bar"]
+    ] lt_map:^(INTMediaImportedEvent *event) {
+      return INTEventTransformerArgs(event, INTCreateEventMetadata());
+    }];
+
+    auto expectedEvents = @[
+      [[INTAnalytricksProjectDeleted alloc] initWithProjectID:@"foo"].properties,
+      [[INTAnalytricksProjectDeleted alloc] initWithProjectID:@"bar"].properties,
+    ];
+
+    return @{
+      kINTTransformerBlockExamplesTransformerBlock: [INTAnalytricksTransformerBlocks
+                                                     projectDeletedEventTransformer],
+      kINTTransformerBlockExamplesArgumentsSequence: args,
+      kINTTransformerBlockExamplesExpectedEvents: expectedEvents
+    };
+  });
+});
+
+context(@"analytricks project modified event transformer", ^{
+  itShouldBehaveLike(kINTTransformerBlockExamples, ^{
+    auto args = @[
+      INTEventTransformerArgs([[INTProjectLoadedEvent alloc] initWithProjectID:@"foo" isNew:YES],
+                              INTCreateEventMetadata()),
+      INTEventTransformerArgs([[INTProjectUnloadedEvent alloc]
+                               initWithProjectID:@"foo" diskSpaceOnUnload:@23],
+                              INTCreateEventMetadata(4)),
+      INTEventTransformerArgs([[INTProjectUnloadedEvent alloc]
+                               initWithProjectID:@"foo" diskSpaceOnUnload:@23],
+                              INTCreateEventMetadata(4)),
+    ];
+
+    auto expectedEvents = @[
+      [[INTAnalytricksProjectModified alloc] initWithProjectID:@"foo" isNew:YES usageDuration:@(4)
+                                             diskSpaceOnUnload:@23 wasDeleted:NO].properties,
+    ];
+
+    return @{
+      kINTTransformerBlockExamplesTransformerBlock: [INTAnalytricksTransformerBlocks
+                                                     projectModifiedEventTransformer],
+      kINTTransformerBlockExamplesArgumentsSequence: args,
+      kINTTransformerBlockExamplesExpectedEvents: expectedEvents
+    };
+  });
+
+  itShouldBehaveLike(kINTTransformerBlockExamples, ^{
+    auto args = @[
+      INTEventTransformerArgs([[INTProjectLoadedEvent alloc] initWithProjectID:@"foo" isNew:NO],
+                              INTCreateEventMetadata()),
+      INTEventTransformerArgs([[INTProjectDeletedEvent alloc] initWithProjectID:@"foo"],
+                              INTCreateEventMetadata(1)),
+      INTEventTransformerArgs([[INTProjectUnloadedEvent alloc]
+                               initWithProjectID:@"foo" diskSpaceOnUnload:@23],
+                              INTCreateEventMetadata(4)),
+    ];
+
+    auto expectedEvents = @[
+      [[INTAnalytricksProjectModified alloc] initWithProjectID:@"foo" isNew:NO usageDuration:@(4)
+                                             diskSpaceOnUnload:@23 wasDeleted:YES].properties,
+    ];
+
+    return @{
+      kINTTransformerBlockExamplesTransformerBlock: [INTAnalytricksTransformerBlocks
+                                                     projectModifiedEventTransformer],
+      kINTTransformerBlockExamplesArgumentsSequence: args,
+      kINTTransformerBlockExamplesExpectedEvents: expectedEvents
+    };
+  });
+
+  itShouldBehaveLike(kINTTransformerBlockExamples, ^{
+    auto args = @[
+      INTEventTransformerArgs([[INTProjectLoadedEvent alloc] initWithProjectID:@"foo" isNew:NO],
+                              INTCreateEventMetadata()),
+      INTEventTransformerArgs([[INTProjectDeletedEvent alloc] initWithProjectID:@"bar"],
+                              INTCreateEventMetadata(1)),
+      INTEventTransformerArgs([[INTProjectUnloadedEvent alloc]
+                               initWithProjectID:@"foo" diskSpaceOnUnload:@23],
+                              INTCreateEventMetadata(4)),
+    ];
+
+    auto expectedEvents = @[
+      [[INTAnalytricksProjectModified alloc] initWithProjectID:@"foo" isNew:NO usageDuration:@(4)
+                                             diskSpaceOnUnload:@23 wasDeleted:NO].properties,
+    ];
+
+    return @{
+      kINTTransformerBlockExamplesTransformerBlock: [INTAnalytricksTransformerBlocks
+                                                     projectModifiedEventTransformer],
+      kINTTransformerBlockExamplesArgumentsSequence: args,
+      kINTTransformerBlockExamplesExpectedEvents: expectedEvents
     };
   });
 });

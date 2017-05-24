@@ -15,6 +15,8 @@
 #import "INTAnalytricksMediaExported.h"
 #import "INTAnalytricksMediaImported.h"
 #import "INTAnalytricksMetadata.h"
+#import "INTAnalytricksProjectDeleted.h"
+#import "INTAnalytricksProjectModified.h"
 #import "INTAnalytricksPushNotificationOpened.h"
 #import "INTAnalytricksScreenVisited.h"
 #import "INTAppBackgroundedEvent.h"
@@ -26,6 +28,9 @@
 #import "INTMediaExportEndedEvent.h"
 #import "INTMediaExportStartedEvent.h"
 #import "INTMediaImportedEvent.h"
+#import "INTProjectDeletedEvent.h"
+#import "INTProjectLoadedEvent.h"
+#import "INTProjectUnloadedEvent.h"
 #import "INTPushNotificationOpenedEvent.h"
 #import "INTScreenDismissedEvent.h"
 #import "INTScreenDisplayedEvent.h"
@@ -221,6 +226,62 @@ NS_ASSUME_NONNULL_BEGIN
                   exportTarget:exportStarted.exportTarget assetID:exportStarted.assetID
                   projectID:exportStarted.projectID isSuccessful:event.isSuccessful].properties;
         }];
+      })
+      .build();
+}
+
++ (INTTransformerBlock)projectDeletedEventTransformer {
+  return INTTransformerBuilder()
+      .transform(NSStringFromClass(INTProjectDeletedEvent.class),
+                 ^(NSDictionary<NSString *, id> *, INTProjectDeletedEvent *event,
+                   INTEventMetadata *, INTAppContext *) {
+        return @[[[INTAnalytricksProjectDeleted alloc]
+                  initWithProjectID:event.projectID].properties];
+      })
+      .build();
+}
+
++ (INTTransformerBlock)projectModifiedEventTransformer {
+  return INTCycleTransformerBuilder()
+      .cycle(NSStringFromClass(INTProjectLoadedEvent.class),
+             NSStringFromClass(INTProjectUnloadedEvent.class))
+      .aggregate(NSStringFromClass(INTProjectLoadedEvent.class),
+                 ^(NSDictionary<NSString *, id> *, INTProjectLoadedEvent *event) {
+        return @{
+          @instanceKeypath(INTAnalytricksProjectModified, projectID): event.projectID,
+          @instanceKeypath(INTAnalytricksProjectModified, isNew): @(event.isNew),
+          @instanceKeypath(INTAnalytricksProjectModified, wasDeleted): @(NO),
+        };
+      })
+      .aggregate(NSStringFromClass(INTProjectDeletedEvent.class),
+                 ^(NSDictionary<NSString *, id> *aggregatedData, INTProjectDeletedEvent *event) {
+        if ([aggregatedData[@instanceKeypath(INTAnalytricksProjectModified, projectID)]
+             isEqual:event.projectID]) {
+          return @{@instanceKeypath(INTAnalytricksProjectModified, wasDeleted): @(YES)};
+        }
+
+        return @{};
+      })
+      .aggregate(NSStringFromClass(INTProjectUnloadedEvent.class),
+             ^(NSDictionary<NSString *, id> *, INTProjectUnloadedEvent *event) {
+        id diskSpaceonUnload = event.diskSpaceOnUnload ?: [NSNull null];
+        return @{
+          @instanceKeypath(INTAnalytricksProjectModified, diskSpaceOnUnload): diskSpaceonUnload
+        };
+      })
+      .onCycleEnd(^(NSDictionary<NSString *, id> *aggregatedData) {
+        NSString *projectID =
+            aggregatedData[@instanceKeypath(INTAnalytricksProjectModified, projectID)];
+        NSNumber *isNew = aggregatedData[@instanceKeypath(INTAnalytricksProjectModified, isNew)];
+        NSNumber *wasDeleted =
+            aggregatedData[@instanceKeypath(INTAnalytricksProjectModified, wasDeleted)];
+        NSNumber * _Nullable diskSpaceOnUnload =
+            aggregatedData[@instanceKeypath(INTAnalytricksProjectModified, diskSpaceOnUnload)];
+
+        return @[[[INTAnalytricksProjectModified alloc]
+                  initWithProjectID:projectID isNew:isNew.boolValue
+                  usageDuration:aggregatedData[kINTCycleDurationKey]
+                  diskSpaceOnUnload:diskSpaceOnUnload wasDeleted:wasDeleted.boolValue].properties];
       })
       .build();
 }
