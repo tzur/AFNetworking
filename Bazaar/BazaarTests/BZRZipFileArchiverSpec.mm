@@ -3,8 +3,6 @@
 
 #import "BZRZipFileArchiver.h"
 
-#import <LTKit/LTProgress.h>
-
 #import "BZRZipArchiveFactory.h"
 #import "BZRZipArchiver.h"
 #import "BZRZipUnarchiver.h"
@@ -20,7 +18,6 @@ static NSString * const kBZRZipArchivingExpectedFilesToArchiveKey =
     @"BZRZipFileArchivingFilesToArchive";
 static NSString * const kBZRZipArchivingExpectedArchivedNamesKey =
     @"BZRZipFileArchivingArchivedNames";
-
 
 SpecBegin(BZRZipFileArchiver)
 
