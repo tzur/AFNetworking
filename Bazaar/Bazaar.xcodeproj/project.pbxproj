@@ -164,9 +164,9 @@
 		B94B877B1DC1F477003BF2C4 /* BZRPeriodicReceiptValidatorActivator.mm in Sources */ = {isa = PBXBuildFile; fileRef = B94B87771DC1F477003BF2C4 /* BZRPeriodicReceiptValidatorActivator.mm */; };
 		B94B87AE1DC1F49B003BF2C4 /* BZRPeriodicReceiptValidatorActivatorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = B94B87AB1DC1F49B003BF2C4 /* BZRPeriodicReceiptValidatorActivatorSpec.mm */; };
 		B94B87AF1DC1F49B003BF2C4 /* BZRExternalTriggerReceiptValidatorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = B94B87AC1DC1F49B003BF2C4 /* BZRExternalTriggerReceiptValidatorSpec.mm */; };
-		B9502A381D6DCD6B00E633BE /* BZRProductContentProviderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = B9502A371D6DCD6B00E633BE /* BZRProductContentProviderSpec.mm */; };
-		B9502A7C1D6DCDC500E633BE /* BZRProductContentProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = B9502A7A1D6DCDC500E633BE /* BZRProductContentProvider.h */; };
-		B9502A7D1D6DCDC500E633BE /* BZRProductContentProvider.mm in Sources */ = {isa = PBXBuildFile; fileRef = B9502A7B1D6DCDC500E633BE /* BZRProductContentProvider.mm */; };
+		B9502A381D6DCD6B00E633BE /* BZRCachedContentFetcherSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = B9502A371D6DCD6B00E633BE /* BZRCachedContentFetcherSpec.mm */; };
+		B9502A7C1D6DCDC500E633BE /* BZRCachedContentFetcher.h in Headers */ = {isa = PBXBuildFile; fileRef = B9502A7A1D6DCDC500E633BE /* BZRCachedContentFetcher.h */; };
+		B9502A7D1D6DCDC500E633BE /* BZRCachedContentFetcher.mm in Sources */ = {isa = PBXBuildFile; fileRef = B9502A7B1D6DCDC500E633BE /* BZRCachedContentFetcher.mm */; };
 		B9584ED61E82D08B00AFF6B0 /* BZRAllowedProductsProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = B9584ED41E82D08B00AFF6B0 /* BZRAllowedProductsProvider.h */; };
 		B9584ED71E82D08B00AFF6B0 /* BZRAllowedProductsProvider.mm in Sources */ = {isa = PBXBuildFile; fileRef = B9584ED51E82D08B00AFF6B0 /* BZRAllowedProductsProvider.mm */; };
 		B959B75E1E363AF90011DF54 /* BZREvent+AdditionalInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = B959B75C1E363AF90011DF54 /* BZREvent+AdditionalInfo.h */; };
@@ -858,9 +858,9 @@
 		B94B87771DC1F477003BF2C4 /* BZRPeriodicReceiptValidatorActivator.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRPeriodicReceiptValidatorActivator.mm; sourceTree = "<group>"; };
 		B94B87AB1DC1F49B003BF2C4 /* BZRPeriodicReceiptValidatorActivatorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRPeriodicReceiptValidatorActivatorSpec.mm; sourceTree = "<group>"; };
 		B94B87AC1DC1F49B003BF2C4 /* BZRExternalTriggerReceiptValidatorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRExternalTriggerReceiptValidatorSpec.mm; sourceTree = "<group>"; };
-		B9502A371D6DCD6B00E633BE /* BZRProductContentProviderSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRProductContentProviderSpec.mm; sourceTree = "<group>"; };
-		B9502A7A1D6DCDC500E633BE /* BZRProductContentProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRProductContentProvider.h; sourceTree = "<group>"; };
-		B9502A7B1D6DCDC500E633BE /* BZRProductContentProvider.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRProductContentProvider.mm; sourceTree = "<group>"; };
+		B9502A371D6DCD6B00E633BE /* BZRCachedContentFetcherSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRCachedContentFetcherSpec.mm; sourceTree = "<group>"; };
+		B9502A7A1D6DCDC500E633BE /* BZRCachedContentFetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRCachedContentFetcher.h; sourceTree = "<group>"; };
+		B9502A7B1D6DCDC500E633BE /* BZRCachedContentFetcher.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRCachedContentFetcher.mm; sourceTree = "<group>"; };
 		B9584ED41E82D08B00AFF6B0 /* BZRAllowedProductsProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRAllowedProductsProvider.h; sourceTree = "<group>"; };
 		B9584ED51E82D08B00AFF6B0 /* BZRAllowedProductsProvider.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRAllowedProductsProvider.mm; sourceTree = "<group>"; };
 		B959B75C1E363AF90011DF54 /* BZREvent+AdditionalInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BZREvent+AdditionalInfo.h"; sourceTree = "<group>"; };
@@ -1456,8 +1456,6 @@
 				B9584ED51E82D08B00AFF6B0 /* BZRAllowedProductsProvider.mm */,
 				B93FC4351D58CB8700A2170C /* BZRProductContentManager.h */,
 				B93FC4361D58CB8700A2170C /* BZRProductContentManager.mm */,
-				B9502A7A1D6DCDC500E633BE /* BZRProductContentProvider.h */,
-				B9502A7B1D6DCDC500E633BE /* BZRProductContentProvider.mm */,
 				B9A850E01DE214FD001AA37C /* NSString+Bazaar.h */,
 				B9A850E11DE214FD001AA37C /* NSString+Bazaar.mm */,
 			);
@@ -1492,7 +1490,6 @@
 				B98505C21D85B479002ABF72 /* BZRAcquiredViaSubscriptionProviderSpec.mm */,
 				B9FCBA171E83BFC600A9CEDF /* BZRAllowedProductsProviderSpec.mm */,
 				B93FC4651D58CB8F00A2170C /* BZRProductContentManagerSpec.mm */,
-				B9502A371D6DCD6B00E633BE /* BZRProductContentProviderSpec.mm */,
 				B9A851AB1DE2E9BA001AA37C /* NSString+BazaarSpec.mm */,
 			);
 			name = Internal;
@@ -1638,6 +1635,8 @@
 		B9484B221D50A06600910066 /* Content Fetching */ = {
 			isa = PBXGroup;
 			children = (
+				B9502A7A1D6DCDC500E633BE /* BZRCachedContentFetcher.h */,
+				B9502A7B1D6DCDC500E633BE /* BZRCachedContentFetcher.mm */,
 				B97E6CCA1D41103200C02863 /* BZRContentFetcherParameters.h */,
 				B9ED1F4B1D53682C00932EE8 /* BZRContentFetcherParameters.mm */,
 				B9484B561D50A09900910066 /* BZRLocalContentFetcher.h */,
@@ -1656,6 +1655,7 @@
 		B9484B531D50A07F00910066 /* Content Fetching */ = {
 			isa = PBXGroup;
 			children = (
+				B9502A371D6DCD6B00E633BE /* BZRCachedContentFetcherSpec.mm */,
 				B9484B5E1D50A09F00910066 /* BZRLocalContentFetcherSpec.mm */,
 				B9484B541D50A08700910066 /* BZRProductContentMultiFetcherSpec.mm */,
 				CD2AFDCC1E966A6200A68F3A /* BZRLocalContentFetcherParametersSpec.mm */,
@@ -1903,7 +1903,7 @@
 				B9484B5A1D50A09900910066 /* BZRLocalContentFetcher.h in Headers */,
 				B9A851931DE24768001AA37C /* BZRProductsWithVariantsProvider.h in Headers */,
 				B9484B5C1D50A09900910066 /* BZRLocalContentFetcherParameters.h in Headers */,
-				B9502A7C1D6DCDC500E633BE /* BZRProductContentProvider.h in Headers */,
+				B9502A7C1D6DCDC500E633BE /* BZRCachedContentFetcher.h in Headers */,
 				B9A850E21DE214FD001AA37C /* NSString+Bazaar.h in Headers */,
 				B97A87191D4610A7004390FC /* BZRRemoteProductsProvider.h in Headers */,
 				9FE7D5A31D3F6B2C00685F19 /* BZRPurchaseManager.h in Headers */,
@@ -2451,7 +2451,7 @@
 				65332E711D3392C200920C32 /* RACSignal+LLSubscriptionCounting.m in Sources */,
 				FA1B885D1D33B2BC00097AD0 /* BZRKeychainStorageSpec.mm in Sources */,
 				6599B42F1CFA4AE100525BB7 /* BZRReceiptValidationStatusSpec.mm in Sources */,
-				B9502A381D6DCD6B00E633BE /* BZRProductContentProviderSpec.mm in Sources */,
+				B9502A381D6DCD6B00E633BE /* BZRCachedContentFetcherSpec.mm in Sources */,
 				B9256C031D73321300490815 /* BZRTransactionRestorationManagerSpec.mm in Sources */,
 				65332E701D3392C200920C32 /* LLSignalTestRecorder.m in Sources */,
 				B9A81B671D90676500168258 /* BZRProductPriceInfo+SKProductSpec.mm in Sources */,
@@ -2502,7 +2502,7 @@
 			files = (
 				65C6A2E51D7DAB4500F13649 /* ValidatricksServer.cer in Sources */,
 				65BDA0081D33FF8000CC1F31 /* NSError+Bazaar.mm in Sources */,
-				B9502A7D1D6DCDC500E633BE /* BZRProductContentProvider.mm in Sources */,
+				B9502A7D1D6DCDC500E633BE /* BZRCachedContentFetcher.mm in Sources */,
 				B97A87021D461067004390FC /* BZRLocalProductsProvider.mm in Sources */,
 				B9ABD3AD1D7EC5E3004D2877 /* BZRStoreKitFacade.mm in Sources */,
 				B97E6CCF1D41103200C02863 /* BZRProduct.mm in Sources */,

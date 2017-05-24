@@ -25,15 +25,16 @@ NS_ASSUME_NONNULL_BEGIN
 /// @return <tt>RACSignal</tt>
 - (RACSignal *)purchaseProduct:(NSString *)productIdentifier;
 
-/// Fetches the content of the given \c product.
+/// Provides access to the content of the given \c product.
 ///
-/// Returns a signal that fetches the content. If the content already exists locally, the signal
-/// just returns an \c LTPath to that content. Otherwise, it fetches the content and sends an
-/// \c LTPath to the content. The signal completes if there is no content to be downloaded, or after
-/// sending the path to it. The signal errs if the user is not allowed to use the product, if there
-/// was an error while fetching the content.
+/// Returns a signal that starts the fetching process. The signal returns \c LTProgress with
+/// \c progress updates throughout the fetching process. When fetching is complete, the signal sends
+/// an \c LTProgress with \c NSBundle as the \c result that provides access to the content and then
+/// completes. If the content already exists locally, the signal completes and sends the \c NSBundle
+/// immediately. The signal sends \c nil and completes if the product has no content.
+/// The signal errs if there was an error while fetching the content.
 ///
-/// @return <tt>RACSignal<LTPath></tt>
+/// @return <tt>RACSignal<nullable LTProgress<NSBundle>></tt>
 - (RACSignal *)fetchProductContent:(NSString *)productIdentifier;
 
 /// Deletes the content of the given \c product.

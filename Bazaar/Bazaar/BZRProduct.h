@@ -19,8 +19,8 @@ LTEnumDeclare(NSUInteger, BZRProductType,
 /// Represents a single in-app product.
 @interface BZRProduct : BZRModel <MTLJSONSerializing>
 
-/// Returns a new \c BZRProduct with \c contentProviderParameters set to given
-/// \c contentProviderParameters.
+/// Returns a new \c BZRProduct with \c contentFetcherParameters set to given
+/// \c contentFetcherParameters.
 - (BZRProduct *)productWithContentFetcherParameters:
     (BZRContentFetcherParameters *)contentFetcherParameters error:(NSError **)error;
 

@@ -7,6 +7,7 @@
 
 #import "BZRAcquiredViaSubscriptionProvider.h"
 #import "BZRAllowedProductsProvider.h"
+#import "BZRCachedContentFetcher.h"
 #import "BZRCachedReceiptValidationStatusProvider.h"
 #import "BZREvent.h"
 #import "BZRExternalTriggerReceiptValidator.h"
@@ -14,7 +15,6 @@
 #import "BZRProduct+EnablesProduct.h"
 #import "BZRProduct+SKProduct.h"
 #import "BZRProductContentManager.h"
-#import "BZRProductContentProvider.h"
 #import "BZRProductPriceInfo+SKProduct.h"
 #import "BZRProductTypedefs.h"
 #import "BZRProductsProvider.h"
@@ -39,8 +39,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// Manager used to manage products content directory.
 @property (readonly, nonatomic) BZRProductContentManager *contentManager;
 
-/// Provider used to provide products' content.
-@property (readonly, nonatomic) BZRProductContentProvider *contentProvider;
+/// Fetcher used to provide products' content.
+@property (readonly, nonatomic) id<BZRProductContentFetcher> contentFetcher;
 
 /// Provider used to provide the latest \c BZRReceiptValidationStatus.
 @property (readonly, nonatomic) BZRCachedReceiptValidationStatusProvider *validationStatusProvider;
@@ -98,7 +98,7 @@ NS_ASSUME_NONNULL_BEGIN
   if (self = [super init]) {
     _productsProvider = configuration.productsProvider;
     _contentManager = configuration.contentManager;
-    _contentProvider = configuration.contentProvider;
+    _contentFetcher = configuration.contentFetcher;
     _validationStatusProvider = configuration.validationStatusProvider;
     _acquiredViaSubscriptionProvider = configuration.acquiredViaSubscriptionProvider;
     _periodicValidatorActivator = configuration.periodicValidatorActivator;
@@ -193,7 +193,7 @@ NS_ASSUME_NONNULL_BEGIN
     self.downloadedContentProducts =
         [NSSet setWithArray:[[productDictionary.allValues lt_filter:^BOOL(BZRProduct *product) {
           return !product.contentFetcherParameters ||
-              [self pathToContentOfProduct:product.identifier];
+              [self contentBundleForProduct:product.identifier];
         }] valueForKey:@instanceKeypath(BZRProduct, identifier)]];
     [self updateAppStoreLocaleFromProductDictionary:productDictionary];
     [self createVariantSelectorWithProductDictionary:productDictionary];
@@ -235,8 +235,12 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark BZRProductsInfoProvider
 #pragma mark -
 
-- (nullable LTPath *)pathToContentOfProduct:(NSString *)productIdentifier {
-  return [self.contentManager pathToContentDirectoryOfProduct:productIdentifier];
+- (nullable NSBundle *)contentBundleForProduct:(NSString *)productIdentifier {
+  if (!self.productDictionary[productIdentifier].contentFetcherParameters) {
+    return nil;
+  }
+
+  return [self.contentFetcher contentBundleForProduct:self.productDictionary[productIdentifier]];
 }
 
 - (NSSet<NSString *> *)purchasedProducts {
@@ -424,8 +428,12 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (RACSignal *)fetchProductContent:(NSString *)productIdentifier {
+  if (!self.productDictionary[productIdentifier].contentFetcherParameters) {
+    return [RACSignal return:nil];
+  }
+
   @weakify(self);
-  return [[[self.contentProvider fetchProductContent:self.productDictionary[productIdentifier]]
+  return [[[self.contentFetcher fetchProductContent:self.productDictionary[productIdentifier]]
       doCompleted:^ {
         @strongify(self);
         self.downloadedContentProducts =
