@@ -71,7 +71,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface LTRandom () {
   /// Random engine used by the instance.
   std::default_random_engine _engine;
-  
+
   /// Uniform distribution of double values in range [0,1].
   std::uniform_real_distribution<double> _uniformDouble;
 }
@@ -137,6 +137,15 @@ NS_ASSUME_NONNULL_BEGIN
   LTParameterAssert(max > 0);
   std::uniform_int_distribution<uint> uniform(0, max - 1);
   return uniform(_engine);
+}
+
+- (uint)randomUnsignedIntegerWithWeights:(const std::vector<double> &)weights {
+  LTParameterAssert(std::any_of(weights.cbegin(), weights.cend(), [](double i) { return i > 0; }),
+                    @"At least one weight value must be positive");
+  LTParameterAssert(std::all_of(weights.cbegin(), weights.cend(), [](double i) { return i >= 0; }),
+                    @"Weight values cannot be negative");
+  std::discrete_distribution<uint> discrete(weights.cbegin(), weights.cend());
+  return discrete(_engine);
 }
 
 @end
