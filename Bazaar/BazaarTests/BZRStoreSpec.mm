@@ -4,6 +4,7 @@
 #import "BZRStore.h"
 
 #import "BZRAcquiredViaSubscriptionProvider.h"
+#import "BZRCachedContentFetcher.h"
 #import "BZRCachedReceiptValidationStatusProvider.h"
 #import "BZREvent.h"
 #import "BZRFakeAcquiredViaSubscriptionProvider.h"
@@ -12,7 +13,6 @@
 #import "BZRPeriodicReceiptValidatorActivator.h"
 #import "BZRProduct+SKProduct.h"
 #import "BZRProductContentManager.h"
-#import "BZRProductContentProvider.h"
 #import "BZRProductPriceInfo.h"
 #import "BZRProductsProvider.h"
 #import "BZRProductsVariantSelector.h"
@@ -51,7 +51,7 @@ SpecBegin(BZRStore)
 __block id<BZRProductsProvider> productsProvider;
 __block BZRProductContentManager *contentManager;
 __block BZRCachedReceiptValidationStatusProvider *receiptValidationStatusProvider;
-__block BZRProductContentProvider *contentProvider;
+__block BZRCachedContentFetcher *contentFetcher;
 __block BZRAcquiredViaSubscriptionProvider *acquiredViaSubscriptionProvider;
 __block BZRStoreKitFacade *storeKitFacade;
 __block BZRPeriodicReceiptValidatorActivator *periodicValidatorActivator;
@@ -73,7 +73,7 @@ beforeEach(^{
   productsProvider = OCMProtocolMock(@protocol(BZRProductsProvider));
   contentManager = OCMClassMock([BZRProductContentManager class]);
   receiptValidationStatusProvider = OCMClassMock([BZRCachedReceiptValidationStatusProvider class]);
-  contentProvider = OCMClassMock([BZRProductContentProvider class]);
+  contentFetcher = OCMClassMock([BZRCachedContentFetcher class]);
   acquiredViaSubscriptionProvider = OCMClassMock([BZRAcquiredViaSubscriptionProvider class]);
   storeKitFacade = OCMClassMock([BZRStoreKitFacade class]);
   periodicValidatorActivator = OCMClassMock([BZRPeriodicReceiptValidatorActivator class]);
@@ -110,7 +110,7 @@ beforeEach(^{
   OCMStub([configuration productsProvider]).andReturn(productsProvider);
   OCMStub([configuration contentManager]).andReturn(contentManager);
   OCMStub([configuration validationStatusProvider]).andReturn(receiptValidationStatusProvider);
-  OCMStub([configuration contentProvider]).andReturn(contentProvider);
+  OCMStub([configuration contentFetcher]).andReturn(contentFetcher);
   OCMStub([configuration acquiredViaSubscriptionProvider])
       .andReturn(acquiredViaSubscriptionProvider);
   OCMStub([configuration storeKitFacade]).andReturn(storeKitFacade);
@@ -156,13 +156,18 @@ context(@"initial receipt validation", ^{
   });
 });
 
-context(@"getting path to content", ^{
-  it(@"should delegate path to content to content manager", ^{
-    LTPath *path = [LTPath pathWithPath:@"bar"];
-    OCMStub([contentManager pathToContentDirectoryOfProduct:productIdentifier]).andReturn(path);
+context(@"getting bundle of content", ^{
+  it(@"should return nil if the product has no content", ^{
+    expect([store contentBundleForProduct:productIdentifier]).to.equal(nil);
+  });
 
-    expect([store pathToContentOfProduct:productIdentifier]).to.equal(path);
-    OCMVerify([contentManager pathToContentDirectoryOfProduct:productIdentifier]);
+  it(@"should get the content bundle from the content fetcher", ^{
+    BZRStubProductDictionaryToReturnProductWithContent(productIdentifier, productsProvider);
+    store = [[BZRStore alloc] initWithConfiguration:configuration];
+    NSBundle *bundle = OCMClassMock([NSBundle class]);
+    OCMStub([contentFetcher contentBundleForProduct:OCMOCK_ANY]).andReturn(bundle);
+
+    expect([store contentBundleForProduct:productIdentifier]).to.equal(bundle);
   });
 });
 
@@ -314,8 +319,8 @@ context(@"downloaded products", ^{
 
   it(@"should add product with downloaded content", ^{
     BZRStubProductDictionaryToReturnProductWithContent(productIdentifier, productsProvider);
-    OCMStub([contentManager pathToContentDirectoryOfProduct:OCMOCK_ANY])
-        .andReturn([LTPath pathWithPath:@"/baz"]);
+    OCMStub([contentFetcher contentBundleForProduct:OCMOCK_ANY])
+        .andReturn(OCMClassMock([NSBundle class]));
     store = [[BZRStore alloc] initWithConfiguration:configuration];
 
     expect([store productList]).will.complete();
@@ -638,35 +643,44 @@ context(@"purchasing products", ^{
 });
 
 context(@"fetching product content", ^{
-  it(@"should send error when content provider errs", ^{
+  it(@"should complete when product has no content", ^{
+    LLSignalTestRecorder *recorder = [[store fetchProductContent:productIdentifier] testRecorder];
+
+    expect(recorder).will.sendValues(@[[NSNull null]]);
+    expect(recorder).will.complete();
+  });
+
+  it(@"should send error when content fetcher errs", ^{
+    BZRStubProductDictionaryToReturnProductWithContent(productIdentifier, productsProvider);
+    store = [[BZRStore alloc] initWithConfiguration:configuration];
     NSError *error = OCMClassMock([NSError class]);
-    OCMStub([contentProvider fetchProductContent:OCMOCK_ANY]).andReturn([RACSignal error:error]);
+    OCMStub([contentFetcher fetchProductContent:OCMOCK_ANY]).andReturn([RACSignal error:error]);
 
     expect([store fetchProductContent:productIdentifier]).will.sendError(error);
   });
 
-  it(@"should send path sent by content provider", ^{
-    BZRStubProductDictionaryToReturnProductWithIdentifier(productIdentifier, productsProvider);
+  it(@"should send progress sent by content fetcher", ^{
+    BZRStubProductDictionaryToReturnProductWithContent(productIdentifier, productsProvider);
     store = [[BZRStore alloc] initWithConfiguration:configuration];
-    LTPath *path = [LTPath pathWithPath:@"bar"];
-    OCMExpect([contentProvider fetchProductContent:
+    LTProgress *progress = OCMClassMock([LTProgress class]);
+    OCMExpect([contentFetcher fetchProductContent:
         [OCMArg checkWithBlock:^BOOL(BZRProduct *product) {
           return [product.identifier isEqualToString:productIdentifier];
-        }]]).andReturn([RACSignal return:path]);
+        }]]).andReturn([RACSignal return:progress]);
 
     LLSignalTestRecorder *recorder = [[store fetchProductContent:productIdentifier] testRecorder];
 
     expect(recorder).will.complete();
-    expect(recorder).will.sendValues(@[path]);
-    OCMVerifyAll((id)contentProvider);
+    expect(recorder).will.sendValues(@[progress]);
+    OCMVerifyAll((id)contentFetcher);
   });
 
   it(@"should update downloaded content products", ^{
-    BZRStubProductDictionaryToReturnProductWithIdentifier(productIdentifier, productsProvider);
+    BZRStubProductDictionaryToReturnProductWithContent(productIdentifier, productsProvider);
     store = [[BZRStore alloc] initWithConfiguration:configuration];
 
-    LTPath *path = [LTPath pathWithPath:@"bar"];
-    OCMStub([contentProvider fetchProductContent:OCMOCK_ANY]).andReturn([RACSignal return:path]);
+    LTProgress *progress = OCMClassMock([LTProgress class]);
+    OCMStub([contentFetcher fetchProductContent:OCMOCK_ANY]).andReturn([RACSignal return:progress]);
 
     expect([store fetchProductContent:productIdentifier]).will.complete();
     expect(store.downloadedContentProducts).to.equal([NSSet setWithObject:productIdentifier]);
@@ -687,7 +701,7 @@ context(@"deleting product content", ^{
         .andReturn([RACSignal empty]);
 
     expect([store deleteProductContent:productIdentifier]).will.complete();
-    OCMVerifyAll((id)contentProvider);
+    OCMVerifyAll((id)contentFetcher);
   });
 
   it(@"should update downloaded content products", ^{
@@ -695,7 +709,7 @@ context(@"deleting product content", ^{
     store = [[BZRStore alloc] initWithConfiguration:configuration];
 
     LTPath *path = [LTPath pathWithPath:@"bar"];
-    OCMStub([contentProvider fetchProductContent:OCMOCK_ANY]).andReturn([RACSignal return:path]);
+    OCMStub([contentFetcher fetchProductContent:OCMOCK_ANY]).andReturn([RACSignal return:path]);
     expect(store.downloadedContentProducts).will.equal([NSSet setWithObject:productIdentifier]);
     OCMStub([contentManager deleteContentDirectoryOfProduct:OCMOCK_ANY])
         .andReturn([RACSignal empty]);
@@ -1169,7 +1183,7 @@ context(@"KVO-compliance", ^{
     OCMStub([configuration productsProvider]).andReturn(productsProvider);
     OCMStub([configuration contentManager]).andReturn(contentManager);
     OCMStub([configuration validationStatusProvider]).andReturn(validationStatusProvider);
-    OCMStub([configuration contentProvider]).andReturn(contentProvider);
+    OCMStub([configuration contentFetcher]).andReturn(contentFetcher);
     OCMStub([configuration acquiredViaSubscriptionProvider])
         .andReturn(acquiredViaSubscriptionProvider);
     OCMStub([configuration storeKitFacade]).andReturn(storeKitFacade);

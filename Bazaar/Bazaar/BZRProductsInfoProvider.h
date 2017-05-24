@@ -6,12 +6,13 @@ NS_ASSUME_NONNULL_BEGIN
 @class BZRReceiptSubscriptionInfo, BZRReceiptValidationStatus, LTPath;
 
 /// Interface for providing the list of purchased products, products with downloaded content, and
-/// subscription information. 
+/// subscription information.
 @protocol BZRProductsInfoProvider <NSObject>
 
-/// Returns the path to the content of the product specified by \c productIdentifier or \c nil if
-/// the product has no content.
-- (nullable LTPath *)pathToContentOfProduct:(NSString *)productIdentifier;
+/// Returns an \c NSBundle that provides access to the content of the product specified by
+/// \c product, if the content is available on the device. Returns \c nil if the product has no
+/// content, or if the content is unavailable on the device.
+- (nullable NSBundle *)contentBundleForProduct:(NSString *)productIdentifier;
 
 /// List of products that were purchased by the user as in-app purchases. KVO-compliant. Changes may
 /// be delivered on an arbitrary thread.

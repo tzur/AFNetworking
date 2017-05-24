@@ -3,7 +3,7 @@
 
 #import "BZRProduct.h"
 
-#import "BZRDummyContentFetcherParameters.h"
+#import "BZRDummyContentFetcher.h"
 
 SpecBegin(BZRProduct)
 
@@ -60,7 +60,7 @@ context(@"conversion" , ^{
       @"identifier": @"id",
       @"productType": @"nonRenewingSubscription",
       @"contentFetcherParameters": @{
-        @"type": NSStringFromClass([BZRDummyContentFetcherParameters class]),
+        @"type": NSStringFromClass([BZRDummyContentFetcher class]),
         @"value": @"foo"
       },
       @"isSubscribersOnly": @NO,

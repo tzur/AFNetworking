@@ -13,7 +13,7 @@ BZRProduct *BZRProductWithIdentifierAndContent(NSString *identifier);
 BZRProduct *BZRProductWithIdentifier(NSString *identifier);
 
 /// Returns a \c BZRProduct with identifier set to \c identifier and with
-/// \c contentProviderParameters set to \c parameters.
+/// \c contentFetcherParameters set to \c parameters.
 BZRProduct *BZRProductWithIdentifierAndParameters(NSString *identifier,
     BZRContentFetcherParameters * _Nullable parameters);
 

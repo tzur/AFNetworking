@@ -5,9 +5,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class BZRAcquiredViaSubscriptionProvider, BZRAllowedProductsProvider,
     BZRCachedReceiptValidationStatusProvider, BZRPeriodicReceiptValidatorActivator,
-    BZRProductContentManager, BZRProductContentProvider, BZRStoreKitFacade, LTPath;
+    BZRProductContentManager, BZRStoreKitFacade, LTPath;
 
-@protocol BZRProductsProvider, BZRProductsVariantSelectorFactory,
+@protocol BZRProductsProvider, BZRProductContentFetcher, BZRProductsVariantSelectorFactory,
     BZRReceiptValidationParametersProvider;
 
 /// Object used to provide configuration objects for \c BZRStore.
@@ -52,9 +52,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// \c contentManager will be initialized with the default parameters as provided by
 /// \c -[BZRProductContentManager initWithFileManager:].
 ///
-/// \c contentProvider will be initialized with
-/// \c -[initWithContentFetcher:contentManager], with a new instance of \c BZRMultiContentFetcher
-/// and with \c contentManager.
+/// \c contentFetcher will be initialized with the default initializer.
 ///
 /// \c BZRCachedReceiptValidationStatusProvider as provided by
 /// \c -[BZRReceiptValidationStatusProvider initWithKeychainStorage:underlyingProvider:]
@@ -84,8 +82,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// Manager used to extract, delete and find content directory with.
 @property (strong, nonatomic) BZRProductContentManager *contentManager;
 
-/// Provider used to provide a product's content.
-@property (strong, nonatomic) BZRProductContentProvider *contentProvider;
+/// Fetcher used to provide a product's content.
+@property (strong, nonatomic) id<BZRProductContentFetcher> contentFetcher;
 
 /// Provider used to provide \c BZRReceiptValidationStatus.
 @property (strong, nonatomic) BZRCachedReceiptValidationStatusProvider *validationStatusProvider;

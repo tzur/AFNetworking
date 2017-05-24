@@ -7,17 +7,16 @@
 
 #import "BZRAcquiredViaSubscriptionProvider.h"
 #import "BZRAllowedProductsProvider.h"
+#import "BZRCachedContentFetcher.h"
 #import "BZRCachedProductsProvider.h"
 #import "BZRCachedReceiptValidationStatusProvider.h"
 #import "BZRKeychainStorage.h"
-#import "BZRLocaleBasedVariantSelectorFactory.h"
 #import "BZRLocalProductsProvider.h"
+#import "BZRLocaleBasedVariantSelectorFactory.h"
 #import "BZRModifiedExpiryReceiptValidationStatusProvider.h"
 #import "BZRPeriodicReceiptValidatorActivator.h"
 #import "BZRProductContentFetcher.h"
 #import "BZRProductContentManager.h"
-#import "BZRProductContentMultiFetcher.h"
-#import "BZRProductContentProvider.h"
 #import "BZRProductsWithDiscountsProvider.h"
 #import "BZRProductsWithPriceInfoProvider.h"
 #import "BZRProductsWithVariantsProvider.h"
@@ -68,10 +67,7 @@ NS_ASSUME_NONNULL_BEGIN
     _fileManager = [NSFileManager defaultManager];
 
     _contentManager = [[BZRProductContentManager alloc] initWithFileManager:self.fileManager];
-    BZRProductContentMultiFetcher *contentFetcher = [[BZRProductContentMultiFetcher alloc] init];
-    _contentProvider =
-        [[BZRProductContentProvider alloc] initWithContentFetcher:contentFetcher
-                                                   contentManager:self.contentManager];
+    _contentFetcher = [[BZRCachedContentFetcher alloc] init];
 
     _validationParametersProvider = [[BZRReceiptValidationParametersProvider alloc] init];
     BZRTimeProvider *timeProvider = [[BZRTimeProvider alloc] init];
