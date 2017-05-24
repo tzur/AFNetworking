@@ -131,12 +131,10 @@ context(@"getting bundle of the product content", ^{
   it(@"should return content bundle if the content exists", ^{
     id<FBROnDemandResource> resource = OCMProtocolMock(@protocol(FBROnDemandResource));
     OCMStub([resource bundle]).andReturn(bundle);
-    LTPath *contentPath = [LTPath pathWithPath:@"bar"];
     OCMStub([bundle fbr_conditionallyBeginAccessToResourcesWithTags:[NSSet setWithObject:@"tag"]])
         .andReturn([RACSignal return:resource]);
 
-    expect([fetcher contentBundleForProduct:product]).to
-        .equal([NSBundle bundleWithPath:contentPath.path]);
+    expect([fetcher contentBundleForProduct:product]).to.equal(bundle);
   });
 
   it(@"should return nil if the content does not exist", ^{

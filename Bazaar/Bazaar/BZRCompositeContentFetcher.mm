@@ -4,6 +4,7 @@
 #import "BZRCompositeContentFetcher.h"
 
 #import "BZRLocalContentFetcher.h"
+#import "BZROnDemandContentFetcher.h"
 #import "BZRProduct.h"
 #import "BZRProductContentFetcher.h"
 #import "BZRProductContentManager.h"
@@ -22,9 +23,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)init {
   BZRLocalContentFetcher *localContentFetcher = [[BZRLocalContentFetcher alloc] init];
+  BZROnDemandContentFetcher *onDemandContentFetcher = [[BZROnDemandContentFetcher alloc] init];
 
   return [self initWithContentFetchers:@{
-    NSStringFromClass([localContentFetcher class]): localContentFetcher
+    NSStringFromClass([localContentFetcher class]): localContentFetcher,
+    NSStringFromClass([onDemandContentFetcher class]): onDemandContentFetcher
   }];
 }
 
