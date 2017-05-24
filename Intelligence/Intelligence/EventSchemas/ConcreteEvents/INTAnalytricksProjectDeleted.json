@@ -1,0 +1,17 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "description": "A project was deleted from the device",
+  "type": "object",
+  "allOf": [
+    {"$ref": "../AbstractEvents/INTAnalytricksBaseUsage.json"},
+    {
+      "properties": {
+        "project_id": {
+          "description": "Project id",
+          "type": "string"
+        }
+      },
+      "required": ["project_id"]
+    }
+  ]
+}
