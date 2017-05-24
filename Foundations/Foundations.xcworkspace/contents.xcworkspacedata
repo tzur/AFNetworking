@@ -38,6 +38,9 @@
       location = "group:../PhotonsUI/PhotonsUI.xcodeproj">
    </FileRef>
    <FileRef
+      location = "group:../Pinky/Pinky.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:../Wireframes/Wireframes.xcodeproj">
    </FileRef>
    <FileRef

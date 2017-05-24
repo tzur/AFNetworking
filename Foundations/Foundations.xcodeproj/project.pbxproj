@@ -13,6 +13,10 @@
 			buildPhases = (
 			);
 			dependencies = (
+				0627764E1ED586E90006024E /* PBXTargetDependency */,
+				0627764C1ED586E50006024E /* PBXTargetDependency */,
+				0627764A1ED586E20006024E /* PBXTargetDependency */,
+				062776481ED586DE0006024E /* PBXTargetDependency */,
 				6A089D6D1DFEE29400AC10A9 /* PBXTargetDependency */,
 				6A089D6F1DFEE29400AC10A9 /* PBXTargetDependency */,
 				65BAF4281D48B1C5009BBB6F /* PBXTargetDependency */,
@@ -44,6 +48,48 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXContainerItemProxy section */
+		062776421ED586D50006024E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 062776391ED586D50006024E /* Pinky.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = A14171A11E6EAA93005DBEFF;
+			remoteInfo = Pinky;
+		};
+		062776441ED586D50006024E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 062776391ED586D50006024E /* Pinky.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = A14171C11E6EAC0D005DBEFF;
+			remoteInfo = PinkyTests;
+		};
+		062776471ED586DE0006024E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 062776391ED586D50006024E /* Pinky.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = A14171A01E6EAA93005DBEFF;
+			remoteInfo = Pinky;
+		};
+		062776491ED586E20006024E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 062776391ED586D50006024E /* Pinky.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = A14171C01E6EAC0D005DBEFF;
+			remoteInfo = PinkyTests;
+		};
+		0627764B1ED586E50006024E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 884961A61EBA1E9B007B3AE8 /* Laboratory.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = A14171A01E6EAA93005DBEFF;
+			remoteInfo = Laboratory;
+		};
+		0627764D1ED586E90006024E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 884961A61EBA1E9B007B3AE8 /* Laboratory.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = A14171C01E6EAC0D005DBEFF;
+			remoteInfo = LaboratoryTests;
+		};
 		654BA75A1D4BFEA4003DCC5F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 65BAF12B1D47F9C9009BBB6F /* LTEngine.xcodeproj */;
@@ -418,6 +464,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		062776391ED586D50006024E /* Pinky.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Pinky.xcodeproj; path = ../Pinky/Pinky.xcodeproj; sourceTree = "<group>"; };
 		65BAF0FE1D47F99B009BBB6F /* Bazaar.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Bazaar.xcodeproj; path = ../Bazaar/Bazaar.xcodeproj; sourceTree = "<group>"; };
 		65BAF1071D47F9A3009BBB6F /* Camera.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Camera.xcodeproj; path = ../Camera/Camera.xcodeproj; sourceTree = "<group>"; };
 		65BAF1101D47F9A7009BBB6F /* CameraUI.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CameraUI.xcodeproj; path = ../CameraUI/CameraUI.xcodeproj; sourceTree = "<group>"; };
@@ -435,6 +482,15 @@
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
+		0627763A1ED586D50006024E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				062776431ED586D50006024E /* libPinky.a */,
+				062776451ED586D50006024E /* PinkyTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		652397371D47F69F00222BCB = {
 			isa = PBXGroup;
 			children = (
@@ -458,6 +514,7 @@
 				65BAF1371D47F9D2009BBB6F /* LTKit.xcodeproj */,
 				65BAF1401D47F9DC009BBB6F /* Photons.xcodeproj */,
 				65BAF1491D47F9E1009BBB6F /* PhotonsUI.xcodeproj */,
+				062776391ED586D50006024E /* Pinky.xcodeproj */,
 				65BAF1521D47F9EA009BBB6F /* Wireframes.xcodeproj */,
 			);
 			name = Projects;
@@ -664,6 +721,10 @@
 					ProjectRef = 65BAF1491D47F9E1009BBB6F /* PhotonsUI.xcodeproj */;
 				},
 				{
+					ProductGroup = 0627763A1ED586D50006024E /* Products */;
+					ProjectRef = 062776391ED586D50006024E /* Pinky.xcodeproj */;
+				},
+				{
 					ProductGroup = 65BAF2BD1D4801B1009BBB6F /* Products */;
 					ProjectRef = 65BAF2BC1D4801B1009BBB6F /* TestHost.xcodeproj */;
 				},
@@ -680,6 +741,20 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		062776431ED586D50006024E /* libPinky.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libPinky.a;
+			remoteRef = 062776421ED586D50006024E /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		062776451ED586D50006024E /* PinkyTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = PinkyTests.xctest;
+			remoteRef = 062776441ED586D50006024E /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		65BAF1041D47F99C009BBB6F /* libBazaar.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -886,6 +961,26 @@
 /* End PBXReferenceProxy section */
 
 /* Begin PBXTargetDependency section */
+		062776481ED586DE0006024E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Pinky;
+			targetProxy = 062776471ED586DE0006024E /* PBXContainerItemProxy */;
+		};
+		0627764A1ED586E20006024E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = PinkyTests;
+			targetProxy = 062776491ED586E20006024E /* PBXContainerItemProxy */;
+		};
+		0627764C1ED586E50006024E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Laboratory;
+			targetProxy = 0627764B1ED586E50006024E /* PBXContainerItemProxy */;
+		};
+		0627764E1ED586E90006024E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = LaboratoryTests;
+			targetProxy = 0627764D1ED586E90006024E /* PBXContainerItemProxy */;
+		};
 		654BA75B1D4BFEA4003DCC5F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = LTEngineTests;
