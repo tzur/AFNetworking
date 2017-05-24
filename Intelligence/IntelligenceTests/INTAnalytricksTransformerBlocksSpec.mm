@@ -45,7 +45,7 @@ context(@"analytricks context enricher", ^{
     auto runID = [NSUUID UUID];
     auto sessionID = [NSUUID UUID];
     auto screenUsageID = [NSUUID UUID];
-    auto openProjectID = [NSUUID UUID];
+    auto openProjectID = @"foo";
 
     auto analytricksContext =
         [[INTAnalytricksContext alloc] initWithRunID:runID sessionID:sessionID
@@ -60,7 +60,7 @@ context(@"analytricks context enricher", ^{
       @"session_id": sessionID.UUIDString,
       @"screen_usage_id": screenUsageID.UUIDString,
       @"screen_name": @"foo",
-      @"open_project_id": openProjectID.UUIDString
+      @"open_project_id": openProjectID
     };
 
     auto expectedEvents = [events lt_map:^(NSDictionary *event) {
@@ -73,10 +73,12 @@ context(@"analytricks context enricher", ^{
   it(@"should prioritize event keys when enriching", ^{
     auto analytricksContext1 =
         [[INTAnalytricksContext alloc] initWithRunID:[NSUUID UUID] sessionID:[NSUUID UUID]
-                      screenUsageID:[NSUUID UUID] screenName:@"foo" openProjectID:[NSUUID UUID]];
+                                       screenUsageID:[NSUUID UUID] screenName:@"foo"
+                                       openProjectID:@"foo"];
     auto analytricksContext2 =
         [[INTAnalytricksContext alloc] initWithRunID:[NSUUID UUID] sessionID:[NSUUID UUID]
-                      screenUsageID:[NSUUID UUID] screenName:@"bar" openProjectID:[NSUUID UUID]];
+                                       screenUsageID:[NSUUID UUID] screenName:@"bar"
+                                       openProjectID:@"bar"];
     auto events = @[analytricksContext1.properties];
     auto enrichedEvents = block(events, @{
       kINTAppContextAnalytricksContextKey: analytricksContext2
@@ -95,7 +97,7 @@ context(@"analytricks context enricher", ^{
   it(@"should not enrich non dictionary events", ^{
     auto analytricksContext =
         [[INTAnalytricksContext alloc] initWithRunID:[NSUUID UUID] sessionID:[NSUUID UUID]
-                      screenUsageID:[NSUUID UUID] screenName:@"foo" openProjectID:[NSUUID UUID]];
+                      screenUsageID:[NSUUID UUID] screenName:@"foo" openProjectID:@"foo"];
     auto events = @[@"foo", @{}];
     auto enrichedEvents = block(events, @{
       kINTAppContextAnalytricksContextKey: analytricksContext
