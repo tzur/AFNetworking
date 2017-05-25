@@ -26,6 +26,12 @@ context(@"no base path", ^{
   it(@"should serialize and deserialize", ^{
     expect([LTPath pathWithRelativeURL:path.relativeURL]).to.equal(path);
   });
+
+  it(@"should encode and decode", ^{
+    NSData *archive = [NSKeyedArchiver archivedDataWithRootObject:path];
+
+    expect([NSKeyedUnarchiver unarchiveObjectWithData:archive]).to.equal(path);
+  });
 });
 
 context(@"temp base path", ^{
@@ -46,6 +52,12 @@ context(@"temp base path", ^{
 
   it(@"should serialize and deserialize", ^{
     expect([LTPath pathWithRelativeURL:path.relativeURL]).to.equal(path);
+  });
+
+  it(@"should encode and decode", ^{
+    NSData *archive = [NSKeyedArchiver archivedDataWithRootObject:path];
+
+    expect([NSKeyedUnarchiver unarchiveObjectWithData:archive]).to.equal(path);
   });
 });
 
@@ -69,6 +81,12 @@ context(@"documents base path", ^{
   it(@"should serialize and deserialize", ^{
     expect([LTPath pathWithRelativeURL:path.relativeURL]).to.equal(path);
   });
+
+  it(@"should encode and decode", ^{
+    NSData *archive = [NSKeyedArchiver archivedDataWithRootObject:path];
+
+    expect([NSKeyedUnarchiver unarchiveObjectWithData:archive]).to.equal(path);
+  });
 });
 
 context(@"main bundle base path", ^{
@@ -90,6 +108,12 @@ context(@"main bundle base path", ^{
 
   it(@"should serialize and deserialize", ^{
     expect([LTPath pathWithRelativeURL:path.relativeURL]).to.equal(path);
+  });
+
+  it(@"should encode and decode", ^{
+    NSData *archive = [NSKeyedArchiver archivedDataWithRootObject:path];
+
+    expect([NSKeyedUnarchiver unarchiveObjectWithData:archive]).to.equal(path);
   });
 });
 
@@ -113,6 +137,12 @@ context(@"caches base path", ^{
   it(@"should serialize and deserialize", ^{
     expect([LTPath pathWithRelativeURL:path.relativeURL]).to.equal(path);
   });
+
+  it(@"should encode and decode", ^{
+    NSData *archive = [NSKeyedArchiver archivedDataWithRootObject:path];
+
+    expect([NSKeyedUnarchiver unarchiveObjectWithData:archive]).to.equal(path);
+  });
 });
 
 context(@"application support base path", ^{
@@ -135,6 +165,12 @@ context(@"application support base path", ^{
 
   it(@"should serialize and deserialize", ^{
     expect([LTPath pathWithRelativeURL:path.relativeURL]).to.equal(path);
+  });
+
+  it(@"should encode and decode", ^{
+    NSData *archive = [NSKeyedArchiver archivedDataWithRootObject:path];
+
+    expect([NSKeyedUnarchiver unarchiveObjectWithData:archive]).to.equal(path);
   });
 });
 
@@ -160,6 +196,12 @@ context(@"no relative path", ^{
         [[NSFileManager lt_documentsDirectory] stringByAppendingPathComponent:@"/"];
     expect(path.path).to.equal(expectedPath);
     expect(path.url).to.equal([NSURL fileURLWithPath:expectedPath]);
+  });
+
+  it(@"should encode and decode", ^{
+    NSData *archive = [NSKeyedArchiver archivedDataWithRootObject:path];
+
+    expect([NSKeyedUnarchiver unarchiveObjectWithData:archive]).to.equal(path);
   });
 });
 

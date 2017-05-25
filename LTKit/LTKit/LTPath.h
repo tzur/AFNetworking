@@ -23,7 +23,7 @@ typedef NS_ENUM(NSUInteger, LTPathBaseDirectory) {
 /// mostly used when the base path is changing in each execution of the app.
 ///
 /// @see https://developer.apple.com/library/ios/technotes/tn2406/_index.html
-@interface LTPath : NSObject
+@interface LTPath : NSObject <NSSecureCoding>
 
 - (instancetype)init NS_UNAVAILABLE;
 

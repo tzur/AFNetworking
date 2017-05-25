@@ -22,6 +22,12 @@ static NSString * const kPathScheme = @"com.lightricks.path";
   return self;
 }
 
+- (nullable instancetype)initWithCoder:(NSCoder *)decoder {
+  NSURL * _Nullable relativeURL = [decoder decodeObjectOfClass:[NSURL class]
+                                                        forKey:@keypath(self, relativeURL)];
+  return [self.class pathWithRelativeURL:relativeURL];
+}
+
 - (NSString *)absolutePathWithPath:(NSString *)path {
   if ([path hasPrefix:@"/"]) {
     return path;
@@ -44,7 +50,7 @@ static NSString * const kPathScheme = @"com.lightricks.path";
     return nil;
   }
 
-  NSNumber *key = [[self baseDirectoryToName] keyForObject:relativeURL.host];
+  NSNumber * _Nullable key = [[self baseDirectoryToName] keyForObject:relativeURL.host];
   if (!key) {
     return nil;
   }
@@ -114,7 +120,7 @@ static NSString * const kPathScheme = @"com.lightricks.path";
       @(LTPathBaseDirectoryApplicationSupport): @"applicationsupport",
     }];
   });
-  
+
   return map;
 }
 
@@ -140,6 +146,18 @@ static NSString * const kPathScheme = @"com.lightricks.path";
 
   return self.baseDirectory == object.baseDirectory &&
       [self.relativePath isEqual:object.relativePath];
+}
+
+#pragma mark -
+#pragma mark NSSecureCoding
+#pragma mark -
+
++ (BOOL)supportsSecureCoding {
+  return YES;
+}
+
+- (void)encodeWithCoder:(NSCoder *)coder {
+  [coder encodeObject:self.relativeURL forKey:@keypath(self, relativeURL)];
 }
 
 @end
