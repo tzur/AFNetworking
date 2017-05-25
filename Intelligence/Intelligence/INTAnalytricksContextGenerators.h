@@ -39,12 +39,10 @@ extern NSString * const kINTAppContextDeviceInfoIDKey;
 + (INTAppContextGeneratorBlock)analytricksContextGenerator;
 
 /// Returns a context generator that generates an \c INTAppcontext with an updated values in
-/// \c kINTAppContextDeviceIDKey and \c kINTAppContextDeviceInfoIDKey. The updates to the
-/// \c INTAppContext are made when the following events are processed:
-///
-/// 1. INTAppWillForegroundEvent - if \c isLaunch is \c YES, then \c kINTAppContextDeviceIDKey and
-///    \c kINTAppContextDeviceInfoIDKey are set to <tt>-[UIDevice identifierForVendor]</tt> of the
-///    current device.
+/// \c kINTAppContextDeviceIDKey and \c kINTAppContextDeviceInfoIDKey when an
+/// \c INTDeviceInfoLoadedEvent is observed. \c kINTAppContextDeviceIDKey is set to the
+/// \c identifierForVendor property of the loaded \c INTDeviceInfo. \c kINTAppContextDeviceInfoIDKey
+/// is set to the \c deviceInfoRevisionID property of the event.
 + (INTAppContextGeneratorBlock)deviceInfoContextGenerator;
 
 @end
