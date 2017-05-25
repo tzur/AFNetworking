@@ -69,7 +69,7 @@ NS_ASSUME_NONNULL_BEGIN
       }];
 }
 
-- (nullable NSBundle *)contentBundleForProduct:(BZRProduct * __unused)product {
+- (RACSignal *)contentBundleForProduct:(BZRProduct *)product {
   if (![product.contentFetcherParameters
         isKindOfClass:[BZROnDemandContentFetcherParameters class]]) {
     LogError(@"The provided parameters class must be: %@",
@@ -80,7 +80,7 @@ NS_ASSUME_NONNULL_BEGIN
   NSSet<NSString *> *tags =
       ((BZROnDemandContentFetcherParameters *)product.contentFetcherParameters).tags;
   @weakify(self)
-  return [[[self.bundle fbr_conditionallyBeginAccessToResourcesWithTags:tags]
+  return [[self.bundle fbr_conditionallyBeginAccessToResourcesWithTags:tags]
       map:^NSBundle * _Nullable(id<FBROnDemandResource> _Nullable resource) {
         @strongify(self)
         if (resource) {
@@ -89,8 +89,7 @@ NS_ASSUME_NONNULL_BEGIN
           }
         }
         return resource.bundle;
-      }]
-      first];
+      }];
 }
 
 + (Class)expectedParametersClass {

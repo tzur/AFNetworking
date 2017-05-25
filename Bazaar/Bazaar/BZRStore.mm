@@ -192,8 +192,7 @@ NS_ASSUME_NONNULL_BEGIN
 
     self.downloadedContentProducts =
         [NSSet setWithArray:[[productDictionary.allValues lt_filter:^BOOL(BZRProduct *product) {
-          return !product.contentFetcherParameters ||
-              [self contentBundleForProduct:product.identifier];
+          return !product.contentFetcherParameters;
         }] valueForKey:@instanceKeypath(BZRProduct, identifier)]];
     [self updateAppStoreLocaleFromProductDictionary:productDictionary];
     [self createVariantSelectorWithProductDictionary:productDictionary];
@@ -235,9 +234,9 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark BZRProductsInfoProvider
 #pragma mark -
 
-- (nullable NSBundle *)contentBundleForProduct:(NSString *)productIdentifier {
+- (RACSignal *)contentBundleForProduct:(NSString *)productIdentifier {
   if (!self.productDictionary[productIdentifier].contentFetcherParameters) {
-    return nil;
+    return [RACSignal return:nil];
   }
 
   return [self.contentFetcher contentBundleForProduct:self.productDictionary[productIdentifier]];

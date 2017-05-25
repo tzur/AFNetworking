@@ -99,9 +99,13 @@ NS_ASSUME_NONNULL_BEGIN
   }];
 }
 
-- (nullable NSBundle *)contentBundleForProduct:(BZRProduct *)product {
+- (RACSignal *)contentBundleForProduct:(BZRProduct *)product {
   LTPath *pathToContent = [self.contentManager pathToContentDirectoryOfProduct:product.identifier];
-  return pathToContent ? [NSBundle bundleWithPath:pathToContent.path] : nil;
+  return [RACSignal return:(pathToContent ? [self bundleWithPath:pathToContent] : nil)];
+}
+
+- (NSBundle *)bundleWithPath:(LTPath *)pathToContent {
+  return [NSBundle bundleWithPath:pathToContent.path];
 }
 
 + (Class)expectedParametersClass {

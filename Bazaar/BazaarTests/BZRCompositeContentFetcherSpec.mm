@@ -24,13 +24,18 @@ beforeEach(^{
       [[BZRCompositeContentFetcher alloc] initWithContentFetchers:contentFetchers];
 });
 
-it(@"should return the bundle of the product content with the right fetcher", ^{
+it(@"should send the bundle of the product content with the right fetcher", ^{
   BZRProduct *product = BZRProductWithIdentifierAndContent(@"foo");
-  OCMStub(product.contentFetcherParameters.type).andReturn(@"mockedContentFetcher");
+  OCMStub([product.contentFetcherParameters type]).andReturn(@"mockedContentFetcher");
 
-  [contentFetcher contentBundleForProduct:product];
+  NSBundle *bundle = OCMClassMock([NSBundle class]);
+  OCMStub([contentFetchers[@"mockedContentFetcher"] contentBundleForProduct:product])
+      .andReturn([RACSignal return:bundle]);
 
-  OCMVerify([contentFetcher contentBundleForProduct:product]);
+  LLSignalTestRecorder *recorder = [[contentFetcher contentBundleForProduct:product] testRecorder];
+
+  expect(recorder).to.complete();
+  expect(recorder).to.sendValues(@[bundle]);
 });
 
 context(@"fetching content", ^{

@@ -9,6 +9,15 @@
 #import "NSErrorCodes+Bazaar.h"
 #import "NSFileManager+Bazaar.h"
 
+/// Category for testing, exposes the method that creates the inner bundle in
+/// \c contentBundleForProduct.
+@interface BZRLocalContentFetcher (ForTesting)
+
+/// Returns a new \c NSBundle with the given \c pathToContent.
+- (NSBundle *)bundleWithPath:(LTPath *)pathToContent;
+
+@end
+
 SpecBegin(BZRLocalContentFetcher)
 
 context(@"parameters conversion" , ^{
@@ -152,7 +161,6 @@ context(@"fetching product", ^{
 
     expect(recorder).will.complete();
     expect(recorder).will.sendValues(@[[[LTProgress alloc] initWithResult:contentBundle]]);
-    expect([fetcher contentBundleForProduct:product]).to.equal(contentBundle);
   });
 });
 
@@ -170,19 +178,26 @@ context(@"getting bundle of the product content", ^{
     product = BZRProductWithIdentifier(@"foo");
   });
 
-  it(@"should return NSBundle with the content path if the content exist", ^{
-    LTPath *contentPath = [LTPath pathWithPath:@"bar"];
+  it(@"should send NSBundle with the content path if the content exists", ^{
+    LTPath *contentPath = [LTPath pathWithPath:@"file://bar"];
     OCMStub([contentManager pathToContentDirectoryOfProduct:product.identifier])
         .andReturn(contentPath);
 
-    expect([fetcher contentBundleForProduct:product]).to
-        .equal([NSBundle bundleWithPath:contentPath.path]);
+    NSBundle *bundle = OCMClassMock([NSBundle class]);
+    fetcher = OCMPartialMock(fetcher);
+    OCMStub([fetcher bundleWithPath:contentPath]).andReturn(bundle);
+
+    auto recorder = [[fetcher contentBundleForProduct:product] testRecorder];
+
+    expect(recorder).to.sendValues(@[bundle]);
   });
 
-  it(@"should return nil if the content is not exist", ^{
+  it(@"should send nil if the content does not exist", ^{
     OCMStub([contentManager pathToContentDirectoryOfProduct:product.identifier]);
 
-    expect([fetcher contentBundleForProduct:product]).to.beNil();
+    auto recorder = [[fetcher contentBundleForProduct:product] testRecorder];
+
+    expect(recorder).to.sendValues(@[[NSNull null]]);
   });
 });
 

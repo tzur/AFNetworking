@@ -157,17 +157,22 @@ context(@"initial receipt validation", ^{
 });
 
 context(@"getting bundle of content", ^{
-  it(@"should return nil if the product has no content", ^{
-    expect([store contentBundleForProduct:productIdentifier]).to.equal(nil);
+  it(@"should send nil if the product has no content", ^{
+    expect([store contentBundleForProduct:productIdentifier]).to.sendValues(@[[NSNull null]]);
   });
 
-  it(@"should get the content bundle from the content fetcher", ^{
+  it(@"should send the content bundle from the content fetcher", ^{
     BZRStubProductDictionaryToReturnProductWithContent(productIdentifier, productsProvider);
     store = [[BZRStore alloc] initWithConfiguration:configuration];
     NSBundle *bundle = OCMClassMock([NSBundle class]);
-    OCMStub([contentFetcher contentBundleForProduct:OCMOCK_ANY]).andReturn(bundle);
+    OCMStub([contentFetcher contentBundleForProduct:OCMOCK_ANY])
+        .andReturn([RACSignal return:bundle]);
 
-    expect([store contentBundleForProduct:productIdentifier]).to.equal(bundle);
+    LLSignalTestRecorder *recorder =
+        [[store contentBundleForProduct:productIdentifier] testRecorder];
+
+    expect(recorder).to.complete();
+    expect(recorder).to.sendValues(@[bundle]);
   });
 });
 
@@ -315,16 +320,6 @@ context(@"downloaded products", ^{
 
     expect([store productList]).will.complete();
     expect(store.downloadedContentProducts).to.equal([NSSet set]);
-  });
-
-  it(@"should add product with downloaded content", ^{
-    BZRStubProductDictionaryToReturnProductWithContent(productIdentifier, productsProvider);
-    OCMStub([contentFetcher contentBundleForProduct:OCMOCK_ANY])
-        .andReturn(OCMClassMock([NSBundle class]));
-    store = [[BZRStore alloc] initWithConfiguration:configuration];
-
-    expect([store productList]).will.complete();
-    expect(store.downloadedContentProducts).to.equal([NSSet setWithObject:productIdentifier]);
   });
 });
 
