@@ -122,10 +122,21 @@ context(@"processing", ^{
 
     [processor process];
 
-    // Set initially to target.
     cv::Mat4b expected([target image]);
-    // Source + membrane.
     expected(cv::Rect(0, 0, 16, 16)) = cv::Vec4b(128, 64, 128, 255);
+
+    expect($([output image])).to.beCloseToMat($(expected));
+  });
+
+  it(@"should composite correctly when target alpha is not one", ^{
+    processor.sourceOpacity = 0.5;
+    processor.flip = NO;
+    [target clearColor:LTVector4(0, 0, 1, 0.75)];
+
+    [processor process];
+
+    cv::Mat4b expected([target image]);
+    expected(cv::Rect(0, 0, 16, 16)) = cv::Vec4b(128, 64, 128, 191);
 
     expect($([output image])).to.beCloseToMat($(expected));
   });
@@ -136,9 +147,7 @@ context(@"processing", ^{
     processor.flip = YES;
     [processor process];
 
-    // Set initially to target.
     cv::Mat4b expected([target image]);
-    // Source + membrane.
     expected(cv::Rect(0, 0, 16, 16)) = cv::Vec4b(0, 191, 128, 255);
 
     expect($([output image])).to.beCloseToMat($(expected));
@@ -151,9 +160,7 @@ context(@"processing", ^{
 
     [processor process];
 
-    // Set initially to target.
     cv::Mat4b expected([target image]);
-   // Source + membrane.
     expected(cv::Rect(0, 0, 16, 16)) = cv::Vec4b(0, 191, 128, 255);
 
     expect($([output image])).to.beCloseToMat($(expected));
@@ -168,9 +175,28 @@ context(@"processing", ^{
 
     [processor process];
 
-    // Set initially to target.
     cv::Mat4b expected = LTLoadMat([self class], @"LTPatchCompositorProcessorSolution.png");
-    // Source + membrane.
+
+    expect($([output image])).to.beCloseToMat($(expected));
+  });
+
+  it(@"should not composite when source alpha is zero", ^{
+    [source clearColor:LTVector4(1, 1, 1, 0)];
+
+    [processor process];
+
+    cv::Mat4b expected([target image]);
+
+    expect($([output image])).to.beCloseToMat($(expected));
+  });
+
+  it(@"should not composite when source outside rect", ^{
+    processor.sourceQuad = [LTQuad quadFromRect:CGRectMake(-8, 8, 8, 8)];
+
+    [processor process];
+
+    cv::Mat4b expected([target image]);
+
     expect($([output image])).to.beCloseToMat($(expected));
   });
 });

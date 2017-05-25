@@ -47,8 +47,8 @@
 }
 
 - (void)setDefaultValues {
-  self.sourceQuad = [LTQuad quadFromRectWithOrigin:CGPointZero andSize:self.source.size];
-  self.targetQuad = [LTQuad quadFromRectWithOrigin:CGPointZero andSize:self.target.size];
+  self.sourceQuad = [LTQuad quadFromRect:CGRectFromSize(self.source.size)];
+  self.targetQuad = [LTQuad quadFromRect:CGRectFromSize(self.target.size)];
   self.sourceOpacity = self.defaultSourceOpacity;
   self.flip = NO;
   self.smoothingAlpha = self.defaultSmoothingAlpha;
@@ -71,7 +71,14 @@
   _targetQuad = targetQuad;
 
   GLKMatrix3 targetTextureMat = LTTextureMatrix3ForQuad(targetQuad, self.target.size);
-  self[[LTPatchCompositorVsh targetTextureMat]] = $(targetTextureMat);
+  self[[LTPatchCompositorFsh targetTextureMat]] = $(targetTextureMat);
+}
+
+- (void)setSourceQuad:(LTQuad *)sourceQuad {
+  _sourceQuad = sourceQuad;
+
+  GLKMatrix3 sourceTextureMat = LTTextureMatrix3ForQuad(sourceQuad, self.source.size);
+  self[[LTPatchCompositorFsh sourceTextureMat]] = $(sourceTextureMat);
 }
 
 LTPropertyWithoutSetter(CGFloat, sourceOpacity, SourceOpacity, 0, 1, 1);
