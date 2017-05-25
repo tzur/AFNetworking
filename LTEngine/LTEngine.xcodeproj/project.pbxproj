@@ -347,7 +347,7 @@
 		284574791D411070006B0817 /* LTContentTouchEventStateFilter+DefaultFilters.mm in Sources */ = {isa = PBXBuildFile; fileRef = 284574771D411070006B0817 /* LTContentTouchEventStateFilter+DefaultFilters.mm */; };
 		284574D51D41152D006B0817 /* LTContentTouchEventStateFilter+DefaultFiltersSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 284574D41D41152D006B0817 /* LTContentTouchEventStateFilter+DefaultFiltersSpec.mm */; };
 		28463D10196983DE0021A7CD /* LTDefaultModule.h in Headers */ = {isa = PBXBuildFile; fileRef = 28463D0E196983DE0021A7CD /* LTDefaultModule.h */; };
-		28463D11196983DE0021A7CD /* LTDefaultModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 28463D0F196983DE0021A7CD /* LTDefaultModule.m */; };
+		28463D11196983DE0021A7CD /* LTDefaultModule.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28463D0F196983DE0021A7CD /* LTDefaultModule.mm */; };
 		284791E81862E70200A70AF5 /* LTGridDrawer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 284791E71862E70200A70AF5 /* LTGridDrawer.mm */; };
 		284791F61862E71500A70AF5 /* LTGridDrawerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 284791F51862E71500A70AF5 /* LTGridDrawerSpec.mm */; };
 		2847921C186315D100A70AF5 /* LTGridDrawer.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 2847921A186315D100A70AF5 /* LTGridDrawer.fsh */; };
@@ -2087,7 +2087,7 @@
 		284574771D411070006B0817 /* LTContentTouchEventStateFilter+DefaultFilters.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "LTContentTouchEventStateFilter+DefaultFilters.mm"; sourceTree = "<group>"; };
 		284574D41D41152D006B0817 /* LTContentTouchEventStateFilter+DefaultFiltersSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "LTContentTouchEventStateFilter+DefaultFiltersSpec.mm"; sourceTree = "<group>"; };
 		28463D0E196983DE0021A7CD /* LTDefaultModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTDefaultModule.h; sourceTree = "<group>"; };
-		28463D0F196983DE0021A7CD /* LTDefaultModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTDefaultModule.m; sourceTree = "<group>"; };
+		28463D0F196983DE0021A7CD /* LTDefaultModule.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTDefaultModule.mm; sourceTree = "<group>"; };
 		284791E61862E70200A70AF5 /* LTGridDrawer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTGridDrawer.h; sourceTree = "<group>"; };
 		284791E71862E70200A70AF5 /* LTGridDrawer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTGridDrawer.mm; sourceTree = "<group>"; };
 		284791F51862E71500A70AF5 /* LTGridDrawerSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTGridDrawerSpec.mm; sourceTree = "<group>"; };
@@ -4524,7 +4524,7 @@
 			isa = PBXGroup;
 			children = (
 				28463D0E196983DE0021A7CD /* LTDefaultModule.h */,
-				28463D0F196983DE0021A7CD /* LTDefaultModule.m */,
+				28463D0F196983DE0021A7CD /* LTDefaultModule.mm */,
 				8B3DEBEB18296B6100EA0C1A /* LTEngine-Prefix.pch */,
 				8B6B50261BDFCF3300662235 /* LTOpenCVCore.h */,
 				8B8664321BF5026D006FFF03 /* LTRef+LTEngine.h */,
@@ -6928,7 +6928,7 @@
 				28A488A618D0C027006BD8CF /* LTBrushShapeDynamicsEffect.mm in Sources */,
 				8B16CA481BAF147B002FB750 /* NSBundle+LTEngineBundle.m in Sources */,
 				288F154A19A63C7A00E1C6F9 /* LTMeshDrawer.mm in Sources */,
-				28463D11196983DE0021A7CD /* LTDefaultModule.m in Sources */,
+				28463D11196983DE0021A7CD /* LTDefaultModule.mm in Sources */,
 				8B422A6D1C30493200398F27 /* LTTexture+Writing.mm in Sources */,
 				8B3F94D2187C194500FAA265 /* LTMMTexture.mm in Sources */,
 				50881C6B1CBE54240026E165 /* LTAttributeData.mm in Sources */,

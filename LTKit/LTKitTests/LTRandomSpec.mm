@@ -31,7 +31,7 @@ context(@"initialization", ^{
     LTRandom *otherRandom = [[LTRandom alloc] init];
     expect(random.initialState).notTo.beIdenticalTo(otherRandom.initialState);
   });
-  
+
   it(@"should initialize with a specific seed", ^{
     random = [[LTRandom alloc] initWithSeed:kTestingSeed];
     LTRandom *otherRandom = [[LTRandom alloc] initWithSeed:kTestingSeed];
@@ -43,7 +43,7 @@ context(@"random", ^{
   beforeEach(^{
     random = [[LTRandom alloc] initWithSeed:kTestingSeed];
   });
-  
+
   it(@"should generate uniform random doubles in [0,1]", ^{
     std::vector<double> values;
     for (NSUInteger i = 0; i < kNumberOfRolls; ++i) {
@@ -54,7 +54,7 @@ context(@"random", ^{
     expect(LTMean(values)).to.beCloseToWithin(0.5, 1e-2);
     expect(LTVariance(values)).to.beCloseToWithin(1.0 / 12.0, 1e-2);
   });
-  
+
   it(@"should generate uniform random doubles in a given range", ^{
     std::vector<double> values;
     for (NSUInteger i = 0; i < kNumberOfRolls; ++i) {
@@ -65,7 +65,7 @@ context(@"random", ^{
     expect(LTMean(values)).to.beCloseToWithin(0, 1e-2);
     expect(LTVariance(values)).to.beCloseToWithin(4.0 / 12.0, 1e-2);
   });
-  
+
   it(@"should generate uniform random integers in a given range", ^{
     const NSInteger a = -10;
     const NSInteger b = 10;
@@ -78,7 +78,7 @@ context(@"random", ^{
     expect(LTMean(values)).to.beCloseToWithin(0.5 * (a + b), 1e-1);
     expect(LTVariance(values)).to.beCloseToWithin(((b - a + 1) * (b - a + 1) - 1) / 12.0, 1);
   });
-  
+
   it(@"should generate uniform random unsigned integers in a given range", ^{
     const NSUInteger max = 21;
     std::vector<NSUInteger> values;
@@ -90,7 +90,32 @@ context(@"random", ^{
     expect(LTMean(values)).to.beCloseToWithin(0.5 * (max - 1), 1e-1);
     expect(LTVariance(values)).to.beCloseToWithin((max * max - 1) / 12.0, 1);
   });
-  
+
+  it(@"should generate weighted random unsigned integers in a given range", ^{
+    const std::vector<double> weights = {1, 2, 3, 4};
+    NSUInteger max = weights.size();
+    std::vector<NSUInteger> values;
+    for (NSUInteger i = 0; i < kNumberOfRolls; ++i) {
+      values.push_back([random randomUnsignedIntegerWithWeights:weights]);
+    }
+    expect(*std::min_element(values.begin(), values.end())).to.beInTheRangeOf(0, max - 1);
+    expect(*std::max_element(values.begin(), values.end())).to.beInTheRangeOf(0, max - 1);
+    expect(LTMean(values)).to.beCloseToWithin(2, 1e-1);
+    expect(LTVariance(values)).to.beCloseToWithin(1, 1);
+  });
+
+  it(@"should not allow weighted random values with negative weights", ^{
+    expect(^{
+      [random randomUnsignedIntegerWithWeights:{1, 2, -1}];
+    }).to.raise(NSInvalidArgumentException);
+  });
+
+  it(@"should not allow weighted random values with all zeros weights", ^{
+    expect(^{
+      [random randomUnsignedIntegerWithWeights:{0, 0, 0}];
+    }).to.raise(NSInvalidArgumentException);
+  });
+
   it(@"should generate identical random sequence after call to reset", ^{
     std::vector<double> first, second;
     for (NSUInteger i = 0; i < kNumberOfRolls; ++i) {
@@ -143,7 +168,7 @@ context(@"random", ^{
 
     expect(random1.engineState).to.equal(random2.engineState);
   });
-  
+
   it(@"should generate identical random sequence when using same seed", ^{
     random = [[LTRandom alloc] initWithSeed:7];
     LTRandom *otherRandom = [[LTRandom alloc] initWithSeed:7];
