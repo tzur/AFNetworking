@@ -66,6 +66,7 @@
 		A1541B8C1EAF2D1400B4F064 /* INTAppLifecycleTimer.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1541B8B1EAF2D1400B4F064 /* INTAppLifecycleTimer.mm */; };
 		A1541C0A1EAF405100B4F064 /* INTAppLifecycleTimerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1541C091EAF405100B4F064 /* INTAppLifecycleTimerSpec.mm */; };
 		A1541C4C1EAF8BF900B4F064 /* INTTransformerBlockBuilder.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1541C4B1EAF8BF900B4F064 /* INTTransformerBlockBuilder.mm */; };
+		A157B2EF1ED6B299008B920D /* INTAnalytricksDeviceInfoChanged.json in Sources */ = {isa = PBXBuildFile; fileRef = A157B2C81ED6AF7F008B920D /* INTAnalytricksDeviceInfoChanged.json */; };
 		A17E08ED1ED1D47A007940A0 /* INTAnalytricksDeepLinkOpened.json in Sources */ = {isa = PBXBuildFile; fileRef = A17E08D61ED1D30A007940A0 /* INTAnalytricksDeepLinkOpened.json */; };
 		A17E08EF1ED1D6E4007940A0 /* INTAnalytricksPushNotificationOpened.json in Sources */ = {isa = PBXBuildFile; fileRef = A17E08EE1ED1D632007940A0 /* INTAnalytricksPushNotificationOpened.json */; };
 		A17E08F21ED1D9CA007940A0 /* INTAnalytricksMediaImported.json in Sources */ = {isa = PBXBuildFile; fileRef = A17E08F01ED1D79A007940A0 /* INTAnalytricksMediaImported.json */; };
@@ -433,6 +434,7 @@
 		A1541C091EAF405100B4F064 /* INTAppLifecycleTimerSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; lineEnding = 0; path = INTAppLifecycleTimerSpec.mm; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		A1541C4A1EAF8BF900B4F064 /* INTTransformerBlockBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INTTransformerBlockBuilder.h; sourceTree = "<group>"; };
 		A1541C4B1EAF8BF900B4F064 /* INTTransformerBlockBuilder.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = INTTransformerBlockBuilder.mm; sourceTree = "<group>"; };
+		A157B2C81ED6AF7F008B920D /* INTAnalytricksDeviceInfoChanged.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = INTAnalytricksDeviceInfoChanged.json; sourceTree = "<group>"; };
 		A172A9BF1EAC112D00A12B86 /* INTEventLogger.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = INTEventLogger.h; sourceTree = "<group>"; };
 		A17E08D61ED1D30A007940A0 /* INTAnalytricksDeepLinkOpened.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = INTAnalytricksDeepLinkOpened.json; sourceTree = "<group>"; };
 		A17E08EE1ED1D632007940A0 /* INTAnalytricksPushNotificationOpened.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = INTAnalytricksPushNotificationOpened.json; sourceTree = "<group>"; };
@@ -868,6 +870,7 @@
 			children = (
 				A149BC041EBE6A9E00DA82B7 /* INTAnalytricksAppBackgrounded.json */,
 				A149BC051EBE6A9E00DA82B7 /* INTAnalytricksAppForegrounded.json */,
+				A157B2C81ED6AF7F008B920D /* INTAnalytricksDeviceInfoChanged.json */,
 				A17E08F41ED1DE30007940A0 /* INTAnalytricksMediaExported.json */,
 				A17E08F01ED1D79A007940A0 /* INTAnalytricksMediaImported.json */,
 				A17E08D61ED1D30A007940A0 /* INTAnalytricksDeepLinkOpened.json */,
@@ -1347,6 +1350,7 @@
 				A11723691ECC76620039177C /* INTDeviceInfo.mm in Sources */,
 				A149BC2C1EBE6B2C00DA82B7 /* INTScreenDismissedEvent.json in Sources */,
 				A149BC1D1EBE6AC200DA82B7 /* INTAnalytricksBaseUsage.json in Sources */,
+				A157B2EF1ED6B299008B920D /* INTAnalytricksDeviceInfoChanged.json in Sources */,
 				A1F24CA51EC07FC20050D534 /* NSData+AloomaBase64.m in Sources */,
 				A17E08F21ED1D9CA007940A0 /* INTAnalytricksMediaImported.json in Sources */,
 				A17E08EF1ED1D6E4007940A0 /* INTAnalytricksPushNotificationOpened.json in Sources */,
