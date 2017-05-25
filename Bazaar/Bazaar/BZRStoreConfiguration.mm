@@ -33,9 +33,6 @@ NS_ASSUME_NONNULL_BEGIN
 /// Manager used to read and write files from the file system.
 @property (strong, nonatomic) NSFileManager *fileManager;
 
-/// Provider used to provide product list before getting their price info from StoreKit.
-@property (strong, nonatomic) id<BZRProductsProvider> netherProductsProvider;
-
 @end
 
 @implementation BZRStoreConfiguration

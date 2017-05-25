@@ -109,6 +109,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// \c self.acquiredViaSubscriptionProvider.
 @property (strong, nonatomic) BZRAllowedProductsProvider *allowedProductsProvider;
 
+/// Provider used to provide product list before getting their price info from StoreKit.
+@property (strong, nonatomic) id<BZRProductsProvider> netherProductsProvider;
+
 @end
 
 NS_ASSUME_NONNULL_END

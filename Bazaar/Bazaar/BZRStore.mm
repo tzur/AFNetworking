@@ -54,9 +54,6 @@ NS_ASSUME_NONNULL_BEGIN
 /// Facade used to interact with Apple StoreKit.
 @property (readonly, nonatomic) BZRStoreKitFacade *storeKitFacade;
 
-/// Validator used to validate receipt on initialization if required.
-@property (readonly, nonatomic) BZRExternalTriggerReceiptValidator *startupReceiptValidator;
-
 /// Factory used to create \c BZRLocaleProductsvariantSelector.
 @property (readonly, nonatomic) id<BZRProductsVariantSelectorFactory> variantSelectorFactory;
 
@@ -73,14 +70,25 @@ NS_ASSUME_NONNULL_BEGIN
 /// Provider used to provide products the user is allowed to use.
 @property (readonly, nonatomic) BZRAllowedProductsProvider *allowedProductsProvider;
 
+/// Provider used to provide product list before getting their price info from StoreKit.
+@property (readonly, nonatomic) id<BZRProductsProvider> netherProductsProvider;
+
+/// Validator used to validate receipt on initialization if required.
+@property (readonly, nonatomic) BZRExternalTriggerReceiptValidator *startupReceiptValidator;
+
+/// List of products that their content is already available on the device and ready to be used.
+/// Products without content will be in the list as well.
+@property (strong, readwrite, nonatomic) NSSet<NSString *> *downloadedContentProducts;
+
 /// Subject used to send events with.
 @property (readonly, nonatomic) RACSubject *eventsSubject;
 
 /// Dictionary that maps fetched product identifier to \c BZRProduct.
 @property (strong, atomic, nullable) NSDictionary<NSString *, BZRProduct *> *productDictionary;
 
-/// Set of products with downloaded content.
-@property (strong, readwrite, nonatomic) NSSet<NSString *> *downloadedContentProducts;
+/// Dictionary that contains products information based only on the products JSON file.
+@property (strong, readwrite, nonatomic, nullable) NSDictionary<NSString *, BZRProduct *> *
+    productsJSONDictionary;
 
 @end
 
@@ -88,6 +96,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @synthesize downloadedContentProducts = _downloadedContentProducts;
 @synthesize productDictionary = _productDictionary;
+@synthesize productsJSONDictionary = _productsJSONDictionary;
 @synthesize eventsSignal = _eventsSignal;
 
 #pragma mark -
@@ -107,14 +116,16 @@ NS_ASSUME_NONNULL_BEGIN
     _variantSelector = [[BZRProductsVariantSelector alloc] init];
     _validationParametersProvider = configuration.validationParametersProvider;
     _allowedProductsProvider = configuration.allowedProductsProvider;
-    _downloadedContentProducts = [NSSet set];
+    _netherProductsProvider = configuration.netherProductsProvider;
     _startupReceiptValidator = [[BZRExternalTriggerReceiptValidator alloc]
                                 initWithValidationStatusProvider:self.validationStatusProvider];
+    _downloadedContentProducts = [NSSet set];
 
     [self initializeEventsSignal];
     [self finishUnfinishedTransactions];
     [self activateStartupValidation];
     [self prefetchProductDictionary];
+    [self prefetchProductsJSONDictionary];
   }
   return self;
 }
@@ -158,9 +169,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)prefetchProductDictionary {
   @weakify(self);
-  [[[self fetchProductDictionary]
+  [[[self fetchProductDictionaryWithProvider:self.productsProvider]
       takeUntil:[self rac_willDeallocSignal]]
-      subscribeNext:^(BZRProductDictionary * _Nullable productDictionary) {
+      subscribeNext:^(BZRProductDictionary *productDictionary) {
         @strongify(self);
         self.productDictionary = productDictionary;
       } error:^(NSError *underlyingError) {
@@ -171,8 +182,8 @@ NS_ASSUME_NONNULL_BEGIN
       }];
 }
 
-- (RACSignal *)fetchProductDictionary {
-  return [[self.productsProvider fetchProductList]
+- (RACSignal *)fetchProductDictionaryWithProvider:(id<BZRProductsProvider>)productsProvider {
+  return [[productsProvider fetchProductList]
       map:^BZRProductDictionary *(BZRProductList *products) {
         NSArray<NSString *> *identifiers =
             [products valueForKey:@instanceKeypath(BZRProduct, identifier)];
@@ -190,10 +201,6 @@ NS_ASSUME_NONNULL_BEGIN
   @synchronized(self) {
     _productDictionary = productDictionary;
 
-    self.downloadedContentProducts =
-        [NSSet setWithArray:[[productDictionary.allValues lt_filter:^BOOL(BZRProduct *product) {
-          return !product.contentFetcherParameters;
-        }] valueForKey:@instanceKeypath(BZRProduct, identifier)]];
     [self updateAppStoreLocaleFromProductDictionary:productDictionary];
     [self createVariantSelectorWithProductDictionary:productDictionary];
     [self addPreAcquiredProductsToAcquiredViaSubscription:productDictionary];
@@ -230,16 +237,41 @@ NS_ASSUME_NONNULL_BEGIN
   }
 }
 
+- (void)prefetchProductsJSONDictionary {
+  @weakify(self);
+  [[[self fetchProductDictionaryWithProvider:self.netherProductsProvider]
+      takeUntil:[self rac_willDeallocSignal]]
+      subscribeNext:^(BZRProductDictionary *productDictionary) {
+        @strongify(self);
+        self.productsJSONDictionary = productDictionary;
+      } error:^(NSError *underlyingError) {
+        @strongify(self);
+        NSError *error = [NSError lt_errorWithCode:BZRErrorCodeFetchingProductListFailed
+                                   underlyingError:underlyingError];
+        [self sendErrorEventOfType:$(BZREventTypeCriticalError) error:error];
+      }];
+}
+
+- (void)setProductsJSONDictionary:(nullable BZRProductDictionary *)productsJSONDictionary {
+  _productsJSONDictionary = productsJSONDictionary;
+
+  self.downloadedContentProducts =
+      [NSSet setWithArray:[[productsJSONDictionary.allValues lt_filter:^BOOL(BZRProduct *product) {
+        return !product.contentFetcherParameters;
+      }] valueForKey:@instanceKeypath(BZRProduct, identifier)]];
+}
+
 #pragma mark -
 #pragma mark BZRProductsInfoProvider
 #pragma mark -
 
 - (RACSignal *)contentBundleForProduct:(NSString *)productIdentifier {
-  if (!self.productDictionary[productIdentifier].contentFetcherParameters) {
+  if (!self.productsJSONDictionary[productIdentifier].contentFetcherParameters) {
     return [RACSignal return:nil];
   }
 
-  return [self.contentFetcher contentBundleForProduct:self.productDictionary[productIdentifier]];
+  return [self.contentFetcher contentBundleForProduct:
+          self.productsJSONDictionary[productIdentifier]];
 }
 
 - (NSSet<NSString *> *)purchasedProducts {
@@ -427,12 +459,12 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (RACSignal *)fetchProductContent:(NSString *)productIdentifier {
-  if (!self.productDictionary[productIdentifier].contentFetcherParameters) {
+  if (!self.productsJSONDictionary[productIdentifier].contentFetcherParameters) {
     return [RACSignal return:nil];
   }
 
   @weakify(self);
-  return [[[self.contentFetcher fetchProductContent:self.productDictionary[productIdentifier]]
+  return [[[self.contentFetcher fetchProductContent:self.productsJSONDictionary[productIdentifier]]
       doCompleted:^ {
         @strongify(self);
         self.downloadedContentProducts =
@@ -499,7 +531,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (RACSignal *)refetchProductDictionarySignal {
   @weakify(self);
-  return [[[self fetchProductDictionary]
+  return [[[self fetchProductDictionaryWithProvider:self.productsProvider]
       doNext:^(BZRProductDictionary *productDictionary) {
         @strongify(self);
         self.productDictionary = productDictionary;
