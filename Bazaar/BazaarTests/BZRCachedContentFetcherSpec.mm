@@ -16,7 +16,7 @@ beforeEach(^{
       [[BZRCachedContentFetcher alloc] initWithUnderlyingContentFetcher:underlyingContentFetcher];
 });
 
-it(@"should return the bundle of the product content provided by the underlying fetcher", ^{
+it(@"should use the underlying fetcher to get the bundle of the product content", ^{
   BZRProduct *product = BZRProductWithIdentifierAndContent(@"foo");
 
   [contentFetcher contentBundleForProduct:product];
@@ -35,8 +35,9 @@ context(@"fetching content", ^{
     progress = [[LTProgress alloc] initWithResult:bundle];
   });
 
-  it(@"should return the content bundle without calling fetch if the content already exists", ^{
-    OCMStub([underlyingContentFetcher contentBundleForProduct:product]).andReturn(bundle);
+  it(@"should send the content bundle without calling fetch if the content already exists", ^{
+    OCMStub([underlyingContentFetcher contentBundleForProduct:product])
+        .andReturn([RACSignal return:bundle]);
     OCMReject([underlyingContentFetcher fetchProductContent:product]);
 
     LLSignalTestRecorder *recorder = [[contentFetcher fetchProductContent:product] testRecorder];
@@ -45,7 +46,9 @@ context(@"fetching content", ^{
     expect(recorder).will.sendValues(@[progress]);
   });
 
-  it(@"should return content bundle provided by content fetcher", ^{
+  it(@"should send content bundle provided by content fetcher", ^{
+    OCMStub([underlyingContentFetcher contentBundleForProduct:product])
+        .andReturn([RACSignal return:nil]);
     OCMStub([underlyingContentFetcher fetchProductContent:product])
         .andReturn([RACSignal return:progress]);
 
@@ -56,6 +59,8 @@ context(@"fetching content", ^{
   });
 
   it(@"should err when content fetcher errs", ^{
+    OCMStub([underlyingContentFetcher contentBundleForProduct:product])
+        .andReturn([RACSignal return:nil]);
     NSError *fetchContentError = OCMClassMock([NSError class]);
     OCMStub([underlyingContentFetcher fetchProductContent:OCMOCK_ANY])
         .andReturn([RACSignal error:fetchContentError]);

@@ -128,20 +128,26 @@ context(@"getting bundle of the product content", ^{
     product = BZRProductWithIdentifierAndParameters(@"foo", parameters);
   });
 
-  it(@"should return content bundle if the content exists", ^{
+  it(@"should send content bundle if the content exists", ^{
     id<FBROnDemandResource> resource = OCMProtocolMock(@protocol(FBROnDemandResource));
     OCMStub([resource bundle]).andReturn(bundle);
     OCMStub([bundle fbr_conditionallyBeginAccessToResourcesWithTags:[NSSet setWithObject:@"tag"]])
         .andReturn([RACSignal return:resource]);
 
-    expect([fetcher contentBundleForProduct:product]).to.equal(bundle);
+    auto recorder = [[fetcher contentBundleForProduct:product] testRecorder];
+
+    expect(recorder).will.complete();
+    expect(recorder).will.sendValues(@[bundle]);
   });
 
-  it(@"should return nil if the content does not exist", ^{
+  it(@"should send nil if the content does not exist", ^{
     OCMStub([bundle fbr_conditionallyBeginAccessToResourcesWithTags:[NSSet setWithObject:@"tag"]])
         .andReturn([RACSignal return:nil]);
 
-    expect([fetcher contentBundleForProduct:product]).to.beNil();
+    auto recorder = [[fetcher contentBundleForProduct:product] testRecorder];
+
+    expect(recorder).will.complete();
+    expect(recorder).will.sendValues(@[[NSNull null]]);
   });
 });
 

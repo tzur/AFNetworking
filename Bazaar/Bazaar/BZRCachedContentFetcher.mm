@@ -31,15 +31,15 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (RACSignal *)fetchProductContent:(BZRProduct *)product {
-  NSBundle *contentBundle = [self contentBundleForProduct:product];
-  if (contentBundle) {
-    return [RACSignal return:[[LTProgress alloc] initWithResult:contentBundle]];
-  }
-
-  return [self.underlyingContentFetcher fetchProductContent:product];
+  return [[self contentBundleForProduct:product]
+    flattenMap:^RACStream *(NSBundle * _Nullable contentBundle) {
+      return contentBundle ?
+          [RACSignal return:[[LTProgress alloc] initWithResult:contentBundle]] :
+          [self.underlyingContentFetcher fetchProductContent:product];
+    }];
 }
 
-- (nullable NSBundle *)contentBundleForProduct:(BZRProduct *)product {
+- (RACSignal *)contentBundleForProduct:(BZRProduct *)product {
   return [self.underlyingContentFetcher contentBundleForProduct:product];
 }
 

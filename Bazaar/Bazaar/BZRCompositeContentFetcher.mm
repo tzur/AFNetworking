@@ -52,7 +52,7 @@ NS_ASSUME_NONNULL_BEGIN
   return [contentFetcher fetchProductContent:product];
 }
 
-- (nullable NSBundle *)contentBundleForProduct:(BZRProduct *)product {
+- (RACSignal *)contentBundleForProduct:(BZRProduct *)product {
   return [self.contentFetchers[product.contentFetcherParameters.type]
           contentBundleForProduct:product];
 }

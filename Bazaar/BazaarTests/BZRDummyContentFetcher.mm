@@ -21,8 +21,8 @@ NS_ASSUME_NONNULL_BEGIN
   return [BZRDummyContentFetcherParameters class];
 }
 
-- (nullable NSBundle *)contentBundleForProduct:(BZRProduct * __unused)product {
-  return nil;
+- (RACSignal *)contentBundleForProduct:(BZRProduct * __unused)product {
+  return [RACSignal return:nil];
 }
 
 @end

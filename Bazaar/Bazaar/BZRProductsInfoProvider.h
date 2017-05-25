@@ -9,10 +9,15 @@ NS_ASSUME_NONNULL_BEGIN
 /// subscription information.
 @protocol BZRProductsInfoProvider <NSObject>
 
-/// Returns an \c NSBundle that provides access to the content of the product specified by
-/// \c product, if the content is available on the device. Returns \c nil if the product has no
-/// content, or if the content is unavailable on the device.
-- (nullable NSBundle *)contentBundleForProduct:(NSString *)productIdentifier;
+/// Provides access to the content of \c product if it exists.
+///
+/// Returns a signal that sends an \c NSBundle or \c nil if the content is not available on the
+/// device, or if the product has no content to be downloaded. The bundle provides access to the
+/// content of the product specified by \c product. The signal completes after sending the value.
+/// The signal errs an error occurred during fetching.
+///
+/// @return <tt>RACSignal<nullable NSBundle></tt>
+- (RACSignal *)contentBundleForProduct:(NSString *)productIdentifier;
 
 /// List of products that were purchased by the user as in-app purchases. KVO-compliant. Changes may
 /// be delivered on an arbitrary thread.
@@ -35,9 +40,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// arbitrary thread.
 @property (readonly, nonatomic) NSSet<NSString *> *allowedProducts;
 
-/// List of products that their content is already available on the device. Products
-/// without content will be in the list as well. KVO-compliant. Changes may be delivered on an
-/// arbitrary thread.
+/// List of products that their content is already available on the device and ready to be used.
+/// Products without content will be in the list as well. KVO-compliant. Changes may be delivered on
+/// an arbitrary thread.
 @property (readonly, nonatomic) NSSet<NSString *> *downloadedContentProducts;
 
 /// Subscription information of the user. KVO-compliant. Changes may be delivered on an arbitrary
