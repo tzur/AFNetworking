@@ -12,6 +12,7 @@
 #import "INTAnalytricksContext.h"
 #import "INTAnalytricksContextGenerators.h"
 #import "INTAnalytricksDeepLinkOpened.h"
+#import "INTAnalytricksDeviceInfoChanged.h"
 #import "INTAnalytricksMediaExported.h"
 #import "INTAnalytricksMediaImported.h"
 #import "INTAnalytricksMetadata.h"
@@ -24,6 +25,8 @@
 #import "INTAppWillEnterForegroundEvent.h"
 #import "INTCycleTransformerBlockBuilder.h"
 #import "INTDeepLinkOpenedEvent.h"
+#import "INTDeviceInfo.h"
+#import "INTDeviceInfoLoadedEvent.h"
 #import "INTEventMetadata.h"
 #import "INTMediaExportEndedEvent.h"
 #import "INTMediaExportStartedEvent.h"
@@ -282,6 +285,33 @@ NS_ASSUME_NONNULL_BEGIN
                   initWithProjectID:projectID isNew:isNew.boolValue
                   usageDuration:aggregatedData[kINTCycleDurationKey]
                   diskSpaceOnUnload:diskSpaceOnUnload wasDeleted:wasDeleted.boolValue].properties];
+      })
+      .build();
+}
+
++ (INTTransformerBlock)deviceInfoChangedEventTransformer {
+  return INTTransformerBuilder()
+      .transform(NSStringFromClass(INTDeviceInfoLoadedEvent.class),
+                 ^(NSDictionary<NSString *, id> *, INTDeviceInfoLoadedEvent *event,
+                   INTEventMetadata *, INTAppContext *) {
+        if (!event.isNewRevision) {
+          return @[];
+        }
+
+        auto deviceInfo = event.deviceInfo;
+        auto _Nullable purchaseReceipt =
+            [deviceInfo.purchaseReceipt base64EncodedStringWithOptions:0];
+
+        return @[
+          [[INTAnalytricksDeviceInfoChanged alloc]
+           initWithIdForVendor:deviceInfo.identifierForVendor advertisingID:deviceInfo.advertisingID
+           isAdvertisingTrackingEnabled:deviceInfo.advertisingTrackingEnabled
+           deviceKind:deviceInfo.deviceKind iosVersion:deviceInfo.iosVersion
+           appVersion:deviceInfo.appVersion appVersionShort:deviceInfo.appVersionShort
+           timezone:deviceInfo.timeZone country:deviceInfo.country
+           preferredLanguage:deviceInfo.preferredLanguage
+           currentAppLanguage:deviceInfo.currentAppLanguage purchaseReceipt:purchaseReceipt
+           appStoreCountry:deviceInfo.appStoreCountry].properties];
       })
       .build();
 }

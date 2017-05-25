@@ -7,6 +7,7 @@
 #import <Intelligence/INTAnalytricksAppForegrounded.h>
 #import <Intelligence/INTAnalytricksContext.h>
 #import <Intelligence/INTAnalytricksDeepLinkOpened.h>
+#import <Intelligence/INTAnalytricksDeviceInfoChanged.h>
 #import <Intelligence/INTAnalytricksMediaExported.h>
 #import <Intelligence/INTAnalytricksMediaImported.h>
 #import <Intelligence/INTAnalytricksMetadata.h>
@@ -32,6 +33,8 @@
 
 #import "INTAnalytricksContextGenerators.h"
 #import "INTCycleTransformerBlockBuilder.h"
+#import "INTDeviceInfo.h"
+#import "INTDeviceInfoLoadedEvent.h"
 #import "INTEventMetadata.h"
 #import "INTEventTransformationExecutor.h"
 #import "INTTransformerBlockExamples.h"
@@ -607,6 +610,58 @@ context(@"analytricks project modified event transformer", ^{
                                                      projectModifiedEventTransformer],
       kINTTransformerBlockExamplesArgumentsSequence: args,
       kINTTransformerBlockExamplesExpectedEvents: expectedEvents
+    };
+  });
+});
+
+context(@"analytricks project deleted event transformer", ^{
+  __block INTDeviceInfo *deviceInfo;
+
+  beforeEach(^{
+    deviceInfo =
+        [[INTDeviceInfo alloc]
+         initWithIdentifierForVendor:[NSUUID UUID] advertisingID:[NSUUID UUID]
+         advertisingTrackingEnabled:YES deviceKind:@"fooBar" iosVersion:@"10.2" appVersion:@"1"
+         appVersionShort:@"1.2" timeZone:@"foo" country:@"bar" preferredLanguage:@"barFoo"
+         currentAppLanguage:@"que"
+         purchaseReceipt:[[NSData alloc] initWithBase64EncodedString:@"thud" options:0]
+         appStoreCountry:@"bar"];
+  });
+
+  itShouldBehaveLike(kINTTransformerBlockExamples, ^{
+    auto deviceInfoLoadedEvent =
+        [[INTDeviceInfoLoadedEvent alloc] initWithDeviceInfo:deviceInfo
+                                        deviceInfoRevisionID:[NSUUID UUID] isNewRevision:YES];
+
+    auto expectedEvent =
+        [[INTAnalytricksDeviceInfoChanged alloc]
+         initWithIdForVendor:deviceInfo.identifierForVendor advertisingID:deviceInfo.advertisingID
+         isAdvertisingTrackingEnabled:YES deviceKind:@"fooBar" iosVersion:@"10.2" appVersion:@"1"
+         appVersionShort:@"1.2" timezone:@"foo" country:@"bar" preferredLanguage:@"barFoo"
+         currentAppLanguage:@"que" purchaseReceipt:@"thud" appStoreCountry:@"bar"].properties;
+
+    return @{
+      kINTTransformerBlockExamplesTransformerBlock: [INTAnalytricksTransformerBlocks
+                                                     deviceInfoChangedEventTransformer],
+      kINTTransformerBlockExamplesArgumentsSequence: @[
+        INTEventTransformerArgs(deviceInfoLoadedEvent, INTCreateEventMetadata())
+      ],
+      kINTTransformerBlockExamplesExpectedEvents: @[expectedEvent]
+    };
+  });
+
+  itShouldBehaveLike(kINTTransformerBlockExamples, ^{
+    auto deviceInfoLoadedEvent =
+        [[INTDeviceInfoLoadedEvent alloc] initWithDeviceInfo:deviceInfo
+                                        deviceInfoRevisionID:[NSUUID UUID] isNewRevision:NO];
+
+    return @{
+      kINTTransformerBlockExamplesTransformerBlock: [INTAnalytricksTransformerBlocks
+                                                     deviceInfoChangedEventTransformer],
+      kINTTransformerBlockExamplesArgumentsSequence: @[
+        INTEventTransformerArgs(deviceInfoLoadedEvent, INTCreateEventMetadata())
+      ],
+      kINTTransformerBlockExamplesExpectedEvents: @[]
     };
   });
 });

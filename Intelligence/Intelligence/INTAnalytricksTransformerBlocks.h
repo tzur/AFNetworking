@@ -87,6 +87,11 @@ NS_ASSUME_NONNULL_BEGIN
 /// the start event is observed, otherwise it is set to \c NO.
 + (INTTransformerBlock)projectModifiedEventTransformer;
 
+/// Transformer that produces an \c NSDictionary, resulting from
+/// <tt>-[INTAnalyticsDeviceInfoChanged properties]</tt> when observing an \c INTDeviceInfoLoaded
+/// with \c isNewRevision set to \c YES.
++ (INTTransformerBlock)deviceInfoChangedEventTransformer;
+
 @end
 
 NS_ASSUME_NONNULL_END
