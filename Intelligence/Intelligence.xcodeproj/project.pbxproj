@@ -67,6 +67,8 @@
 		A1541C0A1EAF405100B4F064 /* INTAppLifecycleTimerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1541C091EAF405100B4F064 /* INTAppLifecycleTimerSpec.mm */; };
 		A1541C4C1EAF8BF900B4F064 /* INTTransformerBlockBuilder.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1541C4B1EAF8BF900B4F064 /* INTTransformerBlockBuilder.mm */; };
 		A157B2EF1ED6B299008B920D /* INTAnalytricksDeviceInfoChanged.json in Sources */ = {isa = PBXBuildFile; fileRef = A157B2C81ED6AF7F008B920D /* INTAnalytricksDeviceInfoChanged.json */; };
+		A157B3511ED6D730008B920D /* NSData+HexString.mm in Sources */ = {isa = PBXBuildFile; fileRef = A157B3501ED6D730008B920D /* NSData+HexString.mm */; };
+		A157B3531ED6D8E1008B920D /* NSData+HexStringSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = A157B3521ED6D8E1008B920D /* NSData+HexStringSpec.mm */; };
 		A17E08ED1ED1D47A007940A0 /* INTAnalytricksDeepLinkOpened.json in Sources */ = {isa = PBXBuildFile; fileRef = A17E08D61ED1D30A007940A0 /* INTAnalytricksDeepLinkOpened.json */; };
 		A17E08EF1ED1D6E4007940A0 /* INTAnalytricksPushNotificationOpened.json in Sources */ = {isa = PBXBuildFile; fileRef = A17E08EE1ED1D632007940A0 /* INTAnalytricksPushNotificationOpened.json */; };
 		A17E08F21ED1D9CA007940A0 /* INTAnalytricksMediaImported.json in Sources */ = {isa = PBXBuildFile; fileRef = A17E08F01ED1D79A007940A0 /* INTAnalytricksMediaImported.json */; };
@@ -435,6 +437,10 @@
 		A1541C4A1EAF8BF900B4F064 /* INTTransformerBlockBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INTTransformerBlockBuilder.h; sourceTree = "<group>"; };
 		A1541C4B1EAF8BF900B4F064 /* INTTransformerBlockBuilder.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = INTTransformerBlockBuilder.mm; sourceTree = "<group>"; };
 		A157B2C81ED6AF7F008B920D /* INTAnalytricksDeviceInfoChanged.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = INTAnalytricksDeviceInfoChanged.json; sourceTree = "<group>"; };
+		A157B34F1ED6D730008B920D /* NSData+HexString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+HexString.h"; sourceTree = "<group>"; };
+		A157B3501ED6D730008B920D /* NSData+HexString.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSData+HexString.mm"; sourceTree = "<group>"; };
+		A157B3521ED6D8E1008B920D /* NSData+HexStringSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSData+HexStringSpec.mm"; sourceTree = "<group>"; };
+		A157B3541ED6DA44008B920D /* INTDataHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INTDataHelpers.h; sourceTree = "<group>"; };
 		A172A9BF1EAC112D00A12B86 /* INTEventLogger.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = INTEventLogger.h; sourceTree = "<group>"; };
 		A17E08D61ED1D30A007940A0 /* INTAnalytricksDeepLinkOpened.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = INTAnalytricksDeepLinkOpened.json; sourceTree = "<group>"; };
 		A17E08EE1ED1D632007940A0 /* INTAnalytricksPushNotificationOpened.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = INTAnalytricksPushNotificationOpened.json; sourceTree = "<group>"; };
@@ -546,6 +552,7 @@
 		A113424A1EB5AD870042ABA8 /* Test Utils */ = {
 			isa = PBXGroup;
 			children = (
+				A157B3541ED6DA44008B920D /* INTDataHelpers.h */,
 				A149BC321EBE6BB400DA82B7 /* INTTransformerBlockExamples.h */,
 				A149BC331EBE6BB400DA82B7 /* INTTransformerBlockExamples.mm */,
 				A1B373BD1EA6511F008E5195 /* INTEventTransformationExecutor.h */,
@@ -906,6 +913,8 @@
 				A1541B8A1EAF2C4300B4F064 /* INTAppLifecycleTimer.h */,
 				A1541B8B1EAF2D1400B4F064 /* INTAppLifecycleTimer.mm */,
 				A11723611ECC65880039177C /* INTStorage.h */,
+				A157B34F1ED6D730008B920D /* NSData+HexString.h */,
+				A157B3501ED6D730008B920D /* NSData+HexString.mm */,
 				A1089F6A1EB76EFB0037B6BE /* NSDictionary+Merge.h */,
 				A1089F6B1EB76EFB0037B6BE /* NSDictionary+Merge.mm */,
 				A17E0A4B1ED4350C007940A0 /* NSLocale+Country.h */,
@@ -920,6 +929,7 @@
 			isa = PBXGroup;
 			children = (
 				A1541C091EAF405100B4F064 /* INTAppLifecycleTimerSpec.mm */,
+				A157B3521ED6D8E1008B920D /* NSData+HexStringSpec.mm */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -1384,6 +1394,7 @@
 				A1417C8D1E6F012E005DBEFF /* INTDataStructures.mm in Sources */,
 				A10165011E7006AA009596E1 /* INTEventTransformer.mm in Sources */,
 				A1541B8C1EAF2D1400B4F064 /* INTAppLifecycleTimer.mm in Sources */,
+				A157B3511ED6D730008B920D /* NSData+HexString.mm in Sources */,
 				A14177A21E6EC276005DBEFF /* INTIntelligence.mm in Sources */,
 				A1541C4C1EAF8BF900B4F064 /* INTTransformerBlockBuilder.mm in Sources */,
 				A1089F6C1EB76EFB0037B6BE /* NSDictionary+Merge.mm in Sources */,
@@ -1398,6 +1409,7 @@
 				A117235B1ECC5C890039177C /* INTFakeDeviceInfoSource.mm in Sources */,
 				A132A3781EBCD08D001F70A6 /* INTAnalytricksFakeBase.json in Sources */,
 				A132A3791EBCD08D001F70A6 /* INTAnalytricksFakeCommon.json in Sources */,
+				A157B3531ED6D8E1008B920D /* NSData+HexStringSpec.mm in Sources */,
 				A132A37A1EBCD08D001F70A6 /* INTAnalytricksFakeConcrete.json in Sources */,
 				A132A37B1EBCD08D001F70A6 /* INTFakeInternalEvent.json in Sources */,
 				A1541B0E1EAF1CC300B4F064 /* INTEventsPipelineSpec.mm in Sources */,
