@@ -270,7 +270,7 @@ NS_ASSUME_NONNULL_BEGIN
         };
       })
       .onCycleEnd(^(NSDictionary<NSString *, id> *aggregatedData) {
-        NSString *projectID =
+        NSUUID *projectID =
             aggregatedData[@instanceKeypath(INTAnalytricksProjectModified, projectID)];
         NSNumber *isNew = aggregatedData[@instanceKeypath(INTAnalytricksProjectModified, isNew)];
         NSNumber *wasDeleted =

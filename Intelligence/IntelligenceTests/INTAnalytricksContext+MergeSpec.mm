@@ -10,7 +10,7 @@ SpecBegin(INTAnalytricksContext_Merge)
 it(@"should return identical instance for an empty dictionary input", ^{
   auto context = [[INTAnalytricksContext alloc] initWithRunID:[NSUUID UUID] sessionID:[NSUUID UUID]
                                                 screenUsageID:[NSUUID UUID] screenName:@"foo"
-                                                openProjectID:@"foo"];
+                                                openProjectID:[NSUUID UUID]];
   auto mergedContext = [context merge:@{}];
 
   expect(mergedContext).to.equal(context);
@@ -39,7 +39,7 @@ sharedExamples(kAnalytricksContextPropertySetExamples, ^(NSDictionary *data) {
 
     context = [[INTAnalytricksContext alloc] initWithRunID:[NSUUID UUID] sessionID:[NSUUID UUID]
                                              screenUsageID:[NSUUID UUID] screenName:@"foo"
-                                             openProjectID:@"foo"];
+                                             openProjectID:[NSUUID UUID]];
   });
 
   it(@"should set new property value", ^{
@@ -87,7 +87,7 @@ itShouldBehaveLike(kAnalytricksContextPropertySetExamples, @{
 
 itShouldBehaveLike(kAnalytricksContextPropertySetExamples, @{
   kAnalytricksContextPropertyKeypathToSet: @instanceKeypath(INTAnalytricksContext, openProjectID),
-  kAnalytricksContextPropertyValue: @"foo"
+  kAnalytricksContextPropertyValue: [NSUUID UUID]
 });
 
 itShouldBehaveLike(kAnalytricksContextPropertySetExamples, @{
