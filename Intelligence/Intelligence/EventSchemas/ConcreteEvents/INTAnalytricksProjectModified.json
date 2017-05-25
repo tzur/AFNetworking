@@ -8,7 +8,8 @@
       "properties": {
         "project_id": {
           "description": "Project id",
-          "type": "string"
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{8}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{12}$"
         },
         "is_new": {
           "description": "True if the project was created and loaded in the same time",

@@ -103,9 +103,9 @@ context(@"analytricks context generator", ^{
 
     it(@"should set current project id according to the opened project", ^{
       auto projectLoadedEvents = @[
-        [[INTProjectLoadedEvent alloc] initWithProjectID:@"foo" isNew:NO],
-        [[INTProjectLoadedEvent alloc] initWithProjectID:@"foo.bar" isNew:NO],
-        [[INTProjectLoadedEvent alloc] initWithProjectID:@"foo.bar.bar" isNew:NO]
+        [[INTProjectLoadedEvent alloc] initWithProjectID:[NSUUID UUID] isNew:NO],
+        [[INTProjectLoadedEvent alloc] initWithProjectID:[NSUUID UUID] isNew:NO],
+        [[INTProjectLoadedEvent alloc] initWithProjectID:[NSUUID UUID] isNew:NO]
       ];
 
       auto generatedContexts =
@@ -134,10 +134,10 @@ context(@"analytricks context generator", ^{
       auto foregroundEvents = @[
         [[INTAppWillEnterForegroundEvent alloc] initWithIsLaunch:NO],
         [[INTAppWillEnterForegroundEvent alloc] initWithIsLaunch:NO],
-        [[INTProjectLoadedEvent alloc] initWithProjectID:@"foo" isNew:NO],
-        [[INTProjectLoadedEvent alloc] initWithProjectID:@"foo.bar" isNew:NO],
-        [[INTProjectUnloadedEvent alloc] initWithProjectID:@"foo" diskSpaceOnUnload:nil],
-        [[INTProjectUnloadedEvent alloc] initWithProjectID:@"foo.bar" diskSpaceOnUnload:nil],
+        [[INTProjectLoadedEvent alloc] initWithProjectID:[NSUUID UUID] isNew:NO],
+        [[INTProjectLoadedEvent alloc] initWithProjectID:[NSUUID UUID] isNew:NO],
+        [[INTProjectUnloadedEvent alloc] initWithProjectID:[NSUUID UUID] diskSpaceOnUnload:nil],
+        [[INTProjectUnloadedEvent alloc] initWithProjectID:[NSUUID UUID] diskSpaceOnUnload:nil],
         [[INTScreenDisplayedEvent alloc] initWithScreenName:@"foo"],
         [[INTScreenDisplayedEvent alloc] initWithScreenName:@"bar"]
       ];

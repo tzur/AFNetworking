@@ -53,7 +53,7 @@ context(@"analytricks context enricher", ^{
     auto runID = [NSUUID UUID];
     auto sessionID = [NSUUID UUID];
     auto screenUsageID = [NSUUID UUID];
-    auto openProjectID = @"foo";
+    auto openProjectID = [NSUUID UUID];
 
     auto analytricksContext =
         [[INTAnalytricksContext alloc] initWithRunID:runID sessionID:sessionID
@@ -68,7 +68,7 @@ context(@"analytricks context enricher", ^{
       @"session_id": sessionID.UUIDString,
       @"screen_usage_id": screenUsageID.UUIDString,
       @"screen_name": @"foo",
-      @"open_project_id": openProjectID
+      @"open_project_id": openProjectID.UUIDString
     };
 
     auto expectedEvents = [events lt_map:^(NSDictionary *event) {
@@ -82,11 +82,11 @@ context(@"analytricks context enricher", ^{
     auto analytricksContext1 =
         [[INTAnalytricksContext alloc] initWithRunID:[NSUUID UUID] sessionID:[NSUUID UUID]
                                        screenUsageID:[NSUUID UUID] screenName:@"foo"
-                                       openProjectID:@"foo"];
+                                       openProjectID:[NSUUID UUID]];
     auto analytricksContext2 =
         [[INTAnalytricksContext alloc] initWithRunID:[NSUUID UUID] sessionID:[NSUUID UUID]
                                        screenUsageID:[NSUUID UUID] screenName:@"bar"
-                                       openProjectID:@"bar"];
+                                       openProjectID:[NSUUID UUID]];
     auto events = @[analytricksContext1.properties];
     auto enrichedEvents = block(events, @{
       kINTAppContextAnalytricksContextKey: analytricksContext2
@@ -106,7 +106,7 @@ context(@"analytricks context enricher", ^{
     auto analytricksContext =
         [[INTAnalytricksContext alloc] initWithRunID:[NSUUID UUID] sessionID:[NSUUID UUID]
                                        screenUsageID:[NSUUID UUID] screenName:@"foo"
-                                       openProjectID:@"foo"];
+                                       openProjectID:[NSUUID UUID]];
     auto events = @[@"foo", @{}];
     auto enrichedEvents = block(events, @{
       kINTAppContextAnalytricksContextKey: analytricksContext
@@ -518,16 +518,19 @@ context(@"analytricks media exported event transformer", ^{
 
 context(@"analytricks project deleted event transformer", ^{
   itShouldBehaveLike(kINTTransformerBlockExamples, ^{
+    auto projectID1 = [NSUUID UUID];
+    auto projectID2 = [NSUUID UUID];
+
     auto args = [@[
-      [[INTProjectDeletedEvent alloc] initWithProjectID:@"foo"],
-      [[INTProjectDeletedEvent alloc] initWithProjectID:@"bar"]
+      [[INTProjectDeletedEvent alloc] initWithProjectID:projectID1],
+      [[INTProjectDeletedEvent alloc] initWithProjectID:projectID2]
     ] lt_map:^(INTMediaImportedEvent *event) {
       return INTEventTransformerArgs(event, INTCreateEventMetadata());
     }];
 
     auto expectedEvents = @[
-      [[INTAnalytricksProjectDeleted alloc] initWithProjectID:@"foo"].properties,
-      [[INTAnalytricksProjectDeleted alloc] initWithProjectID:@"bar"].properties,
+      [[INTAnalytricksProjectDeleted alloc] initWithProjectID:projectID1].properties,
+      [[INTAnalytricksProjectDeleted alloc] initWithProjectID:projectID2].properties,
     ];
 
     return @{
@@ -541,20 +544,22 @@ context(@"analytricks project deleted event transformer", ^{
 
 context(@"analytricks project modified event transformer", ^{
   itShouldBehaveLike(kINTTransformerBlockExamples, ^{
+    auto projectID = [NSUUID UUID];
+
     auto args = @[
-      INTEventTransformerArgs([[INTProjectLoadedEvent alloc] initWithProjectID:@"foo" isNew:YES],
+      INTEventTransformerArgs([[INTProjectLoadedEvent alloc] initWithProjectID:projectID isNew:YES],
                               INTCreateEventMetadata()),
       INTEventTransformerArgs([[INTProjectUnloadedEvent alloc]
-                               initWithProjectID:@"foo" diskSpaceOnUnload:@23],
+                               initWithProjectID:projectID diskSpaceOnUnload:@23],
                               INTCreateEventMetadata(4)),
       INTEventTransformerArgs([[INTProjectUnloadedEvent alloc]
-                               initWithProjectID:@"foo" diskSpaceOnUnload:@23],
+                               initWithProjectID:projectID diskSpaceOnUnload:@23],
                               INTCreateEventMetadata(4)),
     ];
 
     auto expectedEvents = @[
-      [[INTAnalytricksProjectModified alloc] initWithProjectID:@"foo" isNew:YES usageDuration:@(4)
-                                             diskSpaceOnUnload:@23 wasDeleted:NO].properties,
+     [[INTAnalytricksProjectModified alloc] initWithProjectID:projectID isNew:YES usageDuration:@4
+                                            diskSpaceOnUnload:@23 wasDeleted:NO].properties,
     ];
 
     return @{
@@ -566,18 +571,20 @@ context(@"analytricks project modified event transformer", ^{
   });
 
   itShouldBehaveLike(kINTTransformerBlockExamples, ^{
+    auto projectID = [NSUUID UUID];
+
     auto args = @[
-      INTEventTransformerArgs([[INTProjectLoadedEvent alloc] initWithProjectID:@"foo" isNew:NO],
+      INTEventTransformerArgs([[INTProjectLoadedEvent alloc] initWithProjectID:projectID isNew:NO],
                               INTCreateEventMetadata()),
-      INTEventTransformerArgs([[INTProjectDeletedEvent alloc] initWithProjectID:@"foo"],
+      INTEventTransformerArgs([[INTProjectDeletedEvent alloc] initWithProjectID:projectID],
                               INTCreateEventMetadata(1)),
       INTEventTransformerArgs([[INTProjectUnloadedEvent alloc]
-                               initWithProjectID:@"foo" diskSpaceOnUnload:@23],
+                               initWithProjectID:projectID diskSpaceOnUnload:@23],
                               INTCreateEventMetadata(4)),
     ];
 
     auto expectedEvents = @[
-      [[INTAnalytricksProjectModified alloc] initWithProjectID:@"foo" isNew:NO usageDuration:@(4)
+      [[INTAnalytricksProjectModified alloc] initWithProjectID:projectID isNew:NO usageDuration:@4
                                              diskSpaceOnUnload:@23 wasDeleted:YES].properties,
     ];
 
@@ -590,19 +597,21 @@ context(@"analytricks project modified event transformer", ^{
   });
 
   itShouldBehaveLike(kINTTransformerBlockExamples, ^{
+    auto projectID = [NSUUID UUID];
+
     auto args = @[
-      INTEventTransformerArgs([[INTProjectLoadedEvent alloc] initWithProjectID:@"foo" isNew:NO],
+      INTEventTransformerArgs([[INTProjectLoadedEvent alloc] initWithProjectID:projectID isNew:NO],
                               INTCreateEventMetadata()),
-      INTEventTransformerArgs([[INTProjectDeletedEvent alloc] initWithProjectID:@"bar"],
+      INTEventTransformerArgs([[INTProjectDeletedEvent alloc] initWithProjectID:projectID],
                               INTCreateEventMetadata(1)),
       INTEventTransformerArgs([[INTProjectUnloadedEvent alloc]
-                               initWithProjectID:@"foo" diskSpaceOnUnload:@23],
+                               initWithProjectID:projectID diskSpaceOnUnload:@23],
                               INTCreateEventMetadata(4)),
     ];
 
     auto expectedEvents = @[
-      [[INTAnalytricksProjectModified alloc] initWithProjectID:@"foo" isNew:NO usageDuration:@(4)
-                                             diskSpaceOnUnload:@23 wasDeleted:NO].properties,
+      [[INTAnalytricksProjectModified alloc] initWithProjectID:projectID isNew:NO usageDuration:@4
+                                             diskSpaceOnUnload:@23 wasDeleted:YES].properties,
     ];
 
     return @{

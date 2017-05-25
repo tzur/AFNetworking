@@ -5,7 +5,8 @@
   "properties": {
     "project_id": {
       "description": "Project ID",
-      "type": "string"
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{8}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{12}$"
     },
     "disk_space_on_unload": {
       "description": "Disk space allocated to the project in the moment of its unloading",

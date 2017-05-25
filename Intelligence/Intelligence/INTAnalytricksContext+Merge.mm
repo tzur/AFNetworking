@@ -22,9 +22,9 @@ NS_ASSUME_NONNULL_BEGIN
   NSString * _Nullable screenName =
       [self mergeValue:dictionary[@keypath(self, screenName)] toValue:self.screenName
                ofClass:NSString.class];
-  NSString * _Nullable openProjectID =
+  NSUUID * _Nullable openProjectID =
       [self mergeValue:dictionary[@keypath(self, openProjectID)] toValue:self.openProjectID
-               ofClass:NSString.class];
+               ofClass:NSUUID.class];
 
   return [[INTAnalytricksContext alloc] initWithRunID:runID sessionID:sessionID
                                         screenUsageID:screenUsageID screenName:screenName
