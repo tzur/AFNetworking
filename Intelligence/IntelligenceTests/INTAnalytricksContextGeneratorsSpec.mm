@@ -10,6 +10,8 @@
 #import <Intelligence/INTScreenDisplayedEvent.h>
 #import <LTKit/NSArray+Functional.h>
 
+#import "INTDeviceInfo.h"
+#import "INTDeviceInfoLoadedEvent.h"
 #import "INTEventMetadata.h"
 
 static NSArray<INTAppContext *> *INTGenerateContexts(INTAppContextGeneratorBlock contextGenerator,
@@ -149,22 +151,37 @@ context(@"analytricks context generator", ^{
 });
 
 context(@"device info context generator", ^{
-  __block INTAppContext *contextAfterLaunch;
+  __block INTAppContext *contextAfterDeviceInfoLoadedEvent;
   __block NSUUID *idfv;
+  __block NSUUID *deviceInfoRevisionID;
 
   beforeEach(^{
     auto contextGenerator = [INTAnalytricksContextGenerators deviceInfoContextGenerator];
-    auto launchEvent = [[INTAppWillEnterForegroundEvent alloc] initWithIsLaunch:YES];
-    contextAfterLaunch = contextGenerator(@{}, INTCreateEventMetadata(), launchEvent);
-    idfv = [UIDevice currentDevice].identifierForVendor;
+    idfv = [NSUUID UUID];
+    deviceInfoRevisionID = [NSUUID UUID];
+
+    auto deviceInfo =
+        [[INTDeviceInfo alloc]
+         initWithIdentifierForVendor:idfv advertisingID:[NSUUID UUID]
+         advertisingTrackingEnabled:YES deviceKind:@"foo" iosVersion:@"foo" appVersion:@"foo"
+         appVersionShort:@"foo" timeZone:@"foo" country:nil preferredLanguage:nil
+         currentAppLanguage:nil purchaseReceipt:nil appStoreCountry:nil];
+
+    auto deviceInfoLoadedEvent =
+        [[INTDeviceInfoLoadedEvent alloc] initWithDeviceInfo:deviceInfo
+                                        deviceInfoRevisionID:deviceInfoRevisionID isNewRevision:NO];
+
+    contextAfterDeviceInfoLoadedEvent =
+        contextGenerator(@{}, INTCreateEventMetadata(), deviceInfoLoadedEvent);
   });
 
   it(@"should set device id to identifier for vendor on launch", ^{
-    expect(contextAfterLaunch[kINTAppContextDeviceIDKey]).to.equal(idfv);
+    expect(contextAfterDeviceInfoLoadedEvent[kINTAppContextDeviceIDKey]).to.equal(idfv);
   });
 
   it(@"should set device info id to identifier for vendor on launch", ^{
-    expect(contextAfterLaunch[kINTAppContextDeviceInfoIDKey]).to.equal(idfv);
+    expect(contextAfterDeviceInfoLoadedEvent[kINTAppContextDeviceInfoIDKey]).to
+        .equal(deviceInfoRevisionID);
   });
 });
 

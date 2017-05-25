@@ -1,0 +1,81 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "description": "Device info had changed",
+  "allOf": [
+    {"$ref": "../AbstractEvents/INTAnalytricksBaseUsage.json"},
+    {
+      "properties": {
+        "id_for_vendor": {
+          "description": "@see -[INTDeviceInfo identifierForVendor]",
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{8}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{12}$"
+        },
+        "advertising_id": {
+          "description": "@see -[INTDeviceInfo advertisingID]",
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{8}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{12}$"
+        },
+        "is_advertising_tracking_enabled": {
+          "description": "@see -[INTDeviceInfo advertisingTrackingEnabled]",
+          "type": "boolean"
+        },
+        "device_kind": {
+          "description": "@see -[INTDeviceInfo deviceKind]",
+          "type": "string"
+        },
+        "ios_version": {
+          "description": "@see -[INTDeviceInfo iosVersion]",
+          "type": "string"
+        },
+        "app_version": {
+          "description": "@see -[INTDeviceInfo appVersion]",
+          "type": "string"
+        },
+        "app_version_short": {
+          "description": "@see -[INTDeviceInfo appVersionShort]",
+          "type": "string"
+        },
+        "timezone": {
+          "description": "@see -[INTDeviceInfo timeZone]",
+          "type": "string"
+        },
+        "country": {
+          "description": "@see -[INTDeviceInfo country]",
+          "type": ["string", "null"]
+        },
+        "preferred_language": {
+          "description": "@see -[INTDeviceInfo preferredLanguage]",
+          "type": ["string", "null"]
+        },
+        "current_app_language": {
+          "description": "@see -[INTDeviceInfo currentAppLanguage]",
+          "type": ["string", "null"]
+        },
+        "purchase_receipt": {
+          "description": "@see -[INTDeviceInfo purchaseReceipt]",
+          "type": ["string", "null"]
+        },
+        "app_store_country": {
+          "description": "@see -[INTDeviceInfo appStoreCountry]",
+          "type": ["string", "null"]
+        }
+      },
+      "required": [
+        "id_for_vendor",
+        "advertising_id",
+        "is_advertising_tracking_enabled",
+        "device_kind",
+        "ios_version",
+        "app_version",
+        "app_version_short",
+        "timezone",
+        "country",
+        "preferred_language",
+        "current_app_language",
+        "purchase_receipt",
+        "app_store_country"
+      ]
+    }
+  ]
+}

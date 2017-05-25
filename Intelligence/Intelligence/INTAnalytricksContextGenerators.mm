@@ -7,6 +7,8 @@
 
 #import "INTAnalytricksContext+Merge.h"
 #import "INTAppWillEnterForegroundEvent.h"
+#import "INTDeviceInfo.h"
+#import "INTDeviceInfoLoadedEvent.h"
 #import "INTProjectLoadedEvent.h"
 #import "INTProjectUnloadedEvent.h"
 #import "INTScreenDisplayedEvent.h"
@@ -99,14 +101,14 @@ INTAggregationBlock INTAnalytricksContextAggregation(INTAnalytricksContextUpdate
 }
 
 + (INTAppContextGeneratorBlock)deviceInfoContextGenerator {
-  return ^(INTAppContext *context, INTEventMetadata *, INTAppWillEnterForegroundEvent *event) {
-    if (![event isKindOfClass:INTAppWillEnterForegroundEvent.class] || !event.isLaunch) {
+  return ^(INTAppContext *context, INTEventMetadata *, INTDeviceInfoLoadedEvent *event) {
+    if (![event isKindOfClass:INTDeviceInfoLoadedEvent.class]) {
       return context;
     }
 
     auto contextUpdates = @{
-      kINTAppContextDeviceIDKey: [UIDevice currentDevice].identifierForVendor,
-      kINTAppContextDeviceInfoIDKey: [UIDevice currentDevice].identifierForVendor
+      kINTAppContextDeviceIDKey: event.deviceInfo.identifierForVendor,
+      kINTAppContextDeviceInfoIDKey: event.deviceInfoRevisionID
     };
     return (INTAppContext *)[context int_mergeUpdates:contextUpdates];
   };
