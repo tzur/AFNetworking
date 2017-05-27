@@ -308,6 +308,28 @@ context(@"subscription information", ^{
   });
 });
 
+context(@"fetching nether product list", ^{
+  it(@"should prefetch product list on initialization", ^{
+    store = [[BZRStore alloc] initWithConfiguration:configuration];
+
+    OCMVerify([netherProductsProvider fetchProductList]);
+  });
+
+  it(@"should send a critical error when fetching product list fails", ^{
+    auto recorder = [store.eventsSignal testRecorder];
+
+    NSError *error = [NSError lt_errorWithCode:1337];
+    [netherProductsProviderSubject sendError:error];
+
+    expect(recorder).to.matchValue(0, ^BOOL(BZREvent *event) {
+      NSError *eventError = event.eventError;
+      return [event.eventType isEqual:$(BZREventTypeCriticalError)] &&
+          eventError.code == BZRErrorCodeFetchingProductListFailed &&
+          eventError.lt_underlyingError == error;
+    });
+  });
+});
+
 context(@"downloaded products", ^{
   beforeEach(^{
     OCMStub([variantSelector selectedVariantForProductWithIdentifier:productIdentifier])
@@ -1194,6 +1216,7 @@ context(@"KVO-compliance", ^{
     OCMStub([configuration periodicValidatorActivator]).andReturn(periodicValidatorActivator);
     OCMStub([configuration validationParametersProvider]).andReturn(validationParametersProvider);
     OCMStub([configuration allowedProductsProvider]).andReturn(allowedProductsProvider);
+    OCMStub([configuration netherProductsProvider]).andReturn(netherProductsProvider);
 
     store = [[BZRStore alloc] initWithConfiguration:configuration];
   });
@@ -1336,6 +1359,20 @@ context(@"KVO-compliance", ^{
       expect(appStoreLocaleSignal).to.sendValues(@[
         [NSNull null],
         locale
+      ]);
+    });
+  });
+
+  context(@"products JSON dictionary", ^{
+    it(@"should be KVO-compliant", ^{
+      auto recorder = [RACObserve(store, productsJSONDictionary) testRecorder];
+
+      BZRProduct *product = BZRProductWithIdentifier(productIdentifier);
+      [netherProductsProviderSubject sendNext:@[product]];
+
+      expect(recorder).to.sendValues(@[
+        [NSNull null],
+        @{productIdentifier: product}
       ]);
     });
   });

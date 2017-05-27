@@ -252,7 +252,8 @@ NS_ASSUME_NONNULL_BEGIN
       }];
 }
 
-- (void)setProductsJSONDictionary:(nullable BZRProductDictionary *)productsJSONDictionary {
+- (void)setProductsJSONDictionary:(nullable NSDictionary<NSString *, BZRProduct *> *)
+    productsJSONDictionary {
   _productsJSONDictionary = productsJSONDictionary;
 
   self.downloadedContentProducts =
