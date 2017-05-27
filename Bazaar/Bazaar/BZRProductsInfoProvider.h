@@ -3,7 +3,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class BZRReceiptSubscriptionInfo, BZRReceiptValidationStatus, LTPath;
+@class BZRProduct, BZRReceiptSubscriptionInfo, BZRReceiptValidationStatus, LTPath;
 
 /// Interface for providing the list of purchased products, products with downloaded content, and
 /// subscription information.
@@ -55,6 +55,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// AppStore locale. KVO-compliant. Changes may be delivered on an arbitrary thread.
 @property (readonly, nonatomic, nullable) NSLocale *appStoreLocale;
+
+/// Dictionary that contains products information based only on the products JSON file.
+@property (readonly, nonatomic, nullable) NSDictionary<NSString *, BZRProduct *> *
+    productsJSONDictionary;
 
 @end
 

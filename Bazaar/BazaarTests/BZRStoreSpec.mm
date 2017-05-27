@@ -58,11 +58,13 @@ __block BZRPeriodicReceiptValidatorActivator *periodicValidatorActivator;
 __block id<BZRProductsVariantSelector> variantSelector;
 __block id<BZRReceiptValidationParametersProvider> validationParametersProvider;
 __block BZRFakeAllowedProductsProvider *allowedProductsProvider;
+__block id<BZRProductsProvider> netherProductsProvider;
 __block NSBundle *bundle;
 __block RACSubject *productsProviderEventsSubject;
 __block RACSubject *receiptValidationStatusProviderEventsSubject;
 __block RACSubject *acquiredViaSubscriptionProviderEventsSubject;
 __block RACSubject *periodicReceiptValidatorActivatorEventsSubject;
+__block RACSubject *netherProductsProviderSubject;
 __block RACSubject *transactionsErrorEventsSubject;
 __block RACSubject *unfinishedSuccessfulTransactionsSubject;
 __block BZRStoreConfiguration *configuration;
@@ -80,6 +82,7 @@ beforeEach(^{
   variantSelector = OCMProtocolMock(@protocol(BZRProductsVariantSelector));
   validationParametersProvider = OCMClassMock([BZRReceiptValidationParametersProvider class]);
   allowedProductsProvider = [[BZRFakeAllowedProductsProvider alloc] init];
+  netherProductsProvider = OCMProtocolMock(@protocol(BZRProductsProvider));
   bundle = OCMClassMock([NSBundle class]);
   id<BZRProductsVariantSelectorFactory> variantSelectorFactory =
       OCMProtocolMock(@protocol(BZRProductsVariantSelectorFactory));
@@ -91,6 +94,7 @@ beforeEach(^{
   receiptValidationStatusProviderEventsSubject = [RACSubject subject];
   acquiredViaSubscriptionProviderEventsSubject = [RACSubject subject];
   periodicReceiptValidatorActivatorEventsSubject = [RACSubject subject];
+  netherProductsProviderSubject = [RACSubject subject];
   transactionsErrorEventsSubject = [RACSubject subject];
   unfinishedSuccessfulTransactionsSubject = [RACSubject subject];
   OCMStub([productsProvider eventsSignal])
@@ -101,6 +105,7 @@ beforeEach(^{
       .andReturn(acquiredViaSubscriptionProviderEventsSubject);
   OCMStub([periodicValidatorActivator errorEventsSignal])
       .andReturn(periodicReceiptValidatorActivatorEventsSubject);
+  OCMStub([netherProductsProvider fetchProductList]).andReturn(netherProductsProviderSubject);
   OCMStub([storeKitFacade transactionsErrorEventsSignal])
       .andReturn(transactionsErrorEventsSubject);
   OCMStub([storeKitFacade unfinishedSuccessfulTransactionsSignal])
@@ -118,6 +123,7 @@ beforeEach(^{
   OCMStub([configuration variantSelectorFactory]).andReturn(variantSelectorFactory);
   OCMStub([configuration validationParametersProvider]).andReturn(validationParametersProvider);
   OCMStub([configuration allowedProductsProvider]).andReturn(allowedProductsProvider);
+  OCMStub([configuration netherProductsProvider]).andReturn(netherProductsProvider);
 
   store = [[BZRStore alloc] initWithConfiguration:configuration];
   productIdentifier = @"foo";
@@ -162,8 +168,9 @@ context(@"getting bundle of content", ^{
   });
 
   it(@"should send the content bundle from the content fetcher", ^{
-    BZRStubProductDictionaryToReturnProductWithContent(productIdentifier, productsProvider);
-    store = [[BZRStore alloc] initWithConfiguration:configuration];
+    BZRProduct *product = BZRProductWithIdentifierAndContent(productIdentifier);
+    [netherProductsProviderSubject sendNext:@[product]];
+
     NSBundle *bundle = OCMClassMock([NSBundle class]);
     OCMStub([contentFetcher contentBundleForProduct:OCMOCK_ANY])
         .andReturn([RACSignal return:bundle]);
@@ -307,10 +314,9 @@ context(@"downloaded products", ^{
         .andReturn(productIdentifier);
   });
   it(@"should treat product without content as downloaded", ^{
-    BZRStubProductDictionaryToReturnProductWithIdentifier(productIdentifier, productsProvider);
-    store = [[BZRStore alloc] initWithConfiguration:configuration];
+    BZRProduct *product = BZRProductWithIdentifier(productIdentifier);
+    [netherProductsProviderSubject sendNext:@[product]];
 
-    expect([store productList]).will.complete();
     expect(store.downloadedContentProducts).to.equal([NSSet setWithObject:productIdentifier]);
   });
 
@@ -646,8 +652,9 @@ context(@"fetching product content", ^{
   });
 
   it(@"should send error when content fetcher errs", ^{
-    BZRStubProductDictionaryToReturnProductWithContent(productIdentifier, productsProvider);
-    store = [[BZRStore alloc] initWithConfiguration:configuration];
+    BZRProduct *product = BZRProductWithIdentifierAndContent(productIdentifier);
+    [netherProductsProviderSubject sendNext:@[product]];
+
     NSError *error = OCMClassMock([NSError class]);
     OCMStub([contentFetcher fetchProductContent:OCMOCK_ANY]).andReturn([RACSignal error:error]);
 
@@ -655,8 +662,9 @@ context(@"fetching product content", ^{
   });
 
   it(@"should send progress sent by content fetcher", ^{
-    BZRStubProductDictionaryToReturnProductWithContent(productIdentifier, productsProvider);
-    store = [[BZRStore alloc] initWithConfiguration:configuration];
+    BZRProduct *product = BZRProductWithIdentifierAndContent(productIdentifier);
+    [netherProductsProviderSubject sendNext:@[product]];
+
     LTProgress *progress = OCMClassMock([LTProgress class]);
     OCMExpect([contentFetcher fetchProductContent:
         [OCMArg checkWithBlock:^BOOL(BZRProduct *product) {
@@ -671,8 +679,8 @@ context(@"fetching product content", ^{
   });
 
   it(@"should update downloaded content products", ^{
-    BZRStubProductDictionaryToReturnProductWithContent(productIdentifier, productsProvider);
-    store = [[BZRStore alloc] initWithConfiguration:configuration];
+    BZRProduct *product = BZRProductWithIdentifierAndContent(productIdentifier);
+    [netherProductsProviderSubject sendNext:@[product]];
 
     LTProgress *progress = OCMClassMock([LTProgress class]);
     OCMStub([contentFetcher fetchProductContent:OCMOCK_ANY]).andReturn([RACSignal return:progress]);
@@ -700,15 +708,16 @@ context(@"deleting product content", ^{
   });
 
   it(@"should update downloaded content products", ^{
-      BZRStubProductDictionaryToReturnProductWithIdentifier(productIdentifier, productsProvider);
-    store = [[BZRStore alloc] initWithConfiguration:configuration];
+    BZRProduct *product = BZRProductWithIdentifierAndContent(productIdentifier);
+    [netherProductsProviderSubject sendNext:@[product]];
 
-    LTPath *path = [LTPath pathWithPath:@"bar"];
-    OCMStub([contentFetcher fetchProductContent:OCMOCK_ANY]).andReturn([RACSignal return:path]);
+    OCMStub([contentFetcher fetchProductContent:OCMOCK_ANY])
+        .andReturn([RACSignal return:[NSBundle bundleWithIdentifier:@"foo"]]);
+    expect([store fetchProductContent:productIdentifier]).will.complete();
     expect(store.downloadedContentProducts).will.equal([NSSet setWithObject:productIdentifier]);
+
     OCMStub([contentManager deleteContentDirectoryOfProduct:OCMOCK_ANY])
         .andReturn([RACSignal empty]);
-
     expect([store deleteProductContent:productIdentifier]).will.complete();
     expect(store.downloadedContentProducts).to.equal([NSSet set]);
   });
