@@ -537,7 +537,15 @@ context(@"", ^{
     __block CAMFakeAVCaptureDevice *videoDevice;
 
     beforeEach(^{
+      CAMFakeAVCaptureDeviceFormat *deviceFormat = [[CAMFakeAVCaptureDeviceFormat alloc] init];
+      deviceFormat.minISOToReturn = 10;
+      deviceFormat.maxISOToReturn = 100;
+      deviceFormat.minExposureDurationToReturn = CMTimeMakeWithSeconds(0.001, 1000000);
+      deviceFormat.maxExposureDurationToReturn = CMTimeMakeWithSeconds(0.1, 1000000);
+
       videoDevice = [[CAMFakeAVCaptureDevice alloc] init];
+      videoDevice.activeFormat = deviceFormat;
+
       session.videoDevice = videoDevice;
     });
 
@@ -593,6 +601,22 @@ context(@"", ^{
         videoDevice.maxExposureTargetBias = 6;
         expect(device.maxExposureCompensation).will.equal(6);
       });
+
+      it(@"should return correct min exposure duration", ^{
+        expect(device.minExposureDuration).will.equal(0.001);
+      });
+
+      it(@"should return correct max exposure duration", ^{
+        expect(device.maxExposureDuration).will.equal(0.1);
+      });
+
+      it(@"should return correct min ISO", ^{
+        expect(device.minISO).will.equal(10.0);
+      });
+
+      it(@"should return correct max ISO", ^{
+        expect(device.maxISO).will.equal(100.0);
+      });
     });
 
     context(@"require subscription", ^{
@@ -624,6 +648,94 @@ context(@"", ^{
         videoDevice.maxExposureTargetBias = 1;
         [device setExposureCompensation:0.25];
         expect(videoDevice.exposureTargetBias).toNot.equal(0.25);
+      });
+
+      it(@"should update exposure offset", ^{
+        videoDevice.exposureTargetOffset = 3;
+        expect(device.exposureOffset).will.equal(3);
+        videoDevice.exposureTargetOffset = -1;
+        expect(device.exposureOffset).will.equal(-1);
+      });
+
+      it(@"should get correct exposure duration", ^{
+        waitUntilTimeout(3, ^(DoneCallback done) {
+          [videoDevice setExposureModeCustomWithDuration:CMTimeMakeWithSeconds(0.01, 1000000)
+                                                     ISO:AVCaptureISOCurrent
+                                       completionHandler:^(CMTime __unused syncTime) {
+                                         done();
+                                       }];
+        });
+        expect(device.exposureDuration).to.equal(0.01);
+
+        waitUntilTimeout(3, ^(DoneCallback done) {
+          [videoDevice setExposureModeCustomWithDuration:CMTimeMakeWithSeconds(0.02, 1000000)
+                                                     ISO:AVCaptureISOCurrent
+                                       completionHandler:^(CMTime __unused syncTime) {
+                                         done();
+                                       }];
+        });
+        expect(device.exposureDuration).to.equal(0.02);
+      });
+
+      it(@"should set correct exposure duration", ^{
+        LLSignalTestRecorder *recorder = [[device setManualExposureWithDuration:0.01] testRecorder];
+        expect(recorder).will.sendValues(@[@0.01]);
+        expect(recorder).to.complete();
+        expect(CMTimeGetSeconds(videoDevice.exposureDuration)).to.equal(0.01);
+      });
+
+      it(@"should get correct ISO", ^{
+        waitUntilTimeout(3, ^(DoneCallback done) {
+          [videoDevice setExposureModeCustomWithDuration:AVCaptureExposureDurationCurrent
+                                                     ISO:70
+                                       completionHandler:^(CMTime __unused syncTime) {
+                                         done();
+                                       }];
+        });
+        expect(device.ISO).to.equal(70);
+
+        waitUntilTimeout(3, ^(DoneCallback done) {
+          [videoDevice setExposureModeCustomWithDuration:AVCaptureExposureDurationCurrent
+                                                     ISO:80
+                                       completionHandler:^(CMTime __unused syncTime) {
+                                         done();
+                                       }];
+        });
+        expect(device.ISO).to.equal(80);
+      });
+
+      it(@"should set correct ISO", ^{
+        LLSignalTestRecorder *recorder = [[device setManualExposureWithISO:80] testRecorder];
+        expect(recorder).will.sendValues(@[@80]);
+        expect(recorder).to.complete();
+        expect(videoDevice.ISO).to.equal(80);
+      });
+
+      it(@"should set correct exposure duration and ISO", ^{
+        LLSignalTestRecorder *recorder = [[device setManualExposureWithDuration:0.03 andISO:90]
+                                          testRecorder];
+        expect(recorder).will.sendValues(@[RACTuplePack(@0.03, @90)]);
+        expect(recorder).to.complete();
+        expect(CMTimeGetSeconds(videoDevice.exposureDuration)).to.equal(0.03);
+        expect(videoDevice.ISO).to.equal(90);
+      });
+    });
+
+    context(@"require subscription", ^{
+      it(@"should not set correct exposure duration", ^{
+        [device setManualExposureWithDuration:0.01];
+        expect(CMTimeGetSeconds(videoDevice.exposureDuration)).toNot.equal(0.01);
+      });
+
+      it(@"should not set correct ISO", ^{
+        [device setManualExposureWithISO:80];
+        expect(CMTimeGetSeconds(videoDevice.exposureDuration)).toNot.equal(80);
+      });
+
+      it(@"should not set correct exposure duration and ISO", ^{
+        [device setManualExposureWithDuration:0.03 andISO:90];
+        expect(CMTimeGetSeconds(videoDevice.exposureDuration)).toNot.equal(0.03);
+        expect(videoDevice.ISO).toNot.equal(90);
       });
     });
 
@@ -665,6 +777,38 @@ context(@"", ^{
         LLSignalTestRecorder *nanRecorder = [[device setExposureCompensation:NAN] testRecorder];
         expect(nanRecorder).will.error();
         expect(nanRecorder.error.code).to.equal(CAMErrorCodeExposureSettingUnsupported);
+      });
+
+      it(@"should return error when attempting to set exposure duration too small", ^{
+        LLSignalTestRecorder *recorder = [[device setManualExposureWithDuration:0.0001]
+                                          testRecorder];
+        expect(recorder).will.error();
+        expect(recorder.error.code).to.equal(CAMErrorCodeExposureSettingUnsupported);
+        expect(CMTimeGetSeconds(videoDevice.exposureDuration)).toNot.equal(0.0001);
+      });
+
+      it(@"should return error when attempting to set exposure duration too large", ^{
+        LLSignalTestRecorder *recorder = [[device setManualExposureWithDuration:10.0]
+                                          testRecorder];
+        expect(recorder).will.error();
+        expect(recorder.error.code).to.equal(CAMErrorCodeExposureSettingUnsupported);
+        expect(CMTimeGetSeconds(videoDevice.exposureDuration)).toNot.equal(10.0);
+      });
+
+      it(@"should return error when attempting to set ISO too small", ^{
+        LLSignalTestRecorder *recorder = [[device setManualExposureWithISO:1.0]
+                                          testRecorder];
+        expect(recorder).will.error();
+        expect(recorder.error.code).to.equal(CAMErrorCodeExposureSettingUnsupported);
+        expect(videoDevice.ISO).toNot.equal(1.0);
+      });
+
+      it(@"should return error when attempting to set ISO too large", ^{
+        LLSignalTestRecorder *recorder = [[device setManualExposureWithDuration:1000.0]
+                                          testRecorder];
+        expect(recorder).will.error();
+        expect(recorder.error.code).to.equal(CAMErrorCodeExposureSettingUnsupported);
+        expect(videoDevice.ISO).toNot.equal(1000.0);
       });
     });
   });
@@ -715,13 +859,6 @@ context(@"", ^{
         expect(recorder).to.complete();
         expect(videoDevice.whiteBalanceMode).to.equal(AVCaptureWhiteBalanceModeLocked);
         expect(videoDevice.deviceWhiteBalanceGains).to.equal(gains);
-      });
-
-      it(@"should update exposure offset", ^{
-        videoDevice.exposureTargetOffset = 3;
-        expect(device.exposureOffset).will.equal(3);
-        videoDevice.exposureTargetOffset = -1;
-        expect(device.exposureOffset).will.equal(-1);
       });
     });
 

@@ -11,6 +11,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @synthesize interfaceOrientation = _interfaceOrientation;
 @synthesize gravityOrientation = _gravityOrientation;
+@synthesize minExposureDuration = _minExposureDuration;
+@synthesize maxExposureDuration = _maxExposureDuration;
+@synthesize minISO = _minISO;
+@synthesize maxISO = _maxISO;
 
 - (instancetype)initWithSession:(CAMHardwareSession __unused *)session {
   return self = [super init];
@@ -36,6 +40,19 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (RACSignal *)setExposureCompensation:(float __unused)value {
   return self.setExposureCompensationSignal;
+}
+
+- (RACSignal *)setManualExposureWithDuration:(NSTimeInterval __unused)exposureDuration {
+  return self.setManualExposureWithDurationSignal;
+}
+
+- (RACSignal *)setManualExposureWithISO:(float __unused)ISO {
+  return self.setManualExposureWithISOSignal;
+}
+
+- (RACSignal *)setManualExposureWithDuration:(NSTimeInterval __unused)exposureDuration
+                                      andISO:(float __unused)ISO {
+  return self.setManualExposureWithDurationAndISOSignal;
 }
 
 #pragma mark -

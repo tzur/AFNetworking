@@ -15,6 +15,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readwrite, nonatomic) AVCaptureExposureMode exposureMode;
 @property (readwrite, nonatomic) CGPoint exposurePointOfInterest;
 @property (readwrite, nonatomic) float exposureTargetBias;
+@property (readwrite, nonatomic) CMTime exposureDuration;
+@property (readwrite, nonatomic) float ISO;
 @property (readwrite, nonatomic) BOOL adjustingExposure;
 @property (readwrite, nonatomic) AVCaptureWhiteBalanceMode whiteBalanceMode;
 @property (readwrite, nonatomic) AVCaptureWhiteBalanceGains deviceWhiteBalanceGains;
@@ -111,6 +113,21 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)setExposureTargetBias:(float)bias completionHandler:(void (^)(CMTime syncTime))handler {
   self.exposureTargetBias = bias;
+  handler(kCMTimeZero);
+}
+
+- (void)setExposureModeCustomWithDuration:(CMTime)duration ISO:(float)ISO
+                        completionHandler:(void (^)(CMTime syncTime))handler {
+  _exposureMode = AVCaptureExposureModeCustom;
+
+  if (CMTimeCompare(duration, AVCaptureExposureDurationCurrent) != 0) {
+    self.exposureDuration = duration;
+  }
+
+  if (ISO != AVCaptureISOCurrent) {
+    self.ISO = ISO;
+  }
+
   handler(kCMTimeZero);
 }
 

@@ -40,6 +40,22 @@ NS_ASSUME_NONNULL_BEGIN
   return self.highResolutionStillImageDimensionsToReturn;
 }
 
+- (float)minISO {
+  return self.minISOToReturn;
+}
+
+- (float)maxISO {
+  return self.maxISOToReturn;
+}
+
+- (CMTime)minExposureDuration {
+  return self.minExposureDurationToReturn;
+}
+
+- (CMTime)maxExposureDuration {
+  return self.maxExposureDurationToReturn;
+}
+
 - (NSString *)description {
   NSMutableString *description = [NSMutableString stringWithFormat:@"<%@: %p", self.class, self];
   [description appendFormat:@", subtype: %lu", (unsigned long)self.cam_mediaSubType];

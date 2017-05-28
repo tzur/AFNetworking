@@ -55,6 +55,12 @@ NS_ASSUME_NONNULL_BEGIN
 /// @see CAMExposureDevice.
 @property (nonatomic) CGFloat maxExposureCompensation;
 
+/// Exposure duration.
+@property (nonatomic) NSTimeInterval exposureDuration;
+
+/// ISO value.
+@property (nonatomic) float ISO;
+
 /// Return value for the \c setSingleExposurePoint: method.
 @property (strong, nonatomic, nullable) RACSignal *setSingleExposurePointSignal;
 
@@ -72,6 +78,15 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Return value for the \c setExposureCompensation: method.
 @property (strong, nonatomic, nullable) RACSignal *setExposureCompensationSignal;
+
+/// Return value for the \c setManualExposureWithDuration: method.
+@property (strong, nonatomic, nullable) RACSignal *setManualExposureWithDurationSignal;
+
+/// Return value for the \c setManualExposureWithISO: method.
+@property (strong, nonatomic, nullable) RACSignal *setManualExposureWithISOSignal;
+
+/// Return value for the \c setManualExposureWithDuration:andISO: method.
+@property (strong, nonatomic, nullable) RACSignal *setManualExposureWithDurationAndISOSignal;
 
 #pragma mark -
 #pragma mark CAMFlashDevice
