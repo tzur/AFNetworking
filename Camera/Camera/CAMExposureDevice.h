@@ -41,6 +41,28 @@ NS_ASSUME_NONNULL_BEGIN
 /// if there is a problem setting the exposure. All events are sent on an arbitrary thread.
 - (RACSignal *)setExposureCompensation:(float)value;
 
+/// Instructs the camera to enter the Custom exposure mode and lock the exposure duration on
+/// \c exposureDuration. \c exposureDuration should be in the range
+/// <tt>[minExposureDuration, maxExposureDuration]</tt>.
+///
+/// Returned signal sends the new exposure duration value and completes when it is set, or errs
+/// if there is a problem setting the exposure duration. All events are sent on an arbitrary thread.
+- (RACSignal *)setManualExposureWithDuration:(NSTimeInterval)exposureDuration;
+
+/// Instructs the camera to enter the Custom exposure mode and lock the ISO on \c ISO. \c ISO should
+/// be in the range <tt>[minISO, maxISO]</tt>.
+///
+/// Returned signal sends the new ISO value and completes when it is set, or errs if there is a
+/// problem setting the ISO. All events are sent on an arbitrary thread.
+- (RACSignal *)setManualExposureWithISO:(float)ISO;
+
+/// Instructs the camera to enter the Custom exposure mode and lock the exposure duration on
+/// \c exposureDuration and ISO on \c ISO.
+///
+/// Returned signal sends the new exposure compensation value and completes when it is set, or errs
+/// if there is a problem setting the exposure. All events are sent on an arbitrary thread.
+- (RACSignal *)setManualExposureWithDuration:(NSTimeInterval)exposureDuration andISO:(float)ISO;
+
 /// Difference between the current scene's exposure metering and the current exposure settings, in
 /// EV units.
 @property (readonly, nonatomic) float exposureOffset;
@@ -50,6 +72,24 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Maximum exposure compensation value supported by the camera.
 @property (readonly, nonatomic) CGFloat maxExposureCompensation;
+
+/// Exposure duration. Affects both video stream (exposure and frame rate) and still photos.
+@property (readonly, nonatomic) NSTimeInterval exposureDuration;
+
+/// Minimal valid value for \c exposureDuration.
+@property (readonly, nonatomic) NSTimeInterval minExposureDuration;
+
+/// Maximal valid value for \c exposureDuration.
+@property (readonly, nonatomic) NSTimeInterval maxExposureDuration;
+
+/// ISO value. Affects both video stream and still photos.
+@property (readonly, nonatomic) float ISO;
+
+/// Minimal valid value for \c ISO.
+@property (readonly, nonatomic) float minISO;
+
+/// Maximal valid value for \c ISO.
+@property (readonly, nonatomic) float maxISO;
 
 @end
 

@@ -41,6 +41,24 @@ NS_ASSUME_NONNULL_BEGIN
 /// Maximum exposure compensation value supported by the camera.
 @property (nonatomic) CGFloat maxExposureCompensation;
 
+/// Exposure duration. Affects both video stream (exposure and frame rate) and still photos.
+@property (nonatomic) NSTimeInterval exposureDuration;
+
+/// Minimal valid value for \c exposureDuration.
+@property (nonatomic) NSTimeInterval minExposureDuration;
+
+/// Maximal valid value for \c exposureDuration.
+@property (nonatomic) NSTimeInterval maxExposureDuration;
+
+/// ISO value.
+@property (nonatomic) float ISO;
+
+/// Minimal valid value for \c ISO.
+@property (nonatomic) float minISO;
+
+/// Maximal valid value for \c ISO.
+@property (nonatomic) float maxISO;
+
 /// Whether the camera is capable of zooming.
 @property (nonatomic) BOOL hasZoom;
 
@@ -118,6 +136,38 @@ NS_ASSUME_NONNULL_BEGIN
 
   RAC(self, maxExposureCompensation, @0) =
       RACObserve(self, session.videoDevice.maxExposureTargetBias);
+
+  RAC(self, exposureDuration, @0) = [RACObserve(self, session.videoDevice.exposureDuration)
+   map:^NSNumber *(NSValue *nativeExposureDurationValue) {
+     CMTime nativeExposureDuration;
+     [nativeExposureDurationValue getValue:&nativeExposureDuration];
+     NSTimeInterval exposureDuration = CMTimeGetSeconds(nativeExposureDuration);
+     return @(exposureDuration);
+   }];
+
+  RAC(self, minExposureDuration, @0) =
+      [RACObserve(self, session.videoDevice.activeFormat.minExposureDuration)
+       map:^NSNumber *(NSValue *nativeExposureDurationValue) {
+         CMTime nativeExposureDuration;
+         [nativeExposureDurationValue getValue:&nativeExposureDuration];
+         NSTimeInterval exposureDuration = CMTimeGetSeconds(nativeExposureDuration);
+         return @(exposureDuration);
+       }];
+
+  RAC(self, maxExposureDuration, @0) =
+      [RACObserve(self, session.videoDevice.activeFormat.maxExposureDuration)
+      map:^NSNumber *(NSValue *nativeExposureDurationValue) {
+         CMTime nativeExposureDuration;
+         [nativeExposureDurationValue getValue:&nativeExposureDuration];
+         NSTimeInterval exposureDuration = CMTimeGetSeconds(nativeExposureDuration);
+         return @(exposureDuration);
+       }];
+
+  RAC(self, ISO, @0) = RACObserve(self, session.videoDevice.ISO);
+
+  RAC(self, minISO, @0) = RACObserve(self, session.videoDevice.activeFormat.minISO);
+
+  RAC(self, maxISO, @0) = RACObserve(self, session.videoDevice.activeFormat.maxISO);
 }
 
 - (void)setupZoomProperties {
@@ -567,6 +617,79 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
         [subscriber sendNext:@(value)];
         [subscriber sendCompleted];
       }];
+      return YES;
+    } error:&error];
+
+    if (!success) {
+      [subscriber sendError:error];
+    }
+
+    return nil;
+  }] subscribeOn:self.scheduler];
+}
+
+- (RACSignal *)setManualExposureWithDuration:(NSTimeInterval)exposureDuration {
+  CMTime nativeExposureDuration = CMTimeMakeWithSeconds(exposureDuration, 1000000);
+  return [[self setNativeExposureDuration:nativeExposureDuration ISO:AVCaptureISOCurrent]
+          mapReplace:@(exposureDuration)];
+}
+
+- (RACSignal *)setManualExposureWithISO:(float)ISO {
+  return [[self setNativeExposureDuration:AVCaptureExposureDurationCurrent ISO:ISO]
+          mapReplace:@(ISO)];
+}
+
+- (RACSignal *)setManualExposureWithDuration:(NSTimeInterval)exposureDuration andISO:(float)ISO {
+  CMTime nativeExposureDuration = CMTimeMakeWithSeconds(exposureDuration, 1000000);
+  return [[self setNativeExposureDuration:nativeExposureDuration ISO:ISO]
+          mapReplace:RACTuplePack(@(exposureDuration), @(ISO))];
+}
+
+- (RACSignal *)setNativeExposureDuration:(CMTime)nativeExposureDuration ISO:(float)ISO {
+  @weakify(self);
+  return [[RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+    @strongify(self);
+    AVCaptureDevice *device = self.session.videoDevice;
+    NSError *error;
+    BOOL success = [device cam_performWhileLocked:^BOOL(NSError **errorPtr) {
+      if (ISO != AVCaptureISOCurrent && (ISO < device.activeFormat.minISO ||
+                                         ISO > device.activeFormat.maxISO)) {
+        NSString *description = [NSString stringWithFormat:@"ISO value %g is out of range [%g, %g]",
+                                 ISO, device.activeFormat.minISO, device.activeFormat.maxISO];
+        if (errorPtr) {
+          *errorPtr = [NSError lt_errorWithCode:CAMErrorCodeExposureSettingUnsupported
+                                    description:@"%@", description];
+        }
+        return NO;
+      }
+      if (CMTimeCompare(nativeExposureDuration, AVCaptureExposureDurationCurrent) != 0 &&
+          (CMTimeCompare(nativeExposureDuration, device.activeFormat.minExposureDuration) < 0 ||
+           CMTimeCompare(nativeExposureDuration, device.activeFormat.maxExposureDuration) > 0)) {
+        NSString *description = [NSString stringWithFormat:@"Exposure duration value %g is "
+                                 "out of range [%g, %g]", CMTimeGetSeconds(nativeExposureDuration),
+                                 CMTimeGetSeconds(device.activeFormat.maxExposureDuration),
+                                 CMTimeGetSeconds(device.activeFormat.maxExposureDuration)];
+        if (errorPtr) {
+          *errorPtr = [NSError lt_errorWithCode:CAMErrorCodeExposureSettingUnsupported
+                                    description:@"%@", description];
+        }
+        return NO;
+      }
+
+      @try {
+        [device setExposureModeCustomWithDuration:nativeExposureDuration ISO:ISO
+                                completionHandler:^(CMTime __unused syncTime) {
+                                  [subscriber sendNext:[RACUnit defaultUnit]];
+                                  [subscriber sendCompleted];
+                                }];
+      } @catch (NSException *exception) {
+        if (errorPtr) {
+          *errorPtr = [NSError lt_errorWithCode:CAMErrorCodeExposureSettingUnsupported
+                                    description:@"%@", exception];
+        }
+        return NO;
+      }
+
       return YES;
     } error:&error];
 

@@ -18,6 +18,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic) CMVideoDimensions highResolutionStillImageDimensionsToReturn;
 
+@property (nonatomic) float minISOToReturn;
+@property (nonatomic) float maxISOToReturn;
+@property (nonatomic) CMTime minExposureDurationToReturn;
+@property (nonatomic) CMTime maxExposureDurationToReturn;
+
 @end
 
 NS_ASSUME_NONNULL_END

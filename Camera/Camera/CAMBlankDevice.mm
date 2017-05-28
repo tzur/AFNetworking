@@ -12,6 +12,12 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize exposureOffset = _exposureOffset;
 @synthesize minExposureCompensation = _minExposureCompensation;
 @synthesize maxExposureCompensation = _maxExposureCompensation;
+@synthesize exposureDuration = _exposureDuration;
+@synthesize minExposureDuration = _minExposureDuration;
+@synthesize maxExposureDuration = _maxExposureDuration;
+@synthesize ISO = _ISO;
+@synthesize minISO = _minISO;
+@synthesize maxISO = _maxISO;
 @synthesize hasFlash = _hasFlash;
 @synthesize flashWillFire = _flashWillFire;
 @synthesize currentFlashMode = _currentFlashMode;
@@ -104,6 +110,33 @@ NS_ASSUME_NONNULL_BEGIN
     return [RACSignal error:[NSError lt_errorWithCode:CAMErrorCodeExposureSettingUnsupported]];
   } else {
     return [RACSignal return:@(value)];
+  }
+}
+
+- (RACSignal *)setManualExposureWithDuration:(NSTimeInterval)exposureDuration {
+  if (exposureDuration < self.minExposureDuration || exposureDuration > self.maxExposureDuration ||
+      !std::isfinite(exposureDuration)) {
+    return [RACSignal error:[NSError lt_errorWithCode:CAMErrorCodeExposureSettingUnsupported]];
+  } else {
+    return [RACSignal return:@(exposureDuration)];
+  }
+}
+
+- (RACSignal *)setManualExposureWithISO:(float)ISO {
+  if (ISO < self.minISO || ISO > self.maxISO || !std::isfinite(ISO)) {
+    return [RACSignal error:[NSError lt_errorWithCode:CAMErrorCodeExposureSettingUnsupported]];
+  } else {
+    return [RACSignal return:@(ISO)];
+  }
+}
+
+- (RACSignal *)setManualExposureWithDuration:(NSTimeInterval)exposureDuration andISO:(float)ISO {
+  if (exposureDuration < self.minExposureDuration || exposureDuration > self.maxExposureDuration ||
+      !std::isfinite(exposureDuration) || ISO < self.minISO || ISO > self.maxISO ||
+      !std::isfinite(ISO)) {
+    return [RACSignal error:[NSError lt_errorWithCode:CAMErrorCodeExposureSettingUnsupported]];
+  } else {
+    return [RACSignal return:RACTuplePack(@(exposureDuration), @(ISO))];
   }
 }
 
