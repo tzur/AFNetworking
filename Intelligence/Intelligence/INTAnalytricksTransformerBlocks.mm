@@ -13,6 +13,7 @@
 #import "INTAnalytricksContextGenerators.h"
 #import "INTAnalytricksDeepLinkOpened.h"
 #import "INTAnalytricksDeviceInfoChanged.h"
+#import "INTAnalytricksDeviceTokenChanged.h"
 #import "INTAnalytricksMediaExported.h"
 #import "INTAnalytricksMediaImported.h"
 #import "INTAnalytricksMetadata.h"
@@ -27,6 +28,7 @@
 #import "INTDeepLinkOpenedEvent.h"
 #import "INTDeviceInfo.h"
 #import "INTDeviceInfoLoadedEvent.h"
+#import "INTDeviceTokenChangedEvent.h"
 #import "INTEventMetadata.h"
 #import "INTMediaExportEndedEvent.h"
 #import "INTMediaExportStartedEvent.h"
@@ -312,6 +314,17 @@ NS_ASSUME_NONNULL_BEGIN
            preferredLanguage:deviceInfo.preferredLanguage
            currentAppLanguage:deviceInfo.currentAppLanguage purchaseReceipt:purchaseReceipt
            appStoreCountry:deviceInfo.appStoreCountry].properties];
+      })
+      .build();
+}
+
++ (INTTransformerBlock)deviceTokenChangedEventTransformer {
+  return INTTransformerBuilder()
+      .transform(NSStringFromClass(INTDeviceTokenChangedEvent.class),
+                 ^(NSDictionary<NSString *, id> *, INTDeviceTokenChangedEvent *event,
+                   INTEventMetadata *, INTAppContext *) {
+        return @[[[INTAnalytricksDeviceTokenChanged alloc]
+                  initWithDeviceToken:event.deviceToken].properties];
       })
       .build();
 }

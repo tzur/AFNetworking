@@ -92,6 +92,11 @@ NS_ASSUME_NONNULL_BEGIN
 /// with \c isNewRevision set to \c YES.
 + (INTTransformerBlock)deviceInfoChangedEventTransformer;
 
+/// Transformer that produces an \c NSDictionary, resulting from
+/// <tt>-[INTAnalytricksDeviceTokenChanged properties]</tt> when observing an
+/// \c INTDeviceTokenChangedEvent.
++ (INTTransformerBlock)deviceTokenChangedEventTransformer;
+
 @end
 
 NS_ASSUME_NONNULL_END

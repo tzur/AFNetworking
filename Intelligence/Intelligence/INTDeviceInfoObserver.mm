@@ -22,6 +22,9 @@ static NSString * const kINTStorageDeviceInfoKey = @"DeviceInfo";
 /// \c kINTStorageDeviceInfoKey.
 static NSString * const kINTStorageDeviceInfoRevisionIDKey = @"DeviceInfoRevisionID";
 
+/// Key in the storage that holds the \c NSData that is the device push notification token.
+static NSString * const kINTStorageDeviceTokenKey = @"DeviceToken";
+
 @interface INTDeviceInfoObserver ()
 
 /// Device info source that can create a new \c INTDeviceInfo instance.
@@ -129,6 +132,19 @@ static NSString * const kINTStorageDeviceInfoRevisionIDKey = @"DeviceInfoRevisio
 - (void)setAppStoreCountry:(NSString *)appStoreCountry {
   @synchronized (self) {
     [self updateDeviceInfoIfNeededWithAppStoreCountry:appStoreCountry];
+  }
+}
+
+- (void)setDeviceToken:(nullable NSData *)deviceToken {
+  @synchronized (self) {
+    NSData * _Nullable storedDeviceToken =
+        [self loadStoredObjectForKey:kINTStorageDeviceTokenKey type:NSData.class];
+    if (storedDeviceToken == deviceToken || [storedDeviceToken isEqual:deviceToken]) {
+      return;
+    }
+
+    [self.delegate deviceTokenDidChange:deviceToken];
+    [self.storage setObject:deviceToken forKey:kINTStorageDeviceTokenKey];
   }
 }
 

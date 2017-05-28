@@ -3,9 +3,11 @@
 
 #import "INTEventsPipeline.h"
 
+#import <Intelligence/INTDeviceTokenChangedEvent.h>
 #import <LTKit/NSArray+Functional.h>
 
 #import "INTAppLifecycleTimer.h"
+#import "INTDataHelpers.h"
 #import "INTDeviceInfo.h"
 #import "INTDeviceInfoLoadedEvent.h"
 #import "INTEventMetadata.h"
@@ -214,6 +216,34 @@ it(@"should report device info loaded events", ^{
   auto expected = @[[[INTDeviceInfoLoadedEvent alloc] initWithDeviceInfo:deviceInfo
                                                     deviceInfoRevisionID:deviceInfoRevisionID
                                                            isNewRevision:YES]];
+  expect(logger.eventsLogged).will.equal(expected);
+});
+
+it(@"should report device token changed events", ^{
+  auto passThroughTransformerBlock =
+      ^(NSDictionary<NSString *, id> *, INTAppContext *, INTEventMetadata *, id event) {
+        return intl::TransformerBlockResult(nil, @[event]);
+      };
+
+  auto intelligenceEvents = [[INTEventsPipeline alloc] initWithConfiguration:{
+    .contextGeneratorBlock = INTIdentityAppContextGenerator(),
+    .transformerBlocks = {
+      passThroughTransformerBlock
+    },
+    .eventLoggers = @[logger],
+    .appLifecycleTimer = timer
+  }];
+
+  auto deviceToken =
+      INTVectorToNSData<unsigned char>({0x01, 0x23, 0x45, 0x67, 0x89, 0xab, 0xcd, 0xef});
+  [intelligenceEvents deviceTokenDidChange:deviceToken];
+  [intelligenceEvents deviceTokenDidChange:nil];
+
+  auto expected = @[
+    [[INTDeviceTokenChangedEvent alloc] initWithDeviceToken:@"0123456789ABCDEF"],
+    [[INTDeviceTokenChangedEvent alloc] initWithDeviceToken:nil]
+  ];
+
   expect(logger.eventsLogged).will.equal(expected);
 });
 

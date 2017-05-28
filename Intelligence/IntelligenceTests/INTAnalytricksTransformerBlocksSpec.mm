@@ -8,6 +8,7 @@
 #import <Intelligence/INTAnalytricksContext.h>
 #import <Intelligence/INTAnalytricksDeepLinkOpened.h>
 #import <Intelligence/INTAnalytricksDeviceInfoChanged.h>
+#import <Intelligence/INTAnalytricksDeviceTokenChanged.h>
 #import <Intelligence/INTAnalytricksMediaExported.h>
 #import <Intelligence/INTAnalytricksMediaImported.h>
 #import <Intelligence/INTAnalytricksMetadata.h>
@@ -19,6 +20,7 @@
 #import <Intelligence/INTAppBecameActiveEvent.h>
 #import <Intelligence/INTAppWillEnterForegroundEvent.h>
 #import <Intelligence/INTDeepLinkOpenedEvent.h>
+#import <Intelligence/INTDeviceTokenChangedEvent.h>
 #import <Intelligence/INTMediaExportEndedEvent.h>
 #import <Intelligence/INTMediaExportStartedEvent.h>
 #import <Intelligence/INTMediaImportedEvent.h>
@@ -671,6 +673,29 @@ context(@"analytricks project deleted event transformer", ^{
         INTEventTransformerArgs(deviceInfoLoadedEvent, INTCreateEventMetadata())
       ],
       kINTTransformerBlockExamplesExpectedEvents: @[]
+    };
+  });
+});
+
+context(@"analytricks device token change event transformer", ^{
+  itShouldBehaveLike(kINTTransformerBlockExamples, ^{
+    auto args = [@[
+      [[INTDeviceTokenChangedEvent alloc] initWithDeviceToken:@"foo"],
+      [[INTDeviceTokenChangedEvent alloc] initWithDeviceToken:nil]
+    ] lt_map:^(INTMediaImportedEvent *event) {
+      return INTEventTransformerArgs(event, INTCreateEventMetadata());
+    }];
+
+    auto expectedEvents = @[
+      [[INTAnalytricksDeviceTokenChanged alloc] initWithDeviceToken:@"foo"].properties,
+      [[INTAnalytricksDeviceTokenChanged alloc] initWithDeviceToken:nil].properties,
+    ];
+
+    return @{
+      kINTTransformerBlockExamplesTransformerBlock: [INTAnalytricksTransformerBlocks
+                                                     deviceTokenChangedEventTransformer],
+      kINTTransformerBlockExamplesArgumentsSequence: args,
+      kINTTransformerBlockExamplesExpectedEvents: expectedEvents
     };
   });
 });
