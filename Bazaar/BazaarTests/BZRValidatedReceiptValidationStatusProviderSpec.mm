@@ -83,11 +83,15 @@ context(@"fetching receipt validation status", ^{
     });
 
     it(@"should send error when receipt validator errs", ^{
-      NSError *error = OCMClassMock([NSError class]);
+      NSError *error = [NSError lt_errorWithCode:1337];
       OCMStub([receiptValidator validateReceiptWithParameters:OCMOCK_ANY])
           .andReturn([RACSignal error:error]);
 
-      expect([validationStatusProvider fetchReceiptValidationStatus]).will.sendError(error);
+      NSError *receiptValidationError =
+          [NSError lt_errorWithCode:BZRErrorCodeReceiptValidationFailed underlyingError:error];
+
+      expect([validationStatusProvider fetchReceiptValidationStatus]).will
+          .sendError(receiptValidationError);
     });
 
     it(@"should send error when validation has failed", ^{
