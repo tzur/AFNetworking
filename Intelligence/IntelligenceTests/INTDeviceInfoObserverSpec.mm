@@ -3,6 +3,7 @@
 
 #import "INTDeviceInfoObserver.h"
 
+#import "INTDataHelpers.h"
 #import "INTDeviceInfo.h"
 #import "INTFakeDeviceInfoSource.h"
 #import "INTStorage.h"
@@ -39,9 +40,11 @@
 @property (strong, nonatomic) INTDeviceInfo *reportedDeviceInfo;
 @property (strong, nonatomic) NSUUID *reportedDeviceInfoRevisionID;
 @property (nonatomic) BOOL reportedIsNewRevision;
+@property (strong, nonatomic, nullable) NSData *reportedDeviceToken;
 @end
 
 @implementation INTFakeDeviceInfoObserverDelegate
+
 - (void)deviceInfoObserver:(INTDeviceInfoObserver *)deviceInfoObserver
           loadedDeviceInfo:(INTDeviceInfo *)deviceInfo
       deviceInfoRevisionID:(NSUUID *)deviceInfoRevisionID
@@ -51,6 +54,11 @@
   self.reportedDeviceInfoRevisionID = deviceInfoRevisionID;
   self.reportedIsNewRevision = isNewRevision;
 }
+
+- (void)deviceTokenDidChange:(nullable NSData *)deviceToken {
+  self.reportedDeviceToken = deviceToken;
+}
+
 @end
 
 INTDeviceInfo *INTFakeDeviceInfo() {
@@ -118,6 +126,38 @@ it(@"should call delegate with with new device info if it changes over instances
   expect(delegate.reportedDeviceInfo.dictionaryValue).to.equal(source.deviceInfoTemplate);
   expect(delegate.reportedDeviceInfoRevisionID).notTo.equal(revisionID);
   expect(delegate.reportedIsNewRevision).to.equal(YES);
+});
+
+it(@"should report a new device token if none was stored", ^{
+  auto deviceToken =
+      INTVectorToNSData<unsigned char>({0x01, 0x23, 0x45, 0x67, 0x89, 0xab, 0xcd, 0xef});
+  [observer setDeviceToken:deviceToken];
+  expect(delegate.reportedDeviceToken).to.equal(deviceToken);
+});
+
+it(@"should persist device token over instances", ^{
+  auto deviceToken =
+      INTVectorToNSData<unsigned char>({0x01, 0x23, 0x45, 0x67, 0x89, 0xab, 0xcd, 0xef});
+  [observer setDeviceToken:deviceToken];
+  delegate = [[INTFakeDeviceInfoObserverDelegate alloc] init];
+  observer = [[INTDeviceInfoObserver alloc] initWithDeviceInfoSource:source storage:storage
+                                                            delegate:delegate];
+  [observer setDeviceToken:deviceToken];
+
+  expect(delegate.reportedDeviceToken).to.beNil();
+});
+
+it(@"should report changes to the device token", ^{
+  auto deviceToken =
+      INTVectorToNSData<unsigned char>({0x01, 0x23, 0x45, 0x67, 0x89, 0xab, 0xcd, 0xef});
+  [observer setDeviceToken:deviceToken];
+  expect(delegate.reportedDeviceToken).to.equal(deviceToken);
+
+  [observer setDeviceToken:nil];
+  expect(delegate.reportedDeviceToken).to.beNil();
+
+  [observer setDeviceToken:deviceToken];
+  expect(delegate.reportedDeviceToken).to.equal(deviceToken);
 });
 
 SpecEnd

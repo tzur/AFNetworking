@@ -70,6 +70,10 @@ typedef struct {
       deviceInfoRevisionID:(NSUUID *)deviceInfoRevisionID
              isNewRevision:(BOOL)isNewRevision;
 
+/// Reports an \c INTDeviceInfoChangedEvent with \c deviceToken converted to a string as defined by
+/// <tt>-[INTDeviceInfoChangedEvent deviceToken]</tt>.
+- (void)deviceTokenDidChange:(nullable NSData *)deviceToken;
+
 @end
 
 NS_ASSUME_NONNULL_END

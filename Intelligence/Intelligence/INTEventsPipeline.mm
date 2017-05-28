@@ -4,9 +4,11 @@
 #import "INTEventsPipeline.h"
 
 #import "INTDeviceInfoLoadedEvent.h"
+#import "INTDeviceTokenChangedEvent.h"
 #import "INTEventLogger.h"
 #import "INTEventMetadata.h"
 #import "INTEventTransformer.h"
+#import "NSData+HexString.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -96,6 +98,11 @@ NS_ASSUME_NONNULL_BEGIN
   [self reportLowLevelEvent:[[INTDeviceInfoLoadedEvent alloc]
                              initWithDeviceInfo:deviceInfo deviceInfoRevisionID:deviceInfoRevisionID
                              isNewRevision:isNewRevision]];
+}
+
+- (void)deviceTokenDidChange:(nullable NSData *)deviceToken {
+  [self reportLowLevelEvent:[[INTDeviceTokenChangedEvent alloc]
+                             initWithDeviceToken:[deviceToken int_hexString]]];
 }
 
 @end

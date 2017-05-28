@@ -8,7 +8,7 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol INTDeviceInfoSource, INTStorage;
 
 /// Defines a protocol for objects that receive updates from an \c INTDeviceInfoObserver regarding
-/// \c INTDeviceInfo.
+/// \c INTDeviceInfo and push notification device tokens.
 @protocol INTDeviceInfoObserverDelegate <NSObject>
 
 /// Notifies the delegate that \c deviceInfoObserver had loaded the \c deviceInfo.
@@ -21,10 +21,15 @@ NS_ASSUME_NONNULL_BEGIN
       deviceInfoRevisionID:(NSUUID *)deviceInfoRevisionID
              isNewRevision:(BOOL)isNewRevision;
 
+/// Notifies the receiver that the a device token has changed. \c nil device token means that push
+/// notifications are disabled for the device.
+- (void)deviceTokenDidChange:(nullable NSData *)deviceToken;
+
 @end
 
-/// Observes a stored \c INTDeviceInfo and updates it upon changes. Uses a given \c delegate to
-/// inform of any changes to the device info. This class is thread safe.
+/// Observes a stored \c INTDeviceInfo and \c NSData representing a device push notification token
+/// and updates them. Uses a given \c delegate to inform any changes to the device info or device
+/// token. This class is thread safe.
 @interface INTDeviceInfoObserver : NSObject
 
 - (instancetype)init NS_UNAVAILABLE;
@@ -50,6 +55,11 @@ NS_ASSUME_NONNULL_BEGIN
 /// app store country. If \c appStoreCountry is changed, the \c delegate is notified of a new
 /// \c INTDeviceInfo.
 - (void)setAppStoreCountry:(NSString *)appStoreCountry;
+
+/// Sets a device push notification token from Apple if \c deviceToken is different from a
+/// previously set device token, \c delegate is notified of the change. \c nil device token means
+/// that push notifications are disabled for the device.
+- (void)setDeviceToken:(nullable NSData *)deviceToken;
 
 @end
 
