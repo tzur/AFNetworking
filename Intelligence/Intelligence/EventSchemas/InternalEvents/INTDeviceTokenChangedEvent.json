@@ -1,0 +1,12 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "description": "Device push notification token changed",
+  "properties": {
+    "device_token": {
+      "description": "The new device token assigned to the device. The format of the string should be a hexadecimal, zero padded string representation of a token \\c NSData in groups of four bytes. For example, if the device token data is { 0x1, 0x2f, 0x4, 0xdc, 0x34, 0x3c, 0x5, 0x6c } with \\c groupSize 3 will be returned as \"012f04dc 343c056c\". \\c nil if the push notifications are disabled for the device",
+      "type": ["string", "null"]
+    }
+  },
+  "required": ["device_token"]
+}
