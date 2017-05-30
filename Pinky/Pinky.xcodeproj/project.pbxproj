@@ -23,6 +23,7 @@
 		060EA4481EDD86BB0041487A /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 060EA4221EDD85DC0041487A /* ImageIO.framework */; };
 		060EA4491EDD86F80041487A /* MetalKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 06FD91A61EDC319000D180C7 /* MetalKit.framework */; };
 		060EA44A1EDD870D0041487A /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BB1089E1EDD72F700B27DC4 /* OpenGLES.framework */; };
+		060EA49E1EDD9CC20041487A /* NSBundle+PinkyBundle.mm in Sources */ = {isa = PBXBuildFile; fileRef = 060EA49D1EDD9CC20041487A /* NSBundle+PinkyBundle.mm */; };
 		06FD927F1EDC5E1C00D180C7 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 06FD91AA1EDC31BB00D180C7 /* Accelerate.framework */; };
 		06FD92811EDC5E2D00D180C7 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 06FD92801EDC5E2D00D180C7 /* MobileCoreServices.framework */; };
 		06FD92861EDC5F3900D180C7 /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 06FD927D1EDC5DE500D180C7 /* opencv2.framework */; };
@@ -381,6 +382,8 @@
 /* Begin PBXFileReference section */
 		060EA4221EDD85DC0041487A /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		060EA49B1EDD9C740041487A /* PNKDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKDefines.h; sourceTree = "<group>"; };
+		060EA49C1EDD9CC20041487A /* NSBundle+PinkyBundle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSBundle+PinkyBundle.h"; sourceTree = "<group>"; };
+		060EA49D1EDD9CC20041487A /* NSBundle+PinkyBundle.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSBundle+PinkyBundle.mm"; sourceTree = "<group>"; };
 		06FD917C1EDC30B400D180C7 /* LTEngine.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LTEngine.xcodeproj; path = ../LTEngine/LTEngine.xcodeproj; sourceTree = "<group>"; };
 		06FD91A41EDC318700D180C7 /* Metal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Metal.framework; path = System/Library/Frameworks/Metal.framework; sourceTree = SDKROOT; };
 		06FD91A61EDC319000D180C7 /* MetalKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MetalKit.framework; path = System/Library/Frameworks/MetalKit.framework; sourceTree = SDKROOT; };
@@ -757,6 +760,8 @@
 		A14172BA1E6EB04F005DBEFF /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				060EA49C1EDD9CC20041487A /* NSBundle+PinkyBundle.h */,
+				060EA49D1EDD9CC20041487A /* NSBundle+PinkyBundle.mm */,
 				A14172BB1E6EB07E005DBEFF /* Pinky-Prefix.pch */,
 				060EA49B1EDD9C740041487A /* PNKDefines.h */,
 			);
@@ -1256,6 +1261,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				060EA49E1EDD9CC20041487A /* NSBundle+PinkyBundle.mm in Sources */,
 				882D1F161EC19998007F39F5 /* PNKPlaceholder.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
