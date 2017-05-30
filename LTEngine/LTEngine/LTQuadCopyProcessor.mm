@@ -6,13 +6,13 @@
 #import "LTDynamicQuadDrawer.h"
 #import "LTFbo.h"
 #import "LTFboPool.h"
-#import "LTShaderStorage+LTPassthroughShaderFsh.h"
-#import "LTShaderStorage+LTPassthroughShaderVsh.h"
+#import "LTShaderStorage+LTPassthroughWithPerspectiveShaderFsh.h"
+#import "LTShaderStorage+LTPassthroughWithPerspectiveShaderVsh.h"
 #import "LTTexture.h"
 
 @interface LTQuadCopyProcessor ()
 
-/// Drawer.
+/// Object used to render the copied quadrilateral region.
 @property (readonly, nonatomic) LTDynamicQuadDrawer *drawer;
 
 /// Input texture of the processor.
@@ -20,6 +20,15 @@
 
 /// Output texture of the processor.
 @property (strong, nonatomic) LTTexture *outputTexture;
+
+/// Framebuffer object used to update \c outputTexture.
+@property (readonly, nonatomic) LTFbo *fbo;
+
+/// Input quad in normalized coordinates.
+@property (readonly, nonatomic) lt::Quad normalizedInputQuad;
+
+/// Output quad in normalized coordinates.
+@property (readonly, nonatomic) lt::Quad normalizedOutputQuad;
 
 @end
 
@@ -31,11 +40,13 @@
 
 - (instancetype)initWithInput:(LTTexture *)input output:(LTTexture *)output {
   if (self = [super init]) {
-    _drawer = [[LTDynamicQuadDrawer alloc] initWithVertexSource:[LTPassthroughShaderVsh source]
-                                                 fragmentSource:[LTPassthroughShaderFsh source]
-                                                     gpuStructs:[NSOrderedSet orderedSet]];
+    _drawer = [[LTDynamicQuadDrawer alloc]
+               initWithVertexSource:[LTPassthroughWithPerspectiveShaderVsh source]
+               fragmentSource:[LTPassthroughWithPerspectiveShaderFsh source]
+               gpuStructs:[NSOrderedSet orderedSet]];
     _inputTexture = input;
     _outputTexture = output;
+    _fbo = [[LTFboPool currentPool] fboWithTexture:self.outputTexture];
 
     [self resetInputModel];
   }
@@ -46,7 +57,7 @@
 #pragma mark Input model
 #pragma mark -
 
-+ (NSSet *)inputModelPropertyKeys {
++ (NSSet<NSString *> *)inputModelPropertyKeys {
   static NSSet *properties;
 
   static dispatch_once_t onceToken;
@@ -72,48 +83,43 @@
 #pragma mark Processing
 #pragma mark -
 
-- (void)copyNormalizedQuad:(lt::Quad)inputQuad toNormalizedQuad:(lt::Quad)outputQuad {
-  [self.drawer drawQuads:{outputQuad} textureMapQuads:{inputQuad}
-           attributeData:@[] texture:self.inputTexture auxiliaryTextures:@{}
-                uniforms:@{[LTPassthroughShaderVsh modelview]: $(GLKMatrix4Identity),
-                           [LTPassthroughShaderVsh texture]: $(GLKMatrix3Identity)}];
-}
-
-- (void)preprocess {
-  LTFbo *fbo = [[LTFboPool currentPool] fboWithTexture:self.outputTexture];
-  [fbo bindAndDraw:^{
-    lt::Quad inputQuad =
-        self.inputQuad.quad.scaledAround(1.0 / LTVector2(self.inputTexture.size), CGPointZero);
-    lt::Quad outputQuad =
-        self.outputQuad.quad.scaledAround(1.0 / LTVector2(self.outputTexture.size), CGPointZero);
-    [self copyNormalizedQuad:inputQuad toNormalizedQuad:outputQuad];
+- (void)process {
+  [self.fbo bindAndDraw:^{
+    [self copyNormalizedQuad:self.normalizedInputQuad toNormalizedQuad:self.normalizedOutputQuad];
   }];
 }
 
-- (void)process {
-  [self preprocess];
+- (void)copyNormalizedQuad:(lt::Quad)inputQuad toNormalizedQuad:(lt::Quad)outputQuad {
+  [self.drawer drawQuads:{outputQuad} textureMapQuads:{inputQuad}
+           attributeData:@[] texture:self.inputTexture auxiliaryTextures:@{}
+                uniforms:@{}];
 }
 
 #pragma mark -
-#pragma mark Screen processing
+#pragma mark LTScreenProcessing
 #pragma mark -
 
 - (void)processToFramebufferWithSize:(__unused CGSize)size outputRect:(CGRect)rect {
-  lt::Quad inputQuad =
-      self.inputQuad.quad.scaledAround(1 / LTVector2(self.inputTexture.size), CGPointZero);
   lt::Quad outputQuad =
       self.outputQuad.quad.translatedBy(-1 * rect.origin).scaledAround(1 / LTVector2(rect.size),
                                                                        CGPointZero);
-  [self copyNormalizedQuad:inputQuad toNormalizedQuad:outputQuad];
+  [self copyNormalizedQuad:self.normalizedInputQuad toNormalizedQuad:outputQuad];
 }
 
-- (lt::Quad)targetQuadFromQuad:(lt::Quad)quad scaleFactor:(CGSize)scaleFactor
-                   translation:(CGPoint)translation {
-  LTQuadCorners corners = quad.corners();
-  std::transform(corners.begin(), corners.end(), corners.begin(),
-                 [translation, scaleFactor](CGPoint corner) {
-                   return (corner + translation) * scaleFactor;
-                 });
-  return [[LTQuad alloc] initWithCorners:corners].quad;
+#pragma mark -
+#pragma mark Properties
+#pragma mark -
+
+- (void)setInputQuad:(LTQuad *)inputQuad {
+  _inputQuad = inputQuad;
+  _normalizedInputQuad = inputQuad.quad.scaledAround(1.0 / LTVector2(self.inputTexture.size),
+                                                     CGPointZero);
 }
+
+- (void)setOutputQuad:(LTQuad *)outputQuad {
+  _outputQuad = outputQuad;
+  _normalizedOutputQuad = outputQuad.quad.scaledAround(1.0 / LTVector2(self.outputTexture.size),
+                                                       CGPointZero);
+}
+
 @end

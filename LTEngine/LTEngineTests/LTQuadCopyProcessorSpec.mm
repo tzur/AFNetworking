@@ -7,6 +7,7 @@
 #import "LTQuad.h"
 #import "LTRotatedRect.h"
 #import "LTTexture+Factory.h"
+#import "LTTexture+RectCopying.h"
 
 SpecBegin(LTQuadCopyProcessor)
 
@@ -88,6 +89,22 @@ context(@"processing", ^{
       }
 
       expect($([output image])).to.equalMat($(expected));
+    });
+
+    it(@"should copy quad to quad", ^{
+      [input copyToRect:CGRectFromSize(output.size) ofTexture:output];
+      LTQuadCorners corners{{CGPointMake(0, 14), CGPointMake(30, 0), CGPointMake(30, 30),
+          CGPointMake(16, 30)}};
+
+      processor.outputQuad = [[LTQuad alloc] initWithCorners:corners];
+      processor.inputQuad =
+          [LTQuad quadFromQuad:processor.outputQuad.quad.scaledAround({0.5, 0.5}, CGPointZero)];
+      [processor process];
+
+      LTTexture *expected = [LTTexture byteRGBATextureWithSize:output.size];
+      [input copyToRect:CGRectFromSize(expected.size) ofTexture:expected];
+
+      expect($([output image])).to.equalMat($([expected image]));
     });
   });
 
