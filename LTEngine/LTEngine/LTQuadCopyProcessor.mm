@@ -3,17 +3,25 @@
 
 #import "LTQuadCopyProcessor.h"
 
-#import "LTGLKitExtensions.h"
-#import "LTGPUImageProcessor+Protected.h"
-#import "LTNextIterationPlacement.h"
-#import "LTOneShotImageProcessor+Protected.h"
-#import "LTProgram.h"
-#import "LTProgramFactory.h"
-#import "LTQuad.h"
-#import "LTQuadDrawer.h"
+#import "LTDynamicQuadDrawer.h"
+#import "LTFbo.h"
+#import "LTFboPool.h"
 #import "LTShaderStorage+LTPassthroughShaderFsh.h"
 #import "LTShaderStorage+LTPassthroughShaderVsh.h"
 #import "LTTexture.h"
+
+@interface LTQuadCopyProcessor ()
+
+/// Drawer.
+@property (readonly, nonatomic) LTDynamicQuadDrawer *drawer;
+
+/// Input texture of the processor.
+@property (strong, nonatomic) LTTexture *inputTexture;
+
+/// Output texture of the processor.
+@property (strong, nonatomic) LTTexture *outputTexture;
+
+@end
 
 @implementation LTQuadCopyProcessor
 
@@ -22,52 +30,90 @@
 #pragma mark -
 
 - (instancetype)initWithInput:(LTTexture *)input output:(LTTexture *)output {
-  LTProgram *program =
-      [[[self class] programFactory] programWithVertexSource:[LTPassthroughShaderVsh source]
-                                              fragmentSource:[LTPassthroughShaderFsh source]];
-  LTQuadDrawer *drawer = [[LTQuadDrawer alloc] initWithProgram:program sourceTexture:input];
-  if (self = [super initWithDrawer:drawer sourceTexture:input auxiliaryTextures:nil
-                         andOutput:output]) {
-    [self setDefaultValues];
+  if (self = [super init]) {
+    _drawer = [[LTDynamicQuadDrawer alloc] initWithVertexSource:[LTPassthroughShaderVsh source]
+                                                 fragmentSource:[LTPassthroughShaderFsh source]
+                                                     gpuStructs:[NSOrderedSet orderedSet]];
+    _inputTexture = input;
+    _outputTexture = output;
+
+    [self resetInputModel];
   }
   return self;
 }
 
-- (void)setDefaultValues {
-  self.inputQuad = [LTQuad quadFromRect:CGRectFromSize(self.inputTexture.size)];
-  self.outputQuad = [LTQuad quadFromRect:CGRectFromSize(self.outputTexture.size)];
+#pragma mark -
+#pragma mark Input model
+#pragma mark -
+
++ (NSSet *)inputModelPropertyKeys {
+  static NSSet *properties;
+
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    properties = [NSSet setWithArray:@[
+      @instanceKeypath(LTQuadCopyProcessor, inputQuad),
+      @instanceKeypath(LTQuadCopyProcessor, outputQuad)
+    ]];
+  });
+
+  return properties;
+}
+
+- (LTQuad *)defaultInputQuad {
+  return [LTQuad quadFromRect:CGRectFromSize(self.inputTexture.size)];
+}
+
+- (LTQuad *)defaultOutputQuad {
+  return [LTQuad quadFromRect:CGRectFromSize(self.outputTexture.size)];
 }
 
 #pragma mark -
-#pragma mark LTGPUImageProcessor
+#pragma mark Processing
 #pragma mark -
 
-- (void)drawWithPlacement:(LTNextIterationPlacement *)placement {
-  [((LTQuadDrawer *)self.drawer) drawQuad:self.outputQuad inFramebuffer:placement.targetFbo
-                                 fromQuad:self.inputQuad];
+- (void)copyNormalizedQuad:(lt::Quad)inputQuad toNormalizedQuad:(lt::Quad)outputQuad {
+  [self.drawer drawQuads:{outputQuad} textureMapQuads:{inputQuad}
+           attributeData:@[] texture:self.inputTexture auxiliaryTextures:@{}
+                uniforms:@{[LTPassthroughShaderVsh modelview]: $(GLKMatrix4Identity),
+                           [LTPassthroughShaderVsh texture]: $(GLKMatrix3Identity)}];
+}
+
+- (void)preprocess {
+  LTFbo *fbo = [[LTFboPool currentPool] fboWithTexture:self.outputTexture];
+  [fbo bindAndDraw:^{
+    lt::Quad inputQuad =
+        self.inputQuad.quad.scaledAround(1.0 / LTVector2(self.inputTexture.size), CGPointZero);
+    lt::Quad outputQuad =
+        self.outputQuad.quad.scaledAround(1.0 / LTVector2(self.outputTexture.size), CGPointZero);
+    [self copyNormalizedQuad:inputQuad toNormalizedQuad:outputQuad];
+  }];
+}
+
+- (void)process {
+  [self preprocess];
 }
 
 #pragma mark -
 #pragma mark Screen processing
 #pragma mark -
 
-- (void)processToFramebufferWithSize:(CGSize)size outputRect:(CGRect)rect {
-  [self preprocess];
-
-  LTQuad *targetQuad = [self targetQuadFromQuad:self.outputQuad scaleFactor:size / rect.size
-                                    translation:-1 * rect.origin];
-  [((LTQuadDrawer *)self.drawer) drawQuad:targetQuad inFramebufferWithSize:size
-                                 fromQuad:self.inputQuad];
+- (void)processToFramebufferWithSize:(__unused CGSize)size outputRect:(CGRect)rect {
+  lt::Quad inputQuad =
+      self.inputQuad.quad.scaledAround(1 / LTVector2(self.inputTexture.size), CGPointZero);
+  lt::Quad outputQuad =
+      self.outputQuad.quad.translatedBy(-1 * rect.origin).scaledAround(1 / LTVector2(rect.size),
+                                                                       CGPointZero);
+  [self copyNormalizedQuad:inputQuad toNormalizedQuad:outputQuad];
 }
 
-- (LTQuad *)targetQuadFromQuad:(LTQuad *)quad scaleFactor:(CGSize)scaleFactor
+- (lt::Quad)targetQuadFromQuad:(lt::Quad)quad scaleFactor:(CGSize)scaleFactor
                    translation:(CGPoint)translation {
-  LTQuadCorners corners = quad.corners;
+  LTQuadCorners corners = quad.corners();
   std::transform(corners.begin(), corners.end(), corners.begin(),
                  [translation, scaleFactor](CGPoint corner) {
-    return (corner + translation) * scaleFactor;
-  });
-  return [[LTQuad alloc] initWithCorners:corners];
+                   return (corner + translation) * scaleFactor;
+                 });
+  return [[LTQuad alloc] initWithCorners:corners].quad;
 }
-
 @end
