@@ -380,6 +380,7 @@
 
 /* Begin PBXFileReference section */
 		060EA4221EDD85DC0041487A /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
+		060EA49B1EDD9C740041487A /* PNKDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKDefines.h; sourceTree = "<group>"; };
 		06FD917C1EDC30B400D180C7 /* LTEngine.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LTEngine.xcodeproj; path = ../LTEngine/LTEngine.xcodeproj; sourceTree = "<group>"; };
 		06FD91A41EDC318700D180C7 /* Metal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Metal.framework; path = System/Library/Frameworks/Metal.framework; sourceTree = SDKROOT; };
 		06FD91A61EDC319000D180C7 /* MetalKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MetalKit.framework; path = System/Library/Frameworks/MetalKit.framework; sourceTree = SDKROOT; };
@@ -757,6 +758,7 @@
 			isa = PBXGroup;
 			children = (
 				A14172BB1E6EB07E005DBEFF /* Pinky-Prefix.pch */,
+				060EA49B1EDD9C740041487A /* PNKDefines.h */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";

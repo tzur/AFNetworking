@@ -1,10 +1,16 @@
 // Copyright (c) 2017 Lightricks. All rights reserved.
 // Created by Ofir Bibi.
 
+// Pinky helpers.
+#import "PNKDefines.h"
+
 // iOS Frameworks.
 #import <Foundation/Foundation.h>
 #import <Metal/Metal.h>
 #import <MetalKit/MetalKit.h>
+#if PNK_USE_MPS
+  #import <MetalPerformanceShaders/MetalPerformanceShaders.h>
+#endif
 
 // Lightricks Libraries.
 #import <LTKit/LTKit-Prefix.pch>
