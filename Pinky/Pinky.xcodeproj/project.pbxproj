@@ -7,22 +7,140 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		882D1F161EC19998007F39F5 /* PNKPlaceholder.m in Sources */ = {isa = PBXBuildFile; fileRef = 882D1F151EC19998007F39F5 /* PNKPlaceholder.m */; };
+		060EA4101EDD77080041487A /* libLTEngine.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BB1068F1EDD6FB800B27DC4 /* libLTEngine.a */; };
+		060EA4111EDD77160041487A /* libLTKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A141726F1E6EADDF005DBEFF /* libLTKit.a */; };
+		060EA4141EDD7CC40041487A /* libextobjc_iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 882D1F271EC1AC6E007F39F5 /* libextobjc_iOS.a */; };
+		060EA4151EDD7DB00041487A /* libOpenEXR.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 06FD92821EDC5E6C00D180C7 /* libOpenEXR.a */; };
+		060EA4161EDD7E3C0041487A /* libextobjc_iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 882D1F271EC1AC6E007F39F5 /* libextobjc_iOS.a */; };
+		060EA4171EDD7E450041487A /* libLTEngine.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BB1068F1EDD6FB800B27DC4 /* libLTEngine.a */; };
+		060EA4181EDD7E4A0041487A /* libLTKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A141726F1E6EADDF005DBEFF /* libLTKit.a */; };
+		060EA4191EDD7E720041487A /* libOpenEXR.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 06FD92821EDC5E6C00D180C7 /* libOpenEXR.a */; };
+		060EA4231EDD85DC0041487A /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 060EA4221EDD85DC0041487A /* ImageIO.framework */; };
+		060EA4441EDD86940041487A /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BB108A01EDD732C00B27DC4 /* CoreImage.framework */; };
+		060EA4451EDD86940041487A /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BB1089A1EDD72E300B27DC4 /* CoreMedia.framework */; };
+		060EA4461EDD86940041487A /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BB108981EDD72DE00B27DC4 /* CoreText.framework */; };
+		060EA4471EDD86940041487A /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BB1089C1EDD72E700B27DC4 /* CoreVideo.framework */; };
+		060EA4481EDD86BB0041487A /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 060EA4221EDD85DC0041487A /* ImageIO.framework */; };
+		060EA4491EDD86F80041487A /* MetalKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 06FD91A61EDC319000D180C7 /* MetalKit.framework */; };
+		060EA44A1EDD870D0041487A /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BB1089E1EDD72F700B27DC4 /* OpenGLES.framework */; };
+		060EA49E1EDD9CC20041487A /* NSBundle+PinkyBundle.mm in Sources */ = {isa = PBXBuildFile; fileRef = 060EA49D1EDD9CC20041487A /* NSBundle+PinkyBundle.mm */; };
+		06FD927F1EDC5E1C00D180C7 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 06FD91AA1EDC31BB00D180C7 /* Accelerate.framework */; };
+		06FD92811EDC5E2D00D180C7 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 06FD92801EDC5E2D00D180C7 /* MobileCoreServices.framework */; };
+		06FD92861EDC5F3900D180C7 /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 06FD927D1EDC5DE500D180C7 /* opencv2.framework */; };
+		06FD92881EDC5F4500D180C7 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 06FD92871EDC5F4500D180C7 /* AVFoundation.framework */; };
+		06FD92891EDC5F5D00D180C7 /* Objection-iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 06FD92841EDC5ED500D180C7 /* Objection-iOS.framework */; };
+		06FD928B1EDC5F6A00D180C7 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 06FD928A1EDC5F6A00D180C7 /* AssetsLibrary.framework */; };
+		06FD929B1EDC5FAD00D180C7 /* Mantle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 06FD92981EDC5F9100D180C7 /* Mantle.framework */; };
+		06FD92BF1EDC85C600D180C7 /* PNKDevicePlaceholderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 06FD92BE1EDC85C600D180C7 /* PNKDevicePlaceholderSpec.mm */; };
+		06FD92C11EDC85C600D180C7 /* libPinky.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A14171A11E6EAA93005DBEFF /* libPinky.a */; };
+		06FD92CB1EDC86E400D180C7 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 06FD91AA1EDC31BB00D180C7 /* Accelerate.framework */; };
+		06FD92CC1EDC86E900D180C7 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 06FD928A1EDC5F6A00D180C7 /* AssetsLibrary.framework */; };
+		06FD92CD1EDC86EE00D180C7 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 06FD92871EDC5F4500D180C7 /* AVFoundation.framework */; };
+		06FD92CE1EDC86F300D180C7 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 882D1F2D1EC1C497007F39F5 /* CoreGraphics.framework */; };
+		06FD92CF1EDC871100D180C7 /* libSpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A14172B81E6EAF0D005DBEFF /* libSpecta.a */; };
+		06FD92D01EDC871F00D180C7 /* libcompression.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 882D1F171EC19A2C007F39F5 /* libcompression.tbd */; };
+		06FD92D11EDC872E00D180C7 /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A141729D1E6EAF03005DBEFF /* libOCMock.a */; };
+		06FD92D21EDC874100D180C7 /* libExpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A141728A1E6EAEE7005DBEFF /* libExpecta.a */; };
+		06FD92D31EDC87C400D180C7 /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 06FD927D1EDC5DE500D180C7 /* opencv2.framework */; };
+		06FD92D41EDC87DA00D180C7 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1417A911E6ED9CB005DBEFF /* UIKit.framework */; };
+		06FD92D51EDC87DE00D180C7 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 882D1F311EC1C54F007F39F5 /* QuartzCore.framework */; };
+		06FD92D61EDC87ED00D180C7 /* Objection-iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 06FD92841EDC5ED500D180C7 /* Objection-iOS.framework */; };
+		06FD92D71EDC87F000D180C7 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 06FD92801EDC5E2D00D180C7 /* MobileCoreServices.framework */; };
+		06FD92D81EDC87FB00D180C7 /* MetalPerformanceShaders.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 06FD91A81EDC319800D180C7 /* MetalPerformanceShaders.framework */; };
+		06FD92D91EDC87FF00D180C7 /* MetalKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 06FD91A61EDC319000D180C7 /* MetalKit.framework */; };
+		06FD92DA1EDC880300D180C7 /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 06FD91A41EDC318700D180C7 /* Metal.framework */; };
+		06FD92DB1EDC881E00D180C7 /* Mantle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 06FD92981EDC5F9100D180C7 /* Mantle.framework */; };
+		06FD92DC1EDC882300D180C7 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 882D1F2F1EC1C49C007F39F5 /* GLKit.framework */; };
+		882D1F161EC19998007F39F5 /* PNKPlaceholder.mm in Sources */ = {isa = PBXBuildFile; fileRef = 882D1F151EC19998007F39F5 /* PNKPlaceholder.mm */; };
 		882D1F181EC19A2C007F39F5 /* libcompression.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 882D1F171EC19A2C007F39F5 /* libcompression.tbd */; };
-		882D1F2C1EC1AC92007F39F5 /* libextobjc_iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 882D1F271EC1AC6E007F39F5 /* libextobjc_iOS.a */; };
 		882D1F2E1EC1C497007F39F5 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 882D1F2D1EC1C497007F39F5 /* CoreGraphics.framework */; };
 		882D1F301EC1C49C007F39F5 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 882D1F2F1EC1C49C007F39F5 /* GLKit.framework */; };
 		882D1F321EC1C54F007F39F5 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 882D1F311EC1C54F007F39F5 /* QuartzCore.framework */; };
 		884962181EBA226E007B3AE8 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1417A911E6ED9CB005DBEFF /* UIKit.framework */; };
+		8BB108991EDD72DE00B27DC4 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BB108981EDD72DE00B27DC4 /* CoreText.framework */; };
+		8BB1089B1EDD72E300B27DC4 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BB1089A1EDD72E300B27DC4 /* CoreMedia.framework */; };
+		8BB1089D1EDD72E700B27DC4 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BB1089C1EDD72E700B27DC4 /* CoreVideo.framework */; };
+		8BB1089F1EDD72F700B27DC4 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BB1089E1EDD72F700B27DC4 /* OpenGLES.framework */; };
+		8BB108A11EDD732C00B27DC4 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BB108A01EDD732C00B27DC4 /* CoreImage.framework */; };
+		8BB108A21EDD735100B27DC4 /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 06FD91A41EDC318700D180C7 /* Metal.framework */; };
 		A14171C61E6EAC0D005DBEFF /* libPinky.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A14171A11E6EAA93005DBEFF /* libPinky.a */; };
 		A14173401E6EB59F005DBEFF /* libExpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A141728A1E6EAEE7005DBEFF /* libExpecta.a */; };
-		A14173411E6EB59F005DBEFF /* libLTKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A141726F1E6EADDF005DBEFF /* libLTKit.a */; };
 		A14173421E6EB59F005DBEFF /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A141729D1E6EAF03005DBEFF /* libOCMock.a */; };
 		A14173431E6EB59F005DBEFF /* libSpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A14172B81E6EAF0D005DBEFF /* libSpecta.a */; };
 		A1541B0E1EAF1CC300B4F064 /* PNKPlaceholderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1541B0B1EAF1CC300B4F064 /* PNKPlaceholderSpec.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		060EA4121EDD7C9A0041487A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 06FD917C1EDC30B400D180C7 /* LTEngine.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 8B3DEBE318296B6100EA0C1A;
+			remoteInfo = LTEngine;
+		};
+		06FD92931EDC5F9100D180C7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 06FD928C1EDC5F9100D180C7 /* Mantle.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D042FC3C15F72B23004E8054;
+			remoteInfo = "Mantle-Mac";
+		};
+		06FD92951EDC5F9100D180C7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 06FD928C1EDC5F9100D180C7 /* Mantle.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D042FC5415F72B23004E8054;
+			remoteInfo = "Mantle-MacTests";
+		};
+		06FD92971EDC5F9100D180C7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 06FD928C1EDC5F9100D180C7 /* Mantle.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D0E9C35719F6DB38000D427D;
+			remoteInfo = "Mantle-iOS";
+		};
+		06FD92991EDC5F9100D180C7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 06FD928C1EDC5F9100D180C7 /* Mantle.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D0E9C36119F6DB38000D427D;
+			remoteInfo = "Mantle-iOSTests";
+		};
+		06FD92AA1EDC679B00D180C7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A14171991E6EAA93005DBEFF /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 06FD92A01EDC66E500D180C7;
+			remoteInfo = PinkyBundle;
+		};
+		06FD92B61EDC852400D180C7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A14171991E6EAA93005DBEFF /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 06FD92A01EDC66E500D180C7;
+			remoteInfo = PinkyBundle;
+		};
+		06FD92C21EDC85C600D180C7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A14171991E6EAA93005DBEFF /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A14171A01E6EAA93005DBEFF;
+			remoteInfo = Pinky;
+		};
+		06FD92C71EDC86B200D180C7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A14171991E6EAA93005DBEFF /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 06FD92A01EDC66E500D180C7;
+			remoteInfo = PinkyBundle;
+		};
+		06FD92C91EDC86BC00D180C7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A14172D71E6EB2FF005DBEFF /* TestHost.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 65CEFBB11D3BF72800402230;
+			remoteInfo = TestHost;
+		};
 		882D1F241EC1AC6E007F39F5 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 882D1F1D1EC1AC6E007F39F5 /* extobjc.xcodeproj */;
@@ -50,6 +168,27 @@
 			proxyType = 2;
 			remoteGlobalIDString = D0CFB60F128A8EEE006DC377;
 			remoteInfo = "iOS Tests";
+		};
+		8BB1068E1EDD6FB800B27DC4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 06FD917C1EDC30B400D180C7 /* LTEngine.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8B3DEBE418296B6100EA0C1A;
+			remoteInfo = LTEngine;
+		};
+		8BB106901EDD6FB800B27DC4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 06FD917C1EDC30B400D180C7 /* LTEngine.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8BCFBFF318CF0AF000E612DE;
+			remoteInfo = LTEngineBundle;
+		};
+		8BB106921EDD6FB800B27DC4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 06FD917C1EDC30B400D180C7 /* LTEngine.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8B3DEBF418296B6100EA0C1A;
+			remoteInfo = LTEngineTests;
 		};
 		A14171C71E6EAC0D005DBEFF /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -241,13 +380,40 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		060EA4221EDD85DC0041487A /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
+		060EA49B1EDD9C740041487A /* PNKDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKDefines.h; sourceTree = "<group>"; };
+		060EA49C1EDD9CC20041487A /* NSBundle+PinkyBundle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSBundle+PinkyBundle.h"; sourceTree = "<group>"; };
+		060EA49D1EDD9CC20041487A /* NSBundle+PinkyBundle.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSBundle+PinkyBundle.mm"; sourceTree = "<group>"; };
+		06FD917C1EDC30B400D180C7 /* LTEngine.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LTEngine.xcodeproj; path = ../LTEngine/LTEngine.xcodeproj; sourceTree = "<group>"; };
+		06FD91A41EDC318700D180C7 /* Metal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Metal.framework; path = System/Library/Frameworks/Metal.framework; sourceTree = SDKROOT; };
+		06FD91A61EDC319000D180C7 /* MetalKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MetalKit.framework; path = System/Library/Frameworks/MetalKit.framework; sourceTree = SDKROOT; };
+		06FD91A81EDC319800D180C7 /* MetalPerformanceShaders.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MetalPerformanceShaders.framework; path = System/Library/Frameworks/MetalPerformanceShaders.framework; sourceTree = SDKROOT; };
+		06FD91AA1EDC31BB00D180C7 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
+		06FD927D1EDC5DE500D180C7 /* opencv2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = opencv2.framework; path = ../third_party/opencv/opencv2.framework; sourceTree = "<group>"; };
+		06FD92801EDC5E2D00D180C7 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
+		06FD92821EDC5E6C00D180C7 /* libOpenEXR.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libOpenEXR.a; path = "../third_party/openexr-binaries/lib/libOpenEXR.a"; sourceTree = "<group>"; };
+		06FD92841EDC5ED500D180C7 /* Objection-iOS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = "Objection-iOS.framework"; path = "../third_party/objection/Objection-iOS.framework"; sourceTree = "<group>"; };
+		06FD92871EDC5F4500D180C7 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		06FD928A1EDC5F6A00D180C7 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
+		06FD928C1EDC5F9100D180C7 /* Mantle.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Mantle.xcodeproj; path = ../third_party/Mantle/Mantle.xcodeproj; sourceTree = "<group>"; };
+		06FD92A11EDC66E500D180C7 /* PinkyBundle.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PinkyBundle.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
+		06FD92A31EDC66E500D180C7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		06FD92BC1EDC85C600D180C7 /* PinkyDeviceTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PinkyDeviceTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		06FD92BE1EDC85C600D180C7 /* PNKDevicePlaceholderSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKDevicePlaceholderSpec.mm; sourceTree = "<group>"; };
+		06FD92C01EDC85C600D180C7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		06FD92E01EDC893A00D180C7 /* PinkyDeviceTests-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PinkyDeviceTests-Prefix.pch"; sourceTree = "<group>"; };
 		882D1F141EC19998007F39F5 /* PNKPlaceholder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKPlaceholder.h; sourceTree = "<group>"; };
-		882D1F151EC19998007F39F5 /* PNKPlaceholder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PNKPlaceholder.m; sourceTree = "<group>"; };
+		882D1F151EC19998007F39F5 /* PNKPlaceholder.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKPlaceholder.mm; sourceTree = "<group>"; };
 		882D1F171EC19A2C007F39F5 /* libcompression.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libcompression.tbd; path = usr/lib/libcompression.tbd; sourceTree = SDKROOT; };
 		882D1F1D1EC1AC6E007F39F5 /* extobjc.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = extobjc.xcodeproj; path = ../third_party/libextobjc/extobjc.xcodeproj; sourceTree = "<group>"; };
 		882D1F2D1EC1C497007F39F5 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		882D1F2F1EC1C49C007F39F5 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
 		882D1F311EC1C54F007F39F5 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		8BB108981EDD72DE00B27DC4 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
+		8BB1089A1EDD72E300B27DC4 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		8BB1089C1EDD72E700B27DC4 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
+		8BB1089E1EDD72F700B27DC4 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
+		8BB108A01EDD732C00B27DC4 /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
 		A14171A11E6EAA93005DBEFF /* libPinky.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPinky.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		A14171C11E6EAC0D005DBEFF /* PinkyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PinkyTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A14171C51E6EAC0D005DBEFF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -270,6 +436,49 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		06FD929E1EDC66E500D180C7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		06FD92B91EDC85C600D180C7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				06FD92CB1EDC86E400D180C7 /* Accelerate.framework in Frameworks */,
+				06FD92CC1EDC86E900D180C7 /* AssetsLibrary.framework in Frameworks */,
+				06FD92CD1EDC86EE00D180C7 /* AVFoundation.framework in Frameworks */,
+				06FD92CE1EDC86F300D180C7 /* CoreGraphics.framework in Frameworks */,
+				060EA4441EDD86940041487A /* CoreImage.framework in Frameworks */,
+				060EA4451EDD86940041487A /* CoreMedia.framework in Frameworks */,
+				060EA4461EDD86940041487A /* CoreText.framework in Frameworks */,
+				060EA4471EDD86940041487A /* CoreVideo.framework in Frameworks */,
+				06FD92DC1EDC882300D180C7 /* GLKit.framework in Frameworks */,
+				060EA4481EDD86BB0041487A /* ImageIO.framework in Frameworks */,
+				06FD92DB1EDC881E00D180C7 /* Mantle.framework in Frameworks */,
+				06FD92DA1EDC880300D180C7 /* Metal.framework in Frameworks */,
+				06FD92D91EDC87FF00D180C7 /* MetalKit.framework in Frameworks */,
+				06FD92D81EDC87FB00D180C7 /* MetalPerformanceShaders.framework in Frameworks */,
+				06FD92D71EDC87F000D180C7 /* MobileCoreServices.framework in Frameworks */,
+				06FD92D61EDC87ED00D180C7 /* Objection-iOS.framework in Frameworks */,
+				060EA44A1EDD870D0041487A /* OpenGLES.framework in Frameworks */,
+				06FD92D51EDC87DE00D180C7 /* QuartzCore.framework in Frameworks */,
+				06FD92D41EDC87DA00D180C7 /* UIKit.framework in Frameworks */,
+				06FD92D31EDC87C400D180C7 /* opencv2.framework in Frameworks */,
+				06FD92D21EDC874100D180C7 /* libExpecta.a in Frameworks */,
+				060EA4161EDD7E3C0041487A /* libextobjc_iOS.a in Frameworks */,
+				060EA4171EDD7E450041487A /* libLTEngine.a in Frameworks */,
+				060EA4181EDD7E4A0041487A /* libLTKit.a in Frameworks */,
+				06FD92D11EDC872E00D180C7 /* libOCMock.a in Frameworks */,
+				060EA4191EDD7E720041487A /* libOpenEXR.a in Frameworks */,
+				06FD92C11EDC85C600D180C7 /* libPinky.a in Frameworks */,
+				06FD92CF1EDC871100D180C7 /* libSpecta.a in Frameworks */,
+				06FD92D01EDC871F00D180C7 /* libcompression.tbd in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A141719E1E6EAA93005DBEFF /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -281,16 +490,33 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				06FD927F1EDC5E1C00D180C7 /* Accelerate.framework in Frameworks */,
+				06FD928B1EDC5F6A00D180C7 /* AssetsLibrary.framework in Frameworks */,
+				06FD92881EDC5F4500D180C7 /* AVFoundation.framework in Frameworks */,
 				882D1F2E1EC1C497007F39F5 /* CoreGraphics.framework in Frameworks */,
+				8BB108A11EDD732C00B27DC4 /* CoreImage.framework in Frameworks */,
+				8BB1089B1EDD72E300B27DC4 /* CoreMedia.framework in Frameworks */,
+				8BB108991EDD72DE00B27DC4 /* CoreText.framework in Frameworks */,
+				8BB1089D1EDD72E700B27DC4 /* CoreVideo.framework in Frameworks */,
 				882D1F301EC1C49C007F39F5 /* GLKit.framework in Frameworks */,
+				060EA4231EDD85DC0041487A /* ImageIO.framework in Frameworks */,
+				06FD929B1EDC5FAD00D180C7 /* Mantle.framework in Frameworks */,
+				8BB108A21EDD735100B27DC4 /* Metal.framework in Frameworks */,
+				060EA4491EDD86F80041487A /* MetalKit.framework in Frameworks */,
+				06FD92811EDC5E2D00D180C7 /* MobileCoreServices.framework in Frameworks */,
+				06FD92891EDC5F5D00D180C7 /* Objection-iOS.framework in Frameworks */,
+				8BB1089F1EDD72F700B27DC4 /* OpenGLES.framework in Frameworks */,
 				882D1F321EC1C54F007F39F5 /* QuartzCore.framework in Frameworks */,
 				884962181EBA226E007B3AE8 /* UIKit.framework in Frameworks */,
+				06FD92861EDC5F3900D180C7 /* opencv2.framework in Frameworks */,
 				A14173401E6EB59F005DBEFF /* libExpecta.a in Frameworks */,
-				A14171C61E6EAC0D005DBEFF /* libPinky.a in Frameworks */,
-				A14173411E6EB59F005DBEFF /* libLTKit.a in Frameworks */,
+				060EA4141EDD7CC40041487A /* libextobjc_iOS.a in Frameworks */,
+				060EA4101EDD77080041487A /* libLTEngine.a in Frameworks */,
+				060EA4111EDD77160041487A /* libLTKit.a in Frameworks */,
 				A14173421E6EB59F005DBEFF /* libOCMock.a in Frameworks */,
+				060EA4151EDD7DB00041487A /* libOpenEXR.a in Frameworks */,
+				A14171C61E6EAC0D005DBEFF /* libPinky.a in Frameworks */,
 				A14173431E6EB59F005DBEFF /* libSpecta.a in Frameworks */,
-				882D1F2C1EC1AC92007F39F5 /* libextobjc_iOS.a in Frameworks */,
 				882D1F181EC19A2C007F39F5 /* libcompression.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -298,6 +524,68 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		06FD928D1EDC5F9100D180C7 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				06FD92941EDC5F9100D180C7 /* Mantle.framework */,
+				06FD92961EDC5F9100D180C7 /* Mantle-MacTests.xctest */,
+				06FD92981EDC5F9100D180C7 /* Mantle.framework */,
+				06FD929A1EDC5F9100D180C7 /* Mantle-iOSTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		06FD92A21EDC66E500D180C7 /* PinkyBundle */ = {
+			isa = PBXGroup;
+			children = (
+				06FD92AC1EDC67A500D180C7 /* Shaders */,
+				06FD92A31EDC66E500D180C7 /* Info.plist */,
+			);
+			path = PinkyBundle;
+			sourceTree = "<group>";
+		};
+		06FD92AC1EDC67A500D180C7 /* Shaders */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Shaders;
+			path = ../Pinky;
+			sourceTree = "<group>";
+		};
+		06FD92BD1EDC85C600D180C7 /* PinkyDeviceTests */ = {
+			isa = PBXGroup;
+			children = (
+				06FD92DD1EDC88C800D180C7 /* Tests */,
+				06FD92DF1EDC890300D180C7 /* Supporting Files */,
+			);
+			path = PinkyDeviceTests;
+			sourceTree = "<group>";
+		};
+		06FD92DD1EDC88C800D180C7 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				06FD92DE1EDC88CE00D180C7 /* Utils */,
+			);
+			name = Tests;
+			sourceTree = "<group>";
+		};
+		06FD92DE1EDC88CE00D180C7 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				06FD92BE1EDC85C600D180C7 /* PNKDevicePlaceholderSpec.mm */,
+			);
+			name = Utils;
+			sourceTree = "<group>";
+		};
+		06FD92DF1EDC890300D180C7 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				06FD92C01EDC85C600D180C7 /* Info.plist */,
+				06FD92E01EDC893A00D180C7 /* PinkyDeviceTests-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 		882D1F1E1EC1AC6E007F39F5 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -309,11 +597,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		A113424A1EB5AD870042ABA8 /* Test Utils */ = {
+		8BB106891EDD6FB700B27DC4 /* Products */ = {
 			isa = PBXGroup;
 			children = (
+				8BB1068F1EDD6FB800B27DC4 /* libLTEngine.a */,
+				8BB106911EDD6FB800B27DC4 /* LTEngine.bundle */,
+				8BB106931EDD6FB800B27DC4 /* LTEngineTests.xctest */,
 			);
-			name = "Test Utils";
+			name = Products;
 			sourceTree = "<group>";
 		};
 		A14171981E6EAA93005DBEFF = {
@@ -321,6 +612,8 @@
 			children = (
 				A14171B31E6EAAF6005DBEFF /* Configuration */,
 				A14171A31E6EAA93005DBEFF /* Pinky */,
+				06FD92A21EDC66E500D180C7 /* PinkyBundle */,
+				06FD92BD1EDC85C600D180C7 /* PinkyDeviceTests */,
 				A14171C21E6EAC0D005DBEFF /* PinkyTests */,
 				A14175B41E6EBE37005DBEFF /* Frameworks */,
 				A14171CC1E6EAC3A005DBEFF /* Libraries */,
@@ -333,6 +626,8 @@
 			children = (
 				A14171A11E6EAA93005DBEFF /* libPinky.a */,
 				A14171C11E6EAC0D005DBEFF /* PinkyTests.xctest */,
+				06FD92A11EDC66E500D180C7 /* PinkyBundle.bundle */,
+				06FD92BC1EDC85C600D180C7 /* PinkyDeviceTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -342,7 +637,7 @@
 			children = (
 				A14172BA1E6EB04F005DBEFF /* Supporting Files */,
 				882D1F141EC19998007F39F5 /* PNKPlaceholder.h */,
-				882D1F151EC19998007F39F5 /* PNKPlaceholder.m */,
+				882D1F151EC19998007F39F5 /* PNKPlaceholder.mm */,
 			);
 			path = Pinky;
 			sourceTree = "<group>";
@@ -360,7 +655,6 @@
 		A14171C21E6EAC0D005DBEFF /* PinkyTests */ = {
 			isa = PBXGroup;
 			children = (
-				A113424A1EB5AD870042ABA8 /* Test Utils */,
 				A14173471E6EB62C005DBEFF /* Tests */,
 				A14172B91E6EB006005DBEFF /* Supporting Files */,
 			);
@@ -371,7 +665,9 @@
 			isa = PBXGroup;
 			children = (
 				A14172741E6EAEE7005DBEFF /* Expecta.xcodeproj */,
+				06FD917C1EDC30B400D180C7 /* LTEngine.xcodeproj */,
 				A14172691E6EADDF005DBEFF /* LTKit.xcodeproj */,
+				06FD928C1EDC5F9100D180C7 /* Mantle.xcodeproj */,
 				A141728F1E6EAF03005DBEFF /* OCMock.xcodeproj */,
 				A14172A41E6EAF0D005DBEFF /* Specta.xcodeproj */,
 				A14172D71E6EB2FF005DBEFF /* TestHost.xcodeproj */,
@@ -464,7 +760,10 @@
 		A14172BA1E6EB04F005DBEFF /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				060EA49C1EDD9CC20041487A /* NSBundle+PinkyBundle.h */,
+				060EA49D1EDD9CC20041487A /* NSBundle+PinkyBundle.mm */,
 				A14172BB1E6EB07E005DBEFF /* Pinky-Prefix.pch */,
+				060EA49B1EDD9C740041487A /* PNKDefines.h */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -480,7 +779,6 @@
 		A14173471E6EB62C005DBEFF /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				A1541C081EAF400D00B4F064 /* Utils */,
 				A1541B0B1EAF1CC300B4F064 /* PNKPlaceholderSpec.mm */,
 			);
 			name = Tests;
@@ -489,25 +787,71 @@
 		A14175B41E6EBE37005DBEFF /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				882D1F311EC1C54F007F39F5 /* QuartzCore.framework */,
-				882D1F2F1EC1C49C007F39F5 /* GLKit.framework */,
+				060EA4221EDD85DC0041487A /* ImageIO.framework */,
+				8BB108A01EDD732C00B27DC4 /* CoreImage.framework */,
+				8BB1089E1EDD72F700B27DC4 /* OpenGLES.framework */,
+				8BB1089C1EDD72E700B27DC4 /* CoreVideo.framework */,
+				8BB1089A1EDD72E300B27DC4 /* CoreMedia.framework */,
+				8BB108981EDD72DE00B27DC4 /* CoreText.framework */,
+				06FD928A1EDC5F6A00D180C7 /* AssetsLibrary.framework */,
+				06FD92871EDC5F4500D180C7 /* AVFoundation.framework */,
+				06FD91AA1EDC31BB00D180C7 /* Accelerate.framework */,
 				882D1F2D1EC1C497007F39F5 /* CoreGraphics.framework */,
+				882D1F2F1EC1C49C007F39F5 /* GLKit.framework */,
 				882D1F171EC19A2C007F39F5 /* libcompression.tbd */,
+				06FD92821EDC5E6C00D180C7 /* libOpenEXR.a */,
+				06FD91A41EDC318700D180C7 /* Metal.framework */,
+				06FD91A61EDC319000D180C7 /* MetalKit.framework */,
+				06FD91A81EDC319800D180C7 /* MetalPerformanceShaders.framework */,
+				06FD92801EDC5E2D00D180C7 /* MobileCoreServices.framework */,
+				06FD92841EDC5ED500D180C7 /* Objection-iOS.framework */,
+				06FD927D1EDC5DE500D180C7 /* opencv2.framework */,
+				882D1F311EC1C54F007F39F5 /* QuartzCore.framework */,
 				A1417A911E6ED9CB005DBEFF /* UIKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		A1541C081EAF400D00B4F064 /* Utils */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Utils;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		06FD92A01EDC66E500D180C7 /* PinkyBundle */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 06FD92A41EDC66E500D180C7 /* Build configuration list for PBXNativeTarget "PinkyBundle" */;
+			buildPhases = (
+				06FD929D1EDC66E500D180C7 /* Sources */,
+				06FD929E1EDC66E500D180C7 /* Frameworks */,
+				06FD929F1EDC66E500D180C7 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = PinkyBundle;
+			productName = PinkyBundle;
+			productReference = 06FD92A11EDC66E500D180C7 /* PinkyBundle.bundle */;
+			productType = "com.apple.product-type.bundle";
+		};
+		06FD92BB1EDC85C600D180C7 /* PinkyDeviceTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 06FD92C41EDC85C600D180C7 /* Build configuration list for PBXNativeTarget "PinkyDeviceTests" */;
+			buildPhases = (
+				06FD92B81EDC85C600D180C7 /* Sources */,
+				06FD92B91EDC85C600D180C7 /* Frameworks */,
+				06FD92BA1EDC85C600D180C7 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				06FD92C31EDC85C600D180C7 /* PBXTargetDependency */,
+				06FD92C81EDC86B200D180C7 /* PBXTargetDependency */,
+				06FD92CA1EDC86BC00D180C7 /* PBXTargetDependency */,
+			);
+			name = PinkyDeviceTests;
+			productName = PinkyDeviceTests;
+			productReference = 06FD92BC1EDC85C600D180C7 /* PinkyDeviceTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		A14171A01E6EAA93005DBEFF /* Pinky */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = A14171AA1E6EAA93005DBEFF /* Build configuration list for PBXNativeTarget "Pinky" */;
@@ -519,6 +863,8 @@
 			buildRules = (
 			);
 			dependencies = (
+				060EA4131EDD7C9A0041487A /* PBXTargetDependency */,
+				06FD92AB1EDC679B00D180C7 /* PBXTargetDependency */,
 			);
 			name = Pinky;
 			productName = Pinky;
@@ -537,6 +883,7 @@
 			);
 			dependencies = (
 				A14171C81E6EAC0D005DBEFF /* PBXTargetDependency */,
+				06FD92B71EDC852400D180C7 /* PBXTargetDependency */,
 				A14172DE1E6EB331005DBEFF /* PBXTargetDependency */,
 			);
 			name = PinkyTests;
@@ -553,6 +900,15 @@
 				LastUpgradeCheck = 0820;
 				ORGANIZATIONNAME = Lightricks;
 				TargetAttributes = {
+					06FD92A01EDC66E500D180C7 = {
+						CreatedOnToolsVersion = 8.3.2;
+						ProvisioningStyle = Automatic;
+					};
+					06FD92BB1EDC85C600D180C7 = {
+						CreatedOnToolsVersion = 8.3.2;
+						DevelopmentTeam = KG6GWND6BG;
+						ProvisioningStyle = Automatic;
+					};
 					A14171A01E6EAA93005DBEFF = {
 						CreatedOnToolsVersion = 8.2.1;
 						DevelopmentTeam = KG6GWND6BG;
@@ -571,6 +927,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				Base,
 			);
 			mainGroup = A14171981E6EAA93005DBEFF;
 			productRefGroup = A14171A21E6EAA93005DBEFF /* Products */;
@@ -585,8 +942,16 @@
 					ProjectRef = 882D1F1D1EC1AC6E007F39F5 /* extobjc.xcodeproj */;
 				},
 				{
+					ProductGroup = 8BB106891EDD6FB700B27DC4 /* Products */;
+					ProjectRef = 06FD917C1EDC30B400D180C7 /* LTEngine.xcodeproj */;
+				},
+				{
 					ProductGroup = A141726A1E6EADDF005DBEFF /* Products */;
 					ProjectRef = A14172691E6EADDF005DBEFF /* LTKit.xcodeproj */;
+				},
+				{
+					ProductGroup = 06FD928D1EDC5F9100D180C7 /* Products */;
+					ProjectRef = 06FD928C1EDC5F9100D180C7 /* Mantle.xcodeproj */;
 				},
 				{
 					ProductGroup = A14172901E6EAF03005DBEFF /* Products */;
@@ -604,12 +969,42 @@
 			projectRoot = "";
 			targets = (
 				A14171A01E6EAA93005DBEFF /* Pinky */,
+				06FD92A01EDC66E500D180C7 /* PinkyBundle */,
+				06FD92BB1EDC85C600D180C7 /* PinkyDeviceTests */,
 				A14171C01E6EAC0D005DBEFF /* PinkyTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		06FD92941EDC5F9100D180C7 /* Mantle.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Mantle.framework;
+			remoteRef = 06FD92931EDC5F9100D180C7 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		06FD92961EDC5F9100D180C7 /* Mantle-MacTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "Mantle-MacTests.xctest";
+			remoteRef = 06FD92951EDC5F9100D180C7 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		06FD92981EDC5F9100D180C7 /* Mantle.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Mantle.framework;
+			remoteRef = 06FD92971EDC5F9100D180C7 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		06FD929A1EDC5F9100D180C7 /* Mantle-iOSTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "Mantle-iOSTests.xctest";
+			remoteRef = 06FD92991EDC5F9100D180C7 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		882D1F251EC1AC6E007F39F5 /* libextobjc_OSX.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -636,6 +1031,27 @@
 			fileType = wrapper.cfbundle;
 			path = "iOS Tests.octest";
 			remoteRef = 882D1F2A1EC1AC6E007F39F5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8BB1068F1EDD6FB800B27DC4 /* libLTEngine.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libLTEngine.a;
+			remoteRef = 8BB1068E1EDD6FB800B27DC4 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8BB106911EDD6FB800B27DC4 /* LTEngine.bundle */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = LTEngine.bundle;
+			remoteRef = 8BB106901EDD6FB800B27DC4 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8BB106931EDD6FB800B27DC4 /* LTEngineTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = LTEngineTests.xctest;
+			remoteRef = 8BB106921EDD6FB800B27DC4 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		A141726F1E6EADDF005DBEFF /* libLTKit.a */ = {
@@ -802,6 +1218,20 @@
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
+		06FD929F1EDC66E500D180C7 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		06FD92BA1EDC85C600D180C7 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A14171BF1E6EAC0D005DBEFF /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -812,11 +1242,27 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		06FD929D1EDC66E500D180C7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		06FD92B81EDC85C600D180C7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				06FD92BF1EDC85C600D180C7 /* PNKDevicePlaceholderSpec.mm in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A141719D1E6EAA93005DBEFF /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				882D1F161EC19998007F39F5 /* PNKPlaceholder.m in Sources */,
+				060EA49E1EDD9CC20041487A /* NSBundle+PinkyBundle.mm in Sources */,
+				882D1F161EC19998007F39F5 /* PNKPlaceholder.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -831,6 +1277,36 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		060EA4131EDD7C9A0041487A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = LTEngine;
+			targetProxy = 060EA4121EDD7C9A0041487A /* PBXContainerItemProxy */;
+		};
+		06FD92AB1EDC679B00D180C7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 06FD92A01EDC66E500D180C7 /* PinkyBundle */;
+			targetProxy = 06FD92AA1EDC679B00D180C7 /* PBXContainerItemProxy */;
+		};
+		06FD92B71EDC852400D180C7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 06FD92A01EDC66E500D180C7 /* PinkyBundle */;
+			targetProxy = 06FD92B61EDC852400D180C7 /* PBXContainerItemProxy */;
+		};
+		06FD92C31EDC85C600D180C7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A14171A01E6EAA93005DBEFF /* Pinky */;
+			targetProxy = 06FD92C21EDC85C600D180C7 /* PBXContainerItemProxy */;
+		};
+		06FD92C81EDC86B200D180C7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 06FD92A01EDC66E500D180C7 /* PinkyBundle */;
+			targetProxy = 06FD92C71EDC86B200D180C7 /* PBXContainerItemProxy */;
+		};
+		06FD92CA1EDC86BC00D180C7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = TestHost;
+			targetProxy = 06FD92C91EDC86BC00D180C7 /* PBXContainerItemProxy */;
+		};
 		A14171C81E6EAC0D005DBEFF /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = A14171A01E6EAA93005DBEFF /* Pinky */;
@@ -844,55 +1320,102 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		06FD92A51EDC66E500D180C7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = PinkyBundle/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
+				MACOSX_DEPLOYMENT_TARGET = iphone;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Lightricks.PinkyBundle;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				WRAPPER_EXTENSION = bundle;
+			};
+			name = Debug;
+		};
+		06FD92A61EDC66E500D180C7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = PinkyBundle/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
+				MACOSX_DEPLOYMENT_TARGET = iphone;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Lightricks.PinkyBundle;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				WRAPPER_EXTENSION = bundle;
+			};
+			name = Release;
+		};
+		06FD92C51EDC85C600D180C7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/TestHost.app/TestHost";
+				DEVELOPMENT_TEAM = KG6GWND6BG;
+				GCC_PREFIX_HEADER = "$(SRCROOT)/$(TARGET_NAME)/$(TARGET_NAME)-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../third_party/Expecta",
+					"$(SRCROOT)/../third_party/OCMock/Source",
+					"$(SRCROOT)/../third_party/Specta/Specta",
+					"$(SRCROOT)/../third_party/libextobjc",
+				);
+				INFOPLIST_FILE = PinkyDeviceTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = LT.PinkyDeviceTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+			};
+			name = Debug;
+		};
+		06FD92C61EDC85C600D180C7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEVELOPMENT_TEAM = KG6GWND6BG;
+				GCC_PREFIX_HEADER = "$(SRCROOT)/$(TARGET_NAME)/$(TARGET_NAME)-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../third_party/Expecta",
+					"$(SRCROOT)/../third_party/OCMock/Source",
+					"$(SRCROOT)/../third_party/Specta/Specta",
+					"$(SRCROOT)/../third_party/libextobjc",
+				);
+				INFOPLIST_FILE = PinkyDeviceTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = LT.PinkyDeviceTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 		A14171A81E6EAA93005DBEFF /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = A14172621E6EAD9A005DBEFF /* Debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INFINITE_RECURSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_SUSPICIOUS_MOVE = YES;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
+				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
+					"$(SRCROOT)/../third_party/objection",
+					"$(SRCROOT)/../third_party/opencv",
 				);
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
+				GCC_DYNAMIC_NO_PIC = NO;
 				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../LTEngine",
 					"$(SRCROOT)/../LTKit",
+					"$(SRCROOT)/../third_party/Mantle",
 					"$(SRCROOT)/../third_party/libextobjc",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/../third_party/openexr-binaries/lib";
 				MTL_ENABLE_DEBUG_INFO = YES;
-				ONLY_ACTIVE_ARCH = YES;
-				SDKROOT = iphoneos;
 			};
 			name = Debug;
 		};
@@ -902,43 +1425,23 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INFINITE_RECURSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_SUSPICIOUS_MOVE = YES;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../third_party/objection",
+					"$(SRCROOT)/../third_party/opencv",
+				);
 				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../LTEngine",
 					"$(SRCROOT)/../LTKit",
+					"$(SRCROOT)/../third_party/Mantle",
 					"$(SRCROOT)/../third_party/libextobjc",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/../third_party/openexr-binaries/lib";
 				MTL_ENABLE_DEBUG_INFO = NO;
-				SDKROOT = iphoneos;
-				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
 		};
@@ -971,11 +1474,10 @@
 			baseConfigurationReference = A14172651E6EAD9A005DBEFF /* Application.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/TestHost.app/TestHost";
-				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
 				DEVELOPMENT_TEAM = KG6GWND6BG;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/$(TARGET_NAME)/$(TARGET_NAME)-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
-					"$(SRCROOT)/../LTKit",
+					"$(inherited)",
 					"$(SRCROOT)/../third_party/Expecta",
 					"$(SRCROOT)/../third_party/OCMock/Source",
 					"$(SRCROOT)/../third_party/Specta/Specta",
@@ -993,12 +1495,10 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = A14172651E6EAD9A005DBEFF /* Application.xcconfig */;
 			buildSettings = {
-				BUNDLE_LOADER = "";
-				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
 				DEVELOPMENT_TEAM = KG6GWND6BG;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/$(TARGET_NAME)/$(TARGET_NAME)-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
-					"$(SRCROOT)/../LTKit",
+					"$(inherited)",
 					"$(SRCROOT)/../third_party/Expecta",
 					"$(SRCROOT)/../third_party/OCMock/Source",
 					"$(SRCROOT)/../third_party/Specta/Specta",
@@ -1014,6 +1514,24 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		06FD92A41EDC66E500D180C7 /* Build configuration list for PBXNativeTarget "PinkyBundle" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				06FD92A51EDC66E500D180C7 /* Debug */,
+				06FD92A61EDC66E500D180C7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		06FD92C41EDC85C600D180C7 /* Build configuration list for PBXNativeTarget "PinkyDeviceTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				06FD92C51EDC85C600D180C7 /* Debug */,
+				06FD92C61EDC85C600D180C7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		A141719C1E6EAA93005DBEFF /* Build configuration list for PBXProject "Pinky" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

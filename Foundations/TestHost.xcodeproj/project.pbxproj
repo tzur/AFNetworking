@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0651F3BB1EDC8E39009FA384 /* PinkyBundle.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 0651F3B41EDC8E01009FA384 /* PinkyBundle.bundle */; };
 		656155E31D464DC9009E701C /* LTEngine.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 656155DE1D464DAF009E701C /* LTEngine.bundle */; };
 		65BB8B711D3D67C5004886DC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65BB8B701D3D67C5004886DC /* Foundation.framework */; };
 		65BB8B731D3D67C9004886DC /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65BB8B721D3D67C9004886DC /* UIKit.framework */; };
@@ -17,6 +18,41 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		0651F3B11EDC8E01009FA384 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0651F3A01EDC8E00009FA384 /* Pinky.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = A14171A11E6EAA93005DBEFF;
+			remoteInfo = Pinky;
+		};
+		0651F3B31EDC8E01009FA384 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0651F3A01EDC8E00009FA384 /* Pinky.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 06FD92A11EDC66E500D180C7;
+			remoteInfo = PinkyBundle;
+		};
+		0651F3B51EDC8E01009FA384 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0651F3A01EDC8E00009FA384 /* Pinky.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = A14171C11E6EAC0D005DBEFF;
+			remoteInfo = PinkyTests;
+		};
+		0651F3B71EDC8E01009FA384 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0651F3A01EDC8E00009FA384 /* Pinky.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 06FD92BC1EDC85C600D180C7;
+			remoteInfo = PinkyDeviceTests;
+		};
+		0651F3B91EDC8E1C009FA384 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0651F3A01EDC8E00009FA384 /* Pinky.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 06FD92A01EDC66E500D180C7;
+			remoteInfo = PinkyBundle;
+		};
 		656155DB1D464DAF009E701C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 656155C71D464DAE009E701C /* LTEngine.xcodeproj */;
@@ -48,6 +84,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0651F3A01EDC8E00009FA384 /* Pinky.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Pinky.xcodeproj; path = ../Pinky/Pinky.xcodeproj; sourceTree = "<group>"; };
 		652F75DB1D3D429F00EF9256 /* Common.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Common.xcconfig; sourceTree = "<group>"; };
 		652F75DD1D3D429F00EF9256 /* Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
 		652F75DE1D3D429F00EF9256 /* Release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
@@ -80,6 +117,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0651F3A11EDC8E00009FA384 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				0651F3B21EDC8E01009FA384 /* libPinky.a */,
+				0651F3B41EDC8E01009FA384 /* PinkyBundle.bundle */,
+				0651F3B61EDC8E01009FA384 /* PinkyTests.xctest */,
+				0651F3B81EDC8E01009FA384 /* PinkyDeviceTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		652F75301D3D1BE600EF9256 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -122,6 +170,7 @@
 			isa = PBXGroup;
 			children = (
 				656155C71D464DAE009E701C /* LTEngine.xcodeproj */,
+				0651F3A01EDC8E00009FA384 /* Pinky.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -201,6 +250,7 @@
 			);
 			dependencies = (
 				656155E21D464DB8009E701C /* PBXTargetDependency */,
+				0651F3BA1EDC8E1C009FA384 /* PBXTargetDependency */,
 			);
 			name = TestHost;
 			productName = TestHost;
@@ -237,6 +287,10 @@
 					ProductGroup = 656155C81D464DAE009E701C /* Products */;
 					ProjectRef = 656155C71D464DAE009E701C /* LTEngine.xcodeproj */;
 				},
+				{
+					ProductGroup = 0651F3A11EDC8E00009FA384 /* Products */;
+					ProjectRef = 0651F3A01EDC8E00009FA384 /* Pinky.xcodeproj */;
+				},
 			);
 			projectRoot = "";
 			targets = (
@@ -246,6 +300,34 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		0651F3B21EDC8E01009FA384 /* libPinky.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libPinky.a;
+			remoteRef = 0651F3B11EDC8E01009FA384 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		0651F3B41EDC8E01009FA384 /* PinkyBundle.bundle */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = PinkyBundle.bundle;
+			remoteRef = 0651F3B31EDC8E01009FA384 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		0651F3B61EDC8E01009FA384 /* PinkyTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = PinkyTests.xctest;
+			remoteRef = 0651F3B51EDC8E01009FA384 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		0651F3B81EDC8E01009FA384 /* PinkyDeviceTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = PinkyDeviceTests.xctest;
+			remoteRef = 0651F3B71EDC8E01009FA384 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		656155DC1D464DAF009E701C /* libLTEngine.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -277,6 +359,7 @@
 				65CEFBC51D3BF72800402230 /* LaunchScreen.storyboard in Resources */,
 				65CEFBC21D3BF72800402230 /* Assets.xcassets in Resources */,
 				656155E31D464DC9009E701C /* LTEngine.bundle in Resources */,
+				0651F3BB1EDC8E39009FA384 /* PinkyBundle.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -295,6 +378,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		0651F3BA1EDC8E1C009FA384 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = PinkyBundle;
+			targetProxy = 0651F3B91EDC8E1C009FA384 /* PBXContainerItemProxy */;
+		};
 		656155E21D464DB8009E701C /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = LTEngineBundle;
