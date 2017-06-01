@@ -15,8 +15,8 @@ LTEnumDeclare(NSUInteger, DVNBlendMode,
   DVNBlendModeScreen,
   DVNBlendModeColorBurn,
   DVNBlendModeOverlay,
-  DVNBlendModeAddition,
-  DVNBlendModeSubtract
+  DVNBlendModePlusLighter,
+  DVNBlendModePlusDarker
 );
 
 NS_ASSUME_NONNULL_END
