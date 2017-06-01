@@ -3,6 +3,8 @@
 
 #import "Laboratory-Prefix.pch"
 
+#import <LLReactiveMatchers/LLReactiveMatchers.h>
+
 #define EXP_SHORTHAND
 
 // Third party.
