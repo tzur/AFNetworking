@@ -4,6 +4,7 @@
 /// Is assumed to be orthographic projection.
 uniform highp mat4 projection;
 
+/// Texture, in non-premultiplied format, sampled at the center of the rendered quad.
 uniform mediump sampler2D colorTexture;
 uniform bool sampleUniformColorFromColorTexture;
 
@@ -13,6 +14,9 @@ attribute highp vec2 quadVertex0;
 attribute highp vec2 quadVertex1;
 attribute highp vec2 quadVertex2;
 attribute highp vec2 quadVertex3;
+
+/// RGB color, in non-premultiplied format, forwarded to the fragment shader, in case that
+/// \c sampleUniformColorFromColorTexture is \c YES.
 attribute highp vec3 color;
 
 varying highp vec4 vPosition;
@@ -26,6 +30,8 @@ varying highp vec2 vSamplePoint0;
 varying highp vec2 vSamplePoint1;
 varying highp vec2 vSamplePoint2;
 varying highp vec2 vSamplePoint3;
+
+/// RGBA color, in non-premultiplied format, forwarded to the fragment shader.
 varying highp vec4 vColor;
 
 const float kSamplePointsDistanceFromCenter = 0.6;
