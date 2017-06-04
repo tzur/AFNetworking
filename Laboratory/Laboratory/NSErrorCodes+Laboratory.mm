@@ -10,12 +10,12 @@ LTErrorCodesImplement(LaboratoryErrorCodeProductID,
   LABErrorCodeExperimentNotFound,
   /// Caused when a given variant has not been found for a given experiment.
   LABErrorCodeVariantForExperimentNotFound,
-  /// Caused when a given assignment key has not been found.
-  LABErrorCodeAssignmentKeyNotFound,
   /// Caused when an assignment update operation failed.
   LABErrorCodeAssignmentUpdateFailed,
   /// Caused when a source failed to update itself.
-  LABErrorCodeSourceUpdateFailed
+  LABErrorCodeSourceUpdateFailed,
+  /// Caused when a fetch operation failed.
+  LABErrorCodeFetchFailed
 );
 
 NS_ASSUME_NONNULL_END

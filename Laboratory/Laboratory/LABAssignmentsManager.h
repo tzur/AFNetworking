@@ -28,7 +28,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly, nonatomic) NSString *sourceName;
 
 /// The revision of the active assignments.
-@property (readonly, nonatomic) NSUUID activeAssignmentsRevisionID;
+@property (readonly, nonatomic) NSUUID *activeAssignmentsRevisionID;
 
 @end
 
