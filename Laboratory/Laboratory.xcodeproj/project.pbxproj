@@ -17,8 +17,10 @@
 		883235861ED861EA0090787D /* NSErrorCodes+Laboratory.mm in Sources */ = {isa = PBXBuildFile; fileRef = 883235841ED861EA0090787D /* NSErrorCodes+Laboratory.mm */; };
 		883235881ED861F30090787D /* NSErrorCodes+LaboratorySpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 883235871ED861F30090787D /* NSErrorCodes+LaboratorySpec.mm */; };
 		884962181EBA226E007B3AE8 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1417A911E6ED9CB005DBEFF /* UIKit.framework */; };
+		884F64941EE53B3C0052274E /* LABExperimentsTokenProviderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 884F64931EE53B3C0052274E /* LABExperimentsTokenProviderSpec.mm */; };
 		884F64B51EE53E010052274E /* LABFakeStorage.mm in Sources */ = {isa = PBXBuildFile; fileRef = 884F64B41EE53E010052274E /* LABFakeStorage.mm */; };
 		885349B81EE45B0C0043D190 /* LABAssignmentsSource.mm in Sources */ = {isa = PBXBuildFile; fileRef = 885349B71EE45B0C0043D190 /* LABAssignmentsSource.mm */; };
+		88648C231EE5281200B492D7 /* LABExperimentsTokenProvider.mm in Sources */ = {isa = PBXBuildFile; fileRef = 88648C221EE5281200B492D7 /* LABExperimentsTokenProvider.mm */; };
 		88932F5C1EDF538900451D44 /* EXPMatchers+beSubscribedTo.m in Sources */ = {isa = PBXBuildFile; fileRef = 88932F451EDF538900451D44 /* EXPMatchers+beSubscribedTo.m */; };
 		88932F5D1EDF538900451D44 /* EXPMatchers+complete.m in Sources */ = {isa = PBXBuildFile; fileRef = 88932F471EDF538900451D44 /* EXPMatchers+complete.m */; };
 		88932F5E1EDF538900451D44 /* EXPMatchers+deliverValuesOnThread.m in Sources */ = {isa = PBXBuildFile; fileRef = 88932F491EDF538900451D44 /* EXPMatchers+deliverValuesOnThread.m */; };
@@ -304,9 +306,12 @@
 		883235871ED861F30090787D /* NSErrorCodes+LaboratorySpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSErrorCodes+LaboratorySpec.mm"; sourceTree = "<group>"; };
 		88440B511ED8B10B00A64CF7 /* LABAssignmentsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LABAssignmentsManager.h; sourceTree = "<group>"; };
 		88440B521ED8B10B00A64CF7 /* LABAssignmentsSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LABAssignmentsSource.h; sourceTree = "<group>"; };
+		884F64931EE53B3C0052274E /* LABExperimentsTokenProviderSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LABExperimentsTokenProviderSpec.mm; sourceTree = "<group>"; };
 		884F64B31EE53E010052274E /* LABFakeStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LABFakeStorage.h; sourceTree = "<group>"; };
 		884F64B41EE53E010052274E /* LABFakeStorage.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LABFakeStorage.mm; sourceTree = "<group>"; };
 		885349B71EE45B0C0043D190 /* LABAssignmentsSource.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LABAssignmentsSource.mm; sourceTree = "<group>"; };
+		88648C211EE5281200B492D7 /* LABExperimentsTokenProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LABExperimentsTokenProvider.h; sourceTree = "<group>"; };
+		88648C221EE5281200B492D7 /* LABExperimentsTokenProvider.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LABExperimentsTokenProvider.mm; sourceTree = "<group>"; };
 		88932F441EDF538900451D44 /* EXPMatchers+beSubscribedTo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "EXPMatchers+beSubscribedTo.h"; path = "../../third_party/LLReactiveMatchers/LLReactiveMatchers/Matchers/EXPMatchers+beSubscribedTo.h"; sourceTree = "<group>"; };
 		88932F451EDF538900451D44 /* EXPMatchers+beSubscribedTo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "EXPMatchers+beSubscribedTo.m"; path = "../../third_party/LLReactiveMatchers/LLReactiveMatchers/Matchers/EXPMatchers+beSubscribedTo.m"; sourceTree = "<group>"; };
 		88932F461EDF538900451D44 /* EXPMatchers+complete.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "EXPMatchers+complete.h"; path = "../../third_party/LLReactiveMatchers/LLReactiveMatchers/Matchers/EXPMatchers+complete.h"; sourceTree = "<group>"; };
@@ -423,6 +428,8 @@
 				88440B511ED8B10B00A64CF7 /* LABAssignmentsManager.h */,
 				88440B521ED8B10B00A64CF7 /* LABAssignmentsSource.h */,
 				885349B71EE45B0C0043D190 /* LABAssignmentsSource.mm */,
+				88648C211EE5281200B492D7 /* LABExperimentsTokenProvider.h */,
+				88648C221EE5281200B492D7 /* LABExperimentsTokenProvider.mm */,
 				88BB646C1EDAAD100026DEC0 /* LABStorage.h */,
 				883235811ED861EA0090787D /* NSError+Laboratory.h */,
 				883235821ED861EA0090787D /* NSError+Laboratory.mm */,
@@ -436,6 +443,7 @@
 			isa = PBXGroup;
 			children = (
 				883235871ED861F30090787D /* NSErrorCodes+LaboratorySpec.mm */,
+				884F64931EE53B3C0052274E /* LABExperimentsTokenProviderSpec.mm */,
 			);
 			name = Base;
 			sourceTree = "<group>";
@@ -1025,6 +1033,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				88648C231EE5281200B492D7 /* LABExperimentsTokenProvider.mm in Sources */,
 				883235851ED861EA0090787D /* NSError+Laboratory.mm in Sources */,
 				885349B81EE45B0C0043D190 /* LABAssignmentsSource.mm in Sources */,
 				883235861ED861EA0090787D /* NSErrorCodes+Laboratory.mm in Sources */,
@@ -1049,6 +1058,7 @@
 				88932F601EDF538900451D44 /* EXPMatchers+finish.m in Sources */,
 				88932F641EDF538900451D44 /* EXPMatchers+sendError.m in Sources */,
 				88932F5C1EDF538900451D44 /* EXPMatchers+beSubscribedTo.m in Sources */,
+				884F64941EE53B3C0052274E /* LABExperimentsTokenProviderSpec.mm in Sources */,
 				88932F661EDF538900451D44 /* EXPMatchers+sendValues.m in Sources */,
 				88932F631EDF538900451D44 /* EXPMatchers+matchValues.m in Sources */,
 				88932F5F1EDF538900451D44 /* EXPMatchers+error.m in Sources */,
