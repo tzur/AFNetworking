@@ -19,7 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// @see LABAssignmentsSource
 typedef double LABExperimentsToken;
 
-/// Provider of \c LABExperimentToken objects.
+/// Provider of \c LABExperimentsToken objects.
 @protocol LABExperimentsTokenProvider <NSObject>
 
 /// Experiment token for this device.
@@ -27,15 +27,15 @@ typedef double LABExperimentsToken;
 
 @end
 
-/// Default implementation of \c LABExperimentToken. The token is generated once and stored in
-/// \c storage. Subsequent runs will fetch the token from storage.
+/// Default implementation of \c LABExperimentsTokenProvider. The token is generated once and stored
+/// in \c storage. Subsequent runs will fetch the token from storage.
 @interface LABExperimentsTokenProvider : NSObject <LABExperimentsTokenProvider>
 
 /// Initializes with \c NSUserDefaults for \c storage and a new instance of \c LTRandom for
 /// \c random.
 - (instancetype)init;
 
-/// Initializes with \c storage to store and load the \c LABExperimentToken from and \c random
+/// Initializes with \c storage to store and load the \c LABExperimentsToken from and \c random
 /// to generate random token if needed.
 - (instancetype)initWithStorage:(id<LABStorage>)storage random:(LTRandom *)random
     NS_DESIGNATED_INITIALIZER;

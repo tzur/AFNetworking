@@ -16,35 +16,21 @@ __block LABExperimentsTokenProvider *provider;
 beforeEach(^{
   storage = [[LABFakeStorage alloc] init];
   random = OCMClassMock(LTRandom.class);
+  OCMStub([random randomDouble]).andReturn(0.3);
+  provider = [[LABExperimentsTokenProvider alloc] initWithStorage:storage random:random];
 });
 
 it(@"should generate random token", ^{
-  OCMStub([random randomDouble]).andReturn(0.3);
-  provider = [[LABExperimentsTokenProvider alloc] initWithStorage:storage random:random];
   expect(provider.experimentsToken).to.equal(0.3);
 });
 
 it(@"should persist the experiments token", ^{
-  OCMStub([random randomDouble]).andReturn(0.3);
-  provider = [[LABExperimentsTokenProvider alloc] initWithStorage:storage random:random];
   random = OCMClassMock(LTRandom.class);
   OCMStub([random randomDouble]).andReturn(0.6);
   expect(provider.experimentsToken).to.equal(0.3);
 });
 
-it(@"should expose new experiments token if storage is empty", ^{
-  OCMStub([random randomDouble]).andReturn(0.3);
-  provider = [[LABExperimentsTokenProvider alloc] initWithStorage:storage random:random];
-  storage = [[LABFakeStorage alloc] init];
-  random = OCMClassMock(LTRandom.class);
-  OCMStub([random randomDouble]).andReturn(0.6);
-  provider = [[LABExperimentsTokenProvider alloc] initWithStorage:storage random:random];
-  expect(provider.experimentsToken).to.equal(0.6);
-});
-
-it(@"should expose new experiments token if storage is has wront data", ^{
-  OCMStub([random randomDouble]).andReturn(0.3);
-  provider = [[LABExperimentsTokenProvider alloc] initWithStorage:storage random:random];
+it(@"should expose new experiments token if storage has wrong data", ^{
   for (id key in storage.storage) {
     storage.storage[key] = @"foo";
   }
