@@ -175,6 +175,26 @@ context(@"processing", ^{
       expect($([framebufferTexture image])).to.equalMat($(expected));
     });
   });
+
+  context(@"partial processing", ^{
+    it(@"should not render quads that are completely outside the given rect", ^{
+      processor.outputQuad = [LTQuad quadFromRect:CGRectFromSize(CGSizeMake(4, 4))];
+      auto expectedId = output.generationID;
+      [processor processInRect:CGRectMake(16, 16, 4, 4)];
+      expect(output.generationID).to.equal(expectedId);
+    });
+
+    it(@"should only render inside given rect", ^{
+      processor.inputQuad = [LTQuad quadFromRect:CGRectMake(0, 0, 8, 8)];
+      processor.outputQuad = [LTQuad quadFromRect:CGRectMake(0, 0, 16, 16)];
+      [processor processInRect:CGRectMake(6, 6, 6, 6)];
+
+      cv::Mat4b expected(cv::Mat4b::zeros(32, 32));
+      expected(cv::Rect(6, 6, 6, 6)) = cv::Vec4b(255, 0, 0, 255);
+
+      expect($([output image])).to.equalMat($(expected));
+    });
+  });
 });
 
 SpecEnd

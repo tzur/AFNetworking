@@ -6,6 +6,7 @@
 #import "LTDynamicQuadDrawer.h"
 #import "LTFbo.h"
 #import "LTFboPool.h"
+#import "LTGLContext.h"
 #import "LTShaderStorage+LTPassthroughWithPerspectiveShaderFsh.h"
 #import "LTShaderStorage+LTPassthroughWithPerspectiveShaderVsh.h"
 #import "LTTexture.h"
@@ -104,6 +105,24 @@
       self.outputQuad.quad.translatedBy(-1 * rect.origin).scaledAround(1 / LTVector2(rect.size),
                                                                        CGPointZero);
   [self copyNormalizedQuad:self.normalizedInputQuad toNormalizedQuad:outputQuad];
+}
+
+#pragma mark -
+#pragma mark LTPartialProcessing
+#pragma mark -
+
+- (void)processInRect:(CGRect)rect {
+  if (CGRectIntersection(rect, self.outputQuad.quad.boundingRect()) == CGRectNull) {
+    return;
+  }
+
+  [self.fbo bindAndDraw:^{
+    [[LTGLContext currentContext] executeAndPreserveState:^(LTGLContext *context) {
+      context.scissorTestEnabled = YES;
+      context.scissorBox = rect;
+      [self copyNormalizedQuad:self.normalizedInputQuad toNormalizedQuad:self.normalizedOutputQuad];
+    }];
+  }];
 }
 
 #pragma mark -
