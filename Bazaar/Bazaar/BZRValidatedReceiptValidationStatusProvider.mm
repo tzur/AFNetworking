@@ -82,7 +82,12 @@ static const NSUInteger kNumberOfRetries = 4;
 
 - (RACSignal *)validateReceiptWithParameters:
     (BZRReceiptValidationParameters *)receiptValidationParameters {
-  return [[self.receiptValidator validateReceiptWithParameters:receiptValidationParameters]
+  return [[[self.receiptValidator validateReceiptWithParameters:receiptValidationParameters]
+      catch:^RACSignal *(NSError *error) {
+        NSError *receiptValidationError =
+            [NSError lt_errorWithCode:BZRErrorCodeReceiptValidationFailed underlyingError:error];
+        return [RACSignal error:receiptValidationError];
+      }]
       tryMap:^BZRReceiptValidationStatus * _Nullable
           (BZRReceiptValidationStatus *receiptValidationStatus, NSError **error) {
         if (!receiptValidationStatus.isValid) {
