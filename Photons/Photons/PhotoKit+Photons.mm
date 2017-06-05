@@ -50,12 +50,22 @@ NS_ASSUME_NONNULL_BEGIN
   if ([self ptn_isRaw]) {
     [set addObject:kPTNDescriptorTraitRawKey];
   }
+  if ([self ptn_isGIF]) {
+    [set addObject:kPTNDescriptorTraitGIFKey];
+  }
   return set;
 }
 
 - (BOOL)ptn_isRaw {
   if ([self respondsToSelector:@selector(uniformTypeIdentifier)]) {
     return (UTTypeConformsTo((__bridge CFStringRef)self.uniformTypeIdentifier, kUTTypeRawImage));
+  }
+  return NO;
+}
+
+- (BOOL)ptn_isGIF {
+  if ([self respondsToSelector:@selector(uniformTypeIdentifier)]) {
+    return (UTTypeConformsTo((__bridge CFStringRef)self.uniformTypeIdentifier, kUTTypeGIF));
   }
   return NO;
 }

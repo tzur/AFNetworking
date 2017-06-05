@@ -50,6 +50,13 @@ extern NSString * const kPTNDescriptorTraitVideoKey;
 /// resource, this trait will be present only if the RAW image is the first resource.
 extern NSString * const kPTNDescriptorTraitRawKey;
 
+/// Descriptor that represents a GIF asset.
+///
+/// @note PhotoKit assets may contain multiple resources, for example, GIF resources may have both
+/// a GIF and an image resource. In the case where an asset has both GIF and JPEG as resources, this
+/// trait will be present only if the GIF is the first resource.
+extern NSString * const kPTNDescriptorTraitGIFKey;
+
 /// Descriptor that acts as a reference to a heavy object. The heavy object is either costly to
 /// fetch or to store in memory. Each descriptor has an identifier, which uniquely identifies the
 /// heavy object across all Photons' objects, and allows re-fetching the descriptor when needed, as
