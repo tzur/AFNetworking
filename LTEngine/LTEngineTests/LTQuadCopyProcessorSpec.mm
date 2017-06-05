@@ -7,6 +7,7 @@
 #import "LTQuad.h"
 #import "LTRotatedRect.h"
 #import "LTTexture+Factory.h"
+#import "LTTexture+RectCopying.h"
 
 SpecBegin(LTQuadCopyProcessor)
 
@@ -89,6 +90,22 @@ context(@"processing", ^{
 
       expect($([output image])).to.equalMat($(expected));
     });
+
+    it(@"should copy quad to quad", ^{
+      [input copyToRect:CGRectFromSize(output.size) ofTexture:output];
+      LTQuadCorners corners{{CGPointMake(0, 14), CGPointMake(30, 0), CGPointMake(30, 30),
+          CGPointMake(16, 30)}};
+
+      processor.outputQuad = [[LTQuad alloc] initWithCorners:corners];
+      processor.inputQuad =
+          [LTQuad quadFromQuad:processor.outputQuad.quad.scaledAround({0.5, 0.5}, CGPointZero)];
+      [processor process];
+
+      LTTexture *expected = [LTTexture byteRGBATextureWithSize:output.size];
+      [input copyToRect:CGRectFromSize(expected.size) ofTexture:expected];
+
+      expect($([output image])).to.equalMat($([expected image]));
+    });
   });
 
   context(@"screen processing", ^{
@@ -156,6 +173,26 @@ context(@"processing", ^{
       }
 
       expect($([framebufferTexture image])).to.equalMat($(expected));
+    });
+  });
+
+  context(@"partial processing", ^{
+    it(@"should not render quads that are completely outside the given rect", ^{
+      processor.outputQuad = [LTQuad quadFromRect:CGRectFromSize(CGSizeMake(4, 4))];
+      auto expectedId = output.generationID;
+      [processor processInRect:CGRectMake(16, 16, 4, 4)];
+      expect(output.generationID).to.equal(expectedId);
+    });
+
+    it(@"should only render inside given rect", ^{
+      processor.inputQuad = [LTQuad quadFromRect:CGRectMake(0, 0, 8, 8)];
+      processor.outputQuad = [LTQuad quadFromRect:CGRectMake(0, 0, 16, 16)];
+      [processor processInRect:CGRectMake(6, 6, 6, 6)];
+
+      cv::Mat4b expected(cv::Mat4b::zeros(32, 32));
+      expected(cv::Rect(6, 6, 6, 6)) = cv::Vec4b(255, 0, 0, 255);
+
+      expect($([output image])).to.equalMat($(expected));
     });
   });
 });

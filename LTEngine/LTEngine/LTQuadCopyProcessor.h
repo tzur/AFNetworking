@@ -1,13 +1,15 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Rouven Strauss.
 
-#import "LTOneShotImageProcessor.h"
+#import "LTImageProcessor.h"
+#import "LTPartialProcessing.h"
+#import "LTScreenProcessing.h"
 
-@class LTQuad;
+@class LTQuad, LTTexture;
 
 /// Processor for copying an input texture to a quad in an output texture. An implicit interpolation
 /// will be triggered on the GPU depending on the min and mag filters of the input texture.
-@interface LTQuadCopyProcessor : LTOneShotImageProcessor
+@interface LTQuadCopyProcessor : LTImageProcessor <LTPartialProcessing, LTScreenProcessing>
 
 /// Initializes with an input and output texture.
 - (instancetype)initWithInput:(LTTexture *)input output:(LTTexture *)output;
