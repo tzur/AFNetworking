@@ -62,7 +62,7 @@ static const CGFloat kMaxZoom = 4.0;
 
   _focusModeSubject = [[RACSubject alloc] init];
 
-  _focusModeAndPosition = [[[self.focusModeSubject
+  _focusModeAndPosition = [[[[self.focusModeSubject
       distinctUntilChanged]
       filter:^BOOL(CUIFocusIconMode *focusIconAction) {
         if (focusIconAction.mode == CUIFocusIconDisplayModeHidden) {
@@ -71,7 +71,8 @@ static const CGFloat kMaxZoom = 4.0;
         CGPoint point = [focusIconAction.position CGPointValue];
         return std::isfinite(point.x) && std::isfinite(point.y);
       }]
-      takeUntil:[self rac_willDeallocSignal]];
+      takeUntil:[self rac_willDeallocSignal]]
+      deliverOnMainThread];
 
   [self setupSubjectAreaChangedSignal];
 }

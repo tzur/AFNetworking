@@ -350,6 +350,24 @@ context(@"focus", ^{
       [previewViewModel previewTapped:tapMock];
       expect(recorder).to.sendValues(@[kDefiniteFocusAtTapPoint]);
     });
+
+    it(@"should deliver focus updates on main thread", ^{
+      LLSignalTestRecorder *recorder = [previewViewModel.focusModeAndPosition testRecorder];
+
+      RACSignal *performInBackgroundThread = [[RACSignal defer:^RACSignal *{
+        [previewViewModel previewTapped:tapMock];
+        [singleFocusSignal sendNext:$(kTapPoint)];
+        [singleFocusSignal sendCompleted];
+        [singleExposureSignal sendNext:$(kTapPoint)];
+        [singleExposureSignal sendCompleted];
+        return [RACSignal empty];
+      }] subscribeOn:[RACScheduler scheduler]];
+      [performInBackgroundThread waitUntilCompleted:nil];
+
+      expect(recorder).will.sendValues(@[kDefiniteFocusAtTapPoint, kHiddenFocus]);
+      expect(recorder).to.deliverValuesOnMainThread();
+      expect(recorder.operatingThreadsCount).to.equal(1);
+    });
   });
 
   context(@"continuous focus", ^{
