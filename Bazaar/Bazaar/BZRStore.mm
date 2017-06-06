@@ -403,13 +403,13 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (BOOL)isSubscriptionProduct:(NSString *)productIdentifier {
-  BZRProductType *productType = self.productDictionary[productIdentifier].productType;
+  BZRProductType *productType = self.productsJSONDictionary[productIdentifier].productType;
   return [productType isEqual:$(BZRProductTypeRenewableSubscription)] ||
       [productType isEqual:$(BZRProductTypeNonRenewingSubscription)];
 }
 
 - (BOOL)doesSubscriptionEnablesProductWithIdentifier:(NSString *)productIdentifier {
-  BZRProduct *subscriptionProduct = self.productDictionary[self.subscriptionInfo.productId];
+  BZRProduct *subscriptionProduct = self.productsJSONDictionary[self.subscriptionInfo.productId];
   return [subscriptionProduct doesProductEnablesProductWithIdentifier:productIdentifier];
 }
 
@@ -576,6 +576,31 @@ NS_ASSUME_NONNULL_BEGIN
       }]
       takeUntil:[self rac_willDeallocSignal]]
       setNameWithFormat:@"%@ -completedTransactionsSignal", self];
+}
+
+- (RACSignal *)acquireAllEnabledProducts {
+  @weakify(self);
+  return [[[RACSignal defer:^RACSignal *{
+    @strongify(self);
+    if (![self isUserSubscribed]) {
+      NSError *error = [NSError lt_errorWithCode:BZRErrorCodeAcquireAllRequestedForNonSubscriber];
+      return [RACSignal error:error];
+    }
+
+    auto enabledProducts =
+        [[self.productsJSONDictionary allValues] lt_filter:^BOOL(BZRProduct *product) {
+          return ![self isSubscriptionProduct:product.identifier] &&
+              [self doesSubscriptionEnablesProductWithIdentifier:product.identifier];
+        }];
+
+    for (BZRProduct *product in enabledProducts) {
+      [self.acquiredViaSubscriptionProvider addAcquiredViaSubscriptionProduct:product.identifier];
+    }
+
+    return [RACSignal empty];
+  }]
+  takeUntil:[self rac_willDeallocSignal]]
+  setNameWithFormat:@"%@ -acquireAllEnabledProducts", self];
 }
 
 #pragma mark -

@@ -72,7 +72,9 @@ LTErrorCodesDeclare(BazaarErrorCodeProductID,
   /// Product was purchased successfully but not found in the receipt.
   BZRErrorCodePurchasedProductNotFoundInReceipt,
   /// Received request to purchase product that is not valid for purchasing.
-  BZRErrorCodeInvalidProductForPurchasing
+  BZRErrorCodeInvalidProductForPurchasing,
+  /// Received request to acquire all products for a user that's not a subscriber.
+  BZRErrorCodeAcquireAllRequestedForNonSubscriber
 );
 
 NS_ASSUME_NONNULL_END

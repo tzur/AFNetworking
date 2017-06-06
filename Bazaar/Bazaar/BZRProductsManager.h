@@ -72,6 +72,15 @@ NS_ASSUME_NONNULL_BEGIN
 /// @return <tt>RACSignal<BZRReceiptValidationStatus></tt>
 - (RACSignal *)validateReceipt;
 
+/// Acquires all the non-subscription products that the active subscription enables.
+///
+/// Returns a signal that acquires all the non-subscription products that the subscription enables
+/// if the user has an active subscription. The signal completes after acquiring all the products.
+/// The signal errs if the user doesn't have an active subscription.
+///
+/// @return <tt>RACSignal</tt>
+- (RACSignal *)acquireAllEnabledProducts;
+
 /// Sends transactions of purchases that were completed successfully but were not finished in the
 /// last run of the application, and are finished in this run. Every \c SKPaymentTransaction object
 /// sent should be considered a successful purchase. The signal completes when the receiver is
