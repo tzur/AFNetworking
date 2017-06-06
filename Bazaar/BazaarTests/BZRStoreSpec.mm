@@ -484,9 +484,12 @@ context(@"purchasing products", ^{
 
     it(@"should add product to acquired via subscription if subscription exists and not expired", ^{
       BZRReceiptValidationStatus *receiptValidationStatus =
-          BZRReceiptValidationStatusWithInAppPurchaseAndExpiry(productIdentifier, NO);
+          BZRReceiptValidationStatusWithSubscriptionIdentifier(@"subscription");
       OCMStub([receiptValidationStatusProvider receiptValidationStatus])
           .andReturn(receiptValidationStatus);
+      auto productList =
+          @[BZRProductWithIdentifier(@"subscription"), BZRProductWithIdentifier(productIdentifier)];
+      [netherProductsProviderSubject sendNext:productList];
 
       expect([store purchaseProduct:productIdentifier]).will.complete();
       OCMVerify([acquiredViaSubscriptionProvider
@@ -1031,6 +1034,65 @@ context(@"validating receipt", ^{
 
     expect(recorder).to.complete();
     expect(recorder).to.sendValues(@[receiptValidationStatus]);
+  });
+});
+
+context(@"acquiring all enabled products", ^{
+  it(@"should send error when user doesn't have an active subscription", ^{
+    OCMStub([receiptValidationStatusProvider receiptValidationStatus])
+        .andReturn(BZRReceiptValidationStatusWithExpiry(YES));
+
+    NSError *error = [NSError lt_errorWithCode:BZRErrorCodeAcquireAllRequestedForNonSubscriber];
+
+    expect([store acquireAllEnabledProducts]).to.sendError(error);
+  });
+
+  it(@"should add all non subscription products to acquired via subscription", ^{
+    OCMStub([receiptValidationStatusProvider receiptValidationStatus])
+        .andReturn(BZRReceiptValidationStatusWithSubscriptionIdentifier(@"subscription"));
+
+    BZRProduct *purchasedSubscriptionProduct =
+        [BZRProductWithIdentifier(@"subscription")
+         modelByOverridingProperty:@instanceKeypath(BZRProduct, productType)
+         withValue:$(BZRProductTypeRenewableSubscription)];
+    BZRProduct *firstProduct = BZRProductWithIdentifier(productIdentifier);
+    BZRProduct *secondProduct =
+        [BZRProductWithIdentifier(@"bar")
+         modelByOverridingProperty:@instanceKeypath(BZRProduct, productType)
+         withValue:$(BZRProductTypeConsumable)];
+    BZRProduct *anotherSubscriptionProduct =
+        [BZRProductWithIdentifier(@"baz")
+         modelByOverridingProperty:@instanceKeypath(BZRProduct, productType)
+         withValue:$(BZRProductTypeRenewableSubscription)];
+    [netherProductsProviderSubject sendNext:
+        @[purchasedSubscriptionProduct, firstProduct, secondProduct, anotherSubscriptionProduct]];
+
+    OCMReject([acquiredViaSubscriptionProvider addAcquiredViaSubscriptionProduct:@"baz"]);
+
+    expect([store acquireAllEnabledProducts]).to.complete();
+    OCMVerify([acquiredViaSubscriptionProvider
+               addAcquiredViaSubscriptionProduct:productIdentifier]);
+    OCMVerify([acquiredViaSubscriptionProvider addAcquiredViaSubscriptionProduct:@"bar"]);
+  });
+
+  it(@"should not add products that the subscription doesn't enable to acquired via "
+     "subscription", ^{
+    OCMStub([receiptValidationStatusProvider receiptValidationStatus])
+        .andReturn(BZRReceiptValidationStatusWithSubscriptionIdentifier(@"subscription"));
+
+    BZRProduct *purchasedSubscriptionProduct =
+        [[BZRProductWithIdentifier(@"subscription")
+         modelByOverridingProperty:@instanceKeypath(BZRProduct, productType)
+         withValue:$(BZRProductTypeRenewableSubscription)]
+         modelByOverridingProperty:@instanceKeypath(BZRProduct, enablesProducts)
+         withValue:@[@"baz"]];
+    BZRProduct *notEnabledProduct = BZRProductWithIdentifier(productIdentifier);
+    [netherProductsProviderSubject sendNext:@[purchasedSubscriptionProduct, notEnabledProduct]];
+
+    OCMReject([acquiredViaSubscriptionProvider
+               addAcquiredViaSubscriptionProduct:productIdentifier]);
+
+    expect([store acquireAllEnabledProducts]).to.complete();
   });
 });
 
