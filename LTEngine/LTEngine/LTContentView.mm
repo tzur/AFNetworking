@@ -181,7 +181,6 @@ NS_ASSUME_NONNULL_BEGIN
   LTAssert(self.touchEventView);
 
   _interactionManager = [[LTContentInteractionManager alloc] initWithView:self.touchEventView];
-  self.interactionManager.touchEventCanceller = self.touchEventView;
 }
 
 - (void)createConverter {
@@ -331,6 +330,14 @@ NS_ASSUME_NONNULL_BEGIN
 + (NSSet<NSString *> *)keyPathsForValuesAffectingCustomGestureRecognizers {
   return [NSSet setWithObject:@instanceKeypath(LTContentView,
                                                interactionManager.customGestureRecognizers)];
+}
+
+- (NSUInteger)desiredRateForStationaryContentTouchEventForwarding {
+  return self.touchEventView.desiredRateForStationaryTouchEventForwarding;
+}
+
+- (void)setDesiredRateForStationaryContentTouchEventForwarding:(NSUInteger)rate {
+  self.touchEventView.desiredRateForStationaryTouchEventForwarding = rate;
 }
 
 #pragma mark -
