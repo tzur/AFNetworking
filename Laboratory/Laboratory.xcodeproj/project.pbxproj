@@ -46,6 +46,7 @@
 		A14173411E6EB59F005DBEFF /* libLTKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A141726F1E6EADDF005DBEFF /* libLTKit.a */; };
 		A14173421E6EB59F005DBEFF /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A141729D1E6EAF03005DBEFF /* libOCMock.a */; };
 		A14173431E6EB59F005DBEFF /* libSpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A14172B81E6EAF0D005DBEFF /* libSpecta.a */; };
+		A1E388391EE554D90095F056 /* LABFakeAssignmentsSource.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1E388381EE554D90095F056 /* LABFakeAssignmentsSource.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -372,6 +373,8 @@
 		A14172BC1E6EB0CA005DBEFF /* LaboratoryTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "LaboratoryTests-Prefix.pch"; sourceTree = "<group>"; };
 		A14172D71E6EB2FF005DBEFF /* TestHost.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TestHost.xcodeproj; path = ../Foundations/TestHost.xcodeproj; sourceTree = "<group>"; };
 		A1417A911E6ED9CB005DBEFF /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		A1E388371EE554D90095F056 /* LABFakeAssignmentsSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LABFakeAssignmentsSource.h; sourceTree = "<group>"; };
+		A1E388381EE554D90095F056 /* LABFakeAssignmentsSource.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LABFakeAssignmentsSource.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -708,6 +711,8 @@
 		A1541C081EAF400D00B4F064 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				A1E388371EE554D90095F056 /* LABFakeAssignmentsSource.h */,
+				A1E388381EE554D90095F056 /* LABFakeAssignmentsSource.mm */,
 				884F64B31EE53E010052274E /* LABFakeStorage.h */,
 				884F64B41EE53E010052274E /* LABFakeStorage.mm */,
 			);
@@ -1090,6 +1095,7 @@
 				88932F761EDF55D300451D44 /* EXPExpect+LLReactiveMatchersExtensions.m in Sources */,
 				884F64B51EE53E010052274E /* LABFakeStorage.mm in Sources */,
 				88440B991EDB19C200A64CF7 /* LABLocalSourceSpec.mm in Sources */,
+				A1E388391EE554D90095F056 /* LABFakeAssignmentsSource.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
