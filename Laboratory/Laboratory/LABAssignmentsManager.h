@@ -3,7 +3,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@protocol LABAssignmentsSource;
+@protocol LABAssignmentsSource, LABStorage;
 
 /// Contains an assignment (key-value pair resulting from a variant) and its originating variant,
 /// experiment and source.
@@ -27,8 +27,22 @@ NS_ASSUME_NONNULL_BEGIN
 /// Name of the source that provided the assignment.
 @property (readonly, nonatomic) NSString *sourceName;
 
-/// The revision of the active assignments.
-@property (readonly, nonatomic) NSUUID *activeAssignmentsRevisionID;
+@end
+
+/// Contains assignments and their revision ID.
+@protocol LABRevisionedAssignments <NSObject>
+
+/// Revisioned assignments. A mapping between assignment keys and assignment models.
+///
+/// @note This property is KVO-compliant.
+@property (readonly, nonatomic) NSDictionary<NSString *, id<LABAssignment>> *assignments;
+
+/// Unique revison ID of \c assignments. The revison ID must not be a hash over \c assignments. An
+/// object providing an instance of this protocol must must provide a unique revision ID between two
+/// consecutive values of \c assignments, if these values are not equal to each other.
+///
+/// @note This property is KVO-compliant.
+@property (readonly, nonatomic) NSUUID *revisionID;
 
 @end
 
@@ -55,15 +69,16 @@ NS_ASSUME_NONNULL_BEGIN
 /// configured to use the value of the assignment.
 - (void)reportAssignmentAffectedUser:(id<LABAssignment>)assignment;
 
-/// Updates the \c activeAssignments with the latest assignments. The returned signal completes when
-/// the update completes successfully or errs with \c LABErrorCodeAssignmentUpdateFailed on failure.
+/// Updates the \c activeAssignments with the latest assignments. The returned hot signal completes
+/// when the update completes successfully or errs with \c LABErrorCodeAssignmentUpdateFailed on
+/// failure.
 ///
 /// Values are sent on the main thread.
 ///
 /// @return RACSignal<>
 - (RACSignal *)updateActiveAssignments;
 
-/// Updates the \c activeAssignments with the latest assignments in the background. The returned
+/// Updates the \c activeAssignments with the latest assignments in the background. The returned hot
 /// signal completes when the update completes successfully or errs with
 /// \c LABErrorCodeAssignmentUpdateFailed on failure.
 ///
@@ -76,11 +91,28 @@ NS_ASSUME_NONNULL_BEGIN
 /// @return RACSignal<NSNumber *>
 - (RACSignal *)updateActiveAssignmentsInBackground;
 
-/// All the currently active assignments. Maps assignment keys to objects containing the assignment
-/// value and associated data.
+/// All currently active assignments and their revision ID.
 ///
 /// @note This property is KVO-compliant, changes are delivered on the main thread.
-@property (readonly, nonatomic) NSDictionary<NSString *, id<LABAssignment>> *activeAssignments;
+@property (readonly, nonatomic) id<LABRevisionedAssignments> activeAssignments;
+
+@end
+
+@class LABAssignmentsManager;
+
+/// Implementers of this protocol are notified of the active assignments and user affecting
+/// assignments.
+@protocol LABAssignmentsManagerDelegate <NSObject>
+
+/// Notifies the delegate that \c activeAssignments changed under \c assignmentsManager, having
+/// \c revisionID.
+- (void)assignmentsManager:(LABAssignmentsManager *)assignmentsManager
+activeAssignmentsDidChange:(id<LABRevisionedAssignments>)activeAssignments;
+
+/// Notifies the delegate that an \c assignment affected user experience under
+/// the supervision of \c assignmentsManager.
+- (void)assignmentsManager:(LABAssignmentsManager *)assignmentsManager
+   assignmentDidAffectUser:(id<LABAssignment>)assignment;
 
 @end
 
@@ -98,8 +130,20 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)init NS_UNAVAILABLE;
 
-/// Initializes with the given \c sources.
+/// Initializes with the given \c sources, \c delegate and default user defaults storage.
+/// \c delegate is held weakly and used to report the current active assignments and user affecting
+/// assignments.
+///
+/// @note All instances initialized with this initializer have a shared state.
 - (instancetype)initWithAssignmentSources:(NSArray<id<LABAssignmentsSource>> *)sources
+                                 delegate:(id<LABAssignmentsManagerDelegate>)delegate;
+
+/// Initializes with the given \c sources, \c delegate and \c storage. \c delegate is held weakly
+/// and used to report the current active assignments and user affecting assignments. \c storage is
+/// used for persisting the revision of \c activeAssignments, and informing of its changes.
+- (instancetype)initWithAssignmentSources:(NSArray<id<LABAssignmentsSource>> *)sources
+                                 delegate:(id<LABAssignmentsManagerDelegate>)delegate
+                                  storage:(id<LABStorage>)storage
     NS_DESIGNATED_INITIALIZER;
 
 @end

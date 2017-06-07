@@ -6,7 +6,6 @@
 #import <LTKit/NSArray+Functional.h>
 #import <LTKit/NSArray+NSSet.h>
 
-#import "LABFakeAssignmentsSource.h"
 #import "NSError+Laboratory.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -58,7 +57,7 @@ NS_ASSUME_NONNULL_BEGIN
     }].firstObject;
     LTParameterAssert(var, "Variant named %@ does not exist for experiment named %@", variantName,
                       experiment);
-    
+
     activeVariants[experiment] = var;
   }];
 
