@@ -152,7 +152,6 @@ context(@"setting default gesture recognizers", ^{
       OCMVerifyAll(pinchRecognizerMock);
     });
 
-
     it(@"should setup recognizers according to tap interaction mode", ^{
       manager.interactionMode = LTInteractionModeTap;
 
@@ -413,6 +412,16 @@ context(@"LTContentInteractionManager protocol", ^{
   it(@"should cancel touch event sequences when setting the content touch event delegate", ^{
     manager.contentTouchEventDelegate = OCMProtocolMock(@protocol(LTContentTouchEventDelegate));
     OCMVerify([view cancelTouchEventSequences]);
+  });
+
+  it(@"should retrieve the desired rate from the touch event view", ^{
+    OCMStub([view desiredRateForStationaryTouchEventForwarding]).andReturn(7);
+    expect(manager.desiredRateForStationaryContentTouchEventForwarding).to.equal(7);
+  });
+
+  it(@"should proxy the desired rate to the display link", ^{
+    manager.desiredRateForStationaryContentTouchEventForwarding = 7;
+    OCMVerify([view setDesiredRateForStationaryTouchEventForwarding:7]);
   });
 });
 

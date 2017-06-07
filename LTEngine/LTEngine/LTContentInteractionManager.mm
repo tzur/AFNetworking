@@ -94,6 +94,14 @@ NS_ASSUME_NONNULL_BEGIN
   recognizer.enabled = self.interactionMode & mode ? YES : NO;
 }
 
+- (NSUInteger)desiredRateForStationaryContentTouchEventForwarding {
+  return self.touchEventView.desiredRateForStationaryTouchEventForwarding;
+}
+
+- (void)setDesiredRateForStationaryContentTouchEventForwarding:(NSUInteger)rate {
+  self.touchEventView.desiredRateForStationaryTouchEventForwarding = rate;
+}
+
 #pragma mark -
 #pragma mark LTContentTouchEventDelegate
 #pragma mark -
