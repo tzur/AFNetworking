@@ -28,6 +28,14 @@ NS_ASSUME_NONNULL_BEGIN
 /// Delegate to which converted touch events are delegated.
 @property (weak, readonly, nonatomic) id<LTTouchEventDelegate> delegate;
 
+/// Desired rate, in Hertz, at which stationary touch events are to be forwarded to the \c delegate
+/// of this instance. The actual rate is kept as close as possible to the desired rate, but may be
+/// lower due to hardware constraints and/or other tasks being executing simultaneously.
+///
+/// Initial value is \c 60. Setting this value to \c 0 causes the forwarding of stationary touch
+/// events to stop.  Must not be greater than \c 60.
+@property (nonatomic) NSUInteger desiredRateForStationaryTouchEventForwarding;
+
 @end
 
 NS_ASSUME_NONNULL_END

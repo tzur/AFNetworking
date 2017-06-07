@@ -188,7 +188,8 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 - (void)updateDisplayLink {
-  self.displayLink.paused = self.touchToSequenceID.count == 0;
+  self.displayLink.paused = self.touchToSequenceID.count == 0 ||
+      !self.displayLink.preferredFramesPerSecond;
 }
 
 #pragma mark -
@@ -288,6 +289,22 @@ NS_ASSUME_NONNULL_BEGIN
   NSArray<UITouch *> *sortedPredictedTouches =
       [self sortedTouches:[event predictedTouchesForTouch:mainTouch]];
   return [self touchEventsForTouches:sortedPredictedTouches withSequenceID:sequenceID];
+}
+
+#pragma mark -
+#pragma mark Properties
+#pragma mark -
+
+- (NSUInteger)desiredRateForStationaryTouchEventForwarding {
+  return self.displayLink.preferredFramesPerSecond;
+}
+
+- (void)setDesiredRateForStationaryTouchEventForwarding:(NSUInteger)rate {
+  static const NSUInteger kMaximumFrameRate = 60;
+  LTParameterAssert(rate <= kMaximumFrameRate, @"Rate (%lu) must not be greater than %lu",
+                    (unsigned long)rate, (unsigned long)kMaximumFrameRate);
+  self.displayLink.preferredFramesPerSecond = rate;
+  [self updateDisplayLink];
 }
 
 @end
