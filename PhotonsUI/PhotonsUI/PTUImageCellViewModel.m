@@ -23,6 +23,7 @@ NSString * const kPTUImageCellViewModelTraitSessionKey = @"Session";
 NSString * const kPTUImageCellViewModelTraitCloudBasedKey = @"Cloud";
 NSString * const kPTUImageCellViewModelTraitVideoKey = @"Video";
 NSString * const kPTUImageCellViewModelTraitRawKey = @"Raw";
+NSString * const kPTUImageCellViewModelTraitGIFKey = @"GIF";
 
 @interface PTUImageCellViewModel ()
 
@@ -120,6 +121,9 @@ NSString * const kPTUImageCellViewModelTraitRawKey = @"Raw";
   }
   if ([self.descriptor.descriptorTraits containsObject:kPTNDescriptorTraitRawKey]) {
     [traits addObject:kPTUImageCellViewModelTraitRawKey];
+  }
+  if ([self.descriptor.descriptorTraits containsObject:kPTNDescriptorTraitGIFKey]) {
+    [traits addObject:kPTUImageCellViewModelTraitGIFKey];
   }
   return traits;
 }

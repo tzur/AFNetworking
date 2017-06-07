@@ -124,13 +124,24 @@ context(@"PTNDescriptor", ^{
       expect(rawViewModel.traits).to.contain(kPTUImageCellViewModelTraitRawKey);
     });
 
+    it(@"should expose GIF trait if underlying descriptor has GIF trait", ^{
+      id<PTNDescriptor> gifAsset = PTNCreateDescriptor(nil, @"foo", 0,
+          [NSSet setWithObject:kPTNDescriptorTraitGIFKey]);
+      PTUImageCellViewModel *gifViewModel = [[PTUImageCellViewModel alloc]
+                                             initWithAssetManager:assetManager
+                                             descriptor:gifAsset
+                                             imageFetchOptions:options];
+      expect(gifViewModel.traits).to.contain(kPTUImageCellViewModelTraitGIFKey);
+    });
+
     it(@"should expose multiple traits", ^{
       id<PTNDescriptor> multiTraitsAsset =
         PTNCreateDescriptor(nil, @"foo", 0, [NSSet setWithArray:@[
           kPTNDescriptorTraitSessionKey,
           kPTNDescriptorTraitCloudBasedKey,
           kPTNDescriptorTraitVideoKey,
-          kPTNDescriptorTraitRawKey
+          kPTNDescriptorTraitRawKey,
+          kPTNDescriptorTraitGIFKey
         ]]);
       PTUImageCellViewModel *multiTraitsViewModel = [[PTUImageCellViewModel alloc]
                                                      initWithAssetManager:assetManager
@@ -140,6 +151,7 @@ context(@"PTNDescriptor", ^{
       expect(multiTraitsViewModel.traits).to.contain(kPTUImageCellViewModelTraitCloudBasedKey);
       expect(multiTraitsViewModel.traits).to.contain(kPTUImageCellViewModelTraitVideoKey);
       expect(multiTraitsViewModel.traits).to.contain(kPTUImageCellViewModelTraitRawKey);
+      expect(multiTraitsViewModel.traits).to.contain(kPTUImageCellViewModelTraitGIFKey);
     });
   });
 });

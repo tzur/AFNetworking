@@ -80,6 +80,19 @@ context(@"asset descriptor", ^{
     PHAsset *asset = OCMPartialMock([[PHAsset alloc] init]);
     expect(asset.descriptorTraits).to.equal([NSSet set]);
   });
+
+  it(@"should reveal GIF traits when the underlying asset is a GIF", ^{
+    PHAsset *gifAsset = OCMPartialMock([[PHAsset alloc] init]);
+    OCMStub([gifAsset uniformTypeIdentifier]).andReturn(@"com.compuserve.gif");
+    expect(gifAsset.descriptorTraits).to.contain(kPTNDescriptorTraitGIFKey);
+
+    PHAsset *jpegAsset = OCMPartialMock([[PHAsset alloc] init]);
+    OCMStub([jpegAsset uniformTypeIdentifier]).andReturn(@"public.image");
+    expect(jpegAsset.descriptorTraits).to.equal([NSSet set]);
+
+    PHAsset *asset = OCMPartialMock([[PHAsset alloc] init]);
+    expect(asset.descriptorTraits).to.equal([NSSet set]);
+  });
 });
 
 context(@"album descriptor", ^{
