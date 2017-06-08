@@ -172,6 +172,28 @@ sharedExamplesFor(kLTContentInteractionManagerExamples, ^(NSDictionary *data) {
       OCMVerifyAll(contentTouchEventDelegateMock);
     });
   });
+
+  context(@"desired rate for stationary content touch event forwarding", ^{
+    it(@"should have an initial rate of 60", ^{
+      expect(manager.desiredRateForStationaryContentTouchEventForwarding).to.equal(60);
+    });
+
+    it(@"should set the desired rate", ^{
+      manager.desiredRateForStationaryContentTouchEventForwarding = 7;
+      expect(manager.desiredRateForStationaryContentTouchEventForwarding).to.equal(7);
+    });
+
+    it(@"should set the desired rate to 0", ^{
+      manager.desiredRateForStationaryContentTouchEventForwarding = 0;
+      expect(manager.desiredRateForStationaryContentTouchEventForwarding).to.equal(0);
+    });
+
+    it(@"should raise when attempting to set a rate greater than 60", ^{
+      expect(^{
+        manager.desiredRateForStationaryContentTouchEventForwarding = 61;
+      }).to.raise(NSInvalidArgumentException);
+    });
+  });
 });
 
 SharedExamplesEnd

@@ -5,6 +5,7 @@
 
 #import "LTContentTouchEventDelegate.h"
 #import "LTTouchEventCancellation.h"
+#import "LTTouchEventView.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -30,7 +31,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface LTContentInteractionManager ()
 
 /// View holding the gesture recognizers managed by this instance.
-@property (readonly, nonatomic) UIView *view;
+@property (readonly, nonatomic) LTTouchEventView *touchEventView;
 
 @end
 
@@ -40,13 +41,13 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark Initialization
 #pragma mark -
 
-- (instancetype)initWithView:(UIView *)view {
+- (instancetype)initWithView:(LTTouchEventView *)view {
   LTParameterAssert(view);
   LTParameterAssert(!view.gestureRecognizers.count, @"Given view has gesture recognizers (%@)",
                     view.gestureRecognizers);
 
   if (self = [super init]) {
-    _view = view;
+    _touchEventView = view;
     self.interactionMode = LTInteractionModeAllGestures;
     self.defaultGestureRecognizers = [[LTInteractionGestureRecognizers alloc] init];
   }
@@ -63,7 +64,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)setInteractionMode:(LTInteractionMode)interactionMode {
   if ([self forwardTouchEventsForMode:_interactionMode] !=
       [self forwardTouchEventsForMode:interactionMode]) {
-    [self.touchEventCanceller cancelTouchEventSequences];
+    [self.touchEventView cancelTouchEventSequences];
   }
 
   _interactionMode = interactionMode;
@@ -91,6 +92,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)enableRecognizer:(UIGestureRecognizer *)recognizer forMode:(LTInteractionMode)mode {
   recognizer.enabled = self.interactionMode & mode ? YES : NO;
+}
+
+- (NSUInteger)desiredRateForStationaryContentTouchEventForwarding {
+  return self.touchEventView.desiredRateForStationaryTouchEventForwarding;
+}
+
+- (void)setDesiredRateForStationaryContentTouchEventForwarding:(NSUInteger)rate {
+  self.touchEventView.desiredRateForStationaryTouchEventForwarding = rate;
 }
 
 #pragma mark -
@@ -185,13 +194,13 @@ NS_ASSUME_NONNULL_BEGIN
     return;
   }
 
-  [self.touchEventCanceller cancelTouchEventSequences];
+  [self.touchEventView cancelTouchEventSequences];
   _contentTouchEventDelegate = delegate;
 }
 
 - (void)safelyRemoveGestureRecognizer:(nullable UIGestureRecognizer *)recognizer {
   if (recognizer) {
-    [self.view removeGestureRecognizer:recognizer];
+    [self.touchEventView removeGestureRecognizer:recognizer];
   }
 }
 
@@ -200,7 +209,7 @@ NS_ASSUME_NONNULL_BEGIN
     LTParameterAssert(![self.customGestureRecognizers containsObject:recognizer],
                       @"Custom gesture recognizers (%@) contain given recognizer (%@)",
                       self.customGestureRecognizers, recognizer);
-    [self.view addGestureRecognizer:recognizer];
+    [self.touchEventView addGestureRecognizer:recognizer];
   }
 }
 
@@ -212,13 +221,13 @@ NS_ASSUME_NONNULL_BEGIN
   }
 
   for (UIGestureRecognizer *gestureRecognizer in _customGestureRecognizers) {
-    [self.view removeGestureRecognizer:gestureRecognizer];
+    [self.touchEventView removeGestureRecognizer:gestureRecognizer];
   }
   _customGestureRecognizers = customRecognizers;
   for (UIGestureRecognizer *gestureRecognizer in customRecognizers) {
-    LTParameterAssert(![self.view.gestureRecognizers containsObject:gestureRecognizer],
+    LTParameterAssert(![self.touchEventView.gestureRecognizers containsObject:gestureRecognizer],
                       @"Gesture recognizer has already been added as default gesture recognizer.");
-    [self.view addGestureRecognizer:gestureRecognizer];
+    [self.touchEventView addGestureRecognizer:gestureRecognizer];
   }
 }
 

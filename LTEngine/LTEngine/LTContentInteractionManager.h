@@ -6,7 +6,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@protocol LTTouchEventCancellation;
+@class LTTouchEventView;
 
 /// Tuple of gesture recognizers used by \c LTContentInteractionManager objects.
 @interface LTInteractionGestureRecognizers : NSObject
@@ -48,10 +48,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// any gesture recognizers attached to it. Both attachment and removal of gesture recognizers from
 /// the given \c view must only be performed via the \c defaultGestureRecognizers and
 /// \c customGestureRecognizers recognizers.
-- (instancetype)initWithView:(UIView *)view;
-
-/// Object used for cancellation of incoming content touch event sequences.
-@property (weak, nonatomic) id<LTTouchEventCancellation> touchEventCanceller;
+- (instancetype)initWithView:(LTTouchEventView *)view NS_DESIGNATED_INITIALIZER;
 
 /// Default gesture recognizers. Each gesture recognizer is enabled/disabled according to the
 /// corresponding bit flag in the \c interactionMode.

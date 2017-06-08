@@ -5,6 +5,8 @@
 
 #import "LTContentInteractionManagerExamples.h"
 #import "LTContentTouchEventDelegate.h"
+#import "LTTouchEventDelegate.h"
+#import "LTTouchEventView.h"
 
 SpecBegin(LTContentInteractionManager)
 
@@ -12,7 +14,7 @@ __block LTInteractionGestureRecognizers *recognizers;
 __block id tapRecognizerMock;
 __block id panRecognizerMock;
 __block id pinchRecognizerMock;
-__block UIView *view;
+__block LTTouchEventView *view;
 
 beforeEach(^{
   tapRecognizerMock = OCMClassMock([UITapGestureRecognizer class]);
@@ -22,7 +24,7 @@ beforeEach(^{
       [[LTInteractionGestureRecognizers alloc] initWithTapRecognizer:tapRecognizerMock
                                                        panRecognizer:panRecognizerMock
                                                      pinchRecognizer:pinchRecognizerMock];
-  view = [[UIView alloc] initWithFrame:CGRectZero];
+  view = OCMClassMock([LTTouchEventView class]);
 });
 
 afterEach(^{
@@ -36,7 +38,6 @@ afterEach(^{
 context(@"initialization", ^{
   it(@"should initialize correctly", ^{
     LTContentInteractionManager *manager = [[LTContentInteractionManager alloc] initWithView:view];
-    expect(manager.touchEventCanceller).to.beNil();
     expect(manager.defaultGestureRecognizers).toNot.beNil();
     expect(manager.defaultGestureRecognizers.tapGestureRecognizer).to.beNil();
     expect(manager.defaultGestureRecognizers.panGestureRecognizer).to.beNil();
@@ -54,7 +55,7 @@ context(@"initialization", ^{
 
   it(@"should raise when attempting to initialize with view with attached gesture recognizers", ^{
     id gestureRecognizerMock = OCMClassMock([UIPanGestureRecognizer class]);
-    [view addGestureRecognizer:gestureRecognizerMock];
+    OCMStub([view gestureRecognizers]).andReturn(@[gestureRecognizerMock]);
     expect(^{
       LTContentInteractionManager __unused *manager =
           [[LTContentInteractionManager alloc] initWithView:view];
@@ -66,6 +67,9 @@ context(@"setting default gesture recognizers", ^{
   __block LTContentInteractionManager *manager;
 
   beforeEach(^{
+    view =
+        [[LTTouchEventView alloc] initWithFrame:CGRectZero
+                                       delegate:OCMProtocolMock(@protocol(LTTouchEventDelegate))];
     manager = [[LTContentInteractionManager alloc] initWithView:view];
   });
 
@@ -147,7 +151,6 @@ context(@"setting default gesture recognizers", ^{
       OCMVerifyAll(panRecognizerMock);
       OCMVerifyAll(pinchRecognizerMock);
     });
-
 
     it(@"should setup recognizers according to tap interaction mode", ^{
       manager.interactionMode = LTInteractionModeTap;
@@ -245,6 +248,9 @@ context(@"invalid calls", ^{
   __block LTContentInteractionManager *manager;
 
   beforeEach(^{
+    view =
+        [[LTTouchEventView alloc] initWithFrame:CGRectZero
+                                       delegate:OCMProtocolMock(@protocol(LTTouchEventDelegate))];
     manager = [[LTContentInteractionManager alloc] initWithView:view];
   });
 
@@ -368,16 +374,54 @@ context(@"setting interaction mode", ^{
     OCMVerifyAll(panRecognizerMock);
     OCMVerifyAll(pinchRecognizerMock);
   });
+
+  it(@"should cancel sequences when switching between modes with different touch event handling", ^{
+    manager.interactionMode = LTInteractionModeTouchEvents;
+    OCMVerify([view cancelTouchEventSequences]);
+
+    manager.interactionMode = LTInteractionModeAllGestures;
+    OCMVerify([view cancelTouchEventSequences]);
+  });
+
+  it(@"should not cancel sequences when switching between mode with same touch event handling", ^{
+    OCMReject([view cancelTouchEventSequences]);
+    manager.interactionMode = LTInteractionModePanOneTouch;
+    manager.interactionMode = LTInteractionModeAllGestures;
+  });
 });
 
 context(@"LTContentInteractionManager protocol", ^{
-  static UIView * const kView = [[UIView alloc] initWithFrame:CGRectZero];
-  static LTContentInteractionManager * const kManager =
-      [[LTContentInteractionManager alloc] initWithView:kView];
+  __block LTContentInteractionManager *manager;
 
-  itShouldBehaveLike(kLTContentInteractionManagerExamples, @{
-      kLTContentInteractionManager: kManager,
-      kLTContentInteractionManagerView: kView
+  beforeEach(^{
+    manager = [[LTContentInteractionManager alloc] initWithView:view];
+  });
+
+  itShouldBehaveLike(kLTContentInteractionManagerExamples, ^{
+    LTTouchEventView *view =
+        [[LTTouchEventView alloc] initWithFrame:CGRectZero
+                                       delegate:OCMProtocolMock(@protocol(LTTouchEventDelegate))];
+    manager = [[LTContentInteractionManager alloc] initWithView:view];
+
+    return @{
+      kLTContentInteractionManager: manager,
+      kLTContentInteractionManagerView: view
+    };
+  });
+
+  it(@"should cancel touch event sequences when setting the content touch event delegate", ^{
+    manager.contentTouchEventDelegate = OCMProtocolMock(@protocol(LTContentTouchEventDelegate));
+    OCMVerify([view cancelTouchEventSequences]);
+  });
+
+  it(@"should retrieve the desired rate from the touch event view", ^{
+    OCMStub([view desiredRateForStationaryTouchEventForwarding]).andReturn(7);
+    expect(manager.desiredRateForStationaryContentTouchEventForwarding).to.equal(7);
+  });
+
+  it(@"should proxy the desired rate to the display link", ^{
+    manager.desiredRateForStationaryContentTouchEventForwarding = 7;
+    OCMVerify([view setDesiredRateForStationaryTouchEventForwarding:7]);
   });
 });
 
