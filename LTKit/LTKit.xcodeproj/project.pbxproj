@@ -78,6 +78,9 @@
 		85BD00A51DC0E0A30000FE97 /* NSArray+NSSetSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 85BD00A41DC0E0A30000FE97 /* NSArray+NSSetSpec.mm */; };
 		885E975F1D72D3A800A117A2 /* LocalizationTest.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 885E975E1D72D3A800A117A2 /* LocalizationTest.bundle */; };
 		8861FC611E5A266000CA1436 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8861FC601E5A266000CA1436 /* GLKit.framework */; };
+		888258DB1EEECDB000A90675 /* NSSet+Functional.h in Headers */ = {isa = PBXBuildFile; fileRef = 888258D91EEECDB000A90675 /* NSSet+Functional.h */; };
+		888258DC1EEECDB000A90675 /* NSSet+Functional.mm in Sources */ = {isa = PBXBuildFile; fileRef = 888258DA1EEECDB000A90675 /* NSSet+Functional.mm */; };
+		888258F61EEED06300A90675 /* NSSet+FunctionalSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 888258F51EEED06300A90675 /* NSSet+FunctionalSpec.mm */; };
 		88C67F5A1D72C7B800A0E0FC /* LTLocalizationTable.h in Headers */ = {isa = PBXBuildFile; fileRef = 88C67F581D72C7B800A0E0FC /* LTLocalizationTable.h */; };
 		88C67F5B1D72C7B800A0E0FC /* LTLocalizationTable.mm in Sources */ = {isa = PBXBuildFile; fileRef = 88C67F591D72C7B800A0E0FC /* LTLocalizationTable.mm */; };
 		88C67F5E1D72CE0500A0E0FC /* LTLocalizationTableSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 88C67F5D1D72CE0500A0E0FC /* LTLocalizationTableSpec.mm */; };
@@ -510,6 +513,9 @@
 		85BD00A41DC0E0A30000FE97 /* NSArray+NSSetSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSArray+NSSetSpec.mm"; sourceTree = "<group>"; };
 		885E975E1D72D3A800A117A2 /* LocalizationTest.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = LocalizationTest.bundle; sourceTree = "<group>"; };
 		8861FC601E5A266000CA1436 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
+		888258D91EEECDB000A90675 /* NSSet+Functional.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSSet+Functional.h"; sourceTree = "<group>"; };
+		888258DA1EEECDB000A90675 /* NSSet+Functional.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSSet+Functional.mm"; sourceTree = "<group>"; };
+		888258F51EEED06300A90675 /* NSSet+FunctionalSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSSet+FunctionalSpec.mm"; sourceTree = "<group>"; };
 		88C67F581D72C7B800A0E0FC /* LTLocalizationTable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTLocalizationTable.h; sourceTree = "<group>"; };
 		88C67F591D72C7B800A0E0FC /* LTLocalizationTable.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTLocalizationTable.mm; sourceTree = "<group>"; };
 		88C67F5D1D72CE0500A0E0FC /* LTLocalizationTableSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTLocalizationTableSpec.mm; sourceTree = "<group>"; };
@@ -957,6 +963,8 @@
 				5009329C1DD471140092BCF5 /* NSObject+NSSet.mm */,
 				8B4495811CE3209C008402D0 /* NSObject+PropertyAccessors.h */,
 				8B4495821CE3209C008402D0 /* NSObject+PropertyAccessors.m */,
+				888258D91EEECDB000A90675 /* NSSet+Functional.h */,
+				888258DA1EEECDB000A90675 /* NSSet+Functional.mm */,
 				8BA5D6A2199250240093A4FD /* NSString+Hashing.h */,
 				8BA5D6A3199250240093A4FD /* NSString+Hashing.m */,
 				BEB7BB8B1E2622D6007EAB73 /* UIColor+Utilities.h */,
@@ -1001,6 +1009,7 @@
 				85BD00A41DC0E0A30000FE97 /* NSArray+NSSetSpec.mm */,
 				500932B71DD472C40092BCF5 /* NSObject+NSSetSpec.mm */,
 				8B4495A11CE322DB008402D0 /* NSObject+PropertyAccessorsSpec.mm */,
+				888258F51EEED06300A90675 /* NSSet+FunctionalSpec.mm */,
 				8BA5D6C0199250CE0093A4FD /* NSString+HashingSpec.mm */,
 				BEB7BBA71E2623C9007EAB73 /* UIColor+UtilitiesSpec.mm */,
 			);
@@ -1284,6 +1293,7 @@
 				255339401C3E512300C478F9 /* LTTreeNode.h in Headers */,
 				8BB236C21CDCD5C500057F11 /* NSObject+DynamicDispatch.h in Headers */,
 				8BB01CAF196576D7002A8609 /* LTImageLoader.h in Headers */,
+				888258DB1EEECDB000A90675 /* NSSet+Functional.h in Headers */,
 				8B7C6CA41B52829F00B90DBE /* LTMMOutputFile.h in Headers */,
 				8B2405881B860D620079B724 /* NSLocale+Language.h in Headers */,
 				5067221819EA80B5003AF8D2 /* LTBoundedQueue.h in Headers */,
@@ -1655,6 +1665,7 @@
 				835204ED1D2A43B300000EEC /* LTEventBus.m in Sources */,
 				A1006D001E026EFB0061D8BB /* NSDateFormatter+Formatters.mm in Sources */,
 				84455E4C1CD0F5E500042CB7 /* LTMappingRandomAccessCollection.m in Sources */,
+				888258DC1EEECDB000A90675 /* NSSet+Functional.mm in Sources */,
 				CDA09B951E81368000753A41 /* NSData+Encryption.mm in Sources */,
 				28B8BBC41B67CF8600CF9F73 /* LTWeakContainer.mm in Sources */,
 				8B410E8E1CE1F01E007DFF42 /* NSArray+SelectorName.mm in Sources */,
@@ -1688,6 +1699,7 @@
 				8B24058D1B89BBB90079B724 /* UIDevice+HardwareSpec.mm in Sources */,
 				8BF9A54918FA6B9100CCA084 /* LTTimerSpec.mm in Sources */,
 				85BD00A51DC0E0A30000FE97 /* NSArray+NSSetSpec.mm in Sources */,
+				888258F61EEED06300A90675 /* NSSet+FunctionalSpec.mm in Sources */,
 				5067223219EA811A003AF8D2 /* LTQueueSpec.mm in Sources */,
 				C751B0461D48879B005DB5BB /* LTEventBusObserverSpec.mm in Sources */,
 				8B2840291CBE393000B745AE /* LTStructBoxingSpec.mm in Sources */,
