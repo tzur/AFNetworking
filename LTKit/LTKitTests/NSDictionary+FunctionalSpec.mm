@@ -3,23 +3,43 @@
 
 #import "NSDictionary+Functional.h"
 
+static NSDictionary<NSNumber *, NSString *> *const kSourceDictionary = @{
+  @4: @"foo",
+  @8: @"bar",
+  @5: @"baz",
+  @9: @"ping",
+  @3: @"pong"
+};
+
 SpecBegin(NSDictionary_Functional)
 
-context(@"filter", ^{
-  __block NSDictionary<NSNumber *, NSString *> *baseDictionary;
+context(@"map values", ^{
+  it(@"should map the values using the provided block", ^{
+    auto mapped = [kSourceDictionary lt_mapValues:^id (NSNumber *key, NSString *obj) {
+      return [NSString stringWithFormat:@"%@ %@", key, obj];
+    }];
 
-  beforeEach(^{
-    baseDictionary = @{
-      @4: @"foo",
-      @8: @"bar",
-      @5: @"baz",
-      @9: @"ping",
-      @3: @"pong"
-    };
+    expect(mapped).to.equal(@{
+      @4: @"4 foo",
+      @8: @"8 bar",
+      @5: @"5 baz",
+      @9: @"9 ping",
+      @3: @"3 pong"
+    });
   });
 
+  it(@"should raise if mapping block returns nil", ^{
+    expect(^{
+      [kSourceDictionary lt_mapValues:^id (NSNumber *, NSString *) {
+        return nil;
+      }];
+    }).to.raise(NSInvalidArgumentException);
+  });
+});
+
+context(@"filter", ^{
   it(@"should return all and only those items that the filter block has returned YES for", ^{
-    auto filteredDictionary = [baseDictionary lt_filter:^BOOL(NSNumber * key, NSString *) {
+    auto filteredDictionary = [kSourceDictionary lt_filter:^BOOL(NSNumber * key, NSString *) {
       return key.unsignedIntegerValue > 5;
     }];
 
@@ -29,8 +49,8 @@ context(@"filter", ^{
     });
   });
 
-  it(@"should return empty array if block returns NO for all items", ^{
-    auto filteredDictionary = [baseDictionary lt_filter:^BOOL(NSNumber *, NSString *) {
+  it(@"should return empty dictionary if block returns NO for all items", ^{
+    auto filteredDictionary = [kSourceDictionary lt_filter:^BOOL(NSNumber *, NSString *) {
       return NO;
     }];
 
