@@ -204,6 +204,7 @@
 		8BCF586F1BCD25AB001EE2ED /* PTNImageMetadataUpMirrored.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8BCF58661BCD25AB001EE2ED /* PTNImageMetadataUpMirrored.jpg */; };
 		8BF135BA1B79E7A800F4D0B3 /* PTNPhotoKitFakeFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BF135B91B79E7A800F4D0B3 /* PTNPhotoKitFakeFetcher.m */; };
 		B4119F111EEE749100756808 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B4119F101EEE749100756808 /* MediaPlayer.framework */; };
+		B411A0491EEE76BF00756808 /* PTNMediaLibraryAuthorizer.mm in Sources */ = {isa = PBXBuildFile; fileRef = B411A0481EEE76BF00756808 /* PTNMediaLibraryAuthorizer.mm */; };
 		B4D896CB1EF27B7D00348896 /* NSURL+MediaLibrary.mm in Sources */ = {isa = PBXBuildFile; fileRef = B4D896CA1EF27B7D00348896 /* NSURL+MediaLibrary.mm */; };
 		B4D896EA1EF27B8E00348896 /* NSURL+MediaLibrarySpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = B4D896E91EF27B8E00348896 /* NSURL+MediaLibrarySpec.mm */; };
 		BE40BE1F1DF6F561007F4F57 /* PTNVideoFetchOptions.mm in Sources */ = {isa = PBXBuildFile; fileRef = BE40BE1E1DF6F561007F4F57 /* PTNVideoFetchOptions.mm */; };
@@ -804,6 +805,8 @@
 		8BF135B81B79E7A800F4D0B3 /* PTNPhotoKitFakeFetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNPhotoKitFakeFetcher.h; sourceTree = "<group>"; };
 		8BF135B91B79E7A800F4D0B3 /* PTNPhotoKitFakeFetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTNPhotoKitFakeFetcher.m; sourceTree = "<group>"; };
 		B4119F101EEE749100756808 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
+		B411A0471EEE76BF00756808 /* PTNMediaLibraryAuthorizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNMediaLibraryAuthorizer.h; sourceTree = "<group>"; };
+		B411A0481EEE76BF00756808 /* PTNMediaLibraryAuthorizer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PTNMediaLibraryAuthorizer.mm; sourceTree = "<group>"; };
 		B4D896C91EF27B7D00348896 /* NSURL+MediaLibrary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURL+MediaLibrary.h"; sourceTree = "<group>"; };
 		B4D896CA1EF27B7D00348896 /* NSURL+MediaLibrary.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSURL+MediaLibrary.mm"; sourceTree = "<group>"; };
 		B4D896E91EF27B8E00348896 /* NSURL+MediaLibrarySpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSURL+MediaLibrarySpec.mm"; sourceTree = "<group>"; };
@@ -1596,6 +1599,8 @@
 			children = (
 				B4D896C91EF27B7D00348896 /* NSURL+MediaLibrary.h */,
 				B4D896CA1EF27B7D00348896 /* NSURL+MediaLibrary.mm */,
+				B411A0471EEE76BF00756808 /* PTNMediaLibraryAuthorizer.h */,
+				B411A0481EEE76BF00756808 /* PTNMediaLibraryAuthorizer.mm */,
 			);
 			name = MediaLibrary;
 			sourceTree = "<group>";
@@ -1968,6 +1973,7 @@
 				84E55C2C1C8EC84300D91339 /* PTNSignalCache.m in Sources */,
 				84515F5B1C96A8A500AD8B5B /* PTNOpenURLManager.m in Sources */,
 				84E55C251C8EC83800D91339 /* PTNDataBackedImageAsset.m in Sources */,
+				B411A0491EEE76BF00756808 /* PTNMediaLibraryAuthorizer.mm in Sources */,
 				0DF0D2001EACF36D000EEF37 /* PTNAVImageAsset.mm in Sources */,
 				84E55C2E1C8EC84800D91339 /* NSURL+Dropbox.m in Sources */,
 				8430E00D1D8839350071C3C3 /* PTNDescriptor.m in Sources */,
