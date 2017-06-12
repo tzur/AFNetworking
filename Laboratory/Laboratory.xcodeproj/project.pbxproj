@@ -16,9 +16,12 @@
 		883235851ED861EA0090787D /* NSError+Laboratory.mm in Sources */ = {isa = PBXBuildFile; fileRef = 883235821ED861EA0090787D /* NSError+Laboratory.mm */; };
 		883235861ED861EA0090787D /* NSErrorCodes+Laboratory.mm in Sources */ = {isa = PBXBuildFile; fileRef = 883235841ED861EA0090787D /* NSErrorCodes+Laboratory.mm */; };
 		883235881ED861F30090787D /* NSErrorCodes+LaboratorySpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 883235871ED861F30090787D /* NSErrorCodes+LaboratorySpec.mm */; };
+		88440B991EDB19C200A64CF7 /* LABLocalSourceSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 88440B981EDB19C200A64CF7 /* LABLocalSourceSpec.mm */; };
 		884962181EBA226E007B3AE8 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1417A911E6ED9CB005DBEFF /* UIKit.framework */; };
+		884F64941EE53B3C0052274E /* LABExperimentsTokenProviderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 884F64931EE53B3C0052274E /* LABExperimentsTokenProviderSpec.mm */; };
 		884F64B51EE53E010052274E /* LABFakeStorage.mm in Sources */ = {isa = PBXBuildFile; fileRef = 884F64B41EE53E010052274E /* LABFakeStorage.mm */; };
 		885349B81EE45B0C0043D190 /* LABAssignmentsSource.mm in Sources */ = {isa = PBXBuildFile; fileRef = 885349B71EE45B0C0043D190 /* LABAssignmentsSource.mm */; };
+		88648C231EE5281200B492D7 /* LABExperimentsTokenProvider.mm in Sources */ = {isa = PBXBuildFile; fileRef = 88648C221EE5281200B492D7 /* LABExperimentsTokenProvider.mm */; };
 		88932F5C1EDF538900451D44 /* EXPMatchers+beSubscribedTo.m in Sources */ = {isa = PBXBuildFile; fileRef = 88932F451EDF538900451D44 /* EXPMatchers+beSubscribedTo.m */; };
 		88932F5D1EDF538900451D44 /* EXPMatchers+complete.m in Sources */ = {isa = PBXBuildFile; fileRef = 88932F471EDF538900451D44 /* EXPMatchers+complete.m */; };
 		88932F5E1EDF538900451D44 /* EXPMatchers+deliverValuesOnThread.m in Sources */ = {isa = PBXBuildFile; fileRef = 88932F491EDF538900451D44 /* EXPMatchers+deliverValuesOnThread.m */; };
@@ -37,6 +40,7 @@
 		88932F771EDF55D300451D44 /* LLSignalTestRecorder.m in Sources */ = {isa = PBXBuildFile; fileRef = 88932F731EDF55D300451D44 /* LLSignalTestRecorder.m */; };
 		88932F781EDF55D300451D44 /* RACSignal+LLSubscriptionCounting.m in Sources */ = {isa = PBXBuildFile; fileRef = 88932F751EDF55D300451D44 /* RACSignal+LLSubscriptionCounting.m */; };
 		88ABDB141EDFDA6900C72E65 /* ReactiveCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 882D20051EC996D4007F39F5 /* ReactiveCocoa.framework */; };
+		88BB646D1EDAAD100026DEC0 /* LABLocalSource.mm in Sources */ = {isa = PBXBuildFile; fileRef = 88BB646B1EDAAD100026DEC0 /* LABLocalSource.mm */; };
 		A14171C61E6EAC0D005DBEFF /* libLaboratory.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A14171A11E6EAA93005DBEFF /* libLaboratory.a */; };
 		A14173401E6EB59F005DBEFF /* libExpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A141728A1E6EAEE7005DBEFF /* libExpecta.a */; };
 		A14173411E6EB59F005DBEFF /* libLTKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A141726F1E6EADDF005DBEFF /* libLTKit.a */; };
@@ -304,9 +308,13 @@
 		883235871ED861F30090787D /* NSErrorCodes+LaboratorySpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSErrorCodes+LaboratorySpec.mm"; sourceTree = "<group>"; };
 		88440B511ED8B10B00A64CF7 /* LABAssignmentsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LABAssignmentsManager.h; sourceTree = "<group>"; };
 		88440B521ED8B10B00A64CF7 /* LABAssignmentsSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LABAssignmentsSource.h; sourceTree = "<group>"; };
+		88440B981EDB19C200A64CF7 /* LABLocalSourceSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LABLocalSourceSpec.mm; sourceTree = "<group>"; };
+		884F64931EE53B3C0052274E /* LABExperimentsTokenProviderSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LABExperimentsTokenProviderSpec.mm; sourceTree = "<group>"; };
 		884F64B31EE53E010052274E /* LABFakeStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LABFakeStorage.h; sourceTree = "<group>"; };
 		884F64B41EE53E010052274E /* LABFakeStorage.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LABFakeStorage.mm; sourceTree = "<group>"; };
 		885349B71EE45B0C0043D190 /* LABAssignmentsSource.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LABAssignmentsSource.mm; sourceTree = "<group>"; };
+		88648C211EE5281200B492D7 /* LABExperimentsTokenProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LABExperimentsTokenProvider.h; sourceTree = "<group>"; };
+		88648C221EE5281200B492D7 /* LABExperimentsTokenProvider.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LABExperimentsTokenProvider.mm; sourceTree = "<group>"; };
 		88932F441EDF538900451D44 /* EXPMatchers+beSubscribedTo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "EXPMatchers+beSubscribedTo.h"; path = "../../third_party/LLReactiveMatchers/LLReactiveMatchers/Matchers/EXPMatchers+beSubscribedTo.h"; sourceTree = "<group>"; };
 		88932F451EDF538900451D44 /* EXPMatchers+beSubscribedTo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "EXPMatchers+beSubscribedTo.m"; path = "../../third_party/LLReactiveMatchers/LLReactiveMatchers/Matchers/EXPMatchers+beSubscribedTo.m"; sourceTree = "<group>"; };
 		88932F461EDF538900451D44 /* EXPMatchers+complete.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "EXPMatchers+complete.h"; path = "../../third_party/LLReactiveMatchers/LLReactiveMatchers/Matchers/EXPMatchers+complete.h"; sourceTree = "<group>"; };
@@ -343,6 +351,8 @@
 		88932F731EDF55D300451D44 /* LLSignalTestRecorder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LLSignalTestRecorder.m; path = ../../third_party/LLReactiveMatchers/LLReactiveMatchers/Helpers/LLSignalTestRecorder.m; sourceTree = "<group>"; };
 		88932F741EDF55D300451D44 /* RACSignal+LLSubscriptionCounting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "RACSignal+LLSubscriptionCounting.h"; path = "../../third_party/LLReactiveMatchers/LLReactiveMatchers/Helpers/RACSignal+LLSubscriptionCounting.h"; sourceTree = "<group>"; };
 		88932F751EDF55D300451D44 /* RACSignal+LLSubscriptionCounting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "RACSignal+LLSubscriptionCounting.m"; path = "../../third_party/LLReactiveMatchers/LLReactiveMatchers/Helpers/RACSignal+LLSubscriptionCounting.m"; sourceTree = "<group>"; };
+		88BB646A1EDAAD100026DEC0 /* LABLocalSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LABLocalSource.h; sourceTree = "<group>"; };
+		88BB646B1EDAAD100026DEC0 /* LABLocalSource.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LABLocalSource.mm; sourceTree = "<group>"; };
 		88BB646C1EDAAD100026DEC0 /* LABStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LABStorage.h; sourceTree = "<group>"; };
 		A14171A11E6EAA93005DBEFF /* libLaboratory.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libLaboratory.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		A14171C11E6EAC0D005DBEFF /* LaboratoryTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LaboratoryTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -423,6 +433,8 @@
 				88440B511ED8B10B00A64CF7 /* LABAssignmentsManager.h */,
 				88440B521ED8B10B00A64CF7 /* LABAssignmentsSource.h */,
 				885349B71EE45B0C0043D190 /* LABAssignmentsSource.mm */,
+				88648C211EE5281200B492D7 /* LABExperimentsTokenProvider.h */,
+				88648C221EE5281200B492D7 /* LABExperimentsTokenProvider.mm */,
 				88BB646C1EDAAD100026DEC0 /* LABStorage.h */,
 				883235811ED861EA0090787D /* NSError+Laboratory.h */,
 				883235821ED861EA0090787D /* NSError+Laboratory.mm */,
@@ -436,8 +448,17 @@
 			isa = PBXGroup;
 			children = (
 				883235871ED861F30090787D /* NSErrorCodes+LaboratorySpec.mm */,
+				884F64931EE53B3C0052274E /* LABExperimentsTokenProviderSpec.mm */,
 			);
 			name = Base;
+			sourceTree = "<group>";
+		};
+		88440B971EDB199A00A64CF7 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				88440B981EDB19C200A64CF7 /* LABLocalSourceSpec.mm */,
+			);
+			name = Sources;
 			sourceTree = "<group>";
 		};
 		88932F231EDF527600451D44 /* Matchers */ = {
@@ -491,6 +512,15 @@
 			name = LLReactiveMatchers;
 			sourceTree = "<group>";
 		};
+		88BB644B1EDAAD000026DEC0 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				88BB646A1EDAAD100026DEC0 /* LABLocalSource.h */,
+				88BB646B1EDAAD100026DEC0 /* LABLocalSource.mm */,
+			);
+			name = Sources;
+			sourceTree = "<group>";
+		};
 		A14171981E6EAA93005DBEFF = {
 			isa = PBXGroup;
 			children = (
@@ -516,6 +546,7 @@
 			isa = PBXGroup;
 			children = (
 				883235611ED861CD0090787D /* Base */,
+				88BB644B1EDAAD000026DEC0 /* Sources */,
 				A14172BA1E6EB04F005DBEFF /* Supporting Files */,
 			);
 			path = Laboratory;
@@ -656,6 +687,7 @@
 			isa = PBXGroup;
 			children = (
 				883235801ED861DB0090787D /* Base */,
+				88440B971EDB199A00A64CF7 /* Sources */,
 				A1541C081EAF400D00B4F064 /* Utils */,
 			);
 			name = Tests;
@@ -1025,9 +1057,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				88648C231EE5281200B492D7 /* LABExperimentsTokenProvider.mm in Sources */,
 				883235851ED861EA0090787D /* NSError+Laboratory.mm in Sources */,
 				885349B81EE45B0C0043D190 /* LABAssignmentsSource.mm in Sources */,
 				883235861ED861EA0090787D /* NSErrorCodes+Laboratory.mm in Sources */,
+				88BB646D1EDAAD100026DEC0 /* LABLocalSource.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1049,11 +1083,13 @@
 				88932F601EDF538900451D44 /* EXPMatchers+finish.m in Sources */,
 				88932F641EDF538900451D44 /* EXPMatchers+sendError.m in Sources */,
 				88932F5C1EDF538900451D44 /* EXPMatchers+beSubscribedTo.m in Sources */,
+				884F64941EE53B3C0052274E /* LABExperimentsTokenProviderSpec.mm in Sources */,
 				88932F661EDF538900451D44 /* EXPMatchers+sendValues.m in Sources */,
 				88932F631EDF538900451D44 /* EXPMatchers+matchValues.m in Sources */,
 				88932F5F1EDF538900451D44 /* EXPMatchers+error.m in Sources */,
 				88932F761EDF55D300451D44 /* EXPExpect+LLReactiveMatchersExtensions.m in Sources */,
 				884F64B51EE53E010052274E /* LABFakeStorage.mm in Sources */,
+				88440B991EDB19C200A64CF7 /* LABLocalSourceSpec.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
