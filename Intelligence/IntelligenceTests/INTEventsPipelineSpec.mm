@@ -5,9 +5,9 @@
 
 #import <Intelligence/INTDeviceTokenChangedEvent.h>
 #import <LTKit/NSArray+Functional.h>
+#import <LTKitTests/LTDataHelpers.h>
 
 #import "INTAppLifecycleTimer.h"
-#import "INTDataHelpers.h"
 #import "INTDeviceInfo.h"
 #import "INTDeviceInfoLoadedEvent.h"
 #import "INTEventMetadata.h"
@@ -235,7 +235,7 @@ it(@"should report device token changed events", ^{
   }];
 
   auto deviceToken =
-      INTVectorToNSData<unsigned char>({0x01, 0x23, 0x45, 0x67, 0x89, 0xab, 0xcd, 0xef});
+      LTVectorToNSData<unsigned char>({0x01, 0x23, 0x45, 0x67, 0x89, 0xab, 0xcd, 0xef});
   [intelligenceEvents deviceTokenDidChange:deviceToken];
   [intelligenceEvents deviceTokenDidChange:nil];
 

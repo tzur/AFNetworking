@@ -3,7 +3,8 @@
 
 #import "INTDeviceInfoObserver.h"
 
-#import "INTDataHelpers.h"
+#import <LTKitTests/LTDataHelpers.h>
+
 #import "INTDeviceInfo.h"
 #import "INTFakeDeviceInfoSource.h"
 #import "INTStorage.h"
@@ -130,14 +131,14 @@ it(@"should call delegate with with new device info if it changes over instances
 
 it(@"should report a new device token if none was stored", ^{
   auto deviceToken =
-      INTVectorToNSData<unsigned char>({0x01, 0x23, 0x45, 0x67, 0x89, 0xab, 0xcd, 0xef});
+      LTVectorToNSData<unsigned char>({0x01, 0x23, 0x45, 0x67, 0x89, 0xab, 0xcd, 0xef});
   [observer setDeviceToken:deviceToken];
   expect(delegate.reportedDeviceToken).to.equal(deviceToken);
 });
 
 it(@"should persist device token over instances", ^{
   auto deviceToken =
-      INTVectorToNSData<unsigned char>({0x01, 0x23, 0x45, 0x67, 0x89, 0xab, 0xcd, 0xef});
+      LTVectorToNSData<unsigned char>({0x01, 0x23, 0x45, 0x67, 0x89, 0xab, 0xcd, 0xef});
   [observer setDeviceToken:deviceToken];
   delegate = [[INTFakeDeviceInfoObserverDelegate alloc] init];
   observer = [[INTDeviceInfoObserver alloc] initWithDeviceInfoSource:source storage:storage
@@ -149,7 +150,7 @@ it(@"should persist device token over instances", ^{
 
 it(@"should report changes to the device token", ^{
   auto deviceToken =
-      INTVectorToNSData<unsigned char>({0x01, 0x23, 0x45, 0x67, 0x89, 0xab, 0xcd, 0xef});
+      LTVectorToNSData<unsigned char>({0x01, 0x23, 0x45, 0x67, 0x89, 0xab, 0xcd, 0xef});
   [observer setDeviceToken:deviceToken];
   expect(delegate.reportedDeviceToken).to.equal(deviceToken);
 

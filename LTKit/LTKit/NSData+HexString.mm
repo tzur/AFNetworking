@@ -1,5 +1,5 @@
 // Copyright (c) 2017 Lightricks. All rights reserved.
-// Created by Boris Talesnik.
+// Created by Neria Saada.
 
 #import "NSData+HexString.h"
 
@@ -7,7 +7,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation NSData (HexString)
 
-- (NSString *)int_hexString {
+- (NSString *)lt_hexString {
   NSMutableString *hexString = [NSMutableString string];
   auto bytes = (const unsigned char *)self.bytes;
   for (NSUInteger i = 0; i < self.length; ++i) {

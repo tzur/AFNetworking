@@ -196,6 +196,10 @@
 		C751B3D61D48C304005DB5BB /* LTVolatileMessageContainer.h in Headers */ = {isa = PBXBuildFile; fileRef = C751B3D41D48C304005DB5BB /* LTVolatileMessageContainer.h */; };
 		C751B3D71D48C304005DB5BB /* LTVolatileMessageContainer.mm in Sources */ = {isa = PBXBuildFile; fileRef = C751B3D51D48C304005DB5BB /* LTVolatileMessageContainer.mm */; };
 		C751B3D91D48C6C1005DB5BB /* LTVolatileMessageContainerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = C751B3D81D48C6C1005DB5BB /* LTVolatileMessageContainerSpec.mm */; };
+		CD8887881EED8EAB005F8FCA /* NSData+HexString.h in Headers */ = {isa = PBXBuildFile; fileRef = CD8887861EED8EAB005F8FCA /* NSData+HexString.h */; };
+		CD8887891EED8EAB005F8FCA /* NSData+HexString.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD8887871EED8EAB005F8FCA /* NSData+HexString.mm */; };
+		CD8887A31EED8EEB005F8FCA /* NSData+HexStringSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD8887A21EED8EEB005F8FCA /* NSData+HexStringSpec.mm */; };
+		CD8887A51EED900E005F8FCA /* LTDataHelpers.h in Headers */ = {isa = PBXBuildFile; fileRef = CD8887A41EED900E005F8FCA /* LTDataHelpers.h */; };
 		CDA09B941E81368000753A41 /* NSData+Encryption.h in Headers */ = {isa = PBXBuildFile; fileRef = CDA09B921E81368000753A41 /* NSData+Encryption.h */; };
 		CDA09B951E81368000753A41 /* NSData+Encryption.mm in Sources */ = {isa = PBXBuildFile; fileRef = CDA09B931E81368000753A41 /* NSData+Encryption.mm */; };
 		CDA09B981E8136B900753A41 /* NSData+EncryptionSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = CDA09B971E8136B900753A41 /* NSData+EncryptionSpec.mm */; };
@@ -640,6 +644,10 @@
 		C751B3D41D48C304005DB5BB /* LTVolatileMessageContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTVolatileMessageContainer.h; sourceTree = "<group>"; };
 		C751B3D51D48C304005DB5BB /* LTVolatileMessageContainer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTVolatileMessageContainer.mm; sourceTree = "<group>"; };
 		C751B3D81D48C6C1005DB5BB /* LTVolatileMessageContainerSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTVolatileMessageContainerSpec.mm; sourceTree = "<group>"; };
+		CD8887861EED8EAB005F8FCA /* NSData+HexString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+HexString.h"; sourceTree = "<group>"; };
+		CD8887871EED8EAB005F8FCA /* NSData+HexString.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSData+HexString.mm"; sourceTree = "<group>"; };
+		CD8887A21EED8EEB005F8FCA /* NSData+HexStringSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSData+HexStringSpec.mm"; sourceTree = "<group>"; };
+		CD8887A41EED900E005F8FCA /* LTDataHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTDataHelpers.h; sourceTree = "<group>"; };
 		CDA09B921E81368000753A41 /* NSData+Encryption.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Encryption.h"; sourceTree = "<group>"; };
 		CDA09B931E81368000753A41 /* NSData+Encryption.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSData+Encryption.mm"; sourceTree = "<group>"; };
 		CDA09B971E8136B900753A41 /* NSData+EncryptionSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSData+EncryptionSpec.mm"; sourceTree = "<group>"; };
@@ -939,6 +947,8 @@
 				85BD00891DC0E0920000FE97 /* NSArray+NSSet.mm */,
 				8B410E8B1CE1F01E007DFF42 /* NSArray+SelectorName.h */,
 				8B410E8C1CE1F01E007DFF42 /* NSArray+SelectorName.mm */,
+				CD8887861EED8EAB005F8FCA /* NSData+HexString.h */,
+				CD8887871EED8EAB005F8FCA /* NSData+HexString.mm */,
 				88DA5A8F1ED056E9008162BC /* NSDictionary+Functional.h */,
 				88DA5A901ED056EA008162BC /* NSDictionary+Functional.mm */,
 				282CF088187B030A00904F07 /* NSObject+AddToContainer.h */,
@@ -984,6 +994,7 @@
 				503442BC1A0FB95B008E0ED3 /* LTCFExtensionsSpec.mm */,
 				2836212D186C58F900665ED9 /* LTCGExtensionsSpec.mm */,
 				8BE6F7461C21879500F66BA2 /* LTHashExtensionsSpec.mm */,
+				CD8887A21EED8EEB005F8FCA /* NSData+HexStringSpec.mm */,
 				88DA5AAB1ED05771008162BC /* NSDictionary+FunctionalSpec.mm */,
 				8B4495391CE1F4C7008402D0 /* NSArray+SelectorNameSpec.mm */,
 				650F73DB1C7A1A5500148CEC /* NSArray+FunctionalSpec.mm */,
@@ -1130,6 +1141,7 @@
 				50E6AC731D2BD07A0074EC11 /* EXPMatchers+beCloseToSize.h */,
 				8B2405371B85DAC60079B724 /* EXPMatchers+beCloseToPoint.h */,
 				8B2405381B85DAC60079B724 /* EXPMatchers+beCloseToPoint.mm */,
+				CD8887A41EED900E005F8FCA /* LTDataHelpers.h */,
 				256F17121D35243A009D3254 /* LTEqualityExamples.h */,
 				256F17131D35243A009D3254 /* LTEqualityExamples.mm */,
 				835205081D2A455E00000EEC /* LTEventTarget.h */,
@@ -1299,6 +1311,7 @@
 				8B87203D1924A76600517F2E /* LTLoggerMacrosImpl.h in Headers */,
 				259FF7CF1C14920C00362CDD /* LTBipartiteGraph.h in Headers */,
 				8B87203E1924A76600517F2E /* LTMetaMacros.h in Headers */,
+				CD8887881EED8EAB005F8FCA /* NSData+HexString.h in Headers */,
 				8B8720401924A76700517F2E /* LTPropertyMacros.h in Headers */,
 				8B8720421924A76700517F2E /* LTTimer.h in Headers */,
 				8B9FE5761BA9D4A40085E97E /* UIScreen+Physical.h in Headers */,
@@ -1308,6 +1321,7 @@
 				8B8720441924A76700517F2E /* NSObject+AddToContainer.h in Headers */,
 				650F73C11C7A13DF00148CEC /* NSArray+Functional.h in Headers */,
 				83C2EABE1EB73E4400A3085D /* NSDate+Formatting.h in Headers */,
+				CD8887A51EED900E005F8FCA /* LTDataHelpers.h in Headers */,
 				8B4495831CE3209C008402D0 /* NSObject+PropertyAccessors.h in Headers */,
 				8BA5D6A4199250240093A4FD /* NSString+Hashing.h in Headers */,
 				C751B02B1D4881D7005DB5BB /* LTEventBusObserver.h in Headers */,
@@ -1606,6 +1620,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C751B3D71D48C304005DB5BB /* LTVolatileMessageContainer.mm in Sources */,
+				CD8887891EED8EAB005F8FCA /* NSData+HexString.mm in Sources */,
 				8B7C6CA21B52829100B90DBE /* LTMMOutputFile.mm in Sources */,
 				BEB7BB8E1E2622D6007EAB73 /* UIColor+Utilities.mm in Sources */,
 				85BD008B1DC0E0920000FE97 /* NSArray+NSSet.mm in Sources */,
@@ -1724,6 +1739,7 @@
 				8B9D3FC51891116A001A964D /* LTEasyBoxingSpec.mm in Sources */,
 				88C67F5E1D72CE0500A0E0FC /* LTLocalizationTableSpec.mm in Sources */,
 				8BBBE60B1B4E8A7B00726C2A /* NSError+LTKitSpec.mm in Sources */,
+				CD8887A31EED8EEB005F8FCA /* NSData+HexStringSpec.mm in Sources */,
 				8352050A1D2A455E00000EEC /* LTEventTarget.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
