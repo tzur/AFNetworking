@@ -28,5 +28,7 @@ LTErrorCodesImplement(LTKitErrorCodeProductID,
   /// Caused when the compression process has failed.
   LTErrorCodeCompressionFailed,
   /// Caused when a decryption of encrypted data has failed.
-  LTErrorCodeDecryptionFailed
+  LTErrorCodeDecryptionFailed,
+  /// Caused when a decoding of hex string has failed.
+  LTErrorCodeHexDecodingFailed
 );
