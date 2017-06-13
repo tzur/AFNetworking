@@ -28,13 +28,14 @@ context(@"fetching JSON products list", ^{
   it(@"should call GET method of HTTPClient", ^{
     [provider fetchProductList];
 
-    OCMVerify([client GET:OCMOCK_ANY withParameters:OCMOCK_ANY]);
+    OCMVerify([client GET:OCMOCK_ANY withParameters:OCMOCK_ANY headers:OCMOCK_ANY]);
   });
 
   it(@"should send error when GET failed", ^{
     NSError *errorMock = OCMClassMock([NSError class]);
     RACSignal *errorSignal = [RACSignal error:errorMock];
-    OCMStub([client GET:OCMOCK_ANY withParameters:OCMOCK_ANY]).andReturn(errorSignal);
+    OCMStub([client GET:OCMOCK_ANY withParameters:OCMOCK_ANY headers:OCMOCK_ANY])
+        .andReturn(errorSignal);
 
     RACSignal *signal = [provider fetchProductList];
 
@@ -49,7 +50,7 @@ context(@"fetching JSON products list", ^{
     FBRHTTPTaskProgress *progress = OCMClassMock([FBRHTTPTaskProgress class]);
     OCMStub([progress response]).andReturn(response);
     OCMStub([progress hasCompleted]).andReturn(YES);
-    OCMStub([client GET:OCMOCK_ANY withParameters:OCMOCK_ANY])
+    OCMStub([client GET:OCMOCK_ANY withParameters:OCMOCK_ANY headers:OCMOCK_ANY])
         .andReturn([RACSignal return:progress]);
 
     RACSignal *signal = [provider fetchProductList];
@@ -68,7 +69,7 @@ context(@"fetching JSON products list", ^{
     FBRHTTPTaskProgress *progress = OCMClassMock([FBRHTTPTaskProgress class]);
     OCMStub([progress response]).andReturn(response);
     OCMStub([progress hasCompleted]).andReturn(YES);
-    OCMStub([client GET:OCMOCK_ANY withParameters:OCMOCK_ANY])
+    OCMStub([client GET:OCMOCK_ANY withParameters:OCMOCK_ANY headers:OCMOCK_ANY])
         .andReturn([RACSignal return:progress]);
 
     LLSignalTestRecorder *recorder = [[provider fetchProductList] testRecorder];
