@@ -21,12 +21,13 @@ NS_ASSUME_NONNULL_BEGIN
 @interface FBRHTTPRequest (FBRHTTPClient)
 
 /// Creates a new HTTP request to a URL composed from \c baseURL and \c URLString with the specified
-/// HTTP \c method and optional \c parameters. The reuqest \c parametersEncdoing and \c headers are
-/// set to \c nil. If the concatenation of \c URLString to \c baseURL forms an invalid URL an
-/// \c NSInvalidArgumentException is raised.
+/// HTTP \c method, optional \c parameters and an optional \c headers. The request
+/// \c parametersEncdoing is set to \c nil. If the concatenation of \c URLString to \c baseURL forms
+/// an invalid URL an \c NSInvalidArgumentException is raised.
 + (instancetype)requestWithBaseURL:(nullable NSURL *)baseURL URLString:(NSString *)URLString
                             method:(FBRHTTPRequestMethod *)method
-                        parameters:(nullable FBRHTTPRequestParameters *)parameters;
+                        parameters:(nullable FBRHTTPRequestParameters *)parameters
+                           headers:(nullable FBRHTTPRequestHeaders *)headers;
 
 /// Returns a URL composed of \c URLString prefixed by \c baseURL. If the resulting URL is invalid
 /// an \c NSInvalidArgumentException is raised.
@@ -38,10 +39,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (instancetype)requestWithBaseURL:(nullable NSURL *)baseURL URLString:(NSString *)URLString
                             method:(FBRHTTPRequestMethod *)method
-                        parameters:(nullable FBRHTTPRequestParameters *)parameters {
+                        parameters:(nullable FBRHTTPRequestParameters *)parameters
+                           headers:(nullable FBRHTTPRequestHeaders *)headers {
   NSURL *URL = [self requestURLWithBaseURL:baseURL URLString:URLString];
   return [[self alloc] initWithURL:URL method:method parameters:parameters parametersEncoding:nil
-                           headers:nil];
+                           headers:headers];
 }
 
 + (NSURL *)requestURLWithBaseURL:(nullable NSURL *)baseURL URLString:(NSString *)URLString {
@@ -86,45 +88,51 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (RACSignal *)GET:(NSString *)URLString
-    withParameters:(nullable FBRHTTPRequestParameters *)parameters {
+    withParameters:(nullable FBRHTTPRequestParameters *)parameters
+           headers:(nullable FBRHTTPRequestHeaders *)headers {
   return [self taskWithRequest:[FBRHTTPRequest requestWithBaseURL:self.baseURL URLString:URLString
                                                            method:$(FBRHTTPRequestMethodGet)
-                                                       parameters:parameters]];
+                                                       parameters:parameters headers:headers]];
 }
 
 - (RACSignal *)HEAD:(NSString *)URLString
-     withParameters:(nullable FBRHTTPRequestParameters *)parameters {
+     withParameters:(nullable FBRHTTPRequestParameters *)parameters
+            headers:(nullable FBRHTTPRequestHeaders *)headers {
   return [self taskWithRequest:[FBRHTTPRequest requestWithBaseURL:self.baseURL URLString:URLString
                                                            method:$(FBRHTTPRequestMethodHead)
-                                                       parameters:parameters]];
+                                                       parameters:parameters headers:headers]];
 }
 
 - (RACSignal *)POST:(NSString *)URLString
-     withParameters:(nullable FBRHTTPRequestParameters *)parameters {
+     withParameters:(nullable FBRHTTPRequestParameters *)parameters
+            headers:(nullable FBRHTTPRequestHeaders *)headers {
   return [self taskWithRequest:[FBRHTTPRequest requestWithBaseURL:self.baseURL URLString:URLString
                                                            method:$(FBRHTTPRequestMethodPost)
-                                                       parameters:parameters]];
+                                                       parameters:parameters headers:headers]];
 }
 
 - (RACSignal *)PUT:(NSString *)URLString
-    withParameters:(nullable FBRHTTPRequestParameters *)parameters {
+    withParameters:(nullable FBRHTTPRequestParameters *)parameters
+           headers:(nullable FBRHTTPRequestHeaders *)headers {
   return [self taskWithRequest:[FBRHTTPRequest requestWithBaseURL:self.baseURL URLString:URLString
                                                            method:$(FBRHTTPRequestMethodPut)
-                                                       parameters:parameters]];
+                                                       parameters:parameters headers:headers]];
 }
 
 - (RACSignal *)PATCH:(NSString *)URLString
-      withParameters:(nullable FBRHTTPRequestParameters *)parameters {
+      withParameters:(nullable FBRHTTPRequestParameters *)parameters
+             headers:(nullable FBRHTTPRequestHeaders *)headers {
   return [self taskWithRequest:[FBRHTTPRequest requestWithBaseURL:self.baseURL URLString:URLString
                                                            method:$(FBRHTTPRequestMethodPatch)
-                                                       parameters:parameters]];
+                                                       parameters:parameters headers:headers]];
 }
 
 - (RACSignal *)DELETE:(NSString *)URLString
-       withParameters:(nullable FBRHTTPRequestParameters *)parameters {
+       withParameters:(nullable FBRHTTPRequestParameters *)parameters
+              headers:(nullable FBRHTTPRequestHeaders *)headers {
   return [self taskWithRequest:[FBRHTTPRequest requestWithBaseURL:self.baseURL URLString:URLString
                                                            method:$(FBRHTTPRequestMethodDelete)
-                                                       parameters:parameters]];
+                                                       parameters:parameters headers:headers]];
 }
 
 - (RACSignal *)taskWithRequest:(FBRHTTPRequest *)request {
@@ -143,7 +151,7 @@ NS_ASSUME_NONNULL_BEGIN
           [subscriber sendError:error];
         }];
     [task resume];
-    
+
     return [RACDisposable disposableWithBlock:^{
       [task cancel];
     }];
