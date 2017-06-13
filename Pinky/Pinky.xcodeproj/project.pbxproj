@@ -1420,6 +1420,7 @@
 /* Begin XCBuildConfiguration section */
 		06FD92A51EDC66E500D180C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A14172661E6EAD9A005DBEFF /* Bundle.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CODE_SIGN_IDENTITY = "-";
@@ -1436,6 +1437,7 @@
 		};
 		06FD92A61EDC66E500D180C7 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A14172661E6EAD9A005DBEFF /* Bundle.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CODE_SIGN_IDENTITY = "-";
@@ -1452,6 +1454,7 @@
 		};
 		06FD92C51EDC85C600D180C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A14172651E6EAD9A005DBEFF /* Application.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/TestHost.app/TestHost";
 				DEVELOPMENT_TEAM = KG6GWND6BG;
@@ -1473,6 +1476,7 @@
 		};
 		06FD92C61EDC85C600D180C7 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A14172651E6EAD9A005DBEFF /* Application.xcconfig */;
 			buildSettings = {
 				DEVELOPMENT_TEAM = KG6GWND6BG;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/$(TARGET_NAME)/$(TARGET_NAME)-Prefix.pch";
