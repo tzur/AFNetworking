@@ -15,12 +15,11 @@ __block LTLogger *logger;
 beforeEach(^{
   mockTarget = OCMProtocolMock(@protocol(LTLoggerTarget));
   logger = [[LTLogger alloc] init];
-  [logger registerTarget:mockTarget];
 });
 
 context(@"log contents", ^{
   it(@"should contain log data", ^{
-    logger.minimalLogLevel = LTLogLevelDebug;
+    [logger registerTarget:mockTarget withMinimalLogLevel:LTLogLevelDebug];
 
     [logger logWithFormat:kMessage file:kFile line:kLine logLevel:LTLogLevelDebug];
 
@@ -32,15 +31,24 @@ context(@"log contents", ^{
 
 context(@"log levels", ^{
   it(@"should log minimal log level", ^{
-    logger.minimalLogLevel = LTLogLevelDebug;
+    [logger registerTarget:mockTarget withMinimalLogLevel:LTLogLevelDebug];
 
     [logger logWithFormat:kMessage file:kFile line:kLine logLevel:LTLogLevelDebug];
 
     OCMVerify([mockTarget outputString:OCMOCK_ANY file:kFile line:kLine logLevel:LTLogLevelDebug]);
   });
 
+  it(@"should log above minimal log level", ^{
+    [logger registerTarget:mockTarget withMinimalLogLevel:LTLogLevelDebug];
+
+    [logger logWithFormat:kMessage file:kFile line:kLine logLevel:LTLogLevelWarning];
+
+    OCMVerify([mockTarget outputString:OCMOCK_ANY file:kFile line:kLine
+                              logLevel:LTLogLevelWarning]);
+  });
+
   it(@"should not log below minimal log level", ^{
-    logger.minimalLogLevel = LTLogLevelInfo;
+    [logger registerTarget:mockTarget withMinimalLogLevel:LTLogLevelInfo];
 
     OCMReject([[mockTarget ignoringNonObjectArgs]
         outputString:OCMOCK_ANY file:kFile line:kLine logLevel:LTLogLevelDebug]);
@@ -50,9 +58,8 @@ context(@"log levels", ^{
 });
 
 it(@"should unregister a logger target", ^{
+  [logger registerTarget:mockTarget withMinimalLogLevel:LTLogLevelDebug];
   [logger unregisterTarget:mockTarget];
-
-  logger.minimalLogLevel = LTLogLevelDebug;
 
   OCMReject([[mockTarget ignoringNonObjectArgs]
       outputString:OCMOCK_ANY file:kFile line:kLine logLevel:LTLogLevelDebug]);

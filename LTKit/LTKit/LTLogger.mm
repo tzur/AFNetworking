@@ -26,11 +26,8 @@ NSString *NSStringFromLTLogLevel(LTLogLevel logLevel) {
 
 @interface LTLogger ()
 
-/// Targets for logging.
-@property (readonly, nonatomic) NSMutableSet<id<LTLoggerTarget>> *targets;
-
-/// Lock for ensuring thread-safety when logging from multiple threads.
-@property (readonly, nonatomic) NSLock *lock;
+/// Maps between a \c logLevel to a set of targets that log that log level.
+@property (readonly, nonatomic) NSMutableArray<NSMutableSet<id<LTLoggerTarget>> *> *targets;
 
 @end
 
@@ -42,8 +39,13 @@ NSString *NSStringFromLTLogLevel(LTLogLevel logLevel) {
 
 - (instancetype)init {
   if (self = [super init]) {
-    _targets = [NSMutableSet set];
-    _lock = [[NSLock alloc] init];
+    @synchronized(self) {
+      NSUInteger count = (NSUInteger)LTLogLevelError + 1;
+      _targets = [NSMutableArray arrayWithCapacity:count];
+      for (NSUInteger i = 0; i < count; ++i) {
+        self.targets[i] = [NSMutableSet set];
+      }
+    }
   }
   return self;
 }
@@ -163,32 +165,41 @@ static NSString *stringFromNSDecimalWithCurrentLocale(NSDecimal value) {
 #pragma mark Logging helper methods
 #pragma mark -
 
-- (void)registerTarget:(id<LTLoggerTarget>)target {
-  [self.targets addObject:target];
+- (void)registerTarget:(id<LTLoggerTarget>)target withMinimalLogLevel:(LTLogLevel)minimalLogLevel {
+  @synchronized (self) {
+    for (NSUInteger i = minimalLogLevel; i <= LTLogLevelError; ++i) {
+      [self.targets[i] addObject:target];
+    }
+  }
 }
 
 - (void)unregisterTarget:(id<LTLoggerTarget>)target {
-  [self.targets removeObject:target];
+  @synchronized (self) {
+    for (NSUInteger i = 0; i <= LTLogLevelError; ++i) {
+      auto targets = self.targets[i];
+      [targets removeObject:target];
+    }
+  }
 }
 
 - (void)logWithFormat:(NSString *)format file:(const char *)file line:(int)line
              logLevel:(LTLogLevel)logLevel, ... {
-  if (logLevel < self.minimalLogLevel) {
-    return;
+  @synchronized (self) {
+    auto targets = self.targets[(NSUInteger)logLevel];
+    if (!targets.count) {
+      return;
+    }
+
+    va_list args;
+    va_start(args, logLevel);
+
+    NSString *logString = [[NSString alloc] initWithFormat:format arguments:args];
+    for (id<LTLoggerTarget> target in targets) {
+      [target outputString:logString file:file line:line logLevel:logLevel];
+    }
+
+    va_end(args);
   }
-
-  va_list args;
-  va_start(args, logLevel);
-
-  NSString *logString = [[NSString alloc] initWithFormat:format arguments:args];
-
-  [self.lock lock];
-  for (id<LTLoggerTarget> target in self.targets) {
-    [target outputString:logString file:file line:line logLevel:logLevel];
-  }
-  [self.lock unlock];
-
-  va_end(args);
 }
 
 @end
