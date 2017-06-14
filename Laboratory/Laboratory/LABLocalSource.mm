@@ -293,19 +293,13 @@ static NSString * const kActiveVariantsStorageKey = @"ActiveVariantsStorageKey";
 #pragma mark LABAssignmentsSource
 #pragma mark -
 
-- (RACSignal *)fetchAllExperiments {
-  return [RACSignal return:[self.experiments.allKeys lt_set]];
-}
+- (RACSignal *)fetchAllExperimentsAndVariants {
+  auto allExperiments = [self.experiments lt_mapValues:^(NSString *,
+                                                         LABLocalExperiment *experiment) {
+    return [experiment.variants.allKeys lt_set];
+  }];
 
-- (RACSignal *)fetchVariantsForExperiment:(NSString *)experiment {
-  auto _Nullable variants = self.experiments[experiment].variants.allKeys;
-  if (!variants) {
-    auto error = [NSError lab_errorWithCode:LABErrorCodeExperimentNotFound
-                       associatedExperiment:experiment];
-    return [RACSignal error:error];
-  }
-
-  return [RACSignal return:[variants lt_set]];
+  return [RACSignal return:allExperiments];
 }
 
 - (RACSignal *)fetchAssignmentsForExperiment:(NSString *)experiment

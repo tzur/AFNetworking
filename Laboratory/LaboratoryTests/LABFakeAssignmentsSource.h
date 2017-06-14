@@ -6,7 +6,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /// Fake implementation of \c LABAssignmentsSource.
-@interface LABFakeAssignmentsSource : NSObject <LABAssignmentsSource>
+@interface LABFakeAssignmentsSource : NSObject <LABAssignmentsSource, LABExperimentsSource>
 
 /// Updates the given \c variants. The keys of the given dictionary are experiment names and the
 /// values are variant names. If a variant is already selected for one of the experiments, it is

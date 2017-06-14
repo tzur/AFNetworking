@@ -4,6 +4,7 @@
 #import "LABLocalSource.h"
 
 #import <LTKit/LTRandom.h>
+#import <LTKit/NSArray+Functional.h>
 #import <LTKit/NSArray+NSSet.h>
 #import <algorithm>
 
@@ -238,9 +239,21 @@ context(@"LABLocalSource", ^{
     expect(source.activeVariants).to.equal(expectedVariants);
   });
 
-  it(@"should fetch all experiments", ^{
-    expect([source fetchAllExperiments])
-        .to.sendValues(@[[@[@"experiment2", @"experiment1"] lt_set]]);
+  it(@"should fetch all experiments and variants", ^{
+    auto expectedExperiments = @{
+      @"experiment1": [@[@"exp1var1", @"exp1var2"] lt_set],
+      @"experiment2": [@[@"exp2var1", @"exp2var2"] lt_set]
+    };
+
+    expect([source fetchAllExperimentsAndVariants]).to.sendValues(@[expectedExperiments]);
+
+    storage = [[LABFakeStorage alloc] init];
+    tokenProvider = OCMClassMock(LABExperimentsTokenProvider.class);
+    OCMStub([tokenProvider experimentsToken]).andReturn(0.7);
+    source = [[LABLocalSource alloc] initWithExperiments:@[experiment1, experiment2]
+        experimentsTokenProvider:tokenProvider storage:storage random:random];
+
+    expect([source fetchAllExperimentsAndVariants]).to.sendValues(@[expectedExperiments]);
   });
 
   it(@"should only expose variants of experiments with range containing the token", ^{
@@ -251,36 +264,6 @@ context(@"LABLocalSource", ^{
         experimentsTokenProvider:tokenProvider storage:storage random:random];
 
     expect(source.activeVariants).to.equal(LABGenerateVariants(@{experiment2: exp2variant1}));
-  });
-
-  it(@"should fetch non-active experiments", ^{
-    storage = [[LABFakeStorage alloc] init];
-    tokenProvider = OCMClassMock(LABExperimentsTokenProvider.class);
-    OCMStub([tokenProvider experimentsToken]).andReturn(0.7);
-    source = [[LABLocalSource alloc] initWithExperiments:@[experiment1, experiment2]
-        experimentsTokenProvider:tokenProvider storage:storage random:random];
-
-    expect([source fetchAllExperiments])
-        .to.sendValues(@[[@[@"experiment2", @"experiment1"] lt_set]]);
-  });
-
-  it(@"should return the variants for each experiment", ^{
-    LLSignalTestRecorder *experiment1recorder =
-        [[source fetchVariantsForExperiment:@"experiment1"] testRecorder];
-    LLSignalTestRecorder *experiment2recorder =
-        [[source fetchVariantsForExperiment:@"experiment2"] testRecorder];
-
-    expect(experiment1recorder.valuesSentCount).to.equal(1);
-    expect(experiment1recorder.values[0]).to.equal([@[@"exp1var1", @"exp1var2"] lt_set]);
-
-    expect(experiment2recorder.valuesSentCount).to.equal(1);
-    expect(experiment2recorder.values[0]).to.equal([@[@"exp2var1", @"exp2var2"] lt_set]);
-  });
-
-  it(@"should err if experiment does not exist", ^{
-    expect([source fetchVariantsForExperiment:@"notExistingExperiment"])
-        .to.sendError([NSError lab_errorWithCode:LABErrorCodeExperimentNotFound
-                            associatedExperiment:@"notExistingExperiment"]);
   });
 
   context(@"assignment fetch", ^{
@@ -467,8 +450,12 @@ context(@"LABLocalSource", ^{
         expect(source.activeVariants).to.equal(LABGenerateVariants(@{experiment1: exp1variant2}));
       });
 
-      it(@"should not fetch deleted experiments", ^{
-        expect([source fetchAllExperiments]).to.sendValues(@[[@[@"experiment1"] lt_set]]);
+      it(@"should not fetch deleted experiments and variants", ^{
+        auto expectedExperiments = @{
+      @"experiment1": [@[@"exp1var1", @"exp1var2"] lt_set]
+    };
+
+        expect([source fetchAllExperimentsAndVariants]).to.sendValues(@[expectedExperiments]);
       });
 
       it(@"should reselect experiments if they were previously deleted", ^{
