@@ -63,14 +63,14 @@ NSString *NSStringFromLTLogLevel(LTLogLevel logLevel) {
 
 + (nullable NSString *)descriptionFromTypeCode:(const char *)typeCode andValue:(void *)value {
 #define MATCH_TYPE_AND_HANDLER(typeToMatch, handler) \
-    if (strcmp(typeCode, @encode(typeToMatch)) == 0) { \
-      return (handler)(*(typeToMatch *)value); \
-    }
+  if (strcmp(typeCode, @encode(typeToMatch)) == 0) { \
+    return (handler)(*(typeToMatch *)value); \
+  }
 
 #define MATCH_TYPE_AND_FORMAT_STRING(typeToMatch, formatString) \
-    if (strcmp(typeCode, @encode(typeToMatch)) == 0) { \
-      return [NSString stringWithFormat:(formatString), (*(typeToMatch *)value)]; \
-    }
+  if (strcmp(typeCode, @encode(typeToMatch)) == 0) { \
+    return [NSString stringWithFormat:(formatString), (*(typeToMatch *)value)]; \
+  }
 
   MATCH_TYPE_AND_HANDLER(CGPoint, NSStringFromCGPoint);
   MATCH_TYPE_AND_HANDLER(CGSize, NSStringFromCGSize);
