@@ -5,6 +5,7 @@
 #import <Foundation/Foundation.h>
 
 // Third Party Libraries.
+#import <Mantle/Mantle.h>
 #import <ReactiveCocoa/ReactiveCocoa.h>
 
 // Lightricks Libraries.
