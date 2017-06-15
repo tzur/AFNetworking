@@ -3,7 +3,7 @@
 
 #import "LTTouchEventTimestampFilter.h"
 
-#import <LTKit/NSObject+NSSet.h>
+#import <LTKit/NSArray+NSSet.h>
 
 SpecBegin(LTTouchEventTimestampFilter)
 
@@ -79,7 +79,7 @@ context(@"touch event forwarding", ^{
       it(@"should forward calls to the sequence end method", ^{
         [filter receivedTouchEvents:initialTouchEvents predictedEvents:predictedEvents
             touchEventSequenceState:LTTouchEventSequenceStateStart];
-        NSSet<NSNumber *> *sequenceIDs = [@7 lt_set];
+        NSSet<NSNumber *> *sequenceIDs = [NSSet setWithObject:@7];
         [filter touchEventSequencesWithIDs:sequenceIDs
                        terminatedWithState:LTTouchEventSequenceStateEnd];
         OCMVerify([delegateMock touchEventSequencesWithIDs:sequenceIDs
@@ -89,7 +89,7 @@ context(@"touch event forwarding", ^{
       it(@"should forward calls to the sequence cancellation method", ^{
         [filter receivedTouchEvents:initialTouchEvents predictedEvents:predictedEvents
             touchEventSequenceState:LTTouchEventSequenceStateStart];
-        NSSet<NSNumber *> *sequenceIDs = [@7 lt_set];
+        NSSet<NSNumber *> *sequenceIDs = [NSSet setWithObject:@7];
         [filter touchEventSequencesWithIDs:sequenceIDs
                        terminatedWithState:LTTouchEventSequenceStateCancellation];
         OCMVerify([delegateMock touchEventSequencesWithIDs:sequenceIDs
@@ -147,7 +147,7 @@ context(@"touch event forwarding", ^{
                   predictedEvents:predictedEvents
           touchEventSequenceState:LTTouchEventSequenceStateEnd];
       OCMExpect([delegateMock
-                 touchEventSequencesWithIDs:[@7 lt_set]
+                 touchEventSequencesWithIDs:[NSSet setWithObject:@7]
                  terminatedWithState:LTTouchEventSequenceStateEnd]);
     });
 
@@ -158,7 +158,7 @@ context(@"touch event forwarding", ^{
                   predictedEvents:predictedEvents
           touchEventSequenceState:LTTouchEventSequenceStateCancellation];
       OCMExpect([delegateMock
-                 touchEventSequencesWithIDs:[@7 lt_set]
+                 touchEventSequencesWithIDs:[NSSet setWithObject:@7]
                  terminatedWithState:LTTouchEventSequenceStateCancellation]);
     });
   });
@@ -240,12 +240,12 @@ context(@"touch event forwarding", ^{
                     predictedEvents:@[]
             touchEventSequenceState:LTTouchEventSequenceStateStart];
 
-        NSSet<NSNumber *> *sequenceIDs = [@7 lt_set];
+        NSSet<NSNumber *> *sequenceIDs = [NSSet setWithObject:@7];
         [filter touchEventSequencesWithIDs:sequenceIDs
                        terminatedWithState:LTTouchEventSequenceStateEnd];
         OCMVerify([delegateMock touchEventSequencesWithIDs:sequenceIDs
                                        terminatedWithState:LTTouchEventSequenceStateEnd]);
-        sequenceIDs = [@8 lt_set];
+        sequenceIDs = [NSSet setWithObject:@8];
         [filter touchEventSequencesWithIDs:sequenceIDs
                        terminatedWithState:LTTouchEventSequenceStateEnd];
         OCMVerify([delegateMock touchEventSequencesWithIDs:sequenceIDs
@@ -273,13 +273,13 @@ context(@"touch event forwarding", ^{
                     predictedEvents:@[]
             touchEventSequenceState:LTTouchEventSequenceStateStart];
 
-        NSSet<NSNumber *> *sequenceIDs = [@7 lt_set];
+        NSSet<NSNumber *> *sequenceIDs = [NSSet setWithObject:@7];
         [filter touchEventSequencesWithIDs:sequenceIDs
                        terminatedWithState:LTTouchEventSequenceStateCancellation];
         OCMVerify([delegateMock touchEventSequencesWithIDs:sequenceIDs
                                        terminatedWithState:LTTouchEventSequenceStateCancellation]);
 
-        sequenceIDs = [@8 lt_set];
+        sequenceIDs = [NSSet setWithObject:@8];
         [filter touchEventSequencesWithIDs:sequenceIDs
                        terminatedWithState:LTTouchEventSequenceStateCancellation];
         OCMVerify([delegateMock touchEventSequencesWithIDs:sequenceIDs
@@ -377,14 +377,14 @@ context(@"touch event forwarding", ^{
                   predictedEvents:predictedEvents
           touchEventSequenceState:LTTouchEventSequenceStateEnd];
       OCMExpect([delegateMock
-                 touchEventSequencesWithIDs:[@7 lt_set]
+                 touchEventSequencesWithIDs:[NSSet setWithObject:@7]
                  terminatedWithState:LTTouchEventSequenceStateEnd]);
 
       [filter receivedTouchEvents:@[touchEventOfDifferentSequence1]
                   predictedEvents:@[]
           touchEventSequenceState:LTTouchEventSequenceStateEnd];
       OCMExpect([delegateMock
-                 touchEventSequencesWithIDs:[@8 lt_set]
+                 touchEventSequencesWithIDs:[NSSet setWithObject:@8]
                  terminatedWithState:LTTouchEventSequenceStateEnd]);
     });
 
@@ -398,14 +398,14 @@ context(@"touch event forwarding", ^{
                   predictedEvents:predictedEvents
           touchEventSequenceState:LTTouchEventSequenceStateCancellation];
       OCMExpect([delegateMock
-                 touchEventSequencesWithIDs:[@7 lt_set]
+                 touchEventSequencesWithIDs:[NSSet setWithObject:@7]
                  terminatedWithState:LTTouchEventSequenceStateCancellation]);
 
       [filter receivedTouchEvents:@[touchEventOfDifferentSequence1]
                   predictedEvents:@[]
           touchEventSequenceState:LTTouchEventSequenceStateCancellation];
       OCMExpect([delegateMock
-                 touchEventSequencesWithIDs:[@7 lt_set]
+                 touchEventSequencesWithIDs:[NSSet setWithObject:@7]
                  terminatedWithState:LTTouchEventSequenceStateCancellation]);
     });
   });

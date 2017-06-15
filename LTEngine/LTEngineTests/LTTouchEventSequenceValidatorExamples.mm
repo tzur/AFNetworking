@@ -3,8 +3,6 @@
 
 #import "LTTouchEventSequenceValidatorExamples.h"
 
-#import <LTKit/NSObject+NSSet.h>
-
 #import "LTTouchEvent.h"
 #import "LTTouchEventDelegate.h"
 
@@ -327,7 +325,7 @@ sharedExamplesFor(kLTTouchEventSequenceValidatorExamples, ^(NSDictionary *data) 
 
     it(@"should raise when receiving cancelled sequence without receiving starting sequence", ^{
       expect(^{
-        [delegate touchEventSequencesWithIDs:[@0 lt_set]
+        [delegate touchEventSequencesWithIDs:[NSSet setWithObject:@0]
                          terminatedWithState:LTTouchEventSequenceStateCancellation];
       }).to.raise(NSInvalidArgumentException);
     });
@@ -340,7 +338,7 @@ sharedExamplesFor(kLTTouchEventSequenceValidatorExamples, ^(NSDictionary *data) 
 
     it(@"should raise when receiving end information without receiving starting sequence", ^{
       expect(^{
-        [delegate touchEventSequencesWithIDs:[@0 lt_set]
+        [delegate touchEventSequencesWithIDs:[NSSet setWithObject:@0]
                          terminatedWithState:LTTouchEventSequenceStateEnd];
       }).to.raise(NSInvalidArgumentException);
     });
@@ -348,7 +346,7 @@ sharedExamplesFor(kLTTouchEventSequenceValidatorExamples, ^(NSDictionary *data) 
     it(@"should raise when receiving cancellation information without receiving starting sequence",
        ^{
       expect(^{
-        [delegate touchEventSequencesWithIDs:[@0 lt_set]
+        [delegate touchEventSequencesWithIDs:[NSSet setWithObject:@0]
                          terminatedWithState:LTTouchEventSequenceStateCancellation];
       }).to.raise(NSInvalidArgumentException);
     });
@@ -403,7 +401,7 @@ sharedExamplesFor(kLTTouchEventSequenceValidatorExamples, ^(NSDictionary *data) 
       [delegate receivedTouchEvents:touchEvents predictedEvents:@[]
             touchEventSequenceState:LTTouchEventSequenceStateEnd];
       expect(^{
-        [delegate touchEventSequencesWithIDs:[@0 lt_set]
+        [delegate touchEventSequencesWithIDs:[NSSet setWithObject:@0]
                          terminatedWithState:LTTouchEventSequenceStateEnd];
       }).to.raise(NSInvalidArgumentException);
     });
@@ -414,7 +412,7 @@ sharedExamplesFor(kLTTouchEventSequenceValidatorExamples, ^(NSDictionary *data) 
       [delegate receivedTouchEvents:touchEvents predictedEvents:@[]
             touchEventSequenceState:LTTouchEventSequenceStateEnd];
       expect(^{
-        [delegate touchEventSequencesWithIDs:[@0 lt_set]
+        [delegate touchEventSequencesWithIDs:[NSSet setWithObject:@0]
                          terminatedWithState:LTTouchEventSequenceStateCancellation];
       }).to.raise(NSInvalidArgumentException);
     });
@@ -425,7 +423,7 @@ sharedExamplesFor(kLTTouchEventSequenceValidatorExamples, ^(NSDictionary *data) 
       [delegate receivedTouchEvents:touchEvents predictedEvents:@[]
             touchEventSequenceState:LTTouchEventSequenceStateCancellation];
       expect(^{
-        [delegate touchEventSequencesWithIDs:[@0 lt_set]
+        [delegate touchEventSequencesWithIDs:[NSSet setWithObject:@0]
                          terminatedWithState:LTTouchEventSequenceStateCancellation];
       }).to.raise(NSInvalidArgumentException);
     });
@@ -436,7 +434,7 @@ sharedExamplesFor(kLTTouchEventSequenceValidatorExamples, ^(NSDictionary *data) 
       [delegate receivedTouchEvents:touchEvents predictedEvents:@[]
             touchEventSequenceState:LTTouchEventSequenceStateCancellation];
       expect(^{
-        [delegate touchEventSequencesWithIDs:[@0 lt_set]
+        [delegate touchEventSequencesWithIDs:[NSSet setWithObject:@0]
                          terminatedWithState:LTTouchEventSequenceStateEnd];
       }).to.raise(NSInvalidArgumentException);
     });
@@ -450,21 +448,21 @@ sharedExamplesFor(kLTTouchEventSequenceValidatorExamples, ^(NSDictionary *data) 
 
     it(@"should raise when invoking termination method with start state", ^{
       expect(^{
-        [delegate touchEventSequencesWithIDs:[@0 lt_set]
+        [delegate touchEventSequencesWithIDs:[NSSet setWithObject:@0]
                          terminatedWithState:LTTouchEventSequenceStateStart];
       }).to.raise(NSInvalidArgumentException);
     });
 
     it(@"should raise when invoking termination method with continuation state", ^{
       expect(^{
-        [delegate touchEventSequencesWithIDs:[@0 lt_set]
+        [delegate touchEventSequencesWithIDs:[NSSet setWithObject:@0]
                          terminatedWithState:LTTouchEventSequenceStateContinuation];
       }).to.raise(NSInvalidArgumentException);
     });
 
     it(@"should raise when invoking termination method with stationary state", ^{
       expect(^{
-        [delegate touchEventSequencesWithIDs:[@0 lt_set]
+        [delegate touchEventSequencesWithIDs:[NSSet setWithObject:@0]
                          terminatedWithState:LTTouchEventSequenceStateContinuationStationary];
       }).to.raise(NSInvalidArgumentException);
     });
@@ -474,12 +472,12 @@ sharedExamplesFor(kLTTouchEventSequenceValidatorExamples, ^(NSDictionary *data) 
     it(@"should not raise when providing consecutive touch event sequences with same ID", ^{
       [delegate receivedTouchEvents:touchEvents predictedEvents:@[]
             touchEventSequenceState:LTTouchEventSequenceStateStart];
-      [delegate touchEventSequencesWithIDs:[@0 lt_set]
+      [delegate touchEventSequencesWithIDs:[NSSet setWithObject:@0]
                        terminatedWithState:LTTouchEventSequenceStateEnd];
       expect(^{
         [delegate receivedTouchEvents:touchEvents predictedEvents:@[]
               touchEventSequenceState:LTTouchEventSequenceStateStart];
-        [delegate touchEventSequencesWithIDs:[@0 lt_set]
+        [delegate touchEventSequencesWithIDs:[NSSet setWithObject:@0]
                          terminatedWithState:LTTouchEventSequenceStateEnd];
       }).toNot.raise(NSInvalidArgumentException);
     });
