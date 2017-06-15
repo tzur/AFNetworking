@@ -99,6 +99,7 @@
 		8B0B9A1D1CA6BF6900ED2334 /* ReactiveCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B368F771CA6AC53003E34CF /* ReactiveCocoa.framework */; };
 		8B0B9A2A1CA6C09D00ED2334 /* DropboxSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B0B9A281CA6C09000ED2334 /* DropboxSDK.framework */; };
 		8B368FAB1CA6ACB3003E34CF /* Masonry.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B368F401CA6ABF8003E34CF /* Masonry.framework */; };
+		B411A04D1EEE780300756808 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B411A04C1EEE780300756808 /* MediaPlayer.framework */; };
 		BE7B8C101D37A5940013F1FC /* PTUArrayChangesetProvider.mm in Sources */ = {isa = PBXBuildFile; fileRef = BE7B8C0F1D37A5940013F1FC /* PTUArrayChangesetProvider.mm */; };
 		BE7B8C2D1D37ACB00013F1FC /* PTUArrayChangesetProviderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = BE7B8C2C1D37ACB00013F1FC /* PTUArrayChangesetProviderSpec.mm */; };
 		BE8C7C741DFEA6F100FE1508 /* PTUAlbumViewModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = BE8C7C731DFEA6F100FE1508 /* PTUAlbumViewModel.mm */; };
@@ -581,6 +582,7 @@
 		88FAF9161D7727890023AF7A /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = Base; path = Base.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		8B0B9A281CA6C09000ED2334 /* DropboxSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DropboxSDK.framework; path = "../third_party/dropbox-ios-sdk/DropboxSDK.framework"; sourceTree = "<group>"; };
 		8B57B1FC1D914FE100814B3C /* Bundle.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Bundle.xcconfig; sourceTree = "<group>"; };
+		B411A04C1EEE780300756808 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		BE7B8C0E1D37A5940013F1FC /* PTUArrayChangesetProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTUArrayChangesetProvider.h; sourceTree = "<group>"; };
 		BE7B8C0F1D37A5940013F1FC /* PTUArrayChangesetProvider.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PTUArrayChangesetProvider.mm; sourceTree = "<group>"; };
 		BE7B8C2C1D37ACB00013F1FC /* PTUArrayChangesetProviderSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PTUArrayChangesetProviderSpec.mm; sourceTree = "<group>"; };
@@ -609,6 +611,7 @@
 				8861FE0B1E5A2CC800CA1436 /* GLKit.framework in Frameworks */,
 				8861FE071E5A2C6300CA1436 /* ImageIO.framework in Frameworks */,
 				8B368FAB1CA6ACB3003E34CF /* Masonry.framework in Frameworks */,
+				B411A04D1EEE780300756808 /* MediaPlayer.framework in Frameworks */,
 				88EE8DD61EACD5C100D3126A /* MobileCoreServices.framework in Frameworks */,
 				8861FE031E5A2C1D00CA1436 /* Photos.framework in Frameworks */,
 				0DF155F51EB1DCA6009F3080 /* QuartzCore.framework in Frameworks */,
@@ -934,6 +937,7 @@
 		848EFFE21C591C0D001D8368 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B411A04C1EEE780300756808 /* MediaPlayer.framework */,
 				0DF151CB1EAF79DB009F3080 /* AVFoundation.framework */,
 				8861FE0C1E5A2CE200CA1436 /* CoreGraphics.framework */,
 				8861FE081E5A2CAA00CA1436 /* CoreLocation.framework */,
