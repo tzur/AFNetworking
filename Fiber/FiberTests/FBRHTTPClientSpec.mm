@@ -14,7 +14,8 @@
 
 /// Block used as a completion handler with a boolean \c finished parameter.
 typedef RACSignal *(^FBRHTTPClientRequestInitiator)
-    (FBRHTTPClient *client, NSString *URLString, FBRHTTPRequestParameters * _Nullable parameters);
+    (FBRHTTPClient *client, NSString *URLString, FBRHTTPRequestParameters * _Nullable parameters,
+     FBRHTTPRequestHeaders * _Nullable headers);
 
 NSString * const kFBRHTTPClientRequestExamples = @"FBRHTTPClientRequestExamples";
 NSString * const kFBRHTTPClientExpectedMethod = @"FBRHTTPClientExpectedMethod";
@@ -44,22 +45,23 @@ sharedExamplesFor(kFBRHTTPClientRequestExamples, ^(NSDictionary *data) {
   });
 
   it(@"should return a signal", ^{
-    RACSignal *signal = requestInitiator(client, URL.absoluteString, nil);
+    RACSignal *signal = requestInitiator(client, URL.absoluteString, nil, nil);
     expect(signal).to.beKindOf([RACSignal class]);
   });
 
   it(@"should raise exception if the URL string is invalid", ^{
     expect(^{
-      requestInitiator(client, @"/foo/bar", nil);
+      requestInitiator(client, @"/foo/bar", nil, nil);
     }).to.raise(NSInvalidArgumentException);
   });
 
   it(@"should send a request to the session when subscribed to", ^{
     FBRHTTPRequestParameters *parameters = @{@"Foo": @"Bar"};
+    FBRHTTPRequestHeaders *headers = @{@"Qux": @"Baz"};
     FBRHTTPRequest *expectedRequest =
         [[FBRHTTPRequest alloc] initWithURL:URL method:method parameters:parameters
-                         parametersEncoding:nil headers:nil];
-    RACSignal *signal = requestInitiator(client, URL.absoluteString, parameters);
+                         parametersEncoding:nil headers:headers];
+    RACSignal *signal = requestInitiator(client, URL.absoluteString, parameters, headers);
     OCMExpect([session dataTaskWithRequest:expectedRequest progress:OCMOCK_ANY success:OCMOCK_ANY
                                    failure:OCMOCK_ANY]).andReturn(task);
 
@@ -69,12 +71,13 @@ sharedExamplesFor(kFBRHTTPClientRequestExamples, ^(NSDictionary *data) {
 
   it(@"should resume the task when subscribed to", ^{
     FBRHTTPRequestParameters *parameters = @{@"Foo": @"Bar"};
+    FBRHTTPRequestHeaders *headers = @{@"Qux": @"Baz"};
     FBRHTTPRequest *expectedRequest =
         [[FBRHTTPRequest alloc] initWithURL:URL method:method parameters:parameters
-                         parametersEncoding:nil headers:nil];
+                         parametersEncoding:nil headers:headers];
     OCMStub([session dataTaskWithRequest:expectedRequest progress:OCMOCK_ANY success:OCMOCK_ANY
                                  failure:OCMOCK_ANY]).andReturn(task);
-    RACSignal *signal = requestInitiator(client, URL.absoluteString, parameters);
+    RACSignal *signal = requestInitiator(client, URL.absoluteString, parameters, headers);
     OCMExpect([task resume]);
 
     [signal subscribeNext:^(id) {}];
@@ -90,7 +93,7 @@ sharedExamplesFor(kFBRHTTPClientRequestExamples, ^(NSDictionary *data) {
     }] success:OCMOCK_ANY failure:OCMOCK_ANY]).andReturn(task);
 
     LLSignalTestRecorder *recorder =
-        [requestInitiator(client, URL.absoluteString, nil) testRecorder];
+        [requestInitiator(client, URL.absoluteString, nil, nil) testRecorder];
 
     expect(progressBlock).toNot.beNil();
     progress.completedUnitCount = 0;
@@ -117,7 +120,7 @@ sharedExamplesFor(kFBRHTTPClientRequestExamples, ^(NSDictionary *data) {
                                  failure:OCMOCK_ANY]).andReturn(task);
 
     LLSignalTestRecorder *recorder =
-        [requestInitiator(client, URL.absoluteString, nil) testRecorder];
+        [requestInitiator(client, URL.absoluteString, nil, nil) testRecorder];
 
     FBRHTTPTaskProgress *progress = [[FBRHTTPTaskProgress alloc] initWithResponse:response];
     expect(recorder).to.sendValues(@[progress]);
@@ -131,7 +134,7 @@ sharedExamplesFor(kFBRHTTPClientRequestExamples, ^(NSDictionary *data) {
         .andReturn(task);
 
     LLSignalTestRecorder *recorder =
-        [requestInitiator(client, URL.absoluteString, nil) testRecorder];
+        [requestInitiator(client, URL.absoluteString, nil, nil) testRecorder];
 
     expect(recorder).to.matchError(^BOOL(NSError *error) {
       return error.lt_isLTDomain && error.code == 1337;
@@ -143,7 +146,7 @@ sharedExamplesFor(kFBRHTTPClientRequestExamples, ^(NSDictionary *data) {
     OCMStub([session dataTaskWithRequest:OCMOCK_ANY progress:OCMOCK_ANY success:OCMOCK_ANY
                                  failure:OCMOCK_ANY]).andReturn(task);
 
-    [[requestInitiator(client, URL.absoluteString, nil) subscribeNext:^(id) {}] dispose];
+    [[requestInitiator(client, URL.absoluteString, nil, nil) subscribeNext:^(id) {}] dispose];
 
     OCMVerifyAll(task);
   });
@@ -223,8 +226,9 @@ context(@"HTTP requests", ^{
       kFBRHTTPClientExpectedMethod: $(FBRHTTPRequestMethodGet),
       kFBRHTTPClientRequestInitiator:
           ^RACSignal *(FBRHTTPClient *client, NSString *URLString,
-                       FBRHTTPRequestParameters * _Nullable parameters) {
-            return [client GET:URLString withParameters:parameters];
+                       FBRHTTPRequestParameters * _Nullable parameters,
+                       FBRHTTPRequestHeaders * _Nullable headers) {
+            return [client GET:URLString withParameters:parameters headers:headers];
           }
     });
   });
@@ -234,8 +238,9 @@ context(@"HTTP requests", ^{
       kFBRHTTPClientExpectedMethod: $(FBRHTTPRequestMethodHead),
       kFBRHTTPClientRequestInitiator:
           ^RACSignal *(FBRHTTPClient *client, NSString *URLString,
-                       FBRHTTPRequestParameters * _Nullable parameters) {
-            return [client HEAD:URLString withParameters:parameters];
+                       FBRHTTPRequestParameters * _Nullable parameters,
+                       FBRHTTPRequestHeaders * _Nullable headers) {
+            return [client HEAD:URLString withParameters:parameters headers:headers];
           }
     });
   });
@@ -245,8 +250,9 @@ context(@"HTTP requests", ^{
       kFBRHTTPClientExpectedMethod: $(FBRHTTPRequestMethodPost),
       kFBRHTTPClientRequestInitiator:
           ^RACSignal *(FBRHTTPClient *client, NSString *URLString,
-                       FBRHTTPRequestParameters * _Nullable parameters) {
-            return [client POST:URLString withParameters:parameters];
+                       FBRHTTPRequestParameters * _Nullable parameters,
+                       FBRHTTPRequestHeaders * _Nullable headers) {
+            return [client POST:URLString withParameters:parameters headers:headers];
           }
     });
   });
@@ -256,8 +262,9 @@ context(@"HTTP requests", ^{
       kFBRHTTPClientExpectedMethod: $(FBRHTTPRequestMethodPut),
       kFBRHTTPClientRequestInitiator:
           ^RACSignal *(FBRHTTPClient *client, NSString *URLString,
-                       FBRHTTPRequestParameters * _Nullable parameters) {
-            return [client PUT:URLString withParameters:parameters];
+                       FBRHTTPRequestParameters * _Nullable parameters,
+                       FBRHTTPRequestHeaders * _Nullable headers) {
+            return [client PUT:URLString withParameters:parameters headers:headers];
           }
     });
   });
@@ -267,8 +274,9 @@ context(@"HTTP requests", ^{
       kFBRHTTPClientExpectedMethod: $(FBRHTTPRequestMethodPatch),
       kFBRHTTPClientRequestInitiator:
           ^RACSignal *(FBRHTTPClient *client, NSString *URLString,
-                       FBRHTTPRequestParameters * _Nullable parameters) {
-            return [client PATCH:URLString withParameters:parameters];
+                       FBRHTTPRequestParameters * _Nullable parameters,
+                       FBRHTTPRequestHeaders * _Nullable headers) {
+            return [client PATCH:URLString withParameters:parameters headers:headers];
           }
     });
   });
@@ -278,8 +286,9 @@ context(@"HTTP requests", ^{
       kFBRHTTPClientExpectedMethod: $(FBRHTTPRequestMethodDelete),
       kFBRHTTPClientRequestInitiator:
           ^RACSignal *(FBRHTTPClient *client, NSString *URLString,
-                       FBRHTTPRequestParameters * _Nullable parameters) {
-            return [client DELETE:URLString withParameters:parameters];
+                       FBRHTTPRequestParameters * _Nullable parameters,
+                       FBRHTTPRequestHeaders * _Nullable headers) {
+            return [client DELETE:URLString withParameters:parameters headers:headers];
           }
     });
   });

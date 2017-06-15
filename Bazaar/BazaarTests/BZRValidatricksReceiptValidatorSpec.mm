@@ -76,7 +76,7 @@ context(@"receipt validation", ^{
 
   it(@"should send a post request to the server with the correct url string and parameters", ^{
     OCMStub([clientProvider HTTPClient]).andReturn(client);
-    OCMExpect([client POST:URLString withParameters:requestParameters]);
+    OCMExpect([client POST:URLString withParameters:requestParameters headers:OCMOCK_ANY]);
 
     [validator validateReceiptWithParameters:parameters];
 
@@ -87,7 +87,7 @@ context(@"receipt validation", ^{
     OCMExpect([clientProvider HTTPClient]).andReturn(client);
     OCMExpect([clientProvider HTTPClient]).andReturn(client);
     NSError *error = [NSError lt_errorWithCode:1337];
-    OCMStub([client POST:URLString withParameters:requestParameters])
+    OCMStub([client POST:URLString withParameters:requestParameters headers:OCMOCK_ANY])
         .andReturn([RACSignal error:error]);
 
     expect([validator validateReceiptWithParameters:parameters]).will.finish();
@@ -102,7 +102,8 @@ context(@"receipt validation", ^{
 
     beforeEach(^{
       subject = [RACSubject subject];
-      OCMStub([client POST:URLString withParameters:requestParameters]).andReturn(subject);
+      OCMStub([client POST:URLString withParameters:requestParameters headers:OCMOCK_ANY])
+          .andReturn(subject);
       OCMStub([clientProvider HTTPClient]).andReturn(client);
       recorder = [[validator validateReceiptWithParameters:parameters] testRecorder];
     });
@@ -184,7 +185,8 @@ context(@"receipt validation", ^{
                     fromJSONDictionary:JSONResponse error:nil];
       RACSignal *responseSignal =
           [RACSignal return:BZRValidatricksResponseWithJSONObject(JSONResponse)];
-      OCMStub([client POST:URLString withParameters:requestParameters]).andReturn(responseSignal);
+      OCMStub([client POST:URLString withParameters:requestParameters headers:OCMOCK_ANY])
+          .andReturn(responseSignal);
       OCMStub([clientProvider HTTPClient]).andReturn(client);
 
       expect([validator validateReceiptWithParameters:parameters]).will.complete();

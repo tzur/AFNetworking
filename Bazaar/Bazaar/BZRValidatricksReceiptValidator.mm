@@ -8,12 +8,11 @@
 #import <Fiber/RACSignal+Fiber.h>
 
 #import "BZREvent+AdditionalInfo.h"
+#import "BZRMultiHostValidatricksClientProvider.h"
 #import "BZRReceiptValidationParameters+Validatricks.h"
 #import "BZRValidatricksReceiptValidationStatus.h"
 #import "NSErrorCodes+Bazaar.h"
 #import "RACSignal+Bazaar.h"
-
-#import "BZRMultiHostValidatricksClientProvider.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -63,7 +62,8 @@ static NSString * const kReceiptValidationEndpoint = @"validateReceipt";
 
     @weakify(self);
     FBRHTTPRequestParameters *requestParameters = parameters.validatricksRequestParameters;
-    return [[[[[self.client POST:kReceiptValidationEndpoint withParameters:requestParameters]
+    return [[[[[self.client
+        POST:kReceiptValidationEndpoint withParameters:requestParameters headers:nil]
         fbr_deserializeJSON]
         bzr_deserializeModel:[BZRValidatricksReceiptValidationStatus class]]
         doError:^(NSError *) {

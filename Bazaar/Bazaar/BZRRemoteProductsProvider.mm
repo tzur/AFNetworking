@@ -38,7 +38,8 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (RACSignal *)fetchProductList {
-  return [[[[self.HTTPClient GET:self.URL.path withParameters:nil] fbr_deserializeJSON]
+  return [[[[self.HTTPClient GET:self.URL.path withParameters:nil headers:nil]
+      fbr_deserializeJSON]
       bzr_deserializeArrayOfModels:[BZRProduct class]]
       setNameWithFormat:@"%@ -fetchProductList", self.description];
 };

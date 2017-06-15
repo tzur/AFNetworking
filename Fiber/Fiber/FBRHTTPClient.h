@@ -36,8 +36,9 @@ NS_ASSUME_NONNULL_BEGIN
     NS_DESIGNATED_INITIALIZER;
 
 /// Initiates a GET request to the URL specified by \c URLString composed as relative path to the
-/// client's \c baseURL. If \c parameters are specified they will be serialized and sent as part of
-/// the request.
+/// client's \c baseURL. If \c parameters or \c headers are specified they will be serialized and
+/// sent as part of the request. The given \c headers will be added to the headers specified in the
+/// session configuration and will take precedence over them.
 ///
 /// @return <tt>RACSignal<FBRHTTPTaskProgress *></tt>. The signal sends the request on subscription,
 /// and delivers a sequence of \c FBRHTTPTaskProgress objects representing the task status as it
@@ -46,11 +47,13 @@ NS_ASSUME_NONNULL_BEGIN
 /// if the server response indicates an error (i.e. status code not in the range
 /// <tt>[200, 299]</tt>). Values and errors are delivered on the main queue.
 - (RACSignal *)GET:(NSString *)URLString
-    withParameters:(nullable FBRHTTPRequestParameters *)parameters;
+    withParameters:(nullable FBRHTTPRequestParameters *)parameters
+           headers:(nullable FBRHTTPRequestHeaders *)headers;
 
 /// Initiates a HEAD request to the URL specified by \c URLString composed as relative path to the
-/// client's \c baseURL. If \c parameters are specified they will be serialized and sent as part of
-/// the request.
+/// client's \c baseURL. If \c parameters or \c headers are specified they will be serialized and
+/// sent as part of the request. The given \c headers will be added to the headers specified in the
+/// session configuration and will take precedence over them.
 ///
 /// @return <tt>RACSignal<FBRHTTPTaskProgress *></tt>. The signal sends the request on subscription,
 /// and delivers a sequence of \c FBRHTTPTaskProgress objects representing the task status as it
@@ -59,11 +62,13 @@ NS_ASSUME_NONNULL_BEGIN
 /// if the server response indicates an error (i.e. status code not in the range
 /// <tt>[200, 299]</tt>). Values and errors are delivered on the main queue.
 - (RACSignal *)HEAD:(NSString *)URLString
-     withParameters:(nullable FBRHTTPRequestParameters *)parameters;
+     withParameters:(nullable FBRHTTPRequestParameters *)parameters
+            headers:(nullable FBRHTTPRequestHeaders *)headers;
 
 /// Initiates a POST request to the URL specified by \c URLString composed as relative path to the
-/// client's \c baseURL. If \c parameters are specified they will be serialized and sent as part of
-/// the request.
+/// client's \c baseURL. If \c parameters or \c headers are specified they will be serialized and
+/// sent as part of the request. The given \c headers will be added to the headers specified in the
+/// session configuration and will take precedence over them.
 ///
 /// @return <tt>RACSignal<FBRHTTPTaskProgress *></tt>. The signal sends the request on subscription,
 /// and delivers a sequence of \c FBRHTTPTaskProgress objects representing the task status as it
@@ -72,11 +77,13 @@ NS_ASSUME_NONNULL_BEGIN
 /// if the server response indicates an error (i.e. status code not in the range
 /// <tt>[200, 299]</tt>). Values and errors are delivered on the main queue.
 - (RACSignal *)POST:(NSString *)URLString
-     withParameters:(nullable FBRHTTPRequestParameters *)parameters;
+     withParameters:(nullable FBRHTTPRequestParameters *)parameters
+            headers:(nullable FBRHTTPRequestHeaders *)headers;
 
 /// Initiates a PUT request to the URL specified by \c URLString composed as relative path to the
-/// client's \c baseURL. If \c parameters are specified they will be serialized and sent as part of
-/// the request.
+/// client's \c baseURL. If \c parameters or \c headers are specified they will be serialized and
+/// sent as part of the request. The given \c headers will be added to the headers specified in the
+/// session configuration and will take precedence over them.
 ///
 /// @return <tt>RACSignal<FBRHTTPTaskProgress *></tt>. The signal sends the request on subscription,
 /// and delivers a sequence of \c FBRHTTPTaskProgress objects representing the task status as it
@@ -85,11 +92,13 @@ NS_ASSUME_NONNULL_BEGIN
 /// if the server response indicates an error (i.e. status code not in the range
 /// <tt>[200, 299]</tt>). Values and errors are delivered on the main queue.
 - (RACSignal *)PUT:(NSString *)URLString
-    withParameters:(nullable FBRHTTPRequestParameters *)parameters;
+    withParameters:(nullable FBRHTTPRequestParameters *)parameters
+           headers:(nullable FBRHTTPRequestHeaders *)headers;
 
 /// Initiates a PATCH request to the URL specified by \c URLString composed as relative path to the
-/// client's \c baseURL. If \c parameters are specified they will be serialized and sent as part of
-/// the request.
+/// client's \c baseURL. If \c parameters or \c headers are specified they will be serialized and
+/// sent as part of the request. The given \c headers will be added to the headers specified in the
+/// session configuration and will take precedence over them.
 ///
 /// @return <tt>RACSignal<FBRHTTPTaskProgress *></tt>. The signal sends the request on subscription,
 /// and delivers a sequence of \c FBRHTTPTaskProgress objects representing the task status as it
@@ -98,11 +107,13 @@ NS_ASSUME_NONNULL_BEGIN
 /// if the server response indicates an error (i.e. status code not in the range
 /// <tt>[200, 299]</tt>). Values and errors are delivered on the main queue.
 - (RACSignal *)PATCH:(NSString *)URLString
-      withParameters:(nullable FBRHTTPRequestParameters *)parameters;
+      withParameters:(nullable FBRHTTPRequestParameters *)parameters
+             headers:(nullable FBRHTTPRequestHeaders *)headers;
 
 /// Initiates a DELETE request to the URL specified by \c URLString composed as relative path to the
-/// client's \c baseURL. If \c parameters are specified they will be serialized and sent as part of
-/// the request.
+/// client's \c baseURL. If \c parameters or \c headers are specified they will be serialized and
+/// sent as part of the request. The given \c headers will be added to the headers specified in the
+/// session configuration and will take precedence over them.
 ///
 /// @return <tt>RACSignal<FBRHTTPTaskProgress *></tt>. The signal sends the request on subscription,
 /// and delivers a sequence of \c FBRHTTPTaskProgress objects representing the task status as it
@@ -111,7 +122,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// if the server response indicates an error (i.e. status code not in the range
 /// <tt>[200, 299]</tt>). Values and errors are delivered on the main queue.
 - (RACSignal *)DELETE:(NSString *)URLString
-       withParameters:(nullable FBRHTTPRequestParameters *)parameters;
+       withParameters:(nullable FBRHTTPRequestParameters *)parameters
+              headers:(nullable FBRHTTPRequestHeaders *)headers;
 
 /// Underlying HTTP session.
 @property (readonly, nonatomic) id<FBRHTTPSession> session;
