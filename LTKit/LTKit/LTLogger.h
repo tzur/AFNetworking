@@ -85,19 +85,19 @@ NSString *NSStringFromLTLogLevel(LTLogLevel logLevel);
 /// type. If the type cannot be parsed, \c nil is returned.
 + (nullable NSString *)descriptionFromTypeCode:(const char *)type andValue:(void *)value;
 
-/// Registers the given logger target to start receiving messages to log.
-- (void)registerTarget:(id<LTLoggerTarget>)target;
+/// Registers the given logger \c target to receive log messages with level equal or greater than
+/// \c minimalLogLevel, where the level is ordered by the \c LTLogLevel enum field declaration
+/// order.
+- (void)registerTarget:(id<LTLoggerTarget>)target withMinimalLogLevel:(LTLogLevel)minimalLogLevel;
 
-/// Unregisters the given logger target.
+/// Unregisters the given logger \c target. If \c target is not a registered target, this call has
+/// no effect.
 - (void)unregisterTarget:(id<LTLoggerTarget>)target;
 
 /// Logs the message, including originating file name, line number and log level to all selected
 /// targets.
 - (void)logWithFormat:(NSString *)format file:(const char *)file line:(int)line
              logLevel:(LTLogLevel)logLevel, ... NS_FORMAT_FUNCTION(1, 5);
-
-/// Minimal log level to log (by the order defined in the \c LTLogLevel enum).
-@property (nonatomic) LTLogLevel minimalLogLevel;
 
 @end
 
