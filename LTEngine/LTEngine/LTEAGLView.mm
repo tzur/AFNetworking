@@ -142,7 +142,7 @@ NS_ASSUME_NONNULL_BEGIN
   // renderbuffer.
   [self destroyRenderTarget];
 
-  if (newDrawableSize != CGSizeZero) {
+  if (newDrawableSize.width > 0 && newDrawableSize.height > 0) {
     [self createRenderTarget];
   }
   self.drawableSize = self.renderbuffer.size;

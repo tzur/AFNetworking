@@ -47,6 +47,22 @@ it(@"should initialize and layout with zero size", ^{
   expect(view.drawableSize).to.equal(CGSizeZero);
 });
 
+it(@"should initialize and layout with zero height", ^{
+  view = [[LTEAGLView alloc] initWithFrame:CGRectMake(0, 0, kSize.width, 0) context:glContext
+                        contentScaleFactor:[UIScreen mainScreen].nativeScale];
+  expect(view.drawableSize).to.equal(CGSizeZero);
+  [view layoutIfNeeded];
+  expect(view.drawableSize).to.equal(CGSizeZero);
+});
+
+it(@"should initialize and layout with zero width", ^{
+  view = [[LTEAGLView alloc] initWithFrame:CGRectMake(0, 0, 0, kSize.height) context:glContext
+                        contentScaleFactor:[UIScreen mainScreen].nativeScale];
+  expect(view.drawableSize).to.equal(CGSizeZero);
+  [view layoutIfNeeded];
+  expect(view.drawableSize).to.equal(CGSizeZero);
+});
+
 it(@"should initialize with default values", ^{
   expect(view.opaque).to.beTruthy();
   expect(view.contentScaleFactor).to.equal([UIScreen mainScreen].nativeScale);
@@ -118,6 +134,20 @@ context(@"bounds change", ^{
   it(@"should change bounds from non-zero size to zero size", ^{
     [view layoutIfNeeded];
     view.frame = CGRectZero;
+    [view layoutIfNeeded];
+    expect(view.drawableSize).to.equal(CGSizeZero);
+  });
+
+  it(@"should change bounds from non-zero width and height to zero height", ^{
+    [view layoutIfNeeded];
+    view.frame = CGRectMake(0, 0, kSize.width, 0);
+    [view layoutIfNeeded];
+    expect(view.drawableSize).to.equal(CGSizeZero);
+  });
+
+  it(@"should change bounds from non-zero width and height to zero width", ^{
+    [view layoutIfNeeded];
+    view.frame = CGRectMake(0, 0, 0, kSize.height);
     [view layoutIfNeeded];
     expect(view.drawableSize).to.equal(CGSizeZero);
   });
