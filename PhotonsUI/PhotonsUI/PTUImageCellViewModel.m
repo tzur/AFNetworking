@@ -116,7 +116,7 @@ NSString * const kPTUImageCellViewModelTraitGIFKey = @"GIF";
   if ([self.descriptor.descriptorTraits containsObject:kPTNDescriptorTraitCloudBasedKey]) {
     [traits addObject:kPTUImageCellViewModelTraitCloudBasedKey];
   }
-  if ([self.descriptor.descriptorTraits containsObject:kPTNDescriptorTraitVideoKey]) {
+  if ([self.descriptor.descriptorTraits containsObject:kPTNDescriptorTraitAudiovisualKey]) {
     [traits addObject:kPTUImageCellViewModelTraitVideoKey];
   }
   if ([self.descriptor.descriptorTraits containsObject:kPTNDescriptorTraitRawKey]) {
