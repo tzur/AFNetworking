@@ -16,7 +16,7 @@
 		883235851ED861EA0090787D /* NSError+Laboratory.mm in Sources */ = {isa = PBXBuildFile; fileRef = 883235821ED861EA0090787D /* NSError+Laboratory.mm */; };
 		883235861ED861EA0090787D /* NSErrorCodes+Laboratory.mm in Sources */ = {isa = PBXBuildFile; fileRef = 883235841ED861EA0090787D /* NSErrorCodes+Laboratory.mm */; };
 		883235881ED861F30090787D /* NSErrorCodes+LaboratorySpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 883235871ED861F30090787D /* NSErrorCodes+LaboratorySpec.mm */; };
-		88440B991EDB19C200A64CF7 /* LABLocalSourceSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 88440B981EDB19C200A64CF7 /* LABLocalSourceSpec.mm */; };
+		883712FC1EE57E8C0033EE08 /* LABTaplytics.mm in Sources */ = {isa = PBXBuildFile; fileRef = 883712F71EE57E8C0033EE08 /* LABTaplytics.mm */; };
 		883712FD1EE57E8C0033EE08 /* TLProperties+Laboratory.mm in Sources */ = {isa = PBXBuildFile; fileRef = 883712F91EE57E8C0033EE08 /* TLProperties+Laboratory.mm */; };
 		883713171EE580340033EE08 /* Taplytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 883713161EE580340033EE08 /* Taplytics.framework */; };
 		88375E771EE927D100A4B6FE /* Taplytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 883713161EE580340033EE08 /* Taplytics.framework */; };
@@ -27,6 +27,8 @@
 		884F64941EE53B3C0052274E /* LABExperimentsTokenProviderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 884F64931EE53B3C0052274E /* LABExperimentsTokenProviderSpec.mm */; };
 		884F64B51EE53E010052274E /* LABFakeStorage.mm in Sources */ = {isa = PBXBuildFile; fileRef = 884F64B41EE53E010052274E /* LABFakeStorage.mm */; };
 		885349B81EE45B0C0043D190 /* LABAssignmentsSource.mm in Sources */ = {isa = PBXBuildFile; fileRef = 885349B71EE45B0C0043D190 /* LABAssignmentsSource.mm */; };
+		885AFF991F02B34D0035A6B2 /* LABTaplyticsSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 884136081EEE6E220096BF8C /* LABTaplyticsSpec.mm */; };
+		885AFFBD1F02B3E00035A6B2 /* LABLocalSourceSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 88440B981EDB19C200A64CF7 /* LABLocalSourceSpec.mm */; };
 		88648C231EE5281200B492D7 /* LABExperimentsTokenProvider.mm in Sources */ = {isa = PBXBuildFile; fileRef = 88648C221EE5281200B492D7 /* LABExperimentsTokenProvider.mm */; };
 		88932F5C1EDF538900451D44 /* EXPMatchers+beSubscribedTo.m in Sources */ = {isa = PBXBuildFile; fileRef = 88932F451EDF538900451D44 /* EXPMatchers+beSubscribedTo.m */; };
 		88932F5D1EDF538900451D44 /* EXPMatchers+complete.m in Sources */ = {isa = PBXBuildFile; fileRef = 88932F471EDF538900451D44 /* EXPMatchers+complete.m */; };
@@ -345,6 +347,8 @@
 		883235831ED861EA0090787D /* NSErrorCodes+Laboratory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSErrorCodes+Laboratory.h"; sourceTree = "<group>"; };
 		883235841ED861EA0090787D /* NSErrorCodes+Laboratory.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSErrorCodes+Laboratory.mm"; sourceTree = "<group>"; };
 		883235871ED861F30090787D /* NSErrorCodes+LaboratorySpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSErrorCodes+LaboratorySpec.mm"; sourceTree = "<group>"; };
+		883712F61EE57E8C0033EE08 /* LABTaplytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LABTaplytics.h; sourceTree = "<group>"; };
+		883712F71EE57E8C0033EE08 /* LABTaplytics.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LABTaplytics.mm; sourceTree = "<group>"; };
 		883712F81EE57E8C0033EE08 /* TLProperties+Laboratory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TLProperties+Laboratory.h"; sourceTree = "<group>"; };
 		883712F91EE57E8C0033EE08 /* TLProperties+Laboratory.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "TLProperties+Laboratory.mm"; sourceTree = "<group>"; };
 		883713161EE580340033EE08 /* Taplytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Taplytics.framework; path = "../third_party/taplytics-ios-sdk/Taplytics.framework"; sourceTree = "<group>"; };
@@ -353,6 +357,7 @@
 		88375E9A1EE9286500A4B6FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		88396DF01EEC8ADA00A542A3 /* TLProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TLProperties.h; sourceTree = "<group>"; };
 		88396E151EEC8B9F00A542A3 /* TLManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TLManager.h; sourceTree = "<group>"; };
+		884136081EEE6E220096BF8C /* LABTaplyticsSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LABTaplyticsSpec.mm; sourceTree = "<group>"; };
 		88440B511ED8B10B00A64CF7 /* LABAssignmentsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LABAssignmentsManager.h; sourceTree = "<group>"; };
 		88440B521ED8B10B00A64CF7 /* LABAssignmentsSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LABAssignmentsSource.h; sourceTree = "<group>"; };
 		88440B981EDB19C200A64CF7 /* LABLocalSourceSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LABLocalSourceSpec.mm; sourceTree = "<group>"; };
@@ -518,6 +523,7 @@
 			isa = PBXGroup;
 			children = (
 				88440B981EDB19C200A64CF7 /* LABLocalSourceSpec.mm */,
+				884136081EEE6E220096BF8C /* LABTaplyticsSpec.mm */,
 				88F8C3D11F027DF30070F7E4 /* TLProperties+LaboratorySpec.mm */,
 			);
 			name = Sources;
@@ -579,6 +585,8 @@
 			children = (
 				88BB646A1EDAAD100026DEC0 /* LABLocalSource.h */,
 				88BB646B1EDAAD100026DEC0 /* LABLocalSource.mm */,
+				883712F61EE57E8C0033EE08 /* LABTaplytics.h */,
+				883712F71EE57E8C0033EE08 /* LABTaplytics.mm */,
 				88396E151EEC8B9F00A542A3 /* TLManager.h */,
 				88396DF01EEC8ADA00A542A3 /* TLProperties.h */,
 				883712F81EE57E8C0033EE08 /* TLProperties+Laboratory.h */,
@@ -1178,6 +1186,7 @@
 				883712FD1EE57E8C0033EE08 /* TLProperties+Laboratory.mm in Sources */,
 				885349B81EE45B0C0043D190 /* LABAssignmentsSource.mm in Sources */,
 				A148A0551EE3D8110058165C /* LABAssignmentsManager.mm in Sources */,
+				883712FC1EE57E8C0033EE08 /* LABTaplytics.mm in Sources */,
 				883235861ED861EA0090787D /* NSErrorCodes+Laboratory.mm in Sources */,
 				88BB646D1EDAAD100026DEC0 /* LABLocalSource.mm in Sources */,
 			);
@@ -1187,6 +1196,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				885AFFBD1F02B3E00035A6B2 /* LABLocalSourceSpec.mm in Sources */,
 				88932F5E1EDF538900451D44 /* EXPMatchers+deliverValuesOnThread.m in Sources */,
 				88F8C3D21F027DF30070F7E4 /* TLProperties+LaboratorySpec.mm in Sources */,
 				88932F651EDF538900451D44 /* EXPMatchers+sendEvents.m in Sources */,
@@ -1197,6 +1207,7 @@
 				88932F621EDF538900451D44 /* EXPMatchers+matchValue.m in Sources */,
 				88932F671EDF538900451D44 /* EXPMatchers+sendValuesWithCount.m in Sources */,
 				88932F6F1EDF55C000451D44 /* LLReactiveMatchersMessageBuilder.m in Sources */,
+				885AFF991F02B34D0035A6B2 /* LABTaplyticsSpec.mm in Sources */,
 				88932F6E1EDF55C000451D44 /* LLReactiveMatchersHelpers.m in Sources */,
 				88932F771EDF55D300451D44 /* LLSignalTestRecorder.m in Sources */,
 				88932F601EDF538900451D44 /* EXPMatchers+finish.m in Sources */,
@@ -1208,7 +1219,6 @@
 				88932F5F1EDF538900451D44 /* EXPMatchers+error.m in Sources */,
 				88932F761EDF55D300451D44 /* EXPExpect+LLReactiveMatchersExtensions.m in Sources */,
 				884F64B51EE53E010052274E /* LABFakeStorage.mm in Sources */,
-				88440B991EDB19C200A64CF7 /* LABLocalSourceSpec.mm in Sources */,
 				A1E388391EE554D90095F056 /* LABFakeAssignmentsSource.mm in Sources */,
 				A10DEFA91EE425DB00F1DD87 /* LABAssignmentsManagerSpec.mm in Sources */,
 			);
