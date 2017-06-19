@@ -945,6 +945,7 @@
 				8B0B9A281CA6C09000ED2334 /* DropboxSDK.framework */,
 				8861FE0A1E5A2CC800CA1436 /* GLKit.framework */,
 				8861FE061E5A2C6300CA1436 /* ImageIO.framework */,
+				B411A04C1EEE780300756808 /* MediaPlayer.framework */,
 				88EE8DD51EACD5C100D3126A /* MobileCoreServices.framework */,
 				8861FE021E5A2C1D00CA1436 /* Photos.framework */,
 				8861FE0E1E5A2CF100CA1436 /* QuartzCore.framework */,
