@@ -19,7 +19,7 @@ beforeEach(^{
 it(@"should use the underlying fetcher to get the bundle of the product content", ^{
   BZRProduct *product = BZRProductWithIdentifierAndContent(@"foo");
 
-  [contentFetcher contentBundleForProduct:product];
+  [[contentFetcher contentBundleForProduct:product] testRecorder];
 
   OCMVerify([underlyingContentFetcher contentBundleForProduct:product]);
 });
