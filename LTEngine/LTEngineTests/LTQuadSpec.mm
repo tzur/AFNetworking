@@ -1674,4 +1674,11 @@ context(@"equality", ^{
   });
 });
 
+context(@"string from quad", ^{
+  it(@"should return a string from a given quad", ^{
+    expect(NSStringFromLTQuad(lt::Quad::canonicalSquare()))
+        .to.equal(@"{{0, 0}, {1, 0}, {1, 1}, {0, 1}}");
+  });
+});
+
 SpecEnd

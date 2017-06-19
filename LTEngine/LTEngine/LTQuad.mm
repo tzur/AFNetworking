@@ -238,9 +238,8 @@ static NSUInteger LTNumberOfNonLeftTurns(const lt::Quad::Corners &corners);
 }
 
 - (NSString *)description {
-  return [NSString stringWithFormat:@"<%@: %p, v0: (%g, %g), v1: (%g, %g), v2: (%g, %g), "
-          "v3: (%g, %g)>", self.class, self, self.v0.x, self.v0.y, self.v1.x, self.v1.y, self.v2.x,
-          self.v2.y, self.v3.x, self.v3.y];
+  return [NSString stringWithFormat:@"<%@: %p, vertices: %@>", self.class, self,
+          NSStringFromLTQuad(self.quad)];
 }
 
 - (BOOL)isEqual:(LTQuad *)quad {
@@ -704,5 +703,11 @@ Quad::Type Quad::type() const noexcept {
 }
 
 } // namespace lt
+
+NSString *NSStringFromLTQuad(lt::Quad quad) {
+  return [NSString stringWithFormat:@"{{%g, %g}, {%g, %g}, {%g, %g}, {%g, %g}}",
+          quad.v0().x, quad.v0().y, quad.v1().x, quad.v1().y, quad.v2().x, quad.v2().y,
+          quad.v3().x, quad.v3().y];
+}
 
 NS_ASSUME_NONNULL_END
