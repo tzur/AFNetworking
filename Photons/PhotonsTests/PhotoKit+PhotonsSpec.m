@@ -57,7 +57,7 @@ context(@"asset descriptor", ^{
   it(@"should reveal video based traits when the underlying asset is video", ^{
     PHAsset *videoAsset = OCMPartialMock([[PHAsset alloc] init]);
     OCMStub(videoAsset.mediaType).andReturn(PHAssetMediaTypeVideo);
-    expect(videoAsset.descriptorTraits).to.contain(kPTNDescriptorTraitVideoKey);
+    expect(videoAsset.descriptorTraits).to.contain(kPTNDescriptorTraitAudiovisualKey);
 
     PHAsset *imageAsset = OCMPartialMock([[PHAsset alloc] init]);
     OCMStub(imageAsset.mediaType).andReturn(PHAssetMediaTypeImage);

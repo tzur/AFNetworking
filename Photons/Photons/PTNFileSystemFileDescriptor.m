@@ -67,7 +67,7 @@ NS_ASSUME_NONNULL_BEGIN
     return [NSSet set];
   }
 
-  return [NSSet setWithObject:kPTNDescriptorTraitVideoKey];
+  return [NSSet setWithObject:kPTNDescriptorTraitAudiovisualKey];
 }
 
 + (NSArray *)videoFileUTIs {

@@ -85,7 +85,8 @@ context(@"video descriptor", ^{
     LTPath *oneSecondVideoPath = [LTPath pathWithPath:PTNOneSecondVideoPath().path];
     PTNFileSystemFileDescriptor *descriptor =
         [[PTNFileSystemFileDescriptor alloc] initWithPath:oneSecondVideoPath];
-    expect(descriptor.descriptorTraits).to.equal([NSSet setWithObject:kPTNDescriptorTraitVideoKey]);
+    expect(descriptor.descriptorTraits).to.equal([NSSet
+                                                  setWithObject:kPTNDescriptorTraitAudiovisualKey]);
   });
 });
 
