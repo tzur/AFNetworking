@@ -271,7 +271,11 @@ context(@"LTVector2", ^{
     });
   });
 
-  context(@"conversions", ^{
+  context(@"string-vector conversions", ^{
+    it(@"should return a string from a given vector", ^{
+      expect(NSStringFromLTVector2(LTVector2(1.5, 2.5))).to.equal(@"(1.5, 2.5)");
+    });
+
     it(@"should convert from string", ^{
       NSString *value = @"(1.5, 2.5)";
       LTVector2 vector = LTVector2FromString(value);
@@ -507,7 +511,7 @@ context(@"LTVector3", ^{
     });
   });
 
-  context(@"conversions", ^{
+  context(@"color conversions", ^{
     it(@"should convert from rgb to hsv", ^{
       LTVector3 expected = LTVector3(0, 1, 1);
       expect((LTVector3(1, 0, 0).rgbToHsv() - expected).length()).to.beCloseToWithin(0, 1e-4);
@@ -552,6 +556,12 @@ context(@"LTVector3", ^{
     it(@"should convert from hsv to rgb", ^{
       LTVector3 expected = LTVector3(1, 0, 0);
       expect((LTVector3(0, 1, 1).hsvToRgb() - expected).length()).to.beCloseToWithin(0, 1e-4);
+    });
+  });
+
+  context(@"string-vector conversions", ^{
+    it(@"should return a string from a given vector", ^{
+      expect(NSStringFromLTVector3(LTVector3(1.5, 2.5, 3))).to.equal(@"(1.5, 2.5, 3)");
     });
 
     it(@"should convert from string", ^{
@@ -837,7 +847,7 @@ context(@"LTVector4", ^{
     });
   });
 
-  context(@"conversions", ^{
+  context(@"color conversions", ^{
     it(@"should convert from rgb to hsv, while leaving last coordinate unchanged", ^{
       LTVector4 expected = LTVector4(0, 1, 1, 2);
       expect((LTVector4(1, 0, 0, 2).rgbToHsv() - expected).length()).to.beCloseToWithin(0, 1e-4);
@@ -846,6 +856,12 @@ context(@"LTVector4", ^{
     it(@"should convert from hsv to rgb, while leaving last coordinate unchanged", ^{
       LTVector4 expected = LTVector4(1, 0, 0, 2);
       expect((LTVector4(0, 1, 1, 2).hsvToRgb() - expected).length()).to.beCloseToWithin(0, 1e-4);
+    });
+  });
+
+  context(@"string-vector conversions", ^{
+    it(@"should return a string from a given vector", ^{
+      expect(NSStringFromLTVector4(LTVector4(1.5, 2.5, 3, 4))).to.equal(@"(1.5, 2.5, 3, 4)");
     });
 
     it(@"should convert from string", ^{
