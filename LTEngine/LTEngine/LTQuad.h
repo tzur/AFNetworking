@@ -1,8 +1,8 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Rouven Strauss.
 
-#import <experimental/optional>
 #import <LTKit/LTHashExtensions.h>
+#import <experimental/optional>
 
 #import "LTGeometry.h"
 
@@ -587,5 +587,11 @@ struct ::std::hash<lt::Quad> {
     return std::hash<lt::Quad::Corners>()(q.corners());
   }
 };
+
+/// Returns an \c NSString representation of the given \c quad. The returned \c NSString is
+/// <tt>@"{{v0_x, v0_y}, {v1_x, v1_y}, {v2_x, v2_y}, {v3_x, v3_y}}"</tt>, where \c v<i>_x and
+/// \c v<i>_y are the string representations of \c quad.v<i>().x and \c quad.v<i>().y, respectively,
+/// for \c <i> in <tt>{0, 1, 2, 3}</tt>.
+NSString *NSStringFromLTQuad(lt::Quad quad);
 
 NS_ASSUME_NONNULL_END

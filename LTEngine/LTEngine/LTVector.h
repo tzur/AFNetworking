@@ -350,7 +350,9 @@ namespace std {
   }
 }
 
-/// Returns an \c NSString representation of the given vector.
+/// Returns an \c NSString representation of the given \c vector. The returned \c NSString is
+/// <tt>@"(x, y)"</tt>, where \c x and \c y are the string representations of \c vector.x and
+/// \c vector.y, respectively.
 NSString *NSStringFromLTVector2(LTVector2 vector);
 
 /// Returns a vector from its string representation. The representation should be in the format
@@ -692,7 +694,9 @@ namespace std {
   }
 }
 
-/// Returns an \c NSString representation of the given vector.
+/// Returns an \c NSString representation of the given \c vector. The returned \c NSString is
+/// <tt>@"(x, y, z)"</tt>, where \c x, \c y, and \c z are the string representations of \c vector.x,
+/// \c vector.y, and \c vector.z, respectively.
 NSString *NSStringFromLTVector3(LTVector3 vector);
 
 /// Returns a vector from its string representation. The representation should be in the format
@@ -1087,7 +1091,9 @@ namespace std {
   }
 }
 
-/// Returns an \c NSString representation of the given vector.
+/// Returns an \c NSString representation of the given \c vector. The returned \c NSString is
+/// <tt>@"(x, y, z, w)"</tt>, where \c x, \c y, \c z, and \c w are the string representations of
+/// \c vector.x, \c vector.y, \c vector.z, and \c vector.w, respectively.
 NSString *NSStringFromLTVector4(LTVector4 vector);
 
 /// Returns a vector from its string representation. The representation should be in the format
