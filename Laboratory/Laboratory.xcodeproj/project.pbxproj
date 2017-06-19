@@ -16,8 +16,10 @@
 		883235851ED861EA0090787D /* NSError+Laboratory.mm in Sources */ = {isa = PBXBuildFile; fileRef = 883235821ED861EA0090787D /* NSError+Laboratory.mm */; };
 		883235861ED861EA0090787D /* NSErrorCodes+Laboratory.mm in Sources */ = {isa = PBXBuildFile; fileRef = 883235841ED861EA0090787D /* NSErrorCodes+Laboratory.mm */; };
 		883235881ED861F30090787D /* NSErrorCodes+LaboratorySpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 883235871ED861F30090787D /* NSErrorCodes+LaboratorySpec.mm */; };
+		88349C141EF012C1007B14C4 /* LABTaplyticsSourceSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 88349C131EF012C1007B14C4 /* LABTaplyticsSourceSpec.mm */; };
 		883712FC1EE57E8C0033EE08 /* LABTaplytics.mm in Sources */ = {isa = PBXBuildFile; fileRef = 883712F71EE57E8C0033EE08 /* LABTaplytics.mm */; };
 		883712FD1EE57E8C0033EE08 /* TLProperties+Laboratory.mm in Sources */ = {isa = PBXBuildFile; fileRef = 883712F91EE57E8C0033EE08 /* TLProperties+Laboratory.mm */; };
+		883712FE1EE57E8C0033EE08 /* LABTaplyticsSource.mm in Sources */ = {isa = PBXBuildFile; fileRef = 883712FB1EE57E8C0033EE08 /* LABTaplyticsSource.mm */; };
 		883713171EE580340033EE08 /* Taplytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 883713161EE580340033EE08 /* Taplytics.framework */; };
 		88375E771EE927D100A4B6FE /* Taplytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 883713161EE580340033EE08 /* Taplytics.framework */; };
 		88375E971EE9285400A4B6FE /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88375E961EE9285400A4B6FE /* SystemConfiguration.framework */; };
@@ -347,10 +349,13 @@
 		883235831ED861EA0090787D /* NSErrorCodes+Laboratory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSErrorCodes+Laboratory.h"; sourceTree = "<group>"; };
 		883235841ED861EA0090787D /* NSErrorCodes+Laboratory.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSErrorCodes+Laboratory.mm"; sourceTree = "<group>"; };
 		883235871ED861F30090787D /* NSErrorCodes+LaboratorySpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSErrorCodes+LaboratorySpec.mm"; sourceTree = "<group>"; };
+		88349C131EF012C1007B14C4 /* LABTaplyticsSourceSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LABTaplyticsSourceSpec.mm; sourceTree = "<group>"; };
 		883712F61EE57E8C0033EE08 /* LABTaplytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LABTaplytics.h; sourceTree = "<group>"; };
 		883712F71EE57E8C0033EE08 /* LABTaplytics.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LABTaplytics.mm; sourceTree = "<group>"; };
 		883712F81EE57E8C0033EE08 /* TLProperties+Laboratory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TLProperties+Laboratory.h"; sourceTree = "<group>"; };
 		883712F91EE57E8C0033EE08 /* TLProperties+Laboratory.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "TLProperties+Laboratory.mm"; sourceTree = "<group>"; };
+		883712FA1EE57E8C0033EE08 /* LABTaplyticsSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LABTaplyticsSource.h; sourceTree = "<group>"; };
+		883712FB1EE57E8C0033EE08 /* LABTaplyticsSource.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LABTaplyticsSource.mm; sourceTree = "<group>"; };
 		883713161EE580340033EE08 /* Taplytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Taplytics.framework; path = "../third_party/taplytics-ios-sdk/Taplytics.framework"; sourceTree = "<group>"; };
 		88375E961EE9285400A4B6FE /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		88375E981EE9285E00A4B6FE /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
@@ -513,8 +518,8 @@
 			isa = PBXGroup;
 			children = (
 				A10DEFA81EE425DB00F1DD87 /* LABAssignmentsManagerSpec.mm */,
-				883235871ED861F30090787D /* NSErrorCodes+LaboratorySpec.mm */,
 				884F64931EE53B3C0052274E /* LABExperimentsTokenProviderSpec.mm */,
+				883235871ED861F30090787D /* NSErrorCodes+LaboratorySpec.mm */,
 			);
 			name = Base;
 			sourceTree = "<group>";
@@ -524,6 +529,7 @@
 			children = (
 				88440B981EDB19C200A64CF7 /* LABLocalSourceSpec.mm */,
 				884136081EEE6E220096BF8C /* LABTaplyticsSpec.mm */,
+				88349C131EF012C1007B14C4 /* LABTaplyticsSourceSpec.mm */,
 				88F8C3D11F027DF30070F7E4 /* TLProperties+LaboratorySpec.mm */,
 			);
 			name = Sources;
@@ -587,6 +593,8 @@
 				88BB646B1EDAAD100026DEC0 /* LABLocalSource.mm */,
 				883712F61EE57E8C0033EE08 /* LABTaplytics.h */,
 				883712F71EE57E8C0033EE08 /* LABTaplytics.mm */,
+				883712FA1EE57E8C0033EE08 /* LABTaplyticsSource.h */,
+				883712FB1EE57E8C0033EE08 /* LABTaplyticsSource.mm */,
 				88396E151EEC8B9F00A542A3 /* TLManager.h */,
 				88396DF01EEC8ADA00A542A3 /* TLProperties.h */,
 				883712F81EE57E8C0033EE08 /* TLProperties+Laboratory.h */,
@@ -1187,6 +1195,7 @@
 				885349B81EE45B0C0043D190 /* LABAssignmentsSource.mm in Sources */,
 				A148A0551EE3D8110058165C /* LABAssignmentsManager.mm in Sources */,
 				883712FC1EE57E8C0033EE08 /* LABTaplytics.mm in Sources */,
+				883712FE1EE57E8C0033EE08 /* LABTaplyticsSource.mm in Sources */,
 				883235861ED861EA0090787D /* NSErrorCodes+Laboratory.mm in Sources */,
 				88BB646D1EDAAD100026DEC0 /* LABLocalSource.mm in Sources */,
 			);
@@ -1203,6 +1212,7 @@
 				88932F611EDF538900451D44 /* EXPMatchers+matchError.m in Sources */,
 				883235881ED861F30090787D /* NSErrorCodes+LaboratorySpec.mm in Sources */,
 				88932F781EDF55D300451D44 /* RACSignal+LLSubscriptionCounting.m in Sources */,
+				88349C141EF012C1007B14C4 /* LABTaplyticsSourceSpec.mm in Sources */,
 				88932F5D1EDF538900451D44 /* EXPMatchers+complete.m in Sources */,
 				88932F621EDF538900451D44 /* EXPMatchers+matchValue.m in Sources */,
 				88932F671EDF538900451D44 /* EXPMatchers+sendValuesWithCount.m in Sources */,
