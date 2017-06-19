@@ -17,6 +17,11 @@
 		883235861ED861EA0090787D /* NSErrorCodes+Laboratory.mm in Sources */ = {isa = PBXBuildFile; fileRef = 883235841ED861EA0090787D /* NSErrorCodes+Laboratory.mm */; };
 		883235881ED861F30090787D /* NSErrorCodes+LaboratorySpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 883235871ED861F30090787D /* NSErrorCodes+LaboratorySpec.mm */; };
 		88440B991EDB19C200A64CF7 /* LABLocalSourceSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 88440B981EDB19C200A64CF7 /* LABLocalSourceSpec.mm */; };
+		883713171EE580340033EE08 /* Taplytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 883713161EE580340033EE08 /* Taplytics.framework */; };
+		88375E771EE927D100A4B6FE /* Taplytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 883713161EE580340033EE08 /* Taplytics.framework */; };
+		88375E971EE9285400A4B6FE /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88375E961EE9285400A4B6FE /* SystemConfiguration.framework */; };
+		88375E991EE9285E00A4B6FE /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88375E981EE9285E00A4B6FE /* CoreTelephony.framework */; };
+		88375E9B1EE9286500A4B6FE /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88375E9A1EE9286500A4B6FE /* JavaScriptCore.framework */; };
 		884962181EBA226E007B3AE8 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1417A911E6ED9CB005DBEFF /* UIKit.framework */; };
 		884F64941EE53B3C0052274E /* LABExperimentsTokenProviderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 884F64931EE53B3C0052274E /* LABExperimentsTokenProviderSpec.mm */; };
 		884F64B51EE53E010052274E /* LABFakeStorage.mm in Sources */ = {isa = PBXBuildFile; fileRef = 884F64B41EE53E010052274E /* LABFakeStorage.mm */; };
@@ -338,6 +343,10 @@
 		883235831ED861EA0090787D /* NSErrorCodes+Laboratory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSErrorCodes+Laboratory.h"; sourceTree = "<group>"; };
 		883235841ED861EA0090787D /* NSErrorCodes+Laboratory.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSErrorCodes+Laboratory.mm"; sourceTree = "<group>"; };
 		883235871ED861F30090787D /* NSErrorCodes+LaboratorySpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSErrorCodes+LaboratorySpec.mm"; sourceTree = "<group>"; };
+		883713161EE580340033EE08 /* Taplytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Taplytics.framework; path = "../third_party/taplytics-ios-sdk/Taplytics.framework"; sourceTree = "<group>"; };
+		88375E961EE9285400A4B6FE /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		88375E981EE9285E00A4B6FE /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
+		88375E9A1EE9286500A4B6FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		88440B511ED8B10B00A64CF7 /* LABAssignmentsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LABAssignmentsManager.h; sourceTree = "<group>"; };
 		88440B521ED8B10B00A64CF7 /* LABAssignmentsSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LABAssignmentsSource.h; sourceTree = "<group>"; };
 		88440B981EDB19C200A64CF7 /* LABLocalSourceSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LABLocalSourceSpec.mm; sourceTree = "<group>"; };
@@ -417,6 +426,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				882D20181EC9A967007F39F5 /* ReactiveCocoa.framework in Frameworks */,
+				883713171EE580340033EE08 /* Taplytics.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -425,18 +435,22 @@
 			buildActionMask = 2147483647;
 			files = (
 				882D1F2E1EC1C497007F39F5 /* CoreGraphics.framework in Frameworks */,
+				88375E991EE9285E00A4B6FE /* CoreTelephony.framework in Frameworks */,
 				882D1F301EC1C49C007F39F5 /* GLKit.framework in Frameworks */,
 				A148A37B1EE3D9750058165C /* Mantle.framework in Frameworks */,
+				88375E9B1EE9286500A4B6FE /* JavaScriptCore.framework in Frameworks */,
 				882D1F321EC1C54F007F39F5 /* QuartzCore.framework in Frameworks */,
 				88ABDB141EDFDA6900C72E65 /* ReactiveCocoa.framework in Frameworks */,
+				88375E971EE9285400A4B6FE /* SystemConfiguration.framework in Frameworks */,
+				88375E771EE927D100A4B6FE /* Taplytics.framework in Frameworks */,
 				884962181EBA226E007B3AE8 /* UIKit.framework in Frameworks */,
 				A14173401E6EB59F005DBEFF /* libExpecta.a in Frameworks */,
 				A14171C61E6EAC0D005DBEFF /* libLaboratory.a in Frameworks */,
 				A14173411E6EB59F005DBEFF /* libLTKit.a in Frameworks */,
 				A14173421E6EB59F005DBEFF /* libOCMock.a in Frameworks */,
 				A14173431E6EB59F005DBEFF /* libSpecta.a in Frameworks */,
-				882D1F2C1EC1AC92007F39F5 /* libextobjc_iOS.a in Frameworks */,
 				882D1F181EC19A2C007F39F5 /* libcompression.tbd in Frameworks */,
+				882D1F2C1EC1AC92007F39F5 /* libextobjc_iOS.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -737,9 +751,13 @@
 		A14175B41E6EBE37005DBEFF /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				88375E9A1EE9286500A4B6FE /* JavaScriptCore.framework */,
+				88375E981EE9285E00A4B6FE /* CoreTelephony.framework */,
+				88375E961EE9285400A4B6FE /* SystemConfiguration.framework */,
 				882D1F2D1EC1C497007F39F5 /* CoreGraphics.framework */,
 				882D1F2F1EC1C49C007F39F5 /* GLKit.framework */,
 				882D1F311EC1C54F007F39F5 /* QuartzCore.framework */,
+				883713161EE580340033EE08 /* Taplytics.framework */,
 				A1417A911E6ED9CB005DBEFF /* UIKit.framework */,
 				882D1F171EC19A2C007F39F5 /* libcompression.tbd */,
 			);
@@ -1204,7 +1222,12 @@
 			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../third_party/taplytics-ios-sdk",
+				);
 				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
 					"$(SRCROOT)/../LTKit",
 					"$(SRCROOT)/../third_party/Mantle",
 					"$(SRCROOT)/../third_party/libextobjc",
@@ -1221,7 +1244,12 @@
 			baseConfigurationReference = A14172631E6EAD9A005DBEFF /* Release.xcconfig */;
 			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../third_party/taplytics-ios-sdk",
+				);
 				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
 					"$(SRCROOT)/../LTKit",
 					"$(SRCROOT)/../third_party/Mantle",
 					"$(SRCROOT)/../third_party/libextobjc",
@@ -1237,6 +1265,7 @@
 			baseConfigurationReference = A14172681E6EAD9A005DBEFF /* StaticLibrary.xcconfig */;
 			buildSettings = {
 				DEVELOPMENT_TEAM = KG6GWND6BG;
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PREFIX_HEADER = "$(SRCROOT)/$(TARGET_NAME)/$(TARGET_NAME)-Prefix.pch";
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = "-ObjC";
@@ -1250,6 +1279,7 @@
 			baseConfigurationReference = A14172681E6EAD9A005DBEFF /* StaticLibrary.xcconfig */;
 			buildSettings = {
 				DEVELOPMENT_TEAM = KG6GWND6BG;
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PREFIX_HEADER = "$(SRCROOT)/$(TARGET_NAME)/$(TARGET_NAME)-Prefix.pch";
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = "-ObjC";
@@ -1265,6 +1295,7 @@
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/TestHost.app/TestHost";
 				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
 				DEVELOPMENT_TEAM = KG6GWND6BG;
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PREFIX_HEADER = "$(SRCROOT)/$(TARGET_NAME)/$(TARGET_NAME)-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1288,6 +1319,7 @@
 				BUNDLE_LOADER = "";
 				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
 				DEVELOPMENT_TEAM = KG6GWND6BG;
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PREFIX_HEADER = "$(SRCROOT)/$(TARGET_NAME)/$(TARGET_NAME)-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
