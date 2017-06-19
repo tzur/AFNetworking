@@ -5,6 +5,11 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/// Block returning a signal that send an <tt>NSDictionary<NSString *, id></tt> of assignments for
+/// \c experiment and variant. To be used in LABFakeAssignmentsSource.
+typedef RACSignal * _Nonnull(^LABFetchAssignmentsSignalBlock)(NSString *experiment,
+                                                              NSString *variant);
+
 /// Fake implementation of \c LABAssignmentsSource.
 @interface LABFakeAssignmentsSource : NSObject <LABAssignmentsSource, LABExperimentsSource>
 
@@ -28,6 +33,16 @@ NS_ASSUME_NONNULL_BEGIN
 /// Signal returned when calling <tt>-[LABAssignmentsSource updateInBackground]</tt>. Defaults to
 /// <tt>[RACSignal return:@(UIBackgroundFetchResultNoData)]</tt>.
 @property (strong, nonatomic) RACSignal *backgroundUpdateSignal;
+
+/// Signal returned when calling <tt>-[LABAssignmentsSource fetchAllExperimentsAndVariants]</tt>.
+/// Defaults to a signal that returns the data as available in \c allExperiments.
+@property (strong, nonatomic) RACSignal *fetchAllExperimentsAndVariantsSignal;
+
+/// Block that returns a signal to return for the call
+/// <tt>-[LABAssignmentsSource fetchAssignmentsForExperiment:withVariant:]</tt>. Defaults to a
+/// a block that returns a signal that sends the assignments for the variant and experiment as in
+/// \c allExperiments.
+@property (strong, nonatomic) LABFetchAssignmentsSignalBlock fetchAssignmentsSignalBlock;
 
 /// Amount of calls to the \c stabilizeUserExperienceAssignments method of this receiver.
 @property (readonly, nonatomic) NSUInteger stabilizeUserExperienceAssignmentsRequestedCount;
