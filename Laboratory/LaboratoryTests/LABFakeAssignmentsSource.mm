@@ -5,6 +5,7 @@
 
 #import <LTKit/NSArray+Functional.h>
 #import <LTKit/NSArray+NSSet.h>
+#import <LTKit/NSDictionary+Functional.h>
 
 #import "NSError+Laboratory.h"
 
@@ -68,19 +69,15 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark LABAssignmentsSource
 #pragma mark -
 
-- (RACSignal *)fetchAllExperiments {
-  return [RACSignal return:[self.allExperiments.allKeys lt_set]];
-}
+- (RACSignal *)fetchAllExperimentsAndVariants {
+  auto allExperiments = [self.allExperiments lt_mapValues:^(NSString *,
+                                                            NSArray<LABVariant *> *variants) {
+    return [[variants lt_map:^(LABVariant *variant) {
+      return variant.name;
+    }] lt_set];
+  }];
 
-- (RACSignal *)fetchVariantsForExperiment:(NSString *)experiment {
-  auto _Nullable variants =
-      [[self.allExperiments[experiment] lt_map:^(LABVariant *variant) {
-        return variant.name;
-      }] lt_set];
-
-  return variants ? [RACSignal return:variants] :
-      [RACSignal error:[NSError lab_errorWithCode:LABErrorCodeExperimentNotFound
-                             associatedExperiment:experiment]];
+  return [RACSignal return:allExperiments];
 }
 
 - (RACSignal *)fetchAssignmentsForExperiment:(NSString *)experiment

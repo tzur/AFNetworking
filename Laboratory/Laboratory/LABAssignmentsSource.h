@@ -36,43 +36,16 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-/// Implementers of this protocol manage assignments, variants and experiments.
-/// A source provides a set of experiments, and a device can participate in all or in a subset of
-/// them. The set of experiments the current device is participating in is called the active
-/// experiments. When a device participates in an experiment, a variant will be selected for that
-/// experiment by the source, providing the selected variants via the \c activeVariants property.
+/// Implementers of the protocol provides a set of variants that are active on the device via the
+/// \c activeVariants property.
 ///
-/// @note A source may store its data remotely, that means the data will not be always available.
-/// In such cases, the signals/properties can return \c nil. Once the data is fetched, the signals
-/// will send new values, and properties will have new values.
+/// The source of the variants may be remote, so in order to fetch the latest variant data from
+/// the remote resource, use the \c update and \c updateInBackground to fetch the latest data and
+/// update \c activeVariants to its latest value.
+///
+/// @note If \c stabilizeUserExperienceAssignments was called, \c activeVariants may not change in
+/// order to provide a stable user experience.
 @protocol LABAssignmentsSource <NSObject>
-
-/// Signal returning an \c NSSet containing all possible active and non-active experiments and
-/// completes.
-///
-/// The signal errs with \c LABErrorCodeFetchFailed if there was an error fetching the data.
-///
-/// @return RACSignal<NSSet<NSString *> *>
-- (RACSignal *)fetchAllExperiments;
-
-/// Signal returning the possible variants for the given \c experiment. \c experiment should be
-/// either one returned from the \c activeVariants property or from the \c fetchAllExperiments
-/// method. The returned signal sends the current possible variants and continues to send values as
-/// the list of possible variants changes. If \c experiment no longer exists, the signal errs with
-/// \c LABErrorCodeExperimentNotFound. The signal errs with \c LABErrorCodeExperimentNotFound if
-/// \c experiment does not exist.
-///
-/// @return RACSignal<NSSet<NSString *> *>
-- (RACSignal *)fetchVariantsForExperiment:(NSString *)experiment;
-
-/// Signal returning the assignments for \c variant in \c experiment and completes.
-///
-/// The signal errs with \c LABErrorCodeVariantForExperimentNotFound if \c variant doesn't exist for
-/// \c experiment, or there was an error fetching the data.
-///
-/// @return RACSignal<NSDictionary<NSString *, id> *>
-- (RACSignal *)fetchAssignmentsForExperiment:(NSString *)experiment
-                                 withVariant:(NSString *)variant;
 
 @optional
 
@@ -107,11 +80,38 @@ NS_ASSUME_NONNULL_BEGIN
 @required
 
 /// Returns all selected variants for the active experiments. Returns \c nil if the source has not
-/// yet fetched the data from a remote resource. Returns an empty array if there are no active
+/// yet fetched the data from a remote resource. Returns an empty set if there are no active
 /// experiments.
 ///
 /// @note This property is KVO-compliant, changes may be delivered on an arbitrary thread.
 @property (readonly, nonatomic, nullable) NSSet<LABVariant *> *activeVariants;
+
+/// Name which uniquely identifies the source.
+@property (readonly, nonatomic) NSString *name;
+
+@end
+
+/// Implementers of this protocol provide info regarding all possible experiments, variants and
+/// assignments from a specific experiments provider.
+@protocol LABExperimentsSource <NSObject>
+
+/// Signal returning an \c NSDictionary of all possible active and inactive experiments including
+/// all their possible variants and completes. The dictionary's keys are experiment names, and the
+/// values are sets of variant names.
+///
+/// The signal errs with \c LABErrorCodeFetchFailed if there was an error fetching the data.
+///
+/// @return RACSignal<NSDictionary <NSString *, NSSet<NSString *> *> *>
+- (RACSignal *)fetchAllExperimentsAndVariants;
+
+/// Signal returning the assignments for \c variant in \c experiment and completes.
+///
+/// The signal errs with \c LABErrorCodeVariantForExperimentNotFound if \c variant doesn't exist for
+/// \c experiment, or \c LABErrorCodeFetchFailed if there was an error fetching the data.
+///
+/// @return RACSignal<NSDictionary<NSString *, id> *>
+- (RACSignal *)fetchAssignmentsForExperiment:(NSString *)experiment
+                                 withVariant:(NSString *)variant;
 
 /// Name which uniquely identifies the source.
 @property (readonly, nonatomic) NSString *name;

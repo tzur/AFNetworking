@@ -106,7 +106,7 @@ typedef std::pair<double, double> LABExperimentsTokenRange;
 ///
 /// If the \c activeTokenRange is different than when the experiment activity was stored, the new
 /// \c activeTokenRange does not take effect.
-@interface LABLocalSource : NSObject <LABAssignmentsSource>
+@interface LABLocalSource : NSObject <LABAssignmentsSource, LABExperimentsSource>
 
 - (instancetype)init NS_UNAVAILABLE;
 
