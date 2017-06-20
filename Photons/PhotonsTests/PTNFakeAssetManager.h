@@ -7,7 +7,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol PTNAlbum, PTNAudiovisualAsset, PTNImageAsset, PTNImageDataAsset;
 
-@class PTNAlbumChangeset, PTNImageFetchOptions, PTNProgress, PTNAVAssetFetchOptions;
+@class PTNAVAssetFetchOptions, PTNAlbumChangeset, PTNImageFetchOptions, PTNProgress;
 
 /// Value object representing an image request with all of the required parameters for it.
 @interface PTNImageRequest : NSObject
@@ -31,8 +31,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-/// Value object representing a video request with all of the required parameters for it.
-@interface PTNVideoRequest : NSObject
+/// Value object representing a AVAsset request with all of the required parameters for it.
+@interface PTNAVAssetRequest : NSObject
 
 - (instancetype)init NS_UNAVAILABLE;
 
@@ -41,7 +41,7 @@ NS_ASSUME_NONNULL_BEGIN
                            options:(nullable PTNAVAssetFetchOptions *)options
     NS_DESIGNATED_INITIALIZER;
 
-/// Descriptor used for the video request.
+/// Descriptor used for the AVAsset request.
 @property (readonly, nonatomic, nullable) id<PTNDescriptor> descriptor;
 
 /// Fetch options used for the AVAsset request.
@@ -97,23 +97,23 @@ NS_ASSUME_NONNULL_BEGIN
       withProgressObjects:(NSArray<PTNProgress *> *)progress finallyError:(NSError *)error;
 
 #pragma mark -
-#pragma mark Video Serving
+#pragma mark AVAsset Serving
 #pragma mark -
 
-/// Serves the given \c videoRequest by sending the given \c progress reports (array of \c NSNumber
-/// values), followed by the given \c videoAsset, all wrapped in a \c PTNProgress objects and then
-/// completes. If any properties of \c videoRequest are \c nil, that property will be treated as a
+/// Serves the given \c request by sending the given \c progress reports (array of \c NSNumber
+/// values), followed by the given \c asset, all wrapped in a \c PTNProgress objects and then
+/// completes. If any properties of \c request are \c nil, that property will be treated as a
 /// wildcard, matching all values from that property.
-- (void)serveVideoRequest:(PTNVideoRequest *)videoRequest
-             withProgress:(NSArray<NSNumber *> *)progress
-               videoAsset:(id<PTNAudiovisualAsset>)videoAsset;
+- (void)serveAVAssetRequest:(PTNAVAssetRequest *)request
+               withProgress:(NSArray<NSNumber *> *)progress
+                 videoAsset:(id<PTNAudiovisualAsset>)asset;
 
-/// Serves the given \c videoRequest by sending the given \c progress reports (array of \c NSNumber
+/// Serves the given \c request by sending the given \c progress reports (array of \c NSNumber
 /// values) all wrapped in a \c PTNProgress objects, and finally the given \c error. If any
-/// properties of \c videoRequest are \c nil, that property will be treated as a wildcard, matching
+/// properties of \c request are \c nil, that property will be treated as a wildcard, matching
 /// all values from that property.
-- (void)serveVideoRequest:(PTNVideoRequest *)videoRequest
-             withProgress:(NSArray<NSNumber *> *)progress finallyError:(NSError *)error;
+- (void)serveAVAssetRequest:(PTNAVAssetRequest *)request
+               withProgress:(NSArray<NSNumber *> *)progress finallyError:(NSError *)error;
 
 #pragma mark -
 #pragma mark Image Data Serving

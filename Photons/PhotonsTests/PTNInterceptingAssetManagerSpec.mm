@@ -917,17 +917,17 @@ context(@"image fetching", ^{
   });
 });
 
-context(@"video fetching", ^{
+context(@"AVAsset fetching", ^{
   __block PTNAVAssetFetchOptions *options;
   __block id<PTNDescriptor> descriptor;
-  __block PTNVideoRequest *request;
+  __block PTNAVAssetRequest *request;
   __block id<PTNAudiovisualAsset> videoAsset;
 
   beforeEach(^{
     options = OCMClassMock([PTNImageFetchOptions class]);
     descriptor = OCMProtocolMock(@protocol(PTNDescriptor));
     videoAsset = OCMProtocolMock(@protocol(PTNAudiovisualAsset));
-    request = [[PTNVideoRequest alloc] initWithDescriptor:descriptor options:options];
+    request = [[PTNAVAssetRequest alloc] initWithDescriptor:descriptor options:options];
   });
 
   it(@"should forward values from underlying asset manager", ^{
@@ -935,7 +935,7 @@ context(@"video fetching", ^{
         [[interceptingAssetManager fetchAVAssetWithDescriptor:descriptor options:options]
          testRecorder];
 
-    [underlyingAssetManager serveVideoRequest:request withProgress:@[] videoAsset:videoAsset];
+    [underlyingAssetManager serveAVAssetRequest:request withProgress:@[] videoAsset:videoAsset];
 
     expect(values).will.sendValues(@[[[PTNProgress alloc] initWithResult:videoAsset]]);
     expect(values).will.complete();
@@ -948,7 +948,7 @@ context(@"video fetching", ^{
 
     NSError *error = [NSError lt_errorWithCode:1337];
 
-    [underlyingAssetManager serveVideoRequest:request withProgress:@[@0.666] finallyError:error];
+    [underlyingAssetManager serveAVAssetRequest:request withProgress:@[@0.666] finallyError:error];
 
     expect(values).will.sendValues(@[[[PTNProgress alloc] initWithProgress:@0.666]]);
     expect(values).will.error();
