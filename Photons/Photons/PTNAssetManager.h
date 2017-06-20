@@ -7,7 +7,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol PTNAlbumDescriptor, PTNAssetDescriptor, PTNDescriptor, PTNResizingStrategy;
 
-@class PTNImageFetchOptions, PTNVideoFetchOptions;
+@class PTNAVAssetFetchOptions, PTNImageFetchOptions;
 
 @protocol PTNAssetManager <NSObject>
 
@@ -75,7 +75,7 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 /// @return RACSignal<PTNProgress<PTNAudiovisualAsset>>.
 - (RACSignal *)fetchAVAssetWithDescriptor:(id<PTNDescriptor>)descriptor
-                                  options:(PTNVideoFetchOptions *)options;
+                                  options:(PTNAVAssetFetchOptions *)options;
 
 /// Fetches the image data which is backed by the given \c descriptor. The returned signal will err
 /// if \c descriptor is not an asset descriptor.

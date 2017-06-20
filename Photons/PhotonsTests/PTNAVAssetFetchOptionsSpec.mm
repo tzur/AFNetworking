@@ -1,13 +1,13 @@
 // Copyright (c) 2016 Lightricks. All rights reserved.
 // Created by Reuven Siman Tov.
 
-#import "PTNVideoFetchOptions.h"
+#import "PTNAVAssetFetchOptions.h"
 
-SpecBegin(PTNVideoFetchOptions)
+SpecBegin(PTNAVAssetFetchOptions)
 
 it(@"should create new fetch options", ^{
-  PTNVideoFetchOptions *options =
-      [PTNVideoFetchOptions optionsWithDeliveryMode:PTNVideoDeliveryModeFastFormat];
+  PTNAVAssetFetchOptions *options =
+      [PTNAVAssetFetchOptions optionsWithDeliveryMode:PTNVideoDeliveryModeFastFormat];
 
   expect(options.deliveryMode).to.equal(PTNVideoDeliveryModeFastFormat);
 });

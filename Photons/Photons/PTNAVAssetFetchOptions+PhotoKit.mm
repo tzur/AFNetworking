@@ -1,13 +1,13 @@
 // Copyright (c) 2016 Lightricks. All rights reserved.
 // Created by Reuven Siman Tov.
 
-#import "PTNVideoFetchOptions+PhotoKit.h"
+#import "PTNAVAssetFetchOptions+PhotoKit.h"
 
 #import <Photos/Photos.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
-@implementation PTNVideoFetchOptions (PhotoKit)
+@implementation PTNAVAssetFetchOptions (PhotoKit)
 
 - (PHVideoRequestOptions *)photoKitOptions {
   PHVideoRequestOptions *options = [[PHVideoRequestOptions alloc] init];

@@ -62,7 +62,7 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 - (RACSignal *)fetchAVAssetWithDescriptor:(id<PTNDescriptor>)descriptor
-                                  options:(PTNVideoFetchOptions *)options {
+                                  options:(PTNAVAssetFetchOptions *)options {
   id<PTNAssetManager> _Nullable assetManager = self.mapping[descriptor.ptn_identifier.scheme];
   if (!assetManager) {
     return [RACSignal error:[NSError ptn_errorWithCode:PTNErrorCodeUnrecognizedURLScheme

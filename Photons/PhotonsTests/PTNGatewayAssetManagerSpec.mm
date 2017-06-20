@@ -7,6 +7,7 @@
 
 #import "NSError+Photons.h"
 #import "NSURL+Gateway.h"
+#import "PTNAVAssetFetchOptions.h"
 #import "PTNAlbum.h"
 #import "PTNAlbumChangeset.h"
 #import "PTNGatewayAlbumDescriptor.h"
@@ -14,7 +15,6 @@
 #import "PTNImageFetchOptions.h"
 #import "PTNIncrementalChanges.h"
 #import "PTNResizingStrategy.h"
-#import "PTNVideoFetchOptions.h"
 
 SpecBegin(PTNGatewayAssetManager)
 
@@ -188,8 +188,8 @@ context(@"image fetching", ^{
   });
 });
 
-context(@"video fetching", ^{
-  __block PTNVideoFetchOptions *options;
+context(@"AVAsset fetching", ^{
+  __block PTNAVAssetFetchOptions *options;
 
   beforeEach(^{
     options = OCMClassMock([PTNImageFetchOptions class]);

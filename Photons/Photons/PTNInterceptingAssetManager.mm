@@ -227,7 +227,7 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 - (RACSignal *)fetchAVAssetWithDescriptor:(id<PTNDescriptor>)descriptor
-                                  options:(PTNVideoFetchOptions *)options {
+                                  options:(PTNAVAssetFetchOptions *)options {
   return [self.assetManager fetchAVAssetWithDescriptor:descriptor options:options];
 }
 

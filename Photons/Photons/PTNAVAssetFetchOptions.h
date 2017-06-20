@@ -18,15 +18,15 @@ typedef NS_ENUM(NSInteger, PTNVideoDeliveryMode) {
   PTNVideoDeliveryModeFastFormat = 3
 };
 
-/// Value class containing options used while fetching videos. Refer to a specific Photons source
+/// Value class containing options used while fetching AVAssets. Refer to a specific Photons source
 /// documentation for information about which of these options are available for each specific
 /// source. Unsupported options will be ignored.
-@interface PTNVideoFetchOptions : LTValueObject
+@interface PTNAVAssetFetchOptions : LTValueObject
 
-/// Creates a new \c PTNVideoFetchOptions with the given \c deliveryMode.
+/// Creates a new \c PTNAVAssetFetchOptions with the given \c deliveryMode.
 + (instancetype)optionsWithDeliveryMode:(PTNVideoDeliveryMode)deliveryMode;
 
-/// Deilvery mode specifying the requested video quality and delivery priority.
+/// Deilvery mode specifying the requested AVAsset quality and delivery priority.
 @property (readonly, nonatomic) PTNVideoDeliveryMode deliveryMode;
 
 @end

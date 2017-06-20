@@ -7,6 +7,7 @@
 #import <LTKit/LTRandomAccessCollection.h>
 
 #import "NSErrorCodes+Photons.h"
+#import "PTNAVAssetFetchOptions.h"
 #import "PTNAlbum.h"
 #import "PTNAlbumChangeset.h"
 #import "PTNAudiovisualAsset.h"
@@ -17,7 +18,6 @@
 #import "PTNProgress.h"
 #import "PTNResizingStrategy.h"
 #import "PTNTestUtils.h"
-#import "PTNVideoFetchOptions.h"
 
 static BOOL PTNCollectionSemanticallyEqual(id<LTRandomAccessCollection> lhs,
                                     id<LTRandomAccessCollection> rhs) {
@@ -918,7 +918,7 @@ context(@"image fetching", ^{
 });
 
 context(@"video fetching", ^{
-  __block PTNVideoFetchOptions *options;
+  __block PTNAVAssetFetchOptions *options;
   __block id<PTNDescriptor> descriptor;
   __block PTNVideoRequest *request;
   __block id<PTNAudiovisualAsset> videoAsset;

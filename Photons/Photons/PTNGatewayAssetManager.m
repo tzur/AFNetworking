@@ -101,7 +101,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (RACSignal *)fetchAVAssetWithDescriptor:(id<PTNDescriptor>)descriptor
-                                  options:(PTNVideoFetchOptions __unused *)options {
+                                  options:(PTNAVAssetFetchOptions __unused *)options {
   return [RACSignal error:[NSError ptn_errorWithCode:PTNErrorCodeUnsupportedOperation
                                 associatedDescriptor:descriptor]];
 }

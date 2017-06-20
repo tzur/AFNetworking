@@ -7,7 +7,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol PTNAlbum, PTNAudiovisualAsset, PTNImageAsset, PTNImageDataAsset;
 
-@class PTNAlbumChangeset, PTNImageFetchOptions, PTNProgress, PTNVideoFetchOptions;
+@class PTNAlbumChangeset, PTNImageFetchOptions, PTNProgress, PTNAVAssetFetchOptions;
 
 /// Value object representing an image request with all of the required parameters for it.
 @interface PTNImageRequest : NSObject
@@ -38,14 +38,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Initializes with \c descriptor and \c options.
 - (instancetype)initWithDescriptor:(nullable id<PTNDescriptor>)descriptor
-                           options:(nullable PTNVideoFetchOptions *)options
+                           options:(nullable PTNAVAssetFetchOptions *)options
     NS_DESIGNATED_INITIALIZER;
 
 /// Descriptor used for the video request.
 @property (readonly, nonatomic, nullable) id<PTNDescriptor> descriptor;
 
-/// Fetch options used for the video request.
-@property (readonly, nonatomic, nullable) PTNVideoFetchOptions *options;
+/// Fetch options used for the AVAsset request.
+@property (readonly, nonatomic, nullable) PTNAVAssetFetchOptions *options;
 
 @end
 

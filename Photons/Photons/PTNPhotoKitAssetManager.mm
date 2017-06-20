@@ -7,6 +7,7 @@
 
 #import "NSError+Photons.h"
 #import "NSURL+PhotoKit.h"
+#import "PTNAVAssetFetchOptions+PhotoKit.h"
 #import "PTNAlbumChangeset+PhotoKit.h"
 #import "PTNAudiovisualAsset.h"
 #import "PTNAuthorizationManager.h"
@@ -26,7 +27,6 @@
 #import "PTNProgress.h"
 #import "PTNResizingStrategy.h"
 #import "PTNSignalCache.h"
-#import "PTNVideoFetchOptions+PhotoKit.h"
 #import "PhotoKit+Photons.h"
 #import "RACSignal+Photons.h"
 #import "RACStream+Photons.h"
@@ -585,7 +585,7 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 - (RACSignal *)fetchAVAssetWithDescriptor:(id<PTNDescriptor>)descriptor
-                                  options:(PTNVideoFetchOptions *)options {
+                                  options:(PTNAVAssetFetchOptions *)options {
   if (![descriptor isKindOfClass:[PHAsset class]]) {
     return [RACSignal error:[NSError ptn_errorWithCode:PTNErrorCodeInvalidDescriptor
                                   associatedDescriptor:descriptor]];

@@ -1,14 +1,14 @@
 // Copyright (c) 2016 Lightricks. All rights reserved.
 // Created by Reuven Siman Tov.
 
-#import "PTNVideoFetchOptions.h"
+#import "PTNAVAssetFetchOptions.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@implementation PTNVideoFetchOptions
+@implementation PTNAVAssetFetchOptions
 
 + (instancetype)optionsWithDeliveryMode:(PTNVideoDeliveryMode)deliveryMode {
-  PTNVideoFetchOptions *options = [[PTNVideoFetchOptions alloc] init];
+  PTNAVAssetFetchOptions *options = [[PTNAVAssetFetchOptions alloc] init];
   options->_deliveryMode = deliveryMode;
   return options;
 }

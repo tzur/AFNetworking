@@ -5,6 +5,7 @@
 
 #import <LTKit/NSArray+Functional.h>
 
+#import "PTNAVAssetFetchOptions.h"
 #import "PTNAlbumChangeset.h"
 #import "PTNAudiovisualAsset.h"
 #import "PTNDescriptor.h"
@@ -13,7 +14,6 @@
 #import "PTNImageFetchOptions.h"
 #import "PTNProgress.h"
 #import "PTNResizingStrategy.h"
-#import "PTNVideoFetchOptions.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -36,7 +36,7 @@ NS_ASSUME_NONNULL_BEGIN
 @implementation PTNVideoRequest
 
 - (instancetype)initWithDescriptor:(nullable id<PTNDescriptor>)descriptor
-                           options:(nullable PTNVideoFetchOptions *)options {
+                           options:(nullable PTNAVAssetFetchOptions *)options {
   if (self = [super init]) {
     _descriptor = descriptor;
     _options = options;
@@ -126,7 +126,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (RACSignal *)fetchAVAssetWithDescriptor:(id<PTNDescriptor>)descriptor
-                                  options:(PTNVideoFetchOptions *)options {
+                                  options:(PTNAVAssetFetchOptions *)options {
   PTNVideoRequest *request = [[PTNVideoRequest alloc] initWithDescriptor:descriptor
                                                                  options:options];
   if (![self.videoRequests objectForKey:request]) {

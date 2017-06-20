@@ -5,12 +5,12 @@
 
 #import <AVFoundation/AVAsset.h>
 #import <LTKit/LTRandomAccessCollection.h>
+#import <Photons/PTNAVAssetFetchOptions.h>
 #import <Photons/PTNAlbum.h>
 #import <Photons/PTNImageAsset.h>
 #import <Photons/PTNImageFetchOptions.h>
 #import <Photons/PTNProgress.h>
 #import <Photons/PTNResizingStrategy.h>
-#import <Photons/PTNVideoFetchOptions.h>
 
 #import "PTNFakeAssetManager.h"
 #import "PTNTestUtils.h"

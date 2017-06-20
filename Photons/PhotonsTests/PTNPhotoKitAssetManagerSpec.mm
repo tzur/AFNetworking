@@ -7,6 +7,7 @@
 
 #import "NSError+Photons.h"
 #import "NSURL+PhotoKit.h"
+#import "PTNAVAssetFetchOptions.h"
 #import "PTNAlbumChangeset+PhotoKit.h"
 #import "PTNAudiovisualAsset.h"
 #import "PTNAuthorizationStatus.h"
@@ -27,7 +28,6 @@
 #import "PTNPhotoKitTestUtils.h"
 #import "PTNProgress.h"
 #import "PTNResizingStrategy.h"
-#import "PTNVideoFetchOptions.h"
 #import "PhotoKit+Photons.h"
 
 static BOOL PTNNSPredicateEquals(NSPredicate *lhs, NSPredicate *rhs) {
@@ -1138,9 +1138,9 @@ context(@"image fetching", ^{
   });
 });
 
-context(@"video fetching", ^{
+context(@"AVAsset fetching", ^{
   __block id asset;
-  __block PTNVideoFetchOptions *options;
+  __block PTNAVAssetFetchOptions *options;
   __block id<PTNAudiovisualAsset> videoAsset;
   __block AVURLAsset *avasset;
   __block AVAudioMix *audioMix;
@@ -1151,7 +1151,7 @@ context(@"video fetching", ^{
     asset = PTNPhotoKitCreateAsset(@"foo");
     [fetcher registerAsset:asset];
 
-    options = [PTNVideoFetchOptions optionsWithDeliveryMode:PTNVideoDeliveryModeFastFormat];
+    options = [PTNAVAssetFetchOptions optionsWithDeliveryMode:PTNVideoDeliveryModeFastFormat];
 
     avasset = OCMClassMock([AVURLAsset class]);
     OCMStub([avasset URL]).andReturn(@"foo");
