@@ -81,7 +81,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// if \c descriptor is not an asset descriptor.
 ///
 /// The returned signal sends \c PTNProgress objects on a arbitrary thread, complete once the final
-/// result is sent and errs if an error occures while fetching the image. The result type will
+/// result is sent and errs if an error occurs while fetching the image. The result type will
 /// always be a \c PTNImageDataAsset.
 ///
 /// If the asset doesn't exist, the signal will err.
@@ -108,7 +108,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// \c PTNAlbumDescriptorCapabilityRemoveContent in its \c PTNAlbumDescriptorCapabilities in order
 /// for \c descriptors be eligible for removal from it.
 ///
-/// The returned signal completes on an arbitrary thread once the assets were successfuly removed
+/// The returned signal completes on an arbitrary thread once the assets were successfully removed
 /// and errs if an error occurred while removing the assets. The signal sends no values.
 ///
 /// @return RACSignal<>.
