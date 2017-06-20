@@ -125,8 +125,8 @@ NS_ASSUME_NONNULL_BEGIN
   return [self.imageRequests objectForKey:request];
 }
 
-- (RACSignal *)fetchVideoWithDescriptor:(id<PTNDescriptor>)descriptor
-                                options:(PTNVideoFetchOptions *)options {
+- (RACSignal *)fetchAVAssetWithDescriptor:(id<PTNDescriptor>)descriptor
+                                  options:(PTNVideoFetchOptions *)options {
   PTNVideoRequest *request = [[PTNVideoRequest alloc] initWithDescriptor:descriptor
                                                                  options:options];
   if (![self.videoRequests objectForKey:request]) {

@@ -196,7 +196,7 @@ context(@"video fetching", ^{
   });
 
   it(@"should err", ^{
-    RACSignal *values = [manager fetchVideoWithDescriptor:fooDescriptor options:options];
+    RACSignal *values = [manager fetchAVAssetWithDescriptor:fooDescriptor options:options];
 
     expect(values).will.matchError(^BOOL(NSError *error) {
       return error.code == PTNErrorCodeUnsupportedOperation;

@@ -122,13 +122,13 @@ context(@"video fetching", ^{
   });
 
   it(@"should correctly forward video requests", ^{
-    RACSignal *signal = [multiplexerManager fetchVideoWithDescriptor:descriptorA options:options];
+    RACSignal *signal = [multiplexerManager fetchAVAssetWithDescriptor:descriptorA options:options];
     expect(signal).to.equal(returnSignalA);
-    OCMVerify([managerA fetchVideoWithDescriptor:descriptorA  options:options]);
+    OCMVerify([managerA fetchAVAssetWithDescriptor:descriptorA  options:options]);
   });
 
   it(@"should error on video requests with unconfigured scheme", ^{
-    RACSignal *signal = [multiplexerManager fetchVideoWithDescriptor:descriptorD options:options];
+    RACSignal *signal = [multiplexerManager fetchAVAssetWithDescriptor:descriptorD options:options];
     expect(signal).to.matchError(^BOOL(NSError *error) {
       return error.code == PTNErrorCodeUnrecognizedURLScheme;
     });

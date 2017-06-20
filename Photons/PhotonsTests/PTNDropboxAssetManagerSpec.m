@@ -420,7 +420,7 @@ context(@"video fetching", ^{
   });
 
   it(@"should err", ^{
-    RACSignal *values = [manager fetchVideoWithDescriptor:asset options:options];
+    RACSignal *values = [manager fetchAVAssetWithDescriptor:asset options:options];
 
     expect(values).will.matchError(^BOOL(NSError *error) {
       return error.code == PTNErrorCodeUnsupportedOperation;

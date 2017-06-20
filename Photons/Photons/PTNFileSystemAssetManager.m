@@ -273,11 +273,11 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 #pragma mark -
-#pragma mark Video fetching
+#pragma mark AVAsset fetching
 #pragma mark -
 
-- (RACSignal *)fetchVideoWithDescriptor:(id<PTNDescriptor>)descriptor
-                                options:(PTNVideoFetchOptions __unused *)options {
+- (RACSignal *)fetchAVAssetWithDescriptor:(id<PTNDescriptor>)descriptor
+                                  options:(PTNVideoFetchOptions __unused *)options {
   if (![descriptor.descriptorTraits containsObject:kPTNDescriptorTraitAudiovisualKey]) {
     NSError *error = [NSError ptn_errorWithCode:PTNErrorCodeInvalidDescriptor
                            associatedDescriptor:descriptor];

@@ -932,7 +932,7 @@ context(@"video fetching", ^{
 
   it(@"should forward values from underlying asset manager", ^{
     LLSignalTestRecorder *values =
-        [[interceptingAssetManager fetchVideoWithDescriptor:descriptor options:options]
+        [[interceptingAssetManager fetchAVAssetWithDescriptor:descriptor options:options]
          testRecorder];
 
     [underlyingAssetManager serveVideoRequest:request withProgress:@[] videoAsset:videoAsset];
@@ -943,7 +943,7 @@ context(@"video fetching", ^{
 
   it(@"should forward errors from underlying asset manager", ^{
     LLSignalTestRecorder *values =
-        [[interceptingAssetManager fetchVideoWithDescriptor:descriptor options:options]
+        [[interceptingAssetManager fetchAVAssetWithDescriptor:descriptor options:options]
          testRecorder];
 
     NSError *error = [NSError lt_errorWithCode:1337];

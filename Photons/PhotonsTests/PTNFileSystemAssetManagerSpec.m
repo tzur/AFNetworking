@@ -316,19 +316,19 @@ context(@"video fetching", ^{
   });
 
   it(@"should fetch video", ^{
-    RACSignal *values = [manager fetchVideoWithDescriptor:descriptor options:options] ;
+    RACSignal *values = [manager fetchAVAssetWithDescriptor:descriptor options:options] ;
     expect(values).to.sendValues(@[[[PTNProgress alloc] initWithResult:expectedAsset]]);
   });
 
   it(@"should complete after fetching an video", ^{
-    RACSignal *values = [manager fetchVideoWithDescriptor:descriptor options:options];
+    RACSignal *values = [manager fetchAVAssetWithDescriptor:descriptor options:options];
     expect(values).will.sendValuesWithCount(1);
     expect(values).will.complete();
   });
 
   it(@"should error on non-existing assets", ^{
     descriptor = PTNFileSystemFileFromString(@"/foo/bar/baz.mp4");
-    RACSignal *values = [manager fetchVideoWithDescriptor:descriptor options:options];
+    RACSignal *values = [manager fetchAVAssetWithDescriptor:descriptor options:options];
     expect(values).will.matchError(^BOOL(NSError *error) {
       return error.code == PTNErrorCodeInvalidDescriptor;
     });
@@ -336,7 +336,7 @@ context(@"video fetching", ^{
 
   it(@"should error on image descriptor", ^{
     descriptor = PTNFileSystemFileFromString(@"/foo.jpg");
-    RACSignal *values = [manager fetchVideoWithDescriptor:descriptor options:options];
+    RACSignal *values = [manager fetchAVAssetWithDescriptor:descriptor options:options];
     expect(values).will.matchError(^BOOL(NSError *error) {
       return error.code == PTNErrorCodeInvalidDescriptor;
     });
