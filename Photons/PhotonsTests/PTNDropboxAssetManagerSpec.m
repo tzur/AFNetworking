@@ -414,7 +414,7 @@ context(@"audiovisual fetching", ^{
   static NSString * const kAssetPath = @"foo.jpg";
 
   beforeEach(^{
-    options = [PTNAVAssetFetchOptions optionsWithDeliveryMode:PTNVideoDeliveryModeFastFormat];
+    options = [PTNAVAssetFetchOptions optionsWithDeliveryMode:PTNAVAssetDeliveryModeFastFormat];
     metadata = PTNDropboxCreateFileMetadata(kAssetPath, nil);
     asset = [[PTNDropboxFileDescriptor alloc] initWithMetadata:metadata];
   });

@@ -1151,7 +1151,7 @@ context(@"AVAsset fetching", ^{
     asset = PTNPhotoKitCreateAsset(@"foo");
     [fetcher registerAsset:asset];
 
-    options = [PTNAVAssetFetchOptions optionsWithDeliveryMode:PTNVideoDeliveryModeFastFormat];
+    options = [PTNAVAssetFetchOptions optionsWithDeliveryMode:PTNAVAssetDeliveryModeFastFormat];
 
     avasset = OCMClassMock([AVURLAsset class]);
     OCMStub([avasset URL]).andReturn(@"foo");
@@ -1162,7 +1162,7 @@ context(@"AVAsset fetching", ^{
   });
 
   context(@"fetch video of asset", ^{
-    it(@"should fetch video", ^{
+    it(@"should fetch AVAsset", ^{
       [imageManager serveAsset:asset withProgress:@[] avasset:avasset audioMix:audioMix];
 
       RACSignal *values = [manager fetchAVAssetWithDescriptor:asset options:options];
@@ -1170,7 +1170,7 @@ context(@"AVAsset fetching", ^{
       expect(values).will.sendValues(@[[[PTNProgress alloc] initWithResult:videoAsset]]);
     });
 
-    it(@"should complete after fetching a video", ^{
+    it(@"should complete after fetching an AVAsset", ^{
       [imageManager serveAsset:asset withProgress:@[] avasset:avasset audioMix:audioMix];
 
       RACSignal *values = [manager fetchAVAssetWithDescriptor:asset options:options];

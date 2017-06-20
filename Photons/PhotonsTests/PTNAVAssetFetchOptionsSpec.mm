@@ -7,9 +7,9 @@ SpecBegin(PTNAVAssetFetchOptions)
 
 it(@"should create new fetch options", ^{
   PTNAVAssetFetchOptions *options =
-      [PTNAVAssetFetchOptions optionsWithDeliveryMode:PTNVideoDeliveryModeFastFormat];
+      [PTNAVAssetFetchOptions optionsWithDeliveryMode:PTNAVAssetDeliveryModeFastFormat];
 
-  expect(options.deliveryMode).to.equal(PTNVideoDeliveryModeFastFormat);
+  expect(options.deliveryMode).to.equal(PTNAVAssetDeliveryModeFastFormat);
 });
 
 SpecEnd

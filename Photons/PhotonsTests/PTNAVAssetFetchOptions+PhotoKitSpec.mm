@@ -9,7 +9,7 @@ SpecBegin(PTNAVAssetFetchOptions_PhotoKit)
 
 it(@"should create PhotoKit options from photons options", ^{
   PTNAVAssetFetchOptions *options =
-      [PTNAVAssetFetchOptions optionsWithDeliveryMode:PTNVideoDeliveryModeFastFormat];
+      [PTNAVAssetFetchOptions optionsWithDeliveryMode:PTNAVAssetDeliveryModeFastFormat];
   PHVideoRequestOptions *photoKitOptions = [options photoKitOptions];
 
   expect(photoKitOptions.version).to.equal(PHVideoRequestOptionsVersionCurrent);

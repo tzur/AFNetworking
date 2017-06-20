@@ -307,7 +307,7 @@ context(@"AVAsset fetching", ^{
   __block PTNAudiovisualAsset *expectedAsset;
 
   beforeEach(^{
-    options = [PTNAVAssetFetchOptions optionsWithDeliveryMode:PTNVideoDeliveryModeAutomatic];
+    options = [PTNAVAssetFetchOptions optionsWithDeliveryMode:PTNAVAssetDeliveryModeAutomatic];
     descriptorPath = PTNFileSystemPathFromString(PTNOneSecondVideoPath().path);
     descriptor = [[PTNFileSystemFileDescriptor alloc]
                   initWithPath:[LTPath pathWithPath:PTNOneSecondVideoPath().path]];

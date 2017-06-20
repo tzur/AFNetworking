@@ -7,7 +7,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation PTNAVAssetFetchOptions
 
-+ (instancetype)optionsWithDeliveryMode:(PTNVideoDeliveryMode)deliveryMode {
++ (instancetype)optionsWithDeliveryMode:(PTNAVAssetDeliveryMode)deliveryMode {
   PTNAVAssetFetchOptions *options = [[PTNAVAssetFetchOptions alloc] init];
   options->_deliveryMode = deliveryMode;
   return options;
