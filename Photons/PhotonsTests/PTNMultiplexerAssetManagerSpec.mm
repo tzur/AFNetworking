@@ -4,13 +4,13 @@
 #import "PTNMultiplexerAssetManager.h"
 
 #import "NSError+Photons.h"
+#import "PTNAVAssetFetchOptions.h"
 #import "PTNDescriptor.h"
 #import "PTNImageFetchOptions.h"
 #import "PTNMultiplexingTestUtils.h"
 #import "PTNNSURLTestUtils.h"
 #import "PTNResizingStrategy.h"
 #import "PTNTestUtils.h"
-#import "PTNVideoFetchOptions.h"
 
 SpecBegin(PTNMultiplexerAssetManager)
 
@@ -114,21 +114,21 @@ context(@"image fetching", ^{
   });
 });
 
-context(@"video fetching", ^{
-  __block PTNVideoFetchOptions *options;
+context(@"AVAsset fetching", ^{
+  __block PTNAVAssetFetchOptions *options;
 
   beforeEach(^{
-    options = OCMClassMock([PTNVideoFetchOptions class]);
+    options = OCMClassMock([PTNAVAssetFetchOptions class]);
   });
 
-  it(@"should correctly forward video requests", ^{
-    RACSignal *signal = [multiplexerManager fetchVideoWithDescriptor:descriptorA options:options];
+  it(@"should correctly forward AVAsset requests", ^{
+    RACSignal *signal = [multiplexerManager fetchAVAssetWithDescriptor:descriptorA options:options];
     expect(signal).to.equal(returnSignalA);
-    OCMVerify([managerA fetchVideoWithDescriptor:descriptorA  options:options]);
+    OCMVerify([managerA fetchAVAssetWithDescriptor:descriptorA  options:options]);
   });
 
-  it(@"should error on video requests with unconfigured scheme", ^{
-    RACSignal *signal = [multiplexerManager fetchVideoWithDescriptor:descriptorD options:options];
+  it(@"should error on AVAsset requests with unconfigured scheme", ^{
+    RACSignal *signal = [multiplexerManager fetchAVAssetWithDescriptor:descriptorD options:options];
     expect(signal).to.matchError(^BOOL(NSError *error) {
       return error.code == PTNErrorCodeUnrecognizedURLScheme;
     });

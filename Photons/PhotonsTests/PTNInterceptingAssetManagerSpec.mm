@@ -7,6 +7,7 @@
 #import <LTKit/LTRandomAccessCollection.h>
 
 #import "NSErrorCodes+Photons.h"
+#import "PTNAVAssetFetchOptions.h"
 #import "PTNAlbum.h"
 #import "PTNAlbumChangeset.h"
 #import "PTNAudiovisualAsset.h"
@@ -17,7 +18,6 @@
 #import "PTNProgress.h"
 #import "PTNResizingStrategy.h"
 #import "PTNTestUtils.h"
-#import "PTNVideoFetchOptions.h"
 
 static BOOL PTNCollectionSemanticallyEqual(id<LTRandomAccessCollection> lhs,
                                     id<LTRandomAccessCollection> rhs) {
@@ -917,25 +917,25 @@ context(@"image fetching", ^{
   });
 });
 
-context(@"video fetching", ^{
-  __block PTNVideoFetchOptions *options;
+context(@"AVAsset fetching", ^{
+  __block PTNAVAssetFetchOptions *options;
   __block id<PTNDescriptor> descriptor;
-  __block PTNVideoRequest *request;
+  __block PTNAVAssetRequest *request;
   __block id<PTNAudiovisualAsset> videoAsset;
 
   beforeEach(^{
     options = OCMClassMock([PTNImageFetchOptions class]);
     descriptor = OCMProtocolMock(@protocol(PTNDescriptor));
     videoAsset = OCMProtocolMock(@protocol(PTNAudiovisualAsset));
-    request = [[PTNVideoRequest alloc] initWithDescriptor:descriptor options:options];
+    request = [[PTNAVAssetRequest alloc] initWithDescriptor:descriptor options:options];
   });
 
   it(@"should forward values from underlying asset manager", ^{
     LLSignalTestRecorder *values =
-        [[interceptingAssetManager fetchVideoWithDescriptor:descriptor options:options]
+        [[interceptingAssetManager fetchAVAssetWithDescriptor:descriptor options:options]
          testRecorder];
 
-    [underlyingAssetManager serveVideoRequest:request withProgress:@[] videoAsset:videoAsset];
+    [underlyingAssetManager serveAVAssetRequest:request withProgress:@[] videoAsset:videoAsset];
 
     expect(values).will.sendValues(@[[[PTNProgress alloc] initWithResult:videoAsset]]);
     expect(values).will.complete();
@@ -943,12 +943,12 @@ context(@"video fetching", ^{
 
   it(@"should forward errors from underlying asset manager", ^{
     LLSignalTestRecorder *values =
-        [[interceptingAssetManager fetchVideoWithDescriptor:descriptor options:options]
+        [[interceptingAssetManager fetchAVAssetWithDescriptor:descriptor options:options]
          testRecorder];
 
     NSError *error = [NSError lt_errorWithCode:1337];
 
-    [underlyingAssetManager serveVideoRequest:request withProgress:@[@0.666] finallyError:error];
+    [underlyingAssetManager serveAVAssetRequest:request withProgress:@[@0.666] finallyError:error];
 
     expect(values).will.sendValues(@[[[PTNProgress alloc] initWithProgress:@0.666]]);
     expect(values).will.error();

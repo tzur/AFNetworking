@@ -10,6 +10,7 @@
 
 #import "NSError+Photons.h"
 #import "NSURL+FileSystem.h"
+#import "PTNAVAssetFetchOptions.h"
 #import "PTNAVImageAsset.h"
 #import "PTNAlbum.h"
 #import "PTNAlbumChangeset.h"
@@ -23,7 +24,6 @@
 #import "PTNImageResizer.h"
 #import "PTNProgress.h"
 #import "PTNResizingStrategy.h"
-#import "PTNVideoFetchOptions.h"
 
 SpecBegin(PTNFileSystemAssetManager)
 
@@ -300,14 +300,14 @@ context(@"image fetching", ^{
   });
 });
 
-context(@"video fetching", ^{
-  __block PTNVideoFetchOptions *options;
+context(@"AVAsset fetching", ^{
+  __block PTNAVAssetFetchOptions *options;
   __block id<PTNDescriptor> descriptor;
   __block LTPath *descriptorPath;
   __block PTNAudiovisualAsset *expectedAsset;
 
   beforeEach(^{
-    options = [PTNVideoFetchOptions optionsWithDeliveryMode:PTNVideoDeliveryModeAutomatic];
+    options = [PTNAVAssetFetchOptions optionsWithDeliveryMode:PTNAVAssetDeliveryModeAutomatic];
     descriptorPath = PTNFileSystemPathFromString(PTNOneSecondVideoPath().path);
     descriptor = [[PTNFileSystemFileDescriptor alloc]
                   initWithPath:[LTPath pathWithPath:PTNOneSecondVideoPath().path]];
@@ -315,20 +315,20 @@ context(@"video fetching", ^{
     expectedAsset = [[PTNAudiovisualAsset alloc] initWithAVAsset:underlyingAsset];
   });
 
-  it(@"should fetch video", ^{
-    RACSignal *values = [manager fetchVideoWithDescriptor:descriptor options:options] ;
+  it(@"should fetch AVAsset", ^{
+    RACSignal *values = [manager fetchAVAssetWithDescriptor:descriptor options:options] ;
     expect(values).to.sendValues(@[[[PTNProgress alloc] initWithResult:expectedAsset]]);
   });
 
-  it(@"should complete after fetching an video", ^{
-    RACSignal *values = [manager fetchVideoWithDescriptor:descriptor options:options];
+  it(@"should complete after fetching an AVAsset", ^{
+    RACSignal *values = [manager fetchAVAssetWithDescriptor:descriptor options:options];
     expect(values).will.sendValuesWithCount(1);
     expect(values).will.complete();
   });
 
   it(@"should error on non-existing assets", ^{
     descriptor = PTNFileSystemFileFromString(@"/foo/bar/baz.mp4");
-    RACSignal *values = [manager fetchVideoWithDescriptor:descriptor options:options];
+    RACSignal *values = [manager fetchAVAssetWithDescriptor:descriptor options:options];
     expect(values).will.matchError(^BOOL(NSError *error) {
       return error.code == PTNErrorCodeInvalidDescriptor;
     });
@@ -336,7 +336,7 @@ context(@"video fetching", ^{
 
   it(@"should error on image descriptor", ^{
     descriptor = PTNFileSystemFileFromString(@"/foo.jpg");
-    RACSignal *values = [manager fetchVideoWithDescriptor:descriptor options:options];
+    RACSignal *values = [manager fetchAVAssetWithDescriptor:descriptor options:options];
     expect(values).will.matchError(^BOOL(NSError *error) {
       return error.code == PTNErrorCodeInvalidDescriptor;
     });

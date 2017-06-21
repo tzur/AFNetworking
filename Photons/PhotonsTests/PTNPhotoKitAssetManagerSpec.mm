@@ -7,6 +7,7 @@
 
 #import "NSError+Photons.h"
 #import "NSURL+PhotoKit.h"
+#import "PTNAVAssetFetchOptions.h"
 #import "PTNAlbumChangeset+PhotoKit.h"
 #import "PTNAudiovisualAsset.h"
 #import "PTNAuthorizationStatus.h"
@@ -27,7 +28,6 @@
 #import "PTNPhotoKitTestUtils.h"
 #import "PTNProgress.h"
 #import "PTNResizingStrategy.h"
-#import "PTNVideoFetchOptions.h"
 #import "PhotoKit+Photons.h"
 
 static BOOL PTNNSPredicateEquals(NSPredicate *lhs, NSPredicate *rhs) {
@@ -1138,9 +1138,9 @@ context(@"image fetching", ^{
   });
 });
 
-context(@"video fetching", ^{
+context(@"AVAsset fetching", ^{
   __block id asset;
-  __block PTNVideoFetchOptions *options;
+  __block PTNAVAssetFetchOptions *options;
   __block id<PTNAudiovisualAsset> videoAsset;
   __block AVURLAsset *avasset;
   __block AVAudioMix *audioMix;
@@ -1151,7 +1151,7 @@ context(@"video fetching", ^{
     asset = PTNPhotoKitCreateAsset(@"foo");
     [fetcher registerAsset:asset];
 
-    options = [PTNVideoFetchOptions optionsWithDeliveryMode:PTNVideoDeliveryModeFastFormat];
+    options = [PTNAVAssetFetchOptions optionsWithDeliveryMode:PTNAVAssetDeliveryModeFastFormat];
 
     avasset = OCMClassMock([AVURLAsset class]);
     OCMStub([avasset URL]).andReturn(@"foo");
@@ -1162,18 +1162,18 @@ context(@"video fetching", ^{
   });
 
   context(@"fetch video of asset", ^{
-    it(@"should fetch video", ^{
+    it(@"should fetch AVAsset", ^{
       [imageManager serveAsset:asset withProgress:@[] avasset:avasset audioMix:audioMix];
 
-      RACSignal *values = [manager fetchVideoWithDescriptor:asset options:options];
+      RACSignal *values = [manager fetchAVAssetWithDescriptor:asset options:options];
 
       expect(values).will.sendValues(@[[[PTNProgress alloc] initWithResult:videoAsset]]);
     });
 
-    it(@"should complete after fetching a video", ^{
+    it(@"should complete after fetching an AVAsset", ^{
       [imageManager serveAsset:asset withProgress:@[] avasset:avasset audioMix:audioMix];
 
-      RACSignal *values = [manager fetchVideoWithDescriptor:asset options:options];
+      RACSignal *values = [manager fetchAVAssetWithDescriptor:asset options:options];
 
       expect(values).will.sendValuesWithCount(1);
       expect(values).will.complete();
@@ -1183,7 +1183,7 @@ context(@"video fetching", ^{
       [imageManager serveAsset:asset withProgress:@[@0.25, @0.5, @1] avasset:avasset
                       audioMix:audioMix];
 
-      expect([manager fetchVideoWithDescriptor:asset options:options]).will.sendValues(@[
+      expect([manager fetchAVAssetWithDescriptor:asset options:options]).will.sendValues(@[
         [[PTNProgress alloc] initWithProgress:@0.25],
         [[PTNProgress alloc] initWithProgress:@0.5],
         [[PTNProgress alloc] initWithProgress:@1],
@@ -1192,7 +1192,7 @@ context(@"video fetching", ^{
     });
 
     it(@"should cancel request upon disposal", ^{
-      RACSignal *values = [manager fetchVideoWithDescriptor:asset options:options];
+      RACSignal *values = [manager fetchAVAssetWithDescriptor:asset options:options];
 
       RACDisposable *subscriber = [values subscribeNext:^(id) {}];
       expect([imageManager isRequestIssuedForAsset:asset]).will.beTruthy();
@@ -1204,7 +1204,7 @@ context(@"video fetching", ^{
     it(@"should err on error after progress finished", ^{
       [imageManager serveAsset:asset withProgress:@[@0.25, @0.5, @1] finallyError:defaultError];
 
-      RACSignal *values = [manager fetchVideoWithDescriptor:asset options:options];
+      RACSignal *values = [manager fetchAVAssetWithDescriptor:asset options:options];
 
       expect(values).will.sendValues(@[
         [[PTNProgress alloc] initWithProgress:@0.25],
@@ -1220,7 +1220,7 @@ context(@"video fetching", ^{
     it(@"should err on progress download error", ^{
       [imageManager serveAsset:asset withProgress:@[@0.25, @0.5, @1] errorInProgress:defaultError];
 
-      RACSignal *values = [manager fetchVideoWithDescriptor:asset options:options];
+      RACSignal *values = [manager fetchAVAssetWithDescriptor:asset options:options];
 
       expect(values).will.sendValues(@[
         [[PTNProgress alloc] initWithProgress:@0.25],
@@ -1236,7 +1236,7 @@ context(@"video fetching", ^{
       it(@"should not operate on the main thread", ^{
         [imageManager serveAsset:asset withProgress:@[]  avasset:avasset audioMix:audioMix];
 
-        RACSignal *values = [manager fetchVideoWithDescriptor:asset options:options];
+        RACSignal *values = [manager fetchAVAssetWithDescriptor:asset options:options];
 
         expect(values).will.sendValuesWithCount(1);
         expect(fetcher.operatingThreads).notTo.contain([NSThread mainThread]);

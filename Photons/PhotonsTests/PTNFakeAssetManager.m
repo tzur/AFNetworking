@@ -5,6 +5,7 @@
 
 #import <LTKit/NSArray+Functional.h>
 
+#import "PTNAVAssetFetchOptions.h"
 #import "PTNAlbumChangeset.h"
 #import "PTNAudiovisualAsset.h"
 #import "PTNDescriptor.h"
@@ -13,7 +14,6 @@
 #import "PTNImageFetchOptions.h"
 #import "PTNProgress.h"
 #import "PTNResizingStrategy.h"
-#import "PTNVideoFetchOptions.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -33,10 +33,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-@implementation PTNVideoRequest
+@implementation PTNAVAssetRequest
 
 - (instancetype)initWithDescriptor:(nullable id<PTNDescriptor>)descriptor
-                           options:(nullable PTNVideoFetchOptions *)options {
+                           options:(nullable PTNAVAssetFetchOptions *)options {
   if (self = [super init]) {
     _descriptor = descriptor;
     _options = options;
@@ -63,9 +63,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// parameters.
 @property (readonly, nonatomic) NSMapTable<PTNImageRequest *, RACSubject *> *imageRequests;
 
-/// Mapping of \c PTNVideoRequest to the \c RACSubject returned for a video request with those
+/// Mapping of \c PTNAVAssetRequest to the \c RACSubject returned for a AVAsset request with those
 /// parameters.
-@property (readonly, nonatomic) NSMapTable<PTNVideoRequest *, RACSubject *> *videoRequests;
+@property (readonly, nonatomic) NSMapTable<PTNAVAssetRequest *, RACSubject *> *avRequests;
 
 /// Mapping of \c PTNImageDataRequest to the \c RACSubject returned for a imdage data request with
 /// those parameters.
@@ -84,7 +84,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)init {
   if (self = [super init]) {
     _imageRequests = [NSMapTable strongToStrongObjectsMapTable];
-    _videoRequests = [NSMapTable strongToStrongObjectsMapTable];
+    _avRequests = [NSMapTable strongToStrongObjectsMapTable];
     _imageDataRequests = [NSMapTable strongToStrongObjectsMapTable];
     _descriptorRequests = [NSMutableDictionary dictionary];
     _albumRequests = [NSMutableDictionary dictionary];
@@ -125,15 +125,15 @@ NS_ASSUME_NONNULL_BEGIN
   return [self.imageRequests objectForKey:request];
 }
 
-- (RACSignal *)fetchVideoWithDescriptor:(id<PTNDescriptor>)descriptor
-                                options:(PTNVideoFetchOptions *)options {
-  PTNVideoRequest *request = [[PTNVideoRequest alloc] initWithDescriptor:descriptor
-                                                                 options:options];
-  if (![self.videoRequests objectForKey:request]) {
-    [self.videoRequests setObject:[RACSubject subject] forKey:request];
+- (RACSignal *)fetchAVAssetWithDescriptor:(id<PTNDescriptor>)descriptor
+                                  options:(PTNAVAssetFetchOptions *)options {
+  PTNAVAssetRequest *request = [[PTNAVAssetRequest alloc] initWithDescriptor:descriptor
+                                                                     options:options];
+  if (![self.avRequests objectForKey:request]) {
+    [self.avRequests setObject:[RACSubject subject] forKey:request];
   }
 
-  return [self.videoRequests objectForKey:request];
+  return [self.avRequests objectForKey:request];
 }
 
 - (RACSignal *)fetchImageDataWithDescriptor:(id<PTNDescriptor>)descriptor {
@@ -209,31 +209,31 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 #pragma mark -
-#pragma mark Video Serving
+#pragma mark AVAsset Serving
 #pragma mark -
 
-- (void)serveVideoRequest:(PTNVideoRequest *)videoRequest
-             withProgress:(NSArray<NSNumber *> *)progress
-               videoAsset:(id<PTNAudiovisualAsset>)videoAsset {
+- (void)serveAVAssetRequest:(PTNAVAssetRequest *)request
+               withProgress:(NSArray<NSNumber *> *)progress
+                 videoAsset:(id<PTNAudiovisualAsset>)videoAsset {
   NSArray *progressObjects = [[progress lt_map:^PTNProgress *(NSNumber *progressValue) {
     return [[PTNProgress alloc] initWithProgress:progressValue];
   }] arrayByAddingObject:[[PTNProgress alloc] initWithResult:videoAsset]];
 
-  [self serveVideoRequest:videoRequest withProgressObjects:progressObjects then:nil];
+  [self serveAVAssetRequest:request withProgressObjects:progressObjects then:nil];
 }
 
-- (void)serveVideoRequest:(PTNVideoRequest *)videoRequest
-             withProgress:(NSArray<NSNumber *> *)progress finallyError:(NSError *)error {
+- (void)serveAVAssetRequest:(PTNAVAssetRequest *)request
+               withProgress:(NSArray<NSNumber *> *)progress finallyError:(NSError *)error {
   NSArray *progressObjects = [progress lt_map:^PTNProgress *(NSNumber *progressValue) {
     return [[PTNProgress alloc] initWithProgress:progressValue];
   }];
 
-  [self serveVideoRequest:videoRequest withProgressObjects:progressObjects then:error];
+  [self serveAVAssetRequest:request withProgressObjects:progressObjects then:error];
 }
 
-- (void)serveVideoRequest:(PTNVideoRequest *)videoRequest
-      withProgressObjects:(NSArray<PTNProgress *> *)progress then:(nullable NSError *)error {
-  for (RACSubject *signal in [self requestsMatchingVideoRequest:videoRequest]) {
+- (void)serveAVAssetRequest:(PTNAVAssetRequest *)request
+        withProgressObjects:(NSArray<PTNProgress *> *)progress then:(nullable NSError *)error {
+  for (RACSubject *signal in [self requestsMatchingAVAssetRequest:request]) {
     for (PTNProgress *progressObject in progress) {
       [signal sendNext:progressObject];
     }
@@ -246,16 +246,16 @@ NS_ASSUME_NONNULL_BEGIN
   }
 }
 
-- (NSArray<RACSubject *> *)requestsMatchingVideoRequest:(PTNVideoRequest *)videoRequest {
-  return [[self.videoRequests.keyEnumerator.rac_sequence
-      filter:^BOOL(PTNVideoRequest *request) {
-        return (videoRequest.descriptor == nil ||
-            [videoRequest.descriptor isEqual:request.descriptor]) &&
-            (videoRequest.options == nil ||
-            [videoRequest.options isEqual:request.options]);
+- (NSArray<RACSubject *> *)requestsMatchingAVAssetRequest:(PTNAVAssetRequest *)request {
+  return [[self.avRequests.keyEnumerator.rac_sequence
+      filter:^BOOL(PTNAVAssetRequest *r) {
+        return (request.descriptor == nil ||
+            [request.descriptor isEqual:r.descriptor]) &&
+            (request.options == nil ||
+            [request.options isEqual:r.options]);
       }]
-      map:^RACSubject *(PTNVideoRequest *request) {
-        return [self.videoRequests objectForKey:request];
+      map:^RACSubject *(PTNAVAssetRequest *r) {
+        return [self.avRequests objectForKey:r];
       }].array;
 }
 

@@ -7,7 +7,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol PTNAlbumDescriptor, PTNAssetDescriptor, PTNDescriptor, PTNResizingStrategy;
 
-@class PTNImageFetchOptions, PTNVideoFetchOptions;
+@class PTNAVAssetFetchOptions, PTNImageFetchOptions;
 
 @protocol PTNAssetManager <NSObject>
 
@@ -63,25 +63,25 @@ NS_ASSUME_NONNULL_BEGIN
                        resizingStrategy:(id<PTNResizingStrategy>)resizingStrategy
                                 options:(PTNImageFetchOptions *)options;
 
-/// Fetches the video which is backed by the given \c descriptor.
+/// Fetches the audiovisual asset which is backed by the given \c descriptor.
 ///
 /// The returned signal sends \c PTNProgress objects on an arbitrary thread, completes once the
-/// final result is sent and errs if an error occurred while fetching the video. The result type
-/// will always be a \c PTNVideoAsset.
+/// final result is sent and errs if an error occurred while fetching the asset. The result type
+/// will always be a \c PTNAudiovisualAsset.
 ///
 /// If the asset doesn't exist, the signal will err.
 ///
-/// Disposal of the returned signal will abort the current video fetch operation, if in progress.
+/// Disposal of the returned signal will abort the current asset fetch operation, if in progress.
 ///
-/// @return RACSignal<PTNProgress<PTNVideoAsset>>.
-- (RACSignal *)fetchVideoWithDescriptor:(id<PTNDescriptor>)descriptor
-                                options:(PTNVideoFetchOptions *)options;
+/// @return RACSignal<PTNProgress<PTNAudiovisualAsset>>.
+- (RACSignal *)fetchAVAssetWithDescriptor:(id<PTNDescriptor>)descriptor
+                                  options:(PTNAVAssetFetchOptions *)options;
 
 /// Fetches the image data which is backed by the given \c descriptor. The returned signal will err
 /// if \c descriptor is not an asset descriptor.
 ///
 /// The returned signal sends \c PTNProgress objects on a arbitrary thread, complete once the final
-/// result is sent and errs if an error occures while fetching the image. The result type will
+/// result is sent and errs if an error occurs while fetching the image. The result type will
 /// always be a \c PTNImageDataAsset.
 ///
 /// If the asset doesn't exist, the signal will err.
@@ -108,7 +108,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// \c PTNAlbumDescriptorCapabilityRemoveContent in its \c PTNAlbumDescriptorCapabilities in order
 /// for \c descriptors be eligible for removal from it.
 ///
-/// The returned signal completes on an arbitrary thread once the assets were successfuly removed
+/// The returned signal completes on an arbitrary thread once the assets were successfully removed
 /// and errs if an error occurred while removing the assets. The signal sends no values.
 ///
 /// @return RACSignal<>.

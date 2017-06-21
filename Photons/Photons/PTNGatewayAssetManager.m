@@ -100,8 +100,8 @@ NS_ASSUME_NONNULL_BEGIN
   return gatewayDescriptor.imageSignalBlock(resizingStrategy, options);
 }
 
-- (RACSignal *)fetchVideoWithDescriptor:(id<PTNDescriptor>)descriptor
-                                options:(PTNVideoFetchOptions __unused *)options {
+- (RACSignal *)fetchAVAssetWithDescriptor:(id<PTNDescriptor>)descriptor
+                                  options:(PTNAVAssetFetchOptions __unused *)options {
   return [RACSignal error:[NSError ptn_errorWithCode:PTNErrorCodeUnsupportedOperation
                                 associatedDescriptor:descriptor]];
 }

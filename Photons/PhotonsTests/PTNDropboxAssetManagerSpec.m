@@ -8,6 +8,7 @@
 
 #import "NSError+Photons.h"
 #import "NSURL+Dropbox.h"
+#import "PTNAVAssetFetchOptions.h"
 #import "PTNAlbum.h"
 #import "PTNAlbumChangeset.h"
 #import "PTNDropboxDirectoryDescriptor.h"
@@ -23,7 +24,6 @@
 #import "PTNImageResizer.h"
 #import "PTNProgress.h"
 #import "PTNResizingStrategy.h"
-#import "PTNVideoFetchOptions.h"
 
 SpecBegin(PTNDropboxAssetManager)
 
@@ -406,21 +406,21 @@ context(@"image fetching", ^{
   });
 });
 
-context(@"video fetching", ^{
-  __block PTNVideoFetchOptions *options;
+context(@"audiovisual fetching", ^{
+  __block PTNAVAssetFetchOptions *options;
   __block DBMetadata *metadata;
   __block id<PTNDescriptor> asset;
 
   static NSString * const kAssetPath = @"foo.jpg";
 
   beforeEach(^{
-    options = [PTNVideoFetchOptions optionsWithDeliveryMode:PTNVideoDeliveryModeFastFormat];
+    options = [PTNAVAssetFetchOptions optionsWithDeliveryMode:PTNAVAssetDeliveryModeFastFormat];
     metadata = PTNDropboxCreateFileMetadata(kAssetPath, nil);
     asset = [[PTNDropboxFileDescriptor alloc] initWithMetadata:metadata];
   });
 
   it(@"should err", ^{
-    RACSignal *values = [manager fetchVideoWithDescriptor:asset options:options];
+    RACSignal *values = [manager fetchAVAssetWithDescriptor:asset options:options];
 
     expect(values).will.matchError(^BOOL(NSError *error) {
       return error.code == PTNErrorCodeUnsupportedOperation;
