@@ -106,7 +106,7 @@ context(@"PTNDescriptor", ^{
 
     it(@"should expose video trait if underlying descriptor has video trait", ^{
       id<PTNDescriptor> videoAsset = PTNCreateDescriptor(nil, @"foo", 0,
-          [NSSet setWithObject:kPTNDescriptorTraitVideoKey]);
+          [NSSet setWithObject:kPTNDescriptorTraitAudiovisualKey]);
       PTUImageCellViewModel *videoViewModel = [[PTUImageCellViewModel alloc]
                                                initWithAssetManager:assetManager
                                                descriptor:videoAsset
@@ -139,7 +139,7 @@ context(@"PTNDescriptor", ^{
         PTNCreateDescriptor(nil, @"foo", 0, [NSSet setWithArray:@[
           kPTNDescriptorTraitSessionKey,
           kPTNDescriptorTraitCloudBasedKey,
-          kPTNDescriptorTraitVideoKey,
+          kPTNDescriptorTraitAudiovisualKey,
           kPTNDescriptorTraitRawKey,
           kPTNDescriptorTraitGIFKey
         ]]);
@@ -204,9 +204,8 @@ context(@"video", ^{
 
   beforeEach(^{
     duration = 11;
-    videoDescriptor = PTNCreateAssetDescriptor(nil, @"foo", 0,
-                                               [NSSet setWithObject:kPTNDescriptorTraitVideoKey],
-                                               nil, nil, duration, 0);
+    auto traitSet = [NSSet setWithObject:kPTNDescriptorTraitAudiovisualKey];
+    videoDescriptor = PTNCreateAssetDescriptor(nil, @"foo", 0, traitSet, nil, nil, duration, 0);
     timeFormatter = [[PTUTimeFormatter alloc] init];
   });
 

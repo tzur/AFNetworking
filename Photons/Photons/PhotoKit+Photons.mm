@@ -45,7 +45,7 @@ NS_ASSUME_NONNULL_BEGIN
       [set addObject:kPTNDescriptorTraitCloudBasedKey];
   }
   if (self.mediaType == PHAssetMediaTypeVideo) {
-    [set addObject:kPTNDescriptorTraitVideoKey];
+    [set addObject:kPTNDescriptorTraitAudiovisualKey];
   }
   if ([self ptn_isRaw]) {
     [set addObject:kPTNDescriptorTraitRawKey];

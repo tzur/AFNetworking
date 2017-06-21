@@ -40,13 +40,13 @@ extern NSString * const kPTNDescriptorTraitSessionKey;
 /// asset might be already downloaded and cached by the client.
 extern NSString * const kPTNDescriptorTraitCloudBasedKey;
 
-/// Descriptor that represents a video asset.
-extern NSString * const kPTNDescriptorTraitVideoKey;
+/// Descriptor that represents an audiovisual asset.
+extern NSString * const kPTNDescriptorTraitAudiovisualKey;
 
 /// Descriptor that represnts a RAW image asset.
 ///
-/// @note PhotoKit assets may contain multiple resources, for example, Video resources may have both
-/// a video file and an image. In the case where an asset has both JPEG image and RAW image as
+/// @note PhotoKit assets may contain multiple resources, for example, audiovisual asset may have
+/// both a video file and an image. In the case where an asset has both JPEG image and RAW image as
 /// resource, this trait will be present only if the RAW image is the first resource.
 extern NSString * const kPTNDescriptorTraitRawKey;
 
@@ -102,7 +102,7 @@ extern NSString * const kPTNDescriptorTraitGIFKey;
 /// information is unavailable.
 @property (readonly, nonatomic, nullable) NSDate *modificationDate;
 
-/// Duration in seconds of the video or audio asset.
+/// Duration in seconds of the audiovisual asset.
 ///
 /// @note for photo assets, the duration is always zero.
 @property (readonly, nonatomic) NSTimeInterval duration;

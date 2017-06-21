@@ -237,7 +237,7 @@ NS_ASSUME_NONNULL_BEGIN
     return [RACSignal error:error];
   }
 
-  if ([descriptor.descriptorTraits containsObject:kPTNDescriptorTraitVideoKey]) {
+  if ([descriptor.descriptorTraits containsObject:kPTNDescriptorTraitAudiovisualKey]) {
     return [self imageForVideoAssetWithDescriptor:descriptor resizingStrategy:resizingStrategy];
   }
 
@@ -278,7 +278,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (RACSignal *)fetchVideoWithDescriptor:(id<PTNDescriptor>)descriptor
                                 options:(PTNVideoFetchOptions __unused *)options {
-  if (![descriptor.descriptorTraits containsObject:kPTNDescriptorTraitVideoKey]) {
+  if (![descriptor.descriptorTraits containsObject:kPTNDescriptorTraitAudiovisualKey]) {
     NSError *error = [NSError ptn_errorWithCode:PTNErrorCodeInvalidDescriptor
                            associatedDescriptor:descriptor];
     return [RACSignal error:error];
