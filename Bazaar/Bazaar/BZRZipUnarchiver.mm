@@ -76,9 +76,8 @@ NS_ASSUME_NONNULL_BEGIN
                   completion:(LTSuccessOrErrorBlock)completion {
   LTParameterAssert(completion, @"Completion block must not be nil");
 
-  @weakify(self);
+  // No weakify here due to importance of holding self until the block completion.
   dispatch_async(self.archivingQueue, ^{
-    @strongify(self);
     BZRZipUnarchivingDelegate *delegate =
         [[BZRZipUnarchivingDelegate alloc] initWithProgressBlock:progress];
 
@@ -96,7 +95,7 @@ NS_ASSUME_NONNULL_BEGIN
                           underlyingError:error];
       }
     }
-    
+
     completion(success, error);
   });
 }
