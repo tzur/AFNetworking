@@ -124,10 +124,10 @@ NS_ASSUME_NONNULL_BEGIN
   return [[[RACSignal
       createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
         NSError *underlyingError;
-        BOOL createDirectorySuceeded =
+        BOOL createDirectorySucceeded =
             [self createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil
                                   error:&underlyingError];
-        if (!createDirectorySuceeded) {
+        if (!createDirectorySucceeded) {
           NSError *error = [NSError lt_errorWithCode:BZRErrorCodeDirectoryCreationFailed
                                      underlyingError:underlyingError];
           [subscriber sendError:error];
@@ -138,6 +138,25 @@ NS_ASSUME_NONNULL_BEGIN
       }]
       subscribeOn:[RACScheduler scheduler]]
       setNameWithFormat:@"%@ -bzr_createDirectoryAtPathIfNotExists: %@", self.description, path];
+}
+
+- (RACSignal *)bzr_moveItemAtPath:(NSString *)path toPath:(NSString *)targetPath {
+  return [[[RACSignal
+      createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+        NSError *underlyingError;
+        BOOL moveItemSucceeded =
+            [self moveItemAtPath:path toPath:targetPath error:&underlyingError];
+        if (!moveItemSucceeded) {
+          NSError *error = [NSError lt_errorWithCode:BZRErrorCodeMoveItemFailed
+                                     underlyingError:underlyingError];
+          [subscriber sendError:error];
+        } else {
+          [subscriber sendCompleted];
+        }
+        return nil;
+      }]
+      subscribeOn:[RACScheduler scheduler]]
+      setNameWithFormat:@"%@ -bzr_moveItemAtPath: %@ to: %@", self.description, path, targetPath];
 }
 
 @end

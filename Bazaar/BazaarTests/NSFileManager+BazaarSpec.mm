@@ -119,7 +119,7 @@ context(@"files attributes retrieval", ^{
 
   it(@"should not deliver values on the main thread", ^{
     LLSignalTestRecorder *recorder = [[fileManager bzr_retrieveFilesSizes:filePaths] testRecorder];
-    
+
     expect(recorder).will.complete();
     expect(recorder).toNot.deliverValuesOnMainThread();
   });
@@ -255,7 +255,7 @@ context(@"directory enumeration", ^{
   it(@"should not deliver values on the main thread", ^{
     LLSignalTestRecorder *recorder =
         [[fileManager bzr_enumerateDirectoryAtPath:kDirectoryPath] testRecorder];
-    
+
     expect(recorder).will.complete();
     expect(recorder).toNot.deliverValuesOnMainThread();
   });
@@ -298,6 +298,38 @@ context(@"directory creation", ^{
 
     expect(recorder).will.complete();
     expect(recorder).toNot.deliverValuesOnMainThread();
+  });
+});
+
+context(@"moving a file or a directory", ^{
+  __block NSString *sourcePath;
+  __block NSString *targetPath;
+
+  beforeEach(^{
+    sourcePath = @"foo";
+    targetPath = @"boo";
+  });
+
+  it(@"should err if move action failed", ^{
+    NSError *underlyingError = [NSError lt_errorWithCode:1337];
+    OCMStub([fileManager moveItemAtPath:sourcePath toPath:targetPath
+                                  error:[OCMArg setTo:underlyingError]]).andReturn(NO);
+
+    auto signal = [fileManager bzr_moveItemAtPath:sourcePath toPath:targetPath];
+
+    expect(signal).will.matchError(^BOOL(NSError *error) {
+      return error.lt_isLTDomain && error.code == BZRErrorCodeMoveItemFailed &&
+      [error.lt_underlyingError isEqual:underlyingError];
+    });
+  });
+
+  it(@"should complete if move action succeeded", ^{
+    OCMStub([fileManager moveItemAtPath:sourcePath toPath:targetPath
+                                  error:[OCMArg anyObjectRef]]).andReturn(YES);
+
+    auto signal = [fileManager bzr_moveItemAtPath:sourcePath toPath:targetPath];
+
+    expect(signal).will.complete();
   });
 });
 
