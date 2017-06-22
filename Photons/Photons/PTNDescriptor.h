@@ -43,7 +43,7 @@ extern NSString * const kPTNDescriptorTraitCloudBasedKey;
 /// Descriptor that represents an audiovisual asset.
 extern NSString * const kPTNDescriptorTraitAudiovisualKey;
 
-/// Descriptor that represnts a RAW image asset.
+/// Descriptor that represents a RAW image asset.
 ///
 /// @note PhotoKit assets may contain multiple resources, for example, audiovisual asset may have
 /// both a video file and an image. In the case where an asset has both JPEG image and RAW image as
@@ -74,7 +74,7 @@ extern NSString * const kPTNDescriptorTraitGIFKey;
 
 /// Traits associated with this descriptor.
 ///
-/// @see PTNDecriptor.h for the default descriptor trait keys.
+/// @see PTNDescriptor.h for the default descriptor trait keys.
 @property (readonly, nonatomic) NSSet<NSString *> *descriptorTraits;
 
 @end
