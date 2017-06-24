@@ -4,6 +4,7 @@
 #import "PTNAVImageAsset.h"
 
 #import <AVFoundation/AVFoundation.h>
+#import <LTKit/LTRef.h>
 
 #import "NSError+Photons.h"
 #import "PTNAVImageGeneratorFactory.h"
@@ -58,16 +59,18 @@ NS_ASSUME_NONNULL_BEGIN
     AVAssetImageGenerator *imageGenerator =
         [self.imageGeneratorFactory imageGeneratorForAsset:self.asset];
     imageGenerator.maximumSize = [self imageSize];
+
     NSError *error;
-    auto _Nullable cgImage = [imageGenerator copyCGImageAtTime:kCMTimeZero actualTime:nil
-                                                         error:&error];
+    auto cgImage = lt::Ref<CGImageRef>{[imageGenerator copyCGImageAtTime:kCMTimeZero actualTime:nil
+                                                                   error:&error]};
     if (!cgImage) {
       [subscriber sendError:[NSError lt_errorWithCode:PTNErrorCodeAVImageAssetFetchImageFailed
                                       underlyingError:error]];
     }
 
-    [subscriber sendNext:[UIImage imageWithCGImage:cgImage]];
+    [subscriber sendNext:[UIImage imageWithCGImage:cgImage.get()]];
     [subscriber sendCompleted];
+
     return [RACDisposable disposableWithBlock:^{
       [imageGenerator cancelAllCGImageGeneration];
     }];
