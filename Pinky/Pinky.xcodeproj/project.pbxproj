@@ -24,6 +24,8 @@
 		060EA4491EDD86F80041487A /* MetalKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 06FD91A61EDC319000D180C7 /* MetalKit.framework */; };
 		060EA44A1EDD870D0041487A /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BB1089E1EDD72F700B27DC4 /* OpenGLES.framework */; };
 		060EA49E1EDD9CC20041487A /* NSBundle+PinkyBundle.mm in Sources */ = {isa = PBXBuildFile; fileRef = 060EA49D1EDD9CC20041487A /* NSBundle+PinkyBundle.mm */; };
+		06C3F7611EFF9E5B00D4B1F4 /* PNKSingleStyleTransferProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 06C3F7601EFF9E5B00D4B1F4 /* PNKSingleStyleTransferProcessor.mm */; };
+		06C3F7641EFFDA0900D4B1F4 /* PNKSingleStyleTransferProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 06C3F7631EFFDA0900D4B1F4 /* PNKSingleStyleTransferProcessorSpec.mm */; };
 		06FD927F1EDC5E1C00D180C7 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 06FD91AA1EDC31BB00D180C7 /* Accelerate.framework */; };
 		06FD92811EDC5E2D00D180C7 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 06FD92801EDC5E2D00D180C7 /* MobileCoreServices.framework */; };
 		06FD92861EDC5F3900D180C7 /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 06FD927D1EDC5DE500D180C7 /* opencv2.framework */; };
@@ -67,7 +69,6 @@
 		A14173401E6EB59F005DBEFF /* libExpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A141728A1E6EAEE7005DBEFF /* libExpecta.a */; };
 		A14173421E6EB59F005DBEFF /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A141729D1E6EAF03005DBEFF /* libOCMock.a */; };
 		A14173431E6EB59F005DBEFF /* libSpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A14172B81E6EAF0D005DBEFF /* libSpecta.a */; };
-		A1541B0E1EAF1CC300B4F064 /* PNKPlaceholderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1541B0B1EAF1CC300B4F064 /* PNKPlaceholderSpec.mm */; };
 		C9131EA61EE0599D00E924DA /* EXPMatchers+beCloseToCATransform3D.mm in Sources */ = {isa = PBXBuildFile; fileRef = C9131E991EE0599D00E924DA /* EXPMatchers+beCloseToCATransform3D.mm */; };
 		C9131EA71EE0599D00E924DA /* EXPMatchers+beCloseToCATransform3D.mm in Sources */ = {isa = PBXBuildFile; fileRef = C9131E991EE0599D00E924DA /* EXPMatchers+beCloseToCATransform3D.mm */; };
 		C9131EA81EE0599D00E924DA /* EXPMatchers+beCloseToGLKMatrix.mm in Sources */ = {isa = PBXBuildFile; fileRef = C9131E9B1EE0599D00E924DA /* EXPMatchers+beCloseToGLKMatrix.mm */; };
@@ -429,6 +430,9 @@
 		060EA49B1EDD9C740041487A /* PNKDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKDefines.h; sourceTree = "<group>"; };
 		060EA49C1EDD9CC20041487A /* NSBundle+PinkyBundle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSBundle+PinkyBundle.h"; sourceTree = "<group>"; };
 		060EA49D1EDD9CC20041487A /* NSBundle+PinkyBundle.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSBundle+PinkyBundle.mm"; sourceTree = "<group>"; };
+		06C3F75F1EFF9E5B00D4B1F4 /* PNKSingleStyleTransferProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKSingleStyleTransferProcessor.h; sourceTree = "<group>"; };
+		06C3F7601EFF9E5B00D4B1F4 /* PNKSingleStyleTransferProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKSingleStyleTransferProcessor.mm; sourceTree = "<group>"; };
+		06C3F7631EFFDA0900D4B1F4 /* PNKSingleStyleTransferProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKSingleStyleTransferProcessorSpec.mm; sourceTree = "<group>"; };
 		06FD917C1EDC30B400D180C7 /* LTEngine.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LTEngine.xcodeproj; path = ../LTEngine/LTEngine.xcodeproj; sourceTree = "<group>"; };
 		06FD91A41EDC318700D180C7 /* Metal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Metal.framework; path = System/Library/Frameworks/Metal.framework; sourceTree = SDKROOT; };
 		06FD91A61EDC319000D180C7 /* MetalKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MetalKit.framework; path = System/Library/Frameworks/MetalKit.framework; sourceTree = SDKROOT; };
@@ -477,7 +481,6 @@
 		A14172BC1E6EB0CA005DBEFF /* PinkyTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PinkyTests-Prefix.pch"; sourceTree = "<group>"; };
 		A14172D71E6EB2FF005DBEFF /* TestHost.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TestHost.xcodeproj; path = ../Foundations/TestHost.xcodeproj; sourceTree = "<group>"; };
 		A1417A911E6ED9CB005DBEFF /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
-		A1541B0B1EAF1CC300B4F064 /* PNKPlaceholderSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKPlaceholderSpec.mm; sourceTree = "<group>"; };
 		C9131E981EE0599D00E924DA /* EXPMatchers+beCloseToCATransform3D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "EXPMatchers+beCloseToCATransform3D.h"; path = "../../LTEngine/LTEngineTests/EXPMatchers+beCloseToCATransform3D.h"; sourceTree = "<group>"; };
 		C9131E991EE0599D00E924DA /* EXPMatchers+beCloseToCATransform3D.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = "EXPMatchers+beCloseToCATransform3D.mm"; path = "../../LTEngine/LTEngineTests/EXPMatchers+beCloseToCATransform3D.mm"; sourceTree = "<group>"; };
 		C9131E9A1EE0599D00E924DA /* EXPMatchers+beCloseToGLKMatrix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "EXPMatchers+beCloseToGLKMatrix.h"; path = "../../LTEngine/LTEngineTests/EXPMatchers+beCloseToGLKMatrix.h"; sourceTree = "<group>"; };
@@ -591,6 +594,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		06C3F73E1EFF9E3C00D4B1F4 /* Image Processing */ = {
+			isa = PBXGroup;
+			children = (
+				06C3F75F1EFF9E5B00D4B1F4 /* PNKSingleStyleTransferProcessor.h */,
+				06C3F7601EFF9E5B00D4B1F4 /* PNKSingleStyleTransferProcessor.mm */,
+			);
+			name = "Image Processing";
+			sourceTree = "<group>";
+		};
+		06C3F7621EFFD9EA00D4B1F4 /* Image Processing */ = {
+			isa = PBXGroup;
+			children = (
+				06C3F7631EFFDA0900D4B1F4 /* PNKSingleStyleTransferProcessorSpec.mm */,
+			);
+			name = "Image Processing";
+			sourceTree = "<group>";
+		};
 		06FD928D1EDC5F9100D180C7 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -723,6 +743,7 @@
 			isa = PBXGroup;
 			children = (
 				C9815C621EE886E0004868CE /* Extensions */,
+				06C3F73E1EFF9E3C00D4B1F4 /* Image Processing */,
 				A14172BA1E6EB04F005DBEFF /* Supporting Files */,
 				882D1F141EC19998007F39F5 /* PNKPlaceholder.h */,
 				882D1F151EC19998007F39F5 /* PNKPlaceholder.mm */,
@@ -867,7 +888,7 @@
 		A14173471E6EB62C005DBEFF /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				A1541B0B1EAF1CC300B4F064 /* PNKPlaceholderSpec.mm */,
+				06C3F7621EFFD9EA00D4B1F4 /* Image Processing */,
 			);
 			name = Tests;
 			sourceTree = "<group>";
@@ -1382,6 +1403,7 @@
 				C9815C411EE886D1004868CE /* PNKOpenCVExtensions.mm in Sources */,
 				060EA49E1EDD9CC20041487A /* NSBundle+PinkyBundle.mm in Sources */,
 				882D1F161EC19998007F39F5 /* PNKPlaceholder.mm in Sources */,
+				06C3F7611EFF9E5B00D4B1F4 /* PNKSingleStyleTransferProcessor.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1389,12 +1411,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A1541B0E1EAF1CC300B4F064 /* PNKPlaceholderSpec.mm in Sources */,
 				C9131ED71EE05A4D00E924DA /* LTTestUtils+LTEngine.mm in Sources */,
 				C9131EAF1EE0599D00E924DA /* EXPMatchers+beCloseToScalar.mm in Sources */,
 				C9131EA91EE0599D00E924DA /* EXPMatchers+beCloseToGLKMatrix.mm in Sources */,
 				C9131EAD1EE0599D00E924DA /* EXPMatchers+beCloseToMat.mm in Sources */,
 				C9131EA71EE0599D00E924DA /* EXPMatchers+beCloseToCATransform3D.mm in Sources */,
+				06C3F7641EFFDA0900D4B1F4 /* PNKSingleStyleTransferProcessorSpec.mm in Sources */,
 				C9131EB31EE0599D00E924DA /* EXPMatchers+equalScalar.mm in Sources */,
 				C9131EB11EE0599D00E924DA /* EXPMatchers+equalMat.mm in Sources */,
 				C9131EAB1EE0599D00E924DA /* EXPMatchers+beCloseToGLKVector.mm in Sources */,
