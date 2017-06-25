@@ -22,6 +22,11 @@ NS_ASSUME_NONNULL_BEGIN
   return [UIImage imageNamed:name];
 }
 
+- (nullable UIImage *)imageNamed:(NSString *)name inBundle:(nullable NSBundle *)bundle
+   compatibleWithTraitCollection:(nullable UITraitCollection *)traitCollection {
+  return [UIImage imageNamed:name inBundle:bundle compatibleWithTraitCollection:traitCollection];
+}
+
 - (nullable UIImage *)imageWithContentsOfFile:(NSString *)name {
   return [UIImage imageWithContentsOfFile:name];
 }

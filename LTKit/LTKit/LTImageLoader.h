@@ -14,6 +14,12 @@ NS_ASSUME_NONNULL_BEGIN
 /// details.
 - (nullable UIImage *)imageNamed:(NSString *)name;
 
+/// Returns the variant of the image object associated with the given \c name in the given \c bundle
+/// that is compatible with the given \c traitCollection.
+/// See -[UIImage imageNamed:inBundle:compatibleWithTraitCollection:] for more details.
+- (nullable UIImage *)imageNamed:(NSString *)name inBundle:(nullable NSBundle *)bundle
+   compatibleWithTraitCollection:(nullable UITraitCollection *)traitCollection;
+
 /// Returns the image object generated from the given file path. See
 /// -[UIImage imageWithContentsOfFile:] for more details.
 - (nullable UIImage *)imageWithContentsOfFile:(NSString *)name;
