@@ -88,6 +88,7 @@
 		C9131EDB1EE05A8400E924DA /* NSValue+OpenCVExtensions.mm in Sources */ = {isa = PBXBuildFile; fileRef = C9131ED91EE05A8400E924DA /* NSValue+OpenCVExtensions.mm */; };
 		C9815C411EE886D1004868CE /* PNKOpenCVExtensions.mm in Sources */ = {isa = PBXBuildFile; fileRef = C9815C3F1EE886D1004868CE /* PNKOpenCVExtensions.mm */; };
 		C9815C641EE88713004868CE /* PNKOpenCVExtensionsSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = C9815C631EE88713004868CE /* PNKOpenCVExtensionsSpec.mm */; };
+		C9ADC5DD1F00105300C87932 /* Pinky.bundle in Resources */ = {isa = PBXBuildFile; fileRef = C9ADC5DC1F00105300C87932 /* Pinky.bundle */; };
 		C9CAFCC11EE02F2A00B914E4 /* Mantle.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 06FD92981EDC5F9100D180C7 /* Mantle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C9CAFCC51EE0335500B914E4 /* Mantle.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 06FD92981EDC5F9100D180C7 /* Mantle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
@@ -498,6 +499,7 @@
 		C9815C3F1EE886D1004868CE /* PNKOpenCVExtensions.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKOpenCVExtensions.mm; sourceTree = "<group>"; };
 		C9815C401EE886D1004868CE /* PNKOpenCVExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKOpenCVExtensions.h; sourceTree = "<group>"; };
 		C9815C631EE88713004868CE /* PNKOpenCVExtensionsSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKOpenCVExtensionsSpec.mm; sourceTree = "<group>"; };
+		C9ADC5DC1F00105300C87932 /* Pinky.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Pinky.bundle; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -694,6 +696,7 @@
 		A14171981E6EAA93005DBEFF = {
 			isa = PBXGroup;
 			children = (
+				C9ADC5DC1F00105300C87932 /* Pinky.bundle */,
 				A14171B31E6EAAF6005DBEFF /* Configuration */,
 				A14171A31E6EAA93005DBEFF /* Pinky */,
 				06FD92A21EDC66E500D180C7 /* PinkyBundle */,
@@ -1333,6 +1336,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C9ADC5DD1F00105300C87932 /* Pinky.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
