@@ -25,7 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithFileManager:(NSFileManager *)fileManager
                        fileArchiver:(id<BZRFileArchiver>)fileArchiver NS_DESIGNATED_INITIALIZER;
 
-/// Extracts the content from \c contentArchiveFile to the directory of the product specified by
+/// Extracts the content from \c archivePath to the directory of the product specified by
 /// \c productIdentifier and returns the path to the directory.
 ///
 /// Returns a signal that creates a content directory for the product specified by
@@ -38,6 +38,17 @@ NS_ASSUME_NONNULL_BEGIN
 /// @return <tt>RACSignal<LTPath></tt>
 - (RACSignal *)extractContentOfProduct:(NSString *)productIdentifier
                            fromArchive:(LTPath *)archivePath;
+
+/// Extracts the content from \c archivePath to a directory named \c directoryName within the
+/// directory of the product specified by \c productIdentifier.
+///
+/// Returns a signal that has the same behavior as \c extractContentOfProduct:fromArchive:, but
+/// extracts the content to a nested directory named \c directoryName.
+///
+/// @return <tt>RACSignal<LTPath></tt>
+- (RACSignal *)extractContentOfProduct:(NSString *)productIdentifier
+                           fromArchive:(LTPath *)archivePath
+                         intoDirectory:(NSString *)directoryName;
 
 /// Deletes the content of a specific product.
 ///

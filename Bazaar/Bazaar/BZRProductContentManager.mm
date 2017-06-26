@@ -42,20 +42,33 @@ NSString * const kBazaarProductsContentDirectory = @"Bazaar/ProductsContent/";
 
 - (RACSignal *)extractContentOfProduct:(NSString *)productIdentifier
                            fromArchive:(LTPath *)archivePath {
-  LTPath *contentDirectoryPath = [self contentDirectoryPathForProduct:productIdentifier];
-  RACSignal *removeDirectorySignal =
-      [self.fileManager bzr_deleteItemAtPathIfExists:contentDirectoryPath.path];
-  RACSignal *createDirectiorySignal =
-      [self.fileManager bzr_createDirectoryAtPathIfNotExists:contentDirectoryPath.path];
-  RACSignal *extractContentSignal =
-      [self extractContentSignal:contentDirectoryPath archivePath:archivePath];
-
-  return [[RACSignal concat:@[removeDirectorySignal, createDirectiorySignal, extractContentSignal]]
-      setNameWithFormat:@"%@ -extractContent", self.description];
+  auto contentDirectoryPath = [self contentDirectoryPathForProduct:productIdentifier];
+  return [self extractContentFromArchive:archivePath intoDirectory:contentDirectoryPath];
 }
 
-- (RACSignal *)extractContentSignal:(LTPath *)contentDirectoryPath
-                        archivePath:(LTPath *)archivePath {
+- (RACSignal *)extractContentOfProduct:(NSString *)productIdentifier
+                           fromArchive:(LTPath *)archivePath
+                         intoDirectory:(NSString *)directoryName {
+  auto contentDirectoryPath = [[self contentDirectoryPathForProduct:productIdentifier]
+                               pathByAppendingPathComponent:directoryName];
+  return [self extractContentFromArchive:archivePath intoDirectory:contentDirectoryPath];
+}
+
+- (RACSignal *)extractContentFromArchive:(LTPath *)archivePath
+                           intoDirectory:(LTPath *)contentDirectoryPath {
+  RACSignal *removeDirectorySignal =
+      [self.fileManager bzr_deleteItemAtPathIfExists:contentDirectoryPath.path];
+  RACSignal *createDirectorySignal =
+      [self.fileManager bzr_createDirectoryAtPathIfNotExists:contentDirectoryPath.path];
+  RACSignal *unarchiveContentSignal =
+      [self unarchiveContentSignal:contentDirectoryPath archivePath:archivePath];
+
+  return [[RACSignal concat:@[removeDirectorySignal, createDirectorySignal, unarchiveContentSignal]]
+          setNameWithFormat:@"%@ -extractContent", self.description];
+}
+
+- (RACSignal *)unarchiveContentSignal:(LTPath *)contentDirectoryPath
+                          archivePath:(LTPath *)archivePath {
   return [[[self.fileArchiver unarchiveArchiveAtPath:archivePath.path
                                          toDirectory:contentDirectoryPath.path]
       filter:^BOOL(LTProgress<NSString *> *unarchiveProgress) {
