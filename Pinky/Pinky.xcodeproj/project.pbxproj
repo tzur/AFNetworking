@@ -24,6 +24,8 @@
 		060EA4491EDD86F80041487A /* MetalKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 06FD91A61EDC319000D180C7 /* MetalKit.framework */; };
 		060EA44A1EDD870D0041487A /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BB1089E1EDD72F700B27DC4 /* OpenGLES.framework */; };
 		060EA49E1EDD9CC20041487A /* NSBundle+PinkyBundle.mm in Sources */ = {isa = PBXBuildFile; fileRef = 060EA49D1EDD9CC20041487A /* NSBundle+PinkyBundle.mm */; };
+		060FB4641F0104EB00506895 /* Pinky.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 06FD92A11EDC66E500D180C7 /* Pinky.bundle */; };
+		060FB4651F0104F300506895 /* Pinky.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 06FD92A11EDC66E500D180C7 /* Pinky.bundle */; };
 		06C3F7611EFF9E5B00D4B1F4 /* PNKSingleStyleTransferProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 06C3F7601EFF9E5B00D4B1F4 /* PNKSingleStyleTransferProcessor.mm */; };
 		06C3F7641EFFDA0900D4B1F4 /* PNKSingleStyleTransferProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 06C3F7631EFFDA0900D4B1F4 /* PNKSingleStyleTransferProcessorSpec.mm */; };
 		06FD927F1EDC5E1C00D180C7 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 06FD91AA1EDC31BB00D180C7 /* Accelerate.framework */; };
@@ -88,7 +90,6 @@
 		C9131EDB1EE05A8400E924DA /* NSValue+OpenCVExtensions.mm in Sources */ = {isa = PBXBuildFile; fileRef = C9131ED91EE05A8400E924DA /* NSValue+OpenCVExtensions.mm */; };
 		C9815C411EE886D1004868CE /* PNKOpenCVExtensions.mm in Sources */ = {isa = PBXBuildFile; fileRef = C9815C3F1EE886D1004868CE /* PNKOpenCVExtensions.mm */; };
 		C9815C641EE88713004868CE /* PNKOpenCVExtensionsSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = C9815C631EE88713004868CE /* PNKOpenCVExtensionsSpec.mm */; };
-		C9ADC5DD1F00105300C87932 /* Pinky.bundle in Resources */ = {isa = PBXBuildFile; fileRef = C9ADC5DC1F00105300C87932 /* Pinky.bundle */; };
 		C9CAFCC11EE02F2A00B914E4 /* Mantle.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 06FD92981EDC5F9100D180C7 /* Mantle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C9CAFCC51EE0335500B914E4 /* Mantle.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 06FD92981EDC5F9100D180C7 /* Mantle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
@@ -444,7 +445,7 @@
 		06FD92871EDC5F4500D180C7 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		06FD928A1EDC5F6A00D180C7 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		06FD928C1EDC5F9100D180C7 /* Mantle.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Mantle.xcodeproj; path = ../third_party/Mantle/Mantle.xcodeproj; sourceTree = "<group>"; };
-		06FD92A11EDC66E500D180C7 /* PinkyBundle.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PinkyBundle.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
+		06FD92A11EDC66E500D180C7 /* Pinky.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Pinky.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		06FD92A31EDC66E500D180C7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		06FD92BC1EDC85C600D180C7 /* PinkyDeviceTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PinkyDeviceTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		06FD92C01EDC85C600D180C7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -500,7 +501,6 @@
 		C9815C3F1EE886D1004868CE /* PNKOpenCVExtensions.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKOpenCVExtensions.mm; sourceTree = "<group>"; };
 		C9815C401EE886D1004868CE /* PNKOpenCVExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKOpenCVExtensions.h; sourceTree = "<group>"; };
 		C9815C631EE88713004868CE /* PNKOpenCVExtensionsSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKOpenCVExtensionsSpec.mm; sourceTree = "<group>"; };
-		C9ADC5DC1F00105300C87932 /* Pinky.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Pinky.bundle; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -713,7 +713,6 @@
 		A14171981E6EAA93005DBEFF = {
 			isa = PBXGroup;
 			children = (
-				C9ADC5DC1F00105300C87932 /* Pinky.bundle */,
 				A14171B31E6EAAF6005DBEFF /* Configuration */,
 				A14171A31E6EAA93005DBEFF /* Pinky */,
 				06FD92A21EDC66E500D180C7 /* PinkyBundle */,
@@ -730,7 +729,7 @@
 			children = (
 				A14171A11E6EAA93005DBEFF /* libPinky.a */,
 				A14171C11E6EAC0D005DBEFF /* PinkyTests.xctest */,
-				06FD92A11EDC66E500D180C7 /* PinkyBundle.bundle */,
+				06FD92A11EDC66E500D180C7 /* Pinky.bundle */,
 				06FD92BC1EDC85C600D180C7 /* PinkyDeviceTests.xctest */,
 			);
 			name = Products;
@@ -952,7 +951,7 @@
 			);
 			name = PinkyBundle;
 			productName = PinkyBundle;
-			productReference = 06FD92A11EDC66E500D180C7 /* PinkyBundle.bundle */;
+			productReference = 06FD92A11EDC66E500D180C7 /* Pinky.bundle */;
 			productType = "com.apple.product-type.bundle";
 		};
 		06FD92BB1EDC85C600D180C7 /* PinkyDeviceTests */ = {
@@ -1354,7 +1353,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C9ADC5DD1F00105300C87932 /* Pinky.bundle in Resources */,
+				060FB4641F0104EB00506895 /* Pinky.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1362,6 +1361,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				060FB4651F0104F300506895 /* Pinky.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1477,7 +1477,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
 				MACOSX_DEPLOYMENT_TARGET = iphone;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Lightricks.PinkyBundle;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "$(PROJECT_NAME)";
 				SKIP_INSTALL = YES;
 				WRAPPER_EXTENSION = bundle;
 			};
@@ -1494,7 +1494,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
 				MACOSX_DEPLOYMENT_TARGET = iphone;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Lightricks.PinkyBundle;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "$(PROJECT_NAME)";
 				SKIP_INSTALL = YES;
 				WRAPPER_EXTENSION = bundle;
 			};
