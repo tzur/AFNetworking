@@ -383,6 +383,29 @@ context(@"focus", ^{
       expect(deviceStub.lastReceivedContinuousFocusPoint).to.equal(kDeviceCenterPoint);
     });
 
+    it(@"should not set continuous focus and exposure when specifically initialized so", ^{
+      CAMDeviceStub *otherDeviceStub = [[CAMDeviceStub alloc] init];
+      RACSubject *otherPreviewSignal = [RACSubject subject];
+      CALayer *otherDeviceLayer = [CALayer layer];
+      otherDeviceStub.previewLayer = otherDeviceLayer;
+      RACSubject *otherSubjectAreaChanged = [RACSubject subject];
+      otherDeviceStub.subjectAreaChanged = otherSubjectAreaChanged;
+      RACSubject *otherUsePreviewLayerSignal = [RACSubject subject];
+      CUIPreviewViewModel *otherPreviewViewModel = [[CUIPreviewViewModel alloc]
+                                                    initWithDevice:otherDeviceStub
+                                                    previewSignal:otherPreviewSignal
+                                                    usePreviewLayerSignal:otherUsePreviewLayerSignal
+                                                    autofocusOnSubjectAreaChange:NO];
+
+      expect(otherPreviewViewModel).toNot.beNil();
+
+      deviceStub.lastReceivedContinuousExposurePoint = CGPointZero;
+      deviceStub.lastReceivedContinuousFocusPoint = CGPointZero;
+      [otherSubjectAreaChanged sendNext:[RACUnit defaultUnit]];
+      expect(deviceStub.lastReceivedContinuousExposurePoint).to.equal(CGPointZero);
+      expect(deviceStub.lastReceivedContinuousFocusPoint).to.equal(CGPointZero);
+    });
+
     it(@"should subscribe each focus and exposure signal", ^{
       [continuousFocusSignal startCountingSubscriptions];
       [continuousExposureSignal startCountingSubscriptions];

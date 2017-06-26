@@ -3,6 +3,12 @@
 
 #import "CUIPreviewViewModel.h"
 
+#import <Camera/CAMExposureDevice.h>
+#import <Camera/CAMFocusDevice.h>
+#import <Camera/CAMPreviewLayerDevice.h>
+#import <Camera/CAMVideoDevice.h>
+#import <Camera/CAMZoomDevice.h>
+
 #import "CUIFocusIconMode.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -22,6 +28,10 @@ NS_ASSUME_NONNULL_BEGIN
 /// be used for the live preview.
 @property (readwrite, nonatomic) BOOL usePreviewLayer;
 
+/// \c YES when auto-focus should be done each time an event is sent on the \c subjectAreaChanged
+/// signal.
+@property (readonly, nonatomic) BOOL autofocusOnSubjectAreaChange;
+
 @end
 
 @implementation CUIPreviewViewModel
@@ -40,10 +50,20 @@ static const CGFloat kMaxZoom = 4.0;
 - (instancetype)initWithDevice:(id<CUIPreviewDevice>)device
                  previewSignal:(RACSignal *)previewSignal
          usePreviewLayerSignal:(RACSignal *)usePreviewLayerSignal {
+  return [self initWithDevice:device previewSignal:previewSignal
+        usePreviewLayerSignal:usePreviewLayerSignal
+ autofocusOnSubjectAreaChange:YES];
+}
+
+- (instancetype)initWithDevice:(id<CUIPreviewDevice>)device
+                 previewSignal:(RACSignal *)previewSignal
+         usePreviewLayerSignal:(RACSignal *)usePreviewLayerSignal
+  autofocusOnSubjectAreaChange:(BOOL)autofocusOnSubjectAreaChange {
   if (self = [super init]) {
     _device = device;
     _previewLayer = device.previewLayer;
     _previewSignal = previewSignal;
+    _autofocusOnSubjectAreaChange = autofocusOnSubjectAreaChange;
     RAC(self, usePreviewLayer) = usePreviewLayerSignal;
     [self setupZoom];
     [self setupFocus];
@@ -110,6 +130,10 @@ static const CGFloat kMaxZoom = 4.0;
 #pragma mark -
 
 - (void)setupSubjectAreaChangedSignal {
+  if (!self.autofocusOnSubjectAreaChange) {
+    return;
+  }
+
   @weakify(self);
   [[self.device.subjectAreaChanged
       takeUntil:[self rac_willDeallocSignal]]
