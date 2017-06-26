@@ -28,7 +28,7 @@ static inline BOOL LTIsValidHexChar(char c) {
   const char *cHexString = [hexString UTF8String];
 
   for (NSUInteger i = 0; i < hexString.length; i += 2) {
-    if (!LTIsValidHexChar(cHexString[i])) {
+    if (!LTIsValidHexChar(cHexString[i]) || !LTIsValidHexChar(cHexString[i + 1])) {
       if (error) {
         *error = [NSError lt_errorWithCode:LTErrorCodeHexDecodingFailed
                                description:@"Invalid char '%c' at position %lu", cHexString[i],
