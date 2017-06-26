@@ -35,6 +35,15 @@ context(@"dataWithHexString", ^{
     expect(error.code).to.equal(LTErrorCodeHexDecodingFailed);
   });
 
+  it(@"should retrun nil and set error if the second char in a hex string is invalid", ^{
+    NSError *error;
+    auto returnedData = [NSData lt_dataWithHexString:@"A-" error:&error];
+
+    expect(returnedData).to.beNil();
+    expect(error.lt_isLTDomain).to.beTruthy();
+    expect(error.code).to.equal(LTErrorCodeHexDecodingFailed);
+  });
+
   it(@"should retrun nil and set error if the string contains invalid chars", ^{
     NSError *error;
     auto returnedData = [NSData lt_dataWithHexString:@"-DEAD-BEEF" error:&error];
