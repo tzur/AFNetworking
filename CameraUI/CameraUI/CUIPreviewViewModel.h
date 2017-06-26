@@ -3,11 +3,8 @@
 
 #import "CUIGridViewModel.h"
 
-#import <Camera/CAMExposureDevice.h>
-#import <Camera/CAMFocusDevice.h>
-#import <Camera/CAMPreviewLayerDevice.h>
-#import <Camera/CAMVideoDevice.h>
-#import <Camera/CAMZoomDevice.h>
+@protocol CAMExposureDevice, CAMFocusDevice, CAMPreviewLayerDevice, CAMVideoDevice, CAMZoomDevice,
+   CUIGridContainer;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -70,10 +67,20 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)init NS_UNAVAILABLE;
 
 /// Initializes with the given \c device and live preview signal. When \c usePreviewLayerSignal
-/// sends \c YES, the device layer is used as the preview instead of the \c previewSignal.
+/// sends \c YES, the device layer is used as the preview instead of the \c previewSignal. Sets
+/// \c autofocusOnSubjectAreaChange to YES.
 - (instancetype)initWithDevice:(id<CUIPreviewDevice>)device
                  previewSignal:(RACSignal *)previewSignal
-         usePreviewLayerSignal:(RACSignal *)usePreviewLayerSignal NS_DESIGNATED_INITIALIZER;
+         usePreviewLayerSignal:(RACSignal *)usePreviewLayerSignal;
+
+/// Initializes with the given \c device and live preview signal. When \c usePreviewLayerSignal
+/// sends \c YES, the device layer is used as the preview instead of the \c previewSignal.
+/// If \c autofocusOnSubjectAreaChange is \c YES - auto-focus is done each time an event is sent on
+/// the \c subjectAreaChanged signal.
+- (instancetype)initWithDevice:(id<CUIPreviewDevice>)device
+                 previewSignal:(RACSignal *)previewSignal
+         usePreviewLayerSignal:(RACSignal *)usePreviewLayerSignal
+  autofocusOnSubjectAreaChange:(BOOL)autofocusOnSubjectAreaChange NS_DESIGNATED_INITIALIZER;
 
 @end
 
