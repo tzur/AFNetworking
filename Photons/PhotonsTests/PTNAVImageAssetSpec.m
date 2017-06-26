@@ -44,11 +44,38 @@ beforeEach(^{
 it(@"should fetch image", ^{
   UIImage *image = PTNImageWithColor([UIColor redColor], CGRectMake(0, 0, 20, 20));
   CGImageRef cgImage = image.CGImage;
+
   OCMStub([imageGenerator copyCGImageAtTime:kCMTimeZero actualTime:nil error:[OCMArg anyObjectRef]])
-      .andReturn(cgImage);
+      .andDo(^(NSInvocation *invocation) {
+        CGImageRetain(cgImage);
+        [invocation setReturnValue:(void *)&cgImage];
+      });
+
   LLSignalTestRecorder *recorder = [[imageAsset fetchImage] testRecorder];
   expect(recorder).will.sendValuesWithCount(1);
-  expect(((UIImage *)recorder.values.firstObject).CGImage).to.equal(image.CGImage);
+
+  CGImageRef sentImage = ((UIImage *)recorder.values.firstObject).CGImage;
+  expect(sentImage).to.equal(cgImage);
+});
+
+it(@"should transfer ownership of fetched image", ^{
+  UIImage *image = PTNImageWithColor([UIColor redColor], CGRectMake(0, 0, 20, 20));
+  CGImageRef cgImage = CGImageCreateCopy(image.CGImage);
+  const CFIndex initialRetainCount = CFGetRetainCount(cgImage);
+
+  OCMStub([imageGenerator copyCGImageAtTime:kCMTimeZero actualTime:nil error:[OCMArg anyObjectRef]])
+      .andDo(^(NSInvocation *invocation) {
+        CGImageRetain(cgImage);
+        [invocation setReturnValue:(void *)&cgImage];
+      });
+
+  @autoreleasepool {
+    LLSignalTestRecorder *recorder = [[imageAsset fetchImage] testRecorder];
+    expect(recorder).will.sendValuesWithCount(1);
+  }
+
+  expect(CFGetRetainCount(cgImage)).to.equal(initialRetainCount);
+  CGImageRelease(cgImage);
 });
 
 it(@"should err when underlying generator errs", ^{
