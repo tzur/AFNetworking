@@ -38,7 +38,7 @@ itShouldBehaveLike(kLTEqualityExamples, ^{
   return @{
     kLTEqualityExamplesObject: model,
     kLTEqualityExamplesEqualObject: equalModel,
-    kLTEqualityExamplesDifferentObjects: @[]
+    kLTEqualityExamplesDifferentObjects: @[[[NSObject alloc] init]]
   };
 });
 

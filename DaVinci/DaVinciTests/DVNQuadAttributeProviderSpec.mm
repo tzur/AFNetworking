@@ -29,7 +29,7 @@ itShouldBehaveLike(kLTEqualityExamples, ^{
   return @{
     kLTEqualityExamplesObject: model,
     kLTEqualityExamplesEqualObject: equalModel,
-    kLTEqualityExamplesDifferentObjects: @[]
+    kLTEqualityExamplesDifferentObjects: @[[[NSObject alloc] init]]
   };
 });
 
@@ -60,9 +60,6 @@ itShouldBehaveLike(kDVNAttributeProviderExamples, ^{
     kDVNAttributeProviderExamplesExpectedData: data,
     kDVNAttributeProviderExamplesExpectedGPUStruct: gpuStruct
   };
-});
-
-context(@"sample attribute data", ^{
 });
 
 context(@"provider", ^{
