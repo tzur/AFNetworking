@@ -16,7 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// assignments of all the variants must have the exact set of keys as the experiment they're in.
 
 /// Contains a variant, its assignments and its originating experiment.
-@interface LABVariant : LTValueObject
+@interface LABVariant : LTValueObject <NSSecureCoding>
 
 - (instancetype)init NS_UNAVAILABLE;
 

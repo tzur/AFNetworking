@@ -22,7 +22,9 @@ LTErrorCodesDeclare(LaboratoryErrorCodeProductID,
   /// Caused when a source failed to update itself.
   LABErrorCodeSourceUpdateFailed,
   /// Caused when a fetch operation failed.
-  LABErrorCodeFetchFailed
+  LABErrorCodeFetchFailed,
+  /// Caused when an experiment was misconfigured.
+  LABErrorCodeMisconfiguredExperiment
 );
 
 NS_ASSUME_NONNULL_END
