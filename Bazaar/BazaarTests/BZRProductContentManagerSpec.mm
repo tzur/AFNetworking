@@ -106,6 +106,37 @@ context(@"extracting content file", ^{
       return [actualPath.path isEqualToString:expectedPath];
     });
   });
+
+  context(@"extracting product content to the correct path", ^{
+    __block LTPath *productContentPath;
+
+    beforeEach(^{
+      OCMStub([fileManager bzr_deleteItemAtPathIfExists:OCMOCK_ANY]).andReturn([RACSignal empty]);
+      OCMStub([fileManager bzr_createDirectoryAtPathIfNotExists:OCMOCK_ANY])
+          .andReturn([RACSignal empty]);
+      OCMStub([fileArchiver unarchiveArchiveAtPath:OCMOCK_ANY toDirectory:OCMOCK_ANY])
+          .andReturn([RACSignal empty]);
+      auto bazaarContentPath = @"Bazaar/ProductsContent/";
+      auto relativePath = [bazaarContentPath stringByAppendingPathComponent:productIdentifier];
+      productContentPath = [LTPath pathWithBaseDirectory:LTPathBaseDirectoryApplicationSupport
+                                         andRelativePath:relativePath];
+    });
+
+    it(@"should extract to the product directory path", ^{
+      [[manager extractContentOfProduct:productIdentifier fromArchive:archivePath] testRecorder];
+
+      OCMVerify([fileArchiver unarchiveArchiveAtPath:OCMOCK_ANY
+                                         toDirectory:productContentPath.path]);
+    });
+
+    it(@"should extract to the product directory path concatenated with a given directory name", ^{
+      [[manager extractContentOfProduct:productIdentifier fromArchive:archivePath
+                          intoDirectory:@"versionDirectory"] testRecorder];
+
+      auto expectedPath = [productContentPath pathByAppendingPathComponent:@"versionDirectory"];
+      OCMVerify([fileArchiver unarchiveArchiveAtPath:OCMOCK_ANY toDirectory:expectedPath.path]);
+    });
+  });
 });
 
 context(@"deleting content directory", ^{
