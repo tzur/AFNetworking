@@ -24,6 +24,12 @@
 		060EA4491EDD86F80041487A /* MetalKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 06FD91A61EDC319000D180C7 /* MetalKit.framework */; };
 		060EA44A1EDD870D0041487A /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BB1089E1EDD72F700B27DC4 /* OpenGLES.framework */; };
 		060EA49E1EDD9CC20041487A /* NSBundle+PinkyBundle.mm in Sources */ = {isa = PBXBuildFile; fileRef = 060EA49D1EDD9CC20041487A /* NSBundle+PinkyBundle.mm */; };
+		060FB4641F0104EB00506895 /* Pinky.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 06FD92A11EDC66E500D180C7 /* Pinky.bundle */; };
+		060FB4651F0104F300506895 /* Pinky.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 06FD92A11EDC66E500D180C7 /* Pinky.bundle */; };
+		06172A901F02881600379124 /* PNKStyleUpsampleProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 06172A8F1F02881600379124 /* PNKStyleUpsampleProcessor.mm */; };
+		06172AB21F02884F00379124 /* PNKStyleUpsampleProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 06172AB11F02884F00379124 /* PNKStyleUpsampleProcessorSpec.mm */; };
+		06C3F7611EFF9E5B00D4B1F4 /* PNKSingleStyleTransferProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 06C3F7601EFF9E5B00D4B1F4 /* PNKSingleStyleTransferProcessor.mm */; };
+		06C3F7641EFFDA0900D4B1F4 /* PNKSingleStyleTransferProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 06C3F7631EFFDA0900D4B1F4 /* PNKSingleStyleTransferProcessorSpec.mm */; };
 		06FD927F1EDC5E1C00D180C7 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 06FD91AA1EDC31BB00D180C7 /* Accelerate.framework */; };
 		06FD92811EDC5E2D00D180C7 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 06FD92801EDC5E2D00D180C7 /* MobileCoreServices.framework */; };
 		06FD92861EDC5F3900D180C7 /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 06FD927D1EDC5DE500D180C7 /* opencv2.framework */; };
@@ -31,7 +37,6 @@
 		06FD92891EDC5F5D00D180C7 /* Objection-iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 06FD92841EDC5ED500D180C7 /* Objection-iOS.framework */; };
 		06FD928B1EDC5F6A00D180C7 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 06FD928A1EDC5F6A00D180C7 /* AssetsLibrary.framework */; };
 		06FD929B1EDC5FAD00D180C7 /* Mantle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 06FD92981EDC5F9100D180C7 /* Mantle.framework */; };
-		06FD92BF1EDC85C600D180C7 /* PNKDevicePlaceholderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 06FD92BE1EDC85C600D180C7 /* PNKDevicePlaceholderSpec.mm */; };
 		06FD92C11EDC85C600D180C7 /* libPinky.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A14171A11E6EAA93005DBEFF /* libPinky.a */; };
 		06FD92CB1EDC86E400D180C7 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 06FD91AA1EDC31BB00D180C7 /* Accelerate.framework */; };
 		06FD92CC1EDC86E900D180C7 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 06FD928A1EDC5F6A00D180C7 /* AssetsLibrary.framework */; };
@@ -67,7 +72,6 @@
 		A14173401E6EB59F005DBEFF /* libExpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A141728A1E6EAEE7005DBEFF /* libExpecta.a */; };
 		A14173421E6EB59F005DBEFF /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A141729D1E6EAF03005DBEFF /* libOCMock.a */; };
 		A14173431E6EB59F005DBEFF /* libSpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A14172B81E6EAF0D005DBEFF /* libSpecta.a */; };
-		A1541B0E1EAF1CC300B4F064 /* PNKPlaceholderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1541B0B1EAF1CC300B4F064 /* PNKPlaceholderSpec.mm */; };
 		C9131EA61EE0599D00E924DA /* EXPMatchers+beCloseToCATransform3D.mm in Sources */ = {isa = PBXBuildFile; fileRef = C9131E991EE0599D00E924DA /* EXPMatchers+beCloseToCATransform3D.mm */; };
 		C9131EA71EE0599D00E924DA /* EXPMatchers+beCloseToCATransform3D.mm in Sources */ = {isa = PBXBuildFile; fileRef = C9131E991EE0599D00E924DA /* EXPMatchers+beCloseToCATransform3D.mm */; };
 		C9131EA81EE0599D00E924DA /* EXPMatchers+beCloseToGLKMatrix.mm in Sources */ = {isa = PBXBuildFile; fileRef = C9131E9B1EE0599D00E924DA /* EXPMatchers+beCloseToGLKMatrix.mm */; };
@@ -88,7 +92,6 @@
 		C9131EDB1EE05A8400E924DA /* NSValue+OpenCVExtensions.mm in Sources */ = {isa = PBXBuildFile; fileRef = C9131ED91EE05A8400E924DA /* NSValue+OpenCVExtensions.mm */; };
 		C9815C411EE886D1004868CE /* PNKOpenCVExtensions.mm in Sources */ = {isa = PBXBuildFile; fileRef = C9815C3F1EE886D1004868CE /* PNKOpenCVExtensions.mm */; };
 		C9815C641EE88713004868CE /* PNKOpenCVExtensionsSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = C9815C631EE88713004868CE /* PNKOpenCVExtensionsSpec.mm */; };
-		C9ADC5DD1F00105300C87932 /* Pinky.bundle in Resources */ = {isa = PBXBuildFile; fileRef = C9ADC5DC1F00105300C87932 /* Pinky.bundle */; };
 		C9CAFCC11EE02F2A00B914E4 /* Mantle.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 06FD92981EDC5F9100D180C7 /* Mantle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C9CAFCC51EE0335500B914E4 /* Mantle.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 06FD92981EDC5F9100D180C7 /* Mantle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
@@ -429,6 +432,12 @@
 		060EA49B1EDD9C740041487A /* PNKDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKDefines.h; sourceTree = "<group>"; };
 		060EA49C1EDD9CC20041487A /* NSBundle+PinkyBundle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSBundle+PinkyBundle.h"; sourceTree = "<group>"; };
 		060EA49D1EDD9CC20041487A /* NSBundle+PinkyBundle.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSBundle+PinkyBundle.mm"; sourceTree = "<group>"; };
+		06172A8E1F02881600379124 /* PNKStyleUpsampleProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKStyleUpsampleProcessor.h; sourceTree = "<group>"; };
+		06172A8F1F02881600379124 /* PNKStyleUpsampleProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKStyleUpsampleProcessor.mm; sourceTree = "<group>"; };
+		06172AB11F02884F00379124 /* PNKStyleUpsampleProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKStyleUpsampleProcessorSpec.mm; sourceTree = "<group>"; };
+		06C3F75F1EFF9E5B00D4B1F4 /* PNKSingleStyleTransferProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKSingleStyleTransferProcessor.h; sourceTree = "<group>"; };
+		06C3F7601EFF9E5B00D4B1F4 /* PNKSingleStyleTransferProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKSingleStyleTransferProcessor.mm; sourceTree = "<group>"; };
+		06C3F7631EFFDA0900D4B1F4 /* PNKSingleStyleTransferProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKSingleStyleTransferProcessorSpec.mm; sourceTree = "<group>"; };
 		06FD917C1EDC30B400D180C7 /* LTEngine.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LTEngine.xcodeproj; path = ../LTEngine/LTEngine.xcodeproj; sourceTree = "<group>"; };
 		06FD91A41EDC318700D180C7 /* Metal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Metal.framework; path = System/Library/Frameworks/Metal.framework; sourceTree = SDKROOT; };
 		06FD91A61EDC319000D180C7 /* MetalKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MetalKit.framework; path = System/Library/Frameworks/MetalKit.framework; sourceTree = SDKROOT; };
@@ -441,10 +450,9 @@
 		06FD92871EDC5F4500D180C7 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		06FD928A1EDC5F6A00D180C7 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		06FD928C1EDC5F9100D180C7 /* Mantle.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Mantle.xcodeproj; path = ../third_party/Mantle/Mantle.xcodeproj; sourceTree = "<group>"; };
-		06FD92A11EDC66E500D180C7 /* PinkyBundle.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PinkyBundle.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
+		06FD92A11EDC66E500D180C7 /* Pinky.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Pinky.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		06FD92A31EDC66E500D180C7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		06FD92BC1EDC85C600D180C7 /* PinkyDeviceTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PinkyDeviceTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		06FD92BE1EDC85C600D180C7 /* PNKDevicePlaceholderSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKDevicePlaceholderSpec.mm; sourceTree = "<group>"; };
 		06FD92C01EDC85C600D180C7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		06FD92E01EDC893A00D180C7 /* PinkyDeviceTests-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PinkyDeviceTests-Prefix.pch"; sourceTree = "<group>"; };
 		882D1F141EC19998007F39F5 /* PNKPlaceholder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKPlaceholder.h; sourceTree = "<group>"; };
@@ -477,7 +485,6 @@
 		A14172BC1E6EB0CA005DBEFF /* PinkyTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PinkyTests-Prefix.pch"; sourceTree = "<group>"; };
 		A14172D71E6EB2FF005DBEFF /* TestHost.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TestHost.xcodeproj; path = ../Foundations/TestHost.xcodeproj; sourceTree = "<group>"; };
 		A1417A911E6ED9CB005DBEFF /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
-		A1541B0B1EAF1CC300B4F064 /* PNKPlaceholderSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKPlaceholderSpec.mm; sourceTree = "<group>"; };
 		C9131E981EE0599D00E924DA /* EXPMatchers+beCloseToCATransform3D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "EXPMatchers+beCloseToCATransform3D.h"; path = "../../LTEngine/LTEngineTests/EXPMatchers+beCloseToCATransform3D.h"; sourceTree = "<group>"; };
 		C9131E991EE0599D00E924DA /* EXPMatchers+beCloseToCATransform3D.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = "EXPMatchers+beCloseToCATransform3D.mm"; path = "../../LTEngine/LTEngineTests/EXPMatchers+beCloseToCATransform3D.mm"; sourceTree = "<group>"; };
 		C9131E9A1EE0599D00E924DA /* EXPMatchers+beCloseToGLKMatrix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "EXPMatchers+beCloseToGLKMatrix.h"; path = "../../LTEngine/LTEngineTests/EXPMatchers+beCloseToGLKMatrix.h"; sourceTree = "<group>"; };
@@ -499,7 +506,6 @@
 		C9815C3F1EE886D1004868CE /* PNKOpenCVExtensions.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKOpenCVExtensions.mm; sourceTree = "<group>"; };
 		C9815C401EE886D1004868CE /* PNKOpenCVExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKOpenCVExtensions.h; sourceTree = "<group>"; };
 		C9815C631EE88713004868CE /* PNKOpenCVExtensionsSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKOpenCVExtensionsSpec.mm; sourceTree = "<group>"; };
-		C9ADC5DC1F00105300C87932 /* Pinky.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Pinky.bundle; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -591,6 +597,51 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		063894FB1EFFE74300329145 /* Test Utils */ = {
+			isa = PBXGroup;
+			children = (
+				C9131E981EE0599D00E924DA /* EXPMatchers+beCloseToCATransform3D.h */,
+				C9131E991EE0599D00E924DA /* EXPMatchers+beCloseToCATransform3D.mm */,
+				C9131E9A1EE0599D00E924DA /* EXPMatchers+beCloseToGLKMatrix.h */,
+				C9131E9B1EE0599D00E924DA /* EXPMatchers+beCloseToGLKMatrix.mm */,
+				C9131E9C1EE0599D00E924DA /* EXPMatchers+beCloseToGLKVector.h */,
+				C9131E9D1EE0599D00E924DA /* EXPMatchers+beCloseToGLKVector.mm */,
+				C9131E9E1EE0599D00E924DA /* EXPMatchers+beCloseToMat.h */,
+				C9131E9F1EE0599D00E924DA /* EXPMatchers+beCloseToMat.mm */,
+				C9131EA01EE0599D00E924DA /* EXPMatchers+beCloseToScalar.h */,
+				C9131EA11EE0599D00E924DA /* EXPMatchers+beCloseToScalar.mm */,
+				C9131EA21EE0599D00E924DA /* EXPMatchers+equalMat.h */,
+				C9131EA31EE0599D00E924DA /* EXPMatchers+equalMat.mm */,
+				C9131EA41EE0599D00E924DA /* EXPMatchers+equalScalar.h */,
+				C9131EA51EE0599D00E924DA /* EXPMatchers+equalScalar.mm */,
+				C9131ED41EE05A4D00E924DA /* LTTestUtils+LTEngine.h */,
+				C9131ED51EE05A4D00E924DA /* LTTestUtils+LTEngine.mm */,
+				C9131ED81EE05A8400E924DA /* NSValue+OpenCVExtensions.h */,
+				C9131ED91EE05A8400E924DA /* NSValue+OpenCVExtensions.mm */,
+			);
+			name = "Test Utils";
+			sourceTree = "<group>";
+		};
+		06C3F73E1EFF9E3C00D4B1F4 /* Image Processing */ = {
+			isa = PBXGroup;
+			children = (
+				06C3F75F1EFF9E5B00D4B1F4 /* PNKSingleStyleTransferProcessor.h */,
+				06C3F7601EFF9E5B00D4B1F4 /* PNKSingleStyleTransferProcessor.mm */,
+				06172A8E1F02881600379124 /* PNKStyleUpsampleProcessor.h */,
+				06172A8F1F02881600379124 /* PNKStyleUpsampleProcessor.mm */,
+			);
+			name = "Image Processing";
+			sourceTree = "<group>";
+		};
+		06C3F7621EFFD9EA00D4B1F4 /* Image Processing */ = {
+			isa = PBXGroup;
+			children = (
+				06C3F7631EFFDA0900D4B1F4 /* PNKSingleStyleTransferProcessorSpec.mm */,
+				06172AB11F02884F00379124 /* PNKStyleUpsampleProcessorSpec.mm */,
+			);
+			name = "Image Processing";
+			sourceTree = "<group>";
+		};
 		06FD928D1EDC5F9100D180C7 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -623,6 +674,7 @@
 			isa = PBXGroup;
 			children = (
 				06FD92DD1EDC88C800D180C7 /* Tests */,
+				063894FB1EFFE74300329145 /* Test Utils */,
 				06FD92DF1EDC890300D180C7 /* Supporting Files */,
 			);
 			path = PinkyDeviceTests;
@@ -632,35 +684,8 @@
 			isa = PBXGroup;
 			children = (
 				C9815C651EE88730004868CE /* Extensions */,
-				06FD92DE1EDC88CE00D180C7 /* Utils */,
-				06FD92BE1EDC85C600D180C7 /* PNKDevicePlaceholderSpec.mm */,
 			);
 			name = Tests;
-			sourceTree = "<group>";
-		};
-		06FD92DE1EDC88CE00D180C7 /* Utils */ = {
-			isa = PBXGroup;
-			children = (
-				C9131E981EE0599D00E924DA /* EXPMatchers+beCloseToCATransform3D.h */,
-				C9131E991EE0599D00E924DA /* EXPMatchers+beCloseToCATransform3D.mm */,
-				C9131E9A1EE0599D00E924DA /* EXPMatchers+beCloseToGLKMatrix.h */,
-				C9131E9B1EE0599D00E924DA /* EXPMatchers+beCloseToGLKMatrix.mm */,
-				C9131E9C1EE0599D00E924DA /* EXPMatchers+beCloseToGLKVector.h */,
-				C9131E9D1EE0599D00E924DA /* EXPMatchers+beCloseToGLKVector.mm */,
-				C9131E9E1EE0599D00E924DA /* EXPMatchers+beCloseToMat.h */,
-				C9131E9F1EE0599D00E924DA /* EXPMatchers+beCloseToMat.mm */,
-				C9131EA01EE0599D00E924DA /* EXPMatchers+beCloseToScalar.h */,
-				C9131EA11EE0599D00E924DA /* EXPMatchers+beCloseToScalar.mm */,
-				C9131EA21EE0599D00E924DA /* EXPMatchers+equalMat.h */,
-				C9131EA31EE0599D00E924DA /* EXPMatchers+equalMat.mm */,
-				C9131EA41EE0599D00E924DA /* EXPMatchers+equalScalar.h */,
-				C9131EA51EE0599D00E924DA /* EXPMatchers+equalScalar.mm */,
-				C9131ED41EE05A4D00E924DA /* LTTestUtils+LTEngine.h */,
-				C9131ED51EE05A4D00E924DA /* LTTestUtils+LTEngine.mm */,
-				C9131ED81EE05A8400E924DA /* NSValue+OpenCVExtensions.h */,
-				C9131ED91EE05A8400E924DA /* NSValue+OpenCVExtensions.mm */,
-			);
-			name = Utils;
 			sourceTree = "<group>";
 		};
 		06FD92DF1EDC890300D180C7 /* Supporting Files */ = {
@@ -696,7 +721,6 @@
 		A14171981E6EAA93005DBEFF = {
 			isa = PBXGroup;
 			children = (
-				C9ADC5DC1F00105300C87932 /* Pinky.bundle */,
 				A14171B31E6EAAF6005DBEFF /* Configuration */,
 				A14171A31E6EAA93005DBEFF /* Pinky */,
 				06FD92A21EDC66E500D180C7 /* PinkyBundle */,
@@ -713,7 +737,7 @@
 			children = (
 				A14171A11E6EAA93005DBEFF /* libPinky.a */,
 				A14171C11E6EAC0D005DBEFF /* PinkyTests.xctest */,
-				06FD92A11EDC66E500D180C7 /* PinkyBundle.bundle */,
+				06FD92A11EDC66E500D180C7 /* Pinky.bundle */,
 				06FD92BC1EDC85C600D180C7 /* PinkyDeviceTests.xctest */,
 			);
 			name = Products;
@@ -723,6 +747,7 @@
 			isa = PBXGroup;
 			children = (
 				C9815C621EE886E0004868CE /* Extensions */,
+				06C3F73E1EFF9E3C00D4B1F4 /* Image Processing */,
 				A14172BA1E6EB04F005DBEFF /* Supporting Files */,
 				882D1F141EC19998007F39F5 /* PNKPlaceholder.h */,
 				882D1F151EC19998007F39F5 /* PNKPlaceholder.mm */,
@@ -867,7 +892,7 @@
 		A14173471E6EB62C005DBEFF /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				A1541B0B1EAF1CC300B4F064 /* PNKPlaceholderSpec.mm */,
+				06C3F7621EFFD9EA00D4B1F4 /* Image Processing */,
 			);
 			name = Tests;
 			sourceTree = "<group>";
@@ -934,7 +959,7 @@
 			);
 			name = PinkyBundle;
 			productName = PinkyBundle;
-			productReference = 06FD92A11EDC66E500D180C7 /* PinkyBundle.bundle */;
+			productReference = 06FD92A11EDC66E500D180C7 /* Pinky.bundle */;
 			productType = "com.apple.product-type.bundle";
 		};
 		06FD92BB1EDC85C600D180C7 /* PinkyDeviceTests */ = {
@@ -1336,7 +1361,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C9ADC5DD1F00105300C87932 /* Pinky.bundle in Resources */,
+				060FB4641F0104EB00506895 /* Pinky.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1344,6 +1369,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				060FB4651F0104F300506895 /* Pinky.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1361,7 +1387,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				06FD92BF1EDC85C600D180C7 /* PNKDevicePlaceholderSpec.mm in Sources */,
 				C9131ED61EE05A4D00E924DA /* LTTestUtils+LTEngine.mm in Sources */,
 				C9815C641EE88713004868CE /* PNKOpenCVExtensionsSpec.mm in Sources */,
 				C9131EAE1EE0599D00E924DA /* EXPMatchers+beCloseToScalar.mm in Sources */,
@@ -1382,6 +1407,8 @@
 				C9815C411EE886D1004868CE /* PNKOpenCVExtensions.mm in Sources */,
 				060EA49E1EDD9CC20041487A /* NSBundle+PinkyBundle.mm in Sources */,
 				882D1F161EC19998007F39F5 /* PNKPlaceholder.mm in Sources */,
+				06172A901F02881600379124 /* PNKStyleUpsampleProcessor.mm in Sources */,
+				06C3F7611EFF9E5B00D4B1F4 /* PNKSingleStyleTransferProcessor.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1389,12 +1416,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A1541B0E1EAF1CC300B4F064 /* PNKPlaceholderSpec.mm in Sources */,
 				C9131ED71EE05A4D00E924DA /* LTTestUtils+LTEngine.mm in Sources */,
 				C9131EAF1EE0599D00E924DA /* EXPMatchers+beCloseToScalar.mm in Sources */,
 				C9131EA91EE0599D00E924DA /* EXPMatchers+beCloseToGLKMatrix.mm in Sources */,
 				C9131EAD1EE0599D00E924DA /* EXPMatchers+beCloseToMat.mm in Sources */,
+				06172AB21F02884F00379124 /* PNKStyleUpsampleProcessorSpec.mm in Sources */,
 				C9131EA71EE0599D00E924DA /* EXPMatchers+beCloseToCATransform3D.mm in Sources */,
+				06C3F7641EFFDA0900D4B1F4 /* PNKSingleStyleTransferProcessorSpec.mm in Sources */,
 				C9131EB31EE0599D00E924DA /* EXPMatchers+equalScalar.mm in Sources */,
 				C9131EB11EE0599D00E924DA /* EXPMatchers+equalMat.mm in Sources */,
 				C9131EAB1EE0599D00E924DA /* EXPMatchers+beCloseToGLKVector.mm in Sources */,
@@ -1459,7 +1487,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
 				MACOSX_DEPLOYMENT_TARGET = iphone;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Lightricks.PinkyBundle;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "$(PROJECT_NAME)";
 				SKIP_INSTALL = YES;
 				WRAPPER_EXTENSION = bundle;
 			};
@@ -1476,7 +1504,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
 				MACOSX_DEPLOYMENT_TARGET = iphone;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Lightricks.PinkyBundle;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "$(PROJECT_NAME)";
 				SKIP_INSTALL = YES;
 				WRAPPER_EXTENSION = bundle;
 			};
