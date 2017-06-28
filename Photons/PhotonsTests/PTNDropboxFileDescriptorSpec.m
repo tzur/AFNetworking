@@ -3,9 +3,9 @@
 
 #import "PTNDropboxFileDescriptor.h"
 
+#import "NSURL+Dropbox.h"
 #import "PTNDropboxEntry.h"
 #import "PTNDropboxTestUtils.h"
-#import "NSURL+Dropbox.h"
 
 SpecBegin(PTNDropboxFileDescriptor)
 
