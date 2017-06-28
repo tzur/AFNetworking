@@ -3,6 +3,21 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/// Reason used by \c LABAssignmentsManager when informing its delegate that an assignment affected
+/// the user by adding it to the \c activeAssignments of the manager.
+extern NSString * const kLABAssignmentAffectedUserReasonActivatedForDevice;
+
+/// Reason used by \c LABAssignmentsManager when informing its delegate that an assignment affected
+/// the user by removing it to the \c activeAssignments of the manager.
+extern NSString * const kLABAssignmentAffectedUserReasonDeactivatedForDevice;
+
+/// Reason to use when reporting that an assignment affected a user by initiating a long-running
+/// business logic.
+extern NSString * const kLABAssignmentAffectedUserReasonInitiated;
+
+/// Reason to use when reporting that an assignment affected a user by displaying its effects.
+extern NSString * const kLABAssignmentAffectedUserReasonDisplayed;
+
 @protocol LABAssignmentsSource, LABStorage;
 
 /// Contains an assignment (key-value pair resulting from a variant) and its originating variant,
@@ -10,7 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 /// Since assignment data can be changed over time, the protocol groups this information in order to
 /// capture the value and its origins in a specific point in time.
-@protocol LABAssignment <NSObject>
+@protocol LABAssignment <NSSecureCoding>
 
 /// Assignment value.
 @property (readonly, nonatomic) id value;
@@ -29,23 +44,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-/// Contains assignments and their revision ID.
-@protocol LABRevisionedAssignments <NSObject>
-
-/// Revisioned assignments. A mapping between assignment keys and assignment models.
-///
-/// @note This property is KVO-compliant.
-@property (readonly, nonatomic) NSDictionary<NSString *, id<LABAssignment>> *assignments;
-
-/// Unique revison ID of \c assignments. The revison ID must not be a hash over \c assignments. An
-/// object providing an instance of this protocol must must provide a unique revision ID between two
-/// consecutive values of \c assignments, if these values are not equal to each other.
-///
-/// @note This property is KVO-compliant.
-@property (readonly, nonatomic) NSUUID *revisionID;
-
-@end
-
 /// Implementers of this protocol provide access to assignments (key and value pairs) and report
 /// their usage to an analytics service.
 @protocol LABAssignmentsManager <NSObject>
@@ -60,14 +58,14 @@ NS_ASSUME_NONNULL_BEGIN
 /// @note Calling this method does not guarantee that such assignments will not change.
 - (void)stabilizeUserExperienceAssignments;
 
-/// Reports to the analytics module that an assignment has affected the user experience. This method
-/// should not be called when the assignment has been used, but rather when the effects of the
-/// assignment were noticed by the user.
+/// Reports to the analytics module that an assignment has affected the user experience using a
+/// certain \c reason. An example of reason is "displayed".
 ///
 /// @example An assignment defines the number of seconds before a pop-up screen is shown. This
-/// method must be called when the pop-up screen has been shown and not when the timer was
-/// configured to use the value of the assignment.
-- (void)reportAssignmentAffectedUser:(id<LABAssignment>)assignment;
+/// method can be called with an \c kLABAssignmentAffectedUserReasonInitiated reason when a timer
+/// was configured to show the pop-up and with \c kLABAssignmentAffectedUserReasonDisplayed reason
+/// when the pop-up screen has been shown.
+- (void)reportAssignmentAffectedUser:(id<LABAssignment>)assignment reason:(NSString *)reason;
 
 /// Updates the \c activeAssignments with the latest assignments. The returned hot signal completes
 /// when the update completes successfully or errs with \c LABErrorCodeAssignmentUpdateFailed on
@@ -91,28 +89,26 @@ NS_ASSUME_NONNULL_BEGIN
 /// @return RACSignal<NSNumber *>
 - (RACSignal *)updateActiveAssignmentsInBackground;
 
-/// All currently active assignments and their revision ID.
+/// All currently active assignments.
 ///
 /// @note This property is KVO-compliant, changes are delivered on the main thread.
-@property (readonly, nonatomic) id<LABRevisionedAssignments> activeAssignments;
+@property (readonly, nonatomic) NSDictionary<NSString *, id<LABAssignment>> *activeAssignments;
 
 @end
 
 @class LABAssignmentsManager;
 
-/// Implementers of this protocol are notified of the active assignments and user affecting
-/// assignments.
+/// Implementers of this protocol are notified of changes to active assignments and assignments
+/// affecting the user.
 @protocol LABAssignmentsManagerDelegate <NSObject>
 
-/// Notifies the delegate that \c activeAssignments changed under \c assignmentsManager, having
-/// \c revisionID.
+/// Notifies the delegate that an \c assignment affected user experience using \c reason under
+/// the supervision of \c assignmentsManager. \c kLABAssignmentAffectedUserReasonActivatedForDevice
+/// and \c kLABAssignmentAffectedUserReasonDeactiveForDevice are used to as \c reason indicate that
+/// \c assignment was added or removed from the \c activeAssignments property of
+/// \c assignmentsManager, respectively.
 - (void)assignmentsManager:(LABAssignmentsManager *)assignmentsManager
-activeAssignmentsDidChange:(id<LABRevisionedAssignments>)activeAssignments;
-
-/// Notifies the delegate that an \c assignment affected user experience under
-/// the supervision of \c assignmentsManager.
-- (void)assignmentsManager:(LABAssignmentsManager *)assignmentsManager
-   assignmentDidAffectUser:(id<LABAssignment>)assignment;
+   assignmentDidAffectUser:(id<LABAssignment>)assignment reason:(NSString *)reason;
 
 @end
 
@@ -121,8 +117,8 @@ activeAssignmentsDidChange:(id<LABRevisionedAssignments>)activeAssignments;
 ///
 /// This class acts as a multiplexer and demultiplexer of the \c LABAssignmentsSource objects
 /// meaning it forwards all the method calls to the all the \c sources and returns the merged
-/// result. The \c activeAssignments property is a merged results of the \c activeAssignments
-/// property of all the underlying sources.
+/// result. The \c activeAssignments property is a merged results of the \c activeVariants property
+/// of all the underlying sources.
 ///
 /// @attention If different sources have assignments with the same key (conflicting assignments) the
 /// behavior for the conflicting experiments is undefined.
@@ -131,16 +127,16 @@ activeAssignmentsDidChange:(id<LABRevisionedAssignments>)activeAssignments;
 - (instancetype)init NS_UNAVAILABLE;
 
 /// Initializes with the given \c sources, \c delegate and default user defaults storage.
-/// \c delegate is held weakly and used to report the current active assignments and user affecting
-/// assignments.
+/// \c delegate is held weakly and used to report changes to \c activeAssignments and assignments
+/// affecting the user.
 ///
 /// @note All instances initialized with this initializer have a shared state.
 - (instancetype)initWithAssignmentSources:(NSArray<id<LABAssignmentsSource>> *)sources
                                  delegate:(id<LABAssignmentsManagerDelegate>)delegate;
 
 /// Initializes with the given \c sources, \c delegate and \c storage. \c delegate is held weakly
-/// and used to report the current active assignments and user affecting assignments. \c storage is
-/// used for persisting the revision of \c activeAssignments, and informing of its changes.
+/// and used to report changes to \c activeAssignments and assignments affecting the user.
+/// \c storage is used for persisting the \c activeAssignments, and informing of its changes.
 - (instancetype)initWithAssignmentSources:(NSArray<id<LABAssignmentsSource>> *)sources
                                  delegate:(id<LABAssignmentsManagerDelegate>)delegate
                                   storage:(id<LABStorage>)storage

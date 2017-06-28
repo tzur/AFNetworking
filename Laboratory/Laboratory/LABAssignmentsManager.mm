@@ -10,8 +10,13 @@
 #import "LABAssignmentsSource.h"
 #import "LABStorage.h"
 
+NSString * const kLABAssignmentAffectedUserReasonActivatedForDevice = @"activated_for_device";
+NSString * const kLABAssignmentAffectedUserReasonDeactivatedForDevice = @"deactivated_for_device";
+NSString * const kLABAssignmentAffectedUserReasonInitiated = @"initiated";
+NSString * const kLABAssignmentAffectedUserReasonDisplayed = @"displayed";
+
 /// Default implementation of \c LABAssignment protocol.
-@interface LABAssignment : MTLModel <LABAssignment>
+@interface LABAssignment : LTValueObject <LABAssignment>
 
 - (instancetype)init NS_UNAVAILABLE;
 
@@ -30,6 +35,30 @@
 @synthesize experiment = _experiment;
 @synthesize sourceName = _sourceName;
 
+- (nullable instancetype)initWithCoder:(NSCoder *)aDecoder {
+  NSDictionary * _Nullable value =
+      [aDecoder decodePropertyListForKey:@instanceKeypath(LABAssignment, value)];
+  NSString * _Nullable key = [aDecoder decodeObjectOfClass:[NSString class]
+                                                    forKey:@instanceKeypath(LABAssignment, key)];
+  NSString * _Nullable variant =
+      [aDecoder decodeObjectOfClass:[NSString class]
+                             forKey:@instanceKeypath(LABAssignment, variant)];
+  NSString * _Nullable experiment =
+      [aDecoder decodeObjectOfClass:[NSString class]
+                             forKey:@instanceKeypath(LABAssignment, experiment)];
+  NSString * _Nullable sourceName =
+      [aDecoder decodeObjectOfClass:[NSString class]
+                             forKey:@instanceKeypath(LABAssignment, sourceName)];
+
+  if (!value || ![key isKindOfClass:NSString.class] || ![variant isKindOfClass:NSString.class] ||
+      ![experiment isKindOfClass:NSString.class] || ![sourceName isKindOfClass:NSString.class]) {
+    return nil;
+  }
+
+  return [self initWithValue:value key:key variant:variant experiment:experiment
+                  sourceName:sourceName];
+}
+
 - (instancetype)initWithValue:(id)value key:(NSString *)key variant:(NSString *)variant
                    experiment:(NSString *)experiment sourceName:(NSString *)sourceName {
   if (self = [super init]) {
@@ -42,42 +71,16 @@
   return self;
 }
 
-@end
-
-/// Default implementation of \c LABRevisionedAssignments protocol.
-@interface LABRevisionedAssignments : MTLModel <LABRevisionedAssignments>
-
-/// Returns an instance with empty \c assignments and a randomly generated \c revisonID.
-+ (instancetype)empty;
-
-- (instancetype)init NS_UNAVAILABLE;
-
-/// Initializes with the given parameters.
-- (instancetype)initWithAssignments:(NSDictionary<NSString *, LABAssignment *> *)assignments
-                         revisionID:(NSUUID *)revisionID NS_DESIGNATED_INITIALIZER;
-
-/// Revisioned assignments.
-///
-/// @note This property is KVO-compliant.
-@property (readonly, nonatomic) NSDictionary<NSString *, LABAssignment *> *assignments;
-
-@end
-
-@implementation LABRevisionedAssignments
-
-@synthesize revisionID = _revisionID;
-
-+ (instancetype)empty {
-  return [[self alloc] initWithAssignments:@{} revisionID:[NSUUID UUID]];
+- (void)encodeWithCoder:(NSCoder *)aCoder {
+  [aCoder encodeObject:self.value forKey:@instanceKeypath(LABAssignment, value)];
+  [aCoder encodeObject:self.key forKey:@instanceKeypath(LABAssignment, key)];
+  [aCoder encodeObject:self.variant forKey:@instanceKeypath(LABAssignment, variant)];
+  [aCoder encodeObject:self.experiment forKey:@instanceKeypath(LABAssignment, experiment)];
+  [aCoder encodeObject:self.sourceName forKey:@instanceKeypath(LABAssignment, sourceName)];
 }
 
-- (instancetype)initWithAssignments:(NSDictionary<NSString *, LABAssignment *> *)assignments
-                         revisionID:(NSUUID *)revisionID {
-  if (self = [super init]) {
-    _assignments = assignments;
-    _revisionID = revisionID;
-  }
-  return self;
++ (BOOL)supportsSecureCoding {
+  return YES;
 }
 
 @end
@@ -87,8 +90,8 @@
 /// Used to provide and update active assignments.
 @property (readonly, nonatomic) NSArray<id<LABAssignmentsSource>> *sources;
 
-/// All currently active assignments and their revision.
-@property (readwrite, nonatomic, nullable) LABRevisionedAssignments *activeAssignments;
+/// All currently active assignments.
+@property (readwrite, nonatomic) NSDictionary<NSString *, LABAssignment *> *activeAssignments;
 
 /// Used to persist active assignments and their revision ID.
 @property (readonly, nonatomic) id<LABStorage> storage;
@@ -121,26 +124,40 @@
 
 static NSString * const kStoredActiveAssignmentsKey = @"ActiveAssignments";
 
-- (LABRevisionedAssignments *)loadStoredActiveAssignments {
+- (NSDictionary<NSString *, LABAssignment *> *)loadStoredActiveAssignments {
   NSData * _Nullable storedAssignmentsData =
       [self.storage objectForKey:kStoredActiveAssignmentsKey];
   if (![storedAssignmentsData isKindOfClass:NSData.class]) {
-    return [LABRevisionedAssignments empty];
+    return @{};
   }
 
   NSError *error;
-  LABRevisionedAssignments * _Nullable storedAssignments =
+  NSDictionary<NSString *, LABAssignment *> * _Nullable storedAssignments =
       [NSKeyedUnarchiver unarchiveTopLevelObjectWithData:storedAssignmentsData error:&error];
 
   if (!storedAssignments) {
     LogError(@"Failed to load model from key %@, error: %@", kStoredActiveAssignmentsKey, error);
-    return [LABRevisionedAssignments empty];
+    return @{};
   }
 
-  if (![storedAssignments isKindOfClass:LABRevisionedAssignments.class]) {
+  if (![storedAssignments isKindOfClass:NSDictionary.class]) {
     LogError(@"Expected stored model to be of type: %@, got: %@", NSDictionary.class,
              [storedAssignments class]);
-    return [LABRevisionedAssignments empty];
+    return @{};
+  }
+
+  for (NSString *key in storedAssignments) {
+    if (![key isKindOfClass:NSString.class]) {
+      LogError(@"Expected stored assignments key to be of type: %@, got: %@", NSString.class,
+               [key class]);
+      return @{};
+    }
+
+    if (![storedAssignments[key] isKindOfClass:LABAssignment.class]) {
+      LogError(@"Expected stored assignments value to be of type: %@, got: %@", LABAssignment.class,
+               [storedAssignments[key] class]);
+      return @{};
+    }
   }
 
   return storedAssignments;
@@ -190,20 +207,33 @@ static NSString * const kStoredActiveAssignmentsKey = @"ActiveAssignments";
 }
 
 - (void)applyAssignmentsIfNeeded:(NSDictionary<NSString *, LABAssignment *> *)assignments {
-  if (![self shouldApply:assignments]) {
+  if ([self.activeAssignments isEqual:assignments]) {
     return;
   }
 
-  self.activeAssignments =
-      [[LABRevisionedAssignments alloc] initWithAssignments:assignments revisionID:[NSUUID UUID]];
-  [self.delegate assignmentsManager:self activeAssignmentsDidChange:self.activeAssignments];
+  auto currentAssignments = [self.activeAssignments.allValues lt_set];
+  auto newAssignments = [assignments.allValues lt_set];
+
+  self.activeAssignments = assignments;
+
+  NSMutableSet<LABAssignment *> *activatedAssignments = [newAssignments mutableCopy];
+  [activatedAssignments minusSet:currentAssignments];
+
+  for (LABAssignment *assignment in activatedAssignments) {
+    [self.delegate assignmentsManager:self assignmentDidAffectUser:assignment
+                               reason:kLABAssignmentAffectedUserReasonActivatedForDevice];
+  }
+
+  NSMutableSet<LABAssignment *> *deactivatedAssignments = [currentAssignments mutableCopy];
+  [deactivatedAssignments minusSet:newAssignments];
+
+  for (LABAssignment *assignment in deactivatedAssignments) {
+    [self.delegate assignmentsManager:self assignmentDidAffectUser:assignment
+                               reason:kLABAssignmentAffectedUserReasonDeactivatedForDevice];
+  }
 
   auto data = [NSKeyedArchiver archivedDataWithRootObject:self.activeAssignments];
   [self.storage setObject:data forKey:kStoredActiveAssignmentsKey];
-}
-
-- (BOOL)shouldApply:(NSDictionary<NSString *, LABAssignment *> *)assignments {
-  return ![self.activeAssignments.assignments isEqual:assignments];
 }
 
 #pragma mark -
@@ -218,8 +248,8 @@ static NSString * const kStoredActiveAssignmentsKey = @"ActiveAssignments";
   }
 }
 
-- (void)reportAssignmentAffectedUser:(id<LABAssignment>)assignment {
-  [self.delegate assignmentsManager:self assignmentDidAffectUser:assignment];
+- (void)reportAssignmentAffectedUser:(id<LABAssignment>)assignment reason:(NSString *)reason {
+  [self.delegate assignmentsManager:self assignmentDidAffectUser:assignment reason:reason];
 }
 
 - (RACSignal *)updateActiveAssignments {
