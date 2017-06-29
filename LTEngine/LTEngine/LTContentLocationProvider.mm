@@ -13,6 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize contentScaleFactor = _contentScaleFactor;
 @synthesize contentInset = _contentInset;
 @synthesize visibleContentRect = _visibleContentRect;
+@synthesize minZoomScale = _minZoomScale;
 @synthesize maxZoomScale = _maxZoomScale;
 @synthesize zoomScale = _zoomScale;
 
@@ -24,6 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
                  contentScaleFactor:(CGFloat)contentScaleFactor
                        contentInset:(UIEdgeInsets)contentInset
                  visibleContentRect:(CGRect)visibleContentRect
+                       minZoomScale:(CGFloat)minZoomScale
                        maxZoomScale:(CGFloat)maxZoomScale
                           zoomScale:(CGFloat)zoomScale {
   if (self = [super init]) {
@@ -31,6 +33,7 @@ NS_ASSUME_NONNULL_BEGIN
     _contentScaleFactor = contentScaleFactor;
     _contentInset = contentInset;
     _visibleContentRect = visibleContentRect;
+    _minZoomScale = minZoomScale;
     _maxZoomScale = maxZoomScale;
     _zoomScale = zoomScale;
   }
@@ -41,7 +44,9 @@ NS_ASSUME_NONNULL_BEGIN
   return [self initWithContentSize:provider.contentSize
                 contentScaleFactor:provider.contentScaleFactor
                       contentInset:provider.contentInset
-                visibleContentRect:provider.visibleContentRect maxZoomScale:provider.maxZoomScale
+                visibleContentRect:provider.visibleContentRect
+                      minZoomScale:provider.minZoomScale
+                      maxZoomScale:provider.maxZoomScale
                          zoomScale:provider.zoomScale];
 }
 
@@ -62,6 +67,7 @@ NS_ASSUME_NONNULL_BEGIN
       locationInfo.contentScaleFactor == self.contentScaleFactor &&
       locationInfo.contentInset == self.contentInset &&
       locationInfo.visibleContentRect == self.visibleContentRect &&
+      locationInfo.minZoomScale == self.minZoomScale &&
       locationInfo.maxZoomScale == self.maxZoomScale &&
       locationInfo.zoomScale == self.zoomScale;
 }
@@ -75,6 +81,7 @@ NS_ASSUME_NONNULL_BEGIN
   lt::hash_combine(seed, self.contentInset.bottom);
   lt::hash_combine(seed, self.contentInset.right);
   lt::hash_combine(seed, self.visibleContentRect);
+  lt::hash_combine(seed, self.minZoomScale);
   lt::hash_combine(seed, self.maxZoomScale);
   lt::hash_combine(seed, self.zoomScale);
   return seed;

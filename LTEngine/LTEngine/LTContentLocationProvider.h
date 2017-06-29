@@ -26,6 +26,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly, nonatomic) CGRect visibleContentRect;
 
 /// Number of floating-point pixel units of the screen coordinate system per pixel unit of the
+/// content coordinate system, at the minimum zoom level.
+@property (readonly, nonatomic) CGFloat minZoomScale;
+
+/// Number of floating-point pixel units of the screen coordinate system per pixel unit of the
 /// content coordinate system, at the maximum zoom level.
 @property (readonly, nonatomic) CGFloat maxZoomScale;
 
@@ -49,6 +53,7 @@ NS_ASSUME_NONNULL_BEGIN
                  contentScaleFactor:(CGFloat)contentScaleFactor
                        contentInset:(UIEdgeInsets)contentInset
                  visibleContentRect:(CGRect)visibleContentRect
+                       minZoomScale:(CGFloat)minZoomScale
                        maxZoomScale:(CGFloat)maxZoomScale
                           zoomScale:(CGFloat)zoomScale NS_DESIGNATED_INITIALIZER;
 

@@ -101,6 +101,14 @@ context(@"properties", ^{
     expect(view.zoomScale).to.beCloseTo(0.5);
   });
 
+  it(@"should retrieve the minimum zoom scale from the internal scroll view", ^{
+    expect(view.minZoomScale).to.equal(view.scrollView.minimumZoomScale);
+    CGFloat minZoomScale = view.minZoomScale;
+    view.scrollView.minimumZoomScale /= 2;
+    expect(view.minZoomScale).toNot.equal(minZoomScale);
+    expect(view.minZoomScale).to.equal(view.scrollView.minimumZoomScale);
+  });
+
   it(@"should not have any attached gesture recognizers", ^{
     expect(view.gestureRecognizers).to.beNil();
   });

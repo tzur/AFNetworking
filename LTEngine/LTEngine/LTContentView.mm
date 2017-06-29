@@ -65,11 +65,13 @@ NS_ASSUME_NONNULL_BEGIN
 // LTContentNavigationManager protocol.
 @dynamic bounceToAspectFit;
 @dynamic navigationState;
+@dynamic minZoomScaleFactor;
 
 // LTContentLocationProvider protocol.
 @dynamic contentInset;
 @dynamic contentScaleFactor;
 @dynamic contentSize;
+@dynamic minZoomScale;
 @dynamic maxZoomScale;
 @dynamic zoomScale;
 

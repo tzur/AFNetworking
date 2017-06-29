@@ -766,6 +766,11 @@ static const NSTimeInterval kZoomToRectAnimationDuration = 0.4;
   [self navigateToDefaultState];
 }
 
+
+- (CGFloat)minZoomScale {
+  return self.scrollView.minimumZoomScale;
+}
+
 - (CGFloat)zoomScale {
   return std::min(self.bounds.size / self.visibleContentRectInPoints.size);
 }
