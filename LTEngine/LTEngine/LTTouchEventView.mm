@@ -28,6 +28,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Object used to retrieve the system uptime.
 @property (readonly, nonatomic) NSProcessInfo *processInfo;
 
+/// Operating system version of the device.
+@property (readonly, nonatomic) NSString *deviceSystemVersion;
+
 @end
 
 @implementation LTTouchEventView
@@ -44,6 +47,7 @@ NS_ASSUME_NONNULL_BEGIN
     self.sequenceID = 0;
     _displayLink = [self displayLinkForStationaryTouchEvents];
     _processInfo = [NSProcessInfo processInfo];
+    _deviceSystemVersion = UIDevice.currentDevice.systemVersion;
   }
   return self;
 }
@@ -188,8 +192,13 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 - (void)updateDisplayLink {
-  self.displayLink.paused = self.touchToSequenceID.count == 0 ||
-      !self.displayLink.preferredFramesPerSecond;
+  BOOL isTouchToSequenceIDEmpty = self.touchToSequenceID.count == 0;
+  if ([self.deviceSystemVersion compare:@"10.0" options:NSNumericSearch] != NSOrderedAscending) {
+    self.displayLink.paused = isTouchToSequenceIDEmpty ||
+        !self.displayLink.preferredFramesPerSecond;
+  } else {
+    self.displayLink.paused = isTouchToSequenceIDEmpty;
+  }
 }
 
 #pragma mark -

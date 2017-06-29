@@ -34,7 +34,8 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 /// Initial value is \c 60. Setting this value to \c 0 causes the forwarding of stationary touch
 /// events to stop.  Must not be greater than \c 60.
-@property (nonatomic) NSUInteger desiredRateForStationaryTouchEventForwarding;
+@property (nonatomic) NSUInteger desiredRateForStationaryTouchEventForwarding
+    NS_AVAILABLE_IOS(10_0);
 
 @end
 
