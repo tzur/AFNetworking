@@ -1,7 +1,7 @@
-// Copyright (c) 2016 Lightricks. All rights reserved.
+// Copyright (c) 2017 Lightricks. All rights reserved.
 // Created by Rouven Strauss.
 
-#import "DVNQuadAttributeProvider.h"
+#import "DVNQuadCenterAttributeProvider.h"
 
 #import <LTEngine/LTParameterizationKeyToValues.h>
 #import <LTEngine/LTQuad.h>
@@ -10,12 +10,12 @@
 
 #import "DVNAttributeProviderExamples.h"
 
-SpecBegin(DVNQuadAttributeProvider)
+SpecBegin(DVNQuadCenterAttributeProvider)
 
-__block DVNQuadAttributeProviderModel *model;
+__block DVNQuadCenterAttributeProviderModel *model;
 
 beforeEach(^{
-  model = [[DVNQuadAttributeProviderModel alloc] init];
+  model = [[DVNQuadCenterAttributeProviderModel alloc] init];
 });
 
 context(@"initialization", ^{
@@ -25,7 +25,8 @@ context(@"initialization", ^{
 });
 
 itShouldBehaveLike(kLTEqualityExamples, ^{
-  DVNQuadAttributeProviderModel *equalModel = [[DVNQuadAttributeProviderModel alloc] init];
+  DVNQuadCenterAttributeProviderModel *equalModel =
+      [[DVNQuadCenterAttributeProviderModel alloc] init];
   return @{
     kLTEqualityExamplesObject: model,
     kLTEqualityExamplesEqualObject: equalModel,
@@ -43,17 +44,17 @@ itShouldBehaveLike(kDVNAttributeProviderExamples, ^{
   LTSampleValues *samples =
       [[LTSampleValues alloc] initWithSampledParametricValues:{0, 1} mapping:mapping];
   LTGPUStruct *gpuStruct =
-      [[LTGPUStructRegistry sharedInstance] structForName:@"DVNQuadAttributeProviderStruct"];
+      [[LTGPUStructRegistry sharedInstance] structForName:@"DVNQuadCenterAttributeProviderStruct"];
 
-  std::vector<DVNQuadAttributeProviderStruct> values;
+  std::vector<DVNQuadCenterAttributeProviderStruct> values;
 
-  values.insert(values.end(), 6, {{0, 0}, {1, 0}, {1, 1}, {0, 1}});
-  values.insert(values.end(), 6, {{0, 0}, {2, 0}, {2, 2}, {0, 2}});
+  values.insert(values.end(), 6, {{LTVector2(0.5)}});
+  values.insert(values.end(), 6, {{LTVector2(1)}});
 
   NSData *data = [NSData dataWithBytes:values.data() length:values.size() * sizeof(values[0])];
 
   return @{
-    kDVNAttributeProviderExamplesModel: [[DVNQuadAttributeProviderModel alloc] init],
+    kDVNAttributeProviderExamplesModel: [[DVNQuadCenterAttributeProviderModel alloc] init],
     kDVNAttributeProviderExamplesInputQuads: @[quad, otherQuad],
     kDVNAttributeProviderExamplesInputIndices: @[@0, @1],
     kDVNAttributeProviderExamplesInputSample: samples,
@@ -67,7 +68,7 @@ context(@"provider", ^{
     it(@"should provide a correct updated model", ^{
       id<DVNAttributeProvider> provider = [model provider];
       [provider attributeDataFromGeometryValues:dvn::GeometryValues()];
-      DVNQuadAttributeProviderModel *currentModel = [provider currentModel];
+      DVNQuadCenterAttributeProviderModel *currentModel = [provider currentModel];
       expect(currentModel).to.equal(model);
     });
   });

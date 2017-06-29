@@ -24,7 +24,7 @@ SharedExamplesBegin(DVNQuadTransformAttributeProviderExamples)
 sharedExamplesFor(kDVNQuadTransformAttributeProviderExamples, ^(NSDictionary *data) {
   __block DVNQuadTransformAttributeProviderModel *model;
   __block NSNumber *isInverse;
-  
+
   beforeEach(^{
     isInverse = data[kDVNQuadTransformAttributeProviderIsInverse];
     model = [[DVNQuadTransformAttributeProviderModel alloc] initWithIsInverse:isInverse.boolValue];
@@ -42,7 +42,7 @@ sharedExamplesFor(kDVNQuadTransformAttributeProviderExamples, ^(NSDictionary *da
     return @{
       kLTEqualityExamplesObject: model,
       kLTEqualityExamplesEqualObject: equalModel,
-      kLTEqualityExamplesDifferentObjects: @[]
+      kLTEqualityExamplesDifferentObjects: @[[[NSObject alloc] init]]
     };
   });
 
@@ -59,17 +59,17 @@ sharedExamplesFor(kDVNQuadTransformAttributeProviderExamples, ^(NSDictionary *da
                                                                               mapping:mapping];
     LTGPUStruct *gpuStruct = [[LTGPUStructRegistry sharedInstance]
                               structForName:@"DVNQuadTransformAttributeProviderStruct"];
-    
+
     std::vector<DVNQuadTransformAttributeProviderStruct> values;
-    
+
     GLKMatrix3 quadTransform = quad.transform;
     GLKMatrix3 otherQuadTransform = otherQuad.transform;
-    
+
     if (isInverse.boolValue) {
       quadTransform = GLKMatrix3Invert(quadTransform, NULL);
       otherQuadTransform = GLKMatrix3Invert(otherQuadTransform, NULL);
     }
-    
+
     values.insert(values.end(), 6, {
       GLKMatrix3GetRow(quadTransform, 0),
       GLKMatrix3GetRow(quadTransform, 1),
@@ -80,9 +80,9 @@ sharedExamplesFor(kDVNQuadTransformAttributeProviderExamples, ^(NSDictionary *da
       GLKMatrix3GetRow(otherQuadTransform, 1),
       GLKMatrix3GetRow(otherQuadTransform, 2)
     });
-    
+
     NSData *data = [NSData dataWithBytes:values.data() length:values.size() * sizeof(values[0])];
-    
+
     return @{
       kDVNAttributeProviderExamplesModel: [[DVNQuadTransformAttributeProviderModel alloc]
                                            initWithIsInverse:isInverse.boolValue],
@@ -93,7 +93,7 @@ sharedExamplesFor(kDVNQuadTransformAttributeProviderExamples, ^(NSDictionary *da
       kDVNAttributeProviderExamplesExpectedGPUStruct: gpuStruct
     };
   });
-  
+
   context(@"provider", ^{
     context(@"model", ^{
       it(@"should provide a correct updated model", ^{
