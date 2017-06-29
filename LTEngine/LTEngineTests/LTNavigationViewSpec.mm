@@ -3,6 +3,7 @@
 
 #import "LTNavigationView.h"
 
+#import "LTContentNavigationDelegate.h"
 #import "LTContentNavigationManagerExamples.h"
 
 @interface LTNavigationView ()
@@ -38,6 +39,7 @@ context(@"initialization", ^{
     expect(view.frame).to.equal(kViewFrame);
     expect(view.contentSize).to.equal(kContentSize);
     expect(view.contentScaleFactor).to.equal(kContentScaleFactor);
+    expect(view.minZoomScaleFactor).to.equal(1);
     expect(LTContentCenter(view)).to.equal(kViewCenter);
   });
 
@@ -99,6 +101,30 @@ context(@"properties", ^{
     view.contentSize = view.bounds.size * view.contentScaleFactor * 2;
     expect(view.contentSize).to.equal(view.bounds.size * view.contentScaleFactor * 2);
     expect(view.zoomScale).to.beCloseTo(0.5);
+  });
+
+  it(@"should retrieve the minimum zoom scale from the internal scroll view", ^{
+    expect(view.minZoomScale).to.equal(view.scrollView.minimumZoomScale);
+    CGFloat minZoomScale = view.minZoomScale;
+    view.scrollView.minimumZoomScale /= 2;
+    expect(view.minZoomScale).toNot.equal(minZoomScale);
+    expect(view.minZoomScale).to.equal(view.scrollView.minimumZoomScale);
+  });
+
+  it(@"should set the minimum zoom scale factor", ^{
+    CGFloat minZoomScale = view.minZoomScale;
+    view.minZoomScaleFactor = 0.5;
+    expect(view.minZoomScale).to.equal(0.5 * minZoomScale);
+    expect(view.scrollView.minimumZoomScale).to.equal(0.5 * minZoomScale);
+  });
+
+  it(@"should call delegate upon changes of minimum zoom scale factor", ^{
+    id delegate = OCMProtocolMock(@protocol(LTContentNavigationDelegate));
+    view.navigationDelegate = delegate;
+    OCMExpect([[delegate ignoringNonObjectArgs] navigationManager:view
+                                         didNavigateToVisibleRect:CGRectZero]);
+    view.minZoomScaleFactor = 0.5;
+    OCMVerify(delegate);
   });
 
   it(@"should not have any attached gesture recognizers", ^{

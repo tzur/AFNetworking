@@ -21,6 +21,7 @@
 @property (nonatomic) CGSize contentSize;
 @property (nonatomic) CGRect visibleContentRect;
 @property (nonatomic) CGFloat zoomScale;
+@property (nonatomic) CGFloat minZoomScale;
 @property (nonatomic) CGFloat maxZoomScale;
 @end
 
@@ -67,6 +68,7 @@ __block cv::Mat4b expectedOutput;
 __block cv::Mat4b resizedContent;
 __block cv::Rect contentAreaInOutput;
 
+static const CGFloat kMinZoomScale = 0.5;
 static const CGFloat kMaxZoomScale = 16;
 
 static const CGSize kViewSize = CGSizeMake(32, 64);
@@ -85,6 +87,7 @@ beforeEach(^{
   contentLocationProvider = [[LTTestContentLocationProvider alloc] init];
   contentLocationProvider.contentSize = kContentSize;
   contentLocationProvider.zoomScale = 1;
+  contentLocationProvider.minZoomScale = kMinZoomScale;
   contentLocationProvider.maxZoomScale = kMaxZoomScale;
   contentLocationProvider.visibleContentRect = kVisibleContentRect;
 

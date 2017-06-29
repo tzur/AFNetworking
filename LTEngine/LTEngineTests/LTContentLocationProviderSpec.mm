@@ -12,6 +12,7 @@ context(@"initialization", ^{
   __block CGFloat contentScaleFactor;
   __block UIEdgeInsets contentInset;
   __block CGRect visibleContentRect;
+  __block CGFloat minZoomScale;
   __block CGFloat maxZoomScale;
   __block CGFloat zoomScale;
 
@@ -20,8 +21,9 @@ context(@"initialization", ^{
     contentScaleFactor = 3;
     contentInset = UIEdgeInsetsMake(4, 5, 6, 7);
     visibleContentRect = CGRectMake(8, 9, 10, 11);
-    maxZoomScale = 12;
-    zoomScale = 13;
+    minZoomScale = 12;
+    maxZoomScale = 13;
+    zoomScale = 12.5;
   });
 
   it(@"should initialize correctly", ^{
@@ -30,7 +32,8 @@ context(@"initialization", ^{
                                         contentScaleFactor:contentScaleFactor
                                               contentInset:contentInset
                                         visibleContentRect:visibleContentRect
-                                              maxZoomScale:maxZoomScale zoomScale:zoomScale];
+                                              minZoomScale:minZoomScale maxZoomScale:maxZoomScale
+                                                 zoomScale:zoomScale];
     expect(info.contentSize).to.equal(contentSize);
     expect(info.contentScaleFactor).to.equal(contentScaleFactor);
     expect(info.contentInset).to.equal(contentInset);
@@ -63,49 +66,64 @@ context(@"initialization", ^{
                                         contentScaleFactor:contentScaleFactor
                                               contentInset:contentInset
                                         visibleContentRect:visibleContentRect
-                                              maxZoomScale:maxZoomScale zoomScale:zoomScale];
+                                              minZoomScale:minZoomScale maxZoomScale:maxZoomScale
+                                                 zoomScale:zoomScale];
     LTContentLocationInfo *equalInfo =
         [[LTContentLocationInfo alloc] initWithContentSize:contentSize
                                         contentScaleFactor:contentScaleFactor
                                               contentInset:contentInset
                                         visibleContentRect:visibleContentRect
-                                              maxZoomScale:maxZoomScale zoomScale:zoomScale];
+                                              minZoomScale:minZoomScale maxZoomScale:maxZoomScale
+                                                 zoomScale:zoomScale];
     LTContentLocationInfo *infoWithDifferentContentSize =
         [[LTContentLocationInfo alloc] initWithContentSize:contentSize + CGSizeMakeUniform(1)
                                         contentScaleFactor:contentScaleFactor
                                               contentInset:contentInset
                                         visibleContentRect:visibleContentRect
-                                              maxZoomScale:maxZoomScale zoomScale:zoomScale];
+                                              minZoomScale:minZoomScale maxZoomScale:maxZoomScale
+                                                 zoomScale:zoomScale];
     LTContentLocationInfo *infoWithDifferentContentScaleFactor =
         [[LTContentLocationInfo alloc] initWithContentSize:contentSize
                                         contentScaleFactor:contentScaleFactor + 1
                                               contentInset:contentInset
                                         visibleContentRect:visibleContentRect
-                                              maxZoomScale:maxZoomScale zoomScale:zoomScale];
+                                              minZoomScale:minZoomScale maxZoomScale:maxZoomScale
+                                                 zoomScale:zoomScale];
     LTContentLocationInfo *infoWithDifferentContentInset =
         [[LTContentLocationInfo alloc] initWithContentSize:contentSize
                                         contentScaleFactor:contentScaleFactor
                                               contentInset:UIEdgeInsetsMake(1, 2, 3, 4)
                                         visibleContentRect:visibleContentRect
-                                              maxZoomScale:maxZoomScale zoomScale:zoomScale];
+                                              minZoomScale:minZoomScale maxZoomScale:maxZoomScale
+                                                 zoomScale:zoomScale];
     LTContentLocationInfo *infoWithDifferentVisibleContentRect =
         [[LTContentLocationInfo alloc] initWithContentSize:contentSize
                                         contentScaleFactor:contentScaleFactor
                                               contentInset:contentInset
                                         visibleContentRect:CGRectMake(0, 1, 2, 3)
+                                              minZoomScale:minZoomScale maxZoomScale:maxZoomScale
+                                                 zoomScale:zoomScale];
+    LTContentLocationInfo *infoWithDifferentMinZoomScale =
+        [[LTContentLocationInfo alloc] initWithContentSize:contentSize
+                                        contentScaleFactor:contentScaleFactor
+                                              contentInset:contentInset
+                                        visibleContentRect:visibleContentRect
+                                              minZoomScale:minZoomScale + 1
                                               maxZoomScale:maxZoomScale zoomScale:zoomScale];
     LTContentLocationInfo *infoWithDifferentMaxZoomScale =
         [[LTContentLocationInfo alloc] initWithContentSize:contentSize
                                         contentScaleFactor:contentScaleFactor
                                               contentInset:contentInset
                                         visibleContentRect:visibleContentRect
+                                              minZoomScale:minZoomScale
                                               maxZoomScale:maxZoomScale + 1 zoomScale:zoomScale];
     LTContentLocationInfo *infoWithDifferentZoomScale =
         [[LTContentLocationInfo alloc] initWithContentSize:contentSize
                                         contentScaleFactor:contentScaleFactor
                                               contentInset:contentInset
                                         visibleContentRect:visibleContentRect
-                                              maxZoomScale:maxZoomScale zoomScale:zoomScale + 1];
+                                              minZoomScale:minZoomScale maxZoomScale:maxZoomScale
+                                                 zoomScale:zoomScale + 1];
     return @{
       kLTEqualityExamplesObject: info,
       kLTEqualityExamplesEqualObject: equalInfo,
@@ -114,6 +132,7 @@ context(@"initialization", ^{
           infoWithDifferentContentScaleFactor,
           infoWithDifferentContentInset,
           infoWithDifferentVisibleContentRect,
+          infoWithDifferentMinZoomScale,
           infoWithDifferentMaxZoomScale,
           infoWithDifferentZoomScale
       ]
