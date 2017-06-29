@@ -29,6 +29,12 @@ typedef NSDictionary<NSString *, id> *(^INTAnalytricksContextUpdates)(id event);
 
 INTAggregationBlock INTAnalytricksContextAggregation(INTAnalytricksContextUpdates updatesBlock) {
   return ^(NSDictionary<NSString *, id> *, id event, INTEventMetadata *, INTAppContext *context) {
+    auto updates = updatesBlock(event);
+
+    if (!updates.count) {
+      return @{};
+    }
+
     INTAnalytricksContext * _Nullable analytricksContext =
         context[kINTAppContextAnalytricksContextKey];
     if (!analytricksContext) {
@@ -37,8 +43,6 @@ INTAggregationBlock INTAnalytricksContextAggregation(INTAnalytricksContextUpdate
                  "empty until then");
       return @{};
     }
-
-    auto updates = updatesBlock(event);
 
     return @{kINTAppContextAnalytricksContextKey: [analytricksContext merge:updates]};
   };
