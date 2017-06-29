@@ -27,6 +27,16 @@ NS_ASSUME_NONNULL_BEGIN
 /// inside its view at the end of any navigation request. Initial value is \c NO.
 @property (nonatomic) BOOL bounceToAspectFit;
 
+/// Multiplicative factor to adjust the minimum zoom scale for the content. A value of \c 1 causes
+/// the content to be aspect-fit to the bounds of the view managed by this instance, upon minimum
+/// zoom scale. Values lower than \c 1 allow the content to be proportionally smaller than the
+/// aspect-fit rectangle, while values greater than \c 1 restrict the content to be proportionally
+/// larger than the aspect-fit rectangle. Must be positive. Initial value is \c 1.
+///
+/// @important Attempts to set this property to values causing the content to be larger than allowed
+/// by the view are silently ignored.
+@property (nonatomic) CGFloat minZoomScaleFactor;
+
 /// Current navigation state of this instance.
 @property (readonly, nonatomic) LTContentNavigationState *navigationState;
 

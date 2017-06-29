@@ -146,6 +146,9 @@ static NSString * const kScrollAnimationNotification = @"LTNavigationViewAnimati
   return self;
 }
 
+/// Default minimum zoom scale factor.
+static const CGFloat kDefaultMinZoomScaleFactor = 1;
+
 /// Default maximal zoom scale.
 static const CGFloat kDefaultMaxZoomScale = 16;
 
@@ -156,6 +159,7 @@ static const CGFloat kDefaultDoubleTapZoomFactor = 3;
 static const NSUInteger kDefaultDoubleTapLevels = 3;
 
 - (void)setDefaults {
+  self.minZoomScaleFactor = kDefaultMinZoomScaleFactor;
   self.maxZoomScale = kDefaultMaxZoomScale;
   _doubleTapLevels = kDefaultDoubleTapLevels;
   _doubleTapZoomFactor = kDefaultDoubleTapZoomFactor;
@@ -313,6 +317,10 @@ static const NSUInteger kDefaultDoubleTapLevels = 3;
   // maximal zoom scale to be the minimal one. This is relevant to small images and will prevent
   // any zooming of the image.
   CGFloat maximumZoomScale = MAX(self.maxZoomScale, minimumZoomScale);
+
+  if (minimumZoomScale * self.minZoomScaleFactor < maximumZoomScale) {
+    minimumZoomScale *= self.minZoomScaleFactor;
+  }
 
   // Set the minimal zoom scale, and update the current scale to be in the new range.
   self.scrollView.minimumZoomScale = minimumZoomScale;
@@ -766,6 +774,23 @@ static const NSTimeInterval kZoomToRectAnimationDuration = 0.4;
   [self navigateToDefaultState];
 }
 
+@synthesize minZoomScaleFactor = _minZoomScaleFactor;
+
+- (void)setMinZoomScaleFactor:(CGFloat)minZoomScaleFactor {
+  if (self.minZoomScaleFactor == minZoomScaleFactor) {
+    return;
+  }
+  LTParameterAssert(minZoomScaleFactor > 0, @"Factor %g must be positive", minZoomScaleFactor);
+
+  _minZoomScaleFactor = minZoomScaleFactor;
+
+  CGFloat previousZoomScale = self.scrollView.zoomScale;
+  [self configureScrollViewZoomLimits];
+  if (self.scrollView.zoomScale != previousZoomScale) {
+    [self centerContentViewInScrollView];
+  }
+  self.visibleContentRectInPoints = [self visibleContentRectFromScrollView];
+}
 
 - (CGFloat)minZoomScale {
   return self.scrollView.minimumZoomScale;
