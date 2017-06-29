@@ -205,7 +205,8 @@ context(@"video", ^{
   beforeEach(^{
     duration = 11;
     auto traitSet = [NSSet setWithObject:kPTNDescriptorTraitAudiovisualKey];
-    videoDescriptor = PTNCreateAssetDescriptor(nil, @"foo", 0, traitSet, nil, nil, duration, 0);
+    videoDescriptor = PTNCreateAssetDescriptor(nil, @"foo", 0, traitSet, nil, nil, nil, duration,
+                                               0);
     timeFormatter = [[PTUTimeFormatter alloc] init];
   });
 

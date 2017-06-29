@@ -102,6 +102,10 @@ extern NSString * const kPTNDescriptorTraitGIFKey;
 /// information is unavailable.
 @property (readonly, nonatomic, nullable) NSDate *modificationDate;
 
+/// File name of the asset (including extension), or \c nil if that information is unavailable or
+/// undefined (for example, an asset that is not backed by a file system).
+@property (readonly, nonatomic, nullable) NSString *filename;
+
 /// Duration in seconds of the audiovisual asset.
 ///
 /// @note for photo assets, the duration is always zero.

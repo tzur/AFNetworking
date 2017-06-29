@@ -22,18 +22,28 @@ it(@"should initialize with path", ^{
   expect(identifier.ptn_fileSystemAssetPath).to.equal(path);
   expect(descriptor.creationDate).to.beNil();
   expect(descriptor.modificationDate).to.beNil();
+  expect(descriptor.filename).to.equal(@"foo");
   expect(descriptor.descriptorCapabilities).to.equal(PTNDescriptorCapabilityNone);
   expect(descriptor.assetDescriptorCapabilities).to.equal(PTNAssetDescriptorCapabilityNone);
   expect(descriptor.descriptorTraits).to.equal([NSSet set]);
 });
 
-it(@"should use last path component for localized title", ^{
+it(@"should use last path component as localized title", ^{
   LTPath *path = [LTPath pathWithBaseDirectory:LTPathBaseDirectoryTemp
                                andRelativePath:@"/foo/bar.jpg"];
   PTNFileSystemFileDescriptor *descriptor =
       [[PTNFileSystemFileDescriptor alloc] initWithPath:path];
 
   expect(descriptor.localizedTitle).to.equal(@"bar.jpg");
+});
+
+it(@"should use last path component as filename", ^{
+  LTPath *path = [LTPath pathWithBaseDirectory:LTPathBaseDirectoryTemp
+                               andRelativePath:@"/foo/bar.jpg"];
+  PTNFileSystemFileDescriptor *descriptor =
+      [[PTNFileSystemFileDescriptor alloc] initWithPath:path];
+
+  expect(descriptor.filename).to.equal(@"bar.jpg");
 });
 
 it(@"should initialize with path and creation and modification dates", ^{

@@ -24,19 +24,26 @@ it(@"should return Photons identifier url", ^{
 });
 
 it(@"should return localized title as the title of the item", ^{
-  item = OCMPartialMock([[MPMediaItem alloc] init]);
+  MPMediaItem *item = OCMPartialMock([[MPMediaItem alloc] init]);
   OCMStub(item.title).andReturn(@"foo");
 
   expect(item.localizedTitle).to.equal(@"foo");
 });
 
+it(@"should return nil filename", ^{
+  MPMediaItem *item = OCMPartialMock([[MPMediaItem alloc] init]);
+  OCMStub(item.title).andReturn(@"foo");
+
+  expect(item.filename).to.beNil();
+});
+
 it(@"should return video trait descriptor", ^{
-  item = [[MPMediaItem alloc] init];
+  auto item = [[MPMediaItem alloc] init];
   expect(item.descriptorTraits).to.equal([NSSet setWithObject:kPTNDescriptorTraitAudiovisualKey]);
 });
 
 it(@"should return video and cloud trait descriptors for cloud items", ^{
-  item = OCMPartialMock([[MPMediaItem alloc] init]);
+  MPMediaItem *item = OCMPartialMock([[MPMediaItem alloc] init]);
   OCMStub([item isCloudItem]).andReturn(YES);
   expect(item.descriptorTraits).to.equal([NSSet setWithObjects:kPTNDescriptorTraitAudiovisualKey,
                                           kPTNDescriptorTraitCloudBasedKey, nil]);
@@ -48,7 +55,7 @@ it(@"should return descriptor capabilities none", ^{
 
 it(@"should return creation date", ^{
   auto date = [NSDate date];
-  item = OCMPartialMock([[MPMediaItem alloc] init]);
+  MPMediaItem *item = OCMPartialMock([[MPMediaItem alloc] init]);
   OCMStub(item.creationDate).andReturn(date);
 
   expect(item.creationDate).to.equal(date);
@@ -59,7 +66,7 @@ it(@"should return nil modification date", ^{
 });
 
 it(@"should return duration", ^{
-  item = OCMPartialMock([[MPMediaItem alloc] init]);
+  MPMediaItem *item = OCMPartialMock([[MPMediaItem alloc] init]);
   OCMStub(item.playbackDuration).andReturn(1.25);
 
   expect(item.duration).to.equal(1.25);

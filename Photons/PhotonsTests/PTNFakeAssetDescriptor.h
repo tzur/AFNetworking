@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)init NS_UNAVAILABLE;
 
 /// Initializes with \c ptn_identifier, \c localizedTitle, \c descriptorCapabilities,
-/// \c descriptorTraits, \c creationDate, \c modificationDate, zero duration and \c
+/// \c descriptorTraits, \c creationDate, \c modificationDate, \c filename, zero duration and \c
 /// assetDescriptorCapabilities.
 - (instancetype)initWithIdentifier:(NSURL *)ptn_identifier
                     localizedTitle:(nullable NSString *)localizedTitle
@@ -21,10 +21,11 @@ NS_ASSUME_NONNULL_BEGIN
                   descriptorTraits:(NSSet<NSString *> *)descriptorTraits
                       creationDate:(nullable NSDate *)creationDate
                   modificationDate:(nullable NSDate *)modificationDate
+                          filename:(nullable NSString *)filename
        assetDescriptorCapabilities:(PTNAssetDescriptorCapabilities)assetDescriptorCapabilities;
 
 /// Initializes with \c ptn_identifier, \c localizedTitle, \c descriptorCapabilities,
-/// \c descriptorTraits, \c creationDate, \c modificationDate, \c duration and \c
+/// \c descriptorTraits, \c creationDate, \c modificationDate, \c filename, \c duration and \c
 /// assetDescriptorCapabilities.
 - (instancetype)initWithIdentifier:(NSURL *)ptn_identifier
                     localizedTitle:(nullable NSString *)localizedTitle
@@ -32,6 +33,7 @@ NS_ASSUME_NONNULL_BEGIN
                   descriptorTraits:(NSSet<NSString *> *)descriptorTraits
                       creationDate:(nullable NSDate *)creationDate
                   modificationDate:(nullable NSDate *)modificationDate
+                          filename:(nullable NSString *)filename
                           duration:(NSTimeInterval)duration
        assetDescriptorCapabilities:(PTNAssetDescriptorCapabilities)assetDescriptorCapabilities
     NS_DESIGNATED_INITIALIZER;

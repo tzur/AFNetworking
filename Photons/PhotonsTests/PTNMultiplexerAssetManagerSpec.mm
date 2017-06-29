@@ -258,9 +258,9 @@ context(@"changes", ^{
   context(@"favorite", ^{
     beforeEach(^{
       descriptorA = PTNCreateAssetDescriptor(PTNCreateURL(kSchemeA, nil, nil), nil, 0, nil, nil,
-                                             nil, PTNAssetDescriptorCapabilityFavorite);
+                                             nil, nil, PTNAssetDescriptorCapabilityFavorite);
       descriptorB = PTNCreateAssetDescriptor(PTNCreateURL(kSchemeB, nil, nil), nil, 0, nil, nil,
-                                             nil, PTNAssetDescriptorCapabilityFavorite);
+                                             nil, nil, PTNAssetDescriptorCapabilityFavorite);
     });
 
     it(@"should forward favorite requests to underlying managers", ^{
@@ -297,7 +297,7 @@ context(@"changes", ^{
 
     it(@"should err when any descriptors don't support PTNAssetDescriptorCapabilityFavorite", ^{
       id<PTNAssetDescriptor> Unfavorable =
-          PTNCreateAssetDescriptor(PTNCreateURL(kSchemeA, nil, nil), nil, 0, nil, nil, nil, 0);
+          PTNCreateAssetDescriptor(PTNCreateURL(kSchemeA, nil, nil), nil, 0, nil, nil, nil, nil, 0);
       RACSignal *values = [multiplexerManager favoriteDescriptors:@[descriptorA, Unfavorable]
                                                          favorite:YES];
 

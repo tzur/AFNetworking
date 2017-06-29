@@ -23,26 +23,28 @@ id<PTNDescriptor> PTNCreateDescriptor(NSURL * _Nullable identifier,
 
 /// Creates and returns a \c PTNAssetDescriptor with \c identifier or \c nil for a default
 /// identifier of \c fake://descriptor.asset, \c localizedTitle, \c capabilities, \c traits or
-/// \c nil to support no traits, \c creationDate, \c modificationDate, zero duration and \c
-/// assetCapabilities.
+/// \c nil to support no traits, \c creationDate, \c modificationDate, \c filename, zero duration
+/// and \c assetCapabilities.
 id<PTNAssetDescriptor> PTNCreateAssetDescriptor(NSURL * _Nullable identifier,
                                                 NSString * _Nullable localizedTitle,
                                                 PTNDescriptorCapabilities capabilities,
                                                 NSSet<NSString *> * _Nullable traits,
                                                 NSDate * _Nullable creationDate,
                                                 NSDate * _Nullable modificationDate,
+                                                NSString * _Nullable filename,
                                                 PTNAssetDescriptorCapabilities assetCapabilities);
 
 /// Creates and returns a \c PTNAssetDescriptor with \c identifier or \c nil for a default
 /// identifier of \c fake://descriptor.asset, \c localizedTitle, \c capabilities, \c traits or
-/// \c nil to support no traits, \c creationDate, \c modificationDate, \c duration and \c
-/// assetCapabilities.
+/// \c nil to support no traits, \c creationDate, \c modificationDate, \c filename, \c duration and
+/// \c assetCapabilities.
 id<PTNAssetDescriptor> PTNCreateAssetDescriptor(NSURL * _Nullable identifier,
                                                 NSString * _Nullable localizedTitle,
                                                 PTNDescriptorCapabilities capabilities,
                                                 NSSet<NSString *> * _Nullable traits,
                                                 NSDate * _Nullable creationDate,
                                                 NSDate * _Nullable modificationDate,
+                                                NSString * _Nullable filename,
                                                 NSTimeInterval duration,
                                                 PTNAssetDescriptorCapabilities assetCapabilities);
 

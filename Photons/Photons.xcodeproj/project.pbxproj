@@ -879,7 +879,6 @@
 		49F615BDE58178359DAFCD59 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				B4119F101EEE749100756808 /* MediaPlayer.framework */,
 				0DF1515E1EAF7330009F3080 /* CoreMedia.framework */,
 				8861FDD91E5A2BA800CA1436 /* AVFoundation.framework */,
 				8861FDCD1E5A2B5100CA1436 /* CoreGraphics.framework */,
@@ -963,13 +962,13 @@
 				848D2E321C4F75A600491AB3 /* PTNDropboxFakeDBRestClient.m */,
 				841AB67B1C7B704200A50BD1 /* PTNDropboxFakeRestClient.h */,
 				841AB67C1C7B704200A50BD1 /* PTNDropboxFakeRestClient.m */,
+				84DD776C1CA94D70000C3197 /* PTNDropboxFakeRestClientProvider.h */,
+				84DD776D1CA94D70000C3197 /* PTNDropboxFakeRestClientProvider.m */,
 				848186DF1C3BC4F70070462E /* PTNDropboxFileDescriptorSpec.m */,
 				843CD33B1C46763F007435E8 /* PTNDropboxPathProviderSpec.m */,
 				848D2E331C4F75A600491AB3 /* PTNDropboxRestClientSpec.m */,
 				844C0F651C35502A001A6DC9 /* PTNDropboxTestUtils.h */,
 				844C0F661C35502A001A6DC9 /* PTNDropboxTestUtils.m */,
-				84DD776C1CA94D70000C3197 /* PTNDropboxFakeRestClientProvider.h */,
-				84DD776D1CA94D70000C3197 /* PTNDropboxFakeRestClientProvider.m */,
 			);
 			name = Dropbox;
 			sourceTree = "<group>";
@@ -1007,11 +1006,11 @@
 			children = (
 				845162F51C986EDA00AD8B5B /* NSURL+PTNCacheSpec.m */,
 				84E9E9581CBE86E6006EBDB3 /* NSURLCache+PhotonsSpec.mm */,
-				84DD77B61CA9693B000C3197 /* PTNCacheInfoSpec.m */,
-				84DD77E81CA96C2E000C3197 /* PTNCacheResponseSpec.m */,
 				84794C6E1CBE90D90042D8F1 /* PTNCacheFakeNSURLCache.h */,
 				84794C6F1CBE90D90042D8F1 /* PTNCacheFakeNSURLCache.m */,
+				84DD77B61CA9693B000C3197 /* PTNCacheInfoSpec.m */,
 				842C09B61CC8C97C00DB2DB2 /* PTNCacheProxySpec.mm */,
+				84DD77E81CA96C2E000C3197 /* PTNCacheResponseSpec.m */,
 				84A677151CCE35C2009AEC9A /* PTNDataAssetCacheSpec.mm */,
 				84A677301CCE36D3009AEC9A /* PTNFakeDataCache.h */,
 				84A677311CCE36D3009AEC9A /* PTNFakeDataCache.m */,
@@ -1035,10 +1034,10 @@
 		848189A11C3C144C0070462E /* Multiplexing */ = {
 			isa = PBXGroup;
 			children = (
-				84CCB1141D699CD100BD7323 /* PTNMultiplexerAuthorizationManager.h */,
-				84CCB1151D699CD100BD7323 /* PTNMultiplexerAuthorizationManager.mm */,
 				848189BB1C3C14720070462E /* PTNMultiplexerAssetManager.h */,
 				848189BC1C3C14720070462E /* PTNMultiplexerAssetManager.m */,
+				84CCB1141D699CD100BD7323 /* PTNMultiplexerAuthorizationManager.h */,
+				84CCB1151D699CD100BD7323 /* PTNMultiplexerAuthorizationManager.mm */,
 			);
 			name = Multiplexing;
 			sourceTree = "<group>";
@@ -1046,8 +1045,8 @@
 		848189BF1C3C1A040070462E /* Multiplexing */ = {
 			isa = PBXGroup;
 			children = (
-				847BE1491D69A68F00F33BC8 /* PTNMultiplexerAuthorizationManagerSpec.mm */,
 				848189C01C3C1A350070462E /* PTNMultiplexerAssetManagerSpec.mm */,
+				847BE1491D69A68F00F33BC8 /* PTNMultiplexerAuthorizationManagerSpec.mm */,
 				84818A361C3D21920070462E /* PTNMultiplexingTestUtils.h */,
 				84818A371C3D21920070462E /* PTNMultiplexingTestUtils.mm */,
 			);
@@ -1065,10 +1064,10 @@
 		84ED22961CCE6114005B42D9 /* Intercepting */ = {
 			isa = PBXGroup;
 			children = (
-				84ED227A1CCE60DE005B42D9 /* PTNInterceptingAssetManager.h */,
-				84ED227B1CCE60DE005B42D9 /* PTNInterceptingAssetManager.mm */,
 				84F054381CF5FD5D00A426DE /* PTNAlbumInterceptionController.h */,
 				84F054391CF5FD5D00A426DE /* PTNAlbumInterceptionController.mm */,
+				84ED227A1CCE60DE005B42D9 /* PTNInterceptingAssetManager.h */,
+				84ED227B1CCE60DE005B42D9 /* PTNInterceptingAssetManager.mm */,
 			);
 			name = Intercepting;
 			sourceTree = "<group>";
@@ -1211,7 +1210,6 @@
 		8B2FD0201AF9F79000757B1F /* Photons */ = {
 			isa = PBXGroup;
 			children = (
-				8BAFDC981B0DED4C003FB8F5 /* Photons.h */,
 				8476B8911C58B8D9004E0175 /* Authorization */,
 				8B2FD0711AFA0B5100757B1F /* Base */,
 				845162DD1C986A4E00AD8B5B /* Cache */,
@@ -1224,6 +1222,7 @@
 				848189A11C3C144C0070462E /* Multiplexing */,
 				8B2FD0721AFA0B5800757B1F /* PhotoKit */,
 				8B2FD0381AF9F92300757B1F /* Supporting Files */,
+				8BAFDC981B0DED4C003FB8F5 /* Photons.h */,
 			);
 			path = Photons;
 			sourceTree = "<group>";
@@ -1291,6 +1290,10 @@
 				8B3832301B5B89BD00620560 /* PTNAlbumChangesetMove.h */,
 				8B3832311B5B89BD00620560 /* PTNAlbumChangesetMove.m */,
 				8B2FD07B1AFB4EB900757B1F /* PTNAssetManager.h */,
+				BE742B511DF40E10009AAFAB /* PTNAudiovisualAsset.h */,
+				BE742B721DF4115E009AAFAB /* PTNAudiovisualAsset.mm */,
+				BE40BE1D1DF6F561007F4F57 /* PTNAVAssetFetchOptions.h */,
+				BE40BE1E1DF6F561007F4F57 /* PTNAVAssetFetchOptions.mm */,
 				842A3C281C54C70400BD10C1 /* PTNDataAsset.h */,
 				842A3C421C54D33A00BD10C1 /* PTNDataBackedImageAsset.h */,
 				842A3C431C54D33A00BD10C1 /* PTNDataBackedImageAsset.m */,
@@ -1320,10 +1323,6 @@
 				843CD2311C464F9A007435E8 /* PTNSignalCache.m */,
 				84741D1A1C99ADF5001D3D1D /* PTNStaticImageAsset.h */,
 				84741D1B1C99ADF5001D3D1D /* PTNStaticImageAsset.m */,
-				BE742B511DF40E10009AAFAB /* PTNAudiovisualAsset.h */,
-				BE742B721DF4115E009AAFAB /* PTNAudiovisualAsset.mm */,
-				BE40BE1D1DF6F561007F4F57 /* PTNAVAssetFetchOptions.h */,
-				BE40BE1E1DF6F561007F4F57 /* PTNAVAssetFetchOptions.mm */,
 			);
 			name = Base;
 			sourceTree = "<group>";
@@ -1337,6 +1336,8 @@
 				8B2FD0871B00E8A500757B1F /* PhotoKit+Photons.mm */,
 				8B3832341B5B8FC200620560 /* PTNAlbumChangeset+PhotoKit.h */,
 				8B3832351B5B8FC200620560 /* PTNAlbumChangeset+PhotoKit.mm */,
+				BE40BE3D1DF707D2007F4F57 /* PTNAVAssetFetchOptions+PhotoKit.h */,
+				BE40BE3E1DF707D2007F4F57 /* PTNAVAssetFetchOptions+PhotoKit.mm */,
 				8BAFDC4D1B0DC6B9003FB8F5 /* PTNImageFetchOptions+PhotoKit.h */,
 				8BAFDC4E1B0DC6B9003FB8F5 /* PTNImageFetchOptions+PhotoKit.m */,
 				8B2FD0821B00E2ED00757B1F /* PTNPhotoKitAlbum.h */,
@@ -1358,8 +1359,6 @@
 				8B5619941B663FAB006B0DA0 /* PTNPhotoKitImageManager.h */,
 				8B2FD0921B01067700757B1F /* PTNPhotoKitObserver.h */,
 				8B2FD0931B01067700757B1F /* PTNPhotoKitObserver.m */,
-				BE40BE3D1DF707D2007F4F57 /* PTNAVAssetFetchOptions+PhotoKit.h */,
-				BE40BE3E1DF707D2007F4F57 /* PTNAVAssetFetchOptions+PhotoKit.mm */,
 			);
 			name = PhotoKit;
 			sourceTree = "<group>";
@@ -1368,7 +1367,9 @@
 			isa = PBXGroup;
 			children = (
 				8B2FD0EB1B0B494A00757B1F /* NSURL+PhotoKitSpec.mm */,
+				84146FB41C15BD5A00BAE903 /* PhotoKit+PhotonsSpec.m */,
 				8B56195D1B65113F006B0DA0 /* PTNAlbumChangeset+PhotoKitSpec.mm */,
+				BE40BE421DF71230007F4F57 /* PTNAVAssetFetchOptions+PhotoKitSpec.mm */,
 				8B56198F1B661387006B0DA0 /* PTNImageFetchOptions+PhotoKitSpec.m */,
 				8B5619691B66098B006B0DA0 /* PTNPhotoKitAlbumSpec.mm */,
 				8B2FD0E31B09DDA700757B1F /* PTNPhotoKitAssetManagerSpec.mm */,
@@ -1390,8 +1391,6 @@
 				8B2FD0961B04D62B00757B1F /* PTNPhotoKitObserverSpec.mm */,
 				8BF1359E1B79E5B300F4D0B3 /* PTNPhotoKitTestUtils.h */,
 				8BF1359F1B79E5B300F4D0B3 /* PTNPhotoKitTestUtils.mm */,
-				BE40BE421DF71230007F4F57 /* PTNAVAssetFetchOptions+PhotoKitSpec.mm */,
-				84146FB41C15BD5A00BAE903 /* PhotoKit+PhotonsSpec.m */,
 			);
 			name = PhotoKit;
 			sourceTree = "<group>";
@@ -1494,19 +1493,21 @@
 			children = (
 				848598201CBA4C31000A021B /* NSError+PhotonsSpec.mm */,
 				8414EACC1C5E307500014DD1 /* NSURL+PTNResizingStrategySpec.m */,
-				8B5619591B6508E6006B0DA0 /* PTNAlbumChangesetSpec.m */,
 				84515FED1C96CD5100AD8B5B /* PTNAlbumChangesetIncrementalChangesSpec.m */,
 				8B56195B1B650A4A006B0DA0 /* PTNAlbumChangesetMoveSpec.m */,
+				8B5619591B6508E6006B0DA0 /* PTNAlbumChangesetSpec.m */,
 				84333C911CC7B7FE00EC5FB2 /* PTNAlbumSpec.mm */,
+				BE742B741DF43010009AAFAB /* PTNAudiovisualAssetSpec.m */,
+				BE40BE401DF7109D007F4F57 /* PTNAVAssetFetchOptionsSpec.mm */,
 				842A3C4A1C54D63100BD10C1 /* PTNDataBackedImageAssetSpec.m */,
 				84F467801D0808230060EFAA /* PTNDisposableRetainingSignal.h */,
 				84F467811D0808230060EFAA /* PTNDisposableRetainingSignal.m */,
 				8463DA031D1008A000FF4935 /* PTNFakeAlbumDescriptor.h */,
 				8463DA041D1008A000FF4935 /* PTNFakeAlbumDescriptor.m */,
-				841B00EF1CEA05FD00B3CFD7 /* PTNFakeAssetManager.h */,
-				841B00F01CEA05FD00B3CFD7 /* PTNFakeAssetManager.m */,
 				84E700FA1D0043D8005A9AFC /* PTNFakeAssetDescriptor.h */,
 				84E700FB1D0043D8005A9AFC /* PTNFakeAssetDescriptor.m */,
+				841B00EF1CEA05FD00B3CFD7 /* PTNFakeAssetManager.h */,
+				841B00F01CEA05FD00B3CFD7 /* PTNFakeAssetManager.m */,
 				845B68E61CF3251C00D405ED /* PTNFakeDescriptor.h */,
 				845B68E71CF3251C00D405ED /* PTNFakeDescriptor.m */,
 				842A3C4C1C54D65D00BD10C1 /* PTNFileBackedImageAssetSpec.m */,
@@ -1514,17 +1515,15 @@
 				8B5619761B6612C3006B0DA0 /* PTNImageFetchOptionsSpec.m */,
 				8BCF58551BCD0A74001EE2ED /* PTNImageMetadataSpec.mm */,
 				8B16A8761BCBF3E9006DAAA7 /* PTNImageResizerSpec.mm */,
+				846341E51CFC68ED001FA199 /* PTNMulticastingSignalCacheSpec.mm */,
 				844C10BF1C3A5D54001A6DC9 /* PTNNSURLTestUtils.h */,
 				844C10C01C3A5D54001A6DC9 /* PTNNSURLTestUtils.mm */,
-				846341E51CFC68ED001FA199 /* PTNMulticastingSignalCacheSpec.mm */,
 				8B5619671B654515006B0DA0 /* PTNProgressSpec.m */,
 				8BAB947E1B7CB25400B25392 /* PTNResizingStrategySpec.mm */,
 				843CD24D1C465445007435E8 /* PTNSignalCacheSpec.m */,
 				84741D1D1C99B173001D3D1D /* PTNStaticImageAssetSpec.m */,
 				84013BB01CBFB07D00C40E42 /* PTNTestUtils.h */,
 				84013BB11CBFB07D00C40E42 /* PTNTestUtils.mm */,
-				BE742B741DF43010009AAFAB /* PTNAudiovisualAssetSpec.m */,
-				BE40BE401DF7109D007F4F57 /* PTNAVAssetFetchOptionsSpec.mm */,
 			);
 			name = Base;
 			sourceTree = "<group>";
@@ -1541,11 +1540,13 @@
 		8BAB94CC1B80710300B25392 /* FileSystem */ = {
 			isa = PBXGroup;
 			children = (
+				843CD1E61C463FF3007435E8 /* NSFileManager+FileSystem.h */,
 				8BAB94E41B80730E00B25392 /* NSURL+FileSystem.h */,
 				8BAB94E51B80730E00B25392 /* NSURL+FileSystem.m */,
-				843CD1E61C463FF3007435E8 /* NSFileManager+FileSystem.h */,
 				0DF0D1FE1EACF36D000EEF37 /* PTNAVImageAsset.h */,
 				0DF0D1FF1EACF36D000EEF37 /* PTNAVImageAsset.mm */,
+				0DF0D22F1EAE1935000EEF37 /* PTNAVImageGeneratorFactory.h */,
+				0DF0D2301EAE1935000EEF37 /* PTNAVImageGeneratorFactory.mm */,
 				84182D7B1C43992700F762DF /* PTNFileSystemAssetManager.h */,
 				84182D7C1C43992700F762DF /* PTNFileSystemAssetManager.m */,
 				848188821C3BF48E0070462E /* PTNFileSystemDirectoryDescriptor.h */,
@@ -1553,8 +1554,6 @@
 				848188841C3BF48E0070462E /* PTNFileSystemFileDescriptor.h */,
 				848188851C3BF48E0070462E /* PTNFileSystemFileDescriptor.m */,
 				84182D971C43993B00F762DF /* PTNFileSystemFileManager.h */,
-				0DF0D22F1EAE1935000EEF37 /* PTNAVImageGeneratorFactory.h */,
-				0DF0D2301EAE1935000EEF37 /* PTNAVImageGeneratorFactory.mm */,
 			);
 			name = FileSystem;
 			sourceTree = "<group>";

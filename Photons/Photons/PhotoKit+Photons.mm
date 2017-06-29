@@ -18,6 +18,16 @@ NS_ASSUME_NONNULL_BEGIN
 /// resources will be ignored.
 - (NSString *)uniformTypeIdentifier;
 
+/// Undocumented method returning the file name of this asset. In case where the asset has multiple
+/// resources, it returns the file name of the first resource.
+///
+/// @important since the PTNAssetDescriptor protocol requires this undocumented method which is
+/// already implemented on \c PHAsset, there's no way to gracefully check if the selector is
+/// implemented and return \c nil instead. However, this selector is available since the iOS 8.0,
+/// where PhotoKit was introduced, so up to new iOS versions there's no worry that calling this
+/// selector will crash the app.
+- (nullable NSString *)filename;
+
 @end
 
 @implementation PHAsset (Photons)

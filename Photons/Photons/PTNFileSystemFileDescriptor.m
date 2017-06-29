@@ -60,6 +60,10 @@ NS_ASSUME_NONNULL_BEGIN
   return PTNAssetDescriptorCapabilityNone;
 }
 
+- (nullable NSString *)filename {
+  return self.path.path.lastPathComponent;
+}
+
 - (NSSet<NSString *> *)descriptorTraits {
   NSString * _Nullable UTI;
   BOOL success = [self.path.url getResourceValue:&UTI forKey:NSURLTypeIdentifierKey error:nil];
