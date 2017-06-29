@@ -5,6 +5,8 @@
 
 #import <LTKit/NSArray+Functional.h>
 #import <LTKit/NSArray+NSSet.h>
+#import <LTKit/NSDictionary+Functional.h>
+#import <LTKit/NSSet+Functional.h>
 
 #import "LABFakeAssignmentsSource.h"
 #import "LABFakeStorage.h"
@@ -27,17 +29,21 @@ static NSDictionary *LABFakeAssignment(id value, NSString *key, NSString *varian
   };
 }
 
+static NSDictionary *LABFakeAssignment(id<LABAssignment> assignment) {
+  return LABFakeAssignment(assignment.value, assignment.key, assignment.variant,
+                           assignment.experiment, assignment.sourceName);
+}
+
 static NSDictionary<NSString *, NSDictionary *> *
     LABFakeAssignments(NSDictionary<NSString *, id<LABAssignment>> *assignments) {
   auto result = [NSMutableDictionary dictionary];
 
   [assignments enumerateKeysAndObjectsUsingBlock:^(NSString *key, id<LABAssignment> assignment,
                                                    BOOL *) {
-    result[key] = LABFakeAssignment(assignment.value, assignment.key, assignment.variant,
-                                            assignment.experiment, assignment.sourceName);
+    result[key] = LABFakeAssignment(assignment);
   }];
 
-  return [result copy];;
+  return [result copy];
 }
 
 static NSDictionary<NSString *, NSDictionary *> *LABFakeAssignments(LABVariant *variant,
@@ -55,13 +61,9 @@ static NSDictionary<NSString *, NSDictionary *> *LABFakeAssignments(LABVariant *
 /// Fake implementation of \c LABAssignmentsManagerDelegate for the tests.
 @interface LABFakeAssignmentsManagerDelegate : NSObject <LABAssignmentsManagerDelegate>
 
-/// Active assignments that were reported using
-/// \c assignmentsManager:loadedNewActiveAssignments:revisionID. The tuples are pairs of
-/// \c activeAssignments and \c activeAssignmentsRevisionID.
-@property (readonly, nonatomic) NSMutableArray<RACTuple *> *reportedActiveAssignments;
-
-/// Assignments that were reported to the receiver as affecting user experience.
-@property (readonly, nonatomic) NSMutableArray<id<LABAssignment>> *reportedAffectingAssignments;
+/// Assignments that were reported to the receiver as affecting user experience. The tuples are
+/// pairs of \c id<LABAssignment> objects and \c action.
+@property (readonly, nonatomic) NSMutableArray<RACTuple *> *reportedAffectingAssignments;
 
 @end
 
@@ -69,21 +71,14 @@ static NSDictionary<NSString *, NSDictionary *> *LABFakeAssignments(LABVariant *
 
 - (instancetype)init {
   if (self = [super init]) {
-    _reportedActiveAssignments = [NSMutableArray array];
     _reportedAffectingAssignments = [NSMutableArray array];
   }
   return self;
 }
 
 - (void)assignmentsManager:(LABAssignmentsManager * __unused)assignmentsManager
-   activeAssignmentsDidChange:( id<LABRevisionedAssignments>)activeAssignments {
-  [self.reportedActiveAssignments addObject:RACTuplePack(activeAssignments.assignments,
-                                                         activeAssignments.revisionID)];
-}
-
-- (void)assignmentsManager:(LABAssignmentsManager * __unused)assignmentsManager
-   assignmentDidAffectUser:(id<LABAssignment>)assignment {
-  [self.reportedAffectingAssignments addObject:assignment];
+   assignmentDidAffectUser:(id<LABAssignment>)assignment reason:(NSString *)reason {
+  [self.reportedAffectingAssignments addObject:RACTuplePack((id)assignment, reason)];
 }
 
 @end
@@ -138,7 +133,7 @@ beforeEach(^{
 });
 
 it(@"should have no active assignments if sources do not have active assignments", ^{
-  expect(manager.activeAssignments.assignments).to.haveCount(0);
+  expect(manager.activeAssignments).to.haveCount(0);
 });
 
 it(@"should have assignments from one source", ^{
@@ -152,20 +147,20 @@ it(@"should have assignments from one source", ^{
   auto expectedAssignments =
       [exp1Assignments mtl_dictionaryByAddingEntriesFromDictionary:exp2Assignments];
 
-  expect(LABFakeAssignments(manager.activeAssignments.assignments)).to.equal(expectedAssignments);
+  expect(LABFakeAssignments(manager.activeAssignments)).to.equal(expectedAssignments);
 });
 
 it(@"should merge assignments from all sources", ^{
   [fakeSource1 updateActiveVariants:@{@"exp1": source1exp1Variant2.name}];
   auto expectedAssignments = LABFakeAssignments(source1exp1Variant2, fakeSource1.name);
 
-  expect(LABFakeAssignments(manager.activeAssignments.assignments)).to.equal(expectedAssignments);
+  expect(LABFakeAssignments(manager.activeAssignments)).to.equal(expectedAssignments);
 
   [fakeSource2 updateActiveVariants:@{@"exp1": source2exp1Variant1.name}];
   expectedAssignments = [expectedAssignments mtl_dictionaryByAddingEntriesFromDictionary:
                          LABFakeAssignments(source2exp1Variant1, fakeSource2.name)];
 
-  expect(LABFakeAssignments(manager.activeAssignments.assignments)).to.equal(expectedAssignments);
+  expect(LABFakeAssignments(manager.activeAssignments)).to.equal(expectedAssignments);
 });
 
 it(@"should update assignments when source assignments update", ^{
@@ -178,30 +173,7 @@ it(@"should update assignments when source assignments update", ^{
   auto expectedAssignments =
       [exp1Assignments mtl_dictionaryByAddingEntriesFromDictionary:exp2Assignments];
 
-  expect(LABFakeAssignments(manager.activeAssignments.assignments)).to.equal(expectedAssignments);
-});
-
-it(@"should update revision id when active assignments change", ^{
-  [fakeSource1 updateActiveVariants:@{@"exp1": source1exp1Variant2.name}];
-  [fakeSource2 updateActiveVariants:@{@"exp1": source2exp1Variant2.name}];
-  auto revisionID = manager.activeAssignments.revisionID;
-
-  manager = [[LABAssignmentsManager alloc]
-             initWithAssignmentSources:@[fakeSource1, fakeSource2] delegate:delegate
-             storage:storage];
-
-  expect(manager.activeAssignments.revisionID).to.equal(revisionID);
-});
-
-it(@"should persist revision id source variants do not change", ^{
-  auto revisionIDs = [NSMutableSet set];
-  [revisionIDs addObject:manager.activeAssignments.revisionID];
-  [fakeSource1 updateActiveVariants:@{@"exp1": source1exp1Variant2.name}];
-  [revisionIDs addObject:manager.activeAssignments.revisionID];
-  [fakeSource2 updateActiveVariants:@{@"exp1": source2exp1Variant2.name}];
-  [revisionIDs addObject:manager.activeAssignments.revisionID];
-
-  expect(revisionIDs).to.haveCount(3);
+  expect(LABFakeAssignments(manager.activeAssignments)).to.equal(expectedAssignments);
 });
 
 it(@"should persist with the same active assignments if source variants do not change", ^{
@@ -244,7 +216,7 @@ it(@"should not persist assignments if source variants change between instance i
   auto expectedAssignments =
       [exp1Assignments mtl_dictionaryByAddingEntriesFromDictionary:exp2Assignments];
 
-  expect(LABFakeAssignments(manager.activeAssignments.assignments)).to.equal(expectedAssignments);
+  expect(LABFakeAssignments(manager.activeAssignments)).to.equal(expectedAssignments);
 });
 
 it(@"should stabilize user experience in all sources", ^{
@@ -381,41 +353,57 @@ it(@"should return new data fetched if one of the background updates has new dat
   expect(updateSignal).to.sendValues(@[@(UIBackgroundFetchResultNewData)]);
 });
 
-it(@"should update observer when an assignment is loaded", ^{
-  auto expectedAssignments = [NSMutableArray array];
-
+it(@"should update delegate when assignments are activated and deactivated", ^{
   [fakeSource1 updateActiveVariants:@{@"exp1": source1exp1Variant2.name}];
-  [expectedAssignments addObject:RACTuplePack(manager.activeAssignments.assignments,
-                                              manager.activeAssignments.revisionID)];
   [fakeSource2 updateActiveVariants:@{@"exp1": source2exp1Variant2.name}];
-  [expectedAssignments addObject:RACTuplePack(manager.activeAssignments.assignments,
-                                              manager.activeAssignments.revisionID)];
-  [fakeSource1 updateActiveVariants:@{@"exp1": [NSNull null], @"exp2": source1exp2Variant2.name}];
-  [expectedAssignments addObject:RACTuplePack(manager.activeAssignments.assignments,
-                                              manager.activeAssignments.revisionID)];
 
-  expect(delegate.reportedActiveAssignments).to.equal(expectedAssignments);
+  auto expectedAssignments = [LABFakeAssignments(source1exp1Variant2, fakeSource1.name).allValues
+                              arrayByAddingObjectsFromArray:
+                              LABFakeAssignments(source2exp1Variant2, fakeSource2.name).allValues];
+
+  expect([[delegate.reportedAffectingAssignments lt_map:^(RACTuple *assignments) {
+      return RACTuplePack(LABFakeAssignment(assignments.first), assignments.second);
+  }] lt_set]).to.equal([[expectedAssignments lt_map:^(NSDictionary * assignment) {
+    return RACTuplePack(assignment, kLABAssignmentAffectedUserReasonActivatedForDevice);
+  }] lt_set]);
+});
+
+it(@"should update delegate when assignment are deactivated", ^{
+  [fakeSource1 updateActiveVariants:@{@"exp1": source1exp1Variant2.name}];
+  [fakeSource2 updateActiveVariants:@{@"exp1": source2exp1Variant2.name}];
+
+  delegate = [[LABFakeAssignmentsManagerDelegate alloc] init];
+  manager = [[LABAssignmentsManager alloc]
+           initWithAssignmentSources:@[fakeSource1, fakeSource2] delegate:delegate
+           storage:storage];
+
+  [fakeSource1 updateActiveVariants:@{@"exp1": [NSNull null]}];
+
+  auto expectedAssignments = [[LABFakeAssignments(source1exp1Variant2, fakeSource1.name).allValues
+      lt_map:^id _Nonnull(NSDictionary *assignment) {
+        return RACTuplePack(assignment, kLABAssignmentAffectedUserReasonDeactivatedForDevice);
+      }] lt_set];
+
+  expect([[delegate.reportedAffectingAssignments lt_map:^(RACTuple *assignments) {
+      return RACTuplePack(LABFakeAssignment(assignments.first), assignments.second);
+  }] lt_set]).to.equal(expectedAssignments);
 });
 
 it(@"should not update delegate when the current assignment is as the stored assignment", ^{
-  auto expectedAssignments = [NSMutableArray array];
-
   [fakeSource1 updateActiveVariants:@{@"exp1": source1exp1Variant2.name}];
-  [expectedAssignments addObject:RACTuplePack(manager.activeAssignments.assignments,
-                                              manager.activeAssignments.revisionID)];
   [fakeSource2 updateActiveVariants:@{@"exp1": source2exp1Variant2.name}];
-  [expectedAssignments addObject:RACTuplePack(manager.activeAssignments.assignments,
-                                              manager.activeAssignments.revisionID)];
+  auto expectedAssignments = delegate.reportedAffectingAssignments;
 
   manager = [[LABAssignmentsManager alloc]
              initWithAssignmentSources:@[fakeSource1, fakeSource2] delegate:delegate
              storage:storage];
 
-  expect(delegate.reportedActiveAssignments).to.equal(expectedAssignments);
+  expect(delegate.reportedAffectingAssignments).to.equal(expectedAssignments);
 });
 
 it(@"should update delegate when the current assignment is different then the stored assignemnt", ^{
   storage = [[LABFakeStorage alloc] init];
+  delegate = [[LABFakeAssignmentsManagerDelegate alloc] init];
   @autoreleasepool {
     manager = [[LABAssignmentsManager alloc]
                initWithAssignmentSources:@[fakeSource1, fakeSource2] delegate:delegate
@@ -427,39 +415,69 @@ it(@"should update delegate when the current assignment is different then the st
   }
 
   [fakeSource1 updateActiveVariants:@{@"exp1": source1exp1Variant1.name}];
+  delegate = [[LABFakeAssignmentsManagerDelegate alloc] init];
   manager = [[LABAssignmentsManager alloc]
              initWithAssignmentSources:@[fakeSource1, fakeSource2] delegate:delegate
              storage:storage];
 
-  auto expectedValue = RACTuplePack(manager.activeAssignments.assignments,
-                                    manager.activeAssignments.revisionID);
-  expect(delegate.reportedActiveAssignments.lastObject).to.equal(expectedValue);
+   auto expectedActivatedAssignments =
+      [[LABFakeAssignments(source1exp1Variant1, fakeSource1.name).allValues
+       lt_map:^id _Nonnull(NSDictionary *assignment) {
+         return RACTuplePack(assignment, kLABAssignmentAffectedUserReasonActivatedForDevice);
+       }] lt_set];
+
+  auto expectedDeactivatedAssignments =
+      [[LABFakeAssignments(source1exp1Variant2, fakeSource1.name).allValues
+       lt_map:^id _Nonnull(NSDictionary *assignment) {
+         return RACTuplePack(assignment, kLABAssignmentAffectedUserReasonDeactivatedForDevice);
+       }] lt_set];
+
+  expect([[delegate.reportedAffectingAssignments lt_map:^(RACTuple *assignments) {
+    return RACTuplePack(LABFakeAssignment(assignments.first), assignments.second);
+  }] lt_set]).to.equal([expectedActivatedAssignments
+                        setByAddingObjectsFromSet:expectedDeactivatedAssignments]);
 });
 
 it(@"should update delegate with affecting assignments", ^{
   [fakeSource1 updateActiveVariants:@{@"exp1": @"blobVar"}];
 
-  auto fooAssignment = manager.activeAssignments.assignments[@"foo"];
-  auto bazAssignment = manager.activeAssignments.assignments[@"baz"];
+  delegate = [[LABFakeAssignmentsManagerDelegate alloc] init];
+  manager = [[LABAssignmentsManager alloc]
+             initWithAssignmentSources:@[fakeSource1, fakeSource2] delegate:delegate
+             storage:storage];
 
-  [manager reportAssignmentAffectedUser:bazAssignment];
-  [manager reportAssignmentAffectedUser:fooAssignment];
+  auto fooAssignment = manager.activeAssignments[@"foo"];
+  auto bazAssignment = manager.activeAssignments[@"baz"];
 
-  expect(delegate.reportedAffectingAssignments).to.equal(@[bazAssignment, fooAssignment]);
+  [manager reportAssignmentAffectedUser:bazAssignment reason:@"bar"];
+  [manager reportAssignmentAffectedUser:fooAssignment reason:@"thud"];
+
+  expect(delegate.reportedAffectingAssignments).to.equal(@[
+    RACTuplePack((id)bazAssignment, @"bar"),
+    RACTuplePack((id)fooAssignment, @"thud")
+  ]);
 });
 
 it(@"should update delegate with affecting assignments after assignments change", ^{
   [fakeSource1 updateActiveVariants:@{@"exp1": source1exp1Variant2.name}];
 
-  auto fooAssignment = manager.activeAssignments.assignments[@"foo"];
-  auto bazAssignment = manager.activeAssignments.assignments[@"baz"];
+  auto fooAssignment = manager.activeAssignments[@"foo"];
+  auto bazAssignment = manager.activeAssignments[@"baz"];
 
   [fakeSource1 updateActiveVariants:@{@"exp2": source1exp2Variant2.name}];
 
-  [manager reportAssignmentAffectedUser:bazAssignment];
-  [manager reportAssignmentAffectedUser:fooAssignment];
+  delegate = [[LABFakeAssignmentsManagerDelegate alloc] init];
+  manager = [[LABAssignmentsManager alloc]
+             initWithAssignmentSources:@[fakeSource1, fakeSource2] delegate:delegate
+             storage:storage];
 
-  expect(delegate.reportedAffectingAssignments).to.equal(@[bazAssignment, fooAssignment]);
+  [manager reportAssignmentAffectedUser:bazAssignment reason:@"bar"];
+  [manager reportAssignmentAffectedUser:fooAssignment reason:@"thud"];
+
+  expect(delegate.reportedAffectingAssignments).to.equal(@[
+    RACTuplePack((id)bazAssignment, @"bar"),
+    RACTuplePack((id)fooAssignment, @"thud")
+  ]);
 });
 
 SpecEnd
