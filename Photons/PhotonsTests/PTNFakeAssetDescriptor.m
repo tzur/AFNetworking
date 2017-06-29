@@ -13,6 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize descriptorTraits = _descriptorTraits;
 @synthesize creationDate = _creationDate;
 @synthesize modificationDate = _modificationDate;
+@synthesize filename = _filename;
 @synthesize duration = _duration;
 @synthesize assetDescriptorCapabilities = _assetDescriptorCapabilities;
 
@@ -22,11 +23,12 @@ NS_ASSUME_NONNULL_BEGIN
                   descriptorTraits:(NSSet<NSString *> *)descriptorTraits
                       creationDate:(nullable NSDate *)creationDate
                   modificationDate:(nullable NSDate *)modificationDate
+                          filename:(nullable NSString *)filename
        assetDescriptorCapabilities:(PTNAssetDescriptorCapabilities)assetDescriptorCapabilities {
   return [self initWithIdentifier:ptn_identifier localizedTitle:localizedTitle
            descriptorCapabilities:descriptorCapabilities descriptorTraits:descriptorTraits
-                     creationDate:creationDate modificationDate:modificationDate duration:0
-      assetDescriptorCapabilities:assetDescriptorCapabilities];
+                     creationDate:creationDate modificationDate:modificationDate filename:filename
+                         duration:0 assetDescriptorCapabilities:assetDescriptorCapabilities];
 }
 
 - (instancetype)initWithIdentifier:(NSURL *)ptn_identifier
@@ -35,6 +37,7 @@ NS_ASSUME_NONNULL_BEGIN
                   descriptorTraits:(NSSet<NSString *> *)descriptorTraits
                       creationDate:(nullable NSDate *)creationDate
                   modificationDate:(nullable NSDate *)modificationDate
+                          filename:(nullable NSString *)filename
                           duration:(NSTimeInterval)duration
        assetDescriptorCapabilities:(PTNAssetDescriptorCapabilities)assetDescriptorCapabilities {
   if (self = [super init]) {
@@ -44,6 +47,7 @@ NS_ASSUME_NONNULL_BEGIN
     _descriptorTraits = descriptorTraits;
     _creationDate = creationDate;
     _modificationDate = modificationDate;
+    _filename = filename;
     _duration = duration;
     _assetDescriptorCapabilities = assetDescriptorCapabilities;
   }

@@ -33,6 +33,7 @@ id<PTNAssetDescriptor> PTNCreateAssetDescriptor(NSURL * _Nullable identifier,
                                                 NSSet<NSString *> * _Nullable traits,
                                                 NSDate * _Nullable creationDate,
                                                 NSDate * _Nullable modificationDate,
+                                                NSString * _Nullable filename,
                                                 PTNAssetDescriptorCapabilities assetCapabilities) {
   return [[PTNFakeAssetDescriptor alloc]
           initWithIdentifier:identifier ?: [NSURL URLWithString:@"fake://descriptor.asset"]
@@ -41,6 +42,7 @@ id<PTNAssetDescriptor> PTNCreateAssetDescriptor(NSURL * _Nullable identifier,
           descriptorTraits:traits ?: [NSSet set]
           creationDate:creationDate
           modificationDate:modificationDate
+          filename:filename
           assetDescriptorCapabilities:assetCapabilities];
 }
 
@@ -50,6 +52,7 @@ id<PTNAssetDescriptor> PTNCreateAssetDescriptor(NSURL * _Nullable identifier,
                                                 NSSet<NSString *> * _Nullable traits,
                                                 NSDate * _Nullable creationDate,
                                                 NSDate * _Nullable modificationDate,
+                                                NSString * _Nullable filename,
                                                 NSTimeInterval duration,
                                                 PTNAssetDescriptorCapabilities assetCapabilities) {
   return [[PTNFakeAssetDescriptor alloc]
@@ -59,6 +62,7 @@ id<PTNAssetDescriptor> PTNCreateAssetDescriptor(NSURL * _Nullable identifier,
           descriptorTraits:traits ?: [NSSet set]
           creationDate:creationDate
           modificationDate:modificationDate
+          filename:filename
           duration:duration
           assetDescriptorCapabilities:assetCapabilities];
 }
@@ -83,7 +87,7 @@ id<PTNDescriptor> PTNCreateDescriptor(NSString *localizedTitle) {
 }
 
 id<PTNAssetDescriptor> PTNCreateAssetDescriptor(NSString *localizedTitle) {
-  return PTNCreateAssetDescriptor(nil, localizedTitle, 0, nil, nil, nil, 0);
+  return PTNCreateAssetDescriptor(nil, localizedTitle, 0, nil, nil, nil, nil, 0);
 }
 
 id<PTNAlbumDescriptor> PTNCreateAlbumDescriptor(NSString *localizedTitle, NSUInteger assetCount) {

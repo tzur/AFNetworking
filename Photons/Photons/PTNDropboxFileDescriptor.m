@@ -55,6 +55,10 @@ NS_ASSUME_NONNULL_BEGIN
   return nil;
 }
 
+- (nullable NSString *)filename {
+  return self.path.lastPathComponent;
+}
+
 - (PTNDescriptorCapabilities)descriptorCapabilities {
   return PTNDescriptorCapabilityNone;
 }

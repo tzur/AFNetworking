@@ -30,6 +30,13 @@ it(@"should return localized title as the title of the item", ^{
   expect(item.localizedTitle).to.equal(@"foo");
 });
 
+it(@"should return nil filename", ^{
+  MPMediaItem *item = OCMPartialMock([[MPMediaItem alloc] init]);
+  OCMStub(item.title).andReturn(@"foo");
+
+  expect(item.filename).to.beNil();
+});
+
 it(@"should return video trait descriptor", ^{
   item = [[MPMediaItem alloc] init];
   expect(item.descriptorTraits).to.equal([NSSet setWithObject:kPTNDescriptorTraitAudiovisualKey]);

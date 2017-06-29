@@ -20,6 +20,12 @@ context(@"asset descriptor", ^{
     expect(asset.localizedTitle).to.beNil();
   });
 
+  it(@"should not crash when retrieving filename", ^{
+    PHAsset *asset = OCMPartialMock([[PHAsset alloc] init]);
+
+    expect(asset.filename).to.beNil();
+  });
+
   it(@"should reveal delete change capabilities", ^{
     PHAsset *asset = OCMPartialMock([[PHAsset alloc] init]);
     OCMStub([asset canPerformEditOperation:PHAssetEditOperationDelete]).andReturn(YES);

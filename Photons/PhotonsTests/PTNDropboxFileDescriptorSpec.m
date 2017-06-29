@@ -19,6 +19,7 @@ it(@"should return correct identifier", ^{
   expect(asset.ptn_identifier).to.equal([NSURL ptn_dropboxAssetURLWithEntry:entry]);
   expect(asset.localizedTitle).to.equal(@"bar.jpg");
   expect(asset.modificationDate).to.equal(lastModified);
+  expect(asset.filename).to.equal(@"bar.jpg");
   expect(asset.descriptorCapabilities).to.equal(PTNDescriptorCapabilityNone);
   expect(asset.assetDescriptorCapabilities).to.equal(PTNAssetDescriptorCapabilityNone);
   expect(asset.descriptorTraits).to.contain(kPTNDescriptorTraitCloudBasedKey);
@@ -35,6 +36,7 @@ it(@"should return correct identifier with latest revision", ^{
   expect(asset.ptn_identifier).to.equal([NSURL ptn_dropboxAssetURLWithEntry:entry]);
   expect(asset.localizedTitle).to.equal(@"bar.jpg");
   expect(asset.modificationDate).to.equal(lastModified);
+  expect(asset.filename).to.equal(@"bar.jpg");
 });
 
 context(@"equality", ^{

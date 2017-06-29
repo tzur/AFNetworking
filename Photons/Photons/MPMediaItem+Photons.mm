@@ -47,6 +47,11 @@ NS_ASSUME_NONNULL_BEGIN
   return nil;
 }
 
+- (nullable NSString *)filename {
+  // MPMediaItem is not backed by a concrete file.
+  return nil;
+}
+
 - (NSTimeInterval)duration {
   return self.playbackDuration;
 }
