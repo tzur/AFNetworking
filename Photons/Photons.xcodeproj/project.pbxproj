@@ -2044,6 +2044,7 @@
 				84E55C461C8EC87100D91339 /* PTNPhotoKitAssetManager.mm in Sources */,
 				84515F701C96A8D800AD8B5B /* PTNDropboxAuthorizationManager.mm in Sources */,
 				B411A0291EEE76B500756808 /* PTNMediaLibraryAuthorizationManager.mm in Sources */,
+				B45B6C051F04F87E00BF67A6 /* PTNMediaQueryProvider.mm in Sources */,
 				84E55C3F1C8EC86500D91339 /* PTNMultiplexerAssetManager.m in Sources */,
 				BE40BE1F1DF6F561007F4F57 /* PTNAVAssetFetchOptions.mm in Sources */,
 				84E55C431C8EC86B00D91339 /* PTNImageFetchOptions+PhotoKit.m in Sources */,
