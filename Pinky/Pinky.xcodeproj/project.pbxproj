@@ -90,8 +90,10 @@
 		C9131ED71EE05A4D00E924DA /* LTTestUtils+LTEngine.mm in Sources */ = {isa = PBXBuildFile; fileRef = C9131ED51EE05A4D00E924DA /* LTTestUtils+LTEngine.mm */; };
 		C9131EDA1EE05A8400E924DA /* NSValue+OpenCVExtensions.mm in Sources */ = {isa = PBXBuildFile; fileRef = C9131ED91EE05A8400E924DA /* NSValue+OpenCVExtensions.mm */; };
 		C9131EDB1EE05A8400E924DA /* NSValue+OpenCVExtensions.mm in Sources */ = {isa = PBXBuildFile; fileRef = C9131ED91EE05A8400E924DA /* NSValue+OpenCVExtensions.mm */; };
+		C9791A761F025B1F0009E90F /* PNKLibraryLoaderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = C9791A751F025B1F0009E90F /* PNKLibraryLoaderSpec.mm */; };
 		C9815C411EE886D1004868CE /* PNKOpenCVExtensions.mm in Sources */ = {isa = PBXBuildFile; fileRef = C9815C3F1EE886D1004868CE /* PNKOpenCVExtensions.mm */; };
 		C9815C641EE88713004868CE /* PNKOpenCVExtensionsSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = C9815C631EE88713004868CE /* PNKOpenCVExtensionsSpec.mm */; };
+		C9ADC5131EFFE06200C87932 /* PNKLibraryLoader.mm in Sources */ = {isa = PBXBuildFile; fileRef = C9ADC5121EFFE06200C87932 /* PNKLibraryLoader.mm */; };
 		C9CAFCC11EE02F2A00B914E4 /* Mantle.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 06FD92981EDC5F9100D180C7 /* Mantle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C9CAFCC51EE0335500B914E4 /* Mantle.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 06FD92981EDC5F9100D180C7 /* Mantle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
@@ -503,9 +505,12 @@
 		C9131ED51EE05A4D00E924DA /* LTTestUtils+LTEngine.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = "LTTestUtils+LTEngine.mm"; path = "../../LTEngine/LTEngineTests/LTTestUtils+LTEngine.mm"; sourceTree = "<group>"; };
 		C9131ED81EE05A8400E924DA /* NSValue+OpenCVExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSValue+OpenCVExtensions.h"; path = "../../LTEngine/LTEngineTests/NSValue+OpenCVExtensions.h"; sourceTree = "<group>"; };
 		C9131ED91EE05A8400E924DA /* NSValue+OpenCVExtensions.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = "NSValue+OpenCVExtensions.mm"; path = "../../LTEngine/LTEngineTests/NSValue+OpenCVExtensions.mm"; sourceTree = "<group>"; };
+		C9791A751F025B1F0009E90F /* PNKLibraryLoaderSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKLibraryLoaderSpec.mm; sourceTree = "<group>"; };
 		C9815C3F1EE886D1004868CE /* PNKOpenCVExtensions.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKOpenCVExtensions.mm; sourceTree = "<group>"; };
 		C9815C401EE886D1004868CE /* PNKOpenCVExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKOpenCVExtensions.h; sourceTree = "<group>"; };
 		C9815C631EE88713004868CE /* PNKOpenCVExtensionsSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKOpenCVExtensionsSpec.mm; sourceTree = "<group>"; };
+		C9ADC5111EFFE06200C87932 /* PNKLibraryLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKLibraryLoader.h; sourceTree = "<group>"; };
+		C9ADC5121EFFE06200C87932 /* PNKLibraryLoader.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKLibraryLoader.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -684,6 +689,7 @@
 			isa = PBXGroup;
 			children = (
 				C9815C651EE88730004868CE /* Extensions */,
+				C9791A541F025AE90009E90F /* GPU */,
 			);
 			name = Tests;
 			sourceTree = "<group>";
@@ -747,6 +753,7 @@
 			isa = PBXGroup;
 			children = (
 				C9815C621EE886E0004868CE /* Extensions */,
+				C9515C2E1F01125100B973F1 /* GPU */,
 				06C3F73E1EFF9E3C00D4B1F4 /* Image Processing */,
 				A14172BA1E6EB04F005DBEFF /* Supporting Files */,
 				882D1F141EC19998007F39F5 /* PNKPlaceholder.h */,
@@ -923,6 +930,23 @@
 				A1417A911E6ED9CB005DBEFF /* UIKit.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		C9515C2E1F01125100B973F1 /* GPU */ = {
+			isa = PBXGroup;
+			children = (
+				C9ADC5111EFFE06200C87932 /* PNKLibraryLoader.h */,
+				C9ADC5121EFFE06200C87932 /* PNKLibraryLoader.mm */,
+			);
+			name = GPU;
+			sourceTree = "<group>";
+		};
+		C9791A541F025AE90009E90F /* GPU */ = {
+			isa = PBXGroup;
+			children = (
+				C9791A751F025B1F0009E90F /* PNKLibraryLoaderSpec.mm */,
+			);
+			name = GPU;
 			sourceTree = "<group>";
 		};
 		C9815C621EE886E0004868CE /* Extensions */ = {
@@ -1393,6 +1417,7 @@
 				C9131EA81EE0599D00E924DA /* EXPMatchers+beCloseToGLKMatrix.mm in Sources */,
 				C9131EAC1EE0599D00E924DA /* EXPMatchers+beCloseToMat.mm in Sources */,
 				C9131EA61EE0599D00E924DA /* EXPMatchers+beCloseToCATransform3D.mm in Sources */,
+				C9791A761F025B1F0009E90F /* PNKLibraryLoaderSpec.mm in Sources */,
 				C9131EB21EE0599D00E924DA /* EXPMatchers+equalScalar.mm in Sources */,
 				C9131EB01EE0599D00E924DA /* EXPMatchers+equalMat.mm in Sources */,
 				C9131EAA1EE0599D00E924DA /* EXPMatchers+beCloseToGLKVector.mm in Sources */,
@@ -1406,6 +1431,7 @@
 			files = (
 				C9815C411EE886D1004868CE /* PNKOpenCVExtensions.mm in Sources */,
 				060EA49E1EDD9CC20041487A /* NSBundle+PinkyBundle.mm in Sources */,
+				C9ADC5131EFFE06200C87932 /* PNKLibraryLoader.mm in Sources */,
 				882D1F161EC19998007F39F5 /* PNKPlaceholder.mm in Sources */,
 				06172A901F02881600379124 /* PNKStyleUpsampleProcessor.mm in Sources */,
 				06C3F7611EFF9E5B00D4B1F4 /* PNKSingleStyleTransferProcessor.mm in Sources */,
