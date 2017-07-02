@@ -3,8 +3,9 @@
 
 #import "RACSignal+Fiber.h"
 
+#import <LTKit/LTProgress.h>
+
 #import "FBRHTTPResponse.h"
-#import "FBRHTTPTaskProgress.h"
 #import "NSErrorCodes+Fiber.h"
 
 SpecBegin(RACSignal_Fiber)
@@ -25,9 +26,9 @@ context(@"deserialize JSON operator", ^{
   });
 
   it(@"should ignore incomplete progress values", ^{
-    [subject sendNext:[[FBRHTTPTaskProgress alloc] init]];
-    [subject sendNext:[[FBRHTTPTaskProgress alloc] initWithProgress:0.5]];
-    [subject sendNext:[[FBRHTTPTaskProgress alloc] initWithProgress:1]];
+    [subject sendNext:[[LTProgress alloc] init]];
+    [subject sendNext:[[LTProgress alloc] initWithProgress:0.5]];
+    [subject sendNext:[[LTProgress alloc] initWithProgress:1]];
 
     expect(recorder).to.sendValuesWithCount(0);
   });
@@ -39,7 +40,7 @@ context(@"deserialize JSON operator", ^{
         [[FBRHTTPResponse alloc] initWithMetadata:OCMClassMock([NSHTTPURLResponse class])
                                           content:responseData];
 
-    [subject sendNext:[[FBRHTTPTaskProgress alloc] initWithResponse:response]];
+    [subject sendNext:[[LTProgress alloc] initWithResult:response]];
 
     expect(recorder).to.sendValues(@[value]);
     expect(recorder).toNot.complete();
@@ -64,7 +65,7 @@ context(@"deserialize JSON operator", ^{
         [[FBRHTTPResponse alloc] initWithMetadata:OCMClassMock([NSHTTPURLResponse class])
                                           content:responseData];
 
-    [subject sendNext:[[FBRHTTPTaskProgress alloc] initWithResponse:response]];
+    [subject sendNext:[[LTProgress alloc] initWithResult:response]];
     [subject sendCompleted];
 
     expect(recorder).to.matchError(^BOOL(NSError *error) {
@@ -77,7 +78,7 @@ context(@"deserialize JSON operator", ^{
         [[FBRHTTPResponse alloc] initWithMetadata:OCMClassMock([NSHTTPURLResponse class])
                                           content:nil];
 
-    [subject sendNext:[[FBRHTTPTaskProgress alloc] initWithResponse:response]];
+    [subject sendNext:[[LTProgress alloc] initWithResult:response]];
     [subject sendCompleted];
 
     expect(recorder).to.matchError(^BOOL(NSError *error) {
@@ -102,9 +103,9 @@ context(@"skip progress operator", ^{
   });
 
   it(@"should ignore incomplete progress values", ^{
-    [subject sendNext:[[FBRHTTPTaskProgress alloc] init]];
-    [subject sendNext:[[FBRHTTPTaskProgress alloc] initWithProgress:0.5]];
-    [subject sendNext:[[FBRHTTPTaskProgress alloc] initWithProgress:1]];
+    [subject sendNext:[[LTProgress alloc] init]];
+    [subject sendNext:[[LTProgress alloc] initWithProgress:0.5]];
+    [subject sendNext:[[LTProgress alloc] initWithProgress:1]];
 
     expect(recorder).to.sendValuesWithCount(0);
   });
@@ -113,8 +114,8 @@ context(@"skip progress operator", ^{
     FBRHTTPResponse *response =
         [[FBRHTTPResponse alloc] initWithMetadata:OCMClassMock([NSHTTPURLResponse class])
                                           content:nil];
-    [subject sendNext:[[FBRHTTPTaskProgress alloc] initWithProgress:0.5]];
-    [subject sendNext:[[FBRHTTPTaskProgress alloc] initWithResponse:response]];
+    [subject sendNext:[[LTProgress alloc] initWithProgress:0.5]];
+    [subject sendNext:[[LTProgress alloc] initWithResult:response]];
 
     expect(recorder).to.sendValues(@[response]);
     expect(recorder).toNot.complete();

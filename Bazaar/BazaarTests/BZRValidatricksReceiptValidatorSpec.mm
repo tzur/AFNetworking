@@ -7,8 +7,8 @@
 #import <Fiber/FBRHTTPClientProvider.h>
 #import <Fiber/FBRHTTPRequest.h>
 #import <Fiber/FBRHTTPResponse.h>
-#import <Fiber/FBRHTTPTaskProgress.h>
 #import <Fiber/NSErrorCodes+Fiber.h>
+#import <LTKit/LTProgress.h>
 
 #import "BZREvent+AdditionalInfo.h"
 #import "BZRReceiptValidationError.h"
@@ -16,18 +16,19 @@
 #import "BZRValidatricksReceiptValidationStatus.h"
 #import "NSErrorCodes+Bazaar.h"
 
-/// Generates and returns a \c FBRHTTPTaskProgress object wrapping an \c FBRHTTPResponse with the
-/// given \c responseData as its content. The returned object can be sent on an HTTPClient signals.
-static FBRHTTPTaskProgress *BZRValidatricksResponseWithData(NSData * _Nullable responseData) {
+/// Generates and returns an \c LTProgress object wrapping an \c FBRHTTPResponse with the given
+/// \c responseData as its content. The returned object can be sent on an HTTPClient signals.
+static LTProgress<FBRHTTPResponse *> *BZRValidatricksResponseWithData(
+    NSData * _Nullable responseData) {
   NSHTTPURLResponse *responseMetadata = OCMClassMock([NSHTTPURLResponse class]);
   FBRHTTPResponse *response = [[FBRHTTPResponse alloc] initWithMetadata:responseMetadata
                                                                 content:responseData];
-  return [[FBRHTTPTaskProgress alloc] initWithResponse:response];
+  return [[LTProgress alloc] initWithResult:response];
 }
 
-/// Generates and returns a \c FBRHTTPTaskProgress object wrapping an \c FBRHTTPResponse with the
-/// given \c JSONObject as its content. The returned object can be sent on an HTTPClient signals.
-static FBRHTTPTaskProgress *BZRValidatricksResponseWithJSONObject
+/// Generates and returns an \c LTProgress object wrapping an \c FBRHTTPResponse with the given
+/// \c JSONObject as its content. The returned object can be sent on an HTTPClient signals.
+static LTProgress<FBRHTTPResponse *> *BZRValidatricksResponseWithJSONObject
     (NSDictionary * _Nullable JSONObject) {
   NSData *responseData = JSONObject ?
       [NSJSONSerialization dataWithJSONObject:JSONObject options:0 error:nil] : nil;
