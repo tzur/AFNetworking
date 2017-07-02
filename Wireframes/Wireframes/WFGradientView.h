@@ -15,11 +15,17 @@ NS_ASSUME_NONNULL_BEGIN
 /// the top and ending with \c bottomColor on the bottom.
 + (instancetype)verticalGradientWithTopColor:(UIColor *)topColor bottomColor:(UIColor *)bottomColor;
 
-/// Starting color of a gradient. Defaults to <tt>-[UIColor clearColor]</tt>.
+/// First element of \c colors, the starting color of the gradient. Defaults to
+/// <tt>-[UIColor clearColor]</tt>.
 @property (strong, nonatomic) UIColor *startColor;
 
-/// Ending color of a gradient. Defaults to <tt>-[UIColor clearColor]</tt>.
+/// Last element of \c colors, the ending color of the gradient. Defaults to
+/// <tt>-[UIColor clearColor]</tt>.
 @property (strong, nonatomic) UIColor *endColor;
+
+/// Array of colors of each gradient stop. Must have at least two elements, defaults to
+/// <tt>@[[UIColor clearColor], [UIColor clearColor]]</tt>.
+@property (copy, nonatomic) NSArray<UIColor *> *colors;
 
 /// The start point of the gradient, defined in a top-left unit coordinate space and mapped to the
 /// view's \c bounds. (i.e. [0, 0] is the top-left corner of the view, [1, 1] is the bottom-right

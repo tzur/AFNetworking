@@ -3,6 +3,8 @@
 
 #import "WFGradientView.h"
 
+#import <LTKit/NSArray+Functional.h>
+
 NS_ASSUME_NONNULL_BEGIN
 
 @implementation WFGradientView
@@ -10,16 +12,14 @@ NS_ASSUME_NONNULL_BEGIN
 + (instancetype)horizontalGradientWithLeftColor:(UIColor *)leftColor
                                      rightColor:(UIColor *)rightColor {
   WFGradientView *view = [[WFGradientView alloc] initWithFrame:CGRectZero];
-  view.startColor = leftColor;
-  view.endColor = rightColor;
+  view.colors = @[leftColor, rightColor];
   return view;
 }
 
 + (instancetype)verticalGradientWithTopColor:(UIColor *)topColor
                                  bottomColor:(UIColor *)bottomColor {
   WFGradientView *view = [[WFGradientView alloc] initWithFrame:CGRectZero];
-  view.startColor = topColor;
-  view.endColor = bottomColor;
+  view.colors = @[topColor, bottomColor];
   view.startPoint = CGPointMake(0.5, 0);
   view.endPoint = CGPointMake(0.5, 1);
   return view;
@@ -46,17 +46,32 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)setup {
   self.startPoint = CGPointMake(0, 0.5);
   self.endPoint = CGPointMake(1, 0.5);
-  self.startColor = [UIColor clearColor];
-  self.endColor = [UIColor clearColor];
+  self.colors = @[[UIColor clearColor], [UIColor clearColor]];
+}
+
+- (UIColor *)startColor {
+  return self.colors.firstObject;
+}
+
+- (UIColor *)endColor {
+  return self.colors.lastObject;
 }
 
 - (void)setStartColor:(UIColor *)startColor {
-  _startColor = startColor;
-  [self updateGradientLayer];
+  NSMutableArray<UIColor *> *colors = [self.colors mutableCopy];
+  colors[0] = startColor;
+  self.colors = colors;
 }
 
 - (void)setEndColor:(UIColor *)endColor {
-  _endColor = endColor;
+  NSMutableArray<UIColor *> *colors = [self.colors mutableCopy];
+  colors[colors.count - 1] = endColor;
+  self.colors = colors;
+}
+
+- (void)setColors:(NSArray<UIColor *> *)colors {
+  LTParameterAssert(colors.count > 1, @"Invalid colors array, must have at least 2 element");
+  _colors = [colors copy];
   [self updateGradientLayer];
 }
 
@@ -71,14 +86,12 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)updateGradientLayer {
-  if (!self.startColor || !self.endColor) {
-    return;
-  }
-
   CAGradientLayer *layer = (CAGradientLayer *)self.layer;
-  layer.colors = @[(__bridge id)self.startColor.CGColor, (__bridge id)self.endColor.CGColor];
   layer.startPoint = self.startPoint;
   layer.endPoint = self.endPoint;
+  layer.colors = [self.colors lt_map:^id(UIColor *color) {
+    return (__bridge id)color.CGColor;
+  }];
 }
 
 @end
