@@ -61,6 +61,17 @@ NS_ASSUME_NONNULL_BEGIN
 /// but the signal does not support subscription cancellation.
 - (RACSignal *)bzr_createDirectoryAtPathIfNotExists:(NSString *)path;
 
+/// Moves file or directory at the specified \c path to \c targetPath.
+///
+/// Returns a signal that moves the item at \c path to \c targetPath upon subscription and then
+/// completes. The signal errs if the action failed.
+///
+/// @return <tt>RACSignal</tt>
+///
+/// @note Subscription is performed on a new scheduler in order to not block the subscriber thread,
+/// but the signal does not support subscription cancellation.
+- (RACSignal *)bzr_moveItemAtPath:(NSString *)path toPath:(NSString *)targetPath;
+
 @end
 
 NS_ASSUME_NONNULL_END

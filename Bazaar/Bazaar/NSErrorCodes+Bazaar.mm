@@ -70,7 +70,9 @@ LTErrorCodesImplement(BazaarErrorCodeProductID,
   /// Received request to purchase product that is not valid for purchasing.
   BZRErrorCodeInvalidProductForPurchasing,
   /// Received request to acquire all products for a user that's not a subscriber.
-  BZRErrorCodeAcquireAllRequestedForNonSubscriber
+  BZRErrorCodeAcquireAllRequestedForNonSubscriber,
+  /// Failure while moving a file or a directory.
+  BZRErrorCodeMoveItemFailed
 );
 
 NS_ASSUME_NONNULL_END
