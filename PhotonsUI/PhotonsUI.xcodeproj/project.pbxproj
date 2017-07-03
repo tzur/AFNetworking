@@ -937,7 +937,6 @@
 		848EFFE21C591C0D001D8368 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				B411A04C1EEE780300756808 /* MediaPlayer.framework */,
 				0DF151CB1EAF79DB009F3080 /* AVFoundation.framework */,
 				8861FE0C1E5A2CE200CA1436 /* CoreGraphics.framework */,
 				8861FE081E5A2CAA00CA1436 /* CoreLocation.framework */,
