@@ -3,8 +3,9 @@
 
 #import "RACSignal+Fiber.h"
 
+#import <LTKit/LTProgress.h>
+
 #import "FBRHTTPResponse.h"
-#import "FBRHTTPTaskProgress.h"
 #import "NSErrorCodes+Fiber.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -17,14 +18,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (RACSignal *)fbr_skipProgress {
   return [[self
-      filter:^BOOL(FBRHTTPTaskProgress *progress) {
-        LTAssert([progress isKindOfClass:[FBRHTTPTaskProgress class]], @"Expected a signal of "
-                 "FBRHTTPTaskProgress values, got: %@", [progress class]);
+      filter:^BOOL(LTProgress<FBRHTTPResponse *> *progress) {
+        LTAssert([progress isKindOfClass:[LTProgress class]], @"Expected a signal of LTProgress"
+                 "values, got: %@", [progress class]);
 
-        return progress.hasCompleted;
+        return progress.result != nil;
       }]
-      map:^FBRHTTPResponse *(FBRHTTPTaskProgress *progress) {
-        return progress.response;
+      map:^FBRHTTPResponse *(LTProgress<FBRHTTPResponse *> *progress) {
+        return progress.result;
       }];
 }
 
@@ -38,7 +39,7 @@ NS_ASSUME_NONNULL_BEGIN
       }
       return nil;
     }
-    
+
     NSError *underlyingError;
     id object = [NSJSONSerialization JSONObjectWithData:data options:0 error:&underlyingError];
     if (!object || underlyingError) {

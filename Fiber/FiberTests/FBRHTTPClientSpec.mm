@@ -3,13 +3,13 @@
 
 #import "FBRHTTPClient.h"
 
+#import <LTKit/LTProgress.h>
 #import <LTKit/NSError+LTKit.h>
 
 #import "FBRHTTPRequest.h"
 #import "FBRHTTPResponse.h"
 #import "FBRHTTPSession.h"
 #import "FBRHTTPSessionConfiguration.h"
-#import "FBRHTTPTaskProgress.h"
 #import "NSErrorCodes+Fiber.h"
 
 /// Block used as a completion handler with a boolean \c finished parameter.
@@ -104,9 +104,9 @@ sharedExamplesFor(kFBRHTTPClientRequestExamples, ^(NSDictionary *data) {
     progressBlock(progress);
 
     expect(recorder).to.sendValues(@[
-      [[FBRHTTPTaskProgress alloc] initWithProgress:0],
-      [[FBRHTTPTaskProgress alloc] initWithProgress:0.5],
-      [[FBRHTTPTaskProgress alloc] initWithProgress:1]
+      [[LTProgress alloc] initWithProgress:0],
+      [[LTProgress alloc] initWithProgress:0.5],
+      [[LTProgress alloc] initWithProgress:1]
     ]);
     expect(recorder).toNot.complete();
   });
@@ -122,7 +122,7 @@ sharedExamplesFor(kFBRHTTPClientRequestExamples, ^(NSDictionary *data) {
     LLSignalTestRecorder *recorder =
         [requestInitiator(client, URL.absoluteString, nil, nil) testRecorder];
 
-    FBRHTTPTaskProgress *progress = [[FBRHTTPTaskProgress alloc] initWithResponse:response];
+    LTProgress<FBRHTTPResponse *> *progress = [[LTProgress alloc] initWithResult:response];
     expect(recorder).to.sendValues(@[progress]);
     expect(recorder).to.complete();
   });

@@ -40,12 +40,12 @@ NS_ASSUME_NONNULL_BEGIN
 /// sent as part of the request. The given \c headers will be added to the headers specified in the
 /// session configuration and will take precedence over them.
 ///
-/// @return <tt>RACSignal<FBRHTTPTaskProgress *></tt>. The signal sends the request on subscription,
-/// and delivers a sequence of \c FBRHTTPTaskProgress objects representing the task status as it
-/// progresses until it completes. When the task completes the server response body is delivered
-/// wrapped in an \c FBRHTTPTaskProgress object. The signal errs if a communication error occurs or
-/// if the server response indicates an error (i.e. status code not in the range
-/// <tt>[200, 299]</tt>). Values and errors are delivered on the main queue.
+/// @return <tt>RACSignal<LTProgress<FBRHTTPResponse>></tt>. The signal sends the request on
+/// subscription, and delivers a sequence of \c LTProgress<FBRHTTPResponse> objects representing the
+/// task status as it progresses until it completes. When the task completes the server response
+/// body is delivered wrapped in an \c LTProgress<FBRHTTPResponse> object. The signal errs if a
+/// communication error occurs or if the server response indicates an error (i.e. status code not in
+/// the range <tt>[200, 299]</tt>). Values and errors are delivered on the main queue.
 - (RACSignal *)GET:(NSString *)URLString
     withParameters:(nullable FBRHTTPRequestParameters *)parameters
            headers:(nullable FBRHTTPRequestHeaders *)headers;
@@ -55,12 +55,12 @@ NS_ASSUME_NONNULL_BEGIN
 /// sent as part of the request. The given \c headers will be added to the headers specified in the
 /// session configuration and will take precedence over them.
 ///
-/// @return <tt>RACSignal<FBRHTTPTaskProgress *></tt>. The signal sends the request on subscription,
-/// and delivers a sequence of \c FBRHTTPTaskProgress objects representing the task status as it
-/// progresses until it completes. When the task completes the server response body is delivered
-/// wrapped in an \c FBRHTTPTaskProgress object. The signal errs if a communication error occurs or
-/// if the server response indicates an error (i.e. status code not in the range
-/// <tt>[200, 299]</tt>). Values and errors are delivered on the main queue.
+/// @return <tt>RACSignal<LTProgress<FBRHTTPResponse>></tt>. The signal sends the request on
+/// subscription, and delivers a sequence of \c LTProgress<FBRHTTPResponse> objects representing the
+/// task status as it progresses until it completes. When the task completes the server response
+/// body is delivered wrapped in an \c LTProgress<FBRHTTPResponse> object. The signal errs if a
+/// communication error occurs or if the server response indicates an error (i.e. status code not in
+/// the range <tt>[200, 299]</tt>). Values and errors are delivered on the main queue.
 - (RACSignal *)HEAD:(NSString *)URLString
      withParameters:(nullable FBRHTTPRequestParameters *)parameters
             headers:(nullable FBRHTTPRequestHeaders *)headers;
@@ -70,12 +70,12 @@ NS_ASSUME_NONNULL_BEGIN
 /// sent as part of the request. The given \c headers will be added to the headers specified in the
 /// session configuration and will take precedence over them.
 ///
-/// @return <tt>RACSignal<FBRHTTPTaskProgress *></tt>. The signal sends the request on subscription,
-/// and delivers a sequence of \c FBRHTTPTaskProgress objects representing the task status as it
-/// progresses until it completes. When the task completes the server response body is delivered
-/// wrapped in an \c FBRHTTPTaskProgress object. The signal errs if a communication error occurs or
-/// if the server response indicates an error (i.e. status code not in the range
-/// <tt>[200, 299]</tt>). Values and errors are delivered on the main queue.
+/// @return <tt>RACSignal<LTProgress<FBRHTTPResponse>></tt>. The signal sends the request on
+/// subscription, and delivers a sequence of \c LTProgress<FBRHTTPResponse> objects representing the
+/// task status as it progresses until it completes. When the task completes the server response
+/// body is delivered wrapped in an \c LTProgress<FBRHTTPResponse> object. The signal errs if a
+/// communication error occurs or if the server response indicates an error (i.e. status code not in
+/// the range <tt>[200, 299]</tt>). Values and errors are delivered on the main queue.
 - (RACSignal *)POST:(NSString *)URLString
      withParameters:(nullable FBRHTTPRequestParameters *)parameters
             headers:(nullable FBRHTTPRequestHeaders *)headers;
@@ -85,12 +85,12 @@ NS_ASSUME_NONNULL_BEGIN
 /// sent as part of the request. The given \c headers will be added to the headers specified in the
 /// session configuration and will take precedence over them.
 ///
-/// @return <tt>RACSignal<FBRHTTPTaskProgress *></tt>. The signal sends the request on subscription,
-/// and delivers a sequence of \c FBRHTTPTaskProgress objects representing the task status as it
-/// progresses until it completes. When the task completes the server response body is delivered
-/// wrapped in an \c FBRHTTPTaskProgress object. The signal errs if a communication error occurs or
-/// if the server response indicates an error (i.e. status code not in the range
-/// <tt>[200, 299]</tt>). Values and errors are delivered on the main queue.
+/// @return <tt>RACSignal<LTProgress<FBRHTTPResponse>></tt>. The signal sends the request on
+/// subscription, and delivers a sequence of \c LTProgress<FBRHTTPResponse> objects representing the
+/// task status as it progresses until it completes. When the task completes the server response
+/// body is delivered wrapped in an \c LTProgress<FBRHTTPResponse> object. The signal errs if a
+/// communication error occurs or if the server response indicates an error (i.e. status code not in
+/// the range <tt>[200, 299]</tt>). Values and errors are delivered on the main queue.
 - (RACSignal *)PUT:(NSString *)URLString
     withParameters:(nullable FBRHTTPRequestParameters *)parameters
            headers:(nullable FBRHTTPRequestHeaders *)headers;
@@ -100,12 +100,12 @@ NS_ASSUME_NONNULL_BEGIN
 /// sent as part of the request. The given \c headers will be added to the headers specified in the
 /// session configuration and will take precedence over them.
 ///
-/// @return <tt>RACSignal<FBRHTTPTaskProgress *></tt>. The signal sends the request on subscription,
-/// and delivers a sequence of \c FBRHTTPTaskProgress objects representing the task status as it
-/// progresses until it completes. When the task completes the server response body is delivered
-/// wrapped in an \c FBRHTTPTaskProgress object. The signal errs if a communication error occurs or
-/// if the server response indicates an error (i.e. status code not in the range
-/// <tt>[200, 299]</tt>). Values and errors are delivered on the main queue.
+/// @return <tt>RACSignal<LTProgress<FBRHTTPResponse>></tt>. The signal sends the request on
+/// subscription, and delivers a sequence of \c LTProgress<FBRHTTPResponse> objects representing the
+/// task status as it progresses until it completes. When the task completes the server response
+/// body is delivered wrapped in an \c LTProgress<FBRHTTPResponse> object. The signal errs if a
+/// communication error occurs or if the server response indicates an error (i.e. status code not in
+/// the range <tt>[200, 299]</tt>). Values and errors are delivered on the main queue.
 - (RACSignal *)PATCH:(NSString *)URLString
       withParameters:(nullable FBRHTTPRequestParameters *)parameters
              headers:(nullable FBRHTTPRequestHeaders *)headers;
@@ -115,12 +115,12 @@ NS_ASSUME_NONNULL_BEGIN
 /// sent as part of the request. The given \c headers will be added to the headers specified in the
 /// session configuration and will take precedence over them.
 ///
-/// @return <tt>RACSignal<FBRHTTPTaskProgress *></tt>. The signal sends the request on subscription,
-/// and delivers a sequence of \c FBRHTTPTaskProgress objects representing the task status as it
-/// progresses until it completes. When the task completes the server response body is delivered
-/// wrapped in an \c FBRHTTPTaskProgress object. The signal errs if a communication error occurs or
-/// if the server response indicates an error (i.e. status code not in the range
-/// <tt>[200, 299]</tt>). Values and errors are delivered on the main queue.
+/// @return <tt>RACSignal<LTProgress<FBRHTTPResponse>></tt>. The signal sends the request on
+/// subscription, and delivers a sequence of \c LTProgress<FBRHTTPResponse> objects representing the
+/// task status as it progresses until it completes. When the task completes the server response
+/// body is delivered wrapped in an \c LTProgress<FBRHTTPResponse> object. The signal errs if a
+/// communication error occurs or if the server response indicates an error (i.e. status code not in
+/// the range <tt>[200, 299]</tt>). Values and errors are delivered on the main queue.
 - (RACSignal *)DELETE:(NSString *)URLString
        withParameters:(nullable FBRHTTPRequestParameters *)parameters
               headers:(nullable FBRHTTPRequestHeaders *)headers;

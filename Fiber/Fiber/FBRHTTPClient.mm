@@ -3,12 +3,13 @@
 
 #import "FBRHTTPClient.h"
 
+#import <LTKit/LTProgress.h>
+
 #import "FBRAFNetworkingSessionAdapter.h"
 #import "FBRHTTPRequest.h"
 #import "FBRHTTPResponse.h"
 #import "FBRHTTPSession.h"
 #import "FBRHTTPSessionConfiguration.h"
-#import "FBRHTTPTaskProgress.h"
 #import "NSErrorCodes+Fiber.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -139,12 +140,12 @@ NS_ASSUME_NONNULL_BEGIN
   return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
     NSURLSessionDataTask *task =
         [self.session dataTaskWithRequest:request progress:^(NSProgress *progress) {
-          FBRHTTPTaskProgress *taskProgress =
-              [[FBRHTTPTaskProgress alloc] initWithProgress:progress.fractionCompleted];
+          LTProgress<FBRHTTPResponse *> *taskProgress =
+              [[LTProgress alloc] initWithProgress:progress.fractionCompleted];
           [subscriber sendNext:taskProgress];
         } success:^(FBRHTTPResponse *response) {
-          FBRHTTPTaskProgress *taskProgress =
-              [[FBRHTTPTaskProgress alloc] initWithResponse:response];
+          LTProgress<FBRHTTPResponse *> *taskProgress =
+              [[LTProgress alloc] initWithResult:response];
           [subscriber sendNext:taskProgress];
           [subscriber sendCompleted];
         } failure:^(NSError *error) {

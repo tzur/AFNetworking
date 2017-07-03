@@ -5,8 +5,8 @@
 
 #import <Fiber/FBRHTTPClient.h>
 #import <Fiber/FBRHTTPResponse.h>
-#import <Fiber/FBRHTTPTaskProgress.h>
 #import <Fiber/RACSignal+Fiber.h>
+#import <LTKit/LTProgress.h>
 
 #import "BZRTestUtils.h"
 #import "NSErrorCodes+Bazaar.h"
@@ -47,9 +47,8 @@ context(@"fetching JSON products list", ^{
     NSData *JSONData = [NSJSONSerialization dataWithJSONObject:JSONArray options:0 error:NULL];
     FBRHTTPResponse *response = OCMClassMock([FBRHTTPResponse class]);
     OCMStub([response content]).andReturn(JSONData);
-    FBRHTTPTaskProgress *progress = OCMClassMock([FBRHTTPTaskProgress class]);
-    OCMStub([progress response]).andReturn(response);
-    OCMStub([progress hasCompleted]).andReturn(YES);
+    LTProgress<FBRHTTPResponse *> *progress = OCMClassMock([LTProgress class]);
+    OCMStub([progress result]).andReturn(response);
     OCMStub([client GET:OCMOCK_ANY withParameters:OCMOCK_ANY headers:OCMOCK_ANY])
         .andReturn([RACSignal return:progress]);
 
@@ -66,9 +65,8 @@ context(@"fetching JSON products list", ^{
     NSData *JSONData = [NSJSONSerialization dataWithJSONObject:JSONArray options:0 error:NULL];
     FBRHTTPResponse *response = OCMClassMock([FBRHTTPResponse class]);
     OCMStub([response content]).andReturn(JSONData);
-    FBRHTTPTaskProgress *progress = OCMClassMock([FBRHTTPTaskProgress class]);
-    OCMStub([progress response]).andReturn(response);
-    OCMStub([progress hasCompleted]).andReturn(YES);
+    LTProgress<FBRHTTPResponse *> *progress = OCMClassMock([LTProgress class]);
+    OCMStub([progress result]).andReturn(response);
     OCMStub([client GET:OCMOCK_ANY withParameters:OCMOCK_ANY headers:OCMOCK_ANY])
         .andReturn([RACSignal return:progress]);
 
