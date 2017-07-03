@@ -1558,6 +1558,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 65C62B721D046B22000FCE99 /* Application.xcconfig */;
 			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/TestHost.app/TestHost";
 				CLANG_ANALYZER_NONNULL = YES;
 				DEVELOPMENT_TEAM = KG6GWND6BG;
 				HEADER_SEARCH_PATHS = (
@@ -1572,6 +1573,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.lightricks.FiberTests;
 				PRODUCT_NAME = FiberTests;
+				TEST_HOST = "$(BUNDLE_LOADER)";
 			};
 			name = Release;
 		};

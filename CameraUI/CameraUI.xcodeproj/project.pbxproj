@@ -1963,6 +1963,7 @@
 		83B729051CD8D2080090C0BF /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/TestHost.app/TestHost";
 				DEVELOPMENT_TEAM = KG6GWND6BG;
 				GCC_PREFIX_HEADER = "CameraUITests/CameraUITests-Prefix.pch";
 				HEADER_SEARCH_PATHS = (

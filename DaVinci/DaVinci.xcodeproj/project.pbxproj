@@ -1927,6 +1927,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 50FF1A581D2CDFF400E24B4D /* Application.xcconfig */;
 			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/TestHost.app/TestHost";
 				DEVELOPMENT_TEAM = KG6GWND6BG;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "DaVinciTests/DaVinciTests-Prefix.pch";
@@ -1944,6 +1945,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.lightricks.DaVinciTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
 			};
 			name = Release;
 		};

@@ -1780,7 +1780,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 8B78835F1BDF70790051CCD1 /* Debug.xcconfig */;
 			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/TestHost.app/TestHost";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				ENABLE_TESTABILITY = YES;
 				HEADER_SEARCH_PATHS = (
@@ -1831,6 +1830,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 8B7883621BDF70790051CCD1 /* Application.xcconfig */;
 			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/TestHost.app/TestHost";
 				DEVELOPMENT_TEAM = KG6GWND6BG;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PREFIX_HEADER = "LTKitTests/LTKitTests-Prefix.pch";
@@ -1853,6 +1853,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 8B7883621BDF70790051CCD1 /* Application.xcconfig */;
 			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/TestHost.app/TestHost";
 				DEVELOPMENT_TEAM = KG6GWND6BG;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PREFIX_HEADER = "LTKitTests/LTKitTests-Prefix.pch";
