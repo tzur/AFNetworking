@@ -5951,6 +5951,11 @@
 			attributes = {
 				LastUpgradeCheck = 0720;
 				ORGANIZATIONNAME = Lightricks;
+				TargetAttributes = {
+					8B3DEBF318296B6100EA0C1A = {
+						DevelopmentTeam = KG6GWND6BG;
+					};
+				};
 			};
 			buildConfigurationList = 8B3DEBDF18296B6100EA0C1A /* Build configuration list for PBXProject "LTEngine" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -7454,6 +7459,7 @@
 			baseConfigurationReference = 8B6B4FB01BDFA41700662235 /* Application.xcconfig */;
 			buildSettings = {
 				COMPRESS_PNG_FILES = NO;
+				DEVELOPMENT_TEAM = KG6GWND6BG;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "LTEngineTests/LTEngineTests-Prefix.pch";
@@ -7487,6 +7493,7 @@
 			baseConfigurationReference = 8B6B4FB01BDFA41700662235 /* Application.xcconfig */;
 			buildSettings = {
 				COMPRESS_PNG_FILES = NO;
+				DEVELOPMENT_TEAM = KG6GWND6BG;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "LTEngineTests/LTEngineTests-Prefix.pch";

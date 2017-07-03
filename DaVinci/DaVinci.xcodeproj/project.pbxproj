@@ -1362,6 +1362,7 @@
 					};
 					2501547F1D1AE92900420FA9 = {
 						CreatedOnToolsVersion = 7.3.1;
+						DevelopmentTeam = KG6GWND6BG;
 					};
 				};
 			};
@@ -1901,6 +1902,7 @@
 			baseConfigurationReference = 50FF1A581D2CDFF400E24B4D /* Application.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/TestHost.app/TestHost";
+				DEVELOPMENT_TEAM = KG6GWND6BG;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "DaVinciTests/DaVinciTests-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
@@ -1925,6 +1927,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 50FF1A581D2CDFF400E24B4D /* Application.xcconfig */;
 			buildSettings = {
+				DEVELOPMENT_TEAM = KG6GWND6BG;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "DaVinciTests/DaVinciTests-Prefix.pch";
 				HEADER_SEARCH_PATHS = (

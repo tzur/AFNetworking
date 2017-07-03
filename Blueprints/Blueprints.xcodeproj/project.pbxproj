@@ -822,6 +822,7 @@
 					};
 					8BED80971C3A68290001C6F1 = {
 						CreatedOnToolsVersion = 7.2;
+						DevelopmentTeam = KG6GWND6BG;
 					};
 				};
 			};
@@ -1250,6 +1251,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 8BED80911C3A68080001C6F1 /* Application.xcconfig */;
 			buildSettings = {
+				DEVELOPMENT_TEAM = KG6GWND6BG;
 				GCC_PREFIX_HEADER = "BlueprintsTests/BlueprintsTests-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1269,6 +1271,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 8BED80911C3A68080001C6F1 /* Application.xcconfig */;
 			buildSettings = {
+				DEVELOPMENT_TEAM = KG6GWND6BG;
 				GCC_PREFIX_HEADER = "BlueprintsTests/BlueprintsTests-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",

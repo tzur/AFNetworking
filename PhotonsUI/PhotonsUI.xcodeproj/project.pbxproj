@@ -1191,6 +1191,7 @@
 				TargetAttributes = {
 					848E000C1C591DD1001D8368 = {
 						CreatedOnToolsVersion = 7.2;
+						DevelopmentTeam = KG6GWND6BG;
 					};
 					84FF72E81C8EED6D00D1DA9F = {
 						CreatedOnToolsVersion = 7.2.1;
@@ -1707,6 +1708,7 @@
 			baseConfigurationReference = 848EFFB51C591B91001D8368 /* Application.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/TestHost.app/TestHost";
+				DEVELOPMENT_TEAM = KG6GWND6BG;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "PhotonsUITests/PhotonsUITests-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
@@ -1730,6 +1732,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 848EFFB51C591B91001D8368 /* Application.xcconfig */;
 			buildSettings = {
+				DEVELOPMENT_TEAM = KG6GWND6BG;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "PhotonsUITests/PhotonsUITests-Prefix.pch";
 				HEADER_SEARCH_PATHS = (

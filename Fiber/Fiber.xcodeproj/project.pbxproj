@@ -1047,6 +1047,7 @@
 					};
 					65C62B851D0474D4000FCE99 = {
 						CreatedOnToolsVersion = 7.3;
+						DevelopmentTeam = KG6GWND6BG;
 					};
 				};
 			};
@@ -1536,6 +1537,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/TestHost.app/TestHost";
 				CLANG_ANALYZER_NONNULL = YES;
+				DEVELOPMENT_TEAM = KG6GWND6BG;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/Fiber",
@@ -1557,6 +1559,7 @@
 			baseConfigurationReference = 65C62B721D046B22000FCE99 /* Application.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
+				DEVELOPMENT_TEAM = KG6GWND6BG;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/Fiber",

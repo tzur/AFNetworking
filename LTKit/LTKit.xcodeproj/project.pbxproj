@@ -1383,6 +1383,11 @@
 			attributes = {
 				LastUpgradeCheck = 0710;
 				ORGANIZATIONNAME = Lightricks;
+				TargetAttributes = {
+					8B3DEBF318296B6100EA0C1A = {
+						DevelopmentTeam = KG6GWND6BG;
+					};
+				};
 			};
 			buildConfigurationList = 8B3DEBDF18296B6100EA0C1A /* Build configuration list for PBXProject "LTKit" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -1826,6 +1831,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 8B7883621BDF70790051CCD1 /* Application.xcconfig */;
 			buildSettings = {
+				DEVELOPMENT_TEAM = KG6GWND6BG;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PREFIX_HEADER = "LTKitTests/LTKitTests-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
@@ -1847,6 +1853,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 8B7883621BDF70790051CCD1 /* Application.xcconfig */;
 			buildSettings = {
+				DEVELOPMENT_TEAM = KG6GWND6BG;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PREFIX_HEADER = "LTKitTests/LTKitTests-Prefix.pch";
 				HEADER_SEARCH_PATHS = (

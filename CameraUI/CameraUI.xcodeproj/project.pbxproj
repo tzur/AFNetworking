@@ -1309,6 +1309,7 @@
 					};
 					83B728FA1CD8D2080090C0BF = {
 						CreatedOnToolsVersion = 7.3;
+						DevelopmentTeam = KG6GWND6BG;
 					};
 				};
 			};
@@ -1934,6 +1935,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/TestHost.app/TestHost";
+				DEVELOPMENT_TEAM = KG6GWND6BG;
 				GCC_PREFIX_HEADER = "CameraUITests/CameraUITests-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1961,6 +1963,7 @@
 		83B729051CD8D2080090C0BF /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				DEVELOPMENT_TEAM = KG6GWND6BG;
 				GCC_PREFIX_HEADER = "CameraUITests/CameraUITests-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
