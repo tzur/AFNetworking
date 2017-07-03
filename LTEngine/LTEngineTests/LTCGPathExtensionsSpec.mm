@@ -233,6 +233,10 @@ context(@"creation", ^{
   __block CGFloat circleSize;
   __block lt::Ref<CGPathRef> path;
 
+  beforeEach(^{
+    gapSize = 0.25;
+  });
+
   it(@"should correctly create a path for a given acyclic unsmoothened polyline", ^{
     CGPoints points{CGPointMake(0, 0), CGPointMake(1, 0), CGPointMake(1, 1)};
     LTVector2s inputData{LTVector2(points[0]), LTVector2(points[1]), LTVector2(points[2])};
@@ -326,7 +330,6 @@ context(@"creation", ^{
         CGPointMake(2, 1.65), CGPointMake(2 - M_SQRT1_2 * 0.25, 2 - M_SQRT1_2 * 0.25),
         CGPointMake(M_SQRT1_2 * 0.25, M_SQRT1_2 * 0.25)};
     LTVector2s inputData{LTVector2::zeros(), LTVector2(2, 0), LTVector2(2, 1.9), LTVector2(2, 2)};
-    gapSize = 0.25;
     lt::Ref<CGPathRef> immutablePath =
         LTCGPathCreateWithControlPointsAndGapsAroundVertices(inputData, gapSize, kClosed);
 
@@ -345,7 +348,6 @@ context(@"creation", ^{
         CGPointMake(M_SQRT1_2 * 0.25, M_SQRT1_2 * 0.25)};
     LTVector2s inputData{LTVector2(1, 0), LTVector2(2, 0), LTVector2(2, 2),
         LTVector2::zeros()};
-    gapSize = 0.25;
     lt::Ref<CGPathRef> immutablePath =
         LTCGPathCreateWithControlPointsAndGapsAroundVertices(inputData, gapSize, !kClosed);
 
@@ -353,6 +355,27 @@ context(@"creation", ^{
     evaluation.numberOfPointsToExpect = points.size();
     evaluation.numberOfClosedSubPathsToExpect = 3;
     CGPathApply(immutablePath.get(), &evaluation, &LTCheckCorrectnessOfPath);
+    expect(evaluation.failure).to.beFalsy();
+    expect(evaluation.numberOfPoints).to.equal(evaluation.numberOfPointsToExpect);
+    expect(evaluation.numberOfClosedSubPaths).to.equal(evaluation.numberOfClosedSubPathsToExpect);
+  });
+
+  it(@"should correctly create a closed path with gaps on edges", ^{
+    CGPoints points{CGPointMake(1.75, 0), CGPointMake(2, 0), CGPointMake(2, 0.25),
+      CGPointMake(2, 0), CGPointMake(2, 1.75), CGPointMake(2, 2),
+      CGPointMake(1.823223352432251, 1.823223352432251), CGPointMake(2, 2),
+      CGPointMake(0.17677669, 0.17677669), CGPointZero, CGPointMake(0.25, 0), CGPointZero,
+      CGPointMake(0.75, 0), CGPointMake(1, 0), CGPointMake(1.25, 0), CGPointMake(1, 0)
+    };
+    LTVector2s inputData{LTVector2(1, 0), LTVector2(2, 0), LTVector2(2, 2), LTVector2::zeros()};
+    lt::Ref<CGPathRef> immutablePath = LTCGPathCreateWithControlPointsAndGapsOnEdges(inputData,
+                                                                                     gapSize);
+
+    evaluation.points = points;
+    evaluation.numberOfPointsToExpect = points.size();
+    evaluation.numberOfClosedSubPathsToExpect = 4;
+    CGPathApply(immutablePath.get(), &evaluation, &LTCheckCorrectnessOfPath);
+
     expect(evaluation.failure).to.beFalsy();
     expect(evaluation.numberOfPoints).to.equal(evaluation.numberOfPointsToExpect);
     expect(evaluation.numberOfClosedSubPaths).to.equal(evaluation.numberOfClosedSubPathsToExpect);
