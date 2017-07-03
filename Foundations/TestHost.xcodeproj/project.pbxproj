@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0651F3BB1EDC8E39009FA384 /* PinkyBundle.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 0651F3B41EDC8E01009FA384 /* PinkyBundle.bundle */; };
+		0651F3BB1EDC8E39009FA384 /* Pinky.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 0651F3B41EDC8E01009FA384 /* Pinky.bundle */; };
 		656155E31D464DC9009E701C /* LTEngine.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 656155DE1D464DAF009E701C /* LTEngine.bundle */; };
 		65BB8B711D3D67C5004886DC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65BB8B701D3D67C5004886DC /* Foundation.framework */; };
 		65BB8B731D3D67C9004886DC /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65BB8B721D3D67C9004886DC /* UIKit.framework */; };
@@ -121,9 +121,9 @@
 			isa = PBXGroup;
 			children = (
 				0651F3B21EDC8E01009FA384 /* libPinky.a */,
-				0651F3B41EDC8E01009FA384 /* PinkyBundle.bundle */,
-				0651F3B61EDC8E01009FA384 /* PinkyTests.xctest */,
+				0651F3B41EDC8E01009FA384 /* Pinky.bundle */,
 				0651F3B81EDC8E01009FA384 /* PinkyDeviceTests.xctest */,
+				0651F3B61EDC8E01009FA384 /* PinkyTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -308,10 +308,10 @@
 			remoteRef = 0651F3B11EDC8E01009FA384 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		0651F3B41EDC8E01009FA384 /* PinkyBundle.bundle */ = {
+		0651F3B41EDC8E01009FA384 /* Pinky.bundle */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
-			path = PinkyBundle.bundle;
+			path = Pinky.bundle;
 			remoteRef = 0651F3B31EDC8E01009FA384 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
@@ -360,7 +360,7 @@
 				65CEFBC51D3BF72800402230 /* LaunchScreen.storyboard in Resources */,
 				65CEFBC21D3BF72800402230 /* Assets.xcassets in Resources */,
 				656155E31D464DC9009E701C /* LTEngine.bundle in Resources */,
-				0651F3BB1EDC8E39009FA384 /* PinkyBundle.bundle in Resources */,
+				0651F3BB1EDC8E39009FA384 /* Pinky.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
