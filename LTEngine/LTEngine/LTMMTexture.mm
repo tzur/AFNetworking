@@ -32,8 +32,13 @@
 /// Lock for texture read/write synchronization.
 @property (strong, nonatomic) NSRecursiveLock *lock;
 
-/// OpenGL sync object used for GPU/CPU synchronization.
-@property (nonatomic) GLsync syncObject;
+/// OpenGL sync object used in the scenarios of GPU write followed by a CPU read/write, to make sure
+/// the GPU has finished writing to the texture before reading the buffer from the CPU.
+@property (nonatomic, nullable) GLsync writeSyncObject;
+
+/// OpenGL sync object used in the scenario of GPU read followed by a CPU write, to avoid
+/// out-of-order execution which will cause the CPU write to be performed before the GPU read.
+@property (nonatomic, nullable) GLsync readSyncObject;
 
 @end
 
@@ -171,7 +176,8 @@
       _textureCache.reset(nullptr);
     }
 
-    self.syncObject = nil;
+    self.readSyncObject = nil;
+    self.writeSyncObject = nil;
   }];
 }
 
@@ -248,6 +254,8 @@
 }
 
 - (void)endSamplingWithGPU {
+  self.readSyncObject = [self createAndPushSyncObject];
+
   [self.lock unlock];
 }
 
@@ -257,21 +265,31 @@
 }
 
 - (void)endWritingWithGPU {
-  // Make \c self.syncObject a synchronization barrier that is right beyond the last drawing to this
-  // texture in the GPU queue.
-  [[LTGLContext currentContext] executeForOpenGLES2:^{
-    self.syncObject = glFenceSyncAPPLE(GL_SYNC_GPU_COMMANDS_COMPLETE_APPLE, 0);
-  } openGLES3:^{
-    self.syncObject = glFenceSync(GL_SYNC_GPU_COMMANDS_COMPLETE, 0);
-  }];
+  self.writeSyncObject = [self createAndPushSyncObject];
 
   [self updateGenerationID];
   [self.lock unlock];
 }
 
+- (GLsync)createAndPushSyncObject {
+  __block GLsync syncObject;
+  [[LTGLContext currentContext] executeForOpenGLES2:^{
+    syncObject = glFenceSyncAPPLE(GL_SYNC_GPU_COMMANDS_COMPLETE_APPLE, 0);
+  } openGLES3:^{
+    syncObject = glFenceSync(GL_SYNC_GPU_COMMANDS_COMPLETE, 0);
+  }];
+  return syncObject;
+}
+
 - (lt::Ref<CVPixelBufferRef>)pixelBuffer {
   [self lockTextureAndExecute:^{
-    [self waitForGPU];
+    // Need to wait for both read and write syncs since returning a pixelbuffer can be used for both
+    // reading or writing.
+    [self waitForSyncObject:self.writeSyncObject];
+    [self waitForSyncObject:self.readSyncObject];
+
+    self.writeSyncObject = nil;
+    self.readSyncObject = nil;
   }];
 
   return lt::Ref<CVPixelBufferRef>(CVPixelBufferRetain(_pixelBuffer.get()));
@@ -343,8 +361,15 @@ typedef LTTextureMappedWriteBlock LTTextureMappedBlock;
   [self lockTextureAndExecute:^{
     LTAssert(_pixelBuffer, @"Pixel buffer must be created before calling mappedImage:");
 
-    // Make sure everything is written to the texture before reading back to CPU.
-    [self waitForGPU];
+    // GPU read sync is required only when mapping the texture for writing. There's no hazard when
+    // mapping for reading since the texture is not modified.
+    if (!(lockFlags & kCVPixelBufferLock_ReadOnly)) {
+      [self waitForSyncObject:self.readSyncObject];
+      self.readSyncObject = nil;
+    }
+
+    [self waitForSyncObject:self.writeSyncObject];
+    self.writeSyncObject = nil;
 
     if (!CVPixelBufferIsPlanar(_pixelBuffer.get())) {
       LTCVPixelBufferImage(_pixelBuffer.get(), lockFlags, ^(cv::Mat *image) {
@@ -358,14 +383,18 @@ typedef LTTextureMappedWriteBlock LTTextureMappedBlock;
   }];
 }
 
-- (void)waitForGPU {
-  static const GLuint64 kMaxTimeout = std::numeric_limits<GLuint64>::max();
+- (void)waitForSyncObject:(nullable GLsync)sync {
+  // According to \c glIsSync docs: "zero is not the name of a sync object". Therefore we can bail
+  // out quickly by checking this specific value.
+  if (!sync) {
+    return;
+  }
 
-  __block BOOL isSync;
+  __block GLboolean isSync;
   [[LTGLContext currentContext] executeForOpenGLES2:^{
-    isSync = glIsSyncAPPLE(self.syncObject);
+    isSync = glIsSyncAPPLE(sync);
   } openGLES3:^{
-    isSync = glIsSync(self.syncObject);
+    isSync = glIsSync(sync);
   }];
   if (!isSync) {
     return;
@@ -375,33 +404,40 @@ typedef LTTextureMappedWriteBlock LTTextureMappedBlock;
   // the specification of glClientWaitSync(APPLE), there seems to be a bug in the implementation of
   // glClientWaitSync(APPLE) occurring on devices running iOS 10. Hence, we perform a manual
   // flushing.
-  //
-  // TODO:(Rouven) Remove this line once the bug is fixed.
   glFlush();
 
   __block GLenum waitResult;
+  static const GLuint64 kMaxTimeout = std::numeric_limits<GLuint64>::max();
   [[LTGLContext currentContext] executeForOpenGLES2:^{
-    waitResult = glClientWaitSyncAPPLE(self.syncObject, GL_SYNC_FLUSH_COMMANDS_BIT, kMaxTimeout);
+    waitResult = glClientWaitSyncAPPLE(sync, GL_SYNC_FLUSH_COMMANDS_BIT, kMaxTimeout);
   } openGLES3:^{
-    waitResult = glClientWaitSync(self.syncObject, GL_SYNC_FLUSH_COMMANDS_BIT, kMaxTimeout);
+    waitResult = glClientWaitSync(sync, GL_SYNC_FLUSH_COMMANDS_BIT, kMaxTimeout);
   }];
-  self.syncObject = nil;
 
   LTAssert(waitResult != GL_TIMEOUT_EXPIRED_APPLE, @"Timed out while waiting for sync object");
   LTAssert(waitResult != GL_WAIT_FAILED_APPLE, @"Failed waiting on sync object");
 }
 
-- (void)setSyncObject:(GLsync)syncObject {
+- (void)setWriteSyncObject:(nullable GLsync)writeSyncObject {
+  [self deleteSyncObjectIfExists:_writeSyncObject];
+  _writeSyncObject = writeSyncObject;
+}
+
+- (void)setReadSyncObject:(nullable GLsync)readSyncObject {
+  [self deleteSyncObjectIfExists:_readSyncObject];
+  _readSyncObject = readSyncObject;
+}
+
+- (void)deleteSyncObjectIfExists:(nullable GLsync)sync {
   [[LTGLContext currentContext] executeForOpenGLES2:^{
-    if (glIsSyncAPPLE(_syncObject)) {
-      glDeleteSyncAPPLE(_syncObject);
+    if (glIsSyncAPPLE(sync)) {
+      glDeleteSyncAPPLE(sync);
     }
   } openGLES3:^{
-    if (glIsSync(_syncObject)) {
-      glDeleteSync(_syncObject);
+    if (glIsSync(sync)) {
+      glDeleteSync(sync);
     }
   }];
-  _syncObject = syncObject;
 }
 
 - (void)mappedCIImage:(NS_NOESCAPE LTTextureMappedCIImageBlock)block {
