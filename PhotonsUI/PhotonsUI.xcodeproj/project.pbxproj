@@ -937,7 +937,6 @@
 		848EFFE21C591C0D001D8368 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				B411A04C1EEE780300756808 /* MediaPlayer.framework */,
 				0DF151CB1EAF79DB009F3080 /* AVFoundation.framework */,
 				8861FE0C1E5A2CE200CA1436 /* CoreGraphics.framework */,
 				8861FE081E5A2CAA00CA1436 /* CoreLocation.framework */,
@@ -1191,6 +1190,7 @@
 				TargetAttributes = {
 					848E000C1C591DD1001D8368 = {
 						CreatedOnToolsVersion = 7.2;
+						DevelopmentTeam = KG6GWND6BG;
 					};
 					84FF72E81C8EED6D00D1DA9F = {
 						CreatedOnToolsVersion = 7.2.1;
@@ -1707,6 +1707,7 @@
 			baseConfigurationReference = 848EFFB51C591B91001D8368 /* Application.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/TestHost.app/TestHost";
+				DEVELOPMENT_TEAM = KG6GWND6BG;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "PhotonsUITests/PhotonsUITests-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
@@ -1730,6 +1731,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 848EFFB51C591B91001D8368 /* Application.xcconfig */;
 			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/TestHost.app/TestHost";
+				DEVELOPMENT_TEAM = KG6GWND6BG;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "PhotonsUITests/PhotonsUITests-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
@@ -1745,6 +1748,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.lightricks.PhotonsUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
 			};
 			name = Release;
 		};

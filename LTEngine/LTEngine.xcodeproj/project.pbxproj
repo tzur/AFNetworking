@@ -5951,6 +5951,11 @@
 			attributes = {
 				LastUpgradeCheck = 0720;
 				ORGANIZATIONNAME = Lightricks;
+				TargetAttributes = {
+					8B3DEBF318296B6100EA0C1A = {
+						DevelopmentTeam = KG6GWND6BG;
+					};
+				};
 			};
 			buildConfigurationList = 8B3DEBDF18296B6100EA0C1A /* Build configuration list for PBXProject "LTEngine" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -7367,7 +7372,6 @@
 			baseConfigurationReference = 8B6B4FAD1BDFA41700662235 /* Debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/TestHost.app/TestHost";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -7453,7 +7457,9 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 8B6B4FB01BDFA41700662235 /* Application.xcconfig */;
 			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/TestHost.app/TestHost";
 				COMPRESS_PNG_FILES = NO;
+				DEVELOPMENT_TEAM = KG6GWND6BG;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "LTEngineTests/LTEngineTests-Prefix.pch";
@@ -7486,7 +7492,9 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 8B6B4FB01BDFA41700662235 /* Application.xcconfig */;
 			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/TestHost.app/TestHost";
 				COMPRESS_PNG_FILES = NO;
+				DEVELOPMENT_TEAM = KG6GWND6BG;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "LTEngineTests/LTEngineTests-Prefix.pch";
@@ -7510,6 +7518,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.Lightricks.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRIP_PNG_TEXT = NO;
+				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};
 			name = Release;
