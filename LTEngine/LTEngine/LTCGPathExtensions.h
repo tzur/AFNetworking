@@ -43,6 +43,18 @@ lt::Ref<CGPathRef> LTCGPathCreateWithControlPointsAndGapsAroundVertices(const LT
                                                                         CGFloat gapSize,
                                                                         BOOL closed);
 
+/// Creates a path from the provided \c polyline. The given \c gapSize must be greater than \c 0.
+/// The returned path is a closed path containing gaps in the following way: Given two adjacent
+/// edges <tt>(v0, v1)</tt> and <tt>(v1, v2)</tt> of the given \c polyline, two additional points
+/// \c a and \c b are added to the polyline such that \c a lies on <tt>(v0, v1)</tt>, \c b lies on
+/// <tt>(v1, v2)</tt>, the length of <tt>(a, v1)</tt> equals
+/// <tt>min(edgeLength, length(v0, v1) / 2)</tt>, and the length of
+/// <tt>(v1, b)</tt> equals <tt>min(edgeLength, length(v1, v2) / 2)</tt>. The resulting path
+/// contains the edges from \c a to \c v1 and from \c v1 to \c b, but no other edges originating
+/// from \c a or \c b. This procedure is applied to every pair of adjacent edges of the \c polyline.
+lt::Ref<CGPathRef> LTCGPathCreateWithControlPointsAndGapsOnEdges(const LTVector2s &polyline,
+                                                                 CGFloat edgeLength);
+
 /// Creates a path from the provided \c polyline. If \c closed is YES, a cyclic path is returned.
 /// If \c circleRadius is greater than 0, the returned path contains empty circles of radius
 /// \c circleRadius around its vertices. The caller is responsible for releasing the returned path.

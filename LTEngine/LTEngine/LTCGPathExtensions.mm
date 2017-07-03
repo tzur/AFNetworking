@@ -174,6 +174,31 @@ lt::Ref<CGPathRef> LTCGPathCreateWithControlPointsAndGapsAroundVertices(const LT
   return lt::Ref<CGPathRef>(path);
 }
 
+lt::Ref<CGPathRef> LTCGPathCreateWithControlPointsAndGapsOnEdges(const LTVector2s &polyline,
+                                                                 CGFloat edgeLength) {
+  LTParameterAssert(polyline.size() > 1, @"Invalid polyline size: %lu",
+                    (unsigned long)polyline.size());
+  LTParameterAssert(edgeLength > 0, @"Invalid edge length: %g", edgeLength);
+  const NSUInteger kNumberOfCorners = polyline.size();
+
+  LTVector2s start(kNumberOfCorners);
+  LTVector2s end(kNumberOfCorners);
+  LTComputeGapControlPoints(polyline, &start, &end, edgeLength);
+
+  CGMutablePathRef path = CGPathCreateMutable();
+  for (NSUInteger i = 0; i < kNumberOfCorners; ++i) {
+    NSUInteger nextIndex = (i + 1) % kNumberOfCorners;
+    LTVector2 center = polyline[nextIndex];
+
+    CGPathMoveToPoint(path, NULL, end[i].x, end[i].y);
+    CGPathAddLineToPoint(path, NULL, center.x, center.y);
+    CGPathAddLineToPoint(path, NULL, start[nextIndex].x, start[nextIndex].y);
+    CGPathAddLineToPoint(path, NULL, center.x, center.y);
+    CGPathCloseSubpath(path);
+  }
+  return lt::Ref<CGPathRef>(path);
+}
+
 lt::Ref<CGPathRef> LTCGPathCreateWithControlPointsAndCirclesAroundVertices(
     const LTVector2s &polyline, CGFloat circleRadius, BOOL closed) {
   LTParameterAssert(polyline.size() > 1);
