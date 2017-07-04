@@ -30,12 +30,12 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 /// Returns a signal that creates a content directory for the product specified by
 /// \c productIdentifier. If content already exists in the directory, it will be removed. After
-/// creating the directory, it extracts the content from \c archivePath and sends the path to
-/// the content directory if the extraction was successful. Then the signal completes. The signal
-/// errs if there was an error while removing the old directory, creating the directory or
-/// extracting the content from the archive file.
+/// creating the directory, it extracts the content from \c archivePath and sends the bundle that
+/// points to the content directory if the extraction was successful. Then the signal completes.
+/// The signal errs if there was an error while removing the old directory, creating the directory
+/// or extracting the content from the archive file.
 ///
-/// @return <tt>RACSignal<LTPath></tt>
+/// @return <tt>RACSignal<NSBundle></tt>
 - (RACSignal *)extractContentOfProduct:(NSString *)productIdentifier
                            fromArchive:(LTPath *)archivePath;
 
@@ -45,7 +45,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// Returns a signal that has the same behavior as \c extractContentOfProduct:fromArchive:, but
 /// extracts the content to a nested directory named \c directoryName.
 ///
-/// @return <tt>RACSignal<LTPath></tt>
+/// @return <tt>RACSignal<NSBundle></tt>
 - (RACSignal *)extractContentOfProduct:(NSString *)productIdentifier
                            fromArchive:(LTPath *)archivePath
                          intoDirectory:(NSString *)directoryName;

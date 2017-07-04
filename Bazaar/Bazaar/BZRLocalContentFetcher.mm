@@ -26,6 +26,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation BZRLocalContentFetcher
 
++ (Class)expectedParametersClass {
+  return [BZRLocalContentFetcherParameters class];
+}
+
 - (instancetype)init {
   BZRProductContentManager *contentManager =
       [[BZRProductContentManager alloc] initWithFileManager:[NSFileManager defaultManager]];
@@ -44,9 +48,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (RACSignal *)fetchProductContent:(BZRProduct *)product {
   if (![product.contentFetcherParameters isKindOfClass:[BZRLocalContentFetcherParameters class]]) {
+    auto errorDescription =
+        [NSString stringWithFormat:@"Content fetcher of type %@ is expecting parameters of type "
+         "%@, got product (%@) with parameters %@", [BZRLocalContentFetcherParameters class],
+         [self class], product.identifier, product.contentFetcherParameters];
     auto error = [NSError lt_errorWithCode:BZRErrorCodeInvalidContentFetcherParameters
-                               description:@"The provided parameters class must be: %@",
-                                           [BZRLocalContentFetcherParameters class]];
+                               description:@"%@", errorDescription];
     return [RACSignal error:error];
   }
 
@@ -57,15 +64,21 @@ NS_ASSUME_NONNULL_BEGIN
   }
 
   NSString *contentFilename = [[URL absoluteString] lastPathComponent];
-  LTPath *targetPath = [LTPath pathWithBaseDirectory:LTPathBaseDirectoryTemp
-                                     andRelativePath:contentFilename];
+  LTPath *contentArchivePath = [LTPath pathWithBaseDirectory:LTPathBaseDirectoryTemp
+                                             andRelativePath:contentFilename];
 
-  RACSignal *deleteSignal = [self.fileManager bzr_deleteItemAtPathIfExists:targetPath.path];
-  RACSignal *copySignal = [self createCopyFileSignalFrom:URL to:targetPath];
-  RACSignal *extractSignal = [self extractContentOfProduct:product.identifier
-                                               fromArchive:targetPath];
+  auto copySignal = [self createCopyFileSignalFrom:URL to:contentArchivePath];
+  auto extractSignal =
+      [[self.contentManager extractContentOfProduct:product.identifier
+                                        fromArchive:contentArchivePath
+                                     intoDirectory:[self contentDirectoryNameForProduct:product]]
+       map:^LTProgress<NSBundle *> *(NSBundle *bundle) {
+         return [[LTProgress alloc] initWithResult:bundle];
+       }];
+  auto deleteArchiveSignal =
+      [self.fileManager bzr_deleteItemAtPathIfExists:contentArchivePath.path];
 
-  return [[RACSignal concat:@[deleteSignal, copySignal, extractSignal]]
+  return [[RACSignal concat:@[copySignal, extractSignal, deleteArchiveSignal]]
           setNameWithFormat:@"%@ -fetchProductContent", self.description];
 }
 
@@ -86,30 +99,24 @@ NS_ASSUME_NONNULL_BEGIN
   }];
 }
 
-- (RACSignal *)extractContentOfProduct:(NSString *)productIdentifier
-                           fromArchive:(LTPath *)archivePath {
-  @weakify(self);
-  return [RACSignal defer:^RACSignal *{
-    @strongify(self);
-    return [[self.contentManager extractContentOfProduct:productIdentifier fromArchive:archivePath]
-            map:^LTProgress *(LTPath *unarchivedPath) {
-              return [[LTProgress alloc] initWithResult:
-                      [NSBundle bundleWithPath:unarchivedPath.path]];
-            }];
-  }];
+- (NSString *)contentDirectoryNameForProduct:(BZRProduct *)product {
+  NSURL *URL = ((BZRLocalContentFetcherParameters *)product.contentFetcherParameters).URL;
+  return [[[URL absoluteString] lastPathComponent] stringByDeletingPathExtension];
 }
 
 - (RACSignal *)contentBundleForProduct:(BZRProduct *)product {
-  LTPath *pathToContent = [self.contentManager pathToContentDirectoryOfProduct:product.identifier];
-  return [RACSignal return:(pathToContent ? [self bundleWithPath:pathToContent] : nil)];
+  auto contentPath = [self contentDirectoryPathOfProduct:product];
+  return [RACSignal return:(contentPath ? [self bundleWithPath:contentPath] : nil)];
+}
+
+- (LTPath *)contentDirectoryPathOfProduct:(BZRProduct *)product {
+  auto productDirectory = [self.contentManager pathToContentDirectoryOfProduct:product.identifier];
+  return [productDirectory pathByAppendingPathComponent:
+          [self contentDirectoryNameForProduct:product]];
 }
 
 - (NSBundle *)bundleWithPath:(LTPath *)pathToContent {
   return [NSBundle bundleWithPath:pathToContent.path];
-}
-
-+ (Class)expectedParametersClass {
-  return [BZRLocalContentFetcherParameters class];
 }
 
 @end

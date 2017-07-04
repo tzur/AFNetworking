@@ -115,6 +115,8 @@ context(@"fetching product", ^{
     id errorMock = OCMClassMock([NSError class]);
     RACSignal *errorSignal = [RACSignal error:errorMock];
     OCMStub([fileManager bzr_deleteItemAtPathIfExists:OCMOCK_ANY]).andReturn(errorSignal);
+    OCMStub([contentManager extractContentOfProduct:OCMOCK_ANY fromArchive:OCMOCK_ANY
+                                      intoDirectory:OCMOCK_ANY]).andReturn([RACSignal empty]);
 
     RACSignal *signal = [fetcher fetchProductContent:product];
 
@@ -125,6 +127,8 @@ context(@"fetching product", ^{
     OCMStub([fileManager bzr_deleteItemAtPathIfExists:OCMOCK_ANY]).andReturn([RACSignal empty]);
     id errorMock = OCMClassMock([NSError class]);
     OCMStub([fileManager copyItemAtURL:OCMOCK_ANY toURL:OCMOCK_ANY error:[OCMArg setTo:errorMock]]);
+    OCMStub([contentManager extractContentOfProduct:OCMOCK_ANY fromArchive:OCMOCK_ANY
+                                      intoDirectory:OCMOCK_ANY]).andReturn([RACSignal empty]);
 
     RACSignal *signal = [fetcher fetchProductContent:product];
 
@@ -137,7 +141,8 @@ context(@"fetching product", ^{
     NSError *extractContentError = OCMClassMock([NSError class]);
     OCMStub([fileManager bzr_deleteItemAtPathIfExists:OCMOCK_ANY]).andReturn([RACSignal empty]);
     OCMStub([fileManager copyItemAtURL:OCMOCK_ANY toURL:OCMOCK_ANY error:nil]);
-    OCMStub([contentManager extractContentOfProduct:OCMOCK_ANY fromArchive:OCMOCK_ANY])
+    OCMStub([contentManager extractContentOfProduct:OCMOCK_ANY fromArchive:OCMOCK_ANY
+                                      intoDirectory:OCMOCK_ANY])
         .andReturn([RACSignal error:extractContentError]);
 
     RACSignal *fetchingContent = [fetcher fetchProductContent:product];
@@ -152,10 +157,10 @@ context(@"fetching product", ^{
     OCMStub([fileManager bzr_deleteItemAtPathIfExists:OCMOCK_ANY]).andReturn([RACSignal empty]);
     OCMStub([fileManager copyItemAtURL:OCMOCK_ANY toURL:OCMOCK_ANY error:nil]);
     LTPath *extractedContentPath = [LTPath pathWithPath:@"bar"];
-    OCMStub([contentManager extractContentOfProduct:product.identifier
-                                        fromArchive:targetPath])
-        .andReturn([RACSignal return:extractedContentPath]);
-    NSBundle *contentBundle = [NSBundle bundleWithPath:extractedContentPath.path];
+      NSBundle *contentBundle = [NSBundle bundleWithPath:extractedContentPath.path];
+    OCMStub([contentManager extractContentOfProduct:product.identifier fromArchive:targetPath
+                                      intoDirectory:OCMOCK_ANY])
+        .andReturn([RACSignal return:contentBundle]);
 
     LLSignalTestRecorder *recorder = [[fetcher fetchProductContent:product] testRecorder];
 
