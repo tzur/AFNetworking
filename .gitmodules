@@ -53,3 +53,6 @@
 [submodule "third_party/taplytics-ios-sdk"]
 	path = third_party/taplytics-ios-sdk
 	url = https://github.com/Lightricks/taplytics-ios-sdk.git
+[submodule "third_party/Tweaks"]
+	path = third_party/Tweaks
+	url = https://github.com/Lightricks/Tweaks.git
