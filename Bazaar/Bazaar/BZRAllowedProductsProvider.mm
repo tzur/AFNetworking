@@ -7,11 +7,13 @@
 
 #import "BZRAcquiredViaSubscriptionProvider.h"
 #import "BZRCachedReceiptValidationStatusProvider.h"
+#import "BZREvent.h"
 #import "BZRProduct+EnablesProduct.h"
 #import "BZRProductTypedefs.h"
 #import "BZRProductsProvider.h"
 #import "BZRReceiptModel.h"
 #import "BZRReceiptValidationStatus.h"
+#import "NSErrorCodes+Bazaar.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -33,6 +35,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// delivered on an arbitrary thread.
 @property (readwrite, nonatomic) NSSet<NSString *> *allowedProducts;
 
+/// Subject used to send events with.
+@property (readonly, nonatomic) RACSubject *eventsSubject;
+
 @end
 
 @implementation BZRAllowedProductsProvider
@@ -51,6 +56,7 @@ NS_ASSUME_NONNULL_BEGIN
     _acquiredViaSubscriptionProvider = acquiredViaSubscriptionProvider;
     _productList = @[];
     _allowedProducts = [NSSet set];
+    _eventsSubject = [RACSubject subject];
 
     [self setupProductListFetching];
     [self setupAllowedProductsUpdates];
@@ -119,8 +125,11 @@ NS_ASSUME_NONNULL_BEGIN
   }];
 
   if (!subscriptionProduct) {
-    LogError(@"The subscription from the receipt does not exist in product "
-             "list. Subscription identifier is: %@", subscriptionIdentifier);
+    auto error = [NSError lt_errorWithCode:BZRErrorCodeSubscriptionNotFoundInProductList
+                               description:@"The subscription from the receipt does not exist "
+                  "in product list. Subscription identifier is: %@", subscriptionIdentifier];
+    [self.eventsSubject sendNext:
+     [[BZREvent alloc] initWithType:$(BZREventTypeNonCriticalError) eventError:error]];
 
     NSArray<NSString *> *allNonSubscriptionProducts =
         [[productList lt_filter:^BOOL(BZRProduct *product) {
@@ -150,6 +159,10 @@ NS_ASSUME_NONNULL_BEGIN
 - (BOOL)isSubscriptionProduct:(BZRProduct *)product {
   return [product.productType isEqual:$(BZRProductTypeRenewableSubscription)] ||
       [product.productType isEqual:$(BZRProductTypeNonRenewingSubscription)];
+}
+
+- (RACSignal *)eventsSignal {
+  return [self.eventsSubject takeUntil:[self rac_willDeallocSignal]];
 }
 
 @end

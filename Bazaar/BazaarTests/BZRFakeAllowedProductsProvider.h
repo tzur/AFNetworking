@@ -7,10 +7,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Fake provider that provides a set of allowed products manually injected to its
 /// \c allowedProducts property.
-@interface BZRFakeAllowedProductsProvider : BZRAllowedProductsProvider
+@interface BZRFakeAllowedProductsProvider : NSObject <BZRAllowedProductsProvider>
 
-/// Initializes the receiver with mock providers.
-- (instancetype)init;
+/// \c eventsSignal redeclared as \c RACSubject to be able to send events with.
+@property (readonly, nonatomic) RACSubject *eventsSignal;
 
 /// A replaceable allowed products set.
 @property (strong, nonatomic) NSSet<NSString *> *allowedProducts;
