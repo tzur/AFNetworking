@@ -26,6 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 static NSArray<NSString *> * const kDefaultValidatricksHostNames = @[
   @"oregon-api.lightricks.com",
   @"virginia-api.lightricks.com",
+  @"hk-api.lightricks.com",
   @"frankfurt-api.lightricks.com",
   @"ireland-api.lightricks.com"
 ];
