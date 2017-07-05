@@ -40,7 +40,9 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (RACSignal *)contentBundleForProduct:(BZRProduct *)product {
-  return [self.underlyingContentFetcher contentBundleForProduct:product];
+  return [RACSignal defer:^RACSignal *{
+    return [self.underlyingContentFetcher contentBundleForProduct:product];
+  }];
 }
 
 @end
