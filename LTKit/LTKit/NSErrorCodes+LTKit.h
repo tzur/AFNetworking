@@ -112,5 +112,7 @@ LTErrorCodesDeclare(LTKitErrorCodeProductID,
   /// Caused when a decryption of encrypted data has failed.
   LTErrorCodeDecryptionFailed,
   /// Caused when a decoding of hex string has failed.
-  LTErrorCodeHexDecodingFailed
+  LTErrorCodeHexDecodingFailed,
+  /// Caused when an invalid argument has been passed to a method.
+  LTErrorCodeInvalidArgument
 );

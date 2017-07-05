@@ -33,8 +33,8 @@ context(@"LTRandomAccessCollection", ^{
   });
 
   it(@"should return index of object", ^{
-    expect([collection indexOfObject:collection.firstObject]).to.equal(0);
-    expect([collection indexOfObject:collection.lastObject]).to.equal(2);
+    expect([collection indexOfObject:nn(collection.firstObject)]).to.equal(0);
+    expect([collection indexOfObject:nn(collection.lastObject)]).to.equal(2);
 
     expect([collection indexOfObject:@15]).to.equal(NSNotFound);
   });

@@ -129,7 +129,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)removeObserver:(id)target withKey:(id)key fromDictionary:(NSDictionary *)dictionary {
     NSMutableArray *toRemove = [NSMutableArray array];
     for (LTEventObserver *observer in dictionary[key]) {
-      if (target == observer.target) {
+      id _Nullable observerTarget = observer.target;
+      if (observerTarget && target == nn(observer.target)) {
         [toRemove addObject:observer];
       }
     }
@@ -140,16 +141,19 @@ NS_ASSUME_NONNULL_BEGIN
   NSMutableArray<LTEventObserver *> *toNotify = [NSMutableArray array];
 
   dispatch_sync(self.readWriteQueue, ^{
-    for (Class observedClass in self.classObservers) {
+    [self.classObservers enumerateKeysAndObjectsUsingBlock:^(Class observedClass,
+                                                             NSArray *observers, BOOL *) {
       if ([object isKindOfClass:observedClass]) {
-        [toNotify addObjectsFromArray:self.classObservers[observedClass]];
+        [toNotify addObjectsFromArray:observers];
       }
-    }
-    for (NSString *observedProtocol in self.protocolObservers) {
+    }];
+
+    [self.protocolObservers enumerateKeysAndObjectsUsingBlock:^(NSString *observedProtocol,
+                                                                NSArray *observers, BOOL *) {
       if ([object conformsToProtocol:NSProtocolFromString(observedProtocol)]) {
-        [toNotify addObjectsFromArray:self.protocolObservers[observedProtocol]];
+        [toNotify addObjectsFromArray:observers];
       }
-    }
+    }];
   });
 
   [self post:object toObservers:toNotify];

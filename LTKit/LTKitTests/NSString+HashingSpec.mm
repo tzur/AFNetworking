@@ -14,7 +14,7 @@ it(@"should create correct SHA1 hash", ^{
 });
 
 it(@"should create correct HMAC SHA256 hash", ^{
-  expect([@"123456" lt_HMACSHA256WithKey:[@"foo" dataUsingEncoding:NSUTF8StringEncoding]])
+  expect([@"123456" lt_HMACSHA256WithKey:nn([@"foo" dataUsingEncoding:NSUTF8StringEncoding])])
       .to.equal(@"a4a1015c95080269a487a3f2a83a5511bd852237421a9f8f27776a15cca733ec");
 });
 

@@ -34,10 +34,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Formats the format string, level and varargs to an Objective-C call to \c LTLogger.
 #if !(defined(LT_LOG_FORMAT))
-  #define LT_LOG_FORMAT(fmt, lvl, ...) [[LTLogger sharedLogger] \
-          logWithFormat:fmt \
-                   file:[[[NSString stringWithUTF8String:__FILE__] lastPathComponent] UTF8String] \
-                   line:__LINE__ logLevel:lvl, ##__VA_ARGS__]
+  #define LT_LOG_FORMAT(fmt, lvl, ...) do { \
+    NSString *fileName = [[NSString stringWithUTF8String:__FILE__] lastPathComponent]; \
+    const char *fileNameChar = [fileName UTF8String] ?: ""; \
+    [[LTLogger sharedLogger] logWithFormat:fmt file:fileNameChar \
+                                       line:__LINE__ logLevel:lvl, ##__VA_ARGS__]; \
+  } while (0)
 #endif
 
 #if defined(LOGGING_LEVEL_DEBUG) && LOGGING_LEVEL_DEBUG

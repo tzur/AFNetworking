@@ -308,7 +308,7 @@ context(@"KVO compliance", ^{
     [queue pushObject:@2];
     expect(observer.count).to.equal(2);
     expect(observer.numberOfNotifications).to.equal(8);
-    [queue removeObject:queue.lastObject];
+    [queue removeObject:nn(queue.lastObject)];
     expect(observer.count).to.equal(1);
     expect(observer.numberOfNotifications).to.equal(9);
     [queue removeAllObjects];

@@ -39,8 +39,8 @@ typedef NS_ENUM(NSUInteger, LTPathBaseDirectory) {
 + (instancetype)pathWithBaseDirectory:(LTPathBaseDirectory)baseDirectory
                       andRelativePath:(NSString *)relativePath;
 
-/// Initializes a new \c LTPath with the given \c relativeURL. If the \c relativeURL's \c scheme or
-/// \c host doesn't match the values accepted by \c LTPath, \c nil will be returned.
+/// Initializes a new \c LTPath with the given \c relativeURL. If the \c relativeURL's \c scheme,
+/// \c host or \c path doesn't match the values accepted by \c LTPath, \c nil will be returned.
 ///
 /// @see <tt>-[LTPath relativeURL]</tt> for more details.
 + (nullable instancetype)pathWithRelativeURL:(NSURL *)relativeURL;
