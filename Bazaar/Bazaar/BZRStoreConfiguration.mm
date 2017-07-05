@@ -17,6 +17,7 @@
 #import "BZRPeriodicReceiptValidatorActivator.h"
 #import "BZRProductContentFetcher.h"
 #import "BZRProductContentManager.h"
+#import "BZRProductsVariantSelectorFactory.h"
 #import "BZRProductsWithDiscountsProvider.h"
 #import "BZRProductsWithPriceInfoProvider.h"
 #import "BZRProductsWithVariantsProvider.h"
@@ -37,8 +38,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation BZRStoreConfiguration
 
-- (instancetype)initWithProductsListJSONFilePath:(LTPath *)productsListJSONFilePath
-                     countryToTierDictionaryPath:(LTPath *)countryToTierDictionaryPath {
+- (instancetype)initWithProductsListJSONFilePath:(LTPath *)productsListJSONFilePath {
   /// Number of days the user is allowed to use products acquired via subscription after its
   /// subscription has expired.
   static const NSUInteger kExpiredSubscriptionGracePeriod = 7;
@@ -47,7 +47,6 @@ NS_ASSUME_NONNULL_BEGIN
   static const NSUInteger kNotValidatedGracePeriod = 5;
 
   return [self initWithProductsListJSONFilePath:productsListJSONFilePath
-                    countryToTierDictionaryPath:countryToTierDictionaryPath
                             keychainAccessGroup:[BZRKeychainStorage defaultSharedAccessGroup]
                  expiredSubscriptionGracePeriod:kExpiredSubscriptionGracePeriod
                               applicationUserID:nil
@@ -55,7 +54,6 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (instancetype)initWithProductsListJSONFilePath:(LTPath *)productsListJSONFilePath
-                     countryToTierDictionaryPath:(LTPath *)countryToTierDictionaryPath
                              keychainAccessGroup:(nullable NSString *)keychainAccessGroup
                   expiredSubscriptionGracePeriod:(NSUInteger)expiredSubscriptionGracePeriod
                                applicationUserID:(nullable NSString *)applicationUserID
@@ -92,9 +90,7 @@ NS_ASSUME_NONNULL_BEGIN
          initWithValidationStatusProvider:self.validationStatusProvider timeProvider:timeProvider
          gracePeriod:notValidatedReceiptGracePeriod];
 
-    _variantSelectorFactory =
-        [[BZRLocaleBasedVariantSelectorFactory alloc] initWithFileManager:self.fileManager
-         countryToTierPath:countryToTierDictionaryPath];
+    _variantSelectorFactory = [[BZRProductsVariantSelectorFactory alloc] init];
 
     _allowedProductsProvider =
         [[BZRAllowedProductsProvider alloc] initWithProductsProvider:self.netherProductsProvider

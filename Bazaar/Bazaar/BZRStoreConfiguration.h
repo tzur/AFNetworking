@@ -23,15 +23,11 @@ NS_ASSUME_NONNULL_BEGIN
 /// @note In order to use the default shared keychain access group AppIdentifierPrefix has to be
 /// defined in the application's main bundle plist, if it is not defined an
 /// \c NSInternalInconsistencyException is raised.
-- (instancetype)initWithProductsListJSONFilePath:(LTPath *)productsListJSONFilePath
-                     countryToTierDictionaryPath:(LTPath *)countryToTierDictionaryPath;
+- (instancetype)initWithProductsListJSONFilePath:(LTPath *)productsListJSONFilePath;
 
 /// Initializes the in-app store configuration with default parameters.
 ///
 /// \c productsListJSONFilePath is used to load products information from.
-///
-/// \c countryToTierDictionaryPath is used to load country to tier dictionary that is used to select
-/// products variants.
 ///
 /// \c keychainAccessGroup is the access group of the keychain storage used for storing sensitive
 /// user data. If \c nil is provided the access group will default to the application's main bundle
@@ -64,12 +60,13 @@ NS_ASSUME_NONNULL_BEGIN
 /// \c -[BZRProductsAcquiredViaSubscriptionProvider initWithKeychainStorage:] with the given
 /// \c keychainStorage.
 ///
+/// \c variantSelectorFactory is initialized with \c BZRDefaultVariantSelectorFactory.
+///
 /// \c storeKitFacade will be initialized using \c -[BZRStoreKitFacade initApplicationUseID:].
 ///
 /// \c periodicValidatorActivator will be initialized with the default initializer of
 /// \c BZRPeriodicReceiptValidatorActivator.
 - (instancetype)initWithProductsListJSONFilePath:(LTPath *)productsListJSONFilePath
-                     countryToTierDictionaryPath:(LTPath *)countryToTierDictionaryPath
                              keychainAccessGroup:(nullable NSString *)keychainAccessGroup
                   expiredSubscriptionGracePeriod:(NSUInteger)expiredSubscriptionGracePeriod
                                applicationUserID:(nullable NSString *)applicationUserID
