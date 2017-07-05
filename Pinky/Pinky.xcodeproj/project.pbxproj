@@ -56,7 +56,6 @@
 		06FD92DA1EDC880300D180C7 /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 06FD91A41EDC318700D180C7 /* Metal.framework */; };
 		06FD92DB1EDC881E00D180C7 /* Mantle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 06FD92981EDC5F9100D180C7 /* Mantle.framework */; };
 		06FD92DC1EDC882300D180C7 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 882D1F2F1EC1C49C007F39F5 /* GLKit.framework */; };
-		882D1F161EC19998007F39F5 /* PNKPlaceholder.mm in Sources */ = {isa = PBXBuildFile; fileRef = 882D1F151EC19998007F39F5 /* PNKPlaceholder.mm */; };
 		882D1F181EC19A2C007F39F5 /* libcompression.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 882D1F171EC19A2C007F39F5 /* libcompression.tbd */; };
 		882D1F2E1EC1C497007F39F5 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 882D1F2D1EC1C497007F39F5 /* CoreGraphics.framework */; };
 		882D1F301EC1C49C007F39F5 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 882D1F2F1EC1C49C007F39F5 /* GLKit.framework */; };
@@ -437,6 +436,7 @@
 		06172A8E1F02881600379124 /* PNKStyleUpsampleProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKStyleUpsampleProcessor.h; sourceTree = "<group>"; };
 		06172A8F1F02881600379124 /* PNKStyleUpsampleProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKStyleUpsampleProcessor.mm; sourceTree = "<group>"; };
 		06172AB11F02884F00379124 /* PNKStyleUpsampleProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKStyleUpsampleProcessorSpec.mm; sourceTree = "<group>"; };
+		069225E11F0A615700F3C8C7 /* PNKNeuralKernel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNKNeuralKernel.h; sourceTree = "<group>"; };
 		06C3F75F1EFF9E5B00D4B1F4 /* PNKSingleStyleTransferProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKSingleStyleTransferProcessor.h; sourceTree = "<group>"; };
 		06C3F7601EFF9E5B00D4B1F4 /* PNKSingleStyleTransferProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKSingleStyleTransferProcessor.mm; sourceTree = "<group>"; };
 		06C3F7631EFFDA0900D4B1F4 /* PNKSingleStyleTransferProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKSingleStyleTransferProcessorSpec.mm; sourceTree = "<group>"; };
@@ -457,8 +457,6 @@
 		06FD92BC1EDC85C600D180C7 /* PinkyDeviceTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PinkyDeviceTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		06FD92C01EDC85C600D180C7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		06FD92E01EDC893A00D180C7 /* PinkyDeviceTests-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PinkyDeviceTests-Prefix.pch"; sourceTree = "<group>"; };
-		882D1F141EC19998007F39F5 /* PNKPlaceholder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKPlaceholder.h; sourceTree = "<group>"; };
-		882D1F151EC19998007F39F5 /* PNKPlaceholder.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKPlaceholder.mm; sourceTree = "<group>"; };
 		882D1F171EC19A2C007F39F5 /* libcompression.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libcompression.tbd; path = usr/lib/libcompression.tbd; sourceTree = SDKROOT; };
 		882D1F1D1EC1AC6E007F39F5 /* extobjc.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = extobjc.xcodeproj; path = ../third_party/libextobjc/extobjc.xcodeproj; sourceTree = "<group>"; };
 		882D1F2D1EC1C497007F39F5 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -627,6 +625,14 @@
 			name = "Test Utils";
 			sourceTree = "<group>";
 		};
+		069225C01F0A611E00F3C8C7 /* Neural Networks */ = {
+			isa = PBXGroup;
+			children = (
+				069225E11F0A615700F3C8C7 /* PNKNeuralKernel.h */,
+			);
+			name = "Neural Networks";
+			sourceTree = "<group>";
+		};
 		06C3F73E1EFF9E3C00D4B1F4 /* Image Processing */ = {
 			isa = PBXGroup;
 			children = (
@@ -755,9 +761,8 @@
 				C9815C621EE886E0004868CE /* Extensions */,
 				C9515C2E1F01125100B973F1 /* GPU */,
 				06C3F73E1EFF9E3C00D4B1F4 /* Image Processing */,
+				069225C01F0A611E00F3C8C7 /* Neural Networks */,
 				A14172BA1E6EB04F005DBEFF /* Supporting Files */,
-				882D1F141EC19998007F39F5 /* PNKPlaceholder.h */,
-				882D1F151EC19998007F39F5 /* PNKPlaceholder.mm */,
 			);
 			path = Pinky;
 			sourceTree = "<group>";
@@ -1432,7 +1437,6 @@
 				C9815C411EE886D1004868CE /* PNKOpenCVExtensions.mm in Sources */,
 				060EA49E1EDD9CC20041487A /* NSBundle+PinkyBundle.mm in Sources */,
 				C9ADC5131EFFE06200C87932 /* PNKLibraryLoader.mm in Sources */,
-				882D1F161EC19998007F39F5 /* PNKPlaceholder.mm in Sources */,
 				06172A901F02881600379124 /* PNKStyleUpsampleProcessor.mm in Sources */,
 				06C3F7611EFF9E5B00D4B1F4 /* PNKSingleStyleTransferProcessor.mm in Sources */,
 			);
