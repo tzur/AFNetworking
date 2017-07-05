@@ -1,7 +1,11 @@
-// Copyright (c) 2016 Lightricks. All rights reserved.
-// Created by Ben Yohay.
+// Copyright (c) 2017 Lightricks. All rights reserved.
+// Created by Neria Saada.
 
-#import "BZRLocalContentFetcher.h"
+#import "BZRRemoteContentFetcher.h"
+
+#import <Fiber/FBRHTTPClient.h>
+#import <Fiber/FBRHTTPRequest.h>
+#import <Fiber/FBRHTTPResponse.h>
 
 #import "BZRProduct.h"
 #import "BZRProductContentManager.h"
@@ -10,103 +14,117 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface BZRLocalContentFetcher ()
+@interface BZRRemoteContentFetcher ()
 
-/// Manager used to copy files from the given URL to temp folder.
+/// Manager used to delete files.
 @property (readonly, nonatomic) NSFileManager *fileManager;
 
 /// Manager used to extract content from an archive file.
 @property (readonly, nonatomic) BZRProductContentManager *contentManager;
 
+/// HTTP client used to fetch content from a remote URL.
+@property (readonly, nonatomic) FBRHTTPClient *HTTPClient;
+
 @end
 
-#pragma mark -
-#pragma mark BZRLocalContentFetcher
-#pragma mark -
-
-@implementation BZRLocalContentFetcher
+@implementation BZRRemoteContentFetcher
 
 + (Class)expectedParametersClass {
-  return [BZRLocalContentFetcherParameters class];
+  return [BZRRemoteContentFetcherParameters class];
 }
 
 - (instancetype)init {
   BZRProductContentManager *contentManager =
       [[BZRProductContentManager alloc] initWithFileManager:[NSFileManager defaultManager]];
-  return [self initWithFileManager:[NSFileManager defaultManager] contentManager:contentManager];
+  return [self initWithFileManager:[NSFileManager defaultManager] contentManager:contentManager
+                        HTTPClient:[FBRHTTPClient client]];
 }
 
 - (instancetype)initWithFileManager:(NSFileManager *)fileManager
-                     contentManager:(BZRProductContentManager *)contentManager {
+                     contentManager:(BZRProductContentManager *)contentManager
+                         HTTPClient:(FBRHTTPClient *)HTTPClient {
   if (self = [super init]) {
     _fileManager = fileManager;
     _contentManager = contentManager;
+    _HTTPClient = HTTPClient;
   }
 
   return self;
 }
 
 - (RACSignal *)fetchProductContent:(BZRProduct *)product {
-  if (![product.contentFetcherParameters isKindOfClass:[BZRLocalContentFetcherParameters class]]) {
+  if (![product.contentFetcherParameters isKindOfClass:[BZRRemoteContentFetcherParameters class]]) {
     auto errorDescription =
         [NSString stringWithFormat:@"Content fetcher of type %@ is expecting parameters of type "
-         "%@, got product (%@) with parameters %@", [BZRLocalContentFetcherParameters class],
+         "%@, got product (%@) with parameters %@", [BZRRemoteContentFetcherParameters class],
          [self class], product.identifier, product.contentFetcherParameters];
     auto error = [NSError lt_errorWithCode:BZRErrorCodeInvalidContentFetcherParameters
                                description:@"%@", errorDescription];
     return [RACSignal error:error];
   }
 
-  NSURL *URL = ((BZRLocalContentFetcherParameters *)product.contentFetcherParameters).URL;
-  if (![URL isFileURL]) {
-    return [RACSignal error:[NSError lt_errorWithCode:BZRErrorCodeInvalidContentFetcherParameters
-        description:@"URL provided is not an address to a local file: %@", URL]];
+  NSURL *URL = ((BZRRemoteContentFetcherParameters *)product.contentFetcherParameters).URL;
+  if (![FBRHTTPRequest isProtocolSupported:URL]) {
+    auto error = [NSError lt_errorWithCode:BZRErrorCodeInvalidContentFetcherParameters
+                               description:@"Remote content fetcher supports only 'HTTPS' and "
+                  "'HTTP' protocols. Got URL: %@", URL];
+    return [RACSignal error:error];
   }
 
   NSString *contentFilename = [[URL absoluteString] lastPathComponent];
   LTPath *contentArchivePath = [LTPath pathWithBaseDirectory:LTPathBaseDirectoryTemp
                                              andRelativePath:contentFilename];
 
-  auto copySignal = [self createCopyFileSignalFrom:URL to:contentArchivePath];
+  auto downloadSignal = [self downloadFileSignalFrom:URL to:contentArchivePath];
   auto extractSignal =
       [[self.contentManager extractContentOfProduct:product.identifier
                                         fromArchive:contentArchivePath
-                                     intoDirectory:[self contentDirectoryNameForProduct:product]]
+                                      intoDirectory:[self contentDirectoryNameForProduct:product]]
        map:^LTProgress<NSBundle *> *(NSBundle *bundle) {
          return [[LTProgress alloc] initWithResult:bundle];
        }];
   auto deleteArchiveSignal =
       [self.fileManager bzr_deleteItemAtPathIfExists:contentArchivePath.path];
 
-  return [[RACSignal concat:@[copySignal, extractSignal, deleteArchiveSignal]]
+  return [[RACSignal concat:@[downloadSignal, extractSignal, deleteArchiveSignal]]
           setNameWithFormat:@"%@ -fetchProductContent", self.description];
 }
 
-- (RACSignal *)createCopyFileSignalFrom:(NSURL *)sourceURL to:(LTPath *)targetPath {
+- (RACSignal *)downloadFileSignalFrom:(NSURL *)sourceURL to:(LTPath *)targetPath {
   @weakify(self);
   return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
     @strongify(self);
-    NSError *error;
-    [self.fileManager copyItemAtURL:sourceURL toURL:targetPath.url error:&error];
-    if (error) {
-      NSError *copyContentError = [NSError lt_errorWithCode:BZRErrorCodeCopyProductContentFailed
-                                            underlyingError:error];
-      [subscriber sendError:copyContentError];
-    } else {
-      [subscriber sendCompleted];
-    }
+    [[self.HTTPClient GET:sourceURL.absoluteString withParameters:nil headers:nil]
+     subscribeNext:^(LTProgress<FBRHTTPResponse *> *progress) {
+       if (!progress.result) {
+         [subscriber sendNext:progress];
+         return;
+       }
+
+       NSError *error;
+       [[NSData dataWithData:progress.result.content] writeToFile:targetPath.path options:0
+                                                            error:&error];
+       if (error) {
+         [subscriber sendError:error];
+       } else {
+         [subscriber sendCompleted];
+       }
+     } error:^(NSError *error) {
+       [subscriber sendError:error];
+     }];
+
     return nil;
   }];
 }
 
 - (NSString *)contentDirectoryNameForProduct:(BZRProduct *)product {
-  NSURL *URL = ((BZRLocalContentFetcherParameters *)product.contentFetcherParameters).URL;
+  NSURL *URL = ((BZRRemoteContentFetcherParameters *)product.contentFetcherParameters).URL;
   return [[[URL absoluteString] lastPathComponent] stringByDeletingPathExtension];
 }
 
 - (RACSignal *)contentBundleForProduct:(BZRProduct *)product {
   auto contentPath = [self contentDirectoryPathOfProduct:product];
-  return [RACSignal return:(contentPath ? [self bundleWithPath:contentPath] : nil)];
+  return [RACSignal return:(contentPath ? [NSBundle bundleWithPath:contentPath.path] : nil)];
 }
 
 - (LTPath *)contentDirectoryPathOfProduct:(BZRProduct *)product {
@@ -115,21 +133,17 @@ NS_ASSUME_NONNULL_BEGIN
           [self contentDirectoryNameForProduct:product]];
 }
 
-- (NSBundle *)bundleWithPath:(LTPath *)pathToContent {
-  return [NSBundle bundleWithPath:pathToContent.path];
-}
-
 @end
 
 #pragma mark -
-#pragma mark BZRLocalContentFetcherParameters
+#pragma mark BZRRemoteContentFetcherParameters
 #pragma mark -
 
-@implementation BZRLocalContentFetcherParameters
+@implementation BZRRemoteContentFetcherParameters
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
   return [[super JSONKeyPathsByPropertyKey] mtl_dictionaryByAddingEntriesFromDictionary:@{
-    @instanceKeypath(BZRLocalContentFetcherParameters, URL): @"URL"
+    @instanceKeypath(BZRRemoteContentFetcherParameters, URL): @"URL"
   }];
 }
 

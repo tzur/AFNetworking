@@ -43,7 +43,8 @@ NSString * const kBazaarProductsContentDirectory = @"Bazaar/ProductsContent/";
 - (RACSignal *)extractContentOfProduct:(NSString *)productIdentifier
                            fromArchive:(LTPath *)archivePath {
   auto contentDirectoryPath = [self contentDirectoryPathForProduct:productIdentifier];
-  return [self extractContentFromArchive:archivePath intoDirectory:contentDirectoryPath];
+  return [self extractContentFromArchive:archivePath intoDirectory:contentDirectoryPath
+                       productIdentifier:productIdentifier];
 }
 
 - (RACSignal *)extractContentOfProduct:(NSString *)productIdentifier
@@ -51,31 +52,31 @@ NSString * const kBazaarProductsContentDirectory = @"Bazaar/ProductsContent/";
                          intoDirectory:(NSString *)directoryName {
   auto contentDirectoryPath = [[self contentDirectoryPathForProduct:productIdentifier]
                                pathByAppendingPathComponent:directoryName];
-  return [self extractContentFromArchive:archivePath intoDirectory:contentDirectoryPath];
+  return [self extractContentFromArchive:archivePath intoDirectory:contentDirectoryPath
+                       productIdentifier:productIdentifier];
 }
 
 - (RACSignal *)extractContentFromArchive:(LTPath *)archivePath
-                           intoDirectory:(LTPath *)contentDirectoryPath {
-  RACSignal *removeDirectorySignal =
-      [self.fileManager bzr_deleteItemAtPathIfExists:contentDirectoryPath.path];
-  RACSignal *createDirectorySignal =
-      [self.fileManager bzr_createDirectoryAtPathIfNotExists:contentDirectoryPath.path];
-  RACSignal *unarchiveContentSignal =
-      [self unarchiveContentSignal:contentDirectoryPath archivePath:archivePath];
+                           intoDirectory:(LTPath *)contentDirectoryPath
+                       productIdentifier:(NSString *)productIdentifier {
+  auto productDirectoryPath = [self contentDirectoryPathForProduct:productIdentifier];
+  auto directoryName = [contentDirectoryPath.url lastPathComponent];
+  auto parentDirectoryURL = [contentDirectoryPath.url URLByDeletingLastPathComponent];
+  auto parentDirectoryPath = [LTPath pathWithPath:parentDirectoryURL.path];
 
-  return [[RACSignal concat:@[removeDirectorySignal, createDirectorySignal, unarchiveContentSignal]]
-          setNameWithFormat:@"%@ -extractContent", self.description];
-}
+  LTPath *tempPath = [parentDirectoryPath
+                      pathByAppendingPathComponent:[@"_" stringByAppendingString:directoryName]];
 
-- (RACSignal *)unarchiveContentSignal:(LTPath *)contentDirectoryPath
-                          archivePath:(LTPath *)archivePath {
-  return [[[self.fileArchiver unarchiveArchiveAtPath:archivePath.path
-                                         toDirectory:contentDirectoryPath.path]
-      filter:^BOOL(LTProgress<NSString *> *unarchiveProgress) {
-        return unarchiveProgress.result != nil;
-      }] map:^LTPath *(LTProgress<NSString *> *unarchiveProgress) {
-        return [LTPath pathWithPath:unarchiveProgress.result];
-      }];
+  return [[[RACSignal concat:@[
+    [self.fileManager bzr_deleteItemAtPathIfExists:productDirectoryPath.path],
+    [self.fileManager bzr_createDirectoryAtPathIfNotExists:tempPath.path],
+    [self.fileArchiver unarchiveArchiveAtPath:archivePath.path toDirectory:tempPath.path],
+    [self.fileManager bzr_moveItemAtPath:tempPath.path toPath:contentDirectoryPath.path]
+  ]]
+  then:^RACSignal *{
+    return [RACSignal return:[self bundleWithPath:contentDirectoryPath]];
+  }]
+  setNameWithFormat:@"%@ -extractContent", self.description];
 }
 
 - (RACSignal *)deleteContentDirectoryOfProduct:(NSString *)productIdentifier {
@@ -97,6 +98,10 @@ NSString * const kBazaarProductsContentDirectory = @"Bazaar/ProductsContent/";
       [kBazaarProductsContentDirectory stringByAppendingPathComponent:productIdentifier];
   return [LTPath pathWithBaseDirectory:LTPathBaseDirectoryApplicationSupport
                        andRelativePath:relativePathToContent];
+}
+
+- (NSBundle *)bundleWithPath:(LTPath *)pathToContent {
+  return [NSBundle bundleWithPath:pathToContent.path];
 }
 
 @end

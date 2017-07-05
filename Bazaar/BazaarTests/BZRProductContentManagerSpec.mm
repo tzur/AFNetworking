@@ -7,6 +7,14 @@
 #import "NSErrorCodes+Bazaar.h"
 #import "NSFileManager+Bazaar.h"
 
+/// Category for testing, exposes the method that creates \c NSBundle.
+@interface BZRProductContentManager (ForTesting)
+
+/// Returns a new \c NSBundle with the given \c pathToContent.
+- (NSBundle *)bundleWithPath:(LTPath *)pathToContent;
+
+@end
+
 SpecBegin(BZRProductContentManager)
 
 __block NSString *productIdentifier;
@@ -25,9 +33,12 @@ beforeEach(^{
 
 context(@"extracting content file", ^{
   __block LTPath *archivePath;
+  __block NSBundle *bundle;
 
   beforeEach(^{
     archivePath = [LTPath pathWithPath:@"bar"];
+    bundle = OCMClassMock([NSBundle class]);
+    manager = OCMPartialMock(manager);
   });
 
   it(@"should send error when previous content directory deletion failed", ^{
@@ -37,6 +48,8 @@ context(@"extracting content file", ^{
     OCMStub([fileManager bzr_createDirectoryAtPathIfNotExists:OCMOCK_ANY])
         .andReturn([RACSignal empty]);
     OCMStub([fileArchiver unarchiveArchiveAtPath:OCMOCK_ANY toDirectory:OCMOCK_ANY])
+        .andReturn([RACSignal empty]);
+    OCMStub([fileManager bzr_moveItemAtPath:OCMOCK_ANY toPath:OCMOCK_ANY])
         .andReturn([RACSignal empty]);
 
     RACSignal *signal = [manager extractContentOfProduct:productIdentifier fromArchive:archivePath];
@@ -50,6 +63,8 @@ context(@"extracting content file", ^{
     OCMStub([fileManager bzr_createDirectoryAtPathIfNotExists:OCMOCK_ANY])
         .andReturn([RACSignal error:error]);
     OCMStub([fileArchiver unarchiveArchiveAtPath:OCMOCK_ANY toDirectory:OCMOCK_ANY])
+        .andReturn([RACSignal empty]);
+    OCMStub([fileManager bzr_moveItemAtPath:OCMOCK_ANY toPath:OCMOCK_ANY])
         .andReturn([RACSignal empty]);
 
     RACSignal *signal = [manager extractContentOfProduct:productIdentifier fromArchive:archivePath];
@@ -65,6 +80,8 @@ context(@"extracting content file", ^{
     RACSignal *errorSignal = [RACSignal error:error];
     OCMStub([fileArchiver unarchiveArchiveAtPath:OCMOCK_ANY toDirectory:OCMOCK_ANY])
         .andReturn(errorSignal);
+    OCMStub([fileManager bzr_moveItemAtPath:OCMOCK_ANY toPath:OCMOCK_ANY])
+        .andReturn([RACSignal empty]);
 
     RACSignal *signal = [manager extractContentOfProduct:productIdentifier fromArchive:archivePath];
 
@@ -72,6 +89,7 @@ context(@"extracting content file", ^{
   });
 
   it(@"should filter progress without result from archiver", ^{
+    OCMStub([manager bundleWithPath:OCMOCK_ANY]).andReturn(bundle);
     OCMStub([fileManager bzr_deleteItemAtPathIfExists:OCMOCK_ANY]).andReturn([RACSignal empty]);
     OCMStub([fileManager bzr_createDirectoryAtPathIfNotExists:OCMOCK_ANY])
         .andReturn([RACSignal empty]);
@@ -79,36 +97,35 @@ context(@"extracting content file", ^{
     RACSignal *progressSignal = [RACSignal return:progress];
     OCMStub([fileArchiver unarchiveArchiveAtPath:OCMOCK_ANY toDirectory:OCMOCK_ANY])
         .andReturn(progressSignal);
+    OCMStub([fileManager bzr_moveItemAtPath:OCMOCK_ANY toPath:OCMOCK_ANY])
+        .andReturn([RACSignal empty]);
 
     LLSignalTestRecorder *recorder = [[manager extractContentOfProduct:productIdentifier
                                                            fromArchive:archivePath] testRecorder];
 
     expect(recorder).will.complete();
-    expect(recorder).will.sendValuesWithCount(0);
+    expect(recorder).will.sendValues(@[bundle]);
   });
 
-  it(@"should send path when content was extract successfully", ^{
+  it(@"should send bundle when content was extracted successfully", ^{
+    OCMStub([manager bundleWithPath:OCMOCK_ANY]).andReturn(bundle);
     OCMStub([fileManager bzr_deleteItemAtPathIfExists:OCMOCK_ANY]).andReturn([RACSignal empty]);
     OCMStub([fileManager bzr_createDirectoryAtPathIfNotExists:OCMOCK_ANY])
         .andReturn([RACSignal empty]);
-    NSString *expectedPath = @"/baz";
-    LTProgress<NSString *> *progress = [[LTProgress alloc] initWithResult:expectedPath];
-    RACSignal *progressSignal = [RACSignal return:progress];
     OCMStub([fileArchiver unarchiveArchiveAtPath:OCMOCK_ANY toDirectory:OCMOCK_ANY])
-        .andReturn(progressSignal);
+        .andReturn([RACSignal empty]);
+    OCMStub([fileManager bzr_moveItemAtPath:OCMOCK_ANY toPath:OCMOCK_ANY])
+        .andReturn([RACSignal empty]);
 
-    LLSignalTestRecorder *recorder = [[manager extractContentOfProduct:productIdentifier
-                                                           fromArchive:archivePath] testRecorder];
+    LLSignalTestRecorder *recorder =
+        [[manager extractContentOfProduct:productIdentifier fromArchive:archivePath] testRecorder];
 
     expect(recorder).will.complete();
-    expect(recorder).will.sendValuesWithCount(1);
-    expect(recorder).will.matchValue(0, ^BOOL(LTPath *actualPath) {
-      return [actualPath.path isEqualToString:expectedPath];
-    });
+    expect(recorder).will.sendValues(@[bundle]);
   });
 
   context(@"extracting product content to the correct path", ^{
-    __block LTPath *productContentPath;
+    __block LTPath *bazaarContentPath;
 
     beforeEach(^{
       OCMStub([fileManager bzr_deleteItemAtPathIfExists:OCMOCK_ANY]).andReturn([RACSignal empty]);
@@ -116,25 +133,27 @@ context(@"extracting content file", ^{
           .andReturn([RACSignal empty]);
       OCMStub([fileArchiver unarchiveArchiveAtPath:OCMOCK_ANY toDirectory:OCMOCK_ANY])
           .andReturn([RACSignal empty]);
-      auto bazaarContentPath = @"Bazaar/ProductsContent/";
-      auto relativePath = [bazaarContentPath stringByAppendingPathComponent:productIdentifier];
-      productContentPath = [LTPath pathWithBaseDirectory:LTPathBaseDirectoryApplicationSupport
-                                         andRelativePath:relativePath];
+      OCMStub([fileManager bzr_moveItemAtPath:OCMOCK_ANY toPath:OCMOCK_ANY])
+          .andReturn([RACSignal empty]);
+      bazaarContentPath = [LTPath pathWithBaseDirectory:LTPathBaseDirectoryApplicationSupport
+                                         andRelativePath:@"Bazaar/ProductsContent/"];
     });
 
-    it(@"should extract to the product directory path", ^{
+    it(@"should extract to the product temporary directory path", ^{
       [[manager extractContentOfProduct:productIdentifier fromArchive:archivePath] testRecorder];
 
-      OCMVerify([fileArchiver unarchiveArchiveAtPath:OCMOCK_ANY
-                                         toDirectory:productContentPath.path]);
+      auto tempDirectoryName = [@"_" stringByAppendingString:productIdentifier];
+      auto tempPath = [bazaarContentPath pathByAppendingPathComponent:tempDirectoryName].path;
+      OCMVerify([fileArchiver unarchiveArchiveAtPath:OCMOCK_ANY toDirectory:tempPath]);
     });
 
-    it(@"should extract to the product directory path concatenated with a given directory name", ^{
+    it(@"should extract to the product directory path concatenated with a temp directory", ^{
       [[manager extractContentOfProduct:productIdentifier fromArchive:archivePath
                           intoDirectory:@"versionDirectory"] testRecorder];
 
-      auto expectedPath = [productContentPath pathByAppendingPathComponent:@"versionDirectory"];
-      OCMVerify([fileArchiver unarchiveArchiveAtPath:OCMOCK_ANY toDirectory:expectedPath.path]);
+      auto productContentPath = [bazaarContentPath pathByAppendingPathComponent:productIdentifier];
+      auto tempPath = [productContentPath pathByAppendingPathComponent:@"_versionDirectory"];
+      OCMVerify([fileArchiver unarchiveArchiveAtPath:OCMOCK_ANY toDirectory:tempPath.path]);
     });
   });
 });

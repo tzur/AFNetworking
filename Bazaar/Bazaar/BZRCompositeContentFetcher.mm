@@ -8,6 +8,7 @@
 #import "BZRProduct.h"
 #import "BZRProductContentFetcher.h"
 #import "BZRProductContentManager.h"
+#import "BZRRemoteContentFetcher.h"
 #import "NSErrorCodes+Bazaar.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -24,10 +25,12 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)init {
   BZRLocalContentFetcher *localContentFetcher = [[BZRLocalContentFetcher alloc] init];
   BZROnDemandContentFetcher *onDemandContentFetcher = [[BZROnDemandContentFetcher alloc] init];
+  BZRRemoteContentFetcher *remoteContentFetcher = [[BZRRemoteContentFetcher alloc] init];
 
   return [self initWithContentFetchers:@{
     NSStringFromClass([localContentFetcher class]): localContentFetcher,
-    NSStringFromClass([onDemandContentFetcher class]): onDemandContentFetcher
+    NSStringFromClass([onDemandContentFetcher class]): onDemandContentFetcher,
+    NSStringFromClass([remoteContentFetcher class]): remoteContentFetcher
   }];
 }
 
