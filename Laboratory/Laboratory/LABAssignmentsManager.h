@@ -25,7 +25,7 @@ extern NSString * const kLABAssignmentAffectedUserReasonDisplayed;
 ///
 /// Since assignment data can be changed over time, the protocol groups this information in order to
 /// capture the value and its origins in a specific point in time.
-@protocol LABAssignment <NSSecureCoding>
+@protocol LABAssignment <NSObject ,NSSecureCoding>
 
 /// Assignment value.
 @property (readonly, nonatomic) id value;
