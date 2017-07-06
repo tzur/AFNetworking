@@ -18,4 +18,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
+/// Factory that creates a \c BZRProductsVariantSelector object, which is the default variant
+/// selector.
+@interface BZRProductsVariantSelectorFactory : NSObject <BZRProductsVariantSelectorFactory>
+@end
+
 NS_ASSUME_NONNULL_END
