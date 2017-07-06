@@ -1350,7 +1350,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = A14172651E6EAD9A005DBEFF /* Application.xcconfig */;
 			buildSettings = {
-				BUNDLE_LOADER = "";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/TestHost.app/TestHost";
 				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
 				DEVELOPMENT_TEAM = KG6GWND6BG;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
@@ -1366,6 +1366,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = LT.LaboratoryTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
 			};
 			name = Release;
 		};

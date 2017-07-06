@@ -1251,6 +1251,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 8BED80911C3A68080001C6F1 /* Application.xcconfig */;
 			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/TestHost.app/TestHost";
 				DEVELOPMENT_TEAM = KG6GWND6BG;
 				GCC_PREFIX_HEADER = "BlueprintsTests/BlueprintsTests-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
@@ -1264,6 +1265,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.lightricks.BlueprintsTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
 			};
 			name = Debug;
 		};
@@ -1271,6 +1273,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 8BED80911C3A68080001C6F1 /* Application.xcconfig */;
 			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/TestHost.app/TestHost";
 				DEVELOPMENT_TEAM = KG6GWND6BG;
 				GCC_PREFIX_HEADER = "BlueprintsTests/BlueprintsTests-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
@@ -1284,6 +1287,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.lightricks.BlueprintsTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
 			};
 			name = Release;
 		};
