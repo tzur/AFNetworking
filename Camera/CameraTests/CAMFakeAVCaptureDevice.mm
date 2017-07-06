@@ -88,7 +88,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)setFocusModeLockedWithLensPosition:(float)lensPosition
-                         completionHandler:(void (^)(CMTime syncTime))handler {
+                         completionHandler:(nullable void (^)(CMTime syncTime))handler {
   self.lensPosition = lensPosition;
   handler(kCMTimeZero);
 }
@@ -111,13 +111,13 @@ NS_ASSUME_NONNULL_BEGIN
   RAC(self, adjustingExposure) = [@[@YES, @NO].rac_sequence.signal delay:0.005];
 }
 
-- (void)setExposureTargetBias:(float)bias completionHandler:(void (^)(CMTime syncTime))handler {
+- (void)setExposureTargetBias:(float)bias completionHandler:(nullable void (^)(CMTime syncTime))handler {
   self.exposureTargetBias = bias;
   handler(kCMTimeZero);
 }
 
 - (void)setExposureModeCustomWithDuration:(CMTime)duration ISO:(float)ISO
-                        completionHandler:(void (^)(CMTime syncTime))handler {
+                        completionHandler:(nullable void (^)(CMTime syncTime))handler {
   _exposureMode = AVCaptureExposureModeCustom;
 
   if (CMTimeCompare(duration, AVCaptureExposureDurationCurrent) != 0) {
@@ -151,7 +151,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)setWhiteBalanceModeLockedWithDeviceWhiteBalanceGains:
     (AVCaptureWhiteBalanceGains)whiteBalanceGains
-                                           completionHandler:(void (^)(CMTime syncTime))handler {
+                                           completionHandler:(nullable void (^)(CMTime syncTime))handler {
   self.deviceWhiteBalanceGains = whiteBalanceGains;
   handler(kCMTimeZero);
 }
