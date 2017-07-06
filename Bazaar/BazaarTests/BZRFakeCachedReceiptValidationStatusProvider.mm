@@ -4,6 +4,7 @@
 #import "BZRFakeCachedReceiptValidationStatusProvider.h"
 
 #import "BZRKeychainStorage.h"
+#import "BZRReceiptValidationStatusCache.h"
 #import "BZRTimeProvider.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -24,7 +25,6 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize lastReceiptValidationDate = _lastReceiptValidationDate;
 
 - (instancetype)init {
-  BZRKeychainStorage *keychainStorage = OCMClassMock([BZRKeychainStorage class]);
   id<BZRTimeProvider> timeProvider = OCMProtocolMock(@protocol(BZRTimeProvider));
   OCMStub([timeProvider currentTime]).andReturn([RACSignal return:[NSDate date]]);
 
@@ -32,8 +32,10 @@ NS_ASSUME_NONNULL_BEGIN
       OCMProtocolMock(@protocol(BZRReceiptValidationStatusProvider));
   OCMStub([underlyingProvider eventsSignal]).andReturn([RACSignal empty]);
 
-  return [super initWithKeychainStorage:keychainStorage timeProvider:timeProvider
-                     underlyingProvider:underlyingProvider];
+  BZRReceiptValidationStatusCache *receiptValidationStatusCache =
+      OCMClassMock([BZRReceiptValidationStatusCache class]);
+  return [super initWithCache:receiptValidationStatusCache timeProvider:timeProvider
+           underlyingProvider:underlyingProvider];
 }
 
 - (RACSignal *)fetchReceiptValidationStatus {

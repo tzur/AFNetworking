@@ -21,6 +21,7 @@
 #import "BZRProductsWithPriceInfoProvider.h"
 #import "BZRProductsWithVariantsProvider.h"
 #import "BZRReceiptValidationParametersProvider.h"
+#import "BZRReceiptValidationStatusCache.h"
 #import "BZRReceiptValidationStatusProvider.h"
 #import "BZRStoreKitFacade.h"
 #import "BZRTimeProvider.h"
@@ -78,9 +79,13 @@ NS_ASSUME_NONNULL_BEGIN
 
     BZRKeychainStorage *keychainStorage =
         [[BZRKeychainStorage alloc] initWithAccessGroup:keychainAccessGroup];
+    BZRReceiptValidationStatusCache *receiptValidationStatusCache =
+        [[BZRReceiptValidationStatusCache alloc] initWithKeychainStorage:keychainStorage];
+
     _validationStatusProvider =
-        [[BZRCachedReceiptValidationStatusProvider alloc] initWithKeychainStorage:keychainStorage
-         timeProvider:timeProvider underlyingProvider:modifiedExpiryProvider];
+        [[BZRCachedReceiptValidationStatusProvider alloc] initWithCache:receiptValidationStatusCache
+                                                           timeProvider:timeProvider
+                                                     underlyingProvider:modifiedExpiryProvider];
     _acquiredViaSubscriptionProvider =
         [[BZRAcquiredViaSubscriptionProvider alloc] initWithKeychainStorage:keychainStorage];
 
