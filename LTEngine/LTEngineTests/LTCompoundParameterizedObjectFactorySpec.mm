@@ -20,36 +20,13 @@
 
 @end
 
-@interface LTBasicParameterizedTestObject : NSObject <LTBasicParameterizedObject>
-@end
-
-@implementation LTBasicParameterizedTestObject
-
-- (id)copyWithZone:(NSZone __unused *)zone {
-  return self;
-}
-
-- (CGFloat)floatForParametricValue:(CGFloat __unused)parametricValue {
-  return 0;
-}
-
-- (CGFloat)minParametricValue {
-  return 0;
-}
-
-- (CGFloat)maxParametricValue {
-  return 0;
-}
-
-@end
-
 @interface LTBasicTestFactory : NSObject <LTBasicParameterizedObjectFactory>
 @end
 
 @implementation LTBasicTestFactory
 
 - (id<LTBasicParameterizedObject>)baseParameterizedObjectsFromValues:(__unused CGFloats)values {
-  return [[LTBasicParameterizedTestObject alloc] init];
+  return OCMProtocolMock(@protocol(LTBasicParameterizedObject));
 }
 
 + (NSUInteger)numberOfRequiredValues {
