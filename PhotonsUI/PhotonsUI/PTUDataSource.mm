@@ -119,6 +119,9 @@ NS_ASSUME_NONNULL_BEGIN
       takeUntil:self.rac_willDeallocSignal]
       subscribeNext:^(PTUChangeset *changeset) {
         @strongify(self);
+        if (!self) {
+          return;
+        }
 
         // Changes without incremental changes make all changes made before them obsolete, so the
         // \c pendingReloads counter is used to flush the queue as quickly as possible.
@@ -130,6 +133,9 @@ NS_ASSUME_NONNULL_BEGIN
         /// the main thread.
         dispatch_async(self.updateQueue, ^{
           @strongify(self);
+          if (!self) {
+            return;
+          }
 
           // Applying incremental changes when a reload is pending is wasteful, so if a reload is
           // pending we try to clear the queue as quickly as possible.
@@ -139,6 +145,9 @@ NS_ASSUME_NONNULL_BEGIN
 
           dispatch_async(dispatch_get_main_queue(), ^{
             @strongify(self);
+            if (!self) {
+              return;
+            }
 
             self.dataModel = changeset.afterDataModel;
             self.hasData = [self dataModelHasData];
