@@ -3,11 +3,11 @@
 
 #import "LTCompoundParameterizedObjectFactory.h"
 
+#import "LTBasicParameterizedObject.h"
+#import "LTBasicParameterizedObjectFactory.h"
 #import "LTCompoundParameterizedObject.h"
 #import "LTInterpolatableObject.h"
 #import "LTParameterizationKeyToValues.h"
-#import "LTBasicParameterizedObject.h"
-#import "LTBasicParameterizedObjectFactory.h"
 
 @interface LTTestInterpolatableObject : NSObject <LTInterpolatableObject>
 @end
@@ -20,13 +20,36 @@
 
 @end
 
+@interface LTBasicParameterizedTestObject : NSObject <LTBasicParameterizedObject>
+@end
+
+@implementation LTBasicParameterizedTestObject
+
+- (id)copyWithZone:(NSZone __unused *)zone {
+  return self;
+}
+
+- (CGFloat)floatForParametricValue:(CGFloat __unused)parametricValue {
+  return 0;
+}
+
+- (CGFloat)minParametricValue {
+  return 0;
+}
+
+- (CGFloat)maxParametricValue {
+  return 0;
+}
+
+@end
+
 @interface LTBasicTestFactory : NSObject <LTBasicParameterizedObjectFactory>
 @end
 
 @implementation LTBasicTestFactory
 
 - (id<LTBasicParameterizedObject>)baseParameterizedObjectsFromValues:(__unused CGFloats)values {
-  return nil;
+  return [[LTBasicParameterizedTestObject alloc] init];
 }
 
 + (NSUInteger)numberOfRequiredValues {

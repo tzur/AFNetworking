@@ -3,8 +3,8 @@
 
 #import "LTCompoundParameterizedObject.h"
 
-#import "LTParameterizationKeyToValues.h"
 #import "LTBasicParameterizedObject.h"
+#import "LTParameterizationKeyToValues.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
