@@ -445,12 +445,18 @@ context(@"updates", ^{
 
   it(@"should complete collection view update signal on dealloc", ^{
     __weak id<PTUDataSource> weakDataSource;
-    __block LLSignalTestRecorder *recorder;
+    LLSignalTestRecorder *recorder;
+
+    UICollectionViewLayout *layout = OCMClassMock(UICollectionViewLayout.class);
+    UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero
+                                                          collectionViewLayout:layout];
+    auto dataSignal = [RACSubject subject];
+    auto metadataSignal = [RACSubject subject];
+    id<PTUChangesetProvider> changesetProvider = OCMProtocolMock(@protocol(PTUChangesetProvider));
+    OCMStub([changesetProvider fetchChangeset]).andReturn(dataSignal);
+    OCMStub([changesetProvider fetchChangesetMetadata]).andReturn(metadataSignal);
 
     @autoreleasepool {
-      UICollectionViewLayout *layout = OCMClassMock(UICollectionViewLayout.class);
-      UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero
-                                                            collectionViewLayout:layout];
       id<PTUDataSource> dataSource = [[PTUDataSource alloc] initWithCollectionView:collectionView
                                                                  changesetProvider:changesetProvider
                                                              cellViewModelProvider:viewModelProvider
@@ -462,6 +468,43 @@ context(@"updates", ^{
 
     expect(weakDataSource).to.beNil();
     expect(recorder).to.complete();
+  });
+
+  it(@"should not crash when deallocating data source while there are pending changes", ^{
+    static const NSUInteger kChangesetCount = 10;
+
+    UICollectionViewLayout *layout = OCMClassMock(UICollectionViewLayout.class);
+    UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero
+                                                          collectionViewLayout:layout];
+
+    auto dataSignal = [RACSubject subject];
+    auto metadataSignal = [RACSubject subject];
+    id<PTUChangesetProvider> changesetProvider = OCMProtocolMock(@protocol(PTUChangesetProvider));
+    OCMStub([changesetProvider fetchChangeset]).andReturn(dataSignal);
+    OCMStub([changesetProvider fetchChangesetMetadata]).andReturn(metadataSignal);
+
+    @autoreleasepool {
+      id<PTUDataSource> __unused dataSource =
+          [[PTUDataSource alloc] initWithCollectionView:collectionView
+                                      changesetProvider:changesetProvider
+                                  cellViewModelProvider:viewModelProvider
+                                              cellClass:cellClass
+                                        headerCellClass:headerCellClass];
+
+      PTUChangeset *changeset = [[PTUChangeset alloc] initWithAfterDataModel:@[@[@1], @[@2, @3]]];
+      for (NSUInteger j = 0; j < kChangesetCount; ++j) {
+        [dataSignal sendNext:changeset];
+      }
+    }
+
+    // Note that no expectations are being made here. There's an implicit expectation for this code
+    // not to crash. We cannot expect that the data source will deallocate since the changeset
+    // processing operation is running on a background thread, which may hold the data source
+    // strongly after the autoreleasepool scope in this thread ends, therefore leaving the data
+    // source alive.
+    //
+    // However, since the test "should complete collection view update signal on dealloc" passes, we
+    // can be sure that the data source will eventually deallocate.
   });
 });
 
