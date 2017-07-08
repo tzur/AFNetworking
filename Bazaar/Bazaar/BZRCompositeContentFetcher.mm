@@ -7,7 +7,6 @@
 #import "BZROnDemandContentFetcher.h"
 #import "BZRProduct.h"
 #import "BZRProductContentFetcher.h"
-#import "BZRProductContentManager.h"
 #import "BZRRemoteContentFetcher.h"
 #import "NSErrorCodes+Bazaar.h"
 
