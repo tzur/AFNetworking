@@ -20,47 +20,6 @@
 
 SpecBegin(BZRLocalContentFetcher)
 
-context(@"parameters conversion" , ^{
-  __block NSString *localFilePath;
-  __block NSURL *localFileURL;
-
-  beforeEach(^{
-    localFilePath = @"file:///foo/file.zip";
-    localFileURL = [NSURL URLWithString:localFilePath];
-  });
-
-  it(@"should correctly convert BZRLocalContentFetcherParameters instance to JSON dictionary", ^{
-    NSDictionary *dictionaryValue = @{
-      @instanceKeypath(BZRLocalContentFetcherParameters, type): [BZRLocalContentFetcher class],
-      @instanceKeypath(BZRLocalContentFetcherParameters, URL): localFileURL,
-    };
-
-    NSError *error;
-    BZRLocalContentFetcherParameters *parameters =
-        [[BZRLocalContentFetcherParameters alloc] initWithDictionary:dictionaryValue error:&error];
-    expect(error).to.beNil();
-
-    NSDictionary *JSONDictionary = [MTLJSONAdapter JSONDictionaryFromModel:parameters];
-
-    expect(JSONDictionary[@instanceKeypath(BZRLocalContentFetcherParameters, URL)]).to
-        .equal(localFilePath);
-  });
-
-  it(@"should correctly convert from JSON dictionary to BZRLocalContentFetcherParameters", ^{
-    NSDictionary *JSONDictionary = @{
-      @"type": @"BZRLocalContentFetcher",
-      @"URL": localFilePath
-    };
-
-    NSError *error;
-    BZRLocalContentFetcherParameters *parameters =
-        [MTLJSONAdapter modelOfClass:[BZRLocalContentFetcherParameters class]
-                  fromJSONDictionary:JSONDictionary error:&error];
-    expect(error).to.beNil();
-    expect(parameters.URL).to.equal(localFileURL);
-  });
-});
-
 context(@"expected parameters class", ^{
   it(@"should return a non-nil class from expectedParametersClass", ^{
     expect([BZRLocalContentFetcher expectedParametersClass]).notTo.beNil();
@@ -204,6 +163,49 @@ context(@"getting bundle of the product content", ^{
 
     expect(recorder).to.sendValues(@[[NSNull null]]);
   });
+});
+
+SpecEnd
+
+SpecBegin(BZRLocalContentFetcherParameters)
+
+__block NSString *localFilePath;
+__block NSURL *localFileURL;
+
+beforeEach(^{
+  localFilePath = @"file:///foo/file.zip";
+  localFileURL = [NSURL URLWithString:localFilePath];
+});
+
+it(@"should correctly convert BZRLocalContentFetcherParameters instance to JSON dictionary", ^{
+  auto dictionaryValue = @{
+    @instanceKeypath(BZRLocalContentFetcherParameters, type): @"BZRLocalContentFetcher",
+    @instanceKeypath(BZRLocalContentFetcherParameters, URL): localFileURL,
+  };
+
+  NSError *error;
+  auto *parameters = [[BZRLocalContentFetcherParameters alloc] initWithDictionary:dictionaryValue
+                                                                            error:&error];
+  expect(error).to.beNil();
+
+  auto JSONDictionary = [MTLJSONAdapter JSONDictionaryFromModel:parameters];
+  expect(JSONDictionary[@instanceKeypath(BZRLocalContentFetcherParameters, URL)]).to
+      .equal(localFilePath);
+});
+
+it(@"should correctly convert from JSON dictionary to BZRLocalContentFetcherParameters", ^{
+  auto JSONDictionary = @{
+    @"type": @"BZRLocalContentFetcher",
+    @"URL": localFilePath
+  };
+
+  NSError *error;
+  BZRLocalContentFetcherParameters *parameters =
+      [MTLJSONAdapter modelOfClass:[BZRLocalContentFetcherParameters class]
+                fromJSONDictionary:JSONDictionary error:&error];
+
+  expect(error).to.beNil();
+  expect(parameters.URL).to.equal(localFileURL);
 });
 
 SpecEnd

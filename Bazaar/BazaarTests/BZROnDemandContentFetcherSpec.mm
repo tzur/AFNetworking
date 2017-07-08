@@ -11,47 +11,6 @@
 
 SpecBegin(BZROnDemandContentFetcher)
 
-context(@"parameters conversion" , ^{
-  __block NSArray<NSString *> *tags;
-
-  beforeEach(^{
-    tags = @[@"tag1", @"tag2"];
-  });
-
-  it(@"should correctly convert BZRLocalContentFetcherParameters instance to JSON dictionary", ^{
-    NSDictionary *dictionaryValue = @{
-      @instanceKeypath(BZROnDemandContentFetcherParameters, type):
-          [BZROnDemandContentFetcher class],
-      @instanceKeypath(BZROnDemandContentFetcherParameters, tags): tags
-    };
-
-    NSError *error;
-    BZROnDemandContentFetcherParameters *parameters =
-        [[BZROnDemandContentFetcherParameters alloc] initWithDictionary:dictionaryValue
-                                                                  error:&error];
-    expect(error).to.beNil();
-
-    NSDictionary *JSONDictionary = [MTLJSONAdapter JSONDictionaryFromModel:parameters];
-
-    expect(JSONDictionary[@instanceKeypath(BZROnDemandContentFetcherParameters, tags)]).to
-        .equal(tags);
-  });
-
-  it(@"should correctly convert from JSON dictionary to BZROnDemandContentFetcherParameters", ^{
-    NSDictionary *JSONDictionary = @{
-      @"type": @"BZROnDemandContentFetcher",
-      @"tags": @[@"tag1", @"tag2"]
-    };
-
-    NSError *error;
-    BZROnDemandContentFetcherParameters *parameters =
-        [MTLJSONAdapter modelOfClass:[BZROnDemandContentFetcherParameters class]
-                  fromJSONDictionary:JSONDictionary error:&error];
-    expect(error).to.beNil();
-    expect(parameters.tags).to.equal([NSSet setWithArray:tags]);
-  });
-});
-
 context(@"expected parameters class", ^{
   it(@"should return a non-nil class from expectedParametersClass", ^{
     expect([BZROnDemandContentFetcher expectedParametersClass]).notTo.beNil();
@@ -149,6 +108,47 @@ context(@"getting bundle of the product content", ^{
     expect(recorder).will.complete();
     expect(recorder).will.sendValues(@[[NSNull null]]);
   });
+});
+
+SpecEnd
+
+SpecBegin(BZROnDemandContentFetcherParameters)
+
+__block NSArray<NSString *> *tags;
+
+beforeEach(^{
+  tags = @[@"tag1", @"tag2"];
+});
+
+it(@"should correctly convert BZROnDemandContentFetcherParameters instance to JSON dictionary", ^{
+  auto dictionaryValue = @{
+    @instanceKeypath(BZROnDemandContentFetcherParameters, type): @"BZROnDemandContentFetcher",
+    @instanceKeypath(BZROnDemandContentFetcherParameters, tags): tags
+  };
+
+  NSError *error;
+  auto parameters = [[BZROnDemandContentFetcherParameters alloc] initWithDictionary:dictionaryValue
+                                                                              error:&error];
+  expect(error).to.beNil();
+
+  auto JSONDictionary = [MTLJSONAdapter JSONDictionaryFromModel:parameters];
+  expect(JSONDictionary[@instanceKeypath(BZROnDemandContentFetcherParameters, tags)]).to
+      .equal(tags);
+});
+
+it(@"should correctly convert from JSON dictionary to BZROnDemandContentFetcherParameters", ^{
+  auto JSONDictionary = @{
+    @"type": @"BZROnDemandContentFetcher",
+    @"tags": tags
+  };
+
+  NSError *error;
+  BZROnDemandContentFetcherParameters *parameters =
+      [MTLJSONAdapter modelOfClass:[BZROnDemandContentFetcherParameters class]
+                fromJSONDictionary:JSONDictionary error:&error];
+
+  expect(error).to.beNil();
+  expect(parameters.tags).to.equal([NSSet setWithArray:tags]);
 });
 
 SpecEnd
