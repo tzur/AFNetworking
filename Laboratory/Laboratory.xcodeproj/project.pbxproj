@@ -12,7 +12,6 @@
 		882D1F2E1EC1C497007F39F5 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 882D1F2D1EC1C497007F39F5 /* CoreGraphics.framework */; };
 		882D1F301EC1C49C007F39F5 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 882D1F2F1EC1C49C007F39F5 /* GLKit.framework */; };
 		882D1F321EC1C54F007F39F5 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 882D1F311EC1C54F007F39F5 /* QuartzCore.framework */; };
-		882D20181EC9A967007F39F5 /* ReactiveCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 882D20051EC996D4007F39F5 /* ReactiveCocoa.framework */; };
 		883235851ED861EA0090787D /* NSError+Laboratory.mm in Sources */ = {isa = PBXBuildFile; fileRef = 883235821ED861EA0090787D /* NSError+Laboratory.mm */; };
 		883235861ED861EA0090787D /* NSErrorCodes+Laboratory.mm in Sources */ = {isa = PBXBuildFile; fileRef = 883235841ED861EA0090787D /* NSErrorCodes+Laboratory.mm */; };
 		883235881ED861F30090787D /* NSErrorCodes+LaboratorySpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 883235871ED861F30090787D /* NSErrorCodes+LaboratorySpec.mm */; };
@@ -119,6 +118,13 @@
 			proxyType = 2;
 			remoteGlobalIDString = D047261619E49F82006002AA;
 			remoteInfo = "ReactiveCocoa-iOSTests";
+		};
+		8BAB07DA1F10EE8800EBB389 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 882D1FE51EC996D4007F39F5 /* ReactiveCocoa.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = D047260B19E49F82006002AA;
+			remoteInfo = "ReactiveCocoa-iOS";
 		};
 		A14171C71E6EAC0D005DBEFF /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -442,7 +448,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				882D20181EC9A967007F39F5 /* ReactiveCocoa.framework in Frameworks */,
 				883713171EE580340033EE08 /* Taplytics.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -828,6 +833,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				8BAB07DB1F10EE8800EBB389 /* PBXTargetDependency */,
 			);
 			name = Laboratory;
 			productName = Laboratory;
@@ -1237,6 +1243,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		8BAB07DB1F10EE8800EBB389 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "ReactiveCocoa-iOS";
+			targetProxy = 8BAB07DA1F10EE8800EBB389 /* PBXContainerItemProxy */;
+		};
 		A14171C81E6EAC0D005DBEFF /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = A14171A01E6EAA93005DBEFF /* Laboratory */;
@@ -1258,6 +1269,7 @@
 				ENABLE_TESTABILITY = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
+					"$(SRCROOT)/../third_party/ReactiveCocoa/",
 					"$(SRCROOT)/../third_party/taplytics-ios-sdk",
 				);
 				HEADER_SEARCH_PATHS = (
@@ -1280,6 +1292,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
+					"$(SRCROOT)/../third_party/ReactiveCocoa/",
 					"$(SRCROOT)/../third_party/taplytics-ios-sdk",
 				);
 				HEADER_SEARCH_PATHS = (
@@ -1299,7 +1312,6 @@
 			baseConfigurationReference = A14172681E6EAD9A005DBEFF /* StaticLibrary.xcconfig */;
 			buildSettings = {
 				DEVELOPMENT_TEAM = KG6GWND6BG;
-				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PREFIX_HEADER = "$(SRCROOT)/$(TARGET_NAME)/$(TARGET_NAME)-Prefix.pch";
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = "-ObjC";
@@ -1313,7 +1325,6 @@
 			baseConfigurationReference = A14172681E6EAD9A005DBEFF /* StaticLibrary.xcconfig */;
 			buildSettings = {
 				DEVELOPMENT_TEAM = KG6GWND6BG;
-				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PREFIX_HEADER = "$(SRCROOT)/$(TARGET_NAME)/$(TARGET_NAME)-Prefix.pch";
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = "-ObjC";
@@ -1329,7 +1340,6 @@
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/TestHost.app/TestHost";
 				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
 				DEVELOPMENT_TEAM = KG6GWND6BG;
-				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PREFIX_HEADER = "$(SRCROOT)/$(TARGET_NAME)/$(TARGET_NAME)-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1353,7 +1363,6 @@
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/TestHost.app/TestHost";
 				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
 				DEVELOPMENT_TEAM = KG6GWND6BG;
-				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PREFIX_HEADER = "$(SRCROOT)/$(TARGET_NAME)/$(TARGET_NAME)-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
