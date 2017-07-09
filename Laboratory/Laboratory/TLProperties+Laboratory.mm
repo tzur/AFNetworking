@@ -36,19 +36,15 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (NSDictionary<NSString *, id> *)lab_dynamicVariables {
-  auto _Nullable dynamicVariables = self.dynamicVariables;
-  if (!dynamicVariables) {
-    return nil;
-  }
-
   auto filteredVariables = [NSMutableDictionary<NSString *, id> dictionary];
-  [dynamicVariables enumerateKeysAndObjectsUsingBlock:^(NSString *key, NSDictionary *obj, BOOL *) {
+  [self.dynamicVariables
+      enumerateKeysAndObjectsUsingBlock:^(NSString *key, NSDictionary *obj, BOOL *) {
     id _Nullable value = obj[@"value"];
     if (value) {
       filteredVariables[key] = value;
     }
   }];
-  return filteredVariables;
+  return [filteredVariables copy];
 }
 
 - (nullable NSString *)lab_variationsIDForVariation:(NSString *)variation
