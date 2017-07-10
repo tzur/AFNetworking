@@ -9,17 +9,17 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation WFGradientView
 
-+ (instancetype)horizontalGradientWithLeftColor:(UIColor *)leftColor
-                                     rightColor:(UIColor *)rightColor {
++ (instancetype)horizontalGradientWithLeftColor:(nullable UIColor *)leftColor
+                                     rightColor:(nullable UIColor *)rightColor {
   WFGradientView *view = [[WFGradientView alloc] initWithFrame:CGRectZero];
-  view.colors = @[leftColor, rightColor];
+  view.colors = @[leftColor ?: [UIColor clearColor], rightColor ?: [UIColor clearColor]];
   return view;
 }
 
-+ (instancetype)verticalGradientWithTopColor:(UIColor *)topColor
-                                 bottomColor:(UIColor *)bottomColor {
++ (instancetype)verticalGradientWithTopColor:(nullable UIColor *)topColor
+                                 bottomColor:(nullable UIColor *)bottomColor {
   WFGradientView *view = [[WFGradientView alloc] initWithFrame:CGRectZero];
-  view.colors = @[topColor, bottomColor];
+  view.colors = @[topColor ?: [UIColor clearColor], bottomColor ?: [UIColor clearColor]];
   view.startPoint = CGPointMake(0.5, 0);
   view.endPoint = CGPointMake(0.5, 1);
   return view;
@@ -46,7 +46,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)setup {
   self.startPoint = CGPointMake(0, 0.5);
   self.endPoint = CGPointMake(1, 0.5);
-  self.colors = @[[UIColor clearColor], [UIColor clearColor]];
+  self.colors = nil;
 }
 
 - (UIColor *)startColor {
@@ -57,21 +57,22 @@ NS_ASSUME_NONNULL_BEGIN
   return self.colors.lastObject;
 }
 
-- (void)setStartColor:(UIColor *)startColor {
+- (void)setStartColor:(nullable UIColor *)startColor {
   NSMutableArray<UIColor *> *colors = [self.colors mutableCopy];
-  colors[0] = startColor;
+  colors[0] = startColor ?: [UIColor clearColor];
   self.colors = colors;
 }
 
-- (void)setEndColor:(UIColor *)endColor {
+- (void)setEndColor:(nullable UIColor *)endColor {
   NSMutableArray<UIColor *> *colors = [self.colors mutableCopy];
-  colors[colors.count - 1] = endColor;
+  colors[colors.count - 1] = endColor ?: [UIColor clearColor];
   self.colors = colors;
 }
 
-- (void)setColors:(NSArray<UIColor *> *)colors {
-  LTParameterAssert(colors.count > 1, @"Invalid colors array, must have at least 2 element");
-  _colors = [colors copy];
+- (void)setColors:(nullable NSArray<UIColor *> *)colors {
+  LTParameterAssert(!colors || colors.count > 1,
+                    @"Invalid colors array, must be nil or have at least 2 element");
+  _colors = [colors copy] ?: @[[UIColor clearColor], [UIColor clearColor]];
   [self updateGradientLayer];
 }
 

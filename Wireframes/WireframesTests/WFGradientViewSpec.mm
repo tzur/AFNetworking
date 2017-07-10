@@ -15,28 +15,54 @@ it(@"should create a gradient view with default values", ^{
   expect(view.endPoint).to.equal(CGPointMake(1, 0.5));
 });
 
-it(@"should create a horizontal gradient", ^{
-  WFGradientView *view = [WFGradientView horizontalGradientWithLeftColor:[UIColor blueColor]
-                                                              rightColor:[UIColor greenColor]];
+context(@"horizontal gradient", ^{
+  it(@"should create with colors", ^{
+    WFGradientView *view = [WFGradientView horizontalGradientWithLeftColor:[UIColor blueColor]
+                                                                rightColor:[UIColor greenColor]];
 
-  expect(view.startColor).to.equal([UIColor blueColor]);
-  expect(view.endColor).to.equal([UIColor greenColor]);
-  expect(view.colors).to.equal(@[[UIColor blueColor], [UIColor greenColor]]);
-  expect(view.startPoint.x).to.equal(0);
-  expect(view.endPoint.x).to.equal(1);
-  expect(view.startPoint.y).to.equal(view.endPoint.y);
+    expect(view.startColor).to.equal([UIColor blueColor]);
+    expect(view.endColor).to.equal([UIColor greenColor]);
+    expect(view.colors).to.equal(@[[UIColor blueColor], [UIColor greenColor]]);
+    expect(view.startPoint.x).to.equal(0);
+    expect(view.endPoint.x).to.equal(1);
+    expect(view.startPoint.y).to.equal(view.endPoint.y);
+  });
+
+  it(@"should create with nil colors", ^{
+    WFGradientView *view = [WFGradientView horizontalGradientWithLeftColor:nil rightColor:nil];
+
+    expect(view.startColor).to.equal([UIColor clearColor]);
+    expect(view.endColor).to.equal([UIColor clearColor]);
+    expect(view.colors).to.equal(@[[UIColor clearColor], [UIColor clearColor]]);
+    expect(view.startPoint.x).to.equal(0);
+    expect(view.endPoint.x).to.equal(1);
+    expect(view.startPoint.y).to.equal(view.endPoint.y);
+  });
 });
 
-it(@"should create a vertical gradient", ^{
-  WFGradientView *view = [WFGradientView verticalGradientWithTopColor:[UIColor blueColor]
-                                                          bottomColor:[UIColor greenColor]];
+context(@"vertical gradient", ^{
+  it(@"should create with colors", ^{
+    WFGradientView *view = [WFGradientView verticalGradientWithTopColor:[UIColor blueColor]
+                                                            bottomColor:[UIColor greenColor]];
 
-  expect(view.startColor).to.equal([UIColor blueColor]);
-  expect(view.endColor).to.equal([UIColor greenColor]);
-  expect(view.colors).to.equal(@[[UIColor blueColor], [UIColor greenColor]]);
-  expect(view.startPoint.y).to.equal(0);
-  expect(view.endPoint.y).to.equal(1);
-  expect(view.startPoint.x).to.equal(view.endPoint.x);
+    expect(view.startColor).to.equal([UIColor blueColor]);
+    expect(view.endColor).to.equal([UIColor greenColor]);
+    expect(view.colors).to.equal(@[[UIColor blueColor], [UIColor greenColor]]);
+    expect(view.startPoint.y).to.equal(0);
+    expect(view.endPoint.y).to.equal(1);
+    expect(view.startPoint.x).to.equal(view.endPoint.x);
+  });
+
+  it(@"should create with nil colors", ^{
+    WFGradientView *view = [WFGradientView verticalGradientWithTopColor:nil bottomColor:nil];
+
+    expect(view.startColor).to.equal([UIColor clearColor]);
+    expect(view.endColor).to.equal([UIColor clearColor]);
+    expect(view.colors).to.equal(@[[UIColor clearColor], [UIColor clearColor]]);
+    expect(view.startPoint.y).to.equal(0);
+    expect(view.endPoint.y).to.equal(1);
+    expect(view.startPoint.x).to.equal(view.endPoint.x);
+  });
 });
 
 context(@"colors", ^{
@@ -79,6 +105,27 @@ context(@"colors", ^{
     expect(^{
       view.colors = @[[UIColor redColor]];
     }).to.raise(NSInvalidArgumentException);
+  });
+
+  context(@"reset colors", ^{
+    beforeEach(^{
+      view.colors = @[[UIColor redColor], [UIColor blueColor]];
+    });
+
+    it(@"should reset colors when set to nil", ^{
+      view.colors = nil;
+      expect(view.colors).to.equal(@[[UIColor clearColor], [UIColor clearColor]]);
+    });
+
+    it(@"should reset startColor when set to nil", ^{
+      view.startColor = nil;
+      expect(view.startColor).to.equal([UIColor clearColor]);
+    });
+
+    it(@"should reset endColor when set to nil", ^{
+      view.endColor = nil;
+      expect(view.endColor).to.equal([UIColor clearColor]);
+    });
   });
 });
 
