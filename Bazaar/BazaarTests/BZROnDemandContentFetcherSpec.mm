@@ -149,6 +149,19 @@ context(@"getting bundle of the product content", ^{
     expect(recorder).will.complete();
     expect(recorder).will.sendValues(@[[NSNull null]]);
   });
+
+  it(@"should err if the content fetcher parameters are invalid", ^{
+    auto parameters = [[BZRContentFetcherParameters alloc] initWithDictionary:@{
+      @"type": NSStringFromClass([BZRContentFetcherParameters class])
+    } error:nil];
+    auto product = BZRProductWithIdentifierAndParameters(@"foo", parameters);
+
+    auto recorder = [[fetcher contentBundleForProduct:product] testRecorder];
+
+    expect(recorder).to.matchError(^BOOL(NSError *error) {
+      return error.lt_isLTDomain && error.code == BZRErrorCodeInvalidContentFetcherParameters;
+    });
+  });
 });
 
 SpecEnd
