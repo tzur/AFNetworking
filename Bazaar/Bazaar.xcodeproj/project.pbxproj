@@ -267,7 +267,6 @@
 		CD9854581ED5FA15007CBCBC /* BZROnDemandContentFetcher.h in Headers */ = {isa = PBXBuildFile; fileRef = CD9854561ED5FA15007CBCBC /* BZROnDemandContentFetcher.h */; };
 		CD9854591ED5FA15007CBCBC /* BZROnDemandContentFetcher.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD9854571ED5FA15007CBCBC /* BZROnDemandContentFetcher.mm */; };
 		CD9854881ED5FA37007CBCBC /* BZROnDemandContentFetcherSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD9854871ED5FA37007CBCBC /* BZROnDemandContentFetcherSpec.mm */; };
-		CDA913F71EC83CAD00A6C5C6 /* BZRDummyContentFetcher.h in Sources */ = {isa = PBXBuildFile; fileRef = CDB63CDC1EB0C038004884D8 /* BZRDummyContentFetcher.h */; };
 		CDA913F81EC83CAD00A6C5C6 /* BZRDummyContentFetcher.mm in Sources */ = {isa = PBXBuildFile; fileRef = CDB63CDD1EB0C038004884D8 /* BZRDummyContentFetcher.mm */; };
 		CDC75AA51F04DBEB00247591 /* BZRReceiptValidationStatusCache.h in Headers */ = {isa = PBXBuildFile; fileRef = CDC75AA31F04DBEB00247591 /* BZRReceiptValidationStatusCache.h */; };
 		CDC75AA61F04DBEB00247591 /* BZRReceiptValidationStatusCache.mm in Sources */ = {isa = PBXBuildFile; fileRef = CDC75AA41F04DBEB00247591 /* BZRReceiptValidationStatusCache.mm */; };
@@ -1665,10 +1664,10 @@
 				CD9843C81ED17BD2007CBCBC /* BZRCompositeContentFetcher.mm */,
 				B97E6CCA1D41103200C02863 /* BZRContentFetcherParameters.h */,
 				B9ED1F4B1D53682C00932EE8 /* BZRContentFetcherParameters.mm */,
-				CD3A74061EF6989600FA4FBD /* BZRMulticastContentFetcher.h */,
-				CD3A74071EF6989600FA4FBD /* BZRMulticastContentFetcher.mm */,
 				B9484B561D50A09900910066 /* BZRLocalContentFetcher.h */,
 				B9484B571D50A09900910066 /* BZRLocalContentFetcher.mm */,
+				CD3A74061EF6989600FA4FBD /* BZRMulticastContentFetcher.h */,
+				CD3A74071EF6989600FA4FBD /* BZRMulticastContentFetcher.mm */,
 				CD9854561ED5FA15007CBCBC /* BZROnDemandContentFetcher.h */,
 				CD9854571ED5FA15007CBCBC /* BZROnDemandContentFetcher.mm */,
 				B97E6C221D40F44800C02863 /* BZRProductContentFetcher.h */,
@@ -2547,7 +2546,6 @@
 				65C74D061D5352D000D7518C /* BZRZipFileArchiverSpec.mm in Sources */,
 				CD3A74381EF69DD400FA4FBD /* BZRMulticastContentFetcherSpec.mm in Sources */,
 				B973487C1D8C35CB006CF28A /* BZRStoreSpec.mm in Sources */,
-				CDA913F71EC83CAD00A6C5C6 /* BZRDummyContentFetcher.h in Sources */,
 				CDA913F81EC83CAD00A6C5C6 /* BZRDummyContentFetcher.mm in Sources */,
 				CDC7667B1F0A416400247591 /* BZRSharedUserInfoReaderSpec.mm in Sources */,
 			);
@@ -2715,7 +2713,6 @@
 					"$(SRCROOT)/../third_party/LLReactiveMatchers",
 				);
 				INFOPLIST_FILE = BazaarTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.lightricks.BazaarTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2763,7 +2760,6 @@
 					"$(SRCROOT)/../third_party/LLReactiveMatchers",
 				);
 				INFOPLIST_FILE = BazaarTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.lightricks.BazaarTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";

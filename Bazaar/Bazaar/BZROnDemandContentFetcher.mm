@@ -43,11 +43,11 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (RACSignal *)fetchProductContent:(BZRProduct *)product {
-  if (![product.contentFetcherParameters
-        isKindOfClass:[BZROnDemandContentFetcherParameters class]]) {
-    NSError *error = [NSError lt_errorWithCode:BZRErrorCodeInvalidContentFetcherParameters
-                                   description:@"The provided parameters class must be: %@",
-                                               [BZROnDemandContentFetcherParameters class]];
+  Class expectedParametersClass = [[self class] expectedParametersClass];
+  if (![product.contentFetcherParameters isKindOfClass:expectedParametersClass]) {
+    auto error = [NSError lt_errorWithCode:BZRErrorCodeInvalidContentFetcherParameters
+                               description:@"The provided parameters class must be: %@",
+                               expectedParametersClass];
     return [RACSignal error:error];
   }
 
@@ -70,11 +70,12 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (RACSignal *)contentBundleForProduct:(BZRProduct *)product {
-  if (![product.contentFetcherParameters
-        isKindOfClass:[BZROnDemandContentFetcherParameters class]]) {
-    LogError(@"The provided parameters class must be: %@",
-             [BZROnDemandContentFetcherParameters class]);
-    return nil;
+  Class expectedParametersClass = [[self class] expectedParametersClass];
+  if (![product.contentFetcherParameters isKindOfClass:expectedParametersClass]) {
+    auto error = [NSError lt_errorWithCode:BZRErrorCodeInvalidContentFetcherParameters
+                               description:@"The provided parameters class must be: %@",
+                               expectedParametersClass];
+    return [RACSignal error:error];
   }
 
   NSSet<NSString *> *tags =

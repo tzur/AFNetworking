@@ -662,6 +662,7 @@ context(@"purchasing products", ^{
 
           expect([store purchaseProduct:productIdentifier]).will.complete();
         }
+
         expect(weakStore).to.beNil();
       });
     });
@@ -972,27 +973,37 @@ context(@"getting product list", ^{
     OCMVerifyAll((id)productsProvider);
   });
 
-  it(@"should dealloc when all strong references are relinquished", ^{
-    BZRStore * __weak weakStore;
-    NSError *error = [NSError lt_errorWithCode:1337];
+  it(@"should report initial fetching error event via the events signal", ^{
+    auto error = [NSError lt_errorWithCode:1337];
     OCMExpect([productsProvider fetchProductList]).andReturn([RACSignal error:error]);
 
-    RACSignal *productListSignal;
+    auto store = [[BZRStore alloc] initWithConfiguration:configuration];
+
+    expect(store.eventsSignal).will.matchValue(0, ^BOOL(BZREvent *event) {
+      NSError *error = event.eventError;
+      return error.lt_isLTDomain && error.code == BZRErrorCodeFetchingProductListFailed &&
+          [event.eventType isEqual:$(BZREventTypeCriticalError)];
+    });
+  });
+
+  it(@"should dealloc store whlie product list fetching is in progress.", ^{
+    BZRStore * __weak weakStore;
+    auto error = [NSError lt_errorWithCode:1337];
+    OCMExpect([productsProvider fetchProductList]).andReturn([RACSignal error:error]);
+
+    auto productListSignal = [RACSubject subject];
+    LLSignalTestRecorder *productListRecorder;
     @autoreleasepool {
-      BZRStore *store = [[BZRStore alloc] initWithConfiguration:configuration];
+      auto store = [[BZRStore alloc] initWithConfiguration:configuration];
       weakStore = store;
-      expect(store.eventsSignal).will.matchValue(0, ^BOOL(BZREvent *event) {
-        NSError *error = event.eventError;
-        return error.lt_isLTDomain && error.code == BZRErrorCodeFetchingProductListFailed &&
-            [event.eventType isEqual:$(BZREventTypeCriticalError)];
-      });
 
-      OCMExpect([productsProvider fetchProductList]).andReturn([RACSignal return:@[product]]);
-
-      productListSignal = [store productList];
+      OCMExpect([productsProvider fetchProductList]).andReturn(productListSignal);
+      productListRecorder = [[store productList] testRecorder];
     }
-    expect(productListSignal).will.complete();
+
     expect(weakStore).to.beNil();
+    [productListSignal sendNext:@[product]];
+    [productListSignal sendCompleted];
   });
 
   it(@"should set app store locale from product price locale", ^{
@@ -1119,6 +1130,8 @@ context(@"handling unfinished completed transactions", ^{
       weakStore = store;
       completedTransactionsRecorder = [store.completedTransactionsSignal testRecorder];
     }
+
+    expect(weakStore).to.beNil();
     expect(completedTransactionsRecorder).will.complete();
   });
 
@@ -1206,6 +1219,8 @@ context(@"events signal", ^{
       weakStore = store;
       eventsSignal = store.eventsSignal;
     }
+
+    expect(weakStore).to.beNil();
     expect(eventsSignal).will.complete();
   });
 
