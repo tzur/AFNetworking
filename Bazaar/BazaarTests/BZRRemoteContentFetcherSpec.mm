@@ -147,3 +147,44 @@ context(@"fetching product", ^{
 });
 
 SpecEnd
+
+SpecBegin(BZRRemoteContentFetcherParameters)
+
+__block NSURL *remoteFileURL;
+
+beforeEach(^{
+  remoteFileURL = [NSURL URLWithString:@"http://foo.bar/file.zip"];
+});
+
+it(@"should correctly convert BZRRemoteContentFetcherParameters instance to JSON dictionary", ^{
+  auto dictionaryValue = @{
+    @instanceKeypath(BZRRemoteContentFetcherParameters, type): @"BZRRemoteContentFetcher",
+    @instanceKeypath(BZRRemoteContentFetcherParameters, URL): remoteFileURL
+  };
+
+  NSError *error;
+  auto parameters = [[BZRRemoteContentFetcherParameters alloc] initWithDictionary:dictionaryValue
+                                                                            error:&error];
+  expect(error).to.beNil();
+
+  auto JSONDictionary = [MTLJSONAdapter JSONDictionaryFromModel:parameters];
+  expect(JSONDictionary[@instanceKeypath(BZRRemoteContentFetcherParameters, URL)]).to
+      .equal(remoteFileURL.absoluteString);
+});
+
+it(@"should correctly convert from JSON dictionary to BZRRemoteContentFetcherParameters", ^{
+  auto JSONDictionary = @{
+    @"type": @"BZRRemoteContentFetcher",
+    @"URL": remoteFileURL.absoluteString
+  };
+
+  NSError *error;
+  BZRRemoteContentFetcherParameters *parameters =
+      [MTLJSONAdapter modelOfClass:[BZRRemoteContentFetcherParameters class]
+                fromJSONDictionary:JSONDictionary error:&error];
+
+  expect(error).to.beNil();
+  expect(parameters.URL).to.equal(remoteFileURL);
+});
+
+SpecEnd
