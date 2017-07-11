@@ -38,7 +38,8 @@ static cv::Mat LTDrawFromMMTextureToGLTexture(const cv::Mat &image) {
 }
 
 @interface LTMMTexture ()
-@property (nonatomic) GLsync syncObject;
+@property (nonatomic) GLsync readSyncObject;
+@property (nonatomic) GLsync writeSyncObject;
 @end
 
 SpecBegin(LTMMTexture)
@@ -90,9 +91,23 @@ sharedExamplesFor(kLTMMTextureExamples, ^(NSDictionary *contextInfo) {
       [drawer drawRect:rect inFramebuffer:fbo fromRect:rect];
 
       [[LTGLContext currentContext] executeForOpenGLES2:^{
-        expect(glIsSyncAPPLE(texture.syncObject)).to.beTruthy();
+        expect(glIsSyncAPPLE(texture.writeSyncObject)).to.beTruthy();
       } openGLES3:^{
-        expect(glIsSync(texture.syncObject)).to.beTruthy();
+        expect(glIsSync(texture.writeSyncObject)).to.beTruthy();
+      }];
+    });
+
+    it(@"should require synchronization after sampling", ^{
+      LTMMTexture *target = [[LTMMTexture alloc] initWithPropertiesOf:texture];
+      LTFbo *fbo = [[LTFbo alloc] initWithTexture:target];
+
+      CGRect rect = CGRectMake(0, 0, texture.size.width, texture.size.height);
+      [drawer drawRect:rect inFramebuffer:fbo fromRect:rect];
+
+      [[LTGLContext currentContext] executeForOpenGLES2:^{
+        expect(glIsSyncAPPLE(texture.readSyncObject)).to.beTruthy();
+      } openGLES3:^{
+        expect(glIsSync(texture.readSyncObject)).to.beTruthy();
       }];
     });
 
@@ -105,9 +120,11 @@ sharedExamplesFor(kLTMMTextureExamples, ^(NSDictionary *contextInfo) {
     it(@"should not require synchronization after mapping", ^{
       [texture mappedImageForReading:^(const cv::Mat &, BOOL) {
         [[LTGLContext currentContext] executeForOpenGLES2:^{
-          expect(glIsSyncAPPLE(texture.syncObject)).to.beFalsy();
+          expect(glIsSyncAPPLE(texture.writeSyncObject)).to.beFalsy();
+          expect(glIsSyncAPPLE(texture.readSyncObject)).to.beFalsy();
         } openGLES3:^{
-          expect(glIsSync(texture.syncObject)).to.beFalsy();
+          expect(glIsSync(texture.writeSyncObject)).to.beFalsy();
+          expect(glIsSync(texture.readSyncObject)).to.beFalsy();
         }];
       }];
     });
@@ -292,6 +309,37 @@ sharedExamplesFor(kLTMMTextureExamples, ^(NSDictionary *contextInfo) {
       }
     });
 
+    dit(@"should wait until gpu finished reading when mapping for writing", ^{
+      CGSize size = CGSizeMake(16, 16);
+      LTMMTexture *source = [[LTMMTexture alloc] initWithSize:size
+                                                  pixelFormat:$(LTGLPixelFormatRGBA8Unorm)
+                                               allocateMemory:YES];
+      LTMMTexture *target = [[LTMMTexture alloc] initWithSize:size
+                                                  pixelFormat:$(LTGLPixelFormatRGBA8Unorm)
+                                               allocateMemory:YES];
+
+      LTProgram *program = [[LTProgram alloc] initWithVertexSource:[PassthroughVsh source]
+                                                    fragmentSource:[PassthroughFsh source]];
+      LTRectDrawer *drawer = [[LTRectDrawer alloc] initWithProgram:program sourceTexture:source];
+      LTFbo *fbo = [[LTFbo alloc] initWithTexture:target];
+      CGRect rect = CGRectMake(0, 0, size.width, size.height);
+
+      for (int i = 0; i < 5; ++i) {
+        [source mappedImageForWriting:^(cv::Mat *mapped, BOOL) {
+          mapped->setTo(cv::Vec4b(255, 0, 0, 255));
+        }];
+
+        [drawer drawRect:rect inFramebuffer:fbo fromRect:rect];
+
+        [source mappedImageForWriting:^(cv::Mat *mapped, BOOL) {
+          mapped->setTo(cv::Vec4b(0, 255, 0, 255));
+        }];
+
+        cv::Mat4b expected(target.size.height, target.size.width, cv::Vec4b(255, 0, 0, 255));
+        expect($(target.image)).to.equalMat($(expected));
+      }
+    });
+
     dit(@"should have fresh values on GPU after CPU rendering", ^{
       CGSize size = CGSizeMake(16, 16);
       LTMMTexture *source = [[LTMMTexture alloc] initWithSize:size
@@ -420,10 +468,45 @@ sharedExamplesFor(kLTMMTextureExamples, ^(NSDictionary *contextInfo) {
       LTMMTexture *texture = [[LTMMTexture alloc] initWithPixelBuffer:pixelBuffer.get()];
 
       [texture clearColor:LTVector4(0.5, 0.5, 0.5, 1)];
-      expect(texture.syncObject).notTo.beNil();
+      [[LTGLContext currentContext] executeForOpenGLES2:^{
+        expect(glIsSyncAPPLE(texture.writeSyncObject)).to.beTruthy();
+      } openGLES3:^{
+        expect(glIsSync(texture.writeSyncObject)).to.beTruthy();
+      }];
 
       auto returnedPixelBuffer = [texture pixelBuffer];
-      expect(texture.syncObject).to.beNil();
+      [[LTGLContext currentContext] executeForOpenGLES2:^{
+        expect(glIsSyncAPPLE(texture.writeSyncObject)).to.beFalsy();
+      } openGLES3:^{
+        expect(glIsSync(texture.writeSyncObject)).to.beFalsy();
+      }];
+    });
+
+    it(@"should wait for pending GPU reads before returning pixel bufer", ^{
+      auto pixelBuffer = LTCVPixelBufferCreate(1, 1, kCVPixelFormatType_32BGRA);
+      LTMMTexture *texture = [[LTMMTexture alloc] initWithPixelBuffer:pixelBuffer.get()];
+
+      LTMMTexture *target = [[LTMMTexture alloc] initWithPropertiesOf:texture];
+      LTFbo *fbo = [[LTFbo alloc] initWithTexture:target];
+
+      LTProgram *program = [[LTProgram alloc] initWithVertexSource:[PassthroughVsh source]
+                                                    fragmentSource:[PassthroughFsh source]];
+      LTRectDrawer *drawer = [[LTRectDrawer alloc] initWithProgram:program sourceTexture:texture];
+      CGRect rect = CGRectMake(0, 0, texture.size.width, texture.size.height);
+      [drawer drawRect:rect inFramebuffer:fbo fromRect:rect];
+
+      [[LTGLContext currentContext] executeForOpenGLES2:^{
+        expect(glIsSyncAPPLE(texture.readSyncObject)).to.beTruthy();
+      } openGLES3:^{
+        expect(glIsSync(texture.readSyncObject)).to.beTruthy();
+      }];
+
+      auto returnedPixelBuffer = [texture pixelBuffer];
+      [[LTGLContext currentContext] executeForOpenGLES2:^{
+        expect(glIsSyncAPPLE(texture.readSyncObject)).to.beFalsy();
+      } openGLES3:^{
+        expect(glIsSync(texture.readSyncObject)).to.beFalsy();
+      }];
     });
   });
 });
