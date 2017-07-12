@@ -132,10 +132,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Variant name used by the class to indicate that this experiment is not active. Stored
 /// experiments that have this variant are not active.
-static NSString * const kExperimentNotActiveVariantName = @"_inactive";
+static auto const kExperimentNotActiveVariantName = @"_inactive";
 
 /// Key for storing the active variants.
-static NSString * const kActiveVariantsStorageKey = @"ActiveVariantsStorageKey";
+static auto const kActiveVariantsStorageKey = @"ActiveVariantsStorageKey";
+
+/// Key for storing the assignments locked state.
+static auto const kStoredAssignmentsLockedKey = @"LABLocalSourceAssignmentsLocked";
 
 @interface LABLocalSource ()
 
@@ -258,9 +261,11 @@ static NSString * const kActiveVariantsStorageKey = @"ActiveVariantsStorageKey";
   }
 
   auto storedExperiments = [storedExperimentsAndVariants.allKeys lt_set];
-  auto newExperiments =
-      [[self.experiments.allKeys lt_set] lab_setBySubtractingObjectsFromSet:storedExperiments];
-  [experimentsToChooseVariants unionSet:newExperiments];
+  if (![self assignmentsLocked]) {
+    auto newExperiments =
+        [[self.experiments.allKeys lt_set] lab_setBySubtractingObjectsFromSet:storedExperiments];
+    [experimentsToChooseVariants unionSet:newExperiments];
+  }
   return experimentsToChooseVariants;
 }
 
@@ -289,8 +294,32 @@ static NSString * const kActiveVariantsStorageKey = @"ActiveVariantsStorageKey";
   [self.storage setObject:experimentsAndVariants forKey:kActiveVariantsStorageKey];
 }
 
+- (BOOL)assignmentsLocked {
+  return [[self loadAssignmentsLocked] boolValue];
+}
+
+- (nullable NSNumber *)loadAssignmentsLocked {
+  NSNumber * _Nullable object = [self.storage objectForKey:kStoredAssignmentsLockedKey];
+  if ([object isKindOfClass:NSNumber.class]) {
+    return object;
+  }
+  return nil;
+}
+
 #pragma mark -
 #pragma mark LABAssignmentsSource
+#pragma mark -
+
+- (void)stabilizeUserExperienceAssignments {
+  [self storeAssignmentsLocked];
+}
+
+- (void)storeAssignmentsLocked {
+  [self.storage setObject:@YES forKey:kStoredAssignmentsLockedKey];
+}
+
+#pragma mark -
+#pragma mark LABExperimentssSource
 #pragma mark -
 
 - (RACSignal *)fetchAllExperimentsAndVariants {
