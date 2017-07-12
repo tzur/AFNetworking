@@ -4,6 +4,7 @@
 #import "BZRCompositeContentFetcher.h"
 
 #import "BZRLocalContentFetcher.h"
+#import "BZRMulticastContentFetcher.h"
 #import "BZROnDemandContentFetcher.h"
 #import "BZRProduct.h"
 #import "BZRProductContentFetcher.h"
@@ -22,14 +23,20 @@ NS_ASSUME_NONNULL_BEGIN
 @implementation BZRCompositeContentFetcher
 
 - (instancetype)init {
-  BZRLocalContentFetcher *localContentFetcher = [[BZRLocalContentFetcher alloc] init];
-  BZROnDemandContentFetcher *onDemandContentFetcher = [[BZROnDemandContentFetcher alloc] init];
-  BZRRemoteContentFetcher *remoteContentFetcher = [[BZRRemoteContentFetcher alloc] init];
+  auto localContentFetcher = [[BZRLocalContentFetcher alloc] init];
+  auto onDemandContentFetcher = [[BZROnDemandContentFetcher alloc] init];
+  auto remoteContentFetcher = [[BZRRemoteContentFetcher alloc] init];
+  auto mutlicastRemoteContentFetcher =
+      [[BZRMulticastContentFetcher alloc] initWithUnderlyingContentFetcher:remoteContentFetcher];
 
+  // Note: Any changes made to the fetchers dictionary directly affect existing apps that use \c
+  // BZRCompositeContentFetcher and requires careful verification. Providing product list with wrong
+  // parameters names or wrong format is detectable only in runtime and some of these errors may be
+  // silently ignored in runtime and will be hard to detect.
   return [self initWithContentFetchers:@{
-    NSStringFromClass([localContentFetcher class]): localContentFetcher,
-    NSStringFromClass([onDemandContentFetcher class]): onDemandContentFetcher,
-    NSStringFromClass([remoteContentFetcher class]): remoteContentFetcher
+    NSStringFromClass([BZRLocalContentFetcher class]): localContentFetcher,
+    NSStringFromClass([BZROnDemandContentFetcher class]): onDemandContentFetcher,
+    NSStringFromClass([BZRRemoteContentFetcher class]): mutlicastRemoteContentFetcher
   }];
 }
 
