@@ -16,7 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 - (NSURL *)ptn_identifier {
-  return [NSURL ptn_mediaLibraryAssetURLWithItem:self];
+  return [NSURL ptn_mediaLibraryAssetWithItem:self];
 }
 
 - (nullable NSString *)localizedTitle {

@@ -15,7 +15,7 @@ beforeEach(^{
 
 it(@"should return Photons identifier url", ^{
   OCMStub([item persistentID]).andReturn(321);
-  auto url = [NSURL ptn_mediaLibraryAssetURLWithItem:item];
+  auto url = [NSURL ptn_mediaLibraryAssetWithItem:item];
 
   MPMediaItem *itemPartialMock = OCMPartialMock([[MPMediaItem alloc] init]);
   OCMStub(itemPartialMock.persistentID).andReturn(321);
