@@ -63,6 +63,20 @@ NS_ASSUME_NONNULL_BEGIN
   }];
 }
 
+- (RACSignal *)delayedRetry:(NSUInteger)retryCount initialDelay:(NSTimeInterval)initialDelay {
+  __block NSTimeInterval secondsUntilNextTry = initialDelay;
+  return [[[self
+      catch:^(NSError *error) {
+        return [[[RACSignal empty]
+            delay:secondsUntilNextTry]
+            concat:[RACSignal error:error]];
+      }]
+      doError:^(NSError *) {
+        secondsUntilNextTry *= 2;
+      }]
+      retry:retryCount];
+}
+
 @end
 
 NS_ASSUME_NONNULL_END

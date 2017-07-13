@@ -37,6 +37,14 @@ NS_ASSUME_NONNULL_BEGIN
 /// @see BZRModel, MTLJSONSerializing.
 - (RACSignal *)bzr_deserializeArrayOfModels:(Class)modelClass;
 
+/// Resubscribes to the receiving signal if an error occurs for an additional number of
+/// \c retryCount. The first retry starts \c initialDelay seconds after the first error. The delay
+/// is doubled every retry. The signal completes if the original signal completed on any try. The
+/// signal errs if the all the retries failed.
+///
+/// @note If \c retryCount is \c 0, the signal keeps retrying until completion.
+- (RACSignal *)delayedRetry:(NSUInteger)retryCount initialDelay:(NSTimeInterval)initialDelay;
+
 @end
 
 NS_ASSUME_NONNULL_END
