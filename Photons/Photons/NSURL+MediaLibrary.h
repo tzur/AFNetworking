@@ -3,7 +3,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class MPMediaItem;
+@class MPMediaItem, PTNMediaQuery;
+
+@protocol PTNMediaQuery, PTNMediaQueryProvider;
 
 /// Supported types of Media Library URL.
 typedef NS_ENUM(NSUInteger, PTNMediaLibraryURLType) {
@@ -83,6 +85,17 @@ LTEnumDeclare(NSUInteger, PTNMediaLibraryFetchType,
 /// \c MPMediaGrouping or \c nil if the URL is invalid or does not represent a URL with a specific
 /// media grouping.
 @property (readonly, nonatomic, nullable) NSNumber *ptn_mediaLibraryGrouping;
+
+@end
+
+/// Category augmenting \c NSURL with functionality which enables to obtain \c PTNMediaQuery from
+/// \c NSURL.
+@interface NSURL (PTNMediaQuery)
+
+/// Returns \c PTNMediaQuery which is represented by this instance, or \c nil if this instance does
+/// not represent a valid \c PTNMediaQuery. Uses the given \c provider when createing
+/// \c PTNMediaQuery.
+- (nullable id<PTNMediaQuery>)ptn_mediaLibraryQueryWithProvider:(id<PTNMediaQueryProvider>)provider;
 
 @end
 
