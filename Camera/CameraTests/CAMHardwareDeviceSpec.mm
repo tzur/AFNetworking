@@ -544,7 +544,7 @@ context(@"", ^{
       deviceFormat.maxExposureDurationToReturn = CMTimeMakeWithSeconds(0.1, 1000000);
 
       videoDevice = [[CAMFakeAVCaptureDevice alloc] init];
-      videoDevice.activeFormat = deviceFormat;
+      videoDevice.activeFormat = (id)deviceFormat;
 
       session.videoDevice = videoDevice;
     });
@@ -964,7 +964,7 @@ context(@"", ^{
 
       format = [[CAMFakeAVCaptureDeviceFormat alloc] init];
       format.videoMaxZoomFactorToReturn = 4;
-      videoDevice.activeFormat = format;
+      videoDevice.activeFormat = (id)format;
     });
 
     context(@"positive", ^{
@@ -992,14 +992,14 @@ context(@"", ^{
       it(@"should update max zoom factor", ^{
         expect(device.maxZoomFactor).to.equal(4);
         format.videoMaxZoomFactorToReturn = 3;
-        videoDevice.activeFormat = format;
+        videoDevice.activeFormat = (id)format;
         expect(device.maxZoomFactor).will.equal(3);
       });
 
       it(@"should update hasZoom", ^{
         expect(device.hasZoom).to.beTruthy();
         format.videoMaxZoomFactorToReturn = 1;
-        videoDevice.activeFormat = format;
+        videoDevice.activeFormat = (id)format;
         expect(device.maxZoomFactor).will.equal(1);
         expect(device.minZoomFactor).will.equal(1);
         expect(device.hasZoom).will.beFalsy();
