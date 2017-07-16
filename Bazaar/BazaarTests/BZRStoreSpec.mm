@@ -1265,10 +1265,14 @@ context(@"events signal", ^{
 
   it(@"should send error sent by store kit facade", ^{
     NSError *error = OCMClassMock([NSError class]);
-    LLSignalTestRecorder *recorder = [store.eventsSignal testRecorder];
     [transactionsErrorEventsSubject sendNext:error];
 
     expect(recorder).will.sendValues(@[error]);
+  });
+
+  it(@"should send event sent by allowed products provider", ^{
+    [allowedProductsProvider.eventsSignal sendNext:event];
+    expect(recorder).will.sendValues(@[event]);
   });
 });
 

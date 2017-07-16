@@ -72,7 +72,9 @@ LTErrorCodesImplement(BazaarErrorCodeProductID,
   /// Received request to acquire all products for a user that's not a subscriber.
   BZRErrorCodeAcquireAllRequestedForNonSubscriber,
   /// Failure while moving a file or a directory.
-  BZRErrorCodeMoveItemFailed
+  BZRErrorCodeMoveItemFailed,
+  /// The subscription that the user owns does not appear in the product list
+  BZRErrorCodeSubscriptionNotFoundInProductList
 );
 
 NS_ASSUME_NONNULL_END

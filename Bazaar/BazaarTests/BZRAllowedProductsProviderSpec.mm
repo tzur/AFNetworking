@@ -3,6 +3,7 @@
 
 #import "BZRAllowedProductsProvider.h"
 
+#import "BZREvent.h"
 #import "BZRFakeAcquiredViaSubscriptionProvider.h"
 #import "BZRFakeCachedReceiptValidationStatusProvider.h"
 #import "BZRProduct.h"
@@ -11,6 +12,7 @@
 #import "BZRReceiptValidationError.h"
 #import "BZRReceiptValidationStatus.h"
 #import "BZRTestUtils.h"
+#import "NSErrorCodes+Bazaar.h"
 
 static BZRReceiptSubscriptionInfo *BZRSubscriptionWithIdentifier(NSString *subscriptionIdentifier) {
   return [BZRReceiptSubscriptionInfo modelWithDictionary:@{
@@ -74,12 +76,8 @@ context(@"allowed products provider", ^{
 
   it(@"should allow all acquired products if the subscription from the receipt was not found in "
      "product list", ^{
-    productsProvider = OCMProtocolMock(@protocol(BZRProductsProvider));
-    BZRProduct *filterProduct = BZRProductWithIdentifier(filterProductIdentifier);
-    BZRProduct *nonFilterProduct = BZRProductWithIdentifier(nonFilterProductIdentifier);
-    NSArray<BZRProduct *> *productList = @[filterProduct, nonFilterProduct];
-    OCMStub([productsProvider fetchProductList]).andReturn([RACSignal return:productList]);
-    BZRReceiptSubscriptionInfo *subscription = BZRSubscriptionWithIdentifier(@"fullSubscription");
+    BZRReceiptSubscriptionInfo *subscription =
+        BZRSubscriptionWithIdentifier(@"notFoundSubscription");
     validationStatusProvider.receiptValidationStatus =
         [validationStatusProvider.receiptValidationStatus
          modelByOverridingPropertyAtKeypath:
@@ -93,6 +91,24 @@ context(@"allowed products provider", ^{
     NSArray<NSString *> *expectedAllowedProducts =
         @[purchasedProductIdentifier, filterProductIdentifier, nonFilterProductIdentifier];
     expect(allowedProvider.allowedProducts).to.equal([NSSet setWithArray:expectedAllowedProducts]);
+  });
+
+  it(@"should send error event if the subscription from the receipt was not found in product "
+     "list", ^{
+    auto recorder = [allowedProvider.eventsSignal testRecorder];
+
+    BZRReceiptSubscriptionInfo *subscription =
+        BZRSubscriptionWithIdentifier(@"notFoundSubscription");
+    validationStatusProvider.receiptValidationStatus =
+        [validationStatusProvider.receiptValidationStatus
+         modelByOverridingPropertyAtKeypath:
+         @instanceKeypath(BZRReceiptValidationStatus, receipt.subscription)
+         withValue:subscription];
+
+    expect(recorder).to.matchValue(0, ^BOOL(BZREvent *event) {
+      return [event.eventType isEqual:$(BZREventTypeNonCriticalError)] &&
+          event.eventError.code == BZRErrorCodeSubscriptionNotFoundInProductList;
+    });
   });
 
   it(@"should return empty set if the receipt is nil", ^{
