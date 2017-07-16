@@ -6,7 +6,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 UITouch *LTTouchEventViewCreateTouch(NSTimeInterval timestamp) {
-  id touchMock = OCMClassMock([UITouch class]);
+  UITouch *touchMock = OCMClassMock([UITouch class]);
   OCMStub([touchMock timestamp]).andReturn(timestamp);
   return touchMock;
 }
