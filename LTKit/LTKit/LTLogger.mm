@@ -191,7 +191,7 @@ static NSString *stringFromNSDecimalWithCurrentLocale(NSDecimal value) {
     }
 
     va_list args;
-    va_start(args, logLevel);
+    va_start(args, (NSUInteger)logLevel);
 
     NSString *logString = [[NSString alloc] initWithFormat:format arguments:args];
     for (id<LTLoggerTarget> target in targets) {
