@@ -407,7 +407,7 @@ context(@"", ^{
 
     beforeEach(^{
       videoDevice = [[CAMFakeAVCaptureDevice alloc] init];
-      session.videoDevice = videoDevice;
+      session.videoDevice = (id)videoDevice;
     });
 
     context(@"positive", ^{
@@ -546,7 +546,7 @@ context(@"", ^{
       videoDevice = [[CAMFakeAVCaptureDevice alloc] init];
       videoDevice.activeFormat = (id)deviceFormat;
 
-      session.videoDevice = videoDevice;
+      session.videoDevice = (id)videoDevice;
     });
 
     context(@"positive", ^{
@@ -818,7 +818,7 @@ context(@"", ^{
 
     beforeEach(^{
       videoDevice = [[CAMFakeAVCaptureDevice alloc] init];
-      session.videoDevice = videoDevice;
+      session.videoDevice = (id)videoDevice;
     });
 
     context(@"positive", ^{
@@ -960,7 +960,7 @@ context(@"", ^{
 
     beforeEach(^{
       videoDevice = [[CAMFakeAVCaptureDevice alloc] init];
-      session.videoDevice = videoDevice;
+      session.videoDevice = (id)videoDevice;
 
       format = [[CAMFakeAVCaptureDeviceFormat alloc] init];
       format.videoMaxZoomFactorToReturn = 4;
@@ -1040,7 +1040,7 @@ context(@"", ^{
 
     beforeEach(^{
       videoDevice = [[CAMFakeAVCaptureDevice alloc] init];
-      session.videoDevice = videoDevice;
+      session.videoDevice = (id)videoDevice;
     });
 
     context(@"positive", ^{
@@ -1100,7 +1100,7 @@ context(@"", ^{
 
     beforeEach(^{
       videoDevice = [[CAMFakeAVCaptureDevice alloc] init];
-      session.videoDevice = videoDevice;
+      session.videoDevice = (id)videoDevice;
     });
 
     context(@"positive", ^{
@@ -1222,7 +1222,7 @@ context(@"lock", ^{
     device = [[CAMHardwareDevice alloc] initWithSession:session
                                            sessionQueue:dispatch_get_main_queue()];
     videoDevice = [[CAMFakeAVCaptureDevice alloc] init];
-    session.videoDevice = videoDevice;
+    session.videoDevice = (id)videoDevice;
   });
 
   it(@"should lock and unlock device", ^{
@@ -1382,7 +1382,7 @@ context(@"multiple setters", ^{
     videoDevice.focusPointOfInterestSupported = YES;
     videoDevice.exposureModeSupported = YES;
     videoDevice.exposurePointOfInterestSupported = YES;
-    session.videoDevice = videoDevice;
+    session.videoDevice = (id)videoDevice;
   });
 
   it(@"should run multiple setters successfully", ^{

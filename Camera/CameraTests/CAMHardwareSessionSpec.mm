@@ -3,9 +3,9 @@
 
 #import "CAMHardwareSession.h"
 
+#import "CAMDevicePreset.h"
 #import "CAMFakeAVCaptureDevice.h"
 #import "CAMFormatStrategy.h"
-#import "CAMDevicePreset.h"
 
 /// Fake \c CAMFormatStrategy for testing.
 @interface CAMFakeFormatStrategy : NSObject <CAMFormatStrategy>
@@ -160,7 +160,7 @@ context(@"session", ^{
 
     it(@"should not raise when not passing an error output", ^{
       expect(^{
-        [session setupVideoInputWithDevice:device formatStrategy:formatStrategy error:nil];
+        [session setupVideoInputWithDevice:(id)device formatStrategy:formatStrategy error:nil];
       }).toNot.raise(NSInvalidArgumentException);
     });
 
@@ -168,12 +168,12 @@ context(@"session", ^{
       formatStrategy.format = @1;
       OCMStub([sessionMock canAddInput:OCMOCK_ANY]).andReturn(YES);
       id deviceInput = OCMClassMock([AVCaptureDeviceInput class]);
-      OCMStub([deviceInput deviceInputWithDevice:device error:[OCMArg anyObjectRef]])
+      OCMStub([deviceInput deviceInputWithDevice:(id)device error:[OCMArg anyObjectRef]])
           .andReturn(deviceInput);
 
       BOOL success;
       NSError *error;
-      success = [session setupVideoInputWithDevice:device formatStrategy:formatStrategy
+      success = [session setupVideoInputWithDevice:(id)device formatStrategy:formatStrategy
                                              error:&error];
 
       expect(success).to.beTruthy();
@@ -189,7 +189,7 @@ context(@"session", ^{
       device = nil;
       BOOL success;
       NSError *error;
-      success = [session setupVideoInputWithDevice:device formatStrategy:formatStrategy
+      success = [session setupVideoInputWithDevice:(id)device formatStrategy:formatStrategy
                                              error:&error];
 
       expect(success).to.beFalsy();
@@ -200,7 +200,7 @@ context(@"session", ^{
     it(@"should return error when unable to select format", ^{
       BOOL success;
       NSError *error;
-      success = [session setupVideoInputWithDevice:device formatStrategy:formatStrategy
+      success = [session setupVideoInputWithDevice:(id)device formatStrategy:formatStrategy
                                              error:&error];
 
       expect(success).to.beFalsy();
@@ -214,7 +214,7 @@ context(@"session", ^{
 
       BOOL success;
       NSError *error;
-      success = [session setupVideoInputWithDevice:device formatStrategy:formatStrategy
+      success = [session setupVideoInputWithDevice:(id)device formatStrategy:formatStrategy
                                              error:&error];
 
       expect(success).to.beFalsy();
@@ -226,11 +226,11 @@ context(@"session", ^{
     it(@"should return error when unable to create input", ^{
       formatStrategy.format = @1;
       id classMock = OCMClassMock([AVCaptureDeviceInput class]);
-      OCMStub([classMock deviceInputWithDevice:device error:[OCMArg setTo:kError]]);
+      OCMStub([classMock deviceInputWithDevice:(id)device error:[OCMArg setTo:kError]]);
 
       BOOL success;
       NSError *error;
-      success = [session setupVideoInputWithDevice:device formatStrategy:formatStrategy
+      success = [session setupVideoInputWithDevice:(id)device formatStrategy:formatStrategy
                                              error:&error];
 
       expect(success).to.beFalsy();
@@ -245,12 +245,12 @@ context(@"session", ^{
       formatStrategy.format = @1;
       OCMStub([sessionMock canAddInput:OCMOCK_ANY]).andReturn(NO);
       id deviceInput = OCMClassMock([AVCaptureDeviceInput class]);
-      OCMStub([deviceInput deviceInputWithDevice:device error:[OCMArg anyObjectRef]])
+      OCMStub([deviceInput deviceInputWithDevice:(id)device error:[OCMArg anyObjectRef]])
           .andReturn(deviceInput);
 
       BOOL success;
       NSError *error;
-      success = [session setupVideoInputWithDevice:device formatStrategy:formatStrategy
+      success = [session setupVideoInputWithDevice:(id)device formatStrategy:formatStrategy
                                              error:&error];
 
       expect(success).to.beFalsy();
@@ -264,14 +264,14 @@ context(@"session", ^{
       formatStrategy.format = @1;
       OCMStub([sessionMock canAddInput:OCMOCK_ANY]).andReturn(YES);
       id deviceInput = OCMClassMock([AVCaptureDeviceInput class]);
-      OCMStub([deviceInput deviceInputWithDevice:device error:[OCMArg anyObjectRef]])
+      OCMStub([deviceInput deviceInputWithDevice:(id)device error:[OCMArg anyObjectRef]])
           .andReturn(deviceInput);
 
       NSError *error;
-      [session setupVideoInputWithDevice:device formatStrategy:formatStrategy error:&error];
+      [session setupVideoInputWithDevice:(id)device formatStrategy:formatStrategy error:&error];
       id firstInput = session.videoInput;
 
-      [session setupVideoInputWithDevice:device formatStrategy:formatStrategy error:&error];
+      [session setupVideoInputWithDevice:(id)device formatStrategy:formatStrategy error:&error];
       OCMVerify([sessionMock removeInput:firstInput];);
 
       [deviceInput stopMocking];
@@ -294,7 +294,7 @@ context(@"session", ^{
       OCMStub([sessionMock canAddInput:OCMOCK_ANY]).andReturn(YES);
 
       deviceInput = OCMClassMock([AVCaptureDeviceInput class]);
-      OCMStub([deviceInput deviceInputWithDevice:device error:[OCMArg anyObjectRef]])
+      OCMStub([deviceInput deviceInputWithDevice:(id)device error:[OCMArg anyObjectRef]])
           .andReturn(deviceInput);
     });
 
@@ -322,7 +322,7 @@ context(@"session", ^{
 
     it(@"should remove current input", ^{
       NSError *error;
-      [session setupVideoInputWithDevice:device formatStrategy:formatStrategy error:&error];
+      [session setupVideoInputWithDevice:(id)device formatStrategy:formatStrategy error:&error];
       id firstInput = session.videoInput;
 
       [session setCamera:camera error:&error];
@@ -441,7 +441,7 @@ context(@"session", ^{
 
     it(@"should not raise when not passing an error output", ^{
       expect(^{
-        [session setupAudioInputWithDevice:device error:nil];
+        [session setupAudioInputWithDevice:(id)device error:nil];
       }).toNot.raise(NSInvalidArgumentException);
     });
 
@@ -450,7 +450,7 @@ context(@"session", ^{
 
       BOOL success;
       NSError *error;
-      success = [session setupAudioInputWithDevice:device error:&error];
+      success = [session setupAudioInputWithDevice:(id)device error:&error];
 
       expect(success).to.beTruthy();
       expect(error).to.beNil();
@@ -464,7 +464,7 @@ context(@"session", ^{
       device = nil;
       BOOL success;
       NSError *error;
-      success = [session setupAudioInputWithDevice:device error:&error];
+      success = [session setupAudioInputWithDevice:(id)device error:&error];
 
       expect(success).to.beFalsy();
       expect(error.domain).to.equal(kLTErrorDomain);
@@ -473,11 +473,11 @@ context(@"session", ^{
 
     it(@"should return error when unable to create input", ^{
       id classMock = OCMClassMock([AVCaptureDeviceInput class]);
-      OCMStub([classMock deviceInputWithDevice:device error:[OCMArg setTo:kError]]);
+      OCMStub([classMock deviceInputWithDevice:(id)device error:[OCMArg setTo:kError]]);
 
       BOOL success;
       NSError *error;
-      success = [session setupAudioInputWithDevice:device error:&error];
+      success = [session setupAudioInputWithDevice:(id)device error:&error];
 
       expect(success).to.beFalsy();
       expect(error.domain).to.equal(kLTErrorDomain);
@@ -492,7 +492,7 @@ context(@"session", ^{
 
       BOOL success;
       NSError *error;
-      success = [session setupAudioInputWithDevice:device error:&error];
+      success = [session setupAudioInputWithDevice:(id)device error:&error];
 
       expect(success).to.beFalsy();
       expect(error.domain).to.equal(kLTErrorDomain);
@@ -503,10 +503,10 @@ context(@"session", ^{
       OCMStub([sessionMock canAddInput:OCMOCK_ANY]).andReturn(YES);
 
       NSError *error;
-      [session setupAudioInputWithDevice:device error:&error];
+      [session setupAudioInputWithDevice:(id)device error:&error];
       id firstInput = session.audioInput;
 
-      [session setupAudioInputWithDevice:device error:&error];
+      [session setupAudioInputWithDevice:(id)device error:&error];
       OCMVerify([sessionMock removeInput:OCMOCK_ANY];);
       expect(session.audioInput).toNot.beIdenticalTo(firstInput);
     });
