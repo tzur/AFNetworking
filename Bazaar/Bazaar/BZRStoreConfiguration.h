@@ -23,11 +23,15 @@ NS_ASSUME_NONNULL_BEGIN
 /// @note In order to use the default shared keychain access group AppIdentifierPrefix has to be
 /// defined in the application's main bundle plist, if it is not defined an
 /// \c NSInternalInconsistencyException is raised.
-- (instancetype)initWithProductsListJSONFilePath:(LTPath *)productsListJSONFilePath;
+- (instancetype)initWithProductsListJSONFilePath:(LTPath *)productsListJSONFilePath
+                        productListDecryptionKey:(nullable NSString *)productListDecryptionKey;
 
 /// Initializes the in-app store configuration with default parameters.
 ///
 /// \c productsListJSONFilePath is used to load products information from.
+///
+/// \c productListDecryptionKey is the key used to decrypt the products JSON file. The key size must
+/// be 32. If \c productListDecryptionKey is set to \c nil, the file is read without decryption.
 ///
 /// \c keychainAccessGroup is the access group of the keychain storage used for storing sensitive
 /// user data. If \c nil is provided the access group will default to the application's main bundle
@@ -67,6 +71,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// \c periodicValidatorActivator will be initialized with the default initializer of
 /// \c BZRPeriodicReceiptValidatorActivator.
 - (instancetype)initWithProductsListJSONFilePath:(LTPath *)productsListJSONFilePath
+                        productListDecryptionKey:(nullable NSString *)productListDecryptionKey
                              keychainAccessGroup:(nullable NSString *)keychainAccessGroup
                   expiredSubscriptionGracePeriod:(NSUInteger)expiredSubscriptionGracePeriod
                                applicationUserID:(nullable NSString *)applicationUserID
