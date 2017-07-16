@@ -3,6 +3,9 @@
 
 #import "BZRLocalProductsProvider.h"
 
+#import <LTKit/NSData+Compression.h>
+#import <LTKit/NSData+Encryption.h>
+#import <LTKit/NSData+HexString.h>
 #import <LTKit/NSFileManager+LTKit.h>
 
 #import "BZRProduct.h"
@@ -19,18 +22,31 @@ NS_ASSUME_NONNULL_BEGIN
 /// File manager used to read the file's content specified by \c path into a JSON list.
 @property (readonly, nonatomic) NSFileManager *fileManager;
 
+/// Key used to decrypt the products JSON file.
+@property (readonly, nonatomic, nullable) NSData *decryptionKey;
+
 @end
 
 @implementation BZRLocalProductsProvider
 
 - (instancetype)initWithPath:(LTPath *)path {
-  return [self initWithPath:path fileManager:[NSFileManager defaultManager]];
+  return [self initWithPath:path  decryptionKey:nil fileManager:[NSFileManager defaultManager]];
 }
 
-- (instancetype)initWithPath:(LTPath *)path fileManager:(NSFileManager *)fileManager {
+- (instancetype)initWithPath:(LTPath *)path decryptionKey:(nullable NSString *)decryptionKey
+                 fileManager:(NSFileManager *)fileManager
+                {
   if (self = [super init]) {
     _path = path;
     _fileManager = fileManager;
+
+    if (decryptionKey) {
+      LTParameterAssert(decryptionKey.length == 32, @"Decryption key size must be 32");
+      NSError *error;
+      _decryptionKey = [NSData lt_dataWithHexString:decryptionKey error:&error];
+      LTParameterAssert(self.decryptionKey, @"Failed to decode the decryption key '%@' : %@",
+                        decryptionKey, error.lt_description);
+    }
   }
   return self;
 }
@@ -45,7 +61,13 @@ NS_ASSUME_NONNULL_BEGIN
       return nil;
     }
 
-    NSArray *productList = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
+    auto JSONData = self.decryptionKey ? [self decodeData:data error:&error] : data;
+    if (error) {
+      [subscriber sendError:error];
+      return nil;
+    }
+
+    NSArray *productList = [NSJSONSerialization JSONObjectWithData:JSONData options:0 error:&error];
     if (error) {
       NSError *wrappingError = [NSError lt_errorWithCode:BZRErrorCodeJSONDataDeserializationFailed
                                          underlyingError:error];
@@ -65,6 +87,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (RACSignal *)eventsSignal {
   return [[RACSignal never] takeUntil:[self rac_willDeallocSignal]];
+}
+
+- (nullable NSData *)decodeData:(NSData *)data
+                          error:(NSError * __autoreleasing *)error {
+  return [[data
+          lt_decryptWithKey:self.decryptionKey error:error]
+          lt_decompressWithCompressionType:LTCompressionTypeLZFSE error:error];
 }
 
 @end
