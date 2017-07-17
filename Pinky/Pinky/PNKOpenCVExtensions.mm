@@ -21,23 +21,27 @@ static const std::unordered_map<MTLPixelFormat, int> kMTLPixelFormatToMatInfo{
   {MTLPixelFormatRGBA32Float, CV_32FC4}
 };
 
-cv::Mat PNKMatFromMTLTexture(id<MTLTexture> texture) {
+cv::Mat PNKMatFromMTLTexture(id<MTLTexture> texture, NSUInteger slice) {
   auto region = MTLRegionMake2D(0, 0, texture.width, texture.height);
-  return PNKMatFromMTLTextureRegion(texture, region);
+  return PNKMatFromMTLTextureRegion(texture, region, slice);
 }
 
-cv::Mat PNKMatFromMTLTextureRegion(id<MTLTexture> texture, MTLRegion region) {
+cv::Mat PNKMatFromMTLTextureRegion(id<MTLTexture> texture, MTLRegion region, NSUInteger slice) {
   auto pixelFormat = kMTLPixelFormatToMatInfo.find(texture.pixelFormat);
   LTParameterAssert(pixelFormat != kMTLPixelFormatToMatInfo.end(),
                     @"Pixel format type is not supported: %lu",
                     (unsigned long)texture.pixelFormat);
+  LTParameterAssert(slice < texture.arrayLength,
+                    @"Slice must be smaller than the texture's arrayLength (%lu), got: %lu",
+                    (unsigned long)texture.arrayLength, (unsigned long)slice);
 
   auto matType = pixelFormat->second;
   auto targetSize = CGSizeMake(region.size.width, region.size.height);
   auto targetBytesPerRow = targetSize.width * CV_MAT_CN(matType) * CV_ELEM_SIZE1(matType);
 
   cv::Mat output(targetSize.height, targetSize.width, matType);
-  [texture getBytes:output.data bytesPerRow:targetBytesPerRow fromRegion:region mipmapLevel:0];
+  [texture getBytes:output.data bytesPerRow:targetBytesPerRow bytesPerImage:0 fromRegion:region
+        mipmapLevel:0 slice:slice];
   return output;
 }
 
@@ -55,6 +59,11 @@ void PNKCopyMatToMTLTextureRegion(id<MTLTexture> texture, MTLRegion region, cons
   auto matType = pixelFormat->second;
   LTParameterAssert(matType == data.type(), @"Data mat type doesn't match texture pixel: %lu",
                     (unsigned long)texture.pixelFormat);
+  LTParameterAssert(slice < texture.arrayLength,
+                    @"Slice must be smaller than the texture's arrayLength (%lu), got: %lu",
+                    (unsigned long)texture.arrayLength, (unsigned long)slice);
+
+  // \c bytesPerImage must be \c 0 when writing to textures of type other than MTLTextureType3D.
   [texture replaceRegion:region
              mipmapLevel:mipmapLevel
                    slice:slice
