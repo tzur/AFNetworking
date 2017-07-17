@@ -39,7 +39,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation BZRStoreConfiguration
 
-- (instancetype)initWithProductsListJSONFilePath:(LTPath *)productsListJSONFilePath {
+- (instancetype)initWithProductsListJSONFilePath:(LTPath *)productsListJSONFilePath
+                        productListDecryptionKey:(nullable NSString *)productListDecryptionKey {
   /// Number of days the user is allowed to use products acquired via subscription after its
   /// subscription has expired.
   static const NSUInteger kExpiredSubscriptionGracePeriod = 7;
@@ -48,6 +49,7 @@ NS_ASSUME_NONNULL_BEGIN
   static const NSUInteger kNotValidatedGracePeriod = 5;
 
   return [self initWithProductsListJSONFilePath:productsListJSONFilePath
+                       productListDecryptionKey:productListDecryptionKey
                             keychainAccessGroup:[BZRKeychainStorage defaultSharedAccessGroup]
                  expiredSubscriptionGracePeriod:kExpiredSubscriptionGracePeriod
                               applicationUserID:nil
@@ -55,6 +57,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (instancetype)initWithProductsListJSONFilePath:(LTPath *)productsListJSONFilePath
+                        productListDecryptionKey:(nullable NSString *)productListDecryptionKey
                              keychainAccessGroup:(nullable NSString *)keychainAccessGroup
                   expiredSubscriptionGracePeriod:(NSUInteger)expiredSubscriptionGracePeriod
                                applicationUserID:(nullable NSString *)applicationUserID
@@ -88,7 +91,8 @@ NS_ASSUME_NONNULL_BEGIN
         [[BZRAcquiredViaSubscriptionProvider alloc] initWithKeychainStorage:keychainStorage];
 
     _storeKitFacade = [[BZRStoreKitFacade alloc] initWithApplicationUserID:applicationUserID];
-    _productsProvider = [self productsProviderWithJSONFilePath:productsListJSONFilePath];
+    _productsProvider = [self productsProviderWithJSONFilePath:productsListJSONFilePath
+                                                 decryptionKey:productListDecryptionKey];
 
     _periodicValidatorActivator =
         [[BZRPeriodicReceiptValidatorActivator alloc]
@@ -105,9 +109,11 @@ NS_ASSUME_NONNULL_BEGIN
   return self;
 }
 
-- (id<BZRProductsProvider>)productsProviderWithJSONFilePath:(LTPath *)productsListJSONFilePath {
+- (id<BZRProductsProvider>)productsProviderWithJSONFilePath:(LTPath *)productsListJSONFilePath
+                                              decryptionKey:(nullable NSString *)decryptionKey {
     BZRLocalProductsProvider *localProductsProvider =
         [[BZRLocalProductsProvider alloc] initWithPath:productsListJSONFilePath
+                                         decryptionKey:decryptionKey
                                            fileManager:self.fileManager];
     BZRProductsWithDiscountsProvider *productsWithDiscountsProvider =
         [[BZRProductsWithDiscountsProvider alloc]
