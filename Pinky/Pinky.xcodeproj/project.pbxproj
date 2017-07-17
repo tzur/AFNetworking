@@ -91,6 +91,9 @@
 		C9131EDB1EE05A8400E924DA /* NSValue+OpenCVExtensions.mm in Sources */ = {isa = PBXBuildFile; fileRef = C9131ED91EE05A8400E924DA /* NSValue+OpenCVExtensions.mm */; };
 		C91884551F0D27B90090818A /* PNKComputeDispatch.mm in Sources */ = {isa = PBXBuildFile; fileRef = C91884541F0D27B90090818A /* PNKComputeDispatch.mm */; };
 		C9791A761F025B1F0009E90F /* PNKLibraryLoaderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = C9791A751F025B1F0009E90F /* PNKLibraryLoaderSpec.mm */; };
+		C9791ADD1F026D260009E90F /* PNKConstantAlpha.metal in Sources */ = {isa = PBXBuildFile; fileRef = C9791ADC1F026D260009E90F /* PNKConstantAlpha.metal */; };
+		C9791B001F026E180009E90F /* PNKConstantAlpha.mm in Sources */ = {isa = PBXBuildFile; fileRef = C9791AFF1F026E180009E90F /* PNKConstantAlpha.mm */; };
+		C9791B561F0272470009E90F /* PNKConstantAlphaSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = C9791B551F0272470009E90F /* PNKConstantAlphaSpec.mm */; };
 		C9815C411EE886D1004868CE /* PNKOpenCVExtensions.mm in Sources */ = {isa = PBXBuildFile; fileRef = C9815C3F1EE886D1004868CE /* PNKOpenCVExtensions.mm */; };
 		C9815C641EE88713004868CE /* PNKOpenCVExtensionsSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = C9815C631EE88713004868CE /* PNKOpenCVExtensionsSpec.mm */; };
 		C9ADC5131EFFE06200C87932 /* PNKLibraryLoader.mm in Sources */ = {isa = PBXBuildFile; fileRef = C9ADC5121EFFE06200C87932 /* PNKLibraryLoader.mm */; };
@@ -510,6 +513,10 @@
 		C91884531F0D27B90090818A /* PNKComputeDispatch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKComputeDispatch.h; sourceTree = "<group>"; };
 		C91884541F0D27B90090818A /* PNKComputeDispatch.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKComputeDispatch.mm; sourceTree = "<group>"; };
 		C9791A751F025B1F0009E90F /* PNKLibraryLoaderSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKLibraryLoaderSpec.mm; sourceTree = "<group>"; };
+		C9791ADC1F026D260009E90F /* PNKConstantAlpha.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = PNKConstantAlpha.metal; sourceTree = "<group>"; };
+		C9791AFE1F026E180009E90F /* PNKConstantAlpha.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKConstantAlpha.h; sourceTree = "<group>"; };
+		C9791AFF1F026E180009E90F /* PNKConstantAlpha.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKConstantAlpha.mm; sourceTree = "<group>"; };
+		C9791B551F0272470009E90F /* PNKConstantAlphaSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKConstantAlphaSpec.mm; sourceTree = "<group>"; };
 		C9815C3F1EE886D1004868CE /* PNKOpenCVExtensions.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKOpenCVExtensions.mm; sourceTree = "<group>"; };
 		C9815C401EE886D1004868CE /* PNKOpenCVExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKOpenCVExtensions.h; sourceTree = "<group>"; };
 		C9815C631EE88713004868CE /* PNKOpenCVExtensionsSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKOpenCVExtensionsSpec.mm; sourceTree = "<group>"; };
@@ -640,6 +647,14 @@
 			name = "Neural Networks";
 			sourceTree = "<group>";
 		};
+		06A0A94C1F1B4BD100941045 /* Image Processing */ = {
+			isa = PBXGroup;
+			children = (
+				C9791B551F0272470009E90F /* PNKConstantAlphaSpec.mm */,
+			);
+			name = "Image Processing";
+			sourceTree = "<group>";
+		};
 		06A1A9F21F14F0C60031A387 /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -652,6 +667,9 @@
 		06C3F73E1EFF9E3C00D4B1F4 /* Image Processing */ = {
 			isa = PBXGroup;
 			children = (
+				C9791ADC1F026D260009E90F /* PNKConstantAlpha.metal */,
+				C9791AFE1F026E180009E90F /* PNKConstantAlpha.h */,
+				C9791AFF1F026E180009E90F /* PNKConstantAlpha.mm */,
 				06C3F75F1EFF9E5B00D4B1F4 /* PNKSingleStyleTransferProcessor.h */,
 				06C3F7601EFF9E5B00D4B1F4 /* PNKSingleStyleTransferProcessor.mm */,
 				06172A8E1F02881600379124 /* PNKStyleUpsampleProcessor.h */,
@@ -712,6 +730,7 @@
 			children = (
 				C9815C651EE88730004868CE /* Extensions */,
 				C9791A541F025AE90009E90F /* GPU */,
+				06A0A94C1F1B4BD100941045 /* Image Processing */,
 			);
 			name = Tests;
 			sourceTree = "<group>";
@@ -1428,6 +1447,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C9791ADD1F026D260009E90F /* PNKConstantAlpha.metal in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1437,6 +1457,7 @@
 			files = (
 				C9131ED61EE05A4D00E924DA /* LTTestUtils+LTEngine.mm in Sources */,
 				C9815C641EE88713004868CE /* PNKOpenCVExtensionsSpec.mm in Sources */,
+				C9791B561F0272470009E90F /* PNKConstantAlphaSpec.mm in Sources */,
 				C9131EAE1EE0599D00E924DA /* EXPMatchers+beCloseToScalar.mm in Sources */,
 				C9131EA81EE0599D00E924DA /* EXPMatchers+beCloseToGLKMatrix.mm in Sources */,
 				C9131EAC1EE0599D00E924DA /* EXPMatchers+beCloseToMat.mm in Sources */,
@@ -1455,6 +1476,7 @@
 			files = (
 				C9815C411EE886D1004868CE /* PNKOpenCVExtensions.mm in Sources */,
 				C91884551F0D27B90090818A /* PNKComputeDispatch.mm in Sources */,
+				C9791B001F026E180009E90F /* PNKConstantAlpha.mm in Sources */,
 				060EA49E1EDD9CC20041487A /* NSBundle+PinkyBundle.mm in Sources */,
 				C9ADC5131EFFE06200C87932 /* PNKLibraryLoader.mm in Sources */,
 				06172A901F02881600379124 /* PNKStyleUpsampleProcessor.mm in Sources */,
