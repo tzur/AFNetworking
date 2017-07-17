@@ -438,6 +438,7 @@
 		06172A8F1F02881600379124 /* PNKStyleUpsampleProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKStyleUpsampleProcessor.mm; sourceTree = "<group>"; };
 		06172AB11F02884F00379124 /* PNKStyleUpsampleProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKStyleUpsampleProcessorSpec.mm; sourceTree = "<group>"; };
 		069225E11F0A615700F3C8C7 /* PNKNeuralKernel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNKNeuralKernel.h; sourceTree = "<group>"; };
+		06A0A94B1F1B484700941045 /* PNKKernel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNKKernel.h; sourceTree = "<group>"; };
 		06A1AA131F14F0D80031A387 /* PNKNeuralNetworkModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKNeuralNetworkModel.h; sourceTree = "<group>"; };
 		06A1AA151F14F0D80031A387 /* PNKNeuralNetworkOperationsModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKNeuralNetworkOperationsModel.h; sourceTree = "<group>"; };
 		06C3F75F1EFF9E5B00D4B1F4 /* PNKSingleStyleTransferProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKSingleStyleTransferProcessor.h; sourceTree = "<group>"; };
@@ -957,6 +958,7 @@
 			children = (
 				C91884531F0D27B90090818A /* PNKComputeDispatch.h */,
 				C91884541F0D27B90090818A /* PNKComputeDispatch.mm */,
+				06A0A94B1F1B484700941045 /* PNKKernel.h */,
 				C9ADC5111EFFE06200C87932 /* PNKLibraryLoader.h */,
 				C9ADC5121EFFE06200C87932 /* PNKLibraryLoader.mm */,
 			);
