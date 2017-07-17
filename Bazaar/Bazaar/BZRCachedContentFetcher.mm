@@ -17,6 +17,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation BZRCachedContentFetcher
 
+#pragma mark -
+#pragma mark Initialization
+#pragma mark -
+
 - (instancetype)init {
   return [self initWithUnderlyingContentFetcher:[[BZRCompositeContentFetcher alloc] init]];
 }
@@ -29,6 +33,18 @@ NS_ASSUME_NONNULL_BEGIN
 
   return self;
 }
+
+#pragma mark -
+#pragma mark BZREventEmitter
+#pragma mark -
+
+- (RACSignal *)eventsSignal {
+  return self.underlyingContentFetcher.eventsSignal;
+}
+
+#pragma mark -
+#pragma mark BZRProductContentFetcher
+#pragma mark -
 
 - (RACSignal *)fetchProductContent:(BZRProduct *)product {
   return [[self contentBundleForProduct:product]

@@ -33,6 +33,10 @@ NS_ASSUME_NONNULL_BEGIN
   return [BZRRemoteContentFetcherParameters class];
 }
 
+#pragma mark -
+#pragma mark Initialization
+#pragma mark -
+
 - (instancetype)init {
   BZRProductContentManager *contentManager =
       [[BZRProductContentManager alloc] initWithFileManager:[NSFileManager defaultManager]];
@@ -51,6 +55,18 @@ NS_ASSUME_NONNULL_BEGIN
 
   return self;
 }
+
+#pragma mark -
+#pragma mark BZREventEmitter
+#pragma mark -
+
+- (RACSignal *)eventsSignal {
+  return [RACSignal empty];
+}
+
+#pragma mark -
+#pragma mark BZRProductContentFetcher
+#pragma mark -
 
 - (RACSignal *)fetchProductContent:(BZRProduct *)product {
   if (![product.contentFetcherParameters isKindOfClass:[BZRRemoteContentFetcherParameters class]]) {

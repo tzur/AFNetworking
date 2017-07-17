@@ -20,15 +20,15 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-#pragma mark -
-#pragma mark BZRLocalContentFetcher
-#pragma mark -
-
 @implementation BZRLocalContentFetcher
 
 + (Class)expectedParametersClass {
   return [BZRLocalContentFetcherParameters class];
 }
+
+#pragma mark -
+#pragma mark Initialization
+#pragma mark -
 
 - (instancetype)init {
   BZRProductContentManager *contentManager =
@@ -45,6 +45,18 @@ NS_ASSUME_NONNULL_BEGIN
 
   return self;
 }
+
+#pragma mark -
+#pragma mark BZREventEmitter
+#pragma mark -
+
+- (RACSignal *)eventsSignal {
+  return [RACSignal empty];
+}
+
+#pragma mark -
+#pragma mark BZRProductContentFetcher
+#pragma mark -
 
 - (RACSignal *)fetchProductContent:(BZRProduct *)product {
   if (![product.contentFetcherParameters isKindOfClass:[BZRLocalContentFetcherParameters class]]) {

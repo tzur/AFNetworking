@@ -13,6 +13,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation BZRDummyContentFetcher
 
+@synthesize eventsSignal = _eventsSignal;
+
 - (RACSignal *)fetchProductContent:(BZRProduct * __unused)product {
   return [RACSignal empty];
 }

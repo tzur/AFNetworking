@@ -140,8 +140,9 @@ NS_ASSUME_NONNULL_BEGIN
     self.periodicValidatorActivator.errorEventsSignal,
     self.storeKitFacade.transactionsErrorEventsSignal,
     self.productsProvider.eventsSignal,
-    [self.startupReceiptValidator.eventsSignal replay],
-    self.allowedProductsProvider.eventsSignal
+    self.contentFetcher.eventsSignal,
+    self.allowedProductsProvider.eventsSignal,
+    [self.startupReceiptValidator.eventsSignal replay]
   ]]
   takeUntil:[self rac_willDeallocSignal]]
   setNameWithFormat:@"%@ -eventsSignal", self];

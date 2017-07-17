@@ -10,6 +10,7 @@ typedef NSDictionary<NSString *, id<BZRProductContentFetcher>> BZRContentFetcher
 
 /// Fetcher that allows fetching using several different underlying fetchers. The content fetcher is
 /// chosen by checking \c product.contentFetcherParameters.type.
+/// If \c fetchProductContent errs, the error is sent on \c eventsSignal.
 @interface BZRCompositeContentFetcher : NSObject <BZRProductContentFetcher>
 
 /// Initializes with the default collection of content fetchers.

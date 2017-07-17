@@ -23,11 +23,15 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-#pragma mark -
-#pragma mark BZROnDemandContentFetcher
-#pragma mark -
-
 @implementation BZROnDemandContentFetcher
+
++ (Class)expectedParametersClass {
+  return [BZROnDemandContentFetcherParameters class];
+}
+
+#pragma mark -
+#pragma mark Initialization
+#pragma mark -
 
 - (instancetype)init {
   return [self initWithBundle:[NSBundle mainBundle]];
@@ -41,6 +45,18 @@ NS_ASSUME_NONNULL_BEGIN
 
   return self;
 }
+
+#pragma mark -
+#pragma mark BZREventEmitter
+#pragma mark -
+
+- (RACSignal *)eventsSignal {
+  return [RACSignal empty];
+}
+
+#pragma mark -
+#pragma mark BZRProductContentFetcher
+#pragma mark -
 
 - (RACSignal *)fetchProductContent:(BZRProduct *)product {
   Class expectedParametersClass = [[self class] expectedParametersClass];
@@ -91,10 +107,6 @@ NS_ASSUME_NONNULL_BEGIN
         }
         return resource.bundle;
       }];
-}
-
-+ (Class)expectedParametersClass {
-  return [BZROnDemandContentFetcherParameters class];
 }
 
 @end

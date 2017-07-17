@@ -17,7 +17,7 @@ LTErrorCodesDeclare(BazaarErrorCodeProductID,
   BZRErrorCodeProductsMetadataFetchingFailed,
   /// Failure during receipt refreshing.
   BZRErrorCodeReceiptRefreshFailed,
-  /// Deserilization of a model instance from JSON dictionary has failed.
+  /// Deserialization of a model instance from JSON dictionary has failed.
   BZRErrorCodeModelJSONDeserializationFailed,
   /// Deserialization of a JSON object from raw data has failed.
   BZRErrorCodeJSONDataDeserializationFailed,
@@ -78,7 +78,9 @@ LTErrorCodesDeclare(BazaarErrorCodeProductID,
   /// Failure while moving a file or a directory.
   BZRErrorCodeMoveItemFailed,
   /// The subscription that the user owns does not appear in the product list
-  BZRErrorCodeSubscriptionNotFoundInProductList
+  BZRErrorCodeSubscriptionNotFoundInProductList,
+  /// Fetching of product content has failed.
+  BZRErrorCodeFetchingProductContentFailed
 );
 
 NS_ASSUME_NONNULL_END

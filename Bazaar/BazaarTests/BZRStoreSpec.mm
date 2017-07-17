@@ -66,6 +66,7 @@ __block RACSubject *acquiredViaSubscriptionProviderEventsSubject;
 __block RACSubject *periodicReceiptValidatorActivatorEventsSubject;
 __block RACSubject *netherProductsProviderSubject;
 __block RACSubject *transactionsErrorEventsSubject;
+__block RACSubject *contentFetcherEventsSubject;
 __block RACSubject *unfinishedSuccessfulTransactionsSubject;
 __block BZRStoreConfiguration *configuration;
 __block BZRStore *store;
@@ -96,6 +97,7 @@ beforeEach(^{
   periodicReceiptValidatorActivatorEventsSubject = [RACSubject subject];
   netherProductsProviderSubject = [RACSubject subject];
   transactionsErrorEventsSubject = [RACSubject subject];
+  contentFetcherEventsSubject = [RACSubject subject];
   unfinishedSuccessfulTransactionsSubject = [RACSubject subject];
   OCMStub([productsProvider eventsSignal])
       .andReturn(productsProviderEventsSubject);
@@ -108,6 +110,7 @@ beforeEach(^{
   OCMStub([netherProductsProvider fetchProductList]).andReturn(netherProductsProviderSubject);
   OCMStub([storeKitFacade transactionsErrorEventsSignal])
       .andReturn(transactionsErrorEventsSubject);
+  OCMStub([contentFetcher eventsSignal]).andReturn(contentFetcherEventsSubject);
   OCMStub([storeKitFacade unfinishedSuccessfulTransactionsSignal])
       .andReturn(unfinishedSuccessfulTransactionsSubject);
 
@@ -1272,6 +1275,11 @@ context(@"events signal", ^{
 
   it(@"should send event sent by allowed products provider", ^{
     [allowedProductsProvider.eventsSignal sendNext:event];
+    expect(recorder).will.sendValues(@[event]);
+  });
+
+  it(@"should send event sent by content fetcher", ^{
+    [contentFetcherEventsSubject sendNext:event];
     expect(recorder).will.sendValues(@[event]);
   });
 });

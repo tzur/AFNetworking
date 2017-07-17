@@ -1,12 +1,14 @@
 // Copyright (c) 2016 Lightricks. All rights reserved.
 // Created by Ben Yohay.
 
+#import "BZREventEmitter.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
 @class BZRProduct;
 
 /// Protocol for fetching content of products.
-@protocol BZRProductContentFetcher <NSObject>
+@protocol BZRProductContentFetcher <BZREventEmitter>
 
 /// Fetches the content of the given \c product.
 ///
@@ -26,7 +28,7 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 /// Returns a signal that sends an \c NSBundle or \c nil if the content is not available on the
 /// device. The bundle provides access to the content of the product specified by \c product. The
-/// signal completes after sending the value. The signal errs if the given
+/// signal completes after sending the value. The signal errs only if the given
 /// \c contentFetcherParameters is invalid.
 ///
 /// @return <tt>RACSignal<nullable NSBundle></tt>
