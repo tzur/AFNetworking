@@ -3,6 +3,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class BZRContentFetcherParameters;
+
 /// Adds methods and properties to conveniently create Bazaar errors.
 @interface NSError (Bazaar)
 
@@ -31,7 +33,6 @@ NS_ASSUME_NONNULL_BEGIN
 /// \c transaction.
 + (instancetype)bzr_errorWithCode:(NSInteger)code transaction:(SKPaymentTransaction *)transaction;
 
-
 /// Creates and returns an instance of \c NSError with \c domain set to \c LTErrorDomain, \c code
 /// set to \c BZRErrorCodeInvalidProductIdentifier and \c bzr_productIdentifiers set to the given
 /// \c productIdentifiers.
@@ -52,6 +53,12 @@ NS_ASSUME_NONNULL_BEGIN
 /// the given \c productIdentifier.
 + (instancetype)bzr_purchasedProductNotFoundInReceipt:(NSString *)productIdentifier;
 
+/// Creates and returns an instance of \c NSError with \c code set to
+/// \c BZRErrorCodeFetchingProductContentFailed and \c bzr_contentFetcherParameters set to the
+/// given \c parameters. \c underlyingError specifies the reason for the failure in the content
+/// fetching.
++ (instancetype)bzr_errorWithContentFetcherParameters:(BZRContentFetcherParameters *)parameters
+                                      underlyingError:(NSError *)underlyingError;
 
 /// Exception object wrapped by this error.
 @property (readonly, nonatomic, nullable) NSException *bzr_exception;
@@ -80,6 +87,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Identifier of the product that was purchased but not found in the receipt.
 @property (readonly, nonatomic, nullable) NSString *bzr_purchasedProductIdentifier;
+
+/// Parameters of the content whose fetching has failed.
+@property (readonly, nonatomic, nullable) BZRContentFetcherParameters *bzr_contentFetcherParameters;
 
 @end
 

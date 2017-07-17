@@ -22,6 +22,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation BZRMulticastContentFetcher
 
+#pragma mark -
+#pragma mark Initialization
+#pragma mark -
+
 - (instancetype)initWithUnderlyingContentFetcher:
     (id<BZRProductContentFetcher>)underlyingContentFetcher {
   if (self = [super init]) {
@@ -31,6 +35,18 @@ NS_ASSUME_NONNULL_BEGIN
 
   return self;
 }
+
+#pragma mark -
+#pragma mark BZREventEmitter
+#pragma mark -
+
+- (RACSignal *)eventsSignal {
+  return self.underlyingContentFetcher.eventsSignal;
+}
+
+#pragma mark -
+#pragma mark BZRProductContentFetcher
+#pragma mark -
 
 - (RACSignal *)fetchProductContent:(BZRProduct *)product {
   @weakify(self);

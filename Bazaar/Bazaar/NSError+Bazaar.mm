@@ -3,6 +3,7 @@
 
 #import "NSError+Bazaar.h"
 
+#import "BZRContentFetcherParameters.h"
 #import "NSErrorCodes+Bazaar.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -17,6 +18,7 @@ NSString * const kBZRErrorSecondsUntilSubscriptionInvalidationKey =
     @"BZRErrorSecondsUntilSubscriptionInvalidation";
 NSString * const kBZRErrorLastReceiptValidationDateKey = @"BZRErrorLastReceiptValidationDate";
 NSString * const kBZRErrorPurchasedProductIdentifierKey = @"BZRErrorPurchasedProductIdentifier";
+NSString * const kBZRErrorContentFetcherParametersKey = @"BZRErrorContentFetcherParameters";
 
 /// Category that adds method for getting a description of the transaction.
 @interface SKPaymentTransaction (Bazaar)
@@ -129,6 +131,15 @@ NSString * const kBZRErrorPurchasedProductIdentifierKey = @"BZRErrorPurchasedPro
   return [self lt_errorWithCode:BZRErrorCodePurchasedProductNotFoundInReceipt userInfo:userInfo];
 }
 
++ (instancetype)bzr_errorWithContentFetcherParameters:(BZRContentFetcherParameters *)parameters
+                                      underlyingError:(NSError *)underlyingError {
+  NSDictionary *userInfo = @{
+    kBZRErrorContentFetcherParametersKey: parameters,
+    NSUnderlyingErrorKey: underlyingError
+  };
+  return [self lt_errorWithCode:BZRErrorCodeFetchingProductContentFailed userInfo:userInfo];
+}
+
 - (nullable NSException *)bzr_exception {
   return self.userInfo[kBZRErrorExceptionKey];
 }
@@ -163,6 +174,10 @@ NSString * const kBZRErrorPurchasedProductIdentifierKey = @"BZRErrorPurchasedPro
 
 - (nullable NSString *)bzr_purchasedProductIdentifier {
   return self.userInfo[kBZRErrorPurchasedProductIdentifierKey];
+}
+
+- (nullable NSString *)bzr_contentFetcherParameters {
+  return self.userInfo[kBZRErrorContentFetcherParametersKey];
 }
 
 @end

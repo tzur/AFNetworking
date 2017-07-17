@@ -4,6 +4,7 @@
 #import "BZRCompositeContentFetcher.h"
 
 #import "BZRContentFetcherParameters.h"
+#import "BZREvent.h"
 #import "BZRProduct.h"
 #import "BZRProductContentFetcher.h"
 #import "BZRTestUtils.h"
@@ -17,6 +18,7 @@ __block BZRCompositeContentFetcher *compositeContentFetcher;
 
 beforeEach(^{
   contentFetcher = OCMProtocolMock(@protocol(BZRProductContentFetcher));
+  OCMStub([contentFetcher eventsSignal]).andReturn([RACSignal empty]);
   contentFetchers = @{
     @"mockedContentFetcher": contentFetcher
   };
@@ -71,7 +73,7 @@ context(@"fetching content", ^{
       expect(recorder).will.sendValues(@[progress]);
     });
 
-    it(@"should err when product content fetcher errs", ^{
+    it(@"should err when the underlying content fetcher errs", ^{
       NSError *fetchContentError = OCMClassMock([NSError class]);
       OCMStub([contentFetcher fetchProductContent:OCMOCK_ANY])
           .andReturn([RACSignal error:fetchContentError]);
@@ -79,6 +81,22 @@ context(@"fetching content", ^{
       RACSignal *fetchingContent = [compositeContentFetcher fetchProductContent:product];
 
       expect(fetchingContent).will.sendError(fetchContentError);
+    });
+
+    it(@"should send event when the underlying content fetcher errs", ^{
+      NSError *fetchContentError = [NSError lt_errorWithCode:1337];
+      OCMStub([contentFetcher fetchProductContent:OCMOCK_ANY])
+          .andReturn([RACSignal error:fetchContentError]);
+
+      auto recorder = [compositeContentFetcher.eventsSignal testRecorder];
+      RACSignal *fetchingContent = [compositeContentFetcher fetchProductContent:product];
+
+      expect(fetchingContent).will.sendError(fetchContentError);
+      expect(recorder).will.matchValue(0, ^BOOL(BZREvent *event) {
+        return [event.eventType isEqual:$(BZREventTypeNonCriticalError)] &&
+            event.eventError.code == BZRErrorCodeFetchingProductContentFailed &&
+            event.eventError.lt_underlyingError.code == 1337;
+      });
     });
   });
 });

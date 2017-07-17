@@ -74,7 +74,9 @@ LTErrorCodesImplement(BazaarErrorCodeProductID,
   /// Failure while moving a file or a directory.
   BZRErrorCodeMoveItemFailed,
   /// The subscription that the user owns does not appear in the product list
-  BZRErrorCodeSubscriptionNotFoundInProductList
+  BZRErrorCodeSubscriptionNotFoundInProductList,
+  /// Fetching of product content has failed.
+  BZRErrorCodeFetchingProductContentFailed
 );
 
 NS_ASSUME_NONNULL_END
