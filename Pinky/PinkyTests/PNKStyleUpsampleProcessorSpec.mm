@@ -37,8 +37,8 @@ context(@"testing stub style upsampling", ^{
   it(@"should upsample to guide size as stub", ^{
     auto stylizedBuffer = LTCVPixelBufferCreate(kStylizedSize.width, kStylizedSize.height,
                                                 kCVPixelFormatType_32BGRA);
-    LTCVPixelBufferImageForWriting(inputBuffer.get(), ^(cv::Mat *inputMat) {
-      inputMat->setTo(kBlueColor);
+    LTCVPixelBufferImageForWriting(stylizedBuffer.get(), ^(cv::Mat *stylizedMat) {
+      stylizedMat->setTo(kBlueColor);
     });
 
     auto upsampledBuffer = LTCVPixelBufferCreate(kInputSize.width, kInputSize.height,
