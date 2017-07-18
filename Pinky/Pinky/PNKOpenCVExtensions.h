@@ -3,7 +3,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/// Copies the data of a Metal texture and returns it as a \c cv::Mat.
+/// Copies the data of a Metal texture at \c slice and returns it as a \c cv::Mat.
 ///
 /// @note only textures with uncompressed 4-channel pixel formats are supported (RGBA 8, 16 or 32
 /// bit) with the exception of unsigned int 32-bit per channel which is not supported. \c texture
@@ -11,9 +11,9 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 /// @important one must wait until all writes have been completed before calling this function to
 /// avoid undefined behavior.
-cv::Mat PNKMatFromMTLTexture(id<MTLTexture> texture);
+cv::Mat PNKMatFromMTLTexture(id<MTLTexture> texture, NSUInteger slice = 0);
 
-/// Copies \c region of \c data of a Metal texture and returns it as a \c cv::Mat.
+/// Copies \c region of \c data at \c slice of a Metal texture and returns it as a \c cv::Mat.
 ///
 /// @note only textures with uncompressed 4-channel pixel formats are supported (RGBA 8, 16 or 32
 /// bit) with the exception of unsigned int 32-bit per channel which is not supported. \c texture
@@ -21,7 +21,7 @@ cv::Mat PNKMatFromMTLTexture(id<MTLTexture> texture);
 ///
 /// @important one must wait until all writes have been completed before calling this function to
 /// avoid undefined behavior.
-cv::Mat PNKMatFromMTLTextureRegion(id<MTLTexture> texture, MTLRegion region);
+cv::Mat PNKMatFromMTLTextureRegion(id<MTLTexture> texture, MTLRegion region, NSUInteger slice = 0);
 
 /// Copies the content of \c data to \c region in \c texture at the given \c slice and
 /// \c mipmapLevel.
