@@ -5,18 +5,15 @@
 
 #import <LTKit/NSURL+Query.h>
 #import <MediaPlayer/MediaPlayer.h>
-#import <errno.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
-/// Supported types of media library queries.
-LTEnumImplement(NSUInteger, PTNMediaLibraryQueryType,
-  /// Returns all the music artists in the library sorted by artist name.
-  PTNMediaLibraryQueryTypeArtists,
-  /// Returns all the music albums in the library sorted by album name.
-  PTNMediaLibraryQueryTypeAlbums,
-  /// Returns all the songs in the library sorted by song name.
-  PTNMediaLibraryQueryTypeSongs
+/// Fetching option of Media Library entities.
+LTEnumImplement(NSUInteger, PTNMediaLibraryFetchType,
+  /// fetch entities as list of items.
+  PTNMediaLibraryFetchTypeItems,
+  /// fetch entities as list of collections.
+  PTNMediaLibraryFetchTypeCollections
 );
 
 @implementation NSURL (MediaLibrary)
@@ -25,44 +22,120 @@ LTEnumImplement(NSUInteger, PTNMediaLibraryQueryType,
   return @"com.lightricks.Photons.MediaLibrary";
 }
 
-+ (NSURL *)ptn_mediaLibraryAssetURLWithItem:(MPMediaItem *)item {
-  return [self ptn_mediaLibraryURLForType:PTNMediaLibraryURLTypeAsset entity:item];
++ (NSURL *)ptn_mediaLibraryAssetWithItem:(MPMediaItem *)item {
+  auto predicate = [MPMediaPropertyPredicate predicateWithValue:@(item.persistentID)
+                    forProperty:MPMediaItemPropertyPersistentID];
+  return [self ptn_urlWithType:PTNMediaLibraryURLTypeAsset
+                    predicates:[NSSet setWithObject:predicate]
+                     fetchType:$(PTNMediaLibraryFetchTypeItems) groupedBy:nil];
 }
 
-+ (NSURL *)ptn_mediaLibraryAlbumURLWithCollection:(MPMediaItemCollection *)collection {
-  return [self ptn_mediaLibraryURLForType:PTNMediaLibraryURLTypeAlbum entity:collection];
++ (NSURL *)ptn_mediaLibraryAlbumMusicAlbumSongsWithItem:(MPMediaItem *)item {
+  auto predicate = [MPMediaPropertyPredicate predicateWithValue:@(item.albumPersistentID)
+                    forProperty:MPMediaItemPropertyAlbumPersistentID];
+  return [self ptn_urlWithType:PTNMediaLibraryURLTypeAlbum
+                    predicates:[NSSet setWithObject:predicate]
+                     fetchType:$(PTNMediaLibraryFetchTypeItems) groupedBy:nil];
 }
 
-+ (NSURL *)ptn_mediaLibraryURLForType:(PTNMediaLibraryURLType)type entity:(MPMediaEntity *)entity {
-  NSURLComponents *components = [[NSURLComponents alloc] init];
++ (NSURL *)ptn_mediaLibraryAlbumArtistMusicAlbumsWithItem:(MPMediaItem *)item {
+  auto predicate = [MPMediaPropertyPredicate predicateWithValue:@(item.albumPersistentID)
+                    forProperty:MPMediaItemPropertyAlbumPersistentID];
+  return [self ptn_urlWithType:PTNMediaLibraryURLTypeAlbum
+                    predicates:[NSSet setWithObject:predicate]
+                     fetchType:$(PTNMediaLibraryFetchTypeCollections)
+                     groupedBy:@(MPMediaGroupingAlbum)];
+}
 
++ (NSURL *)ptn_mediaLibraryAlbumArtistSongsWithItem:(MPMediaItem *)item {
+  auto predicate = [MPMediaPropertyPredicate predicateWithValue:@(item.albumPersistentID)
+                    forProperty:MPMediaItemPropertyAlbumPersistentID];
+  return [self ptn_urlWithType:PTNMediaLibraryURLTypeAlbum
+                    predicates:[NSSet setWithObject:predicate]
+                     fetchType:$(PTNMediaLibraryFetchTypeItems) groupedBy:nil];
+}
+
++ (NSURL *)ptn_mediaLibraryAlbumSongsByMusicAlbum {
+  return [self ptn_urlWithType:PTNMediaLibraryURLTypeAlbum
+                    predicates:[NSSet setWithObject:[self mediaTypeMusicPredicate]]
+                     fetchType:$(PTNMediaLibraryFetchTypeCollections)
+                     groupedBy:@(MPMediaGroupingAlbum)];
+}
+
++ (NSURL *)ptn_mediaLibraryAlbumSongsByAritst {
+  return [self ptn_urlWithType:PTNMediaLibraryURLTypeAlbum
+                    predicates:[NSSet setWithObject:[self mediaTypeMusicPredicate]]
+                     fetchType:$(PTNMediaLibraryFetchTypeCollections)
+                     groupedBy:@(MPMediaGroupingArtist)];
+}
+
++ (NSURL *)ptn_mediaLibraryAlbumSongs {
+  return [self ptn_urlWithType:PTNMediaLibraryURLTypeAlbum
+                    predicates:[NSSet setWithObject:[self mediaTypeMusicPredicate]]
+                     fetchType:$(PTNMediaLibraryFetchTypeCollections)
+                     groupedBy:@(MPMediaGroupingTitle)];
+}
+
++ (NSURL *)ptn_urlWithType:(PTNMediaLibraryURLType)type
+                predicates:(NSSet<MPMediaPropertyPredicate *> *)predicates
+                 fetchType:(PTNMediaLibraryFetchType *)fetchType
+                 groupedBy:(nullable NSNumber *)grouping {
+  LTParameterAssert(type == PTNMediaLibraryURLTypeAlbum || type == PTNMediaLibraryURLTypeAsset,
+                    @"url type (%lu) is not upported", (unsigned long)type);
+
+  auto queryItems = [NSMutableArray arrayWithArray:[self ptn_queryItemsFromPredicates:predicates]];
+  [queryItems addObject:[NSURLQueryItem queryItemWithName:@"fetch" value:fetchType.name]];
+
+  if (grouping) {
+    [queryItems addObject:[NSURLQueryItem queryItemWithName:@"grouping"
+                           value:[self ptn_groupingToString:grouping]]];
+  }
+
+  auto components = [[NSURLComponents alloc] init];
   components.scheme = [NSURL ptn_mediaLibraryScheme];
   components.host = (type == PTNMediaLibraryURLTypeAlbum) ? @"album" : @"asset";
-  components.path = [NSString stringWithFormat:@"/%llu", entity.persistentID];
+  components.queryItems = [queryItems copy];
 
   return components.URL;
 }
 
-+ (NSURL *)ptn_mediaLibraryQueryURLWithType:(PTNMediaLibraryQueryType *)type {
-  NSURLComponents *components = [[NSURLComponents alloc] init];
-
-  components.scheme = [NSURL ptn_mediaLibraryScheme];
-  components.host = @"query";
-  components.queryItems = @[[NSURLQueryItem queryItemWithName:@"type" value:type.name]];
-
-  return components.URL;
++ (NSArray<NSURLQueryItem *> *)ptn_queryItemsFromPredicates:
+    (NSSet<MPMediaPropertyPredicate *> *)predicates {
+  auto items = [NSMutableArray<NSURLQueryItem *> array];
+  for (MPMediaPropertyPredicate *predicate in predicates) {
+    [items addObject:[NSURLQueryItem queryItemWithName:predicate.property
+                      value:[NSString stringWithFormat:@"%@", predicate.value]]];
+  }
+  return [items copy];
 }
 
-+ (NSURL *)ptn_mediaLibraryAlbumsQueryURL {
-  return [NSURL ptn_mediaLibraryQueryURLWithType:$(PTNMediaLibraryQueryTypeAlbums)];
++ (NSString *)ptn_groupingToString:(NSNumber *)groupingType {
+  return [self ptn_groupingValueToNSStringMap][groupingType];
 }
 
-+ (NSURL *)ptn_mediaLibraryArtistsQueryURL {
-  return [NSURL ptn_mediaLibraryQueryURLWithType:$(PTNMediaLibraryQueryTypeArtists)];
++ (MPMediaPropertyPredicate *)mediaTypeMusicPredicate {
+    return [MPMediaPropertyPredicate predicateWithValue:@(MPMediaTypeMusic)
+                                            forProperty:MPMediaItemPropertyMediaType];
 }
 
-+ (NSURL *)ptn_mediaLibrarySongsQueryURL {
-  return [NSURL ptn_mediaLibraryQueryURLWithType:$(PTNMediaLibraryQueryTypeSongs)];
++ (NSDictionary<NSNumber *, NSString *> *)ptn_groupingValueToNSStringMap {
+  static NSDictionary<NSNumber *, NSString *> *groupingValueToNSStringMap;
+  static dispatch_once_t onceToken;
+
+  dispatch_once(&onceToken, ^{
+    groupingValueToNSStringMap = @{
+      @(MPMediaGroupingAlbum): @"MPMediaGroupingAlbum",
+      @(MPMediaGroupingAlbumArtist): @"MPMediaGroupingAlbumArtist",
+      @(MPMediaGroupingArtist): @"MPMediaGroupingArtist",
+      @(MPMediaGroupingComposer): @"MPMediaGroupingComposer",
+      @(MPMediaGroupingGenre): @"MPMediaGroupingGenre",
+      @(MPMediaGroupingPlaylist): @"MPMediaGroupingPlaylist",
+      @(MPMediaGroupingPodcastTitle): @"MPMediaGroupingPodcastTitle",
+      @(MPMediaGroupingTitle): @"MPMediaGroupingTitle"
+    };
+  });
+
+  return groupingValueToNSStringMap;
 }
 
 #pragma mark -
@@ -74,57 +147,31 @@ LTEnumImplement(NSUInteger, PTNMediaLibraryQueryType,
     return PTNMediaLibraryURLTypeInvalid;
   }
 
-  if ([self.host isEqual:@"asset"] && [self persistentID]) {
+  if ([self.host isEqual:@"asset"]) {
     return PTNMediaLibraryURLTypeAsset;
-  } else if ([self.host isEqual:@"album"] && [self persistentID]) {
+  } else if ([self.host isEqual:@"album"]) {
     return PTNMediaLibraryURLTypeAlbum;
-  } else if ([self.host isEqual:@"query"] && self.lt_queryDictionary[@"type"]) {
-    return PTNMediaLibraryURLTypeQuery;
   }
 
   return PTNMediaLibraryURLTypeInvalid;
 }
 
-- (nullable NSNumber *)persistentID {
-  if (![self.path hasPrefix:@"/"]) {
-    return nil;
-  }
-  errno = 0;
-  auto number = strtoull([[self.path substringFromIndex:1] UTF8String], NULL, 10);
-  if (errno == ERANGE) {
-    return nil;
-  }
-  return @(number);
+- (PTNMediaLibraryFetchType *)ptn_mediaLibraryFetch {
+  auto _Nullable fetch = self.lt_queryDictionary[@"fetch"];
+  LTParameterAssert(fetch, @"%@ does not have a 'fetch' query item", self);
+  return [PTNMediaLibraryFetchType enumWithName:fetch];
 }
 
-- (nullable PTNMediaLibraryQueryType *)ptn_mediaLibraryQueryType {
-  if (![self.scheme isEqual:[NSURL ptn_mediaLibraryScheme]]) {
+- (nullable NSNumber *)ptn_mediaLibraryGrouping {
+  auto _Nullable grouping = self.lt_queryDictionary[@"grouping"];
+  if (!grouping) {
     return nil;
   }
 
-  if (![self.host isEqual:@"query"]) {
-    return nil;
-  }
-
-  auto _Nullable typeName = self.lt_queryDictionary[@"type"];
-  if (!typeName) {
-    return nil;
-  }
-  auto _Nullable type = [PTNMediaLibraryQueryType enumWithName:typeName];
-  if (!type) {
-    return nil;
-  }
-
-  return type;
-}
-
-- (nullable NSNumber *)ptn_mediaLibraryPersistentID {
-  if (self.ptn_mediaLibraryURLType != PTNMediaLibraryURLTypeAsset &&
-      self.ptn_mediaLibraryURLType != PTNMediaLibraryURLTypeAlbum) {
-    return nil;
-  }
-
-  return [self persistentID];
+  auto keys = [[[self class] ptn_groupingValueToNSStringMap] allKeysForObject:grouping];
+  LTAssert(keys.count == 1, "Expected to have 1 key for %@, got %lu", grouping,
+           (unsigned long)keys.count);
+  return keys.firstObject;
 }
 
 @end
