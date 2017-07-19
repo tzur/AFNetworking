@@ -106,6 +106,9 @@ typedef std::pair<double, double> LABExperimentsTokenRange;
 ///
 /// If the \c activeTokenRange is different than when the experiment activity was stored, the new
 /// \c activeTokenRange does not take effect.
+///
+/// This class implements the \c stabilizeUserExperienceAssignments methods. After this method is
+/// called, new experiments will not be exposed.
 @interface LABLocalSource : NSObject <LABAssignmentsSource, LABExperimentsSource>
 
 - (instancetype)init NS_UNAVAILABLE;

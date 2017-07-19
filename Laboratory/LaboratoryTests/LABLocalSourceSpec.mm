@@ -118,6 +118,12 @@ __block LABLocalVariant *exp2variant1;
 __block LABLocalVariant *exp2variant2;
 __block NSArray<NSString *> *exp2Keys;
 
+__block NSDictionary<NSString *, id> *exp3assignment1;
+__block NSDictionary<NSString *, id> *exp3assignment2;
+__block LABLocalVariant *exp3variant1;
+__block LABLocalVariant *exp3variant2;
+__block NSArray<NSString *> *exp3Keys;
+
 beforeEach(^{
   exp1assignment1 = @{@"bar": @"baz", @"zoo": @"kim"};
   exp1assignment2 = @{@"bar": @"boor", @"zoo": @"topia"};
@@ -136,6 +142,15 @@ beforeEach(^{
   exp2variant2 = [[LABLocalVariant alloc] initWithName:@"exp2var2" probabilityWeight:1
                                            assignments:exp2assignment2];
   exp2Keys = @[@"flip", @"ping"];
+
+  exp3assignment1 = @{@"ding": @"dong", @"bling": @"blong"};
+  exp3assignment2 = @{@"ding": @"dang", @"bling": @"blang"};
+
+  exp3variant1 = [[LABLocalVariant alloc] initWithName:@"exp3var1" probabilityWeight:3
+                                           assignments:exp3assignment1];
+  exp3variant2 = [[LABLocalVariant alloc] initWithName:@"exp3var2" probabilityWeight:4
+                                           assignments:exp3assignment2];
+  exp3Keys = @[@"ding", @"bling"];
 });
 
 context(@"LABLocalExperiment", ^{
@@ -204,8 +219,10 @@ context(@"LABLocalSource", ^{
   __block id<LABStorage> storage;
   __block LABLocalExperiment *experiment1;
   __block LABLocalExperiment *experiment2;
+  __block LABLocalExperiment *experiment3;
   __block NSArray<LABLocalVariant *> *experiment1Variants;
   __block NSArray<LABLocalVariant *> *experiment2Variants;
+  __block NSArray<LABLocalVariant *> *experiment3Variants;
   __block LABLocalSource *source;
   __block LABExperimentsTokenProvider *tokenProvider;
 
@@ -220,10 +237,16 @@ context(@"LABLocalSource", ^{
     experiment2 = [[LABLocalExperiment alloc] initWithName:@"experiment2" keys:exp2Keys
                                                   variants:experiment2Variants
                                           activeTokenRange:{0.4, 0.8}];
+    experiment3Variants = @[exp3variant1, exp3variant2];
+    experiment3 = [[LABLocalExperiment alloc] initWithName:@"experiment3" keys:exp3Keys
+                                                  variants:experiment3Variants
+                                          activeTokenRange:{0.3, 0.9}];
+
     tokenProvider = OCMClassMock(LABExperimentsTokenProvider.class);
     OCMStub([tokenProvider experimentsToken]).andReturn(0.5);
     [random fakeRandomUnsignedIntegerWithWeights:{2, 1} andReturnIndexOf:1];
     [random fakeRandomUnsignedIntegerWithWeights:{3, 1} andReturnIndexOf:3];
+    [random fakeRandomUnsignedIntegerWithWeights:{3, 4} andReturnIndexOf:3];
 
     source = [[LABLocalSource alloc] initWithExperiments:@[experiment1, experiment2]
                                 experimentsTokenProvider:tokenProvider storage:storage
@@ -342,17 +365,6 @@ context(@"LABLocalSource", ^{
     });
 
     it(@"should keep old selected variants and select variants for new experiments", ^{
-      NSDictionary<NSString *, id> *exp3assignment1 = @{@"ding": @"dong", @"bling": @"blong"};
-      NSDictionary<NSString *, id> *exp3assignment2 = @{@"ding": @"dang", @"bling": @"blang"};
-      NSArray<NSString *> *experiment3keys = @[@"ding", @"bling"];
-      auto exp3variant1 = [[LABLocalVariant alloc] initWithName:@"exp3var1" probabilityWeight:3
-                                                    assignments:exp3assignment1];
-      auto exp3variant2 = [[LABLocalVariant alloc] initWithName:@"exp3var2" probabilityWeight:4
-                                                    assignments:exp3assignment2];
-      auto experiment3 = [[LABLocalExperiment alloc]
-                          initWithName:@"experiment3" keys:experiment3keys
-                          variants:@[exp3variant1, exp3variant2]activeTokenRange:{0.3, 0.9}];
-
       [random fakeRandomUnsignedIntegerWithWeights:{2, 1} andReturnIndexOf:2];
       [random fakeRandomUnsignedIntegerWithWeights:{3, 1} andReturnIndexOf:1];
       [random fakeRandomUnsignedIntegerWithWeights:{3, 4} andReturnIndexOf:4];
@@ -452,8 +464,8 @@ context(@"LABLocalSource", ^{
 
       it(@"should not fetch deleted experiments and variants", ^{
         auto expectedExperiments = @{
-      @"experiment1": [@[@"exp1var1", @"exp1var2"] lt_set]
-    };
+          @"experiment1": [@[@"exp1var1", @"exp1var2"] lt_set]
+        };
 
         expect([source fetchAllExperimentsAndVariants]).to.sendValues(@[expectedExperiments]);
       });
@@ -468,6 +480,33 @@ context(@"LABLocalSource", ^{
 
         expect(source.activeVariants).to.equal(expectedVariants);
       });
+    });
+  });
+
+  context(@"stabilize", ^{
+    beforeEach(^{
+      [source stabilizeUserExperienceAssignments];
+    });
+
+    it(@"should not expose new experiments after stabilize was called", ^{
+      source = [[LABLocalSource alloc] initWithExperiments:@[experiment1, experiment2, experiment3]
+          experimentsTokenProvider:tokenProvider storage:storage random:random];
+
+      auto expectedVariants = LABGenerateVariants(@{
+        experiment1: exp1variant2,
+        experiment2: exp2variant1
+      });
+      expect(source.activeVariants).to.equal(expectedVariants);
+    });
+
+    it(@"should not expose deleted experiments after stabilize was called", ^{
+      source = [[LABLocalSource alloc] initWithExperiments:@[experiment1]
+                                  experimentsTokenProvider:tokenProvider storage:storage random:random];
+
+      auto expectedVariants = LABGenerateVariants(@{
+        experiment1: exp1variant2,
+      });
+      expect(source.activeVariants).to.equal(expectedVariants);
     });
   });
 });
