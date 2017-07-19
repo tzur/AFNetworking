@@ -3,8 +3,6 @@
 
 #import "CAMFakeAVCaptureDeviceFormat.h"
 
-#import "AVCaptureDeviceFormat+MediaProperties.h"
-
 NS_ASSUME_NONNULL_BEGIN
 
 @implementation CAMFakeAVCaptureDeviceFormat
@@ -16,16 +14,27 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (instancetype)formatWithSubtype:(FourCharCode)subtype width:(int32_t)width height:(int32_t)height
                        stillWidth:(int32_t)stillWidth stillHeight:(int32_t)stillHeight {
-  CAMFakeAVCaptureDeviceFormat *format = [[CAMFakeAVCaptureDeviceFormat alloc] init];
+  return [[CAMFakeAVCaptureDeviceFormat alloc] initWithSubtype:subtype width:width height:height
+                                                    stillWidth:stillWidth stillHeight:stillHeight];
+}
 
-  CMVideoFormatDescriptionRef description;
-  CMVideoFormatDescriptionCreate(NULL, subtype, width, height, NULL, &description);
-  format.formatDescriptionToReturn = description;
+- (instancetype)initWithSubtype:(FourCharCode)subtype width:(int32_t)width height:(int32_t)height
+                     stillWidth:(int32_t)stillWidth stillHeight:(int32_t)stillHeight {
+  if (self = [super init]) {
+    CMVideoFormatDescriptionRef description;
+    CMVideoFormatDescriptionCreate(NULL, subtype, width, height, NULL, &description);
+    _formatDescriptionToReturn = description;
 
-  CMVideoDimensions stillDimensions = {stillWidth, stillHeight};
-  format.highResolutionStillImageDimensionsToReturn = stillDimensions;
+    CMVideoDimensions stillDimensions = {stillWidth, stillHeight};
+    _highResolutionStillImageDimensionsToReturn = stillDimensions;
 
-  return format;
+    _cam_mediaSubType = subtype;
+    _cam_width = (NSUInteger)width;
+    _cam_height = (NSUInteger)height;
+    _cam_pixelCount = (NSUInteger)(width * height);
+    _cam_stillPixelCount = (NSUInteger)(stillWidth * stillHeight);
+  }
+  return self;
 }
 
 - (CGFloat)videoMaxZoomFactor {

@@ -7,39 +7,21 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface CAMFakeAVCaptureDevice ()
 // The properties below are overridden as readwrite so they can be set from this class.
-@property (readwrite, nonatomic) AVCaptureFocusMode focusMode;
-@property (readwrite, nonatomic) CGPoint focusPointOfInterest;
 @property (readwrite, nonatomic) float lensPosition;
 @property (readwrite, nonatomic) float torchLevel;
 @property (readwrite, nonatomic) BOOL adjustingFocus;
-@property (readwrite, nonatomic) AVCaptureExposureMode exposureMode;
-@property (readwrite, nonatomic) CGPoint exposurePointOfInterest;
 @property (readwrite, nonatomic) float exposureTargetBias;
 @property (readwrite, nonatomic) CMTime exposureDuration;
 @property (readwrite, nonatomic) float ISO;
 @property (readwrite, nonatomic) BOOL adjustingExposure;
-@property (readwrite, nonatomic) AVCaptureWhiteBalanceMode whiteBalanceMode;
 @property (readwrite, nonatomic) AVCaptureWhiteBalanceGains deviceWhiteBalanceGains;
 @property (readwrite, nonatomic) BOOL adjustingWhiteBalance;
-@property (readwrite, nonatomic) CGFloat videoZoomFactor;
 @property (readwrite, nonatomic) BOOL rampingVideoZoom;
-@property (readwrite, nonatomic) AVCaptureFlashMode flashMode;
-@property (readwrite, nonatomic) AVCaptureTorchMode torchMode;
 @property (readwrite, nonatomic) CGPoint focusPointOfInterestDuringModeSet;
 @property (readwrite, nonatomic) CGPoint exposurePointOfInterestDuringModeSet;
 @end
 
 @implementation CAMFakeAVCaptureDevice
-
-@synthesize activeFormat = _activeFormat;
-
-- (AVCaptureDeviceFormat *)activeFormat {
-  return _activeFormat;
-}
-
-- (void)setActiveFormat:(AVCaptureDeviceFormat *)activeFormat {
-  _activeFormat = activeFormat;
-}
 
 - (BOOL)hasMediaType:(NSString *)mediaType {
   return [self.mediaTypes containsObject:mediaType];
@@ -48,6 +30,20 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 #pragma mark Lock / Unlock
 #pragma mark -
+
+- (BOOL)cam_performWhileLocked:(BOOL (^)(NSError **errorPtr))action
+                         error:(NSError *__autoreleasing *)errorPtr {
+  LTParameterAssert(action, @"action block must be non-nil");
+  BOOL success;
+
+  success = [self lockForConfiguration:errorPtr];
+  if (success) {
+    success = action(errorPtr);
+  }
+  [self unlockForConfiguration];
+
+  return success;
+}
 
 - (BOOL)lockForConfiguration:(NSError *__autoreleasing *)errorPtr {
   _didLock = YES;
@@ -88,7 +84,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)setFocusModeLockedWithLensPosition:(float)lensPosition
-                         completionHandler:(void (^)(CMTime syncTime))handler {
+                         completionHandler:(nullable void (^)(CMTime syncTime))handler {
   self.lensPosition = lensPosition;
   handler(kCMTimeZero);
 }
@@ -111,13 +107,14 @@ NS_ASSUME_NONNULL_BEGIN
   RAC(self, adjustingExposure) = [@[@YES, @NO].rac_sequence.signal delay:0.005];
 }
 
-- (void)setExposureTargetBias:(float)bias completionHandler:(void (^)(CMTime syncTime))handler {
+- (void)setExposureTargetBias:(float)bias
+            completionHandler:(nullable void (^)(CMTime syncTime))handler {
   self.exposureTargetBias = bias;
   handler(kCMTimeZero);
 }
 
 - (void)setExposureModeCustomWithDuration:(CMTime)duration ISO:(float)ISO
-                        completionHandler:(void (^)(CMTime syncTime))handler {
+                        completionHandler:(nullable void (^)(CMTime syncTime))handler {
   _exposureMode = AVCaptureExposureModeCustom;
 
   if (CMTimeCompare(duration, AVCaptureExposureDurationCurrent) != 0) {
@@ -151,7 +148,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)setWhiteBalanceModeLockedWithDeviceWhiteBalanceGains:
     (AVCaptureWhiteBalanceGains)whiteBalanceGains
-                                           completionHandler:(void (^)(CMTime syncTime))handler {
+    completionHandler:(nullable void (^)(CMTime syncTime))handler {
   self.deviceWhiteBalanceGains = whiteBalanceGains;
   handler(kCMTimeZero);
 }

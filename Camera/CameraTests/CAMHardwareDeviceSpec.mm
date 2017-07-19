@@ -407,7 +407,7 @@ context(@"", ^{
 
     beforeEach(^{
       videoDevice = [[CAMFakeAVCaptureDevice alloc] init];
-      session.videoDevice = videoDevice;
+      session.videoDevice = (id)videoDevice;
     });
 
     context(@"positive", ^{
@@ -544,9 +544,9 @@ context(@"", ^{
       deviceFormat.maxExposureDurationToReturn = CMTimeMakeWithSeconds(0.1, 1000000);
 
       videoDevice = [[CAMFakeAVCaptureDevice alloc] init];
-      videoDevice.activeFormat = deviceFormat;
+      videoDevice.activeFormat = (id)deviceFormat;
 
-      session.videoDevice = videoDevice;
+      session.videoDevice = (id)videoDevice;
     });
 
     context(@"positive", ^{
@@ -818,7 +818,7 @@ context(@"", ^{
 
     beforeEach(^{
       videoDevice = [[CAMFakeAVCaptureDevice alloc] init];
-      session.videoDevice = videoDevice;
+      session.videoDevice = (id)videoDevice;
     });
 
     context(@"positive", ^{
@@ -960,11 +960,11 @@ context(@"", ^{
 
     beforeEach(^{
       videoDevice = [[CAMFakeAVCaptureDevice alloc] init];
-      session.videoDevice = videoDevice;
+      session.videoDevice = (id)videoDevice;
 
       format = [[CAMFakeAVCaptureDeviceFormat alloc] init];
       format.videoMaxZoomFactorToReturn = 4;
-      videoDevice.activeFormat = format;
+      videoDevice.activeFormat = (id)format;
     });
 
     context(@"positive", ^{
@@ -992,14 +992,14 @@ context(@"", ^{
       it(@"should update max zoom factor", ^{
         expect(device.maxZoomFactor).to.equal(4);
         format.videoMaxZoomFactorToReturn = 3;
-        videoDevice.activeFormat = format;
+        videoDevice.activeFormat = (id)format;
         expect(device.maxZoomFactor).will.equal(3);
       });
 
       it(@"should update hasZoom", ^{
         expect(device.hasZoom).to.beTruthy();
         format.videoMaxZoomFactorToReturn = 1;
-        videoDevice.activeFormat = format;
+        videoDevice.activeFormat = (id)format;
         expect(device.maxZoomFactor).will.equal(1);
         expect(device.minZoomFactor).will.equal(1);
         expect(device.hasZoom).will.beFalsy();
@@ -1040,7 +1040,7 @@ context(@"", ^{
 
     beforeEach(^{
       videoDevice = [[CAMFakeAVCaptureDevice alloc] init];
-      session.videoDevice = videoDevice;
+      session.videoDevice = (id)videoDevice;
     });
 
     context(@"positive", ^{
@@ -1100,7 +1100,7 @@ context(@"", ^{
 
     beforeEach(^{
       videoDevice = [[CAMFakeAVCaptureDevice alloc] init];
-      session.videoDevice = videoDevice;
+      session.videoDevice = (id)videoDevice;
     });
 
     context(@"positive", ^{
@@ -1222,7 +1222,7 @@ context(@"lock", ^{
     device = [[CAMHardwareDevice alloc] initWithSession:session
                                            sessionQueue:dispatch_get_main_queue()];
     videoDevice = [[CAMFakeAVCaptureDevice alloc] init];
-    session.videoDevice = videoDevice;
+    session.videoDevice = (id)videoDevice;
   });
 
   it(@"should lock and unlock device", ^{
@@ -1382,7 +1382,7 @@ context(@"multiple setters", ^{
     videoDevice.focusPointOfInterestSupported = YES;
     videoDevice.exposureModeSupported = YES;
     videoDevice.exposurePointOfInterestSupported = YES;
-    session.videoDevice = videoDevice;
+    session.videoDevice = (id)videoDevice;
   });
 
   it(@"should run multiple setters successfully", ^{

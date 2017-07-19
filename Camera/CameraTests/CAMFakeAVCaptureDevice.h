@@ -5,12 +5,13 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/// Fake \c AVCaptureDevice for testing purposes, with many capabilities for mocking and recording
-/// behaviors. It records whether \c lockForConfiguration: and \c unlockForConfiguration were
-/// called, and in what order they were called, and can be configured to err in
-/// \c lockForConfiguration:. Additionally, most \c is*Supported methods can be configured to
-/// return a given value.
-@interface CAMFakeAVCaptureDevice : AVCaptureDevice
+/// Fake \c AVCaptureDevice to be used in testing. To use, explicitly cast to \c AVCaptureDevice
+/// (or \c id).
+///
+/// Starting with iOS 11, Apple have made it harder to directly subclass \c AVCaptureDevice.
+/// Therefore, this class contains some properties that are needed so compilation and linkage will
+/// still work.
+@interface CAMFakeAVCaptureDevice : NSObject
 
 /// Error to return in \c lockForConfiguration:. If \c nil, \c lockForConfiguration: will succeed.
 @property (strong, nonatomic) NSError *lockError;
@@ -78,6 +79,32 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// \c exposurePointOfInterest at the time \c setExposureMode: was last called.
 @property (readonly, nonatomic) CGPoint exposurePointOfInterestDuringModeSet;
+
+// From AVCaptureDevice.
+@property (nonatomic) AVCaptureFocusMode focusMode;
+@property (nonatomic) CGPoint focusPointOfInterest;
+@property (readonly, nonatomic) float lensPosition;
+@property (strong, nonatomic) AVCaptureDeviceFormat *activeFormat;
+@property (nonatomic) AVCaptureExposureMode exposureMode;
+@property (nonatomic) CGPoint exposurePointOfInterest;
+@property (readonly, nonatomic) float exposureTargetBias;
+@property (readonly, nonatomic) CMTime exposureDuration;
+@property (readonly, nonatomic) float ISO;
+@property (nonatomic) AVCaptureWhiteBalanceMode whiteBalanceMode;
+@property (readonly, nonatomic) AVCaptureWhiteBalanceGains deviceWhiteBalanceGains;
+@property (nonatomic) CGFloat videoZoomFactor;
+@property (nonatomic) AVCaptureFlashMode flashMode;
+@property (nonatomic) AVCaptureTorchMode torchMode;
+@property (readonly, nonatomic) float torchLevel;
+@property (readonly, nonatomic) AVCaptureDevicePosition position;
+@property (readonly, nonatomic) NSArray *formats;
+@property (nonatomic, getter=isSubjectAreaChangeMonitoringEnabled) BOOL
+    subjectAreaChangeMonitoringEnabled;
+- (void)setExposureModeCustomWithDuration:(CMTime)duration ISO:(float)ISO
+                        completionHandler:(nullable void (^)(CMTime syncTime))handler;
+
+// From AVCaptureDevice+Configure.
+- (BOOL)cam_performWhileLocked:(BOOL (^)(NSError **errorPtr))action error:(NSError **)errorPtr;
 
 @end
 

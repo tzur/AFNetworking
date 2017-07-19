@@ -1,11 +1,15 @@
 // Copyright (c) 2016 Lightricks. All rights reserved.
 // Created by Nir Bruner.
 
-#import <AVFoundation/AVFoundation.h>
-
 NS_ASSUME_NONNULL_BEGIN
 
-@interface CAMFakeAVCaptureDeviceFormat : AVCaptureDeviceFormat
+/// Fake \c AVCaptureDeviceFormat to be used in testing. To use, explicitly cast to
+/// \c AVCaptureDeviceFormat (or \c id).
+///
+/// Starting with iOS 11, Apple have made it harder to directly subclass \c AVCaptureDeviceFormat.
+/// Therefore, this class contains some properties that are needed so compilation and linkage will
+/// still work.
+@interface CAMFakeAVCaptureDeviceFormat : NSObject
 
 + (instancetype)formatWithSubtype:(FourCharCode)subtype width:(int32_t)width height:(int32_t)height;
 
@@ -22,6 +26,13 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic) float maxISOToReturn;
 @property (nonatomic) CMTime minExposureDurationToReturn;
 @property (nonatomic) CMTime maxExposureDurationToReturn;
+
+// From AVCaptureDeviceFormat+MediaProperties.
+@property (readonly, nonatomic) NSUInteger cam_width;
+@property (readonly, nonatomic) NSUInteger cam_height;
+@property (readonly, nonatomic) NSUInteger cam_pixelCount;
+@property (readonly, nonatomic) NSUInteger cam_stillPixelCount;
+@property (readonly, nonatomic) NSUInteger cam_mediaSubType;
 
 @end
 
