@@ -541,6 +541,34 @@ context(@"subviews", ^{
   });
 });
 
+context(@"content inset", ^{
+  __block PTUAlbumViewController *controller;
+
+  beforeEach(^{
+    controller = [[PTUAlbumViewController alloc] initWithViewModel:viewModel
+                                                     configuration:configuration];
+  });
+
+  it(@"should forward content inset to underlying collection view", ^{
+    [dataSourceProviderSignal sendNext:dataSourceProvider];
+    [controller.view layoutIfNeeded];
+
+    controller.contentInset = UIEdgeInsetsMake(1, 3, 3, 7);
+    expect(controller.collectionViewController.contentInset).to.equal(UIEdgeInsetsMake(1, 3, 3, 7));
+    expect(controller.contentInset).to.equal(UIEdgeInsetsMake(1, 3, 3, 7));
+  });
+
+  it(@"should apply existing content inset to underlying collection view when created", ^{
+    expect(controller.collectionViewController).to.beNil();
+
+    controller.contentInset = UIEdgeInsetsMake(1, 3, 3, 7);
+    [dataSourceProviderSignal sendNext:dataSourceProvider];
+    [controller.view layoutIfNeeded];
+    expect(controller.collectionViewController.contentInset).to.equal(UIEdgeInsetsMake(1, 3, 3, 7));
+    expect(controller.contentInset).to.equal(UIEdgeInsetsMake(1, 3, 3, 7));
+  });
+});
+
 it(@"should deallocate regardless of view model signals' lifetime", ^{
   __weak PTUAlbumViewController *weakViewController;
 

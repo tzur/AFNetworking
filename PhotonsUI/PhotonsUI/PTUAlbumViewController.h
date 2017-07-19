@@ -72,6 +72,11 @@ NS_ASSUME_NONNULL_BEGIN
 /// current \c errorView will remain unchanged.
 @property (strong, nonatomic, nullable) id<PTUErrorViewProvider> errorViewProvider;
 
+/// The distance that the content view is inset from the enclosing scroll view. Use this property to
+/// add to the scrolling area around the content. The unit of size is points. The default value is
+/// \c UIEdgeInsetsZero.
+@property (nonatomic) UIEdgeInsets contentInset;
+
 @end
 
 NS_ASSUME_NONNULL_END
