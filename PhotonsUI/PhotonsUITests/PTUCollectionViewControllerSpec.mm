@@ -979,4 +979,37 @@ context(@"error view", ^{
   });
 });
 
+context(@"content inset", ^{
+  __block PTUCollectionViewController *controller;
+
+  beforeEach(^{
+    controller = [[PTUCollectionViewController alloc] initWithDataSourceProvider:dataSourceProvider
+                                                            initialConfiguration:configuration];
+  });
+
+  it(@"should forward content inset to underlying collection view", ^{
+    [controller.view layoutIfNeeded];
+    auto collectionView =
+        (UICollectionView *)[controller.view wf_viewForAccessibilityIdentifier:@"CollectionView"];
+
+    controller.contentInset = UIEdgeInsetsMake(1, 3, 3, 7);
+    expect(collectionView.contentInset).to.equal(UIEdgeInsetsMake(1, 3, 3, 7));
+    expect(controller.contentInset).to.equal(UIEdgeInsetsMake(1, 3, 3, 7));
+  });
+
+  it(@"should apply existing content inset to underlying collection view when created", ^{
+    auto collectionView =
+        (UICollectionView *)[controller.view wf_viewForAccessibilityIdentifier:@"CollectionView"];
+    expect(collectionView).to.beNil();
+
+    controller.contentInset = UIEdgeInsetsMake(1, 3, 3, 7);
+    [controller.view layoutIfNeeded];
+    collectionView =
+        (UICollectionView *)[controller.view wf_viewForAccessibilityIdentifier:@"CollectionView"];
+
+    expect(collectionView.contentInset).to.equal(UIEdgeInsetsMake(1, 3, 3, 7));
+    expect(controller.contentInset).to.equal(UIEdgeInsetsMake(1, 3, 3, 7));
+  });
+});
+
 SpecEnd
