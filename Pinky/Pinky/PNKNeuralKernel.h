@@ -1,6 +1,8 @@
 // Copyright (c) 2017 Lightricks. All rights reserved.
 // Created by Ofir Bibi.
 
+#import "PNKKernel.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
 /// Protocol providing access to the basic information used by kernels operating on tensors in a
@@ -42,33 +44,11 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 /// Protocol implemented by kernels operating on a single input tensor in a neural network.
-@protocol PNKUnaryNeuralKernel <PNKNeuralKernel>
-
-/// Calculates the output size of this kernel given \c inputSize;
-- (MTLSize)outputSizeForInputSize:(MTLSize)inputSize;
-
-/// Encodes the operation performed by the kernel to \c commandBuffer using \c inputTexture as
-/// input. Output is written asynchronously to \c outputTexture.
-- (void)encodeToCommandBuffer:(id<MTLCommandBuffer>)commandBuffer
-                 inputTexture:(id<MTLTexture>)inputTexture
-                outputTexture:(id<MTLTexture>)outputTexture;
-
+@protocol PNKUnaryNeuralKernel <PNKNeuralKernel, PNKUnaryKernel>
 @end
 
 /// Protocol implemented by kernels operating on a two input tensors in a neural network.
-@protocol PNKBinaryNeuralKernel <PNKNeuralKernel>
-
-/// Calculates the output size of this kernel given \c primaryInputSize and \c secondaryInputSize;
-- (MTLSize)outputSizeForPrimaryInputSize:(MTLSize)primaryInputSize
-                   forSecondaryInputSize:(MTLSize)secondaryInputSize;
-
-/// Encodes the operation performed by the kernel to \c commandBuffer using \c primaryInputTexture
-/// and \c secondaryInputTexture as input. Output is written asynchronously to \c outputTexture.
-- (void)encodeToCommandBuffer:(id<MTLCommandBuffer>)commandBuffer
-          primaryInputTexture:(id<MTLTexture>)primaryInputTexture
-        secondaryInputTexture:(id<MTLTexture>)secondaryInputTexture
-                outputTexture:(id<MTLTexture>)outputTexture;
-
+@protocol PNKBinaryNeuralKernel <PNKNeuralKernel, PNKBinaryKernel>
 @end
 
 NS_ASSUME_NONNULL_END
