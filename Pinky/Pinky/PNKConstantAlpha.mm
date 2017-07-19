@@ -59,7 +59,7 @@ static NSString * const kKernelFunctionName = @"setConstantAlpha";
 }
 
 #pragma mark -
-#pragma mark PNKUnaryEncodableKernel
+#pragma mark PNKUnaryKernel
 #pragma mark -
 
 - (void)encodeToCommandBuffer:(id<MTLCommandBuffer>)commandBuffer

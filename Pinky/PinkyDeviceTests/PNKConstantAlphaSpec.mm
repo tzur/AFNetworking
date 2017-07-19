@@ -84,14 +84,9 @@ context(@"processing", ^{
 
   it(@"should adjust alpha channel correctly", ^{
     cv::Mat4b inputMat(kInputWidth, kInputHeight, kRedColor);
-    auto imageDescriptor =
-        [MPSImageDescriptor imageDescriptorWithChannelFormat:MPSImageFeatureChannelFormatUnorm8
-                                                       width:kInputWidth
-                                                      height:kInputHeight
-                                             featureChannels:kInputFeatureChannels];
-    auto inputImage = [[MPSImage alloc] initWithDevice:device imageDescriptor:imageDescriptor];
+    auto inputImage = PNKImageMake(device, kInputWidth, kInputHeight, kInputFeatureChannels);
     PNKCopyMatToMTLTexture(inputImage.texture, inputMat);
-    auto outputImage = [[MPSImage alloc] initWithDevice:device imageDescriptor:imageDescriptor];
+    auto outputImage = PNKImageMake(device, kInputWidth, kInputHeight, kInputFeatureChannels);
 
     [alphaLayer encodeToCommandBuffer:commandBuffer inputTexture:inputImage.texture
                         outputTexture:outputImage.texture];
