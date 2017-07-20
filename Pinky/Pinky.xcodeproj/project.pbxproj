@@ -443,6 +443,7 @@
 		06172AB11F02884F00379124 /* PNKStyleUpsampleProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKStyleUpsampleProcessorSpec.mm; sourceTree = "<group>"; };
 		068D90A61F1F60A90012F472 /* PNKTestUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKTestUtils.h; sourceTree = "<group>"; };
 		068D90A71F1F60A90012F472 /* PNKTestUtils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKTestUtils.mm; sourceTree = "<group>"; };
+		068D90AA1F1F7F770012F472 /* LTEasyBoxing+Pinky.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "LTEasyBoxing+Pinky.h"; sourceTree = "<group>"; };
 		069225E11F0A615700F3C8C7 /* PNKNeuralKernel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNKNeuralKernel.h; sourceTree = "<group>"; };
 		06A0A94B1F1B484700941045 /* PNKKernel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNKKernel.h; sourceTree = "<group>"; };
 		06A1AA131F14F0D80031A387 /* PNKNeuralNetworkModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKNeuralNetworkModel.h; sourceTree = "<group>"; };
@@ -643,6 +644,14 @@
 			name = "Test Utils";
 			sourceTree = "<group>";
 		};
+		068D90A91F1F7EF50012F472 /* Boxing */ = {
+			isa = PBXGroup;
+			children = (
+				068D90AA1F1F7F770012F472 /* LTEasyBoxing+Pinky.h */,
+			);
+			name = Boxing;
+			sourceTree = "<group>";
+		};
 		069225C01F0A611E00F3C8C7 /* Neural Networks */ = {
 			isa = PBXGroup;
 			children = (
@@ -798,6 +807,7 @@
 		A14171A31E6EAA93005DBEFF /* Pinky */ = {
 			isa = PBXGroup;
 			children = (
+				068D90A91F1F7EF50012F472 /* Boxing */,
 				C9815C621EE886E0004868CE /* Extensions */,
 				C9515C2E1F01125100B973F1 /* GPU */,
 				06C3F73E1EFF9E3C00D4B1F4 /* Image Processing */,
