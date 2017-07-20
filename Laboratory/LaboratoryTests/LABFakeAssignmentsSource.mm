@@ -40,8 +40,37 @@ NS_ASSUME_NONNULL_BEGIN
         }];
     self.updateSignal = [[RACSignal empty] replay];
     self.backgroundUpdateSignal = [[RACSignal return:@(UIBackgroundFetchResultNoData)] replay];
+    self.fetchAllExperimentsAndVariantsSignal = [RACObserve(self, allExperiments)
+        map:^NSDictionary *(NSDictionary<NSString *, NSArray<LABVariant *> *> *allExperiments) {
+          return [allExperiments lt_mapValues:^(NSString *, NSArray<LABVariant *> *variants) {
+            return [[variants lt_map:^(LABVariant *variant) {
+              return variant.name;
+            }] lt_set];
+          }];
+        }];
+    [self setupAssignmentsFetchSignalBlock];
   }
   return self;
+}
+
+- (void)setupAssignmentsFetchSignalBlock {
+  @weakify(self)
+  self.fetchAssignmentsSignalBlock = ^(NSString *experiment, NSString *variant) {
+    @strongify(self)
+    if (!self.allExperiments[experiment]) {
+      return [RACSignal error:[NSError lab_errorWithCode:LABErrorCodeExperimentNotFound
+                                    associatedExperiment:experiment]];
+    }
+
+    auto _Nullable assignments =
+        [self.allExperiments[experiment] lt_find:^(LABVariant *var) {
+          return [var.name isEqual:variant];
+        }].assignments;
+
+    return assignments ? [RACSignal return:assignments] :
+        [RACSignal error:[NSError lab_errorWithCode:LABErrorCodeVariantForExperimentNotFound
+                               associatedExperiment:experiment associatedVariant:variant]];
+  };
 }
 
 - (void)updateActiveVariants:(NSDictionary<NSString *, id> *)variants {
@@ -70,26 +99,12 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 - (RACSignal *)fetchAllExperimentsAndVariants {
-  auto allExperiments = [self.allExperiments lt_mapValues:^(NSString *,
-                                                            NSArray<LABVariant *> *variants) {
-    return [[variants lt_map:^(LABVariant *variant) {
-      return variant.name;
-    }] lt_set];
-  }];
-
-  return [RACSignal return:allExperiments];
+  return [self.fetchAllExperimentsAndVariantsSignal take:1];
 }
 
 - (RACSignal *)fetchAssignmentsForExperiment:(NSString *)experiment
                                  withVariant:(NSString *)variant {
-  auto _Nullable assignments =
-      [self.allExperiments[experiment] lt_filter:^(LABVariant *var) {
-        return [var.name isEqual:variant];
-      }].firstObject.assignments;
-
-  return assignments ? [RACSignal return:assignments] :
-      [RACSignal error:[NSError lab_errorWithCode:LABErrorCodeVariantForExperimentNotFound
-                             associatedExperiment:experiment associatedVariant:variant]];
+  return self.fetchAssignmentsSignalBlock(experiment, variant);
 }
 
 - (RACSignal *)update {

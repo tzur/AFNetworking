@@ -63,6 +63,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// change.
 ///
 /// @return RACSignal<>
+///
+/// @note the returned signal sends values on an arbitrary thread.
 - (RACSignal *)update;
 
 /// Updates the source with the latest data from a remote resource. The API is meant to be used from
@@ -75,6 +77,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// signal doesn't err.
 ///
 /// @return RACSignal<NSNumber *>
+///
+/// @note the returned signal sends values on an arbitrary thread.
 - (RACSignal *)updateInBackground;
 
 @required

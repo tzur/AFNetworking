@@ -52,6 +52,8 @@
 		88BB646D1EDAAD100026DEC0 /* LABLocalSource.mm in Sources */ = {isa = PBXBuildFile; fileRef = 88BB646B1EDAAD100026DEC0 /* LABLocalSource.mm */; };
 		88F8C3D21F027DF30070F7E4 /* TLProperties+LaboratorySpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 88F8C3D11F027DF30070F7E4 /* TLProperties+LaboratorySpec.mm */; };
 		A10DEFA91EE425DB00F1DD87 /* LABAssignmentsManagerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = A10DEFA81EE425DB00F1DD87 /* LABAssignmentsManagerSpec.mm */; };
+		A1248EFC1EE93608008D6535 /* LABDebugSource.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1248EFB1EE93608008D6535 /* LABDebugSource.mm */; };
+		A13C527E1EF177AE00BA2AAA /* LABDebugSourceSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = A13C527D1EF177AE00BA2AAA /* LABDebugSourceSpec.mm */; };
 		A14171C61E6EAC0D005DBEFF /* libLaboratory.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A14171A11E6EAA93005DBEFF /* libLaboratory.a */; };
 		A14173401E6EB59F005DBEFF /* libExpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A141728A1E6EAEE7005DBEFF /* libExpecta.a */; };
 		A14173411E6EB59F005DBEFF /* libLTKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A141726F1E6EADDF005DBEFF /* libLTKit.a */; };
@@ -419,6 +421,9 @@
 		88BB646C1EDAAD100026DEC0 /* LABStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LABStorage.h; sourceTree = "<group>"; };
 		88F8C3D11F027DF30070F7E4 /* TLProperties+LaboratorySpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "TLProperties+LaboratorySpec.mm"; sourceTree = "<group>"; };
 		A10DEFA81EE425DB00F1DD87 /* LABAssignmentsManagerSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LABAssignmentsManagerSpec.mm; sourceTree = "<group>"; };
+		A1248EFA1EE93608008D6535 /* LABDebugSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LABDebugSource.h; sourceTree = "<group>"; };
+		A1248EFB1EE93608008D6535 /* LABDebugSource.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LABDebugSource.mm; sourceTree = "<group>"; };
+		A13C527D1EF177AE00BA2AAA /* LABDebugSourceSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LABDebugSourceSpec.mm; sourceTree = "<group>"; };
 		A14171A11E6EAA93005DBEFF /* libLaboratory.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libLaboratory.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		A14171C11E6EAC0D005DBEFF /* LaboratoryTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LaboratoryTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A14171C51E6EAC0D005DBEFF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -532,6 +537,7 @@
 		88440B971EDB199A00A64CF7 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				A13C527D1EF177AE00BA2AAA /* LABDebugSourceSpec.mm */,
 				88440B981EDB19C200A64CF7 /* LABLocalSourceSpec.mm */,
 				884136081EEE6E220096BF8C /* LABTaplyticsSpec.mm */,
 				88349C131EF012C1007B14C4 /* LABTaplyticsSourceSpec.mm */,
@@ -594,6 +600,8 @@
 		88BB644B1EDAAD000026DEC0 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				A1248EFA1EE93608008D6535 /* LABDebugSource.h */,
+				A1248EFB1EE93608008D6535 /* LABDebugSource.mm */,
 				88BB646A1EDAAD100026DEC0 /* LABLocalSource.h */,
 				88BB646B1EDAAD100026DEC0 /* LABLocalSource.mm */,
 				883712F61EE57E8C0033EE08 /* LABTaplytics.h */,
@@ -1196,6 +1204,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				88648C231EE5281200B492D7 /* LABExperimentsTokenProvider.mm in Sources */,
+				A1248EFC1EE93608008D6535 /* LABDebugSource.mm in Sources */,
 				883235851ED861EA0090787D /* NSError+Laboratory.mm in Sources */,
 				883712FD1EE57E8C0033EE08 /* TLProperties+Laboratory.mm in Sources */,
 				885349B81EE45B0C0043D190 /* LABAssignmentsSource.mm in Sources */,
@@ -1234,6 +1243,7 @@
 				88932F631EDF538900451D44 /* EXPMatchers+matchValues.m in Sources */,
 				88932F5F1EDF538900451D44 /* EXPMatchers+error.m in Sources */,
 				88932F761EDF55D300451D44 /* EXPExpect+LLReactiveMatchersExtensions.m in Sources */,
+				A13C527E1EF177AE00BA2AAA /* LABDebugSourceSpec.mm in Sources */,
 				884F64B51EE53E010052274E /* LABFakeStorage.mm in Sources */,
 				A1E388391EE554D90095F056 /* LABFakeAssignmentsSource.mm in Sources */,
 				A10DEFA91EE425DB00F1DD87 /* LABAssignmentsManagerSpec.mm in Sources */,

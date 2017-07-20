@@ -150,38 +150,41 @@ context(@"initialized source", ^{
 
   it(@"should update and complete when the callback is called with success", ^{
     OCMStub([taplytics performLoadPropertiesFromServer:([OCMArg invokeBlockWithArgs:@YES, nil])]);
-    expect([source update]).to.complete();
+    expect([source update]).will.complete();
     OCMVerify([taplytics performLoadPropertiesFromServer:OCMOCK_ANY]);
   });
 
   it(@"should update and err when the callback is called with error", ^{
     OCMStub([taplytics performLoadPropertiesFromServer:([OCMArg invokeBlockWithArgs:@NO, nil])]);
-    expect([source update]).to.sendError([NSError lt_errorWithCode:LABErrorCodeSourceUpdateFailed]);
+    expect([source update]).will
+        .sendError([NSError lt_errorWithCode:LABErrorCodeSourceUpdateFailed]);
     OCMVerify([taplytics performLoadPropertiesFromServer:OCMOCK_ANY]);
   });
 
   it(@"should update even without subscriber to the signal", ^{
+    OCMExpect([taplytics performLoadPropertiesFromServer:OCMOCK_ANY]);
     [source update];
-    OCMVerify([taplytics performLoadPropertiesFromServer:OCMOCK_ANY]);
+    OCMVerifyAllWithDelay((id)taplytics, 1);
   });
 
   it(@"should update in the background and send new data if callback reports new data", ^{
     OCMStub([taplytics refreshPropertiesInBackground:
             ([OCMArg invokeBlockWithArgs:@(UIBackgroundFetchResultNewData), nil])]);
-    expect([source updateInBackground]).to.sendValues(@[@(UIBackgroundFetchResultNewData)]);
+    expect([source updateInBackground]).will.sendValues(@[@(UIBackgroundFetchResultNewData)]);
     OCMVerify([taplytics refreshPropertiesInBackground:OCMOCK_ANY]);
   });
 
   it(@"should update in the background and send failure if callback reports failure", ^{
     OCMStub([taplytics refreshPropertiesInBackground:
              ([OCMArg invokeBlockWithArgs:@(UIBackgroundFetchResultFailed), nil])]);
-    expect([source updateInBackground]).to.sendValues(@[@(UIBackgroundFetchResultFailed)]);
+    expect([source updateInBackground]).will.sendValues(@[@(UIBackgroundFetchResultFailed)]);
     OCMVerify([taplytics refreshPropertiesInBackground:OCMOCK_ANY]);
   });
 
   it(@"should update in the background even without subscriber to the signal", ^{
+    OCMExpect([taplytics refreshPropertiesInBackground:OCMOCK_ANY]);
     [source updateInBackground];
-    OCMVerify([taplytics refreshPropertiesInBackground:OCMOCK_ANY]);
+    OCMVerifyAllWithDelay((id)taplytics, 1);
   });
 });
 
