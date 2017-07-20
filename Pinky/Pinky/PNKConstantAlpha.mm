@@ -4,7 +4,7 @@
 #import "PNKConstantAlpha.h"
 
 #import "PNKComputeDispatch.h"
-#import "PNKLibraryLoader.h"
+#import "PNKComputeState.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -18,9 +18,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Kernel compiled state to encode.
 @property (readonly, nonatomic) id<MTLComputePipelineState> state;
-
-/// Alpha value to set in the Alpha channel.
-@property (readonly, nonatomic) float alpha;
 
 @end
 
@@ -36,7 +33,6 @@ static NSString * const kKernelFunctionName = @"setConstantAlpha";
 - (instancetype)initWithDevice:(id<MTLDevice>)device alpha:(float)alpha {
   if (self = [super init]) {
     _device = device;
-    _alpha = alpha;
 
     [self compileStateWithAlpha:alpha];
   }
@@ -44,18 +40,9 @@ static NSString * const kKernelFunctionName = @"setConstantAlpha";
 }
 
 - (void)compileStateWithAlpha:(float)alpha {
-  auto library = PNKLoadLibrary(self.device);
   auto functionConstants = [[MTLFunctionConstantValues alloc] init];
   [functionConstants setConstantValue:&alpha type:MTLDataTypeFloat withName:@"alpha"];
-  NSError *error;
-  auto function = [library newFunctionWithName:kKernelFunctionName constantValues:functionConstants
-                                         error:&error];
-  LTAssert(function, @"Can't create function with name %@. Got error %@", kKernelFunctionName,
-           error);
-  auto state = [self.device newComputePipelineStateWithFunction:function error:&error];
-  LTAssert(state, @"Can't create compute pipeline state for function %@. Got error %@",
-           function.name, error);
-  _state = state;
+  _state = PNKCreateComputeStateWithConstants(self.device, kKernelFunctionName, functionConstants);
 }
 
 #pragma mark -
