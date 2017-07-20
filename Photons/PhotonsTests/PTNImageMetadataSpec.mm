@@ -40,7 +40,7 @@ context(@"setting values", ^{
   });
 
   it(@"should set size and orientation correctly", ^{
-    PTNImageOrientation orientation = PTNImageOrientationDownMirrored;
+    PTNImageOrientation *orientation = $(PTNImageOrientationDownMirrored);
     metadata.orientation = orientation;
     expect(metadata.orientation).to.equal(orientation);
 
@@ -48,12 +48,12 @@ context(@"setting values", ^{
     metadata.size = size;
     expect(metadata.size).to.equal(size);
 
-    metadata.orientation = PTNImageOrientationLeft;
+    metadata.orientation = $(PTNImageOrientationLeft);
     metadata.size = size;
     expect(metadata.size).to.equal(size);
 
     // Changing orientation can affect size.
-    metadata.orientation = PTNImageOrientationUp;
+    metadata.orientation = $(PTNImageOrientationUp);
     expect(metadata.size).to.equal(CGSizeMake(size.height, size.width));
   });
 
@@ -100,7 +100,7 @@ context(@"setting values", ^{
     metadata.location = location;
     metadata.heading = heading;
     metadata.size = CGSizeMake(20, 30);
-    metadata.orientation = PTNImageOrientationDownMirrored;
+    metadata.orientation = $(PTNImageOrientationDownMirrored);
 
     metadata.make = nil;
     metadata.model = nil;
@@ -110,7 +110,7 @@ context(@"setting values", ^{
     metadata.location = nil;
     metadata.heading = nil;
     metadata.size = CGSizeNull;
-    metadata.orientation = PTNImageOrientationUp;
+    metadata.orientation = $(PTNImageOrientationUp);
 
     PTNMutableImageMetadata *expected = [[PTNMutableImageMetadata alloc] init];
     expect(metadata).to.equal(expected);
@@ -167,7 +167,8 @@ context(@"NSCopying", ^{
     PTNMutableImageMetadata *mutableMetadata = [metadata mutableCopy];
     expect(mutableMetadata.metadataDictionary).to.equal(metadata.metadataDictionary);
     expect([[mutableMetadata copy] isKindOfClass:[PTNImageMetadata class]]).to.beTruthy();
-    expect([[mutableMetadata mutableCopy] isKindOfClass:[PTNMutableImageMetadata class]]).to.beTruthy();
+    expect([[mutableMetadata mutableCopy] isKindOfClass:[PTNMutableImageMetadata class]]).to
+        .beTruthy();
 
     PTNImageMetadata *immutant = [mutableMetadata copy];
     expect(immutant).to.equal(metadata);
@@ -221,7 +222,7 @@ context(@"initialization", ^{
       expect(metadata.headingDirection).to.beLessThan(0);
 
       expect(metadata.size).to.equal(CGSizeMake(44, 44));
-      expect(metadata.orientation).to.equal(PTNImageOrientationUp);
+      expect(metadata.orientation).to.equal($(PTNImageOrientationUp));
     });
 
     it(@"should copy metadata", ^{
@@ -305,42 +306,42 @@ context(@"orientations", ^{
 
   itShouldBehaveLike(@"reading orientation", @{
     @"name": @"PTNImageMetadataUp",
-    @"orientation": @(PTNImageOrientationUp)
+    @"orientation": $(PTNImageOrientationUp)
   });
 
   itShouldBehaveLike(@"reading orientation", @{
     @"name": @"PTNImageMetadataDown",
-    @"orientation": @(PTNImageOrientationDown)
+    @"orientation": $(PTNImageOrientationDown)
   });
 
   itShouldBehaveLike(@"reading orientation", @{
     @"name": @"PTNImageMetadataLeft",
-    @"orientation": @(PTNImageOrientationLeft)
+    @"orientation": $(PTNImageOrientationLeft)
   });
 
   itShouldBehaveLike(@"reading orientation", @{
     @"name": @"PTNImageMetadataRight",
-    @"orientation": @(PTNImageOrientationRight)
+    @"orientation": $(PTNImageOrientationRight)
   });
 
   itShouldBehaveLike(@"reading orientation", @{
     @"name": @"PTNImageMetadataUpMirrored",
-    @"orientation": @(PTNImageOrientationUpMirrored)
+    @"orientation": $(PTNImageOrientationUpMirrored)
   });
 
   itShouldBehaveLike(@"reading orientation", @{
     @"name": @"PTNImageMetadataDownMirrored",
-    @"orientation": @(PTNImageOrientationDownMirrored)
+    @"orientation": $(PTNImageOrientationDownMirrored)
   });
 
   itShouldBehaveLike(@"reading orientation", @{
     @"name": @"PTNImageMetadataLeftMirrored",
-    @"orientation": @(PTNImageOrientationLeftMirrored)
+    @"orientation": $(PTNImageOrientationLeftMirrored)
   });
 
   itShouldBehaveLike(@"reading orientation", @{
     @"name": @"PTNImageMetadataRightMirrored",
-    @"orientation": @(PTNImageOrientationRightMirrored)
+    @"orientation": $(PTNImageOrientationRightMirrored)
   });
 });
 
