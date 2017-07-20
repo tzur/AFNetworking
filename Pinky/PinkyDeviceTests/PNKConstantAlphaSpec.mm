@@ -3,9 +3,6 @@
 
 #import "PNKConstantAlpha.h"
 
-#import "PNKOpenCVExtensions.h"
-#import "PNKTestUtils.h"
-
 SpecBegin(PNKConstantAlpha)
 
 static const NSUInteger kInputWidth = 6;
