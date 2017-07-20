@@ -254,6 +254,27 @@ context(@"updates", ^{
     OCMVerifyAllWithDelay(collectionView, 1);
   });
 
+  it(@"should not crash when updating incremental changes", ^{
+    auto initialState = [[PTUChangeset alloc] initWithAfterDataModel:@[@[@1, @2, @3]]];
+    auto deletedPaths = @[[NSIndexPath indexPathForItem:0 inSection:0]];
+    auto updates = [[PTUChangeset alloc] initWithBeforeDataModel:@[@[@1, @2, @3]]
+                                                  afterDataModel:@[@[@2, @3]] deleted:deletedPaths
+                                                        inserted:nil updated:nil moved:nil];
+    auto layout = [[UICollectionViewLayout alloc] init];
+    auto collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 0, 1, 1)
+                                             collectionViewLayout:layout];
+    auto dataSource = [[PTUDataSource alloc] initWithCollectionView:collectionView
+                                                  changesetProvider:changesetProvider
+                                              cellViewModelProvider:viewModelProvider
+                                                          cellClass:cellClass
+                                                    headerCellClass:headerCellClass];
+    LLSignalTestRecorder *recorder = [dataSource.didUpdateCollectionView testRecorder];
+    [dataSignal sendNext:initialState];
+    [dataSignal sendNext:updates];
+
+    expect(recorder).will.sendValues(@[[RACUnit defaultUnit], [RACUnit defaultUnit]]);
+  });
+
   it(@"should map incremental changes to corresponding inserts and removes", ^{
     NSArray *deleted = @[[NSIndexPath indexPathForItem:1 inSection:0]];
     NSArray *inserted = @[
