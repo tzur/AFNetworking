@@ -491,25 +491,25 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (RACSignal *)refreshReceipt {
   @weakify(self);
-  return [[[RACSignal defer:^RACSignal *{
-    @strongify(self);
-    return [[self.storeKitFacade refreshReceipt] concat:[self restoreCompletedTransactions]];
-  }]
-  doError:^(NSError *error) {
-    [self sendErrorEventOfType:$(BZREventTypeNonCriticalError) error:error];
-  }]
-  setNameWithFormat:@"%@ -refreshReceipt", self];
+  return [[[[[[[self.storeKitFacade refreshReceipt]
+      concat:[self restorePurchases]]
+      doError:^(NSError *error) {
+        @strongify(self);
+        [self sendErrorEventOfType:$(BZREventTypeNonCriticalError) error:error];
+      }]
+      catchTo:[RACSignal empty]]
+      concat:[self validateReceipt]]
+      ignoreValues]
+      setNameWithFormat:@"%@ -refreshReceipt", self];
 }
 
-- (RACSignal *)restoreCompletedTransactions {
+- (RACSignal *)restorePurchases {
   @weakify(self);
-  return [[[[self.storeKitFacade restoreCompletedTransactions]
+  return [[self.storeKitFacade restoreCompletedTransactions]
       doNext:^(SKPaymentTransaction *transaction) {
         @strongify(self);
         [self.storeKitFacade finishTransaction:transaction];
-      }]
-      concat:[self.validationStatusProvider fetchReceiptValidationStatus]]
-      ignoreValues];
+      }];
 }
 
 - (RACSignal *)productList {
@@ -568,7 +568,12 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (RACSignal *)validateReceipt {
-  return [self.validationStatusProvider fetchReceiptValidationStatus];
+  @weakify(self);
+  return [[self.validationStatusProvider fetchReceiptValidationStatus]
+    doError:^(NSError *error) {
+      @strongify(self);
+      [self sendErrorEventOfType:$(BZREventTypeCriticalError) error:error];
+    }];
 }
 
 - (RACSignal *)completedTransactionsSignal {

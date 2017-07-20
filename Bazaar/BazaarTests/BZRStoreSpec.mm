@@ -753,16 +753,40 @@ context(@"deleting product content", ^{
 });
 
 context(@"refreshing receipt", ^{
-  it(@"should send error event when refresh receipt errs", ^{
-    NSError *error = [NSError lt_errorWithCode:1337];
-    OCMStub([storeKitFacade refreshReceipt]).andReturn([RACSignal error:error]);
+  context(@"refreshing receipt using store kit facade", ^{
+    beforeEach(^{
+      OCMStub([storeKitFacade restoreCompletedTransactions]).andReturn([RACSignal empty]);
+      OCMStub([receiptValidationStatusProvider fetchReceiptValidationStatus])
+          .andReturn([RACSignal empty]);
+    });
 
-    LLSignalTestRecorder *recorder = [[store eventsSignal] testRecorder];
-    [[store refreshReceipt] subscribeNext:^(id) {}];
+    it(@"should not err if refresh receipt errs", ^{
+      NSError *error = [NSError lt_errorWithCode:1337];
+      OCMStub([storeKitFacade refreshReceipt]).andReturn([RACSignal error:error]);
 
-    expect(recorder).will.sendValues(@[
-      [[BZREvent alloc] initWithType:$(BZREventTypeNonCriticalError) eventError:error]
-    ]);
+      expect([store refreshReceipt]).will.complete();
+    });
+
+    it(@"should send error event when refresh receipt errs", ^{
+      NSError *error = [NSError lt_errorWithCode:1337];
+      OCMStub([storeKitFacade refreshReceipt]).andReturn([RACSignal error:error]);
+
+      LLSignalTestRecorder *recorder = [[store eventsSignal] testRecorder];
+      expect([store refreshReceipt]).will.complete();
+
+      expect(recorder).will.sendValues(@[
+        [[BZREvent alloc] initWithType:$(BZREventTypeNonCriticalError) eventError:error]
+      ]);
+    });
+
+    it(@"should validate receipt even if refresh receipt errs", ^{
+      NSError *error = [NSError lt_errorWithCode:1337];
+      OCMStub([storeKitFacade refreshReceipt]).andReturn([RACSignal error:error]);
+
+      expect([store refreshReceipt]).will.complete();
+
+      OCMVerify([receiptValidationStatusProvider fetchReceiptValidationStatus]);
+    });
   });
 
   context(@"transaction restoration", ^{
@@ -770,13 +794,6 @@ context(@"refreshing receipt", ^{
       OCMStub([storeKitFacade refreshReceipt]).andReturn([RACSignal empty]);
       OCMStub([receiptValidationStatusProvider fetchReceiptValidationStatus])
           .andReturn([RACSignal empty]);
-    });
-
-    it(@"should use StoreKit to restore completed transactions.", ^{
-      OCMExpect([storeKitFacade restoreCompletedTransactions]).andReturn([RACSignal empty]);
-
-      expect([store refreshReceipt]).will.complete();
-      OCMVerifyAll((id)storeKitFacade);
     });
 
     it(@"should filter out transaction values", ^{
@@ -806,13 +823,13 @@ context(@"refreshing receipt", ^{
       OCMVerifyAll((id)storeKitFacade);
     });
 
-    it(@"should err if transaction restoration errs", ^{
+    it(@"should not err if transaction restoration errs", ^{
       NSError *error = [NSError lt_errorWithCode:1337];
       OCMExpect([storeKitFacade restoreCompletedTransactions]).andReturn([RACSignal error:error]);
 
       LLSignalTestRecorder *recorder = [[store refreshReceipt] testRecorder];
 
-      expect(recorder).will.sendError(error);
+      expect(recorder).will.complete();
     });
 
     it(@"should send error event when transaction restoration errs", ^{
@@ -820,11 +837,20 @@ context(@"refreshing receipt", ^{
       OCMStub([storeKitFacade restoreCompletedTransactions]).andReturn([RACSignal error:error]);
 
       LLSignalTestRecorder *recorder = [[store eventsSignal] testRecorder];
-      [[store refreshReceipt] subscribeNext:^(id) {}];
+      expect([store refreshReceipt]).will.complete();
 
       expect(recorder).will.sendValues(@[
         [[BZREvent alloc] initWithType:$(BZREventTypeNonCriticalError) eventError:error]
       ]);
+    });
+
+    it(@"should validate receipt even if transaction restoration errs", ^{
+      NSError *error = [NSError lt_errorWithCode:1337];
+      OCMStub([storeKitFacade restoreCompletedTransactions]).andReturn([RACSignal error:error]);
+
+      expect([store refreshReceipt]).will.complete();
+
+      OCMVerify([receiptValidationStatusProvider fetchReceiptValidationStatus]);
     });
   });
 
@@ -837,7 +863,7 @@ context(@"refreshing receipt", ^{
       receiptValidationStatus = OCMClassMock([BZRReceiptValidationStatus class]);
     });
 
-    it(@"should validate the receipt if restoration completed successfully", ^{
+    it(@"should validate the receipt after restoration completed successfully", ^{
       OCMExpect([receiptValidationStatusProvider fetchReceiptValidationStatus])
           .andReturn([RACSignal return:receiptValidationStatus]);
 
@@ -871,10 +897,10 @@ context(@"refreshing receipt", ^{
           .andReturn([RACSignal error:error]);
 
       LLSignalTestRecorder *recorder = [[store eventsSignal] testRecorder];
-      [[store refreshReceipt] subscribeNext:^(id) {}];
+      expect([store refreshReceipt]).to.finish();
 
       expect(recorder).will.sendValues(@[
-        [[BZREvent alloc] initWithType:$(BZREventTypeNonCriticalError) eventError:error]
+        [[BZREvent alloc] initWithType:$(BZREventTypeCriticalError) eventError:error]
       ]);
     });
   });
