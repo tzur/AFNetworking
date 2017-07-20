@@ -33,3 +33,7 @@ extern "C" {
 
 #import <LTEngineTests/EXPMatchers+beCloseToGLKVector.h>
 #import <LTEngineTests/EXPMatchers+beCloseToCATransform3D.h>
+
+// Pinky
+#import "EXPMatchers+equalMTLSize.h"
+#import "LTEasyBoxing+Pinky.h"
