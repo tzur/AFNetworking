@@ -149,10 +149,9 @@ NS_ASSUME_NONNULL_BEGIN
               return;
             }
 
-            self.dataModel = changeset.afterDataModel;
-            self.hasData = [self dataModelHasData];
-
             if (!changeset.hasIncrementalChanges) {
+              self.dataModel = changeset.afterDataModel;
+              self.hasData = [[self class] hasDataInDataModel:self.dataModel];
               [self.collectionView reloadData];
               [self.didUpdateCollectionViewSubject sendNext:[RACUnit defaultUnit]];
               --self.pendingReloads;
@@ -161,6 +160,8 @@ NS_ASSUME_NONNULL_BEGIN
             }
 
             [self.collectionView performBatchUpdates:^{
+              self.dataModel = changeset.afterDataModel;
+              self.hasData = [[self class] hasDataInDataModel:self.dataModel];
               [self performIncrementalUpdatesFromChangeset:changeset];
             } completion:^(BOOL) {
               [self.didUpdateCollectionViewSubject sendNext:[RACUnit defaultUnit]];
@@ -270,8 +271,8 @@ NS_ASSUME_NONNULL_BEGIN
   return [NSSet setWithArray:array].rac_sequence.array;
 }
 
-- (BOOL)dataModelHasData {
-  for (id<LTRandomAccessCollection> collection in self.dataModel) {
++ (BOOL)hasDataInDataModel:(PTUDataModel *)dataModel {
+  for (id<LTRandomAccessCollection> collection in dataModel) {
     if (collection.count) {
       return YES;
     }
