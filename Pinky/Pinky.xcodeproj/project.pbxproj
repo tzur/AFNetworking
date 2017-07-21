@@ -28,8 +28,12 @@
 		060FB4651F0104F300506895 /* Pinky.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 06FD92A11EDC66E500D180C7 /* Pinky.bundle */; };
 		06172A901F02881600379124 /* PNKStyleUpsampleProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 06172A8F1F02881600379124 /* PNKStyleUpsampleProcessor.mm */; };
 		06172AB21F02884F00379124 /* PNKStyleUpsampleProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 06172AB11F02884F00379124 /* PNKStyleUpsampleProcessorSpec.mm */; };
+		068D90A81F1F60A90012F472 /* PNKTestUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 068D90A71F1F60A90012F472 /* PNKTestUtils.mm */; };
+		068D90B21F1F93450012F472 /* EXPMatchers+equalMTLSize.mm in Sources */ = {isa = PBXBuildFile; fileRef = 068D90B11F1F93450012F472 /* EXPMatchers+equalMTLSize.mm */; };
+		068D90B81F1FB2D40012F472 /* NSValue+MTLSize.mm in Sources */ = {isa = PBXBuildFile; fileRef = 068D90B71F1FB2D40012F472 /* NSValue+MTLSize.mm */; };
 		06C3F7611EFF9E5B00D4B1F4 /* PNKSingleStyleTransferProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 06C3F7601EFF9E5B00D4B1F4 /* PNKSingleStyleTransferProcessor.mm */; };
 		06C3F7641EFFDA0900D4B1F4 /* PNKSingleStyleTransferProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 06C3F7631EFFDA0900D4B1F4 /* PNKSingleStyleTransferProcessorSpec.mm */; };
+		06E98DE01F2149710047F80A /* PNKComputeState.mm in Sources */ = {isa = PBXBuildFile; fileRef = 06E98DDF1F2149710047F80A /* PNKComputeState.mm */; };
 		06FD927F1EDC5E1C00D180C7 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 06FD91AA1EDC31BB00D180C7 /* Accelerate.framework */; };
 		06FD92811EDC5E2D00D180C7 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 06FD92801EDC5E2D00D180C7 /* MobileCoreServices.framework */; };
 		06FD92861EDC5F3900D180C7 /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 06FD927D1EDC5DE500D180C7 /* opencv2.framework */; };
@@ -71,12 +75,6 @@
 		A14173401E6EB59F005DBEFF /* libExpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A141728A1E6EAEE7005DBEFF /* libExpecta.a */; };
 		A14173421E6EB59F005DBEFF /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A141729D1E6EAF03005DBEFF /* libOCMock.a */; };
 		A14173431E6EB59F005DBEFF /* libSpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A14172B81E6EAF0D005DBEFF /* libSpecta.a */; };
-		C9131EA61EE0599D00E924DA /* EXPMatchers+beCloseToCATransform3D.mm in Sources */ = {isa = PBXBuildFile; fileRef = C9131E991EE0599D00E924DA /* EXPMatchers+beCloseToCATransform3D.mm */; };
-		C9131EA71EE0599D00E924DA /* EXPMatchers+beCloseToCATransform3D.mm in Sources */ = {isa = PBXBuildFile; fileRef = C9131E991EE0599D00E924DA /* EXPMatchers+beCloseToCATransform3D.mm */; };
-		C9131EA81EE0599D00E924DA /* EXPMatchers+beCloseToGLKMatrix.mm in Sources */ = {isa = PBXBuildFile; fileRef = C9131E9B1EE0599D00E924DA /* EXPMatchers+beCloseToGLKMatrix.mm */; };
-		C9131EA91EE0599D00E924DA /* EXPMatchers+beCloseToGLKMatrix.mm in Sources */ = {isa = PBXBuildFile; fileRef = C9131E9B1EE0599D00E924DA /* EXPMatchers+beCloseToGLKMatrix.mm */; };
-		C9131EAA1EE0599D00E924DA /* EXPMatchers+beCloseToGLKVector.mm in Sources */ = {isa = PBXBuildFile; fileRef = C9131E9D1EE0599D00E924DA /* EXPMatchers+beCloseToGLKVector.mm */; };
-		C9131EAB1EE0599D00E924DA /* EXPMatchers+beCloseToGLKVector.mm in Sources */ = {isa = PBXBuildFile; fileRef = C9131E9D1EE0599D00E924DA /* EXPMatchers+beCloseToGLKVector.mm */; };
 		C9131EAC1EE0599D00E924DA /* EXPMatchers+beCloseToMat.mm in Sources */ = {isa = PBXBuildFile; fileRef = C9131E9F1EE0599D00E924DA /* EXPMatchers+beCloseToMat.mm */; };
 		C9131EAD1EE0599D00E924DA /* EXPMatchers+beCloseToMat.mm in Sources */ = {isa = PBXBuildFile; fileRef = C9131E9F1EE0599D00E924DA /* EXPMatchers+beCloseToMat.mm */; };
 		C9131EAE1EE0599D00E924DA /* EXPMatchers+beCloseToScalar.mm in Sources */ = {isa = PBXBuildFile; fileRef = C9131EA11EE0599D00E924DA /* EXPMatchers+beCloseToScalar.mm */; };
@@ -440,6 +438,13 @@
 		06172A8E1F02881600379124 /* PNKStyleUpsampleProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKStyleUpsampleProcessor.h; sourceTree = "<group>"; };
 		06172A8F1F02881600379124 /* PNKStyleUpsampleProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKStyleUpsampleProcessor.mm; sourceTree = "<group>"; };
 		06172AB11F02884F00379124 /* PNKStyleUpsampleProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKStyleUpsampleProcessorSpec.mm; sourceTree = "<group>"; };
+		068D90A61F1F60A90012F472 /* PNKTestUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKTestUtils.h; sourceTree = "<group>"; };
+		068D90A71F1F60A90012F472 /* PNKTestUtils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKTestUtils.mm; sourceTree = "<group>"; };
+		068D90AA1F1F7F770012F472 /* LTEasyBoxing+Pinky.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "LTEasyBoxing+Pinky.h"; sourceTree = "<group>"; };
+		068D90B01F1F93450012F472 /* EXPMatchers+equalMTLSize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EXPMatchers+equalMTLSize.h"; sourceTree = "<group>"; };
+		068D90B11F1F93450012F472 /* EXPMatchers+equalMTLSize.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "EXPMatchers+equalMTLSize.mm"; sourceTree = "<group>"; };
+		068D90B61F1FB2D40012F472 /* NSValue+MTLSize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSValue+MTLSize.h"; sourceTree = "<group>"; };
+		068D90B71F1FB2D40012F472 /* NSValue+MTLSize.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSValue+MTLSize.mm"; sourceTree = "<group>"; };
 		069225E11F0A615700F3C8C7 /* PNKNeuralKernel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNKNeuralKernel.h; sourceTree = "<group>"; };
 		06A0A94B1F1B484700941045 /* PNKKernel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNKKernel.h; sourceTree = "<group>"; };
 		06A1AA131F14F0D80031A387 /* PNKNeuralNetworkModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKNeuralNetworkModel.h; sourceTree = "<group>"; };
@@ -447,6 +452,8 @@
 		06C3F75F1EFF9E5B00D4B1F4 /* PNKSingleStyleTransferProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKSingleStyleTransferProcessor.h; sourceTree = "<group>"; };
 		06C3F7601EFF9E5B00D4B1F4 /* PNKSingleStyleTransferProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKSingleStyleTransferProcessor.mm; sourceTree = "<group>"; };
 		06C3F7631EFFDA0900D4B1F4 /* PNKSingleStyleTransferProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKSingleStyleTransferProcessorSpec.mm; sourceTree = "<group>"; };
+		06E98DDE1F2149710047F80A /* PNKComputeState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKComputeState.h; sourceTree = "<group>"; };
+		06E98DDF1F2149710047F80A /* PNKComputeState.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKComputeState.mm; sourceTree = "<group>"; };
 		06FD917C1EDC30B400D180C7 /* LTEngine.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LTEngine.xcodeproj; path = ../LTEngine/LTEngine.xcodeproj; sourceTree = "<group>"; };
 		06FD91A41EDC318700D180C7 /* Metal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Metal.framework; path = System/Library/Frameworks/Metal.framework; sourceTree = SDKROOT; };
 		06FD91A61EDC319000D180C7 /* MetalKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MetalKit.framework; path = System/Library/Frameworks/MetalKit.framework; sourceTree = SDKROOT; };
@@ -492,12 +499,6 @@
 		A14172BC1E6EB0CA005DBEFF /* PinkyTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PinkyTests-Prefix.pch"; sourceTree = "<group>"; };
 		A14172D71E6EB2FF005DBEFF /* TestHost.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TestHost.xcodeproj; path = ../Foundations/TestHost.xcodeproj; sourceTree = "<group>"; };
 		A1417A911E6ED9CB005DBEFF /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
-		C9131E981EE0599D00E924DA /* EXPMatchers+beCloseToCATransform3D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "EXPMatchers+beCloseToCATransform3D.h"; path = "../../LTEngine/LTEngineTests/EXPMatchers+beCloseToCATransform3D.h"; sourceTree = "<group>"; };
-		C9131E991EE0599D00E924DA /* EXPMatchers+beCloseToCATransform3D.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = "EXPMatchers+beCloseToCATransform3D.mm"; path = "../../LTEngine/LTEngineTests/EXPMatchers+beCloseToCATransform3D.mm"; sourceTree = "<group>"; };
-		C9131E9A1EE0599D00E924DA /* EXPMatchers+beCloseToGLKMatrix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "EXPMatchers+beCloseToGLKMatrix.h"; path = "../../LTEngine/LTEngineTests/EXPMatchers+beCloseToGLKMatrix.h"; sourceTree = "<group>"; };
-		C9131E9B1EE0599D00E924DA /* EXPMatchers+beCloseToGLKMatrix.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = "EXPMatchers+beCloseToGLKMatrix.mm"; path = "../../LTEngine/LTEngineTests/EXPMatchers+beCloseToGLKMatrix.mm"; sourceTree = "<group>"; };
-		C9131E9C1EE0599D00E924DA /* EXPMatchers+beCloseToGLKVector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "EXPMatchers+beCloseToGLKVector.h"; path = "../../LTEngine/LTEngineTests/EXPMatchers+beCloseToGLKVector.h"; sourceTree = "<group>"; };
-		C9131E9D1EE0599D00E924DA /* EXPMatchers+beCloseToGLKVector.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = "EXPMatchers+beCloseToGLKVector.mm"; path = "../../LTEngine/LTEngineTests/EXPMatchers+beCloseToGLKVector.mm"; sourceTree = "<group>"; };
 		C9131E9E1EE0599D00E924DA /* EXPMatchers+beCloseToMat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "EXPMatchers+beCloseToMat.h"; path = "../../LTEngine/LTEngineTests/EXPMatchers+beCloseToMat.h"; sourceTree = "<group>"; };
 		C9131E9F1EE0599D00E924DA /* EXPMatchers+beCloseToMat.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = "EXPMatchers+beCloseToMat.mm"; path = "../../LTEngine/LTEngineTests/EXPMatchers+beCloseToMat.mm"; sourceTree = "<group>"; };
 		C9131EA01EE0599D00E924DA /* EXPMatchers+beCloseToScalar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "EXPMatchers+beCloseToScalar.h"; path = "../../LTEngine/LTEngineTests/EXPMatchers+beCloseToScalar.h"; sourceTree = "<group>"; };
@@ -616,26 +617,34 @@
 		063894FB1EFFE74300329145 /* Test Utils */ = {
 			isa = PBXGroup;
 			children = (
-				C9131E981EE0599D00E924DA /* EXPMatchers+beCloseToCATransform3D.h */,
-				C9131E991EE0599D00E924DA /* EXPMatchers+beCloseToCATransform3D.mm */,
-				C9131E9A1EE0599D00E924DA /* EXPMatchers+beCloseToGLKMatrix.h */,
-				C9131E9B1EE0599D00E924DA /* EXPMatchers+beCloseToGLKMatrix.mm */,
-				C9131E9C1EE0599D00E924DA /* EXPMatchers+beCloseToGLKVector.h */,
-				C9131E9D1EE0599D00E924DA /* EXPMatchers+beCloseToGLKVector.mm */,
 				C9131E9E1EE0599D00E924DA /* EXPMatchers+beCloseToMat.h */,
 				C9131E9F1EE0599D00E924DA /* EXPMatchers+beCloseToMat.mm */,
 				C9131EA01EE0599D00E924DA /* EXPMatchers+beCloseToScalar.h */,
 				C9131EA11EE0599D00E924DA /* EXPMatchers+beCloseToScalar.mm */,
 				C9131EA21EE0599D00E924DA /* EXPMatchers+equalMat.h */,
 				C9131EA31EE0599D00E924DA /* EXPMatchers+equalMat.mm */,
+				068D90B01F1F93450012F472 /* EXPMatchers+equalMTLSize.h */,
+				068D90B11F1F93450012F472 /* EXPMatchers+equalMTLSize.mm */,
 				C9131EA41EE0599D00E924DA /* EXPMatchers+equalScalar.h */,
 				C9131EA51EE0599D00E924DA /* EXPMatchers+equalScalar.mm */,
 				C9131ED41EE05A4D00E924DA /* LTTestUtils+LTEngine.h */,
 				C9131ED51EE05A4D00E924DA /* LTTestUtils+LTEngine.mm */,
+				068D90B61F1FB2D40012F472 /* NSValue+MTLSize.h */,
+				068D90B71F1FB2D40012F472 /* NSValue+MTLSize.mm */,
 				C9131ED81EE05A8400E924DA /* NSValue+OpenCVExtensions.h */,
 				C9131ED91EE05A8400E924DA /* NSValue+OpenCVExtensions.mm */,
+				068D90A61F1F60A90012F472 /* PNKTestUtils.h */,
+				068D90A71F1F60A90012F472 /* PNKTestUtils.mm */,
 			);
 			name = "Test Utils";
+			sourceTree = "<group>";
+		};
+		068D90A91F1F7EF50012F472 /* Boxing */ = {
+			isa = PBXGroup;
+			children = (
+				068D90AA1F1F7F770012F472 /* LTEasyBoxing+Pinky.h */,
+			);
+			name = Boxing;
 			sourceTree = "<group>";
 		};
 		069225C01F0A611E00F3C8C7 /* Neural Networks */ = {
@@ -793,6 +802,7 @@
 		A14171A31E6EAA93005DBEFF /* Pinky */ = {
 			isa = PBXGroup;
 			children = (
+				068D90A91F1F7EF50012F472 /* Boxing */,
 				C9815C621EE886E0004868CE /* Extensions */,
 				C9515C2E1F01125100B973F1 /* GPU */,
 				06C3F73E1EFF9E3C00D4B1F4 /* Image Processing */,
@@ -975,6 +985,8 @@
 		C9515C2E1F01125100B973F1 /* GPU */ = {
 			isa = PBXGroup;
 			children = (
+				06E98DDE1F2149710047F80A /* PNKComputeState.h */,
+				06E98DDF1F2149710047F80A /* PNKComputeState.mm */,
 				C91884531F0D27B90090818A /* PNKComputeDispatch.h */,
 				C91884541F0D27B90090818A /* PNKComputeDispatch.mm */,
 				06A0A94B1F1B484700941045 /* PNKKernel.h */,
@@ -1457,15 +1469,15 @@
 			files = (
 				C9131ED61EE05A4D00E924DA /* LTTestUtils+LTEngine.mm in Sources */,
 				C9815C641EE88713004868CE /* PNKOpenCVExtensionsSpec.mm in Sources */,
+				068D90B21F1F93450012F472 /* EXPMatchers+equalMTLSize.mm in Sources */,
 				C9791B561F0272470009E90F /* PNKConstantAlphaSpec.mm in Sources */,
 				C9131EAE1EE0599D00E924DA /* EXPMatchers+beCloseToScalar.mm in Sources */,
-				C9131EA81EE0599D00E924DA /* EXPMatchers+beCloseToGLKMatrix.mm in Sources */,
 				C9131EAC1EE0599D00E924DA /* EXPMatchers+beCloseToMat.mm in Sources */,
-				C9131EA61EE0599D00E924DA /* EXPMatchers+beCloseToCATransform3D.mm in Sources */,
 				C9791A761F025B1F0009E90F /* PNKLibraryLoaderSpec.mm in Sources */,
 				C9131EB21EE0599D00E924DA /* EXPMatchers+equalScalar.mm in Sources */,
+				068D90B81F1FB2D40012F472 /* NSValue+MTLSize.mm in Sources */,
 				C9131EB01EE0599D00E924DA /* EXPMatchers+equalMat.mm in Sources */,
-				C9131EAA1EE0599D00E924DA /* EXPMatchers+beCloseToGLKVector.mm in Sources */,
+				068D90A81F1F60A90012F472 /* PNKTestUtils.mm in Sources */,
 				C9131EDA1EE05A8400E924DA /* NSValue+OpenCVExtensions.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1477,6 +1489,7 @@
 				C9815C411EE886D1004868CE /* PNKOpenCVExtensions.mm in Sources */,
 				C91884551F0D27B90090818A /* PNKComputeDispatch.mm in Sources */,
 				C9791B001F026E180009E90F /* PNKConstantAlpha.mm in Sources */,
+				06E98DE01F2149710047F80A /* PNKComputeState.mm in Sources */,
 				060EA49E1EDD9CC20041487A /* NSBundle+PinkyBundle.mm in Sources */,
 				C9ADC5131EFFE06200C87932 /* PNKLibraryLoader.mm in Sources */,
 				06172A901F02881600379124 /* PNKStyleUpsampleProcessor.mm in Sources */,
@@ -1490,14 +1503,11 @@
 			files = (
 				C9131ED71EE05A4D00E924DA /* LTTestUtils+LTEngine.mm in Sources */,
 				C9131EAF1EE0599D00E924DA /* EXPMatchers+beCloseToScalar.mm in Sources */,
-				C9131EA91EE0599D00E924DA /* EXPMatchers+beCloseToGLKMatrix.mm in Sources */,
 				C9131EAD1EE0599D00E924DA /* EXPMatchers+beCloseToMat.mm in Sources */,
 				06172AB21F02884F00379124 /* PNKStyleUpsampleProcessorSpec.mm in Sources */,
-				C9131EA71EE0599D00E924DA /* EXPMatchers+beCloseToCATransform3D.mm in Sources */,
 				06C3F7641EFFDA0900D4B1F4 /* PNKSingleStyleTransferProcessorSpec.mm in Sources */,
 				C9131EB31EE0599D00E924DA /* EXPMatchers+equalScalar.mm in Sources */,
 				C9131EB11EE0599D00E924DA /* EXPMatchers+equalMat.mm in Sources */,
-				C9131EAB1EE0599D00E924DA /* EXPMatchers+beCloseToGLKVector.mm in Sources */,
 				C9131EDB1EE05A8400E924DA /* NSValue+OpenCVExtensions.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

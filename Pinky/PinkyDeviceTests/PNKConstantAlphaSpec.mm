@@ -3,17 +3,6 @@
 
 #import "PNKConstantAlpha.h"
 
-#import "PNKOpenCVExtensions.h"
-
-static MPSImage *PNKImageMake(id<MTLDevice> device, NSUInteger width, NSUInteger height,
-                              NSUInteger channels) {
-  auto imageDescriptor =
-      [MPSImageDescriptor imageDescriptorWithChannelFormat:MPSImageFeatureChannelFormatUnorm8
-                                                     width:width height:height
-                                           featureChannels:channels];
-  return [[MPSImage alloc] initWithDevice:device imageDescriptor:imageDescriptor];
-}
-
 SpecBegin(PNKConstantAlpha)
 
 static const NSUInteger kInputWidth = 6;
@@ -32,8 +21,9 @@ beforeEach(^{
 });
 
 it(@"should raise an exception when input width mismatch", ^{
-  auto inputImage = PNKImageMake(device, kInputWidth, kInputHeight, kInputFeatureChannels);
-  auto outputImage = PNKImageMake(device, kInputWidth * 2, kInputHeight, kInputFeatureChannels);
+  auto inputImage = PNKImageMakeUnorm(device, kInputWidth, kInputHeight, kInputFeatureChannels);
+  auto outputImage = PNKImageMakeUnorm(device, kInputWidth * 2, kInputHeight,
+                                       kInputFeatureChannels);
   expect(^{
     [alphaLayer encodeToCommandBuffer:commandBuffer inputTexture:inputImage.texture
                         outputTexture:outputImage.texture];
@@ -41,8 +31,9 @@ it(@"should raise an exception when input width mismatch", ^{
 });
 
 it(@"should raise an exception when input height mismatch", ^{
-  auto inputImage = PNKImageMake(device, kInputWidth, kInputHeight, kInputFeatureChannels);
-  auto outputImage = PNKImageMake(device, kInputWidth, kInputHeight * 2, kInputFeatureChannels);
+  auto inputImage = PNKImageMakeUnorm(device, kInputWidth, kInputHeight, kInputFeatureChannels);
+  auto outputImage = PNKImageMakeUnorm(device, kInputWidth, kInputHeight * 2,
+                                       kInputFeatureChannels);
   expect(^{
     [alphaLayer encodeToCommandBuffer:commandBuffer inputTexture:inputImage.texture
                         outputTexture:outputImage.texture];
@@ -50,8 +41,8 @@ it(@"should raise an exception when input height mismatch", ^{
 });
 
 it(@"should raise an exception when input texture is an array", ^{
-  auto inputImage = PNKImageMake(device, kInputWidth, kInputHeight, 8);
-  auto outputImage = PNKImageMake(device, kInputWidth, kInputHeight, kInputFeatureChannels);
+  auto inputImage = PNKImageMakeUnorm(device, kInputWidth, kInputHeight, 8);
+  auto outputImage = PNKImageMakeUnorm(device, kInputWidth, kInputHeight, kInputFeatureChannels);
   expect(^{
     [alphaLayer encodeToCommandBuffer:commandBuffer inputTexture:inputImage.texture
                         outputTexture:outputImage.texture];
@@ -59,8 +50,8 @@ it(@"should raise an exception when input texture is an array", ^{
 });
 
 it(@"should raise an exception when output texture is an array", ^{
-  auto inputImage = PNKImageMake(device, kInputWidth, kInputHeight, kInputFeatureChannels);
-  auto outputImage = PNKImageMake(device, kInputWidth, kInputHeight, 8);
+  auto inputImage = PNKImageMakeUnorm(device, kInputWidth, kInputHeight, kInputFeatureChannels);
+  auto outputImage = PNKImageMakeUnorm(device, kInputWidth, kInputHeight, 8);
   expect(^{
     [alphaLayer encodeToCommandBuffer:commandBuffer inputTexture:inputImage.texture
                         outputTexture:outputImage.texture];
@@ -84,9 +75,9 @@ context(@"processing", ^{
 
   it(@"should adjust alpha channel correctly", ^{
     cv::Mat4b inputMat(kInputWidth, kInputHeight, kRedColor);
-    auto inputImage = PNKImageMake(device, kInputWidth, kInputHeight, kInputFeatureChannels);
+    auto inputImage = PNKImageMakeUnorm(device, kInputWidth, kInputHeight, kInputFeatureChannels);
     PNKCopyMatToMTLTexture(inputImage.texture, inputMat);
-    auto outputImage = PNKImageMake(device, kInputWidth, kInputHeight, kInputFeatureChannels);
+    auto outputImage = PNKImageMakeUnorm(device, kInputWidth, kInputHeight, kInputFeatureChannels);
 
     [alphaLayer encodeToCommandBuffer:commandBuffer inputTexture:inputImage.texture
                         outputTexture:outputImage.texture];
