@@ -91,6 +91,9 @@
 		C9131EDA1EE05A8400E924DA /* NSValue+OpenCVExtensions.mm in Sources */ = {isa = PBXBuildFile; fileRef = C9131ED91EE05A8400E924DA /* NSValue+OpenCVExtensions.mm */; };
 		C9131EDB1EE05A8400E924DA /* NSValue+OpenCVExtensions.mm in Sources */ = {isa = PBXBuildFile; fileRef = C9131ED91EE05A8400E924DA /* NSValue+OpenCVExtensions.mm */; };
 		C91884551F0D27B90090818A /* PNKComputeDispatch.mm in Sources */ = {isa = PBXBuildFile; fileRef = C91884541F0D27B90090818A /* PNKComputeDispatch.mm */; };
+		C9231F831F04EF7F009E4FDB /* PNKGammaCorrection.mm in Sources */ = {isa = PBXBuildFile; fileRef = C9231F821F04EF7F009E4FDB /* PNKGammaCorrection.mm */; };
+		C9231FA51F04F1F9009E4FDB /* PNKGammaCorrection.metal in Sources */ = {isa = PBXBuildFile; fileRef = C9231FA41F04F1F9009E4FDB /* PNKGammaCorrection.metal */; };
+		C9231FA91F04F31B009E4FDB /* PNKGammaCorrectionSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = C9231FA81F04F31B009E4FDB /* PNKGammaCorrectionSpec.mm */; };
 		C9791A761F025B1F0009E90F /* PNKLibraryLoaderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = C9791A751F025B1F0009E90F /* PNKLibraryLoaderSpec.mm */; };
 		C9791ADD1F026D260009E90F /* PNKConstantAlpha.metal in Sources */ = {isa = PBXBuildFile; fileRef = C9791ADC1F026D260009E90F /* PNKConstantAlpha.metal */; };
 		C9791B001F026E180009E90F /* PNKConstantAlpha.mm in Sources */ = {isa = PBXBuildFile; fileRef = C9791AFF1F026E180009E90F /* PNKConstantAlpha.mm */; };
@@ -520,6 +523,10 @@
 		C9131ED91EE05A8400E924DA /* NSValue+OpenCVExtensions.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = "NSValue+OpenCVExtensions.mm"; path = "../../LTEngine/LTEngineTests/NSValue+OpenCVExtensions.mm"; sourceTree = "<group>"; };
 		C91884531F0D27B90090818A /* PNKComputeDispatch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKComputeDispatch.h; sourceTree = "<group>"; };
 		C91884541F0D27B90090818A /* PNKComputeDispatch.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKComputeDispatch.mm; sourceTree = "<group>"; };
+		C9231F811F04EF7F009E4FDB /* PNKGammaCorrection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKGammaCorrection.h; sourceTree = "<group>"; };
+		C9231F821F04EF7F009E4FDB /* PNKGammaCorrection.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKGammaCorrection.mm; sourceTree = "<group>"; };
+		C9231FA41F04F1F9009E4FDB /* PNKGammaCorrection.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = PNKGammaCorrection.metal; sourceTree = "<group>"; };
+		C9231FA81F04F31B009E4FDB /* PNKGammaCorrectionSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKGammaCorrectionSpec.mm; sourceTree = "<group>"; };
 		C9791A751F025B1F0009E90F /* PNKLibraryLoaderSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKLibraryLoaderSpec.mm; sourceTree = "<group>"; };
 		C9791ADC1F026D260009E90F /* PNKConstantAlpha.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = PNKConstantAlpha.metal; sourceTree = "<group>"; };
 		C9791AFE1F026E180009E90F /* PNKConstantAlpha.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKConstantAlpha.h; sourceTree = "<group>"; };
@@ -678,6 +685,7 @@
 			isa = PBXGroup;
 			children = (
 				C9791B551F0272470009E90F /* PNKConstantAlphaSpec.mm */,
+				C9231FA81F04F31B009E4FDB /* PNKGammaCorrectionSpec.mm */,
 			);
 			name = "Image Processing";
 			sourceTree = "<group>";
@@ -697,6 +705,9 @@
 				C9791ADC1F026D260009E90F /* PNKConstantAlpha.metal */,
 				C9791AFE1F026E180009E90F /* PNKConstantAlpha.h */,
 				C9791AFF1F026E180009E90F /* PNKConstantAlpha.mm */,
+				C9231FA41F04F1F9009E4FDB /* PNKGammaCorrection.metal */,
+				C9231F811F04EF7F009E4FDB /* PNKGammaCorrection.h */,
+				C9231F821F04EF7F009E4FDB /* PNKGammaCorrection.mm */,
 				06C3F75F1EFF9E5B00D4B1F4 /* PNKSingleStyleTransferProcessor.h */,
 				06C3F7601EFF9E5B00D4B1F4 /* PNKSingleStyleTransferProcessor.mm */,
 				06172A8E1F02881600379124 /* PNKStyleUpsampleProcessor.h */,
@@ -1480,6 +1491,7 @@
 			files = (
 				C9791ADD1F026D260009E90F /* PNKConstantAlpha.metal in Sources */,
 				068D90A21F1F53790012F472 /* PNKAddition.metal in Sources */,
+				C9231FA51F04F1F9009E4FDB /* PNKGammaCorrection.metal in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1493,6 +1505,8 @@
 				C9791B561F0272470009E90F /* PNKConstantAlphaSpec.mm in Sources */,
 				C9131EAE1EE0599D00E924DA /* EXPMatchers+beCloseToScalar.mm in Sources */,
 				068D90A41F1F5D000012F472 /* PNKAdditionSpec.mm in Sources */,
+				C9231FA91F04F31B009E4FDB /* PNKGammaCorrectionSpec.mm in Sources */,
+				C9131EAE1EE0599D00E924DA /* EXPMatchers+beCloseToScalar.mm in Sources */,
 				C9131EAC1EE0599D00E924DA /* EXPMatchers+beCloseToMat.mm in Sources */,
 				C9791A761F025B1F0009E90F /* PNKLibraryLoaderSpec.mm in Sources */,
 				C9131EB21EE0599D00E924DA /* EXPMatchers+equalScalar.mm in Sources */,
@@ -1512,6 +1526,7 @@
 				C91884551F0D27B90090818A /* PNKComputeDispatch.mm in Sources */,
 				C9791B001F026E180009E90F /* PNKConstantAlpha.mm in Sources */,
 				06E98DE01F2149710047F80A /* PNKComputeState.mm in Sources */,
+				C9231F831F04EF7F009E4FDB /* PNKGammaCorrection.mm in Sources */,
 				060EA49E1EDD9CC20041487A /* NSBundle+PinkyBundle.mm in Sources */,
 				C9ADC5131EFFE06200C87932 /* PNKLibraryLoader.mm in Sources */,
 				06172A901F02881600379124 /* PNKStyleUpsampleProcessor.mm in Sources */,
