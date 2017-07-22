@@ -51,7 +51,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) PTUCollectionViewConfiguration *configuration;
 
 /// Collection view used to display data.
-@property (readonly, nonatomic) UICollectionView *collectionView;
+@property (readonly, nonatomic, nullable) UICollectionView *collectionView;
 
 /// Current data source keeping internal collection view up to date with signals from
 /// \c changesetProvider.
@@ -82,6 +82,7 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize itemSelected = _itemSelected;
 @synthesize itemDeselected = _itemDeselected;
 @synthesize localizedTitle = _localizedTitle;
+@synthesize contentInset = _contentInset;
 
 @dynamic view;
 
@@ -393,6 +394,7 @@ static NSURL * _Nullable PTUExtractAssociatedURL(NSError *error) {
   self.collectionView.delegate = self;
   self.collectionView.allowsMultipleSelection = YES;
   self.collectionView.backgroundColor = [UIColor clearColor];
+  self.collectionView.contentInset = self.contentInset;
   [self setConfiguration:self.configuration animated:NO];
   [self configureDataSource];
 }
@@ -479,6 +481,11 @@ static NSURL * _Nullable PTUExtractAssociatedURL(NSError *error) {
 
 - (void)reloadData {
   [self configureDataSource];
+}
+
+- (void)setContentInset:(UIEdgeInsets)contentInset {
+  _contentInset = contentInset;
+  self.collectionView.contentInset = contentInset;
 }
 
 #pragma mark -

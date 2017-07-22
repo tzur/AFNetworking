@@ -52,8 +52,11 @@ NS_ASSUME_NONNULL_BEGIN
       switchToLatest]
       map:^PTUCollectionViewController *(id<PTUDataSourceProvider> dataSourceProvider) {
         @strongify(self);
-        return [[PTUCollectionViewController alloc] initWithDataSourceProvider:dataSourceProvider
-                                                          initialConfiguration:self.configuration];
+        auto controller =
+            [[PTUCollectionViewController alloc] initWithDataSourceProvider:dataSourceProvider
+                                                       initialConfiguration:self.configuration];
+        controller.contentInset = self.contentInset;
+        return controller;
       }];
 
   RACSignal *collectionViewControllerTitle = RACObserve(self, collectionViewController.title);
@@ -183,6 +186,11 @@ NS_ASSUME_NONNULL_BEGIN
   }
   _configuration = configuration;
   [self.collectionViewController setConfiguration:configuration animated:animated];
+}
+
+- (void)setContentInset:(UIEdgeInsets)contentInset {
+  _contentInset = contentInset;
+  self.collectionViewController.contentInset = contentInset;
 }
 
 @end
