@@ -28,6 +28,9 @@
 		060FB4651F0104F300506895 /* Pinky.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 06FD92A11EDC66E500D180C7 /* Pinky.bundle */; };
 		06172A901F02881600379124 /* PNKStyleUpsampleProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 06172A8F1F02881600379124 /* PNKStyleUpsampleProcessor.mm */; };
 		06172AB21F02884F00379124 /* PNKStyleUpsampleProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 06172AB11F02884F00379124 /* PNKStyleUpsampleProcessorSpec.mm */; };
+		068D90811F1F536D0012F472 /* PNKAddition.mm in Sources */ = {isa = PBXBuildFile; fileRef = 068D907F1F1F536D0012F472 /* PNKAddition.mm */; };
+		068D90A21F1F53790012F472 /* PNKAddition.metal in Sources */ = {isa = PBXBuildFile; fileRef = 068D907E1F1F536D0012F472 /* PNKAddition.metal */; };
+		068D90A41F1F5D000012F472 /* PNKAdditionSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 068D90A31F1F5D000012F472 /* PNKAdditionSpec.mm */; };
 		068D90A81F1F60A90012F472 /* PNKTestUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 068D90A71F1F60A90012F472 /* PNKTestUtils.mm */; };
 		068D90B21F1F93450012F472 /* EXPMatchers+equalMTLSize.mm in Sources */ = {isa = PBXBuildFile; fileRef = 068D90B11F1F93450012F472 /* EXPMatchers+equalMTLSize.mm */; };
 		068D90B81F1FB2D40012F472 /* NSValue+MTLSize.mm in Sources */ = {isa = PBXBuildFile; fileRef = 068D90B71F1FB2D40012F472 /* NSValue+MTLSize.mm */; };
@@ -438,6 +441,10 @@
 		06172A8E1F02881600379124 /* PNKStyleUpsampleProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKStyleUpsampleProcessor.h; sourceTree = "<group>"; };
 		06172A8F1F02881600379124 /* PNKStyleUpsampleProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKStyleUpsampleProcessor.mm; sourceTree = "<group>"; };
 		06172AB11F02884F00379124 /* PNKStyleUpsampleProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKStyleUpsampleProcessorSpec.mm; sourceTree = "<group>"; };
+		068D907D1F1F536D0012F472 /* PNKAddition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKAddition.h; sourceTree = "<group>"; };
+		068D907E1F1F536D0012F472 /* PNKAddition.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = PNKAddition.metal; sourceTree = "<group>"; };
+		068D907F1F1F536D0012F472 /* PNKAddition.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKAddition.mm; sourceTree = "<group>"; };
+		068D90A31F1F5D000012F472 /* PNKAdditionSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKAdditionSpec.mm; sourceTree = "<group>"; };
 		068D90A61F1F60A90012F472 /* PNKTestUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKTestUtils.h; sourceTree = "<group>"; };
 		068D90A71F1F60A90012F472 /* PNKTestUtils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKTestUtils.mm; sourceTree = "<group>"; };
 		068D90AA1F1F7F770012F472 /* LTEasyBoxing+Pinky.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "LTEasyBoxing+Pinky.h"; sourceTree = "<group>"; };
@@ -639,6 +646,14 @@
 			name = "Test Utils";
 			sourceTree = "<group>";
 		};
+		068D90A51F1F5D050012F472 /* Neural Networks */ = {
+			isa = PBXGroup;
+			children = (
+				068D90A31F1F5D000012F472 /* PNKAdditionSpec.mm */,
+			);
+			name = "Neural Networks";
+			sourceTree = "<group>";
+		};
 		068D90A91F1F7EF50012F472 /* Boxing */ = {
 			isa = PBXGroup;
 			children = (
@@ -651,6 +666,9 @@
 			isa = PBXGroup;
 			children = (
 				06A1A9F21F14F0C60031A387 /* Model */,
+				068D907D1F1F536D0012F472 /* PNKAddition.h */,
+				068D907E1F1F536D0012F472 /* PNKAddition.metal */,
+				068D907F1F1F536D0012F472 /* PNKAddition.mm */,
 				069225E11F0A615700F3C8C7 /* PNKNeuralKernel.h */,
 			);
 			name = "Neural Networks";
@@ -740,6 +758,7 @@
 				C9815C651EE88730004868CE /* Extensions */,
 				C9791A541F025AE90009E90F /* GPU */,
 				06A0A94C1F1B4BD100941045 /* Image Processing */,
+				068D90A51F1F5D050012F472 /* Neural Networks */,
 			);
 			name = Tests;
 			sourceTree = "<group>";
@@ -1460,6 +1479,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C9791ADD1F026D260009E90F /* PNKConstantAlpha.metal in Sources */,
+				068D90A21F1F53790012F472 /* PNKAddition.metal in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1472,6 +1492,7 @@
 				068D90B21F1F93450012F472 /* EXPMatchers+equalMTLSize.mm in Sources */,
 				C9791B561F0272470009E90F /* PNKConstantAlphaSpec.mm in Sources */,
 				C9131EAE1EE0599D00E924DA /* EXPMatchers+beCloseToScalar.mm in Sources */,
+				068D90A41F1F5D000012F472 /* PNKAdditionSpec.mm in Sources */,
 				C9131EAC1EE0599D00E924DA /* EXPMatchers+beCloseToMat.mm in Sources */,
 				C9791A761F025B1F0009E90F /* PNKLibraryLoaderSpec.mm in Sources */,
 				C9131EB21EE0599D00E924DA /* EXPMatchers+equalScalar.mm in Sources */,
@@ -1487,6 +1508,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C9815C411EE886D1004868CE /* PNKOpenCVExtensions.mm in Sources */,
+				068D90811F1F536D0012F472 /* PNKAddition.mm in Sources */,
 				C91884551F0D27B90090818A /* PNKComputeDispatch.mm in Sources */,
 				C9791B001F026E180009E90F /* PNKConstantAlpha.mm in Sources */,
 				06E98DE01F2149710047F80A /* PNKComputeState.mm in Sources */,
