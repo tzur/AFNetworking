@@ -73,7 +73,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// Provider used to provide product list before getting their price info from StoreKit.
 @property (readonly, nonatomic) id<BZRProductsProvider> netherProductsProvider;
 
-/// Validator used to validate receipt on initialization if required.
+/// Validator used to validate receipt on initialization and whenever an unfinished successful
+/// transaction is received.
 @property (readonly, nonatomic) BZRExternalTriggerReceiptValidator *startupReceiptValidator;
 
 /// List of products that their content is already available on the device and ready to be used.
@@ -161,11 +162,9 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)activateStartupValidation {
-  RACSignal *triggerSignal = [self.storeKitFacade.unfinishedSuccessfulTransactionsSignal
+  RACSignal *triggerSignal = [[self.storeKitFacade.unfinishedSuccessfulTransactionsSignal
+      startWith:[RACUnit defaultUnit]]
       deliverOn:[RACScheduler scheduler]];
-  if (!self.receiptValidationStatus) {
-    triggerSignal = [triggerSignal startWith:[RACUnit defaultUnit]];
-  }
   [self.startupReceiptValidator activateWithTrigger:triggerSignal];
 }
 
