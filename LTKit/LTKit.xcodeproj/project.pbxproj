@@ -594,6 +594,7 @@
 		8B87D5CA1C05DD8B0005410A /* NSErrorCodes+Macros.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSErrorCodes+Macros.h"; sourceTree = "<group>"; };
 		8B87D5CB1C05F2F80005410A /* LTErrorCodesRegistrySpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTErrorCodesRegistrySpec.mm; sourceTree = "<group>"; };
 		8B8A81E61BD65E4F0027B97D /* OCMock.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = OCMock.xcodeproj; path = ../../third_party/OCMock/Source/OCMock.xcodeproj; sourceTree = "<group>"; };
+		8B8C86A91F2499EC0073F826 /* LTCopyGenerics.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTCopyGenerics.h; sourceTree = "<group>"; };
 		8B9D3FB718910941001A964D /* LTEasyBoxing.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTEasyBoxing.h; sourceTree = "<group>"; };
 		8B9D3FC41891116A001A964D /* LTEasyBoxingSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTEasyBoxingSpec.mm; sourceTree = "<group>"; };
 		8B9FE5741BA9D4A40085E97E /* UIScreen+Physical.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIScreen+Physical.h"; sourceTree = "<group>"; };
@@ -940,6 +941,7 @@
 				503442A51A0FB8AF008E0ED3 /* LTCFExtensions.h */,
 				2836211E186C58DC00665ED9 /* LTCGExtensions.h */,
 				2836211F186C58DC00665ED9 /* LTCGExtensions.m */,
+				8B8C86A91F2499EC0073F826 /* LTCopyGenerics.h */,
 				8B4AD2761C20375E00E3CBD3 /* LTHashExtensions.h */,
 				650F73BF1C7A13DF00148CEC /* NSArray+Functional.h */,
 				650F73C01C7A13DF00148CEC /* NSArray+Functional.mm */,
