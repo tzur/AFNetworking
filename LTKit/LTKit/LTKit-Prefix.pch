@@ -32,6 +32,7 @@ extern "C" {
 
 // LTKit.
 #import "LTAssert.h"
+#import "LTCopyGenerics.h"
 #import "LTLogger.h"
 #import "LTPropertyMacros.h"
 #import "LTTypedefs.h"
