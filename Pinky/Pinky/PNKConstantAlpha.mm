@@ -63,10 +63,10 @@ static NSString * const kKernelFunctionName = @"setConstantAlpha";
 - (void)verifyParametersWithInputTexture:(id<MTLTexture>)inputTexture
                            outputTexture:(id<MTLTexture>)outputTexture {
   LTParameterAssert(inputTexture.textureType == MTLTextureType2D,
-                    @"inputTexture type must be 2D, got: %lu",
+                    @"Input texture type must be 2D, got: %lu",
                     (unsigned long)inputTexture.textureType);
   LTParameterAssert(outputTexture.textureType == MTLTextureType2D,
-                    @"outputTexture type must be 2D, got: %lu",
+                    @"Output texture type must be 2D, got: %lu",
                     (unsigned long)outputTexture.textureType);
 
   LTParameterAssert(inputTexture.width == outputTexture.width,
