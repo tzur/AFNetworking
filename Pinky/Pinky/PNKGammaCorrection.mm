@@ -1,7 +1,7 @@
 // Copyright (c) 2017 Lightricks. All rights reserved.
 // Created by Nofar Noy.
 
-#import "PNKConstantAlpha.h"
+#import "PNKGammaCorrection.h"
 
 #import "PNKComputeDispatch.h"
 #import "PNKComputeState.h"
@@ -11,7 +11,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// MTLFunctionConstantValues is not supported in simulator for Xcode 8. Solved in Xcode 9.
 #if PNK_USE_MPS
 
-@interface PNKConstantAlpha ()
+@interface PNKGammaCorrection ()
 
 /// Device to encode this kernel operation.
 @property (readonly, nonatomic) id<MTLDevice> device;
@@ -19,29 +19,33 @@ NS_ASSUME_NONNULL_BEGIN
 /// Kernel compiled state to encode.
 @property (readonly, nonatomic) id<MTLComputePipelineState> state;
 
+/// Gamma value for gamma correction.
+@property (readonly, nonatomic) float gamma;
+
 @end
 
-@implementation PNKConstantAlpha
+@implementation PNKGammaCorrection
 
 /// Kernel function name.
-static NSString * const kKernelFunctionName = @"setConstantAlpha";
+static NSString * const kKernelFunctionName = @"gammaCorrect";
 
 #pragma mark -
 #pragma mark Initialization
 #pragma mark -
 
-- (instancetype)initWithDevice:(id<MTLDevice>)device alpha:(float)alpha {
+- (instancetype)initWithDevice:(id<MTLDevice>)device gamma:(float)gamma {
   if (self = [super init]) {
     _device = device;
+    _gamma = gamma;
 
-    [self compileStateWithAlpha:alpha];
+    [self compileStateWithGamma:gamma];
   }
   return self;
 }
 
-- (void)compileStateWithAlpha:(float)alpha {
+- (void)compileStateWithGamma:(float)gamma {
   auto functionConstants = [[MTLFunctionConstantValues alloc] init];
-  [functionConstants setConstantValue:&alpha type:MTLDataTypeFloat withName:@"alpha"];
+      [functionConstants setConstantValue:&gamma type:MTLDataTypeFloat withName:@"gamma"];
   _state = PNKCreateComputeStateWithConstants(self.device, kKernelFunctionName, functionConstants);
 }
 
