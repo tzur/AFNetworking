@@ -10,7 +10,7 @@ NS_ASSUME_NONNULL_BEGIN
 @implementation NSOrderedSet (BLUNodeCollection)
 
 - (instancetype)blu_nodeCollectionByRemovingNodes:(NSArray<BLUNode *> *)nodes {
-  NSMutableArray *mutableCollection = [self mutableCopy];
+  NSMutableOrderedSet *mutableCollection = [self mutableCopy];
   [mutableCollection removeObjectsInArray:nodes];
   return [mutableCollection copy];
 }
@@ -18,14 +18,14 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)blu_nodeCollectionByInsertingNode:(BLUNode *)node atIndex:(NSUInteger)index {
   LTParameterAssert(index <= self.count, @"Trying to insert node to index %lu which is not in the "
                     "valid range [0..%lu]", (unsigned long)index, (unsigned long)self.count);
-  NSMutableArray *mutableCollection = [self mutableCopy];
+  NSMutableOrderedSet *mutableCollection = [self mutableCopy];
   [mutableCollection insertObject:node atIndex:index];
   return [mutableCollection copy];
 }
 
 - (instancetype)blu_nodeCollectionByInsertingNodes:(NSArray<BLUNode *> *)nodes
                                          atIndexes:(NSIndexSet *)indexes {
-  NSMutableArray *mutableCollection = [self mutableCopy];
+  NSMutableOrderedSet *mutableCollection = [self mutableCopy];
   [mutableCollection insertObjects:nodes atIndexes:indexes];
   return [mutableCollection copy];
 }
@@ -35,7 +35,7 @@ NS_ASSUME_NONNULL_BEGIN
   LTParameterAssert(indexes.count == nodes.count, @"Length of indexes (%lu) is not equal to the "
                     "number of nodes to replace (%lu)", (unsigned long)indexes.count,
                     (unsigned long)nodes.count);
-  NSMutableArray *mutableCollection = [self mutableCopy];
+  NSMutableOrderedSet *mutableCollection = [self mutableCopy];
   [mutableCollection replaceObjectsAtIndexes:indexes withObjects:nodes];
   return [mutableCollection copy];
 }
