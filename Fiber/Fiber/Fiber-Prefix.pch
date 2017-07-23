@@ -10,7 +10,5 @@
   #import <ReactiveCocoa/ReactiveCocoa.h>
 
   /// LTKit.
-  #import <LTKit/LTAssert.h>
-  #import <LTKit/LTEnum.h>
-  #import <LTKit/NSError+LTKit.h>
+  #import <LTKit/LTKit-Prefix.pch>
 #endif
