@@ -3,8 +3,11 @@
 
 #import "NSURL+MediaLibrary.h"
 
+#import <LTKit/LTBidirectionalMap.h>
 #import <LTKit/NSURL+Query.h>
 #import <MediaPlayer/MediaPlayer.h>
+
+#import "PTNMediaQueryProvider.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -118,12 +121,12 @@ LTEnumImplement(NSUInteger, PTNMediaLibraryFetchType,
                                             forProperty:MPMediaItemPropertyMediaType];
 }
 
-+ (NSDictionary<NSNumber *, NSString *> *)ptn_groupingValueToNSStringMap {
-  static NSDictionary<NSNumber *, NSString *> *groupingValueToNSStringMap;
++ (LTBidirectionalMap<NSNumber *, NSString *> *)ptn_groupingValueToNSStringMap {
+  static LTBidirectionalMap<NSNumber *, NSString *> *groupingValueToNSStringMap;
   static dispatch_once_t onceToken;
 
   dispatch_once(&onceToken, ^{
-    groupingValueToNSStringMap = @{
+    groupingValueToNSStringMap = [LTBidirectionalMap mapWithDictionary:@{
       @(MPMediaGroupingAlbum): @"MPMediaGroupingAlbum",
       @(MPMediaGroupingAlbumArtist): @"MPMediaGroupingAlbumArtist",
       @(MPMediaGroupingArtist): @"MPMediaGroupingArtist",
@@ -132,7 +135,7 @@ LTEnumImplement(NSUInteger, PTNMediaLibraryFetchType,
       @(MPMediaGroupingPlaylist): @"MPMediaGroupingPlaylist",
       @(MPMediaGroupingPodcastTitle): @"MPMediaGroupingPodcastTitle",
       @(MPMediaGroupingTitle): @"MPMediaGroupingTitle"
-    };
+    }];
   });
 
   return groupingValueToNSStringMap;
@@ -168,10 +171,141 @@ LTEnumImplement(NSUInteger, PTNMediaLibraryFetchType,
     return nil;
   }
 
-  auto keys = [[[self class] ptn_groupingValueToNSStringMap] allKeysForObject:grouping];
-  LTAssert(keys.count == 1, "Expected to have 1 key for %@, got %lu", grouping,
-           (unsigned long)keys.count);
-  return keys.firstObject;
+  return [[[self class] ptn_groupingValueToNSStringMap] keyForObject:grouping];
+}
+
+@end
+
+@implementation NSURL (PTNMediaQuery)
+
+- (nullable id<PTNMediaQuery>)ptn_mediaLibraryQueryWithProvider:
+      (id<PTNMediaQueryProvider>)provider {
+  if (![self.scheme isEqualToString:[NSURL ptn_mediaLibraryScheme]] ||
+      (![self.host isEqualToString:@"asset"] && ![self.host isEqualToString:@"album"]) ||
+      ![self ptn_hasValidQueryItems]) {
+    return nil;
+  }
+
+  auto _Nullable predicateQueryItems = [self ptn_predicateQueryItems];
+  LTAssert(predicateQueryItems, "predicate query items should not be nil at this stage");
+
+  auto predicates = [NSMutableSet<MPMediaPropertyPredicate *> set];
+  for (NSURLQueryItem *queryItem in predicateQueryItems) {
+    auto _Nullable predicate = [[self class] ptn_predicateWithProperty:queryItem.name
+                                                                 value:queryItem.value];
+    if (!predicate) {
+      return nil;
+    }
+    [predicates addObject:predicate];
+  }
+
+  auto query = [provider queryWithFilterPredicates:predicates];
+
+  if (self.ptn_mediaLibraryGrouping) {
+    query.groupingType = (MPMediaGrouping)self.ptn_mediaLibraryGrouping.integerValue;
+  }
+
+  return query;
+}
+
+- (BOOL)ptn_hasValidQueryItems {
+  NSDictionary<NSString *, NSArray<NSString *> *> *itemsDictionary = [self lt_queryArrayDictionary];
+  auto _Nullable predicateQueryItems = [self ptn_predicateQueryItems];
+  auto _Nullable fetches = itemsDictionary[@"fetch"];
+  auto _Nullable groupings = itemsDictionary[@"grouping"];
+
+  if (!predicateQueryItems || predicateQueryItems.count == 0 || !fetches || fetches.count != 1 ||
+      ![PTNMediaLibraryFetchType fieldNamesToValues][fetches.firstObject]) {
+    return NO;
+  }
+
+  if (groupings) {
+    if (groupings.count != 1) {
+      return NO;
+    }
+    if(![[[self class] ptn_groupingValueToNSStringMap] keyForObject:groupings.firstObject]) {
+      return NO;
+    }
+  }
+
+  if ([self.host isEqualToString:@"asset"]) {
+    if (groupings || ![fetches.firstObject isEqualToString:$(PTNMediaLibraryFetchTypeItems).name]) {
+      return NO;
+    }
+  }
+
+  for (NSURLQueryItem *queryItem in predicateQueryItems) {
+    if(![[[self class] ptn_supportedProperties] containsObject:queryItem.name]) {
+      return NO;
+    }
+  }
+  return YES;
+}
+
+- (nullable NSArray<NSURLQueryItem *> *)ptn_predicateQueryItems {
+  auto _Nullable allQueryItems = [self lt_queryItems];
+  if (!allQueryItems) {
+    return nil;
+  }
+
+  auto propertyPredicateQueryItems = [NSMutableArray<NSURLQueryItem *> array];
+  for (NSURLQueryItem *item in allQueryItems) {
+    if ([item.name isEqualToString:@"fetch"] || [item.name isEqualToString:@"grouping"]) {
+      continue;
+    }
+    [propertyPredicateQueryItems addObject:item];
+  }
+
+  return propertyPredicateQueryItems;
+}
+
++ (nullable MPMediaPropertyPredicate *)ptn_predicateWithProperty:(NSString *)property
+                                                           value:(NSString *)value {
+  errno = 0;
+  if ([self ptn_isPersistenIDProperty:property]) {
+    auto number = [NSNumber numberWithUnsignedLongLong:strtoull([value UTF8String], NULL, 0)];
+    if (errno){
+      return nil;
+    }
+    return [MPMediaPropertyPredicate predicateWithValue:number forProperty:property];
+  }
+  if ([self ptn_isMediaTypeProperty:property]) {
+    auto number = [NSNumber numberWithUnsignedLong:strtoul([value UTF8String], NULL, 0)];
+    if (errno) {
+      return nil;
+    }
+    return [MPMediaPropertyPredicate predicateWithValue:number forProperty:property];
+  }
+  return [MPMediaPropertyPredicate predicateWithValue:value forProperty:property];;
+}
+
++ (BOOL)ptn_isPersistenIDProperty:(NSString *)property {
+  return ([property isEqualToString:MPMediaItemPropertyAlbumPersistentID] ||
+          [property isEqualToString:MPMediaItemPropertyArtistPersistentID] ||
+          [property isEqualToString:MPMediaItemPropertyPersistentID]);
+}
+
++ (BOOL)ptn_isMediaTypeProperty:(NSString *)property {
+  return [property isEqualToString:MPMediaItemPropertyMediaType];
+}
+
++ (NSSet<NSString *> *)ptn_supportedProperties {
+  static NSSet<NSString *> *values;
+  static dispatch_once_t onceToken;
+
+  dispatch_once(&onceToken, ^{
+    values = [NSSet setWithArray:@[
+      MPMediaItemPropertyAlbumPersistentID,
+      MPMediaItemPropertyAlbumTitle,
+      MPMediaItemPropertyArtist,
+      MPMediaItemPropertyArtistPersistentID,
+      MPMediaItemPropertyMediaType,
+      MPMediaItemPropertyPersistentID,
+      MPMediaItemPropertyTitle
+    ]];
+  });
+
+  return values;
 }
 
 @end
