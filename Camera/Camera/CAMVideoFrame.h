@@ -20,6 +20,14 @@ NS_ASSUME_NONNULL_BEGIN
 /// always RGBA, no matter what \c pixelFormat this video frame has. This is an expensive operation.
 - (UIImage *)image;
 
+/// Returns a \c UIImage with a copy of the contents of this video frame after applying transform
+/// appropriate for the given orientation. \c orientation describes how the underlying pixel buffer
+/// should be transformed to obtain an image that has size and layout of actual visual content that
+/// was captured by this frame. For more details see exif orientation specification. The returned
+/// image is always RGBA, no matter what \c pixelFormat this video frame has. This is an expensive
+/// operation.
+- (UIImage *)imageTransformedByExifOrientation:(int)exifOrientation;
+
 /// Returns a \c LTTexture with the contexts of this \c CAMVideoFrame. When possible, this is a
 /// zero-copy operation, and the returned texture is backed by this video frame's data. Otherwise,
 /// the data is copied.
