@@ -108,7 +108,7 @@ NS_ASSUME_NONNULL_BEGIN
   }
 }
 
-- (NSArray<RACSignal *> *)ongoingURLs {
+- (NSArray<NSURL *> *)ongoingURLs {
   @synchronized (self) {
     return [self.mutableOngoingURLs copy];
   }
