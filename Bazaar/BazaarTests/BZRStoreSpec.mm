@@ -133,7 +133,7 @@ beforeEach(^{
 });
 
 context(@"initial receipt validation", ^{
-  it(@"should fetch receipt on initialization if receipt validation status is nil", ^{
+  it(@"should fetch receipt on initialization", ^{
     OCMExpect([receiptValidationStatusProvider fetchReceiptValidationStatus])
         .andReturn([RACSignal return:OCMClassMock([BZRReceiptValidationStatus class])]);
 
@@ -142,16 +142,8 @@ context(@"initial receipt validation", ^{
     OCMVerifyAll((id)receiptValidationStatusProvider);
   });
 
-  it(@"should not fetch receipt on initialization if receipt validation status is not nil", ^{
-    OCMReject([receiptValidationStatusProvider fetchReceiptValidationStatus]);
-    OCMStub([receiptValidationStatusProvider receiptValidationStatus])
-        .andReturn(OCMClassMock([BZRReceiptValidationStatus class]));
-
-    store = [[BZRStore alloc] initWithConfiguration:configuration];
-  });
-
   it(@"should send error event if initial receipt validation failed", ^{
-    NSError *error = OCMClassMock([NSError class]);
+    auto error = [NSError lt_errorWithCode:1337];
     OCMStub([receiptValidationStatusProvider fetchReceiptValidationStatus])
         .andReturn([RACSignal error:error]);
 
