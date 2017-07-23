@@ -7,7 +7,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Image orientations. Values are identical in meaning as the \c UIImageOrientation with the
 /// similar name.
-typedef NS_ENUM(NSUInteger, PTNImageOrientation) {
+LTEnumDeclare(NSUInteger, PTNImageOrientation,
   PTNImageOrientationUp,
   PTNImageOrientationDown,
   PTNImageOrientationLeft,
@@ -16,7 +16,14 @@ typedef NS_ENUM(NSUInteger, PTNImageOrientation) {
   PTNImageOrientationDownMirrored,
   PTNImageOrientationLeftMirrored,
   PTNImageOrientationRightMirrored
-};
+);
+
+@interface PTNImageOrientation (EXIF)
+
+/// Value of the orientation according to exif format.
+@property (readonly, nonatomic) int exifOrientation;
+
+@end
 
 /// Object that holds, parses and manipulates image metadata.
 /// This object is immutable. For a mutable version, see \c PTNMutableImageMetadata.
@@ -83,7 +90,7 @@ typedef NS_ENUM(NSUInteger, PTNImageOrientation) {
 @property (readonly, nonatomic) CGSize size;
 
 /// Orientation of the image.
-@property (readonly, nonatomic) PTNImageOrientation orientation;
+@property (readonly, nonatomic) PTNImageOrientation *orientation;
 
 /// Returns the metadata contents of this \c PTNImageMetadata in the form of a dictionary, that can
 /// be used with methods of frameworks such as \c PhotoKit or \c AssetLibrary.
@@ -123,7 +130,7 @@ typedef NS_ENUM(NSUInteger, PTNImageOrientation) {
 @property (readwrite, nonatomic) CGSize size;
 
 /// Orientation of the image.
-@property (readwrite, nonatomic) PTNImageOrientation orientation;
+@property (readwrite, nonatomic) PTNImageOrientation *orientation;
 
 @end
 

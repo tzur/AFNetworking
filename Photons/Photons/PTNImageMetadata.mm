@@ -15,33 +15,18 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/// Class for converting \c PTNImageOrientation to and from EXIF orientation values.
-@interface PTNImageExifOrientation : NSObject
+LTEnumImplement(NSUInteger, PTNImageOrientation,
+  PTNImageOrientationUp,
+  PTNImageOrientationDown,
+  PTNImageOrientationLeft,
+  PTNImageOrientationRight,
+  PTNImageOrientationUpMirrored,
+  PTNImageOrientationDownMirrored,
+  PTNImageOrientationLeftMirrored,
+  PTNImageOrientationRightMirrored
+);
 
-- (instancetype)init NS_UNAVAILABLE;
-
-/// Initializes with the given \c orientation.
-- (instancetype)initWithImageOrientation:(PTNImageOrientation)orientation NS_DESIGNATED_INITIALIZER;
-
-/// Returns a \c PTNImageOrientation orientation that is associated with the given \c
-/// exifOrientation.
-+ (PTNImageOrientation)orientationWithExifOrientation:(int)exifOrientation;
-
-/// Returns the exif orientation of this object's \c PTNImageOrientation.
-- (int)exifOrientation;
-
-@property (readonly, nonatomic) PTNImageOrientation imageOrientation;
-
-@end
-
-@implementation PTNImageExifOrientation
-
-- (instancetype)initWithImageOrientation:(PTNImageOrientation)imageOrientation {
-  if (self = [super init]) {
-    _imageOrientation = imageOrientation;
-  }
-  return self;
-}
+@implementation PTNImageOrientation (EXIF)
 
 + (LTBidirectionalMap *)exifToImageOrientationMap {
   static LTBidirectionalMap *map;
@@ -49,30 +34,27 @@ NS_ASSUME_NONNULL_BEGIN
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
     map = [LTBidirectionalMap mapWithDictionary:@{
-      @1: @(PTNImageOrientationUp),
-      @2: @(PTNImageOrientationUpMirrored),
-      @3: @(PTNImageOrientationDown),
-      @4: @(PTNImageOrientationDownMirrored),
-      @5: @(PTNImageOrientationLeftMirrored),
-      @6: @(PTNImageOrientationRight),
-      @7: @(PTNImageOrientationRightMirrored),
-      @8: @(PTNImageOrientationLeft)
+      @1: $(PTNImageOrientationUp),
+      @2: $(PTNImageOrientationUpMirrored),
+      @3: $(PTNImageOrientationDown),
+      @4: $(PTNImageOrientationDownMirrored),
+      @5: $(PTNImageOrientationLeftMirrored),
+      @6: $(PTNImageOrientationRight),
+      @7: $(PTNImageOrientationRightMirrored),
+      @8: $(PTNImageOrientationLeft)
     }];
   });
 
   return map;
 }
 
-/// Returns a new \c PTNImageOrientation representing the given EXIF orientation. Returns \c nil if
-/// the given value is invalid or unknown.
-+ (PTNImageOrientation)orientationWithExifOrientation:(int)exifOrientation {
-  return [self.exifToImageOrientationMap[@(exifOrientation)] unsignedIntegerValue];
++ (PTNImageOrientation *)orientationWithExifOrientation:(int)exifOrientation {
+  return self.exifToImageOrientationMap[@(exifOrientation)] ?: $(PTNImageOrientationUp);
 }
 
-/// Returns the EXIF orientation representing this \c PTNImageOrientation.
 - (int)exifOrientation {
-  LTBidirectionalMap *map = [PTNImageExifOrientation exifToImageOrientationMap];
-  return [[map keyForObject:@(self.imageOrientation)] intValue];
+  LTBidirectionalMap *map = [PTNImageOrientation exifToImageOrientationMap];
+  return [[map keyForObject:self] intValue];
 }
 
 @end
@@ -372,9 +354,13 @@ static void PTNSetError(NSError *__autoreleasing *error, NSInteger errorCode, NS
   return size;
 }
 
-- (PTNImageOrientation)orientation {
-  int exifOrientation = [self.data[BRIDGE(kCGImagePropertyOrientation)] intValue];
-  return [PTNImageExifOrientation orientationWithExifOrientation:exifOrientation];
+- (PTNImageOrientation *)orientation {
+  int exifOrientation = [self exifOrientation];
+  return [PTNImageOrientation orientationWithExifOrientation:exifOrientation];
+}
+
+- (int)exifOrientation {
+  return [self.data[BRIDGE(kCGImagePropertyOrientation)] intValue];
 }
 
 - (NSDictionary *)metadataDictionary {
@@ -590,15 +576,13 @@ static void PTNSetError(NSError *__autoreleasing *error, NSInteger errorCode, NS
   }
 }
 
-- (void)setOrientation:(PTNImageOrientation)orientation {
+- (void)setOrientation:(PTNImageOrientation *)orientation {
   [self.data removeObjectForKey:BRIDGE(kCGImagePropertyOrientation)];
   [self.data[BRIDGE(kCGImagePropertyTIFFDictionary)]
       removeObjectForKey:BRIDGE(kCGImagePropertyTIFFOrientation)];
 
-  if (orientation) {
-    PTNImageExifOrientation *imageOrientation = [[PTNImageExifOrientation alloc]
-                                                 initWithImageOrientation:orientation];
-    int exifOrientation = imageOrientation.exifOrientation;
+  if (![orientation isEqual:$(PTNImageOrientationUp)]) {
+    int exifOrientation = orientation.exifOrientation;
     self.data[BRIDGE(kCGImagePropertyOrientation)] = @(exifOrientation);
     self.data[BRIDGE(kCGImagePropertyTIFFDictionary)][BRIDGE(kCGImagePropertyTIFFOrientation)] =
         @(exifOrientation);
