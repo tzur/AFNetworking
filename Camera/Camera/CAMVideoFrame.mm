@@ -55,6 +55,16 @@ static NSDictionary * const kCVPixelFormatToCAMPixelFormat = @{
   return [UIImage imageWithCGImage:cgImage.get()];
 }
 
+- (UIImage *)imageTransformedByExifOrientation:(int)exifOrientation {
+  CVPixelBufferRef pixelBuffer = CMSampleBufferGetImageBuffer(_sampleBuffer.get());
+
+  CIImage *ciImage = [CIImage imageWithCVPixelBuffer:pixelBuffer];
+  ciImage = [ciImage imageByApplyingOrientation:exifOrientation];
+  CIContext *context = [CIContext contextWithOptions:nil];
+  lt::Ref<CGImageRef> cgImage([context createCGImage:ciImage fromRect:ciImage.extent]);
+  return [UIImage imageWithCGImage:cgImage.get()];
+}
+
 - (LTTexture *)textureAtPlaneIndex:(NSUInteger)planeIndex {
   LTAssert([LTGLContext currentContext]);
 

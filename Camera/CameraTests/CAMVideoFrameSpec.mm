@@ -6,9 +6,9 @@
 #import <LTEngine/LTImage.h>
 #import <LTEngine/LTTexture.h>
 
+#import "CAMDevicePreset.h"
 #import "CAMSampleTimingInfo.h"
 #import "CAMTestUtils.h"
-#import "CAMDevicePreset.h"
 
 SpecBegin(CAMVideoFrame)
 
@@ -118,21 +118,45 @@ context(@"conversion to UIImage", ^{
 
   beforeEach(^{
     frame = [[CAMVideoFrame alloc] initWithSampleBuffer:sampleBuffer.get()];
-    uiImage = [frame image];
   });
 
-  it(@"should create image with correct size", ^{
-    expect(uiImage.size).to.equal(CGSizeMake(image.cols, image.rows));
-    expect(uiImage.scale).to.equal(1);
+  context(@"no orientation", ^{
+    beforeEach(^{
+      uiImage = [frame image];
+    });
+
+    it(@"should create image with correct size", ^{
+      expect(uiImage.size).to.equal(CGSizeMake(image.cols, image.rows));
+      expect(uiImage.scale).to.equal(1);
+    });
+
+    it(@"should create image with correct contents converted to RGBA", ^{
+      cv::Mat swizzledImage(image.size(), image.type());
+
+      static const int rgbaToBgra[] = {0, 2, 1, 1, 2, 0, 3, 3};
+      cv::mixChannels(&image, 1, &swizzledImage, 1, rgbaToBgra, 4);
+
+      expect($([[LTImage alloc] initWithImage:uiImage].mat)).to.equalMat($(swizzledImage));
+    });
   });
 
-  it(@"should create image with correct contents converted to RGBA", ^{
-    cv::Mat swizzledImage(image.size(), image.type());
+  context(@"orientation", ^{
+    static const int kExifRightOrientation = 6;
 
-    static const int rgbaToBgra[] = {0, 2, 1, 1, 2, 0, 3, 3};
-    cv::mixChannels(&image, 1, &swizzledImage, 1, rgbaToBgra, 4);
+    beforeEach(^{
+      uiImage = [frame imageTransformedByExifOrientation:kExifRightOrientation];
+    });
 
-    expect($([[LTImage alloc] initWithImage:uiImage].mat)).to.equalMat($(swizzledImage));
+    it(@"should return image with applied orientation transformation", ^{
+      cv::Mat swizzledImage(image.size(), image.type());
+
+      static const int rgbaToBgra[] = {0, 2, 1, 1, 2, 0, 3, 3};
+      cv::mixChannels(&image, 1, &swizzledImage, 1, rgbaToBgra, 4);
+      cv::Mat rotatedImage;
+      cv::rotate(swizzledImage, rotatedImage, cv::RotateFlags::ROTATE_90_CLOCKWISE);
+
+      expect($([[LTImage alloc] initWithImage:uiImage].mat)).to.equalMat($(rotatedImage));
+    });
   });
 });
 
