@@ -82,7 +82,7 @@
 
 #define _LTAssertAndDo(EXPRESSION, MESSAGE, EXECUTE_AFTER) \
   do { \
-    if (!(EXPRESSION)) { \
+    if (__builtin_expect(!(EXPRESSION), 0)) { \
       [[LTLogger sharedLogger] logWithFormat:@"%@" file:__FILE__ line:__LINE__ \
           logLevel:LTLogLevelError, MESSAGE]; \
       (EXECUTE_AFTER); \
