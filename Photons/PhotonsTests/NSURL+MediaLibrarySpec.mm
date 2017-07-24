@@ -45,6 +45,21 @@ beforeEach(^{
   provider = [[PTNMediaQueryProvider alloc] init];
 });
 
+it(@"should return values of predicates", ^{
+  auto url = [[NSURL alloc] init];
+  expect([url ptn_valuesForPredicate:@"foo"]).to.equal(@[]);
+  expect([url ptn_valuesForPredicate:@"bar"]).to.equal(@[]);
+
+  url = [NSURL URLWithString:@"a://b/c?foo=bar&baz=qux&baz=quux"];
+  expect([url ptn_valuesForPredicate:@"foo"]).to.equal(@[@"bar"]);
+  expect([url ptn_valuesForPredicate:@"baz"]).to.equal(@[@"qux", @"quux"]);
+
+  expect([url ptn_valuesForPredicate:@"bar"]).to.equal(@[]);
+  expect([url ptn_valuesForPredicate:@"qux"]).to.equal(@[]);
+  expect([url ptn_valuesForPredicate:@"quux"]).to.equal(@[]);
+  expect([url ptn_valuesForPredicate:@"foobar"]).to.equal(@[]);
+});
+
 it(@"should create asset URL with media item", ^{
   url = [NSURL ptn_mediaLibraryAssetWithItem:mediaLibraryItemMock];
   auto urlString = [NSString stringWithFormat:@"%@://asset?%@=123&"

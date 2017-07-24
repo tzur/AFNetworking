@@ -28,19 +28,22 @@ LTEnumDeclare(NSUInteger, PTNMediaLibraryFetchType,
 /// Category for easy analysis and synthesis of URLs related to Media Library objects.
 ///
 /// The following URL types are supported:
-///   - Asset path: <medialibrary scheme>://asset?<property>=<value>[...]&
+///   - Asset path: <medialibrary scheme>://asset?<predicate>=<value>[...]&
 ///                 fetch=PTNMediaLibraryFetchTypeItems
-///   - Album path: <medialibrary scheme>://album?<property>=<value>[...]&
+///   - Album path: <medialibrary scheme>://album?<predicate>=<value>[...]&
 ///                 fetch=[PTNMediaLibraryFetchTypeItems|PTNMediaLibraryFetchTypeCollections]&
 ///                 [grouping=<MPMediaGrouping>]
 ///
-/// \c property is \s NSString which may have any of \c MPMediaItemProperty* values. \c value is the
-/// string representation of the corresponding property value of \c id type. \c property and
+/// \c predicate is \s NSString which may have any of \c MPMediaItemProperty* values. \c value is
+/// the string representation of the corresponding predicate value of \c id type. \c predicate and
 /// \c value can repeat any number of times. \c fetch defines how the entity is being fetched i.e.
 /// as list of items (assets) or as list of collections (albums). \c grouping may apply only when
 /// \c fetch=PTNMediaLibraryFetchTypeCollections and defines how the collections are constructed
 /// from the URL.
 @interface NSURL (MediaLibrary)
+
+/// Returns \c NSArray of all values, in order of appearance, for the given \c predicate.
+- (NSArray<NSString *> *)ptn_valuesForPredicate:(NSString *)predicate;
 
 /// URL Scheme associated with Media Library URLs.
 + (NSString *)ptn_mediaLibraryScheme;
