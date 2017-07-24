@@ -6,6 +6,7 @@
 #import <LTKit/NSArray+Functional.h>
 #import <LTKit/NSArray+NSSet.h>
 #import <LTKit/NSDictionary+Functional.h>
+#import <LTKit/NSDictionary+Operations.h>
 #import <LTKit/NSSet+Functional.h>
 
 #import "LABFakeAssignmentsSource.h"
@@ -144,8 +145,7 @@ it(@"should have assignments from one source", ^{
 
   auto exp1Assignments = LABFakeAssignments(source1exp1Variant1, fakeSource1.name);
   auto exp2Assignments = LABFakeAssignments(source1exp2Variant1, fakeSource1.name);
-  auto expectedAssignments =
-      [exp1Assignments mtl_dictionaryByAddingEntriesFromDictionary:exp2Assignments];
+  auto expectedAssignments = [exp1Assignments lt_merge:exp2Assignments];
 
   expect(LABFakeAssignments(manager.activeAssignments)).to.equal(expectedAssignments);
 });
@@ -157,8 +157,8 @@ it(@"should merge assignments from all sources", ^{
   expect(LABFakeAssignments(manager.activeAssignments)).to.equal(expectedAssignments);
 
   [fakeSource2 updateActiveVariants:@{@"exp1": source2exp1Variant1.name}];
-  expectedAssignments = [expectedAssignments mtl_dictionaryByAddingEntriesFromDictionary:
-                         LABFakeAssignments(source2exp1Variant1, fakeSource2.name)];
+  expectedAssignments = [expectedAssignments
+                         lt_merge:LABFakeAssignments(source2exp1Variant1, fakeSource2.name)];
 
   expect(LABFakeAssignments(manager.activeAssignments)).to.equal(expectedAssignments);
 });
@@ -170,8 +170,7 @@ it(@"should update assignments when source assignments update", ^{
 
   auto exp1Assignments = LABFakeAssignments(source1exp2Variant2, fakeSource1.name);
   auto exp2Assignments = LABFakeAssignments(source2exp1Variant2, fakeSource2.name);
-  auto expectedAssignments =
-      [exp1Assignments mtl_dictionaryByAddingEntriesFromDictionary:exp2Assignments];
+  auto expectedAssignments = [exp1Assignments lt_merge:exp2Assignments];
 
   expect(LABFakeAssignments(manager.activeAssignments)).to.equal(expectedAssignments);
 });
@@ -213,8 +212,7 @@ it(@"should not persist assignments if source variants change between instance i
 
   auto exp1Assignments = LABFakeAssignments(source1exp2Variant2, fakeSource1.name);
   auto exp2Assignments = LABFakeAssignments(source2exp1Variant2, fakeSource2.name);
-  auto expectedAssignments =
-      [exp1Assignments mtl_dictionaryByAddingEntriesFromDictionary:exp2Assignments];
+  auto expectedAssignments = [exp1Assignments lt_merge:exp2Assignments];
 
   expect(LABFakeAssignments(manager.activeAssignments)).to.equal(expectedAssignments);
 });
