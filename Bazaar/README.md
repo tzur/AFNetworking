@@ -189,7 +189,7 @@ the key.
 At the project `Build Settings` -> `Preprocessor Macros` -> 
     Add `JSON_ENCRYPTION_KEY="\"$JSON_ENCRYPTION_KEY\""`
 - Then you can easily get the key and finally pass it to the Bazaar configuration:
-```objective-c
+```objc
 static NSString * const kProductListEncryptionKey = @JSON_ENCRYPTION_KEY;
 BZRStoreConfiguration *storeConfiguration =
      [[BZRStoreConfiguration alloc] initWithProductsListJSONFilePath:productsPath
@@ -208,6 +208,33 @@ is not the case. In order to make all of them available, one
 should call `purchaseProduct` for every product, or just call
 `acquireAllEnabledProducts`, which errs if the user doesn't have an
 active subscription.
+
+## Shared Keychain
+
+By default, Bazaar writes the user subscription status and purchases information to a shared 
+storage using Apple's [Keychain Storage](https://developer.apple.com/library/content/documentation/Security/Conceptual/keychainServConcepts/02concepts/concepts.html).
+This enables the information to be shared among other apps that have the same app
+identifier prefix (also called [team ID](https://developer.apple.com/library/content/documentation/IDEs/Conceptual/AppDistributionGuide/MaintainingProfiles/MaintainingProfiles.html)).
+
+**Note** If you do not want Bazaar to write to the shared keychain storage, initialize
+`BZRStoreConfiguration` with `keychainAccessGroup` set to `nil`.
+
+Follow these steps in order to allow Bazaar to write to the shared keychain storage in your app:
+1. Go to the project-navigator and select the target -> Capabilities -> turn on `Keychain Sharing` 
+and change the key to be `com.lightricks.shared`.
+2. Go to the project target -> `Info` -> add the key `AppIdentifierPrefix` with a string value 
+`${AppIdentifierPrefix}`.
+> ❗️Failing to do this step will result in Bazaar throwing an exception unless `keychainAccessGroup`
+is set to `nil`.
+
+Once this is set up, other applications can read the subscription status of your application.
+For example, in order to know whether the user is a Facetune 2 subscriber:
+
+```objc
+  auto sharedUserInfoReader = [[BZRSharedUserInfoReader alloc] init];
+  BOOL isFacetune2Subscriber =
+      [sharedUserInfoReader isSubscriberOfAppWithBundleIdentifier:@"com.lightricks.Facetune2"];
+```
 
 ---
 
