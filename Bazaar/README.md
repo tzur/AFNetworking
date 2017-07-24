@@ -1,7 +1,7 @@
 # Bazaar
 
 Bazaar is a library for managing an in-app store using Apple's
-purchasing system. Its main role is to provide interface for making and
+purchasing system. Its main role is to provide an interface for making and
 restoring purchases, managing subscriptions, controlling access to
 products and providing relevant information to the application.
 
@@ -37,7 +37,7 @@ the user. Each purchase entry includes the date of the purchase,
 expiration date (for subscriptions), transaction id, and more.
 
 - Active subscription - A subscription that the user owns and is not
-expired/cancelled.
+expired / canceled.
 
 - Validatricks - Lightricks' receipt validation server. This is the
 server from which Bazaar asks for the latest receipt. The validation
@@ -79,7 +79,7 @@ associated with a product identifier that appears in that set.
 
 ### BZRProductsManager
 
-A protocol that provides interface of purchase related actions:
+A protocol that provides an interface of purchase related actions:
 purchasing of products, restoring purchases etc.
 
 ### BZRStore
@@ -92,15 +92,16 @@ objects that need to have access to it.
 **Note** `BZRStore` should be created as soon as possible during the
 application runtime. This is because the products' prices are fetched
 in every run of the application. The earlier the prices are fetched,
-the shorter the user would have to wait when the application want to
+the shorter the user would have to wait when the application wants to
 show prices.
 
 ### BZRStoreConfiguration
 
 `BZRStore` is initialized with an instance of `BZRStoreConfiguration`.
 The convenience initializer of `BZRStoreConfiguration` is created with
-only one parameter: the path to the product list JSON file. The format
-of the product list file is specified [below](##product-list-json-file).
+two parameters: the path to the product list JSON file and decryption key if the JSON file is
+[encrypted](#json-files-compression-and-encryption) . The format of the product list file is
+specified [below](#product-list-json-file).
 
 The purpose of this class is twofold:
 - Providing a convenient initializer that initializes with the
@@ -157,6 +158,41 @@ is a mandatory field which specifies the method by which fetching
 should be done. In the example above, `URL` is the URL where the
 content can be found. If `contentFetcherParameters` is not specified,
 it is assumed that the product has no additional content.
+
+> ❗️In order to protect the product list content from attackers, it's recommended to
+encrypt the product json file. Bazaar supports product list decryption by passing to
+`BZRStoreConfiguration` the decryption key. 
+See this [section](#json-files-compression-and-encryption) for integrating JSON files encryption
+into the application in build time.
+
+## JSON files compression and encryption
+
+Bazaar's product list provider supports compressed and encrypted file using LZFSE algorithm for
+compression and AES-128 algorithm for encryption.
+The suggested flow for achieving this with Foundations tools is as the following: 
+- Add a User-Defined setting at the project Build Settings named `JSON_ENCRYPTION_KEY` with a valid
+hex string of a length of 32 bytes.
+- Add a Build Rule to your project for files with names matching `*.secure.json` that runs custom
+script:
+```
+python ../Foundations/BuildTools/EncryptFile.py $JSON_ENCRYPTION_KEY "$INPUT_FILE_PATH" 
+    "$TARGET_BUILD_DIR/$CONTENTS_FOLDER_PATH/$INPUT_FILE_BASE.json"
+```
+and output the encrypted file to the contents folder path:
+```
+$(TARGET_BUILD_DIR)/$(CONTENTS_FOLDER_PATH)/${INPUT_FILE_BASE}.json
+```
+- To avoid duplication of this key in the project code, add a preprocessing macro that injects
+the key.
+At the project `Build Settings` -> `Preprocessor Macros` -> 
+    Add `JSON_ENCRYPTION_KEY="\"$JSON_ENCRYPTION_KEY\""`
+- Then you can easily get the key and finally pass it to the Bazaar configuration:
+```objective-c
+static NSString * const kProductListEncryptionKey = @JSON_ENCRYPTION_KEY;
+BZRStoreConfiguration *storeConfiguration =
+     [[BZRStoreConfiguration alloc] initWithProductsListJSONFilePath:productsPath
+                                            productListDecryptionKey:kProductListEncryptionKey];
+```
 
 ## Making purchases
 
