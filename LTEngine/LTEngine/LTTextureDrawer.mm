@@ -39,14 +39,18 @@ NSString * const kLTSourceTextureUniform = @"sourceTexture";
     LTParameterAssert([self.mandatoryUniforms isSubsetOfSet:program.uniforms], @"At least one of "
                       "the required uniforms %@ doesn't exist in the given program",
                       self.mandatoryUniforms);
-    LTParameterAssert([[NSSet setWithArray:[uniformToAuxiliaryTexture allKeys]]
-                       isSubsetOfSet:program.uniforms], @"At least one of the given auxiliary "
-                      "texture uniforms %@ doesn't exist in the given program",
-                      [uniformToAuxiliaryTexture allKeys]);
+    if (uniformToAuxiliaryTexture) {
+      LTParameterAssert([[NSSet setWithArray:[uniformToAuxiliaryTexture allKeys]]
+                         isSubsetOfSet:program.uniforms], @"At least one of the given auxiliary "
+                        "texture uniforms %@ doesn't exist in the given program",
+                        [uniformToAuxiliaryTexture allKeys]);
+    }
 
     self.uniformToTexture = [NSMutableDictionary dictionary];
     [self setSourceTexture:texture];
-    [self setAuxiliaryTextures:uniformToAuxiliaryTexture];
+    if (uniformToAuxiliaryTexture) {
+      [self setAuxiliaryTextures:uniformToAuxiliaryTexture];
+    }
 
     self.program = program;
     self.context = [self createDrawingContext];
