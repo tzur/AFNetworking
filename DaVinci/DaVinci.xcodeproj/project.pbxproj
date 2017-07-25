@@ -623,7 +623,6 @@
 		2501545D1D1ACA1300420FA9 = {
 			isa = PBXGroup;
 			children = (
-				8BF68AD41D82E9510093910D /* libcompression.tbd */,
 				250154681D1ACA1300420FA9 /* DaVinci */,
 				250154811D1AE92900420FA9 /* DaVinciTests */,
 				50FF1A521D2CDFBE00E24B4D /* Configuration */,
@@ -1298,6 +1297,7 @@
 				8861FDA01E5A2AA500CA1436 /* CoreImage.framework */,
 				8861FD9E1E5A2A9C00CA1436 /* QuartzCore.framework */,
 				8861FD7C1E5A2A9800CA1436 /* CoreGraphics.framework */,
+				8BF68AD41D82E9510093910D /* libcompression.tbd */,
 				E4829F621E49D069009F3355 /* libOpenEXR.a */,
 			);
 			name = Frameworks;
