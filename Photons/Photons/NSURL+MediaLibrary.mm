@@ -19,7 +19,16 @@ LTEnumImplement(NSUInteger, PTNMediaLibraryFetchType,
   PTNMediaLibraryFetchTypeCollections
 );
 
+#pragma mark -
+#pragma mark NSURL+MediaLibrary
+#pragma mark -
+
 @implementation NSURL (MediaLibrary)
+
+- (NSArray<NSString *> *)ptn_valuesForPredicate:(NSString *)predicate {
+  auto queryArrayDictionary = [self lt_queryArrayDictionary];
+  return queryArrayDictionary[predicate] ?: @[];
+}
 
 + (NSString *)ptn_mediaLibraryScheme {
   return @"com.lightricks.Photons.MediaLibrary";
@@ -175,6 +184,10 @@ LTEnumImplement(NSUInteger, PTNMediaLibraryFetchType,
 }
 
 @end
+
+#pragma mark -
+#pragma mark NSURL+PTNMediaQuery
+#pragma mark -
 
 @implementation NSURL (PTNMediaQuery)
 
