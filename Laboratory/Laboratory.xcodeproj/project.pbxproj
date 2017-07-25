@@ -61,6 +61,8 @@
 		A14173431E6EB59F005DBEFF /* libSpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A14172B81E6EAF0D005DBEFF /* libSpecta.a */; };
 		A148A0551EE3D8110058165C /* LABAssignmentsManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = A148A0541EE3D8110058165C /* LABAssignmentsManager.mm */; };
 		A1674D971F01617A006A3B07 /* libFBTweak.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A1674D7E1F016167006A3B07 /* libFBTweak.a */; };
+		A1674DAB1F0161EC006A3B07 /* LABTweakCategoriesProvider.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1674DAA1F0161EC006A3B07 /* LABTweakCategoriesProvider.mm */; };
+		A18220B71F026FEC00FC7C61 /* LABTweakCategoriesProviderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = A18220B61F026FEC00FC7C61 /* LABTweakCategoriesProviderSpec.mm */; };
 		A18220B91F0398A500FC7C61 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A18220B81F0398A500FC7C61 /* MessageUI.framework */; };
 		A1E388391EE554D90095F056 /* LABFakeAssignmentsSource.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1E388381EE554D90095F056 /* LABFakeAssignmentsSource.mm */; };
 /* End PBXBuildFile section */
@@ -431,6 +433,11 @@
 		A1417A911E6ED9CB005DBEFF /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		A148A0541EE3D8110058165C /* LABAssignmentsManager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LABAssignmentsManager.mm; sourceTree = "<group>"; };
 		A1674D6C1F016166006A3B07 /* FBTweak.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FBTweak.xcodeproj; path = ../third_party/Tweaks/FBTweak.xcodeproj; sourceTree = "<group>"; };
+		A1674DA81F0161EC006A3B07 /* LABTweakCollectionsProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LABTweakCollectionsProvider.h; sourceTree = "<group>"; };
+		A1674DA91F0161EC006A3B07 /* LABTweakCategoriesProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LABTweakCategoriesProvider.h; sourceTree = "<group>"; };
+		A1674DAA1F0161EC006A3B07 /* LABTweakCategoriesProvider.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LABTweakCategoriesProvider.mm; sourceTree = "<group>"; };
+		A16D7FF31F1A933E006FE0F6 /* LABTweakCategoriesProvider+Internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "LABTweakCategoriesProvider+Internal.h"; sourceTree = "<group>"; };
+		A18220B61F026FEC00FC7C61 /* LABTweakCategoriesProviderSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LABTweakCategoriesProviderSpec.mm; sourceTree = "<group>"; };
 		A18220B81F0398A500FC7C61 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		A1E388371EE554D90095F056 /* LABFakeAssignmentsSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LABFakeAssignmentsSource.h; sourceTree = "<group>"; };
 		A1E388381EE554D90095F056 /* LABFakeAssignmentsSource.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LABFakeAssignmentsSource.mm; sourceTree = "<group>"; };
@@ -632,6 +639,7 @@
 				883235611ED861CD0090787D /* Base */,
 				88BB644B1EDAAD000026DEC0 /* Sources */,
 				A14172BA1E6EB04F005DBEFF /* Supporting Files */,
+				A1674D981F016195006A3B07 /* Tweaks */,
 			);
 			path = Laboratory;
 			sourceTree = "<group>";
@@ -773,6 +781,7 @@
 			children = (
 				883235801ED861DB0090787D /* Base */,
 				88440B971EDB199A00A64CF7 /* Sources */,
+				A18220911F026FC200FC7C61 /* Tweaks */,
 				A1541C081EAF400D00B4F064 /* Utils */,
 			);
 			name = Tests;
@@ -813,6 +822,25 @@
 				A1674D801F016167006A3B07 /* FBTweakTests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		A1674D981F016195006A3B07 /* Tweaks */ = {
+			isa = PBXGroup;
+			children = (
+				A1674DA91F0161EC006A3B07 /* LABTweakCategoriesProvider.h */,
+				A1674DAA1F0161EC006A3B07 /* LABTweakCategoriesProvider.mm */,
+				A16D7FF31F1A933E006FE0F6 /* LABTweakCategoriesProvider+Internal.h */,
+				A1674DA81F0161EC006A3B07 /* LABTweakCollectionsProvider.h */,
+			);
+			name = Tweaks;
+			sourceTree = "<group>";
+		};
+		A18220911F026FC200FC7C61 /* Tweaks */ = {
+			isa = PBXGroup;
+			children = (
+				A18220B61F026FEC00FC7C61 /* LABTweakCategoriesProviderSpec.mm */,
+			);
+			name = Tweaks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1187,6 +1215,7 @@
 				883712FE1EE57E8C0033EE08 /* LABTaplyticsSource.mm in Sources */,
 				883235861ED861EA0090787D /* NSErrorCodes+Laboratory.mm in Sources */,
 				88BB646D1EDAAD100026DEC0 /* LABLocalSource.mm in Sources */,
+				A1674DAB1F0161EC006A3B07 /* LABTweakCategoriesProvider.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1205,6 +1234,7 @@
 				88932F5D1EDF538900451D44 /* EXPMatchers+complete.m in Sources */,
 				88932F621EDF538900451D44 /* EXPMatchers+matchValue.m in Sources */,
 				88932F671EDF538900451D44 /* EXPMatchers+sendValuesWithCount.m in Sources */,
+				A18220B71F026FEC00FC7C61 /* LABTweakCategoriesProviderSpec.mm in Sources */,
 				88932F6F1EDF55C000451D44 /* LLReactiveMatchersMessageBuilder.m in Sources */,
 				885AFF991F02B34D0035A6B2 /* LABTaplyticsSpec.mm in Sources */,
 				88932F6E1EDF55C000451D44 /* LLReactiveMatchersHelpers.m in Sources */,
