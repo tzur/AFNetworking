@@ -39,7 +39,7 @@
 
     self.program = program;
     self.vertexArray = vertexArray;
-    self.uniformToTexture = [[NSMutableDictionary alloc] initWithDictionary:uniformToTexture];
+    self.uniformToTexture = [(uniformToTexture ?: @{}) mutableCopy];
   }
   return self;
 }
