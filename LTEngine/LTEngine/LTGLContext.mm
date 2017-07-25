@@ -125,7 +125,7 @@ typedef struct {
   return self;
 }
 
-- (EAGLContext *)createEAGLContextWithSharegroup:(EAGLSharegroup *)sharegroup
+- (EAGLContext *)createEAGLContextWithSharegroup:(nullable EAGLSharegroup *)sharegroup
                                    versionNumber:(nullable NSNumber *)versionNumber {
   if (versionNumber) {
     return [self createEAGLContextWithSharegroup:sharegroup
@@ -139,10 +139,12 @@ typedef struct {
   return context;
 }
 
-- (nullable EAGLContext *)createEAGLContextWithSharegroup:(EAGLSharegroup *)sharegroup
+- (nullable EAGLContext *)createEAGLContextWithSharegroup:(nullable EAGLSharegroup *)sharegroup
                                                   version:(LTGLVersion)version {
-  return [[EAGLContext alloc] initWithAPI:(EAGLRenderingAPI)version
-                               sharegroup:sharegroup];
+  if (sharegroup) {
+    return [[EAGLContext alloc] initWithAPI:(EAGLRenderingAPI)version sharegroup:sharegroup];
+  }
+  return [[EAGLContext alloc] initWithAPI:(EAGLRenderingAPI)version];
 }
 
 - (void)dealloc {
