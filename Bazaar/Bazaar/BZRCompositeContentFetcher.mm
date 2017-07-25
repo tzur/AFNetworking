@@ -6,6 +6,7 @@
 #import <LTKit/NSArray+Functional.h>
 
 #import "BZREvent.h"
+#import "BZRFallbackContentFetcher.h"
 #import "BZRLocalContentFetcher.h"
 #import "BZRMulticastContentFetcher.h"
 #import "BZROnDemandContentFetcher.h"
@@ -41,6 +42,8 @@ NS_ASSUME_NONNULL_BEGIN
   auto remoteContentFetcher = [[BZRRemoteContentFetcher alloc] init];
   auto mutlicastRemoteContentFetcher =
       [[BZRMulticastContentFetcher alloc] initWithUnderlyingContentFetcher:remoteContentFetcher];
+  auto fallbackContentFetcher =
+      [[BZRFallbackContentFetcher alloc] initWithCompositeContentFetcher:self];
 
   // Note: Any changes made to the fetchers dictionary directly affect existing apps that use \c
   // BZRCompositeContentFetcher and requires careful verification. Providing product list with wrong
@@ -49,7 +52,8 @@ NS_ASSUME_NONNULL_BEGIN
   return [self initWithContentFetchers:@{
     NSStringFromClass([BZRLocalContentFetcher class]): localContentFetcher,
     NSStringFromClass([BZROnDemandContentFetcher class]): onDemandContentFetcher,
-    NSStringFromClass([BZRRemoteContentFetcher class]): mutlicastRemoteContentFetcher
+    NSStringFromClass([BZRRemoteContentFetcher class]): mutlicastRemoteContentFetcher,
+    NSStringFromClass([BZRFallbackContentFetcher class]): fallbackContentFetcher
   }];
 }
 
