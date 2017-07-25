@@ -272,6 +272,9 @@
 		CDC75AA61F04DBEB00247591 /* BZRReceiptValidationStatusCache.mm in Sources */ = {isa = PBXBuildFile; fileRef = CDC75AA41F04DBEB00247591 /* BZRReceiptValidationStatusCache.mm */; };
 		CDC762F81F08DCBC00247591 /* BZRReceiptValidationStatusCacheSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = CDC762F71F08DCBC00247591 /* BZRReceiptValidationStatusCacheSpec.mm */; };
 		CDC7667B1F0A416400247591 /* BZRSharedUserInfoReaderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = CDC7667A1F0A416400247591 /* BZRSharedUserInfoReaderSpec.mm */; };
+		CDC768321F0BAC6800247591 /* BZRFallbackContentFetcher.h in Headers */ = {isa = PBXBuildFile; fileRef = CDC768301F0BAC6800247591 /* BZRFallbackContentFetcher.h */; };
+		CDC768331F0BAC6800247591 /* BZRFallbackContentFetcher.mm in Sources */ = {isa = PBXBuildFile; fileRef = CDC768311F0BAC6800247591 /* BZRFallbackContentFetcher.mm */; };
+		CDC77B1A1F14EAA200247591 /* BZRFallbackContentFetcherSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = CDC77B191F14EAA200247591 /* BZRFallbackContentFetcherSpec.mm */; };
 		CDE00A901E82AD5E007AFD5E /* libcompression.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = CDE00A8F1E82AD5E007AFD5E /* libcompression.tbd */; };
 		EA9976EC1F08526E00A6C70B /* BZRSharedUserInfoReader.h in Headers */ = {isa = PBXBuildFile; fileRef = EA9976EA1F08526E00A6C70B /* BZRSharedUserInfoReader.h */; };
 		EA9976ED1F08526E00A6C70B /* BZRSharedUserInfoReader.mm in Sources */ = {isa = PBXBuildFile; fileRef = EA9976EB1F08526E00A6C70B /* BZRSharedUserInfoReader.mm */; };
@@ -982,6 +985,9 @@
 		CDC75AA41F04DBEB00247591 /* BZRReceiptValidationStatusCache.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRReceiptValidationStatusCache.mm; sourceTree = "<group>"; };
 		CDC762F71F08DCBC00247591 /* BZRReceiptValidationStatusCacheSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRReceiptValidationStatusCacheSpec.mm; sourceTree = "<group>"; };
 		CDC7667A1F0A416400247591 /* BZRSharedUserInfoReaderSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRSharedUserInfoReaderSpec.mm; sourceTree = "<group>"; };
+		CDC768301F0BAC6800247591 /* BZRFallbackContentFetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRFallbackContentFetcher.h; sourceTree = "<group>"; };
+		CDC768311F0BAC6800247591 /* BZRFallbackContentFetcher.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRFallbackContentFetcher.mm; sourceTree = "<group>"; };
+		CDC77B191F14EAA200247591 /* BZRFallbackContentFetcherSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRFallbackContentFetcherSpec.mm; sourceTree = "<group>"; };
 		CDE00A8F1E82AD5E007AFD5E /* libcompression.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libcompression.tbd; path = usr/lib/libcompression.tbd; sourceTree = SDKROOT; };
 		EA9976EA1F08526E00A6C70B /* BZRSharedUserInfoReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRSharedUserInfoReader.h; sourceTree = "<group>"; };
 		EA9976EB1F08526E00A6C70B /* BZRSharedUserInfoReader.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRSharedUserInfoReader.mm; sourceTree = "<group>"; };
@@ -1673,6 +1679,8 @@
 				B97E6C221D40F44800C02863 /* BZRProductContentFetcher.h */,
 				CD3A72B21EF281CD00FA4FBD /* BZRRemoteContentFetcher.h */,
 				CD3A72B31EF281CD00FA4FBD /* BZRRemoteContentFetcher.mm */,
+				CDC768301F0BAC6800247591 /* BZRFallbackContentFetcher.h */,
+				CDC768311F0BAC6800247591 /* BZRFallbackContentFetcher.mm */,
 			);
 			name = "Content Fetching";
 			sourceTree = "<group>";
@@ -1689,6 +1697,7 @@
 				B9484B5E1D50A09F00910066 /* BZRLocalContentFetcherSpec.mm */,
 				CD9854871ED5FA37007CBCBC /* BZROnDemandContentFetcherSpec.mm */,
 				CD3A72E31EF2824E00FA4FBD /* BZRRemoteContentFetcherSpec.mm */,
+				CDC77B191F14EAA200247591 /* BZRFallbackContentFetcherSpec.mm */,
 			);
 			name = "Content Fetching";
 			sourceTree = "<group>";
@@ -1955,6 +1964,7 @@
 				B9502A7C1D6DCDC500E633BE /* BZRCachedContentFetcher.h in Headers */,
 				B9A850E21DE214FD001AA37C /* NSString+Bazaar.h in Headers */,
 				B97A87191D4610A7004390FC /* BZRRemoteProductsProvider.h in Headers */,
+				CDC768321F0BAC6800247591 /* BZRFallbackContentFetcher.h in Headers */,
 				9FE7D5A31D3F6B2C00685F19 /* BZRPurchaseManager.h in Headers */,
 				B98505F31D85BB4A002ABF72 /* BZRProduct+SKProduct.h in Headers */,
 				6501EFE21D5B55CC007B76CC /* BZRFileArchiver.h in Headers */,
@@ -2544,6 +2554,7 @@
 				B9A81B651D90658700168258 /* BZRReceiptModel+ProductPurchasedSpec.mm in Sources */,
 				65C74D041D5352D000D7518C /* BZRZipArchiveFactorySpec.mm in Sources */,
 				65C74D061D5352D000D7518C /* BZRZipFileArchiverSpec.mm in Sources */,
+				CDC77B1A1F14EAA200247591 /* BZRFallbackContentFetcherSpec.mm in Sources */,
 				CD3A74381EF69DD400FA4FBD /* BZRMulticastContentFetcherSpec.mm in Sources */,
 				B973487C1D8C35CB006CF28A /* BZRStoreSpec.mm in Sources */,
 				CDA913F81EC83CAD00A6C5C6 /* BZRDummyContentFetcher.mm in Sources */,
@@ -2623,6 +2634,7 @@
 				650D7D401D324AAD003CE646 /* SKProductsRequest+RACSignalSupport.mm in Sources */,
 				B9A84FBE1DE1B018001AA37C /* BZRLocaleBasedVariantSelector.mm in Sources */,
 				B97E6CD31D41103200C02863 /* BZRProductPriceInfo.mm in Sources */,
+				CDC768331F0BAC6800247591 /* BZRFallbackContentFetcher.mm in Sources */,
 				B98505F41D85BB4A002ABF72 /* BZRProduct+SKProduct.mm in Sources */,
 				6529F8521CEB61A800FBABFE /* BZRReceiptValidationError.mm in Sources */,
 				65013B581D498D2800D06E79 /* BZRZipArchiveFactory.mm in Sources */,
