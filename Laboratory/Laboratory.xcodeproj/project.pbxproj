@@ -60,6 +60,10 @@
 		A14173421E6EB59F005DBEFF /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A141729D1E6EAF03005DBEFF /* libOCMock.a */; };
 		A14173431E6EB59F005DBEFF /* libSpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A14172B81E6EAF0D005DBEFF /* libSpecta.a */; };
 		A148A0551EE3D8110058165C /* LABAssignmentsManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = A148A0541EE3D8110058165C /* LABAssignmentsManager.mm */; };
+		A1674D971F01617A006A3B07 /* libFBTweak.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A1674D7E1F016167006A3B07 /* libFBTweak.a */; };
+		A1674DAB1F0161EC006A3B07 /* LABTweakCategoriesProvider.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1674DAA1F0161EC006A3B07 /* LABTweakCategoriesProvider.mm */; };
+		A18220B71F026FEC00FC7C61 /* LABTweakCategoriesProviderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = A18220B61F026FEC00FC7C61 /* LABTweakCategoriesProviderSpec.mm */; };
+		A18220B91F0398A500FC7C61 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A18220B81F0398A500FC7C61 /* MessageUI.framework */; };
 		A1E388391EE554D90095F056 /* LABFakeAssignmentsSource.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1E388381EE554D90095F056 /* LABFakeAssignmentsSource.mm */; };
 /* End PBXBuildFile section */
 
@@ -302,6 +306,20 @@
 			remoteGlobalIDString = 65CEFBB11D3BF72800402230;
 			remoteInfo = TestHost;
 		};
+		A1674D7D1F016167006A3B07 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A1674D6C1F016166006A3B07 /* FBTweak.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 18EFE46E189EBA4900DA6A5D;
+			remoteInfo = FBTweak;
+		};
+		A1674D7F1F016167006A3B07 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A1674D6C1F016166006A3B07 /* FBTweak.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 18EFE47E189EBA4900DA6A5D;
+			remoteInfo = FBTweakTests;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -414,6 +432,13 @@
 		A14172D71E6EB2FF005DBEFF /* TestHost.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TestHost.xcodeproj; path = ../Foundations/TestHost.xcodeproj; sourceTree = "<group>"; };
 		A1417A911E6ED9CB005DBEFF /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		A148A0541EE3D8110058165C /* LABAssignmentsManager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LABAssignmentsManager.mm; sourceTree = "<group>"; };
+		A1674D6C1F016166006A3B07 /* FBTweak.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FBTweak.xcodeproj; path = ../third_party/Tweaks/FBTweak.xcodeproj; sourceTree = "<group>"; };
+		A1674DA81F0161EC006A3B07 /* LABTweakCollectionsProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LABTweakCollectionsProvider.h; sourceTree = "<group>"; };
+		A1674DA91F0161EC006A3B07 /* LABTweakCategoriesProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LABTweakCategoriesProvider.h; sourceTree = "<group>"; };
+		A1674DAA1F0161EC006A3B07 /* LABTweakCategoriesProvider.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LABTweakCategoriesProvider.mm; sourceTree = "<group>"; };
+		A16D7FF31F1A933E006FE0F6 /* LABTweakCategoriesProvider+Internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "LABTweakCategoriesProvider+Internal.h"; sourceTree = "<group>"; };
+		A18220B61F026FEC00FC7C61 /* LABTweakCategoriesProviderSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LABTweakCategoriesProviderSpec.mm; sourceTree = "<group>"; };
+		A18220B81F0398A500FC7C61 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		A1E388371EE554D90095F056 /* LABFakeAssignmentsSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LABFakeAssignmentsSource.h; sourceTree = "<group>"; };
 		A1E388381EE554D90095F056 /* LABFakeAssignmentsSource.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LABFakeAssignmentsSource.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -435,12 +460,14 @@
 				88375E991EE9285E00A4B6FE /* CoreTelephony.framework in Frameworks */,
 				882D1F301EC1C49C007F39F5 /* GLKit.framework in Frameworks */,
 				88375E9B1EE9286500A4B6FE /* JavaScriptCore.framework in Frameworks */,
+				A18220B91F0398A500FC7C61 /* MessageUI.framework in Frameworks */,
 				882D1F321EC1C54F007F39F5 /* QuartzCore.framework in Frameworks */,
 				88ABDB141EDFDA6900C72E65 /* ReactiveCocoa.framework in Frameworks */,
 				88375E971EE9285400A4B6FE /* SystemConfiguration.framework in Frameworks */,
 				88375E771EE927D100A4B6FE /* Taplytics.framework in Frameworks */,
 				884962181EBA226E007B3AE8 /* UIKit.framework in Frameworks */,
 				A14173401E6EB59F005DBEFF /* libExpecta.a in Frameworks */,
+				A1674D971F01617A006A3B07 /* libFBTweak.a in Frameworks */,
 				A14171C61E6EAC0D005DBEFF /* libLaboratory.a in Frameworks */,
 				A14173411E6EB59F005DBEFF /* libLTKit.a in Frameworks */,
 				A14173421E6EB59F005DBEFF /* libOCMock.a in Frameworks */,
@@ -612,6 +639,7 @@
 				883235611ED861CD0090787D /* Base */,
 				88BB644B1EDAAD000026DEC0 /* Sources */,
 				A14172BA1E6EB04F005DBEFF /* Supporting Files */,
+				A1674D981F016195006A3B07 /* Tweaks */,
 			);
 			path = Laboratory;
 			sourceTree = "<group>";
@@ -640,6 +668,7 @@
 			isa = PBXGroup;
 			children = (
 				A14172741E6EAEE7005DBEFF /* Expecta.xcodeproj */,
+				A1674D6C1F016166006A3B07 /* FBTweak.xcodeproj */,
 				A14172691E6EADDF005DBEFF /* LTKit.xcodeproj */,
 				A141728F1E6EAF03005DBEFF /* OCMock.xcodeproj */,
 				882D1FE51EC996D4007F39F5 /* ReactiveCocoa.xcodeproj */,
@@ -752,6 +781,7 @@
 			children = (
 				883235801ED861DB0090787D /* Base */,
 				88440B971EDB199A00A64CF7 /* Sources */,
+				A18220911F026FC200FC7C61 /* Tweaks */,
 				A1541C081EAF400D00B4F064 /* Utils */,
 			);
 			name = Tests;
@@ -760,12 +790,13 @@
 		A14175B41E6EBE37005DBEFF /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				88375E9A1EE9286500A4B6FE /* JavaScriptCore.framework */,
 				88375E981EE9285E00A4B6FE /* CoreTelephony.framework */,
-				88375E961EE9285400A4B6FE /* SystemConfiguration.framework */,
 				882D1F2D1EC1C497007F39F5 /* CoreGraphics.framework */,
 				882D1F2F1EC1C49C007F39F5 /* GLKit.framework */,
+				88375E9A1EE9286500A4B6FE /* JavaScriptCore.framework */,
+				A18220B81F0398A500FC7C61 /* MessageUI.framework */,
 				882D1F311EC1C54F007F39F5 /* QuartzCore.framework */,
+				88375E961EE9285400A4B6FE /* SystemConfiguration.framework */,
 				883713161EE580340033EE08 /* Taplytics.framework */,
 				A1417A911E6ED9CB005DBEFF /* UIKit.framework */,
 				882D1F171EC19A2C007F39F5 /* libcompression.tbd */,
@@ -782,6 +813,34 @@
 				884F64B41EE53E010052274E /* LABFakeStorage.mm */,
 			);
 			name = Utils;
+			sourceTree = "<group>";
+		};
+		A1674D6D1F016166006A3B07 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A1674D7E1F016167006A3B07 /* libFBTweak.a */,
+				A1674D801F016167006A3B07 /* FBTweakTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A1674D981F016195006A3B07 /* Tweaks */ = {
+			isa = PBXGroup;
+			children = (
+				A1674DA91F0161EC006A3B07 /* LABTweakCategoriesProvider.h */,
+				A1674DAA1F0161EC006A3B07 /* LABTweakCategoriesProvider.mm */,
+				A16D7FF31F1A933E006FE0F6 /* LABTweakCategoriesProvider+Internal.h */,
+				A1674DA81F0161EC006A3B07 /* LABTweakCollectionsProvider.h */,
+			);
+			name = Tweaks;
+			sourceTree = "<group>";
+		};
+		A18220911F026FC200FC7C61 /* Tweaks */ = {
+			isa = PBXGroup;
+			children = (
+				A18220B61F026FEC00FC7C61 /* LABTweakCategoriesProviderSpec.mm */,
+			);
+			name = Tweaks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -863,6 +922,10 @@
 				{
 					ProductGroup = 882D1F1E1EC1AC6E007F39F5 /* Products */;
 					ProjectRef = 882D1F1D1EC1AC6E007F39F5 /* extobjc.xcodeproj */;
+				},
+				{
+					ProductGroup = A1674D6D1F016166006A3B07 /* Products */;
+					ProjectRef = A1674D6C1F016166006A3B07 /* FBTweak.xcodeproj */;
 				},
 				{
 					ProductGroup = A141726A1E6EADDF005DBEFF /* Products */;
@@ -1111,6 +1174,20 @@
 			remoteRef = A14172DB1E6EB2FF005DBEFF /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		A1674D7E1F016167006A3B07 /* libFBTweak.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libFBTweak.a;
+			remoteRef = A1674D7D1F016167006A3B07 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		A1674D801F016167006A3B07 /* FBTweakTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = FBTweakTests.xctest;
+			remoteRef = A1674D7F1F016167006A3B07 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
@@ -1138,6 +1215,7 @@
 				883712FE1EE57E8C0033EE08 /* LABTaplyticsSource.mm in Sources */,
 				883235861ED861EA0090787D /* NSErrorCodes+Laboratory.mm in Sources */,
 				88BB646D1EDAAD100026DEC0 /* LABLocalSource.mm in Sources */,
+				A1674DAB1F0161EC006A3B07 /* LABTweakCategoriesProvider.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1156,6 +1234,7 @@
 				88932F5D1EDF538900451D44 /* EXPMatchers+complete.m in Sources */,
 				88932F621EDF538900451D44 /* EXPMatchers+matchValue.m in Sources */,
 				88932F671EDF538900451D44 /* EXPMatchers+sendValuesWithCount.m in Sources */,
+				A18220B71F026FEC00FC7C61 /* LABTweakCategoriesProviderSpec.mm in Sources */,
 				88932F6F1EDF55C000451D44 /* LLReactiveMatchersMessageBuilder.m in Sources */,
 				885AFF991F02B34D0035A6B2 /* LABTaplyticsSpec.mm in Sources */,
 				88932F6E1EDF55C000451D44 /* LLReactiveMatchersHelpers.m in Sources */,
@@ -1210,6 +1289,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../LTKit",
+					"$(SRCROOT)/../third_party/Tweaks",
 					"$(SRCROOT)/../third_party/libextobjc",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
@@ -1232,6 +1312,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../LTKit",
+					"$(SRCROOT)/../third_party/Tweaks",
 					"$(SRCROOT)/../third_party/libextobjc",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
