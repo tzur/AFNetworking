@@ -25,9 +25,16 @@ extern NSString * const kLABAssignmentAffectedUserReasonDisplayed;
 /// Contains an assignment (key-value pair resulting from a variant) and its originating variant,
 /// experiment and source.
 ///
-/// Since assignment data can be changed over time, the protocol groups this information in order to
+/// Since assignment data can be changed over time, the object groups this information in order to
 /// capture the value and its origins in a specific point in time.
-@protocol LABAssignment <NSObject ,NSSecureCoding>
+@interface LABAssignment : LTValueObject <NSSecureCoding>
+
+- (instancetype)init NS_UNAVAILABLE;
+
+/// Initiliazes with the given parameters.
+- (instancetype)initWithValue:(id)value key:(NSString *)key variant:(NSString *)variant
+                   experiment:(NSString *)experiment sourceName:(NSString *)sourceName
+    NS_DESIGNATED_INITIALIZER;
 
 /// Assignment value.
 @property (readonly, nonatomic) id value;
@@ -43,18 +50,6 @@ extern NSString * const kLABAssignmentAffectedUserReasonDisplayed;
 
 /// Name of the source that provided the assignment.
 @property (readonly, nonatomic) NSString *sourceName;
-
-@end
-
-/// Default implementation of \c LABAssignment protocol.
-@interface LABAssignment : LTValueObject <LABAssignment>
-
-- (instancetype)init NS_UNAVAILABLE;
-
-/// Initiliazes with the given parameters.
-- (instancetype)initWithValue:(id)value key:(NSString *)key variant:(NSString *)variant
-                   experiment:(NSString *)experiment sourceName:(NSString *)sourceName
-    NS_DESIGNATED_INITIALIZER;
 
 @end
 
@@ -79,7 +74,7 @@ extern NSString * const kLABAssignmentAffectedUserReasonDisplayed;
 /// method can be called with an \c kLABAssignmentAffectedUserReasonInitiated reason when a timer
 /// was configured to show the pop-up and with \c kLABAssignmentAffectedUserReasonDisplayed reason
 /// when the pop-up screen has been shown.
-- (void)reportAssignmentAffectedUser:(id<LABAssignment>)assignment reason:(NSString *)reason;
+- (void)reportAssignmentAffectedUser:(LABAssignment *)assignment reason:(NSString *)reason;
 
 /// Updates the \c activeAssignments with the latest assignments. The returned hot signal completes
 /// when the update completes successfully or errs with \c LABErrorCodeAssignmentUpdateFailed on
@@ -106,7 +101,7 @@ extern NSString * const kLABAssignmentAffectedUserReasonDisplayed;
 /// All currently active assignments.
 ///
 /// @note This property is KVO-compliant, changes are delivered on the main thread.
-@property (readonly, nonatomic) NSDictionary<NSString *, id<LABAssignment>> *activeAssignments;
+@property (readonly, nonatomic) NSDictionary<NSString *, LABAssignment *> *activeAssignments;
 
 @end
 
@@ -122,7 +117,7 @@ extern NSString * const kLABAssignmentAffectedUserReasonDisplayed;
 /// \c assignment was added or removed from the \c activeAssignments property of
 /// \c assignmentsManager, respectively.
 - (void)assignmentsManager:(LABAssignmentsManager *)assignmentsManager
-   assignmentDidAffectUser:(id<LABAssignment>)assignment reason:(NSString *)reason;
+   assignmentDidAffectUser:(LABAssignment *)assignment reason:(NSString *)reason;
 
 @end
 
