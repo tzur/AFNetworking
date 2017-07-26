@@ -101,7 +101,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (RACSignal *)contentBundleForProduct:(BZRProduct *)product {
   if (![product.contentFetcherParameters isKindOfClass:[[self class] expectedParametersClass]]) {
-    return [self invalidFetcherParametersErrorSignal:product];
+    return [RACSignal return:nil];
   }
 
   NSArray<BZRContentFetcherParameters *> *fetchersParameters =

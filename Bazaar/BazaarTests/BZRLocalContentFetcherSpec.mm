@@ -116,7 +116,7 @@ context(@"fetching product", ^{
     OCMStub([fileManager bzr_deleteItemAtPathIfExists:OCMOCK_ANY]).andReturn([RACSignal empty]);
     OCMStub([fileManager copyItemAtURL:OCMOCK_ANY toURL:OCMOCK_ANY error:nil]);
     LTPath *extractedContentPath = [LTPath pathWithPath:@"bar"];
-      NSBundle *contentBundle = [NSBundle bundleWithPath:extractedContentPath.path];
+    NSBundle *contentBundle = [NSBundle bundleWithPath:extractedContentPath.path];
     OCMStub([contentManager extractContentOfProduct:product.identifier fromArchive:targetPath
                                       intoDirectory:OCMOCK_ANY])
         .andReturn([RACSignal return:contentBundle]);
@@ -130,8 +130,8 @@ context(@"fetching product", ^{
 
 context(@"getting bundle of the product content", ^{
   __block NSFileManager *fileManager;
-  __block BZRLocalContentFetcher *fetcher;
   __block BZRProductContentManager *contentManager;
+  __block BZRLocalContentFetcher *fetcher;
   __block BZRProduct *product;
 
   beforeEach(^{
@@ -139,17 +139,21 @@ context(@"getting bundle of the product content", ^{
     contentManager = contentManager = OCMClassMock([BZRProductContentManager class]);
     fetcher = [[BZRLocalContentFetcher alloc] initWithFileManager:fileManager
                                                    contentManager:contentManager];
-    product = BZRProductWithIdentifier(@"foo");
+    BZRLocalContentFetcherParameters *parameters =
+        OCMClassMock([BZRLocalContentFetcherParameters class]);
+    OCMStub([parameters URL]).andReturn([NSURL URLWithString:@"file://bar.zip"]);
+    product = BZRProductWithIdentifierAndParameters(@"foo", parameters);
   });
 
-  it(@"should send NSBundle with the content path if the content exists", ^{
-    LTPath *contentPath = [LTPath pathWithPath:@"file://bar"];
+  it(@"should send bundle with the content path if the content exists", ^{
+    LTPath *contentPath = [LTPath pathWithPath:@"foo"];
     OCMStub([contentManager pathToContentDirectoryOfProduct:product.identifier])
         .andReturn(contentPath);
 
     NSBundle *bundle = OCMClassMock([NSBundle class]);
     fetcher = OCMPartialMock(fetcher);
-    OCMStub([fetcher bundleWithPath:contentPath]).andReturn(bundle);
+    OCMStub([fetcher bundleWithPath:[contentPath pathByAppendingPathComponent:@"bar"]])
+        .andReturn(bundle);
 
     auto recorder = [[fetcher contentBundleForProduct:product] testRecorder];
 
@@ -158,6 +162,15 @@ context(@"getting bundle of the product content", ^{
 
   it(@"should send nil if the content does not exist", ^{
     OCMStub([contentManager pathToContentDirectoryOfProduct:product.identifier]);
+
+    auto recorder = [[fetcher contentBundleForProduct:product] testRecorder];
+
+    expect(recorder).to.sendValues(@[[NSNull null]]);
+  });
+
+  it(@"should send nil for invalid content fetcher parameters", ^{
+    BZRContentFetcherParameters *parameters = OCMClassMock([BZRContentFetcherParameters class]);
+    BZRProduct *product = BZRProductWithIdentifierAndParameters(@"foo", parameters);
 
     auto recorder = [[fetcher contentBundleForProduct:product] testRecorder];
 

@@ -107,10 +107,7 @@ NS_ASSUME_NONNULL_BEGIN
       self.contentFetchers[product.contentFetcherParameters.type];
 
   if (!contentFetcher) {
-    NSError *error = [NSError lt_errorWithCode:BZRErrorCodeProductContentFetcherNotRegistered
-                                   description:@"Content fetcher of type %@ is not registered.",
-                                               product.contentFetcherParameters.type];
-    return [RACSignal error:error];
+    return [RACSignal return:nil];
   }
 
   return [self.contentFetchers[product.contentFetcherParameters.type]

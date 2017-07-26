@@ -26,18 +26,30 @@ beforeEach(^{
       [[BZRCompositeContentFetcher alloc] initWithContentFetchers:contentFetchers];
 });
 
-it(@"should send the bundle of the product content with the right fetcher", ^{
-  BZRProduct *product = BZRProductWithIdentifierAndContent(@"foo");
-  OCMStub([product.contentFetcherParameters type]).andReturn(@"mockedContentFetcher");
+context(@"getting bundle of the product content", ^{
+  it(@"should send nil if the underlying fetcher is not registered", ^{
+    BZRProduct *product = BZRProductWithIdentifierAndContent(@"foo");
+    OCMStub([product.contentFetcherParameters type]).andReturn(@"InvalidContentFetcher");
 
-  NSBundle *bundle = OCMClassMock([NSBundle class]);
-  OCMStub([contentFetchers[@"mockedContentFetcher"] contentBundleForProduct:product])
-      .andReturn([RACSignal return:bundle]);
+    auto recorder = [[compositeContentFetcher contentBundleForProduct:product] testRecorder];
 
-  LLSignalTestRecorder *recorder = [[contentFetcher contentBundleForProduct:product] testRecorder];
+    expect(recorder).to.complete();
+    expect(recorder).to.sendValues(@[[NSNull null]]);
+  });
 
-  expect(recorder).to.complete();
-  expect(recorder).to.sendValues(@[bundle]);
+  it(@"should send the bundle of the product content with the right fetcher", ^{
+    BZRProduct *product = BZRProductWithIdentifierAndContent(@"foo");
+    OCMStub([product.contentFetcherParameters type]).andReturn(@"mockedContentFetcher");
+
+    NSBundle *bundle = OCMClassMock([NSBundle class]);
+    OCMStub([contentFetchers[@"mockedContentFetcher"] contentBundleForProduct:product])
+        .andReturn([RACSignal return:bundle]);
+
+    auto recorder = [[compositeContentFetcher contentBundleForProduct:product] testRecorder];
+
+    expect(recorder).to.complete();
+    expect(recorder).to.sendValues(@[bundle]);
+  });
 });
 
 context(@"fetching content", ^{
@@ -45,8 +57,7 @@ context(@"fetching content", ^{
     BZRProduct *product = BZRProductWithIdentifierAndContent(@"foo");
     OCMStub(product.contentFetcherParameters.type).andReturn(@"notRegisteredContentFetcher");
 
-    LLSignalTestRecorder *recorder = [[compositeContentFetcher fetchProductContent:product]
-                                      testRecorder];
+    auto recorder = [[compositeContentFetcher fetchProductContent:product] testRecorder];
 
     expect(recorder).will.matchError(^BOOL(NSError *error) {
       return error.lt_isLTDomain && error.code == BZRErrorCodeProductContentFetcherNotRegistered;
@@ -66,8 +77,7 @@ context(@"fetching content", ^{
       LTProgress *progress = [[LTProgress alloc] initWithResult:bundle];
       OCMStub([contentFetcher fetchProductContent:product]).andReturn([RACSignal return:progress]);
 
-      LLSignalTestRecorder *recorder = [[compositeContentFetcher fetchProductContent:product]
-                                        testRecorder];
+      auto recorder = [[compositeContentFetcher fetchProductContent:product] testRecorder];
 
       expect(recorder).will.complete();
       expect(recorder).will.sendValues(@[progress]);
