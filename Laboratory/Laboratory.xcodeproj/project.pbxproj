@@ -50,6 +50,8 @@
 		88932F781EDF55D300451D44 /* RACSignal+LLSubscriptionCounting.m in Sources */ = {isa = PBXBuildFile; fileRef = 88932F751EDF55D300451D44 /* RACSignal+LLSubscriptionCounting.m */; };
 		88ABDB141EDFDA6900C72E65 /* ReactiveCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 882D20051EC996D4007F39F5 /* ReactiveCocoa.framework */; };
 		88BB646D1EDAAD100026DEC0 /* LABLocalSource.mm in Sources */ = {isa = PBXBuildFile; fileRef = 88BB646B1EDAAD100026DEC0 /* LABLocalSource.mm */; };
+		88C21F471F0D272F0005EFDE /* LABAssignmentValue.mm in Sources */ = {isa = PBXBuildFile; fileRef = 88C21F461F0D272F0005EFDE /* LABAssignmentValue.mm */; };
+		88C21F6B1F0D37E40005EFDE /* LABAssignmentValueSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 88C21F6A1F0D37E40005EFDE /* LABAssignmentValueSpec.mm */; };
 		88F8C3D21F027DF30070F7E4 /* TLProperties+LaboratorySpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 88F8C3D11F027DF30070F7E4 /* TLProperties+LaboratorySpec.mm */; };
 		A10DEFA91EE425DB00F1DD87 /* LABAssignmentsManagerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = A10DEFA81EE425DB00F1DD87 /* LABAssignmentsManagerSpec.mm */; };
 		A1248EFC1EE93608008D6535 /* LABDebugSource.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1248EFB1EE93608008D6535 /* LABDebugSource.mm */; };
@@ -408,6 +410,9 @@
 		88BB646A1EDAAD100026DEC0 /* LABLocalSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LABLocalSource.h; sourceTree = "<group>"; };
 		88BB646B1EDAAD100026DEC0 /* LABLocalSource.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LABLocalSource.mm; sourceTree = "<group>"; };
 		88BB646C1EDAAD100026DEC0 /* LABStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LABStorage.h; sourceTree = "<group>"; };
+		88C21F451F0D272F0005EFDE /* LABAssignmentValue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LABAssignmentValue.h; sourceTree = "<group>"; };
+		88C21F461F0D272F0005EFDE /* LABAssignmentValue.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LABAssignmentValue.mm; sourceTree = "<group>"; };
+		88C21F6A1F0D37E40005EFDE /* LABAssignmentValueSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LABAssignmentValueSpec.mm; sourceTree = "<group>"; };
 		88F8C3D11F027DF30070F7E4 /* TLProperties+LaboratorySpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "TLProperties+LaboratorySpec.mm"; sourceTree = "<group>"; };
 		A10DEFA81EE425DB00F1DD87 /* LABAssignmentsManagerSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LABAssignmentsManagerSpec.mm; sourceTree = "<group>"; };
 		A1248EFA1EE93608008D6535 /* LABDebugSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LABDebugSource.h; sourceTree = "<group>"; };
@@ -505,6 +510,8 @@
 		883235611ED861CD0090787D /* Base */ = {
 			isa = PBXGroup;
 			children = (
+				88C21F451F0D272F0005EFDE /* LABAssignmentValue.h */,
+				88C21F461F0D272F0005EFDE /* LABAssignmentValue.mm */,
 				88440B511ED8B10B00A64CF7 /* LABAssignmentsManager.h */,
 				A148A0541EE3D8110058165C /* LABAssignmentsManager.mm */,
 				88440B521ED8B10B00A64CF7 /* LABAssignmentsSource.h */,
@@ -523,6 +530,7 @@
 		883235801ED861DB0090787D /* Base */ = {
 			isa = PBXGroup;
 			children = (
+				88C21F6A1F0D37E40005EFDE /* LABAssignmentValueSpec.mm */,
 				A10DEFA81EE425DB00F1DD87 /* LABAssignmentsManagerSpec.mm */,
 				884F64931EE53B3C0052274E /* LABExperimentsTokenProviderSpec.mm */,
 				883235871ED861F30090787D /* NSErrorCodes+LaboratorySpec.mm */,
@@ -1214,6 +1222,7 @@
 				883712FC1EE57E8C0033EE08 /* LABTaplytics.mm in Sources */,
 				883712FE1EE57E8C0033EE08 /* LABTaplyticsSource.mm in Sources */,
 				883235861ED861EA0090787D /* NSErrorCodes+Laboratory.mm in Sources */,
+				88C21F471F0D272F0005EFDE /* LABAssignmentValue.mm in Sources */,
 				88BB646D1EDAAD100026DEC0 /* LABLocalSource.mm in Sources */,
 				A1674DAB1F0161EC006A3B07 /* LABTweakCategoriesProvider.mm in Sources */,
 			);
@@ -1228,6 +1237,7 @@
 				88F8C3D21F027DF30070F7E4 /* TLProperties+LaboratorySpec.mm in Sources */,
 				88932F651EDF538900451D44 /* EXPMatchers+sendEvents.m in Sources */,
 				88932F611EDF538900451D44 /* EXPMatchers+matchError.m in Sources */,
+				88C21F6B1F0D37E40005EFDE /* LABAssignmentValueSpec.mm in Sources */,
 				883235881ED861F30090787D /* NSErrorCodes+LaboratorySpec.mm in Sources */,
 				88932F781EDF55D300451D44 /* RACSignal+LLSubscriptionCounting.m in Sources */,
 				88349C141EF012C1007B14C4 /* LABTaplyticsSourceSpec.mm in Sources */,

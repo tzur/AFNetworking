@@ -73,6 +73,23 @@ NS_ASSUME_NONNULL_BEGIN
   return self;
 }
 
++ (instancetype)experimentFromEnum:(Class)enumClass withName:(NSString *)name
+                  activeTokenRange:(LABExperimentsTokenRange)activeTokenRange {
+  LTParameterAssert([enumClass conformsToProtocol:@protocol(LTEnum)], @"Given class %@ doesn't "
+                    "conform to the LTEnum protocol", enumClass);
+
+  return [[LABLocalExperiment alloc] initWithName:name keys:@[name]
+                                         variants:[self variantsFromEnum:enumClass key:name]
+                                 activeTokenRange:activeTokenRange];
+}
+
++ (NSArray<LABLocalVariant *> *)variantsFromEnum:(Class)enumClass key:(NSString *)key {
+  return [[enumClass fields] lt_map:^LABLocalVariant *(id<LTEnum> enumObject) {
+    return [[LABLocalVariant alloc] initWithName:enumObject.name probabilityWeight:1
+                                     assignments:@{key: enumObject.name}];
+  }];
+}
+
 - (BOOL)verifyVariants:(NSArray<LABLocalVariant *> *)variants haveKeys:(NSArray<NSString *> *)keys {
   auto referenceKeysSet = [keys lt_set];
   for (LABLocalVariant *variant in variants) {

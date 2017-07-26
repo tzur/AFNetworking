@@ -12,6 +12,11 @@
 #import "LABFakeStorage.h"
 #import "NSError+Laboratory.h"
 
+LTEnumMake(NSUInteger, LABTestLocalSourceEnum,
+  LABTestLocalSourceEnumA,
+  LABTestLocalSourceEnumB
+);
+
 static NSSet<LABVariant *> *LABGenerateVariants
     (NSDictionary<LABLocalExperiment *, LABLocalVariant *> *localVariants) {
   auto variants = [NSMutableSet set];
@@ -210,6 +215,32 @@ context(@"LABLocalExperiment", ^{
                                   initWithName:@"exp_bar" keys:exp1Keys
                                   variants:@[zeroProbabilityVariant1, zeroProbabilityVariant2]
                                   activeTokenRange:{0.1, 0.2}];
+    }).to.raise(NSInvalidArgumentException);
+  });
+
+  it(@"should create experiment from enum", ^{
+    auto experiment = [LABLocalExperiment experimentFromEnum:LABTestLocalSourceEnum.class
+                                                    withName:@"foo" activeTokenRange:{0.3, 0.7}];
+    expect(experiment.name).to.equal(@"foo");
+    expect(experiment.keys).to.equal(@[@"foo"]);
+    expect(experiment.activeTokenRange).to.equal(LABExperimentsTokenRange({0.3, 0.7}));
+    expect(experiment.variants).to.haveCount([LABTestLocalSourceEnum fields].count);
+
+    auto _Nullable variantA = experiment.variants[$(LABTestLocalSourceEnumA).name];;
+    expect(variantA.name).to.equal($(LABTestLocalSourceEnumA).name);
+    expect(variantA.probabilityWeight).to.equal(1);
+    expect(variantA.assignments).to.equal(@{@"foo": $(LABTestLocalSourceEnumA).name});
+
+    auto _Nullable variantB = experiment.variants[$(LABTestLocalSourceEnumB).name];;
+    expect(variantB.name).to.equal($(LABTestLocalSourceEnumB).name);
+    expect(variantB.probabilityWeight).to.equal(1);
+    expect(variantB.assignments).to.equal(@{@"foo": $(LABTestLocalSourceEnumB).name});
+  });
+
+  it(@"should assert if enumClass does not conform to LTEnum", ^{
+    expect(^{
+      [LABLocalExperiment experimentFromEnum:NSString.class withName:@"bar"
+                            activeTokenRange:{0.3, 0.7}];
     }).to.raise(NSInvalidArgumentException);
   });
 });

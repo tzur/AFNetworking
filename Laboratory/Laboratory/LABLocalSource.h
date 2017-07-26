@@ -71,6 +71,17 @@ typedef std::pair<double, double> LABExperimentsTokenRange;
             activeTokenRange:(LABExperimentsTokenRange)activeTokenRange
     NS_DESIGNATED_INITIALIZER;
 
+/// Returns a local experiment with variant for each field of the given \c enumClass, each variant
+/// has \c probabilityWeight of 1, so the variants are uniformly distributed. The experiment
+/// name is \c name. The experiment has only one key which is \c name. The possible values for the
+/// key is the enum's fields.
+///
+/// The given \c activeTokenRange is used in the created experiment.
+///
+/// @note \c enumClass must conform to LTEnum.
++ (instancetype)experimentFromEnum:(Class)enumClass withName:(NSString *)name
+                  activeTokenRange:(LABExperimentsTokenRange)activeTokenRange;
+
 /// Experiment name.
 @property (readonly, nonatomic) NSString *name;
 
