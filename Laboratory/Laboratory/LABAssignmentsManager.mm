@@ -236,7 +236,7 @@ static NSString * const kStoredActiveAssignmentsKey = @"ActiveAssignments";
   }
 }
 
-- (void)reportAssignmentAffectedUser:(id<LABAssignment>)assignment reason:(NSString *)reason {
+- (void)reportAssignmentAffectedUser:(LABAssignment *)assignment reason:(NSString *)reason {
   [self.delegate assignmentsManager:self assignmentDidAffectUser:assignment reason:reason];
 }
 

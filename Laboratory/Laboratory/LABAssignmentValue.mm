@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 @implementation LABAssignmentValue
 
 + (nullable LABAssignmentValue<id<LTEnum>> *)
-    enumValueForAssignment:(nullable id<LABAssignment>)assignment enumClass:(Class)enumClass {
+    enumValueForAssignment:(nullable LABAssignment *)assignment enumClass:(Class)enumClass {
   LTParameterAssert([enumClass conformsToProtocol:@protocol(LTEnum)], @"Given enumClass %@ doesn't "
                     "conform to the LTEnum protocol", enumClass);
   if (![assignment.value isKindOfClass:NSString.class]) {
@@ -30,7 +30,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 + (nullable LABAssignmentValue<NSString *> *)
-    stringValueForAssignment:(nullable id<LABAssignment>)assignment {
+    stringValueForAssignment:(nullable LABAssignment *)assignment {
   if (![assignment.value isKindOfClass:NSString.class]) {
     LogError(@"Expected assignment %@ value to be of type NSString but got %@", assignment,
              [assignment.value class]);
@@ -40,7 +40,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 + (nullable LABAssignmentValue<NSNumber *> *)
-    numberValueForAssignment:(nullable id<LABAssignment>)assignment {
+    numberValueForAssignment:(nullable LABAssignment *)assignment {
   if (![assignment.value isKindOfClass:NSNumber.class]) {
     LogError(@"Expected assignment %@ value to be of type NSNumber but got %@", assignment,
              [assignment.value class]);
@@ -49,7 +49,7 @@ NS_ASSUME_NONNULL_BEGIN
   return [[LABAssignmentValue alloc] initWithValue:assignment.value andAssignment:assignment];
 }
 
-- (instancetype)initWithValue:(id)value andAssignment:(id<LABAssignment>)assignment {
+- (instancetype)initWithValue:(id)value andAssignment:(LABAssignment *)assignment {
   if (self = [super init]) {
     _assignment = assignment;
     _value = value;
@@ -67,12 +67,12 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (nullable instancetype)initWithCoder:(NSCoder *)aDecoder {
-  id<LABAssignment> _Nullable assignment =
+  LABAssignment * _Nullable assignment =
       [aDecoder decodeObjectForKey:@instanceKeypath(LABAssignmentValue, assignment)];
   id _Nullable value =
       [aDecoder decodeObjectForKey:@instanceKeypath(LABAssignmentValue, value)];
 
-  if (![assignment conformsToProtocol:@protocol(LABAssignment)] || !value) {
+  if (![assignment isKindOfClass:LABAssignment.class] || !value) {
     return nil;
   }
 

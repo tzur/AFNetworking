@@ -5,7 +5,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@protocol LABAssignment, LTEnum;
+@class LABAssignment;
+
+@protocol LTEnum;
 
 /// Value class containing an \c assignment and its \c value transformed to class \c ObjectType. The
 /// two are grouped together for easy access to assignment value, and reporting the user has been
@@ -27,25 +29,25 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 /// Raises \c NSInvalidArgumentException if \c enumClass does not conform to \c LTEnum.
 + (nullable LABAssignmentValue<id<LTEnum>> *)
-    enumValueForAssignment:(nullable id<LABAssignment>)assignment enumClass:(Class)enumClass;
+    enumValueForAssignment:(nullable LABAssignment *)assignment enumClass:(Class)enumClass;
 
 /// Returns \c LABAssignmentValue containing the given \c assignment and its value as \c NSString.
 /// Returns \c nil if the \c value of \c assignment is not \c NSString or if \c assignment is
 /// \c nil.
 + (nullable LABAssignmentValue<NSString *> *)
-    stringValueForAssignment:(nullable id<LABAssignment>)assignment;
+    stringValueForAssignment:(nullable LABAssignment *)assignment;
 
 /// Returns \c LABAssignmentValue containing the given \c assignment and its value as \c NSNumber.
 /// Returns \c nil if the \c value of \c assignment is not \c NSNumber or if \c assignment is
 /// \c nil.
 + (nullable LABAssignmentValue<NSNumber *> *)
-    numberValueForAssignment:(nullable id<LABAssignment>)assignment;
+    numberValueForAssignment:(nullable LABAssignment *)assignment;
 
 - (instancetype)init NS_UNAVAILABLE;
 
 /// Initializes with the given \c value as the transformed value of the assignment and \c assignment
 /// as the originating assignment of \c value.
-- (instancetype)initWithValue:(ObjectType)value andAssignment:(id<LABAssignment>)assignment
+- (instancetype)initWithValue:(ObjectType)value andAssignment:(LABAssignment *)assignment
     NS_DESIGNATED_INITIALIZER;
 
 /// \c value of \c assignment transformed to \c ObjectType.
@@ -53,7 +55,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Assignment, containing its origin data, used to report that the user has been affected by this
 /// assignment.
-@property (readonly, nonatomic) id<LABAssignment> assignment;
+@property (readonly, nonatomic) LABAssignment *assignment;
 
 @end
 

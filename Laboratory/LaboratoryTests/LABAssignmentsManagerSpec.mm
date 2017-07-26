@@ -30,16 +30,16 @@ static NSDictionary *LABFakeAssignment(id value, NSString *key, NSString *varian
   };
 }
 
-static NSDictionary *LABFakeAssignment(id<LABAssignment> assignment) {
+static NSDictionary *LABFakeAssignment(LABAssignment *assignment) {
   return LABFakeAssignment(assignment.value, assignment.key, assignment.variant,
                            assignment.experiment, assignment.sourceName);
 }
 
 static NSDictionary<NSString *, NSDictionary *> *
-    LABFakeAssignments(NSDictionary<NSString *, id<LABAssignment>> *assignments) {
+    LABFakeAssignments(NSDictionary<NSString *, LABAssignment *> *assignments) {
   auto result = [NSMutableDictionary dictionary];
 
-  [assignments enumerateKeysAndObjectsUsingBlock:^(NSString *key, id<LABAssignment> assignment,
+  [assignments enumerateKeysAndObjectsUsingBlock:^(NSString *key, LABAssignment *assignment,
                                                    BOOL *) {
     result[key] = LABFakeAssignment(assignment);
   }];
@@ -63,7 +63,7 @@ static NSDictionary<NSString *, NSDictionary *> *LABFakeAssignments(LABVariant *
 @interface LABFakeAssignmentsManagerDelegate : NSObject <LABAssignmentsManagerDelegate>
 
 /// Assignments that were reported to the receiver as affecting user experience. The tuples are
-/// pairs of \c id<LABAssignment> objects and \c action.
+/// pairs of \c LABAssignment objects and \c action.
 @property (readonly, nonatomic) NSMutableArray<RACTuple *> *reportedAffectingAssignments;
 
 @end
@@ -78,7 +78,7 @@ static NSDictionary<NSString *, NSDictionary *> *LABFakeAssignments(LABVariant *
 }
 
 - (void)assignmentsManager:(LABAssignmentsManager * __unused)assignmentsManager
-   assignmentDidAffectUser:(id<LABAssignment>)assignment reason:(NSString *)reason {
+   assignmentDidAffectUser:(LABAssignment *)assignment reason:(NSString *)reason {
   [self.reportedAffectingAssignments addObject:RACTuplePack((id)assignment, reason)];
 }
 
