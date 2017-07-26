@@ -15,18 +15,6 @@ NSString * const kLABAssignmentAffectedUserReasonDeactivatedForDevice = @"deacti
 NSString * const kLABAssignmentAffectedUserReasonInitiated = @"initiated";
 NSString * const kLABAssignmentAffectedUserReasonDisplayed = @"displayed";
 
-/// Default implementation of \c LABAssignment protocol.
-@interface LABAssignment : LTValueObject <LABAssignment>
-
-- (instancetype)init NS_UNAVAILABLE;
-
-/// Initiliazes with the given parameters.
-- (instancetype)initWithValue:(id)value key:(NSString *)key variant:(NSString *)variant
-                   experiment:(NSString *)experiment sourceName:(NSString *)sourceName
-    NS_DESIGNATED_INITIALIZER;
-
-@end
-
 @implementation LABAssignment
 
 @synthesize value = _value;

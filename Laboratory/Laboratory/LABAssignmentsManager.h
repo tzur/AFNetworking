@@ -1,6 +1,8 @@
 // Copyright (c) 2017 Lightricks. All rights reserved.
 // Created by Barak Weiss.
 
+#import <LTKit/LTValueObject.h>
+
 NS_ASSUME_NONNULL_BEGIN
 
 /// Reason used by \c LABAssignmentsManager when informing its delegate that an assignment affected
@@ -41,6 +43,18 @@ extern NSString * const kLABAssignmentAffectedUserReasonDisplayed;
 
 /// Name of the source that provided the assignment.
 @property (readonly, nonatomic) NSString *sourceName;
+
+@end
+
+/// Default implementation of \c LABAssignment protocol.
+@interface LABAssignment : LTValueObject <LABAssignment>
+
+- (instancetype)init NS_UNAVAILABLE;
+
+/// Initiliazes with the given parameters.
+- (instancetype)initWithValue:(id)value key:(NSString *)key variant:(NSString *)variant
+                   experiment:(NSString *)experiment sourceName:(NSString *)sourceName
+    NS_DESIGNATED_INITIALIZER;
 
 @end
 
