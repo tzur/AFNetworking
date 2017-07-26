@@ -172,6 +172,8 @@ compression and AES-128 algorithm for encryption.
 The suggested flow for achieving this with Foundations tools is as the following: 
 - Add a User-Defined setting at the project Build Settings named `JSON_ENCRYPTION_KEY` with a valid
 hex string of a length of 32 bytes.
+- Make sure the [python modules](#installing-pip) `pycrypto` and `pylzfse` are installed. If needed,
+run `pip install pycrypto` and `pip install git+https://github.com/dimkr/pylzfse`.
 - Add a Build Rule to your project for files with names matching `*.secure.json` that runs custom
 script:
 ```
@@ -206,6 +208,16 @@ is not the case. In order to make all of them available, one
 should call `purchaseProduct` for every product, or just call
 `acquireAllEnabledProducts`, which errs if the user doesn't have an
 active subscription.
+
+---
+
+## Troubleshooting
+
+### Installing pip
+
+If you don't have pip installed, make sure you install python from Homebrew via `brew install
+python`. If `pip` command doesn't work after `brew install python`, try to run `brew unlink python
+&& brew link --overwrite python`.
 
 ## Further reading
 
