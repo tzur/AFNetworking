@@ -88,7 +88,7 @@ context(@"3D mat initialization", ^{
   });
 
   context(@"packed mat validation", ^{
-    it(@"should return a correct packed mat", ^{
+    it(@"should return a correct continous packed mat", ^{
       int matDims[] = {2, 2, 2};
       cv::Mat4b mat(3, matDims);
       for (int z = 0; z < 2; ++z) {
@@ -101,14 +101,17 @@ context(@"3D mat initialization", ^{
       }
       LT3DLUT *lut = [[LT3DLUT alloc] initWithLatticeMat:mat];
 
-      cv::Mat4b packedMat(4, 2);
+      cv::Mat4b expectedPackedMat(4, 2);
       for (int y = 0; y < 4; ++y) {
         for (int x = 0; x < 2; ++x) {
           char value = (char)(2 * y + x);
-          packedMat(y, x) = cv::Vec4b(value, value, value, value);
+          expectedPackedMat(y, x) = cv::Vec4b(value, value, value, value);
         }
       }
-      expect($([lut packedMat])).to.equalMat($(packedMat));
+
+      cv::Mat packedMat = [lut packedMat];
+      expect($(packedMat)).to.equalMat($(expectedPackedMat));
+      expect(packedMat.isContinuous()).to.beTruthy();
     });
   });
 

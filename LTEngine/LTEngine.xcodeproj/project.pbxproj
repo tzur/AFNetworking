@@ -1244,9 +1244,12 @@
 		C7E0B02F1E41E34600E88244 /* ImageZeroVersion1Test.iz in Resources */ = {isa = PBXBuildFile; fileRef = C7E0B02D1E41E34600E88244 /* ImageZeroVersion1Test.iz */; };
 		C7E0B0301E41E34600E88244 /* ImageZeroVersion1Test.iz.1 in Resources */ = {isa = PBXBuildFile; fileRef = C7E0B02E1E41E34600E88244 /* ImageZeroVersion1Test.iz.1 */; };
 		C7E0B0321E41E94800E88244 /* SemiTransparentLena.png in Resources */ = {isa = PBXBuildFile; fileRef = C7E0B0311E41E94800E88244 /* SemiTransparentLena.png */; };
+		E40F7FD31F1F30FD007501C4 /* LT3DLUT+Operations.h in Headers */ = {isa = PBXBuildFile; fileRef = E40F7FD11F1F30FD007501C4 /* LT3DLUT+Operations.h */; };
+		E40F7FD41F1F30FD007501C4 /* LT3DLUT+Operations.mm in Sources */ = {isa = PBXBuildFile; fileRef = E40F7FD21F1F30FD007501C4 /* LT3DLUT+Operations.mm */; };
 		E48419ED1E8ABA6800154E1C /* LTTextureOpenExrArchiver.h in Headers */ = {isa = PBXBuildFile; fileRef = E48419EB1E8ABA6800154E1C /* LTTextureOpenExrArchiver.h */; };
 		E48419EE1E8ABA6800154E1C /* LTTextureOpenExrArchiver.mm in Sources */ = {isa = PBXBuildFile; fileRef = E48419EC1E8ABA6800154E1C /* LTTextureOpenExrArchiver.mm */; };
 		E4841A221E8ABE6200154E1C /* LTTextureOpenExrArchiverSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = E4841A211E8ABE6200154E1C /* LTTextureOpenExrArchiverSpec.mm */; };
+		E4C0DE831F1E384100140840 /* LT3DLUT+OperationsSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = E4C0DE821F1E384100140840 /* LT3DLUT+OperationsSpec.mm */; };
 		E4CEAF5B1E432BEC008FA38E /* libOpenEXR.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E4CEAC461E41DCC9008FA38E /* libOpenEXR.a */; };
 		E4F061FC1E49B46D00FDE0B0 /* LTOpenExrPizCompressor.h in Headers */ = {isa = PBXBuildFile; fileRef = E4F061FA1E49B46D00FDE0B0 /* LTOpenExrPizCompressor.h */; };
 		E4F061FD1E49B46D00FDE0B0 /* LTOpenExrPizCompressor.mm in Sources */ = {isa = PBXBuildFile; fileRef = E4F061FB1E49B46D00FDE0B0 /* LTOpenExrPizCompressor.mm */; };
@@ -3004,9 +3007,12 @@
 		C7E0B02D1E41E34600E88244 /* ImageZeroVersion1Test.iz */ = {isa = PBXFileReference; lastKnownFileType = file; name = ImageZeroVersion1Test.iz; path = Resources/ImageZeroVersion1Test.iz; sourceTree = "<group>"; };
 		C7E0B02E1E41E34600E88244 /* ImageZeroVersion1Test.iz.1 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.man; name = ImageZeroVersion1Test.iz.1; path = Resources/ImageZeroVersion1Test.iz.1; sourceTree = "<group>"; };
 		C7E0B0311E41E94800E88244 /* SemiTransparentLena.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SemiTransparentLena.png; path = Resources/SemiTransparentLena.png; sourceTree = "<group>"; };
+		E40F7FD11F1F30FD007501C4 /* LT3DLUT+Operations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "LT3DLUT+Operations.h"; sourceTree = "<group>"; };
+		E40F7FD21F1F30FD007501C4 /* LT3DLUT+Operations.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "LT3DLUT+Operations.mm"; sourceTree = "<group>"; };
 		E48419EB1E8ABA6800154E1C /* LTTextureOpenExrArchiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTTextureOpenExrArchiver.h; sourceTree = "<group>"; };
 		E48419EC1E8ABA6800154E1C /* LTTextureOpenExrArchiver.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTTextureOpenExrArchiver.mm; sourceTree = "<group>"; };
 		E4841A211E8ABE6200154E1C /* LTTextureOpenExrArchiverSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTTextureOpenExrArchiverSpec.mm; sourceTree = "<group>"; };
+		E4C0DE821F1E384100140840 /* LT3DLUT+OperationsSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "LT3DLUT+OperationsSpec.mm"; sourceTree = "<group>"; };
 		E4CEAC461E41DCC9008FA38E /* libOpenEXR.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libOpenEXR.a; path = "../third_party/openexr-binaries/lib/libOpenEXR.a"; sourceTree = "<group>"; };
 		E4F061FA1E49B46D00FDE0B0 /* LTOpenExrPizCompressor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTOpenExrPizCompressor.h; sourceTree = "<group>"; };
 		E4F061FB1E49B46D00FDE0B0 /* LTOpenExrPizCompressor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTOpenExrPizCompressor.mm; sourceTree = "<group>"; };
@@ -4265,6 +4271,8 @@
 			children = (
 				85F372B11C8C888300E1D429 /* LT3DLUT.h */,
 				85F372B21C8C888300E1D429 /* LT3DLUT.mm */,
+				E40F7FD11F1F30FD007501C4 /* LT3DLUT+Operations.h */,
+				E40F7FD21F1F30FD007501C4 /* LT3DLUT+Operations.mm */,
 				85A8013B1D07128100E8CFAC /* LT3DLUTTextureAtlas.h */,
 				85A8013C1D07128100E8CFAC /* LT3DLUTTextureAtlas.mm */,
 				852F067D1D128EB80081CFC2 /* LT3DLUTTextureAtlasProvider.h */,
@@ -4276,6 +4284,7 @@
 		85F372B61C8C88BD00E1D429 /* Lookup Tables */ = {
 			isa = PBXGroup;
 			children = (
+				E4C0DE821F1E384100140840 /* LT3DLUT+OperationsSpec.mm */,
 				85F372B71C8C88CC00E1D429 /* LT3DLUTSpec.mm */,
 				85A8015E1D071FA500E8CFAC /* LT3DLUTTextureAtlasSpec.mm */,
 				852F06A01D12942F0081CFC2 /* LT3DLUTTextureAtlasProviderSpec.mm */,
@@ -5870,6 +5879,7 @@
 				8B8720451924A76700517F2E /* NSValue+GLKitExtensions.h in Headers */,
 				8B8720461924A76700517F2E /* UIColor+Vector.h in Headers */,
 				28F340641B1EECB000545B82 /* LTTextureJpegArchiver.h in Headers */,
+				E40F7FD31F1F30FD007501C4 /* LT3DLUT+Operations.h in Headers */,
 				03FB6B8819DADBEE00255085 /* LTProcessorFillMode.h in Headers */,
 				50D82E721BFCABFD002EDCBD /* LTCompoundParameterizedObjectFactory.h in Headers */,
 				28B117A519C85C42007E2F17 /* LTScreenProcessing.h in Headers */,
@@ -6958,6 +6968,7 @@
 				0367A4B018ACF45700B42E34 /* LTProceduralFrameProcessor.mm in Sources */,
 				8BBE89511838CA2C006C58AA /* LTArrayBuffer.mm in Sources */,
 				03676D0A1A4097B100072966 /* LTHistogramProcessor.mm in Sources */,
+				E40F7FD41F1F30FD007501C4 /* LT3DLUT+Operations.mm in Sources */,
 				5006776D1C69C025002C6A24 /* LTFloatSetParametricValueProvider.mm in Sources */,
 				03BBB3251887B7CB001E7703 /* LTColorGradient.mm in Sources */,
 				8BA4552C18329FBB00E1EEE2 /* LTGLTexture.mm in Sources */,
@@ -7114,6 +7125,7 @@
 				8BAB320A1C28273E00DEA2A4 /* LTRenderbufferSpec.mm in Sources */,
 				508C156A1C1C84ED009ADA5C /* LTFloatSetExamples.mm in Sources */,
 				857F74851D3691E8005DA3E2 /* LTIndicesDataSpec.mm in Sources */,
+				E4C0DE831F1E384100140840 /* LT3DLUT+OperationsSpec.mm in Sources */,
 				8B3B31D8183905C200FEA96F /* LTArrayBufferSpec.mm in Sources */,
 				28C61C0918B23D540036D66E /* LTTouchCollectorTimeIntervalFilterSpec.mm in Sources */,
 				28FC0FF61D2E969200237FF8 /* LTContentTouchEventFilterSpec.mm in Sources */,

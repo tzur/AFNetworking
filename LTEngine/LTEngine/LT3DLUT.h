@@ -39,19 +39,21 @@ constexpr bool operator!=(const LT3DLUTLatticeSize &lhs, const LT3DLUTLatticeSiz
 /// Creates a new 2x2x2 3D LUT that defines the identity map.
 + (instancetype)identity;
 
-/// Initializes with the given \c packedMat. The given \c mat must be a 2D matrix of type \c CV_8UC4
-/// and size <tt>(m, m^2)</tt>, where \c m must be in <tt>{2, 3, ..., 255}</tt>. The \c packedMat
-/// consists of \c m <tt>m * m</tt> submatrices, thereby constituting a 3D LUT in a serialized
-/// fashion. The element <tt>(x, y)</tt> of the \c packedMat corresponds to the element
-/// <tt>(x, y % m, z / m)</tt> of a corresponding 3D matrix.
+/// Initializes with the given \c packedMat. The given \c packedMat must be a 2D matrix of type
+/// \c CV_8UC4 with \c m^2 rows and \c m columns, where \c m must be in <tt>{2, 3, ..., 255}</tt>.
+/// The \c packedMat consists of \c m <tt>m * m</tt> submatrices, thereby constituting a 3D LUT in a
+/// serialized fashion. The element <tt>(i, j)</tt> of the \c packedMat corresponds to the element
+/// <tt>(i / m, i % m, j)</tt> of the corresponding 3D matrix in the BGR coordinates.
 + (instancetype)lutFromPackedMat:(const cv::Mat &)packedMat;
 
-/// Returns a copy of the 3D LUT as a 2D matrix. The matrix size is <tt>(latticeSize.gDimensionSize
-/// * latticeSize.bDimensionSize, latticeSize.rDimensionSize)</tt>, consists of \c
-/// latticeSize.bDimensionSize <tt>latticeSize.gDimensionSize * latticeSize.rDimensionSize</tt>
-/// submatrices, thereby constituting a 3D LUT in a serialized fashion. The element <tt>(x, y)</tt>
-/// of the matrix corresponds to the element <tt>(x, y % latticeSize.bDimensionSize,
-/// z / latticeSize.bDimensionSize)</tt> of a corresponding 3D matrix.
+/// Returns a copy of the 3D LUT as a 2D matrix. The matrix has <tt>latticeSize.gDimensionSize
+/// * latticeSize.bDimensionSize</tt> rows and \c latticeSize.rDimensionSize columns. It
+/// consists of \c latticeSize.bDimensionSize submutrices having \c latticeSize.gDimensionSize rows
+/// ansd \c latticeSize.rDimensionSize columns each, thereby constituting a 3D LUT in a serialized
+/// fashion. The element <tt>(i, j)</tt> of \c packedMat corresponds to the element
+/// <tt>(i / latticeSize.bDimensionSize, i % latticeSize.bDimensionSize, j)</tt> of the
+/// corresponding 3D matrix in the BGR coordinates. The returned matrix is guaranteed to be
+/// continous.
 - (cv::Mat)packedMat;
 
 /// Matrix representing this 3D lookup table, of type \c CV_8UC4. The dimensions of the matrix are
