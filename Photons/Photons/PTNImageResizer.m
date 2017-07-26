@@ -38,14 +38,14 @@ NS_ASSUME_NONNULL_BEGIN
                                           description:@"Failed creating image source"]];
       return nil;
     }
-      
+
     RACCompoundDisposable *disposable = [RACCompoundDisposable compoundDisposable];
     [disposable addDisposable:[[self resizeImageFromImageSource:sourceRef
                                                resizingStrategy:resizingStrategy
                                                   fullSizeImage:^{
       return [UIImage imageWithContentsOfFile:url.path];
     }] subscribe:subscriber]];
-                                  
+
     [disposable addDisposable:[RACDisposable disposableWithBlock:^{
       LTCFSafeRelease(sourceRef);
     }]];
@@ -114,7 +114,7 @@ typedef UIImage *(^PTNImageBlock)();
     CGSize inputSize = [self sizeOfImageWithProperties:transferredProperties];
     CGSize size = [resizingStrategy sizeForInputSize:inputSize];
 
-    if (inputSize.width == CGSizeNull.width || inputSize.height == CGSizeNull.height) {
+    if (isnan(inputSize.width) || isnan(inputSize.height)) {
       [subscriber sendError:[NSError lt_errorWithCode:PTNErrorCodeInvalidDescriptor
                                           description:@"Image doesn't have width or height"]];
       return nil;
