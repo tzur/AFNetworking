@@ -31,6 +31,7 @@
 		06172C831F03F9E600379124 /* libprotobuf-lite.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 06172C811F03F9DF00379124 /* libprotobuf-lite.a */; };
 		06172C841F03F9E700379124 /* libprotobuf-lite.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 06172C811F03F9DF00379124 /* libprotobuf-lite.a */; };
 		062EEA4F1F25315400AB4958 /* PNKNearestNeighborUpsamplingSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 062EEA4E1F25315400AB4958 /* PNKNearestNeighborUpsamplingSpec.mm */; };
+		0657A1341F299C56002AA730 /* MPSCNNConvolution+Factory.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0657A1331F299C56002AA730 /* MPSCNNConvolution+Factory.mm */; };
 		0657A1371F29A3A4002AA730 /* MPSCNNNeuron+Factory.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0657A1361F29A3A4002AA730 /* MPSCNNNeuron+Factory.mm */; };
 		068D90A41F1F5D000012F472 /* PNKAdditionSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 068D90A31F1F5D000012F472 /* PNKAdditionSpec.mm */; };
 		068D90A81F1F60A90012F472 /* PNKTestUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 068D90A71F1F60A90012F472 /* PNKTestUtils.mm */; };
@@ -497,6 +498,8 @@
 		06172C811F03F9DF00379124 /* libprotobuf-lite.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libprotobuf-lite.a"; path = "../third_party/protobuf/lib/libprotobuf-lite.a"; sourceTree = "<group>"; };
 		062EEA4E1F25315400AB4958 /* PNKNearestNeighborUpsamplingSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKNearestNeighborUpsamplingSpec.mm; sourceTree = "<group>"; };
 		0639ADAE1F03FBC1009CAA3F /* PNKProtobufMacros.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNKProtobufMacros.h; sourceTree = "<group>"; };
+		0657A1321F299C56002AA730 /* MPSCNNConvolution+Factory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MPSCNNConvolution+Factory.h"; sourceTree = "<group>"; };
+		0657A1331F299C56002AA730 /* MPSCNNConvolution+Factory.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "MPSCNNConvolution+Factory.mm"; sourceTree = "<group>"; };
 		0657A1351F29A3A4002AA730 /* MPSCNNNeuron+Factory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MPSCNNNeuron+Factory.h"; sourceTree = "<group>"; };
 		0657A1361F29A3A4002AA730 /* MPSCNNNeuron+Factory.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "MPSCNNNeuron+Factory.mm"; sourceTree = "<group>"; };
 		068D90A31F1F5D000012F472 /* PNKAdditionSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKAdditionSpec.mm; sourceTree = "<group>"; };
@@ -795,6 +798,8 @@
 			isa = PBXGroup;
 			children = (
 				06A1A9F21F14F0C60031A387 /* Model */,
+				0657A1321F299C56002AA730 /* MPSCNNConvolution+Factory.h */,
+				0657A1331F299C56002AA730 /* MPSCNNConvolution+Factory.mm */,
 				0657A1351F29A3A4002AA730 /* MPSCNNNeuron+Factory.h */,
 				0657A1361F29A3A4002AA730 /* MPSCNNNeuron+Factory.mm */,
 				069225E11F0A615700F3C8C7 /* PNKNeuralKernel.h */,
@@ -1737,6 +1742,7 @@
 				0657A1371F29A3A4002AA730 /* MPSCNNNeuron+Factory.mm in Sources */,
 				C9ADC5131EFFE06200C87932 /* PNKLibraryLoader.mm in Sources */,
 				06A1A8FF1F0CD7BA0031A387 /* PNKNeuralNetworkModelFactory.mm in Sources */,
+				0657A1341F299C56002AA730 /* MPSCNNConvolution+Factory.mm in Sources */,
 				06172A901F02881600379124 /* PNKStyleUpsampleProcessor.mm in Sources */,
 				06C3F7611EFF9E5B00D4B1F4 /* PNKSingleStyleTransferProcessor.mm in Sources */,
 				F9CB52FD1F5FE98700C8E8CA /* PNKProtobufHelpers.mm in Sources */,
