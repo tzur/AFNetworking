@@ -9,12 +9,8 @@
 
 #import "LABFakeAssignmentsSource.h"
 #import "LABFakeStorage.h"
+#import "LABVariantUtils.h"
 #import "NSError+Laboratory.h"
-
-static LABVariant *LABCreateVariant(NSString *name, NSDictionary<NSString *, id> *assignments,
-                                    NSString *experiment) {
-  return [[LABVariant alloc] initWithName:name assignments:assignments experiment:experiment];
-}
 
 static NSDictionary *LABFakeExperiment(NSString *name, NSSet<NSString *> *variants, BOOL isActive,
                                        LABVariant * _Nullable selectedVariant) {

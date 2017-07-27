@@ -15,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// if the update fails.
 ///
 /// If new information was received from the remote resource, the property \c collections may
-/// change.
+/// change. Values are sent on the main thread.
 ///
 /// @return RACSignal<>
 - (RACSignal *)updateCollections;
