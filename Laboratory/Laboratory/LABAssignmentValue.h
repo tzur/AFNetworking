@@ -28,7 +28,7 @@ NS_ASSUME_NONNULL_BEGIN
 ///   3. \c assignment is \c nil.
 ///
 /// Raises \c NSInvalidArgumentException if \c enumClass does not conform to \c LTEnum.
-+ (nullable LABAssignmentValue<id<LTEnum>> *)
++ (nullable LABAssignmentValue<id<LTEnum, NSCoding>> *)
     enumValueForAssignment:(nullable LABAssignment *)assignment enumClass:(Class)enumClass;
 
 /// Returns \c LABAssignmentValue containing the given \c assignment and its value as \c NSString.
