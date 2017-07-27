@@ -3,7 +3,7 @@
 
 #import "NSDictionary+Operations.h"
 
-SpecBegin(NSDictionary_Merging)
+SpecBegin(NSDictionary_Operations)
 
 __block NSDictionary<NSNumber *, NSString *> *sourceDictionary;
 
