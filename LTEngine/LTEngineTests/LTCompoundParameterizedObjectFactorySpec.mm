@@ -3,11 +3,11 @@
 
 #import "LTCompoundParameterizedObjectFactory.h"
 
+#import "LTBasicParameterizedObject.h"
+#import "LTBasicParameterizedObjectFactory.h"
 #import "LTCompoundParameterizedObject.h"
 #import "LTInterpolatableObject.h"
 #import "LTParameterizationKeyToValues.h"
-#import "LTBasicParameterizedObject.h"
-#import "LTBasicParameterizedObjectFactory.h"
 
 @interface LTTestInterpolatableObject : NSObject <LTInterpolatableObject>
 @end
@@ -26,7 +26,7 @@
 @implementation LTBasicTestFactory
 
 - (id<LTBasicParameterizedObject>)baseParameterizedObjectsFromValues:(__unused CGFloats)values {
-  return nil;
+  return OCMProtocolMock(@protocol(LTBasicParameterizedObject));
 }
 
 + (NSUInteger)numberOfRequiredValues {

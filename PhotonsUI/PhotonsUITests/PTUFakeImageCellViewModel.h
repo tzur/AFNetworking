@@ -17,13 +17,13 @@ NS_ASSUME_NONNULL_BEGIN
     NS_DESIGNATED_INITIALIZER;
 
 /// Signal used as this view model's \c imageSignalForCellSize: with any size.
-@property (strong, nonatomic) RACSignal *imageSignal;
+@property (strong, nonatomic, nullable) RACSignal *imageSignal;
 
 /// Signal used as this view model's \c titleSignal.
-@property (strong, nonatomic) RACSignal *titleSignal;
+@property (strong, nonatomic, nullable) RACSignal *titleSignal;
 
 /// Signal used as this view model's \c subtitleSignal.
-@property (strong, nonatomic) RACSignal *subtitleSignal;
+@property (strong, nonatomic, nullable) RACSignal *subtitleSignal;
 
 /// Cell traits associated with this view model.
 @property (strong, nonatomic) NSSet<NSString *> *traits;

@@ -48,7 +48,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (BOOL)lockForConfiguration:(NSError *__autoreleasing *)errorPtr {
   _didLock = YES;
 
-  if (self.lockError) {
+  if (errorPtr && self.lockError) {
     *errorPtr = self.lockError;
     return NO;
   } else {
