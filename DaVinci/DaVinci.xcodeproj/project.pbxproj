@@ -62,11 +62,14 @@
 		28FA4D621DF05F7D00EE0B99 /* DVNScatteredGeometryProviderModelSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28FA4D611DF05F7D00EE0B99 /* DVNScatteredGeometryProviderModelSpec.mm */; };
 		28FA4D651DF4586000EE0B99 /* DVNTestGeometryProvider.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28FA4D641DF4586000EE0B99 /* DVNTestGeometryProvider.mm */; };
 		28FA4D671DF4757C00EE0B99 /* DVNGeometryStageModelSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28FA4D661DF4757C00EE0B99 /* DVNGeometryStageModelSpec.mm */; };
+		5001CB2B1F2745A700C70D23 /* DVNBrushSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5001CB2A1F2745A700C70D23 /* DVNBrushSpec.mm */; };
+		5001CB981F27785B00C70D23 /* DVNBrushTip.png in Resources */ = {isa = PBXBuildFile; fileRef = 5001CB971F27785B00C70D23 /* DVNBrushTip.png */; };
 		50073F8E1D363179009F7F48 /* EXPMatchers+equalMat.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50073F8D1D363179009F7F48 /* EXPMatchers+equalMat.mm */; };
 		50073F911D3631FB009F7F48 /* LTTestUtils+LTEngine.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50073F901D3631FB009F7F48 /* LTTestUtils+LTEngine.mm */; };
 		50073F941D363274009F7F48 /* NSValue+OpenCVExtensions.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50073F931D363274009F7F48 /* NSValue+OpenCVExtensions.mm */; };
 		500A3AE01D2D348700043E18 /* DVNRandomTexCoordProvider.mm in Sources */ = {isa = PBXBuildFile; fileRef = 500A3ADC1D2D348700043E18 /* DVNRandomTexCoordProvider.mm */; };
 		500A3AE11D2D348700043E18 /* DVNTextureMappingStageConfiguration.mm in Sources */ = {isa = PBXBuildFile; fileRef = 500A3ADF1D2D348700043E18 /* DVNTextureMappingStageConfiguration.mm */; };
+		500EF5771F29F82F00FEDEC4 /* DVNBrushEdgeAvoidance95.png in Resources */ = {isa = PBXBuildFile; fileRef = 500EF5761F29F82F00FEDEC4 /* DVNBrushEdgeAvoidance95.png */; };
 		500F77D31D2D3A4100023343 /* DVNRandomTexCoordProviderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 500F77D11D2D3A4100023343 /* DVNRandomTexCoordProviderSpec.mm */; };
 		500F77D41D2D3A4100023343 /* DVNTextureMappingStageConfigurationSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 500F77D21D2D3A4100023343 /* DVNTextureMappingStageConfigurationSpec.mm */; };
 		500F77E11D2D3F5C00023343 /* DVNCanonicalTexCoordProvider.mm in Sources */ = {isa = PBXBuildFile; fileRef = 500F77E01D2D3F5C00023343 /* DVNCanonicalTexCoordProvider.mm */; };
@@ -87,6 +90,12 @@
 		507FEFBE1D3A30E3002CB28E /* DVNGeometryTransformerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 507FEFBD1D3A30E3002CB28E /* DVNGeometryTransformerSpec.mm */; };
 		5091E88A1D36484C00B14481 /* DVNTestShader.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 50C90F381D36465E0058A4F3 /* DVNTestShader.fsh */; };
 		5091E88B1D36484C00B14481 /* DVNTestShader.vsh in Sources */ = {isa = PBXBuildFile; fileRef = 50C90F1C1D3646290058A4F3 /* DVNTestShader.vsh */; };
+		509234271F277AE900CCA727 /* DVNBrushTipModelview.png in Resources */ = {isa = PBXBuildFile; fileRef = 509234261F277AE900CCA727 /* DVNBrushTipModelview.png */; };
+		5092344B1F2785D100CCA727 /* DVNBrushEdgeAvoidance0.png in Resources */ = {isa = PBXBuildFile; fileRef = 509234481F2785D100CCA727 /* DVNBrushEdgeAvoidance0.png */; };
+		5092344C1F2785D100CCA727 /* DVNBrushEdgeAvoidance1.png in Resources */ = {isa = PBXBuildFile; fileRef = 509234491F2785D100CCA727 /* DVNBrushEdgeAvoidance1.png */; };
+		5092344D1F2785D100CCA727 /* DVNBrushEdgeAvoidance1WithOffset.png in Resources */ = {isa = PBXBuildFile; fileRef = 5092344A1F2785D100CCA727 /* DVNBrushEdgeAvoidance1WithOffset.png */; };
+		50AB20C41F28BED1008B3F4F /* DVNBrushEdgeAvoidance1Gray.png in Resources */ = {isa = PBXBuildFile; fileRef = 50AB20C31F28BED1008B3F4F /* DVNBrushEdgeAvoidance1Gray.png */; };
+		50AB20E61F28C2E8008B3F4F /* DVNBrushOverlayTexture.png in Resources */ = {isa = PBXBuildFile; fileRef = 50AB20E51F28C2E8008B3F4F /* DVNBrushOverlayTexture.png */; };
 		50CDE7BC1EFA90B40072CBA3 /* DVNQuadCenterAttributeProvider.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50CDE7BB1EFA90B40072CBA3 /* DVNQuadCenterAttributeProvider.mm */; };
 		6543581E1D463C3A002140A8 /* libLTKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6543580A1D463B64002140A8 /* libLTKit.a */; };
 		6543581F1D463C53002140A8 /* libextobjc_iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 654358171D463B6E002140A8 /* libextobjc_iOS.a */; };
@@ -513,6 +522,8 @@
 		28FA4D631DF4586000EE0B99 /* DVNTestGeometryProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DVNTestGeometryProvider.h; sourceTree = "<group>"; };
 		28FA4D641DF4586000EE0B99 /* DVNTestGeometryProvider.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNTestGeometryProvider.mm; sourceTree = "<group>"; };
 		28FA4D661DF4757C00EE0B99 /* DVNGeometryStageModelSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNGeometryStageModelSpec.mm; sourceTree = "<group>"; };
+		5001CB2A1F2745A700C70D23 /* DVNBrushSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNBrushSpec.mm; sourceTree = "<group>"; };
+		5001CB971F27785B00C70D23 /* DVNBrushTip.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = DVNBrushTip.png; path = Resources/DVNBrushTip.png; sourceTree = "<group>"; };
 		50073F8C1D363179009F7F48 /* EXPMatchers+equalMat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "EXPMatchers+equalMat.h"; path = "../../LTEngine/LTEngineTests/EXPMatchers+equalMat.h"; sourceTree = "<group>"; };
 		50073F8D1D363179009F7F48 /* EXPMatchers+equalMat.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = "EXPMatchers+equalMat.mm"; path = "../../LTEngine/LTEngineTests/EXPMatchers+equalMat.mm"; sourceTree = "<group>"; };
 		50073F8F1D3631FB009F7F48 /* LTTestUtils+LTEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "LTTestUtils+LTEngine.h"; path = "../../LTEngine/LTEngineTests/LTTestUtils+LTEngine.h"; sourceTree = "<group>"; };
@@ -524,6 +535,7 @@
 		500A3ADD1D2D348700043E18 /* DVNTexCoordProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DVNTexCoordProvider.h; sourceTree = "<group>"; };
 		500A3ADE1D2D348700043E18 /* DVNTextureMappingStageConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DVNTextureMappingStageConfiguration.h; sourceTree = "<group>"; };
 		500A3ADF1D2D348700043E18 /* DVNTextureMappingStageConfiguration.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNTextureMappingStageConfiguration.mm; sourceTree = "<group>"; };
+		500EF5761F29F82F00FEDEC4 /* DVNBrushEdgeAvoidance95.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = DVNBrushEdgeAvoidance95.png; path = Resources/DVNBrushEdgeAvoidance95.png; sourceTree = "<group>"; };
 		500F77D11D2D3A4100023343 /* DVNRandomTexCoordProviderSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNRandomTexCoordProviderSpec.mm; sourceTree = "<group>"; };
 		500F77D21D2D3A4100023343 /* DVNTextureMappingStageConfigurationSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNTextureMappingStageConfigurationSpec.mm; sourceTree = "<group>"; };
 		500F77DF1D2D3F5C00023343 /* DVNCanonicalTexCoordProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DVNCanonicalTexCoordProvider.h; sourceTree = "<group>"; };
@@ -550,6 +562,12 @@
 		507FEFA01D3A30CA002CB28E /* DVNGeometryTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DVNGeometryTransformer.h; sourceTree = "<group>"; };
 		507FEFA11D3A30CA002CB28E /* DVNGeometryTransformer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNGeometryTransformer.mm; sourceTree = "<group>"; };
 		507FEFBD1D3A30E3002CB28E /* DVNGeometryTransformerSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNGeometryTransformerSpec.mm; sourceTree = "<group>"; };
+		509234261F277AE900CCA727 /* DVNBrushTipModelview.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = DVNBrushTipModelview.png; path = Resources/DVNBrushTipModelview.png; sourceTree = "<group>"; };
+		509234481F2785D100CCA727 /* DVNBrushEdgeAvoidance0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = DVNBrushEdgeAvoidance0.png; path = Resources/DVNBrushEdgeAvoidance0.png; sourceTree = "<group>"; };
+		509234491F2785D100CCA727 /* DVNBrushEdgeAvoidance1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = DVNBrushEdgeAvoidance1.png; path = Resources/DVNBrushEdgeAvoidance1.png; sourceTree = "<group>"; };
+		5092344A1F2785D100CCA727 /* DVNBrushEdgeAvoidance1WithOffset.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = DVNBrushEdgeAvoidance1WithOffset.png; path = Resources/DVNBrushEdgeAvoidance1WithOffset.png; sourceTree = "<group>"; };
+		50AB20C31F28BED1008B3F4F /* DVNBrushEdgeAvoidance1Gray.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = DVNBrushEdgeAvoidance1Gray.png; path = Resources/DVNBrushEdgeAvoidance1Gray.png; sourceTree = "<group>"; };
+		50AB20E51F28C2E8008B3F4F /* DVNBrushOverlayTexture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = DVNBrushOverlayTexture.png; path = Resources/DVNBrushOverlayTexture.png; sourceTree = "<group>"; };
 		50C90F1C1D3646290058A4F3 /* DVNTestShader.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = DVNTestShader.vsh; sourceTree = "<group>"; };
 		50C90F381D36465E0058A4F3 /* DVNTestShader.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = DVNTestShader.fsh; sourceTree = "<group>"; };
 		50CDE7BA1EFA90B40072CBA3 /* DVNQuadCenterAttributeProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DVNQuadCenterAttributeProvider.h; sourceTree = "<group>"; };
@@ -860,6 +878,14 @@
 		285A78FE1DFD692B00095BF4 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				509234481F2785D100CCA727 /* DVNBrushEdgeAvoidance0.png */,
+				509234491F2785D100CCA727 /* DVNBrushEdgeAvoidance1.png */,
+				50AB20C31F28BED1008B3F4F /* DVNBrushEdgeAvoidance1Gray.png */,
+				5092344A1F2785D100CCA727 /* DVNBrushEdgeAvoidance1WithOffset.png */,
+				500EF5761F29F82F00FEDEC4 /* DVNBrushEdgeAvoidance95.png */,
+				50AB20E51F28C2E8008B3F4F /* DVNBrushOverlayTexture.png */,
+				5001CB971F27785B00C70D23 /* DVNBrushTip.png */,
+				509234261F277AE900CCA727 /* DVNBrushTipModelview.png */,
 				285A79051DFD69CD00095BF4 /* DVNBrushTipsRound16Hardness75.png */,
 				285A79061DFD69CD00095BF4 /* DVNBrushTipsRound32Hardness75.png */,
 				285A79071DFD69CD00095BF4 /* DVNBrushTipsRound64Hardness75.png */,
@@ -889,6 +915,7 @@
 			isa = PBXGroup;
 			children = (
 				28662D5A1DF57D740051B9DA /* Painter */,
+				5001CB291F27459C00C70D23 /* Shaders */,
 			);
 			name = "Brush Infrastructure";
 			sourceTree = "<group>";
@@ -929,6 +956,14 @@
 				283625C61E38F67E0014406E /* Auxiliaries */,
 				285FB4C91E1D17EB0021A116 /* DVNBrush.fsh */,
 				285FB4CA1E1D17EB0021A116 /* DVNBrush.vsh */,
+			);
+			name = Shaders;
+			sourceTree = "<group>";
+		};
+		5001CB291F27459C00C70D23 /* Shaders */ = {
+			isa = PBXGroup;
+			children = (
+				5001CB2A1F2745A700C70D23 /* DVNBrushSpec.mm */,
 			);
 			name = Shaders;
 			sourceTree = "<group>";
@@ -1664,11 +1699,19 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				50AB20E61F28C2E8008B3F4F /* DVNBrushOverlayTexture.png in Resources */,
+				5092344C1F2785D100CCA727 /* DVNBrushEdgeAvoidance1.png in Resources */,
+				5092344B1F2785D100CCA727 /* DVNBrushEdgeAvoidance0.png in Resources */,
+				500EF5771F29F82F00FEDEC4 /* DVNBrushEdgeAvoidance95.png in Resources */,
 				285A79081DFD69CD00095BF4 /* DVNBrushTipsRound16Hardness75.png in Resources */,
 				285A79091DFD69CD00095BF4 /* DVNBrushTipsRound32Hardness75.png in Resources */,
+				5001CB981F27785B00C70D23 /* DVNBrushTip.png in Resources */,
+				50AB20C41F28BED1008B3F4F /* DVNBrushEdgeAvoidance1Gray.png in Resources */,
 				285FB4CC1E1D17EB0021A116 /* DVNBrush.vsh in Resources */,
 				285FB4CB1E1D17EB0021A116 /* DVNBrush.fsh in Resources */,
 				285A790A1DFD69CD00095BF4 /* DVNBrushTipsRound64Hardness75.png in Resources */,
+				5092344D1F2785D100CCA727 /* DVNBrushEdgeAvoidance1WithOffset.png in Resources */,
+				509234271F277AE900CCA727 /* DVNBrushTipModelview.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1751,6 +1794,7 @@
 				28FA4D621DF05F7D00EE0B99 /* DVNScatteredGeometryProviderModelSpec.mm in Sources */,
 				25C3DCAE1D37AD410056E47A /* DVNEasyQuadVectorBoxing.mm in Sources */,
 				25AD67791D355A9E0092B3E4 /* DVNPipelineSpec.mm in Sources */,
+				5001CB2B1F2745A700C70D23 /* DVNBrushSpec.mm in Sources */,
 				285A78CF1DFD34F000095BF4 /* DVNBrushTipsProviderSpec.mm in Sources */,
 				25AD67551D35527F0092B3E4 /* LTEqualityExamples.mm in Sources */,
 				28327A8C1E1CEA8E00CDE956 /* DVNJitteredColorAttributeProviderModelSpec.mm in Sources */,
