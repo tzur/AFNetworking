@@ -13,6 +13,15 @@
 #import "NSErrorCodes+Bazaar.h"
 #import "NSFileManager+Bazaar.h"
 
+/// Category for testing, exposes the method that creates the inner bundle in
+/// \c contentBundleForProduct.
+@interface BZRRemoteContentFetcher (ForTesting)
+
+/// Returns a new \c NSBundle with the given \c pathToContent.
+- (NSBundle *)bundleWithPath:(LTPath *)pathToContent;
+
+@end
+
 SpecBegin(BZRRemoteContentFetcher)
 
 context(@"expected parameters class", ^{
@@ -23,9 +32,9 @@ context(@"expected parameters class", ^{
 
 context(@"fetching product", ^{
   __block NSURL *URL;
-  __block FBRHTTPClient *HTTPClient;
   __block NSFileManager *fileManager;
   __block BZRProductContentManager *contentManager;
+  __block FBRHTTPClient *HTTPClient;
   __block BZRRemoteContentFetcher *fetcher;
   __block BZRProduct *product;
 
@@ -143,6 +152,60 @@ context(@"fetching product", ^{
     RACSignal *signal = [fetcher fetchProductContent:product];
 
     expect(signal).will.sendValues(@[[[LTProgress alloc] initWithResult:bundle]]);
+  });
+});
+
+context(@"getting bundle of the product content", ^{
+  __block NSFileManager *fileManager;
+  __block BZRProductContentManager *contentManager;
+  __block FBRHTTPClient *HTTPClient;
+  __block BZRRemoteContentFetcher *fetcher;
+  __block BZRProduct *product;
+
+  beforeEach(^{
+    fileManager = OCMClassMock([NSFileManager class]);
+    contentManager = OCMClassMock([BZRProductContentManager class]);
+    HTTPClient = OCMClassMock([FBRHTTPClient class]);
+    fetcher = [[BZRRemoteContentFetcher alloc] initWithFileManager:fileManager
+                                                    contentManager:contentManager
+                                                        HTTPClient:HTTPClient];
+
+    BZRRemoteContentFetcherParameters *parameters =
+        OCMClassMock([BZRRemoteContentFetcherParameters class]);
+    OCMStub([parameters URL]).andReturn([NSURL URLWithString:@"http://bar.zip"]);
+    product = BZRProductWithIdentifierAndParameters(@"foo", parameters);
+  });
+
+  it(@"should send bundle with the content path if the content exists", ^{
+    LTPath *contentPath = [LTPath pathWithPath:@"foo"];
+    OCMStub([contentManager pathToContentDirectoryOfProduct:product.identifier])
+        .andReturn(contentPath);
+
+    NSBundle *bundle = OCMClassMock([NSBundle class]);
+    fetcher = OCMPartialMock(fetcher);
+    OCMStub([fetcher bundleWithPath:[contentPath pathByAppendingPathComponent:@"bar"]])
+        .andReturn(bundle);
+
+    auto recorder = [[fetcher contentBundleForProduct:product] testRecorder];
+
+    expect(recorder).to.sendValues(@[bundle]);
+  });
+
+  it(@"should send nil if the content does not exist", ^{
+    OCMStub([contentManager pathToContentDirectoryOfProduct:product.identifier]);
+
+    auto recorder = [[fetcher contentBundleForProduct:product] testRecorder];
+
+    expect(recorder).to.sendValues(@[[NSNull null]]);
+  });
+
+  it(@"should send nil for invalid content fetcher parameters", ^{
+    BZRContentFetcherParameters *parameters = OCMClassMock([BZRContentFetcherParameters class]);
+    BZRProduct *product = BZRProductWithIdentifierAndParameters(@"foo", parameters);
+
+    auto recorder = [[fetcher contentBundleForProduct:product] testRecorder];
+
+    expect(recorder).to.sendValues(@[[NSNull null]]);
   });
 });
 

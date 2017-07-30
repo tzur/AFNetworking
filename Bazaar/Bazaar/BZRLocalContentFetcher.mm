@@ -59,7 +59,7 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 - (RACSignal *)fetchProductContent:(BZRProduct *)product {
-  if (![product.contentFetcherParameters isKindOfClass:[BZRLocalContentFetcherParameters class]]) {
+  if (![product.contentFetcherParameters isKindOfClass:[[self class] expectedParametersClass]]) {
     auto errorDescription =
         [NSString stringWithFormat:@"Content fetcher of type %@ is expecting parameters of type "
          "%@, got product (%@) with parameters %@", [BZRLocalContentFetcherParameters class],
@@ -117,6 +117,10 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (RACSignal *)contentBundleForProduct:(BZRProduct *)product {
+  if (![product.contentFetcherParameters isKindOfClass:[[self class] expectedParametersClass]]) {
+    return [RACSignal return:nil];
+  }
+
   auto contentPath = [self contentDirectoryPathOfProduct:product];
   return [RACSignal return:(contentPath ? [self bundleWithPath:contentPath] : nil)];
 }

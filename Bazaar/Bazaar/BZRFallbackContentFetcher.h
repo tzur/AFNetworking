@@ -42,7 +42,6 @@ NS_ASSUME_NONNULL_BEGIN
 /// \c BZRCompositeContentFetcher. The signal completes if the underlying fetcher sends a non \c nil
 /// bundle. If the underlying fetcher sent \c nil the signal will check again with the next packed
 /// parameters. The signal sends \c nil if all the underlying check attempts sent \c nil.
-/// The signal errs if one of the underlying check attempts erred.
 ///
 /// @return <tt>RACSignal<nullable NSBundle></tt>
 - (RACSignal *)contentBundleForProduct:(BZRProduct *)product;

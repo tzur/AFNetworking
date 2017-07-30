@@ -109,7 +109,7 @@ context(@"getting bundle of the product content", ^{
     expect(recorder).will.sendValues(@[[NSNull null]]);
   });
 
-  it(@"should err if the content fetcher parameters are invalid", ^{
+  it(@"should send nil if the content fetcher parameters are invalid", ^{
     auto parameters = [[BZRContentFetcherParameters alloc] initWithDictionary:@{
       @"type": NSStringFromClass([BZRContentFetcherParameters class])
     } error:nil];
@@ -117,9 +117,8 @@ context(@"getting bundle of the product content", ^{
 
     auto recorder = [[fetcher contentBundleForProduct:product] testRecorder];
 
-    expect(recorder).to.matchError(^BOOL(NSError *error) {
-      return error.lt_isLTDomain && error.code == BZRErrorCodeInvalidContentFetcherParameters;
-    });
+    expect(recorder).will.complete();
+    expect(recorder).will.sendValues(@[[NSNull null]]);
   });
 });
 

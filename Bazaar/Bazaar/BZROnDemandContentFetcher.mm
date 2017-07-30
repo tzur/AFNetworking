@@ -86,12 +86,8 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (RACSignal *)contentBundleForProduct:(BZRProduct *)product {
-  Class expectedParametersClass = [[self class] expectedParametersClass];
-  if (![product.contentFetcherParameters isKindOfClass:expectedParametersClass]) {
-    auto error = [NSError lt_errorWithCode:BZRErrorCodeInvalidContentFetcherParameters
-                               description:@"The provided parameters class must be: %@",
-                               expectedParametersClass];
-    return [RACSignal error:error];
+  if (![product.contentFetcherParameters isKindOfClass:[[self class] expectedParametersClass]]) {
+    return [RACSignal return:nil];
   }
 
   NSSet<NSString *> *tags =

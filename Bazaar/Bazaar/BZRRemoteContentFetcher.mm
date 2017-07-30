@@ -69,7 +69,7 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 - (RACSignal *)fetchProductContent:(BZRProduct *)product {
-  if (![product.contentFetcherParameters isKindOfClass:[BZRRemoteContentFetcherParameters class]]) {
+  if (![product.contentFetcherParameters isKindOfClass:[[self class] expectedParametersClass]]) {
     auto errorDescription =
         [NSString stringWithFormat:@"Content fetcher of type %@ is expecting parameters of type "
          "%@, got product (%@) with parameters %@", [BZRRemoteContentFetcherParameters class],
@@ -139,14 +139,22 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (RACSignal *)contentBundleForProduct:(BZRProduct *)product {
+  if (![product.contentFetcherParameters isKindOfClass:[[self class] expectedParametersClass]]) {
+    return [RACSignal return:nil];
+  }
+
   auto contentPath = [self contentDirectoryPathOfProduct:product];
-  return [RACSignal return:(contentPath ? [NSBundle bundleWithPath:contentPath.path] : nil)];
+  return [RACSignal return:(contentPath ? [self bundleWithPath:contentPath] : nil)];
 }
 
 - (LTPath *)contentDirectoryPathOfProduct:(BZRProduct *)product {
   auto productDirectory = [self.contentManager pathToContentDirectoryOfProduct:product.identifier];
   return [productDirectory pathByAppendingPathComponent:
           [self contentDirectoryNameForProduct:product]];
+}
+
+- (NSBundle *)bundleWithPath:(LTPath *)pathToContent {
+  return [NSBundle bundleWithPath:pathToContent.path];
 }
 
 @end
