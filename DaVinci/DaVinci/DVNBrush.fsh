@@ -3,8 +3,8 @@
 
 #extension GL_EXT_shader_framebuffer_fetch : require
 
-/// Texture, in non-premultiplied format, used for texture mapping of the rendered quad. Is
-/// single-channel texture if \c singleChannel is \c YES.
+/// Texture, in non-premultiplied format, used for texture mapping of the rendered quad. Is assumed
+/// to be single-channel texture if \c singleChannel is \c YES.
 uniform mediump sampler2D sourceTexture;
 
 /// Texture, in non-premultiplied format, used as alternative texture mapping of the rendered quad.
@@ -15,7 +15,13 @@ uniform mediump sampler2D overlayTexture;
 uniform mediump sampler2D edgeAvoidanceGuideTexture;
 uniform highp float opacity;
 uniform highp float edgeAvoidance;
+
+/// \c YES if \c sourceTexture is single-channel texture.
 uniform bool singleChannel;
+
+/// \c YES if the render target has exactly one color channel.
+uniform bool renderTargetHasSingleChannel;
+
 uniform bool sampleFromOverlayTexture;
 uniform int blendMode;
 
@@ -115,9 +121,7 @@ highp vec4 subtract(highp vec4 src, highp vec4 dst) {
   return clamp(dst - src, vec4(0.0), vec4(1.0));
 }
 
-highp vec4 blendOfNonPremultipliedColors(mediump vec4 src, highp vec4 dst, int mode) {
-  src.rgb *= src.a;
-  dst.rgb *= dst.a;
+highp vec4 blendOfPremultipliedColors(mediump vec4 src, highp vec4 dst, int mode) {
   highp vec4 premultipliedOutputColor = dst;
 
   if (blendMode == kBlendModeNormal) {
@@ -200,17 +204,23 @@ void main() {
   } else {
     nonPremultipliedSource *= vColor;
   }
-  mediump vec4 nonPremultipliedDst = gl_LastFragData[0];
-  mediump vec4 premultipliedDst = premultipliedColor(nonPremultipliedDst);
+  mediump vec4 premultipliedDst = premultipliedColor(gl_LastFragData[0]);
+  mediump vec4 premultipliedSrc = premultipliedColor(nonPremultipliedSource);
+
   mediump vec4 premultipliedBlendedColor;
 
   if (!sampleFromOverlayTexture) {
     premultipliedBlendedColor =
-        blendOfNonPremultipliedColors(nonPremultipliedSource, nonPremultipliedDst, blendMode);
+        blendOfPremultipliedColors(premultipliedSrc, premultipliedDst, blendMode);
   } else {
-    premultipliedBlendedColor = premultipliedColor(nonPremultipliedSource);
+    premultipliedBlendedColor = premultipliedSrc;
   }
+
   premultipliedBlendedColor = mix(premultipliedDst, premultipliedBlendedColor,
-                                  alpha * edgeAvoidanceFactor(length(premultipliedBlendedColor)));
-  gl_FragColor = nonPremultipliedColor(premultipliedBlendedColor);
+                                  alpha * edgeAvoidanceFactor(length(premultipliedSrc)));
+  if (renderTargetHasSingleChannel) {
+    gl_FragColor = premultipliedBlendedColor;
+  } else {
+    gl_FragColor = nonPremultipliedColor(premultipliedBlendedColor);
+  }
 }
