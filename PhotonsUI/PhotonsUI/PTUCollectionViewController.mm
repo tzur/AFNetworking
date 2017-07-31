@@ -364,14 +364,15 @@ static NSURL * _Nullable PTUExtractAssociatedURL(NSError *error) {
 
 - (void)viewDidLayoutSubviews {
   [super viewDidLayoutSubviews];
+  auto contentSize = [self sizeAfterInset];
   self.albumCellSize = [self.configuration.albumCellSizingStrategy
-      cellSizeForViewSize:self.view.frame.size itemSpacing:self.configuration.minimumItemSpacing
+      cellSizeForViewSize:contentSize itemSpacing:self.configuration.minimumItemSpacing
               lineSpacing:self.configuration.minimumLineSpacing];
   self.assetCellSize = [self.configuration.assetCellSizingStrategy
-      cellSizeForViewSize:self.view.frame.size itemSpacing:self.configuration.minimumItemSpacing
+      cellSizeForViewSize:contentSize itemSpacing:self.configuration.minimumItemSpacing
               lineSpacing:self.configuration.minimumLineSpacing];
   self.headerCellSize = [self.configuration.headerCellSizingStrategy
-      cellSizeForViewSize:self.view.frame.size itemSpacing:self.configuration.minimumItemSpacing
+      cellSizeForViewSize:contentSize itemSpacing:self.configuration.minimumItemSpacing
               lineSpacing:self.configuration.minimumLineSpacing];
 
   /// Collection view setup is deferred to this stage to avoid premature update queries. These
@@ -385,6 +386,19 @@ static NSURL * _Nullable PTUExtractAssociatedURL(NSError *error) {
       make.edges.equalTo(self.view.collectionViewContainer);
     }];
   }
+}
+
+- (CGSize)sizeAfterInset {
+  if ([self scrollsVertically]) {
+    return CGSizeMake(
+      self.view.frame.size.width - (self.contentInset.left + self.contentInset.right),
+      self.view.frame.size.height
+    );
+  }
+  return CGSizeMake(
+    self.view.frame.size.width,
+    self.view.frame.size.height - (self.contentInset.top + self.contentInset.bottom)
+  );
 }
 
 - (void)setupCollectionView {
@@ -451,6 +465,7 @@ static NSURL * _Nullable PTUExtractAssociatedURL(NSError *error) {
   self.collectionView.showsVerticalScrollIndicator = configuration.showsVerticalScrollIndicator;
   self.collectionView.pagingEnabled = configuration.enablePaging;
 
+  [self.view setNeedsLayout];
   [self.collectionView setCollectionViewLayout:layout animated:animated];
 }
 
@@ -486,6 +501,8 @@ static NSURL * _Nullable PTUExtractAssociatedURL(NSError *error) {
 - (void)setContentInset:(UIEdgeInsets)contentInset {
   _contentInset = contentInset;
   self.collectionView.contentInset = contentInset;
+
+  [self.view setNeedsLayout];
 }
 
 #pragma mark -

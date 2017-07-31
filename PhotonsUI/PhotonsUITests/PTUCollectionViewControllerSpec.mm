@@ -228,6 +228,70 @@ context(@"collection view", ^{
         .to.equal(CGSizeMake(200, 100));
   });
 
+  context(@"size with contentInset", ^{
+    __block id<PTUCellSizingStrategy> assetCellSizingStrategy;
+    __block id<PTUCellSizingStrategy> albumCellSizingStrategy;
+    __block id<PTUCellSizingStrategy> headerCellSizingStrategy;
+
+    beforeEach(^{
+      assetCellSizingStrategy = OCMProtocolMock(@protocol(PTUCellSizingStrategy));
+      albumCellSizingStrategy = OCMProtocolMock(@protocol(PTUCellSizingStrategy));
+      headerCellSizingStrategy = OCMProtocolMock(@protocol(PTUCellSizingStrategy));
+
+      configuration = [[PTUCollectionViewConfiguration alloc]
+        initWithAssetCellSizingStrategy:assetCellSizingStrategy
+        albumCellSizingStrategy:albumCellSizingStrategy
+        headerCellSizingStrategy:headerCellSizingStrategy minimumItemSpacing:3
+        minimumLineSpacing:7 scrollDirection:UICollectionViewScrollDirectionVertical
+        showVerticalScrollIndicator:NO showHorizontalScrollIndicator:NO enablePaging:NO];
+      viewController =
+          [[PTUCollectionViewController alloc] initWithDataSourceProvider:dataSourceProvider
+                                                     initialConfiguration:configuration];
+      viewController.view.frame = CGRectMake(0, 0, 200, 300);
+      viewController.contentInset = UIEdgeInsetsMake(20, 10, 20, 10);
+      [viewController.view layoutIfNeeded];
+    });
+
+    it(@"should consider contentInset and scroll direction when sizing cells", ^{
+      OCMVerify([assetCellSizingStrategy cellSizeForViewSize:CGSizeMake(180, 300) itemSpacing:3
+                                                 lineSpacing:7]);
+      OCMVerify([albumCellSizingStrategy cellSizeForViewSize:CGSizeMake(180, 300) itemSpacing:3
+                                                 lineSpacing:7]);
+      OCMVerify([headerCellSizingStrategy cellSizeForViewSize:CGSizeMake(180, 300) itemSpacing:3
+                                                 lineSpacing:7]);
+    });
+
+    it(@"should consider new configuration when configuration is set", ^{
+      configuration = [[PTUCollectionViewConfiguration alloc]
+          initWithAssetCellSizingStrategy:assetCellSizingStrategy
+          albumCellSizingStrategy:albumCellSizingStrategy
+          headerCellSizingStrategy:headerCellSizingStrategy minimumItemSpacing:2
+          minimumLineSpacing:4 scrollDirection:UICollectionViewScrollDirectionHorizontal
+          showVerticalScrollIndicator:NO showHorizontalScrollIndicator:NO enablePaging:NO];
+      [viewController setConfiguration:configuration animated:NO];
+      [viewController.view layoutIfNeeded];
+
+      OCMVerify([assetCellSizingStrategy cellSizeForViewSize:CGSizeMake(200, 260) itemSpacing:2
+                                                 lineSpacing:4]);
+      OCMVerify([albumCellSizingStrategy cellSizeForViewSize:CGSizeMake(200, 260) itemSpacing:2
+                                                 lineSpacing:4]);
+      OCMVerify([headerCellSizingStrategy cellSizeForViewSize:CGSizeMake(200, 260) itemSpacing:2
+                                                  lineSpacing:4]);
+    });
+
+    it(@"should consider contentInset changes", ^{
+      viewController.contentInset = UIEdgeInsetsMake(20, 30, 20, 20);
+      [viewController.view layoutIfNeeded];
+
+      OCMVerify([assetCellSizingStrategy cellSizeForViewSize:CGSizeMake(150, 300) itemSpacing:3
+                                                 lineSpacing:7]);
+      OCMVerify([albumCellSizingStrategy cellSizeForViewSize:CGSizeMake(150, 300) itemSpacing:3
+                                                 lineSpacing:7]);
+      OCMVerify([headerCellSizingStrategy cellSizeForViewSize:CGSizeMake(150, 300) itemSpacing:3
+                                                  lineSpacing:7]);
+    });
+  });
+
   it(@"should size header cells according to strategy", ^{
     dataSource.data = @[@[asset], @[asset]];
     dataSource.sectionTitles = @{@0: @"", @1: @""};
