@@ -31,7 +31,7 @@
 #pragma mark -
 
 - (instancetype)initWithProgram:(LTProgram *)program sourceTexture:(LTTexture *)texture {
-  return [self initWithProgram:program sourceTexture:texture auxiliaryTextures:nil];
+  return [self initWithProgram:program sourceTexture:texture auxiliaryTextures:@{}];
 }
 
 - (instancetype)initWithProgram:(LTProgram *)program sourceTexture:(LTTexture *)texture

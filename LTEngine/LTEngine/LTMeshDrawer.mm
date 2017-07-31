@@ -40,7 +40,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithProgram:(__unused LTProgram *)program
                   sourceTexture:(__unused LTTexture *)texture
-              auxiliaryTextures:(__unused NSDictionary *)uniformToAuxiliaryTexture {
+              auxiliaryTextures:(NSDictionary __unused *)uniformToAuxiliaryTexture {
   LTMethodNotImplemented();
 }
 

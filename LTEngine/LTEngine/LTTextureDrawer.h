@@ -1,6 +1,8 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Amit Goldstein.
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class LTFbo, LTProgram, LTTexture;
 
 /// Uniform name of the source texture, which must be contained in each texture drawer program.
@@ -103,3 +105,5 @@ extern NSString * const kLTSourceTextureUniform;
 
 
 @end
+
+NS_ASSUME_NONNULL_END

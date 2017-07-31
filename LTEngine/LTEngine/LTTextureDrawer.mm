@@ -8,6 +8,8 @@
 #import "LTFbo.h"
 #import "LTProgram.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface LTTextureDrawer ()
 
 /// Program to use when drawing the rect.
@@ -30,7 +32,7 @@ NSString * const kLTSourceTextureUniform = @"sourceTexture";
 #pragma mark -
 
 - (instancetype)initWithProgram:(LTProgram *)program sourceTexture:(LTTexture *)texture {
-  return [self initWithProgram:program sourceTexture:texture auxiliaryTextures:nil];
+  return [self initWithProgram:program sourceTexture:texture auxiliaryTextures:@{}];
 }
 
 - (instancetype)initWithProgram:(LTProgram *)program sourceTexture:(LTTexture *)texture
@@ -39,18 +41,14 @@ NSString * const kLTSourceTextureUniform = @"sourceTexture";
     LTParameterAssert([self.mandatoryUniforms isSubsetOfSet:program.uniforms], @"At least one of "
                       "the required uniforms %@ doesn't exist in the given program",
                       self.mandatoryUniforms);
-    if (uniformToAuxiliaryTexture) {
-      LTParameterAssert([[NSSet setWithArray:[uniformToAuxiliaryTexture allKeys]]
-                         isSubsetOfSet:program.uniforms], @"At least one of the given auxiliary "
-                        "texture uniforms %@ doesn't exist in the given program",
-                        [uniformToAuxiliaryTexture allKeys]);
-    }
+    LTParameterAssert([[NSSet setWithArray:[uniformToAuxiliaryTexture allKeys]]
+                       isSubsetOfSet:program.uniforms], @"At least one of the given auxiliary "
+                      "texture uniforms %@ doesn't exist in the given program",
+                      [uniformToAuxiliaryTexture allKeys]);
 
     self.uniformToTexture = [NSMutableDictionary dictionary];
     [self setSourceTexture:texture];
-    if (uniformToAuxiliaryTexture) {
-      [self setAuxiliaryTextures:uniformToAuxiliaryTexture];
-    }
+    [self setAuxiliaryTextures:uniformToAuxiliaryTexture];
 
     self.program = program;
     self.context = [self createDrawingContext];
@@ -142,3 +140,5 @@ NSString * const kLTSourceTextureUniform = @"sourceTexture";
 }
 
 @end
+
+NS_ASSUME_NONNULL_END
