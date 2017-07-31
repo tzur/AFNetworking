@@ -8,6 +8,8 @@
 #import "LTFbo.h"
 #import "LTProgram.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface LTTextureDrawer ()
 
 /// Program to use when drawing the rect.
@@ -30,7 +32,7 @@ NSString * const kLTSourceTextureUniform = @"sourceTexture";
 #pragma mark -
 
 - (instancetype)initWithProgram:(LTProgram *)program sourceTexture:(LTTexture *)texture {
-  return [self initWithProgram:program sourceTexture:texture auxiliaryTextures:nil];
+  return [self initWithProgram:program sourceTexture:texture auxiliaryTextures:@{}];
 }
 
 - (instancetype)initWithProgram:(LTProgram *)program sourceTexture:(LTTexture *)texture
@@ -138,3 +140,5 @@ NSString * const kLTSourceTextureUniform = @"sourceTexture";
 }
 
 @end
+
+NS_ASSUME_NONNULL_END

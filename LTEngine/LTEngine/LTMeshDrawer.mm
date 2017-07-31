@@ -40,7 +40,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithProgram:(__unused LTProgram *)program
                   sourceTexture:(__unused LTTexture *)texture
-              auxiliaryTextures:(__unused NSDictionary *)uniformToAuxiliaryTexture {
+              auxiliaryTextures:(NSDictionary __unused *)uniformToAuxiliaryTexture {
   LTMethodNotImplemented();
 }
 
@@ -63,7 +63,6 @@ NS_ASSUME_NONNULL_BEGIN
   return [self initWithSourceTexture:sourceTexture meshSourceRect:CGRectFromSize(sourceTexture.size)
                          meshTexture:meshTexture fragmentSource:fragmentSource];
 }
-
 
 - (instancetype)initWithSourceTexture:(LTTexture *)sourceTexture
                        meshSourceRect:(CGRect)meshSourceRect meshTexture:(LTTexture *)meshTexture

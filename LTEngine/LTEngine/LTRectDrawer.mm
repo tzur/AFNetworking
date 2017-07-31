@@ -5,10 +5,9 @@
 
 #import "LTFbo.h"
 #import "LTGLKitExtensions.h"
+#import "LTMultiRectDrawer.h"
 #import "LTProgram.h"
 #import "LTRotatedRect.h"
-
-#import "LTMultiRectDrawer.h"
 #import "LTSingleRectDrawer.h"
 
 @interface LTRectDrawer ()
@@ -31,7 +30,7 @@
 #pragma mark -
 
 - (instancetype)initWithProgram:(LTProgram *)program sourceTexture:(LTTexture *)texture {
-  return [self initWithProgram:program sourceTexture:texture auxiliaryTextures:nil];
+  return [self initWithProgram:program sourceTexture:texture auxiliaryTextures:@{}];
 }
 
 - (instancetype)initWithProgram:(LTProgram *)program sourceTexture:(LTTexture *)texture

@@ -10,8 +10,8 @@
 #import "LTGLKitExtensions.h"
 #import "LTGPUStruct.h"
 #import "LTProgram.h"
-#import "LTShaderStorage+LTGridDrawerVsh.h"
 #import "LTShaderStorage+LTGridDrawerFsh.h"
+#import "LTShaderStorage+LTGridDrawerVsh.h"
 #import "LTVertexArray.h"
 
 /// Holds the position of each grid line vertex.
@@ -71,7 +71,7 @@ static const CGFloat kDefaultWidth = 1.0;
   LTVertexArray *vertexArray = [self createVertexArray];
   LTDrawingContext *context = [[LTDrawingContext alloc] initWithProgram:self.program
                                                             vertexArray:vertexArray
-                                                       uniformToTexture:nil];
+                                                       uniformToTexture:@{}];
   return context;
 }
 

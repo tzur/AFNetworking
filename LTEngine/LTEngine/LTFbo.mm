@@ -470,7 +470,7 @@ typedef void (^LTFboAttachableEnumerationBlock)(NSNumber *attachmentPoint,
   if ([self.attachment respondsToSelector:@selector(debugQuickLookObject)]) {
     return [self.attachment performSelector:@selector(debugQuickLookObject)];
   } else {
-    return nil;
+    return [self description];
   }
 }
 

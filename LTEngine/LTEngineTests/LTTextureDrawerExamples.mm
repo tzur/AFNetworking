@@ -328,12 +328,6 @@ sharedExamplesFor(kLTTextureDrawerExamples, ^(NSDictionary *data) {
 
         expect(LTCompareMat(expected, output.image)).to.beTruthy();
       });
-
-      it(@"should raise when switching to nil source texture", ^{
-        expect(^{
-          [drawer setSourceTexture:nil];
-        }).to.raise(NSInvalidArgumentException);
-      });
     });
   });
 
@@ -378,18 +372,6 @@ sharedExamplesFor(kLTTextureDrawerExamples, ^(NSDictionary *data) {
       expect(^{
         [drawer setAuxiliaryTexture:texture withName:@"anotherTexture"];
       }).toNot.raiseAny();
-    });
-
-    it(@"should raise when setting a nil texture", ^{
-      expect(^{
-        [drawer setAuxiliaryTexture:nil withName:@"anotherTexture"];
-      }).to.raise(NSInvalidArgumentException);
-    });
-
-    it(@"should raise when setting a nil name", ^{
-      expect(^{
-        [drawer setAuxiliaryTexture:texture withName:nil];
-      }).to.raise(NSInvalidArgumentException);
     });
 
     it(@"should raise when setting a non existing name", ^{

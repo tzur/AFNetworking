@@ -24,7 +24,7 @@
 #pragma mark -
 
 - (instancetype)initWithProgram:(LTProgram *)program sourceTexture:(LTTexture *)texture {
-  return [self initWithProgram:program sourceTexture:texture auxiliaryTextures:nil];
+  return [self initWithProgram:program sourceTexture:texture auxiliaryTextures:@{}];
 }
 
 - (instancetype)initWithProgram:(LTProgram *)program sourceTexture:(LTTexture *)texture
@@ -41,7 +41,6 @@
 #pragma mark -
 #pragma mark Drawing (CGRect)
 #pragma mark -
-
 
 - (void)drawRect:(CGRect)targetRect inFramebuffer:(LTFbo *)fbo fromRect:(CGRect)sourceRect {
   [self.singleQuadDrawer drawRect:targetRect inFramebuffer:fbo fromRect:sourceRect];

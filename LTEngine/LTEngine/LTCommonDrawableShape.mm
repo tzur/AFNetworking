@@ -76,7 +76,7 @@ static NSMutableDictionary *cachedPrograms;
   LTAssert(self.program, @"Program must be initialized before creating the drawing context");
   LTVertexArray *vertexArray = [self createVertexArray];
   return [[LTDrawingContext alloc] initWithProgram:self.program vertexArray:vertexArray
-                                  uniformToTexture:nil];
+                                  uniformToTexture:@{}];
 }
 
 - (LTVertexArray *)createVertexArray {
