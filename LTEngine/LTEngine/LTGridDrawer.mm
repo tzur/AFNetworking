@@ -71,7 +71,7 @@ static const CGFloat kDefaultWidth = 1.0;
   LTVertexArray *vertexArray = [self createVertexArray];
   LTDrawingContext *context = [[LTDrawingContext alloc] initWithProgram:self.program
                                                             vertexArray:vertexArray
-                                                       uniformToTexture:nil];
+                                                       uniformToTexture:@{}];
   return context;
 }
 

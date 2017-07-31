@@ -11,6 +11,8 @@
 #import "LTTexture+Sampling.h"
 #import "LTVertexArray.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface LTDrawingContext ()
 
 @property (strong, nonatomic) LTProgram *program;
@@ -30,7 +32,7 @@
   if (self = [super init]) {
     LTParameterAssert(program);
     LTParameterAssert(vertexArray);
-    LTAssert(!uniformToTexture ||
+    LTAssert(uniformToTexture &&
              [[NSSet setWithArray:uniformToTexture.allKeys] isSubsetOfSet:program.uniforms],
              @"At least one uniform does not exist in the given program (given uniforms: %@, "
              "uniforms in program: %@)", uniformToTexture.allKeys, program.uniforms);
@@ -121,3 +123,5 @@
 }
 
 @end
+
+NS_ASSUME_NONNULL_END

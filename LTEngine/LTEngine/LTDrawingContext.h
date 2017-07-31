@@ -1,6 +1,8 @@
 // Copyright (c) 2013 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
+NS_ASSUME_NONNULL_BEGIN
+
 /// Drawing modes that specify what kind of primitive to render.
 typedef NS_ENUM(NSUInteger, LTDrawingContextDrawMode) {
   LTDrawingContextDrawModeTriangleStrip = GL_TRIANGLE_STRIP,
@@ -58,3 +60,5 @@ typedef NS_ENUM(NSUInteger, LTDrawingContextDrawMode) {
 @property (readonly, nonatomic) LTVertexArray *vertexArray;
 
 @end
+
+NS_ASSUME_NONNULL_END
