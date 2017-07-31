@@ -10,8 +10,8 @@
 #import "LTGLKitExtensions.h"
 #import "LTGPUStruct.h"
 #import "LTProgram.h"
-#import "LTShaderStorage+LTGridDrawerVsh.h"
 #import "LTShaderStorage+LTGridDrawerFsh.h"
+#import "LTShaderStorage+LTGridDrawerVsh.h"
 #import "LTVertexArray.h"
 
 /// Holds the position of each grid line vertex.

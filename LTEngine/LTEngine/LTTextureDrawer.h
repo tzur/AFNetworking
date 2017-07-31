@@ -103,7 +103,6 @@ extern NSString * const kLTSourceTextureUniform;
 - (instancetype)initWithProgram:(LTProgram *)program sourceTexture:(LTTexture *)texture
               auxiliaryTextures:(NSDictionary *)uniformToAuxiliaryTexture NS_DESIGNATED_INITIALIZER;
 
-
 @end
 
 NS_ASSUME_NONNULL_END

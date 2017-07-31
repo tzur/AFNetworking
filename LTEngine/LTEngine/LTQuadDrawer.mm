@@ -42,7 +42,6 @@
 #pragma mark Drawing (CGRect)
 #pragma mark -
 
-
 - (void)drawRect:(CGRect)targetRect inFramebuffer:(LTFbo *)fbo fromRect:(CGRect)sourceRect {
   [self.singleQuadDrawer drawRect:targetRect inFramebuffer:fbo fromRect:sourceRect];
 }

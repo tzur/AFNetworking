@@ -5,10 +5,9 @@
 
 #import "LTFbo.h"
 #import "LTGLKitExtensions.h"
+#import "LTMultiRectDrawer.h"
 #import "LTProgram.h"
 #import "LTRotatedRect.h"
-
-#import "LTMultiRectDrawer.h"
 #import "LTSingleRectDrawer.h"
 
 @interface LTRectDrawer ()

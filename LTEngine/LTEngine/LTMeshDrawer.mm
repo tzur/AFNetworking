@@ -64,7 +64,6 @@ NS_ASSUME_NONNULL_BEGIN
                          meshTexture:meshTexture fragmentSource:fragmentSource];
 }
 
-
 - (instancetype)initWithSourceTexture:(LTTexture *)sourceTexture
                        meshSourceRect:(CGRect)meshSourceRect meshTexture:(LTTexture *)meshTexture
                        fragmentSource:(NSString *)fragmentSource {
