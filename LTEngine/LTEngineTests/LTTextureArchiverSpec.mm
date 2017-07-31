@@ -867,6 +867,126 @@ context(@"texture repository", ^{
   });
 });
 
+context(@"duplication", ^{
+  __block LTPath *targetPath;
+
+  beforeEach(^{
+    texture = [LTTexture byteRGBATextureWithSize:CGSizeMake(4, 8)];
+    targetPath = LTPathMake(@"target");
+  });
+
+  afterEach(^{
+    [fileManager removeItemAtPath:targetPath.path error:nil];
+  });
+
+  it(@"should successfully duplicate a texture", ^{
+    [archiver archiveTexture:texture inPath:archivePath withArchiveType:$(LTTextureArchiveTypeJPEG)
+                       error:nil];
+
+    result = [archiver duplicateTextureFromPath:archivePath toPath:targetPath error:&error];
+    expect(result).to.beTruthy();
+    expect(error).to.beNil();
+    expect(LTDirectoryExists(@"target")).to.beTruthy();
+    expect(LTFileExists(@"target/metadata.plist")).to.beTruthy();
+    expect(LTFileExists(@"target/content.jpg")).to.beTruthy();
+    expect(LTLinkExists(@"archive/content.jpg")).to.beTruthy();
+    expect(LTLinkExists(@"target/content.jpg")).to.beTruthy();
+    expect([fileManager contentsEqualAtPath:LTPathMake(@"target/content.jpg").path
+                                    andPath:LTPathMake(@"archive/content.jpg").path]).to.beTruthy();
+    expect([storage.dictionary allValues]).to.haveCountOf(1);
+  });
+
+  it(@"should successfully duplicate a solid color texture", ^{
+    [texture clearColor:LTVector4::ones()];
+    [archiver archiveTexture:texture inPath:archivePath withArchiveType:$(LTTextureArchiveTypeJPEG)
+                       error:nil];
+
+    result = [archiver duplicateTextureFromPath:archivePath toPath:targetPath error:&error];
+    expect(result).to.beTruthy();
+    expect(error).to.beNil();
+    expect(LTDirectoryExists(@"target")).to.beTruthy();
+    expect(LTFileExists(@"target/metadata.plist")).to.beTruthy();
+    expect(LTFileExists(@"target/content.jpg")).to.beFalsy();
+  });
+
+  it(@"should successfully duplicate a texture using multiple files", ^{
+    NSDictionary *data1 = @{@"a": @1, @"b": @2};
+    NSDictionary *data2 = @{@"c": @3, @"d": @4};
+
+    LTTextureArchiveType *typeMock = OCMPartialMock($(LTTextureArchiveTypeJPEG));
+    id archiverMock = OCMProtocolMock(@protocol(LTTextureBaseArchiver));
+    OCMStub([typeMock archiver]).andReturn(archiverMock);
+    OCMStub([archiverMock archiveTexture:texture inPath:LTPathMake(@"archive/content.jpg").path
+                                   error:[OCMArg anyObjectRef]]).andDo(^(NSInvocation *invocation) {
+      [fileManager lt_writeDictionary:data1
+                               toFile:LTPathMake(@"archive/content.jpg").path error:nil];
+      [fileManager lt_writeDictionary:data2
+                               toFile:LTPathMake(@"archive/aux.file").path error:nil];
+      BOOL returnValue = YES;
+      [invocation setReturnValue:&returnValue];
+    });
+
+    result = [archiver archiveTexture:texture inPath:archivePath withArchiveType:typeMock error:nil];
+
+    result = [archiver duplicateTextureFromPath:archivePath toPath:targetPath error:&error];
+    expect(result).to.beTruthy();
+    expect(error).to.beNil();
+    expect(LTDirectoryExists(@"target")).to.beTruthy();
+    expect(LTFileExists(@"target/metadata.plist")).to.beTruthy();
+    expect(LTFileExists(@"target/content.jpg")).to.beTruthy();
+    expect(LTLinkExists(@"target/content.jpg")).to.beTruthy();
+    expect(LTFileExists(@"target/aux.file")).to.beTruthy();
+    expect(LTLinkExists(@"target/aux.file")).to.beTruthy();
+  });
+
+  it(@"should return error if archive folder with given name exists", ^{
+    [fileManager createDirectoryAtPath:targetPath.path withIntermediateDirectories:NO
+                            attributes:nil error:nil];
+
+    result = [archiver duplicateTextureFromPath:archivePath toPath:targetPath error:&error];
+    expect(result).to.beFalsy();
+    expect(error).notTo.beNil();
+    expect(error.code).to.equal(LTErrorCodeFileAlreadyExists);
+    expect(LTDirectoryExists(@"target")).to.beTruthy();
+    expect(LTFileExists(@"target/metadata.plist")).to.beFalsy();
+    expect(LTFileExists(@"target/content.jpg")).to.beFalsy();
+  });
+
+  it(@"should fail if there is no metadata", ^{
+    result = [archiver duplicateTextureFromPath:archivePath toPath:targetPath error:&error];
+    expect(result).to.beFalsy();
+    expect(error).toNot.beNil();
+    expect(error.code).to.equal(LTErrorCodeFileNotFound);
+  });
+
+  it(@"should return error and clean filesystem if failed to save texture metadata", ^{
+    [archiver archiveTexture:texture inPath:archivePath withArchiveType:$(LTTextureArchiveTypeJPEG)
+                       error:nil];
+
+    NSString *metadataPath = [targetPath pathByAppendingPathComponent:@"metadata.plist"].path;
+    OCMStub([fileManager lt_writeDictionary:[OCMArg any] toFile:metadataPath
+                                      error:[OCMArg setTo:kFakeError]]).andReturn(NO);
+
+    result = [archiver duplicateTextureFromPath:archivePath toPath:targetPath error:&error];
+    expect(result).to.beFalsy();
+    expect(error).to.equal(kFakeError);
+    expect(LTDirectoryExists(@"target")).to.beFalsy();
+  });
+
+  it(@"should return error and clean filesystem if failed to link content", ^{
+    [archiver archiveTexture:texture inPath:archivePath withArchiveType:$(LTTextureArchiveTypeJPEG)
+                       error:nil];
+
+    NSString *contentPath = [targetPath pathByAppendingPathComponent:@"content.jpg"].path;
+    OCMStub([fileManager linkItemAtPath:[OCMArg any] toPath:contentPath
+                                  error:[OCMArg setTo:kFakeError]]).andReturn(NO);
+
+    result = [archiver duplicateTextureFromPath:archivePath toPath:targetPath error:&error];
+    expect(result).to.beFalsy();
+    expect(LTDirectoryExists(@"target")).to.beFalsy();
+  });
+});
+
 it(@"should not retain archived texture", ^{
   __weak LTTexture *weakTexture;
 

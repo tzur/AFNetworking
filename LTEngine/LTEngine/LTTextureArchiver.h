@@ -100,6 +100,12 @@ NS_ASSUME_NONNULL_BEGIN
 /// the behavior in case of trying to unarchive it or remove it again is undefined.
 - (BOOL)removeArchiveInPath:(LTPath *)path error:(NSError **)error;
 
+/// Creates a duplicate of the texture archived at the given \c fromPath at the given \c toPath.
+/// Returns \c YES if duplication succeeded. In case of failure \c NO will be returned and
+/// \c error will be populated. This is a light operation that doesn't involve reading the texture
+/// from the disk.
+- (BOOL)duplicateTextureFromPath:(LTPath *)fromPath toPath:(LTPath *)toPath error:(NSError **)error;
+
 /// Cleans up the storage by removing records referring to files that does not exist and keys that
 /// do not refer to any existing file.
 - (void)performStorageMaintenance;

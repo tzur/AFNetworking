@@ -416,6 +416,42 @@ objection_requires_sel(@selector(fileManager));
 }
 
 #pragma mark -
+#pragma mark Duplicating
+#pragma mark -
+
+- (BOOL)duplicateTextureFromPath:(LTPath *)fromPath toPath:(LTPath *)toPath
+                           error:(NSError *__autoreleasing *)error {
+  if (![self createArchiveFolderAtPath:toPath error:error]) {
+    return NO;
+  }
+
+  LTTextureArchiveMetadata *archiveMetadata = [self metadataFromPath:fromPath error:error];
+  if (!archiveMetadata) {
+    return NO;
+  }
+
+  if (![self saveMetadata:archiveMetadata inPath:toPath error:error]) {
+    [self removeFailedArchiveFolderAtPath:toPath];
+    return NO;
+  }
+
+  // In case the texture is a solid color texture, no need to actually store it.
+  if (!archiveMetadata.textureMetadata.fillColor.isNull()) {
+    return YES;
+  }
+
+  NSString *storageKey = [self storageKeyForTextureMetadata:archiveMetadata.textureMetadata
+                                                archiveType:archiveMetadata.archiveType];
+  if (![self linkContentInPath:toPath toExistingArchiveWithStorageKey:storageKey]) {
+    [self removeFailedArchiveFolderAtPath:toPath];
+    return NO;
+  }
+  [self addExistingArchiveInPath:toPath forStorageKey:storageKey];
+
+  return YES;
+}
+
+#pragma mark -
 #pragma mark Maintenance
 #pragma mark -
 
