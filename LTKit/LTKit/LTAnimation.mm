@@ -106,7 +106,7 @@ static LTAnimationManager *instance = nil;
   dispatch_once(&onceToken, ^{
     instance = [[LTAnimationManager alloc] init];
   });
-  
+
   return instance;
 }
 
@@ -163,7 +163,7 @@ static LTAnimationManager *instance = nil;
       [completed addObject:animation];
     }
   }
-  
+
   // Remove all the completed animations, if there are no animations left, pause the display link.
   [self.animations removeObjectsInArray:completed];
   if (!self.animations.count) {

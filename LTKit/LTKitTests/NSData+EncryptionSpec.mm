@@ -57,7 +57,7 @@ it(@"should decrypt data correctly", ^{
   NSError *error;
   NSData * _Nullable decrypted = [data lt_decryptWithKey:key error:&error];
 
-  expect([[NSString alloc] initWithData:decrypted encoding:NSUTF8StringEncoding])
+  expect([[NSString alloc] initWithData:nn(decrypted) encoding:NSUTF8StringEncoding])
       .to.equal(@"foobarbaz");
   expect(error).to.beNil();
 });

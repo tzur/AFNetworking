@@ -1,9 +1,8 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
-#import "LTMetaMacros.h"
-
 #import "LTBidirectionalMap.h"
+#import "LTMetaMacros.h"
 
 /// Avoid including this file directly. To use these macros, include \c LTEnum.h.
 
@@ -331,7 +330,9 @@
   } \
   \
   - (NSString *)name { \
-    return [[[self class] fieldNamesToValues] keyForObject:@(self.value)]; \
+    NSString * _Nullable name = [[[self class] fieldNamesToValues] keyForObject:@(self.value)]; \
+    LTAssert(name, @"Name doesn't exist for value %ld", (unsigned long)self.value); \
+    return (NSString * _Nonnull)name; \
   } \
   \
   - (NSUInteger)hash { \

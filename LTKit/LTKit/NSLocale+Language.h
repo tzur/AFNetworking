@@ -8,8 +8,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// Preferred language for the current device. This is the current iOS interface language, the one
 /// appearing on top of the list in Settings-General-International-Language.
 ///
-/// @return the canonicalized IETF BCP 47 representation of the preferred language, or \c nil if the
-/// language is not available.
+/// @return the canonicalized IETF BCP 47 representation of the preferred language.
 @property (readonly, nonatomic) NSString *lt_preferredLanguage;
 
 /// Language the app is currently using. In case a localization of the preferred language is not

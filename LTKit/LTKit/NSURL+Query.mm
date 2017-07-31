@@ -16,7 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
   LTAssert(components, @"Could not parse URL %@", self);
 
   components.queryItems = [components.queryItems ?: @[] arrayByAddingObjectsFromArray:queryItems];
-  return [components URLRelativeToURL:self.baseURL];
+  return nn([components URLRelativeToURL:self.baseURL]);
 }
 
 - (NSURL *)lt_URLByAppendingQueryDictionary:
@@ -30,7 +30,7 @@ NS_ASSUME_NONNULL_BEGIN
 
   NSMutableArray<NSURLQueryItem *> *queryItems = [NSMutableArray array];
   if (components.queryItems) {
-    [queryItems addObjectsFromArray:components.queryItems];
+    [queryItems addObjectsFromArray:components.queryItems ?: @[]];
   }
 
   [queryDictionary enumerateKeysAndObjectsUsingBlock:^(NSString *key, NSString *value,
@@ -43,7 +43,7 @@ NS_ASSUME_NONNULL_BEGIN
   }];
 
   components.queryItems = queryItems;
-  return [components URLRelativeToURL:self.baseURL];
+  return nn([components URLRelativeToURL:self.baseURL]);
 }
 
 - (NSURL *)lt_URLByAppendingQueryArrayDictionary:
@@ -57,7 +57,7 @@ NS_ASSUME_NONNULL_BEGIN
 
   NSMutableArray<NSURLQueryItem *> *queryItems = [NSMutableArray array];
   if (components.queryItems) {
-    [queryItems addObjectsFromArray:components.queryItems];
+    [queryItems addObjectsFromArray:components.queryItems ?: @[]];
   }
 
   [queryArrayDictionary enumerateKeysAndObjectsUsingBlock:^(NSString *key,
@@ -79,7 +79,7 @@ NS_ASSUME_NONNULL_BEGIN
   }];
 
   components.queryItems = queryItems;
-  return [components URLRelativeToURL:self.baseURL];
+  return nn([components URLRelativeToURL:self.baseURL]);
 }
 
 - (nullable NSArray<NSURLQueryItem *> *)lt_queryItems {

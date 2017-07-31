@@ -6,14 +6,13 @@
 
 #ifdef __cplusplus
 
-#import <array>
 #import <vector>
 
 #pragma mark -
 #pragma mark CoreGraphics
 #pragma mark -
 
-/// A collection oc \c CGFloat.
+/// A collection of \c CGFloat.
 typedef std::vector<CGFloat> CGFloats;
 
 /// A collection of \c CGPoint.

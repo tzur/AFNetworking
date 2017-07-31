@@ -167,7 +167,16 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (BOOL)lt_skipBackup:(BOOL)skipBackup forItemAtURL:(NSURL *)url
                 error:(NSError *__autoreleasing *)error {
-  if (![self fileExistsAtPath:url.path]) {
+  NSString * _Nullable path = url.path;
+  if (!path) {
+    if (error) {
+      *error = [NSError lt_errorWithCode:LTErrorCodeInvalidArgument url:url
+                             description:@"Given URL is not a file URL"];
+    }
+    return NO;
+  }
+
+  if (![self fileExistsAtPath:nn(path)]) {
     if (error) {
       *error = [NSError lt_errorWithCode:LTErrorCodeFileNotFound url:url];
     }
@@ -179,7 +188,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (uint64_t)lt_sizeOfDirectoryAtPath:(NSURL *)path
                                error:(NSError * __autoreleasing *)error {
-  if (![self lt_directoryExistsAtPath:path.path]) {
+  if (!path.path || ![self lt_directoryExistsAtPath:nn(path.path)]) {
     if (error) {
       *error = [NSError lt_errorWithCode:LTErrorCodeFileNotFound url:path];
     }

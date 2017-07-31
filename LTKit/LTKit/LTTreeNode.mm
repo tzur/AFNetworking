@@ -48,7 +48,7 @@ NS_ASSUME_NONNULL_BEGIN
   }
 
   if (traversalOrder == LTTreeTraversalOrderPreOrder) {
-    block(node, stop);
+    block(nn(node), stop);
     if (*stop) {
       return;
     }
@@ -64,7 +64,7 @@ NS_ASSUME_NONNULL_BEGIN
   if (traversalOrder == LTTreeTraversalOrderPostOrder) {
     // No need to check the \c stop variable here since it has been done as last command in the
     // previous loop.
-    block(node, stop);
+    block(nn(node), stop);
   }
 }
 

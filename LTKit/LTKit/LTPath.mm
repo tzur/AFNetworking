@@ -25,7 +25,7 @@ static NSString * const kPathScheme = @"com.lightricks.path";
 - (nullable instancetype)initWithCoder:(NSCoder *)decoder {
   NSURL * _Nullable relativeURL = [decoder decodeObjectOfClass:[NSURL class]
                                                         forKey:@keypath(self, relativeURL)];
-  return [self.class pathWithRelativeURL:relativeURL];
+  return relativeURL ? [self.class pathWithRelativeURL:nn(relativeURL)] : nil;
 }
 
 - (NSString *)absolutePathWithPath:(NSString *)path {
@@ -46,17 +46,17 @@ static NSString * const kPathScheme = @"com.lightricks.path";
 }
 
 + (nullable instancetype)pathWithRelativeURL:(NSURL *)relativeURL {
-  if (![relativeURL.scheme isEqualToString:kPathScheme]) {
+  if (![relativeURL.scheme isEqualToString:kPathScheme] || !relativeURL.host || !relativeURL.path) {
     return nil;
   }
 
-  NSNumber * _Nullable key = [[self baseDirectoryToName] keyForObject:relativeURL.host];
+  NSNumber * _Nullable key = [[self baseDirectoryToName] keyForObject:nn(relativeURL.host)];
   if (!key) {
     return nil;
   }
 
-  return [[LTPath alloc] initWithBaseDirectory:key.unsignedIntegerValue
-                               andRelativePath:relativeURL.path];
+  return [[LTPath alloc] initWithBaseDirectory:(LTPathBaseDirectory)key.unsignedIntegerValue
+                               andRelativePath:nn(relativeURL.path)];
 }
 
 - (NSString *)baseDirectoryPath {
@@ -89,7 +89,7 @@ static NSString * const kPathScheme = @"com.lightricks.path";
   components.scheme = kPathScheme;
   components.host = [self.class baseDirectoryToName][@(self.baseDirectory)];
   components.path = self.relativePath;
-  return components.URL;
+  return nn(components.URL);
 }
 
 - (LTPath *)pathByAppendingPathComponent:(NSString *)pathComponent {

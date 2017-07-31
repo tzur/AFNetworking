@@ -149,7 +149,8 @@ NSString *LTSystemErrorMessageForError(int error) {
   }];
 }
 
-+ (NSDictionary *)lt_userInfo:(NSDictionary *)userInfo withCodeDescription:(NSInteger)code {
++ (nullable NSDictionary *)lt_userInfo:(nullable NSDictionary *)userInfo
+                   withCodeDescription:(NSInteger)code {
   NSString * _Nullable description = [[LTErrorCodesRegistry sharedRegistry]
                                       descriptionForErrorCode:code];
   if (!description) {

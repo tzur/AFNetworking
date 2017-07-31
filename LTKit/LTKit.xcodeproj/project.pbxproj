@@ -22,7 +22,7 @@
 		287A96F51A3320F200A609CD /* NSValue+Type.mm in Sources */ = {isa = PBXBuildFile; fileRef = 287A96F31A3320F200A609CD /* NSValue+Type.mm */; };
 		28AA3EAE19A25BBE00518987 /* NSNumber+CGFloat.h in Headers */ = {isa = PBXBuildFile; fileRef = 28AA3EAC19A25BBE00518987 /* NSNumber+CGFloat.h */; };
 		28AA3EAF19A25BBE00518987 /* NSNumber+CGFloat.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28AA3EAD19A25BBE00518987 /* NSNumber+CGFloat.mm */; };
-		28ABE005187153AD005A5DEC /* LTAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 28ABE004187153AD005A5DEC /* LTAnimation.m */; };
+		28ABE005187153AD005A5DEC /* LTAnimation.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28ABE004187153AD005A5DEC /* LTAnimation.mm */; };
 		28ABE00818715527005A5DEC /* LTAnimationSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28ABE00718715527005A5DEC /* LTAnimationSpec.mm */; };
 		28B8BBC31B67CF8600CF9F73 /* LTWeakContainer.h in Headers */ = {isa = PBXBuildFile; fileRef = 28B8BBC11B67CF8600CF9F73 /* LTWeakContainer.h */; };
 		28B8BBC41B67CF8600CF9F73 /* LTWeakContainer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28B8BBC21B67CF8600CF9F73 /* LTWeakContainer.mm */; };
@@ -50,7 +50,7 @@
 		6AB5182F1CC2993D00540CC6 /* NSURL+Query.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6AB5182D1CC2993D00540CC6 /* NSURL+Query.mm */; };
 		6AB518801CC2A8D700540CC6 /* NSURL+QuerySpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6AB5187F1CC2A8D700540CC6 /* NSURL+QuerySpec.mm */; };
 		835204EC1D2A43B300000EEC /* LTEventBus.h in Headers */ = {isa = PBXBuildFile; fileRef = 835204EA1D2A43B300000EEC /* LTEventBus.h */; };
-		835204ED1D2A43B300000EEC /* LTEventBus.m in Sources */ = {isa = PBXBuildFile; fileRef = 835204EB1D2A43B300000EEC /* LTEventBus.m */; };
+		835204ED1D2A43B300000EEC /* LTEventBus.mm in Sources */ = {isa = PBXBuildFile; fileRef = 835204EB1D2A43B300000EEC /* LTEventBus.mm */; };
 		835205071D2A43D500000EEC /* LTEventBusSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 835205061D2A43D500000EEC /* LTEventBusSpec.mm */; };
 		8352050A1D2A455E00000EEC /* LTEventTarget.m in Sources */ = {isa = PBXBuildFile; fileRef = 835205091D2A455E00000EEC /* LTEventTarget.m */; };
 		83C2EABE1EB73E4400A3085D /* NSDate+Formatting.h in Headers */ = {isa = PBXBuildFile; fileRef = 83C2EABC1EB73E4400A3085D /* NSDate+Formatting.h */; };
@@ -68,13 +68,12 @@
 		84B63E3F1DD8B79900ECF65B /* LTCompoundRandomAccessCollection.mm in Sources */ = {isa = PBXBuildFile; fileRef = 84B63E3D1DD8B79900ECF65B /* LTCompoundRandomAccessCollection.mm */; };
 		84B63E591DD8C77E00ECF65B /* LTCompoundRandomAccessCollectionSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 84B63E581DD8C77E00ECF65B /* LTCompoundRandomAccessCollectionSpec.mm */; };
 		84F7AB261C3290BA00AA502F /* LTPath.h in Headers */ = {isa = PBXBuildFile; fileRef = 84F7AB241C3290BA00AA502F /* LTPath.h */; };
-		84F7AB271C3290BA00AA502F /* LTPath.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F7AB251C3290BA00AA502F /* LTPath.m */; };
+		84F7AB271C3290BA00AA502F /* LTPath.mm in Sources */ = {isa = PBXBuildFile; fileRef = 84F7AB251C3290BA00AA502F /* LTPath.mm */; };
 		84F7AB291C3290D600AA502F /* LTPathSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F7AB281C3290D600AA502F /* LTPathSpec.m */; };
 		85BD008A1DC0E0920000FE97 /* NSArray+NSSet.h in Headers */ = {isa = PBXBuildFile; fileRef = 85BD00881DC0E0920000FE97 /* NSArray+NSSet.h */; };
 		85BD008B1DC0E0920000FE97 /* NSArray+NSSet.mm in Sources */ = {isa = PBXBuildFile; fileRef = 85BD00891DC0E0920000FE97 /* NSArray+NSSet.mm */; };
 		85BD00A51DC0E0A30000FE97 /* NSArray+NSSetSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 85BD00A41DC0E0A30000FE97 /* NSArray+NSSetSpec.mm */; };
 		885E975F1D72D3A800A117A2 /* LocalizationTest.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 885E975E1D72D3A800A117A2 /* LocalizationTest.bundle */; };
-		8861FC611E5A266000CA1436 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8861FC601E5A266000CA1436 /* GLKit.framework */; };
 		888258DB1EEECDB000A90675 /* NSSet+Functional.h in Headers */ = {isa = PBXBuildFile; fileRef = 888258D91EEECDB000A90675 /* NSSet+Functional.h */; };
 		888258DC1EEECDB000A90675 /* NSSet+Functional.mm in Sources */ = {isa = PBXBuildFile; fileRef = 888258DA1EEECDB000A90675 /* NSSet+Functional.mm */; };
 		888258F61EEED06300A90675 /* NSSet+FunctionalSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 888258F51EEED06300A90675 /* NSSet+FunctionalSpec.mm */; };
@@ -93,7 +92,7 @@
 		8B2405801B8607270079B724 /* UIDevice+Hardware.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B24057E1B8607270079B724 /* UIDevice+Hardware.h */; };
 		8B2405811B8607270079B724 /* UIDevice+Hardware.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B24057F1B8607270079B724 /* UIDevice+Hardware.mm */; };
 		8B2405881B860D620079B724 /* NSLocale+Language.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B2405861B860D620079B724 /* NSLocale+Language.h */; };
-		8B2405891B860D620079B724 /* NSLocale+Language.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B2405871B860D620079B724 /* NSLocale+Language.m */; };
+		8B2405891B860D620079B724 /* NSLocale+Language.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B2405871B860D620079B724 /* NSLocale+Language.mm */; };
 		8B24058D1B89BBB90079B724 /* UIDevice+HardwareSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B24058C1B89BBB90079B724 /* UIDevice+HardwareSpec.mm */; };
 		8B2840291CBE393000B745AE /* LTStructBoxingSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B2840281CBE393000B745AE /* LTStructBoxingSpec.mm */; };
 		8B329025192CC2660010592E /* NSFileManager+LTKitSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B329024192CC2660010592E /* NSFileManager+LTKitSpec.mm */; };
@@ -123,6 +122,7 @@
 		8B6A6EBE1CDA3ADC005FB7D9 /* LTRuntime.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B6A6EBC1CDA3ADC005FB7D9 /* LTRuntime.h */; };
 		8B6A6EBF1CDA3ADC005FB7D9 /* LTRuntime.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B6A6EBD1CDA3ADC005FB7D9 /* LTRuntime.mm */; };
 		8B6A6ED91CDA3B60005FB7D9 /* LTRuntimeSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B6A6ED81CDA3B60005FB7D9 /* LTRuntimeSpec.mm */; };
+		8B6BE9621F29CD4B000EE364 /* NSDictionary+OperationsSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B6BE9611F29CD4B000EE364 /* NSDictionary+OperationsSpec.mm */; };
 		8B7622E51DABD6A90032999E /* LTEventBusLoggerTargetSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B7622E41DABD6A90032999E /* LTEventBusLoggerTargetSpec.mm */; };
 		8B78CFDE197654A900684B1D /* LTEnum.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B78CFDC197654A900684B1D /* LTEnum.h */; };
 		8B7AAA891DECA70D003BB7EB /* LTUIKitMainThreadGuard.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B7AAA871DECA70D003BB7EB /* LTUIKitMainThreadGuard.h */; };
@@ -138,7 +138,7 @@
 		8B7C6CA91B52832600B90DBE /* LTMMOutputFileSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B7C6CA71B52832600B90DBE /* LTMMOutputFileSpec.mm */; };
 		8B85C799182A2EE5004C352E /* LTLoggerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B85C798182A2EE5004C352E /* LTLoggerSpec.mm */; };
 		8B871F98192396BE00517F2E /* NSError+LTKit.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B871F97192396BE00517F2E /* NSError+LTKit.mm */; };
-		8B871FAF1923CEF800517F2E /* NSFileManager+LTKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B871FAE1923CEF800517F2E /* NSFileManager+LTKit.m */; };
+		8B871FAF1923CEF800517F2E /* NSFileManager+LTKit.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B871FAE1923CEF800517F2E /* NSFileManager+LTKit.mm */; };
 		8B871FC71924A75E00517F2E /* LTKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B3DEBEC18296B6100EA0C1A /* LTKit.h */; };
 		8B8720341924A76500517F2E /* LTAssert.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BA3E13F182A68FC00FDD95A /* LTAssert.h */; };
 		8B8720351924A76500517F2E /* LTCGExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 2836211E186C58DC00665ED9 /* LTCGExtensions.h */; };
@@ -158,6 +158,7 @@
 		8B87D5AC1C05B1E10005410A /* LTErrorCodesRegistry.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B87D5AA1C05B1E10005410A /* LTErrorCodesRegistry.h */; };
 		8B87D5AD1C05B1E10005410A /* LTErrorCodesRegistry.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B87D5AB1C05B1E10005410A /* LTErrorCodesRegistry.m */; };
 		8B87D5CC1C05F2F80005410A /* LTErrorCodesRegistrySpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B87D5CB1C05F2F80005410A /* LTErrorCodesRegistrySpec.mm */; };
+		8B95A2001F0CE0C100B641C0 /* LTNullabilitySpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B95A1FF1F0CE0C100B641C0 /* LTNullabilitySpec.mm */; };
 		8B9D3FC51891116A001A964D /* LTEasyBoxingSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B9D3FC41891116A001A964D /* LTEasyBoxingSpec.mm */; };
 		8B9FE5761BA9D4A40085E97E /* UIScreen+Physical.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B9FE5741BA9D4A40085E97E /* UIScreen+Physical.h */; };
 		8B9FE5771BA9D4A40085E97E /* UIScreen+Physical.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B9FE5751BA9D4A40085E97E /* UIScreen+Physical.m */; };
@@ -180,6 +181,7 @@
 		8BE6F7471C21879500F66BA2 /* LTHashExtensionsSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BE6F7461C21879500F66BA2 /* LTHashExtensionsSpec.mm */; };
 		8BEE674319596DE7005E4D53 /* LTEnumSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BEE674219596DE7005E4D53 /* LTEnumSpec.mm */; };
 		8BEE674619596F66005E4D53 /* LTBidirectionalMapSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BEE674519596F66005E4D53 /* LTBidirectionalMapSpec.mm */; };
+		8BF54F831F1F5835002CD139 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BF54F821F1F5835002CD139 /* GLKit.framework */; };
 		8BF7B1721949BC7500E67079 /* LTBidirectionalMap.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BF7B1701949BC7500E67079 /* LTBidirectionalMap.h */; };
 		8BF7B1731949BC7500E67079 /* LTBidirectionalMap.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BF7B1711949BC7500E67079 /* LTBidirectionalMap.m */; };
 		8BF9A53B18F684AC00CCA084 /* LTTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BF9A53A18F684AC00CCA084 /* LTTimer.m */; };
@@ -189,7 +191,6 @@
 		A1006D1A1E0271540061D8BB /* NSDateFormatter+FormattersSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1006D191E0271540061D8BB /* NSDateFormatter+FormattersSpec.mm */; };
 		A1A1C8711F164828004A4CBF /* NSDictionary+Operations.h in Headers */ = {isa = PBXBuildFile; fileRef = A1A1C86F1F164828004A4CBF /* NSDictionary+Operations.h */; };
 		A1A1C8721F164828004A4CBF /* NSDictionary+Operations.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1A1C8701F164828004A4CBF /* NSDictionary+Operations.mm */; };
-		A1A1C88C1F164907004A4CBF /* NSDictionary+OperationsSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1A1C88B1F164907004A4CBF /* NSDictionary+OperationsSpec.mm */; };
 		BEB7BB8D1E2622D6007EAB73 /* UIColor+Utilities.h in Headers */ = {isa = PBXBuildFile; fileRef = BEB7BB8B1E2622D6007EAB73 /* UIColor+Utilities.h */; };
 		BEB7BB8E1E2622D6007EAB73 /* UIColor+Utilities.mm in Sources */ = {isa = PBXBuildFile; fileRef = BEB7BB8C1E2622D6007EAB73 /* UIColor+Utilities.mm */; };
 		BEB7BBA81E2623C9007EAB73 /* UIColor+UtilitiesSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = BEB7BBA71E2623C9007EAB73 /* UIColor+UtilitiesSpec.mm */; };
@@ -451,7 +452,7 @@
 		28AA3EAC19A25BBE00518987 /* NSNumber+CGFloat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNumber+CGFloat.h"; sourceTree = "<group>"; };
 		28AA3EAD19A25BBE00518987 /* NSNumber+CGFloat.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSNumber+CGFloat.mm"; sourceTree = "<group>"; };
 		28ABE003187153AD005A5DEC /* LTAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTAnimation.h; sourceTree = "<group>"; };
-		28ABE004187153AD005A5DEC /* LTAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTAnimation.m; sourceTree = "<group>"; };
+		28ABE004187153AD005A5DEC /* LTAnimation.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTAnimation.mm; sourceTree = "<group>"; };
 		28ABE00718715527005A5DEC /* LTAnimationSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTAnimationSpec.mm; sourceTree = "<group>"; };
 		28B8BBC11B67CF8600CF9F73 /* LTWeakContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTWeakContainer.h; sourceTree = "<group>"; };
 		28B8BBC21B67CF8600CF9F73 /* LTWeakContainer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTWeakContainer.mm; sourceTree = "<group>"; };
@@ -483,7 +484,7 @@
 		6AB5182D1CC2993D00540CC6 /* NSURL+Query.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSURL+Query.mm"; sourceTree = "<group>"; };
 		6AB5187F1CC2A8D700540CC6 /* NSURL+QuerySpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSURL+QuerySpec.mm"; sourceTree = "<group>"; };
 		835204EA1D2A43B300000EEC /* LTEventBus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTEventBus.h; sourceTree = "<group>"; };
-		835204EB1D2A43B300000EEC /* LTEventBus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTEventBus.m; sourceTree = "<group>"; };
+		835204EB1D2A43B300000EEC /* LTEventBus.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTEventBus.mm; sourceTree = "<group>"; };
 		835205061D2A43D500000EEC /* LTEventBusSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTEventBusSpec.mm; sourceTree = "<group>"; };
 		835205081D2A455E00000EEC /* LTEventTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTEventTarget.h; sourceTree = "<group>"; };
 		835205091D2A455E00000EEC /* LTEventTarget.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTEventTarget.m; sourceTree = "<group>"; };
@@ -503,13 +504,12 @@
 		84B63E3D1DD8B79900ECF65B /* LTCompoundRandomAccessCollection.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTCompoundRandomAccessCollection.mm; sourceTree = "<group>"; };
 		84B63E581DD8C77E00ECF65B /* LTCompoundRandomAccessCollectionSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTCompoundRandomAccessCollectionSpec.mm; sourceTree = "<group>"; };
 		84F7AB241C3290BA00AA502F /* LTPath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTPath.h; sourceTree = "<group>"; };
-		84F7AB251C3290BA00AA502F /* LTPath.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTPath.m; sourceTree = "<group>"; };
+		84F7AB251C3290BA00AA502F /* LTPath.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTPath.mm; sourceTree = "<group>"; };
 		84F7AB281C3290D600AA502F /* LTPathSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTPathSpec.m; sourceTree = "<group>"; };
 		85BD00881DC0E0920000FE97 /* NSArray+NSSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+NSSet.h"; sourceTree = "<group>"; };
 		85BD00891DC0E0920000FE97 /* NSArray+NSSet.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSArray+NSSet.mm"; sourceTree = "<group>"; };
 		85BD00A41DC0E0A30000FE97 /* NSArray+NSSetSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSArray+NSSetSpec.mm"; sourceTree = "<group>"; };
 		885E975E1D72D3A800A117A2 /* LocalizationTest.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = LocalizationTest.bundle; sourceTree = "<group>"; };
-		8861FC601E5A266000CA1436 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
 		888258D91EEECDB000A90675 /* NSSet+Functional.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSSet+Functional.h"; sourceTree = "<group>"; };
 		888258DA1EEECDB000A90675 /* NSSet+Functional.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSSet+Functional.mm"; sourceTree = "<group>"; };
 		888258F51EEED06300A90675 /* NSSet+FunctionalSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSSet+FunctionalSpec.mm"; sourceTree = "<group>"; };
@@ -520,6 +520,7 @@
 		88DA5A901ED056EA008162BC /* NSDictionary+Functional.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSDictionary+Functional.mm"; sourceTree = "<group>"; };
 		88DA5AAB1ED05771008162BC /* NSDictionary+FunctionalSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSDictionary+FunctionalSpec.mm"; sourceTree = "<group>"; };
 		8B04C96A1BEE651A0024D22E /* LTRefSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTRefSpec.mm; sourceTree = "<group>"; };
+		8B0F9A401EA9187500B58E78 /* LTNullability.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTNullability.h; sourceTree = "<group>"; };
 		8B1889351BEBC8F100E9BD67 /* LTRef.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTRef.h; sourceTree = "<group>"; };
 		8B18BB4019226A7D00DA4B64 /* LTKeyPathCoding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTKeyPathCoding.h; sourceTree = "<group>"; };
 		8B2405371B85DAC60079B724 /* EXPMatchers+beCloseToPoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EXPMatchers+beCloseToPoint.h"; sourceTree = "<group>"; };
@@ -527,7 +528,7 @@
 		8B24057E1B8607270079B724 /* UIDevice+Hardware.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDevice+Hardware.h"; sourceTree = "<group>"; };
 		8B24057F1B8607270079B724 /* UIDevice+Hardware.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIDevice+Hardware.mm"; sourceTree = "<group>"; };
 		8B2405861B860D620079B724 /* NSLocale+Language.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSLocale+Language.h"; sourceTree = "<group>"; };
-		8B2405871B860D620079B724 /* NSLocale+Language.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSLocale+Language.m"; sourceTree = "<group>"; };
+		8B2405871B860D620079B724 /* NSLocale+Language.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSLocale+Language.mm"; sourceTree = "<group>"; };
 		8B24058C1B89BBB90079B724 /* UIDevice+HardwareSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIDevice+HardwareSpec.mm"; sourceTree = "<group>"; };
 		8B27F5A21BBBF47000AAC7B4 /* NSErrorCodes+LTKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSErrorCodes+LTKit.h"; sourceTree = "<group>"; };
 		8B28400F1CBE36C100B745AE /* LTStructBoxing.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTStructBoxing.h; sourceTree = "<group>"; };
@@ -565,6 +566,7 @@
 		8B6A6EBD1CDA3ADC005FB7D9 /* LTRuntime.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTRuntime.mm; sourceTree = "<group>"; };
 		8B6A6ED81CDA3B60005FB7D9 /* LTRuntimeSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTRuntimeSpec.mm; sourceTree = "<group>"; };
 		8B6B07AC185DF67F001CB60B /* LTLoggerMacrosImpl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTLoggerMacrosImpl.h; sourceTree = "<group>"; };
+		8B6BE9611F29CD4B000EE364 /* NSDictionary+OperationsSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSDictionary+OperationsSpec.mm"; sourceTree = "<group>"; };
 		8B7622E41DABD6A90032999E /* LTEventBusLoggerTargetSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTEventBusLoggerTargetSpec.mm; sourceTree = "<group>"; };
 		8B78835F1BDF70790051CCD1 /* Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
 		8B7883601BDF70790051CCD1 /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
@@ -587,7 +589,7 @@
 		8B871F96192396BE00517F2E /* NSError+LTKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSError+LTKit.h"; sourceTree = "<group>"; };
 		8B871F97192396BE00517F2E /* NSError+LTKit.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSError+LTKit.mm"; sourceTree = "<group>"; };
 		8B871FAD1923CEF800517F2E /* NSFileManager+LTKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSFileManager+LTKit.h"; sourceTree = "<group>"; };
-		8B871FAE1923CEF800517F2E /* NSFileManager+LTKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSFileManager+LTKit.m"; sourceTree = "<group>"; };
+		8B871FAE1923CEF800517F2E /* NSFileManager+LTKit.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSFileManager+LTKit.mm"; sourceTree = "<group>"; };
 		8B87D5341C04BA940005410A /* NSBundle+Path.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSBundle+Path.h"; sourceTree = "<group>"; };
 		8B87D5351C04BA940005410A /* NSBundle+Path.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSBundle+Path.mm"; sourceTree = "<group>"; };
 		8B87D54D1C04BC2F0005410A /* NSBundle+PathSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSBundle+PathSpec.mm"; sourceTree = "<group>"; };
@@ -598,6 +600,7 @@
 		8B87D5CB1C05F2F80005410A /* LTErrorCodesRegistrySpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTErrorCodesRegistrySpec.mm; sourceTree = "<group>"; };
 		8B8A81E61BD65E4F0027B97D /* OCMock.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = OCMock.xcodeproj; path = ../../third_party/OCMock/Source/OCMock.xcodeproj; sourceTree = "<group>"; };
 		8B8C86A91F2499EC0073F826 /* LTCopyGenerics.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTCopyGenerics.h; sourceTree = "<group>"; };
+		8B95A1FF1F0CE0C100B641C0 /* LTNullabilitySpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTNullabilitySpec.mm; sourceTree = "<group>"; };
 		8B9D3FB718910941001A964D /* LTEasyBoxing.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTEasyBoxing.h; sourceTree = "<group>"; };
 		8B9D3FC41891116A001A964D /* LTEasyBoxingSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTEasyBoxingSpec.mm; sourceTree = "<group>"; };
 		8B9FE5741BA9D4A40085E97E /* UIScreen+Physical.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIScreen+Physical.h"; sourceTree = "<group>"; };
@@ -630,6 +633,7 @@
 		8BED82C61C3D34320001C6F1 /* LTRandomAccessCollection.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTRandomAccessCollection.h; sourceTree = "<group>"; };
 		8BEE674219596DE7005E4D53 /* LTEnumSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTEnumSpec.mm; sourceTree = "<group>"; };
 		8BEE674519596F66005E4D53 /* LTBidirectionalMapSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTBidirectionalMapSpec.mm; sourceTree = "<group>"; };
+		8BF54F821F1F5835002CD139 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
 		8BF7B1701949BC7500E67079 /* LTBidirectionalMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTBidirectionalMap.h; sourceTree = "<group>"; };
 		8BF7B1711949BC7500E67079 /* LTBidirectionalMap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTBidirectionalMap.m; sourceTree = "<group>"; };
 		8BF9A53918F684AC00CCA084 /* LTTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTTimer.h; sourceTree = "<group>"; };
@@ -640,7 +644,6 @@
 		A1006D191E0271540061D8BB /* NSDateFormatter+FormattersSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSDateFormatter+FormattersSpec.mm"; sourceTree = "<group>"; };
 		A1A1C86F1F164828004A4CBF /* NSDictionary+Operations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+Operations.h"; sourceTree = "<group>"; };
 		A1A1C8701F164828004A4CBF /* NSDictionary+Operations.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSDictionary+Operations.mm"; sourceTree = "<group>"; };
-		A1A1C88B1F164907004A4CBF /* NSDictionary+OperationsSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSDictionary+OperationsSpec.mm"; sourceTree = "<group>"; };
 		BEB7BB8B1E2622D6007EAB73 /* UIColor+Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+Utilities.h"; sourceTree = "<group>"; };
 		BEB7BB8C1E2622D6007EAB73 /* UIColor+Utilities.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIColor+Utilities.mm"; sourceTree = "<group>"; };
 		BEB7BBA71E2623C9007EAB73 /* UIColor+UtilitiesSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIColor+UtilitiesSpec.mm"; sourceTree = "<group>"; };
@@ -682,22 +685,22 @@
 			buildActionMask = 2147483647;
 			files = (
 				CDE008241E82882A007AFD5E /* libcompression.tbd in Frameworks */,
+				8B0B99721CA6BADF00ED2334 /* libextobjc_iOS.a in Frameworks */,
+				8B0B99821CA6BB3D00ED2334 /* libExpecta.a in Frameworks */,
+				8B0B99731CA6BADF00ED2334 /* libOCMock.a in Frameworks */,
+				8B0B99741CA6BADF00ED2334 /* libSpecta.a in Frameworks */,
+				8B3DEBFC18296B6100EA0C1A /* libLTKit.a in Frameworks */,
 				8BA8C68918699D9F00E6F486 /* Accelerate.framework in Frameworks */,
 				8B3C0A5B1832953E000845BA /* AssetsLibrary.framework in Frameworks */,
 				8B3C0A5518329524000845BA /* AVFoundation.framework in Frameworks */,
 				8B3C0A561832952A000845BA /* CoreGraphics.framework in Frameworks */,
 				8B3C0A5918329538000845BA /* CoreMedia.framework in Frameworks */,
 				8B3C0A5718329531000845BA /* CoreVideo.framework in Frameworks */,
-				8B3DEBF718296B6100EA0C1A /* Foundation.framework in Frameworks */,
-				8861FC611E5A266000CA1436 /* GLKit.framework in Frameworks */,
+				8BF54F831F1F5835002CD139 /* GLKit.framework in Frameworks */,
 				8B4E493819E950C500B3F55D /* ImageIO.framework in Frameworks */,
-				8B0B99821CA6BB3D00ED2334 /* libExpecta.a in Frameworks */,
-				8B0B99721CA6BADF00ED2334 /* libextobjc_iOS.a in Frameworks */,
-				8B3DEBFC18296B6100EA0C1A /* libLTKit.a in Frameworks */,
-				8B0B99731CA6BADF00ED2334 /* libOCMock.a in Frameworks */,
-				8B0B99741CA6BADF00ED2334 /* libSpecta.a in Frameworks */,
 				8B4E494B19E950C800B3F55D /* MobileCoreServices.framework in Frameworks */,
 				8BA3E118182A437300FDD95A /* QuartzCore.framework in Frameworks */,
+				8B3DEBF718296B6100EA0C1A /* Foundation.framework in Frameworks */,
 				8BA3E119182A437300FDD95A /* UIKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -709,7 +712,7 @@
 			isa = PBXGroup;
 			children = (
 				28ABE003187153AD005A5DEC /* LTAnimation.h */,
-				28ABE004187153AD005A5DEC /* LTAnimation.m */,
+				28ABE004187153AD005A5DEC /* LTAnimation.mm */,
 			);
 			name = UI;
 			sourceTree = "<group>";
@@ -837,8 +840,7 @@
 		8B3DEBE618296B6100EA0C1A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				CDE008231E82882A007AFD5E /* libcompression.tbd */,
-				8861FC601E5A266000CA1436 /* GLKit.framework */,
+				8BF54F821F1F5835002CD139 /* GLKit.framework */,
 				8B4E494A19E950C800B3F55D /* MobileCoreServices.framework */,
 				8B4E493719E950C500B3F55D /* ImageIO.framework */,
 				8BA8C68718699D9A00E6F486 /* Accelerate.framework */,
@@ -861,14 +863,12 @@
 				8B3DEBEC18296B6100EA0C1A /* LTKit.h */,
 				8B8E50FC1861EB1F00821829 /* Base */,
 				8B7C6C791B5272E100B90DBE /* Boxing */,
-				CDE008031E828739007AFD5E /* Compression */,
 				8BF7B1631949BC3100E67079 /* Data Structures */,
 				8B7C6C781B52722900B90DBE /* Extensions */,
 				8B871FAC1923CE2400517F2E /* IO */,
 				8BB47145183B533500CA1681 /* Libraries */,
 				88C67F3F1D72C1DB00A0E0FC /* Localization */,
 				C7D3E45E1D4F8411000A1EEC /* Logging */,
-				CDA09B011E8135E200753A41 /* Protection */,
 				8B3DEBEA18296B6100EA0C1A /* Supporting Files */,
 				28ABDFF618715394005A5DEC /* UI */,
 			);
@@ -955,6 +955,10 @@
 				85BD00891DC0E0920000FE97 /* NSArray+NSSet.mm */,
 				8B410E8B1CE1F01E007DFF42 /* NSArray+SelectorName.h */,
 				8B410E8C1CE1F01E007DFF42 /* NSArray+SelectorName.mm */,
+				CDE0081C1E828756007AFD5E /* NSData+Compression.h */,
+				CDE0081D1E828756007AFD5E /* NSData+Compression.mm */,
+				CDA09B921E81368000753A41 /* NSData+Encryption.h */,
+				CDA09B931E81368000753A41 /* NSData+Encryption.mm */,
 				CD8887861EED8EAB005F8FCA /* NSData+HexString.h */,
 				CD8887871EED8EAB005F8FCA /* NSData+HexString.mm */,
 				88DA5A8F1ED056E9008162BC /* NSDictionary+Functional.h */,
@@ -1004,12 +1008,14 @@
 				503442BC1A0FB95B008E0ED3 /* LTCFExtensionsSpec.mm */,
 				2836212D186C58F900665ED9 /* LTCGExtensionsSpec.mm */,
 				8BE6F7461C21879500F66BA2 /* LTHashExtensionsSpec.mm */,
-				CD8887A21EED8EEB005F8FCA /* NSData+HexStringSpec.mm */,
-				88DA5AAB1ED05771008162BC /* NSDictionary+FunctionalSpec.mm */,
-				A1A1C88B1F164907004A4CBF /* NSDictionary+OperationsSpec.mm */,
-				8B4495391CE1F4C7008402D0 /* NSArray+SelectorNameSpec.mm */,
 				650F73DB1C7A1A5500148CEC /* NSArray+FunctionalSpec.mm */,
 				85BD00A41DC0E0A30000FE97 /* NSArray+NSSetSpec.mm */,
+				8B4495391CE1F4C7008402D0 /* NSArray+SelectorNameSpec.mm */,
+				CDE008211E828788007AFD5E /* NSData+CompressionSpec.mm */,
+				CDA09B971E8136B900753A41 /* NSData+EncryptionSpec.mm */,
+				CD8887A21EED8EEB005F8FCA /* NSData+HexStringSpec.mm */,
+				88DA5AAB1ED05771008162BC /* NSDictionary+FunctionalSpec.mm */,
+				8B6BE9611F29CD4B000EE364 /* NSDictionary+OperationsSpec.mm */,
 				8B4495A11CE322DB008402D0 /* NSObject+PropertyAccessorsSpec.mm */,
 				888258F51EEED06300A90675 /* NSSet+FunctionalSpec.mm */,
 				8BA5D6C0199250CE0093A4FD /* NSString+HashingSpec.mm */,
@@ -1023,13 +1029,11 @@
 			children = (
 				8B8E50FD1861EB4000821829 /* Base */,
 				8B7C6C7B1B5275C800B90DBE /* Boxing */,
-				CDE008201E82875F007AFD5E /* Compresssion */,
 				8BEE674419596F59005E4D53 /* Data Structures */,
 				8B7C6C7C1B52761000B90DBE /* Extensions */,
 				8B329023192CC2590010592E /* IO */,
 				88C67F5C1D72CC6600A0E0FC /* Localization */,
 				C7D3E4771D4F88D9000A1EEC /* Logging */,
-				CDA09B961E81369900753A41 /* Protection */,
 				8B85C797182A2EC7004C352E /* Supporting Files */,
 				28ABE00618715514005A5DEC /* UI */,
 			);
@@ -1066,11 +1070,11 @@
 				8B7C6C9D1B52829100B90DBE /* LTMMOutputFile.h */,
 				8B7C6C9E1B52829100B90DBE /* LTMMOutputFile.mm */,
 				84F7AB241C3290BA00AA502F /* LTPath.h */,
-				84F7AB251C3290BA00AA502F /* LTPath.m */,
+				84F7AB251C3290BA00AA502F /* LTPath.mm */,
 				8B87D5341C04BA940005410A /* NSBundle+Path.h */,
 				8B87D5351C04BA940005410A /* NSBundle+Path.mm */,
 				8B871FAD1923CEF800517F2E /* NSFileManager+LTKit.h */,
-				8B871FAE1923CEF800517F2E /* NSFileManager+LTKit.m */,
+				8B871FAE1923CEF800517F2E /* NSFileManager+LTKit.mm */,
 				6AB5182C1CC2993D00540CC6 /* NSURL+Query.h */,
 				6AB5182D1CC2993D00540CC6 /* NSURL+Query.mm */,
 			);
@@ -1086,7 +1090,8 @@
 				8B87D5AA1C05B1E10005410A /* LTErrorCodesRegistry.h */,
 				8B87D5AB1C05B1E10005410A /* LTErrorCodesRegistry.m */,
 				835204EA1D2A43B300000EEC /* LTEventBus.h */,
-				835204EB1D2A43B300000EEC /* LTEventBus.m */,
+				835204EB1D2A43B300000EEC /* LTEventBus.mm */,
+				8B0F9A401EA9187500B58E78 /* LTNullability.h */,
 				658CD3C41D50A79B00FF7FD6 /* LTProgress.h */,
 				658CD3C51D50A79B00FF7FD6 /* LTProgress.mm */,
 				28E55DFF1961B21A00EBF9DA /* LTRandom.h */,
@@ -1105,7 +1110,7 @@
 				8B87D5931C05AC630005410A /* NSErrorCodes+LTKit.mm */,
 				8B87D5CA1C05DD8B0005410A /* NSErrorCodes+Macros.h */,
 				8B2405861B860D620079B724 /* NSLocale+Language.h */,
-				8B2405871B860D620079B724 /* NSLocale+Language.m */,
+				8B2405871B860D620079B724 /* NSLocale+Language.mm */,
 				8BB236C01CDCD5C500057F11 /* NSObject+DynamicDispatch.h */,
 				8BB236C11CDCD5C500057F11 /* NSObject+DynamicDispatch.mm */,
 				8B24057E1B8607270079B724 /* UIDevice+Hardware.h */,
@@ -1122,6 +1127,7 @@
 				8BEE674219596DE7005E4D53 /* LTEnumSpec.mm */,
 				8B87D5CB1C05F2F80005410A /* LTErrorCodesRegistrySpec.mm */,
 				835205061D2A43D500000EEC /* LTEventBusSpec.mm */,
+				8B95A1FF1F0CE0C100B641C0 /* LTNullabilitySpec.mm */,
 				658CD3E01D50AC0C00FF7FD6 /* LTProgressSpec.mm */,
 				28D86F551962AB8C00145674 /* LTRandomSpec.mm */,
 				8B04C96A1BEE651A0024D22E /* LTRefSpec.mm */,
@@ -1239,40 +1245,6 @@
 				A1006D191E0271540061D8BB /* NSDateFormatter+FormattersSpec.mm */,
 			);
 			name = Logging;
-			sourceTree = "<group>";
-		};
-		CDA09B011E8135E200753A41 /* Protection */ = {
-			isa = PBXGroup;
-			children = (
-				CDA09B921E81368000753A41 /* NSData+Encryption.h */,
-				CDA09B931E81368000753A41 /* NSData+Encryption.mm */,
-			);
-			name = Protection;
-			sourceTree = "<group>";
-		};
-		CDA09B961E81369900753A41 /* Protection */ = {
-			isa = PBXGroup;
-			children = (
-				CDA09B971E8136B900753A41 /* NSData+EncryptionSpec.mm */,
-			);
-			name = Protection;
-			sourceTree = "<group>";
-		};
-		CDE008031E828739007AFD5E /* Compression */ = {
-			isa = PBXGroup;
-			children = (
-				CDE0081C1E828756007AFD5E /* NSData+Compression.h */,
-				CDE0081D1E828756007AFD5E /* NSData+Compression.mm */,
-			);
-			name = Compression;
-			sourceTree = "<group>";
-		};
-		CDE008201E82875F007AFD5E /* Compresssion */ = {
-			isa = PBXGroup;
-			children = (
-				CDE008211E828788007AFD5E /* NSData+CompressionSpec.mm */,
-			);
-			name = Compresssion;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1645,14 +1617,14 @@
 				6AB5182F1CC2993D00540CC6 /* NSURL+Query.mm in Sources */,
 				84B63E3F1DD8B79900ECF65B /* LTCompoundRandomAccessCollection.mm in Sources */,
 				8B87D5941C05AC630005410A /* NSErrorCodes+LTKit.mm in Sources */,
-				8B871FAF1923CEF800517F2E /* NSFileManager+LTKit.m in Sources */,
+				8B871FAF1923CEF800517F2E /* NSFileManager+LTKit.mm in Sources */,
 				8BB01CB0196576D7002A8609 /* LTImageLoader.m in Sources */,
-				84F7AB271C3290BA00AA502F /* LTPath.m in Sources */,
+				84F7AB271C3290BA00AA502F /* LTPath.mm in Sources */,
 				28E55E021961B21A00EBF9DA /* LTRandom.mm in Sources */,
 				8B871F98192396BE00517F2E /* NSError+LTKit.mm in Sources */,
 				5067221B19EA80B5003AF8D2 /* LTQueue.mm in Sources */,
 				658CD3C71D50A79B00FF7FD6 /* LTProgress.mm in Sources */,
-				28ABE005187153AD005A5DEC /* LTAnimation.m in Sources */,
+				28ABE005187153AD005A5DEC /* LTAnimation.mm in Sources */,
 				8482E2B11D2260DA0084D565 /* LTValueObject.mm in Sources */,
 				8B7AAA8A1DECA70D003BB7EB /* LTUIKitMainThreadGuard.mm in Sources */,
 				5067221919EA80B5003AF8D2 /* LTBoundedQueue.mm in Sources */,
@@ -1670,7 +1642,7 @@
 				259FF7D01C14920C00362CDD /* LTBipartiteGraph.mm in Sources */,
 				28362120186C58DC00665ED9 /* LTCGExtensions.m in Sources */,
 				8B59AA9E1DABC54F0006CC22 /* LTEventBusLoggerTarget.mm in Sources */,
-				835204ED1D2A43B300000EEC /* LTEventBus.m in Sources */,
+				835204ED1D2A43B300000EEC /* LTEventBus.mm in Sources */,
 				A1006D001E026EFB0061D8BB /* NSDateFormatter+Formatters.mm in Sources */,
 				84455E4C1CD0F5E500042CB7 /* LTMappingRandomAccessCollection.m in Sources */,
 				888258DC1EEECDB000A90675 /* NSSet+Functional.mm in Sources */,
@@ -1687,7 +1659,7 @@
 				8B3DEC1118296D2200EA0C1A /* LTLogger.mm in Sources */,
 				650F73C21C7A13DF00148CEC /* NSArray+Functional.mm in Sources */,
 				8BF7B1731949BC7500E67079 /* LTBidirectionalMap.m in Sources */,
-				8B2405891B860D620079B724 /* NSLocale+Language.m in Sources */,
+				8B2405891B860D620079B724 /* NSLocale+Language.mm in Sources */,
 				287A96F51A3320F200A609CD /* NSValue+Type.mm in Sources */,
 				8B9FE5771BA9D4A40085E97E /* UIScreen+Physical.m in Sources */,
 			);
@@ -1712,6 +1684,7 @@
 				8B2840291CBE393000B745AE /* LTStructBoxingSpec.mm in Sources */,
 				5067223119EA811A003AF8D2 /* LTBoundedQueueSpec.mm in Sources */,
 				8B7AAAA41DEE11F1003BB7EB /* LTUIKitMainThreadGuardSpec.mm in Sources */,
+				8B6BE9621F29CD4B000EE364 /* NSDictionary+OperationsSpec.mm in Sources */,
 				8B85C799182A2EE5004C352E /* LTLoggerSpec.mm in Sources */,
 				84F7AB291C3290D600AA502F /* LTPathSpec.m in Sources */,
 				84455E4A1CD0F35C00042CB7 /* LTFastEnumeratorSpec.mm in Sources */,
@@ -1725,6 +1698,7 @@
 				8BEE674319596DE7005E4D53 /* LTEnumSpec.mm in Sources */,
 				BEB7BBA81E2623C9007EAB73 /* UIColor+UtilitiesSpec.mm in Sources */,
 				650F73DC1C7A1A5500148CEC /* NSArray+FunctionalSpec.mm in Sources */,
+				8B95A2001F0CE0C100B641C0 /* LTNullabilitySpec.mm in Sources */,
 				8BA468DE1BC6B9C600AAEC82 /* NSFileManagerTestUtils.mm in Sources */,
 				8B4495A21CE322DB008402D0 /* NSObject+PropertyAccessorsSpec.mm in Sources */,
 				88DA5AAC1ED05771008162BC /* NSDictionary+FunctionalSpec.mm in Sources */,
@@ -1734,7 +1708,6 @@
 				835205071D2A43D500000EEC /* LTEventBusSpec.mm in Sources */,
 				259FF7E71C14921800362CDD /* LTBipartiteGraphSpec.mm in Sources */,
 				8B329025192CC2660010592E /* NSFileManager+LTKitSpec.mm in Sources */,
-				A1A1C88C1F164907004A4CBF /* NSDictionary+OperationsSpec.mm in Sources */,
 				28B8BBC81B68C1CE00CF9F73 /* LTWeakContainerSpec.mm in Sources */,
 				8BBE8943183506E4006C58AA /* LTTestUtils.mm in Sources */,
 				284EBBD11A33ABF600D36688 /* NSValue+TypeSpec.mm in Sources */,
@@ -1803,6 +1776,10 @@
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = (
+					"$(inherited)",
+					"-Wnullable-to-nonnull-conversion",
+				);
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -1818,6 +1795,10 @@
 					"$(SRCROOT)/../third_party/libextobjc",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				OTHER_CFLAGS = (
+					"$(inherited)",
+					"-Wnullable-to-nonnull-conversion",
+				);
 				SDKROOT = iphoneos;
 			};
 			name = Release;
