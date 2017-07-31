@@ -6,6 +6,7 @@
 #import "LTGLContext.h"
 #import "LTGLPixelFormat.h"
 #import "LTGPUResourceExamples.h"
+#import "LTRenderbuffer+Private.h"
 
 SpecBegin(LTRenderbuffer)
 
@@ -81,6 +82,39 @@ sharedExamplesFor(kLTRenderbufferExamples, ^(NSDictionary *info) {
       return @{
         kLTResourceExamplesSUTValue: [NSValue valueWithNonretainedObject:renderbuffer],
         kLTResourceExamplesOpenGLParameterName: @GL_RENDERBUFFER_BINDING};
+    });
+  });
+
+  context(@"dispose", ^{
+    it(@"should allow reusing disposed renderbuffer name", ^{
+      expect(glIsRenderbuffer(renderbuffer.name)).to.beTruthy();
+
+      [renderbuffer dispose];
+
+      expect(renderbuffer.name).to.equal(0);
+      expect(glIsRenderbuffer(renderbuffer.name)).to.beFalsy();
+      expect(^{
+        LTGLCheckDbg(@"error when when disposing renderbuffer");
+      }).notTo.raiseAny();
+    });
+
+    it(@"should dispose renderbuffer when bound", ^{
+      [renderbuffer bindAndExecute:^{
+        [renderbuffer dispose];
+        expect(glIsRenderbuffer(renderbuffer.name)).to.beFalsy();
+      }];
+      expect(glIsRenderbuffer(renderbuffer.name)).to.beFalsy();
+    });
+
+    it(@"should have no effect when disposed multiple times", ^{
+      __block GLboolean isFramebuffer;
+      expect(^{
+        [renderbuffer dispose];
+        [renderbuffer dispose];
+        isFramebuffer = glIsRenderbuffer(renderbuffer.name);
+      }).notTo.raiseAny();
+      expect(isFramebuffer).to.beFalsy();
+      expect(glIsRenderbuffer(renderbuffer.name)).to.beFalsy();
     });
   });
 });
