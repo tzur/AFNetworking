@@ -13,6 +13,7 @@
 #import "BZRProduct.h"
 #import "BZRProductContentFetcher.h"
 #import "BZRRemoteContentFetcher.h"
+#import "BZRRetryContentFetcher.h"
 #import "NSError+Bazaar.h"
 #import "NSErrorCodes+Bazaar.h"
 
@@ -41,7 +42,8 @@ NS_ASSUME_NONNULL_BEGIN
   auto onDemandContentFetcher = [[BZROnDemandContentFetcher alloc] init];
   auto remoteContentFetcher = [[BZRRemoteContentFetcher alloc] init];
   auto mutlicastRemoteContentFetcher =
-      [[BZRMulticastContentFetcher alloc] initWithUnderlyingContentFetcher:remoteContentFetcher];
+      [[BZRMulticastContentFetcher alloc] initWithUnderlyingContentFetcher:
+       [[BZRRetryContentFetcher alloc] initWithUnderlyingContentFetcher:remoteContentFetcher]];
   auto fallbackContentFetcher =
       [[BZRFallbackContentFetcher alloc] initWithCompositeContentFetcher:self];
 
