@@ -84,9 +84,9 @@ it(@"should create music album songs URL with item", ^{
 
 it(@"should create artist's music album URL with item", ^{
   url = [NSURL ptn_mediaLibraryAlbumArtistMusicAlbumsWithItem:mediaLibraryItemMock];
-  auto urlString = [NSString stringWithFormat:@"%@://album?%@=345&"
+  auto urlString = [NSString stringWithFormat:@"%@://album?%@=678&"
                     "fetch=PTNMediaLibraryFetchTypeCollections&grouping=MPMediaGroupingAlbum",
-                    [NSURL ptn_mediaLibraryScheme], MPMediaItemPropertyAlbumPersistentID];
+                    [NSURL ptn_mediaLibraryScheme], MPMediaItemPropertyArtistPersistentID];
   expect(url).to.equal([NSURL URLWithString:urlString]);
   expect(url.ptn_mediaLibraryURLType).to.equal(PTNMediaLibraryURLTypeAlbum);
   expect(url.ptn_mediaLibraryFetch).to.equal($(PTNMediaLibraryFetchTypeCollections));
@@ -95,9 +95,9 @@ it(@"should create artist's music album URL with item", ^{
 
 it(@"should create artist's songs URL with item", ^{
   url = [NSURL ptn_mediaLibraryAlbumArtistSongsWithItem:mediaLibraryItemMock];
-  auto urlString = [NSString stringWithFormat:@"%@://album?%@=345&"
+  auto urlString = [NSString stringWithFormat:@"%@://album?%@=678&"
                     "fetch=PTNMediaLibraryFetchTypeItems", [NSURL ptn_mediaLibraryScheme],
-                    MPMediaItemPropertyAlbumPersistentID];
+                    MPMediaItemPropertyArtistPersistentID];
   expect(url).to.equal([NSURL URLWithString:urlString]);
   expect(url.ptn_mediaLibraryURLType).to.equal(PTNMediaLibraryURLTypeAlbum);
   expect(url.ptn_mediaLibraryFetch).to.equal($(PTNMediaLibraryFetchTypeItems));
