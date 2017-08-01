@@ -21,7 +21,7 @@ typedef PHFetchResult<PHAssetCollection *> PTNAssetCollectionsFetchResult;
 /// Retrieves asset collections of the specified type and subtype.
 ///
 /// @see [PHAssetCollection fetchAssetCollectionsWithType:subtype:options:].
-- (PTNCollectionsFetchResult *)fetchAssetCollectionsWithType:(PHAssetCollectionType)type
+- (PTNAssetCollectionsFetchResult *)fetchAssetCollectionsWithType:(PHAssetCollectionType)type
     subtype:(PHAssetCollectionSubtype)subtype options:(nullable PHFetchOptions *)options;
 
 /// Retrieves a temporary collection list that contains the specified asset collections.

@@ -434,9 +434,9 @@ NS_ASSUME_NONNULL_BEGIN
 - (RACSignal *)fetchMetaAlbumWithType:(NSNumber *)type subtype:(NSNumber *)subtype
                             subalbums:(nullable NSArray<NSNumber *> *)subalbums
                               options:(PHFetchOptions * _Nullable)options {
-  PTNCollectionsFetchResult *fetchResults = [self fetchResultsWithCollectionType:type
-                                                               collectionSubtype:subtype
-                                                                         options:options];
+  PTNAssetCollectionsFetchResult *fetchResults = [self fetchResultsWithCollectionType:type
+                                                                    collectionSubtype:subtype
+                                                                              options:options];
   if (!subalbums) {
     return [RACSignal return:fetchResults];
   }
@@ -473,9 +473,8 @@ NS_ASSUME_NONNULL_BEGIN
                                                                   options:nil]];
 }
 
-- (PTNCollectionsFetchResult *)fetchResultsWithCollectionType:(NSNumber *)collectionType
-                                            collectionSubtype:(NSNumber *)collectionSubtype
-                                                      options:(PHFetchOptions * _Nullable)options {
+- (PTNAssetCollectionsFetchResult *)fetchResultsWithCollectionType:(NSNumber *)collectionType
+    collectionSubtype:(NSNumber *)collectionSubtype options:(PHFetchOptions * _Nullable)options {
   PHAssetCollectionType type = (PHAssetCollectionType)collectionType.unsignedIntegerValue;
   PHAssetCollectionSubtype subtype =
       (PHAssetCollectionSubtype)collectionSubtype.unsignedIntegerValue;
