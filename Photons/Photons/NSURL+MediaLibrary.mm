@@ -51,8 +51,8 @@ LTEnumImplement(NSUInteger, PTNMediaLibraryFetchType,
 }
 
 + (NSURL *)ptn_mediaLibraryAlbumArtistMusicAlbumsWithItem:(MPMediaItem *)item {
-  auto predicate = [MPMediaPropertyPredicate predicateWithValue:@(item.albumPersistentID)
-                    forProperty:MPMediaItemPropertyAlbumPersistentID];
+  auto predicate = [MPMediaPropertyPredicate predicateWithValue:@(item.artistPersistentID)
+                    forProperty:MPMediaItemPropertyArtistPersistentID];
   return [self ptn_urlWithType:PTNMediaLibraryURLTypeAlbum
                     predicates:[NSSet setWithObject:predicate]
                      fetchType:$(PTNMediaLibraryFetchTypeCollections)
@@ -60,8 +60,8 @@ LTEnumImplement(NSUInteger, PTNMediaLibraryFetchType,
 }
 
 + (NSURL *)ptn_mediaLibraryAlbumArtistSongsWithItem:(MPMediaItem *)item {
-  auto predicate = [MPMediaPropertyPredicate predicateWithValue:@(item.albumPersistentID)
-                    forProperty:MPMediaItemPropertyAlbumPersistentID];
+  auto predicate = [MPMediaPropertyPredicate predicateWithValue:@(item.artistPersistentID)
+                    forProperty:MPMediaItemPropertyArtistPersistentID];
   return [self ptn_urlWithType:PTNMediaLibraryURLTypeAlbum
                     predicates:[NSSet setWithObject:predicate]
                      fetchType:$(PTNMediaLibraryFetchTypeItems) groupedBy:nil];

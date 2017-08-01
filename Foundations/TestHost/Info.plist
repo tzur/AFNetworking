@@ -22,6 +22,8 @@
 	<string>1</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>Browse media library</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Camera Usage Description</string>
 	<key>NSAppleMusicUsageDescription</key>

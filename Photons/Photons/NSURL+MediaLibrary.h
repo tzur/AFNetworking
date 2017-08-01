@@ -58,7 +58,7 @@ LTEnumDeclare(NSUInteger, PTNMediaLibraryFetchType,
 + (NSURL *)ptn_mediaLibraryAlbumMusicAlbumSongsWithItem:(MPMediaItem *)item;
 
 /// Unique identifier URL of an album, which holds all music albums of an artist, pointed by the
-/// given \c item. music albums are fetched as list of collections, when each is holding songs.
+/// given \c item. Music albums are fetched as list of collections, when each is holding songs.
 /// Albums sorted by music album title alphabetically.
 + (NSURL *)ptn_mediaLibraryAlbumArtistMusicAlbumsWithItem:(MPMediaItem *)item;
 
