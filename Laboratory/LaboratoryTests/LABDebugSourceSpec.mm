@@ -498,7 +498,9 @@ it(@"should deallocate properly", ^{
     expect(weakSource).notTo.beNil();
   }
 
-  expect(weakSource).to.beNil();
+  // \c will is used instead of \c to to overcome a race condition that is caused by a
+  // \c RACScheduler that runs internally and fails to release in time, because it uses GCD.
+  expect(weakSource).will.beNil();
 });
 
 SpecEnd
