@@ -53,6 +53,11 @@ NS_ASSUME_NONNULL_BEGIN
 /// Manager of authorization status.
 @property (readonly, nonatomic) id<PTNAuthorizationManager> authorizationManager;
 
+/// Cold signal containing the latest <tt>_Nullable PHAssetCollection</tt> containing the "My Photo
+/// Stream" album. Used to workaround a bug where fetching assets in "My Photo Stream" by identifier
+/// doesn't return them.
+@property (readonly, nonatomic) RACSignal *myPhotoStreamAlbum;
+
 @end
 
 @implementation PTNPhotoKitAssetManager
@@ -70,8 +75,30 @@ NS_ASSUME_NONNULL_BEGIN
     _changeManager = changeManager;
 
     _albumSignalCache = [[PTNSignalCache alloc] init];
+    _myPhotoStreamAlbum = [self fetchMyPhotoStreamAlbum];
   }
   return self;
+}
+
+- (RACSignal *)fetchMyPhotoStreamAlbum {
+  id<PTNPhotoKitFetcher> fetcher = self.fetcher;
+  return [[[[RACSignal
+    defer:^RACSignal *{
+      return [RACSignal return:[fetcher
+                                fetchAssetCollectionsWithType:PHAssetCollectionTypeAlbum
+                                subtype:PHAssetCollectionSubtypeAlbumMyPhotoStream
+                                options:nil]];
+    }]
+    takeUntil:self.rac_willDeallocSignal]
+    ptn_replayLastLazily]
+    map:^PHAssetCollection * _Nullable(PTNAssetCollectionsFetchResult *fetchResult) {
+      // My Photo Stream always return one collection.
+      if (fetchResult.count > 1) {
+        LogWarning(@"Expected my photo stream album to contain only a single collection, but it "
+                   "contains %lu collections", (unsigned long)fetchResult.count);
+      }
+      return fetchResult.firstObject;
+    }];
 }
 
 - (instancetype)initWithAuthorizationManager:(id<PTNAuthorizationManager>)authorizationManager {
@@ -407,7 +434,28 @@ NS_ASSUME_NONNULL_BEGIN
 - (RACSignal *)fetchAssetWithIdentifier:(NSString *)identifier {
   PTNAssetsFetchResult *fetchResult =
       [self.fetcher fetchAssetsWithLocalIdentifiers:@[identifier] options:nil];
-  return [RACSignal return:fetchResult];
+
+  if (fetchResult.count) {
+    return [RACSignal return:fetchResult];
+  }
+
+  // If the asset was not found, we search it directly in the "My Photo Stream" album. This is a
+  // workaround to a bug in PhotoKit where fetching assets by local identifiers with
+  // \c fetchAssetsWithLocalIdentifiers:options: doesn't return assets in the "My Photo Stream"
+  // album.
+  //
+  // @see rdar://33824204
+  return [self.myPhotoStreamAlbum
+      map:^PTNAssetsFetchResult *(PHAssetCollection * _Nullable assetCollection) {
+        if (!assetCollection) {
+          return fetchResult;
+        }
+
+        PHFetchOptions *fetchOptions = [[PHFetchOptions alloc] init];
+        fetchOptions.predicate = [NSPredicate predicateWithFormat:@"localIdentifier == %@",
+                                  identifier];
+        return [self.fetcher fetchAssetsInAssetCollection:assetCollection options:fetchOptions];
+      }];
 }
 
 - (RACSignal *)fetchKeyAssetForAssetCollection:(PHAssetCollection *)assetCollection {
