@@ -419,4 +419,20 @@ it(@"should dealloc the manager after fetch signal is disposed", ^{
   expect(weakManager).will.beNil();
 });
 
+it(@"should not dealloc the manager while fetch signal is not disposed", ^{
+  __weak PTNMediaLibraryAssetManager *weakManager;
+  RACSignal *fetchSignal;
+  @autoreleasepool {
+    auto query = [[PTNFakeMediaQuery alloc] initWithItemsSequence:@[@[item]]];
+    auto queryProvider = [[PTNFakeMediaQueryProvider alloc] initWithQuery:query];
+    auto manager = [[PTNMediaLibraryAssetManager alloc] initWithQueryProvider:queryProvider
+                                                         authorizationManager:authorizationManager];
+    weakManager = manager;
+    auto url = [NSURL ptn_mediaLibraryAssetWithItem:item];
+    fetchSignal = [manager fetchDescriptorWithURL:url];
+  }
+  expect(weakManager).toNot.beNil();
+  expect(fetchSignal).will.sendValuesWithCount(1);
+});
+
 SpecEnd
