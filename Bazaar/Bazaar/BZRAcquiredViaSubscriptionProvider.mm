@@ -49,8 +49,12 @@ NSString * const kProductsAcquiredViaSubscriptionSetKey = @"productsAcquiredViaS
 #pragma mark -
 
 - (void)addAcquiredViaSubscriptionProduct:(NSString *)productIdentifier {
+  [self addAcquiredViaSubscriptionProducts:[NSSet setWithObject:productIdentifier]];
+}
+
+- (void)addAcquiredViaSubscriptionProducts:(NSSet<NSString *> *)productIdentifiers {
   self.productsAcquiredViaSubscription =
-      [self.productsAcquiredViaSubscription setByAddingObject:productIdentifier];
+      [self.productsAcquiredViaSubscription setByAddingObjectsFromSet:productIdentifiers];
 }
 
 - (void)removeAcquiredViaSubscriptionProduct:(NSString *)productIdentifier {
