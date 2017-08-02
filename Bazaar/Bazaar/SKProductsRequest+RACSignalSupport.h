@@ -9,7 +9,8 @@ NS_ASSUME_NONNULL_BEGIN
 @interface SKProductsRequest (RACSignalSupport)
 
 /// Unites \c SKProductRequestDelegate callbacks into a signal that can be used to track request's
-/// status. The signal will not fire until \c start is invoked on the receiver.
+/// status. The signal will not fire until \c start is invoked on the receiver. The values are
+/// delivered on the main thread.
 ///
 /// Returns a signal that sends \c SKProductsResponse value when the receiver invokes
 /// \c productRequest:didReceiveResponse: on its delegate. The signal completes when the receiver

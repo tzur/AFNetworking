@@ -9,7 +9,8 @@ NS_ASSUME_NONNULL_BEGIN
 @interface SKReceiptRefreshRequest (RACSignalSupport)
 
 /// Unites \c SKRequestDelegate callbacks into a signal that can be used to track request's status.
-/// The signal will not fire until \c start is invoked on the receiver.
+/// The signal will not fire until \c start is invoked on the receiver. The values are delivered on
+/// the main thread.
 ///
 /// Returns a signal that sends no values, it completes when \c requestDidFinish: is invoked on the
 /// receiver's delegate or when the receiver deallocates. The signal errs when

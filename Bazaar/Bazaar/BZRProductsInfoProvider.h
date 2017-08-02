@@ -36,8 +36,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// \c allowedProducts to get the list of products that the user is allowed to use.
 @property (readonly, nonatomic) NSSet<NSString *> *acquiredProducts;
 
-/// List of products that the user is allowed to use. KVO-compliant. Changes may be delivered on an
-/// arbitrary thread.
+/// List of products that the user is allowed to use. KVO-compliant. Changes are not delivered on
+/// the main thread.
 @property (readonly, nonatomic) NSSet<NSString *> *allowedProducts;
 
 /// List of products that their content is already available on the device and ready to be used.

@@ -9,13 +9,13 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol BZRStoreKitRequestsFactory;
 
 /// \c BZRStoreKitFacade provides a unified reactive interface on top of Apple's StoreKit framework.
-/// 
+///
 /// \c BZRStoreKitFacade is a thin wrapper around Apple's StoreKit, it works directly with StoreKit
 /// objects - some of these objects are passed as parameters to the facade and few are being sent
 /// on signals the facade returns. The facade provides methods for fetching products metadata,
 /// purchasing products, downloading per-product resources, restoring previously purchased products
 /// and refreshing the application receipt.
-/// 
+///
 /// @see SKDownload, SKPayment, SKPaymentQueue, SKProduct, SKProductsRequest, SKProductResponse,
 /// SKPaymentTransaction.
 @interface BZRStoreKitFacade : NSObject
@@ -60,12 +60,12 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 /// Returns a signal that initiates an \c SKProductsRequest upon subscription. The signal sends an
 /// \c SKProductsResponse if the request is successful and then completes. The signal errs if the
-/// request fails for any reason.
+/// request fails for any reason. Values are not delivered on the main thread.
 ///
 /// @note \c SKProductResponse contains an array of \c SKProduct objects each containing metadata on
 /// a single product. The \c SKProduct instances can later be used for purchasing the products.
 ///
-/// @note If \c productIdentifiers contains some invalid product identifiers they will be listed 
+/// @note If \c productIdentifiers contains some invalid product identifiers they will be listed
 /// in the response object under \c invalidProductIdentifiers.
 ///
 /// @return <tt>RACSignal<SKProductsResponse></tt>
@@ -79,7 +79,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// for the transaction and errs if the transaction reaches the \c SKPaymentTransactionStateFailed
 /// state.
 ///
-/// @note Some products, in order to function properly require additional resources that are 
+/// @note Some products, in order to function properly require additional resources that are
 /// available from the AppStore. Once a payment transaction has reached the state
 /// \c SKPaymentTransactionStatePurchased or \c SKPaymentTransactionStateRestored its \c downloads
 /// property will hold an array of \c SKDownload objects that can be used to download these
@@ -118,7 +118,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// \c SKPaymentTransactionStateRestored and it must not be finished, otherwise an
 /// \c NSInvalidArgumentException is raised.
 ///
-/// Returns an array of signals, each is associated with one of the \c SKDownload objects attached 
+/// Returns an array of signals, each is associated with one of the \c SKDownload objects attached
 /// to \c transaction. Each of the signals initiates a download request upon subscription and sends
 /// the associated \c SKDownload object as value whenever its state updates. Each of The signals
 /// completes when its associated \c SKDownload object reaches the \c SKDownloadStateFinished state
@@ -155,11 +155,11 @@ NS_ASSUME_NONNULL_BEGIN
 /// @return <tt>RACSignal</tt>
 - (RACSignal *)refreshReceipt;
 
-/// Finishes a completed \c transaction and removes it from the transaction queue. 
+/// Finishes a completed \c transaction and removes it from the transaction queue.
 ///
-/// Calling this method on an incomplete transaction will raise \c NSInvalidArgumentException. 
-/// Completed transactions are transactions in one of the following states: 
-/// \c SKPaymentTransactionStatePurchased, \c SKPaymentTransactionStateFailed, 
+/// Calling this method on an incomplete transaction will raise \c NSInvalidArgumentException.
+/// Completed transactions are transactions in one of the following states:
+/// \c SKPaymentTransactionStatePurchased, \c SKPaymentTransactionStateFailed,
 /// \c SKPaymentTransactionStateRestored.
 ///
 /// Any completed transaction should be finished when it is no longer needed. Failing to finish

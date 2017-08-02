@@ -82,7 +82,10 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 - (RACSignal *)fetchMetadataForProductsWithIdentifiers:(NSSet<NSString *> *)productIdentifiers {
-  return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+  // Values sent by \c SKProductsRequest's \c bzr_statusSignal are delivered on the main thread.
+  // If Bazaar does additional calculations later it might affect the UI. Therefore, the values are
+  // delivered on a background scheduler.
+  return [[RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
     SKProductsRequest *request =
         [self.storeKitRequestsFactory productsRequestWithIdentifiers:productIdentifiers];
     [[request bzr_statusSignal] subscribe:subscriber];
@@ -90,7 +93,8 @@ NS_ASSUME_NONNULL_BEGIN
     return [RACDisposable disposableWithBlock:^{
       [request cancel];
     }];
-  }];
+  }]
+  deliverOn:[RACScheduler scheduler]];
 }
 
 - (RACSignal *)purchaseProduct:(SKProduct *)product {
