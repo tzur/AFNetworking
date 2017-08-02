@@ -242,9 +242,8 @@ For example, in order to know whether the user is a Facetune 2 subscriber:
 
 ### Installing pip
 
-If you don't have pip installed, make sure you install python from Homebrew via `brew install
-python`. If `pip` command doesn't work after `brew install python`, try to run `brew unlink python
-&& brew link --overwrite python`.
+If you have python but don't have pip installed, run `sudo easy_install pip`.
+If you don't have python installed, run `brew install python`, it will include `pip` as well.
 
 ## Further reading
 
