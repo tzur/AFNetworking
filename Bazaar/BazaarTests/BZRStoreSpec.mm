@@ -221,9 +221,12 @@ context(@"acquired via subscription products", ^{
     OCMStub([productsProvider fetchProductList]).andReturn(productList);
 
     OCMReject([acquiredViaSubscriptionProvider
-               addAcquiredViaSubscriptionProduct:@"notPreAcquired"]);
+        addAcquiredViaSubscriptionProducts:[OCMArg checkWithBlock:^BOOL(NSSet *identifiers) {
+          return [identifiers containsObject:@"notPreAcquired"];
+        }]]);
     store = [[BZRStore alloc] initWithConfiguration:configuration];
-    OCMVerify([acquiredViaSubscriptionProvider addAcquiredViaSubscriptionProduct:@"preAcquired"]);
+    OCMVerify([acquiredViaSubscriptionProvider
+               addAcquiredViaSubscriptionProducts:[NSSet setWithObject:@"preAcquired"]]);
   });
 
   it(@"should return empty set if acquired via subscription products is empty", ^{
@@ -1107,12 +1110,15 @@ context(@"acquiring all enabled products", ^{
     [netherProductsProviderSubject sendNext:
         @[purchasedSubscriptionProduct, firstProduct, secondProduct, anotherSubscriptionProduct]];
 
-    OCMReject([acquiredViaSubscriptionProvider addAcquiredViaSubscriptionProduct:@"baz"]);
+    OCMReject([acquiredViaSubscriptionProvider
+        addAcquiredViaSubscriptionProducts:[OCMArg checkWithBlock:^BOOL(NSSet *identifiers) {
+          return [identifiers containsObject:@"baz"];
+        }]]);
 
     expect([store acquireAllEnabledProducts]).to.complete();
+    auto nonSubscriptionProducts = [NSSet setWithArray:@[productIdentifier, @"bar"]];
     OCMVerify([acquiredViaSubscriptionProvider
-               addAcquiredViaSubscriptionProduct:productIdentifier]);
-    OCMVerify([acquiredViaSubscriptionProvider addAcquiredViaSubscriptionProduct:@"bar"]);
+               addAcquiredViaSubscriptionProducts:nonSubscriptionProducts]);
   });
 
   it(@"should not add products that the subscription doesn't enable to acquired via "
@@ -1130,7 +1136,9 @@ context(@"acquiring all enabled products", ^{
     [netherProductsProviderSubject sendNext:@[purchasedSubscriptionProduct, notEnabledProduct]];
 
     OCMReject([acquiredViaSubscriptionProvider
-               addAcquiredViaSubscriptionProduct:productIdentifier]);
+        addAcquiredViaSubscriptionProducts:[OCMArg checkWithBlock:^BOOL(NSSet *identifiers) {
+          return [identifiers containsObject:productIdentifier];
+        }]]);
 
     expect([store acquireAllEnabledProducts]).to.complete();
   });

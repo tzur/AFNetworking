@@ -230,13 +230,17 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)addPreAcquiredProductsToAcquiredViaSubscription:(BZRProductDictionary *)productDictionary {
-  BZRProductList *preAcquiredViaSubscriptionProducts = [[productDictionary allValues]
+  auto preAcquiredViaSubscriptionProducts = [[[[productDictionary allValues]
       lt_filter:^BOOL(BZRProduct *product) {
         return product.preAcquiredViaSubscription;
-      }];
-  for (BZRProduct *product in preAcquiredViaSubscriptionProducts) {
-    [self.acquiredViaSubscriptionProvider addAcquiredViaSubscriptionProduct:product.identifier];
-  }
+      }]
+      lt_map:^NSString *(BZRProduct *product) {
+        return product.identifier;
+      }]
+      lt_set];
+
+  [self.acquiredViaSubscriptionProvider
+   addAcquiredViaSubscriptionProducts:preAcquiredViaSubscriptionProducts];
 }
 
 - (void)prefetchProductsJSONDictionary {
@@ -595,14 +599,16 @@ NS_ASSUME_NONNULL_BEGIN
     }
 
     auto enabledProducts =
-        [[self.productsJSONDictionary allValues] lt_filter:^BOOL(BZRProduct *product) {
+        [[[[self.productsJSONDictionary allValues] lt_filter:^BOOL(BZRProduct *product) {
           return ![self isSubscriptionProduct:product.identifier] &&
               [self doesSubscriptionEnablesProductWithIdentifier:product.identifier];
-        }];
+        }]
+        lt_map:^NSString *(BZRProduct *product) {
+          return product.identifier;
+        }]
+        lt_set];
 
-    for (BZRProduct *product in enabledProducts) {
-      [self.acquiredViaSubscriptionProvider addAcquiredViaSubscriptionProduct:product.identifier];
-    }
+    [self.acquiredViaSubscriptionProvider addAcquiredViaSubscriptionProducts:enabledProducts];
 
     return [RACSignal empty];
   }]

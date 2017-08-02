@@ -92,7 +92,7 @@ context(@"KVO compliance", ^{
 });
 
 context(@"adding acquired via subscription product", ^{
-  it(@"should add acquired via subscription identifier and save set to storage", ^{
+  it(@"should add acquired via subscription product identifier and save set to storage", ^{
     NSSet *expectedSet = [NSSet setWithArray:@[@"bar", @"foo"]];
     OCMStub([keychainStorage valueOfClass:OCMOCK_ANY forKey:OCMOCK_ANY error:[OCMArg anyObjectRef]])
         .andReturn([NSSet setWithObject:@"bar"]);
@@ -101,6 +101,20 @@ context(@"adding acquired via subscription product", ^{
 
     expect(provider.productsAcquiredViaSubscription).to.equal([NSSet setWithObject:@"bar"]);
     [provider addAcquiredViaSubscriptionProduct:@"foo"];
+    expect(provider.productsAcquiredViaSubscription).to.equal(expectedSet);
+
+    OCMVerifyAll((id)keychainStorage);
+  });
+
+  it(@"should add acquired via subscription product identifiers and save set to storage", ^{
+    NSSet *expectedSet = [NSSet setWithArray:@[@"bar", @"foo", @"baz"]];
+    OCMStub([keychainStorage valueOfClass:OCMOCK_ANY forKey:OCMOCK_ANY error:[OCMArg anyObjectRef]])
+        .andReturn([NSSet setWithObject:@"bar"]);
+    OCMExpect([keychainStorage setValue:expectedSet forKey:OCMOCK_ANY error:[OCMArg anyObjectRef]]);
+    [provider refreshProductsAcquiredViaSubscription:nil];
+
+    expect(provider.productsAcquiredViaSubscription).to.equal([NSSet setWithObject:@"bar"]);
+    [provider addAcquiredViaSubscriptionProducts:[NSSet setWithArray:@[@"foo", @"baz"]]];
     expect(provider.productsAcquiredViaSubscription).to.equal(expectedSet);
 
     OCMVerifyAll((id)keychainStorage);

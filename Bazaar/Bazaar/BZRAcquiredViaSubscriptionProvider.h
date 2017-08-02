@@ -27,6 +27,10 @@ NS_ASSUME_NONNULL_BEGIN
 /// the set to storage.
 - (void)addAcquiredViaSubscriptionProduct:(NSString *)productIdentifier;
 
+/// Adds multiple product identifiers to the set of products that were acquired via subscription
+/// and saves the set to storage.
+- (void)addAcquiredViaSubscriptionProducts:(NSSet<NSString *> *)productIdentifiers;
+
 /// Removes a product identifier from the set of products that were acquired via subscription and
 /// saves the set to storage.
 - (void)removeAcquiredViaSubscriptionProduct:(NSString *)productIdentifier;
