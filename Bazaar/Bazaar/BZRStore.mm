@@ -94,6 +94,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation BZRStore
 
+@synthesize allowedProducts = _allowedProducts;
 @synthesize downloadedContentProducts = _downloadedContentProducts;
 @synthesize productDictionary = _productDictionary;
 @synthesize productsJSONDictionary = _productsJSONDictionary;
@@ -126,6 +127,7 @@ NS_ASSUME_NONNULL_BEGIN
     [self activateStartupValidation];
     [self prefetchProductDictionary];
     [self prefetchProductsJSONDictionary];
+    [self setupAllowedProductsUpdates];
   }
   return self;
 }
@@ -264,6 +266,41 @@ NS_ASSUME_NONNULL_BEGIN
       }] valueForKey:@instanceKeypath(BZRProduct, identifier)]];
 }
 
+- (void)setupAllowedProductsUpdates {
+  @weakify(self);
+  RAC(self, allowedProducts) = [[RACSignal combineLatest:@[
+    RACObserve(self, allowedProductsProvider.allowedProducts),
+    RACObserve(self, productDictionary)
+  ] reduce:(id)^NSSet<NSString *> *(NSSet<NSString *> *allowedProducts,
+                                    BZRProductDictionary * _Nullable productDictionary) {
+    @strongify(self);
+    NSSet<NSString *> *allowedProductsIdentifiers = [[[allowedProducts allObjects]
+        lt_map:^NSString *(NSString *identifier) {
+          return [identifier bzr_baseProductIdentifier];
+        }]
+        lt_set];
+
+    if (!productDictionary) {
+      return allowedProductsIdentifiers;
+    }
+
+    return [[self preAcquiredProducts:productDictionary]
+            setByAddingObjectsFromSet:allowedProductsIdentifiers];
+  }]
+  distinctUntilChanged];
+}
+
+- (NSSet<NSString *> *)preAcquiredProducts:(BZRProductDictionary *)productDictionary {
+  return [[[productDictionary.allValues
+    lt_filter:^BOOL(BZRProduct *product) {
+      return product.preAcquired;
+    }]
+    lt_map:^NSString *(BZRProduct *product) {
+      return product.identifier;
+    }]
+    lt_set];
+}
+
 #pragma mark -
 #pragma mark BZRProductsInfoProvider
 #pragma mark -
@@ -298,28 +335,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSSet<NSString *> *)acquiredProducts {
   return [self.purchasedProducts
           setByAddingObjectsFromSet:self.acquiredViaSubscriptionProducts];
-}
-
-- (NSSet<NSString *> *)allowedProducts {
-  NSArray<NSString *> *allowedProductsIdentifiers =
-      [[self.allowedProductsProvider.allowedProducts allObjects]
-          lt_map:^NSString *(NSString *identifier) {
-            return [identifier bzr_baseProductIdentifier];
-          }];
-  return [[self preAcquiredProducts] setByAddingObjectsFromSet:
-          [NSSet setWithArray:allowedProductsIdentifiers]];
-}
-
-- (NSSet<NSString *> *)preAcquiredProducts {
-  NSArray <BZRProduct *> *preAcquriedProducts = [[self.productDictionary.allValues
-    lt_filter:^BOOL(BZRProduct *product) {
-      return product.preAcquired;
-    }]
-    lt_map:^NSString *(BZRProduct *product) {
-      return product.identifier;
-    }];
-
-  return [NSSet setWithArray:preAcquriedProducts];
 }
 
 - (NSSet<NSString *> *)downloadedContentProducts {
@@ -636,13 +651,6 @@ NS_ASSUME_NONNULL_BEGIN
   return [NSSet setWithObjects:
       @instanceKeypath(BZRStore, validationStatusProvider.receiptValidationStatus),
       @instanceKeypath(BZRStore, acquiredViaSubscriptionProvider.productsAcquiredViaSubscription),
-      nil];
-}
-
-+ (NSSet *)keyPathsForValuesAffectingAllowedProducts {
-  return [NSSet setWithObjects:
-      @instanceKeypath(BZRStore, allowedProductsProvider.allowedProducts),
-      @instanceKeypath(BZRStore, productDictionary),
       nil];
 }
 
