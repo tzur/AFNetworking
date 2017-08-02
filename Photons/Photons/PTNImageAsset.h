@@ -22,6 +22,10 @@ NS_ASSUME_NONNULL_BEGIN
 /// \c PTNImageMetadata object on an arbitrary thread, and completes. If the image metadata cannot
 /// be fetched the signal errs instead.
 ///
+/// @note The image returned in \c fetchImage may be a transformation (such as rotation or resizing)
+/// on an original image. The metadata is fetched from the original image, so some metadata fields
+/// related to the transform may not reflect the image that is returned by \c fetchImage.
+///
 /// @return <tt>RACSignal<PTNImageMetadata *></tt>.
 - (RACSignal *)fetchImageMetadata;
 
