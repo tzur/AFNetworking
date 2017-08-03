@@ -18,40 +18,45 @@ beforeEach(^{
   device = MTLCreateSystemDefaultDevice();
   auto commandQueue = [device newCommandQueue];
   commandBuffer = [commandQueue commandBuffer];
-  additionOp = [[PNKAddition alloc] initWithDevice:device];
 });
 
-it(@"should raise an exception when input feature channels mismatch", ^{
-  auto inputAImage = PNKImageMakeUnorm(device, kInputWidth, kInputHeight, kInputFeatureChannels);
-  auto inputBImage = PNKImageMakeUnorm(device, kInputWidth, kInputHeight,
-                                       kInputFeatureChannels * 2);
-  auto outputImage = PNKImageMakeUnorm(device, kInputWidth, kInputHeight, kInputFeatureChannels);
-  expect(^{
-    [additionOp encodeToCommandBuffer:commandBuffer primaryInputTexture:inputAImage.texture
-                secondaryInputTexture:inputBImage.texture outputTexture:outputImage.texture];
-  }).to.raise(NSInvalidArgumentException);
-});
+context(@"kernel input verification", ^{
+  beforeEach(^{
+    additionOp = [[PNKAddition alloc] initWithDevice:device withInputIsArray:NO];
+  });
 
-it(@"should raise an exception when input width mismatch", ^{
-  auto inputAImage = PNKImageMakeUnorm(device, kInputWidth, kInputHeight, kInputFeatureChannels);
-  auto inputBImage = PNKImageMakeUnorm(device, kInputWidth * 2, kInputHeight,
-                                       kInputFeatureChannels);
-  auto outputImage = PNKImageMakeUnorm(device, kInputWidth, kInputHeight, kInputFeatureChannels);
-  expect(^{
-    [additionOp encodeToCommandBuffer:commandBuffer primaryInputTexture:inputAImage.texture
-                secondaryInputTexture:inputBImage.texture outputTexture:outputImage.texture];
-  }).to.raise(NSInvalidArgumentException);
-});
+  it(@"should raise an exception when input feature channels mismatch", ^{
+    auto inputAImage = PNKImageMakeUnorm(device, kInputWidth, kInputHeight, kInputFeatureChannels);
+    auto inputBImage = PNKImageMakeUnorm(device, kInputWidth, kInputHeight,
+                                         kInputFeatureChannels * 2);
+    auto outputImage = PNKImageMakeUnorm(device, kInputWidth, kInputHeight, kInputFeatureChannels);
+    expect(^{
+      [additionOp encodeToCommandBuffer:commandBuffer primaryInputTexture:inputAImage.texture
+                  secondaryInputTexture:inputBImage.texture outputTexture:outputImage.texture];
+    }).to.raise(NSInvalidArgumentException);
+  });
 
-it(@"should raise an exception when input height mismatch", ^{
-  auto inputAImage = PNKImageMakeUnorm(device, kInputWidth, kInputHeight, kInputFeatureChannels);
-  auto inputBImage = PNKImageMakeUnorm(device, kInputWidth, kInputHeight * 2,
-                                       kInputFeatureChannels);
-  auto outputImage = PNKImageMakeUnorm(device, kInputWidth, kInputHeight, kInputFeatureChannels);
-  expect(^{
-    [additionOp encodeToCommandBuffer:commandBuffer primaryInputTexture:inputAImage.texture
-                secondaryInputTexture:inputBImage.texture outputTexture:outputImage.texture];
-  }).to.raise(NSInvalidArgumentException);
+  it(@"should raise an exception when input width mismatch", ^{
+    auto inputAImage = PNKImageMakeUnorm(device, kInputWidth, kInputHeight, kInputFeatureChannels);
+    auto inputBImage = PNKImageMakeUnorm(device, kInputWidth * 2, kInputHeight,
+                                         kInputFeatureChannels);
+    auto outputImage = PNKImageMakeUnorm(device, kInputWidth, kInputHeight, kInputFeatureChannels);
+    expect(^{
+      [additionOp encodeToCommandBuffer:commandBuffer primaryInputTexture:inputAImage.texture
+                  secondaryInputTexture:inputBImage.texture outputTexture:outputImage.texture];
+    }).to.raise(NSInvalidArgumentException);
+  });
+
+  it(@"should raise an exception when input height mismatch", ^{
+    auto inputAImage = PNKImageMakeUnorm(device, kInputWidth, kInputHeight, kInputFeatureChannels);
+    auto inputBImage = PNKImageMakeUnorm(device, kInputWidth, kInputHeight * 2,
+                                         kInputFeatureChannels);
+    auto outputImage = PNKImageMakeUnorm(device, kInputWidth, kInputHeight, kInputFeatureChannels);
+    expect(^{
+      [additionOp encodeToCommandBuffer:commandBuffer primaryInputTexture:inputAImage.texture
+                  secondaryInputTexture:inputBImage.texture outputTexture:outputImage.texture];
+    }).to.raise(NSInvalidArgumentException);
+  });
 });
 
 it(@"should calculate output size correctly", ^{
@@ -78,6 +83,8 @@ context(@"addition operation with Unorm8 channel format", ^{
   });
 
   it(@"should add inputs correctly for non-array textures", ^{
+    additionOp = [[PNKAddition alloc] initWithDevice:device withInputIsArray:NO];
+
     auto inputAImage = PNKImageMakeUnorm(device, kInputWidth, kInputHeight, kInputFeatureChannels);
     auto inputBImage = PNKImageMakeUnorm(device, kInputWidth, kInputHeight, kInputFeatureChannels);
     auto outputImage = PNKImageMakeUnorm(device, kInputWidth, kInputHeight, kInputFeatureChannels);
@@ -95,6 +102,8 @@ context(@"addition operation with Unorm8 channel format", ^{
   });
 
   it(@"should add inputs correctly for array textures", ^{
+    additionOp = [[PNKAddition alloc] initWithDevice:device withInputIsArray:YES];
+
     auto inputAImage = PNKImageMakeUnorm(device, kInputWidth, kInputHeight,
                                          kInputArrayFeatureChannels);
     auto inputBImage = PNKImageMakeUnorm(device, kInputWidth, kInputHeight,
@@ -141,6 +150,8 @@ context(@"addition operation with Float16 channel format", ^{
   });
 
   it(@"should add inputs correctly for non-array textures", ^{
+    additionOp = [[PNKAddition alloc] initWithDevice:device withInputIsArray:NO];
+
     auto inputAImage = PNKImageMake(device, MPSImageFeatureChannelFormatFloat16, kInputWidth,
                                     kInputHeight, kInputFeatureChannels);
     auto inputBImage = PNKImageMake(device, MPSImageFeatureChannelFormatFloat16, kInputWidth,
@@ -161,6 +172,8 @@ context(@"addition operation with Float16 channel format", ^{
   });
 
   it(@"should add inputs correctly for array textures", ^{
+    additionOp = [[PNKAddition alloc] initWithDevice:device withInputIsArray:YES];
+
     auto inputAImage = PNKImageMake(device, MPSImageFeatureChannelFormatFloat16, kInputWidth,
                                     kInputHeight, kInputArrayFeatureChannels);
     auto inputBImage = PNKImageMake(device, MPSImageFeatureChannelFormatFloat16, kInputWidth,

@@ -15,6 +15,10 @@ NS_ASSUME_NONNULL_BEGIN
                  inputTexture:(id<MTLTexture>)inputTexture
                 outputTexture:(id<MTLTexture>)outputTexture;
 
+/// \c YES iff the kernel expects texture of array type as input for encoding. Kernels only support
+/// array or non-array types and not both.
+@property (readonly, nonatomic) BOOL isInputTextureArray;
+
 @end
 
 /// Protocol implemented by kernels operating on two input textures.
@@ -30,6 +34,10 @@ NS_ASSUME_NONNULL_BEGIN
           primaryInputTexture:(id<MTLTexture>)primaryInputTexture
         secondaryInputTexture:(id<MTLTexture>)secondaryInputTexture
                 outputTexture:(id<MTLTexture>)outputTexture;
+
+/// \c YES iff the kernel expects texture of array type as input for encoding. Kernels only support
+/// array or non-array types and not both.
+@property (readonly, nonatomic) BOOL isInputTextureArray;
 
 @end
 
