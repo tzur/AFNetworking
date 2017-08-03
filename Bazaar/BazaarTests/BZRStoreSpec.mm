@@ -1151,12 +1151,6 @@ context(@"handling unfinished completed transactions", ^{
   beforeEach(^{
     errorsRecorder = [store.eventsSignal testRecorder];
     completedTransactionsRecorder = [store.completedTransactionsSignal testRecorder];
-
-    // Re-initialize store with cahced validation status in order to avoid initial receipt
-    // validation due to missing receipt validation status.
-    OCMStub([receiptValidationStatusProvider receiptValidationStatus])
-        .andReturn(OCMClassMock([BZRReceiptValidationStatus class]));
-    store = [[BZRStore alloc] initWithConfiguration:configuration];
   });
 
   it(@"should complete when object is deallocated", ^{
@@ -1400,6 +1394,18 @@ context(@"KVO-compliance", ^{
     it(@"should update when allowed products set is changed", ^{
       LLSignalTestRecorder *productsSignal = [RACObserve(store, allowedProducts) testRecorder];
 
+      allowedProductsProvider.allowedProducts = [NSSet setWithArray:@[@"foo", @"bar"]];
+
+      expect(productsSignal).to.sendValues(@[
+        [NSSet set],
+        [NSSet setWithObjects:@"foo", @"bar", nil]
+      ]);
+    });
+
+    it(@"should not update when allowed products set hasn't changed", ^{
+      auto productsSignal = [RACObserve(store, allowedProducts) testRecorder];
+
+      allowedProductsProvider.allowedProducts = [NSSet setWithArray:@[@"foo", @"bar"]];
       allowedProductsProvider.allowedProducts = [NSSet setWithArray:@[@"foo", @"bar"]];
 
       expect(productsSignal).to.sendValues(@[
