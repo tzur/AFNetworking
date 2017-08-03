@@ -80,8 +80,11 @@ static NSString * const kKernelFunctionName = @"setConstantAlpha";
                     (unsigned long)inputTexture.height, (unsigned long)outputTexture.height);
 }
 
-- (MTLSize)outputSizeForInputSize:(MTLSize)inputSize {
-  return inputSize;
+- (MTLRegion)inputRegionForOutputSize:(MTLSize)outputSize {
+  return {
+    .origin = {0, 0, 0},
+    .size = outputSize
+  };
 }
 
 @end

@@ -58,12 +58,12 @@ it(@"should raise an exception when output texture is an array", ^{
   }).to.raise(NSInvalidArgumentException);
 });
 
-context(@"kernel output size", ^{
-  it(@"should calculate output size correctly", ^{
-    MTLSize inputSize = {kInputWidth, kInputHeight, kInputFeatureChannels};
-    MTLSize outputSize = [gammaCorrection outputSizeForInputSize:inputSize];
+context(@"kernel input region", ^{
+  it(@"should calculate input region correctly", ^{
+    MTLSize outputSize = {kInputWidth, kInputHeight, kInputFeatureChannels};
+    MTLRegion inputRegion = [gammaCorrection inputRegionForOutputSize:outputSize];
 
-    expect($(outputSize)).to.equalMTLSize($(inputSize));
+    expect($(inputRegion.size)).to.equalMTLSize($(outputSize));
   });
 });
 

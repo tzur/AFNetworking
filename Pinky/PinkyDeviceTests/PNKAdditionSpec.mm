@@ -59,12 +59,24 @@ context(@"kernel input verification", ^{
   });
 });
 
-it(@"should calculate output size correctly", ^{
-  MTLSize inputSize = {kInputWidth, kInputHeight, kInputArrayFeatureChannels};
-  MTLSize outputSize = [additionOp outputSizeForPrimaryInputSize:inputSize
-                                           forSecondaryInputSize:inputSize];
+context(@"kernel input region", ^{
+  beforeEach(^{
+    additionOp = [[PNKAddition alloc] initWithDevice:device withInputIsArray:NO];
+  });
 
-  expect($(outputSize)).to.equalMTLSize($(inputSize));
+  it(@"should calculate primary input region correctly", ^{
+    MTLSize outputSize = {kInputWidth, kInputHeight, kInputArrayFeatureChannels};
+    MTLRegion primaryInputRegion = [additionOp primaryInputRegionForOutputSize:outputSize];
+
+    expect($(primaryInputRegion.size)).to.equalMTLSize($(outputSize));
+  });
+
+  it(@"should calculate secondary input region correctly", ^{
+    MTLSize outputSize = {kInputWidth, kInputHeight, kInputArrayFeatureChannels};
+    MTLRegion secondaryInputRegion = [additionOp secondaryInputRegionForOutputSize:outputSize];
+
+    expect($(secondaryInputRegion.size)).to.equalMTLSize($(outputSize));
+  });
 });
 
 context(@"addition operation with Unorm8 channel format", ^{

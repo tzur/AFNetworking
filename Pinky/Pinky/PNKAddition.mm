@@ -107,9 +107,18 @@ static NSString * const kKernelArrayFunctionName = @"additionArray";
                     (unsigned long)primaryInputTexture.height, (unsigned long)outputTexture.height);
 }
 
-- (MTLSize)outputSizeForPrimaryInputSize:(MTLSize)primaryInputSize
-                   forSecondaryInputSize:(MTLSize __unused)secondaryInputSize {
-  return primaryInputSize;
+- (MTLRegion)primaryInputRegionForOutputSize:(MTLSize)outputSize {
+  return {
+    .origin = {0, 0, 0},
+    .size = outputSize
+  };
+}
+
+- (MTLRegion)secondaryInputRegionForOutputSize:(MTLSize)outputSize {
+  return {
+    .origin = {0, 0, 0},
+    .size = outputSize
+  };
 }
 
 @end
