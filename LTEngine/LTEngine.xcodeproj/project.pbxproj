@@ -1231,6 +1231,7 @@
 		B4947F071DFD4FF500872FBE /* UIImage+Factory.mm in Sources */ = {isa = PBXBuildFile; fileRef = B4947F051DFD4FF500872FBE /* UIImage+Factory.mm */; };
 		B4947F3B1DFD670000872FBE /* UIImage+FactorySpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = B4947F3A1DFD670000872FBE /* UIImage+FactorySpec.mm */; };
 		B49EB6AE1F2EFED6008EDBD3 /* LTFbo+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = B49EB6AC1F2EFED6008EDBD3 /* LTFbo+Private.h */; };
+		B49EB6E41F2F0736008EDBD3 /* LTRenderbuffer+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = B49EB6E21F2F0736008EDBD3 /* LTRenderbuffer+Private.h */; };
 		B4F1DEB21E2CB3430042DB2A /* LTFboAttachableInfoSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = B4F1DEB11E2CB3430042DB2A /* LTFboAttachableInfoSpec.mm */; };
 		BEB7BEB61E26804B007EAB73 /* NSValueTransformer+LTEngine.h in Headers */ = {isa = PBXBuildFile; fileRef = BEB7BEB41E26804B007EAB73 /* NSValueTransformer+LTEngine.h */; };
 		BEB7BEB71E26804B007EAB73 /* NSValueTransformer+LTEngine.mm in Sources */ = {isa = PBXBuildFile; fileRef = BEB7BEB51E26804B007EAB73 /* NSValueTransformer+LTEngine.mm */; };
@@ -2994,6 +2995,7 @@
 		B4947F051DFD4FF500872FBE /* UIImage+Factory.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIImage+Factory.mm"; sourceTree = "<group>"; };
 		B4947F3A1DFD670000872FBE /* UIImage+FactorySpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIImage+FactorySpec.mm"; sourceTree = "<group>"; };
 		B49EB6AC1F2EFED6008EDBD3 /* LTFbo+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "LTFbo+Private.h"; sourceTree = "<group>"; };
+		B49EB6E21F2F0736008EDBD3 /* LTRenderbuffer+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "LTRenderbuffer+Private.h"; sourceTree = "<group>"; };
 		B4F1DEB11E2CB3430042DB2A /* LTFboAttachableInfoSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTFboAttachableInfoSpec.mm; sourceTree = "<group>"; };
 		BEB7BEB41E26804B007EAB73 /* NSValueTransformer+LTEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSValueTransformer+LTEngine.h"; sourceTree = "<group>"; };
 		BEB7BEB51E26804B007EAB73 /* NSValueTransformer+LTEngine.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSValueTransformer+LTEngine.mm"; sourceTree = "<group>"; };
@@ -5139,6 +5141,7 @@
 				85ECD6551D44020A007C9056 /* LTRegularGridMesh.mm */,
 				8B9F3BE41C15DC6800FEB7C4 /* LTRenderbuffer.h */,
 				8B9F3BE51C15DC6800FEB7C4 /* LTRenderbuffer.mm */,
+				B49EB6E21F2F0736008EDBD3 /* LTRenderbuffer+Private.h */,
 				8BA3E13C182A606600FDD95A /* LTShader.h */,
 				8BA3E13D182A606600FDD95A /* LTShader.mm */,
 				8B8E50E81861AA8900821829 /* LTShaderStorage.h */,
@@ -5850,6 +5853,7 @@
 				85CDE5381CFED51C00229787 /* LTForegroundBackgroundDrawer.h in Headers */,
 				8B87202C1924A76400517F2E /* LTPainterPoint.h in Headers */,
 				8B87202D1924A76400517F2E /* LTPainterStroke.h in Headers */,
+				B49EB6E41F2F0736008EDBD3 /* LTRenderbuffer+Private.h in Headers */,
 				8B87202E1924A76400517F2E /* LTPainterStrokeSegment.h in Headers */,
 				25AF174A1AD50BE00055E664 /* LTVGLine.h in Headers */,
 				8BD0730E19A247B5005F2C37 /* LTImage+Texture.h in Headers */,
