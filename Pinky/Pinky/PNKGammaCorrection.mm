@@ -26,6 +26,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation PNKGammaCorrection
 
+@synthesize isInputTextureArray = _isInputTextureArray;
+
 /// Kernel function name.
 static NSString * const kKernelFunctionName = @"gammaCorrect";
 
@@ -36,6 +38,7 @@ static NSString * const kKernelFunctionName = @"gammaCorrect";
 - (instancetype)initWithDevice:(id<MTLDevice>)device gamma:(float)gamma {
   if (self = [super init]) {
     _device = device;
+    _isInputTextureArray = NO;
     _gamma = gamma;
 
     [self compileStateWithGamma:gamma];
@@ -81,8 +84,11 @@ static NSString * const kKernelFunctionName = @"gammaCorrect";
                     (unsigned long)inputTexture.height, (unsigned long)outputTexture.height);
 }
 
-- (MTLSize)outputSizeForInputSize:(MTLSize)inputSize {
-  return inputSize;
+- (MTLRegion)inputRegionForOutputSize:(MTLSize)outputSize {
+  return {
+    .origin = {0, 0, 0},
+    .size = outputSize
+  };
 }
 
 @end
