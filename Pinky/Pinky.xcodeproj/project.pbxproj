@@ -28,6 +28,9 @@
 		060FB4651F0104F300506895 /* Pinky.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 06FD92A11EDC66E500D180C7 /* Pinky.bundle */; };
 		06172A901F02881600379124 /* PNKStyleUpsampleProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 06172A8F1F02881600379124 /* PNKStyleUpsampleProcessor.mm */; };
 		06172AB21F02884F00379124 /* PNKStyleUpsampleProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 06172AB11F02884F00379124 /* PNKStyleUpsampleProcessorSpec.mm */; };
+		062EEA2D1F2530EC00AB4958 /* PNKNearestNeighborUpsampling.mm in Sources */ = {isa = PBXBuildFile; fileRef = 062EEA2B1F2530EC00AB4958 /* PNKNearestNeighborUpsampling.mm */; };
+		062EEA4F1F25315400AB4958 /* PNKNearestNeighborUpsamplingSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 062EEA4E1F25315400AB4958 /* PNKNearestNeighborUpsamplingSpec.mm */; };
+		062EEA501F25315F00AB4958 /* PNKNearestNeighborUpsampling.metal in Sources */ = {isa = PBXBuildFile; fileRef = 062EEA2A1F2530EC00AB4958 /* PNKNearestNeighborUpsampling.metal */; };
 		068D90811F1F536D0012F472 /* PNKAddition.mm in Sources */ = {isa = PBXBuildFile; fileRef = 068D907F1F1F536D0012F472 /* PNKAddition.mm */; };
 		068D90A21F1F53790012F472 /* PNKAddition.metal in Sources */ = {isa = PBXBuildFile; fileRef = 068D907E1F1F536D0012F472 /* PNKAddition.metal */; };
 		068D90A41F1F5D000012F472 /* PNKAdditionSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 068D90A31F1F5D000012F472 /* PNKAdditionSpec.mm */; };
@@ -448,6 +451,10 @@
 		06172A8E1F02881600379124 /* PNKStyleUpsampleProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKStyleUpsampleProcessor.h; sourceTree = "<group>"; };
 		06172A8F1F02881600379124 /* PNKStyleUpsampleProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKStyleUpsampleProcessor.mm; sourceTree = "<group>"; };
 		06172AB11F02884F00379124 /* PNKStyleUpsampleProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKStyleUpsampleProcessorSpec.mm; sourceTree = "<group>"; };
+		062EEA291F2530EC00AB4958 /* PNKNearestNeighborUpsampling.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKNearestNeighborUpsampling.h; sourceTree = "<group>"; };
+		062EEA2A1F2530EC00AB4958 /* PNKNearestNeighborUpsampling.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = PNKNearestNeighborUpsampling.metal; sourceTree = "<group>"; };
+		062EEA2B1F2530EC00AB4958 /* PNKNearestNeighborUpsampling.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKNearestNeighborUpsampling.mm; sourceTree = "<group>"; };
+		062EEA4E1F25315400AB4958 /* PNKNearestNeighborUpsamplingSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKNearestNeighborUpsamplingSpec.mm; sourceTree = "<group>"; };
 		068D907D1F1F536D0012F472 /* PNKAddition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKAddition.h; sourceTree = "<group>"; };
 		068D907E1F1F536D0012F472 /* PNKAddition.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = PNKAddition.metal; sourceTree = "<group>"; };
 		068D907F1F1F536D0012F472 /* PNKAddition.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKAddition.mm; sourceTree = "<group>"; };
@@ -674,6 +681,7 @@
 			isa = PBXGroup;
 			children = (
 				068D90A31F1F5D000012F472 /* PNKAdditionSpec.mm */,
+				062EEA4E1F25315400AB4958 /* PNKNearestNeighborUpsamplingSpec.mm */,
 				068D91371F24C9AD0012F472 /* PNKReflectionPaddingSpec.mm */,
 			);
 			name = "Neural Networks";
@@ -694,6 +702,9 @@
 				068D907D1F1F536D0012F472 /* PNKAddition.h */,
 				068D907E1F1F536D0012F472 /* PNKAddition.metal */,
 				068D907F1F1F536D0012F472 /* PNKAddition.mm */,
+				062EEA2A1F2530EC00AB4958 /* PNKNearestNeighborUpsampling.metal */,
+				062EEA291F2530EC00AB4958 /* PNKNearestNeighborUpsampling.h */,
+				062EEA2B1F2530EC00AB4958 /* PNKNearestNeighborUpsampling.mm */,
 				069225E11F0A615700F3C8C7 /* PNKNeuralKernel.h */,
 				068D91131F249E120012F472 /* PNKReflectionPadding.metal */,
 				068D91121F249E120012F472 /* PNKReflectionPadding.h */,
@@ -1512,6 +1523,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				062EEA501F25315F00AB4958 /* PNKNearestNeighborUpsampling.metal in Sources */,
 				C9791ADD1F026D260009E90F /* PNKConstantAlpha.metal in Sources */,
 				068D90A21F1F53790012F472 /* PNKAddition.metal in Sources */,
 				068D91391F24C9C70012F472 /* PNKReflectionPadding.metal in Sources */,
@@ -1530,6 +1542,7 @@
 				C9131EAE1EE0599D00E924DA /* EXPMatchers+beCloseToScalar.mm in Sources */,
 				068D90A41F1F5D000012F472 /* PNKAdditionSpec.mm in Sources */,
 				C9231FA91F04F31B009E4FDB /* PNKGammaCorrectionSpec.mm in Sources */,
+				062EEA4F1F25315400AB4958 /* PNKNearestNeighborUpsamplingSpec.mm in Sources */,
 				C9131EAE1EE0599D00E924DA /* EXPMatchers+beCloseToScalar.mm in Sources */,
 				C9131EAC1EE0599D00E924DA /* EXPMatchers+beCloseToMat.mm in Sources */,
 				068D91381F24C9AD0012F472 /* PNKReflectionPaddingSpec.mm in Sources */,
@@ -1554,6 +1567,7 @@
 				06E98DE01F2149710047F80A /* PNKComputeState.mm in Sources */,
 				C9231F831F04EF7F009E4FDB /* PNKGammaCorrection.mm in Sources */,
 				060EA49E1EDD9CC20041487A /* NSBundle+PinkyBundle.mm in Sources */,
+				062EEA2D1F2530EC00AB4958 /* PNKNearestNeighborUpsampling.mm in Sources */,
 				C9ADC5131EFFE06200C87932 /* PNKLibraryLoader.mm in Sources */,
 				06172A901F02881600379124 /* PNKStyleUpsampleProcessor.mm in Sources */,
 				06C3F7611EFF9E5B00D4B1F4 /* PNKSingleStyleTransferProcessor.mm in Sources */,
