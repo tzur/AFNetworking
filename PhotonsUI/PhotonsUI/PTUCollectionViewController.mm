@@ -222,7 +222,8 @@ NS_ASSUME_NONNULL_BEGIN
               [[RACObserve(self, dataSource.didUpdateCollectionView)
                   switchToLatest]
                   startWith:[RACUnit defaultUnit]],
-              [[self rac_signalForSelector:@selector(viewDidAppear:)]
+              [[[self rac_signalForSelector:@selector(viewDidAppear:)]
+                  mapReplace:[RACUnit defaultUnit]]
                   startWith:[RACUnit defaultUnit]]
             ]]
             takeUntil:[self rac_signalForSelector:@selector(scrollViewDidScroll:)]];

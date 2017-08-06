@@ -65,7 +65,7 @@ static const NSUInteger kNumberOfRetries = 4;
         }
         return receiptValidationParameters;
       }]
-      flattenMap:^RACStream *(BZRReceiptValidationParameters *receiptValidationParameters) {
+      flattenMap:^(BZRReceiptValidationParameters *receiptValidationParameters) {
         @strongify(self);
         return [self validateReceiptWithParameters:receiptValidationParameters];
       }]

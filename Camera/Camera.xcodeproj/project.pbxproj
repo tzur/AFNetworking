@@ -61,7 +61,6 @@
 		8352064E1D2A81FA00000EEC /* CAMHardwareDevice.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8352064D1D2A81FA00000EEC /* CAMHardwareDevice.mm */; };
 		835206501D2A820700000EEC /* CAMHardwareDeviceSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8352064F1D2A820700000EEC /* CAMHardwareDeviceSpec.mm */; };
 		8355479F1D783E1D00F65398 /* CAMBlankDevice.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8355479E1D783E1D00F65398 /* CAMBlankDevice.mm */; };
-		836C662B1CD7711900BE4496 /* ReactiveCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 832F97731CD7559E001962A0 /* ReactiveCocoa.framework */; };
 		83893A511D128288002B64B4 /* CAMHardwareSession.mm in Sources */ = {isa = PBXBuildFile; fileRef = 83893A501D128288002B64B4 /* CAMHardwareSession.mm */; };
 		83893A541D128296002B64B4 /* CAMHardwareSessionSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 83893A531D128296002B64B4 /* CAMHardwareSessionSpec.mm */; };
 		83893A581D12C827002B64B4 /* CAMFakeAVCaptureDevice.mm in Sources */ = {isa = PBXBuildFile; fileRef = 83893A571D12C827002B64B4 /* CAMFakeAVCaptureDevice.mm */; };
@@ -85,6 +84,7 @@
 		8861FD131E5A289400CA1436 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8861FD121E5A289400CA1436 /* CoreText.framework */; };
 		8861FD151E5A28AE00CA1436 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8861FD141E5A28AE00CA1436 /* ImageIO.framework */; };
 		8861FD171E5A28BD00CA1436 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8861FD161E5A28BD00CA1436 /* QuartzCore.framework */; };
+		8B6867A81F3B277800F0EF4C /* ReactiveObjC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B6862B11F3344C500F0EF4C /* ReactiveObjC.framework */; };
 		8BF68AF71D82E9690093910D /* libcompression.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BF68AF61D82E9690093910D /* libcompression.tbd */; };
 		8D01B2F115E961DB011B44B9 /* CAMDevicePreset.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8D01B772F8E8AF1392710F22 /* CAMDevicePreset.mm */; };
 		8D01B3DB1C6E0CF5A4F4ABDD /* CAMCameraAuthorizationManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8D01B13400EB3080AA21ED2A /* CAMCameraAuthorizationManager.mm */; };
@@ -369,41 +369,6 @@
 			remoteGlobalIDString = 65CEFBB11D3BF72800402230;
 			remoteInfo = TestHost;
 		};
-		832F976E1CD7559E001962A0 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 832F97671CD7559E001962A0 /* ReactiveCocoa.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = D04725EA19E49ED7006002AA;
-			remoteInfo = "ReactiveCocoa-Mac";
-		};
-		832F97701CD7559E001962A0 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 832F97671CD7559E001962A0 /* ReactiveCocoa.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = D04725F519E49ED7006002AA;
-			remoteInfo = "ReactiveCocoa-MacTests";
-		};
-		832F97721CD7559E001962A0 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 832F97671CD7559E001962A0 /* ReactiveCocoa.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = D047260C19E49F82006002AA;
-			remoteInfo = "ReactiveCocoa-iOS";
-		};
-		832F97741CD7559E001962A0 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 832F97671CD7559E001962A0 /* ReactiveCocoa.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = D047261619E49F82006002AA;
-			remoteInfo = "ReactiveCocoa-iOSTests";
-		};
-		836C66171CD76F4500BE4496 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 832F97671CD7559E001962A0 /* ReactiveCocoa.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = D047260B19E49F82006002AA;
-			remoteInfo = "ReactiveCocoa-iOS";
-		};
 		83B72CDA1CDA3E5E0090C0BF /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 83B72CC61CDA3E5E0090C0BF /* LTEngine.xcodeproj */;
@@ -431,6 +396,62 @@
 			proxyType = 1;
 			remoteGlobalIDString = 83FF06D81CD7266B00383C6B;
 			remoteInfo = Camera;
+		};
+		8B6862AC1F3344C500F0EF4C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8B6862A21F3344C500F0EF4C /* ReactiveObjC.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D04725EA19E49ED7006002AA;
+			remoteInfo = "ReactiveObjC-macOS";
+		};
+		8B6862AE1F3344C500F0EF4C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8B6862A21F3344C500F0EF4C /* ReactiveObjC.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D04725F519E49ED7006002AA;
+			remoteInfo = "ReactiveObjC-macOSTests";
+		};
+		8B6862B01F3344C500F0EF4C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8B6862A21F3344C500F0EF4C /* ReactiveObjC.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D047260C19E49F82006002AA;
+			remoteInfo = "ReactiveObjC-iOS";
+		};
+		8B6862B21F3344C500F0EF4C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8B6862A21F3344C500F0EF4C /* ReactiveObjC.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D047261619E49F82006002AA;
+			remoteInfo = "ReactiveObjC-iOSTests";
+		};
+		8B6862B41F3344C500F0EF4C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8B6862A21F3344C500F0EF4C /* ReactiveObjC.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = A9B315541B3940610001CB9C;
+			remoteInfo = "ReactiveObjC-watchOS";
+		};
+		8B6862B61F3344C500F0EF4C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8B6862A21F3344C500F0EF4C /* ReactiveObjC.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 57A4D2411BA13D7A00F7D4B1;
+			remoteInfo = "ReactiveObjC-tvOS";
+		};
+		8B6862B81F3344C500F0EF4C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8B6862A21F3344C500F0EF4C /* ReactiveObjC.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 7DFBED031CDB8C9500EE435B;
+			remoteInfo = "ReactiveObjC-tvOSTests";
+		};
+		8B6862BA1F3344D100F0EF4C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8B6862A21F3344C500F0EF4C /* ReactiveObjC.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = D047260B19E49F82006002AA;
+			remoteInfo = "ReactiveObjC-iOS";
 		};
 /* End PBXContainerItemProxy section */
 
@@ -479,7 +500,6 @@
 		6542A5461D4636AE00450B46 /* Specta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Specta.xcodeproj; path = ../third_party/Specta/Specta/Specta.xcodeproj; sourceTree = "<group>"; };
 		6542A55B1D4636CE00450B46 /* OCMock.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = OCMock.xcodeproj; path = ../third_party/OCMock/Source/OCMock.xcodeproj; sourceTree = "<group>"; };
 		654B9F3C1D48BE2B00F7609B /* TestHost.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TestHost.xcodeproj; path = ../Foundations/TestHost.xcodeproj; sourceTree = "<group>"; };
-		832F97671CD7559E001962A0 /* ReactiveCocoa.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactiveCocoa.xcodeproj; path = ../third_party/ReactiveCocoa/ReactiveCocoa.xcodeproj; sourceTree = "<group>"; };
 		8336DDA81E1BB37D00B09323 /* CAMVolumeButtonsControllerSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CAMVolumeButtonsControllerSpec.mm; sourceTree = "<group>"; };
 		834540341D7C002800D7D619 /* CAMBlankDeviceSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CAMBlankDeviceSpec.mm; sourceTree = "<group>"; };
 		8350566B1E14EE520005D9C4 /* CAMVolumeButtonsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAMVolumeButtonsController.h; sourceTree = "<group>"; };
@@ -582,6 +602,7 @@
 		8861FD121E5A289400CA1436 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		8861FD141E5A28AE00CA1436 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		8861FD161E5A28BD00CA1436 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		8B6862A21F3344C500F0EF4C /* ReactiveObjC.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactiveObjC.xcodeproj; path = ../third_party/ReactiveObjC/ReactiveObjC.xcodeproj; sourceTree = "<group>"; };
 		8BF68AF61D82E9690093910D /* libcompression.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libcompression.tbd; path = usr/lib/libcompression.tbd; sourceTree = SDKROOT; };
 		8D01B13400EB3080AA21ED2A /* CAMCameraAuthorizationManager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CAMCameraAuthorizationManager.mm; sourceTree = "<group>"; };
 		8D01B1C3A112096CEFA00097 /* CAMCameraAuthorizer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CAMCameraAuthorizer.mm; sourceTree = "<group>"; };
@@ -661,7 +682,7 @@
 				83B72D351CDA421C0090C0BF /* opencv2.framework in Frameworks */,
 				8861FD0B1E5A284000CA1436 /* OpenGLES.framework in Frameworks */,
 				8861FD171E5A28BD00CA1436 /* QuartzCore.framework in Frameworks */,
-				836C662B1CD7711900BE4496 /* ReactiveCocoa.framework in Frameworks */,
+				8B6867A81F3B277800F0EF4C /* ReactiveObjC.framework in Frameworks */,
 				8861FD0D1E5A285200CA1436 /* UIKit.framework in Frameworks */,
 				E4829EF11E49CF7D009F3355 /* libOpenEXR.a in Frameworks */,
 			);
@@ -820,17 +841,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		832F97681CD7559E001962A0 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				832F976F1CD7559E001962A0 /* ReactiveCocoa.framework */,
-				832F97711CD7559E001962A0 /* ReactiveCocoa-MacTests.xctest */,
-				832F97731CD7559E001962A0 /* ReactiveCocoa.framework */,
-				832F97751CD7559E001962A0 /* ReactiveCocoa-iOSTests.xctest */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		8336DD841E1BB36400B09323 /* Volume Buttons */ = {
 			isa = PBXGroup;
 			children = (
@@ -942,14 +952,14 @@
 			children = (
 				6542A52B1D46369F00450B46 /* Expecta.xcodeproj */,
 				6542A50A1D4635A700450B46 /* extobjc.xcodeproj */,
-				654B9F3C1D48BE2B00F7609B /* TestHost.xcodeproj */,
 				8352056F1D2A5B2700000EEC /* LLReactiveMatchers */,
 				83B72CC61CDA3E5E0090C0BF /* LTEngine.xcodeproj */,
 				6542A5011D46359F00450B46 /* LTKit.xcodeproj */,
 				0627C4B21D1A6CD900EFEC6B /* Mantle.xcodeproj */,
 				6542A55B1D4636CE00450B46 /* OCMock.xcodeproj */,
-				832F97671CD7559E001962A0 /* ReactiveCocoa.xcodeproj */,
+				8B6862A21F3344C500F0EF4C /* ReactiveObjC.xcodeproj */,
 				6542A5461D4636AE00450B46 /* Specta.xcodeproj */,
+				654B9F3C1D48BE2B00F7609B /* TestHost.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -1185,6 +1195,20 @@
 			path = CameraTests;
 			sourceTree = "<group>";
 		};
+		8B6862A31F3344C500F0EF4C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8B6862AD1F3344C500F0EF4C /* ReactiveObjC.framework */,
+				8B6862AF1F3344C500F0EF4C /* ReactiveObjCTests.xctest */,
+				8B6862B11F3344C500F0EF4C /* ReactiveObjC.framework */,
+				8B6862B31F3344C500F0EF4C /* ReactiveObjCTests.xctest */,
+				8B6862B51F3344C500F0EF4C /* ReactiveObjC.framework */,
+				8B6862B71F3344C500F0EF4C /* ReactiveObjC.framework */,
+				8B6862B91F3344C500F0EF4C /* ReactiveObjCTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1202,7 +1226,7 @@
 			);
 			dependencies = (
 				06C02F461D1950C200745557 /* PBXTargetDependency */,
-				836C66181CD76F4500BE4496 /* PBXTargetDependency */,
+				8B6862BB1F3344D100F0EF4C /* PBXTargetDependency */,
 			);
 			name = Camera;
 			productName = Camera;
@@ -1283,8 +1307,8 @@
 					ProjectRef = 6542A55B1D4636CE00450B46 /* OCMock.xcodeproj */;
 				},
 				{
-					ProductGroup = 832F97681CD7559E001962A0 /* Products */;
-					ProjectRef = 832F97671CD7559E001962A0 /* ReactiveCocoa.xcodeproj */;
+					ProductGroup = 8B6862A31F3344C500F0EF4C /* Products */;
+					ProjectRef = 8B6862A21F3344C500F0EF4C /* ReactiveObjC.xcodeproj */;
 				},
 				{
 					ProductGroup = 6542A5471D4636AE00450B46 /* Products */;
@@ -1521,34 +1545,6 @@
 			remoteRef = 654B9F4C1D48BE2B00F7609B /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		832F976F1CD7559E001962A0 /* ReactiveCocoa.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = ReactiveCocoa.framework;
-			remoteRef = 832F976E1CD7559E001962A0 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		832F97711CD7559E001962A0 /* ReactiveCocoa-MacTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = "ReactiveCocoa-MacTests.xctest";
-			remoteRef = 832F97701CD7559E001962A0 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		832F97731CD7559E001962A0 /* ReactiveCocoa.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = ReactiveCocoa.framework;
-			remoteRef = 832F97721CD7559E001962A0 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		832F97751CD7559E001962A0 /* ReactiveCocoa-iOSTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = "ReactiveCocoa-iOSTests.xctest";
-			remoteRef = 832F97741CD7559E001962A0 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		83B72CDB1CDA3E5E0090C0BF /* libLTEngine.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -1568,6 +1564,55 @@
 			fileType = wrapper.cfbundle;
 			path = LTEngineTests.xctest;
 			remoteRef = 83B72CDE1CDA3E5E0090C0BF /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8B6862AD1F3344C500F0EF4C /* ReactiveObjC.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = ReactiveObjC.framework;
+			remoteRef = 8B6862AC1F3344C500F0EF4C /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8B6862AF1F3344C500F0EF4C /* ReactiveObjCTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = ReactiveObjCTests.xctest;
+			remoteRef = 8B6862AE1F3344C500F0EF4C /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8B6862B11F3344C500F0EF4C /* ReactiveObjC.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = ReactiveObjC.framework;
+			remoteRef = 8B6862B01F3344C500F0EF4C /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8B6862B31F3344C500F0EF4C /* ReactiveObjCTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = ReactiveObjCTests.xctest;
+			remoteRef = 8B6862B21F3344C500F0EF4C /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8B6862B51F3344C500F0EF4C /* ReactiveObjC.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = ReactiveObjC.framework;
+			remoteRef = 8B6862B41F3344C500F0EF4C /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8B6862B71F3344C500F0EF4C /* ReactiveObjC.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = ReactiveObjC.framework;
+			remoteRef = 8B6862B61F3344C500F0EF4C /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8B6862B91F3344C500F0EF4C /* ReactiveObjCTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = ReactiveObjCTests.xctest;
+			remoteRef = 8B6862B81F3344C500F0EF4C /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -1681,15 +1726,15 @@
 			name = TestHost;
 			targetProxy = 654B9F651D48BE4A00F7609B /* PBXContainerItemProxy */;
 		};
-		836C66181CD76F4500BE4496 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "ReactiveCocoa-iOS";
-			targetProxy = 836C66171CD76F4500BE4496 /* PBXContainerItemProxy */;
-		};
 		83FF06F91CD7272F00383C6B /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 83FF06D81CD7266B00383C6B /* Camera */;
 			targetProxy = 83FF06F81CD7272F00383C6B /* PBXContainerItemProxy */;
+		};
+		8B6862BB1F3344D100F0EF4C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "ReactiveObjC-iOS";
+			targetProxy = 8B6862BA1F3344D100F0EF4C /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 

@@ -153,7 +153,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)finishUnfinishedTransactions {
   @weakify(self);
   [[self.storeKitFacade.unfinishedSuccessfulTransactionsSignal
-      flattenMap:^RACStream *(NSArray<SKPaymentTransaction *> *transactions) {
+      flattenMap:^(NSArray<SKPaymentTransaction *> *transactions) {
         return [transactions.rac_sequence signalWithScheduler:[RACScheduler immediateScheduler]];
       }]
       subscribeNext:^(SKPaymentTransaction *transaction) {
@@ -597,7 +597,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (RACSignal *)completedTransactionsSignal {
   return [[[self.storeKitFacade.unfinishedSuccessfulTransactionsSignal
-      flattenMap:^RACStream *(NSArray<SKPaymentTransaction *> *transactions) {
+      flattenMap:^(NSArray<SKPaymentTransaction *> *transactions) {
         return [transactions.rac_sequence signalWithScheduler:[RACScheduler immediateScheduler]];
       }]
       takeUntil:[self rac_willDeallocSignal]]

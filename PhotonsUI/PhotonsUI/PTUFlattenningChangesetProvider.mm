@@ -74,7 +74,7 @@ static NSArray<NSNumber *> *PTUItemsUpToSection(PTUDataModel * _Nullable dataMod
   }
 
   return [[dataModel.rac_sequence
-      map:^NSNumber *(NSArray *section) {
+      map:^NSNumber *(id<LTRandomAccessCollection> section) {
         return @(section.count);
       }]
       scanWithStart:@0 reduce:^NSNumber *(NSNumber *running, NSNumber *next) {

@@ -43,7 +43,7 @@ NS_ASSUME_NONNULL_BEGIN
   return [[[RACSignal
       merge:@[[self restoredTransactionsUpdatesSignal], [self failureSignal]]]
       takeUntil:[self completionSignal]]
-      flattenMap:^RACStream *(RACTuple *tuple) {
+      flattenMap:^(RACTuple *tuple) {
         return ((NSArray *)tuple.second).rac_sequence.signal;
       }];
 }
@@ -59,7 +59,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (RACSignal *)failureSignal {
   return [[[self rac_signalForSelector:@selector(paymentQueue:restorationFailedWithError:)]
       take:1]
-      flattenMap:^RACStream *(RACTuple *parameters) {
+      flattenMap:^(RACTuple *parameters) {
         return [RACSignal error:parameters.second];
       }];
 }

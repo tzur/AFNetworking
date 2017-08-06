@@ -90,7 +90,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (RACSignal *)fetchDescriptorWithURL:(NSURL *)url {
   if (url.ptn_mediaLibraryURLType != PTNMediaLibraryURLTypeAsset &&
       url.ptn_mediaLibraryURLType != PTNMediaLibraryURLTypeAlbum) {
-    [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeInvalidURL url:url]];
+    return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeInvalidURL url:url]];
   }
 
   return [RACSignal defer:^RACSignal *{

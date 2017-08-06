@@ -2,7 +2,7 @@
 // Created by Yaron Inger.
 
 #import <Foundation/Foundation.h>
-#import <ReactiveCocoa/ReactiveCocoa.h>
+#import <ReactiveObjC/ReactiveObjC.h>
 
 /// Project version number for Photons.
 FOUNDATION_EXPORT double PhotonsVersionNumber;

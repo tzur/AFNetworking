@@ -3,8 +3,6 @@
 
 #import "SKReceiptRefreshRequest+RACSignalSupport.h"
 
-#import <ReactiveCocoa/RACDelegateProxy.h>
-
 #import "NSError+Bazaar.h"
 #import "NSErrorCodes+Bazaar.h"
 
@@ -50,7 +48,7 @@ static void RACUseDelegateProxy(SKReceiptRefreshRequest *self) {
 // deallocs.
 - (RACSignal *)bzr_errorSignal {
   return [[self.bzr_delegateProxy signalForSelector:@selector(request:didFailWithError:)]
-      flattenMap:^RACStream *(RACTuple *parameters) {
+      flattenMap:^(RACTuple *parameters) {
         NSError *error = [NSError lt_errorWithCode:BZRErrorCodeReceiptRefreshFailed
                                    underlyingError:parameters.second];
         return [RACSignal error:error];

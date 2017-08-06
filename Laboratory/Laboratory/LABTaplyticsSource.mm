@@ -7,7 +7,6 @@
 #import <LTKit/NSArray+NSSet.h>
 #import <LTKit/NSDictionary+Functional.h>
 #import <LTKit/NSSet+Functional.h>
-#import <ReactiveCocoa/ReactiveCocoa.h>
 #import <Taplytics/Taplytics.h>
 
 #import "LABExperimentsTokenProvider.h"

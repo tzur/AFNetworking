@@ -48,7 +48,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (RACSignal *)fetchProductContent:(BZRProduct *)product {
   return [[self contentBundleForProduct:product]
-    flattenMap:^RACStream *(NSBundle * _Nullable contentBundle) {
+    flattenMap:^(NSBundle * _Nullable contentBundle) {
       return contentBundle ?
           [RACSignal return:[[LTProgress alloc] initWithResult:contentBundle]] :
           [self.underlyingContentFetcher fetchProductContent:product];
