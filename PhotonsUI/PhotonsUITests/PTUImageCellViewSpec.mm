@@ -16,6 +16,7 @@ __block UIImage *image;
 __block RACSubject *imageSubject;
 __block RACSubject *titleSubject;
 __block RACSubject *subtitleSubject;
+__block RACSubject *durationSubject;
 
 beforeEach(^{
   image = [[UIImage alloc] init];
@@ -24,9 +25,11 @@ beforeEach(^{
   imageSubject = [RACSubject subject];
   titleSubject = [RACSubject subject];
   subtitleSubject = [RACSubject subject];
+  durationSubject = [RACSubject subject];
   viewModel = [[PTUFakeImageCellViewModel alloc] initWithImageSignal:imageSubject
                                                          titleSignal:titleSubject
                                                       subtitleSignal:subtitleSubject
+                                                      durationSignal:durationSubject
                                                               traits:nil];
   imageCellView.viewModel = viewModel;
 });
@@ -107,7 +110,9 @@ it(@"should stop taking values from previous view model once changed", ^{
   RACSubject *newSubject = [RACSubject subject];
   PTUFakeImageCellViewModel *otherViewModel =
       [[PTUFakeImageCellViewModel alloc] initWithImageSignal:newSubject titleSignal:nil
-                                              subtitleSignal:nil traits:nil];
+                                              subtitleSignal:nil
+                                              durationSignal:nil
+                                                      traits:nil];
   imageCellView.viewModel = otherViewModel;
 
   [newSubject sendNext:otherImage];
@@ -134,15 +139,19 @@ context(@"memory management", ^{
   __block PTNDisposableRetainingSignal *imageSignal;
   __block PTNDisposableRetainingSignal *titleSignal;
   __block PTNDisposableRetainingSignal *subtitleSignal;
+  __block PTNDisposableRetainingSignal *durationSignal;
+
   __block PTUFakeImageCellViewModel *disposableViewModel;
 
   beforeEach(^{
     imageSignal = PTNCreateDisposableRetainingSignal();
     titleSignal = PTNCreateDisposableRetainingSignal();
     subtitleSignal = PTNCreateDisposableRetainingSignal();
+    durationSignal = PTNCreateDisposableRetainingSignal();
     disposableViewModel = [[PTUFakeImageCellViewModel alloc] initWithImageSignal:imageSignal
                                                                      titleSignal:titleSignal
                                                                   subtitleSignal:subtitleSignal
+                                                                  durationSignal:durationSignal
                                                                           traits:nil];
   });
 

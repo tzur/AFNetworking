@@ -107,10 +107,9 @@ context(@"PTNDescriptor", ^{
     it(@"should expose video trait if underlying descriptor has video trait", ^{
       id<PTNDescriptor> videoAsset = PTNCreateDescriptor(nil, @"foo", 0,
           [NSSet setWithObject:kPTNDescriptorTraitAudiovisualKey]);
-      PTUImageCellViewModel *videoViewModel = [[PTUImageCellViewModel alloc]
-                                               initWithAssetManager:assetManager
-                                               descriptor:videoAsset
-                                               imageFetchOptions:options];
+      PTUImageCellViewModel *videoViewModel =
+          [[PTUImageCellViewModel alloc] initWithAssetManager:assetManager descriptor:videoAsset
+                                            imageFetchOptions:options];
       expect(videoViewModel.traits).to.contain(kPTUImageCellViewModelTraitVideoKey);
     });
 

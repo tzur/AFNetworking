@@ -18,6 +18,7 @@ __block UIImage *image;
 __block RACSubject *imageSubject;
 __block RACSubject *titleSubject;
 __block RACSubject *subtitleSubject;
+__block RACSubject *durationSubject;
 
 beforeEach(^{
   image = [[UIImage alloc] init];
@@ -25,9 +26,11 @@ beforeEach(^{
   imageSubject = [RACSubject subject];
   titleSubject = [RACSubject subject];
   subtitleSubject = [RACSubject subject];
+  durationSubject = [RACSubject subject];
   viewModel = [[PTUFakeImageCellViewModel alloc] initWithImageSignal:imageSubject
                                                          titleSignal:titleSubject
                                                       subtitleSignal:subtitleSubject
+                                                      durationSignal:durationSubject
                                                               traits:nil];
 
   delegate = OCMProtocolMock(@protocol(PTUImageCellControllerDelegate));
@@ -79,6 +82,13 @@ it(@"should update subtitle according to view model", ^{
   OCMVerify([delegate imageCellController:imageCellController loadedSubtitle:@"bar"]);
 });
 
+it(@"should update duration according to view model", ^{
+  [durationSubject sendNext:@"foo"];
+  OCMVerify([delegate imageCellController:imageCellController loadedDuration:@"foo"]);
+  [durationSubject sendNext:@"bar"];
+  OCMVerify([delegate imageCellController:imageCellController loadedDuration:@"bar"]);
+});
+
 it(@"should map errors on the view model's image signal to delegate calls", ^{
   NSError *error = [NSError lt_errorWithCode:1337];
   [imageSubject sendError:error];
@@ -97,10 +107,17 @@ it(@"should map errors on the view model's subtitle signal to delegate calls", ^
   OCMVerify([delegate imageCellController:imageCellController errorLoadingSubtitle:error]);
 });
 
+it(@"should map errors on the view model's duration signal to delegate calls", ^{
+  NSError *error = [NSError lt_errorWithCode:1337];
+  [durationSubject sendError:error];
+  OCMVerify([delegate imageCellController:imageCellController errorLoadingDuration:error]);
+});
+
 it(@"should stop taking values from previous view model once changed", ^{
   [[(OCMockObject *)delegate reject] imageCellController:imageCellController loadedImage:image];
   [[(OCMockObject *)delegate reject] imageCellController:imageCellController loadedTitle:@"foo"];
   [[(OCMockObject *)delegate reject] imageCellController:imageCellController loadedSubtitle:@"bar"];
+  [[(OCMockObject *)delegate reject] imageCellController:imageCellController loadedDuration:@"baz"];
 
   PTUFakeImageCellViewModel *otherViewModel = [[PTUFakeImageCellViewModel alloc] init];
   imageCellController.viewModel = otherViewModel;
@@ -108,27 +125,32 @@ it(@"should stop taking values from previous view model once changed", ^{
   [imageSubject sendNext:image];
   [titleSubject sendNext:@"foo"];
   [subtitleSubject sendNext:@"bar"];
+  [durationSubject sendNext:@"baz"];
 });
 
 it(@"should take values from new view model once changed", ^{
   RACSubject *newImageSubject = [RACSubject subject];
   RACSubject *newTitleSubject = [RACSubject subject];
   RACSubject *newSubtitleSubject = [RACSubject subject];
+  RACSubject *newDurationSubject = [RACSubject subject];
 
   PTUFakeImageCellViewModel *otherViewModel =
       [[PTUFakeImageCellViewModel alloc] initWithImageSignal:newImageSubject
                                                  titleSignal:newTitleSubject
                                               subtitleSignal:newSubtitleSubject
+                                              durationSignal:newDurationSubject
                                                       traits:nil];
   imageCellController.viewModel = otherViewModel;
 
   [newImageSubject sendNext:image];
   [newTitleSubject sendNext:@"foo"];
   [newSubtitleSubject sendNext:@"bar"];
+  [newDurationSubject sendNext:@"baz"];
 
   OCMVerify([delegate imageCellController:imageCellController loadedImage:image]);
   OCMVerify([delegate imageCellController:imageCellController loadedTitle:@"foo"]);
   OCMVerify([delegate imageCellController:imageCellController loadedSubtitle:@"bar"]);
+  OCMVerify([delegate imageCellController:imageCellController loadedDuration:@"baz"]);
 });
 
 it(@"should clear values when setting a new view model", ^{
@@ -136,21 +158,25 @@ it(@"should clear values when setting a new view model", ^{
   OCMVerify([delegate imageCellController:imageCellController loadedImage:nil]);
   OCMVerify([delegate imageCellController:imageCellController loadedTitle:nil]);
   OCMVerify([delegate imageCellController:imageCellController loadedSubtitle:nil]);
+  OCMVerify([delegate imageCellController:imageCellController loadedDuration:nil]);
 });
 
 context(@"memory management", ^{
   __block PTNDisposableRetainingSignal *imageSignal;
   __block PTNDisposableRetainingSignal *titleSignal;
   __block PTNDisposableRetainingSignal *subtitleSignal;
+  __block PTNDisposableRetainingSignal *durationSignal;
   __block PTUFakeImageCellViewModel *disposableViewModel;
 
   beforeEach(^{
     imageSignal = PTNCreateDisposableRetainingSignal();
     titleSignal = PTNCreateDisposableRetainingSignal();
     subtitleSignal = PTNCreateDisposableRetainingSignal();
+    durationSignal = PTNCreateDisposableRetainingSignal();
     disposableViewModel = [[PTUFakeImageCellViewModel alloc] initWithImageSignal:imageSignal
                                                                      titleSignal:titleSignal
                                                                   subtitleSignal:subtitleSignal
+                                                                  durationSignal:durationSignal
                                                                           traits:nil];
   });
 
@@ -160,14 +186,17 @@ context(@"memory management", ^{
     expect(imageSignal.disposables.count).to.equal(1);
     expect(titleSignal.disposables.count).to.equal(1);
     expect(subtitleSignal.disposables.count).to.equal(1);
+    expect(durationSignal.disposables.count).to.equal(1);
     expect(imageSignal.disposables.firstObject.disposed).to.beFalsy();
     expect(titleSignal.disposables.firstObject.disposed).to.beFalsy();
     expect(subtitleSignal.disposables.firstObject.disposed).to.beFalsy();
+    expect(durationSignal.disposables.firstObject.disposed).to.beFalsy();
 
     imageCellController.viewModel = viewModel;
     expect(imageSignal.disposables.firstObject.disposed).to.beTruthy();
     expect(titleSignal.disposables.firstObject.disposed).to.beTruthy();
     expect(subtitleSignal.disposables.firstObject.disposed).to.beTruthy();
+    expect(durationSignal.disposables.firstObject.disposed).to.beTruthy();
   });
 
   it(@"should dispose subscriptions when deallocated", ^{
@@ -182,15 +211,18 @@ context(@"memory management", ^{
       expect(imageSignal.disposables.count).to.equal(1);
       expect(titleSignal.disposables.count).to.equal(1);
       expect(subtitleSignal.disposables.count).to.equal(1);
+      expect(durationSignal.disposables.count).to.equal(1);
       expect(imageSignal.disposables.firstObject.disposed).to.beFalsy();
       expect(titleSignal.disposables.firstObject.disposed).to.beFalsy();
       expect(subtitleSignal.disposables.firstObject.disposed).to.beFalsy();
+      expect(durationSignal.disposables.firstObject.disposed).to.beFalsy();
     }
 
     expect(weakController).to.beNil();
     expect(imageSignal.disposables.firstObject.disposed).to.beTruthy();
     expect(titleSignal.disposables.firstObject.disposed).to.beTruthy();
     expect(subtitleSignal.disposables.firstObject.disposed).to.beTruthy();
+    expect(durationSignal.disposables.firstObject.disposed).to.beTruthy();
   });
 
   it(@"should not reatin cells even if the view model signals do not complete", ^{

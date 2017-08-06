@@ -8,17 +8,20 @@ NS_ASSUME_NONNULL_BEGIN
 @implementation PTUFakeImageCellViewModel
 
 - (instancetype)init {
-  return [self initWithImageSignal:nil titleSignal:nil subtitleSignal:nil traits:nil];
+  return [self initWithImageSignal:nil titleSignal:nil subtitleSignal:nil durationSignal:nil
+                            traits:nil];
 }
 
 - (instancetype)initWithImageSignal:(nullable RACSignal *)imageSignal
                         titleSignal:(nullable RACSignal *)titleSignal
                      subtitleSignal:(nullable RACSignal *)subtitleSignal
+                     durationSignal:(nullable RACSignal *)durationSignal
                              traits:(nullable NSSet<NSString *> *)traits {
   if (self = [super init]) {
     _imageSignal = imageSignal;
     _titleSignal = titleSignal;
     _subtitleSignal = subtitleSignal;
+    _durationSignal = durationSignal;
     _traits = traits ?: [NSSet set];
   }
   return self;
