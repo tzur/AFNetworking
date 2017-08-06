@@ -56,3 +56,6 @@
 [submodule "third_party/Tweaks"]
 	path = third_party/Tweaks
 	url = https://github.com/Lightricks/Tweaks.git
+[submodule "third_party/ReactiveObjC"]
+	path = third_party/ReactiveObjC
+	url = https://github.com/Lightricks/ReactiveObjC
