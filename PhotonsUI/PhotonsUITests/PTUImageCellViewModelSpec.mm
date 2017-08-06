@@ -210,12 +210,12 @@ context(@"video", ^{
     timeFormatter = [[PTUTimeFormatter alloc] init];
   });
 
-  it(@"should deliver video duration string on subtitle signal", ^{
+  it(@"should deliver video duration string on duration signal", ^{
     PTUImageCellViewModel *videoViewModel =
         [[PTUImageCellViewModel alloc] initWithAssetManager:assetManager descriptor:videoDescriptor
                                           imageFetchOptions:options timeFormatter:timeFormatter];
 
-    LLSignalTestRecorder *recorder = [videoViewModel.subtitleSignal testRecorder];
+    LLSignalTestRecorder *recorder = [videoViewModel.durationSignal testRecorder];
 
     expect(recorder.values).to.equal(@[[timeFormatter timeStringForTimeInterval:duration]]);
   });
