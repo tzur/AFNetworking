@@ -193,6 +193,10 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)dealloc {
+  [self dispose];
+}
+
+- (void)dispose {
   if (self.framebuffer) {
     // The attachables held by this object, if not held by any other object, are required to be
     // deallocated immediately after this object deallocates. However, the detaching code may add
@@ -207,6 +211,8 @@ NS_ASSUME_NONNULL_BEGIN
 
     glDeleteFramebuffers(1, &_framebuffer);
     LTGLCheckDbg(@"Failed to delete framebuffer: %d", self.framebuffer);
+
+    _framebuffer = 0;
   }
 }
 

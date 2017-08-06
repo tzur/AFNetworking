@@ -4,9 +4,11 @@
 #import "LTEAGLView.h"
 
 #import "LTFbo.h"
+#import "LTFbo+Private.h"
 #import "LTFboPool.h"
 #import "LTGLContext.h"
 #import "LTRenderbuffer.h"
+#import "LTRenderbuffer+Private.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -149,6 +151,12 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)destroyRenderTarget {
+  // Nullifying the _framebuffer and the _renderbuffer pointers doesn't guarantee their immediate
+  // deallocation. This caused an app crash when calling
+  // -[EAGLContext renderbufferStorage:fromDrawable:], while the previous hasn't been deallocated.
+  // Hence dispose method is called to delete the OGL backing object (framebuffer & renderbuffer).
+  [self.framebuffer dispose];
+  [self.renderbuffer dispose];
   self.renderbuffer = nil;
   self.framebuffer = nil;
 }

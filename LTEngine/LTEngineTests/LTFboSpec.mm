@@ -3,7 +3,9 @@
 
 #import "LTFbo.h"
 
+#import "LTFbo+Private.h"
 #import "LTFboAttachmentInfo.h"
+#import "LTGLCheck.h"
 #import "LTGLContext.h"
 #import "LTGLException.h"
 #import "LTGPUResourceExamples.h"
@@ -381,6 +383,55 @@ context(@"binding", ^{
       expect([LTGLContext currentContext].renderingToScreen).to.beFalsy();
     }];
     expect([LTGLContext currentContext].renderingToScreen).to.beTruthy();
+  });
+});
+
+context(@"dispose", ^{
+  __block LTFbo *fbo;
+  __block LTTexture *texture;
+
+  beforeEach(^{
+    texture = [LTTexture byteRGBATextureWithSize:CGSizeMake(1, 1)];
+    fbo = [[LTFbo alloc] initWithTexture:texture];
+  });
+
+  it(@"should allow reusing disposed fbo name", ^{
+    expect(fbo.name).notTo.equal(0);
+    expect(glIsFramebuffer(fbo.name)).to.beTruthy();
+
+    [fbo dispose];
+
+    expect(fbo.name).to.equal(0);
+    expect(^{
+      LTGLCheckDbg(@"error when when disposing fbo");
+    }).notTo.raiseAny();
+  });
+
+  it(@"should dispose fbo when bound", ^{
+    [fbo bindAndExecute:^{
+      [fbo dispose];
+      expect(glIsFramebuffer(fbo.name)).to.beFalsy();
+    }];
+    expect(glIsFramebuffer(fbo.name)).to.beFalsy();
+  });
+
+  it(@"should have no effect when disposed multiple times", ^{
+    __block GLboolean isFramebuffer;
+    expect(^{
+      [fbo dispose];
+      [fbo dispose];
+      isFramebuffer = glIsFramebuffer(fbo.name);
+    }).notTo.raiseAny();
+    expect(isFramebuffer).to.beFalsy();
+    expect(glIsFramebuffer(fbo.name)).to.beFalsy();
+  });
+
+  it(@"should raise when clearing disposed fbo", ^{
+    [fbo dispose];
+    [fbo clearColor:LTVector4::zeros()];
+    expect(^{
+      LTGLCheckDbg(@"error when clearing disposed fbo");
+    }).to.raise(kLTOpenGLRuntimeErrorException);
   });
 });
 

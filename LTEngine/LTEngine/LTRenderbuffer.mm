@@ -96,9 +96,15 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)dealloc {
+  [self dispose];
+}
+
+- (void)dispose {
   if (self.name) {
     glDeleteRenderbuffers(1, &_name);
     LTGLCheckDbg(@"Error deleting renderbuffer");
+
+    _name = 0;
   }
 }
 
