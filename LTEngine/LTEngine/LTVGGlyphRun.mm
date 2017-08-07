@@ -27,16 +27,16 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark NSObject
 #pragma mark -
 
-- (BOOL)isEqual:(id)object {
-  if (self == object) {
+- (BOOL)isEqual:(LTVGGlyphRun *)run {
+  if (self == run) {
     return YES;
   }
 
-  if (![object isKindOfClass:[LTVGGlyphRun class]]) {
+  if (![run isKindOfClass:[LTVGGlyphRun class]]) {
     return NO;
   }
 
-  return [((LTVGGlyphRun *)object).glyphs isEqualToArray:self.glyphs];
+  return [run.glyphs isEqualToArray:self.glyphs];
 }
 
 #pragma mark -

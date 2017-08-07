@@ -39,16 +39,14 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark NSObject
 #pragma mark -
 
-- (BOOL)isEqual:(id)object {
-  if (self == object) {
+- (BOOL)isEqual:(LTVGGlyph *)glyph {
+  if (self == glyph) {
     return YES;
   }
 
-  if (![object isKindOfClass:[LTVGGlyph class]]) {
+  if (![glyph isKindOfClass:[LTVGGlyph class]]) {
     return NO;
   }
-
-  LTVGGlyph *glyph = object;
 
   return CGPathEqualToPath(glyph.path, self.path) && glyph.glyphIndex == self.glyphIndex &&
       [glyph.font isEqual:self.font] && glyph.baselineOrigin == self.baselineOrigin;

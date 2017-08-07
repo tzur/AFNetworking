@@ -30,17 +30,17 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark NSObject
 #pragma mark -
 
-- (BOOL)isEqual:(id)object {
-  if (self == object) {
+- (BOOL)isEqual:(LTVGLines *)lines {
+  if (self == lines) {
     return YES;
   }
 
-  if (![object isKindOfClass:[LTVGLines class]]) {
+  if (![lines isKindOfClass:[LTVGLines class]]) {
     return NO;
   }
 
-  return [((LTVGLines *)object).lines isEqualToArray:self.lines] &&
-      [((LTVGLines *)object).attributedString isEqualToAttributedString:self.attributedString];
+  return [lines.lines isEqualToArray:self.lines] &&
+      [lines.attributedString isEqualToAttributedString:self.attributedString];
 }
 
 #pragma mark -
