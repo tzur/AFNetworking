@@ -76,7 +76,10 @@ LTErrorCodesImplement(BazaarErrorCodeProductID,
   /// The subscription that the user owns does not appear in the product list
   BZRErrorCodeSubscriptionNotFoundInProductList,
   /// Fetching of product content has failed.
-  BZRErrorCodeFetchingProductContentFailed
+  BZRErrorCodeFetchingProductContentFailed,
+  /// Fetching content has failed due to a version mismatch between a product and its downloaded
+  /// content.
+  BZRErrorCodeFetchedContentMismatch
 );
 
 NS_ASSUME_NONNULL_END

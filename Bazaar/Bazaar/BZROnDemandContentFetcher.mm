@@ -5,6 +5,7 @@
 
 #import <Fiber/FBROnDemandResource.h>
 #import <Fiber/NSBundle+OnDemandResources.h>
+#import <LTKit/NSFileManager+LTKit.h>
 
 #import "BZRProduct.h"
 #import "NSErrorCodes+Bazaar.h"
@@ -21,6 +22,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly, nonatomic) NSMutableDictionary<NSString *, id<FBROnDemandResource>>
     *inUseResources;
 
+/// Manager used to read the checksum file.
+@property (readonly, nonatomic) NSFileManager *fileManager;
+
 @end
 
 @implementation BZROnDemandContentFetcher
@@ -34,12 +38,13 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 - (instancetype)init {
-  return [self initWithBundle:[NSBundle mainBundle]];
+  return [self initWithBundle:[NSBundle mainBundle] fileManager:[NSFileManager defaultManager]];
 }
 
-- (instancetype)initWithBundle:(NSBundle *)bundle {
+- (instancetype)initWithBundle:(NSBundle *)bundle fileManager:(NSFileManager *)fileManager {
   if (self = [super init]) {
     _bundle = bundle;
+    _fileManager = fileManager;
     _inUseResources = [NSMutableDictionary dictionary];
   }
 
@@ -71,16 +76,29 @@ NS_ASSUME_NONNULL_BEGIN
       ((BZROnDemandContentFetcherParameters *)product.contentFetcherParameters).tags;
 
   @weakify(self)
-  return [[self.bundle fbr_beginAccessToResourcesWithTags:tags]
-      map:^LTProgress<NSBundle *> *(LTProgress<id<FBROnDemandResource>> *progress) {
+  return [[[[self.bundle fbr_beginAccessToResourcesWithTags:tags]
+      try:^BOOL(LTProgress<id<FBROnDemandResource>> *progress, NSError * __autoreleasing *error) {
         @strongify(self)
+        return !progress.result || [self isDownloadedContent:progress.result.bundle
+                                              matchesProduct:product error:error];
+      }]
+      doNext:^(LTProgress<id<FBROnDemandResource>> *progress) {
+        @strongify(self)
+        if (!self) {
+          return;
+        }
+
+        if (progress.result) {
+          @synchronized(self) {
+            self.inUseResources[product.identifier] = progress.result;
+          }
+        }
+      }]
+      map:^LTProgress<NSBundle *> *(LTProgress<id<FBROnDemandResource>> *progress) {
         if (!progress.result) {
           return [[LTProgress alloc] initWithProgress:progress.progress];
         }
 
-        @synchronized(self) {
-          self.inUseResources[product.identifier] = progress.result;
-        }
         return [[LTProgress alloc] initWithResult:progress.result.bundle];
       }];
 }
@@ -93,16 +111,91 @@ NS_ASSUME_NONNULL_BEGIN
   NSSet<NSString *> *tags =
       ((BZROnDemandContentFetcherParameters *)product.contentFetcherParameters).tags;
   @weakify(self)
-  return [[self.bundle fbr_conditionallyBeginAccessToResourcesWithTags:tags]
-      map:^NSBundle * _Nullable(id<FBROnDemandResource> _Nullable resource) {
+  return [[[[[[self.bundle fbr_conditionallyBeginAccessToResourcesWithTags:tags]
+      filter:^BOOL(id<FBROnDemandResource> _Nullable resource) {
         @strongify(self)
-        if (resource) {
-          @synchronized(self) {
-            self.inUseResources[product.identifier] = resource;
-          }
+        return resource && [self isDownloadedContent:resource.bundle matchesProduct:product
+                                               error:NULL];
+      }]
+      doNext:^(id<FBROnDemandResource> resource) {
+        @strongify(self)
+        if (!self) {
+          return;
         }
+
+        @synchronized(self) {
+          self.inUseResources[product.identifier] = resource;
+        }
+      }]
+      map:^NSBundle *(id<FBROnDemandResource> resource) {
         return resource.bundle;
-      }];
+      }]
+      concat:[RACSignal return:nil]]
+      take:1];
+}
+
+- (BOOL)isDownloadedContent:(NSBundle *)contentBundle matchesProduct:(BZRProduct *)product
+                      error:(NSError * __autoreleasing *)error {
+  NSString * _Nullable contentChecksum =
+      [self checksumFromContentFileForProduct:product contentBundle:contentBundle error:error];
+  if (!contentChecksum) {
+    return NO;
+  }
+
+  NSString *productChecksum =
+      ((BZROnDemandContentFetcherParameters *)product.contentFetcherParameters).checksum;
+  if (![contentChecksum isEqualToString:productChecksum]) {
+    if (error) {
+      *error = [NSError lt_errorWithCode:BZRErrorCodeFetchedContentMismatch
+                             description:@"A version mismatch was found between the product %@ and "
+                                          "its downloaded content. Product checksum: %@, "
+                                          "downloaded content checksum: %@", product.identifier,
+                                          productChecksum, contentChecksum];
+    }
+    return NO;
+  }
+
+  return YES;
+}
+
+- (nullable NSString *)checksumFromContentFileForProduct:(BZRProduct *)product
+                                           contentBundle:(NSBundle *)contentBundle
+                                                   error:(NSError * __autoreleasing *)error {
+  auto _Nullable checksumFilePath =
+      [self checksumFilePathForProduct:product contentBundle:contentBundle error:error];
+  if (!checksumFilePath) {
+    return nil;
+  }
+
+  return [self checksumFromFileAtPath:checksumFilePath error:error];
+}
+
+- (nullable NSString *)checksumFilePathForProduct:(BZRProduct *)product
+                                    contentBundle:(NSBundle *)contentBundle
+                                            error:(NSError * __autoreleasing *)error {
+  auto _Nullable checksumFilePath = [contentBundle pathForResource:product.identifier
+                                                            ofType:@"checksum"];
+  if (!checksumFilePath && error) {
+    *error = [NSError lt_errorWithCode:BZRErrorCodeFetchedContentMismatch
+                           description:@"Content checksum file %@.checksum was not found",
+                                        product.identifier];
+  }
+
+  return checksumFilePath;
+}
+
+- (nullable NSString *)checksumFromFileAtPath:(NSString *)path
+                                        error:(NSError * __autoreleasing *)error {
+  NSError *underlyingError;
+  NSData * _Nullable data =
+      [self.fileManager lt_dataWithContentsOfFile:path options:0 error:&underlyingError];
+  if (!data && error) {
+    *error = [NSError lt_errorWithCode:BZRErrorCodeFetchedContentMismatch
+                       underlyingError:underlyingError
+                           description:@"Failed to read the content checksum file %@", path];
+  }
+
+  return data ? [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] : nil;
 }
 
 @end
@@ -115,7 +208,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
   return [[super JSONKeyPathsByPropertyKey] mtl_dictionaryByAddingEntriesFromDictionary:@{
-    @instanceKeypath(BZROnDemandContentFetcherParameters, tags): @"tags"
+    @instanceKeypath(BZROnDemandContentFetcherParameters, tags): @"tags",
+    @instanceKeypath(BZROnDemandContentFetcherParameters, checksum): @"checksum"
   }];
 }
 
