@@ -15,7 +15,7 @@ typedef LTVGGlyph * _Nonnull (^LTVGGlyphTransformBlock)(LTVGGlyph *glyph);
 /// Initializes with the given \c lines and the given \c attributedString which is represented by
 /// the given \c lines. The given \c lines must contain at least one element and each element must
 /// be a \c LTVGLine. The given \c attributedString must not be \c nil.
-- (instancetype)initWithLines:(NSArray *)lines
+- (instancetype)initWithLines:(NSArray<LTVGLine *> *)lines
              attributedString:(NSAttributedString *)attributedString;
 
 /// Returns a path of the lines of this instance, s.t. the vertical distance between the subpaths of
@@ -29,8 +29,8 @@ typedef LTVGGlyph * _Nonnull (^LTVGGlyphTransformBlock)(LTVGGlyph *glyph);
 /// given \c block.
 - (LTVGLines *)linesWithGlyphsTransformedUsingBlock:(LTVGGlyphTransformBlock)block;
 
-/// Ordered collection of \c LTVGLine objects constituting the lines of this instance.
-@property (readonly, nonatomic) NSArray *lines;
+/// Ordered collection of lines constituting the lines of this instance.
+@property (readonly, nonatomic) NSArray<LTVGLine *> *lines;
 
 /// Attributed string whose path information is represented by the \c lines property.
 @property (readonly, nonatomic) NSAttributedString *attributedString;

@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark Initialization
 #pragma mark -
 
-- (instancetype)initWithGlyphRuns:(NSArray *)runs {
+- (instancetype)initWithGlyphRuns:(NSArray<LTVGGlyphRun *> *)runs {
   if (self = [super init]) {
     [self validateRuns:runs];
     _glyphRuns = [runs copy];
@@ -61,7 +61,7 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark Auxiliary methods
 #pragma mark -
 
-- (void)validateRuns:(NSArray *)runs {
+- (void)validateRuns:(NSArray<LTVGGlyphRun *> *)runs {
   LTParameterAssert(runs);
 
   LTVGGlyphRun *firstRun = runs.firstObject;

@@ -13,12 +13,12 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark Initialization
 #pragma mark -
 
-- (instancetype)initWithGlyphs:(NSArray *)glyphs {
+- (instancetype)initWithGlyphs:(NSArray<LTVGGlyph *> *)glyphs {
   if (self = [super init]) {
     [self validateGlyphs:glyphs];
     _glyphs = [glyphs copy];
-    _font = ((LTVGGlyph *)self.glyphs.firstObject).font;
-    _baselineOrigin = ((LTVGGlyph *)self.glyphs.firstObject).baselineOrigin;
+    _font = (self.glyphs.firstObject).font;
+    _baselineOrigin = (self.glyphs.firstObject).baselineOrigin;
   }
   return self;
 }
@@ -59,16 +59,18 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark Auxiliary methods
 #pragma mark -
 
-- (void)validateGlyphs:(NSArray *)glyphs {
+- (void)validateGlyphs:(NSArray<LTVGGlyph *> *)glyphs {
   LTParameterAssert(glyphs.count);
-  LTParameterAssert([glyphs.firstObject isKindOfClass:[LTVGGlyph class]]);
+  LTParameterAssert([glyphs.firstObject isKindOfClass:[LTVGGlyph class]],
+                    @"Given object %@ must be a glyph", glyphs.firstObject);
   LTVGGlyph *glyph = glyphs.firstObject;
 
   UIFont *font = glyph.font;
   CGFloat verticalBaselineOrigin = glyph.baselineOrigin.y;
 
-  for (glyph in glyphs) {
-    LTParameterAssert([glyph isKindOfClass:[LTVGGlyph class]]);
+  for (LTVGGlyph *glyph in glyphs) {
+    LTParameterAssert([glyph isKindOfClass:[LTVGGlyph class]], @"Given object %@ must be a glyph",
+                      glyphs.firstObject);
     LTParameterAssert([glyph.font isEqual:font],
                       @"Glyph of different fonts (%@ vs. %@) within the same run.",
                       glyph.font.fontName ?: @"<nil>", font.fontName ?: @"<nil>");

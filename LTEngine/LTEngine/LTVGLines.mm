@@ -14,12 +14,12 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark Initialization
 #pragma mark -
 
-- (instancetype)initWithLines:(NSArray *)lines
+- (instancetype)initWithLines:(NSArray<LTVGLine *> *)lines
              attributedString:(NSAttributedString *)attributedString {
   LTParameterAssert(attributedString);
 
   if (self = [super init]) {
-    [self validateLines:lines];
+    LTParameterAssert(lines.count);
     _lines = [lines copy];
     _attributedString = [attributedString copy];
   }
@@ -100,14 +100,6 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 #pragma mark Auxiliary methods
 #pragma mark -
-
-- (void)validateLines:(NSArray *)lines {
-  LTParameterAssert(lines.count);
-
-  for (id object in lines) {
-    LTParameterAssert([object isKindOfClass:[LTVGLine class]]);
-  }
-}
 
 /// Returns the transformation required to align the given \c path according to the given
 /// \c aligment.

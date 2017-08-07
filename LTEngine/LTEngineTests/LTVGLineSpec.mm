@@ -18,7 +18,7 @@ __block CGPoint baselineOrigin;
 __block LTVGGlyph *glyph;
 __block LTVGGlyphRun *run;
 __block LTVGGlyphRun *anotherRun;
-__block NSArray *runs;
+__block NSArray<LTVGGlyphRun *> *runs;
 __block LTVGLine *line;
 
 beforeEach(^{

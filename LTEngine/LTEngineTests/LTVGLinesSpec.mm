@@ -46,14 +46,9 @@ context(@"initialization", ^{
     expect(lines.attributedString).to.equal(attributedString);
   });
 
-  it(@"should raise when initializing with invalid lines", ^{
+  it(@"should raise when initializing with invalid number of lines", ^{
     expect(^{
       lines = [[LTVGLines alloc] initWithLines:@[]
-                              attributedString:[[NSAttributedString alloc] init]];
-    }).to.raise(NSInvalidArgumentException);
-
-    expect(^{
-      lines = [[LTVGLines alloc] initWithLines:@[@1]
                               attributedString:[[NSAttributedString alloc] init]];
     }).to.raise(NSInvalidArgumentException);
   });
