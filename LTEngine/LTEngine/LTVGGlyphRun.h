@@ -8,9 +8,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Class representing a glyph run (an ordered collection of glyphs sharing the same attributes).
 @interface LTVGGlyphRun : NSObject
 
-/// Initializes with a copy of the given \c glyphs array. The given \c glyphs array must at least
-/// contain one element and each element is required to be a \c LTVGGlyph. All elements must be of
-/// the same font and their baseline origin must have the same y-coordinate.
+/// Initializes with a copy of the given \c glyphs array which must contain at least contain one
+/// element. All elements must be of the same font. The \c baselineOrigin of the returned instance
+/// corresponds to the baseline origin of the first element in the given \c glyphs.
 - (instancetype)initWithGlyphs:(NSArray<LTVGGlyph *> *)glyphs;
 
 /// Returns a path of the runs (which, in turn, are paths of combined glyph paths) of this instance,

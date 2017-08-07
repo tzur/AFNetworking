@@ -52,6 +52,15 @@ context(@"initialization", ^{
       run = [[LTVGGlyphRun alloc] initWithGlyphs:@[glyph, glyphWithDifferentFont]];
     }).to.raise(NSInvalidArgumentException);
   });
+
+  it(@"should not raise when initializing with glyphs with different baselines", ^{
+    LTVGGlyph *glyphWithInvalidBaselineOrigin =
+        [[LTVGGlyph alloc] initWithPath:glyph.path glyphIndex:8 font:font
+                         baselineOrigin:baselineOrigin + CGPointMake(0, 1)];
+    expect(^{
+      run = [[LTVGGlyphRun alloc] initWithGlyphs:@[glyph, glyphWithInvalidBaselineOrigin]];
+    }).toNot.raiseAny();
+  });
 });
 
 context(@"NSObject", ^{

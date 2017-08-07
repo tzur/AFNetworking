@@ -17,8 +17,8 @@ NS_ASSUME_NONNULL_BEGIN
   if (self = [super init]) {
     [self validateGlyphs:glyphs];
     _glyphs = [glyphs copy];
-    _font = (self.glyphs.firstObject).font;
-    _baselineOrigin = (self.glyphs.firstObject).baselineOrigin;
+    _font = self.glyphs.firstObject.font;
+    _baselineOrigin = self.glyphs.firstObject.baselineOrigin;
   }
   return self;
 }
@@ -69,16 +69,14 @@ NS_ASSUME_NONNULL_BEGIN
   CGFloat verticalBaselineOrigin = glyph.baselineOrigin.y;
 
   for (LTVGGlyph *glyph in glyphs) {
-    LTParameterAssert([glyph isKindOfClass:[LTVGGlyph class]], @"Given object %@ must be a glyph",
-                      glyphs.firstObject);
     LTParameterAssert([glyph.font isEqual:font],
                       @"Glyph of different fonts (%@ vs. %@) within the same run.",
                       glyph.font.fontName ?: @"<nil>", font.fontName ?: @"<nil>");
-    LTParameterAssert(verticalBaselineOrigin == glyph.baselineOrigin.y,
-                      @"Vertical baseline origin (%g) of glyph with index %d of font %@ does not "
-                      "match required vertical baseline origin (%g).",
-                      glyph.baselineOrigin.y, glyph.glyphIndex, glyph.font.fontName ?: @"<nil>",
-                      verticalBaselineOrigin);
+    if (verticalBaselineOrigin != glyph.baselineOrigin.y) {
+      LogWarning(@"Vertical baseline origin (%g) of glyph with index %d of font %@ does not match "
+                 "expected vertical baseline origin (%g)", glyph.baselineOrigin.y,
+                 glyph.glyphIndex, glyph.font.fontName, verticalBaselineOrigin);
+    }
   }
 }
 
