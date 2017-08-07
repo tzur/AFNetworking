@@ -1,6 +1,8 @@
 // Copyright (c) 2015 Lightricks. All rights reserved.
 // Created by Rouven Strauss.
 
+NS_ASSUME_NONNULL_BEGIN
+
 /// Class representing a line consisting of \c LTVGGlyphRun.
 @interface LTVGLine : NSObject
 
@@ -24,3 +26,5 @@
 @property (readonly, nonatomic) CGFloat lineHeight;
 
 @end
+
+NS_ASSUME_NONNULL_END

@@ -23,21 +23,6 @@ beforeEach(^{
 });
 
 context(@"initialization", ^{
-  it(@"should raise when trying to initialize without font", ^{
-    expect(^{
-      glyph = [[LTVGGlyph alloc] initWithPath:path.get() glyphIndex:7 font:nil
-                               baselineOrigin:baselineOrigin];
-    }).to.raise(NSInvalidArgumentException);
-  });
-
-  it(@"should initialize correctly without a path for blank glyphs", ^{
-    glyph = [[LTVGGlyph alloc] initWithPath:NULL glyphIndex:7 font:font
-                             baselineOrigin:baselineOrigin];
-    expect(glyph.glyphIndex).to.equal(7);
-    expect(glyph.font).to.equal(font);
-    expect(glyph.baselineOrigin).to.equal(baselineOrigin);
-  });
-
   it(@"should initialize correctly with a path", ^{
     glyph = [[LTVGGlyph alloc] initWithPath:path.get() glyphIndex:7 font:font
                              baselineOrigin:baselineOrigin];

@@ -5,6 +5,8 @@
 
 #import "LTVGGlyphRun.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @implementation LTVGLine
 
 #pragma mark -
@@ -80,3 +82,5 @@
 }
 
 @end
+
+NS_ASSUME_NONNULL_END

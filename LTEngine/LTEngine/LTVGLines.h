@@ -1,10 +1,12 @@
 // Copyright (c) 2015 Lightricks. All rights reserved.
 // Created by Rouven Strauss.
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class LTVGGlyph, LTVGGlyphRun, LTVGLine, LTVGLines;
 
 /// Callback for returning a possibly transformed glyph for a given \c glyph.
-typedef LTVGGlyph *(^LTVGGlyphTransformBlock)(LTVGGlyph *glyph);
+typedef LTVGGlyph * _Nonnull (^LTVGGlyphTransformBlock)(LTVGGlyph *glyph);
 
 /// Class representing a collection of consecutive \c LTVGLine objects along with the
 /// \c NSAttributedString which is represented by these lines.
@@ -34,3 +36,5 @@ typedef LTVGGlyph *(^LTVGGlyphTransformBlock)(LTVGGlyph *glyph);
 @property (readonly, nonatomic) NSAttributedString *attributedString;
 
 @end
+
+NS_ASSUME_NONNULL_END

@@ -48,11 +48,6 @@ context(@"initialization", ^{
 
   it(@"should raise when initializing with invalid lines", ^{
     expect(^{
-      lines = [[LTVGLines alloc] initWithLines:nil
-                              attributedString:[[NSAttributedString alloc] init]];
-    }).to.raise(NSInvalidArgumentException);
-
-    expect(^{
       lines = [[LTVGLines alloc] initWithLines:@[]
                               attributedString:[[NSAttributedString alloc] init]];
     }).to.raise(NSInvalidArgumentException);
@@ -61,12 +56,6 @@ context(@"initialization", ^{
       lines = [[LTVGLines alloc] initWithLines:@[@1]
                               attributedString:[[NSAttributedString alloc] init]];
     }).to.raise(NSInvalidArgumentException);
-
-    it(@"should raise when initializing without attributed string", ^{
-      expect(^{
-        lines = [[LTVGLines alloc] initWithLines:linesArray attributedString:nil];
-      }).to.raise(NSInvalidArgumentException);
-    });
   });
 });
 
@@ -199,12 +188,6 @@ context(@"glyph modification", ^{
           return glyph;
         }];
     expect(result).to.equal(lines);
-  });
-
-  it(@"should raise if no block is provided", ^{
-    expect(^{
-      [lines linesWithGlyphsTransformedUsingBlock:nil];
-    }).to.raise(NSInvalidArgumentException);
   });
 });
 

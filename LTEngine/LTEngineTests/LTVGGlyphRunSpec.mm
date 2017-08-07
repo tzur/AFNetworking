@@ -37,10 +37,6 @@ context(@"initialization", ^{
 
   it(@"should raise when initializing with invalid glyphs", ^{
     expect(^{
-      run = [[LTVGGlyphRun alloc] initWithGlyphs:nil];
-    }).to.raise(NSInvalidArgumentException);
-
-    expect(^{
       run = [[LTVGGlyphRun alloc] initWithGlyphs:@[]];
     }).to.raise(NSInvalidArgumentException);
 
@@ -49,7 +45,7 @@ context(@"initialization", ^{
     }).to.raise(NSInvalidArgumentException);
 
     LTVGGlyph *glyphWithDifferentFont =
-        [[LTVGGlyph alloc] initWithPath:NULL glyphIndex:8
+        [[LTVGGlyph alloc] initWithPath:glyph.path glyphIndex:8
                                    font:[UIFont fontWithName:@"Helvetica" size:10]
                          baselineOrigin:baselineOrigin];
     expect(^{
@@ -72,7 +68,7 @@ context(@"NSObject", ^{
     expect([run isEqual:differentRun]).to.beFalsy();
 
     NSArray *differentGlyphs =
-        @[[[LTVGGlyph alloc] initWithPath:NULL glyphIndex:7
+        @[[[LTVGGlyph alloc] initWithPath:glyph.path glyphIndex:7
                                      font:[UIFont fontWithName:@"Arial" size:1]
                            baselineOrigin:CGPointZero]];
     differentRun = [[LTVGGlyphRun alloc] initWithGlyphs:differentGlyphs];

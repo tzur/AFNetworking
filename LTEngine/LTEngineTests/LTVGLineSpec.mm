@@ -44,10 +44,6 @@ context(@"initialization", ^{
 
   it(@"should raise when initializing with invalid runs", ^{
     expect(^{
-      line = [[LTVGLine alloc] initWithGlyphRuns:nil];
-    }).to.raise(NSInvalidArgumentException);
-
-    expect(^{
       line = [[LTVGLine alloc] initWithGlyphRuns:@[@1]];
     }).to.raise(NSInvalidArgumentException);
 
