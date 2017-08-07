@@ -6,7 +6,6 @@
 #import "LTImage.h"
 #import "LTOpenCVExtensions.h"
 #import "LTVGGlyph.h"
-#import "LTVGGlyphRun.h"
 #import "LTVGTypesetter.h"
 
 SpecBegin(LTVGGlyphRun)
