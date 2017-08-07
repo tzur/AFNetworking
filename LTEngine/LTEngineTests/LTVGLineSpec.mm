@@ -46,14 +46,16 @@ context(@"initialization", ^{
     expect(^{
       line = [[LTVGLine alloc] initWithGlyphRuns:@[@1]];
     }).to.raise(NSInvalidArgumentException);
+  });
 
+  it(@"should not raise when initializing with runs containing glyphs with different baselines", ^{
     LTVGGlyph *glyphWithInvalidBaselineOrigin =
-        [[LTVGGlyph alloc] initWithPath:NULL glyphIndex:8 font:font
+        [[LTVGGlyph alloc] initWithPath:glyph.path glyphIndex:8 font:font
                          baselineOrigin:baselineOrigin + CGPointMake(0, 1)];
     anotherRun = [[LTVGGlyphRun alloc] initWithGlyphs:@[glyphWithInvalidBaselineOrigin]];
     expect(^{
       line = [[LTVGLine alloc] initWithGlyphRuns:@[run, anotherRun]];
-    }).to.raise(NSInvalidArgumentException);
+    }).toNot.raiseAny();
   });
 });
 

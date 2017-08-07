@@ -69,7 +69,10 @@ NS_ASSUME_NONNULL_BEGIN
 
   for (LTVGGlyphRun *run in runs) {
     LTParameterAssert([run isKindOfClass:[LTVGGlyphRun class]]);
-    LTParameterAssert(expectedVerticalBaseLineOrigin == run.baselineOrigin.y);
+    if (expectedVerticalBaseLineOrigin != run.baselineOrigin.y) {
+      LogWarning(@"Run with vertical baseline origin (%g) differing from expected one (%g)",
+                 run.baselineOrigin.y, expectedVerticalBaseLineOrigin);
+    }
   }
 }
 

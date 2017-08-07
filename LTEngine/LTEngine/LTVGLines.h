@@ -13,8 +13,8 @@ typedef LTVGGlyph * _Nonnull (^LTVGGlyphTransformBlock)(LTVGGlyph *glyph);
 @interface LTVGLines : NSObject
 
 /// Initializes with the given \c lines and the given \c attributedString which is represented by
-/// the given \c lines. The given \c lines must contain at least one element and each element must
-/// be a \c LTVGLine. The given \c attributedString must not be \c nil.
+/// the given \c lines. The given \c lines must contain at least one element. The given
+/// \c attributedString must not be \c nil.
 - (instancetype)initWithLines:(NSArray<LTVGLine *> *)lines
              attributedString:(NSAttributedString *)attributedString;
 
