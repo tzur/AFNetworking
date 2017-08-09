@@ -99,8 +99,9 @@ public:
   }
 
 private:
-  /// Memory-mapped input file object.
-  LTMMInputFile *_inputFile;
+  /// Memory-mapped input file object. It is actually non-null; marked as \c _Null_unspecified to
+  /// appease the static code analizer.
+  LTMMInputFile * _Null_unspecified _inputFile;
 
   /// Size of the memory buffer - equals the size of the file.
   size_t _size;
@@ -166,8 +167,9 @@ public:
   }
 
 private:
-  /// Memory-mapped output file object.
-  LTMMOutputFile *_outputFile;
+  /// Memory-mapped input file object. It is actually non-null; marked as \c _Null_unspecified to
+  /// appease the static code analizer.
+  LTMMOutputFile * _Null_unspecified _outputFile;
 
   /// Stream capacity - size of the underlying memory buffer.
   size_t _capacity;
