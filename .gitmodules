@@ -1,10 +1,6 @@
 [submodule "Configuration"]
 	path = Configuration
 	url = https://github.com/Lightricks/Configuration.git
-[submodule "third_party/LLReactiveMatchers"]
-	path = third_party/LLReactiveMatchers
-	url = https://github.com/Lightricks/LLReactiveMatchers.git
-	branch = develop
 [submodule "third_party/ReactiveCocoa"]
 	path = third_party/ReactiveCocoa
 	url = https://github.com/Lightricks/ReactiveCocoa.git
