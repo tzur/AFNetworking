@@ -407,6 +407,30 @@ sharedExamplesFor(kLTMMTextureExamples, ^(NSDictionary *contextInfo) {
       }).to.raise(NSInvalidArgumentException);
     });
 
+    dit(@"should raise when initializing with non IOSurface backed pixel buffer", ^{
+      CVPixelBufferRef pixelBufferRef;
+      CVReturn result = CVPixelBufferCreate(NULL, 2, 2, kCVPixelFormatType_32BGRA, NULL,
+                                            &pixelBufferRef);
+      expect(result).to.equal(kCVReturnSuccess);
+
+      expect(^{
+        __unused auto texture = [[LTMMTexture alloc] initWithPixelBuffer:pixelBufferRef];
+      }).to.raise(kLTTextureCreationFailedException);
+    });
+
+    dit(@"should raise when initializing with non IOSurface backed planar pixel buffer", ^{
+      CVPixelBufferRef pixelBufferRef;
+      CVReturn result = CVPixelBufferCreate(NULL, 2, 2,
+                                            kCVPixelFormatType_420YpCbCr8BiPlanarFullRange, NULL,
+                                            &pixelBufferRef);
+      expect(result).to.equal(kCVReturnSuccess);
+
+      expect(^{
+        __unused auto texture = [[LTMMTexture alloc] initWithPixelBuffer:pixelBufferRef
+                                                              planeIndex:0];
+      }).to.raise(kLTTextureCreationFailedException);
+    });
+
     it(@"should preserve pixel buffer content", ^{
       static const cv::Vec4b kPixelValue{0, 20, 30, 40};
 

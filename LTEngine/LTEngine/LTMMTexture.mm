@@ -1,7 +1,19 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
+#ifndef TARGET_OS_SIMULATOR
+  #if defined(__IPHONE_11_0) && __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_11_0
+    #define LTMMTEXTURE_USE_IOSURFACE
+  #endif
+#endif
+
 #import "LTMMTexture.h"
+
+#ifdef LTMMTEXTURE_USE_IOSURFACE
+  #import <CoreVideo/CVPixelBufferIOSurface.h>
+  #import <IOSurface/IOSurfaceObjC.h>
+  #import <OpenGLEs/EAGLIOSurface.h>
+#endif
 
 #import "CIContext+PixelFormat.h"
 #import "CIImage+Swizzle.h"
@@ -54,8 +66,8 @@
   LTParameterAssert(!maxMipmapLevel, @"LTMMTexture does not support mipmaps");
   if (self = [super initWithSize:size pixelFormat:pixelFormat maxMipmapLevel:maxMipmapLevel
                   allocateMemory:allocateMemory]) {
-    _pixelBuffer = [self createPixelBuffer];
-    [self createTexture];
+    [self setupPixelBuffer:[self createPixelBuffer]];
+    [self setupOpenGLParameters];
   }
   return self;
 }
@@ -71,9 +83,9 @@
        initWithCVPixelFormatType:CVPixelBufferGetPixelFormatType(pixelBuffer)];
 
   if (self = [super initWithSize:size pixelFormat:pixelFormat maxMipmapLevel:0 allocateMemory:NO]) {
-    _pixelBuffer = lt::Ref<CVPixelBufferRef>(CVPixelBufferRetain(pixelBuffer));
     _planeIndex = 0;
-    [self createTexture];
+    [self setupPixelBuffer:lt::Ref<CVPixelBufferRef>(CVPixelBufferRetain(pixelBuffer))];
+    [self setupOpenGLParameters];
   }
   return self;
 }
@@ -95,12 +107,55 @@
        planeIndex:planeIndex];
 
   if (self = [super initWithSize:size pixelFormat:pixelFormat maxMipmapLevel:0 allocateMemory:NO]) {
-    _pixelBuffer = lt::Ref<CVPixelBufferRef>(CVPixelBufferRetain(pixelBuffer));
     _planeIndex = planeIndex;
-    [self createTexture];
+    [self setupPixelBuffer:lt::Ref<CVPixelBufferRef>(CVPixelBufferRetain(pixelBuffer))];
+    [self setupOpenGLParameters];
   }
   return self;
 }
+
+- (void)setupPixelBuffer:(lt::Ref<CVPixelBufferRef>)pixelBuffer {
+  _pixelBuffer = std::move(pixelBuffer);
+#ifdef LTMMTEXTURE_USE_IOSURFACE
+  if (@available(iOS 11.0, *)) {
+    auto _Nullable backingSurface = CVPixelBufferGetIOSurface(_pixelBuffer.get());
+    if (!backingSurface) {
+      [LTGLException raise:kLTTextureCreationFailedException
+                    format:@"Pixel buffer must be backed by IOSurface"];
+    }
+    [self setupSurfaceBackedTexture];
+    return;
+  }
+#endif
+
+  [self setupTextureCacheBackedTexture];
+}
+
+#ifdef LTMMTEXTURE_USE_IOSURFACE
+- (void)setupSurfaceBackedTexture {
+  LTGLVersion version = [LTGLContext currentContext].version;
+  auto internalFormat = [self.pixelFormat textureInternalFormatForVersion:version];
+  auto format = [self.pixelFormat formatForVersion:version];
+  auto precision = [self.pixelFormat precisionForVersion:version];
+  auto eaglContext = [LTGLContext currentContext].context;
+  auto _Nullable surface = CVPixelBufferGetIOSurface(_pixelBuffer.get());
+  LTParameterAssert(surface, @"Pixel buffer must be backed by IOSurface");
+
+  glGenTextures(1, &_name);
+  [self bindAndExecute:^{
+    auto success = [eaglContext texImageIOSurface:surface target:GL_TEXTURE_2D
+                                   internalFormat:internalFormat width:self.size.width
+                                           height:self.size.height format:format type:precision
+                                            plane:(uint32_t)self.planeIndex];
+    if (!success) {
+      [LTGLException raise:kLTTextureCreationFailedException
+                    format:@"Failed creating OpenGL texture %u backed by %@", _name, surface];
+    }
+  }];
+  LTGLCheckDbg(@"Error occurred when creating OpenGL texture %u backed by IOSurface %@", _name,
+               surface);
+}
+#endif
 
 - (lt::Ref<CVPixelBufferRef>)createPixelBuffer {
   OSType pixelFormatType = self.pixelFormat.cvPixelFormatType;
@@ -110,9 +165,13 @@
   return LTCVPixelBufferCreate(self.size.width, self.size.height, pixelFormatType);
 }
 
-- (void)createTexture {
+- (void)setupTextureCacheBackedTexture {
   [self createTextureCache];
-  [self allocateTexture];
+  [self allocateTextureCacheBackedTexture];
+  _name = CVOpenGLESTextureGetName(_texture.get());
+}
+
+- (void)setupOpenGLParameters {
   [self bindAndExecute:^{
     [self setMinFilterInterpolation:self.minFilterInterpolation];
     [self setMagFilterInterpolation:self.magFilterInterpolation];
@@ -136,7 +195,7 @@
   _textureCache.reset(textureCacheRef);
 }
 
-- (void)allocateTexture {
+- (void)allocateTextureCacheBackedTexture {
   LTGLVersion version = [LTGLContext currentContext].version;
   GLenum internalFormat = [self.pixelFormat textureInternalFormatForVersion:version];
   GLenum format = [self.pixelFormat formatForVersion:version];
@@ -487,14 +546,6 @@ typedef LTTextureMappedWriteBlock LTTextureMappedBlock;
     }];
   }
 #endif
-}
-
-#pragma mark -
-#pragma mark Public properties
-#pragma mark -
-
-- (GLuint)name {
-  return _texture ? CVOpenGLESTextureGetName(_texture.get()) : 0;
 }
 
 @end
