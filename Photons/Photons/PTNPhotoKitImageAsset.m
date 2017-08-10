@@ -104,8 +104,9 @@ NS_ASSUME_NONNULL_BEGIN
     if (error) {
       *error = [NSError lt_errorWithCode:PTNErrorCodeAssetMetadataLoadingFailed
                                      url:self.asset.ptn_identifier
-                             description:@"Unsupported media type given: %lu",
-                (unsigned long)input.mediaType];
+                             description:@"Unsupported media type given: %lu, UTI: %@, full size "
+                @"URL: %@", (unsigned long)input.mediaType, input.uniformTypeIdentifier,
+                input.fullSizeImageURL];
     }
     return nil;
   };
