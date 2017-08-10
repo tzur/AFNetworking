@@ -46,6 +46,11 @@ context(@"enum value", ^{
     expect([LABAssignmentValue enumValueForAssignment:assignment
                                             enumClass:LABTestAssignmentEnum.class]).to.beNil();
   });
+
+  it(@"should return nil if assignment is nil", ^{
+    expect([LABAssignmentValue enumValueForAssignment:nil
+                                            enumClass:LABTestAssignmentEnum.class]).to.beNil();
+  });
 });
 
 context(@"NSString value", ^{
@@ -58,8 +63,11 @@ context(@"NSString value", ^{
 
   it(@"should return nil if value is not NSString", ^{
     assignment = assignmentWithValue(@1337);
-    expect([LABAssignmentValue enumValueForAssignment:assignment
-                                            enumClass:LABTestAssignmentEnum.class]).to.beNil();
+    expect([LABAssignmentValue stringValueForAssignment:assignment]).to.beNil();
+  });
+
+  it(@"should return nil if assignment is nil", ^{
+    expect([LABAssignmentValue stringValueForAssignment:nil]).to.beNil();
   });
 });
 
@@ -74,6 +82,10 @@ context(@"NSNumber value", ^{
   it(@"should return nil if value is not NSNumber", ^{
     assignment = assignmentWithValue(@"foo");
     expect([LABAssignmentValue numberValueForAssignment:assignment]).to.beNil();
+  });
+
+  it(@"should return nil if assignment is nil", ^{
+    expect([LABAssignmentValue numberValueForAssignment:nil]).to.beNil();
   });
 });
 

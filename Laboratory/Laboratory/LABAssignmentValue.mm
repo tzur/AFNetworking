@@ -15,6 +15,10 @@ NS_ASSUME_NONNULL_BEGIN
     enumValueForAssignment:(nullable LABAssignment *)assignment enumClass:(Class)enumClass {
   LTParameterAssert([enumClass conformsToProtocol:@protocol(LTEnum)], @"Given enumClass %@ doesn't "
                     "conform to the LTEnum protocol", enumClass);
+  if (!assignment) {
+    return nil;
+  }
+
   if (![assignment.value isKindOfClass:NSString.class]) {
     LogError(@"Expected assignment %@ value to be of type NSString but got %@", assignment,
              [assignment.value class]);
@@ -31,6 +35,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (nullable LABAssignmentValue<NSString *> *)
     stringValueForAssignment:(nullable LABAssignment *)assignment {
+  if (!assignment) {
+    return nil;
+  }
+
   if (![assignment.value isKindOfClass:NSString.class]) {
     LogError(@"Expected assignment %@ value to be of type NSString but got %@", assignment,
              [assignment.value class]);
@@ -41,6 +49,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (nullable LABAssignmentValue<NSNumber *> *)
     numberValueForAssignment:(nullable LABAssignment *)assignment {
+  if (!assignment) {
+    return nil;
+  }
+
   if (![assignment.value isKindOfClass:NSNumber.class]) {
     LogError(@"Expected assignment %@ value to be of type NSNumber but got %@", assignment,
              [assignment.value class]);
