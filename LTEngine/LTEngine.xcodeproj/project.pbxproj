@@ -1224,12 +1224,14 @@
 		B41BF08E1EB22D9800A1FA79 /* NSScanner+Math.h in Headers */ = {isa = PBXBuildFile; fileRef = B41BF08C1EB22D9800A1FA79 /* NSScanner+Math.h */; };
 		B41BF08F1EB22D9800A1FA79 /* NSScanner+Math.mm in Sources */ = {isa = PBXBuildFile; fileRef = B41BF08D1EB22D9800A1FA79 /* NSScanner+Math.mm */; };
 		B41BF0911EB22DCB00A1FA79 /* NSScanner+MathSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = B41BF0901EB22DCB00A1FA79 /* NSScanner+MathSpec.mm */; };
+		B42725421F36F01D00AAE3F9 /* IOSurface.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B427250F1F36F01D00AAE3F9 /* IOSurface.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		B467099F1E07F57F000CD9F5 /* LTFboAttachmentInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = B467099D1E07F57F000CD9F5 /* LTFboAttachmentInfo.h */; };
 		B46709A01E07F57F000CD9F5 /* LTFboAttachmentInfo.mm in Sources */ = {isa = PBXBuildFile; fileRef = B467099E1E07F57F000CD9F5 /* LTFboAttachmentInfo.mm */; };
 		B4755A981E76A51B0018FF0A /* IndexedColor.png in Resources */ = {isa = PBXBuildFile; fileRef = B4755A971E76A51B0018FF0A /* IndexedColor.png */; };
 		B4947F061DFD4FF500872FBE /* UIImage+Factory.h in Headers */ = {isa = PBXBuildFile; fileRef = B4947F041DFD4FF500872FBE /* UIImage+Factory.h */; };
 		B4947F071DFD4FF500872FBE /* UIImage+Factory.mm in Sources */ = {isa = PBXBuildFile; fileRef = B4947F051DFD4FF500872FBE /* UIImage+Factory.mm */; };
 		B4947F3B1DFD670000872FBE /* UIImage+FactorySpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = B4947F3A1DFD670000872FBE /* UIImage+FactorySpec.mm */; };
+		B499E0421F3886350052212E /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3C0A5118329505000845BA /* CoreVideo.framework */; };
 		B49EB6AE1F2EFED6008EDBD3 /* LTFbo+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = B49EB6AC1F2EFED6008EDBD3 /* LTFbo+Private.h */; };
 		B49EB6E41F2F0736008EDBD3 /* LTRenderbuffer+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = B49EB6E21F2F0736008EDBD3 /* LTRenderbuffer+Private.h */; };
 		B4F1DEB21E2CB3430042DB2A /* LTFboAttachableInfoSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = B4F1DEB11E2CB3430042DB2A /* LTFboAttachableInfoSpec.mm */; };
@@ -2988,6 +2990,7 @@
 		B41BF08C1EB22D9800A1FA79 /* NSScanner+Math.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSScanner+Math.h"; sourceTree = "<group>"; };
 		B41BF08D1EB22D9800A1FA79 /* NSScanner+Math.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSScanner+Math.mm"; sourceTree = "<group>"; };
 		B41BF0901EB22DCB00A1FA79 /* NSScanner+MathSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSScanner+MathSpec.mm"; sourceTree = "<group>"; };
+		B427250F1F36F01D00AAE3F9 /* IOSurface.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOSurface.framework; path = System/Library/Frameworks/IOSurface.framework; sourceTree = SDKROOT; };
 		B467099D1E07F57F000CD9F5 /* LTFboAttachmentInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTFboAttachmentInfo.h; sourceTree = "<group>"; };
 		B467099E1E07F57F000CD9F5 /* LTFboAttachmentInfo.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTFboAttachmentInfo.mm; sourceTree = "<group>"; };
 		B4755A971E76A51B0018FF0A /* IndexedColor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = IndexedColor.png; path = Resources/IndexedColor.png; sourceTree = "<group>"; };
@@ -3029,11 +3032,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				8BA8C68818699D9A00E6F486 /* Accelerate.framework in Frameworks */,
-				8B3DEC1918296DE500EA0C1A /* UIKit.framework in Frameworks */,
-				8B3DEC1718296D8F00EA0C1A /* QuartzCore.framework in Frameworks */,
 				8B3DEC1518296D8300EA0C1A /* CoreGraphics.framework in Frameworks */,
-				8B3DEC1318296D7600EA0C1A /* GLKit.framework in Frameworks */,
+				B499E0421F3886350052212E /* CoreVideo.framework in Frameworks */,
 				8B3DEBE818296B6100EA0C1A /* Foundation.framework in Frameworks */,
+				8B3DEC1318296D7600EA0C1A /* GLKit.framework in Frameworks */,
+				B42725421F36F01D00AAE3F9 /* IOSurface.framework in Frameworks */,
+				8B3DEC1718296D8F00EA0C1A /* QuartzCore.framework in Frameworks */,
+				8B3DEC1918296DE500EA0C1A /* UIKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4490,6 +4495,7 @@
 		8B3DEBE618296B6100EA0C1A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B427250F1F36F01D00AAE3F9 /* IOSurface.framework */,
 				8861FC5E1E5A263000CA1436 /* CoreImage.framework */,
 				8861FC2A1E5A261500CA1436 /* CoreText.framework */,
 				E4CEAC461E41DCC9008FA38E /* libOpenEXR.a */,
