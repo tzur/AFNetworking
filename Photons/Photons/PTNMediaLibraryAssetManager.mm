@@ -22,6 +22,7 @@
 #import "PTNProgress.h"
 #import "PTNResizingStrategy.h"
 #import "PTNStaticImageAsset.h"
+#import "RACSignal+Photons.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -60,12 +61,9 @@ NS_ASSUME_NONNULL_BEGIN
   if (self = [super init]) {
     _queryProvider = queryProvider;
     _authorizationManager = authorizationManager;
-
-    auto multicastConnection = [[[self changesNotificationSignal]
+    _changesSignal = [[[self changesNotificationSignal]
         takeUntil:self.rac_willDeallocSignal]
-        publish];
-    [multicastConnection connect];
-    _changesSignal = multicastConnection.signal;
+        ptn_replayLastLazily];
   }
   return self;
 }
