@@ -46,6 +46,7 @@
 		8861FD511E5A298D00CA1436 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8861FD501E5A298D00CA1436 /* QuartzCore.framework */; };
 		8861FD531E5A299A00CA1436 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8861FD521E5A299A00CA1436 /* CoreLocation.framework */; };
 		8861FD551E5A29C300CA1436 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8861FD541E5A29C300CA1436 /* ImageIO.framework */; };
+		8B10C83B1F3EFA9D00F76142 /* libLLReactiveMatchers.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B10C8381F3EFA9000F76142 /* libLLReactiveMatchers.a */; };
 		8B6867CF1F3B278500F0EF4C /* ReactiveObjC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B6862F21F33452A00F0EF4C /* ReactiveObjC.framework */; };
 		8BF68AA51D82E8200093910D /* libcompression.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BF68AA41D82E8200093910D /* libcompression.tbd */; };
 		BE0D7A7E1CF49705009899F9 /* CUIMenuItemTextButton.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0D7A7D1CF49705009899F9 /* CUIMenuItemTextButton.m */; };
@@ -68,23 +69,6 @@
 		BECFD6901D23AD6600361F3D /* CUIFlashModeViewModelSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = BECFD68F1D23AD6600361F3D /* CUIFlashModeViewModelSpec.mm */; };
 		BEE564761D800E9600E79E55 /* CUIDropDownEntryViewModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = BEE564751D800E9600E79E55 /* CUIDropDownEntryViewModel.mm */; };
 		BEE564791D801E7B00E79E55 /* CUIDropDownHorizontalView.mm in Sources */ = {isa = PBXBuildFile; fileRef = BEE564781D801E7B00E79E55 /* CUIDropDownHorizontalView.mm */; };
-		BEEE6D2E1D21385D00579F5D /* EXPExpect+LLReactiveMatchersExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = BEEE6D091D21385D00579F5D /* EXPExpect+LLReactiveMatchersExtensions.m */; };
-		BEEE6D2F1D21385D00579F5D /* LLSignalTestRecorder.m in Sources */ = {isa = PBXBuildFile; fileRef = BEEE6D0B1D21385D00579F5D /* LLSignalTestRecorder.m */; };
-		BEEE6D301D21385D00579F5D /* RACSignal+LLSubscriptionCounting.m in Sources */ = {isa = PBXBuildFile; fileRef = BEEE6D0D1D21385D00579F5D /* RACSignal+LLSubscriptionCounting.m */; };
-		BEEE6D311D21385D00579F5D /* LLReactiveMatchersHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = BEEE6D111D21385D00579F5D /* LLReactiveMatchersHelpers.m */; };
-		BEEE6D321D21385D00579F5D /* LLReactiveMatchersMessageBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = BEEE6D141D21385D00579F5D /* LLReactiveMatchersMessageBuilder.m */; };
-		BEEE6D331D21385D00579F5D /* EXPMatchers+beSubscribedTo.m in Sources */ = {isa = PBXBuildFile; fileRef = BEEE6D171D21385D00579F5D /* EXPMatchers+beSubscribedTo.m */; };
-		BEEE6D341D21385D00579F5D /* EXPMatchers+complete.m in Sources */ = {isa = PBXBuildFile; fileRef = BEEE6D191D21385D00579F5D /* EXPMatchers+complete.m */; };
-		BEEE6D351D21385D00579F5D /* EXPMatchers+deliverValuesOnThread.m in Sources */ = {isa = PBXBuildFile; fileRef = BEEE6D1B1D21385D00579F5D /* EXPMatchers+deliverValuesOnThread.m */; };
-		BEEE6D361D21385D00579F5D /* EXPMatchers+error.m in Sources */ = {isa = PBXBuildFile; fileRef = BEEE6D1D1D21385D00579F5D /* EXPMatchers+error.m */; };
-		BEEE6D371D21385D00579F5D /* EXPMatchers+finish.m in Sources */ = {isa = PBXBuildFile; fileRef = BEEE6D1F1D21385D00579F5D /* EXPMatchers+finish.m */; };
-		BEEE6D381D21385D00579F5D /* EXPMatchers+matchError.m in Sources */ = {isa = PBXBuildFile; fileRef = BEEE6D211D21385D00579F5D /* EXPMatchers+matchError.m */; };
-		BEEE6D391D21385D00579F5D /* EXPMatchers+matchValue.m in Sources */ = {isa = PBXBuildFile; fileRef = BEEE6D231D21385D00579F5D /* EXPMatchers+matchValue.m */; };
-		BEEE6D3A1D21385D00579F5D /* EXPMatchers+matchValues.m in Sources */ = {isa = PBXBuildFile; fileRef = BEEE6D251D21385D00579F5D /* EXPMatchers+matchValues.m */; };
-		BEEE6D3B1D21385D00579F5D /* EXPMatchers+sendError.m in Sources */ = {isa = PBXBuildFile; fileRef = BEEE6D271D21385D00579F5D /* EXPMatchers+sendError.m */; };
-		BEEE6D3C1D21385D00579F5D /* EXPMatchers+sendEvents.m in Sources */ = {isa = PBXBuildFile; fileRef = BEEE6D291D21385D00579F5D /* EXPMatchers+sendEvents.m */; };
-		BEEE6D3D1D21385D00579F5D /* EXPMatchers+sendValues.m in Sources */ = {isa = PBXBuildFile; fileRef = BEEE6D2B1D21385D00579F5D /* EXPMatchers+sendValues.m */; };
-		BEEE6D3E1D21385D00579F5D /* EXPMatchers+sendValuesWithCount.m in Sources */ = {isa = PBXBuildFile; fileRef = BEEE6D2D1D21385D00579F5D /* EXPMatchers+sendValuesWithCount.m */; };
 		BEFF88011D22682200DEAA97 /* CUIFlashMenuViewModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = BEFF87FE1D22682200DEAA97 /* CUIFlashMenuViewModel.mm */; };
 		BEFF88021D22682200DEAA97 /* CUIFlashModeViewModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = BEFF88001D22682200DEAA97 /* CUIFlashModeViewModel.mm */; };
 		E4829F401E49D024009F3355 /* libOpenEXR.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E4829F3F1E49D024009F3355 /* libOpenEXR.a */; };
@@ -393,6 +377,20 @@
 			remoteGlobalIDString = 8B3DEBF418296B6100EA0C1A;
 			remoteInfo = LTEngineTests;
 		};
+		8B10C8371F3EFA9000F76142 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8B10C8321F3EFA9000F76142 /* LLReactiveMatchers.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 21FD0A4A1850470000DB455B;
+			remoteInfo = LLReactiveMatchers;
+		};
+		8B10C8391F3EFA9000F76142 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8B10C8321F3EFA9000F76142 /* LLReactiveMatchers.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 21FD0A5A1850470000DB455B;
+			remoteInfo = LLReactiveMatchersTests;
+		};
 		8B6862ED1F33452A00F0EF4C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 8B6862E31F33452A00F0EF4C /* ReactiveObjC.xcodeproj */;
@@ -550,6 +548,7 @@
 		8861FD501E5A298D00CA1436 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		8861FD521E5A299A00CA1436 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		8861FD541E5A29C300CA1436 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
+		8B10C8321F3EFA9000F76142 /* LLReactiveMatchers.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LLReactiveMatchers.xcodeproj; path = ../third_party/LLReactiveMatchers/LLReactiveMatchers.xcodeproj; sourceTree = "<group>"; };
 		8B6862E31F33452A00F0EF4C /* ReactiveObjC.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactiveObjC.xcodeproj; path = ../third_party/ReactiveObjC/ReactiveObjC.xcodeproj; sourceTree = "<group>"; };
 		8BF68AA41D82E8200093910D /* libcompression.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libcompression.tbd; path = usr/lib/libcompression.tbd; sourceTree = SDKROOT; };
 		BE0D7A7B1CF49705009899F9 /* CUIMenuItemView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUIMenuItemView.h; sourceTree = "<group>"; };
@@ -584,43 +583,6 @@
 		BEE564751D800E9600E79E55 /* CUIDropDownEntryViewModel.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUIDropDownEntryViewModel.mm; sourceTree = "<group>"; };
 		BEE564771D801E7B00E79E55 /* CUIDropDownHorizontalView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUIDropDownHorizontalView.h; sourceTree = "<group>"; };
 		BEE564781D801E7B00E79E55 /* CUIDropDownHorizontalView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUIDropDownHorizontalView.mm; sourceTree = "<group>"; };
-		BEEE6D081D21385D00579F5D /* EXPExpect+LLReactiveMatchersExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EXPExpect+LLReactiveMatchersExtensions.h"; sourceTree = "<group>"; };
-		BEEE6D091D21385D00579F5D /* EXPExpect+LLReactiveMatchersExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EXPExpect+LLReactiveMatchersExtensions.m"; sourceTree = "<group>"; };
-		BEEE6D0A1D21385D00579F5D /* LLSignalTestRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LLSignalTestRecorder.h; sourceTree = "<group>"; };
-		BEEE6D0B1D21385D00579F5D /* LLSignalTestRecorder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LLSignalTestRecorder.m; sourceTree = "<group>"; };
-		BEEE6D0C1D21385D00579F5D /* RACSignal+LLSubscriptionCounting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RACSignal+LLSubscriptionCounting.h"; sourceTree = "<group>"; };
-		BEEE6D0D1D21385D00579F5D /* RACSignal+LLSubscriptionCounting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RACSignal+LLSubscriptionCounting.m"; sourceTree = "<group>"; };
-		BEEE6D0E1D21385D00579F5D /* LLReactiveMatchers-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "LLReactiveMatchers-Prefix.pch"; sourceTree = "<group>"; };
-		BEEE6D0F1D21385D00579F5D /* LLReactiveMatchers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LLReactiveMatchers.h; sourceTree = "<group>"; };
-		BEEE6D101D21385D00579F5D /* LLReactiveMatchersHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LLReactiveMatchersHelpers.h; sourceTree = "<group>"; };
-		BEEE6D111D21385D00579F5D /* LLReactiveMatchersHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LLReactiveMatchersHelpers.m; sourceTree = "<group>"; };
-		BEEE6D121D21385D00579F5D /* LLReactiveMatchersImports.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LLReactiveMatchersImports.h; sourceTree = "<group>"; };
-		BEEE6D131D21385D00579F5D /* LLReactiveMatchersMessageBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LLReactiveMatchersMessageBuilder.h; sourceTree = "<group>"; };
-		BEEE6D141D21385D00579F5D /* LLReactiveMatchersMessageBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LLReactiveMatchersMessageBuilder.m; sourceTree = "<group>"; };
-		BEEE6D161D21385D00579F5D /* EXPMatchers+beSubscribedTo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EXPMatchers+beSubscribedTo.h"; sourceTree = "<group>"; };
-		BEEE6D171D21385D00579F5D /* EXPMatchers+beSubscribedTo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EXPMatchers+beSubscribedTo.m"; sourceTree = "<group>"; };
-		BEEE6D181D21385D00579F5D /* EXPMatchers+complete.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EXPMatchers+complete.h"; sourceTree = "<group>"; };
-		BEEE6D191D21385D00579F5D /* EXPMatchers+complete.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EXPMatchers+complete.m"; sourceTree = "<group>"; };
-		BEEE6D1A1D21385D00579F5D /* EXPMatchers+deliverValuesOnThread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EXPMatchers+deliverValuesOnThread.h"; sourceTree = "<group>"; };
-		BEEE6D1B1D21385D00579F5D /* EXPMatchers+deliverValuesOnThread.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EXPMatchers+deliverValuesOnThread.m"; sourceTree = "<group>"; };
-		BEEE6D1C1D21385D00579F5D /* EXPMatchers+error.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EXPMatchers+error.h"; sourceTree = "<group>"; };
-		BEEE6D1D1D21385D00579F5D /* EXPMatchers+error.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EXPMatchers+error.m"; sourceTree = "<group>"; };
-		BEEE6D1E1D21385D00579F5D /* EXPMatchers+finish.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EXPMatchers+finish.h"; sourceTree = "<group>"; };
-		BEEE6D1F1D21385D00579F5D /* EXPMatchers+finish.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EXPMatchers+finish.m"; sourceTree = "<group>"; };
-		BEEE6D201D21385D00579F5D /* EXPMatchers+matchError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EXPMatchers+matchError.h"; sourceTree = "<group>"; };
-		BEEE6D211D21385D00579F5D /* EXPMatchers+matchError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EXPMatchers+matchError.m"; sourceTree = "<group>"; };
-		BEEE6D221D21385D00579F5D /* EXPMatchers+matchValue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EXPMatchers+matchValue.h"; sourceTree = "<group>"; };
-		BEEE6D231D21385D00579F5D /* EXPMatchers+matchValue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EXPMatchers+matchValue.m"; sourceTree = "<group>"; };
-		BEEE6D241D21385D00579F5D /* EXPMatchers+matchValues.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EXPMatchers+matchValues.h"; sourceTree = "<group>"; };
-		BEEE6D251D21385D00579F5D /* EXPMatchers+matchValues.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EXPMatchers+matchValues.m"; sourceTree = "<group>"; };
-		BEEE6D261D21385D00579F5D /* EXPMatchers+sendError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EXPMatchers+sendError.h"; sourceTree = "<group>"; };
-		BEEE6D271D21385D00579F5D /* EXPMatchers+sendError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EXPMatchers+sendError.m"; sourceTree = "<group>"; };
-		BEEE6D281D21385D00579F5D /* EXPMatchers+sendEvents.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EXPMatchers+sendEvents.h"; sourceTree = "<group>"; };
-		BEEE6D291D21385D00579F5D /* EXPMatchers+sendEvents.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EXPMatchers+sendEvents.m"; sourceTree = "<group>"; };
-		BEEE6D2A1D21385D00579F5D /* EXPMatchers+sendValues.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EXPMatchers+sendValues.h"; sourceTree = "<group>"; };
-		BEEE6D2B1D21385D00579F5D /* EXPMatchers+sendValues.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EXPMatchers+sendValues.m"; sourceTree = "<group>"; };
-		BEEE6D2C1D21385D00579F5D /* EXPMatchers+sendValuesWithCount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EXPMatchers+sendValuesWithCount.h"; sourceTree = "<group>"; };
-		BEEE6D2D1D21385D00579F5D /* EXPMatchers+sendValuesWithCount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EXPMatchers+sendValuesWithCount.m"; sourceTree = "<group>"; };
 		BEFF87FD1D22682200DEAA97 /* CUIFlashMenuViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUIFlashMenuViewModel.h; sourceTree = "<group>"; };
 		BEFF87FE1D22682200DEAA97 /* CUIFlashMenuViewModel.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUIFlashMenuViewModel.mm; sourceTree = "<group>"; };
 		BEFF87FF1D22682200DEAA97 /* CUIFlashModeViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUIFlashModeViewModel.h; sourceTree = "<group>"; };
@@ -714,6 +676,7 @@
 				65061A251D463962003D45B1 /* libextobjc_iOS.a in Frameworks */,
 				F965C9E91CF3183100005627 /* libLTEngine.a in Frameworks */,
 				65061A061D463938003D45B1 /* libLTKit.a in Frameworks */,
+				8B10C83B1F3EFA9D00F76142 /* libLLReactiveMatchers.a in Frameworks */,
 				83B729E21CD8D7CC0090C0BF /* libOCMock.a in Frameworks */,
 				E4829F401E49D024009F3355 /* libOpenEXR.a in Frameworks */,
 				83B729E01CD8D7BA0090C0BF /* libSpecta.a in Frameworks */,
@@ -882,7 +845,7 @@
 				83B72A171CD8E0B30090C0BF /* Camera.xcodeproj */,
 				83B729851CD8D68D0090C0BF /* Expecta.xcodeproj */,
 				65061A161D463954003D45B1 /* extobjc.xcodeproj */,
-				BEEE6D061D21385D00579F5D /* LLReactiveMatchers */,
+				8B10C8321F3EFA9000F76142 /* LLReactiveMatchers.xcodeproj */,
 				83B731B61CDB928A0090C0BF /* LTEngine.xcodeproj */,
 				650619FD1D463932003D45B1 /* LTKit.xcodeproj */,
 				65061A071D463946003D45B1 /* Mantle.xcodeproj */,
@@ -972,6 +935,15 @@
 				83B731BD1CDB928A0090C0BF /* libLTEngine.a */,
 				83B731BF1CDB928A0090C0BF /* LTEngine.bundle */,
 				83B731C11CDB928A0090C0BF /* LTEngineTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		8B10C8331F3EFA9000F76142 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8B10C8381F3EFA9000F76142 /* libLLReactiveMatchers.a */,
+				8B10C83A1F3EFA9000F76142 /* LLReactiveMatchersTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1171,67 +1143,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		BEEE6D061D21385D00579F5D /* LLReactiveMatchers */ = {
-			isa = PBXGroup;
-			children = (
-				BEEE6D071D21385D00579F5D /* Helpers */,
-				BEEE6D0E1D21385D00579F5D /* LLReactiveMatchers-Prefix.pch */,
-				BEEE6D0F1D21385D00579F5D /* LLReactiveMatchers.h */,
-				BEEE6D101D21385D00579F5D /* LLReactiveMatchersHelpers.h */,
-				BEEE6D111D21385D00579F5D /* LLReactiveMatchersHelpers.m */,
-				BEEE6D121D21385D00579F5D /* LLReactiveMatchersImports.h */,
-				BEEE6D131D21385D00579F5D /* LLReactiveMatchersMessageBuilder.h */,
-				BEEE6D141D21385D00579F5D /* LLReactiveMatchersMessageBuilder.m */,
-				BEEE6D151D21385D00579F5D /* Matchers */,
-			);
-			name = LLReactiveMatchers;
-			path = ../third_party/LLReactiveMatchers/LLReactiveMatchers;
-			sourceTree = "<group>";
-		};
-		BEEE6D071D21385D00579F5D /* Helpers */ = {
-			isa = PBXGroup;
-			children = (
-				BEEE6D081D21385D00579F5D /* EXPExpect+LLReactiveMatchersExtensions.h */,
-				BEEE6D091D21385D00579F5D /* EXPExpect+LLReactiveMatchersExtensions.m */,
-				BEEE6D0A1D21385D00579F5D /* LLSignalTestRecorder.h */,
-				BEEE6D0B1D21385D00579F5D /* LLSignalTestRecorder.m */,
-				BEEE6D0C1D21385D00579F5D /* RACSignal+LLSubscriptionCounting.h */,
-				BEEE6D0D1D21385D00579F5D /* RACSignal+LLSubscriptionCounting.m */,
-			);
-			path = Helpers;
-			sourceTree = "<group>";
-		};
-		BEEE6D151D21385D00579F5D /* Matchers */ = {
-			isa = PBXGroup;
-			children = (
-				BEEE6D161D21385D00579F5D /* EXPMatchers+beSubscribedTo.h */,
-				BEEE6D171D21385D00579F5D /* EXPMatchers+beSubscribedTo.m */,
-				BEEE6D181D21385D00579F5D /* EXPMatchers+complete.h */,
-				BEEE6D191D21385D00579F5D /* EXPMatchers+complete.m */,
-				BEEE6D1A1D21385D00579F5D /* EXPMatchers+deliverValuesOnThread.h */,
-				BEEE6D1B1D21385D00579F5D /* EXPMatchers+deliverValuesOnThread.m */,
-				BEEE6D1C1D21385D00579F5D /* EXPMatchers+error.h */,
-				BEEE6D1D1D21385D00579F5D /* EXPMatchers+error.m */,
-				BEEE6D1E1D21385D00579F5D /* EXPMatchers+finish.h */,
-				BEEE6D1F1D21385D00579F5D /* EXPMatchers+finish.m */,
-				BEEE6D201D21385D00579F5D /* EXPMatchers+matchError.h */,
-				BEEE6D211D21385D00579F5D /* EXPMatchers+matchError.m */,
-				BEEE6D221D21385D00579F5D /* EXPMatchers+matchValue.h */,
-				BEEE6D231D21385D00579F5D /* EXPMatchers+matchValue.m */,
-				BEEE6D241D21385D00579F5D /* EXPMatchers+matchValues.h */,
-				BEEE6D251D21385D00579F5D /* EXPMatchers+matchValues.m */,
-				BEEE6D261D21385D00579F5D /* EXPMatchers+sendError.h */,
-				BEEE6D271D21385D00579F5D /* EXPMatchers+sendError.m */,
-				BEEE6D281D21385D00579F5D /* EXPMatchers+sendEvents.h */,
-				BEEE6D291D21385D00579F5D /* EXPMatchers+sendEvents.m */,
-				BEEE6D2A1D21385D00579F5D /* EXPMatchers+sendValues.h */,
-				BEEE6D2B1D21385D00579F5D /* EXPMatchers+sendValues.m */,
-				BEEE6D2C1D21385D00579F5D /* EXPMatchers+sendValuesWithCount.h */,
-				BEEE6D2D1D21385D00579F5D /* EXPMatchers+sendValuesWithCount.m */,
-			);
-			path = Matchers;
-			sourceTree = "<group>";
-		};
 		F935E5921D33DFD6003DEEE5 /* Test Utils */ = {
 			isa = PBXGroup;
 			children = (
@@ -1359,6 +1270,10 @@
 				{
 					ProductGroup = 65061A171D463954003D45B1 /* Products */;
 					ProjectRef = 65061A161D463954003D45B1 /* extobjc.xcodeproj */;
+				},
+				{
+					ProductGroup = 8B10C8331F3EFA9000F76142 /* Products */;
+					ProjectRef = 8B10C8321F3EFA9000F76142 /* LLReactiveMatchers.xcodeproj */;
 				},
 				{
 					ProductGroup = 83B731B71CDB928A0090C0BF /* Products */;
@@ -1658,6 +1573,20 @@
 			remoteRef = 83B731C01CDB928A0090C0BF /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		8B10C8381F3EFA9000F76142 /* libLLReactiveMatchers.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libLLReactiveMatchers.a;
+			remoteRef = 8B10C8371F3EFA9000F76142 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8B10C83A1F3EFA9000F76142 /* LLReactiveMatchersTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = LLReactiveMatchersTests.xctest;
+			remoteRef = 8B10C8391F3EFA9000F76142 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		8B6862EE1F33452A00F0EF4C /* ReactiveObjC.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
@@ -1787,30 +1716,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BEEE6D3A1D21385D00579F5D /* EXPMatchers+matchValues.m in Sources */,
 				8328EE441D436E7E008C5A19 /* CUIFakeTimerContainer.mm in Sources */,
 				F9CDB5F61D2D220900B11D82 /* RACSignal+CameraUISpec.mm in Sources */,
-				BEEE6D301D21385D00579F5D /* RACSignal+LLSubscriptionCounting.m in Sources */,
 				F9CDB5F81D2D221E00B11D82 /* UIViewController+LifecycleSignalsSpec.mm in Sources */,
 				83AE3F121D48948A00F51B89 /* CUIPreviewViewControllerSpec.mm in Sources */,
 				F9E1E9801D117E0B007B5F6F /* CUISelectableMenuItemViewModelSpec.mm in Sources */,
 				F965C9E31CF317D800005627 /* LTTestModule.mm in Sources */,
 				F9E72E891D2BD9B5000E12C1 /* CUIPreviewViewModelSpec.mm in Sources */,
-				BEEE6D361D21385D00579F5D /* EXPMatchers+error.m in Sources */,
 				BE8229021D81BE2D000B0C06 /* CUIDropDownEntryViewModelSpec.mm in Sources */,
 				837FBFC91D4F8929003B53BF /* WFLoggingImageProvider.mm in Sources */,
-				BEEE6D371D21385D00579F5D /* EXPMatchers+finish.m in Sources */,
-				BEEE6D321D21385D00579F5D /* LLReactiveMatchersMessageBuilder.m in Sources */,
-				BEEE6D331D21385D00579F5D /* EXPMatchers+beSubscribedTo.m in Sources */,
 				BE3F84CC1D82DB690043F3E3 /* CUIDropDownHorizontalViewSpec.mm in Sources */,
-				BEEE6D391D21385D00579F5D /* EXPMatchers+matchValue.m in Sources */,
-				BEEE6D3C1D21385D00579F5D /* EXPMatchers+sendEvents.m in Sources */,
-				BEEE6D341D21385D00579F5D /* EXPMatchers+complete.m in Sources */,
 				F9CD3C171CECBC4500190169 /* CUISharedThemeSpec.mm in Sources */,
 				BE0E850A1D2B9B1F00093B01 /* CAMDeviceStub.mm in Sources */,
 				0609BA8B1D9132E5000938EB /* CUISampleBufferViewSpec.mm in Sources */,
 				8328EE411D436169008C5A19 /* CUITimerModeViewModelSpec.mm in Sources */,
-				BEEE6D2F1D21385D00579F5D /* LLSignalTestRecorder.m in Sources */,
 				F9D0D2281D06BACB0033A4A5 /* WFFakePaintCodeModule.m in Sources */,
 				BE1D01091D203656008FA64F /* CUIDropDownViewSpec.mm in Sources */,
 				BECFD6901D23AD6600361F3D /* CUIFlashModeViewModelSpec.mm in Sources */,
@@ -1821,25 +1740,18 @@
 				BE0D7A9E1CF4978F009899F9 /* CUISimpleMenuItemViewModel.m in Sources */,
 				BECE31E21D3BA11900B96053 /* CUIFlipCameraViewModelSpec.mm in Sources */,
 				F935E5711D33DFCF003DEEE5 /* CUIFakeNSNotificationCenter.mm in Sources */,
-				BEEE6D351D21385D00579F5D /* EXPMatchers+deliverValuesOnThread.m in Sources */,
 				F954188C1CFC56DD00C6BE2E /* CUIMenuItemModelSpec.mm in Sources */,
 				F9A684791D1FF45200E0F319 /* CUILayerViewSpec.mm in Sources */,
-				BEEE6D3D1D21385D00579F5D /* EXPMatchers+sendValues.m in Sources */,
 				F925C2D11D37B31E00C95F46 /* CUIFocusIconModeSpec.mm in Sources */,
 				F99542581D058EB0004C54D4 /* CUIIconWithTitleCellSpec.mm in Sources */,
-				BEEE6D381D21385D00579F5D /* EXPMatchers+matchError.m in Sources */,
-				BEEE6D3E1D21385D00579F5D /* EXPMatchers+sendValuesWithCount.m in Sources */,
 				8328EDBC1D40F9E8008C5A19 /* CUIGridViewModelSpec.mm in Sources */,
 				0609BA8E1D913314000938EB /* CAMTestUtils.mm in Sources */,
 				F965C9E61CF317F800005627 /* LTObjectionModule.mm in Sources */,
 				8328EE3F1D43615C008C5A19 /* CUITimerMenuViewModelSpec.mm in Sources */,
 				BEC7B1AF1D1FFCE40012C286 /* CUIDropDownMenuItemsEntrySpec.mm in Sources */,
 				F965C9E01CF317A100005627 /* LTSpectaObjectionHook.mm in Sources */,
-				BEEE6D311D21385D00579F5D /* LLReactiveMatchersHelpers.m in Sources */,
 				BE40FECA1D253776004A7C51 /* CUIFlashMenuViewModelSpec.mm in Sources */,
-				BEEE6D3B1D21385D00579F5D /* EXPMatchers+sendError.m in Sources */,
 				83AE3F351D48955400F51B89 /* UIView+Retrieval.m in Sources */,
-				BEEE6D2E1D21385D00579F5D /* EXPExpect+LLReactiveMatchersExtensions.m in Sources */,
 				F9660E681D09A8F300669EB0 /* CUISingleChoiceMenuViewControllerSpec.mm in Sources */,
 				F9B088A21D2127C500EB1E76 /* CUIMenuItemsDataSourceSpec.mm in Sources */,
 			);
