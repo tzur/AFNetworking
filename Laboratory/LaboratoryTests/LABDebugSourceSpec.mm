@@ -488,19 +488,4 @@ it(@"should reset variant activation requests", ^{
   expect(source.variantActivationRequests).to.haveCount(0);
 });
 
-it(@"should deallocate properly", ^{
-  __block __weak LABDebugSource *weakSource;
-  @autoreleasepool {
-    auto strongSource =
-        [[LABDebugSource alloc] initWithSources:@[fakeSource1, fakeSource2] storage:storage];
-    expect([strongSource update]).will.complete();
-    weakSource = strongSource;
-    expect(weakSource).notTo.beNil();
-  }
-
-  // \c will is used instead of \c to to overcome a race condition that is caused by a
-  // \c RACScheduler that runs internally and fails to release in time, because it uses GCD.
-  expect(weakSource).will.beNil();
-});
-
 SpecEnd
