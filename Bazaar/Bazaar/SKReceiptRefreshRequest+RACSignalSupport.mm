@@ -10,6 +10,18 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation SKReceiptRefreshRequest (RACSignalSupport)
 
+/// Domain of the error when the user cancelled the refresh receipt request.
+static NSErrorDomain const SSErrorDomain = @"SSErrorDomain";
+
+/// Code of the error when the user cancelled the refresh receipt request.
+static const NSInteger SSErrorCodeAuthenticationFailed = 16;
+
+/// Domain of the underlying error when the user cancelled the refresh receipt request.
+static NSErrorDomain const AKAuthenticationErrorDomain = @"AKAuthenticationError";
+
+/// Code of the underlying error when the user cancelled the refresh receipt request.
+static const NSInteger AKAuthenticationErrorCodeAuthenticationFailed = -7003;
+
 static void RACUseDelegateProxy(SKReceiptRefreshRequest *self) {
   if (self.delegate == self.bzr_delegateProxy) {
     return;
@@ -49,10 +61,27 @@ static void RACUseDelegateProxy(SKReceiptRefreshRequest *self) {
 - (RACSignal *)bzr_errorSignal {
   return [[self.bzr_delegateProxy signalForSelector:@selector(request:didFailWithError:)]
       flattenMap:^(RACTuple *parameters) {
-        NSError *error = [NSError lt_errorWithCode:BZRErrorCodeReceiptRefreshFailed
-                                   underlyingError:parameters.second];
+        NSError *underlyingError = parameters.second;
+        NSError *error;
+
+        if ([SKReceiptRefreshRequest isErrorIndicatesCancellation:underlyingError]) {
+          error = [NSError lt_errorWithCode:BZRErrorCodeOperationCancelled
+                            underlyingError:underlyingError
+                                description:@"Refresh receipt operation was cancelled"];
+        } else {
+          error = [NSError lt_errorWithCode:BZRErrorCodeReceiptRefreshFailed
+                            underlyingError:underlyingError];
+        }
+
         return [RACSignal error:error];
       }];
+}
+
++ (BOOL)isErrorIndicatesCancellation:(NSError *)refreshReceiptError {
+  return [refreshReceiptError.domain isEqualToString:SSErrorDomain] &&
+      refreshReceiptError.code == SSErrorCodeAuthenticationFailed &&
+      [refreshReceiptError.lt_underlyingError.domain isEqualToString:AKAuthenticationErrorDomain] &&
+      refreshReceiptError.lt_underlyingError.code == AKAuthenticationErrorCodeAuthenticationFailed;
 }
 
 @end

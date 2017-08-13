@@ -516,7 +516,13 @@ NS_ASSUME_NONNULL_BEGIN
         @strongify(self);
         [self sendErrorEventOfType:$(BZREventTypeNonCriticalError) error:error];
       }]
-      catchTo:[RACSignal empty]]
+      catch:^RACSignal *(NSError *error) {
+        if (error.code == BZRErrorCodeOperationCancelled) {
+          return [RACSignal error:error];
+        }
+
+        return [RACSignal empty];
+      }]
       concat:[self validateReceipt]]
       ignoreValues]
       setNameWithFormat:@"%@ -refreshReceipt", self];
