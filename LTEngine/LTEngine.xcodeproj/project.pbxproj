@@ -1234,6 +1234,7 @@
 		B499E0421F3886350052212E /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3C0A5118329505000845BA /* CoreVideo.framework */; };
 		B49EB6AE1F2EFED6008EDBD3 /* LTFbo+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = B49EB6AC1F2EFED6008EDBD3 /* LTFbo+Private.h */; };
 		B49EB6E41F2F0736008EDBD3 /* LTRenderbuffer+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = B49EB6E21F2F0736008EDBD3 /* LTRenderbuffer+Private.h */; };
+		B4BF15F21F41C8DD0077726E /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3C0A531832950F000845BA /* AVFoundation.framework */; };
 		B4F1DEB21E2CB3430042DB2A /* LTFboAttachableInfoSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = B4F1DEB11E2CB3430042DB2A /* LTFboAttachableInfoSpec.mm */; };
 		BEB7BEB61E26804B007EAB73 /* NSValueTransformer+LTEngine.h in Headers */ = {isa = PBXBuildFile; fileRef = BEB7BEB41E26804B007EAB73 /* NSValueTransformer+LTEngine.h */; };
 		BEB7BEB71E26804B007EAB73 /* NSValueTransformer+LTEngine.mm in Sources */ = {isa = PBXBuildFile; fileRef = BEB7BEB51E26804B007EAB73 /* NSValueTransformer+LTEngine.mm */; };
@@ -3032,6 +3033,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8BA8C68818699D9A00E6F486 /* Accelerate.framework in Frameworks */,
+				B4BF15F21F41C8DD0077726E /* AVFoundation.framework in Frameworks */,
 				8B3DEC1518296D8300EA0C1A /* CoreGraphics.framework in Frameworks */,
 				B499E0421F3886350052212E /* CoreVideo.framework in Frameworks */,
 				8B3DEBE818296B6100EA0C1A /* Foundation.framework in Frameworks */,
