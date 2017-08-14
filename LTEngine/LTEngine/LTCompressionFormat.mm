@@ -1,6 +1,10 @@
 // Copyright (c) 2016 Lightricks. All rights reserved.
 // Created by Amit Yitzhack.
 
+#ifdef __IPHONE_11_0
+  #define LTCOMPRESSIONFORMT_USE_AV_HEIC_TYPE
+#endif
+
 #import "LTCompressionFormat.h"
 
 #import <AVFoundation/AVMediaFormat.h>
@@ -26,7 +30,11 @@ LTEnumImplement(NSUInteger, LTCompressionFormat,
     case LTCompressionFormatTIFF:
       return (NSString *)kUTTypeTIFF;
     case LTCompressionFormatHEVC:
+#ifdef LTCOMPRESSIONFORMT_USE_AV_HEIC_TYPE
       return AVFileTypeHEIC;
+#else
+      return @"public.heic";
+#endif
   }
 }
 
