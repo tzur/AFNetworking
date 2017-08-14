@@ -6,8 +6,8 @@
 #import <ImageIO/CGImageProperties.h>
 #import <LTEngine/CVPixelBuffer+LTEngine.h>
 
-#import "CAMTestUtils.h"
 #import "CAMDevicePreset.h"
+#import "CAMTestUtils.h"
 
 static NSDictionary *CAMSampleBufferMetadata(CMSampleBufferRef sampleBuffer,
                                              CMAttachmentMode attachmentMode) {
@@ -45,7 +45,7 @@ context(@"CAMGePropagatabletMetadata", ^{
     }
     expect(weakDict).to.beNil();
   });
-  
+
   it(@"should return a copy of the propagatable metadata", ^{
     CMSetAttachments(sampleBuffer.get(), (__bridge CFDictionaryRef)metadataDictionary,
                      kCMAttachmentMode_ShouldPropagate);
@@ -169,7 +169,7 @@ context(@"CAMCopyPropagatableMetadata", ^{
                      kCMAttachmentMode_ShouldPropagate);
 
     CAMCopyPropagatableMetadata(sampleBuffer.get(), sampleBuffer2.get());
-    NSDictionary *returnedMetadataDictionary = 
+    NSDictionary *returnedMetadataDictionary =
         CAMSampleBufferMetadata(sampleBuffer2.get(), kCMAttachmentMode_ShouldPropagate);
     NSDictionary *expectedMetadataDictionary = @{
       (__bridge NSString *)kCGImagePropertyExifWhiteBalance: @1,
