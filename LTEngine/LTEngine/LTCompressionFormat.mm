@@ -3,6 +3,7 @@
 
 #import "LTCompressionFormat.h"
 
+#import <AVFoundation/AVMediaFormat.h>
 #import <MobileCoreServices/MobileCoreServices.h>
 
 NS_ASSUME_NONNULL_BEGIN
@@ -10,7 +11,8 @@ NS_ASSUME_NONNULL_BEGIN
 LTEnumImplement(NSUInteger, LTCompressionFormat,
   LTCompressionFormatJPEG,
   LTCompressionFormatPNG,
-  LTCompressionFormatTIFF
+  LTCompressionFormatTIFF,
+  LTCompressionFormatHEVC
 );
 
 @implementation LTCompressionFormat (Properties)
@@ -23,6 +25,8 @@ LTEnumImplement(NSUInteger, LTCompressionFormat,
       return (NSString *)kUTTypePNG;
     case LTCompressionFormatTIFF:
       return (NSString *)kUTTypeTIFF;
+    case LTCompressionFormatHEVC:
+      return AVFileTypeHEIC;
   }
 }
 
@@ -34,6 +38,8 @@ LTEnumImplement(NSUInteger, LTCompressionFormat,
       return @"png";
     case LTCompressionFormatTIFF:
       return @"tif";
+    case LTCompressionFormatHEVC:
+      return @".heic";
   }
 }
 
@@ -45,6 +51,8 @@ LTEnumImplement(NSUInteger, LTCompressionFormat,
       return @"image/png";
     case LTCompressionFormatTIFF:
       return @"image/tiff";
+    case LTCompressionFormatHEVC:
+      return @"image/heic";
   }
 }
 

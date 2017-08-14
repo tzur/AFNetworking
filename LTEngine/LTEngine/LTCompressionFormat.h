@@ -7,7 +7,8 @@ NS_ASSUME_NONNULL_BEGIN
 LTEnumDeclare(NSUInteger, LTCompressionFormat,
   LTCompressionFormatJPEG,
   LTCompressionFormatPNG,
-  LTCompressionFormatTIFF
+  LTCompressionFormatTIFF,
+  LTCompressionFormatHEVC
 );
 
 /// Category providing properties for an \c LTCompressionFormat enum value.
