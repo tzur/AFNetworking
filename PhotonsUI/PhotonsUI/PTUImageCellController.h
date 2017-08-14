@@ -28,6 +28,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)imageCellController:(PTUImageCellController *)imageCellController
              loadedSubtitle:(nullable NSString *)subtitle;
 
+/// Called with \c imageCellController and \c duration whenever a new duration was loaded and should
+/// be displayed. \c duration will be set to \c nil if no duration should be displayed.
+- (void)imageCellController:(PTUImageCellController *)imageCellController
+             loadedDuration:(nullable NSString *)duration;
+
 /// Called with \c imageCellController and the appropriate \c error whenever an error occurred while
 /// attempting to fetch image from latest view model set in \c setViewModel:.
 - (void)imageCellController:(PTUImageCellController *)imageCellController
@@ -42,6 +47,11 @@ NS_ASSUME_NONNULL_BEGIN
 /// attempting to fetch subtitle from latest view model set in \c setViewModel:.
 - (void)imageCellController:(PTUImageCellController *)imageCellController
        errorLoadingSubtitle:(NSError *)error;
+
+/// Called with \c imageCellController and the appropriate \c error whenever an error occurred while
+/// attempting to fetch duration from latest view model set in \c setViewModel:.
+- (void)imageCellController:(PTUImageCellController *)imageCellController
+       errorLoadingDuration:(NSError *)error;
 
 @end
 

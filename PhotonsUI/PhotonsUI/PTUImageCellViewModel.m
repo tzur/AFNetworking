@@ -86,10 +86,15 @@ NSString * const kPTUImageCellViewModelTraitGIFKey = @"GIF";
         map:^NSString *(PTNAlbumChangeset *changeset) {
           return [self stringWithImageCount:changeset.afterAlbum.assets.count];
         }];
-  } else if ([self.traits containsObject:kPTUImageCellViewModelTraitVideoKey]) {
-    return [self videoDuartionString];
   }
 
+  return nil;
+}
+
+- (nullable RACSignal *)durationSignal {
+  if ([self.traits containsObject:kPTUImageCellViewModelTraitVideoKey]) {
+    return [self videoDuartionString];
+  }
   return nil;
 }
 

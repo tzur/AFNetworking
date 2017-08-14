@@ -20,6 +20,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Manual disposal handle for the subtitle signal of the \c viewModel.
 @property (strong, nonatomic) RACDisposable *subtitleSignalDisposable;
 
+/// Manual disposal handle for the duration signal of the \c viewModel.
+@property (strong, nonatomic) RACDisposable *durationSignalDisposable;
+
 @end
 
 @implementation PTUImageCellController
@@ -28,6 +31,7 @@ NS_ASSUME_NONNULL_BEGIN
   [self.imageSignalDisposable dispose];
   [self.titleSignalDisposable dispose];
   [self.subtitleSignalDisposable dispose];
+  [self.durationSignalDisposable dispose];
 }
 
 - (void)setImageSize:(CGSize)imageSize {
@@ -44,6 +48,7 @@ NS_ASSUME_NONNULL_BEGIN
   [self replaceTitleSignalBinding];
   [self replaceSubtitleSignalBinding];
   [self replaceImageSignalBinding];
+  [self replaceDurationSignalBinding];
 }
 
 #pragma mark -
@@ -101,6 +106,36 @@ NS_ASSUME_NONNULL_BEGIN
         if ([self.delegate respondsToSelector:
              @selector(imageCellController:errorLoadingSubtitle:)]) {
           [self.delegate imageCellController:self errorLoadingSubtitle:error];
+        }
+      }];
+}
+
+#pragma mark -
+#pragma mark Duration
+#pragma mark -
+
+- (void)replaceDurationSignalBinding {
+  [self.durationSignalDisposable dispose];
+  if ([self.delegate respondsToSelector:@selector(imageCellController:loadedDuration:)]) {
+    [self.delegate imageCellController:self loadedDuration:nil];
+  }
+  [self bindDurationSignal];
+}
+
+- (void)bindDurationSignal {
+  @weakify(self);
+  self.durationSignalDisposable = [[self.viewModel.durationSignal
+      deliverOnMainThread]
+      subscribeNext:^(NSString *duration) {
+        @strongify(self);
+        if ([self.delegate respondsToSelector:@selector(imageCellController:loadedDuration:)]) {
+          [self.delegate imageCellController:self loadedDuration:duration];
+        }
+      } error:^(NSError *error) {
+        @strongify(self);
+        if ([self.delegate respondsToSelector:
+             @selector(imageCellController:errorLoadingDuration:)]) {
+          [self.delegate imageCellController:self errorLoadingDuration:error];
         }
       }];
 }

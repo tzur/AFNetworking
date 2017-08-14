@@ -39,6 +39,10 @@ extern NSString * const kPTUImageCellViewModelTraitGIFKey;
 /// display, and it should be set to \c nil.
 @property (readonly, nonatomic, nullable) RACSignal *subtitleSignal;
 
+/// Signal carrying duration string to display, or \c nil if no values should be set for the
+/// duration to display, and it should be set to \c nil.
+@property (readonly, nonatomic, nullable) RACSignal *durationSignal;
+
 /// Set of traits defining properties of the corresponding cell.
 ///
 /// @see PTUImageCellViewModel.h for the cell default trait keys.

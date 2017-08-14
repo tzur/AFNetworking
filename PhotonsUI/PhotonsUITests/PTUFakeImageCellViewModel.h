@@ -13,6 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithImageSignal:(nullable RACSignal *)imageSignal
                         titleSignal:(nullable RACSignal *)titleSignal
                      subtitleSignal:(nullable RACSignal *)subtitleSignal
+                     durationSignal:(nullable RACSignal *)durationSignal
                              traits:(nullable NSSet<NSString *> *)traits
     NS_DESIGNATED_INITIALIZER;
 
@@ -24,6 +25,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Signal used as this view model's \c subtitleSignal.
 @property (strong, nonatomic, nullable) RACSignal *subtitleSignal;
+
+/// Signal used as this view model's \c durationSignal.
+@property (strong, nonatomic, nullable) RACSignal *durationSignal;
 
 /// Cell traits associated with this view model.
 @property (strong, nonatomic) NSSet<NSString *> *traits;

@@ -107,10 +107,9 @@ context(@"PTNDescriptor", ^{
     it(@"should expose video trait if underlying descriptor has video trait", ^{
       id<PTNDescriptor> videoAsset = PTNCreateDescriptor(nil, @"foo", 0,
           [NSSet setWithObject:kPTNDescriptorTraitAudiovisualKey]);
-      PTUImageCellViewModel *videoViewModel = [[PTUImageCellViewModel alloc]
-                                               initWithAssetManager:assetManager
-                                               descriptor:videoAsset
-                                               imageFetchOptions:options];
+      PTUImageCellViewModel *videoViewModel =
+          [[PTUImageCellViewModel alloc] initWithAssetManager:assetManager descriptor:videoAsset
+                                            imageFetchOptions:options];
       expect(videoViewModel.traits).to.contain(kPTUImageCellViewModelTraitVideoKey);
     });
 
@@ -210,12 +209,12 @@ context(@"video", ^{
     timeFormatter = [[PTUTimeFormatter alloc] init];
   });
 
-  it(@"should deliver video duration string on subtitle signal", ^{
+  it(@"should deliver video duration string on duration signal", ^{
     PTUImageCellViewModel *videoViewModel =
         [[PTUImageCellViewModel alloc] initWithAssetManager:assetManager descriptor:videoDescriptor
                                           imageFetchOptions:options timeFormatter:timeFormatter];
 
-    LLSignalTestRecorder *recorder = [videoViewModel.subtitleSignal testRecorder];
+    LLSignalTestRecorder *recorder = [videoViewModel.durationSignal testRecorder];
 
     expect(recorder.values).to.equal(@[[timeFormatter timeStringForTimeInterval:duration]]);
   });
