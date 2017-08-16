@@ -21,6 +21,8 @@
 		2873CA171F54656500677B2C /* NSURL+OceanSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2873CA161F54656500677B2C /* NSURL+OceanSpec.mm */; };
 		2873CA421F54659500677B2C /* NSValueTransformer+Photons.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2873CA411F54659500677B2C /* NSValueTransformer+Photons.mm */; };
 		2873CA6C1F5465A600677B2C /* NSValueTransformer+PhotonsSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2873CA6B1F5465A600677B2C /* NSValueTransformer+PhotonsSpec.mm */; };
+		2873CA971F5465D500677B2C /* PTNOceanAlbumDescriptor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2873CA961F5465D500677B2C /* PTNOceanAlbumDescriptor.mm */; };
+		2873CAC11F5465EB00677B2C /* PTNOceanAlbumDescriptorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2873CAC01F5465EB00677B2C /* PTNOceanAlbumDescriptorSpec.mm */; };
 		28BAD5E91F1E0513001048D0 /* Mantle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28BAD5E61F1E033A001048D0 /* Mantle.framework */; };
 		28BAD5EB1F1E0528001048D0 /* AFNetworking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28BAD5EA1F1E0528001048D0 /* AFNetworking.framework */; };
 		28BAD5EC1F1E052D001048D0 /* libFiber.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 28BAD5BA1F1E031C001048D0 /* libFiber.a */; };
@@ -573,6 +575,9 @@
 		2873CA401F54659500677B2C /* NSValueTransformer+Photons.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSValueTransformer+Photons.h"; sourceTree = "<group>"; };
 		2873CA411F54659500677B2C /* NSValueTransformer+Photons.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSValueTransformer+Photons.mm"; sourceTree = "<group>"; };
 		2873CA6B1F5465A600677B2C /* NSValueTransformer+PhotonsSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSValueTransformer+PhotonsSpec.mm"; sourceTree = "<group>"; };
+		2873CA951F5465D500677B2C /* PTNOceanAlbumDescriptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNOceanAlbumDescriptor.h; sourceTree = "<group>"; };
+		2873CA961F5465D500677B2C /* PTNOceanAlbumDescriptor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PTNOceanAlbumDescriptor.mm; sourceTree = "<group>"; };
+		2873CAC01F5465EB00677B2C /* PTNOceanAlbumDescriptorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PTNOceanAlbumDescriptorSpec.mm; sourceTree = "<group>"; };
 		28BAD5A01F1E031B001048D0 /* Fiber.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Fiber.xcodeproj; path = ../Fiber/Fiber.xcodeproj; sourceTree = "<group>"; };
 		28BAD5DA1F1E033A001048D0 /* Mantle.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Mantle.xcodeproj; path = ../third_party/Mantle/Mantle.xcodeproj; sourceTree = "<group>"; };
 		28BAD5EA1F1E0528001048D0 /* AFNetworking.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AFNetworking.framework; path = "../../../../../Library/Developer/Xcode/DerivedData/Photons-bmimbhansjldytcrqayxlubmctds/Build/Products/Debug-iphonesimulator/AFNetworking.framework"; sourceTree = "<group>"; };
@@ -952,6 +957,8 @@
 				2873C9EC1F54655200677B2C /* NSURL+Ocean.mm */,
 				2873CA401F54659500677B2C /* NSValueTransformer+Photons.h */,
 				2873CA411F54659500677B2C /* NSValueTransformer+Photons.mm */,
+				2873CA951F5465D500677B2C /* PTNOceanAlbumDescriptor.h */,
+				2873CA961F5465D500677B2C /* PTNOceanAlbumDescriptor.mm */,
 				2873C9C01F54650800677B2C /* PTNOceanEnums.h */,
 				2873C9C11F54650800677B2C /* PTNOceanEnums.mm */,
 				2873C97C1F54648900677B2C /* RACSignal+Mantle.h */,
@@ -965,6 +972,7 @@
 			children = (
 				2873CA161F54656500677B2C /* NSURL+OceanSpec.mm */,
 				2873CA6B1F5465A600677B2C /* NSValueTransformer+PhotonsSpec.mm */,
+				2873CAC01F5465EB00677B2C /* PTNOceanAlbumDescriptorSpec.mm */,
 				2873C9961F5464FD00677B2C /* PTNOceanEnumsSpec.mm */,
 				2873C9801F5464B000677B2C /* RACSignal+MantleSpec.mm */,
 			);
@@ -2166,6 +2174,7 @@
 				84E55C2C1C8EC84300D91339 /* PTNSignalCache.m in Sources */,
 				84515F5B1C96A8A500AD8B5B /* PTNOpenURLManager.m in Sources */,
 				84E55C251C8EC83800D91339 /* PTNDataBackedImageAsset.m in Sources */,
+				2873CA971F5465D500677B2C /* PTNOceanAlbumDescriptor.mm in Sources */,
 				B411A0491EEE76BF00756808 /* PTNMediaLibraryAuthorizer.mm in Sources */,
 				0DF0D2001EACF36D000EEF37 /* PTNAVImageAsset.mm in Sources */,
 				84E55C2E1C8EC84800D91339 /* NSURL+Dropbox.m in Sources */,
@@ -2324,6 +2333,7 @@
 				84515F751C96A93D00AD8B5B /* PTNPhotoKitAuthorizationManagerSpec.mm in Sources */,
 				84DD77B71CA9693B000C3197 /* PTNCacheInfoSpec.m in Sources */,
 				2873C9811F5464B000677B2C /* RACSignal+MantleSpec.mm in Sources */,
+				2873CAC11F5465EB00677B2C /* PTNOceanAlbumDescriptorSpec.mm in Sources */,
 				B45B6C081F04F96400BF67A6 /* PTNFakeMediaQuery.mm in Sources */,
 				84013BB31CBFB12400C40E42 /* PTNTestUtils.mm in Sources */,
 				8414EACD1C5E307500014DD1 /* NSURL+PTNResizingStrategySpec.m in Sources */,
