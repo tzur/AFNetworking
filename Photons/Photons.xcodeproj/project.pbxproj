@@ -15,6 +15,8 @@
 		0DF155D31EB1DC38009F3080 /* libcompression.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = CDE00B021E82AE40007AFD5E /* libcompression.tbd */; };
 		2873C97E1F54648900677B2C /* RACSignal+Mantle.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2873C97D1F54648900677B2C /* RACSignal+Mantle.mm */; };
 		2873C9811F5464B000677B2C /* RACSignal+MantleSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2873C9801F5464B000677B2C /* RACSignal+MantleSpec.mm */; };
+		2873C9971F5464FD00677B2C /* PTNOceanEnumsSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2873C9961F5464FD00677B2C /* PTNOceanEnumsSpec.mm */; };
+		2873C9C21F54650800677B2C /* PTNOceanEnums.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2873C9C11F54650800677B2C /* PTNOceanEnums.mm */; };
 		28BAD5E91F1E0513001048D0 /* Mantle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28BAD5E61F1E033A001048D0 /* Mantle.framework */; };
 		28BAD5EB1F1E0528001048D0 /* AFNetworking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28BAD5EA1F1E0528001048D0 /* AFNetworking.framework */; };
 		28BAD5EC1F1E052D001048D0 /* libFiber.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 28BAD5BA1F1E031C001048D0 /* libFiber.a */; };
@@ -558,6 +560,9 @@
 		2873C97C1F54648900677B2C /* RACSignal+Mantle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RACSignal+Mantle.h"; sourceTree = "<group>"; };
 		2873C97D1F54648900677B2C /* RACSignal+Mantle.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "RACSignal+Mantle.mm"; sourceTree = "<group>"; };
 		2873C9801F5464B000677B2C /* RACSignal+MantleSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "RACSignal+MantleSpec.mm"; sourceTree = "<group>"; };
+		2873C9961F5464FD00677B2C /* PTNOceanEnumsSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PTNOceanEnumsSpec.mm; sourceTree = "<group>"; };
+		2873C9C01F54650800677B2C /* PTNOceanEnums.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNOceanEnums.h; sourceTree = "<group>"; };
+		2873C9C11F54650800677B2C /* PTNOceanEnums.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PTNOceanEnums.mm; sourceTree = "<group>"; };
 		28BAD5A01F1E031B001048D0 /* Fiber.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Fiber.xcodeproj; path = ../Fiber/Fiber.xcodeproj; sourceTree = "<group>"; };
 		28BAD5DA1F1E033A001048D0 /* Mantle.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Mantle.xcodeproj; path = ../third_party/Mantle/Mantle.xcodeproj; sourceTree = "<group>"; };
 		28BAD5EA1F1E0528001048D0 /* AFNetworking.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AFNetworking.framework; path = "../../../../../Library/Developer/Xcode/DerivedData/Photons-bmimbhansjldytcrqayxlubmctds/Build/Products/Debug-iphonesimulator/AFNetworking.framework"; sourceTree = "<group>"; };
@@ -933,6 +938,8 @@
 		2873C9531F54644B00677B2C /* Stock Assets */ = {
 			isa = PBXGroup;
 			children = (
+				2873C9C01F54650800677B2C /* PTNOceanEnums.h */,
+				2873C9C11F54650800677B2C /* PTNOceanEnums.mm */,
 				2873C97C1F54648900677B2C /* RACSignal+Mantle.h */,
 				2873C97D1F54648900677B2C /* RACSignal+Mantle.mm */,
 			);
@@ -942,6 +949,7 @@
 		2873C97F1F54649300677B2C /* Stock Assets */ = {
 			isa = PBXGroup;
 			children = (
+				2873C9961F5464FD00677B2C /* PTNOceanEnumsSpec.mm */,
 				2873C9801F5464B000677B2C /* RACSignal+MantleSpec.mm */,
 			);
 			name = "Stock Assets";
@@ -2207,6 +2215,7 @@
 				84E55C291C8EC83F00D91339 /* PTNImageResizer.m in Sources */,
 				84E55C341C8EC84F00D91339 /* PTNDropboxFileDescriptor.m in Sources */,
 				84E55C2A1C8EC84000D91339 /* PTNProgress.m in Sources */,
+				2873C9C21F54650800677B2C /* PTNOceanEnums.mm in Sources */,
 				88CDF86C1EA7AAE80094A7F7 /* PTNImageDataAsset.mm in Sources */,
 				B4B0079F1F1735A90034881A /* PTNMediaQueryProvider.mm in Sources */,
 				84E55C221C8EC83200D91339 /* NSURL+PTNResizingStrategy.m in Sources */,
@@ -2272,6 +2281,7 @@
 				84DD77E91CA96C2E000C3197 /* PTNCacheResponseSpec.m in Sources */,
 				846261621CBD1BB900ED364E /* PTNPhotoKitFakeAuthorizationManager.mm in Sources */,
 				845162F61C986EDA00AD8B5B /* NSURL+PTNCacheSpec.m in Sources */,
+				2873C9971F5464FD00677B2C /* PTNOceanEnumsSpec.mm in Sources */,
 				B411A04B1EEE76E000756808 /* PTNMediaLibraryAuthorizationManagerSpec.mm in Sources */,
 				B4F5B2141F25CFE8000B3435 /* PTNMediaLibraryCollectionDescriptorSpec.mm in Sources */,
 				84515F731C96A90500AD8B5B /* PTNDropboxAuthorizationManagerSpec.mm in Sources */,
