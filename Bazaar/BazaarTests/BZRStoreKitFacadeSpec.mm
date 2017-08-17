@@ -67,12 +67,34 @@ context(@"fetching products metadata", ^{
     expect(recorder).will.sendValues(@[response]);
   });
 
+  it(@"should not cancel when signal completes", ^{
+    SKProduct *product = OCMClassMock([SKProduct class]);
+    SKProductsResponse *response = OCMClassMock([SKProductsResponse class]);
+    OCMStub([response products]).andReturn(@[product]);
+    OCMStub([productsRequest bzr_statusSignal]).andReturn([RACSignal return:response]);
+    OCMReject([productsRequest cancel]);
+
+    auto signal =
+        [[storeKitFacade fetchMetadataForProductsWithIdentifiers:productIdentifiers] testRecorder];
+
+    expect(signal).will.complete();
+  });
+
   it(@"should send error sent by products request", ^{
     NSError *error = [NSError lt_errorWithCode:1337];
     OCMStub([productsRequest bzr_statusSignal]).andReturn([RACSignal error:error]);
 
-    RACSignal *signal =
-        [storeKitFacade fetchMetadataForProductsWithIdentifiers:productIdentifiers];
+    RACSignal *signal = [storeKitFacade fetchMetadataForProductsWithIdentifiers:productIdentifiers];
+
+    expect(signal).will.sendError(error);
+  });
+
+  it(@"should not cancel when signal errs", ^{
+    NSError *error = [NSError lt_errorWithCode:1337];
+    OCMStub([productsRequest bzr_statusSignal]).andReturn([RACSignal error:error]);
+    OCMReject([productsRequest cancel]);
+
+    RACSignal *signal = [storeKitFacade fetchMetadataForProductsWithIdentifiers:productIdentifiers];
 
     expect(signal).will.sendError(error);
   });

@@ -86,12 +86,21 @@ NS_ASSUME_NONNULL_BEGIN
   // If Bazaar does additional calculations later it might affect the UI. Therefore, the values are
   // delivered on a background scheduler.
   return [[RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+    __block BOOL didSignalFinish = NO;
     SKProductsRequest *request =
         [self.storeKitRequestsFactory productsRequestWithIdentifiers:productIdentifiers];
-    [[request bzr_statusSignal] subscribe:subscriber];
+    
+    [[[request bzr_statusSignal]
+        finally:^{
+          didSignalFinish = YES;
+        }]
+        subscribe:subscriber];
+
     [request start];
     return [RACDisposable disposableWithBlock:^{
-      [request cancel];
+      if (!didSignalFinish) {
+        [request cancel];
+      }
     }];
   }]
   deliverOn:[RACScheduler scheduler]];
@@ -115,11 +124,20 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (RACSignal *)refreshReceipt {
   return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+    __block BOOL didSignalFinish = NO;
     SKReceiptRefreshRequest *request = [self.storeKitRequestsFactory receiptRefreshRequest];
-    [[request bzr_statusSignal] subscribe:subscriber];
+
+    [[[request bzr_statusSignal]
+        finally:^{
+          didSignalFinish = YES;
+        }]
+        subscribe:subscriber];
+
     [request start];
     return [RACDisposable disposableWithBlock:^{
-      [request cancel];
+      if (!didSignalFinish) {
+        [request cancel];
+      }
     }];
   }];
 }
