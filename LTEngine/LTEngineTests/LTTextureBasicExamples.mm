@@ -3,7 +3,7 @@
 
 #import "LTTextureBasicExamples.h"
 
-#import "LTCVPixelBufferExtensions.h"
+#import "CVPixelBuffer+LTEngine.h"
 #import "LTGLKitExtensions.h"
 #import "LTTexture+Protected.h"
 

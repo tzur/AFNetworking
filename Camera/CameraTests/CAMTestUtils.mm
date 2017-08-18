@@ -3,7 +3,7 @@
 
 #import "CAMTestUtils.h"
 
-#import <LTEngine/LTCVPixelBufferExtensions.h>
+#import <LTEngine/CVPixelBuffer+LTEngine.h>
 
 #import "CAMDevicePreset.h"
 

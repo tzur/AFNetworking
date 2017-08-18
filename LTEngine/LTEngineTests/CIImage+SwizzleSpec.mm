@@ -3,7 +3,7 @@
 
 #import "CIImage+Swizzle.h"
 
-#import "LTCVPixelBufferExtensions.h"
+#import "CVPixelBuffer+LTEngine.h"
 
 SpecBegin(CIImage_Swizzle)
 

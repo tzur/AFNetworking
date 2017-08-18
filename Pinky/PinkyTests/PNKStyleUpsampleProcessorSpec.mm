@@ -3,7 +3,7 @@
 
 #import "PNKStyleUpsampleProcessor.h"
 
-#import <LTEngine/LTCVPixelBufferExtensions.h>
+#import <LTEngine/CVPixelBuffer+LTEngine.h>
 
 SpecBegin(PNKStyleUpsampleProcessor)
 

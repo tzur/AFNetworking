@@ -5,8 +5,8 @@
 
 #import "CIContext+PixelFormat.h"
 #import "CIImage+Swizzle.h"
+#import "CVPixelBuffer+LTEngine.h"
 #import "LTBoundaryCondition.h"
-#import "LTCVPixelBufferExtensions.h"
 #import "LTFbo.h"
 #import "LTFboPool.h"
 #import "LTGLContext.h"

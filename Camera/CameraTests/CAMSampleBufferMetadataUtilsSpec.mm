@@ -4,7 +4,7 @@
 #import "CAMSampleBufferMetadataUtils.h"
 
 #import <ImageIO/CGImageProperties.h>
-#import <LTEngine/LTCVPixelBufferExtensions.h>
+#import <LTEngine/CVPixelBuffer+LTEngine.h>
 
 #import "CAMTestUtils.h"
 #import "CAMDevicePreset.h"
