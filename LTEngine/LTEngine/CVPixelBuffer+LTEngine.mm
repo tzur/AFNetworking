@@ -1,7 +1,7 @@
 // Copyright (c) 2016 Lightricks. All rights reserved.
 // Created by Alex Gershovich.
 
-#import "LTCVPixelBufferExtensions.h"
+#import "CVPixelBuffer+LTEngine.h"
 
 #import "LTGLPixelFormat.h"
 

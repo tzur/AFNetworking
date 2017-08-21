@@ -1,9 +1,9 @@
 // Copyright (c) 2016 Lightricks. All rights reserved.
 // Created by Alex Gershovich.
 
-#import "LTCVPixelBufferExtensions.h"
+#import "CVPixelBuffer+LTEngine.h"
 
-SpecBegin(LTCVPixelBufferExtensions)
+SpecBegin(CVPixelBuffer_LTEngine)
 
 context(@"creation", ^{
   it(@"should create a pixel buffer", ^{

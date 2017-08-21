@@ -3,7 +3,7 @@
 
 #import "LTGLTexture.h"
 
-#import "LTCVPixelBufferExtensions.h"
+#import "CVPixelBuffer+LTEngine.h"
 #import "LTFbo.h"
 #import "LTFboPool.h"
 #import "LTGLContext.h"

@@ -3,7 +3,7 @@
 
 #import "CAMVideoFrame+Factory.h"
 
-#import <LTEngine/LTCVPixelBufferExtensions.h>
+#import <LTEngine/CVPixelBuffer+LTEngine.h>
 #import <LTEngine/LTTexture.h>
 
 #import "CAMDevicePreset.h"

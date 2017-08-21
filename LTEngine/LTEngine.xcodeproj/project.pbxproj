@@ -761,9 +761,9 @@
 		656155C41D464B6D009E701C /* Mantle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B0B9A4F1CA6C10B00ED2334 /* Mantle.framework */; };
 		658788A61AC196F4007EDF71 /* LTSeparableImageProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 658788A51AC196F4007EDF71 /* LTSeparableImageProcessorSpec.mm */; };
 		6A4444721B4AC5E200B9C710 /* LTFboPoolSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6A4444711B4AC5E200B9C710 /* LTFboPoolSpec.mm */; };
-		6AB548C01C81F99700672127 /* LTCVPixelBufferExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 6AB548BE1C81F99700672127 /* LTCVPixelBufferExtensions.h */; };
-		6AB548C11C81F99700672127 /* LTCVPixelBufferExtensions.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6AB548BF1C81F99700672127 /* LTCVPixelBufferExtensions.mm */; };
-		6AB549061C822CE100672127 /* LTCVPixelBufferExtensionsSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6AB549051C822CE100672127 /* LTCVPixelBufferExtensionsSpec.mm */; };
+		6AB548C01C81F99700672127 /* CVPixelBuffer+LTEngine.h in Headers */ = {isa = PBXBuildFile; fileRef = 6AB548BE1C81F99700672127 /* CVPixelBuffer+LTEngine.h */; };
+		6AB548C11C81F99700672127 /* CVPixelBuffer+LTEngine.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6AB548BF1C81F99700672127 /* CVPixelBuffer+LTEngine.mm */; };
+		6AB549061C822CE100672127 /* CVPixelBuffer+LTEngineSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6AB549051C822CE100672127 /* CVPixelBuffer+LTEngineSpec.mm */; };
 		6AB997051D5B3ABB0059863F /* LTPixelBufferPool.h in Headers */ = {isa = PBXBuildFile; fileRef = 6AB997031D5B3ABB0059863F /* LTPixelBufferPool.h */; };
 		6AB997061D5B3ABB0059863F /* LTPixelBufferPool.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6AB997041D5B3ABB0059863F /* LTPixelBufferPool.mm */; };
 		6AB9973A1D5B3B930059863F /* LTPixelBufferPoolSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6AB997391D5B3B930059863F /* LTPixelBufferPoolSpec.mm */; };
@@ -2535,9 +2535,9 @@
 		656155BC1D464B4B009E701C /* TestHost.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TestHost.xcodeproj; path = ../../Foundations/TestHost.xcodeproj; sourceTree = "<group>"; };
 		658788A51AC196F4007EDF71 /* LTSeparableImageProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTSeparableImageProcessorSpec.mm; sourceTree = "<group>"; };
 		6A4444711B4AC5E200B9C710 /* LTFboPoolSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTFboPoolSpec.mm; sourceTree = "<group>"; };
-		6AB548BE1C81F99700672127 /* LTCVPixelBufferExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTCVPixelBufferExtensions.h; sourceTree = "<group>"; };
-		6AB548BF1C81F99700672127 /* LTCVPixelBufferExtensions.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTCVPixelBufferExtensions.mm; sourceTree = "<group>"; };
-		6AB549051C822CE100672127 /* LTCVPixelBufferExtensionsSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTCVPixelBufferExtensionsSpec.mm; sourceTree = "<group>"; };
+		6AB548BE1C81F99700672127 /* CVPixelBuffer+LTEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CVPixelBuffer+LTEngine.h"; sourceTree = "<group>"; };
+		6AB548BF1C81F99700672127 /* CVPixelBuffer+LTEngine.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "CVPixelBuffer+LTEngine.mm"; sourceTree = "<group>"; };
+		6AB549051C822CE100672127 /* CVPixelBuffer+LTEngineSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "CVPixelBuffer+LTEngineSpec.mm"; sourceTree = "<group>"; };
 		6AB997031D5B3ABB0059863F /* LTPixelBufferPool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTPixelBufferPool.h; sourceTree = "<group>"; };
 		6AB997041D5B3ABB0059863F /* LTPixelBufferPool.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTPixelBufferPool.mm; sourceTree = "<group>"; };
 		6AB997391D5B3B930059863F /* LTPixelBufferPoolSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTPixelBufferPoolSpec.mm; sourceTree = "<group>"; };
@@ -4887,10 +4887,10 @@
 				281035F71D6DC4B300AF7C0F /* CIContext+PixelFormat.mm */,
 				286A04181D5CADE900DAC4F3 /* CIImage+Swizzle.h */,
 				286A04191D5CADE900DAC4F3 /* CIImage+Swizzle.m */,
+				6AB548BE1C81F99700672127 /* CVPixelBuffer+LTEngine.h */,
+				6AB548BF1C81F99700672127 /* CVPixelBuffer+LTEngine.mm */,
 				50FEAFAA19DC0510009C6E22 /* LTCGPathExtensions.h */,
 				50FEAFAB19DC0510009C6E22 /* LTCGPathExtensions.mm */,
-				6AB548BE1C81F99700672127 /* LTCVPixelBufferExtensions.h */,
-				6AB548BF1C81F99700672127 /* LTCVPixelBufferExtensions.mm */,
 				8BAE1FB4185858E90075A5AB /* LTGLKitExtensions.h */,
 				280F59FE191A61FB00F9F80B /* LTGLKitExtensions.mm */,
 				8BA5DC1218A11F1E00A60A15 /* LTOpenCVExtensions.h */,
@@ -4950,15 +4950,15 @@
 		8B7C6C7C1B52761000B90DBE /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				280E06C51D6DE27700E2D2AA /* CIContext+PixelFormatSpec.mm */,
 				286A044E1D5CB04000DAC4F3 /* CIImage+SwizzleSpec.mm */,
+				6AB549051C822CE100672127 /* CVPixelBuffer+LTEngineSpec.mm */,
 				50FEAFBE19DC0C95009C6E22 /* LTCGPathExtensionsSpec.mm */,
-				6AB549051C822CE100672127 /* LTCVPixelBufferExtensionsSpec.mm */,
+				8BFA8F86191A2F9F0088310E /* LTGLKitExtensionsSpec.mm */,
 				8B4890D318A126C500598AEE /* LTOpenCVExtensionsSpec.mm */,
 				8B9D3FDF189130F1001A964D /* LTOpenCVHalfFloatSpec.mm */,
-				8BFA8F86191A2F9F0088310E /* LTGLKitExtensionsSpec.mm */,
 				B41BF0901EB22DCB00A1FA79 /* NSScanner+MathSpec.mm */,
 				2843721B19F5918C003F3B4A /* UIColor+VectorSpec.mm */,
-				280E06C51D6DE27700E2D2AA /* CIContext+PixelFormatSpec.mm */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -5751,7 +5751,7 @@
 				2836F9EA1D33B9540078887C /* LTCompressionFormat.h in Headers */,
 				500CAA0C1D26B23C009CF19F /* LTPainter+Interaction.h in Headers */,
 				8BA8221C198788A600FBE68E /* LTJSONSerializationAdapter.h in Headers */,
-				6AB548C01C81F99700672127 /* LTCVPixelBufferExtensions.h in Headers */,
+				6AB548C01C81F99700672127 /* CVPixelBuffer+LTEngine.h in Headers */,
 				8B871FFD1924A76000517F2E /* LTGLException.h in Headers */,
 				8B871FFE1924A76000517F2E /* LTGLTexture.h in Headers */,
 				85F372B31C8C888300E1D429 /* LT3DLUT.h in Headers */,
@@ -6885,7 +6885,7 @@
 				2843B77918ABBF350044B87A /* LTSingleRectDrawer.mm in Sources */,
 				5054C6E41CC68D7B00976EA1 /* LTDynamicDrawer.mm in Sources */,
 				8BAF8BDF18BCAA8600C77C04 /* LTRectMapping.mm in Sources */,
-				6AB548C11C81F99700672127 /* LTCVPixelBufferExtensions.mm in Sources */,
+				6AB548C11C81F99700672127 /* CVPixelBuffer+LTEngine.mm in Sources */,
 				8BABFD62188C13FA004163DA /* LTOneShotProcessingStrategy.mm in Sources */,
 				28ED10EB18CC9EFE00EE1633 /* LTBristleBrush.mm in Sources */,
 				283A95A11B70AB36004559BF /* LTMathUtils.mm in Sources */,
@@ -7100,7 +7100,7 @@
 				286A937A18D0513F00F203DF /* LTTextureBrushExamples.mm in Sources */,
 				502B1CC619FA936700985F30 /* LTQuadMappingSpec.mm in Sources */,
 				BEB7BEEC1E2680DB007EAB73 /* LTTestMTLModel.m in Sources */,
-				6AB549061C822CE100672127 /* LTCVPixelBufferExtensionsSpec.mm in Sources */,
+				6AB549061C822CE100672127 /* CVPixelBuffer+LTEngineSpec.mm in Sources */,
 				2884CDAA1B176DB400A58EE4 /* LTImagePNGCompressorSpec.mm in Sources */,
 				28C207AC1AEF694F007214A5 /* LTTextureMetadataSpec.mm in Sources */,
 				0313D5DB188FA2EB006A1846 /* TexelOffset.fsh in Sources */,

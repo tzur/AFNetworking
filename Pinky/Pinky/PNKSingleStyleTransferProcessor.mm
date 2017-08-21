@@ -3,7 +3,7 @@
 
 #import "PNKSingleStyleTransferProcessor.h"
 
-#import <LTEngine/LTCVPixelBufferExtensions.h>
+#import <LTEngine/CVPixelBuffer+LTEngine.h>
 #import <LTEngine/LTGLPixelFormat.h>
 #import <LTEngine/LTOpenCVExtensions.h>
 

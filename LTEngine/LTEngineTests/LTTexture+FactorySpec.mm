@@ -3,7 +3,7 @@
 
 #import "LTTexture+Factory.h"
 
-#import "LTCVPixelBufferExtensions.h"
+#import "CVPixelBuffer+LTEngine.h"
 
 SpecBegin(LTTexture_Factory)
 
