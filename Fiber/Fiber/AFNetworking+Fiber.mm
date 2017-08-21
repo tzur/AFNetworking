@@ -136,6 +136,7 @@ NS_ASSUME_NONNULL_BEGIN
       [AFHTTPRequestSerializer fbr_serializerWithFiberRequestMarshalling:
        configuration.requestMarshalling];
   sessionManager.responseSerializer = [AFHTTPResponseSerializer serializer];
+  sessionManager.completionQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
 
   return sessionManager;
 }

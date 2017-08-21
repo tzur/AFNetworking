@@ -45,7 +45,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// task status as it progresses until it completes. When the task completes the server response
 /// body is delivered wrapped in an \c LTProgress<FBRHTTPResponse> object. The signal errs if a
 /// communication error occurs or if the server response indicates an error (i.e. status code not in
-/// the range <tt>[200, 299]</tt>). Values and errors are delivered on the main queue.
+/// the range <tt>[200, 299]</tt>). Values and errors are delivered on an arbitrary queue.
 - (RACSignal *)GET:(NSString *)URLString
     withParameters:(nullable FBRHTTPRequestParameters *)parameters
            headers:(nullable FBRHTTPRequestHeaders *)headers;
@@ -60,7 +60,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// task status as it progresses until it completes. When the task completes the server response
 /// body is delivered wrapped in an \c LTProgress<FBRHTTPResponse> object. The signal errs if a
 /// communication error occurs or if the server response indicates an error (i.e. status code not in
-/// the range <tt>[200, 299]</tt>). Values and errors are delivered on the main queue.
+/// the range <tt>[200, 299]</tt>). Values and errors are delivered on an arbitrary queue.
 - (RACSignal *)HEAD:(NSString *)URLString
      withParameters:(nullable FBRHTTPRequestParameters *)parameters
             headers:(nullable FBRHTTPRequestHeaders *)headers;
@@ -75,7 +75,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// task status as it progresses until it completes. When the task completes the server response
 /// body is delivered wrapped in an \c LTProgress<FBRHTTPResponse> object. The signal errs if a
 /// communication error occurs or if the server response indicates an error (i.e. status code not in
-/// the range <tt>[200, 299]</tt>). Values and errors are delivered on the main queue.
+/// the range <tt>[200, 299]</tt>). Values and errors are delivered on an arbitrary queue.
 - (RACSignal *)POST:(NSString *)URLString
      withParameters:(nullable FBRHTTPRequestParameters *)parameters
             headers:(nullable FBRHTTPRequestHeaders *)headers;
@@ -90,7 +90,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// task status as it progresses until it completes. When the task completes the server response
 /// body is delivered wrapped in an \c LTProgress<FBRHTTPResponse> object. The signal errs if a
 /// communication error occurs or if the server response indicates an error (i.e. status code not in
-/// the range <tt>[200, 299]</tt>). Values and errors are delivered on the main queue.
+/// the range <tt>[200, 299]</tt>). Values and errors are delivered on an arbitrary queue.
 - (RACSignal *)PUT:(NSString *)URLString
     withParameters:(nullable FBRHTTPRequestParameters *)parameters
            headers:(nullable FBRHTTPRequestHeaders *)headers;
@@ -105,7 +105,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// task status as it progresses until it completes. When the task completes the server response
 /// body is delivered wrapped in an \c LTProgress<FBRHTTPResponse> object. The signal errs if a
 /// communication error occurs or if the server response indicates an error (i.e. status code not in
-/// the range <tt>[200, 299]</tt>). Values and errors are delivered on the main queue.
+/// the range <tt>[200, 299]</tt>). Values and errors are delivered on an arbitrary queue.
 - (RACSignal *)PATCH:(NSString *)URLString
       withParameters:(nullable FBRHTTPRequestParameters *)parameters
              headers:(nullable FBRHTTPRequestHeaders *)headers;
@@ -120,7 +120,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// task status as it progresses until it completes. When the task completes the server response
 /// body is delivered wrapped in an \c LTProgress<FBRHTTPResponse> object. The signal errs if a
 /// communication error occurs or if the server response indicates an error (i.e. status code not in
-/// the range <tt>[200, 299]</tt>). Values and errors are delivered on the main queue.
+/// the range <tt>[200, 299]</tt>). Values and errors are delivered on an arbitrary queue.
 - (RACSignal *)DELETE:(NSString *)URLString
        withParameters:(nullable FBRHTTPRequestParameters *)parameters
               headers:(nullable FBRHTTPRequestHeaders *)headers;
