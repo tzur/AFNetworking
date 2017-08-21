@@ -5,7 +5,7 @@
 #import <Foundation/Foundation.h>
 
 // Third Party Libraries.
-#import <ReactiveCocoa/ReactiveCocoa.h>
+#import <ReactiveObjC/ReactiveObjC.h>
 
 // Lightricks Libraries.
 #import <LTKit/LTKit-Prefix.pch>

@@ -5,7 +5,7 @@
   #import <Foundation/Foundation.h>
   #import <UIKit/UIKit.h>
 
-  #import <ReactiveCocoa/ReactiveCocoa.h>
+  #import <ReactiveObjC/ReactiveObjC.h>
 
   #import <LTKit/LTAssert.h>
   #import <LTKit/LTEnum.h>

@@ -223,10 +223,10 @@ NS_ASSUME_NONNULL_BEGIN
                                        andInitialChangeset:(RACSignal *)initialChangeset {
   // Track changes on each subalbum. For each change fetch the smart album collection
   // again, and send proper change details with the changed smart album.
-  return [initialChangeset flattenMap:^RACStream *(RACTuple *values) {
+  return [initialChangeset flattenMap:^(RACTuple *values) {
     PHFetchResult *initialFetchResult = values.first;
     return [[[[[self recursiveUpdatesForSmartAlbums]
-      flattenMap:^RACStream *(PHAssetCollection *updatedCollection) {
+      flattenMap:^(PHAssetCollection *updatedCollection) {
         return [RACSignal combineLatest:@[
           [self fetchFetchResultWithURL:url],
           [RACSignal return:updatedCollection]
@@ -257,7 +257,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (RACSignal *)recursiveUpdatesForSmartAlbums {
   return [[self fetchFetchResultWithURL:[NSURL ptn_photoKitSmartAlbums]]
-      flattenMap:^RACStream *(PHFetchResult *fetchResult) {
+      flattenMap:^(PHFetchResult *fetchResult) {
         NSMutableArray *signals = [NSMutableArray array];
 
         for (PHAssetCollection *collection in fetchResult) {

@@ -1,7 +1,7 @@
 // Copyright (c) 2015 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
-#import <ReactiveCocoa/ReactiveCocoa.h>
+#import <ReactiveObjC/RACStream.h>
 
 NS_ASSUME_NONNULL_BEGIN
 

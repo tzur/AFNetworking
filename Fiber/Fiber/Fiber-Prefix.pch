@@ -7,7 +7,7 @@
 
 #ifdef __OBJC__
   /// Third Party.
-  #import <ReactiveCocoa/ReactiveCocoa.h>
+  #import <ReactiveObjC/ReactiveObjC.h>
 
   /// LTKit.
   #import <LTKit/LTKit-Prefix.pch>

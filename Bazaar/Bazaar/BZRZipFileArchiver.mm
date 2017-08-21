@@ -57,9 +57,10 @@ NS_ASSUME_NONNULL_BEGIN
         return RACTuplePack(itemFullPath, itemRelativePath);
       }]
       collect]
-      flattenMap:^RACStream *(NSArray<RACTuple *> *tuples) {
+      flattenMap:^(NSArray<RACTuple *> *tuples) {
         NSArray<NSString *> *filePaths = [tuples valueForKey:@instanceKeypath(RACTuple, first)];
-        NSArray<NSString *> *archivedNames = [tuples valueForKey:@instanceKeypath(RACTuple, second)];
+        NSArray<NSString *> *archivedNames = [tuples valueForKey:@instanceKeypath(RACTuple,
+                                                                                  second)];
         return [self archiveFiles:filePaths toArchiveAtPath:archivePath
                 withArchivedNames:archivedNames];
       }];

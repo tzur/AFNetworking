@@ -1,7 +1,7 @@
 // Copyright (c) 2015 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
-#import <ReactiveCocoa/ReactiveCocoa.h>
+#import <ReactiveObjC/RACSignal.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -25,8 +25,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Combines the latest values from each of the given \c signals by sending the latest value from
 /// each signal accompanied with the index of the signal that caused a new value to be sent over the
-/// receiver. For the returned signal to send an initial value, all the \c signals must send at least one
-/// value. The initially sent value will send a \c nil index.
+/// receiver. For the returned signal to send an initial value, all the \c signals must send at
+/// least one value. The initially sent value will send a \c nil index.
 ///
 /// If \c signals is empty, the returned signal will immediately complete upon subscription.
 ///

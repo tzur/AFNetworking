@@ -2,6 +2,6 @@
 // Created by Nir Bruner.
 
 #import <Masonry/Masonry.h>
-#import <ReactiveCocoa/ReactiveCocoa.h>
+#import <ReactiveObjC/ReactiveObjC.h>
 
 #import <LTEngine/LTEngine-Prefix.pch>

@@ -65,7 +65,7 @@ static NSNumber * const kNonAppStoreProductsLabel = @0;
           return product.isSubscribersOnly ? kNonAppStoreProductsLabel : kAppStoreProductsLabel;
         }];
       }]
-      flattenMap:^RACStream *(BZRClassifiedProducts *classifiedProducts) {
+      flattenMap:^(BZRClassifiedProducts *classifiedProducts) {
         @strongify(self);
         if (!self) {
           return [RACSignal empty];
@@ -88,7 +88,7 @@ static NSNumber * const kNonAppStoreProductsLabel = @0;
   if (!products.count) {
     return [RACSignal return:@[]];
   }
-  
+
   NSArray<NSString *> *identifiers =
       [products valueForKey:@instanceKeypath(BZRProduct, identifier)];
   @weakify(self);

@@ -3,8 +3,6 @@
 
 #import "SKProductsRequest+RACSignalSupport.h"
 
-#import <ReactiveCocoa/RACDelegateProxy.h>
-
 #import "NSError+Bazaar.h"
 #import "NSErrorCodes+Bazaar.h"
 
@@ -60,7 +58,7 @@ static void RACUseDelegateProxy(SKProductsRequest *self) {
 // deallocs.
 - (RACSignal *)bzr_errorSignal {
   return [[self.bzr_delegateProxy signalForSelector:@selector(request:didFailWithError:)]
-      flattenMap:^RACStream *(RACTuple *parameters) {
+      flattenMap:^(RACTuple *parameters) {
         RACTupleUnpack(SKProductsRequest *request, NSError *error) = parameters;
         error = [NSError bzr_errorWithCode:BZRErrorCodeProductsMetadataFetchingFailed
                            productsRequest:request underlyingError:error];

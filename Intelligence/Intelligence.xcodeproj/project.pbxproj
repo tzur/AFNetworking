@@ -1019,7 +1019,7 @@
 				A141719D1E6EAA93005DBEFF /* Sources */,
 				A141719E1E6EAA93005DBEFF /* Frameworks */,
 				A141719F1E6EAA93005DBEFF /* CopyFiles */,
-				A149BB3B1EBE542400DA82B7 /* Cope Event Headers */,
+				A149BB3B1EBE542400DA82B7 /* Copy Event Headers */,
 			);
 			buildRules = (
 				A108A0441EBA19430037B6BE /* PBXBuildRule */,
@@ -1324,14 +1324,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		A149BB3B1EBE542400DA82B7 /* Cope Event Headers */ = {
+		A149BB3B1EBE542400DA82B7 /* Copy Event Headers */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Cope Event Headers";
+			name = "Copy Event Headers";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
