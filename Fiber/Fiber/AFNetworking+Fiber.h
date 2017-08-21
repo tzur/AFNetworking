@@ -49,7 +49,7 @@ NS_ASSUME_NONNULL_BEGIN
                                 withDefaultSerializer:(AFHTTPRequestSerializer *)defaultSerializer;
 
 /// Serializes the given \c request into an \c NSURLRequest. If an error occurs during the
-/// serialization it will reported via the \c error argument, given that it is not \c nil. 
+/// serialization it will reported via the \c error argument, given that it is not \c nil.
 - (nullable NSURLRequest *)fbr_serializedRequestWithRequest:(FBRHTTPRequest *)request
                                                       error:(NSError * _Nullable *)error;
 
@@ -63,7 +63,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface AFHTTPSessionManager (Fiber)
 
 /// Creates and returns a new HTTP session manager with the given \c baseURL and Fiber
-/// \c configuration.
+/// \c configuration. Tasks on this session may dispatched on an arbitrary thread.
 ///
 /// @note If \c configuration specifies a security policy that requires SSL pinning \c baseURL must
 /// be an HTTPS URL.
