@@ -47,7 +47,7 @@ NS_ASSUME_NONNULL_BEGIN
   NSError *error;
   NSURLRequest *serializedRequest = [self serializedRequestWithFiberRequest:request error:&error];
   if (error) {
-    dispatch_async(self.sessionManager.completionQueue, ^{
+    dispatch_async(self.sessionManager.completionQueue ?: dispatch_get_main_queue(), ^{
       failure(error);
     });
     return nil;
@@ -82,7 +82,7 @@ NS_ASSUME_NONNULL_BEGIN
   }];
 
   if (!task) {
-    dispatch_async(self.sessionManager.completionQueue, ^{
+    dispatch_async(self.sessionManager.completionQueue ?: dispatch_get_main_queue(), ^{
       failure([NSError fbr_errorWithCode:FBRErrorCodeHTTPTaskInitiationFailed HTTPRequest:request
                          underlyingError:nil]);
     });
