@@ -58,6 +58,11 @@ NS_ASSUME_NONNULL_BEGIN
 /// doesn't return them.
 @property (readonly, nonatomic) RACSignal *myPhotoStreamAlbum;
 
+/// Used in descriptor fetch signals. PhotoKit serializes access to asset/album so we can serialize
+/// these requests as well and save some resources by lowering the number of threads used when
+/// multiple requests are made simultaneously.
+@property (readonly, nonatomic) RACScheduler *fetchScheduler;
+
 @end
 
 @implementation PTNPhotoKitAssetManager
@@ -74,6 +79,7 @@ NS_ASSUME_NONNULL_BEGIN
     _authorizationManager = authorizationManager;
     _changeManager = changeManager;
 
+    _fetchScheduler = [RACScheduler scheduler];
     _albumSignalCache = [[PTNSignalCache alloc] init];
     _myPhotoStreamAlbum = [self fetchMyPhotoStreamAlbum];
   }
@@ -197,7 +203,7 @@ NS_ASSUME_NONNULL_BEGIN
         return changeset;
       }]
       distinctUntilChanged]
-      subscribeOn:RACScheduler.scheduler]
+      subscribeOn:self.fetchScheduler]
       ptn_replayLastLazily];
 
   self.albumSignalCache[url] = changeset;
@@ -352,7 +358,7 @@ NS_ASSUME_NONNULL_BEGIN
     return [[[RACSignal
         concat:@[initialFetchResult, nextFetchResults]]
         ptn_identicallyDistinctUntilChanged]
-        subscribeOn:RACScheduler.scheduler];
+        subscribeOn:self.fetchScheduler];
   }];
 }
 
@@ -424,7 +430,7 @@ NS_ASSUME_NONNULL_BEGIN
       return [RACSignal return:descriptor];
     } else if ([descriptor isKindOfClass:[PHAssetCollection class]]) {
       return [[self fetchKeyAssetForAssetCollection:(PHAssetCollection *)descriptor]
-          subscribeOn:[RACScheduler scheduler]];
+          subscribeOn:self.fetchScheduler];
     } else {
       LTAssert(NO, @"Invalid descriptor given: %@", descriptor);
     }
@@ -729,7 +735,7 @@ NS_ASSUME_NONNULL_BEGIN
     return [RACDisposable disposableWithBlock:^{
       [self.imageManager cancelImageRequest:requestID];
     }];
-  }] subscribeOn:RACScheduler.scheduler];
+  }] subscribeOn:[RACScheduler scheduler]];
 }
 
 #pragma mark -
