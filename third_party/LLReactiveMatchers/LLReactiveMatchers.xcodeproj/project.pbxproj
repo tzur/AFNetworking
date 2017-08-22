@@ -75,6 +75,20 @@
 			remoteGlobalIDString = 21FD0A491850470000DB455B;
 			remoteInfo = LLReactiveMatchers;
 		};
+		8B5CE4451F4CCEC5006F72D5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8B68691B1F3B2DD700F0EF4C /* Specta.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = E9536D001968D3EE003D1FBA;
+			remoteInfo = "Specta-iOS";
+		};
+		8B5CE4471F4CCEE8006F72D5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8B6869431F3B2F1900F0EF4C /* Expecta.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = E93067CD13B2E6D100EA26FF;
+			remoteInfo = "libExpecta-iOS";
+		};
 		8B68690D1F3B2DC700F0EF4C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 8B6869031F3B2DC700F0EF4C /* ReactiveObjC.xcodeproj */;
@@ -571,7 +585,9 @@
 			buildRules = (
 			);
 			dependencies = (
+				8B5CE4481F4CCEE8006F72D5 /* PBXTargetDependency */,
 				8B6869331F3B2DEF00F0EF4C /* PBXTargetDependency */,
+				8B5CE4461F4CCEC5006F72D5 /* PBXTargetDependency */,
 			);
 			name = LLReactiveMatchers;
 			productName = LLReactiveMatchers;
@@ -840,6 +856,16 @@
 			isa = PBXTargetDependency;
 			target = 21FD0A491850470000DB455B /* LLReactiveMatchers */;
 			targetProxy = 21FD0A601850470000DB455B /* PBXContainerItemProxy */;
+		};
+		8B5CE4461F4CCEC5006F72D5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Specta-iOS";
+			targetProxy = 8B5CE4451F4CCEC5006F72D5 /* PBXContainerItemProxy */;
+		};
+		8B5CE4481F4CCEE8006F72D5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "libExpecta-iOS";
+			targetProxy = 8B5CE4471F4CCEE8006F72D5 /* PBXContainerItemProxy */;
 		};
 		8B6869331F3B2DEF00F0EF4C /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
