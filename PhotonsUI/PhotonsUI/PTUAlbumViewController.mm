@@ -193,6 +193,10 @@ NS_ASSUME_NONNULL_BEGIN
   self.collectionViewController.contentInset = contentInset;
 }
 
+- (void)reloadData {
+  [self.collectionViewController reloadData];
+}
+
 @end
 
 NS_ASSUME_NONNULL_END

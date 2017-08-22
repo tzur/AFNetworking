@@ -42,6 +42,10 @@ NS_ASSUME_NONNULL_BEGIN
 /// underlying collection layout and possibly changes the offset of the scrolled content.
 - (void)setConfiguration:(PTUCollectionViewConfiguration *)configuration animated:(BOOL)animated;
 
+/// Reloads the data of the current album by calling \c reloadData on the internal
+/// \c PTUCollectionViewController.
+- (void)reloadData;
+
 /// View model that controls this view controller.
 @property (readonly, nonatomic) id<PTUAlbumViewModel> viewModel;
 
