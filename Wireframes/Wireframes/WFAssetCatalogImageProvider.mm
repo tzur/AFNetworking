@@ -9,7 +9,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation WFAssetCatalogImageProvider
 
-- (RACSignal *)imageWithURL:(NSURL *)url {
+- (RACSignal<UIImage *> *)imageWithURL:(NSURL *)url {
   return [[[RACSignal
       return:url]
       map:^RACTuple *(NSURL *url) {
@@ -23,7 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
       }];
 }
 
-- (RACTuple *)assetNameAndBundleTupleForURL:(NSURL *)url {
+- (RACThreeTuple<UIImage *, NSURL *, NSURL *> *)assetNameAndBundleTupleForURL:(NSURL *)url {
   NSString *imageName;
   NSURL * _Nullable bundleURL;
 

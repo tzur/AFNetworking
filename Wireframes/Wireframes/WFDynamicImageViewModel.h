@@ -29,7 +29,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// @note prefer \c WFImageViewModelBuilder to create instances of this view model. It offers a
 /// higher level API, more safety checks, and covers the most common use cases.
 - (instancetype)initWithImageProvider:(id<WFImageProvider>)imageProvider
-                         imagesSignal:(RACSignal *)imagesSignal NS_DESIGNATED_INITIALIZER;
+                         imagesSignal:(RACSignal<RACTwoTuple<NSURL *, NSURL *> *> *)imagesSignal
+    NS_DESIGNATED_INITIALIZER;
 
 - (instancetype)init NS_UNAVAILABLE;
 

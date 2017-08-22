@@ -1361,7 +1361,6 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../third_party/objection/",
-					"$(SRCROOT)/../third_party/ReactiveCocoa/",
 				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -1406,7 +1405,6 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../third_party/objection/",
-					"$(SRCROOT)/../third_party/ReactiveCocoa/",
 				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -1463,7 +1461,6 @@
 					"$(SRCROOT)/../LTKit",
 					"$(SRCROOT)/../LTKit/LTKit",
 					"$(SRCROOT)/../third_party/LLReactiveMatchers",
-					"$(SRCROOT)/../third_party/LLReactiveMatchers/LLReactiveMatchers",
 					"$(SRCROOT)/../third_party/Expecta/src/**",
 					"$(SRCROOT)/../third_party/OCMock/Source",
 					"$(SRCROOT)/../third_party/Specta/Specta",
@@ -1489,7 +1486,6 @@
 					"$(SRCROOT)/../LTKit",
 					"$(SRCROOT)/../LTKit/LTKit",
 					"$(SRCROOT)/../third_party/LLReactiveMatchers",
-					"$(SRCROOT)/../third_party/LLReactiveMatchers/LLReactiveMatchers",
 					"$(SRCROOT)/../third_party/Expecta/src/**",
 					"$(SRCROOT)/../third_party/OCMock/Source",
 					"$(SRCROOT)/../third_party/Specta/Specta",

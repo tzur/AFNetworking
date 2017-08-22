@@ -75,7 +75,7 @@ NS_ASSUME_NONNULL_BEGIN
   return self;
 }
 
-- (RACSignal *)imageWithURL:(NSURL *)url {
+- (RACSignal<UIImage *> *)imageWithURL:(NSURL *)url {
   UIImage * _Nullable cachedImage = [self.cache objectForKey:url];
   if (cachedImage) {
     return [RACSignal return:cachedImage];
@@ -83,10 +83,10 @@ NS_ASSUME_NONNULL_BEGIN
 
   return [[[[[RACSignal
       return:url]
-      tryMap:^id(NSURL *url, NSError *__autoreleasing *error) {
+      tryMap:^(NSURL *url, NSError *__autoreleasing *error) {
         return [self requestFromURL:url error:error];
       }]
-      tryMap:^id(WFPaintCodeImageRequest *request, NSError *__autoreleasing *error) {
+      tryMap:^(WFPaintCodeImageRequest *request, NSError *__autoreleasing *error) {
         return [self imageForRequest:request error:error];
       }]
       doNext:^(UIImage *image) {
@@ -180,7 +180,7 @@ NS_ASSUME_NONNULL_BEGIN
            @"Selector %@ is expected to have exactly %ld arguments, but has %lu instead",
            NSStringFromSelector(selector), (long)paramIndex,
            (unsigned long)methodSignature.numberOfArguments);
-  
+
   UIImage *result;
   UIGraphicsBeginImageContextWithOptions(request.frame.size, NO, 0); {
     [invocation invokeWithTarget:target];

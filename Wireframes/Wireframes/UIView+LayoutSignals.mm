@@ -7,7 +7,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation UIView (LayoutSignals)
 
-- (RACSignal *)wf_layoutSubviewsSignal {
+- (RACSignal<NSValue *> *)wf_layoutSubviewsSignal {
   @weakify(self);
   return [[[self rac_signalForSelector:@selector(layoutSubviews)]
       map:^NSValue *(RACTuple *) {
@@ -17,8 +17,8 @@ NS_ASSUME_NONNULL_BEGIN
       setNameWithFormat:@"%@ -wf_layoutSubviewSignal", self];
 }
 
-- (RACSignal *)wf_boundsSignal {
-  RACSignal * _Nullable signal = objc_getAssociatedObject(self, _cmd);
+- (RACSignal<NSValue *> *)wf_boundsSignal {
+  RACSignal<NSValue *> * _Nullable signal = objc_getAssociatedObject(self, _cmd);
   if (signal) {
     return signal;
   }
@@ -32,7 +32,7 @@ NS_ASSUME_NONNULL_BEGIN
   return signal;
 }
 
-- (RACSignal *)wf_currentBounds {
+- (RACSignal<NSValue *> *)wf_currentBounds {
   @weakify(self);
   return [RACSignal defer:^{
     @strongify(self);
@@ -40,8 +40,8 @@ NS_ASSUME_NONNULL_BEGIN
   }];
 }
 
-- (RACSignal *)wf_sizeSignal {
-  RACSignal * _Nullable signal = objc_getAssociatedObject(self, _cmd);
+- (RACSignal<NSValue *> *)wf_sizeSignal {
+  RACSignal<NSValue *> * _Nullable signal = objc_getAssociatedObject(self, _cmd);
   if (signal) {
     return signal;
   };
@@ -57,8 +57,8 @@ NS_ASSUME_NONNULL_BEGIN
   return signal;
 }
 
-- (RACSignal *)wf_positiveSizeSignal {
-  RACSignal * _Nullable signal = objc_getAssociatedObject(self, _cmd);
+- (RACSignal<NSValue *> *)wf_positiveSizeSignal {
+  RACSignal<NSValue *> * _Nullable signal = objc_getAssociatedObject(self, _cmd);
   if (signal) {
     return signal;
   };

@@ -38,7 +38,7 @@ NS_ASSUME_NONNULL_BEGIN
   }];
 }
 
-- (RACSignal *)imageWithURL:(NSURL *)url {
+- (RACSignal<UIImage *> *)imageWithURL:(NSURL *)url {
   // -[NSURL scheme] is nonnull, but it can have nil values.
   NSString *scheme = [url.scheme lowercaseString] ?: @"";
 

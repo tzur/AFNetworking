@@ -44,7 +44,7 @@ static id<WFImageProvider> WFDefaultImageProvider() {
   id<WFImageProvider> _Nullable _imageProvider;
   NSURL * _Nullable _imageURL;
   NSURL * _Nullable _highlightedImageURL;
-  RACSignal * _Nullable _sizeSignal;
+  RACSignal<NSValue *> * _Nullable _sizeSignal;
   CGFloat _lineWidth;
   UIColor * _Nullable _color;
   UIColor * _Nullable _highlightedColor;
@@ -174,7 +174,7 @@ static id<WFImageProvider> WFDefaultImageProvider() {
 
     _isBuilt = YES;
 
-    RACSignal *imagesSignal =
+    RACSignal<RACTwoTuple<NSURL *, NSURL *> *> *imagesSignal =
         [RACSignal return:RACTuplePack([self transformedImageURL],
                                        [self transformedHighlightedImageURL])];
     if (_sizeSignal) {
@@ -197,7 +197,7 @@ static id<WFImageProvider> WFDefaultImageProvider() {
 
 - (nullable NSURL *)transformedImageURL {
   NSURL *transformedImageURL = _imageURL;
-  
+
   if (_color) {
     transformedImageURL = [transformedImageURL wf_URLWithImageColor:_color];
   }
@@ -210,7 +210,7 @@ static id<WFImageProvider> WFDefaultImageProvider() {
 
 - (nullable NSURL *)transformedHighlightedImageURL {
   NSURL *transformedImageURL;
-  
+
   if (!_highlightedColor) {
     transformedImageURL = _highlightedImageURL;
   } else {
@@ -223,7 +223,7 @@ static id<WFImageProvider> WFDefaultImageProvider() {
   if (_lineWidth > 0) {
     transformedImageURL = [transformedImageURL wf_URLWithImageLineWidth:_lineWidth];
   }
-  
+
   return transformedImageURL;
 }
 

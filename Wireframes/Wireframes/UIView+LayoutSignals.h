@@ -11,7 +11,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Hot signal that sends the receiver's \c bounds each time \c layoutSubviews is called
 /// (immediately <b>after</b> the call). The signal completes when the receiver is deallocated.
-@property (readonly, nonatomic) RACSignal *wf_layoutSubviewsSignal;
+@property (readonly, nonatomic) RACSignal<NSValue *> *wf_layoutSubviewsSignal;
 
 /// Hot signal that sends the receiver's current \c bounds, and then new \c bounds whenever the
 /// latter changes. The signal completes when the receiver is deallocated.
@@ -20,13 +20,13 @@ NS_ASSUME_NONNULL_BEGIN
 /// is guarantied that after a change of view bounds, and before the view is redrawn - the most
 /// recent value is sent. This is similar to the way \c -layoutSubviews works: it might not get
 /// called for every change of \c bounds, but it is called eventually during a layout pass.
-@property (readonly, nonatomic) RACSignal *wf_boundsSignal;
+@property (readonly, nonatomic) RACSignal<NSValue *> *wf_boundsSignal;
 
 /// Hot signal that sends the receiver's current size, and then new size each time the latter
 /// changes. The signal completes when the receiver is deallocated.
 ///
 /// @note the signal works similar to \c wf_boundsSignal.
-@property (readonly, nonatomic) RACSignal *wf_sizeSignal;
+@property (readonly, nonatomic) RACSignal<NSValue *> *wf_sizeSignal;
 
 /// Same as \c wf_sizeSignal, but accepts only positive values (where positive size is a size with
 /// both \c width and \c height having positive values).
@@ -35,7 +35,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// loading an image that fits the view, or drawing something. With autolayout, views are usually
 /// created with zero size, and receive the actual bounds only during a layout pass. With the help
 /// of this signal, actual work can be deferred until after the initial layout has been applied.
-@property (readonly, nonatomic) RACSignal *wf_positiveSizeSignal;
+@property (readonly, nonatomic) RACSignal<NSValue *> *wf_positiveSizeSignal;
 
 @end
 
