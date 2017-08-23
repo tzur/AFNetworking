@@ -28,8 +28,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// @param numberOfTaps number of taps in filter that will be created to approximate the gaussian
 /// function. Must be odd and <tt><= [LTGaussianFilterProcessor  maxNumberOfFilterTaps]</tt>.
 ///
-/// All output textures must to be of the same size which has to be equal or smaller to the input
-/// texture's size and maintain the same aspect ratio.
+/// All output textures must to be of the same size.
 - (instancetype)initWithInput:(LTTexture *)input outputs:(NSArray<LTTexture *> *)outputs
                  numberOfTaps:(NSUInteger)numberOfTaps
           spatialUnitProvider:(id<LTGaussianFilterSpatialUnitProvider>)spatialUnitProvider

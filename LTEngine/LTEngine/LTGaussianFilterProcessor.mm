@@ -4,8 +4,8 @@
 #import "LTGaussianFilterProcessor.h"
 
 #import "LTGPUImageProcessor+Protected.h"
-#import "LTShaderStorage+LTGaussianFilterProcessorVsh.h"
 #import "LTShaderStorage+LTGaussianFilterProcessorFsh.h"
+#import "LTShaderStorage+LTGaussianFilterProcessorVsh.h"
 #import "LTTexture.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -124,12 +124,6 @@ static NSString * const kNumberOfTapsPlaceholder = @"@NUMBER_OF_TAPS@";
   LTParameterAssert(outputs);
   CGSize firstOutputSize = [outputs.firstObject size];
   for (LTTexture *output in outputs) {
-    LTParameterAssert(input.size.width >= output.size.width,
-                      @"output texture size (%g, %g) is larger than input texture size (%g, %g)",
-                      output.size.width, output.size.height, input.size.width, input.size.height);
-    LTParameterAssert(std::abs(input.size.width / input.size.height -
-                               output.size.width / output.size.height) < FLT_EPSILON,
-                      @"Output texture aspect ratio is different from the input one");
     LTParameterAssert(std::abs(firstOutputSize.width - output.size.width) < FLT_EPSILON,
                       @"Output textures widths differ.");
     LTParameterAssert(std::abs(firstOutputSize.height - output.size.height) < FLT_EPSILON,
