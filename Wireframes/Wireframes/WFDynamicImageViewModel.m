@@ -21,7 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 @implementation WFDynamicImageViewModel
 
 - (instancetype)initWithImageProvider:(id<WFImageProvider>)imageProvider
-                         imagesSignal:(RACSignal *)imagesSignal {
+                         imagesSignal:(RACSignal<RACTwoTuple<NSURL *, NSURL *> *> *)imagesSignal {
   if (self = [super init]) {
     @weakify(self);
     [[[[[[[imagesSignal

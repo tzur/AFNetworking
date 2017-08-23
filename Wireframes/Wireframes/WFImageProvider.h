@@ -17,7 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// @note be careful when ignoring errors sent by the signal, since it can lead to actual
 /// programming errors staying under the surface. For example, a typo in asset's name causes an
 /// error, and if ignored it may stay unnoticed for a long time, especially for small icons.
-- (RACSignal *)imageWithURL:(NSURL *)url;
+- (RACSignal<UIImage *> *)imageWithURL:(NSURL *)url;
 
 @end
 

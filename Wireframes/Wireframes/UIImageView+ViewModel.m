@@ -40,8 +40,9 @@ static const void *kBindingDisposableKey = &kBindingDisposableKey;
 - (RACDisposable *)wf_bindViewModel:(id<WFImageViewModel>)viewModel {
   RACSubject *unbindTrigger = [RACSubject subject];
 
-  RACSignal *image = [RACObserve(viewModel, image) takeUntil:unbindTrigger];
-  RACSignal *highlightedImage = [RACObserve(viewModel, highlightedImage) takeUntil:unbindTrigger];
+  RACSignal<UIImage *> *image = [RACObserve(viewModel, image) takeUntil:unbindTrigger];
+  RACSignal<UIImage *> *highlightedImage = [RACObserve(viewModel, highlightedImage)
+      takeUntil:unbindTrigger];
 
   @weakify(self);
   RACDisposable *imagesDisposable = [[[RACSignal
