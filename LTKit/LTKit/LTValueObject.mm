@@ -7,19 +7,17 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@implementation LTValueObject
-
 static NSArray<NSString *> *LTPropertyKeys(Class classObject) {
   unsigned int count = 0;
   objc_property_t *properties = class_copyPropertyList(classObject, &count);
   if (!count) {
     return @[];
   }
-  
+
   @onExit {
     free(properties);
   };
-  
+
   NSMutableArray<NSString *> *propertyKeys = [NSMutableArray arrayWithCapacity:count];
   for (unsigned i = 0; i < count; ++i) {
     NSString *propertyName = @(property_getName(properties[i]));
@@ -29,7 +27,7 @@ static NSArray<NSString *> *LTPropertyKeys(Class classObject) {
     @onExit {
       free(attributes);
     };
-    
+
     LTAssert(attributes, @"Failed fetching property attributes for property: %@ from class: %@",
              propertyName, NSStringFromClass(classObject));
     LTAssert(!attributes->weak, @"Weak properties are prohibited by this, property: %@ from class: "
@@ -42,53 +40,68 @@ static NSArray<NSString *> *LTPropertyKeys(Class classObject) {
       [propertyKeys addObject:propertyName];
     }
   }
-  
+
   return propertyKeys;
 }
 
-#pragma mark -
-#pragma mark NSObject
-#pragma mark -
+NSString *LTValueObjectDescription(NSObject *object) {
+  NSMutableString *description = [NSMutableString stringWithFormat:@"<%@: %p", object.class,
+                                  object];
 
-- (NSString *)description {
-  NSMutableString *description = [NSMutableString stringWithFormat:@"<%@: %p", self.class, self];
-
-  for (NSString *key in LTPropertyKeys(self.class)) {
-    [description appendFormat:@", %@: %@", key, [self valueForKey:key]];
+  for (NSString *key in LTPropertyKeys(object.class)) {
+    [description appendFormat:@", %@: %@", key, [object valueForKey:key]];
   }
 
   [description appendString:@">"];
   return [description copy];
 }
 
-- (BOOL)isEqual:(LTValueObject *)object {
-  if (object == self) {
+BOOL LTValueObjectIsEqual(NSObject *first, NSObject *second) {
+  if (first == second) {
     return YES;
   }
-  if (![object isKindOfClass:self.class]) {
+  if (![first isKindOfClass:second.class]) {
     return NO;
   }
 
-  for (NSString *key in LTPropertyKeys(self.class)) {
-    id selfValue = [self valueForKey:key];
-    id objectValue = [object valueForKey:key];
+  for (NSString *key in LTPropertyKeys(first.class)) {
+    id selfValue = [first valueForKey:key];
+    id objectValue = [second valueForKey:key];
 
     if (selfValue != objectValue && ![selfValue isEqual:objectValue]) {
       return NO;
     }
   }
-  
+
   return YES;
 }
 
-- (NSUInteger)hash {
+NSUInteger LTValueObjectHash(NSObject *object) {
   size_t seed = 0;
 
-  for (NSString *key in LTPropertyKeys(self.class)) {
-    lt::hash_combine(seed, [[self valueForKey:key] hash]);
+  for (NSString *key in LTPropertyKeys(object.class)) {
+    lt::hash_combine(seed, [[object valueForKey:key] hash]);
   }
 
   return seed;
+}
+
+@implementation LTValueObject
+
+#pragma mark -
+#pragma mark NSObject
+#pragma mark -
+
+- (NSString *)description {
+  return LTValueObjectDescription(self);
+}
+
+- (BOOL)isEqual:(LTValueObject *)object {
+  return LTValueObjectIsEqual(self, object);
+}
+
+- (NSUInteger)hash {
+  return LTValueObjectHash(self);
 }
 
 @end

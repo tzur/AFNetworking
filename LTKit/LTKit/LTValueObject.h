@@ -3,6 +3,27 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/// Returns a description of the object by iterating the class property list, and concatenating a
+/// string in the format of <tt><[class name]: [pointer value], [p1 name]:
+/// [p1 description](, ...)></tt> where <tt>(, ...)</tt> represents one or more additional
+/// properties in the format <tt>, [p name]: [p description]</tt>, and \c description indicates the
+/// property's \c description method.
+///
+/// @note The properties of \c object must all respond to \c -description.
+NSString *LTValueObjectDescription(NSObject *object);
+
+/// Returns \c YES if \c first points to \c second or if \c first's class is kind of \c second's
+/// class and \c first's properties are equal to \c second's.
+///
+/// @note The properties of both \c first and \c second must all respond to \c -isEqual:.
+BOOL LTValueObjectIsEqual(NSObject *first, NSObject *second);
+
+/// Returns the hash value of the \c object by iterating the class property list, and performing
+/// \c lt::hash_combine on each property's \c hash value.
+///
+/// @note The properties of \c object must all respond to \c -hash.
+NSUInteger LTValueObjectHash(NSObject *object);
+
 /// An abstract base class for value objects, using reflection to provide sensible default
 /// behaviors.
 ///
@@ -11,17 +32,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// \c hash based on the object's ivars. Properties that are not backed by ivars are ignored as they
 /// are not part of the value object itself, but rather inferred from existing properties.
 ///
-/// \c description is implemented by iterating the class property list, and concatenating a string
-/// in the format of <tt><[class name]: [pointer value], [p1 name]: [p1 description](, ...)></tt>
-/// where <tt>(, ...)</tt> represents one or more additional properties in the format
-/// <tt>, [p name]: [p description]</tt>, and \c description indicates the property's \c description
-/// method.
-///
-/// \c isEqual: is implemented by iterating the class property list, comparing each value by both
-/// pointer and its own \c isEqual: method.
-///
-/// \c hash is implemented by iterating the class property list, and performing \c lt::hash_combine
-/// on each property's \c hash value.
+/// Please refer to \c LTValueObjectDescription, \c LTValueObjectIsEqual and \c LTValueObjectHash
+/// for the implementation details of the implemented methods.
 ///
 /// If any of these implementation do not suffice and require more specific behavior the relevant
 /// method must be overridden. This includes but does not limit to requiring \c std::hash instead of
