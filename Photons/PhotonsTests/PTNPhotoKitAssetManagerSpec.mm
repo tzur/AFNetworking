@@ -778,6 +778,32 @@ context(@"asset fetching", ^{
     expect([manager fetchDescriptorWithURL:url]).will.sendValues(@[asset]);
   });
 
+  it(@"should be able deallocate after fetching an asset", ^{
+    __weak PTNPhotoKitAssetManager *weakAssetManager;
+    @autoreleasepool {
+      auto *assetManager = [[PTNPhotoKitAssetManager alloc] initWithFetcher:fetcher
+                                                                   observer:observer
+                                                               imageManager:imageManager
+                                                       authorizationManager:authorizationManager
+                                                              changeManager:changeManager];
+      weakAssetManager = assetManager;
+      NSURL *url = [NSURL ptn_photoKitAssetURLWithAsset:asset];
+      expect([manager fetchDescriptorWithURL:url]).will.sendValues(@[asset]);
+    }
+    expect(weakAssetManager).to.beNil();
+  });
+
+  it(@"should fetch asset when it exists only in Photo Stream album", ^{
+    id photoStreamAlbum = PTNPhotoKitCreateAssetCollection(@"baz");
+    id assetInPhotoStream = PTNPhotoKitCreateAsset(@"blip");
+    [fetcher registerAssets:@[assetInPhotoStream] withAssetCollection:photoStreamAlbum];
+    [fetcher registerAssetCollections:@[photoStreamAlbum] withType:PHAssetCollectionTypeAlbum
+                           andSubtype:PHAssetCollectionSubtypeAlbumMyPhotoStream];
+
+    NSURL *url = [NSURL ptn_photoKitAssetURLWithAsset:assetInPhotoStream];
+    expect([manager fetchDescriptorWithURL:url]).will.sendValues(@[assetInPhotoStream]);
+  });
+
   it(@"should send new asset upon update", ^{
     id newAsset = PTNPhotoKitCreateAsset(nil);
 
