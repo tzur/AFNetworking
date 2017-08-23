@@ -465,6 +465,16 @@ context(@"collection control", ^{
     [selectedAssets sendNext:@[asset]];
     expect(recorder.values).to.equal(@[]);
   });
+
+  it(@"should pass calls to reloadData to internal view controller", ^{
+    PTUCollectionViewController *internalViewControllerMock =
+        OCMClassMock([PTUCollectionViewController class]);
+    albumView.collectionViewController = internalViewControllerMock;
+
+    [albumView reloadData];
+
+    OCMVerify([internalViewControllerMock reloadData]);
+  });
 });
 
 context(@"subviews", ^{
