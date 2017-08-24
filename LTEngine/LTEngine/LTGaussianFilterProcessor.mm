@@ -87,14 +87,8 @@ static NSString * const kNumberOfTapsPlaceholder = @"@NUMBER_OF_TAPS@";
 - (instancetype)initWithInput:(LTTexture *)input outputs:(NSArray<LTTexture *> *)outputs
                  numberOfTaps:(NSUInteger)numberOfTaps
           spatialUnitProvider:(id<LTGaussianFilterSpatialUnitProvider>)spatialUnitProvider {
-  [LTGaussianFilterProcessor validateInput:input withOutputs:outputs];
+  [LTGaussianFilterProcessor validateInput:input outputs:outputs numberOfTaps:numberOfTaps];
   LTParameterAssert(spatialUnitProvider);
-
-  LTParameterAssert(numberOfTaps <= [LTGaussianFilterProcessor maxNumberOfFilterTaps],
-      @"numberOfTaps (%lu) should not exceed maximum (%lu)", (unsigned long)numberOfTaps,
-      (unsigned long)[[self class] maxNumberOfFilterTaps]);
-  LTParameterAssert(numberOfTaps % 2, @"numberOfTaps (%lu) should be odd",
-      (unsigned long)numberOfTaps);
 
   NSString *numberOfTapsString = [NSString stringWithFormat:@"%lu", (unsigned long)numberOfTaps];
   NSString *vshSource = [[LTGaussianFilterProcessorVsh source]
@@ -119,16 +113,28 @@ static NSString * const kNumberOfTapsPlaceholder = @"@NUMBER_OF_TAPS@";
          spatialUnitProvider:defaultSpatialUnitProvider];
 }
 
-+ (void)validateInput:(LTTexture *)input withOutputs:(NSArray<LTTexture *> *)outputs {
++ (void)validateInput:(LTTexture *)input outputs:(NSArray<LTTexture *> *)outputs
+         numberOfTaps:(NSUInteger)numberOfTaps {
   LTParameterAssert(input);
-  LTParameterAssert(outputs);
-  CGSize firstOutputSize = [outputs.firstObject size];
+  LTParameterAssert(outputs.count);
+  int firstOutputWidth = [outputs.firstObject size].width;
+  int firstOutputHeight = [outputs.firstObject size].height;
   for (LTTexture *output in outputs) {
-    LTParameterAssert(std::abs(firstOutputSize.width - output.size.width) < FLT_EPSILON,
-                      @"Output textures widths differ.");
-    LTParameterAssert(std::abs(firstOutputSize.height - output.size.height) < FLT_EPSILON,
-                      @"Output textures heights differ.");
+    int outputWidth = output.size.width;
+    int outputHeight = output.size.height;
+    LTParameterAssert(firstOutputWidth == outputWidth,
+                      @"Output textures width differ(first: %d vs: %d)", firstOutputWidth,
+                      outputWidth);
+    LTParameterAssert(firstOutputHeight == outputHeight,
+                      @"Output textures height differ(first: %d vs: %d)", firstOutputHeight,
+                      outputHeight);
   }
+
+  LTParameterAssert(numberOfTaps <= [LTGaussianFilterProcessor maxNumberOfFilterTaps],
+      @"numberOfTaps (%lu) should not exceed maximum (%lu)", (unsigned long)numberOfTaps,
+      (unsigned long)[[self class] maxNumberOfFilterTaps]);
+  LTParameterAssert(numberOfTaps % 2, @"numberOfTaps (%lu) should be odd",
+      (unsigned long)numberOfTaps);
 }
 
 - (void)iterationStarted:(NSUInteger)iteration {
