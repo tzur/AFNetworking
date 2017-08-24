@@ -21,6 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
                     showVerticalScrollIndicator:(BOOL)showVerticalScrollIndicator
                   showHorizontalScrollIndicator:(BOOL)showHorizontalScrollIndicator
                                    enablePaging:(BOOL)enablePaging
+                            keyboardDismissMode:(UIScrollViewKeyboardDismissMode)keyboardDismissMode
     NS_DESIGNATED_INITIALIZER;
 
 /// Creates and returns a \c PTUCollectionViewConfiguration resembling that of the Photos app.
@@ -34,6 +35,7 @@ NS_ASSUME_NONNULL_BEGIN
 ///   - \c showVerticalScrollIndicator set to \c YES.
 ///   - \c showHorizontalScrollIndicator set to \c NO.
 ///   - \c enablePaging set to \c NO.
+///   - \c keyboardDismissMode set to \c UIScrollViewKeyboardDismissModeOnDrag.
 + (instancetype)defaultConfiguration;
 
 /// Creates and returns a \c PTUCollectionViewConfiguration suitable for a Photo selection strip.
@@ -46,6 +48,7 @@ NS_ASSUME_NONNULL_BEGIN
 ///   - \c showVerticalScrollIndicator set to \c NO.
 ///   - \c showHorizontalScrollIndicator set to \c NO.
 ///   - \c enablePaging set to \c NO.
+///   - \c keyboardDismissMode set to \c UIScrollViewKeyboardDismissModeOnDrag.
 + (instancetype)photoStrip;
 
 /// Creates and returns a \c PTUCollectionViewConfiguration adjusted for iPad devices.
@@ -60,6 +63,7 @@ NS_ASSUME_NONNULL_BEGIN
 ///   - \c showVerticalScrollIndicator set to \c YES.
 ///   - \c showHorizontalScrollIndicator set to \c NO.
 ///   - \c enablePaging set to \c NO.
+///   - \c keyboardDismissMode set to \c UIScrollViewKeyboardDismissModeOnDrag.
 + (instancetype)defaultIPadConfiguration;
 
 /// Creates and returns a \c PTUCollectionViewConfiguration based on the device idiom at runtime -
@@ -95,6 +99,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// \c YES if paging should be enabled.
 @property (readonly, nonatomic) BOOL enablePaging;
+
+/// Keyboard dismiss mode.
+@property (readonly, nonatomic) UIScrollViewKeyboardDismissMode keyboardDismissMode;
 
 @end
 
