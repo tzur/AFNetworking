@@ -27,7 +27,8 @@ it(@"should generate random token", ^{
 it(@"should persist the experiments token", ^{
   random = OCMClassMock(LTRandom.class);
   OCMStub([random randomDouble]).andReturn(0.6);
-  expect(provider.experimentsToken).to.equal(0.3);
+  auto newProvider = [[LABExperimentsTokenProvider alloc] initWithStorage:storage random:random];
+  expect(newProvider.experimentsToken).to.equal(0.3);
 });
 
 it(@"should expose new experiments token if storage has wrong data", ^{
@@ -36,18 +37,8 @@ it(@"should expose new experiments token if storage has wrong data", ^{
   }
   random = OCMClassMock(LTRandom.class);
   OCMStub([random randomDouble]).andReturn(0.6);
-  provider = [[LABExperimentsTokenProvider alloc] initWithStorage:storage random:random];
-  expect(provider.experimentsToken).to.equal(0.6);
-});
-
-it(@"should expose new experiments token if storage is has wront data", ^{
-  for (id key in storage.storage) {
-    storage.storage[key] = @"foo";
-  }
-  random = OCMClassMock(LTRandom.class);
-  OCMStub([random randomDouble]).andReturn(0.6);
-  provider = [[LABExperimentsTokenProvider alloc] initWithStorage:storage random:random];
-  expect(provider.experimentsToken).to.equal(0.6);
+  auto newProvider = [[LABExperimentsTokenProvider alloc] initWithStorage:storage random:random];
+  expect(newProvider.experimentsToken).to.equal(0.6);
 });
 
 SpecEnd
