@@ -12,15 +12,15 @@ NS_ASSUME_NONNULL_BEGIN
 @implementation PTUCollectionViewConfiguration
 
 - (instancetype)initWithAssetCellSizingStrategy:(id<PTUCellSizingStrategy>)assetSizingStrategy
-                        albumCellSizingStrategy:(id<PTUCellSizingStrategy>)albumSizingStrategy
-                       headerCellSizingStrategy:(id<PTUCellSizingStrategy>)headerCellSizingStrategy
-                             minimumItemSpacing:(CGFloat)minimumItemSpacing
-                             minimumLineSpacing:(CGFloat)minimumLineSpacing
-                                scrollDirection:(UICollectionViewScrollDirection)scrollDirection
-                    showVerticalScrollIndicator:(BOOL)showVerticalScrollIndicator
-                  showHorizontalScrollIndicator:(BOOL)showHorizontalScrollIndicator
-                                   enablePaging:(BOOL)enablePaging
-                          keyboardDismissMode:(UIScrollViewKeyboardDismissMode)keyboardDismissMode {
+    albumCellSizingStrategy:(id<PTUCellSizingStrategy>)albumSizingStrategy
+    headerCellSizingStrategy:(id<PTUCellSizingStrategy>)headerCellSizingStrategy
+    minimumItemSpacing:(CGFloat)minimumItemSpacing
+    minimumLineSpacing:(CGFloat)minimumLineSpacing
+    scrollDirection:(UICollectionViewScrollDirection)scrollDirection
+    showVerticalScrollIndicator:(BOOL)showVerticalScrollIndicator
+    showHorizontalScrollIndicator:(BOOL)showHorizontalScrollIndicator
+    enablePaging:(BOOL)enablePaging
+    keyboardDismissMode:(UIScrollViewKeyboardDismissMode)keyboardDismissMode {
   if (self = [super init]) {
     _assetCellSizingStrategy = assetSizingStrategy;
     _albumCellSizingStrategy = albumSizingStrategy;
