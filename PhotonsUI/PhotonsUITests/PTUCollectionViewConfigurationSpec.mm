@@ -20,7 +20,8 @@ it(@"should correctly initialize", ^{
       albumCellSizingStrategy:albumSizingStrategy headerCellSizingStrategy:headerSizingStrategy
       minimumItemSpacing:1 minimumLineSpacing:2
       scrollDirection:UICollectionViewScrollDirectionVertical showVerticalScrollIndicator:YES
-      showHorizontalScrollIndicator:NO enablePaging:YES];
+      showHorizontalScrollIndicator:NO enablePaging:YES
+      keyboardDismissMode:UIScrollViewKeyboardDismissModeOnDrag];
 
   expect(configuration.assetCellSizingStrategy).to.equal(assetSizingStrategy);
   expect(configuration.albumCellSizingStrategy).to.equal(albumSizingStrategy);
@@ -31,6 +32,7 @@ it(@"should correctly initialize", ^{
   expect(configuration.showsVerticalScrollIndicator).to.beTruthy();
   expect(configuration.showsHorizontalScrollIndicator).to.beFalsy();
   expect(configuration.enablePaging).to.beTruthy();
+  expect(configuration.keyboardDismissMode).to.equal(UIScrollViewKeyboardDismissModeOnDrag);
 });
 
 it(@"should correctly initalize with default initializer", ^{
@@ -51,6 +53,7 @@ it(@"should correctly initalize with default initializer", ^{
   expect(configuration.showsVerticalScrollIndicator).to.beTruthy();
   expect(configuration.showsHorizontalScrollIndicator).to.beFalsy();
   expect(configuration.enablePaging).to.beFalsy();
+  expect(configuration.keyboardDismissMode).to.equal(UIScrollViewKeyboardDismissModeOnDrag);
 });
 
 it(@"should correctly initalize with photo strip initializer", ^{
@@ -68,6 +71,7 @@ it(@"should correctly initalize with photo strip initializer", ^{
   expect(configuration.showsVerticalScrollIndicator).to.beFalsy();
   expect(configuration.showsHorizontalScrollIndicator).to.beFalsy();
   expect(configuration.enablePaging).to.beFalsy();
+  expect(configuration.keyboardDismissMode).to.equal(UIScrollViewKeyboardDismissModeOnDrag);
 });
 
 it(@"should correctly initalize with default iPad initializer", ^{
@@ -90,6 +94,7 @@ it(@"should correctly initalize with default iPad initializer", ^{
   expect(configuration.showsVerticalScrollIndicator).to.beTruthy();
   expect(configuration.showsHorizontalScrollIndicator).to.beFalsy();
   expect(configuration.enablePaging).to.beFalsy();
+  expect(configuration.keyboardDismissMode).to.equal(UIScrollViewKeyboardDismissModeOnDrag);
 });
 
 context(@"device adjustable configuration", ^{
@@ -142,19 +147,22 @@ context(@"equality", ^{
       albumCellSizingStrategy:albumSizingStrategy headerCellSizingStrategy:headerSizingStrategy
       minimumItemSpacing:1 minimumLineSpacing:2
       scrollDirection:UICollectionViewScrollDirectionVertical showVerticalScrollIndicator:YES
-      showHorizontalScrollIndicator:NO enablePaging:YES];
+      showHorizontalScrollIndicator:NO enablePaging:YES
+      keyboardDismissMode:UIScrollViewKeyboardDismissModeOnDrag];
     secondConfiguration = [[PTUCollectionViewConfiguration alloc]
       initWithAssetCellSizingStrategy:assetSizingStrategy
       albumCellSizingStrategy:albumSizingStrategy headerCellSizingStrategy:headerSizingStrategy
       minimumItemSpacing:1 minimumLineSpacing:2
       scrollDirection:UICollectionViewScrollDirectionVertical showVerticalScrollIndicator:YES
-      showHorizontalScrollIndicator:NO enablePaging:YES];
+      showHorizontalScrollIndicator:NO enablePaging:YES
+      keyboardDismissMode:UIScrollViewKeyboardDismissModeOnDrag];
     otherConfiguration = [[PTUCollectionViewConfiguration alloc]
       initWithAssetCellSizingStrategy:assetSizingStrategy
       albumCellSizingStrategy:albumSizingStrategy headerCellSizingStrategy:headerSizingStrategy
       minimumItemSpacing:3 minimumLineSpacing:2
       scrollDirection:UICollectionViewScrollDirectionVertical showVerticalScrollIndicator:YES
-      showHorizontalScrollIndicator:NO enablePaging:NO];
+      showHorizontalScrollIndicator:NO enablePaging:NO
+      keyboardDismissMode:UIScrollViewKeyboardDismissModeOnDrag];
   });
 
   it(@"should handle isEqual correctly", ^{

@@ -12,14 +12,15 @@ NS_ASSUME_NONNULL_BEGIN
 @implementation PTUCollectionViewConfiguration
 
 - (instancetype)initWithAssetCellSizingStrategy:(id<PTUCellSizingStrategy>)assetSizingStrategy
-                        albumCellSizingStrategy:(id<PTUCellSizingStrategy>)albumSizingStrategy
-                       headerCellSizingStrategy:(id<PTUCellSizingStrategy>)headerCellSizingStrategy
-                             minimumItemSpacing:(CGFloat)minimumItemSpacing
-                             minimumLineSpacing:(CGFloat)minimumLineSpacing
-                                scrollDirection:(UICollectionViewScrollDirection)scrollDirection
-                    showVerticalScrollIndicator:(BOOL)showVerticalScrollIndicator
-                  showHorizontalScrollIndicator:(BOOL)showHorizontalScrollIndicator
-                                   enablePaging:(BOOL)enablePaging {
+    albumCellSizingStrategy:(id<PTUCellSizingStrategy>)albumSizingStrategy
+    headerCellSizingStrategy:(id<PTUCellSizingStrategy>)headerCellSizingStrategy
+    minimumItemSpacing:(CGFloat)minimumItemSpacing
+    minimumLineSpacing:(CGFloat)minimumLineSpacing
+    scrollDirection:(UICollectionViewScrollDirection)scrollDirection
+    showVerticalScrollIndicator:(BOOL)showVerticalScrollIndicator
+    showHorizontalScrollIndicator:(BOOL)showHorizontalScrollIndicator
+    enablePaging:(BOOL)enablePaging
+    keyboardDismissMode:(UIScrollViewKeyboardDismissMode)keyboardDismissMode {
   if (self = [super init]) {
     _assetCellSizingStrategy = assetSizingStrategy;
     _albumCellSizingStrategy = albumSizingStrategy;
@@ -30,6 +31,7 @@ NS_ASSUME_NONNULL_BEGIN
     _showsVerticalScrollIndicator = showVerticalScrollIndicator;
     _showsHorizontalScrollIndicator = showHorizontalScrollIndicator;
     _enablePaging = enablePaging;
+    _keyboardDismissMode = keyboardDismissMode;
   }
   return self;
 }
@@ -44,7 +46,8 @@ NS_ASSUME_NONNULL_BEGIN
       albumCellSizingStrategy:albumSizingStrategy headerCellSizingStrategy:headerSizingStrategy
       minimumItemSpacing:1 minimumLineSpacing:1
       scrollDirection:UICollectionViewScrollDirectionVertical showVerticalScrollIndicator:YES
-      showHorizontalScrollIndicator:NO enablePaging:NO];
+      showHorizontalScrollIndicator:NO enablePaging:NO
+      keyboardDismissMode:UIScrollViewKeyboardDismissModeOnDrag];
 }
 
 + (instancetype)photoStrip {
@@ -55,7 +58,8 @@ NS_ASSUME_NONNULL_BEGIN
       albumCellSizingStrategy:albumSizingStrategy headerCellSizingStrategy:headerSizingStrategy
       minimumItemSpacing:0 minimumLineSpacing:1
       scrollDirection:UICollectionViewScrollDirectionHorizontal showVerticalScrollIndicator:NO
-      showHorizontalScrollIndicator:NO enablePaging:NO];
+      showHorizontalScrollIndicator:NO enablePaging:NO
+      keyboardDismissMode:UIScrollViewKeyboardDismissModeOnDrag];
 }
 
 + (instancetype)defaultIPadConfiguration {
@@ -70,7 +74,8 @@ NS_ASSUME_NONNULL_BEGIN
       albumCellSizingStrategy:albumSizingStrategy headerCellSizingStrategy:headerSizingStrategy
       minimumItemSpacing:1 minimumLineSpacing:1
       scrollDirection:UICollectionViewScrollDirectionVertical showVerticalScrollIndicator:YES
-      showHorizontalScrollIndicator:NO enablePaging:NO];
+      showHorizontalScrollIndicator:NO enablePaging:NO
+      keyboardDismissMode:UIScrollViewKeyboardDismissModeOnDrag];
 }
 
 + (instancetype)deviceAdjustableConfiguration {
@@ -112,7 +117,8 @@ NS_ASSUME_NONNULL_BEGIN
       self.scrollDirection == object.scrollDirection &&
       self.showsVerticalScrollIndicator == object.showsVerticalScrollIndicator &&
       self.showsHorizontalScrollIndicator == object.showsHorizontalScrollIndicator &&
-      self.enablePaging == object.enablePaging;
+      self.enablePaging == object.enablePaging &&
+      self.keyboardDismissMode == object.keyboardDismissMode;
 }
 
 - (NSUInteger)hash {
@@ -120,7 +126,7 @@ NS_ASSUME_NONNULL_BEGIN
       self.headerCellSizingStrategy.hash ^ @(self.minimumItemSpacing).hash ^
       @(self.minimumLineSpacing).hash ^ @(self.scrollDirection).hash ^
       @(self.showsVerticalScrollIndicator).hash ^ @(self.showsHorizontalScrollIndicator).hash ^
-      @(self.enablePaging).hash;
+      @(self.enablePaging).hash ^ @(self.keyboardDismissMode).hash;
 }
 
 @end

@@ -73,7 +73,8 @@ beforeEach(^{
       albumCellSizingStrategy:albumCellSizingStrategy
       headerCellSizingStrategy:headerCellSizingStrategy minimumItemSpacing:0
       minimumLineSpacing:0 scrollDirection:UICollectionViewScrollDirectionVertical
-      showVerticalScrollIndicator:NO showHorizontalScrollIndicator:NO enablePaging:NO];
+      showVerticalScrollIndicator:NO showHorizontalScrollIndicator:NO enablePaging:NO
+      keyboardDismissMode:UIScrollViewKeyboardDismissModeOnDrag];
   OCMStub([dataSourceProvider dataSourceForCollectionView:OCMOCK_ANY]).andReturn(dataSource);
   viewController =
       [[PTUCollectionViewController alloc] initWithDataSourceProvider:dataSourceProvider
@@ -178,6 +179,7 @@ context(@"collection view", ^{
     expect(collectionView.showsHorizontalScrollIndicator).to.beFalsy();
     expect(collectionView.showsVerticalScrollIndicator).to.beFalsy();
     expect(collectionView.pagingEnabled).to.beFalsy();
+    expect(collectionView.keyboardDismissMode).to.equal(UIScrollViewKeyboardDismissModeOnDrag);
   });
 
   it(@"should correctly apply new configuration", ^{
@@ -188,7 +190,8 @@ context(@"collection view", ^{
         headerCellSizingStrategy:OCMProtocolMock(@protocol(PTUCellSizingStrategy))
         minimumItemSpacing:3 minimumLineSpacing:4
         scrollDirection:UICollectionViewScrollDirectionHorizontal
-        showVerticalScrollIndicator:NO showHorizontalScrollIndicator:YES enablePaging:YES];
+        showVerticalScrollIndicator:NO showHorizontalScrollIndicator:YES enablePaging:YES
+        keyboardDismissMode:UIScrollViewKeyboardDismissModeInteractive];
 
     [viewController setConfiguration:configuration animated:NO];
 
@@ -202,6 +205,7 @@ context(@"collection view", ^{
     expect(collectionView.showsHorizontalScrollIndicator).to.beTruthy();
     expect(collectionView.showsVerticalScrollIndicator).to.beFalsy();
     expect(collectionView.pagingEnabled).to.beTruthy();
+    expect(collectionView.keyboardDismissMode).to.equal(UIScrollViewKeyboardDismissModeInteractive);
   });
 
   it(@"should size asset cells according to strategy", ^{
@@ -243,7 +247,8 @@ context(@"collection view", ^{
         albumCellSizingStrategy:albumCellSizingStrategy
         headerCellSizingStrategy:headerCellSizingStrategy minimumItemSpacing:3
         minimumLineSpacing:7 scrollDirection:UICollectionViewScrollDirectionVertical
-        showVerticalScrollIndicator:NO showHorizontalScrollIndicator:NO enablePaging:NO];
+        showVerticalScrollIndicator:NO showHorizontalScrollIndicator:NO enablePaging:NO
+        keyboardDismissMode:UIScrollViewKeyboardDismissModeOnDrag];
       viewController =
           [[PTUCollectionViewController alloc] initWithDataSourceProvider:dataSourceProvider
                                                      initialConfiguration:configuration];
@@ -267,7 +272,8 @@ context(@"collection view", ^{
           albumCellSizingStrategy:albumCellSizingStrategy
           headerCellSizingStrategy:headerCellSizingStrategy minimumItemSpacing:2
           minimumLineSpacing:4 scrollDirection:UICollectionViewScrollDirectionHorizontal
-          showVerticalScrollIndicator:NO showHorizontalScrollIndicator:NO enablePaging:NO];
+          showVerticalScrollIndicator:NO showHorizontalScrollIndicator:NO enablePaging:NO
+          keyboardDismissMode:UIScrollViewKeyboardDismissModeOnDrag];
       [viewController setConfiguration:configuration animated:NO];
       [viewController.view layoutIfNeeded];
 
@@ -649,7 +655,8 @@ context(@"collection view", ^{
             albumCellSizingStrategy:albumCellSizingStrategy
             headerCellSizingStrategy:headerCellSizingStrategy minimumItemSpacing:0
             minimumLineSpacing:0 scrollDirection:UICollectionViewScrollDirectionHorizontal
-            showVerticalScrollIndicator:YES showHorizontalScrollIndicator:NO enablePaging:NO];
+            showVerticalScrollIndicator:YES showHorizontalScrollIndicator:NO enablePaging:NO
+            keyboardDismissMode:UIScrollViewKeyboardDismissModeOnDrag];
 
         [viewController setConfiguration:configuration animated:NO];
         viewController.view.frame = CGRectMake(0, 0, 300, 100);

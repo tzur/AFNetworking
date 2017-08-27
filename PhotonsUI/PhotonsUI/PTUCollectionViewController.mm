@@ -465,6 +465,7 @@ static NSURL * _Nullable PTUExtractAssociatedURL(NSError *error) {
   self.collectionView.showsHorizontalScrollIndicator = configuration.showsHorizontalScrollIndicator;
   self.collectionView.showsVerticalScrollIndicator = configuration.showsVerticalScrollIndicator;
   self.collectionView.pagingEnabled = configuration.enablePaging;
+  self.collectionView.keyboardDismissMode = configuration.keyboardDismissMode;
 
   [self.view setNeedsLayout];
   [self.collectionView setCollectionViewLayout:layout animated:animated];
