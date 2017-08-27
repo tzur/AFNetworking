@@ -202,8 +202,6 @@ static NSString * const kStoredActiveAssignmentsKey = @"ActiveAssignments";
   auto currentAssignments = [self.activeAssignments.allValues lt_set];
   auto newAssignments = [assignments.allValues lt_set];
 
-  self.activeAssignments = assignments;
-
   NSMutableSet<LABAssignment *> *activatedAssignments = [newAssignments mutableCopy];
   [activatedAssignments minusSet:currentAssignments];
 
@@ -219,6 +217,8 @@ static NSString * const kStoredActiveAssignmentsKey = @"ActiveAssignments";
     [self.delegate assignmentsManager:self assignmentDidAffectUser:assignment
                                reason:kLABAssignmentAffectedUserReasonDeactivatedForDevice];
   }
+
+  self.activeAssignments = assignments;
 
   auto data = [NSKeyedArchiver archivedDataWithRootObject:self.activeAssignments];
   [self.storage setObject:data forKey:kStoredActiveAssignmentsKey];

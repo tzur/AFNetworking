@@ -351,7 +351,7 @@ it(@"should return new data fetched if one of the background updates has new dat
   expect(updateSignal).to.sendValues(@[@(UIBackgroundFetchResultNewData)]);
 });
 
-it(@"should update delegate when assignments are activated and deactivated", ^{
+it(@"should update delegate when assignments are activated", ^{
   [fakeSource1 updateActiveVariants:@{@"exp1": source1exp1Variant2.name}];
   [fakeSource2 updateActiveVariants:@{@"exp1": source2exp1Variant2.name}];
 
@@ -476,6 +476,39 @@ it(@"should update delegate with affecting assignments after assignments change"
     RACTuplePack((id)bazAssignment, @"bar"),
     RACTuplePack((id)fooAssignment, @"thud")
   ]);
+});
+
+it(@"should update delegate when assignments are activated before exposing the assignment", ^{
+  [RACObserve(manager, activeAssignments)
+   subscribeNext:^(NSDictionary<NSString *, LABAssignment *> *activeAssignments) {
+     for (LABAssignment *assignment in activeAssignments.allValues) {
+       [manager reportAssignmentAffectedUser:assignment reason:@"foo"];
+     }
+   }];
+  [fakeSource1 updateActiveVariants:@{@"exp1": source1exp1Variant2.name}];
+
+  auto expectedAssignments = LABFakeAssignments(source1exp1Variant2, fakeSource1.name).allValues;
+  auto expectedActivateReports = [[expectedAssignments lt_map:^(NSDictionary * assignment) {
+    return RACTuplePack(assignment, kLABAssignmentAffectedUserReasonActivatedForDevice);
+  }] lt_set];
+  auto expectedFooReports = [[expectedAssignments lt_map:^(NSDictionary * assignment) {
+    return RACTuplePack(assignment, @"foo");
+  }] lt_set];
+
+  auto reportedActivatedAssignments =
+      [delegate.reportedAffectingAssignments
+       subarrayWithRange:NSMakeRange(0, expectedAssignments.count)];
+  auto reportedFooAssignments =
+      [delegate.reportedAffectingAssignments
+       subarrayWithRange:NSMakeRange(expectedAssignments.count, expectedAssignments.count)];
+
+  expect([[reportedActivatedAssignments lt_map:^(RACTuple *assignments) {
+    return RACTuplePack(LABFakeAssignment(assignments.first), assignments.second);
+  }] lt_set]).to.equal(expectedActivateReports);
+
+  expect([[reportedFooAssignments lt_map:^(RACTuple *assignments) {
+    return RACTuplePack(LABFakeAssignment(assignments.first), assignments.second);
+  }] lt_set]).to.equal(expectedFooReports);
 });
 
 SpecEnd
