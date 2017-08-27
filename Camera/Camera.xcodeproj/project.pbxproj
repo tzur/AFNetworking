@@ -92,6 +92,7 @@
 		BEEDB2101D91ABDD00406926 /* UIDevice+CameraMake.mm in Sources */ = {isa = PBXBuildFile; fileRef = BEEDB20F1D91ABDD00406926 /* UIDevice+CameraMake.mm */; };
 		BEEDB2351D91B09F00406926 /* UIDevice+CameraMakeSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = BEEDB2341D91B09F00406926 /* UIDevice+CameraMakeSpec.mm */; };
 		E4829EF11E49CF7D009F3355 /* libOpenEXR.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E4829EF01E49CF7D009F3355 /* libOpenEXR.a */; };
+		E4AF397D1F52DDCA00AA3F5C /* CAMHardwareSessionFactory.mm in Sources */ = {isa = PBXBuildFile; fileRef = E4AF397C1F52DDCA00AA3F5C /* CAMHardwareSessionFactory.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -602,6 +603,9 @@
 		BEEDB20F1D91ABDD00406926 /* UIDevice+CameraMake.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIDevice+CameraMake.mm"; sourceTree = "<group>"; };
 		BEEDB2341D91B09F00406926 /* UIDevice+CameraMakeSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIDevice+CameraMakeSpec.mm"; sourceTree = "<group>"; };
 		E4829EF01E49CF7D009F3355 /* libOpenEXR.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libOpenEXR.a; path = "../third_party/openexr-binaries/lib/libOpenEXR.a"; sourceTree = "<group>"; };
+		E4AF397B1F52DDCA00AA3F5C /* CAMHardwareSessionFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAMHardwareSessionFactory.h; sourceTree = "<group>"; };
+		E4AF397C1F52DDCA00AA3F5C /* CAMHardwareSessionFactory.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CAMHardwareSessionFactory.mm; sourceTree = "<group>"; };
+		E4AF39A61F52DF2D00AA3F5C /* CAMHardwareSession+Internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CAMHardwareSession+Internal.h"; sourceTree = "<group>"; };
 		F90A1F651D4898B600AC9C22 /* CAMTorchDevice.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CAMTorchDevice.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -882,6 +886,9 @@
 				8352064D1D2A81FA00000EEC /* CAMHardwareDevice.mm */,
 				83893A4F1D128288002B64B4 /* CAMHardwareSession.h */,
 				83893A501D128288002B64B4 /* CAMHardwareSession.mm */,
+				E4AF39A61F52DF2D00AA3F5C /* CAMHardwareSession+Internal.h */,
+				E4AF397B1F52DDCA00AA3F5C /* CAMHardwareSessionFactory.h */,
+				E4AF397C1F52DDCA00AA3F5C /* CAMHardwareSessionFactory.mm */,
 				835206471D2A7F8B00000EEC /* CAMVideoFrame.h */,
 				835206481D2A7F8B00000EEC /* CAMVideoFrame.mm */,
 				060881DA1D9A421F004D307D /* CAMVideoFrame+Factory.h */,
@@ -1565,6 +1572,7 @@
 				BE6375E81D8691A4004F3710 /* CAMDeviceLocation.mm in Sources */,
 				8350566D1E14EE520005D9C4 /* CAMVolumeButtonsController.mm in Sources */,
 				06C02EFC1D19389200745557 /* CAMExposureMap.fsh in Sources */,
+				E4AF397D1F52DDCA00AA3F5C /* CAMHardwareSessionFactory.mm in Sources */,
 				83ACD9C41DCA4523008342F9 /* AVCaptureDeviceFormat+MediaProperties.mm in Sources */,
 				BE84C54E1D463BB10098DC1D /* CAMSampleTimingInfo.mm in Sources */,
 				8355479F1D783E1D00F65398 /* CAMBlankDevice.mm in Sources */,

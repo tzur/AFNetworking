@@ -10,7 +10,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface CAMHardwareDevice () <AVCaptureVideoDataOutputSampleBufferDelegate,
+@interface CAMHardwareDevice () <AVCapturePhotoCaptureDelegate,
+    AVCaptureVideoDataOutputSampleBufferDelegate,
     AVCaptureAudioDataOutputSampleBufferDelegate>
 
 /// Underlying session that holds all AV inputs and outputs.
@@ -90,6 +91,10 @@ NS_ASSUME_NONNULL_BEGIN
 /// Whether or not there are more physical camera devices available.
 @property (nonatomic) BOOL canChangeCamera;
 
+/// Dictionary that maps unique id of the capture photo settings to the subscriber object.
+@property (readonly, nonatomic) NSMutableDictionary<NSNumber *, id<RACSubscriber>>
+    *uniqueIdToSubscriber;
+
 @end
 
 @implementation CAMHardwareDevice
@@ -105,6 +110,7 @@ NS_ASSUME_NONNULL_BEGIN
     _videoFramesSubject = [RACSubject subject];
     _videoFramesErrorsSubject = [RACSubject subject];
     _audioFramesSubject = [RACSubject subject];
+    _uniqueIdToSubscriber = [[NSMutableDictionary alloc] init];
     [self setupSessionDelegates];
     [self setupProperties];
   }
@@ -324,7 +330,11 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
   return [[RACSignal defer:^RACSignal *{
     @strongify(self);
     self.session.videoOutput.videoSettings = pixelFormat.videoSettings;
-    self.session.stillOutput.outputSettings = pixelFormat.videoSettings;
+    if (self.session.photoOutput) {
+      self.session.pixelFormat = pixelFormat;
+    } else {
+      self.session.stillOutput.outputSettings = pixelFormat.videoSettings;
+    }
     return [RACSignal return:pixelFormat];
   }] subscribeOn:self.scheduler];
 }
@@ -334,20 +344,11 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
   RACSignal *captureStillImage = [[RACSignal
       createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
         @strongify(self);
-        [self.session.stillOutput
-         captureStillImageAsynchronouslyFromConnection:self.session.stillConnection
-         completionHandler:^(CMSampleBufferRef imageDataSampleBuffer, NSError *error) {
-           if (error) {
-             [subscriber sendError:[NSError
-                                    lt_errorWithCode:CAMErrorCodeFailedCapturingFromStillOutput
-                                    underlyingError:error]];
-           } else {
-             CAMVideoFrame *frame =
-                 [[CAMVideoFrame alloc] initWithSampleBuffer:imageDataSampleBuffer];
-             [subscriber sendNext:frame];
-             [subscriber sendCompleted];
-           }
-         }];
+        if (self.session.photoOutput) {
+          [self capturePhotoAndSendToSuscriber:subscriber];
+        } else {
+          [self captureStillImageAndSendToSuscriber:subscriber];
+        }
         return nil;
       }]
       subscribeOn:self.scheduler];
@@ -355,6 +356,30 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
   return [[[trigger mapReplace:captureStillImage]
       concat]
       takeUntil:[self rac_willDeallocSignal]];
+}
+
+- (void)capturePhotoAndSendToSuscriber:(id<RACSubscriber>)subscriber {
+  AVCapturePhotoSettings *photoSettings =
+      [AVCapturePhotoSettings photoSettingsWithFormat:self.session.pixelFormat.videoSettings];
+  @synchronized(self.uniqueIdToSubscriber) {
+    self.uniqueIdToSubscriber[@(photoSettings.uniqueID)] = subscriber;
+  }
+  [self.session.photoOutput capturePhotoWithSettings:photoSettings delegate:self];
+}
+
+- (void)captureStillImageAndSendToSuscriber:(id<RACSubscriber>)subscriber {
+  [self.session.stillOutput
+   captureStillImageAsynchronouslyFromConnection:self.session.stillConnection
+   completionHandler:^(CMSampleBufferRef imageDataSampleBuffer, NSError *error) {
+     if (error) {
+       [subscriber sendError:[NSError lt_errorWithCode:CAMErrorCodeFailedCapturingFromStillOutput
+                                       underlyingError:error]];
+     } else {
+       CAMVideoFrame *frame = [[CAMVideoFrame alloc] initWithSampleBuffer:imageDataSampleBuffer];
+       [subscriber sendNext:frame];
+       [subscriber sendCompleted];
+     }
+   }];
 }
 
 - (RACSignal *)videoFrames {
@@ -405,6 +430,39 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
       rac_addObserverForName:AVCaptureDeviceSubjectAreaDidChangeNotification object:nil]
       takeUntil:[self rac_willDeallocSignal]]
       mapReplace:[RACUnit defaultUnit]];
+}
+
+#pragma mark -
+#pragma mark AVCapturePhotoCaptureDelegate
+#pragma mark -
+
+- (void)captureOutput:(AVCapturePhotoOutput * __unused)captureOutput
+    didFinishProcessingPhotoSampleBuffer:(nullable CMSampleBufferRef)photoSampleBuffer
+    previewPhotoSampleBuffer:(nullable CMSampleBufferRef __unused)previewPhotoSampleBuffer
+    resolvedSettings:(AVCaptureResolvedPhotoSettings *)resolvedSettings
+    bracketSettings:(nullable AVCaptureBracketedStillImageSettings * __unused)bracketSettings
+    error:(nullable NSError *)error {
+  id<RACSubscriber> subscriber;
+  @synchronized(self.uniqueIdToSubscriber) {
+    subscriber = self.uniqueIdToSubscriber[@(resolvedSettings.uniqueID)];
+  }
+
+  if (error) {
+    [subscriber sendError:[NSError lt_errorWithCode:CAMErrorCodeFailedCapturingFromStillOutput
+                                    underlyingError:error]];
+  } else {
+    CAMVideoFrame *frame = [[CAMVideoFrame alloc] initWithSampleBuffer:photoSampleBuffer];
+    [subscriber sendNext:frame];
+    [subscriber sendCompleted];
+  }
+}
+
+- (void)captureOutput:(AVCapturePhotoOutput * __unused)captureOutput
+    didFinishCaptureForResolvedSettings:(AVCaptureResolvedPhotoSettings *)resolvedSettings
+    error:(nullable NSError * __unused)error {
+  @synchronized(self.uniqueIdToSubscriber) {
+    [self.uniqueIdToSubscriber removeObjectForKey:@(resolvedSettings.uniqueID)];
+  }
 }
 
 #pragma mark -

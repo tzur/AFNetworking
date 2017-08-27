@@ -24,6 +24,8 @@
 @property (readwrite, nonatomic, nullable) AVCaptureVideoDataOutput *videoOutput;
 @property (readwrite, nonatomic, nullable) AVCaptureConnection *videoConnection;
 @property (readwrite, nonatomic, nullable) AVCaptureStillImageOutput *stillOutput;
+@property (readwrite, nonatomic, nullable) AVCapturePhotoOutput *photoOutput;
+@property (readwrite, nonatomic, nullable) CAMPixelFormat *pixelFormat;
 @property (readwrite, nonatomic, nullable) AVCaptureConnection *stillConnection;
 @property (readwrite, nonatomic, nullable) AVCaptureDevice *audioDevice;
 @property (readwrite, nonatomic, nullable) AVCaptureDeviceInput *audioInput;
@@ -48,7 +50,7 @@ context(@"", ^{
   context(@"video", ^{
     static const CGSize kSize = CGSizeMake(3, 6);
 
-    it(@"should set pixel format", ^{
+    it(@"should set pixel format for still output", ^{
       id videoOutput = OCMClassMock([AVCaptureVideoDataOutput class]);
       session.videoOutput = videoOutput;
       id stillOutput = OCMClassMock([AVCaptureStillImageOutput class]);
@@ -65,7 +67,23 @@ context(@"", ^{
       expect(recorder).to.complete();
     });
 
-    it(@"should not set pixel format without subscribing", ^{
+    it(@"should set pixel format for photo output", ^{
+      id videoOutput = OCMClassMock([AVCaptureVideoDataOutput class]);
+      session.videoOutput = videoOutput;
+      id photoOutput = OCMClassMock([AVCapturePhotoOutput class]);
+      session.photoOutput = photoOutput;
+
+      CAMPixelFormat *pixelFormat = $(CAMPixelFormat420f);
+      OCMExpect([videoOutput setVideoSettings:pixelFormat.videoSettings]);
+
+      LLSignalTestRecorder *recorder = [[device setPixelFormat:pixelFormat] testRecorder];
+      OCMVerifyAllWithDelay(videoOutput, 1);
+      expect(session.pixelFormat).to.equal(pixelFormat);
+      expect(recorder).to.sendValues(@[pixelFormat]);
+      expect(recorder).to.complete();
+    });
+
+    it(@"should not set pixel format for still output without subscribing", ^{
       id videoOutput = OCMClassMock([AVCaptureVideoDataOutput class]);
       session.videoOutput = videoOutput;
       id stillOutput = OCMClassMock([AVCaptureStillImageOutput class]);
@@ -73,6 +91,17 @@ context(@"", ^{
 
       OCMReject([videoOutput setVideoSettings:OCMOCK_ANY]);
       OCMReject([stillOutput setOutputSettings:OCMOCK_ANY]);
+      [device setPixelFormat:$(CAMPixelFormat420f)];
+    });
+
+    it(@"should not set pixel format for photo output without subscribing", ^{
+      id videoOutput = OCMClassMock([AVCaptureVideoDataOutput class]);
+      session.videoOutput = videoOutput;
+      id photoOutput = OCMClassMock([AVCapturePhotoOutput class]);
+      session.photoOutput = photoOutput;
+
+      OCMReject([videoOutput setVideoSettings:OCMOCK_ANY]);
+      OCMReject([session setPixelFormat:OCMOCK_ANY]);
       [device setPixelFormat:$(CAMPixelFormat420f)];
     });
 

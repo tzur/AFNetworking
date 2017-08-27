@@ -32,7 +32,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readwrite, nonatomic) AVCaptureConnection *videoConnection;
 
 /// Still output attached to this session.
-@property (readwrite, nonatomic) AVCaptureStillImageOutput *stillOutput;
+@property (readwrite, nonatomic, nullable) AVCaptureStillImageOutput *stillOutput;
+
+/// Still output attached to this session when running on iOS 10 and up.
+@property (readwrite, nonatomic, nullable) AVCapturePhotoOutput *photoOutput;
 
 /// Still connection between \c videoInput and \c stillOutput.
 @property (readwrite, nonatomic) AVCaptureConnection *stillConnection;
@@ -173,21 +176,31 @@ NS_ASSUME_NONNULL_BEGIN
   }
 }
 
-- (BOOL)setupStillOutputWithError:(NSError * __autoreleasing *)error {
+- (BOOL)setupStillOutputGenericWithPixelFormat:(CAMPixelFormat *)pixelFormat
+                                         error:(NSError * __autoreleasing *)error {
   AVCaptureVideoOrientation stillOrientation = self.stillConnection.videoOrientation;
 
-  if (self.stillOutput) {
-    [self.session removeOutput:self.stillOutput];
+  if (self.stillOutputGeneric) {
+    [self.session removeOutput:self.stillOutputGeneric];
   }
 
-  self.stillOutput = [[AVCaptureStillImageOutput alloc] init];
-  if (![self.session canAddOutput:self.stillOutput]) {
+  if ([AVCapturePhotoOutput class]) {
+    self.photoOutput = [[AVCapturePhotoOutput alloc] init];
+    self.photoOutput.highResolutionCaptureEnabled = YES;
+    self.pixelFormat = pixelFormat;
+  } else {
+    self.stillOutput = [[AVCaptureStillImageOutput alloc] init];
+    self.stillOutput.outputSettings = pixelFormat.videoSettings;
+    self.stillOutput.highResolutionStillImageOutputEnabled = YES;
+  }
+
+  if (![self.session canAddOutput:self.stillOutputGeneric]) {
     if (error) {
       *error = [NSError lt_errorWithCode:CAMErrorCodeFailedAttachingStillOutput];
     }
     return NO;
   }
-  [self.session addOutput:self.stillOutput];
+  [self.session addOutput:self.stillOutputGeneric];
 
   [self updateStillConnection];
   self.stillConnection.videoOrientation = stillOrientation;
@@ -195,8 +208,12 @@ NS_ASSUME_NONNULL_BEGIN
   return YES;
 }
 
+- (AVCaptureOutput *)stillOutputGeneric {
+  return self.photoOutput ? self.photoOutput : self.stillOutput;
+}
+
 - (void)updateStillConnection {
-  self.stillConnection = self.stillOutput.connections.firstObject;
+  self.stillConnection = self.stillOutputGeneric.connections.firstObject;
 }
 
 - (BOOL)setupAudioInputWithDevice:(AVCaptureDevice *)device
@@ -240,7 +257,6 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (BOOL)setupAudioOutputWithError:(NSError * __autoreleasing *)error {
-
   if (self.audioOutput) {
     [self.session removeOutput:self.audioOutput];
   }
@@ -293,64 +309,6 @@ NS_ASSUME_NONNULL_BEGIN
     [self.session removeOutput:output];
   }
   [self.session commitConfiguration];
-}
-
-@end
-
-@implementation CAMHardwareSessionFactory
-
-- (RACSignal *)sessionWithPreset:(CAMDevicePreset *)preset {
-  return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
-    CAMHardwareSession *session = [[CAMHardwareSession alloc]
-        initWithPreset:preset session:[[AVCaptureSession alloc] init]];
-    NSError *error;
-    BOOL success = [self configureSession:session withPreset:preset error:&error];
-    if (success) {
-      [subscriber sendNext:session];
-      [subscriber sendCompleted];
-    } else {
-      [subscriber sendError:error];
-    }
-    return nil;
-  }];
-}
-
-- (BOOL)configureSession:(CAMHardwareSession *)session withPreset:(CAMDevicePreset *)preset
-                   error:(NSError * __autoreleasing *)error {
-  BOOL success;
-
-  [session createPreviewLayer];
-  [session.session beginConfiguration];
-  session.session.sessionPreset = AVCaptureSessionPresetInputPriority;
-
-  success = [session setupVideoInputWithDevice:preset.camera.device
-                                formatStrategy:preset.formatStrategy error:error] &&
-      [session setupVideoOutputWithError:error];
-  if (!success) {
-    return NO;
-  }
-  session.videoOutput.videoSettings = preset.pixelFormat.videoSettings;
-
-  success = [session setupStillOutputWithError:error];
-  if (!success) {
-    return NO;
-  }
-  session.stillOutput.outputSettings = preset.pixelFormat.videoSettings;
-  session.stillOutput.highResolutionStillImageOutputEnabled = YES;
-
-  if (preset.enableAudio) {
-    AVCaptureDevice *device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeAudio];
-    success = [session setupAudioInputWithDevice:device error:error] &&
-        [session setupAudioOutputWithError:error];
-    if (!success) {
-      return NO;
-    }
-  }
-
-  [session.session commitConfiguration];
-  [session.session startRunning];
-
-  return YES;
 }
 
 @end
