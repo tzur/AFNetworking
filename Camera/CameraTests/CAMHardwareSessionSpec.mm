@@ -6,6 +6,7 @@
 #import "CAMDevicePreset.h"
 #import "CAMFakeAVCaptureDevice.h"
 #import "CAMFormatStrategy.h"
+#import "CAMHardwareSessionFactory.h"
 
 /// Fake \c CAMFormatStrategy for testing.
 @interface CAMFakeFormatStrategy : NSObject <CAMFormatStrategy>
@@ -29,7 +30,8 @@
                    formatStrategy:(id<CAMFormatStrategy>)formatStrategy
                             error:(NSError **)error;
 - (BOOL)setupVideoOutputWithError:(NSError **)error;
-- (BOOL)setupStillOutputWithError:(NSError **)error;
+- (BOOL)setupStillOutputGenericWithPixelFormat:(CAMPixelFormat *)pixelFormat
+                                         error:(NSError **)error;
 - (BOOL)setupAudioInputWithDevice:(AVCaptureDevice *)device error:(NSError **)error;
 - (BOOL)setupAudioOutputWithError:(NSError **)error;
 - (void)setVideoOutput:(AVCaptureVideoDataOutput *)videoOutput;
@@ -389,7 +391,7 @@ context(@"session", ^{
   context(@"still output", ^{
     it(@"should not raise when not passing an error output", ^{
       expect(^{
-        [session setupStillOutputWithError:nil];
+        [session setupStillOutputGenericWithPixelFormat:$(CAMPixelFormat420f) error:nil];
       }).toNot.raise(NSInvalidArgumentException);
     });
 
@@ -398,12 +400,17 @@ context(@"session", ^{
 
       BOOL success;
       NSError *error;
-      success = [session setupStillOutputWithError:&error];
+      success = [session setupStillOutputGenericWithPixelFormat:$(CAMPixelFormat420f) error:&error];
 
       expect(success).to.beTruthy();
       expect(error).to.beNil();
-      expect(session.stillOutput).toNot.beNil();
-      OCMVerify([sessionMock addOutput:(id)session.stillOutput]);
+
+      if (session.photoOutput) {
+        OCMVerify([sessionMock addOutput:(id)session.photoOutput]);
+      } else {
+        expect(session.stillOutput).toNot.beNil();
+        OCMVerify([sessionMock addOutput:(id)session.stillOutput]);
+      }
     });
 
     it(@"should return error when unable to attach output", ^{
@@ -411,7 +418,7 @@ context(@"session", ^{
 
       BOOL success;
       NSError *error;
-      success = [session setupStillOutputWithError:&error];
+      success = [session setupStillOutputGenericWithPixelFormat:$(CAMPixelFormat420f) error:&error];
 
       expect(success).to.beFalsy();
       expect(error.domain).to.equal(kLTErrorDomain);
@@ -422,12 +429,21 @@ context(@"session", ^{
       OCMStub([sessionMock canAddOutput:OCMOCK_ANY]).andReturn(YES);
 
       NSError *error;
-      [session setupStillOutputWithError:&error];
-      id firstOutput = session.stillOutput;
+      [session setupStillOutputGenericWithPixelFormat:$(CAMPixelFormat420f) error:&error];
 
-      [session setupStillOutputWithError:&error];
-      OCMVerify([sessionMock removeOutput:firstOutput]);
-      expect(session.stillOutput).toNot.beIdenticalTo(firstOutput);
+      if (session.photoOutput) {
+        id firstOutput = session.photoOutput;
+
+        [session setupStillOutputGenericWithPixelFormat:$(CAMPixelFormat420f) error:&error];
+        OCMVerify([sessionMock removeOutput:firstOutput]);
+        expect(session.photoOutput).toNot.beIdenticalTo(firstOutput);
+      } else {
+        id firstOutput = session.stillOutput;
+
+        [session setupStillOutputGenericWithPixelFormat:$(CAMPixelFormat420f) error:&error];
+        OCMVerify([sessionMock removeOutput:firstOutput]);
+        expect(session.stillOutput).toNot.beIdenticalTo(firstOutput);
+      }
     });
   });
 
@@ -607,20 +623,8 @@ context(@"factory", ^{
     OCMStub([session setupVideoOutputWithError:[OCMArg setTo:nil]]).andReturn(YES);
 
     [factory configureSession:session withPreset:preset error:&error];
-    OCMVerify([session setupStillOutputWithError:[OCMArg anyObjectRef]]);
-  });
-
-  it(@"should configure still output", ^{
-    OCMStub([session setupVideoInputWithDevice:OCMOCK_ANY formatStrategy:OCMOCK_ANY
-                                         error:[OCMArg setTo:nil]]).andReturn(YES);
-    OCMStub([session setupVideoOutputWithError:[OCMArg setTo:nil]]).andReturn(YES);
-    OCMStub([session setupStillOutputWithError:[OCMArg setTo:nil]]).andReturn(YES);
-    id stillOutput = OCMClassMock([AVCaptureStillImageOutput class]);
-    OCMStub([session stillOutput]).andReturn(stillOutput);
-
-    [factory configureSession:session withPreset:preset error:&error];
-    OCMVerify([stillOutput setOutputSettings:OCMOCK_ANY]);
-    OCMVerify([stillOutput setHighResolutionStillImageOutputEnabled:YES]);
+    OCMVerify([session setupStillOutputGenericWithPixelFormat:OCMOCK_ANY
+                                                        error:[OCMArg anyObjectRef]]);
   });
 
   it(@"should create audio input", ^{
@@ -628,7 +632,8 @@ context(@"factory", ^{
     OCMStub([session setupVideoInputWithDevice:OCMOCK_ANY formatStrategy:OCMOCK_ANY
                                          error:[OCMArg setTo:nil]]).andReturn(YES);
     OCMStub([session setupVideoOutputWithError:[OCMArg setTo:nil]]).andReturn(YES);
-    OCMStub([session setupStillOutputWithError:[OCMArg setTo:nil]]).andReturn(YES);
+    OCMStub([session setupStillOutputGenericWithPixelFormat:OCMOCK_ANY
+                                                      error:[OCMArg setTo:nil]]).andReturn(YES);
 
     [factory configureSession:session withPreset:preset error:&error];
     OCMVerify([session setupAudioInputWithDevice:OCMOCK_ANY error:[OCMArg anyObjectRef]]);
@@ -639,7 +644,8 @@ context(@"factory", ^{
     OCMStub([session setupVideoInputWithDevice:OCMOCK_ANY formatStrategy:OCMOCK_ANY
                                          error:[OCMArg setTo:nil]]).andReturn(YES);
     OCMStub([session setupVideoOutputWithError:[OCMArg setTo:nil]]).andReturn(YES);
-    OCMStub([session setupStillOutputWithError:[OCMArg setTo:nil]]).andReturn(YES);
+    OCMStub([session setupStillOutputGenericWithPixelFormat:OCMOCK_ANY
+                                                      error:[OCMArg setTo:nil]]).andReturn(YES);
     OCMStub([session setupAudioInputWithDevice:OCMOCK_ANY
                                          error:[OCMArg setTo:nil]]).andReturn(YES);
 
@@ -652,7 +658,8 @@ context(@"factory", ^{
     OCMStub([session setupVideoInputWithDevice:OCMOCK_ANY formatStrategy:OCMOCK_ANY
                                          error:[OCMArg setTo:nil]]).andReturn(YES);
     OCMStub([session setupVideoOutputWithError:[OCMArg setTo:nil]]).andReturn(YES);
-    OCMStub([session setupStillOutputWithError:[OCMArg setTo:nil]]).andReturn(YES);
+    OCMStub([session setupStillOutputGenericWithPixelFormat:$(CAMPixelFormat420f)
+                                                      error:[OCMArg setTo:nil]]).andReturn(YES);
 
     [[[session reject] ignoringNonObjectArgs] setupAudioInputWithDevice:OCMOCK_ANY error:NULL];
     [factory configureSession:session withPreset:preset error:&error];
@@ -663,7 +670,8 @@ context(@"factory", ^{
     OCMStub([session setupVideoInputWithDevice:OCMOCK_ANY formatStrategy:OCMOCK_ANY
                                          error:[OCMArg setTo:nil]]).andReturn(YES);
     OCMStub([session setupVideoOutputWithError:[OCMArg setTo:nil]]).andReturn(YES);
-    OCMStub([session setupStillOutputWithError:[OCMArg setTo:nil]]).andReturn(YES);
+    OCMStub([session setupStillOutputGenericWithPixelFormat:OCMOCK_ANY
+                                                      error:[OCMArg setTo:nil]]).andReturn(YES);
     OCMStub([session setupAudioInputWithDevice:OCMOCK_ANY
                                          error:[OCMArg setTo:nil]]).andReturn(YES);
 
@@ -676,7 +684,8 @@ context(@"factory", ^{
     OCMStub([session setupVideoInputWithDevice:OCMOCK_ANY formatStrategy:OCMOCK_ANY
                                          error:[OCMArg setTo:nil]]).andReturn(YES);
     OCMStub([session setupVideoOutputWithError:[OCMArg setTo:nil]]).andReturn(YES);
-    OCMStub([session setupStillOutputWithError:[OCMArg setTo:nil]]).andReturn(YES);
+    OCMStub([session setupStillOutputGenericWithPixelFormat:OCMOCK_ANY
+                                                      error:[OCMArg setTo:nil]]).andReturn(YES);
     OCMStub([session setupAudioInputWithDevice:OCMOCK_ANY
                                          error:[OCMArg setTo:nil]]).andReturn(YES);
     OCMStub([session setupAudioOutputWithError:[OCMArg setTo:nil]]).andReturn(YES);
@@ -707,7 +716,8 @@ context(@"factory", ^{
     OCMStub([session setupVideoInputWithDevice:OCMOCK_ANY formatStrategy:OCMOCK_ANY
                                          error:[OCMArg setTo:nil]]).andReturn(YES);
     OCMStub([session setupVideoOutputWithError:[OCMArg setTo:nil]]).andReturn(YES);
-    OCMStub([session setupStillOutputWithError:[OCMArg setTo:kError]]).andReturn(NO);
+    OCMStub([session setupStillOutputGenericWithPixelFormat:OCMOCK_ANY
+                                                      error:[OCMArg setTo:kError]]).andReturn(NO);
     BOOL success = [factory configureSession:session withPreset:preset error:&error];
     expect(success).to.beFalsy();
     expect(error).to.equal(kError);
@@ -718,7 +728,8 @@ context(@"factory", ^{
     OCMStub([session setupVideoInputWithDevice:OCMOCK_ANY formatStrategy:OCMOCK_ANY
                                          error:[OCMArg setTo:nil]]).andReturn(YES);
     OCMStub([session setupVideoOutputWithError:[OCMArg setTo:nil]]).andReturn(YES);
-    OCMStub([session setupStillOutputWithError:[OCMArg setTo:nil]]).andReturn(YES);
+    OCMStub([session setupStillOutputGenericWithPixelFormat:OCMOCK_ANY
+                                                      error:[OCMArg setTo:nil]]).andReturn(YES);
     OCMStub([session setupAudioInputWithDevice:OCMOCK_ANY
                                          error:[OCMArg setTo:kError]]).andReturn(NO);
     BOOL success = [factory configureSession:session withPreset:preset error:&error];
@@ -731,7 +742,8 @@ context(@"factory", ^{
     OCMStub([session setupVideoInputWithDevice:OCMOCK_ANY formatStrategy:OCMOCK_ANY
                                          error:[OCMArg setTo:nil]]).andReturn(YES);
     OCMStub([session setupVideoOutputWithError:[OCMArg setTo:nil]]).andReturn(YES);
-    OCMStub([session setupStillOutputWithError:[OCMArg setTo:nil]]).andReturn(YES);
+    OCMStub([session setupStillOutputGenericWithPixelFormat:OCMOCK_ANY
+                                                      error:[OCMArg setTo:nil]]).andReturn(YES);
     OCMStub([session setupAudioInputWithDevice:OCMOCK_ANY
                                          error:[OCMArg setTo:nil]]).andReturn(YES);
     OCMStub([session setupAudioOutputWithError:[OCMArg setTo:kError]]).andReturn(NO);

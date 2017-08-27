@@ -3,7 +3,7 @@
 
 #import <AVFoundation/AVFoundation.h>
 
-@class CAMDeviceCamera, CAMDevicePreset;
+@class CAMDeviceCamera, CAMPixelFormat;
 
 @protocol CAMFormatStrategy;
 
@@ -14,6 +14,11 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 /// All methods operate synchronously on the current queue. It's the caller's responsibility to
 /// make sure the main queue is not blocked.
+///
+/// Still image output is represented either by \c stillOutput property (iOS 9 and before) or by
+/// \c photoOutput property (iOS 10 and after). The distinction is done because the
+/// \c AVCapturePhotoOutput class (the class of \c photoOutput property) has been introduced in iOS
+/// 10.
 @interface CAMHardwareSession : NSObject
 
 /// Unavailable. Use \c CAMHardwareSessionFactory instead.
@@ -42,8 +47,14 @@ NS_ASSUME_NONNULL_BEGIN
 /// Video connection between \c videoInput and \c videoOutput.
 @property (readonly, nonatomic) AVCaptureConnection *videoConnection;
 
-/// Still output attached to this session.
-@property (readonly, nonatomic) AVCaptureStillImageOutput *stillOutput;
+/// Still output attached to this session. Guaranteed to be non-null for iOS 9 and before.
+@property (readonly, nonatomic, nullable) AVCaptureStillImageOutput *stillOutput;
+
+/// Still output attached to this session. Guaranteed to be non-null for iOS 10 and after.
+@property (readonly, nonatomic, nullable) AVCapturePhotoOutput *photoOutput;
+
+/// Pixel format to use for a single photo capture request when running on iOS 10 and up.
+@property (strong, nonatomic, nullable) CAMPixelFormat *pixelFormat;
 
 /// Still connection between \c videoInput and \c stillOutput.
 @property (readonly, nonatomic) AVCaptureConnection *stillConnection;
@@ -68,19 +79,6 @@ NS_ASSUME_NONNULL_BEGIN
 /// Delegate to receive audio \c CMSampleBuffers.
 @property (weak, nonatomic, nullable)
     id<AVCaptureAudioDataOutputSampleBufferDelegate> audioDelegate;
-
-@end
-
-/// Factory for creating and configuring \c CAMHardwareSession instances.
-@interface CAMHardwareSessionFactory : NSObject
-
-/// Creates a session according to the given \c preset. This includes creating and attaching video
-/// input and output, still output, and according to the preset, may also include audio input and
-/// output.
-///
-/// Returned signal sends the created \c CAMHardwareSession and completes, or sends an appropriate
-/// error if an error occurred at any stage. All events are sent on an arbitrary thread.
-- (RACSignal *)sessionWithPreset:(CAMDevicePreset *)preset;
 
 @end
 
