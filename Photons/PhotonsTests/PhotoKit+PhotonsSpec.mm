@@ -11,6 +11,15 @@
 - (NSString *)uniformTypeIdentifier;
 @end
 
+/// Returns a mocked PHAsset with the given \c uti.
+static PHAsset *PTNCreateAsset(NSString *uti = @"") {
+  PHAsset *asset = OCMPartialMock([[PHAsset alloc] init]);
+  if (uti) {
+    OCMStub([asset uniformTypeIdentifier]).andReturn(uti);
+  }
+  return asset;
+}
+
 SpecBegin(PhotoKit_Photons)
 
 context(@"asset descriptor", ^{
@@ -47,57 +56,47 @@ context(@"asset descriptor", ^{
   });
 
   it(@"should reveal cloud based traits when the underlying asset is cloud based", ^{
-    PHAsset *cloudAsset = OCMPartialMock([[PHAsset alloc] init]);
+    PHAsset *cloudAsset = PTNCreateAsset();
     OCMStub(cloudAsset.sourceType).andReturn(PHAssetSourceTypeCloudShared);
     expect(cloudAsset.descriptorTraits).to.contain(kPTNDescriptorTraitCloudBasedKey);
 
-    PHAsset *iTunesAsset = OCMPartialMock([[PHAsset alloc] init]);
+    PHAsset *iTunesAsset = PTNCreateAsset();
     OCMStub(iTunesAsset.sourceType).andReturn(PHAssetSourceTypeiTunesSynced);
     expect(iTunesAsset.descriptorTraits).to.equal([NSSet set]);
 
-    PHAsset *asset = OCMPartialMock([[PHAsset alloc] init]);
+    PHAsset *asset = PTNCreateAsset();
     OCMStub(asset.sourceType).andReturn(PHAssetSourceTypeUserLibrary);
     expect(asset.descriptorTraits).to.equal([NSSet set]);
   });
 
   it(@"should reveal video based traits when the underlying asset is video", ^{
-    PHAsset *videoAsset = OCMPartialMock([[PHAsset alloc] init]);
+    PHAsset *videoAsset = PTNCreateAsset();
     OCMStub(videoAsset.mediaType).andReturn(PHAssetMediaTypeVideo);
     expect(videoAsset.descriptorTraits).to.contain(kPTNDescriptorTraitAudiovisualKey);
 
-    PHAsset *imageAsset = OCMPartialMock([[PHAsset alloc] init]);
+    PHAsset *imageAsset = PTNCreateAsset();
     OCMStub(imageAsset.mediaType).andReturn(PHAssetMediaTypeImage);
     expect(imageAsset.descriptorTraits).to.equal([NSSet set]);
 
-    PHAsset *asset = OCMPartialMock([[PHAsset alloc] init]);
+    PHAsset *asset = PTNCreateAsset();
     OCMStub(asset.mediaType).andReturn(PHAssetMediaTypeUnknown);
     expect(asset.descriptorTraits).to.equal([NSSet set]);
   });
 
   it(@"should reveal raw traits when the underlying asset is raw", ^{
-    PHAsset *rawAsset = OCMPartialMock([[PHAsset alloc] init]);
-    OCMStub([rawAsset uniformTypeIdentifier]).andReturn(@"com.adobe.raw-image");
+    PHAsset *rawAsset = PTNCreateAsset(@"com.adobe.raw-image");
     expect(rawAsset.descriptorTraits).to.contain(kPTNDescriptorTraitRawKey);
 
-    PHAsset *jpegAsset = OCMPartialMock([[PHAsset alloc] init]);
-    OCMStub([jpegAsset uniformTypeIdentifier]).andReturn(@"public.image");
+    PHAsset *jpegAsset = PTNCreateAsset(@"public.image");
     expect(jpegAsset.descriptorTraits).to.equal([NSSet set]);
-
-    PHAsset *asset = OCMPartialMock([[PHAsset alloc] init]);
-    expect(asset.descriptorTraits).to.equal([NSSet set]);
   });
 
   it(@"should reveal GIF traits when the underlying asset is a GIF", ^{
-    PHAsset *gifAsset = OCMPartialMock([[PHAsset alloc] init]);
-    OCMStub([gifAsset uniformTypeIdentifier]).andReturn(@"com.compuserve.gif");
+    PHAsset *gifAsset = PTNCreateAsset(@"com.compuserve.gif");
     expect(gifAsset.descriptorTraits).to.contain(kPTNDescriptorTraitGIFKey);
 
-    PHAsset *jpegAsset = OCMPartialMock([[PHAsset alloc] init]);
-    OCMStub([jpegAsset uniformTypeIdentifier]).andReturn(@"public.image");
+    PHAsset *jpegAsset = PTNCreateAsset(@"public.image");
     expect(jpegAsset.descriptorTraits).to.equal([NSSet set]);
-
-    PHAsset *asset = OCMPartialMock([[PHAsset alloc] init]);
-    expect(asset.descriptorTraits).to.equal([NSSet set]);
   });
 });
 

@@ -4,6 +4,7 @@
 #import "PhotoKit+Photons.h"
 
 #import <MobileCoreServices/MobileCoreServices.h>
+#import <mutex>
 
 #import "NSURL+PhotoKit.h"
 
@@ -29,6 +30,31 @@ NS_ASSUME_NONNULL_BEGIN
 - (nullable NSString *)filename;
 
 @end
+
+/// Returns \c YES if \c conformsToUTI is an ancestor of \c uti in the UTI hierarchy. For example,
+/// the UTI "com.nikon.raw-image" conforms to "com.nikon.raw-image". Note that any UTI conforms to
+/// itself, i.e. "com.compuserve.gif" conforms to "com.compuserve.gif".
+static BOOL PTUConformsToUTI(NSString *uti, NSString *conformsToUTI) {
+  static dispatch_once_t onceToken;
+  static NSMutableDictionary<NSString *, NSNumber *> *cache;
+  static std::mutex mutex;
+  dispatch_once(&onceToken, ^{
+    cache = [NSMutableDictionary dictionary];
+  });
+
+  // Colon is not a legal UTI character, so it can be used as a separator.
+  // https://developer.apple.com/library/content/documentation/FileManagement/Conceptual/understanding_utis/understand_utis_conc/understand_utis_conc.html
+  NSString *joinedUTI = [@[uti, conformsToUTI] componentsJoinedByString:@":"];
+
+  std::lock_guard<std::mutex> lock(mutex);
+  NSNumber * _Nullable conforms = cache[joinedUTI];
+  if (!conforms) {
+    conforms = @(UTTypeConformsTo((__bridge CFStringRef)uti, (__bridge CFStringRef)conformsToUTI));
+    cache[joinedUTI] = conforms;
+  }
+
+  return [conforms boolValue];
+}
 
 @implementation PHAsset (Photons)
 
@@ -68,14 +94,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (BOOL)ptn_isRaw {
   if ([self respondsToSelector:@selector(uniformTypeIdentifier)]) {
-    return (UTTypeConformsTo((__bridge CFStringRef)self.uniformTypeIdentifier, kUTTypeRawImage));
+    return PTUConformsToUTI(self.uniformTypeIdentifier ,(NSString *)kUTTypeRawImage);
   }
   return NO;
 }
 
 - (BOOL)ptn_isGIF {
   if ([self respondsToSelector:@selector(uniformTypeIdentifier)]) {
-    return (UTTypeConformsTo((__bridge CFStringRef)self.uniformTypeIdentifier, kUTTypeGIF));
+    return PTUConformsToUTI(self.uniformTypeIdentifier, (NSString *)kUTTypeGIF);
   }
   return NO;
 }
