@@ -29,6 +29,7 @@
 		2873CB7F1F54668E00677B2C /* PTNOceanAssetSearchResponseSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2873CB7E1F54668E00677B2C /* PTNOceanAssetSearchResponseSpec.mm */; };
 		2873CBA01F5466C100677B2C /* PTNOceanAssetManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2873CB9F1F5466C100677B2C /* PTNOceanAssetManager.mm */; };
 		2873CBCA1F5466E000677B2C /* PTNOceanAssetManagerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2873CBC91F5466E000677B2C /* PTNOceanAssetManagerSpec.mm */; };
+		2873CBEA1F54671F00677B2C /* OceanFakeSearchResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 2873CBE91F54671F00677B2C /* OceanFakeSearchResponse.json */; };
 		28BAD5E91F1E0513001048D0 /* Mantle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28BAD5E61F1E033A001048D0 /* Mantle.framework */; };
 		28BAD5EB1F1E0528001048D0 /* AFNetworking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28BAD5EA1F1E0528001048D0 /* AFNetworking.framework */; };
 		28BAD5EC1F1E052D001048D0 /* libFiber.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 28BAD5BA1F1E031C001048D0 /* libFiber.a */; };
@@ -593,6 +594,7 @@
 		2873CB9E1F5466C100677B2C /* PTNOceanAssetManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNOceanAssetManager.h; sourceTree = "<group>"; };
 		2873CB9F1F5466C100677B2C /* PTNOceanAssetManager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PTNOceanAssetManager.mm; sourceTree = "<group>"; };
 		2873CBC91F5466E000677B2C /* PTNOceanAssetManagerSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PTNOceanAssetManagerSpec.mm; sourceTree = "<group>"; };
+		2873CBE91F54671F00677B2C /* OceanFakeSearchResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = OceanFakeSearchResponse.json; path = Resources/OceanFakeSearchResponse.json; sourceTree = "<group>"; };
 		28BAD5A01F1E031B001048D0 /* Fiber.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Fiber.xcodeproj; path = ../Fiber/Fiber.xcodeproj; sourceTree = "<group>"; };
 		28BAD5DA1F1E033A001048D0 /* Mantle.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Mantle.xcodeproj; path = ../third_party/Mantle/Mantle.xcodeproj; sourceTree = "<group>"; };
 		28BAD5EA1F1E0528001048D0 /* AFNetworking.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AFNetworking.framework; path = "../../../../../Library/Developer/Xcode/DerivedData/Photons-bmimbhansjldytcrqayxlubmctds/Build/Products/Debug-iphonesimulator/AFNetworking.framework"; sourceTree = "<group>"; };
@@ -1695,6 +1697,7 @@
 		8BCF585B1BCD2350001EE2ED /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				2873CBE91F54671F00677B2C /* OceanFakeSearchResponse.json */,
 				0DBC67E81EAF653C005EE862 /* OneSecondVideo16x16.mp4 */,
 				848D2D2E1C4E24E500491AB3 /* PTNImageAsset.jpg */,
 				8428F2F01C67489B0007B0A5 /* PTNImageAsset.txt */,
@@ -2174,6 +2177,7 @@
 				8BCF586B1BCD25AB001EE2ED /* PTNImageMetadataLeftMirrored.jpg in Resources */,
 				8BCF58681BCD25AB001EE2ED /* PTNImageMetadataDownMirrored.jpg in Resources */,
 				8BCF586C1BCD25AB001EE2ED /* PTNImageMetadataRight.jpg in Resources */,
+				2873CBEA1F54671F00677B2C /* OceanFakeSearchResponse.json in Resources */,
 				8BCF586F1BCD25AB001EE2ED /* PTNImageMetadataUpMirrored.jpg in Resources */,
 				8BCF58691BCD25AB001EE2ED /* PTNImageMetadataImage.jpg in Resources */,
 				8428F2F11C67489B0007B0A5 /* PTNImageAsset.txt in Resources */,

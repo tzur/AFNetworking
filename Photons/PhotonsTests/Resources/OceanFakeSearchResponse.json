@@ -1,0 +1,27 @@
+{
+  "result_count": 1,
+  "page": 2,
+  "total_pages": 3,
+  "total_results": 4,
+  "non_sub_quota_left": 5,
+  "account_quota_left": 6,
+  "results": [
+    {
+      "id": "foo",
+      "asset_type": "photo",
+      "source_id": "pixabay",
+      "all_sizes": [
+        {
+          "height": 7,
+          "width": 8,
+          "url" : "https://bar.com/full.jpg"
+        },
+        {
+          "height": 9,
+          "width": 10,
+          "url" : "https://bar.com/thumbnail.jpg"
+        }
+      ]
+    }
+  ]
+}
