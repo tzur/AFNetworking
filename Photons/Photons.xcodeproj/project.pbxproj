@@ -13,6 +13,27 @@
 		0DF0D2311EAE1935000EEF37 /* PTNAVImageGeneratorFactory.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0DF0D2301EAE1935000EEF37 /* PTNAVImageGeneratorFactory.mm */; };
 		0DF1515F1EAF7330009F3080 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DF1515E1EAF7330009F3080 /* CoreMedia.framework */; };
 		0DF155D31EB1DC38009F3080 /* libcompression.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = CDE00B021E82AE40007AFD5E /* libcompression.tbd */; };
+		2873C97E1F54648900677B2C /* RACSignal+Mantle.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2873C97D1F54648900677B2C /* RACSignal+Mantle.mm */; };
+		2873C9811F5464B000677B2C /* RACSignal+MantleSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2873C9801F5464B000677B2C /* RACSignal+MantleSpec.mm */; };
+		2873C9971F5464FD00677B2C /* PTNOceanEnumsSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2873C9961F5464FD00677B2C /* PTNOceanEnumsSpec.mm */; };
+		2873C9C21F54650800677B2C /* PTNOceanEnums.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2873C9C11F54650800677B2C /* PTNOceanEnums.mm */; };
+		2873C9ED1F54655200677B2C /* NSURL+Ocean.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2873C9EC1F54655200677B2C /* NSURL+Ocean.mm */; };
+		2873CA171F54656500677B2C /* NSURL+OceanSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2873CA161F54656500677B2C /* NSURL+OceanSpec.mm */; };
+		2873CA421F54659500677B2C /* NSValueTransformer+Photons.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2873CA411F54659500677B2C /* NSValueTransformer+Photons.mm */; };
+		2873CA6C1F5465A600677B2C /* NSValueTransformer+PhotonsSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2873CA6B1F5465A600677B2C /* NSValueTransformer+PhotonsSpec.mm */; };
+		2873CA971F5465D500677B2C /* PTNOceanAlbumDescriptor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2873CA961F5465D500677B2C /* PTNOceanAlbumDescriptor.mm */; };
+		2873CAC11F5465EB00677B2C /* PTNOceanAlbumDescriptorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2873CAC01F5465EB00677B2C /* PTNOceanAlbumDescriptorSpec.mm */; };
+		2873CB091F54663900677B2C /* PTNOceanAssetDescriptorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2873CB081F54663900677B2C /* PTNOceanAssetDescriptorSpec.mm */; };
+		2873CB341F54664400677B2C /* PTNOceanAssetDescriptor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2873CB331F54664400677B2C /* PTNOceanAssetDescriptor.mm */; };
+		2873CB551F54667A00677B2C /* PTNOceanAssetSearchResponse.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2873CB541F54667A00677B2C /* PTNOceanAssetSearchResponse.mm */; };
+		2873CB7F1F54668E00677B2C /* PTNOceanAssetSearchResponseSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2873CB7E1F54668E00677B2C /* PTNOceanAssetSearchResponseSpec.mm */; };
+		2873CBA01F5466C100677B2C /* PTNOceanAssetManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2873CB9F1F5466C100677B2C /* PTNOceanAssetManager.mm */; };
+		2873CBCA1F5466E000677B2C /* PTNOceanAssetManagerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2873CBC91F5466E000677B2C /* PTNOceanAssetManagerSpec.mm */; };
+		2873CBEA1F54671F00677B2C /* OceanFakeSearchResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 2873CBE91F54671F00677B2C /* OceanFakeSearchResponse.json */; };
+		2873CC321F54675C00677B2C /* OceanFakeAssetResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 2873CC311F54675C00677B2C /* OceanFakeAssetResponse.json */; };
+		28BAD5E91F1E0513001048D0 /* Mantle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28BAD5E61F1E033A001048D0 /* Mantle.framework */; };
+		28BAD5EB1F1E0528001048D0 /* AFNetworking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28BAD5EA1F1E0528001048D0 /* AFNetworking.framework */; };
+		28BAD5EC1F1E052D001048D0 /* libFiber.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 28BAD5BA1F1E031C001048D0 /* libFiber.a */; };
 		655DCB3F1D4651BB00E44DAA /* libExpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B0B99E31CA6BF2200ED2334 /* libExpecta.a */; };
 		655DCB401D4651BB00E44DAA /* libextobjc_iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 655DCB081D46506700E44DAA /* libextobjc_iOS.a */; };
 		655DCB411D4651BB00E44DAA /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B0B9A0E1CA6BF2200ED2334 /* libOCMock.a */; };
@@ -213,6 +234,48 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		28BAD5B91F1E031C001048D0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 28BAD5A01F1E031B001048D0 /* Fiber.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 65AE67501D0461350083D1CE;
+			remoteInfo = Fiber;
+		};
+		28BAD5BB1F1E031C001048D0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 28BAD5A01F1E031B001048D0 /* Fiber.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 65C62B861D0474D4000FCE99;
+			remoteInfo = FiberTests;
+		};
+		28BAD5E11F1E033A001048D0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 28BAD5DA1F1E033A001048D0 /* Mantle.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D042FC3C15F72B23004E8054;
+			remoteInfo = "Mantle-Mac";
+		};
+		28BAD5E31F1E033A001048D0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 28BAD5DA1F1E033A001048D0 /* Mantle.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D042FC5415F72B23004E8054;
+			remoteInfo = "Mantle-MacTests";
+		};
+		28BAD5E51F1E033A001048D0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 28BAD5DA1F1E033A001048D0 /* Mantle.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D0E9C35719F6DB38000D427D;
+			remoteInfo = "Mantle-iOS";
+		};
+		28BAD5E71F1E033A001048D0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 28BAD5DA1F1E033A001048D0 /* Mantle.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D0E9C36119F6DB38000D427D;
+			remoteInfo = "Mantle-iOSTests";
+		};
 		6512CFFB1D48DA7B00D2C216 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 655DCB371D46518300E44DAA /* TestHost.xcodeproj */;
@@ -508,6 +571,35 @@
 		0DF0D22F1EAE1935000EEF37 /* PTNAVImageGeneratorFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNAVImageGeneratorFactory.h; sourceTree = "<group>"; };
 		0DF0D2301EAE1935000EEF37 /* PTNAVImageGeneratorFactory.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PTNAVImageGeneratorFactory.mm; sourceTree = "<group>"; };
 		0DF1515E1EAF7330009F3080 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		2873C97C1F54648900677B2C /* RACSignal+Mantle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RACSignal+Mantle.h"; sourceTree = "<group>"; };
+		2873C97D1F54648900677B2C /* RACSignal+Mantle.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "RACSignal+Mantle.mm"; sourceTree = "<group>"; };
+		2873C9801F5464B000677B2C /* RACSignal+MantleSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "RACSignal+MantleSpec.mm"; sourceTree = "<group>"; };
+		2873C9961F5464FD00677B2C /* PTNOceanEnumsSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PTNOceanEnumsSpec.mm; sourceTree = "<group>"; };
+		2873C9C01F54650800677B2C /* PTNOceanEnums.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNOceanEnums.h; sourceTree = "<group>"; };
+		2873C9C11F54650800677B2C /* PTNOceanEnums.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PTNOceanEnums.mm; sourceTree = "<group>"; };
+		2873C9EB1F54655200677B2C /* NSURL+Ocean.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURL+Ocean.h"; sourceTree = "<group>"; };
+		2873C9EC1F54655200677B2C /* NSURL+Ocean.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSURL+Ocean.mm"; sourceTree = "<group>"; };
+		2873CA161F54656500677B2C /* NSURL+OceanSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSURL+OceanSpec.mm"; sourceTree = "<group>"; };
+		2873CA401F54659500677B2C /* NSValueTransformer+Photons.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSValueTransformer+Photons.h"; sourceTree = "<group>"; };
+		2873CA411F54659500677B2C /* NSValueTransformer+Photons.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSValueTransformer+Photons.mm"; sourceTree = "<group>"; };
+		2873CA6B1F5465A600677B2C /* NSValueTransformer+PhotonsSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSValueTransformer+PhotonsSpec.mm"; sourceTree = "<group>"; };
+		2873CA951F5465D500677B2C /* PTNOceanAlbumDescriptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNOceanAlbumDescriptor.h; sourceTree = "<group>"; };
+		2873CA961F5465D500677B2C /* PTNOceanAlbumDescriptor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PTNOceanAlbumDescriptor.mm; sourceTree = "<group>"; };
+		2873CAC01F5465EB00677B2C /* PTNOceanAlbumDescriptorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PTNOceanAlbumDescriptorSpec.mm; sourceTree = "<group>"; };
+		2873CB081F54663900677B2C /* PTNOceanAssetDescriptorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PTNOceanAssetDescriptorSpec.mm; sourceTree = "<group>"; };
+		2873CB321F54664400677B2C /* PTNOceanAssetDescriptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNOceanAssetDescriptor.h; sourceTree = "<group>"; };
+		2873CB331F54664400677B2C /* PTNOceanAssetDescriptor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PTNOceanAssetDescriptor.mm; sourceTree = "<group>"; };
+		2873CB531F54667A00677B2C /* PTNOceanAssetSearchResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNOceanAssetSearchResponse.h; sourceTree = "<group>"; };
+		2873CB541F54667A00677B2C /* PTNOceanAssetSearchResponse.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PTNOceanAssetSearchResponse.mm; sourceTree = "<group>"; };
+		2873CB7E1F54668E00677B2C /* PTNOceanAssetSearchResponseSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PTNOceanAssetSearchResponseSpec.mm; sourceTree = "<group>"; };
+		2873CB9E1F5466C100677B2C /* PTNOceanAssetManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNOceanAssetManager.h; sourceTree = "<group>"; };
+		2873CB9F1F5466C100677B2C /* PTNOceanAssetManager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PTNOceanAssetManager.mm; sourceTree = "<group>"; };
+		2873CBC91F5466E000677B2C /* PTNOceanAssetManagerSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PTNOceanAssetManagerSpec.mm; sourceTree = "<group>"; };
+		2873CBE91F54671F00677B2C /* OceanFakeSearchResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = OceanFakeSearchResponse.json; path = Resources/OceanFakeSearchResponse.json; sourceTree = "<group>"; };
+		2873CC311F54675C00677B2C /* OceanFakeAssetResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = OceanFakeAssetResponse.json; path = Resources/OceanFakeAssetResponse.json; sourceTree = "<group>"; };
+		28BAD5A01F1E031B001048D0 /* Fiber.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Fiber.xcodeproj; path = ../Fiber/Fiber.xcodeproj; sourceTree = "<group>"; };
+		28BAD5DA1F1E033A001048D0 /* Mantle.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Mantle.xcodeproj; path = ../third_party/Mantle/Mantle.xcodeproj; sourceTree = "<group>"; };
+		28BAD5EA1F1E0528001048D0 /* AFNetworking.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AFNetworking.framework; path = "../../../../../Library/Developer/Xcode/DerivedData/Photons-bmimbhansjldytcrqayxlubmctds/Build/Products/Debug-iphonesimulator/AFNetworking.framework"; sourceTree = "<group>"; };
 		655DCAFE1D46506700E44DAA /* extobjc.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = extobjc.xcodeproj; path = ../third_party/libextobjc/extobjc.xcodeproj; sourceTree = "<group>"; };
 		655DCB371D46518300E44DAA /* TestHost.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TestHost.xcodeproj; path = ../Foundations/TestHost.xcodeproj; sourceTree = "<group>"; };
 		84013BB01CBFB07D00C40E42 /* PTNTestUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNTestUtils.h; sourceTree = "<group>"; };
@@ -846,6 +938,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				28BAD5EB1F1E0528001048D0 /* AFNetworking.framework in Frameworks */,
 				8861FDDA1E5A2BA800CA1436 /* AVFoundation.framework in Frameworks */,
 				8861FDCE1E5A2B5100CA1436 /* CoreGraphics.framework in Frameworks */,
 				8861FDD21E5A2B7100CA1436 /* CoreLocation.framework in Frameworks */,
@@ -853,6 +946,7 @@
 				8B0B99C01CA6BEB600ED2334 /* DropboxSDK.framework in Frameworks */,
 				8861FDD61E5A2B8F00CA1436 /* GLKit.framework in Frameworks */,
 				8861FDDC1E5A2BC000CA1436 /* ImageIO.framework in Frameworks */,
+				28BAD5E91F1E0513001048D0 /* Mantle.framework in Frameworks */,
 				B4119F111EEE749100756808 /* MediaPlayer.framework in Frameworks */,
 				88EE8DF81EACD68F00D3126A /* MobileCoreServices.framework in Frameworks */,
 				8861FDAF1E5A2B4600CA1436 /* Photos.framework in Frameworks */,
@@ -861,6 +955,7 @@
 				8861FDD41E5A2B7800CA1436 /* Security.framework in Frameworks */,
 				8861FDD01E5A2B5800CA1436 /* UIKit.framework in Frameworks */,
 				655DCB3F1D4651BB00E44DAA /* libExpecta.a in Frameworks */,
+				28BAD5EC1F1E052D001048D0 /* libFiber.a in Frameworks */,
 				8B368F281CA6AAFA003E34CF /* libLTKit.a in Frameworks */,
 				8B10C8951F3EFAFE00F76142 /* libLLReactiveMatchers.a in Frameworks */,
 				655DCB411D4651BB00E44DAA /* libOCMock.a in Frameworks */,
@@ -874,9 +969,68 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2873C9531F54644B00677B2C /* Stock Assets */ = {
+			isa = PBXGroup;
+			children = (
+				2873C9EB1F54655200677B2C /* NSURL+Ocean.h */,
+				2873C9EC1F54655200677B2C /* NSURL+Ocean.mm */,
+				2873CA401F54659500677B2C /* NSValueTransformer+Photons.h */,
+				2873CA411F54659500677B2C /* NSValueTransformer+Photons.mm */,
+				2873CA951F5465D500677B2C /* PTNOceanAlbumDescriptor.h */,
+				2873CA961F5465D500677B2C /* PTNOceanAlbumDescriptor.mm */,
+				2873CB321F54664400677B2C /* PTNOceanAssetDescriptor.h */,
+				2873CB331F54664400677B2C /* PTNOceanAssetDescriptor.mm */,
+				2873CB9E1F5466C100677B2C /* PTNOceanAssetManager.h */,
+				2873CB9F1F5466C100677B2C /* PTNOceanAssetManager.mm */,
+				2873CB531F54667A00677B2C /* PTNOceanAssetSearchResponse.h */,
+				2873CB541F54667A00677B2C /* PTNOceanAssetSearchResponse.mm */,
+				2873C9C01F54650800677B2C /* PTNOceanEnums.h */,
+				2873C9C11F54650800677B2C /* PTNOceanEnums.mm */,
+				2873C97C1F54648900677B2C /* RACSignal+Mantle.h */,
+				2873C97D1F54648900677B2C /* RACSignal+Mantle.mm */,
+			);
+			name = "Stock Assets";
+			sourceTree = "<group>";
+		};
+		2873C97F1F54649300677B2C /* Stock Assets */ = {
+			isa = PBXGroup;
+			children = (
+				2873CA161F54656500677B2C /* NSURL+OceanSpec.mm */,
+				2873CA6B1F5465A600677B2C /* NSValueTransformer+PhotonsSpec.mm */,
+				2873CAC01F5465EB00677B2C /* PTNOceanAlbumDescriptorSpec.mm */,
+				2873CB081F54663900677B2C /* PTNOceanAssetDescriptorSpec.mm */,
+				2873CBC91F5466E000677B2C /* PTNOceanAssetManagerSpec.mm */,
+				2873CB7E1F54668E00677B2C /* PTNOceanAssetSearchResponseSpec.mm */,
+				2873C9961F5464FD00677B2C /* PTNOceanEnumsSpec.mm */,
+				2873C9801F5464B000677B2C /* RACSignal+MantleSpec.mm */,
+			);
+			name = "Stock Assets";
+			sourceTree = "<group>";
+		};
+		28BAD5A11F1E031B001048D0 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				28BAD5BA1F1E031C001048D0 /* libFiber.a */,
+				28BAD5BC1F1E031C001048D0 /* FiberTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		28BAD5DB1F1E033A001048D0 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				28BAD5E21F1E033A001048D0 /* Mantle.framework */,
+				28BAD5E41F1E033A001048D0 /* Mantle-MacTests.xctest */,
+				28BAD5E61F1E033A001048D0 /* Mantle.framework */,
+				28BAD5E81F1E033A001048D0 /* Mantle-iOSTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		49F615BDE58178359DAFCD59 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				28BAD5EA1F1E0528001048D0 /* AFNetworking.framework */,
 				0DF1515E1EAF7330009F3080 /* CoreMedia.framework */,
 				8861FDD91E5A2BA800CA1436 /* AVFoundation.framework */,
 				8861FDCD1E5A2B5100CA1436 /* CoreGraphics.framework */,
@@ -1228,6 +1382,7 @@
 				B4119EF11EEE742D00756808 /* MediaLibrary */,
 				848189A11C3C144C0070462E /* Multiplexing */,
 				8B2FD0721AFA0B5800757B1F /* PhotoKit */,
+				2873C9531F54644B00677B2C /* Stock Assets */,
 				8B2FD0381AF9F92300757B1F /* Supporting Files */,
 				8BAFDC981B0DED4C003FB8F5 /* Photons.h */,
 			);
@@ -1277,6 +1432,7 @@
 				B4119F0F1EEE744C00756808 /* MediaLibrary */,
 				848189BF1C3C1A040070462E /* Multiplexing */,
 				8B2FD0951B04D60900757B1F /* PhotoKit */,
+				2873C97F1F54649300677B2C /* Stock Assets */,
 			);
 			name = Tests;
 			sourceTree = "<group>";
@@ -1510,6 +1666,8 @@
 		8BAFDCCB1B0E0B53003FB8F5 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				28BAD5DA1F1E033A001048D0 /* Mantle.xcodeproj */,
+				28BAD5A01F1E031B001048D0 /* Fiber.xcodeproj */,
 				655DCAFE1D46506700E44DAA /* extobjc.xcodeproj */,
 				8B16A87C1BCBF599006DAAA7 /* LTKit.xcodeproj */,
 				8B6861FD1F333F7500F0EF4C /* ReactiveObjC.xcodeproj */,
@@ -1541,6 +1699,8 @@
 		8BCF585B1BCD2350001EE2ED /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				2873CC311F54675C00677B2C /* OceanFakeAssetResponse.json */,
+				2873CBE91F54671F00677B2C /* OceanFakeSearchResponse.json */,
 				0DBC67E81EAF653C005EE862 /* OneSecondVideo16x16.mp4 */,
 				848D2D2E1C4E24E500491AB3 /* PTNImageAsset.jpg */,
 				8428F2F01C67489B0007B0A5 /* PTNImageAsset.txt */,
@@ -1672,12 +1832,20 @@
 					ProjectRef = 655DCAFE1D46506700E44DAA /* extobjc.xcodeproj */;
 				},
 				{
+					ProductGroup = 28BAD5A11F1E031B001048D0 /* Products */;
+					ProjectRef = 28BAD5A01F1E031B001048D0 /* Fiber.xcodeproj */;
+				},
+				{
 					ProductGroup = 8B10C88D1F3EFAEE00F76142 /* Products */;
 					ProjectRef = 8B10C88C1F3EFAEE00F76142 /* LLReactiveMatchers.xcodeproj */;
 				},
 				{
 					ProductGroup = 8B368EAF1CA6A7EC003E34CF /* Products */;
 					ProjectRef = 8B16A87C1BCBF599006DAAA7 /* LTKit.xcodeproj */;
+				},
+				{
+					ProductGroup = 28BAD5DB1F1E033A001048D0 /* Products */;
+					ProjectRef = 28BAD5DA1F1E033A001048D0 /* Mantle.xcodeproj */;
 				},
 				{
 					ProductGroup = 8B0B9A011CA6BF2200ED2334 /* Products */;
@@ -1705,6 +1873,48 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		28BAD5BA1F1E031C001048D0 /* libFiber.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libFiber.a;
+			remoteRef = 28BAD5B91F1E031C001048D0 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		28BAD5BC1F1E031C001048D0 /* FiberTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = FiberTests.xctest;
+			remoteRef = 28BAD5BB1F1E031C001048D0 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		28BAD5E21F1E033A001048D0 /* Mantle.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Mantle.framework;
+			remoteRef = 28BAD5E11F1E033A001048D0 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		28BAD5E41F1E033A001048D0 /* Mantle-MacTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "Mantle-MacTests.xctest";
+			remoteRef = 28BAD5E31F1E033A001048D0 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		28BAD5E61F1E033A001048D0 /* Mantle.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Mantle.framework;
+			remoteRef = 28BAD5E51F1E033A001048D0 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		28BAD5E81F1E033A001048D0 /* Mantle-iOSTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "Mantle-iOSTests.xctest";
+			remoteRef = 28BAD5E71F1E033A001048D0 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		655DCB061D46506700E44DAA /* libextobjc_OSX.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -1970,10 +2180,12 @@
 				8BCF586B1BCD25AB001EE2ED /* PTNImageMetadataLeftMirrored.jpg in Resources */,
 				8BCF58681BCD25AB001EE2ED /* PTNImageMetadataDownMirrored.jpg in Resources */,
 				8BCF586C1BCD25AB001EE2ED /* PTNImageMetadataRight.jpg in Resources */,
+				2873CBEA1F54671F00677B2C /* OceanFakeSearchResponse.json in Resources */,
 				8BCF586F1BCD25AB001EE2ED /* PTNImageMetadataUpMirrored.jpg in Resources */,
 				8BCF58691BCD25AB001EE2ED /* PTNImageMetadataImage.jpg in Resources */,
 				8428F2F11C67489B0007B0A5 /* PTNImageAsset.txt in Resources */,
 				8BCF586E1BCD25AB001EE2ED /* PTNImageMetadataUp.jpg in Resources */,
+				2873CC321F54675C00677B2C /* OceanFakeAssetResponse.json in Resources */,
 				8BCF586A1BCD25AB001EE2ED /* PTNImageMetadataLeft.jpg in Resources */,
 				8BCF58671BCD25AB001EE2ED /* PTNImageMetadataDown.jpg in Resources */,
 			);
@@ -1994,6 +2206,7 @@
 				84E55C2C1C8EC84300D91339 /* PTNSignalCache.m in Sources */,
 				84515F5B1C96A8A500AD8B5B /* PTNOpenURLManager.m in Sources */,
 				84E55C251C8EC83800D91339 /* PTNDataBackedImageAsset.m in Sources */,
+				2873CA971F5465D500677B2C /* PTNOceanAlbumDescriptor.mm in Sources */,
 				B411A0491EEE76BF00756808 /* PTNMediaLibraryAuthorizer.mm in Sources */,
 				0DF0D2001EACF36D000EEF37 /* PTNAVImageAsset.mm in Sources */,
 				84E55C2E1C8EC84800D91339 /* NSURL+Dropbox.m in Sources */,
@@ -2013,6 +2226,7 @@
 				BE40BE3F1DF707D2007F4F57 /* PTNAVAssetFetchOptions+PhotoKit.mm in Sources */,
 				84E55C361C8EC85100D91339 /* PTNDropboxRestClient.m in Sources */,
 				84E55C381C8EC85700D91339 /* RACSignal+Photons.m in Sources */,
+				2873CB341F54664400677B2C /* PTNOceanAssetDescriptor.mm in Sources */,
 				84E55C441C8EC86C00D91339 /* PTNPhotoKitAlbum.mm in Sources */,
 				84E55C2B1C8EC84200D91339 /* PTNResizingStrategy.m in Sources */,
 				84E55C271C8EC83C00D91339 /* PTNImageFetchOptions.m in Sources */,
@@ -2035,10 +2249,12 @@
 				84DD779C1CA968AE000C3197 /* PTNCacheInfo.m in Sources */,
 				84994ADF1D3E2C8F007E7E84 /* PTNPhotoKitDeferringImageManager.mm in Sources */,
 				84E55C461C8EC87100D91339 /* PTNPhotoKitAssetManager.mm in Sources */,
+				2873CBA01F5466C100677B2C /* PTNOceanAssetManager.mm in Sources */,
 				84515F701C96A8D800AD8B5B /* PTNDropboxAuthorizationManager.mm in Sources */,
 				B411A0291EEE76B500756808 /* PTNMediaLibraryAuthorizationManager.mm in Sources */,
 				84E55C3F1C8EC86500D91339 /* PTNMultiplexerAssetManager.m in Sources */,
 				BE40BE1F1DF6F561007F4F57 /* PTNAVAssetFetchOptions.mm in Sources */,
+				2873CA421F54659500677B2C /* NSValueTransformer+Photons.mm in Sources */,
 				84E55C431C8EC86B00D91339 /* PTNImageFetchOptions+PhotoKit.m in Sources */,
 				84E55C3E1C8EC86000D91339 /* PTNFileSystemFileDescriptor.m in Sources */,
 				846341CB1CFC3861001FA199 /* PTNMulticastingSignalCache.m in Sources */,
@@ -2055,10 +2271,14 @@
 				84741D1C1C99ADF5001D3D1D /* PTNStaticImageAsset.m in Sources */,
 				84E55C3D1C8EC85F00D91339 /* PTNFileSystemDirectoryDescriptor.m in Sources */,
 				84515F6F1C96A8AC00AD8B5B /* DBSession+RACSignalSupport.m in Sources */,
+				2873C97E1F54648900677B2C /* RACSignal+Mantle.mm in Sources */,
 				84E55C291C8EC83F00D91339 /* PTNImageResizer.m in Sources */,
 				84E55C341C8EC84F00D91339 /* PTNDropboxFileDescriptor.m in Sources */,
+				2873CB551F54667A00677B2C /* PTNOceanAssetSearchResponse.mm in Sources */,
 				84E55C2A1C8EC84000D91339 /* PTNProgress.m in Sources */,
+				2873C9C21F54650800677B2C /* PTNOceanEnums.mm in Sources */,
 				88CDF86C1EA7AAE80094A7F7 /* PTNImageDataAsset.mm in Sources */,
+				2873C9ED1F54655200677B2C /* NSURL+Ocean.mm in Sources */,
 				B4B0079F1F1735A90034881A /* PTNMediaQueryProvider.mm in Sources */,
 				84E55C221C8EC83200D91339 /* NSURL+PTNResizingStrategy.m in Sources */,
 				84333C771CC7B75200EC5FB2 /* PTNAlbum.m in Sources */,
@@ -2072,6 +2292,7 @@
 			files = (
 				8B56195E1B65113F006B0DA0 /* PTNAlbumChangeset+PhotoKitSpec.mm in Sources */,
 				8B992D191B78A28700B7836B /* RACSignal+PhotonsSpec.m in Sources */,
+				2873CB091F54663900677B2C /* PTNOceanAssetDescriptorSpec.mm in Sources */,
 				B45B6C0B1F04F99500BF67A6 /* PTNFakeMediaQueryProvider.mm in Sources */,
 				84FABB671CA2DBF5009283F0 /* PTNPhotoKitTestUtils.mm in Sources */,
 				84E72BCE1CE37AD800213DE1 /* PTNInterceptingAssetManagerSpec.mm in Sources */,
@@ -2087,6 +2308,7 @@
 				848187A41C3BE3EB0070462E /* PTNDropboxTestUtils.m in Sources */,
 				8B5619971B664182006B0DA0 /* PTNPhotoKitFakeImageManager.m in Sources */,
 				84994ADC1D3E2903007E7E84 /* PTNPhotoKitDeferringImageManagerSpec.mm in Sources */,
+				2873CA6C1F5465A600677B2C /* NSValueTransformer+PhotonsSpec.mm in Sources */,
 				84515F781C96A97500AD8B5B /* PTNOpenURLManagerSpec.m in Sources */,
 				B4D896EA1EF27B8E00348896 /* NSURL+MediaLibrarySpec.mm in Sources */,
 				BE40BE411DF7109D007F4F57 /* PTNAVAssetFetchOptionsSpec.mm in Sources */,
@@ -2095,6 +2317,7 @@
 				847BE14A1D69A68F00F33BC8 /* PTNMultiplexerAuthorizationManagerSpec.mm in Sources */,
 				BE742B751DF43010009AAFAB /* PTNAudiovisualAssetSpec.m in Sources */,
 				843CD24E1C465445007435E8 /* PTNSignalCacheSpec.m in Sources */,
+				2873CB7F1F54668E00677B2C /* PTNOceanAssetSearchResponseSpec.mm in Sources */,
 				8B56195C1B650A4A006B0DA0 /* PTNAlbumChangesetMoveSpec.m in Sources */,
 				84A677161CCE35C2009AEC9A /* PTNDataAssetCacheSpec.mm in Sources */,
 				84E9E9591CBE86E6006EBDB3 /* NSURLCache+PhotonsSpec.mm in Sources */,
@@ -2123,9 +2346,12 @@
 				84DD77E91CA96C2E000C3197 /* PTNCacheResponseSpec.m in Sources */,
 				846261621CBD1BB900ED364E /* PTNPhotoKitFakeAuthorizationManager.mm in Sources */,
 				845162F61C986EDA00AD8B5B /* NSURL+PTNCacheSpec.m in Sources */,
+				2873C9971F5464FD00677B2C /* PTNOceanEnumsSpec.mm in Sources */,
 				B411A04B1EEE76E000756808 /* PTNMediaLibraryAuthorizationManagerSpec.mm in Sources */,
 				B4F5B2141F25CFE8000B3435 /* PTNMediaLibraryCollectionDescriptorSpec.mm in Sources */,
+				2873CA171F54656500677B2C /* NSURL+OceanSpec.mm in Sources */,
 				84515F731C96A90500AD8B5B /* PTNDropboxAuthorizationManagerSpec.mm in Sources */,
+				2873CBCA1F5466E000677B2C /* PTNOceanAssetManagerSpec.mm in Sources */,
 				8BCF58561BCD0A74001EE2ED /* PTNImageMetadataSpec.mm in Sources */,
 				84182D9A1C43996400F762DF /* PTNFileSystemAssetManagerSpec.m in Sources */,
 				8B56195A1B6508E6006B0DA0 /* PTNAlbumChangesetSpec.m in Sources */,
@@ -2144,6 +2370,8 @@
 				844C10C11C3A5D54001A6DC9 /* PTNNSURLTestUtils.mm in Sources */,
 				84515F751C96A93D00AD8B5B /* PTNPhotoKitAuthorizationManagerSpec.mm in Sources */,
 				84DD77B71CA9693B000C3197 /* PTNCacheInfoSpec.m in Sources */,
+				2873C9811F5464B000677B2C /* RACSignal+MantleSpec.mm in Sources */,
+				2873CAC11F5465EB00677B2C /* PTNOceanAlbumDescriptorSpec.mm in Sources */,
 				B45B6C081F04F96400BF67A6 /* PTNFakeMediaQuery.mm in Sources */,
 				84013BB31CBFB12400C40E42 /* PTNTestUtils.mm in Sources */,
 				8414EACD1C5E307500014DD1 /* NSURL+PTNResizingStrategySpec.m in Sources */,
@@ -2230,6 +2458,8 @@
 					"$(inherited)",
 					"$(SRCROOT)/../LTKit/",
 					"$(SRCROOT)/../third_party/libextobjc/",
+					"$(SRCROOT)/../third_party/Mantle/",
+					"$(SRCROOT)/../Fiber/",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
@@ -2257,6 +2487,8 @@
 					"$(inherited)",
 					"$(SRCROOT)/../LTKit/",
 					"$(SRCROOT)/../third_party/libextobjc/",
+					"$(SRCROOT)/../third_party/Mantle/",
+					"$(SRCROOT)/../Fiber/",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = NO;

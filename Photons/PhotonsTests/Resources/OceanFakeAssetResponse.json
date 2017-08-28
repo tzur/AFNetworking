@@ -1,0 +1,22 @@
+{
+  "id": "foo",
+  "asset_type": "photo",
+  "source_id": "pixabay",
+  "all_sizes": [
+    {
+      "height": 20,
+      "width": 50,
+      "url" : "http://a"
+    },
+    {
+      "height": 60,
+      "width": 100,
+      "url" : "http://b"
+    },
+    {
+      "height": 200,
+      "width": 500,
+      "url" : "http://c"
+    }
+  ]
+}

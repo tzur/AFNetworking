@@ -44,5 +44,7 @@ LTErrorCodesDeclare(PhotonsErrorCodeProductID,
   // Caused when attemping to make an unsupported operation.
   PTNErrorCodeUnsupportedOperation,
   // Caused when extracting image from asset has failed.
-  PTNErrorCodeAVImageAssetFetchImageFailed
+  PTNErrorCodeAVImageAssetFetchImageFailed,
+  // Caused when deserialization has failed.
+  PTNErrorCodeDeserializationFailed
 );
