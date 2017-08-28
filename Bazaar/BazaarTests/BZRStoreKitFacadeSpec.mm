@@ -99,6 +99,7 @@ context(@"fetching products metadata", ^{
   });
 
   it(@"should start when signal is subscribed to", ^{
+    OCMStub([productsRequest bzr_statusSignal]).andReturn([RACSignal never]);
     [[storeKitFacade fetchMetadataForProductsWithIdentifiers:productIdentifiers]
         subscribeNext:^(id) {}];
 
@@ -106,6 +107,7 @@ context(@"fetching products metadata", ^{
   });
 
   it(@"should cancel when signal is disposed", ^{
+    OCMStub([productsRequest bzr_statusSignal]).andReturn([RACSignal never]);
     [[[storeKitFacade fetchMetadataForProductsWithIdentifiers:productIdentifiers]
         subscribeNext:^(id) {
     }] dispose];
@@ -159,12 +161,14 @@ context(@"refreshing receipt", ^{
   });
 
   it(@"should start when singal is subscribed to", ^{
+    OCMStub([refreshRequest bzr_statusSignal]).andReturn([RACSignal never]);
     [[storeKitFacade refreshReceipt] subscribeNext:^(id) {}];
 
     OCMVerify([refreshRequest start]);
   });
 
   it(@"should cancel when signal is disposed", ^{
+    OCMStub([refreshRequest bzr_statusSignal]).andReturn([RACSignal never]);
     [[[storeKitFacade refreshReceipt] subscribeNext:^(id) {}] dispose];
 
     OCMVerify([refreshRequest cancel]);

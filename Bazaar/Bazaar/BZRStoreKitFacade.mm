@@ -88,9 +88,9 @@ NS_ASSUME_NONNULL_BEGIN
   return [[RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
     SKProductsRequest *request =
         [self.storeKitRequestsFactory productsRequestWithIdentifiers:productIdentifiers];
-    
+
     __block BOOL didSignalFinish = NO;
-    [[[request bzr_statusSignal]
+    auto disposable = [[[request bzr_statusSignal]
         finally:^{
           @synchronized(request) {
             didSignalFinish = YES;
@@ -99,13 +99,18 @@ NS_ASSUME_NONNULL_BEGIN
         subscribe:subscriber];
 
     [request start];
-    return [RACDisposable disposableWithBlock:^{
+    auto cancellationDisposable = [RACDisposable disposableWithBlock:^{
       @synchronized (request) {
         if (!didSignalFinish) {
           [request cancel];
         }
       }
     }];
+
+    return [RACCompoundDisposable compoundDisposableWithDisposables:@[
+      disposable,
+      cancellationDisposable
+    ]];
   }]
   deliverOn:[RACScheduler scheduler]];
 }
@@ -131,7 +136,7 @@ NS_ASSUME_NONNULL_BEGIN
     SKReceiptRefreshRequest *request = [self.storeKitRequestsFactory receiptRefreshRequest];
 
     __block BOOL didSignalFinish = NO;
-    [[[request bzr_statusSignal]
+    auto disposable = [[[request bzr_statusSignal]
         finally:^{
           @synchronized(request) {
             didSignalFinish = YES;
@@ -140,13 +145,18 @@ NS_ASSUME_NONNULL_BEGIN
         subscribe:subscriber];
 
     [request start];
-    return [RACDisposable disposableWithBlock:^{
+    auto cancellationDisposable = [RACDisposable disposableWithBlock:^{
       @synchronized (request) {
         if (!didSignalFinish) {
           [request cancel];
         }
       }
     }];
+
+    return [RACCompoundDisposable compoundDisposableWithDisposables:@[
+      disposable,
+      cancellationDisposable
+    ]];
   }];
 }
 
