@@ -230,26 +230,27 @@ NS_ASSUME_NONNULL_BEGIN
 - (RACSignal *)nextChangesetForRegularAlbumWithURL:(NSURL *)url
                                andInitialChangeset:(RACSignal *)initialChangeset {
   // Returns consecutive (PHFetchResult, PTNAlbumChangeset) tuple on each notification.
-  // This works by scanning the input stream and producing a stream of streams that contain a single
-  // tuple.
-  return [[self.observer.photoLibraryChanged
-        scanWithStart:initialChangeset reduce:(id)^(RACSignal *previous, PHChange *change) {
-          return [[[previous
-              takeLast:1]
-              reduceEach:(id)^(PHFetchResult *fetchResult, PTNAlbumChangeset *changeset) {
-                PHFetchResultChangeDetails *details =
-                    [change changeDetailsForFetchResult:fetchResult];
-                if (details) {
-                  PTNAlbumChangeset *newChangeset = [PTNAlbumChangeset changesetWithURL:url
-                                                                  photoKitChangeDetails:details];
-                  return RACTuplePack(details.fetchResultAfterChanges, newChangeset);
-                } else {
-                  return RACTuplePack(fetchResult, changeset);
-                }
-              }]
-              replayLazily];
-        }]
-        concat];
+  @weakify(self);
+  return [initialChangeset
+      flattenMap:^RACSignal *(RACTuple *tuple) {
+        @strongify(self);
+        return [[self.observer.photoLibraryChanged
+            takeUntil:self.rac_willDeallocSignal]
+            scanWithStart:tuple reduce:^RACTuple *(RACTuple *previous, PHChange *change) {
+              PHFetchResult *fetchResult = previous.first;
+              PTNAlbumChangeset *changeset = previous.second;
+
+              PHFetchResultChangeDetails *details =
+                  [change changeDetailsForFetchResult:fetchResult];
+              if (details) {
+                PTNAlbumChangeset *newChangeset = [PTNAlbumChangeset changesetWithURL:url
+                                                                photoKitChangeDetails:details];
+                return RACTuplePack(details.fetchResultAfterChanges, newChangeset);
+              } else {
+                return RACTuplePack(fetchResult, changeset);
+              }
+            }];
+      }];
 }
 
 - (RACSignal *)nextChangesetForSmartAlbumCollectionWithURL:(NSURL *)url
