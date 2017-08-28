@@ -82,8 +82,13 @@
 
     self.originalSignal = signal;
 
+    @weakify(self);
     RACSignal *locallyRecordingSignal = [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
         return [signal subscribeNext:^(id x) {
+            @strongify(self);
+            if (!self) {
+                return;
+            }
             @synchronized(self) {
                 [self.receivedEvents addObject:LLRMArrayValueForSignalValue(x)];
                 [self.activeThreadsInReceivedEvents addObject:[NSThread currentThread]];
@@ -91,6 +96,10 @@
 
             [subscriber sendNext:x];
         } error:^(NSError *error) {
+            @strongify(self);
+            if (!self) {
+                return;
+            }
             @synchronized(self) {
                 self.receivedErrorEvent = YES;
                 self.receivedError = error;
@@ -98,6 +107,10 @@
 
             [subscriber sendError:error];
         } completed:^{
+            @strongify(self);
+            if (!self) {
+                return;
+            }
             @synchronized(self) {
                 self.receivedCompletedEvent = YES;
             }
