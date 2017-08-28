@@ -74,8 +74,7 @@ context(@"fetching products metadata", ^{
     OCMStub([productsRequest bzr_statusSignal]).andReturn([RACSignal return:response]);
     OCMReject([productsRequest cancel]);
 
-    auto signal =
-        [[storeKitFacade fetchMetadataForProductsWithIdentifiers:productIdentifiers] testRecorder];
+    auto signal = [storeKitFacade fetchMetadataForProductsWithIdentifiers:productIdentifiers];
 
     expect(signal).will.complete();
   });
@@ -126,9 +125,18 @@ context(@"refreshing receipt", ^{
   it(@"should complete when receipt refresh request completes", ^{
     OCMStub([refreshRequest bzr_statusSignal]).andReturn([RACSignal empty]);
 
-    LLSignalTestRecorder *recorder = [[storeKitFacade refreshReceipt] testRecorder];
+    auto signal = [storeKitFacade refreshReceipt];
 
-    expect(recorder).will.complete();
+    expect(signal).will.complete();
+  });
+
+  it(@"should not cancel when signal completes", ^{
+    OCMStub([refreshRequest bzr_statusSignal]).andReturn([RACSignal empty]);
+    OCMReject([refreshRequest cancel]);
+
+    auto signal = [storeKitFacade refreshReceipt];
+
+    expect(signal).will.complete();
   });
 
   it(@"should send error sent by receipt refresh request", ^{
@@ -136,6 +144,16 @@ context(@"refreshing receipt", ^{
     OCMStub([refreshRequest bzr_statusSignal]).andReturn([RACSignal error:error]);
 
     RACSignal *signal = [storeKitFacade refreshReceipt];
+
+    expect(signal).will.sendError(error);
+  });
+
+  it(@"should not cancel when signal errs", ^{
+    NSError *error = [NSError lt_errorWithCode:1337];
+    OCMStub([refreshRequest bzr_statusSignal]).andReturn([RACSignal error:error]);
+    OCMReject([refreshRequest cancel]);
+
+    auto signal = [storeKitFacade refreshReceipt];
 
     expect(signal).will.sendError(error);
   });
