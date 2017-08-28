@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		0DF151CC1EAF79DB009F3080 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DF151CB1EAF79DB009F3080 /* AVFoundation.framework */; };
 		0DF155F51EB1DCA6009F3080 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8861FE0E1E5A2CF100CA1436 /* QuartzCore.framework */; };
+		287C87AB1F54115900FCC2CC /* libFiber.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 287C87AA1F54115900FCC2CC /* libFiber.a */; };
 		287C87AD1F54116400FCC2CC /* AFNetworking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 287C87AC1F54116400FCC2CC /* AFNetworking.framework */; };
 		650BB33C1D465389008648A3 /* libExpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B425ED31CA6D218001C457E /* libExpecta.a */; };
 		650BB33D1D465389008648A3 /* libextobjc_iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 650BB32F1D46533E008648A3 /* libextobjc_iOS.a */; };
@@ -421,6 +422,7 @@
 
 /* Begin PBXFileReference section */
 		0DF151CB1EAF79DB009F3080 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		287C87AA1F54115900FCC2CC /* libFiber.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libFiber.a; path = "../../../../../Library/Developer/Xcode/DerivedData/Enlight-crwaevbdgyqdbifriwxrzitqryrt/Build/Products/Debug-iphonesimulator/libFiber.a"; sourceTree = "<group>"; };
 		287C87AC1F54116400FCC2CC /* AFNetworking.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AFNetworking.framework; path = "../../../../../Library/Developer/Xcode/DerivedData/Enlight-crwaevbdgyqdbifriwxrzitqryrt/Build/Products/Debug-iphonesimulator/AFNetworking.framework"; sourceTree = "<group>"; };
 		650BB31C1D465335008648A3 /* LTKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LTKit.xcodeproj; path = ../LTKit/LTKit.xcodeproj; sourceTree = "<group>"; };
 		650BB3251D46533E008648A3 /* extobjc.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = extobjc.xcodeproj; path = ../third_party/libextobjc/extobjc.xcodeproj; sourceTree = "<group>"; };
@@ -612,6 +614,7 @@
 				8861FE051E5A2C4B00CA1436 /* Security.framework in Frameworks */,
 				8861FE011E5A2C1300CA1436 /* UIKit.framework in Frameworks */,
 				650BB33C1D465389008648A3 /* libExpecta.a in Frameworks */,
+				287C87AB1F54115900FCC2CC /* libFiber.a in Frameworks */,
 				650BB33E1D465389008648A3 /* libLTKit.a in Frameworks */,
 				8B10C8C21F3EFB2A00F76142 /* libLLReactiveMatchers.a in Frameworks */,
 				650BB33F1D465389008648A3 /* libOCMock.a in Frameworks */,
@@ -871,6 +874,7 @@
 			isa = PBXGroup;
 			children = (
 				287C87AC1F54116400FCC2CC /* AFNetworking.framework */,
+				287C87AA1F54115900FCC2CC /* libFiber.a */,
 				0DF151CB1EAF79DB009F3080 /* AVFoundation.framework */,
 				8861FE0C1E5A2CE200CA1436 /* CoreGraphics.framework */,
 				8861FE081E5A2CAA00CA1436 /* CoreLocation.framework */,
