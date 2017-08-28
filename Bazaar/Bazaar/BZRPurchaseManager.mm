@@ -93,12 +93,14 @@ NS_ASSUME_NONNULL_BEGIN
         SKMutablePayment *payment = [SKMutablePayment paymentWithProduct:product];
         payment.quantity = quantity;
         payment.applicationUsername = self.applicationUserID;
-        [[self transactionUpdatesForPayment:payment] subscribe:subscriber];
+        auto disposable = [[self transactionUpdatesForPayment:payment] subscribe:subscriber];
+
         dispatch_sync(self.paymentDataAccessQueue, ^{
           [self.pendingPayments addObject:payment];
         });
         [self.paymentQueue addPayment:payment];
-        return nil;
+
+        return disposable;
       }]
       takeUntil:[self rac_willDeallocSignal]]
       setNameWithFormat:@"%@ -purchaseProduct:quantity:", self.description];
