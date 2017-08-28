@@ -154,8 +154,13 @@ NS_ASSUME_NONNULL_BEGIN
   }
 
   // Returns an initial (PHFetchResult, PTNAlbumChangeset) tuple from PhotoKit.
+  @weakify(self);
   RACSignal *initialChangeset = [[[[self fetchFetchResultWithURL:url]
       tryMap:^id(PHFetchResult *fetchResult, NSError *__autoreleasing *errorPtr) {
+        @strongify(self);
+        if (!self) {
+          return nil;
+        }
         // A fetched empty album is an error, unless it's specifically UserAlbums meta album.
         // This is so since a fetch result is all collections that match the fetch request, and so
         // an empty album will be returned as a fetch result with a single album, but when User
@@ -181,6 +186,7 @@ NS_ASSUME_NONNULL_BEGIN
         }
       }]
       doError:^(NSError __unused *error) {
+        @strongify(self);
         [self.albumSignalCache removeSignalForURL:url];
       }]
       replayLazily];
@@ -257,10 +263,20 @@ NS_ASSUME_NONNULL_BEGIN
                                        andInitialChangeset:(RACSignal *)initialChangeset {
   // Track changes on each subalbum. For each change fetch the smart album collection
   // again, and send proper change details with the changed smart album.
-  return [initialChangeset flattenMap:^(RACTuple *values) {
+  auto fetcher = self.fetcher;
+  @weakify(self);
+  return [initialChangeset flattenMap:^RACSignal *(RACTuple *values) {
+    @strongify(self);
+    if (!self) {
+      return nil;
+    }
     PHFetchResult *initialFetchResult = values.first;
     return [[[[[self recursiveUpdatesForSmartAlbums]
-      flattenMap:^(PHAssetCollection *updatedCollection) {
+      flattenMap:^RACSignal *(PHAssetCollection *updatedCollection) {
+        @strongify(self);
+        if (!self) {
+          return nil;
+        }
         return [RACSignal combineLatest:@[
           [self fetchFetchResultWithURL:url],
           [RACSignal return:updatedCollection]
@@ -279,8 +295,8 @@ NS_ASSUME_NONNULL_BEGIN
       reduceEach:(id)^RACTuple *(PHFetchResult *previousFetch, PHFetchResult *currentFetch,
                                  PHAssetCollection *) {
         PHFetchResultChangeDetails *changeDetails =
-            [self.fetcher changeDetailsFromFetchResult:previousFetch toFetchResult:currentFetch
-                                        changedObjects:nil];
+            [fetcher changeDetailsFromFetchResult:previousFetch toFetchResult:currentFetch
+                                   changedObjects:nil];
         PTNAlbumChangeset *changeset = [PTNAlbumChangeset changesetWithURL:url
                                                      photoKitChangeDetails:changeDetails];
 
@@ -372,7 +388,9 @@ NS_ASSUME_NONNULL_BEGIN
     return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeInvalidURL url:url]];
   }
 
+  @weakify(self);
   return [RACSignal defer:^RACSignal *{
+    @strongify(self);
     if (![self.authorizationManager.authorizationStatus
           isEqual:$(PTNAuthorizationStatusAuthorized)]) {
       return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeNotAuthorized url:url]];

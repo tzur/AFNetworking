@@ -199,7 +199,7 @@ context(@"album fetching", ^{
       it(@"should send latest album after all signals have been destroyed", ^{
         @autoreleasepool {
           LLSignalTestRecorder *recorder = [[manager fetchAlbumWithURL:url] testRecorder];
-        [observer sendChange:change];
+          [observer sendChange:change];
 
           // Trigger first fetch and wait until two values are returned.
           expect(recorder.values).will.equal(@[
@@ -229,6 +229,24 @@ context(@"album fetching", ^{
       expect([manager fetchAlbumWithURL:url]).will.matchError(^BOOL(NSError *error) {
         return error.code == PTNErrorCodeNotAuthorized;
       });
+    });
+
+    it(@"should deallocate while subscribed to a fetched album signal", ^{
+      __weak PTNPhotoKitAssetManager *weakManager;
+      LLSignalTestRecorder *recorder;
+
+      @autoreleasepool {
+        PTNPhotoKitAssetManager *manager = [[PTNPhotoKitAssetManager alloc]
+                                            initWithFetcher:fetcher observer:observer
+                                            imageManager:imageManager
+                                            authorizationManager:authorizationManager
+                                            changeManager:changeManager];
+        weakManager = manager;
+
+        recorder = [[manager fetchAlbumWithURL:url] testRecorder];
+      }
+
+      expect(weakManager).to.beNil();
     });
   });
 
@@ -656,6 +674,26 @@ context(@"album fetching", ^{
       expect([manager fetchAlbumWithURL:url]).will.matchError(^BOOL(NSError *error) {
         return error.code == PTNErrorCodeNotAuthorized;
       });
+    });
+
+    it(@"should deallocate while subscribed to the smart album signal", ^{
+      __weak PTNPhotoKitAssetManager *weakManager;
+      LLSignalTestRecorder *recorder;
+
+      NSURL *url = [NSURL ptn_photoKitMetaAlbumWithType:PHAssetCollectionTypeSmartAlbum];
+
+      @autoreleasepool {
+        PTNPhotoKitAssetManager *manager = [[PTNPhotoKitAssetManager alloc]
+                                            initWithFetcher:fetcher observer:observer
+                                            imageManager:imageManager
+                                            authorizationManager:authorizationManager
+                                            changeManager:changeManager];
+        weakManager = manager;
+
+        recorder = [[manager fetchAlbumWithURL:url] testRecorder];
+      }
+
+      expect(weakManager).to.beNil();
     });
   });
 
