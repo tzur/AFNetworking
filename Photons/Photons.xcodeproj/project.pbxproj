@@ -14,6 +14,8 @@
 		0DF1515F1EAF7330009F3080 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DF1515E1EAF7330009F3080 /* CoreMedia.framework */; };
 		0DF155D31EB1DC38009F3080 /* libcompression.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = CDE00B021E82AE40007AFD5E /* libcompression.tbd */; };
 		28BAD5E91F1E0513001048D0 /* Mantle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28BAD5E61F1E033A001048D0 /* Mantle.framework */; };
+		28BAD5EB1F1E0528001048D0 /* AFNetworking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28BAD5EA1F1E0528001048D0 /* AFNetworking.framework */; };
+		28BAD5EC1F1E052D001048D0 /* libFiber.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 28BAD5BA1F1E031C001048D0 /* libFiber.a */; };
 		655DCB3F1D4651BB00E44DAA /* libExpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B0B99E31CA6BF2200ED2334 /* libExpecta.a */; };
 		655DCB401D4651BB00E44DAA /* libextobjc_iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 655DCB081D46506700E44DAA /* libextobjc_iOS.a */; };
 		655DCB411D4651BB00E44DAA /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B0B9A0E1CA6BF2200ED2334 /* libOCMock.a */; };
@@ -214,6 +216,20 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		28BAD5B91F1E031C001048D0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 28BAD5A01F1E031B001048D0 /* Fiber.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 65AE67501D0461350083D1CE;
+			remoteInfo = Fiber;
+		};
+		28BAD5BB1F1E031C001048D0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 28BAD5A01F1E031B001048D0 /* Fiber.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 65C62B861D0474D4000FCE99;
+			remoteInfo = FiberTests;
+		};
 		28BAD5E11F1E033A001048D0 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 28BAD5DA1F1E033A001048D0 /* Mantle.xcodeproj */;
@@ -537,7 +553,9 @@
 		0DF0D22F1EAE1935000EEF37 /* PTNAVImageGeneratorFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNAVImageGeneratorFactory.h; sourceTree = "<group>"; };
 		0DF0D2301EAE1935000EEF37 /* PTNAVImageGeneratorFactory.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PTNAVImageGeneratorFactory.mm; sourceTree = "<group>"; };
 		0DF1515E1EAF7330009F3080 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		28BAD5A01F1E031B001048D0 /* Fiber.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Fiber.xcodeproj; path = ../Fiber/Fiber.xcodeproj; sourceTree = "<group>"; };
 		28BAD5DA1F1E033A001048D0 /* Mantle.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Mantle.xcodeproj; path = ../third_party/Mantle/Mantle.xcodeproj; sourceTree = "<group>"; };
+		28BAD5EA1F1E0528001048D0 /* AFNetworking.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AFNetworking.framework; path = "../../../../../Library/Developer/Xcode/DerivedData/Photons-bmimbhansjldytcrqayxlubmctds/Build/Products/Debug-iphonesimulator/AFNetworking.framework"; sourceTree = "<group>"; };
 		655DCAFE1D46506700E44DAA /* extobjc.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = extobjc.xcodeproj; path = ../third_party/libextobjc/extobjc.xcodeproj; sourceTree = "<group>"; };
 		655DCB371D46518300E44DAA /* TestHost.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TestHost.xcodeproj; path = ../Foundations/TestHost.xcodeproj; sourceTree = "<group>"; };
 		84013BB01CBFB07D00C40E42 /* PTNTestUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNTestUtils.h; sourceTree = "<group>"; };
@@ -876,6 +894,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				28BAD5EB1F1E0528001048D0 /* AFNetworking.framework in Frameworks */,
 				8861FDDA1E5A2BA800CA1436 /* AVFoundation.framework in Frameworks */,
 				8861FDCE1E5A2B5100CA1436 /* CoreGraphics.framework in Frameworks */,
 				8861FDD21E5A2B7100CA1436 /* CoreLocation.framework in Frameworks */,
@@ -892,6 +911,7 @@
 				8861FDD41E5A2B7800CA1436 /* Security.framework in Frameworks */,
 				8861FDD01E5A2B5800CA1436 /* UIKit.framework in Frameworks */,
 				655DCB3F1D4651BB00E44DAA /* libExpecta.a in Frameworks */,
+				28BAD5EC1F1E052D001048D0 /* libFiber.a in Frameworks */,
 				8B368F281CA6AAFA003E34CF /* libLTKit.a in Frameworks */,
 				8B10C8951F3EFAFE00F76142 /* libLLReactiveMatchers.a in Frameworks */,
 				655DCB411D4651BB00E44DAA /* libOCMock.a in Frameworks */,
@@ -905,6 +925,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		28BAD5A11F1E031B001048D0 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				28BAD5BA1F1E031C001048D0 /* libFiber.a */,
+				28BAD5BC1F1E031C001048D0 /* FiberTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		28BAD5DB1F1E033A001048D0 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -919,6 +948,7 @@
 		49F615BDE58178359DAFCD59 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				28BAD5EA1F1E0528001048D0 /* AFNetworking.framework */,
 				0DF1515E1EAF7330009F3080 /* CoreMedia.framework */,
 				8861FDD91E5A2BA800CA1436 /* AVFoundation.framework */,
 				8861FDCD1E5A2B5100CA1436 /* CoreGraphics.framework */,
@@ -1553,6 +1583,7 @@
 			isa = PBXGroup;
 			children = (
 				28BAD5DA1F1E033A001048D0 /* Mantle.xcodeproj */,
+				28BAD5A01F1E031B001048D0 /* Fiber.xcodeproj */,
 				655DCAFE1D46506700E44DAA /* extobjc.xcodeproj */,
 				8B16A87C1BCBF599006DAAA7 /* LTKit.xcodeproj */,
 				8B6861FD1F333F7500F0EF4C /* ReactiveObjC.xcodeproj */,
@@ -1715,6 +1746,10 @@
 					ProjectRef = 655DCAFE1D46506700E44DAA /* extobjc.xcodeproj */;
 				},
 				{
+					ProductGroup = 28BAD5A11F1E031B001048D0 /* Products */;
+					ProjectRef = 28BAD5A01F1E031B001048D0 /* Fiber.xcodeproj */;
+				},
+				{
 					ProductGroup = 8B10C88D1F3EFAEE00F76142 /* Products */;
 					ProjectRef = 8B10C88C1F3EFAEE00F76142 /* LLReactiveMatchers.xcodeproj */;
 				},
@@ -1752,6 +1787,20 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		28BAD5BA1F1E031C001048D0 /* libFiber.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libFiber.a;
+			remoteRef = 28BAD5B91F1E031C001048D0 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		28BAD5BC1F1E031C001048D0 /* FiberTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = FiberTests.xctest;
+			remoteRef = 28BAD5BB1F1E031C001048D0 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		28BAD5E21F1E033A001048D0 /* Mantle.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
@@ -2306,6 +2355,7 @@
 					"$(SRCROOT)/../LTKit/",
 					"$(SRCROOT)/../third_party/libextobjc/",
 					"$(SRCROOT)/../third_party/Mantle/",
+					"$(SRCROOT)/../Fiber/",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
@@ -2334,6 +2384,7 @@
 					"$(SRCROOT)/../LTKit/",
 					"$(SRCROOT)/../third_party/libextobjc/",
 					"$(SRCROOT)/../third_party/Mantle/",
+					"$(SRCROOT)/../Fiber/",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
