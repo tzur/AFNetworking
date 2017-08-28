@@ -64,8 +64,13 @@ NS_ASSUME_NONNULL_BEGIN
       auto fetchingProgressSignal =
           [[[[RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
             @strongify(self);
-            [[self.underlyingContentFetcher fetchProductContent:product] subscribe:subscriber];
-            return [RACDisposable disposableWithBlock:fetchingFinishedBlock];
+            auto underlyingDisposable =
+                [[self.underlyingContentFetcher fetchProductContent:product] subscribe:subscriber];
+
+            return [RACCompoundDisposable compoundDisposableWithDisposables:@[
+              underlyingDisposable,
+              [RACDisposable disposableWithBlock:fetchingFinishedBlock]
+            ]];
           }]
           publish]
           autoconnect]

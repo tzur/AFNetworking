@@ -84,7 +84,7 @@ context(@"content fetching", ^{
 
   it(@"should refetch content if there was an error fetching it the first time", ^{
     OCMExpect([underlyingContentFetcher fetchProductContent:OCMOCK_ANY]).andReturn(subject);
-    OCMExpect([underlyingContentFetcher fetchProductContent:OCMOCK_ANY]);
+    OCMExpect([underlyingContentFetcher fetchProductContent:OCMOCK_ANY]).andReturn(subject);
 
     [[contentFetcher fetchProductContent:product] testRecorder];
     [subject sendError:[NSError lt_errorWithCode:1337]];
@@ -95,7 +95,7 @@ context(@"content fetching", ^{
 
   it(@"should refetch content if the fetching has completed before the second call", ^{
     OCMExpect([underlyingContentFetcher fetchProductContent:OCMOCK_ANY]).andReturn(subject);
-    OCMExpect([underlyingContentFetcher fetchProductContent:OCMOCK_ANY]);
+    OCMExpect([underlyingContentFetcher fetchProductContent:OCMOCK_ANY]).andReturn(subject);
 
     [[contentFetcher fetchProductContent:product] testRecorder];
     [subject sendCompleted];
@@ -106,12 +106,27 @@ context(@"content fetching", ^{
 
   it(@"should refetch content if the number of subscribers was zero before the second call", ^{
     OCMExpect([underlyingContentFetcher fetchProductContent:OCMOCK_ANY]).andReturn(subject);
-    OCMExpect([underlyingContentFetcher fetchProductContent:OCMOCK_ANY]);
+    OCMExpect([underlyingContentFetcher fetchProductContent:OCMOCK_ANY]).andReturn(subject);
 
     [[[contentFetcher fetchProductContent:product] subscribeNext:^(id) {}] dispose];
     [[contentFetcher fetchProductContent:product] testRecorder];
 
     OCMVerifyAll((id)underlyingContentFetcher);
+  });
+
+  it(@"should dispose the underlying signal's disposable if signal was disposed", ^{
+    __block BOOL disposeCalled = NO;
+
+    OCMStub([underlyingContentFetcher fetchProductContent:OCMOCK_ANY]).andReturn(
+        [RACSignal createSignal:^RACDisposable * _Nullable(id<RACSubscriber> __unused subscriber) {
+          return [RACDisposable disposableWithBlock:^{
+            disposeCalled = YES;
+          }];
+        }]);
+
+    [[[contentFetcher fetchProductContent:product] subscribeNext:^(id) {}] dispose];
+
+    expect(disposeCalled).to.beTruthy();
   });
 });
 
