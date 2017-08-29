@@ -162,6 +162,7 @@
 		B97A87191D4610A7004390FC /* BZRRemoteProductsProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = B97A87171D4610A7004390FC /* BZRRemoteProductsProvider.h */; };
 		B97A871A1D4610A7004390FC /* BZRRemoteProductsProvider.mm in Sources */ = {isa = PBXBuildFile; fileRef = B97A87181D4610A7004390FC /* BZRRemoteProductsProvider.mm */; };
 		B97A87461D4610C1004390FC /* BZRRemoteProductsProviderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = B97A87451D4610C1004390FC /* BZRRemoteProductsProviderSpec.mm */; };
+		B97BF8A31F554A1E00178C68 /* SKRequestStatusSignal.h in Headers */ = {isa = PBXBuildFile; fileRef = B97BF8A11F554A1E00178C68 /* SKRequestStatusSignal.h */; };
 		B97E6C241D40F44800C02863 /* BZRProductContentFetcher.h in Headers */ = {isa = PBXBuildFile; fileRef = B97E6C221D40F44800C02863 /* BZRProductContentFetcher.h */; };
 		B97E6C251D40F44800C02863 /* BZRProductsProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = B97E6C231D40F44800C02863 /* BZRProductsProvider.h */; };
 		B97E6CCE1D41103200C02863 /* BZRProduct.h in Headers */ = {isa = PBXBuildFile; fileRef = B97E6CC81D41103200C02863 /* BZRProduct.h */; };
@@ -872,6 +873,7 @@
 		B97A87171D4610A7004390FC /* BZRRemoteProductsProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRRemoteProductsProvider.h; sourceTree = "<group>"; };
 		B97A87181D4610A7004390FC /* BZRRemoteProductsProvider.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRRemoteProductsProvider.mm; sourceTree = "<group>"; };
 		B97A87451D4610C1004390FC /* BZRRemoteProductsProviderSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRRemoteProductsProviderSpec.mm; sourceTree = "<group>"; };
+		B97BF8A11F554A1E00178C68 /* SKRequestStatusSignal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKRequestStatusSignal.h; sourceTree = "<group>"; };
 		B97E6C221D40F44800C02863 /* BZRProductContentFetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRProductContentFetcher.h; sourceTree = "<group>"; };
 		B97E6C231D40F44800C02863 /* BZRProductsProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRProductsProvider.h; sourceTree = "<group>"; };
 		B97E6CC81D41103200C02863 /* BZRProduct.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRProduct.h; sourceTree = "<group>"; };
@@ -1070,6 +1072,7 @@
 				650D7D3F1D324AAD003CE646 /* SKProductsRequest+RACSignalSupport.mm */,
 				65D67B901D53DBF400B647ED /* SKReceiptRefreshRequest+RACSignalSupport.h */,
 				65D67B911D53DBF400B647ED /* SKReceiptRefreshRequest+RACSignalSupport.mm */,
+				B97BF8A11F554A1E00178C68 /* SKRequestStatusSignal.h */,
 			);
 			name = Internal;
 			sourceTree = "<group>";
@@ -1916,6 +1919,7 @@
 				CD3A74081EF6989600FA4FBD /* BZRMulticastContentFetcher.h in Headers */,
 				6526DEF51D41070E0034DE01 /* BZRZipFileArchiver.h in Headers */,
 				65013B571D498D2800D06E79 /* BZRZipArchiveFactory.h in Headers */,
+				B97BF8A31F554A1E00178C68 /* SKRequestStatusSignal.h in Headers */,
 				CDC75AA51F04DBEB00247591 /* BZRReceiptValidationStatusCache.h in Headers */,
 				B9237ADE1D69D60C0069B4F1 /* BZRProductDownloadManager.h in Headers */,
 				65D67B451D53AAA000B647ED /* BZRZipArchiver.h in Headers */,

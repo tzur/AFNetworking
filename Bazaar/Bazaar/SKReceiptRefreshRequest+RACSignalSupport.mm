@@ -29,7 +29,7 @@ static void RACUseDelegateProxy(SKReceiptRefreshRequest *self) {
   return proxy;
 }
 
-- (RACSignal *)bzr_statusSignal {
+- (RACSignal *)statusSignal {
   RACSignal *signal = [[self.bzr_errorSignal takeUntil:self.bzr_completionSignal]
       setNameWithFormat:@"%@ -bzr_statusSignal", self.description];
   RACUseDelegateProxy(self);

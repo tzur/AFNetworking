@@ -14,7 +14,7 @@ context(@"request signal", ^{
 
   beforeEach(^{
     request = [[SKProductsRequest alloc] initWithProductIdentifiers:[NSSet setWithObject:@"foo"]];
-    recorder = [[request bzr_statusSignal] testRecorder];
+    recorder = [[request statusSignal] testRecorder];
   });
 
   it(@"should send the products response when the matching delegate method is invoked", ^{
@@ -50,7 +50,7 @@ context(@"request signal", ^{
       SKProductsRequest *request =
           [[SKProductsRequest alloc] initWithProductIdentifiers:[NSSet setWithObject:@"foo"]];
       weakRequest = request;
-      recorder = [[request bzr_statusSignal] testRecorder];
+      recorder = [[request statusSignal] testRecorder];
     };
 
     expect(weakRequest).to.beNil();

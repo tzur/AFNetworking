@@ -14,7 +14,7 @@ context(@"status signal", ^{
 
   beforeEach(^{
     request = [[SKReceiptRefreshRequest alloc] init];
-    recorder = [[request bzr_statusSignal] testRecorder];
+    recorder = [[request statusSignal] testRecorder];
   });
 
   it(@"should err when the matching delegate method is invoked", ^{
@@ -41,7 +41,7 @@ context(@"status signal", ^{
     @autoreleasepool {
       SKReceiptRefreshRequest *request = [[SKReceiptRefreshRequest alloc] init];
       weakRequest = request;
-      recorder = [[request bzr_statusSignal] testRecorder];
+      recorder = [[request statusSignal] testRecorder];
     };
 
     expect(weakRequest).to.beNil();
