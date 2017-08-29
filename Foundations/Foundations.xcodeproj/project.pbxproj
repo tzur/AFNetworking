@@ -39,6 +39,8 @@
 				654BA76B1D4BFEA4003DCC5F /* PBXTargetDependency */,
 				65BAF43A1D48B1C5009BBB6F /* PBXTargetDependency */,
 				654BA76D1D4BFEA4003DCC5F /* PBXTargetDependency */,
+				CD962D991F5426FE00F2CA82 /* PBXTargetDependency */,
+				CD962D9B1F54271E00F2CA82 /* PBXTargetDependency */,
 				A14176C41E6EBE9E005DBEFF /* PBXTargetDependency */,
 				A14176C61E6EBE9E005DBEFF /* PBXTargetDependency */,
 			);
@@ -461,6 +463,41 @@
 			remoteGlobalIDString = A14171C01E6EAC0D005DBEFF;
 			remoteInfo = IntelligenceTests;
 		};
+		CD962D911F54261300F2CA82 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CD962D7B1F54261300F2CA82 /* Shopix.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 84FF72E91C8EED6D00D1DA9F;
+			remoteInfo = Shopix;
+		};
+		CD962D931F54261300F2CA82 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CD962D7B1F54261300F2CA82 /* Shopix.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 848E000D1C591DD1001D8368;
+			remoteInfo = ShopixTests;
+		};
+		CD962D951F54261300F2CA82 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CD962D7B1F54261300F2CA82 /* Shopix.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = CD5550151F45C8050048215C;
+			remoteInfo = ShopixBundle;
+		};
+		CD962D981F5426FE00F2CA82 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CD962D7B1F54261300F2CA82 /* Shopix.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 84FF72E81C8EED6D00D1DA9F;
+			remoteInfo = Shopix;
+		};
+		CD962D9A1F54271E00F2CA82 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CD962D7B1F54261300F2CA82 /* Shopix.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 848E000C1C591DD1001D8368;
+			remoteInfo = ShopixTests;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -479,6 +516,7 @@
 		6A089D601DFEE26E00AC10A9 /* Blueprints.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Blueprints.xcodeproj; path = ../Blueprints/Blueprints.xcodeproj; sourceTree = "<group>"; };
 		884961A61EBA1E9B007B3AE8 /* Laboratory.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Laboratory.xcodeproj; path = ../Laboratory/Laboratory.xcodeproj; sourceTree = "<group>"; };
 		A14176B21E6EBE8C005DBEFF /* Intelligence.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Intelligence.xcodeproj; path = ../Intelligence/Intelligence.xcodeproj; sourceTree = "<group>"; };
+		CD962D7B1F54261300F2CA82 /* Shopix.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Shopix.xcodeproj; path = ../Shopix/Shopix.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -515,6 +553,7 @@
 				65BAF1401D47F9DC009BBB6F /* Photons.xcodeproj */,
 				65BAF1491D47F9E1009BBB6F /* PhotonsUI.xcodeproj */,
 				062776391ED586D50006024E /* Pinky.xcodeproj */,
+				CD962D7B1F54261300F2CA82 /* Shopix.xcodeproj */,
 				65BAF1521D47F9EA009BBB6F /* Wireframes.xcodeproj */,
 			);
 			name = Projects;
@@ -647,6 +686,16 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		CD962D7C1F54261300F2CA82 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				CD962D921F54261300F2CA82 /* libShopix.a */,
+				CD962D941F54261300F2CA82 /* ShopixTests.xctest */,
+				CD962D961F54261300F2CA82 /* ShopixBundle.bundle */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXProject section */
@@ -723,6 +772,10 @@
 				{
 					ProductGroup = 0627763A1ED586D50006024E /* Products */;
 					ProjectRef = 062776391ED586D50006024E /* Pinky.xcodeproj */;
+				},
+				{
+					ProductGroup = CD962D7C1F54261300F2CA82 /* Products */;
+					ProjectRef = CD962D7B1F54261300F2CA82 /* Shopix.xcodeproj */;
 				},
 				{
 					ProductGroup = 65BAF2BD1D4801B1009BBB6F /* Products */;
@@ -958,6 +1011,27 @@
 			remoteRef = A14176BE1E6EBE8C005DBEFF /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		CD962D921F54261300F2CA82 /* libShopix.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libShopix.a;
+			remoteRef = CD962D911F54261300F2CA82 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		CD962D941F54261300F2CA82 /* ShopixTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = ShopixTests.xctest;
+			remoteRef = CD962D931F54261300F2CA82 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		CD962D961F54261300F2CA82 /* ShopixBundle.bundle */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = ShopixBundle.bundle;
+			remoteRef = CD962D951F54261300F2CA82 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXTargetDependency section */
@@ -1100,6 +1174,16 @@
 			isa = PBXTargetDependency;
 			name = IntelligenceTests;
 			targetProxy = A14176C51E6EBE9E005DBEFF /* PBXContainerItemProxy */;
+		};
+		CD962D991F5426FE00F2CA82 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Shopix;
+			targetProxy = CD962D981F5426FE00F2CA82 /* PBXContainerItemProxy */;
+		};
+		CD962D9B1F54271E00F2CA82 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = ShopixTests;
+			targetProxy = CD962D9A1F54271E00F2CA82 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
