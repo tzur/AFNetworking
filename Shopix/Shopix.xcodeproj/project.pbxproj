@@ -1,0 +1,1461 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		650BB33C1D465389008648A3 /* libExpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B425ED31CA6D218001C457E /* libExpecta.a */; };
+		650BB33E1D465389008648A3 /* libLTKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 650BB3221D465335008648A3 /* libLTKit.a */; };
+		650BB33F1D465389008648A3 /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B425EE51CA6D218001C457E /* libOCMock.a */; };
+		650BB3401D465389008648A3 /* libSpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B425F021CA6D218001C457E /* libSpecta.a */; };
+		84FF72F71C8EEF9600D1DA9F /* libShopix.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 84FF72E91C8EED6D00D1DA9F /* libShopix.a */; };
+		CD3C697E1F559295008A6C23 /* ShopixSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD3C697D1F559295008A6C23 /* ShopixSpec.mm */; };
+		CD3C69A41F559394008A6C23 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD3C69A31F559394008A6C23 /* GLKit.framework */; };
+		CD3C6A0F1F559F23008A6C23 /* libLLReactiveMatchers.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CD962DB01F5427EF00F2CA82 /* libLLReactiveMatchers.a */; };
+		CD3C6A331F559F3A008A6C23 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD3C6A321F559F3A008A6C23 /* UIKit.framework */; };
+		CD3C6A351F559F44008A6C23 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD3C6A341F559F44008A6C23 /* CoreGraphics.framework */; };
+		CD3C6A371F559F61008A6C23 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD3C6A361F559F61008A6C23 /* QuartzCore.framework */; };
+		CD3C6AC81F55A0B0008A6C23 /* ReactiveObjC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDCCF3FF1F4EC2F700F421E6 /* ReactiveObjC.framework */; };
+		CD55511A1F45D5E10048215C /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = CD5551161F45D5E10048215C /* Localizable.strings */; };
+		CD55511B1F45D5E10048215C /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = CD5551181F45D5E10048215C /* Localizable.stringsdict */; };
+		CD962D031F5416D700F2CA82 /* Shopix.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD962D021F5416D700F2CA82 /* Shopix.mm */; };
+		CDB8A6571F53FCE300E14706 /* libextobjc_iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CDB8A6521F53FCB200E14706 /* libextobjc_iOS.a */; };
+		CDB8A6591F53FE1800E14706 /* libcompression.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = CDB8A6581F53FE1800E14706 /* libcompression.tbd */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		650BB3211D465335008648A3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 650BB31C1D465335008648A3 /* LTKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8B3DEBE418296B6100EA0C1A;
+			remoteInfo = LTKit;
+		};
+		650BB3231D465335008648A3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 650BB31C1D465335008648A3 /* LTKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8B3DEBF418296B6100EA0C1A;
+			remoteInfo = LTKitTests;
+		};
+		652F75121D3D029500EF9256 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 848EFF731C591B3A001D8368 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 84FF72E81C8EED6D00D1DA9F;
+			remoteInfo = Shopix;
+		};
+		65BAF3E31D48023C009BBB6F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 650BB3341D465359008648A3 /* TestHost.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 65BAF1821D47FAFE009BBB6F;
+			remoteInfo = TestHost;
+		};
+		65E7AA7A1D48DAEB00830B35 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 650BB3341D465359008648A3 /* TestHost.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 65CEFBB11D3BF72800402230;
+			remoteInfo = TestHost;
+		};
+		8B425EC81CA6D218001C457E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 848E00371C5920CB001D8368 /* Expecta.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 908379791A8B972C009844DA;
+			remoteInfo = Expecta;
+		};
+		8B425ECA1CA6D218001C457E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 848E00371C5920CB001D8368 /* Expecta.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 908379111A8B9660009844DA;
+			remoteInfo = "Expecta-iOS";
+		};
+		8B425ECC1CA6D218001C457E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 848E00371C5920CB001D8368 /* Expecta.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 3A0A598C1AD4418C003DA3E4;
+			remoteInfo = ExpectaTests;
+		};
+		8B425ECE1CA6D218001C457E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 848E00371C5920CB001D8368 /* Expecta.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 3A0A59BF1AD441CB003DA3E4;
+			remoteInfo = "Expecta-iOSTests";
+		};
+		8B425ED01CA6D218001C457E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 848E00371C5920CB001D8368 /* Expecta.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E9ACDF0C13B2DD520010F4D7;
+			remoteInfo = libExpecta;
+		};
+		8B425ED21CA6D218001C457E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 848E00371C5920CB001D8368 /* Expecta.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E93067CE13B2E6D100EA26FF;
+			remoteInfo = "libExpecta-iOS";
+		};
+		8B425ED41CA6D218001C457E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 848E00371C5920CB001D8368 /* Expecta.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 9C4416F917FF3F4A00978F09;
+			remoteInfo = libExpectaTests;
+		};
+		8B425ED61CA6D218001C457E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 848E00371C5920CB001D8368 /* Expecta.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E93067DA13B2E6D100EA26FF;
+			remoteInfo = "libExpecta-iOSTests";
+		};
+		8B425EE01CA6D218001C457E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 848E00251C5920C1001D8368 /* OCMock.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 030EF0A814632FD000B04273;
+			remoteInfo = OCMock;
+		};
+		8B425EE21CA6D218001C457E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 848E00251C5920C1001D8368 /* OCMock.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 03565A3118F0566E003AE91E;
+			remoteInfo = OCMockTests;
+		};
+		8B425EE41CA6D218001C457E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 848E00251C5920C1001D8368 /* OCMock.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 030EF0DC14632FF700B04273;
+			remoteInfo = OCMockLib;
+		};
+		8B425EE61CA6D218001C457E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 848E00251C5920C1001D8368 /* OCMock.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D31108AD1828DB8700737925;
+			remoteInfo = OCMockLibTests;
+		};
+		8B425EE81CA6D218001C457E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 848E00251C5920C1001D8368 /* OCMock.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = F0B950F11B0080BE00942C38;
+			remoteInfo = "OCMock iOS";
+		};
+		8B425EEA1CA6D218001C457E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 848E00251C5920C1001D8368 /* OCMock.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 817EB1621BD765130047E85A;
+			remoteInfo = "OCMock tvOS";
+		};
+		8B425EF71CA6D218001C457E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 848E0A421C5921AD001D8368 /* Specta.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E9536CD81968D30B003D1FBA;
+			remoteInfo = Specta;
+		};
+		8B425EF91CA6D218001C457E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 848E0A421C5921AD001D8368 /* Specta.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E9536CE31968D30B003D1FBA;
+			remoteInfo = SpectaTests;
+		};
+		8B425EFB1CA6D218001C457E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 848E0A421C5921AD001D8368 /* Specta.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E9536D011968D3EE003D1FBA;
+			remoteInfo = "Specta-iOS";
+		};
+		8B425EFD1CA6D218001C457E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 848E0A421C5921AD001D8368 /* Specta.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E9536D0B1968D3EE003D1FBA;
+			remoteInfo = "Specta-iOSTests";
+		};
+		8B425EFF1CA6D218001C457E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 848E0A421C5921AD001D8368 /* Specta.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E91713F119DF07BB00921712;
+			remoteInfo = libSpecta;
+		};
+		8B425F011CA6D218001C457E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 848E0A421C5921AD001D8368 /* Specta.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E917140919DF07D700921712;
+			remoteInfo = "libSpecta-iOS";
+		};
+		CD553D8B1F4184D00048215C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CD553D861F4184D00048215C /* Bazaar.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 65FA32981CE2185D00901304;
+			remoteInfo = Bazaar;
+		};
+		CD553D8D1F4184D00048215C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CD553D861F4184D00048215C /* Bazaar.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 654B1F0A1CE22030001F36FA;
+			remoteInfo = BazaarTests;
+		};
+		CD962DAF1F5427EF00F2CA82 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CD962D9C1F5427EF00F2CA82 /* LLReactiveMatchers.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 21FD0A4A1850470000DB455B;
+			remoteInfo = LLReactiveMatchers;
+		};
+		CD962DB11F5427EF00F2CA82 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CD962D9C1F5427EF00F2CA82 /* LLReactiveMatchers.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 21FD0A5A1850470000DB455B;
+			remoteInfo = LLReactiveMatchersTests;
+		};
+		CDB8A64F1F53FCB200E14706 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CDB8A6481F53FCB200E14706 /* extobjc.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D2AAC07E0554694100DB518D;
+			remoteInfo = "libextobjc (OS X)";
+		};
+		CDB8A6511F53FCB200E14706 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CDB8A6481F53FCB200E14706 /* extobjc.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D0A8B029128A4261004AACE0;
+			remoteInfo = "libextobjc (iOS)";
+		};
+		CDB8A6531F53FCB200E14706 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CDB8A6481F53FCB200E14706 /* extobjc.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D0A8B2DC128A495D004AACE0;
+			remoteInfo = "OS X Tests";
+		};
+		CDB8A6551F53FCB200E14706 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CDB8A6481F53FCB200E14706 /* extobjc.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D0CFB60F128A8EEE006DC377;
+			remoteInfo = "iOS Tests";
+		};
+		CDCCF3FA1F4EC2F700F421E6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CDCCF3D51F4EC2F700F421E6 /* ReactiveObjC.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D04725EA19E49ED7006002AA;
+			remoteInfo = "ReactiveObjC-macOS";
+		};
+		CDCCF3FC1F4EC2F700F421E6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CDCCF3D51F4EC2F700F421E6 /* ReactiveObjC.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D04725F519E49ED7006002AA;
+			remoteInfo = "ReactiveObjC-macOSTests";
+		};
+		CDCCF3FE1F4EC2F700F421E6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CDCCF3D51F4EC2F700F421E6 /* ReactiveObjC.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D047260C19E49F82006002AA;
+			remoteInfo = "ReactiveObjC-iOS";
+		};
+		CDCCF4001F4EC2F700F421E6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CDCCF3D51F4EC2F700F421E6 /* ReactiveObjC.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D047261619E49F82006002AA;
+			remoteInfo = "ReactiveObjC-iOSTests";
+		};
+		CDCCF4021F4EC2F700F421E6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CDCCF3D51F4EC2F700F421E6 /* ReactiveObjC.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = A9B315541B3940610001CB9C;
+			remoteInfo = "ReactiveObjC-watchOS";
+		};
+		CDCCF4041F4EC2F700F421E6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CDCCF3D51F4EC2F700F421E6 /* ReactiveObjC.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 57A4D2411BA13D7A00F7D4B1;
+			remoteInfo = "ReactiveObjC-tvOS";
+		};
+		CDCCF4061F4EC2F700F421E6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CDCCF3D51F4EC2F700F421E6 /* ReactiveObjC.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 7DFBED031CDB8C9500EE435B;
+			remoteInfo = "ReactiveObjC-tvOSTests";
+		};
+		CDCCF4101F4F004D00F421E6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CDCCF3D51F4EC2F700F421E6 /* ReactiveObjC.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = D047260B19E49F82006002AA;
+			remoteInfo = "ReactiveObjC-iOS";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		84FF72E71C8EED6D00D1DA9F /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolderSpec = 16;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		650BB31C1D465335008648A3 /* LTKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LTKit.xcodeproj; path = ../LTKit/LTKit.xcodeproj; sourceTree = "<group>"; };
+		650BB3341D465359008648A3 /* TestHost.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TestHost.xcodeproj; path = ../../Foundations/TestHost.xcodeproj; sourceTree = "<group>"; };
+		848E00081C591DD1001D8368 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		848E000D1C591DD1001D8368 /* ShopixTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ShopixTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		848E00141C591DD1001D8368 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		848E00201C591EC9001D8368 /* Shopix-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Shopix-Prefix.pch"; sourceTree = "<group>"; };
+		848E00221C591F58001D8368 /* ShopixTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ShopixTests-Prefix.pch"; sourceTree = "<group>"; };
+		848E00251C5920C1001D8368 /* OCMock.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = OCMock.xcodeproj; path = ../../third_party/OCMock/Source/OCMock.xcodeproj; sourceTree = "<group>"; };
+		848E00371C5920CB001D8368 /* Expecta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Expecta.xcodeproj; path = ../../third_party/Expecta/Expecta.xcodeproj; sourceTree = "<group>"; };
+		848E0A421C5921AD001D8368 /* Specta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Specta.xcodeproj; path = ../../third_party/Specta/Specta/Specta.xcodeproj; sourceTree = "<group>"; };
+		848EFFAE1C591B91001D8368 /* Common.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Common.xcconfig; sourceTree = "<group>"; };
+		848EFFB01C591B91001D8368 /* Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
+		848EFFB11C591B91001D8368 /* Release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
+		848EFFB51C591B91001D8368 /* Application.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Application.xcconfig; sourceTree = "<group>"; };
+		848EFFB61C591B91001D8368 /* Framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Framework.xcconfig; sourceTree = "<group>"; };
+		848EFFB71C591B91001D8368 /* StaticLibrary.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = StaticLibrary.xcconfig; sourceTree = "<group>"; };
+		84FF72E91C8EED6D00D1DA9F /* libShopix.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libShopix.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		8B57B1FC1D914FE100814B3C /* Bundle.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Bundle.xcconfig; sourceTree = "<group>"; };
+		CD3C697D1F559295008A6C23 /* ShopixSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ShopixSpec.mm; sourceTree = "<group>"; };
+		CD3C69A31F559394008A6C23 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
+		CD3C6A321F559F3A008A6C23 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		CD3C6A341F559F44008A6C23 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		CD3C6A361F559F61008A6C23 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		CD553D861F4184D00048215C /* Bazaar.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Bazaar.xcodeproj; path = ../Bazaar/Bazaar.xcodeproj; sourceTree = "<group>"; };
+		CD5550151F45C8050048215C /* ShopixBundle.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ShopixBundle.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
+		CD5550171F45C8050048215C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CD5551171F45D5E10048215C /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
+		CD5551191F45D5E10048215C /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = Base; path = Base.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
+		CD55511C1F45D5E50048215C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		CD55511E1F45D5E70048215C /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
+		CD55511F1F45D5E80048215C /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/Localizable.strings; sourceTree = "<group>"; };
+		CD5551201F45D5E80048215C /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
+		CD5551211F45D5E90048215C /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Localizable.strings; sourceTree = "<group>"; };
+		CD5551221F45D5EA0048215C /* pt-PT */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-PT"; path = "pt-PT.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		CD5551231F45D5EB0048215C /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/Localizable.strings; sourceTree = "<group>"; };
+		CD5551241F45D5EB0048215C /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
+		CD5551251F45D5EC0048215C /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		CD5551261F45D5ED0048215C /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		CD5551271F45D5EE0048215C /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		CD5551281F45D5EF0048215C /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		CD962CAB1F54045200F2CA82 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = en; path = en.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
+		CD962CAC1F54045600F2CA82 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = de; path = de.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
+		CD962CAD1F54045700F2CA82 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = es; path = es.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
+		CD962CAE1F54045900F2CA82 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = it; path = it.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
+		CD962CAF1F54045A00F2CA82 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = ja; path = ja.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
+		CD962CB01F54045B00F2CA82 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = ko; path = ko.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
+		CD962CB11F54045C00F2CA82 /* pt-PT */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = "pt-PT"; path = "pt-PT.lproj/Localizable.stringsdict"; sourceTree = "<group>"; };
+		CD962CB21F54045D00F2CA82 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = pt; path = pt.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
+		CD962CB31F54045E00F2CA82 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = ru; path = ru.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
+		CD962CB41F54045F00F2CA82 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = tr; path = tr.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
+		CD962CB51F54046000F2CA82 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.stringsdict"; sourceTree = "<group>"; };
+		CD962CB61F54046200F2CA82 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.stringsdict"; sourceTree = "<group>"; };
+		CD962CB71F54046300F2CA82 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = fr; path = fr.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
+		CD962CB81F54056200F2CA82 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
+		CD962D011F5416D700F2CA82 /* Shopix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Shopix.h; sourceTree = "<group>"; };
+		CD962D021F5416D700F2CA82 /* Shopix.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Shopix.mm; sourceTree = "<group>"; };
+		CD962D9C1F5427EF00F2CA82 /* LLReactiveMatchers.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LLReactiveMatchers.xcodeproj; path = ../../third_party/LLReactiveMatchers/LLReactiveMatchers.xcodeproj; sourceTree = "<group>"; };
+		CDB8A6481F53FCB200E14706 /* extobjc.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = extobjc.xcodeproj; path = ../third_party/libextobjc/extobjc.xcodeproj; sourceTree = "<group>"; };
+		CDB8A6581F53FE1800E14706 /* libcompression.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libcompression.tbd; path = usr/lib/libcompression.tbd; sourceTree = SDKROOT; };
+		CDCCF3D51F4EC2F700F421E6 /* ReactiveObjC.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactiveObjC.xcodeproj; path = ../third_party/ReactiveObjC/ReactiveObjC.xcodeproj; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		848E000A1C591DD1001D8368 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CD3C6AC81F55A0B0008A6C23 /* ReactiveObjC.framework in Frameworks */,
+				CD3C6A371F559F61008A6C23 /* QuartzCore.framework in Frameworks */,
+				CD3C6A351F559F44008A6C23 /* CoreGraphics.framework in Frameworks */,
+				CD3C6A331F559F3A008A6C23 /* UIKit.framework in Frameworks */,
+				CD3C6A0F1F559F23008A6C23 /* libLLReactiveMatchers.a in Frameworks */,
+				CD3C69A41F559394008A6C23 /* GLKit.framework in Frameworks */,
+				CDB8A6591F53FE1800E14706 /* libcompression.tbd in Frameworks */,
+				CDB8A6571F53FCE300E14706 /* libextobjc_iOS.a in Frameworks */,
+				650BB33C1D465389008648A3 /* libExpecta.a in Frameworks */,
+				650BB33E1D465389008648A3 /* libLTKit.a in Frameworks */,
+				650BB33F1D465389008648A3 /* libOCMock.a in Frameworks */,
+				84FF72F71C8EEF9600D1DA9F /* libShopix.a in Frameworks */,
+				650BB3401D465389008648A3 /* libSpecta.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		84FF72E61C8EED6D00D1DA9F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CD5550121F45C8050048215C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		650BB31D1D465335008648A3 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				650BB3221D465335008648A3 /* libLTKit.a */,
+				650BB3241D465335008648A3 /* LTKitTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		650BB3351D465359008648A3 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				65BAF3E41D48023C009BBB6F /* TestHost.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		848E00051C591DD1001D8368 /* Shopix */ = {
+			isa = PBXGroup;
+			children = (
+				848E001F1C591E7B001D8368 /* Supporting Files */,
+				CD962D011F5416D700F2CA82 /* Shopix.h */,
+				CD962D021F5416D700F2CA82 /* Shopix.mm */,
+			);
+			path = Shopix;
+			sourceTree = "<group>";
+		};
+		848E00111C591DD1001D8368 /* ShopixTests */ = {
+			isa = PBXGroup;
+			children = (
+				848E00241C59208B001D8368 /* Tests */,
+				848E00231C59207C001D8368 /* Libraries */,
+				848E00211C591F3D001D8368 /* Supporting Files */,
+			);
+			path = ShopixTests;
+			sourceTree = "<group>";
+		};
+		848E001F1C591E7B001D8368 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				848E00081C591DD1001D8368 /* Info.plist */,
+				848E00201C591EC9001D8368 /* Shopix-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		848E00211C591F3D001D8368 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				848E00141C591DD1001D8368 /* Info.plist */,
+				848E00221C591F58001D8368 /* ShopixTests-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		848E00231C59207C001D8368 /* Libraries */ = {
+			isa = PBXGroup;
+			children = (
+				848E00371C5920CB001D8368 /* Expecta.xcodeproj */,
+				650BB3341D465359008648A3 /* TestHost.xcodeproj */,
+				848E00251C5920C1001D8368 /* OCMock.xcodeproj */,
+				848E0A421C5921AD001D8368 /* Specta.xcodeproj */,
+				CD962D9C1F5427EF00F2CA82 /* LLReactiveMatchers.xcodeproj */,
+			);
+			name = Libraries;
+			sourceTree = "<group>";
+		};
+		848E00241C59208B001D8368 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				CD3C697D1F559295008A6C23 /* ShopixSpec.mm */,
+			);
+			name = Tests;
+			sourceTree = "<group>";
+		};
+		848EFF721C591B3A001D8368 = {
+			isa = PBXGroup;
+			children = (
+				848E00051C591DD1001D8368 /* Shopix */,
+				848E00111C591DD1001D8368 /* ShopixTests */,
+				CD5550161F45C8050048215C /* ShopixBundle */,
+				848EFFAD1C591B91001D8368 /* Configuration */,
+				848EFFE21C591C0D001D8368 /* Frameworks */,
+				848EFFC01C591BE0001D8368 /* Libraries */,
+				848EFF7C1C591B3A001D8368 /* Products */,
+			);
+			sourceTree = "<group>";
+			usesTabs = 0;
+		};
+		848EFF7C1C591B3A001D8368 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				848E000D1C591DD1001D8368 /* ShopixTests.xctest */,
+				84FF72E91C8EED6D00D1DA9F /* libShopix.a */,
+				CD5550151F45C8050048215C /* ShopixBundle.bundle */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		848EFFAD1C591B91001D8368 /* Configuration */ = {
+			isa = PBXGroup;
+			children = (
+				848EFFAF1C591B91001D8368 /* Configurations */,
+				848EFFB41C591B91001D8368 /* Targets */,
+				848EFFAE1C591B91001D8368 /* Common.xcconfig */,
+			);
+			name = Configuration;
+			path = ../Configuration;
+			sourceTree = "<group>";
+		};
+		848EFFAF1C591B91001D8368 /* Configurations */ = {
+			isa = PBXGroup;
+			children = (
+				848EFFB01C591B91001D8368 /* Debug.xcconfig */,
+				848EFFB11C591B91001D8368 /* Release.xcconfig */,
+			);
+			path = Configurations;
+			sourceTree = "<group>";
+		};
+		848EFFB41C591B91001D8368 /* Targets */ = {
+			isa = PBXGroup;
+			children = (
+				848EFFB51C591B91001D8368 /* Application.xcconfig */,
+				8B57B1FC1D914FE100814B3C /* Bundle.xcconfig */,
+				848EFFB61C591B91001D8368 /* Framework.xcconfig */,
+				848EFFB71C591B91001D8368 /* StaticLibrary.xcconfig */,
+			);
+			path = Targets;
+			sourceTree = "<group>";
+		};
+		848EFFC01C591BE0001D8368 /* Libraries */ = {
+			isa = PBXGroup;
+			children = (
+				CD553D861F4184D00048215C /* Bazaar.xcodeproj */,
+				CDB8A6481F53FCB200E14706 /* extobjc.xcodeproj */,
+				650BB31C1D465335008648A3 /* LTKit.xcodeproj */,
+				CDCCF3D51F4EC2F700F421E6 /* ReactiveObjC.xcodeproj */,
+			);
+			name = Libraries;
+			sourceTree = "<group>";
+		};
+		848EFFE21C591C0D001D8368 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				CD3C6A361F559F61008A6C23 /* QuartzCore.framework */,
+				CD3C6A341F559F44008A6C23 /* CoreGraphics.framework */,
+				CD3C6A321F559F3A008A6C23 /* UIKit.framework */,
+				CD3C69A31F559394008A6C23 /* GLKit.framework */,
+				CDB8A6581F53FE1800E14706 /* libcompression.tbd */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		8B425EBA1CA6D217001C457E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8B425EC91CA6D218001C457E /* Expecta.framework */,
+				8B425ECB1CA6D218001C457E /* Expecta.framework */,
+				8B425ECD1CA6D218001C457E /* ExpectaTests.xctest */,
+				8B425ECF1CA6D218001C457E /* Expecta-iOSTests.xctest */,
+				8B425ED11CA6D218001C457E /* libExpecta.a */,
+				8B425ED31CA6D218001C457E /* libExpecta.a */,
+				8B425ED51CA6D218001C457E /* libExpectaTests.xctest */,
+				8B425ED71CA6D218001C457E /* libExpecta-iOSTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		8B425EBC1CA6D218001C457E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8B425EE11CA6D218001C457E /* OCMock.framework */,
+				8B425EE31CA6D218001C457E /* OCMockTests.xctest */,
+				8B425EE51CA6D218001C457E /* libOCMock.a */,
+				8B425EE71CA6D218001C457E /* OCMockLibTests.xctest */,
+				8B425EE91CA6D218001C457E /* OCMock.framework */,
+				8B425EEB1CA6D218001C457E /* OCMock.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		8B425EBE1CA6D218001C457E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8B425EF81CA6D218001C457E /* Specta.framework */,
+				8B425EFA1CA6D218001C457E /* SpectaTests.xctest */,
+				8B425EFC1CA6D218001C457E /* Specta.framework */,
+				8B425EFE1CA6D218001C457E /* Specta-iOSTests.xctest */,
+				8B425F001CA6D218001C457E /* libSpecta.a */,
+				8B425F021CA6D218001C457E /* libSpecta.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		CD553D871F4184D00048215C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				CD553D8C1F4184D00048215C /* libBazaar.a */,
+				CD553D8E1F4184D00048215C /* BazaarTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		CD5550161F45C8050048215C /* ShopixBundle */ = {
+			isa = PBXGroup;
+			children = (
+				CD5550171F45C8050048215C /* Info.plist */,
+				CD5551161F45D5E10048215C /* Localizable.strings */,
+				CD5551181F45D5E10048215C /* Localizable.stringsdict */,
+			);
+			path = ShopixBundle;
+			sourceTree = "<group>";
+		};
+		CD962D9D1F5427EF00F2CA82 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				CD962DB01F5427EF00F2CA82 /* libLLReactiveMatchers.a */,
+				CD962DB21F5427EF00F2CA82 /* LLReactiveMatchersTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		CDB8A6491F53FCB200E14706 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				CDB8A6501F53FCB200E14706 /* libextobjc_OSX.a */,
+				CDB8A6521F53FCB200E14706 /* libextobjc_iOS.a */,
+				CDB8A6541F53FCB200E14706 /* Logic Tests.octest */,
+				CDB8A6561F53FCB200E14706 /* iOS Tests.octest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		CDCCF3D61F4EC2F700F421E6 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				CDCCF3FB1F4EC2F700F421E6 /* ReactiveObjC.framework */,
+				CDCCF3FD1F4EC2F700F421E6 /* ReactiveObjCTests.xctest */,
+				CDCCF3FF1F4EC2F700F421E6 /* ReactiveObjC.framework */,
+				CDCCF4011F4EC2F700F421E6 /* ReactiveObjCTests.xctest */,
+				CDCCF4031F4EC2F700F421E6 /* ReactiveObjC.framework */,
+				CDCCF4051F4EC2F700F421E6 /* ReactiveObjC.framework */,
+				CDCCF4071F4EC2F700F421E6 /* ReactiveObjCTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		848E000C1C591DD1001D8368 /* ShopixTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 848E00181C591DD1001D8368 /* Build configuration list for PBXNativeTarget "ShopixTests" */;
+			buildPhases = (
+				848E00091C591DD1001D8368 /* Sources */,
+				848E000A1C591DD1001D8368 /* Frameworks */,
+				848E000B1C591DD1001D8368 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				652F75131D3D029500EF9256 /* PBXTargetDependency */,
+				65E7AA7B1D48DAEB00830B35 /* PBXTargetDependency */,
+			);
+			name = ShopixTests;
+			productName = ShopixTests;
+			productReference = 848E000D1C591DD1001D8368 /* ShopixTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		84FF72E81C8EED6D00D1DA9F /* Shopix */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 84FF72EF1C8EED6D00D1DA9F /* Build configuration list for PBXNativeTarget "Shopix" */;
+			buildPhases = (
+				84FF72E51C8EED6D00D1DA9F /* Sources */,
+				84FF72E61C8EED6D00D1DA9F /* Frameworks */,
+				84FF72E71C8EED6D00D1DA9F /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				CDCCF4111F4F004D00F421E6 /* PBXTargetDependency */,
+			);
+			name = Shopix;
+			productName = Shopix;
+			productReference = 84FF72E91C8EED6D00D1DA9F /* libShopix.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		CD5550141F45C8050048215C /* ShopixBundle */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CD55503B1F45C8050048215C /* Build configuration list for PBXNativeTarget "ShopixBundle" */;
+			buildPhases = (
+				CD5550111F45C8050048215C /* Sources */,
+				CD5550121F45C8050048215C /* Frameworks */,
+				CD5550131F45C8050048215C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ShopixBundle;
+			productName = ShopixBundle;
+			productReference = CD5550151F45C8050048215C /* ShopixBundle.bundle */;
+			productType = "com.apple.product-type.bundle";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		848EFF731C591B3A001D8368 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0810;
+				ORGANIZATIONNAME = Lightricks;
+				TargetAttributes = {
+					848E000C1C591DD1001D8368 = {
+						CreatedOnToolsVersion = 7.2;
+						DevelopmentTeam = KG6GWND6BG;
+					};
+					84FF72E81C8EED6D00D1DA9F = {
+						CreatedOnToolsVersion = 7.2.1;
+					};
+					CD5550141F45C8050048215C = {
+						CreatedOnToolsVersion = 8.3.3;
+						DevelopmentTeam = KG6GWND6BG;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 848EFF761C591B3A001D8368 /* Build configuration list for PBXProject "Shopix" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+				de,
+				es,
+				it,
+				ja,
+				ko,
+				"pt-PT",
+				pt,
+				ru,
+				tr,
+				"zh-Hans",
+				"zh-Hant",
+				fr,
+			);
+			mainGroup = 848EFF721C591B3A001D8368;
+			productRefGroup = 848EFF7C1C591B3A001D8368 /* Products */;
+			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = CD553D871F4184D00048215C /* Products */;
+					ProjectRef = CD553D861F4184D00048215C /* Bazaar.xcodeproj */;
+				},
+				{
+					ProductGroup = 8B425EBA1CA6D217001C457E /* Products */;
+					ProjectRef = 848E00371C5920CB001D8368 /* Expecta.xcodeproj */;
+				},
+				{
+					ProductGroup = CDB8A6491F53FCB200E14706 /* Products */;
+					ProjectRef = CDB8A6481F53FCB200E14706 /* extobjc.xcodeproj */;
+				},
+				{
+					ProductGroup = CD962D9D1F5427EF00F2CA82 /* Products */;
+					ProjectRef = CD962D9C1F5427EF00F2CA82 /* LLReactiveMatchers.xcodeproj */;
+				},
+				{
+					ProductGroup = 650BB31D1D465335008648A3 /* Products */;
+					ProjectRef = 650BB31C1D465335008648A3 /* LTKit.xcodeproj */;
+				},
+				{
+					ProductGroup = 8B425EBC1CA6D218001C457E /* Products */;
+					ProjectRef = 848E00251C5920C1001D8368 /* OCMock.xcodeproj */;
+				},
+				{
+					ProductGroup = CDCCF3D61F4EC2F700F421E6 /* Products */;
+					ProjectRef = CDCCF3D51F4EC2F700F421E6 /* ReactiveObjC.xcodeproj */;
+				},
+				{
+					ProductGroup = 8B425EBE1CA6D218001C457E /* Products */;
+					ProjectRef = 848E0A421C5921AD001D8368 /* Specta.xcodeproj */;
+				},
+				{
+					ProductGroup = 650BB3351D465359008648A3 /* Products */;
+					ProjectRef = 650BB3341D465359008648A3 /* TestHost.xcodeproj */;
+				},
+			);
+			projectRoot = "";
+			targets = (
+				84FF72E81C8EED6D00D1DA9F /* Shopix */,
+				848E000C1C591DD1001D8368 /* ShopixTests */,
+				CD5550141F45C8050048215C /* ShopixBundle */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		650BB3221D465335008648A3 /* libLTKit.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libLTKit.a;
+			remoteRef = 650BB3211D465335008648A3 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		650BB3241D465335008648A3 /* LTKitTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = LTKitTests.xctest;
+			remoteRef = 650BB3231D465335008648A3 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		65BAF3E41D48023C009BBB6F /* TestHost.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = TestHost.app;
+			remoteRef = 65BAF3E31D48023C009BBB6F /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8B425EC91CA6D218001C457E /* Expecta.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Expecta.framework;
+			remoteRef = 8B425EC81CA6D218001C457E /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8B425ECB1CA6D218001C457E /* Expecta.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Expecta.framework;
+			remoteRef = 8B425ECA1CA6D218001C457E /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8B425ECD1CA6D218001C457E /* ExpectaTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = ExpectaTests.xctest;
+			remoteRef = 8B425ECC1CA6D218001C457E /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8B425ECF1CA6D218001C457E /* Expecta-iOSTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "Expecta-iOSTests.xctest";
+			remoteRef = 8B425ECE1CA6D218001C457E /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8B425ED11CA6D218001C457E /* libExpecta.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libExpecta.a;
+			remoteRef = 8B425ED01CA6D218001C457E /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8B425ED31CA6D218001C457E /* libExpecta.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libExpecta.a;
+			remoteRef = 8B425ED21CA6D218001C457E /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8B425ED51CA6D218001C457E /* libExpectaTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = libExpectaTests.xctest;
+			remoteRef = 8B425ED41CA6D218001C457E /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8B425ED71CA6D218001C457E /* libExpecta-iOSTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "libExpecta-iOSTests.xctest";
+			remoteRef = 8B425ED61CA6D218001C457E /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8B425EE11CA6D218001C457E /* OCMock.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = OCMock.framework;
+			remoteRef = 8B425EE01CA6D218001C457E /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8B425EE31CA6D218001C457E /* OCMockTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = OCMockTests.xctest;
+			remoteRef = 8B425EE21CA6D218001C457E /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8B425EE51CA6D218001C457E /* libOCMock.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libOCMock.a;
+			remoteRef = 8B425EE41CA6D218001C457E /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8B425EE71CA6D218001C457E /* OCMockLibTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = OCMockLibTests.xctest;
+			remoteRef = 8B425EE61CA6D218001C457E /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8B425EE91CA6D218001C457E /* OCMock.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = OCMock.framework;
+			remoteRef = 8B425EE81CA6D218001C457E /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8B425EEB1CA6D218001C457E /* OCMock.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = OCMock.framework;
+			remoteRef = 8B425EEA1CA6D218001C457E /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8B425EF81CA6D218001C457E /* Specta.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Specta.framework;
+			remoteRef = 8B425EF71CA6D218001C457E /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8B425EFA1CA6D218001C457E /* SpectaTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = SpectaTests.xctest;
+			remoteRef = 8B425EF91CA6D218001C457E /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8B425EFC1CA6D218001C457E /* Specta.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Specta.framework;
+			remoteRef = 8B425EFB1CA6D218001C457E /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8B425EFE1CA6D218001C457E /* Specta-iOSTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "Specta-iOSTests.xctest";
+			remoteRef = 8B425EFD1CA6D218001C457E /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8B425F001CA6D218001C457E /* libSpecta.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libSpecta.a;
+			remoteRef = 8B425EFF1CA6D218001C457E /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8B425F021CA6D218001C457E /* libSpecta.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libSpecta.a;
+			remoteRef = 8B425F011CA6D218001C457E /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		CD553D8C1F4184D00048215C /* libBazaar.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libBazaar.a;
+			remoteRef = CD553D8B1F4184D00048215C /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		CD553D8E1F4184D00048215C /* BazaarTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = BazaarTests.xctest;
+			remoteRef = CD553D8D1F4184D00048215C /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		CD962DB01F5427EF00F2CA82 /* libLLReactiveMatchers.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libLLReactiveMatchers.a;
+			remoteRef = CD962DAF1F5427EF00F2CA82 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		CD962DB21F5427EF00F2CA82 /* LLReactiveMatchersTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = LLReactiveMatchersTests.xctest;
+			remoteRef = CD962DB11F5427EF00F2CA82 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		CDB8A6501F53FCB200E14706 /* libextobjc_OSX.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libextobjc_OSX.a;
+			remoteRef = CDB8A64F1F53FCB200E14706 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		CDB8A6521F53FCB200E14706 /* libextobjc_iOS.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libextobjc_iOS.a;
+			remoteRef = CDB8A6511F53FCB200E14706 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		CDB8A6541F53FCB200E14706 /* Logic Tests.octest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "Logic Tests.octest";
+			remoteRef = CDB8A6531F53FCB200E14706 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		CDB8A6561F53FCB200E14706 /* iOS Tests.octest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "iOS Tests.octest";
+			remoteRef = CDB8A6551F53FCB200E14706 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		CDCCF3FB1F4EC2F700F421E6 /* ReactiveObjC.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = ReactiveObjC.framework;
+			remoteRef = CDCCF3FA1F4EC2F700F421E6 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		CDCCF3FD1F4EC2F700F421E6 /* ReactiveObjCTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = ReactiveObjCTests.xctest;
+			remoteRef = CDCCF3FC1F4EC2F700F421E6 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		CDCCF3FF1F4EC2F700F421E6 /* ReactiveObjC.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = ReactiveObjC.framework;
+			remoteRef = CDCCF3FE1F4EC2F700F421E6 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		CDCCF4011F4EC2F700F421E6 /* ReactiveObjCTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = ReactiveObjCTests.xctest;
+			remoteRef = CDCCF4001F4EC2F700F421E6 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		CDCCF4031F4EC2F700F421E6 /* ReactiveObjC.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = ReactiveObjC.framework;
+			remoteRef = CDCCF4021F4EC2F700F421E6 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		CDCCF4051F4EC2F700F421E6 /* ReactiveObjC.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = ReactiveObjC.framework;
+			remoteRef = CDCCF4041F4EC2F700F421E6 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		CDCCF4071F4EC2F700F421E6 /* ReactiveObjCTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = ReactiveObjCTests.xctest;
+			remoteRef = CDCCF4061F4EC2F700F421E6 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
+/* Begin PBXResourcesBuildPhase section */
+		848E000B1C591DD1001D8368 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CD5550131F45C8050048215C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CD55511A1F45D5E10048215C /* Localizable.strings in Resources */,
+				CD55511B1F45D5E10048215C /* Localizable.stringsdict in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		848E00091C591DD1001D8368 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CD3C697E1F559295008A6C23 /* ShopixSpec.mm in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		84FF72E51C8EED6D00D1DA9F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CD962D031F5416D700F2CA82 /* Shopix.mm in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CD5550111F45C8050048215C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		652F75131D3D029500EF9256 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 84FF72E81C8EED6D00D1DA9F /* Shopix */;
+			targetProxy = 652F75121D3D029500EF9256 /* PBXContainerItemProxy */;
+		};
+		65E7AA7B1D48DAEB00830B35 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = TestHost;
+			targetProxy = 65E7AA7A1D48DAEB00830B35 /* PBXContainerItemProxy */;
+		};
+		CDCCF4111F4F004D00F421E6 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "ReactiveObjC-iOS";
+			targetProxy = CDCCF4101F4F004D00F421E6 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		CD5551161F45D5E10048215C /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CD5551171F45D5E10048215C /* Base */,
+				CD55511C1F45D5E50048215C /* en */,
+				CD55511E1F45D5E70048215C /* es */,
+				CD55511F1F45D5E80048215C /* it */,
+				CD5551201F45D5E80048215C /* ja */,
+				CD5551211F45D5E90048215C /* ko */,
+				CD5551221F45D5EA0048215C /* pt-PT */,
+				CD5551231F45D5EB0048215C /* pt */,
+				CD5551241F45D5EB0048215C /* ru */,
+				CD5551251F45D5EC0048215C /* tr */,
+				CD5551261F45D5ED0048215C /* zh-Hans */,
+				CD5551271F45D5EE0048215C /* zh-Hant */,
+				CD5551281F45D5EF0048215C /* fr */,
+				CD962CB81F54056200F2CA82 /* de */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		CD5551181F45D5E10048215C /* Localizable.stringsdict */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CD5551191F45D5E10048215C /* Base */,
+				CD962CAB1F54045200F2CA82 /* en */,
+				CD962CAC1F54045600F2CA82 /* de */,
+				CD962CAD1F54045700F2CA82 /* es */,
+				CD962CAE1F54045900F2CA82 /* it */,
+				CD962CAF1F54045A00F2CA82 /* ja */,
+				CD962CB01F54045B00F2CA82 /* ko */,
+				CD962CB11F54045C00F2CA82 /* pt-PT */,
+				CD962CB21F54045D00F2CA82 /* pt */,
+				CD962CB31F54045E00F2CA82 /* ru */,
+				CD962CB41F54045F00F2CA82 /* tr */,
+				CD962CB51F54046000F2CA82 /* zh-Hans */,
+				CD962CB61F54046200F2CA82 /* zh-Hant */,
+				CD962CB71F54046300F2CA82 /* fr */,
+			);
+			name = Localizable.stringsdict;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		848E00191C591DD1001D8368 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 848EFFB51C591B91001D8368 /* Application.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/TestHost.app/TestHost";
+				DEVELOPMENT_TEAM = KG6GWND6BG;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "ShopixTests/ShopixTests-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../third_party/LLReactiveMatchers\"",
+					"\"$(SRCROOT)/../third_party/LLReactiveMatchers/LLReactiveMatchers\"",
+					"\"$(SRCROOT)/../third_party/OCMock/Source\"",
+					"\"$(SRCROOT)/../third_party/Specta/Specta\"",
+					"\"$(SRCROOT)/../third_party/Expecta/Expecta\"",
+				);
+				INFOPLIST_FILE = ShopixTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.lightricks.ShopixTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+			};
+			name = Debug;
+		};
+		848E001A1C591DD1001D8368 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 848EFFB51C591B91001D8368 /* Application.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/TestHost.app/TestHost";
+				DEVELOPMENT_TEAM = KG6GWND6BG;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "ShopixTests/ShopixTests-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../third_party/LLReactiveMatchers\"",
+					"\"$(SRCROOT)/../third_party/LLReactiveMatchers/LLReactiveMatchers\"",
+					"\"$(SRCROOT)/../third_party/OCMock/Source\"",
+					"\"$(SRCROOT)/../third_party/Specta/Specta\"",
+					"\"$(SRCROOT)/../third_party/Expecta/Expecta\"",
+				);
+				INFOPLIST_FILE = ShopixTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.lightricks.ShopixTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+			};
+			name = Release;
+		};
+		848EFF9B1C591B3A001D8368 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 848EFFB01C591B91001D8368 /* Debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../LTKit/",
+					"$(SRCROOT)/../third_party/libextobjc/",
+					"$(SRCROOT)/../Bazaar",
+					"$(SRCROOT)/../third_party/Mantle/",
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		848EFF9C1C591B3A001D8368 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 848EFFB11C591B91001D8368 /* Release.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../LTKit/",
+					"$(SRCROOT)/../third_party/libextobjc/",
+					"$(SRCROOT)/../Bazaar",
+					"$(SRCROOT)/../third_party/Mantle/",
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		84FF72F01C8EED6D00D1DA9F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 848EFFB71C591B91001D8368 /* StaticLibrary.xcconfig */;
+			buildSettings = {
+				GCC_PREFIX_HEADER = "Shopix/Shopix-Prefix.pch";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		84FF72F11C8EED6D00D1DA9F /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 848EFFB71C591B91001D8368 /* StaticLibrary.xcconfig */;
+			buildSettings = {
+				GCC_PREFIX_HEADER = "Shopix/Shopix-Prefix.pch";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		CD5550181F45C8050048215C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8B57B1FC1D914FE100814B3C /* Bundle.xcconfig */;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = KG6GWND6BG;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = ShopixBundle/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				PRODUCT_BUNDLE_IDENTIFIER = com.lightricks.ShopixBundle;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				WRAPPER_EXTENSION = bundle;
+			};
+			name = Debug;
+		};
+		CD5550191F45C8050048215C /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8B57B1FC1D914FE100814B3C /* Bundle.xcconfig */;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = KG6GWND6BG;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = ShopixBundle/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				PRODUCT_BUNDLE_IDENTIFIER = com.lightricks.ShopixBundle;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				WRAPPER_EXTENSION = bundle;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		848E00181C591DD1001D8368 /* Build configuration list for PBXNativeTarget "ShopixTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				848E00191C591DD1001D8368 /* Debug */,
+				848E001A1C591DD1001D8368 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		848EFF761C591B3A001D8368 /* Build configuration list for PBXProject "Shopix" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				848EFF9B1C591B3A001D8368 /* Debug */,
+				848EFF9C1C591B3A001D8368 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		84FF72EF1C8EED6D00D1DA9F /* Build configuration list for PBXNativeTarget "Shopix" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				84FF72F01C8EED6D00D1DA9F /* Debug */,
+				84FF72F11C8EED6D00D1DA9F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CD55503B1F45C8050048215C /* Build configuration list for PBXNativeTarget "ShopixBundle" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CD5550181F45C8050048215C /* Debug */,
+				CD5550191F45C8050048215C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 848EFF731C591B3A001D8368 /* Project object */;
+}
