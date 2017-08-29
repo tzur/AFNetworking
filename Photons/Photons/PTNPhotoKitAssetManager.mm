@@ -345,7 +345,7 @@ NS_ASSUME_NONNULL_BEGIN
   }
 
   return [RACSignal defer:^{
-    RACSignal *initialFetchResult = [[[self fetchFetchResultWithURL:url]
+    RACSignal *initialObject = [[[self fetchFetchResultWithURL:url]
       tryMap:^id(PHFetchResult *fetchResult, NSError *__autoreleasing *errorPtr) {
         if (!fetchResult.count) {
           if (errorPtr) {
@@ -356,24 +356,22 @@ NS_ASSUME_NONNULL_BEGIN
       }]
       replayLazily];
 
-    RACSignal *nextFetchResults = [[self.observer.photoLibraryChanged
-        scanWithStart:initialFetchResult reduce:^(RACSignal *previous, PHChange *change) {
-          return [[[previous
-              takeLast:1]
-              map:^(PHAsset *asset) {
-                PHObject *after = [change changeDetailsForObject:asset].objectAfterChanges;
-                return after ?: asset;
-              }]
-              replayLazily];
-        }]
-        concat];
+    RACSignal *changedObjects = [initialObject
+        flattenMap:^RACSignal *(PHObject *object) {
+          return [self.observer.photoLibraryChanged scanWithStart:object
+              reduce:^PHObject *(PHObject *next, PHChange *change) {
+                PHObject * _Nullable after =
+                    [change changeDetailsForObject:next].objectAfterChanges;
+                return after ?: next;
+              }];
+        }];
 
     // The operator ptn_identicallyDistinctUntilChanged is required because PHFetchResult objects
     // are equal if they back the same asset, even if the asset has changed. This makes sure that
     // only new fetch results are provided, but avoid sending the same fetch result over and over
     // again.
     return [[[RACSignal
-        concat:@[initialFetchResult, nextFetchResults]]
+        concat:@[initialObject, changedObjects]]
         ptn_identicallyDistinctUntilChanged]
         subscribeOn:self.fetchScheduler];
   }];
