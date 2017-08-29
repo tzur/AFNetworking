@@ -232,7 +232,7 @@ context(@"delayed retry", ^{
     auto signal = [RACSignal return:@"foo"];
 
     auto recorder =
-        [[signal delayedRetry:kNumberOfRetries initialDelay:kInitialRetryDelay] testRecorder];
+        [[signal bzr_delayedRetry:kNumberOfRetries initialDelay:kInitialRetryDelay] testRecorder];
 
     expect(recorder).to.complete();
     expect(recorder).to.sendValues(@[@"foo"]);
@@ -246,7 +246,7 @@ context(@"delayed retry", ^{
     }];
 
     auto recorder =
-        [[signal delayedRetry:kNumberOfRetries initialDelay:kInitialRetryDelay] testRecorder];
+        [[signal bzr_delayedRetry:kNumberOfRetries initialDelay:kInitialRetryDelay] testRecorder];
 
     expect(recorder).will.sendValues(@[@1, @2, @3]);
     expect(recorder).will.sendError(error);
@@ -259,7 +259,7 @@ context(@"delayed retry", ^{
       return [[RACSignal return:@(currentRetryCount++)] concat:[RACSignal error:error]];
     }];
 
-    auto recorder = [[signal delayedRetry:1 initialDelay:kInitialRetryDelay] testRecorder];
+    auto recorder = [[signal bzr_delayedRetry:1 initialDelay:kInitialRetryDelay] testRecorder];
 
     expect(recorder).will.sendValues(@[@1, @2]);
     expect(recorder).will.matchError(^BOOL(NSError *error) {
@@ -281,7 +281,7 @@ context(@"delayed retry", ^{
     }];
 
     auto recorder =
-        [[signal delayedRetry:kNumberOfRetries initialDelay:kInitialRetryDelay] testRecorder];
+        [[signal bzr_delayedRetry:kNumberOfRetries initialDelay:kInitialRetryDelay] testRecorder];
 
     expect(recorder).will.complete();
     expect(recorder).will.sendValues(@[@1, @2]);

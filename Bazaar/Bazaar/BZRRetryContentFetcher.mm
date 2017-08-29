@@ -58,7 +58,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (RACSignal *)fetchProductContent:(BZRProduct *)product {
   return [[self.underlyingContentFetcher fetchProductContent:product]
-          delayedRetry:self.numberOfRetries
+          bzr_delayedRetry:self.numberOfRetries
           initialDelay:self.initialDelay];
 }
 

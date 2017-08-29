@@ -43,7 +43,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// signal errs if the all the retries failed.
 ///
 /// @note If \c retryCount is \c 0, the signal keeps retrying until completion.
-- (RACSignal *)delayedRetry:(NSUInteger)retryCount initialDelay:(NSTimeInterval)initialDelay;
+- (RACSignal *)bzr_delayedRetry:(NSUInteger)retryCount initialDelay:(NSTimeInterval)initialDelay;
 
 @end
 
