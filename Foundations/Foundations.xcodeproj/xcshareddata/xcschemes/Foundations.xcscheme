@@ -322,6 +322,16 @@
                ReferencedContainer = "container:../Pinky/Pinky.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "848E000C1C591DD1001D8368"
+               BuildableName = "ShopixTests.xctest"
+               BlueprintName = "ShopixTests"
+               ReferencedContainer = "container:../Shopix/Shopix.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
