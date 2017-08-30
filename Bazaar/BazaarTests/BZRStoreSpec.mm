@@ -790,7 +790,27 @@ context(@"refreshing receipt", ^{
 
       OCMVerify([receiptValidationStatusProvider fetchReceiptValidationStatus]);
     });
-  });
+
+    it(@"should not validate receipt when refresh receipt erred with cancellation", ^{
+      NSError *receiptRefreshError = [NSError lt_errorWithCode:BZRErrorCodeOperationCancelled];
+      OCMStub([storeKitFacade refreshReceipt]).andReturn([RACSignal error:receiptRefreshError]);
+      OCMReject([receiptValidationStatusProvider fetchReceiptValidationStatus]);
+
+      expect([store refreshReceipt]).will.matchError(^BOOL(NSError *error) {
+        return receiptRefreshError == error;
+      });
+    });
+
+    it(@"should not restore completed transactions when refresh receipt erred with cancellation", ^{
+      NSError *receiptRefreshError = [NSError lt_errorWithCode:BZRErrorCodeOperationCancelled];
+      OCMStub([storeKitFacade refreshReceipt]).andReturn([RACSignal error:receiptRefreshError]);
+      OCMReject([storeKitFacade restoreCompletedTransactions]);
+
+      expect([store refreshReceipt]).will.matchError(^BOOL(NSError *error) {
+        return receiptRefreshError == error;
+      });
+    });
+});
 
   context(@"transaction restoration", ^{
     beforeEach(^{

@@ -51,6 +51,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Returns a signal that refreshes the receipt and completes. The signal errs if the refresh has
 /// failed.
 ///
+/// @note if the user cancelled the refresh receipt operation, the signal will err with an
+/// \c BZRErrorCodeOperationCancelled error code.
+///
 /// @return <tt>RACSignal</tt>
 - (RACSignal *)refreshReceipt;
 

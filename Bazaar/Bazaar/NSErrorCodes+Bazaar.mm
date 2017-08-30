@@ -79,7 +79,9 @@ LTErrorCodesImplement(BazaarErrorCodeProductID,
   BZRErrorCodeFetchingProductContentFailed,
   /// Fetching content has failed due to a version mismatch between a product and its downloaded
   /// content.
-  BZRErrorCodeFetchedContentMismatch
+  BZRErrorCodeFetchedContentMismatch,
+  /// Error that is caused by an operation that was cancelled.
+  BZRErrorCodeOperationCancelled
 );
 
 NS_ASSUME_NONNULL_END
