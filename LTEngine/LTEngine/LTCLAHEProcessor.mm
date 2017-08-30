@@ -35,18 +35,16 @@
 #pragma mark -
 
 - (void)process {
-  LTTexture *luminanceTexture = [LTTexture byteRedTextureWithSize:self.outputTexture.size];
   LTColorConversionProcessor *processor =
-      [[LTColorConversionProcessor alloc] initWithInput:self.inputTexture output:luminanceTexture];
+      [[LTColorConversionProcessor alloc] initWithInput:self.inputTexture
+                                                 output:self.outputTexture];
   processor.mode = LTColorConversionRGBToYYYY;
   [processor process];
 
-  [luminanceTexture mappedImageForReading:^(const cv::Mat &mappedTexture, BOOL) {
-    [self.outputTexture mappedImageForWriting:^(cv::Mat *mappedSmooth, BOOL) {
-      cv::Ptr<cv::CLAHE> clahe = cv::createCLAHE();
-      clahe->setClipLimit(3);
-      clahe->apply(mappedTexture, *mappedSmooth);
-    }];
+  [self.outputTexture mappedImageForWriting:^(cv::Mat *mapped, BOOL) {
+    cv::Ptr<cv::CLAHE> clahe = cv::createCLAHE();
+    clahe->setClipLimit(3);
+    clahe->apply(*mapped, *mapped);
   }];
 }
 
