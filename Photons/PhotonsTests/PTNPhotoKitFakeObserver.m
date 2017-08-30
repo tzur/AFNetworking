@@ -18,7 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)init {
   if (self = [super init]) {
-    self.photoLibrarySubject = [RACReplaySubject subject];
+    self.photoLibrarySubject = [RACReplaySubject replaySubjectWithCapacity:1];
   }
   return self;
 }

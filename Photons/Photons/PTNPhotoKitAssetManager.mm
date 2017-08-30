@@ -154,8 +154,13 @@ NS_ASSUME_NONNULL_BEGIN
   }
 
   // Returns an initial (PHFetchResult, PTNAlbumChangeset) tuple from PhotoKit.
+  @weakify(self);
   RACSignal *initialChangeset = [[[[self fetchFetchResultWithURL:url]
       tryMap:^id(PHFetchResult *fetchResult, NSError *__autoreleasing *errorPtr) {
+        @strongify(self);
+        if (!self) {
+          return nil;
+        }
         // A fetched empty album is an error, unless it's specifically UserAlbums meta album.
         // This is so since a fetch result is all collections that match the fetch request, and so
         // an empty album will be returned as a fetch result with a single album, but when User
@@ -181,6 +186,7 @@ NS_ASSUME_NONNULL_BEGIN
         }
       }]
       doError:^(NSError __unused *error) {
+        @strongify(self);
         [self.albumSignalCache removeSignalForURL:url];
       }]
       replayLazily];
@@ -230,36 +236,47 @@ NS_ASSUME_NONNULL_BEGIN
 - (RACSignal *)nextChangesetForRegularAlbumWithURL:(NSURL *)url
                                andInitialChangeset:(RACSignal *)initialChangeset {
   // Returns consecutive (PHFetchResult, PTNAlbumChangeset) tuple on each notification.
-  // This works by scanning the input stream and producing a stream of streams that contain a single
-  // tuple.
-  return [[self.observer.photoLibraryChanged
-        scanWithStart:initialChangeset reduce:(id)^(RACSignal *previous, PHChange *change) {
-          return [[[previous
-              takeLast:1]
-              reduceEach:(id)^(PHFetchResult *fetchResult, PTNAlbumChangeset *changeset) {
-                PHFetchResultChangeDetails *details =
-                    [change changeDetailsForFetchResult:fetchResult];
-                if (details) {
-                  PTNAlbumChangeset *newChangeset = [PTNAlbumChangeset changesetWithURL:url
-                                                                  photoKitChangeDetails:details];
-                  return RACTuplePack(details.fetchResultAfterChanges, newChangeset);
-                } else {
-                  return RACTuplePack(fetchResult, changeset);
-                }
-              }]
-              replayLazily];
-        }]
-        concat];
+  @weakify(self);
+  return [initialChangeset
+      flattenMap:^RACSignal *(RACTuple *tuple) {
+        @strongify(self);
+        return [[self.observer.photoLibraryChanged
+            takeUntil:self.rac_willDeallocSignal]
+            scanWithStart:tuple reduce:^RACTuple *(RACTuple *previous, PHChange *change) {
+              PHFetchResult *fetchResult = previous.first;
+              PTNAlbumChangeset *changeset = previous.second;
+
+              PHFetchResultChangeDetails *details =
+                  [change changeDetailsForFetchResult:fetchResult];
+              if (details) {
+                PTNAlbumChangeset *newChangeset = [PTNAlbumChangeset changesetWithURL:url
+                                                                photoKitChangeDetails:details];
+                return RACTuplePack(details.fetchResultAfterChanges, newChangeset);
+              } else {
+                return RACTuplePack(fetchResult, changeset);
+              }
+            }];
+      }];
 }
 
 - (RACSignal *)nextChangesetForSmartAlbumCollectionWithURL:(NSURL *)url
                                        andInitialChangeset:(RACSignal *)initialChangeset {
   // Track changes on each subalbum. For each change fetch the smart album collection
   // again, and send proper change details with the changed smart album.
-  return [initialChangeset flattenMap:^(RACTuple *values) {
+  auto fetcher = self.fetcher;
+  @weakify(self);
+  return [initialChangeset flattenMap:^RACSignal *(RACTuple *values) {
+    @strongify(self);
+    if (!self) {
+      return nil;
+    }
     PHFetchResult *initialFetchResult = values.first;
     return [[[[[self recursiveUpdatesForSmartAlbums]
-      flattenMap:^(PHAssetCollection *updatedCollection) {
+      flattenMap:^RACSignal *(PHAssetCollection *updatedCollection) {
+        @strongify(self);
+        if (!self) {
+          return nil;
+        }
         return [RACSignal combineLatest:@[
           [self fetchFetchResultWithURL:url],
           [RACSignal return:updatedCollection]
@@ -278,8 +295,8 @@ NS_ASSUME_NONNULL_BEGIN
       reduceEach:(id)^RACTuple *(PHFetchResult *previousFetch, PHFetchResult *currentFetch,
                                  PHAssetCollection *) {
         PHFetchResultChangeDetails *changeDetails =
-            [self.fetcher changeDetailsFromFetchResult:previousFetch toFetchResult:currentFetch
-                                        changedObjects:nil];
+            [fetcher changeDetailsFromFetchResult:previousFetch toFetchResult:currentFetch
+                                   changedObjects:nil];
         PTNAlbumChangeset *changeset = [PTNAlbumChangeset changesetWithURL:url
                                                      photoKitChangeDetails:changeDetails];
 
@@ -328,7 +345,7 @@ NS_ASSUME_NONNULL_BEGIN
   }
 
   return [RACSignal defer:^{
-    RACSignal *initialFetchResult = [[[self fetchFetchResultWithURL:url]
+    RACSignal *initialObject = [[[self fetchFetchResultWithURL:url]
       tryMap:^id(PHFetchResult *fetchResult, NSError *__autoreleasing *errorPtr) {
         if (!fetchResult.count) {
           if (errorPtr) {
@@ -339,24 +356,22 @@ NS_ASSUME_NONNULL_BEGIN
       }]
       replayLazily];
 
-    RACSignal *nextFetchResults = [[self.observer.photoLibraryChanged
-        scanWithStart:initialFetchResult reduce:^(RACSignal *previous, PHChange *change) {
-          return [[[previous
-              takeLast:1]
-              map:^(PHAsset *asset) {
-                PHObject *after = [change changeDetailsForObject:asset].objectAfterChanges;
-                return after ?: asset;
-              }]
-              replayLazily];
-        }]
-        concat];
+    RACSignal *changedObjects = [initialObject
+        flattenMap:^RACSignal *(PHObject *object) {
+          return [self.observer.photoLibraryChanged scanWithStart:object
+              reduce:^PHObject *(PHObject *next, PHChange *change) {
+                PHObject * _Nullable after =
+                    [change changeDetailsForObject:next].objectAfterChanges;
+                return after ?: next;
+              }];
+        }];
 
     // The operator ptn_identicallyDistinctUntilChanged is required because PHFetchResult objects
     // are equal if they back the same asset, even if the asset has changed. This makes sure that
     // only new fetch results are provided, but avoid sending the same fetch result over and over
     // again.
     return [[[RACSignal
-        concat:@[initialFetchResult, nextFetchResults]]
+        concat:@[initialObject, changedObjects]]
         ptn_identicallyDistinctUntilChanged]
         subscribeOn:self.fetchScheduler];
   }];
@@ -371,7 +386,9 @@ NS_ASSUME_NONNULL_BEGIN
     return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeInvalidURL url:url]];
   }
 
+  @weakify(self);
   return [RACSignal defer:^RACSignal *{
+    @strongify(self);
     if (![self.authorizationManager.authorizationStatus
           isEqual:$(PTNAuthorizationStatusAuthorized)]) {
       return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeNotAuthorized url:url]];
