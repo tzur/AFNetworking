@@ -17,7 +17,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// resources, it returns the UTI of the first resource. That means that assets that have multiple
 /// resources like both JPEG and RAW resources, will have the UTI of the first resources. Other
 /// resources will be ignored.
-- (NSString *)uniformTypeIdentifier;
+///
+/// @note This method might return \c nil in unknown situations.
+- (nullable NSString *)uniformTypeIdentifier;
 
 /// Undocumented method returning the file name of this asset. In case where the asset has multiple
 /// resources, it returns the file name of the first resource.
@@ -93,17 +95,21 @@ static BOOL PTUConformsToUTI(NSString *uti, NSString *conformsToUTI) {
 }
 
 - (BOOL)ptn_isRaw {
-  if ([self respondsToSelector:@selector(uniformTypeIdentifier)]) {
-    return PTUConformsToUTI(self.uniformTypeIdentifier ,(NSString *)kUTTypeRawImage);
+  if ([self ptn_hasUniformTypeIdentifier]) {
+    return PTUConformsToUTI(self.uniformTypeIdentifier, (NSString *)kUTTypeRawImage);
   }
   return NO;
 }
 
 - (BOOL)ptn_isGIF {
-  if ([self respondsToSelector:@selector(uniformTypeIdentifier)]) {
+  if ([self ptn_hasUniformTypeIdentifier]) {
     return PTUConformsToUTI(self.uniformTypeIdentifier, (NSString *)kUTTypeGIF);
   }
   return NO;
+}
+
+- (BOOL)ptn_hasUniformTypeIdentifier {
+  return [self respondsToSelector:@selector(uniformTypeIdentifier)] && self.uniformTypeIdentifier;
 }
 
 @end
