@@ -36,6 +36,11 @@ context(@"lt_selectorNameFromComponents", ^{
     expect(name).to.equal(@"prefixSuffix");
   });
 
+  it(@"should combine first empty element with non-empty elements", ^{
+    NSString *name = [@[@"", @"middle", @"suffix"] lt_selectorNameFromComponents];
+    expect(name).to.equal(@"middleSuffix");
+  });
+
   it(@"should combine single item", ^{
     NSString *name = [@[@"Prefix"] lt_selectorNameFromComponents];
     expect(name).to.equal(@"prefix");
