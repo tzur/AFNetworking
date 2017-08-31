@@ -12,7 +12,7 @@
 @end
 
 /// Returns a mocked PHAsset with the given \c uti.
-static PHAsset *PTNCreateAsset(NSString *uti = @"") {
+static PHAsset *PTNCreateAsset(NSString * _Nullable uti = @"") {
   PHAsset *asset = OCMPartialMock([[PHAsset alloc] init]);
   if (uti) {
     OCMStub([asset uniformTypeIdentifier]).andReturn(uti);
@@ -97,6 +97,11 @@ context(@"asset descriptor", ^{
 
     PHAsset *jpegAsset = PTNCreateAsset(@"public.image");
     expect(jpegAsset.descriptorTraits).to.equal([NSSet set]);
+  });
+
+  it(@"should not reveal type traits when UTI is nil", ^{
+    PHAsset *asset = PTNCreateAsset(nil);
+    expect(asset.descriptorTraits).to.equal([NSSet set]);
   });
 });
 
