@@ -10,22 +10,23 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSString *)lt_selectorNameFromComponents {
   __block NSMutableString *methodName = [NSMutableString string];
 
-  [self enumerateObjectsUsingBlock:^(NSString *component, NSUInteger idx, BOOL *) {
+  for (NSString *component in self) {
     NSMutableString *mutableComponent = [component mutableCopy];
     [mutableComponent replaceOccurrencesOfString:@" " withString:@"" options:0
                                            range:NSMakeRange(0, mutableComponent.length)];
 
     if (!mutableComponent.length) {
-      return;
+      continue;
     }
 
     NSString *firstLetter = [mutableComponent substringToIndex:1];
-    NSString *transformedLetter = idx ? firstLetter.uppercaseString : firstLetter.lowercaseString;
+    NSString *transformedLetter = methodName.length ? firstLetter.uppercaseString :
+        firstLetter.lowercaseString;
     [mutableComponent replaceCharactersInRange:NSMakeRange(0, 1)
                                     withString:transformedLetter];
     [methodName appendString:mutableComponent];
-  }];
-  
+  };
+
   return [methodName copy];
 }
 
