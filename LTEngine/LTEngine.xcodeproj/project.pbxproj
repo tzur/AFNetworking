@@ -109,7 +109,6 @@
 		03C7B6C818CF124900E728F5 /* PositiveBrightnessCurve.png in Resources */ = {isa = PBXBuildFile; fileRef = 03C7B6C018CF124900E728F5 /* PositiveBrightnessCurve.png */; };
 		03C7B6C918CF124900E728F5 /* PositiveContrastCurve.png in Resources */ = {isa = PBXBuildFile; fileRef = 03C7B6C118CF124900E728F5 /* PositiveContrastCurve.png */; };
 		03C7B6D718CF313500E728F5 /* MealAdjusted.png in Resources */ = {isa = PBXBuildFile; fileRef = 03C7B6D618CF313500E728F5 /* MealAdjusted.png */; };
-		03C7B71118D0579000E728F5 /* TiledNoise.png in Resources */ = {isa = PBXBuildFile; fileRef = 03C7B71018D0579000E728F5 /* TiledNoise.png */; };
 		03CA15C31965492C0040DB07 /* LTEdgesMaskProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 03CA15C11965492C0040DB07 /* LTEdgesMaskProcessor.h */; };
 		03CA15C41965492C0040DB07 /* LTEdgesMaskProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03CA15C21965492C0040DB07 /* LTEdgesMaskProcessor.mm */; };
 		03CA15C81965498F0040DB07 /* LTEdgesMaskProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03CA15C71965498F0040DB07 /* LTEdgesMaskProcessorSpec.mm */; };
@@ -761,6 +760,7 @@
 		656155C41D464B6D009E701C /* Mantle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B0B9A4F1CA6C10B00ED2334 /* Mantle.framework */; };
 		658788A61AC196F4007EDF71 /* LTSeparableImageProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 658788A51AC196F4007EDF71 /* LTSeparableImageProcessorSpec.mm */; };
 		6A4444721B4AC5E200B9C710 /* LTFboPoolSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6A4444711B4AC5E200B9C710 /* LTFboPoolSpec.mm */; };
+		6A62051D1F4E28CD00EE503D /* TiledNoise.png in Resources */ = {isa = PBXBuildFile; fileRef = 03C7B71018D0579000E728F5 /* TiledNoise.png */; };
 		6AB548C01C81F99700672127 /* CVPixelBuffer+LTEngine.h in Headers */ = {isa = PBXBuildFile; fileRef = 6AB548BE1C81F99700672127 /* CVPixelBuffer+LTEngine.h */; };
 		6AB548C11C81F99700672127 /* CVPixelBuffer+LTEngine.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6AB548BF1C81F99700672127 /* CVPixelBuffer+LTEngine.mm */; };
 		6AB549061C822CE100672127 /* CVPixelBuffer+LTEngineSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6AB549051C822CE100672127 /* CVPixelBuffer+LTEngineSpec.mm */; };
@@ -6401,6 +6401,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6A62051D1F4E28CD00EE503D /* TiledNoise.png in Resources */,
 				85E2B68F1C58C649006AD39C /* SolidRectsDrawerOutOfBoundsRects.png in Resources */,
 				85E2B6901C58C649006AD39C /* SolidRectsDrawerOverlappingRects.png in Resources */,
 				85F599AC1CDF2166009A47B4 /* LTDisplacementMapDrawerResizedWithoutMask.png in Resources */,
@@ -6670,7 +6671,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				033DCD8A19F2B57A004BF795 /* PositiveShadowsCurve.png in Resources */,
-				03C7B71118D0579000E728F5 /* TiledNoise.png in Resources */,
 				033DCD8719F2B57A004BF795 /* NegativeHighlightsCurve.png in Resources */,
 				03C7B6C518CF124900E728F5 /* IdentityCurve.png in Resources */,
 				033DCD8919F2B57A004BF795 /* PositiveHighlightsCurve.png in Resources */,
