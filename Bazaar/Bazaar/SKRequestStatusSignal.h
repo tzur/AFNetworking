@@ -7,7 +7,7 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol SKRequestStatusSignal
 
 /// Initiates the request if it has not already been started. After invoking this method, events
-/// will be sent on \c bzr_statusSignal.
+/// will be sent on \c statusSignal.
 - (void)start;
 
 /// Cancels the request if it has started.

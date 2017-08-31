@@ -82,15 +82,16 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark Public Interface
 #pragma mark -
 
-- (RACSignal *)fetchMetadataForProductsWithIdentifiers:(NSSet<NSString *> *)productIdentifiers {
-  SKProductsRequest *request =
-      [self.storeKitRequestsFactory productsRequestWithIdentifiers:productIdentifiers];
+typedef id<SKRequestStatusSignal>(^SKRequestCreationBlock)();
 
+- (RACSignal *)fetchMetadataForProductsWithIdentifiers:(NSSet<NSString *> *)productIdentifiers {
   // Values sent by \c SKProductsRequest's \c bzr_statusSignal are delivered on the main thread.
   // If Bazaar does additional calculations later it might affect the UI. Therefore, the values are
   // delivered on a background scheduler.
-  return [[BZRStoreKitFacade requestSignalWithSafeDisposable:request]
-      deliverOn:[RACScheduler scheduler]];
+  return [[BZRStoreKitFacade requestSignalWithRequestCreationBlock:^id<SKRequestStatusSignal>() {
+    return [self.storeKitRequestsFactory productsRequestWithIdentifiers:productIdentifiers];
+  }]
+  deliverOn:[RACScheduler scheduler]];
 }
 
 - (RACSignal *)purchaseProduct:(SKProduct *)product {
@@ -110,16 +111,18 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (RACSignal *)refreshReceipt {
-  SKReceiptRefreshRequest *request = [self.storeKitRequestsFactory receiptRefreshRequest];
-  return [BZRStoreKitFacade requestSignalWithSafeDisposable:request];
+  return [BZRStoreKitFacade requestSignalWithRequestCreationBlock:^id<SKRequestStatusSignal>() {
+    return [self.storeKitRequestsFactory receiptRefreshRequest];
+  }];
 }
 
 - (void)finishTransaction:(SKPaymentTransaction *)transaction {
   [self.paymentQueue finishTransaction:transaction];
 }
 
-+ (RACSignal *)requestSignalWithSafeDisposable:(id<SKRequestStatusSignal>)request {
++ (RACSignal *)requestSignalWithRequestCreationBlock:(SKRequestCreationBlock)requestCreationBlock {
   return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+    id<SKRequestStatusSignal> request = requestCreationBlock();
     __block BOOL didSignalFinish = NO;
     auto disposable = [[[request statusSignal]
         finally:^{
