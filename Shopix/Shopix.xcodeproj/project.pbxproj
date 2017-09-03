@@ -21,9 +21,11 @@
 		CD3C6AC81F55A0B0008A6C23 /* ReactiveObjC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDCCF3FF1F4EC2F700F421E6 /* ReactiveObjC.framework */; };
 		CD55511A1F45D5E10048215C /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = CD5551161F45D5E10048215C /* Localizable.strings */; };
 		CD55511B1F45D5E10048215C /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = CD5551181F45D5E10048215C /* Localizable.stringsdict */; };
+		CD8E8E2F1F5C19F500DF8FC1 /* NSNumber+Localization.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD8E8E2E1F5C19F500DF8FC1 /* NSNumber+Localization.mm */; };
 		CD962D031F5416D700F2CA82 /* Shopix.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD962D021F5416D700F2CA82 /* Shopix.mm */; };
 		CDB8A6571F53FCE300E14706 /* libextobjc_iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CDB8A6521F53FCB200E14706 /* libextobjc_iOS.a */; };
 		CDB8A6591F53FE1800E14706 /* libcompression.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = CDB8A6581F53FE1800E14706 /* libcompression.tbd */; };
+		CDCFDEF91F5C39B300C289BA /* NSNumber+LocalizationSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = CDCFDEF81F5C39B300C289BA /* NSNumber+LocalizationSpec.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -369,6 +371,8 @@
 		CD5551261F45D5ED0048215C /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		CD5551271F45D5EE0048215C /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		CD5551281F45D5EF0048215C /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		CD8E8E2D1F5C19F500DF8FC1 /* NSNumber+Localization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNumber+Localization.h"; sourceTree = "<group>"; };
+		CD8E8E2E1F5C19F500DF8FC1 /* NSNumber+Localization.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSNumber+Localization.mm"; sourceTree = "<group>"; };
 		CD962CAB1F54045200F2CA82 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = en; path = en.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		CD962CAC1F54045600F2CA82 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = de; path = de.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		CD962CAD1F54045700F2CA82 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = es; path = es.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
@@ -389,6 +393,7 @@
 		CDB8A6481F53FCB200E14706 /* extobjc.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = extobjc.xcodeproj; path = ../third_party/libextobjc/extobjc.xcodeproj; sourceTree = "<group>"; };
 		CDB8A6581F53FE1800E14706 /* libcompression.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libcompression.tbd; path = usr/lib/libcompression.tbd; sourceTree = SDKROOT; };
 		CDCCF3D51F4EC2F700F421E6 /* ReactiveObjC.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactiveObjC.xcodeproj; path = ../third_party/ReactiveObjC/ReactiveObjC.xcodeproj; sourceTree = "<group>"; };
+		CDCFDEF81F5C39B300C289BA /* NSNumber+LocalizationSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSNumber+LocalizationSpec.mm"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -449,6 +454,7 @@
 		848E00051C591DD1001D8368 /* Shopix */ = {
 			isa = PBXGroup;
 			children = (
+				CD8E8E081F5C19DC00DF8FC1 /* Localization */,
 				848E001F1C591E7B001D8368 /* Supporting Files */,
 				CD962D011F5416D700F2CA82 /* Shopix.h */,
 				CD962D021F5416D700F2CA82 /* Shopix.mm */,
@@ -499,6 +505,7 @@
 		848E00241C59208B001D8368 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				CDCFDF1E1F5C39BA00C289BA /* Localization */,
 				CD3C697D1F559295008A6C23 /* ShopixSpec.mm */,
 			);
 			name = Tests;
@@ -642,6 +649,15 @@
 			path = ShopixBundle;
 			sourceTree = "<group>";
 		};
+		CD8E8E081F5C19DC00DF8FC1 /* Localization */ = {
+			isa = PBXGroup;
+			children = (
+				CD8E8E2D1F5C19F500DF8FC1 /* NSNumber+Localization.h */,
+				CD8E8E2E1F5C19F500DF8FC1 /* NSNumber+Localization.mm */,
+			);
+			name = Localization;
+			sourceTree = "<group>";
+		};
 		CD962D9D1F5427EF00F2CA82 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -674,6 +690,14 @@
 				CDCCF4071F4EC2F700F421E6 /* ReactiveObjCTests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		CDCFDF1E1F5C39BA00C289BA /* Localization */ = {
+			isa = PBXGroup;
+			children = (
+				CDCFDEF81F5C39B300C289BA /* NSNumber+LocalizationSpec.mm */,
+			);
+			name = Localization;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1120,6 +1144,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CD3C697E1F559295008A6C23 /* ShopixSpec.mm in Sources */,
+				CDCFDEF91F5C39B300C289BA /* NSNumber+LocalizationSpec.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1127,6 +1152,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CD8E8E2F1F5C19F500DF8FC1 /* NSNumber+Localization.mm in Sources */,
 				CD962D031F5416D700F2CA82 /* Shopix.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
