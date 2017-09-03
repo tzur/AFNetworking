@@ -28,8 +28,9 @@
 /// extra care when referencing this pixel buffer outside of this object. GPU - CPU synchronization
 /// falls into your responsibility.
 ///
-/// Raises \c LTGLException if the texture cannot be created, and \c NSInvalidArgumentException if
-/// \c pixelBuffer is a planar pixel buffer.
+/// Raises: \c LTGLException if the texture cannot be created or if the \c pixelBuffer is not backed
+/// by IOSurface (when running on iOS 11 device), \c NSInvalidArgumentException if \c pixelBuffer is
+/// a planar pixel buffer.
 ///
 /// @note \c pixelBuffer is retained by this texture.
 - (instancetype)initWithPixelBuffer:(CVPixelBufferRef)pixelBuffer;
@@ -38,8 +39,9 @@
 /// as texture's underlying storage. You must take extra care when referencing this pixel buffer
 /// outside of this object. GPU - CPU synchronization falls into your responsibility.
 ///
-/// Raises \c LTGLException if the texture cannot be created, and \c NSInvalidArgumentException if
-/// \c pixelBuffer is a non-planar pixel buffer or \c planeIndex is out of bounds.
+/// Raises: \c LTGLException if the texture cannot be created or if the \c pixelBuffer is not backed
+/// by IOSurface (when running on iOS 11 device), \c NSInvalidArgumentException if \c pixelBuffer is
+/// a non-planar pixel buffer or \c planeIndex is out of bounds.
 ///
 /// @note \c pixelBuffer is retained by this texture.
 - (instancetype)initWithPixelBuffer:(CVPixelBufferRef)pixelBuffer planeIndex:(size_t)planeIndex;
