@@ -1,10 +1,8 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
-#ifndef TARGET_OS_SIMULATOR
-  #if defined(__IPHONE_11_0) && __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_11_0
-    #define LTMMTEXTURE_USE_IOSURFACE
-  #endif
+#if defined(__IPHONE_11_0) && !defined(TARGET_OS_SIMULATOR)
+  #define LTMMTEXTURE_USE_IOSURFACE
 #endif
 
 #import "LTMMTexture.h"
