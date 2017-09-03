@@ -578,8 +578,15 @@ forHTTPHeaderField:(NSString *)field
 
 - (instancetype)copyWithZone:(NSZone *)zone {
     AFHTTPRequestSerializer *serializer = [[[self class] allocWithZone:zone] init];
-    dispatch_sync(self.requestHeaderModificationQueue, ^{
-        serializer.mutableHTTPRequestHeaders = [self.mutableHTTPRequestHeaders mutableCopyWithZone:zone];
+
+    // \c HTTPRequestHeaders is accessed and not \c mutableHTTPRequestHeaders, despite the extra
+    // copy and context-switch overhead, in order to promise thread-safe access to the headers
+    // dictionary and ensure we get the most updated headers. \c HTTPRequestHeaders is called
+    // outside of the dispatched block in order to avoid nested \c distpatch_sync calls that
+    // increases the potential for future bugs.
+    NSDictionary *requestHeaders = self.HTTPRequestHeaders;
+    dispatch_barrier_sync(serializer.requestHeaderModificationQueue, ^{
+        serializer.mutableHTTPRequestHeaders = [requestHeaders mutableCopyWithZone:zone];
     });
     serializer.queryStringSerializationStyle = self.queryStringSerializationStyle;
     serializer.queryStringSerialization = self.queryStringSerialization;
