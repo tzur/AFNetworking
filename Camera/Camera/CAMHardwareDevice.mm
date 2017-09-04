@@ -361,6 +361,8 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
 - (void)capturePhotoAndSendToSuscriber:(id<RACSubscriber>)subscriber {
   AVCapturePhotoSettings *photoSettings =
       [AVCapturePhotoSettings photoSettingsWithFormat:self.session.pixelFormat.videoSettings];
+  photoSettings.flashMode = self.session.videoDevice.flashMode;
+  photoSettings.highResolutionPhotoEnabled = YES;
   @synchronized(self.uniqueIdToSubscriber) {
     self.uniqueIdToSubscriber[@(photoSettings.uniqueID)] = subscriber;
   }
