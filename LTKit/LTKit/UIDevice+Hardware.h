@@ -44,10 +44,13 @@ typedef NS_ENUM(NSUInteger, UIDeviceKind) {
   UIDeviceKindIPad2G,
   UIDeviceKindIPad3G,
   UIDeviceKindIPad4G,
+  UIDeviceKindIPad5G,
   UIDeviceKindIPadAir1G,
   UIDeviceKindIPadAir2G,
   UIDeviceKindIPadPro9_7,
+  UIDeviceKindIPadPro10_5,
   UIDeviceKindIPadPro12_9,
+  UIDeviceKindIPadPro2G12_9,
 
   // iPad mini.
   UIDeviceKindIPadMini1G,
