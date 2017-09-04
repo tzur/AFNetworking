@@ -182,6 +182,7 @@
 		8BEE674319596DE7005E4D53 /* LTEnumSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BEE674219596DE7005E4D53 /* LTEnumSpec.mm */; };
 		8BEE674619596F66005E4D53 /* LTBidirectionalMapSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BEE674519596F66005E4D53 /* LTBidirectionalMapSpec.mm */; };
 		8BF54F831F1F5835002CD139 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BF54F821F1F5835002CD139 /* GLKit.framework */; };
+		8BF6602D1F5D597700FC7A43 /* libcompression.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BF6602C1F5D597700FC7A43 /* libcompression.tbd */; };
 		8BF7B1721949BC7500E67079 /* LTBidirectionalMap.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BF7B1701949BC7500E67079 /* LTBidirectionalMap.h */; };
 		8BF7B1731949BC7500E67079 /* LTBidirectionalMap.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BF7B1711949BC7500E67079 /* LTBidirectionalMap.m */; };
 		8BF9A53B18F684AC00CCA084 /* LTTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BF9A53A18F684AC00CCA084 /* LTTimer.m */; };
@@ -210,7 +211,6 @@
 		CDE0081E1E828756007AFD5E /* NSData+Compression.h in Headers */ = {isa = PBXBuildFile; fileRef = CDE0081C1E828756007AFD5E /* NSData+Compression.h */; };
 		CDE0081F1E828756007AFD5E /* NSData+Compression.mm in Sources */ = {isa = PBXBuildFile; fileRef = CDE0081D1E828756007AFD5E /* NSData+Compression.mm */; };
 		CDE008221E828788007AFD5E /* NSData+CompressionSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = CDE008211E828788007AFD5E /* NSData+CompressionSpec.mm */; };
-		CDE008241E82882A007AFD5E /* libcompression.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = CDE008231E82882A007AFD5E /* libcompression.tbd */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -634,6 +634,7 @@
 		8BEE674219596DE7005E4D53 /* LTEnumSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTEnumSpec.mm; sourceTree = "<group>"; };
 		8BEE674519596F66005E4D53 /* LTBidirectionalMapSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTBidirectionalMapSpec.mm; sourceTree = "<group>"; };
 		8BF54F821F1F5835002CD139 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
+		8BF6602C1F5D597700FC7A43 /* libcompression.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libcompression.tbd; path = usr/lib/libcompression.tbd; sourceTree = SDKROOT; };
 		8BF7B1701949BC7500E67079 /* LTBidirectionalMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTBidirectionalMap.h; sourceTree = "<group>"; };
 		8BF7B1711949BC7500E67079 /* LTBidirectionalMap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTBidirectionalMap.m; sourceTree = "<group>"; };
 		8BF9A53918F684AC00CCA084 /* LTTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTTimer.h; sourceTree = "<group>"; };
@@ -664,7 +665,6 @@
 		CDE0081C1E828756007AFD5E /* NSData+Compression.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Compression.h"; sourceTree = "<group>"; };
 		CDE0081D1E828756007AFD5E /* NSData+Compression.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSData+Compression.mm"; sourceTree = "<group>"; };
 		CDE008211E828788007AFD5E /* NSData+CompressionSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSData+CompressionSpec.mm"; sourceTree = "<group>"; };
-		CDE008231E82882A007AFD5E /* libcompression.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libcompression.tbd; path = usr/lib/libcompression.tbd; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -684,7 +684,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CDE008241E82882A007AFD5E /* libcompression.tbd in Frameworks */,
+				8BF6602D1F5D597700FC7A43 /* libcompression.tbd in Frameworks */,
 				8B0B99721CA6BADF00ED2334 /* libextobjc_iOS.a in Frameworks */,
 				8B0B99821CA6BB3D00ED2334 /* libExpecta.a in Frameworks */,
 				8B0B99731CA6BADF00ED2334 /* libOCMock.a in Frameworks */,
@@ -840,19 +840,20 @@
 		8B3DEBE618296B6100EA0C1A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				8BF54F821F1F5835002CD139 /* GLKit.framework */,
-				8B4E494A19E950C800B3F55D /* MobileCoreServices.framework */,
-				8B4E493719E950C500B3F55D /* ImageIO.framework */,
 				8BA8C68718699D9A00E6F486 /* Accelerate.framework */,
 				8B3C0A5A1832953E000845BA /* AssetsLibrary.framework */,
-				8B3C0A5818329538000845BA /* CoreMedia.framework */,
 				8B3C0A531832950F000845BA /* AVFoundation.framework */,
-				8B3C0A5118329505000845BA /* CoreVideo.framework */,
-				8B3DEC1818296DE500EA0C1A /* UIKit.framework */,
-				8B3DEC1618296D8F00EA0C1A /* QuartzCore.framework */,
-				8B3DEC1418296D8300EA0C1A /* CoreGraphics.framework */,
-				8B3DEBE718296B6100EA0C1A /* Foundation.framework */,
 				8BCFBFF418CF0AF000E612DE /* CoreFoundation.framework */,
+				8B3DEC1418296D8300EA0C1A /* CoreGraphics.framework */,
+				8B3C0A5818329538000845BA /* CoreMedia.framework */,
+				8B3C0A5118329505000845BA /* CoreVideo.framework */,
+				8B3DEBE718296B6100EA0C1A /* Foundation.framework */,
+				8BF54F821F1F5835002CD139 /* GLKit.framework */,
+				8B4E493719E950C500B3F55D /* ImageIO.framework */,
+				8B4E494A19E950C800B3F55D /* MobileCoreServices.framework */,
+				8B3DEC1618296D8F00EA0C1A /* QuartzCore.framework */,
+				8B3DEC1818296DE500EA0C1A /* UIKit.framework */,
+				8BF6602C1F5D597700FC7A43 /* libcompression.tbd */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
