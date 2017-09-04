@@ -63,6 +63,12 @@ static NSDictionary * const kPlatformSubstringToUIDeviceKind = @{
   @"iPad6,4": @(UIDeviceKindIPadPro9_7), // iPad pro 9.7-Inch WiFi + Cellular.
   @"iPad6,7": @(UIDeviceKindIPadPro12_9), // iPad pro 12.9-Inch WiFi.
   @"iPad6,8": @(UIDeviceKindIPadPro12_9), // iPad pro 12.9-Inch WiFi + Cellular.
+  @"iPad6,11": @(UIDeviceKindIPad5G),
+  @"iPad6,12": @(UIDeviceKindIPad5G),
+  @"iPad7,1": @(UIDeviceKindIPadPro2G12_9),
+  @"iPad7,2": @(UIDeviceKindIPadPro2G12_9),
+  @"iPad7,3": @(UIDeviceKindIPadPro10_5),
+  @"iPad7,4": @(UIDeviceKindIPadPro10_5),
 
   // iPad mini.
   @"iPad2,5": @(UIDeviceKindIPadMini1G), // iPad mini WiFi.
@@ -127,10 +133,13 @@ static NSDictionary * const kDeviceKindToString = @{
   @(UIDeviceKindIPad2G): @"UIDeviceKindIPad2G",
   @(UIDeviceKindIPad3G): @"UIDeviceKindIPad3G",
   @(UIDeviceKindIPad4G): @"UIDeviceKindIPad4G",
+  @(UIDeviceKindIPad5G): @"UIDeviceKindIPad5G",
   @(UIDeviceKindIPadAir1G): @"UIDeviceKindIPadAir1G",
   @(UIDeviceKindIPadAir2G): @"UIDeviceKindIPadAir2G",
   @(UIDeviceKindIPadPro9_7): @"UIDeviceKindIPadPro9_7",
+  @(UIDeviceKindIPadPro10_5): @"UIDeviceKindIPadPro10_5",
   @(UIDeviceKindIPadPro12_9): @"UIDeviceKindIPadPro12_9",
+  @(UIDeviceKindIPadPro2G12_9): @"UIDeviceKindIPadPro2G12_9",
 
   // iPad mini.
   @(UIDeviceKindIPadMini1G): @"UIDeviceKindIPadMini1G",

@@ -67,7 +67,6 @@ NS_ASSUME_NONNULL_BEGIN
     case UIDeviceKindIPadAir2G:
       return @"iPad Air 2";
     case UIDeviceKindIPadPro9_7:
-      return @"iPad Pro";
     case UIDeviceKindIPadPro12_9:
       return @"iPad Pro";
 
@@ -78,11 +77,16 @@ NS_ASSUME_NONNULL_BEGIN
     case UIDeviceKindIPadMini3G:
       return @"iPad mini 3";
 
-      // Missing data - educated guesses.
+    // Missing data - educated guesses.
     case UIDeviceKindIPadMini4G:
       return @"iPad mini 4";
+    case UIDeviceKindIPad5G:
+      return @"iPad";
+    case UIDeviceKindIPadPro10_5:
+    case UIDeviceKindIPadPro2G12_9:
+      return @"iPad Pro";
 
-      // No camera or N/A
+    // No camera or N/A
     case UIDeviceKindAppleTV2:
     case UIDeviceKindAppleTV3:
     case UIDeviceKindAppleTV4:
