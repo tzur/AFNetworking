@@ -1,13 +1,9 @@
 // Copyright (c) 2016 Lightricks. All rights reserved.
 // Created by Amit Yitzhack.
 
-#ifdef __IPHONE_11_0
-  #define LTCOMPRESSIONFORMT_USE_AV_HEIC_TYPE
-#endif
-
 #import "LTCompressionFormat.h"
 
-#import <AVFoundation/AVMediaFormat.h>
+#import <AVFoundation/AVFoundation.h>
 #import <MobileCoreServices/MobileCoreServices.h>
 
 NS_ASSUME_NONNULL_BEGIN
@@ -16,8 +12,13 @@ LTEnumImplement(NSUInteger, LTCompressionFormat,
   LTCompressionFormatJPEG,
   LTCompressionFormatPNG,
   LTCompressionFormatTIFF,
-  LTCompressionFormatHEVC
+  LTCompressionFormatHEIC
 );
+
+BOOL LTIsDeviceSupportsCompressionFormat(LTCompressionFormat *format) {
+  NSArray<NSString *> *types = CFBridgingRelease(CGImageDestinationCopyTypeIdentifiers());
+  return [types containsObject:format.UTI];
+}
 
 @implementation LTCompressionFormat (Properties)
 
@@ -29,8 +30,8 @@ LTEnumImplement(NSUInteger, LTCompressionFormat,
       return (NSString *)kUTTypePNG;
     case LTCompressionFormatTIFF:
       return (NSString *)kUTTypeTIFF;
-    case LTCompressionFormatHEVC:
-#ifdef LTCOMPRESSIONFORMT_USE_AV_HEIC_TYPE
+    case LTCompressionFormatHEIC:
+#ifdef __IPHONE_11_0
       return AVFileTypeHEIC;
 #else
       return @"public.heic";
@@ -46,7 +47,7 @@ LTEnumImplement(NSUInteger, LTCompressionFormat,
       return @"png";
     case LTCompressionFormatTIFF:
       return @"tif";
-    case LTCompressionFormatHEVC:
+    case LTCompressionFormatHEIC:
       return @".heic";
   }
 }
@@ -59,7 +60,7 @@ LTEnumImplement(NSUInteger, LTCompressionFormat,
       return @"image/png";
     case LTCompressionFormatTIFF:
       return @"image/tiff";
-    case LTCompressionFormatHEVC:
+    case LTCompressionFormatHEIC:
       return @"image/heic";
   }
 }
