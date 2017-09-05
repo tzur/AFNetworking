@@ -1,7 +1,7 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
-#if defined(__IPHONE_11_0) && !defined(TARGET_OS_SIMULATOR)
+#if defined(__IPHONE_11_0) && defined(TARGET_OS_IPHONE)
   #define LTMMTEXTURE_USE_IOSURFACE
 #endif
 
