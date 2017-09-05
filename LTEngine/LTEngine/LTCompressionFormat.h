@@ -7,17 +7,14 @@ NS_ASSUME_NONNULL_BEGIN
 LTEnumDeclare(NSUInteger, LTCompressionFormat,
   LTCompressionFormatJPEG,
   LTCompressionFormatPNG,
-  LTCompressionFormatTIFF
+  LTCompressionFormatTIFF,
+  LTCompressionFormatHEIC
 );
 
 /// Category providing properties for an \c LTCompressionFormat enum value.
 @interface LTCompressionFormat (Properties)
 
-/// File extension of \c 3 chars for the compression format.
-///
-/// @note File extension is forced to be of \c 3 chars due to a bug in the MAC photos application
-/// which doesn't behave well when trying to import an image file with longer extensions. See open
-/// radar problem 29659566 for more information.
+/// File extension for the compression format.
 @property (readonly, nonatomic) NSString *fileExtension;
 
 /// Mime type for the compression format.
@@ -27,5 +24,8 @@ LTEnumDeclare(NSUInteger, LTCompressionFormat,
 @property (readonly, nonatomic) NSString *UTI;
 
 @end
+
+/// Returns \c YES if current device supports the given compression \c format.
+BOOL LTIsDeviceSupportsCompressionFormat(LTCompressionFormat *format);
 
 NS_ASSUME_NONNULL_END

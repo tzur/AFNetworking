@@ -1234,6 +1234,10 @@
 		B499E0421F3886350052212E /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3C0A5118329505000845BA /* CoreVideo.framework */; };
 		B49EB6AE1F2EFED6008EDBD3 /* LTFbo+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = B49EB6AC1F2EFED6008EDBD3 /* LTFbo+Private.h */; };
 		B49EB6E41F2F0736008EDBD3 /* LTRenderbuffer+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = B49EB6E21F2F0736008EDBD3 /* LTRenderbuffer+Private.h */; };
+		B4BF15F21F41C8DD0077726E /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3C0A531832950F000845BA /* AVFoundation.framework */; };
+		B4BF16271F41D89D0077726E /* LTImageHEICCompressor.h in Headers */ = {isa = PBXBuildFile; fileRef = B4BF16251F41D89D0077726E /* LTImageHEICCompressor.h */; };
+		B4BF16281F41D89D0077726E /* LTImageHEICCompressor.mm in Sources */ = {isa = PBXBuildFile; fileRef = B4BF16261F41D89D0077726E /* LTImageHEICCompressor.mm */; };
+		B4BF162A1F41DAB00077726E /* LTImageHEICCompressorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = B4BF16291F41DAB00077726E /* LTImageHEICCompressorSpec.mm */; };
 		B4F1DEB21E2CB3430042DB2A /* LTFboAttachableInfoSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = B4F1DEB11E2CB3430042DB2A /* LTFboAttachableInfoSpec.mm */; };
 		BEB7BEB61E26804B007EAB73 /* NSValueTransformer+LTEngine.h in Headers */ = {isa = PBXBuildFile; fileRef = BEB7BEB41E26804B007EAB73 /* NSValueTransformer+LTEngine.h */; };
 		BEB7BEB71E26804B007EAB73 /* NSValueTransformer+LTEngine.mm in Sources */ = {isa = PBXBuildFile; fileRef = BEB7BEB51E26804B007EAB73 /* NSValueTransformer+LTEngine.mm */; };
@@ -2999,6 +3003,9 @@
 		B4947F3A1DFD670000872FBE /* UIImage+FactorySpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIImage+FactorySpec.mm"; sourceTree = "<group>"; };
 		B49EB6AC1F2EFED6008EDBD3 /* LTFbo+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "LTFbo+Private.h"; sourceTree = "<group>"; };
 		B49EB6E21F2F0736008EDBD3 /* LTRenderbuffer+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "LTRenderbuffer+Private.h"; sourceTree = "<group>"; };
+		B4BF16251F41D89D0077726E /* LTImageHEICCompressor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTImageHEICCompressor.h; sourceTree = "<group>"; };
+		B4BF16261F41D89D0077726E /* LTImageHEICCompressor.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = LTImageHEICCompressor.mm; sourceTree = "<group>"; };
+		B4BF16291F41DAB00077726E /* LTImageHEICCompressorSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = LTImageHEICCompressorSpec.mm; sourceTree = "<group>"; };
 		B4F1DEB11E2CB3430042DB2A /* LTFboAttachableInfoSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTFboAttachableInfoSpec.mm; sourceTree = "<group>"; };
 		BEB7BEB41E26804B007EAB73 /* NSValueTransformer+LTEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSValueTransformer+LTEngine.h"; sourceTree = "<group>"; };
 		BEB7BEB51E26804B007EAB73 /* NSValueTransformer+LTEngine.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSValueTransformer+LTEngine.mm"; sourceTree = "<group>"; };
@@ -3032,6 +3039,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8BA8C68818699D9A00E6F486 /* Accelerate.framework in Frameworks */,
+				B4BF15F21F41C8DD0077726E /* AVFoundation.framework in Frameworks */,
 				8B3DEC1518296D8300EA0C1A /* CoreGraphics.framework in Frameworks */,
 				B499E0421F3886350052212E /* CoreVideo.framework in Frameworks */,
 				8B3DEBE818296B6100EA0C1A /* Foundation.framework in Frameworks */,
@@ -4414,6 +4422,8 @@
 				2836F9E81D33B9540078887C /* LTCompressionFormat.h */,
 				2836F9E91D33B9540078887C /* LTCompressionFormat.mm */,
 				28EC239A1B0CEA190099946A /* LTImageCompressor.h */,
+				B4BF16251F41D89D0077726E /* LTImageHEICCompressor.h */,
+				B4BF16261F41D89D0077726E /* LTImageHEICCompressor.mm */,
 				28EC239B1B0CEBCB0099946A /* LTImageIOCompressor.h */,
 				28EC239C1B0CEBCB0099946A /* LTImageIOCompressor.mm */,
 				285EEA521B15C52A002D10EE /* LTImageJPEGCompressor.h */,
@@ -4461,6 +4471,7 @@
 			isa = PBXGroup;
 			children = (
 				2836FA0A1D33B96F0078887C /* LTCompressionFormatSpec.mm */,
+				B4BF16291F41DAB00077726E /* LTImageHEICCompressorSpec.mm */,
 				2884CDB11B1ACD7600A58EE4 /* LTImageIOCompressorSpec.mm */,
 				285660211B1761A800807A4F /* LTImageJPGCompressorSpec.mm */,
 				2884CDA91B176DB400A58EE4 /* LTImagePNGCompressorSpec.mm */,
@@ -5703,6 +5714,7 @@
 				8B871FEB1924A75F00517F2E /* LTProceduralVignetting.h in Headers */,
 				85F1550C1D1283DA00967A90 /* LTHorizontalPackingRectsProvider.h in Headers */,
 				8B871FEC1924A75F00517F2E /* LTPatchCompositorProcessor.h in Headers */,
+				B4BF16271F41D89D0077726E /* LTImageHEICCompressor.h in Headers */,
 				28B117A319C8587E007E2F17 /* LTOneShotBaseImageProcessor+Protected.h in Headers */,
 				50B6BD181DD32CF4005A448E /* LTTouchEventSequenceValidator.h in Headers */,
 				8BABF0CD19B8486500AED760 /* LTEAWProcessor.h in Headers */,
@@ -6760,6 +6772,7 @@
 				280F5A4E191A982A00F9F80B /* LTShapeDrawerEllipticShape.fsh in Sources */,
 				8B7C6CB51B5285E200B90DBE /* LTMatParallelDispatcher.mm in Sources */,
 				283BD0571922218A00B68A90 /* LTShapeDrawerPathShape.fsh in Sources */,
+				B4BF16281F41D89D0077726E /* LTImageHEICCompressor.mm in Sources */,
 				50C371471BF0DD7E003EC78D /* LTBasicPolynomialInterpolant.mm in Sources */,
 				8BB22B051929EBAE00ACE1D5 /* LTCommonDrawableShape.vsh in Sources */,
 				64F1C94E1D41100D00AF2DA6 /* LTMaskedBlurProcessor.mm in Sources */,
@@ -7132,6 +7145,7 @@
 				50D61F4A1C4416CE00EED798 /* LTQuadSpec.mm in Sources */,
 				5008BCF41D32860B0021ACD1 /* LTSplineControlPoint+AttributeKeysSpec.mm in Sources */,
 				2520D4121C4B8CC9004A3A94 /* LTMutableEuclideanSplineSpec.mm in Sources */,
+				B4BF162A1F41DAB00077726E /* LTImageHEICCompressorSpec.mm in Sources */,
 				8B9D3FE0189130F1001A964D /* LTOpenCVHalfFloatSpec.mm in Sources */,
 				8B7DC3A9183292F9008D004B /* LTBoundaryConditionSpec.mm in Sources */,
 				2836FA0B1D33B96F0078887C /* LTCompressionFormatSpec.mm in Sources */,
