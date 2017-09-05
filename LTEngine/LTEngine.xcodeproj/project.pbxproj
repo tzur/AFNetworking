@@ -1225,6 +1225,9 @@
 		B41BF08F1EB22D9800A1FA79 /* NSScanner+Math.mm in Sources */ = {isa = PBXBuildFile; fileRef = B41BF08D1EB22D9800A1FA79 /* NSScanner+Math.mm */; };
 		B41BF0911EB22DCB00A1FA79 /* NSScanner+MathSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = B41BF0901EB22DCB00A1FA79 /* NSScanner+MathSpec.mm */; };
 		B42725421F36F01D00AAE3F9 /* IOSurface.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B427250F1F36F01D00AAE3F9 /* IOSurface.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		B434CE1E1F5E676E000D1A6B /* LTPhotoLibraryImageCompressor.h in Headers */ = {isa = PBXBuildFile; fileRef = B434CE1C1F5E676E000D1A6B /* LTPhotoLibraryImageCompressor.h */; };
+		B434CE1F1F5E676E000D1A6B /* LTPhotoLibraryImageCompressor.mm in Sources */ = {isa = PBXBuildFile; fileRef = B434CE1D1F5E676E000D1A6B /* LTPhotoLibraryImageCompressor.mm */; };
+		B434CE991F5E7EC2000D1A6B /* LTPhotoLibraryImageCompressorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = B434CE981F5E7EC2000D1A6B /* LTPhotoLibraryImageCompressorSpec.mm */; };
 		B467099F1E07F57F000CD9F5 /* LTFboAttachmentInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = B467099D1E07F57F000CD9F5 /* LTFboAttachmentInfo.h */; };
 		B46709A01E07F57F000CD9F5 /* LTFboAttachmentInfo.mm in Sources */ = {isa = PBXBuildFile; fileRef = B467099E1E07F57F000CD9F5 /* LTFboAttachmentInfo.mm */; };
 		B4755A981E76A51B0018FF0A /* IndexedColor.png in Resources */ = {isa = PBXBuildFile; fileRef = B4755A971E76A51B0018FF0A /* IndexedColor.png */; };
@@ -2995,6 +2998,9 @@
 		B41BF08D1EB22D9800A1FA79 /* NSScanner+Math.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSScanner+Math.mm"; sourceTree = "<group>"; };
 		B41BF0901EB22DCB00A1FA79 /* NSScanner+MathSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSScanner+MathSpec.mm"; sourceTree = "<group>"; };
 		B427250F1F36F01D00AAE3F9 /* IOSurface.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOSurface.framework; path = System/Library/Frameworks/IOSurface.framework; sourceTree = SDKROOT; };
+		B434CE1C1F5E676E000D1A6B /* LTPhotoLibraryImageCompressor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTPhotoLibraryImageCompressor.h; sourceTree = "<group>"; };
+		B434CE1D1F5E676E000D1A6B /* LTPhotoLibraryImageCompressor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTPhotoLibraryImageCompressor.mm; sourceTree = "<group>"; };
+		B434CE981F5E7EC2000D1A6B /* LTPhotoLibraryImageCompressorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTPhotoLibraryImageCompressorSpec.mm; sourceTree = "<group>"; };
 		B467099D1E07F57F000CD9F5 /* LTFboAttachmentInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTFboAttachmentInfo.h; sourceTree = "<group>"; };
 		B467099E1E07F57F000CD9F5 /* LTFboAttachmentInfo.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTFboAttachmentInfo.mm; sourceTree = "<group>"; };
 		B4755A971E76A51B0018FF0A /* IndexedColor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = IndexedColor.png; path = Resources/IndexedColor.png; sourceTree = "<group>"; };
@@ -4432,6 +4438,8 @@
 				285EEA571B15C541002D10EE /* LTImagePNGCompressor.mm */,
 				285EEA5A1B15C552002D10EE /* LTImageTIFFCompressor.h */,
 				285EEA5B1B15C552002D10EE /* LTImageTIFFCompressor.mm */,
+				B434CE1C1F5E676E000D1A6B /* LTPhotoLibraryImageCompressor.h */,
+				B434CE1D1F5E676E000D1A6B /* LTPhotoLibraryImageCompressor.mm */,
 			);
 			name = Interfaces;
 			sourceTree = "<group>";
@@ -4476,6 +4484,7 @@
 				285660211B1761A800807A4F /* LTImageJPGCompressorSpec.mm */,
 				2884CDA91B176DB400A58EE4 /* LTImagePNGCompressorSpec.mm */,
 				2884CDAB1B176EC200A58EE4 /* LTImageTIFFCompressorSpec.mm */,
+				B434CE981F5E7EC2000D1A6B /* LTPhotoLibraryImageCompressorSpec.mm */,
 			);
 			name = Interfaces;
 			sourceTree = "<group>";
@@ -5642,6 +5651,7 @@
 				8B871FD11924A75E00517F2E /* LTIterativeProcessingStrategy.h in Headers */,
 				C76F130C1E8A8363003E0CB3 /* LTTextureRepository.h in Headers */,
 				253F607A1B3FC979009C6A5F /* LTBrushRandomState.h in Headers */,
+				B434CE1E1F5E676E000D1A6B /* LTPhotoLibraryImageCompressor.h in Headers */,
 				E4F061FC1E49B46D00FDE0B0 /* LTOpenExrPizCompressor.h in Headers */,
 				282B9BF81D34D01000071AB2 /* LTContentTouchEventStateFilter.h in Headers */,
 				2897A892197EE3CC004EE8B5 /* LTPerspectiveProcessor.h in Headers */,
@@ -7060,6 +7070,7 @@
 				03AD29AF18913E9400516D14 /* LTBicubicResizeProcessor.mm in Sources */,
 				2829F0801991007B00DE1072 /* LTCropProcessor.mm in Sources */,
 				8BB14D7418BF464F00701A1B /* LTPatchProcessor.mm in Sources */,
+				B434CE1F1F5E676E000D1A6B /* LTPhotoLibraryImageCompressor.mm in Sources */,
 				8BD685FC18854F0200571E75 /* LTBilateralFilter.vsh in Sources */,
 				8BABFD5F188C0E9B004163DA /* LTIterativeProcessingStrategy.mm in Sources */,
 				8BAAC5D818BB64C200A4B4DA /* LTPatchCompositor.fsh in Sources */,
@@ -7319,6 +7330,7 @@
 				500677711C69E437002C6A24 /* LTFloatSetParametricValueProviderSpec.mm in Sources */,
 				5050F05B1D2A7CBD0075BDEB /* LTContentNavigationManagerExamples.mm in Sources */,
 				C7DE6D4D1E8A89CE00DC8937 /* LTTextureRepositorySpec.mm in Sources */,
+				B434CE991F5E7EC2000D1A6B /* LTPhotoLibraryImageCompressorSpec.mm in Sources */,
 				28C207AE1AEF695B007214A5 /* LTTextureArchiveTypeSpec.mm in Sources */,
 				500CAA091D26B18F009CF19F /* LTGridDrawingManagerSpec.mm in Sources */,
 				03AFC181190E24F600F17063 /* LTTiltShiftProcessorSpec.mm in Sources */,
