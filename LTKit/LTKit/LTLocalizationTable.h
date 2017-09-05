@@ -30,7 +30,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// Returns a localized string for \c key string. \c key is returned if no matching localized string
 /// could be found, either because there is no table with \c tableName in the bundle, or such table
 /// does not have a matching localized string for the required locale.
-- (NSString *)objectForKeyedSubscript:(NSString *)key;
+- (NSString *)objectForKeyedSubscript:(NSString *)key LT_RETURNS_LOCALIZED_STRING;
 
 /// Name of the localized strings table.
 @property (readonly, nonatomic) NSString *tableName;
