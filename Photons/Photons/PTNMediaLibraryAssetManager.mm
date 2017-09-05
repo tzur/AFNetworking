@@ -121,7 +121,9 @@ NS_ASSUME_NONNULL_BEGIN
 - (RACSignal *)fetchItemDescriptorWithURL:(NSURL *)url {
   return [[self fetchQueryForURL:url]
       tryMap:^MPMediaItem *(id<PTNMediaQuery> query, NSError *__autoreleasing *errorPtr) {
-        *errorPtr = [NSError lt_errorWithCode:PTNErrorCodeInvalidAssetType url:url];
+        if (errorPtr) {
+          *errorPtr = [NSError lt_errorWithCode:PTNErrorCodeInvalidAssetType url:url];
+        }
         return query.items.firstObject;
       }];
 }
@@ -130,7 +132,9 @@ NS_ASSUME_NONNULL_BEGIN
   return [[self fetchQueryForURL:url]
       tryMap:^PTNMediaLibraryCollectionDescriptor *(id<PTNMediaQuery> query,
                                                     NSError *__autoreleasing *errorPtr) {
-        *errorPtr = [NSError lt_errorWithCode:PTNErrorCodeInvalidAssetType url:url];
+        if (errorPtr) {
+          *errorPtr = [NSError lt_errorWithCode:PTNErrorCodeInvalidAssetType url:url];
+        }
         return [[PTNMediaLibraryCollectionDescriptor alloc]
                 initWithCollection:query.collections.firstObject url:url];
       }];
