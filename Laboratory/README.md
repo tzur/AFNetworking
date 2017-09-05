@@ -8,6 +8,8 @@ This document describes the general assumptions, design, features, inputs and ou
 3. [Laboratory (Lab)](#laboratory-lab)
 4. [Analytics](#analytics)
 5. [API](#api)
+6. [Conducting experiments](#conducting-experiments)
+7. [Integrating with your app](#integrating-with-your-app)
 
 ## Vision
 The intent of the framework is to:
