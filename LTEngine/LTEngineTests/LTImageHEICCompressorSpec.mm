@@ -46,24 +46,27 @@ it(@"should clamp quality values", ^{
   expect(compressor.quality).to.equal(1);
 });
 
-dit(@"should create HEVC format data", ^{
-  UIImage *image = LTLoadImage([self class], @"Lena.png");
-  auto data = [compressor compressImage:image metadata:nil error:&error];
-  expect(LTVerifyFormat(data)).to.beTruthy();
-  expect(error).to.beNil();
-});
+// The following tests should run only on HEIC compression supporting devices.
+if ($(LTCompressionFormatHEIC).isSupported) {
+  dit(@"should create HEVC format data", ^{
+    UIImage *image = LTLoadImage([self class], @"Lena.png");
+    auto data = [compressor compressImage:image metadata:nil error:&error];
+    expect(LTVerifyFormat(data)).to.beTruthy();
+    expect(error).to.beNil();
+  });
 
-dit(@"should verify that the quality option affects the output", ^{
-  UIImage *image = LTLoadImage([self class], @"Gray.jpg");
-  NSData *highestQualityData = [compressor compressImage:image metadata:nil error:&error];
-  expect(error).to.beNil();
-  error = nil;
+  dit(@"should verify that the quality option affects the output", ^{
+    UIImage *image = LTLoadImage([self class], @"Gray.jpg");
+    NSData *highestQualityData = [compressor compressImage:image metadata:nil error:&error];
+    expect(error).to.beNil();
+    error = nil;
 
-  compressor = [[LTImageHEICCompressor alloc] initWithQuality:0.5];
-  NSData *lowestQualityData = [compressor compressImage:image metadata:nil error:&error];
-  expect(error).to.beNil();
+    compressor = [[LTImageHEICCompressor alloc] initWithQuality:0.5];
+    NSData *lowestQualityData = [compressor compressImage:image metadata:nil error:&error];
+    expect(error).to.beNil();
 
-  expect(highestQualityData).notTo.equal(lowestQualityData);
-});
+    expect(highestQualityData).notTo.equal(lowestQualityData);
+  });
+}
 
 SpecEnd
