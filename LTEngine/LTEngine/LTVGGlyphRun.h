@@ -20,7 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// point size of the font of this run.
 - (lt::Ref<CGPathRef>)pathWithTrackingFactor:(CGFloat)trackingFactor;
 
-/// Ordered collection of glyphes constituting this run.
+/// Ordered collection of glyphs constituting this run.
 @property (readonly, nonatomic) NSArray<LTVGGlyph *> *glyphs;
 
 /// Font of this instance.
