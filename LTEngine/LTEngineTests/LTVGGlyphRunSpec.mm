@@ -66,7 +66,6 @@ context(@"NSObject", ^{
   it(@"should correctly implement the isEqual method", ^{
     expect([run isEqual:nil]).to.beFalsy();
     expect([run isEqual:@1]).to.beFalsy();
-    expect([run isEqual:[[LTVGGlyphRun alloc] init]]).to.beFalsy();
     expect([run isEqual:run]).to.beTruthy();
 
     LTVGGlyphRun *equalRun = [[LTVGGlyphRun alloc] initWithGlyphs:[glyphs copy]];

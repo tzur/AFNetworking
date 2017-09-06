@@ -63,7 +63,6 @@ context(@"NSObject", ^{
   it(@"should correctly implement the isEqual method", ^{
     expect([line isEqual:nil]).to.beFalsy();
     expect([line isEqual:@1]).to.beFalsy();
-    expect([line isEqual:[[LTVGLine alloc] init]]).to.beFalsy();
     expect([line isEqual:line]).to.beTruthy();
 
     LTVGLine *equalLine = [[LTVGLine alloc] initWithGlyphRuns:@[run, anotherRun]];

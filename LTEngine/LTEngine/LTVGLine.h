@@ -8,8 +8,10 @@ NS_ASSUME_NONNULL_BEGIN
 /// Class representing a line consisting of \c LTVGGlyphRun.
 @interface LTVGLine : NSObject
 
+- (instancetype)init NS_UNAVAILABLE;
+
 /// Initializes with a copy of the given \c runs array.
-- (instancetype)initWithGlyphRuns:(NSArray<LTVGGlyphRun *> *)runs;
+- (instancetype)initWithGlyphRuns:(NSArray<LTVGGlyphRun *> *)runs NS_DESIGNATED_INITIALIZER;
 
 /// Returns a path of the runs of this instance, s.t. the glyphs of the runs are spaced by the
 /// product of the given \c trackingFactor and the point size of the font of the corresponding run.

@@ -70,7 +70,6 @@ context(@"NSObject", ^{
   it(@"should correctly implement the isEqual method", ^{
     expect([lines isEqual:nil]).to.beFalsy();
     expect([lines isEqual:@1]).to.beFalsy();
-    expect([lines isEqual:[[LTVGLines alloc] init]]).to.beFalsy();
     expect([lines isEqual:lines]).to.beTruthy();
 
     LTVGLines *equalLines = [[LTVGLines alloc] initWithLines:linesArray

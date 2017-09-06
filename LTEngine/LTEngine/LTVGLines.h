@@ -12,11 +12,13 @@ typedef LTVGGlyph * _Nonnull (^LTVGGlyphTransformBlock)(LTVGGlyph *glyph);
 /// \c NSAttributedString which is represented by these lines.
 @interface LTVGLines : NSObject
 
+- (instancetype)init NS_UNAVAILABLE;
+
 /// Initializes with the given \c lines and the given \c attributedString which is represented by
 /// the given \c lines. The given \c lines must contain at least one element. The given
 /// \c attributedString must not be \c nil.
 - (instancetype)initWithLines:(NSArray<LTVGLine *> *)lines
-             attributedString:(NSAttributedString *)attributedString;
+             attributedString:(NSAttributedString *)attributedString NS_DESIGNATED_INITIALIZER;
 
 /// Returns a path of the lines of this instance, s.t. the vertical distance between the subpaths of
 /// two consecutive lines corresponds to the product of the given \c leadingFactor and the baseline
