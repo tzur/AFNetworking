@@ -23,9 +23,9 @@ LTEnumDeclare(NSUInteger, LTCompressionFormat,
 /// UTI of the compressed output.
 @property (readonly, nonatomic) NSString *UTI;
 
-@end
+/// \c YES if current device supports this compression format.
+@property (readonly, nonatomic) BOOL isSupported;
 
-/// Returns \c YES if current device supports the given compression \c format.
-BOOL LTIsDeviceSupportsCompressionFormat(LTCompressionFormat *format);
+@end
 
 NS_ASSUME_NONNULL_END

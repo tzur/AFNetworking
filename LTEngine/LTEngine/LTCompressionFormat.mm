@@ -15,11 +15,6 @@ LTEnumImplement(NSUInteger, LTCompressionFormat,
   LTCompressionFormatHEIC
 );
 
-BOOL LTIsDeviceSupportsCompressionFormat(LTCompressionFormat *format) {
-  NSArray<NSString *> *types = CFBridgingRelease(CGImageDestinationCopyTypeIdentifiers());
-  return [types containsObject:format.UTI];
-}
-
 @implementation LTCompressionFormat (Properties)
 
 - (NSString *)UTI {
@@ -63,6 +58,11 @@ BOOL LTIsDeviceSupportsCompressionFormat(LTCompressionFormat *format) {
     case LTCompressionFormatHEIC:
       return @"image/heic";
   }
+}
+
+- (BOOL)isSupported {
+  NSArray<NSString *> *types = CFBridgingRelease(CGImageDestinationCopyTypeIdentifiers());
+  return [types containsObject:self.UTI];
 }
 
 @end
