@@ -247,6 +247,10 @@ context(@"album fetching", ^{
       }
 
       expect(weakManager).to.beNil();
+
+      // This expectation is required to keep the recorder alive until we verify that the manager
+      // deallocated.
+      expect(recorder).notTo.beNil();
     });
   });
 
@@ -694,6 +698,10 @@ context(@"album fetching", ^{
       }
 
       expect(weakManager).to.beNil();
+
+      // This expectation is required to keep the recorder alive until we verify that the manager
+      // deallocated.
+      expect(recorder).notTo.beNil();
     });
   });
 
