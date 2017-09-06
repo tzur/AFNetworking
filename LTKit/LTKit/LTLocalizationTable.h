@@ -3,6 +3,12 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/// Marks a method or function as one that returns a localized string. This will suppress the
+/// "Missing Localizability" static analyzer issue.
+#ifndef LT_RETURNS_LOCALIZED_STRING
+  #define LT_RETURNS_LOCALIZED_STRING __attribute__((annotate("returns_localized_nsstring")))
+#endif
+
 /// Wrapper for a string resource file used for localizing apps. A string resource file is a table
 /// mapping between string keys to localized strings. The keys are usually strings in the default
 /// locale, like English.
@@ -24,7 +30,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// Returns a localized string for \c key string. \c key is returned if no matching localized string
 /// could be found, either because there is no table with \c tableName in the bundle, or such table
 /// does not have a matching localized string for the required locale.
-- (NSString *)objectForKeyedSubscript:(NSString *)key;
+- (NSString *)objectForKeyedSubscript:(NSString *)key LT_RETURNS_LOCALIZED_STRING;
 
 /// Name of the localized strings table.
 @property (readonly, nonatomic) NSString *tableName;
