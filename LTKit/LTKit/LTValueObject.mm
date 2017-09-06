@@ -60,15 +60,15 @@ BOOL LTValueObjectIsEqual(NSObject *first, NSObject *second) {
   if (first == second) {
     return YES;
   }
-  if (![first isKindOfClass:second.class]) {
+  if (![second isKindOfClass:first.class]) {
     return NO;
   }
 
   for (NSString *key in LTPropertyKeys(first.class)) {
-    id selfValue = [first valueForKey:key];
-    id objectValue = [second valueForKey:key];
+    id firstValue = [first valueForKey:key];
+    id secondValue = [second valueForKey:key];
 
-    if (selfValue != objectValue && ![selfValue isEqual:objectValue]) {
+    if (firstValue != secondValue && ![firstValue isEqual:secondValue]) {
       return NO;
     }
   }
