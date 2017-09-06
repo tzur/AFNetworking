@@ -27,9 +27,9 @@ it(@"should report supported formats on sumulator", ^{
   [LTCompressionFormat enumerateEnumUsingBlock:^(LTCompressionFormat *format) {
     if ([format isEqual:$(LTCompressionFormatHEIC)]) {
       /// LTCompressionFormatHEIC isn't supported on simulator
-      expect(LTIsDeviceSupportsCompressionFormat(format)).to.beFalsy();
+      expect(format.isSupported).to.beFalsy();
     } else {
-      expect(LTIsDeviceSupportsCompressionFormat(format)).to.beTruthy();
+      expect(format.isSupported).to.beTruthy();
     }
   }];
 });

@@ -25,7 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (nullable NSData *)compressImage:(UIImage *)image metadata:(nullable NSDictionary *)metadata
                              error:(NSError *__autoreleasing *)error {
-  if (!LTIsDeviceSupportsCompressionFormat($(LTCompressionFormatHEIC))) {
+  if (!$(LTCompressionFormatHEIC).isSupported) {
     if (error) {
       *error = [NSError lt_errorWithCode:LTErrorCodeObjectCreationFailed
                              description:@"HEIC compression isn't suppored on this device"];
