@@ -299,7 +299,7 @@ context(@"handling unfinished transactions", ^{
       OCMVerify([storeKitFacade finishTransaction:transaction]);
     });
 
-    it(@"should send error wrapping a failed transaction", ^{
+    it(@"should send an error event wrapping a failed transaction", ^{
       LLSignalTestRecorder *recorder = [storeKitFacade.transactionsErrorEventsSignal testRecorder];
       SKPaymentTransaction *transaction = OCMClassMock([SKPaymentTransaction class]);
       OCMStub([transaction transactionState]).andReturn(SKPaymentTransactionStateFailed);
@@ -337,6 +337,14 @@ context(@"handling unfinished transactions", ^{
 
       expect(unfinishedCompletedTransactionsRecorder).will.sendValues(@[@[transaction]]);
     });
+  });
+
+  it(@"should send unhandled purchased transactions as unfinished", ^{
+    auto transaction = OCMClassMock([SKPaymentTransaction class]);
+    OCMStub([transaction transactionState]).andReturn(SKPaymentTransactionStatePurchased);
+    [unfinishedTransactionsSubject sendNext:@[transaction]];
+
+    expect(unfinishedCompletedTransactionsRecorder).will.sendValues(@[@[transaction]]);
   });
 });
 

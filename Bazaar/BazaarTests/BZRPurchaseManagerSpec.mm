@@ -123,7 +123,21 @@ context(@"payment update forwarding", ^{
     [purchaseManager paymentQueue:paymentQueue paymentTransactionsUpdated:@[transaction]];
 
     expect(unhandledTransactionsRecorder).will
-        .sendValues(@[transaction, transaction, transaction, transaction]);
+        .sendValues(@[@[transaction], @[transaction], @[transaction], @[transaction]]);
+  });
+
+  it(@"should send unhandled transactions when new subscriber subscribes", ^{
+    transaction.transactionState = SKPaymentTransactionStatePurchasing;
+    [purchaseManager paymentQueue:paymentQueue paymentTransactionsUpdated:@[transaction]];
+    transaction.transactionState = SKPaymentTransactionStateDeferred;
+    [purchaseManager paymentQueue:paymentQueue paymentTransactionsUpdated:@[transaction]];
+    transaction.transactionState = SKPaymentTransactionStatePurchased;
+    [purchaseManager paymentQueue:paymentQueue paymentTransactionsUpdated:@[transaction]];
+    transaction.transactionState = SKPaymentTransactionStateFailed;
+    [purchaseManager paymentQueue:paymentQueue paymentTransactionsUpdated:@[transaction]];
+
+    expect([purchaseManager.unhandledTransactionsSignal testRecorder]).will
+        .sendValues(@[@[transaction], @[transaction], @[transaction], @[transaction]]);
   });
 
   it(@"should not forward removed transactions as unhandled if no purchase was requested", ^{
@@ -202,7 +216,7 @@ context(@"payment update forwarding", ^{
       expect(recorder).will.complete();
       expect(recorder).will.sendValues(@[transaction]);
       expect(unhandledTransactionsRecorder).will
-         .sendValues(@[transaction, transaction, transaction]);
+         .sendValues(@[@[transaction], @[transaction], @[transaction]]);
     });
 
     context(@"identical payments update forwarding", ^{
@@ -221,7 +235,7 @@ context(@"payment update forwarding", ^{
         [purchaseManager paymentQueue:paymentQueue paymentTransactionsUpdated:@[transaction]];
         expect(recorder).will.sendValues(@[transaction]);
         [purchaseManager paymentQueue:paymentQueue paymentTransactionsUpdated:@[otherTransaction]];
-        expect(unhandledTransactionsRecorder).will.sendValues(@[otherTransaction]);
+        expect(unhandledTransactionsRecorder).will.sendValues(@[@[otherTransaction]]);
       });
 
       context(@"two purchases requested", ^{
