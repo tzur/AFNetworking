@@ -13,4 +13,10 @@
 
   // Bazaar.
   #import <Bazaar/Bazaar-Prefix.pch>
+
+  // Localization.
+  #ifdef __cplusplus
+  #import "SPXLocalization.h"
+  using namespace spx;
+  #endif
 #endif
