@@ -84,12 +84,18 @@ NS_ASSUME_NONNULL_BEGIN
 /// @return <tt>RACSignal</tt>
 - (RACSignal *)acquireAllEnabledProducts;
 
-/// Sends transactions of purchases that were completed successfully but were not finished in the
-/// last run of the application, and are finished in this run. Every \c SKPaymentTransaction object
-/// sent should be considered a successful purchase. The signal completes when the receiver is
-/// deallocated. The signal doesn't err.
+/// Sends transactions that were completed successfully and do not match any pending payment
+/// request. Every \c SKPaymentTransaction object sent should be considered a successful purchase.
+/// The signal completes when the receiver is deallocated. The signal doesn't err.
 ///
 /// @return <tt>RACSignal<SKPaymentTransaction></tt>
+///
+/// @note The transactions sent here can be received in one of the following scenarios:
+/// 1. Purchases that were initiated outside of the app (eg. subscription renewals or upgrades).
+/// 2. Purchases that were initiated in previous run of the app and weren't finished yet (eg.
+/// communication error at the final stages of a successful purchase / restoration or app were
+/// killed before transaction was finished).
+/// 3. SOON: Deferred purchases that were in pending state and were later approved and completed.
 @property (readonly, nonatomic) RACSignal *completedTransactionsSignal;
 
 @end

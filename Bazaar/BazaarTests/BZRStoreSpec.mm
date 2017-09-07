@@ -67,7 +67,7 @@ __block RACSubject *periodicReceiptValidatorActivatorEventsSubject;
 __block RACSubject *netherProductsProviderSubject;
 __block RACSubject *transactionsErrorEventsSubject;
 __block RACSubject *contentFetcherEventsSubject;
-__block RACSubject *unfinishedSuccessfulTransactionsSubject;
+__block RACSubject *unhandledSuccessfulTransactionsSubject;
 __block BZRStoreConfiguration *configuration;
 __block BZRStore *store;
 __block NSString *productIdentifier;
@@ -98,7 +98,7 @@ beforeEach(^{
   netherProductsProviderSubject = [RACSubject subject];
   transactionsErrorEventsSubject = [RACSubject subject];
   contentFetcherEventsSubject = [RACSubject subject];
-  unfinishedSuccessfulTransactionsSubject = [RACSubject subject];
+  unhandledSuccessfulTransactionsSubject = [RACSubject subject];
   OCMStub([productsProvider eventsSignal])
       .andReturn(productsProviderEventsSubject);
   OCMStub([receiptValidationStatusProvider eventsSignal])
@@ -111,8 +111,8 @@ beforeEach(^{
   OCMStub([storeKitFacade transactionsErrorEventsSignal])
       .andReturn(transactionsErrorEventsSubject);
   OCMStub([contentFetcher eventsSignal]).andReturn(contentFetcherEventsSubject);
-  OCMStub([storeKitFacade unfinishedSuccessfulTransactionsSignal])
-      .andReturn(unfinishedSuccessfulTransactionsSubject);
+  OCMStub([storeKitFacade unhandledSuccessfulTransactionsSignal])
+      .andReturn(unhandledSuccessfulTransactionsSubject);
 
   configuration = OCMClassMock([BZRStoreConfiguration class]);
   OCMStub([configuration productsProvider]).andReturn(productsProvider);
@@ -1196,8 +1196,8 @@ context(@"handling unfinished completed transactions", ^{
     SKPaymentTransaction *transaction = OCMClassMock([SKPaymentTransaction class]);
     OCMStub([transaction transactionState]).andReturn(SKPaymentTransactionStatePurchased);
     NSArray<SKPaymentTransaction *> *transactions = @[transaction, transaction, transaction];
-    [unfinishedSuccessfulTransactionsSubject sendNext:transactions];
-    [unfinishedSuccessfulTransactionsSubject sendNext:transactions];
+    [unhandledSuccessfulTransactionsSubject sendNext:transactions];
+    [unhandledSuccessfulTransactionsSubject sendNext:transactions];
 
     OCMVerifyAllWithDelay((id)receiptValidationStatusProvider, 0.01);
   });
@@ -1213,7 +1213,7 @@ context(@"handling unfinished completed transactions", ^{
     });
 
     it(@"should finish and fetch receipt validation status", ^{
-      [unfinishedSuccessfulTransactionsSubject sendNext:@[transaction]];
+      [unhandledSuccessfulTransactionsSubject sendNext:@[transaction]];
       OCMVerify([storeKitFacade finishTransaction:transaction]);
       OCMVerify([receiptValidationStatusProvider fetchReceiptValidationStatus]);
     });
@@ -1221,7 +1221,7 @@ context(@"handling unfinished completed transactions", ^{
     it(@"should send transaction on completed transactions signal", ^{
       LLSignalTestRecorder *completedTransactionsRecorder =
           [store.completedTransactionsSignal testRecorder];
-      [unfinishedSuccessfulTransactionsSubject sendNext:@[transaction]];
+      [unhandledSuccessfulTransactionsSubject sendNext:@[transaction]];
       expect(completedTransactionsRecorder).will.sendValues(@[transaction]);
     });
   });
@@ -1235,7 +1235,7 @@ context(@"handling unfinished completed transactions", ^{
     });
 
     it(@"should finish and not fetch receipt validation status", ^{
-      [unfinishedSuccessfulTransactionsSubject sendNext:@[transaction]];
+      [unhandledSuccessfulTransactionsSubject sendNext:@[transaction]];
       OCMVerify([storeKitFacade finishTransaction:transaction]);
       OCMVerify([receiptValidationStatusProvider fetchReceiptValidationStatus]);
     });
@@ -1245,7 +1245,7 @@ context(@"handling unfinished completed transactions", ^{
           .andReturn([RACSignal empty]);
       LLSignalTestRecorder *completedTransactionsRecorder =
           [store.completedTransactionsSignal testRecorder];
-      [unfinishedSuccessfulTransactionsSubject sendNext:@[transaction]];
+      [unhandledSuccessfulTransactionsSubject sendNext:@[transaction]];
       expect(completedTransactionsRecorder).will.sendValues(@[transaction]);
     });
   });

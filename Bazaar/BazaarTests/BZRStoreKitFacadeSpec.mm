@@ -257,94 +257,120 @@ context(@"sending unhandled transactions errors", ^{
   });
 });
 
-context(@"handling unfinished transactions", ^{
-  __block LLSignalTestRecorder *unfinishedCompletedTransactionsRecorder;
+context(@"handling unhandled transactions", ^{
+  __block LLSignalTestRecorder *unhandledSuccessfulTransactionsSignal;
 
   beforeEach(^{
-    unfinishedCompletedTransactionsRecorder =
-        [storeKitFacade.unfinishedSuccessfulTransactionsSignal testRecorder];
+    unhandledSuccessfulTransactionsSignal =
+        [storeKitFacade.unhandledSuccessfulTransactionsSignal testRecorder];
   });
 
-  context(@"purchasing transaction", ^{
-    __block SKPaymentTransaction *transaction;
+  context(@"unfinished transactions", ^{
+    context(@"purchasing transaction", ^{
+      __block SKPaymentTransaction *transaction;
 
-    beforeEach(^{
-      transaction = OCMClassMock([SKPaymentTransaction class]);
-      OCMStub([transaction transactionState]).andReturn(SKPaymentTransactionStatePurchasing);
+      beforeEach(^{
+        transaction = OCMClassMock([SKPaymentTransaction class]);
+        OCMStub([transaction transactionState]).andReturn(SKPaymentTransactionStatePurchasing);
+      });
+
+      it(@"should not finish transaction", ^{
+        OCMReject([paymentQueue finishTransaction:OCMOCK_ANY]);
+
+        [unfinishedTransactionsSubject sendNext:@[transaction]];
+      });
+
+      it(@"should not send transaction as successful", ^{
+        [unfinishedTransactionsSubject sendNext:@[transaction]];
+
+        expect(unhandledSuccessfulTransactionsSignal).will.sendValues(@[@[]]);
+      });
     });
 
-    it(@"should not finish transaction", ^{
-      OCMReject([paymentQueue finishTransaction:OCMOCK_ANY]);
+    context(@"failed transaction", ^{
+      __block SKPaymentTransaction *transaction;
 
-      [unfinishedTransactionsSubject sendNext:@[transaction]];
+      beforeEach(^{
+        transaction = OCMClassMock([SKPaymentTransaction class]);
+        OCMStub([transaction transactionState]).andReturn(SKPaymentTransactionStateFailed);
+      });
+
+      it(@"should finish transaction", ^{
+        [unfinishedTransactionsSubject sendNext:@[transaction]];
+        OCMVerify([storeKitFacade finishTransaction:transaction]);
+      });
+
+      it(@"should send an error event wrapping a failed transaction", ^{
+        LLSignalTestRecorder *recorder =
+            [storeKitFacade.transactionsErrorEventsSignal testRecorder];
+        SKPaymentTransaction *transaction = OCMClassMock([SKPaymentTransaction class]);
+        OCMStub([transaction transactionState]).andReturn(SKPaymentTransactionStateFailed);
+        [unfinishedTransactionsSubject sendNext:@[transaction]];
+
+        expect(recorder).will.matchValue(0, ^BOOL(BZREvent *event) {
+          NSError *error = event.eventError;
+          return [event.eventType isEqual:$(BZREventTypeCriticalError)] && error.lt_isLTDomain &&
+              error.code == BZRErrorCodePurchaseFailed && error.bzr_transaction == transaction;
+        });
+      });
+
+      it(@"should not send transaction as successful", ^{
+        [unfinishedTransactionsSubject sendNext:@[transaction]];
+
+        expect(unhandledSuccessfulTransactionsSignal).will.sendValues(@[@[]]);
+      });
     });
 
-    it(@"should not send transaction as successful", ^{
-      [unfinishedTransactionsSubject sendNext:@[transaction]];
+    context(@"purchased transaction", ^{
+      __block SKPaymentTransaction *transaction;
 
-      expect(unfinishedCompletedTransactionsRecorder).will.sendValues(@[@[]]);
+      beforeEach(^{
+        transaction = OCMClassMock([SKPaymentTransaction class]);
+        OCMStub([transaction transactionState]).andReturn(SKPaymentTransactionStatePurchased);
+      });
+
+      it(@"should not finish transaction", ^{
+        OCMReject([storeKitFacade finishTransaction:transaction]);
+        [unfinishedTransactionsSubject sendNext:@[transaction]];
+      });
+
+      it(@"should send transaction as successful", ^{
+        [unfinishedTransactionsSubject sendNext:@[transaction]];
+
+        expect(unhandledSuccessfulTransactionsSignal).will.sendValues(@[@[transaction]]);
+      });
     });
   });
 
-  context(@"failed transaction", ^{
-    __block SKPaymentTransaction *transaction;
+  it(@"should send unhandled purchased transactions", ^{
+    SKPaymentTransaction *transaction = OCMClassMock([SKPaymentTransaction class]);
+    OCMStub([transaction transactionState]).andReturn(SKPaymentTransactionStatePurchased);
+    [unfinishedTransactionsSubject sendNext:@[transaction]];
 
-    beforeEach(^{
-      transaction = OCMClassMock([SKPaymentTransaction class]);
-      OCMStub([transaction transactionState]).andReturn(SKPaymentTransactionStateFailed);
-    });
+    expect(unhandledSuccessfulTransactionsSignal).will.sendValues(@[@[transaction]]);
+  });
 
-    it(@"should finish transaction", ^{
-      [unfinishedTransactionsSubject sendNext:@[transaction]];
-      OCMVerify([storeKitFacade finishTransaction:transaction]);
-    });
+  it(@"should not send unhandled purchased transactions", ^{
+    BZRStoreKitFacade * __weak weakStoreKitFacade;
 
-    it(@"should send an error event wrapping a failed transaction", ^{
-      LLSignalTestRecorder *recorder = [storeKitFacade.transactionsErrorEventsSignal testRecorder];
+    @autoreleasepool {
+      BZRStoreKitFacade *storeKitFacade =
+          [[BZRStoreKitFacade alloc] initWithPaymentQueue:paymentQueue
+           purchaseManager:purchaseManager restorationManager:restorationManager
+           downloadManager:downloadManager storeKitRequestsFactory:storeKitRequestsFactory];
+      weakStoreKitFacade = storeKitFacade;
+
       SKPaymentTransaction *transaction = OCMClassMock([SKPaymentTransaction class]);
       OCMStub([transaction transactionState]).andReturn(SKPaymentTransactionStateFailed);
       [unfinishedTransactionsSubject sendNext:@[transaction]];
 
-      expect(recorder).will.matchValue(0, ^BOOL(BZREvent *event) {
-        NSError *error = event.eventError;
-        return [event.eventType isEqual:$(BZREventTypeCriticalError)] && error.lt_isLTDomain &&
-            error.code == BZRErrorCodePurchaseFailed && error.bzr_transaction == transaction;
-      });
-    });
+      unhandledSuccessfulTransactionsSignal =
+          [storeKitFacade.unhandledSuccessfulTransactionsSignal testRecorder];
+    }
 
-    it(@"should not send transaction as successful", ^{
-      [unfinishedTransactionsSubject sendNext:@[transaction]];
-
-      expect(unfinishedCompletedTransactionsRecorder).will.sendValues(@[@[]]);
-    });
-  });
-
-  context(@"purchased transaction", ^{
-    __block SKPaymentTransaction *transaction;
-
-    beforeEach(^{
-      transaction = OCMClassMock([SKPaymentTransaction class]);
-      OCMStub([transaction transactionState]).andReturn(SKPaymentTransactionStatePurchased);
-    });
-
-    it(@"should not finish transaction", ^{
-      OCMReject([storeKitFacade finishTransaction:transaction]);
-      [unfinishedTransactionsSubject sendNext:@[transaction]];
-    });
-
-    it(@"should send transaction as successful", ^{
-      [unfinishedTransactionsSubject sendNext:@[transaction]];
-
-      expect(unfinishedCompletedTransactionsRecorder).will.sendValues(@[@[transaction]]);
-    });
-  });
-
-  it(@"should send unhandled purchased transactions as unfinished", ^{
-    auto transaction = OCMClassMock([SKPaymentTransaction class]);
-    OCMStub([transaction transactionState]).andReturn(SKPaymentTransactionStatePurchased);
-    [unfinishedTransactionsSubject sendNext:@[transaction]];
-
-    expect(unfinishedCompletedTransactionsRecorder).will.sendValues(@[@[transaction]]);
+    expect(weakStoreKitFacade).to.beNil();
+    expect(unhandledSuccessfulTransactionsSignal).will.complete();
+    expect(unhandledSuccessfulTransactionsSignal).will.sendValuesWithCount(0);
   });
 });
 
