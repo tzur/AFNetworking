@@ -5,6 +5,7 @@
 
 #import <LTKit/LTProgress.h>
 
+#import "NSBundleResourceRequest+NoThrow.h"
 #import "NSErrorCodes+Fiber.h"
 
 /// Category for testing, exposes the method that creates the inner resource request.
@@ -35,8 +36,8 @@ context(@"begin accessing resources", ^{
 
   it(@"should err when the inner resource request errs", ^{
     NSError *error = OCMClassMock([NSError class]);
-    OCMStub([resourceRequest beginAccessingResourcesWithCompletionHandler:
-             ([OCMArg invokeBlockWithArgs:error,nil])]);
+    OCMStub([resourceRequest fbr_beginAccessingResourcesWithCompletionHandler:
+             ([OCMArg invokeBlockWithArgs:error, nil])]);
 
     LLSignalTestRecorder *recorder =
         [[bundle fbr_beginAccessToResourcesWithTags:[NSSet set]] testRecorder];
@@ -64,7 +65,7 @@ context(@"begin accessing resources", ^{
   });
 
   it(@"should return progress with the resource as the result when the resource is available", ^{
-    OCMStub([resourceRequest beginAccessingResourcesWithCompletionHandler:
+    OCMStub([resourceRequest fbr_beginAccessingResourcesWithCompletionHandler:
              ([OCMArg invokeBlockWithArgs:[NSNull null], nil])]);
 
     LLSignalTestRecorder *recorder =
@@ -80,7 +81,7 @@ context(@"begin accessing resources", ^{
 
 context(@"conditionally begin accessing resources", ^{
   it(@"should return the resource if the resource is available on the device", ^{
-    OCMStub([resourceRequest conditionallyBeginAccessingResourcesWithCompletionHandler:
+    OCMStub([resourceRequest fbr_conditionallyBeginAccessingResourcesWithCompletionHandler:
              ([OCMArg invokeBlockWithArgs:@(YES), nil])]);
 
     LLSignalTestRecorder *recorder =
@@ -91,7 +92,7 @@ context(@"conditionally begin accessing resources", ^{
   });
 
   it(@"should return return nil if the resource is unavailable", ^{
-    OCMStub([resourceRequest conditionallyBeginAccessingResourcesWithCompletionHandler:
+    OCMStub([resourceRequest fbr_conditionallyBeginAccessingResourcesWithCompletionHandler:
              ([OCMArg invokeBlockWithArgs:@(NO), nil])]);
 
     LLSignalTestRecorder *recorder =

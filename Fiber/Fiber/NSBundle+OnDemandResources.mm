@@ -6,6 +6,7 @@
 #import <LTKit/LTProgress.h>
 
 #import "FBROnDemandResource.h"
+#import "NSBundleResourceRequest+NoThrow.h"
 #import "NSErrorCodes+Fiber.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -37,7 +38,7 @@ NS_ASSUME_NONNULL_BEGIN
                                 initWithProgress:[fractionCompleted doubleValue]]];
         }];
 
-    [request beginAccessingResourcesWithCompletionHandler:^(NSError * _Nullable error) {
+    [request fbr_beginAccessingResourcesWithCompletionHandler:^(NSError * _Nullable error) {
       if (!error) {
         [subscriber sendNext:[[LTProgress alloc] initWithResult:request]];
         [subscriber sendCompleted];
@@ -61,7 +62,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (RACSignal *)fbr_conditionallyBeginAccessToResourcesWithTags:(NSSet<NSString *> *)tags {
   return [RACSignal createSignal:^RACDisposable * _Nullable(id<RACSubscriber> subscriber) {
     NSBundleResourceRequest *request = [self fbr_bundleResourceRequestWithTags:tags];
-    [request conditionallyBeginAccessingResourcesWithCompletionHandler:^(BOOL resourcesAvailable) {
+    [request
+     fbr_conditionallyBeginAccessingResourcesWithCompletionHandler:^(BOOL resourcesAvailable) {
       [subscriber sendNext:resourcesAvailable ? request : nil];
       [subscriber sendCompleted];
     }];
