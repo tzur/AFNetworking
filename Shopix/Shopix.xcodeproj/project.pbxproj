@@ -1130,6 +1130,23 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		CD8E86A31F56F1C200DF8FC1 /* Run Localization Script */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Run Localization Script";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"$PROJECT_DIR/BuildTools/Localization/run_app_localization.sh\" \"$PROJECT_DIR\" \"$TARGET_NAME\" \"./ShopixBundle\"";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		848E00091C591DD1001D8368 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
