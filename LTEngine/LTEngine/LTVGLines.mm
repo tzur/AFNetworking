@@ -6,18 +6,20 @@
 #import "LTVGGlyphRun.h"
 #import "LTVGLine.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @implementation LTVGLines
 
 #pragma mark -
 #pragma mark Initialization
 #pragma mark -
 
-- (instancetype)initWithLines:(NSArray *)lines
+- (instancetype)initWithLines:(NSArray<LTVGLine *> *)lines
              attributedString:(NSAttributedString *)attributedString {
   LTParameterAssert(attributedString);
 
   if (self = [super init]) {
-    [self validateLines:lines];
+    LTParameterAssert(lines.count);
     _lines = [lines copy];
     _attributedString = [attributedString copy];
   }
@@ -28,17 +30,17 @@
 #pragma mark NSObject
 #pragma mark -
 
-- (BOOL)isEqual:(id)object {
-  if (self == object) {
+- (BOOL)isEqual:(LTVGLines *)lines {
+  if (self == lines) {
     return YES;
   }
 
-  if (![object isKindOfClass:[LTVGLines class]]) {
+  if (![lines isKindOfClass:[LTVGLines class]]) {
     return NO;
   }
 
-  return [((LTVGLines *)object).lines isEqualToArray:self.lines] &&
-      [((LTVGLines *)object).attributedString isEqualToAttributedString:self.attributedString];
+  return [lines.lines isEqualToArray:self.lines] &&
+      [lines.attributedString isEqualToAttributedString:self.attributedString];
 }
 
 #pragma mark -
@@ -99,14 +101,6 @@
 #pragma mark Auxiliary methods
 #pragma mark -
 
-- (void)validateLines:(NSArray *)lines {
-  LTParameterAssert(lines.count);
-
-  for (id object in lines) {
-    LTParameterAssert([object isKindOfClass:[LTVGLine class]]);
-  }
-}
-
 /// Returns the transformation required to align the given \c path according to the given
 /// \c aligment.
 - (CGAffineTransform)transformationForPath:(CGPathRef)path andAlignment:(NSTextAlignment)alignment {
@@ -122,3 +116,5 @@
 }
 
 @end
+
+NS_ASSUME_NONNULL_END

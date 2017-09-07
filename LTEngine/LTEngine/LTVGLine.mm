@@ -5,13 +5,15 @@
 
 #import "LTVGGlyphRun.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @implementation LTVGLine
 
 #pragma mark -
 #pragma mark Initialization
 #pragma mark -
 
-- (instancetype)initWithGlyphRuns:(NSArray *)runs {
+- (instancetype)initWithGlyphRuns:(NSArray<LTVGGlyphRun *> *)runs {
   if (self = [super init]) {
     [self validateRuns:runs];
     _glyphRuns = [runs copy];
@@ -25,16 +27,16 @@
 #pragma mark NSObject
 #pragma mark -
 
-- (BOOL)isEqual:(id)object {
-  if (self == object) {
+- (BOOL)isEqual:(LTVGLine *)line {
+  if (self == line) {
     return YES;
   }
 
-  if (![object isKindOfClass:[LTVGLine class]]) {
+  if (![line isKindOfClass:[LTVGLine class]]) {
     return NO;
   }
 
-  return [((LTVGLine *)object).glyphRuns isEqualToArray:self.glyphRuns];
+  return [line.glyphRuns isEqualToArray:self.glyphRuns];
 }
 
 #pragma mark -
@@ -59,7 +61,7 @@
 #pragma mark Auxiliary methods
 #pragma mark -
 
-- (void)validateRuns:(NSArray *)runs {
+- (void)validateRuns:(NSArray<LTVGGlyphRun *> *)runs {
   LTParameterAssert(runs);
 
   LTVGGlyphRun *firstRun = runs.firstObject;
@@ -67,7 +69,10 @@
 
   for (LTVGGlyphRun *run in runs) {
     LTParameterAssert([run isKindOfClass:[LTVGGlyphRun class]]);
-    LTParameterAssert(expectedVerticalBaseLineOrigin == run.baselineOrigin.y);
+    if (expectedVerticalBaseLineOrigin != run.baselineOrigin.y) {
+      LogWarning(@"Run with vertical baseline origin (%g) differing from expected one (%g)",
+                 run.baselineOrigin.y, expectedVerticalBaseLineOrigin);
+    }
   }
 }
 
@@ -80,3 +85,5 @@
 }
 
 @end
+
+NS_ASSUME_NONNULL_END

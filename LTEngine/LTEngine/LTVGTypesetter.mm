@@ -12,6 +12,8 @@
 #import "LTVGLine.h"
 #import "LTVGLines.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @implementation LTVGTypesetter
 
 #pragma mark -
@@ -180,3 +182,5 @@ static CGFloat LTCTLineMaxHeight(CTLineRef lineRef) {
 }
 
 @end
+
+NS_ASSUME_NONNULL_END

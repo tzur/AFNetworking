@@ -1,6 +1,8 @@
 // Copyright (c) 2015 Lightricks. All rights reserved.
 // Created by Rouven Strauss.
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class LTVGGlyph, LTVGLines;
 
 /// Class providing typsetting functionality.
@@ -17,3 +19,5 @@
                baselineOrigin:(CGPoint)baselineOrigin;
 
 @end
+
+NS_ASSUME_NONNULL_END

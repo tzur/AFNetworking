@@ -18,7 +18,7 @@ __block CGPoint baselineOrigin;
 __block LTVGGlyph *glyph;
 __block LTVGGlyphRun *run;
 __block LTVGGlyphRun *anotherRun;
-__block NSArray *runs;
+__block NSArray<LTVGGlyphRun *> *runs;
 __block LTVGLine *line;
 
 beforeEach(^{
@@ -44,20 +44,18 @@ context(@"initialization", ^{
 
   it(@"should raise when initializing with invalid runs", ^{
     expect(^{
-      line = [[LTVGLine alloc] initWithGlyphRuns:nil];
-    }).to.raise(NSInvalidArgumentException);
-
-    expect(^{
       line = [[LTVGLine alloc] initWithGlyphRuns:@[@1]];
     }).to.raise(NSInvalidArgumentException);
+  });
 
+  it(@"should not raise when initializing with runs containing glyphs with different baselines", ^{
     LTVGGlyph *glyphWithInvalidBaselineOrigin =
-        [[LTVGGlyph alloc] initWithPath:NULL glyphIndex:8 font:font
+        [[LTVGGlyph alloc] initWithPath:glyph.path glyphIndex:8 font:font
                          baselineOrigin:baselineOrigin + CGPointMake(0, 1)];
     anotherRun = [[LTVGGlyphRun alloc] initWithGlyphs:@[glyphWithInvalidBaselineOrigin]];
     expect(^{
       line = [[LTVGLine alloc] initWithGlyphRuns:@[run, anotherRun]];
-    }).to.raise(NSInvalidArgumentException);
+    }).toNot.raiseAny();
   });
 });
 
@@ -65,7 +63,6 @@ context(@"NSObject", ^{
   it(@"should correctly implement the isEqual method", ^{
     expect([line isEqual:nil]).to.beFalsy();
     expect([line isEqual:@1]).to.beFalsy();
-    expect([line isEqual:[[LTVGLine alloc] init]]).to.beFalsy();
     expect([line isEqual:line]).to.beTruthy();
 
     LTVGLine *equalLine = [[LTVGLine alloc] initWithGlyphRuns:@[run, anotherRun]];

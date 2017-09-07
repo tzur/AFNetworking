@@ -6,7 +6,6 @@
 #import "LTImage.h"
 #import "LTOpenCVExtensions.h"
 #import "LTVGGlyph.h"
-#import "LTVGGlyphRun.h"
 #import "LTVGTypesetter.h"
 
 SpecBegin(LTVGGlyphRun)
@@ -37,10 +36,6 @@ context(@"initialization", ^{
 
   it(@"should raise when initializing with invalid glyphs", ^{
     expect(^{
-      run = [[LTVGGlyphRun alloc] initWithGlyphs:nil];
-    }).to.raise(NSInvalidArgumentException);
-
-    expect(^{
       run = [[LTVGGlyphRun alloc] initWithGlyphs:@[]];
     }).to.raise(NSInvalidArgumentException);
 
@@ -49,12 +44,21 @@ context(@"initialization", ^{
     }).to.raise(NSInvalidArgumentException);
 
     LTVGGlyph *glyphWithDifferentFont =
-        [[LTVGGlyph alloc] initWithPath:NULL glyphIndex:8
+        [[LTVGGlyph alloc] initWithPath:glyph.path glyphIndex:8
                                    font:[UIFont fontWithName:@"Helvetica" size:10]
                          baselineOrigin:baselineOrigin];
     expect(^{
       run = [[LTVGGlyphRun alloc] initWithGlyphs:@[glyph, glyphWithDifferentFont]];
     }).to.raise(NSInvalidArgumentException);
+  });
+
+  it(@"should not raise when initializing with glyphs with different baselines", ^{
+    LTVGGlyph *glyphWithInvalidBaselineOrigin =
+        [[LTVGGlyph alloc] initWithPath:glyph.path glyphIndex:8 font:font
+                         baselineOrigin:baselineOrigin + CGPointMake(0, 1)];
+    expect(^{
+      run = [[LTVGGlyphRun alloc] initWithGlyphs:@[glyph, glyphWithInvalidBaselineOrigin]];
+    }).toNot.raiseAny();
   });
 });
 
@@ -62,7 +66,6 @@ context(@"NSObject", ^{
   it(@"should correctly implement the isEqual method", ^{
     expect([run isEqual:nil]).to.beFalsy();
     expect([run isEqual:@1]).to.beFalsy();
-    expect([run isEqual:[[LTVGGlyphRun alloc] init]]).to.beFalsy();
     expect([run isEqual:run]).to.beTruthy();
 
     LTVGGlyphRun *equalRun = [[LTVGGlyphRun alloc] initWithGlyphs:[glyphs copy]];
@@ -72,7 +75,7 @@ context(@"NSObject", ^{
     expect([run isEqual:differentRun]).to.beFalsy();
 
     NSArray *differentGlyphs =
-        @[[[LTVGGlyph alloc] initWithPath:NULL glyphIndex:7
+        @[[[LTVGGlyph alloc] initWithPath:glyph.path glyphIndex:7
                                      font:[UIFont fontWithName:@"Arial" size:1]
                            baselineOrigin:CGPointZero]];
     differentRun = [[LTVGGlyphRun alloc] initWithGlyphs:differentGlyphs];

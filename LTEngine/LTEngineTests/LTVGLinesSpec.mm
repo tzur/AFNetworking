@@ -46,27 +46,11 @@ context(@"initialization", ^{
     expect(lines.attributedString).to.equal(attributedString);
   });
 
-  it(@"should raise when initializing with invalid lines", ^{
-    expect(^{
-      lines = [[LTVGLines alloc] initWithLines:nil
-                              attributedString:[[NSAttributedString alloc] init]];
-    }).to.raise(NSInvalidArgumentException);
-
+  it(@"should raise when initializing with invalid number of lines", ^{
     expect(^{
       lines = [[LTVGLines alloc] initWithLines:@[]
                               attributedString:[[NSAttributedString alloc] init]];
     }).to.raise(NSInvalidArgumentException);
-
-    expect(^{
-      lines = [[LTVGLines alloc] initWithLines:@[@1]
-                              attributedString:[[NSAttributedString alloc] init]];
-    }).to.raise(NSInvalidArgumentException);
-
-    it(@"should raise when initializing without attributed string", ^{
-      expect(^{
-        lines = [[LTVGLines alloc] initWithLines:linesArray attributedString:nil];
-      }).to.raise(NSInvalidArgumentException);
-    });
   });
 });
 
@@ -86,7 +70,6 @@ context(@"NSObject", ^{
   it(@"should correctly implement the isEqual method", ^{
     expect([lines isEqual:nil]).to.beFalsy();
     expect([lines isEqual:@1]).to.beFalsy();
-    expect([lines isEqual:[[LTVGLines alloc] init]]).to.beFalsy();
     expect([lines isEqual:lines]).to.beTruthy();
 
     LTVGLines *equalLines = [[LTVGLines alloc] initWithLines:linesArray
@@ -199,12 +182,6 @@ context(@"glyph modification", ^{
           return glyph;
         }];
     expect(result).to.equal(lines);
-  });
-
-  it(@"should raise if no block is provided", ^{
-    expect(^{
-      [lines linesWithGlyphsTransformedUsingBlock:nil];
-    }).to.raise(NSInvalidArgumentException);
   });
 });
 
