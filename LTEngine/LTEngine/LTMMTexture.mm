@@ -1,14 +1,13 @@
 // Copyright (c) 2014 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
-#if defined(__IPHONE_11_0) && defined(TARGET_OS_IPHONE)
+#if defined(__IPHONE_11_0) && TARGET_OS_IPHONE && TARGET_OS_EMBEDDED
   #define LTMMTEXTURE_USE_IOSURFACE
 #endif
 
 #import "LTMMTexture.h"
 
 #ifdef LTMMTEXTURE_USE_IOSURFACE
-  #import <CoreVideo/CVPixelBufferIOSurface.h>
   #import <IOSurface/IOSurfaceObjC.h>
   #import <OpenGLEs/EAGLIOSurface.h>
 #endif
