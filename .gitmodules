@@ -55,3 +55,6 @@
 [submodule "third_party/ReactiveObjC"]
 	path = third_party/ReactiveObjC
 	url = https://github.com/Lightricks/ReactiveObjC
+[submodule "third_party/protobuf"]
+	path = third_party/protobuf
+	url = https://github.com/Lightricks/protobuf-ios.git
