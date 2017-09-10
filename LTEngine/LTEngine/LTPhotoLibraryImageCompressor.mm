@@ -21,10 +21,18 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize format = _format;
 
 - (instancetype)init {
+  return [self initWithQuality:1];
+}
+
+- (instancetype)initWithQuality:(CGFloat)quality {
+  LTParameterAssert(quality >= 0 && quality <= 1, @"quality: %g, must be in range [0, 1]", quality);
+
   if (self = [super init]) {
     _compressor = $(LTCompressionFormatHEIC).isSupported ?
-        [[LTImageHEICCompressor alloc] init] : [[LTImageJPEGCompressor alloc] init];
+        [[LTImageHEICCompressor alloc] initWithQuality:quality] :
+        [[LTImageJPEGCompressor alloc] initWithQuality:quality];
     _format = _compressor.format;
+    _quality = quality;
   }
   return self;
 }
