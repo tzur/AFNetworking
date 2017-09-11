@@ -27,10 +27,11 @@ LTEnumImplement(NSUInteger, LTCompressionFormat,
       return (NSString *)kUTTypeTIFF;
     case LTCompressionFormatHEIC:
 #ifdef __IPHONE_11_0
-      return AVFileTypeHEIC;
-#else
-      return @"public.heic";
+      if(@available(iOS 11.0, *)){
+        return AVFileTypeHEIC;
+      }
 #endif
+      return @"public.heic";
   }
 }
 
