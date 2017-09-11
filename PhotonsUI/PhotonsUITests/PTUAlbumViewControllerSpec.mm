@@ -467,13 +467,14 @@ context(@"collection control", ^{
   });
 
   it(@"should pass calls to reloadData to internal view controller", ^{
-    PTUCollectionViewController *internalViewControllerMock =
-        OCMClassMock([PTUCollectionViewController class]);
-    albumView.collectionViewController = internalViewControllerMock;
+    dataSourceProvider = OCMProtocolMock(@protocol(PTUDataSourceProvider));
+    [dataSourceProviderSignal sendNext:dataSourceProvider];
+
+    OCMExpect([dataSourceProvider dataSourceForCollectionView:OCMOCK_ANY]);
 
     [albumView reloadData];
 
-    OCMVerify([internalViewControllerMock reloadData]);
+    OCMVerifyAll((id)dataSourceProvider);
   });
 });
 
