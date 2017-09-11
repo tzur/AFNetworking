@@ -30,16 +30,16 @@ context(@"initialization", ^{
   it(@"should raise an exception when magnification factor is zero", ^{
     expect(^{
       nearestNeighborUpsampler =
-          [[PNKNearestNeighborUpsampling alloc] initWithDevice:device withInputIsArray:NO
-                                       withMagnificationFactor:0];
+          [[PNKNearestNeighborUpsampling alloc] initWithDevice:device inputIsArray:NO
+                                           magnificationFactor:0];
     }).to.raise(NSInvalidArgumentException);
   });
 
   it(@"should raise an exception when magnification factor is one", ^{
     expect(^{
       nearestNeighborUpsampler =
-          [[PNKNearestNeighborUpsampling alloc] initWithDevice:device withInputIsArray:NO
-                                       withMagnificationFactor:1];
+          [[PNKNearestNeighborUpsampling alloc] initWithDevice:device inputIsArray:NO
+                                           magnificationFactor:1];
     }).to.raise(NSInvalidArgumentException);
   });
 });
@@ -47,8 +47,8 @@ context(@"initialization", ^{
 context(@"kernel input verification", ^{
   beforeEach(^{
     nearestNeighborUpsampler =
-        [[PNKNearestNeighborUpsampling alloc] initWithDevice:device withInputIsArray:NO
-                                     withMagnificationFactor:kMagnificationFactor];
+        [[PNKNearestNeighborUpsampling alloc] initWithDevice:device inputIsArray:NO
+                                         magnificationFactor:kMagnificationFactor];
   });
 
   it(@"should raise an exception when input array length mismatch", ^{
@@ -96,8 +96,8 @@ context(@"kernel input verification", ^{
 context(@"kernel output size", ^{
   beforeEach(^{
     nearestNeighborUpsampler =
-        [[PNKNearestNeighborUpsampling alloc] initWithDevice:device withInputIsArray:NO
-                                     withMagnificationFactor:kMagnificationFactor];
+        [[PNKNearestNeighborUpsampling alloc] initWithDevice:device inputIsArray:NO
+                                         magnificationFactor:kMagnificationFactor];
   });
 
   it(@"should calculate input region correctly", ^{
@@ -122,8 +122,8 @@ context(@"nearest neighbor upsampling with Unorm8 channel format", ^{
 
   it(@"should upsample correctly for non-array textures", ^{
     nearestNeighborUpsampler =
-        [[PNKNearestNeighborUpsampling alloc] initWithDevice:device withInputIsArray:NO
-                                     withMagnificationFactor:kMagnificationFactor];
+        [[PNKNearestNeighborUpsampling alloc] initWithDevice:device inputIsArray:NO
+                                         magnificationFactor:kMagnificationFactor];
     auto inputImage = PNKImageMakeUnorm(device, inputMat.cols, inputMat.rows,
                                         kInputFeatureChannels);
     auto outputImage = PNKImageMakeUnorm(device, expected.cols, expected.rows,
@@ -141,8 +141,8 @@ context(@"nearest neighbor upsampling with Unorm8 channel format", ^{
 
   it(@"should upsample correctly for array textures", ^{
     nearestNeighborUpsampler =
-        [[PNKNearestNeighborUpsampling alloc] initWithDevice:device withInputIsArray:YES
-                                     withMagnificationFactor:kMagnificationFactor];
+        [[PNKNearestNeighborUpsampling alloc] initWithDevice:device inputIsArray:YES
+                                         magnificationFactor:kMagnificationFactor];
     auto inputImage = PNKImageMakeUnorm(device, inputMat.cols, inputMat.rows,
                                         kInputArrayFeatureChannels);
     auto outputImage = PNKImageMakeUnorm(device, expected.cols, expected.rows,
