@@ -118,17 +118,6 @@ struct PoolingKernelModel {
   BOOL averagePoolExcludePadding;
   /// If \c YES then pooling is performed on the entire input and kernel size is disregarded.
   BOOL globalPooling;
-  /// Output shape used in case \c isDeconvolution is \c YES. If not set the output size for a
-  /// deconvolution will be calculated by the input size and \c padding.
-  CGSize deconvolutionOutputSize;
-  /// Matrix of weights for the convolution kernel. If \c isDeconvolution is \c NO, the shape of the
-  /// matrix is <tt>[outputFeatureChannels, inputFeatureChannels, kernelHeight, kernelWidth]</tt>.
-  /// If \c isDeconvolution is \c YES, the shape of the matrix is
-  /// <tt>[inputFeatureChannels, outputFeatureChannels, kernelHeight, kernelWidth]</tt>.
-  cv::Mat1f kernelWeights;
-  /// Matrix of weights for the bias added after convolution. Must be of size
-  /// \c outputFeatureChannels.
-  cv::Mat1f biasWeights;
 };
 
 /// Parameters defining the behaviour of a fully connected (affine) layer in a neural network.
