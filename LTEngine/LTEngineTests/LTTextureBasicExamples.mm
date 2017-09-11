@@ -581,7 +581,7 @@ sharedExamplesFor(kLTTextureBasicExamples, ^(NSDictionary *data) {
           return expectedCIImage;
         }];
 
-        expect($([texture image])).to.equalMat($(expected));
+        expect($([texture image])).to.beCloseToMatWithin($(expected), 0.02);
       });
 
       it(@"should draw to 4 channel byte texture", ^{
@@ -633,7 +633,7 @@ sharedExamplesFor(kLTTextureBasicExamples, ^(NSDictionary *data) {
           return expectedCIImage;
         }];
 
-        expect($(texture.image)).to.equalMat($(expected));
+        expect($(texture.image)).to.beCloseToMatWithin($(expected), 0.02);
       });
 
       it(@"should use byte working format when target texture is of byte precision", ^{
