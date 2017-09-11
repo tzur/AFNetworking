@@ -44,7 +44,7 @@ LTEnumImplement(NSUInteger, LTCompressionFormat,
     case LTCompressionFormatTIFF:
       return @"tif";
     case LTCompressionFormatHEIC:
-      return @".heic";
+      return @"heic";
   }
 }
 
