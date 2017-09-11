@@ -4,6 +4,7 @@
 #import "NSURL+MediaLibrary.h"
 
 #import <LTKit/LTBidirectionalMap.h>
+#import <LTKit/NSArray+NSSet.h>
 #import <LTKit/NSURL+Query.h>
 #import <MediaPlayer/MediaPlayer.h>
 
@@ -37,24 +38,39 @@ LTEnumImplement(NSUInteger, PTNMediaLibraryFetchType,
 + (NSURL *)ptn_mediaLibraryAssetWithItem:(MPMediaItem *)item {
   auto predicate = [MPMediaPropertyPredicate predicateWithValue:@(item.persistentID)
                     forProperty:MPMediaItemPropertyPersistentID];
+  auto predicates = [[NSURL ptn_unavailableAssetsPredicates] arrayByAddingObject:predicate];
+
   return [self ptn_urlWithType:PTNMediaLibraryURLTypeAsset
-                    predicates:[NSSet setWithObject:predicate]
+                    predicates:[predicates lt_set]
                      fetchType:$(PTNMediaLibraryFetchTypeItems) groupedBy:nil];
+}
+
+// Apple music assets aren't available for downloading, therefore, we filter them in advance.
++ (NSArray<MPMediaPropertyPredicate *> *)ptn_unavailableAssetsPredicates {
+  auto cloudPredicate = [MPMediaPropertyPredicate predicateWithValue:@(NO)
+                         forProperty:MPMediaItemPropertyIsCloudItem];
+  auto protectedAssetPredicate = [MPMediaPropertyPredicate predicateWithValue:@(NO)
+                                  forProperty:MPMediaItemPropertyHasProtectedAsset];
+  return @[cloudPredicate, protectedAssetPredicate];
 }
 
 + (NSURL *)ptn_mediaLibraryAlbumMusicAlbumSongsWithItem:(MPMediaItem *)item {
   auto predicate = [MPMediaPropertyPredicate predicateWithValue:@(item.albumPersistentID)
                     forProperty:MPMediaItemPropertyAlbumPersistentID];
+  auto predicates = [[NSURL ptn_unavailableAssetsPredicates] arrayByAddingObject:predicate];
+
   return [self ptn_urlWithType:PTNMediaLibraryURLTypeAlbum
-                    predicates:[NSSet setWithObject:predicate]
+                    predicates:[predicates lt_set]
                      fetchType:$(PTNMediaLibraryFetchTypeItems) groupedBy:nil];
 }
 
 + (NSURL *)ptn_mediaLibraryAlbumArtistMusicAlbumsWithItem:(MPMediaItem *)item {
   auto predicate = [MPMediaPropertyPredicate predicateWithValue:@(item.artistPersistentID)
                     forProperty:MPMediaItemPropertyArtistPersistentID];
+  auto predicates = [[NSURL ptn_unavailableAssetsPredicates] arrayByAddingObject:predicate];
+
   return [self ptn_urlWithType:PTNMediaLibraryURLTypeAlbum
-                    predicates:[NSSet setWithObject:predicate]
+                    predicates:[predicates lt_set]
                      fetchType:$(PTNMediaLibraryFetchTypeCollections)
                      groupedBy:@(MPMediaGroupingAlbum)];
 }
@@ -62,28 +78,30 @@ LTEnumImplement(NSUInteger, PTNMediaLibraryFetchType,
 + (NSURL *)ptn_mediaLibraryAlbumArtistSongsWithItem:(MPMediaItem *)item {
   auto predicate = [MPMediaPropertyPredicate predicateWithValue:@(item.artistPersistentID)
                     forProperty:MPMediaItemPropertyArtistPersistentID];
+  auto predicates = [[NSURL ptn_unavailableAssetsPredicates] arrayByAddingObject:predicate];
+
   return [self ptn_urlWithType:PTNMediaLibraryURLTypeAlbum
-                    predicates:[NSSet setWithObject:predicate]
+                    predicates:[predicates lt_set]
                      fetchType:$(PTNMediaLibraryFetchTypeItems) groupedBy:nil];
 }
 
 + (NSURL *)ptn_mediaLibraryAlbumSongsByMusicAlbum {
   return [self ptn_urlWithType:PTNMediaLibraryURLTypeAlbum
-                    predicates:[NSSet setWithObject:[self mediaTypeMusicPredicate]]
+                    predicates:[self ptn_mediaTypeMusicPredicates]
                      fetchType:$(PTNMediaLibraryFetchTypeCollections)
                      groupedBy:@(MPMediaGroupingAlbum)];
 }
 
 + (NSURL *)ptn_mediaLibraryAlbumSongsByAritst {
   return [self ptn_urlWithType:PTNMediaLibraryURLTypeAlbum
-                    predicates:[NSSet setWithObject:[self mediaTypeMusicPredicate]]
+                    predicates:[self ptn_mediaTypeMusicPredicates]
                      fetchType:$(PTNMediaLibraryFetchTypeCollections)
                      groupedBy:@(MPMediaGroupingArtist)];
 }
 
 + (NSURL *)ptn_mediaLibraryAlbumSongs {
   return [self ptn_urlWithType:PTNMediaLibraryURLTypeAlbum
-                    predicates:[NSSet setWithObject:[self mediaTypeMusicPredicate]]
+                    predicates:[self ptn_mediaTypeMusicPredicates]
                      fetchType:$(PTNMediaLibraryFetchTypeCollections)
                      groupedBy:@(MPMediaGroupingTitle)];
 }
@@ -125,9 +143,11 @@ LTEnumImplement(NSUInteger, PTNMediaLibraryFetchType,
   return [self ptn_groupingValueToNSStringMap][groupingType];
 }
 
-+ (MPMediaPropertyPredicate *)mediaTypeMusicPredicate {
-    return [MPMediaPropertyPredicate predicateWithValue:@(MPMediaTypeMusic)
-                                            forProperty:MPMediaItemPropertyMediaType];
++ (NSSet<MPMediaPropertyPredicate *> *)ptn_mediaTypeMusicPredicates {
+  auto predicate =  [MPMediaPropertyPredicate predicateWithValue:@(MPMediaTypeMusic)
+                                                     forProperty:MPMediaItemPropertyMediaType];
+  auto predicates = [[NSURL ptn_unavailableAssetsPredicates] arrayByAddingObject:predicate];
+  return [predicates lt_set];
 }
 
 + (LTBidirectionalMap<NSNumber *, NSString *> *)ptn_groupingValueToNSStringMap {
@@ -275,31 +295,41 @@ LTEnumImplement(NSUInteger, PTNMediaLibraryFetchType,
 + (nullable MPMediaPropertyPredicate *)ptn_predicateWithProperty:(NSString *)property
                                                            value:(NSString *)value {
   errno = 0;
-  if ([self ptn_isPersistenIDProperty:property]) {
+  if ([self ptn_isUnsignedLongLongProperty:property]) {
     auto number = [NSNumber numberWithUnsignedLongLong:strtoull([value UTF8String], NULL, 0)];
     if (errno){
       return nil;
     }
     return [MPMediaPropertyPredicate predicateWithValue:number forProperty:property];
   }
-  if ([self ptn_isMediaTypeProperty:property]) {
+  if ([self ptn_isUnsignedLongProperty:property]) {
     auto number = [NSNumber numberWithUnsignedLong:strtoul([value UTF8String], NULL, 0)];
     if (errno) {
       return nil;
     }
     return [MPMediaPropertyPredicate predicateWithValue:number forProperty:property];
   }
-  return [MPMediaPropertyPredicate predicateWithValue:value forProperty:property];;
+
+  if ([self ptn_isBooleanProperty:property]) {
+    return [MPMediaPropertyPredicate predicateWithValue:@([value boolValue]) forProperty:property];
+  }
+
+  return [MPMediaPropertyPredicate predicateWithValue:value forProperty:property];
 }
 
-+ (BOOL)ptn_isPersistenIDProperty:(NSString *)property {
++ (BOOL)ptn_isUnsignedLongLongProperty:(NSString *)property {
   return ([property isEqualToString:MPMediaItemPropertyAlbumPersistentID] ||
           [property isEqualToString:MPMediaItemPropertyArtistPersistentID] ||
           [property isEqualToString:MPMediaItemPropertyPersistentID]);
 }
 
-+ (BOOL)ptn_isMediaTypeProperty:(NSString *)property {
++ (BOOL)ptn_isUnsignedLongProperty:(NSString *)property {
   return [property isEqualToString:MPMediaItemPropertyMediaType];
+}
+
++ (BOOL)ptn_isBooleanProperty:(NSString *)property {
+  return [property isEqualToString:MPMediaItemPropertyHasProtectedAsset] ||
+      [property isEqualToString:MPMediaItemPropertyIsCloudItem];
 }
 
 + (NSSet<NSString *> *)ptn_supportedProperties {
@@ -314,7 +344,9 @@ LTEnumImplement(NSUInteger, PTNMediaLibraryFetchType,
       MPMediaItemPropertyArtistPersistentID,
       MPMediaItemPropertyMediaType,
       MPMediaItemPropertyPersistentID,
-      MPMediaItemPropertyTitle
+      MPMediaItemPropertyTitle,
+      MPMediaItemPropertyIsCloudItem,
+      MPMediaItemPropertyHasProtectedAsset
     ]];
   });
 

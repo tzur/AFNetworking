@@ -62,10 +62,15 @@ it(@"should return values of predicates", ^{
 
 it(@"should create asset URL with media item", ^{
   url = [NSURL ptn_mediaLibraryAssetWithItem:mediaLibraryItemMock];
-  auto urlString = [NSString stringWithFormat:@"%@://asset?%@=123&"
-                    "fetch=PTNMediaLibraryFetchTypeItems", [NSURL ptn_mediaLibraryScheme],
-                    MPMediaItemPropertyPersistentID];
-  expect(url).to.equal([NSURL URLWithString:urlString]);
+
+  auto queryDictionary = @{
+    MPMediaItemPropertyHasProtectedAsset: @"0",
+    MPMediaItemPropertyIsCloudItem: @"0",
+    MPMediaItemPropertyPersistentID: @"123",
+    @"fetch": @"PTNMediaLibraryFetchTypeItems"
+  };
+
+  expect([url lt_queryDictionary]).to.equal(queryDictionary);
   expect(url.ptn_mediaLibraryURLType).to.equal(PTNMediaLibraryURLTypeAsset);
   expect(url.ptn_mediaLibraryFetch).to.equal($(PTNMediaLibraryFetchTypeItems));
   expect(url.ptn_mediaLibraryGrouping).to.beNil();
@@ -73,10 +78,15 @@ it(@"should create asset URL with media item", ^{
 
 it(@"should create music album songs URL with item", ^{
   url = [NSURL ptn_mediaLibraryAlbumMusicAlbumSongsWithItem:mediaLibraryItemMock];
-  auto urlString = [NSString stringWithFormat:@"%@://album?%@=345&"
-                    "fetch=PTNMediaLibraryFetchTypeItems", [NSURL ptn_mediaLibraryScheme],
-                    MPMediaItemPropertyAlbumPersistentID];
-  expect(url).to.equal([NSURL URLWithString:urlString]);
+
+    auto queryDictionary = @{
+    MPMediaItemPropertyHasProtectedAsset: @"0",
+    MPMediaItemPropertyIsCloudItem: @"0",
+    MPMediaItemPropertyAlbumPersistentID: @"345",
+    @"fetch": @"PTNMediaLibraryFetchTypeItems"
+  };
+
+  expect([url lt_queryDictionary]).to.equal(queryDictionary);
   expect(url.ptn_mediaLibraryURLType).to.equal(PTNMediaLibraryURLTypeAlbum);
   expect(url.ptn_mediaLibraryFetch).to.equal($(PTNMediaLibraryFetchTypeItems));
   expect(url.ptn_mediaLibraryGrouping).to.beNil();
@@ -84,10 +94,16 @@ it(@"should create music album songs URL with item", ^{
 
 it(@"should create artist's music album URL with item", ^{
   url = [NSURL ptn_mediaLibraryAlbumArtistMusicAlbumsWithItem:mediaLibraryItemMock];
-  auto urlString = [NSString stringWithFormat:@"%@://album?%@=678&"
-                    "fetch=PTNMediaLibraryFetchTypeCollections&grouping=MPMediaGroupingAlbum",
-                    [NSURL ptn_mediaLibraryScheme], MPMediaItemPropertyArtistPersistentID];
-  expect(url).to.equal([NSURL URLWithString:urlString]);
+
+  auto queryDictionary = @{
+    MPMediaItemPropertyHasProtectedAsset: @"0",
+    MPMediaItemPropertyIsCloudItem: @"0",
+    MPMediaItemPropertyArtistPersistentID: @"678",
+    @"fetch": @"PTNMediaLibraryFetchTypeCollections",
+    @"grouping": @"MPMediaGroupingAlbum"
+  };
+
+  expect([url lt_queryDictionary]).to.equal(queryDictionary);
   expect(url.ptn_mediaLibraryURLType).to.equal(PTNMediaLibraryURLTypeAlbum);
   expect(url.ptn_mediaLibraryFetch).to.equal($(PTNMediaLibraryFetchTypeCollections));
   expect(url.ptn_mediaLibraryGrouping).to.equal(@(MPMediaGroupingAlbum));
@@ -95,10 +111,15 @@ it(@"should create artist's music album URL with item", ^{
 
 it(@"should create artist's songs URL with item", ^{
   url = [NSURL ptn_mediaLibraryAlbumArtistSongsWithItem:mediaLibraryItemMock];
-  auto urlString = [NSString stringWithFormat:@"%@://album?%@=678&"
-                    "fetch=PTNMediaLibraryFetchTypeItems", [NSURL ptn_mediaLibraryScheme],
-                    MPMediaItemPropertyArtistPersistentID];
-  expect(url).to.equal([NSURL URLWithString:urlString]);
+
+  auto queryDictionary = @{
+    MPMediaItemPropertyHasProtectedAsset: @"0",
+    MPMediaItemPropertyIsCloudItem: @"0",
+    MPMediaItemPropertyArtistPersistentID: @"678",
+    @"fetch": @"PTNMediaLibraryFetchTypeItems"
+  };
+
+  expect([url lt_queryDictionary]).to.equal(queryDictionary);
   expect(url.ptn_mediaLibraryURLType).to.equal(PTNMediaLibraryURLTypeAlbum);
   expect(url.ptn_mediaLibraryFetch).to.equal($(PTNMediaLibraryFetchTypeItems));
   expect(url.ptn_mediaLibraryGrouping).to.beNil();
@@ -106,10 +127,16 @@ it(@"should create artist's songs URL with item", ^{
 
 it(@"should create all music albums songs URL", ^{
   auto url = [NSURL ptn_mediaLibraryAlbumSongsByMusicAlbum];
-  auto urlString = [NSString stringWithFormat:@"%@://album?%@=1&"
-                    "fetch=PTNMediaLibraryFetchTypeCollections&grouping=MPMediaGroupingAlbum",
-                    [NSURL ptn_mediaLibraryScheme], MPMediaItemPropertyMediaType];
-  expect(url).to.equal([NSURL URLWithString:urlString]);
+
+  auto queryDictionary = @{
+    MPMediaItemPropertyHasProtectedAsset: @"0",
+    MPMediaItemPropertyIsCloudItem: @"0",
+    @"fetch": @"PTNMediaLibraryFetchTypeCollections",
+    @"mediaType": @"1",
+    @"grouping": @"MPMediaGroupingAlbum"
+  };
+
+  expect([url lt_queryDictionary]).to.equal(queryDictionary);
   expect(url.ptn_mediaLibraryURLType).to.equal(PTNMediaLibraryURLTypeAlbum);
   expect(url.ptn_mediaLibraryFetch).to.equal($(PTNMediaLibraryFetchTypeCollections));
   expect(url.ptn_mediaLibraryGrouping).to.equal(@(MPMediaGroupingAlbum));
@@ -117,10 +144,16 @@ it(@"should create all music albums songs URL", ^{
 
 it(@"should create all artist songs URL", ^{
   auto url = [NSURL ptn_mediaLibraryAlbumSongsByAritst];
-  auto urlString = [NSString stringWithFormat:@"%@://album?%@=1&"
-                    "fetch=PTNMediaLibraryFetchTypeCollections&grouping=MPMediaGroupingArtist",
-                    [NSURL ptn_mediaLibraryScheme], MPMediaItemPropertyMediaType];
-  expect(url).to.equal([NSURL URLWithString:urlString]);
+
+  auto queryDictionary = @{
+    MPMediaItemPropertyHasProtectedAsset: @"0",
+    MPMediaItemPropertyIsCloudItem: @"0",
+    @"fetch": @"PTNMediaLibraryFetchTypeCollections",
+    @"mediaType": @"1",
+    @"grouping": @"MPMediaGroupingArtist"
+  };
+
+  expect([url lt_queryDictionary]).to.equal(queryDictionary);
   expect(url.ptn_mediaLibraryURLType).to.equal(PTNMediaLibraryURLTypeAlbum);
   expect(url.ptn_mediaLibraryFetch).to.equal($(PTNMediaLibraryFetchTypeCollections));
   expect(url.ptn_mediaLibraryGrouping).to.equal(@(MPMediaGroupingArtist));
@@ -128,10 +161,16 @@ it(@"should create all artist songs URL", ^{
 
 it(@"should create all songs URL", ^{
   auto url = [NSURL ptn_mediaLibraryAlbumSongs];
-  auto urlString = [NSString stringWithFormat:@"%@://album?%@=1&"
-                    "fetch=PTNMediaLibraryFetchTypeCollections&grouping=MPMediaGroupingTitle",
-                    [NSURL ptn_mediaLibraryScheme], MPMediaItemPropertyMediaType];
-  expect(url).to.equal([NSURL URLWithString:urlString]);
+
+  auto queryDictionary = @{
+    MPMediaItemPropertyHasProtectedAsset: @"0",
+    MPMediaItemPropertyIsCloudItem: @"0",
+    @"fetch": @"PTNMediaLibraryFetchTypeCollections",
+    @"mediaType": @"1",
+    @"grouping": @"MPMediaGroupingTitle"
+  };
+
+  expect([url lt_queryDictionary]).to.equal(queryDictionary);
   expect(url.ptn_mediaLibraryURLType).to.equal(PTNMediaLibraryURLTypeAlbum);
   expect(url.ptn_mediaLibraryFetch).to.equal($(PTNMediaLibraryFetchTypeCollections));
   expect(url.ptn_mediaLibraryGrouping).to.equal(@(MPMediaGroupingTitle));
@@ -202,11 +241,12 @@ it(@"should return nil query for malformed album url", ^{
 
 it(@"should return a valid asset query", ^{
   auto query = PTNAssetQuery(provider, [NSString stringWithFormat:
-    @"%@=1&%@=345&%@=AlbumTitle&%@=Artist&%@=678&%@=123&%@=Title&"
+    @"%@=1&%@=345&%@=AlbumTitle&%@=Artist&%@=678&%@=123&%@=Title&%@=0&%@=1&"
     "fetch=PTNMediaLibraryFetchTypeItems", MPMediaItemPropertyMediaType,
     MPMediaItemPropertyAlbumPersistentID, MPMediaItemPropertyAlbumTitle, MPMediaItemPropertyArtist,
     MPMediaItemPropertyArtistPersistentID, MPMediaItemPropertyPersistentID,
-    MPMediaItemPropertyTitle]);
+    MPMediaItemPropertyTitle, MPMediaItemPropertyIsCloudItem,
+    MPMediaItemPropertyHasProtectedAsset]);
 
   auto expectedPredicates = [@[
       [MPMediaPropertyPredicate predicateWithValue:@(1UL) forProperty:MPMediaItemPropertyMediaType],
@@ -219,7 +259,11 @@ it(@"should return a valid asset query", ^{
                                        forProperty:MPMediaItemPropertyArtistPersistentID],
       [MPMediaPropertyPredicate predicateWithValue:@(123ULL)
                                        forProperty:MPMediaItemPropertyPersistentID],
-      [MPMediaPropertyPredicate predicateWithValue:@"Title" forProperty:MPMediaItemPropertyTitle]
+      [MPMediaPropertyPredicate predicateWithValue:@"Title" forProperty:MPMediaItemPropertyTitle],
+      [MPMediaPropertyPredicate predicateWithValue:@(NO)
+                                       forProperty:MPMediaItemPropertyIsCloudItem],
+      [MPMediaPropertyPredicate predicateWithValue:@(YES)
+                                       forProperty:MPMediaItemPropertyHasProtectedAsset]
   ] lt_set];
 
   auto actualPredicates = query.filterPredicates;
