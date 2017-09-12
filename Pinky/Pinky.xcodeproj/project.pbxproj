@@ -118,6 +118,7 @@
 		C9CAFCC11EE02F2A00B914E4 /* Mantle.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 06FD92981EDC5F9100D180C7 /* Mantle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C9CAFCC51EE0335500B914E4 /* Mantle.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 06FD92981EDC5F9100D180C7 /* Mantle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F994A70F1F612A530072D338 /* PNKProtobufHelpersSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = F994A70E1F612A530072D338 /* PNKProtobufHelpersSpec.mm */; };
+		F9CB52FA1F5FE70C00C8E8CA /* PNKCoreMLLayerParser.mm in Sources */ = {isa = PBXBuildFile; fileRef = F9CB52F91F5FE70C00C8E8CA /* PNKCoreMLLayerParser.mm */; };
 		F9CB52FD1F5FE98700C8E8CA /* PNKProtobufHelpers.mm in Sources */ = {isa = PBXBuildFile; fileRef = F9CB52FC1F5FE98700C8E8CA /* PNKProtobufHelpers.mm */; };
 /* End PBXBuildFile section */
 
@@ -589,6 +590,8 @@
 		C9ADC5111EFFE06200C87932 /* PNKLibraryLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKLibraryLoader.h; sourceTree = "<group>"; };
 		C9ADC5121EFFE06200C87932 /* PNKLibraryLoader.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKLibraryLoader.mm; sourceTree = "<group>"; };
 		F994A70E1F612A530072D338 /* PNKProtobufHelpersSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKProtobufHelpersSpec.mm; sourceTree = "<group>"; };
+		F9CB52F81F5FE70C00C8E8CA /* PNKCoreMLLayerParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKCoreMLLayerParser.h; sourceTree = "<group>"; };
+		F9CB52F91F5FE70C00C8E8CA /* PNKCoreMLLayerParser.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKCoreMLLayerParser.mm; sourceTree = "<group>"; };
 		F9CB52FB1F5FE98700C8E8CA /* PNKProtobufHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKProtobufHelpers.h; sourceTree = "<group>"; };
 		F9CB52FC1F5FE98700C8E8CA /* PNKProtobufHelpers.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKProtobufHelpers.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -688,6 +691,8 @@
 			isa = PBXGroup;
 			children = (
 				06172B9D1F03E4F800379124 /* Models */,
+				F9CB52F81F5FE70C00C8E8CA /* PNKCoreMLLayerParser.h */,
+				F9CB52F91F5FE70C00C8E8CA /* PNKCoreMLLayerParser.mm */,
 				F9CB52FB1F5FE98700C8E8CA /* PNKProtobufHelpers.h */,
 				F9CB52FC1F5FE98700C8E8CA /* PNKProtobufHelpers.mm */,
 			);
@@ -1650,6 +1655,7 @@
 				068D91161F249E120012F472 /* PNKReflectionPadding.mm in Sources */,
 				C91884551F0D27B90090818A /* PNKComputeDispatch.mm in Sources */,
 				C9791B001F026E180009E90F /* PNKConstantAlpha.mm in Sources */,
+				F9CB52FA1F5FE70C00C8E8CA /* PNKCoreMLLayerParser.mm in Sources */,
 				06E98DE01F2149710047F80A /* PNKComputeState.mm in Sources */,
 				C9231F831F04EF7F009E4FDB /* PNKGammaCorrection.mm in Sources */,
 				060EA49E1EDD9CC20041487A /* NSBundle+PinkyBundle.mm in Sources */,
