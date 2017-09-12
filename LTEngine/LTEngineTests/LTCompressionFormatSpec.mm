@@ -23,7 +23,7 @@ it(@"should return UTI for every compression extension", ^{
   }];
 });
 
-it(@"should report supported formats on sumulator", ^{
+it(@"should report supported formats on simulator", ^{
   [LTCompressionFormat enumerateEnumUsingBlock:^(LTCompressionFormat *format) {
     if ([format isEqual:$(LTCompressionFormatHEIC)]) {
       /// LTCompressionFormatHEIC isn't supported on simulator
