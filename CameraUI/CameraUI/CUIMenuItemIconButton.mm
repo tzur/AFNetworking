@@ -36,6 +36,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)setupImageViewModel {
   @weakify(self);
   RAC(self, wf_viewModel) = [[RACObserve(self, model.iconURL)
+      deliverOnMainThread]
       map:^id<WFImageViewModel>(NSURL *url) {
         @strongify(self);
         id<CUITheme> theme = [CUISharedTheme sharedTheme];
@@ -44,8 +45,7 @@ NS_ASSUME_NONNULL_BEGIN
             .highlightedColor(theme.iconHighlightedColor)
             .sizeSignal(self.wf_positiveSizeSignal)
             .build();
-      }]
-      deliverOnMainThread];
+      }];
 }
 
 - (void)setEnabled:(BOOL)enabled {
