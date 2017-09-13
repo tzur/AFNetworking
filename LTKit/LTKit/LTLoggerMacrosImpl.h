@@ -37,8 +37,8 @@ NS_ASSUME_NONNULL_BEGIN
   #define LT_LOG_FORMAT(fmt, lvl, ...) do { \
     NSString *fileName = [[NSString stringWithUTF8String:__FILE__] lastPathComponent]; \
     const char *fileNameChar = [fileName UTF8String] ?: ""; \
-    [[LTLogger sharedLogger] logWithFormat:fmt file:fileNameChar \
-                                      line:__LINE__ logLevel:lvl, ##__VA_ARGS__]; \
+    [[LTLogger sharedLogger] logWithFormat:fmt logLevel:lvl file:fileNameChar \
+                                      line:__LINE__, ##__VA_ARGS__]; \
   } while (0)
 #endif
 

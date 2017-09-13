@@ -21,7 +21,7 @@ context(@"log contents", ^{
   it(@"should contain log data", ^{
     [logger registerTarget:mockTarget withMinimalLogLevel:LTLogLevelDebug];
 
-    [logger logWithFormat:kMessage file:kFile line:kLine logLevel:LTLogLevelDebug];
+    [logger logWithFormat:kMessage logLevel:LTLogLevelDebug file:kFile line:kLine ];
 
     OCMVerify([mockTarget outputString:[OCMArg checkWithBlock:^BOOL(NSString *log) {
       return [log rangeOfString:kMessage].location != NSNotFound;
@@ -33,7 +33,7 @@ context(@"log levels", ^{
   it(@"should log minimal log level", ^{
     [logger registerTarget:mockTarget withMinimalLogLevel:LTLogLevelDebug];
 
-    [logger logWithFormat:kMessage file:kFile line:kLine logLevel:LTLogLevelDebug];
+    [logger logWithFormat:kMessage logLevel:LTLogLevelDebug file:kFile line:kLine];
 
     OCMVerify([mockTarget outputString:OCMOCK_ANY file:kFile line:kLine logLevel:LTLogLevelDebug]);
   });
@@ -41,7 +41,7 @@ context(@"log levels", ^{
   it(@"should log above minimal log level", ^{
     [logger registerTarget:mockTarget withMinimalLogLevel:LTLogLevelDebug];
 
-    [logger logWithFormat:kMessage file:kFile line:kLine logLevel:LTLogLevelWarning];
+    [logger logWithFormat:kMessage logLevel:LTLogLevelWarning file:kFile line:kLine];
 
     OCMVerify([mockTarget outputString:OCMOCK_ANY file:kFile line:kLine
                               logLevel:LTLogLevelWarning]);
@@ -53,7 +53,7 @@ context(@"log levels", ^{
     OCMReject([[mockTarget ignoringNonObjectArgs]
         outputString:OCMOCK_ANY file:kFile line:kLine logLevel:LTLogLevelDebug]);
 
-    [logger logWithFormat:kMessage file:kFile line:kLine logLevel:LTLogLevelDebug];
+    [logger logWithFormat:kMessage logLevel:LTLogLevelDebug file:kFile line:kLine];
   });
 });
 
@@ -64,7 +64,7 @@ it(@"should unregister a logger target", ^{
   OCMReject([[mockTarget ignoringNonObjectArgs]
       outputString:OCMOCK_ANY file:kFile line:kLine logLevel:LTLogLevelDebug]);
 
-  [logger logWithFormat:kMessage file:kFile line:kLine logLevel:LTLogLevelDebug];
+  [logger logWithFormat:kMessage logLevel:LTLogLevelDebug file:kFile line:kLine];
 });
 
 SpecEnd

@@ -96,8 +96,8 @@ NSString *NSStringFromLTLogLevel(LTLogLevel logLevel);
 
 /// Logs the message, including originating file name, line number and log level to all selected
 /// targets.
-- (void)logWithFormat:(NSString *)format file:(const char *)file line:(int)line
-             logLevel:(LTLogLevel)logLevel, ... NS_FORMAT_FUNCTION(1, 5);
+- (void)logWithFormat:(NSString *)format logLevel:(LTLogLevel)logLevel
+                 file:(const char *)file line:(int)line, ... NS_FORMAT_FUNCTION(1, 5);
 
 @end
 
