@@ -20,7 +20,7 @@ typedef id _Nonnull(^LTArrayMapBlock)(ObjectType _Nonnull object);
 /// }];
 /// // powersOf2 = [1, 2, 4, ..., 2^10]
 /// @endcode
-- (NSArray *)lt_map:(LTArrayMapBlock)block;
+- (NSArray *)lt_map:(NS_NOESCAPE LTArrayMapBlock)block;
 
 /// Callback block used with \c lt_reduce:initial:.
 typedef id _Nonnull(^LTArrayReduceBlock)(id _Nonnull value, ObjectType object);
