@@ -23,7 +23,11 @@ it(@"should initialize with quality", ^{
 
 it(@"should compress correcly", ^{
   id<LTImageCompressor> referenceCompressor = $(LTCompressionFormatHEIC).isSupported ?
-      [[LTImageHEICCompressor alloc] init] : [[LTImageJPEGCompressor alloc] init];
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wpartial-availability"
+      [[LTImageHEICCompressor alloc] init] :
+#pragma clang diagnostic pop
+      [[LTImageJPEGCompressor alloc] init];
 
   auto image = LTLoadImage([self class], @"Lena.png");
   auto expectedData = [referenceCompressor compressImage:image metadata:nil error:nil];

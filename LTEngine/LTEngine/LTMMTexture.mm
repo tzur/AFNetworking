@@ -140,10 +140,13 @@
 
   glGenTextures(1, &_name);
   [self bindAndExecute:^{
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wpartial-availability"
     auto success = [eaglContext texImageIOSurface:surface target:GL_TEXTURE_2D
                                    internalFormat:internalFormat width:self.size.width
                                            height:self.size.height format:format type:precision
                                             plane:(uint32_t)self.planeIndex];
+#pragma clang diagnostic pop
     if (!success) {
       [LTGLException raise:kLTTextureCreationFailedException
                     format:@"Failed creating OpenGL texture %u backed by %@", _name, surface];
