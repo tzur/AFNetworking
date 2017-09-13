@@ -230,6 +230,10 @@
     if (_textureCache) {
       CVOpenGLESTextureCacheFlush(_textureCache.get(), 0);
       _textureCache.reset(nullptr);
+    } else if (_name) {
+      [self unbind];
+      glDeleteTextures(1, &_name);
+      LTGLCheckDbg(@"Error deleting memory mapped texture");
     }
 
     self.readSyncObject = nil;
