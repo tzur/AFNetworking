@@ -182,8 +182,8 @@ static NSString *stringFromNSDecimalWithCurrentLocale(NSDecimal value) {
   }
 }
 
-- (void)logWithFormat:(NSString *)format file:(const char *)file line:(int)line
-             logLevel:(LTLogLevel)logLevel, ... {
+- (void)logWithFormat:(NSString *)format logLevel:(LTLogLevel)logLevel file:(const char *)file
+                 line:(int)line, ... {
   @synchronized (self) {
     auto targets = self.targets[(NSUInteger)logLevel];
     if (!targets.count) {
@@ -191,7 +191,7 @@ static NSString *stringFromNSDecimalWithCurrentLocale(NSDecimal value) {
     }
 
     va_list args;
-    va_start(args, (NSUInteger)logLevel);
+    va_start(args, line);
 
     NSString *logString = [[NSString alloc] initWithFormat:format arguments:args];
     for (id<LTLoggerTarget> target in targets) {
