@@ -114,5 +114,7 @@ LTErrorCodesDeclare(LTKitErrorCodeProductID,
   /// Caused when a decoding of hex string has failed.
   LTErrorCodeHexDecodingFailed,
   /// Caused when an invalid argument has been passed to a method.
-  LTErrorCodeInvalidArgument
+  LTErrorCodeInvalidArgument,
+  /// Caused when an exception is raised, caught and converted to error.
+  LTErrorCodeExceptionRaised
 );

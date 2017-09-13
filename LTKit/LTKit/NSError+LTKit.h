@@ -22,6 +22,9 @@ extern NSString * const kLTSystemErrorKey;
 /// Key in the \c userInfo dictionary for \c NSString value holding the system error message.
 extern NSString * const kLTSystemErrorMessageKey;
 
+/// Key in the \c userInfo dictionary for \c NSString value holding the exception name.
+extern NSString * const kLTExceptionNameKey;
+
 /// Returns the system error message related to the given \c error. \c error is usually the current
 /// \c errno value.
 NSString *LTSystemErrorMessageForError(int error);
@@ -89,6 +92,11 @@ NSString *LTSystemErrorMessageForError(int error);
 /// Creates an error with Lightricks' domain, given error code, related URL and underlying error.
 + (instancetype)lt_errorWithCode:(NSInteger)code url:(NSURL *)url
                  underlyingError:(nullable NSError *)underlyingError;
+
+/// Creates an error with Lightricks' domain, contains the given \c exception information.
+/// The error \c userInfo dictionary includes the exception \c reason, \c name and \c userInfo keys
+/// if exist.
++ (instancetype)lt_errorWithException:(NSException *)exception;
 
 /// Returns an error with the current system error and its string representation. An error will be
 /// returned even if the current system error variable indicates that there's no error.
