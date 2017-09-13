@@ -29,7 +29,10 @@ NS_ASSUME_NONNULL_BEGIN
 
   if (self = [super init]) {
     _compressor = $(LTCompressionFormatHEIC).isSupported ?
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wpartial-availability"
         [[LTImageHEICCompressor alloc] initWithQuality:quality] :
+#pragma clang diagnostic pop
         [[LTImageJPEGCompressor alloc] initWithQuality:quality];
     _format = _compressor.format;
     _quality = quality;
