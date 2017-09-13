@@ -230,7 +230,7 @@ typedef NS_ENUM(NSUInteger, UIDeviceScreenType) {
     objc_setAssociatedObject(self, _cmd, name, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
   }
 
-  return objc_getAssociatedObject(self, _cmd);
+  return nn(objc_getAssociatedObject(self, _cmd));
 }
 
 - (UIDeviceKind)lt_deviceKind {
@@ -279,7 +279,7 @@ typedef NS_ENUM(NSUInteger, UIDeviceScreenType) {
     LTAssert(self.lt_deviceKindString, @"No valid device type set.");
   }
 
-  return objc_getAssociatedObject(self, _cmd);
+  return nn(objc_getAssociatedObject(self, _cmd));
 }
 
 - (UIDeviceScreenType)lt_screenType {
