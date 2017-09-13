@@ -92,7 +92,7 @@ static const int kBufferSize = 16;
 
   if (self.enumerator) {
     const void *key = pthread_self();
-    objc_setAssociatedObject(self.enumerator, key, nil, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    objc_setAssociatedObject(nn(self.enumerator), key, nil, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
   }
 }
 
