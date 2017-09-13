@@ -59,6 +59,9 @@
 		8B6867FD1F3B279500F0EF4C /* ReactiveObjC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B6863771F3346F800F0EF4C /* ReactiveObjC.framework */; };
 		B918A90E1E06CBC700970070 /* FBRHTTPClientProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = B918A90C1E06CBC700970070 /* FBRHTTPClientProvider.h */; };
 		B918A9341E06CBD300970070 /* FBRHTTPSessionConfigurationProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = B918A9331E06CBD300970070 /* FBRHTTPSessionConfigurationProvider.h */; };
+		CD07C9C61F693C6100355A90 /* NSBundleResourceRequest+NoThrowSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD07C9C51F693C6100355A90 /* NSBundleResourceRequest+NoThrowSpec.mm */; };
+		CD3DEDCB1F6829120081BB67 /* NSBundleResourceRequest+NoThrow.h in Headers */ = {isa = PBXBuildFile; fileRef = CD3DEDC91F6829120081BB67 /* NSBundleResourceRequest+NoThrow.h */; };
+		CD3DEDCC1F6829120081BB67 /* NSBundleResourceRequest+NoThrow.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD3DEDCA1F6829120081BB67 /* NSBundleResourceRequest+NoThrow.mm */; };
 		CD98433A1ECD80E1007CBCBC /* NSBundle+OnDemandResourcesSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD9843391ECD80E1007CBCBC /* NSBundle+OnDemandResourcesSpec.mm */; };
 		CDCD37551EC979E700AFB954 /* FBROnDemandResource.h in Headers */ = {isa = PBXBuildFile; fileRef = CDCD37531EC979E700AFB954 /* FBROnDemandResource.h */; };
 		CDCD39401EC9F57E00AFB954 /* NSBundle+OnDemandResources.h in Headers */ = {isa = PBXBuildFile; fileRef = CDCD393E1EC9F57E00AFB954 /* NSBundle+OnDemandResources.h */; };
@@ -467,6 +470,9 @@
 		8B6863681F3346F800F0EF4C /* ReactiveObjC.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactiveObjC.xcodeproj; path = ../third_party/ReactiveObjC/ReactiveObjC.xcodeproj; sourceTree = "<group>"; };
 		B918A90C1E06CBC700970070 /* FBRHTTPClientProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBRHTTPClientProvider.h; sourceTree = "<group>"; };
 		B918A9331E06CBD300970070 /* FBRHTTPSessionConfigurationProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBRHTTPSessionConfigurationProvider.h; sourceTree = "<group>"; };
+		CD07C9C51F693C6100355A90 /* NSBundleResourceRequest+NoThrowSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSBundleResourceRequest+NoThrowSpec.mm"; sourceTree = "<group>"; };
+		CD3DEDC91F6829120081BB67 /* NSBundleResourceRequest+NoThrow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSBundleResourceRequest+NoThrow.h"; sourceTree = "<group>"; };
+		CD3DEDCA1F6829120081BB67 /* NSBundleResourceRequest+NoThrow.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSBundleResourceRequest+NoThrow.mm"; sourceTree = "<group>"; };
 		CD9843391ECD80E1007CBCBC /* NSBundle+OnDemandResourcesSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSBundle+OnDemandResourcesSpec.mm"; sourceTree = "<group>"; };
 		CDCD37531EC979E700AFB954 /* FBROnDemandResource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBROnDemandResource.h; sourceTree = "<group>"; };
 		CDCD393E1EC9F57E00AFB954 /* NSBundle+OnDemandResources.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSBundle+OnDemandResources.h"; sourceTree = "<group>"; };
@@ -879,6 +885,7 @@
 			isa = PBXGroup;
 			children = (
 				CD9843391ECD80E1007CBCBC /* NSBundle+OnDemandResourcesSpec.mm */,
+				CD07C9C51F693C6100355A90 /* NSBundleResourceRequest+NoThrowSpec.mm */,
 			);
 			name = "On Demand Resources";
 			sourceTree = "<group>";
@@ -889,6 +896,8 @@
 				CDCD37531EC979E700AFB954 /* FBROnDemandResource.h */,
 				CDCD393E1EC9F57E00AFB954 /* NSBundle+OnDemandResources.h */,
 				CDCD393F1EC9F57E00AFB954 /* NSBundle+OnDemandResources.mm */,
+				CD3DEDC91F6829120081BB67 /* NSBundleResourceRequest+NoThrow.h */,
+				CD3DEDCA1F6829120081BB67 /* NSBundleResourceRequest+NoThrow.mm */,
 			);
 			name = "On Demand Resources";
 			sourceTree = "<group>";
@@ -905,6 +914,7 @@
 				65A694431D083D4D001DE328 /* FBRHTTPSessionSecurityPolicy.h in Headers */,
 				65C53DB31D39B6E700B38E62 /* FBRHTTPSession.h in Headers */,
 				65A694441D083D4D001DE328 /* FBRHTTPClient.h in Headers */,
+				CD3DEDCB1F6829120081BB67 /* NSBundleResourceRequest+NoThrow.h in Headers */,
 				B918A90E1E06CBC700970070 /* FBRHTTPClientProvider.h in Headers */,
 				65C53DB21D39B6E400B38E62 /* FBRHTTPRequest.h in Headers */,
 				65C53DB41D39B6EF00B38E62 /* FBRHTTPResponse.h in Headers */,
@@ -1361,6 +1371,7 @@
 				659F3ABC1D23E1830097F3D0 /* NSErrorCodes+Fiber.mm in Sources */,
 				659F3B661D243B630097F3D0 /* AFNetworking+Fiber.mm in Sources */,
 				65C3C24C1D296E4D00C8F288 /* NSError+AFNetworkingAdapter.mm in Sources */,
+				CD3DEDCC1F6829120081BB67 /* NSBundleResourceRequest+NoThrow.mm in Sources */,
 				659F3B691D2448D70097F3D0 /* NSError+Fiber.mm in Sources */,
 				65B7F16E1D186531005810C9 /* FBRHTTPSessionRequestMarshalling.mm in Sources */,
 				6583558C1D2FA2C700B88A70 /* RACSignal+Fiber.mm in Sources */,
@@ -1381,6 +1392,7 @@
 				65C3C2501D2987A700C8F288 /* AFNetworking+FiberSpec.mm in Sources */,
 				CD98433A1ECD80E1007CBCBC /* NSBundle+OnDemandResourcesSpec.mm in Sources */,
 				650794591D25646800187A5D /* FBRHTTPResponseSpec.mm in Sources */,
+				CD07C9C61F693C6100355A90 /* NSBundleResourceRequest+NoThrowSpec.mm in Sources */,
 				653FB1861D2035920000D2CA /* FBRHTTPRequestSpec.mm in Sources */,
 				65F513A21D1C1C7D000687A7 /* FBRCompareSpec.mm in Sources */,
 				659F3ABE1D23E63E0097F3D0 /* FBRHTTPClientSpec.mm in Sources */,
