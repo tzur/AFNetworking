@@ -226,4 +226,27 @@ it(@"should create error with system error even if there's no error", ^{
   expect(error.lt_systemErrorMessage.length).to.beGreaterThan(0);
 });
 
+it(@"should create error with exception", ^{
+  auto exception = [NSException exceptionWithName:NSInternalInconsistencyException reason:@"foo"
+                                         userInfo:nil];
+  auto error = [NSError lt_errorWithException:exception];
+
+  expect(error.lt_isLTDomain).to.beTruthy();
+  expect(error.code).to.equal(LTErrorCodeExceptionRaised);
+  expect(error.userInfo[kLTExceptionNameKey]).to.equal(NSInternalInconsistencyException);
+  expect(error.userInfo[kLTErrorDescriptionKey]).to.equal(@"foo");
+});
+
+it(@"should create error with exception with user information", ^{
+  auto exception = [NSException exceptionWithName:NSInternalInconsistencyException reason:@"foo"
+                                         userInfo:@{@"bar": @"baz"}];
+  auto error = [NSError lt_errorWithException:exception];
+
+  expect(error.lt_isLTDomain).to.beTruthy();
+  expect(error.code).to.equal(LTErrorCodeExceptionRaised);
+  expect(error.userInfo[kLTExceptionNameKey]).to.equal(NSInternalInconsistencyException);
+  expect(error.userInfo[kLTErrorDescriptionKey]).to.equal(@"foo");
+  expect(error.userInfo[@"bar"]).to.equal(@"baz");
+});
+
 SpecEnd

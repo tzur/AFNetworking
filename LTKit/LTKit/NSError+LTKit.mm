@@ -19,6 +19,8 @@ NSString * const kLTSystemErrorKey = @"SystemError";
 
 NSString * const kLTSystemErrorMessageKey = @"SystemErrorMessage";
 
+NSString * const kLTExceptionNameKey = @"ExceptionName";
+
 NSString *LTSystemErrorMessageForError(int error) {
   std::vector<char> message(1024);
   while (strerror_r(error, message.data(), message.size()) == ERANGE) {
@@ -140,6 +142,17 @@ NSString *LTSystemErrorMessageForError(int error) {
     NSURLErrorKey: url ?: [NSNull null],
     NSUnderlyingErrorKey: underlyingError ?: [NSError lt_nullValueGivenError]
   }];
+}
+
++ (instancetype)lt_errorWithException:(NSException *)exception {
+  auto userInfo = [NSMutableDictionary dictionaryWithDictionary:exception.userInfo ?: @{}];
+  [userInfo addEntriesFromDictionary:@{
+    kLTExceptionNameKey: exception.name,
+    kLTErrorDescriptionKey: exception.description,
+    NSLocalizedFailureReasonErrorKey: exception.reason ?: [NSNull null]
+  }];
+
+  return [NSError lt_errorWithCode:LTErrorCodeExceptionRaised userInfo:userInfo];
 }
 
 + (instancetype)lt_errorWithSystemError {
