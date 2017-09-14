@@ -428,6 +428,20 @@
 			remoteGlobalIDString = A14171C11E6EAC0D005DBEFF;
 			remoteInfo = LaboratoryTests;
 		};
+		8B029FE31F696B5300B3CF25 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 062776391ED586D50006024E /* Pinky.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 06FD92A11EDC66E500D180C7;
+			remoteInfo = PinkyBundle;
+		};
+		8B029FE51F696B5300B3CF25 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 062776391ED586D50006024E /* Pinky.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 06FD92BC1EDC85C600D180C7;
+			remoteInfo = PinkyDeviceTests;
+		};
 		8B54EAFB1D89938A00104102 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 65BAF1491D47F9E1009BBB6F /* PhotonsUI.xcodeproj */;
@@ -524,6 +538,8 @@
 			isa = PBXGroup;
 			children = (
 				062776431ED586D50006024E /* libPinky.a */,
+				8B029FE41F696B5300B3CF25 /* Pinky.bundle */,
+				8B029FE61F696B5300B3CF25 /* PinkyDeviceTests.xctest */,
 				062776451ED586D50006024E /* PinkyTests.xctest */,
 			);
 			name = Products;
@@ -702,7 +718,7 @@
 		652397381D47F69F00222BCB /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0800;
+				LastUpgradeCheck = 0900;
 				ORGANIZATIONNAME = Lightricks;
 				TargetAttributes = {
 					65BAF4211D48B1A7009BBB6F = {
@@ -990,6 +1006,20 @@
 			remoteRef = 884961D81EBA21CB007B3AE8 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		8B029FE41F696B5300B3CF25 /* Pinky.bundle */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = Pinky.bundle;
+			remoteRef = 8B029FE31F696B5300B3CF25 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8B029FE61F696B5300B3CF25 /* PinkyDeviceTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = PinkyDeviceTests.xctest;
+			remoteRef = 8B029FE51F696B5300B3CF25 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		8B54EAFC1D89938A00104102 /* PhotonsUIBundle.bundle */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
@@ -1197,14 +1227,20 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -1243,14 +1279,20 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
