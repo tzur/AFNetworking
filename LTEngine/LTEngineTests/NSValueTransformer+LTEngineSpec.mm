@@ -210,7 +210,7 @@ context(@"enum transformer", ^{
 
 context(@"dictionary with value model class", ^{
   __block NSDictionary<NSString *, NSDictionary<NSString *, id> *> *json;
-  __block NSDictionary<NSString *, NSDictionary<NSString *, id> *> *models;
+  __block NSDictionary<NSString *, LTTestMTLModel *> *models;
   __block NSValueTransformer *transformer;
 
   beforeEach(^{

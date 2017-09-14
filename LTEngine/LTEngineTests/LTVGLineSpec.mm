@@ -42,12 +42,6 @@ context(@"initialization", ^{
     expect(line.lineHeight).to.beCloseToWithin(11.5, kEpsilon);
   });
 
-  it(@"should raise when initializing with invalid runs", ^{
-    expect(^{
-      line = [[LTVGLine alloc] initWithGlyphRuns:@[@1]];
-    }).to.raise(NSInvalidArgumentException);
-  });
-
   it(@"should not raise when initializing with runs containing glyphs with different baselines", ^{
     LTVGGlyph *glyphWithInvalidBaselineOrigin =
         [[LTVGGlyph alloc] initWithPath:glyph.path glyphIndex:8 font:font
