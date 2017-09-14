@@ -9,7 +9,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation BLUNode (Builder)
 
-+ (BLUNodeBuilder *(^)())builder {
++ (BLUNodeBuilder *(^)(void))builder {
   return ^{
     return [[BLUNodeBuilder alloc] init];
   };
@@ -53,7 +53,7 @@ NS_ASSUME_NONNULL_BEGIN
   };
 }
 
-- (BLUNode *(^)())build {
+- (BLUNode *(^)(void))build {
   return ^{
     LTParameterAssert(_name, @"Name must be set prior to building the node");
     return [BLUNode nodeWithName:_name childNodes:_childNodes ?: @[] value:_value];
