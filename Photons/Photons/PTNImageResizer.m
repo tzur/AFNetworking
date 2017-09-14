@@ -95,7 +95,7 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 /// Block allocating and returning a \c UIImage.
-typedef UIImage *(^PTNImageBlock)();
+typedef UIImage *(^PTNImageBlock)(void);
 
 // \c imageSource should be released by the caller. \c fullSizeImage should allocate and return the
 // full size image pointed by \c sourceRef.

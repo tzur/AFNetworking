@@ -927,7 +927,6 @@
 			isa = PBXGroup;
 			children = (
 				835547791D783E0100F65398 /* Blank */,
-				83893A341D12827E002B64B4 /* Hardware */,
 				83D318BE1D054A17008A8D7E /* CAMAudioDevice.h */,
 				8D01B1E18E03D65BC0430673 /* CAMDevicePreset.h */,
 				8D01B772F8E8AF1392710F22 /* CAMDevicePreset.mm */,
@@ -942,6 +941,7 @@
 				83D318BD1D054A0E008A8D7E /* CAMVideoDevice.h */,
 				83D318B91D054902008A8D7E /* CAMWhiteBalanceDevice.h */,
 				83D318BA1D054913008A8D7E /* CAMZoomDevice.h */,
+				83893A341D12827E002B64B4 /* Hardware */,
 			);
 			name = Device;
 			sourceTree = "<group>";

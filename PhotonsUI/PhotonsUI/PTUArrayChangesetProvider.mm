@@ -3,6 +3,8 @@
 
 #import "PTUArrayChangesetProvider.h"
 
+#import <LTKit/LTRandomAccessCollection.h>
+
 #import "PTUChangeset.h"
 #import "PTUChangesetMetadata.h"
 

@@ -3,6 +3,8 @@
 
 #import "PTUFlattenningChangesetProvider.h"
 
+#import <LTKit/LTRandomAccessCollection.h>
+
 #import "PTUChangeset.h"
 #import "PTUChangesetMetadata.h"
 #import "PTUChangesetMove.h"

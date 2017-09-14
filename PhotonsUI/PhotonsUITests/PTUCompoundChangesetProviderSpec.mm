@@ -3,6 +3,8 @@
 
 #import "PTUCompoundChangesetProvider.h"
 
+#import <LTKit/LTRandomAccessCollection.h>
+
 #import "PTUChangeset.h"
 #import "PTUChangesetMetadata.h"
 #import "PTUTestUtils.h"

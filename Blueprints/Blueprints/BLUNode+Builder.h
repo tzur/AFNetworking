@@ -28,7 +28,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface BLUNode (Builder)
 
 /// Returns a block that returns a new builder upon call.
-+ (BLUNodeBuilder *(^)())builder;
++ (BLUNodeBuilder *(^)(void))builder;
 
 @end
 
@@ -47,7 +47,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (BLUNodeBuilder *(^)(NSArray<BLUNode *> *childNodes))childNodes;
 
 /// Builds a node with the set parameters. If \c name has not been set, an exception will be raised.
-- (BLUNode *(^)())build;
+- (BLUNode *(^)(void))build;
 
 @end
 

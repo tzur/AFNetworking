@@ -9,7 +9,7 @@ NS_ASSUME_NONNULL_BEGIN
 @CUSTOM_CLASS_DECLARATION@
 
 /// Protocol implemented by objects that provide a JSON serializable dictionary, containing unique
-/// event data for an \c @EVENT_OBJC_NAME.
+/// event data for an \c @EVENT_OBJC_NAME@.
 @protocol @EVENT_OBJC_NAME@DataProvider
 
 /// Dictionary representing the receiver's current properties assignments that can be serialized

@@ -9,7 +9,7 @@ EXPMatcherImplementationBegin(matchError, (BOOL(^matchBlock)(NSError *error)) )
 __block LLSignalTestRecorder *actualRecorder;
 __block BOOL notErrored;
 
-void (^subscribe)() = ^{
+void (^subscribe)(void) = ^{
     if(!actualRecorder) {
         actualRecorder = LLRMRecorderForObject(actual);
     }

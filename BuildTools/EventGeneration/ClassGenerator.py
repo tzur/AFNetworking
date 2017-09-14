@@ -63,6 +63,12 @@ def generate_method_argument_strings(objc_properties):
             for objc_property in objc_properties]
 
 
+def generate_imports(objc_properties):
+    """Generates imports for the given properties"""
+    filenames = [re.sub(r'\s\*', "", objc_property.objc_type) for objc_property in objc_properties]
+    return ["{}.h".format(filename) for filename in filenames]
+
+
 def generate_method_argument_string(name, argument_type, nullable=False):
     """Generates argument strings as used in objective-c"""
     return "{0}:({1}){0}".format(name, merge_nullable_type(argument_type, nullable))

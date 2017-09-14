@@ -39,10 +39,6 @@ context(@"initialization", ^{
       run = [[LTVGGlyphRun alloc] initWithGlyphs:@[]];
     }).to.raise(NSInvalidArgumentException);
 
-    expect(^{
-      run = [[LTVGGlyphRun alloc] initWithGlyphs:@[@1]];
-    }).to.raise(NSInvalidArgumentException);
-
     LTVGGlyph *glyphWithDifferentFont =
         [[LTVGGlyph alloc] initWithPath:glyph.path glyphIndex:8
                                    font:[UIFont fontWithName:@"Helvetica" size:10]

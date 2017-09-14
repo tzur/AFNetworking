@@ -3,6 +3,8 @@
 
 #import "PTUDataSource.h"
 
+#import <LTKit/LTRandomAccessCollection.h>
+
 #import "PTNFakeAssetManager.h"
 #import "PTNTestUtils.h"
 #import "PTUChangeset.h"

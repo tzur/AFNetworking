@@ -173,18 +173,6 @@ context(@"lt_URLByAppendingQueryItems", ^{
 });
 
 context(@"lt_URLByAppendingQueryDictionary", ^{
-  it(@"should raise when query dictionary is illegal", ^{
-    NSURL *url = [NSURL URLWithString:@"foo"];
-
-    expect(^{
-      [url lt_URLByAppendingQueryDictionary:@{@"key": [NSNull null]}];
-    }).to.raise(NSInvalidArgumentException);
-
-    expect(^{
-      [url lt_URLByAppendingQueryDictionary:@{@42: @"value"}];
-    }).to.raise(NSInvalidArgumentException);
-  });
-
   it(@"should not modify URL when appending empty query dictionary", ^{
     NSURL *url = [NSURL URLWithString:@"foo/bar?key=value"];
     expect([url lt_URLByAppendingQueryDictionary:@{}]).to.equal(url);
@@ -226,26 +214,6 @@ context(@"lt_URLByAppendingQueryDictionary", ^{
 });
 
 context(@"lt_URLByAppendingQueryArrayDictionary", ^{
-  it(@"should raise when query dictionary is illegal", ^{
-    NSURL *url = [NSURL URLWithString:@"foo"];
-
-    expect(^{
-      [url lt_URLByAppendingQueryArrayDictionary:@{@"key": [NSNull null]}];
-    }).to.raise(NSInvalidArgumentException);
-
-    expect(^{
-      [url lt_URLByAppendingQueryArrayDictionary:@{@42: @"value"}];
-    }).to.raise(NSInvalidArgumentException);
-
-    expect(^{
-      [url lt_URLByAppendingQueryArrayDictionary:@{@"key": @"value"}];
-    }).to.raise(NSInvalidArgumentException);
-
-    expect(^{
-      [url lt_URLByAppendingQueryArrayDictionary:@{@"key": @[]}];
-    }).to.raise(NSInvalidArgumentException);
-  });
-
   it(@"should not modify URL when appending empty query dictionary", ^{
     NSURL *url = [NSURL URLWithString:@"foo/bar?key=value"];
     expect([url lt_URLByAppendingQueryArrayDictionary:@{}]).to.equal(url);

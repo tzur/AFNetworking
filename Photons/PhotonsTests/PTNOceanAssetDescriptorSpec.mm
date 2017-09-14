@@ -9,7 +9,7 @@
 
 SpecBegin(PTNOceanAssetDescriptor)
 
-__block NSDictionary<NSString *, NSString *> *descriptorDictionary;
+__block NSDictionary<NSString *, id> *descriptorDictionary;
 __block PTNOceanAssetDescriptor *descriptor;
 __block NSError *parseError;
 

@@ -3,7 +3,10 @@
 
 #ifdef __cplusplus
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcomma"
 #import "../../third_party/half/half.hpp"
+#pragma clang diagnostic pop
 
 #import <opencv2/core/core.hpp>
 

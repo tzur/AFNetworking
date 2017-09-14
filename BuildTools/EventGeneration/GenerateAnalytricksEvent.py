@@ -75,7 +75,7 @@ class AnalytricksEventGenerator(object):
 
     @property
     def properties_declarations(self):
-        return  ClassGenerator.generate_property_declarations(self.all_properties)
+        return ClassGenerator.generate_property_declarations(self.all_properties)
 
     @property
     def all_properties(self):
@@ -127,8 +127,7 @@ class AnalytricksEventGenerator(object):
             "PROPERTIES_ASSIGNMENT": "\n".join(self.properties_assignment),
             "JSON_PROVIDERS": " ,".join(self.json_providers),
             "JSON_ASSIGNMENTS": ",\n    ".join(self.json_assignments),
-            "JSON_SERIALIZABLE_PROTOCOL_HEADER":
-                AnalytricksEventGenerator.__json_provider_protocol_import_file(),
+            "JSON_SERIALIZABLE_IMPORTS": "\n".join(self.custom_type_properties_imports),
             "JSON_FILE_NAME": self.__basename
         }
 
@@ -155,10 +154,6 @@ class AnalytricksEventGenerator(object):
     def __analytricks_protocol_import_file():
         return "<Intelligence/INTAnalytricksEvent.h>"
 
-    @staticmethod
-    def __json_provider_protocol_import_file():
-        return "<Intelligence/INTJSONSerializable.h>"
-
 
 if __name__ == "__main__":
     if len(sys.argv) != 4:
@@ -166,7 +161,9 @@ if __name__ == "__main__":
                os.path.basename(sys.argv[0]))
         sys.exit()
 
-    filename, shared_folder, output_dir = sys.argv[1:]
+    filename = sys.argv[1]
+    shared_folder = sys.argv[2]
+    output_dir = sys.argv[3]
 
     try:
         generator = AnalytricksEventGenerator(filename, shared_folder)
