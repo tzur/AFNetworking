@@ -8,7 +8,7 @@ EXPMatcherImplementationBegin(sendError, (NSError *expected))
 __block LLSignalTestRecorder *actualRecorder = nil;
 __block LLSignalTestRecorder *expectedRecorder = nil;
 
-void (^subscribe)() = ^{
+void (^subscribe)(void) = ^{
     if(!actualRecorder) {
         actualRecorder = LLRMRecorderForObject(actual);
     }

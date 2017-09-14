@@ -10,7 +10,7 @@ __block LLSignalTestRecorder *actualRecorder;
 __block id failingValue;
 __block NSUInteger failingIndex;
 
-void (^subscribe)() = ^{
+void (^subscribe)(void) = ^{
     if(!actualRecorder) {
         actualRecorder = LLRMRecorderForObject(actual);
     }

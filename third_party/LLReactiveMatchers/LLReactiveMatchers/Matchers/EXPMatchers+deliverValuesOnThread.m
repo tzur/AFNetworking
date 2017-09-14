@@ -10,7 +10,7 @@ EXPMatcherImplementationBegin(deliverValuesOnThread, (NSThread *expected)) {
   __block NSString *prerequisiteErrorMessage;
   __block LLSignalTestRecorder *actualRecorder = nil;
   
-  void (^subscribe)() = ^{
+  void (^subscribe)(void) = ^{
     if(!actualRecorder) {
       actualRecorder = LLRMRecorderForObject(actual);
     }

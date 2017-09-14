@@ -7,7 +7,7 @@ EXPMatcherImplementationBegin(sendValuesWithCount, (NSUInteger expected))
 
 __block LLSignalTestRecorder *actualRecorder;
 
-void (^subscribe)() = ^{
+void (^subscribe)(void) = ^{
     if(!actualRecorder) {
         actualRecorder = LLRMRecorderForObject(actual);
     }

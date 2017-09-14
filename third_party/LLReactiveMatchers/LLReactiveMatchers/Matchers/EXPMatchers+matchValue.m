@@ -9,7 +9,7 @@ EXPMatcherImplementationBegin(matchValue, (NSUInteger valueIndex, BOOL(^matchBlo
 __block LLSignalTestRecorder *actualRecorder;
 __block BOOL notRecievedCount;
 
-void (^subscribe)() = ^{
+void (^subscribe)(void) = ^{
     if(!actualRecorder) {
         actualRecorder = LLRMRecorderForObject(actual);
     }
