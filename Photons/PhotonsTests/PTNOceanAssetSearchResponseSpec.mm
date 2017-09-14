@@ -9,7 +9,7 @@
 
 SpecBegin(PTNOceanAssetSearchResponse)
 
-__block NSDictionary<NSString *, NSString *> *responseDictionary;
+__block NSDictionary<NSString *, id> *responseDictionary;
 __block PTNOceanAssetSearchResponse *response;
 __block NSError *parseError;
 

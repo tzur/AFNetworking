@@ -17,4 +17,4 @@ PTNFileSystemDirectoryDescriptor *PTNFileSystemDirectoryFromString(NSString *pat
 
 /// Returns \c NSString that is a path for video with 16x16 dimensions and approximately 1 second
 /// duration.
-NSURL *PTNOneSecondVideoPath();
+NSURL *PTNOneSecondVideoPath(void);
