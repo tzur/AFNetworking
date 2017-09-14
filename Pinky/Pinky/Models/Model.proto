@@ -1,3 +1,6 @@
+// Copyright (c) 2017 Lightricks. All rights reserved.
+// Modified by Ofir Bibi.
+
 // Copyright (c) 2017, Apple Inc. All rights reserved.
 //
 // Use of this source code is governed by a BSD-3-clause license that can be
@@ -14,29 +17,13 @@
  *     - ``Pipeline``
  *
  * Regressors
- *     - ``GLMRegressor``
- *     - ``SupportVectorRegressor``
- *     - ``TreeEnsembleRegressor``
  *     - ``NeuralNetworkRegressor``
  *
  * Classifiers
- *     - ``GLMClassifier``
- *     - ``SupportVectorClassifier``
- *     - ``TreeEnsembleClassifier``
  *     - ``NeuralNetworkClassifier``
  *
  * Neural Networks
  *     - ``NeuralNetwork``
- *
- * Feature Engineering
- *     - ``OneHotEncoder``
- *     - ``Imputer``
- *     - ``FeatureVectorizer``
- *     - ``DictVectorizer``
- *     - ``Scaler``
- *     - ``CategoricalMapping``
- *     - ``Normalizer``
- *     - ``ArrayFeatureExtractor``
  *
  * Simple Mathematical Functions
  *     - ``Identity``
@@ -45,21 +32,9 @@
 syntax = "proto3";
 option optimize_for = LITE_RUNTIME;
 
-import public "ArrayFeatureExtractor.proto";
-import public "CategoricalMapping.proto";
-import public "DictVectorizer.proto";
 import public "FeatureTypes.proto";
-import public "FeatureVectorizer.proto";
-import public "GLMRegressor.proto";
-import public "GLMClassifier.proto";
 import public "Identity.proto";
-import public "Imputer.proto";
 import public "NeuralNetwork.proto";
-import public "Normalizer.proto";
-import public "OneHotEncoder.proto";
-import public "Scaler.proto";
-import public "SVM.proto";
-import public "TreeEnsemble.proto";
 
 package CoreML.Specification;
 
@@ -152,29 +127,13 @@ message Model {
         Pipeline pipeline = 202;
 
         // regressors start at 300
-        GLMRegressor glmRegressor = 300;
-        SupportVectorRegressor supportVectorRegressor = 301;
-        TreeEnsembleRegressor treeEnsembleRegressor = 302;
         NeuralNetworkRegressor neuralNetworkRegressor = 303;
 
         // classifiers start at 400
-        GLMClassifier glmClassifier = 400;
-        SupportVectorClassifier supportVectorClassifier = 401;
-        TreeEnsembleClassifier treeEnsembleClassifier = 402;
         NeuralNetworkClassifier neuralNetworkClassifier = 403;
 
         // generic models start at 500
         NeuralNetwork neuralNetwork = 500;
-
-        // feature engineering starts at 600
-        OneHotEncoder oneHotEncoder = 600;
-        Imputer imputer = 601;
-        FeatureVectorizer featureVectorizer = 602;
-        DictVectorizer dictVectorizer = 603;
-        Scaler scaler = 604;
-        CategoricalMapping categoricalMapping = 606;
-        Normalizer normalizer = 607;
-        ArrayFeatureExtractor arrayFeatureExtractor = 609;
 
         // simple mathematical functions used for testing start at 900
         Identity identity = 900;
