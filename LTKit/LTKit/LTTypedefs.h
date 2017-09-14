@@ -42,7 +42,7 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 /// Void block.
-typedef void (^LTVoidBlock)();
+typedef void (^LTVoidBlock)(void);
 
 /// Block used as a completion handler.
 typedef LTVoidBlock LTCompletionBlock;
