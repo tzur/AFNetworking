@@ -6,7 +6,7 @@
 #import <LTKit/NSArray+Functional.h>
 #import <LTKit/NSDateFormatter+Formatters.h>
 
-#import @JSON_SERIALIZABLE_PROTOCOL_HEADER@
+@JSON_SERIALIZABLE_IMPORTS@
 
 NS_ASSUME_NONNULL_BEGIN
 
