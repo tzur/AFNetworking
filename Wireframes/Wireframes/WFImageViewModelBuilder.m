@@ -167,7 +167,7 @@ static id<WFImageProvider> WFDefaultImageProvider() {
   };
 }
 
-- (id<WFImageViewModel> (^)())build {
+- (id<WFImageViewModel> (^)(void))build {
   return ^{
     LTParameterAssert(!_isBuilt, @"build() can be called only once, and it has already been "
                       "called");

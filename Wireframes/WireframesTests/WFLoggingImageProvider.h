@@ -66,7 +66,7 @@ extern "C" {
 ///
 /// @note the installment is valid only in the current test. To use it in multiple tests add the
 /// call to this function to the \c beforeEach block.
-WFLoggingImageProvider *WFUseLoggingImageProvider();
+WFLoggingImageProvider *WFUseLoggingImageProvider(void);
 
 #ifdef __cplusplus
 }

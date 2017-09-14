@@ -111,7 +111,7 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 /// Raises \c NSInvalidArgumentException if the configuration is invalid, or if this is not the
 /// first time \c build() is called.
-- (id<WFImageViewModel> (^)())build;
+- (id<WFImageViewModel> (^)(void))build;
 
 @end
 
