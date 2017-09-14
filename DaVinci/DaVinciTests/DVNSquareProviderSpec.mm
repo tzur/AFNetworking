@@ -12,7 +12,7 @@
 #import "DVNGeometryProviderExamples.h"
 
 SpecBegin(DVNSquareProvider)
-__block DVNSquareProviderModel *model;
+
 __block id<LTSampleValues> samples;
 
 beforeEach(^{
@@ -25,12 +25,11 @@ beforeEach(^{
 
 afterEach(^{
   samples = nil;
-  model = nil;
 });
 
 context(@"initialization", ^{
   it(@"should initialize with given edge length and default values", ^{
-    model = [[DVNSquareProviderModel alloc] initWithEdgeLength:7];
+    DVNSquareProviderModel *model = [[DVNSquareProviderModel alloc] initWithEdgeLength:7];
     expect(model).toNot.beNil();
     expect(model.edgeLength).to.equal(7);
     expect(model.xCoordinateKey)
@@ -40,8 +39,9 @@ context(@"initialization", ^{
   });
 
   it(@"should initialize with given edge length and keys", ^{
-    model = [[DVNSquareProviderModel alloc] initWithEdgeLength:7 xCoordinateKey:@"xKey"
-                                                yCoordinateKey:@"yKey"];
+    DVNSquareProviderModel *model = [[DVNSquareProviderModel alloc] initWithEdgeLength:7
+                                                                        xCoordinateKey:@"xKey"
+                                                                        yCoordinateKey:@"yKey"];
     expect(model).toNot.beNil();
     expect(model.edgeLength).to.equal(7);
     expect(model.xCoordinateKey).to.equal(@"xKey");
@@ -51,37 +51,43 @@ context(@"initialization", ^{
   context(@"invalid initialization attempts", ^{
     it(@"should raise when attempting to initialize with negative edge length", ^{
       expect(^{
-        model = [[DVNSquareProviderModel alloc] initWithEdgeLength:-1];
+        DVNSquareProviderModel * __unused model =
+            [[DVNSquareProviderModel alloc] initWithEdgeLength:-1];
       }).to.raise(NSInvalidArgumentException);
 
       expect(^{
-        model = [[DVNSquareProviderModel alloc] initWithEdgeLength:-1 xCoordinateKey:@"xKey"
-                                                    yCoordinateKey:@"yKey"];
+        DVNSquareProviderModel * __unused model =
+            [[DVNSquareProviderModel alloc] initWithEdgeLength:-1 xCoordinateKey:@"xKey"
+                                                yCoordinateKey:@"yKey"];
       }).to.raise(NSInvalidArgumentException);
     });
 
     it(@"should raise when attempting to initialize with zero edge length", ^{
       expect(^{
-        model = [[DVNSquareProviderModel alloc] initWithEdgeLength:0];
+        DVNSquareProviderModel * __unused model =
+            [[DVNSquareProviderModel alloc] initWithEdgeLength:0];
       }).to.raise(NSInvalidArgumentException);
 
       expect(^{
-        model = [[DVNSquareProviderModel alloc] initWithEdgeLength:0 xCoordinateKey:@"xKey"
-                                                    yCoordinateKey:@"yKey"];
+        DVNSquareProviderModel * __unused model =
+            [[DVNSquareProviderModel alloc] initWithEdgeLength:0 xCoordinateKey:@"xKey"
+                                                yCoordinateKey:@"yKey"];
       }).to.raise(NSInvalidArgumentException);
     });
 
     it(@"should raise when attempting to initialize with empty key", ^{
       expect(^{
-        model = [[DVNSquareProviderModel alloc] initWithEdgeLength:1 xCoordinateKey:@"xKey"
-                                                    yCoordinateKey:@""];
+        DVNSquareProviderModel * __unused model =
+            [[DVNSquareProviderModel alloc] initWithEdgeLength:1 xCoordinateKey:@"xKey"
+                                                yCoordinateKey:@""];
       }).to.raise(NSInvalidArgumentException);
     });
 
     it(@"should raise when attempting to initialize with equal keys", ^{
       expect(^{
-        model = [[DVNSquareProviderModel alloc] initWithEdgeLength:1 xCoordinateKey:@"key"
-                                                    yCoordinateKey:@"key"];
+        DVNSquareProviderModel * __unused model =
+            [[DVNSquareProviderModel alloc] initWithEdgeLength:1 xCoordinateKey:@"key"
+                                                yCoordinateKey:@"key"];
       }).to.raise(NSInvalidArgumentException);
     });
   });
@@ -171,6 +177,9 @@ itShouldBehaveLike(kDVNGeometryProviderExamples, ^{
 context(@"provider", ^{
   context(@"model", ^{
     it(@"should provide a correct updated model", ^{
+      DVNSquareProviderModel *model = [[DVNSquareProviderModel alloc] initWithEdgeLength:7
+                                                                          xCoordinateKey:@"xKey"
+                                                                          yCoordinateKey:@"yKey"];
       id<DVNGeometryProvider> provider = [model provider];
       [provider valuesFromSamples:samples end:NO];
       DVNSquareProviderModel *currentModel = [provider currentModel];

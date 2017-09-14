@@ -7,7 +7,7 @@ SpecBegin(NSNumber_Localization)
 
 it(@"should return a localized price with currency sign at the correct side", ^{
   expect([@(20.99) spx_localizedPriceForLocale:@"en_US"]).to.equal(@"$20.99");
-  expect([@(20.00) spx_localizedPriceForLocale:@"he_IL"]).to.equal(@"20.00 ₪");
+  expect([@(20.00) spx_localizedPriceForLocale:@"fr_FR"]).to.equal(@"20,00 €");
 });
 
 it(@"should trim the third digit onwards", ^{
