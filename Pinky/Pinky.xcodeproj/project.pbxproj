@@ -75,6 +75,7 @@
 		882D1F301EC1C49C007F39F5 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 882D1F2F1EC1C49C007F39F5 /* GLKit.framework */; };
 		882D1F321EC1C54F007F39F5 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 882D1F311EC1C54F007F39F5 /* QuartzCore.framework */; };
 		884962181EBA226E007B3AE8 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1417A911E6ED9CB005DBEFF /* UIKit.framework */; };
+		8B029FBE1F696B3000B3CF25 /* EXPMatchers+beCloseToScalar.mm in Sources */ = {isa = PBXBuildFile; fileRef = C9131EA11EE0599D00E924DA /* EXPMatchers+beCloseToScalar.mm */; };
 		8BB108991EDD72DE00B27DC4 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BB108981EDD72DE00B27DC4 /* CoreText.framework */; };
 		8BB1089B1EDD72E300B27DC4 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BB1089A1EDD72E300B27DC4 /* CoreMedia.framework */; };
 		8BB1089D1EDD72E700B27DC4 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BB1089C1EDD72E700B27DC4 /* CoreVideo.framework */; };
@@ -87,7 +88,6 @@
 		A14173431E6EB59F005DBEFF /* libSpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A14172B81E6EAF0D005DBEFF /* libSpecta.a */; };
 		C9131EAC1EE0599D00E924DA /* EXPMatchers+beCloseToMat.mm in Sources */ = {isa = PBXBuildFile; fileRef = C9131E9F1EE0599D00E924DA /* EXPMatchers+beCloseToMat.mm */; };
 		C9131EAD1EE0599D00E924DA /* EXPMatchers+beCloseToMat.mm in Sources */ = {isa = PBXBuildFile; fileRef = C9131E9F1EE0599D00E924DA /* EXPMatchers+beCloseToMat.mm */; };
-		C9131EAE1EE0599D00E924DA /* EXPMatchers+beCloseToScalar.mm in Sources */ = {isa = PBXBuildFile; fileRef = C9131EA11EE0599D00E924DA /* EXPMatchers+beCloseToScalar.mm */; };
 		C9131EAF1EE0599D00E924DA /* EXPMatchers+beCloseToScalar.mm in Sources */ = {isa = PBXBuildFile; fileRef = C9131EA11EE0599D00E924DA /* EXPMatchers+beCloseToScalar.mm */; };
 		C9131EB01EE0599D00E924DA /* EXPMatchers+equalMat.mm in Sources */ = {isa = PBXBuildFile; fileRef = C9131EA31EE0599D00E924DA /* EXPMatchers+equalMat.mm */; };
 		C9131EB11EE0599D00E924DA /* EXPMatchers+equalMat.mm in Sources */ = {isa = PBXBuildFile; fileRef = C9131EA31EE0599D00E924DA /* EXPMatchers+equalMat.mm */; };
@@ -1171,7 +1171,7 @@
 		A14171991E6EAA93005DBEFF /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0820;
+				LastUpgradeCheck = 0900;
 				ORGANIZATIONNAME = Lightricks;
 				TargetAttributes = {
 					06FD92A01EDC66E500D180C7 = {
@@ -1539,11 +1539,10 @@
 				C9815C641EE88713004868CE /* PNKOpenCVExtensionsSpec.mm in Sources */,
 				068D90B21F1F93450012F472 /* EXPMatchers+equalMTLSize.mm in Sources */,
 				C9791B561F0272470009E90F /* PNKConstantAlphaSpec.mm in Sources */,
-				C9131EAE1EE0599D00E924DA /* EXPMatchers+beCloseToScalar.mm in Sources */,
+				8B029FBE1F696B3000B3CF25 /* EXPMatchers+beCloseToScalar.mm in Sources */,
 				068D90A41F1F5D000012F472 /* PNKAdditionSpec.mm in Sources */,
 				C9231FA91F04F31B009E4FDB /* PNKGammaCorrectionSpec.mm in Sources */,
 				062EEA4F1F25315400AB4958 /* PNKNearestNeighborUpsamplingSpec.mm in Sources */,
-				C9131EAE1EE0599D00E924DA /* EXPMatchers+beCloseToScalar.mm in Sources */,
 				C9131EAC1EE0599D00E924DA /* EXPMatchers+beCloseToMat.mm in Sources */,
 				068D91381F24C9AD0012F472 /* PNKReflectionPaddingSpec.mm in Sources */,
 				C9791A761F025B1F0009E90F /* PNKLibraryLoaderSpec.mm in Sources */,
