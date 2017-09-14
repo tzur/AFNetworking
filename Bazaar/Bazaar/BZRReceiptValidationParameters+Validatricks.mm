@@ -15,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 
   NSMutableDictionary *requestParameters = [NSMutableDictionary dictionary];
 
-  requestParameters[kApplicationBundleIDKey] = self.applicationBundleId,
+  requestParameters[kApplicationBundleIDKey] = self.applicationBundleId;
   requestParameters[kReceiptKey] =
       [self.receiptData base64EncodedStringWithOptions:(NSDataBase64EncodingOptions)0];
   if (self.deviceId) {
