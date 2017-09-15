@@ -263,9 +263,7 @@ NSString * const kLTModelValueTransformerColorKey = @"color";
       ^NSURL * _Nullable(NSString *string) {
         LTParameterAssert([string isKindOfClass:NSString.class],
                           @"Expected a NSString, got: %@", string.class);
-        NSString *escapedUrl = [string stringByAddingPercentEncodingWithAllowedCharacters:
-                                [NSCharacterSet URLQueryAllowedCharacterSet]];
-        return [NSURL URLWithString:escapedUrl];
+        return [NSURL URLWithString:string];
   } reverseBlock:^NSString *(NSURL *url) {
     LTParameterAssert([url isKindOfClass:NSURL.class],
                       @"Expected a NSURL, got: %@", url.class);

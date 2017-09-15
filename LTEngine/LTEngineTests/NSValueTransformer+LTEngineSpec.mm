@@ -639,7 +639,8 @@ context(@"URL value transformer", ^{
   });
 
   it(@"should perform forward transform", ^{
-    NSString *urlString = @"http://hostus mostus/cool path?q=7日間無料";
+    NSString *urlString =
+        @"http://hostus%20mostus/cool%20path?q=7%E6%97%A5%E9%96%93%E7%84%A1%E6%96%99";
     expect([transformer transformedValue:urlString]).to.equal(components.URL);
   });
 
