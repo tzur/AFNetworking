@@ -12,7 +12,6 @@
 		650BB33F1D465389008648A3 /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B425EE51CA6D218001C457E /* libOCMock.a */; };
 		650BB3401D465389008648A3 /* libSpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B425F021CA6D218001C457E /* libSpecta.a */; };
 		84FF72F71C8EEF9600D1DA9F /* libShopix.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 84FF72E91C8EED6D00D1DA9F /* libShopix.a */; };
-		CD3C697E1F559295008A6C23 /* ShopixSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD3C697D1F559295008A6C23 /* ShopixSpec.mm */; };
 		CD3C69A41F559394008A6C23 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD3C69A31F559394008A6C23 /* GLKit.framework */; };
 		CD3C6A0F1F559F23008A6C23 /* libLLReactiveMatchers.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CD962DB01F5427EF00F2CA82 /* libLLReactiveMatchers.a */; };
 		CD3C6A331F559F3A008A6C23 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD3C6A321F559F3A008A6C23 /* UIKit.framework */; };
@@ -22,7 +21,7 @@
 		CD55511A1F45D5E10048215C /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = CD5551161F45D5E10048215C /* Localizable.strings */; };
 		CD55511B1F45D5E10048215C /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = CD5551181F45D5E10048215C /* Localizable.stringsdict */; };
 		CD8E8E2F1F5C19F500DF8FC1 /* NSNumber+Localization.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD8E8E2E1F5C19F500DF8FC1 /* NSNumber+Localization.mm */; };
-		CD962D031F5416D700F2CA82 /* Shopix.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD962D021F5416D700F2CA82 /* Shopix.mm */; };
+		CDB510741F6176150013577C /* SPXLocalization.mm in Sources */ = {isa = PBXBuildFile; fileRef = CDB510731F6176150013577C /* SPXLocalization.mm */; };
 		CDB8A6571F53FCE300E14706 /* libextobjc_iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CDB8A6521F53FCB200E14706 /* libextobjc_iOS.a */; };
 		CDB8A6591F53FE1800E14706 /* libcompression.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = CDB8A6581F53FE1800E14706 /* libcompression.tbd */; };
 		CDCFDEF91F5C39B300C289BA /* NSNumber+LocalizationSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = CDCFDEF81F5C39B300C289BA /* NSNumber+LocalizationSpec.mm */; };
@@ -349,7 +348,6 @@
 		848EFFB71C591B91001D8368 /* StaticLibrary.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = StaticLibrary.xcconfig; sourceTree = "<group>"; };
 		84FF72E91C8EED6D00D1DA9F /* libShopix.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libShopix.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B57B1FC1D914FE100814B3C /* Bundle.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Bundle.xcconfig; sourceTree = "<group>"; };
-		CD3C697D1F559295008A6C23 /* ShopixSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ShopixSpec.mm; sourceTree = "<group>"; };
 		CD3C69A31F559394008A6C23 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
 		CD3C6A321F559F3A008A6C23 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		CD3C6A341F559F44008A6C23 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -387,9 +385,9 @@
 		CD962CB61F54046200F2CA82 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.stringsdict"; sourceTree = "<group>"; };
 		CD962CB71F54046300F2CA82 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = fr; path = fr.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		CD962CB81F54056200F2CA82 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
-		CD962D011F5416D700F2CA82 /* Shopix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Shopix.h; sourceTree = "<group>"; };
-		CD962D021F5416D700F2CA82 /* Shopix.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Shopix.mm; sourceTree = "<group>"; };
 		CD962D9C1F5427EF00F2CA82 /* LLReactiveMatchers.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LLReactiveMatchers.xcodeproj; path = ../../third_party/LLReactiveMatchers/LLReactiveMatchers.xcodeproj; sourceTree = "<group>"; };
+		CDB510721F6176150013577C /* SPXLocalization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPXLocalization.h; sourceTree = "<group>"; };
+		CDB510731F6176150013577C /* SPXLocalization.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXLocalization.mm; sourceTree = "<group>"; };
 		CDB8A6481F53FCB200E14706 /* extobjc.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = extobjc.xcodeproj; path = ../third_party/libextobjc/extobjc.xcodeproj; sourceTree = "<group>"; };
 		CDB8A6581F53FE1800E14706 /* libcompression.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libcompression.tbd; path = usr/lib/libcompression.tbd; sourceTree = SDKROOT; };
 		CDCCF3D51F4EC2F700F421E6 /* ReactiveObjC.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactiveObjC.xcodeproj; path = ../third_party/ReactiveObjC/ReactiveObjC.xcodeproj; sourceTree = "<group>"; };
@@ -456,8 +454,6 @@
 			children = (
 				CD8E8E081F5C19DC00DF8FC1 /* Localization */,
 				848E001F1C591E7B001D8368 /* Supporting Files */,
-				CD962D011F5416D700F2CA82 /* Shopix.h */,
-				CD962D021F5416D700F2CA82 /* Shopix.mm */,
 			);
 			path = Shopix;
 			sourceTree = "<group>";
@@ -506,7 +502,6 @@
 			isa = PBXGroup;
 			children = (
 				CDCFDF1E1F5C39BA00C289BA /* Localization */,
-				CD3C697D1F559295008A6C23 /* ShopixSpec.mm */,
 			);
 			name = Tests;
 			sourceTree = "<group>";
@@ -654,6 +649,8 @@
 			children = (
 				CD8E8E2D1F5C19F500DF8FC1 /* NSNumber+Localization.h */,
 				CD8E8E2E1F5C19F500DF8FC1 /* NSNumber+Localization.mm */,
+				CDB510721F6176150013577C /* SPXLocalization.h */,
+				CDB510731F6176150013577C /* SPXLocalization.mm */,
 			);
 			name = Localization;
 			sourceTree = "<group>";
@@ -729,6 +726,7 @@
 				84FF72E51C8EED6D00D1DA9F /* Sources */,
 				84FF72E61C8EED6D00D1DA9F /* Frameworks */,
 				84FF72E71C8EED6D00D1DA9F /* CopyFiles */,
+				CD8E86A31F56F1C200DF8FC1 /* Run Localization Script */,
 			);
 			buildRules = (
 			);
@@ -1138,12 +1136,28 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		CD8E86A31F56F1C200DF8FC1 /* Run Localization Script */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Run Localization Script";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"$PROJECT_DIR/BuildTools/Localization/run_app_localization.sh\" \"$PROJECT_DIR\" \"$TARGET_NAME\" \"./ShopixBundle\"";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		848E00091C591DD1001D8368 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CD3C697E1F559295008A6C23 /* ShopixSpec.mm in Sources */,
 				CDCFDEF91F5C39B300C289BA /* NSNumber+LocalizationSpec.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1153,7 +1167,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CD8E8E2F1F5C19F500DF8FC1 /* NSNumber+Localization.mm in Sources */,
-				CD962D031F5416D700F2CA82 /* Shopix.mm in Sources */,
+				CDCFE4F71F5D68B500C289BA /* SPXLocalization.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
