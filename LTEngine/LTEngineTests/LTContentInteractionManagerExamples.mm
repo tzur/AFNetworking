@@ -173,25 +173,14 @@ sharedExamplesFor(kLTContentInteractionManagerExamples, ^(NSDictionary *data) {
     });
   });
 
-  context(@"desired rate for stationary content touch event forwarding", ^{
-    it(@"should have an initial rate of 60", ^{
-      expect(manager.desiredRateForStationaryContentTouchEventForwarding).to.equal(60);
+  context(@"stationary touch event forwarding", ^{
+    it(@"should have a truthy initial value", ^{
+      expect(manager.forwardStationaryTouchEvents).to.beTruthy();
     });
 
-    it(@"should set the desired rate", ^{
-      manager.desiredRateForStationaryContentTouchEventForwarding = 7;
-      expect(manager.desiredRateForStationaryContentTouchEventForwarding).to.equal(7);
-    });
-
-    it(@"should set the desired rate to 0", ^{
-      manager.desiredRateForStationaryContentTouchEventForwarding = 0;
-      expect(manager.desiredRateForStationaryContentTouchEventForwarding).to.equal(0);
-    });
-
-    it(@"should raise when attempting to set a rate greater than 60", ^{
-      expect(^{
-        manager.desiredRateForStationaryContentTouchEventForwarding = 61;
-      }).to.raise(NSInvalidArgumentException);
+    it(@"should set touch event forwarding", ^{
+      manager.forwardStationaryTouchEvents = NO;
+      expect(manager.forwardStationaryTouchEvents).to.beFalsy();
     });
   });
 });

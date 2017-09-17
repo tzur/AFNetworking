@@ -28,9 +28,6 @@ NS_ASSUME_NONNULL_BEGIN
 /// Object used to retrieve the system uptime.
 @property (readonly, nonatomic) NSProcessInfo *processInfo;
 
-/// Operating system version of the device.
-@property (readonly, nonatomic) NSString *deviceSystemVersion;
-
 @end
 
 @implementation LTTouchEventView
@@ -47,7 +44,7 @@ NS_ASSUME_NONNULL_BEGIN
     self.sequenceID = 0;
     _displayLink = [self displayLinkForStationaryTouchEvents];
     _processInfo = [NSProcessInfo processInfo];
-    _deviceSystemVersion = UIDevice.currentDevice.systemVersion;
+    _forwardStationaryTouchEvents = YES;
   }
   return self;
 }
@@ -77,7 +74,7 @@ NS_ASSUME_NONNULL_BEGIN
   [super touchesBegan:touches withEvent:event];
   [self updateMapTableWithBeginningTouches:touches];
   [self delegateTouches:touches event:event sequenceState:LTTouchEventSequenceStateStart];
-  [self updateDisplayLink];
+  [self pauseOrResumeDisplayLink];
 }
 
 - (void)touchesMoved:(NSSet<UITouch *> *)touches withEvent:(nullable UIEvent *)event {
@@ -88,7 +85,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(nullable UIEvent *)event {
   [super touchesEnded:touches withEvent:event];
   [self delegateTouches:touches event:event sequenceState:LTTouchEventSequenceStateEnd];
-  [self updateDisplayLink];
+  [self pauseOrResumeDisplayLink];
 }
 
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_10_0
@@ -98,7 +95,7 @@ NS_ASSUME_NONNULL_BEGIN
 #endif
   [super touchesCancelled:touches withEvent:event];
   [self delegateTouches:touches event:event sequenceState:LTTouchEventSequenceStateCancellation];
-  [self updateDisplayLink];
+  [self pauseOrResumeDisplayLink];
 }
 
 - (void)touchesEstimatedPropertiesUpdated:(NSSet<UITouch *> *)touches {
@@ -191,14 +188,9 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark Auxiliary methods - Display Link
 #pragma mark -
 
-- (void)updateDisplayLink {
+- (void)pauseOrResumeDisplayLink {
   BOOL isTouchToSequenceIDEmpty = self.touchToSequenceID.count == 0;
-  if ([self.deviceSystemVersion compare:@"10.0" options:NSNumericSearch] != NSOrderedAscending) {
-    self.displayLink.paused = isTouchToSequenceIDEmpty ||
-        !self.displayLink.preferredFramesPerSecond;
-  } else {
-    self.displayLink.paused = isTouchToSequenceIDEmpty;
-  }
+  self.displayLink.paused = isTouchToSequenceIDEmpty || !self.forwardStationaryTouchEvents;
 }
 
 #pragma mark -
@@ -304,16 +296,9 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark Properties
 #pragma mark -
 
-- (NSUInteger)desiredRateForStationaryTouchEventForwarding {
-  return self.displayLink.preferredFramesPerSecond;
-}
-
-- (void)setDesiredRateForStationaryTouchEventForwarding:(NSUInteger)rate {
-  static const NSUInteger kMaximumFrameRate = 60;
-  LTParameterAssert(rate <= kMaximumFrameRate, @"Rate (%lu) must not be greater than %lu",
-                    (unsigned long)rate, (unsigned long)kMaximumFrameRate);
-  self.displayLink.preferredFramesPerSecond = rate;
-  [self updateDisplayLink];
+- (void)setForwardStationaryTouchEvents:(BOOL)forwardStationaryTouchEvents {
+  _forwardStationaryTouchEvents = forwardStationaryTouchEvents;
+  [self pauseOrResumeDisplayLink];
 }
 
 @end

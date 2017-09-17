@@ -334,12 +334,12 @@ NS_ASSUME_NONNULL_BEGIN
                                                interactionManager.customGestureRecognizers)];
 }
 
-- (NSUInteger)desiredRateForStationaryContentTouchEventForwarding {
-  return self.touchEventView.desiredRateForStationaryTouchEventForwarding;
+- (BOOL)forwardStationaryTouchEvents {
+  return self.touchEventView.forwardStationaryTouchEvents;
 }
 
-- (void)setDesiredRateForStationaryContentTouchEventForwarding:(NSUInteger)rate {
-  self.touchEventView.desiredRateForStationaryTouchEventForwarding = rate;
+- (void)setForwardStationaryTouchEvents:(BOOL)forwardStationaryTouchEvents {
+  self.touchEventView.forwardStationaryTouchEvents = forwardStationaryTouchEvents;
 }
 
 #pragma mark -
