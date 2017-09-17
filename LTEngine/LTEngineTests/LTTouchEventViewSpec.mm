@@ -651,7 +651,7 @@ context(@"forwarding of stationary touch events", ^{
   });
 });
 
-context(@"desired rate for stationary content touch event forwarding", ^{
+context(@"stationary content touch events forwarding", ^{
   __block LTTouchEventView *view;
 
   beforeEach(^{
@@ -659,24 +659,13 @@ context(@"desired rate for stationary content touch event forwarding", ^{
     view = [[LTTouchEventView alloc] initWithFrame:CGRectZero delegate:delegate];
   });
 
-  it(@"should have an initial rate of 60", ^{
-    expect(view.desiredRateForStationaryTouchEventForwarding).to.equal(60);
+  it(@"should have a truthy initial value", ^{
+    expect(view.forwardStationaryTouchEvents).to.beTruthy();
   });
 
-  it(@"should set the desired rate", ^{
-    view.desiredRateForStationaryTouchEventForwarding = 7;
-    expect(view.desiredRateForStationaryTouchEventForwarding).to.equal(7);
-  });
-
-  it(@"should set the desired rate to 0", ^{
-    view.desiredRateForStationaryTouchEventForwarding = 0;
-    expect(view.desiredRateForStationaryTouchEventForwarding).to.equal(0);
-  });
-
-  it(@"should raise when attempting to set a rate greater than 60", ^{
-    expect(^{
-      view.desiredRateForStationaryTouchEventForwarding = 61;
-    }).to.raise(NSInvalidArgumentException);
+  it(@"should set whether to forward touches", ^{
+    view.forwardStationaryTouchEvents = NO;
+    expect(view.forwardStationaryTouchEvents).to.beFalsy();
   });
 });
 
@@ -701,17 +690,13 @@ context(@"display link", ^{
       eventMock = LTTouchEventViewCreateEvent();
     });
 
-    it(@"should retrieve the desired rate from the display link", ^{
-      view.displayLink.preferredFramesPerSecond = 7;
-      expect(view.desiredRateForStationaryTouchEventForwarding).to.equal(7);
+    it(@"should pause display link when forwarding is disabled", ^{
+      view.forwardStationaryTouchEvents = NO;
+      expect(view.displayLink.paused).to.beTruthy();
     });
 
-    it(@"should proxy the desired rate to the display link", ^{
-      view.desiredRateForStationaryTouchEventForwarding = 7;
-      expect(view.displayLink.preferredFramesPerSecond).to.equal(7);
-    });
-
-    it(@"should unpause display link when there are active touches", ^{
+    it(@"should unpause display link when forwarding is enabled", ^{
+      view.forwardStationaryTouchEvents = YES;
       [view touchesBegan:touchMocks withEvent:eventMock];
       expect(view.displayLink.paused).to.beFalsy();
     });
@@ -722,23 +707,23 @@ context(@"display link", ^{
       expect(view.displayLink.paused).to.beTruthy();
     });
 
-    it(@"should pause display link when there are active touches but rate is set to 0", ^{
+    it(@"should pause display link when there are active touches but forwarding is disabled", ^{
       [view touchesBegan:touchMocks withEvent:eventMock];
-      view.desiredRateForStationaryTouchEventForwarding = 0;
+      view.forwardStationaryTouchEvents = NO;
       expect(view.displayLink.paused).to.beTruthy();
     });
 
-    it(@"should unpause display link when there are active touches and rate is set to non-zero", ^{
+    it(@"should unpause display link when there are active touches and forwarding is enabled", ^{
       [view touchesBegan:touchMocks withEvent:eventMock];
-      view.desiredRateForStationaryTouchEventForwarding = 0;
+      view.forwardStationaryTouchEvents = NO;
       expect(view.displayLink.paused).to.beTruthy();
 
-      view.desiredRateForStationaryTouchEventForwarding = 7;
+      view.forwardStationaryTouchEvents = YES;
       expect(view.displayLink.paused).to.beFalsy();
     });
 
-    it(@"should keep display link paused when there are no active touches but rate is updated", ^{
-      view.desiredRateForStationaryTouchEventForwarding = 7;
+    it(@"should pause display link when there are no active touches but forwarding is enabled", ^{
+      view.forwardStationaryTouchEvents = YES;
       expect(view.displayLink.paused).to.beTruthy();
     });
   });
