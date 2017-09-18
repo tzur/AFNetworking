@@ -1,0 +1,24 @@
+/* Text on a button shown to the user on failed action, navigating the user to sending feedback */
+"Contact Us" = "お問い合わせ";
+
+/* Title for an error message indicating that a network error has occurred */
+"Network error" = "ネットワークエラー";
+
+/* Text on a button shown to the user on failed action, dismissing the alert */
+"Not Now" = "今はしない";
+
+/* Shown after a failed purchase */
+"Purchase failed" = "購入できませんでした";
+
+/* Body of an error message that asks the user to try again */
+"Try Again" = "再度嘗試";
+
+/* Title of an alert box shown after purchases restoration has failed */
+"Your purchases cannot be restored at this time" = "現在購入を復元できません";
+
+/* Message shown after a successful products restoration, when no activesubscription was found */
+"Your purchases were restored successfully, no active subscription found" = "購入を問題なく復元しました。有効な購読を見つけられませんでした";
+
+/* No comment provided by engineer. */
+"Your subscription was restored successfully" = "購読が問題なく復元されました。";
+

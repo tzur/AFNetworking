@@ -16,7 +16,6 @@
 
   // Localization.
   #ifdef __cplusplus
-  #import "SPXLocalization.h"
-  using namespace spx;
+    #import "SPXLocalization.h"
   #endif
 #endif
