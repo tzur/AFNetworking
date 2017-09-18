@@ -1,0 +1,24 @@
+/* Text on a button shown to the user on failed action, navigating the user to sending feedback */
+"Contact Us" = "Bizlere Ulaşın";
+
+/* Title for an error message indicating that a network error has occurred */
+"Network error" = "Bağlantı hatası";
+
+/* Text on a button shown to the user on failed action, dismissing the alert */
+"Not Now" = "Şimdi değil";
+
+/* Shown after a failed purchase */
+"Purchase failed" = "Satın alma başarısız";
+
+/* Body of an error message that asks the user to try again */
+"Try Again" = "Tekrar Dene";
+
+/* Title of an alert box shown after purchases restoration has failed */
+"Your purchases cannot be restored at this time" = "Satın alınanlar şu an restore edilemiyor";
+
+/* Message shown after a successful products restoration, when no activesubscription was found */
+"Your purchases were restored successfully, no active subscription found" = "Satın aldıklarınız başarıyla geri yüklendi, aktif abonelik bulunamadı";
+
+/* No comment provided by engineer. */
+"Your subscription was restored successfully" = "Aboneliğiniz başarıyla geri yüklendi";
+

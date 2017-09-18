@@ -1,0 +1,24 @@
+/* Text on a button shown to the user on failed action, navigating the user to sending feedback */
+"Contact Us" = "Contacto";
+
+/* Title for an error message indicating that a network error has occurred */
+"Network error" = "Error de red";
+
+/* Text on a button shown to the user on failed action, dismissing the alert */
+"Not Now" = "Ahora no";
+
+/* Shown after a failed purchase */
+"Purchase failed" = "Error en la compra";
+
+/* Body of an error message that asks the user to try again */
+"Try Again" = "Vuelva a intentarlo";
+
+/* Title of an alert box shown after purchases restoration has failed */
+"Your purchases cannot be restored at this time" = "Tus compras no pueden ser restauradas en este momento";
+
+/* Message shown after a successful products restoration, when no activesubscription was found */
+"Your purchases were restored successfully, no active subscription found" = "Se han restaurado sus compras. No se ha encontrado ninguna suscripción activa";
+
+/* No comment provided by engineer. */
+"Your subscription was restored successfully" = "Su suscripción se ha restaurado";
+

@@ -1,0 +1,24 @@
+/* Text on a button shown to the user on failed action, navigating the user to sending feedback */
+"Contact Us" = "고객 센터";
+
+/* Title for an error message indicating that a network error has occurred */
+"Network error" = "네트워크 오류";
+
+/* Text on a button shown to the user on failed action, dismissing the alert */
+"Not Now" = "나중에";
+
+/* Shown after a failed purchase */
+"Purchase failed" = "구매 실패";
+
+/* Body of an error message that asks the user to try again */
+"Try Again" = "다시 시도하세요";
+
+/* Title of an alert box shown after purchases restoration has failed */
+"Your purchases cannot be restored at this time" = "현재 구입 항목을 복원할 수 없습니다";
+
+/* Message shown after a successful products restoration, when no activesubscription was found */
+"Your purchases were restored successfully, no active subscription found" = "구입 항목이 성공적으로 복원되었지만, 활성화된 구독 기간을 찾을 수 없음";
+
+/* No comment provided by engineer. */
+"Your subscription was restored successfully" = "구독 기간이 성공적으로 복원되었습니다.";
+

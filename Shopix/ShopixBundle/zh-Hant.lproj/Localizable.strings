@@ -1,0 +1,24 @@
+/* Text on a button shown to the user on failed action, navigating the user to sending feedback */
+"Contact Us" = "與我們聯繫";
+
+/* Title for an error message indicating that a network error has occurred */
+"Network error" = "網絡錯誤";
+
+/* Text on a button shown to the user on failed action, dismissing the alert */
+"Not Now" = "暫時不要";
+
+/* Shown after a failed purchase */
+"Purchase failed" = "購買失敗";
+
+/* Body of an error message that asks the user to try again */
+"Try Again" = "再度嘗試";
+
+/* Title of an alert box shown after purchases restoration has failed */
+"Your purchases cannot be restored at this time" = "您的採購當時不能恢復";
+
+/* Message shown after a successful products restoration, when no activesubscription was found */
+"Your purchases were restored successfully, no active subscription found" = "已成功恢復您的購買";
+
+/* No comment provided by engineer. */
+"Your subscription was restored successfully" = "已成功恢復您的訂用。";
+

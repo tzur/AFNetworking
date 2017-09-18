@@ -1,0 +1,24 @@
+/* Text on a button shown to the user on failed action, navigating the user to sending feedback */
+"Contact Us" = "Связаться с нами";
+
+/* Title for an error message indicating that a network error has occurred */
+"Network error" = "Ошибка сети";
+
+/* Text on a button shown to the user on failed action, dismissing the alert */
+"Not Now" = "Не сейчас";
+
+/* Shown after a failed purchase */
+"Purchase failed" = "Сбой при покупке";
+
+/* Body of an error message that asks the user to try again */
+"Try Again" = "Еще раз";
+
+/* Title of an alert box shown after purchases restoration has failed */
+"Your purchases cannot be restored at this time" = "В данный момент ваша покупка не может быть восстановлена";
+
+/* Message shown after a successful products restoration, when no activesubscription was found */
+"Your purchases were restored successfully, no active subscription found" = "Покупки восстановлены. Активных подписок нет";
+
+/* No comment provided by engineer. */
+"Your subscription was restored successfully" = "Подписка восстановлена";
+
