@@ -163,6 +163,10 @@ context(@"value object with no properties", ^{
     expect(firstObject).notTo.equal(nil);
   });
 
+  it(@"should handle isEqual correctly when comparing two inherited non-equal objects", ^{
+    expect([firstObject isEqual:[[NSObject alloc] init]]).to.beFalsy();
+  });
+
   it(@"should return hash", ^{
     expect(firstObject.hash).to.equal(secondObject.hash);
   });
@@ -194,6 +198,10 @@ context(@"value object with properties", ^{
     expect(firstObject).notTo.equal(thirdObject);
     expect(thirdObject).notTo.equal(firstObject);
     expect(firstObject).notTo.equal(nil);
+  });
+
+  it(@"should handle isEqual correctly when comparing two inherited non-equal objects", ^{
+    expect([firstObject isEqual:[[NSObject alloc] init]]).to.beFalsy();
   });
 
   it(@"should return hash", ^{
@@ -228,6 +236,10 @@ context(@"value object with nil properties", ^{
     expect(firstObject).notTo.equal(thirdObject);
     expect(thirdObject).notTo.equal(firstObject);
     expect(firstObject).notTo.equal(nil);
+  });
+
+  it(@"should handle isEqual correctly when comparing two inherited non-equal objects", ^{
+    expect([firstObject isEqual:[[NSObject alloc] init]]).to.beFalsy();
   });
 
   it(@"should return hash", ^{
@@ -270,6 +282,10 @@ context(@"value object with compound properties", ^{
     expect(firstObject).notTo.equal(nil);
   });
 
+  it(@"should handle isEqual correctly when comparing two inherited non-equal objects", ^{
+    expect([firstObject isEqual:[[NSObject alloc] init]]).to.beFalsy();
+  });
+
   it(@"should return hash", ^{
     expect(firstObject.hash).to.equal(secondObject.hash);
   });
@@ -310,6 +326,10 @@ context(@"value object with synthesized protocol properties", ^{
     expect(firstObject).notTo.equal(nil);
   });
 
+  it(@"should handle isEqual correctly when comparing two inherited non-equal objects", ^{
+    expect([firstObject isEqual:[[NSObject alloc] init]]).to.beFalsy();
+  });
+
   it(@"should return hash", ^{
     expect(firstObject.hash).to.equal(secondObject.hash);
   });
@@ -326,7 +346,7 @@ context(@"value object with weak properties", ^{
   __block LTFakeValueObjectWithWeakProperties *firstObject;
   __block LTFakeValueObjectWithWeakProperties *secondObject;
   __block NSString *string;
-  
+
   beforeEach(^{
     string = @"foo";
     firstObject = [[LTFakeValueObjectWithWeakProperties alloc] initWithMyDouble:0.3 myInteger:7
@@ -334,19 +354,19 @@ context(@"value object with weak properties", ^{
     secondObject = [[LTFakeValueObjectWithWeakProperties alloc] initWithMyDouble:0.3 myInteger:7
                                                                        myString:string];
   });
-  
+
   it(@"should raise on isEqual", ^{
     expect(^{
       [firstObject isEqual:secondObject];
     }).to.raise(NSInternalInconsistencyException);
   });
-  
+
   it(@"should raise on hash", ^{
     expect(^{
       [firstObject hash];
     }).to.raise(NSInternalInconsistencyException);
   });
-  
+
   it(@"should raise on description", ^{
     expect(^{
       [firstObject description];
@@ -373,6 +393,10 @@ context(@"value object with non-ivar properties", ^{
     expect(firstObject).notTo.equal(thirdObject);
     expect(thirdObject).notTo.equal(firstObject);
     expect(firstObject).notTo.equal(nil);
+  });
+
+  it(@"should handle isEqual correctly when comparing two inherited non-equal objects", ^{
+    expect([firstObject isEqual:[[NSObject alloc] init]]).to.beFalsy();
   });
 
   it(@"should return hash", ^{
