@@ -19,6 +19,6 @@
 /* Message shown after a successful products restoration, when no activesubscription was found */
 "Your purchases were restored successfully, no active subscription found" = "I tuoi acquisti sono stati ripristinati, non è stato trovato alcun abbonamento attivo";
 
-/* No comment provided by engineer. */
+/* Message shown after successful subscription restoration */
 "Your subscription was restored successfully" = "Il tuo abbonamento è stato ripristinato";
 

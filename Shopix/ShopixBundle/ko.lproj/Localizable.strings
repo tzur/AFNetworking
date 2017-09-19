@@ -19,6 +19,6 @@
 /* Message shown after a successful products restoration, when no activesubscription was found */
 "Your purchases were restored successfully, no active subscription found" = "구입 항목이 성공적으로 복원되었지만, 활성화된 구독 기간을 찾을 수 없음";
 
-/* No comment provided by engineer. */
+/* Message shown after successful subscription restoration */
 "Your subscription was restored successfully" = "구독 기간이 성공적으로 복원되었습니다.";
 
