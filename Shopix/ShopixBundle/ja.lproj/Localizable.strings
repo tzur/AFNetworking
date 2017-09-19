@@ -19,6 +19,6 @@
 /* Message shown after a successful products restoration, when no activesubscription was found */
 "Your purchases were restored successfully, no active subscription found" = "購入を問題なく復元しました。有効な購読を見つけられませんでした";
 
-/* No comment provided by engineer. */
+/* Message shown after successful subscription restoration */
 "Your subscription was restored successfully" = "購読が問題なく復元されました。";
 

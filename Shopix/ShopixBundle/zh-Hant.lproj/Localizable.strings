@@ -19,6 +19,6 @@
 /* Message shown after a successful products restoration, when no activesubscription was found */
 "Your purchases were restored successfully, no active subscription found" = "已成功恢復您的購買";
 
-/* No comment provided by engineer. */
+/* Message shown after successful subscription restoration */
 "Your subscription was restored successfully" = "已成功恢復您的訂用。";
 
