@@ -171,11 +171,13 @@ context(@"copying Mat to MTLTexture", ^{
   });
 
   it(@"should write to texture at region correctly", ^{
-    cv::Mat4b inputData(1, 1);
-    inputData.at<cv::Vec4b>(0, 0) = cv::Vec4b(1, 1, 1, 1);
-    PNKCopyMatToMTLTextureRegion(multiChannelTexture, MTLRegionMake2D(0, 0, 1, 1), inputData);
+    cv::Mat4b inputData(2, 1);
+    inputData(0, 0) = cv::Vec4b(1, 1, 1, 1);
+    inputData(1, 0) = cv::Vec4b(2, 2, 2, 1);
+    PNKCopyMatToMTLTextureRegion(multiChannelTexture, MTLRegionMake2D(0, 0, 1, 2), inputData);
     auto outputData = PNKMatFromMTLTexture(multiChannelTexture);
     multiChannelMat(0, 0) = cv::Vec4b(1, 1, 1, 1);
+    multiChannelMat(1, 0) = cv::Vec4b(2, 2, 2, 1);
     expect($(outputData)).to.equalMat($(multiChannelMat));
   });
 });
