@@ -68,7 +68,7 @@ void PNKCopyMatToMTLTextureRegion(id<MTLTexture> texture, MTLRegion region, cons
              mipmapLevel:mipmapLevel
                    slice:slice
                withBytes:data.data
-             bytesPerRow:texture.width * CV_MAT_CN(matType) * CV_ELEM_SIZE1(matType)
+             bytesPerRow:region.size.width * CV_MAT_CN(matType) * CV_ELEM_SIZE1(matType)
            bytesPerImage:0];
 }
 
