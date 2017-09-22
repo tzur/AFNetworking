@@ -1,9 +1,6 @@
 /* Text on a button shown to the user on failed action, navigating the user to sending feedback */
 "Contact Us" = "Contate-nos";
 
-/* Title for an error message indicating that a network error has occurred */
-"Network error" = "Erro de rede";
-
 /* Text on a button shown to the user on failed action, dismissing the alert */
 "Not Now" = "Agora Não";
 
