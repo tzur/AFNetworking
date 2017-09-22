@@ -1,9 +1,6 @@
 /* Text on a button shown to the user on failed action, navigating the user to sending feedback */
 "Contact Us" = "與我們聯繫";
 
-/* Title for an error message indicating that a network error has occurred */
-"Network error" = "網絡錯誤";
-
 /* Text on a button shown to the user on failed action, dismissing the alert */
 "Not Now" = "暫時不要";
 
