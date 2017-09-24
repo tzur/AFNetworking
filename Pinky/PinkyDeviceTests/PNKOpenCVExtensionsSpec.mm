@@ -6,7 +6,7 @@
 #import <LTEngine/LTImage.h>
 #import <LTEngine/LTOpenCVExtensions.h>
 
-SpecBegin(PNKOpenCVExtensions)
+DeviceSpecBegin(PNKOpenCVExtensions)
 
 static const cv::Vec4b kRedColor(255, 0, 0, 255);
 static const cv::Vec4b kGreenColor(0, 255, 0, 255);
@@ -215,4 +215,4 @@ context(@"copying Mat to MTLTexture of type 2D array", ^{
   });
 });
 
-SpecEnd
+DeviceSpecEnd

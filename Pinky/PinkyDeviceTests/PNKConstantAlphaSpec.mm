@@ -3,7 +3,7 @@
 
 #import "PNKConstantAlpha.h"
 
-SpecBegin(PNKConstantAlpha)
+DeviceSpecBegin(PNKConstantAlpha)
 
 static const NSUInteger kInputWidth = 6;
 static const NSUInteger kInputHeight = 6;
@@ -88,4 +88,4 @@ context(@"processing", ^{
   });
 });
 
-SpecEnd
+DeviceSpecEnd

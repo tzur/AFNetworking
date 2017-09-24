@@ -5,7 +5,7 @@
 
 #import <LTEngine/LTOpenCVExtensions.h>
 
-SpecBegin(PNKNearestNeighborUpsampling)
+DeviceSpecBegin(PNKNearestNeighborUpsampling)
 
 static const NSUInteger kInputWidth = 4;
 static const NSUInteger kInputHeight = 4;
@@ -164,4 +164,4 @@ context(@"nearest neighbor upsampling with Unorm8 channel format", ^{
   });
 });
 
-SpecEnd
+DeviceSpecEnd
