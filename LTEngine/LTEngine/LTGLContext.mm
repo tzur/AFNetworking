@@ -104,47 +104,33 @@ typedef struct {
 }
 
 - (instancetype)initWithSharegroup:(nullable EAGLSharegroup *)sharegroup {
-  return [self initWithSharegroup:sharegroup versionNumber:nil];
-}
-
-- (instancetype)initWithSharegroup:(nullable EAGLSharegroup *)sharegroup
-                           version:(LTGLVersion)version {
-  return [self initWithSharegroup:sharegroup versionNumber:@(version)];
-}
-
-- (instancetype)initWithSharegroup:(nullable EAGLSharegroup *)sharegroup
-                     versionNumber:(nullable NSNumber *)versionNumber {
   if (self = [super init]) {
-    _context = [self createEAGLContextWithSharegroup:sharegroup versionNumber:versionNumber];
-    if (!self.context) {
-      return nil;
-    }
-    _fboPool = [[LTFboPool alloc] init];
-    _programPool = [[LTProgramPool alloc] init];
+    [self setupWithSharegroup:sharegroup versions:@[@(LTGLVersion3), @(LTGLVersion2)]];
   }
   return self;
 }
 
-- (EAGLContext *)createEAGLContextWithSharegroup:(nullable EAGLSharegroup *)sharegroup
-                                   versionNumber:(nullable NSNumber *)versionNumber {
-  if (versionNumber) {
-    return [self createEAGLContextWithSharegroup:sharegroup
-                                         version:(LTGLVersion)versionNumber.unsignedIntegerValue];
+- (instancetype)initWithSharegroup:(nullable EAGLSharegroup *)sharegroup
+                           version:(LTGLVersion)version {
+  if (self = [super init]) {
+    [self setupWithSharegroup:sharegroup versions:@[@(version)]];
   }
-  EAGLContext *context = [self createEAGLContextWithSharegroup:sharegroup version:LTGLVersion3];
-  if (!context) {
-    context = [self createEAGLContextWithSharegroup:sharegroup version:LTGLVersion2];
-  }
-  LTAssert(context, @"EAGLContext creation with sharegroup %@ failed", sharegroup);
-  return context;
+  return self;
 }
 
-- (nullable EAGLContext *)createEAGLContextWithSharegroup:(nullable EAGLSharegroup *)sharegroup
-                                                  version:(LTGLVersion)version {
-  if (sharegroup) {
-    return [[EAGLContext alloc] initWithAPI:(EAGLRenderingAPI)version sharegroup:sharegroup];
+- (void)setupWithSharegroup:(nullable EAGLSharegroup *)sharegroup
+                   versions:(NSArray<NSNumber *> *)versions {
+  for (NSNumber *version in versions) {
+    EAGLRenderingAPI api = (EAGLRenderingAPI)version.unsignedIntegerValue;
+    _context = [[EAGLContext alloc] initWithAPI:api sharegroup:sharegroup];
+    if (_context) {
+      break;
+    }
   }
-  return [[EAGLContext alloc] initWithAPI:(EAGLRenderingAPI)version];
+  LTAssert(self.context, @"EAGLContext creation with sharegroup %@ failed", sharegroup);
+
+  _fboPool = [[LTFboPool alloc] init];
+  _programPool = [[LTProgramPool alloc] init];
 }
 
 - (void)dealloc {
