@@ -1748,7 +1748,7 @@
 				);
 				INFOPLIST_FILE = PinkyDeviceTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = LT.PinkyDeviceTests;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.Lightricks.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 			};
@@ -1769,7 +1769,7 @@
 				);
 				INFOPLIST_FILE = PinkyDeviceTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = LT.PinkyDeviceTests;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.Lightricks.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -1875,7 +1875,7 @@
 				);
 				INFOPLIST_FILE = PinkyTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = LT.PinkyTests;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.Lightricks.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 			};
@@ -1897,7 +1897,7 @@
 				);
 				INFOPLIST_FILE = PinkyTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = LT.PinkyTests;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.Lightricks.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 			};
