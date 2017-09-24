@@ -26,6 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 /// Marks \c MPMediaQuery as an implementer of \c PTNMediaQuery.
+API_AVAILABLE(ios(9.3))
 @interface MPMediaQuery (PTNMediaQuery) <PTNMediaQuery>
 @end
 
@@ -38,6 +39,7 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 /// Default implementation of \PTNMediaQueryProvider protocol.
+API_AVAILABLE(ios(9.3))
 @interface PTNMediaQueryProvider : NSObject <PTNMediaQueryProvider>
 @end
 

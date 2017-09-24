@@ -7,6 +7,7 @@
 
 #import "NSURL+MediaLibrary.h"
 
+API_AVAILABLE(ios(9.3))
 SpecBegin(PTNMediaLibraryCollectionDescriptor)
 
 __block MPMediaItemCollection *collection;

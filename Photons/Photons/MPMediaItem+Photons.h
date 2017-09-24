@@ -9,6 +9,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Category augmenting \c MPMediaItem by adding \c PTNAssetDescriptor's functionality.
 @interface MPMediaItem (Photons) <PTNAssetDescriptor>
+
+/// Identifier of the Photons object.
+@property (readonly, nonatomic) NSURL *ptn_identifier API_AVAILABLE(ios(9.3));
+
 @end
 
 NS_ASSUME_NONNULL_END
