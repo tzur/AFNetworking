@@ -330,7 +330,7 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
   return [[RACSignal defer:^RACSignal *{
     @strongify(self);
     self.session.videoOutput.videoSettings = pixelFormat.videoSettings;
-    if (self.session.photoOutput) {
+    if (@available(iOS 10.0, *)) {
       self.session.pixelFormat = pixelFormat;
     } else {
       self.session.stillOutput.outputSettings = pixelFormat.videoSettings;
@@ -344,7 +344,7 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
   RACSignal *captureStillImage = [[RACSignal
       createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
         @strongify(self);
-        if (self.session.photoOutput) {
+        if (@available(iOS 10.0, *)) {
           [self capturePhotoAndSendToSuscriber:subscriber];
         } else {
           [self captureStillImageAndSendToSuscriber:subscriber];
@@ -358,7 +358,7 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
       takeUntil:[self rac_willDeallocSignal]];
 }
 
-- (void)capturePhotoAndSendToSuscriber:(id<RACSubscriber>)subscriber {
+- (void)capturePhotoAndSendToSuscriber:(id<RACSubscriber>)subscriber API_AVAILABLE(ios(10.0)) {
   AVCapturePhotoSettings *photoSettings =
       [AVCapturePhotoSettings photoSettingsWithFormat:self.session.pixelFormat.videoSettings];
   photoSettings.flashMode = self.session.videoDevice.flashMode;
@@ -443,7 +443,7 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
     previewPhotoSampleBuffer:(nullable CMSampleBufferRef __unused)previewPhotoSampleBuffer
     resolvedSettings:(AVCaptureResolvedPhotoSettings *)resolvedSettings
     bracketSettings:(nullable AVCaptureBracketedStillImageSettings * __unused)bracketSettings
-    error:(nullable NSError *)error {
+    error:(nullable NSError *)error API_AVAILABLE(ios(10.0)) {
   id<RACSubscriber> subscriber;
   @synchronized(self.uniqueIdToSubscriber) {
     subscriber = self.uniqueIdToSubscriber[@(resolvedSettings.uniqueID)];
@@ -461,7 +461,7 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
 
 - (void)captureOutput:(AVCapturePhotoOutput * __unused)captureOutput
     didFinishCaptureForResolvedSettings:(AVCaptureResolvedPhotoSettings *)resolvedSettings
-    error:(nullable NSError * __unused)error {
+    error:(nullable NSError * __unused)error API_AVAILABLE(ios(10.0)) {
   @synchronized(self.uniqueIdToSubscriber) {
     [self.uniqueIdToSubscriber removeObjectForKey:@(resolvedSettings.uniqueID)];
   }

@@ -51,7 +51,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly, nonatomic, nullable) AVCaptureStillImageOutput *stillOutput;
 
 /// Still output attached to this session. Guaranteed to be non-null for iOS 10 and after.
-@property (readonly, nonatomic, nullable) AVCapturePhotoOutput *photoOutput;
+@property (readonly, nonatomic, nullable) AVCapturePhotoOutput *photoOutput
+    API_AVAILABLE(ios(10.0));
 
 /// Pixel format to use for a single photo capture request when running on iOS 10 and up.
 @property (strong, nonatomic, nullable) CAMPixelFormat *pixelFormat;

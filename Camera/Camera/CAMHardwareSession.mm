@@ -35,7 +35,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readwrite, nonatomic, nullable) AVCaptureStillImageOutput *stillOutput;
 
 /// Still output attached to this session when running on iOS 10 and up.
-@property (readwrite, nonatomic, nullable) AVCapturePhotoOutput *photoOutput;
+@property (readwrite, nonatomic, nullable) AVCapturePhotoOutput *photoOutput
+    API_AVAILABLE(ios(10.0));
 
 /// Still connection between \c videoInput and \c stillOutput.
 @property (readwrite, nonatomic) AVCaptureConnection *stillConnection;
@@ -184,7 +185,7 @@ NS_ASSUME_NONNULL_BEGIN
     [self.session removeOutput:self.stillOutputGeneric];
   }
 
-  if ([AVCapturePhotoOutput class]) {
+  if (@available(iOS 10.0, *)) {
     self.photoOutput = [[AVCapturePhotoOutput alloc] init];
     self.photoOutput.highResolutionCaptureEnabled = YES;
     self.pixelFormat = pixelFormat;
@@ -209,7 +210,11 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (AVCaptureOutput *)stillOutputGeneric {
-  return self.photoOutput ? self.photoOutput : self.stillOutput;
+  if (@available(iOS 10.0, *)) {
+    return self.photoOutput;
+  } else {
+    return self.stillOutput;
+  }
 }
 
 - (void)updateStillConnection {

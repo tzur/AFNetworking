@@ -405,7 +405,7 @@ context(@"session", ^{
       expect(success).to.beTruthy();
       expect(error).to.beNil();
 
-      if (session.photoOutput) {
+      if (@available(iOS 10.0, *)) {
         OCMVerify([sessionMock addOutput:(id)session.photoOutput]);
       } else {
         expect(session.stillOutput).toNot.beNil();
@@ -431,7 +431,7 @@ context(@"session", ^{
       NSError *error;
       [session setupStillOutputGenericWithPixelFormat:$(CAMPixelFormat420f) error:&error];
 
-      if (session.photoOutput) {
+      if (@available(iOS 10.0, *)) {
         id firstOutput = session.photoOutput;
 
         [session setupStillOutputGenericWithPixelFormat:$(CAMPixelFormat420f) error:&error];
