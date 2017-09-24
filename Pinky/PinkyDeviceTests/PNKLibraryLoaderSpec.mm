@@ -3,7 +3,7 @@
 
 #import "PNKLibraryLoader.h"
 
-SpecBegin(PNKLoadLibrary)
+DeviceSpecBegin(PNKLoadLibrary)
 
 __block id<MTLDevice> device;
 
@@ -29,4 +29,4 @@ it(@"should use caching", ^{
   expect(callingCount).to.equal(1);
 });
 
-SpecEnd
+DeviceSpecEnd

@@ -53,6 +53,16 @@
                ReferencedContainer = "container:Pinky.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "06FD92BB1EDC85C600D180C7"
+               BuildableName = "PinkyDeviceTests.xctest"
+               BlueprintName = "PinkyDeviceTests"
+               ReferencedContainer = "container:Pinky.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference

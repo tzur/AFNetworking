@@ -5,7 +5,7 @@
 
 #import <LTEngine/LTOpenCVExtensions.h>
 
-SpecBegin(PNKReflectionPadding)
+DeviceSpecBegin(PNKReflectionPadding)
 
 static const NSUInteger kInputWidth = 8;
 static const NSUInteger kInputHeight = 8;
@@ -173,4 +173,4 @@ context(@"reflection padding with Unorm8 channel format", ^{
   });
 });
 
-SpecEnd
+DeviceSpecEnd

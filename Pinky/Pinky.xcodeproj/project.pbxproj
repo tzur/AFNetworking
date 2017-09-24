@@ -1813,6 +1813,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.Lightricks.PinkyBundle;
 				PRODUCT_NAME = "$(PROJECT_NAME)";
 				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = iphoneos;
 				WRAPPER_EXTENSION = bundle;
 			};
 			name = Debug;
@@ -1830,6 +1831,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.Lightricks.PinkyBundle;
 				PRODUCT_NAME = "$(PROJECT_NAME)";
 				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = iphoneos;
 				WRAPPER_EXTENSION = bundle;
 			};
 			name = Release;
@@ -1860,6 +1862,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = A14172651E6EAD9A005DBEFF /* Application.xcconfig */;
 			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/TestHost.app/TestHost";
 				DEVELOPMENT_TEAM = KG6GWND6BG;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/$(TARGET_NAME)/$(TARGET_NAME)-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
@@ -1873,6 +1876,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.Lightricks.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
 			};
 			name = Release;
 		};

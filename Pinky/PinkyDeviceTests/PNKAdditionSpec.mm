@@ -3,7 +3,7 @@
 
 #import "PNKAddition.h"
 
-SpecBegin(PNKAdditionSpec)
+DeviceSpecBegin(PNKAddition)
 
 static const NSUInteger kInputWidth = 5;
 static const NSUInteger kInputHeight = 5;
@@ -210,4 +210,4 @@ context(@"addition operation with Float16 channel format", ^{
   });
 });
 
-SpecEnd
+DeviceSpecEnd
