@@ -9,10 +9,10 @@ namespace pnk {
 #pragma mark Preprocessing
 #pragma mark -
 
-/// Parameters defining a scaling operation to a 3 or 1 channel image. The image value scaling is
-/// performed by first multiplying each channel with the scaling factor and then adding the bias
-/// corresponding to the channel identities <tt>R, G, B or Gray</tt>.
-struct ImageChannelScalingModel {
+/// Parameters defining a per pixel scaling and bias operation to a 3 or 1 channel image. Each pixel
+/// is first multiplied with the scaling factor and then the corresponding bias for each channel is
+/// added.
+struct ImageScaleBiasModel {
   /// Scalar to be multiplied by all channels prior to adding the biases.
   float channelScale;
   /// Scalar bias to be added to the blue channel.
@@ -26,7 +26,7 @@ struct ImageChannelScalingModel {
 };
 
 #pragma mark -
-#pragma mark Nerual Network basic operations
+#pragma mark Neural Network basic operations
 #pragma mark -
 
 /// Padding types for operations dependant on padding such as convolution and pooling.

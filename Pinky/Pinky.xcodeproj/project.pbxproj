@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 47;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -42,6 +42,7 @@
 		068D91161F249E120012F472 /* PNKReflectionPadding.mm in Sources */ = {isa = PBXBuildFile; fileRef = 068D91141F249E120012F472 /* PNKReflectionPadding.mm */; };
 		068D91381F24C9AD0012F472 /* PNKReflectionPaddingSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 068D91371F24C9AD0012F472 /* PNKReflectionPaddingSpec.mm */; };
 		068D91391F24C9C70012F472 /* PNKReflectionPadding.metal in Sources */ = {isa = PBXBuildFile; fileRef = 068D91131F249E120012F472 /* PNKReflectionPadding.metal */; };
+		06A1A8FF1F0CD7BA0031A387 /* PNKNeuralNetworkModelFactory.mm in Sources */ = {isa = PBXBuildFile; fileRef = 06A1A8FE1F0CD7BA0031A387 /* PNKNeuralNetworkModelFactory.mm */; };
 		06C3F7611EFF9E5B00D4B1F4 /* PNKSingleStyleTransferProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 06C3F7601EFF9E5B00D4B1F4 /* PNKSingleStyleTransferProcessor.mm */; };
 		06C3F7641EFFDA0900D4B1F4 /* PNKSingleStyleTransferProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 06C3F7631EFFDA0900D4B1F4 /* PNKSingleStyleTransferProcessorSpec.mm */; };
 		06CA9F921F25C1CE0097E554 /* Lena128.png in Resources */ = {isa = PBXBuildFile; fileRef = 06CA9F911F25C1CE0097E554 /* Lena128.png */; };
@@ -117,6 +118,21 @@
 		C9ADC5131EFFE06200C87932 /* PNKLibraryLoader.mm in Sources */ = {isa = PBXBuildFile; fileRef = C9ADC5121EFFE06200C87932 /* PNKLibraryLoader.mm */; };
 		C9CAFCC11EE02F2A00B914E4 /* Mantle.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 06FD92981EDC5F9100D180C7 /* Mantle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C9CAFCC51EE0335500B914E4 /* Mantle.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 06FD92981EDC5F9100D180C7 /* Mantle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		F92465B81F42C23300ECB4DA /* PNKNeuralNetworkModelFactorySpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = F92465B71F42C23300ECB4DA /* PNKNeuralNetworkModelFactorySpec.mm */; };
+		F92465BB1F42C28200ECB4DA /* sst_lilien.nnmodel in Resources */ = {isa = PBXBuildFile; fileRef = F92465BA1F42C28200ECB4DA /* sst_lilien.nnmodel */; };
+		F990284C1F6FF17400883DF8 /* illegal.nnmodel in Resources */ = {isa = PBXBuildFile; fileRef = F990284B1F6FF17400883DF8 /* illegal.nnmodel */; };
+		F994A70D1F61257F0072D338 /* metadata.nnmodel in Resources */ = {isa = PBXBuildFile; fileRef = F994A70C1F61251A0072D338 /* metadata.nnmodel */; };
+		F994A70F1F612A530072D338 /* PNKProtobufHelpersSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = F994A70E1F612A530072D338 /* PNKProtobufHelpersSpec.mm */; };
+		F9CB52FA1F5FE70C00C8E8CA /* PNKCoreMLLayerParser.mm in Sources */ = {isa = PBXBuildFile; fileRef = F9CB52F91F5FE70C00C8E8CA /* PNKCoreMLLayerParser.mm */; };
+		F9CB52FD1F5FE98700C8E8CA /* PNKProtobufHelpers.mm in Sources */ = {isa = PBXBuildFile; fileRef = F9CB52FC1F5FE98700C8E8CA /* PNKProtobufHelpers.mm */; };
+		F9D7DB051F457F760095DCE5 /* conv_rgb_bias_preprocessing.nnmodel in Resources */ = {isa = PBXBuildFile; fileRef = F9D7DB041F457F760095DCE5 /* conv_rgb_bias_preprocessing.nnmodel */; };
+		F9D7DC331F45B14E0095DCE5 /* conv_no_bias.nnmodel in Resources */ = {isa = PBXBuildFile; fileRef = F9D7DC311F45B14E0095DCE5 /* conv_no_bias.nnmodel */; };
+		F9D7DC341F45B14E0095DCE5 /* deconv.nnmodel in Resources */ = {isa = PBXBuildFile; fileRef = F9D7DC321F45B14E0095DCE5 /* deconv.nnmodel */; };
+		F9D7DC571F45B9D40095DCE5 /* maxpool.nnmodel in Resources */ = {isa = PBXBuildFile; fileRef = F9D7DC551F45B9D40095DCE5 /* maxpool.nnmodel */; };
+		F9D7DC581F45B9D40095DCE5 /* prelu_gray_bias_preprocessing.nnmodel in Resources */ = {isa = PBXBuildFile; fileRef = F9D7DC561F45B9D40095DCE5 /* prelu_gray_bias_preprocessing.nnmodel */; };
+		F9D7DC5A1F4ACB950095DCE5 /* affine.nnmodel in Resources */ = {isa = PBXBuildFile; fileRef = F9D7DC591F4ACB950095DCE5 /* affine.nnmodel */; };
+		F9D7DC5C1F4ACDB00095DCE5 /* batchnorm.nnmodel in Resources */ = {isa = PBXBuildFile; fileRef = F9D7DC5B1F4ACDB00095DCE5 /* batchnorm.nnmodel */; };
+		F9D7DC5E1F4AD4E40095DCE5 /* instnorm.nnmodel in Resources */ = {isa = PBXBuildFile; fileRef = F9D7DC5D1F4AD4E40095DCE5 /* instnorm.nnmodel */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -500,6 +516,8 @@
 		068D91371F24C9AD0012F472 /* PNKReflectionPaddingSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKReflectionPaddingSpec.mm; sourceTree = "<group>"; };
 		069225E11F0A615700F3C8C7 /* PNKNeuralKernel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNKNeuralKernel.h; sourceTree = "<group>"; };
 		06A0A94B1F1B484700941045 /* PNKKernel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNKKernel.h; sourceTree = "<group>"; };
+		06A1A8FD1F0CD7BA0031A387 /* PNKNeuralNetworkModelFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKNeuralNetworkModelFactory.h; sourceTree = "<group>"; };
+		06A1A8FE1F0CD7BA0031A387 /* PNKNeuralNetworkModelFactory.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKNeuralNetworkModelFactory.mm; sourceTree = "<group>"; };
 		06A1AA131F14F0D80031A387 /* PNKNeuralNetworkModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKNeuralNetworkModel.h; sourceTree = "<group>"; };
 		06A1AA151F14F0D80031A387 /* PNKNeuralNetworkOperationsModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKNeuralNetworkOperationsModel.h; sourceTree = "<group>"; };
 		06C3F75F1EFF9E5B00D4B1F4 /* PNKSingleStyleTransferProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKSingleStyleTransferProcessor.h; sourceTree = "<group>"; };
@@ -586,6 +604,23 @@
 		C9815C631EE88713004868CE /* PNKOpenCVExtensionsSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKOpenCVExtensionsSpec.mm; sourceTree = "<group>"; };
 		C9ADC5111EFFE06200C87932 /* PNKLibraryLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKLibraryLoader.h; sourceTree = "<group>"; };
 		C9ADC5121EFFE06200C87932 /* PNKLibraryLoader.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKLibraryLoader.mm; sourceTree = "<group>"; };
+		F92465B71F42C23300ECB4DA /* PNKNeuralNetworkModelFactorySpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKNeuralNetworkModelFactorySpec.mm; sourceTree = "<group>"; };
+		F92465BA1F42C28200ECB4DA /* sst_lilien.nnmodel */ = {isa = PBXFileReference; lastKnownFileType = file; name = sst_lilien.nnmodel; path = Resources/sst_lilien.nnmodel; sourceTree = "<group>"; };
+		F990284B1F6FF17400883DF8 /* illegal.nnmodel */ = {isa = PBXFileReference; lastKnownFileType = file; name = illegal.nnmodel; path = Resources/illegal.nnmodel; sourceTree = "<group>"; };
+		F994A70C1F61251A0072D338 /* metadata.nnmodel */ = {isa = PBXFileReference; lastKnownFileType = file; name = metadata.nnmodel; path = Resources/metadata.nnmodel; sourceTree = "<group>"; };
+		F994A70E1F612A530072D338 /* PNKProtobufHelpersSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKProtobufHelpersSpec.mm; sourceTree = "<group>"; };
+		F9CB52F81F5FE70C00C8E8CA /* PNKCoreMLLayerParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKCoreMLLayerParser.h; sourceTree = "<group>"; };
+		F9CB52F91F5FE70C00C8E8CA /* PNKCoreMLLayerParser.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKCoreMLLayerParser.mm; sourceTree = "<group>"; };
+		F9CB52FB1F5FE98700C8E8CA /* PNKProtobufHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKProtobufHelpers.h; sourceTree = "<group>"; };
+		F9CB52FC1F5FE98700C8E8CA /* PNKProtobufHelpers.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKProtobufHelpers.mm; sourceTree = "<group>"; };
+		F9D7DB041F457F760095DCE5 /* conv_rgb_bias_preprocessing.nnmodel */ = {isa = PBXFileReference; lastKnownFileType = file; name = conv_rgb_bias_preprocessing.nnmodel; path = Resources/conv_rgb_bias_preprocessing.nnmodel; sourceTree = "<group>"; };
+		F9D7DC311F45B14E0095DCE5 /* conv_no_bias.nnmodel */ = {isa = PBXFileReference; lastKnownFileType = file; name = conv_no_bias.nnmodel; path = Resources/conv_no_bias.nnmodel; sourceTree = "<group>"; };
+		F9D7DC321F45B14E0095DCE5 /* deconv.nnmodel */ = {isa = PBXFileReference; lastKnownFileType = file; name = deconv.nnmodel; path = Resources/deconv.nnmodel; sourceTree = "<group>"; };
+		F9D7DC551F45B9D40095DCE5 /* maxpool.nnmodel */ = {isa = PBXFileReference; lastKnownFileType = file; name = maxpool.nnmodel; path = Resources/maxpool.nnmodel; sourceTree = "<group>"; };
+		F9D7DC561F45B9D40095DCE5 /* prelu_gray_bias_preprocessing.nnmodel */ = {isa = PBXFileReference; lastKnownFileType = file; name = prelu_gray_bias_preprocessing.nnmodel; path = Resources/prelu_gray_bias_preprocessing.nnmodel; sourceTree = "<group>"; };
+		F9D7DC591F4ACB950095DCE5 /* affine.nnmodel */ = {isa = PBXFileReference; lastKnownFileType = file; name = affine.nnmodel; path = Resources/affine.nnmodel; sourceTree = "<group>"; };
+		F9D7DC5B1F4ACDB00095DCE5 /* batchnorm.nnmodel */ = {isa = PBXFileReference; lastKnownFileType = file; name = batchnorm.nnmodel; path = Resources/batchnorm.nnmodel; sourceTree = "<group>"; };
+		F9D7DC5D1F4AD4E40095DCE5 /* instnorm.nnmodel */ = {isa = PBXFileReference; lastKnownFileType = file; name = instnorm.nnmodel; path = Resources/instnorm.nnmodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -683,6 +718,12 @@
 			isa = PBXGroup;
 			children = (
 				06172B9D1F03E4F800379124 /* Models */,
+				F9CB52F81F5FE70C00C8E8CA /* PNKCoreMLLayerParser.h */,
+				F9CB52F91F5FE70C00C8E8CA /* PNKCoreMLLayerParser.mm */,
+				06A1A8FD1F0CD7BA0031A387 /* PNKNeuralNetworkModelFactory.h */,
+				06A1A8FE1F0CD7BA0031A387 /* PNKNeuralNetworkModelFactory.mm */,
+				F9CB52FB1F5FE98700C8E8CA /* PNKProtobufHelpers.h */,
+				F9CB52FC1F5FE98700C8E8CA /* PNKProtobufHelpers.mm */,
 			);
 			name = Serialization;
 			sourceTree = "<group>";
@@ -786,6 +827,13 @@
 			name = Model;
 			sourceTree = "<group>";
 		};
+		06A1AA571F14FCC30031A387 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
 		06C3F73E1EFF9E3C00D4B1F4 /* Image Processing */ = {
 			isa = PBXGroup;
 			children = (
@@ -826,6 +874,7 @@
 		06FD92A21EDC66E500D180C7 /* PinkyBundle */ = {
 			isa = PBXGroup;
 			children = (
+				06A1AA571F14FCC30031A387 /* Models */,
 				06FD92AC1EDC67A500D180C7 /* Shaders */,
 				06FD92A31EDC66E500D180C7 /* Info.plist */,
 			);
@@ -944,6 +993,7 @@
 		A14171C21E6EAC0D005DBEFF /* PinkyTests */ = {
 			isa = PBXGroup;
 			children = (
+				F92465B91F42C27500ECB4DA /* Resources */,
 				A14173471E6EB62C005DBEFF /* Tests */,
 				A14172B91E6EB006005DBEFF /* Supporting Files */,
 			);
@@ -1069,6 +1119,7 @@
 		A14173471E6EB62C005DBEFF /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				F92465B51F42C20D00ECB4DA /* Serialization */,
 				06C3F7621EFFD9EA00D4B1F4 /* Image Processing */,
 			);
 			name = Tests;
@@ -1140,6 +1191,41 @@
 				C9815C631EE88713004868CE /* PNKOpenCVExtensionsSpec.mm */,
 			);
 			name = Extensions;
+			sourceTree = "<group>";
+		};
+		F92465B51F42C20D00ECB4DA /* Serialization */ = {
+			isa = PBXGroup;
+			children = (
+				F92465B61F42C21600ECB4DA /* Models */,
+			);
+			name = Serialization;
+			sourceTree = "<group>";
+		};
+		F92465B61F42C21600ECB4DA /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				F92465B71F42C23300ECB4DA /* PNKNeuralNetworkModelFactorySpec.mm */,
+				F994A70E1F612A530072D338 /* PNKProtobufHelpersSpec.mm */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
+		F92465B91F42C27500ECB4DA /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				F9D7DC591F4ACB950095DCE5 /* affine.nnmodel */,
+				F9D7DC5B1F4ACDB00095DCE5 /* batchnorm.nnmodel */,
+				F9D7DB041F457F760095DCE5 /* conv_rgb_bias_preprocessing.nnmodel */,
+				F9D7DC311F45B14E0095DCE5 /* conv_no_bias.nnmodel */,
+				F9D7DC321F45B14E0095DCE5 /* deconv.nnmodel */,
+				F990284B1F6FF17400883DF8 /* illegal.nnmodel */,
+				F9D7DC5D1F4AD4E40095DCE5 /* instnorm.nnmodel */,
+				F9D7DC551F45B9D40095DCE5 /* maxpool.nnmodel */,
+				F994A70C1F61251A0072D338 /* metadata.nnmodel */,
+				F9D7DC561F45B9D40095DCE5 /* prelu_gray_bias_preprocessing.nnmodel */,
+				F92465BA1F42C28200ECB4DA /* sst_lilien.nnmodel */,
+			);
+			name = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1571,7 +1657,18 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F994A70D1F61257F0072D338 /* metadata.nnmodel in Resources */,
+				F9D7DB051F457F760095DCE5 /* conv_rgb_bias_preprocessing.nnmodel in Resources */,
+				F9D7DC571F45B9D40095DCE5 /* maxpool.nnmodel in Resources */,
+				F9D7DC581F45B9D40095DCE5 /* prelu_gray_bias_preprocessing.nnmodel in Resources */,
+				F9D7DC341F45B14E0095DCE5 /* deconv.nnmodel in Resources */,
+				F9D7DC5E1F4AD4E40095DCE5 /* instnorm.nnmodel in Resources */,
+				F92465BB1F42C28200ECB4DA /* sst_lilien.nnmodel in Resources */,
+				F9D7DC5A1F4ACB950095DCE5 /* affine.nnmodel in Resources */,
+				F9D7DC5C1F4ACDB00095DCE5 /* batchnorm.nnmodel in Resources */,
 				060FB4651F0104F300506895 /* Pinky.bundle in Resources */,
+				F9D7DC331F45B14E0095DCE5 /* conv_no_bias.nnmodel in Resources */,
+				F990284C1F6FF17400883DF8 /* illegal.nnmodel in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1627,13 +1724,16 @@
 				068D91161F249E120012F472 /* PNKReflectionPadding.mm in Sources */,
 				C91884551F0D27B90090818A /* PNKComputeDispatch.mm in Sources */,
 				C9791B001F026E180009E90F /* PNKConstantAlpha.mm in Sources */,
+				F9CB52FA1F5FE70C00C8E8CA /* PNKCoreMLLayerParser.mm in Sources */,
 				06E98DE01F2149710047F80A /* PNKComputeState.mm in Sources */,
 				C9231F831F04EF7F009E4FDB /* PNKGammaCorrection.mm in Sources */,
 				060EA49E1EDD9CC20041487A /* NSBundle+PinkyBundle.mm in Sources */,
 				062EEA2D1F2530EC00AB4958 /* PNKNearestNeighborUpsampling.mm in Sources */,
 				C9ADC5131EFFE06200C87932 /* PNKLibraryLoader.mm in Sources */,
+				06A1A8FF1F0CD7BA0031A387 /* PNKNeuralNetworkModelFactory.mm in Sources */,
 				06172A901F02881600379124 /* PNKStyleUpsampleProcessor.mm in Sources */,
 				06C3F7611EFF9E5B00D4B1F4 /* PNKSingleStyleTransferProcessor.mm in Sources */,
+				F9CB52FD1F5FE98700C8E8CA /* PNKProtobufHelpers.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1646,9 +1746,11 @@
 				C9131EAD1EE0599D00E924DA /* EXPMatchers+beCloseToMat.mm in Sources */,
 				06172AB21F02884F00379124 /* PNKStyleUpsampleProcessorSpec.mm in Sources */,
 				06C3F7641EFFDA0900D4B1F4 /* PNKSingleStyleTransferProcessorSpec.mm in Sources */,
+				F994A70F1F612A530072D338 /* PNKProtobufHelpersSpec.mm in Sources */,
 				C9131EB31EE0599D00E924DA /* EXPMatchers+equalScalar.mm in Sources */,
 				C9131EB11EE0599D00E924DA /* EXPMatchers+equalMat.mm in Sources */,
 				C9131EDB1EE05A8400E924DA /* NSValue+OpenCVExtensions.mm in Sources */,
+				F92465B81F42C23300ECB4DA /* PNKNeuralNetworkModelFactorySpec.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1748,7 +1850,7 @@
 				);
 				INFOPLIST_FILE = PinkyDeviceTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = LT.PinkyDeviceTests;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.Lightricks.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 			};
@@ -1769,7 +1871,7 @@
 				);
 				INFOPLIST_FILE = PinkyDeviceTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = LT.PinkyDeviceTests;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.Lightricks.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -1875,7 +1977,7 @@
 				);
 				INFOPLIST_FILE = PinkyTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = LT.PinkyTests;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.Lightricks.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 			};
@@ -1897,7 +1999,7 @@
 				);
 				INFOPLIST_FILE = PinkyTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = LT.PinkyTests;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.Lightricks.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 			};

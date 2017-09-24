@@ -1,6 +1,8 @@
 // Copyright (c) 2017 Lightricks. All rights reserved.
 // Created by Ofir Bibi.
 
+#import <experimental/optional>
+
 #import "PNKNeuralNetworkOperationsModel.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -16,9 +18,8 @@ namespace pnk {
 /// operations are not limited in number. All operations should have distinct names to differentiate
 /// them not only within operation type but also between operation types.
 struct NeuralNetworkModel {
-  /// Model of the preprocessing done by the network. When the network does not perform
-  /// preprocessing, this value is \c nil.
-  std::unique_ptr<ImageChannelScalingModel> preprocessingModel;
+  /// Model for scaling and biasing the image, if needed.
+  std::experimental::optional<ImageScaleBiasModel> scaleBiasModel;
 
   /// Models of convolution kernels in the network, mapped by name.
   std::unordered_map<std::string, ConvolutionKernelModel> convolutionKernels;
