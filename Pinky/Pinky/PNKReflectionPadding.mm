@@ -25,7 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation PNKReflectionPadding
 
-@synthesize isInputTextureArray = _isInputTextureArray;
+@synthesize isInputArray = _isInputArray;
 
 /// Kernel function name for texture.
 static NSString * const kKernelFunctionName = @"reflectionPadding";
@@ -41,7 +41,7 @@ static NSString * const kKernelArrayFunctionName = @"reflectionPaddingArray";
                    paddingSize:(pnk::SymmetricPadding)padding {
   if (self = [super init]) {
     _device = device;
-    _isInputTextureArray = inputIsArray;
+    _isInputArray = inputIsArray;
     _padding = padding;
 
     [self createState];
@@ -57,10 +57,10 @@ static NSString * const kKernelArrayFunctionName = @"reflectionPaddingArray";
   };
   [functionConstants setConstantValue:&paddingSize type:MTLDataTypeUShort2 withName:@"paddingSize"];
 
-  _state = self.isInputTextureArray ?
+  _state = self.isInputArray ?
       PNKCreateComputeStateWithConstants(self.device, kKernelArrayFunctionName, functionConstants) :
       PNKCreateComputeStateWithConstants(self.device, kKernelFunctionName, functionConstants);
-  _functionName = self.isInputTextureArray ? kKernelArrayFunctionName : kKernelFunctionName;
+  _functionName = self.isInputArray ? kKernelArrayFunctionName : kKernelFunctionName;
 }
 
 #pragma mark -
@@ -89,9 +89,9 @@ static NSString * const kKernelArrayFunctionName = @"reflectionPaddingArray";
                     "arrayLength must match output texture arrayLength, got: (%lu, %lu)",
                     (unsigned long)inputTexture.arrayLength,
                     (unsigned long)outputTexture.arrayLength);
-  LTParameterAssert((self.isInputTextureArray && inputTexture.arrayLength > 1) ||
-                    (!self.isInputTextureArray && inputTexture.arrayLength == 1), @"Input textures "
-                    "array type must be %@, got: %@)", @(self.isInputTextureArray),
+  LTParameterAssert((self.isInputArray && inputTexture.arrayLength > 1) ||
+                    (!self.isInputArray && inputTexture.arrayLength == 1), @"Input textures "
+                    "array type must be %@, got: %@)", @(self.isInputArray),
                     @(inputTexture.arrayLength > 1));
   LTParameterAssert(inputTexture.width > self.padding.width,
                     @"Input texture width must be larger than padding width, got: (%lu, %lu)",
@@ -107,6 +107,12 @@ static NSString * const kKernelArrayFunctionName = @"reflectionPaddingArray";
                     @"Output texture height must be that of twice the height padding added to the "
                     "input texture height, got: (%lu, %lu)", (unsigned long)outputTexture.height,
                     (unsigned long)(inputTexture.height + self.padding.height * 2));
+}
+
+- (void)encodeToCommandBuffer:(id<MTLCommandBuffer>)commandBuffer
+                   inputImage:(MPSImage *)inputImage outputImage:(MPSImage *)outputImage {
+  [self encodeToCommandBuffer:commandBuffer inputTexture:inputImage.texture
+                outputTexture:outputImage.texture];
 }
 
 - (MTLRegion)inputRegionForOutputSize:(MTLSize)outputSize {
