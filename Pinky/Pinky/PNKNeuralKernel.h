@@ -1,9 +1,9 @@
 // Copyright (c) 2017 Lightricks. All rights reserved.
 // Created by Ofir Bibi.
 
-#import "PNKKernel.h"
-
 NS_ASSUME_NONNULL_BEGIN
+
+#if PNK_USE_MPS
 
 /// Protocol providing access to the basic information used by kernels operating on tensors in a
 /// neural network. This protocol is meant to be used as a base for more concrete protocols and
@@ -44,11 +44,56 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 /// Protocol implemented by kernels operating on a single input tensor in a neural network.
-@protocol PNKUnaryNeuralKernel <PNKNeuralKernel, PNKUnaryKernel>
+@protocol PNKUnaryNeuralKernel <PNKNeuralKernel>
+
+/// Encodes the operation performed by the kernel to \c commandBuffer using \c inputImage as input.
+/// Output is written asynchronously to \c outputImage.
+- (void)encodeToCommandBuffer:(id<MTLCommandBuffer>)commandBuffer
+                   inputImage:(MPSImage *)inputImage outputImage:(MPSImage *)outputImage;
+
+/// Determines which region of the \c inputImage will be read by
+/// \c encodeToCommandBuffer:inputImage:outputImage: when the kernel runs. \c outputSize should
+/// be the size of the full (untiled) output image. The region of the full (untiled) input image
+/// that will be read is returned. All kernel parameters should be set prior to calling this method
+/// in order to receive the correct region.
+- (MTLRegion)inputRegionForOutputSize:(MTLSize)outputSize;
+
+/// \c YES iff the kernel expects the underlying texture of the input image to be of array type.
+/// Kernels only support array or non-array types and not both.
+@property (readonly, nonatomic) BOOL isInputArray;
+
 @end
 
 /// Protocol implemented by kernels operating on a two input tensors in a neural network.
-@protocol PNKBinaryNeuralKernel <PNKNeuralKernel, PNKBinaryKernel>
+@protocol PNKBinaryNeuralKernel <PNKNeuralKernel>
+
+/// Encodes the operation performed by the kernel to \c commandBuffer using \c primaryInputImage
+/// and \c secondaryInputImage as input. Output is written asynchronously to \c outputImage.
+- (void)encodeToCommandBuffer:(id<MTLCommandBuffer>)commandBuffer
+            primaryInputImage:(MPSImage *)primaryInputImage
+          secondaryInputImage:(MPSImage *)secondaryInputImage
+                  outputImage:(MPSImage *)outputImage;
+
+/// Determines which region of the \c primaryInputImage will be read by
+/// \c encodeToCommandBuffer:primaryInputImage:secondaryInputImage:outputImage: when the kernel
+/// runs. \c outputSize should be the size of the full (untiled) output image. The region of the
+/// full (untiled) primary input image that will be read is returned. All kernel parameters should
+/// be set prior to calling this method in order to receive the correct region.
+- (MTLRegion)primaryInputRegionForOutputSize:(MTLSize)outputSize;
+
+/// Determines which region of the \c secondaryInputImage will be read by
+/// \c encodeToCommandBuffer:primaryInputImage:secondaryInputImage:outputImage: when the kernel
+/// runs. \c outputSize should be the size of the full (untiled) output image. The region of the
+/// full (untiled) secondary input image that will be read is returned. All kernel parameters should
+/// be set prior to calling this method in order to receive the correct region.
+- (MTLRegion)secondaryInputRegionForOutputSize:(MTLSize)outputSize;
+
+/// \c YES iff the kernel expects the underlying texture of the input images to be of array type.
+/// Kernels only support array or non-array types and not both.
+@property (readonly, nonatomic) BOOL isInputArray;
+
 @end
+
+#endif // PNK_USE_MPS
 
 NS_ASSUME_NONNULL_END
