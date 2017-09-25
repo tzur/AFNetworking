@@ -1807,13 +1807,13 @@
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CODE_SIGN_IDENTITY = "-";
 				COMBINE_HIDPI_IMAGES = YES;
+				"EXCLUDED_SOURCE_FILE_NAMES[sdk=iphonesimulator*]" = "*.metal";
 				INFOPLIST_FILE = PinkyBundle/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
 				MACOSX_DEPLOYMENT_TARGET = iphone;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Lightricks.PinkyBundle;
 				PRODUCT_NAME = "$(PROJECT_NAME)";
 				SKIP_INSTALL = YES;
-				SUPPORTED_PLATFORMS = iphoneos;
 				WRAPPER_EXTENSION = bundle;
 			};
 			name = Debug;
@@ -1825,13 +1825,13 @@
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CODE_SIGN_IDENTITY = "-";
 				COMBINE_HIDPI_IMAGES = YES;
+				"EXCLUDED_SOURCE_FILE_NAMES[sdk=iphonesimulator*]" = "*.metal";
 				INFOPLIST_FILE = PinkyBundle/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
 				MACOSX_DEPLOYMENT_TARGET = iphone;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Lightricks.PinkyBundle;
 				PRODUCT_NAME = "$(PROJECT_NAME)";
 				SKIP_INSTALL = YES;
-				SUPPORTED_PLATFORMS = iphoneos;
 				WRAPPER_EXTENSION = bundle;
 			};
 			name = Release;
@@ -1842,6 +1842,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/TestHost.app/TestHost";
 				DEVELOPMENT_TEAM = KG6GWND6BG;
+				"EXCLUDED_SOURCE_FILE_NAMES[sdk=iphonesimulator*]" = "*";
 				GCC_PREFIX_HEADER = "$(SRCROOT)/$(TARGET_NAME)/$(TARGET_NAME)-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1864,6 +1865,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/TestHost.app/TestHost";
 				DEVELOPMENT_TEAM = KG6GWND6BG;
+				"EXCLUDED_SOURCE_FILE_NAMES[sdk=iphonesimulator*]" = "*";
 				GCC_PREFIX_HEADER = "$(SRCROOT)/$(TARGET_NAME)/$(TARGET_NAME)-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
