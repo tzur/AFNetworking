@@ -23,7 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation PNKConstantAlpha
 
-@synthesize isInputTextureArray = _isInputTextureArray;
+@synthesize isInputArray = _isInputArray;
 
 /// Kernel function name.
 static NSString * const kKernelFunctionName = @"setConstantAlpha";
@@ -35,7 +35,7 @@ static NSString * const kKernelFunctionName = @"setConstantAlpha";
 - (instancetype)initWithDevice:(id<MTLDevice>)device alpha:(float)alpha {
   if (self = [super init]) {
     _device = device;
-    _isInputTextureArray = NO;
+    _isInputArray = NO;
 
     [self createStateWithAlpha:alpha];
   }
@@ -78,6 +78,12 @@ static NSString * const kKernelFunctionName = @"setConstantAlpha";
   LTParameterAssert(inputTexture.height == outputTexture.height,
                     @"Input texture height must match output texture height. got: (%lu, %lu)",
                     (unsigned long)inputTexture.height, (unsigned long)outputTexture.height);
+}
+
+- (void)encodeToCommandBuffer:(id<MTLCommandBuffer>)commandBuffer
+                   inputImage:(MPSImage *)inputImage outputImage:(MPSImage *)outputImage {
+  [self encodeToCommandBuffer:commandBuffer inputTexture:inputImage.texture
+                outputTexture:outputImage.texture];
 }
 
 - (MTLRegion)inputRegionForOutputSize:(MTLSize)outputSize {
