@@ -1813,7 +1813,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.Lightricks.PinkyBundle;
 				PRODUCT_NAME = "$(PROJECT_NAME)";
 				SKIP_INSTALL = YES;
-				SUPPORTED_PLATFORMS = iphoneos;
 				WRAPPER_EXTENSION = bundle;
 			};
 			name = Debug;
@@ -1831,7 +1830,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.Lightricks.PinkyBundle;
 				PRODUCT_NAME = "$(PROJECT_NAME)";
 				SKIP_INSTALL = YES;
-				SUPPORTED_PLATFORMS = iphoneos;
 				WRAPPER_EXTENSION = bundle;
 			};
 			name = Release;
