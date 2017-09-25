@@ -5,6 +5,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+#if PNK_USE_MPS
+
 /// Kernel that preforms a nearest neighbor upsampling operation on the input.
 @interface PNKNearestNeighborUpsampling : NSObject <PNKUnaryKernel>
 
@@ -26,9 +28,19 @@ NS_ASSUME_NONNULL_BEGIN
                  inputTexture:(id<MTLTexture>)inputTexture
                 outputTexture:(id<MTLTexture>)outputTexture;
 
+/// Encodes the operation performed by the kernel to \c commandBuffer using \c inputImage as input.
+/// Output is written asynchronously to \c outputImage. \c inputImage.arrayLength must be equal to
+/// \c outputImage.arrayLength. \c outputImage.width must be equal to \c inputImage.width multiplied
+/// by \c magnificationFactor. \c outputImage.height must be equal to \c inputImage.height
+/// multiplied by \c magnificationFactor.
+- (void)encodeToCommandBuffer:(id<MTLCommandBuffer>)commandBuffer
+                   inputImage:(MPSImage *)inputImage outputImage:(MPSImage *)outputImage;
+
 /// Magnification to apply.
 @property (readonly, nonatomic) NSUInteger magnificationFactor;
 
 @end
+
+#endif // PNK_USE_MPS
 
 NS_ASSUME_NONNULL_END
