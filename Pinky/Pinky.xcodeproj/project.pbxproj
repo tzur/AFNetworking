@@ -1842,6 +1842,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/TestHost.app/TestHost";
 				DEVELOPMENT_TEAM = KG6GWND6BG;
+				"EXCLUDED_SOURCE_FILE_NAMES[sdk=iphonesimulator*]" = "*";
 				GCC_PREFIX_HEADER = "$(SRCROOT)/$(TARGET_NAME)/$(TARGET_NAME)-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1864,6 +1865,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/TestHost.app/TestHost";
 				DEVELOPMENT_TEAM = KG6GWND6BG;
+				"EXCLUDED_SOURCE_FILE_NAMES[sdk=iphonesimulator*]" = "*";
 				GCC_PREFIX_HEADER = "$(SRCROOT)/$(TARGET_NAME)/$(TARGET_NAME)-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
