@@ -26,7 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation PNKGammaCorrection
 
-@synthesize isInputTextureArray = _isInputTextureArray;
+@synthesize isInputArray = _isInputArray;
 
 /// Kernel function name.
 static NSString * const kKernelFunctionName = @"gammaCorrect";
@@ -38,7 +38,7 @@ static NSString * const kKernelFunctionName = @"gammaCorrect";
 - (instancetype)initWithDevice:(id<MTLDevice>)device gamma:(float)gamma {
   if (self = [super init]) {
     _device = device;
-    _isInputTextureArray = NO;
+    _isInputArray = NO;
     _gamma = gamma;
 
     [self compileStateWithGamma:gamma];
@@ -82,6 +82,12 @@ static NSString * const kKernelFunctionName = @"gammaCorrect";
   LTParameterAssert(inputTexture.height == outputTexture.height,
                     @"Input texture height must match output texture height. got: (%lu, %lu)",
                     (unsigned long)inputTexture.height, (unsigned long)outputTexture.height);
+}
+
+- (void)encodeToCommandBuffer:(id<MTLCommandBuffer>)commandBuffer
+                   inputImage:(MPSImage *)inputImage outputImage:(MPSImage *)outputImage {
+  [self encodeToCommandBuffer:commandBuffer inputTexture:inputImage.texture
+                outputTexture:outputImage.texture];
 }
 
 - (MTLRegion)inputRegionForOutputSize:(MTLSize)outputSize {
