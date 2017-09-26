@@ -3,6 +3,9 @@
 
 #import "PNKTestUtils.h"
 
+#import <LTKit/LTMMInputFile.h>
+#import <LTKit/NSBundle+Path.h>
+
 NS_ASSUME_NONNULL_BEGIN
 
 MPSImage *PNKImageMake(id<MTLDevice> device, MPSImageFeatureChannelFormat format,
@@ -16,6 +19,34 @@ MPSImage *PNKImageMake(id<MTLDevice> device, MPSImageFeatureChannelFormat format
 MPSImage *PNKImageMakeUnorm(id<MTLDevice> device, NSUInteger width, NSUInteger height,
                             NSUInteger channels) {
   return PNKImageMake(device, MPSImageFeatureChannelFormatUnorm8, width, height, channels);
+}
+
+cv::Mat1f PNKLoadFloatTensorFromBundleResource(NSBundle *bundle, NSString *resource) {
+  NSString * _Nullable path = [bundle lt_pathForResource:resource];
+  LTParameterAssert(path, @"File %@ from bundle %@ failed to load", resource, bundle);
+  NSError *error;
+  LTMMInputFile *tensorFile = [[LTMMInputFile alloc] initWithPath:path error:&error];
+  LTParameterAssert(tensorFile, @"Failed reading file");
+  LTParameterAssert((int)tensorFile.size % sizeof(float) == 0, @"File size must be a multiply of "
+                    "%lu, got %lu", sizeof(float), tensorFile.size);
+
+  cv::Mat1f tensorData(1, (int)tensorFile.size / sizeof(float));
+  memcpy(tensorData.data, tensorFile.data, tensorFile.size);
+  return tensorData;
+}
+
+cv::Mat1hf PNKLoadHalfFloatTensorFromBundleResource(NSBundle *bundle, NSString *resource) {
+  NSString * _Nullable path = [bundle lt_pathForResource:resource];
+  LTParameterAssert(path, @"File %@ from bundle %@ failed to load", resource, bundle);
+  NSError *error;
+  LTMMInputFile *tensorFile = [[LTMMInputFile alloc] initWithPath:path error:&error];
+  LTParameterAssert(tensorFile, @"Failed reading file");
+  LTParameterAssert((int)tensorFile.size % sizeof(half_float::half) == 0, @"File size must be a "
+                    "multiply of %lu, got %lu", sizeof(float) / 2, tensorFile.size);
+
+  cv::Mat1hf tensorData(1, (int)tensorFile.size / sizeof(half_float::half));
+  memcpy(tensorData.data, tensorFile.data, tensorFile.size);
+  return tensorData;
 }
 
 NS_ASSUME_NONNULL_END
