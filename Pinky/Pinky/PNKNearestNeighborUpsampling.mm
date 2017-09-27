@@ -26,7 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation PNKNearestNeighborUpsampling
 
-@synthesize isInputTextureArray = _isInputTextureArray;
+@synthesize isInputArray = _isInputArray;
 
 /// Texture input kernel function name.
 static NSString * const kKernelFunctionName = @"nearestNeighbor";
@@ -44,7 +44,7 @@ static NSString * const kKernelArrayFunctionName = @"nearestNeighborArray";
                     "%lu", (unsigned long)magnificationFactor);
   if (self = [super init]) {
     _device = device;
-    _isInputTextureArray = inputIsArray;
+    _isInputArray = inputIsArray;
     _magnificationFactor = magnificationFactor;
 
     [self createState];
@@ -58,10 +58,10 @@ static NSString * const kKernelArrayFunctionName = @"nearestNeighborArray";
   [functionConstants setConstantValue:&factor type:MTLDataTypeUShort
                              withName:@"magnificationFactor"];
 
-  _state = self.isInputTextureArray ?
+  _state = self.isInputArray ?
       PNKCreateComputeStateWithConstants(self.device, kKernelArrayFunctionName, functionConstants) :
       PNKCreateComputeStateWithConstants(self.device, kKernelFunctionName, functionConstants);
-  _functionName = self.isInputTextureArray ? kKernelArrayFunctionName : kKernelFunctionName;
+  _functionName = self.isInputArray ? kKernelArrayFunctionName : kKernelFunctionName;
 }
 
 #pragma mark -
@@ -86,9 +86,9 @@ static NSString * const kKernelArrayFunctionName = @"nearestNeighborArray";
                     @"Input texture arrayLength must match output texture arrayLength, got: "
                     "(%lu, %lu)", (unsigned long)inputTexture.arrayLength,
                     (unsigned long)outputTexture.arrayLength);
-  LTParameterAssert((self.isInputTextureArray && inputTexture.arrayLength > 1) ||
-                    (!self.isInputTextureArray && inputTexture.arrayLength == 1), @"Input textures "
-                    "array type must be %@, got: %@", @(self.isInputTextureArray),
+  LTParameterAssert((self.isInputArray && inputTexture.arrayLength > 1) ||
+                    (!self.isInputArray && inputTexture.arrayLength == 1), @"Input textures "
+                    "array type must be %@, got: %@", @(self.isInputArray),
                     @(inputTexture.arrayLength > 1));
   LTParameterAssert(inputTexture.width * self.magnificationFactor == outputTexture.width,
                     @"Input texture width after upsampling must match output texture width, "
@@ -98,6 +98,12 @@ static NSString * const kKernelArrayFunctionName = @"nearestNeighborArray";
                     @"Input texture height after upsampling must match output texture height, "
                     "got: (%lu, %lu)", (unsigned long)inputTexture.height *
                     self.magnificationFactor, (unsigned long)outputTexture.height);
+}
+
+- (void)encodeToCommandBuffer:(id<MTLCommandBuffer>)commandBuffer
+                   inputImage:(MPSImage *)inputImage outputImage:(MPSImage *)outputImage {
+  [self encodeToCommandBuffer:commandBuffer inputTexture:inputImage.texture
+                outputTexture:outputImage.texture];
 }
 
 - (MTLRegion)inputRegionForOutputSize:(MTLSize)outputSize {

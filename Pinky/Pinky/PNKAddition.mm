@@ -25,7 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation PNKAddition
 
-@synthesize isInputTextureArray = _isInputTextureArray;
+@synthesize isInputArray = _isInputArray;
 
 /// Kernel function name for texture.
 static NSString * const kKernelFunctionName = @"addition";
@@ -40,7 +40,7 @@ static NSString * const kKernelArrayFunctionName = @"additionArray";
 - (instancetype)initWithDevice:(id<MTLDevice>)device withInputIsArray:(BOOL)inputIsArray {
   if (self = [super init]) {
     _device = device;
-    _isInputTextureArray = inputIsArray;
+    _isInputArray = inputIsArray;
 
     [self createState];
   }
@@ -48,10 +48,10 @@ static NSString * const kKernelArrayFunctionName = @"additionArray";
 }
 
 - (void)createState {
-  _state = self.isInputTextureArray ?
+  _state = self.isInputArray ?
       PNKCreateComputeState(self.device, kKernelArrayFunctionName) :
       PNKCreateComputeState(self.device, kKernelFunctionName);
-  _functionName = self.isInputTextureArray ? kKernelArrayFunctionName : kKernelFunctionName;
+  _functionName = self.isInputArray ? kKernelArrayFunctionName : kKernelFunctionName;
 }
 
 #pragma mark -
@@ -87,9 +87,9 @@ static NSString * const kKernelArrayFunctionName = @"additionArray";
                     "texture arrayLength must match output texture arrayLength. got: (%lu, %lu)",
                     (unsigned long)primaryInputTexture.arrayLength,
                     (unsigned long)outputTexture.arrayLength);
-  LTParameterAssert((self.isInputTextureArray && primaryInputTexture.arrayLength > 1) ||
-                    (!self.isInputTextureArray && primaryInputTexture.arrayLength == 1), @"Input "
-                    "textures array type must be %@, got: %@)", @(self.isInputTextureArray),
+  LTParameterAssert((self.isInputArray && primaryInputTexture.arrayLength > 1) ||
+                    (!self.isInputArray && primaryInputTexture.arrayLength == 1), @"Input "
+                    "textures array type must be %@, got: %@)", @(self.isInputArray),
                     @(primaryInputTexture.arrayLength > 1));
   LTParameterAssert(primaryInputTexture.width == secondaryInputTexture.width, @"Primary input "
                     "texture width must match secondary input texture width. got: (%lu, %lu)",
@@ -105,6 +105,13 @@ static NSString * const kKernelArrayFunctionName = @"additionArray";
   LTParameterAssert(primaryInputTexture.height == outputTexture.height, @"Primary input texture "
                     "height must match output texture height. got: (%lu, %lu)",
                     (unsigned long)primaryInputTexture.height, (unsigned long)outputTexture.height);
+}
+
+- (void)encodeToCommandBuffer:(id<MTLCommandBuffer>)commandBuffer
+            primaryInputImage:(MPSImage *)primaryInputImage
+          secondaryInputImage:(MPSImage *)secondaryInputImage outputImage:(MPSImage *)outputImage {
+  [self encodeToCommandBuffer:commandBuffer primaryInputTexture:primaryInputImage.texture
+        secondaryInputTexture:secondaryInputImage.texture outputTexture:outputImage.texture];
 }
 
 - (MTLRegion)primaryInputRegionForOutputSize:(MTLSize)outputSize {
