@@ -140,6 +140,10 @@ struct AffineKernelModel {
 
 /// Valid activation types for \c ActivationKernelModel.
 typedef NS_ENUM(NSUInteger, ActivationType) {
+  /// An identity activation. <tt>f(x) = x</tt>.
+  ActivationTypeIdentity,
+  /// An absolute function activation. <tt>f(x) = abs(x)</tt>.
+  ActivationTypeAbsolute,
   /// A rectified linear unit (ReLU) activation. <tt>f(x) = max(0, x)</tt>.
   ActivationTypeReLU,
   /// A leaky rectified linear unit activation. <tt>f(x) = max(0, x) + alpha *

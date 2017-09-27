@@ -13,4 +13,10 @@ MPSImage *PNKImageMake(id<MTLDevice> device, MPSImageFeatureChannelFormat format
 MPSImage *PNKImageMakeUnorm(id<MTLDevice> device, NSUInteger width, NSUInteger height,
                             NSUInteger channels);
 
+/// Reads an array of float32 numbers from \c fileName and returns them as a row vector.
+cv::Mat1f PNKLoadFloatTensorFromBundleResource(NSBundle *bundle, NSString *resource);
+
+/// Reads an array of float16 numbers from \c fileName and returns them as a row vector.
+cv::Mat1hf PNKLoadHalfFloatTensorFromBundleResource(NSBundle *bundle, NSString *resource);
+
 NS_ASSUME_NONNULL_END
