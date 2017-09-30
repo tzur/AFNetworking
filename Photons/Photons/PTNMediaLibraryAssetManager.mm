@@ -179,35 +179,34 @@ NS_ASSUME_NONNULL_BEGIN
       return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeInvalidAssetType url:url]];
     }
 
-    auto _Nullable assets = [self assetsFromQuery:query];
-    if (!assets) {
+    auto _Nullable descriptors = [self descriptorsFromQuery:query];
+    if (!descriptors) {
       return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeInvalidAssetType url:url]];
     }
 
     auto album = (url.ptn_mediaLibraryURLType == PTNMediaLibraryURLTypeAsset) ?
-        [[PTNAlbum alloc] initWithURL:url subalbums:@[] assets:assets] :
-        [[PTNAlbum alloc] initWithURL:url subalbums:assets assets:@[]];
-    auto changeset = [PTNAlbumChangeset changesetWithAfterAlbum:album];
-    return [RACSignal return:changeset];
+        [[PTNAlbum alloc] initWithURL:url subalbums:@[] assets:descriptors] :
+        [[PTNAlbum alloc] initWithURL:url subalbums:descriptors assets:@[]];
+    return [RACSignal return:[PTNAlbumChangeset changesetWithAfterAlbum:album]];
   }];
 }
 
-- (nullable NSArray<id<PTNDescriptor>> *)assetsFromQuery:(id<PTNMediaQuery>)query {
+- (nullable NSArray<id<PTNDescriptor>> *)descriptorsFromQuery:(id<PTNMediaQuery>)query {
   // If the query fetches a array of music albums, e.g. a query obtained by
   // +ptn_mediaLibraryAlbumSongsByMusicAlbum url, return an array of collection descriptors where
   // each is describing a music album.
   if ([[self class] isQueryForMusicMediaTypeByMusicAlbums:query] ||
       [[self class] isQueryForArtistPersistentIDByMusicAlbums:query]) {
     return [query.collections lt_map:^id<PTNDescriptor>(MPMediaItemCollection *collection) {
-        auto item = collection.representativeItem;
-        auto url = [NSURL ptn_mediaLibraryAlbumMusicAlbumSongsWithItem:item];
-        return [[PTNMediaLibraryCollectionDescriptor alloc] initWithCollection:collection url:url];
+      auto item = collection.representativeItem;
+      auto url = [NSURL ptn_mediaLibraryAlbumMusicAlbumSongsWithItem:item];
+      return [[PTNMediaLibraryCollectionDescriptor alloc] initWithCollection:collection url:url];
     }];
   }
 
-  // If a query fetches a array of artis songs, e.g. query obtained by
-  // +ptn_mediaLibraryAlbumSongsByAritst:, return array of collection desciptors where each is
-  // describing artit's song.
+  // If a query fetches an array of artist songs, e.g. query obtained by
+  // +ptn_mediaLibraryAlbumSongsByArtist:, return array of collection desciptors where each is
+  // describing artist's song.
   if ([[self class] isQueryForMusicMediaTypeByArtists:query]) {
     return [query.collections lt_map:^id<PTNDescriptor>(MPMediaItemCollection *collection) {
       auto item = collection.representativeItem;
@@ -216,8 +215,8 @@ NS_ASSUME_NONNULL_BEGIN
     }];
   }
 
-  // If query fetches a array of songs e.g. a query obtained by +ptn_mediaLibraryAlbumSongs url,
-  // return array of item desciptors.
+  // If query fetches a array of songs e.g. a query obtained by +ptn_mediaLibraryAlbumSongs URL,
+  // return array of item descriptors.
   if ([[self class] isQueryForAlbumPersistentIDBySongs:query] ||
       [[self class] isQueryForArtistPersistentIDBySongs:query] ||
       [[self class] isQueryForMusicMediaTypeBySongs:query]) {
