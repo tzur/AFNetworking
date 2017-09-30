@@ -169,6 +169,18 @@ context(@"loading images", ^{
     expect($(image.mat)).to.equalMat($(expected));
   });
 
+  it(@"should load CMYK image as RGBA", ^{
+    auto image = LTLoadImage([self class], @"White8bitCMYK.tif");
+    auto ltImage = [[LTImage alloc] initWithImage:image];
+    cv::Mat4b expected(image.size.height, image.size.width, cv::Vec4b(255, 255, 255, 255));
+
+    // For some reason the converted white is (255, 255, 254).
+    expect($(expected)).to.beCloseToMatWithin($(ltImage.mat), @1);
+    expect(CGColorSpaceGetModel(CGImageGetColorSpace(image.CGImage)))
+        .to.equal(kCGColorSpaceModelCMYK);
+    expect(CGColorSpaceGetModel(ltImage.colorSpace)).to.equal(kCGColorSpaceModelRGB);
+  });
+
   context(@"load rotated images as portrait", ^{
     __block LTImage *expected;
 

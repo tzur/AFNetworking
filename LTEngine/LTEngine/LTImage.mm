@@ -125,6 +125,7 @@ NS_ASSUME_NONNULL_BEGIN
       return lt::Ref<CGColorSpaceRef>(CGColorSpaceCreateDeviceGray());
     case kCGColorSpaceModelRGB:
     case kCGColorSpaceModelIndexed:
+    case kCGColorSpaceModelCMYK:
       return lt::Ref<CGColorSpaceRef>(CGColorSpaceCreateDeviceRGB());
     default:
       LTAssert(NO, @"Invalid color space model given: %d", CGColorSpaceGetModel(colorSpace));
@@ -143,6 +144,7 @@ NS_ASSUME_NONNULL_BEGIN
       return CV_8UC1;
     case kCGColorSpaceModelRGB:
     case kCGColorSpaceModelIndexed:
+    case kCGColorSpaceModelCMYK:
       return CV_8UC4;
     default:
       LTAssert(NO, @"Invalid color space model given: %d", CGColorSpaceGetModel(colorSpace));

@@ -1241,6 +1241,7 @@
 		B4BF16271F41D89D0077726E /* LTImageHEICCompressor.h in Headers */ = {isa = PBXBuildFile; fileRef = B4BF16251F41D89D0077726E /* LTImageHEICCompressor.h */; };
 		B4BF16281F41D89D0077726E /* LTImageHEICCompressor.mm in Sources */ = {isa = PBXBuildFile; fileRef = B4BF16261F41D89D0077726E /* LTImageHEICCompressor.mm */; };
 		B4BF162A1F41DAB00077726E /* LTImageHEICCompressorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = B4BF16291F41DAB00077726E /* LTImageHEICCompressorSpec.mm */; };
+		B4E4932E1F801EEC00AB6BE3 /* White8bitCMYK.tif in Resources */ = {isa = PBXBuildFile; fileRef = B4E4932D1F801EE600AB6BE3 /* White8bitCMYK.tif */; };
 		B4F1DEB21E2CB3430042DB2A /* LTFboAttachableInfoSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = B4F1DEB11E2CB3430042DB2A /* LTFboAttachableInfoSpec.mm */; };
 		BEB7BEB61E26804B007EAB73 /* NSValueTransformer+LTEngine.h in Headers */ = {isa = PBXBuildFile; fileRef = BEB7BEB41E26804B007EAB73 /* NSValueTransformer+LTEngine.h */; };
 		BEB7BEB71E26804B007EAB73 /* NSValueTransformer+LTEngine.mm in Sources */ = {isa = PBXBuildFile; fileRef = BEB7BEB51E26804B007EAB73 /* NSValueTransformer+LTEngine.mm */; };
@@ -3041,6 +3042,7 @@
 		B4BF16251F41D89D0077726E /* LTImageHEICCompressor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTImageHEICCompressor.h; sourceTree = "<group>"; };
 		B4BF16261F41D89D0077726E /* LTImageHEICCompressor.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = LTImageHEICCompressor.mm; sourceTree = "<group>"; };
 		B4BF16291F41DAB00077726E /* LTImageHEICCompressorSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = LTImageHEICCompressorSpec.mm; sourceTree = "<group>"; };
+		B4E4932D1F801EE600AB6BE3 /* White8bitCMYK.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = White8bitCMYK.tif; path = Resources/White8bitCMYK.tif; sourceTree = "<group>"; };
 		B4F1DEB11E2CB3430042DB2A /* LTFboAttachableInfoSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTFboAttachableInfoSpec.mm; sourceTree = "<group>"; };
 		BEB7BEB41E26804B007EAB73 /* NSValueTransformer+LTEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSValueTransformer+LTEngine.h"; sourceTree = "<group>"; };
 		BEB7BEB51E26804B007EAB73 /* NSValueTransformer+LTEngine.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSValueTransformer+LTEngine.mm"; sourceTree = "<group>"; };
@@ -4926,6 +4928,7 @@
 				06F9F2D41D59B558002D2726 /* VerticalStepFunction33_bilateral_L1toL3toL1.png */,
 				06B5C1F41D181A9400401556 /* VerticalStepFunction33.png */,
 				8BAB99C81869DBF600D79554 /* White.jpg */,
+				B4E4932D1F801EE600AB6BE3 /* White8bitCMYK.tif */,
 				8BF4D39C1DA55F320080BB1C /* White16.png */,
 			);
 			name = Images;
@@ -6729,6 +6732,7 @@
 				85F599AE1CDF2166009A47B4 /* LTDisplacementMapDrawerUnwarpedWithoutMask.png in Resources */,
 				03D5168918B26FA40026B56A /* StraightRedFrame.png in Resources */,
 				28842E9119DB2E4900BD8FEE /* PerspectiveBarrelCorrection.png in Resources */,
+				B4E4932E1F801EEC00AB6BE3 /* White8bitCMYK.tif in Resources */,
 				8BABF19019BC52C100AED760 /* PyramidGrid5.png in Resources */,
 				286A932E18CF727300F203DF /* BristleBrushBristles.4.png in Resources */,
 				30FE29381ED163770065F6F7 /* LTPatchProcessorPerspectiveSolution.png in Resources */,
