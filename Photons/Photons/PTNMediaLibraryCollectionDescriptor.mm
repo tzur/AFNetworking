@@ -85,8 +85,8 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (NSString *)description {
-  return [NSString stringWithFormat:@"<%@: %p, url: %@ collection: %@>", self.class, self, self.url,
-          self.collection];
+  return [NSString stringWithFormat:@"<%@: %p, url: %@, collection: %@>", self.class, self,
+          self.url, self.collection];
 }
 
 @end
