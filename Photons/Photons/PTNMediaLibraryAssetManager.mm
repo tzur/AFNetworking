@@ -220,7 +220,10 @@ NS_ASSUME_NONNULL_BEGIN
   if ([[self class] isQueryForAlbumPersistentIDBySongs:query] ||
       [[self class] isQueryForArtistPersistentIDBySongs:query] ||
       [[self class] isQueryForMusicMediaTypeBySongs:query]) {
-    return query.items;
+    // Although MPMediaQuery claims that the items property is NSArray, it returns
+    // MPMediaEntityResultSetArray, a subclass of NSArray that contains a bunch of state, and
+    // apparently points to mutable data that may change when the media library changes.
+    return query.items ? [NSArray arrayWithArray:query.items] : nil;
   }
 
   return nil;
