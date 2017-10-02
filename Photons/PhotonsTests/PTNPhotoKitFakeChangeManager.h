@@ -20,7 +20,12 @@ NS_ASSUME_NONNULL_BEGIN
 @interface PTNPhotoKitFakeChangeManager : NSObject <PTNPhotoKitChangeManager>
 
 /// Asset requested to be created by the manager. This includes assets of all supported media types.
-@property (readonly, nonatomic) NSArray *assetCreationRequests;
+@property (readonly, nonatomic) NSArray<NSURL *> *assetCreationRequests;
+
+/// Asset requested to be created with options by the receiver. This includes assets of all
+/// supported media types.
+@property (readonly, nonatomic) NSArray<RACTwoTuple<NSURL *, PHAssetResourceCreationOptions *> *>
+    *assetWithOptionsCreationRequests;
 
 /// Asset requested to be deleted by the manager.
 @property (readonly, nonatomic) NSArray *assetDeleteRequests;
