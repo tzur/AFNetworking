@@ -9,72 +9,30 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface PTNFakeMediaQuery ()
-
-/// Array storing the items, which are sequentially retrieved when reading \c self.items.
-@property (readonly, nonatomic, nullable) NSArray<NSArray<MPMediaItem *> *> *itemsSequence;
-
-/// Array storing the collections, which are sequentially retrieved when reading
-/// \c self.collections.
-@property (readonly, nonatomic, nullable)
-    NSArray<NSArray<MPMediaItemCollection *> *> *collectionsSequence;
-
-/// Current reading index in the \c itemsSequence array.
-@property (nonatomic) NSUInteger itemIndex;
-
-/// Current reading index in the \c collectionsSequence array.
-@property (nonatomic) NSUInteger collectionIndex;
-
-@end
-
 @implementation PTNFakeMediaQuery
 
 @synthesize groupingType = _groupingType;
 @synthesize filterPredicates = _filterPredicates;
 
+- (instancetype)init {
+  return [self initWithItems:nil collections:nil];
+}
+
 - (instancetype)initWithItems:(nullable NSArray<MPMediaItem *> *)items {
-  if (!items) {
-    return [self initWithItemsSequence:nil];
-  }
-  return [self initWithItemsSequence:@[items]];
+  return [self initWithItems:items collections:nil];
 }
 
-- (instancetype)initWithItemsSequence:(nullable NSArray<NSArray<MPMediaItem *> *> *)itemsSequence {
-  return [self initWithSequencesOfItems:itemsSequence collections:nil];
+- (instancetype)initWithCollections:(nullable NSArray<MPMediaItemCollection *> *)collections {
+  return [self initWithItems:nil collections:collections];
 }
 
-- (instancetype)initWithCollectionsSequence:
-    (nullable NSArray<NSArray<MPMediaItemCollection *> *> *)sequence {
-  return [self initWithSequencesOfItems:nil collections:sequence];
-}
-
-- (instancetype)initWithSequencesOfItems:(nullable NSArray *)itemSeq
-                             collections:(nullable NSArray *)collectionSeq {
+- (instancetype)initWithItems:(nullable NSArray<MPMediaItem *> *)items
+                  collections:(nullable NSArray<MPMediaItemCollection *> *)collections {
   if (self = [super init]) {
-    _itemsSequence = itemSeq;
-    _collectionsSequence = collectionSeq;
-    _itemIndex = 0;
-    _collectionIndex = 0;
+    _items = items;
+    _collections = collections;
   }
   return self;
-}
-
-- (nullable NSArray<MPMediaItem *> *)items {
-  if (!self.itemsSequence) {
-    return nil;
-  }
-  NSArray<MPMediaItem *> *items = self.itemsSequence[self.itemIndex];
-  self.itemIndex = (self.itemIndex + 1) % self.itemsSequence.count;
-  return items;
-}
-
-- (nullable NSArray<MPMediaItemCollection *> *)collections {
-  if (!self.collectionsSequence) {
-    return nil;
-  }
-  NSArray<MPMediaItemCollection *> *collections = self.collectionsSequence[self.collectionIndex];
-  self.collectionIndex = (self.collectionIndex + 1) % self.collectionsSequence.count;
-  return collections;
 }
 
 @end

@@ -71,7 +71,7 @@ context(@"convenience initializers", ^{
 context(@"fetching", ^{
   context(@"asset", ^{
     beforeEach(^{
-      query = [[PTNFakeMediaQuery alloc] initWithItemsSequence:@[@[item], @[item2]]];
+      query = [[PTNFakeMediaQuery alloc] initWithItems:@[item]];
       queryProvider = [[PTNFakeMediaQueryProvider alloc] initWithQuery:query];
       manager = [[PTNMediaLibraryAssetManager alloc] initWithQueryProvider:queryProvider
                                                       authorizationManager:authorizationManager];
@@ -87,12 +87,13 @@ context(@"fetching", ^{
       auto recorder = [[manager fetchDescriptorWithURL:url] testRecorder];
       expect(recorder).will.sendValues(@[item]);
 
+      query.items = @[item2];
       PTNPostMediaLibraryNotification(@"notification");
       expect(recorder).will.sendValues(@[item, item2]);
     });
 
     it(@"should not send update when assed did not change", ^{
-      auto query = [[PTNFakeMediaQuery alloc] initWithItemsSequence:@[@[item]]];
+      auto query = [[PTNFakeMediaQuery alloc] initWithItems:@[item]];
 
       auto queryProvider = [[PTNFakeMediaQueryProvider alloc] initWithQuery:query];
       auto manager = [[PTNMediaLibraryAssetManager alloc] initWithQueryProvider:queryProvider
@@ -102,7 +103,6 @@ context(@"fetching", ^{
       auto recorder = [[manager fetchDescriptorWithURL:url] testRecorder];
       expect(recorder).will.sendValues(@[item]);
 
-      NSLog(@"sending update");
       PTNPostMediaLibraryNotification(@"notification");
       expect(recorder).will.sendValues(@[item]);
     });
@@ -112,6 +112,7 @@ context(@"fetching", ^{
       auto signal = [manager fetchDescriptorWithURL:url];
 
       expect(signal).will.sendValues(@[item]);
+      query.items = @[item2];
       expect(signal).will.sendValues(@[item2]);
     });
 
@@ -154,7 +155,7 @@ context(@"fetching", ^{
     __block PTNAlbumChangeset *changeset;
 
     beforeEach(^{
-      query = [[PTNFakeMediaQuery alloc] initWithItemsSequence:@[@[item], @[item2]]];
+      query = [[PTNFakeMediaQuery alloc] initWithItems:@[item]];
       queryProvider = [[PTNFakeMediaQueryProvider alloc] initWithQuery:query];
       manager = [[PTNMediaLibraryAssetManager alloc] initWithQueryProvider:queryProvider
                                                       authorizationManager:authorizationManager];
@@ -171,14 +172,14 @@ context(@"fetching", ^{
 
     context(@"URLs", ^{
       beforeEach(^{
-        query = [[PTNFakeMediaQuery alloc] initWithCollectionsSequence:@[@[collection]]];
+        query = [[PTNFakeMediaQuery alloc] initWithCollections:@[collection]];
         queryProvider = [[PTNFakeMediaQueryProvider alloc] initWithQuery:query];
         manager = [[PTNMediaLibraryAssetManager alloc] initWithQueryProvider:queryProvider
                                                         authorizationManager:authorizationManager];
       });
 
       it(@"should fetch using URL of music album songs with item", ^{
-        auto query = [[PTNFakeMediaQuery alloc] initWithItemsSequence:@[@[item]]];
+        auto query = [[PTNFakeMediaQuery alloc] initWithItems:@[item]];
         auto queryProvider = [[PTNFakeMediaQueryProvider alloc] initWithQuery:query];
         auto manager = [[PTNMediaLibraryAssetManager alloc] initWithQueryProvider:queryProvider
                         authorizationManager:authorizationManager];
@@ -203,7 +204,7 @@ context(@"fetching", ^{
       });
 
       it(@"should fetch using URL of artist songs with item", ^{
-        auto query = [[PTNFakeMediaQuery alloc] initWithItemsSequence:@[@[item]]];
+        auto query = [[PTNFakeMediaQuery alloc] initWithItems:@[item]];
         auto queryProvider = [[PTNFakeMediaQueryProvider alloc] initWithQuery:query];
         auto manager = [[PTNMediaLibraryAssetManager alloc] initWithQueryProvider:queryProvider
                         authorizationManager:authorizationManager];
@@ -247,13 +248,14 @@ context(@"fetching", ^{
 
       auto album2 = [[PTNAlbum alloc] initWithURL:url subalbums:@[item2] assets:@[]];
       auto changeset2 = [PTNAlbumChangeset changesetWithAfterAlbum:album2];
+      query.items = @[item2];
       PTNPostMediaLibraryNotification(@"notificaiton");
 
       expect(recorder).will.sendValues(@[changeset, changeset2]);
     });
 
     it(@"should not send update when album did not change", ^{
-      auto query = [[PTNFakeMediaQuery alloc] initWithItemsSequence:@[@[item]]];
+      auto query = [[PTNFakeMediaQuery alloc] initWithItems:@[item]];
       auto queryProvider = [[PTNFakeMediaQueryProvider alloc] initWithQuery:query];
       auto manager = [[PTNMediaLibraryAssetManager alloc] initWithQueryProvider:queryProvider
                       authorizationManager:authorizationManager];
@@ -270,6 +272,7 @@ context(@"fetching", ^{
       auto signal = [manager fetchAlbumWithURL:url];
 
       expect(signal).will.sendValues(@[changeset]);
+      query.items = @[item2];
       expect(signal).will.sendValues(@[changeset2]);
     });
 
@@ -295,7 +298,7 @@ context(@"fetching", ^{
     });
 
     it(@"should error on non-existing collection", ^{
-      auto nilQuery = [[PTNFakeMediaQuery alloc] initWithCollectionsSequence:nil];
+      auto nilQuery = [[PTNFakeMediaQuery alloc] init];
       auto nilQueryProvider = [[PTNFakeMediaQueryProvider alloc] initWithQuery:nilQuery];
       auto manager = [[PTNMediaLibraryAssetManager alloc] initWithQueryProvider:nilQueryProvider
                       authorizationManager:authorizationManager];
@@ -349,7 +352,7 @@ context(@"fetching", ^{
     });
 
     it(@"should err when image can not be found", ^{
-      auto query = [[PTNFakeMediaQuery alloc] initWithItemsSequence:@[@[item]]];
+      auto query = [[PTNFakeMediaQuery alloc] initWithItems:@[item]];
       auto queryProvider = [[PTNFakeMediaQueryProvider alloc] initWithQuery:query];
       auto manager = [[PTNMediaLibraryAssetManager alloc] initWithQueryProvider:queryProvider
                       authorizationManager:authorizationManager];
@@ -408,7 +411,7 @@ it(@"should err when fetching image data with descriptor", ^{
 it(@"should dealloc the manager after fetch signal is disposed", ^{
   __weak PTNMediaLibraryAssetManager *weakManager;
   @autoreleasepool {
-    auto query = [[PTNFakeMediaQuery alloc] initWithItemsSequence:@[@[item]]];
+    auto query = [[PTNFakeMediaQuery alloc] initWithItems:@[item]];
     auto queryProvider = [[PTNFakeMediaQueryProvider alloc] initWithQuery:query];
     auto manager = [[PTNMediaLibraryAssetManager alloc] initWithQueryProvider:queryProvider];
     weakManager = manager;
@@ -423,7 +426,7 @@ it(@"should not dealloc the manager while fetch signal is not disposed", ^{
   __weak PTNMediaLibraryAssetManager *weakManager;
   RACSignal *fetchSignal;
   @autoreleasepool {
-    auto query = [[PTNFakeMediaQuery alloc] initWithItemsSequence:@[@[item]]];
+    auto query = [[PTNFakeMediaQuery alloc] initWithItems:@[item]];
     auto queryProvider = [[PTNFakeMediaQueryProvider alloc] initWithQuery:query];
     auto manager = [[PTNMediaLibraryAssetManager alloc] initWithQueryProvider:queryProvider
                                                          authorizationManager:authorizationManager];
