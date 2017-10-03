@@ -40,13 +40,13 @@ void LTConvertMat(const cv::Mat &input, cv::Mat *output, int type);
 
 /// Updates the values of the given \c output matrix to be the values of the given \c input matrix,
 /// converted to half-float precision. \c input and \c output must have the same size and number of
-/// channels. \c input depth must be \c CV_16F. \c output depth can be \c CV_8U or \c CV_32F. If
+/// channels. \c input depth must be \c CV_8U or \c CV_32F. \c output depth must be \c CV_16F. If
 /// \c input depth is \c CV_8U, the values will be divided by 255.
 void LTConvertToHalfFloat(const cv::Mat &input, cv::Mat *output);
 
 /// Updates the values of the given \c output matrix to be the values of the given \c input matrix,
 /// converted from half-float precision to \c CV_8U or \c CV_32F. \c input and \c output must have
-/// the same size and number of channels. \c input depth must be \c CV_16F. \c output depth can be
+/// the same size and number of channels. \c input depth must be \c CV_16F. \c output depth must be
 /// \c CV_8U or \c CV_32F. If \c output depth is \c CV_8U, the values will be multiplied by 255.
 void LTConvertFromHalfFloat(const cv::Mat &input, cv::Mat *output);
 
