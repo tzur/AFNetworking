@@ -10,6 +10,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Lightricks backend.
 @interface INTAnalytricksTransformerBlocks : NSObject
 
+/// Key for an \c NSNumber enrichment representing the app run count.
+extern NSString * const kINTEnrichmentAppRunCountKey;
+
 /// Returns a block that adds entries from an \c NSDictionary resulting from
 /// <tt>-[INTAnalytricksContext properties]</tt> to each event in \c events only if an event is an
 /// \c NSDictionary and if \c appContext contains an \c INTAnalytricksContext in
@@ -25,6 +28,13 @@ NS_ASSUME_NONNULL_BEGIN
 /// between the event keys and the analytricks metadata keys, the events' values are taken for the
 /// final dictionary.
 + (INTEventEnrichmentBlock)analytricksMetadataEnrichementBlock;
+
+/// Returns a block that adds \c kINTEnrichmentAppRunCountKey key with the value of
+/// \c kINTAppContextAppRunCountKey to each event in \c events only if an event is an
+/// \c NSDictionary and if \c appContext contains an \c kINTAppContextAppRunCountKey, otherwise the
+/// event is returned as is. If there's a conflict between the event keys and the
+/// \c kINTEnrichmentAppRunCountKey key, the events' value are taken for that key.
++ (INTEventEnrichmentBlock)appRunCountEnrichementBlock;
 
 /// Transformer that produces an \c NSDictionary, resulting from
 /// <tt>-[INTAnalytricksAppForegrounded properties]</tt>. The transformer observes a cycle of low
