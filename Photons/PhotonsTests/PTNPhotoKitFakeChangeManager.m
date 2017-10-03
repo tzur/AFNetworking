@@ -15,6 +15,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Asset requested to be created by the manager.
 @property (readonly, nonatomic) NSMutableArray *assetsCreated;
 
+/// Asset requested to be created with options by the manager.
+@property (readonly, nonatomic) NSMutableArray *assetsWithOptionsCreated;
+
 /// Asset requested to be deleted by the manager.
 @property (readonly, nonatomic) NSMutableArray *assetsDeleted;
 
@@ -46,6 +49,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)init {
   if (self = [super init]) {
     _assetsCreated = [NSMutableArray array];
+    _assetsWithOptionsCreated = [NSMutableArray array];;
     _assetsDeleted = [NSMutableArray array];
     _assetCollectionsDeleted = [NSMutableArray array];
     _collectionListsDeleted = [NSMutableArray array];
@@ -62,6 +66,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (NSArray *)assetCreationRequests {
   return [self.assetsCreated copy];
+}
+
+- (NSArray *)assetWithOptionsCreationRequests {
+  return [self.assetsWithOptionsCreated copy];
 }
 
 - (NSArray *)assetDeleteRequests {
@@ -107,7 +115,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (nullable PHAssetChangeRequest *)createAssetFromImageAtFileURL:(NSURL *)fileURL {
   LTAssert(!self.inChangeBlock, @"Attempting to create image at file URL %@ not within a change "
            "block", fileURL);
-  
+
   [self.assetsCreated addObject:fileURL];
   return self.changeRequest;
 }
@@ -115,8 +123,17 @@ NS_ASSUME_NONNULL_BEGIN
 - (nullable PHAssetChangeRequest *)createAssetFromVideoAtFileURL:(NSURL *)fileURL {
   LTAssert(!self.inChangeBlock, @"Attempting to create video at file URL %@ not within a change "
            "block", fileURL);
-  
+
   [self.assetsCreated addObject:fileURL];
+  return self.changeRequest;
+}
+
+- (nullable PHAssetChangeRequest *)createAssetFromVideoAtFileURL:(NSURL *)fileURL
+      withOptions:(PHAssetResourceCreationOptions *)options {
+  LTAssert(!self.inChangeBlock, @"Attempting to create video at file URL %@ not within a change "
+           "block", fileURL);
+
+  [self.assetsWithOptionsCreated addObject:RACTuplePack(fileURL, options)];
   return self.changeRequest;
 }
 

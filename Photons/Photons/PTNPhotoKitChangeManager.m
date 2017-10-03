@@ -17,6 +17,13 @@ NS_ASSUME_NONNULL_BEGIN
   return [PHAssetChangeRequest creationRequestForAssetFromVideoAtFileURL:fileURL];
 }
 
+- (nullable PHAssetChangeRequest *)createAssetFromVideoAtFileURL:(NSURL *)fileURL
+      withOptions:(PHAssetResourceCreationOptions *)options {
+  PHAssetCreationRequest *request = [PHAssetCreationRequest creationRequestForAsset];
+  [request addResourceWithType:PHAssetResourceTypeVideo fileURL:fileURL options:options];
+  return request;
+}
+
 - (void)deleteAssets:(id<NSFastEnumeration>)assets {
   [PHAssetChangeRequest deleteAssets:assets];
 }

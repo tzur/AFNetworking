@@ -4,7 +4,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @class PHAsset, PHAssetChangeRequest, PHAssetCollection, PHAssetCollectionChangeRequest,
-    PHCollectionList, PHFetchResult;
+    PHAssetResourceCreationOptions, PHCollectionList, PHFetchResult;
 
 /// Protocol for changing PhotoKit entities in the shared \c PHPhotoLibrary.
 @protocol PTNPhotoKitChangeManager <NSObject>
@@ -23,6 +23,13 @@ typedef void (^PTNChangeRequestCompletionBlock)(BOOL success, NSError * _Nullabl
 /// valid file URL. Call this method within a photo library change block to create a video asset.
 /// For details on change blocks, see the \c PTNPhotoKitChangeManager protocol.
 - (nullable PHAssetChangeRequest *)createAssetFromVideoAtFileURL:(NSURL *)fileURL;
+
+/// Requests that the video at the specified \c fileURL will be created using the speified \c
+/// options. Returns the \c PHAssetChangeRequest instance associated with the request. Call this
+/// method within a photo library change block to create a video asset. For details on change
+/// blocks, see the \c PTNPhotoKitChangeManager protocol.
+- (nullable PHAssetChangeRequest *)createAssetFromVideoAtFileURL:(NSURL *)fileURL
+      withOptions:(PHAssetResourceCreationOptions *)options;
 
 /// Requests that the specified \c assets be deleted. Call this method within a photo library change
 /// block to delete assets. For details on change blocks, see the \c PTNPhotoKitChangeManager
