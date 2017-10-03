@@ -11,17 +11,40 @@ NS_ASSUME_NONNULL_BEGIN
 /// return values from \c PTNMediaQuery's methods. Used for testing.
 @interface PTNFakeMediaQuery : NSObject <PTNMediaQuery>
 
+/// Initializes a default \c PTNFakeMediaQuery instance.
+/// It's equivalent to:
+///
+/// @code
+///     [[PTNFakeMediaQuery alloc] initWithItems:nil collections:nil];
+/// @endcode
+- (instancetype)init;
+
 /// Initializes with the given \c items, which will be retuned when reading the \c items property.
+/// It's equivalent to:
+///
+/// @code
+///     [[PTNFakeMediaQuery alloc] initWithItems:items collections:nil];
+/// @endcode
 - (instancetype)initWithItems:(nullable NSArray<MPMediaItem *> *)items;
 
-/// Initializes with the given \c sequence. Each \c items property read will return the next element
-/// in the \c sequence array (in cyclic manner), starting from \c sequence.firstObject.
-- (instancetype)initWithItemsSequence:(nullable NSArray<NSArray<MPMediaItem *> *> *)sequence;
+/// Initializes with the given \c collections, which will be retuned when reading the
+/// \c collections property. It's equivalent to:
+///
+/// @code
+///     [[PTNFakeMediaQuery alloc] initWithItems:nil collections:collections];
+/// @endcode
+- (instancetype)initWithCollections:(nullable NSArray<MPMediaItemCollection *> *)collections;
 
-/// Initializes with the given \c sequence. Each \c collections property read will return the next
-/// element in the \c sequence array (in cyclic manner), starting from \c sequence.firstObject.
-- (instancetype)initWithCollectionsSequence:
-    (nullable NSArray<NSArray<MPMediaItemCollection *> *> *)sequence;
+/// Initializes with the given \c items and \c collections.
+- (instancetype)initWithItems:(nullable NSArray<MPMediaItem *> *)items
+                  collections:(nullable NSArray<MPMediaItemCollection *> *)collections
+    NS_DESIGNATED_INITIALIZER;
+
+/// Array of media items.
+@property (strong, nonatomic, nullable) NSArray<MPMediaItem *> *items;
+
+/// Array of media item collections.
+@property (strong, nonatomic, nullable) NSArray<MPMediaItemCollection *> *collections;
 
 @end
 
