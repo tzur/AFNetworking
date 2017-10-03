@@ -157,8 +157,8 @@ PoolingKernelModel createPoolingKernelModel
 }
 
 ActivationKernelModel createActivationKernelModel(const ActivationParams &activationParams) {
-  switch(activationParams.NonlinearityType_case())
-    case ActivationParams::kLinear: {
+  switch (activationParams.NonlinearityType_case()) {
+    case ActivationParams::kLinear:
       return ActivationKernelModel{
         .activationType = ActivationTypeLinear,
         .alpha = cv::Mat1f(1, 1, activationParams.linear().alpha()),
