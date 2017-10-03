@@ -6,6 +6,7 @@
 #import <LTKit/LTKeyPathCoding.h>
 
 #import "INTAnalytricksContext+Merge.h"
+#import "INTAppRunCountUpdatedEvent.h"
 #import "INTAppWillEnterForegroundEvent.h"
 #import "INTDeviceInfo.h"
 #import "INTDeviceInfoLoadedEvent.h"
@@ -17,10 +18,10 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-extern NSString * const kINTAppContextAnalytricksContextKey =
-    @"_INTAnalytricksContext";
-extern NSString * const kINTAppContextDeviceIDKey = @"_INTDeviceID";
-extern NSString * const kINTAppContextDeviceInfoIDKey = @"_INTDeviceInfoID";
+NSString * const kINTAppContextAnalytricksContextKey = @"_INTAnalytricksContext";
+NSString * const kINTAppContextDeviceIDKey = @"_INTDeviceID";
+NSString * const kINTAppContextDeviceInfoIDKey = @"_INTDeviceInfoID";
+NSString * const kINTAppContextAppRunCountKey = @"_INTAppRunCount";
 
 /// Block that inspects \c event and returns the updates that should be commited to the analytrics
 /// context in a context aggregation process. The block must be a pure function without side
@@ -114,6 +115,17 @@ INTAggregationBlock INTAnalytricksContextAggregation(INTAnalytricksContextUpdate
       kINTAppContextDeviceIDKey: event.deviceInfo.identifierForVendor,
       kINTAppContextDeviceInfoIDKey: event.deviceInfoRevisionID
     };
+    return (INTAppContext *)[context int_mergeUpdates:contextUpdates];
+  };
+}
+
++ (INTAppContextGeneratorBlock)appRunCountContextGenerator {
+  return ^(INTAppContext *context, INTEventMetadata *, INTAppRunCountUpdatedEvent *event) {
+    if (![event isKindOfClass:INTAppRunCountUpdatedEvent.class]) {
+      return context;
+    }
+
+    auto contextUpdates = @{kINTAppContextAppRunCountKey: event.runCount};
     return (INTAppContext *)[context int_mergeUpdates:contextUpdates];
   };
 }

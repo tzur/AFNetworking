@@ -4,6 +4,7 @@
 #import "INTAnalytricksContextGenerators.h"
 
 #import <Intelligence/INTAnalytricksContext.h>
+#import <Intelligence/INTAppRunCountUpdatedEvent.h>
 #import <Intelligence/INTAppWillEnterForegroundEvent.h>
 #import <Intelligence/INTProjectLoadedEvent.h>
 #import <Intelligence/INTProjectUnloadedEvent.h>
@@ -182,6 +183,21 @@ context(@"device info context generator", ^{
   it(@"should set device info id to identifier for vendor on launch", ^{
     expect(contextAfterDeviceInfoLoadedEvent[kINTAppContextDeviceInfoIDKey]).to
         .equal(deviceInfoRevisionID);
+  });
+});
+
+context(@"app run count context generator", ^{
+  __block INTAppContextGeneratorBlock contextGenerator;
+
+  beforeEach(^{
+    contextGenerator = [INTAnalytricksContextGenerators appRunCountContextGenerator];
+  });
+
+  it(@"should set run count to the run count of the observed event", ^{
+    auto appRunCountUpdatedEvent = [[INTAppRunCountUpdatedEvent alloc] initWithRunCount:@4];
+    auto updatedContext = contextGenerator(@{}, INTCreateEventMetadata(), appRunCountUpdatedEvent);
+
+    expect(updatedContext[kINTAppContextAppRunCountKey]).to.equal(@4);
   });
 });
 
