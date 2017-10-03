@@ -14,12 +14,13 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)init NS_UNAVAILABLE;
 
 /// Initializes with the given \c collection and the given \c url;
-- (instancetype)initWithCollection:(MPMediaItemCollection *)collection url:(NSURL *)url;
+- (instancetype)initWithCollection:(MPMediaItemCollection *)collection url:(NSURL *)url
+    NS_DESIGNATED_INITIALIZER;
 
 /// Returns \c MPMediaItemCollection represented by this instance.
 @property (readonly, nonatomic) MPMediaItemCollection *collection;
 
-/// Return \c NSURL represented by this instance.
+/// Returns \c NSURL represented by this instance.
 @property (readonly, nonatomic) NSURL *url;
 
 @end
