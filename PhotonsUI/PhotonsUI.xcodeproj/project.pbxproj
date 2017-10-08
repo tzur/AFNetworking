@@ -407,6 +407,13 @@
 			remoteGlobalIDString = D047260B19E49F82006002AA;
 			remoteInfo = "ReactiveObjC-iOS";
 		};
+		8BEF39B91F8A450A0080ABA3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 849AE4961C6B4F7C00F030CA /* Masonry.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 3AED05B61AD59FD40053CC65;
+			remoteInfo = "Masonry iOS";
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -1109,6 +1116,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				8BEF39BA1F8A450A0080ABA3 /* PBXTargetDependency */,
 				84FF72F31C8EED9300D1DA9F /* PBXTargetDependency */,
 				8B68644F1F3347AF00F0EF4C /* PBXTargetDependency */,
 			);
@@ -1636,6 +1644,11 @@
 			name = "ReactiveObjC-iOS";
 			targetProxy = 8B68644E1F3347AF00F0EF4C /* PBXContainerItemProxy */;
 		};
+		8BEF39BA1F8A450A0080ABA3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Masonry iOS";
+			targetProxy = 8BEF39B91F8A450A0080ABA3 /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
@@ -1769,7 +1782,6 @@
 					"$(SRCROOT)/../LTKit/",
 					"$(SRCROOT)/../Photons",
 					"$(SRCROOT)/../third_party/libextobjc/",
-					"$(SRCROOT)/../third_party/Masonry",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
@@ -1807,7 +1819,6 @@
 					"$(SRCROOT)/../LTKit/",
 					"$(SRCROOT)/../Photons",
 					"$(SRCROOT)/../third_party/libextobjc/",
-					"$(SRCROOT)/../third_party/Masonry",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
