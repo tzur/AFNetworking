@@ -797,7 +797,6 @@
 				84FF72E51C8EED6D00D1DA9F /* Sources */,
 				84FF72E61C8EED6D00D1DA9F /* Frameworks */,
 				84FF72E71C8EED6D00D1DA9F /* CopyFiles */,
-				CD8E86A31F56F1C200DF8FC1 /* Run Localization Script */,
 			);
 			buildRules = (
 			);
@@ -814,6 +813,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = CD55503B1F45C8050048215C /* Build configuration list for PBXNativeTarget "ShopixBundle" */;
 			buildPhases = (
+				65F77D821F8A74BD00FD74ED /* Run Localization Script */,
 				CD5550111F45C8050048215C /* Sources */,
 				CD5550121F45C8050048215C /* Frameworks */,
 				CD5550131F45C8050048215C /* Resources */,
@@ -1209,7 +1209,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		CD8E86A31F56F1C200DF8FC1 /* Run Localization Script */ = {
+		65F77D821F8A74BD00FD74ED /* Run Localization Script */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1221,7 +1221,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"$PROJECT_DIR/BuildTools/Localization/run_app_localization.sh\" \"$PROJECT_DIR\" \"$TARGET_NAME\" \"./ShopixBundle\"";
+			shellScript = "\"$PROJECT_DIR/BuildTools/Localization/run_app_localization.sh\" \"$PROJECT_DIR\" Shopix \"$PROJECT_DIR/ShopixBundle\"";
 		};
 /* End PBXShellScriptBuildPhase section */
 
