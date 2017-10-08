@@ -75,6 +75,13 @@
 			remoteGlobalIDString = 65CEFBB11D3BF72800402230;
 			remoteInfo = TestHost;
 		};
+		65F77D831F8A7CB800FD74ED /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 848EFF731C591B3A001D8368 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CD5550141F45C8050048215C;
+			remoteInfo = ShopixBundle;
+		};
 		8B425EC81CA6D218001C457E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 848E00371C5920CB001D8368 /* Expecta.xcodeproj */;
@@ -372,7 +379,7 @@
 		CD4572881F71731400713681 /* AFNetworking.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AFNetworking.framework; path = "../../../../Library/Developer/Xcode/DerivedData/Owl-cpmihbeuajpsedfbcjbefbzvjxha/Build/Products/Debug-iphonesimulator/AFNetworking.framework"; sourceTree = "<group>"; };
 		CD45728A1F717E4D00713681 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		CD553D861F4184D00048215C /* Bazaar.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Bazaar.xcodeproj; path = ../Bazaar/Bazaar.xcodeproj; sourceTree = "<group>"; };
-		CD5550151F45C8050048215C /* ShopixBundle.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ShopixBundle.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
+		CD5550151F45C8050048215C /* Shopix.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Shopix.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD5550171F45C8050048215C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CD5551171F45D5E10048215C /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
 		CD5551191F45D5E10048215C /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = Base; path = Base.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
@@ -562,7 +569,7 @@
 			children = (
 				848E000D1C591DD1001D8368 /* ShopixTests.xctest */,
 				84FF72E91C8EED6D00D1DA9F /* libShopix.a */,
-				CD5550151F45C8050048215C /* ShopixBundle.bundle */,
+				CD5550151F45C8050048215C /* Shopix.bundle */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -790,12 +797,12 @@
 				84FF72E51C8EED6D00D1DA9F /* Sources */,
 				84FF72E61C8EED6D00D1DA9F /* Frameworks */,
 				84FF72E71C8EED6D00D1DA9F /* CopyFiles */,
-				CD8E86A31F56F1C200DF8FC1 /* Run Localization Script */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 				CDCCF4111F4F004D00F421E6 /* PBXTargetDependency */,
+				65F77D841F8A7CB800FD74ED /* PBXTargetDependency */,
 			);
 			name = Shopix;
 			productName = Shopix;
@@ -806,6 +813,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = CD55503B1F45C8050048215C /* Build configuration list for PBXNativeTarget "ShopixBundle" */;
 			buildPhases = (
+				65F77D821F8A74BD00FD74ED /* Run Localization Script */,
 				CD5550111F45C8050048215C /* Sources */,
 				CD5550121F45C8050048215C /* Frameworks */,
 				CD5550131F45C8050048215C /* Resources */,
@@ -816,7 +824,7 @@
 			);
 			name = ShopixBundle;
 			productName = ShopixBundle;
-			productReference = CD5550151F45C8050048215C /* ShopixBundle.bundle */;
+			productReference = CD5550151F45C8050048215C /* Shopix.bundle */;
 			productType = "com.apple.product-type.bundle";
 		};
 /* End PBXNativeTarget section */
@@ -1201,7 +1209,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		CD8E86A31F56F1C200DF8FC1 /* Run Localization Script */ = {
+		65F77D821F8A74BD00FD74ED /* Run Localization Script */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1213,7 +1221,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"$PROJECT_DIR/BuildTools/Localization/run_app_localization.sh\" \"$PROJECT_DIR\" \"$TARGET_NAME\" \"./ShopixBundle\"";
+			shellScript = "\"$PROJECT_DIR/BuildTools/Localization/run_app_localization.sh\" \"$PROJECT_DIR\" Shopix \"$PROJECT_DIR/ShopixBundle\"";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1256,6 +1264,11 @@
 			isa = PBXTargetDependency;
 			name = TestHost;
 			targetProxy = 65E7AA7A1D48DAEB00830B35 /* PBXContainerItemProxy */;
+		};
+		65F77D841F8A7CB800FD74ED /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CD5550141F45C8050048215C /* ShopixBundle */;
+			targetProxy = 65F77D831F8A7CB800FD74ED /* PBXContainerItemProxy */;
 		};
 		CDCCF4111F4F004D00F421E6 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -1489,7 +1502,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				PRODUCT_BUNDLE_IDENTIFIER = com.lightricks.ShopixBundle;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Shopix;
 				SKIP_INSTALL = YES;
 				WRAPPER_EXTENSION = bundle;
 			};
@@ -1522,7 +1535,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				PRODUCT_BUNDLE_IDENTIFIER = com.lightricks.ShopixBundle;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Shopix;
 				SKIP_INSTALL = YES;
 				WRAPPER_EXTENSION = bundle;
 			};
