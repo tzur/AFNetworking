@@ -13,6 +13,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+using namespace spx;
+
 /// Category that adds a \c dismissBlock property to \c MFMailComposeViewController.
 @interface MFMailComposeViewController (Dismiss)
 
@@ -49,8 +51,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly, nonatomic, weak) UIViewController *viewController;
 
 @end
-
-using spx::_LDefault;
 
 @implementation SPXSubscriptionManager
 
