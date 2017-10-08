@@ -803,6 +803,7 @@
 			);
 			dependencies = (
 				CDCCF4111F4F004D00F421E6 /* PBXTargetDependency */,
+				65F77D841F8A7CB800FD74ED /* PBXTargetDependency */,
 			);
 			name = Shopix;
 			productName = Shopix;
@@ -1263,6 +1264,11 @@
 			isa = PBXTargetDependency;
 			name = TestHost;
 			targetProxy = 65E7AA7A1D48DAEB00830B35 /* PBXContainerItemProxy */;
+		};
+		65F77D841F8A7CB800FD74ED /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CD5550141F45C8050048215C /* ShopixBundle */;
+			targetProxy = 65F77D831F8A7CB800FD74ED /* PBXContainerItemProxy */;
 		};
 		CDCCF4111F4F004D00F421E6 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
