@@ -21,10 +21,18 @@ it(@"should log dictionaries with the event key to Alooma", ^{
   OCMVerify([alooma trackCustomEvent:@{@"event": @"bar"}]);
 });
 
-it(@"should accept only dictionaries with the event key", ^{
+it(@"should accept only dictionaries with the event key with string value", ^{
   expect([logger isEventSupported:@{@"event": @"bar"}]).to.beTruthy();
   expect([logger isEventSupported:@{}]).to.beFalsy();
   expect([logger isEventSupported:@"foo"]).to.beFalsy();
+  expect([logger isEventSupported:@{@"event": @1}]).to.beFalsy();
+});
+
+it(@"should replace non json serializable events with error event", ^{
+  auto event = @{@"event": @"foo", @"bar": [NSUUID UUID]};
+  [logger logEvent:event];
+
+  OCMVerify([alooma trackCustomEvent:INTAloomaJSONSerializationErrorEvent(event)]);
 });
 
 SpecEnd
