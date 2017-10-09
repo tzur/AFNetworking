@@ -7584,7 +7584,7 @@
 					"$(SRCROOT)/../third_party/Mantle/",
 					"$(SRCROOT)/../third_party/openexr-binaries/include",
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SHADER_ENCRYPTION_KEY = "performSelector:";
@@ -7615,7 +7615,7 @@
 					"$(SRCROOT)/../third_party/Mantle/",
 					"$(SRCROOT)/../third_party/openexr-binaries/include",
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				SDKROOT = iphoneos;
 				SHADER_ENCRYPTION_KEY = "performSelector:";
 			};

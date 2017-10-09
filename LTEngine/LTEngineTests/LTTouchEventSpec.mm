@@ -3,6 +3,7 @@
 
 #import "LTTouchEvent.h"
 
+API_AVAILABLE(ios(9.1))
 SpecBegin(LTTouchEvent)
 
 __block NSTimeInterval timestamp;

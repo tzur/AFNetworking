@@ -343,6 +343,7 @@ sharedExamplesFor(kLTTouchEventViewExamples, ^(NSDictionary *data) {
 
 SharedExamplesEnd
 
+API_AVAILABLE(ios(9.1))
 SpecBegin(LTTouchEventView)
 
 context(@"initialization", ^{

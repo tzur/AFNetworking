@@ -267,27 +267,30 @@ context(@"image properties", ^{
     expect(CGColorSpaceGetModel(image.colorSpace)).to.equal(CGColorSpaceGetModel(jpegColorSpace));
   });
 
-  it(@"should load wide gamut color space", ^{
-    lt::Ref<CGColorSpaceRef> colorSpace(CGColorSpaceCreateWithName(kCGColorSpaceSRGB));
+  if (@available(iOS 9.3, *)) {
+    it(@"should load wide gamut color space", ^{
+      lt::Ref<CGColorSpaceRef> colorSpace(CGColorSpaceCreateWithName(kCGColorSpaceSRGB));
 
-    const CGFloat sourceComponents[] = {0.5, 0.75, 0.25, 1.0};
-    auto cgImageRef = LTCreatHalfFloatCGImage(2, 2, colorSpace.get(), LTVector4(sourceComponents[0],
-        sourceComponents[1], sourceComponents[2], sourceComponents[3]));
-    auto uiImage = [[UIImage alloc] initWithCGImage:cgImageRef.get()];
+      const CGFloat sourceComponents[] = {0.5, 0.75, 0.25, 1.0};
+      auto cgImageRef = LTCreatHalfFloatCGImage(2, 2, colorSpace.get(),
+          LTVector4(sourceComponents[0], sourceComponents[1], sourceComponents[2],
+                    sourceComponents[3]));
+      auto uiImage = [[UIImage alloc] initWithCGImage:cgImageRef.get()];
 
-    lt::Ref<CGColorSpaceRef> p3ColorSpace(CGColorSpaceCreateWithName(kCGColorSpaceDisplayP3));
+      lt::Ref<CGColorSpaceRef> p3ColorSpace(CGColorSpaceCreateWithName(kCGColorSpaceDisplayP3));
 
-    cv::Vec4b expectedColor = LTConvertRGBAComponents(sourceComponents, p3ColorSpace.get(),
-                                                      CGImageGetRenderingIntent(cgImageRef.get()));
-    cv::Mat4b expected = (cv::Mat4b(uiImage.size.height, uiImage.size.width) << expectedColor,
-        expectedColor, expectedColor, expectedColor);
+      cv::Vec4b expectedColor = LTConvertRGBAComponents(
+          sourceComponents, p3ColorSpace.get(), CGImageGetRenderingIntent(cgImageRef.get()));
+      cv::Mat4b expected = (cv::Mat4b(uiImage.size.height, uiImage.size.width) << expectedColor,
+          expectedColor, expectedColor, expectedColor);
 
-    auto actual = [[LTImage alloc] initWithImage:uiImage targetColorSpace:p3ColorSpace.get()];
+      auto actual = [[LTImage alloc] initWithImage:uiImage targetColorSpace:p3ColorSpace.get()];
 
-    expect(CGColorSpaceGetModel(actual.colorSpace))
-        .to.equal(CGColorSpaceGetModel((p3ColorSpace.get())));
-    expect($(actual.mat)).to.beCloseToMatWithin($(expected), 1);
-  });
+      expect(CGColorSpaceGetModel(actual.colorSpace))
+          .to.equal(CGColorSpaceGetModel((p3ColorSpace.get())));
+      expect($(actual.mat)).to.beCloseToMatWithin($(expected), 1);
+    });
+  }
 
   it(@"should load NULL color space when initialize with mat", ^{
     cv::Mat4b mat(2, 2, cv::Vec4b(255, 255, 255, 255));
@@ -298,7 +301,7 @@ context(@"image properties", ^{
   });
 
   it(@"should load with image's color space", ^{
-    lt::Ref<CGColorSpaceRef> colorSpace(CGColorSpaceCreateWithName(kCGColorSpaceDisplayP3));
+    lt::Ref<CGColorSpaceRef> colorSpace(CGColorSpaceCreateWithName(kCGColorSpaceSRGB));
 
     auto cgImageRef = LTCreatHalfFloatCGImage(2, 2, colorSpace.get(),
         LTVector4(0.5, 0.75, 0.25, 1.0));

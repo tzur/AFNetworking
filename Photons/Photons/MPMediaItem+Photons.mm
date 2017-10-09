@@ -39,7 +39,11 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 - (nullable NSDate *)creationDate {
-  return self.dateAdded;
+  if (@available(iOS 10.0, *)) {
+    return self.dateAdded;
+  } else {
+    return nil;
+  }
 }
 
 - (nullable NSDate *)modificationDate {

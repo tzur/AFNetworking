@@ -46,7 +46,7 @@ LTEnumImplement(NSUInteger, PTNMediaLibraryFetchType,
 }
 
 // Apple music assets aren't available for downloading, therefore, we filter them in advance.
-+ (NSArray<MPMediaPropertyPredicate *> *)ptn_unavailableAssetsPredicates {
++ (NSArray<MPMediaPropertyPredicate *> *)ptn_unavailableAssetsPredicates API_AVAILABLE(ios(9.3)) {
   auto cloudPredicate = [MPMediaPropertyPredicate predicateWithValue:@(NO)
                          forProperty:MPMediaItemPropertyIsCloudItem];
   auto protectedAssetPredicate = [MPMediaPropertyPredicate predicateWithValue:@(NO)
@@ -109,7 +109,7 @@ LTEnumImplement(NSUInteger, PTNMediaLibraryFetchType,
 + (NSURL *)ptn_urlWithType:(PTNMediaLibraryURLType)type
                 predicates:(NSSet<MPMediaPropertyPredicate *> *)predicates
                  fetchType:(PTNMediaLibraryFetchType *)fetchType
-                 groupedBy:(nullable NSNumber *)grouping {
+                 groupedBy:(nullable NSNumber *)grouping API_AVAILABLE(ios(9.3)) {
   LTParameterAssert(type == PTNMediaLibraryURLTypeAlbum || type == PTNMediaLibraryURLTypeAsset,
                     @"url type (%lu) is not upported", (unsigned long)type);
 
@@ -143,7 +143,7 @@ LTEnumImplement(NSUInteger, PTNMediaLibraryFetchType,
   return [self ptn_groupingValueToNSStringMap][groupingType];
 }
 
-+ (NSSet<MPMediaPropertyPredicate *> *)ptn_mediaTypeMusicPredicates {
++ (NSSet<MPMediaPropertyPredicate *> *)ptn_mediaTypeMusicPredicates API_AVAILABLE(ios(9.3)) {
   auto predicate =  [MPMediaPropertyPredicate predicateWithValue:@(MPMediaTypeMusic)
                                                      forProperty:MPMediaItemPropertyMediaType];
   auto predicates = [[NSURL ptn_unavailableAssetsPredicates] arrayByAddingObject:predicate];
@@ -241,7 +241,7 @@ LTEnumImplement(NSUInteger, PTNMediaLibraryFetchType,
   return query;
 }
 
-- (BOOL)ptn_hasValidQueryItems {
+- (BOOL)ptn_hasValidQueryItems API_AVAILABLE(ios(9.3)) {
   NSDictionary<NSString *, NSArray<NSString *> *> *itemsDictionary = [self lt_queryArrayDictionary];
   auto _Nullable predicateQueryItems = [self ptn_predicateQueryItems];
   auto _Nullable fetches = itemsDictionary[@"fetch"];
@@ -293,11 +293,12 @@ LTEnumImplement(NSUInteger, PTNMediaLibraryFetchType,
 }
 
 + (nullable MPMediaPropertyPredicate *)ptn_predicateWithProperty:(NSString *)property
-                                                           value:(NSString *)value {
+                                                           value:(NSString *)value
+    API_AVAILABLE(ios(9.3)) {
   errno = 0;
   if ([self ptn_isUnsignedLongLongProperty:property]) {
     auto number = [NSNumber numberWithUnsignedLongLong:strtoull([value UTF8String], NULL, 0)];
-    if (errno){
+    if (errno) {
       return nil;
     }
     return [MPMediaPropertyPredicate predicateWithValue:number forProperty:property];
@@ -327,12 +328,12 @@ LTEnumImplement(NSUInteger, PTNMediaLibraryFetchType,
   return [property isEqualToString:MPMediaItemPropertyMediaType];
 }
 
-+ (BOOL)ptn_isBooleanProperty:(NSString *)property {
++ (BOOL)ptn_isBooleanProperty:(NSString *)property API_AVAILABLE(ios(9.3)) {
   return [property isEqualToString:MPMediaItemPropertyHasProtectedAsset] ||
       [property isEqualToString:MPMediaItemPropertyIsCloudItem];
 }
 
-+ (NSSet<NSString *> *)ptn_supportedProperties {
++ (NSSet<NSString *> *)ptn_supportedProperties API_AVAILABLE(ios(9.3)) {
   static NSSet<NSString *> *values;
   static dispatch_once_t onceToken;
 

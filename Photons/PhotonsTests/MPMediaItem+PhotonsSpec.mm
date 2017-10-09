@@ -5,6 +5,7 @@
 
 #import "NSURL+MediaLibrary.h"
 
+API_AVAILABLE(ios(9.3))
 SpecBegin(MPMediaItem_Photons)
 
 __block MPMediaItem *item;

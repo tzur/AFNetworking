@@ -16,14 +16,15 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Returns a new \c PTNAuthorizationStatus object corresponding to the given authorization
 /// \c status.
-+ (instancetype)statusWithMediaLibraryAuthorizationStatus:(MPMediaLibraryAuthorizationStatus)status;
++ (instancetype)statusWithMediaLibraryStatus:(MPMediaLibraryAuthorizationStatus)status
+    API_AVAILABLE(ios(9.3));
 
 @end
 
 @implementation PTNAuthorizationStatus (MediaPlayer)
 
-+ (instancetype)
-    statusWithMediaLibraryAuthorizationStatus:(MPMediaLibraryAuthorizationStatus)status {
++ (instancetype)statusWithMediaLibraryStatus:(MPMediaLibraryAuthorizationStatus)status
+    API_AVAILABLE(ios(9.3)) {
   switch (status) {
     case MPMediaLibraryAuthorizationStatusAuthorized:
       return $(PTNAuthorizationStatusAuthorized);
@@ -66,7 +67,7 @@ NS_ASSUME_NONNULL_BEGIN
   if (self = [super init]) {
     _authorizer = authorizer;
     _authorizationStatus = [PTNAuthorizationStatus
-        statusWithMediaLibraryAuthorizationStatus:authorizer.authorizationStatus];
+                            statusWithMediaLibraryStatus:authorizer.authorizationStatus];
   }
   return self;
 }
@@ -83,8 +84,7 @@ NS_ASSUME_NONNULL_BEGIN
         replayLast];
 
     [self.authorizer requestAuthorization:^(MPMediaLibraryAuthorizationStatus status) {
-      self.authorizationStatus = [PTNAuthorizationStatus
-                                  statusWithMediaLibraryAuthorizationStatus:status];
+      self.authorizationStatus = [PTNAuthorizationStatus statusWithMediaLibraryStatus:status];
     }];
 
     return statusSignal;

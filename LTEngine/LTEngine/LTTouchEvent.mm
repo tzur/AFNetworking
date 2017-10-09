@@ -124,54 +124,53 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 + (nullable NSNumber *)azimuthAngleOfTouch:(UITouch *)touch {
-  // Type is available only since iOS 9.0. Azimuth angle is available only since iOS 9.1.
-  if (![touch respondsToSelector:@selector(type)] || touch.type != UITouchTypeStylus ||
-      ![touch respondsToSelector:@selector(azimuthAngleInView:)]) {
+  if (@available(iOS 9.1, *)) {
+    return touch.type == UITouchTypeStylus ? @([touch azimuthAngleInView:nil]) : nil;
+  } else {
     return nil;
   }
-  return @([touch azimuthAngleInView:nil]);
 }
 
 + (LTVector2)azimuthUnitVectorOfTouch:(UITouch *)touch {
-  // Type is available only since iOS 9.0. Azimuth unit vector is available only since iOS 9.1.
-  if (![touch respondsToSelector:@selector(type)] || touch.type != UITouchTypeStylus ||
-      ![touch respondsToSelector:@selector(azimuthUnitVectorInView:)]) {
-    return LTVector2::null();
+  if (@available(iOS 9.1, *)) {
+    if (touch.type == UITouchTypeStylus) {
+      CGVector vector = [touch azimuthUnitVectorInView:nil];
+      return LTVector2(vector.dx, vector.dy);
+    }
   }
-
-  CGVector vector = [touch azimuthUnitVectorInView:nil];
-  return LTVector2(vector.dx, vector.dy);
+  return LTVector2::null();
 }
 
 + (nullable NSNumber *)altitudeAngleOfTouch:(UITouch *)touch {
-  // Type is available only since iOS 9.0. Altitude angle is available only since iOS 9.1.
-  if (![touch respondsToSelector:@selector(type)] || touch.type != UITouchTypeStylus ||
-      ![touch respondsToSelector:@selector(altitudeAngle)]) {
+  if (@available(iOS 9.1, *)) {
+    return touch.type == UITouchTypeStylus ? @(touch.altitudeAngle) : nil;
+  } else {
     return nil;
   }
-  return @(touch.altitudeAngle);
 }
 
 + (nullable NSNumber *)estimationUpdateIndexOfTouch:(UITouch *)touch {
-  // Estimation update index is available only since iOS 9.1.
-  return [touch respondsToSelector:@selector(estimationUpdateIndex)] ?
-      touch.estimationUpdateIndex : nil;
+  if (@available(iOS 9.1, *)) {
+    return touch.estimationUpdateIndex;
+  } else {
+    return nil;
+  }
 }
 
 + (UITouchProperties)estimatedPropertiesOfTouch:(UITouch *)touch {
-  // Estimated properties are available only since iOS 9.1.
-  if (![touch respondsToSelector:@selector(estimatedProperties)]) {
+  if (@available(iOS 9.1, *)) {
+    return touch.estimatedProperties;
+  } else {
     return 0;
   }
-  return touch.estimatedProperties;
 }
 
 + (UITouchProperties)propertiesExpectingUpdateOfTouch:(UITouch *)touch {
-  // Estimated properties expecting updates are available only since iOS 9.1.
-  if (![touch respondsToSelector:@selector(estimatedPropertiesExpectingUpdates)]) {
+  if (@available(iOS 9.1, *)) {
+    return touch.estimatedPropertiesExpectingUpdates;
+  } else {
     return 0;
   }
-  return touch.estimatedPropertiesExpectingUpdates;
 }
 
 #pragma mark -

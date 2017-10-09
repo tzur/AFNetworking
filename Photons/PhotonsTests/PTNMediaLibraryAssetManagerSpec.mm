@@ -30,7 +30,7 @@ static void PTNPostMediaLibraryNotification(NSString *senderName) {
                                                       object:senderName];
 }
 
-SpecBegin(PTNMediaLibraryAssetManager)
+API_AVAILABLE(ios(9.3)) SpecBegin(PTNMediaLibraryAssetManager)
 
 __block PTNMediaLibraryAssetManager *manager;
 __block PTNFakeMediaQueryProvider *queryProvider;

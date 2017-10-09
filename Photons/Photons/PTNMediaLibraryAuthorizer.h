@@ -5,11 +5,12 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/// Encapsulates the Media Library authorization process.
+API_AVAILABLE(ios(9.3))
+@interface PTNMediaLibraryAuthorizer : NSObject
+
 /// Callback of requests for authorization of the Media Library.
 typedef void (^PTNMediaLibraryAuthorizationStatusHandler)(MPMediaLibraryAuthorizationStatus status);
-
-/// Encapsulates the Media Library authorization process.
-@interface PTNMediaLibraryAuthorizer : NSObject
 
 /// Requests the user's permission to access the contents of Media Library. The given \c handler
 /// will be called with the authorization status.

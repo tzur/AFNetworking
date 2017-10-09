@@ -19,7 +19,7 @@
 }
 
 + (instancetype)blockOperationWithBlock:(void (^)(void))block {
-  return [[self alloc] initWithBlock:block];
+  return [[LTForegroundOperation alloc] initWithBlock:block];
 }
 
 - (instancetype)initWithBlock:(LTCompletionBlock)block {
