@@ -9,6 +9,7 @@
 #import "BZRPaymentQueue.h"
 #import "BZRProductDownloadManager.h"
 #import "BZRPurchaseManager.h"
+#import "BZRRequestStatusSignal.h"
 #import "BZRStoreKitRequestsFactory.h"
 #import "BZRTransactionRestorationManager.h"
 #import "NSError+Bazaar.h"
@@ -81,20 +82,18 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark Public Interface
 #pragma mark -
 
+typedef SKRequest<BZRRequestStatusSignal> *(^BZRRequestFactoryBlock)();
+
 - (RACSignal *)fetchMetadataForProductsWithIdentifiers:(NSSet<NSString *> *)productIdentifiers {
+  auto requestFactoryBlock = ^SKRequest<BZRRequestStatusSignal> *() {
+    return [self.storeKitRequestsFactory productsRequestWithIdentifiers:productIdentifiers];
+  };
+
   // Values sent by \c SKProductsRequest's \c bzr_statusSignal are delivered on the main thread.
   // If Bazaar does additional calculations later it might affect the UI. Therefore, the values are
   // delivered on a background scheduler.
-  return [[RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
-    SKProductsRequest *request =
-        [self.storeKitRequestsFactory productsRequestWithIdentifiers:productIdentifiers];
-    [[request bzr_statusSignal] subscribe:subscriber];
-    [request start];
-    return [RACDisposable disposableWithBlock:^{
-      [request cancel];
-    }];
-  }]
-  deliverOn:[RACScheduler scheduler]];
+  return [[BZRStoreKitFacade requestSignalWithRequestFactoryBlock:requestFactoryBlock]
+      deliverOn:[RACScheduler scheduler]];
 }
 
 - (RACSignal *)purchaseProduct:(SKProduct *)product {
@@ -114,18 +113,48 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (RACSignal *)refreshReceipt {
-  return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
-    SKReceiptRefreshRequest *request = [self.storeKitRequestsFactory receiptRefreshRequest];
-    [[request bzr_statusSignal] subscribe:subscriber];
-    [request start];
-    return [RACDisposable disposableWithBlock:^{
-      [request cancel];
-    }];
-  }];
+  auto requestFactoryBlock = ^SKRequest<BZRRequestStatusSignal> *() {
+    return [self.storeKitRequestsFactory receiptRefreshRequest];
+  };
+
+  return [BZRStoreKitFacade requestSignalWithRequestFactoryBlock:requestFactoryBlock];
 }
 
 - (void)finishTransaction:(SKPaymentTransaction *)transaction {
   [self.paymentQueue finishTransaction:transaction];
+}
+
++ (RACSignal *)requestSignalWithRequestFactoryBlock:(BZRRequestFactoryBlock)requestFactoryBlock {
+  return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+    auto request = requestFactoryBlock();
+
+    __block BOOL didSignalFinish = NO;
+    auto disposable = [[[request statusSignal]
+        finally:^{
+          @synchronized(request) {
+            didSignalFinish = YES;
+          }
+        }]
+        subscribe:subscriber];
+
+    [request start];
+    auto cancellationDisposable = [RACDisposable disposableWithBlock:^{
+      // This code prevents the request from being cancelled after it has completed or erred in most
+      // cases. There is still a case where the signal is disposed of at the same time the request
+      // finishes, and the request is still cancelled. The correct solution is that invoking
+      // `cancel` would not crash after the reqest completes or errs.
+      @synchronized (request) {
+        if (!didSignalFinish) {
+          [request cancel];
+        }
+      }
+    }];
+
+    return [RACCompoundDisposable compoundDisposableWithDisposables:@[
+      disposable,
+      cancellationDisposable
+    ]];
+  }];
 }
 
 #pragma mark -
