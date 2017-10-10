@@ -29,4 +29,14 @@ NS_ASSUME_NONNULL_BEGIN
 @interface LTBasicCatmullRomInterpolantFactory : NSObject <LTBasicParameterizedObjectFactory>
 @end
 
+/// Factory for creating basic B-splines. A B-spline is a polynomial interpolant defined by four
+/// values \c A, \c B, \c C, and \c D serving as control points for the interpolation. The spline is
+/// C^2 continuous, and does not, in general, pass through the control points. The intrinsic
+/// parametric range of any returned interpolant is [\c 0, \c 1].
+///
+/// @see https://en.wikipedia.org/wiki/B-spline
+/// @see http://www.cs.cornell.edu/courses/cs4620/2013fa/lectures/16spline-curves.pdf
+@interface LTBasicBSplineInterpolantFactory : NSObject <LTBasicParameterizedObjectFactory>
+@end
+
 NS_ASSUME_NONNULL_END

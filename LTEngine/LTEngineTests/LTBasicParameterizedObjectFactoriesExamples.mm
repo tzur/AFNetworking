@@ -98,23 +98,22 @@ sharedExamplesFor(kLTBasicParameterizedObjectFactoryExamples, ^(NSDictionary *da
       it(@"should return correct value for minimum value of intrinsic parametric range", ^{
         CGFloat value =
             [parameterizedObject floatForParametricValue:parameterizedObject.minParametricValue];
-        expect(value).to.beCloseToWithin(initializationValues[range.location], kEpsilon);
+        expect(value).to.beCloseToWithin([expectedValues[0] CGFloatValue], kEpsilon);
       });
 
       it(@"should return correct value for maximum value of intrinsic parametric range", ^{
         CGFloat value =
             [parameterizedObject floatForParametricValue:parameterizedObject.maxParametricValue];
-        expect(value).to.beCloseToWithin(initializationValues[range.location + range.length - 1],
-                                         kEpsilon);
+        expect(value).to.beCloseToWithin([expectedValues[4] CGFloatValue], kEpsilon);
       });
 
       it(@"should return the correct interpolation for values in (0, 1)", ^{
         CGFloat value = [parameterizedObject floatForParametricValue:0.25];
-        expect(value).to.beCloseToWithin([expectedValues[0] CGFloatValue], kEpsilon);
-        value = [parameterizedObject floatForParametricValue:0.5];
         expect(value).to.beCloseToWithin([expectedValues[1] CGFloatValue], kEpsilon);
-        value = [parameterizedObject floatForParametricValue:0.75];
+        value = [parameterizedObject floatForParametricValue:0.5];
         expect(value).to.beCloseToWithin([expectedValues[2] CGFloatValue], kEpsilon);
+        value = [parameterizedObject floatForParametricValue:0.75];
+        expect(value).to.beCloseToWithin([expectedValues[3] CGFloatValue], kEpsilon);
       });
     });
   });
