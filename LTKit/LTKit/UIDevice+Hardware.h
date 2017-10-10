@@ -30,6 +30,9 @@ typedef NS_ENUM(NSUInteger, UIDeviceKind) {
   UIDeviceKindIPhoneSE,
   UIDeviceKindIPhone7,
   UIDeviceKindIPhone7Plus,
+  UIDeviceKindIPhone8,
+  UIDeviceKindIPhone8Plus,
+  UIDeviceKindIPhoneX,
 
   // iPod.
   UIDeviceKindIPod1G,
