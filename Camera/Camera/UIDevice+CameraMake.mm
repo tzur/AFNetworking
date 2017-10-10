@@ -47,6 +47,12 @@ NS_ASSUME_NONNULL_BEGIN
       return @"iPhone 7";
     case UIDeviceKindIPhone7Plus:
       return @"iPhone 7 Plus";
+    case UIDeviceKindIPhone8:
+      return @"iPhone 8";
+    case UIDeviceKindIPhone8Plus:
+      return @"iPhone 8 Plus";
+    case UIDeviceKindIPhoneX:
+      return @"iPhone X";
 
     case UIDeviceKindIPod1G:
     case UIDeviceKindIPod2G:
