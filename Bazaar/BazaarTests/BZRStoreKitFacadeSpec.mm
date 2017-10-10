@@ -54,7 +54,7 @@ context(@"fetching products metadata", ^{
         .andReturn(productsRequest);
   });
 
-  it(@"should send value response by payments request", ^{
+  it(@"should send value response sent by payments request", ^{
     SKProduct *product = OCMClassMock([SKProduct class]);
     SKProductsResponse *response = OCMClassMock([SKProductsResponse class]);
     OCMStub([response products]).andReturn(@[product]);

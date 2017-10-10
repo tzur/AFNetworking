@@ -9,13 +9,13 @@
 #import "BZRPaymentQueue.h"
 #import "BZRProductDownloadManager.h"
 #import "BZRPurchaseManager.h"
+#import "BZRRequestStatusSignal.h"
 #import "BZRStoreKitRequestsFactory.h"
 #import "BZRTransactionRestorationManager.h"
 #import "NSError+Bazaar.h"
 #import "NSErrorCodes+Bazaar.h"
 #import "SKProductsRequest+RACSignalSupport.h"
 #import "SKReceiptRefreshRequest+RACSignalSupport.h"
-#import "SKRequestStatusSignal.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -82,16 +82,18 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark Public Interface
 #pragma mark -
 
-typedef id<SKRequestStatusSignal>(^SKRequestCreationBlock)();
+typedef SKRequest<BZRRequestStatusSignal> *(^BZRRequestFactoryBlock)();
 
 - (RACSignal *)fetchMetadataForProductsWithIdentifiers:(NSSet<NSString *> *)productIdentifiers {
+  auto requestFactoryBlock = ^SKRequest<BZRRequestStatusSignal> *() {
+    return [self.storeKitRequestsFactory productsRequestWithIdentifiers:productIdentifiers];
+  };
+
   // Values sent by \c SKProductsRequest's \c bzr_statusSignal are delivered on the main thread.
   // If Bazaar does additional calculations later it might affect the UI. Therefore, the values are
   // delivered on a background scheduler.
-  return [[BZRStoreKitFacade requestSignalWithRequestCreationBlock:^id<SKRequestStatusSignal>() {
-    return [self.storeKitRequestsFactory productsRequestWithIdentifiers:productIdentifiers];
-  }]
-  deliverOn:[RACScheduler scheduler]];
+  return [[BZRStoreKitFacade requestSignalWithRequestFactoryBlock:requestFactoryBlock]
+      deliverOn:[RACScheduler scheduler]];
 }
 
 - (RACSignal *)purchaseProduct:(SKProduct *)product {
@@ -111,18 +113,21 @@ typedef id<SKRequestStatusSignal>(^SKRequestCreationBlock)();
 }
 
 - (RACSignal *)refreshReceipt {
-  return [BZRStoreKitFacade requestSignalWithRequestCreationBlock:^id<SKRequestStatusSignal>() {
+  auto requestFactoryBlock = ^SKRequest<BZRRequestStatusSignal> *() {
     return [self.storeKitRequestsFactory receiptRefreshRequest];
-  }];
+  };
+
+  return [BZRStoreKitFacade requestSignalWithRequestFactoryBlock:requestFactoryBlock];
 }
 
 - (void)finishTransaction:(SKPaymentTransaction *)transaction {
   [self.paymentQueue finishTransaction:transaction];
 }
 
-+ (RACSignal *)requestSignalWithRequestCreationBlock:(SKRequestCreationBlock)requestCreationBlock {
++ (RACSignal *)requestSignalWithRequestFactoryBlock:(BZRRequestFactoryBlock)requestFactoryBlock {
   return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
-    id<SKRequestStatusSignal> request = requestCreationBlock();
+    auto request = requestFactoryBlock();
+
     __block BOOL didSignalFinish = NO;
     auto disposable = [[[request statusSignal]
         finally:^{

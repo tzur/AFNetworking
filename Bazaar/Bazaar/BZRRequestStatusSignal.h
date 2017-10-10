@@ -4,14 +4,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /// Protocol for adding reactive interface to \c SKRequest classes.
-@protocol SKRequestStatusSignal
-
-/// Initiates the request if it has not already been started. After invoking this method, events
-/// will be sent on \c statusSignal.
-- (void)start;
-
-/// Cancels the request if it has started.
-- (void)cancel;
+@protocol BZRRequestStatusSignal
 
 /// Returns a signal that is used to track the request's status. The values are delivered on the
 /// main thread.
