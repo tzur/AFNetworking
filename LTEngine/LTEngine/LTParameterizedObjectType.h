@@ -9,7 +9,8 @@ NS_ASSUME_NONNULL_BEGIN
 LTEnumDeclare(NSUInteger, LTParameterizedObjectType,
   LTParameterizedObjectTypeDegenerate,
   LTParameterizedObjectTypeLinear,
-  LTParameterizedObjectTypeCatmullRom
+  LTParameterizedObjectTypeCatmullRom,
+  LTParameterizedObjectTypeBSpline
 );
 
 /// Category augmenting the \c LTParameterizedObjectType class with functionality to return a

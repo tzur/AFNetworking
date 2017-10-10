@@ -15,7 +15,8 @@ typedef NSDictionary<LTParameterizedObjectType *,
 LTEnumImplement(NSUInteger, LTParameterizedObjectType,
   LTParameterizedObjectTypeDegenerate,
   LTParameterizedObjectTypeLinear,
-  LTParameterizedObjectTypeCatmullRom
+  LTParameterizedObjectTypeCatmullRom,
+  LTParameterizedObjectTypeBSpline
 );
 
 @implementation LTParameterizedObjectType (Type)
@@ -32,7 +33,8 @@ LTEnumImplement(NSUInteger, LTParameterizedObjectType,
     factoryMapping = @{
       $(LTParameterizedObjectTypeDegenerate): [[LTBasicDegenerateInterpolantFactory alloc] init],
       $(LTParameterizedObjectTypeLinear): [[LTBasicLinearInterpolantFactory alloc] init],
-      $(LTParameterizedObjectTypeCatmullRom): [[LTBasicCatmullRomInterpolantFactory alloc] init]
+      $(LTParameterizedObjectTypeCatmullRom): [[LTBasicCatmullRomInterpolantFactory alloc] init],
+      $(LTParameterizedObjectTypeBSpline): [[LTBasicBSplineInterpolantFactory alloc] init]
     };
   });
 
