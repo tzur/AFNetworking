@@ -40,10 +40,10 @@ NS_ASSUME_NONNULL_BEGIN
 - (RACSignal *)purchaseProduct:(SKProduct *)product quantity:(NSUInteger)quantity;
 
 /// Sends transactions that are received by the delegate calls and are not associated with a
-/// purchase made using the receiver. The signal completes when the receiver is deallocated. The
-/// signal doesn't err.
+/// purchase made using the receiver. The transactions are sent in an array batch. The signal
+/// completes when the receiver is deallocated. The signal doesn't err.
 ///
-/// @return <tt>RACSubject<SKPaymentTransaction></tt>
+/// @return <tt>RACSubject<NSArray<SKPaymentTransaction>></tt>
 @property (readonly, nonatomic) RACSignal *unhandledTransactionsSignal;
 
 @end

@@ -99,6 +99,7 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize productDictionary = _productDictionary;
 @synthesize productsJSONDictionary = _productsJSONDictionary;
 @synthesize eventsSignal = _eventsSignal;
+@synthesize completedTransactionsSignal = _completedTransactionsSignal;
 
 #pragma mark -
 #pragma mark Initialization
@@ -123,6 +124,7 @@ NS_ASSUME_NONNULL_BEGIN
     _downloadedContentProducts = [NSSet set];
 
     [self initializeEventsSignal];
+    [self initializeCompletedTransactionsSignal];
     [self finishUnfinishedTransactions];
     [self activateStartupValidation];
     [self prefetchProductDictionary];
@@ -150,12 +152,18 @@ NS_ASSUME_NONNULL_BEGIN
   setNameWithFormat:@"%@ -eventsSignal", self];
 }
 
-- (void)finishUnfinishedTransactions {
-  @weakify(self);
-  [[self.storeKitFacade.unfinishedSuccessfulTransactionsSignal
+- (void)initializeCompletedTransactionsSignal {
+  _completedTransactionsSignal = [[[self.storeKitFacade.unhandledSuccessfulTransactionsSignal
       flattenMap:^(NSArray<SKPaymentTransaction *> *transactions) {
         return [transactions.rac_sequence signalWithScheduler:[RACScheduler immediateScheduler]];
       }]
+      takeUntil:[self rac_willDeallocSignal]]
+      setNameWithFormat:@"%@ -completedTransactionsSignal", self];
+}
+
+- (void)finishUnfinishedTransactions {
+  @weakify(self);
+  [self.completedTransactionsSignal
       subscribeNext:^(SKPaymentTransaction *transaction) {
         @strongify(self);
         [self.storeKitFacade finishTransaction:transaction];
@@ -163,7 +171,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)activateStartupValidation {
-  RACSignal *triggerSignal = [self.storeKitFacade.unfinishedSuccessfulTransactionsSignal
+  RACSignal *triggerSignal = [self.storeKitFacade.unhandledSuccessfulTransactionsSignal
       deliverOn:[RACScheduler scheduler]];
   if (!self.receiptValidationStatus) {
     triggerSignal = [triggerSignal startWith:[RACUnit defaultUnit]];
@@ -599,15 +607,6 @@ NS_ASSUME_NONNULL_BEGIN
       @strongify(self);
       [self sendErrorEventOfType:$(BZREventTypeCriticalError) error:error];
     }];
-}
-
-- (RACSignal *)completedTransactionsSignal {
-  return [[[self.storeKitFacade.unfinishedSuccessfulTransactionsSignal
-      flattenMap:^(NSArray<SKPaymentTransaction *> *transactions) {
-        return [transactions.rac_sequence signalWithScheduler:[RACScheduler immediateScheduler]];
-      }]
-      takeUntil:[self rac_willDeallocSignal]]
-      setNameWithFormat:@"%@ -completedTransactionsSignal", self];
 }
 
 - (RACSignal *)acquireAllEnabledProducts {

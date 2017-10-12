@@ -69,16 +69,10 @@ NS_ASSUME_NONNULL_BEGIN
         dispatch_queue_create("com.lightricks.bazaar.purchaseManager.dataAccessQueue",
                               DISPATCH_QUEUE_SERIAL);
     _unhandledTransactionsSubject = [RACSubject subject];
+    _unhandledTransactionsSignal =
+        [[self.unhandledTransactionsSubject replay] takeUntil:[self rac_willDeallocSignal]];
   }
   return self;
-}
-
-#pragma mark -
-#pragma mark Properties
-#pragma mark -
-
-- (RACSignal *)unhandledTransactionsSignal {
-  return [self.unhandledTransactionsSubject takeUntil:[self rac_willDeallocSignal]];
 }
 
 #pragma mark -
@@ -153,20 +147,38 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)handleTransactions:(NSArray<SKPaymentTransaction *> *)transactions
       transactionsFinished:(BOOL)transactionsFinished {
+  NSMutableArray<SKPaymentTransaction *> *unhandledTransactions = [[NSMutableArray alloc] init];
   dispatch_sync(self.paymentDataAccessQueue, ^{
     for (SKPaymentTransaction *transaction in transactions) {
-      [self handleTransaction:transaction transactionFinished:transactionsFinished];
+      BOOL didHandleTransaction =
+          [self handleTransaction:transaction transactionFinished:transactionsFinished];
+      if (!transactionsFinished && !didHandleTransaction) {
+        [unhandledTransactions addObject:transaction];
+      }
     }
   });
+
+  if ([unhandledTransactions count]) {
+    [self.unhandledTransactionsSubject sendNext:[unhandledTransactions copy]];
+  }
 }
 
-- (void)handleTransaction:(SKPaymentTransaction *)transaction
+- (BOOL)handleTransaction:(SKPaymentTransaction *)transaction
       transactionFinished:(BOOL)transactionFinished {
-  if ([self doesTransactionHavePayment:transaction transactionFinished:transactionFinished]) {
-    [self receivedTransaction:transaction transactionFinished:transactionFinished];
-  } else if(!transactionFinished) {
-    [self.unhandledTransactionsSubject sendNext:transaction];
+  // If there's no associated payment try to find a matching one and pair it.
+  if (!transaction.bzr_associatedPayment && [self pendingPaymentForTransaction:transaction] &&
+      [self shouldPairPendingPaymentForTransaction:transaction
+                               transactionFinished:transactionFinished]) {
+    [self pairPendingPaymentWithTransaction:transaction];
   }
+
+  // Handle transaction only if it has an associated payment.
+  if (transaction.bzr_associatedPayment) {
+    [self receivedTransaction:transaction transactionFinished:transactionFinished];
+    return YES;
+  }
+
+  return NO;
 }
 
 - (void)receivedTransaction:(SKPaymentTransaction __unused *)transaction
@@ -175,40 +187,22 @@ NS_ASSUME_NONNULL_BEGIN
   /// using \c rac_signalForSelector. Therefore this method's implementation is empty.
 }
 
-- (BOOL)doesTransactionHavePayment:(SKPaymentTransaction *)transaction
-               transactionFinished:(BOOL)transactionFinished {
-  if (transaction.bzr_associatedPayment) {
-    return YES;
-  }
-  return [self shouldPairPendingPaymentForTransaction:transaction
-                                  transactionFinished:transactionFinished] &&
-      [self pairPendingPaymentWithTransaction:transaction];
-}
-
 - (BOOL)shouldPairPendingPaymentForTransaction:(SKPaymentTransaction *)transaction
                            transactionFinished:(BOOL)transactionFinished {
   return (transaction.transactionState == SKPaymentTransactionStatePurchasing ||
           transaction.transactionState == SKPaymentTransactionStateFailed) && !transactionFinished;
 }
 
-- (nullable SKPayment *)pairPendingPaymentWithTransaction:(SKPaymentTransaction *)transaction {
+- (void)pairPendingPaymentWithTransaction:(SKPaymentTransaction *)transaction {
   SKPayment *payment = [self pendingPaymentForTransaction:transaction];
-  if (payment) {
-    [self pairPendingPayment:payment withTransaction:transaction];
-  }
-  return payment;
+  [self.pendingPayments removeObjectAtIndex:[self.pendingPayments indexOfObject:payment]];
+  transaction.bzr_associatedPayment = payment;
 }
 
 - (nullable SKPayment *)pendingPaymentForTransaction:(SKPaymentTransaction *)transaction {
   return [[self.pendingPayments lt_filter:^BOOL(SKPayment *payment) {
     return [transaction.payment isEqual:payment];
   }] firstObject];
-}
-
-- (void)pairPendingPayment:(SKPayment *)payment
-           withTransaction:(SKPaymentTransaction *)transaction {
-  [self.pendingPayments removeObjectAtIndex:[self.pendingPayments indexOfObject:payment]];
-  transaction.bzr_associatedPayment = payment;
 }
 
 @end

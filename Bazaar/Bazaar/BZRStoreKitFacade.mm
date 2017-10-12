@@ -207,14 +207,24 @@ typedef SKRequest<BZRRequestStatusSignal> *(^BZRRequestFactoryBlock)();
   }];
 }
 
-- (RACSignal *)unfinishedSuccessfulTransactionsSignal {
-    return [self.paymentQueue.unfinishedTransactionsSignal
-        map:^NSArray<SKPaymentTransaction *> *(NSArray<SKPaymentTransaction *> *transactions) {
-          return [transactions lt_filter:^BOOL(SKPaymentTransaction *transaction) {
-            return transaction.transactionState == SKPaymentTransactionStatePurchased ||
-                transaction.transactionState == SKPaymentTransactionStateRestored;
-          }];
+- (RACSignal *)unhandledSuccessfulTransactionsSignal {
+  return [[RACSignal merge:@[
+    [self successfulTransactionsFromTransactionsSignal:
+     self.paymentQueue.unfinishedTransactionsSignal],
+    [self successfulTransactionsFromTransactionsSignal:
+     self.purchaseManager.unhandledTransactionsSignal]
+  ]]
+  takeUntil:[self rac_willDeallocSignal]];
+}
+
+- (RACSignal *)successfulTransactionsFromTransactionsSignal:(RACSignal *)transactionsSignal {
+  return [transactionsSignal
+      map:^NSArray<SKPaymentTransaction *> *(NSArray<SKPaymentTransaction *> *transactions) {
+        return [transactions lt_filter:^BOOL(SKPaymentTransaction *transaction) {
+          return transaction.transactionState == SKPaymentTransactionStatePurchased ||
+              transaction.transactionState == SKPaymentTransactionStateRestored;
         }];
+      }];
 }
 
 @end

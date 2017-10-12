@@ -30,10 +30,6 @@ NS_ASSUME_NONNULL_BEGIN
 /// \c downloadManager will be using \c [BZRProductDownloadManager initWithPaymentQueue:].
 /// \c storeKitRequestsFactory will be initialized using \c [BZRStoreKitRequestsFactory init].
 ///
-/// @note Using this method, one can handle transactions that were not finished during the previous
-/// execution of the application. One should supply a subject that he is already subscribed to, and
-/// an array of unfinished transactions will be sent using that subject.
-///
 /// @note The \c applicationUserID is a user ID provided by the application that uniquely identifies
 /// the user (i.e. it must be different for different users and identical for the same user across
 /// devices). If it is not \c nil, it will be used when making purchases to assist with fraud
@@ -179,12 +175,19 @@ NS_ASSUME_NONNULL_BEGIN
 /// @return <tt>RACSubject<BZREvent></tt>
 @property (readonly, nonatomic) RACSignal *transactionsErrorEventsSignal;
 
-/// Sends array of successful transactions of payments and restorations that were initiated on a
-/// previous run of the application and weren't finished. The \c SKPaymentTransaction can be either
-/// in the purchased or restored state. The signal doesn't err.
+/// Sends array of transactions that were completed successfully and do not match any pending
+/// payment request. The \c SKPaymentTransaction can be either in the purchased or restored state.
+/// The signal completes when the receiver is deallocated. The signal doesn't err.
 ///
 /// @return <tt>RACSignal<NSArray<SKPaymentTransaction>></tt>
-@property (readonly, nonatomic) RACSignal *unfinishedSuccessfulTransactionsSignal;
+///
+/// @note The transactions sent here can be received in one of the following scenarios:
+/// 1. Purchases that were initiated outside of the app (eg. subscription renewals or upgrades).
+/// 2. Purchases that were initiated in previous run of the app and weren't finished yet (eg.
+/// communication error at the final stages of a successful purchase / restoration or app were
+/// killed before transaction was finished).
+/// 3. SOON: Deferred purchases that were in pending state and were later approved and completed.
+@property (readonly, nonatomic) RACSignal *unhandledSuccessfulTransactionsSignal;
 
 @end
 
