@@ -8,7 +8,7 @@ NS_ASSUME_NONNULL_BEGIN
 #if PNK_USE_MPS
 
 /// Kernel that performs the addition (sum) operation on two textures.
-@interface PNKAddition : NSObject <PNKBinaryKernel>
+@interface PNKAddition : NSObject <PNKBinaryImageKernel>
 
 /// Initializes a new kernel that runs on \c device.
 - (instancetype)initWithDevice:(id<MTLDevice>)device withInputIsArray:(BOOL)inputIsArray

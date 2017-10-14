@@ -55,7 +55,7 @@ static NSString * const kKernelArrayFunctionName = @"additionArray";
 }
 
 #pragma mark -
-#pragma mark PNKBinaryKernel
+#pragma mark PNKBinaryImageKernel
 #pragma mark -
 
 - (void)encodeToCommandBuffer:(id<MTLCommandBuffer>)commandBuffer
@@ -112,6 +112,13 @@ static NSString * const kKernelArrayFunctionName = @"additionArray";
           secondaryInputImage:(MPSImage *)secondaryInputImage outputImage:(MPSImage *)outputImage {
   [self encodeToCommandBuffer:commandBuffer primaryInputTexture:primaryInputImage.texture
         secondaryInputTexture:secondaryInputImage.texture outputTexture:outputImage.texture];
+
+  if ([primaryInputImage isKindOfClass:[MPSTemporaryImage class]]) {
+    ((MPSTemporaryImage *)primaryInputImage).readCount -= 1;
+  }
+  if ([secondaryInputImage isKindOfClass:[MPSTemporaryImage class]]) {
+    ((MPSTemporaryImage *)secondaryInputImage).readCount -= 1;
+  }
 }
 
 - (MTLRegion)primaryInputRegionForOutputSize:(MTLSize)outputSize {
