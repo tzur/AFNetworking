@@ -10,8 +10,6 @@ namespace pnk {
 
 #if PNK_USE_MPS
 
-@class MPSCNNConvolution;
-
 /// Category for conveniently creating \c MPSCNNConvolution objects from pinky model structs.
 @interface MPSCNNConvolution (Factory)
 
