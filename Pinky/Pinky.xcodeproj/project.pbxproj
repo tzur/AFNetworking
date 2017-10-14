@@ -60,6 +60,7 @@
 		06D36EE91F6ACA6D00090584 /* Model.proto in Sources */ = {isa = PBXBuildFile; fileRef = 06D36EE11F6ACA5600090584 /* Model.proto */; };
 		06D36EEA1F6ACA6D00090584 /* NeuralNetwork.proto in Sources */ = {isa = PBXBuildFile; fileRef = 06D36EE41F6ACA5600090584 /* NeuralNetwork.proto */; };
 		06E98DE01F2149710047F80A /* PNKComputeState.mm in Sources */ = {isa = PBXBuildFile; fileRef = 06E98DDF1F2149710047F80A /* PNKComputeState.mm */; };
+		06EDBCBC1F8C908B00A3FF1E /* MPSImage+Factory.mm in Sources */ = {isa = PBXBuildFile; fileRef = 06EDBCBB1F8C908B00A3FF1E /* MPSImage+Factory.mm */; };
 		06FD927F1EDC5E1C00D180C7 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 06FD91AA1EDC31BB00D180C7 /* Accelerate.framework */; };
 		06FD92811EDC5E2D00D180C7 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 06FD92801EDC5E2D00D180C7 /* MobileCoreServices.framework */; };
 		06FD92861EDC5F3900D180C7 /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 06FD927D1EDC5DE500D180C7 /* opencv2.framework */; };
@@ -550,6 +551,8 @@
 		06D36EE51F6ACA5600090584 /* FeatureTypes.proto */ = {isa = PBXFileReference; lastKnownFileType = text; name = FeatureTypes.proto; path = Models/FeatureTypes.proto; sourceTree = "<group>"; };
 		06E98DDE1F2149710047F80A /* PNKComputeState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKComputeState.h; sourceTree = "<group>"; };
 		06E98DDF1F2149710047F80A /* PNKComputeState.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKComputeState.mm; sourceTree = "<group>"; };
+		06EDBCBA1F8C8EA100A3FF1E /* MPSImage+Factory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MPSImage+Factory.h"; sourceTree = "<group>"; };
+		06EDBCBB1F8C908B00A3FF1E /* MPSImage+Factory.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "MPSImage+Factory.mm"; sourceTree = "<group>"; };
 		06FD917C1EDC30B400D180C7 /* LTEngine.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LTEngine.xcodeproj; path = ../LTEngine/LTEngine.xcodeproj; sourceTree = "<group>"; };
 		06FD91A41EDC318700D180C7 /* Metal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Metal.framework; path = System/Library/Frameworks/Metal.framework; sourceTree = SDKROOT; };
 		06FD91A61EDC319000D180C7 /* MetalKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MetalKit.framework; path = System/Library/Frameworks/MetalKit.framework; sourceTree = SDKROOT; };
@@ -1187,6 +1190,8 @@
 		C9515C2E1F01125100B973F1 /* GPU */ = {
 			isa = PBXGroup;
 			children = (
+				06EDBCBA1F8C8EA100A3FF1E /* MPSImage+Factory.h */,
+				06EDBCBB1F8C908B00A3FF1E /* MPSImage+Factory.mm */,
 				06E98DDE1F2149710047F80A /* PNKComputeState.h */,
 				06E98DDF1F2149710047F80A /* PNKComputeState.mm */,
 				C91884531F0D27B90090818A /* PNKComputeDispatch.h */,
@@ -1763,6 +1768,7 @@
 				C9791B001F026E180009E90F /* PNKConstantAlpha.mm in Sources */,
 				F9CB52FA1F5FE70C00C8E8CA /* PNKCoreMLLayerParser.mm in Sources */,
 				06E98DE01F2149710047F80A /* PNKComputeState.mm in Sources */,
+				06EDBCBC1F8C908B00A3FF1E /* MPSImage+Factory.mm in Sources */,
 				C9231F831F04EF7F009E4FDB /* PNKGammaCorrection.mm in Sources */,
 				060EA49E1EDD9CC20041487A /* NSBundle+PinkyBundle.mm in Sources */,
 				0657A1371F29A3A4002AA730 /* MPSCNNNeuron+Factory.mm in Sources */,

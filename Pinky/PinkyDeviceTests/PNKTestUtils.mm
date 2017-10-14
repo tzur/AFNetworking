@@ -6,19 +6,19 @@
 #import <LTKit/LTMMInputFile.h>
 #import <LTKit/NSBundle+Path.h>
 
+#import "MPSImage+Factory.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
 MPSImage *PNKImageMake(id<MTLDevice> device, MPSImageFeatureChannelFormat format,
                        NSUInteger width, NSUInteger height, NSUInteger channels) {
-  auto imageDescriptor = [MPSImageDescriptor imageDescriptorWithChannelFormat:format width:width
-                                                                       height:height
-                                                              featureChannels:channels];
-  return [[MPSImage alloc] initWithDevice:device imageDescriptor:imageDescriptor];
+  return [MPSImage pnk_imageWithDevice:device format:format width:width height:height
+                              channels:channels];
 }
 
 MPSImage *PNKImageMakeUnorm(id<MTLDevice> device, NSUInteger width, NSUInteger height,
                             NSUInteger channels) {
-  return PNKImageMake(device, MPSImageFeatureChannelFormatUnorm8, width, height, channels);
+  return [MPSImage pnk_unorm8ImageWithDevice:device width:width height:height channels:channels];
 }
 
 cv::Mat1f PNKLoadFloatTensorFromBundleResource(NSBundle *bundle, NSString *resource) {
