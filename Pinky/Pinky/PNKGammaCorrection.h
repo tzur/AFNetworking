@@ -9,7 +9,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Kernel that performs gamma correction. Input is expected to be an RGBA or BGRA image, the
 /// correction is performed only for the R, G and B channels.
-@interface PNKGammaCorrection : NSObject <PNKUnaryKernel>
+@interface PNKGammaCorrection : NSObject <PNKUnaryImageKernel>
 
 /// Initializes a new kernel that runs on \c device and gamma corrects the input with \c gamma.
 - (instancetype)initWithDevice:(id<MTLDevice>)device gamma:(float)gamma NS_DESIGNATED_INITIALIZER;
