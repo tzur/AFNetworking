@@ -204,4 +204,48 @@ context(@"instance normalization operation with Float16 channel format", ^{
   });
 });
 
+context(@"PNKUnaryKernel with MPSTemporaryImage", ^{
+  itShouldBehaveLike(kPNKTemporaryImageUnaryExamples, ^{
+    pnk::ActivationKernelModel activationModel {
+      .activationType = pnk::ActivationTypeIdentity
+    };
+    pnk::NormalizationKernelModel normalizationModel {
+      .inputFeatureChannels = kInputRGBFeatureChannels,
+      .scale = cv::Mat1f(1, (int)kInputRGBFeatureChannels),
+      .shift = cv::Mat1f(1, (int)kInputRGBFeatureChannels)
+    };
+
+    instanceNormOp = [[PNKInstanceNormLayer alloc] initWithDevice:device
+                                               normalizationModel:normalizationModel
+                                                  activationModel:activationModel];
+
+    return @{
+      kPNKTemporaryImageExamplesKernel: instanceNormOp,
+      kPNKTemporaryImageExamplesDevice: device,
+      kPNKTemporaryImageExamplesIsArray: @(NO)
+    };
+  });
+
+  itShouldBehaveLike(kPNKTemporaryImageUnaryExamples, ^{
+    pnk::ActivationKernelModel activationModel {
+      .activationType = pnk::ActivationTypeIdentity
+    };
+    pnk::NormalizationKernelModel normalizationModel {
+      .inputFeatureChannels = kInputArrayFeatureChannels,
+      .scale = cv::Mat1f(1, (int)kInputArrayFeatureChannels),
+      .shift = cv::Mat1f(1, (int)kInputArrayFeatureChannels)
+    };
+
+    instanceNormOp = [[PNKInstanceNormLayer alloc] initWithDevice:device
+                                               normalizationModel:normalizationModel
+                                                  activationModel:activationModel];
+
+    return @{
+      kPNKTemporaryImageExamplesKernel: instanceNormOp,
+      kPNKTemporaryImageExamplesDevice: device,
+      kPNKTemporaryImageExamplesIsArray: @(YES)
+    };
+  });
+});
+
 DeviceSpecEnd
