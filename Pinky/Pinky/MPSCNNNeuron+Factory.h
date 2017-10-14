@@ -9,8 +9,6 @@ namespace pnk {
 
 #if PNK_USE_MPS
 
-@class MPSCNNNeuron;
-
 /// Category for conveniently creating \c MPSCNNNeuron objects from pinky \c ActivationKernelModel.
 @interface MPSCNNNeuron (Factory)
 
