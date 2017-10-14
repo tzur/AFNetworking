@@ -18,7 +18,7 @@ namespace pnk {
 /// Kernel that performs a symmetric reflection padding of textures. Padding is done in a manner
 /// such that the value at the border is not repeated, i.e. <tt>dcb|abcdefgh|gfe</tt>. Padding is
 /// done up to the size of the original input in each side, larger paddings require multiple passes.
-@interface PNKReflectionPadding : NSObject <PNKUnaryKernel>
+@interface PNKReflectionPadding : NSObject <PNKUnaryImageKernel>
 
 /// Initializes a new kernel that runs on \c device and applies \c padding to the width and height
 /// of each channel.

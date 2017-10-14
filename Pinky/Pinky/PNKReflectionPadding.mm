@@ -64,7 +64,7 @@ static NSString * const kKernelArrayFunctionName = @"reflectionPaddingArray";
 }
 
 #pragma mark -
-#pragma mark PNKUnaryKernel
+#pragma mark PNKUnaryImageKernel
 #pragma mark -
 
 - (void)encodeToCommandBuffer:(id<MTLCommandBuffer>)commandBuffer
@@ -113,6 +113,10 @@ static NSString * const kKernelArrayFunctionName = @"reflectionPaddingArray";
                    inputImage:(MPSImage *)inputImage outputImage:(MPSImage *)outputImage {
   [self encodeToCommandBuffer:commandBuffer inputTexture:inputImage.texture
                 outputTexture:outputImage.texture];
+
+  if ([inputImage isKindOfClass:[MPSTemporaryImage class]]) {
+    ((MPSTemporaryImage *)inputImage).readCount -= 1;
+  }
 }
 
 - (MTLRegion)inputRegionForOutputSize:(MTLSize)outputSize {
