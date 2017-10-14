@@ -8,7 +8,7 @@ NS_ASSUME_NONNULL_BEGIN
 #if PNK_USE_MPS
 
 /// Kernel that preforms a nearest neighbor upsampling operation on the input.
-@interface PNKNearestNeighborUpsampling : NSObject <PNKUnaryKernel>
+@interface PNKNearestNeighborUpsampling : NSObject <PNKUnaryImageKernel>
 
 /// Initializes a new kernel that runs on \c device and magnifies its input by a factor of
 /// \c magnificationFactor in both width and height. Depth is unchanged.
