@@ -43,6 +43,12 @@ NS_ASSUME_NONNULL_BEGIN
   return self;
 }
 
+- (instancetype)initWithDevice:(id<MTLDevice>)device
+              convolutionModel:(const pnk::ConvolutionKernelModel &)convolutionModel {
+  return [self initWithDevice:device convolutionModel:convolutionModel
+              activationModel:{.activationType = pnk::ActivationTypeIdentity}];
+}
+
 - (void)updatePropertiesWithConvolutionModel:(pnk::ConvolutionKernelModel)convolutionModel {
   _kernelWidth = convolutionModel.kernelWidth;
   _kernelHeight = convolutionModel.kernelHeight;
