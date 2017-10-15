@@ -107,7 +107,8 @@ ConvolutionKernelModel createConvolutionKernelModel
                     convolutionParams.stride_size());
   LTParameterAssert(convolutionParams.dilationfactor_size() == 2, @"Dilation is %d, should be 2D",
                     convolutionParams.dilationfactor_size());
-  LTParameterAssert(convolutionParams.outputshape_size() == 2, @"Outputshape is %d, should be 2D",
+  LTParameterAssert(!convolutionParams.isdeconvolution() ||
+                    convolutionParams.outputshape_size() == 2, @"Outputshape is %d, should be 2D",
                     convolutionParams.outputshape_size());
   LTParameterAssert(convolutionParams.hasbias() == convolutionParams.has_bias(),
                     @"Has bias is not consistent");
@@ -126,8 +127,10 @@ ConvolutionKernelModel createConvolutionKernelModel
     .strideY = (NSUInteger)convolutionParams.stride(1),
     .dilationX = (NSUInteger)convolutionParams.dilationfactor(0),
     .dilationY = (NSUInteger)convolutionParams.dilationfactor(1),
-    .deconvolutionOutputSize = CGSizeMake(convolutionParams.outputshape(0),
-                                          convolutionParams.outputshape(1)),
+    .deconvolutionOutputSize = convolutionParams.isdeconvolution() ?
+        CGSizeMake(convolutionParams.outputshape(0),
+                   convolutionParams.outputshape(1)) :
+        CGSizeNull,
     .padding = paddingType(convolutionParams.ConvolutionPaddingType_case()),
     .isDeconvolution = convolutionParams.isdeconvolution(),
     .hasBias = convolutionParams.hasbias(),
