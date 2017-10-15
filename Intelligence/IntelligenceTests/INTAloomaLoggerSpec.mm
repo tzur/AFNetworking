@@ -5,6 +5,8 @@
 
 #import <Alooma-iOS/Alooma.h>
 
+#import "NSUUID+Zero.h"
+
 SpecBegin(INTAloomaLogger)
 
 __block Alooma *alooma;
@@ -13,6 +15,20 @@ __block INTAloomaLogger *logger;
 beforeEach(^{
   alooma = OCMClassMock(Alooma.class);
   logger = [[INTAloomaLogger alloc] initWithAlooma:alooma];
+});
+
+context(@"serialization error event", ^{
+  it(@"should return a serializable event", ^{
+    auto event = INTAloomaJSONSerializationErrorEvent(@{@"event": @"bar", @"foo": [NSUUID UUID]});
+    expect([NSJSONSerialization isValidJSONObject:event]).to.beTruthy();
+  });
+
+  it(@"should return a serializable event in case of nil identifier for vendor", ^{
+    UIDevice *device = OCMClassMock(UIDevice.class);
+    auto event =
+        INTAloomaJSONSerializationErrorEvent(@{@"event": @"bar", @"foo": [NSUUID UUID]}, device);
+    expect([NSJSONSerialization isValidJSONObject:event]).to.beTruthy();
+  });
 });
 
 it(@"should log dictionaries with the event key to Alooma", ^{
