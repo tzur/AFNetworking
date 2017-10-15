@@ -14,6 +14,10 @@ NS_ASSUME_NONNULL_BEGIN
 /// errs if there is a problem setting the exposure. All events are sent on an arbitrary thread.
 ///
 /// @see \c AVCaptureDevice.exposurePointOfInterest.
+///
+/// @note The value <tt>[0.5, 0.5]</tt> is a special value, resulting in exposure being measured
+/// over the entire frame. For all other values, exposure is measured at that point only. See
+/// https://stackoverflow.com/a/14088534/1074055 for reference.
 - (RACSignal *)setSingleExposurePoint:(CGPoint)exposurePoint;
 
 /// Instructs the camera to continuously set exposure according to the given device point, updating
@@ -24,6 +28,10 @@ NS_ASSUME_NONNULL_BEGIN
 /// arbitrary thread.
 ///
 /// @see \c AVCaptureDevice.exposurePointOfInterest.
+///
+/// @note The value <tt>[0.5, 0.5]</tt> is a special value, resulting in exposure being measured
+/// over the entire frame. For all other values, exposure is measured at that point only. See
+/// https://stackoverflow.com/a/14088534/1074055 for reference.
 - (RACSignal *)setContinuousExposurePoint:(CGPoint)exposurePoint;
 
 /// Instructs the camera to lock the current exposure.
