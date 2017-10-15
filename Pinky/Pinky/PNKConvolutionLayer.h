@@ -22,6 +22,11 @@ namespace pnk {
                activationModel:(const pnk::ActivationKernelModel &)activationModel
     NS_DESIGNATED_INITIALIZER;
 
+/// Convenience initializer that initializes a new layer that runs on \c device and performs a
+/// convolution operation described by \c convolutionModel with no activation.
+- (instancetype)initWithDevice:(id<MTLDevice>)device
+              convolutionModel:(const pnk::ConvolutionKernelModel &)convolutionModel;
+
 - (instancetype)init NS_UNAVAILABLE;
 
 @end
