@@ -16,6 +16,10 @@ extern NSString * const kINTAppContextDeviceIDKey;
 /// by Lightricks backend and \c INTAnalytricksMetadata. Applicable in an \c INTAppContext.
 extern NSString * const kINTAppContextDeviceInfoIDKey;
 
+/// Key for an \c NSNumber, representing the number of times the application had launched on the
+/// device including the current run. Applicable in an \c INTAppContext.
+extern NSString * const kINTAppContextAppRunCountKey;
+
 /// Static class of \c INTAppContextGeneratorBlock blocks for Lightricks shared events
 /// (a.k.a Analytricks) events transformation pipeline.
 @interface INTAnalytricksContextGenerators : NSObject
@@ -44,6 +48,12 @@ extern NSString * const kINTAppContextDeviceInfoIDKey;
 /// \c identifierForVendor property of the loaded \c INTDeviceInfo. \c kINTAppContextDeviceInfoIDKey
 /// is set to the \c deviceInfoRevisionID property of the event.
 + (INTAppContextGeneratorBlock)deviceInfoContextGenerator;
+
+/// Returns a context generator that generates an \c INTAppcontext with an updated values in
+/// \c kINTAppContextAppRunCountKey when an \c INTAppRunCountUpdatedEvent is observed.
+/// \c kINTAppContextAppRunCountKey is set to the \c runCount property of the observed
+/// \c INTAppRunCountUpdatedEvent.
++ (INTAppContextGeneratorBlock)appRunCountContextGenerator;
 
 @end
 

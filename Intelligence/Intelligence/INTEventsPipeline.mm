@@ -5,6 +5,7 @@
 
 #import <LTKit/NSData+HexString.h>
 
+#import "INTAppRunCountUpdatedEvent.h"
 #import "INTDeviceInfoLoadedEvent.h"
 #import "INTDeviceTokenChangedEvent.h"
 #import "INTEventLogger.h"
@@ -104,6 +105,10 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)deviceTokenDidChange:(nullable NSData *)deviceToken {
   [self reportLowLevelEvent:[[INTDeviceTokenChangedEvent alloc]
                              initWithDeviceToken:[deviceToken lt_hexString]]];
+}
+
+- (void)appRunCountUpdated:(NSNumber *)runCount {
+  [self reportLowLevelEvent:[[INTAppRunCountUpdatedEvent alloc] initWithRunCount:runCount]];
 }
 
 @end

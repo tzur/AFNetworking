@@ -74,6 +74,9 @@ typedef struct {
 /// <tt>-[INTDeviceInfoChangedEvent deviceToken]</tt>.
 - (void)deviceTokenDidChange:(nullable NSData *)deviceToken;
 
+/// Reports an \c INTAppRunCountUpdatedEvent with \c runCount.
+- (void)appRunCountUpdated:(NSNumber *)runCount;
+
 @end
 
 NS_ASSUME_NONNULL_END

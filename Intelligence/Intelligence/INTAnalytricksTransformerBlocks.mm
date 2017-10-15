@@ -44,6 +44,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+NSString * const kINTEnrichmentAppRunCountKey = @"app_run_count";
+
 @implementation INTAnalytricksTransformerBlocks
 
 + (INTEventEnrichmentBlock)analytricksContextEnrichementBlock {
@@ -84,6 +86,21 @@ NS_ASSUME_NONNULL_BEGIN
       }
 
       return [analytricksMetadata int_dictionaryByAddingEntriesFromDictionary:event];
+    }];
+  };
+}
+
++ (INTEventEnrichmentBlock)appRunCountEnrichementBlock {
+  return ^(NSArray *events, INTAppContext *appContext, INTEventMetadata *) {
+    NSNumber * _Nullable appRunCount = appContext[kINTAppContextAppRunCountKey];
+
+    auto enrichment = appRunCount ? @{kINTEnrichmentAppRunCountKey: appRunCount} : @{};
+    return [events lt_map:^(NSDictionary *event) {
+      if (![event isKindOfClass:NSDictionary.class]) {
+        return event;
+      }
+
+      return [enrichment int_dictionaryByAddingEntriesFromDictionary:event];
     }];
   };
 }

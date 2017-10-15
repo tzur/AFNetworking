@@ -3,6 +3,7 @@
 
 #import "INTEventsPipeline.h"
 
+#import <Intelligence/INTAppRunCountUpdatedEvent.h>
 #import <Intelligence/INTDeviceTokenChangedEvent.h>
 #import <LTKit/NSArray+Functional.h>
 #import <LTKitTests/LTDataHelpers.h>
@@ -242,6 +243,32 @@ it(@"should report device token changed events", ^{
   auto expected = @[
     [[INTDeviceTokenChangedEvent alloc] initWithDeviceToken:@"0123456789ABCDEF"],
     [[INTDeviceTokenChangedEvent alloc] initWithDeviceToken:nil]
+  ];
+
+  expect(logger.eventsLogged).will.equal(expected);
+});
+
+it(@"should report app run count updated event", ^{
+  auto passThroughTransformerBlock =
+      ^(NSDictionary<NSString *, id> *, INTAppContext *, INTEventMetadata *, id event) {
+        return intl::TransformerBlockResult(nil, @[event]);
+      };
+
+  auto intelligenceEvents = [[INTEventsPipeline alloc] initWithConfiguration:{
+    .contextGeneratorBlock = INTIdentityAppContextGenerator(),
+    .transformerBlocks = {
+      passThroughTransformerBlock
+    },
+    .eventLoggers = @[logger],
+    .appLifecycleTimer = timer
+  }];
+
+  [intelligenceEvents appRunCountUpdated:@1];
+  [intelligenceEvents appRunCountUpdated:@3];
+
+  auto expected = @[
+    [[INTAppRunCountUpdatedEvent alloc] initWithRunCount:@1],
+    [[INTAppRunCountUpdatedEvent alloc] initWithRunCount:@3]
   ];
 
   expect(logger.eventsLogged).will.equal(expected);

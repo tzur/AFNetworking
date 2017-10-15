@@ -25,11 +25,16 @@ NS_ASSUME_NONNULL_BEGIN
 /// notifications are disabled for the device.
 - (void)deviceTokenDidChange:(nullable NSData *)deviceToken;
 
+/// Notifies the receiver that the application's run count on the device had been updated to
+/// \c runCount. The underlying type of \c runCount is an \c NSUInteger.
+- (void)appRunCountUpdated:(NSNumber *)runCount;
+
 @end
 
-/// Observes a stored \c INTDeviceInfo and \c NSData representing a device push notification token
-/// and updates them. Uses a given \c delegate to inform any changes to the device info or device
-/// token. This class is thread safe.
+/// Observes a stored \c INTDeviceInfo, \c NSData representing a device push notification token and
+/// \c NSNumber representing the number of times the application had launched on the device and
+/// updates them. Uses a given \c delegate to inform any changes to the device info or device token.
+/// This class is thread safe.
 @interface INTDeviceInfoObserver : NSObject
 
 - (instancetype)init NS_UNAVAILABLE;

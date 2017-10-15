@@ -25,6 +25,10 @@ static NSString * const kINTStorageDeviceInfoRevisionIDKey = @"DeviceInfoRevisio
 /// Key in the storage that holds the \c NSData that is the device push notification token.
 static NSString * const kINTStorageDeviceTokenKey = @"DeviceToken";
 
+/// Key in the storage that holds the \c NSNumber that is the number of times the app had launched
+/// on the device.
+static NSString * const kINTStorageAppRunCount = @"AppRunCount";
+
 @interface INTDeviceInfoObserver ()
 
 /// Device info source that can create a new \c INTDeviceInfo instance.
@@ -53,10 +57,20 @@ static NSString * const kINTStorageDeviceTokenKey = @"DeviceToken";
       _deviceInfoSource = deviceInfoSource;
       _storage = storage;
       _delegate = delegate;
+      [self updateRunCount];
       [self updateDeviceInfoIfNeededWithAppStoreCountry:nil];
     }
   }
   return self;
+}
+
+- (void)updateRunCount {
+  NSNumber *runCount = [self loadStoredObjectForKey:kINTStorageAppRunCount type:NSNumber.class]
+      ?: @0;
+  runCount = @([runCount integerValue] + 1);
+
+  [self.storage setObject:runCount forKey:kINTStorageAppRunCount];
+  [self.delegate appRunCountUpdated:runCount];
 }
 
 - (void)updateDeviceInfoIfNeededWithAppStoreCountry:(nullable NSString *)appStoreCountry {

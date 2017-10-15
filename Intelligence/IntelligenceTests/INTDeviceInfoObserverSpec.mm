@@ -42,6 +42,7 @@
 @property (strong, nonatomic) NSUUID *reportedDeviceInfoRevisionID;
 @property (nonatomic) BOOL reportedIsNewRevision;
 @property (strong, nonatomic, nullable) NSData *reportedDeviceToken;
+@property (strong, nonatomic, nullable) NSNumber *reportedAppRunCount;
 @end
 
 @implementation INTFakeDeviceInfoObserverDelegate
@@ -58,6 +59,10 @@
 
 - (void)deviceTokenDidChange:(nullable NSData *)deviceToken {
   self.reportedDeviceToken = deviceToken;
+}
+
+- (void)appRunCountUpdated:(NSNumber *)appRunCount {
+  self.reportedAppRunCount = appRunCount;
 }
 
 @end
@@ -159,6 +164,16 @@ it(@"should report changes to the device token", ^{
 
   [observer setDeviceToken:deviceToken];
   expect(delegate.reportedDeviceToken).to.equal(deviceToken);
+});
+
+it(@"should report first launch if none is stored", ^{
+  expect(delegate.reportedAppRunCount).to.equal(@1);
+});
+
+it(@"should increment app run count when run count exists in a given storage", ^{
+  observer = [[INTDeviceInfoObserver alloc] initWithDeviceInfoSource:source storage:storage
+                                                            delegate:delegate];
+  expect(delegate.reportedAppRunCount).to.equal(@2);
 });
 
 SpecEnd

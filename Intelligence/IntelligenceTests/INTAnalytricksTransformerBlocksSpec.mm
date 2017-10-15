@@ -213,6 +213,56 @@ context(@"analytricks metadata enricher", ^{
   });
 });
 
+context(@"app run count enricher", ^{
+  __block INTEventEnrichmentBlock block;
+
+  beforeEach(^{
+    block = [INTAnalytricksTransformerBlocks appRunCountEnrichementBlock];
+  });
+
+  it(@"should enrich dictionary events", ^{
+    auto events = @[@{@"foo": @"bar"}, @{@"foo": @"baz"}];
+    auto enrichedEvents = block(events, @{
+      kINTAppContextAppRunCountKey: @3
+    }, INTCreateEventMetadata());
+
+    auto expectedEvents = @[
+      @{@"foo": @"bar", kINTEnrichmentAppRunCountKey: @3},
+      @{@"foo": @"baz", kINTEnrichmentAppRunCountKey: @3}
+    ];
+
+    expect(enrichedEvents).to.equal(expectedEvents);
+  });
+
+  it(@"should prioritize event keys when enriching", ^{
+    auto events = @[@{kINTEnrichmentAppRunCountKey: @2}];
+    auto enrichedEvents = block(events, @{
+      kINTAppContextAppRunCountKey: @3
+    }, INTCreateEventMetadata());
+
+    expect(enrichedEvents).to.equal(events);
+  });
+
+  it(@"should not enrich dictionary events if app run count is missing", ^{
+    auto events = @[@{@"foo": @"bar"}, @{@"foo": @"baz"}];
+    auto enrichedEvents = block(events, @{}, INTCreateEventMetadata());
+
+    expect(enrichedEvents).to.equal(events);
+  });
+
+  it(@"should not enrich non dictionary events", ^{
+    auto events = @[@"foo", @{}];
+    auto enrichedEvents = block(events, @{
+      kINTAppContextAppRunCountKey: @3
+    }, INTCreateEventMetadata());
+
+    expect(enrichedEvents).to.equal(@[
+      @"foo",
+      @{kINTEnrichmentAppRunCountKey: @3}
+    ]);
+  });
+});
+
 context(@"analytricks foreground event transformer", ^{
   __block INTAppWillEnterForegroundEvent *appWillForegroundEvent;
   __block INTAppBecameActiveEvent *appBecameActiveEvent;
