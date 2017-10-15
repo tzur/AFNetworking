@@ -552,6 +552,7 @@
 		06D36EE51F6ACA5600090584 /* FeatureTypes.proto */ = {isa = PBXFileReference; lastKnownFileType = text; name = FeatureTypes.proto; path = Models/FeatureTypes.proto; sourceTree = "<group>"; };
 		06E98DDE1F2149710047F80A /* PNKComputeState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKComputeState.h; sourceTree = "<group>"; };
 		06E98DDF1F2149710047F80A /* PNKComputeState.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKComputeState.mm; sourceTree = "<group>"; };
+		06EDBCB91F8C03EC00A3FF1E /* LTRef+Pinky.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "LTRef+Pinky.h"; sourceTree = "<group>"; };
 		06EDBCBA1F8C8EA100A3FF1E /* MPSImage+Factory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MPSImage+Factory.h"; sourceTree = "<group>"; };
 		06EDBCBB1F8C908B00A3FF1E /* MPSImage+Factory.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "MPSImage+Factory.mm"; sourceTree = "<group>"; };
 		06EDBCBD1F8C931900A3FF1E /* MPSTemporaryImage+Factory.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "MPSTemporaryImage+Factory.mm"; sourceTree = "<group>"; };
@@ -1135,6 +1136,7 @@
 		A14172BA1E6EB04F005DBEFF /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				06EDBCB91F8C03EC00A3FF1E /* LTRef+Pinky.h */,
 				060EA49C1EDD9CC20041487A /* NSBundle+PinkyBundle.h */,
 				060EA49D1EDD9CC20041487A /* NSBundle+PinkyBundle.mm */,
 				A14172BB1E6EB07E005DBEFF /* Pinky-Prefix.pch */,
