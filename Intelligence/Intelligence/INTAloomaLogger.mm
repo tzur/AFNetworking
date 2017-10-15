@@ -9,13 +9,13 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-NSDictionary *INTAloomaJSONSerializationErrorEvent(NSDictionary *event) {
+NSDictionary *INTAloomaJSONSerializationErrorEvent(NSDictionary *event, UIDevice *device) {
+  auto identifierForVendor = [device identifierForVendor] ?: [NSUUID int_zeroUUID];
   return  @{
     @"event": @"alooma_json_serialization_error",
     @"event_description": [event description],
     @"original_event_type": event[@"event"],
-    @"id_for_vendor": [[UIDevice currentDevice] identifierForVendor].UUIDString ?:
-        [NSUUID int_zeroUUID]
+    @"id_for_vendor": identifierForVendor.UUIDString
   };
 }
 

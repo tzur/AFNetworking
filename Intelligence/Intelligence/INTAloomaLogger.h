@@ -16,7 +16,11 @@ NS_ASSUME_NONNULL_BEGIN
 ///   @"id_for_vendor": [[UIDevice currentDevice] identifierForVendor].UUIDString
 /// }
 /// @endcode
-NSDictionary *INTAloomaJSONSerializationErrorEvent(NSDictionary *event);
+///
+/// @note if <tt>[UIDevice currentDevice] identifierForVendor]</tt> returns \c nil, a zero UUID is
+/// set for the key "id_for_vendor".
+NSDictionary *INTAloomaJSONSerializationErrorEvent(NSDictionary *event,
+                                                   UIDevice *device = [UIDevice currentDevice]);
 
 /// Logs events to an Alooma service endpoint. The current supported events are \c NSDictionary
 /// instances containing an \c NSString in the key "event". If the event is not json serializable,
