@@ -5,7 +5,19 @@
 
 #import <Alooma-iOS/Alooma.h>
 
+#import "NSUUID+Zero.h"
+
 NS_ASSUME_NONNULL_BEGIN
+
+NSDictionary *INTAloomaJSONSerializationErrorEvent(NSDictionary *event) {
+  return  @{
+    @"event": @"alooma_json_serialization_error",
+    @"event_description": [event description],
+    @"original_event_type": event[@"event"],
+    @"id_for_vendor": [[UIDevice currentDevice] identifierForVendor].UUIDString ?:
+        [NSUUID int_zeroUUID]
+  };
+}
 
 @interface INTAloomaLogger ()
 
@@ -38,11 +50,16 @@ static NSString * const kAloomaServerURL = @"https://inputs.alooma.com";
     return;
   }
 
+  if (![NSJSONSerialization isValidJSONObject:event]) {
+    [self.aloomaRecorder trackCustomEvent:INTAloomaJSONSerializationErrorEvent(event)];
+    return;
+  }
+
   [self.aloomaRecorder trackCustomEvent:event];
 }
 
 - (BOOL)isEventSupported:(NSDictionary *)event {
-  return [event isKindOfClass:NSDictionary.class] && event[@"event"];
+  return [event isKindOfClass:NSDictionary.class] && [event[@"event"] isKindOfClass:NSString.class];
 }
 
 @end
