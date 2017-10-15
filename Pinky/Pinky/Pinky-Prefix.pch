@@ -16,4 +16,7 @@
   // Lightricks Libraries.
   #import <LTKit/LTKit-Prefix.pch>
   #import <LTEngine/LTEngine-Prefix.pch>
+
+  // Pinky.
+  #import "LTRef+Pinky.h"
 #endif
