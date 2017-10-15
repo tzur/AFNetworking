@@ -125,7 +125,7 @@ context(@"deserialization", ^{
                                                          kNumberOfColorChannels);
 
       int sampleIndicesArray[] = {0, 1, 2, 5, 45, 345};
-      float expectedArray[] = {0, 12, 24, 60, 4, 366};
+      float expectedArray[] = {0, 4, 8, 20, 180, 302};
       for (NSUInteger i = 0; i < sizeof(sampleIndicesArray) / sizeof(int); ++i) {
         float kernelWeight = kernelModel.kernelWeights(sampleIndicesArray[i]);
         expect(kernelWeight).to.equal(expectedArray[i]);
@@ -178,7 +178,7 @@ context(@"deserialization", ^{
                                                          kNumberOfColorChannels);
 
       int sampleIndicesArray[] = {0, 1, 2, 5, 45};
-      float expectedArray[] = {0, 12, 24, 60, 9};
+      float expectedArray[] = {0, 4, 8, 20, 73};
       for (NSUInteger i = 0; i < sizeof(sampleIndicesArray) / sizeof(int); ++i) {
         float kernelWeight = kernelModel.kernelWeights(sampleIndicesArray[i]);
         expect(kernelWeight).to.equal(expectedArray[i]);
@@ -225,7 +225,7 @@ context(@"deserialization", ^{
                                                          kNumberOfColorChannels);
 
       int sampleIndicesArray[] = {0, 1, 2, 5, 45};
-      float expectedArray[] = {0, 12, 24, 60, 162};
+      float expectedArray[] = {0, 3, 6, 18, 180};
       for (NSUInteger i = 0; i < sizeof(sampleIndicesArray) / sizeof(int); ++i) {
         float kernelWeight = kernelModel.kernelWeights(sampleIndicesArray[i]);
         expect(kernelWeight).to.equal(expectedArray[i]);

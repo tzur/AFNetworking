@@ -59,6 +59,29 @@ PoolingType poolingType(CoreML::Specification::PoolingLayerParams_PoolingType po
   }
 }
 
+/// CoreML serialization uses an OIHW order for convolution layer kernel weights while Metal uses
+/// an OHWI order.
+cv::Mat1f metalConvolutionWeightsFromCoreMLConvolutionParameters(
+    const CoreML::Specification::ConvolutionLayerParams &convolutionParams) {
+  const cv::Mat1f weights = createMat(convolutionParams.weights().floatvalue());
+  NSUInteger inputFeatureChannels = (NSUInteger)(convolutionParams.ngroups() *
+                                                 convolutionParams.kernelchannels());
+  NSUInteger outputFeatureChannels = (NSUInteger)convolutionParams.outputchannels();
+  NSUInteger kernelHeight = (NSUInteger)convolutionParams.kernelsize(1);
+  NSUInteger kernelWidth = (NSUInteger)convolutionParams.kernelsize(0);
+
+  cv::Mat1f result(weights.rows, weights.cols);
+  NSUInteger channelSize = kernelHeight * kernelWidth * inputFeatureChannels;
+  NSUInteger imageSize = kernelHeight * kernelWidth;
+  for (NSUInteger outputChannel = 0; outputChannel < outputFeatureChannels ; ++outputChannel) {
+    cv::Rect roi((int)(outputChannel * channelSize), 0, (int)channelSize, 1);
+    cv::transpose(weights(roi).reshape(1, (int)inputFeatureChannels),
+                  result(roi).reshape(1, (int)imageSize));
+  }
+
+  return result;
+}
+
 } // anonymous namespace
 
 #pragma mark -
@@ -108,7 +131,7 @@ ConvolutionKernelModel createConvolutionKernelModel
     .padding = paddingType(convolutionParams.ConvolutionPaddingType_case()),
     .isDeconvolution = convolutionParams.isdeconvolution(),
     .hasBias = convolutionParams.hasbias(),
-    .kernelWeights = createMat(convolutionParams.weights().floatvalue()),
+    .kernelWeights = metalConvolutionWeightsFromCoreMLConvolutionParameters(convolutionParams),
     .biasWeights = convolutionParams.has_bias() ? createMat(convolutionParams.bias().floatvalue()) :
         cv::Mat1f()
   };
