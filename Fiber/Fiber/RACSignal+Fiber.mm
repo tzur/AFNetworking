@@ -16,7 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
   return [[self fbr_skipProgress] fbr_deserializeJSONResponse];
 }
 
-- (RACSignal *)fbr_skipProgress {
+- (RACSignal<FBRHTTPResponse *> *)fbr_skipProgress {
   return [[self
       filter:^BOOL(LTProgress<FBRHTTPResponse *> *progress) {
         LTAssert([progress isKindOfClass:[LTProgress class]], @"Expected a signal of LTProgress"

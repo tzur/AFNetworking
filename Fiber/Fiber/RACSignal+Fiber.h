@@ -3,6 +3,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class FBRHTTPResponse;
+
 @interface RACSignal (Fiber)
 
 /// Skips incomplete task progress values and deserializes JSON object from completed task progress
@@ -27,7 +29,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// \c LTProgress object. It completes or errs when the receiver completes or errs respectively.
 ///
 /// @return <tt>RACSignal<FBRHTTPResponse></tt>
-- (RACSignal *)fbr_skipProgress;
+- (RACSignal<FBRHTTPResponse *> *)fbr_skipProgress;
 
 @end
 

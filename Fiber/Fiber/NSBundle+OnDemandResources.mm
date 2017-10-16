@@ -29,7 +29,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation NSBundle (OnDemandResources)
 
-- (RACSignal *)fbr_beginAccessToResourcesWithTags:(NSSet<NSString *> *)tags {
+- (RACSignal<FBROnDemandResourceTaskProgress *> *)
+    fbr_beginAccessToResourcesWithTags:(NSSet<NSString *> *)tags {
   return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
     NSBundleResourceRequest *request = [self fbr_bundleResourceRequestWithTags:tags];
     RACDisposable *progressDisposable = [RACObserve(request.progress, fractionCompleted)
@@ -59,7 +60,8 @@ NS_ASSUME_NONNULL_BEGIN
   }];
 }
 
-- (RACSignal *)fbr_conditionallyBeginAccessToResourcesWithTags:(NSSet<NSString *> *)tags {
+- (RACSignal<id<FBROnDemandResource>> *)
+    fbr_conditionallyBeginAccessToResourcesWithTags:(NSSet<NSString *> *)tags {
   return [RACSignal createSignal:^RACDisposable * _Nullable(id<RACSubscriber> subscriber) {
     NSBundleResourceRequest *request = [self fbr_bundleResourceRequestWithTags:tags];
     [request
