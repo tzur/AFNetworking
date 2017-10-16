@@ -10,6 +10,7 @@
 #import "BZRFakeAcquiredViaSubscriptionProvider.h"
 #import "BZRFakeAllowedProductsProvider.h"
 #import "BZRFakeCachedReceiptValidationStatusProvider.h"
+#import "BZRFakeReceiptValidationParametersProvider.h"
 #import "BZRPeriodicReceiptValidatorActivator.h"
 #import "BZRProduct+SKProduct.h"
 #import "BZRProductContentManager.h"
@@ -18,7 +19,6 @@
 #import "BZRProductsVariantSelector.h"
 #import "BZRProductsVariantSelectorFactory.h"
 #import "BZRReceiptModel.h"
-#import "BZRReceiptValidationParametersProvider.h"
 #import "BZRReceiptValidationStatus.h"
 #import "BZRStoreConfiguration.h"
 #import "BZRStoreKitFacade.h"
@@ -68,6 +68,7 @@ __block RACSubject *netherProductsProviderSubject;
 __block RACSubject *transactionsErrorEventsSubject;
 __block RACSubject *contentFetcherEventsSubject;
 __block RACSubject *unhandledSuccessfulTransactionsSubject;
+__block RACSubject *validationParametersProviderEventsSubject;
 __block BZRStoreConfiguration *configuration;
 __block BZRStore *store;
 __block NSString *productIdentifier;
@@ -99,6 +100,8 @@ beforeEach(^{
   transactionsErrorEventsSubject = [RACSubject subject];
   contentFetcherEventsSubject = [RACSubject subject];
   unhandledSuccessfulTransactionsSubject = [RACSubject subject];
+  validationParametersProviderEventsSubject = [RACSubject subject];
+
   OCMStub([productsProvider eventsSignal])
       .andReturn(productsProviderEventsSubject);
   OCMStub([receiptValidationStatusProvider eventsSignal])
@@ -113,6 +116,8 @@ beforeEach(^{
   OCMStub([contentFetcher eventsSignal]).andReturn(contentFetcherEventsSubject);
   OCMStub([storeKitFacade unhandledSuccessfulTransactionsSignal])
       .andReturn(unhandledSuccessfulTransactionsSubject);
+  OCMStub([validationParametersProvider eventsSignal])
+      .andReturn(validationParametersProviderEventsSubject);
 
   configuration = OCMClassMock([BZRStoreConfiguration class]);
   OCMStub([configuration productsProvider]).andReturn(productsProvider);
@@ -1330,17 +1335,22 @@ context(@"events signal", ^{
     [contentFetcherEventsSubject sendNext:event];
     expect(recorder).will.sendValues(@[event]);
   });
+
+  it(@"should send event sent by validation parameters provider", ^{
+    [validationParametersProviderEventsSubject sendNext:event];
+    expect(recorder).will.sendValues(@[event]);
+  });
 });
 
 context(@"KVO-compliance", ^{
   __block BZRFakeCachedReceiptValidationStatusProvider *validationStatusProvider;
   __block BZRFakeAcquiredViaSubscriptionProvider *acquiredViaSubscriptionProvider;
-  __block BZRReceiptValidationParametersProvider *validationParametersProvider;
+  __block id<BZRReceiptValidationParametersProvider> validationParametersProvider;
 
   beforeEach(^{
     validationStatusProvider = [[BZRFakeCachedReceiptValidationStatusProvider alloc] init];
     acquiredViaSubscriptionProvider =  [[BZRFakeAcquiredViaSubscriptionProvider alloc] init];
-    validationParametersProvider = [[BZRReceiptValidationParametersProvider alloc] init];
+    validationParametersProvider = [[BZRFakeReceiptValidationParametersProvider alloc] init];
 
     configuration = OCMClassMock([BZRStoreConfiguration class]);
     OCMStub([configuration productsProvider]).andReturn(productsProvider);

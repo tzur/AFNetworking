@@ -146,7 +146,8 @@ NS_ASSUME_NONNULL_BEGIN
     self.productsProvider.eventsSignal,
     self.contentFetcher.eventsSignal,
     self.allowedProductsProvider.eventsSignal,
-    [self.startupReceiptValidator.eventsSignal replay]
+    [self.startupReceiptValidator.eventsSignal replay],
+    self.validationParametersProvider.eventsSignal
   ]]
   takeUntil:[self rac_willDeallocSignal]]
   setNameWithFormat:@"%@ -eventsSignal", self];
@@ -224,6 +225,7 @@ NS_ASSUME_NONNULL_BEGIN
       [[productDictionary allValues] lt_filter:^BOOL(BZRProduct *product) {
         return product.bzr_underlyingProduct != nil;
       }];
+
   self.validationParametersProvider.appStoreLocale =
       productsWithPriceInfo.firstObject.bzr_underlyingProduct.priceLocale;
 }
