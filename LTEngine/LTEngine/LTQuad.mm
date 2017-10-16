@@ -317,25 +317,61 @@ static std::array<CGFloat, 4> LTEdgeLengthsOfQuad(const lt::Quad &quad) {
     LTVector2(quad.v3() - quad.v0()).length()}};
 }
 
-static cv::Mat1f LTMatWithQuad(const lt::Quad &quad) {
-  cv::Mat1f result(4, 2);
-  result(0, 0) = quad.v0().x;
-  result(0, 1) = quad.v0().y;
-  result(1, 0) = quad.v1().x;
-  result(1, 1) = quad.v1().y;
-  result(2, 0) = quad.v2().x;
-  result(2, 1) = quad.v2().y;
-  result(3, 0) = quad.v3().x;
-  result(3, 1) = quad.v3().y;
-  return result;
-}
-
+/// Transformation required to transform a rectangle with origin at (0, 0) and size (1, 1) such that
+/// its projected corners coincide with the given quad vertices \c v0, \c v1, \c v2, \c v3.
+///
 /// @see http://stackoverflow.com/questions/9470493/transforming-a-rectangle-image-into-a-quadrilateral-using-a-catransform3d/12820877#12820877
-static GLKMatrix3 LTRectToQuadTransformation(CGRect rect, const lt::Quad &quad) {
-  cv::Mat1f sourceMatrix = LTMatWithQuad(lt::Quad(rect));
-  cv::Mat destinationMatrix = LTMatWithQuad(quad);
-  cv::Mat1f homography = cv::findHomography(sourceMatrix, destinationMatrix);
-  return GLKMatrix3MakeWithArray((float *)homography.data);
+static GLKMatrix3 LTTransformationForQuad(CGPoint v0, CGPoint v1, CGPoint v2, CGPoint v3) {
+  const CGRect rect = CGRectMake(0, 0, 1, 1);
+  const CGFloat x1 = v0.x;
+  const CGFloat y1 = v0.y;
+  const CGFloat x2 = v1.x;
+  const CGFloat y2 = v1.y;
+  const CGFloat x3 = v2.x;
+  const CGFloat y3 = v2.y;
+  const CGFloat x4 = v3.x;
+  const CGFloat y4 = v3.y;
+
+  CGFloat X = rect.origin.x;
+  CGFloat Y = rect.origin.y;
+  CGFloat W = rect.size.width;
+  CGFloat H = rect.size.height;
+
+  CGFloat y21 = y2 - y1;
+  CGFloat y32 = y4 - y2;
+  CGFloat y43 = y3 - y4;
+  CGFloat y14 = y1 - y3;
+  CGFloat y31 = y4 - y1;
+  CGFloat y42 = y3 - y2;
+
+  CGFloat a = -H * (x2 * x4 * y14 + x2 * x3 * y31 - x1 * x3 * y32 + x1 * x4 * y42);
+  CGFloat b = W * (x2 * x4 * y14 + x4 * x3 * y21 + x1 * x3 * y32 + x1 * x2 * y43);
+  CGFloat c = H * X * (x2 * x4 * y14 + x2 * x3 * y31 - x1 * x3 * y32 + x1 * x4 * y42)
+      - H * W * x1 * (x3 * y32 - x4 * y42 + x2 * y43)
+      - W * Y * (x2 * x4 * y14 + x4 * x3 * y21 + x1 * x3 * y32 + x1 * x2 * y43);
+
+  CGFloat d = H * (-x3 * y21 * y4 + x2 * y1 * y43 - x1 * y2 * y43 - x4 * y1 * y3 + x4 * y2 * y3);
+  CGFloat e = W * (x3 * y2 * y31 - x4 * y1 * y42 - x2 * y31 * y3 + x1 * y4 * y42);
+  CGFloat f = -(W * (x3 * (Y * y2 * y31 + H * y1 * y32)
+                     - x4 * (H + Y) * y1 * y42 + H * x2 * y1 * y43 + x2 * Y * (y1 - y4) * y3
+                     + x1 * Y * y4 * (-y2 + y3))
+                - H * X * (x3 * y21 * y4 - x2 * y1 * y43 + x4 * (y1 - y2) * y3
+                           + x1 * y2 * (-y4 + y3)));
+
+  CGFloat g = H * (x4 * y21 - x3 * y21 + (-x1 + x2) * y43);
+  CGFloat h = W * (-x2 * y31 + x3 * y31 + (x1 - x4) * y42);
+  CGFloat i = W * Y * (x2 * y31 - x3 * y31 - x1 * y42 + x4 * y42)
+      + H * (X * (-(x4 * y21) + x3 * y21 + x1 * y43 - x2 * y43)
+             + W * (-(x4 * y2) + x3 * y2 + x2 * y4 - x3 * y4 - x2 * y3 + x4 * y3));
+
+  if (std::abs(i) < kEpsilon) {
+    i = kEpsilon * (i > 0 ? 1 : -1);
+  }
+
+  CGFloat iInv = 1 / i;
+
+  return GLKMatrix3Make(a * iInv, b * iInv, c * iInv, d * iInv, e * iInv, f * iInv, g * iInv,
+                        h * iInv, 1);
 }
 
 static NSUInteger LTIndexOfConcavePointInQuad(const lt::Quad &quad) {
@@ -655,7 +691,7 @@ CGFloat Quad::maximumEdgeLength() const noexcept {
 }
 
 GLKMatrix3 Quad::transform() const noexcept {
-  return LTRectToQuadTransformation(CGRectMake(0, 0, 1, 1), *this);
+  return LTTransformationForQuad(v0(), v1(), v2(), v3());
 }
 
 Quad::Type Quad::type() const noexcept {

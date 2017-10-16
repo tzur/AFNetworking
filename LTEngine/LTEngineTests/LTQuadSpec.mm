@@ -4,65 +4,27 @@
 #import "LTQuad.h"
 
 #import <LTEngine/LTGLKitExtensions.h>
+#import <LTKit/LTRandom.h>
 
 #import "LTOpenCVExtensions.h"
 #import "LTRotatedRect.h"
 
 static const CGFloat kEpsilon = 1e-5;
 
+static cv::Mat1f LTMatWithQuad(const lt::Quad &quad) {
+  return (cv::Mat1f(4, 2) << quad.v0().x, quad.v0().y, quad.v1().x, quad.v1().y,
+                             quad.v2().x, quad.v2().y, quad.v3().x, quad.v3().y);
+}
+
 /// Implementation for the sake of correctness checking.
 /// Transformation required to transform a rectangle with origin at (0, 0) and size (1, 1) such that
-/// its projected corners coincide with the vertices of this quad.
-///
-/// @see http://stackoverflow.com/questions/9470493/transforming-a-rectangle-image-into-a-quadrilateral-using-a-catransform3d/12820877#12820877
+/// its projected corners coincide with the vertices of the given \c quad.
 static GLKMatrix3 LTTransformationForQuad(const lt::Quad &quad) {
-  const CGRect rect = CGRectMake(0, 0, 1, 1);
-  const CGFloat x1 = quad.v0().x;
-  const CGFloat y1 = quad.v0().y;
-  const CGFloat x2 = quad.v1().x;
-  const CGFloat y2 = quad.v1().y;
-  const CGFloat x3 = quad.v2().x;
-  const CGFloat y3 = quad.v2().y;
-  const CGFloat x4 = quad.v3().x;
-  const CGFloat y4 = quad.v3().y;
-
-  CGFloat X = rect.origin.x;
-  CGFloat Y = rect.origin.y;
-  CGFloat W = rect.size.width;
-  CGFloat H = rect.size.height;
-
-  CGFloat y21 = y2 - y1;
-  CGFloat y32 = y4 - y2;
-  CGFloat y43 = y3 - y4;
-  CGFloat y14 = y1 - y3;
-  CGFloat y31 = y4 - y1;
-  CGFloat y42 = y3 - y2;
-
-  CGFloat a = -H * (x2 * x4 * y14 + x2 * x3 * y31 - x1 * x3 * y32 + x1 * x4 * y42);
-  CGFloat b = W * (x2 * x4 * y14 + x4 * x3 * y21 + x1 * x3 * y32 + x1 * x2 * y43);
-  CGFloat c = H * X * (x2 * x4 * y14 + x2 * x3 * y31 - x1 * x3 * y32 + x1 * x4 * y42)
-      - H * W * x1 * (x3 * y32 - x4 * y42 + x2 * y43)
-      - W * Y * (x2 * x4 * y14 + x4 * x3 * y21 + x1 * x3 * y32 + x1 * x2 * y43);
-
-  CGFloat d = H * (-x3 * y21 * y4 + x2 * y1 * y43 - x1 * y2 * y43 - x4 * y1 * y3 + x4 * y2 * y3);
-  CGFloat e = W * (x3 * y2 * y31 - x4 * y1 * y42 - x2 * y31 * y3 + x1 * y4 * y42);
-  CGFloat f = -(W * (x3 * (Y * y2 * y31 + H * y1 * y32)
-                     - x4 * (H + Y) * y1 * y42 + H * x2 * y1 * y43 + x2 * Y * (y1 - y4) * y3
-                     + x1 * Y * y4 * (-y2 + y3))
-                - H * X * (x3 * y21 * y4 - x2 * y1 * y43 + x4 * (y1 - y2) * y3
-                           + x1 * y2 * (-y4 + y3)));
-
-  CGFloat g = H * (x4 * y21 - x3 * y21 + (-x1 + x2) * y43);
-  CGFloat h = W * (-x2 * y31 + x3 * y31 + (x1 - x4) * y42);
-  CGFloat i = W * Y * (x2 * y31 - x3 * y31 - x1 * y42 + x4 * y42)
-      + H * (X * (-(x4 * y21) + x3 * y21 + x1 * y43 - x2 * y43)
-             + W * (-(x4 * y2) + x3 * y2 + x2 * y4 - x3 * y4 - x2 * y3 + x4 * y3));
-
-  if (std::abs(i) < kEpsilon) {
-    i = kEpsilon * (i > 0 ? 1 : -1);
-  }
-
-  return GLKMatrix3Make(a / i, b / i, c / i, d / i, e / i, f / i, g / i, h / i, 1);
+  CGRect rect = CGRectMake(0, 0, 1, 1);
+  cv::Mat1f sourceMatrix = LTMatWithQuad(lt::Quad(rect));
+  cv::Mat destinationMatrix = LTMatWithQuad(quad);
+  cv::Mat1f homography = cv::findHomography(sourceMatrix, destinationMatrix);
+  return GLKMatrix3MakeWithArray((float *)homography.data);
 }
 
 SpecBegin(LTQuad)
@@ -1594,6 +1556,34 @@ context(@"properties", ^{
       quad = lt::Quad(corners1);
       expect($(LTMatFromGLKMatrix3(quad.transform())))
           .to.beCloseToMatWithin($(LTMatFromGLKMatrix3(LTTransformationForQuad(quad))), kEpsilon);
+    });
+
+    it(@"should provide the correct transformation for random quads", ^{
+      LTRandom *random = [[LTRandom alloc] initWithSeed:0];
+
+      for (NSUInteger i = 0; i < 1000; ++i) {
+        lt::Quad quad = lt::Quad(CGPointMake([random randomDoubleBetweenMin:0 max:1],
+                                             [random randomDoubleBetweenMin:0 max:1]),
+                                 CGPointMake([random randomDoubleBetweenMin:0 max:1],
+                                             [random randomDoubleBetweenMin:0 max:1]),
+                                 CGPointMake([random randomDoubleBetweenMin:0 max:1],
+                                             [random randomDoubleBetweenMin:0 max:1]),
+                                 CGPointMake([random randomDoubleBetweenMin:0 max:1],
+                                             [random randomDoubleBetweenMin:0 max:1]));
+        GLKMatrix3 matrix = quad.transform();
+        GLKMatrix3 referenceMatrix = LTTransformationForQuad(quad);
+
+        for (NSUInteger i = 0; i < 9; ++i) {
+          expect(matrix.m[i]).to.beCloseToWithin(referenceMatrix.m[i],
+                                                 abs(referenceMatrix.m[i] * 1e-2));
+        }
+
+        for (NSUInteger i = 0; i < 3; ++i) {
+          expect(GLKVector3Normalize(GLKMatrix3GetRow(matrix, (int)i)))
+              .to.beCloseToGLKVectorWithin(GLKVector3Normalize(GLKMatrix3GetRow(referenceMatrix,
+                                                                                (int)i)), 5e-4);
+        }
+      }
     });
 
     it(@"should return itself when transforming canonical square quad with own transform", ^{
