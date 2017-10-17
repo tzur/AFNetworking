@@ -11,7 +11,8 @@ it(@"should return a factory of the correct class for each type", ^{
   NSDictionary<LTParameterizedObjectType *, Class> *typeToClass = @{
     $(LTParameterizedObjectTypeDegenerate): [LTBasicDegenerateInterpolantFactory class],
     $(LTParameterizedObjectTypeLinear): [LTBasicLinearInterpolantFactory class],
-    $(LTParameterizedObjectTypeCatmullRom): [LTBasicCatmullRomInterpolantFactory class]
+    $(LTParameterizedObjectTypeCatmullRom): [LTBasicCatmullRomInterpolantFactory class],
+    $(LTParameterizedObjectTypeBSpline): [LTBasicBSplineInterpolantFactory class]
   };
 
   [LTParameterizedObjectType enumerateEnumUsingBlock:^(LTParameterizedObjectType *value) {
