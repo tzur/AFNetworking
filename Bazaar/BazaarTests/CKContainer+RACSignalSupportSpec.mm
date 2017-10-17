@@ -47,7 +47,8 @@ __block NSError *nonRetryableError;
 
 beforeEach(^{
   container = OCMPartialMock([CKContainer defaultContainer]);
-  retryableError = [NSError lt_errorWithCode:1337 userInfo:@{CKErrorRetryAfterKey: @0}];
+  retryableError = [NSError errorWithDomain:CKErrorDomain code:CKErrorZoneBusy
+                                   userInfo:@{CKErrorRetryAfterKey: @0}];
   nonRetryableError = [NSError lt_errorWithCode:1337];
 });
 
