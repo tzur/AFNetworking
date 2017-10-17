@@ -34,5 +34,8 @@ extern "C" {
 // Pinky.
 #import "EXPMatchers+equalMTLSize.h"
 #import "LTEasyBoxing+Pinky.h"
+#import "MPSImage+Factory.h"
+#import "MPSTemporaryImage+Factory.h"
 #import "PNKOpenCVExtensions.h"
+#import "PNKTemporaryImageExamples.h"
 #import "PNKTestUtils.h"
