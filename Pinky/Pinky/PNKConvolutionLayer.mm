@@ -63,7 +63,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 #pragma mark -
-#pragma mark PNKUnaryKernel
+#pragma mark PNKUnaryImageKernel
 #pragma mark -
 
 - (MPSOffset)calculateOffsetWithInputImage:(MPSImage *)inputImage
