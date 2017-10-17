@@ -46,9 +46,12 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)bzr_retryCloudKitErrorIfNeeded:(NSUInteger)retryCount {
   return [[[self
       catch:^RACSignal *(NSError *error) {
-        NSNumber * _Nullable suggestedRetryDelay = error.userInfo[CKErrorRetryAfterKey];
-        if (suggestedRetryDelay) {
-          NSTimeInterval retryDelay = suggestedRetryDelay.doubleValue;
+        BOOL isRetryableError = [error.domain isEqualToString:CKErrorDomain] &&
+            (error.code == CKErrorZoneBusy || error.code == CKErrorServiceUnavailable ||
+             error.code == CKErrorRequestRateLimited);
+        if (isRetryableError) {
+          NSNumber * _Nullable suggestedRetryDelay = error.userInfo[CKErrorRetryAfterKey];
+          NSTimeInterval retryDelay = suggestedRetryDelay ? suggestedRetryDelay.doubleValue : 3;
           return [[[RACSignal empty]
               delay:retryDelay]
               concat:[RACSignal error:error]];
@@ -61,9 +64,9 @@ NS_ASSUME_NONNULL_BEGIN
         if ([value isKindOfClass:[BZRNonRetryableErrorWrapper class]]) {
           BZRNonRetryableErrorWrapper *errorWrapper = value;
           return [RACSignal error:errorWrapper.error];
-        } else {
-          return [RACSignal return:value];
         }
+
+        return [RACSignal return:value];
       }];
 }
 
