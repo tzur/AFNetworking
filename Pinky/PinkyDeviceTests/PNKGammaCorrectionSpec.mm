@@ -112,4 +112,14 @@ context(@"processing", ^{
   });
 });
 
+context(@"PNKUnaryKernel with MPSTemporaryImage", ^{
+  itShouldBehaveLike(kPNKTemporaryImageUnaryExamples, ^{
+    return @{
+      kPNKTemporaryImageExamplesKernel: gammaCorrection,
+      kPNKTemporaryImageExamplesDevice: device,
+      kPNKTemporaryImageExamplesIsArray: @(NO)
+    };
+  });
+});
+
 DeviceSpecEnd

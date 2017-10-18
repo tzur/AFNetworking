@@ -210,4 +210,26 @@ context(@"addition operation with Float16 channel format", ^{
   });
 });
 
+context(@"PNKBinaryKernel with MPSTemporaryImage", ^{
+  itShouldBehaveLike(kPNKTemporaryImageBinaryExamples, ^{
+    additionOp = [[PNKAddition alloc] initWithDevice:device withInputIsArray:NO];
+
+    return @{
+      kPNKTemporaryImageExamplesKernel: additionOp,
+      kPNKTemporaryImageExamplesDevice: device,
+      kPNKTemporaryImageExamplesIsArray: @(NO)
+    };
+  });
+
+  itShouldBehaveLike(kPNKTemporaryImageBinaryExamples, ^{
+    additionOp = [[PNKAddition alloc] initWithDevice:device withInputIsArray:YES];
+
+    return @{
+      kPNKTemporaryImageExamplesKernel: additionOp,
+      kPNKTemporaryImageExamplesDevice: device,
+      kPNKTemporaryImageExamplesIsArray: @(YES)
+    };
+  });
+});
+
 DeviceSpecEnd

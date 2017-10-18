@@ -164,4 +164,28 @@ context(@"nearest neighbor upsampling with Unorm8 channel format", ^{
   });
 });
 
+context(@"PNKUnaryKernel with MPSTemporaryImage", ^{
+  itShouldBehaveLike(kPNKTemporaryImageUnaryExamples, ^{
+    nearestNeighborUpsampler =
+        [[PNKNearestNeighborUpsampling alloc] initWithDevice:device inputIsArray:NO
+                                         magnificationFactor:2];
+    return @{
+      kPNKTemporaryImageExamplesKernel: nearestNeighborUpsampler,
+      kPNKTemporaryImageExamplesDevice: device,
+      kPNKTemporaryImageExamplesIsArray: @(NO)
+    };
+  });
+
+  itShouldBehaveLike(kPNKTemporaryImageUnaryExamples, ^{
+    nearestNeighborUpsampler =
+        [[PNKNearestNeighborUpsampling alloc] initWithDevice:device inputIsArray:YES
+                                         magnificationFactor:2];
+    return @{
+      kPNKTemporaryImageExamplesKernel: nearestNeighborUpsampler,
+      kPNKTemporaryImageExamplesDevice: device,
+      kPNKTemporaryImageExamplesIsArray: @(YES)
+    };
+  });
+});
+
 DeviceSpecEnd

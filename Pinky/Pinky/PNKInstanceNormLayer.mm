@@ -160,6 +160,10 @@ static NSString * const kKernelArrayFunctionName = @"instanceNormArray";
   PNKComputeDispatch(self.state, commandBuffer, kernelBuffers,
                      @[inputImage.texture, outputImage.texture], self.functionName, threadsInGroup,
                      threadgroupsPerGrid);
+
+  if ([inputImage isKindOfClass:[MPSTemporaryImage class]]) {
+    ((MPSTemporaryImage *)inputImage).readCount -= 1;
+  }
 }
 
 - (void)verifyParametersWithInputImage:(MPSImage *)inputImage

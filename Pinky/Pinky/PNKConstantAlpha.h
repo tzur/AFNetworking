@@ -9,7 +9,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Kernel that sets the Alpha channel to a constant value. Input is expected to be an RGBA or BGRA
 /// image.
-@interface PNKConstantAlpha : NSObject <PNKUnaryKernel>
+@interface PNKConstantAlpha : NSObject <PNKUnaryImageKernel>
 
 /// Initializes a new kernel that runs on \c device and sets the input's alpha channel to \c alpha.
 - (instancetype)initWithDevice:(id<MTLDevice>)device alpha:(float)alpha NS_DESIGNATED_INITIALIZER;

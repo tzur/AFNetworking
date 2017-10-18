@@ -173,4 +173,26 @@ context(@"reflection padding with Unorm8 channel format", ^{
   });
 });
 
+context(@"PNKUnaryKernel with MPSTemporaryImage", ^{
+  itShouldBehaveLike(kPNKTemporaryImageUnaryExamples, ^{
+    reflectionPadding = [[PNKReflectionPadding alloc] initWithDevice:device inputIsArray:NO
+                                                         paddingSize:kPadding];
+    return @{
+      kPNKTemporaryImageExamplesKernel: reflectionPadding,
+      kPNKTemporaryImageExamplesDevice: device,
+      kPNKTemporaryImageExamplesIsArray: @(NO)
+    };
+  });
+
+  itShouldBehaveLike(kPNKTemporaryImageUnaryExamples, ^{
+    reflectionPadding = [[PNKReflectionPadding alloc] initWithDevice:device inputIsArray:YES
+                                                         paddingSize:kPadding];
+    return @{
+      kPNKTemporaryImageExamplesKernel: reflectionPadding,
+      kPNKTemporaryImageExamplesDevice: device,
+      kPNKTemporaryImageExamplesIsArray: @(YES)
+    };
+  });
+});
+
 DeviceSpecEnd
