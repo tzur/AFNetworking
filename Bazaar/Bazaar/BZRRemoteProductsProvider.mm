@@ -37,14 +37,14 @@ NS_ASSUME_NONNULL_BEGIN
   return [self initWithURL:URL HTTPClient:[FBRHTTPClient client]];
 }
 
-- (RACSignal *)fetchProductList {
+- (RACSignal<BZRProductList *> *)fetchProductList {
   return [[[[self.HTTPClient GET:self.URL.path withParameters:nil headers:nil]
       fbr_deserializeJSON]
       bzr_deserializeArrayOfModels:[BZRProduct class]]
       setNameWithFormat:@"%@ -fetchProductList", self.description];
 };
 
-- (RACSignal *)eventsSignal {
+- (RACSignal<BZREvent *> *)eventsSignal {
   return [[RACSignal never] takeUntil:[self rac_willDeallocSignal]];
 }
 

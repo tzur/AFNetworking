@@ -48,7 +48,7 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark BZREventEmitter
 #pragma mark -
 
-- (RACSignal *)eventsSignal {
+- (RACSignal<BZREvent *> *)eventsSignal {
   return self.underlyingContentFetcher.eventsSignal;
 }
 
@@ -56,13 +56,13 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark BZRProductContentFetcher
 #pragma mark -
 
-- (RACSignal *)fetchProductContent:(BZRProduct *)product {
+- (RACSignal<BZRContentFetchingProgress *> *)fetchProductContent:(BZRProduct *)product {
   return [[self.underlyingContentFetcher fetchProductContent:product]
           bzr_delayedRetry:self.numberOfRetries
           initialDelay:self.initialDelay];
 }
 
-- (RACSignal *)contentBundleForProduct:(BZRProduct *)product {
+- (RACSignal<NSBundle *> *)contentBundleForProduct:(BZRProduct *)product {
   return [self.underlyingContentFetcher contentBundleForProduct:product];
 }
 

@@ -50,7 +50,7 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark BZREventEmitter
 #pragma mark -
 
-- (RACSignal *)eventsSignal {
+- (RACSignal<BZREvent *> *)eventsSignal {
   return [RACSignal empty];
 }
 
@@ -58,7 +58,7 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark BZRProductContentFetcher
 #pragma mark -
 
-- (RACSignal *)fetchProductContent:(BZRProduct *)product {
+- (RACSignal<BZRContentFetchingProgress *> *)fetchProductContent:(BZRProduct *)product {
   if (![product.contentFetcherParameters isKindOfClass:[[self class] expectedParametersClass]]) {
     auto errorDescription =
         [NSString stringWithFormat:@"Content fetcher of type %@ is expecting parameters of type "
@@ -84,7 +84,7 @@ NS_ASSUME_NONNULL_BEGIN
       [[self.contentManager extractContentOfProduct:product.identifier
                                         fromArchive:contentArchivePath
                                      intoDirectory:[self contentDirectoryNameForProduct:product]]
-       map:^LTProgress<NSBundle *> *(NSBundle *bundle) {
+       map:^BZRContentFetchingProgress *(NSBundle *bundle) {
          return [[LTProgress alloc] initWithResult:bundle];
        }];
   auto deleteArchiveSignal =
@@ -116,7 +116,7 @@ NS_ASSUME_NONNULL_BEGIN
   return [[[URL absoluteString] lastPathComponent] stringByDeletingPathExtension];
 }
 
-- (RACSignal *)contentBundleForProduct:(BZRProduct *)product {
+- (RACSignal<NSBundle *> *)contentBundleForProduct:(BZRProduct *)product {
   if (![product.contentFetcherParameters isKindOfClass:[[self class] expectedParametersClass]]) {
     return [RACSignal return:nil];
   }

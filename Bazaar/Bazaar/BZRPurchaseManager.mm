@@ -48,7 +48,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Sends transactions that are received from the delegate calls and are not associated with a
 /// purchase made using the receiver.
-@property (readonly, nonatomic) RACSubject *unhandledTransactionsSubject;
+@property (readonly, nonatomic) RACSubject<BZRPaymentTransactionList *> *
+    unhandledTransactionsSubject;
 
 @end
 
@@ -79,7 +80,8 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark Purchasing
 #pragma mark -
 
-- (RACSignal *)purchaseProduct:(SKProduct *)product quantity:(NSUInteger)quantity {
+- (RACSignal<SKPaymentTransaction *> *)purchaseProduct:(SKProduct *)product
+                                              quantity:(NSUInteger)quantity {
   @weakify(self);
   return [[[RACSignal
       createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
@@ -100,7 +102,7 @@ NS_ASSUME_NONNULL_BEGIN
       setNameWithFormat:@"%@ -purchaseProduct:quantity:", self.description];
 }
 
-- (RACSignal *)transactionUpdatesForPayment:(SKPayment *)payment {
+- (RACSignal<SKPaymentTransaction *> *)transactionUpdatesForPayment:(SKPayment *)payment {
   return [[[[[self rac_signalForSelector:@selector(receivedTransaction:transactionFinished:)]
       filter:^BOOL(RACTuple *tuple) {
         // Filter out updates for transactions that are not associated with the specified payment.
@@ -132,12 +134,12 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 - (void)paymentQueue:(SKPaymentQueue __unused *)paymentQueue
-    paymentTransactionsUpdated:(NSArray<SKPaymentTransaction *> *)transactions {
+    paymentTransactionsUpdated:(BZRPaymentTransactionList *)transactions {
   [self handleTransactions:transactions transactionsFinished:NO];
 }
 
 - (void)paymentQueue:(SKPaymentQueue __unused *)paymentQueue
-    paymentTransactionsRemoved:(NSArray<SKPaymentTransaction *> *)transactions {
+    paymentTransactionsRemoved:(BZRPaymentTransactionList *)transactions {
   [self handleTransactions:transactions transactionsFinished:YES];
 }
 
@@ -145,7 +147,7 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark Handling Transaction Updates
 #pragma mark -
 
-- (void)handleTransactions:(NSArray<SKPaymentTransaction *> *)transactions
+- (void)handleTransactions:(BZRPaymentTransactionList *)transactions
       transactionsFinished:(BOOL)transactionsFinished {
   NSMutableArray<SKPaymentTransaction *> *unhandledTransactions = [[NSMutableArray alloc] init];
   dispatch_sync(self.paymentDataAccessQueue, ^{

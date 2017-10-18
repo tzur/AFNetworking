@@ -55,7 +55,7 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark BZREventEmitter
 #pragma mark -
 
-- (RACSignal *)eventsSignal {
+- (RACSignal<BZREvent *> *)eventsSignal {
   return [RACSignal empty];
 }
 
@@ -63,7 +63,7 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark BZRProductContentFetcher
 #pragma mark -
 
-- (RACSignal *)fetchProductContent:(BZRProduct *)product {
+- (RACSignal<BZRContentFetchingProgress *> *)fetchProductContent:(BZRProduct *)product {
   Class expectedParametersClass = [[self class] expectedParametersClass];
   if (![product.contentFetcherParameters isKindOfClass:expectedParametersClass]) {
     auto error = [NSError lt_errorWithCode:BZRErrorCodeInvalidContentFetcherParameters
@@ -94,7 +94,7 @@ NS_ASSUME_NONNULL_BEGIN
           }
         }
       }]
-      map:^LTProgress<NSBundle *> *(LTProgress<id<FBROnDemandResource>> *progress) {
+      map:^BZRContentFetchingProgress *(LTProgress<id<FBROnDemandResource>> *progress) {
         if (!progress.result) {
           return [[LTProgress alloc] initWithProgress:progress.progress];
         }
@@ -103,7 +103,7 @@ NS_ASSUME_NONNULL_BEGIN
       }];
 }
 
-- (RACSignal *)contentBundleForProduct:(BZRProduct *)product {
+- (RACSignal<NSBundle *> *)contentBundleForProduct:(BZRProduct *)product {
   if (![product.contentFetcherParameters isKindOfClass:[[self class] expectedParametersClass]]) {
     return [RACSignal return:nil];
   }

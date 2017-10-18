@@ -49,12 +49,12 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark BZRProductsProvider
 #pragma mark -
 
-- (RACSignal *)fetchProductList {
+- (RACSignal<BZRProductList *> *)fetchProductList {
   @weakify(self);
-  return [[RACSignal defer:^RACSignal *{
+  return [[RACSignal defer:^RACSignal<BZRProductList *> *{
     @strongify(self);
     if (self.productListFetchInProgress) {
-      return [[self waitForFetchToComplete] then:^RACSignal *{
+      return [[self waitForFetchToComplete] then:^{
         @strongify(self);
         return [self productListSignal];
       }];
@@ -65,18 +65,18 @@ NS_ASSUME_NONNULL_BEGIN
   subscribeOn:self.fetchingScheduler];
 }
 
-- (RACSignal *)productListSignal {
+- (RACSignal<BZRProductList *> *)productListSignal {
   return self.productList ? [RACSignal return:self.productList] : [self fetchProductListInternal];
 }
 
-- (RACSignal *)waitForFetchToComplete {
+- (RACSignal<NSNumber *> *)waitForFetchToComplete {
   return [[[RACObserve(self, productListFetchInProgress)
       ignore:@YES]
       take:1]
       deliverOn:self.fetchingScheduler];
 }
 
-- (RACSignal *)fetchProductListInternal {
+- (RACSignal<BZRProductList *> *)fetchProductListInternal {
   self.productListFetchInProgress = YES;
 
   @weakify(self);
@@ -109,7 +109,7 @@ NS_ASSUME_NONNULL_BEGIN
   }];
 }
 
-- (RACSignal *)eventsSignal {
+- (RACSignal<BZREvent *> *)eventsSignal {
   return self.underlyingProvider.eventsSignal;
 }
 

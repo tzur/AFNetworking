@@ -43,13 +43,13 @@ NS_ASSUME_NONNULL_BEGIN
   return self;
 }
 
-- (RACSignal *)archiveFiles:(NSArray<NSString *> *)filePaths
+- (RACSignal<BZRFileArchivingProgress *> *)archiveFiles:(NSArray<NSString *> *)filePaths
             toArchiveAtPath:(NSString *)archivePath {
   return [self archiveFiles:filePaths toArchiveAtPath:archivePath withArchivedNames:nil];
 }
 
-- (RACSignal *)archiveContentsOfDirectory:(NSString *)directoryPath
-                          toArchiveAtPath:(NSString *)archivePath {
+- (RACSignal<BZRFileArchivingProgress *> *)archiveContentsOfDirectory:(NSString *)directoryPath
+                                                      toArchiveAtPath:(NSString *)archivePath {
   return [[[[self.fileManager bzr_enumerateDirectoryAtPath:directoryPath]
       map:^RACTuple *(RACTuple *enumerationTuple) {
         NSString *itemRelativePath = enumerationTuple.second;
@@ -66,12 +66,13 @@ NS_ASSUME_NONNULL_BEGIN
       }];
 }
 
-- (RACSignal *)archiveFiles:(NSArray<NSString *> *)filePaths toArchiveAtPath:(NSString *)archivePath
-          withArchivedNames:(nullable NSArray<NSString *> *)archivedNames {
+- (RACSignal<BZRFileArchivingProgress *> *)archiveFiles:(NSArray<NSString *> *)filePaths
+    toArchiveAtPath:(NSString *)archivePath
+    withArchivedNames:(nullable NSArray<NSString *> *)archivedNames {
   RACSignal *deletionSignal = [self.fileManager bzr_deleteItemAtPathIfExists:archivePath];
 
   @weakify(self);
-  RACSignal *archivingSignal =
+  RACSignal<BZRFileArchivingProgress *> *archivingSignal =
       [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
         @strongify(self);
         NSError *error;
@@ -111,8 +112,8 @@ NS_ASSUME_NONNULL_BEGIN
       subscribeOn:[RACScheduler scheduler]];
 }
 
-- (RACSignal *)unarchiveArchiveAtPath:(NSString *)archivePath
-                          toDirectory:(NSString *)targetDirectory {
+- (RACSignal<BZRFileArchivingProgress *> *)unarchiveArchiveAtPath:(NSString *)archivePath
+                                                      toDirectory:(NSString *)targetDirectory {
   @weakify(self);
   return [[RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
     @strongify(self);

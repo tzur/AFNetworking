@@ -1,6 +1,8 @@
 // Copyright (c) 2016 Lightricks. All rights reserved.
 // Created by Ben Yohay.
 
+#import "BZRStoreKitTypedefs.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
 @protocol BZRPaymentQueuePaymentsDelegate;
@@ -27,7 +29,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// Invoked when \c paymentQueue informs its delegates that the state of the payment transactions in
 /// \c transactions was updated.
 - (void)paymentQueue:(id<BZRPaymentsPaymentQueue>)paymentQueue
-    paymentTransactionsUpdated:(NSArray<SKPaymentTransaction *> *)transactions;
+    paymentTransactionsUpdated:(BZRPaymentTransactionList *)transactions;
 
 @optional
 
@@ -35,7 +37,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// removed from the queue. \c transactions will contain only payment transactions and no
 /// restoration transactions.
 - (void)paymentQueue:(id<BZRPaymentsPaymentQueue>)paymentQueue
-    paymentTransactionsRemoved:(NSArray<SKPaymentTransaction *> *)transactions;
+    paymentTransactionsRemoved:(BZRPaymentTransactionList *)transactions;
 
 @end
 

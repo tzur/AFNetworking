@@ -1,6 +1,8 @@
 // Copyright (c) 2016 Lightricks. All rights reserved.
 // Created by Ben Yohay.
 
+#import "BZRStoreKitTypedefs.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
 @protocol BZRPaymentQueueDownloadsDelegate;

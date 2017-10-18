@@ -17,7 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic, nullable) RACDisposable *triggerSignalSubscription;
 
 /// The other end of \c eventsSignal used to send validation errors.
-@property (readonly, nonatomic) RACSubject *errorsSubject;
+@property (readonly, nonatomic) RACSubject<NSError *> *errorsSubject;
 
 @end
 
@@ -44,7 +44,7 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark BZREventEmitter
 #pragma mark -
 
-- (RACSignal *)eventsSignal {
+- (RACSignal<BZREvent *> *)eventsSignal {
   return [[self.errorsSubject
       map:^BZREvent *(NSError *error) {
         return [[BZREvent alloc] initWithType:$(BZREventTypeNonCriticalError) eventError:error];

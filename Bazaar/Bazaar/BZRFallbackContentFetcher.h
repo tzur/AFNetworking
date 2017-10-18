@@ -30,9 +30,7 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 /// @note If fetching has failed in the middle, the values from the next fetcher will be sent with
 /// new progress values, which may start again from 0.
-///
-/// @return <tt>RACSignal<LTProgress<NSBundle>></tt>
-- (RACSignal *)fetchProductContent:(BZRProduct *)product;
+- (RACSignal<BZRContentFetchingProgress *> *)fetchProductContent:(BZRProduct *)product;
 
 /// Checks if the content bundle exists using the underlying composite content fetcher with
 /// a list of parameters as specified by \c product.contentFetcherParameters.fetcherParameters.
@@ -42,9 +40,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// \c BZRCompositeContentFetcher. The signal completes if the underlying fetcher sends a non \c nil
 /// bundle. If the underlying fetcher sent \c nil the signal will check again with the next packed
 /// parameters. The signal sends \c nil if all the underlying check attempts sent \c nil.
-///
-/// @return <tt>RACSignal<nullable NSBundle></tt>
-- (RACSignal *)contentBundleForProduct:(BZRProduct *)product;
+- (RACSignal<NSBundle *> *)contentBundleForProduct:(BZRProduct *)product;
 
 @end
 

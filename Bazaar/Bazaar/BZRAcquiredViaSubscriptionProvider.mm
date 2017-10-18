@@ -16,7 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly, nonatomic) BZRKeychainStorage *keychainStorage;
 
 /// Subject used to send storage errors as values.
-@property (readonly, nonatomic) RACSubject *storageErrorsSubject;
+@property (readonly, nonatomic) RACSubject<NSError *> *storageErrorsSubject;
 
 /// Set of products that were acquired via subscription.
 @property (strong, readwrite, nonatomic) NSSet<NSString *> *productsAcquiredViaSubscription;
@@ -123,7 +123,7 @@ NSString * const kProductsAcquiredViaSubscriptionSetKey = @"productsAcquiredViaS
 #pragma mark Storage errors
 #pragma mark -
 
-- (RACSignal *)storageErrorEventsSignal {
+- (RACSignal<BZREvent *> *)storageErrorEventsSignal {
   return [self.storageErrorsSubject map:^BZREvent *(NSError *eventError) {
     return [[BZREvent alloc] initWithType:$(BZREventTypeNonCriticalError) eventError:eventError];
   }];

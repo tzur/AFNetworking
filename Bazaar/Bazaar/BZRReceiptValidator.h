@@ -5,7 +5,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class BZRReceiptValidationParameters;
+@class BZRReceiptValidationParameters, BZRReceiptValidationStatus;
 
 /// Protocol for application receipt validators.
 @protocol BZRReceiptValidator <BZREventEmitter>
@@ -16,9 +16,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// it to validate that the receipt was issued for a device with the same ID.
 /// Returns a signal that sends a single \c BZRReceiptValidationStatus and then completes or errs
 /// if failed to complete the receipt validation.
-///
-/// @return <tt>RACSignal<BZRReceiptValidationStatus></tt>
-- (RACSignal *)validateReceiptWithParameters:(BZRReceiptValidationParameters *)parameters;
+- (RACSignal<BZRReceiptValidationStatus *> *)
+    validateReceiptWithParameters:(BZRReceiptValidationParameters *)parameters;
 
 @end
 

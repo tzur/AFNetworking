@@ -30,9 +30,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// expired.
 @property (readonly, nonatomic) NSTimeInterval gracePeriod;
 
-/// Sends time provider as values. The subject completes when the receiver is deallocated. The
-/// subject doesn't err.
-@property (readonly, nonatomic) RACSubject *timeProviderErrorsSubject;
+/// Sends time provider errors as values. The subject completes when the receiver is deallocated.
+/// The subject doesn't err.
+@property (readonly, nonatomic) RACSubject<NSError *> *timeProviderErrorsSubject;
 
 /// Time between each periodic validation.
 @property (readwrite, nonatomic) NSTimeInterval periodicValidationInterval;
@@ -151,8 +151,8 @@ const NSUInteger kMaxPeriodicValidationInterval = 28;
   [self.receiptValidator activateWithTrigger:[self timerSignal:@(timeToNextValidation)]];
 }
 
-- (RACSignal *)timerSignal:(NSNumber *)timeToNextValidation {
-  RACSignal *timerSignal =
+- (RACSignal<NSDate *> *)timerSignal:(NSNumber *)timeToNextValidation {
+  RACSignal<NSDate *> *timerSignal =
       [RACSignal interval:self.periodicValidationInterval onScheduler:[RACScheduler scheduler]];
   if ([timeToNextValidation doubleValue] <= 0) {
     return [timerSignal startWith:[NSDate date]];
@@ -168,7 +168,7 @@ const NSUInteger kMaxPeriodicValidationInterval = 28;
 #pragma mark Handling errors
 #pragma mark -
 
-- (RACSignal *)errorEventsSignal {
+- (RACSignal<BZREvent *> *)errorEventsSignal {
     return [[RACSignal merge:@[
       [self.timeProviderErrorsSubject map:^BZREvent *(NSError *error) {
         return [[BZREvent alloc] initWithType:$(BZREventTypeNonCriticalError) eventError:error];
@@ -178,7 +178,7 @@ const NSUInteger kMaxPeriodicValidationInterval = 28;
     takeUntil:[self rac_willDeallocSignal]];
 }
 
-- (RACSignal *)periodicValidationErrorsSignal {
+- (RACSignal<BZREvent *> *)periodicValidationErrorsSignal {
   @weakify(self);
   return [[[[[self.receiptValidator.eventsSignal
       filter:^BOOL(BZREvent *event) {
@@ -195,7 +195,7 @@ const NSUInteger kMaxPeriodicValidationInterval = 28;
       ignore:nil];
 }
 
-- (RACSignal *)currentTime {
+- (RACSignal<NSDate *> *)currentTime {
   @weakify(self);
   return [[[self.timeProvider currentTime]
       doError:^(NSError *error) {

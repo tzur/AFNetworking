@@ -13,8 +13,6 @@ NS_ASSUME_NONNULL_BEGIN
 /// completes when \c requestDidFinish: is invoked on the receiver's delegate or when the receiver
 /// deallocates. The signal errs when \c -request:didFailWithError: is invoked on the receiver's
 /// delegate. The signal will stop sending values when \c cancel is invoked on the receiver.
-///
-/// @return <tt>RACSignal</tt>.
 - (RACSignal *)statusSignal;
 
 @end

@@ -1,9 +1,11 @@
 // Copyright (c) 2016 Lightricks. All rights reserved.
 // Created by Ben Yohay.
 
+#import "BZRStoreKitTypedefs.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
-@class BZRPaymentQueue, BZRProductDownloadManager, BZRPurchaseManager,
+@class BZREvent, BZRPaymentQueue, BZRProductDownloadManager, BZRPurchaseManager,
     BZRTransactionRestorationManager;
 
 @protocol BZRStoreKitRequestsFactory;
@@ -63,9 +65,8 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 /// @note If \c productIdentifiers contains some invalid product identifiers they will be listed
 /// in the response object under \c invalidProductIdentifiers.
-///
-/// @return <tt>RACSignal<SKProductsResponse></tt>
-- (RACSignal *)fetchMetadataForProductsWithIdentifiers:(NSSet<NSString *> *)productIdentifiers;
+- (RACSignal<SKProductsResponse *> *)
+    fetchMetadataForProductsWithIdentifiers:(NSSet<NSString *> *)productIdentifiers;
 
 /// Purchases a single \c product from the store.
 ///
@@ -83,9 +84,7 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 /// @note When a transaction object is no longer needed one must call \c finishTransaction: on the
 /// store manager. This method should be invoked for completed, restored and failed transactions.
-///
-/// @return <tt>RACSignal<SKPaymentTransaction></tt>
-- (RACSignal *)purchaseProduct:(SKProduct *)product;
+- (RACSignal<SKPaymentTransaction *> *)purchaseProduct:(SKProduct *)product;
 
 /// Purchases \c quantity units of a consumable \c product. \c quantity must be a positive number,
 /// if \c 0 is passed an \c NSInvalidArgumentException is raised.
@@ -104,9 +103,8 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 /// @note When a transaction object is no longer needed one must call \c finishTransaction: on the
 /// store manager. This method should be invoked for completed, restored and failed transactions.
-///
-/// @return <tt>RACSignal<SKPaymentTransaction></tt>
-- (RACSignal *)purchaseConsumableProduct:(SKProduct *)product quantity:(NSUInteger)quantity;
+- (RACSignal<SKPaymentTransaction *> *)purchaseConsumableProduct:(SKProduct *)product
+                                                        quantity:(NSUInteger)quantity;
 
 /// Downloads additional content for a completed \c transaction.
 ///
@@ -120,9 +118,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// completes when its associated \c SKDownload object reaches the \c SKDownloadStateFinished state
 /// and errs with an appropriate error if its associated \c SKDownload object reaches the
 /// \c SKDownloadStateFailed state.
-///
-/// @return <tt>NSArray<RACSignal<SKDownload>></tt>
-- (NSArray<RACSignal *> *)downloadContentForTransaction:(SKPaymentTransaction *)transaction;
+- (NSArray<RACSignal<SKDownload *> *> *)
+    downloadContentForTransaction:(SKPaymentTransaction *)transaction;
 
 /// Restores all previously completed transactions made by the current user.
 ///
@@ -136,9 +133,7 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 /// @note Restore completed transactions causes the StoreKit to show a login dialog, requesting the
 /// user to enter his Apple ID and password in order to approve the restoration.
-///
-/// @return <tt>RACSignal<SKPaymentTransaction></tt>
-- (RACSignal *)restoreCompletedTransactions;
+- (RACSignal<SKPaymentTransaction *> *)restoreCompletedTransactions;
 
 /// Refreshes the AppStore receipt of the application.
 ///
@@ -147,8 +142,6 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 /// @note Receipt refreshing request causes the StoreKit to show a login dialog, requesting the user
 /// to enter his Apple ID and password in order to approve the refresh request.
-///
-/// @return <tt>RACSignal</tt>
 - (RACSignal *)refreshReceipt;
 
 /// Finishes a completed \c transaction and removes it from the transaction queue.
@@ -171,15 +164,11 @@ NS_ASSUME_NONNULL_BEGIN
 /// is received via \c purchaseManager.
 /// \c BZREventTypePurchaseFailed - when an unfinished failed transaction is received.
 /// The signal completes when the receiver is deallocated. The signal doesn't err.
-///
-/// @return <tt>RACSubject<BZREvent></tt>
-@property (readonly, nonatomic) RACSignal *transactionsErrorEventsSignal;
+@property (readonly, nonatomic) RACSignal<BZREvent *> *transactionsErrorEventsSignal;
 
 /// Sends array of transactions that were completed successfully and do not match any pending
 /// payment request. The \c SKPaymentTransaction can be either in the purchased or restored state.
 /// The signal completes when the receiver is deallocated. The signal doesn't err.
-///
-/// @return <tt>RACSignal<NSArray<SKPaymentTransaction>></tt>
 ///
 /// @note The transactions sent here can be received in one of the following scenarios:
 /// 1. Purchases that were initiated outside of the app (eg. subscription renewals or upgrades).
@@ -187,7 +176,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// communication error at the final stages of a successful purchase / restoration or app were
 /// killed before transaction was finished).
 /// 3. SOON: Deferred purchases that were in pending state and were later approved and completed.
-@property (readonly, nonatomic) RACSignal *unhandledSuccessfulTransactionsSignal;
+@property (readonly, nonatomic) RACSignal<BZRPaymentTransactionList *> *
+    unhandledSuccessfulTransactionsSignal;
 
 @end
 

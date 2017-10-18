@@ -8,9 +8,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Returns a signal that sends the current time as \c NSDate and completes. The time can be the
 /// time on another computer/device. The signal cannot errs.
-///
-/// @return <tt>RACSignal<NSDate></tt>
-- (RACSignal *)currentTime;
+- (RACSignal<NSDate *> *)currentTime;
 
 @end
 

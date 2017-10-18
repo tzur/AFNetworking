@@ -93,7 +93,7 @@ context(@"extracting content file", ^{
     OCMStub([fileManager bzr_deleteItemAtPathIfExists:OCMOCK_ANY]).andReturn([RACSignal empty]);
     OCMStub([fileManager bzr_createDirectoryAtPathIfNotExists:OCMOCK_ANY])
         .andReturn([RACSignal empty]);
-    LTProgress<NSString *> *progress = [[LTProgress alloc] init];
+    BZRFileArchivingProgress *progress = [[LTProgress alloc] init];
     RACSignal *progressSignal = [RACSignal return:progress];
     OCMStub([fileArchiver unarchiveArchiveAtPath:OCMOCK_ANY toDirectory:OCMOCK_ANY])
         .andReturn(progressSignal);

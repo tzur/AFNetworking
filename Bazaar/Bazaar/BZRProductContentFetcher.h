@@ -5,6 +5,10 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/// An object representing the progress of fetch request, holding an \c NSBundle of the content as
+/// its \c result upon completion.
+typedef LTProgress<NSBundle *> BZRContentFetchingProgress;
+
 @class BZRProduct;
 
 /// Protocol for fetching content of products.
@@ -19,10 +23,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// there was an error while fetching the content or if the given
 /// \c product.contentFetcherParameters is invalid.
 ///
-/// @return <tt>RACSignal<LTProgress<NSBundle>></tt>
-///
 /// @note \c product must specify the content source in \c product.contentFetcherParameters.
-- (RACSignal *)fetchProductContent:(BZRProduct *)product;
+- (RACSignal<BZRContentFetchingProgress *> *)fetchProductContent:(BZRProduct *)product;
 
 /// Provides access to the content of \c product if the content exists.
 ///
@@ -30,10 +32,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// device. The bundle provides access to the content of the product specified by \c product. The
 /// signal completes after sending the value. The signal doesn't err.
 ///
-/// @return <tt>RACSignal<nullable NSBundle></tt>
-///
 /// @note \c product must specify the content source in \c product.contentFetcherParameters.
-- (RACSignal *)contentBundleForProduct:(BZRProduct *)product;
+- (RACSignal<NSBundle *> *)contentBundleForProduct:(BZRProduct *)product;
 
 @optional
 

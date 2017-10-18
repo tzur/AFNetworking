@@ -3,14 +3,14 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class BZREvent;
+
 /// Protocol for sending events through \c eventsSignal.
 @protocol BZREventEmitter <NSObject>
 
 /// Sends messages of important events that occur throughout the receiver. The events can be
 /// informational or errors. The signal doesn't err.
-///
-/// @return <tt>RACSignal<BZREvent></tt>
-@property (readonly, nonatomic) RACSignal *eventsSignal;
+@property (readonly, nonatomic) RACSignal<BZREvent *> *eventsSignal;
 
 @end
 

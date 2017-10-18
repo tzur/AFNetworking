@@ -1,6 +1,8 @@
 // Copyright (c) 2016 Lightricks. All rights reserved.
 // Created by Hagai Weinfeld.
 
+#import "BZRStoreKitTypedefs.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
 @protocol BZRPaymentsPaymentQueue;
@@ -35,16 +37,13 @@ NS_ASSUME_NONNULL_BEGIN
 /// process of that payment. The signal completes when the transaction has finished. This occurs
 /// only after \c finishTransaction was invoked for that transaction. The signal errs if the
 /// transaction has failed.
-///
-/// @returns <tt>RACSignal<SKPaymentTransaction></tt>
-- (RACSignal *)purchaseProduct:(SKProduct *)product quantity:(NSUInteger)quantity;
+- (RACSignal<SKPaymentTransaction *> *)purchaseProduct:(SKProduct *)product
+                                              quantity:(NSUInteger)quantity;
 
 /// Sends transactions that are received by the delegate calls and are not associated with a
 /// purchase made using the receiver. The transactions are sent in an array batch. The signal
 /// completes when the receiver is deallocated. The signal doesn't err.
-///
-/// @return <tt>RACSubject<NSArray<SKPaymentTransaction>></tt>
-@property (readonly, nonatomic) RACSignal *unhandledTransactionsSignal;
+@property (readonly, nonatomic) RACSignal<BZRPaymentTransactionList *> *unhandledTransactionsSignal;
 
 @end
 

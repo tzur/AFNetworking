@@ -25,7 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly, nonatomic) BZRContentFetchersDictionary *contentFetchers;
 
 /// Subject used to send events with.
-@property (readonly, nonatomic) RACSubject *eventsSubject;
+@property (readonly, nonatomic) RACSubject<BZREvent *> *eventsSubject;
 
 @end
 
@@ -74,7 +74,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)initializeEventsSignal {
   auto underlyingFetchersEventsSignals = [[self.contentFetchers allValues]
-      lt_map:^RACSignal *(id<BZRProductContentFetcher> contentFetcher) {
+      lt_map:^RACSignal<BZREvent *> *(id<BZRProductContentFetcher> contentFetcher) {
         return contentFetcher.eventsSignal;
       }];
 
@@ -83,7 +83,7 @@ NS_ASSUME_NONNULL_BEGIN
       takeUntil:[self rac_willDeallocSignal]];
 }
 
-- (RACSignal *)fetchProductContent:(BZRProduct *)product {
+- (RACSignal<BZRContentFetchingProgress *> *)fetchProductContent:(BZRProduct *)product {
   id<BZRProductContentFetcher> contentFetcher =
       self.contentFetchers[product.contentFetcherParameters.type];
 
@@ -104,7 +104,7 @@ NS_ASSUME_NONNULL_BEGIN
       }];
 }
 
-- (RACSignal *)contentBundleForProduct:(BZRProduct *)product {
+- (RACSignal<NSBundle *> *)contentBundleForProduct:(BZRProduct *)product {
   id<BZRProductContentFetcher> contentFetcher =
       self.contentFetchers[product.contentFetcherParameters.type];
 

@@ -29,9 +29,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// signals will send events only when
 /// \c -[BZRPaymentQueueDownloadsDelegate paymentQueue:UpdatedDownloads:] is called with the
 /// download found in \c updatedDownloads.
-///
-/// @return <tt>NSArray<RACSignal<SKDownload>>></tt>
-- (NSArray<RACSignal *> *)downloadContentForTransaction:(SKPaymentTransaction *)transaction;
+- (NSArray<RACSignal<SKDownload *> *> *)
+    downloadContentForTransaction:(SKPaymentTransaction *)transaction;
 
 @end
 

@@ -11,7 +11,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation NSFileManager (Bazaar)
 
-- (RACSignal *)bzr_retrieveFilesSizes:(NSArray<NSString *> *)filePaths {
+- (RACSignal<RACTuple *> *)bzr_retrieveFilesSizes:(NSArray<NSString *> *)filePaths {
   return [[[self bzr_retrieveFilesAttributes:filePaths]
       tryMap:^RACTuple * _Nullable(RACTuple *attributesTuple, NSError **error) {
         RACTupleUnpack(NSString *filePath, NSDictionary *fileAttributes) = attributesTuple;
@@ -53,7 +53,7 @@ NS_ASSUME_NONNULL_BEGIN
       setNameWithFormat:@"%@ -bzr_retrieveFilesAttributes", self.description];
 }
 
-- (RACSignal *)bzr_enumerateDirectoryAtPath:(NSString *)directoryPath {
+- (RACSignal<RACTuple *> *)bzr_enumerateDirectoryAtPath:(NSString *)directoryPath {
   return [[[RACSignal
       createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
         NSError *error;

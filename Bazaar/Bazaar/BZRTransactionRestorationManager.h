@@ -31,9 +31,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// transaction objects as they arrive, one by one. The values sent are \c SKPaymentTransaction
 /// instances in the state of \c SKPaymentTransactionStateRestored. The signal completes when the
 /// all previous transactions were restored and errs if restoration fails for any reason.
-///
-/// @returns <tt>RACSignal<SKPaymentTransaction></tt>
-- (RACSignal *)restoreCompletedTransactions;
+- (RACSignal<SKPaymentTransaction *> *)restoreCompletedTransactions;
 
 @end
 

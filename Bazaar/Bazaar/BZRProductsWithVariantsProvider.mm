@@ -26,7 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
   return self;
 }
 
-- (RACSignal *)fetchProductList {
+- (RACSignal<BZRProductList *> *)fetchProductList {
   return [[self.underlyingProvider fetchProductList]
       map:^NSArray<BZRProduct *> *(NSArray<BZRProduct *> *productList) {
         NSMutableArray<BZRProduct *> *productListWithVariants = [NSMutableArray array];
@@ -47,7 +47,7 @@ NS_ASSUME_NONNULL_BEGIN
   }] ?: @[];
 }
 
-- (RACSignal *)eventsSignal {
+- (RACSignal<BZREvent *> *)eventsSignal {
   return self.underlyingProvider.eventsSignal;
 }
 

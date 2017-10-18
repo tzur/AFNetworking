@@ -2,6 +2,7 @@
 // Created by Ben Yohay.
 
 #import "BZREventEmitter.h"
+#import "BZRProductTypedefs.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -12,9 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 /// The signal sends an \c NSArray of \c BZRProduct and completes. The signal errs if the fetching
 /// has failed.
-///
-/// @return <tt>RACSignal<NSArray<BZRProduct>></tt>
-- (RACSignal *)fetchProductList;
+- (RACSignal<BZRProductList *> *)fetchProductList;
 
 @end
 

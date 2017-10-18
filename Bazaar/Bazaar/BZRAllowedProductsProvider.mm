@@ -36,7 +36,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readwrite, nonatomic) NSSet<NSString *> *allowedProducts;
 
 /// Subject used to send events with.
-@property (readonly, nonatomic) RACSubject *eventsSubject;
+@property (readonly, nonatomic) RACSubject<BZREvent *> *eventsSubject;
 
 @end
 
@@ -161,7 +161,7 @@ NS_ASSUME_NONNULL_BEGIN
       [product.productType isEqual:$(BZRProductTypeNonRenewingSubscription)];
 }
 
-- (RACSignal *)eventsSignal {
+- (RACSignal<BZREvent *> *)eventsSignal {
   return [self.eventsSubject takeUntil:[self rac_willDeallocSignal]];
 }
 
