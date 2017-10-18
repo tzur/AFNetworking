@@ -10,7 +10,7 @@
 #import <ReactiveObjC/RACSignal.h>
 
 extern NSString *const LLReactiveMatcherFixtureErrorDomain;
-extern NSError * LLReactiveMatchersFixtureError();
+extern NSError * LLReactiveMatchersFixtureError(void);
 
 #define LLSpecError LLReactiveMatchersFixtureError()
 
