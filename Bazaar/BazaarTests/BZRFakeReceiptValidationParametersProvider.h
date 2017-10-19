@@ -8,6 +8,10 @@ NS_ASSUME_NONNULL_BEGIN
 /// Fake receipt validation parameters provider with stub \c receiptValidationParameters.
 @interface BZRFakeReceiptValidationParametersProvider :
     NSObject <BZRReceiptValidationParametersProvider>
+
+/// Subject used to send events with.
+@property (readonly, nonatomic) RACSubject *eventsSubject;
+
 @end
 
 NS_ASSUME_NONNULL_END
