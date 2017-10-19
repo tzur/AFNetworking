@@ -32,6 +32,7 @@ it(@"should have default properties", ^{
   expect(processor.dampingFactor).to.equal(0.2);
   expect(processor.noisyCopies).to.equal(1);
   expect(processor.noiseStandardDeviation).to.equal(0.1);
+  expect(processor.alphaThreshold).to.equal(0.5);
 });
 
 context(@"texture formats", ^{
@@ -130,7 +131,7 @@ context(@"creating lookup table mapping input palette to reference palette", ^{
   });
 
   context(@"transparency", ^{
-    it(@"should ignore the alpha channel of input", ^{
+    it(@"should return nil if all input pixels have alpha below threshold", ^{
       cv::Mat4b transparent = input.image;
       std::transform(transparent.begin(), transparent.end(), transparent.begin(), [](cv::Vec4b v) {
         v[3] = 0;
@@ -138,11 +139,10 @@ context(@"creating lookup table mapping input palette to reference palette", ^{
       });
 
       auto lut = [processor lutForInputMat:transparent referenceMat:reference.image progress:nil];
-      auto output = LTApplyLUT(input, lut);
-      expect($(output.image)).to.beCloseToMatWithin($(expected), 3);
+      expect(lut).to.beNil();
     });
 
-    it(@"should ignore the alpha channel of reference", ^{
+    it(@"should return nil if all reference pixels have alpha below threshold", ^{
       cv::Mat4b transparent = reference.image;
       std::transform(transparent.begin(), transparent.end(), transparent.begin(), [](cv::Vec4b v) {
         v[3] = 0;
@@ -150,7 +150,32 @@ context(@"creating lookup table mapping input palette to reference palette", ^{
       });
 
       auto lut = [processor lutForInputMat:input.image referenceMat:transparent progress:nil];
+      expect(lut).to.beNil();
+    });
+
+    it(@"should ignore input pixels with alpha values below threshold", ^{
+      auto transparent = [input clone];
+      [transparent mappedImageForWriting:^(cv::Mat *mapped, BOOL) {
+        cv::Mat4b roi = mapped->rowRange(0, mapped->rows / 2);
+        mapped->rowRange(0, mapped->rows / 2).setTo(cv::Vec4b(255, 255, 255, 0));
+      }];
+      auto lut = [processor lutForInputTexture:transparent referenceTexture:reference progress:nil];
       auto output = LTApplyLUT(input, lut);
+
+      expected = LTLoadMat(self.class, @"LTColorTransferResultTransparentInput.png");
+      expect($(output.image)).to.beCloseToMatWithin($(expected), 3);
+    });
+
+    it(@"should ignore reference pixels with alpha values below threshold", ^{
+      [reference mappedImageForWriting:^(cv::Mat *mapped, BOOL) {
+        cv::Mat4b roi = mapped->rowRange(0, mapped->rows / 2);
+        mapped->rowRange(0, mapped->rows / 2).setTo(cv::Vec4b(255, 255, 255, 0));
+      }];
+
+      auto lut = [processor lutForInputTexture:input referenceTexture:reference progress:nil];
+      auto output = LTApplyLUT(input, lut);
+
+      expected = LTLoadMat(self.class, @"LTColorTransferResultTransparentReference.png");
       expect($(output.image)).to.beCloseToMatWithin($(expected), 3);
     });
   });

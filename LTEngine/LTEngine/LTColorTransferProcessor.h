@@ -18,29 +18,32 @@ typedef void (^LTColorTransferProgressBlock)(NSUInteger iterationsCompleted, LT3
 /// Returns a 3D lookup table that can be used to map the \c input's color palette to the
 /// \c reference's palette. If \c progress is provided, it will be called with the result lookup
 /// table after every iteration of the algorithm, representing the gradual transition from the
-/// \c input palette to the \c reference's.
+/// \c input palette to the \c reference's. Only pixels with alpha values above \c alphaThreshold
+/// will be considered, and \c nil is returned in case none of the pixels of either \c input or
+/// \c reference are above it. In such a scenario \c progress will not be called.
 
 /// @important Both \c input and \c reference must be of \c LTGLPixelFormatRGBA8Unorm pixel format,
 /// and should be already downsampled to have the \c recommendedNumberOfPixels for optimal running
 /// time.
-/// @important The alpha channel of both textures is ignored, and the other channels must not be
-/// premultiplied for accurate results.
+/// @important Both \c input and \c reference must be non-premultiplied.
 ///
-- (LT3DLUT *)lutForInputTexture:(LTTexture *)input referenceTexture:(LTTexture *)reference
-                       progress:(nullable LTColorTransferProgressBlock)progress;
+- (nullable LT3DLUT *)lutForInputTexture:(LTTexture *)input referenceTexture:(LTTexture *)reference
+                                progress:(nullable LTColorTransferProgressBlock)progress;
 
 /// Returns a 3D lookup table that can be used to map the \c input's color palette to the
 /// \c reference's palette. If \c progress is provided, it will be called with the result lookup
 /// table after every iteration of the algorithm (except for the last one), representing the gradual
-/// transition from the \c input palette to the \c reference's.
+/// transition from the \c input palette to the \c reference's. Only pixels with alpha values above
+/// \c alphaThreshold will be considered, and \c nil is returned in case none of the pixels of
+/// either \c input or \c reference are above it. In such a scenario \c progress will not be called.
 ///
 /// @important Both \c input and \c refernece must should be already downsampled to have the
 /// \c recommendedNumberOfPixels for optimal running time.
-/// @important The alpha channel of both textures is ignored, and the other channels must not be
-/// premultiplied for accurate results.
+/// @important Both \c input and \c reference must be non-premultiplied.
 /// @note Can run on any thread, callback will be called on the same thread.
-- (LT3DLUT *)lutForInputMat:(const cv::Mat4b &)input referenceMat:(const cv::Mat4b &)reference
-                   progress:(nullable LTColorTransferProgressBlock)progress;
+- (nullable LT3DLUT *)lutForInputMat:(const cv::Mat4b &)input
+                        referenceMat:(const cv::Mat4b &)reference
+                            progress:(nullable LTColorTransferProgressBlock)progress;
 
 /// Recommended number of pixels for both \c input and \reference for optimal combination of
 /// results quality and running time.
@@ -55,6 +58,11 @@ LTPropertyDeclare(NSUInteger, iterations, Iterations);
 /// default is \c 32.
 @property (nonatomic) NSUInteger histogramBins;
 LTPropertyDeclare(NSUInteger, histogramBins, HistogramBins);
+
+/// Threshold for the alpha values of pixels that should be taken into account for the color
+/// transfer. Must be in range <tt>[0, 1]</tt>, default is \c 0.5.
+@property (nonatomic) float alphaThreshold;
+LTPropertyDeclare(float, alphaThreshold, AlphaThreshold);
 
 /// Damping factor for progress of each iteration towards the reference. Lower values yield smaller
 /// steps towards the reference's palette in each iteration, but increase the chance of convergence.
