@@ -345,6 +345,7 @@
 		2843B77E18ACBF710044B87A /* LTSingleRectDrawerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2843B77D18ACBF710044B87A /* LTSingleRectDrawerSpec.mm */; };
 		2843B78018ACBFB60044B87A /* LTMultiRectDrawerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2843B77F18ACBFB60044B87A /* LTMultiRectDrawerSpec.mm */; };
 		2843B78318ACC08B0044B87A /* LTTextureDrawerExamples.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2843B78218ACC08B0044B87A /* LTTextureDrawerExamples.mm */; };
+		284429F41F98DEBD00355576 /* LTColorTransferResultTransparentInput.png in Resources */ = {isa = PBXBuildFile; fileRef = 284429C11F98DEB700355576 /* LTColorTransferResultTransparentInput.png */; };
 		284574781D411070006B0817 /* LTContentTouchEventStateFilter+DefaultFilters.h in Headers */ = {isa = PBXBuildFile; fileRef = 284574761D411070006B0817 /* LTContentTouchEventStateFilter+DefaultFilters.h */; };
 		284574791D411070006B0817 /* LTContentTouchEventStateFilter+DefaultFilters.mm in Sources */ = {isa = PBXBuildFile; fileRef = 284574771D411070006B0817 /* LTContentTouchEventStateFilter+DefaultFilters.mm */; };
 		284574D51D41152D006B0817 /* LTContentTouchEventStateFilter+DefaultFiltersSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 284574D41D41152D006B0817 /* LTContentTouchEventStateFilter+DefaultFiltersSpec.mm */; };
@@ -433,6 +434,7 @@
 		288F154919A63C7A00E1C6F9 /* LTMeshDrawer.h in Headers */ = {isa = PBXBuildFile; fileRef = 288F154719A63C7A00E1C6F9 /* LTMeshDrawer.h */; };
 		288F154A19A63C7A00E1C6F9 /* LTMeshDrawer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 288F154819A63C7A00E1C6F9 /* LTMeshDrawer.mm */; };
 		28907A6618D7274E00DFBE7F /* LTBrushEffectExamples.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28907A6518D7274E00DFBE7F /* LTBrushEffectExamples.mm */; };
+		289569B41F98E10E003979FC /* LTColorTransferResultTransparentReference.png in Resources */ = {isa = PBXBuildFile; fileRef = 284429F51F98E05E00355576 /* LTColorTransferResultTransparentReference.png */; };
 		2896C14B1D947C2200AA7653 /* LTTextureLZ4ArchiverSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2896C14A1D947C2200AA7653 /* LTTextureLZ4ArchiverSpec.mm */; };
 		2897579A1AE66EE900A44594 /* CircularPatchDrawerMasked.png in Resources */ = {isa = PBXBuildFile; fileRef = 289757991AE66EE900A44594 /* CircularPatchDrawerMasked.png */; };
 		2897A892197EE3CC004EE8B5 /* LTPerspectiveProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 2897A890197EE3CC004EE8B5 /* LTPerspectiveProcessor.h */; };
@@ -2141,6 +2143,8 @@
 		2843B78218ACC08B0044B87A /* LTTextureDrawerExamples.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTTextureDrawerExamples.mm; sourceTree = "<group>"; };
 		2843B78418ACF4F10044B87A /* LTSingleRectDrawerSpec.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTSingleRectDrawerSpec.h; sourceTree = "<group>"; };
 		2843B78518ACF5030044B87A /* LTMultiRectDrawerSpec.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTMultiRectDrawerSpec.h; sourceTree = "<group>"; };
+		284429C11F98DEB700355576 /* LTColorTransferResultTransparentInput.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LTColorTransferResultTransparentInput.png; sourceTree = "<group>"; };
+		284429F51F98E05E00355576 /* LTColorTransferResultTransparentReference.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LTColorTransferResultTransparentReference.png; sourceTree = "<group>"; };
 		284574761D411070006B0817 /* LTContentTouchEventStateFilter+DefaultFilters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "LTContentTouchEventStateFilter+DefaultFilters.h"; sourceTree = "<group>"; };
 		284574771D411070006B0817 /* LTContentTouchEventStateFilter+DefaultFilters.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "LTContentTouchEventStateFilter+DefaultFilters.mm"; sourceTree = "<group>"; };
 		284574D41D41152D006B0817 /* LTContentTouchEventStateFilter+DefaultFiltersSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "LTContentTouchEventStateFilter+DefaultFiltersSpec.mm"; sourceTree = "<group>"; };
@@ -4805,6 +4809,8 @@
 				28AC7FB61F964D910014F062 /* LTColorTransferInput.jpg */,
 				28AC7FB41F964D3A0014F062 /* LTColorTransferReference.jpg */,
 				28495A421F988F94005D1107 /* LTColorTransferResult.png */,
+				284429C11F98DEB700355576 /* LTColorTransferResultTransparentInput.png */,
+				284429F51F98E05E00355576 /* LTColorTransferResultTransparentReference.png */,
 				85F599A31CDF2166009A47B4 /* LTDisplacementMapDrawerReshapedWithMask.png */,
 				85F599A41CDF2166009A47B4 /* LTDisplacementMapDrawerReshapedWithoutMask.png */,
 				85F599A51CDF2166009A47B4 /* LTDisplacementMapDrawerResizedWithMask.png */,
@@ -6807,6 +6813,7 @@
 				28A366A319754475009F0A4D /* SemiTransparentGray.png in Resources */,
 				5068081A1E0039B9003EF92A /* PerspectiveGeneralQuadWithQuadPortionOfTexture1.png in Resources */,
 				A8BDC6411AC9DA64005FC392 /* CircularPatchDrawerHeal.png in Resources */,
+				289569B41F98E10E003979FC /* LTColorTransferResultTransparentReference.png in Resources */,
 				30DDD6B71CFC8A7500AE72B8 /* ConsistentGaussianFilterLena384.png in Resources */,
 				28A4C9361973E3EA00CDA935 /* RedBorderOnClearBackground.png in Resources */,
 				06B5C1F71D181A9400401556 /* VerticalStepFunction32.png in Resources */,
@@ -6829,6 +6836,7 @@
 				06F9F2D81D59B558002D2726 /* Lena128_bilateral_L1toL3toL1.png in Resources */,
 				28FB00ED1A0AB46D004490AF /* BristleBrushBristles.FlatBlunt.png in Resources */,
 				307C4B5A1E965EC800BAB302 /* RadialMaskTransformed.png in Resources */,
+				284429F41F98DEBD00355576 /* LTColorTransferResultTransparentInput.png in Resources */,
 				06B5C1F61D181A9400401556 /* HorizontalStepFunction33.png in Resources */,
 				280F5A2E191A975500F9F80B /* ShapeDrawerEllipticShapeEllipse.png in Resources */,
 				03BA8C1418D82A0200625068 /* MealBWProcessorWideFrame.png in Resources */,

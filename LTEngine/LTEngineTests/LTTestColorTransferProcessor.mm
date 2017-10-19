@@ -38,8 +38,9 @@ typedef std::vector<vImagePixelCount> PixelCounts;
 
 @implementation LTTestColorTransferProcessor
 
-- (LT3DLUT *)lutForInputMat:(const cv::Mat4b &)inputMat referenceMat:(const cv::Mat4b &)referenceMat
-                   progress:(nullable LTColorTransferProgressBlock)progress {
+- (nullable LT3DLUT *)lutForInputMat:(const cv::Mat4b &)inputMat
+                        referenceMat:(const cv::Mat4b &)referenceMat
+                            progress:(nullable LTColorTransferProgressBlock)progress {
   const auto rotations = [super optimalRotations];
   const auto pdfSmoothingKernel = [super pdfSmoothingKernel];
 

@@ -35,8 +35,8 @@ static const NSUInteger kInverseCDFScaleFactor = 20;
 #pragma mark Optimized CPU Processing
 #pragma mark -
 
-- (LT3DLUT *)lutForInputTexture:(LTTexture *)input referenceTexture:(LTTexture *)reference
-                       progress:(nullable LTColorTransferProgressBlock)progress {
+- (nullable LT3DLUT *)lutForInputTexture:(LTTexture *)input referenceTexture:(LTTexture *)reference
+                                progress:(nullable LTColorTransferProgressBlock)progress {
   LTParameterAssert([input.pixelFormat isEqual:$(LTGLPixelFormatRGBA8Unorm)],
                     @"Invalid pixel format for input (%@): must be %@",
                     input.pixelFormat, $(LTGLPixelFormatRGBA8Unorm));
@@ -54,13 +54,17 @@ static const NSUInteger kInverseCDFScaleFactor = 20;
   return lut;
 }
 
-- (LT3DLUT *)lutForInputMat:(const cv::Mat4b &)inputMat referenceMat:(const cv::Mat4b &)referenceMat
-                   progress:(nullable LTColorTransferProgressBlock)progress {
+- (nullable LT3DLUT *)lutForInputMat:(const cv::Mat4b &)inputMat
+                        referenceMat:(const cv::Mat4b &)referenceMat
+                            progress:(nullable LTColorTransferProgressBlock)progress {
   const auto pdfSmoothingKernel = [self pdfSmoothingKernel];
   const auto rotations = [self optimalRotations];
 
-  auto input = [self floatChannelsFromByteMatrix:inputMat];
-  auto reference = [self floatChannelsFromByteMatrix:referenceMat];
+  auto input = [self filteredFloatChannelsFromByteMatrix:inputMat];
+  auto reference = [self filteredFloatChannelsFromByteMatrix:referenceMat];
+  if (!input[0].size() || !reference[0].size()) {
+    return nil;
+  }
 
   input = [self replicateFloatChannels:input withNoisyCopies:self.noisyCopies];
   reference = [self replicateFloatChannels:reference withNoisyCopies:self.noisyCopies];
@@ -137,21 +141,40 @@ static const NSUInteger kInverseCDFScaleFactor = 20;
   return lut ?: [self lutFromFloatChannels:lattice];
 }
 
-- (std::vector<Floats>)floatChannelsFromByteMatrix:(const cv::Mat4b &)mat {
-  std::vector<Floats> channels = {Floats(mat.total()), Floats(mat.total()), Floats(mat.total())};
+- (std::vector<Floats>)filteredFloatChannelsFromByteMatrix:(const cv::Mat4b &)mat {
+  auto byteChannels = [self filteredByteChannelsFromMatrix:mat];
+  auto size = byteChannels[0].size();
 
-  int numChannels = mat.channels();
-  for (int rowIndex = 0; rowIndex < mat.rows; ++rowIndex) {
-    for (NSUInteger dimension = 0; dimension < channels.size(); ++dimension) {
-      vDSP_vfltu8(mat.ptr<uchar>(rowIndex) + dimension, numChannels,
-                  channels[dimension].data() + rowIndex * mat.cols, 1, mat.cols);
-    }
+  std::vector<Floats> channels = {Floats(size), Floats(size), Floats(size)};
+  for (NSUInteger dimension = 0; dimension < channels.size(); ++dimension) {
+    vDSP_vfltu8(byteChannels[dimension].data(), 1, channels[dimension].data(), 1, size);
   }
 
   float scale = 1.0 / 255.0;
   for (NSUInteger dimension = 0; dimension < channels.size(); ++dimension) {
     vDSP_vsmul(channels[dimension].data(), 1, &scale,
                channels[dimension].data(), 1, channels[dimension].size());
+  }
+
+  return channels;
+}
+
+- (std::vector<std::vector<uchar>>)filteredByteChannelsFromMatrix:(const cv::Mat4b &)mat {
+  std::vector<cv::Vec4b> filtered(mat.total());
+  uchar threshold = std::round(self.alphaThreshold * std::numeric_limits<uchar>::max());
+  auto last = std::copy_if(mat.begin(), mat.end(), filtered.begin(), [threshold](cv::Vec4b v) {
+    return v[3] >= threshold;
+  });
+
+  size_t numPixels = last - filtered.begin();
+  std::vector<std::vector<uchar>> channels = {
+    std::vector<uchar>(numPixels), std::vector<uchar>(numPixels), std::vector<uchar>(numPixels)
+  };
+  for (NSUInteger i = 0; i < numPixels; ++i) {
+    auto v = filtered[i];
+    channels[0][i] = v[0];
+    channels[1][i] = v[1];
+    channels[2][i] = v[2];
   }
 
   return channels;
@@ -384,6 +407,7 @@ static const NSUInteger kInverseCDFScaleFactor = 20;
 
 LTProperty(NSUInteger, iterations, Iterations, 1, 50, 20);
 LTProperty(NSUInteger, histogramBins, HistogramBins, 2, 255, 32);
+LTProperty(float, alphaThreshold, AlphaThreshold, 0, 1, 0.5);
 LTProperty(float, dampingFactor, DampingFactor, 0, 1, 0.2);
 LTProperty(NSUInteger, noisyCopies, NoisyCopies, 0, 5, 1);
 LTProperty(float, noiseStandardDeviation, NoiseStandardDeviation, 0,
