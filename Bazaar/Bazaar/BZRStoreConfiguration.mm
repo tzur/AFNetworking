@@ -68,7 +68,11 @@ NS_ASSUME_NONNULL_BEGIN
     _contentManager = [[BZRProductContentManager alloc] initWithFileManager:self.fileManager];
     _contentFetcher = [[BZRCachedContentFetcher alloc] init];
 
-    _validationParametersProvider = [[BZRReceiptValidationParametersProvider alloc] init];
+    BZRKeychainStorage *keychainStorage =
+        [[BZRKeychainStorage alloc] initWithAccessGroup:keychainAccessGroup];
+    _validationParametersProvider =
+        [[BZRReceiptValidationParametersProvider alloc]
+         initWithKeychainStorage:keychainStorage];
     BZRTimeProvider *timeProvider = [[BZRTimeProvider alloc] init];
     BZRValidatedReceiptValidationStatusProvider *validatorProvider =
         [[BZRValidatedReceiptValidationStatusProvider alloc]
@@ -78,8 +82,6 @@ NS_ASSUME_NONNULL_BEGIN
          expiredSubscriptionGracePeriod:expiredSubscriptionGracePeriod
          underlyingProvider:validatorProvider];
 
-    BZRKeychainStorage *keychainStorage =
-        [[BZRKeychainStorage alloc] initWithAccessGroup:keychainAccessGroup];
     BZRReceiptValidationStatusCache *receiptValidationStatusCache =
         [[BZRReceiptValidationStatusCache alloc] initWithKeychainStorage:keychainStorage];
 
