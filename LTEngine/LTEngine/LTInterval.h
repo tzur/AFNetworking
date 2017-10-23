@@ -37,6 +37,12 @@ public:
       maxValue(std::max(values.first, values.second)),
       minEndpointInclusion(endpointInclusion), maxEndpointInclusion(endpointInclusion) {}
 
+  /// Initializes with the given \c values and closed end points.
+  Interval(std::pair<T, T> values) noexcept :
+      minValue(std::min(values.first, values.second)),
+      maxValue(std::max(values.first, values.second)),
+      minEndpointInclusion(Closed), maxEndpointInclusion(Closed) {}
+
   /// Return a hash value for this interval.
   size_t hash() const {
     return std::hash<T>()(minValue) ^ std::hash<T>()(maxValue) ^
