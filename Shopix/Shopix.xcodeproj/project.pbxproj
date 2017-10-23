@@ -13,6 +13,7 @@
 		650BB3401D465389008648A3 /* libSpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B425F021CA6D218001C457E /* libSpecta.a */; };
 		65F82F021F93C09F002A496C /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65F82EDD1F93C09F002A496C /* CloudKit.framework */; };
 		84FF72F71C8EEF9600D1DA9F /* libShopix.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 84FF72E91C8EED6D00D1DA9F /* libShopix.a */; };
+		88B632AF1F9DD8B10051A535 /* NSErrorCodes+Shopix.mm in Sources */ = {isa = PBXBuildFile; fileRef = 88B632AE1F9DD8B10051A535 /* NSErrorCodes+Shopix.mm */; };
 		CD3C69A41F559394008A6C23 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD3C69A31F559394008A6C23 /* GLKit.framework */; };
 		CD3C6A0F1F559F23008A6C23 /* libLLReactiveMatchers.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CD962DB01F5427EF00F2CA82 /* libLLReactiveMatchers.a */; };
 		CD3C6A331F559F3A008A6C23 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD3C6A321F559F3A008A6C23 /* UIKit.framework */; };
@@ -368,6 +369,8 @@
 		848EFFB61C591B91001D8368 /* Framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Framework.xcconfig; sourceTree = "<group>"; };
 		848EFFB71C591B91001D8368 /* StaticLibrary.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = StaticLibrary.xcconfig; sourceTree = "<group>"; };
 		84FF72E91C8EED6D00D1DA9F /* libShopix.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libShopix.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		88B632AD1F9DD8B10051A535 /* NSErrorCodes+Shopix.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSErrorCodes+Shopix.h"; sourceTree = "<group>"; };
+		88B632AE1F9DD8B10051A535 /* NSErrorCodes+Shopix.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSErrorCodes+Shopix.mm"; sourceTree = "<group>"; };
 		8B57B1FC1D914FE100814B3C /* Bundle.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Bundle.xcconfig; sourceTree = "<group>"; };
 		CD3C69A31F559394008A6C23 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
 		CD3C6A321F559F3A008A6C23 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -497,6 +500,7 @@
 		848E00051C591DD1001D8368 /* Shopix */ = {
 			isa = PBXGroup;
 			children = (
+				88B632881F9DD87E0051A535 /* Errors */,
 				CD8E8E081F5C19DC00DF8FC1 /* Localization */,
 				CDB5137B1F66B0220013577C /* Subscription */,
 				848E001F1C591E7B001D8368 /* Supporting Files */,
@@ -639,6 +643,15 @@
 				CDB8A6581F53FE1800E14706 /* libcompression.tbd */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		88B632881F9DD87E0051A535 /* Errors */ = {
+			isa = PBXGroup;
+			children = (
+				88B632AD1F9DD8B10051A535 /* NSErrorCodes+Shopix.h */,
+				88B632AE1F9DD8B10051A535 /* NSErrorCodes+Shopix.mm */,
+			);
+			name = Errors;
 			sourceTree = "<group>";
 		};
 		8B425EBA1CA6D217001C457E /* Products */ = {
@@ -1246,6 +1259,7 @@
 				CDC8D4EB1F701EA300E7C929 /* SPXLocalization.mm in Sources */,
 				CD8E8E2F1F5C19F500DF8FC1 /* NSNumber+Localization.mm in Sources */,
 				CDB513A21F66B0440013577C /* SPXSubscriptionManager.mm in Sources */,
+				88B632AF1F9DD8B10051A535 /* NSErrorCodes+Shopix.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
