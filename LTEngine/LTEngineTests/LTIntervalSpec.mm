@@ -307,4 +307,17 @@ context(@"intersection", ^{
   });
 });
 
+context(@"description", ^{
+  it(@"should return a proper description", ^{
+    LTTestInterval interval = LTTestInterval({-1, 2});
+    expect(interval.description()).to.equal(@"[-1, 2]");
+    interval = LTTestInterval({-2, 3}, LTTestInterval::Open);
+    expect(interval.description()).to.equal(@"(-2, 3)");
+    interval = LTTestInterval({-3, 4}, LTTestInterval::Open, LTTestInterval::Closed);
+    expect(interval.description()).to.equal(@"(-3, 4]");
+    interval = LTTestInterval({-4, 5}, LTTestInterval::Closed, LTTestInterval::Open);
+    expect(interval.description()).to.equal(@"[-4, 5)");
+  });
+});
+
 SpecEnd

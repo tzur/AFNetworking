@@ -105,6 +105,12 @@ public:
     return maxEndpointInclusion == Closed;
   }
 
+  /// Returns a string representation of this interval.
+  NSString *description() const {
+    return [NSString stringWithFormat:@"%@%g, %g%@", minEndpointIncluded() ? @"[" : @"(",
+            minValue, maxValue, maxEndpointIncluded() ? @"]" : @")"];
+  }
+
 private:
   /// Minimum value of this interval.
   T minValue;
