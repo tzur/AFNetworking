@@ -85,22 +85,22 @@ public:
     return Interval({min, max}, minInclusion, maxInclusion);
   }
 
-  /// Minimum value of this interval.
+  /// Returns the minimum value of this interval.
   T min() const {
     return minValue;
   };
 
-  /// Maximum value of this interval.
+  /// Returns the maximum value of this interval.
   T max() const {
     return maxValue;
   }
 
-  /// \c true if the minimum endpoint of this interval belongs to the interval.
+  /// Returns \c true if the minimum endpoint of this interval belongs to the interval.
   bool minEndpointIncluded() const {
     return minEndpointInclusion == Closed;
   }
 
-  /// \c true if the maximum endpoint of this interval belongs to the interval.
+  /// Returns \c true if the maximum endpoint of this interval belongs to the interval.
   bool maxEndpointIncluded() const {
     return maxEndpointInclusion == Closed;
   }
