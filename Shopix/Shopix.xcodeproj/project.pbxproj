@@ -13,6 +13,7 @@
 		650BB3401D465389008648A3 /* libSpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B425F021CA6D218001C457E /* libSpecta.a */; };
 		65F82F021F93C09F002A496C /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65F82EDD1F93C09F002A496C /* CloudKit.framework */; };
 		84FF72F71C8EEF9600D1DA9F /* libShopix.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 84FF72E91C8EED6D00D1DA9F /* libShopix.a */; };
+		8851018E1F9DDBA60052351B /* NSError+Shopix.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8851018D1F9DDBA60052351B /* NSError+Shopix.mm */; };
 		88B632AF1F9DD8B10051A535 /* NSErrorCodes+Shopix.mm in Sources */ = {isa = PBXBuildFile; fileRef = 88B632AE1F9DD8B10051A535 /* NSErrorCodes+Shopix.mm */; };
 		88B9B4DA1FA8BA940033D48F /* SPXProductAxis.mm in Sources */ = {isa = PBXBuildFile; fileRef = 88FA8CA31F66C68700D2E594 /* SPXProductAxis.mm */; };
 		88B9B4FF1FA8BA980033D48F /* SPXPromotion.mm in Sources */ = {isa = PBXBuildFile; fileRef = 88FA8C9D1F66C52400D2E594 /* SPXPromotion.mm */; };
@@ -371,6 +372,8 @@
 		848EFFB61C591B91001D8368 /* Framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Framework.xcconfig; sourceTree = "<group>"; };
 		848EFFB71C591B91001D8368 /* StaticLibrary.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = StaticLibrary.xcconfig; sourceTree = "<group>"; };
 		84FF72E91C8EED6D00D1DA9F /* libShopix.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libShopix.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		8851018C1F9DDBA60052351B /* NSError+Shopix.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSError+Shopix.h"; sourceTree = "<group>"; };
+		8851018D1F9DDBA60052351B /* NSError+Shopix.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSError+Shopix.mm"; sourceTree = "<group>"; };
 		88B632AD1F9DD8B10051A535 /* NSErrorCodes+Shopix.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSErrorCodes+Shopix.h"; sourceTree = "<group>"; };
 		88B632AE1F9DD8B10051A535 /* NSErrorCodes+Shopix.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSErrorCodes+Shopix.mm"; sourceTree = "<group>"; };
 		88FA8C9C1F66C52400D2E594 /* SPXPromotion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPXPromotion.h; sourceTree = "<group>"; };
@@ -655,6 +658,8 @@
 		88B632881F9DD87E0051A535 /* Errors */ = {
 			isa = PBXGroup;
 			children = (
+				8851018C1F9DDBA60052351B /* NSError+Shopix.h */,
+				8851018D1F9DDBA60052351B /* NSError+Shopix.mm */,
 				88B632AD1F9DD8B10051A535 /* NSErrorCodes+Shopix.h */,
 				88B632AE1F9DD8B10051A535 /* NSErrorCodes+Shopix.mm */,
 			);
@@ -1279,6 +1284,7 @@
 				88B9B4FF1FA8BA980033D48F /* SPXPromotion.mm in Sources */,
 				88B9B4DA1FA8BA940033D48F /* SPXProductAxis.mm in Sources */,
 				CDB513A21F66B0440013577C /* SPXSubscriptionManager.mm in Sources */,
+				8851018E1F9DDBA60052351B /* NSError+Shopix.mm in Sources */,
 				88B632AF1F9DD8B10051A535 /* NSErrorCodes+Shopix.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
