@@ -233,11 +233,8 @@ using namespace spx;
 }
 
 - (void)displayMailComposerWithCompletionHandler:(LTBoolCompletionBlock)completionHandler {
-  UIColor *barTintColor = [UINavigationBar appearance].barTintColor;
-  [UINavigationBar appearance].barTintColor = nil;
-
   auto mailComposeViewController = [self.mailComposeProvider feedbackComposeViewController];
-  if (mailComposeViewController == nil) {
+  if (!mailComposeViewController) {
     completionHandler(NO);
     return;
   }
@@ -245,8 +242,6 @@ using namespace spx;
   mailComposeViewController.mailComposeDelegate = self;
   mailComposeViewController.spx_dismissBlock = completionHandler;
   [self.viewController presentViewController:mailComposeViewController animated:YES completion:nil];
-
-  [UINavigationBar appearance].barTintColor = barTintColor;
 }
 
 #pragma mark -
