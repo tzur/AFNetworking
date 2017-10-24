@@ -88,8 +88,9 @@ context(@"sampling", ^{
         [[LTParameterizationKeyToValues alloc] initWithKeys:keys valuesPerKey:matrix];
     parameterizedObject.returnedMapping = mapping;
 
-    id<LTSampleValues> sampleValues = [sampler nextSamplesFromParameterizedObject:parameterizedObject
-                                                            constrainedToInterval:interval];
+    id<LTSampleValues> sampleValues =
+        [sampler nextSamplesFromParameterizedObject:parameterizedObject
+                              constrainedToInterval:interval];
     expect($(sampleValues.sampledParametricValues)).to.equal($(values));
     expect(sampleValues.mappingOfSampledValues).to.equal(mapping);
   });
@@ -124,8 +125,9 @@ context(@"sampling", ^{
     lt::Interval<CGFloat> firstInterval({0, 1}, lt::Interval<CGFloat>::EndpointInclusion::Closed,
                                         lt::Interval<CGFloat>::EndpointInclusion::Closed);
 
-    id<LTSampleValues> sampleValues = [sampler nextSamplesFromParameterizedObject:parameterizedObject
-                                                            constrainedToInterval:firstInterval];
+    id<LTSampleValues> sampleValues =
+        [sampler nextSamplesFromParameterizedObject:parameterizedObject
+                              constrainedToInterval:firstInterval];
     expect($(sampleValues.sampledParametricValues)).to.equal($(values));
     expect(sampleValues.mappingOfSampledValues).to.equal(mapping);
 
@@ -147,8 +149,9 @@ context(@"sampling", ^{
     lt::Interval<CGFloat> firstInterval({0, 1}, lt::Interval<CGFloat>::EndpointInclusion::Closed,
                                         lt::Interval<CGFloat>::EndpointInclusion::Open);
 
-    id<LTSampleValues> sampleValues = [sampler nextSamplesFromParameterizedObject:parameterizedObject
-                                                            constrainedToInterval:firstInterval];
+    id<LTSampleValues> sampleValues =
+        [sampler nextSamplesFromParameterizedObject:parameterizedObject
+                              constrainedToInterval:firstInterval];
     expect(sampleValues.sampledParametricValues.size()).to.equal(0);
     expect(sampleValues.mappingOfSampledValues).to.beNil();
 
