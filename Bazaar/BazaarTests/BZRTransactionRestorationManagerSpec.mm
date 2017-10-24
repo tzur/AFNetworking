@@ -4,6 +4,7 @@
 #import "BZRTransactionRestorationManager.h"
 
 #import "BZRRestorationPaymentQueue.h"
+#import "NSErrorCodes+Bazaar.h"
 
 @interface BZRTransactionRestorationManager () <BZRPaymentQueueRestorationDelegate>
 @end
@@ -77,10 +78,26 @@ context(@"restoring completed transactions", ^{
   it(@"should err when restoration failed", ^{
     LLSignalTestRecorder *recorder =
         [[restorationManager restoreCompletedTransactions] testRecorder];
-    NSError *error = OCMClassMock([NSError class]);
-    [restorationManager paymentQueue:paymentQueue restorationFailedWithError:error];
+    NSError *restorePurchasesError = [NSError lt_errorWithCode:1337];
+    [restorationManager paymentQueue:paymentQueue restorationFailedWithError:restorePurchasesError];
 
-    expect(recorder).will.sendError(error);
+    expect(recorder).will.matchError(^BOOL(NSError *error) {
+      return error.code == BZRErrorCodeRestorePurchasesFailed &&
+          error.lt_underlyingError == restorePurchasesError;
+    });
+  });
+
+  it(@"should err with operation cancelled when restore purchases was cancelled", ^{
+    LLSignalTestRecorder *recorder =
+        [[restorationManager restoreCompletedTransactions] testRecorder];
+    NSError *restorePurchasesError =
+        [NSError errorWithDomain:SKErrorDomain code:SKErrorPaymentCancelled userInfo:nil];
+    [restorationManager paymentQueue:paymentQueue restorationFailedWithError:restorePurchasesError];
+
+    expect(recorder).will.matchError(^BOOL(NSError *error) {
+      return error.code == BZRErrorCodeOperationCancelled &&
+          error.lt_underlyingError == restorePurchasesError;
+    });
   });
 
   it(@"should send completed transactions one by one", ^{
