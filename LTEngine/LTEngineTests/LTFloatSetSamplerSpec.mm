@@ -94,6 +94,23 @@ context(@"sampling", ^{
     expect(sampleValues.mappingOfSampledValues).to.equal(mapping);
   });
 
+  it(@"should provide valid sample values when object is sampled outside parametric range", ^{
+    CGFloats values = {};
+    floatSet.values = values;
+
+    cv::Mat1g matrix(1, 0);
+    LTParameterizationKeyToValues *mapping =
+        [[LTParameterizationKeyToValues alloc] initWithKeys:keys valuesPerKey:matrix];
+    parameterizedObject.returnedMapping = mapping;
+
+    id<LTSampleValues> sampleValues =
+        [sampler nextSamplesFromParameterizedObject:parameterizedObject
+                              constrainedToInterval:interval];
+
+    expect($(sampleValues.sampledParametricValues)).to.equal($(values));
+    expect(sampleValues.mappingOfSampledValues).to.beNil();
+  });
+
   it(@"should consecutively sample a given parameterized object, using closed interval", ^{
     CGFloats values = {1};
     floatSet.values = values;
