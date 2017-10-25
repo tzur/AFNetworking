@@ -28,7 +28,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Initializes with the given \c sampledParametricValues and \c mapping. The number of given
 /// \c sampledParametricValues must equal the number of values for each key of the given
-/// \c mappingOfSampledValues and must not exceed \c INT_MAX.
+/// \c mappingOfSampledValues and must not exceed \c INT_MAX. The given \c mapping must be \c nil if
+/// \c sampledParametricValues is empty.
 - (instancetype)initWithSampledParametricValues:(const CGFloats &)sampledParametricValues
                                         mapping:(nullable LTParameterizationKeyToValues *)mapping
     NS_DESIGNATED_INITIALIZER;

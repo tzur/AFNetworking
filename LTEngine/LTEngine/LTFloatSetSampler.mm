@@ -4,6 +4,7 @@
 #import "LTFloatSetSampler.h"
 
 #import "LTFloatSet.h"
+#import "LTParameterizationKeyToValues.h"
 #import "LTParameterizedObject.h"
 #import "LTSampleValues.h"
 
@@ -131,6 +132,8 @@ static const lt::Interval<CGFloat>::EndpointInclusion kClosed =
                             self.interval.maxEndpointIncluded() ? kClosed : kOpen);
 
   LTParameterizationKeyToValues *mapping = [object mappingForParametricValues:parametricValues];
+  mapping = mapping.numberOfValuesPerKey ? mapping : nil;
+
   return [[LTSampleValues alloc] initWithSampledParametricValues:parametricValues mapping:mapping];
 }
 
