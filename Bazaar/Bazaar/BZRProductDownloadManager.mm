@@ -26,7 +26,8 @@ NS_ASSUME_NONNULL_BEGIN
   return self;
 }
 
-- (NSArray<RACSignal *> *)downloadContentForTransaction:(SKPaymentTransaction *)transaction {
+- (NSArray<RACSignal<SKDownload *> *> *)
+    downloadContentForTransaction:(SKPaymentTransaction *)transaction {
   LTParameterAssert(transaction.transactionState == SKPaymentTransactionStatePurchased ||
                     transaction.transactionState == SKPaymentTransactionStateRestored,
                     @"Content can only be downloaded for completed transactions, got %@ at state"
@@ -36,13 +37,13 @@ NS_ASSUME_NONNULL_BEGIN
                     "queue, transaction %@ is not in %@", transaction,
                     self.paymentQueue.transactions);
 
-  return [transaction.downloads lt_map:^RACSignal *(SKDownload *download) {
+  return [transaction.downloads lt_map:^RACSignal<SKDownload *> *(SKDownload *download) {
     return [self downloadContent:download];
   }];
 }
 
-- (RACSignal *)downloadContent:(SKDownload *)download {
-  RACSignal *updatedDownloadsSignal =
+- (RACSignal<SKDownload *> *)downloadContent:(SKDownload *)download {
+  RACSignal<SKDownload *> *updatedDownloadsSignal =
       [[[self rac_signalForSelector:@selector(paymentQueue:updatedDownloads:)]
       filter:^BOOL(RACTuple *parameters) {
         return [(NSArray *)parameters.second containsObject:download];

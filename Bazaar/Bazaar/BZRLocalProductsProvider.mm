@@ -51,7 +51,7 @@ NS_ASSUME_NONNULL_BEGIN
   return self;
 }
 
-- (RACSignal *)fetchProductList {
+- (RACSignal<BZRProductList *> *)fetchProductList {
   return [[[[RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
     NSError *error;
     NSData *data = [self.fileManager lt_dataWithContentsOfFile:self.path.path options:0
@@ -85,7 +85,7 @@ NS_ASSUME_NONNULL_BEGIN
       setNameWithFormat:@"%@ -fetchProductList", self.description];
 }
 
-- (RACSignal *)eventsSignal {
+- (RACSignal<BZREvent *> *)eventsSignal {
   return [[RACSignal never] takeUntil:[self rac_willDeallocSignal]];
 }
 

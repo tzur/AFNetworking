@@ -19,7 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic) NSUInteger numberOfRetries;
 
 /// Subject used to send receipt validation errors.
-@property (readonly, nonatomic) RACSubject *validationErrorsSubject;
+@property (readonly, nonatomic) RACSubject<NSError *> *validationErrorsSubject;
 
 @end
 
@@ -41,7 +41,8 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark BZRReceiptValidator
 #pragma mark -
 
-- (RACSignal *)validateReceiptWithParameters:(BZRReceiptValidationParameters *)parameters {
+- (RACSignal<BZRReceiptValidationStatus *> *)
+    validateReceiptWithParameters:(BZRReceiptValidationParameters *)parameters {
   if (!self.numberOfRetries) {
     return [self.underlyingValidator validateReceiptWithParameters:parameters];
   }
@@ -49,7 +50,7 @@ NS_ASSUME_NONNULL_BEGIN
   __block NSTimeInterval secondsUntilNextRetry = self.initialRetryDelay;
 
   @weakify(self);
-  return [[[[RACSignal defer:^RACSignal *{
+  return [[[[RACSignal defer:^{
         @strongify(self);
         return [self.underlyingValidator validateReceiptWithParameters:parameters];
       }]
@@ -57,7 +58,7 @@ NS_ASSUME_NONNULL_BEGIN
         @strongify(self);
         [self.validationErrorsSubject sendNext:error];
       }]
-      catch:^RACSignal *(NSError *error) {
+      catch:^(NSError *error) {
         RACSignal *delaySignal = [[[RACSignal empty]
             delay:secondsUntilNextRetry]
             concat:[RACSignal error:error]];
@@ -67,7 +68,7 @@ NS_ASSUME_NONNULL_BEGIN
       retry:self.numberOfRetries];
 }
 
-- (RACSignal *)eventsSignal {
+- (RACSignal<BZREvent *> *)eventsSignal {
   return [[[self.validationErrorsSubject
       map:^BZREvent *(NSError *error) {
         return [[BZREvent alloc] initWithType:$(BZREventTypeNonCriticalError) eventError:error];

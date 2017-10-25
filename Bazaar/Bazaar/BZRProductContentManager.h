@@ -34,29 +34,23 @@ NS_ASSUME_NONNULL_BEGIN
 /// points to the content directory if the extraction was successful. Then the signal completes.
 /// The signal errs if there was an error while removing the old directory, creating the directory
 /// or extracting the content from the archive file.
-///
-/// @return <tt>RACSignal<NSBundle></tt>
-- (RACSignal *)extractContentOfProduct:(NSString *)productIdentifier
-                           fromArchive:(LTPath *)archivePath;
+- (RACSignal<NSBundle *> *)extractContentOfProduct:(NSString *)productIdentifier
+                                       fromArchive:(LTPath *)archivePath;
 
 /// Extracts the content from \c archivePath to a directory named \c directoryName within the
 /// directory of the product specified by \c productIdentifier.
 ///
 /// Returns a signal that has the same behavior as \c extractContentOfProduct:fromArchive:, but
 /// extracts the content to a nested directory named \c directoryName.
-///
-/// @return <tt>RACSignal<NSBundle></tt>
-- (RACSignal *)extractContentOfProduct:(NSString *)productIdentifier
-                           fromArchive:(LTPath *)archivePath
-                         intoDirectory:(NSString *)directoryName;
+- (RACSignal<NSBundle *> *)extractContentOfProduct:(NSString *)productIdentifier
+                                       fromArchive:(LTPath *)archivePath
+                                     intoDirectory:(NSString *)directoryName;
 
 /// Deletes the content of a specific product.
 ///
 /// Returns a signal that deletes the content of the product specified by \c productIdentifier, by
 /// by removing the product's content directory and completes. The signal errs if the deletion has
 /// failed.
-///
-/// @return <tt>RACSignal</tt>
 - (RACSignal *)deleteContentDirectoryOfProduct:(NSString *)productIdentifier;
 
 /// Returns the path to the content directory of product with the given \c productIdentifier or

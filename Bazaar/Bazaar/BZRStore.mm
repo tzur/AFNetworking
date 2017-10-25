@@ -81,7 +81,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, readwrite, nonatomic) NSSet<NSString *> *downloadedContentProducts;
 
 /// Subject used to send events with.
-@property (readonly, nonatomic) RACSubject *eventsSubject;
+@property (readonly, nonatomic) RACSubject<BZREvent *> *eventsSubject;
 
 /// Dictionary that maps fetched product identifier to \c BZRProduct.
 @property (strong, atomic, nullable) NSDictionary<NSString *, BZRProduct *> *productDictionary;
@@ -155,7 +155,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)initializeCompletedTransactionsSignal {
   _completedTransactionsSignal = [[[self.storeKitFacade.unhandledSuccessfulTransactionsSignal
-      flattenMap:^(NSArray<SKPaymentTransaction *> *transactions) {
+      flattenMap:^(BZRPaymentTransactionList *transactions) {
         return [transactions.rac_sequence signalWithScheduler:[RACScheduler immediateScheduler]];
       }]
       takeUntil:[self rac_willDeallocSignal]]
@@ -195,7 +195,8 @@ NS_ASSUME_NONNULL_BEGIN
       }];
 }
 
-- (RACSignal *)fetchProductDictionaryWithProvider:(id<BZRProductsProvider>)productsProvider {
+- (RACSignal<BZRProductDictionary *> *)
+    fetchProductDictionaryWithProvider:(id<BZRProductsProvider>)productsProvider {
   return [[productsProvider fetchProductList]
       map:^BZRProductDictionary *(BZRProductList *products) {
         NSArray<NSString *> *identifiers =
@@ -319,7 +320,7 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark BZRProductsInfoProvider
 #pragma mark -
 
-- (RACSignal *)contentBundleForProduct:(NSString *)productIdentifier {
+- (RACSignal<NSBundle *> *)contentBundleForProduct:(NSString *)productIdentifier {
   if (!self.productsJSONDictionary[productIdentifier].contentFetcherParameters) {
     return [RACSignal return:nil];
   }
@@ -421,9 +422,9 @@ NS_ASSUME_NONNULL_BEGIN
       setNameWithFormat:@"%@ -purchaseProduct", self];
 }
 
-- (RACSignal *)isProductClearedForSale:(NSString *)productIdentifier {
+- (RACSignal<NSNumber *> *)isProductClearedForSale:(NSString *)productIdentifier {
   @weakify(self);
-  return [RACSignal defer:^RACSignal *{
+  return [RACSignal defer:^{
     @strongify(self);
     return [RACSignal return:(self.productDictionary[productIdentifier] ? @YES : @NO)];
   }];
@@ -468,7 +469,7 @@ NS_ASSUME_NONNULL_BEGIN
               [self sendErrorEventOfType:$(BZREventTypeCriticalError) error:error];
             }];
       }]
-      flattenMap:^RACSignal *(BZRReceiptValidationStatus *receiptValidationStatus) {
+      flattenMap:^(BZRReceiptValidationStatus *receiptValidationStatus) {
         @strongify(self);
         BZRReceiptInfo *receipt = receiptValidationStatus.receipt;
         if (![receipt wasProductPurchased:productIdentifier] &&
@@ -490,7 +491,7 @@ NS_ASSUME_NONNULL_BEGIN
       ignoreValues];
 }
 
-- (RACSignal *)fetchProductContent:(NSString *)productIdentifier {
+- (RACSignal<BZRContentFetchingProgress *> *)fetchProductContent:(NSString *)productIdentifier {
   if (!self.productsJSONDictionary[productIdentifier].contentFetcherParameters) {
     return [RACSignal return:nil];
   }
@@ -547,9 +548,9 @@ NS_ASSUME_NONNULL_BEGIN
       }];
 }
 
-- (RACSignal *)productList {
+- (RACSignal<NSSet<BZRProduct *> *> *)productList {
   @weakify(self);
-  RACSignal *productDictionarySignal = self.productDictionary ?
+  RACSignal<BZRProductDictionary *> *productDictionarySignal = self.productDictionary ?
       [RACSignal return:self.productDictionary] : [self refetchProductDictionarySignal];
   return [productDictionarySignal
       map:^NSSet<BZRProduct *> *(BZRProductDictionary *productDictionary) {
@@ -567,7 +568,7 @@ NS_ASSUME_NONNULL_BEGIN
   return baseIdentifier;
 }
 
-- (RACSignal *)refetchProductDictionarySignal {
+- (RACSignal<BZRProductDictionary *> *)refetchProductDictionarySignal {
   @weakify(self);
   return [[[self fetchProductDictionaryWithProvider:self.productsProvider]
       doNext:^(BZRProductDictionary *productDictionary) {
@@ -602,7 +603,7 @@ NS_ASSUME_NONNULL_BEGIN
   return [NSSet setWithArray:variantsWithBaseIdentifers];
 }
 
-- (RACSignal *)validateReceipt {
+- (RACSignal<BZRReceiptValidationStatus *> *)validateReceipt {
   @weakify(self);
   return [[self.validationStatusProvider fetchReceiptValidationStatus]
     doError:^(NSError *error) {
@@ -613,7 +614,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (RACSignal *)acquireAllEnabledProducts {
   @weakify(self);
-  return [[[RACSignal defer:^RACSignal *{
+  return [[[RACSignal defer:^{
     @strongify(self);
     if (![self isUserSubscribed]) {
       NSError *error = [NSError lt_errorWithCode:BZRErrorCodeAcquireAllRequestedForNonSubscriber];

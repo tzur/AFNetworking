@@ -14,11 +14,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// files in \c filePaths were delivered and errs if failed to retrieve attributes of any of the
 /// files.
 ///
-/// @return <tt>RACSignal<RAACTuple<NSString, NSNumber>></tt>
-///
 /// @note Subscription is performed on a new scheduler in order to not block the subscriber thread,
 /// but the signal does not support subscription cancellation.
-- (RACSignal *)bzr_retrieveFilesSizes:(NSArray<NSString *> *)filePaths;
+- (RACSignal<RACTuple *> *)bzr_retrieveFilesSizes:(NSArray<NSString *> *)filePaths;
 
 /// Recursively enumerates the directory at \c directoryPath and locates all file items in that
 /// directory and its sub-directories.
@@ -28,22 +26,18 @@ NS_ASSUME_NONNULL_BEGIN
 /// \c directoryPath. The signal completes after all items in \c directoryPath were enumerated and
 /// errs if \c directoryPath does not exist or it's not a directory.
 ///
-/// @return <tt>RACSignal<NSArray<NSString>></tt>
-///
 /// @note The provided array does not contains entries for sub-directories. For example if
 /// \c directoryPath is "/foo" and the "foo" directory contains the files "baz" and "bar/baz" the
 /// provided array will be \c ["baz", "bar/baz"] and not \c ["baz", "bar", "bar/baz"].
 ///
 /// @note Subscription is performed on a new scheduler in order to not block the subscriber thread,
 /// but the signal does not support subscription cancellation.
-- (RACSignal *)bzr_enumerateDirectoryAtPath:(NSString *)directoryPath;
+- (RACSignal<RACTuple *> *)bzr_enumerateDirectoryAtPath:(NSString *)directoryPath;
 
 /// Deletes the item at the specified path if it exists.
 ///
 /// Returns a signal that deletes the item at \c path upon subscription and then completes. The
 /// signal errs if deletion failed.
-///
-/// @return <tt>RACSignal</tt>
 ///
 /// @note Subscription is performed on a new scheduler in order to not block the subscriber thread,
 /// but the signal does not support subscription cancellation.
@@ -55,8 +49,6 @@ NS_ASSUME_NONNULL_BEGIN
 /// intermediate directories will be created as well if they don't exist. The signal errs if
 /// creation failed.
 ///
-/// @return <tt>RACSignal</tt>
-///
 /// @note Subscription is performed on a new scheduler in order to not block the subscriber thread,
 /// but the signal does not support subscription cancellation.
 - (RACSignal *)bzr_createDirectoryAtPathIfNotExists:(NSString *)path;
@@ -65,8 +57,6 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 /// Returns a signal that moves the item at \c path to \c targetPath upon subscription and then
 /// completes. The signal errs if the action failed.
-///
-/// @return <tt>RACSignal</tt>
 ///
 /// @note Subscription is performed on a new scheduler in order to not block the subscriber thread,
 /// but the signal does not support subscription cancellation.

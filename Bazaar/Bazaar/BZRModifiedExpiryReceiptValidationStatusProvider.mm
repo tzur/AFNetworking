@@ -26,7 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Sends time provider as values. The subject completes when the receiver is deallocated. The
 /// subject doesn't err.
-@property (readonly, nonatomic) RACSubject *timeProviderErrorsSubject;
+@property (readonly, nonatomic) RACSubject<BZREvent *> *timeProviderErrorsSubject;
 
 @end
 
@@ -53,7 +53,7 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark Sending events
 #pragma mark -
 
-- (RACSignal *)eventsSignal {
+- (RACSignal<BZREvent *> *)eventsSignal {
   return [[RACSignal merge:@[
     self.timeProviderErrorsSubject,
     self.underlyingProvider.eventsSignal
@@ -65,10 +65,11 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark Fetching receipt validation status
 #pragma mark -
 
-- (RACSignal *)fetchReceiptValidationStatus {
+- (RACSignal<BZRReceiptValidationStatus *> *)fetchReceiptValidationStatus {
   @weakify(self);
   return [[[self.underlyingProvider fetchReceiptValidationStatus]
-      flattenMap:^RACSignal *(BZRReceiptValidationStatus *receiptValidationStatus) {
+      flattenMap:^RACSignal<BZRReceiptValidationStatus *> *
+          (BZRReceiptValidationStatus *receiptValidationStatus) {
         @strongify(self);
         if (!receiptValidationStatus.receipt.subscription) {
           return [RACSignal return:receiptValidationStatus];
@@ -83,11 +84,13 @@ NS_ASSUME_NONNULL_BEGIN
       setNameWithFormat:@"%@ -fetchReceiptValidationStatus", self.description];
 }
 
-- (RACSignal *)cancelledSubscriptionModifier:(BZRReceiptValidationStatus *)receiptValidationStatus {
+- (RACSignal<BZRReceiptValidationStatus *> *)
+    cancelledSubscriptionModifier:(BZRReceiptValidationStatus *)receiptValidationStatus {
   return [RACSignal return:[self receiptValidatioStatus:receiptValidationStatus withExpiry:YES]];
 }
 
-- (RACSignal *)extendedSubscriptionModifer:(BZRReceiptValidationStatus *)receiptValidationStatus {
+- (RACSignal<BZRReceiptValidationStatus *> *)
+    extendedSubscriptionModifer:(BZRReceiptValidationStatus *)receiptValidationStatus {
   return [[[[self.timeProvider currentTime] map:^BZRReceiptValidationStatus *(NSDate *currentTime) {
     return [self extendedValidationStatusWithGracePeriod:receiptValidationStatus
                                              currentTime:currentTime];

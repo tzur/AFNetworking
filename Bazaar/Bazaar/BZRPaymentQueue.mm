@@ -13,7 +13,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly, nonatomic) SKPaymentQueue *underlyingPaymentQueue;
 
 /// Subject used to send an array of unfinished transactions.
-@property (readonly, nonatomic) RACSubject *unfinishedTransactionsSubject;
+@property (readonly, nonatomic) RACSubject<BZRPaymentTransactionList *> *
+  unfinishedTransactionsSubject;
 
 /// if \c YES, transactions will be sent using \c unfinishedTransactionsSubject. Otherwise, they
 /// will be passed to the appropriate delegate.
@@ -22,7 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 /// Collection of transactions classified as payment transactions or restoration transactions.
-typedef NSDictionary<NSString *, NSArray<SKPaymentTransaction *> *> BZRClassifiedTransactions;
+typedef NSDictionary<NSString *, BZRPaymentTransactionList *> BZRClassifiedTransactions;
 
 @implementation BZRPaymentQueue
 
@@ -106,7 +107,7 @@ static NSString * const kRestorationLabel = @"Restoration";
 // \c kPaymentLabel and its value is an array of payment transactions and the the other entry has
 // its key set to \c kRestorationLabel and its value is an array of restoration transactions.
 + (BZRClassifiedTransactions *)classifyTransactions:
-    (NSArray<SKPaymentTransaction *> *)transactions {
+    (BZRPaymentTransactionList *)transactions {
   return (BZRClassifiedTransactions *)
       [transactions lt_classify:^NSString *(SKPaymentTransaction *transaction) {
         return transaction.transactionState == SKPaymentTransactionStateRestored ?
@@ -115,7 +116,7 @@ static NSString * const kRestorationLabel = @"Restoration";
 }
 
 - (void)paymentQueue:(SKPaymentQueue __unused *)queue
- updatedTransactions:(NSArray<SKPaymentTransaction *> *)transactions {
+ updatedTransactions:(BZRPaymentTransactionList *)transactions {
   if (self.shouldSendTransactionsAsUnfinished) {
     [self.unfinishedTransactionsSubject sendNext:transactions];
     return;
@@ -136,7 +137,7 @@ static NSString * const kRestorationLabel = @"Restoration";
 }
 
 - (void)paymentQueue:(SKPaymentQueue __unused *)queue
- removedTransactions:(NSArray<SKPaymentTransaction *> *)transactions {
+ removedTransactions:(BZRPaymentTransactionList *)transactions {
   BZRClassifiedTransactions *classifiedTransactions =
       [[self class] classifyTransactions:transactions];
 

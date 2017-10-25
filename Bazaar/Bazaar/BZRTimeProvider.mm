@@ -7,8 +7,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation BZRTimeProvider
 
-- (RACSignal *)currentTime {
-  return [RACSignal defer:^RACSignal *{
+- (RACSignal<NSDate *> *)currentTime {
+  return [RACSignal defer:^{
     return [RACSignal return:[NSDate date]];
   }];
 }

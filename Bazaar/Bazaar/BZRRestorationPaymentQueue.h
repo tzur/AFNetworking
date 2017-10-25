@@ -1,6 +1,8 @@
 // Copyright (c) 2016 Lightricks. All rights reserved.
 // Created by Ben Yohay.
 
+#import "BZRStoreKitTypedefs.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
 @protocol BZRPaymentQueueRestorationDelegate;
@@ -44,7 +46,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// were marked as finished and removed from the queue. \c transactions will contain only restored
 /// transactions and no payment transactions.
 - (void)paymentQueue:(id<BZRRestorationPaymentQueue>)paymentQueue
-    restoredTransactionsRemoved:(NSArray<SKPaymentTransaction *> *)transactions;
+    restoredTransactionsRemoved:(BZRPaymentTransactionList *)transactions;
 
 @end
 

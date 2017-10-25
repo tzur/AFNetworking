@@ -3,7 +3,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class BZRCachedReceiptValidationStatusProvider, BZRExternalTriggerReceiptValidator;
+@class BZRCachedReceiptValidationStatusProvider, BZREvent, BZRExternalTriggerReceiptValidator;
 
 @protocol BZRTimeProvider;
 
@@ -38,9 +38,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// periodic validation error, the days until subscription expiration and the last validation date
 /// will be sent in \c error property. The signal completes when the receiver is deallocated. The
 /// signal doesn't err.
-///
-/// @return <tt>RACSignal<BZREvent></tt>
-@property (readonly, nonatomic) RACSignal *errorEventsSignal;
+@property (readonly, nonatomic) RACSignal<BZREvent *> *errorEventsSignal;
 
 @end
 
@@ -53,9 +51,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// Returns a signal that sends \c [NSDate date] after \c timeToNextValidation seconds if its larger
 /// than 0, and otherwise sends \c [NSDate date] immediately. After that, it sends \c [NSDate date]
 /// every \c periodicValidationInterval seconds.
-///
-/// @return <tt>RACSignal<NSDate></tt>
-- (RACSignal *)timerSignal:(NSNumber *)timeToNextValidation;
+- (RACSignal<NSDate *> *)timerSignal:(NSNumber *)timeToNextValidation;
 
 @end
 

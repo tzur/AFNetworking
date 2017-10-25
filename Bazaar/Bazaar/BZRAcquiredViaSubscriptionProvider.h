@@ -3,7 +3,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class BZRKeychainStorage, BZRKeychainStorageMigrator;
+@class BZREvent, BZRKeychainStorage, BZRKeychainStorageMigrator;
 
 /// Provider that provides a set of products that were acquired via subscription. This class is
 /// thread safe.
@@ -48,9 +48,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Sends storage errors as \c BZREvent encompassing \c NSError. The signal completes when the
 /// receiver is deallocated. The signal doesn't err.
-///
-/// @return <tt>RACSignal<BZREvent></tt>
-@property (readonly, nonatomic) RACSignal *storageErrorEventsSignal;
+@property (readonly, nonatomic) RACSignal<BZREvent *> *storageErrorEventsSignal;
 
 @end
 

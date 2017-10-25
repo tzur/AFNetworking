@@ -41,7 +41,7 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark BZREventEmitter
 #pragma mark -
 
-- (RACSignal *)eventsSignal {
+- (RACSignal<BZREvent *> *)eventsSignal {
   return [RACSignal empty];
 }
 
@@ -49,7 +49,7 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark BZRProductContentFetcher
 #pragma mark -
 
-- (RACSignal *)fetchProductContent:(BZRProduct *)product {
+- (RACSignal<BZRContentFetchingProgress *> *)fetchProductContent:(BZRProduct *)product {
   if (![product.contentFetcherParameters isKindOfClass:[[self class] expectedParametersClass]]) {
     return [self invalidFetcherParametersErrorSignal:product];
   }
@@ -61,7 +61,7 @@ NS_ASSUME_NONNULL_BEGIN
   }
 
   __block NSUInteger fetcherParametersIndex = 0;
-  auto fetchSignal = [RACSignal defer:^RACSignal *{
+  RACSignal<BZRContentFetchingProgress *> *fetchSignal = [RACSignal defer:^{
     auto productWithContentFetcherParameters =
         [product modelByOverridingPropertyAtKeypath:@keypath(product, contentFetcherParameters)
                                           withValue:fetchersParameters[fetcherParametersIndex]];
@@ -99,7 +99,7 @@ NS_ASSUME_NONNULL_BEGIN
   return [RACSignal error:error];
 }
 
-- (RACSignal *)contentBundleForProduct:(BZRProduct *)product {
+- (RACSignal<NSBundle *> *)contentBundleForProduct:(BZRProduct *)product {
   if (![product.contentFetcherParameters isKindOfClass:[[self class] expectedParametersClass]]) {
     return [RACSignal return:nil];
   }
@@ -111,14 +111,15 @@ NS_ASSUME_NONNULL_BEGIN
   }
 
   auto contentBundleSignals =
-      [fetchersParameters lt_map:^RACSignal *(BZRContentFetcherParameters *fetcherParameters) {
-        return [RACSignal defer:^RACSignal *{
-          auto productWithContentFetcherParameters =
-              [product
-               modelByOverridingPropertyAtKeypath:@keypath(product, contentFetcherParameters)
-               withValue:fetcherParameters];
-          return [self.compositeContentFetcher
-                  contentBundleForProduct:productWithContentFetcherParameters];
+      [fetchersParameters
+       lt_map:^RACSignal<NSBundle *> *(BZRContentFetcherParameters *fetcherParameters) {
+         return [RACSignal defer:^{
+           auto productWithContentFetcherParameters =
+               [product
+                modelByOverridingPropertyAtKeypath:@keypath(product, contentFetcherParameters)
+                withValue:fetcherParameters];
+           return [self.compositeContentFetcher
+                   contentBundleForProduct:productWithContentFetcherParameters];
         }];
       }];
 

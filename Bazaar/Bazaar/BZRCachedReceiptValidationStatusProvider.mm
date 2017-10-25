@@ -26,7 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly, nonatomic) id<BZRReceiptValidationStatusProvider> underlyingProvider;
 
 /// Subject used to send events with.
-@property (readonly, nonatomic) RACSubject *eventsSubject;
+@property (readonly, nonatomic) RACSubject<BZREvent *> *eventsSubject;
 
 /// Latest \c BZRReceiptValidationStatus fetched with \c underlyingProvider.
 @property (strong, readwrite, nonatomic, nullable)
@@ -110,7 +110,7 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark BZRReceiptValidationStatusProvider
 #pragma mark -
 
-- (RACSignal *)fetchReceiptValidationStatus {
+- (RACSignal<BZRReceiptValidationStatus *> *)fetchReceiptValidationStatus {
   @weakify(self);
   return [[[self.underlyingProvider fetchReceiptValidationStatus]
       doNext:^(BZRReceiptValidationStatus *receiptValidationStatus) {

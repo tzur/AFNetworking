@@ -4,6 +4,7 @@
 #import "BZRDownloadsPaymentQueue.h"
 #import "BZRPaymentsPaymentQueue.h"
 #import "BZRRestorationPaymentQueue.h"
+#import "BZRStoreKitTypedefs.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -52,9 +53,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// application and weren't finished. The \c SKPaymentTransaction can be either in a failed,
 /// purchased or restored state. The signal completes when the receiver is deallocated. The signal
 /// doesn't err.
-///
-/// @return <tt>RACSignal<NSArray<SKPaymentTransactions>></tt>
-@property (readonly, nonatomic) RACSignal *unfinishedTransactionsSignal;
+@property (readonly, nonatomic) RACSignal<BZRPaymentTransactionList *> *
+    unfinishedTransactionsSignal;
 
 @end
 

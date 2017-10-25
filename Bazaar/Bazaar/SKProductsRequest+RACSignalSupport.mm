@@ -29,10 +29,14 @@ static void RACUseDelegateProxy(SKProductsRequest *self) {
   return proxy;
 }
 
-- (RACSignal *)statusSignal {
-  RACSignal *signal = [[[RACSignal merge:@[self.bzr_responseSignal, self.bzr_errorSignal]]
-      takeUntil:self.bzr_completionSignal]
-      setNameWithFormat:@"%@ -bzr_statusSignal", self.description];
+- (RACSignal<SKProductsResponse *> *)statusSignal {
+  RACSignal<SKProductsResponse *> *signal = [[[RACSignal merge:@[
+    self.bzr_responseSignal,
+    self.bzr_errorSignal
+  ]]
+  takeUntil:self.bzr_completionSignal]
+  setNameWithFormat:@"%@ -bzr_statusSignal", self.description];
+
   RACUseDelegateProxy(self);
 
   return signal;
@@ -40,7 +44,7 @@ static void RACUseDelegateProxy(SKProductsRequest *self) {
 
 // A signal that sends \c SKProductsResponse values. It completes when the proxy delegate deallocs
 // and never errs.
-- (RACSignal *)bzr_responseSignal {
+- (RACSignal<SKProductsResponse *> *)bzr_responseSignal {
   return [[self.bzr_delegateProxy signalForSelector:@selector(productsRequest:didReceiveResponse:)]
       map:^SKProductsResponse *(RACTuple *parameters) {
         return parameters.second;

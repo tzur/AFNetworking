@@ -40,25 +40,25 @@ NSString * const kBazaarProductsContentDirectory = @"Bazaar/ProductsContent/";
   return self;
 }
 
-- (RACSignal *)extractContentOfProduct:(NSString *)productIdentifier
-                           fromArchive:(LTPath *)archivePath {
+- (RACSignal<NSBundle *> *)extractContentOfProduct:(NSString *)productIdentifier
+                                       fromArchive:(LTPath *)archivePath {
   auto contentDirectoryPath = [self contentDirectoryPathForProduct:productIdentifier];
   return [self extractContentFromArchive:archivePath intoDirectory:contentDirectoryPath
                        productIdentifier:productIdentifier];
 }
 
-- (RACSignal *)extractContentOfProduct:(NSString *)productIdentifier
-                           fromArchive:(LTPath *)archivePath
-                         intoDirectory:(NSString *)directoryName {
+- (RACSignal<NSBundle *> *)extractContentOfProduct:(NSString *)productIdentifier
+                                       fromArchive:(LTPath *)archivePath
+                                     intoDirectory:(NSString *)directoryName {
   auto contentDirectoryPath = [[self contentDirectoryPathForProduct:productIdentifier]
                                pathByAppendingPathComponent:directoryName];
   return [self extractContentFromArchive:archivePath intoDirectory:contentDirectoryPath
                        productIdentifier:productIdentifier];
 }
 
-- (RACSignal *)extractContentFromArchive:(LTPath *)archivePath
-                           intoDirectory:(LTPath *)contentDirectoryPath
-                       productIdentifier:(NSString *)productIdentifier {
+- (RACSignal<NSBundle *> *)extractContentFromArchive:(LTPath *)archivePath
+                                       intoDirectory:(LTPath *)contentDirectoryPath
+                                   productIdentifier:(NSString *)productIdentifier {
   auto productDirectoryPath = [self contentDirectoryPathForProduct:productIdentifier];
   auto directoryName = [contentDirectoryPath.url lastPathComponent];
   auto parentDirectoryURL = [contentDirectoryPath.url URLByDeletingLastPathComponent];
@@ -73,7 +73,7 @@ NSString * const kBazaarProductsContentDirectory = @"Bazaar/ProductsContent/";
     [self.fileArchiver unarchiveArchiveAtPath:archivePath.path toDirectory:tempPath.path],
     [self.fileManager bzr_moveItemAtPath:tempPath.path toPath:contentDirectoryPath.path]
   ]]
-  then:^RACSignal *{
+  then:^RACSignal<NSBundle *> *{
     return [RACSignal return:[self bundleWithPath:contentDirectoryPath]];
   }]
   setNameWithFormat:@"%@ -extractContent", self.description];

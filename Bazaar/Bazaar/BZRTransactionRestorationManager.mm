@@ -29,17 +29,18 @@ NS_ASSUME_NONNULL_BEGIN
   return self;
 }
 
-- (RACSignal *)restoreCompletedTransactions {
+- (RACSignal<SKPaymentTransaction *> *)restoreCompletedTransactions {
   @weakify(self);
-  return [RACSignal defer:^RACSignal *{
+  return [RACSignal defer:^{
     @strongify(self);
-    RACSignal *transactionsSignal = [[self restoredTransactionsSignal] replay];
+    RACSignal<SKPaymentTransaction *> *transactionsSignal =
+        [[self restoredTransactionsSignal] replay];
     [self.paymentQueue restoreCompletedTransactionsWithApplicationUserID:self.applicationUserID];
     return transactionsSignal;
   }];
 }
 
-- (RACSignal *)restoredTransactionsSignal {
+- (RACSignal<SKPaymentTransaction *> *)restoredTransactionsSignal {
   return [[[RACSignal
       merge:@[[self restoredTransactionsUpdatesSignal], [self failureSignal]]]
       takeUntil:[self completionSignal]]
@@ -48,7 +49,7 @@ NS_ASSUME_NONNULL_BEGIN
       }];
 }
 
-- (RACSignal *)restoredTransactionsUpdatesSignal {
+- (RACSignal<RACTuple *> *)restoredTransactionsUpdatesSignal {
   return [self rac_signalForSelector:@selector(paymentQueue:transactionsRestored:)];
 }
 

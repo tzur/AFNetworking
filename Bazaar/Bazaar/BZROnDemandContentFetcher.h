@@ -43,9 +43,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// signal completes after sending the \c LTProgress with the \c result. The signal errs if there
 /// was an error while fetching the content, the downloaded content didn't pass the version
 /// validation or if the given \c product.contentFetcherParameters is invalid.
-///
-/// @return <tt>RACSignal<LTProgress<NSBundle>></tt>
-- (RACSignal *)fetchProductContent:(BZRProduct *)product;
+- (RACSignal<BZRContentFetchingProgress *> *)fetchProductContent:(BZRProduct *)product;
 
 /// Checks if the product's content bundle exists using the tags as specified by
 /// \c product.contentFetcherParameters.tags.
@@ -54,9 +52,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// The signal sends \c nil if the content is not available on the device, didn't pass the
 /// version validation or if \c product.contentFetcherParameters is invalid. The signal completes
 /// after sending the value. The signal doesn't err.
-///
-/// @return <tt>RACSignal<nullable NSBundle></tt>
-- (RACSignal *)contentBundleForProduct:(BZRProduct *)product;
+- (RACSignal<NSBundle *> *)contentBundleForProduct:(BZRProduct *)product;
 
 @end
 

@@ -54,7 +54,7 @@ static const NSUInteger kNumberOfRetries = 4;
   return self;
 }
 
-- (RACSignal *)fetchReceiptValidationStatus {
+- (RACSignal<BZRReceiptValidationStatus *> *)fetchReceiptValidationStatus {
   @weakify(self);
   return [[[[self receiptValidationParameters]
       tryMap:^BZRReceiptValidationParameters * _Nullable(
@@ -72,15 +72,15 @@ static const NSUInteger kNumberOfRetries = 4;
       setNameWithFormat:@"%@ -fetchReceiptValidationStatus", self.description];
 }
 
-- (RACSignal *)receiptValidationParameters {
+- (RACSignal<BZRReceiptValidationStatus *> *)receiptValidationParameters {
   @weakify(self);
-  return [RACSignal defer:^RACSignal *{
+  return [RACSignal defer:^{
     @strongify(self);
     return [RACSignal return:[self.validationParametersProvider receiptValidationParameters]];
   }];
 }
 
-- (RACSignal *)validateReceiptWithParameters:
+- (RACSignal<BZRReceiptValidationStatus *> *)validateReceiptWithParameters:
     (BZRReceiptValidationParameters *)receiptValidationParameters {
   return [[[self.receiptValidator validateReceiptWithParameters:receiptValidationParameters]
       catch:^RACSignal *(NSError *error) {
@@ -102,7 +102,7 @@ static const NSUInteger kNumberOfRetries = 4;
       }];
 }
 
-- (RACSignal *)eventsSignal {
+- (RACSignal<BZREvent *> *)eventsSignal {
   return self.receiptValidator.eventsSignal;
 }
 

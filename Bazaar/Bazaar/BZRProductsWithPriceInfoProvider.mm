@@ -24,7 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly, nonatomic) BZRStoreKitFacade *storeKitFacade;
 
 /// Subject used to send errors with.
-@property (readonly, nonatomic) RACSubject *nonCriticalErrorEventsSubject;
+@property (readonly, nonatomic) RACSubject<BZREvent *> *nonCriticalErrorEventsSubject;
 
 @end
 
@@ -57,7 +57,7 @@ static NSNumber * const kAppStoreProductsLabel = @1;
 /// Label used to mark non AppStore products in a \c BZRClassifiedProducts.
 static NSNumber * const kNonAppStoreProductsLabel = @0;
 
-- (RACSignal *)fetchProductList {
+- (RACSignal<BZRProductList *> *)fetchProductList {
   @weakify(self);
   return [[[self.underlyingProvider fetchProductList]
       map:^BZRClassifiedProducts *(BZRProductList *productList) {
@@ -71,7 +71,7 @@ static NSNumber * const kNonAppStoreProductsLabel = @0;
           return [RACSignal empty];
         }
 
-        RACSignal *appStoreProductsMapper =
+        RACSignal<BZRProductList *> *appStoreProductsMapper =
             [self appStoreProductsList:classifiedProducts[kAppStoreProductsLabel]];
         return [appStoreProductsMapper
             map:^BZRProductList *(BZRProductList *appStoreProducts) {
@@ -81,7 +81,7 @@ static NSNumber * const kNonAppStoreProductsLabel = @0;
       }];
 }
 
-- (RACSignal *)appStoreProductsList:(BZRProductList *)products {
+- (RACSignal<BZRProductList *> *)appStoreProductsList:(BZRProductList *)products {
   // If the given product list is empty avoid StoreKit overhead and return a signal that delivers an
   // empty list. Returning an empty signal is not good since the returned list is merged with
   // another list and we don't want to lose the values from the other list.
@@ -118,6 +118,7 @@ static NSNumber * const kNonAppStoreProductsLabel = @0;
         return [self productList:products withMetadataFromProductsResponse:response];
       }]
       map:^BZRProductList *(BZRProductList *productList) {
+        @strongify(self);
         return [self productListWithFullPriceInfoForDiscountProducts:productList];
       }];
 }
@@ -188,7 +189,7 @@ static NSNumber * const kNonAppStoreProductsLabel = @0;
       withValue:discountedProduct.bzr_underlyingProduct];
 }
 
-- (RACSignal *)eventsSignal {
+- (RACSignal<BZREvent *> *)eventsSignal {
   return [[RACSignal merge:@[
       self.nonCriticalErrorEventsSubject,
       self.underlyingProvider.eventsSignal

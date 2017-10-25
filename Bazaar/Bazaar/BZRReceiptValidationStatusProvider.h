@@ -5,6 +5,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class BZRReceiptValidationStatus;
+
 /// Protocol for providing receipt validation status.
 @protocol BZRReceiptValidationStatusProvider <BZREventEmitter>
 
@@ -12,9 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 /// Returns a signal that delivers a \c BZRReceiptValidationStatus and completes. The signal errs if
 /// there was a problem while fetching the receipt for any reason.
-///
-/// @return <tt>RACSignal<BZRReceiptValidationStatus></tt>
-- (RACSignal *)fetchReceiptValidationStatus;
+- (RACSignal<BZRReceiptValidationStatus *> *)fetchReceiptValidationStatus;
 
 @end
 

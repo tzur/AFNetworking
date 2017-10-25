@@ -25,7 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic, nullable) FBRHTTPClient *client;
 
 /// The other end of \c eventsSignal;
-@property (readonly, nonatomic) RACSubject *eventsSubject;
+@property (readonly, nonatomic) RACSubject<BZREvent *> *eventsSubject;
 
 @end
 
@@ -54,7 +54,8 @@ static NSString * const kReceiptValidationEndpoint = @"validateReceipt";
 #pragma mark BZRReceiptValidator
 #pragma mark -
 
-- (RACSignal *)validateReceiptWithParameters:(BZRReceiptValidationParameters *)parameters {
+- (RACSignal<BZRReceiptValidationStatus *> *)
+    validateReceiptWithParameters:(BZRReceiptValidationParameters *)parameters {
   @synchronized (self) {
     if (!self.client) {
       self.client =  [self.clientProvider HTTPClient];
@@ -81,7 +82,7 @@ static NSString * const kReceiptValidationEndpoint = @"validateReceipt";
   }
 }
 
-- (RACSignal *)eventsSignal {
+- (RACSignal<BZREvent *> *)eventsSignal {
   return [self.eventsSubject takeUntil:[self rac_willDeallocSignal]];
 }
 

@@ -15,9 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// device, or if the product has no content to be downloaded. The bundle provides access to the
 /// content of the product specified by \c product. The signal completes after sending the value.
 /// The signal errs an error occurred during fetching.
-///
-/// @return <tt>RACSignal<nullable NSBundle></tt>
-- (RACSignal *)contentBundleForProduct:(NSString *)productIdentifier;
+- (RACSignal<NSBundle *> *)contentBundleForProduct:(NSString *)productIdentifier;
 
 /// List of products that were purchased by the user as in-app purchases. KVO-compliant. Changes may
 /// be delivered on an arbitrary thread.
