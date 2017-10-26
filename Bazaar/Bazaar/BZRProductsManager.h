@@ -5,6 +5,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class BZRProduct, BZRReceiptValidationStatus, LTProgress<ResultType : id<NSObject>>,
+    SKPaymentTransaction;
+
 /// A unified interface for managing an products. The products manager provides methods for:
 ///
 ///   - Refreshing the receipt.
