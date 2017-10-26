@@ -1,8 +1,6 @@
 // Copyright (c) 2017 Lightricks. All rights reserved.
 // Created by Amit Yitzhack.
 
-#import "DVNProjectiveGeometryTransformerModel.h"
-
 #import <LTEngine/LTGLKitExtensions.h>
 #import <LTEngine/LTParameterizationKeyToValues.h>
 #import <LTEngine/LTSampleValues.h>
@@ -11,6 +9,7 @@
 
 #import "DVNEasyQuadVectorBoxing.h"
 #import "DVNGeometryProviderExamples.h"
+#import "DVNProjectiveGeometryTransformerModel.h"
 #import "DVNTestGeometryProvider.h"
 
 SpecBegin(DVNProjectiveGeometryTransformerModel)
@@ -41,7 +40,7 @@ context(@"initialization", ^{
   it(@"should initialize correctly", ^{
     expect(model).toNot.beNil();
     expect(model.model).to.equal(providerModelMock);
-    
+
     for (NSUInteger i = 0; i < 9; ++i) {
       expect(model.transform.m[i]).to.equal(transform.m[i]);
     }

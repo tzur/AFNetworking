@@ -56,7 +56,7 @@ sharedExamplesFor(kDVNGeometryProviderExamples, ^(NSDictionary *data) {
       it(@"should provide the correct samples", ^{
         expect([provider valuesFromSamples:samples end:NO].samples()).to.equal(samples);
       });
-      
+
       it(@"should reproduce the same values when using the same model", ^{
         dvn::GeometryValues values = [provider valuesFromSamples:samples end:NO];
         id<DVNGeometryProvider> otherProvider = [model provider];
@@ -91,7 +91,7 @@ sharedExamplesFor(kDVNDeterministicGeometryProviderExamples, ^(NSDictionary *dat
   __block std::vector<lt::Quad> expectedQuads;
   __block NSArray<NSNumber *> *expectedIndices;
   __block id<DVNGeometryProvider> provider;
-  
+
   beforeEach(^{
     samples = data[kDVNGeometryProviderExamplesSamples];
     expectedQuads =
@@ -99,7 +99,7 @@ sharedExamplesFor(kDVNDeterministicGeometryProviderExamples, ^(NSDictionary *dat
     expectedIndices = data[kDVNGeometryProviderExamplesExpectedIndices];
     provider = [data[kDVNGeometryProviderExamplesModel] provider];
   });
-  
+
   afterEach(^{
     samples = nil;
     expectedQuads = {};
