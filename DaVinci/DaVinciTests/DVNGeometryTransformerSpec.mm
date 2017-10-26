@@ -8,6 +8,7 @@
 #import <LTEngineTests/LTEasyVectorBoxing.h>
 #import <LTKitTests/LTEqualityExamples.h>
 
+#import "DVNEasyQuadVectorBoxing.h"
 #import "DVNGeometryProviderExamples.h"
 #import "DVNTestGeometryProvider.h"
 
@@ -71,13 +72,15 @@ itShouldBehaveLike(kDVNGeometryProviderExamples, ^{
   DVNGeometryTransformerModel *transformerModel =
       [[DVNGeometryTransformerModel alloc] initWithGeometryProviderModel:providerModel
                                                                transform:transform];
-  LTQuad *firstExpectedQuad = [LTQuad quadFromRect:CGRectMake(3, 10, 2, 6)];
-  LTQuad *secondExpectedQuad = [LTQuad quadFromRect:CGRectMake(7, 18, 6, 14)];
+  NSArray<NSValue *> *expectedQuads =
+      DVNConvertedBoxedQuadsFromQuads({
+        lt::Quad(CGRectMake(3, 10, 2, 6)), lt::Quad(CGRectMake(7, 18, 6, 14))
+      });
   std::vector<NSUInteger> indices = {0, 1};
   return @{
     kDVNGeometryProviderExamplesModel: transformerModel,
     kDVNGeometryProviderExamplesSamples: samples,
-    kDVNGeometryProviderExamplesExpectedQuads: @[firstExpectedQuad, secondExpectedQuad],
+    kDVNGeometryProviderExamplesExpectedQuads: expectedQuads,
     kDVNGeometryProviderExamplesExpectedIndices: $(indices)
   };
 });
