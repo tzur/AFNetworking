@@ -42,7 +42,7 @@ context(@"access to pixel data", ^{
   });
 
   afterEach(^{
-    pixelBuffer.release();
+    pixelBuffer = nullptr;
   });
 
   it(@"should lock base address and execute block", ^{
@@ -105,7 +105,7 @@ context(@"access to planar pixel data", ^{
   });
 
   afterEach(^{
-    pixelBuffer.release();
+    pixelBuffer = nullptr;
   });
 
   it(@"should lock base address and execute block", ^{
@@ -193,7 +193,7 @@ context(@"unified access", ^{
     });
 
     afterEach(^{
-      pixelBuffer.release();
+      pixelBuffer = nullptr;
     });
 
     it(@"should pass single matrix with buffers data", ^{
@@ -223,7 +223,7 @@ context(@"unified access", ^{
     });
 
     afterEach(^{
-      pixelBuffer.release();
+      pixelBuffer = nullptr;
     });
 
     it(@"should get correct planar images", ^{
