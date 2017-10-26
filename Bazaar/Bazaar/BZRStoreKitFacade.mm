@@ -175,7 +175,10 @@ typedef SKRequest<BZRRequestStatusSignal> *(^BZRRequestFactoryBlock)();
 }
 
 - (RACSignal<BZREvent *> *)unhandledTransactionsErrors {
-  return [self.purchaseManager.unhandledTransactionsSignal
+  return [[self.purchaseManager.unhandledTransactionsSignal
+      flattenMap:^(BZRPaymentTransactionList *transactionList) {
+        return [transactionList.rac_sequence signalWithScheduler:[RACScheduler immediateScheduler]];
+      }]
       map:^BZREvent *(SKPaymentTransaction *transaction) {
         return [[BZREvent alloc]
                 initWithType:$(BZREventTypeNonCriticalError)

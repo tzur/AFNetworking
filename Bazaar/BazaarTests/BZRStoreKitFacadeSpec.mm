@@ -243,16 +243,24 @@ context(@"sending unhandled transactions errors", ^{
     expect(transactionsErrorEventsSignal).will.complete();
   });
 
-  it(@"should send error wrapping an unhandled transaction when purchase manager sends it", ^{
+  it(@"should send error events for every unhandled transaction when purchase manager sends a list "
+     "of unhandled transactions", ^{
     LLSignalTestRecorder *recorder = [storeKitFacade.transactionsErrorEventsSignal testRecorder];
-    SKPaymentTransaction *transaction = OCMClassMock([SKPaymentTransaction class]);
-    [unhandledTransactionsSubject sendNext:transaction];
+    SKPaymentTransaction *firstTransaction = OCMClassMock([SKPaymentTransaction class]);
+    SKPaymentTransaction *secondTransaction = OCMClassMock([SKPaymentTransaction class]);
+    [unhandledTransactionsSubject sendNext:@[firstTransaction, secondTransaction]];
 
     expect(recorder).will.matchValue(0, ^BOOL(BZREvent *event) {
       NSError *error = event.eventError;
       return [event.eventType isEqual:$(BZREventTypeNonCriticalError)] && error.lt_isLTDomain &&
           error.code == BZRErrorCodeUnhandledTransactionReceived &&
-          error.bzr_transaction == transaction;
+          error.bzr_transaction == firstTransaction;
+    });
+    expect(recorder).will.matchValue(1, ^BOOL(BZREvent *event) {
+      NSError *error = event.eventError;
+      return [event.eventType isEqual:$(BZREventTypeNonCriticalError)] && error.lt_isLTDomain &&
+          error.code == BZRErrorCodeUnhandledTransactionReceived &&
+          error.bzr_transaction == secondTransaction;
     });
   });
 });
