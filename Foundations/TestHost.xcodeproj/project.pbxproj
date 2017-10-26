@@ -275,6 +275,7 @@
 					65CEFBB11D3BF72800402230 = {
 						CreatedOnToolsVersion = 7.3;
 						DevelopmentTeam = KG6GWND6BG;
+						ProvisioningStyle = Manual;
 						SystemCapabilities = {
 							com.apple.iCloud = {
 								enabled = 1;
@@ -425,6 +426,7 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
+				PROVISIONING_PROFILE_SPECIFIER = "TestHost Development Profile";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -438,6 +440,7 @@
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				PROVISIONING_PROFILE_SPECIFIER = "TestHost Development Profile";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -448,11 +451,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = TestHost/TestHost.entitlements;
+				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = KG6GWND6BG;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/$(PROJECT_NAME)/$(TARGET_NAME)-Prefix.pch";
 				INFOPLIST_FILE = TestHost/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.lightricks.TestHost;
+				PRODUCT_BUNDLE_IDENTIFIER = com.lightricks.testing.TestHost;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -463,11 +467,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = TestHost/TestHost.entitlements;
+				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = KG6GWND6BG;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/$(PROJECT_NAME)/$(TARGET_NAME)-Prefix.pch";
 				INFOPLIST_FILE = TestHost/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.lightricks.TestHost;
+				PRODUCT_BUNDLE_IDENTIFIER = com.lightricks.testing.TestHost;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
