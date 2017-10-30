@@ -29,7 +29,7 @@
 		CD45728B1F717E4D00713681 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD45728A1F717E4D00713681 /* Security.framework */; };
 		CD55511A1F45D5E10048215C /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = CD5551161F45D5E10048215C /* Localizable.strings */; };
 		CD55511B1F45D5E10048215C /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = CD5551181F45D5E10048215C /* Localizable.stringsdict */; };
-		CD8E8E2F1F5C19F500DF8FC1 /* NSNumber+Localization.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD8E8E2E1F5C19F500DF8FC1 /* NSNumber+Localization.mm */; };
+		CD8E8E2F1F5C19F500DF8FC1 /* NSDecimalNumber+Localization.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD8E8E2E1F5C19F500DF8FC1 /* NSDecimalNumber+Localization.mm */; };
 		CDB513A21F66B0440013577C /* SPXSubscriptionManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = CDB513A11F66B0440013577C /* SPXSubscriptionManager.mm */; };
 		CDB513A51F66B0A10013577C /* SPXSubscriptionManagerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = CDB513A41F66B0A10013577C /* SPXSubscriptionManagerSpec.mm */; };
 		CDB513A81F66BC150013577C /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDB513A71F66BC150013577C /* StoreKit.framework */; };
@@ -37,7 +37,7 @@
 		CDB8A6591F53FE1800E14706 /* libcompression.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = CDB8A6581F53FE1800E14706 /* libcompression.tbd */; };
 		CDC8CE861F6EA6C400E7C929 /* Objection-iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDC8CE841F6EA67D00E7C929 /* Objection-iOS.framework */; };
 		CDC8D4EB1F701EA300E7C929 /* SPXLocalization.mm in Sources */ = {isa = PBXBuildFile; fileRef = CDB510731F6176150013577C /* SPXLocalization.mm */; };
-		CDCFDEF91F5C39B300C289BA /* NSNumber+LocalizationSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = CDCFDEF81F5C39B300C289BA /* NSNumber+LocalizationSpec.mm */; };
+		CDCFDEF91F5C39B300C289BA /* NSDecimalNumber+LocalizationSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = CDCFDEF81F5C39B300C289BA /* NSDecimalNumber+LocalizationSpec.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -397,8 +397,8 @@
 		CD5551261F45D5ED0048215C /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		CD5551271F45D5EE0048215C /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		CD5551281F45D5EF0048215C /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
-		CD8E8E2D1F5C19F500DF8FC1 /* NSNumber+Localization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNumber+Localization.h"; sourceTree = "<group>"; };
-		CD8E8E2E1F5C19F500DF8FC1 /* NSNumber+Localization.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSNumber+Localization.mm"; sourceTree = "<group>"; };
+		CD8E8E2D1F5C19F500DF8FC1 /* NSDecimalNumber+Localization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDecimalNumber+Localization.h"; sourceTree = "<group>"; };
+		CD8E8E2E1F5C19F500DF8FC1 /* NSDecimalNumber+Localization.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSDecimalNumber+Localization.mm"; sourceTree = "<group>"; };
 		CD962CAB1F54045200F2CA82 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = en; path = en.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		CD962CAC1F54045600F2CA82 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = de; path = de.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		CD962CAD1F54045700F2CA82 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = es; path = es.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
@@ -425,7 +425,7 @@
 		CDB8A6581F53FE1800E14706 /* libcompression.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libcompression.tbd; path = usr/lib/libcompression.tbd; sourceTree = SDKROOT; };
 		CDC8CE841F6EA67D00E7C929 /* Objection-iOS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = "Objection-iOS.framework"; path = "../third_party/objection/Objection-iOS.framework"; sourceTree = "<group>"; };
 		CDCCF3D51F4EC2F700F421E6 /* ReactiveObjC.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactiveObjC.xcodeproj; path = ../third_party/ReactiveObjC/ReactiveObjC.xcodeproj; sourceTree = "<group>"; };
-		CDCFDEF81F5C39B300C289BA /* NSNumber+LocalizationSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSNumber+LocalizationSpec.mm"; sourceTree = "<group>"; };
+		CDCFDEF81F5C39B300C289BA /* NSDecimalNumber+LocalizationSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSDecimalNumber+LocalizationSpec.mm"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -704,8 +704,8 @@
 		CD8E8E081F5C19DC00DF8FC1 /* Localization */ = {
 			isa = PBXGroup;
 			children = (
-				CD8E8E2D1F5C19F500DF8FC1 /* NSNumber+Localization.h */,
-				CD8E8E2E1F5C19F500DF8FC1 /* NSNumber+Localization.mm */,
+				CD8E8E2D1F5C19F500DF8FC1 /* NSDecimalNumber+Localization.h */,
+				CD8E8E2E1F5C19F500DF8FC1 /* NSDecimalNumber+Localization.mm */,
 				CDB510721F6176150013577C /* SPXLocalization.h */,
 				CDB510731F6176150013577C /* SPXLocalization.mm */,
 			);
@@ -767,7 +767,7 @@
 		CDCFDF1E1F5C39BA00C289BA /* Localization */ = {
 			isa = PBXGroup;
 			children = (
-				CDCFDEF81F5C39B300C289BA /* NSNumber+LocalizationSpec.mm */,
+				CDCFDEF81F5C39B300C289BA /* NSDecimalNumber+LocalizationSpec.mm */,
 			);
 			name = Localization;
 			sourceTree = "<group>";
@@ -1234,7 +1234,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CDCFDEF91F5C39B300C289BA /* NSNumber+LocalizationSpec.mm in Sources */,
+				CDCFDEF91F5C39B300C289BA /* NSDecimalNumber+LocalizationSpec.mm in Sources */,
 				CDB513A51F66B0A10013577C /* SPXSubscriptionManagerSpec.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1244,7 +1244,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CDC8D4EB1F701EA300E7C929 /* SPXLocalization.mm in Sources */,
-				CD8E8E2F1F5C19F500DF8FC1 /* NSNumber+Localization.mm in Sources */,
+				CD8E8E2F1F5C19F500DF8FC1 /* NSDecimalNumber+Localization.mm in Sources */,
 				CDB513A21F66B0440013577C /* SPXSubscriptionManager.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

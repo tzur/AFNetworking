@@ -1,11 +1,11 @@
 // Copyright (c) 2017 Lightricks. All rights reserved.
 // Created by Neria Saada.
 
-#import "NSNumber+Localization.h"
+#import "NSDecimalNumber+Localization.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@implementation NSNumber (Localization)
+@implementation NSDecimalNumber (Localization)
 
 - (NSString *)spx_localizedPriceForLocale:(NSString *)localeIdentifier {
   return [self spx_localizedPriceForLocale:localeIdentifier dividedBy:1];
@@ -13,11 +13,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (NSString *)spx_localizedPriceForLocale:(NSString *)localeIdentifier
                                 dividedBy:(NSUInteger)divisor {
-  LTParameterAssert(divisor > 0, @"Price divisor must be greater than 0, got: %lu",
-                    (unsigned long)divisor);
+  auto decimalNumberHandler = [NSDecimalNumberHandler
+                               decimalNumberHandlerWithRoundingMode:NSRoundDown scale:2
+                               raiseOnExactness:NO raiseOnOverflow:YES raiseOnUnderflow:YES
+                               raiseOnDivideByZero:YES];
+  auto decimalDivisor = [NSDecimalNumber decimalNumberWithDecimal:@(divisor).decimalValue];
+  auto result = [self decimalNumberByDividingBy:decimalDivisor withBehavior:decimalNumberHandler];
 
-  auto numberFormatter = [self spx_priceNumberFormatter:localeIdentifier];
-  return [numberFormatter stringFromNumber:@(floor(self.doubleValue / divisor * 100) / 100)];
+  return [[self spx_priceNumberFormatter:localeIdentifier] stringFromNumber:result];
 }
 
 - (NSNumberFormatter *)spx_priceNumberFormatter:(NSString *)localeIdentifier {
