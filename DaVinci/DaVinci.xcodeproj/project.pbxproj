@@ -88,6 +88,8 @@
 		50574AE41D2D654C0076C60D /* libLTEngine.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 250154AC1D1AEAF100420FA9 /* libLTEngine.a */; };
 		507FEFA21D3A30CA002CB28E /* DVNGeometryTransformer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 507FEFA11D3A30CA002CB28E /* DVNGeometryTransformer.mm */; };
 		507FEFBE1D3A30E3002CB28E /* DVNGeometryTransformerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 507FEFBD1D3A30E3002CB28E /* DVNGeometryTransformerSpec.mm */; };
+		5088146F1FA8942A001C2BDD /* DVNBrushOverlayTextureWithTransform.png in Resources */ = {isa = PBXBuildFile; fileRef = 5088144E1FA89409001C2BDD /* DVNBrushOverlayTextureWithTransform.png */; };
+		508814711FA8966B001C2BDD /* DVNBrushColorWithMask.png in Resources */ = {isa = PBXBuildFile; fileRef = 508814701FA89668001C2BDD /* DVNBrushColorWithMask.png */; };
 		5091E88A1D36484C00B14481 /* DVNTestShader.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 50C90F381D36465E0058A4F3 /* DVNTestShader.fsh */; };
 		5091E88B1D36484C00B14481 /* DVNTestShader.vsh in Sources */ = {isa = PBXBuildFile; fileRef = 50C90F1C1D3646290058A4F3 /* DVNTestShader.vsh */; };
 		509234271F277AE900CCA727 /* DVNBrushTipModelview.png in Resources */ = {isa = PBXBuildFile; fileRef = 509234261F277AE900CCA727 /* DVNBrushTipModelview.png */; };
@@ -562,6 +564,8 @@
 		507FEFA01D3A30CA002CB28E /* DVNGeometryTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DVNGeometryTransformer.h; sourceTree = "<group>"; };
 		507FEFA11D3A30CA002CB28E /* DVNGeometryTransformer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNGeometryTransformer.mm; sourceTree = "<group>"; };
 		507FEFBD1D3A30E3002CB28E /* DVNGeometryTransformerSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNGeometryTransformerSpec.mm; sourceTree = "<group>"; };
+		5088144E1FA89409001C2BDD /* DVNBrushOverlayTextureWithTransform.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = DVNBrushOverlayTextureWithTransform.png; path = Resources/DVNBrushOverlayTextureWithTransform.png; sourceTree = "<group>"; };
+		508814701FA89668001C2BDD /* DVNBrushColorWithMask.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = DVNBrushColorWithMask.png; path = Resources/DVNBrushColorWithMask.png; sourceTree = "<group>"; };
 		509234261F277AE900CCA727 /* DVNBrushTipModelview.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = DVNBrushTipModelview.png; path = Resources/DVNBrushTipModelview.png; sourceTree = "<group>"; };
 		509234481F2785D100CCA727 /* DVNBrushEdgeAvoidance0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = DVNBrushEdgeAvoidance0.png; path = Resources/DVNBrushEdgeAvoidance0.png; sourceTree = "<group>"; };
 		509234491F2785D100CCA727 /* DVNBrushEdgeAvoidance1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = DVNBrushEdgeAvoidance1.png; path = Resources/DVNBrushEdgeAvoidance1.png; sourceTree = "<group>"; };
@@ -878,12 +882,14 @@
 		285A78FE1DFD692B00095BF4 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				508814701FA89668001C2BDD /* DVNBrushColorWithMask.png */,
 				509234481F2785D100CCA727 /* DVNBrushEdgeAvoidance0.png */,
 				509234491F2785D100CCA727 /* DVNBrushEdgeAvoidance1.png */,
 				50AB20C31F28BED1008B3F4F /* DVNBrushEdgeAvoidance1Gray.png */,
 				5092344A1F2785D100CCA727 /* DVNBrushEdgeAvoidance1WithOffset.png */,
 				500EF5761F29F82F00FEDEC4 /* DVNBrushEdgeAvoidance95.png */,
 				50AB20E51F28C2E8008B3F4F /* DVNBrushOverlayTexture.png */,
+				5088144E1FA89409001C2BDD /* DVNBrushOverlayTextureWithTransform.png */,
 				5001CB971F27785B00C70D23 /* DVNBrushTip.png */,
 				509234261F277AE900CCA727 /* DVNBrushTipModelview.png */,
 				285A79051DFD69CD00095BF4 /* DVNBrushTipsRound16Hardness75.png */,
@@ -1707,11 +1713,13 @@
 				285A79091DFD69CD00095BF4 /* DVNBrushTipsRound32Hardness75.png in Resources */,
 				5001CB981F27785B00C70D23 /* DVNBrushTip.png in Resources */,
 				50AB20C41F28BED1008B3F4F /* DVNBrushEdgeAvoidance1Gray.png in Resources */,
+				508814711FA8966B001C2BDD /* DVNBrushColorWithMask.png in Resources */,
 				285FB4CC1E1D17EB0021A116 /* DVNBrush.vsh in Resources */,
 				285FB4CB1E1D17EB0021A116 /* DVNBrush.fsh in Resources */,
 				285A790A1DFD69CD00095BF4 /* DVNBrushTipsRound64Hardness75.png in Resources */,
 				5092344D1F2785D100CCA727 /* DVNBrushEdgeAvoidance1WithOffset.png in Resources */,
 				509234271F277AE900CCA727 /* DVNBrushTipModelview.png in Resources */,
+				5088146F1FA8942A001C2BDD /* DVNBrushOverlayTextureWithTransform.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
