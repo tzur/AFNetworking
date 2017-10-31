@@ -7,6 +7,19 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		192A96A21FA9ABA000685B76 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 192A96891FA9ABA000685B76 /* XCTest.framework */; };
+		194FF4F01FA8B9B6008879E7 /* XCUIElement+Interactions.h in Headers */ = {isa = PBXBuildFile; fileRef = 194FF4E81FA8B9B6008879E7 /* XCUIElement+Interactions.h */; };
+		194FF4F11FA8B9B6008879E7 /* XCUIElement+CollectionView.h in Headers */ = {isa = PBXBuildFile; fileRef = 194FF4E91FA8B9B6008879E7 /* XCUIElement+CollectionView.h */; };
+		194FF4F21FA8B9B6008879E7 /* LTUIInterruptionHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = 194FF4EA1FA8B9B6008879E7 /* LTUIInterruptionHandler.h */; };
+		194FF4F31FA8B9B6008879E7 /* LTUITestUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 194FF4EB1FA8B9B6008879E7 /* LTUITestUtils.h */; };
+		194FF5061FA8BAF4008879E7 /* LTUIInterruptionHandler.mm in Sources */ = {isa = PBXBuildFile; fileRef = 194FF4EE1FA8B9B6008879E7 /* LTUIInterruptionHandler.mm */; };
+		194FF5081FA8BAF4008879E7 /* LTUITestUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 194FF4E71FA8B9B6008879E7 /* LTUITestUtils.mm */; };
+		194FF50A1FA8BAF4008879E7 /* XCUIElement+Interactions.mm in Sources */ = {isa = PBXBuildFile; fileRef = 194FF4EC1FA8B9B6008879E7 /* XCUIElement+Interactions.mm */; };
+		194FF50C1FA8BAF4008879E7 /* XCUIElement+CollectionView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 194FF4ED1FA8B9B6008879E7 /* XCUIElement+CollectionView.mm */; };
+		194FF50E1FA8BB44008879E7 /* LTUITestUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 194FF4EB1FA8B9B6008879E7 /* LTUITestUtils.h */; };
+		194FF50F1FA8BB4D008879E7 /* LTUIInterruptionHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = 194FF4EA1FA8B9B6008879E7 /* LTUIInterruptionHandler.h */; };
+		194FF5101FA8BB56008879E7 /* XCUIElement+Interactions.h in Headers */ = {isa = PBXBuildFile; fileRef = 194FF4E81FA8B9B6008879E7 /* XCUIElement+Interactions.h */; };
+		194FF5111FA8BB5F008879E7 /* XCUIElement+CollectionView.h in Headers */ = {isa = PBXBuildFile; fileRef = 194FF4E91FA8B9B6008879E7 /* XCUIElement+CollectionView.h */; };
 		255339401C3E512300C478F9 /* LTTreeNode.h in Headers */ = {isa = PBXBuildFile; fileRef = 2553393E1C3E512300C478F9 /* LTTreeNode.h */; };
 		255339411C3E512300C478F9 /* LTTreeNode.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2553393F1C3E512300C478F9 /* LTTreeNode.mm */; };
 		255339431C3E54A900C478F9 /* LTTreeNodeSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 255339421C3E54A900C478F9 /* LTTreeNodeSpec.mm */; };
@@ -238,6 +251,13 @@
 /* End PBXBuildRule section */
 
 /* Begin PBXContainerItemProxy section */
+		19611C3B1FA9EC00004093D8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8B4D456F19C03AA8000B25F9 /* Specta.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = E917140819DF07D700921712;
+			remoteInfo = "libSpecta-iOS";
+		};
 		65B0D9FA1D48DA420046ADF3 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 65F0E4EC1D464F0F007EB32D /* TestHost.xcodeproj */;
@@ -429,7 +449,30 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		194FF4FA1FA8BA77008879E7 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolderSpec = 16;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		192A96891FA9ABA000685B76 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		194FF4E71FA8B9B6008879E7 /* LTUITestUtils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTUITestUtils.mm; sourceTree = "<group>"; };
+		194FF4E81FA8B9B6008879E7 /* XCUIElement+Interactions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "XCUIElement+Interactions.h"; sourceTree = "<group>"; };
+		194FF4E91FA8B9B6008879E7 /* XCUIElement+CollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "XCUIElement+CollectionView.h"; sourceTree = "<group>"; };
+		194FF4EA1FA8B9B6008879E7 /* LTUIInterruptionHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTUIInterruptionHandler.h; sourceTree = "<group>"; };
+		194FF4EB1FA8B9B6008879E7 /* LTUITestUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTUITestUtils.h; sourceTree = "<group>"; };
+		194FF4EC1FA8B9B6008879E7 /* XCUIElement+Interactions.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "XCUIElement+Interactions.mm"; sourceTree = "<group>"; };
+		194FF4ED1FA8B9B6008879E7 /* XCUIElement+CollectionView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "XCUIElement+CollectionView.mm"; sourceTree = "<group>"; };
+		194FF4EE1FA8B9B6008879E7 /* LTUIInterruptionHandler.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTUIInterruptionHandler.mm; sourceTree = "<group>"; };
+		194FF4FC1FA8BA77008879E7 /* libLTTestKit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libLTTestKit.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		194FF5141FA8BC8B008879E7 /* LTTestKit-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "LTTestKit-Prefix.pch"; sourceTree = "<group>"; };
 		2553393E1C3E512300C478F9 /* LTTreeNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTTreeNode.h; sourceTree = "<group>"; };
 		2553393F1C3E512300C478F9 /* LTTreeNode.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTTreeNode.mm; sourceTree = "<group>"; };
 		255339421C3E54A900C478F9 /* LTTreeNodeSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTTreeNodeSpec.mm; sourceTree = "<group>"; };
@@ -662,6 +705,14 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		194FF4F91FA8BA77008879E7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				192A96A21FA9ABA000685B76 /* XCTest.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8B3DEBE118296B6100EA0C1A /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -702,6 +753,38 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		194FF4F71FA8B9D0008879E7 /* UI Test Utils */ = {
+			isa = PBXGroup;
+			children = (
+				194FF4EA1FA8B9B6008879E7 /* LTUIInterruptionHandler.h */,
+				194FF4EE1FA8B9B6008879E7 /* LTUIInterruptionHandler.mm */,
+				194FF4EB1FA8B9B6008879E7 /* LTUITestUtils.h */,
+				194FF4E71FA8B9B6008879E7 /* LTUITestUtils.mm */,
+				194FF4E81FA8B9B6008879E7 /* XCUIElement+Interactions.h */,
+				194FF4EC1FA8B9B6008879E7 /* XCUIElement+Interactions.mm */,
+				194FF4E91FA8B9B6008879E7 /* XCUIElement+CollectionView.h */,
+				194FF4ED1FA8B9B6008879E7 /* XCUIElement+CollectionView.mm */,
+			);
+			name = "UI Test Utils";
+			sourceTree = "<group>";
+		};
+		194FF4FD1FA8BA77008879E7 /* LTTestKit */ = {
+			isa = PBXGroup;
+			children = (
+				194FF4F71FA8B9D0008879E7 /* UI Test Utils */,
+				194FF5131FA8BC1E008879E7 /* Supporting Files */,
+			);
+			path = LTTestKit;
+			sourceTree = "<group>";
+		};
+		194FF5131FA8BC1E008879E7 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				194FF5141FA8BC8B008879E7 /* LTTestKit-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 		28ABDFF618715394005A5DEC /* UI */ = {
 			isa = PBXGroup;
 			children = (
@@ -816,6 +899,7 @@
 			children = (
 				8B3DEBE918296B6100EA0C1A /* LTKit */,
 				8B3DEBFD18296B6100EA0C1A /* LTKitTests */,
+				194FF4FD1FA8BA77008879E7 /* LTTestKit */,
 				8B78835D1BDF70590051CCD1 /* Configuration */,
 				8B3DEBE618296B6100EA0C1A /* Frameworks */,
 				8B3DEBE518296B6100EA0C1A /* Products */,
@@ -827,6 +911,7 @@
 			children = (
 				8B3DEBE418296B6100EA0C1A /* libLTKit.a */,
 				8B3DEBF418296B6100EA0C1A /* LTKitTests.xctest */,
+				194FF4FC1FA8BA77008879E7 /* libLTTestKit.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -847,6 +932,7 @@
 				8B4E494A19E950C800B3F55D /* MobileCoreServices.framework */,
 				8B3DEC1618296D8F00EA0C1A /* QuartzCore.framework */,
 				8B3DEC1818296DE500EA0C1A /* UIKit.framework */,
+				192A96891FA9ABA000685B76 /* XCTest.framework */,
 				8BF6602C1F5D597700FC7A43 /* libcompression.tbd */,
 			);
 			name = Frameworks;
@@ -1242,6 +1328,17 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
+		194FF50D1FA8BB2C008879E7 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				194FF50F1FA8BB4D008879E7 /* LTUIInterruptionHandler.h in Headers */,
+				194FF50E1FA8BB44008879E7 /* LTUITestUtils.h in Headers */,
+				194FF5101FA8BB56008879E7 /* XCUIElement+Interactions.h in Headers */,
+				194FF5111FA8BB5F008879E7 /* XCUIElement+CollectionView.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8B871FC61924A73A00517F2E /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -1266,9 +1363,11 @@
 				8482E2B01D2260DA0084D565 /* LTValueObject.h in Headers */,
 				8B2405801B8607270079B724 /* UIDevice+Hardware.h in Headers */,
 				8BF7B1721949BC7500E67079 /* LTBidirectionalMap.h in Headers */,
+				194FF4F31FA8B9B6008879E7 /* LTUITestUtils.h in Headers */,
 				88C67F5A1D72C7B800A0E0FC /* LTLocalizationTable.h in Headers */,
 				5067221A19EA80B5003AF8D2 /* LTQueue.h in Headers */,
 				8B8720341924A76500517F2E /* LTAssert.h in Headers */,
+				194FF4F01FA8B9B6008879E7 /* XCUIElement+Interactions.h in Headers */,
 				8B410E8D1CE1F01E007DFF42 /* NSArray+SelectorName.h in Headers */,
 				8B8720351924A76500517F2E /* LTCGExtensions.h in Headers */,
 				84B63E3E1DD8B79900ECF65B /* LTCompoundRandomAccessCollection.h in Headers */,
@@ -1276,6 +1375,7 @@
 				28AA3EAE19A25BBE00518987 /* NSNumber+CGFloat.h in Headers */,
 				CDE0081E1E828756007AFD5E /* NSData+Compression.h in Headers */,
 				658CD3C61D50A79B00FF7FD6 /* LTProgress.h in Headers */,
+				194FF4F21FA8B9B6008879E7 /* LTUIInterruptionHandler.h in Headers */,
 				A1006CFF1E026EFB0061D8BB /* NSDateFormatter+Formatters.h in Headers */,
 				8B6A6EBE1CDA3ADC005FB7D9 /* LTRuntime.h in Headers */,
 				88DA5A911ED056EA008162BC /* NSDictionary+Functional.h in Headers */,
@@ -1298,6 +1398,7 @@
 				83C2EABE1EB73E4400A3085D /* NSDate+Formatting.h in Headers */,
 				CD8887A51EED900E005F8FCA /* LTDataHelpers.h in Headers */,
 				8B4495831CE3209C008402D0 /* NSObject+PropertyAccessors.h in Headers */,
+				194FF4F11FA8B9B6008879E7 /* XCUIElement+CollectionView.h in Headers */,
 				8BA5D6A4199250240093A4FD /* NSString+Hashing.h in Headers */,
 				C751B02B1D4881D7005DB5BB /* LTEventBusObserver.h in Headers */,
 				28E55E011961B21A00EBF9DA /* LTRandom.h in Headers */,
@@ -1312,6 +1413,25 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		194FF4FB1FA8BA77008879E7 /* LTTestKit */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 194FF5021FA8BA77008879E7 /* Build configuration list for PBXNativeTarget "LTTestKit" */;
+			buildPhases = (
+				194FF4F81FA8BA77008879E7 /* Sources */,
+				194FF4F91FA8BA77008879E7 /* Frameworks */,
+				194FF4FA1FA8BA77008879E7 /* CopyFiles */,
+				194FF50D1FA8BB2C008879E7 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				19611C3C1FA9EC00004093D8 /* PBXTargetDependency */,
+			);
+			name = LTTestKit;
+			productName = LTTestKit;
+			productReference = 194FF4FC1FA8BA77008879E7 /* libLTTestKit.a */;
+			productType = "com.apple.product-type.library.static";
+		};
 		8B3DEBE318296B6100EA0C1A /* LTKit */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8B3DEC0718296B6100EA0C1A /* Build configuration list for PBXNativeTarget "LTKit" */;
@@ -1359,6 +1479,11 @@
 				LastUpgradeCheck = 0710;
 				ORGANIZATIONNAME = Lightricks;
 				TargetAttributes = {
+					194FF4FB1FA8BA77008879E7 = {
+						CreatedOnToolsVersion = 9.0;
+						DevelopmentTeam = KG6GWND6BG;
+						ProvisioningStyle = Automatic;
+					};
 					8B3DEBF318296B6100EA0C1A = {
 						DevelopmentTeam = KG6GWND6BG;
 					};
@@ -1400,6 +1525,7 @@
 			targets = (
 				8B3DEBE318296B6100EA0C1A /* LTKit */,
 				8B3DEBF318296B6100EA0C1A /* LTKitTests */,
+				194FF4FB1FA8BA77008879E7 /* LTTestKit */,
 			);
 		};
 /* End PBXProject section */
@@ -1595,6 +1721,17 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		194FF4F81FA8BA77008879E7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				194FF5061FA8BAF4008879E7 /* LTUIInterruptionHandler.mm in Sources */,
+				194FF5081FA8BAF4008879E7 /* LTUITestUtils.mm in Sources */,
+				194FF50A1FA8BAF4008879E7 /* XCUIElement+Interactions.mm in Sources */,
+				194FF50C1FA8BAF4008879E7 /* XCUIElement+CollectionView.mm in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8B3DEBE018296B6100EA0C1A /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1728,6 +1865,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		19611C3C1FA9EC00004093D8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "libSpecta-iOS";
+			targetProxy = 19611C3B1FA9EC00004093D8 /* PBXContainerItemProxy */;
+		};
 		65B0D9FB1D48DA420046ADF3 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = TestHost;
@@ -1752,6 +1894,62 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		194FF5031FA8BA77008879E7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = KG6GWND6BG;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
+				);
+				GCC_PREFIX_HEADER = "LTTestKit/LTTestKit-Prefix.pch";
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../LTKit",
+					"$(SRCROOT)/../third_party/libextobjc/extobjc",
+					"$(SRCROOT)/../third_party/Specta/Specta",
+				);
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		194FF5041FA8BA77008879E7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = KG6GWND6BG;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
+				);
+				GCC_PREFIX_HEADER = "LTTestKit/LTTestKit-Prefix.pch";
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../LTKit",
+					"$(SRCROOT)/../third_party/libextobjc/extobjc",
+					"$(SRCROOT)/../third_party/Specta/Specta",
+				);
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		8B3DEC0518296B6100EA0C1A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 8B78835F1BDF70790051CCD1 /* Debug.xcconfig */;
@@ -1859,6 +2057,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		194FF5021FA8BA77008879E7 /* Build configuration list for PBXNativeTarget "LTTestKit" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				194FF5031FA8BA77008879E7 /* Debug */,
+				194FF5041FA8BA77008879E7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		8B3DEBDF18296B6100EA0C1A /* Build configuration list for PBXProject "LTKit" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
