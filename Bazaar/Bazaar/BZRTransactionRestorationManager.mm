@@ -4,6 +4,7 @@
 #import "BZRTransactionRestorationManager.h"
 
 #import "BZRRestorationPaymentQueue.h"
+#import "NSErrorCodes+Bazaar.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -61,8 +62,24 @@ NS_ASSUME_NONNULL_BEGIN
   return [[[self rac_signalForSelector:@selector(paymentQueue:restorationFailedWithError:)]
       take:1]
       flattenMap:^(RACTuple *parameters) {
-        return [RACSignal error:parameters.second];
+        NSError *underlyingError = parameters.second;
+        NSError *error;
+
+        if ([BZRTransactionRestorationManager isErrorIndicatesCancellation:underlyingError]) {
+          error = [NSError lt_errorWithCode:BZRErrorCodeOperationCancelled
+                            underlyingError:underlyingError
+                                description:@"Restore purchases operation was cancelled"];
+        } else {
+          error = [NSError lt_errorWithCode:BZRErrorCodeRestorePurchasesFailed
+                            underlyingError:underlyingError];
+        }
+
+        return [RACSignal error:error];
       }];
+}
+
++ (BOOL)isErrorIndicatesCancellation:(NSError *)error {
+  return [error.domain isEqualToString:SKErrorDomain] && error.code == SKErrorPaymentCancelled;
 }
 
 #pragma mark -

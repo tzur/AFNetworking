@@ -81,7 +81,9 @@ LTErrorCodesImplement(BazaarErrorCodeProductID,
   /// content.
   BZRErrorCodeFetchedContentMismatch,
   /// Error that is caused by an operation that was cancelled.
-  BZRErrorCodeOperationCancelled
+  BZRErrorCodeOperationCancelled,
+  /// Restoring purchases operation has failed.
+  BZRErrorCodeRestorePurchasesFailed
 );
 
 NS_ASSUME_NONNULL_END
