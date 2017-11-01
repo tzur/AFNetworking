@@ -70,6 +70,7 @@
 		06C9E8091F793E7D00D8A77F /* PNKReflectionPadding.metal in Sources */ = {isa = PBXBuildFile; fileRef = 06C9E8081F793E7400D8A77F /* PNKReflectionPadding.metal */; };
 		06C9E80A1F793E8200D8A77F /* PNKReflectionPadding.mm in Sources */ = {isa = PBXBuildFile; fileRef = 06C9E8061F793E7400D8A77F /* PNKReflectionPadding.mm */; };
 		06CA9F921F25C1CE0097E554 /* Lena128.png in Resources */ = {isa = PBXBuildFile; fileRef = 06CA9F911F25C1CE0097E554 /* Lena128.png */; };
+		06D357EA1FA5B8C3003CFDCF /* PNKKernelExamples.mm in Sources */ = {isa = PBXBuildFile; fileRef = 06D357E91FA5B8C3003CFDCF /* PNKKernelExamples.mm */; };
 		06D36EE61F6ACA6D00090584 /* DataStructures.proto in Sources */ = {isa = PBXBuildFile; fileRef = 06D36EE31F6ACA5600090584 /* DataStructures.proto */; };
 		06D36EE71F6ACA6D00090584 /* FeatureTypes.proto in Sources */ = {isa = PBXBuildFile; fileRef = 06D36EE51F6ACA5600090584 /* FeatureTypes.proto */; };
 		06D36EE81F6ACA6D00090584 /* Identity.proto in Sources */ = {isa = PBXBuildFile; fileRef = 06D36EE21F6ACA5600090584 /* Identity.proto */; };
@@ -581,6 +582,8 @@
 		06C9E8071F793E7400D8A77F /* PNKReflectionPadding.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNKReflectionPadding.h; sourceTree = "<group>"; };
 		06C9E8081F793E7400D8A77F /* PNKReflectionPadding.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = PNKReflectionPadding.metal; sourceTree = "<group>"; };
 		06CA9F911F25C1CE0097E554 /* Lena128.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Lena128.png; path = Resources/Lena128.png; sourceTree = "<group>"; };
+		06D357E81FA5B8C3003CFDCF /* PNKKernelExamples.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNKKernelExamples.h; sourceTree = "<group>"; };
+		06D357E91FA5B8C3003CFDCF /* PNKKernelExamples.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKKernelExamples.mm; sourceTree = "<group>"; };
 		06D36EE11F6ACA5600090584 /* Model.proto */ = {isa = PBXFileReference; lastKnownFileType = text; name = Model.proto; path = Models/Model.proto; sourceTree = "<group>"; };
 		06D36EE21F6ACA5600090584 /* Identity.proto */ = {isa = PBXFileReference; lastKnownFileType = text; name = Identity.proto; path = Models/Identity.proto; sourceTree = "<group>"; };
 		06D36EE31F6ACA5600090584 /* DataStructures.proto */ = {isa = PBXFileReference; lastKnownFileType = text; name = DataStructures.proto; path = Models/DataStructures.proto; sourceTree = "<group>"; };
@@ -824,6 +827,8 @@
 				068D90B71F1FB2D40012F472 /* NSValue+MTLSize.mm */,
 				C9131ED81EE05A8400E924DA /* NSValue+OpenCVExtensions.h */,
 				C9131ED91EE05A8400E924DA /* NSValue+OpenCVExtensions.mm */,
+				06D357E81FA5B8C3003CFDCF /* PNKKernelExamples.h */,
+				06D357E91FA5B8C3003CFDCF /* PNKKernelExamples.mm */,
 				061941AA1F94D22900A329BA /* PNKTemporaryImageExamples.h */,
 				061941AB1F94D22900A329BA /* PNKTemporaryImageExamples.mm */,
 				068D90A61F1F60A90012F472 /* PNKTestUtils.h */,
@@ -1822,6 +1827,7 @@
 				062EEA4F1F25315400AB4958 /* PNKNearestNeighborUpsamplingSpec.mm in Sources */,
 				061941AC1F94D22900A329BA /* PNKTemporaryImageExamples.mm in Sources */,
 				C9131EAC1EE0599D00E924DA /* EXPMatchers+beCloseToMat.mm in Sources */,
+				06D357EA1FA5B8C3003CFDCF /* PNKKernelExamples.mm in Sources */,
 				068D91381F24C9AD0012F472 /* PNKReflectionPaddingSpec.mm in Sources */,
 				C9791A761F025B1F0009E90F /* PNKLibraryLoaderSpec.mm in Sources */,
 				C9131EB21EE0599D00E924DA /* EXPMatchers+equalScalar.mm in Sources */,

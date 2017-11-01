@@ -37,5 +37,6 @@ extern "C" {
 #import "MPSImage+Factory.h"
 #import "MPSTemporaryImage+Factory.h"
 #import "PNKOpenCVExtensions.h"
+#import "PNKKernelExamples.h"
 #import "PNKTemporaryImageExamples.h"
 #import "PNKTestUtils.h"
