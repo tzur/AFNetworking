@@ -1,7 +1,7 @@
 // Copyright (c) 2017 Lightricks. All rights reserved.
 // Created by Ofir Bibi.
 
-#import "PNKInstanceNormLayer.h"
+#import "PNKConditionalInstanceNormLayer.h"
 
 #import "PNKBufferExtensions.h"
 #import "PNKComputeDispatch.h"
@@ -13,14 +13,22 @@ NS_ASSUME_NONNULL_BEGIN
 
 #if PNK_USE_MPS
 
-@interface PNKInstanceNormLayer ()
+@interface PNKConditionalInstanceNormLayer ()
 
 /// Instance normalization kernel performing the operation underlying this layer.
 @property (readonly, nonatomic) PNKInstanceNormInternalKernel *instanceNormKernel;
 
+/// Matrix of scale parameters for the instance normalization operation. Each row of the matrix
+/// represents the scale of the corresponding condition.
+@property (readonly, nonatomic) cv::Mat1f scaleMatrix;
+
+/// Matrix of shift parameters for the instance normalization operation. Each row of the matrix
+/// represents the shift of the corresponding condition.
+@property (readonly, nonatomic) cv::Mat1f shiftMatrix;
+
 @end
 
-@implementation PNKInstanceNormLayer
+@implementation PNKConditionalInstanceNormLayer
 
 @synthesize kernelWidth = _kernelWidth;
 @synthesize kernelHeight = _kernelHeight;
@@ -49,8 +57,7 @@ NS_ASSUME_NONNULL_BEGIN
         activationModel.activationType == pnk::ActivationTypePReLU) {
       [self.instanceNormKernel setPReluParameters:activationModel.alpha];
     }
-    [self.instanceNormKernel setScaleParameters:normalizationModel.scale];
-    [self.instanceNormKernel setShiftParameters:normalizationModel.shift];
+    [self setSingleCondition:0];
   }
   return self;
 }
@@ -58,13 +65,13 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)updatePropertiesWithNormalizationModel:(const pnk::NormalizationKernelModel &)model {
   LTParameterAssert(model.instanceNormalization,
                     @"Normalization model must be instance normalization");
-  LTParameterAssert(model.scale.cols == (int)model.inputFeatureChannels,
-                    @"Normalization model scale parameters must be equal to the number of input "
-                    "features (%lu), got %lu", (unsigned long)model.inputFeatureChannels,
+  LTParameterAssert(model.scale.cols % model.inputFeatureChannels == 0,
+                    @"Normalization model scale parameters must be a multiply of the number of "
+                    "input features (%lu), got %lu", (unsigned long)model.inputFeatureChannels,
                     (unsigned long)model.scale.cols);
-  LTParameterAssert(model.shift.cols == (int)model.inputFeatureChannels,
-                    @"Normalization model shift parameters must be equal to the number of input "
-                    "features (%lu), got %lu", (unsigned long)model.inputFeatureChannels,
+  LTParameterAssert(model.shift.cols % model.inputFeatureChannels == 0,
+                    @"Normalization model shift parameters must be a multiply of the number of "
+                    "input features (%lu), got %lu", (unsigned long)model.inputFeatureChannels,
                     (unsigned long)model.shift.cols);
   _kernelWidth = 1;
   _kernelHeight = 1;
@@ -74,6 +81,18 @@ NS_ASSUME_NONNULL_BEGIN
   _strideY = 1;
   _groups = 1;
   _isInputArray = model.inputFeatureChannels > 4;
+
+  _conditionsCount = model.scale.cols / model.inputFeatureChannels;
+  _scaleMatrix = model.scale.reshape(0, (int)self.conditionsCount).clone();
+  _shiftMatrix = model.shift.reshape(0, (int)self.conditionsCount).clone();
+}
+
+- (void)setSingleCondition:(NSUInteger)condition {
+  LTParameterAssert(condition < self.conditionsCount,
+                    @"Condition number must be in [0, %lu), got %lu",
+                    (unsigned long)self.conditionsCount, (unsigned long)condition);
+  [self.instanceNormKernel setScaleParameters:self.scaleMatrix.row((int)condition)];
+  [self.instanceNormKernel setShiftParameters:self.shiftMatrix.row((int)condition)];
 }
 
 #pragma mark -
@@ -83,7 +102,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)encodeToCommandBuffer:(id<MTLCommandBuffer>)commandBuffer
                    inputImage:(MPSImage *)inputImage outputImage:(MPSImage *)outputImage {
   [self.instanceNormKernel encodeToCommandBuffer:commandBuffer inputImage:inputImage
-                                     outputImage:outputImage];
+                                    outputImage:outputImage];
 }
 
 - (MTLRegion)inputRegionForOutputSize:(MTLSize)outputSize {

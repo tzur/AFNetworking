@@ -4,7 +4,6 @@
 #import "PNKInstanceNormLayer.h"
 
 #import "PNKNeuralNetworkModel.h"
-#import "PNKTestUtils.h"
 
 DeviceSpecBegin(PNKInstanceNormLayer)
 
@@ -34,6 +33,7 @@ context(@"kernel input region", ^{
     };
 
     pnk::NormalizationKernelModel normalizationModel {
+      .instanceNormalization = YES,
       .inputFeatureChannels = inputChannels,
       .scale = cv::Mat1f(1, (int)inputChannels),
       .shift = cv::Mat1f(1, (int)inputChannels)
@@ -62,6 +62,7 @@ context(@"instance normalization operation with Float16 channel format", ^{
     NSBundle *bundle = [NSBundle bundleForClass:[PNKInstanceNormLayerSpec class]];
 
     pnk::NormalizationKernelModel normalizationModel = {
+      .instanceNormalization = YES,
       .inputFeatureChannels = inputChannels,
       .scale = PNKLoadFloatTensorFromBundleResource(bundle, @"instanceNorm_scale.weights"),
       .shift = PNKLoadFloatTensorFromBundleResource(bundle, @"instanceNorm_shift.weights")
@@ -115,6 +116,7 @@ context(@"instance normalization operation with Float16 channel format", ^{
     NSBundle *bundle = [NSBundle bundleForClass:[PNKInstanceNormLayerSpec class]];
 
     pnk::NormalizationKernelModel normalizationModel = {
+      .instanceNormalization = YES,
       .inputFeatureChannels = inputChannels,
       .scale = PNKLoadFloatTensorFromBundleResource(bundle, @"instanceNorm_nonarray_scale.weights"),
       .shift = PNKLoadFloatTensorFromBundleResource(bundle, @"instanceNorm_nonarray_shift.weights")
@@ -159,6 +161,7 @@ context(@"instance normalization operation with Float16 channel format", ^{
     NSBundle *bundle = [NSBundle bundleForClass:[PNKInstanceNormLayerSpec class]];
 
     pnk::NormalizationKernelModel normalizationModel = {
+      .instanceNormalization = YES,
       .inputFeatureChannels = inputChannels,
       .scale = PNKLoadFloatTensorFromBundleResource(bundle, @"instanceNorm_relu_scale.weights"),
       .shift = PNKLoadFloatTensorFromBundleResource(bundle, @"instanceNorm_relu_shift.weights")
@@ -210,6 +213,7 @@ context(@"PNKUnaryKernel with MPSTemporaryImage", ^{
       .activationType = pnk::ActivationTypeIdentity
     };
     pnk::NormalizationKernelModel normalizationModel {
+      .instanceNormalization = YES,
       .inputFeatureChannels = kInputRGBFeatureChannels,
       .scale = cv::Mat1f(1, (int)kInputRGBFeatureChannels),
       .shift = cv::Mat1f(1, (int)kInputRGBFeatureChannels)
@@ -231,6 +235,7 @@ context(@"PNKUnaryKernel with MPSTemporaryImage", ^{
       .activationType = pnk::ActivationTypeIdentity
     };
     pnk::NormalizationKernelModel normalizationModel {
+      .instanceNormalization = YES,
       .inputFeatureChannels = kInputArrayFeatureChannels,
       .scale = cv::Mat1f(1, (int)kInputArrayFeatureChannels),
       .shift = cv::Mat1f(1, (int)kInputArrayFeatureChannels)
