@@ -12,61 +12,61 @@ NSString * const kLABErrorAssociatedAssignmentKeyKey = @"AssociatedAssignmentKey
 @implementation NSError (Laboratory)
 
 + (instancetype)lab_errorWithCode:(NSInteger)code
-             associatedExperiment:(NSString *)associatedExperiment {
+             associatedExperiment:(nullable NSString *)associatedExperiment {
   return [NSError lt_errorWithCode:code userInfo:@{
-    kLABErrorAssociatedExperimentKey: associatedExperiment ?: [NSNull null]
+    kLABErrorAssociatedExperimentKey: nn<id>(associatedExperiment, [NSNull null])
   }];
 }
 
 + (instancetype)lab_errorWithCode:(NSInteger)code
-             associatedExperiment:(NSString *)associatedExperiment
+             associatedExperiment:(nullable NSString *)associatedExperiment
                   underlyingError:(nullable NSError *)underlyingError {
   return [NSError lt_errorWithCode:code userInfo:@{
-    kLABErrorAssociatedExperimentKey: associatedExperiment ?: [NSNull null],
-    NSUnderlyingErrorKey: underlyingError ?: [NSError lab_nullValueGivenError]
+    kLABErrorAssociatedExperimentKey: nn<id>(associatedExperiment, [NSNull null]),
+    NSUnderlyingErrorKey: nn(underlyingError, [NSError lab_nullValueGivenError])
   }];
 }
 
 + (instancetype)lab_errorWithCode:(NSInteger)code
-                associatedVariant:(NSString *)associatedVariant {
+                associatedVariant:(nullable NSString *)associatedVariant {
   return [NSError lt_errorWithCode:code userInfo:@{
-    kLABErrorAssociatedVariantKey: associatedVariant ?: [NSNull null]
+    kLABErrorAssociatedVariantKey: nn<id>(associatedVariant, [NSNull null])
   }];
 }
 
 + (instancetype)lab_errorWithCode:(NSInteger)code
-                associatedVariant:(NSString *)associatedVariant
+                associatedVariant:(nullable NSString *)associatedVariant
                   underlyingError:(nullable NSError *)underlyingError {
   return [NSError lt_errorWithCode:code userInfo:@{
-    kLABErrorAssociatedVariantKey: associatedVariant ?: [NSNull null],
-    NSUnderlyingErrorKey: underlyingError ?: [NSError lab_nullValueGivenError]
+    kLABErrorAssociatedVariantKey: nn<id>(associatedVariant, [NSNull null]),
+    NSUnderlyingErrorKey: nn(underlyingError, [NSError lab_nullValueGivenError])
   }];
 }
 
 + (instancetype)lab_errorWithCode:(NSInteger)code
-          associatedAssignmentKey:(NSString *)associatedAssignmentKey {
+          associatedAssignmentKey:(nullable NSString *)associatedAssignmentKey {
   return [NSError lt_errorWithCode:code userInfo:@{
-    kLABErrorAssociatedAssignmentKeyKey: associatedAssignmentKey ?: [NSNull null]
+    kLABErrorAssociatedAssignmentKeyKey: nn<id>(associatedAssignmentKey, [NSNull null])
   }];
 }
 
 + (instancetype)lab_errorWithCode:(NSInteger)code
-             associatedExperiment:(NSString *)associatedExperiment
-                associatedVariant:(NSString *)associatedVariant {
+             associatedExperiment:(nullable NSString *)associatedExperiment
+                associatedVariant:(nullable NSString *)associatedVariant {
   return [NSError lt_errorWithCode:code userInfo:@{
-    kLABErrorAssociatedExperimentKey: associatedExperiment ?: [NSNull null],
-    kLABErrorAssociatedVariantKey: associatedVariant ?: [NSNull null]
+    kLABErrorAssociatedExperimentKey: nn<id>(associatedExperiment, [NSNull null]),
+    kLABErrorAssociatedVariantKey: nn<id>(associatedVariant, [NSNull null])
   }];
 }
 
 + (instancetype)lab_errorWithCode:(NSInteger)code
-             associatedExperiment:(NSString *)associatedExperiment
-                associatedVariant:(NSString *)associatedVariant
+             associatedExperiment:(nullable NSString *)associatedExperiment
+                associatedVariant:(nullable NSString *)associatedVariant
                   underlyingError:(nullable NSError *)underlyingError {
   return [NSError lt_errorWithCode:code userInfo:@{
-    kLABErrorAssociatedExperimentKey: associatedExperiment ?: [NSNull null],
-    kLABErrorAssociatedVariantKey: associatedVariant ?: [NSNull null],
-    NSUnderlyingErrorKey: underlyingError ?: [NSError lab_nullValueGivenError]
+    kLABErrorAssociatedExperimentKey: nn<id>(associatedExperiment, [NSNull null]),
+    kLABErrorAssociatedVariantKey: nn<id>(associatedVariant, [NSNull null]),
+    NSUnderlyingErrorKey: nn(underlyingError, [NSError lab_nullValueGivenError])
   }];
 }
 
