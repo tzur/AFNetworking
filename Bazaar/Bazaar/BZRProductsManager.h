@@ -19,14 +19,16 @@ NS_ASSUME_NONNULL_BEGIN
 ///   - Getting the list of products that was last fetched.
 @protocol BZRProductsManager <BZREventEmitter>
 
-/// Makes a purchase of the product specified by \c productIdentifier.
+/// Makes a purchase of the product specified by \c productIdentifier. Events can be sent on an
+/// arbitrary thread.
 ///
 /// Returns a signal that makes a purchase of the product and completes. The signal doesn't download
 /// the content of the product. To do so, \c fetchProductContent should be called. The signal errs
 /// if there was an error in the purchase.
 - (RACSignal *)purchaseProduct:(NSString *)productIdentifier;
 
-/// Provides access to the content of the given \c product.
+/// Provides access to the content of the given \c product. Events can be sent on an arbitrary
+/// thread.
 ///
 /// Returns a signal that starts the fetching process. The signal returns \c LTProgress with
 /// \c progress updates throughout the fetching process. When fetching is complete, the signal sends
@@ -36,14 +38,14 @@ NS_ASSUME_NONNULL_BEGIN
 /// The signal errs if there was an error while fetching the content.
 - (RACSignal<LTProgress<NSBundle *> *> *)fetchProductContent:(NSString *)productIdentifier;
 
-/// Deletes the content of the given \c product.
+/// Deletes the content of the given \c product. Events can be sent on an arbitrary thread.
 ///
 /// Returns a \c RACSignal that completes when the deletion has completed successfully. The signal
 /// errs if an error occurred.
 - (RACSignal *)deleteProductContent:(NSString *)productIdentifier;
 
 /// Refreshes the receipt. This updates the subscription information and restores the list of
-/// purchased products on all devices.
+/// purchased products on all devices. Events can be sent on an arbitrary thread.
 ///
 /// Returns a signal that refreshes the receipt and completes. The signal errs if the refresh has
 /// failed.
@@ -53,20 +55,22 @@ NS_ASSUME_NONNULL_BEGIN
 - (RACSignal *)refreshReceipt;
 
 /// Returns most recently fetched list of products. This however doesn't trigger the fetching
-/// process.
+/// process. Events can be sent on an arbitrary thread.
 ///
-/// Returns a signal that send the list of products as \c BZRProduct and completes. The signal errs
+/// Returns a signal that sends the list of products as \c BZRProduct and completes. The signal
+/// errs
 /// if there was an error while fetching the list of products.
 - (RACSignal<NSSet<BZRProduct *> *> *)productList;
 
-/// Validates the receipt.
+/// Validates the receipt. Events can be sent on an arbitrary thread.
 ///
 /// Returns a signal that validates the receipt. If validation is completed successfully, the latest
 /// receipt from Apple is received and the receipt validation status is sent. The signal completes
 /// when the validation is completed successfully. Otherwise the signal errs.
 - (RACSignal<BZRReceiptValidationStatus *> *)validateReceipt;
 
-/// Acquires all the non-subscription products that the active subscription enables.
+/// Acquires all the non-subscription products that the active subscription enables. Events can be
+/// sent on an arbitrary thread.
 ///
 /// Returns a signal that acquires all the non-subscription products that the subscription enables
 /// if the user has an active subscription. The signal completes after acquiring all the products.
@@ -75,7 +79,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Sends transactions that were completed successfully and do not match any pending payment
 /// request. Every \c SKPaymentTransaction object sent should be considered a successful purchase.
-/// The signal completes when the receiver is deallocated. The signal doesn't err.
+/// The signal completes when the receiver is deallocated. The signal doesn't err. Transactions can
+/// be sent on an arbitrary thread.
 ///
 /// @note The transactions sent here can be received in one of the following scenarios:
 /// 1. Purchases that were initiated outside of the app (eg. subscription renewals or upgrades).
