@@ -23,6 +23,14 @@ typedef NSMutableArray<id<LTContentTouchEvent>> LTMutableContentTouchEvents;
 /// content coordinate system. Undefined if the previous content touch event is not well-defined.
 @property (readonly, nonatomic) CGPoint previousContentLocation;
 
+/// Velocity, in point units of the \c content coordinate system, of this instance. Is
+/// \c LTVector2::null() if \c previousTimestamp is \c nil.
+@property (readonly, nonatomic) LTVector2 velocityInContentCoordinates;
+
+/// Boxed speed, in units of the \c content coordinate system, of this instance or \c nil if
+/// \c previousTimestamp is \c nil.
+@property (readonly, nonatomic, nullable) NSNumber *speedInContentCoordinates;
+
 /// Size, in integer pixel units, of the content rectangle when the touch event occurred.
 @property (readonly, nonatomic) CGSize contentSize;
 
