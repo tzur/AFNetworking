@@ -15,6 +15,8 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize viewLocation = _viewLocation;
 @synthesize previousViewLocation = _previousViewLocation;
 @synthesize previousTimestamp = _previousTimestamp;
+@synthesize velocityInViewCoordinates = _velocityInViewCoordinates;
+@synthesize speedInViewCoordinates = _speedInViewCoordinates;
 @synthesize phase = _phase;
 @synthesize tapCount = _tapCount;
 @synthesize majorRadius = _majorRadius;
@@ -49,6 +51,12 @@ NS_ASSUME_NONNULL_BEGIN
              estimationUpdateIndex:(nullable NSNumber *)estimationUpdateIndex
                estimatedProperties:(UITouchProperties)estimatedProperties
         propertiesExpectingUpdates:(UITouchProperties)propertiesExpectingUpdates {
+  if (previousTimestamp) {
+    LTParameterAssert(timestamp >= [previousTimestamp doubleValue], @"Provided invalid "
+                      "combination of timestamp %g and previous timestamp (%g)", timestamp,
+                      [previousTimestamp doubleValue]);
+  }
+
   if (self = [super init]) {
     _sequenceID = sequenceID;
     _timestamp = timestamp;
@@ -69,6 +77,14 @@ NS_ASSUME_NONNULL_BEGIN
     _estimationUpdateIndex = estimationUpdateIndex;
     _estimatedProperties = estimatedProperties;
     _estimatedPropertiesExpectingUpdates = propertiesExpectingUpdates;
+
+    // Derived properties.
+    _velocityInViewCoordinates =
+        previousTimestamp && timestamp > [previousTimestamp doubleValue] ?
+        LTVector2(viewLocation - previousViewLocation) /
+        (timestamp - [previousTimestamp doubleValue]) : LTVector2::null();
+    _speedInViewCoordinates = !_velocityInViewCoordinates.isNull() ?
+        @(_velocityInViewCoordinates.length()) : nil;
   }
   return self;
 }

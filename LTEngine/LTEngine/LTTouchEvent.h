@@ -63,6 +63,16 @@ typedef NS_ENUM(NSUInteger, LTTouchEventSequenceState) {
 /// well-defined.
 @property (readonly, nonatomic, nullable) NSNumber *previousTimestamp;
 
+/// Velocity, in point units of the \c view coordinate system, of this instance. Is
+/// \c LTVector2::null() if \c previousTimestamp is \c nil or if \c timestamp equals the unboxed
+/// value of \c previousTimestamp.
+@property (readonly, nonatomic) LTVector2 velocityInViewCoordinates;
+
+/// Boxed speed, in point units of the \c view coordinate system, of this instance or \c nil if
+/// \c previousTimestamp is \c nil or if \c timestamp equals the unboxed value of
+/// \c previousTimestamp.
+@property (readonly, nonatomic, nullable) NSNumber *speedInViewCoordinates;
+
 #pragma mark -
 #pragma mark Properties of UITouch
 #pragma mark -

@@ -28,7 +28,7 @@ beforeEach(^{
   timestamp = 1;
   viewLocation = CGPointMake(2, 3);
   previousViewLocation = CGPointMake(4, 5);
-  previousTimestamp = @(5.5);
+  previousTimestamp = @5.5;
   phase = UITouchPhaseMoved;
   tapCount = 6;
   majorRadius = 7;
@@ -324,7 +324,7 @@ context(@"initialization", ^{
     expect(touchEvent.timestamp).to.equal(kPreviousTimestamp + 1);
     expect([touchEvent.previousTimestamp doubleValue]).to.equal(kPreviousTimestamp);
   });
-  
+
   it(@"should initialize using timestamp of the given touch but without previous timestamp", ^{
     OCMExpect([touchMock timestamp]).andReturn(timestamp);
 
@@ -431,6 +431,69 @@ context(@"copying", ^{
     LTTouchEvent *touchEvent =
         [LTTouchEvent touchEventWithPropertiesOfTouch:OCMClassMock([UITouch class]) sequenceID:0];
     expect([touchEvent copy]).to.beIdenticalTo(touchEvent);
+  });
+});
+
+context(@"velocity and speed", ^{
+  __block UITouch *touchMock;
+
+  beforeEach(^{
+    touchMock = OCMClassMock([UITouch class]);
+    if (@available(iOS 9.1, *)) {
+      OCMExpect([touchMock preciseLocationInView:OCMOCK_ANY]).andReturn(CGPointMake(0, 7));
+      OCMExpect([touchMock precisePreviousLocationInView:OCMOCK_ANY]).andReturn(CGPointZero);
+    } else {
+      OCMExpect([touchMock locationInView:OCMOCK_ANY]).andReturn(CGPointMake(0, 7));
+      OCMExpect([touchMock previousLocationInView:OCMOCK_ANY]).andReturn(CGPointZero);
+    }
+
+    OCMStub([touchMock timestamp]).andReturn(1);
+  });
+
+  context(@"velocity", ^{
+    it(@"should return the correct velocity", ^{
+      LTTouchEvent *touchEvent = [LTTouchEvent touchEventWithPropertiesOfTouch:touchMock
+                                                             previousTimestamp:@0
+                                                                    sequenceID:0];
+      expect(touchEvent.velocityInViewCoordinates).to.equal(LTVector2(0, 7));
+    });
+
+    it(@"should return LTVector2::null() as velocity if previousTimestamp is nil", ^{
+      LTTouchEvent *touchEvent = [LTTouchEvent touchEventWithPropertiesOfTouch:touchMock
+                                                                    sequenceID:0];
+      expect(touchEvent.velocityInViewCoordinates.isNull()).to.beTruthy();
+    });
+
+    it(@"should return LTVector2::null() as velocity if timestamp equals previousTimestamp", ^{
+      LTTouchEvent *touchEvent = [LTTouchEvent touchEventWithPropertiesOfTouch:touchMock
+                                                                     timestamp:0
+                                                             previousTimestamp:@0
+                                                                    sequenceID:0];
+      expect(touchEvent.velocityInViewCoordinates.isNull()).to.beTruthy();
+    });
+  });
+
+  context(@"speed", ^{
+    it(@"should return the correct speed", ^{
+      LTTouchEvent *touchEvent = [LTTouchEvent touchEventWithPropertiesOfTouch:touchMock
+                                                             previousTimestamp:@0
+                                                                    sequenceID:0];
+      expect(touchEvent.speedInViewCoordinates).to.equal(@7);
+    });
+
+    it(@"should return nil as speed if timestamp equals previousTimestamp", ^{
+      LTTouchEvent *touchEvent = [LTTouchEvent touchEventWithPropertiesOfTouch:touchMock
+                                                                     timestamp:0
+                                                             previousTimestamp:@0
+                                                                    sequenceID:0];
+      expect(touchEvent.speedInViewCoordinates).to.beNil();
+    });
+
+    it(@"should return nil as speed if previousTimestamp is nil", ^{
+      LTTouchEvent *touchEvent = [LTTouchEvent touchEventWithPropertiesOfTouch:touchMock
+                                                                    sequenceID:0];
+      expect(touchEvent.speedInViewCoordinates).to.beNil();
+    });
   });
 });
 
