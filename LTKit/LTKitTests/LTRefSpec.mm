@@ -242,8 +242,37 @@ context(@"explicit boolean operator", ^{
   });
 });
 
+context(@"equality operators", ^{
+  it(@"equal", ^{
+    lt::Ref<CGMutablePathRef> ref(CGPathCreateMutable());
+    lt::Ref<CGMutablePathRef> anotherRef = ref;
+    lt::Ref<CGMutablePathRef> nullRef;
 
+    expect(ref == anotherRef).to.beTruthy();
+    expect(anotherRef == ref).to.beTruthy();
+    expect(nullRef == nullptr).to.beTruthy();
+    expect(nullptr == nullRef).to.beTruthy();
+    expect(ref == nullRef).to.beFalsy();
+    expect(nullRef == ref).to.beFalsy();
+    expect(ref == nullptr).to.beFalsy();
+    expect(nullptr == ref).to.beFalsy();
   });
+
+  it(@"not equal", ^{
+    lt::Ref<CGMutablePathRef> ref(CGPathCreateMutable());
+    lt::Ref<CGMutablePathRef> anotherRef = ref;
+    lt::Ref<CGMutablePathRef> nullRef;
+
+    expect(ref != anotherRef).to.beFalsy();
+    expect(anotherRef != ref).to.beFalsy();
+    expect(nullRef != nullptr).to.beFalsy();
+    expect(nullptr != nullRef).to.beFalsy();
+    expect(ref != nullRef).to.beTruthy();
+    expect(nullRef != ref).to.beTruthy();
+    expect(ref != nullptr).to.beTruthy();
+    expect(nullptr != ref).to.beTruthy();
+  });
+});
 
 context(@"reset", ^{
   it(@"should reset correctly", ^{

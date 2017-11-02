@@ -306,6 +306,36 @@ constexpr auto makeRef(T &&reference) noexcept {
   return lt::Ref<typename std::remove_reference<T>::type>(std::forward<T>(reference));
 }
 
+template <typename T, typename U>
+constexpr bool operator==(const Ref<T> &x, const Ref<U> &y) noexcept {
+  return x.get() == y.get();
+}
+
+template <typename T>
+constexpr bool operator==(nullptr_t, const Ref<T> &x) noexcept {
+  return !x;
+}
+
+template <typename T>
+constexpr bool operator==(const Ref<T> &x, nullptr_t) noexcept {
+  return !x;
+}
+
+template <typename T, typename U>
+constexpr bool operator!=(const Ref<T> &x, const Ref<U> &y) noexcept {
+  return !(x == y);
+}
+
+template <typename T>
+constexpr bool operator!=(nullptr_t, const Ref<T> &x) noexcept {
+  return static_cast<bool>(x);
+}
+
+template <typename T>
+constexpr bool operator!=(const Ref<T> &x, nullptr_t) noexcept {
+  return static_cast<bool>(x);
+}
+
 } // namespace lt
 
 #endif
