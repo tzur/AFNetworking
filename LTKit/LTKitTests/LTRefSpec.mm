@@ -3,215 +3,205 @@
 
 #import "LTRef.h"
 
-class LTMyType {
-public:
-  LTMyType(const std::string &name) : _name(name) {};
-
-  const std::string name() const {
-    return _name;
-  }
-
-private:
-  const std::string _name;
-};
-
-class LTMyDerivedType : public LTMyType {
-public:
-  LTMyDerivedType(const std::string &name) : LTMyType(name) {};
-};
-
-typedef void (^LTMyTypeReleaseBlock)(const LTMyType *myType);
-
-static LTMyTypeReleaseBlock releaseBlock;
-
-void LTMyTypeRelease(const LTMyType *myType) {
-  if (releaseBlock) {
-    releaseBlock(myType);
-  }
-  delete myType;
-}
-
-LTRefReleaserMake(LTMyType *, LTMyTypeRelease);
-LTRefReleaserMake(const LTMyType *, LTMyTypeRelease);
-LTRefReleaserMake(LTMyDerivedType *, LTMyTypeRelease);
-
 SpecBegin(LTRef)
 
-context(@"releaser for custom type", ^{
-  __block BOOL released;
+context(@"constructor", ^{
+  it(@"should be empty when constructed with no reference", ^{
+    lt::Ref<CGMutablePathRef> ref;
 
-  beforeEach(^{
-    released = NO;
-
-    releaseBlock = ^(const LTMyType *releasedMyType) {
-      expect(@(releasedMyType->name().c_str())).to.equal(@"foo");
-      released = YES;
-    };
+    CGMutablePathRef reference = ref.get();
+    expect(reference).to.equal(nullptr);
   });
 
-  afterEach(^{
-    releaseBlock = nil;
+  it(@"should be empty when constructed with nullptr_t", ^{
+    lt::Ref<CGMutablePathRef> ref(nullptr);
+
+    CGMutablePathRef reference = ref.get();
+    expect(reference).to.equal(nullptr);
   });
 
-  it(@"should call release function when Ref is destroyed", ^{
-    {
-      lt::Ref<LTMyType *> myType(new LTMyType("foo"));
-    }
+  it(@"should not change retain count on construction", ^{
+    CGMutablePathRef mutablePathRef = CGPathCreateMutable();
+    CFIndex beforeRetainCount = CFGetRetainCount(mutablePathRef);
 
-    expect(released).to.beTruthy();
+    lt::Ref<CGMutablePathRef> ref(mutablePathRef);
+    CFIndex afterRetainCount = CFGetRetainCount(mutablePathRef);
+
+    expect(afterRetainCount).to.equal(beforeRetainCount);
   });
 
-  it(@"should call release function when resetting the Ref", ^{
-    lt::Ref<LTMyType *> myType(new LTMyType("foo"));
-    myType.reset(nullptr);
+  it(@"should retain when constructing with ::retain", ^{
+    CGMutablePathRef reference = CGPathCreateMutable();
+    CFIndex beforeRetainCount = CFGetRetainCount(reference);
 
-    bool empty = !myType;
-    expect(empty).to.beTruthy();
+    lt::Ref<CGMutablePathRef> ref = lt::Ref<CGMutablePathRef>::retain(reference);
+    CGMutablePathRef retainedReference = ref.get();
+    CFIndex afterRetainCount = CFGetRetainCount(retainedReference);
+
+    expect(retainedReference).to.equal(reference);
+    expect(afterRetainCount).to.equal(beforeRetainCount + 1);
+
+    CFRelease(reference);
+  });
+
+  it(@"should create a ref with makeRef", ^{
+    CGMutablePathRef reference = CGPathCreateMutable();
+    auto ref = lt::makeRef(reference);
+    CGMutablePathRef constructedRef = ref.get();
+
+    expect(constructedRef).to.equal(reference);
+  });
+
+  it(@"should create a ref with makeRef that accepts an rvalue reference", ^{
+    CGMutablePathRef reference = CGPathCreateMutable();
+    auto ref = lt::makeRef(std::move(reference));
+    CGMutablePathRef constructedRef = ref.get();
+
+    expect(constructedRef).to.equal(reference);
+  });
+});
+
+context(@"copy constructor", ^{
+  it(@"should increase retain count when copying", ^{
+    CGMutablePathRef mutablePathRef = CGPathCreateMutable();
+    lt::Ref<CGMutablePathRef> firstRef(mutablePathRef);
+
+    CFIndex beforeRetainCount = CFGetRetainCount(firstRef.get());
+    lt::Ref<CGMutablePathRef> secondRef(firstRef);
+    CFIndex afterRetainCount = CFGetRetainCount(secondRef.get());
+
+    CGMutablePathRef firstReference = firstRef.get();
+    CGMutablePathRef secondReference = secondRef.get();
+
+    expect(firstReference).to.equal(secondReference);
+    expect(afterRetainCount).to.equal(beforeRetainCount + 1);
+  });
+
+  it(@"should copy construct to a const type", ^{
+    CGMutablePathRef mutablePathRef = CGPathCreateMutable();
+    lt::Ref<CGMutablePathRef> firstRef(mutablePathRef);
+
+    CFIndex beforeRetainCount = CFGetRetainCount(firstRef.get());
+    lt::Ref<CGPathRef> secondRef(firstRef);
+    CFIndex afterRetainCount = CFGetRetainCount(secondRef.get());
+
+    CGMutablePathRef firstReference = firstRef.get();
+    CGPathRef secondReference = secondRef.get();
+
+    expect(firstReference).to.equal(secondReference);
+    expect(afterRetainCount).to.equal(beforeRetainCount + 1);
+  });
+});
+
+context(@"assignment operator", ^{
+  it(@"should increase retain count when assigning", ^{
+    CGMutablePathRef mutablePathRef = CGPathCreateMutable();
+    lt::Ref<CGMutablePathRef> firstRef(mutablePathRef);
+
+    CFIndex beforeRetainCount = CFGetRetainCount(firstRef.get());
+    lt::Ref<CGMutablePathRef> secondRef;
+    secondRef = firstRef;
+    CFIndex afterRetainCount = CFGetRetainCount(secondRef.get());
+
+    CGMutablePathRef firstReference = firstRef.get();
+    CGMutablePathRef secondReference = secondRef.get();
+
+    expect(firstReference).to.equal(secondReference);
+    expect(afterRetainCount).to.equal(beforeRetainCount + 1);
+  });
+
+  it(@"should release previous reference when assigning", ^{
+    CGMutablePathRef firstReference = CGPathCreateMutable();
+    lt::Ref<CGMutablePathRef> firstRef(firstReference);
+
+    CGMutablePathRef secondReference = CGPathCreateMutable();
+    CFRetain(secondReference);
+    CFIndex beforeRetainCount = CFGetRetainCount(secondReference);
+    lt::Ref<CGMutablePathRef> secondRef(secondReference);
+
+    secondRef = firstRef;
+
+    CFIndex afterRetainCount = CFGetRetainCount(secondReference);
+    expect(afterRetainCount).to.equal(beforeRetainCount - 1);
+
+    CFRelease(secondReference);
+  });
+
+  it(@"should assign construct to a const type", ^{
+    CGMutablePathRef mutablePathRef = CGPathCreateMutable();
+    lt::Ref<CGMutablePathRef> firstRef(mutablePathRef);
+
+    CFIndex beforeRetainCount = CFGetRetainCount(firstRef.get());
+    lt::Ref<CGPathRef> secondRef;
+    secondRef = firstRef;
+    CFIndex afterRetainCount = CFGetRetainCount(secondRef.get());
+
+    CGMutablePathRef firstReference = firstRef.get();
+    CGPathRef secondReference = secondRef.get();
+
+    expect(firstReference).to.equal(secondReference);
+    expect(afterRetainCount).to.equal(beforeRetainCount + 1);
   });
 });
 
 context(@"move semantics", ^{
   it(@"should use move constructor correctly", ^{
-    lt::Ref<LTMyType *> myType(new LTMyType("foo"));
-    LTMyType *firstReference = myType.get();
+    lt::Ref<CGMutablePathRef> ref(CGPathCreateMutable());
+    auto firstReference = ref.get();
 
-    lt::Ref<LTMyType *> movedMyType = std::move(myType);
-    LTMyType *movedReference = movedMyType.get();
+    lt::Ref<CGMutablePathRef> movedRef = std::move(ref);
+    CGMutablePathRef movedReference = movedRef.get();
 
-    LTMyType *stolenReference = myType.get();
+    CGMutablePathRef stolenReference = ref.get();
 
     expect(firstReference).to.equal(movedReference);
-    expect(stolenReference).toNot.equal(movedReference);
+    expect(stolenReference).to.equal(nullptr);
   });
 
   it(@"should use move constructor to a const type", ^{
-    lt::Ref<LTMyType *> myType(new LTMyType("foo"));
-    LTMyType *firstReference = myType.get();
+    lt::Ref<CGMutablePathRef> ref(CGPathCreateMutable());
+    auto firstReference = ref.get();
 
-    lt::Ref<const LTMyType *> movedMyType = std::move(myType);
-    const LTMyType *movedReference = movedMyType.get();
+    lt::Ref<CGPathRef> movedRef = std::move(ref);
+    CGPathRef movedReference = movedRef.get();
 
-    LTMyType *stolenReference = myType.get();
-
-    expect(firstReference).to.equal(movedReference);
-    expect(stolenReference).toNot.equal(movedReference);
-  });
-
-  it(@"should use move constructor to a different type", ^{
-    lt::Ref<LTMyDerivedType *> myType(new LTMyDerivedType("foo"));
-    LTMyType *firstReference = myType.get();
-
-    lt::Ref<LTMyType *> movedMyType = std::move(myType);
-    LTMyType *movedReference = movedMyType.get();
-
-    LTMyType *stolenReference = myType.get();
+    CGPathRef stolenReference = ref.get();
 
     expect(firstReference).to.equal(movedReference);
-    expect(stolenReference).toNot.equal(movedReference);
+    expect(stolenReference).to.equal(nullptr);
   });
 
   it(@"should use move assignment operator correctly", ^{
-    lt::Ref<LTMyType *> myType(new LTMyType("foo"));
-    lt::Ref<LTMyType *> movedMyType;
+    lt::Ref<CGMutablePathRef> ref(CGPathCreateMutable());
+    lt::Ref<CGMutablePathRef> movedRef;
 
-    LTMyType *firstReference = myType.get();
-    movedMyType = std::move(myType);
+    CGMutablePathRef firstReference = ref.get();
+    movedRef = std::move(ref);
 
-    LTMyType *movedReference = movedMyType.get();
-    LTMyType *stolenReference = myType.get();
+    CGMutablePathRef movedReference = movedRef.get();
+    CGMutablePathRef stolenReference = ref.get();
 
     expect(firstReference).to.equal(movedReference);
-    expect(stolenReference).toNot.equal(movedReference);
+    expect(stolenReference).to.equal(nullptr);
   });
 
   it(@"should use move assignment to a const type", ^{
-    lt::Ref<LTMyType *> myType(new LTMyType("foo"));
-    lt::Ref<const LTMyType *> movedMyType;
+    lt::Ref<CGMutablePathRef> ref(CGPathCreateMutable());
+    lt::Ref<CGPathRef> movedRef;
 
-    LTMyType *firstReference = myType.get();
-    movedMyType = std::move(myType);
+    CGMutablePathRef firstReference = ref.get();
+    movedRef = std::move(ref);
 
-    const LTMyType *movedReference = movedMyType.get();
-    LTMyType *stolenReference = myType.get();
-
-    expect(firstReference).to.equal(movedReference);
-    expect(stolenReference).toNot.equal(movedReference);
-  });
-
-  it(@"should use move assignment to a different type", ^{
-    lt::Ref<LTMyDerivedType *> myType(new LTMyDerivedType("foo"));
-    lt::Ref<LTMyType *> movedMyType;
-
-    LTMyType *firstReference = myType.get();
-    movedMyType = std::move(myType);
-
-    LTMyType *movedReference = movedMyType.get();
-    LTMyType *stolenReference = myType.get();
+    CGPathRef movedReference = movedRef.get();
+    CGMutablePathRef stolenReference = ref.get();
 
     expect(firstReference).to.equal(movedReference);
-    expect(stolenReference).toNot.equal(movedReference);
+    expect(stolenReference).to.equal(nullptr);
   });
 });
 
-context(@"getting the underlying reference", ^{
-  it(@"should retrieve the underlying reference with get()", ^{
-    LTMyType *myType = new LTMyType("foo");
-    lt::Ref<LTMyType *> myTypeRef(myType);
-
-    LTMyType *myTypeRetrieved = myTypeRef.get();
-    expect(myTypeRetrieved).to.equal(myType);
-  });
-
-  it(@"should retrieve the underlying reference with implicit cast", ^{
-    LTMyType *myType = new LTMyType("foo");
-    lt::Ref<LTMyType *> myTypeRef(myType);
-
-    LTMyType *myTypeRetrieved = myTypeRef.get();
-    expect(myTypeRetrieved).to.equal(myType);
-  });
-});
-
-context(@"explicit boolean operator", ^{
-  it(@"should be empty when constructed with no ref", ^{
-    lt::Ref<LTMyType *> ref;
-
-    bool empty = !ref;
-    expect(empty).to.beTruthy();
-  });
-
-  it(@"should be not empty when constructed with a valid ref", ^{
-    lt::Ref<LTMyType *> ref(new LTMyType("foo"));
-
-    bool empty = !ref;
-    expect(empty).to.beFalsy();
-  });
-
-  it(@"should be empty after reset to nullptr", ^{
-    lt::Ref<LTMyType *> ref(new LTMyType("foo"));
-    ref.reset(nullptr);
-
-    bool empty = !ref;
-    expect(empty).to.beTruthy();
-  });
-});
-
-context(@"releasing a ref", ^{
-  it(@"should release a ref and return it", ^{
-    lt::Ref<LTMyType *> ref(new LTMyType("foo"));
-
-    LTMyType *rawPointer = ref.get();
-    LTMyType *myType = ref.release();
-
-    bool empty = !ref;
-    expect(empty).to.beTruthy();
-    expect(rawPointer).to.to.equal(myType);
-
-    delete myType;
-  });
-});
-
-context(@"releaser for core foundation objects", ^{
-  it(@"should release CGMutablePathRef", ^{
+context(@"destructor", ^{
+  it(@"should decrease retain count when releasing", ^{
     CGMutablePathRef mutablePathRef;
     CFIndex retainCount;
 
@@ -223,6 +213,105 @@ context(@"releaser for core foundation objects", ^{
 
     expect(CFGetRetainCount(mutablePathRef)).to.equal(retainCount - 1);
     CFRelease(mutablePathRef);
+  });
+});
+
+context(@"getting the underlying reference", ^{
+  it(@"should retrieve the underlying reference with get()", ^{
+    CGMutablePathRef reference = CGPathCreateMutable();
+    lt::Ref<CGMutablePathRef> ref(reference);
+
+    CGMutablePathRef retrievedReference = ref.get();
+    expect(retrievedReference).to.equal(reference);
+  });
+});
+
+context(@"explicit boolean operator", ^{
+  it(@"should return true when constructed with a non null reference", ^{
+    lt::Ref<CGMutablePathRef> ref(CGPathCreateMutable());
+
+    bool empty = !ref;
+    expect(empty).to.beFalsy();
+  });
+
+  it(@"should return false when holding a nullptr", ^{
+    lt::Ref<CGMutablePathRef> ref;
+
+    bool empty = !ref;
+    expect(empty).to.beTruthy();
+  });
+});
+
+context(@"equality operators", ^{
+  it(@"equal", ^{
+    lt::Ref<CGMutablePathRef> ref(CGPathCreateMutable());
+    lt::Ref<CGMutablePathRef> anotherRef = ref;
+    lt::Ref<CGMutablePathRef> nullRef;
+
+    expect(ref == anotherRef).to.beTruthy();
+    expect(anotherRef == ref).to.beTruthy();
+    expect(nullRef == nullptr).to.beTruthy();
+    expect(nullptr == nullRef).to.beTruthy();
+    expect(ref == nullRef).to.beFalsy();
+    expect(nullRef == ref).to.beFalsy();
+    expect(ref == nullptr).to.beFalsy();
+    expect(nullptr == ref).to.beFalsy();
+  });
+
+  it(@"not equal", ^{
+    lt::Ref<CGMutablePathRef> ref(CGPathCreateMutable());
+    lt::Ref<CGMutablePathRef> anotherRef = ref;
+    lt::Ref<CGMutablePathRef> nullRef;
+
+    expect(ref != anotherRef).to.beFalsy();
+    expect(anotherRef != ref).to.beFalsy();
+    expect(nullRef != nullptr).to.beFalsy();
+    expect(nullptr != nullRef).to.beFalsy();
+    expect(ref != nullRef).to.beTruthy();
+    expect(nullRef != ref).to.beTruthy();
+    expect(ref != nullptr).to.beTruthy();
+    expect(nullptr != ref).to.beTruthy();
+  });
+});
+
+context(@"reset", ^{
+  it(@"should reset correctly", ^{
+    lt::Ref<CGMutablePathRef> ref(CGPathCreateMutable());
+    ref.reset(nullptr);
+
+    bool empty = !ref;
+    expect(empty).to.beTruthy();
+  });
+});
+
+context(@"release", ^{
+  it(@"should release correctly", ^{
+    CGMutablePathRef reference = CGPathCreateMutable();
+    CFIndex beforeRetainCount = CFGetRetainCount(reference);
+
+    lt::Ref<CGMutablePathRef> ref(reference);
+    CGMutablePathRef releasedReference = ref.release();
+    CFIndex afterRetainCount = CFGetRetainCount(releasedReference);
+
+    expect(reference).to.equal(releasedReference);
+    expect(afterRetainCount).to.equal(beforeRetainCount);
+
+    CFRelease(reference);
+  });
+});
+
+context(@"releasing a ref", ^{
+  it(@"should release a ref and return it", ^{
+    lt::Ref<CGMutablePathRef> ref(CGPathCreateMutable());
+
+    CGMutablePathRef rawPointer = ref.get();
+    CGMutablePathRef reference = ref.release();
+
+    bool empty = !ref;
+    expect(empty).to.beTruthy();
+    expect(rawPointer).to.to.equal(reference);
+
+    CFRelease(reference);
   });
 });
 

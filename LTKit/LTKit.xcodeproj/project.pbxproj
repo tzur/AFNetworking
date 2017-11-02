@@ -559,6 +559,7 @@
 		8B4E494A19E950C800B3F55D /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		8B59AA9B1DABC54F0006CC22 /* LTEventBusLoggerTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTEventBusLoggerTarget.h; sourceTree = "<group>"; };
 		8B59AA9C1DABC54F0006CC22 /* LTEventBusLoggerTarget.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTEventBusLoggerTarget.mm; sourceTree = "<group>"; };
+		8B6A468F1FA1B64E0034B230 /* LTDefines.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTDefines.h; sourceTree = "<group>"; };
 		8B6A6EBC1CDA3ADC005FB7D9 /* LTRuntime.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTRuntime.h; sourceTree = "<group>"; };
 		8B6A6EBD1CDA3ADC005FB7D9 /* LTRuntime.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTRuntime.mm; sourceTree = "<group>"; };
 		8B6A6ED81CDA3B60005FB7D9 /* LTRuntimeSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTRuntimeSpec.mm; sourceTree = "<group>"; };
@@ -1077,6 +1078,7 @@
 			isa = PBXGroup;
 			children = (
 				8BA3E13F182A68FC00FDD95A /* LTAssert.h */,
+				8B6A468F1FA1B64E0034B230 /* LTDefines.h */,
 				8B78CFDC197654A900684B1D /* LTEnum.h */,
 				8BBB14A8194F489B000CF391 /* LTEnumMacros.h */,
 				8B87D5AA1C05B1E10005410A /* LTErrorCodesRegistry.h */,
