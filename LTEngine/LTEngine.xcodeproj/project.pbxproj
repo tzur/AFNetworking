@@ -895,7 +895,6 @@
 		8B3C0A561832952A000845BA /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3DEC1418296D8300EA0C1A /* CoreGraphics.framework */; };
 		8B3C0A5718329531000845BA /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3C0A5118329505000845BA /* CoreVideo.framework */; };
 		8B3C0A5918329538000845BA /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3C0A5818329538000845BA /* CoreMedia.framework */; };
-		8B3C0A5B1832953E000845BA /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3C0A5A1832953E000845BA /* AssetsLibrary.framework */; };
 		8B3DEBE818296B6100EA0C1A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3DEBE718296B6100EA0C1A /* Foundation.framework */; };
 		8B3DEBF718296B6100EA0C1A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3DEBE718296B6100EA0C1A /* Foundation.framework */; };
 		8B3DEBFC18296B6100EA0C1A /* libLTEngine.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3DEBE418296B6100EA0C1A /* libLTEngine.a */; };
@@ -3144,7 +3143,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				8BA8C68918699D9F00E6F486 /* Accelerate.framework in Frameworks */,
-				8B3C0A5B1832953E000845BA /* AssetsLibrary.framework in Frameworks */,
 				8B3C0A5518329524000845BA /* AVFoundation.framework in Frameworks */,
 				8B3C0A561832952A000845BA /* CoreGraphics.framework in Frameworks */,
 				8861FC5F1E5A263000CA1436 /* CoreImage.framework in Frameworks */,
