@@ -27,6 +27,7 @@ NS_ASSUME_NONNULL_BEGIN
 @dynamic viewLocation;
 @dynamic previousViewLocation;
 @dynamic timestamp;
+@dynamic previousTimestamp;
 @dynamic view;
 @dynamic phase;
 @dynamic tapCount;

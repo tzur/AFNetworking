@@ -9,6 +9,7 @@ SpecBegin(LTContentTouchEvent)
 static const NSTimeInterval kTimestamp = 1;
 static const CGPoint kViewLocation = CGPointMake(2, 3);
 static const CGPoint kPreviousViewLocation = CGPointMake(4, 5);
+static const NSNumber *kPreviousTimestamp = @5.5;
 static const UITouchPhase kPhase = UITouchPhaseMoved;
 static const NSUInteger kTapCount = 6;
 static const CGFloat kMajorRadius = 7;
@@ -48,6 +49,7 @@ beforeEach(^{
   OCMStub([touchEventMock timestamp]).andReturn(kTimestamp);
   OCMStub([touchEventMock viewLocation]).andReturn(kViewLocation);
   OCMStub([touchEventMock previousViewLocation]).andReturn(kPreviousViewLocation);
+  OCMStub([touchEventMock previousTimestamp]).andReturn(kPreviousTimestamp);
   OCMStub([touchEventMock phase]).andReturn(kPhase);
   OCMStub([touchEventMock tapCount]).andReturn(kTapCount);
   OCMStub([touchEventMock majorRadius]).andReturn(kMajorRadius);
@@ -87,6 +89,7 @@ context(@"initialization", ^{
     expect(contentTouchEvent.timestamp).to.equal(kTimestamp);
     expect(contentTouchEvent.viewLocation).to.equal(kViewLocation);
     expect(contentTouchEvent.previousViewLocation).to.equal(kPreviousViewLocation);
+    expect(contentTouchEvent.previousTimestamp).to.equal(kPreviousTimestamp);
     expect(contentTouchEvent.phase).to.equal(kPhase);
     expect(contentTouchEvent.tapCount).to.equal(kTapCount);
     expect(contentTouchEvent.majorRadius).to.equal(kMajorRadius);
