@@ -4,7 +4,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /// Adds convenience methods for getting a localized price given a locale identifier.
-@interface NSNumber (Localization)
+@interface NSDecimalNumber (Localization)
 
 /// Returns the localized price of the price specified by the receiver and \c localeIdentifier. The
 /// decimal places from the third onwards are trimmed.
