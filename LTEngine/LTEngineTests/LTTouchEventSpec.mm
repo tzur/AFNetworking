@@ -9,6 +9,7 @@ SpecBegin(LTTouchEvent)
 __block NSTimeInterval timestamp;
 __block CGPoint viewLocation;
 __block CGPoint previousViewLocation;
+__block NSNumber *previousTimestamp;
 __block CGFloat majorRadius;
 __block CGFloat majorRadiusTolerance;
 __block NSUInteger tapCount;
@@ -27,6 +28,7 @@ beforeEach(^{
   timestamp = 1;
   viewLocation = CGPointMake(2, 3);
   previousViewLocation = CGPointMake(4, 5);
+  previousTimestamp = @(5.5);
   phase = UITouchPhaseMoved;
   tapCount = 6;
   majorRadius = 7;
@@ -70,14 +72,13 @@ context(@"initialization", ^{
 
   it(@"should initialize using the view of the given touch", ^{
     UIView *view = [[UIView alloc] init];
-    OCMExpect([touchMock view]).andReturn(view);
+    OCMStub([touchMock view]).andReturn(view);
     LTTouchEvent *touchEvent = [LTTouchEvent touchEventWithPropertiesOfTouch:touchMock
                                                                   sequenceID:0];
     expect(touchEvent.view).to.beIdenticalTo(view);
-    OCMVerifyAll((id)touchMock);
   });
 
-  it(@"should initialize using the time stamp of the given touch", ^{
+  it(@"should initialize using the timestamp of the given touch", ^{
     OCMExpect([touchMock timestamp]).andReturn(timestamp);
     LTTouchEvent *touchEvent = [LTTouchEvent touchEventWithPropertiesOfTouch:touchMock
                                                                   sequenceID:0];
@@ -85,10 +86,20 @@ context(@"initialization", ^{
     OCMVerifyAll((id)touchMock);
   });
 
+  it(@"should initialize without previous timestamp", ^{
+    LTTouchEvent *touchEvent = [LTTouchEvent touchEventWithPropertiesOfTouch:touchMock
+                                                                  sequenceID:0];
+    expect(touchEvent.previousTimestamp).to.beNil();
+  });
+
   context(@"locations in view", ^{
     it(@"should initialize using the view location of the given touch", ^{
       OCMStub([touchMock view]).andReturn(strictViewMock);
-      OCMExpect([touchMock locationInView:strictViewMock]).andReturn(viewLocation);
+      if (@available(iOS 9.1, *)) {
+        OCMExpect([touchMock preciseLocationInView:strictViewMock]).andReturn(viewLocation);
+      } else {
+        OCMExpect([touchMock locationInView:strictViewMock]).andReturn(viewLocation);
+      }
       LTTouchEvent *touchEvent = [LTTouchEvent touchEventWithPropertiesOfTouch:touchMock
                                                                     sequenceID:0];
       expect(touchEvent.viewLocation).to.equal(viewLocation);
@@ -97,7 +108,13 @@ context(@"initialization", ^{
 
     it(@"should initialize using the previous view location of the given touch", ^{
       OCMStub([touchMock view]).andReturn(strictViewMock);
-      OCMExpect([touchMock previousLocationInView:strictViewMock]).andReturn(previousViewLocation);
+      if (@available(iOS 9.1, *)) {
+        OCMExpect([touchMock precisePreviousLocationInView:strictViewMock])
+            .andReturn(previousViewLocation);
+      } else {
+        OCMExpect([touchMock previousLocationInView:strictViewMock])
+            .andReturn(previousViewLocation);
+      }
       LTTouchEvent *touchEvent = [LTTouchEvent touchEventWithPropertiesOfTouch:touchMock
                                                                     sequenceID:0];
       expect(touchEvent.previousViewLocation).to.equal(previousViewLocation);
@@ -245,9 +262,15 @@ context(@"initialization", ^{
     // This test ensures that no additional new or existing properties of the given touch are
     // accessed without updating the tests.
     OCMExpect([strictTouchMock timestamp]).andReturn(timestamp);
-    OCMExpect([strictTouchMock locationInView:strictViewMock]).andReturn(viewLocation);
-    OCMExpect([strictTouchMock previousLocationInView:strictViewMock])
-        .andReturn(previousViewLocation);
+    if (@available(iOS 9.1, *)) {
+      OCMExpect([strictTouchMock preciseLocationInView:strictViewMock]).andReturn(viewLocation);
+      OCMExpect([strictTouchMock precisePreviousLocationInView:strictViewMock])
+          .andReturn(previousViewLocation);
+    } else {
+      OCMExpect([strictTouchMock locationInView:strictViewMock]).andReturn(viewLocation);
+      OCMExpect([strictTouchMock previousLocationInView:strictViewMock])
+          .andReturn(previousViewLocation);
+    }
     OCMExpect([strictTouchMock phase]).andReturn(phase);
     OCMExpect([strictTouchMock tapCount]).andReturn(tapCount);
     OCMExpect([strictTouchMock majorRadius]).andReturn(majorRadius);
@@ -289,13 +312,51 @@ context(@"initialization", ^{
     OCMVerifyAll((id)strictTouchMock);
   });
 
-  it(@"should initialize with a given timestamp", ^{
-    static const NSTimeInterval kTimestamp = 123.456789;
+  it(@"should initialize using timestamp of the given touch and given previous timestamp", ^{
+    static const NSTimeInterval kPreviousTimestamp = 123.456789;
+    OCMExpect([touchMock timestamp]).andReturn(kPreviousTimestamp + 1);
+
+    LTTouchEvent *touchEvent = [LTTouchEvent touchEventWithPropertiesOfTouch:touchMock
+                                                           previousTimestamp:@(kPreviousTimestamp)
+                                                                  sequenceID:0];
+
+    OCMVerifyAll((id)touchMock);
+    expect(touchEvent.timestamp).to.equal(kPreviousTimestamp + 1);
+    expect([touchEvent.previousTimestamp doubleValue]).to.equal(kPreviousTimestamp);
+  });
+  
+  it(@"should initialize using timestamp of the given touch but without previous timestamp", ^{
+    OCMExpect([touchMock timestamp]).andReturn(timestamp);
+
+    LTTouchEvent *touchEvent = [LTTouchEvent touchEventWithPropertiesOfTouch:touchMock
+                                                           previousTimestamp:nil
+                                                                  sequenceID:0];
+    OCMVerifyAll((id)touchMock);
+    expect(touchEvent.timestamp).to.equal(timestamp);
+    expect(touchEvent.previousTimestamp).to.beNil();
+  });
+
+  it(@"should initialize with a given timestamp and previous timestamp", ^{
+    static const NSTimeInterval kTimestamp = 987.654321;
+    static const NSTimeInterval kPreviousTimestamp = 123.456789;
     OCMReject([touchMock timestamp]);
     LTTouchEvent *touchEvent = [LTTouchEvent touchEventWithPropertiesOfTouch:touchMock
                                                                    timestamp:kTimestamp
+                                                           previousTimestamp:@(kPreviousTimestamp)
                                                                   sequenceID:0];
     expect(touchEvent.timestamp).to.equal(kTimestamp);
+    expect([touchEvent.previousTimestamp doubleValue]).to.equal(kPreviousTimestamp);
+  });
+
+  it(@"should initialize with a given timestamp but without previous timestamp", ^{
+    static const NSTimeInterval kTimestamp = 987.654321;
+    OCMReject([touchMock timestamp]);
+    LTTouchEvent *touchEvent = [LTTouchEvent touchEventWithPropertiesOfTouch:touchMock
+                                                                   timestamp:kTimestamp
+                                                           previousTimestamp:nil sequenceID:0];
+
+    expect(touchEvent.timestamp).to.equal(kTimestamp);
+    expect(touchEvent.previousTimestamp).to.beNil();
   });
 });
 

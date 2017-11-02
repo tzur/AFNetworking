@@ -26,9 +26,15 @@ sharedExamplesFor(kLTTouchEventSequenceValidatorExamples, ^(NSDictionary *data) 
     touchEvent0 = OCMProtocolMock(@protocol(LTTouchEvent));
     touchEvent1 = OCMProtocolMock(@protocol(LTTouchEvent));
     touchEvent2 = OCMProtocolMock(@protocol(LTTouchEvent));
+    OCMStub([touchEvent0 copyWithZone:nil]).andReturn(touchEvent0);
+    OCMStub([touchEvent1 copyWithZone:nil]).andReturn(touchEvent1);
+    OCMStub([touchEvent2 copyWithZone:nil]).andReturn(touchEvent2);
     OCMStub([touchEvent0 timestamp]).andReturn(0.2);
     OCMStub([touchEvent1 timestamp]).andReturn(0.5);
     OCMStub([touchEvent2 timestamp]).andReturn(1);
+    OCMStub([touchEvent0 previousTimestamp]);
+    OCMStub([touchEvent1 previousTimestamp]).andReturn(@0.2);
+    OCMStub([touchEvent2 previousTimestamp]).andReturn(@0.5);
     OCMStub([touchEvent0 sequenceID]).andReturn(0);
     OCMStub([touchEvent1 sequenceID]).andReturn(0);
     OCMStub([touchEvent2 sequenceID]).andReturn(1);
