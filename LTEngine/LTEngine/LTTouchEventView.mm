@@ -3,6 +3,8 @@
 
 #import "LTTouchEventView.h"
 
+#import <LTKit/NSArray+Functional.h>
+
 #import "LTTouchEvent.h"
 #import "LTTouchEventDelegate.h"
 
@@ -18,6 +20,11 @@ NS_ASSUME_NONNULL_BEGIN
 /// @important The \c UITouch objects are weakly held since the iOS documentation explicitly forbids
 /// strongly holding \c UITouch objects.
 @property (strong, nonatomic) NSMapTable<UITouch *, NSNumber *> *touchToSequenceID;
+
+/// Mapping of boxed sequence IDs to boxed \c NSTimeInterval representing the \c timestamp of the
+/// most recent touch event provided to the \c delegate.
+@property (strong, nonatomic, nullable)
+    NSMutableDictionary<NSNumber *, NSNumber *> *sequenceIDToMostRecentTimestamp;
 
 /// Number to use as sequence ID of next starting touch event sequence.
 @property (nonatomic) NSUInteger sequenceID;
@@ -41,6 +48,7 @@ NS_ASSUME_NONNULL_BEGIN
   if (self = [super initWithFrame:frame]) {
     self.delegate = delegate;
     self.touchToSequenceID = [NSMapTable weakToStrongObjectsMapTable];
+    self.sequenceIDToMostRecentTimestamp = [NSMutableDictionary dictionary];
     self.sequenceID = 0;
     _displayLink = [self displayLinkForStationaryTouchEvents];
     _processInfo = [NSProcessInfo processInfo];
@@ -142,6 +150,7 @@ NS_ASSUME_NONNULL_BEGIN
   // i.e. nested calls to \c cancelTouchEventSequences do not lead to an infinite loop or other
   // degenerate behavior.
   [self.touchToSequenceID removeAllObjects];
+  [self.sequenceIDToMostRecentTimestamp removeAllObjects];
   [self.delegate touchEventSequencesWithIDs:sequenceIDs
                         terminatedWithState:LTTouchEventSequenceStateCancellation];
 }
@@ -160,9 +169,10 @@ NS_ASSUME_NONNULL_BEGIN
     }
 
     NSUInteger sequenceID = [[self.touchToSequenceID objectForKey:touch] unsignedIntegerValue];
-    LTTouchEvent *touchEvent = [LTTouchEvent touchEventWithPropertiesOfTouch:touch
-                                                                   timestamp:timestamp
-                                                                  sequenceID:sequenceID];
+    LTTouchEvent *touchEvent =
+        [LTTouchEvent touchEventWithPropertiesOfTouch:touch timestamp:timestamp
+                                    previousTimestamp:nil sequenceID:sequenceID];
+    self.sequenceIDToMostRecentTimestamp[@(sequenceID)] = @(touchEvent.timestamp);
     [self.delegate
      receivedTouchEvents:@[touchEvent]
      predictedEvents:@[]
@@ -209,7 +219,10 @@ NS_ASSUME_NONNULL_BEGIN
       continue;
     }
 
-    if (state == LTTouchEventSequenceStateEnd || state == LTTouchEventSequenceStateCancellation) {
+    BOOL finalState =
+        state == LTTouchEventSequenceStateEnd || state == LTTouchEventSequenceStateCancellation;
+
+    if (finalState) {
       // Remove the touch from the map table before(!) calling the delegate, in order to ensure that
       // possible external termination requests performed as a result of the delegate call only
       // trigger the termination of touches that have not been declared as terminated in the
@@ -224,6 +237,10 @@ NS_ASSUME_NONNULL_BEGIN
                                                                withSequenceID:sequenceID
                                                                       inEvent:event]
                touchEventSequenceState:state];
+
+    if (finalState) {
+      [self.sequenceIDToMostRecentTimestamp removeObjectForKey:boxedSequenceID];
+    }
   }
 }
 
@@ -242,7 +259,13 @@ NS_ASSUME_NONNULL_BEGIN
                             withSequenceID:(NSUInteger)sequenceID
                                    inEvent:(nullable UIEvent *)event {
   if (![event respondsToSelector:@selector(coalescedTouchesForTouch:)]) {
-    return @[[LTTouchEvent touchEventWithPropertiesOfTouch:mainTouch sequenceID:sequenceID]];
+    LTTouchEvents *touchEvents =
+        @[[LTTouchEvent
+           touchEventWithPropertiesOfTouch:mainTouch
+           previousTimestamp:self.sequenceIDToMostRecentTimestamp[@(sequenceID)]
+           sequenceID:sequenceID]];
+    self.sequenceIDToMostRecentTimestamp[@(sequenceID)] = @(mainTouch.timestamp);
+    return touchEvents;
   }
 
   // Note that, according to Apple's documentation, one is supposed to use either main touches or
@@ -258,23 +281,45 @@ NS_ASSUME_NONNULL_BEGIN
   // \c LTTouchEvent constructed from the main touch.
   NSArray<UITouch *> * _Nullable coalescedTouches = [event coalescedTouchesForTouch:mainTouch];
 
+  NSNumber * _Nullable mostRecentTimestamp = self.sequenceIDToMostRecentTimestamp[@(sequenceID)];
+
   if (!coalescedTouches.count) {
     LogDebug(@"No coalesced touches despite valid event (%@) and main touch (%@)", event,
              mainTouch);
-    return @[[LTTouchEvent touchEventWithPropertiesOfTouch:mainTouch sequenceID:sequenceID]];
+
+    NSTimeInterval timestamp = std::max((NSTimeInterval)[mostRecentTimestamp doubleValue],
+                                        mainTouch.timestamp);
+    LTTouchEvents *touchEvents =
+        @[[LTTouchEvent touchEventWithPropertiesOfTouch:mainTouch timestamp:timestamp
+                                      previousTimestamp:mostRecentTimestamp sequenceID:sequenceID]];
+    self.sequenceIDToMostRecentTimestamp[@(sequenceID)] = @(mainTouch.timestamp);
+    return touchEvents;
   }
 
-  return [self touchEventsForTouches:[self sortedTouches:coalescedTouches]
-                      withSequenceID:sequenceID];
+  LTTouchEvents *touchEvents =
+      [self touchEventsForTouches:[self sortedTouches:coalescedTouches]
+                previousTimestamp:self.sequenceIDToMostRecentTimestamp[@(sequenceID)]
+                   withSequenceID:sequenceID];
+  self.sequenceIDToMostRecentTimestamp[@(sequenceID)] = @(touchEvents.lastObject.timestamp);
+  return touchEvents;
 }
 
 - (LTTouchEvents *)touchEventsForTouches:(NSArray<UITouch *> *)touches
+                       previousTimestamp:(nullable NSNumber *)previousTimestamp
                           withSequenceID:(NSUInteger)sequenceID {
   LTMutableTouchEvents *mutableTouchEvents = [NSMutableArray arrayWithCapacity:touches.count];
 
   for (UITouch *touch in touches) {
-    [mutableTouchEvents addObject:[LTTouchEvent touchEventWithPropertiesOfTouch:touch
-                                                                     sequenceID:sequenceID]];
+    // Use the maximum of the previously stored timestamp and the current timestamp of the touch
+    // since in rare occasions the timestamp of the touch is smaller than the previously stored one.
+    NSTimeInterval timestamp = std::max((NSTimeInterval)[previousTimestamp doubleValue],
+                                        touch.timestamp);
+    LTTouchEvent *touchEvent = [LTTouchEvent touchEventWithPropertiesOfTouch:touch
+                                                                   timestamp:timestamp
+                                                           previousTimestamp:previousTimestamp
+                                                                  sequenceID:sequenceID];
+    previousTimestamp = @(touchEvent.timestamp);
+    [mutableTouchEvents addObject:touchEvent];
   }
 
   return [mutableTouchEvents copy];
@@ -289,7 +334,10 @@ NS_ASSUME_NONNULL_BEGIN
 
   NSArray<UITouch *> *sortedPredictedTouches =
       [self sortedTouches:[event predictedTouchesForTouch:mainTouch]];
-  return [self touchEventsForTouches:sortedPredictedTouches withSequenceID:sequenceID];
+
+  return [sortedPredictedTouches lt_map:^LTTouchEvent *(UITouch *touch) {
+    return [LTTouchEvent touchEventWithPropertiesOfTouch:touch sequenceID:sequenceID];
+  }];
 }
 
 #pragma mark -

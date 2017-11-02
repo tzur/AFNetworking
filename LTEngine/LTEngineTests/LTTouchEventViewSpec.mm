@@ -100,29 +100,45 @@ NSString * const kLTTouchEventViewSequenceState = @"LTTouchEventViewSequenceStat
 SharedExamplesBegin(LTTouchEventView)
 
 sharedExamplesFor(kLTTouchEventViewExamples, ^(NSDictionary *data) {
+  __block UIFakeTouch *mainTouch0;
+  __block UIFakeTouch *mainTouch1;
+  __block UIFakeTouch *mainTouch2;
+  __block NSSet<UIFakeTouch *> *allTouches;
   __block id eventMock;
-  __block NSSet<UITouch *> *allTouches;
+  __block id initialEventMock;
   __block LTTouchEventSequenceState state;
 
   beforeEach(^{
     state = (LTTouchEventSequenceState)[data[kLTTouchEventViewSequenceState] integerValue];
 
-    id mainTouch0 = LTTouchEventViewCreateTouch(0);
-    id mainTouch1 = LTTouchEventViewCreateTouch(1);
-    id mainTouch2 = LTTouchEventViewCreateTouch(2);
-    eventMock = LTTouchEventViewCreateEvent();
+    mainTouch0 = LTTouchEventViewCreateTouch(0);
+    mainTouch1 = LTTouchEventViewCreateTouch(1);
+    mainTouch2 = LTTouchEventViewCreateTouch(2);
+    initialEventMock = LTTouchEventViewCreateEvent();
 
-    LTTouchEventViewMakeEventReturnTouchesForTouch(eventMock, mainTouch0,
+    LTTouchEventViewMakeEventReturnTouchesForTouch(initialEventMock, mainTouch0,
                                                    LTTouchEventViewCreateTouches({0, 0.5}),
                                                    LTTouchEventViewCreateTouches({1}));
-    LTTouchEventViewMakeEventReturnTouchesForTouch(eventMock, mainTouch1,
+    LTTouchEventViewMakeEventReturnTouchesForTouch(initialEventMock, mainTouch1,
                                                    LTTouchEventViewCreateTouches({1, 1.25, 1.5}),
                                                    LTTouchEventViewCreateTouches({3, 2.5}));
-    LTTouchEventViewMakeEventReturnTouchesForTouch(eventMock, mainTouch2,
+    LTTouchEventViewMakeEventReturnTouchesForTouch(initialEventMock, mainTouch2,
                                                    LTTouchEventViewCreateTouches({2.5, 2}),
                                                    LTTouchEventViewCreateTouches({4}));
 
     allTouches = [NSSet setWithArray:@[mainTouch1, mainTouch2, mainTouch0]];
+
+    eventMock = LTTouchEventViewCreateEvent();
+
+    LTTouchEventViewMakeEventReturnTouchesForTouch(eventMock, mainTouch0,
+                                                   LTTouchEventViewCreateTouches({3, 3.25}),
+                                                   LTTouchEventViewCreateTouches({3.5}));
+    LTTouchEventViewMakeEventReturnTouchesForTouch(eventMock, mainTouch1,
+                                                   LTTouchEventViewCreateTouches({4.5, 4, 4.75}),
+                                                   LTTouchEventViewCreateTouches({4.825, 5}));
+    LTTouchEventViewMakeEventReturnTouchesForTouch(eventMock, mainTouch2,
+                                                   LTTouchEventViewCreateTouches({5, 5.25}),
+                                                   LTTouchEventViewCreateTouches({6}));
   });
 
   context(@"touch handling", ^{
@@ -140,19 +156,19 @@ sharedExamplesFor(kLTTouchEventViewExamples, ^(NSDictionary *data) {
             [view touchesBegan:allTouches withEvent:eventMock];
             break;
           case LTTouchEventSequenceStateContinuation:
-            [view touchesBegan:allTouches withEvent:eventMock];
+            [view touchesBegan:allTouches withEvent:initialEventMock];
             [delegate.calls removeAllObjects];
             [view touchesMoved:allTouches withEvent:eventMock];
             break;
           case LTTouchEventSequenceStateContinuationStationary:
             break;
           case LTTouchEventSequenceStateEnd:
-            [view touchesBegan:allTouches withEvent:eventMock];
+            [view touchesBegan:allTouches withEvent:initialEventMock];
             [delegate.calls removeAllObjects];
             [view touchesEnded:allTouches withEvent:eventMock];
             break;
           case LTTouchEventSequenceStateCancellation:
-            [view touchesBegan:allTouches withEvent:eventMock];
+            [view touchesBegan:allTouches withEvent:initialEventMock];
             [delegate.calls removeAllObjects];
             [view touchesCancelled:allTouches withEvent:eventMock];
             break;
@@ -177,25 +193,33 @@ sharedExamplesFor(kLTTouchEventViewExamples, ^(NSDictionary *data) {
           event.respondsToCoalescedTouchesSelector = NO;
           [delegate.calls removeAllObjects];
 
+          LTVoidBlock prepareNextCall = ^{
+            [delegate.calls removeAllObjects];
+            mainTouch0.timestamp = 3;
+            mainTouch1.timestamp = 4;
+            mainTouch2.timestamp = 5;
+          };
+
           switch (state) {
             case LTTouchEventSequenceStateStart:
+              prepareNextCall();
               [view touchesBegan:allTouches withEvent:event];
               break;
             case LTTouchEventSequenceStateContinuation:
-              [view touchesBegan:allTouches withEvent:eventMock];
-              [delegate.calls removeAllObjects];
+              [view touchesBegan:allTouches withEvent:initialEventMock];
+              prepareNextCall();
               [view touchesMoved:allTouches withEvent:event];
               break;
             case LTTouchEventSequenceStateContinuationStationary:
               break;
             case LTTouchEventSequenceStateEnd:
-              [view touchesBegan:allTouches withEvent:eventMock];
-              [delegate.calls removeAllObjects];
+              [view touchesBegan:allTouches withEvent:initialEventMock];
+              prepareNextCall();
               [view touchesEnded:allTouches withEvent:event];
               break;
             case LTTouchEventSequenceStateCancellation:
-              [view touchesBegan:allTouches withEvent:eventMock];
-              [delegate.calls removeAllObjects];
+              [view touchesBegan:allTouches withEvent:initialEventMock];
+              prepareNextCall();
               [view touchesCancelled:allTouches withEvent:event];
               break;
           }
@@ -218,9 +242,21 @@ sharedExamplesFor(kLTTouchEventViewExamples, ^(NSDictionary *data) {
         });
 
         it(@"should sort the main touches according to their timestamp", ^{
-          expect(calls[0].events.firstObject.timestamp).to.equal(0);
-          expect(calls[1].events.firstObject.timestamp).to.equal(1);
-          expect(calls[2].events.firstObject.timestamp).to.equal(2);
+          expect(calls[0].events.firstObject.timestamp).to.equal(3);
+          expect(calls[1].events.firstObject.timestamp).to.equal(4);
+          expect(calls[2].events.firstObject.timestamp).to.equal(5);
+        });
+
+        it(@"should use the correct previous timestamps", ^{
+          if (state == LTTouchEventSequenceStateStart) {
+            expect(calls[0].events.firstObject.previousTimestamp).to.beNil();
+            expect(calls[1].events.firstObject.previousTimestamp).to.beNil();
+            expect(calls[2].events.firstObject.previousTimestamp).to.beNil();
+          } else {
+            expect(calls[0].events.firstObject.previousTimestamp).to.equal(@0.5);
+            expect(calls[1].events.firstObject.previousTimestamp).to.equal(@1.5);
+            expect(calls[2].events.firstObject.previousTimestamp).to.equal(@2.5);
+          }
         });
       });
 
@@ -250,15 +286,39 @@ sharedExamplesFor(kLTTouchEventViewExamples, ^(NSDictionary *data) {
         });
 
         it(@"should sort the coalesced touches according to their timestamp", ^{
-          expect(calls[0].events[0].timestamp).to.equal(0);
-          expect(calls[0].events[1].timestamp).to.equal(0.5);
+          expect(calls[0].events[0].timestamp).to.equal(3);
+          expect(calls[0].events[1].timestamp).to.equal(3.25);
 
-          expect(calls[1].events[0].timestamp).to.equal(1);
-          expect(calls[1].events[1].timestamp).to.equal(1.25);
-          expect(calls[1].events[2].timestamp).to.equal(1.5);
+          expect(calls[1].events[0].timestamp).to.equal(4);
+          expect(calls[1].events[1].timestamp).to.equal(4.5);
+          expect(calls[1].events[2].timestamp).to.equal(4.75);
 
-          expect(calls[2].events[0].timestamp).to.equal(2);
-          expect(calls[2].events[1].timestamp).to.equal(2.5);
+          expect(calls[2].events[0].timestamp).to.equal(5);
+          expect(calls[2].events[1].timestamp).to.equal(5.25);
+        });
+
+        it(@"should use the correct previous timestamps", ^{
+          if (state == LTTouchEventSequenceStateStart) {
+            expect(calls[0].events[0].previousTimestamp).to.beNil();
+          } else {
+            expect(calls[0].events[0].previousTimestamp).to.equal(@0.5);
+          }
+          expect(calls[0].events[1].previousTimestamp).to.equal(@3);
+
+          if (state == LTTouchEventSequenceStateStart) {
+            expect(calls[1].events[0].previousTimestamp).to.beNil();
+          } else {
+            expect(calls[1].events[0].previousTimestamp).to.equal(@1.5);
+          }
+          expect(calls[1].events[1].previousTimestamp).to.equal(@4);
+          expect(calls[1].events[2].previousTimestamp).to.equal(@4.5);
+
+          if (state == LTTouchEventSequenceStateStart) {
+            expect(calls[2].events[0].previousTimestamp).to.beNil();
+          } else {
+            expect(calls[2].events[0].previousTimestamp).to.equal(@2.5);
+          }
+          expect(calls[2].events[1].previousTimestamp).to.equal(@5);
         });
       });
 
@@ -271,25 +331,32 @@ sharedExamplesFor(kLTTouchEventViewExamples, ^(NSDictionary *data) {
           event.respondsToPredictedTouchesSelector = NO;
           [delegate.calls removeAllObjects];
 
+          LTVoidBlock prepareNextCall = ^{
+            [delegate.calls removeAllObjects];
+            mainTouch0.timestamp = 3;
+            mainTouch1.timestamp = 4;
+            mainTouch2.timestamp = 5;
+          };
+
           switch (state) {
             case LTTouchEventSequenceStateStart:
               [view touchesBegan:allTouches withEvent:event];
               break;
             case LTTouchEventSequenceStateContinuation:
-              [view touchesBegan:allTouches withEvent:eventMock];
-              [delegate.calls removeAllObjects];
+              [view touchesBegan:allTouches withEvent:initialEventMock];
+              prepareNextCall();
               [view touchesMoved:allTouches withEvent:event];
               break;
             case LTTouchEventSequenceStateContinuationStationary:
               break;
             case LTTouchEventSequenceStateEnd:
-              [view touchesBegan:allTouches withEvent:eventMock];
-              [delegate.calls removeAllObjects];
+              [view touchesBegan:allTouches withEvent:initialEventMock];
+              prepareNextCall();
               [view touchesEnded:allTouches withEvent:event];
               break;
             case LTTouchEventSequenceStateCancellation:
-              [view touchesBegan:allTouches withEvent:eventMock];
-              [delegate.calls removeAllObjects];
+              [view touchesBegan:allTouches withEvent:initialEventMock];
+              prepareNextCall();
               [view touchesCancelled:allTouches withEvent:event];
               break;
           }
@@ -333,8 +400,17 @@ sharedExamplesFor(kLTTouchEventViewExamples, ^(NSDictionary *data) {
         });
 
         it(@"should sort the predicted touches according to their timestamp", ^{
-          expect(calls[1].predictedEvents[0].timestamp).to.equal(2.5);
-          expect(calls[1].predictedEvents[1].timestamp).to.equal(3);
+          expect(calls[1].predictedEvents[0].timestamp).to.equal(4.825);
+          expect(calls[1].predictedEvents[1].timestamp).to.equal(5);
+        });
+
+        it(@"should not add previous timestamps to predicted touches", ^{
+          expect(calls[0].predictedEvents[0].previousTimestamp).to.beNil();
+
+          expect(calls[1].predictedEvents[0].previousTimestamp).to.beNil();
+          expect(calls[1].predictedEvents[1].previousTimestamp).to.beNil();
+
+          expect(calls[2].predictedEvents[0].previousTimestamp).to.beNil();
         });
       });
     });
@@ -364,8 +440,8 @@ context(@"initialization", ^{
 context(@"cancellation", ^{
   __block LTTestTouchEventDelegate *delegate;
   __block LTTouchEventView *view;
-  __block id mainTouch;
-  __block id anotherMainTouch;
+  __block UIFakeTouch *mainTouch;
+  __block UIFakeTouch *anotherMainTouch;
   __block id eventMock;
   __block NSSet<id<LTTouchEvent>> *allTouches;
 
@@ -442,10 +518,12 @@ context(@"cancellation", ^{
     [view touchesBegan:allTouches withEvent:eventMock];
     [delegate.calls removeAllObjects];
     delegate.block = block;
+
+    mainTouch.timestamp = 7;
     [view touchesMoved:[NSSet setWithArray:@[mainTouch]] withEvent:eventMock];
 
     expect(delegate.calls).to.haveACountOf(1);
-    expect(delegate.calls.firstObject.events.firstObject.timestamp).to.equal(0);
+    expect(delegate.calls.firstObject.events.firstObject.timestamp).to.equal(7);
     expect(delegate.idsOfCancelledSequences).to.haveACountOf(2);
     expect(delegate.idsOfCancelledSequences).to.contain(@0);
     expect(delegate.idsOfCancelledSequences).to.contain(@1);
@@ -460,10 +538,12 @@ context(@"cancellation", ^{
     [view touchesBegan:allTouches withEvent:eventMock];
     [delegate.calls removeAllObjects];
     delegate.block = block;
+    mainTouch.timestamp = 7;
+    anotherMainTouch.timestamp = 8;
     [view touchesMoved:allTouches withEvent:eventMock];
 
     expect(delegate.calls).to.haveACountOf(1);
-    expect(delegate.calls.firstObject.events.firstObject.timestamp).to.equal(0);
+    expect(delegate.calls.firstObject.events.firstObject.timestamp).to.equal(7);
     expect(delegate.idsOfCancelledSequences).to.haveACountOf(2);
     expect(delegate.idsOfCancelledSequences).to.contain(@0);
     expect(delegate.idsOfCancelledSequences).to.contain(@1);
@@ -478,10 +558,11 @@ context(@"cancellation", ^{
     [view touchesBegan:allTouches withEvent:eventMock];
     [delegate.calls removeAllObjects];
     delegate.block = block;
+    mainTouch.timestamp = 7;
     [view touchesEnded:[NSSet setWithArray:@[mainTouch]] withEvent:eventMock];
 
     expect(delegate.calls).to.haveACountOf(1);
-    expect(delegate.calls.firstObject.events.firstObject.timestamp).to.equal(0);
+    expect(delegate.calls.firstObject.events.firstObject.timestamp).to.equal(7);
     expect(delegate.idsOfCancelledSequences).to.haveACountOf(1);
     expect(delegate.terminationState).to.equal(LTTouchEventSequenceStateCancellation);
   });
@@ -494,10 +575,11 @@ context(@"cancellation", ^{
     [view touchesBegan:allTouches withEvent:eventMock];
     [delegate.calls removeAllObjects];
     delegate.block = block;
+    mainTouch.timestamp = 7;
     [view touchesCancelled:[NSSet setWithArray:@[mainTouch]] withEvent:eventMock];
 
     expect(delegate.calls).to.haveACountOf(1);
-    expect(delegate.calls.firstObject.events.firstObject.timestamp).to.equal(0);
+    expect(delegate.calls.firstObject.events.firstObject.timestamp).to.equal(7);
     expect(delegate.idsOfCancelledSequences).to.haveACountOf(1);
     expect(delegate.terminationState).to.equal(LTTouchEventSequenceStateCancellation);
   });
@@ -541,6 +623,8 @@ context(@"cancellation", ^{
   it(@"should ignore cancellation requests if termination has already been reported", ^{
     [view touchesBegan:allTouches withEvent:eventMock];
     [delegate.calls removeAllObjects];
+    mainTouch.timestamp = 7;
+    anotherMainTouch.timestamp = 8;
     [view touchesEnded:allTouches withEvent:eventMock];
     expect(delegate.calls).to.haveACountOf(2);
     [view cancelTouchEventSequences];
@@ -551,6 +635,8 @@ context(@"cancellation", ^{
   it(@"should ignore cancellation requests if cancellation has already been reported", ^{
     [view touchesBegan:allTouches withEvent:eventMock];
     [delegate.calls removeAllObjects];
+    mainTouch.timestamp = 7;
+    anotherMainTouch.timestamp = 8;
     [view touchesCancelled:allTouches withEvent:eventMock];
     expect(delegate.calls).to.haveACountOf(2);
     [view cancelTouchEventSequences];
@@ -570,6 +656,8 @@ context(@"cancellation", ^{
     [view touchesBegan:allTouches withEvent:eventMock];
     [delegate.calls removeAllObjects];
     delegate.block = block;
+    mainTouch.timestamp = 7;
+    anotherMainTouch.timestamp = 8;
     [view touchesEnded:allTouches withEvent:eventMock];
 
     expect(delegate.calls).to.haveACountOf(2);
@@ -588,6 +676,8 @@ context(@"cancellation", ^{
     [view touchesBegan:allTouches withEvent:eventMock];
     [delegate.calls removeAllObjects];
     delegate.block = block;
+    mainTouch.timestamp = 7;
+    anotherMainTouch.timestamp = 8;
     [view touchesCancelled:allTouches withEvent:eventMock];
 
     expect(delegate.calls).to.haveACountOf(2);
@@ -597,9 +687,9 @@ context(@"cancellation", ^{
 });
 
 context(@"forwarding of stationary touch events", ^{
-  __block id mainTouch0;
-  __block id mainTouch1;
-  __block id mainTouch2;
+  __block UIFakeTouch *mainTouch0;
+  __block UIFakeTouch *mainTouch1;
+  __block UIFakeTouch *mainTouch2;
   __block LTTouchEventView *view;
   __block LTTestTouchEventDelegate *delegate;
   __block id processInfoPartialMock;
@@ -620,9 +710,9 @@ context(@"forwarding of stationary touch events", ^{
   });
 
   it(@"should correctly forward stationary touch events, according to CADisplayLink", ^{
-    OCMStub([mainTouch0 phase]).andReturn(UITouchPhaseStationary);
-    OCMStub([mainTouch1 phase]).andReturn(UITouchPhaseStationary);
-    OCMStub([mainTouch2 phase]).andReturn(UITouchPhaseBegan);
+    mainTouch0.phase = UITouchPhaseStationary;
+    mainTouch1.phase = UITouchPhaseStationary;
+    mainTouch2.phase = UITouchPhaseBegan;
     OCMExpect([processInfoPartialMock systemUptime]).andReturn(123.456);
 
     [view forwardStationaryTouchEvents:OCMClassMock([CADisplayLink class])];
@@ -645,6 +735,8 @@ context(@"forwarding of stationary touch events", ^{
 
     expect(touchEvent.sequenceID).to.equal(0);
     expect(otherTouchEvent.sequenceID).to.equal(1);
+    expect(touchEvent.previousTimestamp).to.beNil();
+    expect(otherTouchEvent.previousTimestamp).to.beNil();
     expect(touchEvent.phase).to.equal(UITouchPhaseStationary);
     expect(otherTouchEvent.phase).to.equal(UITouchPhaseStationary);
 
@@ -683,11 +775,11 @@ context(@"display link", ^{
   });
 
   context(@"updates of display link", ^{
-    __block NSSet<UITouch *> *touchMocks;
+    __block NSSet<UIFakeTouch *> *fakeTouches;
     __block id eventMock;
 
     beforeEach(^{
-      touchMocks = [NSSet setWithArray:@[LTTouchEventViewCreateTouch(0)]];
+      fakeTouches = [NSSet setWithArray:@[LTTouchEventViewCreateTouch(0)]];
       eventMock = LTTouchEventViewCreateEvent();
     });
 
@@ -698,24 +790,25 @@ context(@"display link", ^{
 
     it(@"should unpause display link when forwarding is enabled", ^{
       view.forwardStationaryTouchEvents = YES;
-      [view touchesBegan:touchMocks withEvent:eventMock];
+      [view touchesBegan:fakeTouches withEvent:eventMock];
       expect(view.displayLink.paused).to.beFalsy();
     });
 
     it(@"should pause display link when there are no active touches", ^{
-      [view touchesBegan:touchMocks withEvent:eventMock];
-      [view touchesEnded:touchMocks withEvent:eventMock];
+      [view touchesBegan:fakeTouches withEvent:eventMock];
+      fakeTouches.anyObject.timestamp = 1;
+      [view touchesEnded:fakeTouches withEvent:eventMock];
       expect(view.displayLink.paused).to.beTruthy();
     });
 
     it(@"should pause display link when there are active touches but forwarding is disabled", ^{
-      [view touchesBegan:touchMocks withEvent:eventMock];
+      [view touchesBegan:fakeTouches withEvent:eventMock];
       view.forwardStationaryTouchEvents = NO;
       expect(view.displayLink.paused).to.beTruthy();
     });
 
     it(@"should unpause display link when there are active touches and forwarding is enabled", ^{
-      [view touchesBegan:touchMocks withEvent:eventMock];
+      [view touchesBegan:fakeTouches withEvent:eventMock];
       view.forwardStationaryTouchEvents = NO;
       expect(view.displayLink.paused).to.beTruthy();
 
@@ -762,21 +855,35 @@ context(@"estimated properties", ^{
   it(@"should only forward property updates of touches belonging to occurring sequences", ^{
     LTTestTouchEventDelegate *delegate = [[LTTestTouchEventDelegate alloc] init];
     LTTouchEventView *view = [[LTTouchEventView alloc] initWithFrame:CGRectZero delegate:delegate];
-    id touchMock = LTTouchEventViewCreateTouch(7);
-    id anotherTouchMock = LTTouchEventViewCreateTouch(8);
-    NSSet<UITouch *> *touchMocks = [@[touchMock, anotherTouchMock] lt_set];
+    UIFakeTouch *mainTouch = LTTouchEventViewCreateTouch(7);
+    UIFakeTouch *anotherMainTouch = LTTouchEventViewCreateTouch(8);
+    NSSet<UITouch *> *touchMocks = [@[mainTouch, anotherMainTouch] lt_set];
     id eventMock = OCMClassMock([UIEvent class]);
 
     [view touchesBegan:touchMocks withEvent:eventMock];
 
-    NSSet<UITouch *> *endedTouchMocks = [@[touchMock] lt_set];
-
+    mainTouch.timestamp = 9;
+    NSSet<UITouch *> *endedTouchMocks = [@[mainTouch] lt_set];
     [view touchesEnded:endedTouchMocks withEvent:eventMock];
 
     [view touchesEstimatedPropertiesUpdated:touchMocks];
 
     expect(delegate.updatedTouchEvents).to.haveACountOf(1);
     expect(delegate.updatedTouchEvents.firstObject.timestamp).to.equal(8);
+  });
+
+  it(@"should not add previous timestamps to updated touches", ^{
+    LTTestTouchEventDelegate *delegate = [[LTTestTouchEventDelegate alloc] init];
+    LTTouchEventView *view = [[LTTouchEventView alloc] initWithFrame:CGRectZero delegate:delegate];
+    id touchMock = LTTouchEventViewCreateTouch(7);
+    NSSet<UITouch *> *touchMocks = [@[touchMock] lt_set];
+    id eventMock = OCMClassMock([UIEvent class]);
+
+    [view touchesBegan:touchMocks withEvent:eventMock];
+    [view touchesEstimatedPropertiesUpdated:touchMocks];
+
+    expect(delegate.updatedTouchEvents).to.haveACountOf(1);
+    expect(delegate.updatedTouchEvents.firstObject.previousTimestamp).to.beNil();
   });
 });
 
