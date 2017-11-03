@@ -17,7 +17,9 @@ LTEnumImplement(NSUInteger, DVNBlendMode,
   DVNBlendModeOverlay,
   DVNBlendModePlusLighter,
   DVNBlendModePlusDarker,
-  DVNBlendModeSubtract
+  DVNBlendModeSubtract,
+  DVNBlendModeOpaqueSource,
+  DVNBlendModeOpaqueDestination
 );
 
 NS_ASSUME_NONNULL_END

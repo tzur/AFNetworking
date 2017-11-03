@@ -570,8 +570,8 @@ context(@"rendering", ^{
       expect($(targetTexture.image)).to.equalMat($(expectedMat));
     });
 
-    it(@"should render with src blend mode", ^{
-      mutableUniforms[[DVNBrushFsh blendMode]] = @(DVNBlendModeSrc);
+    it(@"should render with opaque source blend mode", ^{
+      mutableUniforms[[DVNBrushFsh blendMode]] = @(DVNBlendModeOpaqueSource);
       [fbo bindAndDraw:^{
         [drawer drawQuads:quads textureMapQuads:{lt::Quad::canonicalSquare()}
             attributeData:attributeData texture:brushTipTexture auxiliaryTextures:@{}
@@ -584,8 +584,8 @@ context(@"rendering", ^{
       expect($(targetTexture.image)).to.equalMat($(expectedMat));
     });
 
-    it(@"should render with dst blend mode", ^{
-      mutableUniforms[[DVNBrushFsh blendMode]] = @(DVNBlendModeDst);
+    it(@"should render with opaque destination blend mode", ^{
+      mutableUniforms[[DVNBrushFsh blendMode]] = @(DVNBlendModeOpaqueDestination);
       [fbo bindAndDraw:^{
         [drawer drawQuads:quads textureMapQuads:{lt::Quad::canonicalSquare()}
             attributeData:attributeData texture:brushTipTexture auxiliaryTextures:@{}

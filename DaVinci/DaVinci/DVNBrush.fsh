@@ -75,8 +75,8 @@ const int kBlendModeOverlay = 8;
 const int kBlendModePlusLighter = 9;
 const int kBlendModePlusDarker = 10;
 const int kBlendModeSubtract = 11;
-const int kBlendModeSrc = 12;
-const int kBlendModeDst = 13;
+const int kBlendModeOpaqueSource = 12;
+const int kBlendModeOpaqueDestination = 13;
 
 highp vec4 normal(highp vec4 src, highp vec4 dst) {
   return vec4(src.rgb + dst.rgb * (1.0 - src.a), src.a + dst.a * (1.0 - src.a));
@@ -178,9 +178,9 @@ highp vec4 blendOfPremultipliedColors(mediump vec4 src, highp vec4 dst, int mode
     premultipliedOutputColor = plusDarker(src, dst);
   } else if (blendMode == kBlendModeSubtract) {
     premultipliedOutputColor = subtract(src, dst);
-  } else if (blendMode == kBlendModeSrc) {
+  } else if (blendMode == kBlendModeOpaqueSource) {
     premultipliedOutputColor = src;
-  } else if (blendMode == kBlendModeDst) {
+  } else if (blendMode == kBlendModeOpaqueDestination) {
     // Do nothing since premultipliedOutputColor is already dst.
   }
   return premultipliedOutputColor;
