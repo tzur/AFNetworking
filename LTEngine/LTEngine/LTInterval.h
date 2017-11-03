@@ -95,6 +95,16 @@ public:
     return maxValue;
   }
 
+  /// Returns the linearly interpolated value for parametric value \c t. In particular, \c min() is
+  /// returned for \c t equalling \c 0 and \c max() is returned for \c t equalling \c 1. If this
+  /// interval is empty, an assertion is raised.
+  T valueAt(T t) const {
+    LTParameterAssert(!isEmpty(), @"No interpolation is possible for empty interval ");
+    T min = minEndpointIncluded() ? minValue : std::nextafter(minValue, maxValue);
+    T max = maxEndpointIncluded() ? maxValue : std::nextafter(maxValue, minValue);
+    return (1 - t) * min + t * max;
+  }
+
   /// Returns \c true if the minimum endpoint of this interval belongs to the interval.
   bool minEndpointIncluded() const {
     return minEndpointInclusion == Closed;

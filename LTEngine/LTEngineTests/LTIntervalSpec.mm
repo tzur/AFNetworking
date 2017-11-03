@@ -307,6 +307,43 @@ context(@"intersection", ^{
   });
 });
 
+context(@"linear interpolation", ^{
+  __block LTTestInterval interval;
+
+  beforeEach(^{
+    interval = LTTestInterval({-1, 2});
+  });
+
+  it(@"should return its minimum value for factor of 0", ^{
+    expect(interval.valueAt(0)).to.equal(-1);
+  });
+
+  it(@"should return its minimum value for factor of 0, in case of open end point", ^{
+    interval = LTTestInterval({-1, 2}, LTTestInterval::Open);
+    expect(interval.valueAt(0)).to.equal(std::nextafter((CGFloat)-1, (CGFloat)2));
+  });
+
+  it(@"should return its minimum value for factor of 0.5", ^{
+    expect(interval.valueAt(0.5)).to.equal(0.5);
+  });
+
+  it(@"should return its minimum value for factor of 0", ^{
+    expect(interval.valueAt(1)).to.equal(2);
+  });
+
+  it(@"should return its minimum value for factor of 1, in case of open end point", ^{
+    interval = LTTestInterval({-1, 2}, LTTestInterval::Open);
+    expect(interval.valueAt(1)).to.equal(std::nextafter((CGFloat)2, (CGFloat)-1));
+  });
+
+  it(@"should raise when trying to retrieve interpolated value of empty interval", ^{
+    LTTestInterval interval = LTTestInterval();
+    expect(^{
+      __unused CGFloat value = interval.valueAt(0);
+    }).to.raise(NSInvalidArgumentException);
+  });
+});
+
 context(@"description", ^{
   it(@"should return a proper description", ^{
     LTTestInterval interval = LTTestInterval({-1, 2});
