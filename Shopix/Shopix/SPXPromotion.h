@@ -1,8 +1,6 @@
 // Copyright (c) 2017 Lightricks. All rights reserved.
 // Created by Barak Weiss.
 
-#import <LTKit/LTValueObject.h>
-
 NS_ASSUME_NONNULL_BEGIN
 
 @class SPXBaseProductAxisValue, SPXBenefitAxisValue;
@@ -10,7 +8,7 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol SPXProductAxisValue;
 
 /// Value object defining which benefit axis values to apply on which base axis values.
-@interface SPXCoupon : LTValueObject
+@interface SPXCoupon : MTLModel <MTLJSONSerializing>
 
 - (instancetype)init NS_UNAVAILABLE;
 
@@ -29,8 +27,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// respectively, and \c baseProductValues is set to be X. Both products X.U and X.V will get
 /// \c benefitValues.
 - (instancetype)initWithBaseProductValues:(NSArray<SPXBaseProductAxisValue *> *)baseProductValues
-                            benefitValues:(NSArray<SPXBenefitAxisValue *> *)benefitValues
-    NS_DESIGNATED_INITIALIZER;
+                            benefitValues:(NSArray<SPXBenefitAxisValue *> *)benefitValues;
 
 /// Returns a new coupon with \c baseProductValues as the values to apply \c benefitValues on.
 ///
@@ -51,7 +48,7 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 /// A promotion can be applied on base product values, to get a product descriptors.
 /// @see [SPXProductDescriptorsFactory productDescriptorsWithPromotion:withError:]
-@interface SPXPromotion : LTValueObject
+@interface SPXPromotion : MTLModel <MTLJSONSerializing>
 
 - (instancetype)init NS_UNAVAILABLE;
 
@@ -61,7 +58,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// @note This class does not check for the validity of the \c coupons, as they can conflict.
 /// Validity is checked when applying the coupon.
 - (instancetype)initWithName:(NSString *)name coupons:(NSArray<SPXCoupon *> *)coupons
-                  expiryDate:(NSDate *)expiryDate NS_DESIGNATED_INITIALIZER;
+                  expiryDate:(NSDate *)expiryDate;
 
 /// Name of the promotion.
 @property (readonly, nonatomic) NSString *name;

@@ -6,6 +6,7 @@
   #import <Foundation/Foundation.h>
 
   // Third party.
+  #import <Mantle/Mantle.h>
   #import <Masonry/Masonry.h>
   #import <ReactiveObjC/ReactiveObjC.h>
 
