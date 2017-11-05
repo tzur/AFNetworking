@@ -32,7 +32,6 @@
 		8B3CEA081C4E6EF3008E779B /* NSErrorCodes+Blueprints.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B3CEA061C4E6EF3008E779B /* NSErrorCodes+Blueprints.mm */; };
 		8B3CEA0A1C4E72BB008E779B /* BLUModelSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B3CEA091C4E72BB008E779B /* BLUModelSpec.mm */; };
 		8B3CEAC11C4E8B2E008E779B /* BLUModelNodeChangeSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B3CEAC01C4E8B2E008E779B /* BLUModelNodeChangeSpec.mm */; };
-		8B3CECBD1C563B70008E779B /* BLUFastEnumerator.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B3CECBB1C563B70008E779B /* BLUFastEnumerator.h */; };
 		8B3CED4D1C590D6F008E779B /* BLUNodeData.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B3CED4B1C590D6F008E779B /* BLUNodeData.h */; };
 		8B3CED4E1C590D6F008E779B /* BLUNodeData.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B3CED4C1C590D6F008E779B /* BLUNodeData.m */; };
 		8B3CED501C5930CF008E779B /* BLUNodeDataSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B3CED4F1C5930CF008E779B /* BLUNodeDataSpec.mm */; };
@@ -364,7 +363,6 @@
 		8B3CEAC01C4E8B2E008E779B /* BLUModelNodeChangeSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BLUModelNodeChangeSpec.mm; sourceTree = "<group>"; };
 		8B3CEC711C54B673008E779B /* BLUProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BLUProvider.h; sourceTree = "<group>"; };
 		8B3CEC8B1C54B80A008E779B /* BLUProviderDescriptor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BLUProviderDescriptor.h; sourceTree = "<group>"; };
-		8B3CECBB1C563B70008E779B /* BLUFastEnumerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLUFastEnumerator.h; sourceTree = "<group>"; };
 		8B3CED4B1C590D6F008E779B /* BLUNodeData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLUNodeData.h; sourceTree = "<group>"; };
 		8B3CED4C1C590D6F008E779B /* BLUNodeData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLUNodeData.m; sourceTree = "<group>"; };
 		8B3CED4F1C5930CF008E779B /* BLUNodeDataSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BLUNodeDataSpec.mm; sourceTree = "<group>"; };
@@ -702,7 +700,6 @@
 				8BD00C3D1C5DFC9B009A1A2D /* NSIndexPath+Blueprints.h in Headers */,
 				8B0E4D761CC65DED0031B743 /* BLUNode+Builder.h in Headers */,
 				8BED83041C3D81980001C6F1 /* NSOrderedSet+BLUNodeCollection.h in Headers */,
-				8B3CECBD1C563B70008E779B /* BLUFastEnumerator.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1139,7 +1136,6 @@
 			baseConfigurationReference = 8BED808E1C3A68080001C6F1 /* Debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -1165,7 +1161,6 @@
 			baseConfigurationReference = 8BED808F1C3A68080001C6F1 /* Release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";

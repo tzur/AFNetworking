@@ -707,7 +707,7 @@
 			children = (
 				CD962D921F54261300F2CA82 /* libShopix.a */,
 				CD962D941F54261300F2CA82 /* ShopixTests.xctest */,
-				CD962D961F54261300F2CA82 /* ShopixBundle.bundle */,
+				CD962D961F54261300F2CA82 /* Shopix.bundle */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1055,10 +1055,10 @@
 			remoteRef = CD962D931F54261300F2CA82 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		CD962D961F54261300F2CA82 /* ShopixBundle.bundle */ = {
+		CD962D961F54261300F2CA82 /* Shopix.bundle */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
-			path = ShopixBundle.bundle;
+			path = Shopix.bundle;
 			remoteRef = CD962D951F54261300F2CA82 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
@@ -1225,7 +1225,6 @@
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
@@ -1277,7 +1276,6 @@
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;

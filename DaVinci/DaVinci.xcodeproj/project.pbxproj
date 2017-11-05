@@ -1836,7 +1836,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 50FF1A551D2CDFF400E24B4D /* Debug.xcconfig */;
 			buildSettings = {
-				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
@@ -1872,7 +1871,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 50FF1A561D2CDFF400E24B4D /* Release.xcconfig */;
 			buildSettings = {
-				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
