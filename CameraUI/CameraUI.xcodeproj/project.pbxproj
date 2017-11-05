@@ -32,7 +32,6 @@
 		83B729E21CD8D7CC0090C0BF /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 83B729AE1CD8D6940090C0BF /* libOCMock.a */; };
 		83B72A7A1CD8E2FD0090C0BF /* libCamera.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 83B72A1D1CD8E0B30090C0BF /* libCamera.a */; };
 		83B731B11CDB92600090C0BF /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83B731B01CDB92600090C0BF /* AVFoundation.framework */; };
-		83B731B31CDB92640090C0BF /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83B731B21CDB92640090C0BF /* AssetsLibrary.framework */; };
 		83B731B51CDB92670090C0BF /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83B731B41CDB92670090C0BF /* CoreMedia.framework */; };
 		83B731C31CDB92A20090C0BF /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83B731C21CDB92A20090C0BF /* opencv2.framework */; };
 		83B731C41CDB92C00090C0BF /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83B731C21CDB92A20090C0BF /* opencv2.framework */; };
@@ -665,7 +664,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				F965C9ED1CF318CE00005627 /* Accelerate.framework in Frameworks */,
-				83B731B31CDB92640090C0BF /* AssetsLibrary.framework in Frameworks */,
 				83B731B11CDB92600090C0BF /* AVFoundation.framework in Frameworks */,
 				8861FD191E5A290300CA1436 /* CoreGraphics.framework in Frameworks */,
 				8861FD451E5A293B00CA1436 /* CoreImage.framework in Frameworks */,

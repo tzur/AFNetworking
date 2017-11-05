@@ -616,7 +616,7 @@ context(@"generate mat", ^{
     cv::Mat1b expectedGray(expected.size());
     cv::cvtColor(expected, expectedGray, CV_RGBA2GRAY);
     float factor = *std::max_element(expectedGray.begin(), expectedGray.end()) / 255.0;
-    std::transform(expected.begin(), expected.end(), expected.end(),
+    std::transform(expected.begin(), expected.end(), expected.begin(),
                    [factor](const cv::Vec4b &pixel) {
       return LTLTVector4ToVec4b(LTVector4(pixel) / factor);
     });

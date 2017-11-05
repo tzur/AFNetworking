@@ -36,7 +36,6 @@
 		282EE74E1D2A79FA002FA432 /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 250154E11D1AF0A100420FA9 /* opencv2.framework */; };
 		282EE74F1D2A7A14002FA432 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 250154DB1D1AEF4700420FA9 /* AVFoundation.framework */; };
 		282EE7501D2A7A22002FA432 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 250154D81D1AEF1400420FA9 /* Accelerate.framework */; };
-		282EE7521D2A7A35002FA432 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 282EE7511D2A7A35002FA432 /* AssetsLibrary.framework */; };
 		282EE7551D2A7A62002FA432 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 250154DD1D1AEF5400420FA9 /* CoreMedia.framework */; };
 		28327A8C1E1CEA8E00CDE956 /* DVNJitteredColorAttributeProviderModelSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28327A8B1E1CEA8E00CDE956 /* DVNJitteredColorAttributeProviderModelSpec.mm */; };
 		283625C51E38E8A80014406E /* DVNBlendMode.mm in Sources */ = {isa = PBXBuildFile; fileRef = 283625C41E38E8A80014406E /* DVNBlendMode.mm */; };
@@ -607,7 +606,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				282EE7501D2A7A22002FA432 /* Accelerate.framework in Frameworks */,
-				282EE7521D2A7A35002FA432 /* AssetsLibrary.framework in Frameworks */,
 				282EE74F1D2A7A14002FA432 /* AVFoundation.framework in Frameworks */,
 				8861FD7D1E5A2A9800CA1436 /* CoreGraphics.framework in Frameworks */,
 				8861FDA11E5A2AA500CA1436 /* CoreImage.framework in Frameworks */,
