@@ -1129,7 +1129,6 @@
 		8BABFD71188D0EB0004163DA /* LTIterativeProcessingStrategySpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BABFD70188D0EB0004163DA /* LTIterativeProcessingStrategySpec.mm */; };
 		8BABFD73188D2177004163DA /* LTGPUImageProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BABFD72188D2177004163DA /* LTGPUImageProcessorSpec.mm */; };
 		8BABFD8C188D4C15004163DA /* Noise.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BABFD8B188D4C15004163DA /* Noise.png */; };
-		8BAD630E18A3D70100482564 /* ValueSetter.fsh in Resources */ = {isa = PBXBuildFile; fileRef = 8BAD630D18A3D70100482564 /* ValueSetter.fsh */; };
 		8BAD631B18A3D75900482564 /* ValueSetter.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 8BAD630D18A3D70100482564 /* ValueSetter.fsh */; };
 		8BAE1F86184F5DEE0075A5AB /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3DEC1218296D7600EA0C1A /* GLKit.framework */; };
 		8BAE1FAF18571B740075A5AB /* LTRectDrawer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BAE1FAE18571B740075A5AB /* LTRectDrawer.mm */; };
@@ -1158,7 +1157,6 @@
 		8BAE3AB518B6220900DA79E1 /* LTSplitComplexMat.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BAE3AB418B6220900DA79E1 /* LTSplitComplexMat.mm */; };
 		8BAECBB618BDEAAC00315425 /* LTSplitComplexMatSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BAECBB518BDEAAC00315425 /* LTSplitComplexMatSpec.mm */; };
 		8BAECDEC18FE9B3900D43125 /* LTPassthroughProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BAECDEB18FE9B3900D43125 /* LTPassthroughProcessorSpec.mm */; };
-		8BAED5331886D21D00BCACF7 /* TwoInputTextures.fsh in Resources */ = {isa = PBXBuildFile; fileRef = 8BAED5321886D21D00BCACF7 /* TwoInputTextures.fsh */; };
 		8BAED5401886D28B00BCACF7 /* TwoInputTextures.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 8BAED5321886D21D00BCACF7 /* TwoInputTextures.fsh */; };
 		8BAF8BDF18BCAA8600C77C04 /* LTRectMapping.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BAF8BDE18BCAA8600C77C04 /* LTRectMapping.mm */; };
 		8BAF8BF818BCB21D00C77C04 /* LTRectMappingSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8BAF8BF718BCB21D00C77C04 /* LTRectMappingSpec.mm */; };
@@ -6690,7 +6688,6 @@
 				06F9F2D51D59B558002D2726 /* HorizontalStepFunction32_bilateral_L1toL3.png in Resources */,
 				5068081B1E0039B9003EF92A /* PerspectiveGeneralQuadWithRectPortionOfTexture.png in Resources */,
 				286A932D18CF727300F203DF /* BristleBrushBristles.2.png in Resources */,
-				8BAED5331886D21D00BCACF7 /* TwoInputTextures.fsh in Resources */,
 				506808201E0039B9003EF92A /* PerspectiveTextureQuad2.png in Resources */,
 				28A612971934F15D00D005D8 /* GaussianSquare.png in Resources */,
 				8597AEBC1D748F25008C96D2 /* LTAnisotropicDiffusion_guided_kernel_5_sigma_0_8.png in Resources */,
@@ -6830,7 +6827,6 @@
 				8BABF19219BC52C100AED760 /* PyramidGrid7.png in Resources */,
 				8BA82041197E55C800FBE68E /* RectUp.jpg in Resources */,
 				28AC7FB51F964D3A0014F062 /* LTColorTransferReference.jpg in Resources */,
-				8BAD630E18A3D70100482564 /* ValueSetter.fsh in Resources */,
 				06F9F2D81D59B558002D2726 /* Lena128_bilateral_L1toL3toL1.png in Resources */,
 				28FB00ED1A0AB46D004490AF /* BristleBrushBristles.FlatBlunt.png in Resources */,
 				307C4B5A1E965EC800BAB302 /* RadialMaskTransformed.png in Resources */,
