@@ -37,6 +37,12 @@ public:
       maxValue(std::max(values.first, values.second)),
       minEndpointInclusion(endpointInclusion), maxEndpointInclusion(endpointInclusion) {}
 
+  /// Initializes with the given \c values and closed end points.
+  Interval(std::pair<T, T> values) noexcept :
+      minValue(std::min(values.first, values.second)),
+      maxValue(std::max(values.first, values.second)),
+      minEndpointInclusion(Closed), maxEndpointInclusion(Closed) {}
+
   /// Return a hash value for this interval.
   size_t hash() const {
     return std::hash<T>()(minValue) ^ std::hash<T>()(maxValue) ^
@@ -79,24 +85,40 @@ public:
     return Interval({min, max}, minInclusion, maxInclusion);
   }
 
-  /// Minimum value of this interval.
+  /// Returns the minimum value of this interval.
   T min() const {
     return minValue;
   };
 
-  /// Maximum value of this interval.
+  /// Returns the maximum value of this interval.
   T max() const {
     return maxValue;
   }
 
-  /// \c true if the minimum endpoint of this interval belongs to the interval.
+  /// Returns the linearly interpolated value for parametric value \c t. In particular, \c min() is
+  /// returned for \c t equalling \c 0 and \c max() is returned for \c t equalling \c 1. If this
+  /// interval is empty, an assertion is raised.
+  T valueAt(T t) const {
+    LTParameterAssert(!isEmpty(), @"No interpolation is possible for empty interval ");
+    T min = minEndpointIncluded() ? minValue : std::nextafter(minValue, maxValue);
+    T max = maxEndpointIncluded() ? maxValue : std::nextafter(maxValue, minValue);
+    return (1 - t) * min + t * max;
+  }
+
+  /// Returns \c true if the minimum endpoint of this interval belongs to the interval.
   bool minEndpointIncluded() const {
     return minEndpointInclusion == Closed;
   }
 
-  /// \c true if the maximum endpoint of this interval belongs to the interval.
+  /// Returns \c true if the maximum endpoint of this interval belongs to the interval.
   bool maxEndpointIncluded() const {
     return maxEndpointInclusion == Closed;
+  }
+
+  /// Returns a string representation of this interval.
+  NSString *description() const {
+    return [NSString stringWithFormat:@"%@%g, %g%@", minEndpointIncluded() ? @"[" : @"(",
+            minValue, maxValue, maxEndpointIncluded() ? @"]" : @")"];
   }
 
 private:
