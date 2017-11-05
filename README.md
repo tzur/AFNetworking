@@ -40,7 +40,6 @@
 6. a. In the `General` tab, add the following to `Linked Frameworks and Binaries`: 
 		- `Accelerate`
 		- `AVFoundation`
-		- `AssetsLibrary`
 		- `CoreMedia`
    b. In the `General` tab, add the following to `Embedded Binaries`: 
 		- `Mantle.framework` (from `Mantle-iOS`)
