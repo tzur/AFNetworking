@@ -10,169 +10,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-// Source: http://theiphonewiki.com/wiki/Models
-static NSDictionary * const kPlatformSubstringToUIDeviceKind = @{
-  // iPhone.
-  @"iPhone1,1": @(UIDeviceKindIPhone1),
-  @"iPhone1,2": @(UIDeviceKindIPhone3G),
-  @"iPhone2": @(UIDeviceKindIPhone3GS),
-  @"iPhone3": @(UIDeviceKindIPhone4),
-  @"iPhone4": @(UIDeviceKindIPhone4S),
-  @"iPhone5,1": @(UIDeviceKindIPhone5),
-  @"iPhone5,2": @(UIDeviceKindIPhone5),
-  @"iPhone5,3": @(UIDeviceKindIPhone5C),
-  @"iPhone5,4": @(UIDeviceKindIPhone5C),
-  @"iPhone6,1": @(UIDeviceKindIPhone5S),
-  @"iPhone6,2": @(UIDeviceKindIPhone5S),
-  @"iPhone7,2": @(UIDeviceKindIPhone6),
-  @"iPhone7,1": @(UIDeviceKindIPhone6Plus),
-  @"iPhone8,1": @(UIDeviceKindIPhone6S),
-  @"iPhone8,2": @(UIDeviceKindIPhone6SPlus),
-  @"iPhone8,4": @(UIDeviceKindIPhoneSE),
-  @"iPhone9,1": @(UIDeviceKindIPhone7),
-  @"iPhone9,2": @(UIDeviceKindIPhone7Plus),
-  @"iPhone9,3": @(UIDeviceKindIPhone7),
-  @"iPhone9,4": @(UIDeviceKindIPhone7Plus),
-  @"iPhone10,1": @(UIDeviceKindIPhone8),
-  @"iPhone10,2": @(UIDeviceKindIPhone8Plus),
-  @"iPhone10,3": @(UIDeviceKindIPhoneX),
-  @"iPhone10,4": @(UIDeviceKindIPhone8),
-  @"iPhone10,5": @(UIDeviceKindIPhone8Plus),
-  @"iPhone10,6": @(UIDeviceKindIPhoneX),
-
-  // iPod.
-  @"iPod1,1": @(UIDeviceKindIPod1G),
-  @"iPod2,1": @(UIDeviceKindIPod2G),
-  @"iPod3,1": @(UIDeviceKindIPod3G),
-  @"iPod4,1": @(UIDeviceKindIPod4G),
-  @"iPod5,1": @(UIDeviceKindIPod5G),
-  @"iPod7,1": @(UIDeviceKindIPod6G),
-
-  // iPad.
-  @"iPad1": @(UIDeviceKindIPad1G),
-  @"iPad2,1": @(UIDeviceKindIPad2G),
-  @"iPad2,2": @(UIDeviceKindIPad2G),
-  @"iPad2,3": @(UIDeviceKindIPad2G),
-  @"iPad2,4": @(UIDeviceKindIPad2G),
-  @"iPad3,1": @(UIDeviceKindIPad3G),
-  @"iPad3,2": @(UIDeviceKindIPad3G),
-  @"iPad3,3": @(UIDeviceKindIPad3G),
-  @"iPad3,4": @(UIDeviceKindIPad4G),
-  @"iPad3,5": @(UIDeviceKindIPad4G),
-  @"iPad3,6": @(UIDeviceKindIPad4G),
-  @"iPad4,1": @(UIDeviceKindIPadAir1G), // iPad Air WiFi.
-  @"iPad4,2": @(UIDeviceKindIPadAir1G), // iPad Air WiFi + Cellular.
-  @"iPad4,3": @(UIDeviceKindIPadAir1G), // iPad Air WiFi + Cellular (China).
-  @"iPad5,3": @(UIDeviceKindIPadAir2G), // iPad Air 2 WiFi.
-  @"iPad5,4": @(UIDeviceKindIPadAir2G), // iPad Air 2 WiFi + Cellular.
-  @"iPad6,3": @(UIDeviceKindIPadPro9_7), // iPad pro 9.7-Inch WiFi.
-  @"iPad6,4": @(UIDeviceKindIPadPro9_7), // iPad pro 9.7-Inch WiFi + Cellular.
-  @"iPad6,7": @(UIDeviceKindIPadPro12_9), // iPad pro 12.9-Inch WiFi.
-  @"iPad6,8": @(UIDeviceKindIPadPro12_9), // iPad pro 12.9-Inch WiFi + Cellular.
-  @"iPad6,11": @(UIDeviceKindIPad5G),
-  @"iPad6,12": @(UIDeviceKindIPad5G),
-  @"iPad7,1": @(UIDeviceKindIPadPro2G12_9),
-  @"iPad7,2": @(UIDeviceKindIPadPro2G12_9),
-  @"iPad7,3": @(UIDeviceKindIPadPro10_5),
-  @"iPad7,4": @(UIDeviceKindIPadPro10_5),
-
-  // iPad mini.
-  @"iPad2,5": @(UIDeviceKindIPadMini1G), // iPad mini WiFi.
-  @"iPad2,6": @(UIDeviceKindIPadMini1G), // iPad mini WiFi + GSM.
-  @"iPad2,7": @(UIDeviceKindIPadMini1G), // iPad mini WiFi + CDMA.
-  @"iPad4,4": @(UIDeviceKindIPadMini2G), // iPad mini 2 WiFi.
-  @"iPad4,5": @(UIDeviceKindIPadMini2G), // iPad mini 2 WiFi + Cellular.
-  @"iPad4,6": @(UIDeviceKindIPadMini2G), // iPad mini 2 WiFi + Cellular (China).
-  @"iPad4,7": @(UIDeviceKindIPadMini3G), // iPad mini 3 WiFi.
-  @"iPad4,8": @(UIDeviceKindIPadMini3G), // iPad mini 3 WiFi + Cellular.
-  @"iPad4,9": @(UIDeviceKindIPadMini3G), // iPad mini 3 WiFi + Cellular (China).
-  @"iPad5,1": @(UIDeviceKindIPadMini4G),
-  @"iPad5,2": @(UIDeviceKindIPadMini4G),
-
-  // Apple TV.
-  @"AppleTV2,1": @(UIDeviceKindAppleTV2),
-  @"AppleTV3,1": @(UIDeviceKindAppleTV3),
-  @"AppleTV3,2": @(UIDeviceKindAppleTV3),
-  @"AppleTV5,3": @(UIDeviceKindAppleTV4),
-
-  // Simulator (iPad / iPhone types are not resolved by platform string).
-  @"x86_64": @(UIDeviceKindSimulatorIPhone),
-  @"i386": @(UIDeviceKindSimulatorIPhone),
-};
-
-// Unknowns (these must be checked after all known devices).
-static NSDictionary * const kUnknownPlatformSubstringToUIDeviceKind = @{
-  @"iPhone": @(UIDeviceKindUnknownIPhone),
-  @"iPod": @(UIDeviceKindUnknownIPod),
-  @"iPad": @(UIDeviceKindUnknownIPad),
-  @"AppleTV": @(UIDeviceKindUnknownAppleTV),
-};
-
-static NSDictionary * const kDeviceKindToString = @{
-  // iPhone.
-  @(UIDeviceKindIPhone1): @"UIDeviceKindIPhone1",
-  @(UIDeviceKindIPhone3G): @"UIDeviceKindIPhone3G",
-  @(UIDeviceKindIPhone3GS): @"UIDeviceKindIPhone3GS",
-  @(UIDeviceKindIPhone4): @"UIDeviceKindIPhone4",
-  @(UIDeviceKindIPhone4S): @"UIDeviceKindIPhone4S",
-  @(UIDeviceKindIPhone5): @"UIDeviceKindIPhone5",
-  @(UIDeviceKindIPhone5C): @"UIDeviceKindIPhone5C",
-  @(UIDeviceKindIPhone5S): @"UIDeviceKindIPhone5S",
-  @(UIDeviceKindIPhone6): @"UIDeviceKindIPhone6",
-  @(UIDeviceKindIPhone6Plus): @"UIDeviceKindIPhone6Plus",
-  @(UIDeviceKindIPhone6S): @"UIDeviceKindIPhone6S",
-  @(UIDeviceKindIPhone6SPlus): @"UIDeviceKindIPhone6SPlus",
-  @(UIDeviceKindIPhoneSE): @"UIDeviceKindIPhoneSE",
-  @(UIDeviceKindIPhone7): @"UIDeviceKindIPhone7",
-  @(UIDeviceKindIPhone7Plus): @"UIDeviceKindIPhone7Plus",
-  @(UIDeviceKindIPhone8): @"UIDeviceKindIPhone8",
-  @(UIDeviceKindIPhone8Plus): @"UIDeviceKindIPhone8Plus",
-  @(UIDeviceKindIPhoneX): @"UIDeviceKindIPhoneX",
-
-  // iPod.
-  @(UIDeviceKindIPod1G): @"UIDeviceKindIPod1G",
-  @(UIDeviceKindIPod2G): @"UIDeviceKindIPod2G",
-  @(UIDeviceKindIPod3G): @"UIDeviceKindIPod3G",
-  @(UIDeviceKindIPod4G): @"UIDeviceKindIPod4G",
-  @(UIDeviceKindIPod5G): @"UIDeviceKindIPod5G",
-  @(UIDeviceKindIPod6G): @"UIDeviceKindIPod6G",
-
-  // iPad.
-  @(UIDeviceKindIPad1G): @"UIDeviceKindIPad1G",
-  @(UIDeviceKindIPad2G): @"UIDeviceKindIPad2G",
-  @(UIDeviceKindIPad3G): @"UIDeviceKindIPad3G",
-  @(UIDeviceKindIPad4G): @"UIDeviceKindIPad4G",
-  @(UIDeviceKindIPad5G): @"UIDeviceKindIPad5G",
-  @(UIDeviceKindIPadAir1G): @"UIDeviceKindIPadAir1G",
-  @(UIDeviceKindIPadAir2G): @"UIDeviceKindIPadAir2G",
-  @(UIDeviceKindIPadPro9_7): @"UIDeviceKindIPadPro9_7",
-  @(UIDeviceKindIPadPro10_5): @"UIDeviceKindIPadPro10_5",
-  @(UIDeviceKindIPadPro12_9): @"UIDeviceKindIPadPro12_9",
-  @(UIDeviceKindIPadPro2G12_9): @"UIDeviceKindIPadPro2G12_9",
-
-  // iPad mini.
-  @(UIDeviceKindIPadMini1G): @"UIDeviceKindIPadMini1G",
-  @(UIDeviceKindIPadMini2G): @"UIDeviceKindIPadMini2G",
-  @(UIDeviceKindIPadMini3G): @"UIDeviceKindIPadMini3G",
-  @(UIDeviceKindIPadMini4G): @"UIDeviceKindIPadMini4G",
-
-  // Apple TV.
-  @(UIDeviceKindAppleTV2): @"UIDeviceKindAppleTV2",
-  @(UIDeviceKindAppleTV3): @"UIDeviceKindAppleTV3",
-  @(UIDeviceKindAppleTV4): @"UIDeviceKindAppleTV4",
-
-  // Simulator
-  @(UIDeviceKindSimulatorIPhone): @"UIDeviceKindSimulatorIPhone",
-  @(UIDeviceKindSimulatorIPad): @"UIDeviceKindSimulatorIPad",
-
-  // Unknowns.
-  @(UIDeviceKindUnknownIPhone): @"UIDeviceKindUnknownIPhone",
-  @(UIDeviceKindUnknownIPod): @"UIDeviceKindUnknownIPod",
-  @(UIDeviceKindUnknownIPad): @"UIDeviceKindUnknownIPad",
-  @(UIDeviceKindUnknownAppleTV): @"UIDeviceKindUnknownAppleTV",
-  @(UIDeviceKindUnknownDevice): @"UIDeviceKindUnknownDevice"
-};
-
 /// Screen type of the device. The type of the screen defines its density.
 typedef NS_ENUM(NSUInteger, UIDeviceScreenType) {
   UIDeviceScreenTypeIPhoneNonRetina,
@@ -254,6 +91,104 @@ typedef NS_ENUM(NSUInteger, UIDeviceScreenType) {
 }
 
 - (UIDeviceKind)lt_deviceKindFromPlatformName:(NSString *)platformName {
+  // Source: http://theiphonewiki.com/wiki/Models
+  static NSDictionary * const kPlatformSubstringToUIDeviceKind = @{
+    // iPhone.
+    @"iPhone1,1": @(UIDeviceKindIPhone1),
+    @"iPhone1,2": @(UIDeviceKindIPhone3G),
+    @"iPhone2": @(UIDeviceKindIPhone3GS),
+    @"iPhone3": @(UIDeviceKindIPhone4),
+    @"iPhone4": @(UIDeviceKindIPhone4S),
+    @"iPhone5,1": @(UIDeviceKindIPhone5),
+    @"iPhone5,2": @(UIDeviceKindIPhone5),
+    @"iPhone5,3": @(UIDeviceKindIPhone5C),
+    @"iPhone5,4": @(UIDeviceKindIPhone5C),
+    @"iPhone6,1": @(UIDeviceKindIPhone5S),
+    @"iPhone6,2": @(UIDeviceKindIPhone5S),
+    @"iPhone7,2": @(UIDeviceKindIPhone6),
+    @"iPhone7,1": @(UIDeviceKindIPhone6Plus),
+    @"iPhone8,1": @(UIDeviceKindIPhone6S),
+    @"iPhone8,2": @(UIDeviceKindIPhone6SPlus),
+    @"iPhone8,4": @(UIDeviceKindIPhoneSE),
+    @"iPhone9,1": @(UIDeviceKindIPhone7),
+    @"iPhone9,2": @(UIDeviceKindIPhone7Plus),
+    @"iPhone9,3": @(UIDeviceKindIPhone7),
+    @"iPhone9,4": @(UIDeviceKindIPhone7Plus),
+    @"iPhone10,1": @(UIDeviceKindIPhone8),
+    @"iPhone10,2": @(UIDeviceKindIPhone8Plus),
+    @"iPhone10,3": @(UIDeviceKindIPhoneX),
+    @"iPhone10,4": @(UIDeviceKindIPhone8),
+    @"iPhone10,5": @(UIDeviceKindIPhone8Plus),
+    @"iPhone10,6": @(UIDeviceKindIPhoneX),
+
+    // iPod.
+    @"iPod1,1": @(UIDeviceKindIPod1G),
+    @"iPod2,1": @(UIDeviceKindIPod2G),
+    @"iPod3,1": @(UIDeviceKindIPod3G),
+    @"iPod4,1": @(UIDeviceKindIPod4G),
+    @"iPod5,1": @(UIDeviceKindIPod5G),
+    @"iPod7,1": @(UIDeviceKindIPod6G),
+
+    // iPad.
+    @"iPad1": @(UIDeviceKindIPad1G),
+    @"iPad2,1": @(UIDeviceKindIPad2G),
+    @"iPad2,2": @(UIDeviceKindIPad2G),
+    @"iPad2,3": @(UIDeviceKindIPad2G),
+    @"iPad2,4": @(UIDeviceKindIPad2G),
+    @"iPad3,1": @(UIDeviceKindIPad3G),
+    @"iPad3,2": @(UIDeviceKindIPad3G),
+    @"iPad3,3": @(UIDeviceKindIPad3G),
+    @"iPad3,4": @(UIDeviceKindIPad4G),
+    @"iPad3,5": @(UIDeviceKindIPad4G),
+    @"iPad3,6": @(UIDeviceKindIPad4G),
+    @"iPad4,1": @(UIDeviceKindIPadAir1G), // iPad Air WiFi.
+    @"iPad4,2": @(UIDeviceKindIPadAir1G), // iPad Air WiFi + Cellular.
+    @"iPad4,3": @(UIDeviceKindIPadAir1G), // iPad Air WiFi + Cellular (China).
+    @"iPad5,3": @(UIDeviceKindIPadAir2G), // iPad Air 2 WiFi.
+    @"iPad5,4": @(UIDeviceKindIPadAir2G), // iPad Air 2 WiFi + Cellular.
+    @"iPad6,3": @(UIDeviceKindIPadPro9_7), // iPad pro 9.7-Inch WiFi.
+    @"iPad6,4": @(UIDeviceKindIPadPro9_7), // iPad pro 9.7-Inch WiFi + Cellular.
+    @"iPad6,7": @(UIDeviceKindIPadPro12_9), // iPad pro 12.9-Inch WiFi.
+    @"iPad6,8": @(UIDeviceKindIPadPro12_9), // iPad pro 12.9-Inch WiFi + Cellular.
+    @"iPad6,11": @(UIDeviceKindIPad5G),
+    @"iPad6,12": @(UIDeviceKindIPad5G),
+    @"iPad7,1": @(UIDeviceKindIPadPro2G12_9),
+    @"iPad7,2": @(UIDeviceKindIPadPro2G12_9),
+    @"iPad7,3": @(UIDeviceKindIPadPro10_5),
+    @"iPad7,4": @(UIDeviceKindIPadPro10_5),
+
+    // iPad mini.
+    @"iPad2,5": @(UIDeviceKindIPadMini1G), // iPad mini WiFi.
+    @"iPad2,6": @(UIDeviceKindIPadMini1G), // iPad mini WiFi + GSM.
+    @"iPad2,7": @(UIDeviceKindIPadMini1G), // iPad mini WiFi + CDMA.
+    @"iPad4,4": @(UIDeviceKindIPadMini2G), // iPad mini 2 WiFi.
+    @"iPad4,5": @(UIDeviceKindIPadMini2G), // iPad mini 2 WiFi + Cellular.
+    @"iPad4,6": @(UIDeviceKindIPadMini2G), // iPad mini 2 WiFi + Cellular (China).
+    @"iPad4,7": @(UIDeviceKindIPadMini3G), // iPad mini 3 WiFi.
+    @"iPad4,8": @(UIDeviceKindIPadMini3G), // iPad mini 3 WiFi + Cellular.
+    @"iPad4,9": @(UIDeviceKindIPadMini3G), // iPad mini 3 WiFi + Cellular (China).
+    @"iPad5,1": @(UIDeviceKindIPadMini4G),
+    @"iPad5,2": @(UIDeviceKindIPadMini4G),
+
+    // Apple TV.
+    @"AppleTV2,1": @(UIDeviceKindAppleTV2),
+    @"AppleTV3,1": @(UIDeviceKindAppleTV3),
+    @"AppleTV3,2": @(UIDeviceKindAppleTV3),
+    @"AppleTV5,3": @(UIDeviceKindAppleTV4),
+
+    // Simulator (iPad / iPhone types are not resolved by platform string).
+    @"x86_64": @(UIDeviceKindSimulatorIPhone),
+    @"i386": @(UIDeviceKindSimulatorIPhone),
+  };
+
+  // Unknowns (these must be checked after all known devices).
+  static NSDictionary * const kUnknownPlatformSubstringToUIDeviceKind = @{
+    @"iPhone": @(UIDeviceKindUnknownIPhone),
+    @"iPod": @(UIDeviceKindUnknownIPod),
+    @"iPad": @(UIDeviceKindUnknownIPad),
+    @"AppleTV": @(UIDeviceKindUnknownAppleTV),
+  };
+
   // Convert to UIDeviceKind. First search for known devices, then for unknown but specific kind,
   // and if not found until then, fall to the great unknown.
   for (NSString *substring in kPlatformSubstringToUIDeviceKind) {
@@ -283,10 +218,75 @@ typedef NS_ENUM(NSUInteger, UIDeviceScreenType) {
 }
 
 - (NSString *)lt_deviceKindString {
+  static NSDictionary * const kDeviceKindToString = @{
+    // iPhone.
+    @(UIDeviceKindIPhone1): @"UIDeviceKindIPhone1",
+    @(UIDeviceKindIPhone3G): @"UIDeviceKindIPhone3G",
+    @(UIDeviceKindIPhone3GS): @"UIDeviceKindIPhone3GS",
+    @(UIDeviceKindIPhone4): @"UIDeviceKindIPhone4",
+    @(UIDeviceKindIPhone4S): @"UIDeviceKindIPhone4S",
+    @(UIDeviceKindIPhone5): @"UIDeviceKindIPhone5",
+    @(UIDeviceKindIPhone5C): @"UIDeviceKindIPhone5C",
+    @(UIDeviceKindIPhone5S): @"UIDeviceKindIPhone5S",
+    @(UIDeviceKindIPhone6): @"UIDeviceKindIPhone6",
+    @(UIDeviceKindIPhone6Plus): @"UIDeviceKindIPhone6Plus",
+    @(UIDeviceKindIPhone6S): @"UIDeviceKindIPhone6S",
+    @(UIDeviceKindIPhone6SPlus): @"UIDeviceKindIPhone6SPlus",
+    @(UIDeviceKindIPhoneSE): @"UIDeviceKindIPhoneSE",
+    @(UIDeviceKindIPhone7): @"UIDeviceKindIPhone7",
+    @(UIDeviceKindIPhone7Plus): @"UIDeviceKindIPhone7Plus",
+    @(UIDeviceKindIPhone8): @"UIDeviceKindIPhone8",
+    @(UIDeviceKindIPhone8Plus): @"UIDeviceKindIPhone8Plus",
+    @(UIDeviceKindIPhoneX): @"UIDeviceKindIPhoneX",
+
+    // iPod.
+    @(UIDeviceKindIPod1G): @"UIDeviceKindIPod1G",
+    @(UIDeviceKindIPod2G): @"UIDeviceKindIPod2G",
+    @(UIDeviceKindIPod3G): @"UIDeviceKindIPod3G",
+    @(UIDeviceKindIPod4G): @"UIDeviceKindIPod4G",
+    @(UIDeviceKindIPod5G): @"UIDeviceKindIPod5G",
+    @(UIDeviceKindIPod6G): @"UIDeviceKindIPod6G",
+
+    // iPad.
+    @(UIDeviceKindIPad1G): @"UIDeviceKindIPad1G",
+    @(UIDeviceKindIPad2G): @"UIDeviceKindIPad2G",
+    @(UIDeviceKindIPad3G): @"UIDeviceKindIPad3G",
+    @(UIDeviceKindIPad4G): @"UIDeviceKindIPad4G",
+    @(UIDeviceKindIPad5G): @"UIDeviceKindIPad5G",
+    @(UIDeviceKindIPadAir1G): @"UIDeviceKindIPadAir1G",
+    @(UIDeviceKindIPadAir2G): @"UIDeviceKindIPadAir2G",
+    @(UIDeviceKindIPadPro9_7): @"UIDeviceKindIPadPro9_7",
+    @(UIDeviceKindIPadPro10_5): @"UIDeviceKindIPadPro10_5",
+    @(UIDeviceKindIPadPro12_9): @"UIDeviceKindIPadPro12_9",
+    @(UIDeviceKindIPadPro2G12_9): @"UIDeviceKindIPadPro2G12_9",
+
+    // iPad mini.
+    @(UIDeviceKindIPadMini1G): @"UIDeviceKindIPadMini1G",
+    @(UIDeviceKindIPadMini2G): @"UIDeviceKindIPadMini2G",
+    @(UIDeviceKindIPadMini3G): @"UIDeviceKindIPadMini3G",
+    @(UIDeviceKindIPadMini4G): @"UIDeviceKindIPadMini4G",
+
+    // Apple TV.
+    @(UIDeviceKindAppleTV2): @"UIDeviceKindAppleTV2",
+    @(UIDeviceKindAppleTV3): @"UIDeviceKindAppleTV3",
+    @(UIDeviceKindAppleTV4): @"UIDeviceKindAppleTV4",
+
+    // Simulator
+    @(UIDeviceKindSimulatorIPhone): @"UIDeviceKindSimulatorIPhone",
+    @(UIDeviceKindSimulatorIPad): @"UIDeviceKindSimulatorIPad",
+
+    // Unknowns.
+    @(UIDeviceKindUnknownIPhone): @"UIDeviceKindUnknownIPhone",
+    @(UIDeviceKindUnknownIPod): @"UIDeviceKindUnknownIPod",
+    @(UIDeviceKindUnknownIPad): @"UIDeviceKindUnknownIPad",
+    @(UIDeviceKindUnknownAppleTV): @"UIDeviceKindUnknownAppleTV",
+    @(UIDeviceKindUnknownDevice): @"UIDeviceKindUnknownDevice"
+  };
+
   if (!objc_getAssociatedObject(self, _cmd)) {
-    objc_setAssociatedObject(self, _cmd, kDeviceKindToString[@(self.lt_deviceKind)],
-                             OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-    LTAssert(self.lt_deviceKindString, @"No valid device type set.");
+    NSString * _Nullable deviceKindString = kDeviceKindToString[@(self.lt_deviceKind)];
+    LTAssert(deviceKindString, @"No valid device type to set.");
+    objc_setAssociatedObject(self, _cmd, deviceKindString, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
   }
 
   return nn(objc_getAssociatedObject(self, _cmd));
