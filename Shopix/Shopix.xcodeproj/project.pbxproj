@@ -14,9 +14,12 @@
 		65F82F021F93C09F002A496C /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65F82EDD1F93C09F002A496C /* CloudKit.framework */; };
 		84FF72F71C8EEF9600D1DA9F /* libShopix.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 84FF72E91C8EED6D00D1DA9F /* libShopix.a */; };
 		8851018E1F9DDBA60052351B /* NSError+Shopix.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8851018D1F9DDBA60052351B /* NSError+Shopix.mm */; };
+		885CA2B31FB301F2005380BD /* SPXProductDescriptorsFactorySpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 885CA2B21FB301F1005380BD /* SPXProductDescriptorsFactorySpec.mm */; };
+		88720F9D1F9E1A4D00E18F05 /* SPXProductDescriptorsFactory.mm in Sources */ = {isa = PBXBuildFile; fileRef = 88FA8C9A1F66AA0A00D2E594 /* SPXProductDescriptorsFactory.mm */; };
 		88B632AF1F9DD8B10051A535 /* NSErrorCodes+Shopix.mm in Sources */ = {isa = PBXBuildFile; fileRef = 88B632AE1F9DD8B10051A535 /* NSErrorCodes+Shopix.mm */; };
 		88B9B4DA1FA8BA940033D48F /* SPXProductAxis.mm in Sources */ = {isa = PBXBuildFile; fileRef = 88FA8CA31F66C68700D2E594 /* SPXProductAxis.mm */; };
 		88B9B4FF1FA8BA980033D48F /* SPXPromotion.mm in Sources */ = {isa = PBXBuildFile; fileRef = 88FA8C9D1F66C52400D2E594 /* SPXPromotion.mm */; };
+		88FF39701FB2E047006311FF /* SPXProductDescriptor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 88FF396F1FB2E047006311FF /* SPXProductDescriptor.mm */; };
 		CD3C69A41F559394008A6C23 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD3C69A31F559394008A6C23 /* GLKit.framework */; };
 		CD3C6A0F1F559F23008A6C23 /* libLLReactiveMatchers.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CD962DB01F5427EF00F2CA82 /* libLLReactiveMatchers.a */; };
 		CD3C6A331F559F3A008A6C23 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD3C6A321F559F3A008A6C23 /* UIKit.framework */; };
@@ -374,12 +377,17 @@
 		84FF72E91C8EED6D00D1DA9F /* libShopix.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libShopix.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		8851018C1F9DDBA60052351B /* NSError+Shopix.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSError+Shopix.h"; sourceTree = "<group>"; };
 		8851018D1F9DDBA60052351B /* NSError+Shopix.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSError+Shopix.mm"; sourceTree = "<group>"; };
+		885CA2B21FB301F1005380BD /* SPXProductDescriptorsFactorySpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXProductDescriptorsFactorySpec.mm; sourceTree = "<group>"; };
 		88B632AD1F9DD8B10051A535 /* NSErrorCodes+Shopix.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSErrorCodes+Shopix.h"; sourceTree = "<group>"; };
 		88B632AE1F9DD8B10051A535 /* NSErrorCodes+Shopix.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSErrorCodes+Shopix.mm"; sourceTree = "<group>"; };
+		88FA8C991F66AA0A00D2E594 /* SPXProductDescriptorsFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPXProductDescriptorsFactory.h; sourceTree = "<group>"; };
+		88FA8C9A1F66AA0A00D2E594 /* SPXProductDescriptorsFactory.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXProductDescriptorsFactory.mm; sourceTree = "<group>"; };
 		88FA8C9C1F66C52400D2E594 /* SPXPromotion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPXPromotion.h; sourceTree = "<group>"; };
 		88FA8C9D1F66C52400D2E594 /* SPXPromotion.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXPromotion.mm; sourceTree = "<group>"; };
 		88FA8CA21F66C68700D2E594 /* SPXProductAxis.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPXProductAxis.h; sourceTree = "<group>"; };
 		88FA8CA31F66C68700D2E594 /* SPXProductAxis.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXProductAxis.mm; sourceTree = "<group>"; };
+		88FF396E1FB2E047006311FF /* SPXProductDescriptor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SPXProductDescriptor.h; sourceTree = "<group>"; };
+		88FF396F1FB2E047006311FF /* SPXProductDescriptor.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXProductDescriptor.mm; sourceTree = "<group>"; };
 		8B57B1FC1D914FE100814B3C /* Bundle.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Bundle.xcconfig; sourceTree = "<group>"; };
 		CD3C69A31F559394008A6C23 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
 		CD3C6A321F559F3A008A6C23 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -562,6 +570,7 @@
 			isa = PBXGroup;
 			children = (
 				CDCFDF1E1F5C39BA00C289BA /* Localization */,
+				885CA28D1FB301C6005380BD /* Promotions */,
 				CDB513A31F66B07D0013577C /* Subscription */,
 			);
 			name = Tests;
@@ -655,6 +664,14 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		885CA28D1FB301C6005380BD /* Promotions */ = {
+			isa = PBXGroup;
+			children = (
+				885CA2B21FB301F1005380BD /* SPXProductDescriptorsFactorySpec.mm */,
+			);
+			name = Promotions;
+			sourceTree = "<group>";
+		};
 		88B632881F9DD87E0051A535 /* Errors */ = {
 			isa = PBXGroup;
 			children = (
@@ -671,8 +688,12 @@
 			children = (
 				88FA8CA21F66C68700D2E594 /* SPXProductAxis.h */,
 				88FA8CA31F66C68700D2E594 /* SPXProductAxis.mm */,
+				88FA8C991F66AA0A00D2E594 /* SPXProductDescriptorsFactory.h */,
+				88FA8C9A1F66AA0A00D2E594 /* SPXProductDescriptorsFactory.mm */,
 				88FA8C9C1F66C52400D2E594 /* SPXPromotion.h */,
 				88FA8C9D1F66C52400D2E594 /* SPXPromotion.mm */,
+				88FF396E1FB2E047006311FF /* SPXProductDescriptor.h */,
+				88FF396F1FB2E047006311FF /* SPXProductDescriptor.mm */,
 			);
 			name = Promotions;
 			sourceTree = "<group>";
@@ -1270,6 +1291,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				885CA2B31FB301F2005380BD /* SPXProductDescriptorsFactorySpec.mm in Sources */,
 				CDCFDEF91F5C39B300C289BA /* NSDecimalNumber+LocalizationSpec.mm in Sources */,
 				CDB513A51F66B0A10013577C /* SPXSubscriptionManagerSpec.mm in Sources */,
 			);
@@ -1279,11 +1301,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				88720F9D1F9E1A4D00E18F05 /* SPXProductDescriptorsFactory.mm in Sources */,
 				CDC8D4EB1F701EA300E7C929 /* SPXLocalization.mm in Sources */,
 				CD8E8E2F1F5C19F500DF8FC1 /* NSDecimalNumber+Localization.mm in Sources */,
 				88B9B4FF1FA8BA980033D48F /* SPXPromotion.mm in Sources */,
 				88B9B4DA1FA8BA940033D48F /* SPXProductAxis.mm in Sources */,
 				CDB513A21F66B0440013577C /* SPXSubscriptionManager.mm in Sources */,
+				88FF39701FB2E047006311FF /* SPXProductDescriptor.mm in Sources */,
 				8851018E1F9DDBA60052351B /* NSError+Shopix.mm in Sources */,
 				88B632AF1F9DD8B10051A535 /* NSErrorCodes+Shopix.mm in Sources */,
 			);
