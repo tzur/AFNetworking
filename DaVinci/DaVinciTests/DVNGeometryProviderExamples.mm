@@ -56,7 +56,7 @@ sharedExamplesFor(kDVNGeometryProviderExamples, ^(NSDictionary *data) {
       it(@"should provide the correct samples", ^{
         expect([provider valuesFromSamples:samples end:NO].samples()).to.equal(samples);
       });
-      
+
       it(@"should reproduce the same values when using the same model", ^{
         dvn::GeometryValues values = [provider valuesFromSamples:samples end:NO];
         id<DVNGeometryProvider> otherProvider = [model provider];
@@ -88,20 +88,21 @@ SharedExamplesBegin(DVNDeterministicGeometryProviderExamples)
 
 sharedExamplesFor(kDVNDeterministicGeometryProviderExamples, ^(NSDictionary *data) {
   __block id<LTSampleValues> samples;
-  __block NSArray<LTQuad *> *expectedQuads;
+  __block std::vector<lt::Quad> expectedQuads;
   __block NSArray<NSNumber *> *expectedIndices;
   __block id<DVNGeometryProvider> provider;
-  
+
   beforeEach(^{
     samples = data[kDVNGeometryProviderExamplesSamples];
-    expectedQuads = data[kDVNGeometryProviderExamplesExpectedQuads];
+    expectedQuads =
+        DVNConvertedQuadsFromBoxedQuads(data[kDVNGeometryProviderExamplesExpectedQuads]);
     expectedIndices = data[kDVNGeometryProviderExamplesExpectedIndices];
     provider = [data[kDVNGeometryProviderExamplesModel] provider];
   });
-  
+
   afterEach(^{
     samples = nil;
-    expectedQuads = nil;
+    expectedQuads = {};
     expectedIndices = nil;
     provider = nil;
   });
@@ -109,7 +110,11 @@ sharedExamplesFor(kDVNDeterministicGeometryProviderExamples, ^(NSDictionary *dat
   it(@"should provide the expected quads", ^{
     dvn::GeometryValues values = [provider valuesFromSamples:samples end:NO];
     expect($(values.indices())).to.equal(expectedIndices);
-    expect(DVNConvertedQuadsFromQuads(values.quads())).to.equal(expectedQuads);
+    std::vector<lt::Quad> quads = values.quads();
+    expect(quads.size()).to.equal(expectedQuads.size());
+    for (std::vector<lt::Quad>::size_type i = 0; i < quads.size(); ++i) {
+      expect(quads[i] == expectedQuads[i]).to.beTruthy();
+    }
   });
 });
 

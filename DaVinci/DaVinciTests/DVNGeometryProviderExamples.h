@@ -16,7 +16,7 @@ extern NSString * const kDVNGeometryProviderExamplesSamples;
 /// and provide deterministic geometry.
 extern NSString * const kDVNDeterministicGeometryProviderExamples;
 
-/// Dictionary key to an <tt>NSArray<LTQuad *> *</tt> object expected as part of the result of the
+/// Dictionary key to an <tt>NSArray<NSValue *> *</tt> object expected as part of the result of the
 /// \c valuesFromSamples:end: method of the \c id<DVNGeometryProvider> constructed from the model
 /// provided via \c kDVNGeometryProviderExamplesModel, when calling the method with the samples
 /// accessible via \c kDVNGeometryProviderExamplesSamples and value \c NO for the \c end parameter

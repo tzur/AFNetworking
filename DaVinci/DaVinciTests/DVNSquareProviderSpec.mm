@@ -9,6 +9,7 @@
 #import <LTEngineTests/LTEasyVectorBoxing.h>
 #import <LTKitTests/LTEqualityExamples.h>
 
+#import "DVNEasyQuadVectorBoxing.h"
 #import "DVNGeometryProviderExamples.h"
 
 SpecBegin(DVNSquareProvider)
@@ -138,15 +139,16 @@ itShouldBehaveLike(kDVNDeterministicGeometryProviderExamples, ^{
   DVNSquareProviderModel *model = [[DVNSquareProviderModel alloc] initWithEdgeLength:7
                                                                       xCoordinateKey:@"xKey"
                                                                       yCoordinateKey:@"yKey"];
-  LTQuad *firstExpectedQuad = [LTQuad quadFromRect:CGRectCenteredAt(CGPointMake(1, 3),
-                                                                    CGSizeMakeUniform(7))];
-  LTQuad *secondExpectedQuad = [LTQuad quadFromRect:CGRectCenteredAt(CGPointMake(2, 4),
-                                                                     CGSizeMakeUniform(7))];
+  NSArray<NSValue *> *expectedQuads =
+      DVNConvertedBoxedQuadsFromQuads({
+        lt::Quad(CGRectCenteredAt(CGPointMake(1, 3), CGSizeMakeUniform(7))),
+        lt::Quad(CGRectCenteredAt(CGPointMake(2, 4), CGSizeMakeUniform(7)))
+      });
   std::vector<NSUInteger> indices = {0, 1};
   return @{
     kDVNGeometryProviderExamplesModel: model,
     kDVNGeometryProviderExamplesSamples: samples,
-    kDVNGeometryProviderExamplesExpectedQuads: @[firstExpectedQuad, secondExpectedQuad],
+    kDVNGeometryProviderExamplesExpectedQuads: expectedQuads,
     kDVNGeometryProviderExamplesExpectedIndices: $(indices)
   };
 });
@@ -161,15 +163,16 @@ itShouldBehaveLike(kDVNGeometryProviderExamples, ^{
       [[LTParameterizationKeyToValues alloc] initWithKeys:keys
                                              valuesPerKey:(cv::Mat1g(2, 2) << 1, 2, 3, 4)];
   samples = [[LTSampleValues alloc] initWithSampledParametricValues:{0, 1} mapping:mapping];
-  LTQuad *firstExpectedQuad = [LTQuad quadFromRect:CGRectCenteredAt(CGPointMake(1, 3),
-                                                                    CGSizeMakeUniform(7))];
-  LTQuad *secondExpectedQuad = [LTQuad quadFromRect:CGRectCenteredAt(CGPointMake(2, 4),
-                                                                     CGSizeMakeUniform(7))];
+  NSArray<NSValue *> *expectedQuads =
+      DVNConvertedBoxedQuadsFromQuads({
+        lt::Quad(CGRectCenteredAt(CGPointMake(1, 3), CGSizeMakeUniform(7))),
+        lt::Quad(CGRectCenteredAt(CGPointMake(2, 4), CGSizeMakeUniform(7)))
+      });
   std::vector<NSUInteger> indices = {0, 1};
   return @{
     kDVNGeometryProviderExamplesModel: model,
     kDVNGeometryProviderExamplesSamples: samples,
-    kDVNGeometryProviderExamplesExpectedQuads: @[firstExpectedQuad, secondExpectedQuad],
+    kDVNGeometryProviderExamplesExpectedQuads: expectedQuads,
     kDVNGeometryProviderExamplesExpectedIndices: $(indices)
   };
 });

@@ -1,15 +1,15 @@
 // Copyright (c) 2017 Lightricks. All rights reserved.
 // Created by Amit Yitzhack.
 
-#import "DVNProjectiveGeometryTransformerModel.h"
-
 #import <LTEngine/LTGLKitExtensions.h>
 #import <LTEngine/LTParameterizationKeyToValues.h>
 #import <LTEngine/LTSampleValues.h>
 #import <LTEngineTests/LTEasyVectorBoxing.h>
 #import <LTKitTests/LTEqualityExamples.h>
 
+#import "DVNEasyQuadVectorBoxing.h"
 #import "DVNGeometryProviderExamples.h"
+#import "DVNProjectiveGeometryTransformerModel.h"
 #import "DVNTestGeometryProvider.h"
 
 SpecBegin(DVNProjectiveGeometryTransformerModel)
@@ -40,7 +40,7 @@ context(@"initialization", ^{
   it(@"should initialize correctly", ^{
     expect(model).toNot.beNil();
     expect(model.model).to.equal(providerModelMock);
-    
+
     for (NSUInteger i = 0; i < 9; ++i) {
       expect(model.transform.m[i]).to.equal(transform.m[i]);
     }
@@ -87,13 +87,16 @@ itShouldBehaveLike(kDVNDeterministicGeometryProviderExamples, ^{
   DVNProjectiveGeometryTransformerModel *transformerModel =
       [[DVNProjectiveGeometryTransformerModel alloc] initWithGeometryProviderModel:providerModel
                                                                          transform:transform];
-  LTQuad *firstExpectedQuad = [LTQuad quadFromRect:CGRectMake(3, 10, 2, 6)];
-  LTQuad *secondExpectedQuad = [LTQuad quadFromRect:CGRectMake(7, 18, 6, 14)];
+
+  NSArray<NSValue *> *expectedQuads =
+      DVNConvertedBoxedQuadsFromQuads({
+        lt::Quad(CGRectMake(3, 10, 2, 6)), lt::Quad(CGRectMake(7, 18, 6, 14))
+      });
   std::vector<NSUInteger> indices = {0, 1};
   return @{
     kDVNGeometryProviderExamplesModel: transformerModel,
     kDVNGeometryProviderExamplesSamples: samples,
-    kDVNGeometryProviderExamplesExpectedQuads: @[firstExpectedQuad, secondExpectedQuad],
+    kDVNGeometryProviderExamplesExpectedQuads: expectedQuads,
     kDVNGeometryProviderExamplesExpectedIndices: $(indices)
   };
 });
