@@ -84,6 +84,8 @@
 		503C57551D3665E200C20B38 /* DVNSplineRenderModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 503C57531D3665E200C20B38 /* DVNSplineRenderModel.mm */; };
 		503C577D1D36731A00C20B38 /* DVNSquareProvider.mm in Sources */ = {isa = PBXBuildFile; fileRef = 503C577C1D36731A00C20B38 /* DVNSquareProvider.mm */; };
 		503C579E1D3685A400C20B38 /* DVNSplineRenderModelSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 503C579D1D3685A400C20B38 /* DVNSplineRenderModelSpec.mm */; };
+		504720471FA21A6100D11F96 /* DVNDirectedRectProvider.mm in Sources */ = {isa = PBXBuildFile; fileRef = 504720461FA21A6100D11F96 /* DVNDirectedRectProvider.mm */; };
+		504720491FA21A6F00D11F96 /* DVNDirectedRectProviderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 504720481FA21A6F00D11F96 /* DVNDirectedRectProviderSpec.mm */; };
 		50574AD21D2D60490076C60D /* LTSpectaOpenGLContextHook.mm in Sources */ = {isa = PBXBuildFile; fileRef = 50574AD11D2D60490076C60D /* LTSpectaOpenGLContextHook.mm */; };
 		50574AE41D2D654C0076C60D /* libLTEngine.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 250154AC1D1AEAF100420FA9 /* libLTEngine.a */; };
 		507FEFA21D3A30CA002CB28E /* DVNGeometryTransformer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 507FEFA11D3A30CA002CB28E /* DVNGeometryTransformer.mm */; };
@@ -557,6 +559,9 @@
 		503C577B1D36731A00C20B38 /* DVNSquareProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DVNSquareProvider.h; sourceTree = "<group>"; };
 		503C577C1D36731A00C20B38 /* DVNSquareProvider.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNSquareProvider.mm; sourceTree = "<group>"; };
 		503C579D1D3685A400C20B38 /* DVNSplineRenderModelSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNSplineRenderModelSpec.mm; sourceTree = "<group>"; };
+		504720251FA21A6000D11F96 /* DVNDirectedRectProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DVNDirectedRectProvider.h; sourceTree = "<group>"; };
+		504720461FA21A6100D11F96 /* DVNDirectedRectProvider.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNDirectedRectProvider.mm; sourceTree = "<group>"; };
+		504720481FA21A6F00D11F96 /* DVNDirectedRectProviderSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNDirectedRectProviderSpec.mm; sourceTree = "<group>"; };
 		50574AD01D2D60490076C60D /* LTSpectaOpenGLContextHook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LTSpectaOpenGLContextHook.h; path = ../../LTEngine/LTEngineTests/LTSpectaOpenGLContextHook.h; sourceTree = "<group>"; };
 		50574AD11D2D60490076C60D /* LTSpectaOpenGLContextHook.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = LTSpectaOpenGLContextHook.mm; path = ../../LTEngine/LTEngineTests/LTSpectaOpenGLContextHook.mm; sourceTree = "<group>"; };
 		507FEFA01D3A30CA002CB28E /* DVNGeometryTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DVNGeometryTransformer.h; sourceTree = "<group>"; };
@@ -847,6 +852,7 @@
 			isa = PBXGroup;
 			children = (
 				257344FB1D3795D800E852B2 /* Examples */,
+				504720481FA21A6F00D11F96 /* DVNDirectedRectProviderSpec.mm */,
 				507FEFBD1D3A30E3002CB28E /* DVNGeometryTransformerSpec.mm */,
 				281503BA1E51E7E800C51462 /* DVNProjectiveGeometryTransformerSpec.mm */,
 				28FA4D611DF05F7D00EE0B99 /* DVNScatteredGeometryProviderModelSpec.mm */,
@@ -1186,6 +1192,8 @@
 		503C577E1D36733C00C20B38 /* Providers */ = {
 			isa = PBXGroup;
 			children = (
+				504720251FA21A6000D11F96 /* DVNDirectedRectProvider.h */,
+				504720461FA21A6100D11F96 /* DVNDirectedRectProvider.mm */,
 				507FEFA01D3A30CA002CB28E /* DVNGeometryTransformer.h */,
 				507FEFA11D3A30CA002CB28E /* DVNGeometryTransformer.mm */,
 				281503971E51E4C300C51462 /* DVNProjectiveGeometryTransformerModel.h */,
@@ -1753,6 +1761,7 @@
 				258341691D339AB60005BC07 /* DVNRenderStageConfiguration.mm in Sources */,
 				286C1D901DED9A5E00523F2E /* DVNScatteredGeometryProviderModel.mm in Sources */,
 				503C577D1D36731A00C20B38 /* DVNSquareProvider.mm in Sources */,
+				504720471FA21A6100D11F96 /* DVNDirectedRectProvider.mm in Sources */,
 				25AD67771D355A900092B3E4 /* DVNPipeline.mm in Sources */,
 				500A3AE11D2D348700043E18 /* DVNTextureMappingStageConfiguration.mm in Sources */,
 				503C57541D3665E200C20B38 /* DVNSplineRenderer.mm in Sources */,
@@ -1787,6 +1796,7 @@
 				25AD67741D3553F50092B3E4 /* DVNPipelineConfigurationSpec.mm in Sources */,
 				257856FC1F0126A800EB4129 /* DVNQuadCenterAttributeProviderSpec.mm in Sources */,
 				50073F941D363274009F7F48 /* NSValue+OpenCVExtensions.mm in Sources */,
+				504720491FA21A6F00D11F96 /* DVNDirectedRectProviderSpec.mm in Sources */,
 				50073F911D3631FB009F7F48 /* LTTestUtils+LTEngine.mm in Sources */,
 				500F77D31D2D3A4100023343 /* DVNRandomTexCoordProviderSpec.mm in Sources */,
 				254C07C21D3F53FE009ECEEB /* DVNAttributeProviderExamples.mm in Sources */,
