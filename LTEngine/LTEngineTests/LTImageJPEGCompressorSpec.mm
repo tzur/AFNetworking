@@ -1,25 +1,25 @@
 // Copyright (c) 2015 Lightricks. All rights reserved.
 // Created by Amit Shabtay.
 
-#import "LTImagePNGCompressor.h"
+#import "LTImageJPEGCompressor.h"
 
 #import "LTCompressionFormat.h"
 #import "LTOpenCVExtensions.h"
 #import "LTTexture+Factory.h"
 
 static BOOL LTVerifyFormat(NSData *compressedImage) {
-  const std::vector<uint8_t> kPNGHeader = {0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A};
+  const std::vector<uint8_t> kJPEGHeader = {0xFF, 0xD8, 0xFF};
   const std::vector<uint8_t> header((uint8_t *)compressedImage.bytes,
-                                    (uint8_t *)compressedImage.bytes + kPNGHeader.size());
-  return kPNGHeader == header;
+                                    (uint8_t *)compressedImage.bytes + kJPEGHeader.size());
+  return kJPEGHeader == header;
 }
 
-SpecBegin(LTImagePNGCompressor)
+SpecBegin(LTImageJPEGCompressor)
 
-__block LTImagePNGCompressor *compressor;
+__block LTImageJPEGCompressor *compressor;
 
 beforeEach(^{
-  compressor = [[LTImagePNGCompressor alloc] init];
+  compressor = [[LTImageJPEGCompressor alloc] initWithQuality:1];
 });
 
 afterEach(^{
@@ -27,10 +27,10 @@ afterEach(^{
 });
 
 it(@"should return correct format", ^{
-  expect(compressor.format).to.equal($(LTCompressionFormatPNG));
+  expect(compressor.format).to.equal($(LTCompressionFormatJPEG));
 });
 
-it(@"should create png format data", ^{
+it(@"should create jpeg format data", ^{
   UIImage *jpegImage = LTLoadImage([self class], @"Gray.jpg");
 
   NSError *error;
@@ -40,11 +40,24 @@ it(@"should create png format data", ^{
   expect(error).to.beNil();
 });
 
+it(@"should change output when using different quality value", ^{
+  UIImage *image = LTLoadImage([self class], @"Lena.png");
+
+  NSData *highQualityData = [compressor compressImage:image metadata:nil error:nil];
+  expect(highQualityData).notTo.beNil();
+
+  LTImageJPEGCompressor *otherCompressor = [[LTImageJPEGCompressor alloc] initWithQuality:0];
+  NSData *lowQualityData = [otherCompressor compressImage:image metadata:nil error:nil];
+  expect(lowQualityData).notTo.beNil();
+
+  expect(highQualityData).notTo.equal(lowQualityData);
+});
+
 it(@"should compress same data to file as to in memory data", ^{
   LTCreateTemporaryDirectory();
 
   UIImage *image = LTLoadImage([self class], @"Lena.png");
-  auto url = [NSURL fileURLWithPath:LTTemporaryPath(@"temp.png")];
+  auto url = [NSURL fileURLWithPath:LTTemporaryPath(@"temp.jpg")];
 
   NSError *error;
   auto compressed = [compressor compressImage:image metadata:nil toURL:url error:&error];

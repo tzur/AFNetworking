@@ -20,29 +20,34 @@ NS_ASSUME_NONNULL_BEGIN
 
 @synthesize format = _format;
 
-- (instancetype)init {
-  return [self initWithQuality:1];
-}
-
 - (instancetype)initWithQuality:(CGFloat)quality {
-  LTParameterAssert(quality >= 0 && quality <= 1, @"quality: %g, must be in range [0, 1]", quality);
-
   if (self = [super init]) {
-    _compressor = $(LTCompressionFormatHEIC).isSupported ?
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wpartial-availability"
-        [[LTImageHEICCompressor alloc] initWithQuality:quality] :
-#pragma clang diagnostic pop
-        [[LTImageJPEGCompressor alloc] initWithQuality:quality];
     _format = _compressor.format;
-    _quality = quality;
+    _quality = MIN(MAX(quality, 0), 1);
+
+    [self setupCompressor];
   }
   return self;
+}
+
+- (void)setupCompressor {
+  if (@available(iOS 11.0, *)) {
+    _compressor = $(LTCompressionFormatHEIC).isSupported ?
+        [[LTImageHEICCompressor alloc] initWithQuality:self.quality] :
+        [[LTImageJPEGCompressor alloc] initWithQuality:self.quality];
+  } else {
+    _compressor = [[LTImageJPEGCompressor alloc] initWithQuality:self.quality];
+  }
 }
 
 - (nullable NSData *)compressImage:(UIImage *)image metadata:(nullable NSDictionary *)metadata
                              error:(NSError *__autoreleasing *)error {
   return [self.compressor compressImage:image metadata:metadata error:error];
+}
+
+- (BOOL)compressImage:(UIImage *)image metadata:(nullable NSDictionary *)metadata toURL:(NSURL *)url
+                error:(NSError *__autoreleasing *)error {
+  return [self.compressor compressImage:image metadata:metadata toURL:url error:error];
 }
 
 @end

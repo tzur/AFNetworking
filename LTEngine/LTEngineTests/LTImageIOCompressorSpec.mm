@@ -4,12 +4,12 @@
 #import "LTImageIOCompressor.h"
 
 #import <ImageIO/ImageIO.h>
-#import <LTKit/LTCFExtensions.h>
 
 #import "LTCompressionFormat.h"
 #import "LTImage.h"
 #import "LTOpenCVExtensions.h"
 #import "LTTexture+Factory.h"
+#import "UIImage+Factory.h"
 
 static BOOL LTVerifyFormat(NSData *compressedImage) {
   const std::vector<uint8_t> kJPEGHeader = {0xFF, 0xD8, 0xFF};
@@ -36,125 +36,179 @@ static NSDictionary *LTGetMetadata(NSData *compressedImage) {
 
 SpecBegin(LTImageIOCompressor)
 
-__block LTImageIOCompressor *compressor;
-__block NSError *error;
+context(@"compression to data", ^{
+  __block LTImageIOCompressor *compressor;
 
-beforeEach(^{
-  compressor = [[LTImageIOCompressor alloc] initWithOptions:nil format:$(LTCompressionFormatJPEG)];
-  error = nil;
+  beforeEach(^{
+    compressor = [[LTImageIOCompressor alloc] initWithOptions:nil
+                                                       format:$(LTCompressionFormatJPEG)];
+  });
+
+  it(@"should return correct format", ^{
+    expect(compressor.format).to.equal($(LTCompressionFormatJPEG));
+  });
+
+  it(@"should compress jpeg from cv::Mat", ^{
+    cv::Mat4b mat(5, 5, cv::Vec4b(192, 128, 64, 255));
+    UIImage *image = [UIImage lt_imageWithMat:mat];
+
+    NSError *error;
+    NSData *data = [compressor compressImage:image metadata:nil error:&error];
+
+    expect(LTVerifyFormat(data)).to.beTruthy();
+    expect(error).to.beNil();
+  });
+
+  it(@"should compress jpeg from jpeg", ^{
+    UIImage *image = LTLoadImage([self class], @"Gray.jpg");
+
+    NSError *error;
+    NSData *data = [compressor compressImage:image metadata:nil error:&error];
+
+    expect(LTVerifyFormat(data)).to.beTruthy();
+    expect(error).to.beNil();
+  });
+
+  it(@"should compress jpeg from png", ^{
+    UIImage *image = LTLoadImage([self class], @"Lena.png");
+
+    NSError *error;
+    NSData *data = [compressor compressImage:image metadata:nil error:&error];
+
+    expect(LTVerifyFormat(data)).to.beTruthy();
+    expect(error).to.beNil();
+  });
+
+  it(@"should compress jpeg from tiff", ^{
+    UIImage *image = LTLoadImage([self class], @"ImageCompressorInput.tiff");
+
+    NSError *error;
+    NSData *data = [compressor compressImage:image metadata:nil error:&error];
+
+    expect(LTVerifyFormat(data)).to.beTruthy();
+    expect(error).to.beNil();
+  });
+
+  it(@"should consider options argument", ^{
+    UIImage *image = LTLoadImage([self class], @"Lena.png");
+    LTImageIOCompressor *highCompressor = [[LTImageIOCompressor alloc] initWithOptions:@{
+      (__bridge NSString *)kCGImageDestinationLossyCompressionQuality: @1
+    } format:$(LTCompressionFormatJPEG)];
+
+    NSError *error;
+    NSData *highQualityData = [highCompressor compressImage:image metadata:nil error:&error];
+    expect(error).to.beNil();
+
+    LTImageIOCompressor *lowCompressor = [[LTImageIOCompressor alloc] initWithOptions:@{
+      (__bridge NSString *)kCGImageDestinationLossyCompressionQuality: @0.5
+    } format:$(LTCompressionFormatJPEG)];
+    NSData *lowQualityData = [lowCompressor compressImage:image metadata:nil error:&error];
+
+    expect(error).to.beNil();
+    expect(highQualityData).notTo.equal(lowQualityData);
+  });
+
+  static const NSString * kUserComment = @"user comment";
+  static const NSString * kLensModel = @"iPod touch front camera 2.18mm f/2.4";
+
+  it(@"should add metadata to output image", ^{
+    UIImage *image = LTLoadImage([self class], @"Lena.png");
+    NSDictionary *metadata = @{(__bridge NSString *)kCGImagePropertyExifDictionary: @{
+      (__bridge NSString *)kCGImagePropertyExifUserComment: kUserComment,
+      (__bridge NSString *)kCGImagePropertyExifLensModel: kLensModel
+    }};
+
+    LTImageIOCompressor *compressor =
+        [[LTImageIOCompressor alloc] initWithOptions:nil format:$(LTCompressionFormatJPEG)];
+    NSError *error;
+    NSData *imageData = [compressor compressImage:image metadata:metadata error:&error];
+    NSDictionary *uncompressedMetadata = LTGetMetadata(imageData);
+    NSDictionary *exifData =
+        uncompressedMetadata[(__bridge NSString *)kCGImagePropertyExifDictionary];
+
+    expect(error).to.beNil();
+    expect(exifData[(__bridge NSString *)kCGImagePropertyExifUserComment]).to.equal(kUserComment);
+    expect(exifData[(__bridge NSString *)kCGImagePropertyExifLensModel]).to.equal(kLensModel);
+  });
+
+  it(@"should merge options with metadata", ^{
+    UIImage *image = LTLoadImage([self class], @"Lena.png");
+    LTImageIOCompressor *compressor = [[LTImageIOCompressor alloc] initWithOptions:@{
+      (__bridge NSString *)kCGImagePropertyExifDictionary: @{
+        (__bridge NSString *)kCGImagePropertyExifUserComment: kUserComment,
+      }
+    } format:$(LTCompressionFormatJPEG)];
+
+    NSDictionary *metadata = @{(__bridge NSString *)kCGImagePropertyExifDictionary: @{
+      (__bridge NSString *)kCGImagePropertyExifLensModel: kLensModel
+    }};
+    NSError *error;
+    NSData *imageData = [compressor compressImage:image metadata:metadata error:&error];
+    NSDictionary *uncompressedMetadata = LTGetMetadata(imageData);
+    NSDictionary *exifData =
+        uncompressedMetadata[(__bridge NSString *)kCGImagePropertyExifDictionary];
+
+    expect(error).to.beNil();
+    expect(exifData[(__bridge NSString *)kCGImagePropertyExifUserComment]).to.equal(kUserComment);
+    expect(exifData[(__bridge NSString *)kCGImagePropertyExifLensModel]).to.equal(kLensModel);
+  });
+
+  it(@"should create valid data from non-contiguous texture", ^{
+    cv::Mat4b imageMat(10, 10);
+    imageMat(cv::Rect(0, 0, 10, 5)) = cv::Vec4b(0, 0, 0, 255);
+    imageMat(cv::Rect(0, 5, 10, 5)) = cv::Vec4b(255, 255, 255, 255);
+    cv::Mat4b nonContiguousImageMat = imageMat(cv::Rect(2, 2, 5, 5));
+
+    UIImage *image = [UIImage lt_imageWithMat:nonContiguousImageMat];
+    NSError *error;
+    NSData *imageData = [compressor compressImage:image metadata:nil error:&error];
+    LTImage *compressedImage = [[LTImage alloc] initWithImage:[UIImage imageWithData:imageData]];
+
+    expect($(compressedImage.mat)).to.beCloseToMatWithin($(nonContiguousImageMat), 2);
+    expect(error).to.beNil();
+  });
 });
 
-it(@"should return correct format", ^{
-  expect(compressor.format).to.equal($(LTCompressionFormatJPEG));
-});
+context(@"compression to a file", ^{
+  __block LTImageIOCompressor *compressor;
+  __block NSURL *url;
+  __block UIImage *image;
 
-it(@"should create jpeg format data from texture", ^{
-  cv::Mat4b imageMat(5, 5, cv::Vec4b(192, 128, 64, 255));
-  UIImage *uiImage = [[LTImage alloc] initWithMat:imageMat copy:YES].UIImage;
+  beforeEach(^{
+    LTCreateTemporaryDirectory();
 
-  expect(LTVerifyFormat([compressor compressImage:uiImage metadata:nil error:&error]))
-      .to.beTruthy();
-  expect(error).to.beNil();
-});
+    url = [NSURL fileURLWithPath:LTTemporaryPath(@"temp.jpg")];
+    image = LTLoadImage([self class], @"Lena.png");
 
-it(@"should create png format data from jpeg", ^{
-  UIImage *jpegImage = LTLoadImage([self class], @"Gray.jpg");
-  expect(LTVerifyFormat([compressor compressImage:jpegImage metadata:nil error:&error]))
-      .to.beTruthy();
-  expect(error).to.beNil();
-});
+    compressor = [[LTImageIOCompressor alloc] initWithOptions:@{
+      (__bridge NSString *)kCGImageDestinationLossyCompressionQuality: @1
+    } format:$(LTCompressionFormatJPEG)];
+  });
 
-it(@"should create png format data from png", ^{
-  UIImage *jpegImage = LTLoadImage([self class], @"Lena.png");
-  expect(LTVerifyFormat([compressor compressImage:jpegImage metadata:nil error:&error]))
-      .to.beTruthy();
-  expect(error).to.beNil();
-});
+  afterEach(^{
+    [[NSFileManager defaultManager] removeItemAtPath:LTTemporaryPath() error:nil];
+  });
 
-it(@"should create png format data from tiff", ^{
-  UIImage *tiffImage = LTLoadImage([self class], @"ImageCompressorInput.tiff");
-  expect(LTVerifyFormat([compressor compressImage:tiffImage metadata:nil error:&error]))
-      .to.beTruthy();
-  expect(error).to.beNil();
-});
+  it(@"should compress successfully to a file", ^{
+    NSError *error;
 
-it(@"should verify options are passed by checking setting the quality option", ^{
-  UIImage *image = LTLoadImage([self class], @"Lena.png");
-  NSDictionary *options = @{
-    (__bridge NSString *)kCGImageDestinationLossyCompressionQuality: @1
-  };
-  LTImageIOCompressor *compressor =
-      [[LTImageIOCompressor alloc] initWithOptions:options format:$(LTCompressionFormatJPEG)];
-  NSData *highQualityData = [compressor compressImage:image metadata:nil error:&error];
-  expect(error).to.beNil();
+    auto compressed = [compressor compressImage:image metadata:nil toURL:url error:&error];
 
-  options = @{
-    (__bridge NSString *)kCGImageDestinationLossyCompressionQuality: @0.5
-  };
-  compressor = [[LTImageIOCompressor alloc] initWithOptions:options format:$(LTCompressionFormatJPEG)];
-  NSData *lowQualityData = [compressor compressImage:image metadata:nil error:&error];
+    expect(error).to.beNil();
+    expect(compressed).to.beTruthy();
+  });
 
-  expect(error).to.beNil();
-  expect(highQualityData).notTo.equal(lowQualityData);
-});
+  it(@"should compress same data to file as to in memory data", ^{
+    auto url = [NSURL fileURLWithPath:LTTemporaryPath(@"temp.jpg")];
 
-static const NSString * kUserComment = @"user comment";
-static const NSString * kLensModel = @"iPod touch front camera 2.18mm f/2.4";
+    auto compressed = [compressor compressImage:image metadata:nil toURL:url error:nil];
+    auto expectedData = [compressor compressImage:image metadata:nil error:nil];
+    auto actualData = [NSData dataWithContentsOfURL:url];
 
-it(@"should add metadata", ^{
-  UIImage *image = LTLoadImage([self class], @"Lena.png");
-  NSDictionary *metadata = @{(__bridge NSString *)kCGImagePropertyExifDictionary: @{
-    (__bridge NSString *)kCGImagePropertyExifUserComment: kUserComment,
-    (__bridge NSString *)kCGImagePropertyExifLensModel: kLensModel
-  }};
-
-  LTImageIOCompressor *compressor =
-      [[LTImageIOCompressor alloc] initWithOptions:nil format:$(LTCompressionFormatJPEG)];
-  NSData *imageData = [compressor compressImage:image metadata:metadata error:&error];
-  NSDictionary *uncompressedMetadata = LTGetMetadata(imageData);
-  NSDictionary *exifData =
-      uncompressedMetadata[(__bridge NSString *)kCGImagePropertyExifDictionary];
-
-  expect(error).to.beNil();
-  expect(exifData[(__bridge NSString *)kCGImagePropertyExifUserComment]).to.equal(kUserComment);
-  expect(exifData[(__bridge NSString *)kCGImagePropertyExifLensModel]).to.equal(kLensModel);
-});
-
-it(@"should verify options and metadata are merged correctly by checking the final metadata", ^{
-  UIImage *image = LTLoadImage([self class], @"Lena.png");
-  NSDictionary *options = @{(__bridge NSString *)kCGImagePropertyExifDictionary: @{
-    (__bridge NSString *)kCGImagePropertyExifUserComment: kUserComment,
-  }};
-  NSDictionary *metadata = @{(__bridge NSString *)kCGImagePropertyExifDictionary: @{
-    (__bridge NSString *)kCGImagePropertyExifLensModel: kLensModel
-  }};
-
-  LTImageIOCompressor *compressor =
-      [[LTImageIOCompressor alloc] initWithOptions:options format:$(LTCompressionFormatJPEG)];
-  NSData *imageData = [compressor compressImage:image metadata:metadata error:&error];
-  NSDictionary *uncompressedMetadata = LTGetMetadata(imageData);
-  NSDictionary *exifData =
-      uncompressedMetadata[(__bridge NSString *)kCGImagePropertyExifDictionary];
-
-  expect(error).to.beNil();
-  expect(exifData[(__bridge NSString *)kCGImagePropertyExifUserComment]).to.equal(kUserComment);
-  expect(exifData[(__bridge NSString *)kCGImagePropertyExifLensModel]).to.equal(kLensModel);
-});
-
-it(@"should create valid data from non-contiguous texture", ^{
-  cv::Mat4b imageMat(10, 10);
-  imageMat(cv::Rect(0, 0, 10, 5)) = cv::Vec4b(0, 0, 0, 255);
-  imageMat(cv::Rect(0, 5, 10, 5)) = cv::Vec4b(255, 255, 255, 255);
-  cv::Mat4b nonContiguousImageMat = imageMat(cv::Rect(2, 2, 5, 5));
-
-  LTImageIOCompressor *compressor =
-      [[LTImageIOCompressor alloc] initWithOptions:nil format:$(LTCompressionFormatJPEG)];
-
-  UIImage *image = [[LTImage alloc] initWithMat:nonContiguousImageMat copy:YES].UIImage;
-  NSData *imageData = [compressor compressImage:image metadata:nil error:&error];
-  LTImage *compressedImage = [[LTImage alloc] initWithImage:[UIImage imageWithData:imageData]];
-  expect($(compressedImage.mat)).to.beCloseToMatWithin($(nonContiguousImageMat), 2);
-  expect(error).to.beNil();
+    expect(compressed).to.beTruthy();
+    expect(expectedData).notTo.beNil();
+    expect(expectedData).to.equal(actualData);
+  });
 });
 
 SpecEnd

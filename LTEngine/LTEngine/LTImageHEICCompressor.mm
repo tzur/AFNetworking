@@ -10,22 +10,37 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@implementation LTImageHEICCompressor
+@interface LTImageHEICCompressor ()
 
-- (instancetype)init {
-  return [self initWithQuality:1];
-}
+/// Internal ImageIO compressor used for the actual compression.
+@property (readonly, nonatomic, nullable) LTImageIOCompressor *compressor;
+
+@end
+
+@implementation LTImageHEICCompressor
 
 - (instancetype)initWithQuality:(CGFloat)quality {
   if (self = [super init]) {
-    self.quality = quality;
+    _quality = MIN(MAX(quality, 0), 1);
+
+    [self setupCompressor];
   }
   return self;
 }
 
+- (void)setupCompressor {
+  if (!$(LTCompressionFormatHEIC).isSupported) {
+    return;
+  }
+
+  _compressor = [[LTImageIOCompressor alloc] initWithOptions:@{
+    (__bridge NSString *)kCGImageDestinationLossyCompressionQuality: @(self.quality)
+  } format:self.format];
+}
+
 - (nullable NSData *)compressImage:(UIImage *)image metadata:(nullable NSDictionary *)metadata
                              error:(NSError *__autoreleasing *)error {
-  if (!$(LTCompressionFormatHEIC).isSupported) {
+  if (!self.compressor) {
     if (error) {
       *error = [NSError lt_errorWithCode:LTErrorCodeObjectCreationFailed
                              description:@"HEIC compression isn't suppored on this device"];
@@ -33,11 +48,21 @@ NS_ASSUME_NONNULL_BEGIN
     return nil;
   }
 
-  auto options = @{
-    (__bridge NSString *)kCGImageDestinationLossyCompressionQuality: @(self.quality)
-  };
-  auto compressor = [[LTImageIOCompressor alloc] initWithOptions:options format:self.format];
-  return [compressor compressImage:image metadata:metadata error:error];
+  return [self.compressor compressImage:image metadata:metadata error:error];
+}
+
+- (BOOL)compressImage:(UIImage *)image metadata:(nullable NSDictionary *)metadata toURL:(NSURL *)url
+                error:(NSError *__autoreleasing *)error {
+  if (!self.compressor) {
+    if (error) {
+      *error = [NSError lt_errorWithCode:LTErrorCodeObjectCreationFailed
+                                     url:url
+                             description:@"HEIC compression isn't suppored on this device"];
+    }
+    return NO;
+  }
+
+  return [self.compressor compressImage:image metadata:metadata toURL:url error:error];
 }
 
 - (LTCompressionFormat *)format {

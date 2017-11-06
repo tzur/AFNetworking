@@ -10,31 +10,34 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@implementation LTImageJPEGCompressor
+@interface LTImageJPEGCompressor ()
 
-- (instancetype)init {
-  return [self initWithQuality:self.defaultQuality];
-}
+/// Internal ImageIO compressor used for the actual compression.
+@property (readonly, nonatomic) LTImageIOCompressor *compressor;
+
+@end
+
+@implementation LTImageJPEGCompressor
 
 - (instancetype)initWithQuality:(CGFloat)quality {
   if (self = [super init]) {
-    self.quality = quality;
+    _quality = MIN(MAX(quality, 0), 1);
+    _compressor = [[LTImageIOCompressor alloc] initWithOptions:@{
+      (__bridge NSString *)kCGImageDestinationLossyCompressionQuality: @(self.quality)
+    } format:self.format];
   }
   return self;
 }
 
 - (nullable NSData *)compressImage:(UIImage *)image metadata:(nullable NSDictionary *)metadata
                              error:(NSError *__autoreleasing *)error {
-  NSDictionary *options = @{
-    (__bridge NSString *)kCGImageDestinationLossyCompressionQuality:@(self.quality)
-  };
-
-  LTImageIOCompressor *compressor = [[LTImageIOCompressor alloc] initWithOptions:options
-                                                                          format:self.format];
-  return [compressor compressImage:image metadata:metadata error:error];
+  return [self.compressor compressImage:image metadata:metadata error:error];
 }
 
-LTProperty(CGFloat, quality, Quality, 0, 1, 1);
+- (BOOL)compressImage:(UIImage *)image metadata:(nullable NSDictionary *)metadata toURL:(NSURL *)url
+                error:(NSError *__autoreleasing *)error {
+  return [self.compressor compressImage:image metadata:metadata toURL:url error:error];
+}
 
 - (LTCompressionFormat *)format {
   return $(LTCompressionFormatJPEG);

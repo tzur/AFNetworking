@@ -9,10 +9,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// \c LTImageJPEGCompressor as a fallback option.
 @interface LTPhotoLibraryImageCompressor : NSObject <LTImageCompressor>
 
-/// Initializes the underlying compressor with the default compression quality of \c 1. The
-/// underlying compressor is \c LTImageHEICCompressor on supported devices or
-/// \c LTImageJPEGCompressor otherwise.
-- (instancetype)init;
+- (instancetype)init NS_UNAVAILABLE;
 
 /// Initializes the underlying compressor with the given \c quality in the range of \c [0, 1]. The
 /// underlying compressor is \c LTImageHEICCompressor on supported devices or
