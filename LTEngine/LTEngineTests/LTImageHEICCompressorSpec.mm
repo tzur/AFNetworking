@@ -32,6 +32,14 @@ it(@"should set quality property" , ^{
   expect(compressor.quality).to.equal(1);
 });
 
+it(@"should clamp quality value", ^{
+  auto qualityBelowCompressor = [[LTImageHEICCompressor alloc] initWithQuality:-1];
+  auto qualityAboveCompressor = [[LTImageHEICCompressor alloc] initWithQuality:2];
+
+  expect(qualityBelowCompressor.quality).to.equal(0);
+  expect(qualityAboveCompressor.quality).to.equal(1);
+});
+
 // The following tests should run only on HEIC compression supporting devices.
 if ($(LTCompressionFormatHEIC).isSupported) {
   dit(@"should create HEVC format data", ^{

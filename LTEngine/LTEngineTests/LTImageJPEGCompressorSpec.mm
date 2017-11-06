@@ -30,6 +30,14 @@ it(@"should return correct format", ^{
   expect(compressor.format).to.equal($(LTCompressionFormatJPEG));
 });
 
+it(@"should clamp quality value", ^{
+  auto qualityBelowCompressor = [[LTImageJPEGCompressor alloc] initWithQuality:-1];
+  auto qualityAboveCompressor = [[LTImageJPEGCompressor alloc] initWithQuality:2];
+
+  expect(qualityBelowCompressor.quality).to.equal(0);
+  expect(qualityAboveCompressor.quality).to.equal(1);
+});
+
 it(@"should create jpeg format data", ^{
   UIImage *jpegImage = LTLoadImage([self class], @"Gray.jpg");
 

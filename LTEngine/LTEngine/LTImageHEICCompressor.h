@@ -18,10 +18,9 @@ NS_CLASS_AVAILABLE_IOS(11_0) @interface LTImageHEICCompressor : NSObject <LTImag
 /// storage and best quality and value of \c 0 means minimal storage but lowest quality.
 - (instancetype)initWithQuality:(CGFloat)quality NS_DESIGNATED_INITIALIZER;
 
-/// Compression quality in the range [0, 1]. Default value is \c 1 which means maximal storage and
-/// best quality and value of \c 0 means minimal storage but lowest quality. Values are clamped to
-/// [0, 1] range upon \c quality set.
-@property (nonatomic) CGFloat quality;
+/// Compression quality in the range <tt>[0, 1]</tt>, where \c 1 yields largest output size and best
+/// quality and \c 0 yields minimal output size but lowest quality.
+@property (readonly, nonatomic) CGFloat quality;
 
 @end
 

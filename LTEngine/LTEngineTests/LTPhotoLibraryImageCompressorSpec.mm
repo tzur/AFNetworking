@@ -15,6 +15,14 @@ it(@"should initialize with quality", ^{
   expect(compressor.quality).to.equal(0.5);
 });
 
+it(@"should clamp quality value", ^{
+  auto qualityBelowCompressor = [[LTPhotoLibraryImageCompressor alloc] initWithQuality:-1];
+  auto qualityAboveCompressor = [[LTPhotoLibraryImageCompressor alloc] initWithQuality:2];
+
+  expect(qualityBelowCompressor.quality).to.equal(0);
+  expect(qualityAboveCompressor.quality).to.equal(1);
+});
+
 it(@"should compress correcly", ^{
   id<LTImageCompressor> referenceCompressor;
 

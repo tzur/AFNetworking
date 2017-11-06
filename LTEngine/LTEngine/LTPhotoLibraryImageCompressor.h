@@ -11,14 +11,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)init NS_UNAVAILABLE;
 
-/// Initializes the underlying compressor with the given \c quality in the range of \c [0, 1]. The
-/// underlying compressor is \c LTImageHEICCompressor on supported devices or
-/// \c LTImageJPEGCompressor otherwise. \c quality \c 1 means maximal storage and best quality and
-/// \c 0 means minimal storage but lowest quality. \c quality must be in <tt>[0, 1]</tt> range.
+/// Initializes the compressor with the given \c quality in the range of \c [0, 1]. If quality is
+/// outside the range it will be clamped. The compressor will actually use one of two compressors:
+/// \c LTImageHEICCompressor on supported devices or \c LTImageJPEGCompressor otherwise.
 - (instancetype)initWithQuality:(CGFloat)quality NS_DESIGNATED_INITIALIZER;
 
-/// Quality of the source texture in the range <tt>[0, 1]</tt>. Default value is \c 1 which means
-/// maximal storage and best quality and value of \c 0 means minimal storage but lowest quality.
+/// Compression quality in the range <tt>[0, 1]</tt>, where \c 1 yields largest output size and best
+/// quality and \c 0 yields minimal output size but lowest quality.
 @property (readonly, nonatomic) CGFloat quality;
 
 @end
