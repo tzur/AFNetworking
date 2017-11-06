@@ -13,6 +13,8 @@
 			buildPhases = (
 			);
 			dependencies = (
+				B4D68AFB1FB1ACF7009A5300 /* PBXTargetDependency */,
+				B4D68AFD1FB1ACF7009A5300 /* PBXTargetDependency */,
 				0627764E1ED586E90006024E /* PBXTargetDependency */,
 				0627764C1ED586E50006024E /* PBXTargetDependency */,
 				0627764A1ED586E20006024E /* PBXTargetDependency */,
@@ -477,6 +479,34 @@
 			remoteGlobalIDString = A14171C01E6EAC0D005DBEFF;
 			remoteInfo = IntelligenceTests;
 		};
+		B4D68AFA1FB1ACF7009A5300 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B4EDC8481FB0AC46002FE151 /* TinCan.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = A14171A01E6EAA93005DBEFF;
+			remoteInfo = TinCan;
+		};
+		B4D68AFC1FB1ACF7009A5300 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B4EDC8481FB0AC46002FE151 /* TinCan.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = A14171C01E6EAC0D005DBEFF;
+			remoteInfo = TinCanTests;
+		};
+		B4EDC85B1FB0AC46002FE151 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B4EDC8481FB0AC46002FE151 /* TinCan.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = A14171A11E6EAA93005DBEFF;
+			remoteInfo = TinCan;
+		};
+		B4EDC85D1FB0AC46002FE151 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B4EDC8481FB0AC46002FE151 /* TinCan.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = A14171C11E6EAC0D005DBEFF;
+			remoteInfo = TinCanTests;
+		};
 		CD962D911F54261300F2CA82 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = CD962D7B1F54261300F2CA82 /* Shopix.xcodeproj */;
@@ -530,6 +560,7 @@
 		6A089D601DFEE26E00AC10A9 /* Blueprints.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Blueprints.xcodeproj; path = ../Blueprints/Blueprints.xcodeproj; sourceTree = "<group>"; };
 		884961A61EBA1E9B007B3AE8 /* Laboratory.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Laboratory.xcodeproj; path = ../Laboratory/Laboratory.xcodeproj; sourceTree = "<group>"; };
 		A14176B21E6EBE8C005DBEFF /* Intelligence.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Intelligence.xcodeproj; path = ../Intelligence/Intelligence.xcodeproj; sourceTree = "<group>"; };
+		B4EDC8481FB0AC46002FE151 /* TinCan.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TinCan.xcodeproj; path = ../TinCan/TinCan.xcodeproj; sourceTree = "<group>"; };
 		CD962D7B1F54261300F2CA82 /* Shopix.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Shopix.xcodeproj; path = ../Shopix/Shopix.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -570,6 +601,7 @@
 				65BAF1491D47F9E1009BBB6F /* PhotonsUI.xcodeproj */,
 				062776391ED586D50006024E /* Pinky.xcodeproj */,
 				CD962D7B1F54261300F2CA82 /* Shopix.xcodeproj */,
+				B4EDC8481FB0AC46002FE151 /* TinCan.xcodeproj */,
 				65BAF1521D47F9EA009BBB6F /* Wireframes.xcodeproj */,
 			);
 			name = Projects;
@@ -702,6 +734,15 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		B4EDC8491FB0AC46002FE151 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				B4EDC85C1FB0AC46002FE151 /* libTinCan.a */,
+				B4EDC85E1FB0AC46002FE151 /* TinCanTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		CD962D7C1F54261300F2CA82 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -796,6 +837,10 @@
 				{
 					ProductGroup = 65BAF2BD1D4801B1009BBB6F /* Products */;
 					ProjectRef = 65BAF2BC1D4801B1009BBB6F /* TestHost.xcodeproj */;
+				},
+				{
+					ProductGroup = B4EDC8491FB0AC46002FE151 /* Products */;
+					ProjectRef = B4EDC8481FB0AC46002FE151 /* TinCan.xcodeproj */;
 				},
 				{
 					ProductGroup = 65BAF1531D47F9EA009BBB6F /* Products */;
@@ -1041,6 +1086,20 @@
 			remoteRef = A14176BE1E6EBE8C005DBEFF /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		B4EDC85C1FB0AC46002FE151 /* libTinCan.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libTinCan.a;
+			remoteRef = B4EDC85B1FB0AC46002FE151 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		B4EDC85E1FB0AC46002FE151 /* TinCanTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = TinCanTests.xctest;
+			remoteRef = B4EDC85D1FB0AC46002FE151 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		CD962D921F54261300F2CA82 /* libShopix.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -1204,6 +1263,16 @@
 			isa = PBXTargetDependency;
 			name = IntelligenceTests;
 			targetProxy = A14176C51E6EBE9E005DBEFF /* PBXContainerItemProxy */;
+		};
+		B4D68AFB1FB1ACF7009A5300 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = TinCan;
+			targetProxy = B4D68AFA1FB1ACF7009A5300 /* PBXContainerItemProxy */;
+		};
+		B4D68AFD1FB1ACF7009A5300 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = TinCanTests;
+			targetProxy = B4D68AFC1FB1ACF7009A5300 /* PBXContainerItemProxy */;
 		};
 		CD962D991F5426FE00F2CA82 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
