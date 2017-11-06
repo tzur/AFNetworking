@@ -13,16 +13,44 @@ uniform mediump sampler2D overlayTexture;
 /// RGB or RGBA texture, in non-premultiplied or premultiplied format, used for computing the edges
 /// potentially restricting the rendering.
 uniform mediump sampler2D edgeAvoidanceGuideTexture;
+
+/// Opacity used per rendered quad. Must be in range <tt>[0, 1]</tt>.
 uniform highp float opacity;
+
+/// Edge avoidance factor. Must be in range <tt>[0, 1]</tt>.
 uniform highp float edgeAvoidance;
 
-/// \c YES if \c sourceTexture is single-channel texture.
-uniform bool singleChannel;
+/// Linear transformation for transforming the texture coordinate system used for sampling the
+/// \c overlayTexture.
+uniform highp mat4 overlayTextureCoordTransform;
 
-/// \c YES if the render target has exactly one color channel.
+/// Enumeration value indicating whether to use the colors of the \c sourceTexture or the
+/// \c overlayTexture as source color.
+uniform int sourceType;
+
+/// Value for \c sourceType indicating that the \c vColor should be used as source color.
+const int kSourceTypeColor = 0;
+
+/// Value for \c sourceType indicating that the \c sourceTexture should be used as source color.
+const int kSourceTypeSourceTexture = 1;
+
+/// Value for \c sourceType indicating that the \c overlayTexture should be used as source color or
+/// mask.
+const int kSourceTypeOverlayTexture = 2;
+
+/// \c YES if \c sourceTexture should be used as mask. In this case, the texture is assumed to have
+/// a single channel, otherwise it is assumed to have RGBA channels.
+uniform bool useSourceTextureAsMask;
+
+/// \c YES if \c overlayTexture should be used as mask. In this case, the texture is assumed to have
+/// a single channel, otherwise it is assumed to have RGBA channels. Is ignored if \c sourceType
+/// does not equal \c kSourceTypeOverlayTexture.
+uniform bool useOverlayTextureAsMask;
+
+/// \c YES if the render target has a single channel.
 uniform bool renderTargetHasSingleChannel;
 
-uniform bool sampleFromOverlayTexture;
+/// Blend mode to be used for blending.
 uniform int blendMode;
 
 /// RGBA color, in non-premultiplied format.
@@ -47,6 +75,8 @@ const int kBlendModeOverlay = 8;
 const int kBlendModePlusLighter = 9;
 const int kBlendModePlusDarker = 10;
 const int kBlendModeSubtract = 11;
+const int kBlendModeOpaqueSource = 12;
+const int kBlendModeOpaqueDestination = 13;
 
 highp vec4 normal(highp vec4 src, highp vec4 dst) {
   return vec4(src.rgb + dst.rgb * (1.0 - src.a), src.a + dst.a * (1.0 - src.a));
@@ -148,6 +178,10 @@ highp vec4 blendOfPremultipliedColors(mediump vec4 src, highp vec4 dst, int mode
     premultipliedOutputColor = plusDarker(src, dst);
   } else if (blendMode == kBlendModeSubtract) {
     premultipliedOutputColor = subtract(src, dst);
+  } else if (blendMode == kBlendModeOpaqueSource) {
+    premultipliedOutputColor = src;
+  } else if (blendMode == kBlendModeOpaqueDestination) {
+    // Do nothing since premultipliedOutputColor is already dst.
   }
   return premultipliedOutputColor;
 }
@@ -190,37 +224,53 @@ mediump vec4 nonPremultipliedColor(in mediump vec4 premultipliedColor) {
 }
 
 void main() {
+  // Compute the source content to be blended with the render target content, as well as the mask
+  // restricting the blended result to a certain subset of the pixels.
+  mediump vec4 nonPremultipliedSourceContent = vColor;
+  mediump float mask = opacity;
+
   mediump vec4 nonPremultipliedSource = texture2D(sourceTexture, vTexcoord.xy / vTexcoord.z);
-  mediump float alpha = opacity * nonPremultipliedSource.a;
 
-  if (singleChannel) {
-    alpha = opacity * nonPremultipliedSource.r;
+  // If required, always use the source texture as mask, independent of whether the overlay texture
+  // is used.
+  if (useSourceTextureAsMask) {
+    mask *= nonPremultipliedSource.r;
+  }
 
-    if (sampleFromOverlayTexture) {
-      nonPremultipliedSource = texture2D(overlayTexture, (vPosition / vPosition.w).xy);
+  if (sourceType == kSourceTypeSourceTexture && !useSourceTextureAsMask) {
+    // Use the tinted sourceTexture value for blending, without any additional masking.
+    nonPremultipliedSourceContent = nonPremultipliedSource * vColor;
+  } else if (sourceType == kSourceTypeOverlayTexture) {
+    highp vec4 overlayTextureCoord =
+        overlayTextureCoordTransform * vec4((vPosition / vPosition.w).xy, 0.0, 1.0);
+    mediump vec4 overlayTextureColor = texture2D(overlayTexture,
+                                                 overlayTextureCoord.xy / overlayTextureCoord.w);
+    if (useOverlayTextureAsMask) {
+      // Use the overlayTexture as mask, possibly in addition to the mask provided by the
+      // sourceTexture.
+      mask *= overlayTextureColor.r;
     } else {
-      nonPremultipliedSource = vec4(vColor.rgb, vColor.a * alpha);
+      // Use the tinted overlayTexture value for blending, possibly masked by the sourceTexture.
+      nonPremultipliedSourceContent = overlayTextureColor * vColor;
     }
-  } else {
-    nonPremultipliedSource *= vColor;
   }
+
+  // Perform the blending of the content with the render target content.
   mediump vec4 premultipliedDst = premultipliedColor(gl_LastFragData[0]);
-  mediump vec4 premultipliedSrc = premultipliedColor(nonPremultipliedSource);
+  mediump vec4 premultipliedSrc = premultipliedColor(nonPremultipliedSourceContent);
 
-  mediump vec4 premultipliedBlendedColor;
+  mediump vec4 premultipliedBlendedColor = blendOfPremultipliedColors(premultipliedSrc,
+                                                                      premultipliedDst, blendMode);
 
-  if (!sampleFromOverlayTexture) {
-    premultipliedBlendedColor =
-        blendOfPremultipliedColors(premultipliedSrc, premultipliedDst, blendMode);
-  } else {
-    premultipliedBlendedColor = premultipliedSrc;
-  }
+  // Perform the masking.
+  mediump vec4 premultipliedBlendedAndMaskedColor =
+      mix(premultipliedDst, premultipliedBlendedColor,
+          mask * edgeAvoidanceFactor(length(premultipliedSrc)));
 
-  premultipliedBlendedColor = mix(premultipliedDst, premultipliedBlendedColor,
-                                  alpha * edgeAvoidanceFactor(length(premultipliedSrc)));
   if (renderTargetHasSingleChannel) {
-    gl_FragColor = premultipliedBlendedColor;
+    gl_FragColor = premultipliedBlendedAndMaskedColor;
   } else {
-    gl_FragColor = nonPremultipliedColor(premultipliedBlendedColor);
+    gl_FragColor = nonPremultipliedColor(premultipliedBlendedAndMaskedColor);
   }
 }
+

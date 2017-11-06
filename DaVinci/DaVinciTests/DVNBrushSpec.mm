@@ -83,7 +83,9 @@ beforeEach(^{
   fbo = [[LTFbo alloc] initWithTexture:targetTexture];
   uniforms = @{[DVNBrushVsh modelview]: $(GLKMatrix4Identity),
                [DVNBrushFsh blendMode]: @($(DVNBlendModeNormal).value),
-               [DVNBrushFsh opacity]: @1};
+               [DVNBrushFsh opacity]: @1,
+               [DVNBrushFsh sourceType]: @1,
+               [DVNBrushFsh overlayTextureCoordTransform]: $(GLKMatrix4Identity)};
 });
 
 afterEach(^{
@@ -111,6 +113,61 @@ context(@"rendering", ^{
 
     cv::Mat expectedMat = LTLoadMat([self class], @"DVNBrushTip.png");
     expect($(targetTexture.image)).to.equalMat($(expectedMat));
+  });
+
+  context(@"source type equaling kSourceTypeColor", ^{
+    __block NSMutableDictionary<NSString *, NSValue *> *mutableUniforms;
+
+    beforeEach(^{
+      attributeData = DVNTestAttributeDataForQuads(quads, LTVector3(1, 0, 0));
+      NSArray<LTGPUStruct *> *gpuStructs =
+          @[attributeData[0].gpuStruct, attributeData[1].gpuStruct];
+      drawer = [[LTDynamicQuadDrawer alloc]
+                initWithVertexSource:[DVNBrushVsh source] fragmentSource:[DVNBrushFsh source]
+                gpuStructs:[NSOrderedSet orderedSetWithArray:gpuStructs]];
+
+      mutableUniforms = [uniforms mutableCopy];
+      mutableUniforms[[DVNBrushFsh sourceType]] = @0;
+    });
+
+    afterEach(^{
+      mutableUniforms = nil;
+    });
+
+    it(@"should render with color", ^{
+      [brushTipTexture clearColor:LTVector4::zeros()];
+
+      [fbo bindAndDraw:^{
+        [drawer drawQuads:quads textureMapQuads:{lt::Quad::canonicalSquare()}
+            attributeData:attributeData texture:brushTipTexture auxiliaryTextures:@{}
+                 uniforms:mutableUniforms];
+      }];
+
+      cv::Mat4b expectedMat(targetTexture.size.height, targetTexture.size.width,
+                            cv::Vec4b(0, 0, 0, 0));
+      expectedMat(cv::Rect(0, targetTexture.size.height / 4, targetTexture.size.width,
+                           targetTexture.size.height / 2)) = cv::Vec4b(255, 0, 0, 255);
+      expect($(targetTexture.image)).to.equalMat($(expectedMat));
+    });
+
+    it(@"should render with color and mask", ^{
+      mutableUniforms[[DVNBrushFsh useSourceTextureAsMask]] = @YES;
+      cv::Mat image = LTLoadMat([self class], @"DVNBrushTipsRound64Hardness75.png");
+      LTTexture *rgbaBrushTipTexture = [LTTexture textureWithImage:image];
+      brushTipTexture = [LTTexture byteRedTextureWithSize:rgbaBrushTipTexture.size];
+      [rgbaBrushTipTexture cloneTo:brushTipTexture];
+
+      [fbo clearColor:LTVector4::ones()];
+
+      [fbo bindAndDraw:^{
+        [drawer drawQuads:quads textureMapQuads:{lt::Quad::canonicalSquare()}
+            attributeData:attributeData texture:brushTipTexture auxiliaryTextures:@{}
+                 uniforms:mutableUniforms];
+      }];
+
+      cv::Mat expectedMat = LTLoadMat([self class], @"DVNBrushColorWithMask.png");
+      expect($(targetTexture.image)).to.equalMat($(expectedMat));
+    });
   });
 
   it(@"should render with opacity", ^{
@@ -171,7 +228,7 @@ context(@"rendering", ^{
 
       auto mutableUniforms = [uniforms mutableCopy];
       mutableUniforms[[DVNBrushFsh edgeAvoidance]] = @0;
-      mutableUniforms[[DVNBrushFsh singleChannel]] = @YES;
+      mutableUniforms[[DVNBrushFsh useSourceTextureAsMask]] = @YES;
       mutableUniforms[[DVNBrushFsh renderTargetHasSingleChannel]] = @YES;
       mutableUniforms[[DVNBrushVsh edgeAvoidanceSamplingOffset]] = $(LTVector2::zeros());
       uniforms = [mutableUniforms copy];
@@ -256,18 +313,28 @@ context(@"rendering", ^{
   });
 
   context(@"sampling from overlay texture", ^{
-    it(@"should sample from overlay texture", ^{
+    __block NSMutableDictionary<NSString *, NSValue *> *mutableUniforms;
+    __block NSDictionary<NSString *, LTTexture *> *auxiliaryTextures;
+
+    beforeEach(^{
       cv::Mat image = LTLoadMat([self class], @"DVNBrushTipsRound64Hardness75.png");
       brushTipTexture = [LTTexture textureWithImage:image];
 
-      auto auxiliaryTextures = @{[DVNBrushFsh overlayTexture]: DVNTestColoredTexture(NO)};
+      auxiliaryTextures = @{[DVNBrushFsh overlayTexture]: DVNTestColoredTexture(NO)};
 
-      auto mutableUniforms = [uniforms mutableCopy];
-      mutableUniforms[[DVNBrushFsh sampleFromOverlayTexture]] = @YES;
-      mutableUniforms[[DVNBrushFsh singleChannel]] = @YES;
+      mutableUniforms = [uniforms mutableCopy];
+      mutableUniforms[[DVNBrushFsh sourceType]] = @2;
+      mutableUniforms[[DVNBrushFsh useSourceTextureAsMask]] = @YES;
 
       [targetTexture clearColor:LTVector4(0, 0, 0, 1)];
+    });
 
+    afterEach(^{
+      mutableUniforms = nil;
+      auxiliaryTextures = nil;
+    });
+
+    it(@"should sample from overlay texture", ^{
       [fbo bindAndDraw:^{
         [drawer drawQuads:quads textureMapQuads:{lt::Quad::canonicalSquare()}
             attributeData:attributeData texture:brushTipTexture auxiliaryTextures:auxiliaryTextures
@@ -275,6 +342,20 @@ context(@"rendering", ^{
       }];
 
       cv::Mat expectedMat = LTLoadMat([self class], @"DVNBrushOverlayTexture.png");
+      expect($(targetTexture.image)).to.equalMat($(expectedMat));
+    });
+
+    it(@"should sample from overlay texture with overlay texture coord transform", ^{
+      mutableUniforms[[DVNBrushFsh overlayTextureCoordTransform]] =
+          $(GLKMatrix4MakeTranslation(0.25, 0, 0));
+
+      [fbo bindAndDraw:^{
+        [drawer drawQuads:quads textureMapQuads:{lt::Quad::canonicalSquare()}
+            attributeData:attributeData texture:brushTipTexture auxiliaryTextures:auxiliaryTextures
+                 uniforms:mutableUniforms];
+      }];
+
+      cv::Mat expectedMat = LTLoadMat([self class], @"DVNBrushOverlayTextureWithTransform.png");
       expect($(targetTexture.image)).to.equalMat($(expectedMat));
     });
   });
@@ -486,6 +567,32 @@ context(@"rendering", ^{
       cv::Mat4b expectedMat(kTargetTextureHeight, kTargetTextureWidth, kBackColor);
       expectedMat.at<cv::Vec4b>(0, 0) = cv::Vec4b(192, 64, 255, 128);
 
+      expect($(targetTexture.image)).to.equalMat($(expectedMat));
+    });
+
+    it(@"should render with opaque source blend mode", ^{
+      mutableUniforms[[DVNBrushFsh blendMode]] = @(DVNBlendModeOpaqueSource);
+      [fbo bindAndDraw:^{
+        [drawer drawQuads:quads textureMapQuads:{lt::Quad::canonicalSquare()}
+            attributeData:attributeData texture:brushTipTexture auxiliaryTextures:@{}
+                 uniforms:mutableUniforms];
+      }];
+
+      cv::Mat4b expectedMat(kTargetTextureHeight, kTargetTextureWidth, kBackColor);
+      expectedMat(0, 0) = cv::Vec4b(96, 96, 144, 255);
+
+      expect($(targetTexture.image)).to.equalMat($(expectedMat));
+    });
+
+    it(@"should render with opaque destination blend mode", ^{
+      mutableUniforms[[DVNBrushFsh blendMode]] = @(DVNBlendModeOpaqueDestination);
+      [fbo bindAndDraw:^{
+        [drawer drawQuads:quads textureMapQuads:{lt::Quad::canonicalSquare()}
+            attributeData:attributeData texture:brushTipTexture auxiliaryTextures:@{}
+                 uniforms:mutableUniforms];
+      }];
+
+      cv::Mat4b expectedMat(kTargetTextureHeight, kTargetTextureWidth, kBackColor);
       expect($(targetTexture.image)).to.equalMat($(expectedMat));
     });
   });
