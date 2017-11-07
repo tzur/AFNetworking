@@ -50,6 +50,9 @@
       location = "group:TestHost.xcodeproj">
    </FileRef>
    <FileRef
+      location = "group:../TinCan/TinCan.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:../Wireframes/Wireframes.xcodeproj">
    </FileRef>
 </Workspace>

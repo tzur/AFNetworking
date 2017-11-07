@@ -333,6 +333,16 @@
                ReferencedContainer = "container:../Shopix/Shopix.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "A14171C01E6EAC0D005DBEFF"
+               BuildableName = "TinCanTests.xctest"
+               BlueprintName = "TinCanTests"
+               ReferencedContainer = "container:../TinCan/TinCan.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
