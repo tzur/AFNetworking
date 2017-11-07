@@ -21,6 +21,8 @@
 		A14173421E6EB59F005DBEFF /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A141729D1E6EAF03005DBEFF /* libOCMock.a */; };
 		A14173431E6EB59F005DBEFF /* libSpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A14172B81E6EAF0D005DBEFF /* libSpecta.a */; };
 		A18220B91F0398A500FC7C61 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A18220B81F0398A500FC7C61 /* MessageUI.framework */; };
+		B4D68B071FB1ADA0009A5300 /* TestSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = B4D68B061FB1ADA0009A5300 /* TestSpec.mm */; };
+		B4D68B2C1FB1AE0D009A5300 /* Test.mm in Sources */ = {isa = PBXBuildFile; fileRef = B4D68B2B1FB1AE0D009A5300 /* Test.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -338,6 +340,9 @@
 		A14172D71E6EB2FF005DBEFF /* TestHost.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TestHost.xcodeproj; path = ../Foundations/TestHost.xcodeproj; sourceTree = "<group>"; };
 		A1417A911E6ED9CB005DBEFF /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		A18220B81F0398A500FC7C61 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
+		B4D68B061FB1ADA0009A5300 /* TestSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = TestSpec.mm; sourceTree = "<group>"; };
+		B4D68B2A1FB1AE0D009A5300 /* Test.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Test.h; sourceTree = "<group>"; };
+		B4D68B2B1FB1AE0D009A5300 /* Test.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = Test.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -386,6 +391,8 @@
 		883235611ED861CD0090787D /* Base */ = {
 			isa = PBXGroup;
 			children = (
+				B4D68B2A1FB1AE0D009A5300 /* Test.h */,
+				B4D68B2B1FB1AE0D009A5300 /* Test.mm */,
 			);
 			name = Base;
 			sourceTree = "<group>";
@@ -393,6 +400,7 @@
 		883235801ED861DB0090787D /* Base */ = {
 			isa = PBXGroup;
 			children = (
+				B4D68B061FB1ADA0009A5300 /* TestSpec.mm */,
 			);
 			name = Base;
 			sourceTree = "<group>";
@@ -985,6 +993,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B4D68B2C1FB1AE0D009A5300 /* Test.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -992,6 +1001,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B4D68B071FB1ADA0009A5300 /* TestSpec.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
