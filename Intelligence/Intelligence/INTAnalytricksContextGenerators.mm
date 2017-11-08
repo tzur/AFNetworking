@@ -36,15 +36,7 @@ INTAggregationBlock INTAnalytricksContextAggregation(INTAnalytricksContextUpdate
       return @{};
     }
 
-    INTAnalytricksContext * _Nullable analytricksContext =
-        context[kINTAppContextAnalytricksContextKey];
-    if (!analytricksContext) {
-      LogWarning(@"Application did not report INTAppWillForegroundEvent with property isLaunch set "
-                 "to YES. The kINTAppContextAnalytricksContextKey in the resulting context remains "
-                 "empty until then");
-      return @{};
-    }
-
+    INTAnalytricksContext *analytricksContext = nn(context[kINTAppContextAnalytricksContextKey]);
     return @{kINTAppContextAnalytricksContextKey: [analytricksContext merge:updates]};
   };
 }
@@ -52,11 +44,7 @@ INTAggregationBlock INTAnalytricksContextAggregation(INTAnalytricksContextUpdate
 @implementation INTAnalytricksContextGenerators
 
 + (INTAppContextGeneratorBlock)analytricksContextGenerator {
-  auto foregroundAggregation = ^(INTAppWillEnterForegroundEvent *event) {
-    if (event.isLaunch) {
-      return @{};
-    }
-
+  auto foregroundAggregation = ^(INTAppWillEnterForegroundEvent *) {
     return @{@instanceKeypath(INTAnalytricksContext, sessionID): [NSUUID UUID]};
   };
 
@@ -77,19 +65,6 @@ INTAggregationBlock INTAnalytricksContextAggregation(INTAnalytricksContextUpdate
 
   INTTransformerBlock transformer = INTTransformerBuilder()
       .aggregate(NSStringFromClass(INTAppWillEnterForegroundEvent.class),
-                 ^(NSDictionary<NSString *, id> *, INTAppWillEnterForegroundEvent *event) {
-        if (!event.isLaunch) {
-          return @{};
-        }
-
-        INTAnalytricksContext *analytricksContext =
-            [[INTAnalytricksContext alloc]
-             initWithRunID:[NSUUID UUID] sessionID:[NSUUID UUID] screenUsageID:nil screenName:nil
-             openProjectID:nil];
-
-        return @{kINTAppContextAnalytricksContextKey: analytricksContext};
-      })
-      .aggregate(NSStringFromClass(INTAppWillEnterForegroundEvent.class),
                  INTAnalytricksContextAggregation(foregroundAggregation))
       .aggregate(NSStringFromClass(INTScreenDisplayedEvent.class),
                  INTAnalytricksContextAggregation(screenDisplayAggregation))
@@ -99,10 +74,32 @@ INTAggregationBlock INTAnalytricksContextAggregation(INTAnalytricksContextUpdate
                  INTAnalytricksContextAggregation(projectCloseAggregation))
       .build();
 
-  return ^(INTAppContext *context, INTEventMetadata *eventMetadata, id event) {
-    auto contextUpdates = transformer(@{}, context, eventMetadata, event).aggregatedData;
-    return [context int_mergeUpdates:contextUpdates];
-  };
+  INTAppContextGeneratorBlock analytricksContextInitializer =
+      ^(INTAppContext *context, INTEventMetadata *, id) {
+        if (!context[kINTAppContextAnalytricksContextKey]) {
+          auto *analytricksContext =
+              [[INTAnalytricksContext alloc]
+               initWithRunID:[NSUUID UUID] sessionID:nil screenUsageID:nil screenName:nil
+               openProjectID:nil];
+
+          return (INTAppContext *)[context int_mergeUpdates:@{
+            kINTAppContextAnalytricksContextKey: analytricksContext
+          }];
+        }
+
+        return context;
+      };
+
+  INTAppContextGeneratorBlock analytricksContextUpdater =
+      ^(INTAppContext *context, INTEventMetadata *eventMetadata, id event) {
+        auto contextUpdates = transformer(@{}, context, eventMetadata, event).aggregatedData;
+        return [context int_mergeUpdates:contextUpdates];
+      };
+
+  return INTComposeAppContextGenerators(@[
+    analytricksContextInitializer,
+    analytricksContextUpdater
+  ]);
 }
 
 + (INTAppContextGeneratorBlock)deviceInfoContextGenerator {

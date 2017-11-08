@@ -36,118 +36,82 @@ context(@"analytricks context generator", ^{
     contextGenerator = [INTAnalytricksContextGenerators analytricksContextGenerator];
   });
 
-  context(@"after launch event", ^{
-    __block INTAppContext *contextAfterLaunch;
+  it(@"should create a new analytricks context on first event that is processed", ^{
+    auto context = contextGenerator(@{}, INTCreateEventMetadata(), @"foo");
+    INTAnalytricksContext *analytricksContext = context[kINTAppContextAnalytricksContextKey];
 
-    beforeEach(^{
-      auto launchEvent = [[INTAppWillEnterForegroundEvent alloc] initWithIsLaunch:YES];
-      contextAfterLaunch = contextGenerator(@{}, INTCreateEventMetadata(), launchEvent);
-    });
-
-    it(@"should create a new analytricks context on launch", ^{
-      expect(contextAfterLaunch[kINTAppContextAnalytricksContextKey])
-          .to.beKindOf(INTAnalytricksContext.class);
-    });
-
-    it(@"should set new session id on foreground", ^{
-      auto foregroundEvents = @[
-        [[INTAppWillEnterForegroundEvent alloc] initWithIsLaunch:NO],
-        [[INTAppWillEnterForegroundEvent alloc] initWithIsLaunch:NO],
-        [[INTAppWillEnterForegroundEvent alloc] initWithIsLaunch:NO]
-      ];
-
-      auto generatedContexts =
-          INTGenerateContexts(contextGenerator, foregroundEvents, contextAfterLaunch);
-
-      auto sessionIDs =
-          [NSSet setWithArray:[generatedContexts lt_map:^NSUUID *(INTAppContext *context) {
-            return [context[kINTAppContextAnalytricksContextKey] sessionID];
-          }]];
-
-      expect(generatedContexts).to.haveCount(sessionIDs.count);
-    });
-
-    it(@"should set new screen usage id on screen display", ^{
-      auto screenOpenedEvents = @[
-        [[INTScreenDisplayedEvent alloc] initWithScreenName:@"foo"],
-        [[INTScreenDisplayedEvent alloc] initWithScreenName:@"bar"],
-        [[INTScreenDisplayedEvent alloc] initWithScreenName:@"baz"]
-      ];
-
-      auto generatedContexts =
-          INTGenerateContexts(contextGenerator, screenOpenedEvents, contextAfterLaunch);
-
-      auto screenUsageIDs =
-          [NSSet setWithArray:[generatedContexts lt_map:^NSUUID *(INTAppContext *context) {
-            return [context[kINTAppContextAnalytricksContextKey] screenUsageID];
-          }]];
-
-      expect(generatedContexts).to.haveCount(screenUsageIDs.count);
-    });
-
-    it(@"should set current screen name when a screen is displayed", ^{
-      auto screenOpenedEvents = @[
-        [[INTScreenDisplayedEvent alloc] initWithScreenName:@"foo"],
-        [[INTScreenDisplayedEvent alloc] initWithScreenName:@"bar"],
-        [[INTScreenDisplayedEvent alloc] initWithScreenName:@"baz"]
-      ];
-
-      auto generatedContexts =
-          INTGenerateContexts(contextGenerator, screenOpenedEvents, contextAfterLaunch);
-
-      auto screenNames = [generatedContexts lt_map:^NSString *(INTAppContext *context) {
-        return [context[kINTAppContextAnalytricksContextKey] screenName] ;
-      }];
-
-      expect(screenNames).to.haveCount(@[@"foo", @"bar", @"baz"].count);
-    });
-
-    it(@"should set current project id according to the opened project", ^{
-      auto projectLoadedEvents = @[
-        [[INTProjectLoadedEvent alloc] initWithProjectID:[NSUUID UUID] isNew:NO],
-        [[INTProjectLoadedEvent alloc] initWithProjectID:[NSUUID UUID] isNew:NO],
-        [[INTProjectLoadedEvent alloc] initWithProjectID:[NSUUID UUID] isNew:NO]
-      ];
-
-      auto generatedContexts =
-          INTGenerateContexts(contextGenerator, projectLoadedEvents, contextAfterLaunch);
-
-      auto openProjectIDs = [generatedContexts lt_map:^id (INTAppContext *context) {
-        return [context[kINTAppContextAnalytricksContextKey] openProjectID];
-      }];
-
-      auto expectedIDs = [projectLoadedEvents lt_map:^id (INTProjectLoadedEvent *event) {
-        return event.projectID;
-      }];
-
-      expect(openProjectIDs).to.equal(expectedIDs);
-    });
+    expect(analytricksContext).to.beKindOf(INTAnalytricksContext.class);
+    expect(analytricksContext.runID).toNot.beNil();
   });
 
-  context(@"before launch event", ^{
-    __block INTAppContext *startContext;
+  it(@"should set new session id on foreground", ^{
+    auto foregroundEvents = @[
+      [[INTAppWillEnterForegroundEvent alloc] initWithIsLaunch:NO],
+      [[INTAppWillEnterForegroundEvent alloc] initWithIsLaunch:YES],
+      [[INTAppWillEnterForegroundEvent alloc] initWithIsLaunch:NO]
+    ];
 
-    beforeEach(^{
-      startContext = @{@"foo": @"bar"};
-    });
+    auto generatedContexts = INTGenerateContexts(contextGenerator, foregroundEvents);
 
-    it(@"should not update context on events other than launch", ^{
-      auto foregroundEvents = @[
-        [[INTAppWillEnterForegroundEvent alloc] initWithIsLaunch:NO],
-        [[INTAppWillEnterForegroundEvent alloc] initWithIsLaunch:NO],
-        [[INTProjectLoadedEvent alloc] initWithProjectID:[NSUUID UUID] isNew:NO],
-        [[INTProjectLoadedEvent alloc] initWithProjectID:[NSUUID UUID] isNew:NO],
-        [[INTProjectUnloadedEvent alloc] initWithProjectID:[NSUUID UUID] diskSpaceOnUnload:nil],
-        [[INTProjectUnloadedEvent alloc] initWithProjectID:[NSUUID UUID] diskSpaceOnUnload:nil],
-        [[INTScreenDisplayedEvent alloc] initWithScreenName:@"foo"],
-        [[INTScreenDisplayedEvent alloc] initWithScreenName:@"bar"]
-      ];
+    auto sessionIDs =
+        [NSSet setWithArray:[generatedContexts lt_map:^NSUUID *(INTAppContext *context) {
+          return [context[kINTAppContextAnalytricksContextKey] sessionID];
+        }]];
 
-      auto generatedContexts =
-          [NSSet setWithArray:INTGenerateContexts(contextGenerator, foregroundEvents,
-                                                  startContext)];
-      expect(generatedContexts).to.equal([NSSet setWithObject:startContext]);
-    });
+    expect(sessionIDs).to.haveCount(3);
+  });
+
+  it(@"should set new screen usage id on screen display", ^{
+    auto screenOpenedEvents = @[
+      [[INTScreenDisplayedEvent alloc] initWithScreenName:@"foo"],
+      [[INTScreenDisplayedEvent alloc] initWithScreenName:@"bar"],
+      [[INTScreenDisplayedEvent alloc] initWithScreenName:@"baz"]
+    ];
+
+    auto generatedContexts = INTGenerateContexts(contextGenerator, screenOpenedEvents);
+
+    auto screenUsageIDs =
+        [NSSet setWithArray:[generatedContexts lt_map:^NSUUID *(INTAppContext *context) {
+          return [context[kINTAppContextAnalytricksContextKey] screenUsageID];
+        }]];
+
+    expect(screenUsageIDs).to.haveCount(3);
+  });
+
+  it(@"should set current screen name when a screen is displayed", ^{
+    auto screenOpenedEvents = @[
+      [[INTScreenDisplayedEvent alloc] initWithScreenName:@"foo"],
+      [[INTScreenDisplayedEvent alloc] initWithScreenName:@"bar"],
+      [[INTScreenDisplayedEvent alloc] initWithScreenName:@"baz"]
+    ];
+
+    auto generatedContexts = INTGenerateContexts(contextGenerator, screenOpenedEvents);
+
+    auto screenNames = [generatedContexts lt_map:^NSString *(INTAppContext *context) {
+      return [context[kINTAppContextAnalytricksContextKey] screenName];
+    }];
+
+    expect(screenNames).to.equal(@[@"foo", @"bar", @"baz"]);
+  });
+
+  it(@"should set current project id according to the opened project", ^{
+    auto projectLoadedEvents = @[
+      [[INTProjectLoadedEvent alloc] initWithProjectID:[NSUUID UUID] isNew:NO],
+      [[INTProjectLoadedEvent alloc] initWithProjectID:[NSUUID UUID] isNew:NO],
+      [[INTProjectLoadedEvent alloc] initWithProjectID:[NSUUID UUID] isNew:NO]
+    ];
+
+    auto generatedContexts = INTGenerateContexts(contextGenerator, projectLoadedEvents);
+
+    auto openProjectIDs = [generatedContexts lt_map:^id (INTAppContext *context) {
+      return [context[kINTAppContextAnalytricksContextKey] openProjectID];
+    }];
+
+    auto expectedIDs = [projectLoadedEvents lt_map:^id (INTProjectLoadedEvent *event) {
+      return event.projectID;
+    }];
+
+    expect(openProjectIDs).to.equal(expectedIDs);
   });
 });
 

@@ -25,13 +25,11 @@ extern NSString * const kINTAppContextAppRunCountKey;
 @interface INTAnalytricksContextGenerators : NSObject
 
 /// Context generator that generates an \c INTAppContext with an updated value in
-/// \c kINTAppContextAnalytricksContextKey. The updates to the \c INTAnalytricksContext are made
-/// when the following events are processed:
+/// \c kINTAppContextAnalytricksContextKey. On the first event that is processed by this generator,
+/// a new \c INTAnalytricksContext is created with \c runID set to a uniquely generated \c NSUUID.
+/// The updates to the \c INTAnalytricksContext are made when the following events are processed:
 ///
-/// 1. INTAppWillForegroundEvent -
-///    a. If \c isLaunch is \c YES, then a new \c INTAnalytricksContext is generated, having only
-///    \c appRunID and \c sessionID set to a uniquely generated \c NSUUID for each.
-///    b. If \c isLaunch is \c NO, \c sessionID is set to a uniquely generated \c NSUUID.
+/// 1. INTAppWillForegroundEvent - the \c sessionID is set to a uniquely generated \c NSUUID.
 /// 2. INTScreenDisplayedEvent - the \c screenUsageID is set to a new value, and \c screenName is
 ///    set to the <tt>-[INTScreenDisplayedEvent screenName]</tt>.
 /// 3. INTProjectLoadedEvent - the \c openProjectID is set to
