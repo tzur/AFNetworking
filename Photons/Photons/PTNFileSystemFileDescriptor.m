@@ -86,13 +86,19 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (NSTimeInterval)duration {
+  if (![[self descriptorTraits] containsObject:kPTNDescriptorTraitAudiovisualKey]) {
+    return 0;
+  }
+
   if (self.fetchedDuration) {
     return _duration;
   }
 
   self.fetchedDuration = YES;
   AVAsset *asset = [AVAsset assetWithURL:self.path.url];
-  _duration = CMTimeGetSeconds(asset.duration);
+  CMTime assetDuration = asset.duration;
+  _duration = CMTIME_IS_NUMERIC(assetDuration) ? CMTimeGetSeconds(assetDuration) : 0.0;
+
   return _duration;
 }
 
