@@ -6,6 +6,7 @@
   #import <Foundation/Foundation.h>
 
   // Third party.
+  #import <Masonry/Masonry.h>
   #import <ReactiveObjC/ReactiveObjC.h>
 
   #pragma clang diagnostic push
