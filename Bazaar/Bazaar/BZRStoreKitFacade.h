@@ -84,6 +84,9 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 /// @note When a transaction object is no longer needed one must call \c finishTransaction: on the
 /// store manager. This method should be invoked for completed, restored and failed transactions.
+///
+/// @note If the purchase was cancelled, the signal will err with an error code
+/// \c BZRErrorCodeOperationCancelled.
 - (RACSignal<SKPaymentTransaction *> *)purchaseProduct:(SKProduct *)product;
 
 /// Purchases \c quantity units of a consumable \c product. \c quantity must be a positive number,
