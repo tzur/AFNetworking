@@ -92,8 +92,7 @@ using namespace spx;
       deliverOnMainThread]
       subscribeError:^(NSError *error) {
         @strongify(self);
-        if (!self || ([error.lt_underlyingError.domain isEqualToString:SKErrorDomain] &&
-                      error.lt_underlyingError.code == SKErrorPaymentCancelled)) {
+        if (!self || error.code == BZRErrorCodeOperationCancelled) {
            completionHandler(NO);
            return;
         }

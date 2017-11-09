@@ -7,6 +7,7 @@
 #import <Bazaar/BZRProductsInfoProvider.h>
 #import <Bazaar/BZRProductsManager.h>
 #import <Bazaar/BZRReceiptModel.h>
+#import <Bazaar/NSErrorCodes+Bazaar.h>
 #import <MessageUI/MessageUI.h>
 
 #import "SPXFeedbackComposeViewControllerProvider.h"
@@ -57,6 +58,14 @@ context(@"purchase subscription", ^{
     [subscriptionManager purchaseSubscription:@"foo" completionHandler:^(BOOL) {}];
 
     OCMVerifyAll((id)viewController);
+  });
+
+  it(@"should not present an alert if purchasing subscription was cancelled", ^{
+    auto error = [NSError lt_errorWithCode:BZRErrorCodeOperationCancelled];
+    OCMStub([productsManager purchaseProduct:@"foo"]).andReturn([RACSignal error:error]);
+    OCMReject([viewController presentViewController:OCMOCK_ANY animated:YES completion:OCMOCK_ANY]);
+
+    [subscriptionManager purchaseSubscription:@"foo" completionHandler:^(BOOL) {}];
   });
 
   it(@"should invoke the completion block if purchase subscription succeeded" , ^{
