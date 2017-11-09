@@ -84,14 +84,14 @@ context(@"equality", ^{
 });
 
 context(@"video descriptor", ^{
- it(@"should have underlying asset's duration", ^{
+ it(@"should have underlying asset's duration when given a URL of an audiovisual file", ^{
     LTPath *oneSecondVideoPath = [LTPath pathWithPath:PTNOneSecondVideoPath().path];
     PTNFileSystemFileDescriptor *descriptor =
         [[PTNFileSystemFileDescriptor alloc] initWithPath:oneSecondVideoPath];
     expect(round(descriptor.duration)).to.equal(1);
   });
 
-  it(@"should have video descriptor key in descriptor traits", ^{
+  it(@"should have video descriptor key in traits when given a URL of an audiovisual file", ^{
     LTPath *oneSecondVideoPath = [LTPath pathWithPath:PTNOneSecondVideoPath().path];
     PTNFileSystemFileDescriptor *descriptor =
         [[PTNFileSystemFileDescriptor alloc] initWithPath:oneSecondVideoPath];
