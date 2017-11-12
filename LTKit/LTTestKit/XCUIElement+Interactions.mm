@@ -9,12 +9,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Duration of pressing the start coordinate before draging to end coordinate in pan interaction
 /// emulation.
-static const NSTimeInterval kPanPressBeforeDragDuration = 0.1;
+static const NSTimeInterval kLTPanPressBeforeDragDuration = 0.1;
 
 - (void)lt_panFromOffset:(CGVector)normalizedStart toOffset:(CGVector)normalizedEnd {
   auto start = [self coordinateWithNormalizedOffset:normalizedStart];
-  auto end =  [self coordinateWithNormalizedOffset:normalizedEnd];
-  [start pressForDuration:kPanPressBeforeDragDuration thenDragToCoordinate:end];
+  auto end = [self coordinateWithNormalizedOffset:normalizedEnd];
+  [start pressForDuration:kLTPanPressBeforeDragDuration thenDragToCoordinate:end];
 }
 
 @end

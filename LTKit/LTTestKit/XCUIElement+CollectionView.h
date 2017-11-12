@@ -5,22 +5,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Possible scrolling directions of the collection view.
 typedef NS_ENUM(NSUInteger, LTScrollDirection) {
-  LTUp,
-  LTDown,
-  LTLeft,
-  LTRight
+  LTScrollDirectionUp,
+  LTScrollDirectionDown,
+  LTScrollDirectionLeft,
+  LTScrollDirectionRight
 };
 
-/// Map between a direction to its oposite direction.
-NSDictionary * const kOpositeDirection = @{
-  @(LTUp): @(LTDown),
-  @(LTDown): @(LTUp),
-  @(LTLeft): @(LTRight),
-  @(LTRight): @(LTLeft)
-};
-
-/// For expressing index of cell that is not visible in the collection view.
-extern const NSInteger kLTCellNotVisibleInCollection;
+/// Map between a direction to its opposite direction.
+extern NSDictionary * const kLTOppositeDirection;
 
 /// Category for handling collectionView operations in UI tests. Each cell in this collection view
 /// should have a unique accessibility identifier otherwise scrolls and iterations that are
@@ -29,8 +21,8 @@ extern const NSInteger kLTCellNotVisibleInCollection;
 
 /// Possible results of handling an iteration step.
 typedef NS_ENUM(NSUInteger, LTIterationStepResult) {
-  LTKeepIterating,
-  LTStopIterating
+  LTIterationStepResultKeepIterating,
+  LTIterationStepResultStopIterating
 };
 
 /// Block to be invoked for each cell while iterating the collection view. The
@@ -41,11 +33,11 @@ typedef LTIterationStepResult (^LTCellIterationBlock)(XCUIElement *cell);
 /// Iterates over the visible cells in the given \c direction, and invokes the given \c block for
 /// the current cell at each iteration step, then scrolls in the given \c direction and continues
 /// the iteration with the visible cells after scrolling, and so on until the end of the collection
-/// or until LTStopIterating is returned from \c block.
+/// or until \c LTIterationStepResultStopIterating is returned from \c block.
 - (void)lt_collectionViewIterateFromCurrentPositionInDirection:(LTScrollDirection)direction
                                                      withBlock:(LTCellIterationBlock)block;
 
-/// Scrolls until content edge in the oposite of the given \c direction, and then iterate as
+/// Scrolls until content edge in the opposite of the given \c direction, and then iterate as
 /// described in \c lt_collectionViewIterateFromCurrentPositionInDirection.
 - (void)lt_collectionViewIterateFromContentEdgeInDirection:(LTScrollDirection)direction
                                                  withBlock:(LTCellIterationBlock)block;
@@ -57,7 +49,7 @@ typedef LTIterationStepResult (^LTCellIterationBlock)(XCUIElement *cell);
 /// each cell.
 - (void)lt_collectionViewPressAllCellsInDirection:(LTScrollDirection)direction;
 
-/// Scrolls in the oposite of the given \c direction to content edge, and then scrolls in the given
+/// Scrolls in the opposite of the given \c direction to content edge, and then scrolls in the given
 /// direction until the given \c cellIdentifier is visible (or until reaching the end of the
 /// content). If \c shouldPress is \c YES, presses on this cell after scrolling to it. Returns
 /// \c YES if the cell with the given \c cellIdentifier is visible when this method returns, \c NO

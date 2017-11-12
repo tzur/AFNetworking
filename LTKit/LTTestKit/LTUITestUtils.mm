@@ -11,15 +11,15 @@ static inline SPTSpec * _Nullable SPTCurrentSpec() {
   return [[NSThread mainThread] threadDictionary][@"SPTCurrentSpec"];
 }
 
-void lt_addInterruptionMonitor(LTUIInterruptionHandler *UIInterruptionHandler) {
+void LTAddInterruptionMonitor(LTUIInterruptionHandler *UIInterruptionHandler) {
   SPTSpec *spec = SPTCurrentSpec();
   [spec addUIInterruptionMonitorWithDescription:UIInterruptionHandler.descriptionText
                                         handler:UIInterruptionHandler.block];
 }
 
-LTUIInterruptionHandler *lt_getAllowAllAlertsBlock() {
+LTUIInterruptionHandler *LTGetAllowAllAlertsBlock() {
   return [[LTUIInterruptionHandler alloc] initWithDescription:@"Allow all alerts"
-                                                     withBlock: ^BOOL(XCUIElement *alert) {
+                                                    withBlock:^BOOL(XCUIElement *alert) {
     if (alert.buttons[@"Allow"].exists) {
       [alert.buttons[@"Allow"] tap];
       return YES;

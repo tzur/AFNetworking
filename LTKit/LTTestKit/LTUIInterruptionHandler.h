@@ -17,7 +17,7 @@ typedef BOOL (^LTUIInterruptionHandlerBlock)(XCUIElement *);
 
 /// Initializes with the given \c description and \c block.
 - (instancetype)initWithDescription:(NSString *)description
-                           withBlock:(LTUIInterruptionHandlerBlock)block NS_DESIGNATED_INITIALIZER;
+                          withBlock:(LTUIInterruptionHandlerBlock)block NS_DESIGNATED_INITIALIZER;
 
 /// Textual description for this handler. Mainly used for debugging and analysis.
 @property (readonly, nonatomic) NSString *descriptionText;
