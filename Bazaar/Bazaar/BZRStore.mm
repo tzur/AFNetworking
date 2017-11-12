@@ -541,7 +541,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (RACSignal *)restorePurchases {
   @weakify(self);
-  return [[self.storeKitFacade restoreCompletedTransactions]
+  return [[[self.storeKitFacade restoreCompletedTransactions]
+      deliverOnMainThread]
       doNext:^(SKPaymentTransaction *transaction) {
         @strongify(self);
         [self.storeKitFacade finishTransaction:transaction];
