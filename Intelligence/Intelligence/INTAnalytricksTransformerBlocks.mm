@@ -185,7 +185,8 @@ NSString * const kINTEnrichmentAppRunCountKey = @"app_run_count";
                  ^(NSDictionary<NSString *, id> *, INTPushNotificationOpenedEvent *event,
                    INTEventMetadata *, INTAppContext *) {
         return @[[[INTAnalytricksPushNotificationOpened alloc]
-                  initWithPushID:event.pushID deepLink:event.deepLink].properties];
+                  initWithPushID:event.pushID deepLink:event.deepLink
+                  pushSource:event.pushSource].properties];
       })
       .build();
 }

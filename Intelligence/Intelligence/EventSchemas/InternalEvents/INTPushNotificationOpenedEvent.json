@@ -10,7 +10,11 @@
     "deep_link": {
       "description": "deep link within the push notification, if available",
       "type": ["string", "null"]
+    },
+    "push_source": {
+    "description": "push notification source, i.e. 'Local', 'Remote'.",
+    "type": "string"
     }
   },
-  "required": ["push_id", "deep_link"]
+  "required": ["push_id", "deep_link", "push_source"]
 }
