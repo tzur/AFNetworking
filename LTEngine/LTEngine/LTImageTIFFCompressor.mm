@@ -10,23 +10,46 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@interface LTImageTIFFCompressor ()
+
+/// Internal ImageIO compressor used for the actual compression.
+@property (readonly, nonatomic) LTImageIOCompressor *compressor;
+
+@end
+
 @implementation LTImageTIFFCompressor
+
+- (instancetype)init {
+  if (self = [super init]) {
+    // NSTIFFCompressionLZW defined in NSBitmapImageRep.h of OSX, and not for iOS. For that reason,
+    // we need to put the actual value of the enum. This issue was discussed with the ImageIO
+    // development team, which confirmed that it uses libtiff under the hood, and the constant is
+    // not likely to change.
+    static const NSUInteger kLZWCompression = 5;
+    NSDictionary *options = @{
+      (__bridge NSString *)kCGImagePropertyTIFFDictionary: @{
+        (__bridge NSString *)kCGImagePropertyTIFFCompression: @(kLZWCompression)
+      }
+    };
+
+    _compressor = [[LTImageIOCompressor alloc] initWithOptions:options format:self.format];
+  }
+  return self;
+}
 
 - (nullable NSData *)compressImage:(UIImage *)image metadata:(nullable NSDictionary *)metadata
                              error:(NSError *__autoreleasing *)error {
-  // NSTIFFCompressionLZW defined in NSBitmapImageRep.h of OSX, and not for iOS. For that reason,
-  // we need to put the actual value of the enum. This issue was discussed with the ImageIO
-  // development team, which confirmed that it uses libtiff under the hood, and the constant is not
-  // likely to change.
-  static const NSUInteger kLZWCompression = 5;
-  NSDictionary *options = @{
-    (__bridge NSString *)kCGImagePropertyTIFFDictionary: @{
-      (__bridge NSString *)kCGImagePropertyTIFFCompression: @(kLZWCompression)
-    }
-  };
+  auto metadataWithoutTiling = [self removeTileEntriesFromMetadata:metadata];
+  return [self.compressor compressImage:image metadata:metadataWithoutTiling error:error];
+}
 
-  auto compressor = [[LTImageIOCompressor alloc] initWithOptions:options format:self.format];
+- (BOOL)compressImage:(UIImage *)image metadata:(nullable NSDictionary *)metadata toURL:(NSURL *)url
+                error:(NSError * __autoreleasing *)error {
+  auto metadataWithoutTiling = [self removeTileEntriesFromMetadata:metadata];
+  return [self.compressor compressImage:image metadata:metadataWithoutTiling toURL:url error:error];
+}
 
+- (NSDictionary *)removeTileEntriesFromMetadata:(NSDictionary *)metadata {
   // TIFF compression with declared tiling in the image metadata leads to unexpected observed
   // behaviours:
   // 1) When exporting the image to Instagram, the image is presented as BGRA.
@@ -38,16 +61,6 @@ NS_ASSUME_NONNULL_BEGIN
   // preview image in Mac) doesn't handle the compress tiled image as it should.
   // The current solution that works in practice is to remove the tiling declaration entries from
   // the \c metadata dictionary.
-  auto metadataWithoutTiling = [self removeTileEntriesFromMetadata:metadata];
-
-  return [compressor compressImage:image metadata:metadataWithoutTiling error:error];
-}
-
-- (LTCompressionFormat *)format {
-  return $(LTCompressionFormatTIFF);
-}
-
-- (NSDictionary *)removeTileEntriesFromMetadata:(NSDictionary *)metadata {
   NSDictionary * _Nullable tiffDictionary =
       metadata[(__bridge NSString *)kCGImagePropertyTIFFDictionary];
 
@@ -65,6 +78,10 @@ NS_ASSUME_NONNULL_BEGIN
       tiffDictionaryWithoutTiling;
 
   return [mutableMetadata copy];
+}
+
+- (LTCompressionFormat *)format {
+  return $(LTCompressionFormatTIFF);
 }
 
 @end

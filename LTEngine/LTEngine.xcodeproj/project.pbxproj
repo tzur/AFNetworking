@@ -377,7 +377,7 @@
 		284ED12C1895662300414A8A /* LTLinearInterpolantSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 284ED12B1895662300414A8A /* LTLinearInterpolantSpec.mm */; };
 		284ED12E1895667500414A8A /* LTPolynomialInterpolantExamples.mm in Sources */ = {isa = PBXBuildFile; fileRef = 284ED12D1895667500414A8A /* LTPolynomialInterpolantExamples.mm */; };
 		284ED1301895668800414A8A /* LTCatmullRomInterpolantSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 284ED12F1895668800414A8A /* LTCatmullRomInterpolantSpec.mm */; };
-		285660221B1761A800807A4F /* LTImageJPGCompressorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 285660211B1761A800807A4F /* LTImageJPGCompressorSpec.mm */; };
+		285660221B1761A800807A4F /* LTImageJPEGCompressorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 285660211B1761A800807A4F /* LTImageJPEGCompressorSpec.mm */; };
 		2856D2871A00E10B008FC29F /* PerspectiveOverflow.png in Resources */ = {isa = PBXBuildFile; fileRef = 2856D2861A00E10B008FC29F /* PerspectiveOverflow.png */; };
 		285A671419AE1C8300B2CE9E /* LTMeshBaseDrawer.vsh in Sources */ = {isa = PBXBuildFile; fileRef = 285A671219AE1C7000B2CE9E /* LTMeshBaseDrawer.vsh */; };
 		285A671B19AE313400B2CE9E /* LTReshapeProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 285A671919AE313400B2CE9E /* LTReshapeProcessor.h */; };
@@ -2177,7 +2177,7 @@
 		284ED12D1895667500414A8A /* LTPolynomialInterpolantExamples.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTPolynomialInterpolantExamples.mm; sourceTree = "<group>"; };
 		284ED12F1895668800414A8A /* LTCatmullRomInterpolantSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTCatmullRomInterpolantSpec.mm; sourceTree = "<group>"; };
 		284ED131189568AC00414A8A /* LTPolynomialInterpolantExamples.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTPolynomialInterpolantExamples.h; sourceTree = "<group>"; };
-		285660211B1761A800807A4F /* LTImageJPGCompressorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTImageJPGCompressorSpec.mm; sourceTree = "<group>"; };
+		285660211B1761A800807A4F /* LTImageJPEGCompressorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTImageJPEGCompressorSpec.mm; sourceTree = "<group>"; };
 		28568E221D490F2800D7E27E /* LTShaderUnit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTShaderUnit.h; sourceTree = "<group>"; };
 		2856D2861A00E10B008FC29F /* PerspectiveOverflow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PerspectiveOverflow.png; path = Resources/PerspectiveOverflow.png; sourceTree = "<group>"; };
 		285A671219AE1C7000B2CE9E /* LTMeshBaseDrawer.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTMeshBaseDrawer.vsh; sourceTree = "<group>"; };
@@ -4569,7 +4569,7 @@
 				2836FA0A1D33B96F0078887C /* LTCompressionFormatSpec.mm */,
 				B4BF16291F41DAB00077726E /* LTImageHEICCompressorSpec.mm */,
 				2884CDB11B1ACD7600A58EE4 /* LTImageIOCompressorSpec.mm */,
-				285660211B1761A800807A4F /* LTImageJPGCompressorSpec.mm */,
+				285660211B1761A800807A4F /* LTImageJPEGCompressorSpec.mm */,
 				2884CDA91B176DB400A58EE4 /* LTImagePNGCompressorSpec.mm */,
 				2884CDAB1B176EC200A58EE4 /* LTImageTIFFCompressorSpec.mm */,
 				B434CE981F5E7EC2000D1A6B /* LTPhotoLibraryImageCompressorSpec.mm */,
@@ -7458,7 +7458,7 @@
 				8BAE3A4A18B2668900DA79E1 /* EXPMatchers+equalScalar.mm in Sources */,
 				8B3F94A2187AE9E400FAA265 /* LTOneShotImageProcessorSpec.mm in Sources */,
 				28F3CAA21D004B59007FC2E9 /* LTLinearProcessorSpec.mm in Sources */,
-				285660221B1761A800807A4F /* LTImageJPGCompressorSpec.mm in Sources */,
+				285660221B1761A800807A4F /* LTImageJPEGCompressorSpec.mm in Sources */,
 				8BABFD6D188C5AD3004163DA /* LTNextIterationPlacementSpec.mm in Sources */,
 				8BABF0D019B8491800AED760 /* LTEAWProcessorSpec.mm in Sources */,
 				85CDE56E1CFEF89900229787 /* LTForegroundBackgroundDrawerSpec.mm in Sources */,

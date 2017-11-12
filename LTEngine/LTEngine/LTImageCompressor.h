@@ -5,15 +5,21 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class LTCompressionFormat;
 
-/// Protocol for applying compression on images.
-@protocol LTImageCompressor
+/// Implemented by objects that perform image compression on \c UIImage and return \c NSData or
+/// write the results directly to file.
+@protocol LTImageCompressor <NSObject>
 
-/// Apply compression on \c image and add \c metadata to the resulting \c NSData. An error will be
-/// raised if the \c image is \c nil. The \c metadata may be \c nil, or it may include make, model,
-/// location, etc. The \c metadata will only be added to compression formats that support it. In
-/// case the compression process fails, the method will return \c nil and relevant \c error.
+/// Compresses \c image and adds \c metadata to the resulting \c NSData. On error, \c nil will be
+/// returned and \c error will be set. \c metadata will only be added to compression formats that
+/// support it.
 - (nullable NSData *)compressImage:(UIImage *)image metadata:(nullable NSDictionary *)metadata
-                             error:(NSError *__autoreleasing *)error;
+                             error:(NSError **)error;
+
+/// Compresses \c image and adds \c metadata, while writing the result to \c url. On error, \c nil
+/// will be returned and \c error will be set. \c metadata will only be added to compression formats
+/// that support it.
+- (BOOL)compressImage:(UIImage *)image metadata:(nullable NSDictionary *)metadata
+                toURL:(NSURL *)url error:(NSError **)error;
 
 /// Compressor output format.
 @property (readonly, nonatomic) LTCompressionFormat *format;

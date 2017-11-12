@@ -43,6 +43,9 @@ NS_ASSUME_NONNULL_BEGIN
                                      (__bridge CFStringRef)self.format.UTI, 1, NULL)
   );
   if (!destination) {
+    *error = [NSError lt_errorWithCode:LTErrorCodeObjectCreationFailed
+                           description:@"Failed creating image destination with image %@, "
+                                       "metadata %@", image, metadata];
     return nil;
   }
 
@@ -55,12 +58,46 @@ NS_ASSUME_NONNULL_BEGIN
     if (error) {
       *error = [NSError lt_errorWithCode:LTErrorCodeObjectCreationFailed
                              description:@"Failed creating image %@ with metadata %@", image,
-                metadata];
+                                         metadata];
     }
     return nil;
   }
 
   return imageData;
+}
+
+- (BOOL)compressImage:(UIImage *)image metadata:(nullable NSDictionary *)metadata
+                toURL:(nonnull NSURL *)url error:(NSError *__autoreleasing *)error {
+  LTParameterAssert(image);
+
+  lt::Ref<CGImageDestinationRef> destination(
+    CGImageDestinationCreateWithURL((__bridge CFURLRef)url, (__bridge CFStringRef)self.format.UTI,
+                                    1, NULL)
+  );
+  if (!destination) {
+    *error = [NSError lt_errorWithCode:LTErrorCodeObjectCreationFailed
+                                   url:url
+                           description:@"Failed creating image destination with image %@, "
+                                       "metadata %@", image, metadata];
+    return NO;
+  }
+
+  NSDictionary *combinedOptions = [self optionsByMerging:metadata to:self.options];
+  CGImageDestinationAddImage(destination.get(), image.CGImage,
+                             (__bridge CFDictionaryRef)combinedOptions);
+
+  BOOL finalized = CGImageDestinationFinalize(destination.get());
+  if (!finalized) {
+    if (error) {
+      *error = [NSError lt_errorWithCode:LTErrorCodeObjectCreationFailed
+                                     url:url
+                             description:@"Failed creating image %@ with metadata %@", image,
+                                         metadata];
+    }
+    return NO;
+  }
+
+  return YES;
 }
 
 /// Deep merge of two dictionaries. If the same key appears in both and the object is not a

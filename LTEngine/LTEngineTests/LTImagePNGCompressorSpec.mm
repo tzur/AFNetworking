@@ -17,11 +17,9 @@ static BOOL LTVerifyFormat(NSData *compressedImage) {
 SpecBegin(LTImagePNGCompressor)
 
 __block LTImagePNGCompressor *compressor;
-__block NSError *error;
 
 beforeEach(^{
   compressor = [[LTImagePNGCompressor alloc] init];
-  error = nil;
 });
 
 afterEach(^{
@@ -34,9 +32,31 @@ it(@"should return correct format", ^{
 
 it(@"should create png format data", ^{
   UIImage *jpegImage = LTLoadImage([self class], @"Gray.jpg");
-  expect(LTVerifyFormat([compressor compressImage:jpegImage metadata:nil error:&error]))
-      .to.beTruthy();
+
+  NSError *error;
+  NSData *data = [compressor compressImage:jpegImage metadata:nil error:&error];
+
+  expect(LTVerifyFormat(data)).to.beTruthy();
   expect(error).to.beNil();
+});
+
+it(@"should compress same data to file as to in memory data", ^{
+  LTCreateTemporaryDirectory();
+
+  UIImage *image = LTLoadImage([self class], @"Lena.png");
+  auto url = [NSURL fileURLWithPath:LTTemporaryPath(@"temp.png")];
+
+  NSError *error;
+  auto compressed = [compressor compressImage:image metadata:nil toURL:url error:&error];
+  auto expectedData = [compressor compressImage:image metadata:nil error:nil];
+  auto actualData = [NSData dataWithContentsOfURL:url];
+
+  expect(compressed).to.beTruthy();
+  expect(error).to.beNil();
+  expect(expectedData).notTo.beNil();
+  expect(expectedData).to.equal(actualData);
+
+  [[NSFileManager defaultManager] removeItemAtPath:LTTemporaryPath() error:nil];
 });
 
 SpecEnd
