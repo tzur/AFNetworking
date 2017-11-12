@@ -83,4 +83,20 @@ it(@"should compress same data to file as to in memory data", ^{
   [[NSFileManager defaultManager] removeItemAtPath:LTTemporaryPath() error:nil];
 });
 
+it(@"should return correct format", ^{
+  id<LTImageCompressor> referenceCompressor;
+
+  if (@available(iOS 11.0, *)) {
+    referenceCompressor = $(LTCompressionFormatHEIC).isSupported ?
+    [[LTImageHEICCompressor alloc] initWithQuality:1] :
+    [[LTImageJPEGCompressor alloc] initWithQuality:1];
+  } else {
+    referenceCompressor = [[LTImageJPEGCompressor alloc] initWithQuality:1];
+  }
+
+  auto compressor = [[LTPhotoLibraryImageCompressor alloc] initWithQuality:1];
+
+  expect(compressor.format).to.equal(referenceCompressor.format);
+});
+
 SpecEnd

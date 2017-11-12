@@ -22,10 +22,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithQuality:(CGFloat)quality {
   if (self = [super init]) {
-    _format = _compressor.format;
     _quality = MIN(MAX(quality, 0), 1);
 
     [self setupCompressor];
+    _format = _compressor.format;
   }
   return self;
 }
