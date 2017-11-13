@@ -5,6 +5,7 @@
 
 #import <AVFoundation/AVFoundation.h>
 #import <LTKit/LTPath.h>
+#import <MobileCoreServices/MobileCoreServices.h>
 
 #import "NSURL+FileSystem.h"
 
@@ -65,24 +66,39 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (NSSet<NSString *> *)descriptorTraits {
-  NSString * _Nullable UTI;
-  BOOL success = [self.path.url getResourceValue:&UTI forKey:NSURLTypeIdentifierKey error:nil];
-  if (!success || ![[self.class videoFileUTIs] containsObject:UTI]) {
-    return [NSSet set];
+  NSSet<NSString *> *videoFilesExtensions = [PTNFileSystemFileDescriptor videoFilesExtensions];
+  if ([videoFilesExtensions containsObject:[self.path.url.pathExtension lowercaseString]]) {
+    return [NSSet setWithObject:kPTNDescriptorTraitAudiovisualKey];
   }
 
-  return [NSSet setWithObject:kPTNDescriptorTraitAudiovisualKey];
+  return [NSSet set];
 }
 
-+ (NSArray *)videoFileUTIs {
-  static NSArray *types;
-
++ (NSSet<NSString *> *)videoFilesExtensions {
+  static NSSet<NSString *> *extensions;
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
-    types = [AVURLAsset audiovisualTypes];
+    NSArray<NSString *> *UTIs = [AVURLAsset audiovisualTypes];
+    NSMutableSet<NSString *> *filenameExtensions = [NSMutableSet set];
+    for (NSString *UTI in UTIs) {
+      NSArray<NSString *> *fileExtensions =
+          [PTNFileSystemFileDescriptor fileExtensionsForUTI:[UTI lowercaseString]];
+      [filenameExtensions addObjectsFromArray:fileExtensions];
+    }
+    extensions = filenameExtensions;
   });
 
-  return types;
+  return extensions;
+}
+
++ (NSArray<NSString *> *)fileExtensionsForUTI:(NSString *)UTI {
+  CFArrayRef _Nullable extensions =
+      UTTypeCopyAllTagsWithClass((__bridge CFStringRef)UTI, kUTTagClassFilenameExtension);
+  if (!extensions) {
+    return @[];
+  }
+
+  return (__bridge_transfer NSArray *)extensions;
 }
 
 - (NSTimeInterval)duration {

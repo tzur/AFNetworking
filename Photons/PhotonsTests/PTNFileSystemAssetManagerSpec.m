@@ -326,15 +326,7 @@ context(@"AVAsset fetching", ^{
     expect(values).will.complete();
   });
 
-  it(@"should error on non-existing assets", ^{
-    descriptor = PTNFileSystemFileFromString(@"/foo/bar/baz.mp4");
-    RACSignal *values = [manager fetchAVAssetWithDescriptor:descriptor options:options];
-    expect(values).will.matchError(^BOOL(NSError *error) {
-      return error.code == PTNErrorCodeInvalidDescriptor;
-    });
-  });
-
-  it(@"should error on image descriptor", ^{
+  it(@"should error on non audiovisual descriptor", ^{
     descriptor = PTNFileSystemFileFromString(@"/foo.jpg");
     RACSignal *values = [manager fetchAVAssetWithDescriptor:descriptor options:options];
     expect(values).will.matchError(^BOOL(NSError *error) {
