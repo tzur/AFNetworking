@@ -20,7 +20,7 @@ typedef NSMutableArray<id<LTContentTouchEvent>> LTMutableContentTouchEvents;
 @property (readonly, nonatomic) CGPoint contentLocation;
 
 /// Location of the touch during the previous touch event, in floating-point pixel units of the
-/// content coordinate system.
+/// content coordinate system. Undefined if the previous content touch event is not well-defined.
 @property (readonly, nonatomic) CGPoint previousContentLocation;
 
 /// Size, in integer pixel units, of the content rectangle when the touch event occurred.

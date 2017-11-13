@@ -23,6 +23,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// \c state is LTTouchEventSequenceStateStart, \c LTTouchEventSequenceStateEnd or
 /// \c LTTouchEventSequenceStateCancellation, the given \c contentTouchEvents contain exactly one
 /// content touch event.
+///
+/// @note The \c previousTimestamp of the given \c predictedTouchEvents is \c nil.
 - (void)receivedContentTouchEvents:(LTContentTouchEvents *)contentTouchEvents
                    predictedEvents:(LTContentTouchEvents *)predictedTouchEvents
            touchEventSequenceState:(LTTouchEventSequenceState)state;
@@ -31,6 +33,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// \c contentTouchEvents contain at least one touch event, are ordered according to their
 /// timestamps and belong to touch event sequences that have not ended yet. The timestamps are not
 /// necessarily monotonically increasing for consecutive calls to this method.
+///
+/// @note The \c previousTimestamp of the given \c contentTouchEvents is \c nil.
 - (void)receivedUpdatesOfContentTouchEvents:(LTContentTouchEvents *)contentTouchEvents;
 
 /// Called to inform the delegate that all content touch event sequences with the given
