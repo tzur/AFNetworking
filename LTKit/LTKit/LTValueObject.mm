@@ -3,6 +3,8 @@
 
 #import "LTValueObject.h"
 
+#import <mutex>
+
 #import "LTHashExtensions.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -44,11 +46,36 @@ static NSArray<NSString *> *LTPropertyKeys(Class classObject) {
   return propertyKeys;
 }
 
+/// Maps between class object to an array of its property keys.
+static CFMutableDictionaryRef propertyKeysCache;
+
+/// Protectes the cache.
+static std::mutex cacheLock;
+
+static NSArray<NSString *> *LTCachedPropertyKeys(Class classObject) {
+  std::lock_guard<std::mutex> lock(cacheLock);
+
+  if (!propertyKeysCache) {
+    propertyKeysCache = CFDictionaryCreateMutable(NULL, 0, NULL, &kCFTypeDictionaryValueCallBacks);
+  }
+
+  NSArray<NSString *> * _Nullable keys =
+      (NSArray<NSString *> *)CFDictionaryGetValue(propertyKeysCache,
+                                                  (__bridge const void *)classObject);
+  if (!keys) {
+    keys = LTPropertyKeys(classObject);
+    CFDictionarySetValue(propertyKeysCache, (__bridge const void *)classObject,
+                         (__bridge const void *)keys);
+  }
+
+  return nn(keys);
+}
+
 NSString *LTValueObjectDescription(NSObject *object) {
   NSMutableString *description = [NSMutableString stringWithFormat:@"<%@: %p", object.class,
                                   object];
 
-  for (NSString *key in LTPropertyKeys(object.class)) {
+  for (NSString *key in LTCachedPropertyKeys(object.class)) {
     [description appendFormat:@", %@: %@", key, [object valueForKey:key]];
   }
 
@@ -64,7 +91,7 @@ BOOL LTValueObjectIsEqual(NSObject *first, NSObject *second) {
     return NO;
   }
 
-  for (NSString *key in LTPropertyKeys(first.class)) {
+  for (NSString *key in LTCachedPropertyKeys(first.class)) {
     id firstValue = [first valueForKey:key];
     id secondValue = [second valueForKey:key];
 
@@ -79,7 +106,7 @@ BOOL LTValueObjectIsEqual(NSObject *first, NSObject *second) {
 NSUInteger LTValueObjectHash(NSObject *object) {
   size_t seed = 0;
 
-  for (NSString *key in LTPropertyKeys(object.class)) {
+  for (NSString *key in LTCachedPropertyKeys(object.class)) {
     lt::hash_combine(seed, [[object valueForKey:key] hash]);
   }
 
