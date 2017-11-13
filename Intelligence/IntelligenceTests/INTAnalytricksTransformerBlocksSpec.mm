@@ -290,7 +290,7 @@ context(@"analytricks foreground event transformer", ^{
 
   itShouldBehaveLike(kINTTransformerBlockExamples, ^{
     auto pushNotificationEvent = [[INTPushNotificationOpenedEvent alloc]
-                                  initWithPushID:@"foo" deepLink:nil];
+                                  initWithPushID:@"foo" deepLink:nil pushSource:@"bar"];
 
     auto expectedEvent = [[INTAnalytricksAppForegrounded alloc]
                          initWithSource:@"push_notification" isLaunch:YES].properties;
@@ -417,9 +417,10 @@ context(@"analytricks deep link opened event transformer", ^{
 context(@"analytricks push notification received event transformer", ^{
   itShouldBehaveLike(kINTTransformerBlockExamples, ^{
     auto dataProviders = @[
-      [[INTAnalytricksPushNotificationOpened alloc] initWithPushID:@"foo" deepLink:nil].properties,
       [[INTAnalytricksPushNotificationOpened alloc]
-       initWithPushID:@"bar" deepLink:@"http://foo"].properties
+       initWithPushID:@"foo" deepLink:nil pushSource:@"Local"].properties,
+      [[INTAnalytricksPushNotificationOpened alloc]
+       initWithPushID:@"bar" deepLink:@"http://foo" pushSource:@"Remote"].properties
     ];
 
     return @{
@@ -427,10 +428,10 @@ context(@"analytricks push notification received event transformer", ^{
                                                  pushNotificationOpenedEventTransformer],
       kINTTransformerBlockExamplesArgumentsSequence: @[
         INTEventTransformerArgs([[INTPushNotificationOpenedEvent alloc]
-                                 initWithPushID:@"foo" deepLink:nil],
+                                 initWithPushID:@"foo" deepLink:nil pushSource:@"Local"],
                                 INTCreateEventMetadata()),
         INTEventTransformerArgs([[INTPushNotificationOpenedEvent alloc]
-                                 initWithPushID:@"bar" deepLink:@"http://foo"],
+                                 initWithPushID:@"bar" deepLink:@"http://foo" pushSource:@"Remote"],
                                 INTCreateEventMetadata()),
       ],
       kINTTransformerBlockExamplesExpectedEvents: dataProviders
