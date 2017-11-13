@@ -1300,6 +1300,9 @@
 		E4841A221E8ABE6200154E1C /* LTTextureOpenExrArchiverSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = E4841A211E8ABE6200154E1C /* LTTextureOpenExrArchiverSpec.mm */; };
 		E4C0DE831F1E384100140840 /* LT3DLUT+OperationsSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = E4C0DE821F1E384100140840 /* LT3DLUT+OperationsSpec.mm */; };
 		E4CEAF5B1E432BEC008FA38E /* libOpenEXR.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E4CEAC461E41DCC9008FA38E /* libOpenEXR.a */; };
+		E4DE72D11FB1A2050097EF57 /* LTImageIOExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = E4DE72CF1FB1A2050097EF57 /* LTImageIOExtensions.h */; };
+		E4DE72D21FB1A2050097EF57 /* LTImageIOExtensions.mm in Sources */ = {isa = PBXBuildFile; fileRef = E4DE72D01FB1A2050097EF57 /* LTImageIOExtensions.mm */; };
+		E4DE73061FB1A2BA0097EF57 /* LTImageIOExtensionsSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = E4DE73051FB1A2BA0097EF57 /* LTImageIOExtensionsSpec.mm */; };
 		E4F061FC1E49B46D00FDE0B0 /* LTOpenExrPizCompressor.h in Headers */ = {isa = PBXBuildFile; fileRef = E4F061FA1E49B46D00FDE0B0 /* LTOpenExrPizCompressor.h */; };
 		E4F061FD1E49B46D00FDE0B0 /* LTOpenExrPizCompressor.mm in Sources */ = {isa = PBXBuildFile; fileRef = E4F061FB1E49B46D00FDE0B0 /* LTOpenExrPizCompressor.mm */; };
 		E4F062851E49B89800FDE0B0 /* LTOpenExrPizCompressorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = E4F062841E49B89800FDE0B0 /* LTOpenExrPizCompressorSpec.mm */; };
@@ -1734,6 +1737,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 8BCFBFF218CF0AF000E612DE;
 			remoteInfo = LTEngineBundle;
+		};
+		E4A5F2E51FB97D7900F8C4D5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8B16C9671BAEABD6002FB750 /* LTKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 194FF4FC1FA8BA77008879E7;
+			remoteInfo = LTTestKit;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -3114,6 +3124,9 @@
 		E4841A211E8ABE6200154E1C /* LTTextureOpenExrArchiverSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTTextureOpenExrArchiverSpec.mm; sourceTree = "<group>"; };
 		E4C0DE821F1E384100140840 /* LT3DLUT+OperationsSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "LT3DLUT+OperationsSpec.mm"; sourceTree = "<group>"; };
 		E4CEAC461E41DCC9008FA38E /* libOpenEXR.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libOpenEXR.a; path = "../third_party/openexr-binaries/lib/libOpenEXR.a"; sourceTree = "<group>"; };
+		E4DE72CF1FB1A2050097EF57 /* LTImageIOExtensions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTImageIOExtensions.h; sourceTree = "<group>"; };
+		E4DE72D01FB1A2050097EF57 /* LTImageIOExtensions.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = LTImageIOExtensions.mm; sourceTree = "<group>"; };
+		E4DE73051FB1A2BA0097EF57 /* LTImageIOExtensionsSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = LTImageIOExtensionsSpec.mm; sourceTree = "<group>"; };
 		E4F061FA1E49B46D00FDE0B0 /* LTOpenExrPizCompressor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTOpenExrPizCompressor.h; sourceTree = "<group>"; };
 		E4F061FB1E49B46D00FDE0B0 /* LTOpenExrPizCompressor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTOpenExrPizCompressor.mm; sourceTree = "<group>"; };
 		E4F062841E49B89800FDE0B0 /* LTOpenExrPizCompressorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTOpenExrPizCompressorSpec.mm; sourceTree = "<group>"; };
@@ -4454,6 +4467,7 @@
 			children = (
 				8B368DE21CA6942A003E34CF /* libLTKit.a */,
 				8B368DE41CA6942A003E34CF /* LTKitTests.xctest */,
+				E4A5F2E61FB97D7900F8C4D5 /* libLTTestKit.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -4520,6 +4534,8 @@
 				B4BF16261F41D89D0077726E /* LTImageHEICCompressor.mm */,
 				28EC239B1B0CEBCB0099946A /* LTImageIOCompressor.h */,
 				28EC239C1B0CEBCB0099946A /* LTImageIOCompressor.mm */,
+				E4DE72CF1FB1A2050097EF57 /* LTImageIOExtensions.h */,
+				E4DE72D01FB1A2050097EF57 /* LTImageIOExtensions.mm */,
 				285EEA521B15C52A002D10EE /* LTImageJPEGCompressor.h */,
 				285EEA531B15C52A002D10EE /* LTImageJPEGCompressor.mm */,
 				285EEA561B15C541002D10EE /* LTImagePNGCompressor.h */,
@@ -4569,6 +4585,7 @@
 				2836FA0A1D33B96F0078887C /* LTCompressionFormatSpec.mm */,
 				B4BF16291F41DAB00077726E /* LTImageHEICCompressorSpec.mm */,
 				2884CDB11B1ACD7600A58EE4 /* LTImageIOCompressorSpec.mm */,
+				E4DE73051FB1A2BA0097EF57 /* LTImageIOExtensionsSpec.mm */,
 				285660211B1761A800807A4F /* LTImageJPEGCompressorSpec.mm */,
 				2884CDA91B176DB400A58EE4 /* LTImagePNGCompressorSpec.mm */,
 				2884CDAB1B176EC200A58EE4 /* LTImageTIFFCompressorSpec.mm */,
@@ -5833,6 +5850,7 @@
 				85F154EB1D1283CF00967A90 /* LTPackingRectsProvider.h in Headers */,
 				288419411BD3A04A00B09F6B /* LTTextureArchiverNonPersistentStorage.h in Headers */,
 				8B17A5941C32A232001713BB /* LTEAGLView.h in Headers */,
+				E4DE72D11FB1A2050097EF57 /* LTImageIOExtensions.h in Headers */,
 				8B871FDD1924A75E00517F2E /* LTColorGradient.h in Headers */,
 				03CA15C31965492C0040DB07 /* LTEdgesMaskProcessor.h in Headers */,
 				8B871FDE1924A75E00517F2E /* LTCurve.h in Headers */,
@@ -6563,6 +6581,13 @@
 			remoteRef = 8B3690071CA6B7BE003E34CF /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		E4A5F2E61FB97D7900F8C4D5 /* libLTTestKit.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libLTTestKit.a;
+			remoteRef = E4A5F2E51FB97D7900F8C4D5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
@@ -7171,6 +7196,7 @@
 				0367A4B018ACF45700B42E34 /* LTProceduralFrameProcessor.mm in Sources */,
 				8BBE89511838CA2C006C58AA /* LTArrayBuffer.mm in Sources */,
 				03676D0A1A4097B100072966 /* LTHistogramProcessor.mm in Sources */,
+				E4DE72D21FB1A2050097EF57 /* LTImageIOExtensions.mm in Sources */,
 				E40F7FD41F1F30FD007501C4 /* LT3DLUT+Operations.mm in Sources */,
 				5006776D1C69C025002C6A24 /* LTFloatSetParametricValueProvider.mm in Sources */,
 				03BBB3251887B7CB001E7703 /* LTColorGradient.mm in Sources */,
@@ -7448,6 +7474,7 @@
 				8B7C6CC81B52860600B90DBE /* LTMatParallelDispatcherSpec.mm in Sources */,
 				28BB81A91924DF650071CB0B /* LTShapeDrawerSpec.mm in Sources */,
 				8BD688FB1B6E00FA003BDA34 /* LTTextureIZArchiverSpec.mm in Sources */,
+				E4DE73061FB1A2BA0097EF57 /* LTImageIOExtensionsSpec.mm in Sources */,
 				061DF9591EBB10BB006BBF1F /* LTLaplacianLevelFusionProcessorSpec.mm in Sources */,
 				2812D56619912B380081478F /* LTCropProcessorSpec.mm in Sources */,
 				50B6BD511DD32D11005A448E /* LTTouchEventSequenceValidatorExamples.mm in Sources */,
