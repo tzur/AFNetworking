@@ -128,12 +128,7 @@ context(@"combining to a file", ^{
   __block NSURL *url;
 
   beforeEach(^{
-    LTCreateTemporaryDirectory();
     url = [NSURL fileURLWithPath:LTTemporaryPath(@"temp.jpg")];
-  });
-
-  afterEach(^{
-    [[NSFileManager defaultManager] removeItemAtPath:LTTemporaryPath() error:nil];
   });
 
   it(@"should combine successfully to a file", ^{

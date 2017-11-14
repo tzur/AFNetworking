@@ -23,7 +23,6 @@ beforeEach(^{
                                              half_float::half(1.f), half_float::half(0.f)));
   }];
 
-  LTCreateTemporaryDirectory();
   path = LTTemporaryPath(@"output.openexrpiz");
 });
 

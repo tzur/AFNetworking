@@ -22,4 +22,5 @@ extern "C" {
   #import "EXPMatchers+beBlock.h"
   #import "EXPMatchers+beCloseToPoint.h"
   #import "EXPMatchers+beCloseToSize.h"
+  #import <LTKitTestUtils/LTSpectaTemporaryPathHook.h>
 #endif

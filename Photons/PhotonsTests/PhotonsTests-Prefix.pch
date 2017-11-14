@@ -11,3 +11,7 @@
   #import <OCMock/OCMock.h>
   #import <Specta/Specta.h>
 #endif
+
+#ifdef __cplusplus
+  #import <LTKitTestUtils/LTSpectaTemporaryPathHook.h>
+#endif

@@ -20,7 +20,6 @@ SpecBegin(PTNImageResizer)
 __block PTNImageResizer *resizer;
 
 beforeEach(^{
-  LTCreateTemporaryDirectory();
   resizer = [[PTNImageResizer alloc] init];
 });
 
@@ -276,9 +275,8 @@ context(@"Data Resizing", ^{
 
     beforeEach(^{
       NSString *path = LTTemporaryPath(@"PTNImageResizerTest.jpg");
-      imageData = [NSData dataWithContentsOfFile:path];
-
       PTNWriteImageOfSizeToFile(kOriginalSize, path, UIImageOrientationUp);
+      imageData = [NSData dataWithContentsOfFile:path];
     });
 
     context(@"aspect fill", ^{
@@ -374,9 +372,8 @@ context(@"Data Resizing", ^{
 
     beforeEach(^{
       NSString *path = LTTemporaryPath(@"PTNImageResizerRotatedTest.jpg");
-      imageData = [NSData dataWithContentsOfFile:path];
-
       PTNWriteImageOfSizeToFile(CGSizeMake(6, 12), path, UIImageOrientationRight);
+      imageData = [NSData dataWithContentsOfFile:path];
     });
 
     context(@"aspect fill", ^{

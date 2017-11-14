@@ -62,8 +62,6 @@ it(@"should change output when using different quality value", ^{
 });
 
 it(@"should compress same data to file as to in memory data", ^{
-  LTCreateTemporaryDirectory();
-
   UIImage *image = LTLoadImage([self class], @"Lena.png");
   auto url = [NSURL fileURLWithPath:LTTemporaryPath(@"temp.jpg")];
 
@@ -76,8 +74,6 @@ it(@"should compress same data to file as to in memory data", ^{
   expect(error).to.beNil();
   expect(expectedData).notTo.beNil();
   expect(expectedData).to.equal(actualData);
-
-  [[NSFileManager defaultManager] removeItemAtPath:LTTemporaryPath() error:nil];
 });
 
 SpecEnd

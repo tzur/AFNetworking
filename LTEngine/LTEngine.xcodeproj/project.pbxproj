@@ -185,6 +185,7 @@
 		06F9F2D91D59B558002D2726 /* VerticalStepFunction33_bilateral_L1toL3.png in Resources */ = {isa = PBXBuildFile; fileRef = 06F9F2D31D59B558002D2726 /* VerticalStepFunction33_bilateral_L1toL3.png */; };
 		06F9F2DA1D59B558002D2726 /* VerticalStepFunction33_bilateral_L1toL3toL1.png in Resources */ = {isa = PBXBuildFile; fileRef = 06F9F2D41D59B558002D2726 /* VerticalStepFunction33_bilateral_L1toL3toL1.png */; };
 		090898FA1C4F97FB0022FA62 /* EXPMatchers+beCloseToGLKMatrix.mm in Sources */ = {isa = PBXBuildFile; fileRef = 090898F81C4F97FB0022FA62 /* EXPMatchers+beCloseToGLKMatrix.mm */; };
+		19D95CA71FBB160F00357EB9 /* libLTKitTestUtils.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E4A5F2E61FB97D7900F8C4D5 /* libLTKitTestUtils.a */; };
 		2520B1811D7DA22100F9ECCA /* LTTouchEventSequenceSplitter.h in Headers */ = {isa = PBXBuildFile; fileRef = 2520B1801D7DA22100F9ECCA /* LTTouchEventSequenceSplitter.h */; };
 		2520B1B51D7DA28E00F9ECCA /* LTTouchEventSequenceSplitter.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2520B1B41D7DA28E00F9ECCA /* LTTouchEventSequenceSplitter.mm */; };
 		2520B1B71D7DADC100F9ECCA /* LTTouchEventSequenceSplitterSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2520B1B61D7DADC100F9ECCA /* LTTouchEventSequenceSplitterSpec.mm */; };
@@ -3172,6 +3173,7 @@
 				656155B91D464A58009E701C /* libExpecta.a in Frameworks */,
 				8B3DEBFC18296B6100EA0C1A /* libLTEngine.a in Frameworks */,
 				8B368E971CA69D63003E34CF /* libLTKit.a in Frameworks */,
+				19D95CA71FBB160F00357EB9 /* libLTKitTestUtils.a in Frameworks */,
 				656155BA1D464A5F009E701C /* libOCMock.a in Frameworks */,
 				E4CEAF5B1E432BEC008FA38E /* libOpenEXR.a in Frameworks */,
 				656155BB1D464A65009E701C /* libSpecta.a in Frameworks */,
@@ -4467,7 +4469,7 @@
 			children = (
 				8B368DE21CA6942A003E34CF /* libLTKit.a */,
 				8B368DE41CA6942A003E34CF /* LTKitTests.xctest */,
-				E4A5F2E61FB97D7900F8C4D5 /* libLTTestKit.a */,
+				E4A5F2E61FB97D7900F8C4D5 /* libLTKitTestUtils.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -6581,10 +6583,10 @@
 			remoteRef = 8B3690071CA6B7BE003E34CF /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		E4A5F2E61FB97D7900F8C4D5 /* libLTTestKit.a */ = {
+		E4A5F2E61FB97D7900F8C4D5 /* libLTKitTestUtils.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
-			path = libLTTestKit.a;
+			path = libLTKitTestUtils.a;
 			remoteRef = E4A5F2E51FB97D7900F8C4D5 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};

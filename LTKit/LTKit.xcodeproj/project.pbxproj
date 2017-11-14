@@ -20,6 +20,9 @@
 		194FF50F1FA8BB4D008879E7 /* LTUIInterruptionHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = 194FF4EA1FA8B9B6008879E7 /* LTUIInterruptionHandler.h */; };
 		194FF5101FA8BB56008879E7 /* XCUIElement+Interactions.h in Headers */ = {isa = PBXBuildFile; fileRef = 194FF4E81FA8B9B6008879E7 /* XCUIElement+Interactions.h */; };
 		194FF5111FA8BB5F008879E7 /* XCUIElement+CollectionView.h in Headers */ = {isa = PBXBuildFile; fileRef = 194FF4E91FA8B9B6008879E7 /* XCUIElement+CollectionView.h */; };
+		19D95C2F1FBAD3C800357EB9 /* LTSpectaTemporaryPathHook.h in Headers */ = {isa = PBXBuildFile; fileRef = 19D95C2D1FBAD3C800357EB9 /* LTSpectaTemporaryPathHook.h */; };
+		19D95C301FBAD3C800357EB9 /* LTSpectaTemporaryPathHook.mm in Sources */ = {isa = PBXBuildFile; fileRef = 19D95C2E1FBAD3C800357EB9 /* LTSpectaTemporaryPathHook.mm */; };
+		19D95C691FBAE91C00357EB9 /* libLTKitTestUtils.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 194FF4FC1FA8BA77008879E7 /* libLTKitTestUtils.a */; };
 		255339401C3E512300C478F9 /* LTTreeNode.h in Headers */ = {isa = PBXBuildFile; fileRef = 2553393E1C3E512300C478F9 /* LTTreeNode.h */; };
 		255339411C3E512300C478F9 /* LTTreeNode.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2553393F1C3E512300C478F9 /* LTTreeNode.mm */; };
 		255339431C3E54A900C478F9 /* LTTreeNodeSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 255339421C3E54A900C478F9 /* LTTreeNodeSpec.mm */; };
@@ -472,6 +475,8 @@
 		194FF4EE1FA8B9B6008879E7 /* LTUIInterruptionHandler.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTUIInterruptionHandler.mm; sourceTree = "<group>"; };
 		194FF4FC1FA8BA77008879E7 /* libLTKitTestUtils.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libLTKitTestUtils.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		194FF5141FA8BC8B008879E7 /* LTKitTestUtils-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "LTKitTestUtils-Prefix.pch"; sourceTree = "<group>"; };
+		19D95C2D1FBAD3C800357EB9 /* LTSpectaTemporaryPathHook.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTSpectaTemporaryPathHook.h; sourceTree = "<group>"; };
+		19D95C2E1FBAD3C800357EB9 /* LTSpectaTemporaryPathHook.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = LTSpectaTemporaryPathHook.mm; sourceTree = "<group>"; };
 		2553393E1C3E512300C478F9 /* LTTreeNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTTreeNode.h; sourceTree = "<group>"; };
 		2553393F1C3E512300C478F9 /* LTTreeNode.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTTreeNode.mm; sourceTree = "<group>"; };
 		255339421C3E54A900C478F9 /* LTTreeNodeSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTTreeNodeSpec.mm; sourceTree = "<group>"; };
@@ -729,6 +734,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				19D95C691FBAE91C00357EB9 /* libLTKitTestUtils.a in Frameworks */,
 				8B3C0A5518329524000845BA /* AVFoundation.framework in Frameworks */,
 				8BA8C68918699D9F00E6F486 /* Accelerate.framework in Frameworks */,
 				8B3C0A561832952A000845BA /* CoreGraphics.framework in Frameworks */,
@@ -770,6 +776,7 @@
 		194FF4FD1FA8BA77008879E7 /* LTKitTestUtils */ = {
 			isa = PBXGroup;
 			children = (
+				19D95C151FBAD39900357EB9 /* Test Utils */,
 				194FF5131FA8BC1E008879E7 /* Supporting Files */,
 				194FF4F71FA8B9D0008879E7 /* UI Test Utils */,
 			);
@@ -782,6 +789,15 @@
 				194FF5141FA8BC8B008879E7 /* LTKitTestUtils-Prefix.pch */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		19D95C151FBAD39900357EB9 /* Test Utils */ = {
+			isa = PBXGroup;
+			children = (
+				19D95C2D1FBAD3C800357EB9 /* LTSpectaTemporaryPathHook.h */,
+				19D95C2E1FBAD3C800357EB9 /* LTSpectaTemporaryPathHook.mm */,
+			);
+			name = "Test Utils";
 			sourceTree = "<group>";
 		};
 		28ABDFF618715394005A5DEC /* UI */ = {
@@ -1334,6 +1350,7 @@
 			files = (
 				194FF50F1FA8BB4D008879E7 /* LTUIInterruptionHandler.h in Headers */,
 				194FF50E1FA8BB44008879E7 /* LTUITestUtils.h in Headers */,
+				19D95C2F1FBAD3C800357EB9 /* LTSpectaTemporaryPathHook.h in Headers */,
 				194FF5101FA8BB56008879E7 /* XCUIElement+Interactions.h in Headers */,
 				194FF5111FA8BB5F008879E7 /* XCUIElement+CollectionView.h in Headers */,
 			);
@@ -1726,6 +1743,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				194FF5061FA8BAF4008879E7 /* LTUIInterruptionHandler.mm in Sources */,
+				19D95C301FBAD3C800357EB9 /* LTSpectaTemporaryPathHook.mm in Sources */,
 				194FF5081FA8BAF4008879E7 /* LTUITestUtils.mm in Sources */,
 				194FF50A1FA8BAF4008879E7 /* XCUIElement+Interactions.mm in Sources */,
 				194FF50C1FA8BAF4008879E7 /* XCUIElement+CollectionView.mm in Sources */,

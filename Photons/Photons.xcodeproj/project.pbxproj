@@ -13,6 +13,7 @@
 		0DF0D2311EAE1935000EEF37 /* PTNAVImageGeneratorFactory.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0DF0D2301EAE1935000EEF37 /* PTNAVImageGeneratorFactory.mm */; };
 		0DF1515F1EAF7330009F3080 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DF1515E1EAF7330009F3080 /* CoreMedia.framework */; };
 		0DF155D31EB1DC38009F3080 /* libcompression.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = CDE00B021E82AE40007AFD5E /* libcompression.tbd */; };
+		19D95D1F1FBB1C2500357EB9 /* libLTKitTestUtils.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19D95D1E1FBB1C2500357EB9 /* libLTKitTestUtils.a */; };
 		2873C97E1F54648900677B2C /* RACSignal+Mantle.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2873C97D1F54648900677B2C /* RACSignal+Mantle.mm */; };
 		2873C9811F5464B000677B2C /* RACSignal+MantleSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2873C9801F5464B000677B2C /* RACSignal+MantleSpec.mm */; };
 		2873C9971F5464FD00677B2C /* PTNOceanEnumsSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2873C9961F5464FD00677B2C /* PTNOceanEnumsSpec.mm */; };
@@ -237,6 +238,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		19D95D1D1FBB1C2500357EB9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8B16A87C1BCBF599006DAAA7 /* LTKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 194FF4FC1FA8BA77008879E7;
+			remoteInfo = LTKitTestUtils;
+		};
 		28BAD5B91F1E031C001048D0 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 28BAD5A01F1E031B001048D0 /* Fiber.xcodeproj */;
@@ -965,6 +973,7 @@
 				8861FDD01E5A2B5800CA1436 /* UIKit.framework in Frameworks */,
 				655DCB3F1D4651BB00E44DAA /* libExpecta.a in Frameworks */,
 				28BAD5EC1F1E052D001048D0 /* libFiber.a in Frameworks */,
+				19D95D1F1FBB1C2500357EB9 /* libLTKitTestUtils.a in Frameworks */,
 				8B10C8951F3EFAFE00F76142 /* libLLReactiveMatchers.a in Frameworks */,
 				8B368F281CA6AAFA003E34CF /* libLTKit.a in Frameworks */,
 				655DCB411D4651BB00E44DAA /* libOCMock.a in Frameworks */,
@@ -1590,6 +1599,7 @@
 			children = (
 				8B368EB41CA6A7EC003E34CF /* libLTKit.a */,
 				8B368EB61CA6A7EC003E34CF /* LTKitTests.xctest */,
+				19D95D1E1FBB1C2500357EB9 /* libLTKitTestUtils.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1888,6 +1898,13 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		19D95D1E1FBB1C2500357EB9 /* libLTKitTestUtils.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libLTKitTestUtils.a;
+			remoteRef = 19D95D1D1FBB1C2500357EB9 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		28BAD5BA1F1E031C001048D0 /* libFiber.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
