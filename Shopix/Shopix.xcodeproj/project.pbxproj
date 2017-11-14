@@ -36,6 +36,9 @@
 		CD45728B1F717E4D00713681 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD45728A1F717E4D00713681 /* Security.framework */; };
 		CD55511A1F45D5E10048215C /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = CD5551161F45D5E10048215C /* Localizable.strings */; };
 		CD55511B1F45D5E10048215C /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = CD5551181F45D5E10048215C /* Localizable.stringsdict */; };
+		CD574E691FAF661800E0BA97 /* libWireframes.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CD574E6A1FAF661800E0BA97 /* libWireframes.a */; };
+		CD60A5EA1FB34F6A0017D777 /* SPXSubscriptionGradientButton.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD60A5E91FB34F6A0017D777 /* SPXSubscriptionGradientButton.mm */; };
+		CD60A5ED1FB433180017D777 /* SPXDualLabelView.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD60A5EC1FB433180017D777 /* SPXDualLabelView.mm */; };
 		CD8E8E2F1F5C19F500DF8FC1 /* NSDecimalNumber+Localization.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD8E8E2E1F5C19F500DF8FC1 /* NSDecimalNumber+Localization.mm */; };
 		CDB513A21F66B0440013577C /* SPXSubscriptionManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = CDB513A11F66B0440013577C /* SPXSubscriptionManager.mm */; };
 		CDB513A51F66B0A10013577C /* SPXSubscriptionManagerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = CDB513A41F66B0A10013577C /* SPXSubscriptionManagerSpec.mm */; };
@@ -417,6 +420,11 @@
 		CD5551261F45D5ED0048215C /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		CD5551271F45D5EE0048215C /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		CD5551281F45D5EF0048215C /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		CD574E6A1FAF661800E0BA97 /* libWireframes.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libWireframes.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		CD60A5E81FB34F6A0017D777 /* SPXSubscriptionGradientButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SPXSubscriptionGradientButton.h; sourceTree = "<group>"; };
+		CD60A5E91FB34F6A0017D777 /* SPXSubscriptionGradientButton.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXSubscriptionGradientButton.mm; sourceTree = "<group>"; };
+		CD60A5EB1FB433180017D777 /* SPXDualLabelView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SPXDualLabelView.h; sourceTree = "<group>"; };
+		CD60A5EC1FB433180017D777 /* SPXDualLabelView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXDualLabelView.mm; sourceTree = "<group>"; };
 		CD8E8E2D1F5C19F500DF8FC1 /* NSDecimalNumber+Localization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDecimalNumber+Localization.h"; sourceTree = "<group>"; };
 		CD8E8E2E1F5C19F500DF8FC1 /* NSDecimalNumber+Localization.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSDecimalNumber+Localization.mm"; sourceTree = "<group>"; };
 		CD962CAB1F54045200F2CA82 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = en; path = en.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
@@ -477,6 +485,7 @@
 				650BB33F1D465389008648A3 /* libOCMock.a in Frameworks */,
 				84FF72F71C8EEF9600D1DA9F /* libShopix.a in Frameworks */,
 				650BB3401D465389008648A3 /* libSpecta.a in Frameworks */,
+				CD574E691FAF661800E0BA97 /* libWireframes.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -645,6 +654,7 @@
 		848EFFE21C591C0D001D8368 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CD574E6A1FAF661800E0BA97 /* libWireframes.a */,
 				65F82EDD1F93C09F002A496C /* CloudKit.framework */,
 				CD45728A1F717E4D00713681 /* Security.framework */,
 				CD4572881F71731400713681 /* AFNetworking.framework */,
@@ -781,6 +791,10 @@
 		CDB5137B1F66B0220013577C /* Subscription */ = {
 			isa = PBXGroup;
 			children = (
+				CD60A5EB1FB433180017D777 /* SPXDualLabelView.h */,
+				CD60A5EC1FB433180017D777 /* SPXDualLabelView.mm */,
+				CD60A5E81FB34F6A0017D777 /* SPXSubscriptionGradientButton.h */,
+				CD60A5E91FB34F6A0017D777 /* SPXSubscriptionGradientButton.mm */,
 				CDB513A61F66B1550013577C /* SPXFeedbackComposeViewControllerProvider.h */,
 				CDB513A01F66B0440013577C /* SPXSubscriptionManager.h */,
 				CDB513A11F66B0440013577C /* SPXSubscriptionManager.mm */,
@@ -1302,6 +1316,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				88720F9D1F9E1A4D00E18F05 /* SPXProductDescriptorsFactory.mm in Sources */,
+				CD60A5EA1FB34F6A0017D777 /* SPXSubscriptionGradientButton.mm in Sources */,
 				CDC8D4EB1F701EA300E7C929 /* SPXLocalization.mm in Sources */,
 				CD8E8E2F1F5C19F500DF8FC1 /* NSDecimalNumber+Localization.mm in Sources */,
 				88B9B4FF1FA8BA980033D48F /* SPXPromotion.mm in Sources */,
@@ -1310,6 +1325,7 @@
 				88FF39701FB2E047006311FF /* SPXProductDescriptor.mm in Sources */,
 				8851018E1F9DDBA60052351B /* NSError+Shopix.mm in Sources */,
 				88B632AF1F9DD8B10051A535 /* NSErrorCodes+Shopix.mm in Sources */,
+				CD60A5ED1FB433180017D777 /* SPXDualLabelView.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1453,6 +1469,7 @@
 					"$(SRCROOT)/../third_party/libextobjc/",
 					"$(SRCROOT)/../Bazaar",
 					"$(SRCROOT)/../third_party/Mantle/",
+					"$(SRCROOT)/../Wireframes",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
@@ -1476,6 +1493,7 @@
 					"$(SRCROOT)/../third_party/libextobjc/",
 					"$(SRCROOT)/../Bazaar",
 					"$(SRCROOT)/../third_party/Mantle/",
+					"$(SRCROOT)/../Wireframes",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
