@@ -470,8 +470,8 @@
 		194FF4EC1FA8B9B6008879E7 /* XCUIElement+Interactions.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "XCUIElement+Interactions.mm"; sourceTree = "<group>"; };
 		194FF4ED1FA8B9B6008879E7 /* XCUIElement+CollectionView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "XCUIElement+CollectionView.mm"; sourceTree = "<group>"; };
 		194FF4EE1FA8B9B6008879E7 /* LTUIInterruptionHandler.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTUIInterruptionHandler.mm; sourceTree = "<group>"; };
-		194FF4FC1FA8BA77008879E7 /* libLTTestKit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libLTTestKit.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		194FF5141FA8BC8B008879E7 /* LTTestKit-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "LTTestKit-Prefix.pch"; sourceTree = "<group>"; };
+		194FF4FC1FA8BA77008879E7 /* libLTKitTestUtils.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libLTKitTestUtils.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		194FF5141FA8BC8B008879E7 /* LTKitTestUtils-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "LTKitTestUtils-Prefix.pch"; sourceTree = "<group>"; };
 		2553393E1C3E512300C478F9 /* LTTreeNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTTreeNode.h; sourceTree = "<group>"; };
 		2553393F1C3E512300C478F9 /* LTTreeNode.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTTreeNode.mm; sourceTree = "<group>"; };
 		255339421C3E54A900C478F9 /* LTTreeNodeSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTTreeNodeSpec.mm; sourceTree = "<group>"; };
@@ -767,19 +767,19 @@
 			name = "UI Test Utils";
 			sourceTree = "<group>";
 		};
-		194FF4FD1FA8BA77008879E7 /* LTTestKit */ = {
+		194FF4FD1FA8BA77008879E7 /* LTKitTestUtils */ = {
 			isa = PBXGroup;
 			children = (
 				194FF4F71FA8B9D0008879E7 /* UI Test Utils */,
 				194FF5131FA8BC1E008879E7 /* Supporting Files */,
 			);
-			path = LTTestKit;
+			path = LTKitTestUtils;
 			sourceTree = "<group>";
 		};
 		194FF5131FA8BC1E008879E7 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				194FF5141FA8BC8B008879E7 /* LTTestKit-Prefix.pch */,
+				194FF5141FA8BC8B008879E7 /* LTKitTestUtils-Prefix.pch */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -897,8 +897,8 @@
 			isa = PBXGroup;
 			children = (
 				8B3DEBE918296B6100EA0C1A /* LTKit */,
+				194FF4FD1FA8BA77008879E7 /* LTKitTestUtils */,
 				8B3DEBFD18296B6100EA0C1A /* LTKitTests */,
-				194FF4FD1FA8BA77008879E7 /* LTTestKit */,
 				8B78835D1BDF70590051CCD1 /* Configuration */,
 				8B3DEBE618296B6100EA0C1A /* Frameworks */,
 				8B3DEBE518296B6100EA0C1A /* Products */,
@@ -910,7 +910,7 @@
 			children = (
 				8B3DEBE418296B6100EA0C1A /* libLTKit.a */,
 				8B3DEBF418296B6100EA0C1A /* LTKitTests.xctest */,
-				194FF4FC1FA8BA77008879E7 /* libLTTestKit.a */,
+				194FF4FC1FA8BA77008879E7 /* libLTKitTestUtils.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1413,9 +1413,9 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		194FF4FB1FA8BA77008879E7 /* LTTestKit */ = {
+		194FF4FB1FA8BA77008879E7 /* LTKitTestUtils */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 194FF5021FA8BA77008879E7 /* Build configuration list for PBXNativeTarget "LTTestKit" */;
+			buildConfigurationList = 194FF5021FA8BA77008879E7 /* Build configuration list for PBXNativeTarget "LTKitTestUtils" */;
 			buildPhases = (
 				194FF4F81FA8BA77008879E7 /* Sources */,
 				194FF4F91FA8BA77008879E7 /* Frameworks */,
@@ -1427,9 +1427,9 @@
 			dependencies = (
 				19611C3C1FA9EC00004093D8 /* PBXTargetDependency */,
 			);
-			name = LTTestKit;
-			productName = LTTestKit;
-			productReference = 194FF4FC1FA8BA77008879E7 /* libLTTestKit.a */;
+			name = LTKitTestUtils;
+			productName = LTKitTestUtils;
+			productReference = 194FF4FC1FA8BA77008879E7 /* libLTKitTestUtils.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 		8B3DEBE318296B6100EA0C1A /* LTKit */ = {
@@ -1525,7 +1525,7 @@
 			targets = (
 				8B3DEBE318296B6100EA0C1A /* LTKit */,
 				8B3DEBF318296B6100EA0C1A /* LTKitTests */,
-				194FF4FB1FA8BA77008879E7 /* LTTestKit */,
+				194FF4FB1FA8BA77008879E7 /* LTKitTestUtils */,
 			);
 		};
 /* End PBXProject section */
@@ -1896,6 +1896,7 @@
 /* Begin XCBuildConfiguration section */
 		194FF5031FA8BA77008879E7 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8B7883641BDF70790051CCD1 /* StaticLibrary.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_ENABLE_MODULES = YES;
@@ -1907,7 +1908,7 @@
 					"$(inherited)",
 					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
 				);
-				GCC_PREFIX_HEADER = "LTTestKit/LTTestKit-Prefix.pch";
+				GCC_PREFIX_HEADER = "LTKitTestUtils/LTKitTestUtils-Prefix.pch";
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1924,6 +1925,7 @@
 		};
 		194FF5041FA8BA77008879E7 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8B7883641BDF70790051CCD1 /* StaticLibrary.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_ENABLE_MODULES = YES;
@@ -1935,7 +1937,7 @@
 					"$(inherited)",
 					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
 				);
-				GCC_PREFIX_HEADER = "LTTestKit/LTTestKit-Prefix.pch";
+				GCC_PREFIX_HEADER = "LTKitTestUtils/LTKitTestUtils-Prefix.pch";
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2057,7 +2059,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		194FF5021FA8BA77008879E7 /* Build configuration list for PBXNativeTarget "LTTestKit" */ = {
+		194FF5021FA8BA77008879E7 /* Build configuration list for PBXNativeTarget "LTKitTestUtils" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				194FF5031FA8BA77008879E7 /* Debug */,
