@@ -2,7 +2,7 @@
 
 ## How to add LTKit to your project
 
-1. Create a new XCode project.
+1. Create a new Xcode project.
 2. Enter the `LTKit` directory and drag the `LTKit.xcodeproj` directory to your new project.
 3. Click on your new project, then on `Build Settings`: 
 	- Add `-ObjC` to `Other Linker Flags`.
@@ -12,35 +12,40 @@
 
 ## How to add LTEngine to your project
 
-1. Create a new XCode project.
-2. Drag the following files from LTEngine's directory in Finder into XCode's project-navigator:
+1. Create a new Xcode project.
+2. Drag the following files from LTEngine's directory in Finder into Xcode's project-navigator:
   - `LTEngine/LTEngine/LTEngine.xcodeproj`
   - `LTEngine/third_party/Mantle/Mantle.xcodeproj`
   - `LTEngine/third_party/opencv/opencv2.framework` 
   - `LTEngine/third_party/objection/Objection-iOS.framework`
+  - `LTEngine/third_party/openexr-binaries/lib/libOpenEXR.a`
 3. Add LTEngine to your project's prefix header file:
   - If your project doesn't have a prefix-header (a `.pch` file):
     - In XCode, create a new file with the `PCH File` template found under iOS -> Other.
-    - Congratualtions, your project now has a prefix-header file.
+    - Congratulations, your project now has a prefix-header file.
   - Add `#import <LTEngine/LTEngine-Prefix.pch>` to the prefix-header.
 4. Add the `Configurations` submodule to your project, full instructions are available [here](https://github.com/lightricks/configuration).
-5. In XCode's project-navigator, click on your new project, then in the `Build Settings` tab:
+5. In Xcode's project-navigator, click on your new project, then in the `Build Settings` tab:
   - Set `Precompile Prefix Header` to `YES`.
   - Set `Prefix Header` to the name of your prefix-header (including the .pch suffix).
   - Add the following paths to `Header Search Paths` with `<LTEngine Path>` replaced by the actual path to LTEngine's directory:
-    (It is highly adviced to use relative paths by using `$(SRCROOT)` to indicate the project's root directory.)
+    (It is highly advised to use relative paths by using `$(SRCROOT)` to indicate the project's root directory.)
     *  `<LTEngine Path>/LTEngine`
     *  `<LTEngine Path>/LTKit/LTKit`
     *  `<LTEngine Path>/third_party/Mantle`
     *  `<LTEngine Path>/third_party/libextobjc`
   - If missing, add the following paths to `Framework Search Paths` with `<LTEngine Path>` replaced by the actual path to LTEngine's directory:
-    (It is highly adviced to use relative paths by using `$(SRCROOT)` to indicate the project's root directory.)
+    (It is highly advised to use relative paths by using `$(SRCROOT)` to indicate the project's root directory.)
     *  `<LTEngine Path>/third_party/opencv`
     *  `<LTEngine Path>/third_party/objection`
+  - If missing, add the following paths to `Library Search Paths` with `<LTEngine Path>` replaced by the actual path to LTEngine's directory:
+    (It is highly advised to use relative paths by using `$(SRCROOT)` to indicate the project's root directory.)
+    *  `<LTEngine Path>/third_party/openexr-binaries/lib`
 6. a. In the `General` tab, add the following to `Linked Frameworks and Binaries`: 
 		- `Accelerate`
 		- `AVFoundation`
 		- `CoreMedia`
+		- `MobileCoreServices`
    b. In the `General` tab, add the following to `Embedded Binaries`: 
 		- `Mantle.framework` (from `Mantle-iOS`)
 7. In the `Build Phases` tab:
@@ -55,3 +60,4 @@
     * `libextobjc_iOS.a`
   - Add `LTEngine.bundle` to `Copy Bundle Resources`.
 8. LTEngine requires the C++ Standard Library to be included in the project, in order to include it, a `.mm` file must be present in your project. If no such file exists, rename an existing `.m` file to `.mm`.
+9. In case there are issues, try executing `git submodule update --init --recursive`.
