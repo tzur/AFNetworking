@@ -35,8 +35,10 @@ NS_ASSUME_NONNULL_BEGIN
 /// Returns a signal that initiates a payment request upon subscription and sends
 /// \c SKPaymentTransaction updates for every transaction update that belongs to the purchasing
 /// process of that payment. The signal completes when the transaction has finished. This occurs
-/// only after \c finishTransaction was invoked for that transaction. The signal errs if the
-/// transaction has failed.
+/// only after \c finishTransaction was invoked for that transaction.
+///
+/// @note If the purchase was cancelled, the signal will err with an error code
+/// \c BZRErrorCodeOperationCancelled.
 - (RACSignal<SKPaymentTransaction *> *)purchaseProduct:(SKProduct *)product
                                               quantity:(NSUInteger)quantity;
 

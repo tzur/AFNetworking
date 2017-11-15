@@ -103,6 +103,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (RACSignal<SKPaymentTransaction *> *)transactionUpdatesForPayment:(SKPayment *)payment {
+  @weakify(self);
   return [[[[[self rac_signalForSelector:@selector(receivedTransaction:transactionFinished:)]
       filter:^BOOL(RACTuple *tuple) {
         // Filter out updates for transactions that are not associated with the specified payment.
@@ -117,16 +118,25 @@ NS_ASSUME_NONNULL_BEGIN
                  transaction.transactionState == SKPaymentTransactionStateFailed);
       }]
       map:^RACEvent *(RACTuple *tuple) {
+        @strongify(self);
         RACTupleUnpack(SKPaymentTransaction *transaction, NSNumber *transactionFinished) = tuple;
         if ([transactionFinished boolValue]) {
           return [RACEvent completedEvent];
         } else if (transaction.transactionState == SKPaymentTransactionStateFailed) {
-          return [RACEvent eventWithError:
-                  [NSError bzr_errorWithCode:BZRErrorCodePurchaseFailed transaction:transaction]];
+          return [RACEvent eventWithError:[self failedTransactionError:transaction]];
         }
         return [RACEvent eventWithValue:transaction];
       }]
       dematerialize];
+}
+
+- (NSError *)failedTransactionError:(SKPaymentTransaction *)transaction {
+  if ([transaction.error.domain isEqualToString:SKErrorDomain] &&
+      transaction.error.code == SKErrorPaymentCancelled) {
+    return [NSError bzr_errorWithCode:BZRErrorCodeOperationCancelled transaction:transaction];
+  }
+
+  return [NSError bzr_errorWithCode:BZRErrorCodePurchaseFailed transaction:transaction];
 }
 
 #pragma mark -

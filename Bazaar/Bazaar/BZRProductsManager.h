@@ -25,6 +25,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Returns a signal that makes a purchase of the product and completes. The signal doesn't download
 /// the content of the product. To do so, \c fetchProductContent should be called. The signal errs
 /// if there was an error in the purchase.
+///
+/// @note If the purchase was cancelled, the signal will err with an error code
+/// \c BZRErrorCodeOperationCancelled.
 - (RACSignal *)purchaseProduct:(NSString *)productIdentifier;
 
 /// Provides access to the content of the given \c product. Events can be sent on an arbitrary
