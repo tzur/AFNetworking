@@ -11,6 +11,7 @@ NSString * const kBZREventReceiptValidationStatusKey = @"BZREventReceiptValidati
 NSString * const kBZREventReceiptValidationRequestIdKey = @"BZREventReceiptValidationRequestId";
 NSString * const BZREventProductIdentifierKey = @"BZREventProductIdentifier";
 NSString * const BZREventPromotedIAPAbortedKey = @"BZREventPromotedIAPAborted";
+NSString * const BZREventAppStoreLocaleKey = @"BZREventAppStoreLocale";
 
 @implementation BZREvent (AdditionalInfo)
 

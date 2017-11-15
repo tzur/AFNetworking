@@ -12,7 +12,7 @@
 #import "BZRAggregatedReceiptValidationStatusProvider.h"
 #import "BZRAllowedProductsProvider.h"
 #import "BZRCachedContentFetcher.h"
-#import "BZREvent.h"
+#import "BZREvent+AdditionalInfo.h"
 #import "BZRExternalTriggerReceiptValidator.h"
 #import "BZRKeychainStorage.h"
 #import "BZRMultiAppSubscriptionClassifier.h"
@@ -171,7 +171,8 @@ NS_ASSUME_NONNULL_BEGIN
     self.storeKitMetadataFetcher.eventsSignal,
     self.keychainStorage.eventsSignal,
     self.storeKitFacade.eventsSignal,
-    [self.backgroundReceiptValidator.eventsSignal replay]
+    [self.backgroundReceiptValidator.eventsSignal replay],
+    [self appStoreLocaleChangedEvents]
   ]]
   takeUntil:[self rac_willDeallocSignal]]
   setNameWithFormat:@"%@ -eventsSignal", self];
@@ -184,6 +185,17 @@ NS_ASSUME_NONNULL_BEGIN
       }]
       takeUntil:[self rac_willDeallocSignal]]
       setNameWithFormat:@"%@ -completedTransactionsSignal", self];
+}
+
+- (RACSignal<BZREvent *> *)appStoreLocaleChangedEvents {
+  return [[[RACObserve(self, validationParametersProvider.appStoreLocale)
+      distinctUntilChanged]
+      skip:1]
+      map:^BZREvent *(NSLocale * _Nullable appStoreLocale) {
+        return [[BZREvent alloc] initWithType:$(BZREventTypeInformational) eventInfo:@{
+            BZREventAppStoreLocaleKey: appStoreLocale.localeIdentifier ?: [NSNull null]
+        }];
+      }];
 }
 
 - (void)finishUnfinishedTransactions {
