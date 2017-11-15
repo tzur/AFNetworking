@@ -5,7 +5,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class BZRAcquiredViaSubscriptionProvider, BZRAllowedProductsProvider,
     BZRCachedReceiptValidationStatusProvider, BZRPeriodicReceiptValidatorActivator,
-    BZRProductContentManager, BZRStoreKitFacade, LTPath;
+    BZRProductContentManager, BZRProductsPriceInfoFetcher, BZRStoreKitFacade, LTPath;
 
 @protocol BZRProductsProvider, BZRProductContentFetcher, BZRProductsVariantSelectorFactory,
     BZRReceiptValidationParametersProvider;
