@@ -114,6 +114,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Provider used to provide product list before getting their price info from StoreKit.
 @property (strong, nonatomic) id<BZRProductsProvider> netherProductsProvider;
 
+/// Fetcher used to fetch products price info.
+@property (readonly, nonatomic) BZRProductsPriceInfoFetcher *priceInfoFetcher;
+
 @end
 
 NS_ASSUME_NONNULL_END
