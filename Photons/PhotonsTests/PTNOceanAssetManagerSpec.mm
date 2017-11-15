@@ -313,6 +313,28 @@ context(@"fetching images", ^{
         ]);
       });
 
+      it(@"should prefer image with biggest pixel count where applicable", ^{
+        OCMStub([options deliveryMode]).andReturn(PTNImageDeliveryModeHighQuality);
+
+        RACSubject *subject = [RACSubject subject];
+        OCMStub([client GET:@"http://c" withParameters:nil headers:nil]).andReturn(subject);
+        NSData *data = OCMClassMock([NSData class]);
+        LTProgress *progress = PTNFakeLTProgress(data);
+        resizingStrategy = [PTNResizingStrategy identity];
+
+        LLSignalTestRecorder *recorder = [[manager
+                                           fetchImageWithDescriptor:descriptor
+                                           resizingStrategy:resizingStrategy
+                                           options:options] testRecorder];
+
+        [subject sendNext:progress];
+
+        expect(recorder).to.sendValues(@[
+          [[PTNProgress alloc] initWithResult:[[PTNDataBackedImageAsset alloc]
+                                               initWithData:data resizingStrategy:resizingStrategy]]
+        ]);
+      });
+
       it(@"should fetch image in opportunistic delivery mode", ^{
         OCMStub([options deliveryMode]).andReturn(PTNImageDeliveryModeOpportunistic);
 

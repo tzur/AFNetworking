@@ -148,21 +148,21 @@ static NSString * const kBaseEndpoint = @"https://ocean.lightricks.com/";
 - (RACSignal *)fetchImageContentWithDescriptor:(PTNOceanAssetDescriptor *)descriptor
                               resizingStrategy:(id<PTNResizingStrategy>)resizingStrategy
                                        options:(PTNImageFetchOptions *)options {
-  std::vector<CGSize> sizes(descriptor.sizes.count);
+  NSArray<PTNOceanAssetSizeInfo *> *orderedSizes = [descriptor.sizes sortedArrayUsingComparator:
+      ^NSComparisonResult(PTNOceanAssetSizeInfo *lhs, PTNOceanAssetSizeInfo *rhs) {
+        return [@(rhs.width * rhs.height) compare:@(lhs.width * lhs.height)];
+      }];
 
-  for (NSUInteger i = 0; i < sizes.size(); ++i) {
-    sizes[i] = CGSizeMake(descriptor.sizes[i].width, descriptor.sizes[i].height);
-  }
-  auto imageIndex = [self imageIndexForSizes:sizes resizingStrategy:resizingStrategy];
-  auto thumbnailIndex = [self thumbnailIndexForSizes:sizes];
+  auto imageIndex = [self imageIndexForSizes:orderedSizes resizingStrategy:resizingStrategy];
+  auto thumbnailIndex = orderedSizes.count - 1;
 
-  auto imageSignal = [self fetchImageWithURL:descriptor.sizes[imageIndex].url
+  auto imageSignal = [self fetchImageWithURL:orderedSizes[imageIndex].url
                             resizingStrategy:resizingStrategy];
 
   if (imageIndex == thumbnailIndex) {
     return imageSignal;
   }
-  auto thumbnailSignal = [self fetchImageWithURL:descriptor.sizes[thumbnailIndex].url
+  auto thumbnailSignal = [self fetchImageWithURL:orderedSizes[thumbnailIndex].url
                                 resizingStrategy:resizingStrategy];
 
   switch (options.deliveryMode) {
@@ -175,21 +175,24 @@ static NSString * const kBaseEndpoint = @"https://ocean.lightricks.com/";
   }
 }
 
-- (NSUInteger)imageIndexForSizes:(const std::vector<CGSize> &)sizes
+- (NSUInteger)imageIndexForSizes:(NSArray<PTNOceanAssetSizeInfo *> *)sizes
                 resizingStrategy:(id<PTNResizingStrategy>)resizingStrategy {
-  std::vector<CGFloat> distances(sizes.size());
-  std::transform(sizes.cbegin(), sizes.cend(), distances.begin(), [&](CGSize size) {
-    CGSize outputSize = [resizingStrategy sizeForInputSize:size];
-    return std::hypot(outputSize.width - size.width, outputSize.height - size.height);
-  });
-  return std::distance(distances.cbegin(), std::min_element(distances.cbegin(), distances.cend()));
-}
+  NSUInteger index = NSNotFound;
+  CGFloat minDistance = CGFLOAT_MAX;
 
-- (NSUInteger)thumbnailIndexForSizes:(const std::vector<CGSize> &)sizes {
-  auto iterator = std::min_element(sizes.cbegin(), sizes.cend(), [](CGSize lhs, CGSize rhs) {
-    return lhs.width <= rhs.width && lhs.height <= rhs.height;
-  });
-  return std::distance(sizes.cbegin(), iterator);
+  for (NSUInteger i = 0; i < sizes.count; ++i) {
+    CGSize size = CGSizeMake(sizes[i].width, sizes[i].height);
+    CGSize outputSize = [resizingStrategy sizeForInputSize:size];
+    CGFloat distance = std::hypot(outputSize.width - size.width, outputSize.height - size.height);
+
+    // Using strict inequality will ensure that in scenarios where there are more than one
+    // size candidates, the one which has the biggest pixel count is preferred.
+    if (distance < minDistance) {
+      minDistance = distance;
+      index = i;
+    }
+  }
+  return index;
 }
 
 - (RACSignal *)fetchImageWithURL:(NSURL *)url
