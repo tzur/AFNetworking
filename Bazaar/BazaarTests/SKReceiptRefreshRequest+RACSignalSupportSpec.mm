@@ -19,17 +19,13 @@ context(@"status signal", ^{
 
   it(@"should err with cancelation error when request fails with error that indicates "
      "cancellation", ^{
-    NSError *underlyingRefreshReceiptError =
-        [NSError errorWithDomain:@"AKAuthenticationError" code:-7003 userInfo:@{}];
-    NSError *RefreshReceiptError =
-        [NSError errorWithDomain:@"SSErrorDomain" code:16
-                        userInfo:@{NSUnderlyingErrorKey: underlyingRefreshReceiptError}];
+    NSError *refreshReceiptError = [NSError errorWithDomain:@"SSErrorDomain" code:16 userInfo:@{}];
 
-    [request.delegate request:request didFailWithError:RefreshReceiptError];
+    [request.delegate request:request didFailWithError:refreshReceiptError];
 
     expect(recorder).will.matchError(^BOOL(NSError *error) {
       return error.code == BZRErrorCodeOperationCancelled &&
-          error.lt_underlyingError == RefreshReceiptError;
+          error.lt_underlyingError == refreshReceiptError;
     });
     expect(recorder).to.sendValuesWithCount(0);
   });
