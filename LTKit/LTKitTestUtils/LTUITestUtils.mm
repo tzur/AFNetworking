@@ -3,18 +3,13 @@
 
 #import "LTUITestUtils.h"
 
-#import <Specta/Specta.h>
+#import <Specta/SpectaUtility.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
-static inline SPTSpec * _Nullable SPTCurrentSpec() {
-  return [[NSThread mainThread] threadDictionary][@"SPTCurrentSpec"];
-}
-
 void LTAddInterruptionMonitor(LTUIInterruptionHandler *UIInterruptionHandler) {
-  SPTSpec *spec = SPTCurrentSpec();
-  [spec addUIInterruptionMonitorWithDescription:UIInterruptionHandler.descriptionText
-                                        handler:UIInterruptionHandler.block];
+  [SPTCurrentSpec addUIInterruptionMonitorWithDescription:UIInterruptionHandler.descriptionText
+                                                  handler:UIInterruptionHandler.block];
 }
 
 LTUIInterruptionHandler *LTGetAllowAllAlertsBlock() {

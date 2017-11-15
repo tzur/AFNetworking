@@ -13,6 +13,7 @@
 			buildPhases = (
 			);
 			dependencies = (
+				190965C81FBC39E200AD5B91 /* PBXTargetDependency */,
 				B4D68AFB1FB1ACF7009A5300 /* PBXTargetDependency */,
 				B4D68AFD1FB1ACF7009A5300 /* PBXTargetDependency */,
 				0627764E1ED586E90006024E /* PBXTargetDependency */,
@@ -93,6 +94,20 @@
 			proxyType = 1;
 			remoteGlobalIDString = A14171C01E6EAC0D005DBEFF;
 			remoteInfo = LaboratoryTests;
+		};
+		190965C71FBC39E200AD5B91 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 65BAF1371D47F9D2009BBB6F /* LTKit.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 194FF4FB1FA8BA77008879E7;
+			remoteInfo = LTKitTestUtils;
+		};
+		190965CB1FBC39E300AD5B91 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 65BAF1371D47F9D2009BBB6F /* LTKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 194FF4FC1FA8BA77008879E7;
+			remoteInfo = LTKitTestUtils;
 		};
 		654BA75A1D4BFEA4003DCC5F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -667,6 +682,7 @@
 			children = (
 				65BAF13D1D47F9D3009BBB6F /* libLTKit.a */,
 				65BAF13F1D47F9D3009BBB6F /* LTKitTests.xctest */,
+				190965CC1FBC39E300AD5B91 /* libLTKitTestUtils.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -867,6 +883,13 @@
 			fileType = wrapper.cfbundle;
 			path = PinkyTests.xctest;
 			remoteRef = 062776441ED586D50006024E /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		190965CC1FBC39E300AD5B91 /* libLTKitTestUtils.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libLTKitTestUtils.a;
+			remoteRef = 190965CB1FBC39E300AD5B91 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		65BAF1041D47F99C009BBB6F /* libBazaar.a */ = {
@@ -1143,6 +1166,11 @@
 			isa = PBXTargetDependency;
 			name = LaboratoryTests;
 			targetProxy = 0627764D1ED586E90006024E /* PBXContainerItemProxy */;
+		};
+		190965C81FBC39E200AD5B91 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = LTKitTestUtils;
+			targetProxy = 190965C71FBC39E200AD5B91 /* PBXContainerItemProxy */;
 		};
 		654BA75B1D4BFEA4003DCC5F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
