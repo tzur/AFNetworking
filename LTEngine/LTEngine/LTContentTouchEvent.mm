@@ -18,6 +18,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @synthesize contentLocation = _contentLocation;
 @synthesize previousContentLocation = _previousContentLocation;
+@synthesize velocityInContentCoordinates = _velocityInContentCoordinates;
+@synthesize speedInContentCoordinates = _speedInContentCoordinates;
 @synthesize contentSize = _contentSize;
 @synthesize contentZoomScale = _contentZoomScale;
 @synthesize majorContentRadius = _majorContentRadius;
@@ -26,7 +28,10 @@ NS_ASSUME_NONNULL_BEGIN
 @dynamic sequenceID;
 @dynamic viewLocation;
 @dynamic previousViewLocation;
+@dynamic velocityInViewCoordinates;
+@dynamic speedInViewCoordinates;
 @dynamic timestamp;
+@dynamic previousTimestamp;
 @dynamic view;
 @dynamic phase;
 @dynamic tapCount;
@@ -64,6 +69,13 @@ NS_ASSUME_NONNULL_BEGIN
     _majorContentRadiusTolerance =
         [self convertDistanceFromPresentationToContentCoordinates:touchEvent.majorRadiusTolerance
                                                    usingTransform:transform];
+
+    // Derived properties.
+    _velocityInContentCoordinates = self.previousTimestamp ?
+        LTVector2(self.contentLocation - self.previousContentLocation) /
+        (self.timestamp - [self.previousTimestamp doubleValue]) : LTVector2::null();
+    _speedInContentCoordinates = !_velocityInContentCoordinates.isNull() ?
+        @(_velocityInContentCoordinates.length()) : nil;
   }
   return self;
 }

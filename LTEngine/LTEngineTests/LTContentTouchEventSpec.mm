@@ -9,6 +9,7 @@ SpecBegin(LTContentTouchEvent)
 static const NSTimeInterval kTimestamp = 1;
 static const CGPoint kViewLocation = CGPointMake(2, 3);
 static const CGPoint kPreviousViewLocation = CGPointMake(4, 5);
+static const NSNumber *kPreviousTimestamp = @0.5;
 static const UITouchPhase kPhase = UITouchPhaseMoved;
 static const NSUInteger kTapCount = 6;
 static const CGFloat kMajorRadius = 7;
@@ -38,6 +39,18 @@ static const CGSize kContentSize = CGSizeMake(1, 2);
 static const CGFloat kMajorContentRadius = kScaleFactor * kMajorRadius;
 static const CGFloat kMajorContentRadiusTolerance = kScaleFactor * kMajorRadiusTolerance;
 
+static const LTVector2 kVelocityInViewCoordinates =
+    LTVector2(kViewLocation - kPreviousViewLocation) /
+    (kTimestamp - [kPreviousTimestamp doubleValue]);
+
+static const NSNumber *kSpeedInViewCoordinates = @(kVelocityInViewCoordinates.length());
+
+static const LTVector2 kVelocityInContentCoordinates =
+    LTVector2(kContentLocation - kPreviousContentLocation) /
+    (kTimestamp - [kPreviousTimestamp doubleValue]);
+
+static const NSNumber *kSpeedInContentCoordinates = @(kVelocityInContentCoordinates.length());
+
 __block id<LTTouchEvent> initialTouchEventMock;
 __block id<LTTouchEvent> touchEventMock;
 
@@ -48,6 +61,9 @@ beforeEach(^{
   OCMStub([touchEventMock timestamp]).andReturn(kTimestamp);
   OCMStub([touchEventMock viewLocation]).andReturn(kViewLocation);
   OCMStub([touchEventMock previousViewLocation]).andReturn(kPreviousViewLocation);
+  OCMStub([touchEventMock previousTimestamp]).andReturn(kPreviousTimestamp);
+  OCMStub([touchEventMock velocityInViewCoordinates]).andReturn(kVelocityInViewCoordinates);
+  OCMStub([touchEventMock speedInViewCoordinates]).andReturn(kSpeedInViewCoordinates);
   OCMStub([touchEventMock phase]).andReturn(kPhase);
   OCMStub([touchEventMock tapCount]).andReturn(kTapCount);
   OCMStub([touchEventMock majorRadius]).andReturn(kMajorRadius);
@@ -87,6 +103,9 @@ context(@"initialization", ^{
     expect(contentTouchEvent.timestamp).to.equal(kTimestamp);
     expect(contentTouchEvent.viewLocation).to.equal(kViewLocation);
     expect(contentTouchEvent.previousViewLocation).to.equal(kPreviousViewLocation);
+    expect(contentTouchEvent.previousTimestamp).to.equal(kPreviousTimestamp);
+    expect(contentTouchEvent.velocityInViewCoordinates).to.equal(kVelocityInViewCoordinates);
+    expect(contentTouchEvent.speedInViewCoordinates).to.equal(kSpeedInViewCoordinates);
     expect(contentTouchEvent.phase).to.equal(kPhase);
     expect(contentTouchEvent.tapCount).to.equal(kTapCount);
     expect(contentTouchEvent.majorRadius).to.equal(kMajorRadius);
@@ -163,9 +182,59 @@ context(@"NSObject protocol", ^{
 context(@"copying", ^{
   it(@"should return itself as copy, due to immutability", ^{
     LTContentTouchEvent *contentTouchEvent =
-        [[LTContentTouchEvent alloc] initWithTouchEvent:touchEventMock contentSize:kContentSize
+        [[LTContentTouchEvent alloc] initWithTouchEvent:initialTouchEventMock
+                                            contentSize:kContentSize
                                        contentZoomScale:kContentZoomScale transform:kTransform];
     expect([contentTouchEvent copy]).to.beIdenticalTo(contentTouchEvent);
+  });
+});
+
+context(@"velocity and speed in content coordinates", ^{
+  context(@"velocity", ^{
+    it(@"should return the correct velocity", ^{
+      LTContentTouchEvent *contentTouchEvent =
+          [[LTContentTouchEvent alloc] initWithTouchEvent:initialTouchEventMock
+                                              contentSize:kContentSize
+                                         contentZoomScale:kContentZoomScale transform:kTransform];
+      expect(contentTouchEvent.velocityInContentCoordinates)
+          .to.equal(kVelocityInContentCoordinates);
+    });
+
+    it(@"should return LTVector2::null() as velocity if previousTimestamp is nil", ^{
+      initialTouchEventMock = OCMProtocolMock(@protocol(LTTouchEvent));
+      touchEventMock = OCMProtocolMock(@protocol(LTTouchEvent));
+      OCMStub([initialTouchEventMock copyWithZone:nil]).andReturn(touchEventMock);
+      OCMStub([touchEventMock previousTimestamp]);
+
+      LTContentTouchEvent *contentTouchEvent =
+          [[LTContentTouchEvent alloc] initWithTouchEvent:initialTouchEventMock
+                                              contentSize:kContentSize
+                                         contentZoomScale:kContentZoomScale transform:kTransform];
+      expect(contentTouchEvent.velocityInContentCoordinates.isNull()).to.beTruthy();
+    });
+  });
+
+  context(@"speed", ^{
+    it(@"should return the correct speed", ^{
+      LTContentTouchEvent *contentTouchEvent =
+          [[LTContentTouchEvent alloc] initWithTouchEvent:initialTouchEventMock
+                                              contentSize:kContentSize
+                                         contentZoomScale:kContentZoomScale transform:kTransform];
+      expect(contentTouchEvent.speedInContentCoordinates).to.equal(kSpeedInContentCoordinates);
+    });
+
+    it(@"should return nil as speed if previousTimestamp is nil", ^{
+      initialTouchEventMock = OCMProtocolMock(@protocol(LTTouchEvent));
+      touchEventMock = OCMProtocolMock(@protocol(LTTouchEvent));
+      OCMStub([initialTouchEventMock copyWithZone:nil]).andReturn(touchEventMock);
+      OCMStub([touchEventMock previousTimestamp]);
+
+      LTContentTouchEvent *contentTouchEvent =
+          [[LTContentTouchEvent alloc] initWithTouchEvent:initialTouchEventMock
+                                              contentSize:kContentSize
+                                         contentZoomScale:kContentZoomScale transform:kTransform];
+      expect(contentTouchEvent.speedInContentCoordinates).to.beNil();
+    });
   });
 });
 

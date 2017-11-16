@@ -5,14 +5,19 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-UITouch *LTTouchEventViewCreateTouch(NSTimeInterval timestamp) {
-  UITouch *touchMock = OCMClassMock([UITouch class]);
-  OCMStub([touchMock timestamp]).andReturn(timestamp);
-  return touchMock;
+@implementation UIFakeTouch
+@synthesize timestamp = _timestamp;
+@synthesize phase = _phase;
+@end
+
+UIFakeTouch *LTTouchEventViewCreateTouch(NSTimeInterval timestamp) {
+  UIFakeTouch *touch = [[UIFakeTouch alloc] init];
+  touch.timestamp = timestamp;
+  return touch;
 }
 
-NSArray<UITouch *> *LTTouchEventViewCreateTouches(std::vector<NSTimeInterval> timestamps) {
-  NSMutableArray<UITouch *> *touchMocks = [NSMutableArray arrayWithCapacity:timestamps.size()];
+NSArray<UIFakeTouch *> *LTTouchEventViewCreateTouches(std::vector<NSTimeInterval> timestamps) {
+  NSMutableArray<UIFakeTouch *> *touchMocks = [NSMutableArray arrayWithCapacity:timestamps.size()];
   for (NSTimeInterval timestamp : timestamps) {
     [touchMocks addObject:LTTouchEventViewCreateTouch(timestamp)];
   }

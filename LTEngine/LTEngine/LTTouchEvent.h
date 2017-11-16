@@ -55,8 +55,23 @@ typedef NS_ENUM(NSUInteger, LTTouchEventSequenceState) {
 /// Location of the touch during the touch event, in coordinates of the \c view.
 @property (readonly, nonatomic) CGPoint viewLocation;
 
-/// Location of the touch during the previous touch event, in coordinates of the \c view.
+/// Location of the touch during the previous touch event, in coordinates of the \c view. Undefined
+/// if the previous touch event is not well-defined.
 @property (readonly, nonatomic) CGPoint previousViewLocation;
+
+/// Boxed timestamp of the previous touch event. \c nil if the previous touch event is not
+/// well-defined.
+@property (readonly, nonatomic, nullable) NSNumber *previousTimestamp;
+
+/// Velocity, in point units of the \c view coordinate system, of this instance. Is
+/// \c LTVector2::null() if \c previousTimestamp is \c nil or if \c timestamp equals the unboxed
+/// value of \c previousTimestamp.
+@property (readonly, nonatomic) LTVector2 velocityInViewCoordinates;
+
+/// Boxed speed, in point units of the \c view coordinate system, of this instance or \c nil if
+/// \c previousTimestamp is \c nil or if \c timestamp equals the unboxed value of
+/// \c previousTimestamp.
+@property (readonly, nonatomic, nullable) NSNumber *speedInViewCoordinates;
 
 #pragma mark -
 #pragma mark Properties of UITouch
@@ -161,12 +176,23 @@ typedef NS_ENUM(NSUInteger, LTTouchEventSequenceState) {
 
 /// Initializes with the properties of the given \c touch and the given \c sequenceID. The given
 /// \c touch is not retained by the returned object. The \c timestamp of the returned object equals
-/// the \c timestamp of the given \c touch.
+/// the \c timestamp of the given \c touch. The \c previousTimestamp of the returned object is
+/// \c nil.
 + (instancetype)touchEventWithPropertiesOfTouch:(UITouch *)touch sequenceID:(NSUInteger)sequenceID;
 
-/// Initializes with the properties of the given \c touch, \c timestamp, and \c sequenceID. The
-/// given \c touch is not retained by the returned object.
+/// Initializes with the properties of the given \c touch, the given \c previousTimestamp and
+/// \c sequenceID. The given \c touch is not retained by the returned object. The \c timestamp of
+/// the returned object equals the \c timestamp of the given \c touch. The
+/// \c previousTimestamp must be \c nil if the previous touch event is not well-defined.
++ (instancetype)touchEventWithPropertiesOfTouch:(UITouch *)touch
+                              previousTimestamp:(nullable NSNumber *)previousTimestamp
+                                     sequenceID:(NSUInteger)sequenceID;
+
+/// Initializes with the properties of the given \c touch, \c timestamp, \c previousTimestamp and
+/// \c sequenceID. The given \c touch is not retained by the returned object. The
+/// \c previousTimestamp must be \c nil if the previous touch event is not well-defined.
 + (instancetype)touchEventWithPropertiesOfTouch:(UITouch *)touch timestamp:(NSTimeInterval)timestamp
+                              previousTimestamp:(nullable NSNumber *)previousTimestamp
                                      sequenceID:(NSUInteger)sequenceID;
 
 @end

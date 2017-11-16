@@ -26,6 +26,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// @important Temporally consecutive touch event sequences might have the same sequence ID.
 /// However, it is guaranteed that there are no concurrently occurring touch event sequences with
 /// the same sequence ID, if the sequences originate from the same source.
+///
+/// @note The \c previousTimestamp of the given \c predictedTouchEvents is \c nil.
 - (void)receivedTouchEvents:(LTTouchEvents *)touchEvents
             predictedEvents:(LTTouchEvents *)predictedTouchEvents
     touchEventSequenceState:(LTTouchEventSequenceState)state;
@@ -33,6 +35,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// Called to delegate the handling of the given updated \c touchEvents. The \c touchEvents
 /// contain at least one touch event, are ordered according to their timestamps and belong to touch
 /// event sequences that have not ended yet.
+///
+/// @note The \c previousTimestamp of the given \c touchEvents is \c nil.
 - (void)receivedUpdatesOfTouchEvents:(LTTouchEvents *)touchEvents;
 
 /// Called to inform the delegate that all touch event sequences with the given \c sequenceIDs have

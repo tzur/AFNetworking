@@ -14,6 +14,9 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize view = _view;
 @synthesize viewLocation = _viewLocation;
 @synthesize previousViewLocation = _previousViewLocation;
+@synthesize previousTimestamp = _previousTimestamp;
+@synthesize velocityInViewCoordinates = _velocityInViewCoordinates;
+@synthesize speedInViewCoordinates = _speedInViewCoordinates;
 @synthesize phase = _phase;
 @synthesize tapCount = _tapCount;
 @synthesize majorRadius = _majorRadius;
@@ -35,6 +38,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithSequenceID:(NSUInteger)sequenceID timestamp:(NSTimeInterval)timestamp
                               view:(nullable UIView *)view viewLocation:(CGPoint)viewLocation
               previousViewLocation:(CGPoint)previousViewLocation
+                 previousTimestamp:(nullable NSNumber *)previousTimestamp
                              phase:(UITouchPhase)phase tapCount:(NSUInteger)tapCount
                        majorRadius:(CGFloat)majorRadius
               majorRadiusTolerance:(CGFloat)majorRadiusTolerance
@@ -47,12 +51,19 @@ NS_ASSUME_NONNULL_BEGIN
              estimationUpdateIndex:(nullable NSNumber *)estimationUpdateIndex
                estimatedProperties:(UITouchProperties)estimatedProperties
         propertiesExpectingUpdates:(UITouchProperties)propertiesExpectingUpdates {
+  if (previousTimestamp) {
+    LTParameterAssert(timestamp >= [previousTimestamp doubleValue], @"Provided invalid "
+                      "combination of timestamp %g and previous timestamp (%g)", timestamp,
+                      [previousTimestamp doubleValue]);
+  }
+
   if (self = [super init]) {
     _sequenceID = sequenceID;
     _timestamp = timestamp;
     _view = view;
     _viewLocation = viewLocation;
     _previousViewLocation = previousViewLocation;
+    _previousTimestamp = previousTimestamp;
     _phase = phase;
     _tapCount = tapCount;
     _majorRadius = majorRadius;
@@ -66,20 +77,51 @@ NS_ASSUME_NONNULL_BEGIN
     _estimationUpdateIndex = estimationUpdateIndex;
     _estimatedProperties = estimatedProperties;
     _estimatedPropertiesExpectingUpdates = propertiesExpectingUpdates;
+
+    // Derived properties.
+    _velocityInViewCoordinates =
+        previousTimestamp && timestamp > [previousTimestamp doubleValue] ?
+        LTVector2(viewLocation - previousViewLocation) /
+        (timestamp - [previousTimestamp doubleValue]) : LTVector2::null();
+    _speedInViewCoordinates = !_velocityInViewCoordinates.isNull() ?
+        @(_velocityInViewCoordinates.length()) : nil;
   }
   return self;
 }
 
-+ (instancetype)touchEventWithPropertiesOfTouch:(UITouch *)touch sequenceID:(NSUInteger)sequenceID {
++ (instancetype)touchEventWithPropertiesOfTouch:(UITouch *)touch
+                                     sequenceID:(NSUInteger)sequenceID {
+  return [self touchEventWithPropertiesOfTouch:touch previousTimestamp:nil sequenceID:sequenceID];
+}
+
++ (instancetype)touchEventWithPropertiesOfTouch:(UITouch *)touch
+                              previousTimestamp:(nullable NSNumber *)previousTimestamp
+                                     sequenceID:(NSUInteger)sequenceID {
   return [self touchEventWithPropertiesOfTouch:touch timestamp:touch.timestamp
-                                    sequenceID:sequenceID];
+                             previousTimestamp:previousTimestamp sequenceID:sequenceID];
 }
 
 + (instancetype)touchEventWithPropertiesOfTouch:(UITouch *)touch timestamp:(NSTimeInterval)timestamp
+                              previousTimestamp:(nullable NSNumber *)previousTimestamp
                                      sequenceID:(NSUInteger)sequenceID {
+  CGPoint viewLocation;
+  if (@available(iOS 9.1, *)) {
+    viewLocation = [touch preciseLocationInView:touch.view];
+  } else {
+    viewLocation = [touch locationInView:touch.view];
+  }
+
+  CGPoint previousViewLocation;
+  if (@available(iOS 9.1, *)) {
+    previousViewLocation = [touch precisePreviousLocationInView:touch.view];
+  } else {
+    previousViewLocation = [touch previousLocationInView:touch.view];
+  }
+
   return [[LTTouchEvent alloc] initWithSequenceID:sequenceID timestamp:timestamp view:touch.view
-                                     viewLocation:[touch locationInView:touch.view]
-                             previousViewLocation:[touch previousLocationInView:touch.view]
+                                     viewLocation:viewLocation
+                             previousViewLocation:previousViewLocation
+                                previousTimestamp:previousTimestamp
                                             phase:touch.phase
                                          tapCount:touch.tapCount
                                       majorRadius:touch.majorRadius

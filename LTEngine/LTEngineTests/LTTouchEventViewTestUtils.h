@@ -3,11 +3,16 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/// Creates a fake \c UITouch object with the given \c timestamp.
-UITouch *LTTouchEventViewCreateTouch(NSTimeInterval timestamp);
+@interface UIFakeTouch : UITouch
+@property (nonatomic) NSTimeInterval timestamp;
+@property (nonatomic) UITouchPhase phase;
+@end
+
+/// Creates a \c UIFakeTouch object with the given \c timestamp.
+UIFakeTouch *LTTouchEventViewCreateTouch(NSTimeInterval timestamp);
 
 /// Creates fake \c UITouch objects with the given \c timestamps.
-NSArray<UITouch *> *LTTouchEventViewCreateTouches(std::vector<NSTimeInterval> timestamps);
+NSArray<UIFakeTouch *> *LTTouchEventViewCreateTouches(std::vector<NSTimeInterval> timestamps);
 
 /// Creates a fake \c UIEvent object.
 UIEvent *LTTouchEventViewCreateEvent();
