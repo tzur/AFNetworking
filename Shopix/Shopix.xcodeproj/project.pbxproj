@@ -506,6 +506,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		639C5AA21FB37C8400937367 /* Customizable Components */ = {
+			isa = PBXGroup;
+			children = (
+				65125FE01FB5F7C900C7D2FA /* Feedback Composer */,
+			);
+			name = "Customizable Components";
+			sourceTree = "<group>";
+		};
 		650BB31D1D465335008648A3 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -523,9 +531,25 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		65125FE01FB5F7C900C7D2FA /* Feedback Composer */ = {
+			isa = PBXGroup;
+			children = (
+				CDB513A61F66B1550013577C /* SPXFeedbackComposeViewControllerProvider.h */,
+			);
+			name = "Feedback Composer";
+			sourceTree = "<group>";
+		};
+		653D9C341FB742C80035ACEC /* Customizable Components */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "Customizable Components";
+			sourceTree = "<group>";
+		};
 		848E00051C591DD1001D8368 /* Shopix */ = {
 			isa = PBXGroup;
 			children = (
+				639C5AA21FB37C8400937367 /* Customizable Components */,
 				88B632881F9DD87E0051A535 /* Errors */,
 				CD8E8E081F5C19DC00DF8FC1 /* Localization */,
 				88FA8C711F66A5FE00D2E594 /* Promotions */,
@@ -578,6 +602,7 @@
 		848E00241C59208B001D8368 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				653D9C341FB742C80035ACEC /* Customizable Components */,
 				CDCFDF1E1F5C39BA00C289BA /* Localization */,
 				885CA28D1FB301C6005380BD /* Promotions */,
 				CDB513A31F66B07D0013577C /* Subscription */,
@@ -795,7 +820,6 @@
 				CD60A5EC1FB433180017D777 /* SPXDualLabelView.mm */,
 				CD60A5E81FB34F6A0017D777 /* SPXSubscriptionGradientButton.h */,
 				CD60A5E91FB34F6A0017D777 /* SPXSubscriptionGradientButton.mm */,
-				CDB513A61F66B1550013577C /* SPXFeedbackComposeViewControllerProvider.h */,
 				CDB513A01F66B0440013577C /* SPXSubscriptionManager.h */,
 				CDB513A11F66B0440013577C /* SPXSubscriptionManager.mm */,
 			);
