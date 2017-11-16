@@ -210,7 +210,7 @@ context(@"URL Resizing", ^{
       it(@"should return a resized aspect fitted image", ^{
         static CGSize kTargetSize = CGSizeMake(6, 6);
         static CGSize kExpectedSize = CGSizeMake(6, 3);
-        
+
         RACSignal *signal = [resizer resizeImageAtURL:fileURL toSize:kTargetSize
                                           contentMode:PTNImageContentModeAspectFit];
         expect(signal).will.matchValue(0, ^BOOL(UIImage *value) {
@@ -357,7 +357,7 @@ context(@"Data Resizing", ^{
     it(@"should err when invalid data is given", ^{
       static CGSize kTargetSize = CGSizeMake(6, 6);
       imageData = [NSData data];
-      
+
       RACSignal *signal = [resizer resizeImageFromData:imageData toSize:kTargetSize
                                            contentMode:PTNImageContentModeAspectFill];
 

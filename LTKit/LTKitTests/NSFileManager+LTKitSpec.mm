@@ -335,7 +335,7 @@ context(@"common directories", ^{
 
   it(@"should return YES if directory exists at path", ^{
     expect([fileManager lt_directoryExistsAtPath:LTTemporaryPath()]).to.beTruthy();
-    
+
     [fileManager removeItemAtPath:LTTemporaryPath() error:nil];
     expect([fileManager lt_directoryExistsAtPath:LTTemporaryPath()]).to.beFalsy();
 

@@ -4,7 +4,7 @@
 #import "DVNSplineRenderModel.h"
 
 #import <LTEngine/LTControlPointModel.h>
-#import <LTKitTests/LTEqualityExamples.h>
+#import <LTKitTestUtils/LTEqualityExamples.h>
 
 #import "DVNPipelineConfiguration.h"
 

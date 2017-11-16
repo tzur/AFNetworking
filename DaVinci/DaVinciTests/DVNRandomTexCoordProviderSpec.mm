@@ -5,7 +5,7 @@
 
 #import <LTEngine/LTQuad.h>
 #import <LTKit/LTRandom.h>
-#import <LTKitTests/LTEqualityExamples.h>
+#import <LTKitTestUtils/LTEqualityExamples.h>
 
 #import "DVNTexCoordProviderExamples.h"
 

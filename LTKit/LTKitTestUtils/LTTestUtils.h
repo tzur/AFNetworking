@@ -3,6 +3,14 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/// Returns given \c relativePath appended to the spec temporary base directory. The spec temporary
+/// base directory depends on the specific spec currently running, so there's no concern for files
+/// overwriting each other. If the spec temporary base directory doesn't exist it is created.
+NSString *LTTemporaryPath(NSString *relativePath = @"");
+
+/// Returns \c YES if the given \c relativePath to the spec temporary base directory exists.
+BOOL LTFileExistsInTemporaryPath(NSString *relativePath);
+
 /// Defines a spec that is not going to run, by inheriting from \c NSObject and not from \c SPTSpec.
 #define FakeSpecBegin(name) \
   @interface name##Spec : NSObject \

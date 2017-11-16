@@ -11,8 +11,10 @@
   // Third Party.
   #import <LLReactiveMatchers/LLReactiveMatchers.h>
   #import <LLReactiveMatchers/Matchers/EXPMatchers+error.h>
+#endif
 
-  // LTKitTests.
-  #import <LTKitTests/EXPMatchers+beCloseToPoint.h>
-  #import <LTKitTests/LTTestUtils.h>
+#ifdef __cplusplus
+  // LTKitTestUtils.
+  #import <LTKitTestUtils/EXPMatchers+beCloseToPoint.h>
+  #import <LTKitTestUtils/LTTestUtils.h>
 #endif

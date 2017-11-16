@@ -1,16 +1,17 @@
 // Copyright (c) 2016 Lightricks. All rights reserved.
 // Created by Amit Yitzhack.
 
-#import <LTKit/LTRandom.h>
+#import "DVNScatteredGeometryProviderModel.h"
+
 #import <LTEngine/LTParameterizationKeyToValues.h>
 #import <LTEngine/LTSampleValues.h>
 #import <LTEngine/LTSplineControlPoint.h>
 #import <LTEngineTests/LTEasyVectorBoxing.h>
-#import <LTKitTests/LTEqualityExamples.h>
+#import <LTKit/LTRandom.h>
+#import <LTKit/NSArray+Functional.h>
+#import <LTKitTestUtils/LTEqualityExamples.h>
 
 #import "DVNEasyQuadVectorBoxing.h"
-#import <LTKit/NSArray+Functional.h>
-#import "DVNScatteredGeometryProviderModel.h"
 #import "DVNGeometryProviderExamples.h"
 #import "DVNTestGeometryProvider.h"
 
@@ -32,13 +33,13 @@ beforeEach(^{
   distance = lt::Interval<CGFloat>({1, 5}, lt::Interval<CGFloat>::EndpointInclusion::Closed);
   angle = lt::Interval<CGFloat>({M_PI_4, M_PI}, lt::Interval<CGFloat>::EndpointInclusion::Closed);
   scale = lt::Interval<CGFloat>({0.5, 1.5}, lt::Interval<CGFloat>::EndpointInclusion::Closed);
-  
+
   NSOrderedSet<NSString *> *keys = [NSOrderedSet orderedSetWithArray:@[@"xKey", @"yKey"]];
   LTParameterizationKeyToValues *mapping =
       [[LTParameterizationKeyToValues alloc] initWithKeys:keys
                                              valuesPerKey:(cv::Mat1g(2, 2) << 1, 2, 3, 4)];
   samples = [[LTSampleValues alloc] initWithSampledParametricValues:{0, 1} mapping:mapping];
-  
+
   model = [[DVNScatteredGeometryProviderModel alloc]
            initWithGeometryProviderModel:underlyingProviderModel randomState:randomState
            count:count distance:distance angle:angle scale:scale];
@@ -100,7 +101,7 @@ context(@"provider", ^{
       id<DVNGeometryProvider> provider = [model provider];
       [provider valuesFromSamples:samples end:NO];
       DVNScatteredGeometryProviderModel *currentModel = [provider currentModel];
-      
+
       expect(model.geometryProviderModel).toNot.equal(currentModel.geometryProviderModel);
       expect(model.randomState).toNot.equal(currentModel.randomState);
       expect(model.count == currentModel.count).to.beTruthy();
@@ -109,13 +110,13 @@ context(@"provider", ^{
       expect(model.scale == currentModel.scale).to.beTruthy();
     });
   });
-  
+
   context(@"non-deterministic", ^{
     context(@"bounds", ^{
       __block std::vector<lt::Quad> quads;
       __block std::vector<lt::Quad> underlyingQuads;
       __block std::vector<NSUInteger> indices;
-      
+
       beforeEach(^{
         dvn::GeometryValues values = [[model provider] valuesFromSamples:samples end:NO];
         dvn::GeometryValues underlyingValues =
@@ -124,7 +125,7 @@ context(@"provider", ^{
         underlyingQuads = underlyingValues.quads();
         indices = values.indices();
       });
-      
+
       it(@"should provide quads with bounded centers", ^{
         for (NSUInteger i = 0; i < quads.size(); ++i) {
           CGFloat length = LTVector2(quads[i].center() -
@@ -132,7 +133,7 @@ context(@"provider", ^{
           expect(distance.contains(length)).to.beTruthy();
         }
       });
-      
+
       it(@"should provide quads with bounded orientation", ^{
         for (NSUInteger i = 0; i < quads.size(); ++i) {
           for (NSUInteger j = 0; j < quads[i].kNumQuadCorners; ++j) {
@@ -143,7 +144,7 @@ context(@"provider", ^{
           }
         }
       });
-      
+
       it(@"should provide quads with bounded scale", ^{
         for (NSUInteger i = 0; i < quads.size(); ++i) {
           for (NSUInteger j = 0; j < quads[i].kNumQuadCorners; ++j) {

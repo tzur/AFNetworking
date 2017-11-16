@@ -7,28 +7,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/// Specta hook which removes the temporary path from the file system after each spec that created a
-/// temporary path.
-@interface LTSpectaTemporaryPathHook ()
-
-/// Returns given \c relativePath appended to the spec temporary base directory. The spec temporary
-/// base directory depends on the specific spec currently running, so there's no concern for files
-/// overwriting each other. If the spec temporary base directory doesn't exist it is created.
-+ (NSString *)temporaryPath:(NSString *)relativePath;
-
-/// Returns \c YES if the given \c relativePath to the spec temporary base directory exists.
-+ (BOOL)fileExistsInTemporaryPath:(NSString *)relativePath;
-
-@end
-
-NSString *LTTemporaryPath(NSString *relativePath) {
-  return [LTSpectaTemporaryPathHook temporaryPath:relativePath];
-}
-
-BOOL LTFileExistsInTemporaryPath(NSString *relativePath) {
-  return [LTSpectaTemporaryPathHook fileExistsInTemporaryPath:relativePath];
-}
-
 @implementation LTSpectaTemporaryPathHook
 
 static NSString * _Nullable _temporaryPath;

@@ -3,6 +3,24 @@
 
 #import <XCTest/XCTest.h>
 
-#import "LTAssert.h"
-#import "LTNullability.h"
+#import "LTKit-Prefix.pch"
 #import "LTValueObject.h"
+
+#define EXP_SHORTHAND
+
+// Third party.
+#ifdef __cplusplus
+extern "C" {
+#endif
+#import <Expecta/Expecta.h>
+#import <Specta/Specta.h>
+#ifdef __cplusplus
+}
+#endif
+
+#ifdef __cplusplus
+  #import "LTTestUtils.h"
+  #import "EXPMatchers+beBlock.h"
+  #import "EXPMatchers+beCloseToPoint.h"
+  #import "EXPMatchers+beCloseToSize.h"
+#endif

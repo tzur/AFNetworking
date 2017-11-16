@@ -45,9 +45,6 @@
 		8B283F141CBA84EA00B745AE /* libExpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B283EB91CBA833C00B745AE /* libExpecta.a */; };
 		8B283F151CBA84EA00B745AE /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B283EE11CBA834D00B745AE /* libOCMock.a */; };
 		8B283F161CBA84EA00B745AE /* libSpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B283ED21CBA834300B745AE /* libSpecta.a */; };
-		8B283F511CBA88E800B745AE /* EXPMatchers+beBlock.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B283F4C1CBA88E800B745AE /* EXPMatchers+beBlock.mm */; };
-		8B283F521CBA88E800B745AE /* EXPMatchers+beCloseToPoint.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B283F4E1CBA88E800B745AE /* EXPMatchers+beCloseToPoint.mm */; };
-		8B283F531CBA88E800B745AE /* LTTestUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B283F501CBA88E800B745AE /* LTTestUtils.mm */; };
 		8B283F701CBA9C6E00B745AE /* UIViewController+Containment.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B283F6F1CBA9C6E00B745AE /* UIViewController+Containment.m */; };
 		8B283FA71CBA9E2900B745AE /* UIViewController+ContainmentSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B283FA61CBA9E2900B745AE /* UIViewController+ContainmentSpec.mm */; };
 		8B283FFF1CBE33B200B745AE /* WFTransparentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B283FFE1CBE33B200B745AE /* WFTransparentView.m */; };
@@ -70,6 +67,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		1909714D1FBD773C00AD5B91 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8B283EEC1CBA838900B745AE /* LTKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 194FF4FC1FA8BA77008879E7;
+			remoteInfo = LTKitTestUtils;
+		};
 		65322E031D465479002D5F17 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 65322DFC1D465479002D5F17 /* extobjc.xcodeproj */;
@@ -421,12 +425,6 @@
 		8B283EEC1CBA838900B745AE /* LTKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LTKit.xcodeproj; path = ../LTKit/LTKit.xcodeproj; sourceTree = "<group>"; };
 		8B283F1C1CBA85E400B745AE /* WireframesTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WireframesTests-Prefix.pch"; sourceTree = "<group>"; };
 		8B283F291CBA86F500B745AE /* Wireframes-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Wireframes-Prefix.pch"; sourceTree = "<group>"; };
-		8B283F4B1CBA88E800B745AE /* EXPMatchers+beBlock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "EXPMatchers+beBlock.h"; path = "../../LTKit/LTKitTests/EXPMatchers+beBlock.h"; sourceTree = "<group>"; };
-		8B283F4C1CBA88E800B745AE /* EXPMatchers+beBlock.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = "EXPMatchers+beBlock.mm"; path = "../../LTKit/LTKitTests/EXPMatchers+beBlock.mm"; sourceTree = "<group>"; };
-		8B283F4D1CBA88E800B745AE /* EXPMatchers+beCloseToPoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "EXPMatchers+beCloseToPoint.h"; path = "../../LTKit/LTKitTests/EXPMatchers+beCloseToPoint.h"; sourceTree = "<group>"; };
-		8B283F4E1CBA88E800B745AE /* EXPMatchers+beCloseToPoint.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = "EXPMatchers+beCloseToPoint.mm"; path = "../../LTKit/LTKitTests/EXPMatchers+beCloseToPoint.mm"; sourceTree = "<group>"; };
-		8B283F4F1CBA88E800B745AE /* LTTestUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LTTestUtils.h; path = ../../LTKit/LTKitTests/LTTestUtils.h; sourceTree = "<group>"; };
-		8B283F501CBA88E800B745AE /* LTTestUtils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = LTTestUtils.mm; path = ../../LTKit/LTKitTests/LTTestUtils.mm; sourceTree = "<group>"; };
 		8B283F6E1CBA9C6E00B745AE /* UIViewController+Containment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Containment.h"; sourceTree = "<group>"; };
 		8B283F6F1CBA9C6E00B745AE /* UIViewController+Containment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Containment.m"; sourceTree = "<group>"; };
 		8B283FA61CBA9E2900B745AE /* UIViewController+ContainmentSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIViewController+ContainmentSpec.mm"; sourceTree = "<group>"; };
@@ -764,6 +762,7 @@
 			children = (
 				8B283EF21CBA838900B745AE /* libLTKit.a */,
 				8B283EF41CBA838900B745AE /* LTKitTests.xctest */,
+				1909714E1FBD773C00AD5B91 /* libLTKitTestUtils.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -787,16 +786,10 @@
 		8B283F341CBA88AC00B745AE /* Test Utils */ = {
 			isa = PBXGroup;
 			children = (
-				8B283F4B1CBA88E800B745AE /* EXPMatchers+beBlock.h */,
-				8B283F4C1CBA88E800B745AE /* EXPMatchers+beBlock.mm */,
-				8B283F4D1CBA88E800B745AE /* EXPMatchers+beCloseToPoint.h */,
-				8B283F4E1CBA88E800B745AE /* EXPMatchers+beCloseToPoint.mm */,
 				8BC7B6591CF1EEFC0047BEDE /* LTObjectionModule.h */,
 				8BC7B65A1CF1EEFC0047BEDE /* LTObjectionModule.mm */,
 				8BC7B6531CF1EE280047BEDE /* LTSpectaObjectionHook.h */,
 				8BC7B6541CF1EE280047BEDE /* LTSpectaObjectionHook.mm */,
-				8B283F4F1CBA88E800B745AE /* LTTestUtils.h */,
-				8B283F501CBA88E800B745AE /* LTTestUtils.mm */,
 				8BC7B64D1CF1E5010047BEDE /* WFLoggingImageProvider.h */,
 				8BC7B64E1CF1E5010047BEDE /* WFLoggingImageProvider.mm */,
 				6AFCE0B01CDDE61D00FA8BF3 /* WFTestUtils.h */,
@@ -994,6 +987,13 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		1909714E1FBD773C00AD5B91 /* libLTKitTestUtils.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libLTKitTestUtils.a;
+			remoteRef = 1909714D1FBD773C00AD5B91 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		65322E041D465479002D5F17 /* libextobjc_OSX.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -1291,7 +1291,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				6A0C328C1CE7476800809579 /* WFImageViewModelBuilderSpec.mm in Sources */,
-				8B283F521CBA88E800B745AE /* EXPMatchers+beCloseToPoint.mm in Sources */,
 				6AB2AB021CC3949600BC2371 /* UIView+LayoutSignalsSpec.mm in Sources */,
 				6AAED9F81CC62ABE00B3C62F /* WFAssetCatalogImageProviderSpec.mm in Sources */,
 				6A34F60A1CD89A5300B91A58 /* WFDynamicImageViewModelSpec.mm in Sources */,
@@ -1300,7 +1299,6 @@
 				C9133DAB1D357524009E796B /* CALayer+EnumerationSpec.m in Sources */,
 				8BB234C41CDCB69D00057F11 /* WFGradientViewSpec.mm in Sources */,
 				6AB518E11CCA454300540CC6 /* WFFakePaintCodeModule.m in Sources */,
-				8B283F511CBA88E800B745AE /* EXPMatchers+beBlock.mm in Sources */,
 				C99B8BB71D6F6E2C00897FF1 /* UIFont+SizeSpec.mm in Sources */,
 				6AAEDB871CD73B0100B3C62F /* UIImageView+ViewModelSpec.mm in Sources */,
 				8BC7B65B1CF1EEFC0047BEDE /* LTObjectionModule.mm in Sources */,
@@ -1313,7 +1311,6 @@
 				8B2840021CBE33E100B745AE /* WFTransparentViewSpec.mm in Sources */,
 				284FDEF01E018C270066AB93 /* UIView+RetrievalSpec.mm in Sources */,
 				8BC7B6551CF1EE280047BEDE /* LTSpectaObjectionHook.mm in Sources */,
-				8B283F531CBA88E800B745AE /* LTTestUtils.mm in Sources */,
 				8B078FDC1D47B0AC00A8E9EB /* CATransaction+AnimationsSpec.mm in Sources */,
 				6AFCE0B21CDDE61D00FA8BF3 /* WFTestUtils.mm in Sources */,
 			);

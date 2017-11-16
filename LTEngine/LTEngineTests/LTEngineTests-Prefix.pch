@@ -16,11 +16,10 @@ extern "C" {
 #endif
 
 #ifdef __cplusplus
-  // LTKitTests.
-  #import <LTKitTestUtils/LTSpectaTemporaryPathHook.h>
-  #import <LTKitTests/EXPMatchers+beCloseToPoint.h>
-  #import <LTKitTests/EXPMatchers+beCloseToSize.h>
-  #import <LTKitTests/LTTestUtils.h>
+  // LTKitTestUtils.
+  #import <LTKitTestUtils/EXPMatchers+beCloseToPoint.h>
+  #import <LTKitTestUtils/EXPMatchers+beCloseToSize.h>
+  #import <LTKitTestUtils/LTTestUtils.h>
 
   // LTEngineTests.
   #import "LTTestUtils+LTEngine.h"

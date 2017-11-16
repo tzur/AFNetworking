@@ -3,7 +3,7 @@
 
 #import "INTDeviceInfoObserver.h"
 
-#import <LTKitTests/LTDataHelpers.h>
+#import <LTKitTestUtils/LTDataHelpers.h>
 
 #import "INTDeviceInfo.h"
 #import "INTFakeDeviceInfoSource.h"

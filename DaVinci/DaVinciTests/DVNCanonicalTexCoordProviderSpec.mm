@@ -4,7 +4,7 @@
 #import "DVNCanonicalTexCoordProvider.h"
 
 #import <LTEngine/LTQuad.h>
-#import <LTKitTests/LTEqualityExamples.h>
+#import <LTKitTestUtils/LTEqualityExamples.h>
 
 #import "DVNTexCoordProviderExamples.h"
 

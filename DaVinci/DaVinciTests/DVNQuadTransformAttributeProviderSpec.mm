@@ -7,7 +7,7 @@
 #import <LTEngine/LTQuad.h>
 #import <LTEngine/LTRotatedRect.h>
 #import <LTEngine/LTSampleValues.h>
-#import <LTKitTests/LTEqualityExamples.h>
+#import <LTKitTestUtils/LTEqualityExamples.h>
 
 #import "DVNAttributeProviderExamples.h"
 

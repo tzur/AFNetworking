@@ -4,7 +4,7 @@
 #import "DVNPipelineConfiguration.h"
 
 #import <LTEngine/LTContinuousSampler.h>
-#import <LTKitTests/LTEqualityExamples.h>
+#import <LTKitTestUtils/LTEqualityExamples.h>
 
 #import "DVNAttributeStageConfiguration.h"
 #import "DVNGeometryProvider.h"
