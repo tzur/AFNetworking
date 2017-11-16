@@ -7,12 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		639C5AC91FB37DD300937367 /* SPXAlertViewModelBuilder.mm in Sources */ = {isa = PBXBuildFile; fileRef = 639C5AC81FB37DD300937367 /* SPXAlertViewModelBuilder.mm */; };
 		650BB33C1D465389008648A3 /* libExpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B425ED31CA6D218001C457E /* libExpecta.a */; };
 		650BB33E1D465389008648A3 /* libLTKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 650BB3221D465335008648A3 /* libLTKit.a */; };
 		650BB33F1D465389008648A3 /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B425EE51CA6D218001C457E /* libOCMock.a */; };
 		650BB3401D465389008648A3 /* libSpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B425F021CA6D218001C457E /* libSpecta.a */; };
 		653D9C391FB757860035ACEC /* SPXAlertViewModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 653D9C381FB757860035ACEC /* SPXAlertViewModel.mm */; };
 		653D9C3B1FB7B5E00035ACEC /* SPXAlertViewModelSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 653D9C3A1FB7B5E00035ACEC /* SPXAlertViewModelSpec.mm */; };
+		653D9C3D1FB7BBCC0035ACEC /* SPXAlertViewModelBuilderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 653D9C3C1FB7BBCC0035ACEC /* SPXAlertViewModelBuilderSpec.mm */; };
 		65F82F021F93C09F002A496C /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65F82EDD1F93C09F002A496C /* CloudKit.framework */; };
 		84FF72F71C8EEF9600D1DA9F /* libShopix.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 84FF72E91C8EED6D00D1DA9F /* libShopix.a */; };
 		8851018E1F9DDBA60052351B /* NSError+Shopix.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8851018D1F9DDBA60052351B /* NSError+Shopix.mm */; };
@@ -363,10 +365,13 @@
 
 /* Begin PBXFileReference section */
 		639409EA1FB3642100C817FE /* SPXAlertViewModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SPXAlertViewModel.h; sourceTree = "<group>"; };
+		639C5AC71FB37DD300937367 /* SPXAlertViewModelBuilder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SPXAlertViewModelBuilder.h; sourceTree = "<group>"; };
+		639C5AC81FB37DD300937367 /* SPXAlertViewModelBuilder.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXAlertViewModelBuilder.mm; sourceTree = "<group>"; };
 		650BB31C1D465335008648A3 /* LTKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LTKit.xcodeproj; path = ../LTKit/LTKit.xcodeproj; sourceTree = "<group>"; };
 		650BB3341D465359008648A3 /* TestHost.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TestHost.xcodeproj; path = ../../Foundations/TestHost.xcodeproj; sourceTree = "<group>"; };
 		653D9C381FB757860035ACEC /* SPXAlertViewModel.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXAlertViewModel.mm; sourceTree = "<group>"; };
 		653D9C3A1FB7B5E00035ACEC /* SPXAlertViewModelSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXAlertViewModelSpec.mm; sourceTree = "<group>"; };
+		653D9C3C1FB7BBCC0035ACEC /* SPXAlertViewModelBuilderSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXAlertViewModelBuilderSpec.mm; sourceTree = "<group>"; };
 		65F82EDD1F93C09F002A496C /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		848E00081C591DD1001D8368 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		848E000D1C591DD1001D8368 /* ShopixTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ShopixTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -516,6 +521,8 @@
 			children = (
 				639409EA1FB3642100C817FE /* SPXAlertViewModel.h */,
 				653D9C381FB757860035ACEC /* SPXAlertViewModel.mm */,
+				639C5AC71FB37DD300937367 /* SPXAlertViewModelBuilder.h */,
+				639C5AC81FB37DD300937367 /* SPXAlertViewModelBuilder.mm */,
 			);
 			name = Alert;
 			sourceTree = "<group>";
@@ -566,6 +573,7 @@
 			isa = PBXGroup;
 			children = (
 				653D9C3A1FB7B5E00035ACEC /* SPXAlertViewModelSpec.mm */,
+				653D9C3C1FB7BBCC0035ACEC /* SPXAlertViewModelBuilderSpec.mm */,
 			);
 			name = Alert;
 			sourceTree = "<group>";
@@ -1355,6 +1363,7 @@
 			files = (
 				885CA2B31FB301F2005380BD /* SPXProductDescriptorsFactorySpec.mm in Sources */,
 				CDCFDEF91F5C39B300C289BA /* NSDecimalNumber+LocalizationSpec.mm in Sources */,
+				653D9C3D1FB7BBCC0035ACEC /* SPXAlertViewModelBuilderSpec.mm in Sources */,
 				CDB513A51F66B0A10013577C /* SPXSubscriptionManagerSpec.mm in Sources */,
 				653D9C3B1FB7B5E00035ACEC /* SPXAlertViewModelSpec.mm in Sources */,
 			);
@@ -1364,6 +1373,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				639C5AC91FB37DD300937367 /* SPXAlertViewModelBuilder.mm in Sources */,
 				88720F9D1F9E1A4D00E18F05 /* SPXProductDescriptorsFactory.mm in Sources */,
 				CD60A5EA1FB34F6A0017D777 /* SPXSubscriptionGradientButton.mm in Sources */,
 				CDC8D4EB1F701EA300E7C929 /* SPXLocalization.mm in Sources */,
