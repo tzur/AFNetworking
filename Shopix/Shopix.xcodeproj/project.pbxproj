@@ -8,10 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		639C5AC91FB37DD300937367 /* SPXAlertViewModelBuilder.mm in Sources */ = {isa = PBXBuildFile; fileRef = 639C5AC81FB37DD300937367 /* SPXAlertViewModelBuilder.mm */; };
+		639C5ACC1FB4B47600937367 /* UIAlertController+ViewModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 639C5ACB1FB4B47600937367 /* UIAlertController+ViewModel.mm */; };
 		650BB33C1D465389008648A3 /* libExpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B425ED31CA6D218001C457E /* libExpecta.a */; };
 		650BB33E1D465389008648A3 /* libLTKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 650BB3221D465335008648A3 /* libLTKit.a */; };
 		650BB33F1D465389008648A3 /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B425EE51CA6D218001C457E /* libOCMock.a */; };
 		650BB3401D465389008648A3 /* libSpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B425F021CA6D218001C457E /* libSpecta.a */; };
+		653D9C371FB743110035ACEC /* UIAlertController+ViewModelSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 653D9C361FB743110035ACEC /* UIAlertController+ViewModelSpec.mm */; };
 		653D9C391FB757860035ACEC /* SPXAlertViewModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 653D9C381FB757860035ACEC /* SPXAlertViewModel.mm */; };
 		653D9C3B1FB7B5E00035ACEC /* SPXAlertViewModelSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 653D9C3A1FB7B5E00035ACEC /* SPXAlertViewModelSpec.mm */; };
 		653D9C3D1FB7BBCC0035ACEC /* SPXAlertViewModelBuilderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 653D9C3C1FB7BBCC0035ACEC /* SPXAlertViewModelBuilderSpec.mm */; };
@@ -367,8 +369,11 @@
 		639409EA1FB3642100C817FE /* SPXAlertViewModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SPXAlertViewModel.h; sourceTree = "<group>"; };
 		639C5AC71FB37DD300937367 /* SPXAlertViewModelBuilder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SPXAlertViewModelBuilder.h; sourceTree = "<group>"; };
 		639C5AC81FB37DD300937367 /* SPXAlertViewModelBuilder.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXAlertViewModelBuilder.mm; sourceTree = "<group>"; };
+		639C5ACA1FB4B47600937367 /* UIAlertController+ViewModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIAlertController+ViewModel.h"; sourceTree = "<group>"; };
+		639C5ACB1FB4B47600937367 /* UIAlertController+ViewModel.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIAlertController+ViewModel.mm"; sourceTree = "<group>"; };
 		650BB31C1D465335008648A3 /* LTKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LTKit.xcodeproj; path = ../LTKit/LTKit.xcodeproj; sourceTree = "<group>"; };
 		650BB3341D465359008648A3 /* TestHost.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TestHost.xcodeproj; path = ../../Foundations/TestHost.xcodeproj; sourceTree = "<group>"; };
+		653D9C361FB743110035ACEC /* UIAlertController+ViewModelSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIAlertController+ViewModelSpec.mm"; sourceTree = "<group>"; };
 		653D9C381FB757860035ACEC /* SPXAlertViewModel.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXAlertViewModel.mm; sourceTree = "<group>"; };
 		653D9C3A1FB7B5E00035ACEC /* SPXAlertViewModelSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXAlertViewModelSpec.mm; sourceTree = "<group>"; };
 		653D9C3C1FB7BBCC0035ACEC /* SPXAlertViewModelBuilderSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXAlertViewModelBuilderSpec.mm; sourceTree = "<group>"; };
@@ -523,6 +528,8 @@
 				653D9C381FB757860035ACEC /* SPXAlertViewModel.mm */,
 				639C5AC71FB37DD300937367 /* SPXAlertViewModelBuilder.h */,
 				639C5AC81FB37DD300937367 /* SPXAlertViewModelBuilder.mm */,
+				639C5ACA1FB4B47600937367 /* UIAlertController+ViewModel.h */,
+				639C5ACB1FB4B47600937367 /* UIAlertController+ViewModel.mm */,
 			);
 			name = Alert;
 			sourceTree = "<group>";
@@ -572,6 +579,7 @@
 		653D9C351FB742E20035ACEC /* Alert */ = {
 			isa = PBXGroup;
 			children = (
+				653D9C361FB743110035ACEC /* UIAlertController+ViewModelSpec.mm */,
 				653D9C3A1FB7B5E00035ACEC /* SPXAlertViewModelSpec.mm */,
 				653D9C3C1FB7BBCC0035ACEC /* SPXAlertViewModelBuilderSpec.mm */,
 			);
@@ -1364,6 +1372,7 @@
 				885CA2B31FB301F2005380BD /* SPXProductDescriptorsFactorySpec.mm in Sources */,
 				CDCFDEF91F5C39B300C289BA /* NSDecimalNumber+LocalizationSpec.mm in Sources */,
 				653D9C3D1FB7BBCC0035ACEC /* SPXAlertViewModelBuilderSpec.mm in Sources */,
+				653D9C371FB743110035ACEC /* UIAlertController+ViewModelSpec.mm in Sources */,
 				CDB513A51F66B0A10013577C /* SPXSubscriptionManagerSpec.mm in Sources */,
 				653D9C3B1FB7B5E00035ACEC /* SPXAlertViewModelSpec.mm in Sources */,
 			);
@@ -1378,6 +1387,7 @@
 				CD60A5EA1FB34F6A0017D777 /* SPXSubscriptionGradientButton.mm in Sources */,
 				CDC8D4EB1F701EA300E7C929 /* SPXLocalization.mm in Sources */,
 				CD8E8E2F1F5C19F500DF8FC1 /* NSDecimalNumber+Localization.mm in Sources */,
+				639C5ACC1FB4B47600937367 /* UIAlertController+ViewModel.mm in Sources */,
 				88B9B4FF1FA8BA980033D48F /* SPXPromotion.mm in Sources */,
 				88B9B4DA1FA8BA940033D48F /* SPXProductAxis.mm in Sources */,
 				653D9C391FB757860035ACEC /* SPXAlertViewModel.mm in Sources */,
