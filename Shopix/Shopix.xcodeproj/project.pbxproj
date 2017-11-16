@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		639409F01FB3650200C817FE /* SPXAlertViewControllerProvider.mm in Sources */ = {isa = PBXBuildFile; fileRef = 639409EF1FB3650200C817FE /* SPXAlertViewControllerProvider.mm */; };
 		639C5AC91FB37DD300937367 /* SPXAlertViewModelBuilder.mm in Sources */ = {isa = PBXBuildFile; fileRef = 639C5AC81FB37DD300937367 /* SPXAlertViewModelBuilder.mm */; };
 		639C5ACC1FB4B47600937367 /* UIAlertController+ViewModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 639C5ACB1FB4B47600937367 /* UIAlertController+ViewModel.mm */; };
 		650BB33C1D465389008648A3 /* libExpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B425ED31CA6D218001C457E /* libExpecta.a */; };
@@ -57,6 +58,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		63590B5F1FBDB3BC0044A48D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 650BB31C1D465335008648A3 /* LTKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 194FF4FC1FA8BA77008879E7;
+			remoteInfo = LTKitTestUtils;
+		};
 		650BB3211D465335008648A3 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 650BB31C1D465335008648A3 /* LTKit.xcodeproj */;
@@ -366,7 +374,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		639409E91FB3637600C817FE /* SPXAlertViewControllerProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SPXAlertViewControllerProvider.h; sourceTree = "<group>"; };
 		639409EA1FB3642100C817FE /* SPXAlertViewModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SPXAlertViewModel.h; sourceTree = "<group>"; };
+		639409EF1FB3650200C817FE /* SPXAlertViewControllerProvider.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXAlertViewControllerProvider.mm; sourceTree = "<group>"; };
 		639C5AC71FB37DD300937367 /* SPXAlertViewModelBuilder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SPXAlertViewModelBuilder.h; sourceTree = "<group>"; };
 		639C5AC81FB37DD300937367 /* SPXAlertViewModelBuilder.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXAlertViewModelBuilder.mm; sourceTree = "<group>"; };
 		639C5ACA1FB4B47600937367 /* UIAlertController+ViewModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIAlertController+ViewModel.h"; sourceTree = "<group>"; };
@@ -524,6 +534,8 @@
 		639409ED1FB364BF00C817FE /* Alert */ = {
 			isa = PBXGroup;
 			children = (
+				639409E91FB3637600C817FE /* SPXAlertViewControllerProvider.h */,
+				639409EF1FB3650200C817FE /* SPXAlertViewControllerProvider.mm */,
 				639409EA1FB3642100C817FE /* SPXAlertViewModel.h */,
 				653D9C381FB757860035ACEC /* SPXAlertViewModel.mm */,
 				639C5AC71FB37DD300937367 /* SPXAlertViewModelBuilder.h */,
@@ -1388,6 +1400,8 @@
 				CDC8D4EB1F701EA300E7C929 /* SPXLocalization.mm in Sources */,
 				CD8E8E2F1F5C19F500DF8FC1 /* NSDecimalNumber+Localization.mm in Sources */,
 				639C5ACC1FB4B47600937367 /* UIAlertController+ViewModel.mm in Sources */,
+				639409F01FB3650200C817FE /* SPXAlertViewControllerProvider.mm in Sources */,
+				CD8E8E2F1F5C19F500DF8FC1 /* NSDecimalNumber+Localization.mm in Sources */,
 				88B9B4FF1FA8BA980033D48F /* SPXPromotion.mm in Sources */,
 				88B9B4DA1FA8BA940033D48F /* SPXProductAxis.mm in Sources */,
 				653D9C391FB757860035ACEC /* SPXAlertViewModel.mm in Sources */,
