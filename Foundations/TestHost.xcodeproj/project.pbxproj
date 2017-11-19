@@ -143,9 +143,9 @@
 		652F75DA1D3D429F00EF9256 /* Configuration */ = {
 			isa = PBXGroup;
 			children = (
-				652F75DB1D3D429F00EF9256 /* Common.xcconfig */,
 				652F75DC1D3D429F00EF9256 /* Configurations */,
 				652F75E11D3D429F00EF9256 /* Targets */,
+				652F75DB1D3D429F00EF9256 /* Common.xcconfig */,
 			);
 			name = Configuration;
 			path = ../Configuration;
@@ -221,12 +221,12 @@
 		65CEFBB41D3BF72800402230 /* TestHost */ = {
 			isa = PBXGroup;
 			children = (
-				6505A7BA1F9351B2007569C8 /* TestHost.entitlements */,
-				65CEFBB61D3BF72800402230 /* main.m */,
-				65CEFBB81D3BF72800402230 /* FNDAppDelegate.h */,
-				65CEFBB91D3BF72800402230 /* FNDAppDelegate.mm */,
 				652F75301D3D1BE600EF9256 /* Resources */,
 				65CEFBB51D3BF72800402230 /* Supporting Files */,
+				65CEFBB81D3BF72800402230 /* FNDAppDelegate.h */,
+				65CEFBB91D3BF72800402230 /* FNDAppDelegate.mm */,
+				6505A7BA1F9351B2007569C8 /* TestHost.entitlements */,
+				65CEFBB61D3BF72800402230 /* main.m */,
 			);
 			path = TestHost;
 			sourceTree = "<group>";
@@ -234,9 +234,9 @@
 		65CEFBB51D3BF72800402230 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				65CEFBC61D3BF72800402230 /* Info.plist */,
 				65CEFBC31D3BF72800402230 /* LaunchScreen.storyboard */,
 				65BAF4A41D48BD08009BBB6F /* TestHost-Prefix.pch */,
-				65CEFBC61D3BF72800402230 /* Info.plist */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
