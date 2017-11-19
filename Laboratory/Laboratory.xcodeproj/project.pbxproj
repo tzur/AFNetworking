@@ -463,9 +463,9 @@
 				884962181EBA226E007B3AE8 /* UIKit.framework in Frameworks */,
 				A14173401E6EB59F005DBEFF /* libExpecta.a in Frameworks */,
 				A1674D971F01617A006A3B07 /* libFBTweak.a in Frameworks */,
-				A14171C61E6EAC0D005DBEFF /* libLaboratory.a in Frameworks */,
-				A14173411E6EB59F005DBEFF /* libLTKit.a in Frameworks */,
 				8B10C9A01F3F059200F76142 /* libLLReactiveMatchers.a in Frameworks */,
+				A14173411E6EB59F005DBEFF /* libLTKit.a in Frameworks */,
+				A14171C61E6EAC0D005DBEFF /* libLaboratory.a in Frameworks */,
 				A14173421E6EB59F005DBEFF /* libOCMock.a in Frameworks */,
 				A14173431E6EB59F005DBEFF /* libSpecta.a in Frameworks */,
 				882D1F181EC19A2C007F39F5 /* libcompression.tbd in Frameworks */,
@@ -523,8 +523,8 @@
 			children = (
 				A13C527D1EF177AE00BA2AAA /* LABDebugSourceSpec.mm */,
 				88440B981EDB19C200A64CF7 /* LABLocalSourceSpec.mm */,
-				884136081EEE6E220096BF8C /* LABTaplyticsSpec.mm */,
 				88349C131EF012C1007B14C4 /* LABTaplyticsSourceSpec.mm */,
+				884136081EEE6E220096BF8C /* LABTaplyticsSpec.mm */,
 				88F8C3D11F027DF30070F7E4 /* TLProperties+LaboratorySpec.mm */,
 			);
 			name = Sources;
@@ -587,8 +587,8 @@
 		A14171A21E6EAA93005DBEFF /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				A14171A11E6EAA93005DBEFF /* libLaboratory.a */,
 				A14171C11E6EAC0D005DBEFF /* LaboratoryTests.xctest */,
+				A14171A11E6EAA93005DBEFF /* libLaboratory.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -607,9 +607,9 @@
 		A14171B31E6EAAF6005DBEFF /* Configuration */ = {
 			isa = PBXGroup;
 			children = (
-				A14172601E6EAD9A005DBEFF /* Common.xcconfig */,
 				A14172611E6EAD9A005DBEFF /* Configurations */,
 				A14172641E6EAD9A005DBEFF /* Targets */,
+				A14172601E6EAD9A005DBEFF /* Common.xcconfig */,
 			);
 			name = Configuration;
 			sourceTree = "<group>";
@@ -617,9 +617,9 @@
 		A14171C21E6EAC0D005DBEFF /* LaboratoryTests */ = {
 			isa = PBXGroup;
 			children = (
+				A14172B91E6EB006005DBEFF /* Supporting Files */,
 				A17E87161F275DCF00F01834 /* Test Utils */,
 				A14173471E6EB62C005DBEFF /* Tests */,
-				A14172B91E6EB006005DBEFF /* Supporting Files */,
 			);
 			path = LaboratoryTests;
 			sourceTree = "<group>";
@@ -628,7 +628,6 @@
 			isa = PBXGroup;
 			children = (
 				A14172741E6EAEE7005DBEFF /* Expecta.xcodeproj */,
-				882D1F1D1EC1AC6E007F39F5 /* extobjc.xcodeproj */,
 				A1674D6C1F016166006A3B07 /* FBTweak.xcodeproj */,
 				8B10C9971F3F058700F76142 /* LLReactiveMatchers.xcodeproj */,
 				A14172691E6EADDF005DBEFF /* LTKit.xcodeproj */,
@@ -636,6 +635,7 @@
 				8B6863BB1F33474400F0EF4C /* ReactiveObjC.xcodeproj */,
 				A14172A41E6EAF0D005DBEFF /* Specta.xcodeproj */,
 				A14172D71E6EB2FF005DBEFF /* TestHost.xcodeproj */,
+				882D1F1D1EC1AC6E007F39F5 /* extobjc.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -750,8 +750,8 @@
 		A14175B41E6EBE37005DBEFF /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				88375E981EE9285E00A4B6FE /* CoreTelephony.framework */,
 				882D1F2D1EC1C497007F39F5 /* CoreGraphics.framework */,
+				88375E981EE9285E00A4B6FE /* CoreTelephony.framework */,
 				882D1F2F1EC1C49C007F39F5 /* GLKit.framework */,
 				88375E9A1EE9286500A4B6FE /* JavaScriptCore.framework */,
 				A18220B81F0398A500FC7C61 /* MessageUI.framework */,
