@@ -663,8 +663,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F965C9ED1CF318CE00005627 /* Accelerate.framework in Frameworks */,
 				83B731B11CDB92600090C0BF /* AVFoundation.framework in Frameworks */,
+				F965C9ED1CF318CE00005627 /* Accelerate.framework in Frameworks */,
 				8861FD191E5A290300CA1436 /* CoreGraphics.framework in Frameworks */,
 				8861FD451E5A293B00CA1436 /* CoreImage.framework in Frameworks */,
 				8861FD531E5A299A00CA1436 /* CoreLocation.framework in Frameworks */,
@@ -674,28 +674,28 @@
 				8861FD4F1E5A297A00CA1436 /* CoreVideo.framework in Frameworks */,
 				8861FD471E5A294F00CA1436 /* GLKit.framework in Frameworks */,
 				8861FD551E5A29C300CA1436 /* ImageIO.framework in Frameworks */,
-				83B72A7A1CD8E2FD0090C0BF /* libCamera.a in Frameworks */,
-				83B729001CD8D2080090C0BF /* libCameraUI.a in Frameworks */,
-				8BF68AA51D82E8200093910D /* libcompression.tbd in Frameworks */,
-				83B729E11CD8D7BE0090C0BF /* libExpecta.a in Frameworks */,
-				65061A251D463962003D45B1 /* libextobjc_iOS.a in Frameworks */,
-				F965C9E91CF3183100005627 /* libLTEngine.a in Frameworks */,
-				65061A061D463938003D45B1 /* libLTKit.a in Frameworks */,
-				8B10C83B1F3EFA9D00F76142 /* libLLReactiveMatchers.a in Frameworks */,
-				83B729E21CD8D7CC0090C0BF /* libOCMock.a in Frameworks */,
-				E4829F401E49D024009F3355 /* libOpenEXR.a in Frameworks */,
-				83B729E01CD8D7BA0090C0BF /* libSpecta.a in Frameworks */,
-				F9F42B0E1CF47E740050877E /* libWireframes.a in Frameworks */,
 				65061A261D46397F003D45B1 /* Mantle.framework in Frameworks */,
 				BEC7B1B01D1FFF3C0012C286 /* Masonry.framework in Frameworks */,
 				835057F01E150A750005D9C4 /* MediaPlayer.framework in Frameworks */,
 				288E8EC21D3BEAEC000B7E69 /* MobileCoreServices.framework in Frameworks */,
-				8861FD491E5A295400CA1436 /* OpenGLES.framework in Frameworks */,
 				F965C9DC1CF316F800005627 /* Objection-iOS.framework in Frameworks */,
-				83B731C41CDB92C00090C0BF /* opencv2.framework in Frameworks */,
+				8861FD491E5A295400CA1436 /* OpenGLES.framework in Frameworks */,
 				8861FD511E5A298D00CA1436 /* QuartzCore.framework in Frameworks */,
 				8B6867CF1F3B278500F0EF4C /* ReactiveObjC.framework in Frameworks */,
 				8861FD4B1E5A295C00CA1436 /* UIKit.framework in Frameworks */,
+				83B72A7A1CD8E2FD0090C0BF /* libCamera.a in Frameworks */,
+				83B729001CD8D2080090C0BF /* libCameraUI.a in Frameworks */,
+				83B729E11CD8D7BE0090C0BF /* libExpecta.a in Frameworks */,
+				8B10C83B1F3EFA9D00F76142 /* libLLReactiveMatchers.a in Frameworks */,
+				F965C9E91CF3183100005627 /* libLTEngine.a in Frameworks */,
+				65061A061D463938003D45B1 /* libLTKit.a in Frameworks */,
+				83B729E21CD8D7CC0090C0BF /* libOCMock.a in Frameworks */,
+				E4829F401E49D024009F3355 /* libOpenEXR.a in Frameworks */,
+				83B729E01CD8D7BA0090C0BF /* libSpecta.a in Frameworks */,
+				F9F42B0E1CF47E740050877E /* libWireframes.a in Frameworks */,
+				8BF68AA51D82E8200093910D /* libcompression.tbd in Frameworks */,
+				65061A251D463962003D45B1 /* libextobjc_iOS.a in Frameworks */,
+				83B731C41CDB92C00090C0BF /* opencv2.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -705,26 +705,26 @@
 		650619D21D463867003D45B1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				8861FD541E5A29C300CA1436 /* ImageIO.framework */,
-				8861FD521E5A299A00CA1436 /* CoreLocation.framework */,
-				8861FD501E5A298D00CA1436 /* QuartzCore.framework */,
-				8861FD4E1E5A297A00CA1436 /* CoreVideo.framework */,
-				8861FD4C1E5A297400CA1436 /* CoreText.framework */,
-				8861FD4A1E5A295C00CA1436 /* UIKit.framework */,
-				8861FD481E5A295400CA1436 /* OpenGLES.framework */,
-				8861FD461E5A294F00CA1436 /* GLKit.framework */,
-				8861FD441E5A293B00CA1436 /* CoreImage.framework */,
-				8861FD181E5A290300CA1436 /* CoreGraphics.framework */,
-				E4829F3F1E49D024009F3355 /* libOpenEXR.a */,
-				8BF68AA41D82E8200093910D /* libcompression.tbd */,
+				83B731B01CDB92600090C0BF /* AVFoundation.framework */,
 				F965C9EC1CF318CE00005627 /* Accelerate.framework */,
 				83B731B21CDB92640090C0BF /* AssetsLibrary.framework */,
-				83B731B01CDB92600090C0BF /* AVFoundation.framework */,
+				8861FD181E5A290300CA1436 /* CoreGraphics.framework */,
+				8861FD441E5A293B00CA1436 /* CoreImage.framework */,
+				8861FD521E5A299A00CA1436 /* CoreLocation.framework */,
 				83B731B41CDB92670090C0BF /* CoreMedia.framework */,
 				BEA275971D3284A2001BB8ED /* CoreMotion.framework */,
+				8861FD4C1E5A297400CA1436 /* CoreText.framework */,
+				8861FD4E1E5A297A00CA1436 /* CoreVideo.framework */,
+				8861FD461E5A294F00CA1436 /* GLKit.framework */,
+				8861FD541E5A29C300CA1436 /* ImageIO.framework */,
 				835057EF1E150A750005D9C4 /* MediaPlayer.framework */,
 				288E8EC11D3BEAEC000B7E69 /* MobileCoreServices.framework */,
 				F965C9BF1CF316E100005627 /* Objection-iOS.framework */,
+				8861FD481E5A295400CA1436 /* OpenGLES.framework */,
+				8861FD501E5A298D00CA1436 /* QuartzCore.framework */,
+				8861FD4A1E5A295C00CA1436 /* UIKit.framework */,
+				E4829F3F1E49D024009F3355 /* libOpenEXR.a */,
+				8BF68AA41D82E8200093910D /* libcompression.tbd */,
 				83B731C21CDB92A20090C0BF /* opencv2.framework */,
 			);
 			name = Frameworks;
@@ -784,8 +784,8 @@
 		83B728EC1CD8D1090090C0BF /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				83B728EB1CD8D1090090C0BF /* libCameraUI.a */,
 				83B728FB1CD8D2080090C0BF /* CameraUITests.xctest */,
+				83B728EB1CD8D1090090C0BF /* libCameraUI.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -795,8 +795,8 @@
 			children = (
 				BE4629501CDF1EE400D9F7E2 /* Bars */,
 				BE46294E1CDF1E0900D9F7E2 /* Preview */,
-				BE4629521CDF23C400D9F7E2 /* Utils */,
 				83B731931CDB922A0090C0BF /* Supporting Files */,
+				BE4629521CDF23C400D9F7E2 /* Utils */,
 			);
 			path = CameraUI;
 			sourceTree = "<group>";
@@ -806,9 +806,9 @@
 			children = (
 				BE4629531CDF245600D9F7E2 /* Bars */,
 				BE4629541CDF246400D9F7E2 /* Preview */,
+				83B731AF1CDB92320090C0BF /* Supporting Files */,
 				F935E5921D33DFD6003DEEE5 /* Test Utils */,
 				BE4629551CDF248200D9F7E2 /* Utils */,
-				83B731AF1CDB92320090C0BF /* Supporting Files */,
 			);
 			path = CameraUITests;
 			sourceTree = "<group>";
@@ -816,9 +816,9 @@
 		83B729061CD8D27F0090C0BF /* Configuration */ = {
 			isa = PBXGroup;
 			children = (
-				83B729071CD8D2900090C0BF /* Common.xcconfig */,
 				83B729081CD8D2900090C0BF /* Configurations */,
 				83B7290B1CD8D2900090C0BF /* Targets */,
+				83B729071CD8D2900090C0BF /* Common.xcconfig */,
 			);
 			name = Configuration;
 			sourceTree = "<group>";
@@ -849,7 +849,6 @@
 			children = (
 				83B72A171CD8E0B30090C0BF /* Camera.xcodeproj */,
 				83B729851CD8D68D0090C0BF /* Expecta.xcodeproj */,
-				65061A161D463954003D45B1 /* extobjc.xcodeproj */,
 				8B10C8321F3EFA9000F76142 /* LLReactiveMatchers.xcodeproj */,
 				83B731B61CDB928A0090C0BF /* LTEngine.xcodeproj */,
 				650619FD1D463932003D45B1 /* LTKit.xcodeproj */,
@@ -860,6 +859,7 @@
 				83B729701CD8D6890090C0BF /* Specta.xcodeproj */,
 				650619F31D46388F003D45B1 /* TestHost.xcodeproj */,
 				F9F42B001CF47E610050877E /* Wireframes.xcodeproj */,
+				65061A161D463954003D45B1 /* extobjc.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -1125,8 +1125,8 @@
 				BE3F84CB1D82DB690043F3E3 /* CUIDropDownHorizontalViewSpec.mm */,
 				BEC7B1AE1D1FFCE40012C286 /* CUIDropDownMenuItemsEntrySpec.mm */,
 				BE1D01081D203656008FA64F /* CUIDropDownViewSpec.mm */,
-				BECFD68F1D23AD6600361F3D /* CUIFlashModeViewModelSpec.mm */,
 				BE40FEC91D253776004A7C51 /* CUIFlashMenuViewModelSpec.mm */,
+				BECFD68F1D23AD6600361F3D /* CUIFlashModeViewModelSpec.mm */,
 				BECE31E11D3BA11900B96053 /* CUIFlipCameraViewModelSpec.mm */,
 				8328EDBB1D40F9E8008C5A19 /* CUIGridViewModelSpec.mm */,
 				BE97558E1D0077E10081A766 /* CUIMenuItemIconButtonSpec.mm */,
