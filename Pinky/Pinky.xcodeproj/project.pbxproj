@@ -709,9 +709,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				06FD92CB1EDC86E400D180C7 /* Accelerate.framework in Frameworks */,
-				06172C831F03F9E600379124 /* libprotobuf-lite.a in Frameworks */,
 				06FD92CD1EDC86EE00D180C7 /* AVFoundation.framework in Frameworks */,
+				06FD92CB1EDC86E400D180C7 /* Accelerate.framework in Frameworks */,
 				06FD92CE1EDC86F300D180C7 /* CoreGraphics.framework in Frameworks */,
 				060EA4441EDD86940041487A /* CoreImage.framework in Frameworks */,
 				060EA4451EDD86940041487A /* CoreMedia.framework in Frameworks */,
@@ -728,9 +727,7 @@
 				060EA44A1EDD870D0041487A /* OpenGLES.framework in Frameworks */,
 				06FD92D51EDC87DE00D180C7 /* QuartzCore.framework in Frameworks */,
 				06FD92D41EDC87DA00D180C7 /* UIKit.framework in Frameworks */,
-				06FD92D31EDC87C400D180C7 /* opencv2.framework in Frameworks */,
 				06FD92D21EDC874100D180C7 /* libExpecta.a in Frameworks */,
-				060EA4161EDD7E3C0041487A /* libextobjc_iOS.a in Frameworks */,
 				060EA4171EDD7E450041487A /* libLTEngine.a in Frameworks */,
 				060EA4181EDD7E4A0041487A /* libLTKit.a in Frameworks */,
 				06FD92D11EDC872E00D180C7 /* libOCMock.a in Frameworks */,
@@ -738,6 +735,9 @@
 				06FD92C11EDC85C600D180C7 /* libPinky.a in Frameworks */,
 				06FD92CF1EDC871100D180C7 /* libSpecta.a in Frameworks */,
 				06FD92D01EDC871F00D180C7 /* libcompression.tbd in Frameworks */,
+				060EA4161EDD7E3C0041487A /* libextobjc_iOS.a in Frameworks */,
+				06172C831F03F9E600379124 /* libprotobuf-lite.a in Frameworks */,
+				06FD92D31EDC87C400D180C7 /* opencv2.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -752,15 +752,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				06FD927F1EDC5E1C00D180C7 /* Accelerate.framework in Frameworks */,
 				06FD92881EDC5F4500D180C7 /* AVFoundation.framework in Frameworks */,
+				06FD927F1EDC5E1C00D180C7 /* Accelerate.framework in Frameworks */,
 				882D1F2E1EC1C497007F39F5 /* CoreGraphics.framework in Frameworks */,
 				8BB108A11EDD732C00B27DC4 /* CoreImage.framework in Frameworks */,
 				8BB1089B1EDD72E300B27DC4 /* CoreMedia.framework in Frameworks */,
 				8BB108991EDD72DE00B27DC4 /* CoreText.framework in Frameworks */,
 				8BB1089D1EDD72E700B27DC4 /* CoreVideo.framework in Frameworks */,
 				882D1F301EC1C49C007F39F5 /* GLKit.framework in Frameworks */,
-				06172C841F03F9E700379124 /* libprotobuf-lite.a in Frameworks */,
 				060EA4231EDD85DC0041487A /* ImageIO.framework in Frameworks */,
 				06FD929B1EDC5FAD00D180C7 /* Mantle.framework in Frameworks */,
 				8BB108A21EDD735100B27DC4 /* Metal.framework in Frameworks */,
@@ -770,9 +769,7 @@
 				8BB1089F1EDD72F700B27DC4 /* OpenGLES.framework in Frameworks */,
 				882D1F321EC1C54F007F39F5 /* QuartzCore.framework in Frameworks */,
 				884962181EBA226E007B3AE8 /* UIKit.framework in Frameworks */,
-				06FD92861EDC5F3900D180C7 /* opencv2.framework in Frameworks */,
 				A14173401E6EB59F005DBEFF /* libExpecta.a in Frameworks */,
-				060EA4141EDD7CC40041487A /* libextobjc_iOS.a in Frameworks */,
 				060EA4101EDD77080041487A /* libLTEngine.a in Frameworks */,
 				060EA4111EDD77160041487A /* libLTKit.a in Frameworks */,
 				A14173421E6EB59F005DBEFF /* libOCMock.a in Frameworks */,
@@ -780,6 +777,9 @@
 				A14171C61E6EAC0D005DBEFF /* libPinky.a in Frameworks */,
 				A14173431E6EB59F005DBEFF /* libSpecta.a in Frameworks */,
 				882D1F181EC19A2C007F39F5 /* libcompression.tbd in Frameworks */,
+				060EA4141EDD7CC40041487A /* libextobjc_iOS.a in Frameworks */,
+				06172C841F03F9E700379124 /* libprotobuf-lite.a in Frameworks */,
+				06FD92861EDC5F3900D180C7 /* opencv2.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -819,10 +819,10 @@
 				C9131E9F1EE0599D00E924DA /* EXPMatchers+beCloseToMat.mm */,
 				C9131EA01EE0599D00E924DA /* EXPMatchers+beCloseToScalar.h */,
 				C9131EA11EE0599D00E924DA /* EXPMatchers+beCloseToScalar.mm */,
-				C9131EA21EE0599D00E924DA /* EXPMatchers+equalMat.h */,
-				C9131EA31EE0599D00E924DA /* EXPMatchers+equalMat.mm */,
 				068D90B01F1F93450012F472 /* EXPMatchers+equalMTLSize.h */,
 				068D90B11F1F93450012F472 /* EXPMatchers+equalMTLSize.mm */,
+				C9131EA21EE0599D00E924DA /* EXPMatchers+equalMat.h */,
+				C9131EA31EE0599D00E924DA /* EXPMatchers+equalMat.mm */,
 				C9131EA41EE0599D00E924DA /* EXPMatchers+equalScalar.h */,
 				C9131EA51EE0599D00E924DA /* EXPMatchers+equalScalar.mm */,
 				C9131ED41EE05A4D00E924DA /* LTTestUtils+LTEngine.h */,
@@ -844,23 +844,23 @@
 		065F98261F24D0F70093D2B1 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				06CA9F911F25C1CE0097E554 /* Lena128.png */,
 				06C6BC7D1F7153BA005F57D4 /* conv2d_bias.weights */,
 				06C6BC7E1F7153BA005F57D4 /* conv2d_input.tensor */,
 				06C6BC5B1F7153B9005F57D4 /* conv2d_kernel.weights */,
 				06C6BC7C1F7153B9005F57D4 /* conv2d_output.tensor */,
+				06B924ED1F8955DE00D07848 /* instanceNorm_input.tensor */,
 				06B924FB1F8994E500D07848 /* instanceNorm_nonarray_input.tensor */,
 				06B924FD1F8994E500D07848 /* instanceNorm_nonarray_output.tensor */,
 				06B924FE1F8994E500D07848 /* instanceNorm_nonarray_scale.weights */,
 				06B924FC1F8994E500D07848 /* instanceNorm_nonarray_shift.weights */,
-				06B924ED1F8955DE00D07848 /* instanceNorm_input.tensor */,
 				06B924EC1F8955DE00D07848 /* instanceNorm_output.tensor */,
-				06B924EE1F8955DE00D07848 /* instanceNorm_scale.weights */,
-				06B924EB1F8955DE00D07848 /* instanceNorm_shift.weights */,
 				06B925031F89980B00D07848 /* instanceNorm_relu_input.tensor */,
 				06B925061F89980B00D07848 /* instanceNorm_relu_output.tensor */,
 				06B925041F89980B00D07848 /* instanceNorm_relu_scale.weights */,
 				06B925051F89980B00D07848 /* instanceNorm_relu_shift.weights */,
-				06CA9F911F25C1CE0097E554 /* Lena128.png */,
+				06B924EE1F8955DE00D07848 /* instanceNorm_scale.weights */,
+				06B924EB1F8955DE00D07848 /* instanceNorm_shift.weights */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -868,9 +868,9 @@
 		068D90A51F1F5D050012F472 /* Neural Networks */ = {
 			isa = PBXGroup;
 			children = (
+				064723ED1F98F06E008EBAF8 /* PNKConditionalInstanceNormLayerSpec.mm */,
 				06463BAB1F3A62220087E057 /* PNKConvolutionLayerSpec.mm */,
 				06B924C91F8946D300D07848 /* PNKInstanceNormLayerSpec.mm */,
-				064723ED1F98F06E008EBAF8 /* PNKConditionalInstanceNormLayerSpec.mm */,
 			);
 			name = "Neural Networks";
 			sourceTree = "<group>";
@@ -939,17 +939,17 @@
 				06C9E7FC1F793C6800D8A77F /* PNKAddition.h */,
 				06C9E7FE1F793C6800D8A77F /* PNKAddition.metal */,
 				06C9E7FD1F793C6800D8A77F /* PNKAddition.mm */,
-				C9791ADC1F026D260009E90F /* PNKConstantAlpha.metal */,
 				C9791AFE1F026E180009E90F /* PNKConstantAlpha.h */,
+				C9791ADC1F026D260009E90F /* PNKConstantAlpha.metal */,
 				C9791AFF1F026E180009E90F /* PNKConstantAlpha.mm */,
-				C9231FA41F04F1F9009E4FDB /* PNKGammaCorrection.metal */,
 				C9231F811F04EF7F009E4FDB /* PNKGammaCorrection.h */,
+				C9231FA41F04F1F9009E4FDB /* PNKGammaCorrection.metal */,
 				C9231F821F04EF7F009E4FDB /* PNKGammaCorrection.mm */,
-				06C9E8011F793D3900D8A77F /* PNKNearestNeighborUpsampling.metal */,
 				06C9E8021F793D3900D8A77F /* PNKNearestNeighborUpsampling.h */,
+				06C9E8011F793D3900D8A77F /* PNKNearestNeighborUpsampling.metal */,
 				06C9E8031F793D3900D8A77F /* PNKNearestNeighborUpsampling.mm */,
-				06C9E8081F793E7400D8A77F /* PNKReflectionPadding.metal */,
 				06C9E8071F793E7400D8A77F /* PNKReflectionPadding.h */,
+				06C9E8081F793E7400D8A77F /* PNKReflectionPadding.metal */,
 				06C9E8061F793E7400D8A77F /* PNKReflectionPadding.mm */,
 				06C3F75F1EFF9E5B00D4B1F4 /* PNKSingleStyleTransferProcessor.h */,
 				06C3F7601EFF9E5B00D4B1F4 /* PNKSingleStyleTransferProcessor.mm */,
@@ -1001,9 +1001,9 @@
 			isa = PBXGroup;
 			children = (
 				065F98261F24D0F70093D2B1 /* Resources */,
-				06FD92DD1EDC88C800D180C7 /* Tests */,
-				063894FB1EFFE74300329145 /* Test Utils */,
 				06FD92DF1EDC890300D180C7 /* Supporting Files */,
+				063894FB1EFFE74300329145 /* Test Utils */,
+				06FD92DD1EDC88C800D180C7 /* Tests */,
 			);
 			path = PinkyDeviceTests;
 			sourceTree = "<group>";
@@ -1066,10 +1066,10 @@
 		A14171A21E6EAA93005DBEFF /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				A14171A11E6EAA93005DBEFF /* libPinky.a */,
-				A14171C11E6EAC0D005DBEFF /* PinkyTests.xctest */,
 				06FD92A11EDC66E500D180C7 /* Pinky.bundle */,
 				06FD92BC1EDC85C600D180C7 /* PinkyDeviceTests.xctest */,
+				A14171C11E6EAC0D005DBEFF /* PinkyTests.xctest */,
+				A14171A11E6EAA93005DBEFF /* libPinky.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1091,9 +1091,9 @@
 		A14171B31E6EAAF6005DBEFF /* Configuration */ = {
 			isa = PBXGroup;
 			children = (
-				A14172601E6EAD9A005DBEFF /* Common.xcconfig */,
 				A14172611E6EAD9A005DBEFF /* Configurations */,
 				A14172641E6EAD9A005DBEFF /* Targets */,
+				A14172601E6EAD9A005DBEFF /* Common.xcconfig */,
 			);
 			name = Configuration;
 			sourceTree = "<group>";
@@ -1102,8 +1102,8 @@
 			isa = PBXGroup;
 			children = (
 				F92465B91F42C27500ECB4DA /* Resources */,
-				A14173471E6EB62C005DBEFF /* Tests */,
 				A14172B91E6EB006005DBEFF /* Supporting Files */,
+				A14173471E6EB62C005DBEFF /* Tests */,
 			);
 			path = PinkyTests;
 			sourceTree = "<group>";
@@ -1210,9 +1210,9 @@
 				06EDBCB91F8C03EC00A3FF1E /* LTRef+Pinky.h */,
 				060EA49C1EDD9CC20041487A /* NSBundle+PinkyBundle.h */,
 				060EA49D1EDD9CC20041487A /* NSBundle+PinkyBundle.mm */,
-				A14172BB1E6EB07E005DBEFF /* Pinky-Prefix.pch */,
 				060EA49B1EDD9C740041487A /* PNKDefines.h */,
 				0639ADAE1F03FBC1009CAA3F /* PNKProtobufMacros.h */,
+				A14172BB1E6EB07E005DBEFF /* Pinky-Prefix.pch */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -1228,8 +1228,8 @@
 		A14173471E6EB62C005DBEFF /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				F92465B51F42C20D00ECB4DA /* Serialization */,
 				06C3F7621EFFD9EA00D4B1F4 /* Image Processing */,
+				F92465B51F42C20D00ECB4DA /* Serialization */,
 			);
 			name = Tests;
 			sourceTree = "<group>";
@@ -1237,28 +1237,28 @@
 		A14175B41E6EBE37005DBEFF /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				060EA4221EDD85DC0041487A /* ImageIO.framework */,
-				8BB108A01EDD732C00B27DC4 /* CoreImage.framework */,
-				8BB1089E1EDD72F700B27DC4 /* OpenGLES.framework */,
-				8BB1089C1EDD72E700B27DC4 /* CoreVideo.framework */,
-				8BB1089A1EDD72E300B27DC4 /* CoreMedia.framework */,
-				8BB108981EDD72DE00B27DC4 /* CoreText.framework */,
-				06FD928A1EDC5F6A00D180C7 /* AssetsLibrary.framework */,
 				06FD92871EDC5F4500D180C7 /* AVFoundation.framework */,
 				06FD91AA1EDC31BB00D180C7 /* Accelerate.framework */,
+				06FD928A1EDC5F6A00D180C7 /* AssetsLibrary.framework */,
 				882D1F2D1EC1C497007F39F5 /* CoreGraphics.framework */,
+				8BB108A01EDD732C00B27DC4 /* CoreImage.framework */,
+				8BB1089A1EDD72E300B27DC4 /* CoreMedia.framework */,
+				8BB108981EDD72DE00B27DC4 /* CoreText.framework */,
+				8BB1089C1EDD72E700B27DC4 /* CoreVideo.framework */,
 				882D1F2F1EC1C49C007F39F5 /* GLKit.framework */,
-				882D1F171EC19A2C007F39F5 /* libcompression.tbd */,
-				06FD92821EDC5E6C00D180C7 /* libOpenEXR.a */,
-				06172C811F03F9DF00379124 /* libprotobuf-lite.a */,
+				060EA4221EDD85DC0041487A /* ImageIO.framework */,
 				06FD91A41EDC318700D180C7 /* Metal.framework */,
 				06FD91A61EDC319000D180C7 /* MetalKit.framework */,
 				06FD91A81EDC319800D180C7 /* MetalPerformanceShaders.framework */,
 				06FD92801EDC5E2D00D180C7 /* MobileCoreServices.framework */,
 				06FD92841EDC5ED500D180C7 /* Objection-iOS.framework */,
-				06FD927D1EDC5DE500D180C7 /* opencv2.framework */,
+				8BB1089E1EDD72F700B27DC4 /* OpenGLES.framework */,
 				882D1F311EC1C54F007F39F5 /* QuartzCore.framework */,
 				A1417A911E6ED9CB005DBEFF /* UIKit.framework */,
+				06FD92821EDC5E6C00D180C7 /* libOpenEXR.a */,
+				882D1F171EC19A2C007F39F5 /* libcompression.tbd */,
+				06172C811F03F9DF00379124 /* libprotobuf-lite.a */,
+				06FD927D1EDC5DE500D180C7 /* opencv2.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1272,10 +1272,10 @@
 				06EDBCBD1F8C931900A3FF1E /* MPSTemporaryImage+Factory.mm */,
 				06EDBD541F8FB18D00A3FF1E /* PNKBufferExtensions.h */,
 				06EDBD551F8FB18D00A3FF1E /* PNKBufferExtensions.mm */,
-				06E98DDE1F2149710047F80A /* PNKComputeState.h */,
-				06E98DDF1F2149710047F80A /* PNKComputeState.mm */,
 				C91884531F0D27B90090818A /* PNKComputeDispatch.h */,
 				C91884541F0D27B90090818A /* PNKComputeDispatch.mm */,
+				06E98DDE1F2149710047F80A /* PNKComputeState.h */,
+				06E98DDF1F2149710047F80A /* PNKComputeState.mm */,
 				06A0A94B1F1B484700941045 /* PNKKernel.h */,
 				C9ADC5111EFFE06200C87932 /* PNKLibraryLoader.h */,
 				C9ADC5121EFFE06200C87932 /* PNKLibraryLoader.mm */,
@@ -1331,8 +1331,8 @@
 			children = (
 				F9D7DC591F4ACB950095DCE5 /* affine.nnmodel */,
 				F9D7DC5B1F4ACDB00095DCE5 /* batchnorm.nnmodel */,
-				F9D7DB041F457F760095DCE5 /* conv_rgb_bias_preprocessing.nnmodel */,
 				F9D7DC311F45B14E0095DCE5 /* conv_no_bias.nnmodel */,
+				F9D7DB041F457F760095DCE5 /* conv_rgb_bias_preprocessing.nnmodel */,
 				F9D7DC321F45B14E0095DCE5 /* deconv.nnmodel */,
 				F990284B1F6FF17400883DF8 /* illegal.nnmodel */,
 				F9D7DC5D1F4AD4E40095DCE5 /* instnorm.nnmodel */,
@@ -2131,11 +2131,7 @@
 				);
 				INFOPLIST_FILE = PinkyTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				"OTHER_LDFLAGS[sdk=iphoneos*]" = (
-					"$(inherited)",
-					"-framework",
-					MetalPerformanceShaders,
-				);
+				"OTHER_LDFLAGS[sdk=iphoneos*]" = "$(inherited) -framework MetalPerformanceShaders";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.Lightricks.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
@@ -2158,11 +2154,7 @@
 				);
 				INFOPLIST_FILE = PinkyTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				"OTHER_LDFLAGS[sdk=iphoneos*]" = (
-					"$(inherited)",
-					"-framework",
-					MetalPerformanceShaders,
-				);
+				"OTHER_LDFLAGS[sdk=iphoneos*]" = "$(inherited) -framework MetalPerformanceShaders";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.Lightricks.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
