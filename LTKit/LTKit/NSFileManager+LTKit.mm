@@ -45,6 +45,11 @@ NS_ASSUME_NONNULL_BEGIN
   return applicationSupportDirectory;
 }
 
+- (BOOL)lt_fileExistsAtPath:(NSString *)path {
+  BOOL isDirectory;
+  return [self fileExistsAtPath:path isDirectory:&isDirectory] && !isDirectory;
+}
+
 - (BOOL)lt_directoryExistsAtPath:(NSString *)path {
   BOOL isDirectory;
   return [self fileExistsAtPath:path isDirectory:&isDirectory] && isDirectory;
