@@ -601,7 +601,6 @@
 		6523974C1D47F6DF00222BCB /* Projects */ = {
 			isa = PBXGroup;
 			children = (
-				65BAF2BC1D4801B1009BBB6F /* TestHost.xcodeproj */,
 				65BAF0FE1D47F99B009BBB6F /* Bazaar.xcodeproj */,
 				6A089D601DFEE26E00AC10A9 /* Blueprints.xcodeproj */,
 				65BAF1071D47F9A3009BBB6F /* Camera.xcodeproj */,
@@ -609,13 +608,14 @@
 				65BAF1191D47F9B3009BBB6F /* DaVinci.xcodeproj */,
 				65BAF1221D47F9B9009BBB6F /* Fiber.xcodeproj */,
 				A14176B21E6EBE8C005DBEFF /* Intelligence.xcodeproj */,
-				884961A61EBA1E9B007B3AE8 /* Laboratory.xcodeproj */,
 				65BAF12B1D47F9C9009BBB6F /* LTEngine.xcodeproj */,
 				65BAF1371D47F9D2009BBB6F /* LTKit.xcodeproj */,
+				884961A61EBA1E9B007B3AE8 /* Laboratory.xcodeproj */,
 				65BAF1401D47F9DC009BBB6F /* Photons.xcodeproj */,
 				65BAF1491D47F9E1009BBB6F /* PhotonsUI.xcodeproj */,
 				062776391ED586D50006024E /* Pinky.xcodeproj */,
 				CD962D7B1F54261300F2CA82 /* Shopix.xcodeproj */,
+				65BAF2BC1D4801B1009BBB6F /* TestHost.xcodeproj */,
 				B4EDC8481FB0AC46002FE151 /* TinCan.xcodeproj */,
 				65BAF1521D47F9EA009BBB6F /* Wireframes.xcodeproj */,
 			);
