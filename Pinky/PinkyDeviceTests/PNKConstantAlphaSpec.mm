@@ -93,7 +93,7 @@ context(@"PNKUnaryKernel with MPSTemporaryImage", ^{
     return @{
       kPNKTemporaryImageExamplesKernel: alphaLayer,
       kPNKTemporaryImageExamplesDevice: device,
-      kPNKTemporaryImageExamplesIsArray: @(NO)
+      kPNKTemporaryImageExamplesInputChannels: @(kInputFeatureChannels)
     };
   });
 });

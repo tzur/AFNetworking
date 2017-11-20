@@ -23,7 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation PNKConstantAlpha
 
-@synthesize isInputArray = _isInputArray;
+@synthesize inputFeatureChannels = _inputFeatureChannels;
 
 /// Kernel function name.
 static NSString * const kKernelFunctionName = @"setConstantAlpha";
@@ -35,7 +35,7 @@ static NSString * const kKernelFunctionName = @"setConstantAlpha";
 - (instancetype)initWithDevice:(id<MTLDevice>)device alpha:(float)alpha {
   if (self = [super init]) {
     _device = device;
-    _isInputArray = NO;
+    _inputFeatureChannels = 4;
 
     [self createStateWithAlpha:alpha];
   }
