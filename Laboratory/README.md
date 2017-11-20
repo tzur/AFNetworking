@@ -43,17 +43,17 @@ By convention, experiment names must use `UpperCamelCase`.
 
 #### Experiment Example
 An experiment called `SubscriptionScreenTheme` has the keys `subscribeScreenFontColor` which defines the color of the font in the subscribe screen and `subscribeScreenFontSize` that defines the font size of the subscribe screen.
-The options for `subscribeScreenFontSize` are `10` and `12`. The options for `subscribeScreenFontColor` are `blue` and `yellow`. We end up with 4 variants:
+The options for `subscribeScreenFontSize` are `10` and `12`. The options for `subscribeScreenFontColor` are `blue` and `red`. We end up with 4 variants:
 
 |                                  | `subscribeScreenFontSize` | `subscribeScreenFontColor` |
 |----------------------------------|---------------------------|----------------------------|
 | SubscriptionScreenThemeSmallBlue | `10`                      | `blue`                     |
 | SubscriptionScreenThemeLargeBlue | `12`                      | `blue`                     |
-| SubscriptionScreenThemeSmallRed  | `10`                      | `yellow`                   |
-| SubscriptionScreenThemeLargeRed  | `12`                      | `yellow`                   |
+| SubscriptionScreenThemeSmallRed  | `10`                      | `red`                   |
+| SubscriptionScreenThemeLargeRed  | `12`                      | `red`                   |
 
 This experiment can also be implemented using only one key called `theme` which has the 4 above mentioned options for its values.
-**Note**: It is up to the app to convert the `blue` and `yellow` strings to specific color objects. Another option is to set the `subscribeScreenFontColor` to the hex value of the color.
+**Note**: It is up to the app to convert the `blue` and `red` strings to specific color objects. Another option is to set the `subscribeScreenFontColor` to the hex value of the color.
 
 ### Active Experiments and Variants
 Only one variant for each experiment can be assigned to a device at specific point in time, by using the [`SubscriptionScreenTheme` example](#experiment-example) again, only one of the variants can be assigned to a device. This selected variant is called the active variant.
