@@ -20,9 +20,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// in order to receive the correct region.
 - (MTLRegion)inputRegionForOutputSize:(MTLSize)outputSize;
 
-/// \c YES iff the kernel expects texture of array type as input for encoding. Kernels only support
-/// array or non-array types and not both.
-@property (readonly, nonatomic) BOOL isInputArray;
+/// Number of feature channels per pixel in the input image.
+@property (readonly, nonatomic) NSUInteger inputFeatureChannels;
 
 @end
 
@@ -50,9 +49,11 @@ NS_ASSUME_NONNULL_BEGIN
 /// be set prior to calling this method in order to receive the correct region.
 - (MTLRegion)secondaryInputRegionForOutputSize:(MTLSize)outputSize;
 
-/// \c YES iff the kernel expects texture of array type as input for encoding. Kernels only support
-/// array or non-array types and not both.
-@property (readonly, nonatomic) BOOL isInputArray;
+/// Number of feature channels per pixel in the primary input image.
+@property (readonly, nonatomic) NSUInteger primaryInputFeatureChannels;
+
+/// Number of feature channels per pixel in the secondary input image.
+@property (readonly, nonatomic) NSUInteger secondaryInputFeatureChannels;
 
 @end
 
