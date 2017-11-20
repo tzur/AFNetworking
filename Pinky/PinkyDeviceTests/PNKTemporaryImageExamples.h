@@ -18,5 +18,5 @@ extern NSString * const kPNKTemporaryImageExamplesKernel;
 /// Dictionary key to the \c MTLDevice used to create the kernel to be tested.
 extern NSString * const kPNKTemporaryImageExamplesDevice;
 
-/// Dictionary key stating if the input image is a texture array.
-extern NSString * const kPNKTemporaryImageExamplesIsArray;
+/// Dictionary key stating the number of feature channels in the input images.
+extern NSString * const kPNKTemporaryImageExamplesInputChannels;

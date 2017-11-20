@@ -9,7 +9,8 @@ NSString * const kPNKTemporaryImageUnaryExamples = @"PNKTemporaryImageUnaryExamp
 NSString * const kPNKTemporaryImageBinaryExamples = @"PNKTemporaryImageBinaryExamples";
 NSString * const kPNKTemporaryImageExamplesKernel = @"PNKTemporaryImageExamplesKernel";
 NSString * const kPNKTemporaryImageExamplesDevice = @"PNKTemporaryImageExamplesDevice";
-NSString * const kPNKTemporaryImageExamplesIsArray = @"PNKTemporaryImageExamplesIsArray";
+NSString * const kPNKTemporaryImageExamplesInputChannels =
+    @"PNKTemporaryImageExamplesInputChannels";
 
 SharedExamplesBegin(PNKTemporaryImageExamples)
 
@@ -18,7 +19,7 @@ sharedExamplesFor(kPNKTemporaryImageUnaryExamples, ^(NSDictionary *data) {
     it(@"should manage readCount properly upon consumption", ^{
       id<PNKUnaryKernel> unaryKernel = data[kPNKTemporaryImageExamplesKernel];
       id<MTLDevice> device = data[kPNKTemporaryImageExamplesDevice];
-      NSUInteger channels = [data[kPNKTemporaryImageExamplesIsArray] boolValue] ? 32 : 3;
+      NSUInteger channels = [data[kPNKTemporaryImageExamplesInputChannels] unsignedIntegerValue];
 
       auto commandQueue = [device newCommandQueue];
       id<MTLCommandBuffer> commandBuffer = [commandQueue commandBuffer];
@@ -49,7 +50,7 @@ sharedExamplesFor(kPNKTemporaryImageBinaryExamples, ^(NSDictionary *data) {
     it(@"should manage readCount properly upon consumption", ^{
       id<PNKBinaryKernel> binaryKernel = data[kPNKTemporaryImageExamplesKernel];
       id<MTLDevice> device = data[kPNKTemporaryImageExamplesDevice];
-      NSUInteger channels = [data[kPNKTemporaryImageExamplesIsArray] boolValue] ? 32 : 3;
+      NSUInteger channels = [data[kPNKTemporaryImageExamplesInputChannels] unsignedIntegerValue];
 
       auto commandQueue = [device newCommandQueue];
       id<MTLCommandBuffer> commandBuffer = [commandQueue commandBuffer];
