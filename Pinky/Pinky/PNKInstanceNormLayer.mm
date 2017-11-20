@@ -29,7 +29,6 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize strideX = _strideX;
 @synthesize strideY = _strideY;
 @synthesize groups = _groups;
-@synthesize isInputArray = _isInputArray;
 
 #pragma mark -
 #pragma mark Initialization
@@ -73,7 +72,6 @@ NS_ASSUME_NONNULL_BEGIN
   _strideX = 1;
   _strideY = 1;
   _groups = 1;
-  _isInputArray = model.inputFeatureChannels > 4;
 }
 
 #pragma mark -
