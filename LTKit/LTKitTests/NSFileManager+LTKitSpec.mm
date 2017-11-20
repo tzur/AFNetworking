@@ -323,6 +323,16 @@ context(@"common directories", ^{
     expect(path).to.endWith(@"Application Support");
   });
 
+  it(@"should return YES if file exists at path", ^{
+    [fileManager createDirectoryAtPath:LTTemporaryPath() withIntermediateDirectories:YES
+                            attributes:nil error:nil];
+    [fileManager lt_writeDictionary:@{} toFile:LTTemporaryPath(@"file") error:nil];
+    expect([fileManager lt_fileExistsAtPath:LTTemporaryPath(@"file")]).to.beTruthy();
+
+    [fileManager removeItemAtPath:LTTemporaryPath() error:nil];
+    expect([fileManager lt_fileExistsAtPath:LTTemporaryPath(@"file")]).to.beFalsy();
+  });
+
   it(@"should return YES if directory exists at path", ^{
     expect([fileManager lt_directoryExistsAtPath:LTTemporaryPath()]).to.beFalsy();
 
