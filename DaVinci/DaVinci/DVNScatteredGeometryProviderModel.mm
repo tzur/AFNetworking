@@ -9,17 +9,21 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@interface DVNScatteredGeometryProviderModel ()
+
+/// Returns a new instance equal to this instance, with the exception of the given
+/// \c geometryProviderModel and \c randomState.
+- (instancetype)copyWithGeometryProviderModel:(id<DVNGeometryProviderModel>)geometryProviderModel
+                                  randomState:(LTRandomState *)randomState;
+
+@end
+
 /// Geometry provider constructible from \c DVNScatteredGeometryProviderModel objects.
 @interface DVNScatteredGeometryProvider : NSObject <DVNGeometryProvider>
 
-/// Initializes with the given \c geometryProvider, \c randomState, \c count, \c distance, \c angle
-/// and \c scale.
+/// Initializes with the given \c geometryProvider and \c model.
 - (instancetype)initWithGeometryProvider:(id<DVNGeometryProvider>)geometryProvider
-                             randomState:(LTRandomState *)randomState
-                                   count:(lt::Interval<NSUInteger>)count
-                                distance:(lt::Interval<CGFloat>)distance
-                                   angle:(lt::Interval<CGFloat>)angle
-                                   scale:(lt::Interval<CGFloat>)scale;
+                                   model:(DVNScatteredGeometryProviderModel *)model;
 
 @end
 
@@ -28,40 +32,27 @@ NS_ASSUME_NONNULL_BEGIN
 /// Underlying geometry provider of this instance.
 @property (readonly, nonatomic) id<DVNGeometryProvider> geometryProvider;
 
-/// Support of the discrete uniform distribution used to draw values specify number of instances to
-/// create for each quad.
-@property (readonly, nonatomic) lt::Interval<NSUInteger> count;
-
-/// Support of the uniform distribution used to draw values specify the translation. Must be in
-/// range <tt>[0, inf)</tt>.
-@property (readonly, nonatomic) lt::Interval<CGFloat> distance;
-
-/// Support of the uniform distribution used to draw values specify the rotation.
-@property (readonly, nonatomic) lt::Interval<CGFloat> angle;
-
-/// Support of the uniform distribution used to draw values specify the scaling.
-@property (readonly, nonatomic) lt::Interval<CGFloat> scale;
-
 /// Random object for sampling flow.
 @property (readonly, nonatomic) LTRandom *random;
+
+/// Model provided upon initialization.
+@property (readonly, nonatomic) DVNScatteredGeometryProviderModel *model;
+
+/// Indication whether tapering is performed.
+@property (readonly, nonatomic) BOOL performsTapering;
 
 @end
 
 @implementation DVNScatteredGeometryProvider
 
 - (instancetype)initWithGeometryProvider:(id<DVNGeometryProvider>)geometryProvider
-                             randomState:(LTRandomState *)randomState
-                                   count:(lt::Interval<NSUInteger>)count
-                                distance:(lt::Interval<CGFloat>)distance
-                                   angle:(lt::Interval<CGFloat>)angle
-                                   scale:(lt::Interval<CGFloat>)scale {
+                                   model:(DVNScatteredGeometryProviderModel *)model {
   if (self = [super init]) {
-    _random = [[LTRandom alloc] initWithState:randomState];
+    _random = [[LTRandom alloc] initWithState:model.randomState];
     _geometryProvider = geometryProvider;
-    _count = count;
-    _distance = distance;
-    _angle = angle;
-    _scale = scale;
+    _model = model;
+    _performsTapering = (model.lengthOfStartTapering > 0 || model.lengthOfEndTapering > 0) &&
+        model.minimumTaperingScaleFactor < 1;
   }
   return self;
 }
@@ -74,40 +65,62 @@ NS_ASSUME_NONNULL_BEGIN
   std::vector<NSUInteger> indices;
   indices.reserve(originalQuads.size());
 
-  for (NSUInteger index : values.indices()) {
-    NSUInteger count = [self.random randomIntegerBetweenMin:(int)self.count.inf()
-                                                        max:(int)self.count.sup()];
+  CGFloats sampledParametricValues = samples.sampledParametricValues;
+  CGFloat minParametricValue = sampledParametricValues.front();
+  CGFloat maxParametricValue = sampledParametricValues.back();
+  CGFloat length = maxParametricValue - minParametricValue;
 
-    for (NSUInteger i = 0; i < count; ++i) {
-      quads.push_back([self randomlyTransformedQuadFromQuad:originalQuads[index]]);
+  for (NSUInteger i = 0; i < sampledParametricValues.size(); ++i) {
+    NSUInteger count = [self.random randomIntegerBetweenMin:(int)self.model.count.inf()
+                                                        max:(int)self.model.count.sup()];
+    CGFloat taperingScaleFactor = 1;
+
+    if (self.performsTapering) {
+      CGFloat parametricValue = sampledParametricValues[i];
+      taperingScaleFactor = std::min((parametricValue + 1) / self.model.lengthOfStartTapering,
+                                     (CGFloat)1.0);
+      if (end) {
+        CGFloat endTaperingScaleFactor =
+            std::min(length > self.model.lengthOfEndTapering ?
+                     (maxParametricValue - parametricValue) / self.model.lengthOfEndTapering :
+                     (maxParametricValue - parametricValue) / length, (CGFloat)1.0);
+        taperingScaleFactor *= endTaperingScaleFactor;
+      }
+      taperingScaleFactor = std::max(pow(taperingScaleFactor, self.model.taperingExponent),
+                                     self.model.minimumTaperingScaleFactor);
+    }
+
+    NSUInteger index = values.indices()[i];
+
+    for (NSUInteger j = 0; j < count; ++j) {
+      quads.push_back([self randomlyTransformedQuadFromQuad:originalQuads[index]
+                                        taperingScaleFactor:taperingScaleFactor]);
       indices.push_back(index);
     }
   }
   return dvn::GeometryValues(quads, indices, values.samples());
 }
 
-- (lt::Quad)randomlyTransformedQuadFromQuad:(lt::Quad)quad {
-  CGFloat distanceLength = [self.random randomDoubleBetweenMin:self.distance.inf()
-                                                           max:self.distance.sup()];
+- (lt::Quad)randomlyTransformedQuadFromQuad:(lt::Quad)quad
+                        taperingScaleFactor:(CGFloat)taperingScaleFactor {
+  CGFloat distanceLength = [self.random randomDoubleBetweenMin:self.model.distance.inf()
+                                                           max:self.model.distance.sup()];
   CGPoint distance = CGPoint(LTVector2::angle([self.random randomDoubleBetweenMin:0 max:M_PI * 2]) *
                              distanceLength);
-  CGFloat angle = [self.random randomDoubleBetweenMin:self.angle.inf() max:self.angle.sup()];
-  CGFloat scale = [self.random randomDoubleBetweenMin:self.scale.inf() max:self.scale.sup()];
+  CGFloat angle = [self.random randomDoubleBetweenMin:self.model.angle.inf()
+                                                  max:self.model.angle.sup()];
+  CGFloat scale = [self.random randomDoubleBetweenMin:self.model.scale.inf()
+                                                  max:self.model.scale.sup()];
   return quad
       .rotatedAroundPoint(angle, quad.center())
-      .scaledAround(scale, quad.center())
-      .translatedBy(distance);
+      .scaledBy(scale * taperingScaleFactor)
+      .translatedBy(distance * taperingScaleFactor);
 }
 
 - (id<DVNGeometryProviderModel>)currentModel {
   id<DVNGeometryProviderModel> model = [self.geometryProvider currentModel];
   LTRandomState *randomState = self.random.engineState;
-  return [[DVNScatteredGeometryProviderModel alloc] initWithGeometryProviderModel:model
-                                                                      randomState:randomState
-                                                                            count:self.count
-                                                                         distance:self.distance
-                                                                            angle:self.angle
-                                                                            scale:self.scale];
+  return [self.model copyWithGeometryProviderModel:model randomState:randomState];
 }
 
 @end
@@ -124,7 +137,25 @@ NS_ASSUME_NONNULL_BEGIN
                                      distance:(lt::Interval<CGFloat>)distance
                                         angle:(lt::Interval<CGFloat>)angle
                                         scale:(lt::Interval<CGFloat>)scale {
-  [self validateDistance:distance angle:angle scale:scale];
+  return [self initWithGeometryProviderModel:geometryProviderModel randomState:randomState
+                                       count:count distance:distance angle:angle scale:scale
+                       lengthOfStartTapering:0 lengthOfEndTapering:0 taperingExponent:1
+                  minimumTaperingScaleFactor:1];
+}
+
+- (instancetype)initWithGeometryProviderModel:(id<DVNGeometryProviderModel>)geometryProviderModel
+                                  randomState:(LTRandomState *)randomState
+                                        count:(lt::Interval<NSUInteger>)count
+                                     distance:(lt::Interval<CGFloat>)distance
+                                        angle:(lt::Interval<CGFloat>)angle
+                                        scale:(lt::Interval<CGFloat>)scale
+                        lengthOfStartTapering:(CGFloat)lengthOfStartTapering
+                          lengthOfEndTapering:(CGFloat)lengthOfEndTapering
+                             taperingExponent:(CGFloat)taperingExponent
+                   minimumTaperingScaleFactor:(CGFloat)minimumTaperingScaleFactor {
+  [self validateDistance:distance angle:angle scale:scale
+   lengthOfStartTapering:lengthOfStartTapering lengthOfEndTapering:lengthOfEndTapering
+        taperingExponent:taperingExponent minimumTaperingScaleFactor:minimumTaperingScaleFactor];
 
   if (self = [super init]) {
     _geometryProviderModel = geometryProviderModel;
@@ -133,28 +164,44 @@ NS_ASSUME_NONNULL_BEGIN
     _distance = distance;
     _angle = angle;
     _scale = scale;
+    _lengthOfStartTapering = lengthOfStartTapering;
+    _lengthOfEndTapering = lengthOfEndTapering;
+    _taperingExponent = taperingExponent;
+    _minimumTaperingScaleFactor = minimumTaperingScaleFactor;
   }
   return self;
 }
 
 - (void)validateDistance:(lt::Interval<CGFloat>)distance angle:(lt::Interval<CGFloat>)angle
-                   scale:(lt::Interval<CGFloat>)scale {
-  lt::Interval<CGFloat> validInterval({0, CGFLOAT_MAX},
-                                      lt::Interval<CGFloat>::EndpointInclusion::Closed);
-  LTParameterAssert(distance.intersects(validInterval),
-                    @"Interval %@ outside valid distance interval ([0, CGFLOAT_MAX))",
+                   scale:(lt::Interval<CGFloat>)scale
+   lengthOfStartTapering:(CGFloat)lengthOfStartTapering
+     lengthOfEndTapering:(CGFloat)lengthOfEndTapering taperingExponent:(CGFloat)taperingExponent
+      minimumTaperingScaleFactor:(CGFloat)minimumTaperingScaleFactor {
+  lt::Interval<CGFloat> nonNegativeNumbers({0, CGFLOAT_MAX});
+  LTParameterAssert(distance.intersects(nonNegativeNumbers),
+                    @"Interval %@ outside valid distance interval ([0, CGFLOAT_MAX])",
                     distance.description());
-  validInterval = lt::Interval<CGFloat>({0, 2 * M_PI},
-                                        lt::Interval<CGFloat>::EndpointInclusion::Closed,
-                                        lt::Interval<CGFloat>::EndpointInclusion::Closed);
-  LTParameterAssert(angle.intersects(validInterval),
-                    @"Interval %@ outside valid angle interval ([0, 2 * PI])", angle.description());
-  validInterval = lt::Interval<CGFloat>({0, CGFLOAT_MAX},
+  lt::Interval<CGFloat> validAngleInterval({0, 2 * M_PI});
+  LTParameterAssert(angle.intersects(validAngleInterval),
+                    @"Interval %@ outside valid angle interval ([0, 2 * PI])",
+                    angle.description());
+  lt::Interval<CGFloat> positiveNumbers({0, CGFLOAT_MAX},
                                         lt::Interval<CGFloat>::EndpointInclusion::Open,
                                         lt::Interval<CGFloat>::EndpointInclusion::Closed);
-  LTParameterAssert(scale.intersects(validInterval),
-                    @"Interval %@ outside valid scaling interval ((0, CGFLOAT_MAX))",
+  LTParameterAssert(scale.intersects(positiveNumbers),
+                    @"Interval %@ outside valid scaling interval ((0, CGFLOAT_MAX])",
                     scale.description());
+  LTParameterAssert(nonNegativeNumbers.contains(lengthOfStartTapering),
+                    @"Invalid length of start tapering: %g", lengthOfStartTapering);
+  LTParameterAssert(nonNegativeNumbers.contains(lengthOfEndTapering),
+                    @"Invalid length of end tapering: %g", lengthOfEndTapering);
+  lt::Interval<CGFloat> openZeroOneRange =
+      lt::Interval<CGFloat>({0, 1}, lt::Interval<CGFloat>::EndpointInclusion::Open,
+                            lt::Interval<CGFloat>::EndpointInclusion::Closed);
+  LTParameterAssert(openZeroOneRange.contains(taperingExponent), @"Invalid tapering exponent: %g",
+                    taperingExponent);
+  LTParameterAssert(openZeroOneRange.contains(minimumTaperingScaleFactor),
+                    @"Invalid minimum tapering scale factor: %g", minimumTaperingScaleFactor);
 }
 
 #pragma mark -
@@ -172,7 +219,11 @@ NS_ASSUME_NONNULL_BEGIN
 
   return [self.geometryProviderModel isEqual:model.geometryProviderModel] &&
       [self.randomState isEqual:model.randomState] && self.count == model.count &&
-      self.distance == model.distance && self.angle == model.angle && self.scale == model.scale;
+      self.distance == model.distance && self.angle == model.angle && self.scale == model.scale &&
+      self.lengthOfStartTapering == model.lengthOfStartTapering &&
+      self.lengthOfEndTapering == model.lengthOfEndTapering &&
+      self.taperingExponent == model.taperingExponent &&
+      self.minimumTaperingScaleFactor == model.minimumTaperingScaleFactor;
 }
 
 - (NSUInteger)hash {
@@ -195,17 +246,28 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 #pragma mark -
+#pragma mark Copying
+#pragma mark -
+
+- (instancetype)copyWithGeometryProviderModel:(id<DVNGeometryProviderModel>)geometryProviderModel
+                                  randomState:(LTRandomState *)randomState {
+  return [[[self class] alloc] initWithGeometryProviderModel:geometryProviderModel
+                                                 randomState:randomState count:self.count
+                                                    distance:self.distance angle:self.angle
+                                                       scale:self.scale
+                                       lengthOfStartTapering:self.lengthOfStartTapering
+                                         lengthOfEndTapering:self.lengthOfEndTapering
+                                            taperingExponent:self.taperingExponent
+                                  minimumTaperingScaleFactor:self.minimumTaperingScaleFactor];
+}
+
+#pragma mark -
 #pragma mark DVNGeometryProviderModel
 #pragma mark -
 
 - (id<DVNGeometryProvider>)provider {
   id<DVNGeometryProvider> provider = [self.geometryProviderModel provider];
-  return [[DVNScatteredGeometryProvider alloc] initWithGeometryProvider:provider
-                                                            randomState:self.randomState
-                                                                  count:self.count
-                                                               distance:self.distance
-                                                                  angle:self.angle
-                                                                  scale:self.scale];
+  return [[DVNScatteredGeometryProvider alloc] initWithGeometryProvider:provider model:self];
 }
 
 @end
