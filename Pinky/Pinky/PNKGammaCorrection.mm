@@ -26,7 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation PNKGammaCorrection
 
-@synthesize isInputArray = _isInputArray;
+@synthesize inputFeatureChannels = _inputFeatureChannels;
 
 /// Kernel function name.
 static NSString * const kKernelFunctionName = @"gammaCorrect";
@@ -38,7 +38,7 @@ static NSString * const kKernelFunctionName = @"gammaCorrect";
 - (instancetype)initWithDevice:(id<MTLDevice>)device gamma:(float)gamma {
   if (self = [super init]) {
     _device = device;
-    _isInputArray = NO;
+    _inputFeatureChannels = 4;
     _gamma = gamma;
 
     [self compileStateWithGamma:gamma];

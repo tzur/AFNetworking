@@ -117,7 +117,7 @@ context(@"PNKUnaryKernel with MPSTemporaryImage", ^{
     return @{
       kPNKTemporaryImageExamplesKernel: gammaCorrection,
       kPNKTemporaryImageExamplesDevice: device,
-      kPNKTemporaryImageExamplesIsArray: @(NO)
+      kPNKTemporaryImageExamplesInputChannels: @(kInputFeatureChannels)
     };
   });
 });
