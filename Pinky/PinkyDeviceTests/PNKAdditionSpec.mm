@@ -22,7 +22,8 @@ beforeEach(^{
 
 context(@"kernel input verification", ^{
   beforeEach(^{
-    additionOp = [[PNKAddition alloc] initWithDevice:device withInputIsArray:NO];
+    additionOp = [[PNKAddition alloc] initWithDevice:device
+                                inputFeatureChannels:kInputFeatureChannels];
   });
 
   it(@"should raise an exception when input feature channels mismatch", ^{
@@ -61,7 +62,8 @@ context(@"kernel input verification", ^{
 
 context(@"kernel input region", ^{
   beforeEach(^{
-    additionOp = [[PNKAddition alloc] initWithDevice:device withInputIsArray:NO];
+    additionOp = [[PNKAddition alloc] initWithDevice:device
+                                inputFeatureChannels:kInputFeatureChannels];
   });
 
   it(@"should calculate primary input region correctly", ^{
@@ -95,7 +97,8 @@ context(@"addition operation with Unorm8 channel format", ^{
   });
 
   it(@"should add inputs correctly for non-array textures", ^{
-    additionOp = [[PNKAddition alloc] initWithDevice:device withInputIsArray:NO];
+    additionOp = [[PNKAddition alloc] initWithDevice:device
+                                inputFeatureChannels:kInputFeatureChannels];
 
     auto inputAImage = PNKImageMakeUnorm(device, kInputWidth, kInputHeight, kInputFeatureChannels);
     auto inputBImage = PNKImageMakeUnorm(device, kInputWidth, kInputHeight, kInputFeatureChannels);
@@ -114,7 +117,8 @@ context(@"addition operation with Unorm8 channel format", ^{
   });
 
   it(@"should add inputs correctly for array textures", ^{
-    additionOp = [[PNKAddition alloc] initWithDevice:device withInputIsArray:YES];
+    additionOp = [[PNKAddition alloc] initWithDevice:device
+                                inputFeatureChannels:kInputArrayFeatureChannels];
 
     auto inputAImage = PNKImageMakeUnorm(device, kInputWidth, kInputHeight,
                                          kInputArrayFeatureChannels);
@@ -162,7 +166,8 @@ context(@"addition operation with Float16 channel format", ^{
   });
 
   it(@"should add inputs correctly for non-array textures", ^{
-    additionOp = [[PNKAddition alloc] initWithDevice:device withInputIsArray:NO];
+    additionOp = [[PNKAddition alloc] initWithDevice:device
+                                inputFeatureChannels:kInputFeatureChannels];
 
     auto inputAImage = PNKImageMake(device, MPSImageFeatureChannelFormatFloat16, kInputWidth,
                                     kInputHeight, kInputFeatureChannels);
@@ -184,7 +189,8 @@ context(@"addition operation with Float16 channel format", ^{
   });
 
   it(@"should add inputs correctly for array textures", ^{
-    additionOp = [[PNKAddition alloc] initWithDevice:device withInputIsArray:YES];
+    additionOp = [[PNKAddition alloc] initWithDevice:device
+                                inputFeatureChannels:kInputArrayFeatureChannels];
 
     auto inputAImage = PNKImageMake(device, MPSImageFeatureChannelFormatFloat16, kInputWidth,
                                     kInputHeight, kInputArrayFeatureChannels);
@@ -212,22 +218,24 @@ context(@"addition operation with Float16 channel format", ^{
 
 context(@"PNKBinaryKernel with MPSTemporaryImage", ^{
   itShouldBehaveLike(kPNKTemporaryImageBinaryExamples, ^{
-    additionOp = [[PNKAddition alloc] initWithDevice:device withInputIsArray:NO];
+    additionOp = [[PNKAddition alloc] initWithDevice:device
+                                inputFeatureChannels:kInputFeatureChannels];
 
     return @{
       kPNKTemporaryImageExamplesKernel: additionOp,
       kPNKTemporaryImageExamplesDevice: device,
-      kPNKTemporaryImageExamplesIsArray: @(NO)
+      kPNKTemporaryImageExamplesInputChannels: @(kInputFeatureChannels)
     };
   });
 
   itShouldBehaveLike(kPNKTemporaryImageBinaryExamples, ^{
-    additionOp = [[PNKAddition alloc] initWithDevice:device withInputIsArray:YES];
+    additionOp = [[PNKAddition alloc] initWithDevice:device
+                                inputFeatureChannels:kInputArrayFeatureChannels];
 
     return @{
       kPNKTemporaryImageExamplesKernel: additionOp,
       kPNKTemporaryImageExamplesDevice: device,
-      kPNKTemporaryImageExamplesIsArray: @(YES)
+      kPNKTemporaryImageExamplesInputChannels: @(kInputArrayFeatureChannels)
     };
   });
 });
