@@ -14,7 +14,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// \c magnificationFactor in both width and height. Depth is unchanged.
 ///
 /// \c magnificationFactor must be greater than 1.
-- (instancetype)initWithDevice:(id<MTLDevice>)device inputIsArray:(BOOL)inputIsArray
+- (instancetype)initWithDevice:(id<MTLDevice>)device
+          inputFeatureChannels:(NSUInteger)inputFeatureChannels
            magnificationFactor:(NSUInteger)magnificationFactor NS_DESIGNATED_INITIALIZER;
 
 - (instancetype)init NS_UNAVAILABLE;

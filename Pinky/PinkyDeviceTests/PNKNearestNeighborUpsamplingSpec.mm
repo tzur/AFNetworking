@@ -30,7 +30,8 @@ context(@"initialization", ^{
   it(@"should raise an exception when magnification factor is zero", ^{
     expect(^{
       nearestNeighborUpsampler =
-          [[PNKNearestNeighborUpsampling alloc] initWithDevice:device inputIsArray:NO
+          [[PNKNearestNeighborUpsampling alloc] initWithDevice:device
+                                          inputFeatureChannels:kInputFeatureChannels
                                            magnificationFactor:0];
     }).to.raise(NSInvalidArgumentException);
   });
@@ -38,7 +39,8 @@ context(@"initialization", ^{
   it(@"should raise an exception when magnification factor is one", ^{
     expect(^{
       nearestNeighborUpsampler =
-          [[PNKNearestNeighborUpsampling alloc] initWithDevice:device inputIsArray:NO
+          [[PNKNearestNeighborUpsampling alloc] initWithDevice:device
+                                          inputFeatureChannels:kInputFeatureChannels
                                            magnificationFactor:1];
     }).to.raise(NSInvalidArgumentException);
   });
@@ -47,7 +49,8 @@ context(@"initialization", ^{
 context(@"kernel input verification", ^{
   beforeEach(^{
     nearestNeighborUpsampler =
-        [[PNKNearestNeighborUpsampling alloc] initWithDevice:device inputIsArray:NO
+        [[PNKNearestNeighborUpsampling alloc] initWithDevice:device
+                                        inputFeatureChannels:kInputFeatureChannels
                                          magnificationFactor:kMagnificationFactor];
   });
 
@@ -96,7 +99,8 @@ context(@"kernel input verification", ^{
 context(@"kernel output size", ^{
   beforeEach(^{
     nearestNeighborUpsampler =
-        [[PNKNearestNeighborUpsampling alloc] initWithDevice:device inputIsArray:NO
+        [[PNKNearestNeighborUpsampling alloc] initWithDevice:device
+                                        inputFeatureChannels:kInputFeatureChannels
                                          magnificationFactor:kMagnificationFactor];
   });
 
@@ -122,7 +126,8 @@ context(@"nearest neighbor upsampling with Unorm8 channel format", ^{
 
   it(@"should upsample correctly for non-array textures", ^{
     nearestNeighborUpsampler =
-        [[PNKNearestNeighborUpsampling alloc] initWithDevice:device inputIsArray:NO
+        [[PNKNearestNeighborUpsampling alloc] initWithDevice:device
+                                        inputFeatureChannels:kInputFeatureChannels
                                          magnificationFactor:kMagnificationFactor];
     auto inputImage = PNKImageMakeUnorm(device, inputMat.cols, inputMat.rows,
                                         kInputFeatureChannels);
@@ -141,7 +146,8 @@ context(@"nearest neighbor upsampling with Unorm8 channel format", ^{
 
   it(@"should upsample correctly for array textures", ^{
     nearestNeighborUpsampler =
-        [[PNKNearestNeighborUpsampling alloc] initWithDevice:device inputIsArray:YES
+        [[PNKNearestNeighborUpsampling alloc] initWithDevice:device
+                                        inputFeatureChannels:kInputArrayFeatureChannels
                                          magnificationFactor:kMagnificationFactor];
     auto inputImage = PNKImageMakeUnorm(device, inputMat.cols, inputMat.rows,
                                         kInputArrayFeatureChannels);
@@ -167,23 +173,25 @@ context(@"nearest neighbor upsampling with Unorm8 channel format", ^{
 context(@"PNKUnaryKernel with MPSTemporaryImage", ^{
   itShouldBehaveLike(kPNKTemporaryImageUnaryExamples, ^{
     nearestNeighborUpsampler =
-        [[PNKNearestNeighborUpsampling alloc] initWithDevice:device inputIsArray:NO
+        [[PNKNearestNeighborUpsampling alloc] initWithDevice:device
+                                        inputFeatureChannels:kInputFeatureChannels
                                          magnificationFactor:2];
     return @{
       kPNKTemporaryImageExamplesKernel: nearestNeighborUpsampler,
       kPNKTemporaryImageExamplesDevice: device,
-      kPNKTemporaryImageExamplesIsArray: @(NO)
+      kPNKTemporaryImageExamplesInputChannels: @(kInputFeatureChannels)
     };
   });
 
   itShouldBehaveLike(kPNKTemporaryImageUnaryExamples, ^{
     nearestNeighborUpsampler =
-        [[PNKNearestNeighborUpsampling alloc] initWithDevice:device inputIsArray:YES
+        [[PNKNearestNeighborUpsampling alloc] initWithDevice:device
+                                        inputFeatureChannels:kInputArrayFeatureChannels
                                          magnificationFactor:2];
     return @{
       kPNKTemporaryImageExamplesKernel: nearestNeighborUpsampler,
       kPNKTemporaryImageExamplesDevice: device,
-      kPNKTemporaryImageExamplesIsArray: @(YES)
+      kPNKTemporaryImageExamplesInputChannels: @(kInputArrayFeatureChannels)
     };
   });
 });
