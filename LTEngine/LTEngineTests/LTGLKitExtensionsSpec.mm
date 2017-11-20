@@ -268,7 +268,7 @@ context(@"GLKMatrix4", ^{
       auto mat = GLKMatrix4FromString(value);
       expect(mat.m00).to.equal(1.5);
       expect(mat.m01).to.equal(2.5);
-      expect(std::isinf(mat.m02) and mat.m02 > 0).to.beTruthy();
+      expect(std::isinf(mat.m02) && (mat.m02 > 0)).to.beTruthy();
       expect(mat.m03).to.equal(35);
       expect(mat.m10).to.equal(3);
       expect(mat.m11).to.equal(4);
@@ -276,7 +276,7 @@ context(@"GLKMatrix4", ^{
       expect(mat.m13).to.equal(70);
       expect(mat.m20).to.equal(5);
       expect(mat.m21).to.equal(6);
-      expect(std::isinf(mat.m22) && mat.m22 < 0).to.beTruthy();
+      expect(std::isinf(mat.m22) && (mat.m22 < 0)).to.beTruthy();
       expect(mat.m23).to.equal(-100);
       expect(mat.m30).to.equal(13);
       expect(mat.m31).to.equal(14);
