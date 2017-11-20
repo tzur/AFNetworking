@@ -492,20 +492,20 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CDE00ABF1E82ADED007AFD5E /* libcompression.tbd in Frameworks */,
 				659F3B611D2437BD0097F3D0 /* AFNetworking.framework in Frameworks */,
 				8861FCDC1E5A277D00CA1436 /* CoreGraphics.framework in Frameworks */,
 				8861FCE01E5A279D00CA1436 /* GLKit.framework in Frameworks */,
-				6535FE3F1D047777002EEB8F /* libExpecta.a in Frameworks */,
-				65BDFC2C1D0EC58800C86D36 /* libextobjc_iOS.a in Frameworks */,
-				65892E661D16EF630049815D /* libFiber.a in Frameworks */,
-				65A694241D06F521001DE328 /* libLTKit.a in Frameworks */,
-				8B10C86B1F3EFACB00F76142 /* libLLReactiveMatchers.a in Frameworks */,
-				6535FE401D04777E002EEB8F /* libOCMock.a in Frameworks */,
-				6535FE3E1D047770002EEB8F /* libSpecta.a in Frameworks */,
 				8861FCDE1E5A278600CA1436 /* QuartzCore.framework in Frameworks */,
 				8B6867FD1F3B279500F0EF4C /* ReactiveObjC.framework in Frameworks */,
 				8861FCB71E5A277300CA1436 /* UIKit.framework in Frameworks */,
+				6535FE3F1D047777002EEB8F /* libExpecta.a in Frameworks */,
+				65892E661D16EF630049815D /* libFiber.a in Frameworks */,
+				8B10C86B1F3EFACB00F76142 /* libLLReactiveMatchers.a in Frameworks */,
+				65A694241D06F521001DE328 /* libLTKit.a in Frameworks */,
+				6535FE401D04777E002EEB8F /* libOCMock.a in Frameworks */,
+				6535FE3E1D047770002EEB8F /* libSpecta.a in Frameworks */,
+				CDE00ABF1E82ADED007AFD5E /* libcompression.tbd in Frameworks */,
+				65BDFC2C1D0EC58800C86D36 /* libextobjc_iOS.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -524,8 +524,8 @@
 		65892E461D16EC250049815D /* HTTP Session */ = {
 			isa = PBXGroup;
 			children = (
-				65C3C2261D29651B00C8F288 /* Internal */,
 				65B7F18E1D18696F005810C9 /* Configuration */,
+				65C3C2261D29651B00C8F288 /* Internal */,
 				659F3ABD1D23E63E0097F3D0 /* FBRHTTPClientSpec.mm */,
 				653FB1851D2035920000D2CA /* FBRHTTPRequestSpec.mm */,
 				650794581D25646800187A5D /* FBRHTTPResponseSpec.mm */,
@@ -592,8 +592,8 @@
 		65A694351D081FA1001DE328 /* HTTP Session */ = {
 			isa = PBXGroup;
 			children = (
-				65892F7E1D1ACC340049815D /* Internal */,
 				65A694391D082170001DE328 /* Configuration */,
+				65892F7E1D1ACC340049815D /* Internal */,
 				65A694091D05948F001DE328 /* FBRHTTPClient.h */,
 				659F3AB51D23C81B0097F3D0 /* FBRHTTPClient.mm */,
 				B918A90C1E06CBC700970070 /* FBRHTTPClientProvider.h */,
@@ -637,8 +637,8 @@
 		65AE67511D0461350083D1CE /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				65AE67501D0461350083D1CE /* libFiber.a */,
 				65C62B861D0474D4000FCE99 /* FiberTests.xctest */,
+				65AE67501D0461350083D1CE /* libFiber.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -646,11 +646,11 @@
 		65AE67521D0461350083D1CE /* Fiber */ = {
 			isa = PBXGroup;
 			children = (
-				CDCD372F1EC9795800AFB954 /* On Demand Resources */,
 				65079A241D7D93DD0022CB11 /* Certificate Pinning */,
 				659F3AB91D23DD750097F3D0 /* Errors */,
 				65A694351D081FA1001DE328 /* HTTP Session */,
 				65F5137F1D1C19DE000687A7 /* Internal Utils */,
+				CDCD372F1EC9795800AFB954 /* On Demand Resources */,
 				65C62B751D046D88000FCE99 /* Supporting Files */,
 			);
 			path = Fiber;
@@ -706,9 +706,9 @@
 		65C62B6A1D046B22000FCE99 /* Configuration */ = {
 			isa = PBXGroup;
 			children = (
-				65C62B6B1D046B22000FCE99 /* Common.xcconfig */,
 				65C62B6C1D046B22000FCE99 /* Configurations */,
 				65C62B711D046B22000FCE99 /* Targets */,
+				65C62B6B1D046B22000FCE99 /* Common.xcconfig */,
 			);
 			name = Configuration;
 			path = ../Configuration;
@@ -745,8 +745,8 @@
 		65C62B871D0474D5000FCE99 /* FiberTests */ = {
 			isa = PBXGroup;
 			children = (
-				65C62B931D04753A000FCE99 /* Tests */,
 				65C62B911D0474EA000FCE99 /* Supporting Files */,
+				65C62B931D04753A000FCE99 /* Tests */,
 			);
 			path = FiberTests;
 			sourceTree = "<group>";
@@ -754,8 +754,8 @@
 		65C62B911D0474EA000FCE99 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				65C62B8A1D0474D5000FCE99 /* Info.plist */,
 				65C62B921D047507000FCE99 /* FiberTests-Prefix.pch */,
+				65C62B8A1D0474D5000FCE99 /* Info.plist */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -763,11 +763,11 @@
 		65C62B931D04753A000FCE99 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				CD9843151ECD80A2007CBCBC /* On Demand Resources */,
 				65B5FA371D7DBFFC005FDA21 /* Certificate Pinning */,
 				659F3BD81D24598F0097F3D0 /* Errors */,
 				65892E461D16EC250049815D /* HTTP Session */,
 				65F513A01D1C1C65000687A7 /* Internal Utils */,
+				CD9843151ECD80A2007CBCBC /* On Demand Resources */,
 			);
 			name = Tests;
 			sourceTree = "<group>";
@@ -777,13 +777,13 @@
 			children = (
 				65A693D91D0593D5001DE328 /* AFNetworking.xcodeproj */,
 				65C62B951D0476F6000FCE99 /* Expecta.xcodeproj */,
-				65BDFC031D0EC56D00C86D36 /* extobjc.xcodeproj */,
 				8B10C8621F3EFABE00F76142 /* LLReactiveMatchers.xcodeproj */,
 				65A6940C1D05999B001DE328 /* LTKit.xcodeproj */,
 				65C62BB01D0476FE000FCE99 /* OCMock.xcodeproj */,
 				8B6863681F3346F800F0EF4C /* ReactiveObjC.xcodeproj */,
 				65C62BC51D047711000FCE99 /* Specta.xcodeproj */,
 				65B6E5731D46419100D503C0 /* TestHost.xcodeproj */,
+				65BDFC031D0EC56D00C86D36 /* extobjc.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -849,11 +849,11 @@
 		8861FCB51E5A277300CA1436 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				CDE00ABE1E82ADED007AFD5E /* libcompression.tbd */,
+				8861FCDB1E5A277D00CA1436 /* CoreGraphics.framework */,
 				8861FCDF1E5A279D00CA1436 /* GLKit.framework */,
 				8861FCDD1E5A278600CA1436 /* QuartzCore.framework */,
-				8861FCDB1E5A277D00CA1436 /* CoreGraphics.framework */,
 				8861FCB61E5A277300CA1436 /* UIKit.framework */,
+				CDE00ABE1E82ADED007AFD5E /* libcompression.tbd */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";

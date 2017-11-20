@@ -718,10 +718,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				8BA8C68818699D9A00E6F486 /* Accelerate.framework in Frameworks */,
-				8B3DEC1918296DE500EA0C1A /* UIKit.framework in Frameworks */,
-				8B3DEC1718296D8F00EA0C1A /* QuartzCore.framework in Frameworks */,
 				8B3DEC1518296D8300EA0C1A /* CoreGraphics.framework in Frameworks */,
 				8B3DEBE818296B6100EA0C1A /* Foundation.framework in Frameworks */,
+				8B3DEC1718296D8F00EA0C1A /* QuartzCore.framework in Frameworks */,
+				8B3DEC1918296DE500EA0C1A /* UIKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -729,23 +729,23 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8BF6602D1F5D597700FC7A43 /* libcompression.tbd in Frameworks */,
-				8B0B99721CA6BADF00ED2334 /* libextobjc_iOS.a in Frameworks */,
-				8B0B99821CA6BB3D00ED2334 /* libExpecta.a in Frameworks */,
-				8B0B99731CA6BADF00ED2334 /* libOCMock.a in Frameworks */,
-				8B0B99741CA6BADF00ED2334 /* libSpecta.a in Frameworks */,
-				8B3DEBFC18296B6100EA0C1A /* libLTKit.a in Frameworks */,
-				8BA8C68918699D9F00E6F486 /* Accelerate.framework in Frameworks */,
 				8B3C0A5518329524000845BA /* AVFoundation.framework in Frameworks */,
+				8BA8C68918699D9F00E6F486 /* Accelerate.framework in Frameworks */,
 				8B3C0A561832952A000845BA /* CoreGraphics.framework in Frameworks */,
 				8B3C0A5918329538000845BA /* CoreMedia.framework in Frameworks */,
 				8B3C0A5718329531000845BA /* CoreVideo.framework in Frameworks */,
+				8B3DEBF718296B6100EA0C1A /* Foundation.framework in Frameworks */,
 				8BF54F831F1F5835002CD139 /* GLKit.framework in Frameworks */,
 				8B4E493819E950C500B3F55D /* ImageIO.framework in Frameworks */,
 				8B4E494B19E950C800B3F55D /* MobileCoreServices.framework in Frameworks */,
 				8BA3E118182A437300FDD95A /* QuartzCore.framework in Frameworks */,
-				8B3DEBF718296B6100EA0C1A /* Foundation.framework in Frameworks */,
 				8BA3E119182A437300FDD95A /* UIKit.framework in Frameworks */,
+				8B0B99821CA6BB3D00ED2334 /* libExpecta.a in Frameworks */,
+				8B3DEBFC18296B6100EA0C1A /* libLTKit.a in Frameworks */,
+				8B0B99731CA6BADF00ED2334 /* libOCMock.a in Frameworks */,
+				8B0B99741CA6BADF00ED2334 /* libSpecta.a in Frameworks */,
+				8BF6602D1F5D597700FC7A43 /* libcompression.tbd in Frameworks */,
+				8B0B99721CA6BADF00ED2334 /* libextobjc_iOS.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -759,10 +759,10 @@
 				194FF4EE1FA8B9B6008879E7 /* LTUIInterruptionHandler.mm */,
 				194FF4EB1FA8B9B6008879E7 /* LTUITestUtils.h */,
 				194FF4E71FA8B9B6008879E7 /* LTUITestUtils.mm */,
-				194FF4E81FA8B9B6008879E7 /* XCUIElement+Interactions.h */,
-				194FF4EC1FA8B9B6008879E7 /* XCUIElement+Interactions.mm */,
 				194FF4E91FA8B9B6008879E7 /* XCUIElement+CollectionView.h */,
 				194FF4ED1FA8B9B6008879E7 /* XCUIElement+CollectionView.mm */,
+				194FF4E81FA8B9B6008879E7 /* XCUIElement+Interactions.h */,
+				194FF4EC1FA8B9B6008879E7 /* XCUIElement+Interactions.mm */,
 			);
 			name = "UI Test Utils";
 			sourceTree = "<group>";
@@ -770,8 +770,8 @@
 		194FF4FD1FA8BA77008879E7 /* LTKitTestUtils */ = {
 			isa = PBXGroup;
 			children = (
-				194FF4F71FA8B9D0008879E7 /* UI Test Utils */,
 				194FF5131FA8BC1E008879E7 /* Supporting Files */,
+				194FF4F71FA8B9D0008879E7 /* UI Test Utils */,
 			);
 			path = LTKitTestUtils;
 			sourceTree = "<group>";
@@ -885,9 +885,9 @@
 				8B7C6CA71B52832600B90DBE /* LTMMOutputFileSpec.mm */,
 				84F7AB281C3290D600AA502F /* LTPathSpec.m */,
 				8B87D54D1C04BC2F0005410A /* NSBundle+PathSpec.mm */,
+				8B329024192CC2660010592E /* NSFileManager+LTKitSpec.mm */,
 				8BA468DC1BC6B9C600AAEC82 /* NSFileManagerTestUtils.h */,
 				8BA468DD1BC6B9C600AAEC82 /* NSFileManagerTestUtils.mm */,
-				8B329024192CC2660010592E /* NSFileManager+LTKitSpec.mm */,
 				6AB5187F1CC2A8D700540CC6 /* NSURL+QuerySpec.mm */,
 			);
 			name = IO;
@@ -908,8 +908,8 @@
 		8B3DEBE518296B6100EA0C1A /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				8B3DEBE418296B6100EA0C1A /* libLTKit.a */,
 				8B3DEBF418296B6100EA0C1A /* LTKitTests.xctest */,
+				8B3DEBE418296B6100EA0C1A /* libLTKit.a */,
 				194FF4FC1FA8BA77008879E7 /* libLTKitTestUtils.a */,
 			);
 			name = Products;
@@ -918,9 +918,9 @@
 		8B3DEBE618296B6100EA0C1A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				8B3C0A531832950F000845BA /* AVFoundation.framework */,
 				8BA8C68718699D9A00E6F486 /* Accelerate.framework */,
 				8B3C0A5A1832953E000845BA /* AssetsLibrary.framework */,
-				8B3C0A531832950F000845BA /* AVFoundation.framework */,
 				8BCFBFF418CF0AF000E612DE /* CoreFoundation.framework */,
 				8B3DEC1418296D8300EA0C1A /* CoreGraphics.framework */,
 				8B3C0A5818329538000845BA /* CoreMedia.framework */,
@@ -940,7 +940,6 @@
 		8B3DEBE918296B6100EA0C1A /* LTKit */ = {
 			isa = PBXGroup;
 			children = (
-				8B3DEBEC18296B6100EA0C1A /* LTKit.h */,
 				8B8E50FC1861EB1F00821829 /* Base */,
 				8B7C6C791B5272E100B90DBE /* Boxing */,
 				8BF7B1631949BC3100E67079 /* Data Structures */,
@@ -951,6 +950,7 @@
 				C7D3E45E1D4F8411000A1EEC /* Logging */,
 				8B3DEBEA18296B6100EA0C1A /* Supporting Files */,
 				28ABDFF618715394005A5DEC /* UI */,
+				8B3DEBEC18296B6100EA0C1A /* LTKit.h */,
 			);
 			path = LTKit;
 			sourceTree = "<group>";
@@ -969,10 +969,10 @@
 		8B3DEBFD18296B6100EA0C1A /* LTKitTests */ = {
 			isa = PBXGroup;
 			children = (
-				8B85C796182A2EC3004C352E /* Tests */,
-				8BBE8940183503AB006C58AA /* Test Utils */,
 				8B85C79A182A31C8004C352E /* Libraries */,
 				8B3DEBFE18296B6100EA0C1A /* Supporting Files */,
+				8BBE8940183503AB006C58AA /* Test Utils */,
+				8B85C796182A2EC3004C352E /* Tests */,
 			);
 			path = LTKitTests;
 			sourceTree = "<group>";
@@ -980,9 +980,9 @@
 		8B3DEBFE18296B6100EA0C1A /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				8B3DEC0018296B6100EA0C1A /* InfoPlist.strings */,
 				8B3DEBFF18296B6100EA0C1A /* LTKitTests-Info.plist */,
 				8BA11ADC183124CB00A5001D /* LTKitTests-Prefix.pch */,
-				8B3DEC0018296B6100EA0C1A /* InfoPlist.strings */,
 				885E975E1D72D3A800A117A2 /* LocalizationTest.bundle */,
 			);
 			name = "Supporting Files";
@@ -1130,9 +1130,9 @@
 			isa = PBXGroup;
 			children = (
 				8BCA6721182FD8D3003FCB65 /* Expecta.xcodeproj */,
-				65F0E4EC1D464F0F007EB32D /* TestHost.xcodeproj */,
 				8B8A81E61BD65E4F0027B97D /* OCMock.xcodeproj */,
 				8B4D456F19C03AA8000B25F9 /* Specta.xcodeproj */,
+				65F0E4EC1D464F0F007EB32D /* TestHost.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -1233,9 +1233,9 @@
 			children = (
 				659361E81C7C824D00A5F1D2 /* EXPMatchers+beBlock.h */,
 				659361E91C7C824D00A5F1D2 /* EXPMatchers+beBlock.mm */,
-				50E6AC731D2BD07A0074EC11 /* EXPMatchers+beCloseToSize.h */,
 				8B2405371B85DAC60079B724 /* EXPMatchers+beCloseToPoint.h */,
 				8B2405381B85DAC60079B724 /* EXPMatchers+beCloseToPoint.mm */,
+				50E6AC731D2BD07A0074EC11 /* EXPMatchers+beCloseToSize.h */,
 				CD8887A41EED900E005F8FCA /* LTDataHelpers.h */,
 				256F17121D35243A009D3254 /* LTEqualityExamples.h */,
 				256F17131D35243A009D3254 /* LTEqualityExamples.mm */,
@@ -1256,8 +1256,8 @@
 				84B63E581DD8C77E00ECF65B /* LTCompoundRandomAccessCollectionSpec.mm */,
 				84455E491CD0F35C00042CB7 /* LTFastEnumeratorSpec.mm */,
 				84455E4D1CD0FB1A00042CB7 /* LTMappingRandomAccessCollectionSpec.mm */,
-				255339421C3E54A900C478F9 /* LTTreeNodeSpec.mm */,
 				5067223019EA811A003AF8D2 /* LTQueueSpec.mm */,
+				255339421C3E54A900C478F9 /* LTTreeNodeSpec.mm */,
 				8BD7F5E81CF35EDA00EF2005 /* LTUnorderedMapSpec.mm */,
 				28B8BBC71B68C1CE00CF9F73 /* LTWeakContainerSpec.mm */,
 			);
@@ -1277,13 +1277,13 @@
 				84B63E3D1DD8B79900ECF65B /* LTCompoundRandomAccessCollection.mm */,
 				84455E421CD0F2AB00042CB7 /* LTFastEnumerator.h */,
 				84455E431CD0F2AB00042CB7 /* LTFastEnumerator.mm */,
-				2553393E1C3E512300C478F9 /* LTTreeNode.h */,
-				2553393F1C3E512300C478F9 /* LTTreeNode.mm */,
+				84455E7C1CD1F33700042CB7 /* LTMappingRandomAccessCollection.h */,
+				84455E4B1CD0F5E500042CB7 /* LTMappingRandomAccessCollection.m */,
 				5067221619EA80B5003AF8D2 /* LTQueue.h */,
 				5067221719EA80B5003AF8D2 /* LTQueue.mm */,
 				8BED82C61C3D34320001C6F1 /* LTRandomAccessCollection.h */,
-				84455E7C1CD1F33700042CB7 /* LTMappingRandomAccessCollection.h */,
-				84455E4B1CD0F5E500042CB7 /* LTMappingRandomAccessCollection.m */,
+				2553393E1C3E512300C478F9 /* LTTreeNode.h */,
+				2553393F1C3E512300C478F9 /* LTTreeNode.mm */,
 				8BD7F5CF1CF3596A00EF2005 /* LTUnorderedMap.h */,
 				28B8BBC11B67CF8600CF9F73 /* LTWeakContainer.h */,
 				28B8BBC21B67CF8600CF9F73 /* LTWeakContainer.mm */,

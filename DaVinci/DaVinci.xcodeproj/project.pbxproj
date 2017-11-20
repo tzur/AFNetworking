@@ -619,8 +619,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				282EE7501D2A7A22002FA432 /* Accelerate.framework in Frameworks */,
 				282EE74F1D2A7A14002FA432 /* AVFoundation.framework in Frameworks */,
+				282EE7501D2A7A22002FA432 /* Accelerate.framework in Frameworks */,
 				8861FD7D1E5A2A9800CA1436 /* CoreGraphics.framework in Frameworks */,
 				8861FDA11E5A2AA500CA1436 /* CoreImage.framework in Frameworks */,
 				282EE7551D2A7A62002FA432 /* CoreMedia.framework in Frameworks */,
@@ -628,22 +628,22 @@
 				8861FDA71E5A2AC600CA1436 /* CoreVideo.framework in Frameworks */,
 				8861FDA31E5A2AAE00CA1436 /* GLKit.framework in Frameworks */,
 				8861FDAD1E5A2AEA00CA1436 /* ImageIO.framework in Frameworks */,
-				8BF68AD51D82E9510093910D /* libcompression.tbd in Frameworks */,
+				5031A0811D2AB26B00971E25 /* Mantle.framework in Frameworks */,
+				2804AB0E1D3BB6180057F1A0 /* MobileCoreServices.framework in Frameworks */,
+				282EE74D1D2A79EA002FA432 /* Objection-iOS.framework in Frameworks */,
+				8861FDA51E5A2AB400CA1436 /* OpenGLES.framework in Frameworks */,
+				8861FD9F1E5A2A9C00CA1436 /* QuartzCore.framework in Frameworks */,
+				8861FDA91E5A2ACF00CA1436 /* UIKit.framework in Frameworks */,
 				250154851D1AE92900420FA9 /* libDaVinci.a in Frameworks */,
 				2501552F1D1AF1A400420FA9 /* libExpecta.a in Frameworks */,
-				6543581F1D463C53002140A8 /* libextobjc_iOS.a in Frameworks */,
 				50574AE41D2D654C0076C60D /* libLTEngine.a in Frameworks */,
 				6543581E1D463C3A002140A8 /* libLTKit.a in Frameworks */,
 				2501552E1D1AF19A00420FA9 /* libOCMock.a in Frameworks */,
 				E4829F631E49D069009F3355 /* libOpenEXR.a in Frameworks */,
 				250155301D1AF1B600420FA9 /* libSpecta.a in Frameworks */,
-				5031A0811D2AB26B00971E25 /* Mantle.framework in Frameworks */,
-				2804AB0E1D3BB6180057F1A0 /* MobileCoreServices.framework in Frameworks */,
-				282EE74D1D2A79EA002FA432 /* Objection-iOS.framework in Frameworks */,
+				8BF68AD51D82E9510093910D /* libcompression.tbd in Frameworks */,
+				6543581F1D463C53002140A8 /* libextobjc_iOS.a in Frameworks */,
 				282EE74E1D2A79FA002FA432 /* opencv2.framework in Frameworks */,
-				8861FDA51E5A2AB400CA1436 /* OpenGLES.framework in Frameworks */,
-				8861FD9F1E5A2A9C00CA1436 /* QuartzCore.framework in Frameworks */,
-				8861FDA91E5A2ACF00CA1436 /* UIKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -665,8 +665,8 @@
 		250154671D1ACA1300420FA9 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				250154661D1ACA1300420FA9 /* libDaVinci.a */,
 				250154801D1AE92900420FA9 /* DaVinciTests.xctest */,
+				250154661D1ACA1300420FA9 /* libDaVinci.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -684,10 +684,10 @@
 		250154811D1AE92900420FA9 /* DaVinciTests */ = {
 			isa = PBXGroup;
 			children = (
-				250154D71D1AEE9900420FA9 /* Tests */,
-				50574AB51D2D60230076C60D /* TestUtils */,
 				285A78FE1DFD692B00095BF4 /* Resources */,
 				250154D61D1AEE9100420FA9 /* Supporting Files */,
+				50574AB51D2D60230076C60D /* TestUtils */,
+				250154D71D1AEE9900420FA9 /* Tests */,
 			);
 			path = DaVinciTests;
 			sourceTree = "<group>";
@@ -696,8 +696,8 @@
 			isa = PBXGroup;
 			children = (
 				250154DB1D1AEF4700420FA9 /* AVFoundation.framework */,
-				282EE7511D2A7A35002FA432 /* AssetsLibrary.framework */,
 				250154D81D1AEF1400420FA9 /* Accelerate.framework */,
+				282EE7511D2A7A35002FA432 /* AssetsLibrary.framework */,
 				250154DD1D1AEF5400420FA9 /* CoreMedia.framework */,
 				2804AB0D1D3BB6180057F1A0 /* MobileCoreServices.framework */,
 				250154DF1D1AF07C00420FA9 /* Objection-iOS.framework */,
@@ -747,8 +747,8 @@
 		250154D61D1AEE9100420FA9 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				250154841D1AE92900420FA9 /* Info.plist */,
 				282EE74C1D2A793E002FA432 /* DaVinciTests-Prefix.pch */,
+				250154841D1AE92900420FA9 /* Info.plist */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -948,10 +948,10 @@
 		286C1C5B1DEC59F500523F2E /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				285FB7261E1E4AF20021A116 /* DVNPropertyMacros.h */,
 				286C1C7E1DEC5A3000523F2E /* DVNPatternSamplingStageModel.h */,
 				286C1C7D1DEC5A3000523F2E /* DVNPatternSamplingStageModel.mm */,
 				28D30C901E013A8C00DF0640 /* DVNPipelineStagesMutableModels.h */,
+				285FB7261E1E4AF20021A116 /* DVNPropertyMacros.h */,
 				286C1D6B1DED9A0C00523F2E /* DVNScatteredGeometryStageModel.h */,
 				286C1D6C1DED9A0C00523F2E /* DVNScatteredGeometryStageModel.mm */,
 			);
@@ -961,8 +961,8 @@
 		286C1C801DEC5A3E00523F2E /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				286C1C811DEC5A5200523F2E /* DVNPatternSamplingStageModelSpec.mm */,
 				28FA4D661DF4757C00EE0B99 /* DVNGeometryStageModelSpec.mm */,
+				286C1C811DEC5A5200523F2E /* DVNPatternSamplingStageModelSpec.mm */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -989,12 +989,12 @@
 		500F77CA1D2D35C600023343 /* API */ = {
 			isa = PBXGroup;
 			children = (
+				500F77CB1D2D35CC00023343 /* Configuration */,
+				500F77CC1D2D35E000023343 /* Stage Component API */,
 				25AD67751D355A900092B3E4 /* DVNPipeline.h */,
 				25AD67761D355A900092B3E4 /* DVNPipeline.mm */,
 				25AD67701D3553ED0092B3E4 /* DVNPipelineConfiguration.h */,
 				25AD67711D3553ED0092B3E4 /* DVNPipelineConfiguration.mm */,
-				500F77CB1D2D35CC00023343 /* Configuration */,
-				500F77CC1D2D35E000023343 /* Stage Component API */,
 			);
 			name = API;
 			sourceTree = "<group>";
@@ -1028,8 +1028,8 @@
 		500F77CD1D2D35F500023343 /* Base */ = {
 			isa = PBXGroup;
 			children = (
-				503C57701D3665ED00C20B38 /* Spline Renderer */,
 				250154C61D1AEB5900420FA9 /* Pipeline */,
+				503C57701D3665ED00C20B38 /* Spline Renderer */,
 			);
 			name = Base;
 			sourceTree = "<group>";
@@ -1037,9 +1037,9 @@
 		500F77CE1D2D35FF00023343 /* Building Blocks */ = {
 			isa = PBXGroup;
 			children = (
+				254C079D1D3F4A70009ECEEB /* Attribute Stage */,
 				500F77CF1D2D363E00023343 /* Geometry Stage */,
 				500F77D01D2D364400023343 /* Texture Mapping Stage */,
-				254C079D1D3F4A70009ECEEB /* Attribute Stage */,
 			);
 			name = "Building Blocks";
 			sourceTree = "<group>";
@@ -1064,9 +1064,9 @@
 		500F77D51D2D3A4700023343 /* Building Blocks */ = {
 			isa = PBXGroup;
 			children = (
+				254C07BC1D3F52F5009ECEEB /* Attribute Stage */,
 				500F77D61D2D3A5300023343 /* Geometry Stage */,
 				500F77D71D2D3A5700023343 /* Texture Mapping Stage */,
-				254C07BC1D3F52F5009ECEEB /* Attribute Stage */,
 			);
 			name = "Building Blocks";
 			sourceTree = "<group>";
@@ -1091,9 +1091,9 @@
 		500F77D81D2D3A6900023343 /* Pipeline */ = {
 			isa = PBXGroup;
 			children = (
-				50C90F3A1D3646860058A4F3 /* Shaders */,
 				500F77D91D2D3A7700023343 /* API */,
 				500F77D51D2D3A4700023343 /* Building Blocks */,
+				50C90F3A1D3646860058A4F3 /* Shaders */,
 			);
 			name = Pipeline;
 			sourceTree = "<group>";
@@ -1101,12 +1101,12 @@
 		500F77D91D2D3A7700023343 /* API */ = {
 			isa = PBXGroup;
 			children = (
-				25AD677A1D355BC10092B3E4 /* DVNTestPipelineConfiguration.h */,
-				25AD677B1D356A580092B3E4 /* DVNTestPipelineConfiguration.mm */,
-				25AD67781D355A9E0092B3E4 /* DVNPipelineSpec.mm */,
-				25AD67731D3553F50092B3E4 /* DVNPipelineConfigurationSpec.mm */,
 				500F77DA1D2D3AA400023343 /* Configuration */,
 				500F77DB1D2D3AA900023343 /* Stage Component API */,
+				25AD67731D3553F50092B3E4 /* DVNPipelineConfigurationSpec.mm */,
+				25AD67781D355A9E0092B3E4 /* DVNPipelineSpec.mm */,
+				25AD677A1D355BC10092B3E4 /* DVNTestPipelineConfiguration.h */,
+				25AD677B1D356A580092B3E4 /* DVNTestPipelineConfiguration.mm */,
 			);
 			name = API;
 			sourceTree = "<group>";
@@ -1142,12 +1142,12 @@
 		500F77E91D2D55D200023343 /* Providers */ = {
 			isa = PBXGroup;
 			children = (
+				285A78AB1DFD31AE00095BF4 /* DVNBrushTipsProvider.h */,
+				285A78AC1DFD31AE00095BF4 /* DVNBrushTipsProvider.mm */,
 				500F77DF1D2D3F5C00023343 /* DVNCanonicalTexCoordProvider.h */,
 				500F77E01D2D3F5C00023343 /* DVNCanonicalTexCoordProvider.mm */,
 				500A3ADB1D2D348700043E18 /* DVNRandomTexCoordProvider.h */,
 				500A3ADC1D2D348700043E18 /* DVNRandomTexCoordProvider.mm */,
-				285A78AB1DFD31AE00095BF4 /* DVNBrushTipsProvider.h */,
-				285A78AC1DFD31AE00095BF4 /* DVNBrushTipsProvider.mm */,
 			);
 			name = Providers;
 			sourceTree = "<group>";
@@ -1183,8 +1183,8 @@
 		5021E09D1D252363002EE897 /* Base */ = {
 			isa = PBXGroup;
 			children = (
-				503C57B91D3685A900C20B38 /* Spline Renderer */,
 				500F77D81D2D3A6900023343 /* Pipeline */,
+				503C57B91D3685A900C20B38 /* Spline Renderer */,
 			);
 			name = Base;
 			sourceTree = "<group>";
@@ -1192,11 +1192,11 @@
 		503C57701D3665ED00C20B38 /* Spline Renderer */ = {
 			isa = PBXGroup;
 			children = (
+				503C57521D3665E200C20B38 /* DVNSplineRenderModel.h */,
+				503C57531D3665E200C20B38 /* DVNSplineRenderModel.mm */,
 				503C57501D3665E200C20B38 /* DVNSplineRenderer.h */,
 				503C57511D3665E200C20B38 /* DVNSplineRenderer.mm */,
 				28662D381DF57D2C0051B9DA /* DVNSplineRendering.h */,
-				503C57521D3665E200C20B38 /* DVNSplineRenderModel.h */,
-				503C57531D3665E200C20B38 /* DVNSplineRenderModel.mm */,
 			);
 			name = "Spline Renderer";
 			sourceTree = "<group>";
@@ -1221,10 +1221,10 @@
 		503C57B91D3685A900C20B38 /* Spline Renderer */ = {
 			isa = PBXGroup;
 			children = (
+				503C579D1D3685A400C20B38 /* DVNSplineRenderModelSpec.mm */,
 				257494E91D3775090046F89B /* DVNSplineRendererSpec.mm */,
 				28662D5D1DF57D970051B9DA /* DVNSplineRenderingExamples.h */,
 				28662D5E1DF57D970051B9DA /* DVNSplineRenderingExamples.mm */,
-				503C579D1D3685A400C20B38 /* DVNSplineRenderModelSpec.mm */,
 			);
 			name = "Spline Renderer";
 			sourceTree = "<group>";
@@ -1232,10 +1232,10 @@
 		50574AB51D2D60230076C60D /* TestUtils */ = {
 			isa = PBXGroup;
 			children = (
-				50073F8C1D363179009F7F48 /* EXPMatchers+equalMat.h */,
-				50073F8D1D363179009F7F48 /* EXPMatchers+equalMat.mm */,
 				25C3DC921D37ACD60056E47A /* DVNEasyQuadVectorBoxing.h */,
 				25C3DCAD1D37AD410056E47A /* DVNEasyQuadVectorBoxing.mm */,
+				50073F8C1D363179009F7F48 /* EXPMatchers+equalMat.h */,
+				50073F8D1D363179009F7F48 /* EXPMatchers+equalMat.mm */,
 				25AD67531D35527F0092B3E4 /* LTEqualityExamples.h */,
 				25AD67541D35527F0092B3E4 /* LTEqualityExamples.mm */,
 				50574AD01D2D60490076C60D /* LTSpectaOpenGLContextHook.h */,
@@ -1270,13 +1270,13 @@
 			isa = PBXGroup;
 			children = (
 				250154FC1D1AF14C00420FA9 /* Expecta.xcodeproj */,
-				6543580D1D463B6E002140A8 /* extobjc.xcodeproj */,
-				654357FE1D463B5A002140A8 /* TestHost.xcodeproj */,
 				2501549B1D1AEAF000420FA9 /* LTEngine.xcodeproj */,
 				654358041D463B64002140A8 /* LTKit.xcodeproj */,
 				250154B11D1AEB0300420FA9 /* Mantle.xcodeproj */,
 				250154E71D1AF13900420FA9 /* OCMock.xcodeproj */,
 				250155171D1AF15B00420FA9 /* Specta.xcodeproj */,
+				654357FE1D463B5A002140A8 /* TestHost.xcodeproj */,
+				6543580D1D463B6E002140A8 /* extobjc.xcodeproj */,
 			);
 			name = Projects;
 			sourceTree = "<group>";
@@ -1284,9 +1284,9 @@
 		50FF1A521D2CDFBE00E24B4D /* Configuration */ = {
 			isa = PBXGroup;
 			children = (
-				50FF1A531D2CDFF400E24B4D /* Common.xcconfig */,
 				50FF1A541D2CDFF400E24B4D /* Configurations */,
 				50FF1A571D2CDFF400E24B4D /* Targets */,
+				50FF1A531D2CDFF400E24B4D /* Common.xcconfig */,
 			);
 			name = Configuration;
 			sourceTree = "<group>";
@@ -1343,17 +1343,17 @@
 		8861FD7B1E5A2A9800CA1436 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				8861FDAC1E5A2AEA00CA1436 /* ImageIO.framework */,
-				8861FDAA1E5A2AE500CA1436 /* CoreText.framework */,
-				8861FDA81E5A2ACF00CA1436 /* UIKit.framework */,
-				8861FDA61E5A2AC600CA1436 /* CoreVideo.framework */,
-				8861FDA41E5A2AB400CA1436 /* OpenGLES.framework */,
-				8861FDA21E5A2AAE00CA1436 /* GLKit.framework */,
-				8861FDA01E5A2AA500CA1436 /* CoreImage.framework */,
-				8861FD9E1E5A2A9C00CA1436 /* QuartzCore.framework */,
 				8861FD7C1E5A2A9800CA1436 /* CoreGraphics.framework */,
-				8BF68AD41D82E9510093910D /* libcompression.tbd */,
+				8861FDA01E5A2AA500CA1436 /* CoreImage.framework */,
+				8861FDAA1E5A2AE500CA1436 /* CoreText.framework */,
+				8861FDA61E5A2AC600CA1436 /* CoreVideo.framework */,
+				8861FDA21E5A2AAE00CA1436 /* GLKit.framework */,
+				8861FDAC1E5A2AEA00CA1436 /* ImageIO.framework */,
+				8861FDA41E5A2AB400CA1436 /* OpenGLES.framework */,
+				8861FD9E1E5A2A9C00CA1436 /* QuartzCore.framework */,
+				8861FDA81E5A2ACF00CA1436 /* UIKit.framework */,
 				E4829F621E49D069009F3355 /* libOpenEXR.a */,
+				8BF68AD41D82E9510093910D /* libcompression.tbd */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";

@@ -492,19 +492,19 @@
 			buildActionMask = 2147483647;
 			files = (
 				A117235F1ECC60230039177C /* AdSupport.framework in Frameworks */,
-				A1F24D121EC0C0B50050D534 /* CoreTelephony.framework in Frameworks */,
 				A1417AAA1E6ED9D0005DBEFF /* CoreGraphics.framework in Frameworks */,
+				A1F24D121EC0C0B50050D534 /* CoreTelephony.framework in Frameworks */,
 				A1417AAE1E6EDA31005DBEFF /* GLKit.framework in Frameworks */,
 				A11722DD1ECC5AA90039177C /* Mantle.framework in Frameworks */,
 				A1417AAC1E6ED9D5005DBEFF /* QuartzCore.framework in Frameworks */,
 				A1F24D101EC0BFBD0050D534 /* SystemConfiguration.framework in Frameworks */,
 				A1417A921E6ED9CB005DBEFF /* UIKit.framework in Frameworks */,
-				CDE00B451E82AE82007AFD5E /* libcompression.tbd in Frameworks */,
 				A14173401E6EB59F005DBEFF /* libExpecta.a in Frameworks */,
 				A14171C61E6EAC0D005DBEFF /* libIntelligence.a in Frameworks */,
 				A14173411E6EB59F005DBEFF /* libLTKit.a in Frameworks */,
 				A14173421E6EB59F005DBEFF /* libOCMock.a in Frameworks */,
 				A14173431E6EB59F005DBEFF /* libSpecta.a in Frameworks */,
+				CDE00B451E82AE82007AFD5E /* libcompression.tbd in Frameworks */,
 				A14175B61E6EBE37005DBEFF /* libextobjc_iOS.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -552,12 +552,12 @@
 		A113424A1EB5AD870042ABA8 /* Test Utils */ = {
 			isa = PBXGroup;
 			children = (
-				A149BC321EBE6BB400DA82B7 /* INTTransformerBlockExamples.h */,
-				A149BC331EBE6BB400DA82B7 /* INTTransformerBlockExamples.mm */,
 				A1B373BD1EA6511F008E5195 /* INTEventTransformationExecutor.h */,
 				A1B373BE1EA6511F008E5195 /* INTEventTransformationExecutor.mm */,
 				A1541B0C1EAF1CC300B4F064 /* INTRecorderLogger.h */,
 				A1541B0D1EAF1CC300B4F064 /* INTRecorderLogger.mm */,
+				A149BC321EBE6BB400DA82B7 /* INTTransformerBlockExamples.h */,
+				A149BC331EBE6BB400DA82B7 /* INTTransformerBlockExamples.mm */,
 			);
 			name = "Test Utils";
 			sourceTree = "<group>";
@@ -641,8 +641,8 @@
 		A14171A21E6EAA93005DBEFF /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				A14171A11E6EAA93005DBEFF /* libIntelligence.a */,
 				A14171C11E6EAC0D005DBEFF /* IntelligenceTests.xctest */,
+				A14171A11E6EAA93005DBEFF /* libIntelligence.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -671,9 +671,9 @@
 		A14171B31E6EAAF6005DBEFF /* Configuration */ = {
 			isa = PBXGroup;
 			children = (
-				A14172601E6EAD9A005DBEFF /* Common.xcconfig */,
 				A14172611E6EAD9A005DBEFF /* Configurations */,
 				A14172641E6EAD9A005DBEFF /* Targets */,
+				A14172601E6EAD9A005DBEFF /* Common.xcconfig */,
 			);
 			name = Configuration;
 			sourceTree = "<group>";
@@ -681,9 +681,9 @@
 		A14171C21E6EAC0D005DBEFF /* IntelligenceTests */ = {
 			isa = PBXGroup;
 			children = (
+				A14172B91E6EB006005DBEFF /* Supporting Files */,
 				A113424A1EB5AD870042ABA8 /* Test Utils */,
 				A14173471E6EB62C005DBEFF /* Tests */,
-				A14172B91E6EB006005DBEFF /* Supporting Files */,
 			);
 			path = IntelligenceTests;
 			sourceTree = "<group>";
@@ -818,13 +818,13 @@
 			isa = PBXGroup;
 			children = (
 				A117235E1ECC60230039177C /* AdSupport.framework */,
-				A1F24D111EC0C0B50050D534 /* CoreTelephony.framework */,
-				A1F24D0F1EC0BFBD0050D534 /* SystemConfiguration.framework */,
-				CDE00B441E82AE82007AFD5E /* libcompression.tbd */,
 				A1417AA91E6ED9D0005DBEFF /* CoreGraphics.framework */,
+				A1F24D111EC0C0B50050D534 /* CoreTelephony.framework */,
 				A1417AAD1E6EDA31005DBEFF /* GLKit.framework */,
 				A1417AAB1E6ED9D5005DBEFF /* QuartzCore.framework */,
+				A1F24D0F1EC0BFBD0050D534 /* SystemConfiguration.framework */,
 				A1417A911E6ED9CB005DBEFF /* UIKit.framework */,
+				CDE00B441E82AE82007AFD5E /* libcompression.tbd */,
 				A14175B51E6EBE37005DBEFF /* libextobjc_iOS.a */,
 			);
 			name = Frameworks;
@@ -876,11 +876,11 @@
 			children = (
 				A149BC041EBE6A9E00DA82B7 /* INTAnalytricksAppBackgrounded.json */,
 				A149BC051EBE6A9E00DA82B7 /* INTAnalytricksAppForegrounded.json */,
+				A17E08D61ED1D30A007940A0 /* INTAnalytricksDeepLinkOpened.json */,
 				A157B2C81ED6AF7F008B920D /* INTAnalytricksDeviceInfoChanged.json */,
 				A157B3631ED6EF60008B920D /* INTAnalytricksDeviceTokenChanged.json */,
 				A17E08F41ED1DE30007940A0 /* INTAnalytricksMediaExported.json */,
 				A17E08F01ED1D79A007940A0 /* INTAnalytricksMediaImported.json */,
-				A17E08D61ED1D30A007940A0 /* INTAnalytricksDeepLinkOpened.json */,
 				A17E0B0A1ED45E06007940A0 /* INTAnalytricksProjectDeleted.json */,
 				A17E0A781ED45A6F007940A0 /* INTAnalytricksProjectModified.json */,
 				A17E08EE1ED1D632007940A0 /* INTAnalytricksPushNotificationOpened.json */,
@@ -956,13 +956,13 @@
 				A149BC221EBE6AE300DA82B7 /* INTAppBecameActiveEvent.json */,
 				A1C1F29F1F837EA30002DE07 /* INTAppRunCountUpdatedEvent.json */,
 				A1C943251EBB357800BECAB4 /* INTAppWillEnterForegroundEvent.json */,
-				A157B3331ED6D192008B920D /* INTDeviceTokenChangedEvent.json */,
-				A17E08F51ED1DF4F007940A0 /* INTMediaExportStartedEvent.json */,
-				A17E08F61ED1E087007940A0 /* INTMediaExportEndedEvent.json */,
-				A17E08F11ED1D8C1007940A0 /* INTMediaImportedEvent.json */,
 				A149BC231EBE6AE300DA82B7 /* INTDeepLinkOpenedEvent.json */,
 				A117236E1ECC787E0039177C /* INTDeviceInfoLoadedEvent.h */,
 				A117236F1ECC787E0039177C /* INTDeviceInfoLoadedEvent.mm */,
+				A157B3331ED6D192008B920D /* INTDeviceTokenChangedEvent.json */,
+				A17E08F61ED1E087007940A0 /* INTMediaExportEndedEvent.json */,
+				A17E08F51ED1DF4F007940A0 /* INTMediaExportStartedEvent.json */,
+				A17E08F11ED1D8C1007940A0 /* INTMediaImportedEvent.json */,
 				A17E0A8F1ED45B78007940A0 /* INTProjectDeletedEvent.json */,
 				A1C943291EBB357800BECAB4 /* INTProjectLoadedEvent.json */,
 				A1C943271EBB357800BECAB4 /* INTProjectUnloadedEvent.json */,

@@ -415,7 +415,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CDE00A8E1E82AD4A007AFD5E /* libcompression.tbd in Frameworks */,
 				8861FC211E5A227B00CA1436 /* CoreGraphics.framework in Frameworks */,
 				8861FC231E5A22B800CA1436 /* GLKit.framework in Frameworks */,
 				8861FC261E5A22F000CA1436 /* QuartzCore.framework in Frameworks */,
@@ -423,11 +422,12 @@
 				8861FC031E5A225500CA1436 /* UIKit.framework in Frameworks */,
 				8BED809D1C3A68290001C6F1 /* libBlueprints.a in Frameworks */,
 				8B5E6D0F1CC64F3900E6A9BC /* libExpecta.a in Frameworks */,
-				8B5E6CC21CC6478B00E6A9BC /* libextobjc_iOS.a in Frameworks */,
-				8B5E6CC31CC647E700E6A9BC /* libLTKit.a in Frameworks */,
 				8B10C8031F3EFA5700F76142 /* libLLReactiveMatchers.a in Frameworks */,
+				8B5E6CC31CC647E700E6A9BC /* libLTKit.a in Frameworks */,
 				8B5E6CBF1CC6478B00E6A9BC /* libOCMock.a in Frameworks */,
 				8B5E6CC01CC6478B00E6A9BC /* libSpecta.a in Frameworks */,
+				CDE00A8E1E82AD4A007AFD5E /* libcompression.tbd in Frameworks */,
+				8B5E6CC21CC6478B00E6A9BC /* libextobjc_iOS.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -545,8 +545,6 @@
 				8BED80C41C3A697A0001C6F1 /* Supporting Files */,
 				8B97B0241CC8BEC4001CD91B /* BLUFileListProvider.h */,
 				8B97B0251CC8BEC4001CD91B /* BLUFileListProvider.m */,
-				8B3CEC711C54B673008E779B /* BLUProvider.h */,
-				8B3CEC8B1C54B80A008E779B /* BLUProviderDescriptor.h */,
 				8B3CE9641C4E57C9008E779B /* BLUModel.h */,
 				8B3CE9651C4E57C9008E779B /* BLUModel.mm */,
 				8B3CEA011C4E6BB7008E779B /* BLUModelNodeChange.h */,
@@ -562,6 +560,8 @@
 				8BED83011C3D80E80001C6F1 /* BLUNodeCollection.h */,
 				8B3CED4B1C590D6F008E779B /* BLUNodeData.h */,
 				8B3CED4C1C590D6F008E779B /* BLUNodeData.m */,
+				8B3CEC711C54B673008E779B /* BLUProvider.h */,
+				8B3CEC8B1C54B80A008E779B /* BLUProviderDescriptor.h */,
 				8B3CE80C1C43D9D8008E779B /* NSArray+BLUNodeCollection.h */,
 				8B3CE80D1C43D9D8008E779B /* NSArray+BLUNodeCollection.mm */,
 				8B3CEA051C4E6EF3008E779B /* NSErrorCodes+Blueprints.h */,
@@ -614,17 +614,17 @@
 			children = (
 				8BED80E81C3A6B880001C6F1 /* Supporting Files */,
 				8B97B0441CC8D54D001CD91B /* BLUFileListProviderSpec.mm */,
-				8B3CEA091C4E72BB008E779B /* BLUModelSpec.mm */,
 				8B3CEAC01C4E8B2E008E779B /* BLUModelNodeChangeSpec.mm */,
+				8B3CEA091C4E72BB008E779B /* BLUModelSpec.mm */,
 				8B3CED731C593523008E779B /* BLUModelTestUtils.h */,
 				8B3CED741C593523008E779B /* BLUModelTestUtils.m */,
 				8B0E4D941CC65E310031B743 /* BLUNode+BuilderSpec.mm */,
 				8B3CE8171C441329008E779B /* BLUNode+OperationSpec.mm */,
+				8BED830A1C3E84DB0001C6F1 /* BLUNode+TreeSpec.mm */,
 				8B3CE8101C440D8E008E779B /* BLUNodeCollectionExamples.h */,
 				8B3CE8111C440D8E008E779B /* BLUNodeCollectionExamples.mm */,
-				8BED82E21C3D66590001C6F1 /* BLUNodeSpec.mm */,
-				8BED830A1C3E84DB0001C6F1 /* BLUNode+TreeSpec.mm */,
 				8B3CED4F1C5930CF008E779B /* BLUNodeDataSpec.mm */,
+				8BED82E21C3D66590001C6F1 /* BLUNodeSpec.mm */,
 				8B3CE8131C440FD3008E779B /* NSArray+BLUNodeCollectionSpec.mm */,
 				8BD00C571C5E1F9A009A1A2D /* NSIndexPath+BlueprintsSpec.mm */,
 				8BA08DD01CCE078500C866CC /* NSIndexSet+BlueprintsSpec.mm */,
@@ -656,9 +656,6 @@
 				8861FC201E5A227B00CA1436 /* CoreGraphics.framework */,
 				8BED818B1C3A71690001C6F1 /* Expecta.xcodeproj */,
 				8861FC221E5A22B800CA1436 /* GLKit.framework */,
-				CDE00A701E82AC04007AFD5E /* libcompression.tbd */,
-				8B5E6D0E1CC64F3900E6A9BC /* libExpecta.a */,
-				8B5E6CC11CC6478B00E6A9BC /* libextobjc_iOS.a */,
 				8B10C7FA1F3EFA4600F76142 /* LLReactiveMatchers.xcodeproj */,
 				8BED82C11C3BEDB00001C6F1 /* Mantle.xcodeproj */,
 				8BED81BB1C3A717B0001C6F1 /* OCMock.xcodeproj */,
@@ -666,6 +663,9 @@
 				8B6863161F3346A800F0EF4C /* ReactiveObjC.xcodeproj */,
 				8BED81A61C3A71720001C6F1 /* Specta.xcodeproj */,
 				8861FC021E5A225500CA1436 /* UIKit.framework */,
+				8B5E6D0E1CC64F3900E6A9BC /* libExpecta.a */,
+				CDE00A701E82AC04007AFD5E /* libcompression.tbd */,
+				8B5E6CC11CC6478B00E6A9BC /* libextobjc_iOS.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";

@@ -625,8 +625,8 @@
 				8861FE011E5A2C1300CA1436 /* UIKit.framework in Frameworks */,
 				650BB33C1D465389008648A3 /* libExpecta.a in Frameworks */,
 				287C87AB1F54115900FCC2CC /* libFiber.a in Frameworks */,
-				650BB33E1D465389008648A3 /* libLTKit.a in Frameworks */,
 				8B10C8C21F3EFB2A00F76142 /* libLLReactiveMatchers.a in Frameworks */,
+				650BB33E1D465389008648A3 /* libLTKit.a in Frameworks */,
 				650BB33F1D465389008648A3 /* libOCMock.a in Frameworks */,
 				84FF72F81C8EEFA000D1DA9F /* libPhotons.a in Frameworks */,
 				84FF72F71C8EEF9600D1DA9F /* libPhotonsUI.a in Frameworks */,
@@ -684,11 +684,11 @@
 		848E00051C591DD1001D8368 /* PhotonsUI */ = {
 			isa = PBXGroup;
 			children = (
-				848E00061C591DD1001D8368 /* PhotonsUI.h */,
 				848E0A441C5921FE001D8368 /* Base */,
 				84B63E7F1DD8D79100ECF65B /* Changeset Provider */,
 				887267B91D7C3C5C00D4F2A6 /* Localization */,
 				848E001F1C591E7B001D8368 /* Supporting Files */,
+				848E00061C591DD1001D8368 /* PhotonsUI.h */,
 			);
 			path = PhotonsUI;
 			sourceTree = "<group>";
@@ -696,9 +696,9 @@
 		848E00111C591DD1001D8368 /* PhotonsUITests */ = {
 			isa = PBXGroup;
 			children = (
-				848E00241C59208B001D8368 /* Tests */,
 				848E00231C59207C001D8368 /* Libraries */,
 				848E00211C591F3D001D8368 /* Supporting Files */,
+				848E00241C59208B001D8368 /* Tests */,
 			);
 			path = PhotonsUITests;
 			sourceTree = "<group>";
@@ -707,9 +707,9 @@
 			isa = PBXGroup;
 			children = (
 				848E00081C591DD1001D8368 /* Info.plist */,
-				848E00201C591EC9001D8368 /* PhotonsUI-Prefix.pch */,
 				88FAF8F21D7727820023AF7A /* Localizable.strings */,
 				88FAF9151D7727890023AF7A /* Localizable.stringsdict */,
+				848E00201C591EC9001D8368 /* PhotonsUI-Prefix.pch */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -726,14 +726,14 @@
 		848E00231C59207C001D8368 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				848E0A3E1C592153001D8368 /* LTTestUtils */,
+				84F4677A1D0806AF0060EFAA /* PTNTestUtils */,
+				84F11CF21D2ECE5A002FA1CF /* WFTestUtils */,
 				848E00371C5920CB001D8368 /* Expecta.xcodeproj */,
 				8B10C8B91F3EFB1D00F76142 /* LLReactiveMatchers.xcodeproj */,
-				848E0A3E1C592153001D8368 /* LTTestUtils */,
 				848E00251C5920C1001D8368 /* OCMock.xcodeproj */,
-				84F4677A1D0806AF0060EFAA /* PTNTestUtils */,
 				848E0A421C5921AD001D8368 /* Specta.xcodeproj */,
 				650BB3341D465359008648A3 /* TestHost.xcodeproj */,
-				84F11CF21D2ECE5A002FA1CF /* WFTestUtils */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -776,16 +776,16 @@
 				846E18901C730F2100B94467 /* PTUChangesetProvider.h */,
 				8405CF461DDB28A200CB638B /* PTUCollectionView.h */,
 				8405CF471DDB28A200CB638B /* PTUCollectionView.mm */,
+				8482E0131D2143690084D565 /* PTUCollectionViewConfiguration.h */,
+				8482E0141D2143690084D565 /* PTUCollectionViewConfiguration.mm */,
 				84BE49001D2E44150090105C /* PTUCollectionViewController.h */,
 				84BE49011D2E44150090105C /* PTUCollectionViewController.mm */,
+				84EA94B51D0702A90052455E /* PTUDataSource.h */,
+				84EA94B61D0702A90052455E /* PTUDataSource.mm */,
 				84BE49021D2E44150090105C /* PTUDataSourceProvider.h */,
 				84BE49031D2E44150090105C /* PTUDataSourceProvider.m */,
 				8414247B1D770FDC00968C36 /* PTUErrorViewProvider.h */,
 				8414247C1D770FDC00968C36 /* PTUErrorViewProvider.mm */,
-				8482E0131D2143690084D565 /* PTUCollectionViewConfiguration.h */,
-				8482E0141D2143690084D565 /* PTUCollectionViewConfiguration.mm */,
-				84EA94B51D0702A90052455E /* PTUDataSource.h */,
-				84EA94B61D0702A90052455E /* PTUDataSource.mm */,
 				841FA8A61D6D92D2009C44A9 /* PTUHeaderCell.h */,
 				841FA8C81D6D966A009C44A9 /* PTUHeaderCell.m */,
 				84AB7E741C85DF3A008E254A /* PTUImageCell.h */,
@@ -821,9 +821,9 @@
 		848EFF7C1C591B3A001D8368 /* Products */ = {
 			isa = PBXGroup;
 			children = (
+				8872656E1D772D7B00D4F2A6 /* PhotonsUIBundle.bundle */,
 				848E000D1C591DD1001D8368 /* PhotonsUITests.xctest */,
 				84FF72E91C8EED6D00D1DA9F /* libPhotonsUI.a */,
-				8872656E1D772D7B00D4F2A6 /* PhotonsUIBundle.bundle */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -862,11 +862,11 @@
 		848EFFC01C591BE0001D8368 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				650BB3251D46533E008648A3 /* extobjc.xcodeproj */,
 				650BB31C1D465335008648A3 /* LTKit.xcodeproj */,
 				849AE4961C6B4F7C00F030CA /* Masonry.xcodeproj */,
 				848EFFD91C591BFF001D8368 /* Photons.xcodeproj */,
 				8B6864361F3347A500F0EF4C /* ReactiveObjC.xcodeproj */,
+				650BB3251D46533E008648A3 /* extobjc.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -884,8 +884,6 @@
 			isa = PBXGroup;
 			children = (
 				287C87AC1F54116400FCC2CC /* AFNetworking.framework */,
-				287C87AA1F54115900FCC2CC /* libFiber.a */,
-				287C87831F54114C00FCC2CC /* Mantle.framework */,
 				0DF151CB1EAF79DB009F3080 /* AVFoundation.framework */,
 				8861FE0C1E5A2CE200CA1436 /* CoreGraphics.framework */,
 				8861FE081E5A2CAA00CA1436 /* CoreLocation.framework */,
@@ -893,12 +891,14 @@
 				8B0B9A281CA6C09000ED2334 /* DropboxSDK.framework */,
 				8861FE0A1E5A2CC800CA1436 /* GLKit.framework */,
 				8861FE061E5A2C6300CA1436 /* ImageIO.framework */,
+				287C87831F54114C00FCC2CC /* Mantle.framework */,
 				B411A04C1EEE780300756808 /* MediaPlayer.framework */,
 				88EE8DD51EACD5C100D3126A /* MobileCoreServices.framework */,
 				8861FE021E5A2C1D00CA1436 /* Photos.framework */,
 				8861FE0E1E5A2CF100CA1436 /* QuartzCore.framework */,
 				8861FE041E5A2C4B00CA1436 /* Security.framework */,
 				8861FE001E5A2C1300CA1436 /* UIKit.framework */,
+				287C87AA1F54115900FCC2CC /* libFiber.a */,
 				CDE00B211E82AE65007AFD5E /* libcompression.tbd */,
 			);
 			name = Frameworks;
@@ -907,10 +907,10 @@
 		84B63E7F1DD8D79100ECF65B /* Changeset Provider */ = {
 			isa = PBXGroup;
 			children = (
-				BE7B8C0E1D37A5940013F1FC /* PTUArrayChangesetProvider.h */,
-				BE7B8C0F1D37A5940013F1FC /* PTUArrayChangesetProvider.mm */,
 				8414ED571C624E6B00014DD1 /* PTUAlbumChangesetProvider.h */,
 				8414ED581C624E6B00014DD1 /* PTUAlbumChangesetProvider.m */,
+				BE7B8C0E1D37A5940013F1FC /* PTUArrayChangesetProvider.h */,
+				BE7B8C0F1D37A5940013F1FC /* PTUArrayChangesetProvider.mm */,
 				84765E101D29393600D3D5C5 /* PTUChangesetProviderReverser.h */,
 				84765E111D29393600D3D5C5 /* PTUChangesetProviderReverser.m */,
 				84A6CE1B1D392502003369E0 /* PTUCompoundChangesetProvider.h */,
