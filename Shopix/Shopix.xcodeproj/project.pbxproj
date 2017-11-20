@@ -20,6 +20,7 @@
 		653D9C3D1FB7BBCC0035ACEC /* SPXAlertViewModelBuilderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 653D9C3C1FB7BBCC0035ACEC /* SPXAlertViewModelBuilderSpec.mm */; };
 		65F82F021F93C09F002A496C /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65F82EDD1F93C09F002A496C /* CloudKit.framework */; };
 		84FF72F71C8EEF9600D1DA9F /* libShopix.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 84FF72E91C8EED6D00D1DA9F /* libShopix.a */; };
+		8823B33D1FC3070100A2DEB9 /* Masonry.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8823B3261FC2FC8C00A2DEB9 /* Masonry.framework */; };
 		8851018E1F9DDBA60052351B /* NSError+Shopix.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8851018D1F9DDBA60052351B /* NSError+Shopix.mm */; };
 		885CA2B31FB301F2005380BD /* SPXProductDescriptorsFactorySpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 885CA2B21FB301F1005380BD /* SPXProductDescriptorsFactorySpec.mm */; };
 		88720F9D1F9E1A4D00E18F05 /* SPXProductDescriptorsFactory.mm in Sources */ = {isa = PBXBuildFile; fileRef = 88FA8C9A1F66AA0A00D2E594 /* SPXProductDescriptorsFactory.mm */; };
@@ -49,7 +50,6 @@
 		CD60A5ED1FB433180017D777 /* SPXDualLabelView.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD60A5EC1FB433180017D777 /* SPXDualLabelView.mm */; };
 		CD8E8E2F1F5C19F500DF8FC1 /* NSDecimalNumber+Localization.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD8E8E2E1F5C19F500DF8FC1 /* NSDecimalNumber+Localization.mm */; };
 		CDAC84E01FC1632000B197B3 /* SPXButtonsHorizontalLayoutViewSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = CDAC84DF1FC1632000B197B3 /* SPXButtonsHorizontalLayoutViewSpec.mm */; };
-		CDAC85081FC16F3300B197B3 /* Masonry.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDAC85091FC16F3300B197B3 /* Masonry.framework */; };
 		CDB513A21F66B0440013577C /* SPXSubscriptionManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = CDB513A11F66B0440013577C /* SPXSubscriptionManager.mm */; };
 		CDB513A51F66B0A10013577C /* SPXSubscriptionManagerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = CDB513A41F66B0A10013577C /* SPXSubscriptionManagerSpec.mm */; };
 		CDB513A81F66BC150013577C /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDB513A71F66BC150013577C /* StoreKit.framework */; };
@@ -61,13 +61,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		63590B5F1FBDB3BC0044A48D /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 650BB31C1D465335008648A3 /* LTKit.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 194FF4FC1FA8BA77008879E7;
-			remoteInfo = LTKitTestUtils;
-		};
 		650BB3211D465335008648A3 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 650BB31C1D465335008648A3 /* LTKit.xcodeproj */;
@@ -109,6 +102,34 @@
 			proxyType = 1;
 			remoteGlobalIDString = CD5550141F45C8050048215C;
 			remoteInfo = ShopixBundle;
+		};
+		8823B3211FC2FC8C00A2DEB9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 650BB31C1D465335008648A3 /* LTKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 194FF4FC1FA8BA77008879E7;
+			remoteInfo = LTKitTestUtils;
+		};
+		8823B3251FC2FC8C00A2DEB9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8823B30B1FC2FC8C00A2DEB9 /* Masonry.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 3AED05B71AD59FD40053CC65;
+			remoteInfo = "Masonry iOS";
+		};
+		8823B3271FC2FC8C00A2DEB9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8823B30B1FC2FC8C00A2DEB9 /* Masonry.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 3AED06271AD5A1400053CC65;
+			remoteInfo = "Masonry OSX";
+		};
+		8823B3771FC30C0300A2DEB9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8823B30B1FC2FC8C00A2DEB9 /* Masonry.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 3AED05B61AD59FD40053CC65;
+			remoteInfo = "Masonry iOS";
 		};
 		8B425EC81CA6D218001C457E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -406,6 +427,7 @@
 		848EFFB61C591B91001D8368 /* Framework.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Framework.xcconfig; sourceTree = "<group>"; };
 		848EFFB71C591B91001D8368 /* StaticLibrary.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = StaticLibrary.xcconfig; sourceTree = "<group>"; };
 		84FF72E91C8EED6D00D1DA9F /* libShopix.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libShopix.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		8823B30B1FC2FC8C00A2DEB9 /* Masonry.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Masonry.xcodeproj; path = ../third_party/Masonry/Masonry.xcodeproj; sourceTree = "<group>"; };
 		8851018C1F9DDBA60052351B /* NSError+Shopix.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSError+Shopix.h"; sourceTree = "<group>"; };
 		8851018D1F9DDBA60052351B /* NSError+Shopix.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSError+Shopix.mm"; sourceTree = "<group>"; };
 		885CA2B21FB301F1005380BD /* SPXProductDescriptorsFactorySpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXProductDescriptorsFactorySpec.mm; sourceTree = "<group>"; };
@@ -473,7 +495,6 @@
 		CD962CB81F54056200F2CA82 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		CD962D9C1F5427EF00F2CA82 /* LLReactiveMatchers.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LLReactiveMatchers.xcodeproj; path = ../../third_party/LLReactiveMatchers/LLReactiveMatchers.xcodeproj; sourceTree = "<group>"; };
 		CDAC84DF1FC1632000B197B3 /* SPXButtonsHorizontalLayoutViewSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXButtonsHorizontalLayoutViewSpec.mm; sourceTree = "<group>"; };
-		CDAC85091FC16F3300B197B3 /* Masonry.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Masonry.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CDB510721F6176150013577C /* SPXLocalization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPXLocalization.h; sourceTree = "<group>"; };
 		CDB510731F6176150013577C /* SPXLocalization.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXLocalization.mm; sourceTree = "<group>"; };
 		CDB513A01F66B0440013577C /* SPXSubscriptionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPXSubscriptionManager.h; sourceTree = "<group>"; };
@@ -498,7 +519,7 @@
 				CD3C6A351F559F44008A6C23 /* CoreGraphics.framework in Frameworks */,
 				CD3C69A41F559394008A6C23 /* GLKit.framework in Frameworks */,
 				CD4572831F7172EB00713681 /* Mantle.framework in Frameworks */,
-				CDAC85081FC16F3300B197B3 /* Masonry.framework in Frameworks */,
+				8823B33D1FC3070100A2DEB9 /* Masonry.framework in Frameworks */,
 				CD45725A1F716A8100713681 /* MessageUI.framework in Frameworks */,
 				CDC8CE861F6EA6C400E7C929 /* Objection-iOS.framework in Frameworks */,
 				CD3C6A371F559F61008A6C23 /* QuartzCore.framework in Frameworks */,
@@ -568,6 +589,7 @@
 			children = (
 				650BB3221D465335008648A3 /* libLTKit.a */,
 				650BB3241D465335008648A3 /* LTKitTests.xctest */,
+				8823B3221FC2FC8C00A2DEB9 /* libLTKitTestUtils.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -730,6 +752,7 @@
 			children = (
 				CD553D861F4184D00048215C /* Bazaar.xcodeproj */,
 				650BB31C1D465335008648A3 /* LTKit.xcodeproj */,
+				8823B30B1FC2FC8C00A2DEB9 /* Masonry.xcodeproj */,
 				CDCCF3D51F4EC2F700F421E6 /* ReactiveObjC.xcodeproj */,
 				CDB8A6481F53FCB200E14706 /* extobjc.xcodeproj */,
 			);
@@ -744,7 +767,6 @@
 				CD3C6A341F559F44008A6C23 /* CoreGraphics.framework */,
 				CD3C69A31F559394008A6C23 /* GLKit.framework */,
 				CD4572821F7172EB00713681 /* Mantle.framework */,
-				CDAC85091FC16F3300B197B3 /* Masonry.framework */,
 				CD4572591F716A8100713681 /* MessageUI.framework */,
 				CDC8CE841F6EA67D00E7C929 /* Objection-iOS.framework */,
 				CD3C6A361F559F61008A6C23 /* QuartzCore.framework */,
@@ -758,6 +780,15 @@
 				CDB8A6581F53FE1800E14706 /* libcompression.tbd */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		8823B30C1FC2FC8C00A2DEB9 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8823B3261FC2FC8C00A2DEB9 /* Masonry.framework */,
+				8823B3281FC2FC8C00A2DEB9 /* Masonry.framework */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		885CA28D1FB301C6005380BD /* Promotions */ = {
@@ -964,6 +995,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				8823B3781FC30C0300A2DEB9 /* PBXTargetDependency */,
 				CDCCF4111F4F004D00F421E6 /* PBXTargetDependency */,
 				65F77D841F8A7CB800FD74ED /* PBXTargetDependency */,
 			);
@@ -1058,6 +1090,10 @@
 					ProjectRef = 650BB31C1D465335008648A3 /* LTKit.xcodeproj */;
 				},
 				{
+					ProductGroup = 8823B30C1FC2FC8C00A2DEB9 /* Products */;
+					ProjectRef = 8823B30B1FC2FC8C00A2DEB9 /* Masonry.xcodeproj */;
+				},
+				{
 					ProductGroup = 8B425EBC1CA6D218001C457E /* Products */;
 					ProjectRef = 848E00251C5920C1001D8368 /* OCMock.xcodeproj */;
 				},
@@ -1103,6 +1139,27 @@
 			fileType = wrapper.application;
 			path = TestHost.app;
 			remoteRef = 65BAF3E31D48023C009BBB6F /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8823B3221FC2FC8C00A2DEB9 /* libLTKitTestUtils.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libLTKitTestUtils.a;
+			remoteRef = 8823B3211FC2FC8C00A2DEB9 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8823B3261FC2FC8C00A2DEB9 /* Masonry.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Masonry.framework;
+			remoteRef = 8823B3251FC2FC8C00A2DEB9 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8823B3281FC2FC8C00A2DEB9 /* Masonry.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Masonry.framework;
+			remoteRef = 8823B3271FC2FC8C00A2DEB9 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		8B425EC91CA6D218001C457E /* Expecta.framework */ = {
@@ -1451,6 +1508,11 @@
 			isa = PBXTargetDependency;
 			target = CD5550141F45C8050048215C /* ShopixBundle */;
 			targetProxy = 65F77D831F8A7CB800FD74ED /* PBXContainerItemProxy */;
+		};
+		8823B3781FC30C0300A2DEB9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Masonry iOS";
+			targetProxy = 8823B3771FC30C0300A2DEB9 /* PBXContainerItemProxy */;
 		};
 		CDCCF4111F4F004D00F421E6 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
