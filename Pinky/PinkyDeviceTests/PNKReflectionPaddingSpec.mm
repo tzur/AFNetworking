@@ -28,7 +28,8 @@ beforeEach(^{
 
 context(@"kernel input verification", ^{
   beforeEach(^{
-    reflectionPadding = [[PNKReflectionPadding alloc] initWithDevice:device inputIsArray:NO
+    reflectionPadding = [[PNKReflectionPadding alloc] initWithDevice:device
+                                                inputFeatureChannels:kInputFeatureChannels
                                                          paddingSize:kPadding];
   });
 
@@ -98,7 +99,8 @@ context(@"kernel input verification", ^{
 
 context(@"kernel input region", ^{
   beforeEach(^{
-    reflectionPadding = [[PNKReflectionPadding alloc] initWithDevice:device inputIsArray:NO
+    reflectionPadding = [[PNKReflectionPadding alloc] initWithDevice:device
+                                                inputFeatureChannels:kInputFeatureChannels
                                                          paddingSize:kPadding];
   });
 
@@ -129,7 +131,8 @@ context(@"reflection padding with Unorm8 channel format", ^{
   });
 
   it(@"should add inputs correctly for non-array textures", ^{
-    reflectionPadding = [[PNKReflectionPadding alloc] initWithDevice:device inputIsArray:NO
+    reflectionPadding = [[PNKReflectionPadding alloc] initWithDevice:device
+                                                inputFeatureChannels:kInputFeatureChannels
                                                          paddingSize:kPadding];
 
     auto inputImage = PNKImageMakeUnorm(device, inputMat.cols, inputMat.rows,
@@ -149,7 +152,8 @@ context(@"reflection padding with Unorm8 channel format", ^{
   });
 
   it(@"should add inputs correctly for array textures", ^{
-    reflectionPadding = [[PNKReflectionPadding alloc] initWithDevice:device inputIsArray:YES
+    reflectionPadding = [[PNKReflectionPadding alloc] initWithDevice:device
+                                                inputFeatureChannels:kInputArrayFeatureChannels
                                                          paddingSize:kPadding];
 
     auto inputImage = PNKImageMakeUnorm(device, inputMat.cols, inputMat.rows,
@@ -175,22 +179,24 @@ context(@"reflection padding with Unorm8 channel format", ^{
 
 context(@"PNKUnaryKernel with MPSTemporaryImage", ^{
   itShouldBehaveLike(kPNKTemporaryImageUnaryExamples, ^{
-    reflectionPadding = [[PNKReflectionPadding alloc] initWithDevice:device inputIsArray:NO
+    reflectionPadding = [[PNKReflectionPadding alloc] initWithDevice:device
+                                                inputFeatureChannels:kInputFeatureChannels
                                                          paddingSize:kPadding];
     return @{
       kPNKTemporaryImageExamplesKernel: reflectionPadding,
       kPNKTemporaryImageExamplesDevice: device,
-      kPNKTemporaryImageExamplesIsArray: @(NO)
+      kPNKTemporaryImageExamplesInputChannels: @(kInputFeatureChannels)
     };
   });
 
   itShouldBehaveLike(kPNKTemporaryImageUnaryExamples, ^{
-    reflectionPadding = [[PNKReflectionPadding alloc] initWithDevice:device inputIsArray:YES
+    reflectionPadding = [[PNKReflectionPadding alloc] initWithDevice:device
+                                                inputFeatureChannels:kInputArrayFeatureChannels
                                                          paddingSize:kPadding];
     return @{
       kPNKTemporaryImageExamplesKernel: reflectionPadding,
       kPNKTemporaryImageExamplesDevice: device,
-      kPNKTemporaryImageExamplesIsArray: @(YES)
+      kPNKTemporaryImageExamplesInputChannels: @(kInputArrayFeatureChannels)
     };
   });
 });
