@@ -496,29 +496,29 @@
 				CD4572891F71731400713681 /* AFNetworking.framework in Frameworks */,
 				65F82F021F93C09F002A496C /* CloudKit.framework in Frameworks */,
 				CD3C6A351F559F44008A6C23 /* CoreGraphics.framework in Frameworks */,
-				CD45728B1F717E4D00713681 /* Security.framework in Frameworks */,
-				CDB513A81F66BC150013577C /* StoreKit.framework in Frameworks */,
+				CD3C69A41F559394008A6C23 /* GLKit.framework in Frameworks */,
 				CD4572831F7172EB00713681 /* Mantle.framework in Frameworks */,
 				CDAC85081FC16F3300B197B3 /* Masonry.framework in Frameworks */,
 				CD45725A1F716A8100713681 /* MessageUI.framework in Frameworks */,
-				CD3C6AC81F55A0B0008A6C23 /* ReactiveObjC.framework in Frameworks */,
-				CD3C6A371F559F61008A6C23 /* QuartzCore.framework in Frameworks */,
-				CD3C6A331F559F3A008A6C23 /* UIKit.framework in Frameworks */,
-				CD3C69A41F559394008A6C23 /* GLKit.framework in Frameworks */,
 				CDC8CE861F6EA6C400E7C929 /* Objection-iOS.framework in Frameworks */,
+				CD3C6A371F559F61008A6C23 /* QuartzCore.framework in Frameworks */,
+				CD3C6AC81F55A0B0008A6C23 /* ReactiveObjC.framework in Frameworks */,
+				CD45728B1F717E4D00713681 /* Security.framework in Frameworks */,
+				CDB513A81F66BC150013577C /* StoreKit.framework in Frameworks */,
+				CD3C6A331F559F3A008A6C23 /* UIKit.framework in Frameworks */,
 				CD4572871F71730200713681 /* ZipArchive.framework in Frameworks */,
-				CDB8A6591F53FE1800E14706 /* libcompression.tbd in Frameworks */,
-				CD4572851F7172F800713681 /* libUICKeyChainStore.a in Frameworks */,
 				CD45727F1F7172C400713681 /* libBazaar.a in Frameworks */,
-				CDB8A6571F53FCE300E14706 /* libextobjc_iOS.a in Frameworks */,
 				650BB33C1D465389008648A3 /* libExpecta.a in Frameworks */,
-				650BB33E1D465389008648A3 /* libLTKit.a in Frameworks */,
-				CD3C6A0F1F559F23008A6C23 /* libLLReactiveMatchers.a in Frameworks */,
 				CD4572811F7172E500713681 /* libFiber.a in Frameworks */,
+				CD3C6A0F1F559F23008A6C23 /* libLLReactiveMatchers.a in Frameworks */,
+				650BB33E1D465389008648A3 /* libLTKit.a in Frameworks */,
 				650BB33F1D465389008648A3 /* libOCMock.a in Frameworks */,
 				84FF72F71C8EEF9600D1DA9F /* libShopix.a in Frameworks */,
 				650BB3401D465389008648A3 /* libSpecta.a in Frameworks */,
+				CD4572851F7172F800713681 /* libUICKeyChainStore.a in Frameworks */,
 				CD574E691FAF661800E0BA97 /* libWireframes.a in Frameworks */,
+				CDB8A6591F53FE1800E14706 /* libcompression.tbd in Frameworks */,
+				CDB8A6571F53FCE300E14706 /* libextobjc_iOS.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -599,9 +599,9 @@
 		653D9C351FB742E20035ACEC /* Alert */ = {
 			isa = PBXGroup;
 			children = (
-				653D9C361FB743110035ACEC /* UIAlertController+ViewModelSpec.mm */,
-				653D9C3A1FB7B5E00035ACEC /* SPXAlertViewModelSpec.mm */,
 				653D9C3C1FB7BBCC0035ACEC /* SPXAlertViewModelBuilderSpec.mm */,
+				653D9C3A1FB7B5E00035ACEC /* SPXAlertViewModelSpec.mm */,
+				653D9C361FB743110035ACEC /* UIAlertController+ViewModelSpec.mm */,
 			);
 			name = Alert;
 			sourceTree = "<group>";
@@ -622,9 +622,9 @@
 		848E00111C591DD1001D8368 /* ShopixTests */ = {
 			isa = PBXGroup;
 			children = (
-				848E00241C59208B001D8368 /* Tests */,
 				848E00231C59207C001D8368 /* Libraries */,
 				848E00211C591F3D001D8368 /* Supporting Files */,
+				848E00241C59208B001D8368 /* Tests */,
 			);
 			path = ShopixTests;
 			sourceTree = "<group>";
@@ -651,10 +651,10 @@
 			isa = PBXGroup;
 			children = (
 				848E00371C5920CB001D8368 /* Expecta.xcodeproj */,
-				650BB3341D465359008648A3 /* TestHost.xcodeproj */,
+				CD962D9C1F5427EF00F2CA82 /* LLReactiveMatchers.xcodeproj */,
 				848E00251C5920C1001D8368 /* OCMock.xcodeproj */,
 				848E0A421C5921AD001D8368 /* Specta.xcodeproj */,
-				CD962D9C1F5427EF00F2CA82 /* LLReactiveMatchers.xcodeproj */,
+				650BB3341D465359008648A3 /* TestHost.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -687,9 +687,9 @@
 		848EFF7C1C591B3A001D8368 /* Products */ = {
 			isa = PBXGroup;
 			children = (
+				CD5550151F45C8050048215C /* Shopix.bundle */,
 				848E000D1C591DD1001D8368 /* ShopixTests.xctest */,
 				84FF72E91C8EED6D00D1DA9F /* libShopix.a */,
-				CD5550151F45C8050048215C /* Shopix.bundle */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -729,9 +729,9 @@
 			isa = PBXGroup;
 			children = (
 				CD553D861F4184D00048215C /* Bazaar.xcodeproj */,
-				CDB8A6481F53FCB200E14706 /* extobjc.xcodeproj */,
 				650BB31C1D465335008648A3 /* LTKit.xcodeproj */,
 				CDCCF3D51F4EC2F700F421E6 /* ReactiveObjC.xcodeproj */,
+				CDB8A6481F53FCB200E14706 /* extobjc.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -739,22 +739,22 @@
 		848EFFE21C591C0D001D8368 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				CDAC85091FC16F3300B197B3 /* Masonry.framework */,
-				CD574E6A1FAF661800E0BA97 /* libWireframes.a */,
-				65F82EDD1F93C09F002A496C /* CloudKit.framework */,
-				CD45728A1F717E4D00713681 /* Security.framework */,
 				CD4572881F71731400713681 /* AFNetworking.framework */,
-				CD4572861F71730200713681 /* ZipArchive.framework */,
-				CD4572841F7172F800713681 /* libUICKeyChainStore.a */,
+				65F82EDD1F93C09F002A496C /* CloudKit.framework */,
+				CD3C6A341F559F44008A6C23 /* CoreGraphics.framework */,
+				CD3C69A31F559394008A6C23 /* GLKit.framework */,
 				CD4572821F7172EB00713681 /* Mantle.framework */,
-				CD4572801F7172E500713681 /* libFiber.a */,
+				CDAC85091FC16F3300B197B3 /* Masonry.framework */,
 				CD4572591F716A8100713681 /* MessageUI.framework */,
 				CDC8CE841F6EA67D00E7C929 /* Objection-iOS.framework */,
-				CDB513A71F66BC150013577C /* StoreKit.framework */,
 				CD3C6A361F559F61008A6C23 /* QuartzCore.framework */,
-				CD3C6A341F559F44008A6C23 /* CoreGraphics.framework */,
+				CD45728A1F717E4D00713681 /* Security.framework */,
+				CDB513A71F66BC150013577C /* StoreKit.framework */,
 				CD3C6A321F559F3A008A6C23 /* UIKit.framework */,
-				CD3C69A31F559394008A6C23 /* GLKit.framework */,
+				CD4572861F71730200713681 /* ZipArchive.framework */,
+				CD4572801F7172E500713681 /* libFiber.a */,
+				CD4572841F7172F800713681 /* libUICKeyChainStore.a */,
+				CD574E6A1FAF661800E0BA97 /* libWireframes.a */,
 				CDB8A6581F53FE1800E14706 /* libcompression.tbd */,
 			);
 			name = Frameworks;
@@ -784,12 +784,12 @@
 			children = (
 				88FA8CA21F66C68700D2E594 /* SPXProductAxis.h */,
 				88FA8CA31F66C68700D2E594 /* SPXProductAxis.mm */,
+				88FF396E1FB2E047006311FF /* SPXProductDescriptor.h */,
+				88FF396F1FB2E047006311FF /* SPXProductDescriptor.mm */,
 				88FA8C991F66AA0A00D2E594 /* SPXProductDescriptorsFactory.h */,
 				88FA8C9A1F66AA0A00D2E594 /* SPXProductDescriptorsFactory.mm */,
 				88FA8C9C1F66C52400D2E594 /* SPXPromotion.h */,
 				88FA8C9D1F66C52400D2E594 /* SPXPromotion.mm */,
-				88FF396E1FB2E047006311FF /* SPXProductDescriptor.h */,
-				88FF396F1FB2E047006311FF /* SPXProductDescriptor.mm */,
 			);
 			name = Promotions;
 			sourceTree = "<group>";
@@ -877,10 +877,10 @@
 		CDB5137B1F66B0220013577C /* Subscription */ = {
 			isa = PBXGroup;
 			children = (
-				CD60A5EB1FB433180017D777 /* SPXDualLabelView.h */,
-				CD60A5EC1FB433180017D777 /* SPXDualLabelView.mm */,
 				CD60A58C1FB2F2850017D777 /* SPXButtonsHorizontalLayoutView.h */,
 				CD60A58D1FB2F2850017D777 /* SPXButtonsHorizontalLayoutView.mm */,
+				CD60A5EB1FB433180017D777 /* SPXDualLabelView.h */,
+				CD60A5EC1FB433180017D777 /* SPXDualLabelView.mm */,
 				CD60A5E81FB34F6A0017D777 /* SPXSubscriptionGradientButton.h */,
 				CD60A5E91FB34F6A0017D777 /* SPXSubscriptionGradientButton.mm */,
 				CDB513A01F66B0440013577C /* SPXSubscriptionManager.h */,
