@@ -1,19 +1,28 @@
-/* Text on a button shown to the user on failed action, navigating the user to sending feedback */
+/* Text on a button shown to the user on failed action, suggesting the user to contact our support team */
 "Contact Us" = "고객 센터";
 
-/* Text on a button shown to the user on failed action, dismissing the alert */
+/* Text on a button shown to the user on failed action, dismissing the alert and canceling the operation */
 "Not Now" = "나중에";
 
-/* Shown after a failed purchase */
-"Purchase failed" = "구매 실패";
+/* Title of a button shown in an information alert */
+"OK" = "OK"; /* MISSING TRANSLATION */
 
-/* Body of an error message that asks the user to try again */
+/* Message shown after a failing operation, giving the user 3 options: retry the failing operation, send a feedback email or cancel the operation */
+"Please try again. If the problem persists, let us know and we'll get right on it." = "Please try again. If the problem persists, let us know and we'll get right on it."; /* MISSING TRANSLATION */
+
+/* Title of an alert shown after failed purchase */
+"Purchase Failed" = "Purchase Failed"; /* MISSING TRANSLATION */
+
+/* Title of an alert shown after successful restoration of user purchases */
+"Restoration Completed" = "Restoration Completed"; /* MISSING TRANSLATION */
+
+/* Title of an alert shown after failing attempt to restore purchases */
+"Restoration Failed" = "Restoration Failed"; /* MISSING TRANSLATION */
+
+/* Text on a button shown to the user on failed action, trying the failed operation again */
 "Try Again" = "다시 시도하세요";
 
-/* Title of an alert box shown after purchases restoration has failed */
-"Your purchases cannot be restored at this time" = "현재 구입 항목을 복원할 수 없습니다";
-
-/* Message shown after a successful products restoration, when no activesubscription was found */
+/* Message shown after a successful products restoration, but no activesubscription was found */
 "Your purchases were restored successfully, no active subscription found" = "구입 항목이 성공적으로 복원되었지만, 활성화된 구독 기간을 찾을 수 없음";
 
 /* Message shown after successful subscription restoration */
