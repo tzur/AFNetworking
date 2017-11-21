@@ -53,6 +53,7 @@
 		CDAC86E31FC33C4B00B197B3 /* SPXPagingViewSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = CDAC86E21FC33C4B00B197B3 /* SPXPagingViewSpec.mm */; };
 		CDAC8C501FC4558000B197B3 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDAC8C291FC4557A00B197B3 /* AVFoundation.framework */; };
 		CDAC8C521FC455A000B197B3 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDAC8C511FC4559600B197B3 /* CoreMedia.framework */; };
+		CDAC90FB1FC496F100B197B3 /* SPXSubscriptionVideoPageView.mm in Sources */ = {isa = PBXBuildFile; fileRef = CDAC90FA1FC496F100B197B3 /* SPXSubscriptionVideoPageView.mm */; };
 		CDACBD731FBB4476000A1548 /* SPXPagingView.mm in Sources */ = {isa = PBXBuildFile; fileRef = CDACBD721FBB4476000A1548 /* SPXPagingView.mm */; };
 		CDB513A21F66B0440013577C /* SPXSubscriptionManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = CDB513A11F66B0440013577C /* SPXSubscriptionManager.mm */; };
 		CDB513A51F66B0A10013577C /* SPXSubscriptionManagerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = CDB513A41F66B0A10013577C /* SPXSubscriptionManagerSpec.mm */; };
@@ -502,6 +503,8 @@
 		CDAC86E21FC33C4B00B197B3 /* SPXPagingViewSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXPagingViewSpec.mm; sourceTree = "<group>"; };
 		CDAC8C291FC4557A00B197B3 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		CDAC8C511FC4559600B197B3 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		CDAC90D31FC496F100B197B3 /* SPXSubscriptionVideoPageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPXSubscriptionVideoPageView.h; sourceTree = "<group>"; };
+		CDAC90FA1FC496F100B197B3 /* SPXSubscriptionVideoPageView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXSubscriptionVideoPageView.mm; sourceTree = "<group>"; };
 		CDACBD711FBB4476000A1548 /* SPXPagingView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SPXPagingView.h; sourceTree = "<group>"; };
 		CDACBD721FBB4476000A1548 /* SPXPagingView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXPagingView.mm; sourceTree = "<group>"; };
 		CDB510721F6176150013577C /* SPXLocalization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPXLocalization.h; sourceTree = "<group>"; };
@@ -931,6 +934,8 @@
 				CD60A5E91FB34F6A0017D777 /* SPXSubscriptionGradientButton.mm */,
 				CDB513A01F66B0440013577C /* SPXSubscriptionManager.h */,
 				CDB513A11F66B0440013577C /* SPXSubscriptionManager.mm */,
+				CDAC90D31FC496F100B197B3 /* SPXSubscriptionVideoPageView.h */,
+				CDAC90FA1FC496F100B197B3 /* SPXSubscriptionVideoPageView.mm */,
 			);
 			name = Subscription;
 			sourceTree = "<group>";
@@ -1484,6 +1489,7 @@
 				639C5AC91FB37DD300937367 /* SPXAlertViewModelBuilder.mm in Sources */,
 				88720F9D1F9E1A4D00E18F05 /* SPXProductDescriptorsFactory.mm in Sources */,
 				CD60A5EA1FB34F6A0017D777 /* SPXSubscriptionGradientButton.mm in Sources */,
+				CDAC90FB1FC496F100B197B3 /* SPXSubscriptionVideoPageView.mm in Sources */,
 				CDACBD731FBB4476000A1548 /* SPXPagingView.mm in Sources */,
 				CDC8D4EB1F701EA300E7C929 /* SPXLocalization.mm in Sources */,
 				CD8E8E2F1F5C19F500DF8FC1 /* NSDecimalNumber+Localization.mm in Sources */,
