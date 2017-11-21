@@ -16,7 +16,6 @@ static const mode_t kFileMode = 0644;
 
 context(@"valid file", ^{
   beforeEach(^{
-    LTCreateTemporaryDirectory();
     path = LTTemporaryPath(@"LTMMOutputFile.test");
 
     outputFile = [[LTMMOutputFile alloc] initWithPath:path size:kFileSize mode:kFileMode

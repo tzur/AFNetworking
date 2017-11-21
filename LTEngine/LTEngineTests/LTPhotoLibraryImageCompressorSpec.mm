@@ -64,8 +64,6 @@ it(@"should raise when initalized with illegal quality", ^{
 });
 
 it(@"should compress same data to file as to in memory data", ^{
-  LTCreateTemporaryDirectory();
-
   UIImage *image = LTLoadImage([self class], @"Lena.png");
   auto url = [NSURL fileURLWithPath:LTTemporaryPath(@"temp.bin")];
 
@@ -79,8 +77,6 @@ it(@"should compress same data to file as to in memory data", ^{
   expect(error).to.beNil();
   expect(expectedData).notTo.beNil();
   expect(expectedData).to.equal(actualData);
-
-  [[NSFileManager defaultManager] removeItemAtPath:LTTemporaryPath() error:nil];
 });
 
 it(@"should return correct format", ^{

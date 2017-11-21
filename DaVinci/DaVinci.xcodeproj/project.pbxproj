@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		190971841FBD782600AD5B91 /* libLTKitTestUtils.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 190971731FBD77CC00AD5B91 /* libLTKitTestUtils.a */; };
 		250154851D1AE92900420FA9 /* libDaVinci.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 250154661D1ACA1300420FA9 /* libDaVinci.a */; };
 		2501552E1D1AF19A00420FA9 /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 250154F51D1AF13900420FA9 /* libOCMock.a */; };
 		2501552F1D1AF1A400420FA9 /* libExpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 250155121D1AF14C00420FA9 /* libExpecta.a */; };
@@ -22,7 +23,6 @@
 		258341851D339C580005BC07 /* DVNRenderStageConfigurationSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 258341841D339C580005BC07 /* DVNRenderStageConfigurationSpec.mm */; };
 		258341BC1D33B3CB0005BC07 /* DVNGeometryValues.mm in Sources */ = {isa = PBXBuildFile; fileRef = 258341BB1D33B3CB0005BC07 /* DVNGeometryValues.mm */; };
 		258341BE1D33B8CA0005BC07 /* DVNGeometryValuesSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 258341BD1D33B8CA0005BC07 /* DVNGeometryValuesSpec.mm */; };
-		25AD67551D35527F0092B3E4 /* LTEqualityExamples.mm in Sources */ = {isa = PBXBuildFile; fileRef = 25AD67541D35527F0092B3E4 /* LTEqualityExamples.mm */; };
 		25AD67721D3553ED0092B3E4 /* DVNPipelineConfiguration.mm in Sources */ = {isa = PBXBuildFile; fileRef = 25AD67711D3553ED0092B3E4 /* DVNPipelineConfiguration.mm */; };
 		25AD67741D3553F50092B3E4 /* DVNPipelineConfigurationSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 25AD67731D3553F50092B3E4 /* DVNPipelineConfigurationSpec.mm */; };
 		25AD67771D355A900092B3E4 /* DVNPipeline.mm in Sources */ = {isa = PBXBuildFile; fileRef = 25AD67761D355A900092B3E4 /* DVNPipeline.mm */; };
@@ -169,6 +169,13 @@
 /* End PBXBuildRule section */
 
 /* Begin PBXContainerItemProxy section */
+		190971721FBD77CC00AD5B91 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 654358041D463B64002140A8 /* LTKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 194FF4FC1FA8BA77008879E7;
+			remoteInfo = LTKitTestUtils;
+		};
 		250154861D1AE92900420FA9 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 2501545E1D1ACA1300420FA9 /* Project object */;
@@ -474,8 +481,6 @@
 		258341BA1D33B3CB0005BC07 /* DVNGeometryValues.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DVNGeometryValues.h; sourceTree = "<group>"; };
 		258341BB1D33B3CB0005BC07 /* DVNGeometryValues.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNGeometryValues.mm; sourceTree = "<group>"; };
 		258341BD1D33B8CA0005BC07 /* DVNGeometryValuesSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNGeometryValuesSpec.mm; sourceTree = "<group>"; };
-		25AD67531D35527F0092B3E4 /* LTEqualityExamples.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LTEqualityExamples.h; path = ../../LTKit/LTKitTests/LTEqualityExamples.h; sourceTree = "<group>"; };
-		25AD67541D35527F0092B3E4 /* LTEqualityExamples.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = LTEqualityExamples.mm; path = ../../LTKit/LTKitTests/LTEqualityExamples.mm; sourceTree = "<group>"; };
 		25AD67701D3553ED0092B3E4 /* DVNPipelineConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DVNPipelineConfiguration.h; sourceTree = "<group>"; };
 		25AD67711D3553ED0092B3E4 /* DVNPipelineConfiguration.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNPipelineConfiguration.mm; sourceTree = "<group>"; };
 		25AD67731D3553F50092B3E4 /* DVNPipelineConfigurationSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNPipelineConfigurationSpec.mm; sourceTree = "<group>"; };
@@ -638,6 +643,7 @@
 				2501552F1D1AF1A400420FA9 /* libExpecta.a in Frameworks */,
 				50574AE41D2D654C0076C60D /* libLTEngine.a in Frameworks */,
 				6543581E1D463C3A002140A8 /* libLTKit.a in Frameworks */,
+				190971841FBD782600AD5B91 /* libLTKitTestUtils.a in Frameworks */,
 				2501552E1D1AF19A00420FA9 /* libOCMock.a in Frameworks */,
 				E4829F631E49D069009F3355 /* libOpenEXR.a in Frameworks */,
 				250155301D1AF1B600420FA9 /* libSpecta.a in Frameworks */,
@@ -1236,8 +1242,6 @@
 				25C3DCAD1D37AD410056E47A /* DVNEasyQuadVectorBoxing.mm */,
 				50073F8C1D363179009F7F48 /* EXPMatchers+equalMat.h */,
 				50073F8D1D363179009F7F48 /* EXPMatchers+equalMat.mm */,
-				25AD67531D35527F0092B3E4 /* LTEqualityExamples.h */,
-				25AD67541D35527F0092B3E4 /* LTEqualityExamples.mm */,
 				50574AD01D2D60490076C60D /* LTSpectaOpenGLContextHook.h */,
 				50574AD11D2D60490076C60D /* LTSpectaOpenGLContextHook.mm */,
 				50073F8F1D3631FB009F7F48 /* LTTestUtils+LTEngine.h */,
@@ -1325,6 +1329,7 @@
 			children = (
 				6543580A1D463B64002140A8 /* libLTKit.a */,
 				6543580C1D463B64002140A8 /* LTKitTests.xctest */,
+				190971731FBD77CC00AD5B91 /* libLTKitTestUtils.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1474,6 +1479,13 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		190971731FBD77CC00AD5B91 /* libLTKitTestUtils.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libLTKitTestUtils.a;
+			remoteRef = 190971721FBD77CC00AD5B91 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		250154AC1D1AEAF100420FA9 /* libLTEngine.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -1821,7 +1833,6 @@
 				25AD67791D355A9E0092B3E4 /* DVNPipelineSpec.mm in Sources */,
 				5001CB2B1F2745A700C70D23 /* DVNBrushSpec.mm in Sources */,
 				285A78CF1DFD34F000095BF4 /* DVNBrushTipsProviderSpec.mm in Sources */,
-				25AD67551D35527F0092B3E4 /* LTEqualityExamples.mm in Sources */,
 				28327A8C1E1CEA8E00CDE956 /* DVNJitteredColorAttributeProviderModelSpec.mm in Sources */,
 				50574AD21D2D60490076C60D /* LTSpectaOpenGLContextHook.mm in Sources */,
 				28662D5F1DF57D970051B9DA /* DVNSplineRenderingExamples.mm in Sources */,

@@ -7,7 +7,10 @@
   #import <Expecta/Expecta.h>
   #import <LLReactiveMatchers/LLReactiveMatchers.h>
   #import <LLReactiveMatchers/Matchers/EXPMatchers+error.h>
-  #import <LTKitTests/LTTestUtils.h>
   #import <OCMock/OCMock.h>
   #import <Specta/Specta.h>
+#endif
+
+#ifdef __cplusplus
+  #import <LTKitTestUtils/LTTestUtils.h>
 #endif

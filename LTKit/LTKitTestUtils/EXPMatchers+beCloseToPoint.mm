@@ -13,7 +13,7 @@ EXPMatcherImplementationBegin(_beCloseToPointWithin, (id expected, id within)) {
   __block NSString *prerequisiteErrorMessage;
   __block CGPoint expectedPoint;
   __block CGPoint actualPoint;
-  
+
   prerequisite(^BOOL{
     if (!(([expected isKindOfClass:[EXPFloatTuple class]] &&
           [actual isKindOfClass:[EXPFloatTuple class]]) ||
@@ -25,7 +25,7 @@ EXPMatcherImplementationBegin(_beCloseToPointWithin, (id expected, id within)) {
     }
     return !prerequisiteErrorMessage;
   });
-  
+
   match(^BOOL{
     if ([expected isKindOfClass:[EXPFloatTuple class]]) {
       expectedPoint = CGPointMake([(EXPFloatTuple *)expected values][0],
@@ -42,7 +42,7 @@ EXPMatcherImplementationBegin(_beCloseToPointWithin, (id expected, id within)) {
     distance = CGPointDistance(expectedPoint, actualPoint);
     return distance <= range;
   });
-  
+
   failureMessageForTo(^NSString *{
     if (prerequisiteErrorMessage) {
       return prerequisiteErrorMessage;
@@ -56,7 +56,7 @@ EXPMatcherImplementationBegin(_beCloseToPointWithin, (id expected, id within)) {
               actualPoint.x, actualPoint.y, expectedPoint.x, expectedPoint.y, distance];
     }
   });
-  
+
   failureMessageForNotTo(^NSString *{
     if (prerequisiteErrorMessage) {
       return prerequisiteErrorMessage;

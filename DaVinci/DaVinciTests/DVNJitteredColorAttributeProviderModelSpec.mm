@@ -7,7 +7,7 @@
 #import <LTEngine/LTQuad.h>
 #import <LTEngine/LTSampleValues.h>
 #import <LTKit/LTRandom.h>
-#import <LTKitTests/LTEqualityExamples.h>
+#import <LTKitTestUtils/LTEqualityExamples.h>
 
 #import "DVNAttributeProviderExamples.h"
 #import "DVNEasyQuadVectorBoxing.h"
@@ -38,7 +38,7 @@ context(@"initialization", ^{
   it(@"should initialize correctly", ^{
     expect(model).toNot.beNil();
   });
-  
+
   it(@"should have correct initial property values", ^{
     expect(model.baseColor).to.equal(baseColor);
     expect(model.brightnessJitter).to.equal(brightnessJitter);
@@ -46,7 +46,7 @@ context(@"initialization", ^{
     expect(model.saturationJitter).to.equal(saturationJitter);
     expect(model.randomState).to.equal(randomState);
   });
-  
+
   context(@"invalid initialization attempts", ^{
     it(@"should raise when attempting to initialize out of range brightness jitter", ^{
       expect(^{
@@ -57,7 +57,7 @@ context(@"initialization", ^{
                                                                       randomState:randomState];
       }).to.raise(NSInvalidArgumentException);
     });
-    
+
     it(@"should raise when attempting to initialize out of range hue jitter", ^{
       expect(^{
         model = [[DVNJitteredColorAttributeProviderModel alloc] initWithBaseColor:baseColor
@@ -67,7 +67,7 @@ context(@"initialization", ^{
                                                                       randomState:randomState];
       }).to.raise(NSInvalidArgumentException);
     });
-    
+
     it(@"should raise when attempting to initialize out of range saturation jitter", ^{
       expect(^{
         model = [[DVNJitteredColorAttributeProviderModel alloc] initWithBaseColor:baseColor

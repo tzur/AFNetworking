@@ -4,7 +4,7 @@
 #import "DVNRenderStageConfiguration.h"
 
 #import <LTEngine/LTTexture+Factory.h>
-#import <LTKitTests/LTEqualityExamples.h>
+#import <LTKitTestUtils/LTEqualityExamples.h>
 
 SpecBegin(DVNRenderStageConfiguration)
 

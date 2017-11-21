@@ -28,18 +28,8 @@ __block NSError *error;
 beforeEach(^{
   compressor = [[LTOpenExrPizCompressor alloc] init];
 
-  LTCreateTemporaryDirectory();
-
   path = LTTemporaryPath(@"output.openexrpiz");
   error = nil;
-});
-
-afterEach(^{
-  NSFileManager *fileManager = [NSFileManager defaultManager];
-  for (NSString *file in [fileManager enumeratorAtPath:LTTemporaryPath()]) {
-    NSString *path = [LTTemporaryPath() stringByAppendingPathComponent:file];
-    [fileManager removeItemAtPath:path error:nil];
-  }
 });
 
 context(@"compression and decompression", ^{

@@ -175,18 +175,12 @@ context(@"compression to a file", ^{
   __block UIImage *image;
 
   beforeEach(^{
-    LTCreateTemporaryDirectory();
-
     url = [NSURL fileURLWithPath:LTTemporaryPath(@"temp.jpg")];
     image = LTLoadImage([self class], @"Lena.png");
 
     compressor = [[LTImageIOCompressor alloc] initWithOptions:@{
       (__bridge NSString *)kCGImageDestinationLossyCompressionQuality: @1
     } format:$(LTCompressionFormatJPEG)];
-  });
-
-  afterEach(^{
-    [[NSFileManager defaultManager] removeItemAtPath:LTTemporaryPath() error:nil];
   });
 
   it(@"should compress successfully to a file", ^{

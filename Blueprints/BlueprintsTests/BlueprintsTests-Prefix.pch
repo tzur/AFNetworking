@@ -18,10 +18,10 @@ extern "C" {
 #endif
 
 #ifdef __cplusplus
-  #import <LTKitTests/LTTestUtils.h>
+  #import <LTKitTestUtils/LTTestUtils.h>
 
   // Matchers.
-  #import <LTKitTests/EXPMatchers+beCloseToPoint.h>
+  #import <LTKitTestUtils/EXPMatchers+beCloseToPoint.h>
   #import <LLReactiveMatchers/LLReactiveMatchers.h>
   #import <LLReactiveMatchers/Matchers/EXPMatchers+error.h>
 #endif

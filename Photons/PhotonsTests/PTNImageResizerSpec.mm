@@ -20,7 +20,6 @@ SpecBegin(PTNImageResizer)
 __block PTNImageResizer *resizer;
 
 beforeEach(^{
-  LTCreateTemporaryDirectory();
   resizer = [[PTNImageResizer alloc] init];
 });
 
@@ -211,7 +210,7 @@ context(@"URL Resizing", ^{
       it(@"should return a resized aspect fitted image", ^{
         static CGSize kTargetSize = CGSizeMake(6, 6);
         static CGSize kExpectedSize = CGSizeMake(6, 3);
-        
+
         RACSignal *signal = [resizer resizeImageAtURL:fileURL toSize:kTargetSize
                                           contentMode:PTNImageContentModeAspectFit];
         expect(signal).will.matchValue(0, ^BOOL(UIImage *value) {
@@ -276,9 +275,8 @@ context(@"Data Resizing", ^{
 
     beforeEach(^{
       NSString *path = LTTemporaryPath(@"PTNImageResizerTest.jpg");
-      imageData = [NSData dataWithContentsOfFile:path];
-
       PTNWriteImageOfSizeToFile(kOriginalSize, path, UIImageOrientationUp);
+      imageData = [NSData dataWithContentsOfFile:path];
     });
 
     context(@"aspect fill", ^{
@@ -359,7 +357,7 @@ context(@"Data Resizing", ^{
     it(@"should err when invalid data is given", ^{
       static CGSize kTargetSize = CGSizeMake(6, 6);
       imageData = [NSData data];
-      
+
       RACSignal *signal = [resizer resizeImageFromData:imageData toSize:kTargetSize
                                            contentMode:PTNImageContentModeAspectFill];
 
@@ -374,9 +372,8 @@ context(@"Data Resizing", ^{
 
     beforeEach(^{
       NSString *path = LTTemporaryPath(@"PTNImageResizerRotatedTest.jpg");
-      imageData = [NSData dataWithContentsOfFile:path];
-
       PTNWriteImageOfSizeToFile(CGSizeMake(6, 12), path, UIImageOrientationRight);
+      imageData = [NSData dataWithContentsOfFile:path];
     });
 
     context(@"aspect fill", ^{

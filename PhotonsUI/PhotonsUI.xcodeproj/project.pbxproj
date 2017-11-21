@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		0DF151CC1EAF79DB009F3080 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DF151CB1EAF79DB009F3080 /* AVFoundation.framework */; };
 		0DF155F51EB1DCA6009F3080 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8861FE0E1E5A2CF100CA1436 /* QuartzCore.framework */; };
+		190971D81FBD8F5200AD5B91 /* libLTKitTestUtils.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 190971C01FBD78A300AD5B91 /* libLTKitTestUtils.a */; };
 		287C87841F54114C00FCC2CC /* Mantle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 287C87831F54114C00FCC2CC /* Mantle.framework */; };
 		287C87AB1F54115900FCC2CC /* libFiber.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 287C87AA1F54115900FCC2CC /* libFiber.a */; };
 		287C87AD1F54116400FCC2CC /* AFNetworking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 287C87AC1F54116400FCC2CC /* AFNetworking.framework */; };
@@ -37,7 +38,6 @@
 		84884C7F1C71D83000DBB987 /* PTUChangesetMoveSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 84884C7E1C71D83000DBB987 /* PTUChangesetMoveSpec.mm */; };
 		848D31341D0F0415006BC52F /* PTUImageCellViewModelProvider.mm in Sources */ = {isa = PBXBuildFile; fileRef = 848D31331D0F0415006BC52F /* PTUImageCellViewModelProvider.mm */; };
 		848D31511D0F06CE006BC52F /* PTUImageCellViewModelProviderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 848D31501D0F06CE006BC52F /* PTUImageCellViewModelProviderSpec.mm */; };
-		848E0A411C59217D001D8368 /* LTTestUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 848E0A401C59217D001D8368 /* LTTestUtils.mm */; };
 		84A0DC3D1C8747AE005A98F3 /* PTUImageCellViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A0DC3B1C8747AE005A98F3 /* PTUImageCellViewModel.m */; };
 		84A0DD0F1C874F3E005A98F3 /* PTUImageCellViewModelSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 84A0DD0E1C874F3E005A98F3 /* PTUImageCellViewModelSpec.mm */; };
 		84A6CE1D1D392502003369E0 /* PTUCompoundChangesetProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A6CE1C1D392502003369E0 /* PTUCompoundChangesetProvider.m */; };
@@ -64,7 +64,6 @@
 		84F4679E1D080B620060EFAA /* PTNDisposableRetainingSignal.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F4679D1D080B620060EFAA /* PTNDisposableRetainingSignal.m */; };
 		84F467B01D0839F20060EFAA /* PTNFakeAssetDescriptor.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F467AF1D0839F20060EFAA /* PTNFakeAssetDescriptor.m */; };
 		84F830DD1D11986E00A01882 /* PTUCellSizingStrategySpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 84F830DC1D11986E00A01882 /* PTUCellSizingStrategySpec.mm */; };
-		84F830FB1D11A0B900A01882 /* EXPMatchers+beCloseToPoint.mm in Sources */ = {isa = PBXBuildFile; fileRef = 84F830FA1D11A0B900A01882 /* EXPMatchers+beCloseToPoint.mm */; };
 		84FF72F41C8EED9600D1DA9F /* PTUAlbumChangesetProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 8414ED581C624E6B00014DD1 /* PTUAlbumChangesetProvider.m */; };
 		84FF72F51C8EED9800D1DA9F /* PTUChangeset.m in Sources */ = {isa = PBXBuildFile; fileRef = 8428F3AB1C68E6840007B0A5 /* PTUChangeset.m */; };
 		84FF72F61C8EED9900D1DA9F /* PTUChangesetMove.m in Sources */ = {isa = PBXBuildFile; fileRef = 84884C181C70E63500DBB987 /* PTUChangesetMove.m */; };
@@ -99,6 +98,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		190971BF1FBD78A300AD5B91 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 650BB31C1D465335008648A3 /* LTKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 194FF4FC1FA8BA77008879E7;
+			remoteInfo = LTKitTestUtils;
+		};
 		650BB3211D465335008648A3 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 650BB31C1D465335008648A3 /* LTKit.xcodeproj */;
@@ -483,8 +489,6 @@
 		848E00221C591F58001D8368 /* PhotonsUITests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PhotonsUITests-Prefix.pch"; sourceTree = "<group>"; };
 		848E00251C5920C1001D8368 /* OCMock.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = OCMock.xcodeproj; path = ../../third_party/OCMock/Source/OCMock.xcodeproj; sourceTree = "<group>"; };
 		848E00371C5920CB001D8368 /* Expecta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Expecta.xcodeproj; path = ../../third_party/Expecta/Expecta.xcodeproj; sourceTree = "<group>"; };
-		848E0A3F1C59217D001D8368 /* LTTestUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LTTestUtils.h; path = ../../LTKit/LTKitTests/LTTestUtils.h; sourceTree = "<group>"; };
-		848E0A401C59217D001D8368 /* LTTestUtils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = LTTestUtils.mm; path = ../../LTKit/LTKitTests/LTTestUtils.mm; sourceTree = "<group>"; };
 		848E0A421C5921AD001D8368 /* Specta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Specta.xcodeproj; path = ../../third_party/Specta/Specta/Specta.xcodeproj; sourceTree = "<group>"; };
 		848EFFAE1C591B91001D8368 /* Common.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Common.xcconfig; sourceTree = "<group>"; };
 		848EFFB01C591B91001D8368 /* Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
@@ -536,8 +540,6 @@
 		84F467AE1D0839F20060EFAA /* PTNFakeAssetDescriptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PTNFakeAssetDescriptor.h; path = ../../Photons/PhotonsTests/PTNFakeAssetDescriptor.h; sourceTree = "<group>"; };
 		84F467AF1D0839F20060EFAA /* PTNFakeAssetDescriptor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PTNFakeAssetDescriptor.m; path = ../../Photons/PhotonsTests/PTNFakeAssetDescriptor.m; sourceTree = "<group>"; };
 		84F830DC1D11986E00A01882 /* PTUCellSizingStrategySpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PTUCellSizingStrategySpec.mm; sourceTree = "<group>"; };
-		84F830F91D11A0B900A01882 /* EXPMatchers+beCloseToPoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "EXPMatchers+beCloseToPoint.h"; path = "../../LTKit/LTKitTests/EXPMatchers+beCloseToPoint.h"; sourceTree = "<group>"; };
-		84F830FA1D11A0B900A01882 /* EXPMatchers+beCloseToPoint.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = "EXPMatchers+beCloseToPoint.mm"; path = "../../LTKit/LTKitTests/EXPMatchers+beCloseToPoint.mm"; sourceTree = "<group>"; };
 		84FF72E91C8EED6D00D1DA9F /* libPhotonsUI.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPhotonsUI.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		8861FDDD1E5A2C0C00CA1436 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		8861FE001E5A2C1300CA1436 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -627,6 +629,7 @@
 				287C87AB1F54115900FCC2CC /* libFiber.a in Frameworks */,
 				8B10C8C21F3EFB2A00F76142 /* libLLReactiveMatchers.a in Frameworks */,
 				650BB33E1D465389008648A3 /* libLTKit.a in Frameworks */,
+				190971D81FBD8F5200AD5B91 /* libLTKitTestUtils.a in Frameworks */,
 				650BB33F1D465389008648A3 /* libOCMock.a in Frameworks */,
 				84FF72F81C8EEFA000D1DA9F /* libPhotons.a in Frameworks */,
 				84FF72F71C8EEF9600D1DA9F /* libPhotonsUI.a in Frameworks */,
@@ -658,6 +661,7 @@
 			children = (
 				650BB3221D465335008648A3 /* libLTKit.a */,
 				650BB3241D465335008648A3 /* LTKitTests.xctest */,
+				190971C01FBD78A300AD5B91 /* libLTKitTestUtils.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -726,7 +730,6 @@
 		848E00231C59207C001D8368 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				848E0A3E1C592153001D8368 /* LTTestUtils */,
 				84F4677A1D0806AF0060EFAA /* PTNTestUtils */,
 				84F11CF21D2ECE5A002FA1CF /* WFTestUtils */,
 				848E00371C5920CB001D8368 /* Expecta.xcodeproj */,
@@ -745,17 +748,6 @@
 				84B63E811DD8DC9500ECF65B /* Changeset Provider */,
 			);
 			name = Tests;
-			sourceTree = "<group>";
-		};
-		848E0A3E1C592153001D8368 /* LTTestUtils */ = {
-			isa = PBXGroup;
-			children = (
-				84F830F91D11A0B900A01882 /* EXPMatchers+beCloseToPoint.h */,
-				84F830FA1D11A0B900A01882 /* EXPMatchers+beCloseToPoint.mm */,
-				848E0A3F1C59217D001D8368 /* LTTestUtils.h */,
-				848E0A401C59217D001D8368 /* LTTestUtils.mm */,
-			);
-			name = LTTestUtils;
 			sourceTree = "<group>";
 		};
 		848E0A441C5921FE001D8368 /* Base */ = {
@@ -1238,6 +1230,13 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		190971C01FBD78A300AD5B91 /* libLTKitTestUtils.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libLTKitTestUtils.a;
+			remoteRef = 190971BF1FBD78A300AD5B91 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		650BB3221D465335008648A3 /* libLTKit.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -1550,7 +1549,6 @@
 				84F11CF11D2EBDD7002FA1CF /* PTNFakeAssetManager.m in Sources */,
 				BE8C7C9C1DFECAD500FE1508 /* PTUAlbumViewControllerSpec.mm in Sources */,
 				8428F3AF1C68F7590007B0A5 /* PTUChangesetSpec.mm in Sources */,
-				84F830FB1D11A0B900A01882 /* EXPMatchers+beCloseToPoint.mm in Sources */,
 				84CCAF881D64A6A900BD7323 /* PTUImageCellControllerSpec.mm in Sources */,
 				84884C7F1C71D83000DBB987 /* PTUChangesetMoveSpec.mm in Sources */,
 				841424A01D77126600968C36 /* PTUErrorViewProvider.mm in Sources */,
@@ -1563,7 +1561,6 @@
 				84B63E831DD8DCEB00ECF65B /* PTUFlattenningChangesetProviderSpec.mm in Sources */,
 				84F467B01D0839F20060EFAA /* PTNFakeAssetDescriptor.m in Sources */,
 				848D31511D0F06CE006BC52F /* PTUImageCellViewModelProviderSpec.mm in Sources */,
-				848E0A411C59217D001D8368 /* LTTestUtils.mm in Sources */,
 				BE7B8C2D1D37ACB00013F1FC /* PTUArrayChangesetProviderSpec.mm in Sources */,
 				84765E321D293E2600D3D5C5 /* PTUReversedRandomAccessCollectionSpec.mm in Sources */,
 				BE9487201E545CD900EF80D5 /* PTUTimeFormatterSpec.mm in Sources */,

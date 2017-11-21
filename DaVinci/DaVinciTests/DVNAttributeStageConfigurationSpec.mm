@@ -3,7 +3,7 @@
 
 #import "DVNAttributeStageConfiguration.h"
 
-#import <LTKitTests/LTEqualityExamples.h>
+#import <LTKitTestUtils/LTEqualityExamples.h>
 
 SpecBegin(DVNAttributeStageConfiguration)
 

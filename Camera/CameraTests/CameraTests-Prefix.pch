@@ -8,9 +8,9 @@
 #import <LLReactiveMatchers/Matchers/EXPMatchers+error.h>
 
 #ifdef __cplusplus
-  // LTKitTests.
-  #import <LTKitTests/EXPMatchers+beCloseToPoint.h>
-  #import <LTKitTests/LTTestUtils.h>
+  // LTKitTestUtils.
+  #import <LTKitTestUtils/EXPMatchers+beCloseToPoint.h>
+  #import <LTKitTestUtils/LTTestUtils.h>
 
   // LTEngineTests.
   #import <LTEngineTests/LTTestUtils+LTEngine.h>

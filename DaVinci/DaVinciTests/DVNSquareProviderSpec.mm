@@ -7,7 +7,7 @@
 #import <LTEngine/LTSampleValues.h>
 #import <LTEngine/LTSplineControlPoint.h>
 #import <LTEngineTests/LTEasyVectorBoxing.h>
-#import <LTKitTests/LTEqualityExamples.h>
+#import <LTKitTestUtils/LTEqualityExamples.h>
 
 #import "DVNEasyQuadVectorBoxing.h"
 #import "DVNGeometryProviderExamples.h"

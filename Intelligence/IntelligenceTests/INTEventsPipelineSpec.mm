@@ -6,7 +6,7 @@
 #import <Intelligence/INTAppRunCountUpdatedEvent.h>
 #import <Intelligence/INTDeviceTokenChangedEvent.h>
 #import <LTKit/NSArray+Functional.h>
-#import <LTKitTests/LTDataHelpers.h>
+#import <LTKitTestUtils/LTDataHelpers.h>
 
 #import "INTAppLifecycleTimer.h"
 #import "INTDeviceInfo.h"

@@ -3,7 +3,7 @@
 
 #import "LTIndicesData.h"
 
-#import <LTKitTests/LTEqualityExamples.h>
+#import <LTKitTestUtils/LTEqualityExamples.h>
 
 SpecBegin(LTIndicesData)
 
