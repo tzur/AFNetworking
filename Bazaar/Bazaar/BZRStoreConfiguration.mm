@@ -17,6 +17,7 @@
 #import "BZRPeriodicReceiptValidatorActivator.h"
 #import "BZRProductContentFetcher.h"
 #import "BZRProductContentManager.h"
+#import "BZRProductsPriceInfoFetcher.h"
 #import "BZRProductsVariantSelectorFactory.h"
 #import "BZRProductsWithDiscountsProvider.h"
 #import "BZRProductsWithPriceInfoProvider.h"
@@ -123,10 +124,12 @@ NS_ASSUME_NONNULL_BEGIN
     _netherProductsProvider =
         [[BZRProductsWithVariantsProvider alloc]
          initWithUnderlyingProvider:productsWithDiscountsProvider];
+    auto priceInfoFetcher =
+        [[BZRProductsPriceInfoFetcher alloc] initWithStoreKitFacade:self.storeKitFacade];
     BZRProductsWithPriceInfoProvider *productsWithPriceInfoProvider =
         [[BZRProductsWithPriceInfoProvider alloc]
          initWithUnderlyingProvider:self.netherProductsProvider
-         storeKitFacade:self.storeKitFacade];
+         priceInfoFetcher:priceInfoFetcher];
     return [[BZRCachedProductsProvider alloc]
             initWithUnderlyingProvider:productsWithPriceInfoProvider];
 }

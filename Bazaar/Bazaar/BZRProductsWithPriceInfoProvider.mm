@@ -6,11 +6,10 @@
 #import <LTKit/NSArray+Functional.h>
 
 #import "BZREvent.h"
-#import "BZRProduct+SKProduct.h"
-#import "BZRProductPriceInfo+SKProduct.h"
+#import "BZRProduct.h"
 #import "BZRProductTypedefs.h"
-#import "BZRStoreKitFacade.h"
-#import "NSError+Bazaar.h"
+#import "BZRProductsPriceInfoFetcher.h"
+#import "NSErrorCodes+Bazaar.h"
 #import "NSString+Bazaar.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -20,26 +19,25 @@ NS_ASSUME_NONNULL_BEGIN
 /// Provider used to provide the list of products.
 @property (readonly, nonatomic) id<BZRProductsProvider> underlyingProvider;
 
-/// Facade used to interact with Apple StoreKit.
-@property (readonly, nonatomic) BZRStoreKitFacade *storeKitFacade;
-
-/// Subject used to send errors with.
-@property (readonly, nonatomic) RACSubject<BZREvent *> *nonCriticalErrorEventsSubject;
+/// Fetcher used to fetch price info for products.
+@property (readonly, nonatomic) BZRProductsPriceInfoFetcher *priceInfoFetcher;
 
 @end
 
 @implementation BZRProductsWithPriceInfoProvider
+
+@synthesize eventsSignal = _eventsSignal;
 
 #pragma mark -
 #pragma mark Initialization
 #pragma mark -
 
 - (instancetype)initWithUnderlyingProvider:(id<BZRProductsProvider>)underlyingProvider
-                            storeKitFacade:(BZRStoreKitFacade *)storeKitFacade {
+                          priceInfoFetcher:(BZRProductsPriceInfoFetcher *)priceInfoFetcher {
   if (self = [super init]) {
     _underlyingProvider = underlyingProvider;
-    _storeKitFacade = storeKitFacade;
-    _nonCriticalErrorEventsSubject = [RACSubject subject];
+    _priceInfoFetcher = priceInfoFetcher;
+    _eventsSignal = [underlyingProvider.eventsSignal takeUntil:[self rac_willDeallocSignal]];
   }
   return self;
 }
@@ -82,119 +80,26 @@ static NSNumber * const kNonAppStoreProductsLabel = @0;
 }
 
 - (RACSignal<BZRProductList *> *)appStoreProductsList:(BZRProductList *)products {
-  // If the given product list is empty avoid StoreKit overhead and return a signal that delivers an
-  // empty list. Returning an empty signal is not good since the returned list is merged with
-  // another list and we don't want to lose the values from the other list.
-  if (!products.count) {
-    return [RACSignal return:@[]];
-  }
-
-  NSArray<NSString *> *identifiers =
-      [products valueForKey:@instanceKeypath(BZRProduct, identifier)];
-  @weakify(self);
-  return [[[[self.storeKitFacade
-      fetchMetadataForProductsWithIdentifiers:[NSSet setWithArray:identifiers]]
-      doNext:^(SKProductsResponse *response) {
-        @strongify(self);
-        if (response.invalidProductIdentifiers.count) {
-          NSSet<NSString *> *productIdentifiers =
-              [NSSet setWithArray:response.invalidProductIdentifiers];
-          NSError *error = [NSError bzr_invalidProductsErrorWithIdentifers:productIdentifiers];
-          [self.nonCriticalErrorEventsSubject sendNext:
-           [[BZREvent alloc] initWithType:$(BZREventTypeNonCriticalError) eventError:error]];
-        }
-      }]
-      tryMap:^BZRProductList * _Nullable
-          (SKProductsResponse *response, NSError * __autoreleasing *error) {
-        @strongify(self);
-        if (![response.products count]) {
+  return [[[self.priceInfoFetcher fetchProductsPriceInfo:products]
+      try:^BOOL(BZRProductList *productsWithPriceInfo, NSError * __autoreleasing *error) {
+        if (![productsWithPriceInfo count]) {
           if (error) {
-            NSSet<NSString *> *productIdentifiers =
-                [NSSet setWithArray:response.invalidProductIdentifiers];
-            *error = [NSError bzr_invalidProductsErrorWithIdentifers:productIdentifiers];
+            *error = [NSError lt_errorWithCode:BZRErrorCodeProductsMetadataFetchingFailed];
           }
-          return nil;
+
+          return NO;
         }
-        return [self productList:products withMetadataFromProductsResponse:response];
+
+        return YES;
       }]
-      map:^BZRProductList *(BZRProductList *productList) {
-        @strongify(self);
-        return [self productListWithFullPriceInfoForDiscountProducts:productList];
+      map:^BZRProductList *(BZRProductList *productsWithPriceInfo) {
+        NSArray<NSString *> *productIdentifiers = [productsWithPriceInfo valueForKey:@"identifier"];
+        return [productsWithPriceInfo lt_filter:^BOOL(BZRProduct *product) {
+          return [product.identifier.bzr_baseProductIdentifier
+                  isEqualToString:product.identifier] ||
+              [productIdentifiers containsObject:product.identifier.bzr_baseProductIdentifier];
+        }];
       }];
-}
-
-- (BZRProductList *)productList:(BZRProductList *)productList
-    withMetadataFromProductsResponse:(SKProductsResponse *)productsResponse {
-  NSArray<NSString *> *identifiers =
-      [productList valueForKey:@instanceKeypath(BZRProduct, identifier)];
-  NSDictionary<NSString *, BZRProduct *> *productDictionary =
-      [NSDictionary dictionaryWithObjects:productList forKeys:identifiers];
-  return [productsResponse.products lt_reduce:^NSMutableArray<BZRProduct *> *
-          (NSMutableArray<BZRProduct *> *productListSoFar, SKProduct *product) {
-    BZRProduct *bazaarProduct = productDictionary[product.productIdentifier];
-    if (!bazaarProduct || [self isProduct:[bazaarProduct.identifier bzr_baseProductIdentifier]
-                markedAsInvalidByResponse:productsResponse]) {
-      return productListSoFar;
-    }
-
-    BZRProductPriceInfo *priceInfo = [BZRProductPriceInfo productPriceInfoWithSKProduct:product];
-    [productListSoFar addObject:[[bazaarProduct
-        modelByOverridingProperty:@keypath(bazaarProduct, priceInfo) withValue:priceInfo]
-        modelByOverridingProperty:@keypath(bazaarProduct, bzr_underlyingProduct)
-                        withValue:product]];
-    return productListSoFar;
-  } initial:[@[] mutableCopy]];
-}
-
-- (BOOL)isProduct:(NSString *)productIdentifier
-    markedAsInvalidByResponse:(SKProductsResponse *)response {
-  return [response.invalidProductIdentifiers containsObject:productIdentifier];
-}
-
-- (BZRProductList *)productListWithFullPriceInfoForDiscountProducts:(BZRProductList *)products {
-  BZRProductDictionary *productDictionary = [self productDictionaryForProductList:products];
-  BZRProductList *discountedProductsWithFullPriceInfo =
-      [[products lt_filter:^BOOL(BZRProduct *product) {
-        return product.fullPriceProductIdentifier != nil;
-      }]
-      lt_map:^BZRProduct *(BZRProduct *discountedProduct) {
-        BZRProduct *fullPriceProduct =
-            productDictionary[discountedProduct.fullPriceProductIdentifier];
-        return [self discountProductWithFullPriceInfo:discountedProduct
-                                     fullPriceProduct:fullPriceProduct];
-      }];
-  BZRProductDictionary *discountedProductDictionary =
-      [self productDictionaryForProductList:discountedProductsWithFullPriceInfo];
-  return [productDictionary
-          mtl_dictionaryByAddingEntriesFromDictionary:discountedProductDictionary].allValues;
-}
-
-- (BZRProductDictionary *)productDictionaryForProductList:(BZRProductList *)productList {
-  NSArray<NSString *> *identifiers =
-      [productList valueForKey:@instanceKeypath(BZRProduct, identifier)];
-  return [NSDictionary dictionaryWithObjects:productList forKeys:identifiers];
-}
-
-- (BZRProduct *)discountProductWithFullPriceInfo:(BZRProduct *)discountedProduct
-                                fullPriceProduct:(BZRProduct *)fullPriceProduct {
-  NSDecimalNumber *fullPrice = fullPriceProduct.priceInfo.price;
-  BZRProductPriceInfo *priceInfoWithFullPrice =
-      [discountedProduct.priceInfo
-       modelByOverridingProperty:@keypath(discountedProduct.priceInfo, fullPrice)
-       withValue:fullPrice];
-  return [[discountedProduct
-      modelByOverridingProperty:@keypath(discountedProduct, priceInfo)
-      withValue:priceInfoWithFullPrice]
-      modelByOverridingProperty:@keypath(discountedProduct, bzr_underlyingProduct)
-      withValue:discountedProduct.bzr_underlyingProduct];
-}
-
-- (RACSignal<BZREvent *> *)eventsSignal {
-  return [[RACSignal merge:@[
-      self.nonCriticalErrorEventsSubject,
-      self.underlyingProvider.eventsSignal
-  ]]
-  takeUntil:[self rac_willDeallocSignal]];
 }
 
 @end
