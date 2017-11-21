@@ -25,7 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation PNKReflectionPadding
 
-@synthesize isInputArray = _isInputArray;
+@synthesize inputFeatureChannels = _inputFeatureChannels;
 
 /// Kernel function name for texture.
 static NSString * const kKernelFunctionName = @"reflectionPadding";
@@ -37,11 +37,12 @@ static NSString * const kKernelArrayFunctionName = @"reflectionPaddingArray";
 #pragma mark Initialization
 #pragma mark -
 
-- (instancetype)initWithDevice:(id<MTLDevice>)device inputIsArray:(BOOL)inputIsArray
+- (instancetype)initWithDevice:(id<MTLDevice>)device
+          inputFeatureChannels:(NSUInteger)inputFeatureChannels
                    paddingSize:(pnk::SymmetricPadding)padding {
   if (self = [super init]) {
     _device = device;
-    _isInputArray = inputIsArray;
+    _inputFeatureChannels = inputFeatureChannels;
     _padding = padding;
 
     [self createState];
@@ -57,10 +58,8 @@ static NSString * const kKernelArrayFunctionName = @"reflectionPaddingArray";
   };
   [functionConstants setConstantValue:&paddingSize type:MTLDataTypeUShort2 withName:@"paddingSize"];
 
-  _state = self.isInputArray ?
-      PNKCreateComputeStateWithConstants(self.device, kKernelArrayFunctionName, functionConstants) :
-      PNKCreateComputeStateWithConstants(self.device, kKernelFunctionName, functionConstants);
-  _functionName = self.isInputArray ? kKernelArrayFunctionName : kKernelFunctionName;
+  _functionName = self.inputFeatureChannels > 4 ? kKernelArrayFunctionName : kKernelFunctionName;
+  _state = PNKCreateComputeStateWithConstants(self.device, self.functionName, functionConstants);
 }
 
 #pragma mark -
@@ -89,10 +88,10 @@ static NSString * const kKernelArrayFunctionName = @"reflectionPaddingArray";
                     "arrayLength must match output texture arrayLength, got: (%lu, %lu)",
                     (unsigned long)inputTexture.arrayLength,
                     (unsigned long)outputTexture.arrayLength);
-  LTParameterAssert((self.isInputArray && inputTexture.arrayLength > 1) ||
-                    (!self.isInputArray && inputTexture.arrayLength == 1), @"Input textures "
-                    "array type must be %@, got: %@)", @(self.isInputArray),
-                    @(inputTexture.arrayLength > 1));
+  LTParameterAssert(inputTexture.arrayLength == (self.inputFeatureChannels - 1) / 4 + 1,
+                    @"Input texture arrayLength must be %lu, got: %lu)",
+                    (unsigned long)((self.inputFeatureChannels - 1) / 4 + 1),
+                    (unsigned long)inputTexture.arrayLength);
   LTParameterAssert(inputTexture.width > self.padding.width,
                     @"Input texture width must be larger than padding width, got: (%lu, %lu)",
                     (unsigned long)inputTexture.width, (unsigned long)self.padding.width);

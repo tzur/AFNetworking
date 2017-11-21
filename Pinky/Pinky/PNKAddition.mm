@@ -25,7 +25,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation PNKAddition
 
-@synthesize isInputArray = _isInputArray;
+@synthesize primaryInputFeatureChannels = _primaryInputFeatureChannels;
+@synthesize secondaryInputFeatureChannels = _secondaryInputFeatureChannels;
 
 /// Kernel function name for texture.
 static NSString * const kKernelFunctionName = @"addition";
@@ -37,10 +38,12 @@ static NSString * const kKernelArrayFunctionName = @"additionArray";
 #pragma mark Initialization
 #pragma mark -
 
-- (instancetype)initWithDevice:(id<MTLDevice>)device withInputIsArray:(BOOL)inputIsArray {
+- (instancetype)initWithDevice:(id<MTLDevice>)device
+          inputFeatureChannels:(NSUInteger)inputFeatureChannels {
   if (self = [super init]) {
     _device = device;
-    _isInputArray = inputIsArray;
+    _primaryInputFeatureChannels = inputFeatureChannels;
+    _secondaryInputFeatureChannels = inputFeatureChannels;
 
     [self createState];
   }
@@ -48,10 +51,9 @@ static NSString * const kKernelArrayFunctionName = @"additionArray";
 }
 
 - (void)createState {
-  _state = self.isInputArray ?
-      PNKCreateComputeState(self.device, kKernelArrayFunctionName) :
-      PNKCreateComputeState(self.device, kKernelFunctionName);
-  _functionName = self.isInputArray ? kKernelArrayFunctionName : kKernelFunctionName;
+  _functionName = self.primaryInputFeatureChannels > 4 ?
+      kKernelArrayFunctionName : kKernelFunctionName;
+  _state = PNKCreateComputeState(self.device, self.functionName);
 }
 
 #pragma mark -
@@ -87,10 +89,11 @@ static NSString * const kKernelArrayFunctionName = @"additionArray";
                     "texture arrayLength must match output texture arrayLength. got: (%lu, %lu)",
                     (unsigned long)primaryInputTexture.arrayLength,
                     (unsigned long)outputTexture.arrayLength);
-  LTParameterAssert((self.isInputArray && primaryInputTexture.arrayLength > 1) ||
-                    (!self.isInputArray && primaryInputTexture.arrayLength == 1), @"Input "
-                    "textures array type must be %@, got: %@)", @(self.isInputArray),
-                    @(primaryInputTexture.arrayLength > 1));
+  LTParameterAssert(primaryInputTexture.arrayLength ==
+                    (self.primaryInputFeatureChannels - 1) / 4 + 1,
+                    @"Input textures arrayLength must be %lu, got: %lu)",
+                    (unsigned long)((self.primaryInputFeatureChannels - 1) / 4 + 1),
+                    (unsigned long)primaryInputTexture.arrayLength);
   LTParameterAssert(primaryInputTexture.width == secondaryInputTexture.width, @"Primary input "
                     "texture width must match secondary input texture width. got: (%lu, %lu)",
                     (unsigned long)primaryInputTexture.width,

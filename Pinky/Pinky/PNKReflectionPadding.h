@@ -22,7 +22,8 @@ namespace pnk {
 
 /// Initializes a new kernel that runs on \c device and applies \c padding to the width and height
 /// of each channel.
-- (instancetype)initWithDevice:(id<MTLDevice>)device inputIsArray:(BOOL)inputIsArray
+- (instancetype)initWithDevice:(id<MTLDevice>)device
+          inputFeatureChannels:(NSUInteger)inputFeatureChannels
                    paddingSize:(pnk::SymmetricPadding)padding NS_DESIGNATED_INITIALIZER;
 
 - (instancetype)init NS_UNAVAILABLE;

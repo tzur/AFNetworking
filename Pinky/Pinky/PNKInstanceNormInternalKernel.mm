@@ -39,7 +39,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation PNKInstanceNormInternalKernel
 
-@synthesize isInputArray = _isInputArray;
+@synthesize inputFeatureChannels = _inputFeatureChannels;
 
 /// Texture input kernel function name.
 static NSString * const kKernelFunctionName = @"instanceNorm";
@@ -57,7 +57,7 @@ static NSString * const kKernelArrayFunctionName = @"instanceNormArray";
   if (self = [super init]) {
     _device = device;
     _featureChannels = featureChannels;
-    _isInputArray = featureChannels > 4;
+    _inputFeatureChannels = featureChannels;
     _activationType = activationType;
     [self setupBuffersAndStateWithActivationModel:activationType];
   }
@@ -95,7 +95,7 @@ static NSString * const kKernelArrayFunctionName = @"instanceNormArray";
 }
 
 - (void)createStateWithHasPrelu:(const BOOL)hasPrelu sharedPrelu:(const BOOL)sharedPrelu {
-  _functionName = self.isInputArray ? kKernelArrayFunctionName : kKernelFunctionName;
+  _functionName = self.inputFeatureChannels > 4 ? kKernelArrayFunctionName : kKernelFunctionName;
   auto functionConstants = [[MTLFunctionConstantValues alloc] init];
   [functionConstants setConstantValue:&hasPrelu type:MTLDataTypeBool withName:@"hasPrelu"];
   [functionConstants setConstantValue:&sharedPrelu type:MTLDataTypeBool withName:@"sharedPrelu"];

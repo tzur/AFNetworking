@@ -29,7 +29,6 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize strideX = _strideX;
 @synthesize strideY = _strideY;
 @synthesize groups = _groups;
-@synthesize isInputArray = _isInputArray;
 
 - (instancetype)initWithDevice:(id<MTLDevice>)device
               convolutionModel:(const pnk::ConvolutionKernelModel &)convolutionModel
@@ -58,8 +57,6 @@ NS_ASSUME_NONNULL_BEGIN
   _strideY = convolutionModel.strideY;
   _groups = convolutionModel.groups;
   _padding = convolutionModel.padding;
-  _isInputArray = convolutionModel.inputFeatureChannels > 4 ||
-      convolutionModel.outputFeatureChannels > 4;
 }
 
 #pragma mark -

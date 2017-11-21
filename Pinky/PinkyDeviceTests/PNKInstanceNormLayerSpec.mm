@@ -226,7 +226,7 @@ context(@"PNKUnaryKernel with MPSTemporaryImage", ^{
     return @{
       kPNKTemporaryImageExamplesKernel: instanceNormOp,
       kPNKTemporaryImageExamplesDevice: device,
-      kPNKTemporaryImageExamplesIsArray: @(NO)
+      kPNKTemporaryImageExamplesInputChannels: @(kInputRGBFeatureChannels)
     };
   });
 
@@ -248,7 +248,7 @@ context(@"PNKUnaryKernel with MPSTemporaryImage", ^{
     return @{
       kPNKTemporaryImageExamplesKernel: instanceNormOp,
       kPNKTemporaryImageExamplesDevice: device,
-      kPNKTemporaryImageExamplesIsArray: @(YES)
+      kPNKTemporaryImageExamplesInputChannels: @(kInputArrayFeatureChannels)
     };
   });
 });

@@ -11,8 +11,8 @@ NS_ASSUME_NONNULL_BEGIN
 @interface PNKAddition : NSObject <PNKBinaryImageKernel>
 
 /// Initializes a new kernel that runs on \c device.
-- (instancetype)initWithDevice:(id<MTLDevice>)device withInputIsArray:(BOOL)inputIsArray
-    NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithDevice:(id<MTLDevice>)device
+          inputFeatureChannels:(NSUInteger)inputFeatureChannels NS_DESIGNATED_INITIALIZER;
 
 - (instancetype)init NS_UNAVAILABLE;
 
