@@ -10,6 +10,8 @@
 		639409F01FB3650200C817FE /* SPXAlertViewControllerProvider.mm in Sources */ = {isa = PBXBuildFile; fileRef = 639409EF1FB3650200C817FE /* SPXAlertViewControllerProvider.mm */; };
 		639C5AC91FB37DD300937367 /* SPXAlertViewModelBuilder.mm in Sources */ = {isa = PBXBuildFile; fileRef = 639C5AC81FB37DD300937367 /* SPXAlertViewModelBuilder.mm */; };
 		639C5ACC1FB4B47600937367 /* UIAlertController+ViewModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 639C5ACB1FB4B47600937367 /* UIAlertController+ViewModel.mm */; };
+		63E591531FC44AAC0009A34B /* SPXAlertViewModel+ShopixPresets.mm in Sources */ = {isa = PBXBuildFile; fileRef = 63E591521FC44AAC0009A34B /* SPXAlertViewModel+ShopixPresets.mm */; };
+		63E591671FC492480009A34B /* SPXAlertViewModel+ShopixPresetsSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 63E591661FC492480009A34B /* SPXAlertViewModel+ShopixPresetsSpec.mm */; };
 		650BB33C1D465389008648A3 /* libExpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B425ED31CA6D218001C457E /* libExpecta.a */; };
 		650BB33E1D465389008648A3 /* libLTKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 650BB3221D465335008648A3 /* libLTKit.a */; };
 		650BB33F1D465389008648A3 /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B425EE51CA6D218001C457E /* libOCMock.a */; };
@@ -409,6 +411,9 @@
 		639C5AC81FB37DD300937367 /* SPXAlertViewModelBuilder.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXAlertViewModelBuilder.mm; sourceTree = "<group>"; };
 		639C5ACA1FB4B47600937367 /* UIAlertController+ViewModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIAlertController+ViewModel.h"; sourceTree = "<group>"; };
 		639C5ACB1FB4B47600937367 /* UIAlertController+ViewModel.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIAlertController+ViewModel.mm"; sourceTree = "<group>"; };
+		63E591511FC44AAC0009A34B /* SPXAlertViewModel+ShopixPresets.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SPXAlertViewModel+ShopixPresets.h"; sourceTree = "<group>"; };
+		63E591521FC44AAC0009A34B /* SPXAlertViewModel+ShopixPresets.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "SPXAlertViewModel+ShopixPresets.mm"; sourceTree = "<group>"; };
+		63E591661FC492480009A34B /* SPXAlertViewModel+ShopixPresetsSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "SPXAlertViewModel+ShopixPresetsSpec.mm"; sourceTree = "<group>"; };
 		650BB31C1D465335008648A3 /* LTKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LTKit.xcodeproj; path = ../LTKit/LTKit.xcodeproj; sourceTree = "<group>"; };
 		650BB3341D465359008648A3 /* TestHost.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TestHost.xcodeproj; path = ../../Foundations/TestHost.xcodeproj; sourceTree = "<group>"; };
 		653D9C361FB743110035ACEC /* UIAlertController+ViewModelSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIAlertController+ViewModelSpec.mm"; sourceTree = "<group>"; };
@@ -921,6 +926,8 @@
 		CDB5137B1F66B0220013577C /* Subscription */ = {
 			isa = PBXGroup;
 			children = (
+				63E591511FC44AAC0009A34B /* SPXAlertViewModel+ShopixPresets.h */,
+				63E591521FC44AAC0009A34B /* SPXAlertViewModel+ShopixPresets.mm */,
 				CD60A58C1FB2F2850017D777 /* SPXButtonsHorizontalLayoutView.h */,
 				CD60A58D1FB2F2850017D777 /* SPXButtonsHorizontalLayoutView.mm */,
 				CD60A5EB1FB433180017D777 /* SPXDualLabelView.h */,
@@ -938,6 +945,7 @@
 		CDB513A31F66B07D0013577C /* Subscription */ = {
 			isa = PBXGroup;
 			children = (
+				63E591661FC492480009A34B /* SPXAlertViewModel+ShopixPresetsSpec.mm */,
 				CDAC84DF1FC1632000B197B3 /* SPXButtonsHorizontalLayoutViewSpec.mm */,
 				CDAC86E21FC33C4B00B197B3 /* SPXPagingViewSpec.mm */,
 				CDB513A41F66B0A10013577C /* SPXSubscriptionManagerSpec.mm */,
@@ -1468,6 +1476,7 @@
 			files = (
 				885CA2B31FB301F2005380BD /* SPXProductDescriptorsFactorySpec.mm in Sources */,
 				CDCFDEF91F5C39B300C289BA /* NSDecimalNumber+LocalizationSpec.mm in Sources */,
+				63E591671FC492480009A34B /* SPXAlertViewModel+ShopixPresetsSpec.mm in Sources */,
 				653D9C3D1FB7BBCC0035ACEC /* SPXAlertViewModelBuilderSpec.mm in Sources */,
 				CDAC86E31FC33C4B00B197B3 /* SPXPagingViewSpec.mm in Sources */,
 				653D9C371FB743110035ACEC /* UIAlertController+ViewModelSpec.mm in Sources */,
@@ -1490,6 +1499,7 @@
 				639C5ACC1FB4B47600937367 /* UIAlertController+ViewModel.mm in Sources */,
 				639409F01FB3650200C817FE /* SPXAlertViewControllerProvider.mm in Sources */,
 				CD8E8E2F1F5C19F500DF8FC1 /* NSDecimalNumber+Localization.mm in Sources */,
+				63E591531FC44AAC0009A34B /* SPXAlertViewModel+ShopixPresets.mm in Sources */,
 				88B9B4FF1FA8BA980033D48F /* SPXPromotion.mm in Sources */,
 				88B9B4DA1FA8BA940033D48F /* SPXProductAxis.mm in Sources */,
 				653D9C391FB757860035ACEC /* SPXAlertViewModel.mm in Sources */,

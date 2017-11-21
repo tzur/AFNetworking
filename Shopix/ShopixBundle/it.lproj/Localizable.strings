@@ -1,19 +1,28 @@
-/* Text on a button shown to the user on failed action, navigating the user to sending feedback */
+/* Text on a button shown to the user on failed action, suggesting the user to contact our support team */
 "Contact Us" = "Contattaci";
 
-/* Text on a button shown to the user on failed action, dismissing the alert */
+/* Text on a button shown to the user on failed action, dismissing the alert and canceling the operation */
 "Not Now" = "Non adesso";
 
-/* Shown after a failed purchase */
-"Purchase failed" = "Acquisto non riuscito";
+/* Title of a button shown in an information alert */
+"OK" = "OK"; /* MISSING TRANSLATION */
 
-/* Body of an error message that asks the user to try again */
+/* Message shown after a failing operation, giving the user 3 options: retry the failing operation, send a feedback email or cancel the operation */
+"Please try again. If the problem persists, let us know and we'll get right on it." = "Please try again. If the problem persists, let us know and we'll get right on it."; /* MISSING TRANSLATION */
+
+/* Title of an alert shown after failed purchase */
+"Purchase Failed" = "Purchase Failed"; /* MISSING TRANSLATION */
+
+/* Title of an alert shown after successful restoration of user purchases */
+"Restoration Completed" = "Restoration Completed"; /* MISSING TRANSLATION */
+
+/* Title of an alert shown after failing attempt to restore purchases */
+"Restoration Failed" = "Restoration Failed"; /* MISSING TRANSLATION */
+
+/* Text on a button shown to the user on failed action, trying the failed operation again */
 "Try Again" = "Riprova";
 
-/* Title of an alert box shown after purchases restoration has failed */
-"Your purchases cannot be restored at this time" = "Il tuo acquisto non può essere ripristinato al momento";
-
-/* Message shown after a successful products restoration, when no activesubscription was found */
+/* Message shown after a successful products restoration, but no activesubscription was found */
 "Your purchases were restored successfully, no active subscription found" = "I tuoi acquisti sono stati ripristinati, non è stato trovato alcun abbonamento attivo";
 
 /* Message shown after successful subscription restoration */
