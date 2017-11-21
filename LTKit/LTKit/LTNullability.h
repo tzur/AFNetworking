@@ -13,7 +13,7 @@ static inline T _Nonnull nn(T _Nullable object) noexcept {
 #if defined(DEBUG) && DEBUG
   LTAssert(object, @"Nullable object can not be converted to nonnull because its value is nil");
 #else
-  if (!object) {
+  if (__builtin_expect(!object, 0)) {
     LogError(@"Nullable object can not be converted to nonnull because its value is nil");
   }
 #endif
@@ -34,7 +34,7 @@ static inline T _Nonnull nn(T _Nullable object, T _Nonnull defaultValue) noexcep
   LTParameterAssert(defaultValue, @"Nullable defaultValue can not be converted to nonnull because "
                     "its value is nil");
 #else
-  if (!defaultValue) {
+  if (__builtin_expect(!defaultValue, 0)) {
     LogError(@"Nullable defaultValue can not be converted to nonnull because its value is nil");
   }
 #endif
