@@ -28,8 +28,8 @@ static inline T _Nonnull nn(T _Nullable object) noexcept {
 
 /// Returns \c object if it's not \c nil, otherwise returns \c defaultValue, which must not be
 /// \c nil.
-template <typename T>
-static inline T _Nonnull nn(T _Nullable object, T _Nonnull defaultValue) noexcept {
+template <typename T, typename U>
+static inline T _Nonnull nn(T _Nullable object, U _Nonnull defaultValue) noexcept {
 #if defined(DEBUG) && DEBUG
   LTParameterAssert(defaultValue, @"Nullable defaultValue can not be converted to nonnull because "
                     "its value is nil");
