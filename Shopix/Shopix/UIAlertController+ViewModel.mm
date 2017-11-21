@@ -17,7 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
       enumerateObjectsUsingBlock:^(id<SPXAlertButtonViewModel> button, NSUInteger index, BOOL *) {
         auto action = [UIAlertAction actionWithTitle:button.title style:UIAlertActionStyleDefault
                                              handler:^(UIAlertAction *) {
-                                               [button.action execute:[RACUnit defaultUnit]];
+                                               button.action();
                                              }];
         [alertController addAction:action];
         if (viewModel.defaultButtonIndex &&
