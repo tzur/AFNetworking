@@ -4,37 +4,10 @@
 #import "INTDeviceInfoObserver.h"
 
 #import <LTKitTestUtils/LTDataHelpers.h>
+#import <LTKitTestUtils/LTFakeStorage.h>
 
 #import "INTDeviceInfo.h"
 #import "INTFakeDeviceInfoSource.h"
-#import "INTStorage.h"
-
-@interface INTFakeStorage : NSObject <INTStorage>
-@property (readonly, nonatomic) NSMutableDictionary *storage;
-@end
-
-@implementation INTFakeStorage
-
-- (instancetype)init {
-  if (self = [super init]) {
-    _storage = [NSMutableDictionary dictionary];
-  }
-  return self;
-}
-
-- (void)setObject:(nullable id)value forKey:(NSString *)key {
-  if (!value) {
-    [self.storage removeObjectForKey:key];
-  } else {
-    self.storage[key] = value;
-  }
-}
-
-- (nullable id)objectForKey:(NSString *)key {
-  return self.storage[key];
-}
-
-@end
 
 @interface INTFakeDeviceInfoObserverDelegate : NSObject <INTDeviceInfoObserverDelegate>
 @property (strong, nonatomic) INTDeviceInfoObserver *reportingDeviceInfoObserver;
@@ -82,13 +55,13 @@ SpecBegin(INTDeviceInfoObserver)
 __block INTDeviceInfoObserver *observer;
 __block INTFakeDeviceInfoSource *source;
 __block INTFakeDeviceInfoObserverDelegate *delegate;
-__block INTFakeStorage *storage;
+__block LTFakeStorage *storage;
 
 beforeEach(^{
   source = [[INTFakeDeviceInfoSource alloc] init];
   source.deviceInfoTemplate = [INTFakeDeviceInfo() dictionaryValue];
   delegate = [[INTFakeDeviceInfoObserverDelegate alloc] init];
-  storage = [[INTFakeStorage alloc] init];
+  storage = [[LTFakeStorage alloc] init];
   observer = [[INTDeviceInfoObserver alloc] initWithDeviceInfoSource:source storage:storage
                                                             delegate:delegate];
 });

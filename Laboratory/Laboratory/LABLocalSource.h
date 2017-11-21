@@ -9,7 +9,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class LTRandom;
 
-@protocol LABExperimentsTokenProvider, LABStorage;
+@protocol LABExperimentsTokenProvider, LTStorage;
 
 /// Configuration of a variant for \c LABLocalSource. A variant is a set of assignments for an
 /// experiment. The keys of the assignments must match those of the experiment the variant is
@@ -135,7 +135,7 @@ typedef std::pair<double, double> LABExperimentsTokenRange;
 /// randomly select variants.
 - (instancetype)initWithExperiments:(NSArray<LABLocalExperiment *> *)experiments
            experimentsTokenProvider:(id<LABExperimentsTokenProvider>)experimentsTokenProvider
-                            storage:(id<LABStorage>)storage random:(LTRandom *)random
+                            storage:(id<LTStorage>)storage random:(LTRandom *)random
     NS_DESIGNATED_INITIALIZER;
 
 @end

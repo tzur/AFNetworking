@@ -6,9 +6,9 @@
 #import <LTKit/LTHashExtensions.h>
 #import <LTKit/NSArray+Functional.h>
 #import <LTKit/NSArray+NSSet.h>
+#import <LTKitTestUtils/LTFakeStorage.h>
 
 #import "LABFakeAssignmentsSource.h"
-#import "LABFakeStorage.h"
 #import "LABVariantUtils.h"
 #import "NSError+Laboratory.h"
 
@@ -75,7 +75,7 @@ static NSDictionary<NSString *, NSSet<NSDictionary *> *>
 SpecBegin(LABDebugSource)
 
 __block LABFakeAssignmentsSource *fakeSource1, *fakeSource2;
-__block LABFakeStorage *storage;
+__block LTFakeStorage *storage;
 __block LABDebugSource *source;
 __block std::unordered_map<std::tuple<NSUInteger, NSUInteger, NSUInteger>, LABVariant *> variants;
 
@@ -102,7 +102,7 @@ beforeEach(^{
     @"exp2": @[variants[{1, 1, 0}], variants[{1, 1, 1}]]
   };
   fakeSource2.name = @"fake2";
-  storage = [[LABFakeStorage alloc] init];
+  storage = [[LTFakeStorage alloc] init];
   source = [[LABDebugSource alloc] initWithSources:@[fakeSource1, fakeSource2] storage:storage];
 });
 
@@ -336,7 +336,8 @@ it(@"should not preserve activate state if variant to activate does not exist in
 it(@"should complete activation signal if source deallocates", ^{
   __block RACSignal *activationSignal;
   @autoreleasepool {
-    auto source = [[LABDebugSource alloc] initWithSources:@[fakeSource1, fakeSource2] storage:storage];
+    auto source = [[LABDebugSource alloc] initWithSources:@[fakeSource1, fakeSource2]
+                                                  storage:storage];
     expect([source update]).will.complete();
     activationSignal = [source activateVariant:variants[{0, 0, 1}].name
                                   ofExperiment:variants[{0, 0, 1}].experiment

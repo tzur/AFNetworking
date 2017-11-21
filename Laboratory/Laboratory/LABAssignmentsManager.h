@@ -20,7 +20,7 @@ extern NSString * const kLABAssignmentAffectedUserReasonInitiated;
 /// Reason to use when reporting that an assignment affected a user by displaying its effects.
 extern NSString * const kLABAssignmentAffectedUserReasonDisplayed;
 
-@protocol LABAssignmentsSource, LABStorage;
+@protocol LABAssignmentsSource, LTStorage;
 
 /// Contains an assignment (key-value pair resulting from a variant) and its originating variant,
 /// experiment and source.
@@ -148,7 +148,7 @@ extern NSString * const kLABAssignmentAffectedUserReasonDisplayed;
 /// \c storage is used for persisting the \c activeAssignments, and informing of its changes.
 - (instancetype)initWithAssignmentSources:(NSArray<id<LABAssignmentsSource>> *)sources
                                  delegate:(id<LABAssignmentsManagerDelegate>)delegate
-                                  storage:(id<LABStorage>)storage
+                                  storage:(id<LTStorage>)storage
     NS_DESIGNATED_INITIALIZER;
 
 @end

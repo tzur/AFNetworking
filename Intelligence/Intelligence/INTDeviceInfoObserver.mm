@@ -3,17 +3,13 @@
 
 #import "INTDeviceInfoObserver.h"
 
+#import <LTKit/LTStorage.h>
+
 #import "INTDeviceInfo.h"
 #import "INTDeviceInfoSource.h"
-#import "INTStorage.h"
 #import "NSUUID+Zero.h"
 
 NS_ASSUME_NONNULL_BEGIN
-
-/// Conform \c NSUserDefaults to \c INTStorage to be used as the default storage for storing device
-/// info.
-@interface NSUserDefaults (Storage) <INTStorage>
-@end
 
 /// Key in the storage that holds the \c INTDeviceInfo.
 static NSString * const kINTStorageDeviceInfoKey = @"DeviceInfo";
@@ -35,7 +31,7 @@ static NSString * const kINTStorageAppRunCount = @"AppRunCount";
 @property (readonly, nonatomic) id<INTDeviceInfoSource> deviceInfoSource;
 
 /// Used for storing \c deviceInfo.
-@property (readonly, nonatomic) id<INTStorage> storage;
+@property (readonly, nonatomic) id<LTStorage> storage;
 
 /// Delegate for reporting device info loaded events.
 @property (weak, readonly, nonatomic) id<INTDeviceInfoObserverDelegate> delegate;
@@ -50,7 +46,7 @@ static NSString * const kINTStorageAppRunCount = @"AppRunCount";
 }
 
 - (instancetype)initWithDeviceInfoSource:(id<INTDeviceInfoSource>)deviceInfoSource
-                                 storage:(id<INTStorage>)storage
+                                 storage:(id<LTStorage>)storage
                                 delegate:(id<INTDeviceInfoObserverDelegate>)delegate {
   if (self = [super init]) {
     @synchronized (self) {

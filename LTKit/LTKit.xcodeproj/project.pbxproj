@@ -32,6 +32,9 @@
 		194FF50F1FA8BB4D008879E7 /* LTUIInterruptionHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = 194FF4EA1FA8B9B6008879E7 /* LTUIInterruptionHandler.h */; };
 		194FF5101FA8BB56008879E7 /* XCUIElement+Interactions.h in Headers */ = {isa = PBXBuildFile; fileRef = 194FF4E81FA8B9B6008879E7 /* XCUIElement+Interactions.h */; };
 		194FF5111FA8BB5F008879E7 /* XCUIElement+CollectionView.h in Headers */ = {isa = PBXBuildFile; fileRef = 194FF4E91FA8B9B6008879E7 /* XCUIElement+CollectionView.h */; };
+		19C886891FC43069009F147E /* LTStorage.h in Headers */ = {isa = PBXBuildFile; fileRef = 19C886721FC43069009F147E /* LTStorage.h */; };
+		19C8868C1FC4308D009F147E /* LTFakeStorage.h in Headers */ = {isa = PBXBuildFile; fileRef = 19C8868A1FC4308D009F147E /* LTFakeStorage.h */; };
+		19C8868D1FC4308D009F147E /* LTFakeStorage.mm in Sources */ = {isa = PBXBuildFile; fileRef = 19C8868B1FC4308D009F147E /* LTFakeStorage.mm */; };
 		19D95C2F1FBAD3C800357EB9 /* LTSpectaTemporaryPathHook.h in Headers */ = {isa = PBXBuildFile; fileRef = 19D95C2D1FBAD3C800357EB9 /* LTSpectaTemporaryPathHook.h */; };
 		19D95C301FBAD3C800357EB9 /* LTSpectaTemporaryPathHook.mm in Sources */ = {isa = PBXBuildFile; fileRef = 19D95C2E1FBAD3C800357EB9 /* LTSpectaTemporaryPathHook.mm */; };
 		19D95C691FBAE91C00357EB9 /* libLTKitTestUtils.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 194FF4FC1FA8BA77008879E7 /* libLTKitTestUtils.a */; };
@@ -500,6 +503,9 @@
 		194FF4EE1FA8B9B6008879E7 /* LTUIInterruptionHandler.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTUIInterruptionHandler.mm; sourceTree = "<group>"; };
 		194FF4FC1FA8BA77008879E7 /* libLTKitTestUtils.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libLTKitTestUtils.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		194FF5141FA8BC8B008879E7 /* LTKitTestUtils-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "LTKitTestUtils-Prefix.pch"; sourceTree = "<group>"; };
+		19C886721FC43069009F147E /* LTStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTStorage.h; sourceTree = "<group>"; };
+		19C8868A1FC4308D009F147E /* LTFakeStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTFakeStorage.h; sourceTree = "<group>"; };
+		19C8868B1FC4308D009F147E /* LTFakeStorage.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTFakeStorage.mm; sourceTree = "<group>"; };
 		19D95C2D1FBAD3C800357EB9 /* LTSpectaTemporaryPathHook.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTSpectaTemporaryPathHook.h; sourceTree = "<group>"; };
 		19D95C2E1FBAD3C800357EB9 /* LTSpectaTemporaryPathHook.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = LTSpectaTemporaryPathHook.mm; sourceTree = "<group>"; };
 		2553393E1C3E512300C478F9 /* LTTreeNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTTreeNode.h; sourceTree = "<group>"; };
@@ -817,6 +823,8 @@
 				190970F71FBD6D5700AD5B91 /* LTEqualityExamples.mm */,
 				190970F81FBD6D5700AD5B91 /* LTEventTarget.h */,
 				190970F21FBD6D5300AD5B91 /* LTEventTarget.m */,
+				19C8868A1FC4308D009F147E /* LTFakeStorage.h */,
+				19C8868B1FC4308D009F147E /* LTFakeStorage.mm */,
 				19D95C2D1FBAD3C800357EB9 /* LTSpectaTemporaryPathHook.h */,
 				19D95C2E1FBAD3C800357EB9 /* LTSpectaTemporaryPathHook.mm */,
 				190971051FBD6D6A00AD5B91 /* LTTestUtils.h */,
@@ -1217,6 +1225,7 @@
 				8B1889351BEBC8F100E9BD67 /* LTRef.h */,
 				8B6A6EBC1CDA3ADC005FB7D9 /* LTRuntime.h */,
 				8B6A6EBD1CDA3ADC005FB7D9 /* LTRuntime.mm */,
+				19C886721FC43069009F147E /* LTStorage.h */,
 				8BF9A53918F684AC00CCA084 /* LTTimer.h */,
 				8BF9A53A18F684AC00CCA084 /* LTTimer.m */,
 				8BA11AEA18320FCB00A5001D /* LTTypedefs.h */,
@@ -1358,6 +1367,7 @@
 				190971041FBD6D5800AD5B91 /* LTEqualityExamples.h in Headers */,
 				194FF50F1FA8BB4D008879E7 /* LTUIInterruptionHandler.h in Headers */,
 				190971071FBD6D6B00AD5B91 /* LTTestUtils.h in Headers */,
+				19C8868C1FC4308D009F147E /* LTFakeStorage.h in Headers */,
 				190971021FBD6D5800AD5B91 /* LTEventTarget.h in Headers */,
 				190971001FBD6D5800AD5B91 /* LTDataHelpers.h in Headers */,
 				190970FB1FBD6D5800AD5B91 /* EXPMatchers+beCloseToSize.h in Headers */,
@@ -1394,6 +1404,7 @@
 				8BF7B1721949BC7500E67079 /* LTBidirectionalMap.h in Headers */,
 				194FF4F31FA8B9B6008879E7 /* LTUITestUtils.h in Headers */,
 				88C67F5A1D72C7B800A0E0FC /* LTLocalizationTable.h in Headers */,
+				19C886891FC43069009F147E /* LTStorage.h in Headers */,
 				5067221A19EA80B5003AF8D2 /* LTQueue.h in Headers */,
 				8B8720341924A76500517F2E /* LTAssert.h in Headers */,
 				194FF4F01FA8B9B6008879E7 /* XCUIElement+Interactions.h in Headers */,
@@ -1764,6 +1775,7 @@
 				190970FC1FBD6D5800AD5B91 /* LTEventTarget.m in Sources */,
 				190971011FBD6D5800AD5B91 /* LTEqualityExamples.mm in Sources */,
 				190970FF1FBD6D5800AD5B91 /* EXPMatchers+beBlock.mm in Sources */,
+				19C8868D1FC4308D009F147E /* LTFakeStorage.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
