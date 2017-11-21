@@ -11,23 +11,33 @@ it(@"should return the correct scheme", ^{
   expect([NSURL ptn_oceanScheme]).to.equal(@"com.lightricks.Photons.Ocean");
 });
 
-it(@"should initialize a correct album URL", ^{
+it(@"should initialize a correct album URL with no page argument", ^{
   NSURL *url = [NSURL ptn_oceanAlbumURLWithSource:$(PTNOceanAssetSourcePixabay)
                                            phrase:@"foo bar"];
 
   expect(url.scheme).to.equal([NSURL ptn_oceanScheme]);
   expect(url.host).to.equal(@"album");
-  expect(url.query).to.equal(@"source=pixabay&phrase=foo%20bar");
+  expect(url.query).to.equal(@"source=pixabay&phrase=foo%20bar&page=1");
+  expect(url.ptn_oceanURLType).to.equal($(PTNOceanURLTypeAlbum));
+});
+
+it(@"should initialize a correct album URL", ^{
+  NSURL *url = [NSURL ptn_oceanAlbumURLWithSource:$(PTNOceanAssetSourcePixabay)
+                                           phrase:@"foo bar" page:1337];
+
+  expect(url.scheme).to.equal([NSURL ptn_oceanScheme]);
+  expect(url.host).to.equal(@"album");
+  expect(url.query).to.equal(@"source=pixabay&phrase=foo%20bar&page=1337");
   expect(url.ptn_oceanURLType).to.equal($(PTNOceanURLTypeAlbum));
 });
 
 it(@"should initialize a correct album URL with no phrase", ^{
   NSURL *url = [NSURL ptn_oceanAlbumURLWithSource:$(PTNOceanAssetSourcePixabay)
-                                           phrase:nil];
+                                           phrase:nil page:1337];
 
   expect(url.scheme).to.equal([NSURL ptn_oceanScheme]);
   expect(url.host).to.equal(@"album");
-  expect(url.query).to.equal(@"source=pixabay");
+  expect(url.query).to.equal(@"source=pixabay&page=1337");
   expect(url.ptn_oceanURLType).to.equal($(PTNOceanURLTypeAlbum));
 });
 

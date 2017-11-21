@@ -50,7 +50,7 @@ static PTNCacheProxy *PTNAssetCacheProxy(NSData *data, id<PTNResizingStrategy> r
 }
 
 static NSURL *PTNFakeAlbumRequestURL() {
-  return [NSURL ptn_oceanAlbumURLWithSource:$(PTNOceanAssetSourcePixabay) phrase:@"foo"];
+  return [NSURL ptn_oceanAlbumURLWithSource:$(PTNOceanAssetSourcePixabay) phrase:@"foo" page:0];
 }
 
 static LTProgress *PTNFakeLTProgress(NSData *data) {
