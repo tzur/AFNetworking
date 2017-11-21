@@ -9,11 +9,15 @@
 #import <Bazaar/NSErrorCodes+Bazaar.h>
 #import <MessageUI/MessageUI.h>
 
+#import "SPXAlertViewControllerProvider.h"
+#import "SPXAlertViewModel+ShopixPresets.h"
 #import "SPXFeedbackComposeViewControllerProvider.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-using namespace spx;
+#pragma mark -
+#pragma mark MFMailComposeViewController+Dismissal
+#pragma mark -
 
 /// Category that adds a \c dismissBlock property to \c MFMailComposeViewController.
 @interface MFMailComposeViewController (Dismiss)
@@ -36,6 +40,10 @@ using namespace spx;
 
 @end
 
+#pragma mark -
+#pragma mark SPXSubscriptionManager
+#pragma mark -
+
 @interface SPXSubscriptionManager () <MFMailComposeViewControllerDelegate>
 
 /// Provider used to get the currnet subcription status.
@@ -47,6 +55,9 @@ using namespace spx;
 /// Provides a mail compose view controller for user feedback.
 @property (readonly, nonatomic) id<SPXFeedbackComposeViewControllerProvider> mailComposeProvider;
 
+/// Provides alert view controllers for alerts shown on failure / success.
+@property (readonly, nonatomic) id<SPXAlertViewControllerProvider> alertProvider;
+
 /// Used to present upon all the alert messages for the user.
 @property (readonly, nonatomic, weak) UIViewController *viewController;
 
@@ -54,27 +65,37 @@ using namespace spx;
 
 @implementation SPXSubscriptionManager
 
-#pragma mark -
-#pragma mark SPXSubscriptionManager
-#pragma mark -
-
 - (instancetype)initWithViewController:(UIViewController *)viewController {
-  return [self
-      initWithProductsInfoProvider:[JSObjection defaultInjector][@protocol(BZRProductsInfoProvider)]
-      productsManager:[JSObjection defaultInjector][@protocol(BZRProductsManager)]
-      mailComposeProvider:
-          [JSObjection defaultInjector][@protocol(SPXFeedbackComposeViewControllerProvider)]
-      viewController:viewController];
+  id<BZRProductsInfoProvider> _Nullable productsInfoProvider =
+      [JSObjection defaultInjector][@protocol(BZRProductsInfoProvider)];
+  id<BZRProductsManager> _Nullable productsManager =
+      [JSObjection defaultInjector][@protocol(BZRProductsManager)];
+  id<SPXFeedbackComposeViewControllerProvider> _Nullable mailComposeProvider =
+      [JSObjection defaultInjector][@protocol(SPXFeedbackComposeViewControllerProvider)];
+  id<SPXAlertViewControllerProvider> alertProvider =
+      [JSObjection defaultInjector][@protocol(SPXFeedbackComposeViewControllerProvider)] ?:
+      [[SPXAlertViewControllerProvider alloc] init];
+
+  LTAssert(productsInfoProvider && productsManager && mailComposeProvider,
+           @"One or more required dependencies were not injected properly, make sure Objection's "
+           "default injector has binding for: BZRProductsInfoProvider, BZRProductsManager and "
+           "SPXFeedbackComposeViewControllerProvider protocols");
+
+  return [self initWithProductsInfoProvider:productsInfoProvider productsManager:productsManager
+                        mailComposeProvider:mailComposeProvider alertProvider:alertProvider
+                             viewController:viewController];
 }
 
 - (instancetype)initWithProductsInfoProvider:(id<BZRProductsInfoProvider>)productsInfoProvider
     productsManager:(id<BZRProductsManager>)productsManager
     mailComposeProvider:(id<SPXFeedbackComposeViewControllerProvider>)mailComposeProvider
+    alertProvider:(id<SPXAlertViewControllerProvider>)alertProvider
     viewController:(UIViewController *)viewController {
   if (self = [super init]) {
     _productsInfoProvider = productsInfoProvider;
     _productsManager = productsManager;
     _mailComposeProvider = mailComposeProvider;
+    _alertProvider = alertProvider;
     _viewController = viewController;
   }
 
@@ -97,17 +118,18 @@ using namespace spx;
            return;
         }
 
-        auto purchaseFailedMessage =
-            _LDefault(@"Purchase failed", @"Shown after a failed purchase");
-        [self presentFailureAlertWithMessage:purchaseFailedMessage
-                             tryAgainHandler:^{
-                               if (error.code == BZRErrorCodeReceiptValidationFailed) {
-                                 [self validateReceiptWithCompletionHandler:completionHandler];
-                               } else {
-                                 [self purchaseSubscription:productIdentifier
-                                          completionHandler:completionHandler];
-                               }
-                             } completionHandler:completionHandler];
+        auto alertViewModel = [SPXAlertViewModel purchaseFailedAlertWithTryAgainAction:^{
+          if (error.code == BZRErrorCodeReceiptValidationFailed) {
+            [self validateReceiptWithCompletionHandler:completionHandler];
+          } else {
+            [self purchaseSubscription:productIdentifier completionHandler:completionHandler];
+          }
+        } contactUsAction:^{
+          [self presentMailComposerWithCompletionHandler:completionHandler];
+        } cancelAction:^{
+          completionHandler(NO);
+        }];
+        [self presentAlertWithViewModel:alertViewModel];
       } completed:^{
         completionHandler(YES);
       }];
@@ -124,12 +146,14 @@ using namespace spx;
            return;
         }
 
-        auto purchaseFailedMessage =
-            _LDefault(@"Purchase failed", @"Shown after a failed purchase");
-        [self presentFailureAlertWithMessage:purchaseFailedMessage
-                             tryAgainHandler:^{
-                               [self validateReceiptWithCompletionHandler:completionHandler];
-                             } completionHandler:completionHandler];
+        auto alertViewModel = [SPXAlertViewModel purchaseFailedAlertWithTryAgainAction:^{
+          [self validateReceiptWithCompletionHandler:completionHandler];
+        } contactUsAction:^{
+          [self presentMailComposerWithCompletionHandler:completionHandler];
+        } cancelAction:^{
+          completionHandler(NO);
+        }];
+        [self presentAlertWithViewModel:alertViewModel];
       } completed:^{
         completionHandler(YES);
       }];
@@ -146,13 +170,14 @@ using namespace spx;
           return;
         }
 
-        auto restorePurchasesFailedMessage =
-            _LDefault(@"Your purchases cannot be restored at this time",
-                      @"Title of an alert box shown after purchases restoration has failed");
-        [self presentFailureAlertWithMessage:restorePurchasesFailedMessage
-                             tryAgainHandler:^{
-                               [self restorePurchasesWithCompletionHandler:completionHandler];
-                             } completionHandler:completionHandler];
+        auto alertViewModel = [SPXAlertViewModel restorationFailedAlertWithTryAgainAction:^{
+          [self restorePurchasesWithCompletionHandler:completionHandler];
+        } contactUsAction:^{
+          [self presentMailComposerWithCompletionHandler:completionHandler];
+        } cancelAction:^{
+          completionHandler(NO);
+        }];
+        [self presentAlertWithViewModel:alertViewModel];
       }
       completed:^{
         @strongify(self);
@@ -161,77 +186,20 @@ using namespace spx;
           return;
         }
 
-        auto restorePurchasesMessage = (self.productsInfoProvider.subscriptionInfo &&
-            !self.productsInfoProvider.subscriptionInfo.isExpired) ?
-            _LDefault(@"Your subscription was restored successfully",
-                      @"Message shown after successful subscription restoration") :
-            _LDefault(@"Your purchases were restored successfully, no active subscription found",
-                      @"Message shown after a successful products restoration, when no active"
-                       "subscription was found");
-        [self presentSuccessAlertWithMessage:restorePurchasesMessage
-                           completionHandler:completionHandler];
+        BOOL subscriptionRestored = self.productsInfoProvider.subscriptionInfo &&
+            !self.productsInfoProvider.subscriptionInfo.isExpired;
+        [self presentAlertWithViewModel:[SPXAlertViewModel successfulRestorationAlertWithAction:^{
+          completionHandler(YES);
+        } subscriptionRestored:subscriptionRestored]];
       }];
 }
 
-- (void)presentSuccessAlertWithMessage:(NSString *)message
-                     completionHandler:(LTBoolCompletionBlock)completionHandler {
-  auto OKButton = [self alertButtonWithTitle:@"OK" handler:^{
-    completionHandler(YES);
-  }];
-  auto alert = [self alertWithMessage:message buttons:@[OKButton]];
-
-  [self.viewController presentViewController:alert animated:YES completion:nil];
+- (void)presentAlertWithViewModel:(id<SPXAlertViewModel>)alertViewModel {
+  auto alertViewController = [self.alertProvider alertViewControllerWithModel:alertViewModel];
+  [self.viewController presentViewController:alertViewController animated:YES completion:nil];
 }
 
-- (void)presentFailureAlertWithMessage:(NSString *)message
-                       tryAgainHandler:(LTVoidBlock)tryAgainHandler
-                     completionHandler:(LTBoolCompletionBlock)completionHandler {
-  auto tryAgainTitle = _LDefault(@"Try Again", @"Body of an error message that asks the user to "
-                                   "try again");
-  auto contactUsTitle = _LDefault(@"Contact Us", @"Text on a button shown to the user on failed "
-                                   "action, navigating the user to sending feedback");
-  auto notNowTitle = _LDefault(@"Not Now", @"Text on a button shown to the user on failed action, "
-                                "dismissing the alert");
-
-  auto tryAgainButton = [self alertButtonWithTitle:tryAgainTitle handler:^{
-    tryAgainHandler();
-  }];
-  auto contactUsButton = [self alertButtonWithTitle:contactUsTitle handler:^{
-    [self displayMailComposerWithCompletionHandler:completionHandler];
-  }];
-  auto notNowButton = [self alertButtonWithTitle:notNowTitle handler:^{
-    completionHandler(NO);
-  }];
-
-  auto alert = [self alertWithMessage:message buttons:@[
-    tryAgainButton,
-    contactUsButton,
-    notNowButton
-  ]];
-  [self.viewController presentViewController:alert animated:YES completion:nil];
-}
-
-- (UIAlertController *)alertWithMessage:(NSString *)message
-                                buttons:(NSArray<UIAlertAction *> *)buttons {
-  auto alert = [UIAlertController alertControllerWithTitle:nil
-                                                   message:message
-                                            preferredStyle:UIAlertControllerStyleAlert];
-  for (UIAlertAction *button in buttons) {
-    [alert addAction:button];
-  }
-
-  return alert;
-}
-
-- (UIAlertAction *)alertButtonWithTitle:(NSString *)title
-                                handler:(LTVoidBlock)handler {
-  return [UIAlertAction actionWithTitle:title style:UIAlertActionStyleDefault
-                                handler:^(UIAlertAction *){
-                                  handler();
-                                }];
-}
-
-- (void)displayMailComposerWithCompletionHandler:(LTBoolCompletionBlock)completionHandler {
+- (void)presentMailComposerWithCompletionHandler:(LTBoolCompletionBlock)completionHandler {
   auto mailComposeViewController = [self.mailComposeProvider feedbackComposeViewController];
   if (!mailComposeViewController) {
     completionHandler(NO);
