@@ -4,7 +4,8 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @class SPXAlertViewModelBuilder;
-@protocol SPXAlertViewModel;
+
+@protocol SPXAlertButtonViewModel, SPXAlertViewModel;
 
 /// Interface for easily and dynamically building an \c SPXAlertViewModel.
 ///
@@ -35,7 +36,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// @note Title must be set and buttons must be added before the view model can be built.
 + (instancetype)builder;
 
-/// Block used to create a new builder that builds an \c SPXAlertViewModel with the given \c title.
+/// Block that returns a builder that builds an \c SPXAlertViewModel with the given \c title.
 typedef SPXAlertViewModelBuilder * _Nonnull (^SPXSetAlertTitleBlock)(NSString *title);
 
 /// Set the alert's title.
@@ -43,15 +44,16 @@ typedef SPXAlertViewModelBuilder * _Nonnull (^SPXSetAlertTitleBlock)(NSString *t
 
 /// Block used to create a new builder that builds an \c SPXAlertViewModel with the given
 /// \c message.
-typedef SPXAlertViewModelBuilder * _Nonnull (^SPXSetAlertMessageBlock)(NSString *message);
+typedef SPXAlertViewModelBuilder * _Nonnull (^SPXSetAlertMessageBlock)(
+    NSString * _Nullable message);
 
 /// Set the alert's message.
 @property (readonly, nonatomic) SPXSetAlertMessageBlock setMessage;
 
-/// Block used to create a new builder that builds an \c SPXAlerViewModel with additional button.
-/// The additional button will have the given \c title and \c action.
+/// Block that returns a builder that builds an \c SPXAlerViewModel with an additional button. The
+/// additional button will have the given \c title and will invoke action when pressed.
 typedef SPXAlertViewModelBuilder * _Nonnull (^SPXAddAlertButtonBlock)(NSString *title,
-                                                                      RACSignal *action);
+                                                                      LTVoidBlock action);
 
 /// Add an alert button.
 @property (readonly, nonatomic) SPXAddAlertButtonBlock addButton;
@@ -59,7 +61,7 @@ typedef SPXAlertViewModelBuilder * _Nonnull (^SPXAddAlertButtonBlock)(NSString *
 /// Add a default alert button. If there's already a default button it will be overwritten.
 @property (readonly, nonatomic) SPXAddAlertButtonBlock addDefaultButton;
 
-/// Block used to create a new builder that builds an \c SPXAlertViewModel with the given
+/// Block that returns a builder that builds an \c SPXAlertViewModel with the given
 /// \c defaultButtonIndex.
 typedef SPXAlertViewModelBuilder * _Nonnull (^SPXSetDefaultAlertButtonIndexBlock)
     (NSUInteger defaultButtonIndex);

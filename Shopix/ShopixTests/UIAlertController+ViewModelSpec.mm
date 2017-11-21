@@ -11,8 +11,8 @@ __block SPXAlertViewModel *viewModel;
 
 beforeEach(^{
   viewModel = [[SPXAlertViewModel alloc] initWithTitle:@"Title" message:@"Message" buttons:@[
-    [[SPXAlertButtonViewModel alloc] initWithTitle:@"OK" action:[RACSignal empty]],
-    [[SPXAlertButtonViewModel alloc] initWithTitle:@"Cancel" action:[RACSignal empty]]
+    [[SPXAlertButtonViewModel alloc] initWithTitle:@"OK" action:^{}],
+    [[SPXAlertButtonViewModel alloc] initWithTitle:@"Cancel" action:^{}]
   ] defaultButtonIndex:nil];
 });
 

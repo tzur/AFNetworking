@@ -6,25 +6,21 @@
 SpecBegin(SPXAlertButtonViewModel)
 
 it(@"should initialize with the given title", ^{
-  auto viewModel = [[SPXAlertButtonViewModel alloc] initWithTitle:@"OK" action:[RACSignal empty]];
+  auto viewModel = [[SPXAlertButtonViewModel alloc] initWithTitle:@"OK" action:^{}];
 
   expect(viewModel.title).to.equal(@"OK");
 });
 
 it(@"should subscribe to the action signal when the action command is executed", ^{
-  __block BOOL wasSubscribed = NO;
-  auto actionSignal = [RACSignal
-      createSignal:^RACDisposable * _Nullable(id<RACSubscriber> subscriber) {
-        wasSubscribed = YES;
-        [subscriber sendCompleted];
-        return nil;
-      }];
-  auto viewModel = [[SPXAlertButtonViewModel alloc] initWithTitle:@"OK"
-                                                           action:actionSignal];
+  __block BOOL wasExecuted = NO;
+  auto actionBlock = ^{
+    wasExecuted = YES;
+  };
+  auto viewModel = [[SPXAlertButtonViewModel alloc] initWithTitle:@"OK" action:actionBlock];
 
-  [viewModel.action execute:[RACUnit defaultUnit]];
+  viewModel.action();
 
-  expect(wasSubscribed).will.beTruthy();
+  expect(wasExecuted).will.beTruthy();
 });
 
 SpecEnd
@@ -35,8 +31,8 @@ __block NSArray<SPXAlertButtonViewModel *> *buttons;
 
 beforeEach(^{
   buttons = @[
-    [[SPXAlertButtonViewModel alloc] initWithTitle:@"OK" action:[RACSignal empty]],
-    [[SPXAlertButtonViewModel alloc] initWithTitle:@"Cancel" action:[RACSignal empty]]
+    [[SPXAlertButtonViewModel alloc] initWithTitle:@"OK" action:^{}],
+    [[SPXAlertButtonViewModel alloc] initWithTitle:@"Cancel" action:^{}]
   ];
 });
 

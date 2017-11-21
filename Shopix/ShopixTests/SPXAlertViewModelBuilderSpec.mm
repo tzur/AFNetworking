@@ -10,7 +10,7 @@ SpecBegin(SPXAlertViewModelBuilder)
 it(@"should build the view model with the required parameters", ^{
   auto viewModel = [SPXAlertViewModelBuilder builder]
       .setTitle(@"Title")
-      .addButton(@"OK", [RACSignal empty])
+      .addButton(@"OK", ^{})
       .build();
 
   expect(viewModel.title).to.equal(@"Title");
@@ -23,7 +23,7 @@ it(@"should build the view model with the required parameters", ^{
 it(@"should raise exception if built without title", ^{
   expect(^{
     auto __unused viewModel = [SPXAlertViewModelBuilder builder]
-        .addButton(@"OK", [RACSignal empty])
+        .addButton(@"OK", ^{})
         .build();
   }).to.raise(NSInternalInconsistencyException);
 });
@@ -39,8 +39,8 @@ it(@"should raise exception if built without buttons", ^{
 it(@"should build the view model with a default button", ^{
   auto viewModel = [SPXAlertViewModelBuilder builder]
       .setTitle(@"Title")
-      .addButton(@"OK", [RACSignal empty])
-      .addDefaultButton(@"Cancel", [RACSignal empty])
+      .addButton(@"OK", ^{})
+      .addDefaultButton(@"Cancel", ^{})
       .build();
 
   expect(viewModel.title).to.equal(@"Title");
@@ -55,7 +55,7 @@ it(@"should raise exception if default button index is set to an invalid index",
   expect(^{
     auto __unused viewModel = [SPXAlertViewModelBuilder builder]
         .setTitle(@"Title")
-        .addButton(@"OK", [RACSignal empty])
+        .addButton(@"OK", ^{})
         .setDefaultButtonIndex(1);
   }).to.raise(NSInvalidArgumentException);
 });

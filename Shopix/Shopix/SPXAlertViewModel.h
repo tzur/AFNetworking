@@ -14,7 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly, nonatomic) NSString *title;
 
 /// Action to execute when that button is pressed.
-@property (readonly, nonatomic) RACCommand<RACUnit *, id> *action;
+@property (readonly, nonatomic) LTVoidBlock action;
 
 @end
 
@@ -25,7 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Initializes the view model with the given \c title. The receiver's \c action command will
 /// subscribe to the given \c action signal on execution.
-- (instancetype)initWithTitle:(NSString *)title action:(RACSignal *)action
+- (instancetype)initWithTitle:(NSString *)title action:(LTVoidBlock)action
     NS_DESIGNATED_INITIALIZER;
 
 @end

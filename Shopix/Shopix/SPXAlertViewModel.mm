@@ -14,12 +14,12 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize title = _title;
 @synthesize action = _action;
 
-- (instancetype)initWithTitle:(NSString *)title action:(RACSignal *)action {
+- (instancetype)initWithTitle:(NSString *)title action:(LTVoidBlock)action {
+  LTParameterAssert(action, @"Action block must not be nil");
+
   if (self = [super init]) {
     _title = [title copy];
-    _action = [[RACCommand alloc] initWithSignalBlock:^(id) {
-      return action;
-    }];
+    _action = [action copy];
   }
   return self;
 }

@@ -37,14 +37,14 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (SPXSetAlertMessageBlock)setMessage {
-  return ^(NSString *message) {
+  return ^(NSString * _Nullable message) {
     self.message = [message copy];
     return self;
   };
 }
 
 - (SPXAddAlertButtonBlock)addButton {
-  return ^(NSString *title, RACSignal *action) {
+  return ^(NSString *title, LTVoidBlock action) {
     self.buttons = self.buttons ?: [NSMutableArray array];
     auto button = [[SPXAlertButtonViewModel alloc] initWithTitle:title action:action];
     [self.buttons addObject:button];
@@ -53,7 +53,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (SPXAddAlertButtonBlock)addDefaultButton {
-  return ^(NSString *title, RACSignal *action) {
+  return ^(NSString *title, LTVoidBlock action) {
     self.buttons = self.buttons ?: [NSMutableArray array];
     auto button = [[SPXAlertButtonViewModel alloc] initWithTitle:title action:action];
     [self.buttons addObject:button];
