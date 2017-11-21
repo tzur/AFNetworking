@@ -16,6 +16,7 @@
 
   // LTKit.
   #import <LTKit/LTKit-Prefix.pch>
+  #import <LTKit/LTCGExtensions.h>
 
   // Bazaar.
   #import <Bazaar/Bazaar-Prefix.pch>
