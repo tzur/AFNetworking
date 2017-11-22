@@ -22,7 +22,7 @@
 /* Text on a button shown to the user on failed action, trying the failed operation again */
 "Try Again" = "다시 시도하세요";
 
-/* Message shown after a successful products restoration, but no activesubscription was found */
+/* Message shown after a successful products restoration, but no active subscription was found */
 "Your purchases were restored successfully, no active subscription found" = "구입 항목이 성공적으로 복원되었지만, 활성화된 구독 기간을 찾을 수 없음";
 
 /* Message shown after successful subscription restoration */
