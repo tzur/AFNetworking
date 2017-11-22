@@ -1,9 +1,8 @@
 // Copyright (c) 2016 Lightricks. All rights reserved.
 // Created by Ben Yohay.
 
-#import "BZRProduct.h"
-
 #import "BZRContentFetcherParameters.h"
+#import "BZRProduct+SKProduct.h"
 #import "BZRProductPriceInfo.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -85,6 +84,12 @@ LTEnumImplement(NSUInteger, BZRProductType,
     ]];
   });
   return optionalPropertyKeys;
+}
+
+- (NSDictionary *)dictionaryValue {
+  auto mutableDictionaryValue = [[super dictionaryValue] mutableCopy];
+  mutableDictionaryValue[@keypath(self, bzr_underlyingProduct)] = self.bzr_underlyingProduct;
+  return [mutableDictionaryValue copy];
 }
 
 @end
