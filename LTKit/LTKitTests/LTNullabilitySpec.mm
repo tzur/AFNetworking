@@ -12,7 +12,7 @@ it(@"should return original ObjC object if not nil", ^{
 
 it(@"should return default ObjC object if nil", ^{
   NSString * _Nullable object = nil;
-  NSString * defaultValue = @"bar";
+  NSString *defaultValue = @"bar";
   expect(nn(object, defaultValue)).to.equal(defaultValue);
 });
 
@@ -29,6 +29,13 @@ it(@"should return default pointer if nil", ^{
   int *defaultValue = &object;
 
   expect(nn(ptr, defaultValue)).to.equal(&object);
+});
+
+it(@"should convert convertible type from default value to object", ^{
+  id _Nullable object = nil;
+  NSString *defaultValue = @"bar";
+
+  expect(nn(object, defaultValue)).to.equal(defaultValue);
 });
 
 it(@"should return original array if not nil", ^{
