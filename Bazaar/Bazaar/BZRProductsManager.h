@@ -80,6 +80,17 @@ NS_ASSUME_NONNULL_BEGIN
 /// The signal errs if the user doesn't have an active subscription.
 - (RACSignal *)acquireAllEnabledProducts;
 
+/// Fetches info of the products specified by \c productIdentifiers and returns them as a dictionary
+/// mapping product identifiers to \c BZRProduct. Events can be sent on an arbitrary thread.
+///
+/// Returns a signal that fetches the info of all products specified by \c productIdentifiers and
+/// sends them as a dictionary mapping identifiers to \c BZRProduct. If a product's price info
+/// couldn't be fetched, it will not appear in the returned dictionary. The signal completes after
+/// sending the dictionary of products. The signal errs if fetching the products' info encountred an
+/// error, the error code will be \c BZRErrorCodeProductsMetadataFetchingFailed.
+- (RACSignal<NSDictionary<NSString *, BZRProduct *> *> *)
+    fetchProductsInfo:(NSSet<NSString *> *)productIdentifiers;
+
 /// Sends transactions that were completed successfully and do not match any pending payment
 /// request. Every \c SKPaymentTransaction object sent should be considered a successful purchase.
 /// The signal completes when the receiver is deallocated. The signal doesn't err. Transactions can

@@ -94,6 +94,8 @@ NS_ASSUME_NONNULL_BEGIN
         [[BZRAcquiredViaSubscriptionProvider alloc] initWithKeychainStorage:keychainStorage];
 
     _storeKitFacade = [[BZRStoreKitFacade alloc] initWithApplicationUserID:applicationUserID];
+    _priceInfoFetcher =
+        [[BZRProductsPriceInfoFetcher alloc] initWithStoreKitFacade:self.storeKitFacade];
     _productsProvider = [self productsProviderWithJSONFilePath:productsListJSONFilePath
                                                  decryptionKey:productListDecryptionKey];
 
@@ -124,12 +126,10 @@ NS_ASSUME_NONNULL_BEGIN
     _netherProductsProvider =
         [[BZRProductsWithVariantsProvider alloc]
          initWithUnderlyingProvider:productsWithDiscountsProvider];
-    auto priceInfoFetcher =
-        [[BZRProductsPriceInfoFetcher alloc] initWithStoreKitFacade:self.storeKitFacade];
     BZRProductsWithPriceInfoProvider *productsWithPriceInfoProvider =
         [[BZRProductsWithPriceInfoProvider alloc]
          initWithUnderlyingProvider:self.netherProductsProvider
-         priceInfoFetcher:priceInfoFetcher];
+         priceInfoFetcher:self.priceInfoFetcher];
     return [[BZRCachedProductsProvider alloc]
             initWithUnderlyingProvider:productsWithPriceInfoProvider];
 }

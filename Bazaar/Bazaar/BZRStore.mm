@@ -4,6 +4,7 @@
 #import "BZRStore.h"
 
 #import <LTKit/NSArray+Functional.h>
+#import <LTKit/NSArray+NSSet.h>
 
 #import "BZRAcquiredViaSubscriptionProvider.h"
 #import "BZRAllowedProductsProvider.h"
@@ -17,6 +18,7 @@
 #import "BZRProductContentManager.h"
 #import "BZRProductPriceInfo+SKProduct.h"
 #import "BZRProductTypedefs.h"
+#import "BZRProductsPriceInfoFetcher.h"
 #import "BZRProductsProvider.h"
 #import "BZRProductsVariantSelector.h"
 #import "BZRProductsVariantSelectorFactory.h"
@@ -73,6 +75,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Provider used to provide product list before getting their price info from StoreKit.
 @property (readonly, nonatomic) id<BZRProductsProvider> netherProductsProvider;
 
+/// Fetcher used to fetch products price info.
+@property (readonly, nonatomic) BZRProductsPriceInfoFetcher *priceInfoFetcher;
+
 /// Validator used to validate receipt on initialization if required.
 @property (readonly, nonatomic) BZRExternalTriggerReceiptValidator *startupReceiptValidator;
 
@@ -119,6 +124,7 @@ NS_ASSUME_NONNULL_BEGIN
     _validationParametersProvider = configuration.validationParametersProvider;
     _allowedProductsProvider = configuration.allowedProductsProvider;
     _netherProductsProvider = configuration.netherProductsProvider;
+    _priceInfoFetcher = configuration.priceInfoFetcher;
     _startupReceiptValidator = [[BZRExternalTriggerReceiptValidator alloc]
                                 initWithValidationStatusProvider:self.validationStatusProvider];
     _downloadedContentProducts = [NSSet set];
@@ -146,6 +152,7 @@ NS_ASSUME_NONNULL_BEGIN
     self.productsProvider.eventsSignal,
     self.contentFetcher.eventsSignal,
     self.allowedProductsProvider.eventsSignal,
+    self.priceInfoFetcher.eventsSignal,
     [self.startupReceiptValidator.eventsSignal replay],
     self.validationParametersProvider.eventsSignal
   ]]
@@ -638,6 +645,26 @@ NS_ASSUME_NONNULL_BEGIN
   }]
   takeUntil:[self rac_willDeallocSignal]]
   setNameWithFormat:@"%@ -acquireAllEnabledProducts", self];
+}
+
+- (RACSignal<BZRProductDictionary *> *)fetchProductsInfo:(NSSet<NSString *> *)productIdentifiers {
+  auto priceInfoFetcher = self.priceInfoFetcher;
+  return [[[[RACObserve(self, productsJSONDictionary)
+      ignore:nil]
+      take:1]
+      flattenMap:^RACSignal *(BZRProductDictionary *productDictionary) {
+        auto requestedProductList =
+            [[productDictionary allValues] lt_filter:^BOOL(BZRProduct *product) {
+              return [productIdentifiers containsObject:product.identifier];
+            }];
+
+        return [priceInfoFetcher fetchProductsPriceInfo:requestedProductList];
+      }]
+      map:^BZRProductDictionary *(BZRProductList *productList) {
+        NSArray<NSString *> *identifiers =
+            [productList valueForKey:@instanceKeypath(BZRProduct, identifier)];
+        return [NSDictionary dictionaryWithObjects:productList forKeys:identifiers];
+      }];
 }
 
 #pragma mark -

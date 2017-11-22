@@ -15,6 +15,7 @@
 #import "BZRProduct+SKProduct.h"
 #import "BZRProductContentManager.h"
 #import "BZRProductPriceInfo.h"
+#import "BZRProductsPriceInfoFetcher.h"
 #import "BZRProductsProvider.h"
 #import "BZRProductsVariantSelector.h"
 #import "BZRProductsVariantSelectorFactory.h"
@@ -59,6 +60,7 @@ __block id<BZRProductsVariantSelector> variantSelector;
 __block id<BZRReceiptValidationParametersProvider> validationParametersProvider;
 __block BZRFakeAllowedProductsProvider *allowedProductsProvider;
 __block id<BZRProductsProvider> netherProductsProvider;
+__block BZRProductsPriceInfoFetcher *priceInfoFetcher;
 __block NSBundle *bundle;
 __block RACSubject *productsProviderEventsSubject;
 __block RACSubject *receiptValidationStatusProviderEventsSubject;
@@ -69,6 +71,7 @@ __block RACSubject *transactionsErrorEventsSubject;
 __block RACSubject *contentFetcherEventsSubject;
 __block RACSubject *unhandledSuccessfulTransactionsSubject;
 __block RACSubject *validationParametersProviderEventsSubject;
+__block RACSubject *priceInfoFetcherEventsSubject;
 __block BZRStoreConfiguration *configuration;
 __block BZRStore *store;
 __block NSString *productIdentifier;
@@ -85,6 +88,7 @@ beforeEach(^{
   validationParametersProvider = OCMClassMock([BZRReceiptValidationParametersProvider class]);
   allowedProductsProvider = [[BZRFakeAllowedProductsProvider alloc] init];
   netherProductsProvider = OCMProtocolMock(@protocol(BZRProductsProvider));
+  priceInfoFetcher = OCMClassMock([BZRProductsPriceInfoFetcher class]);
   bundle = OCMClassMock([NSBundle class]);
   id<BZRProductsVariantSelectorFactory> variantSelectorFactory =
       OCMProtocolMock(@protocol(BZRProductsVariantSelectorFactory));
@@ -100,6 +104,7 @@ beforeEach(^{
   transactionsErrorEventsSubject = [RACSubject subject];
   contentFetcherEventsSubject = [RACSubject subject];
   unhandledSuccessfulTransactionsSubject = [RACSubject subject];
+  priceInfoFetcherEventsSubject = [RACSubject subject];
   validationParametersProviderEventsSubject = [RACSubject subject];
 
   OCMStub([productsProvider eventsSignal])
@@ -116,6 +121,7 @@ beforeEach(^{
   OCMStub([contentFetcher eventsSignal]).andReturn(contentFetcherEventsSubject);
   OCMStub([storeKitFacade unhandledSuccessfulTransactionsSignal])
       .andReturn(unhandledSuccessfulTransactionsSubject);
+  OCMStub([priceInfoFetcher eventsSignal]).andReturn(priceInfoFetcherEventsSubject);
   OCMStub([validationParametersProvider eventsSignal])
       .andReturn(validationParametersProviderEventsSubject);
 
@@ -132,6 +138,7 @@ beforeEach(^{
   OCMStub([configuration validationParametersProvider]).andReturn(validationParametersProvider);
   OCMStub([configuration allowedProductsProvider]).andReturn(allowedProductsProvider);
   OCMStub([configuration netherProductsProvider]).andReturn(netherProductsProvider);
+  OCMStub([configuration priceInfoFetcher]).andReturn(priceInfoFetcher);
 
   store = [[BZRStore alloc] initWithConfiguration:configuration];
   productIdentifier = @"foo";
@@ -1169,6 +1176,38 @@ context(@"acquiring all enabled products", ^{
   });
 });
 
+context(@"maually fetching products info", ^{
+  it(@"should err if products info fetcher errs", ^{
+    auto product = BZRProductWithIdentifier(productIdentifier);
+    [netherProductsProviderSubject sendNext:@[product, BZRProductWithIdentifier(@"bar")]];
+    NSError *error = [NSError lt_errorWithCode:1337];
+    OCMStub([priceInfoFetcher fetchProductsPriceInfo:OCMOCK_ANY])
+        .andReturn([RACSignal error:error]);
+
+    expect([store fetchProductsInfo:@[productIdentifier].lt_set]).will.sendError(error);
+  });
+
+  it(@"should not fetch info of products that don't appear in product list provided by nether "
+     "products provider", ^{
+    auto product = BZRProductWithIdentifier(productIdentifier);
+    [netherProductsProviderSubject sendNext:@[product]];
+    OCMStub([priceInfoFetcher fetchProductsPriceInfo:@[]]).andReturn([RACSignal return:@[]]);
+
+    expect([store fetchProductsInfo:@[@"bar"].lt_set]).will.sendValues(@[@{}]);
+  });
+
+  it(@"should fetch info of products that appear both in the given product identifiers set and in "
+     "product list provided by nether products provider", ^{
+    auto product = BZRProductWithIdentifier(productIdentifier);
+    [netherProductsProviderSubject sendNext:@[product, BZRProductWithIdentifier(@"bar")]];
+    OCMStub([priceInfoFetcher fetchProductsPriceInfo:@[product]])
+        .andReturn([RACSignal return:@[product]]);
+
+    expect([store fetchProductsInfo:@[productIdentifier].lt_set])
+        .will.sendValues(@[@{productIdentifier: product}]);
+  });
+});
+
 context(@"handling unfinished completed transactions", ^{
   __block LLSignalTestRecorder *errorsRecorder;
   __block LLSignalTestRecorder *completedTransactionsRecorder;
@@ -1364,6 +1403,7 @@ context(@"KVO-compliance", ^{
     OCMStub([configuration validationParametersProvider]).andReturn(validationParametersProvider);
     OCMStub([configuration allowedProductsProvider]).andReturn(allowedProductsProvider);
     OCMStub([configuration netherProductsProvider]).andReturn(netherProductsProvider);
+    OCMStub([configuration priceInfoFetcher]).andReturn(priceInfoFetcher);
 
     store = [[BZRStore alloc] initWithConfiguration:configuration];
   });
