@@ -92,8 +92,12 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, atomic, nullable) NSDictionary<NSString *, BZRProduct *> *productDictionary;
 
 /// Dictionary that contains products information based only on the products JSON file.
-@property (strong, readwrite, nonatomic, nullable) NSDictionary<NSString *, BZRProduct *> *
+@property (strong, nonatomic, nullable) NSDictionary<NSString *, BZRProduct *> *
     productsJSONDictionary;
+
+/// \c YES if the product list was fetched successfully using \c self.productsProvider. \c NO
+/// otherwise.
+@property (nonatomic) BOOL productListWasFetched;
 
 @end
 
@@ -128,6 +132,7 @@ NS_ASSUME_NONNULL_BEGIN
     _startupReceiptValidator = [[BZRExternalTriggerReceiptValidator alloc]
                                 initWithValidationStatusProvider:self.validationStatusProvider];
     _downloadedContentProducts = [NSSet set];
+    _productListWasFetched = NO;
 
     [self initializeEventsSignal];
     [self initializeCompletedTransactionsSignal];
@@ -193,13 +198,22 @@ NS_ASSUME_NONNULL_BEGIN
       takeUntil:[self rac_willDeallocSignal]]
       subscribeNext:^(BZRProductDictionary *productDictionary) {
         @strongify(self);
-        self.productDictionary = productDictionary;
+        @synchronized(self) {
+          self.productListWasFetched = YES;
+          [self mergeProductDictionaryWithExistingDictionary:productDictionary];
+        }
       } error:^(NSError *underlyingError) {
         @strongify(self);
         NSError *error = [NSError lt_errorWithCode:BZRErrorCodeFetchingProductListFailed
                                    underlyingError:underlyingError];
         [self sendErrorEventOfType:$(BZREventTypeCriticalError) error:error];
       }];
+}
+
+- (void)mergeProductDictionaryWithExistingDictionary:(BZRProductDictionary *)productDictionary {
+  self.productDictionary = self.productDictionary ?
+      [self.productDictionary mtl_dictionaryByAddingEntriesFromDictionary:productDictionary] :
+      productDictionary;
 }
 
 - (RACSignal<BZRProductDictionary *> *)
@@ -557,9 +571,13 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (RACSignal<NSSet<BZRProduct *> *> *)productList {
+  RACSignal<BZRProductDictionary *> *productDictionarySignal;
+  @synchronized(self) {
+    productDictionarySignal = self.productListWasFetched ?
+        [RACSignal return:self.productDictionary] : [self refetchProductDictionarySignal];
+  }
+
   @weakify(self);
-  RACSignal<BZRProductDictionary *> *productDictionarySignal = self.productDictionary ?
-      [RACSignal return:self.productDictionary] : [self refetchProductDictionarySignal];
   return [productDictionarySignal
       map:^NSSet<BZRProduct *> *(BZRProductDictionary *productDictionary) {
         @strongify(self);
@@ -581,7 +599,10 @@ NS_ASSUME_NONNULL_BEGIN
   return [[[self fetchProductDictionaryWithProvider:self.productsProvider]
       doNext:^(BZRProductDictionary *productDictionary) {
         @strongify(self);
-        self.productDictionary = productDictionary;
+        @synchronized(self) {
+          self.productListWasFetched = YES;
+          [self mergeProductDictionaryWithExistingDictionary:productDictionary];
+        }
       }]
       doError:^(NSError *underlyingError) {
         @strongify(self);
@@ -649,7 +670,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (RACSignal<BZRProductDictionary *> *)fetchProductsInfo:(NSSet<NSString *> *)productIdentifiers {
   auto priceInfoFetcher = self.priceInfoFetcher;
-  return [[[[RACObserve(self, productsJSONDictionary)
+  @weakify(self);
+  return [[[[[RACObserve(self, productsJSONDictionary)
       ignore:nil]
       take:1]
       flattenMap:^RACSignal *(BZRProductDictionary *productDictionary) {
@@ -664,6 +686,10 @@ NS_ASSUME_NONNULL_BEGIN
         NSArray<NSString *> *identifiers =
             [productList valueForKey:@instanceKeypath(BZRProduct, identifier)];
         return [NSDictionary dictionaryWithObjects:productList forKeys:identifiers];
+      }]
+      doNext:^(BZRProductDictionary *productDictionary) {
+        @strongify(self);
+        [self mergeProductDictionaryWithExistingDictionary:productDictionary];
       }];
 }
 
