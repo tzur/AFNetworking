@@ -73,11 +73,11 @@ NS_ASSUME_NONNULL_BEGIN
   quads.reserve(originalQuads.size());
   std::vector<NSUInteger> indices;
   indices.reserve(originalQuads.size());
-  
+
   for (NSUInteger index : values.indices()) {
-    NSUInteger count = [self.random randomIntegerBetweenMin:(int)self.count.min()
-                                                        max:(int)self.count.max()];
-    
+    NSUInteger count = [self.random randomIntegerBetweenMin:(int)self.count.inf()
+                                                        max:(int)self.count.sup()];
+
     for (NSUInteger i = 0; i < count; ++i) {
       quads.push_back([self randomlyTransformedQuadFromQuad:originalQuads[index]]);
       indices.push_back(index);
@@ -87,12 +87,12 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (lt::Quad)randomlyTransformedQuadFromQuad:(lt::Quad)quad {
-  CGFloat distanceLength = [self.random randomDoubleBetweenMin:self.distance.min()
-                                                           max:self.distance.max()];
+  CGFloat distanceLength = [self.random randomDoubleBetweenMin:self.distance.inf()
+                                                           max:self.distance.sup()];
   CGPoint distance = CGPoint(LTVector2::angle([self.random randomDoubleBetweenMin:0 max:M_PI * 2]) *
                              distanceLength);
-  CGFloat angle = [self.random randomDoubleBetweenMin:self.angle.min() max:self.angle.max()];
-  CGFloat scale = [self.random randomDoubleBetweenMin:self.scale.min() max:self.scale.max()];
+  CGFloat angle = [self.random randomDoubleBetweenMin:self.angle.inf() max:self.angle.sup()];
+  CGFloat scale = [self.random randomDoubleBetweenMin:self.scale.inf() max:self.scale.sup()];
   return quad
       .rotatedAroundPoint(angle, quad.center())
       .scaledAround(scale, quad.center())
@@ -125,7 +125,7 @@ NS_ASSUME_NONNULL_BEGIN
                                         angle:(lt::Interval<CGFloat>)angle
                                         scale:(lt::Interval<CGFloat>)scale {
   [self validateDistance:distance angle:angle scale:scale];
-  
+
   if (self = [super init]) {
     _geometryProviderModel = geometryProviderModel;
     _randomState = randomState;
@@ -142,20 +142,19 @@ NS_ASSUME_NONNULL_BEGIN
   lt::Interval<CGFloat> validInterval({0, CGFLOAT_MAX},
                                       lt::Interval<CGFloat>::EndpointInclusion::Closed);
   LTParameterAssert(distance.intersects(validInterval),
-                    @"Interval ([%g, %g]) outside valid distance interval ([0, CGFLOAT_MAX))",
-                    distance.min(), distance.max());
+                    @"Interval %@ outside valid distance interval ([0, CGFLOAT_MAX))",
+                    distance.description());
   validInterval = lt::Interval<CGFloat>({0, 2 * M_PI},
                                         lt::Interval<CGFloat>::EndpointInclusion::Closed,
                                         lt::Interval<CGFloat>::EndpointInclusion::Closed);
   LTParameterAssert(angle.intersects(validInterval),
-                    @"Interval ([%g, %g]) outside valid angle interval ([0, 2 * PI])",
-                    angle.min(), angle.max());
+                    @"Interval %@ outside valid angle interval ([0, 2 * PI])", angle.description());
   validInterval = lt::Interval<CGFloat>({0, CGFLOAT_MAX},
                                         lt::Interval<CGFloat>::EndpointInclusion::Open,
                                         lt::Interval<CGFloat>::EndpointInclusion::Closed);
   LTParameterAssert(scale.intersects(validInterval),
-                    @"Interval ([%g, %g]) outside valid scaling interval ((0, CGFLOAT_MAX))",
-                    scale.min(), scale.max());
+                    @"Interval %@ outside valid scaling interval ((0, CGFLOAT_MAX))",
+                    scale.description());
 }
 
 #pragma mark -
@@ -166,11 +165,11 @@ NS_ASSUME_NONNULL_BEGIN
   if (self == model) {
     return YES;
   }
-  
+
   if (![model isKindOfClass:[DVNScatteredGeometryProviderModel class]]) {
     return NO;
   }
-  
+
   return [self.geometryProviderModel isEqual:model.geometryProviderModel] &&
       [self.randomState isEqual:model.randomState] && self.count == model.count &&
       self.distance == model.distance && self.angle == model.angle && self.scale == model.scale;

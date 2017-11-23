@@ -11,54 +11,54 @@ context(@"initialization", ^{
   context(@"separate specification of end point closures", ^{
     it(@"should initialize correctly", ^{
       LTTestInterval interval({0, 1}, LTTestInterval::Closed, LTTestInterval::Open);
-      expect(interval.min()).to.equal(0);
-      expect(interval.max()).to.equal(1);
-      expect(interval.minEndpointIncluded()).to.beTruthy();
-      expect(interval.maxEndpointIncluded()).to.beFalsy();
+      expect(interval.inf()).to.equal(0);
+      expect(interval.sup()).to.equal(1);
+      expect(interval.infIncluded()).to.beTruthy();
+      expect(interval.supIncluded()).to.beFalsy();
     });
 
     it(@"should initialize correctly, independent of value order", ^{
       LTTestInterval interval({1, 0}, LTTestInterval::Closed, LTTestInterval::Open);
-      expect(interval.min()).to.equal(0);
-      expect(interval.max()).to.equal(1);
-      expect(interval.minEndpointIncluded()).to.beTruthy();
-      expect(interval.maxEndpointIncluded()).to.beFalsy();
+      expect(interval.inf()).to.equal(0);
+      expect(interval.sup()).to.equal(1);
+      expect(interval.infIncluded()).to.beTruthy();
+      expect(interval.supIncluded()).to.beFalsy();
     });
   });
 
   context(@"unified specification of end point closures", ^{
     it(@"should initialize correctly", ^{
       LTTestInterval interval({-1, 2}, LTTestInterval::Closed);
-      expect(interval.min()).to.equal(-1);
-      expect(interval.max()).to.equal(2);
-      expect(interval.minEndpointIncluded()).to.beTruthy();
-      expect(interval.maxEndpointIncluded()).to.beTruthy();
+      expect(interval.inf()).to.equal(-1);
+      expect(interval.sup()).to.equal(2);
+      expect(interval.infIncluded()).to.beTruthy();
+      expect(interval.supIncluded()).to.beTruthy();
     });
 
     it(@"should initialize correctly, independent of value order", ^{
       LTTestInterval interval({2, -1}, LTTestInterval::Closed);
-      expect(interval.min()).to.equal(-1);
-      expect(interval.max()).to.equal(2);
-      expect(interval.minEndpointIncluded()).to.beTruthy();
-      expect(interval.maxEndpointIncluded()).to.beTruthy();
+      expect(interval.inf()).to.equal(-1);
+      expect(interval.sup()).to.equal(2);
+      expect(interval.infIncluded()).to.beTruthy();
+      expect(interval.supIncluded()).to.beTruthy();
     });
   });
 
   context(@"implicit specification of end point closures", ^{
     it(@"should initialize correctly", ^{
       LTTestInterval interval({-1, 2});
-      expect(interval.min()).to.equal(-1);
-      expect(interval.max()).to.equal(2);
-      expect(interval.minEndpointIncluded()).to.beTruthy();
-      expect(interval.maxEndpointIncluded()).to.beTruthy();
+      expect(interval.inf()).to.equal(-1);
+      expect(interval.sup()).to.equal(2);
+      expect(interval.infIncluded()).to.beTruthy();
+      expect(interval.supIncluded()).to.beTruthy();
     });
 
     it(@"should initialize correctly, independent of value order", ^{
       LTTestInterval interval({2, -1});
-      expect(interval.min()).to.equal(-1);
-      expect(interval.max()).to.equal(2);
-      expect(interval.minEndpointIncluded()).to.beTruthy();
-      expect(interval.maxEndpointIncluded()).to.beTruthy();
+      expect(interval.inf()).to.equal(-1);
+      expect(interval.sup()).to.equal(2);
+      expect(interval.infIncluded()).to.beTruthy();
+      expect(interval.supIncluded()).to.beTruthy();
     });
   });
 });

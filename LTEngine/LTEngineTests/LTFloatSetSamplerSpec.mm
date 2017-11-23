@@ -186,10 +186,10 @@ context(@"model", ^{
 
     LTFloatSetSamplerModel *model = [sampler currentModel];
     expect(model.floatSet).to.equal(floatSet);
-    expect(model.interval.min()).to.equal(1);
-    expect(model.interval.max()).to.equal(2.5);
-    expect(model.interval.minEndpointIncluded()).to.beTruthy();
-    expect(model.interval.maxEndpointIncluded()).to.beTruthy();
+    expect(model.interval.inf()).to.equal(1);
+    expect(model.interval.sup()).to.equal(2.5);
+    expect(model.interval.infIncluded()).to.beTruthy();
+    expect(model.interval.supIncluded()).to.beTruthy();
   });
 
   it(@"should provide correct model after consecutive samples of a given parameterized object", ^{
@@ -207,10 +207,10 @@ context(@"model", ^{
 
     LTFloatSetSamplerModel *model = [sampler currentModel];
     expect(model.floatSet).to.equal(floatSet);
-    expect(model.interval.min()).to.equal(2);
-    expect(model.interval.max()).to.equal(2.5);
-    expect(model.interval.minEndpointIncluded()).to.beFalsy();
-    expect(model.interval.maxEndpointIncluded()).to.beTruthy();
+    expect(model.interval.inf()).to.equal(2);
+    expect(model.interval.sup()).to.equal(2.5);
+    expect(model.interval.infIncluded()).to.beFalsy();
+    expect(model.interval.supIncluded()).to.beTruthy();
   });
 });
 
