@@ -5,6 +5,28 @@
 
 #import "PNKNeuralNetworkModel.h"
 
+static cv::Mat PNKConvertToMultichannelMatrix(cv::Mat matrix, NSUInteger rows, NSUInteger columns,
+                                              NSUInteger channels) {
+  LTAssert(matrix.channels() == 1);
+  LTAssert(matrix.rows == 1);
+  LTAssert(matrix.total() == rows * columns * channels);
+  LTAssert(channels % 4 == 0);
+
+  int iRows = (int)rows;
+  int iColumns = (int)columns;
+  int iChannels = (int)channels;
+  int type = matrix.type();
+
+  cv::Mat result(iRows * iColumns, iChannels, type);
+  for (int chunk = 0; chunk < iChannels / 4; ++chunk) {
+    cv::Rect roi(4 * chunk, 0, 4, iRows * iColumns);
+    matrix.colRange(iRows * iColumns * 4 * chunk, iRows * iColumns * 4 * (chunk + 1))
+    .reshape(1, iRows * iColumns).copyTo(result(roi));
+  }
+
+  return result.reshape(iChannels, iRows);
+}
+
 SpecBegin(PNKConditionalInstanceNormLayer)
 
 static const NSUInteger kInputWidth = 15;
@@ -99,6 +121,7 @@ context(@"conditional instance normalization PNKUnaryKernel encoding", ^{
     pnk::ActivationKernelModel activationModel {
       .activationType = pnk::ActivationTypeIdentity
     };
+
     pnk::NormalizationKernelModel normalizationModel {
       .instanceNormalization = YES,
       .inputFeatureChannels = inputChannels,
@@ -111,10 +134,15 @@ context(@"conditional instance normalization PNKUnaryKernel encoding", ^{
                                              normalizationModel:normalizationModel
                                                 activationModel:activationModel];
 
-    auto inputMat =
+    auto inputMatOneRow =
         PNKLoadHalfFloatTensorFromBundleResource(bundle, @"instanceNorm_nonarray_input.tensor");
-    auto expectedMat =
+    auto inputMat = PNKConvertToMultichannelMatrix(inputMatOneRow, kInputHeight, kInputWidth,
+                                                   inputChannels);
+
+    auto expectedMatOneRow =
         PNKLoadHalfFloatTensorFromBundleResource(bundle, @"instanceNorm_nonarray_output.tensor");
+    auto expectedMat = PNKConvertToMultichannelMatrix(expectedMatOneRow, kInputHeight, kInputWidth,
+                                                      inputChannels);
 
     return @{
       kPNKKernelExamplesKernel: kernel,
@@ -146,9 +174,15 @@ context(@"conditional instance normalization PNKUnaryKernel encoding", ^{
                                              normalizationModel:normalizationModel
                                                 activationModel:activationModel];
 
-    auto inputMat = PNKLoadHalfFloatTensorFromBundleResource(bundle, @"instanceNorm_input.tensor");
-    auto expectedMat = PNKLoadHalfFloatTensorFromBundleResource(bundle,
-                                                                @"instanceNorm_output.tensor");
+    auto inputMatOneRow =
+        PNKLoadHalfFloatTensorFromBundleResource(bundle, @"instanceNorm_input.tensor");
+    auto inputMat = PNKConvertToMultichannelMatrix(inputMatOneRow, kInputHeight, kInputWidth,
+                                                   inputChannels);
+
+    auto expectedMatOneRow =
+        PNKLoadHalfFloatTensorFromBundleResource(bundle, @"instanceNorm_output.tensor");
+    auto expectedMat = PNKConvertToMultichannelMatrix(expectedMatOneRow, kInputHeight, kInputWidth,
+                                                      inputChannels);
 
     return @{
       kPNKKernelExamplesKernel: kernel,
@@ -180,10 +214,15 @@ context(@"conditional instance normalization PNKUnaryKernel encoding", ^{
                                              normalizationModel:normalizationModel
                                                 activationModel:activationModel];
 
-    auto inputMat = PNKLoadHalfFloatTensorFromBundleResource(bundle,
-                                                             @"instanceNorm_relu_input.tensor");
-    auto expectedMat = PNKLoadHalfFloatTensorFromBundleResource(bundle,
-                                                                @"instanceNorm_relu_output.tensor");
+    auto inputMatOneRow =
+        PNKLoadHalfFloatTensorFromBundleResource(bundle, @"instanceNorm_relu_input.tensor");
+    auto inputMat = PNKConvertToMultichannelMatrix(inputMatOneRow, kInputHeight, kInputWidth,
+                                                   inputChannels);
+
+    auto expectedMatOneRow =
+        PNKLoadHalfFloatTensorFromBundleResource(bundle, @"instanceNorm_relu_output.tensor");
+    auto expectedMat = PNKConvertToMultichannelMatrix(expectedMatOneRow, kInputHeight, kInputWidth,
+                                                      inputChannels);
 
     return @{
       kPNKKernelExamplesKernel: kernel,
@@ -217,7 +256,7 @@ context(@"PNKUnaryKernel with MPSTemporaryImage", ^{
     return @{
       kPNKTemporaryImageExamplesKernel: ciNormOp,
       kPNKTemporaryImageExamplesDevice: device,
-      kPNKTemporaryImageExamplesInputChannels: @(kInputRGBFeatureChannels)
+      kPNKTemporaryImageExamplesOutputChannels: @(kInputRGBFeatureChannels)
     };
   });
 
@@ -239,7 +278,7 @@ context(@"PNKUnaryKernel with MPSTemporaryImage", ^{
     return @{
       kPNKTemporaryImageExamplesKernel: ciNormOp,
       kPNKTemporaryImageExamplesDevice: device,
-      kPNKTemporaryImageExamplesInputChannels: @(kInputArrayFeatureChannels)
+      kPNKTemporaryImageExamplesOutputChannels: @(kInputArrayFeatureChannels)
     };
   });
 });

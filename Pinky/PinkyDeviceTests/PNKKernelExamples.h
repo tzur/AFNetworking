@@ -9,6 +9,10 @@ extern NSString * const kPNKUnaryKernelExamples;
 /// operation completes successfully and that the output is correct.
 extern NSString * const kPNKBinaryKernelExamples;
 
+/// Group name of shared tests for \c PNKBinaryImageKernel implementations checking that the encoded
+/// operation completes successfully and that the output is correct.
+extern NSString * const kPNKBinaryImageKernelExamples;
+
 /// Dictionary key to the object whose implementation of the \c PNKUnaryKernel or \c PNKBinaryKernel
 /// protocol is to test.
 extern NSString * const kPNKKernelExamplesKernel;
