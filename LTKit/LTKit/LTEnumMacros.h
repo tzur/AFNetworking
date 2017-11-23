@@ -257,12 +257,13 @@
     return self; \
   } \
   \
-  - (nullable instancetype)initWithCoder:(NSCoder *)aDecoder {\
-    return [self initWithValue:[[aDecoder decodeObjectForKey:@"value"] NAME##Value]]; \
+  - (nullable instancetype)initWithCoder:(NSCoder *)aDecoder { \
+    return [self initWithValue:[[aDecoder decodeObjectOfClass:[NSValue class] \
+                                                       forKey:@keypath(self,value)] NAME##Value]]; \
   } \
   \
   - (void)encodeWithCoder:(NSCoder *)aCoder { \
-    [aCoder encodeObject:[NSValue valueWith##NAME:self.value] forKey:@"value"]; \
+    [aCoder encodeObject:[NSValue valueWith##NAME:self.value] forKey:@keypath(self,value)]; \
   } \
   \
   - (nullable instancetype)enumWithNextValue { \
@@ -327,6 +328,10 @@
   \
   + (LTBidirectionalMap<NSString *, NSNumber *> *)fieldNamesToValues { \
     return [self _fieldNamesToValues]; \
+  } \
+  \
+  + (BOOL)supportsSecureCoding { \
+    return YES; \
   } \
   \
   - (NSString *)name { \
