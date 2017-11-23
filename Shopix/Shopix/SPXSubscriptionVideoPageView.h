@@ -1,14 +1,18 @@
 // Copyright (c) 2017 Lightricks. All rights reserved.
 // Created by Neria Saada.
 
+#import "SPXPagingView.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
 /// View that represents a single page for the subscription screen with a rounded corners video,
 /// title and subtitle.
-@interface SPXSubscriptionVideoPageView : UIView
+/// @see SPXPagingView, SPXFocusAwarePageView.
+@interface SPXSubscriptionVideoPageView : UIView <SPXFocusAwarePageView>
 
-/// URL for the video presented on top of the page. The video will start right after \c URL is set
-/// and the video is loaded. If \c nil no video is shown.
+/// URL for the video presented on top of the page. The video will start playing when the page
+/// gains focus and paused when the page loses focus . If the URL is replaced while the video is
+/// playing the new video will immediatley start playing. If set to \c nil no video is shown.
 @property (strong, nonatomic, nullable) NSURL *videoURL;
 
 /// Title presented below the video. If \c nil no title is shown.

@@ -113,12 +113,27 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 #pragma mark -
+#pragma mark SPXFocusAwarePageView
+#pragma mark -
+
+- (void)pageViewWillLoseFocus {
+  [self.videoView pause];
+}
+
+- (void)pageViewDidGainFocus {
+  [self.videoView play];
+}
+
+#pragma mark -
 #pragma mark Properties
 #pragma mark -
 
 - (void)setVideoURL:(nullable NSURL *)videoURL {
+  BOOL isPlaying = self.videoView.isPlaying;
   self.videoView.videoURL = videoURL;
-  [self.videoView play];
+  if (isPlaying) {
+    [self.videoView play];
+  }
 }
 
 - (nullable NSURL *)videoURL {

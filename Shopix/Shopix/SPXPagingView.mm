@@ -17,6 +17,10 @@ NS_ASSUME_NONNULL_BEGIN
 /// View that holds \c contentView and provides horizontal scrolling.
 @property (readonly, nonatomic) UIScrollView *scrollView;
 
+/// Currently focused page index, updated after the scroll view animation end declerating. Reset to
+/// \c 0 when \c pageViews are updated.
+@property (nonatomic) NSUInteger focusedPageIndex;
+
 @end
 
 @implementation SPXPagingView
@@ -71,6 +75,36 @@ static const CGFloat kDefaultPageViewWidthRatio = 0.84;
 #pragma mark UIScrollViewDelegate
 #pragma mark -
 
+- (void)scrollViewDidEndDecelerating:(UIScrollView * __unused)scrollView {
+  if (!self.pageViews.count) {
+    return;
+  }
+
+  CGSize pageSize = self.pageViews.firstObject.frame.size;
+  CGFloat spacingWidth = self.spacingRatio * self.scrollView.frame.size.width;
+  CGFloat contentOffsetX = self.scrollView.contentOffset.x;
+
+  auto leftMarginWidth = self.paddingViews.firstObject.frame.size.width;
+  [self notifyFocusedPageOnFocusLose];
+  self.focusedPageIndex = ((contentOffsetX + scrollView.frame.size.width / 2 - leftMarginWidth) /
+                           (pageSize.width + spacingWidth));
+  [self notifyFocusedPageOnFocusGain];
+}
+
+- (void)notifyFocusedPageOnFocusLose {
+  auto focusedPage = self.pageViews[self.focusedPageIndex];
+  if ([focusedPage conformsToProtocol:@protocol(SPXFocusAwarePageView)]) {
+    [(id<SPXFocusAwarePageView>)focusedPage pageViewWillLoseFocus];
+  }
+}
+
+- (void)notifyFocusedPageOnFocusGain {
+  auto focusedPage = self.pageViews[self.focusedPageIndex];
+  if ([focusedPage conformsToProtocol:@protocol(SPXFocusAwarePageView)]) {
+    [(id<SPXFocusAwarePageView>)focusedPage pageViewDidGainFocus];
+  }
+}
+
 - (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity
               targetContentOffset:(inout CGPoint *)targetContentOffset {
   if (self.pageViews.count < 2) {
@@ -108,6 +142,15 @@ static const CGFloat kDefaultPageViewWidthRatio = 0.84;
   self.paddingViews = paddingViews;
 
   [self updatePageViewsConstraints];
+
+  [self.scrollView setContentOffset:CGPointMake(0, 0) animated:YES];
+  if (self.pageViews.count) {
+    [self notifyFocusedPageOnFocusLose];
+    self.focusedPageIndex = 0;
+    [self notifyFocusedPageOnFocusGain];
+  } else {
+    self.focusedPageIndex = 0;
+  }
 }
 
 - (void)updatePageViewsConstraints {
