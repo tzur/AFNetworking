@@ -4,9 +4,9 @@
 #import "LABTaplyticsSource.h"
 
 #import <LTKit/NSArray+NSSet.h>
+#import <LTKitTestUtils/LTFakeStorage.h>
 
 #import "LABExperimentsTokenProvider.h"
-#import "LABFakeStorage.h"
 #import "LABTaplytics.h"
 #import "NSError+Laboratory.h"
 
@@ -103,12 +103,12 @@ static NSDictionary *k1ExperimentsToVariations = @{
 SpecBegin(LABTaplyticsSource)
 
 __block LABExperimentsTokenProvider *tokenProvider;
-__block LABFakeStorage *storage;
+__block LTFakeStorage *storage;
 
 beforeEach(^{
   tokenProvider = OCMClassMock(LABExperimentsTokenProvider.class);
   OCMStub([tokenProvider experimentsToken]).andReturn(0.3);
-  storage = [[LABFakeStorage alloc] init];
+  storage = [[LTFakeStorage alloc] init];
 });
 
 context(@"initialization", ^{

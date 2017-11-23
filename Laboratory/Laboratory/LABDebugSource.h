@@ -5,7 +5,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@protocol LABStorage;
+@protocol LTStorage;
 
 /// Implementers of this protocol provide info about an experiment - its name, available variants,
 /// and the current active variant and its assignments. This info is used by the \c LABDebugSource
@@ -50,7 +50,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// Initializes with \c sources and \c storage. \c sources are used to fetch experiment models.
 /// \c storage is used to store the latest \c allExperiments.
 - (instancetype)initWithSources:(NSArray<id<LABExperimentsSource>> *)sources
-                        storage:(id<LABStorage>)storage NS_DESIGNATED_INITIALIZER;
+                        storage:(id<LTStorage>)storage NS_DESIGNATED_INITIALIZER;
 
 /// Activates \c variant of \c experiment from \c source. The activation is done synchronously.
 /// Returns a hot signal that sends \c YES if \c variant is active for \c experiment and \c NO if

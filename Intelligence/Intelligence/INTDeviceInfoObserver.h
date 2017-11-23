@@ -5,7 +5,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class INTDeviceInfo, INTDeviceInfoObserver;
 
-@protocol INTDeviceInfoSource, INTStorage;
+@protocol INTDeviceInfoSource, LTStorage;
 
 /// Defines a protocol for objects that receive updates from an \c INTDeviceInfoObserver regarding
 /// \c INTDeviceInfo and push notification device tokens.
@@ -52,7 +52,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// stored \c INTDeviceInfo, checks for any updates to any device info, stores the updates and
 /// notifies the delegate that \c INTDeviceInfo was loaded.
 - (instancetype)initWithDeviceInfoSource:(id<INTDeviceInfoSource>)deviceInfoSource
-                                 storage:(id<INTStorage>)storage
+                                 storage:(id<LTStorage>)storage
                                 delegate:(id<INTDeviceInfoObserverDelegate>)delegate
     NS_DESIGNATED_INITIALIZER;
 

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		19C886911FC43E1D009F147E /* libLTKitTestUtils.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19C885611FC41F95009F147E /* libLTKitTestUtils.a */; };
 		882D1F181EC19A2C007F39F5 /* libcompression.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 882D1F171EC19A2C007F39F5 /* libcompression.tbd */; };
 		882D1F2C1EC1AC92007F39F5 /* libextobjc_iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 882D1F271EC1AC6E007F39F5 /* libextobjc_iOS.a */; };
 		882D1F2E1EC1C497007F39F5 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 882D1F2D1EC1C497007F39F5 /* CoreGraphics.framework */; };
@@ -26,7 +27,6 @@
 		88375E9B1EE9286500A4B6FE /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88375E9A1EE9286500A4B6FE /* JavaScriptCore.framework */; };
 		884962181EBA226E007B3AE8 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1417A911E6ED9CB005DBEFF /* UIKit.framework */; };
 		884F64941EE53B3C0052274E /* LABExperimentsTokenProviderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 884F64931EE53B3C0052274E /* LABExperimentsTokenProviderSpec.mm */; };
-		884F64B51EE53E010052274E /* LABFakeStorage.mm in Sources */ = {isa = PBXBuildFile; fileRef = 884F64B41EE53E010052274E /* LABFakeStorage.mm */; };
 		885349B81EE45B0C0043D190 /* LABAssignmentsSource.mm in Sources */ = {isa = PBXBuildFile; fileRef = 885349B71EE45B0C0043D190 /* LABAssignmentsSource.mm */; };
 		885AFF991F02B34D0035A6B2 /* LABTaplyticsSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 884136081EEE6E220096BF8C /* LABTaplyticsSpec.mm */; };
 		885AFFBD1F02B3E00035A6B2 /* LABLocalSourceSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 88440B981EDB19C200A64CF7 /* LABLocalSourceSpec.mm */; };
@@ -56,6 +56,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		19C885601FC41F95009F147E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A14172691E6EADDF005DBEFF /* LTKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 194FF4FC1FA8BA77008879E7;
+			remoteInfo = LTKitTestUtils;
+		};
 		882D1F241EC1AC6E007F39F5 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 882D1F1D1EC1AC6E007F39F5 /* extobjc.xcodeproj */;
@@ -386,14 +393,11 @@
 		88440B521ED8B10B00A64CF7 /* LABAssignmentsSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LABAssignmentsSource.h; sourceTree = "<group>"; };
 		88440B981EDB19C200A64CF7 /* LABLocalSourceSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LABLocalSourceSpec.mm; sourceTree = "<group>"; };
 		884F64931EE53B3C0052274E /* LABExperimentsTokenProviderSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LABExperimentsTokenProviderSpec.mm; sourceTree = "<group>"; };
-		884F64B31EE53E010052274E /* LABFakeStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LABFakeStorage.h; sourceTree = "<group>"; };
-		884F64B41EE53E010052274E /* LABFakeStorage.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LABFakeStorage.mm; sourceTree = "<group>"; };
 		885349B71EE45B0C0043D190 /* LABAssignmentsSource.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LABAssignmentsSource.mm; sourceTree = "<group>"; };
 		88648C211EE5281200B492D7 /* LABExperimentsTokenProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LABExperimentsTokenProvider.h; sourceTree = "<group>"; };
 		88648C221EE5281200B492D7 /* LABExperimentsTokenProvider.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LABExperimentsTokenProvider.mm; sourceTree = "<group>"; };
 		88BB646A1EDAAD100026DEC0 /* LABLocalSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LABLocalSource.h; sourceTree = "<group>"; };
 		88BB646B1EDAAD100026DEC0 /* LABLocalSource.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LABLocalSource.mm; sourceTree = "<group>"; };
-		88BB646C1EDAAD100026DEC0 /* LABStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LABStorage.h; sourceTree = "<group>"; };
 		88C21F451F0D272F0005EFDE /* LABAssignmentValue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LABAssignmentValue.h; sourceTree = "<group>"; };
 		88C21F461F0D272F0005EFDE /* LABAssignmentValue.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LABAssignmentValue.mm; sourceTree = "<group>"; };
 		88C21F6A1F0D37E40005EFDE /* LABAssignmentValueSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LABAssignmentValueSpec.mm; sourceTree = "<group>"; };
@@ -465,6 +469,7 @@
 				A1674D971F01617A006A3B07 /* libFBTweak.a in Frameworks */,
 				8B10C9A01F3F059200F76142 /* libLLReactiveMatchers.a in Frameworks */,
 				A14173411E6EB59F005DBEFF /* libLTKit.a in Frameworks */,
+				19C886911FC43E1D009F147E /* libLTKitTestUtils.a in Frameworks */,
 				A14171C61E6EAC0D005DBEFF /* libLaboratory.a in Frameworks */,
 				A14173421E6EB59F005DBEFF /* libOCMock.a in Frameworks */,
 				A14173431E6EB59F005DBEFF /* libSpecta.a in Frameworks */,
@@ -498,7 +503,6 @@
 				885349B71EE45B0C0043D190 /* LABAssignmentsSource.mm */,
 				88648C211EE5281200B492D7 /* LABExperimentsTokenProvider.h */,
 				88648C221EE5281200B492D7 /* LABExperimentsTokenProvider.mm */,
-				88BB646C1EDAAD100026DEC0 /* LABStorage.h */,
 				883235811ED861EA0090787D /* NSError+Laboratory.h */,
 				883235821ED861EA0090787D /* NSError+Laboratory.mm */,
 				883235831ED861EA0090787D /* NSErrorCodes+Laboratory.h */,
@@ -667,6 +671,7 @@
 			children = (
 				A141726F1E6EADDF005DBEFF /* libLTKit.a */,
 				A14172711E6EADDF005DBEFF /* LTKitTests.xctest */,
+				19C885611FC41F95009F147E /* libLTKitTestUtils.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -791,8 +796,6 @@
 			children = (
 				A1E388371EE554D90095F056 /* LABFakeAssignmentsSource.h */,
 				A1E388381EE554D90095F056 /* LABFakeAssignmentsSource.mm */,
-				884F64B31EE53E010052274E /* LABFakeStorage.h */,
-				884F64B41EE53E010052274E /* LABFakeStorage.mm */,
 				A17E87171F275E1200F01834 /* LABVariantUtils.h */,
 			);
 			name = "Test Utils";
@@ -925,6 +928,13 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		19C885611FC41F95009F147E /* libLTKitTestUtils.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libLTKitTestUtils.a;
+			remoteRef = 19C885601FC41F95009F147E /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		882D1F251EC1AC6E007F39F5 /* libextobjc_OSX.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -1237,7 +1247,6 @@
 				885AFF991F02B34D0035A6B2 /* LABTaplyticsSpec.mm in Sources */,
 				884F64941EE53B3C0052274E /* LABExperimentsTokenProviderSpec.mm in Sources */,
 				A13C527E1EF177AE00BA2AAA /* LABDebugSourceSpec.mm in Sources */,
-				884F64B51EE53E010052274E /* LABFakeStorage.mm in Sources */,
 				A1E388391EE554D90095F056 /* LABFakeAssignmentsSource.mm in Sources */,
 				A17E86F61F275DA900F01834 /* LABDebugSourceTweakCollectionsProviderSpec.mm in Sources */,
 				A10DEFA91EE425DB00F1DD87 /* LABAssignmentsManagerSpec.mm in Sources */,

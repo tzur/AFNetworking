@@ -3,6 +3,7 @@
 
 #import "LABTaplyticsSource.h"
 
+#import <LTKit/LTStorage.h>
 #import <LTKit/NSArray+Functional.h>
 #import <LTKit/NSArray+NSSet.h>
 #import <LTKit/NSDictionary+Functional.h>
@@ -10,7 +11,6 @@
 #import <Taplytics/Taplytics.h>
 
 #import "LABExperimentsTokenProvider.h"
-#import "LABStorage.h"
 #import "LABTaplytics.h"
 #import "NSError+Laboratory.h"
 
@@ -40,7 +40,7 @@ static auto const kCustomDataExperimentsTokenKey = @"ExperimentsToken";
 @property (readonly, nonatomic) id<LABTaplytics> taplytics;
 
 /// Used to store the latest assignments.
-@property (readonly, nonatomic) id<LABStorage> storage;
+@property (readonly, nonatomic) id<LTStorage> storage;
 
 /// \c YES if the assignments are locked and should not be changed, except when an experiment no
 /// longer exists, or keys are overriden using meta keys.
@@ -68,7 +68,7 @@ static auto const kCustomDataExperimentsTokenKey = @"ExperimentsToken";
 - (instancetype)initWithAPIKey:(NSString *)apiKey
       experimentsTokenProvider:(LABExperimentsTokenProvider *)experimentsTokenProvider
                     customData:(NSDictionary<NSString *, id> *)customData
-                     taplytics:(id<LABTaplytics>)taplytics storage:(id<LABStorage>)storage {
+                     taplytics:(id<LABTaplytics>)taplytics storage:(id<LTStorage>)storage {
   if (self = [super init]) {
     _taplytics = taplytics;
     _storage = storage;

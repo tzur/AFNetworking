@@ -8,10 +8,9 @@
 #import <LTKit/NSDictionary+Functional.h>
 #import <LTKit/NSDictionary+Operations.h>
 #import <LTKit/NSSet+Functional.h>
+#import <LTKitTestUtils/LTFakeStorage.h>
 
 #import "LABFakeAssignmentsSource.h"
-#import "LABFakeStorage.h"
-#import "LABStorage.h"
 #import "NSError+Laboratory.h"
 
 static LABVariant *LABCreateVariant(NSString *name, NSDictionary<NSString *, id> *assignments,
@@ -87,7 +86,7 @@ static NSDictionary<NSString *, NSDictionary *> *LABFakeAssignments(LABVariant *
 SpecBegin(LABAssignmentsManager)
 
 __block LABFakeAssignmentsSource *fakeSource1, *fakeSource2;
-__block LABFakeStorage *storage;
+__block LTFakeStorage *storage;
 __block LABFakeAssignmentsManagerDelegate *delegate;
 __block LABAssignmentsManager *manager;
 
@@ -127,7 +126,7 @@ beforeEach(^{
   };
   fakeSource2.name = @"fake2";
 
-  storage = [[LABFakeStorage alloc] init];
+  storage = [[LTFakeStorage alloc] init];
   delegate = [[LABFakeAssignmentsManagerDelegate alloc] init];
   manager = [[LABAssignmentsManager alloc] initWithAssignmentSources:@[fakeSource1, fakeSource2]
                                                             delegate:delegate storage:storage];
@@ -189,7 +188,7 @@ it(@"should persist with the same active assignments if source variants do not c
 });
 
 it(@"should not persist assignments if source variants change between instance initializations", ^{
-  storage = [[LABFakeStorage alloc] init];
+  storage = [[LTFakeStorage alloc] init];
   @autoreleasepool {
     manager = [[LABAssignmentsManager alloc]
                initWithAssignmentSources:@[fakeSource1, fakeSource2] delegate:delegate
@@ -400,7 +399,7 @@ it(@"should not update delegate when the current assignment is as the stored ass
 });
 
 it(@"should update delegate when the current assignment is different then the stored assignemnt", ^{
-  storage = [[LABFakeStorage alloc] init];
+  storage = [[LTFakeStorage alloc] init];
   delegate = [[LABFakeAssignmentsManagerDelegate alloc] init];
   @autoreleasepool {
     manager = [[LABAssignmentsManager alloc]
