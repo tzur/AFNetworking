@@ -18,7 +18,10 @@
 #import "PTNAVAssetFetchOptions.h"
 #import "PTNAlbum.h"
 #import "PTNAlbumChangeset.h"
+#import "PTNCacheInfo.h"
+#import "PTNCacheProxy.h"
 #import "PTNDataBackedImageAsset.h"
+#import "PTNDateProvider.h"
 #import "PTNImageFetchOptions.h"
 #import "PTNImageMetadata.h"
 #import "PTNOceanAlbumDescriptor.h"
@@ -35,6 +38,15 @@ static FBRHTTPRequestParameters *PTNFakeRequestParameters() {
     @"source_id": @"pixabay",
     @"idfv": [UIDevice currentDevice].identifierForVendor.UUIDString
   };
+}
+
+static PTNCacheProxy *PTNAssetCacheProxy(NSData *data, id<PTNResizingStrategy> resizingStrategy,
+                                         NSDate *responseTime) {
+  auto result = [[PTNDataBackedImageAsset alloc] initWithData:data
+                                             resizingStrategy:resizingStrategy];
+  auto cacheInfo = [[PTNCacheInfo alloc] initWithMaxAge:86400 responseTime:responseTime
+                                              entityTag:nil];
+ return [[PTNCacheProxy<PTNAlbum> alloc] initWithUnderlyingObject:result cacheInfo:cacheInfo];
 }
 
 static NSURL *PTNFakeAlbumRequestURL() {
@@ -54,11 +66,16 @@ static NSString * const kFakeURLString = @"http://foo.bar";
 __block NSURL *requestURL;
 __block id client;
 __block PTNOceanAssetManager *manager;
+__block PTNDateProvider *dateProvider;
+__block NSDate *date;
 
 beforeEach(^{
   requestURL = PTNFakeAlbumRequestURL();
   client = OCMClassMock([FBRHTTPClient class]);
-  manager = [[PTNOceanAssetManager alloc] initWithClient:client];
+  dateProvider = OCMClassMock([PTNDateProvider class]);
+  date = [NSDate date];
+  OCMStub([dateProvider date]).andReturn(date);
+  manager = [[PTNOceanAssetManager alloc] initWithClient:client dateProvider:dateProvider];
 });
 
 context(@"fetching albums", ^{
@@ -94,8 +111,12 @@ context(@"fetching albums", ^{
 
       id<PTNAlbum> album = [[PTNAlbum alloc] initWithURL:requestURL subalbums:@[]
                                                   assets:@[expectedDescriptor]];
+      auto cacheInfo = [[PTNCacheInfo alloc] initWithMaxAge:300 responseTime:date entityTag:nil];
+      auto cacheProxy = [[PTNCacheProxy<PTNAlbum> alloc] initWithUnderlyingObject:album
+                                                                        cacheInfo:cacheInfo];
+
       expect(expectedDescriptor).toNot.beNil();
-      expect(recorder).to.sendValues(@[[PTNAlbumChangeset changesetWithAfterAlbum:album]]);
+      expect(recorder).to.sendValues(@[[PTNAlbumChangeset changesetWithAfterAlbum:cacheProxy]]);
     });
   });
 
@@ -124,8 +145,13 @@ context(@"fetching albums", ^{
 
 context(@"fetching descriptors", ^{
   it(@"should fetch album descriptor", ^{
-    expect([manager fetchDescriptorWithURL:requestURL])
-        .to.sendValues(@[[[PTNOceanAlbumDescriptor alloc] initWithAlbumURL:requestURL]]);
+    auto descriptor = [[PTNOceanAlbumDescriptor alloc] initWithAlbumURL:requestURL];
+    auto cacheInfo = [[PTNCacheInfo alloc]
+                      initWithMaxAge:[NSDate distantFuture].timeIntervalSince1970
+                      responseTime:date entityTag:nil];
+    auto cacheProxy = [[PTNCacheProxy<PTNAlbum> alloc] initWithUnderlyingObject:descriptor
+                                                                      cacheInfo:cacheInfo];
+    expect([manager fetchDescriptorWithURL:requestURL]).to.sendValues(@[cacheProxy]);
   });
 
   context(@"fetching asset descriptor", ^{
@@ -156,6 +182,9 @@ context(@"fetching descriptors", ^{
                                                      modelOfClass:[PTNOceanAssetDescriptor class]
                                                      fromJSONDictionary:jsonDictionary
                                                      error:nil];
+      auto cacheInfo = [[PTNCacheInfo alloc] initWithMaxAge:86400 responseTime:date entityTag:nil];
+      auto cacheProxy = [[PTNCacheProxy<PTNAlbum> alloc] initWithUnderlyingObject:expectedDescriptor
+                                                                        cacheInfo:cacheInfo];
 
       RACSubject *subject = [RACSubject subject];
       OCMStub([client GET:OCMOCK_ANY withParameters:OCMOCK_ANY headers:OCMOCK_ANY])
@@ -166,7 +195,7 @@ context(@"fetching descriptors", ^{
       [subject sendNext:PTNFakeLTProgress(data)];
 
       expect(expectedDescriptor).toNot.beNil();
-      expect(recorder).to.sendValues(@[expectedDescriptor]);
+      expect(recorder).to.sendValues(@[cacheProxy]);
     });
 
     it(@"should forward deserialization errors", ^{
@@ -286,10 +315,8 @@ context(@"fetching images", ^{
 
         [subject sendNext:progress];
 
-        expect(recorder).to.sendValues(@[
-          [[PTNProgress alloc] initWithResult:[[PTNDataBackedImageAsset alloc]
-                                               initWithData:data resizingStrategy:resizingStrategy]]
-        ]);
+        auto result = PTNAssetCacheProxy(data, resizingStrategy, date);
+        expect(recorder).to.sendValues(@[[[PTNProgress alloc] initWithResult:result]]);
       });
 
       it(@"should fetch image in high quality delivery mode", ^{
@@ -308,8 +335,7 @@ context(@"fetching images", ^{
         [subject sendNext:progress];
 
         expect(recorder).to.sendValues(@[
-          [[PTNProgress alloc] initWithResult:[[PTNDataBackedImageAsset alloc]
-                                               initWithData:data resizingStrategy:resizingStrategy]]
+          [[PTNProgress alloc] initWithResult:PTNAssetCacheProxy(data, resizingStrategy, date)]
         ]);
       });
 
@@ -330,8 +356,7 @@ context(@"fetching images", ^{
         [subject sendNext:progress];
 
         expect(recorder).to.sendValues(@[
-          [[PTNProgress alloc] initWithResult:[[PTNDataBackedImageAsset alloc]
-                                               initWithData:data resizingStrategy:resizingStrategy]]
+          [[PTNProgress alloc] initWithResult:PTNAssetCacheProxy(data, resizingStrategy, date)]
         ]);
       });
 
@@ -361,12 +386,10 @@ context(@"fetching images", ^{
 
         expect(recorder).to.complete();
         expect(recorder).to.sendValues(@[
-          [[PTNProgress alloc] initWithResult:[[PTNDataBackedImageAsset alloc]
-                                               initWithData:lowQualityData
-                                               resizingStrategy:resizingStrategy]],
-          [[PTNProgress alloc] initWithResult:[[PTNDataBackedImageAsset alloc]
-                                               initWithData:highQualityData
-                                               resizingStrategy:resizingStrategy]]
+          [[PTNProgress alloc]
+           initWithResult:PTNAssetCacheProxy(lowQualityData, resizingStrategy, date)],
+          [[PTNProgress alloc]
+           initWithResult:PTNAssetCacheProxy(highQualityData, resizingStrategy, date)]
         ]);
       });
     });
@@ -394,13 +417,40 @@ context(@"unsupported operations", ^{
   });
 });
 
+context(@"caching", ^{
+  it(@"should invalidate album", ^{
+    auto url = [NSURL URLWithString:kFakeURLString];
+    expect([manager validateAlbumWithURL:url entityTag:@"foo"]).to.sendValues(@[@NO]);
+  });
+
+  it(@"should invalidate descriptor", ^{
+    auto url = [NSURL URLWithString:kFakeURLString];
+    expect([manager validateDescriptorWithURL:url entityTag:@"foo"]).to.sendValues(@[@NO]);
+  });
+
+  it(@"should invalidate image", ^{
+    expect([manager validateImageWithDescriptor:OCMProtocolMock(@protocol(PTNDescriptor))
+                               resizingStrategy:OCMProtocolMock(@protocol(PTNResizingStrategy))
+                                        options:OCMClassMock([PTNImageFetchOptions class])
+                                      entityTag:@"foo"]).to.sendValues(@[@NO]);
+  });
+
+  it(@"should not have canonical URL", ^{
+    expect([manager
+            canonicalURLForDescriptor:OCMProtocolMock(@protocol(PTNDescriptor))
+            resizingStrategy:OCMProtocolMock(@protocol(PTNResizingStrategy))
+            options:OCMClassMock([PTNImageFetchOptions class])]).to.beNil();
+  });
+});
+
 context(@"deallocation", ^{
   it(@"should dealloc the manager after fetch signal is disposed", ^{
     __weak PTNOceanAssetManager *weakManager;
 
     @autoreleasepool {
       auto manager = [[PTNOceanAssetManager alloc]
-                      initWithClient:OCMClassMock([FBRHTTPClient class])];
+                      initWithClient:OCMClassMock([FBRHTTPClient class])
+                      dateProvider:OCMClassMock([PTNDateProvider class])];
       weakManager = manager;
       auto url = PTNFakeAlbumRequestURL();
       auto disposable = [[manager fetchDescriptorWithURL:url] subscribeNext:^(id) {}];
@@ -415,7 +465,8 @@ context(@"deallocation", ^{
 
     @autoreleasepool {
       auto manager = [[PTNOceanAssetManager alloc]
-                      initWithClient:OCMClassMock([FBRHTTPClient class])];
+                      initWithClient:OCMClassMock([FBRHTTPClient class])
+                      dateProvider:OCMClassMock([PTNDateProvider class])];
       weakManager = manager;
       auto url = PTNFakeAlbumRequestURL();
       fetchSignal = [manager fetchDescriptorWithURL:url];
