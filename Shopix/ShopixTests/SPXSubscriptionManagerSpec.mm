@@ -10,21 +10,19 @@
 #import <Bazaar/NSErrorCodes+Bazaar.h>
 #import <MessageUI/MessageUI.h>
 
+#import "SPXAlertViewControllerProvider.h"
+#import "SPXAlertViewModel.h"
+#import "SPXAlertViewModel+ShopixPresets.h"
 #import "SPXFeedbackComposeViewControllerProvider.h"
-
-/// Category for testing, exposes the alert method.
-@interface SPXSubscriptionManager (ForTesting)
-
-- (UIAlertAction *)alertButtonWithTitle:(NSString *)title
-                                handler:(LTVoidBlock)handler;
-
-@end
 
 SpecBegin(SPXSubscriptionManager)
 
 __block id<BZRProductsManager> productsManager;
 __block id<BZRProductsInfoProvider> productsInfoProvider;
 __block MFMailComposeViewController *mailComposeViewController;
+__block id<SPXFeedbackComposeViewControllerProvider> mailComposerProvider;
+__block UIViewController *alertViewController;
+__block id<SPXAlertViewControllerProvider> alertProvider;
 __block UIViewController *viewController;
 __block SPXSubscriptionManager *subscriptionManager;
 
@@ -32,35 +30,37 @@ beforeEach(^{
   productsManager = OCMProtocolMock(@protocol(BZRProductsManager));
   productsInfoProvider = OCMProtocolMock(@protocol(BZRProductsInfoProvider));
   mailComposeViewController = OCMClassMock([MFMailComposeViewController class]);
-  id<SPXFeedbackComposeViewControllerProvider> mailComposerProvider =
-      OCMProtocolMock(@protocol(SPXFeedbackComposeViewControllerProvider));
+  mailComposerProvider = OCMProtocolMock(@protocol(SPXFeedbackComposeViewControllerProvider));
+  alertViewController = OCMClassMock([UIViewController class]);
+  alertProvider = OCMProtocolMock(@protocol(SPXAlertViewControllerProvider));
   OCMStub([mailComposerProvider feedbackComposeViewController])
       .andReturn(mailComposeViewController);
   viewController = OCMClassMock([UIViewController class]);
   OCMStub([productsInfoProvider productsJSONDictionary]).andReturn(@{
     @"foo": OCMClassMock([BZRProduct class])
   });
-  subscriptionManager = [[SPXSubscriptionManager alloc]
-                         initWithProductsInfoProvider:productsInfoProvider
-                         productsManager:productsManager
-                         mailComposeProvider:mailComposerProvider
-                         viewController:viewController];
+  subscriptionManager =
+      [[SPXSubscriptionManager alloc] initWithProductsInfoProvider:productsInfoProvider
+                                                   productsManager:productsManager
+                                               mailComposeProvider:mailComposerProvider
+                                                     alertProvider:alertProvider
+                                                    viewController:viewController];
 });
 
-context(@"purchase subscription", ^{
-  it(@"should present an alert if purchase subscription failed", ^{
+context(@"purchasing subscription", ^{
+  it(@"should present an alert if purchase failed", ^{
     auto error = [NSError lt_errorWithCode:1337];
     OCMStub([productsManager purchaseProduct:@"foo"]).andReturn([RACSignal error:error]);
-    OCMExpect([viewController presentViewController:[OCMArg checkWithBlock:^BOOL(id obj) {
-      return [obj isKindOfClass:[UIAlertController class]];
-    }] animated:YES completion:nil]);
+    OCMStub([alertProvider alertViewControllerWithModel:OCMOCK_ANY]).andReturn(alertViewController);
+    OCMExpect([viewController presentViewController:alertViewController animated:YES
+                                         completion:nil]);
 
     [subscriptionManager purchaseSubscription:@"foo" completionHandler:^(BOOL) {}];
 
     OCMVerifyAll((id)viewController);
   });
 
-  it(@"should not present an alert if purchasing subscription was cancelled", ^{
+  it(@"should not present an alert if purchae was cancelled", ^{
     auto error = [NSError lt_errorWithCode:BZRErrorCodeOperationCancelled];
     OCMStub([productsManager purchaseProduct:@"foo"]).andReturn([RACSignal error:error]);
     OCMReject([viewController presentViewController:OCMOCK_ANY animated:YES completion:OCMOCK_ANY]);
@@ -68,7 +68,7 @@ context(@"purchase subscription", ^{
     [subscriptionManager purchaseSubscription:@"foo" completionHandler:^(BOOL) {}];
   });
 
-  it(@"should invoke the completion block if purchase subscription succeeded" , ^{
+  it(@"should invoke the completion block if purchase succeeded" , ^{
     OCMStub([productsManager purchaseProduct:@"foo"]).andReturn([RACSignal empty]);
     [subscriptionManager purchaseSubscription:@"foo" completionHandler:^(BOOL success) {
       expect(success).will.beTruthy();
@@ -76,35 +76,29 @@ context(@"purchase subscription", ^{
   });
 
   context(@"purchase failed alert", ^{
-    __block NSDictionary *mappingButtonTitleToHandler;
+    __block id<SPXAlertViewModel> viewModel;
     __block BOOL completionBlockInvoked;
     __block BOOL completionBlockSuccess;
 
     beforeEach(^{
-      NSMutableDictionary *actionHandlers = [NSMutableDictionary dictionary];
-      id subscriptionManagerMock = OCMPartialMock(subscriptionManager);
-      OCMStub([subscriptionManagerMock alertButtonWithTitle:OCMOCK_ANY handler:OCMOCK_ANY])
+      OCMStub([alertProvider alertViewControllerWithModel:OCMOCK_ANY])
           .andDo(^(NSInvocation *invocation) {
-            __unsafe_unretained NSString *title;
-            [invocation getArgument:&title atIndex:2];
-            __unsafe_unretained LTVoidBlock handler;
-            [invocation getArgument:&handler atIndex:3];
-            actionHandlers[title] = handler;
-          }).andForwardToRealObject();
+            __unsafe_unretained id<SPXAlertViewModel> unsafeViewModel;
+            [invocation getArgument:&unsafeViewModel atIndex:2];
+            viewModel = unsafeViewModel;
+          }).andReturn(alertViewController);
       OCMExpect([productsManager purchaseProduct:@"foo"])
           .andReturn([RACSignal error:[NSError lt_errorWithCode:1337]]);
-      [subscriptionManagerMock purchaseSubscription:@"foo" completionHandler:^(BOOL success) {
+      [subscriptionManager purchaseSubscription:@"foo" completionHandler:^(BOOL success) {
         completionBlockInvoked = YES;
         completionBlockSuccess = success;
       }];
-      mappingButtonTitleToHandler = [actionHandlers copy];
     });
 
-    it(@"should invoke purchase product when try again button is pressed", ^{
-      OCMExpect([productsManager purchaseProduct:@"foo"]);
+    it(@"should invoke refresh receipt when try again button is pressed", ^{
+      OCMExpect([productsManager purchaseProduct:@"foo"]).andReturn([RACSignal empty]);
 
-      LTVoidBlock handler = mappingButtonTitleToHandler[@"Try Again"];
-      handler();
+      viewModel.buttons[0].action();
 
       OCMVerifyAll((id)productsManager);
     });
@@ -112,15 +106,14 @@ context(@"purchase subscription", ^{
     it(@"should present mail composer when contact us button is pressed", ^{
       OCMExpect([viewController presentViewController:mailComposeViewController animated:YES
                                            completion:nil]);
-      LTVoidBlock handler = mappingButtonTitleToHandler[@"Contact Us"];
-      handler();
+
+      viewModel.buttons[1].action();
 
       OCMVerifyAll((id)viewController);
     });
 
     it(@"should invoke completion block with NO when not now button is pressed", ^{
-      LTVoidBlock handler = mappingButtonTitleToHandler[@"Not Now"];
-      handler();
+      viewModel.buttons[2].action();
 
       expect(completionBlockInvoked).will.equal(YES);
       expect(completionBlockSuccess).will.equal(NO);
@@ -129,25 +122,30 @@ context(@"purchase subscription", ^{
 });
 
 context(@"restore purchases", ^{
-  it(@"should present an alert if restore purchases failed", ^{
+  it(@"should present failure alert if restoration failed", ^{
     auto error = [NSError lt_errorWithCode:1337];
     OCMStub([productsManager refreshReceipt]).andReturn([RACSignal error:error]);
-    OCMExpect([viewController presentViewController:[OCMArg checkWithBlock:^BOOL(id obj) {
-      return [obj isKindOfClass:[UIAlertController class]];
-    }] animated:YES completion:nil]);
+    OCMStub([alertProvider alertViewControllerWithModel:[OCMArg checkWithBlock:^BOOL(id viewModel) {
+      return [viewModel conformsToProtocol:@protocol(SPXAlertViewModel)] &&
+          ((id<SPXAlertViewModel>)viewModel).buttons.count == 3;
+    }]]).andReturn(alertViewController);
+    OCMExpect([viewController presentViewController:alertViewController animated:YES
+                                         completion:nil]);
 
     [subscriptionManager restorePurchasesWithCompletionHandler:^(BOOL) {}];
 
     OCMVerifyAll((id)viewController);
   });
 
-    it(@"should present an alert if restore purchases succeeded and active subscription found", ^{
-    OCMExpect([viewController presentViewController:
-              [OCMArg checkWithBlock:^BOOL(UIViewController *presentedController) {
-      return [presentedController isKindOfClass:[UIAlertController class]] &&
-      [((UIAlertController *)presentedController).message
-       isEqualToString:@"Your subscription was restored successfully"];
-    }] animated:YES completion:nil]);
+  it(@"should present success alert if restoration succeeded and active subscription found", ^{
+    OCMStub([alertProvider alertViewControllerWithModel:[OCMArg checkWithBlock:^BOOL(id viewModel) {
+      return [viewModel conformsToProtocol:@protocol(SPXAlertViewModel)] &&
+          ((id<SPXAlertViewModel>)viewModel).buttons.count == 1 &&
+          [((id<SPXAlertViewModel>)viewModel).message isEqualToString:
+           @"Your subscription was restored successfully"];
+    }]]).andReturn(alertViewController);
+    OCMExpect([viewController presentViewController:alertViewController animated:YES
+                                         completion:nil]);
 
     BZRReceiptSubscriptionInfo *subscriptionInfo = OCMClassMock([BZRReceiptSubscriptionInfo class]);
     OCMStub([productsInfoProvider subscriptionInfo]).andReturn(subscriptionInfo);
@@ -158,13 +156,15 @@ context(@"restore purchases", ^{
     OCMVerifyAll((id)viewController);
   });
 
-  it(@"should present an alert if restore purchases succeeded and no subscription found", ^{
-    OCMExpect([viewController presentViewController:
-              [OCMArg checkWithBlock:^BOOL(UIViewController *presentedController) {
-      return [presentedController isKindOfClass:[UIAlertController class]] &&
-      [((UIAlertController *)presentedController).message
-       isEqualToString:@"Your purchases were restored successfully, no active subscription found"];
-    }] animated:YES completion:nil]);
+  it(@"should present an alert if restoration succeeded and no subscription found", ^{
+    OCMStub([alertProvider alertViewControllerWithModel:[OCMArg checkWithBlock:^BOOL(id viewModel) {
+      return [viewModel conformsToProtocol:@protocol(SPXAlertViewModel)] &&
+          ((id<SPXAlertViewModel>)viewModel).buttons.count == 1 &&
+          [((id<SPXAlertViewModel>)viewModel).message isEqualToString:
+           @"Your purchases were restored successfully, no active subscription found"];
+    }]]).andReturn(alertViewController);
+    OCMExpect([viewController presentViewController:alertViewController animated:YES
+                                         completion:nil]);
     OCMStub([productsManager refreshReceipt]).andReturn([RACSignal empty]);
 
     [subscriptionManager restorePurchasesWithCompletionHandler:^(BOOL) {}];
@@ -179,36 +179,30 @@ context(@"restore purchases", ^{
     }];
   });
 
-  context(@"restore purchases failed alert", ^{
-    __block NSDictionary *mappingButtonTitleToHandler;
+  context(@"restoration failed alert", ^{
+    __block id<SPXAlertViewModel> viewModel;
     __block BOOL completionBlockInvoked;
     __block BOOL completionBlockSuccess;
 
     beforeEach(^{
-      NSMutableDictionary *actionHandlers = [NSMutableDictionary dictionary];
-      id subscriptionManagerMock = OCMPartialMock(subscriptionManager);
-      OCMStub([subscriptionManagerMock alertButtonWithTitle:OCMOCK_ANY handler:OCMOCK_ANY])
+      OCMStub([alertProvider alertViewControllerWithModel:OCMOCK_ANY])
           .andDo(^(NSInvocation *invocation) {
-            __unsafe_unretained NSString *title;
-            [invocation getArgument:&title atIndex:2];
-            __unsafe_unretained LTVoidBlock handler;
-            [invocation getArgument:&handler atIndex:3];
-            actionHandlers[title] = handler;
-          }).andForwardToRealObject();
+            __unsafe_unretained id<SPXAlertViewModel> unsafeViewModel;
+            [invocation getArgument:&unsafeViewModel atIndex:2];
+            viewModel = unsafeViewModel;
+          }).andReturn(alertViewController);
       OCMExpect([productsManager refreshReceipt])
           .andReturn([RACSignal error:[NSError lt_errorWithCode:1337]]);
-      [subscriptionManagerMock restorePurchasesWithCompletionHandler:^(BOOL success) {
+      [subscriptionManager restorePurchasesWithCompletionHandler:^(BOOL success) {
         completionBlockInvoked = YES;
         completionBlockSuccess = success;
       }];
-      mappingButtonTitleToHandler = [actionHandlers copy];
     });
 
     it(@"should invoke refresh receipt when try again button is pressed", ^{
-      OCMExpect([productsManager refreshReceipt]);
+      OCMExpect([productsManager refreshReceipt]).andReturn([RACSignal empty]);
 
-      LTVoidBlock handler = mappingButtonTitleToHandler[@"Try Again"];
-      handler();
+      viewModel.buttons[0].action();
 
       OCMVerifyAll((id)productsManager);
     });
@@ -216,15 +210,14 @@ context(@"restore purchases", ^{
     it(@"should present mail composer when contact us button is pressed", ^{
       OCMExpect([viewController presentViewController:mailComposeViewController animated:YES
                                            completion:nil]);
-      LTVoidBlock handler = mappingButtonTitleToHandler[@"Contact Us"];
-      handler();
+
+      viewModel.buttons[1].action();
 
       OCMVerifyAll((id)viewController);
     });
 
     it(@"should invoke completion block with NO when not now button is pressed", ^{
-      LTVoidBlock handler = mappingButtonTitleToHandler[@"Not Now"];
-      handler();
+      viewModel.buttons[2].action();
 
       expect(completionBlockInvoked).will.equal(YES);
       expect(completionBlockSuccess).will.equal(NO);

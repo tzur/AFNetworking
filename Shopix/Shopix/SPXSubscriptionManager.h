@@ -1,7 +1,8 @@
 // Copyright (c) 2017 Lightricks. All rights reserved.
 // Created by Neria Saada.
 
-@protocol BZRProductsManager, BZRProductsInfoProvider, SPXFeedbackComposeViewControllerProvider;
+@protocol BZRProductsManager, BZRProductsInfoProvider, SPXAlertViewControllerProvider,
+    SPXFeedbackComposeViewControllerProvider;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -11,18 +12,20 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)init NS_UNAVAILABLE;
 
-/// Initializes with shared \c productsInfoProvider, \c productsManager and \c mailComposeProvider
-/// pulled from \c JSObjection. \c viewController is used to present other view-controllers during
-/// the purchase / restore process (e.g alerts, feedback composer).
+/// Initializes with shared \c productsInfoProvider, \c productsManager, \c mailComposeProvider and
+/// \c alertProvider pulled from \c JSObjection. \c viewController is used to present other
+/// view-controllers during the purchase / restoration process (e.g alerts, feedback composer).
 - (instancetype)initWithViewController:(UIViewController *)viewController;
 
-/// Initializes with \c productsInfoProvider used to get the current subscription status,
-/// \c productsManager used to purchase subscriptions, \c mailComposeProvider that
-/// provides a mail compose view controller for user feedback, \c viewController is used to present
-/// other view-controllers during the purchase / restore process (e.g alerts, feedback composer).
+/// Initializes with \c productsInfoProvider used to get the current subscription status;
+/// \c productsManager used to purchase subscriptions and restore purchases; \c mailComposeProvider
+/// provides mail compose view controller for sending user feedback; \c alertProvider provides
+/// alert view controllers presented during the purchase / restoration process; and
+/// \c viewController is used to present other view-controllers (e.g alerts and feedback composer).
 - (instancetype)initWithProductsInfoProvider:(id<BZRProductsInfoProvider>)productsInfoProvider
     productsManager:(id<BZRProductsManager>)productsManager
     mailComposeProvider:(id<SPXFeedbackComposeViewControllerProvider>)mailComposeProvider
+    alertProvider:(id<SPXAlertViewControllerProvider>)alertProvider
     viewController:(UIViewController *)viewController NS_DESIGNATED_INITIALIZER;
 
 /// Makes a purchase of the subscription specified by \c productIdentifier. \c completionHandler
