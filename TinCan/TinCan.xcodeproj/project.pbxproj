@@ -23,6 +23,8 @@
 		A18220B91F0398A500FC7C61 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A18220B81F0398A500FC7C61 /* MessageUI.framework */; };
 		B42D71061FBB24810024718E /* TINMessage.mm in Sources */ = {isa = PBXBuildFile; fileRef = B42D70DF1FBB24810024718E /* TINMessage.mm */; };
 		B42D71081FBB24900024718E /* TINMessageSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = B42D71071FBB24900024718E /* TINMessageSpec.mm */; };
+		B45926D81FC69A5F00A70964 /* TINMessage+UserInfo.mm in Sources */ = {isa = PBXBuildFile; fileRef = B45926D71FC69A5F00A70964 /* TINMessage+UserInfo.mm */; };
+		B45926FD1FC6A06200A70964 /* TINMessage+UserInfoSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = B45926FC1FC6A06200A70964 /* TINMessage+UserInfoSpec.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -350,6 +352,9 @@
 		B42D70DF1FBB24810024718E /* TINMessage.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = TINMessage.mm; sourceTree = "<group>"; };
 		B42D71051FBB24810024718E /* TINMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TINMessage.h; sourceTree = "<group>"; };
 		B42D71071FBB24900024718E /* TINMessageSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = TINMessageSpec.mm; sourceTree = "<group>"; };
+		B45926D61FC69A5F00A70964 /* TINMessage+UserInfo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TINMessage+UserInfo.h"; sourceTree = "<group>"; };
+		B45926D71FC69A5F00A70964 /* TINMessage+UserInfo.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "TINMessage+UserInfo.mm"; sourceTree = "<group>"; };
+		B45926FC1FC6A06200A70964 /* TINMessage+UserInfoSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "TINMessage+UserInfoSpec.mm"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -400,6 +405,8 @@
 			children = (
 				B42D71051FBB24810024718E /* TINMessage.h */,
 				B42D70DF1FBB24810024718E /* TINMessage.mm */,
+				B45926D61FC69A5F00A70964 /* TINMessage+UserInfo.h */,
+				B45926D71FC69A5F00A70964 /* TINMessage+UserInfo.mm */,
 			);
 			name = Base;
 			sourceTree = "<group>";
@@ -407,6 +414,7 @@
 		883235801ED861DB0090787D /* Base */ = {
 			isa = PBXGroup;
 			children = (
+				B45926FC1FC6A06200A70964 /* TINMessage+UserInfoSpec.mm */,
 				B42D71071FBB24900024718E /* TINMessageSpec.mm */,
 			);
 			name = Base;
@@ -526,7 +534,7 @@
 			children = (
 				A141726F1E6EADDF005DBEFF /* libLTKit.a */,
 				A14172711E6EADDF005DBEFF /* LTKitTests.xctest */,
-				B42D70F21FBB24810024718E /* libLTTestKit.a */,
+				B42D70F21FBB24810024718E /* libLTKitTestUtils.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -984,10 +992,10 @@
 			remoteRef = A14172DB1E6EB2FF005DBEFF /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		B42D70F21FBB24810024718E /* libLTTestKit.a */ = {
+		B42D70F21FBB24810024718E /* libLTKitTestUtils.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
-			path = libLTTestKit.a;
+			path = libLTKitTestUtils.a;
 			remoteRef = B42D70F11FBB24810024718E /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
@@ -1008,6 +1016,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B45926D81FC69A5F00A70964 /* TINMessage+UserInfo.mm in Sources */,
 				B42D71061FBB24810024718E /* TINMessage.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1016,6 +1025,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B45926FD1FC6A06200A70964 /* TINMessage+UserInfoSpec.mm in Sources */,
 				B42D71081FBB24900024718E /* TINMessageSpec.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
