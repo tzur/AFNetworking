@@ -109,7 +109,7 @@ context(@"processing", ^{
     it(@"should return an updated current configuration after consecutive processing", ^{
       [fbo bindAndDraw:^{
         [pipeline processParameterizedObject:parameterizedObject inInterval:kInterval end:NO];
-        lt::Interval<CGFloat> nextInterval({kInterval.max(), kInterval.max() + 1},
+        lt::Interval<CGFloat> nextInterval({kInterval.sup(), kInterval.sup() + 1},
                                            lt::Interval<CGFloat>::EndpointInclusion::Open);
         [pipeline processParameterizedObject:parameterizedObject inInterval:nextInterval end:NO];
       }];

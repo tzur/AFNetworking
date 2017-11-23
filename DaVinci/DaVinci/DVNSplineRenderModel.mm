@@ -20,7 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
                               endInterval:(lt::Interval<CGFloat>)endInterval {
   LTParameterAssert(controlPointModel);
   LTParameterAssert(configuration);
-  LTParameterAssert(endInterval.min() >= 0);
+  LTParameterAssert(endInterval.inf() >= 0);
 
   if (self = [super init]) {
     _controlPointModel = controlPointModel;

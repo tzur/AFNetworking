@@ -81,7 +81,7 @@ typedef struct {
 
   CGFloats result;
 
-  while (currentValue <= interval.max()) {
+  while (currentValue <= interval.sup()) {
     if (interval.contains(currentValue)) {
       result.push_back(currentValue);
     }
@@ -102,16 +102,16 @@ typedef struct {
   // m in Z, s in R^+, s > (n - 1) * d}, where \c n is the number of values per sequence.
   // For the given \c interval, the intersection of the set with the interval must be returned.
   // Hence, \c k and \c m must be computed such that \c p + k * d + m * s is the maximum value
-  // smaller than or equal to \c interval.min().
+  // smaller than or equal to \c interval.inf().
 
   // Solving for m: setting \c k to \c 0 yields:
-  // \c p + m * s <= interval.min() <=> m <= (interval.min() - p) / s
-  NSInteger m = std::floor((interval.min() - self.pivotValue) / self.distanceOfFirstValues);
+  // \c p + m * s <= interval.inf() <=> m <= (interval.inf() - p) / s
+  NSInteger m = std::floor((interval.inf() - self.pivotValue) / self.distanceOfFirstValues);
 
   CGFloat firstValueOfSequence = self.pivotValue + m * self.distanceOfFirstValues;
 
-  // Solving for \c k: p + k * d + m * s <= interval.min() <=> k <= (interval.min() - p - m * s) / d
-  NSInteger k = std::floor(interval.min() - firstValueOfSequence) / self.valueDistance;
+  // Solving for \c k: p + k * d + m * s <= interval.inf() <=> k <= (interval.inf() - p - m * s) / d
+  NSInteger k = std::floor(interval.inf() - firstValueOfSequence) / self.valueDistance;
   LTAssert(k >= 0, @"Computed value (%ld) must be non-negative", (long)k);
 
   if ((NSUInteger)k >= self.numberOfValuesPerSequence) {
@@ -121,10 +121,10 @@ typedef struct {
     };
   }
   CGFloat startValue = self.pivotValue + k * self.valueDistance + m * self.distanceOfFirstValues;
-  LTAssert(startValue <= interval.min(),
+  LTAssert(startValue <= interval.inf(),
            @"Value (%f) computed for p = %f, k = %ld, d = %f, m = %ld, s = %f must be smaller than "
            "minimum value of interval (%f)", startValue, self.pivotValue, (long)k,
-           self.valueDistance, (long)m, self.distanceOfFirstValues, interval.min());
+           self.valueDistance, (long)m, self.distanceOfFirstValues, interval.inf());
 
   return {.startValue = startValue, .numberOfRemainingValues = self.numberOfValuesPerSequence - k};
 }

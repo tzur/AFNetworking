@@ -127,9 +127,9 @@ static const lt::Interval<CGFloat>::EndpointInclusion kClosed =
   CGFloats parametricValues = [self.floatSet discreteValuesInInterval:intersection];
 
   self.interval =
-      lt::Interval<CGFloat>({intersection.max(), self.interval.max()},
-                            intersection.maxEndpointIncluded() ? kOpen : kClosed,
-                            self.interval.maxEndpointIncluded() ? kClosed : kOpen);
+      lt::Interval<CGFloat>({intersection.sup(), self.interval.sup()},
+                            intersection.supIncluded() ? kOpen : kClosed,
+                            self.interval.supIncluded() ? kClosed : kOpen);
 
   LTParameterizationKeyToValues *mapping = [object mappingForParametricValues:parametricValues];
   mapping = mapping.numberOfValuesPerKey ? mapping : nil;

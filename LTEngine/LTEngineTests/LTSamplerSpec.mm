@@ -47,10 +47,10 @@ it(@"should correcly sample parameterized object using discrete CGFloat set, in 
   id<LTSampleValues> values = [sampler samplesFromParameterizedObject:parameterizedObject
                                                      usingDiscreteSet:set interval:interval];
 
-  expect(set.receivedInterval.min()).to.equal(interval.min());
-  expect(set.receivedInterval.max()).to.equal(interval.max());
-  expect(set.receivedInterval.minEndpointIncluded()).to.equal(interval.minEndpointIncluded());
-  expect(set.receivedInterval.maxEndpointIncluded()).to.equal(interval.maxEndpointIncluded());
+  expect(set.receivedInterval.inf()).to.equal(interval.inf());
+  expect(set.receivedInterval.sup()).to.equal(interval.sup());
+  expect(set.receivedInterval.infIncluded()).to.equal(interval.infIncluded());
+  expect(set.receivedInterval.supIncluded()).to.equal(interval.supIncluded());
   expect(values.sampledParametricValues.size()).to.equal(3);
   expect(values.mappingOfSampledValues).toNot.beNil();
   expect(values.mappingOfSampledValues).to.equal(parameterizedObject.returnedMapping);

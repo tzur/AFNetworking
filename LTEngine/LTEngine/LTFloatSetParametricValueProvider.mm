@@ -126,9 +126,9 @@ static const CGFloatInterval::EndpointInclusion kClosed =
 
   CGFloats parametricValues = [self.floatSet discreteValuesInInterval:intersection];
 
-  self.interval = CGFloatInterval({intersection.max(), self.interval.max()},
-                                  intersection.maxEndpointIncluded() ? kOpen : kClosed,
-                                  self.interval.maxEndpointIncluded() ? kClosed : kOpen);
+  self.interval = CGFloatInterval({intersection.sup(), self.interval.sup()},
+                                  intersection.supIncluded() ? kOpen : kClosed,
+                                  self.interval.supIncluded() ? kClosed : kOpen);
 
   return parametricValues;
 }

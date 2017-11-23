@@ -85,10 +85,8 @@ NS_ASSUME_NONNULL_BEGIN
                  @"Configuration %@ of pipeline should not be different than configuration at "
                  "start of control point sequence", pipelineConfiguration);
         LTAssert(self.lastIntervalUsedInLastSequence == lt::Interval<CGFloat>(),
-                 @"Last interval (%g, %g) used in most recent control point sequence must equal "
-                 "the empty (0, 0) interval",
-                 self.lastIntervalUsedInLastSequence.min(),
-                 self.lastIntervalUsedInLastSequence.max());
+                 @"Last interval %@ used in most recent control point sequence must equal "
+                 "the empty (0, 0) interval", self.lastIntervalUsedInLastSequence.description());
         return;
       }
 
@@ -138,7 +136,7 @@ static const lt::Interval<CGFloat>::EndpointInclusion kClosed =
     lt::Interval<CGFloat>::EndpointInclusion::Closed;
 
 - (void)processUnprocessedPartOfSpline:(BOOL)end {
-  lt::Interval<CGFloat> interval({self.lastIntervalUsedInLastSequence.max(),
+  lt::Interval<CGFloat> interval({self.lastIntervalUsedInLastSequence.sup(),
                                   self.splineConstructor.parameterizedObject.maxParametricValue},
                                   self.firstRenderCallOfSequence ? kClosed : kOpen, kClosed);
 
@@ -175,8 +173,8 @@ static const lt::Interval<CGFloat>::EndpointInclusion kClosed =
   id<LTParameterizedObject> parameterizedObject =
       [LTParameterizedObjectConstructor parameterizedObjectFromModel:model.controlPointModel];
 
-  lt::Interval<CGFloat> interval({0, model.endInterval.min()}, kClosed,
-                                 model.endInterval.minEndpointIncluded() ? kOpen : kClosed);
+  lt::Interval<CGFloat> interval({0, model.endInterval.inf()}, kClosed,
+                                 model.endInterval.infIncluded() ? kOpen : kClosed);
 
   [pipeline processParameterizedObject:parameterizedObject inInterval:interval end:NO];
   [pipeline processParameterizedObject:parameterizedObject inInterval:model.endInterval end:YES];
