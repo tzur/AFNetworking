@@ -185,7 +185,7 @@ context(@"PNKUnaryKernel with MPSTemporaryImage", ^{
     return @{
       kPNKTemporaryImageExamplesKernel: reflectionPadding,
       kPNKTemporaryImageExamplesDevice: device,
-      kPNKTemporaryImageExamplesInputChannels: @(kInputFeatureChannels)
+      kPNKTemporaryImageExamplesOutputChannels: @(kInputFeatureChannels)
     };
   });
 
@@ -196,7 +196,7 @@ context(@"PNKUnaryKernel with MPSTemporaryImage", ^{
     return @{
       kPNKTemporaryImageExamplesKernel: reflectionPadding,
       kPNKTemporaryImageExamplesDevice: device,
-      kPNKTemporaryImageExamplesInputChannels: @(kInputArrayFeatureChannels)
+      kPNKTemporaryImageExamplesOutputChannels: @(kInputArrayFeatureChannels)
     };
   });
 });
