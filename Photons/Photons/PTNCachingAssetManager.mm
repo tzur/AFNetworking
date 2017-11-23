@@ -5,6 +5,7 @@
 
 #import "NSURL+PTNCache.h"
 #import "NSURL+PTNResizingStrategy.h"
+#import "NSURLCache+Photons.h"
 #import "PTNAlbum.h"
 #import "PTNAlbumChangeset.h"
 #import "PTNCacheAwareAssetManager.h"
@@ -12,6 +13,7 @@
 #import "PTNCacheProxy.h"
 #import "PTNCacheResponse.h"
 #import "PTNDataAssetCache.h"
+#import "PTNDataCache.h"
 #import "PTNDescriptor.h"
 #import "PTNImageAsset.h"
 #import "PTNProgress.h"
@@ -37,6 +39,15 @@ static BOOL PTNIsCacheEqual(id lhs, id rhs) {
 @end
 
 @implementation PTNCachingAssetManager
+
+- (instancetype)initWithAssetManager:(id<PTNCacheAwareAssetManager>)assetManager
+                      memoryCapacity:(NSUInteger)memoryCapacity
+                        diskCapacity:(NSUInteger)diskCapacity {
+  auto cache = [[NSURLCache alloc] initWithMemoryCapacity:memoryCapacity diskCapacity:diskCapacity
+                                                 diskPath:nil];
+  return [self initWithAssetManager:assetManager
+                              cache:[[PTNDataAssetCache alloc] initWithCache:cache]];
+}
 
 - (instancetype)initWithAssetManager:(id<PTNCacheAwareAssetManager>)assetManager
                                cache:(id<PTNDataAssetCache>)cache {

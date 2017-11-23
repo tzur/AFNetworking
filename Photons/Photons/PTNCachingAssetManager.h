@@ -59,10 +59,19 @@ NS_ASSUME_NONNULL_BEGIN
 /// @see NSURL+PTNCache.h
 @interface PTNCachingAssetManager : NSObject <PTNAssetManager>
 
+- (instancetype)init NS_UNAVAILABLE;
+
+/// Initializes with \c assetManager as the underlying manager to use as the origin server and an
+/// \c NSURLCache object configured with the given \c memoryCapacity and \c diskCapacity that
+/// specify the the memory and the disk capacity of the cache in bytes, respectively.
+- (instancetype)initWithAssetManager:(id<PTNAssetManager>)assetManager
+                      memoryCapacity:(NSUInteger)memoryCapacity
+                        diskCapacity:(NSUInteger)diskCapacity;
+
 /// Initializes with \c assetManager as the underlying manager to use as the origin server and
 /// \c cache as the cache.
 - (instancetype)initWithAssetManager:(id<PTNCacheAwareAssetManager>)assetManager
-                               cache:(id<PTNDataAssetCache>)cache;
+                               cache:(id<PTNDataAssetCache>)cache NS_DESIGNATED_INITIALIZER;
 
 @end
 
