@@ -15,7 +15,10 @@
 #import "NSURL+Ocean.h"
 #import "PTNAlbum.h"
 #import "PTNAlbumChangeset.h"
+#import "PTNCacheInfo.h"
+#import "PTNCacheProxy.h"
 #import "PTNDataBackedImageAsset.h"
+#import "PTNDateProvider.h"
 #import "PTNImageFetchOptions.h"
 #import "PTNOceanAlbumDescriptor.h"
 #import "PTNOceanAssetDescriptor.h"
@@ -33,6 +36,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// HTTP Client for sending GET requests to Ocean.
 @property (readonly, nonatomic) FBRHTTPClient *client;
 
+/// Used for initial time reference for the maximum ages of the cached objects.
+@property (readonly, nonatomic) PTNDateProvider *dateProvider;
+
 @end
 
 @implementation PTNOceanAssetManager
@@ -42,11 +48,13 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 - (instancetype)init {
-  return [self initWithClient:[FBRHTTPClient client]];
+  return [self initWithClient:[FBRHTTPClient client] dateProvider:[[PTNDateProvider alloc] init]];
 }
 
-- (instancetype)initWithClient:(FBRHTTPClient *)client {
+- (instancetype)initWithClient:(FBRHTTPClient *)client
+                  dateProvider:(PTNDateProvider *)dateProvider {
   if (self = [super init]) {
+    _dateProvider = dateProvider;
     _client = client;
   }
   return self;
@@ -58,6 +66,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Ocean base endpoint.
 static NSString * const kBaseEndpoint = @"https://ocean.lightricks.com/";
+
+/// Max age, in seconds, of cached \c PTNAlbum objects.
+static const NSTimeInterval kAlbumMaxAge = 300;
 
 - (RACSignal *)fetchAlbumWithURL:(NSURL *)url {
   if (![url.ptn_oceanURLType isEqual:$(PTNOceanURLTypeAlbum)]) {
@@ -73,7 +84,12 @@ static NSString * const kBaseEndpoint = @"https://ocean.lightricks.com/";
       ptn_parseDictionaryWithClass:[PTNOceanAssetSearchResponse class]]
       map:^PTNAlbumChangeset *(PTNOceanAssetSearchResponse *response) {
         auto album = [[PTNAlbum alloc] initWithURL:url subalbums:@[] assets:response.results];
-        return [PTNAlbumChangeset changesetWithAfterAlbum:album];
+        auto cacheInfo = [[PTNCacheInfo alloc] initWithMaxAge:kAlbumMaxAge
+                                                 responseTime:[self.dateProvider date]
+                                                    entityTag:nil];
+        auto cacheProxy = [[PTNCacheProxy<PTNAlbum> alloc] initWithUnderlyingObject:album
+                                                                          cacheInfo:cacheInfo];
+        return [PTNAlbumChangeset changesetWithAfterAlbum:cacheProxy];
       }]
       catch:^RACSignal *(NSError *error) {
         return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeAlbumNotFound url:url
@@ -92,21 +108,38 @@ static NSString * const kBaseEndpoint = @"https://ocean.lightricks.com/";
 #pragma mark Asset fetching
 #pragma mark -
 
+/// Max age, in seconds, of cached \c PTNOceanAssetDescriptor and \c PTNDataBackedImageAsset
+/// objects.
+static const NSTimeInterval kAssetMaxAge = 86400;
+
 - (RACSignal *)fetchDescriptorWithURL:(NSURL *)url {
   if (!url.ptn_oceanURLType) {
     return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeInvalidURL url:url]];
   }
   switch (url.ptn_oceanURLType.value) {
-    case PTNOceanURLTypeAlbum:
-      return [RACSignal return:[[PTNOceanAlbumDescriptor alloc] initWithAlbumURL:url]];
+    case PTNOceanURLTypeAlbum: {
+      auto albumDescriptor = [[PTNOceanAlbumDescriptor alloc] initWithAlbumURL:url];
+      auto cacheInfo = [[PTNCacheInfo alloc]
+                        initWithMaxAge:[NSDate distantFuture].timeIntervalSince1970
+                        responseTime:[self.dateProvider date] entityTag:nil];
+      auto cacheProxy = [[PTNCacheProxy alloc] initWithUnderlyingObject:albumDescriptor
+                                                              cacheInfo:cacheInfo];
+      return [RACSignal return:cacheProxy];
+    }
     case PTNOceanURLTypeAsset: {
       NSString *urlString = [@[kBaseEndpoint, @"asset/", url.lt_queryDictionary[@"id"]]
           componentsJoinedByString:@""];
       auto requestParameters = [self oceanRequestParametersWithURL:url];
 
-      return [[[[self.client GET:urlString withParameters:requestParameters headers:nil]
+      return [[[[[self.client GET:urlString withParameters:requestParameters headers:nil]
           fbr_deserializeJSON]
           ptn_parseDictionaryWithClass:[PTNOceanAssetDescriptor class]]
+          map:^PTNCacheProxy *(PTNOceanAssetDescriptor *descriptor) {
+            auto cacheInfo = [[PTNCacheInfo alloc] initWithMaxAge:kAssetMaxAge
+                                                     responseTime:[self.dateProvider date]
+                                                        entityTag:nil];
+            return [[PTNCacheProxy alloc] initWithUnderlyingObject:descriptor cacheInfo:cacheInfo];
+          }]
           catch:^RACSignal *(NSError *error) {
             return [RACSignal error:[NSError lt_errorWithCode:PTNErrorCodeAssetLoadingFailed url:url
                                               underlyingError:error]];
@@ -207,7 +240,12 @@ static NSString * const kBaseEndpoint = @"https://ocean.lightricks.com/";
         }
         auto result = [[PTNDataBackedImageAsset alloc] initWithData:progress.result.content
                                                    resizingStrategy:resizingStrategy];
-        return [[PTNProgress alloc] initWithResult:result];
+        auto cacheInfo = [[PTNCacheInfo alloc] initWithMaxAge:kAssetMaxAge
+                                                 responseTime:[self.dateProvider date]
+                                                    entityTag:nil];
+        auto cacheProxy = [[PTNCacheProxy alloc] initWithUnderlyingObject:result
+                                                                cacheInfo:cacheInfo];
+        return [[PTNProgress alloc] initWithResult:cacheProxy];
       }];
 }
 
@@ -228,6 +266,33 @@ static NSString * const kBaseEndpoint = @"https://ocean.lightricks.com/";
 - (RACSignal *)fetchImageDataWithDescriptor:(id<PTNDescriptor>)descriptor {
   return [RACSignal error:[NSError ptn_errorWithCode:PTNErrorCodeUnsupportedOperation
                                 associatedDescriptor:descriptor]];
+}
+
+#pragma mark -
+#pragma mark Caching
+#pragma mark -
+
+- (RACSignal *)validateAlbumWithURL:(NSURL __unused *)url
+                          entityTag:(nullable NSString __unused *)entityTag {
+  return [RACSignal return:@NO];
+}
+
+- (RACSignal *)validateDescriptorWithURL:(NSURL __unused *)url
+                               entityTag:(nullable NSString __unused *)entityTag {
+  return [RACSignal return:@NO];
+}
+
+- (RACSignal *)validateImageWithDescriptor:(__unused id<PTNDescriptor>)descriptor
+                          resizingStrategy:(__unused id<PTNResizingStrategy>)resizingStrategy
+                                   options:(PTNImageFetchOptions __unused *)options
+                                 entityTag:(nullable NSString __unused *)entityTag {
+  return [RACSignal return:@NO];
+}
+
+- (nullable NSURL *)canonicalURLForDescriptor:(__unused id<PTNDescriptor>)descriptor
+                             resizingStrategy:(__unused id<PTNResizingStrategy>)resizingStrategy
+                                      options:(PTNImageFetchOptions __unused *)options {
+  return nil;
 }
 
 @end
