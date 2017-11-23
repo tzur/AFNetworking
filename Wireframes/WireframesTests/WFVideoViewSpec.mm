@@ -74,7 +74,10 @@ context(@"delegate", ^{
           return videoView;
         }];
     [videoView play];
-    expect(videoDidFinishPlaybackSignal).will.sendValues(@[videoView]);
+
+    // The signal is sometimes called late, probably due to some lazy initialization in the video
+    // playback system, which causes the signal to be called just after one second on some machines.
+    expect(videoDidFinishPlaybackSignal).after(3).sendValues(@[videoView]);
   });
 
   xit(@"should call progress in delegate as expected", ^{
