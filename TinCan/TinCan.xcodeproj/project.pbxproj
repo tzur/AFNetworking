@@ -27,6 +27,7 @@
 		B45926FD1FC6A06200A70964 /* TINMessage+UserInfoSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = B45926FC1FC6A06200A70964 /* TINMessage+UserInfoSpec.mm */; };
 		B45927001FC6A76900A70964 /* NSURL+TinCan.mm in Sources */ = {isa = PBXBuildFile; fileRef = B45926FF1FC6A76900A70964 /* NSURL+TinCan.mm */; };
 		B45927021FC6AF2D00A70964 /* NSURL+TinCanSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = B45927011FC6AF2D00A70964 /* NSURL+TinCanSpec.mm */; };
+		B45927061FC6B1EC00A70964 /* TINTestsCommon.mm in Sources */ = {isa = PBXBuildFile; fileRef = B45927051FC6B1EC00A70964 /* TINTestsCommon.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -360,6 +361,8 @@
 		B45926FE1FC6A76900A70964 /* NSURL+TinCan.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSURL+TinCan.h"; sourceTree = "<group>"; };
 		B45926FF1FC6A76900A70964 /* NSURL+TinCan.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSURL+TinCan.mm"; sourceTree = "<group>"; };
 		B45927011FC6AF2D00A70964 /* NSURL+TinCanSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSURL+TinCanSpec.mm"; sourceTree = "<group>"; };
+		B45927041FC6B1EC00A70964 /* TINTestsCommon.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TINTestsCommon.h; sourceTree = "<group>"; };
+		B45927051FC6B1EC00A70964 /* TINTestsCommon.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = TINTestsCommon.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -617,6 +620,7 @@
 			isa = PBXGroup;
 			children = (
 				883235801ED861DB0090787D /* Base */,
+				B45927031FC6B13D00A70964 /* Common */,
 			);
 			name = Tests;
 			sourceTree = "<group>";
@@ -632,6 +636,15 @@
 				882D1F171EC19A2C007F39F5 /* libcompression.tbd */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		B45927031FC6B13D00A70964 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				B45927041FC6B1EC00A70964 /* TINTestsCommon.h */,
+				B45927051FC6B1EC00A70964 /* TINTestsCommon.mm */,
+			);
+			name = Common;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1034,6 +1047,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B45927061FC6B1EC00A70964 /* TINTestsCommon.mm in Sources */,
 				B45926FD1FC6A06200A70964 /* TINMessage+UserInfoSpec.mm in Sources */,
 				B42D71081FBB24900024718E /* TINMessageSpec.mm in Sources */,
 				B45927021FC6AF2D00A70964 /* NSURL+TinCanSpec.mm in Sources */,
