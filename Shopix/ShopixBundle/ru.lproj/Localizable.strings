@@ -22,7 +22,7 @@
 /* Text on a button shown to the user on failed action, trying the failed operation again */
 "Try Again" = "Еще раз";
 
-/* Message shown after a successful products restoration, but no activesubscription was found */
+/* Message shown after a successful products restoration, but no active subscription was found */
 "Your purchases were restored successfully, no active subscription found" = "Покупки восстановлены. Активных подписок нет";
 
 /* Message shown after successful subscription restoration */

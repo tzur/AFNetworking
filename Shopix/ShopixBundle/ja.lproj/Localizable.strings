@@ -22,7 +22,7 @@
 /* Text on a button shown to the user on failed action, trying the failed operation again */
 "Try Again" = "再度嘗試";
 
-/* Message shown after a successful products restoration, but no activesubscription was found */
+/* Message shown after a successful products restoration, but no active subscription was found */
 "Your purchases were restored successfully, no active subscription found" = "購入を問題なく復元しました。有効な購読を見つけられませんでした";
 
 /* Message shown after successful subscription restoration */
