@@ -50,7 +50,7 @@ static PTNCacheProxy *PTNAssetCacheProxy(NSData *data, id<PTNResizingStrategy> r
 }
 
 static NSURL *PTNFakeAlbumRequestURL() {
-  return [NSURL ptn_oceanAlbumURLWithSource:$(PTNOceanAssetSourcePixabay) phrase:@"foo" page:0];
+  return [NSURL ptn_oceanAlbumURLWithSource:$(PTNOceanAssetSourcePixabay) phrase:@"foo" page:2];
 }
 
 static LTProgress *PTNFakeLTProgress(NSData *data) {
@@ -83,6 +83,7 @@ context(@"fetching albums", ^{
     it(@"should use correct request arguments", ^{
       NSMutableDictionary *expectedParameters = [PTNFakeRequestParameters() mutableCopy];
       expectedParameters[@"phrase"] = @"foo";
+      expectedParameters[@"page"] = @"2";
       NSString *expectedURLString = @"https://ocean.lightricks.com/search";
       OCMExpect([client GET:expectedURLString withParameters:expectedParameters headers:nil]);
 
