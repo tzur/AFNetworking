@@ -12,7 +12,7 @@ __block NSURL *albumURL;
 __block PTNOceanAlbumDescriptor *descriptor;
 
 beforeEach(^{
-  albumURL = [NSURL ptn_oceanAlbumURLWithSource:$(PTNOceanAssetSourcePixabay) phrase:@"foo"];
+  albumURL = [NSURL ptn_oceanAlbumURLWithSource:$(PTNOceanAssetSourcePixabay) phrase:@"foo" page:0];
   descriptor = [[PTNOceanAlbumDescriptor alloc] initWithAlbumURL:albumURL];
 });
 
@@ -59,7 +59,7 @@ context(@"NSObject", ^{
 
     it(@"should return NO when comparing to different objects", ^{
       NSURL *url =
-          [NSURL ptn_oceanAlbumURLWithSource:$(PTNOceanAssetSourcePixabay) phrase:@"bar"];
+          [NSURL ptn_oceanAlbumURLWithSource:$(PTNOceanAssetSourcePixabay) phrase:@"bar" page:0];
       PTNOceanAlbumDescriptor *differentDescriptor =
           [[PTNOceanAlbumDescriptor alloc] initWithAlbumURL:url];
 

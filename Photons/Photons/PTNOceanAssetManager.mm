@@ -77,6 +77,7 @@ static const NSTimeInterval kAlbumMaxAge = 300;
   NSMutableDictionary<NSString *, NSObject *> *requestParameters =
       [[self oceanRequestParametersWithURL:url] mutableCopy];
   requestParameters[@"phrase"] = url.lt_queryDictionary[@"phrase"];
+  requestParameters[@"page"] = url.lt_queryDictionary[@"page"];
 
   return [[[[[self.client GET:[kBaseEndpoint stringByAppendingString:@"search"]
                withParameters:requestParameters headers:nil]

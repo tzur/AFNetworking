@@ -23,6 +23,11 @@ LTEnumImplement(NSUInteger, PTNOceanURLType,
 
 + (NSURL *)ptn_oceanAlbumURLWithSource:(PTNOceanAssetSource *)source
                                 phrase:(nullable NSString *)phrase {
+  return [NSURL ptn_oceanAlbumURLWithSource:source phrase:phrase page:1];
+}
+
++ (NSURL *)ptn_oceanAlbumURLWithSource:(PTNOceanAssetSource *)source
+                                phrase:(nullable NSString *)phrase page:(NSUInteger)page {
   NSURLComponents *components = [[NSURLComponents alloc] init];
   components.scheme = [self ptn_oceanScheme];
   components.host = @"album";
@@ -33,6 +38,8 @@ LTEnumImplement(NSUInteger, PTNOceanURLType,
   if (phrase) {
     [queryItems addObject:[NSURLQueryItem queryItemWithName:@"phrase" value:phrase]];
   }
+  [queryItems addObject:[NSURLQueryItem queryItemWithName:@"page"
+                         value:[NSString stringWithFormat:@"%lu", (unsigned long)page]]];
   components.queryItems = queryItems;
   return components.URL;
 }
