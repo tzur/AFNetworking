@@ -41,12 +41,6 @@ context(@"creating Mat from MTLTexture", ^{
     LTAssert(!error, @"Can't create texture from input image. Error %@", error);
   });
 
-  it(@"should raise an exception when pixel format is not supported", ^{
-    expect(^{
-      PNKMatFromMTLTexture(singleChannelTexture);
-    }).to.raise(NSInvalidArgumentException);
-  });
-
   it(@"should write texture content correctly", ^{
     auto output = PNKMatFromMTLTexture(multiChannelTexture);
     expect($(output)).to.equalMat($(multiChannelMat));
@@ -124,15 +118,6 @@ context(@"copying Mat to MTLTexture", ^{
     singleChannelTexture = [textureLoader newTextureWithCGImage:singleChannelImage.UIImage.CGImage
                                                         options:nil error:&error];
     LTAssert(!error, @"Can't create texture from input image. Error %@", error);
-  });
-
-  it(@"should raise an exception when pixel format is not supported", ^{
-    auto targetSize = CGSizeMake(singleChannelTexture.width, singleChannelTexture.height);
-    cv::Mat1b inputData(targetSize.height, targetSize.width);
-    auto region =  MTLRegionMake2D(0, 0, singleChannelTexture.width, singleChannelTexture.height);
-    expect(^{
-      PNKCopyMatToMTLTextureRegion(singleChannelTexture, region, inputData);
-    }).to.raise(NSInvalidArgumentException);
   });
 
   it(@"should raise an exception when input width doesn't match region width", ^{
