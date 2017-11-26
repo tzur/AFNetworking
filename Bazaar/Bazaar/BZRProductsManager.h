@@ -86,8 +86,10 @@ NS_ASSUME_NONNULL_BEGIN
 /// Returns a signal that fetches the info of all products specified by \c productIdentifiers and
 /// sends them as a dictionary mapping identifiers to \c BZRProduct. If a product's price info
 /// couldn't be fetched, it will not appear in the returned dictionary. The signal completes after
-/// sending the dictionary of products. The signal errs if fetching the products' info encountred an
-/// error, the error code will be \c BZRErrorCodeProductsMetadataFetchingFailed.
+/// sending the dictionary of products. If a product identifier is missing from the product list,
+/// the signal errs with error code \c BZRErrorCodeInvalidProductIdentifer and the invalid product
+/// identifiers at \c bzr_productIdentifiers. If fetching the products' info encountred an error,
+/// the signal errs with an error code \c BZRErrorCodeProductsMetadataFetchingFailed.
 - (RACSignal<NSDictionary<NSString *, BZRProduct *> *> *)
     fetchProductsInfo:(NSSet<NSString *> *)productIdentifiers;
 
