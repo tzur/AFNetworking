@@ -9,8 +9,8 @@ NSString * const kPNKTemporaryImageUnaryExamples = @"PNKTemporaryImageUnaryExamp
 NSString * const kPNKTemporaryImageBinaryExamples = @"PNKTemporaryImageBinaryExamples";
 NSString * const kPNKTemporaryImageExamplesKernel = @"PNKTemporaryImageExamplesKernel";
 NSString * const kPNKTemporaryImageExamplesDevice = @"PNKTemporaryImageExamplesDevice";
-NSString * const kPNKTemporaryImageExamplesInputChannels =
-    @"PNKTemporaryImageExamplesInputChannels";
+NSString * const kPNKTemporaryImageExamplesOutputChannels =
+    @"PNKTemporaryImageExamplesOutputChannels";
 
 SharedExamplesBegin(PNKTemporaryImageExamples)
 
@@ -19,12 +19,13 @@ sharedExamplesFor(kPNKTemporaryImageUnaryExamples, ^(NSDictionary *data) {
     it(@"should manage readCount properly upon consumption", ^{
       id<PNKUnaryKernel> unaryKernel = data[kPNKTemporaryImageExamplesKernel];
       id<MTLDevice> device = data[kPNKTemporaryImageExamplesDevice];
-      NSUInteger channels = [data[kPNKTemporaryImageExamplesInputChannels] unsignedIntegerValue];
+      NSUInteger outputChannels = [data[kPNKTemporaryImageExamplesOutputChannels]
+                                   unsignedIntegerValue];
 
       auto commandQueue = [device newCommandQueue];
       id<MTLCommandBuffer> commandBuffer = [commandQueue commandBuffer];
 
-      MTLSize outputSize{32, 32, channels};
+      MTLSize outputSize{32, 32, outputChannels};
       auto outputImage = [MPSImage pnk_float16ImageWithDevice:device
                                                         width:outputSize.width
                                                        height:outputSize.height
@@ -50,12 +51,13 @@ sharedExamplesFor(kPNKTemporaryImageBinaryExamples, ^(NSDictionary *data) {
     it(@"should manage readCount properly upon consumption", ^{
       id<PNKBinaryKernel> binaryKernel = data[kPNKTemporaryImageExamplesKernel];
       id<MTLDevice> device = data[kPNKTemporaryImageExamplesDevice];
-      NSUInteger channels = [data[kPNKTemporaryImageExamplesInputChannels] unsignedIntegerValue];
+      NSUInteger outputChannels = [data[kPNKTemporaryImageExamplesOutputChannels]
+                                   unsignedIntegerValue];
 
       auto commandQueue = [device newCommandQueue];
       id<MTLCommandBuffer> commandBuffer = [commandQueue commandBuffer];
 
-      MTLSize outputSize{32, 32, channels};
+      MTLSize outputSize{32, 32, outputChannels};
       auto outputImage = [MPSImage pnk_float16ImageWithDevice:device
                                                         width:outputSize.width
                                                        height:outputSize.height

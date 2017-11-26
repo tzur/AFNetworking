@@ -6,7 +6,31 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /// Mapping of Metal texture pixel format to mat type.
-static const std::unordered_map<MTLPixelFormat, int> kMTLPixelFormatToMatInfo{
+static const std::unordered_map<MTLPixelFormat, int> kMTLPixelFormatToMatInfo = {
+  {MTLPixelFormatR8Unorm, CV_8UC1},
+  {MTLPixelFormatR8Unorm_sRGB, CV_8UC1},
+  {MTLPixelFormatR8Snorm, CV_8SC1},
+  {MTLPixelFormatR8Uint, CV_8UC1},
+  {MTLPixelFormatR8Sint, CV_8SC1},
+  {MTLPixelFormatR16Unorm, CV_16UC1},
+  {MTLPixelFormatR16Snorm, CV_16SC1},
+  {MTLPixelFormatR16Uint, CV_16UC1},
+  {MTLPixelFormatR16Sint, CV_16SC1},
+  {MTLPixelFormatR16Float, CV_16FC1},
+  {MTLPixelFormatR32Sint, CV_32SC1},
+  {MTLPixelFormatR32Float, CV_32FC1},
+  {MTLPixelFormatRG8Unorm, CV_8UC2},
+  {MTLPixelFormatRG8Unorm_sRGB, CV_8UC2},
+  {MTLPixelFormatRG8Snorm, CV_8SC2},
+  {MTLPixelFormatRG8Uint, CV_8UC2},
+  {MTLPixelFormatRG8Sint, CV_8SC2},
+  {MTLPixelFormatRG16Unorm, CV_16UC2},
+  {MTLPixelFormatRG16Snorm, CV_16SC2},
+  {MTLPixelFormatRG16Uint, CV_16UC2},
+  {MTLPixelFormatRG16Sint, CV_16SC2},
+  {MTLPixelFormatRG16Float, CV_16FC2},
+  {MTLPixelFormatRG32Sint, CV_32SC2},
+  {MTLPixelFormatRG32Float, CV_32FC2},
   {MTLPixelFormatRGBA8Unorm, CV_8UC4},
   {MTLPixelFormatRGBA8Unorm_sRGB, CV_8UC4},
   {MTLPixelFormatRGBA8Snorm, CV_8SC4},

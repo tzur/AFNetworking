@@ -179,7 +179,7 @@ context(@"PNKUnaryKernel with MPSTemporaryImage", ^{
     return @{
       kPNKTemporaryImageExamplesKernel: nearestNeighborUpsampler,
       kPNKTemporaryImageExamplesDevice: device,
-      kPNKTemporaryImageExamplesInputChannels: @(kInputFeatureChannels)
+      kPNKTemporaryImageExamplesOutputChannels: @(kInputFeatureChannels)
     };
   });
 
@@ -191,7 +191,7 @@ context(@"PNKUnaryKernel with MPSTemporaryImage", ^{
     return @{
       kPNKTemporaryImageExamplesKernel: nearestNeighborUpsampler,
       kPNKTemporaryImageExamplesDevice: device,
-      kPNKTemporaryImageExamplesInputChannels: @(kInputArrayFeatureChannels)
+      kPNKTemporaryImageExamplesOutputChannels: @(kInputArrayFeatureChannels)
     };
   });
 });
