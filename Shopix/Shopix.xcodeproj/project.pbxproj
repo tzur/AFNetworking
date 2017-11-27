@@ -142,6 +142,20 @@
 			remoteGlobalIDString = 3AED05B61AD59FD40053CC65;
 			remoteInfo = "Masonry iOS";
 		};
+		886F956F1FCC49C3002F2529 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 886F953C1FCC49C2002F2529 /* Wireframes.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8B283E171CBA7EED00B745AE;
+			remoteInfo = Wireframes;
+		};
+		886F95711FCC49C3002F2529 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 886F953C1FCC49C2002F2529 /* Wireframes.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8B283E701CBA814100B745AE;
+			remoteInfo = WireframesTests;
+		};
 		8B425EC81CA6D218001C457E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 848E00371C5920CB001D8368 /* Expecta.xcodeproj */;
@@ -445,6 +459,7 @@
 		8851018C1F9DDBA60052351B /* NSError+Shopix.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSError+Shopix.h"; sourceTree = "<group>"; };
 		8851018D1F9DDBA60052351B /* NSError+Shopix.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSError+Shopix.mm"; sourceTree = "<group>"; };
 		885CA2B21FB301F1005380BD /* SPXProductDescriptorsFactorySpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXProductDescriptorsFactorySpec.mm; sourceTree = "<group>"; };
+		886F953C1FCC49C2002F2529 /* Wireframes.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Wireframes.xcodeproj; path = ../Wireframes/Wireframes.xcodeproj; sourceTree = "<group>"; };
 		88B632AD1F9DD8B10051A535 /* NSErrorCodes+Shopix.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSErrorCodes+Shopix.h"; sourceTree = "<group>"; };
 		88B632AE1F9DD8B10051A535 /* NSErrorCodes+Shopix.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSErrorCodes+Shopix.mm"; sourceTree = "<group>"; };
 		88FA8C991F66AA0A00D2E594 /* SPXProductDescriptorsFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPXProductDescriptorsFactory.h; sourceTree = "<group>"; };
@@ -784,6 +799,7 @@
 				650BB31C1D465335008648A3 /* LTKit.xcodeproj */,
 				8823B30B1FC2FC8C00A2DEB9 /* Masonry.xcodeproj */,
 				CDCCF3D51F4EC2F700F421E6 /* ReactiveObjC.xcodeproj */,
+				886F953C1FCC49C2002F2529 /* Wireframes.xcodeproj */,
 				CDB8A6481F53FCB200E14706 /* extobjc.xcodeproj */,
 			);
 			name = Libraries;
@@ -829,6 +845,15 @@
 				885CA2B21FB301F1005380BD /* SPXProductDescriptorsFactorySpec.mm */,
 			);
 			name = Promotions;
+			sourceTree = "<group>";
+		};
+		886F953D1FCC49C2002F2529 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				886F95701FCC49C3002F2529 /* libWireframes.a */,
+				886F95721FCC49C3002F2529 /* WireframesTests.xctest */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		88B632881F9DD87E0051A535 /* Errors */ = {
@@ -1156,6 +1181,10 @@
 					ProductGroup = 650BB3351D465359008648A3 /* Products */;
 					ProjectRef = 650BB3341D465359008648A3 /* TestHost.xcodeproj */;
 				},
+				{
+					ProductGroup = 886F953D1FCC49C2002F2529 /* Products */;
+					ProjectRef = 886F953C1FCC49C2002F2529 /* Wireframes.xcodeproj */;
+				},
 			);
 			projectRoot = "";
 			targets = (
@@ -1207,6 +1236,20 @@
 			fileType = wrapper.framework;
 			path = Masonry.framework;
 			remoteRef = 8823B3271FC2FC8C00A2DEB9 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		886F95701FCC49C3002F2529 /* libWireframes.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libWireframes.a;
+			remoteRef = 886F956F1FCC49C3002F2529 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		886F95721FCC49C3002F2529 /* WireframesTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = WireframesTests.xctest;
+			remoteRef = 886F95711FCC49C3002F2529 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		8B425EC91CA6D218001C457E /* Expecta.framework */ = {
