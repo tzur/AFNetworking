@@ -47,6 +47,17 @@ static void BZRStubProductDictionaryToReturnProduct(BZRProduct *product,
   OCMExpect([productsProvider fetchProductList]).andReturn([RACSignal return:@[product]]);
 }
 
+static BZRProduct *BZRProductWithPriceInfo(BZRProduct *product, float price,
+                                           NSString *localeIdentifier) {
+  BZRProductPriceInfo *priceInfo = [BZRProductPriceInfo modelWithDictionary:@{
+    @instanceKeypath(BZRProductPriceInfo, price): [NSDecimalNumber numberWithFloat:price],
+    @instanceKeypath(BZRProductPriceInfo, localeIdentifier):
+        [[NSLocale alloc] initWithLocaleIdentifier:localeIdentifier]
+  } error:nil];
+
+  return [product modelByOverridingProperty:@keypath(product, priceInfo) withValue:priceInfo];
+}
+
 SpecBegin(BZRStore)
 
 __block id<BZRProductsProvider> productsProvider;
@@ -1187,24 +1198,88 @@ context(@"maually fetching products info", ^{
     expect([store fetchProductsInfo:@[productIdentifier].lt_set]).will.sendError(error);
   });
 
-  it(@"should not fetch info of products that don't appear in product list provided by nether "
-     "products provider", ^{
+  it(@"should send error in case a requested product doesn't appear in product list provided by "
+     "nether products provider", ^{
     auto product = BZRProductWithIdentifier(productIdentifier);
     [netherProductsProviderSubject sendNext:@[product]];
     OCMStub([priceInfoFetcher fetchProductsPriceInfo:@[]]).andReturn([RACSignal return:@[]]);
 
-    expect([store fetchProductsInfo:@[@"bar"].lt_set]).will.sendValues(@[@{}]);
+    expect([store fetchProductsInfo:@[@"bar"].lt_set]).will.matchError(^BOOL(NSError *error) {
+      return error.code == BZRErrorCodeInvalidProductIdentifer &&
+          [error.bzr_productIdentifiers isEqualToSet:@[@"bar"].lt_set];
+    });
   });
 
   it(@"should fetch info of products that appear both in the given product identifiers set and in "
      "product list provided by nether products provider", ^{
     auto product = BZRProductWithIdentifier(productIdentifier);
+    auto productWithPriceInfo = BZRProductWithPriceInfo(product, 1337, @"de_DE");
+
     [netherProductsProviderSubject sendNext:@[product, BZRProductWithIdentifier(@"bar")]];
     OCMStub([priceInfoFetcher fetchProductsPriceInfo:@[product]])
-        .andReturn([RACSignal return:@[product]]);
+        .andReturn([RACSignal return:@[productWithPriceInfo]]);
 
     expect([store fetchProductsInfo:@[productIdentifier].lt_set])
-        .will.sendValues(@[@{productIdentifier: product}]);
+        .will.sendValues(@[@{productIdentifier: productWithPriceInfo}]);
+  });
+
+  context(@"fetching discounted products", ^{
+    __block BZRProduct *product;
+    __block BZRProduct *fullPriceProduct;
+
+    beforeEach(^{
+      product =
+          [BZRProductWithIdentifier(productIdentifier)
+           modelByOverridingProperty:@instanceKeypath(BZRProduct, fullPriceProductIdentifier)
+           withValue:@"fullFoo"];
+      fullPriceProduct = BZRProductWithIdentifier(@"fullFoo");
+    });
+
+    it(@"should fetch full price product of discounted products", ^{
+      auto productList = @[fullPriceProduct, product];
+
+      [netherProductsProviderSubject sendNext:productList];
+
+      OCMExpect([priceInfoFetcher fetchProductsPriceInfo:productList])
+          .andReturn([RACSignal return:productList]);
+
+      expect([store fetchProductsInfo:@[productIdentifier].lt_set]).to.complete();
+      OCMVerifyAll((id)priceInfoFetcher);
+    });
+
+    it(@"should not send full price products that were not requested by the user", ^{
+      [netherProductsProviderSubject sendNext:@[fullPriceProduct, product]];
+
+      OCMStub([priceInfoFetcher fetchProductsPriceInfo:OCMOCK_ANY])
+          .andReturn(([RACSignal return:@[product, fullPriceProduct]]));
+
+      expect([store fetchProductsInfo:@[productIdentifier].lt_set]).to
+          .sendValues(@[@{productIdentifier: product}]);
+    });
+
+    it(@"should send full price products that were requested by the user", ^{
+      auto productWithPriceInfo = BZRProductWithPriceInfo(product, 1337, @"de_DE");
+
+      [netherProductsProviderSubject sendNext:@[fullPriceProduct, product]];
+
+      OCMStub([priceInfoFetcher fetchProductsPriceInfo:OCMOCK_ANY])
+          .andReturn(([RACSignal return:@[productWithPriceInfo, fullPriceProduct]]));
+
+      expect([store fetchProductsInfo:@[productIdentifier, @"fullFoo"].lt_set]).to.sendValues(@[@{
+        productIdentifier: productWithPriceInfo,
+        @"fullFoo": fullPriceProduct
+      }]);
+    });
+
+    it(@"should not fetch full price products that don't exist in product list", ^{
+      [netherProductsProviderSubject sendNext:@[product]];
+
+      OCMStub([priceInfoFetcher fetchProductsPriceInfo:@[product]])
+          .andReturn([RACSignal return:@[product]]);
+
+      expect([store fetchProductsInfo:@[productIdentifier].lt_set]).to
+          .sendValues(@[@{productIdentifier: product}]);
+    });
   });
 });
 

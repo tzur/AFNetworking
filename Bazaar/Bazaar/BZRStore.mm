@@ -5,6 +5,8 @@
 
 #import <LTKit/NSArray+Functional.h>
 #import <LTKit/NSArray+NSSet.h>
+#import <LTKit/NSDictionary+Functional.h>
+#import <LTKit/NSSet+Functional.h>
 
 #import "BZRAcquiredViaSubscriptionProvider.h"
 #import "BZRAllowedProductsProvider.h"
@@ -669,18 +671,36 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (RACSignal<BZRProductDictionary *> *)fetchProductsInfo:(NSSet<NSString *> *)productIdentifiers {
-  auto priceInfoFetcher = self.priceInfoFetcher;
   @weakify(self);
-  return [[[[[RACObserve(self, productsJSONDictionary)
+  return [[[[[[RACObserve(self, productsJSONDictionary)
       ignore:nil]
       take:1]
-      flattenMap:^RACSignal *(BZRProductDictionary *productDictionary) {
+      flattenMap:^RACSignal<BZRProductList *> *(BZRProductDictionary *productDictionary) {
+        @strongify(self);
+        if (!self) {
+          return [RACSignal return:(BZRProductList *)@[]];
+        }
+
         auto requestedProductList =
             [[productDictionary allValues] lt_filter:^BOOL(BZRProduct *product) {
               return [productIdentifiers containsObject:product.identifier];
             }];
 
-        return [priceInfoFetcher fetchProductsPriceInfo:requestedProductList];
+        if (requestedProductList.count != productIdentifiers.count) {
+          auto missingProductIdentifiers =
+              [productIdentifiers lt_filter:^BOOL(NSString *productIdentifier) {
+                return !productDictionary[productIdentifier];
+              }];
+
+          return [RACSignal error:
+                  [NSError bzr_invalidProductsErrorWithIdentifers:missingProductIdentifiers]];
+        }
+
+        auto requestedProductsWithFullProducts =
+            [self productsWithFullPriceProducts:requestedProductList
+                              productDictionary:productDictionary];
+
+        return [self.priceInfoFetcher fetchProductsPriceInfo:requestedProductsWithFullProducts];
       }]
       map:^BZRProductDictionary *(BZRProductList *productList) {
         NSArray<NSString *> *identifiers =
@@ -690,7 +710,30 @@ NS_ASSUME_NONNULL_BEGIN
       doNext:^(BZRProductDictionary *productDictionary) {
         @strongify(self);
         [self mergeProductDictionaryWithExistingDictionary:productDictionary];
+      }]
+      map:^BZRProductDictionary *(BZRProductDictionary *productDictionary) {
+        return [productDictionary lt_filter:^BOOL(NSString *productIdentifier, BZRProduct *) {
+          return [productIdentifiers containsObject:productIdentifier];
+        }];
       }];
+}
+
+- (BZRProductList *)productsWithFullPriceProducts:(BZRProductList *)products
+                                productDictionary:(BZRProductDictionary *)productDictionary {
+  auto productIdentifiers = [products lt_map:^NSString *(BZRProduct *product) {
+    return product.identifier;
+  }];
+
+  return [[[products
+      lt_filter:^BOOL(BZRProduct *product) {
+        return product.fullPriceProductIdentifier &&
+            ![productIdentifiers containsObject:product.fullPriceProductIdentifier] &&
+            productDictionary[product.fullPriceProductIdentifier];
+      }]
+      lt_map:^BZRProduct *(BZRProduct *product) {
+        return productDictionary[product.fullPriceProductIdentifier];
+      }]
+      arrayByAddingObjectsFromArray:products];
 }
 
 #pragma mark -
