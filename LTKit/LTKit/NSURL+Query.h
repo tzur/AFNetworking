@@ -17,6 +17,15 @@ NS_ASSUME_NONNULL_BEGIN
 /// string.
 - (NSURL *)lt_URLByAppendingQueryItems:(NSArray<NSURLQueryItem *> *)queryItems;
 
+/// Returns a new URL made by replacing the value of all the occurrences of the query item with the
+/// given \c name with the given \c value. If \c name has no respective query item in the receiver,
+/// the returned URL will be the same as the receiver.
+///
+/// Raises \c NSInternalInconsistencyException if the URL string of the receiver could not be
+/// parsed. This should never happen, since the receiver instance has applied the same parsing logic
+/// in order to be initialized.
+- (NSURL *)lt_URLByReplacingQueryItemsWithName:(NSString *)name withValue:(NSString *)value;
+
 /// Returns a new URL made by appending query items as defined by \c queryDictionary. The order
 /// and the multiplicity of the original query items are preserved, but the ordering of new items is
 /// not defined.

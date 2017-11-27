@@ -19,6 +19,19 @@ NS_ASSUME_NONNULL_BEGIN
   return nn([components URLRelativeToURL:self.baseURL]);
 }
 
+- (NSURL *)lt_URLByReplacingQueryItemsWithName:(NSString *)name withValue:(NSString *)value {
+  auto components = [NSURLComponents componentsWithURL:self resolvingAgainstBaseURL:NO];
+  auto queryItems = [components.queryItems mutableCopy];
+
+  for (NSUInteger i = 0; i < queryItems.count; ++i) {
+    if ([queryItems[i].name isEqualToString:name]) {
+      queryItems[i] = [NSURLQueryItem queryItemWithName:name value:value];
+    }
+  }
+  components.queryItems = queryItems;
+  return nn([components URLRelativeToURL:self.baseURL]);;
+}
+
 - (NSURL *)lt_URLByAppendingQueryDictionary:
     (NSDictionary<NSString *, NSString *> *)queryDictionary {
   if (!queryDictionary.count) {
