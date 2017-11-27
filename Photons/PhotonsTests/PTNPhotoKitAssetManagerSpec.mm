@@ -978,6 +978,23 @@ context(@"image fetching", ^{
     defaultError = [NSError errorWithDomain:@"foo" code:1337 userInfo:nil];
   });
 
+  it(@"should make requests with network access allowed", ^{
+    id<PTNPhotoKitImageManager> imageManager = OCMProtocolMock(@protocol(PTNPhotoKitImageManager));
+    auto assetManager = [[PTNPhotoKitAssetManager alloc] initWithFetcher:fetcher observer:observer
+                                                            imageManager:imageManager
+                                                    authorizationManager:authorizationManager
+                                                           changeManager:changeManager];
+    OCMExpect([[(id)imageManager ignoringNonObjectArgs] requestImageForAsset:asset targetSize:size
+        contentMode:PHImageContentModeDefault
+        options:[OCMArg checkWithBlock:^BOOL(PHImageRequestOptions *options) {
+          return options.isNetworkAccessAllowed;
+        }] resultHandler:([OCMArg invokeBlockWithArgs:image, @{}, nil])]);
+
+    expect([assetManager fetchImageWithDescriptor:asset resizingStrategy:resizingStrategy
+                                          options:options]).will.complete();
+    OCMVerifyAll((id)imageManager);
+  });
+
   context(@"fetch image of asset", ^{
     it(@"should fetch image", ^{
       [imageManager serveAsset:asset withProgress:@[] image:image];
@@ -1233,6 +1250,21 @@ context(@"AVAsset fetching", ^{
     defaultError = [NSError errorWithDomain:@"foo" code:1337 userInfo:nil];
   });
 
+  it(@"should make requests with network access allowed", ^{
+    id<PTNPhotoKitImageManager> imageManager = OCMProtocolMock(@protocol(PTNPhotoKitImageManager));
+    auto assetManager = [[PTNPhotoKitAssetManager alloc] initWithFetcher:fetcher observer:observer
+                                                            imageManager:imageManager
+                                                    authorizationManager:authorizationManager
+                                                           changeManager:changeManager];
+    OCMExpect([imageManager requestAVAssetForVideo:asset
+        options:[OCMArg checkWithBlock:^BOOL(PHVideoRequestOptions *options) {
+          return options.isNetworkAccessAllowed;
+        }] resultHandler:([OCMArg invokeBlockWithArgs:avasset, audioMix, @{}, nil])]);
+
+    expect([assetManager fetchAVAssetWithDescriptor:asset options:options]).will.complete();
+    OCMVerifyAll((id)imageManager);
+  });
+
   context(@"fetch video of asset", ^{
     it(@"should fetch AVAsset", ^{
       [imageManager serveAsset:asset withProgress:@[] avasset:avasset audioMix:audioMix];
@@ -1340,6 +1372,22 @@ context(@"image data fetching", ^{
                                                  orientation:orientation];
 
     defaultError = [NSError errorWithDomain:@"foo" code:1337 userInfo:nil];
+  });
+
+  it(@"should make requests with network access allowed", ^{
+    id<PTNPhotoKitImageManager> imageManager = OCMProtocolMock(@protocol(PTNPhotoKitImageManager));
+    auto assetManager = [[PTNPhotoKitAssetManager alloc] initWithFetcher:fetcher observer:observer
+                                                            imageManager:imageManager
+                                                    authorizationManager:authorizationManager
+                                                           changeManager:changeManager];
+    OCMExpect([imageManager requestImageDataForAsset:asset
+        options:[OCMArg checkWithBlock:^BOOL(PHImageRequestOptions *options) {
+          return options.isNetworkAccessAllowed;
+        }] resultHandler:([OCMArg invokeBlockWithArgs:imageData,
+                           uniformTypeIdentifier, @(orientation), @{}, nil])]);
+
+    expect([assetManager fetchImageDataWithDescriptor:asset]).will.complete();
+    OCMVerifyAll((id)imageManager);
   });
 
   context(@"fetch raw image of asset", ^{
