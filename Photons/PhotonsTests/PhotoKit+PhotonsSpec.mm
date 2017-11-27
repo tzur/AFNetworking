@@ -9,6 +9,7 @@
 
 @interface PHAsset (UniformTypeIdentifier)
 - (NSString *)uniformTypeIdentifier;
+- (BOOL)isCloudPlaceholder;
 @end
 
 /// Returns a mocked PHAsset with the given \c uti.
@@ -55,17 +56,13 @@ context(@"asset descriptor", ^{
     expect(asset.descriptorCapabilities & PTNAssetDescriptorCapabilityFavorite).to.beTruthy();
   });
 
-  it(@"should reveal cloud based traits when the underlying asset is cloud based", ^{
-    PHAsset *cloudAsset = PTNCreateAsset();
-    OCMStub(cloudAsset.sourceType).andReturn(PHAssetSourceTypeCloudShared);
-    expect(cloudAsset.descriptorTraits).to.contain(kPTNDescriptorTraitCloudBasedKey);
-
-    PHAsset *iTunesAsset = PTNCreateAsset();
-    OCMStub(iTunesAsset.sourceType).andReturn(PHAssetSourceTypeiTunesSynced);
-    expect(iTunesAsset.descriptorTraits).to.equal([NSSet set]);
+  it(@"should reveal cloud based traits when the underlyking asset is a cloud placeholder", ^{
+    PHAsset *placeholderAsset = PTNCreateAsset();
+    OCMStub(placeholderAsset.isCloudPlaceholder).andReturn(YES);
+    expect(placeholderAsset.descriptorTraits).to.contain(kPTNDescriptorTraitCloudBasedKey);
 
     PHAsset *asset = PTNCreateAsset();
-    OCMStub(asset.sourceType).andReturn(PHAssetSourceTypeUserLibrary);
+    OCMStub(asset.isCloudPlaceholder).andReturn(NO);
     expect(asset.descriptorTraits).to.equal([NSSet set]);
   });
 

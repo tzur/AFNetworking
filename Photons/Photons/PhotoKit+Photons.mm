@@ -31,6 +31,12 @@ NS_ASSUME_NONNULL_BEGIN
 /// selector will crash the app.
 - (nullable NSString *)filename;
 
+/// Undocumented method returning \c YES if the asset serves as a placeholder for the actual asset
+/// which is located in the cloud. This seems to happen when iCloud Photo Library is turned on but
+/// the asset's full data is not located on the device. Once the cloud asset is downloaded it
+/// replaces this asset.
+- (BOOL)isCloudPlaceholder API_AVAILABLE(ios(8.2));
+
 @end
 
 /// Returns \c YES if \c conformsToUTI is an ancestor of \c uti in the UTI hierarchy. For example,
@@ -79,8 +85,8 @@ static BOOL PTUConformsToUTI(NSString *uti, NSString *conformsToUTI) {
 
 - (NSSet<NSString *> *)descriptorTraits {
   NSMutableSet *set = [NSMutableSet set];
-  if (self.sourceType == PHAssetSourceTypeCloudShared) {
-      [set addObject:kPTNDescriptorTraitCloudBasedKey];
+  if ([self respondsToSelector:@selector(isCloudPlaceholder)] && self.isCloudPlaceholder) {
+    [set addObject:kPTNDescriptorTraitCloudBasedKey];
   }
   if (self.mediaType == PHAssetMediaTypeVideo) {
     [set addObject:kPTNDescriptorTraitAudiovisualKey];
