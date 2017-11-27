@@ -214,9 +214,11 @@ typedef void (^LTImageCGImageBlock)(CGImageRef imageRef);
 }
 
 - (NSData *)dataFromMatWithCopying:(BOOL)copyData {
-  // Note that the length is not _mat.total() * _mat.elemSize(), as this is not true for
-  // non-continuous matrices. See http://goo.gl/Lmccbg.
-  NSUInteger length = _mat.rows * _mat.step[0];
+  // Note that the length is not `_mat.total() * _mat.elemSize()`, as this is not true for
+  // non-continuous matrices. See http://goo.gl/Lmccbg. Additionally, calculating the `length` as
+  // `_mat.rows * _mat.step[0]` may cause out-of-bound access since the last row of the matrix
+  // contains only `_mat.cols` elements, who's size in bytes is less than or equal to `step[0]`.
+  NSUInteger length = (_mat.rows - 1) * _mat.step[0] + _mat.cols * _mat.elemSize();
   if (copyData) {
     return [NSData dataWithBytes:_mat.data length:length];
   } else {
