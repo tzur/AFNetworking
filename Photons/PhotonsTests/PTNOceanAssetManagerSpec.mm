@@ -49,8 +49,8 @@ static PTNCacheProxy *PTNAssetCacheProxy(NSData *data, id<PTNResizingStrategy> r
  return [[PTNCacheProxy<PTNAlbum> alloc] initWithUnderlyingObject:result cacheInfo:cacheInfo];
 }
 
-static NSURL *PTNFakeAlbumRequestURL() {
-  return [NSURL ptn_oceanAlbumURLWithSource:$(PTNOceanAssetSourcePixabay) phrase:@"foo" page:2];
+static NSURL *PTNFakeAlbumRequestURL(NSUInteger page = 2) {
+  return [NSURL ptn_oceanAlbumURLWithSource:$(PTNOceanAssetSourcePixabay) phrase:@"foo" page:page];
 }
 
 static LTProgress *PTNFakeLTProgress(NSData *data) {
@@ -111,12 +111,32 @@ context(@"fetching albums", ^{
       [request sendNext:PTNFakeLTProgress(data)];
 
       id<PTNAlbum> album = [[PTNAlbum alloc] initWithURL:requestURL subalbums:@[]
-                                                  assets:@[expectedDescriptor]];
+                                                  assets:@[expectedDescriptor]
+                                            nextAlbumURL:PTNFakeAlbumRequestURL(3)];
       auto cacheInfo = [[PTNCacheInfo alloc] initWithMaxAge:300 responseTime:date entityTag:nil];
       auto cacheProxy = [[PTNCacheProxy<PTNAlbum> alloc] initWithUnderlyingObject:album
                                                                         cacheInfo:cacheInfo];
 
       expect(expectedDescriptor).toNot.beNil();
+      expect(recorder).to.sendValues(@[[PTNAlbumChangeset changesetWithAfterAlbum:cacheProxy]]);
+    });
+
+    it(@"should not have next album for the last page", ^{
+      RACSubject *request = [RACSubject subject];
+      OCMStub([client GET:OCMOCK_ANY withParameters:OCMOCK_ANY headers:OCMOCK_ANY])
+          .andReturn(request);
+      LLSignalTestRecorder *recorder = [[manager fetchAlbumWithURL:requestURL] testRecorder];
+
+      NSString *path = [NSBundle lt_pathForResource:@"OceanFakeSearchResponseLastPage.json"
+                                          nearClass:[self class]];
+
+      [request sendNext:PTNFakeLTProgress([NSData dataWithContentsOfFile:path])];
+
+      id<PTNAlbum> album = [[PTNAlbum alloc] initWithURL:requestURL subalbums:@[] assets:@[]];
+      auto cacheInfo = [[PTNCacheInfo alloc] initWithMaxAge:300 responseTime:date entityTag:nil];
+      auto cacheProxy = [[PTNCacheProxy<PTNAlbum> alloc] initWithUnderlyingObject:album
+                                                                        cacheInfo:cacheInfo];
+
       expect(recorder).to.sendValues(@[[PTNAlbumChangeset changesetWithAfterAlbum:cacheProxy]]);
     });
   });

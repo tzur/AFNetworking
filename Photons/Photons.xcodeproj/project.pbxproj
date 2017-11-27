@@ -40,6 +40,7 @@
 		655DCB401D4651BB00E44DAA /* libextobjc_iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 655DCB081D46506700E44DAA /* libextobjc_iOS.a */; };
 		655DCB411D4651BB00E44DAA /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B0B9A0E1CA6BF2200ED2334 /* libOCMock.a */; };
 		655DCB421D4651BB00E44DAA /* libSpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B0B9A001CA6BF2200ED2334 /* libSpecta.a */; };
+		799E70DD1FCC3E3600582415 /* OceanFakeSearchResponseLastPage.json in Resources */ = {isa = PBXBuildFile; fileRef = 799E70B31FCC3E3600582415 /* OceanFakeSearchResponseLastPage.json */; };
 		84013BB31CBFB12400C40E42 /* PTNTestUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 84013BB11CBFB07D00C40E42 /* PTNTestUtils.mm */; };
 		8403F0771CCF54C400FFED7D /* PTNCachingAssetManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8403F0761CCF54C400FFED7D /* PTNCachingAssetManager.mm */; };
 		841229151C9FE57D0078A690 /* PTNGatewayAssetManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 841229141C9FE57D0078A690 /* PTNGatewayAssetManager.m */; };
@@ -615,6 +616,7 @@
 		28BAD5EA1F1E0528001048D0 /* AFNetworking.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AFNetworking.framework; path = "../../../../../Library/Developer/Xcode/DerivedData/Photons-bmimbhansjldytcrqayxlubmctds/Build/Products/Debug-iphonesimulator/AFNetworking.framework"; sourceTree = "<group>"; };
 		655DCAFE1D46506700E44DAA /* extobjc.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = extobjc.xcodeproj; path = ../third_party/libextobjc/extobjc.xcodeproj; sourceTree = "<group>"; };
 		655DCB371D46518300E44DAA /* TestHost.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TestHost.xcodeproj; path = ../Foundations/TestHost.xcodeproj; sourceTree = "<group>"; };
+		799E70B31FCC3E3600582415 /* OceanFakeSearchResponseLastPage.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = OceanFakeSearchResponseLastPage.json; path = Resources/OceanFakeSearchResponseLastPage.json; sourceTree = "<group>"; };
 		84013BB01CBFB07D00C40E42 /* PTNTestUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNTestUtils.h; sourceTree = "<group>"; };
 		84013BB11CBFB07D00C40E42 /* PTNTestUtils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PTNTestUtils.mm; sourceTree = "<group>"; };
 		8403F0751CCF54C400FFED7D /* PTNCachingAssetManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNCachingAssetManager.h; sourceTree = "<group>"; };
@@ -1718,6 +1720,7 @@
 			children = (
 				2873CC311F54675C00677B2C /* OceanFakeAssetResponse.json */,
 				2873CBE91F54671F00677B2C /* OceanFakeSearchResponse.json */,
+				799E70B31FCC3E3600582415 /* OceanFakeSearchResponseLastPage.json */,
 				0DBC67E81EAF653C005EE862 /* OneSecondVideo16x16.mp4 */,
 				848D2D2E1C4E24E500491AB3 /* PTNImageAsset.jpg */,
 				8428F2F01C67489B0007B0A5 /* PTNImageAsset.txt */,
@@ -2206,6 +2209,7 @@
 				8BCF586C1BCD25AB001EE2ED /* PTNImageMetadataRight.jpg in Resources */,
 				2873CBEA1F54671F00677B2C /* OceanFakeSearchResponse.json in Resources */,
 				8BCF586F1BCD25AB001EE2ED /* PTNImageMetadataUpMirrored.jpg in Resources */,
+				799E70DD1FCC3E3600582415 /* OceanFakeSearchResponseLastPage.json in Resources */,
 				8BCF58691BCD25AB001EE2ED /* PTNImageMetadataImage.jpg in Resources */,
 				8428F2F11C67489B0007B0A5 /* PTNImageAsset.txt in Resources */,
 				8BCF586E1BCD25AB001EE2ED /* PTNImageMetadataUp.jpg in Resources */,
