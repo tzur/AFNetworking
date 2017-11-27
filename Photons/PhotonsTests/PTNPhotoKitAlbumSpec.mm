@@ -23,6 +23,7 @@ it(@"should initialize with url and assets fetch result", ^{
   expect(album.assets).to.equal(fetchResult);
   expect(album.subalbums.count).to.equal(0);
   expect(album.subalbums).notTo.equal(fetchResult);
+  expect(album.nextAlbumURL).to.beNil();
 });
 
 it(@"should initialize with url and subalbums fetch result", ^{
@@ -36,6 +37,7 @@ it(@"should initialize with url and subalbums fetch result", ^{
   expect(album.assets.count).to.equal(0);
   expect(album.assets).notTo.equal(fetchResult);
   expect(album.subalbums).to.equal(fetchResult);
+  expect(album.nextAlbumURL).to.beNil();
 });
 
 SpecEnd
