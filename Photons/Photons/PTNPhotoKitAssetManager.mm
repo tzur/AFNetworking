@@ -721,7 +721,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (RACSignal *)imageDataForPhotoKitAsset:(PHAsset *)asset {
   return [[RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
-    PHImageRequestOptions *options = [[PHImageRequestOptions alloc] init];
+    PHImageRequestOptions *options = [[[PTNImageFetchOptions alloc] init] photoKitOptions];
     options.progressHandler = ^(double value, NSError *error, BOOL *, NSDictionary *) {
       if (!error) {
         PTNProgress *progress = [[PTNProgress alloc] initWithProgress:@(value)];
