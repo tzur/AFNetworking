@@ -391,4 +391,15 @@ context(@"saving images", ^{
   });
 });
 
+it(@"should not crash when accessing sub matrix near end of a non-continuous matrix", ^{
+  const auto size = 2096;
+  const auto xOffset = 2000;
+  auto mat = cv::Mat4b(size, size, cv::Scalar(255, 127, 63, 255));
+  auto subMat = mat(cv::Rect(xOffset, 0, size - xOffset, size));
+  auto image = [[LTImage alloc] initWithMat:subMat copy:NO];
+  auto uiImage = [image UIImageWithScale:1 copyData:NO];
+  auto data = UIImageJPEGRepresentation(uiImage, 1);
+  expect(data).toNot.beNil();
+});
+
 SpecEnd
