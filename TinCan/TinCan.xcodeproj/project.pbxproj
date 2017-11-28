@@ -21,8 +21,13 @@
 		A14173421E6EB59F005DBEFF /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A141729D1E6EAF03005DBEFF /* libOCMock.a */; };
 		A14173431E6EB59F005DBEFF /* libSpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A14172B81E6EAF0D005DBEFF /* libSpecta.a */; };
 		A18220B91F0398A500FC7C61 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A18220B81F0398A500FC7C61 /* MessageUI.framework */; };
-		B4D68B071FB1ADA0009A5300 /* TestSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = B4D68B061FB1ADA0009A5300 /* TestSpec.mm */; };
-		B4D68B2C1FB1AE0D009A5300 /* Test.mm in Sources */ = {isa = PBXBuildFile; fileRef = B4D68B2B1FB1AE0D009A5300 /* Test.mm */; };
+		B42D71061FBB24810024718E /* TINMessage.mm in Sources */ = {isa = PBXBuildFile; fileRef = B42D70DF1FBB24810024718E /* TINMessage.mm */; };
+		B42D71081FBB24900024718E /* TINMessageSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = B42D71071FBB24900024718E /* TINMessageSpec.mm */; };
+		B45926D81FC69A5F00A70964 /* TINMessage+UserInfo.mm in Sources */ = {isa = PBXBuildFile; fileRef = B45926D71FC69A5F00A70964 /* TINMessage+UserInfo.mm */; };
+		B45926FD1FC6A06200A70964 /* TINMessage+UserInfoSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = B45926FC1FC6A06200A70964 /* TINMessage+UserInfoSpec.mm */; };
+		B45927001FC6A76900A70964 /* NSURL+TinCan.mm in Sources */ = {isa = PBXBuildFile; fileRef = B45926FF1FC6A76900A70964 /* NSURL+TinCan.mm */; };
+		B45927021FC6AF2D00A70964 /* NSURL+TinCanSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = B45927011FC6AF2D00A70964 /* NSURL+TinCanSpec.mm */; };
+		B45927061FC6B1EC00A70964 /* TINTestsCommon.mm in Sources */ = {isa = PBXBuildFile; fileRef = B45927051FC6B1EC00A70964 /* TINTestsCommon.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -299,6 +304,13 @@
 			remoteGlobalIDString = 65CEFBB11D3BF72800402230;
 			remoteInfo = TestHost;
 		};
+		B42D70F11FBB24810024718E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A14172691E6EADDF005DBEFF /* LTKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 194FF4FC1FA8BA77008879E7;
+			remoteInfo = LTTestKit;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -340,9 +352,17 @@
 		A14172D71E6EB2FF005DBEFF /* TestHost.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TestHost.xcodeproj; path = ../Foundations/TestHost.xcodeproj; sourceTree = "<group>"; };
 		A1417A911E6ED9CB005DBEFF /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		A18220B81F0398A500FC7C61 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
-		B4D68B061FB1ADA0009A5300 /* TestSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = TestSpec.mm; sourceTree = "<group>"; };
-		B4D68B2A1FB1AE0D009A5300 /* Test.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Test.h; sourceTree = "<group>"; };
-		B4D68B2B1FB1AE0D009A5300 /* Test.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = Test.mm; sourceTree = "<group>"; };
+		B42D70DF1FBB24810024718E /* TINMessage.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = TINMessage.mm; sourceTree = "<group>"; };
+		B42D71051FBB24810024718E /* TINMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TINMessage.h; sourceTree = "<group>"; };
+		B42D71071FBB24900024718E /* TINMessageSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = TINMessageSpec.mm; sourceTree = "<group>"; };
+		B45926D61FC69A5F00A70964 /* TINMessage+UserInfo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TINMessage+UserInfo.h"; sourceTree = "<group>"; };
+		B45926D71FC69A5F00A70964 /* TINMessage+UserInfo.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "TINMessage+UserInfo.mm"; sourceTree = "<group>"; };
+		B45926FC1FC6A06200A70964 /* TINMessage+UserInfoSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "TINMessage+UserInfoSpec.mm"; sourceTree = "<group>"; };
+		B45926FE1FC6A76900A70964 /* NSURL+TinCan.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSURL+TinCan.h"; sourceTree = "<group>"; };
+		B45926FF1FC6A76900A70964 /* NSURL+TinCan.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSURL+TinCan.mm"; sourceTree = "<group>"; };
+		B45927011FC6AF2D00A70964 /* NSURL+TinCanSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSURL+TinCanSpec.mm"; sourceTree = "<group>"; };
+		B45927041FC6B1EC00A70964 /* TINTestsCommon.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TINTestsCommon.h; sourceTree = "<group>"; };
+		B45927051FC6B1EC00A70964 /* TINTestsCommon.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = TINTestsCommon.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -391,8 +411,12 @@
 		883235611ED861CD0090787D /* Base */ = {
 			isa = PBXGroup;
 			children = (
-				B4D68B2A1FB1AE0D009A5300 /* Test.h */,
-				B4D68B2B1FB1AE0D009A5300 /* Test.mm */,
+				B45926FE1FC6A76900A70964 /* NSURL+TinCan.h */,
+				B45926FF1FC6A76900A70964 /* NSURL+TinCan.mm */,
+				B42D71051FBB24810024718E /* TINMessage.h */,
+				B42D70DF1FBB24810024718E /* TINMessage.mm */,
+				B45926D61FC69A5F00A70964 /* TINMessage+UserInfo.h */,
+				B45926D71FC69A5F00A70964 /* TINMessage+UserInfo.mm */,
 			);
 			name = Base;
 			sourceTree = "<group>";
@@ -400,7 +424,9 @@
 		883235801ED861DB0090787D /* Base */ = {
 			isa = PBXGroup;
 			children = (
-				B4D68B061FB1ADA0009A5300 /* TestSpec.mm */,
+				B45927011FC6AF2D00A70964 /* NSURL+TinCanSpec.mm */,
+				B45926FC1FC6A06200A70964 /* TINMessage+UserInfoSpec.mm */,
+				B42D71071FBB24900024718E /* TINMessageSpec.mm */,
 			);
 			name = Base;
 			sourceTree = "<group>";
@@ -519,6 +545,7 @@
 			children = (
 				A141726F1E6EADDF005DBEFF /* libLTKit.a */,
 				A14172711E6EADDF005DBEFF /* LTKitTests.xctest */,
+				B42D70F21FBB24810024718E /* libLTKitTestUtils.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -593,6 +620,7 @@
 			isa = PBXGroup;
 			children = (
 				883235801ED861DB0090787D /* Base */,
+				B45927031FC6B13D00A70964 /* Common */,
 			);
 			name = Tests;
 			sourceTree = "<group>";
@@ -608,6 +636,15 @@
 				882D1F171EC19A2C007F39F5 /* libcompression.tbd */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		B45927031FC6B13D00A70964 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				B45927041FC6B1EC00A70964 /* TINTestsCommon.h */,
+				B45927051FC6B1EC00A70964 /* TINTestsCommon.mm */,
+			);
+			name = Common;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -976,6 +1013,13 @@
 			remoteRef = A14172DB1E6EB2FF005DBEFF /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		B42D70F21FBB24810024718E /* libLTKitTestUtils.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libLTKitTestUtils.a;
+			remoteRef = B42D70F11FBB24810024718E /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
@@ -993,7 +1037,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B4D68B2C1FB1AE0D009A5300 /* Test.mm in Sources */,
+				B45926D81FC69A5F00A70964 /* TINMessage+UserInfo.mm in Sources */,
+				B42D71061FBB24810024718E /* TINMessage.mm in Sources */,
+				B45927001FC6A76900A70964 /* NSURL+TinCan.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1001,7 +1047,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B4D68B071FB1ADA0009A5300 /* TestSpec.mm in Sources */,
+				B45927061FC6B1EC00A70964 /* TINTestsCommon.mm in Sources */,
+				B45926FD1FC6A06200A70964 /* TINMessage+UserInfoSpec.mm in Sources */,
+				B42D71081FBB24900024718E /* TINMessageSpec.mm in Sources */,
+				B45927021FC6AF2D00A70964 /* NSURL+TinCanSpec.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1040,6 +1089,10 @@
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = (
+					"$(inherited)",
+					"-Wnullable-to-nonnull-conversion",
+				);
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -1056,6 +1109,10 @@
 					"$(SRCROOT)/../third_party/libextobjc",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				OTHER_CFLAGS = (
+					"$(inherited)",
+					"-Wnullable-to-nonnull-conversion",
+				);
 				SDKROOT = iphoneos;
 			};
 			name = Release;

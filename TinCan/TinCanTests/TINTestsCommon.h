@@ -3,8 +3,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface Test : NSObject
-
-@end
+/// TestHost's application group ID, used in specs.
+extern NSString * const kTINTestHostAppGroupID;
 
 NS_ASSUME_NONNULL_END
