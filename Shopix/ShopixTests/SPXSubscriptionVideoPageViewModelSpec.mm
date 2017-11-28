@@ -6,6 +6,7 @@
 SpecBegin(SPXSubscriptionVideoPageViewModel)
 
 __block SPXSubscriptionVideoPageViewModel *videoPageViewModel;
+__block id mockApplication;
 __block UIWindow *window;
 __block NSRange titleRange;
 __block NSRange subtitleRange;
@@ -17,9 +18,13 @@ beforeEach(^{
   titleRange = NSMakeRange(0, videoPageViewModel.title.length);
   subtitleRange = NSMakeRange(0, videoPageViewModel.subtitle.length);
 
-  id mockApplication = [OCMockObject partialMockForObject:[UIApplication sharedApplication]];
+  mockApplication = OCMPartialMock([UIApplication sharedApplication]);
   window = OCMClassMock([UIWindow class]);
   OCMStub([mockApplication keyWindow]).andReturn(window);
+});
+
+afterEach(^{
+  mockApplication = nil;
 });
 
 context(@"font size adaptation", ^{
