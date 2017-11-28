@@ -25,9 +25,6 @@ NS_ASSUME_NONNULL_BEGIN
 /// @see https://developer.apple.com/library/content/documentation/Miscellaneous/Reference/UTIRef/Articles/System-DeclaredUniformTypeIdentifiers.html
 @property (readonly, nonatomic, nullable) NSString *uniformTypeIdentifier;
 
-/// The orientation of the image.
-@property (readonly, nonatomic) UIImageOrientation orientation;
-
 @end
 
 /// Default implementation of \c PTNImageDataAsset.
@@ -35,15 +32,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)init NS_UNAVAILABLE;
 
-/// Initializes with \c data as the image data. \c uniformTypeIdentifier will be set to \c nil and
-/// \c orientation to \c UIImageOrientationUp.
+/// Initializes with \c data as the image data. \c uniformTypeIdentifier will be set to \c nil.
 - (instancetype)initWithData:(NSData *)data;
 
-/// Initializes with \c data as the image data, the \c uniformTypeIdentifier of the image and the
-/// \c orientation of the image.
+/// Initializes with \c data as the image data, the \c uniformTypeIdentifier of the image.
 - (instancetype)initWithData:(NSData *)data
-       uniformTypeIdentifier:(nullable NSString *)uniformTypeIdentifier
-                 orientation:(UIImageOrientation)orientation NS_DESIGNATED_INITIALIZER;
+       uniformTypeIdentifier:(nullable NSString *)uniformTypeIdentifier NS_DESIGNATED_INITIALIZER;
 
 @end
 

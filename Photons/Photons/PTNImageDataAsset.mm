@@ -18,19 +18,16 @@ NS_ASSUME_NONNULL_BEGIN
 @implementation PTNImageDataAsset
 
 @synthesize uniformTypeIdentifier = _uniformTypeIdentifier;
-@synthesize orientation = _orientation;
 
 - (instancetype)initWithData:(NSData *)data {
-  return [self initWithData:data uniformTypeIdentifier:nil orientation:UIImageOrientationUp];
+  return [self initWithData:data uniformTypeIdentifier:nil];
 }
 
 - (instancetype)initWithData:(NSData *)data
-       uniformTypeIdentifier:(nullable NSString *)uniformTypeIdentifier
-                 orientation:(UIImageOrientation)orientation {
+       uniformTypeIdentifier:(nullable NSString *)uniformTypeIdentifier {
   if (self = [super init]) {
     _data = data;
     _uniformTypeIdentifier = uniformTypeIdentifier;
-    _orientation = orientation;
   }
   return self;
 }
@@ -71,17 +68,16 @@ NS_ASSUME_NONNULL_BEGIN
     return NO;
   }
 
-  return [self.data isEqual:object.data] && self.orientation == object.orientation;
+  return [self.data isEqual:object.data];
 }
 
 - (NSUInteger)hash {
-  return self.data.hash ^ self.orientation;
+  return self.data.hash;
 }
 
 - (NSString *)description {
-  return [NSString stringWithFormat:@"<%@: %p, data length: %lu, UTI: %@, orientation %ld>",
-          self.class, self, (unsigned long)self.data.length, self.uniformTypeIdentifier,
-          (long)self.orientation];
+  return [NSString stringWithFormat:@"<%@: %p, data length: %lu, UTI: %@>",
+          self.class, self, (unsigned long)self.data.length, self.uniformTypeIdentifier];
 }
 
 @end

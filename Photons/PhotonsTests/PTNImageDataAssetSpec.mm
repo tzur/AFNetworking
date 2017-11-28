@@ -15,8 +15,7 @@ beforeEach(^{
   char buffer[] = { 0x1, 0x2, 0x3, 0x4 };
   data = [[NSData alloc] initWithBytes:buffer length:sizeof(buffer)];
   asset = [[PTNImageDataAsset alloc] initWithData:data
-                                   uniformTypeIdentifier:@"public.type"
-                                             orientation:UIImageOrientationLeft];
+                                   uniformTypeIdentifier:@"public.type"];
 });
 
 it(@"should fetch data", ^{
