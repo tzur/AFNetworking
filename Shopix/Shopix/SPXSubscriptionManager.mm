@@ -73,7 +73,7 @@ NS_ASSUME_NONNULL_BEGIN
   id<SPXFeedbackComposeViewControllerProvider> _Nullable mailComposeProvider =
       [JSObjection defaultInjector][@protocol(SPXFeedbackComposeViewControllerProvider)];
   id<SPXAlertViewControllerProvider> alertProvider =
-      [JSObjection defaultInjector][@protocol(SPXFeedbackComposeViewControllerProvider)] ?:
+      [JSObjection defaultInjector][@protocol(SPXAlertViewControllerProvider)] ?:
       [[SPXAlertViewControllerProvider alloc] init];
 
   LTAssert(productsInfoProvider && productsManager && mailComposeProvider,
@@ -102,6 +102,29 @@ NS_ASSUME_NONNULL_BEGIN
   return self;
 }
 
+- (void)fetchProductsInfo:(NSSet<NSString *> *)productIdentifiers
+        completionHandler:(SPXFetchProductsCompletionBlock)completionHandler {
+  @weakify(self);
+  [[[self.productsManager fetchProductsInfo:productIdentifiers]
+   deliverOnMainThread]
+   subscribeNext:^(NSDictionary<NSString *, BZRProduct *> *products) {
+     completionHandler(products, nil);
+   }
+   error:^(NSError *error) {
+     @strongify(self);
+     auto alertViewModel = [SPXAlertViewModel fetchProductsInfoFailedAlertWithTryAgainAction:^{
+       [self fetchProductsInfo:productIdentifiers completionHandler:completionHandler];
+     } contactUsAction:^{
+       [self presentMailComposerWithCompletionHandler:^(BOOL) {
+         completionHandler(nil, error);
+       }];
+     } cancelAction:^{
+       completionHandler(nil, error);
+     }];
+     [self presentAlertWithViewModel:alertViewModel];
+   }];
+}
+
 - (void)purchaseSubscription:(NSString *)productIdentifier
            completionHandler:(LTBoolCompletionBlock)completionHandler {
   LTParameterAssert(self.productsInfoProvider.productsJSONDictionary[productIdentifier],
@@ -114,8 +137,8 @@ NS_ASSUME_NONNULL_BEGIN
       subscribeError:^(NSError *error) {
         @strongify(self);
         if (!self || error.code == BZRErrorCodeOperationCancelled) {
-           completionHandler(NO);
-           return;
+          completionHandler(NO);
+          return;
         }
 
         auto alertViewModel = [SPXAlertViewModel purchaseFailedAlertWithTryAgainAction:^{

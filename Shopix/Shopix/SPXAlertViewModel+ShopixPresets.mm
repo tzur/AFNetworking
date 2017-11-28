@@ -12,6 +12,16 @@ using namespace spx;
 
 @implementation SPXAlertViewModel (ShopixPresets)
 
++ (instancetype)fetchProductsInfoFailedAlertWithTryAgainAction:(LTVoidBlock)tryAgainAction
+                                               contactUsAction:(LTVoidBlock)contactUsAction
+                                                  cancelAction:(LTVoidBlock)cancelAction {
+  auto title = _LDefault(@"Network Error",
+                         @"Title of an alert shown after failing attempt to fetch products "
+                         "information");
+  return [self failureAlertWithTitle:title tryAgainAction:tryAgainAction
+                     contactUsAction:contactUsAction cancelAction:cancelAction];
+}
+
 + (instancetype)successfulRestorationAlertWithAction:(LTVoidBlock)action
                                 subscriptionRestored:(BOOL)subscriptionRestored {
   auto title = _LDefault(@"Restoration Completed",

@@ -14,6 +14,15 @@ NS_ASSUME_NONNULL_BEGIN
 + (instancetype)successfulRestorationAlertWithAction:(LTVoidBlock)action
                                 subscriptionRestored:(BOOL)subscriptionRestored;
 
+/// Creates a new alert view-model for an alert that should be shown after failing product
+/// information fetching. The alert will have a title, message and 3 buttons, "Try Again" for
+/// retrying the operation, "Contact Us" button for reporting the issue and a "Not Now" button for
+/// cancelling the operation. The \c tryAgainAction, \c contactUsAction or \c cancelAction block is
+/// invoked if the user pressed on the "Try Again", "Contact Us" or "Not Now" button respectively.
++ (instancetype)fetchProductsInfoFailedAlertWithTryAgainAction:(LTVoidBlock)tryAgainAction
+                                               contactUsAction:(LTVoidBlock)contactUsAction
+                                                  cancelAction:(LTVoidBlock)cancelAction;
+
 /// Creates a new alert view-model for an alert that should be shown after failing purchase
 /// restoration. The alert will have a title, message and 3 buttons, "Try Again" for retrying the
 /// operation, "Contact Us" button for reporting the issue and a "Not Now" button for cancelling the

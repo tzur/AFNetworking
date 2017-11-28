@@ -1,6 +1,9 @@
 /* Text on a button shown to the user on failed action, suggesting the user to contact our support team */
 "Contact Us" = "Contattaci";
 
+/* Title of an alert shown after failing attempt to fetch products information */
+"Network Error" = "Network Error"; /* MISSING TRANSLATION */
+
 /* Text on a button shown to the user on failed action, dismissing the alert and canceling the operation */
 "Not Now" = "Non adesso";
 
