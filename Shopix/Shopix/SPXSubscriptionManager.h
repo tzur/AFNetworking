@@ -3,32 +3,37 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class BZRProduct;
+@class BZRProduct, SPXSubscriptionManager;
 
-@protocol BZRProductsManager, BZRProductsInfoProvider, SPXAlertViewControllerProvider,
-    SPXFeedbackComposeViewControllerProvider;
+@protocol BZRProductsManager, BZRProductsInfoProvider, SPXAlertViewModel;
+
+/// Delegate for \c SPXSubscriptionManager, used by the manager to present UI during asynchronous
+/// operations. The manager may use it to present alerts successful completion of some operations or
+/// on failure of some other operations and to present the feedback mail composer.
+@protocol SPXSubscriptionManagerDelegate <NSObject>
+
+/// Invoked by the subscription manager when an alert is needed to be shown to the user. The
+/// \c viewModel defines the title, message and buttons of the alert.
+- (void)presentAlertWithViewModel:(id<SPXAlertViewModel>)viewModel;
+
+/// Invoked by the subscription manager when the user requested to send a feedback email. When
+/// the mail composer is dismissed \c completionHandler should be invoked.
+- (void)presentFeedbackMailComposerWithCompletionHandler:(LTVoidBlock)completionHandler;
+
+@end
 
 /// Manager used to handle subscription purchasing and restoration, with an appropriate localized
 /// messages to the user on success or failure.
 @interface SPXSubscriptionManager : NSObject
 
-- (instancetype)init NS_UNAVAILABLE;
+/// Initializes with shared \c productsInfoProvider and \c productsManager pulled from Objection.
+- (instancetype)init;
 
-/// Initializes with shared \c productsInfoProvider, \c productsManager, \c mailComposeProvider and
-/// \c alertProvider pulled from \c JSObjection. \c viewController is used to present other
-/// view-controllers during the purchase / restoration process (e.g alerts, feedback composer).
-- (instancetype)initWithViewController:(UIViewController *)viewController;
-
-/// Initializes with \c productsInfoProvider used to get the current subscription status;
-/// \c productsManager used to purchase subscriptions and restore purchases; \c mailComposeProvider
-/// provides mail compose view controller for sending user feedback; \c alertProvider provides
-/// alert view controllers presented during the purchase / restoration process; and
-/// \c viewController is used to present other view-controllers (e.g alerts and feedback composer).
+/// Initializes with \c productsInfoProvider used to get the current subscription status and
+/// \c productsManager is used to purchase subscriptions and restore purchases.
 - (instancetype)initWithProductsInfoProvider:(id<BZRProductsInfoProvider>)productsInfoProvider
-    productsManager:(id<BZRProductsManager>)productsManager
-    mailComposeProvider:(id<SPXFeedbackComposeViewControllerProvider>)mailComposeProvider
-    alertProvider:(id<SPXAlertViewControllerProvider>)alertProvider
-    viewController:(UIViewController *)viewController NS_DESIGNATED_INITIALIZER;
+                             productsManager:(id<BZRProductsManager>)productsManager
+    NS_DESIGNATED_INITIALIZER;
 
 /// Block invoked after product information fetch is completed. On success \c products is returned
 /// and error is \c nil. On failure, \c products is \c nil and \c error will contain an appropriate
@@ -62,6 +67,9 @@ typedef void (^SPXFetchProductsCompletionBlock)
 /// that will restart the restoration process, and a "Contact Us" button that will present the
 /// feedback mail composer. \c completionHandler is invoked on the main thread.
 - (void)restorePurchasesWithCompletionHandler:(LTBoolCompletionBlock)completionHandler;
+
+/// Delegate used to present UI to the user during asynchronous operations.
+@property (weak, nonatomic, nullable) id<SPXSubscriptionManagerDelegate> delegate;
 
 @end
 
