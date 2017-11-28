@@ -1,17 +1,14 @@
 // Copyright (c) 2017 Lightricks. All rights reserved.
 // Created by Barak Weiss.
 
+#import <LTKit/LTValueObject.h>
+
+#import "PTNDataAsset.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
 /// Protocol for an image in an \c NSData format, enabling fetching of image data and metadata.
-@protocol PTNImageDataAsset <NSObject>
-
-/// Fetches the data of the image backed up by this asset. The returned signal sends a single
-/// \c NSData object on an arbitrary thread, and completes. If data can't be fetched the signal errs
-/// instead.
-///
-/// @return <tt>RACSignal<NSData *></tt>.
-- (RACSignal *)fetchImageData;
+@protocol PTNImageDataAsset <PTNDataAsset>
 
 /// Fetches the image metadata of image backed by this asset. The returned signal sends a single
 /// \c PTNImageMetadata object on an arbitrary thread, and completes. If the image metadata cannot
@@ -28,7 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 /// Default implementation of \c PTNImageDataAsset.
-@interface PTNImageDataAsset : NSObject <PTNImageDataAsset>
+@interface PTNImageDataAsset : LTValueObject <PTNImageDataAsset>
 
 - (instancetype)init NS_UNAVAILABLE;
 

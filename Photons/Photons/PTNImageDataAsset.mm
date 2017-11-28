@@ -3,6 +3,9 @@
 
 #import "PTNImageDataAsset.h"
 
+#import <LTKit/LTPath.h>
+#import <LTKit/NSFileManager+LTKit.h>
+
 #import "NSError+Photons.h"
 #import "PTNImageMetadata.h"
 
@@ -52,32 +55,23 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark PTNDataAsset
 #pragma mark -
 
-- (RACSignal *)fetchImageData {
+- (RACSignal *)fetchData {
   return [RACSignal return:self.data];
 }
 
-#pragma mark -
-#pragma mark NSObject
-#pragma mark -
-
-- (BOOL)isEqual:(PTNImageDataAsset *)object {
-  if (object == self) {
-    return YES;
-  }
-  if (![object isKindOfClass:self.class]) {
-    return NO;
-  }
-
-  return [self.data isEqual:object.data];
-}
-
-- (NSUInteger)hash {
-  return self.data.hash;
-}
-
-- (NSString *)description {
-  return [NSString stringWithFormat:@"<%@: %p, data length: %lu, UTI: %@>",
-          self.class, self, (unsigned long)self.data.length, self.uniformTypeIdentifier];
+- (RACSignal *)writeToFileAtPath:(LTPath *)path usingFileManager:(NSFileManager *)fileManager {
+  return [[RACSignal defer:^RACSignal *{
+      NSError *error;
+      BOOL success = [fileManager lt_writeData:self.data toFile:path.path
+                                       options:NSDataWritingAtomic error:&error];
+      if (!success) {
+        return [RACSignal error:[NSError lt_errorWithCode:LTErrorCodeFileWriteFailed
+                                                      url:path.url
+                                          underlyingError:error]];
+      }
+      return [RACSignal empty];
+    }]
+    subscribeOn:RACScheduler.scheduler];
 }
 
 @end
