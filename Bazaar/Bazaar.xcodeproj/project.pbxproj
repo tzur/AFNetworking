@@ -235,6 +235,9 @@
 		B9EE58AA1D5DF76F008B4448 /* BZRTimeConversion.mm in Sources */ = {isa = PBXBuildFile; fileRef = B9EE58A81D5DF76F008B4448 /* BZRTimeConversion.mm */; };
 		B9EE58AD1D5DFAD7008B4448 /* BZRTimeProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = B9EE58AB1D5DFAD7008B4448 /* BZRTimeProvider.h */; };
 		B9EE58AE1D5DFAD7008B4448 /* BZRTimeProvider.mm in Sources */ = {isa = PBXBuildFile; fileRef = B9EE58AC1D5DFAD7008B4448 /* BZRTimeProvider.mm */; };
+		B9EF55021FCD8E0800083414 /* BZRKeychainStorageRoute.mm in Sources */ = {isa = PBXBuildFile; fileRef = B9EF54CB1FCD8E0800083414 /* BZRKeychainStorageRoute.mm */; };
+		B9EF55031FCD8E0800083414 /* BZRKeychainStorageRoute.h in Headers */ = {isa = PBXBuildFile; fileRef = B9EF55011FCD8E0800083414 /* BZRKeychainStorageRoute.h */; };
+		B9EF55451FCD8F0B00083414 /* BZRKeychainStorageRouteSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = B9EF55111FCD8F0B00083414 /* BZRKeychainStorageRouteSpec.mm */; };
 		B9F0882C1D8EBB4300381E29 /* BZRFakeAcquiredViaSubscriptionProvider.mm in Sources */ = {isa = PBXBuildFile; fileRef = B9F0882B1D8EBB4300381E29 /* BZRFakeAcquiredViaSubscriptionProvider.mm */; };
 		B9F0B57E1F0CDA90006636A9 /* BZRProductsVariantSelectorFactory.mm in Sources */ = {isa = PBXBuildFile; fileRef = B9F0B57C1F0CDA90006636A9 /* BZRProductsVariantSelectorFactory.mm */; };
 		B9F3281B1F95F8C500ACA74A /* BZRReceiptValidationParametersProviderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = B9F3281A1F95F8C500ACA74A /* BZRReceiptValidationParametersProviderSpec.mm */; };
@@ -691,6 +694,13 @@
 			remoteGlobalIDString = D047260B19E49F82006002AA;
 			remoteInfo = "ReactiveObjC-iOS";
 		};
+		B9EF54E61FCD8E0800083414 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6580F0751CEB319F007EABDD /* LTKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 194FF4FC1FA8BA77008879E7;
+			remoteInfo = LTKitTestUtils;
+		};
 		FA8D43481D3517CC006FF5DB /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FA8D43221D3517CC006FF5DB /* UICKeyChainStore.xcodeproj */;
@@ -970,6 +980,9 @@
 		B9EE58A81D5DF76F008B4448 /* BZRTimeConversion.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRTimeConversion.mm; sourceTree = "<group>"; };
 		B9EE58AB1D5DFAD7008B4448 /* BZRTimeProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRTimeProvider.h; sourceTree = "<group>"; };
 		B9EE58AC1D5DFAD7008B4448 /* BZRTimeProvider.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRTimeProvider.mm; sourceTree = "<group>"; };
+		B9EF54CB1FCD8E0800083414 /* BZRKeychainStorageRoute.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRKeychainStorageRoute.mm; sourceTree = "<group>"; };
+		B9EF55011FCD8E0800083414 /* BZRKeychainStorageRoute.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRKeychainStorageRoute.h; sourceTree = "<group>"; };
+		B9EF55111FCD8F0B00083414 /* BZRKeychainStorageRouteSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRKeychainStorageRouteSpec.mm; sourceTree = "<group>"; };
 		B9F0882A1D8EBB4300381E29 /* BZRFakeAcquiredViaSubscriptionProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRFakeAcquiredViaSubscriptionProvider.h; sourceTree = "<group>"; };
 		B9F0882B1D8EBB4300381E29 /* BZRFakeAcquiredViaSubscriptionProvider.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRFakeAcquiredViaSubscriptionProvider.mm; sourceTree = "<group>"; };
 		B9F0B57C1F0CDA90006636A9 /* BZRProductsVariantSelectorFactory.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRProductsVariantSelectorFactory.mm; sourceTree = "<group>"; };
@@ -1358,6 +1371,7 @@
 			children = (
 				6599B4031CFA346C00525BB7 /* libLTKit.a */,
 				6599B4051CFA346C00525BB7 /* LTKitTests.xctest */,
+				B9EF54E71FCD8E0800083414 /* libLTKitTestUtils.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1908,6 +1922,8 @@
 				B9FD07FD1D61B38E00523BB4 /* BZRKeychainStorage+TypeSafety.mm */,
 				CD81DFAA1E93BA940061C12D /* BZRKeychainStorageMigrator.h */,
 				CD81DFAB1E93BA940061C12D /* BZRKeychainStorageMigrator.mm */,
+				B9EF55011FCD8E0800083414 /* BZRKeychainStorageRoute.h */,
+				B9EF54CB1FCD8E0800083414 /* BZRKeychainStorageRoute.mm */,
 				9FD3A75A1D3DF26100967F8D /* UICKeyChainStore+SecureStorage.h */,
 				9FD3A75B1D3DF26100967F8D /* UICKeyChainStore+SecureStorage.mm */,
 			);
@@ -1919,6 +1935,7 @@
 			children = (
 				B9FD082D1D61B40B00523BB4 /* BZRKeychainStorage+TypeSafetySpec.mm */,
 				CD81E0C41E93D7C70061C12D /* BZRKeychainStorageMigratorSpec.mm */,
+				B9EF55111FCD8F0B00083414 /* BZRKeychainStorageRouteSpec.mm */,
 				FA1B885C1D33B2BC00097AD0 /* BZRKeychainStorageSpec.mm */,
 				9FE7D4F01D3F5D1000685F19 /* UICKeyChainStore+SecureStorageSpec.mm */,
 			);
@@ -2030,6 +2047,7 @@
 				CD3A74081EF6989600FA4FBD /* BZRMulticastContentFetcher.h in Headers */,
 				B9CD44C11F9E2EED002D1B05 /* BZRStoreKitTypedefs.h in Headers */,
 				6526DEF51D41070E0034DE01 /* BZRZipFileArchiver.h in Headers */,
+				B9EF55031FCD8E0800083414 /* BZRKeychainStorageRoute.h in Headers */,
 				65013B571D498D2800D06E79 /* BZRZipArchiveFactory.h in Headers */,
 				B97BF8A31F554A1E00178C68 /* BZRRequestStatusSignal.h in Headers */,
 				CDC75AA51F04DBEB00247591 /* BZRReceiptValidationStatusCache.h in Headers */,
@@ -2532,6 +2550,13 @@
 			remoteRef = 8B6864151F33477D00F0EF4C /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		B9EF54E71FCD8E0800083414 /* libLTKitTestUtils.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libLTKitTestUtils.a;
+			remoteRef = B9EF54E61FCD8E0800083414 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		FA8D43491D3517CC006FF5DB /* UICKeyChainStore.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
@@ -2644,6 +2669,7 @@
 				65C74D041D5352D000D7518C /* BZRZipArchiveFactorySpec.mm in Sources */,
 				65C74D061D5352D000D7518C /* BZRZipFileArchiverSpec.mm in Sources */,
 				CDC77B1A1F14EAA200247591 /* BZRFallbackContentFetcherSpec.mm in Sources */,
+				B9EF55451FCD8F0B00083414 /* BZRKeychainStorageRouteSpec.mm in Sources */,
 				CD3A74381EF69DD400FA4FBD /* BZRMulticastContentFetcherSpec.mm in Sources */,
 				B973487C1D8C35CB006CF28A /* BZRStoreSpec.mm in Sources */,
 				CDA913F81EC83CAD00A6C5C6 /* BZRDummyContentFetcher.mm in Sources */,
@@ -2672,6 +2698,7 @@
 				B9237ADF1D69D60C0069B4F1 /* BZRProductDownloadManager.mm in Sources */,
 				6529F8691CEB6F0E00FBABFE /* BZRReceiptValidationParameters.mm in Sources */,
 				B918A9381E06D4EB00970070 /* BZRValidatricksHTTPClientProvider.mm in Sources */,
+				B9EF55021FCD8E0800083414 /* BZRKeychainStorageRoute.mm in Sources */,
 				B9A851631DE2468F001AA37C /* BZRProductsVariantSelector.mm in Sources */,
 				CD3A74091EF6989600FA4FBD /* BZRMulticastContentFetcher.mm in Sources */,
 				B9FD07FF1D61B38E00523BB4 /* BZRKeychainStorage+TypeSafety.mm in Sources */,

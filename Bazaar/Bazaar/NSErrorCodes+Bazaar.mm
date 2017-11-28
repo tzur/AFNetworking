@@ -83,7 +83,9 @@ LTErrorCodesImplement(BazaarErrorCodeProductID,
   /// Error that is caused by an operation that was cancelled.
   BZRErrorCodeOperationCancelled,
   /// Restoring purchases operation has failed.
-  BZRErrorCodeRestorePurchasesFailed
+  BZRErrorCodeRestorePurchasesFailed,
+  /// Service name was not found while trying to store/retrieve data from storage.
+  BZRErrorCodeServiceNameNotFound
 );
 
 NS_ASSUME_NONNULL_END

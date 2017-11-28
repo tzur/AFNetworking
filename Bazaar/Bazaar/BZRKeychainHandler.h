@@ -18,6 +18,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Bazaar namespace error for the given underlying class error.
 + (NSError *)errorForUnderlyingError:(NSError *)underlyingError;
 
+/// Name of the service that is used to access a partition in the keychain storage.
+@property (readonly, nonatomic, nullable) NSString *service;
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -34,6 +34,14 @@ NS_ASSUME_NONNULL_BEGIN
 /// appropriate error.
 - (BOOL)setValue:(nullable id<NSSecureCoding>)value forKey:(NSString *)key error:(NSError **)error;
 
+/// The name of the partition that \c BZRKeychainStorage initialized without \c service stores and
+/// retrieves values from.
++ (NSString *)defaultService;
+
+/// Name of the partition that the receiver stores and retrieves values from. \c nil if the receiver
+/// accesses the default partition.
+@property (readonly, nonatomic, nullable) NSString *service;
+
 @end
 
 /// Category for assisting with creation of shared keychain storage. In order for an application to

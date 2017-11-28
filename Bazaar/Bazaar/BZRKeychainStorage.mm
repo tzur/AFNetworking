@@ -84,6 +84,14 @@ NS_ASSUME_NONNULL_BEGIN
   return success;
 }
 
++ (NSString *)defaultService {
+  return [UICKeyChainStore defaultService];
+}
+
+- (nullable NSString *)service {
+  return self.keychainHandler.service;
+}
+
 @end
 
 @implementation BZRKeychainStorage (SharedKeychain)
