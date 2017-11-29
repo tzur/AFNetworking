@@ -190,9 +190,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (nullable NSArray<SPXProductDescriptor *> *)
     productDescriptorsWithPromotion:(nullable SPXPromotion *)promotion
                           withError:(NSError *__autoreleasing *)error {
-  auto _Nullable promotionError = [self validatePromotion:promotion];
-  if (promotionError) {
-    *error = promotionError;
+  if (![self validatePromotion:promotion error:error]) {
     return nil;
   }
 
@@ -217,26 +215,35 @@ NS_ASSUME_NONNULL_BEGIN
   }];
 }
 
-- (nullable NSError *)validatePromotion:(nullable SPXPromotion *)promotion {
+- (BOOL)validatePromotion:(nullable SPXPromotion *)promotion
+                    error:(NSError * __autoreleasing *)error {
   if (!promotion) {
-    return nil;
+    return YES;
   }
 
   if ([[promotion.expiryDate earlierDate:[NSDate date]] isEqual:promotion.expiryDate]) {
-    return [NSError spx_errorWithCode:SPXErrorCodePromotionExpired associatedPromotion:promotion];
+    if (error) {
+      *error = [NSError spx_errorWithCode:SPXErrorCodePromotionExpired
+                      associatedPromotion:promotion];
+    }
+    return NO;
   }
 
   for (SPXCoupon *coupon in promotion.coupons) {
     if (![self verifyNoDuplicates:[coupon.benefitValues valuesAxes]]) {
-      return [NSError spx_errorWithCode:SPXErrorCodeInvalidCoupon associatedPromotion:promotion
-                       associatedCoupon:coupon];
+      if (error) {
+        *error = [NSError spx_errorWithCode:SPXErrorCodeInvalidCoupon associatedPromotion:promotion
+                           associatedCoupon:coupon];
+      }
+      return NO;
     }
-    NSError *error;
-    if (![self verifyNoConflictWithCoupon:coupon inPromotion:promotion error:&error]) {
-      return error;
+
+    if (![self verifyNoConflictWithCoupon:coupon inPromotion:promotion error:error]) {
+      return NO;
     }
   }
-  return nil;
+
+  return YES;
 }
 
 - (BOOL)verifyNoConflictWithCoupon:(SPXCoupon *)coupon inPromotion:(SPXPromotion *)promotion
@@ -250,9 +257,11 @@ NS_ASSUME_NONNULL_BEGIN
     auto intersectAxes = [[[coupon.baseProductValues lt_set]
                            setByIntersectingWithSet:[otherCoupon.baseProductValues lt_set]]
                           valuesAxes];
-    if (MIN(couponBaseAxes.count, otherCouponBaseAxes.count) == intersectAxes.count) {
-      *error = [NSError spx_errorWithCode:SPXErrorCodeConflictingCouponsInPromotion
-                      associatedPromotion:promotion associatedCoupon:coupon];
+    if (std::min(couponBaseAxes.count, otherCouponBaseAxes.count) == intersectAxes.count) {
+      if (error) {
+        *error = [NSError spx_errorWithCode:SPXErrorCodeConflictingCouponsInPromotion
+                        associatedPromotion:promotion associatedCoupon:coupon];
+      }
       return NO;
     }
   }
