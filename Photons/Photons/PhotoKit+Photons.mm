@@ -31,11 +31,18 @@ NS_ASSUME_NONNULL_BEGIN
 /// selector will crash the app.
 - (nullable NSString *)filename;
 
-/// Undocumented method returning \c YES if the asset serves as a placeholder for the actual asset
-/// which is located in the cloud. This seems to happen when iCloud Photo Library is turned on but
-/// the asset's full data is not located on the device. Once the cloud asset is downloaded it
-/// replaces this asset.
-- (BOOL)isCloudPlaceholder API_AVAILABLE(ios(8.2));
+/// Undocumented method returning the kind of the cloud placeholder this asset represents. It seems
+/// that PhotoKit uses placeholders when iCloud Photo Library is turned on but the asset's full data
+/// is not located on the device. Once the cloud asset is downloaded it replaces this asset with
+/// another asset that has a different \c cloudPlaceholderKind.
+///
+/// From code inspection and some dynamic reverse engineering, it seems that values of \c 3 and
+/// \c 4 represent an asset that's not downloaded yet, while \c 5 represents an asset that's fully
+/// available on the device.
+///
+/// @note the \c int value is probably represented as an enum in the actual code, but such data
+/// is not available in the binary.
+@property (readonly, nonatomic) int cloudPlaceholderKind API_AVAILABLE(ios(8.2));
 
 @end
 
@@ -85,7 +92,7 @@ static BOOL PTUConformsToUTI(NSString *uti, NSString *conformsToUTI) {
 
 - (NSSet<NSString *> *)descriptorTraits {
   NSMutableSet *set = [NSMutableSet set];
-  if ([self respondsToSelector:@selector(isCloudPlaceholder)] && self.isCloudPlaceholder) {
+  if (self.cloudPlaceholderKind == 3 || self.cloudPlaceholderKind == 4) {
     [set addObject:kPTNDescriptorTraitCloudBasedKey];
   }
   if (self.mediaType == PHAssetMediaTypeVideo) {
