@@ -22,6 +22,10 @@
   return NO;
 }
 
+- (nullable NSString *)service {
+  return @"foo";
+}
+
 /// Bazaar namespace error for the given underlying class error.
 + (NSError *)errorForUnderlyingError:(NSError *)underlyingError {
   return underlyingError;
