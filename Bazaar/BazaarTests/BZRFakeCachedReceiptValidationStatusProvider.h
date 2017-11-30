@@ -9,8 +9,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// \c receiptValidationStatus property.
 @interface BZRFakeCachedReceiptValidationStatusProvider : BZRCachedReceiptValidationStatusProvider
 
-/// Initializes with \c keychainStorage set to \c OCMClassMock([BZRKeychainStorage class]) and
-/// \c underlyingProvider set to \c OCMProtocolMock(@protocol(BZRReceiptValidationStatusProvider)).
+/// Initializes with mock objects.
 - (instancetype)init;
 
 /// A replaceable receipt validation status.

@@ -11,6 +11,7 @@
 #import "BZRCachedProductsProvider.h"
 #import "BZRCachedReceiptValidationStatusProvider.h"
 #import "BZRKeychainStorage.h"
+#import "BZRKeychainStorageRoute.h"
 #import "BZRLocalProductsProvider.h"
 #import "BZRLocaleBasedVariantSelectorFactory.h"
 #import "BZRModifiedExpiryReceiptValidationStatusProvider.h"
@@ -54,7 +55,8 @@ NS_ASSUME_NONNULL_BEGIN
                             keychainAccessGroup:[BZRKeychainStorage defaultSharedAccessGroup]
                  expiredSubscriptionGracePeriod:kExpiredSubscriptionGracePeriod
                               applicationUserID:nil
-                 notValidatedReceiptGracePeriod:kNotValidatedGracePeriod];
+                 notValidatedReceiptGracePeriod:kNotValidatedGracePeriod
+                            applicationBundleID:[[NSBundle mainBundle] bundleIdentifier]];
 }
 
 - (instancetype)initWithProductsListJSONFilePath:(LTPath *)productsListJSONFilePath
@@ -62,7 +64,8 @@ NS_ASSUME_NONNULL_BEGIN
                              keychainAccessGroup:(nullable NSString *)keychainAccessGroup
                   expiredSubscriptionGracePeriod:(NSUInteger)expiredSubscriptionGracePeriod
                                applicationUserID:(nullable NSString *)applicationUserID
-                  notValidatedReceiptGracePeriod:(NSUInteger)notValidatedReceiptGracePeriod {
+                  notValidatedReceiptGracePeriod:(NSUInteger)notValidatedReceiptGracePeriod
+                             applicationBundleID:(NSString *)applicationBundleID {
   if (self = [super init]) {
     _fileManager = [NSFileManager defaultManager];
 
@@ -83,13 +86,18 @@ NS_ASSUME_NONNULL_BEGIN
          expiredSubscriptionGracePeriod:expiredSubscriptionGracePeriod
          underlyingProvider:validatorProvider];
 
+    BZRKeychainStorageRoute *keychainStorageRoute =
+        [[BZRKeychainStorageRoute alloc] initWithAccessGroup:keychainAccessGroup
+                                                serviceNames:@[applicationBundleID].lt_set];
+
     BZRReceiptValidationStatusCache *receiptValidationStatusCache =
-        [[BZRReceiptValidationStatusCache alloc] initWithKeychainStorage:keychainStorage];
+        [[BZRReceiptValidationStatusCache alloc] initWithKeychainStorage:keychainStorageRoute];
 
     _validationStatusProvider =
         [[BZRCachedReceiptValidationStatusProvider alloc] initWithCache:receiptValidationStatusCache
                                                            timeProvider:timeProvider
-                                                     underlyingProvider:modifiedExpiryProvider];
+                                                     underlyingProvider:modifiedExpiryProvider
+                                                    applicationBundleID:applicationBundleID];
     _acquiredViaSubscriptionProvider =
         [[BZRAcquiredViaSubscriptionProvider alloc] initWithKeychainStorage:keychainStorage];
 

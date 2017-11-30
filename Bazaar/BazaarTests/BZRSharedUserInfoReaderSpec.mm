@@ -13,8 +13,8 @@
 
 /// Returns \c BZRReceiptValidationStatusCache with access to keychain with \c bundleIdentifier
 /// service.
-- (BZRReceiptValidationStatusCache *)receiptValidationStatusCacheForAppWithBundleIdentifier
-    :(NSString *)bundleIdentifier;
+- (BZRReceiptValidationStatusCache *)receiptValidationStatusCacheForAppWithBundleIdentifier:
+    (NSString *)bundleIdentifier;
 
 @end
 
@@ -37,7 +37,8 @@ beforeEach(^{
   auto receiptValidationStatusCacheEntry = [[BZRReceiptValidationStatusCacheEntry alloc]
                                             initWithReceiptValidationStatus:receiptValidationStatus
                                             cachingDateTime:[NSDate date]];
-  OCMStub([receiptValidationStatusCache loadCacheEntry:nil])
+  OCMStub([receiptValidationStatusCache
+      loadCacheEntryOfApplicationWithBundleID:bundleIdentifier error:nil])
       .andReturn(receiptValidationStatusCacheEntry);
 
   sharedUserInfo = OCMPartialMock([[BZRSharedUserInfoReader alloc] init]);

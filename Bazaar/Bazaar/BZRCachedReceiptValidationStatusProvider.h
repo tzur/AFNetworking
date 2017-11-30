@@ -17,10 +17,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Initializes with \c receiptValidationStatusCache, used to persist receipt validation status, and
 /// \c timeProvider used to provide the time the receipt was cached, and with
-/// \c underlyingProvider, used to fetch the receipt validation status.
+/// \c underlyingProvider, used to fetch the receipt validation status. \c applicationBundleID is an
+/// identifier used to store and retrieve receipt validation status from the current application's
+/// partition in storage.
 - (instancetype)initWithCache:(BZRReceiptValidationStatusCache *)receiptValidationStatusCache
                  timeProvider:(id<BZRTimeProvider>)timeProvider
            underlyingProvider:(id<BZRReceiptValidationStatusProvider>)underlyingProvider
+          applicationBundleID:(NSString *)applicationBundleID
     NS_DESIGNATED_INITIALIZER;
 
 /// Expires the subscription of the user. Updates the cache and the \c receiptValidationStatus with
