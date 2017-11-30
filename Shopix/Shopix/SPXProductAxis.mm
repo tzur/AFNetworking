@@ -41,7 +41,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-@implementation SPXBenefitProductAxisDiscoutLevel
+@implementation SPXBenefitProductAxisDiscountLevel
 
 - (NSArray<id<SPXProductAxisValue>> *)values {
   return @[[self fullPrice], [self off25], [self off50], [self off75]];
@@ -136,8 +136,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation SPXBenefitProductAxis
 
-+ (SPXBenefitProductAxisDiscoutLevel *)discountLevel {
-  return [[SPXBenefitProductAxisDiscoutLevel alloc] init];
++ (SPXBenefitProductAxisDiscountLevel *)discountLevel {
+  return [[SPXBenefitProductAxisDiscountLevel alloc] init];
 }
 
 + (SPXBenefitProductAxisFreeTrialDuration *)freeTrialDuration {
