@@ -3,48 +3,23 @@
 
 #import "BZRKeychainStorage.h"
 
-#import "BZRKeychainHandler.h"
+#import <UICKeyChainStore/UICKeyChainStore.h>
+
+#import "BZREvent.h"
 #import "NSErrorCodes+Bazaar.h"
-
-/// Fake handler that provides empty implementations to \c BZRKeychainHandler's methods.
-@interface BZRFakeKeychainHandler : NSObject <BZRKeychainHandler>
-@end
-
-@implementation BZRFakeKeychainHandler
-
-- (nullable NSData *)dataForKey:(NSString __unused *)key
-                          error:(NSError * __unused __autoreleasing *)error {
-  return nil;
-}
-
-- (BOOL)setData:(nullable NSData __unused *)data forKey:(NSString __unused *)key
-          error:(NSError * __unused __autoreleasing *)error {
-  return NO;
-}
-
-- (nullable NSString *)service {
-  return @"foo";
-}
-
-/// Bazaar namespace error for the given underlying class error.
-+ (NSError *)errorForUnderlyingError:(NSError *)underlyingError {
-  return underlyingError;
-}
-
-@end
 
 SpecBegin(BZRKeychainStorage)
 
-__block id<BZRKeychainHandler> keychainHandler;
+__block UICKeyChainStore *keychainStore;
 
 beforeEach(^{
-  keychainHandler = OCMClassMock([BZRFakeKeychainHandler class]);
+  keychainStore = OCMClassMock([UICKeyChainStore class]);
 });
 
 context(@"initialization", ^{
   it(@"should initialize with keychain handler", ^{
     BZRKeychainStorage *keychainStorage =
-      [[BZRKeychainStorage alloc] initWithKeychainHandler:keychainHandler];
+        [[BZRKeychainStorage alloc] initWithKeychainStore:keychainStore];
     expect(keychainStorage).toNot.beNil();
   });
 });
@@ -53,14 +28,14 @@ context(@"keychain storage", ^{
   __block BZRKeychainStorage *secureStorage;
 
   beforeEach(^{
-    secureStorage = [[BZRKeychainStorage alloc] initWithKeychainHandler:keychainHandler];
+    secureStorage = [[BZRKeychainStorage alloc] initWithKeychainStore:keychainStore];
   });
 
   it(@"should store values correctly", ^{
     NSString *key = @"key";
     NSString *value = @"value";
     NSData *archivedValue = [NSKeyedArchiver archivedDataWithRootObject:value];
-    OCMExpect([keychainHandler setData:archivedValue forKey:key error:[OCMArg anyObjectRef]])
+    OCMExpect([keychainStore setData:archivedValue forKey:key error:[OCMArg anyObjectRef]])
         .andReturn(YES);
 
     NSError *error;
@@ -68,13 +43,13 @@ context(@"keychain storage", ^{
 
     expect(success).to.beTruthy();
     expect(error).to.beNil();
-    OCMVerifyAll((id)keychainHandler);
+    OCMVerifyAll((id)keychainStore);
   });
 
   it(@"should read values correctly", ^{
     NSString *key = @"key";
     NSString *value = @"value";
-    OCMStub([keychainHandler dataForKey:key error:[OCMArg anyObjectRef]])
+    OCMStub([keychainStore dataForKey:key error:[OCMArg anyObjectRef]])
         .andReturn([NSKeyedArchiver archivedDataWithRootObject:value]);
     NSError *error;
     id<NSSecureCoding> storedValue = [secureStorage valueForKey:key error:&error];
@@ -84,7 +59,7 @@ context(@"keychain storage", ^{
 
   it(@"should allow nil value", ^{
     NSString *key = @"foo";
-    OCMExpect([keychainHandler setData:nil forKey:key error:[OCMArg anyObjectRef]])
+    OCMExpect([keychainStore setData:nil forKey:key error:[OCMArg anyObjectRef]])
         .andReturn(YES);
 
     NSError *error;
@@ -92,7 +67,7 @@ context(@"keychain storage", ^{
 
     expect(success).to.beTruthy();
     expect(error).to.beNil();
-    OCMVerifyAll((id)keychainHandler);
+    OCMVerifyAll((id)keychainStore);
   });
 
   it(@"should return nil for non-existing values", ^{
@@ -105,34 +80,59 @@ context(@"keychain storage", ^{
 
   it(@"should proxy read errors correctly", ^{
     NSError *underlyingError = OCMClassMock([NSError class]);
-    NSError *bazaarError = OCMClassMock([NSError class]);
-    OCMStub([keychainHandler dataForKey:[OCMArg any] error:[OCMArg setTo:underlyingError]]);
-    OCMStub([keychainHandler errorForUnderlyingError:underlyingError]).andReturn(bazaarError);
+    OCMStub([keychainStore dataForKey:[OCMArg any] error:[OCMArg setTo:underlyingError]]);
 
     NSError *error;
     id value = [secureStorage valueForKey:@"key" error:&error];
 
     expect(value).to.beNil();
-    expect(error).to.equal(bazaarError);
+    expect(error.code).to.equal(BZRErrorCodeLoadingFromKeychainStorageFailed);
+    expect(error.lt_underlyingError).to.equal(underlyingError);
+  });
+
+  it(@"should send error event when read failed", ^{
+    NSError *underlyingError = OCMClassMock([NSError class]);
+    OCMStub([keychainStore dataForKey:[OCMArg any] error:[OCMArg setTo:underlyingError]]);
+
+    NSError *error;
+    auto recorder = [secureStorage.eventsSignal testRecorder];
+    [secureStorage valueForKey:@"key" error:&error];
+
+    expect(recorder).to.matchValue(0, ^BOOL(BZREvent *event) {
+      return [event.eventType isEqual:$(BZREventTypeNonCriticalError)] && event.eventError == error;
+    });
   });
 
   it(@"should proxy write errors correctly", ^{
     NSError *underlyingError = OCMClassMock([NSError class]);
-    NSError *bazaarError = OCMClassMock([NSError class]);
-    OCMStub([keychainHandler setData:OCMOCK_ANY forKey:OCMOCK_ANY
+    OCMStub([keychainStore setData:OCMOCK_ANY forKey:OCMOCK_ANY
                                error:[OCMArg setTo:underlyingError]]);
-    OCMStub([keychainHandler errorForUnderlyingError:underlyingError]).andReturn(bazaarError);
 
     NSError *error;
     BOOL success = [secureStorage setValue:@"value" forKey:@"key" error:&error];
 
     expect(success).to.beFalsy();
-    expect(error).to.equal(bazaarError);
+    expect(error.code).to.equal(BZRErrorCodeStoringToKeychainStorageFailed);
+    expect(error.lt_underlyingError).to.equal(underlyingError);
+  });
+
+  it(@"should send error event when write failed", ^{
+    NSError *underlyingError = OCMClassMock([NSError class]);
+    OCMStub([keychainStore setData:OCMOCK_ANY forKey:OCMOCK_ANY
+                               error:[OCMArg setTo:underlyingError]]);
+
+    NSError *error;
+    auto recorder = [secureStorage.eventsSignal testRecorder];
+    [secureStorage setValue:@"value" forKey:@"key" error:&error];
+
+    expect(recorder).to.matchValue(0, ^BOOL(BZREvent *event) {
+      return [event.eventType isEqual:$(BZREventTypeNonCriticalError)] && event.eventError == error;
+    });
   });
 
   it(@"should return nil and err for values not archived appropriately", ^{
     NSString *key = @"key";
-    OCMStub([keychainHandler dataForKey:key error:[OCMArg anyObjectRef]])
+    OCMStub([keychainStore dataForKey:key error:[OCMArg anyObjectRef]])
         .andReturn([@"foo" dataUsingEncoding:NSUTF8StringEncoding]);
     NSError *error;
     id<NSSecureCoding> storedValue = [secureStorage valueForKey:key error:&error];
