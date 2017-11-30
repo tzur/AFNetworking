@@ -34,6 +34,8 @@
 		B476E9251FCDA8B2007BC81C /* TINMessageFactorySpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = B476E9231FCDA8B2007BC81C /* TINMessageFactorySpec.mm */; };
 		B476E9271FCE9EA6007BC81C /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B476E9261FCE9E9D007BC81C /* MobileCoreServices.framework */; };
 		B4E0535F1FD0A0B100F2DBB1 /* NSErrorCodes+TinCan.mm in Sources */ = {isa = PBXBuildFile; fileRef = B4E0535E1FD0A0B100F2DBB1 /* NSErrorCodes+TinCan.mm */; };
+		B4D17B161FCFE433002DBF30 /* NSFileManager+TinCan.mm in Sources */ = {isa = PBXBuildFile; fileRef = B4D17B141FCFE433002DBF30 /* NSFileManager+TinCan.mm */; };
+		B4D17B3B1FCFE458002DBF30 /* NSFileManager+TinCanSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = B4D17B3A1FCFE458002DBF30 /* NSFileManager+TinCanSpec.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -375,6 +377,9 @@
 		B476E9261FCE9E9D007BC81C /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		B4E0535D1FD0A0B100F2DBB1 /* NSErrorCodes+TinCan.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSErrorCodes+TinCan.h"; sourceTree = "<group>"; };
 		B4E0535E1FD0A0B100F2DBB1 /* NSErrorCodes+TinCan.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSErrorCodes+TinCan.mm"; sourceTree = "<group>"; };
+		B4D17B141FCFE433002DBF30 /* NSFileManager+TinCan.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSFileManager+TinCan.mm"; sourceTree = "<group>"; };
+		B4D17B151FCFE433002DBF30 /* NSFileManager+TinCan.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSFileManager+TinCan.h"; sourceTree = "<group>"; };
+		B4D17B3A1FCFE458002DBF30 /* NSFileManager+TinCanSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSFileManager+TinCanSpec.mm"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -428,6 +433,8 @@
 			children = (
 				B4E0535D1FD0A0B100F2DBB1 /* NSErrorCodes+TinCan.h */,
 				B4E0535E1FD0A0B100F2DBB1 /* NSErrorCodes+TinCan.mm */,
+				B4D17B151FCFE433002DBF30 /* NSFileManager+TinCan.h */,
+				B4D17B141FCFE433002DBF30 /* NSFileManager+TinCan.mm */,
 				B45926FE1FC6A76900A70964 /* NSURL+TinCan.h */,
 				B45926FF1FC6A76900A70964 /* NSURL+TinCan.mm */,
 				B42D71051FBB24810024718E /* TINMessage.h */,
@@ -443,6 +450,7 @@
 		883235801ED861DB0090787D /* Base */ = {
 			isa = PBXGroup;
 			children = (
+				B4D17B3A1FCFE458002DBF30 /* NSFileManager+TinCanSpec.mm */,
 				B45927011FC6AF2D00A70964 /* NSURL+TinCanSpec.mm */,
 				B45926FC1FC6A06200A70964 /* TINMessage+UserInfoSpec.mm */,
 				B476E9231FCDA8B2007BC81C /* TINMessageFactorySpec.mm */,
@@ -1059,6 +1067,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B45926D81FC69A5F00A70964 /* TINMessage+UserInfo.mm in Sources */,
+				B4D17B161FCFE433002DBF30 /* NSFileManager+TinCan.mm in Sources */,
 				B42D71061FBB24810024718E /* TINMessage.mm in Sources */,
 				B476E9201FCDA88E007BC81C /* TINMessageFactory.mm in Sources */,
 				B45927001FC6A76900A70964 /* NSURL+TinCan.mm in Sources */,
@@ -1074,6 +1083,7 @@
 				B45926FD1FC6A06200A70964 /* TINMessage+UserInfoSpec.mm in Sources */,
 				B476E9251FCDA8B2007BC81C /* TINMessageFactorySpec.mm in Sources */,
 				B42D71081FBB24900024718E /* TINMessageSpec.mm in Sources */,
+				B4D17B3B1FCFE458002DBF30 /* NSFileManager+TinCanSpec.mm in Sources */,
 				B45927021FC6AF2D00A70964 /* NSURL+TinCanSpec.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
