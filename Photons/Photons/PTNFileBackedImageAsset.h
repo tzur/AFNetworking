@@ -3,6 +3,7 @@
 
 #import "PTNDataAsset.h"
 #import "PTNImageAsset.h"
+#import "PTNImageDataAsset.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -14,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 /// @note \c saveToFile: will trigger a file copying operation, \c fetchImage will trigger a file
 /// read operation from \c path, followed by decoding of the image from the retrieved data.
-@interface PTNFileBackedImageAsset : NSObject <PTNDataAsset, PTNImageAsset>
+@interface PTNFileBackedImageAsset : NSObject <PTNDataAsset, PTNImageAsset, PTNImageDataAsset>
 
 /// Initializes with file located at \c path, \c fileManager, \c resizer and \c resizingStrategy.
 /// \c fileManager will be used to handle file system interaction. \c resizer and
@@ -22,6 +23,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// required for optimization; it allows a single underlying file to be shared by multiple instances
 /// of \c PTNImageAsset conforming classes, each using a different resizing strategy to resolve the
 /// desired size from the original.
+///
+/// If \c resizingStrategy is \c nil, the identity resizing strategy is used.
 - (instancetype)initWithFilePath:(LTPath *)path fileManager:(NSFileManager *)fileManager
                     imageResizer:(PTNImageResizer *)resizier
                 resizingStrategy:(nullable id<PTNResizingStrategy>)resizingStrategy;

@@ -5,6 +5,7 @@
 
 #import <LTKit/LTPath.h>
 #import <LTKit/NSFileManager+LTKit.h>
+#import <MobileCoreServices/MobileCoreServices.h>
 
 #import "NSError+Photons.h"
 #import "PTNImageMetadata.h"
@@ -14,32 +15,41 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+NSString * _Nullable PTNUTIFromPath(LTPath *path) {
+  return (__bridge_transfer NSString *)
+      UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension,
+                                            (__bridge CFStringRef)path.path.pathExtension, nil);
+}
+
 @interface PTNFileBackedImageAsset ()
 
 /// Local \c LTPath path to underlying file backing this image asset.
-@property (strong, nonatomic) LTPath *path;
+@property (readonly, nonatomic) LTPath *path;
 
 /// Resizing strategy to be used when fetching underlying image.
-@property (strong, nonatomic) id<PTNResizingStrategy> resizingStrategy;
+@property (nullable, readonly, nonatomic) id<PTNResizingStrategy> resizingStrategy;
 
 /// Used for resizing underlying image.
-@property (strong, nonatomic) PTNImageResizer *imageResizer;
+@property (readonly, nonatomic) PTNImageResizer *imageResizer;
 
 /// File manager for file system interaction.
-@property (strong, nonatomic) NSFileManager *fileManager;
+@property (readonly, nonatomic) NSFileManager *fileManager;
 
 @end
 
 @implementation PTNFileBackedImageAsset
 
+@synthesize uniformTypeIdentifier = _uniformTypeIdentifier;
+
 - (instancetype)initWithFilePath:(LTPath *)path fileManager:(NSFileManager *)fileManager
                     imageResizer:(PTNImageResizer *)imageResizer
                 resizingStrategy:(nullable id<PTNResizingStrategy>)resizingStrategy {
   if (self = [super init]) {
-    self.path = path;
-    self.fileManager = fileManager;
-    self.imageResizer = imageResizer;
-    self.resizingStrategy = resizingStrategy ?: [PTNResizingStrategy identity];
+    _path = path;
+    _uniformTypeIdentifier = PTNUTIFromPath(path);
+    _fileManager = fileManager;
+    _imageResizer = imageResizer;
+    _resizingStrategy = resizingStrategy ?: [PTNResizingStrategy identity];
   }
   return self;
 }
