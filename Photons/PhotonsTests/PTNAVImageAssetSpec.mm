@@ -4,7 +4,10 @@
 #import "PTNAVImageAsset.h"
 
 #import <AVFoundation/AVFoundation.h>
+#import <LTKit/LTCGExtensions.h>
+#import <LTKit/LTPath.h>
 #import <LTKit/NSBundle+Path.h>
+#import <LTKit/NSFileManager+LTKit.h>
 
 #import "NSError+Photons.h"
 #import "PTNAVImageGeneratorFactory.h"
@@ -13,7 +16,7 @@
 #import "PTNResizingStrategy.h"
 
 static UIImage *PTNImageWithColor(UIColor *color, CGRect rect) {
-  UIGraphicsBeginImageContextWithOptions(rect.size, NO, 0);
+  UIGraphicsBeginImageContextWithOptions(rect.size, NO, 1);
   [color setFill];
   UIRectFill(rect);
   UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
@@ -45,7 +48,8 @@ it(@"should fetch image", ^{
   UIImage *image = PTNImageWithColor([UIColor redColor], CGRectMake(0, 0, 20, 20));
   CGImageRef cgImage = image.CGImage;
 
-  OCMStub([imageGenerator copyCGImageAtTime:kCMTimeZero actualTime:nil error:[OCMArg anyObjectRef]])
+  OCMStub([imageGenerator copyCGImageAtTime:kCMTimeZero actualTime:(CMTime *)[OCMArg anyPointer]
+                                      error:[OCMArg anyObjectRef]])
       .andDo(^(NSInvocation *invocation) {
         CGImageRetain(cgImage);
         [invocation setReturnValue:(void *)&cgImage];
@@ -63,7 +67,8 @@ it(@"should transfer ownership of fetched image", ^{
   CGImageRef cgImage = CGImageCreateCopy(image.CGImage);
   const CFIndex initialRetainCount = CFGetRetainCount(cgImage);
 
-  OCMStub([imageGenerator copyCGImageAtTime:kCMTimeZero actualTime:nil error:[OCMArg anyObjectRef]])
+  OCMStub([imageGenerator copyCGImageAtTime:kCMTimeZero actualTime:(CMTime *)[OCMArg anyPointer]
+                                      error:[OCMArg anyObjectRef]])
       .andDo(^(NSInvocation *invocation) {
         CGImageRetain(cgImage);
         [invocation setReturnValue:(void *)&cgImage];
@@ -79,7 +84,8 @@ it(@"should transfer ownership of fetched image", ^{
 });
 
 it(@"should err when underlying generator errs", ^{
-  OCMStub([imageGenerator copyCGImageAtTime:kCMTimeZero actualTime:nil error:[OCMArg anyObjectRef]])
+  OCMStub([imageGenerator copyCGImageAtTime:kCMTimeZero actualTime:(CMTime *)[OCMArg anyPointer]
+                                      error:[OCMArg anyObjectRef]])
       .andReturn((CGImageRef)nil);
   RACSignal *values = [imageAsset fetchImage];
   expect(values).will.matchError(^BOOL(NSError *error) {
@@ -91,6 +97,26 @@ it(@"should set underlying generator max size to the size from the resizing stra
   OCMExpect([imageGenerator setMaximumSize:CGSizeMake(10, 10)]);
   [[imageAsset fetchImage] testRecorder];
   OCMVerifyAllWithDelay((OCMockObject *)imageGenerator, 1.0);
+});
+
+it(@"should fetch image data", ^{
+  UIImage *image = PTNImageWithColor([UIColor redColor], CGRectMake(0, 0, 20, 20));
+  CGImageRef cgImage = image.CGImage;
+
+  OCMStub([imageGenerator copyCGImageAtTime:kCMTimeZero actualTime:(CMTime *)[OCMArg anyPointer]
+                                      error:[OCMArg anyObjectRef]])
+      .andDo(^(NSInvocation *invocation) {
+        CGImageRetain(cgImage);
+        [invocation setReturnValue:(void *)&cgImage];
+      });
+
+  LLSignalTestRecorder *recorder = [[imageAsset fetchData] testRecorder];
+  expect(recorder).will.sendValuesWithCount(1);
+  NSData *data = recorder.values.firstObject;
+  expect([data isKindOfClass:[NSData class]]).to.beTruthy();
+
+  UIImage *newImage = [UIImage imageWithData:data];
+  expect(newImage.size * newImage.scale).to.equal(CGSizeMake(20, 20));
 });
 
 it(@"should fetch image metadata", ^{
@@ -106,9 +132,48 @@ it(@"should be deallocated when fetch image completes", ^{
                               resizingStrategy:[PTNResizingStrategy identity]];
     expect([imageAsset fetchImage]).will.complete();
   }
-  // Will is beeing used since weakImage can still be retained due to the fact that the fetchImage
-  // method retains itself using GCD.
+  // Will is used since weakImage can still be retained due to the fact that the fetchImage method
+  // retains itself using GCD.
   expect(weakImage).will.beNil();
+});
+
+context(@"write to file", ^{
+  __block NSFileManager *fileManager;
+
+  beforeEach(^{
+    fileManager = OCMClassMock([NSFileManager class]);
+    UIImage *image = PTNImageWithColor([UIColor redColor], CGRectMake(0, 0, 20, 20));
+    CGImageRef cgImage = image.CGImage;
+
+    OCMStub([imageGenerator copyCGImageAtTime:kCMTimeZero actualTime:nil
+                                        error:[OCMArg anyObjectRef]])
+        .andDo(^(NSInvocation *invocation) {
+          CGImageRetain(cgImage);
+          [invocation setReturnValue:(void *)&cgImage];
+        });
+  });
+
+  it(@"should write data to disk", ^{
+    LTPath *writePath = [LTPath pathWithPath:@"foo"];
+    OCMExpect([fileManager lt_writeData:[OCMArg checkWithBlock:^BOOL(NSData *data) {
+      UIImage *newImage = [UIImage imageWithData:data];
+      return newImage.size == CGSizeMake(20, 20);
+    }] toFile:writePath.path options:NSDataWritingAtomic error:[OCMArg setTo:nil]]).andReturn(YES);
+
+    expect([imageAsset writeToFileAtPath:writePath usingFileManager:fileManager]).will.complete();
+    OCMVerifyAll((id)fileManager);
+  });
+
+  it(@"should err when writing data to disk fails", ^{
+    LTPath *path = [LTPath pathWithPath:@"foo"];
+    OCMStub([fileManager lt_writeData:OCMOCK_ANY toFile:path.path options:NSDataWritingAtomic
+                                error:[OCMArg setTo:[NSError lt_errorWithCode:1337]]]);
+
+    expect([imageAsset writeToFileAtPath:path usingFileManager:fileManager])
+    .will.matchError(^BOOL(NSError *error) {
+      return error.lt_isLTDomain && error.code == LTErrorCodeFileWriteFailed;
+    });
+  });
 });
 
 SpecEnd

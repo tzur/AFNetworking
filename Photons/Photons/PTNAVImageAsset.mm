@@ -4,7 +4,10 @@
 #import "PTNAVImageAsset.h"
 
 #import <AVFoundation/AVFoundation.h>
+#import <LTKit/LTPath.h>
 #import <LTKit/LTRef.h>
+#import <LTKit/NSFileManager+LTKit.h>
+#import <MobileCoreServices/MobileCoreServices.h>
 
 #import "NSError+Photons.h"
 #import "PTNAVImageGeneratorFactory.h"
@@ -54,7 +57,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (RACSignal *)fetchImage {
   // The retain of the receiver promises that as long as this signal isn't disposed or completed
-  // the receiver wont get deallocated.
+  // the receiver won't get deallocated.
   return [[RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
     AVAssetImageGenerator *imageGenerator =
         [self.imageGeneratorFactory imageGeneratorForAsset:self.asset];
@@ -75,6 +78,41 @@ NS_ASSUME_NONNULL_BEGIN
       [imageGenerator cancelAllCGImageGeneration];
     }];
   }] subscribeOn:[RACScheduler scheduler]];
+}
+
+#pragma mark -
+#pragma mark PTNImageDataAsset
+#pragma mark -
+
+- (RACSignal *)fetchData {
+  return [[self fetchImage]
+          tryMap:^NSData * _Nullable(UIImage *image, NSError *__autoreleasing *errorPtr) {
+    // PhotoKit uses JPEG and 0.93 compression when fetching images from \c audiovisual assets.
+    auto _Nullable data = UIImageJPEGRepresentation(image, 0.93);
+    if (!data) {
+      *errorPtr = [NSError lt_errorWithCode:PTNErrorCodeAVImageAssetFetchImageDataFailed];
+    }
+    return data;
+  }];
+}
+
+- (RACSignal *)writeToFileAtPath:(LTPath *)path usingFileManager:(NSFileManager *)fileManager {
+  return [[[self fetchData] flattenMap:^(NSData *data) {
+    NSError *error;
+    BOOL success = [fileManager  lt_writeData:data toFile:path.path options:NSDataWritingAtomic
+                                        error:&error];
+    if (!success) {
+      return [RACSignal error:[NSError lt_errorWithCode:LTErrorCodeFileWriteFailed
+                                                    url:path.url
+                                        underlyingError:error]];
+    }
+
+    return [RACSignal empty];
+  }] subscribeOn:RACScheduler.scheduler];
+}
+
+- (nullable NSString *)uniformTypeIdentifier {
+  return (__bridge NSString *)kUTTypeJPEG;
 }
 
 - (RACSignal *)fetchImageMetadata {
