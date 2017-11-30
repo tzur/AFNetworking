@@ -38,7 +38,7 @@ NS_ASSUME_NONNULL_BEGIN
 @implementation SPXSubscriptionViewModel
 
 @synthesize subscriptionDescriptors = _subscriptionDescriptors;
-@synthesize prefferdProductIndex = _prefferdProductIndex;
+@synthesize preferredProductIndex = _preferredProductIndex;
 @synthesize pageViewModels = _pageViewModels;
 @synthesize termsViewModel = _termsViewModel;
 @synthesize colorScheme = _colorScheme;
@@ -47,14 +47,14 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize feedbackComposerRequested = _feedbackComposerRequested;
 
 - (instancetype)initWithProducts:(NSArray<NSString *> *)productIdentifiers
-           preferredProductIndex:(nullable NSNumber *)prefferdProductIndex
+           preferredProductIndex:(nullable NSNumber *)preferredProductIndex
                   pageViewModels:(NSArray<id<SPXSubscriptionVideoPageViewModel>> *)pageViewModels
                   termsViewModel:(id<SPXSubscriptionTermsViewModel>)termsViewModel
                      colorScheme:(SPXColorScheme *)colorScheme
              subscriptionManager:(SPXSubscriptionManager *)subscriptionManager {
-  LTParameterAssert(prefferdProductIndex.unsignedIntegerValue < productIdentifiers.count,
+  LTParameterAssert(preferredProductIndex.unsignedIntegerValue < productIdentifiers.count,
                     @"Highlighted button index (%lu) must be lower than the number of buttons "
-                    "(%lu)", (unsigned long)prefferdProductIndex.unsignedIntegerValue,
+                    "(%lu)", (unsigned long)preferredProductIndex.unsignedIntegerValue,
                     (unsigned long)productIdentifiers.count);
   if (self = [super init]) {
     _productIdentifiers = [productIdentifiers copy];
@@ -62,7 +62,7 @@ NS_ASSUME_NONNULL_BEGIN
         lt_map:^SPXSubscriptionDescriptor *(NSString *productIdentifier) {
           return [[SPXSubscriptionDescriptor alloc] initWithProductIdentifier:productIdentifier];
         }];
-    _prefferdProductIndex = prefferdProductIndex;
+    _preferredProductIndex = preferredProductIndex;
     _pageViewModels = [pageViewModels copy];
     _termsViewModel = termsViewModel;
     _colorScheme = colorScheme;
@@ -77,10 +77,10 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (instancetype)initWithProducts:(NSArray<NSString *> *)productIdentifiers
-           preferredProductIndex:(nullable NSNumber *)prefferdProductIndex
+           preferredProductIndex:(nullable NSNumber *)preferredProductIndex
                   pageViewModels:(NSArray<id<SPXSubscriptionVideoPageViewModel>> *)pageViewModels
                   termsViewModel:(id<SPXSubscriptionTermsViewModel>)termsViewModel {
-  return [self initWithProducts:productIdentifiers preferredProductIndex:prefferdProductIndex
+  return [self initWithProducts:productIdentifiers preferredProductIndex:preferredProductIndex
                  pageViewModels:pageViewModels termsViewModel:termsViewModel
                     colorScheme:[JSObjection defaultInjector][[SPXColorScheme class]]
             subscriptionManager:[[SPXSubscriptionManager alloc] init]];
@@ -128,8 +128,7 @@ NS_ASSUME_NONNULL_BEGIN
   self.shouldShowActivityIndicator = YES;
   @weakify(self);
   [self.subscriptionManager
-   restorePurchasesWithCompletionHandler:^(BZRReceiptInfo * _Nullable receiptInfo,
-                                           NSError *) {
+   restorePurchasesWithCompletionHandler:^(BZRReceiptInfo * _Nullable receiptInfo, NSError *) {
     @strongify(self);
     self.shouldShowActivityIndicator = NO;
     if (receiptInfo.subscription && !receiptInfo.subscription.isExpired) {

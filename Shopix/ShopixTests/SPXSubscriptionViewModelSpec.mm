@@ -32,7 +32,7 @@ beforeEach(^{
       colorScheme:colorScheme subscriptionManager:subscriptionManager];
 });
 
-it(@"should raise if the prefferd button index is greater than the number of buttons", ^{
+it(@"should raise if the preferred button index is greater than the number of buttons", ^{
   expect(^{
       viewModel = [[SPXSubscriptionViewModel alloc] initWithProducts:requestedProductIdentifiers
       preferredProductIndex:@2 pageViewModels:@[] termsViewModel:termsViewModel
