@@ -16,8 +16,7 @@ beforeEach(^{
   currentApplicationBundleID = @"foo";
   receiptDataCache =
       [[BZRReceiptDataCache alloc] initWithKeychainStorageRoute:keychainStorageRoute
-                                     currentApplicationBundleID:currentApplicationBundleID
-                                             notificationCenter:notificationCenter];
+                                     currentApplicationBundleID:currentApplicationBundleID];
 });
 
 context(@"retrieving receipt data from storage", ^{
@@ -52,17 +51,17 @@ context(@"writing receipt data to storage", ^{
     id mockData = OCMClassMock([NSData class]);
     OCMStub([mockData dataWithContentsOfURL:receiptURL]).andReturn(receiptData);
 
+    [receiptDataCache storeReceiptData];
+
     OCMVerify([keychainStorageRoute setValue:receiptData forKey:OCMOCK_ANY serviceName:@"foo"
                                        error:[OCMArg anyObjectRef]]);
   });
 
   it(@"should not store nil receipt data to storage", ^{
-    NSURL *receiptURL = [[NSBundle mainBundle] appStoreReceiptURL];
-    NSData *receiptData = [@"Receipt Data" dataUsingEncoding:NSUTF8StringEncoding];
     id mockData = OCMClassMock([NSData class]);
-    OCMStub([mockData dataWithContentsOfURL:receiptURL]).andReturn(receiptData);
+    OCMStub([mockData dataWithContentsOfURL:OCMOCK_ANY]);
 
-    OCMReject([keychainStorageRoute setValue:receiptData forKey:OCMOCK_ANY serviceName:@"foo"
+    OCMReject([keychainStorageRoute setValue:OCMOCK_ANY forKey:OCMOCK_ANY serviceName:@"foo"
                                        error:[OCMArg anyObjectRef]]);
 
     [receiptDataCache storeReceiptData];
