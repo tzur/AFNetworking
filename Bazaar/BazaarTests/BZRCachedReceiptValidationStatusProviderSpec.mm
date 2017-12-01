@@ -21,6 +21,7 @@ __block BZRReceiptValidationStatus *receiptValidationStatus;
 __block id<BZRReceiptValidationStatusProvider> underlyingProvider;
 __block RACSubject *underlyingEventsSubject;
 __block BZRReceiptValidationStatusCache *receiptValidationStatusCache;
+__block NSString *applicationBundeID;
 __block BZRCachedReceiptValidationStatusProvider *validationStatusProvider;
 
 beforeEach(^{
@@ -30,6 +31,7 @@ beforeEach(^{
   underlyingProvider = OCMProtocolMock(@protocol(BZRReceiptValidationStatusProvider));
   underlyingEventsSubject = [RACSubject subject];
   receiptValidationStatusCache = OCMClassMock([BZRReceiptValidationStatusCache class]);
+  applicationBundeID = @"foo";
   OCMStub([underlyingProvider eventsSignal]).andReturn(underlyingEventsSubject);
   currentTime = OCMClassMock([NSDate class]);
   OCMStub([timeProvider currentTime]).andReturn([RACSignal return:currentTime]);
@@ -41,13 +43,15 @@ context(@"initialization", ^{
     auto cacheEntry = [[BZRReceiptValidationStatusCacheEntry alloc]
                        initWithReceiptValidationStatus:validationStatus
                        cachingDateTime:currentTime];
-    OCMExpect([receiptValidationStatusCache loadCacheEntry:[OCMArg anyObjectRef]])
-        .andReturn(cacheEntry);
+    OCMExpect([receiptValidationStatusCache
+               loadCacheEntryOfApplicationWithBundleID:applicationBundeID
+               error:[OCMArg anyObjectRef]]).andReturn(cacheEntry);
 
     validationStatusProvider =
         [[BZRCachedReceiptValidationStatusProvider alloc] initWithCache:receiptValidationStatusCache
                                                            timeProvider:timeProvider
-                                                     underlyingProvider:underlyingProvider];
+                                                     underlyingProvider:underlyingProvider
+                                                    applicationBundleID:applicationBundeID];
 
     expect(validationStatusProvider.receiptValidationStatus).to.equal(validationStatus);
     expect(validationStatusProvider.lastReceiptValidationDate).to.equal(currentTime);
@@ -61,7 +65,8 @@ context(@"initialization", ^{
     validationStatusProvider =
         [[BZRCachedReceiptValidationStatusProvider alloc] initWithCache:receiptValidationStatusCache
                                                            timeProvider:timeProvider
-                                                     underlyingProvider:underlyingProvider];
+                                                     underlyingProvider:underlyingProvider
+                                                    applicationBundleID:applicationBundeID];
 
     expect(validationStatusProvider.receiptValidationStatus).to.beNil();
     expect(validationStatusProvider.lastReceiptValidationDate).to.beNil();
@@ -81,7 +86,8 @@ context(@"deallocation", ^{
       auto validationStatusProvider = [[BZRCachedReceiptValidationStatusProvider alloc]
                                        initWithCache:receiptValidationStatusCache
                                        timeProvider:timeProvider
-                                       underlyingProvider:underlyingProvider];
+                                       underlyingProvider:underlyingProvider
+                                       applicationBundleID:applicationBundeID];
       weakValidationStatusProvider = validationStatusProvider;
       recorder = [[validationStatusProvider eventsSignal] testRecorder];
     }
@@ -96,7 +102,8 @@ context(@"deallocation", ^{
       auto validationStatusProvider = [[BZRCachedReceiptValidationStatusProvider alloc]
                                        initWithCache:receiptValidationStatusCache
                                        timeProvider:timeProvider
-                                       underlyingProvider:underlyingProvider];
+                                       underlyingProvider:underlyingProvider
+                                       applicationBundleID:applicationBundeID];
       weakValidationStatusProvider = validationStatusProvider;
       recorder = [[validationStatusProvider fetchReceiptValidationStatus] testRecorder];
     }
@@ -110,7 +117,8 @@ context(@"handling errors", ^{
     validationStatusProvider =
         [[BZRCachedReceiptValidationStatusProvider alloc] initWithCache:receiptValidationStatusCache
                                                            timeProvider:timeProvider
-                                                     underlyingProvider:underlyingProvider];
+                                                     underlyingProvider:underlyingProvider
+                                                    applicationBundleID:applicationBundeID];
     LLSignalTestRecorder *recorder = [validationStatusProvider.eventsSignal testRecorder];
     BZREvent *event = OCMClassMock([BZREvent class]);
     [underlyingEventsSubject sendNext:event];
@@ -121,13 +129,15 @@ context(@"handling errors", ^{
   it(@"should send error event when failed to store receipt validation status", ^{
     NSError *underlyingError = OCMClassMock([NSError class]);
     OCMStub([receiptValidationStatusCache storeCacheEntry:OCMOCK_ANY
+                                      applicationBundleID:applicationBundeID
                                                     error:[OCMArg setTo:underlyingError]]);
     OCMStub([underlyingProvider fetchReceiptValidationStatus])
         .andReturn([RACSignal return:receiptValidationStatus]);
     validationStatusProvider =
         [[BZRCachedReceiptValidationStatusProvider alloc] initWithCache:receiptValidationStatusCache
                                                            timeProvider:timeProvider
-                                                     underlyingProvider:underlyingProvider];
+                                                     underlyingProvider:underlyingProvider
+                                                    applicationBundleID:applicationBundeID];
     LLSignalTestRecorder *recorder = [validationStatusProvider.eventsSignal testRecorder];
 
     expect([validationStatusProvider fetchReceiptValidationStatus]).will.complete();
@@ -139,11 +149,14 @@ context(@"handling errors", ^{
 
   it(@"should send error event when failed to read from cache", ^{
     NSError *error = [NSError lt_errorWithCode:1337];
-    OCMStub([receiptValidationStatusCache loadCacheEntry:[OCMArg setTo:error]]);
+    OCMStub([receiptValidationStatusCache
+             loadCacheEntryOfApplicationWithBundleID:applicationBundeID
+             error:[OCMArg setTo:error]]);
     validationStatusProvider =
         [[BZRCachedReceiptValidationStatusProvider alloc] initWithCache:receiptValidationStatusCache
                                                            timeProvider:timeProvider
-                                                     underlyingProvider:underlyingProvider];
+                                                     underlyingProvider:underlyingProvider
+                                                    applicationBundleID:applicationBundeID];
 
     expect(validationStatusProvider.eventsSignal).will.matchValue(0, ^BOOL(BZREvent *event) {
       return [event.eventType isEqual:$(BZREventTypeNonCriticalError)] && event.eventError == error;
@@ -159,7 +172,8 @@ context(@"fetching receipt validation status", ^{
     validationStatusProvider =
         [[BZRCachedReceiptValidationStatusProvider alloc] initWithCache:receiptValidationStatusCache
                                                            timeProvider:timeProvider
-                                                     underlyingProvider:underlyingProvider];
+                                                     underlyingProvider:underlyingProvider
+                                                    applicationBundleID:applicationBundeID];
   });
 
   it(@"should send receipt validation status sent by the underlying provider", ^{
@@ -172,6 +186,7 @@ context(@"fetching receipt validation status", ^{
 
   it(@"should save receipt validation status to cache", ^{
     OCMExpect([receiptValidationStatusCache storeCacheEntry:OCMOCK_ANY
+                                        applicationBundleID:applicationBundeID
                                                       error:[OCMArg anyObjectRef]]);
 
     RACSignal *validateSignal = [validationStatusProvider fetchReceiptValidationStatus];
@@ -182,6 +197,7 @@ context(@"fetching receipt validation status", ^{
 
   it(@"should update receipt validation status and validation date after fetching", ^{
     OCMExpect([receiptValidationStatusCache storeCacheEntry:OCMOCK_ANY
+                                        applicationBundleID:applicationBundeID
                                                       error:[OCMArg anyObjectRef]]);
 
     RACSignal *validateSignal = [validationStatusProvider fetchReceiptValidationStatus];
@@ -194,8 +210,9 @@ context(@"fetching receipt validation status", ^{
 
   it(@"should update receipt validation status and validation date if storing to cache has "
      " failed", ^{
-    OCMStub([receiptValidationStatusCache storeCacheEntry:OCMOCK_ANY error:[OCMArg anyObjectRef]])
-          .andReturn(NO);
+    OCMStub([receiptValidationStatusCache storeCacheEntry:OCMOCK_ANY
+                                      applicationBundleID:applicationBundeID
+                                                    error:[OCMArg anyObjectRef]]).andReturn(NO);
 
     RACSignal *validateSignal = [validationStatusProvider fetchReceiptValidationStatus];
 
@@ -212,19 +229,23 @@ context(@"fetching receipt validation status", ^{
     auto cacheEntry = [[BZRReceiptValidationStatusCacheEntry alloc]
                        initWithReceiptValidationStatus:validationStatus
                        cachingDateTime:validationDate];
-    OCMStub([receiptValidationStatusCache loadCacheEntry:[OCMArg anyObjectRef]])
-        .andReturn(cacheEntry);
+    OCMStub([receiptValidationStatusCache
+             loadCacheEntryOfApplicationWithBundleID:applicationBundeID
+             error:[OCMArg anyObjectRef]]).andReturn(cacheEntry);
 
     validationStatusProvider =
         [[BZRCachedReceiptValidationStatusProvider alloc] initWithCache:receiptValidationStatusCache
                                                            timeProvider:timeProvider
-                                                     underlyingProvider:underlyingProvider];
+                                                     underlyingProvider:underlyingProvider
+                                                    applicationBundleID:applicationBundeID];
 
     expect(validationStatusProvider.receiptValidationStatus).to.equal(validationStatus);
     expect(validationStatusProvider.lastReceiptValidationDate).to.equal(validationDate);
 
     auto error = [NSError lt_errorWithCode:1337];
-    OCMStub([receiptValidationStatusCache storeCacheEntry:OCMOCK_ANY error:[OCMArg setTo:error]]);
+    OCMStub([receiptValidationStatusCache storeCacheEntry:OCMOCK_ANY
+                                      applicationBundleID:applicationBundeID
+                                                    error:[OCMArg setTo:error]]);
     [validationStatusProvider fetchReceiptValidationStatus];
     expect(validationStatusProvider.receiptValidationStatus).to.equal(validationStatus);
     expect(validationStatusProvider.lastReceiptValidationDate).to.equal(validationDate);
@@ -240,7 +261,8 @@ context(@"fetching receipt validation status", ^{
     validationStatusProvider =
         [[BZRCachedReceiptValidationStatusProvider alloc] initWithCache:receiptValidationStatusCache
                                                            timeProvider:timeProvider
-                                                     underlyingProvider:underlyingProvider];
+                                                     underlyingProvider:underlyingProvider
+                                                    applicationBundleID:applicationBundeID];
     LLSignalTestRecorder *recorder =
         [[validationStatusProvider fetchReceiptValidationStatus] testRecorder];
 
@@ -254,13 +276,15 @@ context(@"KVO compliance", ^{
   beforeEach(^{
     OCMStub([underlyingProvider fetchReceiptValidationStatus])
         .andReturn([RACSignal return:receiptValidationStatus]);
-    OCMStub([receiptValidationStatusCache storeCacheEntry:OCMOCK_ANY error:[OCMArg anyObjectRef]])
-        .andReturn(YES);
+    OCMStub([receiptValidationStatusCache storeCacheEntry:OCMOCK_ANY
+                                      applicationBundleID:applicationBundeID
+                                                    error:[OCMArg anyObjectRef]]).andReturn(YES);
 
     validationStatusProvider =
         [[BZRCachedReceiptValidationStatusProvider alloc] initWithCache:receiptValidationStatusCache
                                                            timeProvider:timeProvider
-                                                     underlyingProvider:underlyingProvider];
+                                                     underlyingProvider:underlyingProvider
+                                                    applicationBundleID:applicationBundeID];
   });
 
   it(@"should notify the observer when receipt validation status changes", ^{
@@ -291,7 +315,8 @@ context(@"expiring subscription", ^{
     validationStatusProvider =
         [[BZRCachedReceiptValidationStatusProvider alloc] initWithCache:receiptValidationStatusCache
                                                            timeProvider:timeProvider
-                                                     underlyingProvider:underlyingProvider];
+                                                     underlyingProvider:underlyingProvider
+                                                    applicationBundleID:applicationBundeID];
     LLSignalTestRecorder *validationSignal =
         [[validationStatusProvider fetchReceiptValidationStatus] testRecorder];
 

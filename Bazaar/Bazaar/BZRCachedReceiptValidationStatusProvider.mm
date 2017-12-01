@@ -25,6 +25,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Provider used to fetch the receipt validation status.
 @property (readonly, nonatomic) id<BZRReceiptValidationStatusProvider> underlyingProvider;
 
+/// Current application's bundle ID.
+@property (readonly, nonatomic) NSString *applicationBundleID;
+
 /// Subject used to send events with.
 @property (readonly, nonatomic) RACSubject<BZREvent *> *eventsSubject;
 
@@ -47,11 +50,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithCache:(BZRReceiptValidationStatusCache *)receiptValidationStatusCache
                  timeProvider:(id<BZRTimeProvider>)timeProvider
-           underlyingProvider:(id<BZRReceiptValidationStatusProvider>)underlyingProvider {
+           underlyingProvider:(id<BZRReceiptValidationStatusProvider>)underlyingProvider
+          applicationBundleID:(NSString *)applicationBundleID {
   if (self = [super init]) {
     _receiptValidationStatusCache = receiptValidationStatusCache;
     _timeProvider = timeProvider;
     _underlyingProvider = underlyingProvider;
+    _applicationBundleID = applicationBundleID;
     _eventsSubject = [RACSubject subject];
     _eventsSignal = [[RACSignal merge:@[
       [self.eventsSubject replayLast],
@@ -71,7 +76,9 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)loadReceiptValidationStatus {
   NSError *underlyingError;
   BZRReceiptValidationStatusCacheEntry * _Nullable receiptStatusCacheEntry =
-      [self.receiptValidationStatusCache loadCacheEntry:&underlyingError];
+      [self.receiptValidationStatusCache
+       loadCacheEntryOfApplicationWithBundleID:self.applicationBundleID
+       error:&underlyingError];
 
   if (!receiptStatusCacheEntry && underlyingError) {
     [self.eventsSubject sendNext:
@@ -95,7 +102,8 @@ NS_ASSUME_NONNULL_BEGIN
                                   cachingDateTime:cachingDateTime];
   NSError *error;
   BOOL success =
-      [self.receiptValidationStatusCache storeCacheEntry:receiptStatusCacheEntry error:&error];
+      [self.receiptValidationStatusCache storeCacheEntry:receiptStatusCacheEntry
+                                     applicationBundleID:self.applicationBundleID error:&error];
   if (!success && error) {
     [self.eventsSubject sendNext:
      [[BZREvent alloc] initWithType:$(BZREventTypeNonCriticalError) eventError:error]];

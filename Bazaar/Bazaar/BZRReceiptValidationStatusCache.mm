@@ -4,8 +4,8 @@
 #import "BZRReceiptValidationStatusCache.h"
 
 #import "BZREvent.h"
-#import "BZRKeychainStorage+TypeSafety.h"
 #import "BZRKeychainStorageMigrator.h"
+#import "BZRKeychainStorageRoute.h"
 #import "BZRReceiptModel.h"
 #import "BZRReceiptValidationStatus.h"
 #import "BZRTimeProvider.h"
@@ -37,7 +37,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface BZRReceiptValidationStatusCache ()
 
 /// Storage used to cache the latest fetched \c receiptValidationStatus.
-@property (readonly, nonatomic) BZRKeychainStorage *keychainStorage;
+@property (readonly, nonatomic) BZRKeychainStorageRoute *keychainStorageRoute;
 
 @end
 
@@ -69,9 +69,9 @@ NSString * const kValidationDateKey = @"validationDate";
 #pragma mark Initialization
 #pragma mark -
 
-- (instancetype)initWithKeychainStorage:(BZRKeychainStorage *)keychainStorage {
+- (instancetype)initWithKeychainStorage:(BZRKeychainStorageRoute *)keychainStorageRoute {
   if (self = [super init]) {
-    _keychainStorage = keychainStorage;
+    _keychainStorageRoute = keychainStorageRoute;
   }
   return self;
 }
@@ -82,6 +82,7 @@ NSString * const kValidationDateKey = @"validationDate";
 
 - (BOOL)storeCacheEntry:
     (nullable BZRReceiptValidationStatusCacheEntry *)receiptValidationStatusCacheEntry
+    applicationBundleID:(NSString *)applicationBundleID
     error:(NSError * __autoreleasing *)error {
   NSDictionary<NSString *, NSObject *> *receiptValidationStatusForCaching;
   if (receiptValidationStatusCacheEntry) {
@@ -91,13 +92,15 @@ NSString * const kValidationDateKey = @"validationDate";
     };
   }
   return [self storeValue:receiptValidationStatusForCaching
-                   forKey:kCachedReceiptValidationStatusStorageKey error:error];
+          forKey:kCachedReceiptValidationStatusStorageKey applicationBundleID:applicationBundleID
+          error:error];
 }
 
 - (BOOL)storeValue:(nullable id)value forKey:(NSString *)key
-             error:(NSError * __autoreleasing *)error {
+    applicationBundleID:(NSString *)applicationBundleID error:(NSError * __autoreleasing *)error {
   NSError *storageError;
-  BOOL success = [self.keychainStorage setValue:value forKey:key error:&storageError];
+  BOOL success = [self.keychainStorageRoute setValue:value forKey:key
+                                         serviceName:applicationBundleID error:&storageError];
   if (!success && error) {
     auto description =
         [NSString stringWithFormat:@"Failed to store the value: %@ for key: %@", value, key];
@@ -112,13 +115,14 @@ NSString * const kValidationDateKey = @"validationDate";
 #pragma mark Loading receipt validation status
 #pragma mark -
 
-- (nullable BZRReceiptValidationStatusCacheEntry *)loadCacheEntry:
-    (NSError * __autoreleasing *)error {
+- (nullable BZRReceiptValidationStatusCacheEntry *)loadCacheEntryOfApplicationWithBundleID:
+    (NSString *)applicationBundleID error:(NSError * __autoreleasing *)error {
   NSError *underlyingError;
   NSDictionary<NSString *, id> * _Nullable cachedReceiptValidationStatus =
-      [self.keychainStorage valueOfClass:[NSDictionary class]
-                                  forKey:kCachedReceiptValidationStatusStorageKey
-                                   error:&underlyingError];
+      (NSDictionary *)[self.keychainStorageRoute
+                       valueForKey:kCachedReceiptValidationStatusStorageKey
+                       serviceName:applicationBundleID error:&underlyingError];
+
   if (!cachedReceiptValidationStatus) {
     if (error && underlyingError) {
       auto description = [NSString stringWithFormat:@"Failed to load value for key: %@",

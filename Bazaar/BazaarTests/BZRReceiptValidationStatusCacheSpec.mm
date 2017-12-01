@@ -3,7 +3,7 @@
 
 #import "BZRReceiptValidationStatusCache.h"
 
-#import "BZRKeychainStorage+TypeSafety.h"
+#import "BZRKeychainStorageRoute.h"
 #import "BZRReceiptModel.h"
 #import "BZRReceiptValidationStatus.h"
 #import "BZRTimeProvider.h"
@@ -15,17 +15,20 @@ static NSString * const kValidationStatusKey = @"validationStatus";
 static NSString * const kValidationDateKey = @"validationDate";
 static NSString * const kCachedReceiptValidationStatusStorageKey = @"receiptValidationStatus";
 
-__block BZRKeychainStorage *keychainStorage;
+__block BZRKeychainStorageRoute *keychainStorageRoute;
 __block BZRReceiptValidationStatus *receiptValidationStatus;
 __block RACSubject *underlyingEventsSubject;
 __block BZRReceiptValidationStatusCache *validationStatusCache;
+__block NSString *applicationBundleID;
 
 beforeEach(^{
-  keychainStorage = OCMClassMock([BZRKeychainStorage class]);
+  keychainStorageRoute = OCMClassMock([BZRKeychainStorageRoute class]);
   receiptValidationStatus = OCMClassMock([BZRReceiptValidationStatus class]);
   underlyingEventsSubject = [RACSubject subject];
   validationStatusCache =
-      [[BZRReceiptValidationStatusCache alloc] initWithKeychainStorage:keychainStorage];
+      [[BZRReceiptValidationStatusCache alloc] initWithKeychainStorage:keychainStorageRoute];
+
+  applicationBundleID = @"foo";
 });
 
 context(@"cache access", ^{
@@ -37,16 +40,18 @@ context(@"cache access", ^{
       kValidationDateKey: cachedDate
     };
 
-    OCMExpect([keychainStorage valueOfClass:[NSDictionary class] forKey:OCMOCK_ANY
-                                      error:[OCMArg anyObjectRef]]).andReturn(receiptDictionary);
+    OCMExpect([keychainStorageRoute valueForKey:OCMOCK_ANY serviceName:applicationBundleID
+        error:[OCMArg anyObjectRef]]).andReturn(receiptDictionary);
     validationStatusCache = [[BZRReceiptValidationStatusCache alloc]
-                              initWithKeychainStorage:keychainStorage];
+                              initWithKeychainStorage:keychainStorageRoute];
 
-    auto validationStatusCacheEntry = [validationStatusCache loadCacheEntry:nil];
+    auto validationStatusCacheEntry =
+        [validationStatusCache loadCacheEntryOfApplicationWithBundleID:applicationBundleID
+                                                                 error:nil];
 
     expect(validationStatusCacheEntry.receiptValidationStatus).to.equal(validationStatus);
     expect(validationStatusCacheEntry.cachingDateTime).to.equal(cachedDate);
-    OCMVerifyAll((id)keychainStorage);
+    OCMVerifyAll((id)keychainStorageRoute);
   });
 
   it(@"should store receipt validation to cache", ^{
@@ -55,48 +60,54 @@ context(@"cache access", ^{
       return receiptDictionary[kValidationStatusKey] == receiptValidationStatus &&
           receiptDictionary[kValidationDateKey] == cachedDate;
     };
-    OCMExpect([keychainStorage setValue:[OCMArg checkWithBlock:checkDictionaryValuesBlock]
-                                 forKey:kCachedReceiptValidationStatusStorageKey
-                                  error:[OCMArg anyObjectRef]]).andReturn(YES);
+    OCMExpect([keychainStorageRoute setValue:[OCMArg checkWithBlock:checkDictionaryValuesBlock]
+                                      forKey:kCachedReceiptValidationStatusStorageKey
+                                 serviceName:applicationBundleID
+                                       error:[OCMArg anyObjectRef]]).andReturn(YES);
     validationStatusCache = [[BZRReceiptValidationStatusCache alloc]
-                             initWithKeychainStorage:keychainStorage];
+                             initWithKeychainStorage:keychainStorageRoute];
 
     auto cacheEntry = [[BZRReceiptValidationStatusCacheEntry alloc]
                        initWithReceiptValidationStatus:receiptValidationStatus
                        cachingDateTime:cachedDate];
     NSError *error;
-    auto success = [validationStatusCache storeCacheEntry:cacheEntry error:&error];
+    auto success = [validationStatusCache storeCacheEntry:cacheEntry
+                                      applicationBundleID:applicationBundleID error:&error];
     expect(success).to.beTruthy();
     expect(error).to.beNil();
-    OCMVerifyAll((id)keychainStorage);
+    OCMVerifyAll((id)keychainStorageRoute);
   });
 
   it(@"should store nil to cache", ^{
-    OCMExpect([keychainStorage setValue:nil
-                                 forKey:kCachedReceiptValidationStatusStorageKey
-                                  error:[OCMArg anyObjectRef]]).andReturn(YES);
+    OCMExpect([keychainStorageRoute setValue:nil
+                                      forKey:kCachedReceiptValidationStatusStorageKey
+                                 serviceName:applicationBundleID
+                                       error:[OCMArg anyObjectRef]]).andReturn(YES);
     validationStatusCache = [[BZRReceiptValidationStatusCache alloc]
-                             initWithKeychainStorage:keychainStorage];
+                             initWithKeychainStorage:keychainStorageRoute];
 
     NSError *error;
-    BOOL success = [validationStatusCache storeCacheEntry:nil error:&error];
+    BOOL success = [validationStatusCache storeCacheEntry:nil
+                                      applicationBundleID:applicationBundleID error:&error];
 
     expect(success).to.beTruthy();
     expect(error).to.beNil();
-    OCMVerifyAll((id)keychainStorage);
+    OCMVerifyAll((id)keychainStorageRoute);
   });
 
   it(@"should return error if failed to store to the storage", ^{
     NSError *error = [NSError lt_errorWithCode:1337];
-    OCMStub([keychainStorage setValue:OCMOCK_ANY forKey:OCMOCK_ANY error:[OCMArg setTo:error]])
+    OCMStub([keychainStorageRoute setValue:OCMOCK_ANY forKey:OCMOCK_ANY
+                               serviceName:applicationBundleID error:[OCMArg setTo:error]])
         .andReturn(NO);
     validationStatusCache = [[BZRReceiptValidationStatusCache alloc]
-                             initWithKeychainStorage:keychainStorage];
+                             initWithKeychainStorage:keychainStorageRoute];
     auto cacheEntry = [[BZRReceiptValidationStatusCacheEntry alloc]
                        initWithReceiptValidationStatus:receiptValidationStatus
                        cachingDateTime:[NSDate date]];
     NSError *returnedError;
-    BOOL success = [validationStatusCache storeCacheEntry:cacheEntry error:&returnedError];
+    BOOL success = [validationStatusCache storeCacheEntry:cacheEntry
+                                      applicationBundleID:applicationBundleID error:&returnedError];
 
     expect(returnedError.code).to.equal(BZRErrorCodeStoringDataToStorageFailed);
     expect(returnedError.lt_underlyingError.code).to.equal(1337);
@@ -105,11 +116,13 @@ context(@"cache access", ^{
 
   it(@"should return error if failed to read from storage", ^{
     NSError *error = [NSError lt_errorWithCode:1337];
-    OCMStub([keychainStorage valueOfClass:OCMOCK_ANY forKey:OCMOCK_ANY error:[OCMArg setTo:error]]);
+    OCMStub([keychainStorageRoute valueForKey:OCMOCK_ANY serviceName:applicationBundleID
+                                        error:[OCMArg setTo:error]]);
     validationStatusCache = [[BZRReceiptValidationStatusCache alloc]
-                             initWithKeychainStorage:keychainStorage];
+                             initWithKeychainStorage:keychainStorageRoute];
     NSError *returnedError;
-    auto value = [validationStatusCache loadCacheEntry:&returnedError];
+    auto value = [validationStatusCache loadCacheEntryOfApplicationWithBundleID:applicationBundleID
+                                                                          error:&returnedError];
 
     expect(returnedError.code).to.equal(BZRErrorCodeLoadingDataFromStorageFailed);
     expect(returnedError.lt_underlyingError.code).to.equal(1337);

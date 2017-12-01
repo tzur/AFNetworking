@@ -5,7 +5,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class BZRKeychainStorage, BZRReceiptValidationStatus, BZRKeychainStorageMigrator,
+@class BZRKeychainStorageRoute, BZRReceiptValidationStatus, BZRKeychainStorageMigrator,
     BZRReceiptValidationStatusCache;
 
 @protocol BZRTimeProvider;
@@ -41,20 +41,24 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)init NS_UNAVAILABLE;
 
-/// Initializes with \c keychainStorage, used to read and store receipt validation status.
-- (instancetype)initWithKeychainStorage:(BZRKeychainStorage *)keychainStorage
+/// Initializes with \c keychainStorageRoute, used to store and retrieve receipt validation status
+/// of multiple applications.
+- (instancetype)initWithKeychainStorage:(BZRKeychainStorageRoute *)keychainStorageRoute
     NS_DESIGNATED_INITIALIZER;
 
-/// Stores the receipt validation status to storage and returns \c YES on success. If an error
-/// occurred while writing to the cache \c error is populated with error information and \c NO
-/// is returned.
+/// Stores the receipt validation status to the storage of the application specified by
+/// \c applicationBundleID and returns \c YES on success. If an error occurred while writing to the
+/// cache \c error is populated with error information and \c NO is returned.
 - (BOOL)storeCacheEntry:
     (nullable BZRReceiptValidationStatusCacheEntry *)receiptValidationStatusCacheEntry
+    applicationBundleID:(NSString *)applicationBundleID
     error:(NSError **)error;
 
-/// Returns the receipt validation status from storage. If an error occurred while loading from
-/// cache \c error is populated with error information and \c nil is returned.
-- (nullable BZRReceiptValidationStatusCacheEntry *)loadCacheEntry:(NSError **)error;
+/// Returns the receipt validation status of the application with the given \c applicationBundleID.
+/// If an error occurred while loading from cache \c error is populated with error information and
+/// \c nil is returned.
+- (nullable BZRReceiptValidationStatusCacheEntry *)loadCacheEntryOfApplicationWithBundleID:
+    (NSString *)applicationBundleID error:(NSError **)error;
 
 @end
 

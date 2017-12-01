@@ -4,6 +4,7 @@
 #import "BZRSharedUserInfoReader.h"
 
 #import "BZRKeychainStorage.h"
+#import "BZRKeychainStorageRoute.h"
 #import "BZRReceiptModel.h"
 #import "BZRReceiptValidationStatus.h"
 #import "BZRReceiptValidationStatusCache.h"
@@ -14,7 +15,9 @@
 - (BOOL)isSubscriberOfAppWithBundleIdentifier:(NSString *)bundleIdentifier {
   BZRReceiptValidationStatusCache *receiptValidationStatusCache =
       [self receiptValidationStatusCacheForAppWithBundleIdentifier:bundleIdentifier];
-  BZRReceiptValidationStatusCacheEntry *cache = [receiptValidationStatusCache loadCacheEntry:nil];
+  BZRReceiptValidationStatusCacheEntry *cache =
+      [receiptValidationStatusCache loadCacheEntryOfApplicationWithBundleID:bundleIdentifier
+                                                                      error:nil];
   BZRReceiptSubscriptionInfo *subscription = cache.receiptValidationStatus.receipt.subscription;
 
   return subscription && !subscription.isExpired;
@@ -22,10 +25,11 @@
 
 - (BZRReceiptValidationStatusCache *)receiptValidationStatusCacheForAppWithBundleIdentifier:
     (NSString *)bundleIdentifier {
-  auto keychainStorage =
-      [[BZRKeychainStorage alloc] initWithAccessGroup:[BZRKeychainStorage defaultSharedAccessGroup]
-                                              service:bundleIdentifier];
-  return [[BZRReceiptValidationStatusCache alloc] initWithKeychainStorage:keychainStorage];
+  auto keychainStorageRoute =
+      [[BZRKeychainStorageRoute alloc]
+       initWithAccessGroup:[BZRKeychainStorage defaultSharedAccessGroup]
+       serviceNames:@[bundleIdentifier].lt_set];
+  return [[BZRReceiptValidationStatusCache alloc] initWithKeychainStorage:keychainStorageRoute];
 }
 
 @end
