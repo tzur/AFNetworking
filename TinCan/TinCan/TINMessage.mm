@@ -83,7 +83,7 @@ NSString * const kTINMessageFileName = @".tincan";
 @implementation TINMessage (NSURL)
 
 - (nullable NSURL *)directoryURL {
-  return [NSURL tin_messageDirectoryURLWithAppGroup:self.appGroupID scheme:self.sourceScheme
+  return [NSURL tin_messageDirectoryURLWithAppGroup:self.appGroupID scheme:self.targetScheme
                                          identifier:self.identifier];
 }
 
