@@ -85,7 +85,7 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 /// Benefit axis describing the discount percentage a product has, defaults to \c fullPrice.
-@interface SPXBenefitProductAxisDiscoutLevel : LTValueObject <SPXBenefitAxis>
+@interface SPXBenefitProductAxisDiscountLevel : LTValueObject <SPXBenefitAxis>
 
 /// Full price.
 @property (readonly, nonatomic) SPXBenefitAxisValue *fullPrice;
@@ -153,8 +153,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)init NS_UNAVAILABLE;
 
-/// Returns a new \c SPXBenefitProductAxisDiscoutLevel object.
-@property (class, readonly, nonatomic) SPXBenefitProductAxisDiscoutLevel *discountLevel;
+/// Returns a new \c SPXBenefitProductAxisDiscountLevel object.
+@property (class, readonly, nonatomic) SPXBenefitProductAxisDiscountLevel *discountLevel;
 
 /// Returns a new \c SPXBenefitProductAxisFreeTrialDuration object.
 @property (class, readonly, nonatomic) SPXBenefitProductAxisFreeTrialDuration *freeTrialDuration;

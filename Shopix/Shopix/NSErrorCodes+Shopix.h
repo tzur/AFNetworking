@@ -18,7 +18,9 @@ LTErrorCodesDeclare(ShopixErrorCodeProductID,
   /// Caused when a promotion has conflicting coupons.
   SPXErrorCodeConflictingCouponsInPromotion,
   /// Caused when a coupon is invalid.
-  SPXErrorCodeInvalidCoupon
+  SPXErrorCodeInvalidCoupon,
+  /// Caused when a deserialization process failed.
+  SPXErrorCodeDeserializationFailed
 );
 
 NS_ASSUME_NONNULL_END
