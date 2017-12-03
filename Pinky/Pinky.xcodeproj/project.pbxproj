@@ -26,8 +26,6 @@
 		060EA49E1EDD9CC20041487A /* NSBundle+PinkyBundle.mm in Sources */ = {isa = PBXBuildFile; fileRef = 060EA49D1EDD9CC20041487A /* NSBundle+PinkyBundle.mm */; };
 		060FB4641F0104EB00506895 /* Pinky.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 06FD92A11EDC66E500D180C7 /* Pinky.bundle */; };
 		060FB4651F0104F300506895 /* Pinky.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 06FD92A11EDC66E500D180C7 /* Pinky.bundle */; };
-		06172A901F02881600379124 /* PNKStyleUpsampleProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 06172A8F1F02881600379124 /* PNKStyleUpsampleProcessor.mm */; };
-		06172AB21F02884F00379124 /* PNKStyleUpsampleProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 06172AB11F02884F00379124 /* PNKStyleUpsampleProcessorSpec.mm */; };
 		06172C831F03F9E600379124 /* libprotobuf-lite.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 06172C811F03F9DF00379124 /* libprotobuf-lite.a */; };
 		06172C841F03F9E700379124 /* libprotobuf-lite.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 06172C811F03F9DF00379124 /* libprotobuf-lite.a */; };
 		061941AC1F94D22900A329BA /* PNKTemporaryImageExamples.mm in Sources */ = {isa = PBXBuildFile; fileRef = 061941AB1F94D22900A329BA /* PNKTemporaryImageExamples.mm */; };
@@ -62,8 +60,6 @@
 		06B925081F89982700D07848 /* instanceNorm_relu_output.tensor in Resources */ = {isa = PBXBuildFile; fileRef = 06B925061F89980B00D07848 /* instanceNorm_relu_output.tensor */; };
 		06B925091F89982700D07848 /* instanceNorm_relu_scale.weights in Resources */ = {isa = PBXBuildFile; fileRef = 06B925041F89980B00D07848 /* instanceNorm_relu_scale.weights */; };
 		06B9250A1F89982700D07848 /* instanceNorm_relu_shift.weights in Resources */ = {isa = PBXBuildFile; fileRef = 06B925051F89980B00D07848 /* instanceNorm_relu_shift.weights */; };
-		06C3F7611EFF9E5B00D4B1F4 /* PNKSingleStyleTransferProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 06C3F7601EFF9E5B00D4B1F4 /* PNKSingleStyleTransferProcessor.mm */; };
-		06C3F7641EFFDA0900D4B1F4 /* PNKSingleStyleTransferProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 06C3F7631EFFDA0900D4B1F4 /* PNKSingleStyleTransferProcessorSpec.mm */; };
 		06C6BC321F7003E6005F57D4 /* PNKConvolutionLayerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 06463BAB1F3A62220087E057 /* PNKConvolutionLayerSpec.mm */; };
 		06C9E7FF1F793C8A00D8A77F /* PNKAddition.mm in Sources */ = {isa = PBXBuildFile; fileRef = 06C9E7FD1F793C6800D8A77F /* PNKAddition.mm */; };
 		06C9E8001F793CC100D8A77F /* PNKAddition.metal in Sources */ = {isa = PBXBuildFile; fileRef = 06C9E7FE1F793C6800D8A77F /* PNKAddition.metal */; };
@@ -194,6 +190,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 8B3DEBE318296B6100EA0C1A;
 			remoteInfo = LTEngine;
+		};
+		06415F161FD4299C00F9F70C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A14172691E6EADDF005DBEFF /* LTKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 194FF4FC1FA8BA77008879E7;
+			remoteInfo = LTKitTestUtils;
 		};
 		06FD92931EDC5F9100D180C7 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -523,9 +526,6 @@
 		060EA49B1EDD9C740041487A /* PNKDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKDefines.h; sourceTree = "<group>"; };
 		060EA49C1EDD9CC20041487A /* NSBundle+PinkyBundle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSBundle+PinkyBundle.h"; sourceTree = "<group>"; };
 		060EA49D1EDD9CC20041487A /* NSBundle+PinkyBundle.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSBundle+PinkyBundle.mm"; sourceTree = "<group>"; };
-		06172A8E1F02881600379124 /* PNKStyleUpsampleProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKStyleUpsampleProcessor.h; sourceTree = "<group>"; };
-		06172A8F1F02881600379124 /* PNKStyleUpsampleProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKStyleUpsampleProcessor.mm; sourceTree = "<group>"; };
-		06172AB11F02884F00379124 /* PNKStyleUpsampleProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKStyleUpsampleProcessorSpec.mm; sourceTree = "<group>"; };
 		06172C811F03F9DF00379124 /* libprotobuf-lite.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libprotobuf-lite.a"; path = "../third_party/protobuf/lib/libprotobuf-lite.a"; sourceTree = "<group>"; };
 		061941AA1F94D22900A329BA /* PNKTemporaryImageExamples.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNKTemporaryImageExamples.h; sourceTree = "<group>"; };
 		061941AB1F94D22900A329BA /* PNKTemporaryImageExamples.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKTemporaryImageExamples.mm; sourceTree = "<group>"; };
@@ -574,9 +574,6 @@
 		06B925061F89980B00D07848 /* instanceNorm_relu_output.tensor */ = {isa = PBXFileReference; lastKnownFileType = file; name = instanceNorm_relu_output.tensor; path = Resources/instanceNorm_relu_output.tensor; sourceTree = "<group>"; };
 		06B925231F8A003200D07848 /* PNKConditionalInstanceNormLayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNKConditionalInstanceNormLayer.h; sourceTree = "<group>"; };
 		06B925441F8A003200D07848 /* PNKConditionalInstanceNormLayer.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKConditionalInstanceNormLayer.mm; sourceTree = "<group>"; };
-		06C3F75F1EFF9E5B00D4B1F4 /* PNKSingleStyleTransferProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKSingleStyleTransferProcessor.h; sourceTree = "<group>"; };
-		06C3F7601EFF9E5B00D4B1F4 /* PNKSingleStyleTransferProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKSingleStyleTransferProcessor.mm; sourceTree = "<group>"; };
-		06C3F7631EFFDA0900D4B1F4 /* PNKSingleStyleTransferProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKSingleStyleTransferProcessorSpec.mm; sourceTree = "<group>"; };
 		06C6BC5B1F7153B9005F57D4 /* conv2d_kernel.weights */ = {isa = PBXFileReference; lastKnownFileType = file; name = conv2d_kernel.weights; path = Resources/conv2d_kernel.weights; sourceTree = "<group>"; };
 		06C6BC7C1F7153B9005F57D4 /* conv2d_output.tensor */ = {isa = PBXFileReference; lastKnownFileType = file; name = conv2d_output.tensor; path = Resources/conv2d_output.tensor; sourceTree = "<group>"; };
 		06C6BC7D1F7153BA005F57D4 /* conv2d_bias.weights */ = {isa = PBXFileReference; lastKnownFileType = file; name = conv2d_bias.weights; path = Resources/conv2d_bias.weights; sourceTree = "<group>"; };
@@ -962,10 +959,6 @@
 				06C9E8071F793E7400D8A77F /* PNKReflectionPadding.h */,
 				06C9E8081F793E7400D8A77F /* PNKReflectionPadding.metal */,
 				06C9E8061F793E7400D8A77F /* PNKReflectionPadding.mm */,
-				06C3F75F1EFF9E5B00D4B1F4 /* PNKSingleStyleTransferProcessor.h */,
-				06C3F7601EFF9E5B00D4B1F4 /* PNKSingleStyleTransferProcessor.mm */,
-				06172A8E1F02881600379124 /* PNKStyleUpsampleProcessor.h */,
-				06172A8F1F02881600379124 /* PNKStyleUpsampleProcessor.mm */,
 			);
 			name = "Image Processing";
 			sourceTree = "<group>";
@@ -973,8 +966,6 @@
 		06C3F7621EFFD9EA00D4B1F4 /* Image Processing */ = {
 			isa = PBXGroup;
 			children = (
-				06C3F7631EFFDA0900D4B1F4 /* PNKSingleStyleTransferProcessorSpec.mm */,
-				06172AB11F02884F00379124 /* PNKStyleUpsampleProcessorSpec.mm */,
 			);
 			name = "Image Processing";
 			sourceTree = "<group>";
@@ -1161,6 +1152,7 @@
 			children = (
 				A141726F1E6EADDF005DBEFF /* libLTKit.a */,
 				A14172711E6EADDF005DBEFF /* LTKitTests.xctest */,
+				06415F171FD4299C00F9F70C /* libLTKitTestUtils.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1523,6 +1515,13 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		06415F171FD4299C00F9F70C /* libLTKitTestUtils.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libLTKitTestUtils.a;
+			remoteRef = 06415F161FD4299C00F9F70C /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		06FD92941EDC5F9100D180C7 /* Mantle.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
@@ -1893,8 +1892,6 @@
 				C9ADC5131EFFE06200C87932 /* PNKLibraryLoader.mm in Sources */,
 				06A1A8FF1F0CD7BA0031A387 /* PNKNeuralNetworkModelFactory.mm in Sources */,
 				0657A1341F299C56002AA730 /* MPSCNNConvolution+Factory.mm in Sources */,
-				06172A901F02881600379124 /* PNKStyleUpsampleProcessor.mm in Sources */,
-				06C3F7611EFF9E5B00D4B1F4 /* PNKSingleStyleTransferProcessor.mm in Sources */,
 				F9CB52FD1F5FE98700C8E8CA /* PNKProtobufHelpers.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1906,8 +1903,6 @@
 				C9131ED71EE05A4D00E924DA /* LTTestUtils+LTEngine.mm in Sources */,
 				C9131EAF1EE0599D00E924DA /* EXPMatchers+beCloseToScalar.mm in Sources */,
 				C9131EAD1EE0599D00E924DA /* EXPMatchers+beCloseToMat.mm in Sources */,
-				06172AB21F02884F00379124 /* PNKStyleUpsampleProcessorSpec.mm in Sources */,
-				06C3F7641EFFDA0900D4B1F4 /* PNKSingleStyleTransferProcessorSpec.mm in Sources */,
 				F994A70F1F612A530072D338 /* PNKProtobufHelpersSpec.mm in Sources */,
 				C9131EB31EE0599D00E924DA /* EXPMatchers+equalScalar.mm in Sources */,
 				C9131EB11EE0599D00E924DA /* EXPMatchers+equalMat.mm in Sources */,
@@ -2145,7 +2140,11 @@
 				);
 				INFOPLIST_FILE = PinkyTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				"OTHER_LDFLAGS[sdk=iphoneos*]" = "$(inherited) -framework MetalPerformanceShaders";
+				"OTHER_LDFLAGS[sdk=iphoneos*]" = (
+					"$(inherited)",
+					"-framework",
+					MetalPerformanceShaders,
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.Lightricks.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
@@ -2168,7 +2167,11 @@
 				);
 				INFOPLIST_FILE = PinkyTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				"OTHER_LDFLAGS[sdk=iphoneos*]" = "$(inherited) -framework MetalPerformanceShaders";
+				"OTHER_LDFLAGS[sdk=iphoneos*]" = (
+					"$(inherited)",
+					"-framework",
+					MetalPerformanceShaders,
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.Lightricks.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
