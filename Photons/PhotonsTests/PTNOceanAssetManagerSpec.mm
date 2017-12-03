@@ -40,22 +40,31 @@ static FBRHTTPRequestParameters *PTNFakeRequestParameters() {
   };
 }
 
-static PTNCacheProxy *PTNAssetCacheProxy(NSData *data, id<PTNResizingStrategy> resizingStrategy,
+static PTNCacheProxy *PTNAssetCacheProxy(NSData *data, NSString * _Nullable uti,
+                                         id<PTNResizingStrategy> resizingStrategy,
                                          NSDate *responseTime) {
-  auto result = [[PTNDataBackedImageAsset alloc] initWithData:data
+  auto result = [[PTNDataBackedImageAsset alloc] initWithData:data uniformTypeIdentifier:uti
                                              resizingStrategy:resizingStrategy];
   auto cacheInfo = [[PTNCacheInfo alloc] initWithMaxAge:86400 responseTime:responseTime
                                               entityTag:nil];
- return [[PTNCacheProxy<PTNAlbum> alloc] initWithUnderlyingObject:result cacheInfo:cacheInfo];
+  return [[PTNCacheProxy<PTNAlbum> alloc] initWithUnderlyingObject:result cacheInfo:cacheInfo];
+}
+
+static PTNCacheProxy *PTNAssetCacheProxy(NSData *data, id<PTNResizingStrategy> resizingStrategy,
+                                         NSDate *responseTime) {
+  return PTNAssetCacheProxy(data, nil, resizingStrategy, responseTime);
 }
 
 static NSURL *PTNFakeAlbumRequestURL(NSUInteger page = 2) {
   return [NSURL ptn_oceanAlbumURLWithSource:$(PTNOceanAssetSourcePixabay) phrase:@"foo" page:page];
 }
 
-static LTProgress *PTNFakeLTProgress(NSData *data) {
+static LTProgress *PTNFakeLTProgress(NSData *data, NSString * _Nullable mimeType = nil) {
   FBRHTTPResponse *response = OCMClassMock([FBRHTTPResponse class]);
+  NSHTTPURLResponse *metadata = OCMClassMock([NSHTTPURLResponse class]);
+  OCMStub([metadata MIMEType]).andReturn(mimeType);
   OCMStub([response content]).andReturn(data);
+  OCMStub([response metadata]).andReturn(metadata);
   return [[LTProgress alloc] initWithResult:response];
 }
 
@@ -286,7 +295,7 @@ context(@"fetching images", ^{
 
       beforeEach(^{
         NSString *path = [NSBundle lt_pathForResource:@"OceanFakeAssetResponse.json"
-                                          nearClass:[self class]];
+                                            nearClass:[self class]];
         NSData *data = [NSData dataWithContentsOfFile:path];
         NSDictionary *jsonDictionary = [NSJSONSerialization JSONObjectWithData:data options:0
                                                                          error:nil];
@@ -441,20 +450,107 @@ context(@"fetching images", ^{
   });
 });
 
+context(@"fetching image data", ^{
+  it(@"should send error for an invalid descriptor class", ^{
+    id<PTNDescriptor> invalidDescriptor = OCMProtocolMock(@protocol(PTNDescriptor));
+    RACSignal *fetch = [manager fetchImageDataWithDescriptor:invalidDescriptor];
+
+    expect(fetch).to.sendError([NSError ptn_errorWithCode:PTNErrorCodeInvalidDescriptor
+                                     associatedDescriptor:invalidDescriptor]);
+  });
+
+  context(@"ocean descriptors", ^{
+    context(@"invalid descriptors", ^{
+      it(@"should send error if there are no available assets", ^{
+        PTNOceanAssetDescriptor *invalidDescriptor = [MTLJSONAdapter
+                                                      modelOfClass:[PTNOceanAssetDescriptor class]
+                                                      fromJSONDictionary:@{
+          @"all_sizes": @[],
+          @"asset_type": @"photo",
+          @"source_id": @"pixabay",
+          @"id": @"foo"
+        } error:nil];
+        RACSignal *fetch = [manager fetchImageDataWithDescriptor:invalidDescriptor];
+
+        expect(fetch).to.sendError([NSError ptn_errorWithCode:PTNErrorCodeInvalidDescriptor
+                                         associatedDescriptor:invalidDescriptor]);
+      });
+    });
+
+    context(@"valid descriptors", ^{
+      __block PTNOceanAssetDescriptor *descriptor;
+
+      beforeEach(^{
+        NSString *path = [NSBundle lt_pathForResource:@"OceanFakeAssetResponse.json"
+                                            nearClass:[self class]];
+        NSData *data = [NSData dataWithContentsOfFile:path];
+        NSDictionary *jsonDictionary = [NSJSONSerialization JSONObjectWithData:data options:0
+                                                                         error:nil];
+        descriptor = [MTLJSONAdapter modelOfClass:[PTNOceanAssetDescriptor class]
+                               fromJSONDictionary:jsonDictionary error:nil];
+      });
+
+      it(@"should send progress", ^{
+        RACSubject *subject = [RACSubject subject];
+        OCMStub([client GET:@"http://c" withParameters:OCMOCK_ANY headers:OCMOCK_ANY])
+            .andReturn(subject);
+
+        LLSignalTestRecorder *recorder = [[manager fetchImageDataWithDescriptor:descriptor]
+                                          testRecorder];
+
+        [subject sendNext:[[LTProgress alloc] initWithProgress:0.25]];
+        [subject sendNext:[[LTProgress alloc] initWithProgress:0.5]];
+
+        expect(recorder).to.sendValues(@[
+          [[PTNProgress alloc] initWithProgress:@0.25],
+          [[PTNProgress alloc] initWithProgress:@0.5]
+        ]);
+      });
+
+      it(@"should prefer image with largest pixel count", ^{
+        RACSubject *subject = [RACSubject subject];
+        OCMStub([client GET:@"http://c" withParameters:OCMOCK_ANY headers:OCMOCK_ANY])
+            .andReturn(subject);
+        NSData *data = [NSData data];
+        LTProgress *progress = PTNFakeLTProgress(data);
+
+        LLSignalTestRecorder *recorder = [[manager fetchImageDataWithDescriptor:descriptor]
+                                          testRecorder];
+        [subject sendNext:progress];
+
+        expect(recorder).to.sendValues(@[
+          [[PTNProgress alloc] initWithResult:PTNAssetCacheProxy(data,
+                                                                 [PTNResizingStrategy identity],
+                                                                 date)]
+        ]);
+      });
+
+      it(@"should convert MIME type to UTI", ^{
+        RACSubject *subject = [RACSubject subject];
+        OCMStub([client GET:OCMOCK_ANY withParameters:OCMOCK_ANY headers:OCMOCK_ANY])
+            .andReturn(subject);
+        NSData *data = [NSData data];
+        LTProgress *progress = PTNFakeLTProgress(data, @"image/jpeg");
+
+        LLSignalTestRecorder *recorder = [[manager fetchImageDataWithDescriptor:descriptor]
+                                          testRecorder];
+        [subject sendNext:progress];
+
+        expect(recorder).to.sendValues(@[
+          [[PTNProgress alloc] initWithResult:PTNAssetCacheProxy(data, @"public.jpeg",
+                                                                 [PTNResizingStrategy identity],
+                                                                 date)]
+        ]);
+      });
+    });
+  });
+});
+
 context(@"unsupported operations", ^{
   it(@"should send error when attempting to fetch audiovisual asset", ^{
     RACSignal *fetch = [manager
                         fetchAVAssetWithDescriptor:OCMProtocolMock(@protocol(PTNDescriptor))
                         options:OCMClassMock([PTNAVAssetFetchOptions class])];
-
-    expect(fetch).to.matchError(^BOOL(NSError *error) {
-      return error.code == PTNErrorCodeUnsupportedOperation;
-    });
-  });
-
-  it(@"should send error when attempting to fetch image data", ^{
-    RACSignal *fetch =
-        [manager fetchImageDataWithDescriptor:OCMProtocolMock(@protocol(PTNDescriptor))];
 
     expect(fetch).to.matchError(^BOOL(NSError *error) {
       return error.code == PTNErrorCodeUnsupportedOperation;
