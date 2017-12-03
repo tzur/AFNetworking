@@ -191,6 +191,13 @@
 			remoteGlobalIDString = 8B3DEBE318296B6100EA0C1A;
 			remoteInfo = LTEngine;
 		};
+		06415F161FD4299C00F9F70C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A14172691E6EADDF005DBEFF /* LTKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 194FF4FC1FA8BA77008879E7;
+			remoteInfo = LTKitTestUtils;
+		};
 		06FD92931EDC5F9100D180C7 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 06FD928C1EDC5F9100D180C7 /* Mantle.xcodeproj */;
@@ -1145,6 +1152,7 @@
 			children = (
 				A141726F1E6EADDF005DBEFF /* libLTKit.a */,
 				A14172711E6EADDF005DBEFF /* LTKitTests.xctest */,
+				06415F171FD4299C00F9F70C /* libLTKitTestUtils.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1507,6 +1515,13 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		06415F171FD4299C00F9F70C /* libLTKitTestUtils.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libLTKitTestUtils.a;
+			remoteRef = 06415F161FD4299C00F9F70C /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		06FD92941EDC5F9100D180C7 /* Mantle.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
@@ -2125,7 +2140,11 @@
 				);
 				INFOPLIST_FILE = PinkyTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				"OTHER_LDFLAGS[sdk=iphoneos*]" = "$(inherited) -framework MetalPerformanceShaders";
+				"OTHER_LDFLAGS[sdk=iphoneos*]" = (
+					"$(inherited)",
+					"-framework",
+					MetalPerformanceShaders,
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.Lightricks.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
@@ -2148,7 +2167,11 @@
 				);
 				INFOPLIST_FILE = PinkyTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				"OTHER_LDFLAGS[sdk=iphoneos*]" = "$(inherited) -framework MetalPerformanceShaders";
+				"OTHER_LDFLAGS[sdk=iphoneos*]" = (
+					"$(inherited)",
+					"-framework",
+					MetalPerformanceShaders,
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.Lightricks.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
