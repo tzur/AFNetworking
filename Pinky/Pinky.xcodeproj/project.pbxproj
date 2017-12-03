@@ -26,8 +26,6 @@
 		060EA49E1EDD9CC20041487A /* NSBundle+PinkyBundle.mm in Sources */ = {isa = PBXBuildFile; fileRef = 060EA49D1EDD9CC20041487A /* NSBundle+PinkyBundle.mm */; };
 		060FB4641F0104EB00506895 /* Pinky.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 06FD92A11EDC66E500D180C7 /* Pinky.bundle */; };
 		060FB4651F0104F300506895 /* Pinky.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 06FD92A11EDC66E500D180C7 /* Pinky.bundle */; };
-		06172A901F02881600379124 /* PNKStyleUpsampleProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 06172A8F1F02881600379124 /* PNKStyleUpsampleProcessor.mm */; };
-		06172AB21F02884F00379124 /* PNKStyleUpsampleProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 06172AB11F02884F00379124 /* PNKStyleUpsampleProcessorSpec.mm */; };
 		06172C831F03F9E600379124 /* libprotobuf-lite.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 06172C811F03F9DF00379124 /* libprotobuf-lite.a */; };
 		06172C841F03F9E700379124 /* libprotobuf-lite.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 06172C811F03F9DF00379124 /* libprotobuf-lite.a */; };
 		061941AC1F94D22900A329BA /* PNKTemporaryImageExamples.mm in Sources */ = {isa = PBXBuildFile; fileRef = 061941AB1F94D22900A329BA /* PNKTemporaryImageExamples.mm */; };
@@ -521,9 +519,6 @@
 		060EA49B1EDD9C740041487A /* PNKDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKDefines.h; sourceTree = "<group>"; };
 		060EA49C1EDD9CC20041487A /* NSBundle+PinkyBundle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSBundle+PinkyBundle.h"; sourceTree = "<group>"; };
 		060EA49D1EDD9CC20041487A /* NSBundle+PinkyBundle.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSBundle+PinkyBundle.mm"; sourceTree = "<group>"; };
-		06172A8E1F02881600379124 /* PNKStyleUpsampleProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKStyleUpsampleProcessor.h; sourceTree = "<group>"; };
-		06172A8F1F02881600379124 /* PNKStyleUpsampleProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKStyleUpsampleProcessor.mm; sourceTree = "<group>"; };
-		06172AB11F02884F00379124 /* PNKStyleUpsampleProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKStyleUpsampleProcessorSpec.mm; sourceTree = "<group>"; };
 		06172C811F03F9DF00379124 /* libprotobuf-lite.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libprotobuf-lite.a"; path = "../third_party/protobuf/lib/libprotobuf-lite.a"; sourceTree = "<group>"; };
 		061941AA1F94D22900A329BA /* PNKTemporaryImageExamples.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNKTemporaryImageExamples.h; sourceTree = "<group>"; };
 		061941AB1F94D22900A329BA /* PNKTemporaryImageExamples.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKTemporaryImageExamples.mm; sourceTree = "<group>"; };
@@ -957,8 +952,6 @@
 				06C9E8071F793E7400D8A77F /* PNKReflectionPadding.h */,
 				06C9E8081F793E7400D8A77F /* PNKReflectionPadding.metal */,
 				06C9E8061F793E7400D8A77F /* PNKReflectionPadding.mm */,
-				06172A8E1F02881600379124 /* PNKStyleUpsampleProcessor.h */,
-				06172A8F1F02881600379124 /* PNKStyleUpsampleProcessor.mm */,
 			);
 			name = "Image Processing";
 			sourceTree = "<group>";
@@ -966,7 +959,6 @@
 		06C3F7621EFFD9EA00D4B1F4 /* Image Processing */ = {
 			isa = PBXGroup;
 			children = (
-				06172AB11F02884F00379124 /* PNKStyleUpsampleProcessorSpec.mm */,
 			);
 			name = "Image Processing";
 			sourceTree = "<group>";
@@ -1885,7 +1877,6 @@
 				C9ADC5131EFFE06200C87932 /* PNKLibraryLoader.mm in Sources */,
 				06A1A8FF1F0CD7BA0031A387 /* PNKNeuralNetworkModelFactory.mm in Sources */,
 				0657A1341F299C56002AA730 /* MPSCNNConvolution+Factory.mm in Sources */,
-				06172A901F02881600379124 /* PNKStyleUpsampleProcessor.mm in Sources */,
 				F9CB52FD1F5FE98700C8E8CA /* PNKProtobufHelpers.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1897,7 +1888,6 @@
 				C9131ED71EE05A4D00E924DA /* LTTestUtils+LTEngine.mm in Sources */,
 				C9131EAF1EE0599D00E924DA /* EXPMatchers+beCloseToScalar.mm in Sources */,
 				C9131EAD1EE0599D00E924DA /* EXPMatchers+beCloseToMat.mm in Sources */,
-				06172AB21F02884F00379124 /* PNKStyleUpsampleProcessorSpec.mm in Sources */,
 				F994A70F1F612A530072D338 /* PNKProtobufHelpersSpec.mm in Sources */,
 				C9131EB31EE0599D00E924DA /* EXPMatchers+equalScalar.mm in Sources */,
 				C9131EB11EE0599D00E924DA /* EXPMatchers+equalMat.mm in Sources */,
