@@ -42,12 +42,18 @@ NS_ASSUME_NONNULL_BEGIN
     (SPXSubscriptionDescriptor *)subscriptionDescriptor {
   auto subscriptionButton = [[SPXSubscriptionGradientButton alloc] init];
   subscriptionButton.exclusiveTouch = YES;
+  subscriptionButton.enabled = NO;
   subscriptionButton.topText =
       [self.formatter periodTextForSubscription:subscriptionDescriptor.productIdentifier
                                   monthlyFormat:YES];
   subscriptionButton.bottomGradientColors = self.bottomGradientColors;
 
   SPXSubscriptionButtonFormatter *formatter = self.formatter;
+  RAC(subscriptionButton, enabled) = [[RACObserve(subscriptionDescriptor, priceInfo)
+      deliverOnMainThread]
+      map:^NSNumber *(BZRProductPriceInfo * _Nullable priceInfo) {
+        return @(priceInfo != nil);
+      }];
   RAC(subscriptionButton, bottomText) = [[RACObserve(subscriptionDescriptor, priceInfo)
       deliverOnMainThread]
       map:^NSAttributedString * _Nullable (BZRProductPriceInfo * _Nullable priceInfo) {
