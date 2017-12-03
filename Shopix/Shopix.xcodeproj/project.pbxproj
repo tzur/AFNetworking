@@ -7,9 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		633E793A1FD3DC1300239C87 /* SPXSubscriptionManager+RACSignalSupport.mm in Sources */ = {isa = PBXBuildFile; fileRef = 633E79391FD3DC1300239C87 /* SPXSubscriptionManager+RACSignalSupport.mm */; };
 		639409F01FB3650200C817FE /* SPXAlertViewControllerProvider.mm in Sources */ = {isa = PBXBuildFile; fileRef = 639409EF1FB3650200C817FE /* SPXAlertViewControllerProvider.mm */; };
 		639C5AC91FB37DD300937367 /* SPXAlertViewModelBuilder.mm in Sources */ = {isa = PBXBuildFile; fileRef = 639C5AC81FB37DD300937367 /* SPXAlertViewModelBuilder.mm */; };
 		639C5ACC1FB4B47600937367 /* UIAlertController+ViewModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 639C5ACB1FB4B47600937367 /* UIAlertController+ViewModel.mm */; };
+		63DC6CE71FD405FC009C0B71 /* SPXSubscriptionManager+RACSignalSupportSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 63DC6CE61FD405FC009C0B71 /* SPXSubscriptionManager+RACSignalSupportSpec.mm */; };
 		63E591531FC44AAC0009A34B /* SPXAlertViewModel+ShopixPresets.mm in Sources */ = {isa = PBXBuildFile; fileRef = 63E591521FC44AAC0009A34B /* SPXAlertViewModel+ShopixPresets.mm */; };
 		63E591671FC492480009A34B /* SPXAlertViewModel+ShopixPresetsSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 63E591661FC492480009A34B /* SPXAlertViewModel+ShopixPresetsSpec.mm */; };
 		650BB33C1D465389008648A3 /* libExpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B425ED31CA6D218001C457E /* libExpecta.a */; };
@@ -431,6 +433,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		633E79381FD3DC1300239C87 /* SPXSubscriptionManager+RACSignalSupport.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SPXSubscriptionManager+RACSignalSupport.h"; sourceTree = "<group>"; };
+		633E79391FD3DC1300239C87 /* SPXSubscriptionManager+RACSignalSupport.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "SPXSubscriptionManager+RACSignalSupport.mm"; sourceTree = "<group>"; };
 		639409E91FB3637600C817FE /* SPXAlertViewControllerProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SPXAlertViewControllerProvider.h; sourceTree = "<group>"; };
 		639409EA1FB3642100C817FE /* SPXAlertViewModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SPXAlertViewModel.h; sourceTree = "<group>"; };
 		639409EF1FB3650200C817FE /* SPXAlertViewControllerProvider.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXAlertViewControllerProvider.mm; sourceTree = "<group>"; };
@@ -438,6 +442,7 @@
 		639C5AC81FB37DD300937367 /* SPXAlertViewModelBuilder.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXAlertViewModelBuilder.mm; sourceTree = "<group>"; };
 		639C5ACA1FB4B47600937367 /* UIAlertController+ViewModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIAlertController+ViewModel.h"; sourceTree = "<group>"; };
 		639C5ACB1FB4B47600937367 /* UIAlertController+ViewModel.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIAlertController+ViewModel.mm"; sourceTree = "<group>"; };
+		63DC6CE61FD405FC009C0B71 /* SPXSubscriptionManager+RACSignalSupportSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "SPXSubscriptionManager+RACSignalSupportSpec.mm"; sourceTree = "<group>"; };
 		63E591511FC44AAC0009A34B /* SPXAlertViewModel+ShopixPresets.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SPXAlertViewModel+ShopixPresets.h"; sourceTree = "<group>"; };
 		63E591521FC44AAC0009A34B /* SPXAlertViewModel+ShopixPresets.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "SPXAlertViewModel+ShopixPresets.mm"; sourceTree = "<group>"; };
 		63E591661FC492480009A34B /* SPXAlertViewModel+ShopixPresetsSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "SPXAlertViewModel+ShopixPresetsSpec.mm"; sourceTree = "<group>"; };
@@ -1008,6 +1013,8 @@
 				CDF5F96E1FCDC4EA007D4AB0 /* SPXSubscriptionGradientButtonsFactory.mm */,
 				CDB513A01F66B0440013577C /* SPXSubscriptionManager.h */,
 				CDB513A11F66B0440013577C /* SPXSubscriptionManager.mm */,
+				633E79381FD3DC1300239C87 /* SPXSubscriptionManager+RACSignalSupport.h */,
+				633E79391FD3DC1300239C87 /* SPXSubscriptionManager+RACSignalSupport.mm */,
 				CDAC92081FC5994900B197B3 /* SPXSubscriptionTermsView.h */,
 				CDAC92091FC5994900B197B3 /* SPXSubscriptionTermsView.mm */,
 				CDAC91D91FC593C700B197B3 /* SPXSubscriptionTermsViewModel.h */,
@@ -1028,6 +1035,7 @@
 				CDAC86E21FC33C4B00B197B3 /* SPXPagingViewSpec.mm */,
 				CDF5FAC41FCED77D007D4AB0 /* SPXSubscriptionButtonFormatterSpec.mm */,
 				CDF5FB281FCF249B007D4AB0 /* SPXSubscriptionGradientButtonsFactorySpec.mm */,
+				63DC6CE61FD405FC009C0B71 /* SPXSubscriptionManager+RACSignalSupportSpec.mm */,
 				CDB513A41F66B0A10013577C /* SPXSubscriptionManagerSpec.mm */,
 				CDA6E0E91FCB2D3200114D6B /* SPXSubscriptionVideoPageViewModelSpec.mm */,
 			);
@@ -1596,6 +1604,7 @@
 				63E591671FC492480009A34B /* SPXAlertViewModel+ShopixPresetsSpec.mm in Sources */,
 				CDF5FB291FCF249B007D4AB0 /* SPXSubscriptionGradientButtonsFactorySpec.mm in Sources */,
 				CDA6E0EA1FCB2D3200114D6B /* SPXSubscriptionVideoPageViewModelSpec.mm in Sources */,
+				63DC6CE71FD405FC009C0B71 /* SPXSubscriptionManager+RACSignalSupportSpec.mm in Sources */,
 				653D9C3D1FB7BBCC0035ACEC /* SPXAlertViewModelBuilderSpec.mm in Sources */,
 				CDAC86E31FC33C4B00B197B3 /* SPXPagingViewSpec.mm in Sources */,
 				653D9C371FB743110035ACEC /* UIAlertController+ViewModelSpec.mm in Sources */,
@@ -1612,6 +1621,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				639C5AC91FB37DD300937367 /* SPXAlertViewModelBuilder.mm in Sources */,
+				633E793A1FD3DC1300239C87 /* SPXSubscriptionManager+RACSignalSupport.mm in Sources */,
 				CDAC920A1FC5994900B197B3 /* SPXSubscriptionTermsView.mm in Sources */,
 				88720F9D1F9E1A4D00E18F05 /* SPXProductDescriptorsFactory.mm in Sources */,
 				CD60A5EA1FB34F6A0017D777 /* SPXSubscriptionGradientButton.mm in Sources */,
