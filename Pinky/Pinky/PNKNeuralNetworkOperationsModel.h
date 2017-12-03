@@ -80,7 +80,7 @@ struct ConvolutionKernelModel {
   /// deconvolution will be calculated by the input size and \c padding.
   CGSize deconvolutionOutputSize;
   /// Matrix of weights for the convolution kernel. If \c isDeconvolution is \c NO, the shape of the
-  /// matrix is <tt>[outputFeatureChannels, inputFeatureChannels, kernelHeight, kernelWidth]</tt>.
+  /// matrix is <tt>[outputFeatureChannels, kernelHeight, kernelWidth, inputFeatureChannels]</tt>.
   /// If \c isDeconvolution is \c YES, the shape of the matrix is
   /// <tt>[inputFeatureChannels, outputFeatureChannels, kernelHeight, kernelWidth]</tt>.
   cv::Mat1f kernelWeights;
