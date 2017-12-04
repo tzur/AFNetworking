@@ -190,7 +190,7 @@ using namespace spx;
 
 - (void)setupRestorePurchasesButton {
   auto topPaddingView = [self addPaddingSubviewBeneathView:self.subscriptionButtonsView
-                                               heightRatio:0.01 maxHeight:20];
+                                               heightRatio:0.03 maxHeight:20];
 
   _restorePurchasesButton = [[SPXRestorePurchasesButton alloc] init];
   self.restorePurchasesButton.textColor = self.viewModel.colorScheme.textColor;

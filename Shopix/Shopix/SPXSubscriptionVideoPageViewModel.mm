@@ -4,6 +4,7 @@
 #import "SPXSubscriptionVideoPageViewModel.h"
 
 #import "SPXColorScheme.h"
+#import "UIFont+Shopix.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -55,11 +56,10 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (NSAttributedString *)title {
-  auto windowHeight = [UIApplication sharedApplication].keyWindow.bounds.size.height;
-  auto fontSize = std::clamp(windowHeight * 0.04, 18, 26);
   return [[NSAttributedString alloc] initWithString:self.titleText attributes:@{
     NSForegroundColorAttributeName: self.titleTextColor,
-    NSFontAttributeName: [UIFont systemFontOfSize:fontSize weight:UIFontWeightBold]
+    NSFontAttributeName: [UIFont spx_fontWithSizeRatio:0.04 minSize:18 maxSize:26
+                                                weight:UIFontWeightBold]
   }];
 }
 
@@ -68,11 +68,9 @@ NS_ASSUME_NONNULL_BEGIN
     return nil;
   }
 
-  auto windowHeight = [UIApplication sharedApplication].keyWindow.bounds.size.height;
-  auto fontSize = std::clamp(windowHeight * 0.019, 13, 16);
   return [[NSAttributedString alloc] initWithString:self.subtitleText attributes:@{
     NSForegroundColorAttributeName: self.subtitleTextColor,
-    NSFontAttributeName: [UIFont systemFontOfSize:fontSize weight:UIFontWeightLight]
+    NSFontAttributeName: [UIFont spx_standardFontWithSizeRatio:0.019 minSize:13 maxSize:16]
   }];
 }
 
