@@ -6,13 +6,21 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class SPXSubscriptionButtonFormatter;
+@class SPXColorScheme, SPXSubscriptionButtonFormatter;
 
 /// Buttons factory that creates \c SPXSubscriptionGradientButton, the subscription period and
 /// price are set as the top and bottom texts of the button respectively.
 @interface SPXSubscriptionGradientButtonsFactory : NSObject <SPXSubscriptionButtonsFactory>
 
-- (instancetype)init NS_UNAVAILABLE;
+/// Initializes with \c colorScheme pulled from Objection and \c formatter is set to the default
+/// formatter with the \c colorScheme colors.
+- (instancetype)init;
+
+/// Initializes with \c colorScheme for mapping between the colors scheme to the buttons colors.
+/// \c bottomGradientColors are set to \c mainColor, \c periodTextColor is set to \c darkTextColor
+/// \c priceTextColor is set to \c textColor. \c fullPriceTextColor is set to \c grayedTextColor.
+/// \c formatter is set to the default formatter with the given colors.
+- (instancetype)initWithColorScheme:(SPXColorScheme *)colorScheme;
 
 /// Initializes with \c bottomGradientColors for the buttons gradient colors, \c periodTextColor,
 /// \c priceTextColor and \c fullPriceTextColor are the period and prices texts colors. \c formatter

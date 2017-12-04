@@ -3,6 +3,7 @@
 
 #import "SPXSubscriptionGradientButtonsFactory.h"
 
+#import "SPXColorScheme.h"
 #import "SPXSubscriptionButtonFormatter.h"
 #import "SPXSubscriptionDescriptor.h"
 
@@ -20,13 +21,15 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation SPXSubscriptionGradientButtonsFactory
 
-- (instancetype)initWithBottomGradientColors:(NSArray<UIColor *> *)bottomGradientColors
-                                   formatter:(SPXSubscriptionButtonFormatter *)formatter {
-  if (self = [super init]) {
-    _bottomGradientColors = [bottomGradientColors copy];
-    _formatter = formatter;
-  }
-  return self;
+- (instancetype)init {
+  return [self initWithColorScheme:nn([JSObjection defaultInjector][[SPXColorScheme class]])];
+}
+
+- (instancetype)initWithColorScheme:(SPXColorScheme *)colorScheme {
+  return [self initWithBottomGradientColors:@[colorScheme.mainColor, colorScheme.mainColor]
+                            periodTextColor:colorScheme.darkTextColor
+                         fullPriceTextColor:colorScheme.grayedTextColor
+                             priceTextColor:colorScheme.textColor];
 }
 
 - (instancetype)initWithBottomGradientColors:(NSArray<UIColor *> *)bottomGradientColors
@@ -36,6 +39,15 @@ NS_ASSUME_NONNULL_BEGIN
   auto formatter = [[SPXSubscriptionButtonFormatter alloc] initWithPeriodTextColor:periodTextColor
       priceTextColor:priceTextColor fullPriceTextColor:fullPriceTextColor];
   return [self initWithBottomGradientColors:bottomGradientColors formatter:formatter];
+}
+
+- (instancetype)initWithBottomGradientColors:(NSArray<UIColor *> *)bottomGradientColors
+                                   formatter:(SPXSubscriptionButtonFormatter *)formatter {
+  if (self = [super init]) {
+    _bottomGradientColors = [bottomGradientColors copy];
+    _formatter = formatter;
+  }
+  return self;
 }
 
 - (UIButton *)createSubscriptionButtonWithSubscriptionDescriptor:
