@@ -22,7 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithFullTerms:(NSURL *)fullTermsURL privacyPolicy:(NSURL *)privacyPolicyURL {
   auto termsString = @"Payment will be charged to your iTunes account at confirmation of purchase. "
-      "Subscriptions will automatically renew unless auto-renew is turned off at least 24 hours  "
+      "Subscriptions will automatically renew unless auto-renew is turned off at least 24 hours "
       "before the end of the current period. Your account will be charged for renewal, in "
       "accordance with your plan, within 24 hours prior to the end of the current period. You can "
       "manage or turn off auto-renew in your Apple ID account settings any time after purchase. ";
