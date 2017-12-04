@@ -5,6 +5,7 @@
 
 #import <LTEngine/LTMMTexture.h>
 
+#import "CAMAudioFrame.h"
 #import "CAMDevicePreset.h"
 #import "CAMFakeAVCaptureDevice.h"
 #import "CAMFakeAVCaptureDeviceFormat.h"
@@ -389,20 +390,22 @@ context(@"", ^{
   context(@"audio", ^{
     it(@"should send audio frame", ^{
       lt::Ref<CMSampleBufferRef> sampleBuffer = CAMCreateEmptySampleBuffer();
+      lt::Ref<CMSampleBufferRef> otherSampleBuffer = CAMCreateEmptySampleBuffer();
 
       id output = OCMClassMock([AVCaptureAudioDataOutput class]);
       id connection = OCMClassMock([AVCaptureConnection class]);
-      LLSignalTestRecorder *recorder = [[device audioFrames] testRecorder];
-      CMSampleBufferRef sampleBufferRef = sampleBuffer.get();
-      NSValue *expected = [NSValue value:&sampleBufferRef
-                            withObjCType:@encode(CMSampleBufferRef)];
 
+      LLSignalTestRecorder *recorder = [[device audioFrames] testRecorder];
       [device captureOutput:output didOutputSampleBuffer:sampleBuffer.get()
              fromConnection:connection];
-      expect(recorder).to.sendValues(@[expected]);
-      [device captureOutput:output didOutputSampleBuffer:sampleBuffer.get()
+      expect(recorder).to.matchValue(0, ^BOOL(id<CAMAudioFrame> frame) {
+        return [frame sampleBuffer].get() == sampleBuffer.get();
+      });
+      [device captureOutput:output didOutputSampleBuffer:otherSampleBuffer.get()
              fromConnection:connection];
-      expect(recorder).to.sendValues(@[expected, expected]);
+      expect(recorder).to.matchValue(1, ^BOOL(id<CAMAudioFrame> frame) {
+        return [frame sampleBuffer].get() == otherSampleBuffer.get();
+      });
       expect(recorder).toNot.complete();
     });
   });

@@ -4,6 +4,7 @@
 #import "CAMHardwareDevice.h"
 
 #import "AVCaptureDevice+Configure.h"
+#import "CAMAudioFrame.h"
 #import "CAMDevicePreset.h"
 #import "CAMHardwareSession.h"
 #import "CAMVideoFrame.h"
@@ -317,8 +318,7 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
 }
 
 - (void)didOutputAudioSampleBuffer:(CMSampleBufferRef)sampleBuffer {
-  [self.audioFramesSubject sendNext:[NSValue value:&sampleBuffer
-                                      withObjCType:@encode(CMSampleBufferRef)]];
+  [self.audioFramesSubject sendNext:[[CAMAudioFrame alloc] initWithSampleBuffer:sampleBuffer]];
 }
 
 #pragma mark -
