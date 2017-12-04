@@ -6,45 +6,14 @@
 #import <Bazaar/BZRProductsInfoProvider.h>
 #import <Bazaar/BZRProductsManager.h>
 #import <Bazaar/BZRReceiptModel.h>
+#import <Bazaar/BZRReceiptValidationStatus.h>
 #import <Bazaar/NSErrorCodes+Bazaar.h>
-#import <MessageUI/MessageUI.h>
 
-#import "SPXAlertViewControllerProvider.h"
 #import "SPXAlertViewModel+ShopixPresets.h"
-#import "SPXFeedbackComposeViewControllerProvider.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-#pragma mark -
-#pragma mark MFMailComposeViewController+Dismissal
-#pragma mark -
-
-/// Category that adds a \c dismissBlock property to \c MFMailComposeViewController.
-@interface MFMailComposeViewController (Dismiss)
-
-/// Block invoked after the mail composer is dismissed.
-@property (nonatomic, nullable) LTBoolCompletionBlock spx_dismissBlock;
-
-@end
-
-@implementation MFMailComposeViewController (Dismiss)
-
-- (nullable LTBoolCompletionBlock)spx_dismissBlock {
-  return objc_getAssociatedObject(self, @selector(spx_dismissBlock));
-}
-
-- (void)setSpx_dismissBlock:(nullable LTBoolCompletionBlock)dismissBlock {
-    objc_setAssociatedObject(self, @selector(spx_dismissBlock), dismissBlock,
-                             OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-}
-
-@end
-
-#pragma mark -
-#pragma mark SPXSubscriptionManager
-#pragma mark -
-
-@interface SPXSubscriptionManager () <MFMailComposeViewControllerDelegate>
+@interface SPXSubscriptionManager ()
 
 /// Provider used to get the currnet subcription status.
 @property (readonly, nonatomic) id<BZRProductsInfoProvider> productsInfoProvider;
@@ -52,51 +21,29 @@ NS_ASSUME_NONNULL_BEGIN
 /// Manager used to purchase subscriptions.
 @property (readonly, nonatomic) id<BZRProductsManager> productsManager;
 
-/// Provides a mail compose view controller for user feedback.
-@property (readonly, nonatomic) id<SPXFeedbackComposeViewControllerProvider> mailComposeProvider;
-
-/// Provides alert view controllers for alerts shown on failure / success.
-@property (readonly, nonatomic) id<SPXAlertViewControllerProvider> alertProvider;
-
-/// Used to present upon all the alert messages for the user.
-@property (readonly, nonatomic, weak) UIViewController *viewController;
-
 @end
 
 @implementation SPXSubscriptionManager
 
-- (instancetype)initWithViewController:(UIViewController *)viewController {
+- (instancetype)init {
   id<BZRProductsInfoProvider> _Nullable productsInfoProvider =
       [JSObjection defaultInjector][@protocol(BZRProductsInfoProvider)];
   id<BZRProductsManager> _Nullable productsManager =
       [JSObjection defaultInjector][@protocol(BZRProductsManager)];
-  id<SPXFeedbackComposeViewControllerProvider> _Nullable mailComposeProvider =
-      [JSObjection defaultInjector][@protocol(SPXFeedbackComposeViewControllerProvider)];
-  id<SPXAlertViewControllerProvider> alertProvider =
-      [JSObjection defaultInjector][@protocol(SPXAlertViewControllerProvider)] ?:
-      [[SPXAlertViewControllerProvider alloc] init];
 
-  LTAssert(productsInfoProvider && productsManager && mailComposeProvider,
-           @"One or more required dependencies were not injected properly, make sure Objection's "
-           "default injector has binding for: BZRProductsInfoProvider, BZRProductsManager and "
-           "SPXFeedbackComposeViewControllerProvider protocols");
+  LTAssert(productsInfoProvider && productsManager,
+           @"One or more required dependencies (BZRProductsInfoProvider and BZRProductsManager) "
+           "were not injected properly, make sure Objection's default injector has binding for "
+           "these protocols");
 
-  return [self initWithProductsInfoProvider:productsInfoProvider productsManager:productsManager
-                        mailComposeProvider:mailComposeProvider alertProvider:alertProvider
-                             viewController:viewController];
+  return [self initWithProductsInfoProvider:productsInfoProvider productsManager:productsManager];
 }
 
 - (instancetype)initWithProductsInfoProvider:(id<BZRProductsInfoProvider>)productsInfoProvider
-    productsManager:(id<BZRProductsManager>)productsManager
-    mailComposeProvider:(id<SPXFeedbackComposeViewControllerProvider>)mailComposeProvider
-    alertProvider:(id<SPXAlertViewControllerProvider>)alertProvider
-    viewController:(UIViewController *)viewController {
+    productsManager:(id<BZRProductsManager>)productsManager {
   if (self = [super init]) {
     _productsInfoProvider = productsInfoProvider;
     _productsManager = productsManager;
-    _mailComposeProvider = mailComposeProvider;
-    _alertProvider = alertProvider;
-    _viewController = viewController;
   }
 
   return self;
@@ -112,21 +59,19 @@ NS_ASSUME_NONNULL_BEGIN
    }
    error:^(NSError *error) {
      @strongify(self);
-     auto alertViewModel = [SPXAlertViewModel fetchProductsInfoFailedAlertWithTryAgainAction:^{
-       [self fetchProductsInfo:productIdentifiers completionHandler:completionHandler];
-     } contactUsAction:^{
-       [self presentMailComposerWithCompletionHandler:^(BOOL) {
-         completionHandler(nil, error);
-       }];
-     } cancelAction:^{
+     if (!self.delegate) {
        completionHandler(nil, error);
-     }];
-     [self presentAlertWithViewModel:alertViewModel];
+       return;
+     }
+
+     [self presentProductsInfoFetchingFailedAlertWithError:error
+                                        productIdentifiers:productIdentifiers
+                                         completionHandler:completionHandler];
    }];
 }
 
 - (void)purchaseSubscription:(NSString *)productIdentifier
-           completionHandler:(LTBoolCompletionBlock)completionHandler {
+           completionHandler:(SPXPurchaseSubscriptionCompletionBlock)completionHandler {
   LTParameterAssert(self.productsInfoProvider.productsJSONDictionary[productIdentifier],
                     @"Cannot purchase product, got invalid product identifier: %@",
                     productIdentifier);
@@ -136,114 +81,187 @@ NS_ASSUME_NONNULL_BEGIN
       deliverOnMainThread]
       subscribeError:^(NSError *error) {
         @strongify(self);
-        if (!self || error.code == BZRErrorCodeOperationCancelled) {
-          completionHandler(NO);
+        if (!self.delegate || error.code == BZRErrorCodeOperationCancelled) {
+          completionHandler(nil, error);
           return;
         }
 
-        auto alertViewModel = [SPXAlertViewModel purchaseFailedAlertWithTryAgainAction:^{
-          if (error.code == BZRErrorCodeReceiptValidationFailed) {
-            [self validateReceiptWithCompletionHandler:completionHandler];
-          } else {
-            [self purchaseSubscription:productIdentifier completionHandler:completionHandler];
-          }
-        } contactUsAction:^{
-          [self presentMailComposerWithCompletionHandler:completionHandler];
-        } cancelAction:^{
-          completionHandler(NO);
-        }];
-        [self presentAlertWithViewModel:alertViewModel];
+        [self presentPurchaseFailedAlertWithError:error productIdentifier:productIdentifier
+                                completionHandler:completionHandler];
       } completed:^{
-        completionHandler(YES);
+        @strongify(self);
+        completionHandler(self.productsInfoProvider.subscriptionInfo, nil);
       }];
 }
 
-- (void)validateReceiptWithCompletionHandler:(LTBoolCompletionBlock)completionHandler {
+- (void)validateReceiptWithCompletionHandler:
+    (SPXPurchaseSubscriptionCompletionBlock)completionHandler {
   @weakify(self);
   [[[self.productsManager validateReceipt]
       deliverOnMainThread]
-      subscribeError:^(NSError *) {
+      subscribeError:^(NSError *error) {
         @strongify(self);
-        if (!self) {
-           completionHandler(NO);
+        if (!self.delegate || error.code == BZRErrorCodeOperationCancelled) {
+           completionHandler(nil, error);
            return;
         }
 
-        auto alertViewModel = [SPXAlertViewModel purchaseFailedAlertWithTryAgainAction:^{
-          [self validateReceiptWithCompletionHandler:completionHandler];
-        } contactUsAction:^{
-          [self presentMailComposerWithCompletionHandler:completionHandler];
-        } cancelAction:^{
-          completionHandler(NO);
-        }];
-        [self presentAlertWithViewModel:alertViewModel];
+        [self presentReceiptValidationFailedAlertWithError:error
+                                         completionHandler:completionHandler];
       } completed:^{
-        completionHandler(YES);
+        @strongify(self);
+        completionHandler(self.productsInfoProvider.subscriptionInfo, nil);
       }];
 }
 
-- (void)restorePurchasesWithCompletionHandler:(LTBoolCompletionBlock)completionHandler {
+- (void)restorePurchasesWithCompletionHandler:(SPXRestorationCompletionBlock)completionHandler {
   @weakify(self);
   [[[self.productsManager refreshReceipt]
       deliverOnMainThread]
       subscribeError:^(NSError *error) {
         @strongify(self);
-        if (!self || error.code == BZRErrorCodeOperationCancelled) {
-          completionHandler(NO);
+        if (!self.delegate || error.code == BZRErrorCodeOperationCancelled) {
+          completionHandler(nil, error);
           return;
         }
 
-        auto alertViewModel = [SPXAlertViewModel restorationFailedAlertWithTryAgainAction:^{
-          [self restorePurchasesWithCompletionHandler:completionHandler];
-        } contactUsAction:^{
-          [self presentMailComposerWithCompletionHandler:completionHandler];
-        } cancelAction:^{
-          completionHandler(NO);
-        }];
-        [self presentAlertWithViewModel:alertViewModel];
+        [self presentRestorationFailedAlertWithError:error completionHandler:completionHandler];
       }
       completed:^{
         @strongify(self);
-        if (!self) {
-          completionHandler(YES);
+        BZRReceiptInfo *receipt = self.productsInfoProvider.receiptValidationStatus.receipt;
+        if (!self.delegate) {
+          completionHandler(receipt, nil);
           return;
         }
 
         BOOL subscriptionRestored = self.productsInfoProvider.subscriptionInfo &&
             !self.productsInfoProvider.subscriptionInfo.isExpired;
-        [self presentAlertWithViewModel:[SPXAlertViewModel successfulRestorationAlertWithAction:^{
-          completionHandler(YES);
-        } subscriptionRestored:subscriptionRestored]];
+        auto alertViewModel = [SPXAlertViewModel successfulRestorationAlertWithAction:^{
+          completionHandler(receipt, nil);
+        } subscriptionRestored:subscriptionRestored];
+        [self.delegate presentAlertWithViewModel:alertViewModel];
       }];
 }
 
-- (void)presentAlertWithViewModel:(id<SPXAlertViewModel>)alertViewModel {
-  auto alertViewController = [self.alertProvider alertViewControllerWithModel:alertViewModel];
-  [self.viewController presentViewController:alertViewController animated:YES completion:nil];
-}
-
-- (void)presentMailComposerWithCompletionHandler:(LTBoolCompletionBlock)completionHandler {
-  auto mailComposeViewController = [self.mailComposeProvider feedbackComposeViewController];
-  if (!mailComposeViewController) {
-    completionHandler(NO);
-    return;
-  }
-
-  mailComposeViewController.mailComposeDelegate = self;
-  mailComposeViewController.spx_dismissBlock = completionHandler;
-  [self.viewController presentViewController:mailComposeViewController animated:YES completion:nil];
-}
-
 #pragma mark -
-#pragma mark MFMailComposeViewControllerDelegate
+#pragma mark Presenting Alerts
 #pragma mark -
 
-- (void)mailComposeController:(MFMailComposeViewController *)controller
-          didFinishWithResult:(MFMailComposeResult __unused)result
-                        error:(NSError * _Nullable __unused)error {
-  [controller dismissViewControllerAnimated:YES completion:^{
-    controller.spx_dismissBlock(NO);
+- (void)presentProductsInfoFetchingFailedAlertWithError:(NSError *)error
+    productIdentifiers:(NSSet<NSString *> *)productIdentifiers
+    completionHandler:(SPXFetchProductsCompletionBlock)completionHandler {
+  @weakify(self);
+  auto alertViewModel = [SPXAlertViewModel fetchProductsInfoFailedAlertWithTryAgainAction:^{
+    @strongify(self);
+    if (!self) {
+      completionHandler(nil, error);
+      return;
+    }
+
+    [self fetchProductsInfo:productIdentifiers completionHandler:completionHandler];
+  } contactUsAction:^{
+    @strongify(self);
+    if (!self || !self.delegate) {
+      completionHandler(nil, error);
+      return;
+    }
+
+    [self.delegate presentFeedbackMailComposerWithCompletionHandler:^{
+      completionHandler(nil, error);
+    }];
+  } cancelAction:^{
+    completionHandler(nil, error);
   }];
+  [self.delegate presentAlertWithViewModel:alertViewModel];
+}
+
+- (void)presentPurchaseFailedAlertWithError:(NSError *)error
+    productIdentifier:(NSString *)productIdentifier
+    completionHandler:(SPXPurchaseSubscriptionCompletionBlock)completionHandler {
+  @weakify(self);
+  auto alertViewModel = [SPXAlertViewModel purchaseFailedAlertWithTryAgainAction:^{
+    @strongify(self);
+    if (!self) {
+      completionHandler(nil, error);
+      return;
+    }
+
+    // If the purchase succeeded and only the receipt validation failed retry only the receipt
+    // validation and not the entire purchase process.
+    if (error.code == BZRErrorCodeReceiptValidationFailed) {
+      [self validateReceiptWithCompletionHandler:completionHandler];
+    } else {
+      [self purchaseSubscription:productIdentifier completionHandler:completionHandler];
+    }
+  } contactUsAction:^{
+    @strongify(self);
+    if (!self.delegate) {
+      completionHandler(nil, error);
+      return;
+    }
+
+    [self.delegate presentFeedbackMailComposerWithCompletionHandler:^{
+      completionHandler(nil, error);
+    }];
+  } cancelAction:^{
+    completionHandler(nil, error);
+  }];
+  [self.delegate presentAlertWithViewModel:alertViewModel];
+}
+
+- (void)presentReceiptValidationFailedAlertWithError:(NSError *)error
+    completionHandler:(SPXPurchaseSubscriptionCompletionBlock)completionHandler {
+  @weakify(self);
+  auto alertViewModel = [SPXAlertViewModel purchaseFailedAlertWithTryAgainAction:^{
+    @strongify(self);
+    if (!self) {
+      completionHandler(nil, error);
+      return;
+    }
+
+    [self validateReceiptWithCompletionHandler:completionHandler];
+  } contactUsAction:^{
+    @strongify(self);
+    if (!self.delegate) {
+      completionHandler(nil, error);
+      return;
+    }
+
+    [self.delegate presentFeedbackMailComposerWithCompletionHandler:^{
+      completionHandler(nil, error);
+    }];
+  } cancelAction:^{
+    completionHandler(nil, error);
+  }];
+  [self.delegate presentAlertWithViewModel:alertViewModel];
+}
+
+- (void)presentRestorationFailedAlertWithError:(NSError *)error
+                             completionHandler:(SPXRestorationCompletionBlock)completionHandler {
+  @weakify(self);
+  auto alertViewModel = [SPXAlertViewModel restorationFailedAlertWithTryAgainAction:^{
+    @strongify(self);
+    if (!self) {
+      completionHandler(nil, error);
+      return;
+    }
+
+    [self restorePurchasesWithCompletionHandler:completionHandler];
+  } contactUsAction:^{
+    @strongify(self);
+    if (!self.delegate) {
+      completionHandler(nil, error);
+      return;
+    }
+
+    [self.delegate presentFeedbackMailComposerWithCompletionHandler:^{
+      completionHandler(nil, error);
+    }];
+  } cancelAction:^{
+    completionHandler(nil, error);
+  }];
+  [self.delegate presentAlertWithViewModel:alertViewModel];
 }
 
 @end
