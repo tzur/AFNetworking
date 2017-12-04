@@ -72,8 +72,8 @@ context(@"kernel input region", ^{
     MTLSize outputSize = {kInputWidth, kInputHeight, outputChannels};
     MTLRegion inputRegion = [convolutionOp inputRegionForOutputSize:outputSize];
     MTLSize inputSize = {
-      (outputSize.width - 1) * stride + kernelSide,
-      (outputSize.height - 1) * stride + kernelSide,
+      (outputSize.width - 1) * stride + 1,
+      (outputSize.height - 1) * stride + 1,
       inputChannels};
 
     expect($(inputRegion.size)).to.equalMTLSize($(inputSize));

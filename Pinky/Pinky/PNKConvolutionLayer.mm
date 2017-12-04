@@ -99,14 +99,14 @@ NS_ASSUME_NONNULL_BEGIN
   switch (self.padding) {
     case pnk::PaddingTypeSame:
       return {
-        (outputSize.width - 1) * self.strideX + self.kernelWidth,
-        (outputSize.height - 1) * self.strideY + self.kernelHeight,
+        (outputSize.width - 1) * self.strideX + 1,
+        (outputSize.height - 1) * self.strideY + 1,
         self.inputFeatureChannels
       };
     case pnk::PaddingTypeValid:
       return {
-        (outputSize.width - 1) * self.strideX + 1,
-        (outputSize.height - 1) * self.strideY + 1,
+        (outputSize.width - 1) * self.strideX + self.kernelWidth,
+        (outputSize.height - 1) * self.strideY + self.kernelHeight,
         self.inputFeatureChannels
       };
   }
