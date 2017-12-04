@@ -29,6 +29,15 @@ NS_ASSUME_NONNULL_BEGIN
   convolutionDescriptor.strideInPixelsY = convolutionModel.strideY;
   convolutionDescriptor.groups = convolutionModel.groups;
 
+  LTParameterAssert(convolutionModel.kernelWeights.total() ==
+                    convolutionModel.outputFeatureChannels * convolutionModel.kernelHeight *
+                    convolutionModel.kernelWidth * convolutionModel.inputFeatureChannels, @"The "
+                    "kernel weights matrix must have %lu * %lu * %lu * %lu = %lu members, got %lu",
+                    convolutionModel.outputFeatureChannels, convolutionModel.kernelHeight,
+                    convolutionModel.kernelWidth, convolutionModel.inputFeatureChannels,
+                    convolutionModel.outputFeatureChannels * convolutionModel.kernelHeight *
+                    convolutionModel.kernelWidth * convolutionModel.inputFeatureChannels,
+                    convolutionModel.kernelWeights.total());
   LTParameterAssert(convolutionModel.kernelWeights.isContinuous(), @"Kernel weights in model must "
            "be continuous");
   LTParameterAssert(!convolutionModel.hasBias || convolutionModel.biasWeights.isContinuous(),
