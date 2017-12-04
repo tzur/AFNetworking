@@ -8,13 +8,19 @@ NS_ASSUME_NONNULL_BEGIN
 @interface SPXSubscriptionTermsViewModel ()
 
 /// Non-attributed version of the terms overview as provided on initialization.
-@property (strong, nonatomic) NSString *termsOverview;
+@property (readonly, nonatomic) NSString *termsOverview;
 
 /// URL to the full terms-of-use document.
-@property (strong, nonatomic) NSURL *fullTermsURL;
+@property (readonly, nonatomic) NSURL *fullTermsURL;
 
 /// URL to the full privacy-policy document.
-@property (strong, nonatomic) NSURL *privacyPolicyURL;
+@property (readonly, nonatomic) NSURL *privacyPolicyURL;
+
+/// Color for \c termsText.
+@property (readonly, nonatomic) UIColor *termsTextColor;
+
+/// Color for \c termsOfUseLink and \c privacyPolicyLink.
+@property (readonly, nonatomic) UIColor *linksColor;
 
 @end
 
@@ -32,10 +38,23 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithTermsOverview:(NSString *)termsOverview fullTerms:(NSURL *)fullTermsURL
                         privacyPolicy:(NSURL *)privacyPolicyURL {
+  return [self initWithTermsOverview:termsOverview fullTerms:fullTermsURL
+                       privacyPolicy:privacyPolicyURL
+                      termsTextColor:[UIColor colorWithWhite:1.0 alpha:0.6]
+                          linksColor:[UIColor colorWithWhite:1.0 alpha:0.6]];
+}
+
+- (instancetype)initWithTermsOverview:(NSString *)termsOverview
+                            fullTerms:(NSURL *)fullTermsURL
+                        privacyPolicy:(NSURL *)privacyPolicyURL
+                       termsTextColor:(UIColor *)termsTextColor
+                           linksColor:(UIColor *)linksColor {
   if (self = [super init]) {
     _termsOverview = [termsOverview copy];
     _fullTermsURL = fullTermsURL;
     _privacyPolicyURL = privacyPolicyURL;
+    _termsTextColor = termsTextColor;
+    _linksColor = linksColor;
   }
   return self;
 }
@@ -48,7 +67,7 @@ NS_ASSUME_NONNULL_BEGIN
   auto paragraphStyle = [[NSMutableParagraphStyle alloc] init];
   paragraphStyle.alignment = NSTextAlignmentCenter;
   return [[NSMutableAttributedString alloc] initWithString:self.termsOverview attributes:@{
-    NSForegroundColorAttributeName: [UIColor colorWithWhite:1.0 alpha:0.6],
+    NSForegroundColorAttributeName: self.termsTextColor,
     NSFontAttributeName: [UIFont systemFontOfSize:9 weight:UIFontWeightLight],
     NSParagraphStyleAttributeName: paragraphStyle
   }];
@@ -56,7 +75,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (NSAttributedString *)termsOfUseLink {
     return [[NSAttributedString alloc] initWithString:@"Terms of Use" attributes:@{
-    NSForegroundColorAttributeName: [UIColor colorWithWhite:1.0 alpha:0.6],
+    NSForegroundColorAttributeName: self.linksColor,
     NSFontAttributeName: [UIFont systemFontOfSize:9 weight:UIFontWeightBold],
     NSLinkAttributeName: self.fullTermsURL ?: [NSURL URLWithString:@""],
   }];
@@ -64,7 +83,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (NSAttributedString *)privacyPolicyLink {
   return [[NSAttributedString alloc] initWithString:@"Privacy" attributes:@{
-    NSForegroundColorAttributeName: [UIColor colorWithWhite:1.0 alpha:0.6],
+    NSForegroundColorAttributeName: self.linksColor,
     NSFontAttributeName: [UIFont systemFontOfSize:9 weight:UIFontWeightBold],
     NSLinkAttributeName: self.privacyPolicyURL ?: [NSURL URLWithString:@""]
   }];
