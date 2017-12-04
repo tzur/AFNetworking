@@ -15,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface SPXSubscriptionManager ()
 
-/// Provider used to get the currnet subcription status.
+/// Provider used to get the current subscription status.
 @property (readonly, nonatomic) id<BZRProductsInfoProvider> productsInfoProvider;
 
 /// Manager used to purchase subscriptions.

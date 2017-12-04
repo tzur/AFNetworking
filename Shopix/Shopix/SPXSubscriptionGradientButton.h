@@ -16,7 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// Top label background color. Defaults to <tt>[UIColor whiteColor]</tt>.
 @property (strong, nonatomic, nullable) UIColor *topBackgroundColor;
 
-/// Bottom background horizontal gradaint colors. Must have at least two elements, defaults to
+/// Bottom background horizontal gradient colors. Must have at least two elements, defaults to
 /// <tt>@[[UIColor clearColor], [UIColor clearColor]]</tt>.
 @property (copy, nonatomic) NSArray<UIColor *> *bottomGradientColors;
 

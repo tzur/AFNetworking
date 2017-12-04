@@ -67,9 +67,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Hot signal that delivers an \c SPXAlertViewModel whenever the manager asks his delegate to
 /// present an alert. Subscribers should present an alert in response, and activate the action
 /// attached with the alert button that user pressed. The signal completes when the manager is
-/// dellocated.
+/// deallocated.
 ///
-/// It is recommended to subscribe to this signal before initating any other operation on the
+/// It is recommended to subscribe to this signal before initiating any other operation on the
 /// manager. Failing to it this way may lead requests getting lost.
 ///
 /// @note Values are delivered on the main thread.
@@ -78,9 +78,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Hot signal that delivers an \c LTVoidBlock whenever the manager asks his delegate to present the
 /// feedback mail composer. Subscribers should present a mail composer in response, and invoke the
 /// completion block when mail composer has dismissed. The signal completes when the manager is
-/// dellocated.
+/// deallocated.
 ///
-/// It is recommended to subscribe to this signal before initating any other operation on the
+/// It is recommended to subscribe to this signal before initiating any other operation on the
 /// manager. Failing to it this way may lead to requests getting lost.
 ///
 /// @note Values are delivered on the main thread.

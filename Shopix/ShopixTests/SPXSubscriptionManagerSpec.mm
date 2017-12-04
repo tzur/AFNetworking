@@ -108,7 +108,7 @@ context(@"fetching products information", ^{
         viewModel = unsafeViewModel;
       });
 
-      // This expectation is not for varifaction, it's a replacment for OCMStub since we stub
+      // This expectation is not for verification, it's a replacement for OCMStub since we stub
       // this method again with a different return value in the tests.
       OCMExpect([productsManager fetchProductsInfo:products])
           .andReturn([RACSignal error:fetchError]);
@@ -304,7 +304,7 @@ context(@"purchasing subscription", ^{
         viewModel = unsafeViewModel;
       });
 
-      // This expectation is not for varifaction, it's a replacment for OCMStub since we stub
+      // This expectation is not for verification, it's a replacement for OCMStub since we stub
       // this method again with a different return value in the tests.
       OCMExpect([productsManager purchaseProduct:@"foo"])
           .andReturn([RACSignal error:purchaseError]);
@@ -549,7 +549,7 @@ context(@"restore purchases", ^{
         viewModel = unsafeViewModel;
       });
 
-      // This expectation is not for varifaction, it's a replacment for OCMStub since we stub
+      // This expectation is not for verification, it's a replacement for OCMStub since we stub
       // this method again with a different return value in the tests.
       OCMExpect([productsManager refreshReceipt]).andReturn([RACSignal error:restorationError]);
       [subscriptionManager restorePurchasesWithCompletionHandler:completionBlock];
