@@ -34,6 +34,9 @@
 /* Title of an alert shown after failing attempt to restore purchases */
 "Restoration Failed" = "Restoration Failed";
 
+/* Label on a button that restored previously purchased products */
+"Restore Purchases" = "Restore Purchases";
+
 /* Text on a button shown to the user on failed action, trying the failed operation again */
 "Try Again" = "Try Again";
 

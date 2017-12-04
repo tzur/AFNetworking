@@ -33,7 +33,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Preferred subscription product index. The button for this subscription product should be
 /// highlighted.
-@property (readonly, nonatomic, nullable) NSNumber *prefferdProductIndex;
+@property (readonly, nonatomic, nullable) NSNumber *preferredProductIndex;
 
 /// Page view models, used to define page views with video, title and subtitle.
 @property (readonly, nonatomic) NSArray<id<SPXSubscriptionVideoPageViewModel>> * pageViewModels;
@@ -77,7 +77,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// subscribe screen. The order of the array determines the order of the displayed buttons and
 /// the order of \c subscriptionDescriptors.
 ///
-/// \c prefferdProductIndex is a preferred subscription product index. The button for this
+/// \c preferredProductIndex is a preferred subscription product index. The button for this
 /// subscription product will be highlighted. Must be in range
 //// <tt>[0, subscriptionDescriptors.count - 1]</tt>, otherwise an \c NSInvalidArgumentException is
 /// raised. If set to \c nil none of the buttons will be highlighted.
@@ -91,7 +91,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// \c subscriptionManager used to handle products information fetching, subscription purchasing and
 /// restoration.
 - (instancetype)initWithProducts:(NSArray<NSString *> *)productIdentifiers
-           preferredProductIndex:(nullable NSNumber *)prefferdProductIndex
+           preferredProductIndex:(nullable NSNumber *)preferredProductIndex
                   pageViewModels:(NSArray<id<SPXSubscriptionVideoPageViewModel>> *)pageViewModels
                   termsViewModel:(id<SPXSubscriptionTermsViewModel>)termsViewModel
                      colorScheme:(SPXColorScheme *)colorScheme
@@ -101,7 +101,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// Same as the designated initializer. \c colorScheme is pulled from Objection, and
 /// \c subscriptionManager is set to the default manager.
 - (instancetype)initWithProducts:(NSArray<NSString *> *)productIdentifiers
-           preferredProductIndex:(nullable NSNumber *)prefferdProductIndex
+           preferredProductIndex:(nullable NSNumber *)preferredProductIndex
                   pageViewModels:(NSArray<id<SPXSubscriptionVideoPageViewModel>> *)pageViewModels
                   termsViewModel:(id<SPXSubscriptionTermsViewModel>)termsViewModel;
 
