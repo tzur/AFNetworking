@@ -3,8 +3,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/// Objects conforming to this protocol store plist compatible objects.
-@protocol LTStorage <NSObject>
+/// Objects conforming to this protocol persistently store plist compatible objects.
+@protocol LTKeyValuePersistentStorage <NSObject>
 
 /// Sets \c value to key \c key. If \c value is \c nil then the key is removed from the receiver.
 ///
@@ -20,14 +20,10 @@ NS_ASSUME_NONNULL_BEGIN
 /// Returns a stored object for \c key. Returns \c nil if no object exists for \c key.
 - (nullable id)objectForKey:(NSString *)key;
 
-/// Waits for any pending asynchronous updates to the storage and returns. Returns \c YES if the
-/// data was saved successfully to disk, otherwise \c NO.
-- (BOOL)synchronize;
-
 @end
 
-/// Conforms \c NSUserDefaults to \c LTStorage
-@interface NSUserDefaults (LTStorage) <LTStorage>
+/// Conforms \c NSUserDefaults to \c LTKeyValuePersistentStorage
+@interface NSUserDefaults (LTKeyValuePersistentStorage) <LTKeyValuePersistentStorage>
 @end
 
 NS_ASSUME_NONNULL_END

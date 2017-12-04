@@ -4,7 +4,7 @@
 #import "LABAssignmentsManager.h"
 
 #import <LTKit/LTKeyPathCoding.h>
-#import <LTKit/LTStorage.h>
+#import <LTKit/LTKeyValuePersistentStorage.h>
 #import <LTKit/NSArray+Functional.h>
 #import <LTKit/NSArray+NSSet.h>
 
@@ -82,7 +82,7 @@ NSString * const kLABAssignmentAffectedUserReasonDisplayed = @"displayed";
 @property (readwrite, nonatomic) NSDictionary<NSString *, LABAssignment *> *activeAssignments;
 
 /// Used to persist active assignments and their revision ID.
-@property (readonly, nonatomic) id<LTStorage> storage;
+@property (readonly, nonatomic) id<LTKeyValuePersistentStorage> storage;
 
 /// Used to report assignments changes and user affecting assignments.
 @property (weak, readonly, nonatomic) id<LABAssignmentsManagerDelegate> delegate;
@@ -99,7 +99,7 @@ NSString * const kLABAssignmentAffectedUserReasonDisplayed = @"displayed";
 
 - (instancetype)initWithAssignmentSources:(NSArray<id<LABAssignmentsSource>> *)sources
                                  delegate:(id<LABAssignmentsManagerDelegate>)delegate
-                                  storage:(id<LTStorage>)storage {
+                                  storage:(id<LTKeyValuePersistentStorage>)storage {
   if (self = [super init]) {
     _sources = sources;
     _storage = storage;

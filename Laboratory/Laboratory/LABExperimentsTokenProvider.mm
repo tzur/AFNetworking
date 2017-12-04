@@ -3,8 +3,8 @@
 
 #import "LABExperimentsTokenProvider.h"
 
+#import <LTKit/LTKeyValuePersistentStorage.h>
 #import <LTKit/LTRandom.h>
-#import <LTKit/LTStorage.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -14,7 +14,7 @@ static NSString * const kLABExperimentsTokenProviderTokenKey =
 @interface LABExperimentsTokenProvider ()
 
 /// Used to store the \c experimentsToken.
-@property (readonly, nonatomic) id<LTStorage> storage;
+@property (readonly, nonatomic) id<LTKeyValuePersistentStorage> storage;
 
 /// Used to generate new \c experimentsToken.
 @property (readonly, nonatomic) LTRandom *random;
@@ -30,7 +30,7 @@ static NSString * const kLABExperimentsTokenProviderTokenKey =
                         random:[[LTRandom alloc] init]];
 }
 
-- (instancetype)initWithStorage:(id<LTStorage>)storage random:(LTRandom *)random {
+- (instancetype)initWithStorage:(id<LTKeyValuePersistentStorage>)storage random:(LTRandom *)random {
   if (self = [super init]) {
     _storage = storage;
     _random = random;

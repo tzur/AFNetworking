@@ -4,7 +4,7 @@
 #import "INTDeviceInfoObserver.h"
 
 #import <LTKitTestUtils/LTDataHelpers.h>
-#import <LTKitTestUtils/LTFakeStorage.h>
+#import <LTKitTestUtils/LTFakeKeyValuePersistentStorage.h>
 
 #import "INTDeviceInfo.h"
 #import "INTFakeDeviceInfoSource.h"
@@ -55,13 +55,13 @@ SpecBegin(INTDeviceInfoObserver)
 __block INTDeviceInfoObserver *observer;
 __block INTFakeDeviceInfoSource *source;
 __block INTFakeDeviceInfoObserverDelegate *delegate;
-__block LTFakeStorage *storage;
+__block LTFakeKeyValuePersistentStorage *storage;
 
 beforeEach(^{
   source = [[INTFakeDeviceInfoSource alloc] init];
   source.deviceInfoTemplate = [INTFakeDeviceInfo() dictionaryValue];
   delegate = [[INTFakeDeviceInfoObserverDelegate alloc] init];
-  storage = [[LTFakeStorage alloc] init];
+  storage = [[LTFakeKeyValuePersistentStorage alloc] init];
   observer = [[INTDeviceInfoObserver alloc] initWithDeviceInfoSource:source storage:storage
                                                             delegate:delegate];
 });

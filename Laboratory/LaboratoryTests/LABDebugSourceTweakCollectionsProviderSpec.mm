@@ -8,7 +8,7 @@
 #import <LTKit/LTHashExtensions.h>
 #import <LTKit/NSArray+Functional.h>
 #import <LTKit/NSArray+NSSet.h>
-#import <LTKitTestUtils/LTFakeStorage.h>
+#import <LTKitTestUtils/LTFakeKeyValuePersistentStorage.h>
 
 #import "LABDebugSource.h"
 #import "LABFakeAssignmentsSource.h"
@@ -18,7 +18,7 @@
 SpecBegin(LABDebugSourceTweakCollectionsProvider)
 
 __block LABFakeAssignmentsSource *fakeSource1, *fakeSource2;
-__block LTFakeStorage *storage;
+__block LTFakeKeyValuePersistentStorage *storage;
 __block LABDebugSource *source;
 __block std::unordered_map<std::tuple<NSUInteger, NSUInteger, NSUInteger>, LABVariant *> variants;
 __block LABDebugSourceTweakCollectionsProvider *provider;
@@ -46,7 +46,7 @@ beforeEach(^{
     @"thud": @[variants[{1, 1, 0}], variants[{1, 1, 1}]]
   };
   fakeSource2.name = @"fake2";
-  storage = [[LTFakeStorage alloc] init];
+  storage = [[LTFakeKeyValuePersistentStorage alloc] init];
   source = [[LABDebugSource alloc] initWithSources:@[fakeSource1, fakeSource2] storage:storage];
   provider = [[LABDebugSourceTweakCollectionsProvider alloc] initWithDebugSource:source];
 });

@@ -5,7 +5,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class LTRandom;
 
-@protocol LTStorage;
+@protocol LTKeyValuePersistentStorage;
 
 /// Token that determines whether an experiment is active or not. Some experiments are active
 /// only when \c LABExperimentsToken falls within their "token range".
@@ -37,7 +37,7 @@ typedef double LABExperimentsToken;
 
 /// Initializes with \c storage to store and load the \c LABExperimentsToken from and \c random
 /// to generate random token if needed.
-- (instancetype)initWithStorage:(id<LTStorage>)storage random:(LTRandom *)random
+- (instancetype)initWithStorage:(id<LTKeyValuePersistentStorage>)storage random:(LTRandom *)random
     NS_DESIGNATED_INITIALIZER;
 
 @end

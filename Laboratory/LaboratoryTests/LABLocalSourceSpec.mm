@@ -6,7 +6,7 @@
 #import <LTKit/LTRandom.h>
 #import <LTKit/NSArray+Functional.h>
 #import <LTKit/NSArray+NSSet.h>
-#import <LTKitTestUtils/LTFakeStorage.h>
+#import <LTKitTestUtils/LTFakeKeyValuePersistentStorage.h>
 #import <algorithm>
 
 #import "LABExperimentsTokenProvider.h"
@@ -247,7 +247,7 @@ context(@"LABLocalExperiment", ^{
 
 context(@"LABLocalSource", ^{
   __block LABFakeLTRandom *random;
-  __block id<LTStorage> storage;
+  __block id<LTKeyValuePersistentStorage> storage;
   __block LABLocalExperiment *experiment1;
   __block LABLocalExperiment *experiment2;
   __block LABLocalExperiment *experiment3;
@@ -259,7 +259,7 @@ context(@"LABLocalSource", ^{
 
   beforeEach(^{
     random = [[LABFakeLTRandom alloc] init];
-    storage = [[LTFakeStorage alloc] init];
+    storage = [[LTFakeKeyValuePersistentStorage alloc] init];
     experiment1Variants = @[exp1variant1, exp1variant2];
     experiment1 = [[LABLocalExperiment alloc] initWithName:@"experiment1" keys:exp1Keys
                                                   variants:experiment1Variants
@@ -301,7 +301,7 @@ context(@"LABLocalSource", ^{
 
     expect([source fetchAllExperimentsAndVariants]).to.sendValues(@[expectedExperiments]);
 
-    storage = [[LTFakeStorage alloc] init];
+    storage = [[LTFakeKeyValuePersistentStorage alloc] init];
     tokenProvider = OCMClassMock(LABExperimentsTokenProvider.class);
     OCMStub([tokenProvider experimentsToken]).andReturn(0.7);
     source = [[LABLocalSource alloc] initWithExperiments:@[experiment1, experiment2]
@@ -311,7 +311,7 @@ context(@"LABLocalSource", ^{
   });
 
   it(@"should only expose variants of experiments with range containing the token", ^{
-    storage = [[LTFakeStorage alloc] init];
+    storage = [[LTFakeKeyValuePersistentStorage alloc] init];
     tokenProvider = OCMClassMock(LABExperimentsTokenProvider.class);
     OCMStub([tokenProvider experimentsToken]).andReturn(0.7);
     source = [[LABLocalSource alloc] initWithExperiments:@[experiment1, experiment2]
@@ -384,7 +384,7 @@ context(@"LABLocalSource", ^{
     it(@"should reselect variants if storage is deleted", ^{
       [random fakeRandomUnsignedIntegerWithWeights:{2, 1} andReturnIndexOf:2];
       [random fakeRandomUnsignedIntegerWithWeights:{3, 1} andReturnIndexOf:1];
-      storage = [[LTFakeStorage alloc] init];
+      storage = [[LTFakeKeyValuePersistentStorage alloc] init];
       source = [[LABLocalSource alloc] initWithExperiments:@[experiment1, experiment2]
           experimentsTokenProvider:tokenProvider storage:storage random:random];
       auto expectedVariants = LABGenerateVariants(@{
@@ -448,7 +448,7 @@ context(@"LABLocalSource", ^{
     it(@"should persist inactive experiments even if the token becomes in range", ^{
       [random fakeRandomUnsignedIntegerWithWeights:{2, 1} andReturnIndexOf:2];
       [random fakeRandomUnsignedIntegerWithWeights:{3, 1} andReturnIndexOf:1];
-      storage = [[LTFakeStorage alloc] init];
+      storage = [[LTFakeKeyValuePersistentStorage alloc] init];
       tokenProvider = OCMClassMock(LABExperimentsTokenProvider.class);
       OCMStub([tokenProvider experimentsToken]).andReturn(0.7);
       source = [[LABLocalSource alloc] initWithExperiments:@[experiment1, experiment2]
