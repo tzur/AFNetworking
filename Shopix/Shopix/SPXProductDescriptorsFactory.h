@@ -27,7 +27,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)init NS_UNAVAILABLE;
 
 /// Initializes with \c productsAxes as the axes of the products matrix. \c version and \c prefix
-/// to perpend the product indentifier and \c baseProductValues as the base for the generated
+/// to perpend the product identifier and \c baseProductValues as the base for the generated
 /// product descriptors.
 ///
 /// Raises \c NSInvalidArgumentException if:
@@ -42,7 +42,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// Product matrix version.
 @property (readonly, nonatomic) NSString *version;
 
-/// Perfix for product identifiers.
+/// Prefix for product identifiers.
 @property (readonly, nonatomic) NSString *prefix;
 
 /// Axes of the product matrix.
@@ -53,7 +53,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Returns the products matching the \c baseProductValues, with \c promotion applied on the
 /// matching product. If \c promotion is \c nil, the default value for every benefit axis will be
-/// applied. Returns \c nil if an error occures. In this case \c error will contain the relevant
+/// applied. Returns \c nil if an error occurs. In this case \c error will contain the relevant
 /// error. The order of the returned products is the same as the \c baseProductValues parameter in
 /// the initializer.
 ///

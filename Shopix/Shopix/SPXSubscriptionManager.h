@@ -47,7 +47,7 @@ typedef void (^SPXFetchProductsCompletionBlock)
 /// it will not appear in the returned dictionary. On error, \c completionHandler is invoked with
 /// \c products set to \c nil and \c error will contain error information.
 ///
-/// @note On failure \c error.code may be either \c BZRErrorCodeProductMetadataFetchingFaild or
+/// @note On failure \c error.code may be either \c BZRErrorCodeProductMetadataFetchingFailed or
 /// \c BZRErrorCodeInvalidProductIdentifer.
 - (void)fetchProductsInfo:(NSSet<NSString *> *)productIdentifiers
         completionHandler:(SPXFetchProductsCompletionBlock)completionHandler;
@@ -59,7 +59,7 @@ typedef void (^SPXPurchaseSubscriptionCompletionBlock)
     (BZRReceiptSubscriptionInfo * _Nullable subscriptionInfo, NSError * _Nullable error);
 
 /// Purchases the subscription product specified by \c productIdentifier. \c completionHandler is
-/// invoked on the main thread when the purchase process has completed with \c subscripionInfo and
+/// invoked on the main thread when the purchase process has completed with \c subscriptionInfo and
 /// \c error set to \c nil if purchase was successful, otherwise \c subscriptionInfo will be \c nil
 /// and \c error will contain the error information.
 ///

@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)init NS_UNAVAILABLE;
 
-/// Initialize with \c indentifier, \c baseProductValues and \c benefitValues.
+/// Initialize with \c identifier, \c baseProductValues and \c benefitValues.
 - (instancetype)initWithIdentifier:(NSString *)identifier
                  baseProductValues:(NSSet<SPXBaseProductAxisValue *> *)baseProductValues
                      benefitValues:(NSSet<SPXBenefitAxisValue *> *)benefitValues

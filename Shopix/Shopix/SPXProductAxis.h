@@ -34,9 +34,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-/// Axis specfying a part of a product, i.e. subscription length for subscription products. Directly
-/// affects the contents of the product - product with different value for this axis, represent
-/// different products.
+/// Axis specifying a part of a product, i.e. subscription length for subscription products.
+/// Directly affects the contents of the product - product with different value for this axis,
+/// represent different products.
 @protocol SPXBaseProductAxis <SPXProductAxis>;
 @end
 

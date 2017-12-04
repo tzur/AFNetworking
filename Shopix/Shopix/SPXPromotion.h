@@ -66,7 +66,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// All the coupons in this promotion.
 @property (readonly, nonatomic) NSArray<SPXCoupon *> *coupons;
 
-/// Expirty date for this promotion. The last date in UTC this promotion is valid.
+/// Expiry date for this promotion. The last date in UTC this promotion is valid.
 @property (readonly, nonatomic) NSDate *expiryDate;
 
 @end

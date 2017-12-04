@@ -12,13 +12,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// URL for the video presented on top of the page. The video will start playing when the page
 /// gains focus and paused when the page loses focus . If the URL is replaced while the video is
-/// playing the new video will immediatley start playing. If set to \c nil no video is shown.
+/// playing the new video will immediately start playing. If set to \c nil no video is shown.
 @property (strong, nonatomic, nullable) NSURL *videoURL;
 
 /// Title presented below the video. If \c nil no title is shown.
 @property (strong, nonatomic, nullable) NSAttributedString *title;
 
-/// Secondery title presented below \c title. If \c nil no subtitle is shown.
+/// Secondary title presented below \c title. If \c nil no subtitle is shown.
 @property (strong, nonatomic, nullable) NSAttributedString *subtitle;
 
 @end
