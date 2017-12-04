@@ -48,7 +48,7 @@ NS_ASSUME_NONNULL_BEGIN
   auto paragraphStyle = [[NSMutableParagraphStyle alloc] init];
   paragraphStyle.alignment = NSTextAlignmentCenter;
   return [[NSMutableAttributedString alloc] initWithString:self.termsOverview attributes:@{
-    NSForegroundColorAttributeName: [UIColor whiteColor],
+    NSForegroundColorAttributeName: [UIColor colorWithWhite:1.0 alpha:0.6],
     NSFontAttributeName: [UIFont systemFontOfSize:9 weight:UIFontWeightLight],
     NSParagraphStyleAttributeName: paragraphStyle
   }];
@@ -56,7 +56,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (NSAttributedString *)termsOfUseLink {
     return [[NSAttributedString alloc] initWithString:@"Terms of Use" attributes:@{
-    NSForegroundColorAttributeName: [UIColor whiteColor],
+    NSForegroundColorAttributeName: [UIColor colorWithWhite:1.0 alpha:0.6],
     NSFontAttributeName: [UIFont systemFontOfSize:9 weight:UIFontWeightBold],
     NSLinkAttributeName: self.fullTermsURL ?: [NSURL URLWithString:@""],
   }];
@@ -64,7 +64,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (NSAttributedString *)privacyPolicyLink {
   return [[NSAttributedString alloc] initWithString:@"Privacy" attributes:@{
-    NSForegroundColorAttributeName: [UIColor whiteColor],
+    NSForegroundColorAttributeName: [UIColor colorWithWhite:1.0 alpha:0.6],
     NSFontAttributeName: [UIFont systemFontOfSize:9 weight:UIFontWeightBold],
     NSLinkAttributeName: self.privacyPolicyURL ?: [NSURL URLWithString:@""]
   }];

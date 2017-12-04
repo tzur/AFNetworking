@@ -75,13 +75,13 @@ using namespace spx;
     [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@", periodString]
                                     attributes:@{
       NSForegroundColorAttributeName: self.periodTextColor,
-      NSFontAttributeName: [UIFont spx_standardFontWithSizeRatio:0.018 minSize:11 maxSize:16]
+      NSFontAttributeName: [UIFont spx_standardFontWithSizeRatio:0.016 minSize:11 maxSize:16]
     }];
   auto unitCountString = [NSString stringWithFormat:@"%lu\n", (unsigned long)unitCount];
   auto unitCountText = [[NSMutableAttributedString alloc]
       initWithString:unitCountString attributes:@{
         NSForegroundColorAttributeName: self.periodTextColor,
-        NSFontAttributeName: [UIFont spx_fontWithSizeRatio:0.038 minSize:18 maxSize:30
+        NSFontAttributeName: [UIFont spx_fontWithSizeRatio:0.036 minSize:18 maxSize:30
                                                     weight:UIFontWeightBold]
       }];
   [unitCountText appendAttributedString:periodText];
@@ -95,7 +95,7 @@ using namespace spx;
                 "single one-time price, instead of a renewable subscription plan");
   return [[NSAttributedString alloc] initWithString:periodString attributes:@{
     NSForegroundColorAttributeName: self.periodTextColor,
-    NSFontAttributeName: [UIFont spx_fontWithSizeRatio:0.018 minSize:11 maxSize:16
+    NSFontAttributeName: [UIFont spx_fontWithSizeRatio:0.016 minSize:11 maxSize:16
                                                 weight:UIFontWeightBold]
   }];
 }
@@ -114,7 +114,7 @@ using namespace spx;
 
   return [[NSAttributedString alloc] initWithString:priceString attributes:@{
     NSForegroundColorAttributeName: self.priceTextColor,
-    NSFontAttributeName: [UIFont spx_fontWithSizeRatio:0.018 minSize:11 maxSize:16
+    NSFontAttributeName: [UIFont spx_fontWithSizeRatio:0.016 minSize:11 maxSize:16
                                                 weight:UIFontWeightBold]
   }];
 }
@@ -162,7 +162,7 @@ using namespace spx;
     NSForegroundColorAttributeName: self.fullPriceTextColor,
     NSBaselineOffsetAttributeName: @0,
     NSStrikethroughStyleAttributeName: @1,
-    NSFontAttributeName: [UIFont spx_fontWithSizeRatio:0.018 minSize:11 maxSize:16
+    NSFontAttributeName: [UIFont spx_fontWithSizeRatio:0.016 minSize:11 maxSize:16
                           weight:UIFontWeightLight].wf_fontWithItalicTrait
   }];
 }
