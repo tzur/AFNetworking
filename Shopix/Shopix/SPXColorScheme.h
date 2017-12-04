@@ -14,7 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithMainColor:(UIColor *)mainColor
                         textColor:(UIColor *)textColor
                     darkTextColor:(UIColor *)darkTextColor
-                  greyedTextColor:(UIColor *)greyedTextColor
+                  grayedTextColor:(UIColor *)grayedTextColor
                   backgroundColor:(UIColor *)backgroundColor NS_DESIGNATED_INITIALIZER;
 
 /// Main app color.
@@ -26,8 +26,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// Dark text color for bright backgrounds.
 @property (readonly, nonatomic) UIColor *darkTextColor;
 
-/// Greyed out text color.
-@property (readonly, nonatomic) UIColor *greyedTextColor;
+/// Grayed out text color.
+@property (readonly, nonatomic) UIColor *grayedTextColor;
 
 /// General views background color.
 @property (readonly, nonatomic) UIColor *backgroundColor;

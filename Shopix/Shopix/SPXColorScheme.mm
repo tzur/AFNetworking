@@ -10,13 +10,13 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithMainColor:(UIColor *)mainColor
                         textColor:(UIColor *)textColor
                     darkTextColor:(UIColor *)darkTextColor
-                  greyedTextColor:(UIColor *)greyedTextColor
+                  grayedTextColor:(UIColor *)grayedTextColor
                   backgroundColor:(UIColor *)backgroundColor {
   if (self = [super init]) {
     _mainColor = mainColor;
     _textColor = textColor;
     _darkTextColor = darkTextColor;
-    _greyedTextColor = greyedTextColor;
+    _grayedTextColor = grayedTextColor;
     _backgroundColor = backgroundColor;
   }
   return self;

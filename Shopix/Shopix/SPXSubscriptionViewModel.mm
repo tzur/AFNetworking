@@ -82,7 +82,7 @@ NS_ASSUME_NONNULL_BEGIN
                   termsViewModel:(id<SPXSubscriptionTermsViewModel>)termsViewModel {
   return [self initWithProducts:productIdentifiers preferredProductIndex:preferredProductIndex
                  pageViewModels:pageViewModels termsViewModel:termsViewModel
-                    colorScheme:[JSObjection defaultInjector][[SPXColorScheme class]]
+                    colorScheme:nn([JSObjection defaultInjector][[SPXColorScheme class]])
             subscriptionManager:[[SPXSubscriptionManager alloc] init]];
 }
 

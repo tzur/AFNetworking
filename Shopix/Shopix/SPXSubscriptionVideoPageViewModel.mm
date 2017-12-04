@@ -3,6 +3,8 @@
 
 #import "SPXSubscriptionVideoPageViewModel.h"
 
+#import "SPXColorScheme.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
 @interface SPXSubscriptionVideoPageViewModel ()
@@ -24,6 +26,19 @@ NS_ASSUME_NONNULL_BEGIN
 @implementation SPXSubscriptionVideoPageViewModel
 
 @synthesize videoURL = _videoURL;
+
+- (instancetype)initWithVideoURL:(NSURL *)videoURL titleText:(NSString *)titleText
+                    subtitleText:(nullable NSString *)subtitleText {
+  return [self initWithVideoURL:videoURL titleText:titleText subtitleText:subtitleText
+                    colorScheme:nn([JSObjection defaultInjector][[SPXColorScheme class]])];
+}
+
+- (instancetype)initWithVideoURL:(NSURL *)videoURL titleText:(NSString *)titleText
+                    subtitleText:(nullable NSString *)subtitleText
+                     colorScheme:(SPXColorScheme *)colorScheme {
+  return [self initWithVideoURL:videoURL titleText:titleText subtitleText:subtitleText
+                 titleTextColor:colorScheme.textColor subtitleTextColor:colorScheme.textColor];
+}
 
 - (instancetype)initWithVideoURL:(NSURL *)videoURL titleText:(NSString *)titleText
                     subtitleText:(nullable NSString *)subtitleText

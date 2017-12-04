@@ -3,6 +3,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class SPXColorScheme;
+
 #pragma mark -
 #pragma mark SPXSubscriptionVideoPageViewModel protocol
 #pragma mark -
@@ -31,6 +33,17 @@ NS_ASSUME_NONNULL_BEGIN
 @interface SPXSubscriptionVideoPageViewModel : NSObject <SPXSubscriptionVideoPageViewModel>
 
 - (instancetype)init NS_UNAVAILABLE;
+
+/// Initializes with the provided \c videoURL, \c titleText and \c subtitleText. \c colorScheme is
+/// pulled from Objection.
+- (instancetype)initWithVideoURL:(NSURL *)videoURL titleText:(NSString *)titleText
+                    subtitleText:(nullable NSString *)subtitleText;
+
+/// Initializes with the provided \c videoURL, \c titleText and \c subtitleText. \c colorScheme is
+/// used to set the \c titleTextColor and \c subtitleTextColor to \c textColor.
+- (instancetype)initWithVideoURL:(NSURL *)videoURL titleText:(NSString *)titleText
+                    subtitleText:(nullable NSString *)subtitleText
+                     colorScheme:(SPXColorScheme *)colorScheme;
 
 /// Initializes with the provided \c videoURL, \c titleText and \c subtitleText. \c titleTextColor
 /// and \c subtitleTextColor are the colors for \c titleText and \c subtitleText.
