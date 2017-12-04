@@ -20,6 +20,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// no subalbums, an empty collection will be returned.
 @property (readonly, nonatomic) id<LTRandomAccessCollection> subalbums;
 
+/// URL of the album this instance is followed by, in case pagination is used.
+@property (readonly, nonatomic, nullable) NSURL *nextAlbumURL;
+
 @end
 
 /// Implementation of \c PTNAlbum backed by an \c NSURL, an \c NSArray of \c PTNAlbumDescriptor
@@ -28,10 +31,16 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)init NS_UNAVAILABLE;
 
-/// Initializes with \c url, subalbums and assets.
+/// Initializes with \c url, \c subalbums and \c assets. The \c nextAlbumURL is set to \c nil.
 - (instancetype)initWithURL:(NSURL *)url
                   subalbums:(id<LTRandomAccessCollection>)subalbums
-                     assets:(id<LTRandomAccessCollection>)assets NS_DESIGNATED_INITIALIZER;
+                     assets:(id<LTRandomAccessCollection>)assets;
+
+/// Initializes with \c url, subalbums, \c assets and \c nextAlbumURL.
+- (instancetype)initWithURL:(NSURL *)url
+                  subalbums:(id<LTRandomAccessCollection>)subalbums
+                     assets:(id<LTRandomAccessCollection>)assets
+               nextAlbumURL:(nullable NSURL *)nextAlbumURL NS_DESIGNATED_INITIALIZER;
 
 @end
 

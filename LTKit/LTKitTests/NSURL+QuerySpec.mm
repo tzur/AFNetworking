@@ -172,6 +172,29 @@ context(@"lt_URLByAppendingQueryItems", ^{
   });
 });
 
+context(@"lt_URLByReplacingQueryItemsWithName", ^{
+  it(@"should replace query items for valid arguments", ^{
+    NSURL *url = [NSURL URLWithString:@"foo/bar?key=value&foo=bar&key=baz"];
+    NSURL *expectedURL = [NSURL URLWithString:@"foo/bar?key=foo&foo=bar&key=foo"];
+
+    expect([url lt_URLByReplacingQueryItemsWithName:@"key" withValue:@"foo"]).to.equal(expectedURL);
+  });
+
+  it(@"should preserve relative URL", ^{
+    NSURL *baseURL = [NSURL URLWithString:@"scheme://domain/root"];
+    NSURL *relativeURL = [NSURL URLWithString:@"/newroot/path?key1=value1" relativeToURL:baseURL];
+    NSURL *url = [relativeURL lt_URLByReplacingQueryItemsWithName:@"key1" withValue:@"value2"];
+
+    expect(url.baseURL).to.equal(baseURL);
+    expect(url.query).to.equal(@"key1=value2");
+  });
+
+  it(@"should return the same URL if the given name has no respective query item", ^{
+    NSURL *url = [NSURL URLWithString:@"foo/bar?key=value&foo=bar"];
+    expect([url lt_URLByReplacingQueryItemsWithName:@"baz" withValue:@"bar"]).to.equal(url);
+  });
+});
+
 context(@"lt_URLByAppendingQueryDictionary", ^{
   it(@"should not modify URL when appending empty query dictionary", ^{
     NSURL *url = [NSURL URLWithString:@"foo/bar?key=value"];

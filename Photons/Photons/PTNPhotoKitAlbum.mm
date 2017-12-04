@@ -55,6 +55,10 @@ NS_ASSUME_NONNULL_BEGIN
   return self.albumsFetchResult ?: @[];
 }
 
+- (nullable NSURL *)nextAlbumURL {
+  return nil;
+}
+
 #pragma mark -
 #pragma mark NSObject
 #pragma mark -

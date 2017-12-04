@@ -84,7 +84,11 @@ static const NSTimeInterval kAlbumMaxAge = 300;
       fbr_deserializeJSON]
       ptn_parseDictionaryWithClass:[PTNOceanAssetSearchResponse class]]
       map:^PTNAlbumChangeset *(PTNOceanAssetSearchResponse *response) {
-        auto album = [[PTNAlbum alloc] initWithURL:url subalbums:@[] assets:response.results];
+        auto _Nullable nextAlbumURL = response.page < response.pagesCount ?
+            [url lt_URLByReplacingQueryItemsWithName:@"page"
+                                           withValue:[@(response.page + 1) stringValue]] : nil;
+        auto album = [[PTNAlbum alloc] initWithURL:url subalbums:@[] assets:response.results
+                                      nextAlbumURL:nextAlbumURL];
         auto cacheInfo = [[PTNCacheInfo alloc] initWithMaxAge:kAlbumMaxAge
                                                  responseTime:[self.dateProvider date]
                                                     entityTag:nil];
