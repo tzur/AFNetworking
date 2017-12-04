@@ -73,12 +73,8 @@ using namespace spx;
 
 - (instancetype)initWithViewModel:(id<SPXSubscriptionViewModel>)viewModel
     mailComposerProvider:(id<SPXFeedbackComposeViewControllerProvider>)mailComposerProvider {
-  auto buttonsGradientColors = @[viewModel.colorScheme.mainColor, viewModel.colorScheme.mainColor];
   auto defaultButtonsFactory = [[SPXSubscriptionGradientButtonsFactory alloc]
-                                initWithBottomGradientColors:buttonsGradientColors
-                                periodTextColor:viewModel.colorScheme.darkTextColor
-                                fullPriceTextColor:viewModel.colorScheme.greyedTextColor
-                                priceTextColor:viewModel.colorScheme.textColor];
+                                initWithColorScheme:viewModel.colorScheme];
   return [self initWithViewModel:viewModel
          alertControllerProvider:[[SPXAlertViewControllerProvider alloc] init]
             mailComposerProvider:mailComposerProvider
