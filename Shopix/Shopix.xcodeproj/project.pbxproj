@@ -76,9 +76,13 @@
 		CDC8395C1FCFFAC400E9F41A /* SPXSubscriptionViewModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = CDC8395B1FCFFAC400E9F41A /* SPXSubscriptionViewModel.mm */; };
 		CDC83B431FD04E2400E9F41A /* SPXSubscriptionViewModelSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = CDC83B421FD04E2400E9F41A /* SPXSubscriptionViewModelSpec.mm */; };
 		CDC83C161FD067E700E9F41A /* SPXSubscriptionViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = CDC83C151FD067E600E9F41A /* SPXSubscriptionViewController.mm */; };
+		CDC83E191FD444D200E9F41A /* SPXSubscriptionButtonPressedEvent.mm in Sources */ = {isa = PBXBuildFile; fileRef = CDC83E141FD444D200E9F41A /* SPXSubscriptionButtonPressedEvent.mm */; };
+		CDC83E1A1FD444D200E9F41A /* SPXRestorePurchasesButtonPressedEvent.mm in Sources */ = {isa = PBXBuildFile; fileRef = CDC83E151FD444D200E9F41A /* SPXRestorePurchasesButtonPressedEvent.mm */; };
+		CDC83E1B1FD444D200E9F41A /* SPXPurchaseSubscriptionEvent.mm in Sources */ = {isa = PBXBuildFile; fileRef = CDC83E181FD444D200E9F41A /* SPXPurchaseSubscriptionEvent.mm */; };
 		CDC8CE861F6EA6C400E7C929 /* Objection-iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDC8CE841F6EA67D00E7C929 /* Objection-iOS.framework */; };
 		CDC8D4EB1F701EA300E7C929 /* SPXLocalization.mm in Sources */ = {isa = PBXBuildFile; fileRef = CDB510731F6176150013577C /* SPXLocalization.mm */; };
 		CDCFDEF91F5C39B300C289BA /* NSDecimalNumber+LocalizationSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = CDCFDEF81F5C39B300C289BA /* NSDecimalNumber+LocalizationSpec.mm */; };
+		CDEF4FB01FD5BF3A00A599A7 /* SPXRestorePurchasesEvent.mm in Sources */ = {isa = PBXBuildFile; fileRef = CDEF4FAF1FD5BF3A00A599A7 /* SPXRestorePurchasesEvent.mm */; };
 		CDF5F9711FCDC4EB007D4AB0 /* SPXSubscriptionDescriptor.mm in Sources */ = {isa = PBXBuildFile; fileRef = CDF5F9441FCDC4EA007D4AB0 /* SPXSubscriptionDescriptor.mm */; };
 		CDF5F9721FCDC4EB007D4AB0 /* SPXSubscriptionGradientButtonsFactory.mm in Sources */ = {isa = PBXBuildFile; fileRef = CDF5F96E1FCDC4EA007D4AB0 /* SPXSubscriptionGradientButtonsFactory.mm */; };
 		CDF5FAC31FCECC85007D4AB0 /* UIFont+Shopix.mm in Sources */ = {isa = PBXBuildFile; fileRef = CDF5FAC21FCECC85007D4AB0 /* UIFont+Shopix.mm */; };
@@ -580,9 +584,17 @@
 		CDC83B421FD04E2400E9F41A /* SPXSubscriptionViewModelSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXSubscriptionViewModelSpec.mm; sourceTree = "<group>"; };
 		CDC83BEC1FD067E600E9F41A /* SPXSubscriptionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPXSubscriptionViewController.h; sourceTree = "<group>"; };
 		CDC83C151FD067E600E9F41A /* SPXSubscriptionViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXSubscriptionViewController.mm; sourceTree = "<group>"; };
+		CDC83E131FD444D100E9F41A /* SPXSubscriptionButtonPressedEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPXSubscriptionButtonPressedEvent.h; sourceTree = "<group>"; };
+		CDC83E141FD444D200E9F41A /* SPXSubscriptionButtonPressedEvent.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXSubscriptionButtonPressedEvent.mm; sourceTree = "<group>"; };
+		CDC83E151FD444D200E9F41A /* SPXRestorePurchasesButtonPressedEvent.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXRestorePurchasesButtonPressedEvent.mm; sourceTree = "<group>"; };
+		CDC83E161FD444D200E9F41A /* SPXRestorePurchasesButtonPressedEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPXRestorePurchasesButtonPressedEvent.h; sourceTree = "<group>"; };
+		CDC83E171FD444D200E9F41A /* SPXPurchaseSubscriptionEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPXPurchaseSubscriptionEvent.h; sourceTree = "<group>"; };
+		CDC83E181FD444D200E9F41A /* SPXPurchaseSubscriptionEvent.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXPurchaseSubscriptionEvent.mm; sourceTree = "<group>"; };
 		CDC8CE841F6EA67D00E7C929 /* Objection-iOS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = "Objection-iOS.framework"; path = "../third_party/objection/Objection-iOS.framework"; sourceTree = "<group>"; };
 		CDCCF3D51F4EC2F700F421E6 /* ReactiveObjC.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactiveObjC.xcodeproj; path = ../third_party/ReactiveObjC/ReactiveObjC.xcodeproj; sourceTree = "<group>"; };
 		CDCFDEF81F5C39B300C289BA /* NSDecimalNumber+LocalizationSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSDecimalNumber+LocalizationSpec.mm"; sourceTree = "<group>"; };
+		CDEF4FAE1FD5BF3A00A599A7 /* SPXRestorePurchasesEvent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SPXRestorePurchasesEvent.h; sourceTree = "<group>"; };
+		CDEF4FAF1FD5BF3A00A599A7 /* SPXRestorePurchasesEvent.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXRestorePurchasesEvent.mm; sourceTree = "<group>"; };
 		CDF5F9441FCDC4EA007D4AB0 /* SPXSubscriptionDescriptor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXSubscriptionDescriptor.mm; sourceTree = "<group>"; };
 		CDF5F96D1FCDC4EA007D4AB0 /* SPXSubscriptionDescriptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPXSubscriptionDescriptor.h; sourceTree = "<group>"; };
 		CDF5F96E1FCDC4EA007D4AB0 /* SPXSubscriptionGradientButtonsFactory.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXSubscriptionGradientButtonsFactory.mm; sourceTree = "<group>"; };
@@ -719,6 +731,7 @@
 		848E00051C591DD1001D8368 /* Shopix */ = {
 			isa = PBXGroup;
 			children = (
+				CDC83DEA1FD444AD00E9F41A /* Analytics */,
 				639C5AA21FB37C8400937367 /* Customizable Components */,
 				88B632881F9DD87E0051A535 /* Errors */,
 				CD8E8E081F5C19DC00DF8FC1 /* Localization */,
@@ -969,6 +982,17 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		CD1FFDBE1FD5C556004D5DEB /* UI Events */ = {
+			isa = PBXGroup;
+			children = (
+				CDC83E161FD444D200E9F41A /* SPXRestorePurchasesButtonPressedEvent.h */,
+				CDC83E151FD444D200E9F41A /* SPXRestorePurchasesButtonPressedEvent.mm */,
+				CDC83E131FD444D100E9F41A /* SPXSubscriptionButtonPressedEvent.h */,
+				CDC83E141FD444D200E9F41A /* SPXSubscriptionButtonPressedEvent.mm */,
+			);
+			name = "UI Events";
+			sourceTree = "<group>";
+		};
 		CD553D871F4184D00048215C /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -1077,6 +1101,18 @@
 				CDB8A6561F53FCB200E14706 /* iOS Tests.octest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		CDC83DEA1FD444AD00E9F41A /* Analytics */ = {
+			isa = PBXGroup;
+			children = (
+				CD1FFDBE1FD5C556004D5DEB /* UI Events */,
+				CDC83E171FD444D200E9F41A /* SPXPurchaseSubscriptionEvent.h */,
+				CDC83E181FD444D200E9F41A /* SPXPurchaseSubscriptionEvent.mm */,
+				CDEF4FAE1FD5BF3A00A599A7 /* SPXRestorePurchasesEvent.h */,
+				CDEF4FAF1FD5BF3A00A599A7 /* SPXRestorePurchasesEvent.mm */,
+			);
+			name = Analytics;
 			sourceTree = "<group>";
 		};
 		CDCCF3D61F4EC2F700F421E6 /* Products */ = {
@@ -1658,6 +1694,8 @@
 				CDAC90FB1FC496F100B197B3 /* SPXSubscriptionVideoPageView.mm in Sources */,
 				CDACBD731FBB4476000A1548 /* SPXPagingView.mm in Sources */,
 				CDF5F9721FCDC4EB007D4AB0 /* SPXSubscriptionGradientButtonsFactory.mm in Sources */,
+				CDC83E191FD444D200E9F41A /* SPXSubscriptionButtonPressedEvent.mm in Sources */,
+				CDC83E1B1FD444D200E9F41A /* SPXPurchaseSubscriptionEvent.mm in Sources */,
 				CDC8D4EB1F701EA300E7C929 /* SPXLocalization.mm in Sources */,
 				CDAC91DB1FC593C700B197B3 /* SPXSubscriptionTermsViewModel.mm in Sources */,
 				CD8E8E2F1F5C19F500DF8FC1 /* NSDecimalNumber+Localization.mm in Sources */,
@@ -1669,6 +1707,7 @@
 				639409F01FB3650200C817FE /* SPXAlertViewControllerProvider.mm in Sources */,
 				CDC83C161FD067E700E9F41A /* SPXSubscriptionViewController.mm in Sources */,
 				CD8E8E2F1F5C19F500DF8FC1 /* NSDecimalNumber+Localization.mm in Sources */,
+				CDEF4FB01FD5BF3A00A599A7 /* SPXRestorePurchasesEvent.mm in Sources */,
 				63E591531FC44AAC0009A34B /* SPXAlertViewModel+ShopixPresets.mm in Sources */,
 				88B9B4FF1FA8BA980033D48F /* SPXPromotion.mm in Sources */,
 				CD2F2B801FD55C45006257B4 /* SPXRestorePurchasesButton.mm in Sources */,
@@ -1681,6 +1720,7 @@
 				88FF39701FB2E047006311FF /* SPXProductDescriptor.mm in Sources */,
 				8851018E1F9DDBA60052351B /* NSError+Shopix.mm in Sources */,
 				88B632AF1F9DD8B10051A535 /* NSErrorCodes+Shopix.mm in Sources */,
+				CDC83E1A1FD444D200E9F41A /* SPXRestorePurchasesButtonPressedEvent.mm in Sources */,
 				CD60A5ED1FB433180017D777 /* SPXDualLabelView.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1832,7 +1872,7 @@
 					"$(SRCROOT)/../third_party/Mantle/",
 					"$(SRCROOT)/../Wireframes",
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				SDKROOT = iphoneos;
 			};
@@ -1856,7 +1896,7 @@
 					"$(SRCROOT)/../third_party/Mantle/",
 					"$(SRCROOT)/../Wireframes",
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 			};
