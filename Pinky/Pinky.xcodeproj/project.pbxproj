@@ -47,6 +47,8 @@
 		068D91381F24C9AD0012F472 /* PNKReflectionPaddingSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 068D91371F24C9AD0012F472 /* PNKReflectionPaddingSpec.mm */; };
 		06958ED71F82172500DB7724 /* PNKInstanceNormInternalKernel.metal in Sources */ = {isa = PBXBuildFile; fileRef = 06958EB61F82171600DB7724 /* PNKInstanceNormInternalKernel.metal */; };
 		06A1A8FF1F0CD7BA0031A387 /* PNKNeuralNetworkModelFactory.mm in Sources */ = {isa = PBXBuildFile; fileRef = 06A1A8FE1F0CD7BA0031A387 /* PNKNeuralNetworkModelFactory.mm */; };
+		06AB67C91FCABFA10063C68F /* PNKDilatedConvolutionInternalLayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 06AB67C81FCABFA10063C68F /* PNKDilatedConvolutionInternalLayer.mm */; };
+		06AB67CB1FCABFE10063C68F /* PNKDilatedConvolutionInternalLayer.metal in Sources */ = {isa = PBXBuildFile; fileRef = 06AB67CA1FCABFE10063C68F /* PNKDilatedConvolutionInternalLayer.metal */; };
 		06B924CA1F8946D300D07848 /* PNKInstanceNormLayerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 06B924C91F8946D300D07848 /* PNKInstanceNormLayerSpec.mm */; };
 		06B924EF1F8964AF00D07848 /* instanceNorm_input.tensor in Resources */ = {isa = PBXBuildFile; fileRef = 06B924ED1F8955DE00D07848 /* instanceNorm_input.tensor */; };
 		06B924F01F8964AF00D07848 /* instanceNorm_output.tensor in Resources */ = {isa = PBXBuildFile; fileRef = 06B924EC1F8955DE00D07848 /* instanceNorm_output.tensor */; };
@@ -147,6 +149,8 @@
 		E4281EBC1FC1B53B008F4BAD /* PNKConcatenation.mm in Sources */ = {isa = PBXBuildFile; fileRef = E4281EBB1FC1B53B008F4BAD /* PNKConcatenation.mm */; };
 		E4281EE31FC1C846008F4BAD /* PNKConcatenationSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = E4281EE21FC1C846008F4BAD /* PNKConcatenationSpec.mm */; };
 		E4281EE41FC1CF8F008F4BAD /* PNKConcatenation.metal in Sources */ = {isa = PBXBuildFile; fileRef = E4281EE01FC1BCB2008F4BAD /* PNKConcatenation.metal */; };
+		E4786D451FD5499B0057FE03 /* MPSCNNConvolution+FactorySpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = E4786D441FD5499B0057FE03 /* MPSCNNConvolution+FactorySpec.mm */; };
+		E484089E1FCBF98B00468645 /* PNKDilatedConvolutionInternalLayerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = E484089D1FCBF98B00468645 /* PNKDilatedConvolutionInternalLayerSpec.mm */; };
 		F92465B81F42C23300ECB4DA /* PNKNeuralNetworkModelFactorySpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = F92465B71F42C23300ECB4DA /* PNKNeuralNetworkModelFactorySpec.mm */; };
 		F92465BB1F42C28200ECB4DA /* sst_lilien.nnmodel in Resources */ = {isa = PBXBuildFile; fileRef = F92465BA1F42C28200ECB4DA /* sst_lilien.nnmodel */; };
 		F990284C1F6FF17400883DF8 /* illegal.nnmodel in Resources */ = {isa = PBXBuildFile; fileRef = F990284B1F6FF17400883DF8 /* illegal.nnmodel */; };
@@ -485,6 +489,13 @@
 			remoteGlobalIDString = 65CEFBB11D3BF72800402230;
 			remoteInfo = TestHost;
 		};
+		E4786D571FD5499E0057FE03 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A14172691E6EADDF005DBEFF /* LTKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 194FF4FC1FA8BA77008879E7;
+			remoteInfo = LTKitTestUtils;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -559,6 +570,9 @@
 		06A1A8FE1F0CD7BA0031A387 /* PNKNeuralNetworkModelFactory.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKNeuralNetworkModelFactory.mm; sourceTree = "<group>"; };
 		06A1AA131F14F0D80031A387 /* PNKNeuralNetworkModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKNeuralNetworkModel.h; sourceTree = "<group>"; };
 		06A1AA151F14F0D80031A387 /* PNKNeuralNetworkOperationsModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKNeuralNetworkOperationsModel.h; sourceTree = "<group>"; };
+		06AB67A41FCABFA00063C68F /* PNKDilatedConvolutionInternalLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKDilatedConvolutionInternalLayer.h; sourceTree = "<group>"; };
+		06AB67C81FCABFA10063C68F /* PNKDilatedConvolutionInternalLayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKDilatedConvolutionInternalLayer.mm; sourceTree = "<group>"; };
+		06AB67CA1FCABFE10063C68F /* PNKDilatedConvolutionInternalLayer.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = PNKDilatedConvolutionInternalLayer.metal; sourceTree = "<group>"; };
 		06B924C91F8946D300D07848 /* PNKInstanceNormLayerSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKInstanceNormLayerSpec.mm; sourceTree = "<group>"; };
 		06B924EB1F8955DE00D07848 /* instanceNorm_shift.weights */ = {isa = PBXFileReference; lastKnownFileType = text; name = instanceNorm_shift.weights; path = Resources/instanceNorm_shift.weights; sourceTree = "<group>"; };
 		06B924EC1F8955DE00D07848 /* instanceNorm_output.tensor */ = {isa = PBXFileReference; lastKnownFileType = file; name = instanceNorm_output.tensor; path = Resources/instanceNorm_output.tensor; sourceTree = "<group>"; };
@@ -682,6 +696,8 @@
 		E4281EBB1FC1B53B008F4BAD /* PNKConcatenation.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKConcatenation.mm; sourceTree = "<group>"; };
 		E4281EE01FC1BCB2008F4BAD /* PNKConcatenation.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = PNKConcatenation.metal; sourceTree = "<group>"; };
 		E4281EE21FC1C846008F4BAD /* PNKConcatenationSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKConcatenationSpec.mm; sourceTree = "<group>"; };
+		E4786D441FD5499B0057FE03 /* MPSCNNConvolution+FactorySpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "MPSCNNConvolution+FactorySpec.mm"; sourceTree = "<group>"; };
+		E484089D1FCBF98B00468645 /* PNKDilatedConvolutionInternalLayerSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKDilatedConvolutionInternalLayerSpec.mm; sourceTree = "<group>"; };
 		F92465B71F42C23300ECB4DA /* PNKNeuralNetworkModelFactorySpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKNeuralNetworkModelFactorySpec.mm; sourceTree = "<group>"; };
 		F92465BA1F42C28200ECB4DA /* sst_lilien.nnmodel */ = {isa = PBXFileReference; lastKnownFileType = file; name = sst_lilien.nnmodel; path = Resources/sst_lilien.nnmodel; sourceTree = "<group>"; };
 		F990284B1F6FF17400883DF8 /* illegal.nnmodel */ = {isa = PBXFileReference; lastKnownFileType = file; name = illegal.nnmodel; path = Resources/illegal.nnmodel; sourceTree = "<group>"; };
@@ -872,8 +888,10 @@
 		068D90A51F1F5D050012F472 /* Neural Networks */ = {
 			isa = PBXGroup;
 			children = (
+				E4786D441FD5499B0057FE03 /* MPSCNNConvolution+FactorySpec.mm */,
 				064723ED1F98F06E008EBAF8 /* PNKConditionalInstanceNormLayerSpec.mm */,
 				06463BAB1F3A62220087E057 /* PNKConvolutionLayerSpec.mm */,
+				E484089D1FCBF98B00468645 /* PNKDilatedConvolutionInternalLayerSpec.mm */,
 				06B924C91F8946D300D07848 /* PNKInstanceNormLayerSpec.mm */,
 			);
 			name = "Neural Networks";
@@ -899,6 +917,9 @@
 				06B925441F8A003200D07848 /* PNKConditionalInstanceNormLayer.mm */,
 				0657A10F1F29908F002AA730 /* PNKConvolutionLayer.h */,
 				0657A1101F29908F002AA730 /* PNKConvolutionLayer.mm */,
+				06AB67A41FCABFA00063C68F /* PNKDilatedConvolutionInternalLayer.h */,
+				06AB67CA1FCABFE10063C68F /* PNKDilatedConvolutionInternalLayer.metal */,
+				06AB67C81FCABFA10063C68F /* PNKDilatedConvolutionInternalLayer.mm */,
 				06447DAF1FA892610077346E /* PNKInstanceNormInternalKernel.h */,
 				06958EB61F82171600DB7724 /* PNKInstanceNormInternalKernel.metal */,
 				06447DB01FA892610077346E /* PNKInstanceNormInternalKernel.mm */,
@@ -1152,7 +1173,7 @@
 			children = (
 				A141726F1E6EADDF005DBEFF /* libLTKit.a */,
 				A14172711E6EADDF005DBEFF /* LTKitTests.xctest */,
-				06415F171FD4299C00F9F70C /* libLTKitTestUtils.a */,
+				E4786D581FD5499E0057FE03 /* libLTKitTestUtils.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1760,6 +1781,13 @@
 			remoteRef = A14172DB1E6EB2FF005DBEFF /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		E4786D581FD5499E0057FE03 /* libLTKitTestUtils.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libLTKitTestUtils.a;
+			remoteRef = E4786D571FD5499E0057FE03 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
@@ -1824,6 +1852,7 @@
 				06958ED71F82172500DB7724 /* PNKInstanceNormInternalKernel.metal in Sources */,
 				06C9E8091F793E7D00D8A77F /* PNKReflectionPadding.metal in Sources */,
 				06FB205A1F92AC0C009F1949 /* PNKTemplatedIO.metal in Sources */,
+				06AB67CB1FCABFE10063C68F /* PNKDilatedConvolutionInternalLayer.metal in Sources */,
 				06C9E8001F793CC100D8A77F /* PNKAddition.metal in Sources */,
 				C9791ADD1F026D260009E90F /* PNKConstantAlpha.metal in Sources */,
 				06C9E8051F793DD300D8A77F /* PNKNearestNeighborUpsampling.metal in Sources */,
@@ -1838,6 +1867,7 @@
 			files = (
 				C9131ED61EE05A4D00E924DA /* LTTestUtils+LTEngine.mm in Sources */,
 				C9815C641EE88713004868CE /* PNKOpenCVExtensionsSpec.mm in Sources */,
+				E4786D451FD5499B0057FE03 /* MPSCNNConvolution+FactorySpec.mm in Sources */,
 				068D90B21F1F93450012F472 /* EXPMatchers+equalMTLSize.mm in Sources */,
 				C9791B561F0272470009E90F /* PNKConstantAlphaSpec.mm in Sources */,
 				8B029FBE1F696B3000B3CF25 /* EXPMatchers+beCloseToScalar.mm in Sources */,
@@ -1851,6 +1881,7 @@
 				064723EE1F98F06E008EBAF8 /* PNKConditionalInstanceNormLayerSpec.mm in Sources */,
 				068D91381F24C9AD0012F472 /* PNKReflectionPaddingSpec.mm in Sources */,
 				C9791A761F025B1F0009E90F /* PNKLibraryLoaderSpec.mm in Sources */,
+				E484089E1FCBF98B00468645 /* PNKDilatedConvolutionInternalLayerSpec.mm in Sources */,
 				C9131EB21EE0599D00E924DA /* EXPMatchers+equalScalar.mm in Sources */,
 				068D90B81F1FB2D40012F472 /* NSValue+MTLSize.mm in Sources */,
 				E4281EE31FC1C846008F4BAD /* PNKConcatenationSpec.mm in Sources */,
@@ -1881,6 +1912,7 @@
 				06C9E8041F793DCF00D8A77F /* PNKNearestNeighborUpsampling.mm in Sources */,
 				C91884551F0D27B90090818A /* PNKComputeDispatch.mm in Sources */,
 				C9791B001F026E180009E90F /* PNKConstantAlpha.mm in Sources */,
+				06AB67C91FCABFA10063C68F /* PNKDilatedConvolutionInternalLayer.mm in Sources */,
 				F9CB52FA1F5FE70C00C8E8CA /* PNKCoreMLLayerParser.mm in Sources */,
 				06E98DE01F2149710047F80A /* PNKComputeState.mm in Sources */,
 				06EDBCBC1F8C908B00A3FF1E /* MPSImage+Factory.mm in Sources */,

@@ -22,13 +22,18 @@ NSString * const kPNKKernelExamplesSecondaryInputMat = @"PNKKernelExamplesSecond
 NSString * const kPNKKernelExamplesExpectedMat = @"PNKKernelExamplesExpectedMat";
 
 static void PNKCopyMatrixToImage(cv::Mat matrix, MPSImage *image) {
-  auto matrixWithChannelsAsColumns = matrix.reshape(1, (int)matrix.total());
+  int total = (int)matrix.total();
+  auto matrixWithChannelsAsColumns = matrix.reshape(1, total);
 
   int channelsPerSlice = (image.featureChannels <= 2) ? (int)image.featureChannels : 4;
   for (NSUInteger i = 0; i < image.texture.arrayLength; ++i) {
-    cv::Rect roi((int)(i * channelsPerSlice), 0, channelsPerSlice, (int)matrix.total());
-    cv::Mat slice = matrixWithChannelsAsColumns(roi).clone().reshape(channelsPerSlice, matrix.rows);
-    PNKCopyMatToMTLTexture(image.texture, slice, i);
+    int relevantChannels = std::min(channelsPerSlice,
+                                    (int)(image.featureChannels - i * channelsPerSlice));
+    cv::Mat slice(total, channelsPerSlice, matrix.depth());
+    cv::Rect sourceROI((int)(i * channelsPerSlice), 0, relevantChannels, total);
+    cv::Rect destinationROI(0, 0, relevantChannels, total);
+    matrixWithChannelsAsColumns(sourceROI).copyTo(slice(destinationROI));
+    PNKCopyMatToMTLTexture(image.texture, slice.reshape(channelsPerSlice, matrix.rows), i);
   }
 }
 
