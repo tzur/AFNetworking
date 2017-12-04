@@ -11,6 +11,7 @@
 		8861FC211E5A227B00CA1436 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8861FC201E5A227B00CA1436 /* CoreGraphics.framework */; };
 		8861FC231E5A22B800CA1436 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8861FC221E5A22B800CA1436 /* GLKit.framework */; };
 		8861FC261E5A22F000CA1436 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8861FC251E5A22F000CA1436 /* QuartzCore.framework */; };
+		88A67E0F1FD5C108005BA17A /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88A67DEA1FD5C108005BA17A /* MobileCoreServices.framework */; };
 		8B0E4D761CC65DED0031B743 /* BLUNode+Builder.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B0E4D741CC65DED0031B743 /* BLUNode+Builder.h */; };
 		8B0E4D771CC65DED0031B743 /* BLUNode+Builder.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B0E4D751CC65DED0031B743 /* BLUNode+Builder.m */; };
 		8B0E4D951CC65E310031B743 /* BLUNode+BuilderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B0E4D941CC65E310031B743 /* BLUNode+BuilderSpec.mm */; };
@@ -339,6 +340,7 @@
 		8861FC201E5A227B00CA1436 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		8861FC221E5A22B800CA1436 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
 		8861FC251E5A22F000CA1436 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		88A67DEA1FD5C108005BA17A /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		8B0E4D741CC65DED0031B743 /* BLUNode+Builder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BLUNode+Builder.h"; sourceTree = "<group>"; };
 		8B0E4D751CC65DED0031B743 /* BLUNode+Builder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "BLUNode+Builder.m"; sourceTree = "<group>"; };
 		8B0E4D941CC65E310031B743 /* BLUNode+BuilderSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "BLUNode+BuilderSpec.mm"; sourceTree = "<group>"; };
@@ -417,6 +419,7 @@
 			files = (
 				8861FC211E5A227B00CA1436 /* CoreGraphics.framework in Frameworks */,
 				8861FC231E5A22B800CA1436 /* GLKit.framework in Frameworks */,
+				88A67E0F1FD5C108005BA17A /* MobileCoreServices.framework in Frameworks */,
 				8861FC261E5A22F000CA1436 /* QuartzCore.framework in Frameworks */,
 				8B6867881F3B275B00F0EF4C /* ReactiveObjC.framework in Frameworks */,
 				8861FC031E5A225500CA1436 /* UIKit.framework in Frameworks */,
@@ -658,6 +661,7 @@
 				8861FC221E5A22B800CA1436 /* GLKit.framework */,
 				8B10C7FA1F3EFA4600F76142 /* LLReactiveMatchers.xcodeproj */,
 				8BED82C11C3BEDB00001C6F1 /* Mantle.xcodeproj */,
+				88A67DEA1FD5C108005BA17A /* MobileCoreServices.framework */,
 				8BED81BB1C3A717B0001C6F1 /* OCMock.xcodeproj */,
 				8861FC251E5A22F000CA1436 /* QuartzCore.framework */,
 				8B6863161F3346A800F0EF4C /* ReactiveObjC.xcodeproj */,

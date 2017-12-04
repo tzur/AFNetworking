@@ -39,6 +39,7 @@
 		8861FD761E5A29F800CA1436 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8861FD751E5A29F800CA1436 /* QuartzCore.framework */; };
 		8861FD781E5A2A1C00CA1436 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8861FD771E5A2A1C00CA1436 /* CoreGraphics.framework */; };
 		8861FD7A1E5A2A3F00CA1436 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8861FD791E5A2A3F00CA1436 /* GLKit.framework */; };
+		88A67E961FD5C8DB005BA17A /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88A67E721FD5C8DB005BA17A /* MobileCoreServices.framework */; };
 		8B078FDC1D47B0AC00A8E9EB /* CATransaction+AnimationsSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B078FDB1D47B0AC00A8E9EB /* CATransaction+AnimationsSpec.mm */; };
 		8B10C8EC1F3EFBA700F76142 /* libLLReactiveMatchers.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B10C8E91F3EFB4500F76142 /* libLLReactiveMatchers.a */; };
 		8B283E751CBA814100B745AE /* libWireframes.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B283E171CBA7EED00B745AE /* libWireframes.a */; };
@@ -439,6 +440,7 @@
 		8861FD751E5A29F800CA1436 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		8861FD771E5A2A1C00CA1436 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		8861FD791E5A2A3F00CA1436 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
+		88A67E721FD5C8DB005BA17A /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		8B078FDB1D47B0AC00A8E9EB /* CATransaction+AnimationsSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "CATransaction+AnimationsSpec.mm"; sourceTree = "<group>"; };
 		8B10C8E31F3EFB4500F76142 /* LLReactiveMatchers.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LLReactiveMatchers.xcodeproj; path = ../third_party/LLReactiveMatchers/LLReactiveMatchers.xcodeproj; sourceTree = "<group>"; };
 		8B283E171CBA7EED00B745AE /* libWireframes.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libWireframes.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -518,6 +520,7 @@
 				CDAC8D2C1FC45C2200B197B3 /* CoreMedia.framework in Frameworks */,
 				8861FD7A1E5A2A3F00CA1436 /* GLKit.framework in Frameworks */,
 				CDF61FF81FEC08E400D05AEC /* Masonry.framework in Frameworks */,
+				88A67E961FD5C8DB005BA17A /* MobileCoreServices.framework in Frameworks */,
 				8BC7B64C1CF1D8330047BEDE /* Objection-iOS.framework in Frameworks */,
 				8861FD761E5A29F800CA1436 /* QuartzCore.framework in Frameworks */,
 				8B6868691F3B27C000F0EF4C /* ReactiveObjC.framework in Frameworks */,
@@ -544,6 +547,7 @@
 				8861FD771E5A2A1C00CA1436 /* CoreGraphics.framework */,
 				CDAC8D2B1FC45C1B00B197B3 /* CoreMedia.framework */,
 				8861FD791E5A2A3F00CA1436 /* GLKit.framework */,
+				88A67E721FD5C8DB005BA17A /* MobileCoreServices.framework */,
 				8BC7B6251CF1D6650047BEDE /* Objection-iOS.framework */,
 				8861FD751E5A29F800CA1436 /* QuartzCore.framework */,
 				8861FD561E5A29DE00CA1436 /* UIKit.framework */,

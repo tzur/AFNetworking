@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		19C886B71FC43EC6009F147E /* libLTKitTestUtils.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19C885801FC41FC9009F147E /* libLTKitTestUtils.a */; };
+		88A67EDD1FD5CA69005BA17A /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88A67EC11FD5CA69005BA17A /* MobileCoreServices.framework */; };
 		A10165011E7006AA009596E1 /* INTEventTransformer.mm in Sources */ = {isa = PBXBuildFile; fileRef = A10165001E7006AA009596E1 /* INTEventTransformer.mm */; };
 		A101680B1E713D8B009596E1 /* INTEventTransformerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = A101680A1E713D8B009596E1 /* INTEventTransformerSpec.mm */; };
 		A1089F6C1EB76EFB0037B6BE /* NSDictionary+Merge.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1089F6B1EB76EFB0037B6BE /* NSDictionary+Merge.mm */; };
@@ -355,6 +356,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		88A67EC11FD5CA69005BA17A /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		A10164FF1E7006AA009596E1 /* INTEventTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INTEventTransformer.h; sourceTree = "<group>"; };
 		A10165001E7006AA009596E1 /* INTEventTransformer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = INTEventTransformer.mm; sourceTree = "<group>"; };
 		A101680A1E713D8B009596E1 /* INTEventTransformerSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = INTEventTransformerSpec.mm; sourceTree = "<group>"; };
@@ -503,6 +505,7 @@
 				A1F24D121EC0C0B50050D534 /* CoreTelephony.framework in Frameworks */,
 				A1417AAE1E6EDA31005DBEFF /* GLKit.framework in Frameworks */,
 				A11722DD1ECC5AA90039177C /* Mantle.framework in Frameworks */,
+				88A67EDD1FD5CA69005BA17A /* MobileCoreServices.framework in Frameworks */,
 				A1417AAC1E6ED9D5005DBEFF /* QuartzCore.framework in Frameworks */,
 				A1F24D101EC0BFBD0050D534 /* SystemConfiguration.framework in Frameworks */,
 				A1417A921E6ED9CB005DBEFF /* UIKit.framework in Frameworks */,
@@ -830,6 +833,7 @@
 				A1417AA91E6ED9D0005DBEFF /* CoreGraphics.framework */,
 				A1F24D111EC0C0B50050D534 /* CoreTelephony.framework */,
 				A1417AAD1E6EDA31005DBEFF /* GLKit.framework */,
+				88A67EC11FD5CA69005BA17A /* MobileCoreServices.framework */,
 				A1417AAB1E6ED9D5005DBEFF /* QuartzCore.framework */,
 				A1F24D0F1EC0BFBD0050D534 /* SystemConfiguration.framework */,
 				A1417A911E6ED9CB005DBEFF /* UIKit.framework */,
