@@ -52,6 +52,14 @@ it(@"should set the subscription price and full price at the bottom of the new b
   expect([button.bottomText string]).will.equal(@"10");
 });
 
+it(@"should disable the button until the price is set", ^{
+  auto button = [buttonsFactory createSubscriptionButtonWithSubscriptionDescriptor:descriptor];
+
+  expect([button isEnabled]).to.beFalsy();
+  descriptor.priceInfo = OCMClassMock([BZRProductPriceInfo class]);
+  expect([button isEnabled]).to.beTruthy();
+});
+
 it(@"should not hold the button strongly", ^{
   __weak UIButton *button;
 
