@@ -55,7 +55,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)setupVideoView {
   _videoView = [[WFVideoView alloc] initWithVideoProgressIntervalTime:1 playInLoop:YES];
-  self.videoView.layer.cornerRadius = 10;
+  self.videoView.layer.cornerRadius = 7;
   self.videoView.layer.masksToBounds = YES;
   [self.mediaContainerView addSubview:self.videoView];
 

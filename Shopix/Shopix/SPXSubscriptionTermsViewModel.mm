@@ -66,6 +66,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSAttributedString *)termsText {
   auto paragraphStyle = [[NSMutableParagraphStyle alloc] init];
   paragraphStyle.alignment = NSTextAlignmentCenter;
+  paragraphStyle.lineHeightMultiple = 0.9;
   return [[NSMutableAttributedString alloc] initWithString:self.termsOverview attributes:@{
     NSForegroundColorAttributeName: self.termsTextColor,
     NSFontAttributeName: [UIFont systemFontOfSize:9 weight:UIFontWeightLight],
