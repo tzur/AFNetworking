@@ -165,7 +165,7 @@ using namespace spx;
 }
 
 - (void)setupButtons {
-  auto topPaddingView = [self addPaddingSubviewBeneathView:self.pagingView heightRatio:0.03
+  auto topPaddingView = [self addPaddingSubviewBeneathView:self.pagingView heightRatio:0.01
                                                  maxHeight:120];
 
   _subscriptionButtonsView = [[SPXButtonsHorizontalLayoutView alloc] init];
@@ -190,7 +190,7 @@ using namespace spx;
 
 - (void)setupRestorePurchasesButton {
   auto topPaddingView = [self addPaddingSubviewBeneathView:self.subscriptionButtonsView
-                                               heightRatio:0.03 maxHeight:20];
+                                               heightRatio:0.015 maxHeight:20];
 
   _restorePurchasesButton = [[SPXRestorePurchasesButton alloc] init];
   self.restorePurchasesButton.textColor = self.viewModel.colorScheme.textColor;
@@ -211,7 +211,7 @@ using namespace spx;
 
   [self.termsView mas_makeConstraints:^(MASConstraintMaker *make) {
     make.centerX.equalTo(self.view);
-    make.bottom.equalTo(self.view).offset(-5);
+    make.bottom.equalTo(self.view).offset(-2);
     make.width.equalTo(self.view).multipliedBy(0.94);
   }];
 }
