@@ -17,7 +17,8 @@ __block id<PTNDescriptor> descriptor;
 beforeEach(^{
   assetManager = OCMProtocolMock(@protocol(PTNAssetManager));
   options = [PTNImageFetchOptions optionsWithDeliveryMode:PTNImageDeliveryModeHighQuality
-                                               resizeMode:PTNImageResizeModeExact];
+                                               resizeMode:PTNImageResizeModeExact
+                                          includeMetadata:NO];
   descriptor = PTNCreateDescriptor([NSURL URLWithString:@"http://www.foo.com"], @"foo", 0, nil);
 });
 
@@ -39,7 +40,8 @@ it(@"should return correct view model when created with default options", ^{
 
   PTNImageFetchOptions *defaultOptions =
       [PTNImageFetchOptions optionsWithDeliveryMode:PTNImageDeliveryModeOpportunistic
-                                         resizeMode:PTNImageResizeModeFast];
+                                         resizeMode:PTNImageResizeModeFast
+                                    includeMetadata:NO];
 
   PTUImageCellViewModel *viewModel =
       (PTUImageCellViewModel *)[provider viewModelForDescriptor:descriptor];

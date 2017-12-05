@@ -10,7 +10,8 @@ SpecBegin(PTNImageFetchOptions_PhotoKit)
 it(@"should create photokit options from photons options", ^{
   PTNImageFetchOptions *options = [PTNImageFetchOptions
                                    optionsWithDeliveryMode:PTNImageDeliveryModeFast
-                                   resizeMode:PTNImageResizeModeExact];
+                                   resizeMode:PTNImageResizeModeExact
+                                   includeMetadata:NO];
   PHImageRequestOptions *photoKitOptions = [options photoKitOptions];
 
   expect(photoKitOptions.version).to.equal(PHImageRequestOptionsVersionCurrent);
@@ -24,7 +25,8 @@ it(@"should create photokit options from photons options", ^{
 it(@"should map fast resize mode to none resize mode", ^{
   PTNImageFetchOptions *options = [PTNImageFetchOptions
                                    optionsWithDeliveryMode:PTNImageDeliveryModeFast
-                                   resizeMode:PTNImageResizeModeFast];
+                                   resizeMode:PTNImageResizeModeFast
+                                   includeMetadata:NO];
   PHImageRequestOptions *photoKitOptions = [options photoKitOptions];
 
   expect(photoKitOptions.resizeMode).to.equal(PHImageRequestOptionsResizeModeNone);

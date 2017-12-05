@@ -1,12 +1,14 @@
 // Copyright (c) 2015 Lightricks. All rights reserved.
 // Created by Yaron Inger.
 
+#import <LTKit/LTValueObject.h>
+
 NS_ASSUME_NONNULL_BEGIN
 
 /// Types of available image delivery modes.
 typedef NS_ENUM(NSInteger, PTNImageDeliveryMode) {
   /// Provide the image at the given size and highest quality available, but may take a long time to
-  /// load. This is the default mode.
+  /// load.
   PTNImageDeliveryModeHighQuality,
   /// Provide an image quickly, which can be of low-quality.
   PTNImageDeliveryModeFast,
@@ -29,17 +31,32 @@ typedef NS_ENUM(NSInteger, PTNImageResizeMode) {
 /// Value class containing options used while fetching images. Refer to a specific Photons source
 /// documentation for information about which of these options are available for each specific
 /// source. Unsupported options will be ignored.
-@interface PTNImageFetchOptions : NSObject
+@interface PTNImageFetchOptions : LTValueObject
 
-/// Creates a new \c PTNImageFetchOptions with the given \c deliveryMode and \c resizeMode.
+/// Initializes with \c PTNImageDeliveryModeHighQuality for \c deliveryMode,
+/// \c PTNImageResizeModeExact for \c resizeMode and \c NO for \c includeMetadata.
+- (instancetype)init;
+
+/// Creates a new \c PTNImageFetchOptions with \c PTNImageDeliveryModeHighQuality for
+/// \c deliveryMode, \c PTNImageResizeModeExact for \c resizeMode and \c NO for \c includeMetadata.
++ (instancetype)options;
+
+/// Creates a new \c PTNImageFetchOptions with the given \c deliveryMode, \c resizeMode and
+/// \c includeMetadata.
 + (instancetype)optionsWithDeliveryMode:(PTNImageDeliveryMode)deliveryMode
-                             resizeMode:(PTNImageResizeMode)resizeMode;
+                             resizeMode:(PTNImageResizeMode)resizeMode
+                        includeMetadata:(BOOL)includeMetadata;
 
 /// Type of image delivery mode.
 @property (readonly, nonatomic) PTNImageDeliveryMode deliveryMode;
 
 /// Type of image resize mode.
 @property (readonly, nonatomic) PTNImageResizeMode resizeMode;
+
+/// Whether metadata should be fetched along with the image. When this option is \c YES, other
+/// options may be ignored since in some cases this requires fetching the original, full-sized
+/// image.
+@property (readonly, nonatomic) BOOL includeMetadata;
 
 @end
 
