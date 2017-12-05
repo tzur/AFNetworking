@@ -1,47 +1,47 @@
 /* Abbreviation of the word month, representing per-month suffix of a price, as in $5/mo - $5 per month. The '/' should remain in the localized version */
-"/mo" = "/mo"; /* MISSING TRANSLATION */
+"/mo" = "/月";
 
 /* Text on a button shown to the user on failed action, suggesting the user to contact our support team */
 "Contact Us" = "與我們聯繫";
 
 /* Label on a button for purchasing subscription that renews every one month */
-"Month" = "Month"; /* MISSING TRANSLATION */
+"Month" = "個月";
 
 /* Label on a button for purchasing subscription that renews every x months */
-"Months" = "Months"; /* MISSING TRANSLATION */
+"Months" = "個月";
 
 /* Title of an alert shown after failing attempt to fetch products information */
-"Network Error" = "Network Error"; /* MISSING TRANSLATION */
+"Network Error" = "網絡錯誤";
 
 /* Text on a button shown to the user on failed action, dismissing the alert and canceling the operation */
 "Not Now" = "暫時不要";
 
 /* Title of a button shown in an information alert */
-"OK" = "OK"; /* MISSING TRANSLATION */
+"OK" = "好";
 
 /* Label on a button for purchasing the product at a single one-time price, instead of a renewable subscription plan */
-"One-Time\nPurchase" = "One-Time\nPurchase"; /* MISSING TRANSLATION */
+"One-Time\nPurchase" = "一次性購買\n";
 
 /* Message shown after a failing operation, giving the user 3 options: retry the failing operation, send a feedback email or cancel the operation */
-"Please try again. If the problem persists, let us know and we'll get right on it." = "Please try again. If the problem persists, let us know and we'll get right on it."; /* MISSING TRANSLATION */
+"Please try again. If the problem persists, let us know and we'll get right on it." = "請重試，若問題仍存在，請與我們聯繫，我們將立即處理。";
 
 /* Title of an alert shown after failed purchase */
-"Purchase Failed" = "Purchase Failed"; /* MISSING TRANSLATION */
+"Purchase Failed" = "無法完成購買";
 
 /* Title of an alert shown after successful restoration of user purchases */
 "Restoration Completed" = "Restoration Completed"; /* MISSING TRANSLATION */
 
 /* Title of an alert shown after failing attempt to restore purchases */
-"Restoration Failed" = "Restoration Failed"; /* MISSING TRANSLATION */
+"Restoration Failed" = "恢復購買失敗";
 
 /* Label on a button that restored previously purchased products */
-"Restore Purchases" = "Restore Purchases"; /* MISSING TRANSLATION */
+"Restore Purchases" = "恢復購買";
 
 /* Text on a button shown to the user on failed action, trying the failed operation again */
 "Try Again" = "再度嘗試";
 
 /* Label on a button for purchasing subscription that renews every one year */
-"Year" = "Year"; /* MISSING TRANSLATION */
+"Year" = "年";
 
 /* Message shown after a successful products restoration, but no active subscription was found */
 "Your purchases were restored successfully, no active subscription found" = "已成功恢復您的購買";

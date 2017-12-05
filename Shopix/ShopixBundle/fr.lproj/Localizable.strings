@@ -1,47 +1,47 @@
 /* Abbreviation of the word month, representing per-month suffix of a price, as in $5/mo - $5 per month. The '/' should remain in the localized version */
-"/mo" = "/mo"; /* MISSING TRANSLATION */
+"/mo" = "/mo";
 
 /* Text on a button shown to the user on failed action, suggesting the user to contact our support team */
 "Contact Us" = "Nous contacter";
 
 /* Label on a button for purchasing subscription that renews every one month */
-"Month" = "Month"; /* MISSING TRANSLATION */
+"Month" = "mois";
 
 /* Label on a button for purchasing subscription that renews every x months */
-"Months" = "Months"; /* MISSING TRANSLATION */
+"Months" = "mois";
 
 /* Title of an alert shown after failing attempt to fetch products information */
-"Network Error" = "Network Error"; /* MISSING TRANSLATION */
+"Network Error" = "Erreur réseau";
 
 /* Text on a button shown to the user on failed action, dismissing the alert and canceling the operation */
 "Not Now" = "Pas maintenant";
 
 /* Title of a button shown in an information alert */
-"OK" = "OK"; /* MISSING TRANSLATION */
+"OK" = "OK";
 
 /* Label on a button for purchasing the product at a single one-time price, instead of a renewable subscription plan */
-"One-Time\nPurchase" = "One-Time\nPurchase"; /* MISSING TRANSLATION */
+"One-Time\nPurchase" = "Achat\nunique";
 
 /* Message shown after a failing operation, giving the user 3 options: retry the failing operation, send a feedback email or cancel the operation */
-"Please try again. If the problem persists, let us know and we'll get right on it." = "Please try again. If the problem persists, let us know and we'll get right on it."; /* MISSING TRANSLATION */
+"Please try again. If the problem persists, let us know and we'll get right on it." = "Veuillez réessayer. Si le problème persiste, signalez-le-nous afin que nous trouvions une solution.";
 
 /* Title of an alert shown after failed purchase */
-"Purchase Failed" = "Purchase Failed"; /* MISSING TRANSLATION */
+"Purchase Failed" = "Échec de l’achat";
 
 /* Title of an alert shown after successful restoration of user purchases */
 "Restoration Completed" = "Restoration Completed"; /* MISSING TRANSLATION */
 
 /* Title of an alert shown after failing attempt to restore purchases */
-"Restoration Failed" = "Restoration Failed"; /* MISSING TRANSLATION */
+"Restoration Failed" = "Échec de la restauration";
 
 /* Label on a button that restored previously purchased products */
-"Restore Purchases" = "Restore Purchases"; /* MISSING TRANSLATION */
+"Restore Purchases" = "Restaurer les achats";
 
 /* Text on a button shown to the user on failed action, trying the failed operation again */
 "Try Again" = "Réessayez";
 
 /* Label on a button for purchasing subscription that renews every one year */
-"Year" = "Year"; /* MISSING TRANSLATION */
+"Year" = "an";
 
 /* Message shown after a successful products restoration, but no active subscription was found */
 "Your purchases were restored successfully, no active subscription found" = "Vos achats ont bien été restaurés, aucun abonnement actif n'a été trouvé";
