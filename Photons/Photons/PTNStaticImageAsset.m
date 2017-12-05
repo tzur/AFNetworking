@@ -7,18 +7,17 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface PTNStaticImageAsset ()
-
-/// Image backing this image asset.
-@property (readonly, nonatomic) UIImage *image;
-
-@end
-
 @implementation PTNStaticImageAsset
 
 - (instancetype)initWithImage:(UIImage *)image {
+  return [self initWithImage:image imageMetadata:nil];
+}
+
+- (instancetype)initWithImage:(UIImage *)image
+                imageMetadata:(nullable PTNImageMetadata *)imageMetadata {
   if (self = [super init]) {
     _image = image;
+    _imageMetadata = imageMetadata ?: [[PTNImageMetadata alloc] init];
   }
   return self;
 }
@@ -32,30 +31,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (RACSignal *)fetchImageMetadata {
-  return [RACSignal return:[[PTNImageMetadata alloc] init]];
-}
-
-#pragma mark -
-#pragma mark NSObject
-#pragma mark -
-
-- (BOOL)isEqual:(PTNStaticImageAsset *)object {
-  if (object == self) {
-    return YES;
-  }
-  if (![object isKindOfClass:self.class]) {
-    return NO;
-  }
-
-  return [self.image isEqual:object.image];
-}
-
-- (NSUInteger)hash {
-  return self.image.hash;
-}
-
-- (NSString *)description {
-  return [NSString stringWithFormat:@"<%@: %p, image: %@>", self.class, self, self.image];
+  return [RACSignal return:self.imageMetadata];
 }
 
 @end
