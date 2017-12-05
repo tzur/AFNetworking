@@ -21,6 +21,7 @@
 		A14173421E6EB59F005DBEFF /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A141729D1E6EAF03005DBEFF /* libOCMock.a */; };
 		A14173431E6EB59F005DBEFF /* libSpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A14172B81E6EAF0D005DBEFF /* libSpecta.a */; };
 		A18220B91F0398A500FC7C61 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A18220B81F0398A500FC7C61 /* MessageUI.framework */; };
+		B421E2241FCEF05B007F57EA /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B476E9261FCE9E9D007BC81C /* MobileCoreServices.framework */; };
 		B42D71061FBB24810024718E /* TINMessage.mm in Sources */ = {isa = PBXBuildFile; fileRef = B42D70DF1FBB24810024718E /* TINMessage.mm */; };
 		B42D71081FBB24900024718E /* TINMessageSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = B42D71071FBB24900024718E /* TINMessageSpec.mm */; };
 		B45926D81FC69A5F00A70964 /* TINMessage+UserInfo.mm in Sources */ = {isa = PBXBuildFile; fileRef = B45926D71FC69A5F00A70964 /* TINMessage+UserInfo.mm */; };
@@ -28,6 +29,11 @@
 		B45927001FC6A76900A70964 /* NSURL+TinCan.mm in Sources */ = {isa = PBXBuildFile; fileRef = B45926FF1FC6A76900A70964 /* NSURL+TinCan.mm */; };
 		B45927021FC6AF2D00A70964 /* NSURL+TinCanSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = B45927011FC6AF2D00A70964 /* NSURL+TinCanSpec.mm */; };
 		B45927061FC6B1EC00A70964 /* TINTestsCommon.mm in Sources */ = {isa = PBXBuildFile; fileRef = B45927051FC6B1EC00A70964 /* TINTestsCommon.mm */; };
+		B46CB0EC1FC448DA00F54D1E /* libLTKitTestUtils.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B42D70F21FBB24810024718E /* libLTKitTestUtils.a */; };
+		B476E9201FCDA88E007BC81C /* TINMessageFactory.mm in Sources */ = {isa = PBXBuildFile; fileRef = B476E91B1FCDA88E007BC81C /* TINMessageFactory.mm */; };
+		B476E9251FCDA8B2007BC81C /* TINMessageFactorySpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = B476E9231FCDA8B2007BC81C /* TINMessageFactorySpec.mm */; };
+		B476E9271FCE9EA6007BC81C /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B476E9261FCE9E9D007BC81C /* MobileCoreServices.framework */; };
+		B4E0535F1FD0A0B100F2DBB1 /* NSErrorCodes+TinCan.mm in Sources */ = {isa = PBXBuildFile; fileRef = B4E0535E1FD0A0B100F2DBB1 /* NSErrorCodes+TinCan.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -363,6 +369,12 @@
 		B45927011FC6AF2D00A70964 /* NSURL+TinCanSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSURL+TinCanSpec.mm"; sourceTree = "<group>"; };
 		B45927041FC6B1EC00A70964 /* TINTestsCommon.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TINTestsCommon.h; sourceTree = "<group>"; };
 		B45927051FC6B1EC00A70964 /* TINTestsCommon.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = TINTestsCommon.mm; sourceTree = "<group>"; };
+		B476E91B1FCDA88E007BC81C /* TINMessageFactory.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = TINMessageFactory.mm; sourceTree = "<group>"; };
+		B476E91E1FCDA88E007BC81C /* TINMessageFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TINMessageFactory.h; sourceTree = "<group>"; };
+		B476E9231FCDA8B2007BC81C /* TINMessageFactorySpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = TINMessageFactorySpec.mm; sourceTree = "<group>"; };
+		B476E9261FCE9E9D007BC81C /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
+		B4E0535D1FD0A0B100F2DBB1 /* NSErrorCodes+TinCan.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSErrorCodes+TinCan.h"; sourceTree = "<group>"; };
+		B4E0535E1FD0A0B100F2DBB1 /* NSErrorCodes+TinCan.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSErrorCodes+TinCan.mm"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -370,6 +382,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B476E9271FCE9EA6007BC81C /* MobileCoreServices.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -380,12 +393,14 @@
 				882D1F2E1EC1C497007F39F5 /* CoreGraphics.framework in Frameworks */,
 				882D1F301EC1C49C007F39F5 /* GLKit.framework in Frameworks */,
 				A18220B91F0398A500FC7C61 /* MessageUI.framework in Frameworks */,
+				B421E2241FCEF05B007F57EA /* MobileCoreServices.framework in Frameworks */,
 				882D1F321EC1C54F007F39F5 /* QuartzCore.framework in Frameworks */,
 				8B6867341F3B273C00F0EF4C /* ReactiveObjC.framework in Frameworks */,
 				884962181EBA226E007B3AE8 /* UIKit.framework in Frameworks */,
 				A14173401E6EB59F005DBEFF /* libExpecta.a in Frameworks */,
 				8B10C9A01F3F059200F76142 /* libLLReactiveMatchers.a in Frameworks */,
 				A14173411E6EB59F005DBEFF /* libLTKit.a in Frameworks */,
+				B46CB0EC1FC448DA00F54D1E /* libLTKitTestUtils.a in Frameworks */,
 				A14173421E6EB59F005DBEFF /* libOCMock.a in Frameworks */,
 				A14173431E6EB59F005DBEFF /* libSpecta.a in Frameworks */,
 				A14171C61E6EAC0D005DBEFF /* libTinCan.a in Frameworks */,
@@ -411,12 +426,16 @@
 		883235611ED861CD0090787D /* Base */ = {
 			isa = PBXGroup;
 			children = (
+				B4E0535D1FD0A0B100F2DBB1 /* NSErrorCodes+TinCan.h */,
+				B4E0535E1FD0A0B100F2DBB1 /* NSErrorCodes+TinCan.mm */,
 				B45926FE1FC6A76900A70964 /* NSURL+TinCan.h */,
 				B45926FF1FC6A76900A70964 /* NSURL+TinCan.mm */,
 				B42D71051FBB24810024718E /* TINMessage.h */,
 				B42D70DF1FBB24810024718E /* TINMessage.mm */,
 				B45926D61FC69A5F00A70964 /* TINMessage+UserInfo.h */,
 				B45926D71FC69A5F00A70964 /* TINMessage+UserInfo.mm */,
+				B476E91E1FCDA88E007BC81C /* TINMessageFactory.h */,
+				B476E91B1FCDA88E007BC81C /* TINMessageFactory.mm */,
 			);
 			name = Base;
 			sourceTree = "<group>";
@@ -426,6 +445,7 @@
 			children = (
 				B45927011FC6AF2D00A70964 /* NSURL+TinCanSpec.mm */,
 				B45926FC1FC6A06200A70964 /* TINMessage+UserInfoSpec.mm */,
+				B476E9231FCDA8B2007BC81C /* TINMessageFactorySpec.mm */,
 				B42D71071FBB24900024718E /* TINMessageSpec.mm */,
 			);
 			name = Base;
@@ -631,6 +651,7 @@
 				882D1F2D1EC1C497007F39F5 /* CoreGraphics.framework */,
 				882D1F2F1EC1C49C007F39F5 /* GLKit.framework */,
 				A18220B81F0398A500FC7C61 /* MessageUI.framework */,
+				B476E9261FCE9E9D007BC81C /* MobileCoreServices.framework */,
 				882D1F311EC1C54F007F39F5 /* QuartzCore.framework */,
 				A1417A911E6ED9CB005DBEFF /* UIKit.framework */,
 				882D1F171EC19A2C007F39F5 /* libcompression.tbd */,
@@ -1039,7 +1060,9 @@
 			files = (
 				B45926D81FC69A5F00A70964 /* TINMessage+UserInfo.mm in Sources */,
 				B42D71061FBB24810024718E /* TINMessage.mm in Sources */,
+				B476E9201FCDA88E007BC81C /* TINMessageFactory.mm in Sources */,
 				B45927001FC6A76900A70964 /* NSURL+TinCan.mm in Sources */,
+				B4E0535F1FD0A0B100F2DBB1 /* NSErrorCodes+TinCan.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1049,6 +1072,7 @@
 			files = (
 				B45927061FC6B1EC00A70964 /* TINTestsCommon.mm in Sources */,
 				B45926FD1FC6A06200A70964 /* TINMessage+UserInfoSpec.mm in Sources */,
+				B476E9251FCDA8B2007BC81C /* TINMessageFactorySpec.mm in Sources */,
 				B42D71081FBB24900024718E /* TINMessageSpec.mm in Sources */,
 				B45927021FC6AF2D00A70964 /* NSURL+TinCanSpec.mm in Sources */,
 			);

@@ -76,21 +76,22 @@ context(@"url", ^{
   });
 
   it(@"should return correct directory URL", ^{
-    auto _Nullable expectedURL =  [NSURL tin_messageDirectoryURLWithAppGroup:message.appGroupID
-                                                                      scheme:message.sourceScheme
+    auto _Nullable expectedURL = [NSURL tin_messageDirectoryURLWithAppGroup:message.appGroupID
+                                                                      scheme:message.targetScheme
                                                                   identifier:message.identifier];
     expect(expectedURL).notTo.beNil();
     expect(message.directoryURL).to.equal(expectedURL);
   });
 
-  it(@"should return correct message URL", ^{
-    auto _Nullable dirURL =  [NSURL tin_messageDirectoryURLWithAppGroup:message.appGroupID
-                                                                 scheme:message.sourceScheme
-                                                             identifier:message.identifier];
-    auto _Nullable messageURL = [dirURL URLByAppendingPathComponent:kTINMessageFileName];
+  it(@"should return message URL that relies under the message directory", ^{
+    auto _Nullable dirURL = [NSURL tin_messageDirectoryURLWithAppGroup:message.appGroupID
+                                                                scheme:message.targetScheme
+                                                            identifier:message.identifier];
     expect(dirURL).notTo.beNil();
-    expect(messageURL).notTo.beNil();
-    expect(message.url).to.equal(messageURL);
+    expect(message.url).notTo.beNil();
+    expect([message.url.path hasPrefix:nn(message.directoryURL.path)]).to.beTruthy();
+    expect(message.url.pathComponents.count)
+        .to.beGreaterThan(message.directoryURL.pathComponents.count);
   });
 });
 
