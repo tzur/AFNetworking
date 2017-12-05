@@ -1,47 +1,47 @@
 /* Abbreviation of the word month, representing per-month suffix of a price, as in $5/mo - $5 per month. The '/' should remain in the localized version */
-"/mo" = "/mo"; /* MISSING TRANSLATION */
+"/mo" = "/mese";
 
 /* Text on a button shown to the user on failed action, suggesting the user to contact our support team */
 "Contact Us" = "Contattaci";
 
 /* Label on a button for purchasing subscription that renews every one month */
-"Month" = "Month"; /* MISSING TRANSLATION */
+"Month" = "mese";
 
 /* Label on a button for purchasing subscription that renews every x months */
-"Months" = "Months"; /* MISSING TRANSLATION */
+"Months" = "mesi";
 
 /* Title of an alert shown after failing attempt to fetch products information */
-"Network Error" = "Network Error"; /* MISSING TRANSLATION */
+"Network Error" = "Errore di rete";
 
 /* Text on a button shown to the user on failed action, dismissing the alert and canceling the operation */
 "Not Now" = "Non adesso";
 
 /* Title of a button shown in an information alert */
-"OK" = "OK"; /* MISSING TRANSLATION */
+"OK" = "OK";
 
 /* Label on a button for purchasing the product at a single one-time price, instead of a renewable subscription plan */
-"One-Time\nPurchase" = "One-Time\nPurchase"; /* MISSING TRANSLATION */
+"One-Time\nPurchase" = "Acquisto\nuna tantum";
 
 /* Message shown after a failing operation, giving the user 3 options: retry the failing operation, send a feedback email or cancel the operation */
-"Please try again. If the problem persists, let us know and we'll get right on it." = "Please try again. If the problem persists, let us know and we'll get right on it."; /* MISSING TRANSLATION */
+"Please try again. If the problem persists, let us know and we'll get right on it." = "Riprova. Se il problema persiste informaci e ce ne occuperemo.";
 
 /* Title of an alert shown after failed purchase */
-"Purchase Failed" = "Purchase Failed"; /* MISSING TRANSLATION */
+"Purchase Failed" = "Acquisto non riuscito";
 
 /* Title of an alert shown after successful restoration of user purchases */
 "Restoration Completed" = "Restoration Completed"; /* MISSING TRANSLATION */
 
 /* Title of an alert shown after failing attempt to restore purchases */
-"Restoration Failed" = "Restoration Failed"; /* MISSING TRANSLATION */
+"Restoration Failed" = "Ripristino non riuscito";
 
 /* Label on a button that restored previously purchased products */
-"Restore Purchases" = "Restore Purchases"; /* MISSING TRANSLATION */
+"Restore Purchases" = "Ripristina acquisti";
 
 /* Text on a button shown to the user on failed action, trying the failed operation again */
 "Try Again" = "Riprova";
 
 /* Label on a button for purchasing subscription that renews every one year */
-"Year" = "Year"; /* MISSING TRANSLATION */
+"Year" = "anno";
 
 /* Message shown after a successful products restoration, but no active subscription was found */
 "Your purchases were restored successfully, no active subscription found" = "I tuoi acquisti sono stati ripristinati, non è stato trovato alcun abbonamento attivo";

@@ -1,47 +1,47 @@
 /* Abbreviation of the word month, representing per-month suffix of a price, as in $5/mo - $5 per month. The '/' should remain in the localized version */
-"/mo" = "/mo"; /* MISSING TRANSLATION */
+"/mo" = "/월";
 
 /* Text on a button shown to the user on failed action, suggesting the user to contact our support team */
 "Contact Us" = "고객 센터";
 
 /* Label on a button for purchasing subscription that renews every one month */
-"Month" = "Month"; /* MISSING TRANSLATION */
+"Month" = "개월";
 
 /* Label on a button for purchasing subscription that renews every x months */
-"Months" = "Months"; /* MISSING TRANSLATION */
+"Months" = "개월";
 
 /* Title of an alert shown after failing attempt to fetch products information */
-"Network Error" = "Network Error"; /* MISSING TRANSLATION */
+"Network Error" = "네트워크 오류";
 
 /* Text on a button shown to the user on failed action, dismissing the alert and canceling the operation */
 "Not Now" = "나중에";
 
 /* Title of a button shown in an information alert */
-"OK" = "OK"; /* MISSING TRANSLATION */
+"OK" = "네";
 
 /* Label on a button for purchasing the product at a single one-time price, instead of a renewable subscription plan */
-"One-Time\nPurchase" = "One-Time\nPurchase"; /* MISSING TRANSLATION */
+"One-Time\nPurchase" = "일회성\n구매";
 
 /* Message shown after a failing operation, giving the user 3 options: retry the failing operation, send a feedback email or cancel the operation */
-"Please try again. If the problem persists, let us know and we'll get right on it." = "Please try again. If the problem persists, let us know and we'll get right on it."; /* MISSING TRANSLATION */
+"Please try again. If the problem persists, let us know and we'll get right on it." = "다시 시도해주시기 바랍니다. 만약 문제가 지속되는 경우, 연락해 주시면 바로 살펴보겠습니다.";
 
 /* Title of an alert shown after failed purchase */
-"Purchase Failed" = "Purchase Failed"; /* MISSING TRANSLATION */
+"Purchase Failed" = "구매 실패";
 
 /* Title of an alert shown after successful restoration of user purchases */
 "Restoration Completed" = "Restoration Completed"; /* MISSING TRANSLATION */
 
 /* Title of an alert shown after failing attempt to restore purchases */
-"Restoration Failed" = "Restoration Failed"; /* MISSING TRANSLATION */
+"Restoration Failed" = "복원 실패";
 
 /* Label on a button that restored previously purchased products */
-"Restore Purchases" = "Restore Purchases"; /* MISSING TRANSLATION */
+"Restore Purchases" = "구입 항목 복원";
 
 /* Text on a button shown to the user on failed action, trying the failed operation again */
 "Try Again" = "다시 시도하세요";
 
 /* Label on a button for purchasing subscription that renews every one year */
-"Year" = "Year"; /* MISSING TRANSLATION */
+"Year" = "년";
 
 /* Message shown after a successful products restoration, but no active subscription was found */
 "Your purchases were restored successfully, no active subscription found" = "구입 항목이 성공적으로 복원되었지만, 활성화된 구독 기간을 찾을 수 없음";
