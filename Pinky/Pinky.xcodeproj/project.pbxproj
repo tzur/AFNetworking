@@ -553,6 +553,7 @@
 		06447DB01FA892610077346E /* PNKInstanceNormInternalKernel.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKInstanceNormInternalKernel.mm; sourceTree = "<group>"; };
 		06463BAB1F3A62220087E057 /* PNKConvolutionLayerSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKConvolutionLayerSpec.mm; sourceTree = "<group>"; };
 		064723ED1F98F06E008EBAF8 /* PNKConditionalInstanceNormLayerSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKConditionalInstanceNormLayerSpec.mm; sourceTree = "<group>"; };
+		0647450E1FD86FD300BAE7BD /* PNKNeuralNetwork.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNKNeuralNetwork.h; sourceTree = "<group>"; };
 		0657A10F1F29908F002AA730 /* PNKConvolutionLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKConvolutionLayer.h; sourceTree = "<group>"; };
 		0657A1101F29908F002AA730 /* PNKConvolutionLayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKConvolutionLayer.mm; sourceTree = "<group>"; };
 		0657A1321F299C56002AA730 /* MPSCNNConvolution+Factory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MPSCNNConvolution+Factory.h"; sourceTree = "<group>"; };
@@ -932,6 +933,7 @@
 				0636A0811F8173F70064E561 /* PNKInstanceNormLayer.h */,
 				0636A0821F8173F70064E561 /* PNKInstanceNormLayer.mm */,
 				069225E11F0A615700F3C8C7 /* PNKNeuralKernel.h */,
+				0647450E1FD86FD300BAE7BD /* PNKNeuralNetwork.h */,
 				064160A01FD57CDD00F9F70C /* PNKPoolingLayer.h */,
 				064160C21FD57CDD00F9F70C /* PNKPoolingLayer.mm */,
 			);
