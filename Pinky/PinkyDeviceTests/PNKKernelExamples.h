@@ -29,7 +29,7 @@ extern NSString * const kPNKKernelExamplesPrimaryInputChannels;
 /// Dictionary key stating the number of secondary input channels.
 extern NSString * const kPNKKernelExamplesSecondaryInputChannels;
 
-/// Dictionary key stating the number of input channels.
+/// Dictionary key stating the number of output channels.
 extern NSString * const kPNKKernelExamplesOutputChannels;
 
 /// Dictionary key stating the width of the output image.
@@ -46,3 +46,9 @@ extern NSString * const kPNKKernelExamplesSecondaryInputMat;
 
 /// Dictionary key to the cv::Mat representing the expected result image.
 extern NSString * const kPNKKernelExamplesExpectedMat;
+
+/// Dictionary key to the boolean value stating how the input images size should be calculated. If
+/// \c YES the input size is determined from the corresponding size of the input matrix given in
+/// \c kPNKKernelExamplesPrimaryInputMat and \c kPNKKernelExamplesPrimaryInputMat. If \c NO it is
+/// calculated from the output image size by calling \c inputRegionForOutputSize:.
+extern NSString * const kPNKKernelExamplesInputImageSizeFromInputMat;
