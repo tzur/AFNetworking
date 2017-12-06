@@ -5,19 +5,6 @@
 
 #import "PNKNeuralNetworkOperationsModel.h"
 
-static cv::Mat PNKFillMatrix(int rows, int columns, int channels) {
-  cv::Mat1hf matrix(rows * columns, channels);
-  for (int i = 0; i < rows; ++i) {
-    for (int j = 0; j < columns; ++j) {
-      for (int k = 0; k < channels; ++k) {
-        matrix.at<half_float::half>(i * columns + j, k) =
-            (half_float::half)((i / 3 + j / 5 + k) % 2);
-      }
-    }
-  }
-  return matrix.reshape(channels, rows);
-}
-
 static cv::Mat PNKFillKernel(int kernelWidth, int kernelHeight, int inputChannels,
                              int outputChannels) {
   int dims[] = {outputChannels, kernelHeight, kernelWidth, inputChannels};
@@ -153,163 +140,169 @@ static NSDictionary *PNKBuildHalfFloatDataForKernelExamples(id<MTLDevice> device
   };
 }
 
-SpecBegin(PNKDilatedConvolutionInternalLayer)
+DeviceSpecBegin(PNKDilatedConvolutionInternalLayer)
 
 __block id<MTLDevice> device;
-__block pnk::ConvolutionKernelModel convolutionKernelModel;
 
 beforeEach(^{
   device = MTLCreateSystemDefaultDevice();
-  convolutionKernelModel = PNKBuildConvolutionModel(3, 3, 1, 1, 2, 2, pnk::PaddingTypeSame);
 });
 
-context(@"instantiation parameter checks", ^{
-  __block PNKDilatedConvolutionInternalLayer *convolutionKernel;
-
-  it(@"should instantiate correctly with default parameters", ^{
-    expect(^{
-      convolutionKernel = [[PNKDilatedConvolutionInternalLayer alloc]
-                           initWithDevice:device
-                           convolutionModel:convolutionKernelModel];
-    }).notTo.raiseAny();
-  });
-
-  it(@"should raise when strideX is not one", ^{
-    convolutionKernelModel.strideX = 2;
-    expect(^{
-      convolutionKernel = [[PNKDilatedConvolutionInternalLayer alloc]
-                           initWithDevice:device
-                           convolutionModel:convolutionKernelModel];
-    }).to.raise(NSInvalidArgumentException);
-  });
-
-  it(@"should raise when strideY is not one", ^{
-    convolutionKernelModel.strideY = 3;
-    expect(^{
-      convolutionKernel = [[PNKDilatedConvolutionInternalLayer alloc]
-                           initWithDevice:device
-                           convolutionModel:convolutionKernelModel];
-    }).to.raise(NSInvalidArgumentException);
-  });
-
-  it(@"should raise when groups is not one", ^{
-    convolutionKernelModel.groups = 4;
-    expect(^{
-      convolutionKernel = [[PNKDilatedConvolutionInternalLayer alloc]
-                           initWithDevice:device
-                           convolutionModel:convolutionKernelModel];
-    }).to.raise(NSInvalidArgumentException);
-  });
-
-  it(@"should raise when kernel width is even", ^{
-    convolutionKernelModel.kernelWidth = 4;
-    convolutionKernelModel.kernelWeights = cv::Mat1f::ones(3, 4);
-    expect(^{
-      convolutionKernel = [[PNKDilatedConvolutionInternalLayer alloc]
-                           initWithDevice:device
-                           convolutionModel:convolutionKernelModel];
-    }).to.raise(NSInvalidArgumentException);
-  });
-
-  it(@"should raise when kernel height is even", ^{
-    convolutionKernelModel.kernelHeight = 6;
-    convolutionKernelModel.kernelWeights = cv::Mat1f::ones(6, 3);
-    expect(^{
-      convolutionKernel = [[PNKDilatedConvolutionInternalLayer alloc]
-                           initWithDevice:device
-                           convolutionModel:convolutionKernelModel];
-    }).to.raise(NSInvalidArgumentException);
-  });
-
-  it(@"should raise when given invalid padding type", ^{
-    convolutionKernelModel.padding = (pnk::PaddingType)10;
-    expect(^{
-      convolutionKernel = [[PNKDilatedConvolutionInternalLayer alloc]
-                           initWithDevice:device
-                           convolutionModel:convolutionKernelModel];
-    }).to.raise(NSInvalidArgumentException);
-  });
-});
-
-context(@"encodeToCommandBuffer parameter checks", ^{
-  static const NSUInteger kInputWidth = 32;
-  static const NSUInteger kInputHeight = 32;
-
-  __block PNKDilatedConvolutionInternalLayer *convolutionKernel;
-  __block id<MTLCommandQueue> commandQueue;
-  __block id<MTLCommandBuffer> commandBuffer;
+context(@"parameter tests", ^{
+  __block pnk::ConvolutionKernelModel convolutionKernelModel;
 
   beforeEach(^{
-    device = MTLCreateSystemDefaultDevice();
-    convolutionKernel = [[PNKDilatedConvolutionInternalLayer alloc]
-                         initWithDevice:device
-                         convolutionModel:convolutionKernelModel];
-    commandQueue = [device newCommandQueue];
-    commandBuffer = [commandQueue commandBuffer];
+    convolutionKernelModel = PNKBuildConvolutionModel(3, 3, 1, 1, 2, 2, pnk::PaddingTypeSame);
   });
 
-  it(@"should not raise when called with default parameters", ^{
-    MTLSize inputSize{kInputWidth, kInputHeight, 1};
-    MTLSize outputSize{kInputWidth, kInputHeight, 1};
+  context(@"instantiation", ^{
+    __block PNKDilatedConvolutionInternalLayer *convolutionKernel;
 
-    auto inputImage = [MPSImage pnk_imageWithDevice:device
-                                             format:MPSImageFeatureChannelFormatFloat16
-                                               size:inputSize];
-    auto outputImage = [MPSImage pnk_imageWithDevice:device
-                                              format:MPSImageFeatureChannelFormatFloat16
-                                                size:outputSize];
-    expect(^{
-      [convolutionKernel encodeToCommandBuffer:commandBuffer inputImage:inputImage
-                                   outputImage:outputImage];
-    }).notTo.raiseAny();
+    it(@"should instantiate correctly with correct parameters", ^{
+      expect(^{
+        convolutionKernel = [[PNKDilatedConvolutionInternalLayer alloc]
+                             initWithDevice:device
+                             convolutionModel:convolutionKernelModel];
+      }).notTo.raiseAny();
+    });
+
+    it(@"should raise when strideX is not one", ^{
+      convolutionKernelModel.strideX = 2;
+      expect(^{
+        convolutionKernel = [[PNKDilatedConvolutionInternalLayer alloc]
+                             initWithDevice:device
+                             convolutionModel:convolutionKernelModel];
+      }).to.raise(NSInvalidArgumentException);
+    });
+
+    it(@"should raise when strideY is not one", ^{
+      convolutionKernelModel.strideY = 3;
+      expect(^{
+        convolutionKernel = [[PNKDilatedConvolutionInternalLayer alloc]
+                             initWithDevice:device
+                             convolutionModel:convolutionKernelModel];
+      }).to.raise(NSInvalidArgumentException);
+    });
+
+    it(@"should raise when groups is not one", ^{
+      convolutionKernelModel.groups = 4;
+      expect(^{
+        convolutionKernel = [[PNKDilatedConvolutionInternalLayer alloc]
+                             initWithDevice:device
+                             convolutionModel:convolutionKernelModel];
+      }).to.raise(NSInvalidArgumentException);
+    });
+
+    it(@"should raise when kernel width is even", ^{
+      convolutionKernelModel.kernelWidth = 4;
+      convolutionKernelModel.kernelWeights = cv::Mat1f::ones(3, 4);
+      expect(^{
+        convolutionKernel = [[PNKDilatedConvolutionInternalLayer alloc]
+                             initWithDevice:device
+                             convolutionModel:convolutionKernelModel];
+      }).to.raise(NSInvalidArgumentException);
+    });
+
+    it(@"should raise when kernel height is even", ^{
+      convolutionKernelModel.kernelHeight = 6;
+      convolutionKernelModel.kernelWeights = cv::Mat1f::ones(6, 3);
+      expect(^{
+        convolutionKernel = [[PNKDilatedConvolutionInternalLayer alloc]
+                             initWithDevice:device
+                             convolutionModel:convolutionKernelModel];
+      }).to.raise(NSInvalidArgumentException);
+    });
+
+    it(@"should raise when given invalid padding type", ^{
+      convolutionKernelModel.padding = (pnk::PaddingType)10;
+      expect(^{
+        convolutionKernel = [[PNKDilatedConvolutionInternalLayer alloc]
+                             initWithDevice:device
+                             convolutionModel:convolutionKernelModel];
+      }).to.raise(NSInvalidArgumentException);
+    });
   });
 
-  it(@"should raise when input image size does not fit output image size", ^{
-    MTLSize inputSize{kInputWidth, kInputHeight, 1};
-    MTLSize outputSize{kInputWidth + 1, kInputHeight, 1};
+  context(@"encodeToCommandBuffer", ^{
+    static const NSUInteger kInputWidth = 32;
+    static const NSUInteger kInputHeight = 32;
 
-    auto inputImage = [MPSImage pnk_imageWithDevice:device
-                                             format:MPSImageFeatureChannelFormatFloat16
-                                               size:inputSize];
-    auto outputImage = [MPSImage pnk_imageWithDevice:device
-                                              format:MPSImageFeatureChannelFormatFloat16
-                                                size:outputSize];
-    expect(^{
-      [convolutionKernel encodeToCommandBuffer:commandBuffer inputImage:inputImage
-                                   outputImage:outputImage];
-    }).to.raise(NSInvalidArgumentException);
-  });
+    __block PNKDilatedConvolutionInternalLayer *convolutionKernel;
+    __block id<MTLCommandQueue> commandQueue;
+    __block id<MTLCommandBuffer> commandBuffer;
 
-  it(@"should raise when input image has wrong number of channels", ^{
-    MTLSize inputSize{kInputWidth, kInputHeight, 2};
-    MTLSize outputSize{kInputWidth, kInputHeight, 1};
+    beforeEach(^{
+      device = MTLCreateSystemDefaultDevice();
+      convolutionKernel = [[PNKDilatedConvolutionInternalLayer alloc]
+                           initWithDevice:device
+                           convolutionModel:convolutionKernelModel];
+      commandQueue = [device newCommandQueue];
+      commandBuffer = [commandQueue commandBuffer];
+    });
 
-    auto inputImage = [MPSImage pnk_imageWithDevice:device
-                                             format:MPSImageFeatureChannelFormatFloat16
-                                               size:inputSize];
-    auto outputImage = [MPSImage pnk_imageWithDevice:device
-                                              format:MPSImageFeatureChannelFormatFloat16
-                                                size:outputSize];
-    expect(^{
-      [convolutionKernel encodeToCommandBuffer:commandBuffer inputImage:inputImage
-                                   outputImage:outputImage];
-    }).to.raise(NSInvalidArgumentException);
-  });
+    it(@"should not raise when called with correct parameters", ^{
+      MTLSize inputSize{kInputWidth, kInputHeight, 1};
+      MTLSize outputSize{kInputWidth, kInputHeight, 1};
 
-  it(@"should raise when output image has wrong number of channels", ^{
-    MTLSize inputSize{kInputWidth, kInputHeight, 1};
-    MTLSize outputSize{kInputWidth, kInputHeight, 2};
+      auto inputImage = [MPSImage pnk_imageWithDevice:device
+                                               format:MPSImageFeatureChannelFormatFloat16
+                                                 size:inputSize];
+      auto outputImage = [MPSImage pnk_imageWithDevice:device
+                                                format:MPSImageFeatureChannelFormatFloat16
+                                                  size:outputSize];
+      expect(^{
+        [convolutionKernel encodeToCommandBuffer:commandBuffer inputImage:inputImage
+                                     outputImage:outputImage];
+      }).notTo.raiseAny();
+    });
 
-    auto inputImage = [MPSImage pnk_imageWithDevice:device
-                                             format:MPSImageFeatureChannelFormatFloat16
-                                               size:inputSize];
-    auto outputImage = [MPSImage pnk_imageWithDevice:device
-                                              format:MPSImageFeatureChannelFormatFloat16
-                                                size:outputSize];
-    expect(^{
-      [convolutionKernel encodeToCommandBuffer:commandBuffer inputImage:inputImage
-                                   outputImage:outputImage];
-    }).to.raise(NSInvalidArgumentException);
+    it(@"should raise when input image size does not fit output image size", ^{
+      MTLSize inputSize{kInputWidth, kInputHeight, 1};
+      MTLSize outputSize{kInputWidth + 1, kInputHeight, 1};
+
+      auto inputImage = [MPSImage pnk_imageWithDevice:device
+                                               format:MPSImageFeatureChannelFormatFloat16
+                                                 size:inputSize];
+      auto outputImage = [MPSImage pnk_imageWithDevice:device
+                                                format:MPSImageFeatureChannelFormatFloat16
+                                                  size:outputSize];
+      expect(^{
+        [convolutionKernel encodeToCommandBuffer:commandBuffer inputImage:inputImage
+                                     outputImage:outputImage];
+      }).to.raise(NSInvalidArgumentException);
+    });
+
+    it(@"should raise when input image has wrong number of channels", ^{
+      MTLSize inputSize{kInputWidth, kInputHeight, 2};
+      MTLSize outputSize{kInputWidth, kInputHeight, 1};
+
+      auto inputImage = [MPSImage pnk_imageWithDevice:device
+                                               format:MPSImageFeatureChannelFormatFloat16
+                                                 size:inputSize];
+      auto outputImage = [MPSImage pnk_imageWithDevice:device
+                                                format:MPSImageFeatureChannelFormatFloat16
+                                                  size:outputSize];
+      expect(^{
+        [convolutionKernel encodeToCommandBuffer:commandBuffer inputImage:inputImage
+                                     outputImage:outputImage];
+      }).to.raise(NSInvalidArgumentException);
+    });
+
+    it(@"should raise when output image has wrong number of channels", ^{
+      MTLSize inputSize{kInputWidth, kInputHeight, 1};
+      MTLSize outputSize{kInputWidth, kInputHeight, 2};
+
+      auto inputImage = [MPSImage pnk_imageWithDevice:device
+                                               format:MPSImageFeatureChannelFormatFloat16
+                                                 size:inputSize];
+      auto outputImage = [MPSImage pnk_imageWithDevice:device
+                                                format:MPSImageFeatureChannelFormatFloat16
+                                                  size:outputSize];
+      expect(^{
+        [convolutionKernel encodeToCommandBuffer:commandBuffer inputImage:inputImage
+                                     outputImage:outputImage];
+      }).to.raise(NSInvalidArgumentException);
+    });
   });
 });
 
@@ -377,6 +370,9 @@ context(@"dilated convolution", ^{
 
 context(@"PNKTemporaryImageExamples", ^{
   itShouldBehaveLike(kPNKTemporaryImageUnaryExamples, ^{
+    pnk::ConvolutionKernelModel convolutionKernelModel =
+        PNKBuildConvolutionModel(3, 3, 1, 1, 2, 2, pnk::PaddingTypeSame);
+
     auto convolutionKernel = [[PNKDilatedConvolutionInternalLayer alloc]
                               initWithDevice:device
                               convolutionModel:convolutionKernelModel];
@@ -387,4 +383,5 @@ context(@"PNKTemporaryImageExamples", ^{
     };
   });
 });
-SpecEnd
+
+DeviceSpecEnd

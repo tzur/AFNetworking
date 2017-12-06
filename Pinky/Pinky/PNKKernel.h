@@ -20,7 +20,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// in order to receive the correct region.
 - (MTLRegion)inputRegionForOutputSize:(MTLSize)outputSize;
 
-/// Number of feature channels per pixel in the input image.
+/// Number of feature channels per pixel in the input image. \c 0 iff the kernel allows for
+/// undetermined number of feature channels.
 @property (readonly, nonatomic) NSUInteger inputFeatureChannels;
 
 @end
@@ -49,10 +50,12 @@ NS_ASSUME_NONNULL_BEGIN
 /// be set prior to calling this method in order to receive the correct region.
 - (MTLRegion)secondaryInputRegionForOutputSize:(MTLSize)outputSize;
 
-/// Number of feature channels per pixel in the primary input image.
+/// Number of feature channels per pixel in the primary input image. \c 0 iff the kernel allows for
+/// undetermined number of feature channels.
 @property (readonly, nonatomic) NSUInteger primaryInputFeatureChannels;
 
-/// Number of feature channels per pixel in the secondary input image.
+/// Number of feature channels per pixel in the secondary input image. \c 0 iff the kernel allows
+/// for undetermined number of feature channels.
 @property (readonly, nonatomic) NSUInteger secondaryInputFeatureChannels;
 
 @end

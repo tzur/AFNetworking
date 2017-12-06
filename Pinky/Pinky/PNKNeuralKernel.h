@@ -18,9 +18,6 @@ NS_ASSUME_NONNULL_BEGIN
 /// Height of the filter window.
 @property (readonly, nonatomic) NSUInteger kernelHeight;
 
-/// Number of feature channels per pixel in the input image.
-@property (readonly, nonatomic) NSUInteger inputFeatureChannels;
-
 /// Number of feature channels per pixel in the output image.
 @property (readonly, nonatomic) NSUInteger outputFeatureChannels;
 

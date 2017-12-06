@@ -49,4 +49,17 @@ cv::Mat1hf PNKLoadHalfFloatTensorFromBundleResource(NSBundle *bundle, NSString *
   return tensorData;
 }
 
+cv::Mat PNKFillMatrix(int rows, int columns, int channels) {
+  cv::Mat1hf matrix(rows * columns, channels);
+  for (int i = 0; i < rows; ++i) {
+    for (int j = 0; j < columns; ++j) {
+      for (int k = 0; k < channels; ++k) {
+        matrix.at<half_float::half>(i * columns + j, k) =
+            (half_float::half)((i + j + k) % 2);
+      }
+    }
+  }
+  return matrix.reshape(channels, rows);
+}
+
 NS_ASSUME_NONNULL_END

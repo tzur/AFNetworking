@@ -20,6 +20,8 @@ NSString * const kPNKKernelExamplesOutputHeight = @"PNKKernelExamplesOutputHeigh
 NSString * const kPNKKernelExamplesPrimaryInputMat = @"PNKKernelExamplesPrimaryInputMat";
 NSString * const kPNKKernelExamplesSecondaryInputMat = @"PNKKernelExamplesSecondaryInputMat";
 NSString * const kPNKKernelExamplesExpectedMat = @"PNKKernelExamplesExpectedMat";
+NSString * const kPNKKernelExamplesInputImageSizeFromInputMat =
+    @"PNKKernelExamplesInputImageSizeFromInputMat";
 
 static void PNKCopyMatrixToImage(cv::Mat matrix, MPSImage *image) {
   int total = (int)matrix.total();
@@ -59,17 +61,29 @@ sharedExamplesFor(kPNKUnaryKernelExamples, ^(NSDictionary *data) {
       NSUInteger outputHeight = [data[kPNKKernelExamplesOutputHeight] unsignedIntegerValue];
 
       MTLSize outputSize{outputWidth, outputHeight, outputChannels};
-      auto inputRegion = [unaryKernel inputRegionForOutputSize:outputSize];
+
+      auto inputMat = [data[kPNKKernelExamplesPrimaryInputMat] matValue];
+      BOOL inputImageSizeFromInputMat =
+          [data[kPNKKernelExamplesInputImageSizeFromInputMat] boolValue];
+      MTLSize inputSize;
+      if (inputImageSizeFromInputMat) {
+        inputSize = {
+          (NSUInteger)inputMat.cols,
+          (NSUInteger)inputMat.rows,
+          (NSUInteger)inputMat.channels()
+        };
+      } else {
+        auto inputRegion = [unaryKernel inputRegionForOutputSize:outputSize];
+        inputSize = inputRegion.size;
+      }
 
       auto commandQueue = [device newCommandQueue];
       id<MTLCommandBuffer> commandBuffer = [commandQueue commandBuffer];
 
-      auto inputImage = [MPSImage pnk_imageWithDevice:device format:pixelFormat
-                                                 size:inputRegion.size];
+      auto inputImage = [MPSImage pnk_imageWithDevice:device format:pixelFormat size:inputSize];
       auto outputImage = [MPSImage pnk_imageWithDevice:device format:pixelFormat size:outputSize];
       auto expectedImage = [MPSImage pnk_imageWithDevice:device format:pixelFormat size:outputSize];
 
-      auto inputMat = [data[kPNKKernelExamplesPrimaryInputMat] matValue];
       PNKCopyMatrixToImage(inputMat, inputImage);
 
       auto expectedMat = [data[kPNKKernelExamplesExpectedMat] matValue];
