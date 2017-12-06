@@ -26,9 +26,9 @@ cv::Mat PNKMatFromMTLTextureRegion(id<MTLTexture> texture, MTLRegion region, NSU
 /// Copies the content of \c data to \c region in \c texture at the given \c slice and
 /// \c mipmapLevel.
 ///
-/// @note only textures with uncompressed 4-channel pixel formats are supported (RGBA 8, 16 or 32
-/// bit). An exception is raised if \c data is not continuous or if \c data size is not equal to
-/// \c region size and \c data type doesn't match \c texture pixel format.
+/// @note only textures with 1, 2 or 4 channels with 8, 16 or 32 bits per channel pixel formats are
+/// supported. An exception is raised if \c data is not continuous or if \c data size is not equal
+/// to \c region size and \c data type doesn't match \c texture pixel format.
 ///
 /// @important one must wait until all writes have been completed before calling this function to
 /// avoid undefined behavior.
@@ -40,9 +40,9 @@ void PNKCopyMatToMTLTextureRegion(id<MTLTexture> texture, MTLRegion region, cons
 
 /// Copies the content of \c data to \c texture at the given \c slice and \c mipmapLevel.
 ///
-/// @note only textures with uncompressed 4-channel pixel formats are supported (RGBA 8, 16 or 32
-/// bit). An exception is raised if \c data is not continuous or if \c data size is not equal to
-/// \c region size and \c data type doesn't match \c texture pixel format.
+/// @note only textures with 1, 2 or 4 channels with 8, 16 or 32 bits per channel pixel formats are
+/// supported. An exception is raised if \c data is not continuous or if \c data size is not equal
+/// \c texture size and \c data type doesn't match \c texture pixel format.
 ///
 /// @important one must wait until all writes have been completed before calling this function to
 /// avoid undefined behavior.
