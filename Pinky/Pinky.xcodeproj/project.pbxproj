@@ -29,12 +29,18 @@
 		06172C831F03F9E600379124 /* libprotobuf-lite.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 06172C811F03F9DF00379124 /* libprotobuf-lite.a */; };
 		06172C841F03F9E700379124 /* libprotobuf-lite.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 06172C811F03F9DF00379124 /* libprotobuf-lite.a */; };
 		061941AC1F94D22900A329BA /* PNKTemporaryImageExamples.mm in Sources */ = {isa = PBXBuildFile; fileRef = 061941AB1F94D22900A329BA /* PNKTemporaryImageExamples.mm */; };
+		061C659B1FD6881A00F1BF1B /* PNKSkySegmentation.nnmodel in Resources */ = {isa = PBXBuildFile; fileRef = 061C65791FD6881900F1BF1B /* PNKSkySegmentation.nnmodel */; };
+		061C659D1FD6DA6400F1BF1B /* PNKSkyShape512.model in Resources */ = {isa = PBXBuildFile; fileRef = 061C659C1FD6DA6400F1BF1B /* PNKSkyShape512.model */; };
+		061C66361FD6E7D800F1BF1B /* Bicycles1200.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 061C66351FD6E7D800F1BF1B /* Bicycles1200.jpg */; };
 		062EEA4F1F25315400AB4958 /* PNKNearestNeighborUpsamplingSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 062EEA4E1F25315400AB4958 /* PNKNearestNeighborUpsamplingSpec.mm */; };
 		0636A0831F8173F70064E561 /* PNKInstanceNormLayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0636A0821F8173F70064E561 /* PNKInstanceNormLayer.mm */; };
+		06415FB01FD49A1A00F9F70C /* PNKSkySegmentationNetworkSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 06415F8C1FD49A1900F9F70C /* PNKSkySegmentationNetworkSpec.mm */; };
+		06415FB51FD49A5C00F9F70C /* PNKSkySegmentationNetwork.mm in Sources */ = {isa = PBXBuildFile; fileRef = 06415FB41FD49A5C00F9F70C /* PNKSkySegmentationNetwork.mm */; };
 		064160C31FD57CDD00F9F70C /* PNKPoolingLayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 064160C21FD57CDD00F9F70C /* PNKPoolingLayer.mm */; };
 		064160C51FD57CF300F9F70C /* PNKPoolingLayerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 064160C41FD57CF300F9F70C /* PNKPoolingLayerSpec.mm */; };
 		06447DB11FA892610077346E /* PNKInstanceNormInternalKernel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 06447DB01FA892610077346E /* PNKInstanceNormInternalKernel.mm */; };
 		064723EE1F98F06E008EBAF8 /* PNKConditionalInstanceNormLayerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 064723ED1F98F06E008EBAF8 /* PNKConditionalInstanceNormLayerSpec.mm */; };
+		064745311FD8891A00BAE7BD /* Bicycles_skymask512.png in Resources */ = {isa = PBXBuildFile; fileRef = 064745301FD8891A00BAE7BD /* Bicycles_skymask512.png */; };
 		0651C2291F7273E2004EE4D3 /* conv2d_bias.weights in Resources */ = {isa = PBXBuildFile; fileRef = 06C6BC7D1F7153BA005F57D4 /* conv2d_bias.weights */; };
 		0651C22A1F7273E2004EE4D3 /* conv2d_input.tensor in Resources */ = {isa = PBXBuildFile; fileRef = 06C6BC7E1F7153BA005F57D4 /* conv2d_input.tensor */; };
 		0651C22B1F7273E2004EE4D3 /* conv2d_kernel.weights in Resources */ = {isa = PBXBuildFile; fileRef = 06C6BC5B1F7153B9005F57D4 /* conv2d_kernel.weights */; };
@@ -196,13 +202,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = 8B3DEBE318296B6100EA0C1A;
 			remoteInfo = LTEngine;
-		};
-		06415F161FD4299C00F9F70C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A14172691E6EADDF005DBEFF /* LTKit.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 194FF4FC1FA8BA77008879E7;
-			remoteInfo = LTKitTestUtils;
 		};
 		06FD92931EDC5F9100D180C7 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -542,10 +541,16 @@
 		06172C811F03F9DF00379124 /* libprotobuf-lite.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libprotobuf-lite.a"; path = "../third_party/protobuf/lib/libprotobuf-lite.a"; sourceTree = "<group>"; };
 		061941AA1F94D22900A329BA /* PNKTemporaryImageExamples.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNKTemporaryImageExamples.h; sourceTree = "<group>"; };
 		061941AB1F94D22900A329BA /* PNKTemporaryImageExamples.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKTemporaryImageExamples.mm; sourceTree = "<group>"; };
+		061C65791FD6881900F1BF1B /* PNKSkySegmentation.nnmodel */ = {isa = PBXFileReference; lastKnownFileType = file; name = PNKSkySegmentation.nnmodel; path = Resources/PNKSkySegmentation.nnmodel; sourceTree = "<group>"; };
+		061C659C1FD6DA6400F1BF1B /* PNKSkyShape512.model */ = {isa = PBXFileReference; lastKnownFileType = file; name = PNKSkyShape512.model; path = Resources/PNKSkyShape512.model; sourceTree = "<group>"; };
+		061C66351FD6E7D800F1BF1B /* Bicycles1200.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = Bicycles1200.jpg; path = Resources/Bicycles1200.jpg; sourceTree = "<group>"; };
 		062EEA4E1F25315400AB4958 /* PNKNearestNeighborUpsamplingSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKNearestNeighborUpsamplingSpec.mm; sourceTree = "<group>"; };
 		0636A0811F8173F70064E561 /* PNKInstanceNormLayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNKInstanceNormLayer.h; sourceTree = "<group>"; };
 		0636A0821F8173F70064E561 /* PNKInstanceNormLayer.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKInstanceNormLayer.mm; sourceTree = "<group>"; };
 		0639ADAE1F03FBC1009CAA3F /* PNKProtobufMacros.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNKProtobufMacros.h; sourceTree = "<group>"; };
+		06415F8C1FD49A1900F9F70C /* PNKSkySegmentationNetworkSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKSkySegmentationNetworkSpec.mm; sourceTree = "<group>"; };
+		06415FB31FD49A5C00F9F70C /* PNKSkySegmentationNetwork.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKSkySegmentationNetwork.h; sourceTree = "<group>"; };
+		06415FB41FD49A5C00F9F70C /* PNKSkySegmentationNetwork.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKSkySegmentationNetwork.mm; sourceTree = "<group>"; };
 		064160A01FD57CDD00F9F70C /* PNKPoolingLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKPoolingLayer.h; sourceTree = "<group>"; };
 		064160C21FD57CDD00F9F70C /* PNKPoolingLayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKPoolingLayer.mm; sourceTree = "<group>"; };
 		064160C41FD57CF300F9F70C /* PNKPoolingLayerSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKPoolingLayerSpec.mm; sourceTree = "<group>"; };
@@ -554,6 +559,7 @@
 		06463BAB1F3A62220087E057 /* PNKConvolutionLayerSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKConvolutionLayerSpec.mm; sourceTree = "<group>"; };
 		064723ED1F98F06E008EBAF8 /* PNKConditionalInstanceNormLayerSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKConditionalInstanceNormLayerSpec.mm; sourceTree = "<group>"; };
 		0647450E1FD86FD300BAE7BD /* PNKNeuralNetwork.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNKNeuralNetwork.h; sourceTree = "<group>"; };
+		064745301FD8891A00BAE7BD /* Bicycles_skymask512.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Bicycles_skymask512.png; path = Resources/Bicycles_skymask512.png; sourceTree = "<group>"; };
 		0657A10F1F29908F002AA730 /* PNKConvolutionLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKConvolutionLayer.h; sourceTree = "<group>"; };
 		0657A1101F29908F002AA730 /* PNKConvolutionLayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKConvolutionLayer.mm; sourceTree = "<group>"; };
 		0657A1321F299C56002AA730 /* MPSCNNConvolution+Factory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MPSCNNConvolution+Factory.h"; sourceTree = "<group>"; };
@@ -870,7 +876,11 @@
 		065F98261F24D0F70093D2B1 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				061C66351FD6E7D800F1BF1B /* Bicycles1200.jpg */,
+				064745301FD8891A00BAE7BD /* Bicycles_skymask512.png */,
 				06CA9F911F25C1CE0097E554 /* Lena128.png */,
+				061C65791FD6881900F1BF1B /* PNKSkySegmentation.nnmodel */,
+				061C659C1FD6DA6400F1BF1B /* PNKSkyShape512.model */,
 				06C6BC7D1F7153BA005F57D4 /* conv2d_bias.weights */,
 				06C6BC7E1F7153BA005F57D4 /* conv2d_input.tensor */,
 				06C6BC5B1F7153B9005F57D4 /* conv2d_kernel.weights */,
@@ -900,6 +910,7 @@
 				E484089D1FCBF98B00468645 /* PNKDilatedConvolutionInternalLayerSpec.mm */,
 				06B924C91F8946D300D07848 /* PNKInstanceNormLayerSpec.mm */,
 				064160C41FD57CF300F9F70C /* PNKPoolingLayerSpec.mm */,
+				06415F8C1FD49A1900F9F70C /* PNKSkySegmentationNetworkSpec.mm */,
 			);
 			name = "Neural Networks";
 			sourceTree = "<group>";
@@ -936,6 +947,8 @@
 				0647450E1FD86FD300BAE7BD /* PNKNeuralNetwork.h */,
 				064160A01FD57CDD00F9F70C /* PNKPoolingLayer.h */,
 				064160C21FD57CDD00F9F70C /* PNKPoolingLayer.mm */,
+				06415FB31FD49A5C00F9F70C /* PNKSkySegmentationNetwork.h */,
+				06415FB41FD49A5C00F9F70C /* PNKSkySegmentationNetwork.mm */,
 			);
 			name = "Neural Networks";
 			sourceTree = "<group>";
@@ -1546,13 +1559,6 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		06415F171FD4299C00F9F70C /* libLTKitTestUtils.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libLTKitTestUtils.a;
-			remoteRef = 06415F161FD4299C00F9F70C /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		06FD92941EDC5F9100D180C7 /* Mantle.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
@@ -1820,9 +1826,12 @@
 				06B924EF1F8964AF00D07848 /* instanceNorm_input.tensor in Resources */,
 				06B925071F89982700D07848 /* instanceNorm_relu_input.tensor in Resources */,
 				06B9250A1F89982700D07848 /* instanceNorm_relu_shift.weights in Resources */,
+				061C659D1FD6DA6400F1BF1B /* PNKSkyShape512.model in Resources */,
 				06B924F01F8964AF00D07848 /* instanceNorm_output.tensor in Resources */,
 				06B924F11F8964AF00D07848 /* instanceNorm_scale.weights in Resources */,
 				06B924F21F8964AF00D07848 /* instanceNorm_shift.weights in Resources */,
+				061C659B1FD6881A00F1BF1B /* PNKSkySegmentation.nnmodel in Resources */,
+				061C66361FD6E7D800F1BF1B /* Bicycles1200.jpg in Resources */,
 				0651C22B1F7273E2004EE4D3 /* conv2d_kernel.weights in Resources */,
 				060FB4641F0104EB00506895 /* Pinky.bundle in Resources */,
 				06B925091F89982700D07848 /* instanceNorm_relu_scale.weights in Resources */,
@@ -1830,6 +1839,7 @@
 				06CA9F921F25C1CE0097E554 /* Lena128.png in Resources */,
 				0651C22A1F7273E2004EE4D3 /* conv2d_input.tensor in Resources */,
 				0651C22C1F7273E2004EE4D3 /* conv2d_output.tensor in Resources */,
+				064745311FD8891A00BAE7BD /* Bicycles_skymask512.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1899,6 +1909,7 @@
 				C9131EB01EE0599D00E924DA /* EXPMatchers+equalMat.mm in Sources */,
 				068D90A81F1F60A90012F472 /* PNKTestUtils.mm in Sources */,
 				C9131EDA1EE05A8400E924DA /* NSValue+OpenCVExtensions.mm in Sources */,
+				06415FB01FD49A1A00F9F70C /* PNKSkySegmentationNetworkSpec.mm in Sources */,
 				06B924CA1F8946D300D07848 /* PNKInstanceNormLayerSpec.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1936,6 +1947,7 @@
 				C9ADC5131EFFE06200C87932 /* PNKLibraryLoader.mm in Sources */,
 				06A1A8FF1F0CD7BA0031A387 /* PNKNeuralNetworkModelFactory.mm in Sources */,
 				0657A1341F299C56002AA730 /* MPSCNNConvolution+Factory.mm in Sources */,
+				06415FB51FD49A5C00F9F70C /* PNKSkySegmentationNetwork.mm in Sources */,
 				F9CB52FD1F5FE98700C8E8CA /* PNKProtobufHelpers.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
