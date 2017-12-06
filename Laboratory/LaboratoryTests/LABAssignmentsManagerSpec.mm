@@ -8,7 +8,7 @@
 #import <LTKit/NSDictionary+Functional.h>
 #import <LTKit/NSDictionary+Operations.h>
 #import <LTKit/NSSet+Functional.h>
-#import <LTKitTestUtils/LTFakeStorage.h>
+#import <LTKitTestUtils/LTFakeKeyValuePersistentStorage.h>
 
 #import "LABFakeAssignmentsSource.h"
 #import "NSError+Laboratory.h"
@@ -86,7 +86,7 @@ static NSDictionary<NSString *, NSDictionary *> *LABFakeAssignments(LABVariant *
 SpecBegin(LABAssignmentsManager)
 
 __block LABFakeAssignmentsSource *fakeSource1, *fakeSource2;
-__block LTFakeStorage *storage;
+__block LTFakeKeyValuePersistentStorage *storage;
 __block LABFakeAssignmentsManagerDelegate *delegate;
 __block LABAssignmentsManager *manager;
 
@@ -126,7 +126,7 @@ beforeEach(^{
   };
   fakeSource2.name = @"fake2";
 
-  storage = [[LTFakeStorage alloc] init];
+  storage = [[LTFakeKeyValuePersistentStorage alloc] init];
   delegate = [[LABFakeAssignmentsManagerDelegate alloc] init];
   manager = [[LABAssignmentsManager alloc] initWithAssignmentSources:@[fakeSource1, fakeSource2]
                                                             delegate:delegate storage:storage];
@@ -188,7 +188,7 @@ it(@"should persist with the same active assignments if source variants do not c
 });
 
 it(@"should not persist assignments if source variants change between instance initializations", ^{
-  storage = [[LTFakeStorage alloc] init];
+  storage = [[LTFakeKeyValuePersistentStorage alloc] init];
   @autoreleasepool {
     manager = [[LABAssignmentsManager alloc]
                initWithAssignmentSources:@[fakeSource1, fakeSource2] delegate:delegate
@@ -399,7 +399,7 @@ it(@"should not update delegate when the current assignment is as the stored ass
 });
 
 it(@"should update delegate when the current assignment is different then the stored assignemnt", ^{
-  storage = [[LTFakeStorage alloc] init];
+  storage = [[LTFakeKeyValuePersistentStorage alloc] init];
   delegate = [[LABFakeAssignmentsManagerDelegate alloc] init];
   @autoreleasepool {
     manager = [[LABAssignmentsManager alloc]

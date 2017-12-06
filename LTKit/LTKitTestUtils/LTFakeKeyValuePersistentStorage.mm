@@ -1,11 +1,11 @@
 // Copyright (c) 2017 Lightricks. All rights reserved.
 // Created by Dekel Avrahami.
 
-#import "LTFakeStorage.h"
+#import "LTFakeKeyValuePersistentStorage.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@implementation LTFakeStorage
+@implementation LTFakeKeyValuePersistentStorage
 
 - (instancetype)init {
   if (self = [super init]) {
@@ -28,10 +28,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)removeObjectForKey:(NSString *)key {
   [self.storage removeObjectForKey:key];
-}
-
-- (BOOL)synchronize {
-  return YES;
 }
 
 @end

@@ -5,7 +5,7 @@
 
 @class LABExperimentsTokenProvider;
 
-@protocol LTStorage, LABTaplytics;
+@protocol LTKeyValuePersistentStorage, LABTaplytics;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -58,7 +58,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithAPIKey:(NSString *)apiKey
       experimentsTokenProvider:(LABExperimentsTokenProvider *)experimentsTokenProvider
                     customData:(NSDictionary<NSString *, id> *)customData
-                     taplytics:(id<LABTaplytics>)taplytics storage:(id<LTStorage>)storage
+                     taplytics:(id<LABTaplytics>)taplytics
+                       storage:(id<LTKeyValuePersistentStorage>)storage
     NS_DESIGNATED_INITIALIZER;
 
 @end

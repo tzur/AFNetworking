@@ -4,7 +4,7 @@
 #import "LABDebugSource.h"
 
 #import <LTKit/LTKeyPathCoding.h>
-#import <LTKit/LTStorage.h>
+#import <LTKit/LTKeyValuePersistentStorage.h>
 #import <LTKit/NSArray+Functional.h>
 #import <LTKit/NSArray+NSSet.h>
 #import <LTKit/NSDictionary+Functional.h>
@@ -151,7 +151,7 @@ typedef NSDictionary<NSString *, NSDictionary<NSString *, NSString *> *> LABSour
     allExperimentModels;
 
 /// Used to persist the experiments model.
-@property (readonly, nonatomic) id<LTStorage> storage;
+@property (readonly, nonatomic) id<LTKeyValuePersistentStorage> storage;
 
 /// Used for internally passing updated debug experiments models.
 @property (readonly, nonatomic) RACSubject *updatesSubject;
@@ -186,7 +186,7 @@ static NSString * const kLABStorageAllDebugActiveExperimentsKey = @"LABAllDebugA
 }
 
 - (instancetype)initWithSources:(NSArray<id<LABExperimentsSource>> *)sources
-                        storage:(id<LTStorage>)storage {
+                        storage:(id<LTKeyValuePersistentStorage>)storage {
   if (self = [super init]) {
     _storage = storage;
     _updatesSubject = [RACSubject subject];

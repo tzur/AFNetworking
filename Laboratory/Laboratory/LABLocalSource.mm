@@ -3,8 +3,8 @@
 
 #import "LABLocalSource.h"
 
+#import <LTKit/LTKeyValuePersistentStorage.h>
 #import <LTKit/LTRandom.h>
-#import <LTKit/LTStorage.h>
 #import <LTKit/NSArray+Functional.h>
 #import <LTKit/NSArray+NSSet.h>
 #import <LTKit/NSDictionary+Functional.h>
@@ -163,7 +163,7 @@ static auto const kStoredAssignmentsLockedKey = @"LABLocalSourceAssignmentsLocke
 @property (readonly, nonatomic) NSDictionary<NSString *, LABLocalExperiment *> *experiments;
 
 /// Used to store the experiments and variants.
-@property (readonly, nonatomic) id<LTStorage> storage;
+@property (readonly, nonatomic) id<LTKeyValuePersistentStorage> storage;
 
 /// Used to decide which experiments are active.
 @property (readonly, nonatomic) LABExperimentsToken experimentsToken;
@@ -186,7 +186,8 @@ static auto const kStoredAssignmentsLockedKey = @"LABLocalSourceAssignmentsLocke
 
 - (instancetype)initWithExperiments:(NSArray<LABLocalExperiment *> *)experiments
            experimentsTokenProvider:(id<LABExperimentsTokenProvider>)experimentsTokenProvider
-                            storage:(id<LTStorage>)storage random:(LTRandom *)random {
+                            storage:(id<LTKeyValuePersistentStorage>)storage
+                             random:(LTRandom *)random {
   if (self = [super init]) {
     _storage = storage;
     _random = random;

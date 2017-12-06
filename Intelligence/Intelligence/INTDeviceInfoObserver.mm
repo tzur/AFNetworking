@@ -3,7 +3,7 @@
 
 #import "INTDeviceInfoObserver.h"
 
-#import <LTKit/LTStorage.h>
+#import <LTKit/LTKeyValuePersistentStorage.h>
 
 #import "INTDeviceInfo.h"
 #import "INTDeviceInfoSource.h"
@@ -31,7 +31,7 @@ static NSString * const kINTStorageAppRunCount = @"AppRunCount";
 @property (readonly, nonatomic) id<INTDeviceInfoSource> deviceInfoSource;
 
 /// Used for storing \c deviceInfo.
-@property (readonly, nonatomic) id<LTStorage> storage;
+@property (readonly, nonatomic) id<LTKeyValuePersistentStorage> storage;
 
 /// Delegate for reporting device info loaded events.
 @property (weak, readonly, nonatomic) id<INTDeviceInfoObserverDelegate> delegate;
@@ -46,7 +46,7 @@ static NSString * const kINTStorageAppRunCount = @"AppRunCount";
 }
 
 - (instancetype)initWithDeviceInfoSource:(id<INTDeviceInfoSource>)deviceInfoSource
-                                 storage:(id<LTStorage>)storage
+                                 storage:(id<LTKeyValuePersistentStorage>)storage
                                 delegate:(id<INTDeviceInfoObserverDelegate>)delegate {
   if (self = [super init]) {
     @synchronized (self) {

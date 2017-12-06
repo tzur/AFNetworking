@@ -4,16 +4,16 @@
 #import "LABExperimentsTokenProvider.h"
 
 #import <LTKit/LTRandom.h>
-#import <LTKitTestUtils/LTFakeStorage.h>
+#import <LTKitTestUtils/LTFakeKeyValuePersistentStorage.h>
 
 SpecBegin(LABExperimentsTokenProvider)
 
-__block LTFakeStorage *storage;
+__block LTFakeKeyValuePersistentStorage *storage;
 __block LTRandom *random;
 __block LABExperimentsTokenProvider *provider;
 
 beforeEach(^{
-  storage = [[LTFakeStorage alloc] init];
+  storage = [[LTFakeKeyValuePersistentStorage alloc] init];
   random = OCMClassMock(LTRandom.class);
   OCMStub([random randomDouble]).andReturn(0.3);
   provider = [[LABExperimentsTokenProvider alloc] initWithStorage:storage random:random];
