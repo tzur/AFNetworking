@@ -5,9 +5,14 @@
 
 #import <Bazaar/BZRProduct.h>
 #import <Bazaar/BZRReceiptModel.h>
+#import <LTKit/LTTimer.h>
 #import <LTKit/NSArray+Functional.h>
 
 #import "SPXColorScheme.h"
+#import "SPXPurchaseSubscriptionEvent.h"
+#import "SPXRestorePurchasesButtonPressedEvent.h"
+#import "SPXRestorePurchasesEvent.h"
+#import "SPXSubscriptionButtonPressedEvent.h"
 #import "SPXSubscriptionDescriptor.h"
 #import "SPXSubscriptionManager.h"
 
@@ -24,14 +29,17 @@ NS_ASSUME_NONNULL_BEGIN
 /// Subject that sends an alert view model when requested to show an alert to the user on success or
 /// failure. The receiver should present an alert with the given \c id<SPXAlertViewModel> and invoke
 /// the action block on each button press event.
-@property (readwrite, nonatomic) RACSubject<id<SPXAlertViewModel>> *alertRequested;
+@property (readonly, nonatomic) RACSubject<id<SPXAlertViewModel>> *alertRequestedSubject;
 
 /// Subject that sends value when requested to show a mail composer to the user. The \c value is
 /// a \c LTVoidBlock that should called when the mail composer is dismissed.
-@property (readwrite, nonatomic) RACSubject<LTVoidBlock> *feedbackComposerRequested;
+@property (readonly, nonatomic) RACSubject<LTVoidBlock> *feedbackComposerRequestedSubject;
 
 /// \c YES if the activity indicator is visible, \c NO otherwise.
 @property (nonatomic) BOOL shouldShowActivityIndicator;
+
+/// Subject used to send events with.
+@property (readonly, nonatomic) RACSubject<LTValueObject *> *eventsSubject;
 
 @end
 
@@ -45,6 +53,7 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize alertRequested = _alertRequested;
 @synthesize dismissRequested = _dismissRequested;
 @synthesize feedbackComposerRequested = _feedbackComposerRequested;
+@synthesize events = _events;
 
 - (instancetype)initWithProducts:(NSArray<NSString *> *)productIdentifiers
            preferredProductIndex:(nullable NSNumber *)preferredProductIndex
@@ -67,8 +76,14 @@ NS_ASSUME_NONNULL_BEGIN
     _termsViewModel = termsViewModel;
     _colorScheme = colorScheme;
     _subscriptionManager = subscriptionManager;
-    _alertRequested = [RACSubject subject];
-    _feedbackComposerRequested = [RACSubject subject];
+    _alertRequestedSubject = [RACSubject subject];
+    _alertRequested = [self.alertRequestedSubject
+                       takeUntil:[self rac_willDeallocSignal]];
+    _feedbackComposerRequestedSubject = [RACSubject subject];
+    _feedbackComposerRequested = [self.feedbackComposerRequestedSubject
+                                  takeUntil:[self rac_willDeallocSignal]];
+    _eventsSubject = [RACSubject subject];
+    _events = self.eventsSubject;
     _dismissRequested = [[self rac_signalForSelector:@selector(requestDismiss)]
                          mapReplace:[RACUnit defaultUnit]];
     subscriptionManager.delegate = self;
@@ -111,29 +126,55 @@ NS_ASSUME_NONNULL_BEGIN
                     "is greater than the number of buttons (%lu)", (unsigned long)buttonIndex,
                     (unsigned long)self.subscriptionDescriptors.count);
   self.shouldShowActivityIndicator = YES;
-  NSString *subscriptionIdentifier = self.subscriptionDescriptors[buttonIndex].productIdentifier;
 
+  SPXSubscriptionDescriptor *descriptor = self.subscriptionDescriptors[buttonIndex];
+  [self.eventsSubject sendNext:[[SPXSubscriptionButtonPressedEvent alloc]
+                                initWithSubscriptionDescriptor:descriptor]];
+
+  auto timer = [[LTTimer alloc] init];
+  [timer start];
+
+  auto eventsSubject = self.eventsSubject;
   @weakify(self);
-  [self.subscriptionManager purchaseSubscription:subscriptionIdentifier completionHandler:
-   ^(BZRReceiptSubscriptionInfo * _Nullable subscriptionInfo, NSError *) {
-    @strongify(self);
-    self.shouldShowActivityIndicator = NO;
-    if (subscriptionInfo) {
-      [self requestDismiss];
-    }
+  [self.subscriptionManager purchaseSubscription:descriptor.productIdentifier completionHandler:
+   ^(BZRReceiptSubscriptionInfo * _Nullable subscriptionInfo, NSError * _Nullable error) {
+     @strongify(self);
+     self.shouldShowActivityIndicator = NO;
+
+     [eventsSubject sendNext:[[SPXPurchaseSubscriptionEvent alloc]
+                              initWithSubscriptionDescriptor:descriptor
+                              successfulPurchase:error == nil receiptInfo:subscriptionInfo
+                              purchaseDuration:[timer stop] error:error]];
+
+     if (subscriptionInfo) {
+       [self requestDismiss];
+     }
   }];
 }
 
 - (void)restorePurchasesButtonPressed {
   self.shouldShowActivityIndicator = YES;
+
+  [self.eventsSubject sendNext:[[SPXRestorePurchasesButtonPressedEvent alloc] init]];
+
+  auto timer = [[LTTimer alloc] init];
+  [timer start];
+
+  auto eventsSubject = self.eventsSubject;
   @weakify(self);
   [self.subscriptionManager
-   restorePurchasesWithCompletionHandler:^(BZRReceiptInfo * _Nullable receiptInfo, NSError *) {
+   restorePurchasesWithCompletionHandler:^(BZRReceiptInfo * _Nullable receiptInfo,
+                                           NSError * _Nullable error) {
     @strongify(self);
-    self.shouldShowActivityIndicator = NO;
-    if (receiptInfo.subscription && !receiptInfo.subscription.isExpired) {
-      [self requestDismiss];
-    }
+     self.shouldShowActivityIndicator = NO;
+
+     [eventsSubject sendNext:[[SPXRestorePurchasesEvent alloc]
+                              initWithSuccessfulRestore:error == nil receiptInfo:receiptInfo
+                              restoreDuration:[timer stop] error:error]];
+
+     if (receiptInfo.subscription && !receiptInfo.subscription.isExpired) {
+       [self requestDismiss];
+     }
   }];
 }
 
@@ -146,11 +187,11 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 - (void)presentAlertWithViewModel:(id<SPXAlertViewModel>)viewModel {
-  [self.alertRequested sendNext:viewModel];
+  [self.alertRequestedSubject sendNext:viewModel];
 }
 
 - (void)presentFeedbackMailComposerWithCompletionHandler:(LTVoidBlock)completionHandler {
-  [self.feedbackComposerRequested sendNext:completionHandler];
+  [self.feedbackComposerRequestedSubject sendNext:completionHandler];
 }
 
 @end
