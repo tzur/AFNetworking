@@ -17,6 +17,8 @@ NS_ASSUME_NONNULL_BEGIN
     case pnk::ActivationTypeIdentity:
       return nil;
     case pnk::ActivationTypeReLU:
+      return [[MPSCNNNeuronReLU alloc] initWithDevice:device a:0];
+    case pnk::ActivationTypeLeakyReLU:
       return [[MPSCNNNeuronReLU alloc] initWithDevice:device a:activationModel.alpha(0)];
     case pnk::ActivationTypeLinear:
       return [[MPSCNNNeuronLinear alloc] initWithDevice:device a:activationModel.alpha(0)
