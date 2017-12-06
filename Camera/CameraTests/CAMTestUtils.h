@@ -7,6 +7,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class CAMPixelFormat;
 
+/// Creates an empty data ready audio \c CMSampleBuffer with the given \c timingInfo.
+lt::Ref<CMSampleBufferRef> CAMCreateEmptyAudioSampleBuffer(CMSampleTimingInfo timingInfo);
+
 /// Creates an empty data ready \c CMSampleBuffer.
 lt::Ref<CMSampleBufferRef> CAMCreateEmptySampleBuffer();
 

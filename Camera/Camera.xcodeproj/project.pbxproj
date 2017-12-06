@@ -27,6 +27,8 @@
 		06C02F7C1D1970D900745557 /* EXPMatchers+equalScalar.mm in Sources */ = {isa = PBXBuildFile; fileRef = 06C02F7B1D1970D900745557 /* EXPMatchers+equalScalar.mm */; };
 		06C02F7E1D1974C000745557 /* NSValue+OpenCVExtensions.mm in Sources */ = {isa = PBXBuildFile; fileRef = 06C02F7D1D1974C000745557 /* NSValue+OpenCVExtensions.mm */; };
 		2804AAEA1D3BB5D20057F1A0 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2804AAE91D3BB5D20057F1A0 /* MobileCoreServices.framework */; };
+		64BA7B321FCEBC220015BA5C /* CAMAudioFrame.mm in Sources */ = {isa = PBXBuildFile; fileRef = 64BA7B071FCEBC220015BA5C /* CAMAudioFrame.mm */; };
+		64E2070B1FD576B300ADC090 /* CAMAudioFrameSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 64E2070A1FD576B300ADC090 /* CAMAudioFrameSpec.mm */; };
 		6542A5191D4635BC00450B46 /* libLTKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6542A5071D46359F00450B46 /* libLTKit.a */; };
 		6542A51A1D4635C300450B46 /* libextobjc_iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6542A5141D4635A700450B46 /* libextobjc_iOS.a */; };
 		6542A5701D4636DB00450B46 /* libExpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6542A5411D46369F00450B46 /* libExpecta.a */; };
@@ -489,6 +491,9 @@
 		06C02F7B1D1970D900745557 /* EXPMatchers+equalScalar.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = "EXPMatchers+equalScalar.mm"; path = "../../LTEngine/LTEngineTests/EXPMatchers+equalScalar.mm"; sourceTree = "<group>"; };
 		06C02F7D1D1974C000745557 /* NSValue+OpenCVExtensions.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = "NSValue+OpenCVExtensions.mm"; path = "../../LTEngine/LTEngineTests/NSValue+OpenCVExtensions.mm"; sourceTree = "<group>"; };
 		2804AAE91D3BB5D20057F1A0 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
+		64BA7B071FCEBC220015BA5C /* CAMAudioFrame.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CAMAudioFrame.mm; sourceTree = "<group>"; };
+		64BA7B311FCEBC220015BA5C /* CAMAudioFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAMAudioFrame.h; sourceTree = "<group>"; };
+		64E2070A1FD576B300ADC090 /* CAMAudioFrameSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = CAMAudioFrameSpec.mm; sourceTree = "<group>"; };
 		6542A5011D46359F00450B46 /* LTKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LTKit.xcodeproj; path = ../LTKit/LTKit.xcodeproj; sourceTree = "<group>"; };
 		6542A50A1D4635A700450B46 /* extobjc.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = extobjc.xcodeproj; path = ../third_party/libextobjc/extobjc.xcodeproj; sourceTree = "<group>"; };
 		6542A5241D46364400450B46 /* libExpecta.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libExpecta.a; path = "../../../../Library/Developer/Xcode/DerivedData/Camera-bezwrftftsoxergwngycwphyuedj/Build/Products/Debug-iphonesimulator/libExpecta.a"; sourceTree = "<group>"; };
@@ -880,6 +885,8 @@
 		83893A341D12827E002B64B4 /* Hardware */ = {
 			isa = PBXGroup;
 			children = (
+				64BA7B311FCEBC220015BA5C /* CAMAudioFrame.h */,
+				64BA7B071FCEBC220015BA5C /* CAMAudioFrame.mm */,
 				8352064C1D2A81FA00000EEC /* CAMHardwareDevice.h */,
 				8352064D1D2A81FA00000EEC /* CAMHardwareDevice.mm */,
 				83893A4F1D128288002B64B4 /* CAMHardwareSession.h */,
@@ -898,6 +905,7 @@
 		83893A521D12828D002B64B4 /* Hardware */ = {
 			isa = PBXGroup;
 			children = (
+				64E2070A1FD576B300ADC090 /* CAMAudioFrameSpec.mm */,
 				8352064F1D2A820700000EEC /* CAMHardwareDeviceSpec.mm */,
 				83893A531D128296002B64B4 /* CAMHardwareSessionSpec.mm */,
 				060882521D9A4F2C004D307D /* CAMVideoFrame+FactorySpec.mm */,
@@ -1589,6 +1597,7 @@
 				8D01B2F115E961DB011B44B9 /* CAMDevicePreset.mm in Sources */,
 				8D01B671025DA94D9439D897 /* CAMFakeAVCaptureDeviceFormat.mm in Sources */,
 				8D01BEE7F94A92FDDD41751F /* CAMCameraAuthorizer.mm in Sources */,
+				64BA7B321FCEBC220015BA5C /* CAMAudioFrame.mm in Sources */,
 				8D01B3DB1C6E0CF5A4F4ABDD /* CAMCameraAuthorizationManager.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1618,6 +1627,7 @@
 				BE66B2A11D882511004D99B2 /* CAMSampleBufferMetadataUtilsSpec.mm in Sources */,
 				06C02F751D196A9800745557 /* LTTestUtils+LTEngine.mm in Sources */,
 				835206501D2A820700000EEC /* CAMHardwareDeviceSpec.mm in Sources */,
+				64E2070B1FD576B300ADC090 /* CAMAudioFrameSpec.mm in Sources */,
 				834540351D7C002800D7D619 /* CAMBlankDeviceSpec.mm in Sources */,
 				83893A541D128296002B64B4 /* CAMHardwareSessionSpec.mm in Sources */,
 				BEB6EDF01D325C4700E9D424 /* LTTestModule.mm in Sources */,

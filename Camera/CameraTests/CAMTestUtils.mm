@@ -9,6 +9,39 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+lt::Ref<CMSampleBufferRef> CAMCreateEmptyAudioSampleBuffer(CMSampleTimingInfo timingInfo) {
+  CMSampleBufferRef sampleBuffer = NULL;
+  OSStatus status = -1;
+
+  AudioStreamBasicDescription audioFormat;
+  audioFormat.mSampleRate = 44100.00;
+  audioFormat.mFormatID = kAudioFormatLinearPCM;
+  audioFormat.mFormatFlags = 0xc;
+  audioFormat.mBytesPerPacket= 2;
+  audioFormat.mFramesPerPacket= 1;
+  audioFormat.mBytesPerFrame = 2;
+  audioFormat.mChannelsPerFrame= 1;
+  audioFormat.mBitsPerChannel= 16;
+  audioFormat.mReserved= 0;
+
+  CMFormatDescriptionRef format = NULL;
+  status = CMAudioFormatDescriptionCreate(kCFAllocatorDefault, &audioFormat, 0, nil, 0, nil, nil,
+                                          &format);
+  lt::Ref<CMFormatDescriptionRef> formatRef = lt::makeRef(format);
+
+  if (status != noErr) {
+    return lt::Ref<CMSampleBufferRef>();
+  }
+
+  status = CMSampleBufferCreate(kCFAllocatorDefault, nil , NO, nil, nil, formatRef.get(), 1, 1,
+                                &timingInfo, 0, nil, &sampleBuffer);
+  if (status != noErr) {
+    return lt::Ref<CMSampleBufferRef>();
+  }
+
+  return lt::makeRef(sampleBuffer);
+}
+
 lt::Ref<CMSampleBufferRef> CAMCreateEmptySampleBuffer() {
   CMSampleBufferRef sampleBuffer;
   OSStatus status = CMSampleBufferCreateReady(kCFAllocatorDefault, NULL, NULL, 0, 0, NULL, 0, NULL,
