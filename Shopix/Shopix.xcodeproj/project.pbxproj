@@ -33,6 +33,8 @@
 		88B9B4FF1FA8BA980033D48F /* SPXPromotion.mm in Sources */ = {isa = PBXBuildFile; fileRef = 88FA8C9D1F66C52400D2E594 /* SPXPromotion.mm */; };
 		88CEB4511FB44D1B00E01950 /* SPXPromotionSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 88CEB4501FB44D1A00E01950 /* SPXPromotionSpec.mm */; };
 		88FF39701FB2E047006311FF /* SPXProductDescriptor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 88FF396F1FB2E047006311FF /* SPXProductDescriptor.mm */; };
+		CD1F02AD1FD87556004D5DEB /* SPXSubscriptionChristmasButtonsFactory.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD1F02AC1FD87555004D5DEB /* SPXSubscriptionChristmasButtonsFactory.mm */; };
+		CD1FFFF91FD705CD004D5DEB /* images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CD1FFFF81FD702A3004D5DEB /* images.xcassets */; };
 		CD2F2B551FD5577D006257B4 /* MFMailComposeViewController+Dismissal.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD2F2B541FD5577D006257B4 /* MFMailComposeViewController+Dismissal.mm */; };
 		CD2F2B801FD55C45006257B4 /* SPXRestorePurchasesButton.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD2F2B7F1FD55C45006257B4 /* SPXRestorePurchasesButton.mm */; };
 		CD3C69A41F559394008A6C23 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD3C69A31F559394008A6C23 /* GLKit.framework */; };
@@ -495,6 +497,9 @@
 		88FF396E1FB2E047006311FF /* SPXProductDescriptor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SPXProductDescriptor.h; sourceTree = "<group>"; };
 		88FF396F1FB2E047006311FF /* SPXProductDescriptor.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXProductDescriptor.mm; sourceTree = "<group>"; };
 		8B57B1FC1D914FE100814B3C /* Bundle.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Bundle.xcconfig; sourceTree = "<group>"; };
+		CD1F02AB1FD87555004D5DEB /* SPXSubscriptionChristmasButtonsFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPXSubscriptionChristmasButtonsFactory.h; sourceTree = "<group>"; };
+		CD1F02AC1FD87555004D5DEB /* SPXSubscriptionChristmasButtonsFactory.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXSubscriptionChristmasButtonsFactory.mm; sourceTree = "<group>"; };
+		CD1FFFF81FD702A3004D5DEB /* images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = images.xcassets; sourceTree = "<group>"; };
 		CD2F2B531FD5577D006257B4 /* MFMailComposeViewController+Dismissal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MFMailComposeViewController+Dismissal.h"; sourceTree = "<group>"; };
 		CD2F2B541FD5577D006257B4 /* MFMailComposeViewController+Dismissal.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "MFMailComposeViewController+Dismissal.mm"; sourceTree = "<group>"; };
 		CD2F2B7E1FD55C45006257B4 /* SPXRestorePurchasesButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SPXRestorePurchasesButton.h; sourceTree = "<group>"; };
@@ -993,6 +998,14 @@
 			name = "UI Events";
 			sourceTree = "<group>";
 		};
+		CD1FFFC91FD70239004D5DEB /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				CD1FFFF81FD702A3004D5DEB /* images.xcassets */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		CD553D871F4184D00048215C /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -1005,6 +1018,7 @@
 		CD5550161F45C8050048215C /* ShopixBundle */ = {
 			isa = PBXGroup;
 			children = (
+				CD1FFFC91FD70239004D5DEB /* Resources */,
 				CD5550171F45C8050048215C /* Info.plist */,
 				CD5551161F45D5E10048215C /* Localizable.strings */,
 				CD5551181F45D5E10048215C /* Localizable.stringsdict */,
@@ -1050,6 +1064,8 @@
 				CD63768C1FCDB70E00521EDD /* SPXSubscriptionButtonFormatter.h */,
 				CD6376B51FCDB70E00521EDD /* SPXSubscriptionButtonFormatter.mm */,
 				CDF5F96F1FCDC4EB007D4AB0 /* SPXSubscriptionButtonsFactory.h */,
+				CD1F02AB1FD87555004D5DEB /* SPXSubscriptionChristmasButtonsFactory.h */,
+				CD1F02AC1FD87555004D5DEB /* SPXSubscriptionChristmasButtonsFactory.mm */,
 				CDF5F96D1FCDC4EA007D4AB0 /* SPXSubscriptionDescriptor.h */,
 				CDF5F9441FCDC4EA007D4AB0 /* SPXSubscriptionDescriptor.mm */,
 				CD60A5E81FB34F6A0017D777 /* SPXSubscriptionGradientButton.h */,
@@ -1633,6 +1649,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CD1FFFF91FD705CD004D5DEB /* images.xcassets in Resources */,
 				CD55511A1F45D5E10048215C /* Localizable.strings in Resources */,
 				CD55511B1F45D5E10048215C /* Localizable.stringsdict in Resources */,
 			);
@@ -1712,6 +1729,7 @@
 				88B9B4FF1FA8BA980033D48F /* SPXPromotion.mm in Sources */,
 				CD2F2B801FD55C45006257B4 /* SPXRestorePurchasesButton.mm in Sources */,
 				88B9B4DA1FA8BA940033D48F /* SPXProductAxis.mm in Sources */,
+				CD1F02AD1FD87556004D5DEB /* SPXSubscriptionChristmasButtonsFactory.mm in Sources */,
 				653D9C391FB757860035ACEC /* SPXAlertViewModel.mm in Sources */,
 				CD60A58E1FB2F2850017D777 /* SPXButtonsHorizontalLayoutView.mm in Sources */,
 				CDC8391B1FCFF87D00E9F41A /* SPXColorScheme.mm in Sources */,
