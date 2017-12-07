@@ -78,13 +78,13 @@ using namespace spx;
   return [self initWithViewModel:viewModel
          alertControllerProvider:[[SPXAlertViewControllerProvider alloc] init]
             mailComposerProvider:mailComposerProvider
-     subscriptionButtonsProvider:defaultButtonsFactory];
+      subscriptionButtonsFactory:defaultButtonsFactory];
 }
 
 - (instancetype)initWithViewModel:(id<SPXSubscriptionViewModel>)viewModel
           alertControllerProvider:(id<SPXAlertViewControllerProvider>)alertControllerProvider
              mailComposerProvider:(id<SPXFeedbackComposeViewControllerProvider>)mailComposerProvider
-      subscriptionButtonsProvider:(id<SPXSubscriptionButtonsFactory>)subscriptionButtonsFactory {
+       subscriptionButtonsFactory:(id<SPXSubscriptionButtonsFactory>)subscriptionButtonsFactory {
   if (self = [super initWithNibName:nil bundle:nil]) {
     _viewModel = viewModel;
     _alertControllerProvider = alertControllerProvider;
@@ -179,10 +179,12 @@ using namespace spx;
     make.height.mas_lessThanOrEqualTo(self.view.mas_width).multipliedBy(0.32);
   }];
 
-  self.subscriptionButtonsView.buttons = [self.viewModel.subscriptionDescriptors
-      lt_map:^UIButton *(SPXSubscriptionDescriptor *subscriptionDescriptor) {
+  auto descriptors = self.viewModel.subscriptionDescriptors;
+  self.subscriptionButtonsView.buttons = [descriptors
+      lt_map:^UIControl *(SPXSubscriptionDescriptor *subscriptionDescriptor) {
         return [self.subscriptionButtonsFactory
-                createSubscriptionButtonWithSubscriptionDescriptor:subscriptionDescriptor];
+                createSubscriptionButtonWithSubscriptionDescriptor:subscriptionDescriptor
+                atIndex:[descriptors indexOfObject:subscriptionDescriptor] outOf:descriptors.count];
       }];
 
   self.subscriptionButtonsView.enlargedButtonIndex = self.viewModel.preferredProductIndex;

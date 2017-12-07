@@ -32,28 +32,32 @@ beforeEach(^{
 
 it(@"should set the button gradient colors", ^{
   auto button = (SPXSubscriptionGradientButton *)
-      [buttonsFactory createSubscriptionButtonWithSubscriptionDescriptor:descriptor];
+      [buttonsFactory createSubscriptionButtonWithSubscriptionDescriptor:descriptor atIndex:0
+                                                                   outOf:1];
 
   expect(button.bottomGradientColors).to.equal(@[[UIColor whiteColor], [UIColor blackColor]]);
 });
 
 it(@"should set the subscription period at the top of the new button", ^{
   auto button = (SPXSubscriptionGradientButton *)
-      [buttonsFactory createSubscriptionButtonWithSubscriptionDescriptor:descriptor];
+      [buttonsFactory createSubscriptionButtonWithSubscriptionDescriptor:descriptor atIndex:0
+                                                                   outOf:1];
 
   expect([button.topText string]).to.equal(@"boo");
 });
 
 it(@"should set the subscription price and full price at the bottom of the new button", ^{
   auto button = (SPXSubscriptionGradientButton *)
-      [buttonsFactory createSubscriptionButtonWithSubscriptionDescriptor:descriptor];
+      [buttonsFactory createSubscriptionButtonWithSubscriptionDescriptor:descriptor atIndex:0
+                                                                   outOf:1];
   descriptor.priceInfo = OCMClassMock([BZRProductPriceInfo class]);
 
   expect([button.bottomText string]).will.equal(@"10");
 });
 
 it(@"should disable the button until the price is set", ^{
-  auto button = [buttonsFactory createSubscriptionButtonWithSubscriptionDescriptor:descriptor];
+  auto button = [buttonsFactory createSubscriptionButtonWithSubscriptionDescriptor:descriptor
+                                                                           atIndex:0 outOf:1];
 
   expect([button isEnabled]).to.beFalsy();
   descriptor.priceInfo = OCMClassMock([BZRProductPriceInfo class]);
@@ -61,11 +65,12 @@ it(@"should disable the button until the price is set", ^{
 });
 
 it(@"should not hold the button strongly", ^{
-  __weak UIButton *button;
+  __weak UIControl *button;
 
   @autoreleasepool {
-    UIButton *strongButton =
-        [buttonsFactory createSubscriptionButtonWithSubscriptionDescriptor:descriptor];
+    UIControl *strongButton =
+        [buttonsFactory createSubscriptionButtonWithSubscriptionDescriptor:descriptor atIndex:0
+                                                                     outOf:1];
     button = strongButton;
   }
 
