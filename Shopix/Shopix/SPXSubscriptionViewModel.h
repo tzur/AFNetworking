@@ -5,7 +5,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class SPXSubscriptionDescriptor, SPXColorScheme;
+@class LTValueObject, SPXSubscriptionDescriptor, SPXColorScheme;
 
 @protocol SPXAlertViewModel, SPXSubscriptionVideoPageViewModel, SPXSubscriptionTermsViewModel,
     SPXSubscriptionTermsViewModel;
@@ -55,6 +55,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// \c YES if the activity indicator should be visible, \c NO otherwise. KVO compliant.
 @property (readonly, nonatomic) BOOL shouldShowActivityIndicator;
+
+/// Sends UI interactions events and restore / purchase subscription success or failure events.
+@property (readonly, nonatomic) RACSignal<LTValueObject *> *events;
 
 /// Hot signal that sends a \c RACUnit value when the view should be dismissed. The signal delivers
 /// on the main thread.
