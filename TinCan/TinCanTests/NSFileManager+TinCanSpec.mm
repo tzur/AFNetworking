@@ -5,6 +5,7 @@
 
 #import <LTKit/NSFileManager+LTKit.h>
 #import <LTKitTestUtils/LTTestUtils.h>
+#import <MobileCoreServices/MobileCoreServices.h>
 
 #import "TINMessage+UserInfo.h"
 #import "TINMessageFactory.h"
@@ -31,8 +32,17 @@ afterEach(^{
 });
 
 context(@"unit tests", ^{
+  __block NSFileManager *fileManagerMock;
+
+  beforeEach(^{
+    fileManagerMock = OCMPartialMock(fileManager);
+  });
+
+  afterEach(^{
+    [(id)fileManagerMock stopMocking];
+  });
+
   it(@"should report error when failed accessing the file system", ^{
-    NSFileManager *fileManagerMock = OCMPartialMock(fileManager);
     OCMStub([fileManagerMock createDirectoryAtURL:OCMOCK_ANY withIntermediateDirectories:YES
                                        attributes:OCMOCK_ANY
                                             error:[OCMArg anyObjectRef]]).andReturn(YES);
@@ -52,7 +62,6 @@ context(@"unit tests", ^{
   });
 
   it(@"should report error when failed creating intermidiate direct", ^{
-    NSFileManager *fileManagerMock = OCMPartialMock(fileManager);
     OCMStub([fileManagerMock createDirectoryAtURL:OCMOCK_ANY withIntermediateDirectories:YES
         attributes:OCMOCK_ANY error:[OCMArg setTo:[NSError lt_errorWithCode:123]]]).andReturn(NO);
 
@@ -69,13 +78,26 @@ context(@"unit tests", ^{
   });
 
   it(@"should report error when file doesn't exist", ^{
-    NSFileManager *fileManagerMock = OCMPartialMock(fileManager);
     OCMStub([fileManagerMock lt_dataWithContentsOfFile:OCMOCK_ANY options:0
         error:[OCMArg setTo:[NSError lt_errorWithCode:123]]]);
     auto url = [NSURL fileURLWithPath:@"/tmp/foo"];
     __block NSError *error;
     auto _Nullable message = [fileManager tin_readMessageFromURL:url error:&error];
     expect(message).to.beNil();
+    expect(error.code).to.equal(123);
+  });
+
+  it(@"should report error when failed accessing the file system while removing all messages", ^{
+    OCMStub([fileManagerMock removeItemAtURL:OCMOCK_ANY
+        error:[OCMArg setTo:[NSError lt_errorWithCode:123]]]).andReturn(NO);
+    auto data = [@"foo" dataUsingEncoding:NSUTF8StringEncoding];
+    __unused auto message = [messageFactory messageWithTargetScheme:@"target" userInfo:@{} data:data
+                                                                uti:(__bridge NSString *)kUTTypePNG
+                                                              error:nil];
+    NSError *error;
+    auto success = [fileManagerMock tin_removeAllMessagesWithAppGroupID:kTINTestHostAppGroupID
+                                                                 scheme:@"target" error:&error];
+    expect(success).to.beFalsy();
     expect(error.code).to.equal(123);
   });
 });
@@ -117,6 +139,22 @@ context(@"integration tests", ^{
     auto _Nullable message = [fileManager tin_readMessageFromURL:url error:&error];
     expect(message).to.beNil();
     expect(error.code).to.equal(LTErrorCodeInvalidArgument);
+  });
+
+  it(@"should remove all message directories", ^{
+    auto data = [@"foo" dataUsingEncoding:NSUTF8StringEncoding];
+    auto data2 = [@"bar" dataUsingEncoding:NSUTF8StringEncoding];
+    auto _Nullable message = [messageFactory messageWithTargetScheme:@"target" userInfo:@{}
+        data:data uti:(__bridge NSString *)kUTTypePNG error:nil];
+    auto _Nullable message2 = [messageFactory messageWithTargetScheme:@"target" userInfo:@{}
+        data:data2 uti:(__bridge NSString *)kUTTypePNG error:nil];
+    NSError *error;
+    auto success = [fileManager tin_removeAllMessagesWithAppGroupID:kTINTestHostAppGroupID
+                                                             scheme:@"target" error:&error];
+    expect(success).to.beTruthy();
+    expect(error).to.beNil();
+    expect([fileManager lt_directoryExistsAtPath:nn(message.directoryURL.path)]).to.beFalsy();
+    expect([fileManager lt_directoryExistsAtPath:nn(message2.directoryURL.path)]).to.beFalsy();
   });
 });
 

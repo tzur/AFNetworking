@@ -13,7 +13,9 @@ LTErrorCodesImplement(TINErrorCodeProductID,
   /// Caused when message's target can't be found.
   TINErrorCodeMessageTargetNotFound,
   /// Caused when message can't be sent.
-  TINErrorCodeMessageSendFailed
+  TINErrorCodeMessageSendFailed,
+  /// Cause when this application dones't support any scheme.
+  TINErrorCodeNoValidSchemeFound
 );
 
 NS_ASSUME_NONNULL_END

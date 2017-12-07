@@ -17,6 +17,14 @@ NS_ASSUME_NONNULL_BEGIN
 /// an error occurred during this process. \c url must be a URL of a file.
 - (nullable TINMessage *)tin_readMessageFromURL:(NSURL *)url error:(NSError **)error;
 
+/// Removes all designated message directories for the given \c appGroupID and \c scheme. Returns
+/// \c YES upon success, otherwise \c NO and sets the \c error.
+///
+/// @important user can safely remove only the message directories of messages which are targeted to
+/// this application.
+- (BOOL)tin_removeAllMessagesWithAppGroupID:(NSString *)appGroupID scheme:(NSString *)scheme
+                                      error:(NSError **)error;
+
 @end
 
 NS_ASSUME_NONNULL_END
