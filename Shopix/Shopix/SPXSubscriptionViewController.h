@@ -34,7 +34,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithViewModel:(id<SPXSubscriptionViewModel>)viewModel
           alertControllerProvider:(id<SPXAlertViewControllerProvider>)alertControllerProvider
              mailComposerProvider:(id<SPXFeedbackComposeViewControllerProvider>)mailComposerProvider
-      subscriptionButtonsProvider:(id<SPXSubscriptionButtonsFactory>)subscriptionButtonsFactory
+       subscriptionButtonsFactory:(id<SPXSubscriptionButtonsFactory>)subscriptionButtonsFactory
     NS_DESIGNATED_INITIALIZER;
 
 /// Background view, stretched to the size of the view.

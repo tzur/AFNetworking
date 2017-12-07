@@ -10,7 +10,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Buttons that will be centered and horizontally aligned from left to right. Reset the buttons
 /// will also set \c enlargedButtonIndex to \c nil.
-@property (strong, nonatomic) NSArray<UIButton *> *buttons;
+@property (strong, nonatomic) NSArray<UIControl *> *buttons;
 
 /// Index of a button that will be enlarged, must be in range <tt>[0, buttons.count - 1]</tt>,
 /// otherwise a \c NSInvalidArgumentException is raised. If set to \c nil none of the buttons will

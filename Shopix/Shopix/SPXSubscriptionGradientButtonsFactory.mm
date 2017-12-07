@@ -50,8 +50,9 @@ NS_ASSUME_NONNULL_BEGIN
   return self;
 }
 
-- (UIButton *)createSubscriptionButtonWithSubscriptionDescriptor:
-    (SPXSubscriptionDescriptor *)subscriptionDescriptor {
+- (UIControl *)createSubscriptionButtonWithSubscriptionDescriptor:
+    (SPXSubscriptionDescriptor *)subscriptionDescriptor atIndex:(NSUInteger __unused)index
+                                                          outOf:(NSUInteger __unused)buttonsCount {
   auto subscriptionButton = [[SPXSubscriptionGradientButton alloc] init];
   subscriptionButton.exclusiveTouch = YES;
   subscriptionButton.enabled = NO;
