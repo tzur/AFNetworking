@@ -82,6 +82,15 @@ using namespace spx;
 }
 
 - (instancetype)initWithViewModel:(id<SPXSubscriptionViewModel>)viewModel
+             mailComposerProvider:(id<SPXFeedbackComposeViewControllerProvider>)mailComposerProvider
+       subscriptionButtonsFactory:(id<SPXSubscriptionButtonsFactory>)subscriptionButtonsFactory {
+  return [self initWithViewModel:viewModel
+         alertControllerProvider:[[SPXAlertViewControllerProvider alloc] init]
+            mailComposerProvider:mailComposerProvider
+      subscriptionButtonsFactory:subscriptionButtonsFactory];
+}
+
+- (instancetype)initWithViewModel:(id<SPXSubscriptionViewModel>)viewModel
           alertControllerProvider:(id<SPXAlertViewControllerProvider>)alertControllerProvider
              mailComposerProvider:(id<SPXFeedbackComposeViewControllerProvider>)mailComposerProvider
        subscriptionButtonsFactory:(id<SPXSubscriptionButtonsFactory>)subscriptionButtonsFactory {

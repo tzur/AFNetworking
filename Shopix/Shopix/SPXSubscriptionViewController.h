@@ -26,6 +26,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithViewModel:(id<SPXSubscriptionViewModel>)viewModel
     mailComposerProvider:(id<SPXFeedbackComposeViewControllerProvider>)mailComposerProvider;
 
+/// Same as the designated initializer. \c alertControllerProvider is set to the default provider.
+- (instancetype)initWithViewModel:(id<SPXSubscriptionViewModel>)viewModel
+             mailComposerProvider:(id<SPXFeedbackComposeViewControllerProvider>)mailComposerProvider
+       subscriptionButtonsFactory:(id<SPXSubscriptionButtonsFactory>)subscriptionButtonsFactory;
+
 /// Initializes with \c viewModel for the subscription view configuration,
 /// \c alertControllerProvider for creating the success and failure alerts, \c mailComposerProvider
 /// for creating the feedback view controller, \c subscriptionButtonsProvider for creating the
