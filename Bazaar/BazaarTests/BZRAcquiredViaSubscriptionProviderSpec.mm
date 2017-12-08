@@ -137,35 +137,4 @@ context(@"removing acquired via subscription product", ^{
   });
 });
 
-context(@"storage errors", ^{
-  it(@"should send storage error when saving set to storage has failed", ^{
-    LLSignalTestRecorder *recorder = [provider.storageErrorEventsSignal testRecorder];
-    NSError *underlyingError = OCMClassMock([NSError class]);
-    OCMStub([keychainStorage setValue:OCMOCK_ANY forKey:OCMOCK_ANY
-                                error:[OCMArg setTo:underlyingError]]);
-
-    [provider addAcquiredViaSubscriptionProduct:@"foo"];
-    expect(recorder).will.matchValue(0, ^BOOL(BZREvent *event) {
-      NSError *error = event.eventError;
-      return [event.eventType isEqual:$(BZREventTypeNonCriticalError)] && error.lt_isLTDomain &&
-          error.code == BZRErrorCodeStoringDataToStorageFailed &&
-          error.lt_underlyingError == underlyingError;
-    });
-  });
-
-  it(@"should send error event when failed to read from storage", ^{
-    LLSignalTestRecorder *recorder = [provider.storageErrorEventsSignal testRecorder];
-    NSError *error = OCMClassMock([NSError class]);
-    OCMStub([keychainStorage valueOfClass:OCMOCK_ANY forKey:OCMOCK_ANY error:[OCMArg setTo:error]]);
-
-    NSError *returnedError;
-    [provider refreshProductsAcquiredViaSubscription:&returnedError];
-
-    expect(returnedError).to.equal(error);
-    expect(recorder).will.matchValue(0, ^BOOL(BZREvent *event) {
-      return [event.eventType isEqual:$(BZREventTypeNonCriticalError)] && event.eventError == error;
-    });
-  });
-});
-
 SpecEnd

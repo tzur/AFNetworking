@@ -8,7 +8,7 @@ NS_ASSUME_NONNULL_BEGIN
 @class BZRKeychainStorage, BZRReceiptValidationParameters;
 
 /// Protocol for providing \c BZRReceiptValidationParameters.
-@protocol BZRReceiptValidationParametersProvider <BZREventEmitter>
+@protocol BZRReceiptValidationParametersProvider
 
 /// Provides the parameters for receipt validation to be used by \c BZRReciptValidator.
 - (nullable BZRReceiptValidationParameters *)receiptValidationParameters;
