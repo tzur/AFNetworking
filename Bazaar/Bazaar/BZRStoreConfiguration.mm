@@ -6,6 +6,7 @@
 #import <LTKit/LTPath.h>
 
 #import "BZRAcquiredViaSubscriptionProvider.h"
+#import "BZRAggregatedReceiptValidationStatusProvider.h"
 #import "BZRAllowedProductsProvider.h"
 #import "BZRAppStoreLocaleCache.h"
 #import "BZRCachedContentFetcher.h"
@@ -89,7 +90,7 @@ NS_ASSUME_NONNULL_BEGIN
     BZRValidatedReceiptValidationStatusProvider *validatorProvider =
         [[BZRValidatedReceiptValidationStatusProvider alloc]
          initWithValidationParametersProvider:self.validationParametersProvider
-         receiptDataCache:receiptDataCache currentApplicationBundleID:applicationBundleID];
+         receiptDataCache:receiptDataCache];
 
     BZRModifiedExpiryReceiptValidationStatusProvider *modifiedExpiryProvider =
         [[BZRModifiedExpiryReceiptValidationStatusProvider alloc] initWithTimeProvider:timeProvider
@@ -99,11 +100,10 @@ NS_ASSUME_NONNULL_BEGIN
     BZRReceiptValidationStatusCache *receiptValidationStatusCache =
         [[BZRReceiptValidationStatusCache alloc] initWithKeychainStorage:keychainStorageRoute];
 
-    _validationStatusProvider =
+     auto cacheReceiptValidationStatusProvider =
         [[BZRCachedReceiptValidationStatusProvider alloc] initWithCache:receiptValidationStatusCache
                                                            timeProvider:timeProvider
-                                                     underlyingProvider:modifiedExpiryProvider
-                                                    applicationBundleID:applicationBundleID];
+                                                     underlyingProvider:modifiedExpiryProvider];
     _acquiredViaSubscriptionProvider =
         [[BZRAcquiredViaSubscriptionProvider alloc] initWithKeychainStorage:self.keychainStorage];
 
@@ -113,9 +113,17 @@ NS_ASSUME_NONNULL_BEGIN
     _productsProvider = [self productsProviderWithJSONFilePath:productsListJSONFilePath
                                                  decryptionKey:productListDecryptionKey];
 
+    _validationStatusProvider =
+        [[BZRAggregatedReceiptValidationStatusProvider alloc]
+         initWithUnderlyingProvider:cacheReceiptValidationStatusProvider
+         currentApplicationBundleID:applicationBundleID
+         multiAppConfiguration:nil];
+
     _periodicValidatorActivator =
         [[BZRPeriodicReceiptValidatorActivator alloc]
-         initWithValidationStatusProvider:self.validationStatusProvider timeProvider:timeProvider];
+         initWithValidationStatusProvider:cacheReceiptValidationStatusProvider
+         timeProvider:timeProvider bundledApplicationsIDs:@[applicationBundleID].lt_set
+         aggregatedValidationStatusProvider:self.validationStatusProvider];
 
     _variantSelectorFactory = [[BZRProductsVariantSelectorFactory alloc] init];
 

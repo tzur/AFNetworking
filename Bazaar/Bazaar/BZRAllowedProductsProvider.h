@@ -5,7 +5,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class BZRAcquiredViaSubscriptionProvider, BZRCachedReceiptValidationStatusProvider;
+@class BZRAcquiredViaSubscriptionProvider, BZRAggregatedReceiptValidationStatusProvider;
 
 @protocol BZRProductsProvider;
 
@@ -24,11 +24,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)init NS_UNAVAILABLE;
 
 /// Initializes with \c productsProvider, used to provide the product list.
-/// \c validationStatusProvider is used to provide the latest receipt validation status.
+/// \c validationStatusProvider is used to provide the latest aggregated receipt validation status.
 /// \c acquiredViaSubscriptionProvider is used to provide acquired via subscription products.
 - (instancetype)initWithProductsProvider:(id<BZRProductsProvider>)productsProvider
-    validationStatusProvider:(BZRCachedReceiptValidationStatusProvider *)validationStatusProvider
-    acquiredViaSubscriptionProvider:(BZRAcquiredViaSubscriptionProvider *)
+    validationStatusProvider:(BZRAggregatedReceiptValidationStatusProvider *)
+    validationStatusProvider acquiredViaSubscriptionProvider:(BZRAcquiredViaSubscriptionProvider *)
     acquiredViaSubscriptionProvider
     NS_DESIGNATED_INITIALIZER;
 
