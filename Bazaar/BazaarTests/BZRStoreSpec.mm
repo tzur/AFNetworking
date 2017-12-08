@@ -5,11 +5,10 @@
 
 #import "BZRAcquiredViaSubscriptionProvider.h"
 #import "BZRCachedContentFetcher.h"
-#import "BZRCachedReceiptValidationStatusProvider.h"
 #import "BZREvent.h"
 #import "BZRFakeAcquiredViaSubscriptionProvider.h"
+#import "BZRFakeAggregatedReceiptValidationStatusProvider.h"
 #import "BZRFakeAllowedProductsProvider.h"
-#import "BZRFakeCachedReceiptValidationStatusProvider.h"
 #import "BZRFakeReceiptValidationParametersProvider.h"
 #import "BZRKeychainStorage.h"
 #import "BZRPeriodicReceiptValidatorActivator.h"
@@ -63,7 +62,8 @@ SpecBegin(BZRStore)
 
 __block id<BZRProductsProvider> productsProvider;
 __block BZRProductContentManager *contentManager;
-__block BZRCachedReceiptValidationStatusProvider *receiptValidationStatusProvider;
+__block BZRFakeAggregatedReceiptValidationStatusProvider *
+    receiptValidationStatusProvider;
 __block BZRCachedContentFetcher *contentFetcher;
 __block BZRAcquiredViaSubscriptionProvider *acquiredViaSubscriptionProvider;
 __block BZRStoreKitFacade *storeKitFacade;
@@ -90,7 +90,8 @@ __block NSString *productIdentifier;
 beforeEach(^{
   productsProvider = OCMProtocolMock(@protocol(BZRProductsProvider));
   contentManager = OCMClassMock([BZRProductContentManager class]);
-  receiptValidationStatusProvider = OCMClassMock([BZRCachedReceiptValidationStatusProvider class]);
+  receiptValidationStatusProvider =
+      OCMClassMock([BZRFakeAggregatedReceiptValidationStatusProvider class]);
   contentFetcher = OCMClassMock([BZRCachedContentFetcher class]);
   acquiredViaSubscriptionProvider = OCMClassMock([BZRAcquiredViaSubscriptionProvider class]);
   storeKitFacade = OCMClassMock([BZRStoreKitFacade class]);
@@ -1441,12 +1442,12 @@ context(@"events signal", ^{
 });
 
 context(@"KVO-compliance", ^{
-  __block BZRFakeCachedReceiptValidationStatusProvider *validationStatusProvider;
+  __block BZRFakeAggregatedReceiptValidationStatusProvider *validationStatusProvider;
   __block BZRFakeAcquiredViaSubscriptionProvider *acquiredViaSubscriptionProvider;
   __block id<BZRReceiptValidationParametersProvider> validationParametersProvider;
 
   beforeEach(^{
-    validationStatusProvider = [[BZRFakeCachedReceiptValidationStatusProvider alloc] init];
+    validationStatusProvider = [[BZRFakeAggregatedReceiptValidationStatusProvider alloc] init];
     acquiredViaSubscriptionProvider =  [[BZRFakeAcquiredViaSubscriptionProvider alloc] init];
     validationParametersProvider = [[BZRFakeReceiptValidationParametersProvider alloc] init];
 

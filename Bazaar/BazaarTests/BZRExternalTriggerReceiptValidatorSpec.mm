@@ -4,15 +4,15 @@
 #import "BZRExternalTriggerReceiptValidator.h"
 
 #import "BZREvent.h"
-#import "BZRReceiptValidationStatusProvider.h"
+#import "BZRFakeAggregatedReceiptValidationStatusProvider.h"
 
 SpecBegin(BZRExternalTriggerReceiptValidator)
 
-__block id<BZRReceiptValidationStatusProvider> validationStatusProvider;
+__block BZRFakeAggregatedReceiptValidationStatusProvider *validationStatusProvider;
 __block BZRExternalTriggerReceiptValidator *receiptValidator;
 
 beforeEach(^{
-  validationStatusProvider = OCMProtocolMock(@protocol(BZRReceiptValidationStatusProvider));
+  validationStatusProvider = OCMClassMock([BZRFakeAggregatedReceiptValidationStatusProvider class]);
   receiptValidator =
       [[BZRExternalTriggerReceiptValidator alloc]
        initWithValidationStatusProvider:validationStatusProvider];

@@ -56,7 +56,7 @@ beforeEach(^{
       [[BZRValidatedReceiptValidationStatusProvider alloc]
        initWithReceiptValidator:receiptValidator
        validationParametersProvider:receiptValidationParametersProvider
-       receiptDataCache:receiptDataCache currentApplicationBundleID:currentApplicationBundleID];
+       receiptDataCache:receiptDataCache];
 });
 
 context(@"deallocating object", ^{
@@ -76,10 +76,10 @@ context(@"deallocating object", ^{
           [[BZRValidatedReceiptValidationStatusProvider alloc]
            initWithReceiptValidator:receiptValidator
            validationParametersProvider:receiptValidationParametersProvider
-           receiptDataCache:receiptDataCache currentApplicationBundleID:currentApplicationBundleID];
+           receiptDataCache:receiptDataCache];
       weakValidationStatusProvider = validationStatusProvider;
       eventsSignal = validationStatusProvider.eventsSignal;
-      fetchSignal = [validationStatusProvider fetchReceiptValidationStatus];
+      fetchSignal = [validationStatusProvider fetchReceiptValidationStatus:@"foo"];
     }
 
     expect(fetchSignal).will.finish();
@@ -89,7 +89,7 @@ context(@"deallocating object", ^{
 
 context(@"fetching receipt validation status", ^{
   it(@"should send error when receipt validation parameters are nil", ^{
-    RACSignal *validateSignal = [validationStatusProvider fetchReceiptValidationStatus];
+    RACSignal *validateSignal = [validationStatusProvider fetchReceiptValidationStatus:@"foo"];
 
     expect(validateSignal).will.matchError(^BOOL(NSError *error) {
       return error.lt_isLTDomain && error.code == BZRErrorCodeReceiptValidationFailed;
@@ -111,7 +111,7 @@ context(@"fetching receipt validation status", ^{
       NSError *receiptValidationError =
           [NSError lt_errorWithCode:BZRErrorCodeReceiptValidationFailed underlyingError:error];
 
-      expect([validationStatusProvider fetchReceiptValidationStatus]).will
+      expect([validationStatusProvider fetchReceiptValidationStatus:@"foo"]).will
           .sendError(receiptValidationError);
     });
 
@@ -121,7 +121,7 @@ context(@"fetching receipt validation status", ^{
       OCMStub([receiptValidator validateReceiptWithParameters:OCMOCK_ANY])
           .andReturn([RACSignal return:receiptValidationStatus]);
 
-      RACSignal *validateSignal = [validationStatusProvider fetchReceiptValidationStatus];
+      RACSignal *validateSignal = [validationStatusProvider fetchReceiptValidationStatus:@"foo"];
 
       expect(validateSignal).will.matchError(^BOOL(NSError *error) {
         return error.lt_isLTDomain && error.code == BZRErrorCodeReceiptValidationFailed;
@@ -135,7 +135,7 @@ context(@"fetching receipt validation status", ^{
       OCMStub([receiptValidator validateReceiptWithParameters:OCMOCK_ANY])
           .andReturn([RACSignal return:receiptValidationStatus]);
 
-      expect([validationStatusProvider fetchReceiptValidationStatus]).will.finish();
+      expect([validationStatusProvider fetchReceiptValidationStatus:@"foo"]).will.finish();
 
       OCMVerify([receiptDataCache storeReceiptData:receiptData
                                applicationBundleID:currentApplicationBundleID
@@ -151,7 +151,7 @@ context(@"fetching receipt validation status", ^{
       OCMStub([receiptValidator validateReceiptWithParameters:OCMOCK_ANY])
           .andReturn([RACSignal return:receiptValidationStatus]);
 
-      expect([validationStatusProvider fetchReceiptValidationStatus]).will.finish();
+      expect([validationStatusProvider fetchReceiptValidationStatus:@"foo"]).will.finish();
 
       OCMVerify([receiptDataCache storeReceiptData:receiptData
                                applicationBundleID:currentApplicationBundleID
@@ -170,7 +170,7 @@ context(@"fetching receipt validation status", ^{
       OCMReject([receiptDataCache storeReceiptData:OCMOCK_ANY applicationBundleID:OCMOCK_ANY
                                              error:[OCMArg anyObjectRef]]);
 
-      expect([validationStatusProvider fetchReceiptValidationStatus]).will.finish();
+      expect([validationStatusProvider fetchReceiptValidationStatus:@"foo"]).will.finish();
     });
 
     it(@"should not store receipt data when receipt data is nil", ^{
@@ -181,7 +181,7 @@ context(@"fetching receipt validation status", ^{
       OCMReject([receiptDataCache storeReceiptData:OCMOCK_ANY applicationBundleID:OCMOCK_ANY
                                              error:[OCMArg anyObjectRef]]);
 
-      expect([validationStatusProvider fetchReceiptValidationStatus]).will.finish();
+      expect([validationStatusProvider fetchReceiptValidationStatus:@"foo"]).will.finish();
     });
 
     it(@"should return receipt validation status upon successful validation", ^{
@@ -191,7 +191,7 @@ context(@"fetching receipt validation status", ^{
           .andReturn([RACSignal return:receiptValidationStatus]);
 
       LLSignalTestRecorder *recorder =
-          [[validationStatusProvider fetchReceiptValidationStatus] testRecorder];
+          [[validationStatusProvider fetchReceiptValidationStatus:@"foo"] testRecorder];
 
       expect(recorder).will.complete();
       expect(recorder).will.sendValues(@[receiptValidationStatus]);
