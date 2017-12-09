@@ -34,7 +34,7 @@ using namespace spx;
 #pragma mark SPXSubscriptionViewController
 #pragma mark -
 
-@interface SPXSubscriptionViewController () <MFMailComposeViewControllerDelegate>
+@interface SPXSubscriptionViewController ()
 
 /// View configuration.
 @property (readonly, nonatomic) id<SPXSubscriptionViewModel> viewModel;
@@ -306,11 +306,12 @@ using namespace spx;
   @weakify(self);
   [self.viewModel.feedbackComposerRequested subscribeNext:^(LTVoidBlock completionHandler) {
     @strongify(self);
-    auto _Nullable mailComposer = [self.mailComposerProvider feedbackComposeViewController];
+    auto _Nullable mailComposer = [self.mailComposerProvider createFeedbackComposeViewController];
 
     if (mailComposer) {
-      mailComposer.mailComposeDelegate = self;
-      mailComposer.spx_dismissBlock = completionHandler;
+      [mailComposer.dismissRequested subscribeNext:^(RACUnit *) {
+        [self dismissViewControllerAnimated:YES completion:completionHandler];
+      }];
       [self presentViewController:mailComposer animated:YES completion:nil];
     } else {
       completionHandler();
@@ -336,18 +337,6 @@ using namespace spx;
 
 - (RACSignal<RACUnit *> *)dismissRequested {
   return self.viewModel.dismissRequested;
-}
-
-#pragma mark -
-#pragma mark MFMailComposeViewControllerDelegate
-#pragma mark -
-
-- (void)mailComposeController:(MFMailComposeViewController *)controller
-          didFinishWithResult:(MFMailComposeResult __unused)result
-                        error:(NSError * _Nullable __unused)error {
-  [controller dismissViewControllerAnimated:YES completion:^{
-    controller.spx_dismissBlock();
-  }];
 }
 
 @end

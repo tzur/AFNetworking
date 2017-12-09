@@ -3,14 +3,12 @@
 
 #import <MessageUI/MessageUI.h>
 
+#import "SPXFeedbackComposeViewControllerProvider.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
-/// Category that adds a \c dismissBlock property to \c MFMailComposeViewController.
-@interface MFMailComposeViewController (Dismissal)
-
-/// Block invoked after the mail composer is dismissed.
-@property (nonatomic, nullable) LTVoidBlock spx_dismissBlock;
-
+/// Category that implements \c dismissRequested property in \c MFMailComposeViewController.
+@interface MFMailComposeViewController (Dismissal) <SPXMailComposeViewController>
 @end
 
 NS_ASSUME_NONNULL_END
