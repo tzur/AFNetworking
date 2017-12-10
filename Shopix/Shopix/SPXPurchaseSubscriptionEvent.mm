@@ -21,7 +21,8 @@ NS_ASSUME_NONNULL_BEGIN
     _productIdentifier = [subscriptionDescriptor.productIdentifier copy];
     _price = subscriptionDescriptor.priceInfo.price;
     _localeIdentifier = subscriptionDescriptor.priceInfo.localeIdentifier;
-    _currencyCode = [NSLocale localeWithLocaleIdentifier:self.localeIdentifier].currencyCode;
+    _currencyCode = [[NSLocale localeWithLocaleIdentifier:self.localeIdentifier]
+                     objectForKey:NSLocaleCurrencyCode];
     _originalTransactionId = receiptInfo.originalTransactionId;
     _purchaseDuration = purchaseDuration;
     _successfulPurchase = successfulPurchase;
