@@ -125,43 +125,6 @@ context(@"handling errors", ^{
 
     expect(recorder).will.sendValues(@[event]);
   });
-
-  it(@"should send error event when failed to store receipt validation status", ^{
-    NSError *underlyingError = OCMClassMock([NSError class]);
-    OCMStub([receiptValidationStatusCache storeCacheEntry:OCMOCK_ANY
-                                      applicationBundleID:applicationBundeID
-                                                    error:[OCMArg setTo:underlyingError]]);
-    OCMStub([underlyingProvider fetchReceiptValidationStatus])
-        .andReturn([RACSignal return:receiptValidationStatus]);
-    validationStatusProvider =
-        [[BZRCachedReceiptValidationStatusProvider alloc] initWithCache:receiptValidationStatusCache
-                                                           timeProvider:timeProvider
-                                                     underlyingProvider:underlyingProvider
-                                                    applicationBundleID:applicationBundeID];
-    LLSignalTestRecorder *recorder = [validationStatusProvider.eventsSignal testRecorder];
-
-    expect([validationStatusProvider fetchReceiptValidationStatus]).will.complete();
-    expect(recorder).will.matchValue(0, ^BOOL(BZREvent *event) {
-      return event.eventError == underlyingError &&
-          [event.eventType isEqual:$(BZREventTypeNonCriticalError)];
-    });
-  });
-
-  it(@"should send error event when failed to read from cache", ^{
-    NSError *error = [NSError lt_errorWithCode:1337];
-    OCMStub([receiptValidationStatusCache
-             loadCacheEntryOfApplicationWithBundleID:applicationBundeID
-             error:[OCMArg setTo:error]]);
-    validationStatusProvider =
-        [[BZRCachedReceiptValidationStatusProvider alloc] initWithCache:receiptValidationStatusCache
-                                                           timeProvider:timeProvider
-                                                     underlyingProvider:underlyingProvider
-                                                    applicationBundleID:applicationBundeID];
-
-    expect(validationStatusProvider.eventsSignal).will.matchValue(0, ^BOOL(BZREvent *event) {
-      return [event.eventType isEqual:$(BZREventTypeNonCriticalError)] && event.eventError == error;
-    });
-  });
 });
 
 context(@"fetching receipt validation status", ^{

@@ -11,6 +11,7 @@
 #import "BZRFakeAllowedProductsProvider.h"
 #import "BZRFakeCachedReceiptValidationStatusProvider.h"
 #import "BZRFakeReceiptValidationParametersProvider.h"
+#import "BZRKeychainStorage.h"
 #import "BZRPeriodicReceiptValidatorActivator.h"
 #import "BZRProduct+SKProduct.h"
 #import "BZRProductContentManager.h"
@@ -72,17 +73,17 @@ __block id<BZRReceiptValidationParametersProvider> validationParametersProvider;
 __block BZRFakeAllowedProductsProvider *allowedProductsProvider;
 __block id<BZRProductsProvider> netherProductsProvider;
 __block BZRProductsPriceInfoFetcher *priceInfoFetcher;
+__block BZRKeychainStorage *keychainStorage;
 __block NSBundle *bundle;
 __block RACSubject *productsProviderEventsSubject;
 __block RACSubject *receiptValidationStatusProviderEventsSubject;
-__block RACSubject *acquiredViaSubscriptionProviderEventsSubject;
 __block RACSubject *periodicReceiptValidatorActivatorEventsSubject;
 __block RACSubject *netherProductsProviderSubject;
 __block RACSubject *transactionsErrorEventsSubject;
 __block RACSubject *contentFetcherEventsSubject;
 __block RACSubject *unhandledSuccessfulTransactionsSubject;
-__block RACSubject *validationParametersProviderEventsSubject;
 __block RACSubject *priceInfoFetcherEventsSubject;
+__block RACSubject *keychainStorageEventsSubject;
 __block BZRStoreConfiguration *configuration;
 __block BZRStore *store;
 __block NSString *productIdentifier;
@@ -100,6 +101,7 @@ beforeEach(^{
   allowedProductsProvider = [[BZRFakeAllowedProductsProvider alloc] init];
   netherProductsProvider = OCMProtocolMock(@protocol(BZRProductsProvider));
   priceInfoFetcher = OCMClassMock([BZRProductsPriceInfoFetcher class]);
+  keychainStorage = OCMClassMock([BZRKeychainStorage class]);
   bundle = OCMClassMock([NSBundle class]);
   id<BZRProductsVariantSelectorFactory> variantSelectorFactory =
       OCMProtocolMock(@protocol(BZRProductsVariantSelectorFactory));
@@ -109,21 +111,18 @@ beforeEach(^{
 
   productsProviderEventsSubject = [RACSubject subject];
   receiptValidationStatusProviderEventsSubject = [RACSubject subject];
-  acquiredViaSubscriptionProviderEventsSubject = [RACSubject subject];
   periodicReceiptValidatorActivatorEventsSubject = [RACSubject subject];
   netherProductsProviderSubject = [RACSubject subject];
   transactionsErrorEventsSubject = [RACSubject subject];
   contentFetcherEventsSubject = [RACSubject subject];
   unhandledSuccessfulTransactionsSubject = [RACSubject subject];
   priceInfoFetcherEventsSubject = [RACSubject subject];
-  validationParametersProviderEventsSubject = [RACSubject subject];
+  keychainStorageEventsSubject = [RACSubject subject];
 
   OCMStub([productsProvider eventsSignal])
       .andReturn(productsProviderEventsSubject);
   OCMStub([receiptValidationStatusProvider eventsSignal])
       .andReturn(receiptValidationStatusProviderEventsSubject);
-  OCMStub([acquiredViaSubscriptionProvider storageErrorEventsSignal])
-      .andReturn(acquiredViaSubscriptionProviderEventsSubject);
   OCMStub([periodicValidatorActivator errorEventsSignal])
       .andReturn(periodicReceiptValidatorActivatorEventsSubject);
   OCMStub([netherProductsProvider fetchProductList]).andReturn(netherProductsProviderSubject);
@@ -133,8 +132,7 @@ beforeEach(^{
   OCMStub([storeKitFacade unhandledSuccessfulTransactionsSignal])
       .andReturn(unhandledSuccessfulTransactionsSubject);
   OCMStub([priceInfoFetcher eventsSignal]).andReturn(priceInfoFetcherEventsSubject);
-  OCMStub([validationParametersProvider eventsSignal])
-      .andReturn(validationParametersProviderEventsSubject);
+  OCMStub([keychainStorage eventsSignal]).andReturn(keychainStorageEventsSubject);
 
   configuration = OCMClassMock([BZRStoreConfiguration class]);
   OCMStub([configuration productsProvider]).andReturn(productsProvider);
@@ -150,6 +148,7 @@ beforeEach(^{
   OCMStub([configuration allowedProductsProvider]).andReturn(allowedProductsProvider);
   OCMStub([configuration netherProductsProvider]).andReturn(netherProductsProvider);
   OCMStub([configuration priceInfoFetcher]).andReturn(priceInfoFetcher);
+  OCMStub([configuration keychainStorage]).andReturn(keychainStorage);
 
   store = [[BZRStore alloc] initWithConfiguration:configuration];
   productIdentifier = @"foo";
@@ -1422,12 +1421,6 @@ context(@"events signal", ^{
     expect(recorder).will.sendValues(@[event]);
   });
 
-  it(@"should send event sent by acquired via subscription provider", ^{
-    BZREvent *event = OCMClassMock([BZREvent class]);
-    [acquiredViaSubscriptionProviderEventsSubject sendNext:event];
-    expect(recorder).will.sendValue(0, event);
-  });
-
   it(@"should send event sent by periodic receipt validator activator", ^{
     [periodicReceiptValidatorActivatorEventsSubject sendNext:event];
     expect(recorder).will.sendValues(@[event]);
@@ -1450,8 +1443,8 @@ context(@"events signal", ^{
     expect(recorder).will.sendValues(@[event]);
   });
 
-  it(@"should send event sent by validation parameters provider", ^{
-    [validationParametersProviderEventsSubject sendNext:event];
+  it(@"should send event sent by keychain storage", ^{
+    [keychainStorageEventsSubject sendNext:event];
     expect(recorder).will.sendValues(@[event]);
   });
 });
@@ -1479,6 +1472,7 @@ context(@"KVO-compliance", ^{
     OCMStub([configuration allowedProductsProvider]).andReturn(allowedProductsProvider);
     OCMStub([configuration netherProductsProvider]).andReturn(netherProductsProvider);
     OCMStub([configuration priceInfoFetcher]).andReturn(priceInfoFetcher);
+    OCMStub([configuration keychainStorage]).andReturn(keychainStorage);
 
     store = [[BZRStore alloc] initWithConfiguration:configuration];
   });

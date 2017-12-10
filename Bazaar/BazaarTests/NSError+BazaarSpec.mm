@@ -190,4 +190,28 @@ context(@"purchased product not in receipt error", ^{
   });
 });
 
+context(@"error with storage failure", ^{
+  it(@"should return an error with the given values", ^{
+    NSError *underlyingError = [NSError lt_errorWithCode:1337];
+    NSError *error = [NSError bzr_storageErrorWithCode:1337 underlyingError:underlyingError
+        description:@"foo" keychainStorageServiceName:@"baz" keychainStorageKey:@"bar"
+        keychainStorageValue:@[@"value"]];
+
+    expect(error.lt_underlyingError).to.equal(underlyingError);
+    expect(error.lt_description).to.equal(@"foo");
+    expect(error.bzr_keychainStorageServiceName).to.equal(@"baz");
+    expect(error.bzr_keychainStorageKey).to.equal(@"bar");
+    expect(error.bzr_keychainStorageValueDescription).to.equal(@[@"value"].description);
+  });
+
+  it(@"should return an error without the given nil values", ^{
+    NSError *error = [NSError bzr_storageErrorWithCode:1337 underlyingError:nil description:@"foo"
+        keychainStorageServiceName:nil keychainStorageKey:@"bar" keychainStorageValue:nil];
+
+    expect(error.lt_underlyingError).to.beNil();
+    expect(error.bzr_keychainStorageServiceName).to.beNil();
+    expect(error.bzr_keychainStorageValueDescription).to.beNil();
+  });
+});
+
 SpecEnd

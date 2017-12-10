@@ -109,23 +109,22 @@ context(@"cache access", ^{
     BOOL success = [validationStatusCache storeCacheEntry:cacheEntry
                                       applicationBundleID:applicationBundleID error:&returnedError];
 
-    expect(returnedError.code).to.equal(BZRErrorCodeStoringDataToStorageFailed);
+    expect(returnedError.code).to.equal(BZRErrorCodeStoringToKeychainStorageFailed);
     expect(returnedError.lt_underlyingError.code).to.equal(1337);
     expect(success).to.beFalsy();
   });
 
   it(@"should return error if failed to read from storage", ^{
-    NSError *error = [NSError lt_errorWithCode:1337];
+    NSError *storageError = [NSError lt_errorWithCode:1337];
     OCMStub([keychainStorageRoute valueForKey:OCMOCK_ANY serviceName:applicationBundleID
-                                        error:[OCMArg setTo:error]]);
+                                        error:[OCMArg setTo:storageError]]);
     validationStatusCache = [[BZRReceiptValidationStatusCache alloc]
                              initWithKeychainStorage:keychainStorageRoute];
-    NSError *returnedError;
+    NSError *error;
     auto value = [validationStatusCache loadCacheEntryOfApplicationWithBundleID:applicationBundleID
-                                                                          error:&returnedError];
+                                                                          error:&error];
 
-    expect(returnedError.code).to.equal(BZRErrorCodeLoadingDataFromStorageFailed);
-    expect(returnedError.lt_underlyingError.code).to.equal(1337);
+    expect(error).to.equal(storageError);
     expect(value).to.beNil();
   });
 });

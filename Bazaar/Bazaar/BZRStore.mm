@@ -14,6 +14,7 @@
 #import "BZRCachedReceiptValidationStatusProvider.h"
 #import "BZREvent.h"
 #import "BZRExternalTriggerReceiptValidator.h"
+#import "BZRKeychainStorage.h"
 #import "BZRPeriodicReceiptValidatorActivator.h"
 #import "BZRProduct+EnablesProduct.h"
 #import "BZRProduct+SKProduct.h"
@@ -80,6 +81,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Fetcher used to fetch products price info.
 @property (readonly, nonatomic) BZRProductsPriceInfoFetcher *priceInfoFetcher;
 
+/// Storage used to store and retrieve values from keychain storage.
+@property (readonly, nonatomic) BZRKeychainStorage *keychainStorage;
+
 /// Validator used to validate receipt on initialization if required.
 @property (readonly, nonatomic) BZRExternalTriggerReceiptValidator *startupReceiptValidator;
 
@@ -131,6 +135,7 @@ NS_ASSUME_NONNULL_BEGIN
     _allowedProductsProvider = configuration.allowedProductsProvider;
     _netherProductsProvider = configuration.netherProductsProvider;
     _priceInfoFetcher = configuration.priceInfoFetcher;
+    _keychainStorage = configuration.keychainStorage;
     _startupReceiptValidator = [[BZRExternalTriggerReceiptValidator alloc]
                                 initWithValidationStatusProvider:self.validationStatusProvider];
     _downloadedContentProducts = [NSSet set];
@@ -153,7 +158,6 @@ NS_ASSUME_NONNULL_BEGIN
   _eventsSignal = [[[RACSignal merge:@[
     [self.eventsSubject replay],
     self.validationStatusProvider.eventsSignal,
-    self.acquiredViaSubscriptionProvider.storageErrorEventsSignal,
     self.periodicValidatorActivator.errorEventsSignal,
     self.storeKitFacade.transactionsErrorEventsSignal,
     self.productsProvider.eventsSignal,
@@ -161,7 +165,7 @@ NS_ASSUME_NONNULL_BEGIN
     self.allowedProductsProvider.eventsSignal,
     self.priceInfoFetcher.eventsSignal,
     [self.startupReceiptValidator.eventsSignal replay],
-    self.validationParametersProvider.eventsSignal
+    self.keychainStorage.eventsSignal
   ]]
   takeUntil:[self rac_willDeallocSignal]]
   setNameWithFormat:@"%@ -eventsSignal", self];

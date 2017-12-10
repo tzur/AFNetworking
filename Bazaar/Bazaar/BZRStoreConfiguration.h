@@ -4,8 +4,9 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @class BZRAcquiredViaSubscriptionProvider, BZRAllowedProductsProvider,
-    BZRCachedReceiptValidationStatusProvider, BZRPeriodicReceiptValidatorActivator,
-    BZRProductContentManager, BZRProductsPriceInfoFetcher, BZRStoreKitFacade, LTPath;
+    BZRCachedReceiptValidationStatusProvider, BZRKeychainStorage,
+    BZRPeriodicReceiptValidatorActivator, BZRProductContentManager, BZRProductsPriceInfoFetcher,
+    BZRStoreKitFacade, LTPath;
 
 @protocol BZRProductsProvider, BZRProductContentFetcher, BZRProductsVariantSelectorFactory,
     BZRReceiptValidationParametersProvider;
@@ -118,6 +119,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Fetcher used to fetch products price info.
 @property (readonly, nonatomic) BZRProductsPriceInfoFetcher *priceInfoFetcher;
+
+/// Storage used to store and retrieve values from keychain storage.
+@property (readonly, nonatomic) BZRKeychainStorage *keychainStorage;
 
 @end
 

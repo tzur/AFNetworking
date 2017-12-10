@@ -104,7 +104,7 @@ NSString * const kValidationDateKey = @"validationDate";
   if (!success && error) {
     auto description =
         [NSString stringWithFormat:@"Failed to store the value: %@ for key: %@", value, key];
-    *error = [NSError lt_errorWithCode:BZRErrorCodeStoringDataToStorageFailed
+    *error = [NSError lt_errorWithCode:BZRErrorCodeStoringToKeychainStorageFailed
                        underlyingError:storageError description:@"%@", description];
   }
 
@@ -117,19 +117,12 @@ NSString * const kValidationDateKey = @"validationDate";
 
 - (nullable BZRReceiptValidationStatusCacheEntry *)loadCacheEntryOfApplicationWithBundleID:
     (NSString *)applicationBundleID error:(NSError * __autoreleasing *)error {
-  NSError *underlyingError;
   NSDictionary<NSString *, id> * _Nullable cachedReceiptValidationStatus =
       (NSDictionary *)[self.keychainStorageRoute
                        valueForKey:kCachedReceiptValidationStatusStorageKey
-                       serviceName:applicationBundleID error:&underlyingError];
+                       serviceName:applicationBundleID error:error];
 
   if (!cachedReceiptValidationStatus) {
-    if (error && underlyingError) {
-      auto description = [NSString stringWithFormat:@"Failed to load value for key: %@",
-                          kCachedReceiptValidationStatusStorageKey];
-      *error = [NSError lt_errorWithCode:BZRErrorCodeLoadingDataFromStorageFailed
-                         underlyingError:underlyingError description:@"%@", description];
-    }
     return nil;
   }
   return [[BZRReceiptValidationStatusCacheEntry alloc]

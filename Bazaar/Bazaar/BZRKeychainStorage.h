@@ -1,29 +1,30 @@
 // Copyright (c) 2016 Lightricks. All rights reserved.
 // Created by Hagai Weinfeld.
 
-@protocol BZRKeychainHandler;
+#import "BZREventEmitter.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-/// Wrapper class for \c BZRKeychainHandler conforming classes that allows the storage of values
-/// that conform to \c NSSecureCoding.
-@interface BZRKeychainStorage : NSObject
+@class UICKeyChainStore;
+
+/// Wrapper class for \c UICKeyChainStore conforming classes that allows the storage of values that
+///  conform to \c NSSecureCoding.
+@interface BZRKeychainStorage : NSObject <BZREventEmitter>
 
 - (instancetype)init NS_UNAVAILABLE;
 
-/// Initializes with new underlying \c BZRKeychainHandler with the specified \c accessGroup,
-/// a key used to share access to the same storage through different applications, and \c service
+/// Initializes with new underlying \c UICKeyChainStore with the specified \c accessGroup, a key
+/// used to share access to the same storage through different applications, and \c service
 /// initialized to the default service.
 - (instancetype)initWithAccessGroup:(nullable NSString *)accessGroup;
 
-/// Initializes with new underlying \c BZRKeychainHandler with the specified \c accessGroup,
+/// Initializes with new underlying \c UICKeyChainStore with the specified \c accessGroup,
 /// a key used to share access to the same storage through different applications, and with
 /// \c service, used to access an application's partition in the keychain storage.
 - (instancetype)initWithAccessGroup:(nullable NSString *)accessGroup service:(NSString *)service;
 
-/// Initializes with a \c BZRKeychainHandler conforming class to be used for keychain storage.
-- (instancetype)initWithKeychainHandler:(id<BZRKeychainHandler>)keychainHandler
-      NS_DESIGNATED_INITIALIZER;
+/// Initializes with \c keychainStore to be used for keychain storage.
+- (instancetype)initWithKeychainStore:(UICKeyChainStore *)keychainStore NS_DESIGNATED_INITIALIZER;
 
 /// Value for the given \c key if it exists or \c nil otherwise. \c error is set with an appropriate
 /// error on failure.

@@ -46,10 +46,6 @@ NS_ASSUME_NONNULL_BEGIN
 /// an arbitrary thread.
 @property (readonly, nonatomic) NSSet<NSString *> *productsAcquiredViaSubscription;
 
-/// Sends storage errors as \c BZREvent encompassing \c NSError. The signal completes when the
-/// receiver is deallocated. The signal doesn't err.
-@property (readonly, nonatomic) RACSignal<BZREvent *> *storageErrorEventsSignal;
-
 @end
 
 NS_ASSUME_NONNULL_END

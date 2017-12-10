@@ -28,9 +28,6 @@ NS_ASSUME_NONNULL_BEGIN
 /// Current application's bundle ID.
 @property (readonly, nonatomic) NSString *applicationBundleID;
 
-/// Subject used to send events with.
-@property (readonly, nonatomic) RACSubject<BZREvent *> *eventsSubject;
-
 /// Latest \c BZRReceiptValidationStatus fetched with \c underlyingProvider.
 @property (strong, readwrite, nonatomic, nullable)
     BZRReceiptValidationStatus *receiptValidationStatus;
@@ -57,12 +54,7 @@ NS_ASSUME_NONNULL_BEGIN
     _timeProvider = timeProvider;
     _underlyingProvider = underlyingProvider;
     _applicationBundleID = applicationBundleID;
-    _eventsSubject = [RACSubject subject];
-    _eventsSignal = [[RACSignal merge:@[
-      [self.eventsSubject replayLast],
-      self.underlyingProvider.eventsSignal
-    ]]
-    takeUntil:[self rac_willDeallocSignal]];
+    _eventsSignal = [self.underlyingProvider.eventsSignal takeUntil:[self rac_willDeallocSignal]];
 
     [self loadReceiptValidationStatus];
   }
@@ -74,16 +66,11 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 - (void)loadReceiptValidationStatus {
-  NSError *underlyingError;
   BZRReceiptValidationStatusCacheEntry * _Nullable receiptStatusCacheEntry =
       [self.receiptValidationStatusCache
-       loadCacheEntryOfApplicationWithBundleID:self.applicationBundleID
-       error:&underlyingError];
+       loadCacheEntryOfApplicationWithBundleID:self.applicationBundleID error:nil];
 
-  if (!receiptStatusCacheEntry && underlyingError) {
-    [self.eventsSubject sendNext:
-     [[BZREvent alloc] initWithType:$(BZREventTypeNonCriticalError) eventError:underlyingError]];
-  } else {
+  if (receiptStatusCacheEntry) {
     @synchronized (self) {
       self.receiptValidationStatus = receiptStatusCacheEntry.receiptValidationStatus;
       self.lastReceiptValidationDate = receiptStatusCacheEntry.cachingDateTime;
@@ -100,14 +87,8 @@ NS_ASSUME_NONNULL_BEGIN
   auto receiptStatusCacheEntry = [[BZRReceiptValidationStatusCacheEntry alloc]
                                   initWithReceiptValidationStatus:receiptValidationStatus
                                   cachingDateTime:cachingDateTime];
-  NSError *error;
-  BOOL success =
-      [self.receiptValidationStatusCache storeCacheEntry:receiptStatusCacheEntry
-                                     applicationBundleID:self.applicationBundleID error:&error];
-  if (!success && error) {
-    [self.eventsSubject sendNext:
-     [[BZREvent alloc] initWithType:$(BZREventTypeNonCriticalError) eventError:error]];
-  }
+  [self.receiptValidationStatusCache storeCacheEntry:receiptStatusCacheEntry
+                                 applicationBundleID:self.applicationBundleID error:nil];
   @synchronized (self) {
     self.receiptValidationStatus = receiptStatusCacheEntry.receiptValidationStatus;
     self.lastReceiptValidationDate = receiptStatusCacheEntry.cachingDateTime;

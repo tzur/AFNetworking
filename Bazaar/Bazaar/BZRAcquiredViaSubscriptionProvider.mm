@@ -15,9 +15,6 @@ NS_ASSUME_NONNULL_BEGIN
 /// Storage used to persist the set of products that were acquired via subscription.
 @property (readonly, nonatomic) BZRKeychainStorage *keychainStorage;
 
-/// Subject used to send storage errors as values.
-@property (readonly, nonatomic) RACSubject<NSError *> *storageErrorsSubject;
-
 /// Set of products that were acquired via subscription.
 @property (strong, readwrite, nonatomic) NSSet<NSString *> *productsAcquiredViaSubscription;
 
@@ -37,7 +34,6 @@ NSString * const kProductsAcquiredViaSubscriptionSetKey = @"productsAcquiredViaS
 - (instancetype)initWithKeychainStorage:(BZRKeychainStorage *)keychainStorage {
   if (self = [super init]) {
     _keychainStorage = keychainStorage;
-    _storageErrorsSubject = [RACSubject subject];
     _productsAcquiredViaSubscription = [NSSet set];
     [self refreshProductsAcquiredViaSubscription:nil];
   }
@@ -70,23 +66,16 @@ NSString * const kProductsAcquiredViaSubscriptionSetKey = @"productsAcquiredViaS
 - (void)setProductsAcquiredViaSubscription:(NSSet<NSString *> *)productsAcquiredViaSubscription {
   @synchronized (self) {
     _productsAcquiredViaSubscription = productsAcquiredViaSubscription;
-    NSError *error;
-    BOOL success = [self.keychainStorage setValue:productsAcquiredViaSubscription
-                                           forKey:kProductsAcquiredViaSubscriptionSetKey
-                                            error:&error];
-    if (!success) {
-      [self.storageErrorsSubject sendNext:
-          [NSError lt_errorWithCode:BZRErrorCodeStoringDataToStorageFailed underlyingError:error
-                        description:@"Failed to store products acquired via subscription set to "
-           "secure storage" ]];
-    }
+    [self.keychainStorage setValue:productsAcquiredViaSubscription
+                            forKey:kProductsAcquiredViaSubscriptionSetKey
+                             error:nil];
   }
 }
 
 - (nullable NSSet<NSString *> *)refreshProductsAcquiredViaSubscription:
     (NSError * __autoreleasing *)error {
   @synchronized (self) {
-    NSSet<NSString *> *productsAcquiredViaSubscription =
+    NSSet<NSString *> * _Nullable productsAcquiredViaSubscription =
         [self productsAcquiredViaSubscriptionFromCache:error];
 
     if (productsAcquiredViaSubscription) {
@@ -102,31 +91,20 @@ NSString * const kProductsAcquiredViaSubscriptionSetKey = @"productsAcquiredViaS
 
 - (nullable NSSet<NSString *> *)productsAcquiredViaSubscriptionFromCache:
     (NSError * __autoreleasing *)error {
-  NSError *underlyingError;
-  NSSet<NSString *> *productsAcquiredViaSubscription =
+  NSError *storageError;
+  NSSet<NSString *> * _Nullable productsAcquiredViaSubscription =
       [self.keychainStorage valueOfClass:[NSSet class]
                                   forKey:kProductsAcquiredViaSubscriptionSetKey
-                                   error:&underlyingError];
-  if (underlyingError) {
-    [self.storageErrorsSubject sendNext:underlyingError];
+                                   error:&storageError];
+  if (storageError) {
     if (error) {
-      *error = underlyingError;
+      *error = storageError;
     }
 
     return nil;
   }
 
   return productsAcquiredViaSubscription ?: [NSSet set];
-}
-
-#pragma mark -
-#pragma mark Storage errors
-#pragma mark -
-
-- (RACSignal<BZREvent *> *)storageErrorEventsSignal {
-  return [self.storageErrorsSubject map:^BZREvent *(NSError *eventError) {
-    return [[BZREvent alloc] initWithType:$(BZREventTypeNonCriticalError) eventError:eventError];
-  }];
 }
 
 #pragma mark -

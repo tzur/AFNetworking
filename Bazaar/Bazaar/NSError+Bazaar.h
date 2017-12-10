@@ -60,6 +60,18 @@ NS_ASSUME_NONNULL_BEGIN
 + (instancetype)bzr_errorWithContentFetcherParameters:(BZRContentFetcherParameters *)parameters
                                       underlyingError:(NSError *)underlyingError;
 
+/// Creates and returns an instance of \c NSError with the given error \c code. \c underlyingError
+/// contains the error of the underlying storage module. \c description describes the reason for
+/// failure. \c keychainStorageServiceName is the name of the partition to which storing or
+/// retrieving failed. \c keychainStorageKey is the key to the data for which storing or
+/// retrieving failed. \c keychainStorageValue is a value which was failed to be stored.
++ (instancetype)bzr_storageErrorWithCode:(NSInteger)code
+                         underlyingError:(nullable NSError *)underlyingError
+                             description:(NSString *)description
+              keychainStorageServiceName:(nullable NSString *)keychainStorageServiceName
+                      keychainStorageKey:(NSString *)keychainStorageKey
+                    keychainStorageValue:(nullable id<NSSecureCoding>)keychainStorageValue;
+
 /// Exception object wrapped by this error.
 @property (readonly, nonatomic, nullable) NSException *bzr_exception;
 
@@ -90,6 +102,15 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Parameters of the content whose fetching has failed.
 @property (readonly, nonatomic, nullable) BZRContentFetcherParameters *bzr_contentFetcherParameters;
+
+/// Name of the partition to which the data was being stored or retrieved from.
+@property (readonly, nonatomic, nullable) NSString *bzr_keychainStorageServiceName;
+
+/// Key of the data that was being stored or retrieved.
+@property (readonly, nonatomic, nullable) NSString *bzr_keychainStorageKey;
+
+/// Value that was being stored.
+@property (readonly, nonatomic, nullable) NSString *bzr_keychainStorageValueDescription;
 
 @end
 

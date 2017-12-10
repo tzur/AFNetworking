@@ -19,6 +19,10 @@ NSString * const kBZRErrorSecondsUntilSubscriptionInvalidationKey =
 NSString * const kBZRErrorLastReceiptValidationDateKey = @"BZRErrorLastReceiptValidationDate";
 NSString * const kBZRErrorPurchasedProductIdentifierKey = @"BZRErrorPurchasedProductIdentifier";
 NSString * const kBZRErrorContentFetcherParametersKey = @"BZRErrorContentFetcherParameters";
+NSString * const kBZRErrorKeychainStorageServiceNameKey = @"BZRErrorKeychainStorageServiceName";
+NSString * const kBZRErrorKeychainStorageKeyKey = @"BZRKeychainStorageKey";
+NSString * const kBZRErrorKeychainStorageValueDescriptionKey =
+    @"BZRKeychainStorageValueDescription";
 
 /// Category that adds method for getting a description of the transaction.
 @interface SKPaymentTransaction (Bazaar)
@@ -140,6 +144,29 @@ NSString * const kBZRErrorContentFetcherParametersKey = @"BZRErrorContentFetcher
   return [self lt_errorWithCode:BZRErrorCodeFetchingProductContentFailed userInfo:userInfo];
 }
 
++ (instancetype)bzr_storageErrorWithCode:(NSInteger)code
+                         underlyingError:(nullable NSError *)underlyingError
+                             description:(NSString *)description
+              keychainStorageServiceName:(nullable NSString *)keychainStorageServiceName
+                      keychainStorageKey:(NSString *)keychainStorageKey
+                    keychainStorageValue:(nullable id<NSSecureCoding>)keychainStorageValue {
+  auto underlyingErrorDictionary = underlyingError ? @{NSUnderlyingErrorKey: underlyingError} : @{};
+  auto serviceNameDictionary = keychainStorageServiceName ?
+      @{kBZRErrorKeychainStorageServiceNameKey: [keychainStorageServiceName copy]} : @{};
+  auto _Nullable valueDescription = ((NSObject *)keychainStorageValue).description;
+  auto valueDictionary = valueDescription ?
+      @{kBZRErrorKeychainStorageValueDescriptionKey: valueDescription} : @{};
+
+  NSDictionary *userInfo = [[[@{
+    kLTErrorDescriptionKey: description,
+    kBZRErrorKeychainStorageKeyKey: keychainStorageKey
+  }
+  mtl_dictionaryByAddingEntriesFromDictionary:underlyingErrorDictionary]
+  mtl_dictionaryByAddingEntriesFromDictionary:serviceNameDictionary]
+  mtl_dictionaryByAddingEntriesFromDictionary:valueDictionary];
+  return [self lt_errorWithCode:code userInfo:userInfo];
+}
+
 - (nullable NSException *)bzr_exception {
   return self.userInfo[kBZRErrorExceptionKey];
 }
@@ -178,6 +205,18 @@ NSString * const kBZRErrorContentFetcherParametersKey = @"BZRErrorContentFetcher
 
 - (nullable NSString *)bzr_contentFetcherParameters {
   return self.userInfo[kBZRErrorContentFetcherParametersKey];
+}
+
+- (nullable NSString *)bzr_keychainStorageServiceName {
+  return self.userInfo[kBZRErrorKeychainStorageServiceNameKey];
+}
+
+- (nullable NSString *)bzr_keychainStorageKey {
+  return self.userInfo[kBZRErrorKeychainStorageKeyKey];
+}
+
+- (nullable NSString *)bzr_keychainStorageValueDescription {
+  return self.userInfo[kBZRErrorKeychainStorageValueDescriptionKey];
 }
 
 @end
