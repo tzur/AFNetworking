@@ -32,6 +32,8 @@
 		194FF50F1FA8BB4D008879E7 /* LTUIInterruptionHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = 194FF4EA1FA8B9B6008879E7 /* LTUIInterruptionHandler.h */; };
 		194FF5101FA8BB56008879E7 /* XCUIElement+Interactions.h in Headers */ = {isa = PBXBuildFile; fileRef = 194FF4E81FA8B9B6008879E7 /* XCUIElement+Interactions.h */; };
 		194FF5111FA8BB5F008879E7 /* XCUIElement+CollectionView.h in Headers */ = {isa = PBXBuildFile; fileRef = 194FF4E91FA8B9B6008879E7 /* XCUIElement+CollectionView.h */; };
+		1984BE421FDD65EF00873DA0 /* XCUIElement+ElementState.h in Headers */ = {isa = PBXBuildFile; fileRef = 1984BE401FDD65EF00873DA0 /* XCUIElement+ElementState.h */; };
+		1984BE431FDD65EF00873DA0 /* XCUIElement+ElementState.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1984BE411FDD65EF00873DA0 /* XCUIElement+ElementState.mm */; };
 		19C886891FC43069009F147E /* LTKeyValuePersistentStorage.h in Headers */ = {isa = PBXBuildFile; fileRef = 19C886721FC43069009F147E /* LTKeyValuePersistentStorage.h */; };
 		19C8868C1FC4308D009F147E /* LTFakeKeyValuePersistentStorage.h in Headers */ = {isa = PBXBuildFile; fileRef = 19C8868A1FC4308D009F147E /* LTFakeKeyValuePersistentStorage.h */; };
 		19C8868D1FC4308D009F147E /* LTFakeKeyValuePersistentStorage.mm in Sources */ = {isa = PBXBuildFile; fileRef = 19C8868B1FC4308D009F147E /* LTFakeKeyValuePersistentStorage.mm */; };
@@ -503,6 +505,8 @@
 		194FF4EE1FA8B9B6008879E7 /* LTUIInterruptionHandler.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTUIInterruptionHandler.mm; sourceTree = "<group>"; };
 		194FF4FC1FA8BA77008879E7 /* libLTKitTestUtils.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libLTKitTestUtils.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		194FF5141FA8BC8B008879E7 /* LTKitTestUtils-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "LTKitTestUtils-Prefix.pch"; sourceTree = "<group>"; };
+		1984BE401FDD65EF00873DA0 /* XCUIElement+ElementState.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "XCUIElement+ElementState.h"; sourceTree = "<group>"; };
+		1984BE411FDD65EF00873DA0 /* XCUIElement+ElementState.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "XCUIElement+ElementState.mm"; sourceTree = "<group>"; };
 		19C886721FC43069009F147E /* LTKeyValuePersistentStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTKeyValuePersistentStorage.h; sourceTree = "<group>"; };
 		19C8868A1FC4308D009F147E /* LTFakeKeyValuePersistentStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTFakeKeyValuePersistentStorage.h; sourceTree = "<group>"; };
 		19C8868B1FC4308D009F147E /* LTFakeKeyValuePersistentStorage.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTFakeKeyValuePersistentStorage.mm; sourceTree = "<group>"; };
@@ -786,6 +790,8 @@
 				194FF4E71FA8B9B6008879E7 /* LTUITestUtils.mm */,
 				194FF4E91FA8B9B6008879E7 /* XCUIElement+CollectionView.h */,
 				194FF4ED1FA8B9B6008879E7 /* XCUIElement+CollectionView.mm */,
+				1984BE401FDD65EF00873DA0 /* XCUIElement+ElementState.h */,
+				1984BE411FDD65EF00873DA0 /* XCUIElement+ElementState.mm */,
 				194FF4E81FA8B9B6008879E7 /* XCUIElement+Interactions.h */,
 				194FF4EC1FA8B9B6008879E7 /* XCUIElement+Interactions.mm */,
 			);
@@ -1363,6 +1369,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				190970FE1FBD6D5800AD5B91 /* EXPMatchers+beBlock.h in Headers */,
+				1984BE421FDD65EF00873DA0 /* XCUIElement+ElementState.h in Headers */,
 				190971031FBD6D5800AD5B91 /* EXPMatchers+beCloseToPoint.h in Headers */,
 				190971041FBD6D5800AD5B91 /* LTEqualityExamples.h in Headers */,
 				194FF50F1FA8BB4D008879E7 /* LTUIInterruptionHandler.h in Headers */,
@@ -1765,6 +1772,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1984BE431FDD65EF00873DA0 /* XCUIElement+ElementState.mm in Sources */,
 				194FF5061FA8BAF4008879E7 /* LTUIInterruptionHandler.mm in Sources */,
 				19D95C301FBAD3C800357EB9 /* LTSpectaTemporaryPathHook.mm in Sources */,
 				190970FD1FBD6D5800AD5B91 /* EXPMatchers+beCloseToPoint.mm in Sources */,
