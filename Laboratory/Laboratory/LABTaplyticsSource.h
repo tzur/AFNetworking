@@ -62,6 +62,9 @@ NS_ASSUME_NONNULL_BEGIN
                        storage:(id<LTKeyValuePersistentStorage>)storage
     NS_DESIGNATED_INITIALIZER;
 
+/// Underlying Taplytics SDK object. This object represents an already functional Taplytics service.
+@property (readonly, nonatomic) id<LABTaplytics> taplytics;
+
 @end
 
 NS_ASSUME_NONNULL_END
