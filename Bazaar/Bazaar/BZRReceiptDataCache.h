@@ -15,17 +15,21 @@ NS_ASSUME_NONNULL_BEGIN
 /// multiple applications. \c currentApplicationBundleID is the bundle ID of the current
 /// application.
 - (instancetype)initWithKeychainStorageRoute:(BZRKeychainStorageRoute *)keychainStorageRoute
-                  currentApplicationBundleID:(NSString *)currentApplicationBundleID
     NS_DESIGNATED_INITIALIZER;
 
-/// Stores the receipt data of the current application to the partition of the current application.
-/// If the receipt data is \c nil, it will not be stored.
-- (void)storeReceiptData;
+/// Stores the \c receiptData of the application with the bundle ID specified by
+/// \c applicationBundleID, and returns \c YES on success. If there was an error \c NO will be
+/// returned and \c error will be populated with an appropriate error.
+- (BOOL)storeReceiptData:(nullable NSData *)receiptData
+     applicationBundleID:(NSString *)applicationBundleID error:(NSError **)error;
 
-/// Returns the receipt data of the application with \c bundleID. If the receipt data was not found
-/// \c nil will be returned. If there was an error \c nil will be returned and \c error will be
-/// popuplated with an appropriate error.
-- (nullable NSData *)receiptDataForBundleID:(NSString *)bundleID error:(NSError **)error;
+/// Loads and returns the receipt data of the application with \c applicationBundleID. If there was
+/// an error \c nil will be returned and \c error will be populated with an appropriate error.
+///
+/// @note If the value doesn't exist in the storage, a \c nil value will be returned, thus \c nil
+/// might be returned even if there was no error.
+- (nullable NSData *)receiptDataForApplicationBundleID:(NSString *)applicationBundleID
+                                                 error:(NSError **)error;
 
 @end
 

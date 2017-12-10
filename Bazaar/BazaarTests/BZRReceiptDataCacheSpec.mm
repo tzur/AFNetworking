@@ -8,15 +8,12 @@
 SpecBegin(BZRReceiptDataCache)
 
 __block BZRKeychainStorageRoute *keychainStorageRoute;
-__block NSString *currentApplicationBundleID;
 __block BZRReceiptDataCache *receiptDataCache;
 
 beforeEach(^{
   keychainStorageRoute = OCMClassMock([BZRKeychainStorageRoute class]);
-  currentApplicationBundleID = @"foo";
   receiptDataCache =
-      [[BZRReceiptDataCache alloc] initWithKeychainStorageRoute:keychainStorageRoute
-                                     currentApplicationBundleID:currentApplicationBundleID];
+      [[BZRReceiptDataCache alloc] initWithKeychainStorageRoute:keychainStorageRoute];
 });
 
 context(@"retrieving receipt data from storage", ^{
@@ -26,18 +23,18 @@ context(@"retrieving receipt data from storage", ^{
     OCMStub([keychainStorageRoute valueForKey:OCMOCK_ANY serviceName:@"bar" error:nil])
         .andReturn(expectedData);
 
-    auto data = [receiptDataCache receiptDataForBundleID:@"bar" error:nil];
+    auto data = [receiptDataCache receiptDataForApplicationBundleID:@"bar" error:nil];
 
     expect(data).to.equal(expectedData);
   });
 
-  it(@"should return error in case keychain storage route returned error", ^{
+  it(@"should set error and return nil in case keychain storage route returned error", ^{
     NSError *storageError = [NSError lt_errorWithCode:1337];
     OCMStub([keychainStorageRoute valueForKey:OCMOCK_ANY serviceName:@"bar"
                                         error:[OCMArg setTo:storageError]]);
 
     NSError *error;
-    auto data = [receiptDataCache receiptDataForBundleID:@"bar" error:&error];
+    auto data = [receiptDataCache receiptDataForApplicationBundleID:@"bar" error:&error];
 
     expect(data).to.beNil();
     expect(error).to.equal(storageError);
@@ -45,26 +42,31 @@ context(@"retrieving receipt data from storage", ^{
 });
 
 context(@"writing receipt data to storage", ^{
-  it(@"should store non-nil receipt data to storage", ^{
-    NSURL *receiptURL = [[NSBundle mainBundle] appStoreReceiptURL];
+  it(@"should return YES when storing receipt data to storage was successful", ^{
+    OCMStub([keychainStorageRoute setValue:OCMOCK_ANY forKey:OCMOCK_ANY serviceName:@"foo"
+                                     error:[OCMArg anyObjectRef]]).andReturn(YES);
+
     NSData *receiptData = [@"Receipt Data" dataUsingEncoding:NSUTF8StringEncoding];
-    id mockData = OCMClassMock([NSData class]);
-    OCMStub([mockData dataWithContentsOfURL:receiptURL]).andReturn(receiptData);
+    NSError *error;
+    BOOL success = [receiptDataCache storeReceiptData:receiptData applicationBundleID:@"foo"
+                                                error:&error];
 
-    [receiptDataCache storeReceiptData];
-
-    OCMVerify([keychainStorageRoute setValue:receiptData forKey:OCMOCK_ANY serviceName:@"foo"
-                                       error:[OCMArg anyObjectRef]]);
+    expect(success).to.beTruthy();
+    expect(error).to.beNil();
   });
 
-  it(@"should not store nil receipt data to storage", ^{
-    id mockData = OCMClassMock([NSData class]);
-    OCMStub([mockData dataWithContentsOfURL:OCMOCK_ANY]);
+  it(@"should set error and return NO when there was an error storing receipt data to storage", ^{
+    NSError *storageError = [NSError lt_errorWithCode:1337];
+    OCMStub([keychainStorageRoute setValue:OCMOCK_ANY forKey:OCMOCK_ANY serviceName:@"foo"
+                                     error:[OCMArg setTo:storageError]]);
 
-    OCMReject([keychainStorageRoute setValue:OCMOCK_ANY forKey:OCMOCK_ANY serviceName:@"foo"
-                                       error:[OCMArg anyObjectRef]]);
+    NSData *receiptData = [@"Receipt Data" dataUsingEncoding:NSUTF8StringEncoding];
+    NSError *error;
+    BOOL success = [receiptDataCache storeReceiptData:receiptData applicationBundleID:@"foo"
+                                                error:&error];
 
-    [receiptDataCache storeReceiptData];
+    expect(success).to.beFalsy();
+    expect(error).to.equal(storageError);
   });
 });
 

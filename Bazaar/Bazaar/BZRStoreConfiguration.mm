@@ -23,6 +23,7 @@
 #import "BZRProductsWithDiscountsProvider.h"
 #import "BZRProductsWithPriceInfoProvider.h"
 #import "BZRProductsWithVariantsProvider.h"
+#import "BZRReceiptDataCache.h"
 #import "BZRReceiptValidationParametersProvider.h"
 #import "BZRReceiptValidationStatusCache.h"
 #import "BZRReceiptValidationStatusProvider.h"
@@ -77,17 +78,22 @@ NS_ASSUME_NONNULL_BEGIN
         [[BZRReceiptValidationParametersProvider alloc]
          initWithKeychainStorage:self.keychainStorage];
     BZRTimeProvider *timeProvider = [[BZRTimeProvider alloc] init];
-    BZRValidatedReceiptValidationStatusProvider *validatorProvider =
-        [[BZRValidatedReceiptValidationStatusProvider alloc]
-         initWithValidationParametersProvider:self.validationParametersProvider];
-    BZRModifiedExpiryReceiptValidationStatusProvider *modifiedExpiryProvider =
-        [[BZRModifiedExpiryReceiptValidationStatusProvider alloc] initWithTimeProvider:timeProvider
-         expiredSubscriptionGracePeriod:expiredSubscriptionGracePeriod
-         underlyingProvider:validatorProvider];
 
     BZRKeychainStorageRoute *keychainStorageRoute =
         [[BZRKeychainStorageRoute alloc] initWithAccessGroup:keychainAccessGroup
                                                 serviceNames:@[applicationBundleID].lt_set];
+    BZRReceiptDataCache *receiptDataCache =
+        [[BZRReceiptDataCache alloc] initWithKeychainStorageRoute:keychainStorageRoute];
+
+    BZRValidatedReceiptValidationStatusProvider *validatorProvider =
+        [[BZRValidatedReceiptValidationStatusProvider alloc]
+         initWithValidationParametersProvider:self.validationParametersProvider
+         receiptDataCache:receiptDataCache currentApplicationBundleID:applicationBundleID];
+
+    BZRModifiedExpiryReceiptValidationStatusProvider *modifiedExpiryProvider =
+        [[BZRModifiedExpiryReceiptValidationStatusProvider alloc] initWithTimeProvider:timeProvider
+         expiredSubscriptionGracePeriod:expiredSubscriptionGracePeriod
+         underlyingProvider:validatorProvider];
 
     BZRReceiptValidationStatusCache *receiptValidationStatusCache =
         [[BZRReceiptValidationStatusCache alloc] initWithKeychainStorage:keychainStorageRoute];
