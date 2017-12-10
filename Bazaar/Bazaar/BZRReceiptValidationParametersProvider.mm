@@ -3,8 +3,8 @@
 
 #import "BZRReceiptValidationParametersProvider.h"
 
-#import "BZREvent.h"
-#import "BZRKeychainStorage+TypeSafety.h"
+#import "BZRAppStoreLocaleCache.h"
+#import "BZRReceiptDataCache.h"
 #import "BZRReceiptValidationParameters.h"
 #import "NSErrorCodes+Bazaar.h"
 
@@ -12,21 +12,29 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface BZRReceiptValidationParametersProvider ()
 
-/// Keychain storage used to save App Store locale.
-@property (readonly, nonatomic) BZRKeychainStorage *keychainStorage;
+/// Cache used to store and retrieve App Store locale of multiple applications.
+@property (readonly, nonatomic) BZRAppStoreLocaleCache *appStoreLocaleCache;
+
+/// Cache used to store and retrieve receipt data of multiple applications.
+@property (readonly, nonatomic) BZRReceiptDataCache *receiptDataCache;
+
+/// Bundle ID of the current application.
+@property (readonly, nonatomic) NSString *currentApplicationBundleID;
 
 @end
 
 @implementation BZRReceiptValidationParametersProvider
 
-/// Key to which the App Store locale is written to.
-NSString * const kAppStoreLocaleKey = @"appStoreLocale";
-
 @synthesize appStoreLocale = _appStoreLocale;
 
-- (instancetype)initWithKeychainStorage:(BZRKeychainStorage *)keychainStorage {
+- (instancetype)initWithAppStoreLocaleCache:(BZRAppStoreLocaleCache *)appStoreLocaleCache
+                           receiptDataCache:(BZRReceiptDataCache *)receiptDataCache
+                 currentApplicationBundleID:(NSString *)currentApplicationBundleID {
   if (self = [super init]) {
-    _keychainStorage = keychainStorage;
+    _appStoreLocaleCache = appStoreLocaleCache;
+    _receiptDataCache = receiptDataCache;
+    _currentApplicationBundleID = [currentApplicationBundleID copy];
+
     [self loadAppStoreLocaleFromStorage];
   }
 
@@ -34,21 +42,39 @@ NSString * const kAppStoreLocaleKey = @"appStoreLocale";
 }
 
 - (void)loadAppStoreLocaleFromStorage {
-  NSString * _Nullable appStoreLocaleIdentifier =
-      [self.keychainStorage valueOfClass:NSString.class forKey:kAppStoreLocaleKey
-                                   error:nil];
+  NSLocale * _Nullable appStoreLocale =
+      [self.appStoreLocaleCache appStoreLocaleForBundleID:self.currentApplicationBundleID
+                                                    error:nil];
 
-  if (appStoreLocaleIdentifier) {
-    @synchronized(self) {
-      [self willChangeValueForKey:@keypath(self, appStoreLocale)];
-      _appStoreLocale = [NSLocale localeWithLocaleIdentifier:appStoreLocaleIdentifier];
-      [self didChangeValueForKey:@keypath(self, appStoreLocale)];
-    }
+  if (appStoreLocale) {
+      _appStoreLocale = appStoreLocale;
   }
 }
 
-- (nullable BZRReceiptValidationParameters *)receiptValidationParameters {
-  return [BZRReceiptValidationParameters defaultParametersWithLocale:self.appStoreLocale];
+- (nullable BZRReceiptValidationParameters *)receiptValidationParametersForApplication:
+    (NSString *)applicationBundleID {
+  NSUUID * _Nullable deviceID = [[UIDevice currentDevice] identifierForVendor];
+  NSData * _Nullable receiptData;
+  NSLocale * _Nullable appStoreLocale;
+
+  if ([applicationBundleID isEqualToString:self.currentApplicationBundleID]) {
+    receiptData = [NSData dataWithContentsOfURL:[[NSBundle mainBundle] appStoreReceiptURL]];
+    appStoreLocale = self.appStoreLocale;
+  } else {
+    receiptData = [self.receiptDataCache receiptDataForApplicationBundleID:applicationBundleID
+                                                                     error:nil];
+    appStoreLocale = [self.appStoreLocaleCache appStoreLocaleForBundleID:applicationBundleID
+                                                                   error:nil];
+  }
+
+  if (!receiptData) {
+    return nil;
+  }
+
+  return [[BZRReceiptValidationParameters alloc]
+          initWithCurrentApplicationBundleID:self.currentApplicationBundleID
+          applicationBundleID:applicationBundleID receiptData:receiptData deviceID:deviceID
+          appStoreLocale:appStoreLocale userID:nil];
 }
 
 - (nullable NSLocale *)appStoreLocale {
@@ -69,8 +95,9 @@ NSString * const kAppStoreLocaleKey = @"appStoreLocale";
 }
 
 - (void)storeAppStoreLocaleToStorage:(nullable NSLocale *)appStoreLocale {
-  [self.keychainStorage setValue:[appStoreLocale localeIdentifier] forKey:kAppStoreLocaleKey
-                           error:nil];
+  [self.appStoreLocaleCache storeAppStoreLocale:appStoreLocale
+                                       bundleID:self.currentApplicationBundleID
+                                          error:nil];
 }
 
 @end

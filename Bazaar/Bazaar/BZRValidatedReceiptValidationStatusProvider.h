@@ -15,8 +15,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)init NS_UNAVAILABLE;
 
-/// Initializes with \c receiptValidator set to \c [[BZRValidatricksReceiptValidator alloc] init]
-/// and with \c validationParametersProvider.
+/// Initializes with the given \c validationParametersProvider, \c receiptDataCache
+/// and \c currentApplicationBundleID. \c receiptValidator is set to
+/// \c [[BZRValidatricksReceiptValidator alloc] init] wrapped by a \c BZRRetryReceiptValidator.
 - (instancetype)initWithValidationParametersProvider:(id<BZRReceiptValidationParametersProvider>)
     validationParametersProvider receiptDataCache:(BZRReceiptDataCache *)receiptDataCache
     currentApplicationBundleID:(NSString *)currentApplicationBundleID;

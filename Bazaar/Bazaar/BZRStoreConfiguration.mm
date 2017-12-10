@@ -7,6 +7,7 @@
 
 #import "BZRAcquiredViaSubscriptionProvider.h"
 #import "BZRAllowedProductsProvider.h"
+#import "BZRAppStoreLocaleCache.h"
 #import "BZRCachedContentFetcher.h"
 #import "BZRCachedProductsProvider.h"
 #import "BZRCachedReceiptValidationStatusProvider.h"
@@ -73,10 +74,8 @@ NS_ASSUME_NONNULL_BEGIN
     _contentManager = [[BZRProductContentManager alloc] initWithFileManager:self.fileManager];
     _contentFetcher = [[BZRCachedContentFetcher alloc] init];
 
-    _keychainStorage = [[BZRKeychainStorage alloc] initWithAccessGroup:keychainAccessGroup];
-    _validationParametersProvider =
-        [[BZRReceiptValidationParametersProvider alloc]
-         initWithKeychainStorage:self.keychainStorage];
+    _keychainStorage =
+        [[BZRKeychainStorage alloc] initWithAccessGroup:keychainAccessGroup];
     BZRTimeProvider *timeProvider = [[BZRTimeProvider alloc] init];
 
     BZRKeychainStorageRoute *keychainStorageRoute =
@@ -84,6 +83,13 @@ NS_ASSUME_NONNULL_BEGIN
                                                 serviceNames:@[applicationBundleID].lt_set];
     BZRReceiptDataCache *receiptDataCache =
         [[BZRReceiptDataCache alloc] initWithKeychainStorageRoute:keychainStorageRoute];
+
+    BZRAppStoreLocaleCache *appStoreLocaleCache =
+        [[BZRAppStoreLocaleCache alloc] initWithKeychainStorageRoute:keychainStorageRoute];
+    _validationParametersProvider =
+        [[BZRReceiptValidationParametersProvider alloc]
+         initWithAppStoreLocaleCache:appStoreLocaleCache receiptDataCache:receiptDataCache
+         currentApplicationBundleID:applicationBundleID];
 
     BZRValidatedReceiptValidationStatusProvider *validatorProvider =
         [[BZRValidatedReceiptValidationStatusProvider alloc]

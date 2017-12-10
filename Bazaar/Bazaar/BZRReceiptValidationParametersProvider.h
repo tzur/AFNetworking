@@ -1,34 +1,35 @@
 // Copyright (c) 2016 Lightricks. All rights reserved.
 // Created by Ben Yohay.
 
-#import "BZREventEmitter.h"
-
 NS_ASSUME_NONNULL_BEGIN
 
-@class BZRKeychainStorage, BZRReceiptValidationParameters;
+@class BZRAppStoreLocaleCache, BZRReceiptDataCache, BZRReceiptValidationParameters;
 
 /// Protocol for providing \c BZRReceiptValidationParameters.
 @protocol BZRReceiptValidationParametersProvider
 
-/// Provides the parameters for receipt validation to be used by \c BZRReciptValidator.
-- (nullable BZRReceiptValidationParameters *)receiptValidationParameters;
+/// Returns receipt validation parameters for validating the receipt of application with
+/// \c applicationBundleID.
+- (nullable BZRReceiptValidationParameters *)receiptValidationParametersForApplication:
+    (NSString *)applicationBundleID;
 
 /// AppStore locale. KVO-compliant.
 @property (strong, atomic, nullable) NSLocale *appStoreLocale;
 
 @end
 
-/// Default implementation of \c BZRReceiptValidationParametersProvider, provides the parameters
-/// provided by \c -[BZRReceiptValidationParameters defaultParametersWithLocale:] with
-/// \c appStoreLocale. If \c appStoreLocale is \c nil, \c receiptValidationParameters will return
-/// \c nil.
+/// Default implementation of \c BZRReceiptValidationParametersProvider.
 @interface BZRReceiptValidationParametersProvider :
     NSObject <BZRReceiptValidationParametersProvider>
 
 - (instancetype)init NS_UNAVAILABLE;
 
-/// Initializes with \c keychainStorage, used to store and load App Store locale.
-- (instancetype)initWithKeychainStorage:(BZRKeychainStorage *)keychainStorage;
+/// Initializes with \c appStoreLocaleCache, used to load App Store locale of multiple applications
+/// from cache. \c receiptDataCache is used to load receipt data of multiple applications from
+/// cache. \c currentApplicationBundleID is the bundle ID of the current application.
+- (instancetype)initWithAppStoreLocaleCache:(BZRAppStoreLocaleCache *)appStoreLocaleCache
+                           receiptDataCache:(BZRReceiptDataCache *)receiptDataCache
+                 currentApplicationBundleID:(NSString *)currentApplicationBundleID;
 
 @end
 
