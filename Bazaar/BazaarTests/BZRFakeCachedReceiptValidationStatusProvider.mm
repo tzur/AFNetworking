@@ -35,7 +35,8 @@ NS_ASSUME_NONNULL_BEGIN
   BZRReceiptValidationStatusCache *receiptValidationStatusCache =
       OCMClassMock([BZRReceiptValidationStatusCache class]);
   return [super initWithCache:receiptValidationStatusCache timeProvider:timeProvider
-           underlyingProvider:underlyingProvider applicationBundleID:@"foo"];
+          underlyingProvider:underlyingProvider applicationBundleID:@"foo"
+          cachedEntryDaysToLive:14];
 }
 
 - (RACSignal *)fetchReceiptValidationStatus {
