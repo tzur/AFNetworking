@@ -64,9 +64,9 @@ static const NSUInteger kNumberOfRetries = 4;
     currentApplicationBundleID:(NSString *)currentApplicationBundleID {
   if (self = [super init]) {
     _receiptValidator = receiptValidator;
-    _validationParametersProvider = validationParametersProvider;
     _receiptDataCache = receiptDataCache;
-    _currentApplicationBundleID = currentApplicationBundleID;
+    _validationParametersProvider = validationParametersProvider;
+    _currentApplicationBundleID = [currentApplicationBundleID copy];
   }
   return self;
 }
@@ -93,7 +93,10 @@ static const NSUInteger kNumberOfRetries = 4;
   @weakify(self);
   return [RACSignal defer:^{
     @strongify(self);
-    return [RACSignal return:[self.validationParametersProvider receiptValidationParameters]];
+
+    return [RACSignal return:
+            [self.validationParametersProvider receiptValidationParametersForApplication:
+             self.currentApplicationBundleID]];
   }];
 }
 

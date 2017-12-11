@@ -58,10 +58,11 @@ context(@"receipt validation", ^{
 
   beforeEach(^{
     NSData *receiptData = [@"foobar" dataUsingEncoding:NSUTF8StringEncoding];
-    parameters = [[BZRReceiptValidationParameters alloc] initWithReceiptData:receiptData
-                                                         applicationBundleId:@"foobar"
-                                                                    deviceId:nil
-                                                              appStoreLocale:nil];
+    parameters = [[BZRReceiptValidationParameters alloc]
+                  initWithCurrentApplicationBundleID:@"foobar" applicationBundleID:@"foobar"
+                  receiptData:receiptData deviceID:nil appStoreLocale:[NSLocale currentLocale]
+                  userID:nil];
+
     requestParameters = [parameters validatricksRequestParameters];
     URLString = [BZRValidatricksReceiptValidator receiptValidationEndpoint];
 

@@ -67,7 +67,8 @@ context(@"deallocating object", ^{
 
     OCMStub([receiptValidator validateReceiptWithParameters:OCMOCK_ANY])
         .andReturn([RACSignal return:BZRValidReceiptValidationStatus()]);
-    OCMStub([receiptValidationParametersProvider receiptValidationParameters])
+    OCMStub([receiptValidationParametersProvider
+        receiptValidationParametersForApplication:OCMOCK_ANY])
         .andReturn(receiptValidationParameters);
 
     @autoreleasepool {
@@ -97,7 +98,8 @@ context(@"fetching receipt validation status", ^{
 
   context(@"receipt validation parameters are valid", ^{
     beforeEach(^{
-      OCMStub([receiptValidationParametersProvider receiptValidationParameters])
+      OCMStub([receiptValidationParametersProvider
+          receiptValidationParametersForApplication:OCMOCK_ANY])
           .andReturn(receiptValidationParameters);
     });
 
