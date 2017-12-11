@@ -163,10 +163,10 @@ static BOOL LTIsDirectionReversedToCollectionView(LTScrollDirection direction) {
       if (!CGRectContainsPoint(self.frame, cell.frame.origin)) {
         continue;
       }
+      lastCellVisitedIdentifier = cell.identifier;
       if (block(cell) == LTIterationStepResultStopIterating) {
         return;
       }
-      lastCellVisitedIdentifier = cell.identifier;
     }
     [self lt_collectionViewScrollInDirection:direction];
     NSUInteger lastVisibleCellIndex;
