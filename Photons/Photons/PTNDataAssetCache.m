@@ -98,7 +98,8 @@ static NSString const * kDescriptorKey = @"com.lightricks.Photons.descriptor";
                      resizingStrategy:(id<PTNResizingStrategy>)resizingStrategy {
   return [[self.cache cachedDataForURL:url]
       map:^id(PTNCacheResponse<NSData *, NSDictionary *> *response) {
-        if (!response.data || !response.info[kCacheInfoKey]) {
+        if (![response.data length] || !response.info[kCacheInfoKey] ||
+            ![response.info[kCacheInfoKey] isKindOfClass:[NSDictionary class]]) {
           return nil;
         }
 
