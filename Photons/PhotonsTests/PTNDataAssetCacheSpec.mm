@@ -92,7 +92,8 @@ context(@"image assets", ^{
   __block id<PTNResizingStrategy> resizingStrategy;
 
   beforeEach(^{
-    data = [[NSData alloc] init];
+    uint8_t buffer[] = { 0x1, 0x2, 0x3, 0x4 };
+    data = [NSData dataWithBytes:buffer length:sizeof(buffer)];
     imageAsset = OCMProtocolMock(@protocol(PTNDataAsset));
     OCMStub([imageAsset fetchData]).andReturn([RACSignal return:data]);
     resizingStrategy = OCMProtocolMock(@protocol(PTNResizingStrategy));
@@ -135,6 +136,65 @@ context(@"image assets", ^{
     expect([cache cachedImageAssetForURL:url resizingStrategy:resizingStrategy])
         .will.matchError(^BOOL(NSError *error) {
           return error.code == 1337;
+    });
+  });
+
+  context(@"mixed assets", ^{
+    __block id<PTNResizingStrategy> resizingStrategy;
+    __block id<PTNDescriptor> descriptor;
+    __block id<PTNAlbum> album;
+    __block id<PTNDataAsset> imageAsset;
+    __block NSData *data;
+
+    beforeEach(^{
+      resizingStrategy = OCMProtocolMock(@protocol(PTNResizingStrategy));
+      descriptor = OCMProtocolMock(@protocol(PTNDescriptor));
+      NSArray *assets = @[@"foo", @"bar"];
+      NSArray *subalbums = @[@"baz", @"qux"];
+      album = PTNCreateAlbum(url, assets, subalbums);
+      uint8_t buffer[] = { 0x1, 0x2, 0x3, 0x4 };
+      data = [NSData dataWithBytes:buffer length:sizeof(buffer)];
+      imageAsset = OCMProtocolMock(@protocol(PTNDataAsset));
+      OCMStub([imageAsset fetchData]).andReturn([RACSignal return:data]);
+      resizingStrategy = OCMProtocolMock(@protocol(PTNResizingStrategy));
+    });
+
+    it(@"should not crash when image is fetched on the same URL descriptor is cached", ^{
+      [cache storeDescriptor:descriptor withCacheInfo:cacheInfo forURL:url];
+
+      expect([cache cachedImageAssetForURL:url resizingStrategy:resizingStrategy])
+          .will.complete();
+    });
+
+    it(@"should not crash when image is fetched on the same URL album is cached", ^{
+      [cache storeAlbum:album withCacheInfo:cacheInfo forURL:url];
+
+      expect([cache cachedImageAssetForURL:url resizingStrategy:resizingStrategy])
+          .will.complete();
+    });
+
+    it(@"should not crash when album is fetched on the same URL descriptor is cached", ^{
+      [cache storeDescriptor:descriptor withCacheInfo:cacheInfo forURL:url];
+
+      expect([cache cachedAlbumForURL:url]).will.complete();
+    });
+
+    it(@"should not crash when album is fetched on the same URL image is cached", ^{
+      [cache storeImageAsset:imageAsset withCacheInfo:cacheInfo forURL:url];
+
+      expect([cache cachedAlbumForURL:url]).will.complete();
+    });
+
+    it(@"should not crash when descriptor is fetched on the same URL image is cached", ^{
+      [cache storeImageAsset:imageAsset withCacheInfo:cacheInfo forURL:url];
+
+      expect([cache cachedDescriptorForURL:url]).will.complete();
+    });
+
+    it(@"should not crash when descriptor is fetched on the same URL album is cached", ^{
+      [cache storeAlbum:album withCacheInfo:cacheInfo forURL:url];
+
+      expect([cache cachedDescriptorForURL:url]).will.complete();
     });
   });
 });
