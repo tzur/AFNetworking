@@ -16,6 +16,29 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/// Returns an activated \c taplytics object with an \c apiKey, \c customData, a timeout of 60
+/// seconds and disabling the splash screen stall, shake menu, Taplytics borders UI for debug mode.
+static id<LABTaplytics> kLABStartTaplytics(id<LABTaplytics> taplytics, NSString *apiKey,
+                                           NSDictionary<NSString *, id> *customData) {
+  [taplytics setUserAttributes:@{
+    // As documented in the Taplytics SDK, setting the "customData" key, will send these keys to
+    // Taplytics for advanced experiments filtering.
+    @"customData": customData
+  }];
+  [taplytics startTaplyticsWithAPIKey:apiKey options:@{
+    // Do not show splash screen.
+    TaplyticsOptionShowLaunchImage: @NO,
+    // Disable shake menu.
+    TaplyticsOptionShowShakeMenu: @NO,
+    // Disables intrusive error indicators in debug mode.
+    TaplyticsOptionDisableBorders: @YES,
+    // Specifies the number of seconds to display the splash screen. Also specify the timeout value
+    // for network requests.
+    TaplyticsOptionDelayLoad: @60
+  }];
+  return taplytics;
+}
+
 /// Prefix for every meta key.
 static auto const kMetaKeyPrefix = @"__";
 
@@ -35,9 +58,6 @@ static auto const kStoredVariantsKey = @"LABTaplyticsSourceVariants";
 static auto const kCustomDataExperimentsTokenKey = @"ExperimentsToken";
 
 @interface LABTaplyticsSource ()
-
-/// Taplytics SDK object.
-@property (readonly, nonatomic) id<LABTaplytics> taplytics;
 
 /// Used to store the latest assignments.
 @property (readonly, nonatomic) id<LTKeyValuePersistentStorage> storage;
@@ -71,14 +91,13 @@ static auto const kCustomDataExperimentsTokenKey = @"ExperimentsToken";
                      taplytics:(id<LABTaplytics>)taplytics
                        storage:(id<LTKeyValuePersistentStorage>)storage {
   if (self = [super init]) {
-    _taplytics = taplytics;
     _storage = storage;
-    [self bindProperties];
 
     NSMutableDictionary<NSString *, id> *augmentedCustomData = [customData mutableCopy];
     augmentedCustomData[kCustomDataExperimentsTokenKey] =
         @(experimentsTokenProvider.experimentsToken);
-    [self startWithAPIKey:apiKey andCustomData:[augmentedCustomData copy]];
+    _taplytics = kLABStartTaplytics(taplytics, apiKey, [augmentedCustomData copy]);
+    [self bindProperties];
   }
   return self;
 }
@@ -256,26 +275,6 @@ static auto const kCustomDataExperimentsTokenKey = @"ExperimentsToken";
   }
   return [[LABVariant alloc] initWithName:variant.name assignments:updatedAssignemnts
                                experiment:variant.experiment];
-}
-
-- (void)startWithAPIKey:(NSString *)apiKey
-          andCustomData:(NSDictionary<NSString *, id> *)customData {
-  [self.taplytics setUserAttributes:@{
-    // As docunented in the Taplytics SDK, setting the "customData" key, will send these keys to
-    // Taplytics for advanced experiments filtering.
-    @"customData": customData
-  }];
-  [self.taplytics startTaplyticsWithAPIKey:apiKey options:@{
-    // Do not show splash screen.
-    TaplyticsOptionShowLaunchImage: @NO,
-    // Disable shake menu.
-    TaplyticsOptionShowShakeMenu: @NO,
-    // Disables intrusive error indicators in debug mode.
-    TaplyticsOptionDisableBorders: @YES,
-    // Specifies the number of seconds to display the splash screen. Also specify the timeout value
-    // for network requests.
-    TaplyticsOptionDelayLoad: @60
-  }];
 }
 
 - (NSSet<LABVariant *> *)loadVariants {
