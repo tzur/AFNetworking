@@ -68,9 +68,9 @@
 		CDAC8C281FC44F5700B197B3 /* WFFakeVideoViewDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = CDAC8C271FC44F5600B197B3 /* WFFakeVideoViewDelegate.mm */; };
 		CDAC8D2A1FC45C1300B197B3 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDAC8D061FC45C0B00B197B3 /* AVFoundation.framework */; };
 		CDAC8D2C1FC45C2200B197B3 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDAC8D2B1FC45C1B00B197B3 /* CoreMedia.framework */; };
-		CDAC8F961FC46C0100B197B3 /* BlankVideo64x64.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = CDAC8C201FC44E8C00B197B3 /* BlankVideo64x64.mp4 */; };
-		CDAC8FBA1FC46C0400B197B3 /* BlankVideo1080x1920Rotation0.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = CDAC8BFC1FC44E8600B197B3 /* BlankVideo1080x1920Rotation0.mp4 */; };
 		CDE00AE41E82AE1F007AFD5E /* libcompression.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = CDE00AE31E82AE1F007AFD5E /* libcompression.tbd */; };
+		EA7966DD1FDEB416003658B8 /* ZeroLengthTestVideo.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = EA7966B91FDEB37A003658B8 /* ZeroLengthTestVideo.mp4 */; };
+		EA7967A31FDEB9E0003658B8 /* HalfSecondTestVideo.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = EA7967A21FDEB9CB003658B8 /* HalfSecondTestVideo.mp4 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -462,8 +462,6 @@
 		C99B8BB21D6F6DAD00897FF1 /* UIFont+Size.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIFont+Size.h"; sourceTree = "<group>"; };
 		C99B8BB31D6F6DAD00897FF1 /* UIFont+Size.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIFont+Size.mm"; sourceTree = "<group>"; };
 		C99B8BB61D6F6E2C00897FF1 /* UIFont+SizeSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIFont+SizeSpec.mm"; sourceTree = "<group>"; };
-		CDAC8BFC1FC44E8600B197B3 /* BlankVideo1080x1920Rotation0.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = BlankVideo1080x1920Rotation0.mp4; sourceTree = "<group>"; };
-		CDAC8C201FC44E8C00B197B3 /* BlankVideo64x64.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = BlankVideo64x64.mp4; sourceTree = "<group>"; };
 		CDAC8C211FC44EC900B197B3 /* WFVideoViewSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = WFVideoViewSpec.mm; sourceTree = "<group>"; };
 		CDAC8C231FC44EEA00B197B3 /* WFVideoView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = WFVideoView.mm; sourceTree = "<group>"; };
 		CDAC8C241FC44EEA00B197B3 /* WFVideoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WFVideoView.h; sourceTree = "<group>"; };
@@ -472,6 +470,8 @@
 		CDAC8D061FC45C0B00B197B3 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		CDAC8D2B1FC45C1B00B197B3 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		CDE00AE31E82AE1F007AFD5E /* libcompression.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libcompression.tbd; path = usr/lib/libcompression.tbd; sourceTree = SDKROOT; };
+		EA7966B91FDEB37A003658B8 /* ZeroLengthTestVideo.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = ZeroLengthTestVideo.mp4; sourceTree = "<group>"; };
+		EA7967A21FDEB9CB003658B8 /* HalfSecondTestVideo.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = HalfSecondTestVideo.mp4; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -630,9 +630,9 @@
 			isa = PBXGroup;
 			children = (
 				6AB518D71CCA2D9400540CC6 /* Assets.xcassets */,
-				CDAC8BFC1FC44E8600B197B3 /* BlankVideo1080x1920Rotation0.mp4 */,
-				CDAC8C201FC44E8C00B197B3 /* BlankVideo64x64.mp4 */,
+				EA7967A21FDEB9CB003658B8 /* HalfSecondTestVideo.mp4 */,
 				6A7E52FA1CCE3964000AAAF3 /* SmallImageInBundle.jpg */,
+				EA7966B91FDEB37A003658B8 /* ZeroLengthTestVideo.mp4 */,
 			);
 			name = Assets;
 			sourceTree = "<group>";
@@ -1280,10 +1280,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CDAC8F961FC46C0100B197B3 /* BlankVideo64x64.mp4 in Resources */,
 				6A7E52FB1CCE3964000AAAF3 /* SmallImageInBundle.jpg in Resources */,
-				CDAC8FBA1FC46C0400B197B3 /* BlankVideo1080x1920Rotation0.mp4 in Resources */,
+				EA7967A31FDEB9E0003658B8 /* HalfSecondTestVideo.mp4 in Resources */,
 				6AB518D81CCA2D9400540CC6 /* Assets.xcassets in Resources */,
+				EA7966DD1FDEB416003658B8 /* ZeroLengthTestVideo.mp4 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
