@@ -27,10 +27,6 @@ NS_ASSUME_NONNULL_BEGIN
 /// Cache used to store receipt data when validation is requested and receipt data is valid.
 @property (readonly, nonatomic) BZRReceiptDataCache *receiptDataCache;
 
-/// Current application's bundle ID, used to cache receipt data to the storage of the current
-/// application
-@property (readonly, nonatomic) NSString *currentApplicationBundleID;
-
 @end
 
 /// Delay of the second try to fetch the receipt validation status after the first try has failed.
@@ -43,8 +39,7 @@ static const NSUInteger kNumberOfRetries = 4;
 
 - (instancetype)initWithValidationParametersProvider:
     (id<BZRReceiptValidationParametersProvider>)validationParametersProvider
-    receiptDataCache:(BZRReceiptDataCache *)receiptDataCache
-    currentApplicationBundleID:(NSString *)currentApplicationBundleID {
+    receiptDataCache:(BZRReceiptDataCache *)receiptDataCache {
   BZRValidatricksReceiptValidator *receiptValidator =
       [[BZRValidatricksReceiptValidator alloc] init];
   BZRRetryReceiptValidator *retryValidator =
@@ -53,27 +48,25 @@ static const NSUInteger kNumberOfRetries = 4;
                                                     numberOfRetries:kNumberOfRetries];
   return [self initWithReceiptValidator:retryValidator
            validationParametersProvider:validationParametersProvider
-                       receiptDataCache:receiptDataCache
-             currentApplicationBundleID:currentApplicationBundleID];
+                       receiptDataCache:receiptDataCache];
 }
 
 - (instancetype)initWithReceiptValidator:(id<BZRReceiptValidator>)receiptValidator
     validationParametersProvider:
     (id<BZRReceiptValidationParametersProvider>)validationParametersProvider
-    receiptDataCache:(BZRReceiptDataCache *)receiptDataCache
-    currentApplicationBundleID:(NSString *)currentApplicationBundleID {
+    receiptDataCache:(BZRReceiptDataCache *)receiptDataCache {
   if (self = [super init]) {
     _receiptValidator = receiptValidator;
     _receiptDataCache = receiptDataCache;
     _validationParametersProvider = validationParametersProvider;
-    _currentApplicationBundleID = [currentApplicationBundleID copy];
   }
   return self;
 }
 
-- (RACSignal<BZRReceiptValidationStatus *> *)fetchReceiptValidationStatus {
+- (RACSignal<BZRReceiptValidationStatus *> *)fetchReceiptValidationStatus:
+    (NSString *)applicationBundleID {
   @weakify(self);
-  return [[[[self receiptValidationParameters]
+  return [[[[self receiptValidationParameters:applicationBundleID]
       tryMap:^BZRReceiptValidationParameters * _Nullable(
           BZRReceiptValidationParameters * _Nullable receiptValidationParameters, NSError **error) {
         if (!receiptValidationParameters && error) {
@@ -84,23 +77,26 @@ static const NSUInteger kNumberOfRetries = 4;
       }]
       flattenMap:^(BZRReceiptValidationParameters *receiptValidationParameters) {
         @strongify(self);
-        return [self validateReceiptWithParameters:receiptValidationParameters];
+        return [self validateReceiptWithApplicationBundleID:applicationBundleID
+                                receiptValidationParameters:receiptValidationParameters];
       }]
       setNameWithFormat:@"%@ -fetchReceiptValidationStatus", self.description];
 }
 
-- (RACSignal<BZRReceiptValidationStatus *> *)receiptValidationParameters {
+- (RACSignal<BZRReceiptValidationStatus *> *)receiptValidationParameters:
+    (NSString *)applicationBundleID {
   @weakify(self);
   return [RACSignal defer:^{
     @strongify(self);
 
     return [RACSignal return:
             [self.validationParametersProvider receiptValidationParametersForApplication:
-             self.currentApplicationBundleID]];
+             applicationBundleID]];
   }];
 }
 
-- (RACSignal<BZRReceiptValidationStatus *> *)validateReceiptWithParameters:
+- (RACSignal<BZRReceiptValidationStatus *> *)validateReceiptWithApplicationBundleID:
+    (NSString *)applicationBundleID receiptValidationParameters:
     (BZRReceiptValidationParameters *)receiptValidationParameters {
   return [[[[self.receiptValidator validateReceiptWithParameters:receiptValidationParameters]
       catch:^RACSignal *(NSError *error) {
@@ -110,7 +106,8 @@ static const NSUInteger kNumberOfRetries = 4;
       }]
       doNext:^(BZRReceiptValidationStatus *receiptValidationStatus) {
         [self saveReceiptDataToStorageIfValid:receiptValidationParameters.receiptData
-                      receiptValidationStatus:receiptValidationStatus];
+                      receiptValidationStatus:receiptValidationStatus
+                          applicationBundleID:applicationBundleID];
       }]
       tryMap:^BZRReceiptValidationStatus * _Nullable
           (BZRReceiptValidationStatus *receiptValidationStatus, NSError **error) {
@@ -127,7 +124,8 @@ static const NSUInteger kNumberOfRetries = 4;
 }
 
 - (void)saveReceiptDataToStorageIfValid:(nullable NSData *)receiptData
-                receiptValidationStatus:(BZRReceiptValidationStatus *)receiptValidationStatus {
+                receiptValidationStatus:(BZRReceiptValidationStatus *)receiptValidationStatus
+                    applicationBundleID:(NSString *)applicationBundleID {
   // The receipt is not saved to storage if it is \c nil or an error related to the receipt has
   // returned from validation.
   if (!receiptData || (receiptValidationStatus.error &&
@@ -136,13 +134,8 @@ static const NSUInteger kNumberOfRetries = 4;
     return;
   }
 
-  [self.receiptDataCache storeReceiptData:receiptData
-                      applicationBundleID:self.currentApplicationBundleID error:nil];
-}
-
-- (RACSignal<BZRReceiptValidationStatus *> *)fetchReceiptValidationStatus:
-    (NSString __unused *)applicationBundleID {
-  return [self fetchReceiptValidationStatus];
+  [self.receiptDataCache storeReceiptData:receiptData applicationBundleID:applicationBundleID
+                                    error:nil];
 }
 
 - (RACSignal<BZREvent *> *)eventsSignal {
