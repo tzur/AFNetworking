@@ -7,4 +7,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// of the app.
 BOOL LTIsRunningTests();
 
+/// Returns \c YES if the current execution of the app was launched with the given \c argument.
+BOOL LTIsLaunchedWithArgument(NSString *argument);
+
 NS_ASSUME_NONNULL_END
