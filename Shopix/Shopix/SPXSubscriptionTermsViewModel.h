@@ -25,6 +25,9 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark SPXSubscriptionTermsViewModel class
 #pragma mark -
 
+/// Default terms overview string.
+extern NSString * const kSPXTermsOverview;
+
 /// An \c SPXSubscriptionTermsViewModel implementation for receiving the terms string and URLs as
 /// input and outputs attributed strings respectively.
 @interface SPXSubscriptionTermsViewModel : NSObject <SPXSubscriptionTermsViewModel>
