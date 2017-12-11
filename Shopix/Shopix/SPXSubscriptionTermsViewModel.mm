@@ -5,6 +5,13 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+NSString * const kSPXTermsOverview = @"Payment will be charged to your iTunes account at "
+    "confirmation of purchase. Subscriptions will automatically renew unless auto-renew is turned "
+    "off at least 24 hours before the end of the current period. Your account will be charged for "
+    "renewal, in accordance with your plan, within 24 hours prior to the end of the current "
+    "period. You can manage or turn off auto-renew in your Apple ID account settings any time "
+    "after purchase.";
+
 @interface SPXSubscriptionTermsViewModel ()
 
 /// Non-attributed version of the terms overview as provided on initialization.
@@ -27,12 +34,7 @@ NS_ASSUME_NONNULL_BEGIN
 @implementation SPXSubscriptionTermsViewModel
 
 - (instancetype)initWithFullTerms:(NSURL *)fullTermsURL privacyPolicy:(NSURL *)privacyPolicyURL {
-  auto termsString = @"Payment will be charged to your iTunes account at confirmation of purchase. "
-      "Subscriptions will automatically renew unless auto-renew is turned off at least 24 hours "
-      "before the end of the current period. Your account will be charged for renewal, in "
-      "accordance with your plan, within 24 hours prior to the end of the current period. You can "
-      "manage or turn off auto-renew in your Apple ID account settings any time after purchase. ";
-  return [self initWithTermsOverview:termsString fullTerms:fullTermsURL
+  return [self initWithTermsOverview:kSPXTermsOverview fullTerms:fullTermsURL
                        privacyPolicy:privacyPolicyURL];
 }
 

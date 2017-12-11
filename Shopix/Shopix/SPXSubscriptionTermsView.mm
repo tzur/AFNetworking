@@ -30,6 +30,7 @@ NS_ASSUME_NONNULL_BEGIN
                                 termsOfUseLink:(NSAttributedString *)termsOfUseLink
                              privacyPolicyLink:(NSAttributedString *)privacyPolicyLink {
   auto terms = [[NSMutableAttributedString alloc] initWithAttributedString:termsText];
+  [terms appendAttributedString:[[NSAttributedString alloc] initWithString:@" "]];
   [terms appendAttributedString:termsOfUseLink];
 
   NSDictionary<NSAttributedStringKey, id> *termsOverviewAttributes =
