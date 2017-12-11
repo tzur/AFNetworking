@@ -21,6 +21,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// This meta key should have the name "__Keys_<Experiment Name>" and it's value must be a JSON
 /// array containing the names of the keys in the experiment (excluding other meta keys).
 ///
+/// Also, any experiment having the suffix "__Remote_" is ignored by this source, as this suffix
+/// marks the experiment as remote configuration, which is not supported by Laboratory.
+///
 /// When the \c stabilizeUserExperienceAssignments method is called for the first time, the source
 /// stores the active variants and their assignments to \c storage. On subsequent runs, these stored
 /// variants and assignemts are returned as the \c activeVariants. That means that new experiments

@@ -57,6 +57,9 @@ static auto const kStoredVariantsKey = @"LABTaplyticsSourceVariants";
 /// Custom data key for experiments token.
 static auto const kCustomDataExperimentsTokenKey = @"ExperimentsToken";
 
+/// Prefix for a Taplytics defined experiment or variable that is used as a remote configuration.
+static auto const kRemoteConfigurationExperimentPrefix = @"__Remote_";
+
 @interface LABTaplyticsSource ()
 
 /// Used to store the latest assignments.
@@ -135,7 +138,12 @@ static auto const kCustomDataExperimentsTokenKey = @"ExperimentsToken";
   auto experimentsToKeys = [self extractExperimentsInformationFrom:metaAssignments
                                                          keyPrefix:kExperimentKeysMetaKeyPrefix];
   auto variants = [NSMutableSet set];
-  [properties.activeExperimentsToVariations
+  auto nonRemoteConfigurationExperimentsToVariations =
+      [properties.activeExperimentsToVariations lt_filter:^BOOL(NSString *experiment, NSString *) {
+        return ![experiment hasPrefix:kRemoteConfigurationExperimentPrefix];
+      }];
+
+  [nonRemoteConfigurationExperimentsToVariations
       enumerateKeysAndObjectsUsingBlock:^(NSString *experimentName, NSString *variantName, BOOL *) {
     auto _Nullable experimentKeys = experimentsToKeys[experimentName];
     if (!experimentKeys) {
@@ -387,7 +395,11 @@ static auto const kCustomDataExperimentsTokenKey = @"ExperimentsToken";
         return;
       }
 
-      [subscriber sendNext:properties.allExperimentsToVariations];
+     auto nonRemoteConfigurationExperimentsToVariations =
+          [properties.allExperimentsToVariations lt_filter:^BOOL(NSString *experiment, NSString *) {
+            return ![experiment hasPrefix:kRemoteConfigurationExperimentPrefix];
+          }];
+      [subscriber sendNext:nonRemoteConfigurationExperimentsToVariations];
       [subscriber sendCompleted];
     }];
     return nil;

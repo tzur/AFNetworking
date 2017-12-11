@@ -85,6 +85,13 @@ static auto const kAPIKey = @"foo_key";
 
 @end
 
+static NSDictionary *k4ExperimentsToVariations = @{
+  @"Exp1": [@[@"Exp1Var1", @"Exp1Var2"] lt_set],
+  @"Exp2": [@[@"Exp2Var1", @"Exp2Var2"] lt_set],
+  @"Exp3": [@[@"Exp3Var1", @"Exp3Var2"] lt_set],
+  @"__Remote_Exp4": [@[@"Exp4Var1", @"Exp4Var2"] lt_set]
+};
+
 static NSDictionary *k3ExperimentsToVariations = @{
   @"Exp1": [@[@"Exp1Var1", @"Exp1Var2"] lt_set],
   @"Exp2": [@[@"Exp2Var1", @"Exp2Var2"] lt_set],
@@ -255,6 +262,36 @@ context(@"properties change", ^{
       @"Exp2Key1": @"baz",
       @"Exp2Key2": @"flu"
     };
+    taplyticsProperties.allExperimentsToVariations = k4ExperimentsToVariations;
+    taplyticsProperties.activeExperimentsToVariations = @{
+      @"Exp1": @"Exp1Var2",
+      @"Exp2": @"Exp2Var1",
+      @"Exp3": @"Exp3Var2",
+      @"__Remote_Exp4": @"Exp4Var2"
+    };
+    taplytics.properties = taplyticsProperties;
+
+    auto exp2var1 = [[LABVariant alloc] initWithName:@"Exp2Var1"
+                                         assignments:@{@"Exp2Key1": @"baz", @"Exp2Key2": @"flu"}
+                                          experiment:@"Exp2"];
+    auto expectedVariants = [NSSet setWithObject:exp2var1];
+    expect(source.activeVariants).to.equal(expectedVariants);
+  });
+
+  it(@"should not expose remote configuration experiments", ^{
+    expect(source.activeVariants).to.beNil();
+
+    auto taplyticsProperties = [[LABFakeTaplyticsProperties alloc] init];
+    taplyticsProperties.activeDynamicVariables = @{
+      @"__Keys_Exp1": @"[\"Exp1Key1\", \"Exp1Key2\"]",
+      @"__Keys_Exp2": @"[\"Exp2Key1\", \"Exp2Key2\"]",
+      @"Exp1Key1": @"foo",
+      @"Exp1Key2": @"bar",
+      @"Exp2Key1": @"baz",
+      @"Exp2Key2": @"flu",
+      @"Exp4Key1": @"faz",
+      @"Exp4Key2": @"que"
+    };
     taplyticsProperties.allExperimentsToVariations = k3ExperimentsToVariations;
     taplyticsProperties.activeExperimentsToVariations = @{
       @"Exp1": @"Exp1Var2",
@@ -263,10 +300,13 @@ context(@"properties change", ^{
     };
     taplytics.properties = taplyticsProperties;
 
+    auto exp1var2 = [[LABVariant alloc] initWithName:@"Exp1Var2"
+                                         assignments:@{@"Exp1Key1": @"foo", @"Exp1Key2": @"bar"}
+                                          experiment:@"Exp1"];
     auto exp2var1 = [[LABVariant alloc] initWithName:@"Exp2Var1"
                                          assignments:@{@"Exp2Key1": @"baz", @"Exp2Key2": @"flu"}
                                           experiment:@"Exp2"];
-    auto expectedVariants = [NSSet setWithObject:exp2var1];
+    auto expectedVariants = [@[exp1var2, exp2var1] lt_set];
     expect(source.activeVariants).to.equal(expectedVariants);
   });
 
@@ -281,6 +321,19 @@ context(@"properties change", ^{
 
     taplyticsProperties.allExperimentsToVariations = k2ExperimentsToVariations;
     expect([source fetchAllExperimentsAndVariants]).to.sendValues(@[k2ExperimentsToVariations]);
+  });
+
+  it(@"should not fetch remote configuration experiments", ^{
+    auto taplyticsProperties = [[LABFakeTaplyticsProperties alloc] init];
+    taplyticsProperties.allExperimentsToVariations = k3ExperimentsToVariations;
+    taplyticsProperties.activeDynamicVariables = @{};
+    taplyticsProperties.activeExperimentsToVariations = @{};
+    taplytics.allExperimentsToVariations = taplyticsProperties;
+
+    expect([source fetchAllExperimentsAndVariants]).to.sendValues(@[k3ExperimentsToVariations]);
+
+    taplyticsProperties.allExperimentsToVariations = k4ExperimentsToVariations;
+    expect([source fetchAllExperimentsAndVariants]).to.sendValues(@[k3ExperimentsToVariations]);
   });
 
   it(@"should err all experiments fetch operation if callback returned error", ^{
