@@ -19,7 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)init {
   if (self = [super init]) {
-    auto christmasRedColor = [UIColor colorWithRed:0.92 green:0.19 blue:0.23 alpha:1.0];
+    auto christmasRedColor = [UIColor colorWithRed:0.929 green:0.161 blue:0.20 alpha:1.0];
     auto periodTextColor = [UIColor colorWithRed:0.2 green:0.18 blue:0.21 alpha:1.0];
     auto fullPriceTextColor = [[UIColor whiteColor] colorWithAlphaComponent:0.6];
     _gradientButtonsFactory = [[SPXSubscriptionGradientButtonsFactory alloc]
@@ -44,7 +44,7 @@ NS_ASSUME_NONNULL_BEGIN
   } else if (buttonsCount > 0 && index == buttonsCount - 1) {
     imageName = @"christmas_button_right";
   } else {
-    imageName = @"christmas_button_middle";
+    return gradientButton;
   }
 
   auto shopixBundle = [NSBundle bundleWithIdentifier:@"com.lightricks.ShopixBundle"];
@@ -64,8 +64,8 @@ NS_ASSUME_NONNULL_BEGIN
   [christmasButton addSubview:imageView];
   [imageView mas_makeConstraints:^(MASConstraintMaker *make) {
     make.center.equalTo(christmasButton);
-    make.height.equalTo(christmasButton).multipliedBy(1.65);
-    make.width.equalTo(imageView.mas_height).multipliedBy(0.677);
+    make.height.equalTo(christmasButton).multipliedBy(1.4);
+    make.width.equalTo(imageView.mas_height).multipliedBy(0.85);
   }];
   return christmasButton;
 }
