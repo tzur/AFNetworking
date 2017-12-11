@@ -9,7 +9,7 @@
 #import "CUILayerView.h"
 #import "CUIPreviewViewModel.h"
 #import "CUISampleBufferView.h"
-#import "CUISharedTheme.h"
+#import "CUITheme.h"
 #import "UIViewController+LifecycleSignals.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -202,7 +202,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)hideFocusIcon {
   [self.focusView.layer removeAllAnimations];
 
-  self.focusView.color = [CUISharedTheme sharedTheme].iconHighlightedColor;
+  self.focusView.color = [CUITheme sharedTheme].iconHighlightedColor;
 
   [UIView animateWithDuration:0.3 delay:0.5 options:0 animations:^{
     self.focusView.alpha = 0;

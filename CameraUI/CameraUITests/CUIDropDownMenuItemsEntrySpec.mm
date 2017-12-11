@@ -5,8 +5,8 @@
 
 #import "CUIMenuItemIconButton.h"
 #import "CUIMenuItemTextButton.h"
-#import "CUISharedTheme.h"
 #import "CUISimpleMenuItemViewModel.h"
+#import "CUITheme.h"
 #import "UIView+Retrieval.h"
 
 SpecBegin(CUIDropDownMenuItemsEntry)
@@ -17,7 +17,7 @@ __block Class mainBarViewClass;
 __block Class subitemViewClass;
 
 beforeEach(^{
-  LTMockProtocol(@protocol(CUITheme));
+  LTMockClass([CUITheme class]);
   model = [[CUISimpleMenuItemViewModel alloc] init];
   model.subitems= @[
     [[CUISimpleMenuItemViewModel alloc] init],

@@ -8,7 +8,7 @@
 #import <Wireframes/WFImageViewModelBuilder.h>
 
 #import "CUIMenuItemViewModel.h"
-#import "CUISharedTheme.h"
+#import "CUITheme.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -39,7 +39,7 @@ NS_ASSUME_NONNULL_BEGIN
       deliverOnMainThread]
       map:^id<WFImageViewModel>(NSURL *url) {
         @strongify(self);
-        id<CUITheme> theme = [CUISharedTheme sharedTheme];
+        CUITheme *theme = [CUITheme sharedTheme];
         return WFImageViewModel(url)
             .color(theme.iconColor)
             .highlightedColor(theme.iconHighlightedColor)

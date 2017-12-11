@@ -6,7 +6,7 @@
 #import "CUIIconWithTitleCell.h"
 #import "CUIMenuItemViewModel.h"
 #import "CUISelectableMenuItemViewModel.h"
-#import "CUISharedTheme.h"
+#import "CUITheme.h"
 
 SpecBegin(CUIMenuItemsDataSource)
 
@@ -44,7 +44,7 @@ context(@"test returned cells", ^{
   __block CUIIconWithTitleCell *cell;
 
   beforeEach(^{
-    LTMockProtocol(@protocol(CUITheme));
+    LTMockClass([CUITheme class]);
     cell = [[CUIIconWithTitleCell alloc] init];
     OCMStub([collectionViewStrictMock
         dequeueReusableCellWithReuseIdentifier:kCellClassIdentifier

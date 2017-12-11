@@ -1,10 +1,21 @@
 // Copyright (c) 2016 Lightricks. All rights reserved.
-// Created by Lior Bar.
+// Created by Gennadi Iosad.
 
 NS_ASSUME_NONNULL_BEGIN
 
-/// Protocol for defining the fonts and colors used in \c CameraUI.
-@protocol CUITheme <NSObject>
+/// Class for defining the fonts and colors used in \c CameraUI.
+@interface CUITheme : NSObject
+
+- (instancetype)init NS_UNAVAILABLE;
+
+/// Initializes properties with given arguments.
+- (instancetype)initWithTitleFont:(UIFont *)titleFont
+             titleHighlightedFont:(UIFont *)titleHighlightedFont
+                       titleColor:(UIColor *)titleColor
+            titleHighlightedColor:(UIColor *)titleHighlightedColor
+                        iconColor:(UIColor *)iconColor
+             iconHighlightedColor:(UIColor *)iconHighlightedColor
+              menuBackgroundColor:(UIColor *)menuBackgroundColor NS_DESIGNATED_INITIALIZER;
 
 /// Font for title, such as the title of a menu item.
 @property (readonly, nonatomic) UIFont *titleFont;
@@ -27,15 +38,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Background color for menus.
 @property (readonly, nonatomic) UIColor *menuBackgroundColor;
 
-@end
-
-/// Class for getting the shared theme used by \c CameraUI, shared theme is set using \c JSObjection
-/// for the protocol \c CUITheme.
-@interface CUISharedTheme : NSObject
-
 /// Returns the shared theme used by \c CameraUI. If the shared theme was not set, an exception will
-/// be raised.
-+ (id<CUITheme>)sharedTheme;
+/// be raised. Shared theme is set using \c JSObjection for the class \c CUITheme.
++ (CUITheme *)sharedTheme;
 
 @end
 
