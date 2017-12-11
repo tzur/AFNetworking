@@ -10,18 +10,17 @@ SpecBegin(WFVideoView)
 __block WFVideoView *videoView;
 __block WFFakeVideoViewDelegate *delegate;
 __block NSURL *zeroLengthVideoURL;
-__block NSURL *fiveSecondVideoURL;
+__block NSURL *halfSecondVideoURL;
 
 beforeEach(^{
   videoView = [[WFVideoView alloc] initWithVideoProgressIntervalTime:0.1 playInLoop:NO];
   delegate = [[WFFakeVideoViewDelegate alloc] init];
   videoView.delegate = delegate;
 
-  zeroLengthVideoURL = [[NSBundle bundleForClass:self.class] URLForResource:@"BlankVideo64x64"
+  zeroLengthVideoURL = [[NSBundle bundleForClass:self.class] URLForResource:@"ZeroLengthTestVideo"
                                                               withExtension:@"mp4"];
-  fiveSecondVideoURL =
-      [[NSBundle bundleForClass:self.class] URLForResource:@"BlankVideo1080x1920Rotation0"
-                                             withExtension:@"mp4"];
+  halfSecondVideoURL = [[NSBundle bundleForClass:self.class] URLForResource:@"HalfSecondTestVideo"
+                                                              withExtension:@"mp4"];
 });
 
 afterEach(^{
@@ -50,10 +49,10 @@ it(@"should set properties correctly when video is empty", ^{
 
 it(@"should return correct video size", ^{
   videoView.videoURL = zeroLengthVideoURL;
-  expect(videoView.videoSize).will.equal(CGSizeMake(64, 64));
+  expect(videoView.videoSize).will.equal(CGSizeMake(20, 16));
 
-  videoView.videoURL = fiveSecondVideoURL;
-  expect(videoView.videoSize).will.equal(CGSizeMake(1080, 1920));
+  videoView.videoURL = halfSecondVideoURL;
+  expect(videoView.videoSize).will.equal(CGSizeMake(640, 360));
 });
 
 context(@"delegate", ^{
@@ -75,13 +74,11 @@ context(@"delegate", ^{
         }];
     [videoView play];
 
-    // The signal is sometimes called late, probably due to some lazy initialization in the video
-    // playback system, which causes the signal to be called just after one second on some machines.
-    expect(videoDidFinishPlaybackSignal).after(3).sendValues(@[videoView]);
+    expect(videoDidFinishPlaybackSignal).will.sendValues(@[videoView]);
   });
 
   xit(@"should call progress in delegate as expected", ^{
-    videoView.videoURL = fiveSecondVideoURL;
+    videoView.videoURL = halfSecondVideoURL;
     LLSignalTestRecorder *recorder = [[[[[delegate
         rac_signalForSelector:@selector(videoProgress:progressTime:videoDurationTime:)]
         deliverOnMainThread]
@@ -110,7 +107,7 @@ context(@"delegate", ^{
                                                                       playInLoop:YES];
       WFFakeVideoViewDelegate *delegate = [[WFFakeVideoViewDelegate alloc] init];
       view.delegate = delegate;
-      view.videoURL = fiveSecondVideoURL;
+      view.videoURL = halfSecondVideoURL;
       weakDelegate = delegate;
     }
     expect(weakDelegate).to.beNil();
@@ -122,7 +119,7 @@ context(@"delegate", ^{
       WFVideoView *view = [[WFVideoView alloc] initWithVideoProgressIntervalTime:0.1
                                                                       playInLoop:YES];
       view.delegate = delegate;
-      view.videoURL = fiveSecondVideoURL;
+      view.videoURL = halfSecondVideoURL;
 
       [[[delegate rac_signalForSelector:@selector(videoDidLoad:)]
           take:1]
@@ -142,7 +139,7 @@ context(@"delegate", ^{
                                                                       playInLoop:YES];
       WFFakeVideoViewDelegate *delegate = [[WFFakeVideoViewDelegate alloc] init];
       view.delegate = delegate;
-      view.videoURL = fiveSecondVideoURL;
+      view.videoURL = halfSecondVideoURL;
 
       [[[delegate rac_signalForSelector:@selector(videoDidLoad:)]
           take:1]
