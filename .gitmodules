@@ -58,3 +58,6 @@
 [submodule "third_party/protobuf"]
 	path = third_party/protobuf
 	url = https://github.com/Lightricks/protobuf-ios.git
+[submodule "third_party/AppsFlyer"]
+	path = third_party/AppsFlyer
+	url = https://github.com/Lightricks/AppsFlyerFramework.git
