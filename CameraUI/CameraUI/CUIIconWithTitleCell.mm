@@ -7,7 +7,7 @@
 #import <Wireframes/WFImageViewModelBuilder.h>
 
 #import "CUIMenuItemViewModel.h"
-#import "CUISharedTheme.h"
+#import "CUITheme.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -33,7 +33,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)setup {
-  self.backgroundColor = [CUISharedTheme sharedTheme].menuBackgroundColor;
+  self.backgroundColor = [CUITheme sharedTheme].menuBackgroundColor;
   [self setupTitleLabel];
   [self setupIconView];
   [self setupViewModel];
@@ -41,9 +41,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)setupTitleLabel {
   _titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-  self.titleLabel.textColor =[CUISharedTheme sharedTheme].titleColor;
-  self.titleLabel.highlightedTextColor = [CUISharedTheme sharedTheme].titleHighlightedColor;
-  self.titleLabel.font = [CUISharedTheme sharedTheme].titleFont;
+  self.titleLabel.textColor =[CUITheme sharedTheme].titleColor;
+  self.titleLabel.highlightedTextColor = [CUITheme sharedTheme].titleHighlightedColor;
+  self.titleLabel.font = [CUITheme sharedTheme].titleFont;
   self.titleLabel.textAlignment = NSTextAlignmentCenter;
 
   [self.contentView addSubview:self.titleLabel];
@@ -75,8 +75,8 @@ NS_ASSUME_NONNULL_BEGIN
       map:^id<WFImageViewModel>(NSURL *iconURL) {
         @strongify(self);
         return WFImageViewModel(iconURL)
-               .color([CUISharedTheme sharedTheme].iconColor)
-               .highlightedColor([CUISharedTheme sharedTheme].iconHighlightedColor)
+               .color([CUITheme sharedTheme].iconColor)
+               .highlightedColor([CUITheme sharedTheme].iconHighlightedColor)
                .sizeToBounds(self.iconView)
                .build();
       }]

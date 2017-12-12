@@ -4,7 +4,7 @@
 #import "CUIMenuItemIconButton.h"
 
 #import "CUISimpleMenuItemViewModel.h"
-#import "CUISharedTheme.h"
+#import "CUITheme.h"
 #import "WFLoggingImageProvider.h"
 
 SpecBegin(CUIMenuItemIconButton)
@@ -20,7 +20,7 @@ __block id themeMock;
 __block WFLoggingImageProvider *imageProvider;
 
 beforeEach(^{
-  themeMock = LTMockProtocol(@protocol(CUITheme));
+  themeMock = LTMockClass([CUITheme class]);
   OCMStub([themeMock iconColor]).andReturn(kIconColor);
   OCMStub([themeMock iconHighlightedColor]).andReturn(kIconHighlightedColor);
 

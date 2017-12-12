@@ -4,7 +4,7 @@
 #import "CUIMenuItemTextButton.h"
 
 #import "CUISimpleMenuItemViewModel.h"
-#import "CUISharedTheme.h"
+#import "CUITheme.h"
 
 SpecBegin(CUIMenuItemTextButton)
 
@@ -19,7 +19,7 @@ __block CUISimpleMenuItemViewModel *model;
 __block id themeMock;
 
 beforeEach(^{
-  themeMock = LTMockProtocol(@protocol(CUITheme));
+  themeMock = LTMockClass([CUITheme class]);
   OCMStub([themeMock titleColor]).andReturn(kTitleColor);
   OCMStub([themeMock titleHighlightedColor]).andReturn(kTitleHighlightedColor);
   OCMStub([themeMock titleFont]).andReturn(kTitleFont);

@@ -8,7 +8,7 @@
 #import <Wireframes/WFImageViewModelBuilder.h>
 
 #import "CUIMenuItemViewModel.h"
-#import "CUISharedTheme.h"
+#import "CUITheme.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -31,6 +31,7 @@ NS_ASSUME_NONNULL_BEGIN
   RAC(self, enabled) = [RACObserve(self, model.enabled) deliverOnMainThread];
   [self addTarget:self.model action:@selector(didTap) forControlEvents:UIControlEventTouchUpInside];
   [self setupImageViewModel];
+  [self setupImageViewShadow];
 }
 
 - (void)setupImageViewModel {
@@ -39,13 +40,25 @@ NS_ASSUME_NONNULL_BEGIN
       deliverOnMainThread]
       map:^id<WFImageViewModel>(NSURL *url) {
         @strongify(self);
-        id<CUITheme> theme = [CUISharedTheme sharedTheme];
+        CUITheme *theme = [CUITheme sharedTheme];
         return WFImageViewModel(url)
             .color(theme.iconColor)
             .highlightedColor(theme.iconHighlightedColor)
             .sizeSignal(self.wf_positiveSizeSignal)
             .build();
       }];
+}
+
+- (void)setupImageViewShadow {
+  auto sharedTheme = [CUITheme sharedTheme];
+
+  if (sharedTheme.iconShadowOpacity > 0) {
+    self.imageView.layer.shadowOpacity = sharedTheme.iconShadowOpacity;
+    self.imageView.layer.shadowRadius = sharedTheme.iconShadowRadius;
+    self.imageView.layer.shadowOffset = sharedTheme.iconShadowOffset;
+    self.imageView.layer.shouldRasterize = YES;
+    self.imageView.layer.rasterizationScale = UIScreen.mainScreen.scale;
+  }
 }
 
 - (void)setEnabled:(BOOL)enabled {

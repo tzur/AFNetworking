@@ -4,7 +4,7 @@
 #import "CUISingleChoiceMenuViewController.h"
 
 #import "CUIIconWithTitleCell.h"
-#import "CUISharedTheme.h"
+#import "CUITheme.h"
 
 @interface CUISingleChoiceMenuViewController (ForTesting) <UICollectionViewDelegate,
     UICollectionViewDelegateFlowLayout>
@@ -40,7 +40,7 @@ __block CUISingleChoiceMenuViewModel *menuViewModel;
 __block NSArray<CUIMenuItemModel *> *itemModels;
 
 beforeEach(^{
-  LTMockProtocol(@protocol(CUITheme));
+  LTMockClass([CUITheme class]);
   itemModels = @[
     [[CUIMenuItemModel alloc] initWithLocalizedTitle:@"a" iconURL:kTestURL key:@""],
     [[CUIMenuItemModel alloc] initWithLocalizedTitle:@"b" iconURL:kTestURL key:@""]
