@@ -8,6 +8,9 @@ namespace lt {
 /// type.
 template <typename T>
 class Interval {
+  static_assert(std::is_integral<T>::value || std::is_floating_point<T>::value,
+                "Interval class is only available for primitive scalar types");
+
 public:
   /// Types of end point inclusion indicating whether an end point of the interval is included.
   enum EndpointInclusion {
@@ -50,7 +53,7 @@ public:
     if (_inf == _sup) {
       return !infIncluded() || !supIncluded();
     } else if (!infIncluded() && !supIncluded()) {
-      return std::nextafter(_inf, _sup) == _sup;
+      return std::is_integral<T>::value ? _inf + 1 == _sup : std::nextafter(_inf, _sup) == _sup;
     }
     return false;
   }
@@ -68,7 +71,7 @@ public:
 
   /// Returns a new interval constituting the intersection between this interval and the given
   /// \c interval.
-  lt::Interval<T> intersectionWith(lt::Interval<CGFloat> interval) const {
+  lt::Interval<T> intersectionWith(lt::Interval<T> interval) const {
     T inf = std::max(_inf, interval._inf);
     T sup = std::min(_sup, interval._sup);
 
@@ -94,10 +97,21 @@ public:
   /// Returns the linearly interpolated value for parametric value \c t. In particular, the minimum
   /// of this interval is returned for \c t equalling \c 0 and the maximum of this interval is
   /// returned for \c t equalling \c 1. If this interval is empty, an assertion is raised.
-  T valueAt(T t) const {
-    LTParameterAssert(!isEmpty(), @"No interpolation is possible for empty interval ");
-    T min = infIncluded() ? _inf : std::nextafter(_inf, _sup);
-    T max = supIncluded() ? _sup : std::nextafter(_sup, _inf);
+  double valueAt(double t) const {
+    LTParameterAssert(!isEmpty(), @"Trying to interpolate non-existing values of empty interval %@",
+                      description());
+
+    // No overflow possible since non-empty intervals always allow incrementing (/decrementing) of
+    // their infimum (/supremum) by a single step.
+    T min = _inf;
+    T max = _sup;
+
+    if (!infIncluded()) {
+      min = std::is_integral<T>::value ? _inf + 1 : std::nextafter(_inf, _sup);
+    }
+    if (!supIncluded()) {
+      max = std::is_integral<T>::value ? _sup - 1 : std::nextafter(_sup, _inf);
+    }
     return (1 - t) * min + t * max;
   }
 
@@ -113,8 +127,13 @@ public:
 
   /// Returns a string representation of this interval.
   NSString *description() const {
-    return [NSString stringWithFormat:@"%@%g, %g%@", infIncluded() ? @"[" : @"(",
-            _inf, _sup, supIncluded() ? @"]" : @")"];
+    std::stringstream stream;
+    stream << (infIncluded() ? "[" : "(");
+    stream << _inf;
+    stream << ", ";
+    stream << _sup;
+    stream << (supIncluded() ? "]" : ")");
+    return [NSString stringWithUTF8String:stream.str().c_str()];
   }
 
 private:
