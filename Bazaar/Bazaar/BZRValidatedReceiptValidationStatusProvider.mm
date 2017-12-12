@@ -140,6 +140,11 @@ static const NSUInteger kNumberOfRetries = 4;
                       applicationBundleID:self.currentApplicationBundleID error:nil];
 }
 
+- (RACSignal<BZRReceiptValidationStatus *> *)fetchReceiptValidationStatus:
+    (NSString __unused *)applicationBundleID {
+  return [self fetchReceiptValidationStatus];
+}
+
 - (RACSignal<BZREvent *> *)eventsSignal {
   return self.receiptValidator.eventsSignal;
 }
