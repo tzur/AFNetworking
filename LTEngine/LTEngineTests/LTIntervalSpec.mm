@@ -331,6 +331,28 @@ context(@"empty intervals", ^{
     expect(interval.isEmpty()).to.beTruthy();
   });
 
+  context(@"edge cases for floating-point intervals", ^{
+    it(@"should indicate that an empty CGFloat interval is empty", ^{
+      LTCGFloatInterval interval({-0.0, +0.0}, LTCGFloatInterval::Open);
+      expect(interval.isEmpty()).to.beTruthy();
+    });
+
+    it(@"should indicate that an empty left-open CGFloat interval is empty", ^{
+      LTCGFloatInterval interval({-0.0, +0.0}, LTCGFloatInterval::Open, LTCGFloatInterval::Closed);
+      expect(interval.isEmpty()).to.beTruthy();
+    });
+
+    it(@"should indicate that an empty right-open CGFloat interval is empty", ^{
+      LTCGFloatInterval interval({-0.0, +0.0}, LTCGFloatInterval::Closed, LTCGFloatInterval::Open);
+      expect(interval.isEmpty()).to.beTruthy();
+    });
+
+    it(@"should indicate that a non-empty CGFloat interval is not empty", ^{
+      LTCGFloatInterval interval({-0.0, +0.0});
+      expect(interval.isEmpty()).to.beFalsy();
+    });
+  });
+
   it(@"should indicate that an empty NSInteger interval is empty", ^{
     LTIntegerInterval interval({-1, 0}, LTIntegerInterval::Open);
     expect(interval.isEmpty()).to.beTruthy();
