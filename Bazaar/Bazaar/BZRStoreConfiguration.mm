@@ -17,6 +17,7 @@
 #import "BZRLocalProductsProvider.h"
 #import "BZRLocaleBasedVariantSelectorFactory.h"
 #import "BZRModifiedExpiryReceiptValidationStatusProvider.h"
+#import "BZRMultiAppConfiguration.h"
 #import "BZRPeriodicReceiptValidatorActivator.h"
 #import "BZRProductContentFetcher.h"
 #import "BZRProductContentManager.h"
@@ -55,15 +56,39 @@ NS_ASSUME_NONNULL_BEGIN
                             keychainAccessGroup:[BZRKeychainStorage defaultSharedAccessGroup]
                  expiredSubscriptionGracePeriod:kExpiredSubscriptionGracePeriod
                               applicationUserID:nil
-                            applicationBundleID:[[NSBundle mainBundle] bundleIdentifier]];
+                            applicationBundleID:[[NSBundle mainBundle] bundleIdentifier]
+                          multiAppConfiguration:nil];
 }
 
 - (instancetype)initWithProductsListJSONFilePath:(LTPath *)productsListJSONFilePath
                         productListDecryptionKey:(nullable NSString *)productListDecryptionKey
-                             keychainAccessGroup:(nullable NSString *)keychainAccessGroup
-                  expiredSubscriptionGracePeriod:(NSUInteger)expiredSubscriptionGracePeriod
-                               applicationUserID:(nullable NSString *)applicationUserID
-                             applicationBundleID:(NSString *)applicationBundleID {
+                          bundledApplicationsIDs:(NSSet<NSString *> *)bundledApplicationsIDs
+                      multiAppSubscriptionMarker:(NSString *)multiAppSubscriptionMarker {
+  /// Number of days the user is allowed to use products acquired via subscription after its
+  /// subscription has expired.
+  static const NSUInteger kExpiredSubscriptionGracePeriod = 7;
+
+  auto applicationBundleID = [[NSBundle mainBundle] bundleIdentifier];
+  auto multiAppConfiguration =
+      [[BZRMultiAppConfiguration alloc]
+       initWithBundledApplicationsIDs:[bundledApplicationsIDs setByAddingObject:applicationBundleID]
+       multiAppSubscriptionIdentifierMarker:multiAppSubscriptionMarker];
+  return [self initWithProductsListJSONFilePath:productsListJSONFilePath
+                       productListDecryptionKey:productListDecryptionKey
+                            keychainAccessGroup:[BZRKeychainStorage defaultSharedAccessGroup]
+                 expiredSubscriptionGracePeriod:kExpiredSubscriptionGracePeriod
+                              applicationUserID:nil
+                            applicationBundleID:applicationBundleID
+                          multiAppConfiguration:multiAppConfiguration];
+}
+
+- (instancetype)initWithProductsListJSONFilePath:(LTPath *)productsListJSONFilePath
+    productListDecryptionKey:(nullable NSString *)productListDecryptionKey
+    keychainAccessGroup:(nullable NSString *)keychainAccessGroup
+    expiredSubscriptionGracePeriod:(NSUInteger)expiredSubscriptionGracePeriod
+    applicationUserID:(nullable NSString *)applicationUserID
+    applicationBundleID:(NSString *)applicationBundleID
+    multiAppConfiguration:(nullable BZRMultiAppConfiguration *)multiAppConfiguration {
   if (self = [super init]) {
     _fileManager = [NSFileManager defaultManager];
 
@@ -74,9 +99,11 @@ NS_ASSUME_NONNULL_BEGIN
         [[BZRKeychainStorage alloc] initWithAccessGroup:keychainAccessGroup];
     BZRTimeProvider *timeProvider = [[BZRTimeProvider alloc] init];
 
+    auto bundledApplicationsID = multiAppConfiguration.bundledApplicationsIDs ?
+        multiAppConfiguration.bundledApplicationsIDs : [NSSet setWithObject:applicationBundleID];
     BZRKeychainStorageRoute *keychainStorageRoute =
         [[BZRKeychainStorageRoute alloc] initWithAccessGroup:keychainAccessGroup
-                                                serviceNames:@[applicationBundleID].lt_set];
+                                                serviceNames:bundledApplicationsID];
     BZRReceiptDataCache *receiptDataCache =
         [[BZRReceiptDataCache alloc] initWithKeychainStorageRoute:keychainStorageRoute];
 
@@ -113,16 +140,20 @@ NS_ASSUME_NONNULL_BEGIN
     _productsProvider = [self productsProviderWithJSONFilePath:productsListJSONFilePath
                                                  decryptionKey:productListDecryptionKey];
 
+    auto multiAppConfigurationWithCurrentApplication =
+        [[BZRMultiAppConfiguration alloc] initWithBundledApplicationsIDs:bundledApplicationsID
+         multiAppSubscriptionIdentifierMarker:
+         multiAppConfiguration.multiAppSubscriptionIdentifierMarker];
     _validationStatusProvider =
         [[BZRAggregatedReceiptValidationStatusProvider alloc]
          initWithUnderlyingProvider:cacheReceiptValidationStatusProvider
          currentApplicationBundleID:applicationBundleID
-         multiAppConfiguration:nil];
+         multiAppConfiguration:multiAppConfigurationWithCurrentApplication];
 
     _periodicValidatorActivator =
         [[BZRPeriodicReceiptValidatorActivator alloc]
          initWithValidationStatusProvider:cacheReceiptValidationStatusProvider
-         timeProvider:timeProvider bundledApplicationsIDs:@[applicationBundleID].lt_set
+         timeProvider:timeProvider bundledApplicationsIDs:bundledApplicationsID
          aggregatedValidationStatusProvider:self.validationStatusProvider];
 
     _variantSelectorFactory = [[BZRProductsVariantSelectorFactory alloc] init];
