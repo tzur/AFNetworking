@@ -5,6 +5,45 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+#pragma mark -
+#pragma mark SPXScrollView
+#pragma mark -
+
+/// Scroll view that has 2 differences from the standard \c UIScrollView:
+/// 1. Instead of delaying touches until they can be identified as pan gesture or other gesture,
+/// this scroll view forwards touches immediately to the content view in which the touches occurred.
+/// This allows content views to immediately respond to touch downs, for example by highlighting.
+/// 2. The view cancels touch handling for content views, even for content \c UIControl views, when
+/// the touch is identified as a pan gesture and not a tap gesture.
+///
+/// This scroll view is useful when the content of the scroll view contains controls that handle tap
+/// gesture, like \c UIButton, and the desired behavior is a pan gesture that starts on such control
+/// will be captured by the scroll view and initiate a scroll.
+@interface SPXScrollView : UIScrollView
+@end
+
+@implementation SPXScrollView
+
+- (instancetype)initWithFrame:(CGRect)frame {
+  if (self = [super initWithFrame:frame]) {
+    self.delaysContentTouches = NO;
+  }
+  return self;
+}
+
+- (BOOL)touchesShouldCancelInContentView:(UIView *)view {
+  if ([view isKindOfClass:[UIControl class]]) {
+    return YES;
+  }
+  return [super touchesShouldCancelInContentView:view];
+}
+
+@end
+
+#pragma mark -
+#pragma mark SPXPagingView
+#pragma mark -
+
 @interface SPXPagingView () <UIScrollViewDelegate>
 
 /// Hidden views for spacing between \c pageViews.
@@ -15,7 +54,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly, nonatomic) UIView *contentView;
 
 /// View that holds \c contentView and provides horizontal scrolling.
-@property (readonly, nonatomic) UIScrollView *scrollView;
+@property (readonly, nonatomic) SPXScrollView *scrollView;
 
 /// Currently focused page index, updated after the scroll view animation end declerating. Reset to
 /// \c 0 when \c pageViews are updated.
@@ -51,7 +90,7 @@ static const CGFloat kDefaultPageViewWidthRatio = 0.84;
 }
 
 - (void)setupScrollView {
-  _scrollView = [[UIScrollView alloc] init];
+  _scrollView = [[SPXScrollView alloc] init];
   self.scrollView.showsHorizontalScrollIndicator = NO;
   self.scrollView.delegate = self;
   self.scrollView.decelerationRate = UIScrollViewDecelerationRateFast;
@@ -67,7 +106,8 @@ static const CGFloat kDefaultPageViewWidthRatio = 0.84;
   [self.scrollView addSubview:self.contentView];
 
   [self.contentView mas_makeConstraints:^(MASConstraintMaker *make) {
-    make.edges.equalTo(self.scrollView);
+    make.left.top.right.equalTo(self.scrollView);
+    make.height.equalTo(self.scrollView);
   }];
 }
 
