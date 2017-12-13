@@ -77,7 +77,6 @@ __block BZRKeychainStorage *keychainStorage;
 __block NSBundle *bundle;
 __block RACSubject *productsProviderEventsSubject;
 __block RACSubject *receiptValidationStatusProviderEventsSubject;
-__block RACSubject *periodicReceiptValidatorActivatorEventsSubject;
 __block RACSubject *netherProductsProviderSubject;
 __block RACSubject *transactionsErrorEventsSubject;
 __block RACSubject *contentFetcherEventsSubject;
@@ -111,7 +110,6 @@ beforeEach(^{
 
   productsProviderEventsSubject = [RACSubject subject];
   receiptValidationStatusProviderEventsSubject = [RACSubject subject];
-  periodicReceiptValidatorActivatorEventsSubject = [RACSubject subject];
   netherProductsProviderSubject = [RACSubject subject];
   transactionsErrorEventsSubject = [RACSubject subject];
   contentFetcherEventsSubject = [RACSubject subject];
@@ -123,8 +121,6 @@ beforeEach(^{
       .andReturn(productsProviderEventsSubject);
   OCMStub([receiptValidationStatusProvider eventsSignal])
       .andReturn(receiptValidationStatusProviderEventsSubject);
-  OCMStub([periodicValidatorActivator errorEventsSignal])
-      .andReturn(periodicReceiptValidatorActivatorEventsSubject);
   OCMStub([netherProductsProvider fetchProductList]).andReturn(netherProductsProviderSubject);
   OCMStub([storeKitFacade transactionsErrorEventsSignal])
       .andReturn(transactionsErrorEventsSubject);
@@ -1418,11 +1414,6 @@ context(@"events signal", ^{
 
   it(@"should send event sent by receipt validation status provider", ^{
     [receiptValidationStatusProviderEventsSubject sendNext:event];
-    expect(recorder).will.sendValues(@[event]);
-  });
-
-  it(@"should send event sent by periodic receipt validator activator", ^{
-    [periodicReceiptValidatorActivatorEventsSubject sendNext:event];
     expect(recorder).will.sendValues(@[event]);
   });
 

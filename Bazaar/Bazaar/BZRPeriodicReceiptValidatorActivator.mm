@@ -26,10 +26,6 @@ NS_ASSUME_NONNULL_BEGIN
 /// Provider used to check if the receipt should be validated.
 @property (readonly, nonatomic) id<BZRTimeProvider> timeProvider;
 
-/// Number of seconds the receipt is allowed to remain not validated until the subscription becomes
-/// expired.
-@property (readonly, nonatomic) NSTimeInterval gracePeriod;
-
 /// Sends time provider errors as values. The subject completes when the receiver is deallocated.
 /// The subject doesn't err.
 @property (readonly, nonatomic) RACSubject<NSError *> *timeProviderErrorsSubject;
@@ -53,24 +49,22 @@ const NSUInteger kMaxPeriodicValidationInterval = 28;
 
 - (instancetype)initWithValidationStatusProvider:
     (BZRCachedReceiptValidationStatusProvider *)validationStatusProvider
-    timeProvider:(id<BZRTimeProvider>)timeProvider gracePeriod:(NSUInteger)gracePeriod {
+    timeProvider:(id<BZRTimeProvider>)timeProvider {
   BZRExternalTriggerReceiptValidator *receiptValidator =
       [[BZRExternalTriggerReceiptValidator alloc]
        initWithValidationStatusProvider:validationStatusProvider];
 
   return [self initWithReceiptValidator:receiptValidator
-               validationStatusProvider:validationStatusProvider timeProvider:timeProvider
-                            gracePeriod:gracePeriod];
+               validationStatusProvider:validationStatusProvider timeProvider:timeProvider];
 }
 
 - (instancetype)initWithReceiptValidator:(BZRExternalTriggerReceiptValidator *)receiptValidator
     validationStatusProvider:(BZRCachedReceiptValidationStatusProvider *)validationStatusProvider
-    timeProvider:(id<BZRTimeProvider>)timeProvider gracePeriod:(NSUInteger)gracePeriod {
+    timeProvider:(id<BZRTimeProvider>)timeProvider {
   if (self = [super init]) {
     _validationStatusProvider = validationStatusProvider;
     _receiptValidator = receiptValidator;
     _timeProvider = timeProvider;
-    _gracePeriod = [BZRTimeConversion numberOfSecondsInDays:gracePeriod];
     _timeProviderErrorsSubject = [RACSubject subject];
 
     [self activateTimerWhenSubscriptionExists];
@@ -107,8 +101,7 @@ const NSUInteger kMaxPeriodicValidationInterval = 28;
 
   // If the subscription is marked as expired because it was cancelled, no need to activate.
   // If the subscription is marked as expired and the last validation occurred after the
-  // expiration date then the subscription is surely expired (and grace period is over), no
-  // need to activate.
+  // expiration date then the subscription is surely expired, no need to activate.
   if (subscription.isExpired && (subscription.cancellationDateTime ||
       [subscription.expirationDateTime compare:receiptValidationStatus.validationDateTime] ==
       NSOrderedAscending)) {
@@ -121,12 +114,9 @@ const NSUInteger kMaxPeriodicValidationInterval = 28;
 }
 
 - (void)activatePeriodicValidationForSubscription:(BZRReceiptSubscriptionInfo *)subscription {
-  @weakify(self);
-  [[self currentTime] subscribeNext:^(NSDate *currentTime) {
-    @strongify(self);
-    self.periodicValidationInterval = [self periodicValidationIntervalForSubscription:subscription];
-    [self activatePeriodicValidationWithCurrentTime:currentTime];
-  }];
+  self.periodicValidationInterval = [self periodicValidationIntervalForSubscription:subscription];
+  [self rac_liftSelector:@selector(activatePeriodicValidationWithCurrentTime:)
+    withSignalsFromArray:@[[self.timeProvider currentTime]]];
 }
 
 - (NSTimeInterval)periodicValidationIntervalForSubscription:
@@ -162,81 +152,6 @@ const NSUInteger kMaxPeriodicValidationInterval = 28;
       interval:[timeToNextValidation doubleValue] onScheduler:[RACScheduler scheduler]]
       take:1]
       concat:timerSignal];
-}
-
-#pragma mark -
-#pragma mark Handling errors
-#pragma mark -
-
-- (RACSignal<BZREvent *> *)errorEventsSignal {
-    return [[RACSignal merge:@[
-      [self.timeProviderErrorsSubject map:^BZREvent *(NSError *error) {
-        return [[BZREvent alloc] initWithType:$(BZREventTypeNonCriticalError) eventError:error];
-      }],
-      [self periodicValidationErrorsSignal]
-    ]]
-    takeUntil:[self rac_willDeallocSignal]];
-}
-
-- (RACSignal<BZREvent *> *)periodicValidationErrorsSignal {
-  @weakify(self);
-  return [[[[[self.receiptValidator.eventsSignal
-      filter:^BOOL(BZREvent *event) {
-        return event.eventError != nil;
-      }]
-      map:^NSError *(BZREvent *event) {
-        return event.eventError;
-      }]
-      zipWith:[self currentTime]]
-      reduceEach:(id)^BZREvent *(NSError *validationError, NSDate *currentTime) {
-        @strongify(self);
-        return [self periodicValidationError:validationError withTimeStamp:currentTime];
-      }]
-      ignore:nil];
-}
-
-- (RACSignal<NSDate *> *)currentTime {
-  @weakify(self);
-  return [[[self.timeProvider currentTime]
-      doError:^(NSError *error) {
-        @strongify(self);
-        [self.timeProviderErrorsSubject sendNext:error];
-      }]
-      catchTo:[RACSignal return:[NSDate date]]];
-}
-
-- (nullable BZREvent *)periodicValidationError:(NSError *)validationError
-                                 withTimeStamp:(NSDate *)timeStamp {
-  NSDate *lastReceiptValidationDate = self.validationStatusProvider.lastReceiptValidationDate;
-  if (!lastReceiptValidationDate) {
-    // This case can happen only if \c receiptValidationStatus is not \c nil but
-    // \c lastReceiptValidationDate is. This, in turn, is only possible if the
-    // \c receiptValidationStatus was saved to secure storage but there was an error saving
-    // \c lastReceiptValidationDate. In this case a storage error will be sent in
-    // \c validationStatusProvider, so we don't need to send another error.
-    return nil;
-  }
-  NSTimeInterval secondsUntilInvalidation =
-      [[self dateOfInvalidationForLastReceiptValidation:lastReceiptValidationDate]
-       timeIntervalSinceDate:timeStamp];
-
-  if (secondsUntilInvalidation < 0) {
-    [self.validationStatusProvider expireSubscription];
-  }
-
-  NSError *error =
-      [NSError bzr_errorWithSecondsUntilSubscriptionInvalidation:@(secondsUntilInvalidation)
-                                       lastReceiptValidationDate:lastReceiptValidationDate
-                                                 underlyingError:validationError];
-  return [[BZREvent alloc] initWithType:$(BZREventTypeNonCriticalError) eventError:error];
-}
-
-- (NSDate *)dateOfInvalidationForLastReceiptValidation:(NSDate *)lastReceiptValidationDate {
-  NSDate *dateOfInvalidation =
-      [lastReceiptValidationDate dateByAddingTimeInterval:self.periodicValidationInterval];
-  return [self.validationStatusProvider.receiptValidationStatus.receipt.environment
-          isEqual:$(BZRReceiptEnvironmentSandbox)] ? dateOfInvalidation :
-      [dateOfInvalidation dateByAddingTimeInterval:self.gracePeriod];
 }
 
 @end
