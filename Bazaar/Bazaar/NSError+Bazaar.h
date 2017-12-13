@@ -3,6 +3,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+extern NSString * const kBZRApplicationBundleIDKey;
+
 @class BZRContentFetcherParameters;
 
 /// Adds methods and properties to conveniently create Bazaar errors.
@@ -111,6 +113,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Value that was being stored.
 @property (readonly, nonatomic, nullable) NSString *bzr_keychainStorageValueDescription;
+
+/// Bundle identifier of the application whose validation failed.
+@property (readonly, nonatomic, nullable) NSString *bzr_applicationBundleID;
 
 @end
 

@@ -23,6 +23,7 @@ NSString * const kBZRErrorKeychainStorageServiceNameKey = @"BZRErrorKeychainStor
 NSString * const kBZRErrorKeychainStorageKeyKey = @"BZRKeychainStorageKey";
 NSString * const kBZRErrorKeychainStorageValueDescriptionKey =
     @"BZRKeychainStorageValueDescription";
+NSString * const kBZRApplicationBundleIDKey = @"BZRApplicationBundleID";
 
 /// Category that adds method for getting a description of the transaction.
 @interface SKPaymentTransaction (Bazaar)
@@ -217,6 +218,10 @@ NSString * const kBZRErrorKeychainStorageValueDescriptionKey =
 
 - (nullable NSString *)bzr_keychainStorageValueDescription {
   return self.userInfo[kBZRErrorKeychainStorageValueDescriptionKey];
+}
+
+- (nullable NSString *)bzr_applicationBundleID {
+  return self.userInfo[kBZRApplicationBundleIDKey];
 }
 
 @end

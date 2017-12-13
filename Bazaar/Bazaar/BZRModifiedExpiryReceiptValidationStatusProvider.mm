@@ -84,6 +84,11 @@ NS_ASSUME_NONNULL_BEGIN
       setNameWithFormat:@"%@ -fetchReceiptValidationStatus", self.description];
 }
 
+- (RACSignal<BZRReceiptValidationStatus *> *)fetchReceiptValidationStatus:
+    (NSString __unused *)applicationBundleID {
+  return [self fetchReceiptValidationStatus];
+}
+
 - (RACSignal<BZRReceiptValidationStatus *> *)
     cancelledSubscriptionModifier:(BZRReceiptValidationStatus *)receiptValidationStatus {
   return [RACSignal return:[self receiptValidatioStatus:receiptValidationStatus withExpiry:YES]];
