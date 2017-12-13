@@ -22,7 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithCoder:(NSCoder *)coder NS_UNAVAILABLE;
 
 /// Same as the designated initializer. \c alertControllerProvider is set to the default provider
-/// and \c subscriptionButtonsProvider is set to \c SPXSubscriptionGradientButtonsProvider.
+/// and \c subscriptionButtonsFactory is set to \c SPXSubscriptionGradientButtonsFactory.
 - (instancetype)initWithViewModel:(id<SPXSubscriptionViewModel>)viewModel
     mailComposerProvider:(id<SPXFeedbackComposeViewControllerProvider>)mailComposerProvider;
 
@@ -33,9 +33,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Initializes with \c viewModel for the subscription view configuration,
 /// \c alertControllerProvider for creating the success and failure alerts, \c mailComposerProvider
-/// for creating the feedback view controller, \c subscriptionButtonsProvider for creating the
-/// subscription buttons and \c backgroundView the view on the background, if \c nil the background
-/// color from \c viewModel.colorsTheme is taken.
+/// for creating the feedback view controller, \c subscriptionButtonsFactory for creating the
+/// subscription buttons.
 - (instancetype)initWithViewModel:(id<SPXSubscriptionViewModel>)viewModel
           alertControllerProvider:(id<SPXAlertViewControllerProvider>)alertControllerProvider
              mailComposerProvider:(id<SPXFeedbackComposeViewControllerProvider>)mailComposerProvider

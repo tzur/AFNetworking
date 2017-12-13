@@ -51,10 +51,10 @@ using namespace spx;
 /// View that lets the user paginate horizontally between the given pages.
 @property (readonly, nonatomic) SPXPagingView *pagingView;
 
-/// View contains horizontally aligned buttons, where one of the buttons can be enlarged.
+/// View containing horizontally aligned buttons, where one of the buttons can be enlarged.
 @property (readonly, nonatomic) SPXButtonsHorizontalLayoutView *subscriptionButtonsView;
 
-/// Button allows the user restore previous subscription.
+/// Button that allows the user to restore previous subscription.
 @property (readonly, nonatomic) SPXRestorePurchasesButton *restorePurchasesButton;
 
 /// View for subscription terms of use text and documents links.
