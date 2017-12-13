@@ -48,7 +48,6 @@ __block BZRExternalTriggerReceiptValidator *receiptValidator;
 __block RACSubject *validatorErrorsSubject;
 __block BZRFakeCachedReceiptValidationStatusProvider *receiptValidationStatusProvider;
 __block id<BZRTimeProvider> timeProvider;
-__block NSUInteger gracePeriod;
 __block BZRPeriodicReceiptValidatorActivator *activator;
 __block NSDate *lastValidationDate;
 
@@ -58,11 +57,10 @@ beforeEach(^{
   OCMStub([receiptValidator eventsSignal]).andReturn(validatorErrorsSubject);
   receiptValidationStatusProvider = [[BZRFakeCachedReceiptValidationStatusProvider alloc] init];
   timeProvider = OCMProtocolMock(@protocol(BZRTimeProvider));
-  gracePeriod = 7;
   activator = OCMPartialMock([[BZRPeriodicReceiptValidatorActivator alloc]
                               initWithReceiptValidator:receiptValidator
                               validationStatusProvider:receiptValidationStatusProvider
-                              timeProvider:timeProvider gracePeriod:gracePeriod]);
+                              timeProvider:timeProvider]);
 
   lastValidationDate = [NSDate date];
 });
@@ -70,24 +68,20 @@ beforeEach(^{
 context(@"deallocating object", ^{
   it(@"should not contain retain cycle", ^{
     BZRPeriodicReceiptValidatorActivator * __weak weakPeriodicValidatorActivator;
-    LLSignalTestRecorder *recorder;
 
-    receiptValidationStatusProvider.receiptValidationStatus =
-        BZRReceiptValidationStatusWithSubscriptionPeriod(1337);
     BZRStubLastValidationDate(receiptValidationStatusProvider, lastValidationDate);
     BZRStubCurrentTimeWithIntervalSinceDate(timeProvider, 1337 / 2 + 1, lastValidationDate);
+    receiptValidationStatusProvider.receiptValidationStatus =
+        BZRReceiptValidationStatusWithSubscriptionPeriod(1337);
 
     @autoreleasepool {
       BZRPeriodicReceiptValidatorActivator *receiptValidatorActivator =
           [[BZRPeriodicReceiptValidatorActivator alloc]
            initWithReceiptValidator:receiptValidator
-           validationStatusProvider:receiptValidationStatusProvider timeProvider:timeProvider
-           gracePeriod:gracePeriod];
+           validationStatusProvider:receiptValidationStatusProvider timeProvider:timeProvider];
       weakPeriodicValidatorActivator = receiptValidatorActivator;
-      recorder = [receiptValidatorActivator.errorEventsSignal testRecorder];
     }
 
-    expect(recorder).to.complete();
     expect(weakPeriodicValidatorActivator).to.beNil();
   });
 });
@@ -95,8 +89,15 @@ context(@"deallocating object", ^{
 context(@"subscription doesn't exist", ^{
   it(@"should deactivate periodic validator if subscription doesn't exist", ^{
     OCMReject([receiptValidator activateWithTrigger:OCMOCK_ANY]);
+    BZRReceiptInfo *receipt = [BZRReceiptInfo modelWithDictionary:@{
+      @instanceKeypath(BZRReceiptInfo, environment): $(BZRReceiptEnvironmentProduction),
+    } error:nil];
     receiptValidationStatusProvider.receiptValidationStatus =
-        BZRReceiptValidationStatusWithExpiry(NO);
+        [BZRReceiptValidationStatus modelWithDictionary:@{
+          @instanceKeypath(BZRReceiptValidationStatus, isValid): @YES,
+          @instanceKeypath(BZRReceiptValidationStatus, validationDateTime): [NSDate date],
+          @instanceKeypath(BZRReceiptValidationStatus, receipt): receipt
+        } error:nil];
 
     OCMVerify([receiptValidator deactivate]);
   });
@@ -235,213 +236,6 @@ context(@"subscription exists", ^{
     }]]);
 
     receiptValidationStatusProvider.receiptValidationStatus = receiptValidationStatus;
-  });
-
-  it(@"should send event when time provider fails", ^{
-    NSError *error = [NSError lt_errorWithCode:1337];
-    OCMStub([timeProvider currentTime]).andReturn([RACSignal error:error]);
-
-    LLSignalTestRecorder *recorder = [activator.errorEventsSignal testRecorder];
-
-    receiptValidationStatusProvider.receiptValidationStatus = receiptValidationStatus;
-
-    expect(recorder).will.matchValue(0, ^BOOL(BZREvent *event) {
-      return [event.eventType isEqual:$(BZREventTypeNonCriticalError)] &&
-          [event.eventError isEqual:error];
-    });
-  });
-});
-
-context(@"periodic receipt validation failed", ^{
-  beforeEach(^{
-    BZRStubLastValidationDate(receiptValidationStatusProvider, lastValidationDate);
-
-    receiptValidationStatusProvider.receiptValidationStatus =
-        BZRReceiptValidationStatusWithExpiry(NO);
-  });
-
-  it(@"should not contain retain cycle", ^{
-    BZRPeriodicReceiptValidatorActivator * __weak weakPeriodicValidatorActivator;
-    LLSignalTestRecorder *recorder;
-
-    NSError *timeError = [NSError lt_errorWithCode:13371337];
-    OCMStub([timeProvider currentTime]).andReturn([RACSignal error:timeError]);
-
-    @autoreleasepool {
-      BZRPeriodicReceiptValidatorActivator *receiptValidatorActivator =
-          [[BZRPeriodicReceiptValidatorActivator alloc]
-           initWithReceiptValidator:receiptValidator
-           validationStatusProvider:receiptValidationStatusProvider timeProvider:timeProvider
-           gracePeriod:gracePeriod];
-
-      weakPeriodicValidatorActivator = receiptValidatorActivator;
-      recorder = [receiptValidatorActivator.errorEventsSignal testRecorder];
-
-      NSError *error = [NSError lt_errorWithCode:1337];
-      BZREvent *errorEvent = [[BZREvent alloc] initWithType:$(BZREventTypeCriticalError)
-                                                 eventError:error];
-      [validatorErrorsSubject sendNext:errorEvent];
-    }
-
-    expect(recorder).will.complete();
-    expect(weakPeriodicValidatorActivator).to.beNil();
-  });
-
-  it(@"should send validation error event even with late subscription", ^{
-    BZRStubCurrentTimeWithIntervalSinceDate(timeProvider, 1, lastValidationDate);
-    LLSignalTestRecorder *recorder = [[activator errorEventsSignal] testRecorder];
-    BZRStubCurrentTimeWithIntervalSinceDate(timeProvider, 1337, lastValidationDate);
-    NSError *underlyingError = [NSError lt_errorWithCode:1337];
-    BZREvent *errorEvent = [[BZREvent alloc] initWithType:$(BZREventTypeCriticalError)
-                                               eventError:underlyingError];
-
-    [validatorErrorsSubject sendNext:errorEvent];
-
-    expect(recorder).will.matchValue(0, ^BOOL(BZREvent *event) {
-      return event.eventType.value == BZREventTypeNonCriticalError &&
-        event.eventError.code == BZRErrorCodePeriodicReceiptValidationFailed &&
-        event.eventError.lt_underlyingError == underlyingError;
-    });
-  });
-
-  it(@"should send validation error and time provider error events if time provider errs", ^{
-    NSError *timeProviderError = [NSError lt_errorWithCode:13371337];
-    OCMStub([timeProvider currentTime]).andReturn([RACSignal error:timeProviderError]);
-    NSError *periodicValidatorError = [NSError lt_errorWithCode:1337];
-    BZREvent *errorEvent = [[BZREvent alloc] initWithType:$(BZREventTypeCriticalError)
-                                               eventError:periodicValidatorError];
-
-    LLSignalTestRecorder *recorder = [[activator errorEventsSignal] testRecorder];
-    [validatorErrorsSubject sendNext:errorEvent];
-
-    expect(recorder).will.sendValuesWithCount(2);
-    expect(recorder).will.matchValue(0, ^BOOL(BZREvent *event) {
-      return event.eventType.value == BZREventTypeNonCriticalError &&
-        event.eventError == timeProviderError;
-    });
-    expect(recorder).will.matchValue(1, ^BOOL(BZREvent *event) {
-      return event.eventType.value == BZREventTypeNonCriticalError &&
-        event.eventError.code == BZRErrorCodePeriodicReceiptValidationFailed &&
-        event.eventError.lt_underlyingError == periodicValidatorError;
-    });
-  });
-
-  it(@"should send error with correct days left and last validation date", ^{
-    NSUInteger daysPastLastValidation =
-        [BZRTimeConversion numberOfDaysInSeconds:activator.periodicValidationInterval] + 4;
-    NSTimeInterval currentTimeOffset =
-        [BZRTimeConversion numberOfSecondsInDays:daysPastLastValidation];
-    BZRStubCurrentTimeWithIntervalSinceDate(timeProvider, currentTimeOffset, lastValidationDate);
-    NSInteger expectedSecondsLeft =
-        [BZRTimeConversion numberOfSecondsInDays:gracePeriod - daysPastLastValidation] +
-        activator.periodicValidationInterval;
-
-    NSError *underlyingError = [NSError lt_errorWithCode:1337];
-    BZREvent *errorEvent = [[BZREvent alloc] initWithType:$(BZREventTypeCriticalError)
-                                               eventError:underlyingError];
-
-    LLSignalTestRecorder *recorder = [[activator errorEventsSignal] testRecorder];
-    [validatorErrorsSubject sendNext:errorEvent];
-
-    expect(recorder).will.matchValue(0, ^BOOL(BZREvent *event) {
-      NSError *error = event.eventError;
-      return error.lt_isLTDomain && error.code == BZRErrorCodePeriodicReceiptValidationFailed &&
-          [error.bzr_secondsUntilSubscriptionInvalidation integerValue] == expectedSecondsLeft &&
-          [error.bzr_lastReceiptValidationDate isEqualToDate:lastValidationDate] &&
-          error.lt_underlyingError == underlyingError &&
-          [event.eventType isEqual:$(BZREventTypeNonCriticalError)];
-    });
-  });
-
-  it(@"should not expire subscription if grace period not over", ^{
-    NSUInteger daysPastLastValidation =
-        [BZRTimeConversion numberOfDaysInSeconds:activator.periodicValidationInterval] +
-        gracePeriod - 1;
-    NSTimeInterval currentTimeOffset =
-        [BZRTimeConversion numberOfSecondsInDays:daysPastLastValidation];
-    BZRStubCurrentTimeWithIntervalSinceDate(timeProvider, currentTimeOffset, lastValidationDate);
-
-    [activator.errorEventsSignal subscribeNext:^(id) {}];
-
-    NSError *error = [NSError lt_errorWithCode:1337];
-    BZREvent *errorEvent = [[BZREvent alloc] initWithType:$(BZREventTypeCriticalError)
-                                               eventError:error];
-    [validatorErrorsSubject sendNext:errorEvent];
-
-    expect(receiptValidationStatusProvider.wasExpireSubscriptionCalled).to.beFalsy();
-  });
-
-  it(@"should expire subscription if grace period is over", ^{
-    NSUInteger daysPastLastValidation =
-        [BZRTimeConversion numberOfDaysInSeconds:activator.periodicValidationInterval] +
-        gracePeriod + 1;
-    NSTimeInterval currentTimeOffset =
-        [BZRTimeConversion numberOfSecondsInDays:daysPastLastValidation];
-    BZRStubCurrentTimeWithIntervalSinceDate(timeProvider, currentTimeOffset, lastValidationDate);
-
-    [activator.errorEventsSignal subscribeNext:^(id) {}];
-    NSError *error = [NSError lt_errorWithCode:1337];
-    BZREvent *errorEvent = [[BZREvent alloc] initWithType:$(BZREventTypeCriticalError)
-                                               eventError:error];
-    [validatorErrorsSubject sendNext:errorEvent];
-
-    expect(receiptValidationStatusProvider.wasExpireSubscriptionCalled).to.beTruthy();
-  });
-
-  context(@"sandbox environment", ^{
-    beforeEach(^{
-      BZRReceiptInfo *receipt =
-          [receiptValidationStatusProvider.receiptValidationStatus.receipt
-           modelByOverridingProperty:@instanceKeypath(BZRReceiptInfo, environment)
-           withValue:$(BZRReceiptEnvironmentSandbox)];
-      receiptValidationStatusProvider.receiptValidationStatus =
-          [receiptValidationStatusProvider.receiptValidationStatus
-           modelByOverridingProperty:@instanceKeypath(BZRReceiptValidationStatus, receipt)
-           withValue:receipt];
-    });
-
-    it(@"should not count grace period in seconds left to invalidation", ^{
-      NSUInteger daysPastLastValidation =
-          [BZRTimeConversion numberOfDaysInSeconds:activator.periodicValidationInterval] + 4;
-      NSTimeInterval currentTimeOffset =
-          [BZRTimeConversion numberOfSecondsInDays:daysPastLastValidation];
-      BZRStubCurrentTimeWithIntervalSinceDate(timeProvider, currentTimeOffset, lastValidationDate);
-      NSInteger expectedSecondsLeft =
-          activator.periodicValidationInterval -
-          [BZRTimeConversion numberOfSecondsInDays:daysPastLastValidation];
-      NSError *underlyingError = [NSError lt_errorWithCode:1337];
-      BZREvent *errorEvent = [[BZREvent alloc] initWithType:$(BZREventTypeCriticalError)
-                                                 eventError:underlyingError];
-
-      LLSignalTestRecorder *recorder = [[activator errorEventsSignal] testRecorder];
-      [validatorErrorsSubject sendNext:errorEvent];
-
-      expect(recorder).will.matchValue(0, ^BOOL(BZREvent *event) {
-        NSError *error = event.eventError;
-        return error.lt_isLTDomain && error.code == BZRErrorCodePeriodicReceiptValidationFailed &&
-            [error.bzr_secondsUntilSubscriptionInvalidation integerValue] == expectedSecondsLeft &&
-            [error.bzr_lastReceiptValidationDate isEqualToDate:lastValidationDate] &&
-            error.lt_underlyingError == underlyingError &&
-            [event.eventType isEqual:$(BZREventTypeNonCriticalError)];
-      });
-    });
-
-    it(@"should expire subscription if days past last validation has passed", ^{
-      NSUInteger daysPastLastValidation =
-          [BZRTimeConversion numberOfDaysInSeconds:activator.periodicValidationInterval] + 1;
-      NSTimeInterval currentTimeOffset =
-          [BZRTimeConversion numberOfSecondsInDays:daysPastLastValidation];
-      BZRStubCurrentTimeWithIntervalSinceDate(timeProvider, currentTimeOffset, lastValidationDate);
-      NSError *error = [NSError lt_errorWithCode:1337];
-      BZREvent *errorEvent = [[BZREvent alloc] initWithType:$(BZREventTypeCriticalError)
-                                                 eventError:error];
-
-      LLSignalTestRecorder *recorder = [activator.errorEventsSignal testRecorder];
-      [validatorErrorsSubject sendNext:errorEvent];
-
-      expect(recorder).will.sendValuesWithCount(1);
-      expect(receiptValidationStatusProvider.wasExpireSubscriptionCalled).to.beTruthy();
-    });
   });
 });
 

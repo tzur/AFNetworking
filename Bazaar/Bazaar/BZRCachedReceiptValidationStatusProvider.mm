@@ -11,6 +11,7 @@
 #import "BZRReceiptModel.h"
 #import "BZRReceiptValidationStatus.h"
 #import "BZRReceiptValidationStatusCache.h"
+#import "BZRTimeConversion.h"
 #import "BZRTimeProvider.h"
 #import "NSError+Bazaar.h"
 #import "NSErrorCodes+Bazaar.h"
@@ -30,6 +31,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Current application's bundle ID.
 @property (readonly, nonatomic) NSString *applicationBundleID;
+
+/// Seconds until the cache is invalidated, starting from the date of the last validation.
+@property (readonly, nonatomic) NSTimeInterval cachedEntryTimeToLive;
 
 /// Latest \c BZRReceiptValidationStatus fetched with \c underlyingProvider.
 @property (strong, readwrite, nonatomic, nullable)
@@ -55,11 +59,22 @@ NS_ASSUME_NONNULL_BEGIN
                  timeProvider:(id<BZRTimeProvider>)timeProvider
            underlyingProvider:(id<BZRReceiptValidationStatusProvider>)underlyingProvider
           applicationBundleID:(NSString *)applicationBundleID {
+  return [self initWithCache:receiptValidationStatusCache timeProvider:timeProvider
+          underlyingProvider:underlyingProvider applicationBundleID:applicationBundleID
+       cachedEntryDaysToLive:19];
+}
+
+- (instancetype)initWithCache:(BZRReceiptValidationStatusCache *)receiptValidationStatusCache
+                 timeProvider:(id<BZRTimeProvider>)timeProvider
+           underlyingProvider:(id<BZRReceiptValidationStatusProvider>)underlyingProvider
+          applicationBundleID:(NSString *)applicationBundleID
+        cachedEntryDaysToLive:(NSUInteger)cachedEntryDaysToLive {
   if (self = [super init]) {
     _receiptValidationStatusCache = receiptValidationStatusCache;
     _timeProvider = timeProvider;
     _underlyingProvider = underlyingProvider;
     _applicationBundleID = applicationBundleID;
+    _cachedEntryTimeToLive = [BZRTimeConversion numberOfSecondsInDays:cachedEntryDaysToLive];
     _eventsSubject = [RACSubject subject];
     _eventsSignal = [[RACSignal merge:@[
       self.underlyingProvider.eventsSignal,
@@ -117,50 +132,64 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (RACSignal<BZRReceiptValidationStatus *> *)fetchReceiptValidationStatus {
   @weakify(self);
-  return [[[self.underlyingProvider fetchReceiptValidationStatus]
+  return [[[[self.underlyingProvider fetchReceiptValidationStatus]
       doNext:^(BZRReceiptValidationStatus *receiptValidationStatus) {
-       @strongify(self);
-       [[self.timeProvider currentTime] subscribeNext:^(NSDate *currentTime) {
-         @strongify(self);
-         [self storeReceiptValidationStatus:receiptValidationStatus cachingDateTime:currentTime];
-       }];
+        @strongify(self);
+        [self rac_liftSelector:@selector(storeReceiptValidationStatus:cachingDateTime:)
+          withSignalsFromArray:@[
+            [RACSignal return:receiptValidationStatus],
+            [self.timeProvider currentTime]
+          ]];
+      }]
+      doError:^(NSError *) {
+        @strongify(self);
+        [self invalidateReceiptValidationStatusIfNeeded:self.applicationBundleID];
       }]
       setNameWithFormat:@"%@ -fetchReceiptValidationStatus", self.description];
 }
 
-- (RACSignal<BZRReceiptValidationStatus *> *)fetchReceiptValidationStatus:
-    (NSString __unused *)applicationBundleID {
-  return [self fetchReceiptValidationStatus];
-}
+- (void)invalidateReceiptValidationStatusIfNeeded:(NSString *)applicationBundleID {
+  auto _Nullable cacheEntry = [self.receiptValidationStatusCache
+                               loadCacheEntryOfApplicationWithBundleID:applicationBundleID
+                               error:nil];
+  auto _Nullable subscription = cacheEntry.receiptValidationStatus.receipt.subscription;
 
-#pragma mark -
-#pragma mark Expiring subscription
-#pragma mark -
-
-- (void)expireSubscription {
-  if (!self.receiptValidationStatus.receipt.subscription) {
+  if (!subscription || subscription.isExpired) {
     return;
   }
 
-  auto isExpiredKeypath = @keypath(self.receiptValidationStatus, receipt.subscription.isExpired);
-  auto receiptValidationStatus =
-      [self.receiptValidationStatus modelByOverridingPropertyAtKeypath:isExpiredKeypath
-                                                             withValue:@YES];
+  @weakify(self);
+  [[[self.timeProvider currentTime]
+      takeUntil:[self rac_willDeallocSignal]]
+      subscribeNext:^(NSDate *currentTime) {
+        @strongify(self);
+        if ([currentTime timeIntervalSinceDate:cacheEntry.cachingDateTime] -
+            self.cachedEntryTimeToLive < 0) {
+          return;
+        }
 
-  [self storeReceiptValidationStatus:receiptValidationStatus
-                     cachingDateTime:self.lastReceiptValidationDate];
+        [self invalidateCachedEntry:cacheEntry currentTime:currentTime];
+      }];
 }
 
-- (nullable BZRReceiptValidationStatus *)receiptValidationStatus {
-  @synchronized (self) {
-    return _receiptValidationStatus;
-  }
+- (void)invalidateCachedEntry:(BZRReceiptValidationStatusCacheEntry *)cacheEntry
+                  currentTime:(NSDate *)currentTime {
+  auto receiptValidationStatusWithExpiredSubscription = [cacheEntry.receiptValidationStatus
+      modelByOverridingPropertyAtKeypath:@instanceKeypath(BZRReceiptValidationStatus,
+      receipt.subscription.isExpired) withValue:@YES];
+  [self storeReceiptValidationStatus:receiptValidationStatusWithExpiredSubscription
+                     cachingDateTime:currentTime];
 }
 
 - (nullable NSDate *)lastReceiptValidationDate {
   @synchronized (self) {
     return _lastReceiptValidationDate;
   }
+}
+
+- (RACSignal<BZRReceiptValidationStatus *> *)fetchReceiptValidationStatus:
+    (NSString __unused *)applicationBundleID {
+  return [self fetchReceiptValidationStatus];
 }
 
 @end

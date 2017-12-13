@@ -158,7 +158,6 @@ NS_ASSUME_NONNULL_BEGIN
   _eventsSignal = [[[RACSignal merge:@[
     [self.eventsSubject replay],
     self.validationStatusProvider.eventsSignal,
-    self.periodicValidatorActivator.errorEventsSignal,
     self.storeKitFacade.transactionsErrorEventsSignal,
     self.productsProvider.eventsSignal,
     self.contentFetcher.eventsSignal,

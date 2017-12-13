@@ -16,20 +16,25 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)init NS_UNAVAILABLE;
 
+/// Initializes with the given \c receiptValidationStatusCache, \c timeProvider,
+/// \c applicationBundleID, and \c cachedEntryTimeToLive set to \c 14.
+- (instancetype)initWithCache:(BZRReceiptValidationStatusCache *)receiptValidationStatusCache
+                 timeProvider:(id<BZRTimeProvider>)timeProvider
+           underlyingProvider:(id<BZRReceiptValidationStatusProvider>)underlyingProvider
+          applicationBundleID:(NSString *)applicationBundleID;
+
 /// Initializes with \c receiptValidationStatusCache, used to persist receipt validation status, and
 /// \c timeProvider used to provide the time the receipt was cached, and with
 /// \c underlyingProvider, used to fetch the receipt validation status. \c applicationBundleID is an
 /// identifier used to store and retrieve receipt validation status from the current application's
-/// partition in storage.
+/// partition in storage. \c cachedEntryDaysToLive is the number of days cache entries are valid
+/// for. Cache entries older than that will be invalidated and remain invalid until a successful
+/// receipt validation.
 - (instancetype)initWithCache:(BZRReceiptValidationStatusCache *)receiptValidationStatusCache
                  timeProvider:(id<BZRTimeProvider>)timeProvider
            underlyingProvider:(id<BZRReceiptValidationStatusProvider>)underlyingProvider
           applicationBundleID:(NSString *)applicationBundleID
-    NS_DESIGNATED_INITIALIZER;
-
-/// Expires the subscription of the user. Updates the cache and the \c receiptValidationStatus with
-/// an expired validation status, \c lastReceiptValidationDate remains unchanged.
-- (void)expireSubscription;
+        cachedEntryDaysToLive:(NSUInteger)cachedEntryDaysToLive NS_DESIGNATED_INITIALIZER;
 
 /// Loads receipt validation status cache entry of the application specified by
 /// \c applicationBundleID. If the cache entry couldn't be found or there was an error \c nil will

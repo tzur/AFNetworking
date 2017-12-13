@@ -49,15 +49,11 @@ NS_ASSUME_NONNULL_BEGIN
   /// subscription has expired.
   static const NSUInteger kExpiredSubscriptionGracePeriod = 7;
 
-  /// Number of days the receipt can remain not validated until subscription marked as expired.
-  static const NSUInteger kNotValidatedGracePeriod = 5;
-
   return [self initWithProductsListJSONFilePath:productsListJSONFilePath
                        productListDecryptionKey:productListDecryptionKey
                             keychainAccessGroup:[BZRKeychainStorage defaultSharedAccessGroup]
                  expiredSubscriptionGracePeriod:kExpiredSubscriptionGracePeriod
                               applicationUserID:nil
-                 notValidatedReceiptGracePeriod:kNotValidatedGracePeriod
                             applicationBundleID:[[NSBundle mainBundle] bundleIdentifier]];
 }
 
@@ -66,7 +62,6 @@ NS_ASSUME_NONNULL_BEGIN
                              keychainAccessGroup:(nullable NSString *)keychainAccessGroup
                   expiredSubscriptionGracePeriod:(NSUInteger)expiredSubscriptionGracePeriod
                                applicationUserID:(nullable NSString *)applicationUserID
-                  notValidatedReceiptGracePeriod:(NSUInteger)notValidatedReceiptGracePeriod
                              applicationBundleID:(NSString *)applicationBundleID {
   if (self = [super init]) {
     _fileManager = [NSFileManager defaultManager];
@@ -120,8 +115,7 @@ NS_ASSUME_NONNULL_BEGIN
 
     _periodicValidatorActivator =
         [[BZRPeriodicReceiptValidatorActivator alloc]
-         initWithValidationStatusProvider:self.validationStatusProvider timeProvider:timeProvider
-         gracePeriod:notValidatedReceiptGracePeriod];
+         initWithValidationStatusProvider:self.validationStatusProvider timeProvider:timeProvider];
 
     _variantSelectorFactory = [[BZRProductsVariantSelectorFactory alloc] init];
 

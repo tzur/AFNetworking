@@ -19,8 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// Initializes the in-app store configuration with Lightricks' default shared keychain access group
 /// as provided by \c + [BZRKeychainStorage defaultSharedAccessGroup].
 /// \c expiredSubscriptionGracePeriod is set to \c 7. \c applicationUserID is set to \c nil.
-/// \c notValidatedReceiptGracePeriod is set to \c 5. \c applicationBundleID is set to application's
-/// bundle identifier.
+/// \c applicationBundleID is set to application's bundle identifier.
 ///
 /// @note In order to use the default shared keychain access group AppIdentifierPrefix has to be
 /// defined in the application's main bundle plist, if it is not defined an
@@ -44,9 +43,6 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 /// \c applicationUserID is an optional unique identifier for the user's account, used for making
 /// purchases and restoring transactions.
-///
-/// \c notValidatedReceiptGracePeriod determines the number of days the receipt can remain not
-/// validated until subscription marked as expired.
 ///
 /// \c productsProvider will be initialized with \c BZRCachedProductsProvider with the
 /// given \c productsListJSONFilePath and \c fileManager.
@@ -77,7 +73,6 @@ NS_ASSUME_NONNULL_BEGIN
                              keychainAccessGroup:(nullable NSString *)keychainAccessGroup
                   expiredSubscriptionGracePeriod:(NSUInteger)expiredSubscriptionGracePeriod
                                applicationUserID:(nullable NSString *)applicationUserID
-                  notValidatedReceiptGracePeriod:(NSUInteger)notValidatedReceiptGracePeriod
                              applicationBundleID:(NSString *)applicationBundleID
     NS_DESIGNATED_INITIALIZER;
 
