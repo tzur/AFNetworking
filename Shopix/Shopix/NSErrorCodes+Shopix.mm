@@ -13,7 +13,11 @@ LTErrorCodesImplement(ShopixErrorCodeProductID,
   /// Caused when a coupon is invalid.
   SPXErrorCodeInvalidCoupon,
   /// Caused when a deserialization process failed.
-  SPXErrorCodeDeserializationFailed
+  SPXErrorCodeDeserializationFailed,
+  /// Caused when a serialization process failed.
+  SPXErrorCodeSerializationFailed,
+  /// Caused when data failed signature validation.
+  SPXErrorCodeSignatureValidationFailed
 );
 
 NS_ASSUME_NONNULL_END

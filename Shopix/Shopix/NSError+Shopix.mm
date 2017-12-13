@@ -21,11 +21,24 @@ NSString * const kSPXErrorAssociatedCouponKey = @"AssociatedCoupon";
 
 + (instancetype)spx_errorWithCode:(NSInteger)code
               associatedPromotion:(SPXPromotion *)associatedPromotion
+                  underlyingError:(NSError *)underlyingError {
+  return [NSError lt_errorWithCode:code userInfo:@{
+      kSPXErrorAssociatedPromotionKey: associatedPromotion,
+      NSUnderlyingErrorKey: underlyingError ?: [NSError spx_nullValueGivenError]
+  }];
+}
+
++ (instancetype)spx_errorWithCode:(NSInteger)code
+              associatedPromotion:(SPXPromotion *)associatedPromotion
                  associatedCoupon:(SPXCoupon *)associatedCoupon {
   return [NSError lt_errorWithCode:code userInfo:@{
     kSPXErrorAssociatedPromotionKey: associatedPromotion,
     kSPXErrorAssociatedCouponKey: associatedCoupon
   }];
+}
+
++ (instancetype)spx_nullValueGivenError {
+  return [NSError lt_errorWithCode:LTErrorCodeNullValueGiven];
 }
 
 - (nullable SPXPromotion *)spx_associatedPromotion {
