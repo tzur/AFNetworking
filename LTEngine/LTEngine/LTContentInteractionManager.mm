@@ -94,6 +94,10 @@ NS_ASSUME_NONNULL_BEGIN
   recognizer.enabled = self.interactionMode & mode ? YES : NO;
 }
 
+- (BOOL)isCurrentlyReceivingContentTouchEvents {
+  return self.touchEventView.isCurrentlyReceivingTouchEvents;
+}
+
 - (BOOL)forwardStationaryContentTouchEvents {
   return self.touchEventView.forwardStationaryTouchEvents;
 }

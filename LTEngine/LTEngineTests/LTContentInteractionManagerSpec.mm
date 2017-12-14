@@ -414,6 +414,11 @@ context(@"LTContentInteractionManager protocol", ^{
     OCMVerify([view cancelTouchEventSequences]);
   });
 
+  it(@"should retrieve whether content touch events are being received from touch event view", ^{
+    OCMStub([view isCurrentlyReceivingTouchEvents]).andReturn(YES);
+    expect(manager.isCurrentlyReceivingContentTouchEvents).to.beTruthy();
+  });
+
   it(@"should retrieve whether to forward stationary content touch events from touch event view", ^{
     OCMStub([view forwardStationaryTouchEvents]).andReturn(YES);
     expect(manager.forwardStationaryContentTouchEvents).to.beTruthy();

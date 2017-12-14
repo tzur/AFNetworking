@@ -171,6 +171,10 @@ sharedExamplesFor(kLTContentInteractionManagerExamples, ^(NSDictionary *data) {
 
       OCMVerifyAll(contentTouchEventDelegateMock);
     });
+
+    it(@"should not receive touch events initially", ^{
+      expect(manager.isCurrentlyReceivingContentTouchEvents).to.beFalsy();
+    });
   });
 
   context(@"stationary content touch event forwarding", ^{

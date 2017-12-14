@@ -334,6 +334,10 @@ NS_ASSUME_NONNULL_BEGIN
                                                interactionManager.customGestureRecognizers)];
 }
 
+- (BOOL)isCurrentlyReceivingContentTouchEvents {
+  return self.interactionManager.isCurrentlyReceivingContentTouchEvents;
+}
+
 - (BOOL)forwardStationaryContentTouchEvents {
   return self.interactionManager.forwardStationaryContentTouchEvents;
 }

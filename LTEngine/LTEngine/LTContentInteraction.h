@@ -54,6 +54,11 @@ NS_ASSUME_NONNULL_BEGIN
 /// that content touch event sequences stay exclusive to a single delegate.
 @property (weak, nonatomic, nullable) id<LTContentTouchEventDelegate> contentTouchEventDelegate;
 
+/// Indication whether this instance is currently receiving content touch events.
+///
+/// @note This property is not KVO compliant.
+@property (readonly, nonatomic) BOOL isCurrentlyReceivingContentTouchEvents;
+
 /// Indication whether to forward stationary content touch events to \c delegate, at the display
 /// refresh rate. Default value is \c YES.
 @property (nonatomic) BOOL forwardStationaryContentTouchEvents;
