@@ -236,6 +236,51 @@ For example, in order to know whether the user is a Facetune 2 subscriber:
       [sharedUserInfoReader isSubscriberOfAppWithBundleIdentifier:@"com.lightricks.Facetune2"];
 ```
 
+## Multi-app Subscription
+
+Multi-app subscription is a subscription that the user purchases in one
+application that unlocks content in a different application, assuming
+they are from the same developer. Bazaar can be configured to support
+multi-app subscriptions from other applications. It needs to be aware of
+two things: which applications can unlock content for the current
+application, and which subscriptions should be considered multi-app
+subscriptions. The two parameters are provided thus:
+
+- `bundledApplicationIDs` - bundle identifiers of other applications
+  that may contain a multi-app subscription that unlocks content for the
+  current application. This will tell Bazaar to read receipt data of
+  these apps from the shared keychain and validate & update receipt data
+  for these apps in the keychain when needed.
+- `multiAppSubscriptionMarker` - substring of a product identifier.
+  Subscription whose product identifier contains this string is
+  considered a multi-app subscription for the current application.
+
+An example code to enable multi-app subscription with substring
+`.multiApp.` for the applications with identifiers `com.lightricks.foo`
+and `com.lightricks.bar`:
+
+```objc
+// ...Code that gets the other parameters for `BZRStoreConfiguration`.
+
+NSString *multiAppSubscriptionMarker = @".multiApp.";
+NSSet<NSString *> *bundledApplicationIDs = [NSSet setWithObjects:@"com.lightricks.foo", @"com.lightricks.bar", nil];
+BZRStoreConfiguration *storeConfiguration =
+     [[BZRStoreConfiguration alloc] initWithProductsListJSONFilePath:productsPath
+                                            productListDecryptionKey:kProductListEncryptionKey
+                                          multiAppSubscriptionMarker:multiAppSubscriptionMarker
+                                               bundledApplicationIDs:bundledApplicationIDs];
+```
+
+**Note** The applications also have to read and write from the same
+keychain storage, which Bazaar takes care of by default (as described
+in [Shared Keychain](#shared-keychain)).
+
+**Note** Due to the fact that Bazaar needs the receipt of another
+application in order to perform validation, there are cases where the
+current application cannot be aware of another application's multi-app
+subscription. Currently the only solution is to restore purchases in
+the other application. These cases are thoroughly discussed [in this document](https://docs.google.com/document/d/1Tgdc869E48FKpCHefPqr1xbPgjSSEH6Q1bMDhh2CxOk/edit#heading=h.sv24ekae7r9n).
+
 ---
 
 ## Troubleshooting
