@@ -53,6 +53,17 @@ NS_ASSUME_NONNULL_BEGIN
   return self.vertexSource.hash ^ self.fragmentSource.hash ^ self.uniforms.hash;
 }
 
+#pragma mark -
+#pragma mark Public API
+#pragma mark -
+
+- (instancetype)copyWithAuxiliaryTextures:(NSDictionary<NSString *, LTTexture *> *)auxiliaryTextures
+                                 uniforms:(NSDictionary<NSString *, NSValue *> *)uniforms {
+  return [[[self class] alloc] initWithVertexSource:self.vertexSource
+                                     fragmentSource:self.fragmentSource
+                                  auxiliaryTextures:auxiliaryTextures uniforms:uniforms];
+}
+
 @end
 
 NS_ASSUME_NONNULL_END
