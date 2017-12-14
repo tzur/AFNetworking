@@ -13,11 +13,12 @@
 
 SpecBegin(DVNPipelineConfiguration)
 
-__block id samplingConfiguration;
-__block id geometryConfiguration;
-__block id textureConfiguration;
-__block id attributeConfiguration;
-__block id renderConfiguration;
+__block id<LTContinuousSamplerModel> samplingConfiguration;
+__block id<DVNGeometryProviderModel> geometryConfiguration;
+__block DVNTextureMappingStageConfiguration *textureConfiguration;
+__block DVNAttributeStageConfiguration *attributeConfiguration;
+__block DVNRenderStageConfiguration *renderConfiguration;
+__block DVNPipelineConfiguration *configuration;
 
 beforeEach(^{
   samplingConfiguration = OCMProtocolMock(@protocol(LTContinuousSamplerModel));
@@ -25,16 +26,17 @@ beforeEach(^{
   textureConfiguration = OCMClassMock([DVNTextureMappingStageConfiguration class]);
   attributeConfiguration = OCMClassMock([DVNAttributeStageConfiguration class]);
   renderConfiguration = OCMClassMock([DVNRenderStageConfiguration class]);
+
+  configuration =
+      [[DVNPipelineConfiguration alloc] initWithSamplingStageConfiguration:samplingConfiguration
+                                                geometryStageConfiguration:geometryConfiguration
+                                          textureMappingStageConfiguration:textureConfiguration
+                                               attributeStageConfiguration:attributeConfiguration
+                                                  renderStageConfiguration:renderConfiguration];
 });
 
 context(@"initialization", ^{
   it(@"should initialize correctly", ^{
-    DVNPipelineConfiguration *configuration =
-        [[DVNPipelineConfiguration alloc] initWithSamplingStageConfiguration:samplingConfiguration
-                                                  geometryStageConfiguration:geometryConfiguration
-                                            textureMappingStageConfiguration:textureConfiguration
-                                                 attributeStageConfiguration:attributeConfiguration
-                                                    renderStageConfiguration:renderConfiguration];
     expect(configuration.samplingStageConfiguration).to.equal(samplingConfiguration);
     expect(configuration.geometryStageConfiguration).to.equal(geometryConfiguration);
     expect(configuration.textureStageConfiguration).to.equal(textureConfiguration);
@@ -68,6 +70,29 @@ itShouldBehaveLike(kLTEqualityExamples, ^{
     kLTEqualityExamplesEqualObject: equalConfiguration,
     kLTEqualityExamplesDifferentObjects: @[differentConfiguration]
   };
+});
+
+context(@"instance creation with updated properties", ^{
+  it(@"should create a new instance with a given render stage configuration", ^{
+    DVNRenderStageConfiguration *otherRenderConfiguration =
+        OCMClassMock([DVNRenderStageConfiguration class]);
+
+    DVNPipelineConfiguration *updatedConfiguration =
+        [configuration shallowCopyWithRenderStageConfiguration:otherRenderConfiguration];
+
+    expect(updatedConfiguration.samplingStageConfiguration)
+        .to.beIdenticalTo(configuration.samplingStageConfiguration);
+    expect(updatedConfiguration.geometryStageConfiguration)
+        .to.beIdenticalTo(configuration.geometryStageConfiguration);
+    expect(updatedConfiguration.textureStageConfiguration)
+        .to.beIdenticalTo(configuration.textureStageConfiguration);
+    expect(updatedConfiguration.attributeStageConfiguration)
+        .to.beIdenticalTo(configuration.attributeStageConfiguration);
+    expect(updatedConfiguration.renderStageConfiguration)
+        .toNot.equal(configuration.renderStageConfiguration);
+    expect(updatedConfiguration.renderStageConfiguration)
+        .to.beIdenticalTo(otherRenderConfiguration);
+  });
 });
 
 SpecEnd
