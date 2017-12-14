@@ -6,7 +6,6 @@
 #import "LTGLContext.h"
 #import "LTGLPixelFormat.h"
 #import "LTGPUResourceExamples.h"
-#import "LTRenderbuffer+Private.h"
 
 SpecBegin(LTRenderbuffer)
 
@@ -81,7 +80,10 @@ sharedExamplesFor(kLTRenderbufferExamples, ^(NSDictionary *info) {
     itShouldBehaveLike(kLTResourceExamples, ^{
       return @{
         kLTResourceExamplesSUTValue: [NSValue valueWithNonretainedObject:renderbuffer],
-        kLTResourceExamplesOpenGLParameterName: @GL_RENDERBUFFER_BINDING};
+        kLTResourceExamplesOpenGLParameterName: @GL_RENDERBUFFER_BINDING,
+        kLTResourceExamplesIsResourceFunction:
+            [NSValue valueWithPointer:(const void *)glIsRenderbuffer]
+      };
     });
   });
 

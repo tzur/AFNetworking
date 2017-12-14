@@ -353,8 +353,10 @@ context(@"binding", ^{
   });
 
   itShouldBehaveLike(kLTResourceExamples, ^{
-    return @{kLTResourceExamplesSUTValue: [NSValue valueWithNonretainedObject:program],
-             kLTResourceExamplesOpenGLParameterName: @GL_CURRENT_PROGRAM};
+    return @{
+      kLTResourceExamplesSUTValue: [NSValue valueWithNonretainedObject:program],
+      kLTResourceExamplesOpenGLParameterName: @GL_CURRENT_PROGRAM
+    };
   });
 });
 
