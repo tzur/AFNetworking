@@ -199,8 +199,8 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 - (void)pauseOrResumeDisplayLink {
-  BOOL isTouchToSequenceIDEmpty = self.touchToSequenceID.count == 0;
-  self.displayLink.paused = isTouchToSequenceIDEmpty || !self.forwardStationaryTouchEvents;
+  self.displayLink.paused = ![self isCurrentlyReceivingTouchEvents] ||
+      !self.forwardStationaryTouchEvents;
 }
 
 #pragma mark -
@@ -347,6 +347,10 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)setForwardStationaryTouchEvents:(BOOL)forwardStationaryTouchEvents {
   _forwardStationaryTouchEvents = forwardStationaryTouchEvents;
   [self pauseOrResumeDisplayLink];
+}
+
+- (BOOL)isCurrentlyReceivingTouchEvents {
+  return self.touchToSequenceID.count != 0;
 }
 
 @end
