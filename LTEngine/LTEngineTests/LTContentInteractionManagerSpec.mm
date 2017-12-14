@@ -414,13 +414,13 @@ context(@"LTContentInteractionManager protocol", ^{
     OCMVerify([view cancelTouchEventSequences]);
   });
 
-  it(@"should retrieve whether to forward stationary touch events from the touch event view", ^{
+  it(@"should retrieve whether to forward stationary content touch events from touch event view", ^{
     OCMStub([view forwardStationaryTouchEvents]).andReturn(YES);
-    expect(manager.forwardStationaryTouchEvents).to.beTruthy();
+    expect(manager.forwardStationaryContentTouchEvents).to.beTruthy();
   });
 
   it(@"should proxy the desired rate to the display link", ^{
-    manager.forwardStationaryTouchEvents = NO;
+    manager.forwardStationaryContentTouchEvents = NO;
     OCMVerify([view setForwardStationaryTouchEvents:NO]);
   });
 });

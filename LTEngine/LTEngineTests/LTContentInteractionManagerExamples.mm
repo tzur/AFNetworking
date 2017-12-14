@@ -173,14 +173,14 @@ sharedExamplesFor(kLTContentInteractionManagerExamples, ^(NSDictionary *data) {
     });
   });
 
-  context(@"stationary touch event forwarding", ^{
+  context(@"stationary content touch event forwarding", ^{
     it(@"should have a truthy initial value", ^{
-      expect(manager.forwardStationaryTouchEvents).to.beTruthy();
+      expect(manager.forwardStationaryContentTouchEvents).to.beTruthy();
     });
 
-    it(@"should set touch event forwarding", ^{
-      manager.forwardStationaryTouchEvents = NO;
-      expect(manager.forwardStationaryTouchEvents).to.beFalsy();
+    it(@"should set content touch event forwarding", ^{
+      manager.forwardStationaryContentTouchEvents = NO;
+      expect(manager.forwardStationaryContentTouchEvents).to.beFalsy();
     });
   });
 });

@@ -94,12 +94,12 @@ NS_ASSUME_NONNULL_BEGIN
   recognizer.enabled = self.interactionMode & mode ? YES : NO;
 }
 
-- (BOOL)forwardStationaryTouchEvents {
+- (BOOL)forwardStationaryContentTouchEvents {
   return self.touchEventView.forwardStationaryTouchEvents;
 }
 
-- (void)setForwardStationaryTouchEvents:(BOOL)forwardStationaryTouchEvents {
-  self.touchEventView.forwardStationaryTouchEvents = forwardStationaryTouchEvents;
+- (void)setForwardStationaryContentTouchEvents:(BOOL)forwardStationaryContentTouchEvents {
+  self.touchEventView.forwardStationaryTouchEvents = forwardStationaryContentTouchEvents;
 }
 
 #pragma mark -
