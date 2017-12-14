@@ -129,7 +129,7 @@ NS_ASSUME_NONNULL_BEGIN
     _##name = name; \
     ___##name##Set = YES; \
   }\
-  - (void) _verify##Name:(type)name { \
+  - (void)_verify##Name:(type)name { \
     LTParameterAssert(name >= self.min##Name); \
     LTParameterAssert(name <= self.max##Name); \
   }
