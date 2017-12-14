@@ -81,7 +81,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly, nonatomic) BZRProductsPriceInfoFetcher *priceInfoFetcher;
 
 /// Validator used to validate receipt on initialization if required.
-@property (readonly, nonatomic) BZRExternalTriggerReceiptValidator *startupReceiptValidator;
+@property (readonly, nonatomic) BZRExternalTriggerReceiptValidator *backgroundReceiptValidator;
 
 /// List of products that their content is already available on the device and ready to be used.
 /// Products without content will be in the list as well.
@@ -131,15 +131,15 @@ NS_ASSUME_NONNULL_BEGIN
     _allowedProductsProvider = configuration.allowedProductsProvider;
     _netherProductsProvider = configuration.netherProductsProvider;
     _priceInfoFetcher = configuration.priceInfoFetcher;
-    _startupReceiptValidator = [[BZRExternalTriggerReceiptValidator alloc]
-                                initWithValidationStatusProvider:self.validationStatusProvider];
+    _backgroundReceiptValidator = [[BZRExternalTriggerReceiptValidator alloc]
+                                   initWithValidationStatusProvider:self.validationStatusProvider];
     _downloadedContentProducts = [NSSet set];
     _productListWasFetched = NO;
 
     [self initializeEventsSignal];
     [self initializeCompletedTransactionsSignal];
     [self finishUnfinishedTransactions];
-    [self activateStartupValidation];
+    [self activateBackgroundValidation];
     [self prefetchProductDictionary];
     [self prefetchProductsJSONDictionary];
     [self setupAllowedProductsUpdates];
@@ -160,7 +160,7 @@ NS_ASSUME_NONNULL_BEGIN
     self.contentFetcher.eventsSignal,
     self.allowedProductsProvider.eventsSignal,
     self.priceInfoFetcher.eventsSignal,
-    [self.startupReceiptValidator.eventsSignal replay],
+    [self.backgroundReceiptValidator.eventsSignal replay],
     self.validationParametersProvider.eventsSignal
   ]]
   takeUntil:[self rac_willDeallocSignal]]
@@ -185,13 +185,32 @@ NS_ASSUME_NONNULL_BEGIN
       }];
 }
 
-- (void)activateStartupValidation {
-  RACSignal *triggerSignal = [self.storeKitFacade.unhandledSuccessfulTransactionsSignal
-      deliverOn:[RACScheduler scheduler]];
-  if (!self.receiptValidationStatus) {
-    triggerSignal = [triggerSignal startWith:[RACUnit defaultUnit]];
-  }
-  [self.startupReceiptValidator activateWithTrigger:triggerSignal];
+- (void)activateBackgroundValidation {
+  RACSignal *completedTransactionsSignal =
+      [self.storeKitFacade.unhandledSuccessfulTransactionsSignal
+       deliverOn:[RACScheduler scheduler]];
+
+  auto appStoreLocaleObserver = RACObserve(self.validationParametersProvider, appStoreLocale);
+  auto appStoreLocaleChangedSignal = [[appStoreLocaleObserver distinctUntilChanged] skip:1];
+
+  // We want to wait for the first value of the App Store locale that is fetched from the products'
+  // metadata before doing validation that is triggered from the completed transactions signal.
+  auto fetchedAppStoreSignal = [[appStoreLocaleObserver skip:1] take:1];
+
+  @weakify(self);
+  auto triggerSignal = [RACSignal merge:@[
+    appStoreLocaleChangedSignal,
+    [fetchedAppStoreSignal flattenMap:^(id) {
+      @strongify(self);
+      if (!self.receiptValidationStatus) {
+        return [completedTransactionsSignal startWith:@[]];
+      }
+
+      return completedTransactionsSignal;
+    }]
+  ]];
+
+  [self.backgroundReceiptValidator activateWithTrigger:triggerSignal];
 }
 
 - (void)prefetchProductDictionary {

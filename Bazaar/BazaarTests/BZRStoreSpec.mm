@@ -68,7 +68,7 @@ __block BZRAcquiredViaSubscriptionProvider *acquiredViaSubscriptionProvider;
 __block BZRStoreKitFacade *storeKitFacade;
 __block BZRPeriodicReceiptValidatorActivator *periodicValidatorActivator;
 __block id<BZRProductsVariantSelector> variantSelector;
-__block id<BZRReceiptValidationParametersProvider> validationParametersProvider;
+__block BZRFakeReceiptValidationParametersProvider *validationParametersProvider;
 __block BZRFakeAllowedProductsProvider *allowedProductsProvider;
 __block id<BZRProductsProvider> netherProductsProvider;
 __block BZRProductsPriceInfoFetcher *priceInfoFetcher;
@@ -96,7 +96,7 @@ beforeEach(^{
   storeKitFacade = OCMClassMock([BZRStoreKitFacade class]);
   periodicValidatorActivator = OCMClassMock([BZRPeriodicReceiptValidatorActivator class]);
   variantSelector = OCMProtocolMock(@protocol(BZRProductsVariantSelector));
-  validationParametersProvider = OCMClassMock([BZRReceiptValidationParametersProvider class]);
+  validationParametersProvider = [[BZRFakeReceiptValidationParametersProvider alloc] init];
   allowedProductsProvider = [[BZRFakeAllowedProductsProvider alloc] init];
   netherProductsProvider = OCMProtocolMock(@protocol(BZRProductsProvider));
   priceInfoFetcher = OCMClassMock([BZRProductsPriceInfoFetcher class]);
@@ -132,9 +132,9 @@ beforeEach(^{
   OCMStub([contentFetcher eventsSignal]).andReturn(contentFetcherEventsSubject);
   OCMStub([storeKitFacade unhandledSuccessfulTransactionsSignal])
       .andReturn(unhandledSuccessfulTransactionsSubject);
-  OCMStub([priceInfoFetcher eventsSignal]).andReturn(priceInfoFetcherEventsSubject);
   OCMStub([validationParametersProvider eventsSignal])
       .andReturn(validationParametersProviderEventsSubject);
+  OCMStub([priceInfoFetcher eventsSignal]).andReturn(priceInfoFetcherEventsSubject);
 
   configuration = OCMClassMock([BZRStoreConfiguration class]);
   OCMStub([configuration productsProvider]).andReturn(productsProvider);
@@ -156,35 +156,59 @@ beforeEach(^{
 });
 
 context(@"initial receipt validation", ^{
-  it(@"should fetch receipt on initialization if receipt validation status is nil", ^{
+  it(@"should fetch receipt on initialization if receipt validation status is nil and App Store "
+     "locale was fetched", ^{
     OCMExpect([receiptValidationStatusProvider fetchReceiptValidationStatus])
         .andReturn([RACSignal return:OCMClassMock([BZRReceiptValidationStatus class])]);
 
     store = [[BZRStore alloc] initWithConfiguration:configuration];
+    validationParametersProvider.appStoreLocale = [NSLocale currentLocale];
 
     OCMVerifyAll((id)receiptValidationStatusProvider);
   });
 
-  it(@"should not fetch receipt on initialization if receipt validation status is not nil", ^{
+  it(@"should not fetch receipt on initialization if receipt validation status is nil and App "
+     "Store locale was not fetched", ^{
+    OCMReject([receiptValidationStatusProvider fetchReceiptValidationStatus]);
+
+    store = [[BZRStore alloc] initWithConfiguration:configuration];
+  });
+
+  it(@"should not fetch receipt on initialization if receipt validation status is not nil and "
+     "App Store locale was fetched", ^{
+    validationParametersProvider.appStoreLocale = [NSLocale currentLocale];
     OCMReject([receiptValidationStatusProvider fetchReceiptValidationStatus]);
     OCMStub([receiptValidationStatusProvider receiptValidationStatus])
         .andReturn(OCMClassMock([BZRReceiptValidationStatus class]));
 
     store = [[BZRStore alloc] initWithConfiguration:configuration];
+    validationParametersProvider.appStoreLocale = [NSLocale currentLocale];
   });
 
   it(@"should send error event if initial receipt validation failed", ^{
-    NSError *error = OCMClassMock([NSError class]);
+    validationParametersProvider.appStoreLocale = [NSLocale currentLocale];
+    NSError *error = [NSError lt_errorWithCode:1337];
     OCMStub([receiptValidationStatusProvider fetchReceiptValidationStatus])
         .andReturn([RACSignal error:error]);
 
     store = [[BZRStore alloc] initWithConfiguration:configuration];
     LLSignalTestRecorder *eventsRecorder = [[store eventsSignal] testRecorder];
+    validationParametersProvider.appStoreLocale = [NSLocale currentLocale];
 
     expect(eventsRecorder).will.matchValue(0, ^BOOL(BZREvent *event) {
       return [event.eventType isEqual:$(BZREventTypeNonCriticalError)] &&
           event.eventError == error;
     });
+  });
+});
+
+context(@"App Store locale", ^{
+  it(@"should fetch receipt validation every time the App Store locale changes", ^{
+    validationParametersProvider.appStoreLocale = [NSLocale currentLocale];
+    validationParametersProvider.appStoreLocale = nil;
+
+    OCMVerify([receiptValidationStatusProvider fetchReceiptValidationStatus]);
+    OCMVerify([receiptValidationStatusProvider fetchReceiptValidationStatus]);
   });
 });
 
@@ -1097,7 +1121,7 @@ context(@"getting product list", ^{
     LLSignalTestRecorder *recorder = [[store productList] testRecorder];
 
     expect(recorder).will.complete();
-    OCMVerify([validationParametersProvider setAppStoreLocale:locale]);
+    expect(validationParametersProvider.appStoreLocale).to.equal(locale);
   });
 });
 
@@ -1290,6 +1314,8 @@ context(@"handling unfinished completed transactions", ^{
   beforeEach(^{
     errorsRecorder = [store.eventsSignal testRecorder];
     completedTransactionsRecorder = [store.completedTransactionsSignal testRecorder];
+    OCMStub([receiptValidationStatusProvider receiptValidationStatus])
+        .andReturn(OCMClassMock([BZRReceiptValidationStatus class]));
   });
 
   it(@"should complete when object is deallocated", ^{
@@ -1305,7 +1331,18 @@ context(@"handling unfinished completed transactions", ^{
     expect(completedTransactionsRecorder).will.complete();
   });
 
+  it(@"should not fetch receipt validation status if App Store locale was not fetched", ^{
+    OCMReject([receiptValidationStatusProvider fetchReceiptValidationStatus]);
+
+    SKPaymentTransaction *transaction = OCMClassMock([SKPaymentTransaction class]);
+    OCMStub([transaction transactionState]).andReturn(SKPaymentTransactionStatePurchased);
+    NSArray<SKPaymentTransaction *> *transactions = @[transaction, transaction, transaction];
+    [unhandledSuccessfulTransactionsSubject sendNext:transactions];
+    [unhandledSuccessfulTransactionsSubject sendNext:transactions];
+  });
+
   it(@"should call fetch receipt validation status once for each transactions array", ^{
+    validationParametersProvider.appStoreLocale = [NSLocale currentLocale];
     OCMExpect([receiptValidationStatusProvider fetchReceiptValidationStatus])
         .andReturn([RACSignal return:OCMClassMock([BZRReceiptValidationStatus class])]);
     OCMExpect([receiptValidationStatusProvider fetchReceiptValidationStatus])
@@ -1321,52 +1358,15 @@ context(@"handling unfinished completed transactions", ^{
     OCMVerifyAllWithDelay((id)receiptValidationStatusProvider, 0.01);
   });
 
-  context(@"purchased transaction", ^{
-    __block SKPaymentTransaction *transaction;
+  it(@"should finish transaction", ^{
+    validationParametersProvider.appStoreLocale = [NSLocale currentLocale];
+    OCMStub([receiptValidationStatusProvider fetchReceiptValidationStatus]);
 
-    beforeEach(^{
-      OCMStub([receiptValidationStatusProvider fetchReceiptValidationStatus])
-          .andReturn([RACSignal empty]);
-      transaction = OCMClassMock([SKPaymentTransaction class]);
-      OCMStub([transaction transactionState]).andReturn(SKPaymentTransactionStatePurchased);
-    });
+    SKPaymentTransaction *transaction = OCMClassMock([SKPaymentTransaction class]);
+    OCMStub([transaction transactionState]).andReturn(SKPaymentTransactionStatePurchased);
+    [unhandledSuccessfulTransactionsSubject sendNext:@[transaction]];
 
-    it(@"should finish and fetch receipt validation status", ^{
-      [unhandledSuccessfulTransactionsSubject sendNext:@[transaction]];
-      OCMVerify([storeKitFacade finishTransaction:transaction]);
-      OCMVerify([receiptValidationStatusProvider fetchReceiptValidationStatus]);
-    });
-
-    it(@"should send transaction on completed transactions signal", ^{
-      LLSignalTestRecorder *completedTransactionsRecorder =
-          [store.completedTransactionsSignal testRecorder];
-      [unhandledSuccessfulTransactionsSubject sendNext:@[transaction]];
-      expect(completedTransactionsRecorder).will.sendValues(@[transaction]);
-    });
-  });
-
-  context(@"restored transaction", ^{
-    __block SKPaymentTransaction *transaction;
-
-    beforeEach(^{
-      transaction = OCMClassMock([SKPaymentTransaction class]);
-      OCMStub([transaction transactionState]).andReturn(SKPaymentTransactionStateRestored);
-    });
-
-    it(@"should finish and not fetch receipt validation status", ^{
-      [unhandledSuccessfulTransactionsSubject sendNext:@[transaction]];
-      OCMVerify([storeKitFacade finishTransaction:transaction]);
-      OCMVerify([receiptValidationStatusProvider fetchReceiptValidationStatus]);
-    });
-
-    it(@"should send transaction on completed transactions signal", ^{
-      OCMStub([receiptValidationStatusProvider fetchReceiptValidationStatus])
-          .andReturn([RACSignal empty]);
-      LLSignalTestRecorder *completedTransactionsRecorder =
-          [store.completedTransactionsSignal testRecorder];
-      [unhandledSuccessfulTransactionsSubject sendNext:@[transaction]];
-      expect(completedTransactionsRecorder).will.sendValues(@[transaction]);
-    });
+    OCMVerify([storeKitFacade finishTransaction:transaction]);
   });
 });
 
@@ -1451,7 +1451,7 @@ context(@"events signal", ^{
   });
 
   it(@"should send event sent by validation parameters provider", ^{
-    [validationParametersProviderEventsSubject sendNext:event];
+    [validationParametersProvider.eventsSubject sendNext:event];
     expect(recorder).will.sendValues(@[event]);
   });
 });
@@ -1459,7 +1459,6 @@ context(@"events signal", ^{
 context(@"KVO-compliance", ^{
   __block BZRFakeCachedReceiptValidationStatusProvider *validationStatusProvider;
   __block BZRFakeAcquiredViaSubscriptionProvider *acquiredViaSubscriptionProvider;
-  __block id<BZRReceiptValidationParametersProvider> validationParametersProvider;
 
   beforeEach(^{
     validationStatusProvider = [[BZRFakeCachedReceiptValidationStatusProvider alloc] init];
