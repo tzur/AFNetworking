@@ -5135,7 +5135,6 @@
 		8B85C79A182A31C8004C352E /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				8B16C9B01BAF01B6002FB750 /* LTKit */,
 				8B16CAB51BB06783002FB750 /* Expecta.xcodeproj */,
 				8B8A822B1BD662350027B97D /* OCMock.xcodeproj */,
 				8B16CAD01BB06797002FB750 /* Specta.xcodeproj */,
