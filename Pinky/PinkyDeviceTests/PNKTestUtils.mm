@@ -62,4 +62,30 @@ cv::Mat PNKFillMatrix(int rows, int columns, int channels) {
   return matrix.reshape(channels, rows);
 }
 
+template <typename T, int cvType>
+cv::Mat PNKGenerateChannelwiseConstantMatrix(NSUInteger rows, NSUInteger columns,
+                                             const std::vector<T> values) {
+  int channels = (int)values.size();
+
+  cv::Mat matrix = cv::Mat((int)(rows * columns), channels, cvType);
+
+  for (int i = 0; i < matrix.rows; i++) {
+    for (int j = 0; j < channels; j++) {
+      matrix.at<T>(i, j) = values[j];
+    }
+  }
+
+  return matrix.reshape(channels, (int)rows);
+}
+
+cv::Mat PNKGenerateChannelwiseConstantUcharMatrix(NSUInteger rows, NSUInteger columns,
+                                                  const std::vector<uchar> values) {
+  return PNKGenerateChannelwiseConstantMatrix<uchar, CV_8U>(rows, columns, values);
+}
+
+cv::Mat PNKGenerateChannelwiseConstantHalfFloatMatrix(NSUInteger rows, NSUInteger columns,
+                                                      const std::vector<half_float::half> values) {
+  return PNKGenerateChannelwiseConstantMatrix<half_float::half, CV_16F>(rows, columns, values);
+}
+
 NS_ASSUME_NONNULL_END
