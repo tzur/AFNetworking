@@ -5,7 +5,7 @@
 
 @class BZRReceiptDataCache;
 
-@protocol BZRReceiptValidationParametersProvider, BZRReceiptValidator;
+@protocol BZRReceiptValidationParametersProvider, BZRReceiptValidator, BZRUserIDProvider;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -19,15 +19,18 @@ NS_ASSUME_NONNULL_BEGIN
 /// and \c currentApplicationBundleID. \c receiptValidator is set to
 /// \c [[BZRValidatricksReceiptValidator alloc] init] wrapped by a \c BZRRetryReceiptValidator.
 - (instancetype)initWithValidationParametersProvider:(id<BZRReceiptValidationParametersProvider>)
-    validationParametersProvider receiptDataCache:(BZRReceiptDataCache *)receiptDataCache;
+    validationParametersProvider receiptDataCache:(BZRReceiptDataCache *)receiptDataCache
+    userIDProvider:(id<BZRUserIDProvider>)userIDProvider;
 
 /// Initializes \c receiptValidator is used to validate the receipt and return the latest
 /// \c BZRReceiptValidationStatus. \c validationParametersProvider is used to provide validation
 /// parameters to \c receiptValidator to validate the receipt. \c receiptDataCache is used to store
-/// the receipt validation status when validation is requested.
+/// the receipt validation status when validation is requested. \c userIDProvider is used to get a
+/// unique identifier of the user to send to validation.
 - (instancetype)initWithReceiptValidator:(id<BZRReceiptValidator>)receiptValidator
     validationParametersProvider:(id<BZRReceiptValidationParametersProvider>)
     validationParametersProvider receiptDataCache:(BZRReceiptDataCache *)receiptDataCache
+    userIDProvider:(id<BZRUserIDProvider>)userIDProvider
     NS_DESIGNATED_INITIALIZER;
 
 @end

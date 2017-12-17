@@ -52,7 +52,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (nullable BZRReceiptValidationParameters *)receiptValidationParametersForApplication:
-    (NSString *)applicationBundleID {
+    (NSString *)applicationBundleID userID:(nullable NSString *)userID {
   NSUUID * _Nullable deviceID = [[UIDevice currentDevice] identifierForVendor];
   NSData * _Nullable receiptData;
   NSLocale * _Nullable appStoreLocale;
@@ -67,14 +67,14 @@ NS_ASSUME_NONNULL_BEGIN
                                                                    error:nil];
   }
 
-  if (!receiptData) {
+  if (!receiptData && !userID) {
     return nil;
   }
 
   return [[BZRReceiptValidationParameters alloc]
           initWithCurrentApplicationBundleID:self.currentApplicationBundleID
           applicationBundleID:applicationBundleID receiptData:receiptData deviceID:deviceID
-          appStoreLocale:appStoreLocale userID:nil];
+          appStoreLocale:appStoreLocale userID:userID];
 }
 
 - (nullable NSLocale *)appStoreLocale {

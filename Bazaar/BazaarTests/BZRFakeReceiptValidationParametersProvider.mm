@@ -10,7 +10,7 @@ NS_ASSUME_NONNULL_BEGIN
 @synthesize appStoreLocale = _appStoreLocale;
 
 - (nullable BZRReceiptValidationParameters *)receiptValidationParametersForApplication:
-    (NSString __unused *)applicationBundleID {
+    (NSString __unused *)applicationBundleID userID:(nullable NSString __unused *)userID {
   return nil;
 }
 

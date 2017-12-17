@@ -10,6 +10,7 @@
 #import "BZRReceiptValidationStatus.h"
 #import "BZRReceiptValidator.h"
 #import "BZRRetryReceiptValidator.h"
+#import "BZRUserIDProvider.h"
 #import "BZRValidatricksReceiptValidator.h"
 #import "NSErrorCodes+Bazaar.h"
 
@@ -27,6 +28,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Cache used to store receipt data when validation is requested and receipt data is valid.
 @property (readonly, nonatomic) BZRReceiptDataCache *receiptDataCache;
 
+/// Provider used to provide a unique identifier of the user.
+@property (readonly, nonatomic) id<BZRUserIDProvider> userIDProvider;
+
 @end
 
 /// Delay of the second try to fetch the receipt validation status after the first try has failed.
@@ -39,7 +43,8 @@ static const NSUInteger kNumberOfRetries = 4;
 
 - (instancetype)initWithValidationParametersProvider:
     (id<BZRReceiptValidationParametersProvider>)validationParametersProvider
-    receiptDataCache:(BZRReceiptDataCache *)receiptDataCache {
+    receiptDataCache:(BZRReceiptDataCache *)receiptDataCache
+    userIDProvider:(id<BZRUserIDProvider>)userIDProvider {
   BZRValidatricksReceiptValidator *receiptValidator =
       [[BZRValidatricksReceiptValidator alloc] init];
   BZRRetryReceiptValidator *retryValidator =
@@ -48,17 +53,20 @@ static const NSUInteger kNumberOfRetries = 4;
                                                     numberOfRetries:kNumberOfRetries];
   return [self initWithReceiptValidator:retryValidator
            validationParametersProvider:validationParametersProvider
-                       receiptDataCache:receiptDataCache];
+                       receiptDataCache:receiptDataCache
+                         userIDProvider:userIDProvider];
 }
 
 - (instancetype)initWithReceiptValidator:(id<BZRReceiptValidator>)receiptValidator
     validationParametersProvider:
     (id<BZRReceiptValidationParametersProvider>)validationParametersProvider
-    receiptDataCache:(BZRReceiptDataCache *)receiptDataCache {
+    receiptDataCache:(BZRReceiptDataCache *)receiptDataCache
+    userIDProvider:(id<BZRUserIDProvider>)userIDProvider {
   if (self = [super init]) {
     _receiptValidator = receiptValidator;
     _receiptDataCache = receiptDataCache;
     _validationParametersProvider = validationParametersProvider;
+    _userIDProvider = userIDProvider;
   }
   return self;
 }
@@ -91,7 +99,7 @@ static const NSUInteger kNumberOfRetries = 4;
 
     return [RACSignal return:
             [self.validationParametersProvider receiptValidationParametersForApplication:
-             applicationBundleID]];
+             applicationBundleID userID:self.userIDProvider.userID]];
   }];
 }
 
