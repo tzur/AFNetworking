@@ -92,7 +92,7 @@ context(@"convolution operation with Float16 channel format", ^{
       .activationType = pnk::ActivationTypeIdentity
     };
 
-    NSBundle *bundle = [NSBundle bundleForClass:[PNKConvolutionLayerSpec class]];
+    NSBundle *bundle = [NSBundle lt_testBundle];
 
     pnk::ConvolutionKernelModel convolutionModel = {
       .kernelWidth = kernelSide,

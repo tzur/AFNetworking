@@ -5,8 +5,8 @@
 
 #import "LTOpenCVExtensions.h"
 
-static cv::Mat4b LTLoadRGBAImage(Class className, NSString *name) {
-  NSBundle *bundle = [NSBundle bundleForClass:className];
+static cv::Mat4b LTLoadRGBAImage(NSString *name) {
+  NSBundle *bundle = [NSBundle lt_testBundle];
   NSString *path = [bundle pathForResource:name ofType:@"png"];
 
   cv::Mat3b bgr(cv::imread([path cStringUsingEncoding:NSUTF8StringEncoding]));
@@ -154,7 +154,7 @@ context(@"loading images", ^{
     expect(image.size).to.equal(CGSizeMake(32, 32));
 
     // To do fair comparison, we rely on OpenCV's imread.
-    cv::Mat4b expected(LTLoadRGBAImage([self class], @"LTImageNoise@2x"));
+    cv::Mat4b expected(LTLoadRGBAImage(@"LTImageNoise@2x"));
 
     expect($(image.mat)).to.equalMat($(expected));
   });

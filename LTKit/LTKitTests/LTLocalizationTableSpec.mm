@@ -10,8 +10,7 @@ __block NSString *testBundlePath;
 __block NSBundle *testBundle;
 
 beforeEach(^{
-  testBundlePath = [[NSBundle bundleForClass:self.class] pathForResource:@"LocalizationTest"
-                                                                  ofType:@"bundle"];
+  testBundlePath = [[NSBundle lt_testBundle] pathForResource:@"LocalizationTest" ofType:@"bundle"];
   testBundle = [NSBundle bundleWithPath:testBundlePath];
   LTAssert(testBundle, @"The test target is missing the LocalizationTest bundle");
 });

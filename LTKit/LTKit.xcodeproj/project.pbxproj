@@ -34,6 +34,8 @@
 		194FF5111FA8BB5F008879E7 /* XCUIElement+CollectionView.h in Headers */ = {isa = PBXBuildFile; fileRef = 194FF4E91FA8B9B6008879E7 /* XCUIElement+CollectionView.h */; };
 		1984BE421FDD65EF00873DA0 /* XCUIElement+ElementState.h in Headers */ = {isa = PBXBuildFile; fileRef = 1984BE401FDD65EF00873DA0 /* XCUIElement+ElementState.h */; };
 		1984BE431FDD65EF00873DA0 /* XCUIElement+ElementState.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1984BE411FDD65EF00873DA0 /* XCUIElement+ElementState.mm */; };
+		1984C7051FE6661100873DA0 /* NSBundle+Test.h in Headers */ = {isa = PBXBuildFile; fileRef = 1984C7031FE6661100873DA0 /* NSBundle+Test.h */; };
+		1984C7061FE6661100873DA0 /* NSBundle+Test.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1984C7041FE6661100873DA0 /* NSBundle+Test.mm */; };
 		19C886891FC43069009F147E /* LTKeyValuePersistentStorage.h in Headers */ = {isa = PBXBuildFile; fileRef = 19C886721FC43069009F147E /* LTKeyValuePersistentStorage.h */; };
 		19C8868C1FC4308D009F147E /* LTFakeKeyValuePersistentStorage.h in Headers */ = {isa = PBXBuildFile; fileRef = 19C8868A1FC4308D009F147E /* LTFakeKeyValuePersistentStorage.h */; };
 		19C8868D1FC4308D009F147E /* LTFakeKeyValuePersistentStorage.mm in Sources */ = {isa = PBXBuildFile; fileRef = 19C8868B1FC4308D009F147E /* LTFakeKeyValuePersistentStorage.mm */; };
@@ -507,6 +509,8 @@
 		194FF5141FA8BC8B008879E7 /* LTKitTestUtils-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "LTKitTestUtils-Prefix.pch"; sourceTree = "<group>"; };
 		1984BE401FDD65EF00873DA0 /* XCUIElement+ElementState.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "XCUIElement+ElementState.h"; sourceTree = "<group>"; };
 		1984BE411FDD65EF00873DA0 /* XCUIElement+ElementState.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "XCUIElement+ElementState.mm"; sourceTree = "<group>"; };
+		1984C7031FE6661100873DA0 /* NSBundle+Test.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSBundle+Test.h"; sourceTree = "<group>"; };
+		1984C7041FE6661100873DA0 /* NSBundle+Test.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSBundle+Test.mm"; sourceTree = "<group>"; };
 		19C886721FC43069009F147E /* LTKeyValuePersistentStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTKeyValuePersistentStorage.h; sourceTree = "<group>"; };
 		19C8868A1FC4308D009F147E /* LTFakeKeyValuePersistentStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTFakeKeyValuePersistentStorage.h; sourceTree = "<group>"; };
 		19C8868B1FC4308D009F147E /* LTFakeKeyValuePersistentStorage.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTFakeKeyValuePersistentStorage.mm; sourceTree = "<group>"; };
@@ -835,6 +839,8 @@
 				19D95C2E1FBAD3C800357EB9 /* LTSpectaTemporaryPathHook.mm */,
 				190971051FBD6D6A00AD5B91 /* LTTestUtils.h */,
 				190971061FBD6D6A00AD5B91 /* LTTestUtils.mm */,
+				1984C7031FE6661100873DA0 /* NSBundle+Test.h */,
+				1984C7041FE6661100873DA0 /* NSBundle+Test.mm */,
 			);
 			name = "Test Utils";
 			sourceTree = "<group>";
@@ -1371,6 +1377,7 @@
 				190970FE1FBD6D5800AD5B91 /* EXPMatchers+beBlock.h in Headers */,
 				1984BE421FDD65EF00873DA0 /* XCUIElement+ElementState.h in Headers */,
 				190971031FBD6D5800AD5B91 /* EXPMatchers+beCloseToPoint.h in Headers */,
+				1984C7051FE6661100873DA0 /* NSBundle+Test.h in Headers */,
 				190971041FBD6D5800AD5B91 /* LTEqualityExamples.h in Headers */,
 				194FF50F1FA8BB4D008879E7 /* LTUIInterruptionHandler.h in Headers */,
 				190971071FBD6D6B00AD5B91 /* LTTestUtils.h in Headers */,
@@ -1783,6 +1790,7 @@
 				190970FC1FBD6D5800AD5B91 /* LTEventTarget.m in Sources */,
 				190971011FBD6D5800AD5B91 /* LTEqualityExamples.mm in Sources */,
 				190970FF1FBD6D5800AD5B91 /* EXPMatchers+beBlock.mm in Sources */,
+				1984C7061FE6661100873DA0 /* NSBundle+Test.mm in Sources */,
 				19C8868D1FC4308D009F147E /* LTFakeKeyValuePersistentStorage.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

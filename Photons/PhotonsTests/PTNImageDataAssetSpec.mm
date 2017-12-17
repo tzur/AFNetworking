@@ -25,8 +25,8 @@ it(@"should fetch data", ^{
 
 context(@"metadata fetching", ^{
   it(@"should fetch metadata", ^{
-    NSURL *url = [[NSBundle bundleForClass:[self class]] URLForResource:@"PTNImageMetadataImage"
-                                                          withExtension:@"jpg"];
+    NSURL *url = [[NSBundle lt_testBundle] URLForResource:@"PTNImageMetadataImage"
+                                            withExtension:@"jpg"];
 
     NSData *imageData = [NSData dataWithContentsOfURL:url];
     asset = [[PTNImageDataAsset alloc] initWithData:imageData];
