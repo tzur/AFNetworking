@@ -71,27 +71,23 @@ context(@"deallocating object", ^{
 
     @autoreleasepool {
       BZRCachedReceiptValidationStatusProvider *provider =
-          OCMPartialMock([[BZRCachedReceiptValidationStatusProvider alloc]
-                          initWithCache:receiptValidationStatusCache
-                          timeProvider:timeProvider
-                          underlyingProvider:underlyingProvider
-                          applicationBundleID:@"foo"]);
+          [[BZRCachedReceiptValidationStatusProvider alloc]
+           initWithCache:receiptValidationStatusCache
+           timeProvider:timeProvider
+           underlyingProvider:underlyingProvider
+           applicationBundleID:@"foo"];
       weakValidationStatusProvider = provider;
 
-      auto firstReceiptValidationStatus = BZRReceiptValidationStatusWithExpiry(YES);
-      auto secondReceiptValidationStatus = BZRReceiptValidationStatusWithExpiry(NO);
-
-      OCMStub([provider fetchReceiptValidationStatus:@"foo"])
-          .andReturn([RACSignal return:firstReceiptValidationStatus]);
-      OCMStub([provider fetchReceiptValidationStatus:@"bar"])
-          .andReturn([RACSignal return:secondReceiptValidationStatus]);
+      OCMStub([underlyingProvider fetchReceiptValidationStatus:@"foo"])
+          .andReturn([RACSignal return:BZRReceiptValidationStatusWithExpiry(YES)]);
+      OCMStub([underlyingProvider fetchReceiptValidationStatus:@"bar"])
+          .andReturn([RACSignal return:BZRReceiptValidationStatusWithExpiry(NO)]);
 
       recorder = [[provider fetchReceiptValidationStatuses:@[@"foo", @"bar"].lt_set] testRecorder];
     }
 
     expect(weakValidationStatusProvider).to.beNil();
     expect(recorder).will.complete();
-    expect(recorder).will.sendValuesWithCount(0);
   });
 });
 
