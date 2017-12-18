@@ -48,7 +48,7 @@ beforeEach(^{
 });
 
 it(@"should return values of predicates", ^{
-  auto url = [[NSURL alloc] init];
+  auto url = [NSURL URLWithString:@""];
   expect([url ptn_valuesForPredicate:@"foo"]).to.equal(@[]);
   expect([url ptn_valuesForPredicate:@"bar"]).to.equal(@[]);
 
