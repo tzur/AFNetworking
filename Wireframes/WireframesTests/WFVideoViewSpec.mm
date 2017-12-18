@@ -17,10 +17,10 @@ beforeEach(^{
   delegate = [[WFFakeVideoViewDelegate alloc] init];
   videoView.delegate = delegate;
 
-  zeroLengthVideoURL = [[NSBundle lt_testBundle] URLForResource:@"ZeroLengthTestVideo"
-                                                  withExtension:@"mp4"];
-  halfSecondVideoURL = [[NSBundle lt_testBundle] URLForResource:@"HalfSecondTestVideo"
-                                                  withExtension:@"mp4"];
+  zeroLengthVideoURL = [NSBundle.lt_testBundle URLForResource:@"ZeroLengthTestVideo"
+                                                withExtension:@"mp4"];
+  halfSecondVideoURL = [NSBundle.lt_testBundle URLForResource:@"HalfSecondTestVideo"
+                                                withExtension:@"mp4"];
 });
 
 afterEach(^{

@@ -59,7 +59,7 @@ context(@"instance normalization operation with Float16 channel format", ^{
       .activationType = pnk::ActivationTypeIdentity
     };
 
-    NSBundle *bundle = [NSBundle lt_testBundle];
+    NSBundle *bundle = NSBundle.lt_testBundle;
 
     pnk::NormalizationKernelModel normalizationModel = {
       .instanceNormalization = YES,
@@ -113,7 +113,7 @@ context(@"instance normalization operation with Float16 channel format", ^{
       .activationType = pnk::ActivationTypeIdentity
     };
 
-    NSBundle *bundle = [NSBundle lt_testBundle];
+    NSBundle *bundle = NSBundle.lt_testBundle;
 
     pnk::NormalizationKernelModel normalizationModel = {
       .instanceNormalization = YES,
@@ -158,7 +158,7 @@ context(@"instance normalization operation with Float16 channel format", ^{
       .activationType = pnk::ActivationTypeReLU
     };
 
-    NSBundle *bundle = [NSBundle lt_testBundle];
+    NSBundle *bundle = NSBundle.lt_testBundle;
 
     pnk::NormalizationKernelModel normalizationModel = {
       .instanceNormalization = YES,

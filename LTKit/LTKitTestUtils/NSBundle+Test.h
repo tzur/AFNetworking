@@ -6,8 +6,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// Category for bundles of test targets.
 @interface NSBundle (Test)
 
-/// Returns the bundle of the currently running test target.
-+ (NSBundle *)lt_testBundle;
+/// The bundle of the currently running test target.
+@property (class, readonly, nonatomic) NSBundle *lt_testBundle;
 
 @end
 

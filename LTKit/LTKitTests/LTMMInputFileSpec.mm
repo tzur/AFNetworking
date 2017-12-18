@@ -13,7 +13,7 @@ context(@"valid file", ^{
   __block NSString *path;
 
   beforeEach(^{
-    path = [[NSBundle lt_testBundle] executablePath];
+    path = [NSBundle.lt_testBundle executablePath];
     inputFile = [[LTMMInputFile alloc] initWithPath:path error:&error];
   });
 

@@ -13,7 +13,7 @@ context(@"default configuration", ^{
   });
 
   it(@"should load image from asset catalog", ^{
-    NSBundle *testsBundle = [NSBundle lt_testBundle];
+    NSBundle *testsBundle = NSBundle.lt_testBundle;
     NSURL *url = [NSURL URLWithString:@"SmallImageInBundle.jpg"
                         relativeToURL:testsBundle.bundleURL];
     RACSignal *image = [imageLoader imageWithURL:url];
