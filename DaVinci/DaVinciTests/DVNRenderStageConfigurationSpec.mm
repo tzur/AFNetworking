@@ -13,11 +13,11 @@ static NSString * const kFragmentSource = @"fragment source";
 static NSDictionary<NSString *, NSValue *> * const kUniforms = @{@"uniform": @1};
 
 __block NSDictionary<NSString *, LTTexture *> *auxiliaryTextures;
-__block id texureMock;
+__block LTTexture *textureMock;
 
 beforeEach(^{
-  texureMock = OCMClassMock([LTTexture class]);
-  auxiliaryTextures = @{@"texture": texureMock};
+  textureMock = OCMClassMock([LTTexture class]);
+  auxiliaryTextures = @{@"texture": textureMock};
 });
 
 context(@"initialization", ^{
@@ -77,6 +77,33 @@ itShouldBehaveLike(kLTEqualityExamples, ^{
     kLTEqualityExamplesDifferentObjects: @[differentConfiguration, otherDifferentConfiguration,
                                            yetAnotherDifferentConfiguration]
   };
+});
+
+context(@"instance creation with updated properties", ^{
+  __block DVNRenderStageConfiguration *configuration;
+
+  beforeEach(^{
+    configuration = [[DVNRenderStageConfiguration alloc] initWithVertexSource:kVertexSource
+                                                               fragmentSource:kFragmentSource
+                                                            auxiliaryTextures:auxiliaryTextures
+                                                                     uniforms:kUniforms];
+  });
+
+  it(@"should create a new instance with given auxiliary textures and uniform values", ^{
+    LTTexture *otherTextureMock = OCMClassMock([LTTexture class]);
+    NSDictionary<NSString *, LTTexture *> *otherAuxiliaryTextures = @{@"texture": otherTextureMock};
+    NSDictionary<NSString *, NSValue *> *otherUniforms = @{@"uniform": @7};
+
+    DVNRenderStageConfiguration *otherConfiguration =
+        [configuration copyWithAuxiliaryTextures:otherAuxiliaryTextures uniforms:otherUniforms];
+
+    expect(otherConfiguration.vertexSource).to.equal(configuration.vertexSource);
+    expect(otherConfiguration.fragmentSource).to.equal(configuration.fragmentSource);
+    expect(otherConfiguration.auxiliaryTextures).toNot.equal(configuration.auxiliaryTextures);
+    expect(otherConfiguration.auxiliaryTextures).to.equal(otherAuxiliaryTextures);
+    expect(otherConfiguration.uniforms).toNot.equal(configuration.uniforms);
+    expect(otherConfiguration.uniforms).to.equal(otherUniforms);
+  });
 });
 
 SpecEnd

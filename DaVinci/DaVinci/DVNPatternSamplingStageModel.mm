@@ -61,7 +61,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 DVNProperty(CGFloat, spacing, Spacing, 0.01, CGFLOAT_MAX, 1);
 DVNProperty(CGFloat, sequenceDistance, SequenceDistance, 0.01, CGFLOAT_MAX, 1);
-DVNProperty(NSUInteger, numberOfSamplesPerSequence, NumberOfSamplesPerSequence, 1, NSUIntegerMax, 1);
+DVNProperty(NSUInteger, numberOfSamplesPerSequence, NumberOfSamplesPerSequence, 1, NSUIntegerMax,
+            1);
 
 @end
 
