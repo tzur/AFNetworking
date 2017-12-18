@@ -29,7 +29,7 @@ context(@"segment", ^{
   __block MPSImage *outputImage;
 
   beforeEach(^{
-    NSBundle *bundle = [NSBundle bundleForClass:[self class]];
+    NSBundle *bundle = [NSBundle lt_testBundle];
     NSError *error;
     auto networkModelURL =
         [NSURL URLWithString:[bundle lt_pathForResource:@"PNKSkySegmentation.nnmodel"]];

@@ -21,8 +21,7 @@ __block NSData *imageData;
 __block LTPath *path;
 
 beforeEach(^{
-  NSString *pathString = [[NSBundle bundleForClass:[self class]] pathForResource:@"PTNImageAsset"
-                                                                          ofType:@"jpg"];
+  NSString *pathString = [[NSBundle lt_testBundle] pathForResource:@"PTNImageAsset" ofType:@"jpg"];
   path = [LTPath pathWithPath:pathString];
   imageData = [NSData dataWithContentsOfFile:path.path];
   fileManager = OCMClassMock([NSFileManager class]);
@@ -74,8 +73,8 @@ it(@"should write data to disk", ^{
 
 context(@"path of unsupported data", ^{
   beforeEach(^{
-    NSString *pathString = [[NSBundle bundleForClass:[self class]] pathForResource:@"PTNImageAsset"
-                                                                            ofType:@"txt"];
+    NSString *pathString = [[NSBundle lt_testBundle] pathForResource:@"PTNImageAsset"
+                                                              ofType:@"txt"];
     path = [LTPath pathWithPath:pathString];
     asset = [[PTNFileBackedImageAsset alloc] initWithFilePath:path fileManager:fileManager
                                                  imageResizer:resizer

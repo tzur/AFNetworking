@@ -112,7 +112,7 @@ context(@"conditional instance normalization PNKUnaryKernel encoding", ^{
   __block NSBundle *bundle;
 
   beforeEach(^{
-    bundle = [NSBundle bundleForClass:[PNKConditionalInstanceNormLayerSpec class]];
+    bundle = [NSBundle lt_testBundle];
   });
 
   itShouldBehaveLike(kPNKUnaryKernelExamples, ^{

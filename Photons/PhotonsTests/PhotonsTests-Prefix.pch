@@ -14,3 +14,4 @@
 #ifdef __cplusplus
   #import <LTKitTestUtils/LTTestUtils.h>
 #endif
+  #import <LTKitTestUtils/NSBundle+Test.h>

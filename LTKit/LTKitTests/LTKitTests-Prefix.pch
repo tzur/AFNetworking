@@ -22,4 +22,5 @@ extern "C" {
   #import <LTKitTestUtils/EXPMatchers+beBlock.h>
   #import <LTKitTestUtils/EXPMatchers+beCloseToPoint.h>
   #import <LTKitTestUtils/EXPMatchers+beCloseToSize.h>
+  #import <LTKitTestUtils/NSBundle+Test.h>
 #endif
