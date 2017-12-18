@@ -97,7 +97,8 @@ context(@"initialization", ^{
     it(@"should initialize correctly without content texture and without navigation state", ^{
       LTContentView *view =
           [[LTContentView alloc] initWithFrame:CGRectZero contentScaleFactor:kContentScaleFactor
-                                       context:currentContext contentTexture:nil navigationState:nil];
+                                       context:currentContext contentTexture:nil
+                               navigationState:nil];
       expect(view).toNot.beNil();
       expect(view.contentScaleFactor).to.equal(kContentScaleFactor);
     });
@@ -115,7 +116,8 @@ context(@"initialization", ^{
     it(@"should initialize correctly without content texture but with navigation state", ^{
       LTContentView *view =
           [[LTContentView alloc] initWithFrame:CGRectZero contentScaleFactor:kContentScaleFactor
-                                       context:currentContext contentTexture:nil navigationState:nil];
+                                       context:currentContext contentTexture:nil
+                               navigationState:nil];
       LTContentNavigationState *state = [view navigationState];
 
       view = [[LTContentView alloc] initWithFrame:CGRectZero contentScaleFactor:kContentScaleFactor
@@ -356,6 +358,12 @@ context(@"protocols", ^{
         kLTContentInteractionManager: view,
         kLTContentInteractionManagerView: view.touchEventView
       };
+    });
+
+    it(@"should retrieve whether content touch events are being received from touch event view", ^{
+      LTTouchEventView *partialTouchEventView = OCMPartialMock(view.touchEventView);
+      OCMStub([(id)partialTouchEventView isCurrentlyReceivingTouchEvents]).andReturn(YES);
+      expect(view.isCurrentlyReceivingContentTouchEvents).to.beTruthy();
     });
   });
 

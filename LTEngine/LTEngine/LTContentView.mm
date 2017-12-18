@@ -334,12 +334,16 @@ NS_ASSUME_NONNULL_BEGIN
                                                interactionManager.customGestureRecognizers)];
 }
 
-- (BOOL)forwardStationaryTouchEvents {
-  return self.touchEventView.forwardStationaryTouchEvents;
+- (BOOL)isCurrentlyReceivingContentTouchEvents {
+  return self.interactionManager.isCurrentlyReceivingContentTouchEvents;
 }
 
-- (void)setForwardStationaryTouchEvents:(BOOL)forwardStationaryTouchEvents {
-  self.touchEventView.forwardStationaryTouchEvents = forwardStationaryTouchEvents;
+- (BOOL)forwardStationaryContentTouchEvents {
+  return self.interactionManager.forwardStationaryContentTouchEvents;
+}
+
+- (void)setForwardStationaryContentTouchEvents:(BOOL)forwardStationaryContentTouchEvents {
+  self.interactionManager.forwardStationaryContentTouchEvents = forwardStationaryContentTouchEvents;
 }
 
 #pragma mark -

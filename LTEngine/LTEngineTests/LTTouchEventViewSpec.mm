@@ -144,11 +144,11 @@ sharedExamplesFor(kLTTouchEventViewExamples, ^(NSDictionary *data) {
   context(@"touch handling", ^{
     context(@"beginning touch event sequence", ^{
       __block NSArray<LTTestTouchEventDelegateCall *> *calls;
+      __block LTTouchEventView *view;
 
       beforeEach(^{
         LTTestTouchEventDelegate *delegate = [[LTTestTouchEventDelegate alloc] init];
-        LTTouchEventView *view = [[LTTouchEventView alloc] initWithFrame:CGRectZero
-                                                                delegate:delegate];
+        view = [[LTTouchEventView alloc] initWithFrame:CGRectZero delegate:delegate];
         [delegate.calls removeAllObjects];
 
         switch (state) {
@@ -412,6 +412,22 @@ sharedExamplesFor(kLTTouchEventViewExamples, ^(NSDictionary *data) {
 
           expect(calls[2].predictedEvents[0].previousTimestamp).to.beNil();
         });
+      });
+
+      it(@"should indicate whether it is currently handling touch events", ^{
+        switch (state) {
+          case LTTouchEventSequenceStateStart:
+          case LTTouchEventSequenceStateContinuation:
+          case LTTouchEventSequenceStateContinuationStationary: {
+            expect(view.isCurrentlyReceivingTouchEvents).to.beTruthy();
+            break;
+          }
+          case LTTouchEventSequenceStateEnd:
+          case LTTouchEventSequenceStateCancellation: {
+            expect(view.isCurrentlyReceivingTouchEvents).to.beFalsy();
+            break;
+          }
+        }
       });
     });
   });
