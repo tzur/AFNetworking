@@ -64,7 +64,7 @@ cv::Mat PNKFillMatrix(int rows, int columns, int channels) {
 
 template <typename T, int cvType>
 cv::Mat PNKGenerateChannelwiseConstantMatrix(NSUInteger rows, NSUInteger columns,
-                                             const std::vector<T> values) {
+                                             const std::vector<T> &values) {
   int channels = (int)values.size();
 
   cv::Mat matrix = cv::Mat((int)(rows * columns), channels, cvType);
@@ -79,12 +79,12 @@ cv::Mat PNKGenerateChannelwiseConstantMatrix(NSUInteger rows, NSUInteger columns
 }
 
 cv::Mat PNKGenerateChannelwiseConstantUcharMatrix(NSUInteger rows, NSUInteger columns,
-                                                  const std::vector<uchar> values) {
+                                                  const std::vector<uchar> &values) {
   return PNKGenerateChannelwiseConstantMatrix<uchar, CV_8U>(rows, columns, values);
 }
 
 cv::Mat PNKGenerateChannelwiseConstantHalfFloatMatrix(NSUInteger rows, NSUInteger columns,
-                                                      const std::vector<half_float::half> values) {
+                                                      const std::vector<half_float::half> &values) {
   return PNKGenerateChannelwiseConstantMatrix<half_float::half, CV_16F>(rows, columns, values);
 }
 
