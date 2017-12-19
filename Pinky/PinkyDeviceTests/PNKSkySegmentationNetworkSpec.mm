@@ -61,7 +61,7 @@ context(@"segment", ^{
                                                height:inputImage.height channels:2];
   });
 
-  it(@"should segment sky image correctly uaing encode API", ^{
+  it(@"should segment sky image correctly using encode API", ^{
     auto buffer = [commandQueue commandBuffer];
     [network encodeWithCommandBuffer:buffer inputImage:inputImage outputImage:outputImage];
     [buffer commit];
@@ -71,10 +71,10 @@ context(@"segment", ^{
     std::vector<cv::Mat> channels;
     cv::split(outputMat, channels);
 
-    expect($(channels[0])).to.equalMat($(expectedMask));
+    expect($(channels[0])).to.beCloseToMatWithin($(expectedMask), 3);
   });
 
-  it(@"should segment sky image correctly uaing async commit API", ^{
+  it(@"should segment sky image correctly using async commit API", ^{
     waitUntil(^(DoneCallback done) {
       [network encodeAndCommitAsyncWithCommandQueue:commandQueue inputImage:inputImage
                                         outputImage:outputImage completion:^{
@@ -86,7 +86,7 @@ context(@"segment", ^{
     std::vector<cv::Mat> channels;
     cv::split(outputMat, channels);
 
-    expect($(channels[0])).to.equalMat($(expectedMask));
+    expect($(channels[0])).to.beCloseToMatWithin($(expectedMask), 3);
   });
 });
 
