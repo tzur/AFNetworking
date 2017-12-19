@@ -169,8 +169,9 @@ NS_ASSUME_NONNULL_BEGIN
     self.contentFetcher.eventsSignal,
     self.allowedProductsProvider.eventsSignal,
     self.storeKitMetadataFetcher.eventsSignal,
-    [self.backgroundReceiptValidator.eventsSignal replay],
-    self.keychainStorage.eventsSignal
+    self.keychainStorage.eventsSignal,
+    self.storeKitFacade.eventsSignal,
+    [self.backgroundReceiptValidator.eventsSignal replay]
   ]]
   takeUntil:[self rac_willDeallocSignal]]
   setNameWithFormat:@"%@ -eventsSignal", self];

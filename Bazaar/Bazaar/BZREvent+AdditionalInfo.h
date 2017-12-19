@@ -7,6 +7,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class BZRReceiptValidationStatus;
 
+/// Key in the event info dictionary mapping to a product's identifier.
+extern NSString * const BZREventProductIdentifierKey;
+
 /// Adds methods to conveniently create \c BZREvent objects for various types of events.
 @interface BZREvent (AdditionalInfo)
 

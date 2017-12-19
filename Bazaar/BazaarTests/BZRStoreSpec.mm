@@ -83,6 +83,7 @@ __block RACSubject *contentFetcherEventsSubject;
 __block RACSubject *unhandledSuccessfulTransactionsSubject;
 __block RACSubject *storeKitMetadataFetcherEventsSubject;
 __block RACSubject *keychainStorageEventsSubject;
+__block RACSubject *storeKitFacadeEventsSubject;
 __block BZRStoreConfiguration *configuration;
 __block BZRStore *store;
 __block NSString *productIdentifier;
@@ -117,6 +118,7 @@ beforeEach(^{
   unhandledSuccessfulTransactionsSubject = [RACSubject subject];
   storeKitMetadataFetcherEventsSubject = [RACSubject subject];
   keychainStorageEventsSubject = [RACSubject subject];
+  storeKitFacadeEventsSubject = [RACSubject subject];
 
   OCMStub([productsProvider eventsSignal])
       .andReturn(productsProviderEventsSubject);
@@ -130,6 +132,7 @@ beforeEach(^{
       .andReturn(unhandledSuccessfulTransactionsSubject);
   OCMStub([storeKitMetadataFetcher eventsSignal]).andReturn(storeKitMetadataFetcherEventsSubject);
   OCMStub([keychainStorage eventsSignal]).andReturn(keychainStorageEventsSubject);
+  OCMStub([storeKitFacade eventsSignal]).andReturn(storeKitFacadeEventsSubject);
 
   configuration = OCMClassMock([BZRStoreConfiguration class]);
   OCMStub([configuration productsProvider]).andReturn(productsProvider);
@@ -1523,6 +1526,11 @@ context(@"events signal", ^{
 
   it(@"should send event sent by keychain storage", ^{
     [keychainStorageEventsSubject sendNext:event];
+    expect(recorder).will.sendValues(@[event]);
+  });
+
+  it(@"should send event sent by store kit facade", ^{
+    [storeKitFacadeEventsSubject sendNext:event];
     expect(recorder).will.sendValues(@[event]);
   });
 });

@@ -5,6 +5,8 @@
 
 #import <LTKit/NSArray+Functional.h>
 
+#import "BZREvent+AdditionalInfo.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
 @interface BZRPaymentQueue () <SKPaymentTransactionObserver>
@@ -20,6 +22,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// will be passed to the appropriate delegate.
 @property (nonatomic) BOOL shouldSendTransactionsAsUnfinished;
 
+/// Subject used to send promoted IAP events with.
+@property (readonly, nonatomic) RACSubject<BZREvent *> *promotedIAPEventsSubject;
+
 @end
 
 /// Collection of transactions classified as payment transactions or restoration transactions.
@@ -30,6 +35,7 @@ typedef NSDictionary<NSString *, BZRPaymentTransactionList *> BZRClassifiedTrans
 @synthesize downloadsDelegate = _downloadsDelegate;
 @synthesize paymentsDelegate = _paymentsDelegate;
 @synthesize restorationDelegate = _restorationDelegate;
+@synthesize eventsSignal = _eventsSignal;
 
 /// Label for transactions classified as payment transactions.
 static NSString * const kPaymentLabel = @"Payment";
@@ -51,6 +57,8 @@ static NSString * const kRestorationLabel = @"Restoration";
     _unfinishedTransactionsSubject = [RACSubject subject];
     _unfinishedTransactionsSignal =
         [[self.unfinishedTransactionsSubject replay] takeUntil:[self rac_willDeallocSignal]];
+    _promotedIAPEventsSubject = [RACSubject subject];
+    _eventsSignal = [self.promotedIAPEventsSubject takeUntil:[self rac_willDeallocSignal]];
     [self.underlyingPaymentQueue addTransactionObserver:self];
     self.shouldSendTransactionsAsUnfinished = YES;
   }
@@ -176,6 +184,18 @@ static NSString * const kRestorationLabel = @"Restoration";
 
 - (void)finishTransaction:(SKPaymentTransaction *)transaction {
   [self.underlyingPaymentQueue finishTransaction:transaction];
+}
+
+#pragma mark -
+#pragma mark Promoted IAP
+#pragma mark -
+
+- (BOOL)paymentQueue:(SKPaymentQueue __unused *)queue
+    shouldAddStorePayment:(SKPayment __unused *)payment forProduct:(SKProduct *)product {
+  auto event = [[BZREvent alloc] initWithType:$(BZREventTypePromotedIAPInitiated)
+      eventInfo:@{BZREventProductIdentifierKey: product.productIdentifier}];
+  [self.promotedIAPEventsSubject sendNext:event];
+  return YES;
 }
 
 @end

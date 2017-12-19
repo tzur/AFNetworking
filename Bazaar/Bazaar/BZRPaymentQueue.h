@@ -2,6 +2,7 @@
 // Created by Daniel Lahyani.
 
 #import "BZRDownloadsPaymentQueue.h"
+#import "BZREventEmitter.h"
 #import "BZRPaymentsPaymentQueue.h"
 #import "BZRRestorationPaymentQueue.h"
 #import "BZRStoreKitTypedefs.h"
@@ -33,8 +34,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// only one \c BZRPaymentQueue should be instantiated.
 ///
 /// @see SKPaymentQueue, SKPaymentTransactionObserver, SKPaymentTransaction, SKDownload.
-@interface BZRPaymentQueue : NSObject <BZRDownloadsPaymentQueue, BZRPaymentsPaymentQueue,
-                                       BZRRestorationPaymentQueue>
+@interface BZRPaymentQueue : NSObject <BZRDownloadsPaymentQueue, BZREventEmitter,
+                                       BZRPaymentsPaymentQueue, BZRRestorationPaymentQueue>
 
 /// Initializes with \c underlyingPaymentQueue set to \c -[SKPaymentQueue defaultQueue].
 ///

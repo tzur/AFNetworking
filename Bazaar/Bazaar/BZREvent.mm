@@ -9,7 +9,8 @@ LTEnumImplement(NSUInteger, BZREventType,
   BZREventTypeNonCriticalError,
   BZREventTypeCriticalError,
   BZREventTypeInformational,
-  BZREventTypeReceiptValidationStatusReceived
+  BZREventTypeReceiptValidationStatusReceived,
+  BZREventTypePromotedIAPInitiated
 );
 
 @implementation BZREvent

@@ -3,6 +3,8 @@
 
 #import "BZRPaymentQueue.h"
 
+#import "BZREvent+AdditionalInfo.h"
+
 /// Returns a new array which contains interleaved objects from \c anArray and \c anotherArray.
 /// Item at index \c i in the returned array is the <tt>(i / 2)</tt>'th item from \c anArray if
 /// <tt>i % 2 == 0</tt> or from \c anotherArray if <tt>i % 2 == 1</tt>. The length of the new array
@@ -225,10 +227,7 @@ context(@"transactions", ^{
       OCMVerifyAll(restorationDelegate);
     });
   });
-
 });
-
-
 
 context(@"downloads", ^{
   it(@"should report the downloads delegate when downloads are updated", ^{
@@ -242,5 +241,24 @@ context(@"downloads", ^{
     OCMVerifyAll(downloadsDelegate);
   });
 });
+
+if (@available(iOS 11.0, *)) {
+  context(@"promoted IAP", ^{
+    it(@"should send event when promoted IAP is initiated", ^{
+      SKPayment *payment = OCMClassMock([SKPayment class]);
+      SKProduct *product = OCMClassMock([SKProduct class]);
+      OCMStub([product productIdentifier]).andReturn(@"foo");
+      auto recorder = [paymentQueue.eventsSignal testRecorder];
+
+      [paymentQueue paymentQueue:underlyingPaymentQueue shouldAddStorePayment:payment
+                      forProduct:product];
+
+      expect(recorder).to.matchValue(0, ^BOOL(BZREvent *event) {
+        return [event.eventType isEqual:$(BZREventTypePromotedIAPInitiated)] &&
+            [event.eventInfo[BZREventProductIdentifierKey] isEqualToString:@"foo"];
+      });
+    });
+  });
+}
 
 SpecEnd

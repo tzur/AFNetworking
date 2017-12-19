@@ -40,6 +40,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation BZRStoreKitFacade
 
+@synthesize eventsSignal = _eventsSignal;
+
 #pragma mark -
 #pragma mark Initialization
 #pragma mark -
@@ -72,6 +74,7 @@ NS_ASSUME_NONNULL_BEGIN
     _restorationManager = restorationManager;
     _downloadManager = downloadManager;
     _storeKitRequestsFactory = storeKitRequestsFactory;
+    _eventsSignal = [paymentQueue.eventsSignal takeUntil:[self rac_willDeallocSignal]];
 
     [self finishFailedTransactions];
   }
