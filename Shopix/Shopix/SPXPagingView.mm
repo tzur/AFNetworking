@@ -56,9 +56,12 @@ NS_ASSUME_NONNULL_BEGIN
 /// View that holds \c contentView and provides horizontal scrolling.
 @property (readonly, nonatomic) SPXScrollView *scrollView;
 
-/// Currently focused page index, updated after the scroll view animation end declerating. Reset to
-/// \c 0 when \c pageViews are updated.
-@property (nonatomic) NSUInteger focusedPageIndex;
+/// Currently focused page, updated after the scroll view animation end declerating. \c nil if there
+/// are no views.
+@property (nonatomic, nullable) UIView *focusedPage;
+
+/// Scrolling position in range <tt>[0, pageViews.count]</tt>.
+@property (nonatomic) CGFloat scrollPosition;
 
 @end
 
@@ -115,33 +118,61 @@ static const CGFloat kDefaultPageViewWidthRatio = 0.84;
 #pragma mark UIScrollViewDelegate
 #pragma mark -
 
-- (void)scrollViewDidEndDecelerating:(UIScrollView * __unused)scrollView {
-  if (!self.pageViews.count) {
-    return;
+- (void)scrollViewDidScroll:(UIScrollView * __unused)scrollView {
+  self.scrollPosition = [self calculateScrollPositionByOffset];
+}
+
+- (CGFloat)calculateScrollPositionByOffset {
+  auto scrollViewWidth = self.scrollView.frame.size.width;
+  if (!scrollViewWidth) {
+    return 0;
   }
 
-  CGSize pageSize = self.pageViews.firstObject.frame.size;
-  CGFloat spacingWidth = self.spacingRatio * self.scrollView.frame.size.width;
+  CGFloat pageWidth = self.pageViewWidthRatio * scrollViewWidth;
+  CGFloat spacingWidth = self.spacingRatio * scrollViewWidth;
+  CGFloat marginWidth = (scrollViewWidth - pageWidth) / 2;
   CGFloat contentOffsetX = self.scrollView.contentOffset.x;
 
-  auto leftMarginWidth = self.paddingViews.firstObject.frame.size.width;
-  [self notifyFocusedPageOnFocusLose];
-  self.focusedPageIndex = ((contentOffsetX + scrollView.frame.size.width / 2 - leftMarginWidth) /
-                           (pageSize.width + spacingWidth));
-  [self notifyFocusedPageOnFocusGain];
+  return ((contentOffsetX + (spacingWidth + scrollViewWidth) / 2 - marginWidth) /
+          (pageWidth + spacingWidth)) - 0.5;
+}
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView * __unused)scrollView {
+  [self updateFocusedPage];
+}
+
+- (void)scrollViewDidEndScrollingAnimation:(UIScrollView * __unused)scrollView {
+  [self updateFocusedPage];
+}
+
+- (void)updateFocusedPage {
+  if (self.pageViews.count) {
+    auto scrollPosition = round([self calculateScrollPositionByOffset]);
+    NSUInteger focusedPageIndex = std::clamp(scrollPosition, 0, self.pageViews.count - 1);
+    auto targetFocusedPage = self.pageViews[focusedPageIndex];
+    if (targetFocusedPage != self.focusedPage) {
+      [self notifyFocusedPageOnFocusLose];
+      self.focusedPage = targetFocusedPage;
+      [self notifyFocusedPageOnFocusGain];
+    }
+  } else {
+    self.focusedPage = nil;
+  }
 }
 
 - (void)notifyFocusedPageOnFocusLose {
-  auto focusedPage = self.pageViews[self.focusedPageIndex];
-  if ([focusedPage conformsToProtocol:@protocol(SPXFocusAwarePageView)]) {
-    [(id<SPXFocusAwarePageView>)focusedPage pageViewWillLoseFocus];
+  if (!self.focusedPage || ![self.pageViews containsObject:self.focusedPage]) {
+    return;
+  }
+
+  if ([self.focusedPage conformsToProtocol:@protocol(SPXFocusAwarePageView)]) {
+    [(id<SPXFocusAwarePageView>)self.focusedPage pageViewWillLoseFocus];
   }
 }
 
 - (void)notifyFocusedPageOnFocusGain {
-  auto focusedPage = self.pageViews[self.focusedPageIndex];
-  if ([focusedPage conformsToProtocol:@protocol(SPXFocusAwarePageView)]) {
-    [(id<SPXFocusAwarePageView>)focusedPage pageViewDidGainFocus];
+  if ([self.focusedPage conformsToProtocol:@protocol(SPXFocusAwarePageView)]) {
+    [(id<SPXFocusAwarePageView>)self.focusedPage pageViewDidGainFocus];
   }
 }
 
@@ -165,6 +196,26 @@ static const CGFloat kDefaultPageViewWidthRatio = 0.84;
 }
 
 #pragma mark -
+#pragma mark Public
+#pragma mark -
+
+- (void)scrollToPage:(NSUInteger)pageIndex animated:(BOOL)animated {
+  LTParameterAssert(pageIndex < self.pageViews.count, @"Page index (%lu) must be smaller than the "
+                    "number of pages (%lu)", (unsigned long)pageIndex,
+                    (unsigned long)self.pageViews.count);
+  [self layoutIfNeeded];
+  CGFloat marginRatio = (1 - self.pageViewWidthRatio) * 0.5;
+  CGFloat leftMarginWidth = marginRatio * self.scrollView.frame.size.width;
+  CGPoint targetPoint = CGPointMake(self.pageViews[pageIndex].frame.origin.x - leftMarginWidth, 0);
+  [self.scrollView setContentOffset:targetPoint animated:animated];
+
+  // The case where the animation will not occur, and need to update the focused page immediately.
+  if (!animated) {
+    [self updateFocusedPage];
+  }
+}
+
+#pragma mark -
 #pragma mark Properties
 #pragma mark -
 
@@ -184,12 +235,11 @@ static const CGFloat kDefaultPageViewWidthRatio = 0.84;
   [self updatePageViewsConstraints];
 
   [self.scrollView setContentOffset:CGPointMake(0, 0) animated:YES];
-  if (self.pageViews.count) {
-    [self notifyFocusedPageOnFocusLose];
-    self.focusedPageIndex = 0;
-    [self notifyFocusedPageOnFocusGain];
-  } else {
-    self.focusedPageIndex = 0;
+
+  // The cases where the there is no focuesd page or the focused page is already the first page so
+  // the animation will not occur.
+  if (!self.focusedPage || self.scrollPosition == 0) {
+    [self updateFocusedPage];
   }
 }
 
@@ -243,7 +293,9 @@ static const CGFloat kDefaultPageViewWidthRatio = 0.84;
 - (void)setSpacingRatio:(CGFloat)spacingRatio {
   _spacingRatio = std::clamp(spacingRatio, 0, 1);
   [self updatePaddingViewsConstraints];
-}
+  if (self.focusedPage) {
+    [self scrollToPage:[self.pageViews indexOfObject:self.focusedPage] animated:NO];
+  }}
 
 - (void)setPageViewWidthRatio:(CGFloat)pageViewWidthRatio {
   _pageViewWidthRatio = std::clamp(pageViewWidthRatio, 0, 1);
