@@ -146,6 +146,10 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark Abstract methods
 #pragma mark -
 
+- (void)dispose {
+  LTMethodNotImplemented();
+}
+
 - (void)storeRect:(CGRect __unused)rect toImage:(cv::Mat __unused *)image {
   LTMethodNotImplemented();
 }

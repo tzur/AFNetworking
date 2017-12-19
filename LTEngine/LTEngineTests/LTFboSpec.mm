@@ -3,7 +3,6 @@
 
 #import "LTFbo.h"
 
-#import "LTFbo+Private.h"
 #import "LTFboAttachmentInfo.h"
 #import "LTGLCheck.h"
 #import "LTGLContext.h"
@@ -365,8 +364,12 @@ context(@"binding", ^{
   });
 
   itShouldBehaveLike(kLTResourceExamples, ^{
-    return @{kLTResourceExamplesSUTValue: [NSValue valueWithNonretainedObject:fbo],
-             kLTResourceExamplesOpenGLParameterName: @GL_FRAMEBUFFER_BINDING};
+    return @{
+      kLTResourceExamplesSUTValue: [NSValue valueWithNonretainedObject:fbo],
+      kLTResourceExamplesOpenGLParameterName: @GL_FRAMEBUFFER_BINDING,
+      kLTResourceExamplesIsResourceFunction:
+          [NSValue valueWithPointer:(const void *)glIsFramebuffer]
+    };
   });
 
   it(@"should disable scissor test while bound", ^{

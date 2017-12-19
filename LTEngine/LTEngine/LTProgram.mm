@@ -94,9 +94,18 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)dealloc {
+  [self dispose];
+}
+
+- (void)dispose {
+  if (!self.name) {
+    return;
+  }
+
   [self unbind];
   [[LTGLContext currentContext].programPool recycleName:self.name
                                          withIdentifier:self.sourceIdentifier];
+  _name = 0;
 }
 
 #pragma mark -

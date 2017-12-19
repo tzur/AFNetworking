@@ -197,12 +197,16 @@ sharedExamplesFor(kLTVertexArrayExamples, ^(NSDictionary *contextInfo) {
       [[LTGLContext currentContext] executeForOpenGLES2:^{
         data = @{
           kLTResourceExamplesSUTValue: [NSValue valueWithNonretainedObject:vertexArray],
-          kLTResourceExamplesOpenGLParameterName: @GL_VERTEX_ARRAY_BINDING_OES
+          kLTResourceExamplesOpenGLParameterName: @GL_VERTEX_ARRAY_BINDING_OES,
+          kLTResourceExamplesIsResourceFunction:
+            [NSValue valueWithPointer:(const void *)glIsVertexArray]
         };
       } openGLES3:^{
         data = @{
           kLTResourceExamplesSUTValue: [NSValue valueWithNonretainedObject:vertexArray],
-          kLTResourceExamplesOpenGLParameterName: @GL_VERTEX_ARRAY_BINDING
+          kLTResourceExamplesOpenGLParameterName: @GL_VERTEX_ARRAY_BINDING,
+          kLTResourceExamplesIsResourceFunction:
+              [NSValue valueWithPointer:(const void *)glIsVertexArray]
         };
       }];
       return data;
@@ -227,7 +231,8 @@ sharedExamplesFor(kLTVertexArrayExamples, ^(NSDictionary *contextInfo) {
     });
 
     it(@"should retrieve element list", ^{
-      expect(vertexArray.elements).to.equal([NSSet setWithObject:vertexArray[@"SingleFieldStruct"]]);
+      expect(vertexArray.elements)
+          .to.equal([NSSet setWithObject:vertexArray[@"SingleFieldStruct"]]);
     });
   });
 

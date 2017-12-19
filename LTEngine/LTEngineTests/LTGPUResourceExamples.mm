@@ -8,16 +8,19 @@
 NSString * const kLTResourceExamples = @"LTResourceExamples";
 NSString * const kLTResourceExamplesSUTValue = @"LTResourceExamplesSUTValue";
 NSString * const kLTResourceExamplesOpenGLParameterName = @"LTResourceExamplesOpenGLParameterName";
+NSString * const kLTResourceExamplesIsResourceFunction = @"LTResourceExamplesIsResourceFunction";
 
 SharedExampleGroupsBegin(LTResourceExamples)
 
 sharedExamplesFor(kLTResourceExamples, ^(NSDictionary *data) {
   __block id<LTGPUResource> resource;
   __block GLenum parameter;
+  __block LTGLIsResource isResource;
 
   beforeEach(^{
     resource = [data[kLTResourceExamplesSUTValue] nonretainedObjectValue];
     parameter = [data[kLTResourceExamplesOpenGLParameterName] unsignedIntValue];
+    isResource = (LTGLIsResource)[data[kLTResourceExamplesIsResourceFunction] pointerValue];
   });
 
   afterEach(^{
@@ -108,6 +111,38 @@ sharedExamplesFor(kLTResourceExamples, ^(NSDictionary *data) {
       [resource bindAndExecute:nil];
       [resource unbind];
     }).to.raise(NSInvalidArgumentException);
+  });
+
+  it(@"should set name to 0 upon disposal", ^{
+    [resource dispose];
+    expect(resource.name).to.equal(0);
+  });
+
+  it(@"should not be bound after disposal", ^{
+    [resource bind];
+    [resource dispose];
+
+    GLint currentBoundObject;
+    glGetIntegerv(parameter, &currentBoundObject);
+    expect(currentBoundObject).to.equal(0);
+  });
+
+  it(@"should not cause GL errors if unbinding after disposal", ^{
+    [resource dispose];
+    [resource unbind];
+    LTGLCheck(@"GL errors caused while disposing");
+  });
+
+  it(@"should invalidate name after disposal", ^{
+    // Some resources do not invalidate their names since it goes back to a pool. Therefore, this
+    // test is optional.
+    if (!isResource) {
+      return;
+    }
+
+    GLuint name = resource.name;
+    [resource dispose];
+    expect(isResource(name)).to.beFalsy();
   });
 });
 

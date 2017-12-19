@@ -100,12 +100,14 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)dispose {
-  if (self.name) {
-    glDeleteRenderbuffers(1, &_name);
-    LTGLCheckDbg(@"Error deleting renderbuffer");
-
-    _name = 0;
+  if (!self.name) {
+    return;
   }
+
+  glDeleteRenderbuffers(1, &_name);
+  LTGLCheckDbg(@"Error deleting renderbuffer");
+
+  _name = 0;
 }
 
 #pragma mark -

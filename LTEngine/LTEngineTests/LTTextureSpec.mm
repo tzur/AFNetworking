@@ -63,8 +63,12 @@ sharedExamplesFor(kLTTextureExamples, ^(NSDictionary *contextInfo) {
 
     context(@"binding", ^{
       itShouldBehaveLike(kLTResourceExamples, ^{
-        return @{kLTResourceExamplesSUTValue: [NSValue valueWithNonretainedObject:texture],
-                 kLTResourceExamplesOpenGLParameterName: @GL_TEXTURE_BINDING_2D};
+        return @{
+          kLTResourceExamplesSUTValue: [NSValue valueWithNonretainedObject:texture],
+          kLTResourceExamplesOpenGLParameterName: @GL_TEXTURE_BINDING_2D,
+          kLTResourceExamplesIsResourceFunction:
+              [NSValue valueWithPointer:(const void *)glIsTexture]
+        };
       });
 
       it(@"should bind and unbind from the same texture unit", ^{

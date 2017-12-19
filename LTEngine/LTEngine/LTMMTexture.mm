@@ -222,6 +222,10 @@
 }
 
 - (void)dealloc {
+  [self dispose];
+}
+
+- (void)dispose {
   if (!self.name) {
     return;
   }
@@ -241,6 +245,7 @@
 
     self.readSyncObject = nil;
     self.writeSyncObject = nil;
+    _name = 0;
   }];
 }
 

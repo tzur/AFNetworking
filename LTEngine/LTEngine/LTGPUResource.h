@@ -23,6 +23,24 @@
 /// @param block The block to execute after binding the resource. Must not be \c nil.
 - (void)bindAndExecute:(NS_NOESCAPE LTVoidBlock)block;
 
+/// Disposes the resource immediately and sets the \c name to \c 0.
+///
+/// This method must be called when the context that created the resource is bound. After calling
+/// this method any responses or side effects caused by messages sent to this object are considered
+/// undefined behavior.
+///
+/// A common usage of this method is to enforce relinquishing to resource before this object is
+/// deallocated, since it's usually impossible to precisely control the lifetime of an ObjC object.
+///
+/// Any subsequent calls to this method will be ignored.
+///
+/// @important this method allows manual management of the GPU resource lifetime, which should
+/// normally be avoided. It leaves the object in a "half-dead" and mostly unusable state, which can
+/// easily result in hard to detect use-after-dispose bugs. Always prefer automatic dispose, where
+/// the system guaranties that the disposal occurs only after the resource can no longer be used,
+/// and on the correct context.
+- (void)dispose;
+
 /// OpenGL name of the resource.
 @property (readonly, nonatomic) GLuint name;
 
