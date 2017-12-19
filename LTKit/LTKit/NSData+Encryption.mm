@@ -50,6 +50,32 @@ NS_ASSUME_NONNULL_BEGIN
   return decryptedData;
 }
 
+- (nullable instancetype)lt_encryptWithKey:(NSData *)key iv:(NSData *)iv
+                                     error:(NSError *__autoreleasing *)error {
+  LTParameterAssert(iv.length == kCCBlockSizeAES128, @"IV must be exactly %u bytes long",
+                    kCCBlockSizeAES128);
+  NSMutableData *data = [NSMutableData dataWithLength:self.length + (kCCBlockSizeAES128 * 2)];
+
+  void *encryptedBytes = (uint8_t *)data.mutableBytes + kCCBlockSizeAES128;
+  size_t encryptedBytesLength = data.length - kCCBlockSizeAES128;
+
+  size_t length;
+  CCCryptorStatus status = CCCrypt(kCCEncrypt, kCCAlgorithmAES128, kCCOptionPKCS7Padding, key.bytes,
+                                   key.length, iv.bytes, self.bytes, self.length, encryptedBytes,
+                                   encryptedBytesLength, &length);
+  if (status != kCCSuccess) {
+    if (error) {
+      *error = [NSError lt_errorWithCode:LTErrorCodeEncryptionFailed
+                             description:@"CCCrypt failed with status %d", status];
+    }
+    return nil;
+  }
+  [data replaceBytesInRange:NSMakeRange(0, kCCBlockSizeAES128) withBytes:iv.bytes];
+
+  data.length = length + kCCBlockSizeAES128;
+  return data;
+}
+
 @end
 
 NS_ASSUME_NONNULL_END
