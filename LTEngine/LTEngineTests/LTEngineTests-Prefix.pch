@@ -31,8 +31,9 @@ extern "C" {
   #import "LTEasyBoxing+OpenCVExtensions.h"
 #endif
 
-#import "EXPMatchers+beCloseToGLKVector.h"
 #import "EXPMatchers+beCloseToCATransform3D.h"
+#import "EXPMatchers+beCloseToGLKVector.h"
+#import "EXPMatchers+beCloseToLTVector.h"
 #import "LTSpectaKeyWindowViewHook.h"
 #import "LTSpectaObjectionHook.h"
 #import "LTSpectaOpenGLContextHook.h"

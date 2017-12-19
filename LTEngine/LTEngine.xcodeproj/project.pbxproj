@@ -2115,6 +2115,7 @@
 		283906C718C620DB00BD21CE /* LTPainterMergeShader.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTPainterMergeShader.fsh; sourceTree = "<group>"; };
 		283906CA18C71DF500BD21CE /* LTPainterSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTPainterSpec.mm; sourceTree = "<group>"; };
 		2839AA981AF10E030019EEE6 /* CircularPatchFlipped.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = CircularPatchFlipped.png; path = Resources/CircularPatchFlipped.png; sourceTree = "<group>"; };
+		283A4B581FE9043C009608E6 /* EXPMatchers+beCloseToLTVector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EXPMatchers+beCloseToLTVector.h"; sourceTree = "<group>"; };
 		283A959F1B70AB36004559BF /* LTMathUtils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTMathUtils.mm; sourceTree = "<group>"; };
 		283BD0391922214300B68A90 /* ShapeDrawerPathShapeCloseSubpath.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ShapeDrawerPathShapeCloseSubpath.png; path = Resources/ShapeDrawerPathShapeCloseSubpath.png; sourceTree = "<group>"; };
 		283BD03A1922214300B68A90 /* ShapeDrawerPathShapeLineFromCenter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ShapeDrawerPathShapeLineFromCenter.png; path = Resources/ShapeDrawerPathShapeLineFromCenter.png; sourceTree = "<group>"; };
@@ -5515,6 +5516,7 @@
 				090898F81C4F97FB0022FA62 /* EXPMatchers+beCloseToGLKMatrix.mm */,
 				280F5A0D191A69ED00F9F80B /* EXPMatchers+beCloseToGLKVector.h */,
 				280F5A0E191A69ED00F9F80B /* EXPMatchers+beCloseToGLKVector.mm */,
+				283A4B581FE9043C009608E6 /* EXPMatchers+beCloseToLTVector.h */,
 				8BAE3A4518B2441B00DA79E1 /* EXPMatchers+beCloseToMat.h */,
 				8BAE3A4618B2441B00DA79E1 /* EXPMatchers+beCloseToMat.mm */,
 				8BAE3A4B18B2709400DA79E1 /* EXPMatchers+beCloseToScalar.h */,
