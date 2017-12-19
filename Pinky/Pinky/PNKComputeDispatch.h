@@ -31,6 +31,28 @@ void PNKComputeDispatchWithDefaultThreads(id<MTLComputePipelineState> state,
                                           NSString * _Nullable commandDescription,
                                           MTLSize workingSpaceSize);
 
+/// Dispatches a GPU operation wokring only on \c MTLBuffers to a compute command encoder.
+///
+/// @param state Reference to a compiled compute program to encode and dispatch.
+/// @param commandBuffer Buffer to store the encoded command.
+/// @param buffers Array of buffers to encode. The buffers are encoded to an index corresponding to
+/// their index in the array.
+/// @param commandDescription Debug string label used to identify groups of encoded commands. If
+/// \c nil then no label will be added. Adding a label does not change the rendering or compute
+/// behavior, rather it is used by the Xcode debugger to organize the rendering commands in a format
+/// that may provide insight into how your compute pipeline works.
+/// @param workingBufferSize number of pixels for the kernel threads to be executed on. Must be
+/// larger than 0.
+///
+/// @note We want to maximize the number of threads running in parallel. Thus,
+/// \c threadsInGroup.width is set to the maximum number of threads, and the number of thread groups
+/// (grid cells) is chosen such that the entire buffer is covered.
+void PNKComputeDispatchWithDefaultThreads(id<MTLComputePipelineState> state,
+                                          id<MTLCommandBuffer> commandBuffer,
+                                          NSArray<id<MTLBuffer>> *buffers,
+                                          NSString * _Nullable commandDescription,
+                                          NSUInteger workingBufferSize);
+
 /// Dispatches a GPU operation to a compute command encoder.
 ///
 /// @param state Reference to a compiled compute program to encode and dispatch.

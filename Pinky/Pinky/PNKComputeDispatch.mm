@@ -31,6 +31,21 @@ void PNKComputeDispatchWithDefaultThreads(id<MTLComputePipelineState> state,
                      threadgroupsPerGrid);
 }
 
+void PNKComputeDispatchWithDefaultThreads(id<MTLComputePipelineState> state,
+                                          id<MTLCommandBuffer> commandBuffer,
+                                          NSArray<id<MTLBuffer>> *buffers,
+                                          NSString * _Nullable debugGroup,
+                                          NSUInteger workingBufferSize) {
+  LTParameterAssert(workingBufferSize > 0 , @"workingBufferSize should be positive. got: %lu",
+                    (unsigned long)workingBufferSize);
+
+  auto threadsInGroup = MTLSizeMake(state.maxTotalThreadsPerThreadgroup, 1, 1);
+  auto threadgroupsPerGrid =
+      MTLSizeMake(PNKDivideRoundUp(workingBufferSize, threadsInGroup.width), 1, 1);
+  PNKComputeDispatch(state, commandBuffer, buffers, @[], debugGroup, threadsInGroup,
+                     threadgroupsPerGrid);
+}
+
 void PNKComputeDispatch(id<MTLComputePipelineState> state, id<MTLCommandBuffer> commandBuffer,
                         NSArray<id<MTLBuffer>> *buffers,
                         NSArray<id<MTLTexture>> *textures,
