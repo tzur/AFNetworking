@@ -29,7 +29,7 @@ context(@"deserialization", ^{
 
   it(@"should error if the URL is for an illegal CoreML", ^{
     auto neuralNetworkURL =
-          [NSURL URLWithString:[[NSBundle lt_testBundle] lt_pathForResource:@"illegal.nnmodel"]];
+          [NSURL URLWithString:[NSBundle.lt_testBundle lt_pathForResource:@"illegal.nnmodel"]];
     NSError *error;
     auto model = [neuralNetworkModelFactory modelWithCoreMLModel:neuralNetworkURL
                                                            error:&error];
@@ -41,7 +41,7 @@ context(@"deserialization", ^{
   context(@"scaling and bias model", ^{
     it(@"should deserialize with RGB bias", ^{
       auto neuralNetworkURL =
-          [NSURL URLWithString:[[NSBundle lt_testBundle]
+          [NSURL URLWithString:[NSBundle.lt_testBundle
                                 lt_pathForResource:@"conv_rgb_bias_preprocessing.nnmodel"]];
       NSError *error;
       auto model = [neuralNetworkModelFactory modelWithCoreMLModel:neuralNetworkURL error:&error];
@@ -56,7 +56,7 @@ context(@"deserialization", ^{
 
     it(@"should deserialize with gray bias", ^{
       auto neuralNetworkURL =
-          [NSURL URLWithString:[[NSBundle lt_testBundle]
+          [NSURL URLWithString:[NSBundle.lt_testBundle
                                 lt_pathForResource:@"prelu_gray_bias_preprocessing.nnmodel"]];
       NSError *error;
       auto model = [neuralNetworkModelFactory modelWithCoreMLModel:neuralNetworkURL error:&error];
@@ -73,7 +73,7 @@ context(@"deserialization", ^{
   context(@"metadata", ^{
     it(@"should deserialize with metadata", ^{
       auto neuralNetworkURL =
-          [NSURL URLWithString:[[NSBundle lt_testBundle] lt_pathForResource:@"metadata.nnmodel"]];
+          [NSURL URLWithString:[NSBundle.lt_testBundle lt_pathForResource:@"metadata.nnmodel"]];
       NSError *error;
       auto model = [neuralNetworkModelFactory modelWithCoreMLModel:neuralNetworkURL error:&error];
       expect(error).to.beNil();
@@ -90,7 +90,7 @@ context(@"deserialization", ^{
   context(@"convolution", ^{
     it(@"should deserialize with bias", ^{
       auto neuralNetworkURL =
-          [NSURL URLWithString:[[NSBundle lt_testBundle]
+          [NSURL URLWithString:[NSBundle.lt_testBundle
                                 lt_pathForResource:@"conv_rgb_bias_preprocessing.nnmodel"]];
       NSError *error;
       auto model = [neuralNetworkModelFactory modelWithCoreMLModel:neuralNetworkURL error:&error];
@@ -143,8 +143,7 @@ context(@"deserialization", ^{
 
     it(@"should deserialize with no bias", ^{
       auto neuralNetworkURL =
-          [NSURL URLWithString:[[NSBundle lt_testBundle]
-                                lt_pathForResource:@"conv_no_bias.nnmodel"]];
+          [NSURL URLWithString:[NSBundle.lt_testBundle lt_pathForResource:@"conv_no_bias.nnmodel"]];
       NSError *error;
       auto model = [neuralNetworkModelFactory modelWithCoreMLModel:neuralNetworkURL error:&error];
       expect(error).to.beNil();
@@ -188,8 +187,7 @@ context(@"deserialization", ^{
 
     it(@"should deserialize deconvolution", ^{
       auto neuralNetworkURL =
-          [NSURL URLWithString:[[NSBundle lt_testBundle]
-                                lt_pathForResource:@"deconv.nnmodel"]];
+          [NSURL URLWithString:[NSBundle.lt_testBundle lt_pathForResource:@"deconv.nnmodel"]];
       NSError *error;
       auto model = [neuralNetworkModelFactory modelWithCoreMLModel:neuralNetworkURL error:&error];
       expect(error).to.beNil();
@@ -237,7 +235,7 @@ context(@"deserialization", ^{
   context(@"activation", ^{
     it(@"should deserialize prelu", ^{
       auto neuralNetworkURL =
-          [NSURL URLWithString:[[NSBundle lt_testBundle]
+          [NSURL URLWithString:[NSBundle.lt_testBundle
                                 lt_pathForResource:@"prelu_gray_bias_preprocessing.nnmodel"]];
       NSError *error;
       auto model = [neuralNetworkModelFactory modelWithCoreMLModel:neuralNetworkURL error:&error];
@@ -262,7 +260,7 @@ context(@"deserialization", ^{
   context(@"pooling", ^{
     it(@"should deserialize max pool", ^{
       auto neuralNetworkURL =
-          [NSURL URLWithString:[[NSBundle lt_testBundle] lt_pathForResource:@"maxpool.nnmodel"]];
+          [NSURL URLWithString:[NSBundle.lt_testBundle lt_pathForResource:@"maxpool.nnmodel"]];
       NSError *error;
       auto model = [neuralNetworkModelFactory modelWithCoreMLModel:neuralNetworkURL error:&error];
       expect(error).to.beNil();
@@ -288,7 +286,7 @@ context(@"deserialization", ^{
   context(@"affine", ^{
     it(@"should deserialize affine", ^{
       auto neuralNetworkURL =
-          [NSURL URLWithString:[[NSBundle lt_testBundle] lt_pathForResource:@"affine.nnmodel"]];
+          [NSURL URLWithString:[NSBundle.lt_testBundle lt_pathForResource:@"affine.nnmodel"]];
       NSError *error;
       auto model = [neuralNetworkModelFactory modelWithCoreMLModel:neuralNetworkURL error:&error];
       expect(error).to.beNil();
@@ -326,7 +324,7 @@ context(@"deserialization", ^{
   context(@"Normalization", ^{
     it(@"should deserialize batch normalization", ^{
       auto neuralNetworkURL =
-          [NSURL URLWithString:[[NSBundle lt_testBundle] lt_pathForResource:@"batchnorm.nnmodel"]];
+          [NSURL URLWithString:[NSBundle.lt_testBundle lt_pathForResource:@"batchnorm.nnmodel"]];
       NSError *error;
       auto model = [neuralNetworkModelFactory modelWithCoreMLModel:neuralNetworkURL error:&error];
       expect(error).to.beNil();
@@ -361,7 +359,7 @@ context(@"deserialization", ^{
 
     it(@"should deserialize instance normalization", ^{
       auto neuralNetworkURL =
-          [NSURL URLWithString:[[NSBundle lt_testBundle] lt_pathForResource:@"instnorm.nnmodel"]];
+          [NSURL URLWithString:[NSBundle.lt_testBundle lt_pathForResource:@"instnorm.nnmodel"]];
       NSError *error;
       auto model = [neuralNetworkModelFactory modelWithCoreMLModel:neuralNetworkURL error:&error];
       expect(error).to.beNil();
@@ -396,7 +394,7 @@ context(@"deserialization", ^{
 
     beforeEach(^{
       styleTransferNetworkURL =
-          [NSURL URLWithString:[[NSBundle lt_testBundle] lt_pathForResource:@"sst_lilien.nnmodel"]];
+          [NSURL URLWithString:[NSBundle.lt_testBundle lt_pathForResource:@"sst_lilien.nnmodel"]];
     });
 
     it(@"should deserialize", ^{

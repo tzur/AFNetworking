@@ -6,7 +6,7 @@
 #import "LTOpenCVExtensions.h"
 
 static cv::Mat4b LTLoadRGBAImage(NSString *name) {
-  NSBundle *bundle = [NSBundle lt_testBundle];
+  NSBundle *bundle = NSBundle.lt_testBundle;
   NSString *path = [bundle pathForResource:name ofType:@"png"];
 
   cv::Mat3b bgr(cv::imread([path cStringUsingEncoding:NSUTF8StringEncoding]));

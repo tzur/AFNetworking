@@ -60,8 +60,8 @@ context(@"metadata fetching", ^{
 
   context(@"image media type", ^{
     it(@"should fetch metadata", ^{
-      NSURL *url = [[NSBundle lt_testBundle] URLForResource:@"PTNImageMetadataImage"
-                                              withExtension:@"jpg"];
+      NSURL *url = [NSBundle.lt_testBundle URLForResource:@"PTNImageMetadataImage"
+                                            withExtension:@"jpg"];
       PHContentEditingInput *contentEditingInput = PTNPhotoKitCreateImageContentEditingInput(url);
       photoKitAsset = PTNPhotoKitCreateAssetForContentEditing(@"foo", contentEditingInput, nil, 0);
       asset = [[PTNPhotoKitImageAsset alloc] initWithImage:image asset:photoKitAsset];
