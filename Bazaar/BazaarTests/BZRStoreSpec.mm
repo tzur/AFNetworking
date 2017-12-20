@@ -15,7 +15,6 @@
 #import "BZRProduct+SKProduct.h"
 #import "BZRProductContentManager.h"
 #import "BZRProductPriceInfo.h"
-#import "BZRProductsPriceInfoFetcher.h"
 #import "BZRProductsProvider.h"
 #import "BZRProductsVariantSelector.h"
 #import "BZRProductsVariantSelectorFactory.h"
@@ -23,6 +22,7 @@
 #import "BZRReceiptValidationStatus.h"
 #import "BZRStoreConfiguration.h"
 #import "BZRStoreKitFacade.h"
+#import "BZRStoreKitMetadataFetcher.h"
 #import "BZRTestUtils.h"
 #import "NSError+Bazaar.h"
 #import "NSErrorCodes+Bazaar.h"
@@ -71,7 +71,7 @@ __block id<BZRProductsVariantSelector> variantSelector;
 __block BZRFakeReceiptValidationParametersProvider *validationParametersProvider;
 __block BZRFakeAllowedProductsProvider *allowedProductsProvider;
 __block id<BZRProductsProvider> netherProductsProvider;
-__block BZRProductsPriceInfoFetcher *priceInfoFetcher;
+__block BZRStoreKitMetadataFetcher *storeKitMetadataFetcher;
 __block NSBundle *bundle;
 __block RACSubject *productsProviderEventsSubject;
 __block RACSubject *receiptValidationStatusProviderEventsSubject;
@@ -82,7 +82,7 @@ __block RACSubject *transactionsErrorEventsSubject;
 __block RACSubject *contentFetcherEventsSubject;
 __block RACSubject *unhandledSuccessfulTransactionsSubject;
 __block RACSubject *validationParametersProviderEventsSubject;
-__block RACSubject *priceInfoFetcherEventsSubject;
+__block RACSubject *storeKitMetadataFetcherEventsSubject;
 __block BZRStoreConfiguration *configuration;
 __block BZRStore *store;
 __block NSString *productIdentifier;
@@ -99,7 +99,7 @@ beforeEach(^{
   validationParametersProvider = [[BZRFakeReceiptValidationParametersProvider alloc] init];
   allowedProductsProvider = [[BZRFakeAllowedProductsProvider alloc] init];
   netherProductsProvider = OCMProtocolMock(@protocol(BZRProductsProvider));
-  priceInfoFetcher = OCMClassMock([BZRProductsPriceInfoFetcher class]);
+  storeKitMetadataFetcher = OCMClassMock([BZRStoreKitMetadataFetcher class]);
   bundle = OCMClassMock([NSBundle class]);
   id<BZRProductsVariantSelectorFactory> variantSelectorFactory =
       OCMProtocolMock(@protocol(BZRProductsVariantSelectorFactory));
@@ -115,7 +115,7 @@ beforeEach(^{
   transactionsErrorEventsSubject = [RACSubject subject];
   contentFetcherEventsSubject = [RACSubject subject];
   unhandledSuccessfulTransactionsSubject = [RACSubject subject];
-  priceInfoFetcherEventsSubject = [RACSubject subject];
+  storeKitMetadataFetcherEventsSubject = [RACSubject subject];
   validationParametersProviderEventsSubject = [RACSubject subject];
 
   OCMStub([productsProvider eventsSignal])
@@ -134,7 +134,7 @@ beforeEach(^{
       .andReturn(unhandledSuccessfulTransactionsSubject);
   OCMStub([validationParametersProvider eventsSignal])
       .andReturn(validationParametersProviderEventsSubject);
-  OCMStub([priceInfoFetcher eventsSignal]).andReturn(priceInfoFetcherEventsSubject);
+  OCMStub([storeKitMetadataFetcher eventsSignal]).andReturn(storeKitMetadataFetcherEventsSubject);
 
   configuration = OCMClassMock([BZRStoreConfiguration class]);
   OCMStub([configuration productsProvider]).andReturn(productsProvider);
@@ -149,7 +149,7 @@ beforeEach(^{
   OCMStub([configuration validationParametersProvider]).andReturn(validationParametersProvider);
   OCMStub([configuration allowedProductsProvider]).andReturn(allowedProductsProvider);
   OCMStub([configuration netherProductsProvider]).andReturn(netherProductsProvider);
-  OCMStub([configuration priceInfoFetcher]).andReturn(priceInfoFetcher);
+  OCMStub([configuration storeKitMetadataFetcher]).andReturn(storeKitMetadataFetcher);
 
   store = [[BZRStore alloc] initWithConfiguration:configuration];
   productIdentifier = @"foo";
@@ -1216,7 +1216,7 @@ context(@"maually fetching products info", ^{
     auto product = BZRProductWithIdentifier(productIdentifier);
     [netherProductsProviderSubject sendNext:@[product, BZRProductWithIdentifier(@"bar")]];
     NSError *error = [NSError lt_errorWithCode:1337];
-    OCMStub([priceInfoFetcher fetchProductsPriceInfo:OCMOCK_ANY])
+    OCMStub([storeKitMetadataFetcher fetchProductsMetadata:OCMOCK_ANY])
         .andReturn([RACSignal error:error]);
 
     expect([store fetchProductsInfo:@[productIdentifier].lt_set]).will.sendError(error);
@@ -1226,7 +1226,7 @@ context(@"maually fetching products info", ^{
      "nether products provider", ^{
     auto product = BZRProductWithIdentifier(productIdentifier);
     [netherProductsProviderSubject sendNext:@[product]];
-    OCMStub([priceInfoFetcher fetchProductsPriceInfo:@[]]).andReturn([RACSignal return:@[]]);
+    OCMStub([storeKitMetadataFetcher fetchProductsMetadata:@[]]).andReturn([RACSignal return:@[]]);
 
     expect([store fetchProductsInfo:@[@"bar"].lt_set]).will.matchError(^BOOL(NSError *error) {
       return error.code == BZRErrorCodeInvalidProductIdentifier &&
@@ -1240,7 +1240,7 @@ context(@"maually fetching products info", ^{
     auto productWithPriceInfo = BZRProductWithPriceInfo(product, 1337, @"de_DE");
 
     [netherProductsProviderSubject sendNext:@[product, BZRProductWithIdentifier(@"bar")]];
-    OCMStub([priceInfoFetcher fetchProductsPriceInfo:@[product]])
+    OCMStub([storeKitMetadataFetcher fetchProductsMetadata:@[product]])
         .andReturn([RACSignal return:@[productWithPriceInfo]]);
 
     expect([store fetchProductsInfo:@[productIdentifier].lt_set])
@@ -1264,17 +1264,17 @@ context(@"maually fetching products info", ^{
 
       [netherProductsProviderSubject sendNext:productList];
 
-      OCMExpect([priceInfoFetcher fetchProductsPriceInfo:productList])
+      OCMExpect([storeKitMetadataFetcher fetchProductsMetadata:productList])
           .andReturn([RACSignal return:productList]);
 
       expect([store fetchProductsInfo:@[productIdentifier].lt_set]).to.complete();
-      OCMVerifyAll((id)priceInfoFetcher);
+      OCMVerifyAll((id)storeKitMetadataFetcher);
     });
 
     it(@"should not send full price products that were not requested by the user", ^{
       [netherProductsProviderSubject sendNext:@[fullPriceProduct, product]];
 
-      OCMStub([priceInfoFetcher fetchProductsPriceInfo:OCMOCK_ANY])
+      OCMStub([storeKitMetadataFetcher fetchProductsMetadata:OCMOCK_ANY])
           .andReturn(([RACSignal return:@[product, fullPriceProduct]]));
 
       expect([store fetchProductsInfo:@[productIdentifier].lt_set]).to
@@ -1286,7 +1286,7 @@ context(@"maually fetching products info", ^{
 
       [netherProductsProviderSubject sendNext:@[fullPriceProduct, product]];
 
-      OCMStub([priceInfoFetcher fetchProductsPriceInfo:OCMOCK_ANY])
+      OCMStub([storeKitMetadataFetcher fetchProductsMetadata:OCMOCK_ANY])
           .andReturn(([RACSignal return:@[productWithPriceInfo, fullPriceProduct]]));
 
       expect([store fetchProductsInfo:@[productIdentifier, @"fullFoo"].lt_set]).to.sendValues(@[@{
@@ -1298,7 +1298,7 @@ context(@"maually fetching products info", ^{
     it(@"should not fetch full price products that don't exist in product list", ^{
       [netherProductsProviderSubject sendNext:@[product]];
 
-      OCMStub([priceInfoFetcher fetchProductsPriceInfo:@[product]])
+      OCMStub([storeKitMetadataFetcher fetchProductsMetadata:@[product]])
           .andReturn([RACSignal return:@[product]]);
 
       expect([store fetchProductsInfo:@[productIdentifier].lt_set]).to
@@ -1477,7 +1477,7 @@ context(@"KVO-compliance", ^{
     OCMStub([configuration validationParametersProvider]).andReturn(validationParametersProvider);
     OCMStub([configuration allowedProductsProvider]).andReturn(allowedProductsProvider);
     OCMStub([configuration netherProductsProvider]).andReturn(netherProductsProvider);
-    OCMStub([configuration priceInfoFetcher]).andReturn(priceInfoFetcher);
+    OCMStub([configuration storeKitMetadataFetcher]).andReturn(storeKitMetadataFetcher);
 
     store = [[BZRStore alloc] initWithConfiguration:configuration];
   });

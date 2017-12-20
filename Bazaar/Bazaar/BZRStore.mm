@@ -20,7 +20,6 @@
 #import "BZRProductContentManager.h"
 #import "BZRProductPriceInfo+SKProduct.h"
 #import "BZRProductTypedefs.h"
-#import "BZRProductsPriceInfoFetcher.h"
 #import "BZRProductsProvider.h"
 #import "BZRProductsVariantSelector.h"
 #import "BZRProductsVariantSelectorFactory.h"
@@ -29,6 +28,7 @@
 #import "BZRReceiptValidationStatus.h"
 #import "BZRStoreConfiguration.h"
 #import "BZRStoreKitFacade.h"
+#import "BZRStoreKitMetadataFetcher.h"
 #import "NSError+Bazaar.h"
 #import "NSErrorCodes+Bazaar.h"
 #import "NSString+Bazaar.h"
@@ -77,8 +77,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// Provider used to provide product list before getting their price info from StoreKit.
 @property (readonly, nonatomic) id<BZRProductsProvider> netherProductsProvider;
 
-/// Fetcher used to fetch products price info.
-@property (readonly, nonatomic) BZRProductsPriceInfoFetcher *priceInfoFetcher;
+/// Fetcher used to fetch products metadata.
+@property (readonly, nonatomic) BZRStoreKitMetadataFetcher *storeKitMetadataFetcher;
 
 /// Validator used to validate receipt on initialization if required.
 @property (readonly, nonatomic) BZRExternalTriggerReceiptValidator *backgroundReceiptValidator;
@@ -130,7 +130,7 @@ NS_ASSUME_NONNULL_BEGIN
     _validationParametersProvider = configuration.validationParametersProvider;
     _allowedProductsProvider = configuration.allowedProductsProvider;
     _netherProductsProvider = configuration.netherProductsProvider;
-    _priceInfoFetcher = configuration.priceInfoFetcher;
+    _storeKitMetadataFetcher = configuration.storeKitMetadataFetcher;
     _backgroundReceiptValidator = [[BZRExternalTriggerReceiptValidator alloc]
                                    initWithValidationStatusProvider:self.validationStatusProvider];
     _downloadedContentProducts = [NSSet set];
@@ -159,7 +159,7 @@ NS_ASSUME_NONNULL_BEGIN
     self.productsProvider.eventsSignal,
     self.contentFetcher.eventsSignal,
     self.allowedProductsProvider.eventsSignal,
-    self.priceInfoFetcher.eventsSignal,
+    self.storeKitMetadataFetcher.eventsSignal,
     [self.backgroundReceiptValidator.eventsSignal replay],
     self.validationParametersProvider.eventsSignal
   ]]
@@ -719,7 +719,8 @@ NS_ASSUME_NONNULL_BEGIN
             [self productsWithFullPriceProducts:requestedProductList
                               productDictionary:productDictionary];
 
-        return [self.priceInfoFetcher fetchProductsPriceInfo:requestedProductsWithFullProducts];
+        return [self.storeKitMetadataFetcher
+                fetchProductsMetadata:requestedProductsWithFullProducts];
       }]
       map:^BZRProductDictionary *(BZRProductList *productList) {
         NSArray<NSString *> *identifiers =

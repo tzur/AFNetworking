@@ -5,7 +5,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class BZRAcquiredViaSubscriptionProvider, BZRAllowedProductsProvider,
     BZRCachedReceiptValidationStatusProvider, BZRPeriodicReceiptValidatorActivator,
-    BZRProductContentManager, BZRProductsPriceInfoFetcher, BZRStoreKitFacade, LTPath;
+    BZRProductContentManager, BZRStoreKitFacade, BZRStoreKitMetadataFetcher, LTPath;
 
 @protocol BZRProductsProvider, BZRProductContentFetcher, BZRProductsVariantSelectorFactory,
     BZRReceiptValidationParametersProvider;
@@ -98,6 +98,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Facade used to interact with Apple StoreKit.
 @property (strong, nonatomic) BZRStoreKitFacade *storeKitFacade;
 
+/// Fetcher used to fetch products metadata.
+@property (readonly, nonatomic) BZRStoreKitMetadataFetcher *storeKitMetadataFetcher;
+
 /// Activator used to control the periodic receipt validation.
 @property (strong, nonatomic) BZRPeriodicReceiptValidatorActivator *periodicValidatorActivator;
 
@@ -113,11 +116,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// \c self.acquiredViaSubscriptionProvider.
 @property (strong, nonatomic) BZRAllowedProductsProvider *allowedProductsProvider;
 
-/// Provider used to provide product list before getting their price info from StoreKit.
+/// Provider used to provide product list before getting their metadata from StoreKit.
 @property (strong, nonatomic) id<BZRProductsProvider> netherProductsProvider;
-
-/// Fetcher used to fetch products price info.
-@property (readonly, nonatomic) BZRProductsPriceInfoFetcher *priceInfoFetcher;
 
 @end
 

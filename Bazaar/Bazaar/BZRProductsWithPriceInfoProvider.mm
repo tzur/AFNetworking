@@ -8,7 +8,7 @@
 #import "BZREvent.h"
 #import "BZRProduct.h"
 #import "BZRProductTypedefs.h"
-#import "BZRProductsPriceInfoFetcher.h"
+#import "BZRStoreKitMetadataFetcher.h"
 #import "NSErrorCodes+Bazaar.h"
 #import "NSString+Bazaar.h"
 
@@ -20,7 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly, nonatomic) id<BZRProductsProvider> underlyingProvider;
 
 /// Fetcher used to fetch price info for products.
-@property (readonly, nonatomic) BZRProductsPriceInfoFetcher *priceInfoFetcher;
+@property (readonly, nonatomic) BZRStoreKitMetadataFetcher *storeKitMetadataFetcher;
 
 @end
 
@@ -33,10 +33,10 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 - (instancetype)initWithUnderlyingProvider:(id<BZRProductsProvider>)underlyingProvider
-                          priceInfoFetcher:(BZRProductsPriceInfoFetcher *)priceInfoFetcher {
+                   storeKitMetadataFetcher:(BZRStoreKitMetadataFetcher *)storeKitMetadataFetcher {
   if (self = [super init]) {
     _underlyingProvider = underlyingProvider;
-    _priceInfoFetcher = priceInfoFetcher;
+    _storeKitMetadataFetcher = storeKitMetadataFetcher;
     _eventsSignal = [underlyingProvider.eventsSignal takeUntil:[self rac_willDeallocSignal]];
   }
   return self;
@@ -80,7 +80,7 @@ static NSNumber * const kNonAppStoreProductsLabel = @0;
 }
 
 - (RACSignal<BZRProductList *> *)appStoreProductsList:(BZRProductList *)products {
-  return [[[self.priceInfoFetcher fetchProductsPriceInfo:products]
+  return [[[self.storeKitMetadataFetcher fetchProductsMetadata:products]
       try:^BOOL(BZRProductList *productsWithPriceInfo, NSError * __autoreleasing *error) {
         if (![productsWithPriceInfo count]) {
           if (error) {

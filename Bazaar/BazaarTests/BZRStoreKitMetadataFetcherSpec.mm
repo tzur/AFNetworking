@@ -1,13 +1,13 @@
 // Copyright (c) 2017 Lightricks. All rights reserved.
 // Created by Ben Yohay.
 
-#import "BZRProductsPriceInfoFetcher.h"
+#import "BZRStoreKitMetadataFetcher.h"
 
 #import <LTKit/NSArray+Functional.h>
 
 #import "BZREvent.h"
 #import "BZRProduct+SKProduct.h"
-#import "BZRProductPriceInfo+SKProduct.h"
+#import "BZRProductPriceInfo.h"
 #import "BZRStoreKitFacade.h"
 #import "BZRTestUtils.h"
 #import "NSError+Bazaar.h"
@@ -22,36 +22,37 @@ SKProduct *BZRProductWithProperties(NSString *productIdentifier, NSDecimalNumber
   return product;
 }
 
-SpecBegin(BZRProductsPriceInfoFetcher)
+SpecBegin(BZRStoreKitMetadataFetcher)
 
 __block BZRStoreKitFacade *storeKitFacade;
-__block BZRProductsPriceInfoFetcher *priceInfoFetcher;
+__block BZRStoreKitMetadataFetcher *storeKitMetadataFetcher;
 __block BZRProduct *product;
 
 beforeEach(^{
   storeKitFacade = OCMClassMock([BZRStoreKitFacade class]);
-  priceInfoFetcher = [[BZRProductsPriceInfoFetcher alloc] initWithStoreKitFacade:storeKitFacade];
+  storeKitMetadataFetcher =
+      [[BZRStoreKitMetadataFetcher alloc] initWithStoreKitFacade:storeKitFacade];
   product = BZRProductWithIdentifier(@"foo");
 });
 
 context(@"getting product list", ^{
   it(@"should dealloc when all strong references are relinquished", ^{
-    BZRProductsPriceInfoFetcher * __weak weakPriceInfoFetcher;
+    BZRStoreKitMetadataFetcher * __weak weakstoreKitMetadataFetcher;
     NSError *error = [NSError lt_errorWithCode:1337];
     OCMStub([storeKitFacade fetchMetadataForProductsWithIdentifiers:OCMOCK_ANY])
         .andReturn([RACSignal error:error]);
 
     RACSignal *priceInfoSignal;
     @autoreleasepool {
-      auto priceInfoFetcher =
-          [[BZRProductsPriceInfoFetcher alloc] initWithStoreKitFacade:storeKitFacade];
-      weakPriceInfoFetcher = priceInfoFetcher;
+      auto storeKitMetadataFetcher =
+          [[BZRStoreKitMetadataFetcher alloc] initWithStoreKitFacade:storeKitFacade];
+      weakstoreKitMetadataFetcher = storeKitMetadataFetcher;
 
-      priceInfoSignal = [priceInfoFetcher fetchProductsPriceInfo:@[product]];
+      priceInfoSignal = [storeKitMetadataFetcher fetchProductsMetadata:@[product]];
     }
 
     expect(priceInfoSignal).will.finish();
-    expect(weakPriceInfoFetcher).to.beNil();
+    expect(weakstoreKitMetadataFetcher).to.beNil();
   });
 
   it(@"should send error when failed to fetch products metadata", ^{
@@ -59,7 +60,7 @@ context(@"getting product list", ^{
     OCMStub([storeKitFacade fetchMetadataForProductsWithIdentifiers:OCMOCK_ANY])
         .andReturn([RACSignal error:error]);
 
-    expect([priceInfoFetcher fetchProductsPriceInfo:@[product]]).will.sendError(error);
+    expect([storeKitMetadataFetcher fetchProductsMetadata:@[product]]).will.sendError(error);
   });
 
   it(@"should send error event if product list contains some invalid product identifiers", ^{
@@ -69,9 +70,9 @@ context(@"getting product list", ^{
     OCMStub([storeKitFacade fetchMetadataForProductsWithIdentifiers:OCMOCK_ANY])
         .andReturn([RACSignal return:response]);
 
-    auto recorder = [priceInfoFetcher.eventsSignal testRecorder];
+    auto recorder = [storeKitMetadataFetcher.eventsSignal testRecorder];
 
-    [[priceInfoFetcher fetchProductsPriceInfo:@[product]] subscribeNext:^(id) {}];
+    [[storeKitMetadataFetcher fetchProductsMetadata:@[product]] subscribeNext:^(id) {}];
 
     expect(recorder).will.matchValue(0, ^BOOL(BZREvent *event) {
       NSError *error = event.eventError;
@@ -86,7 +87,7 @@ context(@"getting product list", ^{
     OCMStub([storeKitFacade fetchMetadataForProductsWithIdentifiers:OCMOCK_ANY])
         .andReturn([RACSignal return:response]);
 
-    auto recorder = [[priceInfoFetcher fetchProductsPriceInfo:@[product]] testRecorder];
+    auto recorder = [[storeKitMetadataFetcher fetchProductsMetadata:@[product]] testRecorder];
 
     expect(recorder).will.complete();
     expect(recorder).will.matchValue(0, ^BOOL(NSArray<BZRProduct *> *productList) {
@@ -100,7 +101,7 @@ context(@"getting product list", ^{
     OCMStub([storeKitFacade fetchMetadataForProductsWithIdentifiers:OCMOCK_ANY])
         .andReturn([RACSignal return:response]);
 
-    auto recorder = [[priceInfoFetcher fetchProductsPriceInfo:@[product]] testRecorder];
+    auto recorder = [[storeKitMetadataFetcher fetchProductsMetadata:@[product]] testRecorder];
 
     expect(recorder).will.complete();
     expect(recorder).will.sendValues(@[@[]]);
@@ -114,7 +115,7 @@ context(@"getting product list", ^{
     OCMStub([storeKitFacade fetchMetadataForProductsWithIdentifiers:OCMOCK_ANY])
         .andReturn([RACSignal return:response]);
 
-    auto recorder = [[priceInfoFetcher fetchProductsPriceInfo:@[product]] testRecorder];
+    auto recorder = [[storeKitMetadataFetcher fetchProductsMetadata:@[product]] testRecorder];
 
     expect(recorder).will.matchValue(0, ^BOOL(NSSet<BZRProduct *> *productList) {
       BZRProductPriceInfo *priceInfo = [productList allObjects].firstObject.priceInfo;
@@ -160,7 +161,7 @@ context(@"getting product list", ^{
     });
 
     it(@"should set full price correctly", ^{
-      auto recorder = [[priceInfoFetcher fetchProductsPriceInfo:productList] testRecorder];
+      auto recorder = [[storeKitMetadataFetcher fetchProductsMetadata:productList] testRecorder];
 
       expect(recorder).will.matchValue(0, ^BOOL(NSSet<BZRProduct *> *productList) {
         return [[productList.allObjects lt_filter:^BOOL(BZRProduct *product) {
@@ -170,7 +171,7 @@ context(@"getting product list", ^{
     });
 
     it(@"should set underlying product correctly", ^{
-      auto recorder = [[priceInfoFetcher fetchProductsPriceInfo:productList] testRecorder];
+      auto recorder = [[storeKitMetadataFetcher fetchProductsMetadata:productList] testRecorder];
 
       expect(recorder).will.matchValue(0, ^BOOL(NSSet<BZRProduct *> *productList) {
         return [productList.allObjects lt_filter:^BOOL(BZRProduct *product) {
