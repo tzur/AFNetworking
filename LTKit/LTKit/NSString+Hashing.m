@@ -16,18 +16,27 @@ NS_ASSUME_NONNULL_BEGIN
   uint8_t digest[CC_MD5_DIGEST_LENGTH];
   CC_MD5(data.bytes, (CC_LONG)data.length, digest);
 
-  return [self lt_hexStringWithBytes:digest andSize:CC_MD5_DIGEST_LENGTH];
+  return [self lt_hexStringWithBytes:digest andSize:sizeof(digest)];
 }
 
 - (NSString *)lt_SHA1 {
   const char *string = [self cStringUsingEncoding:NSUTF8StringEncoding];
   NSData *data = [NSData dataWithBytes:string length:self.length];
 
-  // Digest.
   uint8_t digest[CC_SHA1_DIGEST_LENGTH];
   CC_SHA1(data.bytes, (CC_LONG)data.length, digest);
 
-  return [self lt_hexStringWithBytes:digest andSize:CC_SHA1_DIGEST_LENGTH];
+  return [self lt_hexStringWithBytes:digest andSize:sizeof(digest)];
+}
+
+- (NSString *)lt_SHA256 {
+  const char *string = [self cStringUsingEncoding:NSUTF8StringEncoding];
+  NSData *data = [NSData dataWithBytes:string length:self.length];
+
+  uint8_t digest[CC_SHA256_DIGEST_LENGTH];
+  CC_SHA256(data.bytes, (CC_LONG)data.length, digest);
+
+  return [self lt_hexStringWithBytes:digest andSize:sizeof(digest)];
 }
 
 - (NSString *)lt_HMACSHA256WithKey:(NSData *)key {
@@ -37,7 +46,7 @@ NS_ASSUME_NONNULL_BEGIN
   CCHmac(kCCHmacAlgSHA256, key.bytes, (CC_LONG)key.length, stringData.bytes,
          (CC_LONG)stringData.length, digest);
 
-  return [self lt_hexStringWithBytes:digest andSize:CC_SHA256_DIGEST_LENGTH];
+  return [self lt_hexStringWithBytes:digest andSize:sizeof(digest)];
 }
 
 - (NSString *)lt_hexStringWithBytes:(uint8_t *)bytes andSize:(NSUInteger)size {
