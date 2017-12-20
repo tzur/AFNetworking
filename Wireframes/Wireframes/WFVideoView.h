@@ -1,6 +1,8 @@
 // Copyright (c) 2017 Lightricks. All rights reserved.
 // Created by Daniel Hadar.
 
+#import <AVFoundation/AVFoundation.h>
+
 NS_ASSUME_NONNULL_BEGIN
 
 @class WFVideoView;
@@ -61,6 +63,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// URL of the video to be played by this view.
 @property (strong, nonatomic, nullable) NSURL *videoURL;
+
+/// Defines how the video is displayed within the view bounds. Default is
+/// \c AVLayerVideoGravityResizeAspect.
+@property (strong, nonatomic) AVLayerVideoGravity videoGravity;
 
 /// Current time of the current displayed video. If \c videoURL is \c nil, \c 0 is returned.
 @property (readonly, nonatomic) NSTimeInterval currentTime;

@@ -55,6 +55,15 @@ it(@"should return correct video size", ^{
   expect(videoView.videoSize).will.equal(CGSizeMake(640, 360));
 });
 
+it(@"should proxy video gravity to layer", ^{
+  auto layer = (AVPlayerLayer *)videoView.layer;
+  videoView.videoGravity = AVLayerVideoGravityResizeAspectFill;
+  expect(layer.videoGravity).to.equal(AVLayerVideoGravityResizeAspectFill);
+
+  videoView.videoGravity = AVLayerVideoGravityResizeAspect;
+  expect(layer.videoGravity).to.equal(AVLayerVideoGravityResizeAspect);
+});
+
 context(@"delegate", ^{
   it(@"should call delegate when video loads", ^{
     videoView.videoURL = zeroLengthVideoURL;
