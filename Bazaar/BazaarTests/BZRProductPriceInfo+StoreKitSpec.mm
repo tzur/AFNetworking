@@ -1,9 +1,9 @@
 // Copyright (c) 2016 Lightricks. All rights reserved.
 // Created by Ben Yohay.
 
-#import "BZRProductPriceInfo+SKProduct.h"
+#import "BZRProductPriceInfo+StoreKit.h"
 
-SpecBegin(BZRProductPriceInfo_SKProduct)
+SpecBegin(BZRProductPriceInfo_StoreKit)
 
 context(@"creating product price info from SKProduct", ^{
   it(@"should create product price info with correct price", ^{

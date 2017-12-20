@@ -6,7 +6,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /// Adds creation method with a \c SKProduct.
-@interface BZRProductPriceInfo (SKProduct)
+@interface BZRProductPriceInfo (StoreKit)
 
 /// Creates a new \c BZRProductPriceInfo with the given \c product.
 + (instancetype)productPriceInfoWithSKProduct:(SKProduct *)product;

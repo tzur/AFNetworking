@@ -6,8 +6,8 @@
 #import <LTKit/NSArray+Functional.h>
 
 #import "BZREvent.h"
-#import "BZRProduct+SKProduct.h"
-#import "BZRProductPriceInfo+SKProduct.h"
+#import "BZRProduct+StoreKit.h"
+#import "BZRProductPriceInfo+StoreKit.h"
 #import "BZRStoreKitFacade.h"
 #import "NSError+Bazaar.h"
 
@@ -86,7 +86,7 @@ NS_ASSUME_NONNULL_BEGIN
 
             auto priceInfo = [BZRProductPriceInfo productPriceInfoWithSKProduct:product];
             auto bazaarProductWithStoreKitMetadata = [[bazaarProduct
-                modelByOverridingProperty:@keypath(bazaarProduct, bzr_underlyingProduct)
+                modelByOverridingProperty:@keypath(bazaarProduct, underlyingProduct)
                 withValue:product]
                 modelByOverridingProperty:@keypath(bazaarProduct, priceInfo)
                 withValue:priceInfo];
@@ -130,8 +130,8 @@ NS_ASSUME_NONNULL_BEGIN
   return [[discountedProduct
       modelByOverridingProperty:@keypath(discountedProduct, priceInfo)
       withValue:priceInfoWithFullPrice]
-      modelByOverridingProperty:@keypath(discountedProduct, bzr_underlyingProduct)
-      withValue:discountedProduct.bzr_underlyingProduct];
+      modelByOverridingProperty:@keypath(discountedProduct, underlyingProduct)
+      withValue:discountedProduct.underlyingProduct];
 }
 
 @end

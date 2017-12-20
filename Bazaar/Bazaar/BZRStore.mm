@@ -16,9 +16,8 @@
 #import "BZRExternalTriggerReceiptValidator.h"
 #import "BZRPeriodicReceiptValidatorActivator.h"
 #import "BZRProduct+EnablesProduct.h"
-#import "BZRProduct+SKProduct.h"
+#import "BZRProduct+StoreKit.h"
 #import "BZRProductContentManager.h"
-#import "BZRProductPriceInfo+SKProduct.h"
 #import "BZRProductTypedefs.h"
 #import "BZRProductsProvider.h"
 #import "BZRProductsVariantSelector.h"
@@ -266,11 +265,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)updateAppStoreLocaleFromProductDictionary:(BZRProductDictionary *)productDictionary {
   BZRProductList *productsWithPriceInfo =
       [[productDictionary allValues] lt_filter:^BOOL(BZRProduct *product) {
-        return product.bzr_underlyingProduct != nil;
+        return product.underlyingProduct != nil;
       }];
 
   self.validationParametersProvider.appStoreLocale =
-      productsWithPriceInfo.firstObject.bzr_underlyingProduct.priceLocale;
+      productsWithPriceInfo.firstObject.underlyingProduct.priceLocale;
 }
 
 - (void)createVariantSelectorWithProductDictionary:(BZRProductDictionary *)productDictionary {
@@ -488,7 +487,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (RACSignal *)purchaseProductWithStoreKit:(NSString *)productIdentifier {
-  SKProduct *product = self.productDictionary[productIdentifier].bzr_underlyingProduct;
+  SKProduct *product = self.productDictionary[productIdentifier].underlyingProduct;
   @weakify(self);
   return [[[[[[self.storeKitFacade purchaseProduct:product]
       filter:^BOOL(SKPaymentTransaction *transaction) {

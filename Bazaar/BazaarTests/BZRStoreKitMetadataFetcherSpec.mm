@@ -6,7 +6,7 @@
 #import <LTKit/NSArray+Functional.h>
 
 #import "BZREvent.h"
-#import "BZRProduct+SKProduct.h"
+#import "BZRProduct+StoreKit.h"
 #import "BZRProductPriceInfo.h"
 #import "BZRStoreKitFacade.h"
 #import "BZRTestUtils.h"
@@ -176,7 +176,7 @@ context(@"getting product list", ^{
       expect(recorder).will.matchValue(0, ^BOOL(NSSet<BZRProduct *> *productList) {
         return [productList.allObjects lt_filter:^BOOL(BZRProduct *product) {
           return [product.identifier isEqualToString:@"bar"];
-        }].firstObject.bzr_underlyingProduct == discountedUnderlyingProduct;
+        }].firstObject.underlyingProduct == discountedUnderlyingProduct;
       });
     });
   });

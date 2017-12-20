@@ -1,11 +1,11 @@
 // Copyright (c) 2016 Lightricks. All rights reserved.
 // Created by Ben Yohay.
 
-#import "BZRProductPriceInfo+SKProduct.h"
+#import "BZRProductPriceInfo+StoreKit.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@implementation BZRProductPriceInfo (SKProduct)
+@implementation BZRProductPriceInfo (StoreKit)
 
 + (instancetype)productPriceInfoWithSKProduct:(SKProduct *)product {
   NSDictionary *dictionaryValue = @{
@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
     @instanceKeypath(BZRProductPriceInfo, localeIdentifier):
         [product.priceLocale objectForKey:NSLocaleIdentifier]
   };
-  return [BZRProductPriceInfo modelWithDictionary:dictionaryValue error:nil];
+  return lt::nn([BZRProductPriceInfo modelWithDictionary:dictionaryValue error:nil]);
 }
 
 @end
