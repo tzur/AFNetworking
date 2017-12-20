@@ -18,6 +18,10 @@ PHAssetCollection *PTNPhotoKitCreateAssetCollection(NSString * _Nullable localId
 /// If a \c nil \c localIdentifier is passed the asset's \c localIdentifier property will be \c nil.
 PHAsset *PTNPhotoKitCreateAsset(NSString * _Nullable localIdentifier);
 
+/// Creates a fake PhotoKit asset with \c localIdentifier for the \c localIdentifier property and
+/// \c traits as the \c descriptorTraits property.
+PHAsset *PTNPhotoKitCreateAsset(NSString * _Nullable localIdentifier, NSArray<NSString *> *traits);
+
 /// Creates a fake PhotoKit asset with \c pixelWidth and \c pixelHeight properties as specified by
 /// \c size.
 PHAsset *PTNPhotoKitCreateAsset(NSString * _Nullable localIdentifier, CGSize size);

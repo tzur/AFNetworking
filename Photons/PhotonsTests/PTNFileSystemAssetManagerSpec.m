@@ -195,7 +195,8 @@ context(@"image fetching", ^{
   beforeEach(^{
     resizingStrategy = [PTNResizingStrategy identity];
     options = [PTNImageFetchOptions optionsWithDeliveryMode:PTNImageDeliveryModeFast
-                                                 resizeMode:PTNImageResizeModeFast];
+                                                 resizeMode:PTNImageResizeModeFast
+                                            includeMetadata:NO];
     imageAsset = [[PTNFileBackedImageAsset alloc] initWithFilePath:[LTPath pathWithPath:@"foo.jpg"]
                                                        fileManager:fileManager
                                                       imageResizer:imageResizer
@@ -287,7 +288,8 @@ context(@"image fetching", ^{
     id<PTNResizingStrategy> resizing = [PTNResizingStrategy identity];
     PTNImageFetchOptions *imageOptions =
         [PTNImageFetchOptions optionsWithDeliveryMode:PTNImageDeliveryModeHighQuality
-                                           resizeMode:PTNImageResizeModeFast];
+                                           resizeMode:PTNImageResizeModeFast
+                                      includeMetadata:NO];
 
     RACSignal *values = [manager fetchImageWithDescriptor:descriptor resizingStrategy:resizing
                                                   options:imageOptions];

@@ -319,7 +319,8 @@ context(@"fetching", ^{
     beforeEach(^{
       resizeStrategy = [PTNResizingStrategy identity];
       options = [PTNImageFetchOptions optionsWithDeliveryMode:PTNImageDeliveryModeFast
-                                                   resizeMode:PTNImageResizeModeFast];
+                                                   resizeMode:PTNImageResizeModeFast
+                                              includeMetadata:NO];
       auto image = [[UIImage alloc] init];
       imageAsset = [[PTNStaticImageAsset alloc] initWithImage:image];
       artwork = [[MPMediaItemArtwork alloc] initWithImage:image];

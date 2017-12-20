@@ -27,7 +27,8 @@ beforeEach(^{
   assetManager = [[PTNFakeAssetManager alloc] init];
   url = [NSURL URLWithString:@"http://www.foo.com"];
   options = [PTNImageFetchOptions optionsWithDeliveryMode:PTNImageDeliveryModeHighQuality
-                                               resizeMode:PTNImageResizeModeExact];
+                                               resizeMode:PTNImageResizeModeExact
+                                          includeMetadata:NO];
   cellSize = CGSizeMake(10, 10);
 });
 
