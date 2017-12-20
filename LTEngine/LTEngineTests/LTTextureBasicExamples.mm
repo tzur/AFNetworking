@@ -428,12 +428,10 @@ sharedExamplesFor(kLTTextureBasicExamples, ^(NSDictionary *data) {
         expect(other.fillColor.isNull()).to.beTruthy();
       });
 
-      it(@"should use clearColor when cloning a texture with fill color", ^{
+      it(@"should set the fill color when cloning a texture with fill color", ^{
         [texture clearColor:LTVector4::ones()];
         LTTexture *other = [[[texture class] alloc] initWithPropertiesOf:texture];
-        id mock = OCMPartialMock(other);
         [texture cloneTo:other];
-        OCMVerify([mock clearColor:LTVector4::ones()]);
         expect(other.fillColor).to.equal(texture.fillColor);
       });
     });

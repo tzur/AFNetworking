@@ -3,6 +3,8 @@
 
 #import <LTKit/LTTypedefs.h>
 
+@class LTGLContext;
+
 @protocol LTGPUResource <NSObject>
 
 /// Binds the active context to the resource. Does nothing if the resource is already bound. Once
@@ -43,5 +45,11 @@
 
 /// OpenGL name of the resource.
 @property (readonly, nonatomic) GLuint name;
+
+/// The context that was used to create this resource.
+///
+/// @note \c context is held strongly by the resource, which prevents it from being deallocated
+/// while the resource is still alive.
+@property (readonly, nonatomic) LTGLContext *context;
 
 @end

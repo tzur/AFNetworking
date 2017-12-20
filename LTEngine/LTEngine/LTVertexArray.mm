@@ -4,7 +4,8 @@
 #import "LTVertexArray.h"
 
 #import "LTArrayBuffer.h"
-#import "LTGLContext.h"
+#import "LTGLContext+Internal.h"
+#import "LTGPUResourceProxy.h"
 #import "LTGPUStruct.h"
 #import "LTProgram.h"
 
@@ -80,6 +81,8 @@
 
 @implementation LTVertexArray
 
+@synthesize context = _context;
+
 #pragma mark -
 #pragma mark Initialization and destruction
 #pragma mark -
@@ -87,19 +90,23 @@
 - (instancetype)initWithElements:(NSSet<LTVertexArrayElement *> *)elements {
   LTParameterAssert(elements.count,
                     @"Given vertex array element set must contain at least one element");
-
+  LTGPUResourceProxy * _Nullable proxy = nil;
   if (self = [super init]) {
+    _context = [LTGLContext currentContext];
+
     [self validateElements:elements];
     [self setupWithElements:elements];
 
-    [[LTGLContext currentContext] executeForOpenGLES2:^{
+    [self.context executeForOpenGLES2:^{
       glGenVertexArraysOES(1, &_name);
     } openGLES3:^{
       glGenVertexArrays(1, &_name);
     }];
     LTGLCheck(@"Failed generating vertex array");
+    proxy = [[LTGPUResourceProxy alloc] initWithResource:self];
+    [self.context addResource:nn((typeof(self))proxy)];
   }
-  return self;
+  return (typeof(self))proxy;
 }
 
 - (void)dealloc {
@@ -107,12 +114,13 @@
 }
 
 - (void)dispose {
-  if (!self.name) {
+  if (!self.name || !self.context) {
     return;
   }
 
+  [self.context removeResource:self];
   [self unbind];
-  [[LTGLContext currentContext] executeForOpenGLES2:^{
+  [self.context executeForOpenGLES2:^{
     glDeleteVertexArraysOES(1, &_name);
   } openGLES3:^{
     glDeleteVertexArrays(1, &_name);
@@ -172,7 +180,7 @@
     return;
   }
 
-  [[LTGLContext currentContext] executeForOpenGLES2:^{
+  [self.context executeForOpenGLES2:^{
     glGetIntegerv(GL_VERTEX_ARRAY_BINDING_OES, &_previousVertexArray);
     glBindVertexArrayOES(self.name);
   } openGLES3:^{
@@ -188,7 +196,7 @@
     return;
   }
 
-  [[LTGLContext currentContext] executeForOpenGLES2:^{
+  [self.context executeForOpenGLES2:^{
     glBindVertexArrayOES(self.previousVertexArray);
   } openGLES3:^{
     glBindVertexArray(self.previousVertexArray);

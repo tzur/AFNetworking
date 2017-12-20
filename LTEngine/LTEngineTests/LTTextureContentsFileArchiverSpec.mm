@@ -102,12 +102,6 @@ context(@"half float textures", ^{
     cv::Rect subrect(1, 1, 2, 2);
     image.copyTo(bigImage(subrect));
     expect(bigImage(subrect).isContinuous()).to.beFalsy();
-    id mock = OCMPartialMock(texture);
-    OCMStub([mock mappedImageForReading:[OCMArg any]]).andDo(^(NSInvocation *invocation) {
-      LTTextureMappedReadBlock passedBlock;
-      [invocation getArgument:&passedBlock atIndex:2];
-      passedBlock(bigImage(subrect), NO);
-    });
 
     OCMExpect([fileManager lt_writeData:[OCMArg checkWithBlock:^BOOL(NSData *data) {
       cv::Mat mat(image.rows, image.cols, image.type(), const_cast<void *>(data.bytes));

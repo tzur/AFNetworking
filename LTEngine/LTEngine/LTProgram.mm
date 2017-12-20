@@ -6,8 +6,9 @@
 #import <LTKit/NSString+Hashing.h>
 #import <numeric>
 
-#import "LTGLContext.h"
+#import "LTGLContext+Internal.h"
 #import "LTGLException.h"
+#import "LTGPUResourceProxy.h"
 #import "LTProgramPool.h"
 #import "LTShader.h"
 
@@ -67,6 +68,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation LTProgram
 
+@synthesize context = _context;
 @synthesize name = _name;
 
 #pragma mark -
@@ -75,10 +77,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithVertexSource:(NSString *)vertexSource
                       fragmentSource:(NSString *)fragmentSource {
+  LTGPUResourceProxy * _Nullable proxy = nil;
   if (self = [super init]) {
+    _context = [LTGLContext currentContext];
     _sourceIdentifier = [[vertexSource lt_SHA1] stringByAppendingString:[fragmentSource lt_SHA1]];
-
-    _name = [[LTGLContext currentContext].programPool nameForIdentifier:self.sourceIdentifier];
+    _name = [self.context.programPool nameForIdentifier:self.sourceIdentifier];
 
     if (![self isProgramLinked]) {
       [self linkWithVertexSource:vertexSource fragmentSource:fragmentSource];
@@ -89,8 +92,10 @@ NS_ASSUME_NONNULL_BEGIN
       [self extractAttributesFromProgram];
       [self resetState];
     }
+    proxy = [[LTGPUResourceProxy alloc] initWithResource:self];
+    [self.context addResource:nn((typeof(self))proxy)];
   }
-  return self;
+  return (typeof(self))proxy;
 }
 
 - (void)dealloc {
@@ -98,13 +103,13 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)dispose {
-  if (!self.name) {
+  if (!self.name || !self.context) {
     return;
   }
 
+  [self.context removeResource:self];
   [self unbind];
-  [[LTGLContext currentContext].programPool recycleName:self.name
-                                         withIdentifier:self.sourceIdentifier];
+  [self.context.programPool recycleName:self.name withIdentifier:self.sourceIdentifier];
   _name = 0;
 }
 

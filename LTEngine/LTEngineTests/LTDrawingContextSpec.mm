@@ -102,7 +102,6 @@ sharedExamplesFor(kLTDrawingContextExamples, ^(NSDictionary *contextInfo) {
 
       program = [[LTProgram alloc] initWithVertexSource:[PassthroughVsh source]
                                          fragmentSource:[TwoInputTexturesFsh source]];
-      programMock = [OCMockObject partialMockForObject:program];
 
       NSDictionary *uniformMap = @{[TwoInputTexturesFsh textureA]: textureA,
                                    [TwoInputTexturesFsh textureB]: textureB};
@@ -122,19 +121,26 @@ sharedExamplesFor(kLTDrawingContextExamples, ^(NSDictionary *contextInfo) {
       it(@"should set unique texture unit values as shader uniforms", ^{
         // Record used indices when setting sampler index.
         __block NSMutableArray *usedIndices = [NSMutableArray array];
-        id valueCheck = [OCMArg checkWithBlock:^BOOL(NSNumber *number) {
+
+        LTProgram *programMock = OCMClassMock([LTProgram class]);
+        OCMStub([programMock bindAndExecute:[OCMArg invokeBlock]]);
+        OCMStub([programMock setObject:[OCMArg checkWithBlock:^BOOL(NSNumber *number) {
           [usedIndices addObject:number];
           return YES;
-        }];
+        }] forKeyedSubscript:OCMOCK_ANY]);
+        auto uniforms = [NSSet setWithArray:@[@"textureA", @"textureB"]];
+        OCMStub([programMock uniforms]).andReturn(uniforms);
 
-        [[programMock expect] setObject:valueCheck forKeyedSubscript:[OCMArg any]];
-        [[programMock expect] setObject:valueCheck forKeyedSubscript:[OCMArg any]];
+        drawingContext = [[LTDrawingContext alloc] initWithProgram:programMock
+                                                       vertexArray:vertexArray
+                                                  uniformToTexture:@{
+          [TwoInputTexturesFsh textureA]: textureA,
+          [TwoInputTexturesFsh textureB]: textureB
+        }];
 
         [fbo bindAndDraw:^{
           [drawingContext drawWithMode:LTDrawingContextDrawModeTriangles];
         }];
-
-        OCMVerifyAll(programMock);
 
         // Verify given indices are unique.
         expect(usedIndices.count).to.equal([NSSet setWithArray:usedIndices].count);
@@ -199,19 +205,30 @@ sharedExamplesFor(kLTDrawingContextExamples, ^(NSDictionary *contextInfo) {
       it(@"should set unique texture unit values as shader uniforms", ^{
         // Record used indices when setting sampler index.
         __block NSMutableArray *usedIndices = [NSMutableArray array];
-        id valueCheck = [OCMArg checkWithBlock:^BOOL(NSNumber *number) {
+
+        LTProgram *programMock = OCMClassMock([LTProgram class]);
+        OCMStub([programMock bindAndExecute:OCMOCK_ANY]).andDo(^(NSInvocation *invocation) {
+          LTVoidBlock block;
+          [invocation getArgument:&block atIndex:2];
+          block();
+        });
+        OCMStub([programMock setObject:[OCMArg checkWithBlock:^BOOL(NSNumber *number) {
           [usedIndices addObject:number];
           return YES;
-        }];
+        }] forKeyedSubscript:OCMOCK_ANY]);
+        auto uniforms = [NSSet setWithArray:@[@"textureA", @"textureB"]];
+        OCMStub([programMock uniforms]).andReturn(uniforms);
 
-        [[programMock expect] setObject:valueCheck forKeyedSubscript:[OCMArg any]];
-        [[programMock expect] setObject:valueCheck forKeyedSubscript:[OCMArg any]];
+        drawingContext = [[LTDrawingContext alloc] initWithProgram:programMock
+                                                       vertexArray:vertexArray
+                                                  uniformToTexture:@{
+          [TwoInputTexturesFsh textureA]: textureA,
+          [TwoInputTexturesFsh textureB]: textureB
+        }];
 
         [fbo bindAndDraw:^{
           [drawingContext drawElements:indicesArray withMode:LTDrawingContextDrawModeTriangles];
         }];
-
-        OCMVerifyAll(programMock);
 
         // Verify given indices are unique.
         expect(usedIndices.count).to.equal([NSSet setWithArray:usedIndices].count);
