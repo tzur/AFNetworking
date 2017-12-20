@@ -43,7 +43,7 @@ objection_register_singleton([LTGPUQueue class]);
 - (instancetype)initWithSharedContext:(LTGLContext *)context {
   if (self = [super init]) {
     [self createQueues];
-    [self createOpenGLContextWithSharegroup:context.context.sharegroup];
+    [self createOpenGLContextWithSharegroup:context.context.sharegroup queue:self.lowPriorityQueue];
 
     self.completionQueue = dispatch_get_main_queue();
     self.failureQueue = dispatch_get_main_queue();
@@ -72,8 +72,9 @@ objection_register_singleton([LTGPUQueue class]);
                               (__bridge void *)(self), NULL);
 }
 
-- (void)createOpenGLContextWithSharegroup:(EAGLSharegroup *)sharegroup {
-  self.context = [[LTGLContext alloc] initWithSharegroup:sharegroup];
+- (void)createOpenGLContextWithSharegroup:(EAGLSharegroup *)sharegroup
+                                    queue:(dispatch_queue_t)queue {
+  self.context = [[LTGLContext alloc] initWithSharegroup:sharegroup targetQueue:queue];
   if (!self.context) {
     [LTGLException raise:kLTGPUQueueContextCreationFailedException
                   format:@"Failed creating OpenGL ES context"];
