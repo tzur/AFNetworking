@@ -6,6 +6,7 @@
 #import <stack>
 
 #import "LTFboPool.h"
+#import "LTGPUResource.h"
 #import "LTProgramPool.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -91,6 +92,19 @@ typedef struct {
 /// Maximum number of color attachments that can be used on the device's GPU.
 @property (readwrite, nonatomic) GLint maxNumberOfColorAttachmentPoints;
 
+/// Maps between resource's name, prepended with resources's \c Class, and its associated
+/// \c LTGPUResource, which is held weakly.
+///
+/// @note key construction guarantees unique keys for two resources of different type with same
+/// \c name.
+///
+/// @note table's entry management is being done manually, since it has many subtleties as explaned
+/// http://cocoamine.net/blog/2013/12/13/nsmaptable-and-zeroing-weak-references/
+@property (strong, nonatomic) NSMapTable<NSString *, id<LTGPUResource>> *nameToResource;
+
+/// Serial queue which feeds the \c targetQueue with tasks executed by this context.
+@property (strong, nonatomic) dispatch_queue_t serialQueue;
+
 @end
 
 @implementation LTGLContext
@@ -104,33 +118,50 @@ typedef struct {
 }
 
 - (instancetype)initWithSharegroup:(nullable EAGLSharegroup *)sharegroup {
-  if (self = [super init]) {
-    [self setupWithSharegroup:sharegroup versions:@[@(LTGLVersion3), @(LTGLVersion2)]];
-  }
-  return self;
+  return [self initWithSharegroup:sharegroup versions:@[@(LTGLVersion3), @(LTGLVersion2)]
+                      targetQueue:dispatch_get_main_queue()];
+}
+
+- (instancetype)initWithSharegroup:(nullable EAGLSharegroup *)sharegroup
+                       targetQueue:(dispatch_queue_t)targetQueue {
+  return [self initWithSharegroup:sharegroup versions:@[@(LTGLVersion3), @(LTGLVersion2)]
+                      targetQueue:targetQueue];
 }
 
 - (instancetype)initWithSharegroup:(nullable EAGLSharegroup *)sharegroup
                            version:(LTGLVersion)version {
+  return [self initWithSharegroup:sharegroup versions:@[@(version)]
+                      targetQueue:dispatch_get_main_queue()];
+}
+
+- (instancetype)initWithSharegroup:(nullable EAGLSharegroup *)sharegroup
+                          versions:(NSArray<NSNumber *> *)versions
+                       targetQueue:(dispatch_queue_t)targetQueue {
   if (self = [super init]) {
-    [self setupWithSharegroup:sharegroup versions:@[@(version)]];
+    for (NSNumber *version in versions) {
+      EAGLRenderingAPI api = (EAGLRenderingAPI)version.unsignedIntegerValue;
+      _context = [[EAGLContext alloc] initWithAPI:api sharegroup:sharegroup];
+      if (_context) {
+        break;
+      }
+    }
+    LTAssert(self.context, @"EAGLContext creation with sharegroup %@ failed", sharegroup);
+
+    _fboPool = [[LTFboPool alloc] init];
+    _programPool = [[LTProgramPool alloc] init];
+    _nameToResource = [NSMapTable strongToWeakObjectsMapTable];
+    [self setupQueuesWithTargetQueue:targetQueue];
   }
   return self;
 }
 
-- (void)setupWithSharegroup:(nullable EAGLSharegroup *)sharegroup
-                   versions:(NSArray<NSNumber *> *)versions {
-  for (NSNumber *version in versions) {
-    EAGLRenderingAPI api = (EAGLRenderingAPI)version.unsignedIntegerValue;
-    _context = [[EAGLContext alloc] initWithAPI:api sharegroup:sharegroup];
-    if (_context) {
-      break;
-    }
-  }
-  LTAssert(self.context, @"EAGLContext creation with sharegroup %@ failed", sharegroup);
-
-  _fboPool = [[LTFboPool alloc] init];
-  _programPool = [[LTProgramPool alloc] init];
+- (void)setupQueuesWithTargetQueue:(dispatch_queue_t)targetQueue {
+  _targetQueue = targetQueue;
+  _serialQueue = dispatch_queue_create("com.lightricks.LTEngine.LTGLContext-serialQueue",
+                                       DISPATCH_QUEUE_SERIAL);
+  // Set specific key-value for _targetQueue to allow querying whether running on it.
+  dispatch_queue_set_specific(_targetQueue, (__bridge void *)self, (__bridge void *)self, NULL);
+  dispatch_set_target_queue(_serialQueue, _targetQueue);
 }
 
 - (void)dealloc {
@@ -138,6 +169,30 @@ typedef struct {
   [EAGLContext setCurrentContext:self.context];
   [self.programPool flush];
   [EAGLContext setCurrentContext:currentContext];
+}
+
+#pragma mark -
+#pragma mark Resource management
+#pragma mark -
+
+- (void)addResource:(id<LTGPUResource>)resource {
+  [self.nameToResource setObject:resource forKey:[self keyFromResource:resource]];
+}
+
+- (void)removeResource:(id<LTGPUResource>)resource {
+  [self.nameToResource removeObjectForKey:[self keyFromResource:resource]];
+}
+
+- (NSArray<id<LTGPUResource>> *)resources {
+  auto resources = [NSMutableArray arrayWithCapacity:self.nameToResource.count];
+  for (NSString *key in self.nameToResource) {
+    [resources addObject:[self.nameToResource objectForKey:key]];
+  }
+  return [resources copy];
+}
+
+- (NSString *)keyFromResource:(id<LTGPUResource>)resource {
+  return [NSString stringWithFormat:@"%@%d", [resource class], resource.name];
 }
 
 #pragma mark -
@@ -323,6 +378,36 @@ typedef struct {
     case LTGLVersion3:
       openGLES3();
       break;
+  }
+}
+
+- (void)executeAsyncBlock:(LTVoidBlock)block {
+  if ([self isOnContextQueue]) {
+    [self switchContextIfNeededAndExecuteAsyncBlock:block];
+  } else {
+    dispatch_async(self.serialQueue, ^{
+      [self switchContextIfNeededAndExecuteAsyncBlock:block];
+    });
+  }
+}
+
+- (BOOL)isOnContextQueue {
+  return dispatch_get_specific((__bridge void *)self) == (__bridge void * _Nullable)self;
+}
+
+- (void)switchContextIfNeededAndExecuteAsyncBlock:(LTVoidBlock)block {
+  LTGLContext * _Nullable previousContext = nil;
+  BOOL restorePrevious = NO;
+  if (![self isSetAsCurrentContext]) {
+    previousContext = [LTGLContext currentContext];
+    [LTGLContext setCurrentContext:self];
+    restorePrevious = YES;
+  }
+
+  block();
+
+  if (restorePrevious) {
+    [LTGLContext setCurrentContext:previousContext];
   }
 }
 
@@ -524,6 +609,28 @@ typedef struct {
 - (void)assertContextIsCurrentContext {
   LTAssert([self isSetAsCurrentContext],
            @"Trying to modify context while not set as current context");
+}
+
+#pragma mark -
+#pragma mark NSObject
+#pragma mark -
+
+- (NSString *)description {
+  auto description = [NSString stringWithFormat:@"%@: %p, resourceCount: %lu",
+                      [self class], self, (unsigned long)self.nameToResource.count];
+
+  if (self.nameToResource.count) {
+    description = [NSString stringWithFormat:@"%@, resources:\n ", description];
+    auto resourcesDescription = [NSMutableArray<NSString *> array];
+    for (NSString *name in self.nameToResource) {
+      id<LTGPUResource> resource = [self.nameToResource objectForKey:name];
+      [resourcesDescription addObject:[NSString stringWithFormat:@"%@: %@", name, resource]];
+    }
+    description = [NSString stringWithFormat:@"%@%@", description,
+                   [resourcesDescription componentsJoinedByString:@",\n "]];
+  }
+
+  return [NSString stringWithFormat:@"<%@>", description];
 }
 
 #pragma mark -

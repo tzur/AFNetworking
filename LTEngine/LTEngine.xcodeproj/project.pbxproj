@@ -777,6 +777,7 @@
 		656155BB1D464A65009E701C /* libSpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 656155B41D4649F9009E701C /* libSpecta.a */; };
 		656155C41D464B6D009E701C /* Mantle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B0B9A4F1CA6C10B00ED2334 /* Mantle.framework */; };
 		658788A61AC196F4007EDF71 /* LTSeparableImageProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 658788A51AC196F4007EDF71 /* LTSeparableImageProcessorSpec.mm */; };
+		6A27EA37F78FEF9B801B5232 /* LTGLContext+Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = 6A27EDB2B50BEB752E17EEE0 /* LTGLContext+Internal.h */; };
 		6A4444721B4AC5E200B9C710 /* LTFboPoolSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6A4444711B4AC5E200B9C710 /* LTFboPoolSpec.mm */; };
 		6A62051D1F4E28CD00EE503D /* TiledNoise.png in Resources */ = {isa = PBXBuildFile; fileRef = 03C7B71018D0579000E728F5 /* TiledNoise.png */; };
 		6AB548C01C81F99700672127 /* CVPixelBuffer+LTEngine.h in Headers */ = {isa = PBXBuildFile; fileRef = 6AB548BE1C81F99700672127 /* CVPixelBuffer+LTEngine.h */; };
@@ -1239,6 +1240,7 @@
 		B434CE1E1F5E676E000D1A6B /* LTPhotoLibraryImageCompressor.h in Headers */ = {isa = PBXBuildFile; fileRef = B434CE1C1F5E676E000D1A6B /* LTPhotoLibraryImageCompressor.h */; };
 		B434CE1F1F5E676E000D1A6B /* LTPhotoLibraryImageCompressor.mm in Sources */ = {isa = PBXBuildFile; fileRef = B434CE1D1F5E676E000D1A6B /* LTPhotoLibraryImageCompressor.mm */; };
 		B434CE991F5E7EC2000D1A6B /* LTPhotoLibraryImageCompressorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = B434CE981F5E7EC2000D1A6B /* LTPhotoLibraryImageCompressorSpec.mm */; };
+		B44241E51EA78FC4000BFC22 /* LTGLContext+InternalSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = B44241E41EA78FC4000BFC22 /* LTGLContext+InternalSpec.mm */; };
 		B467099F1E07F57F000CD9F5 /* LTFboAttachmentInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = B467099D1E07F57F000CD9F5 /* LTFboAttachmentInfo.h */; };
 		B46709A01E07F57F000CD9F5 /* LTFboAttachmentInfo.mm in Sources */ = {isa = PBXBuildFile; fileRef = B467099E1E07F57F000CD9F5 /* LTFboAttachmentInfo.mm */; };
 		B4755A981E76A51B0018FF0A /* IndexedColor.png in Resources */ = {isa = PBXBuildFile; fileRef = B4755A971E76A51B0018FF0A /* IndexedColor.png */; };
@@ -2616,6 +2618,7 @@
 		656155B71D464A28009E701C /* opencv2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = opencv2.framework; path = ../third_party/opencv/opencv2.framework; sourceTree = "<group>"; };
 		656155BC1D464B4B009E701C /* TestHost.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TestHost.xcodeproj; path = ../../TestHost/TestHost.xcodeproj; sourceTree = "<group>"; };
 		658788A51AC196F4007EDF71 /* LTSeparableImageProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTSeparableImageProcessorSpec.mm; sourceTree = "<group>"; };
+		6A27EDB2B50BEB752E17EEE0 /* LTGLContext+Internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "LTGLContext+Internal.h"; sourceTree = "<group>"; };
 		6A4444711B4AC5E200B9C710 /* LTFboPoolSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTFboPoolSpec.mm; sourceTree = "<group>"; };
 		6AB548BE1C81F99700672127 /* CVPixelBuffer+LTEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CVPixelBuffer+LTEngine.h"; sourceTree = "<group>"; };
 		6AB548BF1C81F99700672127 /* CVPixelBuffer+LTEngine.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "CVPixelBuffer+LTEngine.mm"; sourceTree = "<group>"; };
@@ -3068,6 +3071,7 @@
 		B434CE1C1F5E676E000D1A6B /* LTPhotoLibraryImageCompressor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTPhotoLibraryImageCompressor.h; sourceTree = "<group>"; };
 		B434CE1D1F5E676E000D1A6B /* LTPhotoLibraryImageCompressor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTPhotoLibraryImageCompressor.mm; sourceTree = "<group>"; };
 		B434CE981F5E7EC2000D1A6B /* LTPhotoLibraryImageCompressorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTPhotoLibraryImageCompressorSpec.mm; sourceTree = "<group>"; };
+		B44241E41EA78FC4000BFC22 /* LTGLContext+InternalSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "LTGLContext+InternalSpec.mm"; sourceTree = "<group>"; };
 		B467099D1E07F57F000CD9F5 /* LTFboAttachmentInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTFboAttachmentInfo.h; sourceTree = "<group>"; };
 		B467099E1E07F57F000CD9F5 /* LTFboAttachmentInfo.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTFboAttachmentInfo.mm; sourceTree = "<group>"; };
 		B4755A971E76A51B0018FF0A /* IndexedColor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = IndexedColor.png; path = Resources/IndexedColor.png; sourceTree = "<group>"; };
@@ -5261,6 +5265,7 @@
 				8BA3E140182A707200FDD95A /* LTGLCheck.h */,
 				8B8E51031861F54600821829 /* LTGLContext.h */,
 				8B8E51041861F54600821829 /* LTGLContext.mm */,
+				6A27EDB2B50BEB752E17EEE0 /* LTGLContext+Internal.h */,
 				8BC87E5E1C21D25D0061BD00 /* LTGLEnums.h */,
 				8BCA66F3182FB5E2003FCB65 /* LTGLException.h */,
 				8BCA66F4182FB5E2003FCB65 /* LTGLException.m */,
@@ -5334,6 +5339,7 @@
 				B4F1DEB11E2CB3430042DB2A /* LTFboAttachableInfoSpec.mm */,
 				6A4444711B4AC5E200B9C710 /* LTFboPoolSpec.mm */,
 				288AB4021835203300A11FA4 /* LTFboSpec.mm */,
+				B44241E41EA78FC4000BFC22 /* LTGLContext+InternalSpec.mm */,
 				8B8E510D1863216E00821829 /* LTGLContextSpec.mm */,
 				8BC87EAE1C22CD3C0061BD00 /* LTGLPixelFormatSpec.mm */,
 				8B5A0E05189AA91C0098399C /* LTGLTextureSpec.mm */,
@@ -6080,6 +6086,7 @@
 				285A671B19AE313400B2CE9E /* LTReshapeProcessor.h in Headers */,
 				509CE8A51D325C5000D496D6 /* LTSplineControlPoint+ContentTouchEvent.h in Headers */,
 				8B539FF41B4A882600036743 /* LTFboPool.h in Headers */,
+				6A27EA37F78FEF9B801B5232 /* LTGLContext+Internal.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7371,6 +7378,7 @@
 				28E8AF141997B5FB00C2DD22 /* LTCropDrawerSpec.mm in Sources */,
 				855988611CE31D4200EC4648 /* LTTextureAtlasSpec.mm in Sources */,
 				50D6724F1D26B84A00005CC7 /* LTContentCoordinateConverterSpec.mm in Sources */,
+				B44241E51EA78FC4000BFC22 /* LTGLContext+InternalSpec.mm in Sources */,
 				28ED111018CDCF5A00EE1633 /* LTBristleBrushSpec.mm in Sources */,
 				8527B54D1CF45F48009CA3BB /* LTChannelsPackingProcessorSpec.mm in Sources */,
 				28FC0E7F1D2AAEC100237FF8 /* LTContentTouchEventDistancePredicateSpec.mm in Sources */,
