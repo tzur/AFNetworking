@@ -10,9 +10,15 @@ NS_ASSUME_NONNULL_BEGIN
 + (nullable NSURL *)tin_messageDirectoryURLWithAppGroup:(NSString *)appGroupID
                                                  scheme:(NSString *)scheme
                                              identifier:(NSUUID *)identifier {
-  auto sharedDirectory = [self tin_appGroupDirectoryURL:appGroupID];
-  auto schemeDirectory = [sharedDirectory URLByAppendingPathComponent:scheme isDirectory:YES];
+  auto _Nullable schemeDirectory = [NSURL tin_messagesDirectoryURLWithAppGroup:appGroupID
+                                                                        scheme:scheme];
   return [schemeDirectory URLByAppendingPathComponent:identifier.UUIDString isDirectory:YES];
+}
+
++ (nullable NSURL *)tin_messagesDirectoryURLWithAppGroup:(NSString *)appGroupID
+                                                  scheme:(NSString *)scheme {
+  auto _Nullable sharedDirectory = [self tin_appGroupDirectoryURL:appGroupID];
+  return [sharedDirectory URLByAppendingPathComponent:scheme isDirectory:YES];
 }
 
 + (nullable NSURL *)tin_appGroupDirectoryURL:(NSString *)appGroupID {

@@ -13,6 +13,12 @@ NS_ASSUME_NONNULL_BEGIN
                                                  scheme:(NSString *)scheme
                                              identifier:(NSUUID *)identifier;
 
+/// Returns a URL of a directory designated for all messages with the given \c appGroupID and
+/// \c scheme. Returns \c nil if this application doesn't have a valid application group set in the
+/// application's entitlements.
++ (nullable NSURL *)tin_messagesDirectoryURLWithAppGroup:(NSString *)appGroupID
+                                                  scheme:(NSString *)scheme;
+
 /// Returns a URL of a directory for the given \c appGroupID. This directory is shared among all the
 /// application with the same \c appGroupID. Returns \c nil if this application doesn't have a valid
 /// application group set in the application's entitlements.
