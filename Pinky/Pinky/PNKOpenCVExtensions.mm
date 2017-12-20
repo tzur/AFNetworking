@@ -55,18 +55,40 @@ cv::Mat PNKMatFromMTLTextureRegion(id<MTLTexture> texture, MTLRegion region, NSU
   LTParameterAssert(pixelFormat != kMTLPixelFormatToMatInfo.end(),
                     @"Pixel format type is not supported: %lu",
                     (unsigned long)texture.pixelFormat);
+  cv::Mat output((int)region.size.height, (int)region.size.width, pixelFormat->second);
+  PNKCopyMTLTextureRegionToMat(texture, region, slice, 0, &output);
+  return output;
+}
+
+void PNKCopyMTLTextureToMat(id<MTLTexture> texture, NSUInteger slice, NSUInteger mipmapLevel,
+                            cv::Mat *mat) {
+  auto region = MTLRegionMake2D(0, 0, texture.width, texture.height);
+  PNKCopyMTLTextureRegionToMat(texture, region, slice, mipmapLevel, mat);
+}
+
+void PNKCopyMTLTextureRegionToMat(id<MTLTexture> texture, MTLRegion region, NSUInteger slice,
+                                  NSUInteger mipmapLevel, cv::Mat *mat) {
+  auto pixelFormat = kMTLPixelFormatToMatInfo.find(texture.pixelFormat);
+  LTParameterAssert(pixelFormat != kMTLPixelFormatToMatInfo.end(),
+                    @"Pixel format type is not supported: %lu",
+                    (unsigned long)texture.pixelFormat);
   LTParameterAssert(slice < texture.arrayLength,
                     @"Slice must be smaller than the texture's arrayLength (%lu), got: %lu",
                     (unsigned long)texture.arrayLength, (unsigned long)slice);
 
   auto matType = pixelFormat->second;
-  auto targetSize = CGSizeMake(region.size.width, region.size.height);
-  auto targetBytesPerRow = targetSize.width * CV_MAT_CN(matType) * CV_ELEM_SIZE1(matType);
+  LTParameterAssert(mat, @"Mat parameter must be non-null");
+  LTParameterAssert(matType == mat->type(), @"matrix must be of type %d - got %d", matType,
+                    mat->type());
+  LTParameterAssert((int)region.size.width == mat->cols, @"Matrix must have %d columns - got %d",
+                    (int)region.size.width, mat->cols);
+  LTParameterAssert((int)region.size.height == mat->rows, @"Matrix must have %d columns - got %d",
+                    (int)region.size.height, mat->rows);
 
-  cv::Mat output(targetSize.height, targetSize.width, matType);
-  [texture getBytes:output.data bytesPerRow:targetBytesPerRow bytesPerImage:0 fromRegion:region
-        mipmapLevel:0 slice:slice];
-  return output;
+  auto matBytesPerRow = mat->step[0];
+
+  [texture getBytes:mat->data bytesPerRow:matBytesPerRow bytesPerImage:0 fromRegion:region
+        mipmapLevel:mipmapLevel slice:slice];
 }
 
 void PNKCopyMatToMTLTextureRegion(id<MTLTexture> texture, MTLRegion region, const cv::Mat &data,
