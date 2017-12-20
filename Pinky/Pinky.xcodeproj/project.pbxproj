@@ -163,6 +163,9 @@
 		E46994FE1FE690A500B944C9 /* PNKImageBilinearScale.mm in Sources */ = {isa = PBXBuildFile; fileRef = E46994FD1FE690A500B944C9 /* PNKImageBilinearScale.mm */; };
 		E46995211FE698F100B944C9 /* PNKImageBilinearScale.metal in Sources */ = {isa = PBXBuildFile; fileRef = E46995201FE698F100B944C9 /* PNKImageBilinearScale.metal */; };
 		E46995231FE6A8E600B944C9 /* PNKImageBilinearScaleSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = E46995221FE6A8E600B944C9 /* PNKImageBilinearScaleSpec.mm */; };
+		E46A48471FE7DF3200EB0D33 /* PNKPixelBufferUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = E4BAEEB41FE7C985009F594D /* PNKPixelBufferUtils.mm */; };
+		E46A48691FE7DF3600EB0D33 /* PNKSkySegmentationProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 06415FB71FD49A6900F9F70C /* PNKSkySegmentationProcessor.mm */; };
+		E46A486A1FE7DF3B00EB0D33 /* PNKSkySegmentationProcessorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 06415FB11FD49A2400F9F70C /* PNKSkySegmentationProcessorSpec.mm */; };
 		E47248D61FE7A418008E57EE /* ResizeInput.png in Resources */ = {isa = PBXBuildFile; fileRef = E47248D51FE7A418008E57EE /* ResizeInput.png */; };
 		E4786D451FD5499B0057FE03 /* MPSCNNConvolution+FactorySpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = E4786D441FD5499B0057FE03 /* MPSCNNConvolution+FactorySpec.mm */; };
 		E484089E1FCBF98B00468645 /* PNKDilatedConvolutionInternalLayerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = E484089D1FCBF98B00468645 /* PNKDilatedConvolutionInternalLayerSpec.mm */; };
@@ -559,8 +562,11 @@
 		0636A0821F8173F70064E561 /* PNKInstanceNormLayer.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKInstanceNormLayer.mm; sourceTree = "<group>"; };
 		0639ADAE1F03FBC1009CAA3F /* PNKProtobufMacros.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNKProtobufMacros.h; sourceTree = "<group>"; };
 		06415F8C1FD49A1900F9F70C /* PNKSkySegmentationNetworkSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKSkySegmentationNetworkSpec.mm; sourceTree = "<group>"; };
+		06415FB11FD49A2400F9F70C /* PNKSkySegmentationProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKSkySegmentationProcessorSpec.mm; sourceTree = "<group>"; };
 		06415FB31FD49A5C00F9F70C /* PNKSkySegmentationNetwork.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKSkySegmentationNetwork.h; sourceTree = "<group>"; };
 		06415FB41FD49A5C00F9F70C /* PNKSkySegmentationNetwork.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKSkySegmentationNetwork.mm; sourceTree = "<group>"; };
+		06415FB61FD49A6800F9F70C /* PNKSkySegmentationProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKSkySegmentationProcessor.h; sourceTree = "<group>"; };
+		06415FB71FD49A6900F9F70C /* PNKSkySegmentationProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKSkySegmentationProcessor.mm; sourceTree = "<group>"; };
 		064160A01FD57CDD00F9F70C /* PNKPoolingLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKPoolingLayer.h; sourceTree = "<group>"; };
 		064160C21FD57CDD00F9F70C /* PNKPoolingLayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKPoolingLayer.mm; sourceTree = "<group>"; };
 		064160C41FD57CF300F9F70C /* PNKPoolingLayerSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKPoolingLayerSpec.mm; sourceTree = "<group>"; };
@@ -727,6 +733,8 @@
 		E47248D51FE7A418008E57EE /* ResizeInput.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ResizeInput.png; path = Resources/ResizeInput.png; sourceTree = "<group>"; };
 		E4786D441FD5499B0057FE03 /* MPSCNNConvolution+FactorySpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "MPSCNNConvolution+FactorySpec.mm"; sourceTree = "<group>"; };
 		E484089D1FCBF98B00468645 /* PNKDilatedConvolutionInternalLayerSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKDilatedConvolutionInternalLayerSpec.mm; sourceTree = "<group>"; };
+		E4BAEEB31FE7C985009F594D /* PNKPixelBufferUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNKPixelBufferUtils.h; sourceTree = "<group>"; };
+		E4BAEEB41FE7C985009F594D /* PNKPixelBufferUtils.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKPixelBufferUtils.mm; sourceTree = "<group>"; };
 		E4D719311FE145580047E620 /* PNKGather.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNKGather.h; sourceTree = "<group>"; };
 		E4D719321FE145580047E620 /* PNKGather.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKGather.mm; sourceTree = "<group>"; };
 		E4D719551FE148F90047E620 /* PNKGather.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = PNKGather.metal; sourceTree = "<group>"; };
@@ -869,6 +877,25 @@
 			name = Models;
 			sourceTree = "<group>";
 		};
+		061C66371FD7E02800F1BF1B /* Processors */ = {
+			isa = PBXGroup;
+			children = (
+				E4BAEEB31FE7C985009F594D /* PNKPixelBufferUtils.h */,
+				E4BAEEB41FE7C985009F594D /* PNKPixelBufferUtils.mm */,
+				06415FB61FD49A6800F9F70C /* PNKSkySegmentationProcessor.h */,
+				06415FB71FD49A6900F9F70C /* PNKSkySegmentationProcessor.mm */,
+			);
+			name = Processors;
+			sourceTree = "<group>";
+		};
+		061C66381FD7E05600F1BF1B /* Processors */ = {
+			isa = PBXGroup;
+			children = (
+				06415FB11FD49A2400F9F70C /* PNKSkySegmentationProcessorSpec.mm */,
+			);
+			name = Processors;
+			sourceTree = "<group>";
+		};
 		063894FB1EFFE74300329145 /* Test Utils */ = {
 			isa = PBXGroup;
 			children = (
@@ -927,7 +954,7 @@
 			name = Resources;
 			sourceTree = "<group>";
 		};
-		068D90A51F1F5D050012F472 /* Neural Networks */ = {
+		068D90A51F1F5D050012F472 /* Network Layers */ = {
 			isa = PBXGroup;
 			children = (
 				E4786D441FD5499B0057FE03 /* MPSCNNConvolution+FactorySpec.mm */,
@@ -936,9 +963,8 @@
 				E484089D1FCBF98B00468645 /* PNKDilatedConvolutionInternalLayerSpec.mm */,
 				06B924C91F8946D300D07848 /* PNKInstanceNormLayerSpec.mm */,
 				064160C41FD57CF300F9F70C /* PNKPoolingLayerSpec.mm */,
-				06415F8C1FD49A1900F9F70C /* PNKSkySegmentationNetworkSpec.mm */,
 			);
-			name = "Neural Networks";
+			name = "Network Layers";
 			sourceTree = "<group>";
 		};
 		068D90A91F1F7EF50012F472 /* Boxing */ = {
@@ -949,7 +975,7 @@
 			name = Boxing;
 			sourceTree = "<group>";
 		};
-		069225C01F0A611E00F3C8C7 /* Neural Networks */ = {
+		069225C01F0A611E00F3C8C7 /* Network Layers */ = {
 			isa = PBXGroup;
 			children = (
 				06A1A9F21F14F0C60031A387 /* Model */,
@@ -970,13 +996,10 @@
 				0636A0811F8173F70064E561 /* PNKInstanceNormLayer.h */,
 				0636A0821F8173F70064E561 /* PNKInstanceNormLayer.mm */,
 				069225E11F0A615700F3C8C7 /* PNKNeuralKernel.h */,
-				0647450E1FD86FD300BAE7BD /* PNKNeuralNetwork.h */,
 				064160A01FD57CDD00F9F70C /* PNKPoolingLayer.h */,
 				064160C21FD57CDD00F9F70C /* PNKPoolingLayer.mm */,
-				06415FB31FD49A5C00F9F70C /* PNKSkySegmentationNetwork.h */,
-				06415FB41FD49A5C00F9F70C /* PNKSkySegmentationNetwork.mm */,
 			);
-			name = "Neural Networks";
+			name = "Network Layers";
 			sourceTree = "<group>";
 		};
 		06A0A94C1F1B4BD100941045 /* Image Processing */ = {
@@ -1094,7 +1117,9 @@
 				C9815C651EE88730004868CE /* Extensions */,
 				C9791A541F025AE90009E90F /* GPU */,
 				06A0A94C1F1B4BD100941045 /* Image Processing */,
-				068D90A51F1F5D050012F472 /* Neural Networks */,
+				068D90A51F1F5D050012F472 /* Network Layers */,
+				E4BAEEB61FE7D76E009F594D /* Neural Networks */,
+				061C66381FD7E05600F1BF1B /* Processors */,
 			);
 			name = Tests;
 			sourceTree = "<group>";
@@ -1161,7 +1186,9 @@
 				C9815C621EE886E0004868CE /* Extensions */,
 				C9515C2E1F01125100B973F1 /* GPU */,
 				06C3F73E1EFF9E3C00D4B1F4 /* Image Processing */,
-				069225C01F0A611E00F3C8C7 /* Neural Networks */,
+				069225C01F0A611E00F3C8C7 /* Network Layers */,
+				E4BAEE911FE7C446009F594D /* Neural Networks */,
+				061C66371FD7E02800F1BF1B /* Processors */,
 				06172B7B1F03BDD600379124 /* Serialization */,
 				A14172BA1E6EB04F005DBEFF /* Supporting Files */,
 			);
@@ -1388,6 +1415,24 @@
 				C9815C631EE88713004868CE /* PNKOpenCVExtensionsSpec.mm */,
 			);
 			name = Extensions;
+			sourceTree = "<group>";
+		};
+		E4BAEE911FE7C446009F594D /* Neural Networks */ = {
+			isa = PBXGroup;
+			children = (
+				0647450E1FD86FD300BAE7BD /* PNKNeuralNetwork.h */,
+				06415FB31FD49A5C00F9F70C /* PNKSkySegmentationNetwork.h */,
+				06415FB41FD49A5C00F9F70C /* PNKSkySegmentationNetwork.mm */,
+			);
+			name = "Neural Networks";
+			sourceTree = "<group>";
+		};
+		E4BAEEB61FE7D76E009F594D /* Neural Networks */ = {
+			isa = PBXGroup;
+			children = (
+				06415F8C1FD49A1900F9F70C /* PNKSkySegmentationNetworkSpec.mm */,
+			);
+			name = "Neural Networks";
 			sourceTree = "<group>";
 		};
 		F92465B51F42C20D00ECB4DA /* Serialization */ = {
@@ -1925,6 +1970,7 @@
 				C9131ED61EE05A4D00E924DA /* LTTestUtils+LTEngine.mm in Sources */,
 				C9815C641EE88713004868CE /* PNKOpenCVExtensionsSpec.mm in Sources */,
 				E4786D451FD5499B0057FE03 /* MPSCNNConvolution+FactorySpec.mm in Sources */,
+				E46A486A1FE7DF3B00EB0D33 /* PNKSkySegmentationProcessorSpec.mm in Sources */,
 				068D90B21F1F93450012F472 /* EXPMatchers+equalMTLSize.mm in Sources */,
 				C9791B561F0272470009E90F /* PNKConstantAlphaSpec.mm in Sources */,
 				8B029FBE1F696B3000B3CF25 /* EXPMatchers+beCloseToScalar.mm in Sources */,
@@ -1972,10 +2018,12 @@
 				E4D719331FE145580047E620 /* PNKGather.mm in Sources */,
 				06EDBD561F8FB18D00A3FF1E /* PNKBufferExtensions.mm in Sources */,
 				0657A1111F29908F002AA730 /* PNKConvolutionLayer.mm in Sources */,
+				E46A48471FE7DF3200EB0D33 /* PNKPixelBufferUtils.mm in Sources */,
 				E4281EBC1FC1B53B008F4BAD /* PNKConcatenation.mm in Sources */,
 				06C9E8041F793DCF00D8A77F /* PNKNearestNeighborUpsampling.mm in Sources */,
 				C91884551F0D27B90090818A /* PNKComputeDispatch.mm in Sources */,
 				064160C31FD57CDD00F9F70C /* PNKPoolingLayer.mm in Sources */,
+				E46A48691FE7DF3600EB0D33 /* PNKSkySegmentationProcessor.mm in Sources */,
 				C9791B001F026E180009E90F /* PNKConstantAlpha.mm in Sources */,
 				06AB67C91FCABFA10063C68F /* PNKDilatedConvolutionInternalLayer.mm in Sources */,
 				F9CB52FA1F5FE70C00C8E8CA /* PNKCoreMLLayerParser.mm in Sources */,
