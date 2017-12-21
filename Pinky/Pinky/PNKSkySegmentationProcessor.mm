@@ -90,7 +90,7 @@ static const NSUInteger kShapeModelInputSide = 512;
                       outputFeatureChannelIndices:{0}];
     _ciContext = [CIContext lt_contextWithPixelFormat:$(LTGLPixelFormatRGBA8Unorm)];
     _dispatchQueue = dispatch_queue_create("com.lightricks.Pinky.SkySegmentationProcessor",
-                                           DISPATCH_QUEUE_SERIAL);
+                                           DISPATCH_QUEUE_SERIAL_WITH_AUTORELEASE_POOL);
   }
   return self;
 }
@@ -147,8 +147,8 @@ static const NSUInteger kShapeModelInputSide = 512;
   [self.network encodeWithCommandBuffer:commandBuffer inputImage:netInputImage
                             outputImage:netOutputImage];
 
-  [self encodePostProcessWithCommandBuffer:commandBuffer input:netOutputImage.texture
-                                    output:outputTexture];
+  [self encodePostProcessWithCommandBuffer:commandBuffer inputImage:netOutputImage
+                             outputTexture:outputTexture];
 
   [commandBuffer addCompletedHandler:^(id<MTLCommandBuffer>) {
     completion();
@@ -162,9 +162,11 @@ static const NSUInteger kShapeModelInputSide = 512;
   [self.resizer encodeToCommandBuffer:buffer inputTexture:input outputTexture:output];
 }
 
-- (void)encodePostProcessWithCommandBuffer:(id<MTLCommandBuffer>)buffer input:(id<MTLTexture>)input
-                                    output:(id<MTLTexture>)output {
-  [self.gatherer encodeToCommandBuffer:buffer inputTexture:input outputTexture:output];
+- (void)encodePostProcessWithCommandBuffer:(id<MTLCommandBuffer>)buffer
+                                inputImage:(MPSImage *)inputImage
+                             outputTexture:(id<MTLTexture>)outputTexture {
+  auto outputImage = [[MPSImage alloc] initWithTexture:outputTexture featureChannels:1];
+  [self.gatherer encodeToCommandBuffer:buffer inputImage:inputImage outputImage:outputImage];
 }
 
 - (void)upsampleImage:(CVPixelBufferRef)image withGuide:(CVPixelBufferRef)guide
