@@ -33,15 +33,13 @@
 		88B9B4FF1FA8BA980033D48F /* SPXPromotion.mm in Sources */ = {isa = PBXBuildFile; fileRef = 88FA8C9D1F66C52400D2E594 /* SPXPromotion.mm */; };
 		88CEB4511FB44D1B00E01950 /* SPXPromotionSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 88CEB4501FB44D1A00E01950 /* SPXPromotionSpec.mm */; };
 		88FF39701FB2E047006311FF /* SPXProductDescriptor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 88FF396F1FB2E047006311FF /* SPXProductDescriptor.mm */; };
-		CD0A89B11FDD93C600A29EF7 /* SPXSubscriptionViewControllerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD0A89B01FDD93C600A29EF7 /* SPXSubscriptionViewControllerSpec.mm */; };
-		CD1F02AD1FD87556004D5DEB /* SPXSubscriptionChristmasButtonsFactory.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD1F02AC1FD87555004D5DEB /* SPXSubscriptionChristmasButtonsFactory.mm */; };
-		CD1FFFF91FD705CD004D5DEB /* images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CD1FFFF81FD702A3004D5DEB /* images.xcassets */; };
-		8B70922C1FD819BD009393C9 /* SKStoreProductViewController+RACSignalSupport.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B7092291FD819BB009393C9 /* SKStoreProductViewController+RACSignalSupport.mm */; };
-		8B70922D1FD819BD009393C9 /* SPXStoreProductController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B70922B1FD819BC009393C9 /* SPXStoreProductController.mm */; };
 		8B33A96E1FDD691000F60182 /* SKStoreProductViewController+ShopixSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B33A96D1FDD691000F60182 /* SKStoreProductViewController+ShopixSpec.mm */; };
 		8B70926A1FD81DF6009393C9 /* AppsFlyerLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B7092691FD81DF6009393C9 /* AppsFlyerLib.framework */; };
 		8B70926B1FD81E0B009393C9 /* AppsFlyerLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B7092691FD81DF6009393C9 /* AppsFlyerLib.framework */; };
 		8B7093601FDD3A31009393C9 /* SKStoreProductViewController+Shopix.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B70935F1FDD3A31009393C9 /* SKStoreProductViewController+Shopix.mm */; };
+		CD0A89B11FDD93C600A29EF7 /* SPXSubscriptionViewControllerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD0A89B01FDD93C600A29EF7 /* SPXSubscriptionViewControllerSpec.mm */; };
+		CD1F02AD1FD87556004D5DEB /* SPXSubscriptionChristmasButtonsFactory.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD1F02AC1FD87555004D5DEB /* SPXSubscriptionChristmasButtonsFactory.mm */; };
+		CD1FFFF91FD705CD004D5DEB /* images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CD1FFFF81FD702A3004D5DEB /* images.xcassets */; };
 		CD2F2B551FD5577D006257B4 /* MFMailComposeViewController+Dismissal.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD2F2B541FD5577D006257B4 /* MFMailComposeViewController+Dismissal.mm */; };
 		CD2F2B801FD55C45006257B4 /* SPXRestorePurchasesButton.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD2F2B7F1FD55C45006257B4 /* SPXRestorePurchasesButton.mm */; };
 		CD3C69A41F559394008A6C23 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD3C69A31F559394008A6C23 /* GLKit.framework */; };
@@ -505,13 +503,13 @@
 		88FF396F1FB2E047006311FF /* SPXProductDescriptor.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXProductDescriptor.mm; sourceTree = "<group>"; };
 		8B33A96D1FDD691000F60182 /* SKStoreProductViewController+ShopixSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "SKStoreProductViewController+ShopixSpec.mm"; sourceTree = "<group>"; };
 		8B57B1FC1D914FE100814B3C /* Bundle.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Bundle.xcconfig; sourceTree = "<group>"; };
+		8B7092691FD81DF6009393C9 /* AppsFlyerLib.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppsFlyerLib.framework; path = ../third_party/AppsFlyer/AppsFlyerLib.framework; sourceTree = "<group>"; };
+		8B70935E1FDD3A31009393C9 /* SKStoreProductViewController+Shopix.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SKStoreProductViewController+Shopix.h"; sourceTree = "<group>"; };
+		8B70935F1FDD3A31009393C9 /* SKStoreProductViewController+Shopix.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "SKStoreProductViewController+Shopix.mm"; sourceTree = "<group>"; };
 		CD0A89B01FDD93C600A29EF7 /* SPXSubscriptionViewControllerSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXSubscriptionViewControllerSpec.mm; sourceTree = "<group>"; };
 		CD1F02AB1FD87555004D5DEB /* SPXSubscriptionChristmasButtonsFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPXSubscriptionChristmasButtonsFactory.h; sourceTree = "<group>"; };
 		CD1F02AC1FD87555004D5DEB /* SPXSubscriptionChristmasButtonsFactory.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXSubscriptionChristmasButtonsFactory.mm; sourceTree = "<group>"; };
 		CD1FFFF81FD702A3004D5DEB /* images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = images.xcassets; sourceTree = "<group>"; };
-		8B7092691FD81DF6009393C9 /* AppsFlyerLib.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppsFlyerLib.framework; path = ../third_party/AppsFlyer/AppsFlyerLib.framework; sourceTree = "<group>"; };
-		8B70935E1FDD3A31009393C9 /* SKStoreProductViewController+Shopix.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SKStoreProductViewController+Shopix.h"; sourceTree = "<group>"; };
-		8B70935F1FDD3A31009393C9 /* SKStoreProductViewController+Shopix.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "SKStoreProductViewController+Shopix.mm"; sourceTree = "<group>"; };
 		CD2F2B531FD5577D006257B4 /* MFMailComposeViewController+Dismissal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MFMailComposeViewController+Dismissal.h"; sourceTree = "<group>"; };
 		CD2F2B541FD5577D006257B4 /* MFMailComposeViewController+Dismissal.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "MFMailComposeViewController+Dismissal.mm"; sourceTree = "<group>"; };
 		CD2F2B7E1FD55C45006257B4 /* SPXRestorePurchasesButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SPXRestorePurchasesButton.h; sourceTree = "<group>"; };
@@ -679,28 +677,36 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		639409ED1FB364BF00C817FE /* Alert */ = {
+		639409ED1FB364BF00C817FE /* Alerts */ = {
 			isa = PBXGroup;
 			children = (
 				639409E91FB3637600C817FE /* SPXAlertViewControllerProvider.h */,
 				639409EF1FB3650200C817FE /* SPXAlertViewControllerProvider.mm */,
 				639409EA1FB3642100C817FE /* SPXAlertViewModel.h */,
 				653D9C381FB757860035ACEC /* SPXAlertViewModel.mm */,
+				63E591511FC44AAC0009A34B /* SPXAlertViewModel+ShopixPresets.h */,
+				63E591521FC44AAC0009A34B /* SPXAlertViewModel+ShopixPresets.mm */,
 				639C5AC71FB37DD300937367 /* SPXAlertViewModelBuilder.h */,
 				639C5AC81FB37DD300937367 /* SPXAlertViewModelBuilder.mm */,
 				639C5ACA1FB4B47600937367 /* UIAlertController+ViewModel.h */,
 				639C5ACB1FB4B47600937367 /* UIAlertController+ViewModel.mm */,
 			);
-			name = Alert;
+			name = Alerts;
 			sourceTree = "<group>";
 		};
-		639C5AA21FB37C8400937367 /* Customizable Components */ = {
+		639C5AA21FB37C8400937367 /* Common Components */ = {
 			isa = PBXGroup;
 			children = (
-				639409ED1FB364BF00C817FE /* Alert */,
-				65125FE01FB5F7C900C7D2FA /* Feedback Composer */,
+				CD60A58C1FB2F2850017D777 /* SPXButtonsHorizontalLayoutView.h */,
+				CD60A58D1FB2F2850017D777 /* SPXButtonsHorizontalLayoutView.mm */,
+				CD60A5EB1FB433180017D777 /* SPXDualLabelView.h */,
+				CD60A5EC1FB433180017D777 /* SPXDualLabelView.mm */,
+				CDACBD711FBB4476000A1548 /* SPXPagingView.h */,
+				CDACBD721FBB4476000A1548 /* SPXPagingView.mm */,
+				CD60A5E81FB34F6A0017D777 /* SPXSubscriptionGradientButton.h */,
+				CD60A5E91FB34F6A0017D777 /* SPXSubscriptionGradientButton.mm */,
 			);
-			name = "Customizable Components";
+			name = "Common Components";
 			sourceTree = "<group>";
 		};
 		650BB31D1D465335008648A3 /* Products */ = {
@@ -724,41 +730,42 @@
 		65125FE01FB5F7C900C7D2FA /* Feedback Composer */ = {
 			isa = PBXGroup;
 			children = (
+				CD2F2B531FD5577D006257B4 /* MFMailComposeViewController+Dismissal.h */,
+				CD2F2B541FD5577D006257B4 /* MFMailComposeViewController+Dismissal.mm */,
 				CDB513A61F66B1550013577C /* SPXFeedbackComposeViewControllerProvider.h */,
 			);
 			name = "Feedback Composer";
 			sourceTree = "<group>";
 		};
-		653D9C341FB742C80035ACEC /* Customizable Components */ = {
+		653D9C341FB742C80035ACEC /* Common Components */ = {
 			isa = PBXGroup;
 			children = (
-				653D9C351FB742E20035ACEC /* Alert */,
+				CDAC84DF1FC1632000B197B3 /* SPXButtonsHorizontalLayoutViewSpec.mm */,
+				CDAC86E21FC33C4B00B197B3 /* SPXPagingViewSpec.mm */,
 			);
-			name = "Customizable Components";
+			name = "Common Components";
 			sourceTree = "<group>";
 		};
-		653D9C351FB742E20035ACEC /* Alert */ = {
+		653D9C351FB742E20035ACEC /* Alerts */ = {
 			isa = PBXGroup;
 			children = (
+				63E591661FC492480009A34B /* SPXAlertViewModel+ShopixPresetsSpec.mm */,
 				653D9C3C1FB7BBCC0035ACEC /* SPXAlertViewModelBuilderSpec.mm */,
 				653D9C3A1FB7B5E00035ACEC /* SPXAlertViewModelSpec.mm */,
 				653D9C361FB743110035ACEC /* UIAlertController+ViewModelSpec.mm */,
 			);
-			name = Alert;
+			name = Alerts;
 			sourceTree = "<group>";
 		};
 		848E00051C591DD1001D8368 /* Shopix */ = {
 			isa = PBXGroup;
 			children = (
 				CDC83DEA1FD444AD00E9F41A /* Analytics */,
-				639C5AA21FB37C8400937367 /* Customizable Components */,
 				88B632881F9DD87E0051A535 /* Errors */,
 				CD8E8E081F5C19DC00DF8FC1 /* Localization */,
 				88FA8C711F66A5FE00D2E594 /* Promotions */,
-				8B7091FF1FD81970009393C9 /* Store */,
-				CDB5137B1F66B0220013577C /* Subscription */,
 				848E001F1C591E7B001D8368 /* Supporting Files */,
-				CDF5FA981FCECC60007D4AB0 /* Utils */,
+				CDD9F7A51FE803F800A7A6DB /* User Interface */,
 			);
 			path = Shopix;
 			sourceTree = "<group>";
@@ -806,12 +813,9 @@
 		848E00241C59208B001D8368 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				653D9C341FB742C80035ACEC /* Customizable Components */,
 				CDCFDF1E1F5C39BA00C289BA /* Localization */,
 				885CA28D1FB301C6005380BD /* Promotions */,
-				8B7093381FD828CF009393C9 /* Store */,
-				CDB513A31F66B07D0013577C /* Subscription */,
-				CDF5FAC81FCEED30007D4AB0 /* Utils */,
+				CDB513A31F66B07D0013577C /* User Interface */,
 			);
 			name = Tests;
 			sourceTree = "<group>";
@@ -1004,21 +1008,21 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		8B7091FF1FD81970009393C9 /* Store */ = {
+		8B7091FF1FD81970009393C9 /* AppStore Product Screen */ = {
 			isa = PBXGroup;
 			children = (
 				8B70935E1FDD3A31009393C9 /* SKStoreProductViewController+Shopix.h */,
 				8B70935F1FDD3A31009393C9 /* SKStoreProductViewController+Shopix.mm */,
 			);
-			name = Store;
+			name = "AppStore Product Screen";
 			sourceTree = "<group>";
 		};
-		8B7093381FD828CF009393C9 /* Store */ = {
+		8B7093381FD828CF009393C9 /* AppStore Product Screen */ = {
 			isa = PBXGroup;
 			children = (
 				8B33A96D1FDD691000F60182 /* SKStoreProductViewController+ShopixSpec.mm */,
 			);
-			name = Store;
+			name = "AppStore Product Screen";
 			sourceTree = "<group>";
 		};
 		CD1FFDBE1FD5C556004D5DEB /* UI Events */ = {
@@ -1060,6 +1064,25 @@
 			path = ShopixBundle;
 			sourceTree = "<group>";
 		};
+		CD890F971FE698C600064B72 /* Single App */ = {
+			isa = PBXGroup;
+			children = (
+				CD1F02AB1FD87555004D5DEB /* SPXSubscriptionChristmasButtonsFactory.h */,
+				CD1F02AC1FD87555004D5DEB /* SPXSubscriptionChristmasButtonsFactory.mm */,
+				CDF5F9701FCDC4EB007D4AB0 /* SPXSubscriptionGradientButtonsFactory.h */,
+				CDF5F96E1FCDC4EA007D4AB0 /* SPXSubscriptionGradientButtonsFactory.mm */,
+				CDAC90D31FC496F100B197B3 /* SPXSubscriptionVideoPageView.h */,
+				CDAC90FA1FC496F100B197B3 /* SPXSubscriptionVideoPageView.mm */,
+				CDAC93931FC5F0D100B197B3 /* SPXSubscriptionVideoPageViewModel.h */,
+				CDAC936C1FC5F0D100B197B3 /* SPXSubscriptionVideoPageViewModel.mm */,
+				CDC83BEC1FD067E600E9F41A /* SPXSubscriptionViewController.h */,
+				CDC83C151FD067E600E9F41A /* SPXSubscriptionViewController.mm */,
+				CDC839321FCFFAC400E9F41A /* SPXSubscriptionViewModel.h */,
+				CDC8395B1FCFFAC400E9F41A /* SPXSubscriptionViewModel.mm */,
+			);
+			name = "Single App";
+			sourceTree = "<group>";
+		};
 		CD8E8E081F5C19DC00DF8FC1 /* Localization */ = {
 			isa = PBXGroup;
 			children = (
@@ -1080,67 +1103,32 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		CDB5137B1F66B0220013577C /* Subscription */ = {
+		CDB5137B1F66B0220013577C /* Subscription Screens */ = {
 			isa = PBXGroup;
 			children = (
-				63E591511FC44AAC0009A34B /* SPXAlertViewModel+ShopixPresets.h */,
-				63E591521FC44AAC0009A34B /* SPXAlertViewModel+ShopixPresets.mm */,
-				CD60A58C1FB2F2850017D777 /* SPXButtonsHorizontalLayoutView.h */,
-				CD60A58D1FB2F2850017D777 /* SPXButtonsHorizontalLayoutView.mm */,
-				CDC8391A1FCFF87D00E9F41A /* SPXColorScheme.h */,
-				CDC838F11FCFF87D00E9F41A /* SPXColorScheme.mm */,
-				CD60A5EB1FB433180017D777 /* SPXDualLabelView.h */,
-				CD60A5EC1FB433180017D777 /* SPXDualLabelView.mm */,
-				CDACBD711FBB4476000A1548 /* SPXPagingView.h */,
-				CDACBD721FBB4476000A1548 /* SPXPagingView.mm */,
-				CD2F2B7E1FD55C45006257B4 /* SPXRestorePurchasesButton.h */,
-				CD2F2B7F1FD55C45006257B4 /* SPXRestorePurchasesButton.mm */,
+				CDD9F7A61FE80CD900A7A6DB /* Common Components */,
+				CD890F971FE698C600064B72 /* Single App */,
 				CD63768C1FCDB70E00521EDD /* SPXSubscriptionButtonFormatter.h */,
 				CD6376B51FCDB70E00521EDD /* SPXSubscriptionButtonFormatter.mm */,
 				CDF5F96F1FCDC4EB007D4AB0 /* SPXSubscriptionButtonsFactory.h */,
-				CD1F02AB1FD87555004D5DEB /* SPXSubscriptionChristmasButtonsFactory.h */,
-				CD1F02AC1FD87555004D5DEB /* SPXSubscriptionChristmasButtonsFactory.mm */,
 				CDF5F96D1FCDC4EA007D4AB0 /* SPXSubscriptionDescriptor.h */,
 				CDF5F9441FCDC4EA007D4AB0 /* SPXSubscriptionDescriptor.mm */,
-				CD60A5E81FB34F6A0017D777 /* SPXSubscriptionGradientButton.h */,
-				CD60A5E91FB34F6A0017D777 /* SPXSubscriptionGradientButton.mm */,
-				CDF5F9701FCDC4EB007D4AB0 /* SPXSubscriptionGradientButtonsFactory.h */,
-				CDF5F96E1FCDC4EA007D4AB0 /* SPXSubscriptionGradientButtonsFactory.mm */,
-				CDB513A01F66B0440013577C /* SPXSubscriptionManager.h */,
-				CDB513A11F66B0440013577C /* SPXSubscriptionManager.mm */,
-				633E79381FD3DC1300239C87 /* SPXSubscriptionManager+RACSignalSupport.h */,
-				633E79391FD3DC1300239C87 /* SPXSubscriptionManager+RACSignalSupport.mm */,
-				CDAC92081FC5994900B197B3 /* SPXSubscriptionTermsView.h */,
-				CDAC92091FC5994900B197B3 /* SPXSubscriptionTermsView.mm */,
-				CDAC91D91FC593C700B197B3 /* SPXSubscriptionTermsViewModel.h */,
-				CDAC91DA1FC593C700B197B3 /* SPXSubscriptionTermsViewModel.mm */,
-				CDAC90D31FC496F100B197B3 /* SPXSubscriptionVideoPageView.h */,
-				CDAC90FA1FC496F100B197B3 /* SPXSubscriptionVideoPageView.mm */,
-				CDAC93931FC5F0D100B197B3 /* SPXSubscriptionVideoPageViewModel.h */,
-				CDAC936C1FC5F0D100B197B3 /* SPXSubscriptionVideoPageViewModel.mm */,
-				CDC83BEC1FD067E600E9F41A /* SPXSubscriptionViewController.h */,
-				CDC83C151FD067E600E9F41A /* SPXSubscriptionViewController.mm */,
-				CDC839321FCFFAC400E9F41A /* SPXSubscriptionViewModel.h */,
-				CDC8395B1FCFFAC400E9F41A /* SPXSubscriptionViewModel.mm */,
 			);
-			name = Subscription;
+			name = "Subscription Screens";
 			sourceTree = "<group>";
 		};
-		CDB513A31F66B07D0013577C /* Subscription */ = {
+		CDB513A31F66B07D0013577C /* User Interface */ = {
 			isa = PBXGroup;
 			children = (
-				63E591661FC492480009A34B /* SPXAlertViewModel+ShopixPresetsSpec.mm */,
-				CDAC84DF1FC1632000B197B3 /* SPXButtonsHorizontalLayoutViewSpec.mm */,
-				CDAC86E21FC33C4B00B197B3 /* SPXPagingViewSpec.mm */,
-				CDF5FAC41FCED77D007D4AB0 /* SPXSubscriptionButtonFormatterSpec.mm */,
-				CDF5FB281FCF249B007D4AB0 /* SPXSubscriptionGradientButtonsFactorySpec.mm */,
+				653D9C351FB742E20035ACEC /* Alerts */,
+				8B7093381FD828CF009393C9 /* AppStore Product Screen */,
+				653D9C341FB742C80035ACEC /* Common Components */,
+				CDD9F7A71FE8108200A7A6DB /* Subscription Screens */,
 				63DC6CE61FD405FC009C0B71 /* SPXSubscriptionManager+RACSignalSupportSpec.mm */,
 				CDB513A41F66B0A10013577C /* SPXSubscriptionManagerSpec.mm */,
-				CDA6E0E91FCB2D3200114D6B /* SPXSubscriptionVideoPageViewModelSpec.mm */,
-				CD0A89B01FDD93C600A29EF7 /* SPXSubscriptionViewControllerSpec.mm */,
-				CDC83B421FD04E2400E9F41A /* SPXSubscriptionViewModelSpec.mm */,
+				CDF5FAC61FCEED2D007D4AB0 /* UIFont+ShopixSpec.mm */,
 			);
-			name = Subscription;
+			name = "User Interface";
 			sourceTree = "<group>";
 		};
 		CDB8A6491F53FCB200E14706 /* Products */ = {
@@ -1188,23 +1176,57 @@
 			name = Localization;
 			sourceTree = "<group>";
 		};
-		CDF5FA981FCECC60007D4AB0 /* Utils */ = {
+		CDD9F7A51FE803F800A7A6DB /* User Interface */ = {
 			isa = PBXGroup;
 			children = (
-				CD2F2B531FD5577D006257B4 /* MFMailComposeViewController+Dismissal.h */,
-				CD2F2B541FD5577D006257B4 /* MFMailComposeViewController+Dismissal.mm */,
+				639409ED1FB364BF00C817FE /* Alerts */,
+				8B7091FF1FD81970009393C9 /* AppStore Product Screen */,
+				639C5AA21FB37C8400937367 /* Common Components */,
+				65125FE01FB5F7C900C7D2FA /* Feedback Composer */,
+				CDB5137B1F66B0220013577C /* Subscription Screens */,
+				CDC8391A1FCFF87D00E9F41A /* SPXColorScheme.h */,
+				CDC838F11FCFF87D00E9F41A /* SPXColorScheme.mm */,
+				CDB513A01F66B0440013577C /* SPXSubscriptionManager.h */,
+				CDB513A11F66B0440013577C /* SPXSubscriptionManager.mm */,
+				633E79381FD3DC1300239C87 /* SPXSubscriptionManager+RACSignalSupport.h */,
+				633E79391FD3DC1300239C87 /* SPXSubscriptionManager+RACSignalSupport.mm */,
 				CDF5FAC11FCECC85007D4AB0 /* UIFont+Shopix.h */,
 				CDF5FAC21FCECC85007D4AB0 /* UIFont+Shopix.mm */,
 			);
-			name = Utils;
+			name = "User Interface";
 			sourceTree = "<group>";
 		};
-		CDF5FAC81FCEED30007D4AB0 /* Utils */ = {
+		CDD9F7A61FE80CD900A7A6DB /* Common Components */ = {
 			isa = PBXGroup;
 			children = (
-				CDF5FAC61FCEED2D007D4AB0 /* UIFont+ShopixSpec.mm */,
+				CD2F2B7E1FD55C45006257B4 /* SPXRestorePurchasesButton.h */,
+				CD2F2B7F1FD55C45006257B4 /* SPXRestorePurchasesButton.mm */,
+				CDAC92081FC5994900B197B3 /* SPXSubscriptionTermsView.h */,
+				CDAC92091FC5994900B197B3 /* SPXSubscriptionTermsView.mm */,
+				CDAC91D91FC593C700B197B3 /* SPXSubscriptionTermsViewModel.h */,
+				CDAC91DA1FC593C700B197B3 /* SPXSubscriptionTermsViewModel.mm */,
 			);
-			name = Utils;
+			name = "Common Components";
+			sourceTree = "<group>";
+		};
+		CDD9F7A71FE8108200A7A6DB /* Subscription Screens */ = {
+			isa = PBXGroup;
+			children = (
+				CDD9F7A81FE8111900A7A6DB /* Single App */,
+				CDF5FAC41FCED77D007D4AB0 /* SPXSubscriptionButtonFormatterSpec.mm */,
+				CDF5FB281FCF249B007D4AB0 /* SPXSubscriptionGradientButtonsFactorySpec.mm */,
+			);
+			name = "Subscription Screens";
+			sourceTree = "<group>";
+		};
+		CDD9F7A81FE8111900A7A6DB /* Single App */ = {
+			isa = PBXGroup;
+			children = (
+				CDA6E0E91FCB2D3200114D6B /* SPXSubscriptionVideoPageViewModelSpec.mm */,
+				CD0A89B01FDD93C600A29EF7 /* SPXSubscriptionViewControllerSpec.mm */,
+				CDC83B421FD04E2400E9F41A /* SPXSubscriptionViewModelSpec.mm */,
+			);
+			name = "Single App";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
