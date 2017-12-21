@@ -32,6 +32,12 @@ static NSURL *TINMessengerURLFromMessage(TINMessage *message) {
 /// File manager which is used to access the file system.
 @property (readonly, nonatomic) NSFileManager *fileManager;
 
+/// Application's group ID this messenger's messages belong to.
+@property (readonly, nonatomic) NSString *appGroupID;
+
+/// Bundle instance which is used to access application's Info.plist data.
+@property (readonly, nonatomic) NSBundle *bundle;
+
 @end
 
 @implementation TINMessenger
@@ -41,22 +47,28 @@ static NSURL *TINMessengerURLFromMessage(TINMessage *message) {
 #pragma mark -
 
 - (instancetype)initWithApplication:(UIApplication *)application
-                        fileManager:(NSFileManager *)fileManager {
+                        fileManager:(NSFileManager *)fileManager appGroupID:(NSString *)appGroupID
+                             bundle:(NSBundle *)bundle {
   if (self = [super init]) {
     _application = application;
     _fileManager = fileManager;
+    _appGroupID = appGroupID;
+    _bundle = bundle;
   }
   return self;
 }
 
 + (instancetype)messengerWithApplication:(UIApplication *)application
-                             fileManager:(NSFileManager *)fileManager {
-  return [[self alloc] initWithApplication:application fileManager:fileManager];
+                             fileManager:(NSFileManager *)fileManager
+                              appGroupID:(NSString *)appGroupID  bundle:(NSBundle *)bundle {
+  return [[self alloc] initWithApplication:application fileManager:fileManager
+                                appGroupID:appGroupID bundle:bundle];
 }
 
 + (instancetype)messenger {
   return [self messengerWithApplication:[UIApplication sharedApplication]
-                            fileManager:[NSFileManager defaultManager]];
+                            fileManager:[NSFileManager defaultManager]
+                             appGroupID:kTINAppGroupID bundle:[NSBundle mainBundle]];
 }
 
 #pragma mark -
@@ -191,6 +203,56 @@ static NSURL *TINMessengerURLFromMessage(TINMessage *message) {
   }
 
   return YES;
+}
+
+- (BOOL)removeAllMessagesWithError:(NSError *__autoreleasing *)error {
+  auto schemes = [self bundleSchemes];
+  if (!schemes.count) {
+    if (error) {
+      *error = [NSError lt_errorWithCode:TINErrorCodeNoValidSchemeFound];
+    }
+    return NO;
+  }
+
+  auto errors = [NSMutableArray<NSError *> array];
+  for (NSString *scheme in schemes) {
+    NSError *internalError;
+    if (![self.fileManager tin_removeAllMessagesWithAppGroupID:self.appGroupID scheme:scheme
+                                                         error:&internalError]) {
+      [errors addObject:internalError];
+    }
+  }
+
+  if (errors.count && error) {
+    *error = [NSError lt_errorWithCode:LTErrorCodeFileRemovalFailed underlyingErrors:errors];
+  }
+
+  if (errors.count) {
+    return NO;
+  }
+
+  return YES;
+}
+
+- (NSArray<NSString *> *)bundleSchemes {
+  NSArray * _Nullable urlTypesArray = self.bundle.infoDictionary[@"CFBundleURLTypes"];
+  if (!urlTypesArray) {
+    return @[];
+  }
+
+  auto schemes = [NSMutableArray<NSString *> array];
+
+  for (NSDictionary *urlSchemesDictionary in urlTypesArray) {
+    NSArray * _Nullable schemesArray = urlSchemesDictionary[@"CFBundleURLSchemes"];
+    if (!schemesArray) {
+      return @[];
+    }
+
+    if (schemesArray.count) {
+      [schemes addObject:nn(schemesArray.firstObject)];
+    }
+  }
+  return schemes;
 }
 
 @end

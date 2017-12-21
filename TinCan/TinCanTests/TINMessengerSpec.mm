@@ -3,12 +3,14 @@
 
 #import "TINMessenger.h"
 
+#import <LTKit/NSFileManager+LTKit.h>
 #import <LTKit/NSURL+Query.h>
 #import <MobileCoreServices/MobileCoreServices.h>
 
 #import "NSErrorCodes+TinCan.h"
 #import "NSFileManager+TinCan.h"
 #import "TINMessage+UserInfo.h"
+#import "TINMessageFactory.h"
 
 // Returns TINMessenger's URL from the given messageID.
 NSURL *TINMessengerURLFromMessageID(NSUUID *messageID) {
@@ -32,7 +34,9 @@ __block NSFileManager *fileManager;
 beforeEach(^{
   applicationMock = OCMClassMock(UIApplication.class);
   fileManager = [NSFileManager defaultManager];
-  messenger = [TINMessenger messengerWithApplication:applicationMock fileManager:fileManager];
+  messenger = [TINMessenger messengerWithApplication:applicationMock fileManager:fileManager
+                                          appGroupID:kTINTestHostAppGroupID
+                                              bundle:[NSBundle mainBundle]];
   message = [TINMessage messageWithAppGroupID:kTINTestHostAppGroupID sourceScheme:@"source"
                                  targetScheme:@"target" identifier:[NSUUID UUID] userInfo:@{}];
 });
@@ -113,7 +117,9 @@ context(@"message send", ^{
   it(@"should error when message can't be archived", ^{
     NSFileManager *fileManagerMock = OCMClassMock(NSFileManager.class);
     auto messenger = [TINMessenger messengerWithApplication:applicationMock
-                                                fileManager:fileManagerMock];
+                                                fileManager:fileManagerMock
+                                                 appGroupID:kTINTestHostAppGroupID
+                                                     bundle:[NSBundle mainBundle]];
     auto message = [TINMessage messageWithAppGroupID:kTINTestHostAppGroupID sourceScheme:@"source"
                                         targetScheme:@"target" identifier:[NSUUID UUID]
                                             userInfo:@{}];
@@ -193,6 +199,63 @@ it(@"should return YES when message can be sent", ^{
   OCMStub(messageMock.url).andReturn([NSURL URLWithString:@"foo"]);
   OCMStub([applicationMock canOpenURL:OCMOCK_ANY]).andReturn(YES);
   expect([messenger canSendMessage:messageMock]).to.beTruthy();
+});
+
+context(@"message remove", ^{
+  __block TINMessageFactory *messageFactory;
+  __block NSBundle *bundleMock;
+
+  beforeEach(^{
+    bundleMock = OCMClassMock([NSBundle class]);
+    messageFactory = [TINMessageFactory messageFactoryWithSourceScheme:@"source"
+                                                           fileManager:fileManager
+                                                            appGroupID:kTINTestHostAppGroupID];
+    messenger = [TINMessenger messengerWithApplication:applicationMock
+                                           fileManager:[NSFileManager defaultManager]
+                                            appGroupID:kTINTestHostAppGroupID bundle:bundleMock];
+  });
+
+  it(@"should remove all messages", ^{
+    auto messenger = [TINMessenger messengerWithApplication:applicationMock
+                                                fileManager:[NSFileManager defaultManager]
+                                                 appGroupID:kTINTestHostAppGroupID
+                                                     bundle:[NSBundle mainBundle]];
+    auto data = [@"foo" dataUsingEncoding:NSUTF8StringEncoding];
+    auto message = [messageFactory messageWithTargetScheme:@"testhost" userInfo:@{} data:data
+                                                       uti:(__bridge NSString *)kUTTypePNG
+                                                     error:nil];
+    __block NSError *error;
+    expect([messenger removeAllMessagesWithError:&error]).to.beTruthy();
+    expect(error).to.beNil();
+    expect([fileManager lt_fileExistsAtPath:nn(message.directoryURL.path)]);
+  });
+
+  it(@"should report error when failed removing messages directory", ^{
+    NSFileManager *fileManagerMock = OCMClassMock(NSFileManager.class);
+    auto messenger = [TINMessenger messengerWithApplication:applicationMock
+                                                fileManager:fileManagerMock
+                                                 appGroupID:kTINTestHostAppGroupID
+                                                     bundle:[NSBundle mainBundle]];
+    OCMStub([fileManagerMock tin_removeAllMessagesWithAppGroupID:OCMOCK_ANY scheme:OCMOCK_ANY
+             error:[OCMArg setTo:[NSError lt_errorWithCode:123]]]).andReturn(NO);
+    __block NSError *error;
+    expect([messenger removeAllMessagesWithError:&error]).to.beFalsy();
+    expect(error.code).to.equal(LTErrorCodeFileRemovalFailed);
+  });
+
+  it(@"should report error when failed getting CFBundleURLTypes", ^{
+    OCMStub(bundleMock.infoDictionary).andReturn(@{});
+    __block NSError *error;
+    expect([messenger removeAllMessagesWithError:&error]).to.beFalsy();
+    expect(error.code).to.equal(TINErrorCodeNoValidSchemeFound);
+  });
+
+  it(@"should report error when failed getting CFBundleURLSchemes", ^{
+    OCMStub(bundleMock.infoDictionary).andReturn(@{@"CFBundleURLTypes": @[]});
+    __block NSError *error;
+    expect([messenger removeAllMessagesWithError:&error]).to.beFalsy();
+    expect(error.code).to.equal(TINErrorCodeNoValidSchemeFound);
+  });
 });
 
 SpecEnd

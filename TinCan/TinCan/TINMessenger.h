@@ -57,19 +57,23 @@ NS_ASSUME_NONNULL_BEGIN
 /// @endcode
 @interface TINMessenger : NSObject
 
-/// Initializes with the given \c application, which is used to open the target application during
-/// message delivery process, and the \c fileManager, which is used to store and retrieve messages
-/// from the file system.
+/// Initializes with the given \c application, \c fileManager, \c appGroupID and \c bundle.
+/// \c application is used to open the target application during message delivery process.
+/// \c fileManager is used to store and retrieve messages from the file system. \c appGroupID
+/// defines the application group ID this messenger's messages belong to. \c bundle is used to
+/// access application's Info.plist data.
 + (instancetype)messengerWithApplication:(UIApplication *)application
                              fileManager:(NSFileManager *)fileManager
-    NS_EXTENSION_UNAVAILABLE_IOS("");
+                              appGroupID:(NSString *)appGroupID
+                                  bundle:(NSBundle *)bundle NS_EXTENSION_UNAVAILABLE_IOS("");
 
-/// Initializes with shared \c UIApplication application and the default \c NSFileManager.
-/// Equivalent to calling:
+/// Initializes with shared \c UIApplication application, the default \c NSFileManager and
+/// \c kTINAppGroupID application group ID. Equivalent to calling:
 ///
 /// @code
 /// [TINMessenger messengerWithApplication:[UIApplication sharedApplication]
-///                            fileManager:[NSFileManager defaultManager]];
+///                            fileManager:[NSFileManager defaultManager]
+///                             appGroupID:kTINAppGroupID bundle:[NSBundle mainBundle]];
 /// @endcode
 + (instancetype)messenger NS_EXTENSION_UNAVAILABLE_IOS("");
 
@@ -99,6 +103,13 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 /// @see \c TINMessenger's class documentation for the URL format definition.
 + (BOOL)isTinCanURL:(NSURL *)url;
+
+/// Removes the designated message directories of all the messages targeted to this application, for
+/// every scheme suported by this application. Returns \c YES on success, otherwise \c NO and sets
+/// the \c error.
+///
+/// @note list of application supported schemes is obtained from application's \c Info.plist.
+- (BOOL)removeAllMessagesWithError:(NSError **)error;
 
 @end
 
