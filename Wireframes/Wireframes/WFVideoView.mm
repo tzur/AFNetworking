@@ -3,8 +3,6 @@
 
 #import "WFVideoView.h"
 
-#import <AVFoundation/AVFoundation.h>
-
 NS_ASSUME_NONNULL_BEGIN
 
 @interface WFVideoView ()
@@ -40,9 +38,14 @@ NS_ASSUME_NONNULL_BEGIN
 /// Size of the current displayed video. If \c videoURL is \c nil, \c CGSizeZero is returned.
 @property (readwrite, nonatomic) CGSize videoSize;
 
+/// View's layer.
+@property (readonly, nonatomic) AVPlayerLayer *layer;
+
 @end
 
 @implementation WFVideoView
+
+@dynamic layer;
 
 #pragma mark -
 #pragma mark Initialization
@@ -183,7 +186,7 @@ NS_ASSUME_NONNULL_BEGIN
 
   _player = player;
 
-  [(AVPlayerLayer *)self.layer setPlayer:player];
+  [self.layer setPlayer:player];
 }
 
 #pragma mark -
@@ -299,6 +302,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (NSTimeInterval)videoDuration {
   return self.player ? CMTimeGetSeconds(self.player.currentItem.asset.duration) : 0;
+}
+
+- (void)setVideoGravity:(AVLayerVideoGravity)videoGravity {
+  self.layer.videoGravity = videoGravity;
+}
+
+- (AVLayerVideoGravity)videoGravity {
+  return self.layer.videoGravity;
 }
 
 @end
