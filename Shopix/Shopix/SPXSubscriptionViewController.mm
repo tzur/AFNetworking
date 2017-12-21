@@ -286,7 +286,7 @@ using namespace spx;
 
 - (void)setupActivityIndicatorBinding {
   @weakify(self);
-  [RACObserve(self, viewModel.shouldShowActivityIndicator) subscribeNext:^(NSNumber *active) {
+  [RACObserve(self.viewModel, shouldShowActivityIndicator) subscribeNext:^(NSNumber *active) {
     @strongify(self);
     active.boolValue ?
         [self.activityIndicatorView startAnimating] : [self.activityIndicatorView stopAnimating];
