@@ -620,6 +620,10 @@
 		CDF5FAC41FCED77D007D4AB0 /* SPXSubscriptionButtonFormatterSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXSubscriptionButtonFormatterSpec.mm; sourceTree = "<group>"; };
 		CDF5FAC61FCEED2D007D4AB0 /* UIFont+ShopixSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIFont+ShopixSpec.mm"; sourceTree = "<group>"; };
 		CDF5FB281FCF249B007D4AB0 /* SPXSubscriptionGradientButtonsFactorySpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXSubscriptionGradientButtonsFactorySpec.mm; sourceTree = "<group>"; };
+		CDF6209E1FEF918F00D05AEC /* SPXMultiSubscriptionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPXMultiSubscriptionViewController.h; sourceTree = "<group>"; };
+		CDF6209F1FEF918F00D05AEC /* SPXMultiSubscriptionViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPXMultiSubscriptionViewModel.h; sourceTree = "<group>"; };
+		CDF620A01FEF918F00D05AEC /* SPXSubscriptionButtonsPageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPXSubscriptionButtonsPageView.h; sourceTree = "<group>"; };
+		CDF620A11FEF918F00D05AEC /* SPXSubscriptionButtonsPageViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPXSubscriptionButtonsPageViewModel.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1107,6 +1111,7 @@
 			isa = PBXGroup;
 			children = (
 				CDD9F7A61FE80CD900A7A6DB /* Common Components */,
+				CDF620751FEF917100D05AEC /* Multi App */,
 				CD890F971FE698C600064B72 /* Single App */,
 				CD63768C1FCDB70E00521EDD /* SPXSubscriptionButtonFormatter.h */,
 				CD6376B51FCDB70E00521EDD /* SPXSubscriptionButtonFormatter.mm */,
@@ -1227,6 +1232,17 @@
 				CDC83B421FD04E2400E9F41A /* SPXSubscriptionViewModelSpec.mm */,
 			);
 			name = "Single App";
+			sourceTree = "<group>";
+		};
+		CDF620751FEF917100D05AEC /* Multi App */ = {
+			isa = PBXGroup;
+			children = (
+				CDF6209E1FEF918F00D05AEC /* SPXMultiSubscriptionViewController.h */,
+				CDF6209F1FEF918F00D05AEC /* SPXMultiSubscriptionViewModel.h */,
+				CDF620A01FEF918F00D05AEC /* SPXSubscriptionButtonsPageView.h */,
+				CDF620A11FEF918F00D05AEC /* SPXSubscriptionButtonsPageViewModel.h */,
+			);
+			name = "Multi App";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
