@@ -74,6 +74,7 @@
 		A157B2EF1ED6B299008B920D /* INTAnalytricksDeviceInfoChanged.json in Sources */ = {isa = PBXBuildFile; fileRef = A157B2C81ED6AF7F008B920D /* INTAnalytricksDeviceInfoChanged.json */; };
 		A157B34E1ED6D212008B920D /* INTDeviceTokenChangedEvent.json in Sources */ = {isa = PBXBuildFile; fileRef = A157B3331ED6D192008B920D /* INTDeviceTokenChangedEvent.json */; };
 		A157B37E1ED6EFC3008B920D /* INTAnalytricksDeviceTokenChanged.json in Sources */ = {isa = PBXBuildFile; fileRef = A157B3631ED6EF60008B920D /* INTAnalytricksDeviceTokenChanged.json */; };
+		A16326F71FEFB75100A02640 /* libFMDB-IOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A16326C21FEFB72100A02640 /* libFMDB-IOS.a */; };
 		A17E08ED1ED1D47A007940A0 /* INTAnalytricksDeepLinkOpened.json in Sources */ = {isa = PBXBuildFile; fileRef = A17E08D61ED1D30A007940A0 /* INTAnalytricksDeepLinkOpened.json */; };
 		A17E08EF1ED1D6E4007940A0 /* INTAnalytricksPushNotificationOpened.json in Sources */ = {isa = PBXBuildFile; fileRef = A17E08EE1ED1D632007940A0 /* INTAnalytricksPushNotificationOpened.json */; };
 		A17E08F21ED1D9CA007940A0 /* INTAnalytricksMediaImported.json in Sources */ = {isa = PBXBuildFile; fileRef = A17E08F01ED1D79A007940A0 /* INTAnalytricksMediaImported.json */; };
@@ -87,6 +88,7 @@
 		A17E0B0C1ED45E90007940A0 /* INTAnalytricksProjectDeleted.json in Sources */ = {isa = PBXBuildFile; fileRef = A17E0B0A1ED45E06007940A0 /* INTAnalytricksProjectDeleted.json */; };
 		A17E0B0D1ED45E92007940A0 /* INTAnalytricksProjectModified.json in Sources */ = {isa = PBXBuildFile; fileRef = A17E0A781ED45A6F007940A0 /* INTAnalytricksProjectModified.json */; };
 		A1B373BF1EA6511F008E5195 /* INTEventTransformationExecutor.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1B373BE1EA6511F008E5195 /* INTEventTransformationExecutor.mm */; };
+		A1B583501FF0FB7B00A73596 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = A1B583261FF0FB7B00A73596 /* libsqlite3.tbd */; };
 		A1C1F2BA1F837EB00002DE07 /* INTAppRunCountUpdatedEvent.json in Sources */ = {isa = PBXBuildFile; fileRef = A1C1F29F1F837EA30002DE07 /* INTAppRunCountUpdatedEvent.json */; };
 		A1C9432F1EBB358E00BECAB4 /* INTAppWillEnterForegroundEvent.json in Sources */ = {isa = PBXBuildFile; fileRef = A1C943251EBB357800BECAB4 /* INTAppWillEnterForegroundEvent.json */; };
 		A1C943311EBB358E00BECAB4 /* INTProjectUnloadedEvent.json in Sources */ = {isa = PBXBuildFile; fileRef = A1C943271EBB357800BECAB4 /* INTProjectUnloadedEvent.json */; };
@@ -415,6 +417,48 @@
 			remoteGlobalIDString = 65CEFBB11D3BF72800402230;
 			remoteInfo = TestHost;
 		};
+		A16326BB1FEFB72100A02640 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A16326AA1FEFB72100A02640 /* fmdb.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8DD76FA10486AA7600D96B5E;
+			remoteInfo = fmdb;
+		};
+		A16326BD1FEFB72100A02640 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A16326AA1FEFB72100A02640 /* fmdb.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = EE4290EF12B42F870088BD94;
+			remoteInfo = FMDB;
+		};
+		A16326BF1FEFB72100A02640 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A16326AA1FEFB72100A02640 /* fmdb.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = BF5D041618416BB2008C5AA9;
+			remoteInfo = Tests;
+		};
+		A16326C11FEFB72100A02640 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A16326AA1FEFB72100A02640 /* fmdb.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 6290CBB5188FE836009790F8;
+			remoteInfo = "FMDB-IOS";
+		};
+		A16326C31FEFB72100A02640 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A16326AA1FEFB72100A02640 /* fmdb.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 83C73EFE1C326AB000FFC730;
+			remoteInfo = "FMDB iOS";
+		};
+		A16326C51FEFB72100A02640 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A16326AA1FEFB72100A02640 /* fmdb.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 83C73F0B1C326ADA00FFC730;
+			remoteInfo = "FMDB MacOS";
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -527,6 +571,7 @@
 		A157B2C81ED6AF7F008B920D /* INTAnalytricksDeviceInfoChanged.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = INTAnalytricksDeviceInfoChanged.json; sourceTree = "<group>"; };
 		A157B3331ED6D192008B920D /* INTDeviceTokenChangedEvent.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = INTDeviceTokenChangedEvent.json; sourceTree = "<group>"; };
 		A157B3631ED6EF60008B920D /* INTAnalytricksDeviceTokenChanged.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = INTAnalytricksDeviceTokenChanged.json; sourceTree = "<group>"; };
+		A16326AA1FEFB72100A02640 /* fmdb.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = fmdb.xcodeproj; path = ../third_party/fmdb/fmdb.xcodeproj; sourceTree = "<group>"; };
 		A172A9BF1EAC112D00A12B86 /* INTEventLogger.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = INTEventLogger.h; sourceTree = "<group>"; };
 		A17E08D61ED1D30A007940A0 /* INTAnalytricksDeepLinkOpened.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = INTAnalytricksDeepLinkOpened.json; sourceTree = "<group>"; };
 		A17E08EE1ED1D632007940A0 /* INTAnalytricksPushNotificationOpened.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = INTAnalytricksPushNotificationOpened.json; sourceTree = "<group>"; };
@@ -543,6 +588,7 @@
 		A17E0B0A1ED45E06007940A0 /* INTAnalytricksProjectDeleted.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = INTAnalytricksProjectDeleted.json; sourceTree = "<group>"; };
 		A1B373BD1EA6511F008E5195 /* INTEventTransformationExecutor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INTEventTransformationExecutor.h; sourceTree = "<group>"; };
 		A1B373BE1EA6511F008E5195 /* INTEventTransformationExecutor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = INTEventTransformationExecutor.mm; sourceTree = "<group>"; };
+		A1B583261FF0FB7B00A73596 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		A1C1F29F1F837EA30002DE07 /* INTAppRunCountUpdatedEvent.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = INTAppRunCountUpdatedEvent.json; sourceTree = "<group>"; };
 		A1C942FF1EBB356900BECAB4 /* INTAnalytricksContext.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = INTAnalytricksContext.json; sourceTree = "<group>"; };
 		A1C943001EBB356900BECAB4 /* INTAnalytricksMetadata.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = INTAnalytricksMetadata.json; sourceTree = "<group>"; };
@@ -590,6 +636,7 @@
 				A1F24D101EC0BFBD0050D534 /* SystemConfiguration.framework in Frameworks */,
 				A1417A921E6ED9CB005DBEFF /* UIKit.framework in Frameworks */,
 				A14173401E6EB59F005DBEFF /* libExpecta.a in Frameworks */,
+				A16326F71FEFB75100A02640 /* libFMDB-IOS.a in Frameworks */,
 				A14171C61E6EAC0D005DBEFF /* libIntelligence.a in Frameworks */,
 				A14013CD1FD0358B00760DE5 /* libLLReactiveMatchers.a in Frameworks */,
 				A14173411E6EB59F005DBEFF /* libLTKit.a in Frameworks */,
@@ -598,6 +645,7 @@
 				A14173431E6EB59F005DBEFF /* libSpecta.a in Frameworks */,
 				CDE00B451E82AE82007AFD5E /* libcompression.tbd in Frameworks */,
 				A14175B61E6EBE37005DBEFF /* libextobjc_iOS.a in Frameworks */,
+				A1B583501FF0FB7B00A73596 /* libsqlite3.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -814,6 +862,7 @@
 				A14012281FCFE7D500760DE5 /* ReactiveObjC.xcodeproj */,
 				A14172A41E6EAF0D005DBEFF /* Specta.xcodeproj */,
 				A14172D71E6EB2FF005DBEFF /* TestHost.xcodeproj */,
+				A16326AA1FEFB72100A02640 /* fmdb.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -944,6 +993,7 @@
 				A1417A911E6ED9CB005DBEFF /* UIKit.framework */,
 				CDE00B441E82AE82007AFD5E /* libcompression.tbd */,
 				A14175B51E6EBE37005DBEFF /* libextobjc_iOS.a */,
+				A1B583261FF0FB7B00A73596 /* libsqlite3.tbd */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1048,8 +1098,22 @@
 			isa = PBXGroup;
 			children = (
 				A1541C091EAF405100B4F064 /* INTAppLifecycleTimerSpec.mm */,
+				A16326781FEFB68E00A02640 /* INTJSONStorageSpec.mm */,
 			);
 			name = Utils;
+			sourceTree = "<group>";
+		};
+		A16326AB1FEFB72100A02640 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A16326BC1FEFB72100A02640 /* fmdb */,
+				A16326BE1FEFB72100A02640 /* libFMDB.a */,
+				A16326C01FEFB72100A02640 /* Tests.xctest */,
+				A16326C21FEFB72100A02640 /* libFMDB-IOS.a */,
+				A16326C41FEFB72100A02640 /* FMDB.framework */,
+				A16326C61FEFB72100A02640 /* FMDB.framework */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		A172A9A81EAC111600A12B86 /* Event Logging */ = {
@@ -1212,6 +1276,10 @@
 				{
 					ProductGroup = A14172751E6EAEE7005DBEFF /* Products */;
 					ProjectRef = A14172741E6EAEE7005DBEFF /* Expecta.xcodeproj */;
+				},
+				{
+					ProductGroup = A16326AB1FEFB72100A02640 /* Products */;
+					ProjectRef = A16326AA1FEFB72100A02640 /* fmdb.xcodeproj */;
 				},
 				{
 					ProductGroup = A14013B71FD0350100760DE5 /* Products */;
@@ -1510,6 +1578,48 @@
 			remoteRef = A14172DB1E6EB2FF005DBEFF /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		A16326BC1FEFB72100A02640 /* fmdb */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.executable";
+			path = fmdb;
+			remoteRef = A16326BB1FEFB72100A02640 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		A16326BE1FEFB72100A02640 /* libFMDB.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libFMDB.a;
+			remoteRef = A16326BD1FEFB72100A02640 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		A16326C01FEFB72100A02640 /* Tests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = Tests.xctest;
+			remoteRef = A16326BF1FEFB72100A02640 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		A16326C21FEFB72100A02640 /* libFMDB-IOS.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libFMDB-IOS.a";
+			remoteRef = A16326C11FEFB72100A02640 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		A16326C41FEFB72100A02640 /* FMDB.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = FMDB.framework;
+			remoteRef = A16326C31FEFB72100A02640 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		A16326C61FEFB72100A02640 /* FMDB.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = FMDB.framework;
+			remoteRef = A16326C51FEFB72100A02640 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
@@ -1664,6 +1774,7 @@
 					"$(SRCROOT)/../LTKit",
 					"$(SRCROOT)/../third_party/Mantle",
 					"$(SRCROOT)/../third_party/alooma-ios-sdk",
+					"$(SRCROOT)/../third_party/fmdb/src",
 					"$(SRCROOT)/../third_party/libextobjc",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
@@ -1682,6 +1793,7 @@
 					"$(SRCROOT)/../LTKit",
 					"$(SRCROOT)/../third_party/Mantle",
 					"$(SRCROOT)/../third_party/alooma-ios-sdk",
+					"$(SRCROOT)/../third_party/fmdb/src",
 					"$(SRCROOT)/../third_party/libextobjc",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
