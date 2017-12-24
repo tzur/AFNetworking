@@ -96,6 +96,8 @@
 		CDF5FAC51FCED77D007D4AB0 /* SPXSubscriptionButtonFormatterSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = CDF5FAC41FCED77D007D4AB0 /* SPXSubscriptionButtonFormatterSpec.mm */; };
 		CDF5FAC71FCEED2D007D4AB0 /* UIFont+ShopixSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = CDF5FAC61FCEED2D007D4AB0 /* UIFont+ShopixSpec.mm */; };
 		CDF5FB291FCF249B007D4AB0 /* SPXSubscriptionGradientButtonsFactorySpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = CDF5FB281FCF249B007D4AB0 /* SPXSubscriptionGradientButtonsFactorySpec.mm */; };
+		CDF621E01FEFCED800D05AEC /* SPXSubscriptionButtonsPageViewModelSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = CDF621DF1FEFCED800D05AEC /* SPXSubscriptionButtonsPageViewModelSpec.mm */; };
+		CDF621E21FEFD42700D05AEC /* SPXSubscriptionButtonsPageViewModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = CDF621E11FEFD42700D05AEC /* SPXSubscriptionButtonsPageViewModel.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -624,6 +626,8 @@
 		CDF6209F1FEF918F00D05AEC /* SPXMultiSubscriptionViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPXMultiSubscriptionViewModel.h; sourceTree = "<group>"; };
 		CDF620A01FEF918F00D05AEC /* SPXSubscriptionButtonsPageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPXSubscriptionButtonsPageView.h; sourceTree = "<group>"; };
 		CDF620A11FEF918F00D05AEC /* SPXSubscriptionButtonsPageViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPXSubscriptionButtonsPageViewModel.h; sourceTree = "<group>"; };
+		CDF621DF1FEFCED800D05AEC /* SPXSubscriptionButtonsPageViewModelSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXSubscriptionButtonsPageViewModelSpec.mm; sourceTree = "<group>"; };
+		CDF621E11FEFD42700D05AEC /* SPXSubscriptionButtonsPageViewModel.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXSubscriptionButtonsPageViewModel.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1111,7 +1115,7 @@
 			isa = PBXGroup;
 			children = (
 				CDD9F7A61FE80CD900A7A6DB /* Common Components */,
-				CDF620751FEF917100D05AEC /* Multi App */,
+				CDF620751FEF917100D05AEC /* Multi Group */,
 				CD890F971FE698C600064B72 /* Single App */,
 				CD63768C1FCDB70E00521EDD /* SPXSubscriptionButtonFormatter.h */,
 				CD6376B51FCDB70E00521EDD /* SPXSubscriptionButtonFormatter.mm */,
@@ -1217,6 +1221,7 @@
 		CDD9F7A71FE8108200A7A6DB /* Subscription Screens */ = {
 			isa = PBXGroup;
 			children = (
+				CDF621B61FEFA6BD00D05AEC /* Multi Group */,
 				CDD9F7A81FE8111900A7A6DB /* Single App */,
 				CDF5FAC41FCED77D007D4AB0 /* SPXSubscriptionButtonFormatterSpec.mm */,
 				CDF5FB281FCF249B007D4AB0 /* SPXSubscriptionGradientButtonsFactorySpec.mm */,
@@ -1234,15 +1239,24 @@
 			name = "Single App";
 			sourceTree = "<group>";
 		};
-		CDF620751FEF917100D05AEC /* Multi App */ = {
+		CDF620751FEF917100D05AEC /* Multi Group */ = {
 			isa = PBXGroup;
 			children = (
 				CDF6209E1FEF918F00D05AEC /* SPXMultiSubscriptionViewController.h */,
 				CDF6209F1FEF918F00D05AEC /* SPXMultiSubscriptionViewModel.h */,
 				CDF620A01FEF918F00D05AEC /* SPXSubscriptionButtonsPageView.h */,
 				CDF620A11FEF918F00D05AEC /* SPXSubscriptionButtonsPageViewModel.h */,
+				CDF621E11FEFD42700D05AEC /* SPXSubscriptionButtonsPageViewModel.mm */,
 			);
-			name = "Multi App";
+			name = "Multi Group";
+			sourceTree = "<group>";
+		};
+		CDF621B61FEFA6BD00D05AEC /* Multi Group */ = {
+			isa = PBXGroup;
+			children = (
+				CDF621DF1FEFCED800D05AEC /* SPXSubscriptionButtonsPageViewModelSpec.mm */,
+			);
+			name = "Multi Group";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1762,6 +1776,7 @@
 				CDA6E0EA1FCB2D3200114D6B /* SPXSubscriptionVideoPageViewModelSpec.mm in Sources */,
 				63DC6CE71FD405FC009C0B71 /* SPXSubscriptionManager+RACSignalSupportSpec.mm in Sources */,
 				653D9C3D1FB7BBCC0035ACEC /* SPXAlertViewModelBuilderSpec.mm in Sources */,
+				CDF621E01FEFCED800D05AEC /* SPXSubscriptionButtonsPageViewModelSpec.mm in Sources */,
 				CDAC86E31FC33C4B00B197B3 /* SPXPagingViewSpec.mm in Sources */,
 				653D9C371FB743110035ACEC /* UIAlertController+ViewModelSpec.mm in Sources */,
 				CD0A89B11FDD93C600A29EF7 /* SPXSubscriptionViewControllerSpec.mm in Sources */,
@@ -1807,6 +1822,7 @@
 				88B9B4DA1FA8BA940033D48F /* SPXProductAxis.mm in Sources */,
 				CD1F02AD1FD87556004D5DEB /* SPXSubscriptionChristmasButtonsFactory.mm in Sources */,
 				653D9C391FB757860035ACEC /* SPXAlertViewModel.mm in Sources */,
+				CDF621E21FEFD42700D05AEC /* SPXSubscriptionButtonsPageViewModel.mm in Sources */,
 				CD60A58E1FB2F2850017D777 /* SPXButtonsHorizontalLayoutView.mm in Sources */,
 				CDC8391B1FCFF87D00E9F41A /* SPXColorScheme.mm in Sources */,
 				CDB513A21F66B0440013577C /* SPXSubscriptionManager.mm in Sources */,
