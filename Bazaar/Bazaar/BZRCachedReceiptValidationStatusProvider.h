@@ -20,20 +20,16 @@ NS_ASSUME_NONNULL_BEGIN
 /// \c applicationBundleID, and \c cachedEntryTimeToLive set to \c 14.
 - (instancetype)initWithCache:(BZRReceiptValidationStatusCache *)receiptValidationStatusCache
                  timeProvider:(id<BZRTimeProvider>)timeProvider
-           underlyingProvider:(id<BZRReceiptValidationStatusProvider>)underlyingProvider
-          applicationBundleID:(NSString *)applicationBundleID;
+           underlyingProvider:(id<BZRReceiptValidationStatusProvider>)underlyingProvider;
 
 /// Initializes with \c receiptValidationStatusCache, used to persist receipt validation status, and
 /// \c timeProvider used to provide the time the receipt was cached, and with
-/// \c underlyingProvider, used to fetch the receipt validation status. \c applicationBundleID is an
-/// identifier used to store and retrieve receipt validation status from the current application's
-/// partition in storage. \c cachedEntryDaysToLive is the number of days cache entries are valid
-/// for. Cache entries older than that will be invalidated and remain invalid until a successful
-/// receipt validation.
+/// \c underlyingProvider, used to fetch the receipt validation status. \c cachedEntryDaysToLive is
+/// the number of days cache entries are valid for. Cache entries older than that will be
+/// invalidated and remain invalid until a successful receipt validation.
 - (instancetype)initWithCache:(BZRReceiptValidationStatusCache *)receiptValidationStatusCache
                  timeProvider:(id<BZRTimeProvider>)timeProvider
            underlyingProvider:(id<BZRReceiptValidationStatusProvider>)underlyingProvider
-          applicationBundleID:(NSString *)applicationBundleID
         cachedEntryDaysToLive:(NSUInteger)cachedEntryDaysToLive NS_DESIGNATED_INITIALIZER;
 
 /// Loads receipt validation status cache entry of the application specified by
@@ -41,16 +37,6 @@ NS_ASSUME_NONNULL_BEGIN
 /// be returned.
 - (nullable BZRReceiptValidationStatusCacheEntry *)loadReceiptValidationStatusCacheEntryFromStorage:
     (NSString *)applicationBundleID;
-
-/// Holds the most recent receipt validation status. Before fetching has completed successfully for
-/// the first time this property holds the value loaded from cache. If no value exists in the cache
-/// or there was an error while loading from cache, this property will be \c nil.
-/// KVO compliant. Changes may be delivered on an arbitrary thread.
-@property (readonly, nonatomic, nullable) BZRReceiptValidationStatus *receiptValidationStatus;
-
-/// Holds the date of the last receipt validation. \c nil if \c receiptValidationStatus is \c nil.
-/// KVO compliant. Changes may be delivered on an arbitrary thread.
-@property (readonly, nonatomic, nullable) NSDate *lastReceiptValidationDate;
 
 @end
 

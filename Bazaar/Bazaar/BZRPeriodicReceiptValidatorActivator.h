@@ -3,7 +3,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class BZRCachedReceiptValidationStatusProvider, BZREvent, BZRExternalTriggerReceiptValidator;
+@class BZRAggregatedReceiptValidationStatusProvider, BZRCachedReceiptValidationStatusProvider,
+    BZREvent, BZRExternalTriggerReceiptValidator;
 
 @protocol BZRTimeProvider;
 
@@ -19,17 +20,27 @@ NS_ASSUME_NONNULL_BEGIN
 /// to fetch the receipt validation status.
 - (instancetype)initWithValidationStatusProvider:
     (BZRCachedReceiptValidationStatusProvider *)validationStatusProvider
-    timeProvider:(id<BZRTimeProvider>)timeProvider;
+    timeProvider:(id<BZRTimeProvider>)timeProvider
+    bundledApplicationsIDs:(NSSet<NSString *> *)bundledApplicationsIDs
+    aggregatedValidationStatusProvider:
+    (BZRAggregatedReceiptValidationStatusProvider *)aggregatedValidationStatusProvider;
 
 /// Initializes with \c receiptValidator used to validate the receipt periodically.
 /// \c validationStatusProvider is used to fetch the latest receipt validation status and provide
 /// the validation date. \c timeProvider is used to check if the receipt should be validated.
+/// \c bundledApplicationsIDs is the set of applications for which validation will be performed.
+/// \c aggregatedValidationStatusProvider is used to provide the latest aggregated receipt
+/// validation status and determine whether periodic validation is required.
 ///
 /// If both the periodic validation interval and the grace period have passed, subscription is
 /// marked as expired.
 - (instancetype)initWithReceiptValidator:(BZRExternalTriggerReceiptValidator *)receiptValidator
     validationStatusProvider:(BZRCachedReceiptValidationStatusProvider *)validationStatusProvider
-    timeProvider:(id<BZRTimeProvider>)timeProvider NS_DESIGNATED_INITIALIZER;
+    timeProvider:(id<BZRTimeProvider>)timeProvider
+    bundledApplicationsIDs:(NSSet<NSString *> *)bundledApplicationsIDs
+    aggregatedValidationStatusProvider:
+    (BZRAggregatedReceiptValidationStatusProvider *)aggregatedValidationStatusProvider
+    NS_DESIGNATED_INITIALIZER;
 
 @end
 

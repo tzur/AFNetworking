@@ -3,10 +3,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class BZRAcquiredViaSubscriptionProvider, BZRAllowedProductsProvider,
-    BZRCachedReceiptValidationStatusProvider, BZRKeychainStorage,
-    BZRPeriodicReceiptValidatorActivator, BZRProductContentManager, BZRProductsPriceInfoFetcher,
-    BZRStoreKitFacade, LTPath;
+@class BZRAcquiredViaSubscriptionProvider, BZRAggregatedReceiptValidationStatusProvider,
+    BZRAllowedProductsProvider, BZRKeychainStorage, BZRPeriodicReceiptValidatorActivator,
+    BZRProductContentManager, BZRProductsPriceInfoFetcher, BZRStoreKitFacade, LTPath;
 
 @protocol BZRProductsProvider, BZRProductContentFetcher, BZRProductsVariantSelectorFactory,
     BZRReceiptValidationParametersProvider;
@@ -85,8 +84,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Fetcher used to provide a product's content.
 @property (strong, nonatomic) id<BZRProductContentFetcher> contentFetcher;
 
-/// Provider used to provide \c BZRReceiptValidationStatus.
-@property (strong, nonatomic) BZRCachedReceiptValidationStatusProvider *validationStatusProvider;
+/// Provider used to provide the aggregated \c BZRReceiptValidationStatus.
+@property (strong, nonatomic) BZRAggregatedReceiptValidationStatusProvider *
+    validationStatusProvider;
 
 /// Provider used to provide list of acquired via subsription products.
 @property (strong, nonatomic) BZRAcquiredViaSubscriptionProvider *acquiredViaSubscriptionProvider;

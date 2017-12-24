@@ -1,23 +1,20 @@
 // Copyright (c) 2016 Lightricks. All rights reserved.
 // Created by Ben Yohay.
 
-#import "BZRCachedReceiptValidationStatusProvider.h"
+#import "BZRAggregatedReceiptValidationStatusProvider.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 /// Fake provider that provides a \c BZRReceiptValidationStatus manually injected to its
 /// \c receiptValidationStatus property.
-@interface BZRFakeCachedReceiptValidationStatusProvider : BZRCachedReceiptValidationStatusProvider
+@interface BZRFakeAggregatedReceiptValidationStatusProvider :
+    BZRAggregatedReceiptValidationStatusProvider
 
-/// Initializes with mock objects.
+/// Initializes with mock arguments.
 - (instancetype)init;
 
 /// A replaceable receipt validation status.
-@property (strong, readwrite, nonatomic, nullable) BZRReceiptValidationStatus *
-    receiptValidationStatus;
-
-/// A replaceable last receipt validation date.
-@property (strong, readwrite, nonatomic, nullable) NSDate *lastReceiptValidationDate;
+@property (readwrite, atomic, nullable) BZRReceiptValidationStatus *receiptValidationStatus;
 
 /// \c YES if \c fetchReceiptValidationStatus was called, \c NO otherwise.
 @property (readonly, nonatomic) BOOL wasFetchReceiptValidationStatusCalled;
@@ -25,9 +22,6 @@ NS_ASSUME_NONNULL_BEGIN
 /// The signal that is returned from \c fetchReceiptValidationStatus. If \c nil,
 /// \c +[RACSignal empty] is returned.
 @property (strong, nonatomic, nullable) RACSignal *signalToReturnFromFetchReceiptValidationStatus;
-
-/// \c YES if \c expireSubscription was called, \c NO otherwise.
-@property (readonly, nonatomic) BOOL wasExpireSubscriptionCalled;
 
 @end
 

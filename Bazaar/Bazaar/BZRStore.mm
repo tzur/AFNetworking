@@ -9,9 +9,9 @@
 #import <LTKit/NSSet+Functional.h>
 
 #import "BZRAcquiredViaSubscriptionProvider.h"
+#import "BZRAggregatedReceiptValidationStatusProvider.h"
 #import "BZRAllowedProductsProvider.h"
 #import "BZRCachedContentFetcher.h"
-#import "BZRCachedReceiptValidationStatusProvider.h"
 #import "BZREvent.h"
 #import "BZRExternalTriggerReceiptValidator.h"
 #import "BZRKeychainStorage.h"
@@ -48,10 +48,12 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly, nonatomic) id<BZRProductContentFetcher> contentFetcher;
 
 /// Provider used to provide the latest \c BZRReceiptValidationStatus.
-@property (readonly, nonatomic) BZRCachedReceiptValidationStatusProvider *validationStatusProvider;
+@property (readonly, nonatomic) BZRAggregatedReceiptValidationStatusProvider *
+    validationStatusProvider;
 
 /// Provider used to provide list of products that were acquired via subsription.
-@property (readonly, nonatomic) BZRAcquiredViaSubscriptionProvider *acquiredViaSubscriptionProvider;
+@property (readonly, nonatomic) BZRAcquiredViaSubscriptionProvider
+    *acquiredViaSubscriptionProvider;
 
 /// Activator used to control the periodic validation.
 @property (readonly, nonatomic) BZRPeriodicReceiptValidatorActivator *periodicValidatorActivator;

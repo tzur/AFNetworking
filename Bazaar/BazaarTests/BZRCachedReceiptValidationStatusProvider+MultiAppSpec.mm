@@ -32,7 +32,7 @@ beforeEach(^{
                                              initWithCache:receiptValidationStatusCache
                                              timeProvider:timeProvider
                                              underlyingProvider:underlyingProvider
-                                             applicationBundleID:@"foo"]);
+                                             cachedEntryDaysToLive:14]);
 });
 
 afterEach(^{
@@ -48,8 +48,7 @@ context(@"deallocating object", ^{
           OCMPartialMock([[BZRCachedReceiptValidationStatusProvider alloc]
                           initWithCache:receiptValidationStatusCache
                           timeProvider:timeProvider
-                          underlyingProvider:underlyingProvider
-                          applicationBundleID:@"foo"]);
+                          underlyingProvider:underlyingProvider]);
 
       auto firstReceiptValidationStatus = BZRReceiptValidationStatusWithExpiry(YES);
       auto secondReceiptValidationStatus = BZRReceiptValidationStatusWithExpiry(NO);
@@ -75,7 +74,7 @@ context(@"deallocating object", ^{
            initWithCache:receiptValidationStatusCache
            timeProvider:timeProvider
            underlyingProvider:underlyingProvider
-           applicationBundleID:@"foo"];
+           cachedEntryDaysToLive:14];
       weakValidationStatusProvider = provider;
 
       OCMStub([underlyingProvider fetchReceiptValidationStatus:@"foo"])

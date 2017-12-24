@@ -3,15 +3,16 @@
 
 #import "BZRExternalTriggerReceiptValidator.h"
 
+#import "BZRAggregatedReceiptValidationStatusProvider.h"
 #import "BZREvent.h"
-#import "BZRReceiptValidationStatusProvider.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface BZRExternalTriggerReceiptValidator ()
 
-/// Provider used to fetch receipt validation status.
-@property (readonly, nonatomic) id<BZRReceiptValidationStatusProvider> validationStatusProvider;
+/// Provider used to fetch the aggregated receipt validation status.
+@property (readonly, nonatomic) BZRAggregatedReceiptValidationStatusProvider *
+    validationStatusProvider;
 
 /// Subscription to the trigger signal. Will be \c nil while deactivated and non-nil when activated.
 @property (strong, nonatomic, nullable) RACDisposable *triggerSignalSubscription;
@@ -28,7 +29,7 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 - (instancetype)initWithValidationStatusProvider:
-    (id<BZRReceiptValidationStatusProvider>)validationStatusProvider {
+    (BZRAggregatedReceiptValidationStatusProvider *)validationStatusProvider {
   if (self = [super init]) {
     _validationStatusProvider = validationStatusProvider;
     _errorsSubject = [RACSubject subject];

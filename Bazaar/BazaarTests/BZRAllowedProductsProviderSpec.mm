@@ -5,7 +5,7 @@
 
 #import "BZREvent.h"
 #import "BZRFakeAcquiredViaSubscriptionProvider.h"
-#import "BZRFakeCachedReceiptValidationStatusProvider.h"
+#import "BZRFakeAggregatedReceiptValidationStatusProvider.h"
 #import "BZRProduct.h"
 #import "BZRProductsProvider.h"
 #import "BZRReceiptModel.h"
@@ -29,7 +29,7 @@ SpecBegin(BZRAllowedProductsProvider)
 
 context(@"allowed products provider", ^{
   __block id<BZRProductsProvider> productsProvider;
-  __block BZRFakeCachedReceiptValidationStatusProvider *validationStatusProvider;
+  __block BZRFakeAggregatedReceiptValidationStatusProvider *validationStatusProvider;
   __block BZRFakeAcquiredViaSubscriptionProvider *acquiredViaSubscriptionProvider;
   __block BZRAllowedProductsProvider *allowedProvider;
 
@@ -39,7 +39,7 @@ context(@"allowed products provider", ^{
 
   beforeEach(^{
     productsProvider = OCMProtocolMock(@protocol(BZRProductsProvider));
-    validationStatusProvider = [[BZRFakeCachedReceiptValidationStatusProvider alloc] init];
+    validationStatusProvider = [[BZRFakeAggregatedReceiptValidationStatusProvider alloc] init];
     acquiredViaSubscriptionProvider = [[BZRFakeAcquiredViaSubscriptionProvider alloc] init];
 
     purchasedProductIdentifier = @"foo";
