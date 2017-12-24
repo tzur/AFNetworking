@@ -5,6 +5,8 @@
 
 #import <LTKit/NSFileManager+LTKit.h>
 
+#import "NSErrorCodes+TinCan.h"
+#import "NSURL+TinCan.h"
 #import "TINMessage.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -84,6 +86,19 @@ NS_ASSUME_NONNULL_BEGIN
   }
 
   return message;
+}
+
+- (BOOL)tin_removeAllMessagesWithAppGroupID:(NSString *)appGroupID scheme:(NSString *)scheme
+                                      error:(NSError *__autoreleasing *)error {
+  auto _Nullable messagesDirectoryURL = [NSURL tin_messagesDirectoryURLWithAppGroup:appGroupID
+                                                                             scheme:scheme];
+  if (!messagesDirectoryURL) {
+    if (error) {
+      *error = [NSError lt_errorWithCode:TINErrorCodeAppGroupAccessFailed];
+    }
+    return NO;
+  }
+  return [self removeItemAtURL:nn(messagesDirectoryURL) error:error];
 }
 
 @end
