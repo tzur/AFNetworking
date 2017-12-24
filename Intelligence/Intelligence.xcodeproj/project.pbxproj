@@ -74,6 +74,8 @@
 		A157B2EF1ED6B299008B920D /* INTAnalytricksDeviceInfoChanged.json in Sources */ = {isa = PBXBuildFile; fileRef = A157B2C81ED6AF7F008B920D /* INTAnalytricksDeviceInfoChanged.json */; };
 		A157B34E1ED6D212008B920D /* INTDeviceTokenChangedEvent.json in Sources */ = {isa = PBXBuildFile; fileRef = A157B3331ED6D192008B920D /* INTDeviceTokenChangedEvent.json */; };
 		A157B37E1ED6EFC3008B920D /* INTAnalytricksDeviceTokenChanged.json in Sources */ = {isa = PBXBuildFile; fileRef = A157B3631ED6EF60008B920D /* INTAnalytricksDeviceTokenChanged.json */; };
+		A16326771FEFB60400A02640 /* INTRecordStorage.mm in Sources */ = {isa = PBXBuildFile; fileRef = A16326521FEFB60300A02640 /* INTRecordStorage.mm */; };
+		A16326791FEFB68E00A02640 /* INTRecordStorageSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = A16326781FEFB68E00A02640 /* INTRecordStorageSpec.mm */; };
 		A16326F71FEFB75100A02640 /* libFMDB-IOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A16326C21FEFB72100A02640 /* libFMDB-IOS.a */; };
 		A17E08ED1ED1D47A007940A0 /* INTAnalytricksDeepLinkOpened.json in Sources */ = {isa = PBXBuildFile; fileRef = A17E08D61ED1D30A007940A0 /* INTAnalytricksDeepLinkOpened.json */; };
 		A17E08EF1ED1D6E4007940A0 /* INTAnalytricksPushNotificationOpened.json in Sources */ = {isa = PBXBuildFile; fileRef = A17E08EE1ED1D632007940A0 /* INTAnalytricksPushNotificationOpened.json */; };
@@ -571,6 +573,9 @@
 		A157B2C81ED6AF7F008B920D /* INTAnalytricksDeviceInfoChanged.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = INTAnalytricksDeviceInfoChanged.json; sourceTree = "<group>"; };
 		A157B3331ED6D192008B920D /* INTDeviceTokenChangedEvent.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = INTDeviceTokenChangedEvent.json; sourceTree = "<group>"; };
 		A157B3631ED6EF60008B920D /* INTAnalytricksDeviceTokenChanged.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = INTAnalytricksDeviceTokenChanged.json; sourceTree = "<group>"; };
+		A16326521FEFB60300A02640 /* INTRecordStorage.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = INTRecordStorage.mm; sourceTree = "<group>"; };
+		A16326761FEFB60300A02640 /* INTRecordStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INTRecordStorage.h; sourceTree = "<group>"; };
+		A16326781FEFB68E00A02640 /* INTRecordStorageSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = INTRecordStorageSpec.mm; sourceTree = "<group>"; };
 		A16326AA1FEFB72100A02640 /* fmdb.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = fmdb.xcodeproj; path = ../third_party/fmdb/fmdb.xcodeproj; sourceTree = "<group>"; };
 		A172A9BF1EAC112D00A12B86 /* INTEventLogger.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = INTEventLogger.h; sourceTree = "<group>"; };
 		A17E08D61ED1D30A007940A0 /* INTAnalytricksDeepLinkOpened.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = INTAnalytricksDeepLinkOpened.json; sourceTree = "<group>"; };
@@ -1084,6 +1089,8 @@
 			children = (
 				A1541B8A1EAF2C4300B4F064 /* INTAppLifecycleTimer.h */,
 				A1541B8B1EAF2D1400B4F064 /* INTAppLifecycleTimer.mm */,
+				A16326761FEFB60300A02640 /* INTRecordStorage.h */,
+				A16326521FEFB60300A02640 /* INTRecordStorage.mm */,
 				A1089F6A1EB76EFB0037B6BE /* NSDictionary+Merge.h */,
 				A1089F6B1EB76EFB0037B6BE /* NSDictionary+Merge.mm */,
 				A17E0A4B1ED4350C007940A0 /* NSLocale+Country.h */,
@@ -1098,7 +1105,7 @@
 			isa = PBXGroup;
 			children = (
 				A1541C091EAF405100B4F064 /* INTAppLifecycleTimerSpec.mm */,
-				A16326781FEFB68E00A02640 /* INTJSONStorageSpec.mm */,
+				A16326781FEFB68E00A02640 /* INTRecordStorageSpec.mm */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -1702,6 +1709,7 @@
 				A149BB561EBE56D000DA82B7 /* INTAnalytricksContext+Merge.mm in Sources */,
 				A1417C801E6EF77C005DBEFF /* INTEventMetadata.mm in Sources */,
 				A140117B1FCEA2BD00760DE5 /* NSError+Intelligence.mm in Sources */,
+				A16326771FEFB60400A02640 /* INTRecordStorage.mm in Sources */,
 				A11723701ECC787E0039177C /* INTDeviceInfoLoadedEvent.mm in Sources */,
 				A117236D1ECC767C0039177C /* NSUUID+Zero.mm in Sources */,
 				A1541AF41EAF1CB000B4F064 /* INTEventsPipeline.mm in Sources */,
@@ -1719,6 +1727,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A16326791FEFB68E00A02640 /* INTRecordStorageSpec.mm in Sources */,
 				A149BB5C1EBE574900DA82B7 /* INTAnalytricksContextGeneratorsSpec.mm in Sources */,
 				A117235B1ECC5C890039177C /* INTFakeDeviceInfoSource.mm in Sources */,
 				A132A3781EBCD08D001F70A6 /* INTAnalytricksFakeBase.json in Sources */,
