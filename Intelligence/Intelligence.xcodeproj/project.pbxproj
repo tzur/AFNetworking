@@ -32,6 +32,8 @@
 		A132A37A1EBCD08D001F70A6 /* INTAnalytricksFakeConcrete.json in Sources */ = {isa = PBXBuildFile; fileRef = A132A34D1EBCCDF3001F70A6 /* INTAnalytricksFakeConcrete.json */; };
 		A132A37B1EBCD08D001F70A6 /* INTFakeInternalEvent.json in Sources */ = {isa = PBXBuildFile; fileRef = A132A3561EBCCDF3001F70A6 /* INTFakeInternalEvent.json */; };
 		A132A37D1EBCD200001F70A6 /* INTEventCodeGenerationSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = A132A37C1EBCD200001F70A6 /* INTEventCodeGenerationSpec.mm */; };
+		A14013A91FD01CBA00760DE5 /* ReactiveObjC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A14012371FCFE7D500760DE5 /* ReactiveObjC.framework */; };
+		A14013CD1FD0358B00760DE5 /* libLLReactiveMatchers.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A14013BC1FD0350100760DE5 /* libLLReactiveMatchers.a */; };
 		A14171C61E6EAC0D005DBEFF /* libIntelligence.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A14171A11E6EAA93005DBEFF /* libIntelligence.a */; };
 		A14173401E6EB59F005DBEFF /* libExpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A141728A1E6EAEE7005DBEFF /* libExpecta.a */; };
 		A14173411E6EB59F005DBEFF /* libLTKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A141726F1E6EADDF005DBEFF /* libLTKit.a */; };
@@ -165,6 +167,76 @@
 			proxyType = 2;
 			remoteGlobalIDString = D0E9C36119F6DB38000D427D;
 			remoteInfo = "Mantle-iOSTests";
+		};
+		A14012321FCFE7D500760DE5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A14012281FCFE7D500760DE5 /* ReactiveObjC.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D04725EA19E49ED7006002AA;
+			remoteInfo = "ReactiveObjC-macOS";
+		};
+		A14012341FCFE7D500760DE5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A14012281FCFE7D500760DE5 /* ReactiveObjC.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D04725F519E49ED7006002AA;
+			remoteInfo = "ReactiveObjC-macOSTests";
+		};
+		A14012361FCFE7D500760DE5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A14012281FCFE7D500760DE5 /* ReactiveObjC.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D047260C19E49F82006002AA;
+			remoteInfo = "ReactiveObjC-iOS";
+		};
+		A14012381FCFE7D500760DE5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A14012281FCFE7D500760DE5 /* ReactiveObjC.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D047261619E49F82006002AA;
+			remoteInfo = "ReactiveObjC-iOSTests";
+		};
+		A140123A1FCFE7D500760DE5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A14012281FCFE7D500760DE5 /* ReactiveObjC.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = A9B315541B3940610001CB9C;
+			remoteInfo = "ReactiveObjC-watchOS";
+		};
+		A140123C1FCFE7D500760DE5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A14012281FCFE7D500760DE5 /* ReactiveObjC.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 57A4D2411BA13D7A00F7D4B1;
+			remoteInfo = "ReactiveObjC-tvOS";
+		};
+		A140123E1FCFE7D500760DE5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A14012281FCFE7D500760DE5 /* ReactiveObjC.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 7DFBED031CDB8C9500EE435B;
+			remoteInfo = "ReactiveObjC-tvOSTests";
+		};
+		A14013091FCFEA2600760DE5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A14012281FCFE7D500760DE5 /* ReactiveObjC.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = D047260B19E49F82006002AA;
+			remoteInfo = "ReactiveObjC-iOS";
+		};
+		A14013BB1FD0350100760DE5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A14013B61FD0350100760DE5 /* LLReactiveMatchers.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 21FD0A4A1850470000DB455B;
+			remoteInfo = LLReactiveMatchers;
+		};
+		A14013BD1FD0350100760DE5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A14013B61FD0350100760DE5 /* LLReactiveMatchers.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 21FD0A5A1850470000DB455B;
+			remoteInfo = LLReactiveMatchersTests;
 		};
 		A14171C71E6EAC0D005DBEFF /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -388,6 +460,8 @@
 		A132A34D1EBCCDF3001F70A6 /* INTAnalytricksFakeConcrete.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = INTAnalytricksFakeConcrete.json; path = ConcreteEvents/INTAnalytricksFakeConcrete.json; sourceTree = "<group>"; };
 		A132A3561EBCCDF3001F70A6 /* INTFakeInternalEvent.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = INTFakeInternalEvent.json; path = InternalEvents/INTFakeInternalEvent.json; sourceTree = "<group>"; };
 		A132A37C1EBCD200001F70A6 /* INTEventCodeGenerationSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = INTEventCodeGenerationSpec.mm; sourceTree = "<group>"; };
+		A14012281FCFE7D500760DE5 /* ReactiveObjC.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactiveObjC.xcodeproj; path = ../third_party/ReactiveObjC/ReactiveObjC.xcodeproj; sourceTree = "<group>"; };
+		A14013B61FD0350100760DE5 /* LLReactiveMatchers.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LLReactiveMatchers.xcodeproj; path = ../third_party/LLReactiveMatchers/LLReactiveMatchers.xcodeproj; sourceTree = "<group>"; };
 		A14171A11E6EAA93005DBEFF /* libIntelligence.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libIntelligence.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		A14171C11E6EAC0D005DBEFF /* IntelligenceTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = IntelligenceTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A14171C51E6EAC0D005DBEFF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -507,10 +581,12 @@
 				A1417AAE1E6EDA31005DBEFF /* GLKit.framework in Frameworks */,
 				A11722DD1ECC5AA90039177C /* Mantle.framework in Frameworks */,
 				A1417AAC1E6ED9D5005DBEFF /* QuartzCore.framework in Frameworks */,
+				A14013A91FD01CBA00760DE5 /* ReactiveObjC.framework in Frameworks */,
 				A1F24D101EC0BFBD0050D534 /* SystemConfiguration.framework in Frameworks */,
 				A1417A921E6ED9CB005DBEFF /* UIKit.framework in Frameworks */,
 				A14173401E6EB59F005DBEFF /* libExpecta.a in Frameworks */,
 				A14171C61E6EAC0D005DBEFF /* libIntelligence.a in Frameworks */,
+				A14013CD1FD0358B00760DE5 /* libLLReactiveMatchers.a in Frameworks */,
 				A14173411E6EB59F005DBEFF /* libLTKit.a in Frameworks */,
 				19C886B71FC43EC6009F147E /* libLTKitTestUtils.a in Frameworks */,
 				A14173421E6EB59F005DBEFF /* libOCMock.a in Frameworks */,
@@ -637,6 +713,29 @@
 			path = EventSchemas;
 			sourceTree = "<group>";
 		};
+		A14012291FCFE7D500760DE5 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A14012331FCFE7D500760DE5 /* ReactiveObjC.framework */,
+				A14012351FCFE7D500760DE5 /* ReactiveObjCTests.xctest */,
+				A14012371FCFE7D500760DE5 /* ReactiveObjC.framework */,
+				A14012391FCFE7D500760DE5 /* ReactiveObjCTests.xctest */,
+				A140123B1FCFE7D500760DE5 /* ReactiveObjC.framework */,
+				A140123D1FCFE7D500760DE5 /* ReactiveObjC.framework */,
+				A140123F1FCFE7D500760DE5 /* ReactiveObjCTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A14013B71FD0350100760DE5 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A14013BC1FD0350100760DE5 /* libLLReactiveMatchers.a */,
+				A14013BE1FD0350100760DE5 /* LLReactiveMatchersTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		A14171981E6EAA93005DBEFF = {
 			isa = PBXGroup;
 			children = (
@@ -703,9 +802,11 @@
 			isa = PBXGroup;
 			children = (
 				A14172741E6EAEE7005DBEFF /* Expecta.xcodeproj */,
+				A14013B61FD0350100760DE5 /* LLReactiveMatchers.xcodeproj */,
 				A14172691E6EADDF005DBEFF /* LTKit.xcodeproj */,
 				A11722CE1ECC5A950039177C /* Mantle.xcodeproj */,
 				A141728F1E6EAF03005DBEFF /* OCMock.xcodeproj */,
+				A14012281FCFE7D500760DE5 /* ReactiveObjC.xcodeproj */,
 				A14172A41E6EAF0D005DBEFF /* Specta.xcodeproj */,
 				A14172D71E6EB2FF005DBEFF /* TestHost.xcodeproj */,
 			);
@@ -1041,6 +1142,7 @@
 				A108A0441EBA19430037B6BE /* PBXBuildRule */,
 			);
 			dependencies = (
+				A140130A1FCFEA2600760DE5 /* PBXTargetDependency */,
 			);
 			name = Intelligence;
 			productName = Intelligence;
@@ -1104,6 +1206,10 @@
 					ProjectRef = A14172741E6EAEE7005DBEFF /* Expecta.xcodeproj */;
 				},
 				{
+					ProductGroup = A14013B71FD0350100760DE5 /* Products */;
+					ProjectRef = A14013B61FD0350100760DE5 /* LLReactiveMatchers.xcodeproj */;
+				},
+				{
 					ProductGroup = A141726A1E6EADDF005DBEFF /* Products */;
 					ProjectRef = A14172691E6EADDF005DBEFF /* LTKit.xcodeproj */;
 				},
@@ -1114,6 +1220,10 @@
 				{
 					ProductGroup = A14172901E6EAF03005DBEFF /* Products */;
 					ProjectRef = A141728F1E6EAF03005DBEFF /* OCMock.xcodeproj */;
+				},
+				{
+					ProductGroup = A14012291FCFE7D500760DE5 /* Products */;
+					ProjectRef = A14012281FCFE7D500760DE5 /* ReactiveObjC.xcodeproj */;
 				},
 				{
 					ProductGroup = A14172A51E6EAF0D005DBEFF /* Products */;
@@ -1166,6 +1276,69 @@
 			fileType = wrapper.cfbundle;
 			path = "Mantle-iOSTests.xctest";
 			remoteRef = A11722DB1ECC5A950039177C /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		A14012331FCFE7D500760DE5 /* ReactiveObjC.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = ReactiveObjC.framework;
+			remoteRef = A14012321FCFE7D500760DE5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		A14012351FCFE7D500760DE5 /* ReactiveObjCTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = ReactiveObjCTests.xctest;
+			remoteRef = A14012341FCFE7D500760DE5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		A14012371FCFE7D500760DE5 /* ReactiveObjC.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = ReactiveObjC.framework;
+			remoteRef = A14012361FCFE7D500760DE5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		A14012391FCFE7D500760DE5 /* ReactiveObjCTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = ReactiveObjCTests.xctest;
+			remoteRef = A14012381FCFE7D500760DE5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		A140123B1FCFE7D500760DE5 /* ReactiveObjC.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = ReactiveObjC.framework;
+			remoteRef = A140123A1FCFE7D500760DE5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		A140123D1FCFE7D500760DE5 /* ReactiveObjC.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = ReactiveObjC.framework;
+			remoteRef = A140123C1FCFE7D500760DE5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		A140123F1FCFE7D500760DE5 /* ReactiveObjCTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = ReactiveObjCTests.xctest;
+			remoteRef = A140123E1FCFE7D500760DE5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		A14013BC1FD0350100760DE5 /* libLLReactiveMatchers.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libLLReactiveMatchers.a;
+			remoteRef = A14013BB1FD0350100760DE5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		A14013BE1FD0350100760DE5 /* LLReactiveMatchersTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = LLReactiveMatchersTests.xctest;
+			remoteRef = A14013BD1FD0350100760DE5 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		A141726F1E6EADDF005DBEFF /* libLTKit.a */ = {
@@ -1453,6 +1626,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		A140130A1FCFEA2600760DE5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "ReactiveObjC-iOS";
+			targetProxy = A14013091FCFEA2600760DE5 /* PBXContainerItemProxy */;
+		};
 		A14171C81E6EAC0D005DBEFF /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = A14171A01E6EAA93005DBEFF /* Intelligence */;
@@ -1547,6 +1725,7 @@
 					"$(inherited)",
 					"$(SRCROOT)/../Intelligence",
 					"$(SRCROOT)/../third_party/Expecta",
+					"$(SRCROOT)/../third_party/LLReactiveMatchers",
 					"$(SRCROOT)/../third_party/OCMock/Source",
 					"$(SRCROOT)/../third_party/Specta/Specta",
 				);
@@ -1570,6 +1749,7 @@
 					"$(inherited)",
 					"$(SRCROOT)/../Intelligence",
 					"$(SRCROOT)/../third_party/Expecta",
+					"$(SRCROOT)/../third_party/LLReactiveMatchers",
 					"$(SRCROOT)/../third_party/OCMock/Source",
 					"$(SRCROOT)/../third_party/Specta/Specta",
 				);

@@ -9,3 +9,4 @@
 
 // Third Party.
 #import <Mantle/Mantle.h>
+#import <ReactiveObjC/ReactiveObjC.h>
