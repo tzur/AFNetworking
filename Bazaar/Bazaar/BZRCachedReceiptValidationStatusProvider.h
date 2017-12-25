@@ -32,11 +32,8 @@ NS_ASSUME_NONNULL_BEGIN
            underlyingProvider:(id<BZRReceiptValidationStatusProvider>)underlyingProvider
         cachedEntryDaysToLive:(NSUInteger)cachedEntryDaysToLive NS_DESIGNATED_INITIALIZER;
 
-/// Loads receipt validation status cache entry of the application specified by
-/// \c applicationBundleID. If the cache entry couldn't be found or there was an error \c nil will
-/// be returned.
-- (nullable BZRReceiptValidationStatusCacheEntry *)loadReceiptValidationStatusCacheEntryFromStorage:
-    (NSString *)applicationBundleID;
+/// Cache used to store and load receipt validation status cache entries.
+@property (readonly, nonatomic) BZRReceiptValidationStatusCache *receiptValidationStatusCache;
 
 @end
 
@@ -47,8 +44,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// Maps product application bundle ID to receipt validation status.
 typedef NSDictionary<NSString *, BZRReceiptValidationStatus *> BZRMultiAppReceiptValidationStatus;
 
-/// Adds convenience methods for fetching and loading receipt validation status of multiple
-/// applications.
+/// Adds convenience methods for fetching receipt validation statuses of multiple applications.
 @interface BZRCachedReceiptValidationStatusProvider (MultiApp)
 
 /// Fetches receipt validation status of the applications specified by \c bundledApplicationsIDs.
@@ -61,12 +57,6 @@ typedef NSDictionary<NSString *, BZRReceiptValidationStatus *> BZRMultiAppReceip
 /// \c lt_underlyingErrors.
 - (RACSignal<BZRMultiAppReceiptValidationStatus *> *)fetchReceiptValidationStatuses:
     (NSSet<NSString *> *)bundledApplicationsIDs;
-
-/// Loads the cache entry of the applications specified by \c bundledApplicationsIDs. If there was
-/// an error loading a cache cache entry or it was not found in cache, it will not appear in the
-/// returned dictionary.
-- (NSDictionary<NSString *, BZRReceiptValidationStatusCacheEntry *> *)
-    loadReceiptValidationStatusCacheEntries:(NSSet<NSString *> *)bundledApplicationsIDs;
 
 @end
 

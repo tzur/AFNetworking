@@ -154,7 +154,7 @@ NS_ASSUME_NONNULL_BEGIN
 
     _periodicValidatorActivator =
         [[BZRPeriodicReceiptValidatorActivator alloc]
-         initWithValidationStatusProvider:cacheReceiptValidationStatusProvider
+         initWithReceiptValidationStatusCache:receiptValidationStatusCache
          timeProvider:timeProvider bundledApplicationsIDs:bundledApplicationsID
          aggregatedValidationStatusProvider:self.validationStatusProvider];
 

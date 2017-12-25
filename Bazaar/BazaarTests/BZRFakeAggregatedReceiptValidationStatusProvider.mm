@@ -5,6 +5,7 @@
 
 #import "BZRCachedReceiptValidationStatusProvider.h"
 #import "BZRMultiAppReceiptValidationStatusAggregator.h"
+#import "BZRReceiptValidationStatusCache.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -28,9 +29,11 @@ NS_ASSUME_NONNULL_BEGIN
   OCMStub([provider eventsSignal]).andReturn([RACSignal empty]);
   BZRMultiAppReceiptValidationStatusAggregator *aggregator =
       OCMClassMock([BZRMultiAppReceiptValidationStatusAggregator class]);
+  BZRReceiptValidationStatusCache *cache = OCMClassMock([BZRReceiptValidationStatusCache class]);
+  OCMStub([provider receiptValidationStatusCache]).andReturn(cache);
 
   return [super initWithUnderlyingProvider:provider aggregator:aggregator
-          bundledApplicationsIDs:@[@"foo", @"bar"].lt_set];
+                    bundledApplicationsIDs:@[@"foo", @"bar"].lt_set];
 }
 
 - (RACSignal *)fetchReceiptValidationStatus {

@@ -20,8 +20,9 @@
 SpecBegin(BZRAggregatedReceiptValidationStatusProvider)
 
 __block BZRCachedReceiptValidationStatusProvider *underlyingProvider;
-__block BZRMultiAppReceiptValidationStatusAggregator *aggregator;
 __block RACSubject *underlyingProviderEventsSubject;
+__block BZRMultiAppReceiptValidationStatusAggregator *aggregator;
+__block BZRReceiptValidationStatusCache *receiptValidationStatusCache;
 __block NSSet<NSString *> *bundledApplicationsIDs;
 __block BZRAggregatedReceiptValidationStatusProvider *receiptValidationStatusAggregator;
 
@@ -30,6 +31,9 @@ beforeEach(^{
   underlyingProviderEventsSubject = [RACSubject subject];
   OCMStub([underlyingProvider eventsSignal]).andReturn(underlyingProviderEventsSubject);
   aggregator = OCMClassMock([BZRMultiAppReceiptValidationStatusAggregator class]);
+  receiptValidationStatusCache = OCMClassMock([BZRReceiptValidationStatusCache class]);
+  OCMStub([underlyingProvider receiptValidationStatusCache])
+      .andReturn(receiptValidationStatusCache);
   bundledApplicationsIDs = @[@"com.lt.otherApp", @"com.lt.anotherApp"].lt_set;
   receiptValidationStatusAggregator = [[BZRAggregatedReceiptValidationStatusProvider alloc]
       initWithUnderlyingProvider:underlyingProvider aggregator:aggregator
@@ -83,7 +87,9 @@ context(@"aggregated receipt validation status property", ^{
 
     it(@"should be nil if aggregator returned nil on the receipt validation statuses from cache", ^{
       underlyingProvider = OCMClassMock([BZRCachedReceiptValidationStatusProvider class]);
-      OCMStub([underlyingProvider loadReceiptValidationStatusCacheEntries:OCMOCK_ANY])
+      OCMStub([underlyingProvider receiptValidationStatusCache])
+          .andReturn(receiptValidationStatusCache);
+      OCMStub([receiptValidationStatusCache loadReceiptValidationStatusCacheEntries:OCMOCK_ANY])
           .andReturn(@{});
 
       receiptValidationStatusAggregator = [[BZRAggregatedReceiptValidationStatusProvider alloc]
@@ -100,8 +106,8 @@ context(@"aggregated receipt validation status property", ^{
       auto cacheEntry = [[BZRReceiptValidationStatusCacheEntry alloc]
                          initWithReceiptValidationStatus:receiptValidationStatus
                          cachingDateTime:[NSDate date]];
-      OCMStub([underlyingProvider
-          loadReceiptValidationStatusCacheEntryFromStorage:OCMOCK_ANY])
+      OCMStub([receiptValidationStatusCache
+          loadReceiptValidationStatusCacheEntries:OCMOCK_ANY])
           .andReturn(@{@"foo": cacheEntry});
       OCMStub([aggregator aggregateMultiAppReceiptValidationStatuses:OCMOCK_ANY])
           .andReturn(receiptValidationStatus);

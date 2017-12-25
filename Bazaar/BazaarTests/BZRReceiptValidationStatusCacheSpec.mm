@@ -6,6 +6,7 @@
 #import "BZRKeychainStorageRoute.h"
 #import "BZRReceiptModel.h"
 #import "BZRReceiptValidationStatus.h"
+#import "BZRTestUtils.h"
 #import "BZRTimeProvider.h"
 #import "NSErrorCodes+Bazaar.h"
 
@@ -126,6 +127,53 @@ context(@"cache access", ^{
 
     expect(error).to.equal(storageError);
     expect(value).to.beNil();
+  });
+});
+
+context(@"loading multiple cache entries from cache", ^{
+  __block BZRReceiptValidationStatusCacheEntry *cacheEntry;
+
+  beforeEach(^{
+    validationStatusCache = OCMPartialMock(validationStatusCache);
+    receiptValidationStatus = BZRReceiptValidationStatusWithExpiry(YES);
+    cacheEntry = [[BZRReceiptValidationStatusCacheEntry alloc]
+                  initWithReceiptValidationStatus:receiptValidationStatus
+                  cachingDateTime:[NSDate date]];
+  });
+
+  afterEach(^{
+    validationStatusCache = nil;
+  });
+
+  it(@"should return dictionary with the receipt validation status of the requested bundle IDs", ^{
+    auto secondReceiptValidationStatus = BZRReceiptValidationStatusWithExpiry(NO);
+    auto secondReceiptValidationStatusCacheEntry =
+        [[BZRReceiptValidationStatusCacheEntry alloc]
+         initWithReceiptValidationStatus:secondReceiptValidationStatus
+         cachingDateTime:[NSDate dateWithTimeIntervalSince1970:1337]];
+
+    OCMStub([validationStatusCache loadCacheEntryOfApplicationWithBundleID:@"foo"
+        error:[OCMArg anyObjectRef]]).andReturn(cacheEntry);
+    OCMStub([validationStatusCache loadCacheEntryOfApplicationWithBundleID:@"bar"
+        error:[OCMArg anyObjectRef]]).andReturn(secondReceiptValidationStatusCacheEntry);
+
+    auto cacheEntries =
+        [validationStatusCache loadReceiptValidationStatusCacheEntries:@[@"foo", @"bar"].lt_set];
+
+    expect(cacheEntries).to.equal(@{
+      @"foo": cacheEntry,
+      @"bar": secondReceiptValidationStatusCacheEntry
+    });
+  });
+
+  it(@"should return dictionary without bundleIDs whose cache entry wasn't found", ^{
+    OCMStub([validationStatusCache loadCacheEntryOfApplicationWithBundleID:@"foo"
+        error:[OCMArg anyObjectRef]]).andReturn(cacheEntry);
+
+    auto cacheEntries =
+        [validationStatusCache loadReceiptValidationStatusCacheEntries:@[@"foo", @"bar"].lt_set];
+
+    expect(cacheEntries).to.equal(@{@"foo": cacheEntry});
   });
 });
 
