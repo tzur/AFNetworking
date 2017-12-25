@@ -57,6 +57,13 @@ using namespace spx;
 /// Button that allows the user to restore previous subscription.
 @property (readonly, nonatomic) SPXRestorePurchasesButton *restorePurchasesButton;
 
+/// View contains \c subscriptionButtonsView and \c restorePurchasesButton with padding between
+/// them.
+@property (readonly, nonatomic) UIView *buttonsContainer;
+
+/// View contains centered \c buttonsContainer with top and bottom margins.
+@property (readonly, nonatomic) UIView *buttonsContainerWithMargins;
+
 /// View for subscription terms of use text and documents links.
 @property (readonly, nonatomic) SPXSubscriptionTermsView *termsView;
 
@@ -121,8 +128,10 @@ using namespace spx;
 
   if (self.view.frame.size.width < self.view.frame.size.height) {
     self.pagingView.pageViewWidthRatio = 0.84;
+    self.pagingView.spacingRatio = 0.05;
   } else {
     self.pagingView.pageViewWidthRatio = 0.42;
+    self.pagingView.spacingRatio = 0.4;
   }
 }
 
@@ -132,10 +141,11 @@ using namespace spx;
 
 - (void)setupSubviews {
   [self setupBackgroundView];
+  [self setupTerms];
   [self setupPageingView];
+  [self setupButtonsContainer];
   [self setupButtons];
   [self setupRestorePurchasesButton];
-  [self setupTerms];
   [self setupActivityIndicator];
 }
 
@@ -157,6 +167,7 @@ using namespace spx;
   [self.pagingView mas_makeConstraints:^(MASConstraintMaker *make) {
     make.top.left.right.equalTo(self.view);
     make.height.equalTo(self.view).multipliedBy(0.58).priorityHigh();
+    make.height.mas_lessThanOrEqualTo(self.view.mas_width).multipliedBy(0.95);
   }];
   self.pagingView.pageViews = [self createPageViews];
 }
@@ -173,16 +184,34 @@ using namespace spx;
   }];
 }
 
-- (void)setupButtons {
-  auto topPaddingView = [self addPaddingSubviewBeneathView:self.pagingView heightRatio:0.01
-                                                 maxHeight:120];
+- (void)setupButtonsContainer {
+  _buttonsContainerWithMargins = [[UIView alloc] init];
+  [self.view addSubview:self.buttonsContainerWithMargins];
 
+  [self.buttonsContainerWithMargins mas_makeConstraints:^(MASConstraintMaker *make) {
+    make.left.right.equalTo(self.view);
+    make.top.equalTo(self.pagingView.mas_bottom);
+    make.bottom.equalTo(self.termsView.mas_top);
+  }];
+
+  _buttonsContainer = [[UIView alloc] init];
+  [self.buttonsContainerWithMargins addSubview:self.buttonsContainer];
+
+  [self.buttonsContainer mas_makeConstraints:^(MASConstraintMaker *make) {
+    make.left.right.equalTo(self.buttonsContainerWithMargins);
+    make.center.equalTo(self.buttonsContainerWithMargins);
+    make.height.equalTo(self.view).multipliedBy(0.24).priorityHigh();
+    make.height.mas_lessThanOrEqualTo(230);
+  }];
+}
+
+- (void)setupButtons {
   _subscriptionButtonsView = [[SPXButtonsHorizontalLayoutView alloc] init];
-  [self.view addSubview:self.subscriptionButtonsView];
+  [self.buttonsContainer addSubview:self.subscriptionButtonsView];
 
   [self.subscriptionButtonsView mas_makeConstraints:^(MASConstraintMaker *make) {
     make.left.right.equalTo(self.view);
-    make.top.equalTo(topPaddingView.mas_bottom);
+    make.top.equalTo(self.buttonsContainer);
     make.height.equalTo(self.view).multipliedBy(0.197).priorityHigh();
     make.height.mas_lessThanOrEqualTo(167);
     make.height.mas_lessThanOrEqualTo(self.view.mas_width).multipliedBy(0.32);
@@ -200,16 +229,13 @@ using namespace spx;
 }
 
 - (void)setupRestorePurchasesButton {
-  auto topPaddingView = [self addPaddingSubviewBeneathView:self.subscriptionButtonsView
-                                               heightRatio:0.015 maxHeight:20];
-
   _restorePurchasesButton = [[SPXRestorePurchasesButton alloc] init];
   self.restorePurchasesButton.textColor = self.viewModel.colorScheme.textColor;
 
-  [self.view addSubview:self.restorePurchasesButton];
+  [self.buttonsContainer addSubview:self.restorePurchasesButton];
   [self.restorePurchasesButton mas_makeConstraints:^(MASConstraintMaker *make) {
-    make.top.equalTo(topPaddingView.mas_bottom);
-    make.centerX.equalTo(self.view);
+    make.bottom.centerX.equalTo(self.buttonsContainer);
+    make.height.equalTo(@16);
   }];
 }
 
@@ -237,22 +263,6 @@ using namespace spx;
   [self.activityIndicatorView mas_makeConstraints:^(MASConstraintMaker *make) {
     make.edges.equalTo(self.view);
   }];
-}
-
-- (UIView *)addPaddingSubviewBeneathView:(UIView *)view heightRatio:(CGFloat)heightRatio
-                               maxHeight:(NSUInteger)maxHeight {
-  auto paddingView = [[UIView alloc] init];
-  paddingView.hidden = YES;
-  [self.view addSubview:paddingView];
-
-  [paddingView mas_makeConstraints:^(MASConstraintMaker *make) {
-    make.left.right.equalTo(self.view);
-    make.top.equalTo(view.mas_bottom);
-    make.height.equalTo(self.view).multipliedBy(heightRatio).priorityHigh();
-    make.height.mas_lessThanOrEqualTo(maxHeight);
-  }];
-
-  return paddingView;
 }
 
 #pragma mark -
