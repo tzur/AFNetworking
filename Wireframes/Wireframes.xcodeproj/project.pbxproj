@@ -70,6 +70,7 @@
 		CDAC8D2A1FC45C1300B197B3 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDAC8D061FC45C0B00B197B3 /* AVFoundation.framework */; };
 		CDAC8D2C1FC45C2200B197B3 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDAC8D2B1FC45C1B00B197B3 /* CoreMedia.framework */; };
 		CDE00AE41E82AE1F007AFD5E /* libcompression.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = CDE00AE31E82AE1F007AFD5E /* libcompression.tbd */; };
+		CDF61FF81FEC08E400D05AEC /* Masonry.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDF61FF51FEC08BA00D05AEC /* Masonry.framework */; };
 		EA7966DD1FDEB416003658B8 /* ZeroLengthTestVideo.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = EA7966B91FDEB37A003658B8 /* ZeroLengthTestVideo.mp4 */; };
 		EA7967A31FDEB9E0003658B8 /* HalfSecondTestVideo.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = EA7967A21FDEB9CB003658B8 /* HalfSecondTestVideo.mp4 */; };
 /* End PBXBuildFile section */
@@ -355,6 +356,27 @@
 			remoteGlobalIDString = D047260B19E49F82006002AA;
 			remoteInfo = "ReactiveObjC-iOS";
 		};
+		CDF61FF41FEC08BA00D05AEC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CDF61FEF1FEC08BA00D05AEC /* Masonry.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 3AED05B71AD59FD40053CC65;
+			remoteInfo = "Masonry iOS";
+		};
+		CDF61FF61FEC08BA00D05AEC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CDF61FEF1FEC08BA00D05AEC /* Masonry.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 3AED06271AD5A1400053CC65;
+			remoteInfo = "Masonry OSX";
+		};
+		CDF61FF91FEC09AE00D05AEC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CDF61FEF1FEC08BA00D05AEC /* Masonry.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 3AED05B61AD59FD40053CC65;
+			remoteInfo = "Masonry iOS";
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -471,6 +493,7 @@
 		CDAC8D061FC45C0B00B197B3 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		CDAC8D2B1FC45C1B00B197B3 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		CDE00AE31E82AE1F007AFD5E /* libcompression.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libcompression.tbd; path = usr/lib/libcompression.tbd; sourceTree = SDKROOT; };
+		CDF61FEF1FEC08BA00D05AEC /* Masonry.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Masonry.xcodeproj; path = ../third_party/Masonry/Masonry.xcodeproj; sourceTree = "<group>"; };
 		EA7966B91FDEB37A003658B8 /* ZeroLengthTestVideo.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = ZeroLengthTestVideo.mp4; sourceTree = "<group>"; };
 		EA7967A21FDEB9CB003658B8 /* HalfSecondTestVideo.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = HalfSecondTestVideo.mp4; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -491,6 +514,7 @@
 				8861FD781E5A2A1C00CA1436 /* CoreGraphics.framework in Frameworks */,
 				CDAC8D2C1FC45C2200B197B3 /* CoreMedia.framework in Frameworks */,
 				8861FD7A1E5A2A3F00CA1436 /* GLKit.framework in Frameworks */,
+				CDF61FF81FEC08E400D05AEC /* Masonry.framework in Frameworks */,
 				8BC7B64C1CF1D8330047BEDE /* Objection-iOS.framework in Frameworks */,
 				8861FD761E5A29F800CA1436 /* QuartzCore.framework in Frameworks */,
 				8B6868691F3B27C000F0EF4C /* ReactiveObjC.framework in Frameworks */,
@@ -731,6 +755,7 @@
 				8B283EA31CBA833C00B745AE /* Expecta.xcodeproj */,
 				8B10C8E31F3EFB4500F76142 /* LLReactiveMatchers.xcodeproj */,
 				8B283EEC1CBA838900B745AE /* LTKit.xcodeproj */,
+				CDF61FEF1FEC08BA00D05AEC /* Masonry.xcodeproj */,
 				8B283ED31CBA834C00B745AE /* OCMock.xcodeproj */,
 				8B68646A1F3347DF00F0EF4C /* ReactiveObjC.xcodeproj */,
 				8B283EBE1CBA834300B745AE /* Specta.xcodeproj */,
@@ -905,6 +930,15 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		CDF61FF01FEC08BA00D05AEC /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				CDF61FF51FEC08BA00D05AEC /* Masonry.framework */,
+				CDF61FF71FEC08BA00D05AEC /* Masonry.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -919,6 +953,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				CDF61FFA1FEC09AE00D05AEC /* PBXTargetDependency */,
 				8B6864831F3347F500F0EF4C /* PBXTargetDependency */,
 			);
 			name = Wireframes;
@@ -989,6 +1024,10 @@
 				{
 					ProductGroup = 8B283EED1CBA838900B745AE /* Products */;
 					ProjectRef = 8B283EEC1CBA838900B745AE /* LTKit.xcodeproj */;
+				},
+				{
+					ProductGroup = CDF61FF01FEC08BA00D05AEC /* Products */;
+					ProjectRef = CDF61FEF1FEC08BA00D05AEC /* Masonry.xcodeproj */;
 				},
 				{
 					ProductGroup = 8B283ED41CBA834C00B745AE /* Products */;
@@ -1275,6 +1314,20 @@
 			remoteRef = 8B6864801F3347DF00F0EF4C /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		CDF61FF51FEC08BA00D05AEC /* Masonry.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Masonry.framework;
+			remoteRef = CDF61FF41FEC08BA00D05AEC /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		CDF61FF71FEC08BA00D05AEC /* Masonry.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Masonry.framework;
+			remoteRef = CDF61FF61FEC08BA00D05AEC /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
@@ -1367,6 +1420,11 @@
 			isa = PBXTargetDependency;
 			name = "ReactiveObjC-iOS";
 			targetProxy = 8B6864821F3347F500F0EF4C /* PBXContainerItemProxy */;
+		};
+		CDF61FFA1FEC09AE00D05AEC /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Masonry iOS";
+			targetProxy = CDF61FF91FEC09AE00D05AEC /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
