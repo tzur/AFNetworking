@@ -34,6 +34,8 @@
 		A132A37D1EBCD200001F70A6 /* INTEventCodeGenerationSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = A132A37C1EBCD200001F70A6 /* INTEventCodeGenerationSpec.mm */; };
 		A14013A91FD01CBA00760DE5 /* ReactiveObjC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A14012371FCFE7D500760DE5 /* ReactiveObjC.framework */; };
 		A14013CD1FD0358B00760DE5 /* libLLReactiveMatchers.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A14013BC1FD0350100760DE5 /* libLLReactiveMatchers.a */; };
+		A140117B1FCEA2BD00760DE5 /* NSError+Intelligence.mm in Sources */ = {isa = PBXBuildFile; fileRef = A140117A1FCEA2BD00760DE5 /* NSError+Intelligence.mm */; };
+		A14013181FCFF73E00760DE5 /* NSError+IntelligenceSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = A14013171FCFF73E00760DE5 /* NSError+IntelligenceSpec.mm */; };
 		A14171C61E6EAC0D005DBEFF /* libIntelligence.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A14171A11E6EAA93005DBEFF /* libIntelligence.a */; };
 		A14173401E6EB59F005DBEFF /* libExpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A141728A1E6EAEE7005DBEFF /* libExpecta.a */; };
 		A14173411E6EB59F005DBEFF /* libLTKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A141726F1E6EADDF005DBEFF /* libLTKit.a */; };
@@ -462,6 +464,9 @@
 		A132A37C1EBCD200001F70A6 /* INTEventCodeGenerationSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = INTEventCodeGenerationSpec.mm; sourceTree = "<group>"; };
 		A14012281FCFE7D500760DE5 /* ReactiveObjC.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactiveObjC.xcodeproj; path = ../third_party/ReactiveObjC/ReactiveObjC.xcodeproj; sourceTree = "<group>"; };
 		A14013B61FD0350100760DE5 /* LLReactiveMatchers.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LLReactiveMatchers.xcodeproj; path = ../third_party/LLReactiveMatchers/LLReactiveMatchers.xcodeproj; sourceTree = "<group>"; };
+		A14011791FCEA2BD00760DE5 /* NSError+Intelligence.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSError+Intelligence.h"; sourceTree = "<group>"; };
+		A140117A1FCEA2BD00760DE5 /* NSError+Intelligence.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSError+Intelligence.mm"; sourceTree = "<group>"; };
+		A14013171FCFF73E00760DE5 /* NSError+IntelligenceSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSError+IntelligenceSpec.mm"; sourceTree = "<group>"; };
 		A14171A11E6EAA93005DBEFF /* libIntelligence.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libIntelligence.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		A14171C11E6EAC0D005DBEFF /* IntelligenceTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = IntelligenceTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A14171C51E6EAC0D005DBEFF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -951,6 +956,8 @@
 				A1417C7E1E6EF77C005DBEFF /* INTEventMetadata.h */,
 				A1417C7F1E6EF77C005DBEFF /* INTEventMetadata.mm */,
 				A108A0411EBA129C0037B6BE /* INTJSONSerializable.h */,
+				A14011791FCEA2BD00760DE5 /* NSError+Intelligence.h */,
+				A140117A1FCEA2BD00760DE5 /* NSError+Intelligence.mm */,
 				A1FEB71F1FCDF03F003C0557 /* NSErrorCodes+Intelligence.h */,
 				A1FEB7201FCDF03F003C0557 /* NSErrorCodes+Intelligence.mm */,
 			);
@@ -1092,6 +1099,7 @@
 			isa = PBXGroup;
 			children = (
 				A1D136E81E78F4C200B1EA8D /* INTDataStructuresSpec.mm */,
+				A14013171FCFF73E00760DE5 /* NSError+IntelligenceSpec.mm */,
 			);
 			name = Base;
 			sourceTree = "<group>";
@@ -1583,6 +1591,7 @@
 				A1C9433A1EBB358E00BECAB4 /* INTAnalytricksMetadata.json in Sources */,
 				A149BB561EBE56D000DA82B7 /* INTAnalytricksContext+Merge.mm in Sources */,
 				A1417C801E6EF77C005DBEFF /* INTEventMetadata.mm in Sources */,
+				A140117B1FCEA2BD00760DE5 /* NSError+Intelligence.mm in Sources */,
 				A11723701ECC787E0039177C /* INTDeviceInfoLoadedEvent.mm in Sources */,
 				A117236D1ECC767C0039177C /* NSUUID+Zero.mm in Sources */,
 				A1541AF41EAF1CB000B4F064 /* INTEventsPipeline.mm in Sources */,
@@ -1611,6 +1620,7 @@
 				A132A37D1EBCD200001F70A6 /* INTEventCodeGenerationSpec.mm in Sources */,
 				A149BC351EBE6BB400DA82B7 /* INTTransformerBlockExamples.mm in Sources */,
 				A1541C0A1EAF405100B4F064 /* INTAppLifecycleTimerSpec.mm in Sources */,
+				A14013181FCFF73E00760DE5 /* NSError+IntelligenceSpec.mm in Sources */,
 				A149BC361EBE6BB400DA82B7 /* INTAnalytricksTransformerBlocksSpec.mm in Sources */,
 				A1541B0F1EAF1CC300B4F064 /* INTRecorderLogger.mm in Sources */,
 				A1D136E91E78F4C200B1EA8D /* INTDataStructuresSpec.mm in Sources */,
