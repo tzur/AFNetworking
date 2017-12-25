@@ -6,6 +6,14 @@
 #import <CoreLocation/CoreLocation.h>
 #import <LTKit/LTCGExtensions.h>
 
+/// Returns a ISO8601 formatter that uses the system timezone.
+static NSDateFormatter *PTNISO8601SystemTimezoneDateFormatter() {
+  NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+  dateFormatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
+  dateFormatter.dateFormat = @"yyyy-MM-dd'T'HH:mm:ss.SSS";
+  return dateFormatter;
+}
+
 SpecBegin(PTNImageMetadata)
 
 static NSDictionary * const kGarbageMetadata = @{@"foo": @"bar"};
@@ -205,7 +213,9 @@ context(@"initialization", ^{
       expect(metadata.model).to.equal(@"iPhone 6");
       expect(metadata.software).to.equal(@"8.1.3");
 
-      NSDate *originalTime = [NSDate dateWithTimeIntervalSince1970:1423410852.489];
+      NSString *originalTimeString = @"2015-02-08T17:54:12.489";
+      NSDate *originalTime = [PTNISO8601SystemTimezoneDateFormatter()
+                              dateFromString:originalTimeString];
       expect(metadata.originalTime).to.equal(originalTime);
       expect(metadata.digitizedTime).to.equal(originalTime);
 
@@ -355,7 +365,8 @@ context(@"compliance", ^{
                       pathForResource:@"PTNImageMetadataImage" ofType:@"jpg"];
     expect(path).toNot.beNil();
     NSError *error;
-    metadata = [[PTNImageMetadata alloc] initWithImageURL:[NSURL fileURLWithPath:path] error:&error];
+    metadata = [[PTNImageMetadata alloc] initWithImageURL:[NSURL fileURLWithPath:path]
+                                                    error:&error];
     expect(error).to.beNil();
     expect(metadata).toNot.beNil();
 
@@ -366,7 +377,9 @@ context(@"compliance", ^{
     expected.model = @"iPhone 6";
     expected.software = @"8.1.3";
 
-    NSDate *originalTime = [NSDate dateWithTimeIntervalSince1970:1423410852.489];
+    NSString *originalTimeString = @"2015-02-08T17:54:12.489";
+    NSDate *originalTime = [PTNISO8601SystemTimezoneDateFormatter()
+                            dateFromString:originalTimeString];
     expected.originalTime = originalTime;
     expected.digitizedTime = originalTime;
 
