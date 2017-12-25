@@ -44,8 +44,6 @@
 		285A79081DFD69CD00095BF4 /* DVNBrushTipsRound16Hardness75.png in Resources */ = {isa = PBXBuildFile; fileRef = 285A79051DFD69CD00095BF4 /* DVNBrushTipsRound16Hardness75.png */; };
 		285A79091DFD69CD00095BF4 /* DVNBrushTipsRound32Hardness75.png in Resources */ = {isa = PBXBuildFile; fileRef = 285A79061DFD69CD00095BF4 /* DVNBrushTipsRound32Hardness75.png */; };
 		285A790A1DFD69CD00095BF4 /* DVNBrushTipsRound64Hardness75.png in Resources */ = {isa = PBXBuildFile; fileRef = 285A79071DFD69CD00095BF4 /* DVNBrushTipsRound64Hardness75.png */; };
-		285FB4CB1E1D17EB0021A116 /* DVNBrush.fsh in Resources */ = {isa = PBXBuildFile; fileRef = 285FB4C91E1D17EB0021A116 /* DVNBrush.fsh */; };
-		285FB4CC1E1D17EB0021A116 /* DVNBrush.vsh in Resources */ = {isa = PBXBuildFile; fileRef = 285FB4CA1E1D17EB0021A116 /* DVNBrush.vsh */; };
 		285FB4ED1E1D180C0021A116 /* DVNBrush.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 285FB4C91E1D17EB0021A116 /* DVNBrush.fsh */; };
 		285FB4EE1E1D180C0021A116 /* DVNBrush.vsh in Sources */ = {isa = PBXBuildFile; fileRef = 285FB4CA1E1D17EB0021A116 /* DVNBrush.vsh */; };
 		28662D5C1DF57D8A0051B9DA /* DVNPainterSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28662D5B1DF57D8A0051B9DA /* DVNPainterSpec.mm */; };
@@ -1740,8 +1738,6 @@
 				5001CB981F27785B00C70D23 /* DVNBrushTip.png in Resources */,
 				50AB20C41F28BED1008B3F4F /* DVNBrushEdgeAvoidance1Gray.png in Resources */,
 				508814711FA8966B001C2BDD /* DVNBrushColorWithMask.png in Resources */,
-				285FB4CC1E1D17EB0021A116 /* DVNBrush.vsh in Resources */,
-				285FB4CB1E1D17EB0021A116 /* DVNBrush.fsh in Resources */,
 				285A790A1DFD69CD00095BF4 /* DVNBrushTipsRound64Hardness75.png in Resources */,
 				5092344D1F2785D100CCA727 /* DVNBrushEdgeAvoidance1WithOffset.png in Resources */,
 				509234271F277AE900CCA727 /* DVNBrushTipModelview.png in Resources */,
