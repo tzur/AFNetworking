@@ -4,8 +4,9 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @class BZRAcquiredViaSubscriptionProvider, BZRAggregatedReceiptValidationStatusProvider,
-    BZRAllowedProductsProvider, BZRKeychainStorage, BZRPeriodicReceiptValidatorActivator,
-    BZRProductContentManager, BZRProductsPriceInfoFetcher, BZRStoreKitFacade, LTPath;
+    BZRAllowedProductsProvider, BZRKeychainStorage, BZRMultiAppConfiguration,
+    BZRPeriodicReceiptValidatorActivator, BZRProductContentManager, BZRProductsPriceInfoFetcher,
+    BZRStoreKitFacade, LTPath;
 
 @protocol BZRProductsProvider, BZRProductContentFetcher, BZRProductsVariantSelectorFactory,
     BZRReceiptValidationParametersProvider;
@@ -15,16 +16,36 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)init NS_UNAVAILABLE;
 
+/// Initializes the configuration with a single-app mode.
+///
 /// Initializes the in-app store configuration with Lightricks' default shared keychain access group
 /// as provided by \c + [BZRKeychainStorage defaultSharedAccessGroup].
 /// \c expiredSubscriptionGracePeriod is set to \c 7. \c applicationUserID is set to \c nil.
-/// \c applicationBundleID is set to application's bundle identifier.
+/// \c applicationBundleID is set to application's bundle identifier. \c multiAppConfiguration is
+/// set to \c nil.
 ///
 /// @note In order to use the default shared keychain access group AppIdentifierPrefix has to be
 /// defined in the application's main bundle plist, if it is not defined an
 /// \c NSInternalInconsistencyException is raised.
 - (instancetype)initWithProductsListJSONFilePath:(LTPath *)productsListJSONFilePath
                         productListDecryptionKey:(nullable NSString *)productListDecryptionKey;
+
+/// Initializes the configuration with a multi-app mode.
+///
+/// Initializes the in-app store configuration with Lightricks' default shared keychain access group
+/// as provided by \c + [BZRKeychainStorage defaultSharedAccessGroup].
+/// \c expiredSubscriptionGracePeriod is set to \c 7. \c applicationUserID is set to \c nil.
+/// \c applicationBundleID is set to application's bundle identifier. \c multiAppConfiguration is
+/// created from a set that contains \c bundledApplicationsIDs plus the current applications'
+/// bundle ID, and from \c multiAppSubscriptionMarker.
+///
+/// @note In order to use the default shared keychain access group AppIdentifierPrefix has to be
+/// defined in the application's main bundle plist, if it is not defined an
+/// \c NSInternalInconsistencyException is raised.
+- (instancetype)initWithProductsListJSONFilePath:(LTPath *)productsListJSONFilePath
+                        productListDecryptionKey:(nullable NSString *)productListDecryptionKey
+                          bundledApplicationsIDs:(NSSet<NSString *> *)bundledApplicationsIDs
+                      multiAppSubscriptionMarker:(NSString *)multiAppSubscriptionMarker;
 
 /// Initializes the in-app store configuration with default parameters.
 ///
@@ -68,11 +89,12 @@ NS_ASSUME_NONNULL_BEGIN
 /// \c periodicValidatorActivator will be initialized with the default initializer of
 /// \c BZRPeriodicReceiptValidatorActivator.
 - (instancetype)initWithProductsListJSONFilePath:(LTPath *)productsListJSONFilePath
-                        productListDecryptionKey:(nullable NSString *)productListDecryptionKey
-                             keychainAccessGroup:(nullable NSString *)keychainAccessGroup
-                  expiredSubscriptionGracePeriod:(NSUInteger)expiredSubscriptionGracePeriod
-                               applicationUserID:(nullable NSString *)applicationUserID
-                             applicationBundleID:(NSString *)applicationBundleID
+    productListDecryptionKey:(nullable NSString *)productListDecryptionKey
+    keychainAccessGroup:(nullable NSString *)keychainAccessGroup
+    expiredSubscriptionGracePeriod:(NSUInteger)expiredSubscriptionGracePeriod
+    applicationUserID:(nullable NSString *)applicationUserID
+    applicationBundleID:(NSString *)applicationBundleID
+    multiAppConfiguration:(nullable BZRMultiAppConfiguration *)multiAppConfiguration
     NS_DESIGNATED_INITIALIZER;
 
 /// Provider used to provide the list of products.
