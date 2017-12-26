@@ -8,7 +8,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// Category which wraps Masonry's safe area methods. The category's methods return Masonary's safe
 /// area \c MASViewAttribute if available, otherwise they return a \c MASViewAttribute of the
 /// receiver with the corresponding \c NSLayoutAttribute.
-@interface UIView (MasonrySafeAreaLayoutGuide)
+@interface UIView (MASSafeArea)
 
 /// Returns the \c mas_safeAreaLayoutGuide of the view if exists and \c MASViewAttribute of the
 /// receiver with \c NSLayoutAttributeNotAnAttribute otherwise, which equivalent to the view's first

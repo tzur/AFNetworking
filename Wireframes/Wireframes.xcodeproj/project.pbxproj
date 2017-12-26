@@ -70,7 +70,7 @@
 		CDAC8D2A1FC45C1300B197B3 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDAC8D061FC45C0B00B197B3 /* AVFoundation.framework */; };
 		CDAC8D2C1FC45C2200B197B3 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDAC8D2B1FC45C1B00B197B3 /* CoreMedia.framework */; };
 		CDE00AE41E82AE1F007AFD5E /* libcompression.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = CDE00AE31E82AE1F007AFD5E /* libcompression.tbd */; };
-		CDF61FEE1FEC04EF00D05AEC /* UIView+MasonrySafeAreaLayoutGuide.mm in Sources */ = {isa = PBXBuildFile; fileRef = CDF61FEC1FEC04EF00D05AEC /* UIView+MasonrySafeAreaLayoutGuide.mm */; };
+		CDF61FEE1FEC04EF00D05AEC /* UIView+MASSafeArea.mm in Sources */ = {isa = PBXBuildFile; fileRef = CDF61FEC1FEC04EF00D05AEC /* UIView+MASSafeArea.mm */; };
 		CDF61FF81FEC08E400D05AEC /* Masonry.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDF61FF51FEC08BA00D05AEC /* Masonry.framework */; };
 		EA7966DD1FDEB416003658B8 /* ZeroLengthTestVideo.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = EA7966B91FDEB37A003658B8 /* ZeroLengthTestVideo.mp4 */; };
 		EA7967A31FDEB9E0003658B8 /* HalfSecondTestVideo.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = EA7967A21FDEB9CB003658B8 /* HalfSecondTestVideo.mp4 */; };
@@ -494,8 +494,8 @@
 		CDAC8D061FC45C0B00B197B3 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		CDAC8D2B1FC45C1B00B197B3 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		CDE00AE31E82AE1F007AFD5E /* libcompression.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libcompression.tbd; path = usr/lib/libcompression.tbd; sourceTree = SDKROOT; };
-		CDF61FEC1FEC04EF00D05AEC /* UIView+MasonrySafeAreaLayoutGuide.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIView+MasonrySafeAreaLayoutGuide.mm"; sourceTree = "<group>"; };
-		CDF61FED1FEC04EF00D05AEC /* UIView+MasonrySafeAreaLayoutGuide.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+MasonrySafeAreaLayoutGuide.h"; sourceTree = "<group>"; };
+		CDF61FEC1FEC04EF00D05AEC /* UIView+MASSafeArea.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIView+MASSafeArea.mm"; sourceTree = "<group>"; };
+		CDF61FED1FEC04EF00D05AEC /* UIView+MASSafeArea.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+MASSafeArea.h"; sourceTree = "<group>"; };
 		CDF61FEF1FEC08BA00D05AEC /* Masonry.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Masonry.xcodeproj; path = ../third_party/Masonry/Masonry.xcodeproj; sourceTree = "<group>"; };
 		EA7966B91FDEB37A003658B8 /* ZeroLengthTestVideo.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = ZeroLengthTestVideo.mp4; sourceTree = "<group>"; };
 		EA7967A21FDEB9CB003658B8 /* HalfSecondTestVideo.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = HalfSecondTestVideo.mp4; sourceTree = "<group>"; };
@@ -863,8 +863,8 @@
 				C99B8BB31D6F6DAD00897FF1 /* UIFont+Size.mm */,
 				C77A04071D40DA2800427AD7 /* UIFont+Utilities.h */,
 				C77A04081D40DA2800427AD7 /* UIFont+Utilities.mm */,
-				CDF61FED1FEC04EF00D05AEC /* UIView+MasonrySafeAreaLayoutGuide.h */,
-				CDF61FEC1FEC04EF00D05AEC /* UIView+MasonrySafeAreaLayoutGuide.mm */,
+				CDF61FED1FEC04EF00D05AEC /* UIView+MASSafeArea.h */,
+				CDF61FEC1FEC04EF00D05AEC /* UIView+MASSafeArea.mm */,
 				8BC7B5641CECA3B50047BEDE /* UIView+Retrieval.h */,
 				8BC7B5651CECA3B50047BEDE /* UIView+Retrieval.m */,
 				8B283F6E1CBA9C6E00B745AE /* UIViewController+Containment.h */,
@@ -1367,7 +1367,7 @@
 				C77A04091D40DA2800427AD7 /* UIFont+Utilities.mm in Sources */,
 				6AAED9F31CC62AAD00B3C62F /* WFAssetCatalogImageProvider.mm in Sources */,
 				6A2D0FE11CE1DC7000B439C6 /* WFImageViewModelBuilder.m in Sources */,
-				CDF61FEE1FEC04EF00D05AEC /* UIView+MasonrySafeAreaLayoutGuide.mm in Sources */,
+				CDF61FEE1FEC04EF00D05AEC /* UIView+MASSafeArea.mm in Sources */,
 				C9133D8F1D3574FE009E796B /* CALayer+Enumeration.m in Sources */,
 				CDAC8C251FC44EEA00B197B3 /* WFVideoView.mm in Sources */,
 				6AAED9F41CC62AAD00B3C62F /* WFImageLoader.mm in Sources */,

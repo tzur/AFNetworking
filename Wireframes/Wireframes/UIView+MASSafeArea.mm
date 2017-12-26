@@ -1,13 +1,13 @@
 // Copyright (c) 2017 Lightricks. All rights reserved.
 // Created by Dana Feischer.
 
-#import "UIView+MasonrySafeAreaLayoutGuide.h"
+#import "UIView+MASSafeArea.h"
 
 #import <Masonry/Masonry.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
-@implementation UIView (MasonrySafeAreaLayoutGuide)
+@implementation UIView (MASSafeArea)
 
 - (MASViewAttribute *)wf_safeArea {
   if (@available(iOS 11.0, *)) {
