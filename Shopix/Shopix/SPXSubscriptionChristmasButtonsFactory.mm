@@ -33,10 +33,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (UIControl *)createSubscriptionButtonWithSubscriptionDescriptor:
     (SPXSubscriptionDescriptor *)subscriptionDescriptor atIndex:(NSUInteger)index
-                                                          outOf:(NSUInteger)buttonsCount {
+                                                          outOf:(NSUInteger)buttonsCount
+                                                  isHighlighted:(BOOL)isHighlighted {
   auto gradientButton = [self.gradientButtonsFactory
                          createSubscriptionButtonWithSubscriptionDescriptor:subscriptionDescriptor
-                         atIndex:index outOf:buttonsCount];
+                         atIndex:index outOf:buttonsCount isHighlighted:isHighlighted];
 
   NSString *imageName;
   if (index == 0) {

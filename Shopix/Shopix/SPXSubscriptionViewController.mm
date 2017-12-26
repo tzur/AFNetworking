@@ -222,7 +222,8 @@ using namespace spx;
       lt_map:^UIControl *(SPXSubscriptionDescriptor *subscriptionDescriptor) {
         return [self.subscriptionButtonsFactory
                 createSubscriptionButtonWithSubscriptionDescriptor:subscriptionDescriptor
-                atIndex:[descriptors indexOfObject:subscriptionDescriptor] outOf:descriptors.count];
+                atIndex:[descriptors indexOfObject:subscriptionDescriptor] outOf:descriptors.count
+                isHighlighted:NO];
       }];
 
   self.subscriptionButtonsView.enlargedButtonIndex = self.viewModel.preferredProductIndex;

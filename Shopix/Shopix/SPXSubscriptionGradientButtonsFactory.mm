@@ -52,7 +52,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (UIControl *)createSubscriptionButtonWithSubscriptionDescriptor:
     (SPXSubscriptionDescriptor *)subscriptionDescriptor atIndex:(NSUInteger __unused)index
-                                                          outOf:(NSUInteger __unused)buttonsCount {
+                                                          outOf:(NSUInteger __unused)buttonsCount
+                                                  isHighlighted:(BOOL __unused)isHighlighted {
   auto subscriptionButton = [[SPXSubscriptionGradientButton alloc] init];
   subscriptionButton.exclusiveTouch = YES;
   subscriptionButton.enabled = NO;
