@@ -3,8 +3,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class BZRAggregatedReceiptValidationStatusProvider, BZRCachedReceiptValidationStatusProvider,
-    BZREvent, BZRExternalTriggerReceiptValidator;
+@class BZRAggregatedReceiptValidationStatusProvider, BZREvent, BZRExternalTriggerReceiptValidator,
+    BZRReceiptValidationStatusCache;
 
 @protocol BZRTimeProvider;
 
@@ -18,8 +18,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// Initializes the receiver with the given \c validationStatusProvider that will be used to
 /// fetch receipt validation status. The \c timeProvider will be used to determine whether and when
 /// to fetch the receipt validation status.
-- (instancetype)initWithValidationStatusProvider:
-    (BZRCachedReceiptValidationStatusProvider *)validationStatusProvider
+- (instancetype)initWithReceiptValidationStatusCache:
+    (BZRReceiptValidationStatusCache *)receiptValidationStatusCache
     timeProvider:(id<BZRTimeProvider>)timeProvider
     bundledApplicationsIDs:(NSSet<NSString *> *)bundledApplicationsIDs
     aggregatedValidationStatusProvider:
@@ -35,7 +35,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// If both the periodic validation interval and the grace period have passed, subscription is
 /// marked as expired.
 - (instancetype)initWithReceiptValidator:(BZRExternalTriggerReceiptValidator *)receiptValidator
-    validationStatusProvider:(BZRCachedReceiptValidationStatusProvider *)validationStatusProvider
+    receiptValidationStatusCache:(BZRReceiptValidationStatusCache *)receiptValidationStatusCache
     timeProvider:(id<BZRTimeProvider>)timeProvider
     bundledApplicationsIDs:(NSSet<NSString *> *)bundledApplicationsIDs
     aggregatedValidationStatusProvider:

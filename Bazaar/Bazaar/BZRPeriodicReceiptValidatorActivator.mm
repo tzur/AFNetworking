@@ -6,7 +6,6 @@
 #import <LTKit/NSDictionary+Functional.h>
 
 #import "BZRAggregatedReceiptValidationStatusProvider.h"
-#import "BZRCachedReceiptValidationStatusProvider.h"
 #import "BZREvent.h"
 #import "BZRExternalTriggerReceiptValidator.h"
 #import "BZRReceiptEnvironment.h"
@@ -24,8 +23,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// Validator that is activated and deactivated depending on the receipt validation status.
 @property (readonly, nonatomic) BZRExternalTriggerReceiptValidator *receiptValidator;
 
-/// Provider used to provide the latest receipt validation status.
-@property (readonly, nonatomic) BZRCachedReceiptValidationStatusProvider *validationStatusProvider;
+/// Cache used to load receipt validation status cache entry from storage.
+@property (readonly, nonatomic) BZRReceiptValidationStatusCache *receiptValidationStatusCache;
 
 /// Provider used to check if the receipt should be validated.
 @property (readonly, nonatomic) id<BZRTimeProvider> timeProvider;
@@ -54,8 +53,8 @@ const NSUInteger kMaxPeriodicValidationInterval = 28;
 #pragma mark Initialization
 #pragma mark -
 
-- (instancetype)initWithValidationStatusProvider:
-    (BZRCachedReceiptValidationStatusProvider *)validationStatusProvider
+- (instancetype)initWithReceiptValidationStatusCache:
+    (BZRReceiptValidationStatusCache *)receiptValidationStatusCache
     timeProvider:(id<BZRTimeProvider>)timeProvider
     bundledApplicationsIDs:(NSSet<NSString *> *)bundledApplicationsIDs
     aggregatedValidationStatusProvider:
@@ -65,20 +64,20 @@ const NSUInteger kMaxPeriodicValidationInterval = 28;
         initWithValidationStatusProvider:aggregatedValidationStatusProvider];
 
    return [self initWithReceiptValidator:receiptValidator
-                validationStatusProvider:validationStatusProvider timeProvider:timeProvider
+            receiptValidationStatusCache:receiptValidationStatusCache timeProvider:timeProvider
                   bundledApplicationsIDs:bundledApplicationsIDs
       aggregatedValidationStatusProvider:aggregatedValidationStatusProvider];
 }
 
 - (instancetype)initWithReceiptValidator:(BZRExternalTriggerReceiptValidator *)receiptValidator
-    validationStatusProvider:(BZRCachedReceiptValidationStatusProvider *)validationStatusProvider
+    receiptValidationStatusCache:(BZRReceiptValidationStatusCache *)receiptValidationStatusCache
     timeProvider:(id<BZRTimeProvider>)timeProvider
     bundledApplicationsIDs:(NSSet<NSString *> *)bundledApplicationsIDs
     aggregatedValidationStatusProvider:
     (BZRAggregatedReceiptValidationStatusProvider *)aggregatedValidationStatusProvider {
   if (self = [super init]) {
-    _validationStatusProvider = validationStatusProvider;
     _receiptValidator = receiptValidator;
+    _receiptValidationStatusCache = receiptValidationStatusCache;
     _timeProvider = timeProvider;
     _bundledApplicationsIDs = bundledApplicationsIDs;
     _aggregatedValidationStatusProvider = aggregatedValidationStatusProvider;
@@ -165,7 +164,7 @@ const NSUInteger kMaxPeriodicValidationInterval = 28;
 }
 
 - (NSArray<NSDate *> *)lastReceiptValidationDatesForBundledApplications {
-  return [[[[self.validationStatusProvider
+  return [[[[self.receiptValidationStatusCache
       loadReceiptValidationStatusCacheEntries:self.bundledApplicationsIDs]
       lt_filter:^BOOL(NSString *, BZRReceiptValidationStatusCacheEntry *cacheEntry) {
         return [self shouldActivatePeriodicValidatorForValidationStatus:

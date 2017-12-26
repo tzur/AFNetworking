@@ -170,46 +170,4 @@ context(@"fetching receipt validation status of multiple apps", ^{
   });
 });
 
-context(@"loading receipt validation status cache entry from cache", ^{
-  __block BZRReceiptValidationStatusCacheEntry *cacheEntry;
-
-  beforeEach(^{
-    receiptValidationStatus = BZRReceiptValidationStatusWithExpiry(YES);
-    cacheEntry = [[BZRReceiptValidationStatusCacheEntry alloc]
-                  initWithReceiptValidationStatus:receiptValidationStatus
-                  cachingDateTime:[NSDate date]];
-  });
-
-  it(@"should return dictionary with the receipt validation status of the requested bundle IDs", ^{
-    auto secondReceiptValidationStatus = BZRReceiptValidationStatusWithExpiry(NO);
-    auto secondReceiptValidationStatusCacheEntry =
-        [[BZRReceiptValidationStatusCacheEntry alloc]
-         initWithReceiptValidationStatus:secondReceiptValidationStatus
-         cachingDateTime:[NSDate dateWithTimeIntervalSince1970:1337]];
-
-    OCMStub([validationStatusProvider loadReceiptValidationStatusCacheEntryFromStorage:@"foo"])
-        .andReturn(cacheEntry);
-    OCMStub([validationStatusProvider loadReceiptValidationStatusCacheEntryFromStorage:@"bar"])
-        .andReturn(secondReceiptValidationStatusCacheEntry);
-
-    auto cacheEntries =
-        [validationStatusProvider loadReceiptValidationStatusCacheEntries:@[@"foo", @"bar"].lt_set];
-
-    expect(cacheEntries).to.equal(@{
-      @"foo": cacheEntry,
-      @"bar": secondReceiptValidationStatusCacheEntry
-    });
-  });
-
-  it(@"should return dictionary without bundleIDs whose cache entry wasn't found", ^{
-    OCMStub([validationStatusProvider loadReceiptValidationStatusCacheEntryFromStorage:@"foo"])
-        .andReturn(cacheEntry);
-
-    auto cacheEntries =
-        [validationStatusProvider loadReceiptValidationStatusCacheEntries:@[@"foo", @"bar"].lt_set];
-
-    expect(cacheEntries).to.equal(@{@"foo": cacheEntry});
-  });
-});
-
 SpecEnd

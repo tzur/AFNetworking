@@ -62,4 +62,19 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
+#pragma mark -
+#pragma mark BZRCachedReceiptValidationStatusCache
+#pragma mark -
+
+/// Adds convenience method for loading cache entries of multiple applications.
+@interface BZRReceiptValidationStatusCache (MultiApp)
+
+/// Loads the cache entry of the applications specified by \c bundledApplicationsIDs. If there was
+/// an error loading a cache cache entry or it was not found in cache, it will not appear in the
+/// returned dictionary.
+- (NSDictionary<NSString *, BZRReceiptValidationStatusCacheEntry *> *)
+    loadReceiptValidationStatusCacheEntries:(NSSet<NSString *> *)bundledApplicationsIDs;
+
+@end
+
 NS_ASSUME_NONNULL_END

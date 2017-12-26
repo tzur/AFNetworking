@@ -20,9 +20,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface BZRCachedReceiptValidationStatusProvider ()
 
-/// Cache used to store the fetched receipt validation status.
-@property (readonly, nonatomic) BZRReceiptValidationStatusCache *receiptValidationStatusCache;
-
 /// Object used to provide the current time.
 @property (readonly, nonatomic) id<BZRTimeProvider> timeProvider;
 
@@ -232,22 +229,6 @@ NS_ASSUME_NONNULL_BEGIN
   return [NSDictionary
           dictionaryWithObjects:[tuples valueForKey:@instanceKeypath(RACTuple, second)]
           forKeys:[tuples valueForKey:@instanceKeypath(RACTuple, first)]];
-}
-
-- (NSDictionary<NSString *, BZRReceiptValidationStatusCacheEntry *> *)
-    loadReceiptValidationStatusCacheEntries:(NSSet<NSString *> *)bundledApplicationsIDs {
-  return [bundledApplicationsIDs.allObjects lt_reduce:^BZRMultiAppReceiptValidationStatus *
-       (BZRMultiAppReceiptValidationStatus *dictionarySoFar, NSString *bundleID) {
-         auto _Nullable cacheEntry =
-             [self loadReceiptValidationStatusCacheEntryFromStorage:bundleID];
-         if (!cacheEntry) {
-           return dictionarySoFar;
-         }
-
-         return [dictionarySoFar mtl_dictionaryByAddingEntriesFromDictionary:@{
-           bundleID: cacheEntry
-         }];
-       } initial:@{}];
 }
 
 @end

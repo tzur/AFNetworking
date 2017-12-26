@@ -73,7 +73,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)loadAggregatedReceiptValidationStatusFromStorage {
   BZRMultiAppReceiptValidationStatus *bundleIDToReceiptValidationStatus =
-      [[self.underlyingProvider loadReceiptValidationStatusCacheEntries:self.bundledApplicationsIDs]
+      [[self.underlyingProvider.receiptValidationStatusCache
+      loadReceiptValidationStatusCacheEntries:self.bundledApplicationsIDs]
       lt_mapValues:^BZRReceiptValidationStatus *
           (NSString *, BZRReceiptValidationStatusCacheEntry *cacheEntry) {
         return cacheEntry.receiptValidationStatus;

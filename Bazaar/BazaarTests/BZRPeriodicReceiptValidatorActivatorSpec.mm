@@ -18,9 +18,9 @@
 
 // Stubs \c receiptValidationStatusProvider to return the given \c bundleIDToCacheEntries.
 static void BZRStubLoadedCacheEntries(
-  BZRCachedReceiptValidationStatusProvider *receiptValidationStatusProvider,
+  BZRReceiptValidationStatusCache *receiptValidationStatusCache,
   NSDictionary<NSString *, BZRReceiptValidationStatusCacheEntry *> *bundleIDToCacheEntries) {
-  OCMStub([receiptValidationStatusProvider
+  OCMStub([receiptValidationStatusCache
       loadReceiptValidationStatusCacheEntries:OCMOCK_ANY]).andReturn(bundleIDToCacheEntries);
 }
 
@@ -36,10 +36,10 @@ static BZRReceiptValidationStatusCacheEntry *BZRCacheEntryWithActiveSubscription
 // Stubs loading cache entries via \c receiptValidationStatusProvider to return a dictionary
 // containing bundleID mapped to a cache entry containing the given \c lastReceiptValidationDate.
 static void BZRStubLoadedCacheEntryWithLastReceiptValidationDate(
-    BZRCachedReceiptValidationStatusProvider *receiptValidationStatusProvider,
+    BZRReceiptValidationStatusCache *receiptValidationStatusCache,
     NSString *bundleID, NSDate *lastReceiptValidationDate) {
   auto cacheEntry = BZRCacheEntryWithActiveSubscriptionAndDate(lastReceiptValidationDate);
-  BZRStubLoadedCacheEntries(receiptValidationStatusProvider, @{bundleID: cacheEntry});
+  BZRStubLoadedCacheEntries(receiptValidationStatusCache, @{bundleID: cacheEntry});
 }
 
 // Stubs \c timeProvider to set the current time to be \c date plus \c interval seconds.
@@ -73,6 +73,7 @@ __block BZRCachedReceiptValidationStatusProvider *receiptValidationStatusProvide
 __block id<BZRTimeProvider> timeProvider;
 __block BZRFakeAggregatedReceiptValidationStatusProvider *
     aggregatedReceiptValidationStatusProvider;
+__block BZRReceiptValidationStatusCache *receiptValidationStatusCache;
 __block NSString *currentApplicationBundleID;
 __block NSSet<NSString *> *bundledApplicationsIDs;
 __block BZRPeriodicReceiptValidatorActivator *activator;
@@ -86,9 +87,10 @@ beforeEach(^{
   bundledApplicationsIDs = @[currentApplicationBundleID, @"bar"].lt_set;
   aggregatedReceiptValidationStatusProvider =
       [[BZRFakeAggregatedReceiptValidationStatusProvider alloc] init];
+  receiptValidationStatusCache = OCMClassMock([BZRReceiptValidationStatusCache class]);
   activator = OCMPartialMock([[BZRPeriodicReceiptValidatorActivator alloc]
       initWithReceiptValidator:receiptValidator
-      validationStatusProvider:receiptValidationStatusProvider timeProvider:timeProvider
+      receiptValidationStatusCache:receiptValidationStatusCache timeProvider:timeProvider
       bundledApplicationsIDs:bundledApplicationsIDs
       aggregatedValidationStatusProvider:aggregatedReceiptValidationStatusProvider]);
 
@@ -99,7 +101,7 @@ context(@"deallocating object", ^{
   it(@"should dealloc when all strong references are relinquished", ^{
     BZRPeriodicReceiptValidatorActivator * __weak weakPeriodicValidatorActivator;
 
-    BZRStubLoadedCacheEntryWithLastReceiptValidationDate(receiptValidationStatusProvider,
+    BZRStubLoadedCacheEntryWithLastReceiptValidationDate(receiptValidationStatusCache,
                                                          currentApplicationBundleID,
                                                          lastValidationDate);
     BZRStubCurrentTimeWithIntervalSinceDate(timeProvider, 1337 / 2 + 1, lastValidationDate);
@@ -110,7 +112,7 @@ context(@"deallocating object", ^{
       BZRPeriodicReceiptValidatorActivator *receiptValidatorActivator =
           [[BZRPeriodicReceiptValidatorActivator alloc]
            initWithReceiptValidator:receiptValidator
-           validationStatusProvider:receiptValidationStatusProvider timeProvider:timeProvider
+           receiptValidationStatusCache:receiptValidationStatusCache timeProvider:timeProvider
            bundledApplicationsIDs:bundledApplicationsIDs
            aggregatedValidationStatusProvider:aggregatedReceiptValidationStatusProvider];
       weakPeriodicValidatorActivator = receiptValidatorActivator;
@@ -185,7 +187,7 @@ context(@"subscription exists", ^{
   it(@"should activate the periodic validator if subscription exists and is not marked as expired",
      ^{
     OCMReject([receiptValidator deactivate]);
-    BZRStubLoadedCacheEntryWithLastReceiptValidationDate(receiptValidationStatusProvider,
+    BZRStubLoadedCacheEntryWithLastReceiptValidationDate(receiptValidationStatusCache,
                                                          currentApplicationBundleID,
                                                          lastValidationDate);
     BZRStubCurrentTimeWithIntervalSinceDate(timeProvider, activator.periodicValidationInterval,
@@ -200,7 +202,7 @@ context(@"subscription exists", ^{
      "expiration", ^{
     OCMReject([receiptValidator deactivate]);
     receiptValidationStatus = BZRReceiptValidationStatusWithExpiry(YES, NO);
-    BZRStubLoadedCacheEntryWithLastReceiptValidationDate(receiptValidationStatusProvider,
+    BZRStubLoadedCacheEntryWithLastReceiptValidationDate(receiptValidationStatusCache,
                                                          currentApplicationBundleID,
                                                          lastValidationDate);
     BZRStubCurrentTimeWithIntervalSinceDate(timeProvider, activator.periodicValidationInterval,
@@ -212,7 +214,7 @@ context(@"subscription exists", ^{
   });
 
   it(@"should compute time to next validation to be less than zero", ^{
-    BZRStubLoadedCacheEntryWithLastReceiptValidationDate(receiptValidationStatusProvider,
+    BZRStubLoadedCacheEntryWithLastReceiptValidationDate(receiptValidationStatusCache,
                                                          currentApplicationBundleID,
                                                          lastValidationDate);
     BZRStubCurrentTimeWithIntervalSinceDate(timeProvider, subscriptionPeriod / 2 + 2,
@@ -236,7 +238,7 @@ context(@"subscription exists", ^{
           [invocation getArgument:&signal atIndex:2];
           validateReceiptSignal = signal;
         });
-    BZRStubLoadedCacheEntryWithLastReceiptValidationDate(receiptValidationStatusProvider,
+    BZRStubLoadedCacheEntryWithLastReceiptValidationDate(receiptValidationStatusCache,
                                                          currentApplicationBundleID,
                                                          lastValidationDate);
     BZRStubCurrentTimeWithIntervalSinceDate(timeProvider, subscriptionPeriod / 2 + 1,
@@ -264,7 +266,7 @@ context(@"subscription exists", ^{
   });
 
   it(@"should correctly compute time left to next validation", ^{
-    BZRStubLoadedCacheEntryWithLastReceiptValidationDate(receiptValidationStatusProvider,
+    BZRStubLoadedCacheEntryWithLastReceiptValidationDate(receiptValidationStatusCache,
                                                          currentApplicationBundleID,
                                                          lastValidationDate);
     BZRStubCurrentTimeWithIntervalSinceDate(timeProvider, 133, lastValidationDate);
@@ -283,7 +285,7 @@ context(@"subscription exists", ^{
        "validation dates", ^{
       NSDate *earlierDate = [NSDate dateWithTimeIntervalSince1970:30];
       NSDate *laterDate = [NSDate dateWithTimeIntervalSince1970:60];
-      BZRStubLoadedCacheEntries(receiptValidationStatusProvider, @{
+      BZRStubLoadedCacheEntries(receiptValidationStatusCache, @{
         @"foo": BZRCacheEntryWithActiveSubscriptionAndDate(earlierDate),
         @"bar": BZRCacheEntryWithActiveSubscriptionAndDate(laterDate)
       });
@@ -308,7 +310,7 @@ context(@"subscription exists", ^{
                          initWithReceiptValidationStatus:
                          BZRReceiptValidationStatusWithExpiry(YES, YES)
                          cachingDateTime:earlierDate];
-      BZRStubLoadedCacheEntries(receiptValidationStatusProvider, @{
+      BZRStubLoadedCacheEntries(receiptValidationStatusCache, @{
         @"foo": cacheEntry,
         @"bar": BZRCacheEntryWithActiveSubscriptionAndDate(laterDate)
       });

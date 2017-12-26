@@ -3,6 +3,8 @@
 
 #import "BZRReceiptValidationStatusCache.h"
 
+#import <LTKit/NSArray+Functional.h>
+
 #import "BZREvent.h"
 #import "BZRKeychainStorageMigrator.h"
 #import "BZRKeychainStorageRoute.h"
@@ -132,4 +134,31 @@ NSString * const kValidationDateKey = @"validationDate";
 
 @end
 
+#pragma mark -
+#pragma mark BZRCachedReceiptValidationStatusCache+MultiApp
+#pragma mark -
+
+@implementation BZRReceiptValidationStatusCache (MultiApp)
+
+- (NSDictionary<NSString *, BZRReceiptValidationStatusCacheEntry *> *)
+    loadReceiptValidationStatusCacheEntries:(NSSet<NSString *> *)bundledApplicationsIDs {
+  return [bundledApplicationsIDs.allObjects lt_reduce:
+       ^NSDictionary<NSString *, BZRReceiptValidationStatusCacheEntry *> *
+       (NSDictionary<NSString *, BZRReceiptValidationStatusCacheEntry *> *dictionarySoFar,
+        NSString *bundleID) {
+         auto _Nullable cacheEntry =
+             [self loadCacheEntryOfApplicationWithBundleID:bundleID error:nil];
+         if (!cacheEntry) {
+           return dictionarySoFar;
+         }
+
+         return [dictionarySoFar mtl_dictionaryByAddingEntriesFromDictionary:@{
+           bundleID: cacheEntry
+         }];
+       } initial:@{}];
+}
+
+@end
+
 NS_ASSUME_NONNULL_END
+
