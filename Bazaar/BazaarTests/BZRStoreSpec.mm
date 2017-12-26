@@ -1229,7 +1229,7 @@ context(@"maually fetching products info", ^{
     OCMStub([priceInfoFetcher fetchProductsPriceInfo:@[]]).andReturn([RACSignal return:@[]]);
 
     expect([store fetchProductsInfo:@[@"bar"].lt_set]).will.matchError(^BOOL(NSError *error) {
-      return error.code == BZRErrorCodeInvalidProductIdentifer &&
+      return error.code == BZRErrorCodeInvalidProductIdentifier &&
           [error.bzr_productIdentifiers isEqualToSet:@[@"bar"].lt_set];
     });
   });

@@ -8,10 +8,10 @@
 #import "CKContainer+RACSignalSupport.h"
 
 static BZRCloudKitAccountInfo *BZRAccountInfo(BZRCloudKitAccountStatus *accountStatus,
-    CKContainer *container, CKRecordID * _Nullable recordIdentifer) {
+    CKContainer *container, CKRecordID * _Nullable recordIdentifier) {
   return [[BZRCloudKitAccountInfo alloc] initWithAccountStatus:accountStatus
                                            containerIdentifier:container.containerIdentifier
-                                          userRecordIdentifier:recordIdentifer.recordName];
+                                          userRecordIdentifier:recordIdentifier.recordName];
 }
 
 SpecBegin(BZRCloudKitAccountInfoProvider)

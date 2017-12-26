@@ -48,7 +48,7 @@ typedef void (^SPXFetchProductsCompletionBlock)
 /// \c products set to \c nil and \c error will contain error information.
 ///
 /// @note On failure \c error.code may be either \c BZRErrorCodeProductMetadataFetchingFailed or
-/// \c BZRErrorCodeInvalidProductIdentifer.
+/// \c BZRErrorCodeInvalidProductIdentifier.
 - (void)fetchProductsInfo:(NSSet<NSString *> *)productIdentifiers
         completionHandler:(SPXFetchProductsCompletionBlock)completionHandler;
 

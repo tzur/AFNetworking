@@ -108,9 +108,9 @@ NS_ASSUME_NONNULL_BEGIN
   /// which is actually the Apple developer team ID.
   static NSString * const kAppIdentifierPrefixKey = @"AppIdentifierPrefix";
 
-  NSString *appIdentiferPrefix =
+  NSString *appIdentifierPrefix =
       [[NSBundle mainBundle] objectForInfoDictionaryKey:kAppIdentifierPrefixKey];
-  return [appIdentiferPrefix stringByAppendingString:accessGroup];
+  return [appIdentifierPrefix stringByAppendingString:accessGroup];
 }
 
 @end

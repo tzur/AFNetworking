@@ -637,7 +637,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// Since this set is sent outside of this class, each variant's identifier is modified to be its
 /// corresponding base product's identifier.
 - (NSSet<BZRProduct *> *)variantsWithBaseIdentifiers:(BZRProductDictionary *)productDictionary {
-  BZRProductList *variantsWithBaseIdentifers =
+  BZRProductList *variantsWithBaseIdentifiers =
       [[productDictionary.allValues lt_filter:^BOOL(BZRProduct *product) {
         NSString *baseProductIdentifier =
             [self baseProductForProductWithIdentifier:product.identifier];
@@ -650,7 +650,7 @@ NS_ASSUME_NONNULL_BEGIN
         return [variant modelByOverridingProperty:@keypath(variant, identifier)
                                         withValue:product.identifier];
   }];
-  return [NSSet setWithArray:variantsWithBaseIdentifers];
+  return [NSSet setWithArray:variantsWithBaseIdentifiers];
 }
 
 - (RACSignal<BZRReceiptValidationStatus *> *)validateReceipt {
@@ -712,7 +712,7 @@ NS_ASSUME_NONNULL_BEGIN
               }];
 
           return [RACSignal error:
-                  [NSError bzr_invalidProductsErrorWithIdentifers:missingProductIdentifiers]];
+                  [NSError bzr_invalidProductsErrorWithIdentifiers:missingProductIdentifiers]];
         }
 
         auto requestedProductsWithFullProducts =
