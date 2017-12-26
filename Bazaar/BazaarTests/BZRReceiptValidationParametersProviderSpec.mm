@@ -13,12 +13,14 @@ SpecBegin(BZRReceiptValidationParametersProvider)
 __block BZRReceiptDataCache *receiptDataCache;
 __block BZRAppStoreLocaleCache *appStoreLocaleCache;
 __block NSString *currentApplicationBundleID;
+__block NSString *userID;
 __block BZRReceiptValidationParametersProvider *parametersProvider;
 
 beforeEach(^{
   receiptDataCache = OCMClassMock([BZRReceiptDataCache class]);
   appStoreLocaleCache = OCMClassMock([BZRAppStoreLocaleCache class]);
   currentApplicationBundleID = @"foo";
+  userID = @"bar";
   parametersProvider =
       [[BZRReceiptValidationParametersProvider alloc]
        initWithAppStoreLocaleCache:appStoreLocaleCache receiptDataCache:receiptDataCache
@@ -74,18 +76,19 @@ context(@"KVO-compliance", ^{
 });
 
 context(@"providing receipt validation parameters", ^{
-  it(@"should return parameters with the correct current application bundle ID and device ID", ^{
+  it(@"should return parameters with the correct parameters", ^{
     NSData *receiptData = [@"Bar Receipt Data" dataUsingEncoding:NSUTF8StringEncoding];
     OCMStub([receiptDataCache receiptDataForApplicationBundleID:@"bar"
         error:[OCMArg anyObjectRef]]).andReturn(receiptData);
 
     auto receiptValidationParameters =
-        [parametersProvider receiptValidationParametersForApplication:@"bar"];
+        [parametersProvider receiptValidationParametersForApplication:@"bar" userID:userID];
 
     expect(receiptValidationParameters.currentApplicationBundleID).to
         .equal(currentApplicationBundleID);
     expect(receiptValidationParameters.deviceID).to
         .equal([[UIDevice currentDevice] identifierForVendor]);
+    expect(receiptValidationParameters.userID).to.equal(userID);
   });
 
   it(@"should return receipt data of the bundle ID that was requested", ^{
@@ -94,7 +97,7 @@ context(@"providing receipt validation parameters", ^{
         error:[OCMArg anyObjectRef]]).andReturn(receiptData);
 
     auto receiptValidationParameters =
-        [parametersProvider receiptValidationParametersForApplication:@"bar"];
+        [parametersProvider receiptValidationParametersForApplication:@"bar" userID:userID];
 
     expect(receiptValidationParameters.receiptData).to.equal(receiptData);
   });
@@ -109,13 +112,27 @@ context(@"providing receipt validation parameters", ^{
 
     auto receiptValidationParameters =
         [parametersProvider receiptValidationParametersForApplication:
-         currentApplicationBundleID];
+         currentApplicationBundleID userID:userID];
 
     expect(receiptValidationParameters.receiptData).to.equal(receiptDataFromFile);
   });
 
-  it(@"should return nil if receipt data was not found", ^{
-    expect([parametersProvider receiptValidationParametersForApplication:@"bar"])
+  it(@"should return parameters if receipt data was not found and user ID is not nil", ^{
+    expect([parametersProvider receiptValidationParametersForApplication:@"bar" userID:userID])
+        .toNot.beNil();
+  });
+
+  it(@"should return parameters if receipt data was found and user ID is nil", ^{
+    NSData *receiptData = [@"Bar Receipt Data" dataUsingEncoding:NSUTF8StringEncoding];
+    OCMStub([receiptDataCache receiptDataForApplicationBundleID:@"bar"
+        error:[OCMArg anyObjectRef]]).andReturn(receiptData);
+
+    expect([parametersProvider receiptValidationParametersForApplication:@"bar" userID:nil])
+        .toNot.beNil();
+  });
+
+  it(@"should return nil if receipt data was not found and user ID is nil", ^{
+    expect([parametersProvider receiptValidationParametersForApplication:@"bar" userID:nil])
         .to.beNil();
   });
 
@@ -129,7 +146,7 @@ context(@"providing receipt validation parameters", ^{
         error:[OCMArg anyObjectRef]]).andReturn(appStoreLocale);
 
     auto receiptValidationParameters =
-        [parametersProvider receiptValidationParametersForApplication:@"bar"];
+        [parametersProvider receiptValidationParametersForApplication:@"bar" userID:userID];
 
     expect(receiptValidationParameters.appStoreLocale).to.equal(appStoreLocale);
   });
@@ -146,7 +163,7 @@ context(@"providing receipt validation parameters", ^{
 
     auto receiptValidationParameters =
         [parametersProvider receiptValidationParametersForApplication:
-         currentApplicationBundleID];
+         currentApplicationBundleID userID:userID];
 
     expect(receiptValidationParameters.appStoreLocale).to.equal(parametersProvider.appStoreLocale);
   });

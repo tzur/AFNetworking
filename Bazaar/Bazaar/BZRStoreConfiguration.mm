@@ -33,6 +33,7 @@
 #import "BZRStoreKitFacade.h"
 #import "BZRTimeProvider.h"
 #import "BZRValidatedReceiptValidationStatusProvider.h"
+#import "BZRiCloudUserIDProvider.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -114,10 +115,11 @@ NS_ASSUME_NONNULL_BEGIN
          initWithAppStoreLocaleCache:appStoreLocaleCache receiptDataCache:receiptDataCache
          currentApplicationBundleID:applicationBundleID];
 
+    auto userIDProvider = [[BZRiCloudUserIDProvider alloc] init];
     BZRValidatedReceiptValidationStatusProvider *validatorProvider =
         [[BZRValidatedReceiptValidationStatusProvider alloc]
          initWithValidationParametersProvider:self.validationParametersProvider
-         receiptDataCache:receiptDataCache];
+         receiptDataCache:receiptDataCache userIDProvider:userIDProvider];
 
     BZRModifiedExpiryReceiptValidationStatusProvider *modifiedExpiryProvider =
         [[BZRModifiedExpiryReceiptValidationStatusProvider alloc] initWithTimeProvider:timeProvider

@@ -11,6 +11,7 @@
 #import "BZRReceiptValidationParametersProvider.h"
 #import "BZRReceiptValidationStatus.h"
 #import "BZRReceiptValidator.h"
+#import "BZRUserIDProvider.h"
 #import "NSErrorCodes+Bazaar.h"
 
 BZRReceiptValidationStatus *BZRInvalidReceiptValidationStatusWithError(
@@ -43,6 +44,7 @@ __block BZRReceiptValidationParameters *receiptValidationParameters;
 __block id<BZRReceiptValidationParametersProvider> receiptValidationParametersProvider;
 __block BZRReceiptDataCache *receiptDataCache;
 __block NSString *currentApplicationBundleID;
+__block id<BZRUserIDProvider> userIDProvider;
 __block BZRValidatedReceiptValidationStatusProvider *validationStatusProvider;
 
 beforeEach(^{
@@ -52,11 +54,12 @@ beforeEach(^{
       OCMProtocolMock(@protocol(BZRReceiptValidationParametersProvider));
   receiptDataCache = OCMClassMock([BZRReceiptDataCache class]);
   currentApplicationBundleID = @"foo";
+  userIDProvider = OCMProtocolMock(@protocol(BZRUserIDProvider));
   validationStatusProvider =
       [[BZRValidatedReceiptValidationStatusProvider alloc]
        initWithReceiptValidator:receiptValidator
        validationParametersProvider:receiptValidationParametersProvider
-       receiptDataCache:receiptDataCache];
+       receiptDataCache:receiptDataCache userIDProvider:userIDProvider];
 });
 
 context(@"deallocating object", ^{
@@ -68,7 +71,7 @@ context(@"deallocating object", ^{
     OCMStub([receiptValidator validateReceiptWithParameters:OCMOCK_ANY])
         .andReturn([RACSignal return:BZRValidReceiptValidationStatus()]);
     OCMStub([receiptValidationParametersProvider
-        receiptValidationParametersForApplication:OCMOCK_ANY])
+        receiptValidationParametersForApplication:OCMOCK_ANY userID:OCMOCK_ANY])
         .andReturn(receiptValidationParameters);
 
     @autoreleasepool {
@@ -76,7 +79,7 @@ context(@"deallocating object", ^{
           [[BZRValidatedReceiptValidationStatusProvider alloc]
            initWithReceiptValidator:receiptValidator
            validationParametersProvider:receiptValidationParametersProvider
-           receiptDataCache:receiptDataCache];
+           receiptDataCache:receiptDataCache userIDProvider:userIDProvider];
       weakValidationStatusProvider = validationStatusProvider;
       eventsSignal = validationStatusProvider.eventsSignal;
       fetchSignal = [validationStatusProvider fetchReceiptValidationStatus:@"foo"];
@@ -96,10 +99,19 @@ context(@"fetching receipt validation status", ^{
     });
   });
 
+  it(@"should pass application bundle ID and user ID to parameters provider", ^{
+    OCMStub([userIDProvider userID]).andReturn(@"bar");
+
+    expect([validationStatusProvider fetchReceiptValidationStatus:@"foo"]).will.finish();
+
+    OCMVerify([receiptValidationParametersProvider
+               receiptValidationParametersForApplication:@"foo" userID:@"bar"]);
+  });
+
   context(@"receipt validation parameters are valid", ^{
     beforeEach(^{
       OCMStub([receiptValidationParametersProvider
-          receiptValidationParametersForApplication:OCMOCK_ANY])
+          receiptValidationParametersForApplication:OCMOCK_ANY userID:OCMOCK_ANY])
           .andReturn(receiptValidationParameters);
     });
 

@@ -9,9 +9,10 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol BZRReceiptValidationParametersProvider
 
 /// Returns receipt validation parameters for validating the receipt of application with
-/// \c applicationBundleID.
+/// \c applicationBundleID. An additional identifier of the user may be provided via
+/// \c userID.
 - (nullable BZRReceiptValidationParameters *)receiptValidationParametersForApplication:
-    (NSString *)applicationBundleID;
+    (NSString *)applicationBundleID userID:(nullable NSString *)userID;
 
 /// AppStore locale. KVO-compliant.
 @property (strong, atomic, nullable) NSLocale *appStoreLocale;
