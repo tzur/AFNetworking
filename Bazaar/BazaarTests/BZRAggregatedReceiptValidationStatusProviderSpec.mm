@@ -32,8 +32,7 @@ beforeEach(^{
   OCMStub([underlyingProvider eventsSignal]).andReturn(underlyingProviderEventsSubject);
   aggregator = OCMClassMock([BZRMultiAppReceiptValidationStatusAggregator class]);
   receiptValidationStatusCache = OCMClassMock([BZRReceiptValidationStatusCache class]);
-  OCMStub([underlyingProvider receiptValidationStatusCache])
-      .andReturn(receiptValidationStatusCache);
+  OCMStub([underlyingProvider cache]).andReturn(receiptValidationStatusCache);
   bundledApplicationsIDs = @[@"com.lt.otherApp", @"com.lt.anotherApp"].lt_set;
   receiptValidationStatusAggregator = [[BZRAggregatedReceiptValidationStatusProvider alloc]
       initWithUnderlyingProvider:underlyingProvider aggregator:aggregator
@@ -87,8 +86,7 @@ context(@"aggregated receipt validation status property", ^{
 
     it(@"should be nil if aggregator returned nil on the receipt validation statuses from cache", ^{
       underlyingProvider = OCMClassMock([BZRCachedReceiptValidationStatusProvider class]);
-      OCMStub([underlyingProvider receiptValidationStatusCache])
-          .andReturn(receiptValidationStatusCache);
+      OCMStub([underlyingProvider cache]).andReturn(receiptValidationStatusCache);
       OCMStub([receiptValidationStatusCache loadReceiptValidationStatusCacheEntries:OCMOCK_ANY])
           .andReturn(@{});
 
