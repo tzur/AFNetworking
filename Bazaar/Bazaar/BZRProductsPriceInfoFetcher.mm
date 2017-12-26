@@ -55,7 +55,7 @@ NS_ASSUME_NONNULL_BEGIN
         if (response.invalidProductIdentifiers.count) {
           NSSet<NSString *> *invalidProductIdentifiers = response.invalidProductIdentifiers.lt_set;
           NSError *error =
-              [NSError bzr_invalidProductsErrorWithIdentifers:invalidProductIdentifiers];
+              [NSError bzr_invalidProductsErrorWithIdentifiers:invalidProductIdentifiers];
           [self.nonCriticalErrorEventsSubject sendNext:
            [[BZREvent alloc] initWithType:$(BZREventTypeNonCriticalError) eventError:error]];
         }

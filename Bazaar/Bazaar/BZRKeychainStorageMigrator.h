@@ -23,7 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (BOOL)migrateValueForKey:(NSString *)key ofClass:(Class)valueClass error:(NSError **)error;
 
 /// Creates a migrator using an instance of \c BZRKeychainStorage initialized with
-/// bundle identifer access group as the \c sourceKeychainStorage, and another instance of
+/// bundle identifier access group as the \c sourceKeychainStorage, and another instance of
 /// \c BZRKeychainStorage initialized with Lightricks shared access group as
 // \c targetKeychainStorage.
 + (BZRKeychainStorageMigrator *)migratorFromPrivateToSharedAcccessGroup;

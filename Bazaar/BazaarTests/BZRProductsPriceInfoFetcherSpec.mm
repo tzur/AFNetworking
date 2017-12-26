@@ -62,7 +62,7 @@ context(@"getting product list", ^{
     expect([priceInfoFetcher fetchProductsPriceInfo:@[product]]).will.sendError(error);
   });
 
-  it(@"should send error event if product list contains some invalid product identifers", ^{
+  it(@"should send error event if product list contains some invalid product identifiers", ^{
     SKProductsResponse *response = OCMClassMock([SKProductsResponse class]);
     OCMStub([response products]).andReturn(@[]);
     OCMStub([response invalidProductIdentifiers]).andReturn(@[product.identifier]);
@@ -76,7 +76,7 @@ context(@"getting product list", ^{
     expect(recorder).will.matchValue(0, ^BOOL(BZREvent *event) {
       NSError *error = event.eventError;
       return [event.eventType isEqual:$(BZREventTypeNonCriticalError)] && error.lt_isLTDomain &&
-          error.code == BZRErrorCodeInvalidProductIdentifer &&
+          error.code == BZRErrorCodeInvalidProductIdentifier &&
           [error.bzr_productIdentifiers isEqual:[NSSet setWithObject:product.identifier]];
     });
   });
