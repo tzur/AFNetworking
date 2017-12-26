@@ -118,5 +118,7 @@ LTErrorCodesDeclare(LTKitErrorCodeProductID,
   /// Caused when an invalid argument has been passed to a method.
   LTErrorCodeInvalidArgument,
   /// Caused when an exception is raised, caught and converted to error.
-  LTErrorCodeExceptionRaised
+  LTErrorCodeExceptionRaised,
+  /// Caused when an encryption operation failed.
+  LTErrorCodeEncryptionFailed
 );
