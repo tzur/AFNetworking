@@ -30,7 +30,7 @@ NS_ASSUME_NONNULL_BEGIN
   BZRMultiAppReceiptValidationStatusAggregator *aggregator =
       OCMClassMock([BZRMultiAppReceiptValidationStatusAggregator class]);
   BZRReceiptValidationStatusCache *cache = OCMClassMock([BZRReceiptValidationStatusCache class]);
-  OCMStub([provider receiptValidationStatusCache]).andReturn(cache);
+  OCMStub([provider cache]).andReturn(cache);
 
   return [super initWithUnderlyingProvider:provider aggregator:aggregator
                     bundledApplicationsIDs:@[@"foo", @"bar"].lt_set];

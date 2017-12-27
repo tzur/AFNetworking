@@ -72,16 +72,15 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)loadAggregatedReceiptValidationStatusFromStorage {
-  BZRMultiAppReceiptValidationStatus *bundleIDToReceiptValidationStatus =
-      [[self.underlyingProvider.receiptValidationStatusCache
-      loadReceiptValidationStatusCacheEntries:self.bundledApplicationsIDs]
-      lt_mapValues:^BZRReceiptValidationStatus *
-          (NSString *, BZRReceiptValidationStatusCacheEntry *cacheEntry) {
-        return cacheEntry.receiptValidationStatus;
-      }];
+  BZRMultiAppReceiptValidationStatus *multiAppReceiptValidationStatus =
+      [[self.underlyingProvider.cache
+          loadReceiptValidationStatusCacheEntries:self.bundledApplicationsIDs]
+          lt_mapValues:^(NSString *, BZRReceiptValidationStatusCacheEntry *cacheEntry) {
+            return cacheEntry.receiptValidationStatus;
+          }];
 
-  _receiptValidationStatus = [self.aggregator
-      aggregateMultiAppReceiptValidationStatuses:bundleIDToReceiptValidationStatus];
+  _receiptValidationStatus =
+      [self.aggregator aggregateMultiAppReceiptValidationStatuses:multiAppReceiptValidationStatus];
 }
 
 #pragma mark -

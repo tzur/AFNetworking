@@ -29,13 +29,6 @@ NS_ASSUME_NONNULL_BEGIN
 /// Seconds until the cache is invalidated, starting from the date of the last validation.
 @property (readonly, nonatomic) NSTimeInterval cachedEntryTimeToLive;
 
-/// Latest \c BZRReceiptValidationStatus fetched with \c underlyingProvider.
-@property (strong, readwrite, nonatomic, nullable)
-    BZRReceiptValidationStatus *receiptValidationStatus;
-
-/// Holds the date of the last receipt validation. \c nil if \c receiptValidationStatus is \c nil.
-@property (strong, readwrite, nonatomic, nullable) NSDate *lastReceiptValidationDate;
-
 /// Subject used to send events;
 @property (readonly, nonatomic) RACSubject<BZREvent *> *eventsSubject;
 
@@ -61,7 +54,7 @@ NS_ASSUME_NONNULL_BEGIN
            underlyingProvider:(id<BZRReceiptValidationStatusProvider>)underlyingProvider
         cachedEntryDaysToLive:(NSUInteger)cachedEntryDaysToLive {
   if (self = [super init]) {
-    _receiptValidationStatusCache = receiptValidationStatusCache;
+    _cache = receiptValidationStatusCache;
     _timeProvider = timeProvider;
     _underlyingProvider = underlyingProvider;
     _cachedEntryTimeToLive = [BZRTimeConversion numberOfSecondsInDays:cachedEntryDaysToLive];
@@ -80,8 +73,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (nullable BZRReceiptValidationStatusCacheEntry *)loadReceiptValidationStatusCacheEntryFromStorage:
     (NSString *)applicationBundleID {
-  return [self.receiptValidationStatusCache
-          loadCacheEntryOfApplicationWithBundleID:applicationBundleID error:nil];
+  return [self.cache loadCacheEntryOfApplicationWithBundleID:applicationBundleID error:nil];
 }
 
 #pragma mark -
@@ -94,8 +86,8 @@ NS_ASSUME_NONNULL_BEGIN
   auto receiptStatusCacheEntry = [[BZRReceiptValidationStatusCacheEntry alloc]
                                   initWithReceiptValidationStatus:receiptValidationStatus
                                   cachingDateTime:cachingDateTime];
-  [self.receiptValidationStatusCache storeCacheEntry:receiptStatusCacheEntry
-                                 applicationBundleID:applicationBundleID error:nil];
+  [self.cache storeCacheEntry:receiptStatusCacheEntry
+          applicationBundleID:applicationBundleID error:nil];
 }
 
 #pragma mark -
@@ -124,9 +116,8 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)invalidateReceiptValidationStatusIfNeeded:(NSString *)applicationBundleID {
-  auto _Nullable cacheEntry = [self.receiptValidationStatusCache
-                               loadCacheEntryOfApplicationWithBundleID:applicationBundleID
-                               error:nil];
+  auto _Nullable cacheEntry =
+      [self.cache loadCacheEntryOfApplicationWithBundleID:applicationBundleID error:nil];
   auto _Nullable subscription = cacheEntry.receiptValidationStatus.receipt.subscription;
 
   if (!subscription || subscription.isExpired) {

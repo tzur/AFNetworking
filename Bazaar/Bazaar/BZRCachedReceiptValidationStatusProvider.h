@@ -33,7 +33,7 @@ NS_ASSUME_NONNULL_BEGIN
         cachedEntryDaysToLive:(NSUInteger)cachedEntryDaysToLive NS_DESIGNATED_INITIALIZER;
 
 /// Cache used to store and load receipt validation status cache entries.
-@property (readonly, nonatomic) BZRReceiptValidationStatusCache *receiptValidationStatusCache;
+@property (readonly, nonatomic) BZRReceiptValidationStatusCache *cache;
 
 @end
 
