@@ -502,7 +502,7 @@
 		6542A52B1D46369F00450B46 /* Expecta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Expecta.xcodeproj; path = ../third_party/Expecta/Expecta.xcodeproj; sourceTree = "<group>"; };
 		6542A5461D4636AE00450B46 /* Specta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Specta.xcodeproj; path = ../third_party/Specta/Specta/Specta.xcodeproj; sourceTree = "<group>"; };
 		6542A55B1D4636CE00450B46 /* OCMock.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = OCMock.xcodeproj; path = ../third_party/OCMock/Source/OCMock.xcodeproj; sourceTree = "<group>"; };
-		654B9F3C1D48BE2B00F7609B /* TestHost.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TestHost.xcodeproj; path = ../Foundations/TestHost.xcodeproj; sourceTree = "<group>"; };
+		654B9F3C1D48BE2B00F7609B /* TestHost.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TestHost.xcodeproj; path = ../TestHost/TestHost.xcodeproj; sourceTree = "<group>"; };
 		8336DDA81E1BB37D00B09323 /* CAMVolumeButtonsControllerSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CAMVolumeButtonsControllerSpec.mm; sourceTree = "<group>"; };
 		834540341D7C002800D7D619 /* CAMBlankDeviceSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CAMBlankDeviceSpec.mm; sourceTree = "<group>"; };
 		8350566B1E14EE520005D9C4 /* CAMVolumeButtonsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAMVolumeButtonsController.h; sourceTree = "<group>"; };

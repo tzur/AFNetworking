@@ -438,7 +438,7 @@
 		65A6943D1D082E46001DE328 /* FBRHTTPSessionRequestMarshalling.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBRHTTPSessionRequestMarshalling.h; sourceTree = "<group>"; };
 		65AE67501D0461350083D1CE /* libFiber.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libFiber.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		65B5FA5B1D7DC02E005FDA21 /* FBRCertificatePinningSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FBRCertificatePinningSpec.mm; sourceTree = "<group>"; };
-		65B6E5731D46419100D503C0 /* TestHost.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TestHost.xcodeproj; path = ../Foundations/TestHost.xcodeproj; sourceTree = "<group>"; };
+		65B6E5731D46419100D503C0 /* TestHost.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TestHost.xcodeproj; path = ../TestHost/TestHost.xcodeproj; sourceTree = "<group>"; };
 		65B7F16D1D186531005810C9 /* FBRHTTPSessionRequestMarshalling.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FBRHTTPSessionRequestMarshalling.mm; sourceTree = "<group>"; };
 		65B7F18C1D186966005810C9 /* FBRHTTPSessionRequestMarshallingSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FBRHTTPSessionRequestMarshallingSpec.mm; sourceTree = "<group>"; };
 		65BDFC031D0EC56D00C86D36 /* extobjc.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = extobjc.xcodeproj; path = ../third_party/libextobjc/extobjc.xcodeproj; sourceTree = "<group>"; };

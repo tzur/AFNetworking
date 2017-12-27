@@ -794,7 +794,7 @@
 		654B1F4E1CE22299001F36FA /* OCMock.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = OCMock.xcodeproj; path = ../third_party/OCMock/Source/OCMock.xcodeproj; sourceTree = "<group>"; };
 		6562104E1D3779FB00E12FAF /* BZRReceiptValidationParameters+ValidatricksSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "BZRReceiptValidationParameters+ValidatricksSpec.mm"; sourceTree = "<group>"; };
 		656210731D377D1200E12FAF /* BZRValidatricksReceiptModelSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRValidatricksReceiptModelSpec.mm; sourceTree = "<group>"; };
-		656469671D46463B006BD7DE /* TestHost.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TestHost.xcodeproj; path = ../Foundations/TestHost.xcodeproj; sourceTree = "<group>"; };
+		656469671D46463B006BD7DE /* TestHost.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TestHost.xcodeproj; path = ../TestHost/TestHost.xcodeproj; sourceTree = "<group>"; };
 		6580F0711CEB2DB9007EABDD /* BZRReceiptValidator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BZRReceiptValidator.h; sourceTree = "<group>"; };
 		6580F0721CEB2E8D007EABDD /* BZRReceiptValidationStatus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BZRReceiptValidationStatus.h; sourceTree = "<group>"; };
 		6580F0731CEB2E8D007EABDD /* BZRReceiptValidationStatus.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRReceiptValidationStatus.mm; sourceTree = "<group>"; };

@@ -694,7 +694,7 @@
 		A14172A41E6EAF0D005DBEFF /* Specta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Specta.xcodeproj; path = ../third_party/Specta/Specta/Specta.xcodeproj; sourceTree = "<group>"; };
 		A14172BB1E6EB07E005DBEFF /* Pinky-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Pinky-Prefix.pch"; sourceTree = "<group>"; };
 		A14172BC1E6EB0CA005DBEFF /* PinkyTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PinkyTests-Prefix.pch"; sourceTree = "<group>"; };
-		A14172D71E6EB2FF005DBEFF /* TestHost.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TestHost.xcodeproj; path = ../Foundations/TestHost.xcodeproj; sourceTree = "<group>"; };
+		A14172D71E6EB2FF005DBEFF /* TestHost.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TestHost.xcodeproj; path = ../TestHost/TestHost.xcodeproj; sourceTree = "<group>"; };
 		A1417A911E6ED9CB005DBEFF /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		C9131E9E1EE0599D00E924DA /* EXPMatchers+beCloseToMat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "EXPMatchers+beCloseToMat.h"; path = "../../LTEngine/LTEngineTests/EXPMatchers+beCloseToMat.h"; sourceTree = "<group>"; };
 		C9131E9F1EE0599D00E924DA /* EXPMatchers+beCloseToMat.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = "EXPMatchers+beCloseToMat.mm"; path = "../../LTEngine/LTEngineTests/EXPMatchers+beCloseToMat.mm"; sourceTree = "<group>"; };
