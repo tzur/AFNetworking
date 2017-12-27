@@ -12,7 +12,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/// Returns the \c TINMessenger's URL representation of the given message.
+/// Returns the \c TINMessenger's URL representation of the given \c message.
 static NSURL *TINMessengerURLFromMessage(TINMessage *message) {
   auto components = [[NSURLComponents alloc] init];
   components.scheme = message.targetScheme;
@@ -113,7 +113,7 @@ static NSURL *TINMessengerURLFromMessage(TINMessage *message) {
 }
 
 - (BOOL)canSendMessage:(TINMessage *)message {
-  if (!message.url || ![self.application canOpenURL:nn(message.url)]) {
+  if (![self.application canOpenURL:TINMessengerURLFromMessage(message)]) {
     return NO;
   }
   return YES;
