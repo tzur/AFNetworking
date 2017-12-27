@@ -12,7 +12,7 @@
 #import "BZRFakeCachedReceiptValidationStatusProvider.h"
 #import "BZRFakeReceiptValidationParametersProvider.h"
 #import "BZRPeriodicReceiptValidatorActivator.h"
-#import "BZRProduct+SKProduct.h"
+#import "BZRProduct+StoreKit.h"
 #import "BZRProductContentManager.h"
 #import "BZRProductPriceInfo.h"
 #import "BZRProductsProvider.h"
@@ -599,8 +599,8 @@ context(@"purchasing products", ^{
         SKProduct *underlyingProduct = OCMClassMock([SKProduct class]);
         BZRProduct *bazaarProduct = BZRProductWithIdentifier(@"bar");
         bazaarProduct = [bazaarProduct
-            modelByOverridingProperty:@instanceKeypath(BZRProduct, bzr_underlyingProduct)
-                            withValue:underlyingProduct];
+                         modelByOverridingProperty:@instanceKeypath(BZRProduct, underlyingProduct)
+                         withValue:underlyingProduct];
         OCMStub([variantSelector selectedVariantForProductWithIdentifier:@"bar"]).andReturn(@"bar");
         BZRStubProductDictionaryToReturnProduct(bazaarProduct, productsProvider);
         BZRStore *store = [[BZRStore alloc] initWithConfiguration:configuration];
@@ -638,8 +638,8 @@ context(@"purchasing products", ^{
         beforeEach(^{
           BZRProduct *bazaarProduct = BZRProductWithIdentifier(@"bar");
           bazaarProduct = [bazaarProduct
-              modelByOverridingProperty:@instanceKeypath(BZRProduct, bzr_underlyingProduct)
-              withValue:OCMClassMock([SKProduct class])];
+                           modelByOverridingProperty:@instanceKeypath(BZRProduct, underlyingProduct)
+                           withValue:OCMClassMock([SKProduct class])];
           OCMStub([variantSelector selectedVariantForProductWithIdentifier:@"bar"])
               .andReturn(@"bar");
           BZRStubProductDictionaryToReturnProduct(bazaarProduct, productsProvider);
@@ -1110,9 +1110,8 @@ context(@"getting product list", ^{
     SKProduct *underlyingProduct = OCMClassMock([SKProduct class]);
     OCMStub([underlyingProduct priceLocale]).andReturn(locale);
     BZRProduct *product = BZRProductWithIdentifier(productIdentifier);
-    product =
-        [product modelByOverridingProperty:@keypath(product, bzr_underlyingProduct)
-                                 withValue:underlyingProduct];
+    product = [product modelByOverridingProperty:@keypath(product, underlyingProduct)
+                                       withValue:underlyingProduct];
     OCMStub([variantSelector selectedVariantForProductWithIdentifier:productIdentifier])
         .andReturn(productIdentifier);
     OCMStub([productsProvider fetchProductList]).andReturn([RACSignal return:@[product]]);

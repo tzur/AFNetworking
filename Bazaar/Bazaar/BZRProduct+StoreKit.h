@@ -6,10 +6,10 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /// Associates a \c BZRProduct with an \c SKProduct.
-@interface BZRProduct (SKProduct)
+@interface BZRProduct (StoreKit)
 
 /// \c SKProduct product associated with the BZRProduct.
-@property (readonly, nonatomic, nullable) SKProduct *bzr_underlyingProduct;
+@property (readonly, nonatomic, nullable) SKProduct *underlyingProduct;
 
 @end
 

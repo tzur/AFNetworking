@@ -4,6 +4,7 @@
 #import "BZRProduct.h"
 
 #import "BZRDummyContentFetcher.h"
+#import "BZRProduct+StoreKit.h"
 
 SpecBegin(BZRProduct)
 
@@ -83,6 +84,20 @@ context(@"conversion" , ^{
     expect(product.variants).to.equal(@[@"TierA", @"TierB"]);
     expect(product.enablesProducts).to.equal(@[@"foo.bar", @"baz"]);
   });
+
+  it(@"should include the underlying product in the dictionary value if it exists", ^{
+    SKProduct *underlyingProduct = OCMClassMock([SKProduct class]);
+    NSDictionary *dictionaryValue = @{
+        @instanceKeypath(BZRProduct, identifier): @"foo",
+        @instanceKeypath(BZRProduct, productType): $(BZRProductTypeNonConsumable),
+        @instanceKeypath(BZRProduct, underlyingProduct): underlyingProduct
+    };
+    BZRProduct *product = [[BZRProduct alloc] initWithDictionary:dictionaryValue error:nil];
+
+    expect(product).toNot.beNil();
+    expect(product.dictionaryValue[@keypath(product, underlyingProduct)])
+        .to.beIdenticalTo(underlyingProduct);
+    });
 });
 
 SpecEnd

@@ -3,7 +3,7 @@
 
 #import "BZRLocaleBasedVariantSelector.h"
 
-#import "BZRProduct+SKProduct.h"
+#import "BZRProduct+StoreKit.h"
 #import "NSString+Bazaar.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -42,7 +42,7 @@ NS_ASSUME_NONNULL_BEGIN
   LTParameterAssert(product, @"Got a request for variant of product that does not exist. "
                     "Identifier: %@", productIdentifier);
   NSString *countryCode =
-      [product.bzr_underlyingProduct.priceLocale objectForKey:NSLocaleCountryCode];
+      [product.underlyingProduct.priceLocale objectForKey:NSLocaleCountryCode];
   NSString *tier = self.countryToTier[countryCode];
   if (!tier) {
     return productIdentifier;

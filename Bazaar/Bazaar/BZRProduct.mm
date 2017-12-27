@@ -1,8 +1,10 @@
 // Copyright (c) 2016 Lightricks. All rights reserved.
 // Created by Ben Yohay.
 
+#import "BZRProduct.h"
+
 #import "BZRContentFetcherParameters.h"
-#import "BZRProduct+SKProduct.h"
+#import "BZRProduct+StoreKit.h"
 #import "BZRProductPriceInfo.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -88,7 +90,7 @@ LTEnumImplement(NSUInteger, BZRProductType,
 
 - (NSDictionary *)dictionaryValue {
   auto mutableDictionaryValue = [[super dictionaryValue] mutableCopy];
-  mutableDictionaryValue[@keypath(self, bzr_underlyingProduct)] = self.bzr_underlyingProduct;
+  mutableDictionaryValue[@keypath(self, underlyingProduct)] = self.underlyingProduct;
   return [mutableDictionaryValue copy];
 }
 
