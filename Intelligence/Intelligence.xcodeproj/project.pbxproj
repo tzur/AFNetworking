@@ -403,7 +403,7 @@
 		A14172A41E6EAF0D005DBEFF /* Specta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Specta.xcodeproj; path = ../third_party/Specta/Specta/Specta.xcodeproj; sourceTree = "<group>"; };
 		A14172BB1E6EB07E005DBEFF /* Intelligence-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Intelligence-Prefix.pch"; sourceTree = "<group>"; };
 		A14172BC1E6EB0CA005DBEFF /* IntelligenceTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "IntelligenceTests-Prefix.pch"; sourceTree = "<group>"; };
-		A14172D71E6EB2FF005DBEFF /* TestHost.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TestHost.xcodeproj; path = ../Foundations/TestHost.xcodeproj; sourceTree = "<group>"; };
+		A14172D71E6EB2FF005DBEFF /* TestHost.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TestHost.xcodeproj; path = ../TestHost/TestHost.xcodeproj; sourceTree = "<group>"; };
 		A14175B51E6EBE37005DBEFF /* libextobjc_iOS.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libextobjc_iOS.a; path = "../../../Library/Developer/Xcode/DerivedData/Intelligence-ggssnmdkwphyujhcqihvnrvvwwol/Build/Products/Debug-iphonesimulator/libextobjc_iOS.a"; sourceTree = "<group>"; };
 		A14177A01E6EC276005DBEFF /* INTIntelligence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INTIntelligence.h; sourceTree = "<group>"; };
 		A14177A11E6EC276005DBEFF /* INTIntelligence.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = INTIntelligence.mm; sourceTree = "<group>"; };

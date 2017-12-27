@@ -395,7 +395,7 @@
 /* Begin PBXFileReference section */
 		284FDEEF1E018C270066AB93 /* UIView+RetrievalSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIView+RetrievalSpec.mm"; sourceTree = "<group>"; };
 		65322DFC1D465479002D5F17 /* extobjc.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = extobjc.xcodeproj; path = ../third_party/libextobjc/extobjc.xcodeproj; sourceTree = "<group>"; };
-		65322E0D1D4654BB002D5F17 /* TestHost.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TestHost.xcodeproj; path = ../Foundations/TestHost.xcodeproj; sourceTree = "<group>"; };
+		65322E0D1D4654BB002D5F17 /* TestHost.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TestHost.xcodeproj; path = ../TestHost/TestHost.xcodeproj; sourceTree = "<group>"; };
 		6A0C328B1CE7476800809579 /* WFImageViewModelBuilderSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = WFImageViewModelBuilderSpec.mm; sourceTree = "<group>"; };
 		6A2990271CD36C600046C4ED /* WFImageViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WFImageViewModel.h; sourceTree = "<group>"; };
 		6A2D0FDF1CE1DC7000B439C6 /* WFImageViewModelBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WFImageViewModelBuilder.h; sourceTree = "<group>"; };
