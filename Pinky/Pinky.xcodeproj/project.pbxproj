@@ -170,7 +170,6 @@
 		E4786D451FD5499B0057FE03 /* MPSCNNConvolution+FactorySpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = E4786D441FD5499B0057FE03 /* MPSCNNConvolution+FactorySpec.mm */; };
 		E484089E1FCBF98B00468645 /* PNKDilatedConvolutionInternalLayerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = E484089D1FCBF98B00468645 /* PNKDilatedConvolutionInternalLayerSpec.mm */; };
 		E484D3701FEF838900DA050C /* PNKAvailability.mm in Sources */ = {isa = PBXBuildFile; fileRef = E484D36F1FEF838900DA050C /* PNKAvailability.mm */; };
-		E484D3931FEF852F00DA050C /* PNKAvailabilitySpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = E484D3921FEF852F00DA050C /* PNKAvailabilitySpec.mm */; };
 		E4D719331FE145580047E620 /* PNKGather.mm in Sources */ = {isa = PBXBuildFile; fileRef = E4D719321FE145580047E620 /* PNKGather.mm */; };
 		E4D719571FE1491E0047E620 /* PNKGather.metal in Sources */ = {isa = PBXBuildFile; fileRef = E4D719551FE148F90047E620 /* PNKGather.metal */; };
 		E4D719591FE16D650047E620 /* PNKGatherSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = E4D719581FE16D650047E620 /* PNKGatherSpec.mm */; };
@@ -737,7 +736,6 @@
 		E484089D1FCBF98B00468645 /* PNKDilatedConvolutionInternalLayerSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKDilatedConvolutionInternalLayerSpec.mm; sourceTree = "<group>"; };
 		E484D36E1FEF838900DA050C /* PNKAvailability.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNKAvailability.h; sourceTree = "<group>"; };
 		E484D36F1FEF838900DA050C /* PNKAvailability.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKAvailability.mm; sourceTree = "<group>"; };
-		E484D3921FEF852F00DA050C /* PNKAvailabilitySpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKAvailabilitySpec.mm; sourceTree = "<group>"; };
 		E4BAEEB31FE7C985009F594D /* PNKPixelBufferUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNKPixelBufferUtils.h; sourceTree = "<group>"; };
 		E4BAEEB41FE7C985009F594D /* PNKPixelBufferUtils.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKPixelBufferUtils.mm; sourceTree = "<group>"; };
 		E4D719311FE145580047E620 /* PNKGather.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNKGather.h; sourceTree = "<group>"; };
@@ -1402,7 +1400,6 @@
 		C9791A541F025AE90009E90F /* GPU */ = {
 			isa = PBXGroup;
 			children = (
-				E484D3921FEF852F00DA050C /* PNKAvailabilitySpec.mm */,
 				C9791A751F025B1F0009E90F /* PNKLibraryLoaderSpec.mm */,
 			);
 			name = GPU;
@@ -2001,7 +1998,6 @@
 				E4281EE31FC1C846008F4BAD /* PNKConcatenationSpec.mm in Sources */,
 				C9131EB01EE0599D00E924DA /* EXPMatchers+equalMat.mm in Sources */,
 				068D90A81F1F60A90012F472 /* PNKTestUtils.mm in Sources */,
-				E484D3931FEF852F00DA050C /* PNKAvailabilitySpec.mm in Sources */,
 				C9131EDA1EE05A8400E924DA /* NSValue+OpenCVExtensions.mm in Sources */,
 				06415FB01FD49A1A00F9F70C /* PNKSkySegmentationNetworkSpec.mm in Sources */,
 				06B924CA1F8946D300D07848 /* PNKInstanceNormLayerSpec.mm in Sources */,
