@@ -71,4 +71,7 @@ void PNKCopyMatToMTLTextureRegion(id<MTLTexture> texture, MTLRegion region, cons
 void PNKCopyMatToMTLTexture(id<MTLTexture> texture, const cv::Mat &data, NSUInteger slice = 0,
                             NSUInteger mipmapLevel = 0);
 
+/// Returns channels count for the pixel format of the given \c texture.
+NSUInteger PNKChannelCountForTexture(id<MTLTexture> texture);
+
 NS_ASSUME_NONNULL_END

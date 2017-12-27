@@ -139,8 +139,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)buildNetworkWithModel:(const pnk::NeuralNetworkModel &)model {
-  _concat1 = [[PNKConcatenation alloc] initWithDevice:self.device
-                          primaryInputFeatureChannels:3 secondaryInputFeatureChannels:1];
+  _concat1 = [[PNKConcatenation alloc] initWithDevice:self.device];
   // Downsample.
   _conv1 = [[PNKConvolutionLayer alloc]
             initWithDevice:self.device
@@ -208,8 +207,7 @@ NS_ASSUME_NONNULL_BEGIN
              initWithDevice:self.device
              convolutionModel:model.convolutionKernels.at("uconv1")
              activationModel:model.activationKernels.at("uconv1__activation__")];
-  _concat2 = [[PNKConcatenation alloc] initWithDevice:self.device
-                          primaryInputFeatureChannels:32 secondaryInputFeatureChannels:16];
+  _concat2 = [[PNKConcatenation alloc] initWithDevice:self.device];
   _upsample2 = [[PNKNearestNeighborUpsampling alloc] initWithDevice:self.device
                                                inputFeatureChannels:48
                                                 magnificationFactor:2];
@@ -217,8 +215,7 @@ NS_ASSUME_NONNULL_BEGIN
              initWithDevice:self.device
              convolutionModel:model.convolutionKernels.at("uconv2")
              activationModel:model.activationKernels.at("uconv2__activation__")];
-  _concat3 = [[PNKConcatenation alloc] initWithDevice:self.device
-                          primaryInputFeatureChannels:16 secondaryInputFeatureChannels:4];
+  _concat3 = [[PNKConcatenation alloc] initWithDevice:self.device];
   // Segment.
   _convfc = [[PNKConvolutionLayer alloc]
               initWithDevice:self.device
