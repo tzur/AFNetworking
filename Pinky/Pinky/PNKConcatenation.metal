@@ -7,24 +7,23 @@
 
 using namespace metal;
 
-constant ushort primaryInputFeatureChannels [[function_constant(0)]];
-constant ushort secondaryInputFeatureChannels [[function_constant(1)]];
-
-constant ushort primaryBodyChunksCount = primaryInputFeatureChannels / 4;
-constant ushort primaryTailSize = primaryInputFeatureChannels - primaryBodyChunksCount * 4;
-constant ushort secondaryHeadSize = (secondaryInputFeatureChannels < 4 - primaryTailSize) ?
-    secondaryInputFeatureChannels : (4 - primaryTailSize);
-constant ushort secondaryBodyChunksCount =
-    (secondaryInputFeatureChannels - secondaryHeadSize + 3) / 4;
-
 template <typename U, typename V, typename W>
-void concat(U inputImageA [[texture(0)]],
-            V inputImageB [[texture(1)]],
-            W outputImage [[texture(2)]],
+void concat(constant ushort *featureChannelCounts [[buffer(0)]], U inputImageA [[texture(0)]],
+            V inputImageB [[texture(1)]], W outputImage [[texture(2)]],
             ushort2 gridIndex [[thread_position_in_grid]]) {
   if (gridIndex.x >= inputImageA.get_width() || gridIndex.y >= inputImageA.get_height()) {
     return;
   }
+
+  const ushort primaryInputFeatureChannels = featureChannelCounts[0];
+  const ushort secondaryInputFeatureChannels = featureChannelCounts[1];
+
+  const ushort primaryBodyChunksCount = primaryInputFeatureChannels / 4;
+  const ushort primaryTailSize = primaryInputFeatureChannels - primaryBodyChunksCount * 4;
+  const ushort secondaryHeadSize = (secondaryInputFeatureChannels < 4 - primaryTailSize) ?
+      secondaryInputFeatureChannels : (4 - primaryTailSize);
+  const ushort secondaryBodyChunksCount =
+      (secondaryInputFeatureChannels - secondaryHeadSize + 3) / 4;
 
   // Copy the body of Primary.
   for (ushort chunk = 0; chunk < primaryBodyChunksCount; ++chunk) {
@@ -73,37 +72,42 @@ void concat(U inputImageA [[texture(0)]],
   }
 }
 
-kernel void concatSingleAndSingleToSingle(texture2d<half, access::read> inputImageA [[texture(0)]],
+kernel void concatSingleAndSingleToSingle(constant ushort *featureChannelCounts [[buffer(0)]],
+                                          texture2d<half, access::read> inputImageA [[texture(0)]],
                                           texture2d<half, access::read> inputImageB [[texture(1)]],
                                           texture2d<half, access::write> outputImage [[texture(2)]],
                                           ushort2 gridIndex [[thread_position_in_grid]]) {
-  concat(inputImageA, inputImageB, outputImage, gridIndex);
+  concat(featureChannelCounts, inputImageA, inputImageB, outputImage, gridIndex);
 }
 
-kernel void concatSingleAndSingleToArray(texture2d<half, access::read> inputImageA [[texture(0)]],
+kernel void concatSingleAndSingleToArray(constant ushort *featureChannelCounts [[buffer(0)]],
+                                         texture2d<half, access::read> inputImageA [[texture(0)]],
                                          texture2d<half, access::read> inputImageB [[texture(1)]],
                                          texture2d_array<half, access::write> outputImage [[texture(2)]],
                                          ushort2 gridIndex [[thread_position_in_grid]]) {
-  concat(inputImageA, inputImageB, outputImage, gridIndex);
+  concat(featureChannelCounts, inputImageA, inputImageB, outputImage, gridIndex);
 }
 
-kernel void concatSingleAndArrayToArray(texture2d<half, access::read> inputImageA [[texture(0)]],
+kernel void concatSingleAndArrayToArray(constant ushort *featureChannelCounts [[buffer(0)]],
+                                        texture2d<half, access::read> inputImageA [[texture(0)]],
                                         texture2d_array<half, access::read> inputImageB [[texture(1)]],
                                         texture2d_array<half, access::write> outputImage [[texture(2)]],
                                         ushort2 gridIndex [[thread_position_in_grid]]) {
-  concat(inputImageA, inputImageB, outputImage, gridIndex);
+  concat(featureChannelCounts, inputImageA, inputImageB, outputImage, gridIndex);
 }
 
-kernel void concatArrayAndSingleToArray(texture2d_array<half, access::read> inputImageA [[texture(0)]],
+kernel void concatArrayAndSingleToArray(constant ushort *featureChannelCounts [[buffer(0)]],
+                                        texture2d_array<half, access::read> inputImageA [[texture(0)]],
                                         texture2d<half, access::read> inputImageB [[texture(1)]],
                                         texture2d_array<half, access::write> outputImage [[texture(2)]],
                                         ushort2 gridIndex [[thread_position_in_grid]]) {
-  concat(inputImageA, inputImageB, outputImage, gridIndex);
+  concat(featureChannelCounts, inputImageA, inputImageB, outputImage, gridIndex);
 }
 
-kernel void concatArrayAndArrayToArray(texture2d_array<half, access::read> inputImageA [[texture(0)]],
+kernel void concatArrayAndArrayToArray(constant ushort *featureChannelCounts [[buffer(0)]],
+                                       texture2d_array<half, access::read> inputImageA [[texture(0)]],
                                        texture2d_array<half, access::read> inputImageB [[texture(1)]],
                                        texture2d_array<half, access::write> outputImage [[texture(2)]],
                                        ushort2 gridIndex [[thread_position_in_grid]]) {
-  concat(inputImageA, inputImageB, outputImage, gridIndex);
+  concat(featureChannelCounts, inputImageA, inputImageB, outputImage, gridIndex);
 }

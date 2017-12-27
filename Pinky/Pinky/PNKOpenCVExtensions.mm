@@ -124,4 +124,14 @@ void PNKCopyMatToMTLTexture(id<MTLTexture> texture, const cv::Mat &data, NSUInte
                                data, slice, mipmapLevel);
 }
 
+NSUInteger PNKChannelCountForTexture(id<MTLTexture> texture) {
+  auto pixelFormat = kMTLPixelFormatToMatInfo.find(texture.pixelFormat);
+  LTParameterAssert(pixelFormat != kMTLPixelFormatToMatInfo.end(),
+                    @"Pixel format type is not supported: %lu",
+                    (unsigned long)texture.pixelFormat);
+  int cvType = pixelFormat->second;
+  int channels = (cvType >> CV_CN_SHIFT) + 1;
+  return channels * texture.arrayLength;
+}
+
 NS_ASSUME_NONNULL_END
