@@ -38,7 +38,7 @@ beforeEach(^{
 });
 
 context(@"fetching products information", ^{
-  __block NSError * fetchError;
+  __block NSError *fetchError;
   __block NSSet<NSString *> *products;
   __block NSDictionary<NSString *, BZRProduct *> *productsInfo;
   __block SPXFetchProductsCompletionBlock completionBlock;
@@ -85,7 +85,7 @@ context(@"fetching products information", ^{
     expect(completionBlockError).to.equal(fetchError);
   });
 
-  it(@"should invoke the completion block with result if fetch succeeded" , ^{
+  it(@"should invoke the completion block with result if fetch succeeded", ^{
     OCMStub([productsManager fetchProductsInfo:products])
         .andReturn([RACSignal return:productsInfo]);
 
@@ -198,9 +198,178 @@ context(@"fetching products information", ^{
   });
 });
 
+context(@"fetching products information if needed", ^{
+  __block NSError *fetchError;
+  __block NSSet<NSString *> *products;
+  __block NSSet<BZRProduct *> *productList;
+  __block NSDictionary<NSString *, BZRProduct *> *productsInfo;
+  __block SPXFetchProductsCompletionBlock completionBlock;
+  __block BOOL completionBlockInvoked;
+  __block NSDictionary<NSString *, BZRProduct *> *completionBlockProductsInfo;
+  __block NSError *completionBlockError;
+
+  beforeEach(^{
+    fetchError = [NSError lt_errorWithCode:BZRErrorCodeProductsMetadataFetchingFailed];
+    products = @[@"foo", @"bar"].lt_set;
+    BZRProduct *firstProduct = OCMClassMock([BZRProduct class]);
+    BZRProduct *secondProduct = OCMClassMock([BZRProduct class]);
+    OCMStub([firstProduct identifier]).andReturn(@"foo");
+    OCMStub([secondProduct identifier]).andReturn(@"bar");
+    productList = [@[
+      firstProduct,
+      secondProduct,
+      OCMClassMock([BZRProduct class])
+    ] lt_set];
+    productsInfo = @{
+      @"foo": firstProduct,
+      @"bar": secondProduct
+    };
+
+    completionBlockInvoked = NO;
+    completionBlockProductsInfo = nil;
+    completionBlockError = nil;
+    completionBlock = ^(NSDictionary<NSString *, BZRProduct *> * _Nullable productsInfo,
+                        NSError * _Nullable error) {
+      completionBlockInvoked = YES;
+      completionBlockProductsInfo = productsInfo;
+      completionBlockError = error;
+    };
+  });
+
+  it(@"should present an alert if fetch failed", ^{
+    OCMStub([productsManager productList]).andReturn([RACSignal error:fetchError]);
+    OCMExpect([delegate presentAlertWithViewModel:OCMOCK_ANY]);
+
+    [subscriptionManager fetchProductsInfoIfNeeded:products completionHandler:completionBlock];
+
+    OCMVerifyAll((id)delegate);
+  });
+
+  it(@"should invoke the completion block with error immediately if no delegate is set", ^{
+    OCMStub([productsManager productList]).andReturn([RACSignal error:fetchError]);
+    subscriptionManager.delegate = nil;
+
+    [subscriptionManager fetchProductsInfoIfNeeded:products completionHandler:completionBlock];
+
+    expect(completionBlockInvoked).will.beTruthy();
+    expect(completionBlockProductsInfo).to.beNil();
+    expect(completionBlockError).to.equal(fetchError);
+  });
+
+  it(@"should invoke the completion block with result if fetch succeeded", ^{
+    OCMStub([productsManager productList]).andReturn([RACSignal return:productList]);
+
+    [subscriptionManager fetchProductsInfoIfNeeded:products completionHandler:completionBlock];
+
+    expect(completionBlockInvoked).will.beTruthy();
+    expect(completionBlockProductsInfo).to.equal(productsInfo);
+    expect(completionBlockError).to.beNil();
+  });
+
+  context(@"fetch failed alert", ^{
+    __block id<SPXAlertViewModel> viewModel;
+
+    beforeEach(^{
+      viewModel = nil;
+
+      OCMStub([delegate presentAlertWithViewModel:OCMOCK_ANY]).andDo(^(NSInvocation *invocation) {
+        __unsafe_unretained id<SPXAlertViewModel> unsafeViewModel;
+        [invocation getArgument:&unsafeViewModel atIndex:2];
+        viewModel = unsafeViewModel;
+      });
+
+      // This expectation is not for verification, it's a replacement for OCMStub since we stub
+      // this method again with a different return value in the tests.
+      OCMExpect([productsManager productList]).andReturn([RACSignal error:fetchError]);
+      [subscriptionManager fetchProductsInfoIfNeeded:products completionHandler:completionBlock];
+    });
+
+    context(@"try again button is pressed", ^{
+      it(@"should try the operation again", ^{
+        OCMExpect([productsManager fetchProductsInfo:products]).andReturn([RACSignal empty]);
+
+        viewModel.buttons[0].action();
+
+        OCMVerifyAll((id)productsManager);
+        expect(completionBlockInvoked).to.beFalsy();
+      });
+
+      it(@"should invoke the completion block with result after successful retry", ^{
+        OCMExpect([productsManager fetchProductsInfo:products])
+            .andReturn([RACSignal return:productsInfo]);
+
+        viewModel.buttons[0].action();
+
+        OCMVerifyAll((id)productsManager);
+        expect(completionBlockInvoked).will.beTruthy();
+        expect(completionBlockProductsInfo).to.equal(productsInfo);
+        expect(completionBlockError).to.beNil();
+      });
+
+      it(@"should keep trying again as long as the operation fails and try again is pressed", ^{
+        OCMExpect([productsManager fetchProductsInfo:products])
+            .andReturn([RACSignal error:fetchError]);
+        viewModel.buttons[0].action();
+        expect(completionBlockInvoked).to.beFalsy();
+
+        OCMExpect([productsManager fetchProductsInfo:products])
+            .andReturn([RACSignal return:productsInfo]);
+
+        viewModel.buttons[0].action();
+
+        OCMVerifyAll((id)productsManager);
+        expect(completionBlockInvoked).will.beTruthy();
+        expect(completionBlockProductsInfo).to.equal(productsInfo);
+        expect(completionBlockError).to.beNil();
+      });
+    });
+
+    context(@"contact us button is pressed", ^{
+      it(@"should present mail composer", ^{
+        OCMExpect([delegate presentFeedbackMailComposerWithCompletionHandler:OCMOCK_ANY]);
+
+        viewModel.buttons[1].action();
+
+        OCMVerifyAll((id)delegate);
+      });
+
+      it(@"should invoke the completion block with error when mail composer is dismissed", ^{
+        OCMExpect([delegate presentFeedbackMailComposerWithCompletionHandler:[OCMArg invokeBlock]]);
+
+        viewModel.buttons[1].action();
+
+        OCMVerifyAll((id)delegate);
+        expect(completionBlockInvoked).will.beTruthy();
+        expect(completionBlockProductsInfo).to.beNil();
+        expect(completionBlockError).to.equal(fetchError);
+      });
+
+      it(@"should invoke the completion block with error if no delegate is set", ^{
+        subscriptionManager.delegate = nil;
+
+        viewModel.buttons[1].action();
+
+        expect(completionBlockInvoked).will.beTruthy();
+        expect(completionBlockProductsInfo).to.beNil();
+        expect(completionBlockError).to.equal(fetchError);
+      });
+    });
+
+    context(@"not now button is pressed", ^{
+      it(@"should invoke completion block with error", ^{
+        viewModel.buttons[2].action();
+
+        expect(completionBlockInvoked).will.equal(YES);
+        expect(completionBlockProductsInfo).to.beNil();
+        expect(completionBlockError).to.equal(fetchError);
+      });
+    });
+  });
+});
+
 context(@"purchasing subscription", ^{
-  __block NSError * purchaseError;
-  __block NSError * validationError;
+  __block NSError *purchaseError;
+  __block NSError *validationError;
   __block SPXPurchaseSubscriptionCompletionBlock completionBlock;
   __block BOOL completionBlockInvoked;
   __block BZRReceiptSubscriptionInfo *completionBlockSubscriptionInfo;
@@ -278,7 +447,7 @@ context(@"purchasing subscription", ^{
     expect(completionBlockError).to.equal(cancellationError);
   });
 
-  it(@"should invoke the completion block with result if purchase succeeded" , ^{
+  it(@"should invoke the completion block with result if purchase succeeded", ^{
     OCMStub([productsManager purchaseProduct:@"foo"]).andReturn([RACSignal empty]);
     BZRReceiptSubscriptionInfo *subscriptionInfo = OCMClassMock([BZRReceiptSubscriptionInfo class]);
     OCMStub([productsInfoProvider subscriptionInfo]).andReturn(subscriptionInfo);
@@ -512,7 +681,7 @@ context(@"restore purchases", ^{
   });
 
   it(@"should invoke completion block with result immediately if restoration succeeded and no "
-     "delegate is set" , ^{
+     "delegate is set", ^{
     subscriptionManager.delegate = nil;
     OCMStub([productsManager refreshReceipt]).andReturn([RACSignal empty]);
 
@@ -524,7 +693,7 @@ context(@"restore purchases", ^{
   });
 
   it(@"should invoke completion block with result after alert is dismissed if restoration "
-     "succeeded" , ^{
+     "succeeded", ^{
     OCMExpect([delegate presentAlertWithViewModel:OCMOCK_ANY]).andDo(^(NSInvocation *invocation) {
       __unsafe_unretained id<SPXAlertViewModel> viewModel;
       [invocation getArgument:&viewModel atIndex:2];
