@@ -10,6 +10,15 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol SPXAlertViewModel, SPXSubscriptionVideoPageViewModel, SPXSubscriptionTermsViewModel,
     SPXSubscriptionTermsViewModel;
 
+/// Possible values of the products fetching strategy.
+LTEnumDeclare(NSUInteger, SPXFetchProductsStrategy,
+  /// States that the products information will be taken from the cached products information if it
+  /// exists, otherwise it will be fetched.
+  SPXFetchProductsStrategyIfNeeded,
+  /// States that the products information will re-fetched every time the view is loaded.
+  SPXFetchProductsStrategyAlways
+);
+
 #pragma mark -
 #pragma mark SPXSubscriptionViewModel protocol
 #pragma mark -
@@ -74,6 +83,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)init NS_UNAVAILABLE;
 
+/// Same as the designated initializer. \c colorScheme is pulled from Objection,
+/// \c subscriptionManager is set to the default manager and \c fetchProductsStrategy is set to
+/// \c SPXFetchProductsStrategyAlways.
+- (instancetype)initWithProducts:(NSArray<NSString *> *)productIdentifiers
+           preferredProductIndex:(nullable NSNumber *)preferredProductIndex
+                  pageViewModels:(NSArray<id<SPXSubscriptionVideoPageViewModel>> *)pageViewModels
+                  termsViewModel:(id<SPXSubscriptionTermsViewModel>)termsViewModel;
+
 /// Initializes with:
 ///
 /// \c productIdentifiers defines the subscription products that will be offered to the user on the
@@ -93,20 +110,16 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 /// \c subscriptionManager used to handle products information fetching, subscription purchasing and
 /// restoration.
+///
+/// \c fetchProductsStrategy used to specify the strategy for products information fetching.
 - (instancetype)initWithProducts:(NSArray<NSString *> *)productIdentifiers
            preferredProductIndex:(nullable NSNumber *)preferredProductIndex
                   pageViewModels:(NSArray<id<SPXSubscriptionVideoPageViewModel>> *)pageViewModels
                   termsViewModel:(id<SPXSubscriptionTermsViewModel>)termsViewModel
                      colorScheme:(SPXColorScheme *)colorScheme
              subscriptionManager:(SPXSubscriptionManager *)subscriptionManager
+           fetchProductsStrategy:(SPXFetchProductsStrategy *)fetchProductsStrategy
     NS_DESIGNATED_INITIALIZER;
-
-/// Same as the designated initializer. \c colorScheme is pulled from Objection, and
-/// \c subscriptionManager is set to the default manager.
-- (instancetype)initWithProducts:(NSArray<NSString *> *)productIdentifiers
-           preferredProductIndex:(nullable NSNumber *)preferredProductIndex
-                  pageViewModels:(NSArray<id<SPXSubscriptionVideoPageViewModel>> *)pageViewModels
-                  termsViewModel:(id<SPXSubscriptionTermsViewModel>)termsViewModel;
 
 @end
 

@@ -18,6 +18,11 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+LTEnumImplement(NSUInteger, SPXFetchProductsStrategy,
+  SPXFetchProductsStrategyIfNeeded,
+  SPXFetchProductsStrategyAlways
+);
+
 @interface SPXSubscriptionViewModel () <SPXSubscriptionManagerDelegate>
 
 /// Identifiers of the subscription products.
@@ -25,6 +30,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Manager used to handle products information fetching, subscription purchasing and restoration.
 @property (readonly, nonatomic) SPXSubscriptionManager *subscriptionManager;
+
+/// Enum used to specify the strategy for products information fetching.
+@property (readonly, nonatomic) SPXFetchProductsStrategy *fetchProductsStrategy;
 
 /// Subject that sends an alert view model when requested to show an alert to the user on success or
 /// failure. The receiver should present an alert with the given \c id<SPXAlertViewModel> and invoke
@@ -58,9 +66,21 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithProducts:(NSArray<NSString *> *)productIdentifiers
            preferredProductIndex:(nullable NSNumber *)preferredProductIndex
                   pageViewModels:(NSArray<id<SPXSubscriptionVideoPageViewModel>> *)pageViewModels
+                  termsViewModel:(id<SPXSubscriptionTermsViewModel>)termsViewModel {
+  return [self initWithProducts:productIdentifiers preferredProductIndex:preferredProductIndex
+                 pageViewModels:pageViewModels termsViewModel:termsViewModel
+                    colorScheme:nn([JSObjection defaultInjector][[SPXColorScheme class]])
+            subscriptionManager:[[SPXSubscriptionManager alloc] init]
+          fetchProductsStrategy:$(SPXFetchProductsStrategyAlways)];
+}
+
+- (instancetype)initWithProducts:(NSArray<NSString *> *)productIdentifiers
+           preferredProductIndex:(nullable NSNumber *)preferredProductIndex
+                  pageViewModels:(NSArray<id<SPXSubscriptionVideoPageViewModel>> *)pageViewModels
                   termsViewModel:(id<SPXSubscriptionTermsViewModel>)termsViewModel
                      colorScheme:(SPXColorScheme *)colorScheme
-             subscriptionManager:(SPXSubscriptionManager *)subscriptionManager {
+             subscriptionManager:(SPXSubscriptionManager *)subscriptionManager
+           fetchProductsStrategy:(SPXFetchProductsStrategy *)fetchProductsStrategy {
   LTParameterAssert(preferredProductIndex.unsignedIntegerValue < productIdentifiers.count,
                     @"Highlighted button index (%lu) must be lower than the number of buttons "
                     "(%lu)", (unsigned long)preferredProductIndex.unsignedIntegerValue,
@@ -76,9 +96,9 @@ NS_ASSUME_NONNULL_BEGIN
     _termsViewModel = termsViewModel;
     _colorScheme = colorScheme;
     _subscriptionManager = subscriptionManager;
+    _fetchProductsStrategy = fetchProductsStrategy;
     _alertRequestedSubject = [RACSubject subject];
-    _alertRequested = [self.alertRequestedSubject
-                       takeUntil:[self rac_willDeallocSignal]];
+    _alertRequested = [self.alertRequestedSubject takeUntil:[self rac_willDeallocSignal]];
     _feedbackComposerRequestedSubject = [RACSubject subject];
     _feedbackComposerRequested = [self.feedbackComposerRequestedSubject
                                   takeUntil:[self rac_willDeallocSignal]];
@@ -91,34 +111,31 @@ NS_ASSUME_NONNULL_BEGIN
   return self;
 }
 
-- (instancetype)initWithProducts:(NSArray<NSString *> *)productIdentifiers
-           preferredProductIndex:(nullable NSNumber *)preferredProductIndex
-                  pageViewModels:(NSArray<id<SPXSubscriptionVideoPageViewModel>> *)pageViewModels
-                  termsViewModel:(id<SPXSubscriptionTermsViewModel>)termsViewModel {
-  return [self initWithProducts:productIdentifiers preferredProductIndex:preferredProductIndex
-                 pageViewModels:pageViewModels termsViewModel:termsViewModel
-                    colorScheme:nn([JSObjection defaultInjector][[SPXColorScheme class]])
-            subscriptionManager:[[SPXSubscriptionManager alloc] init]];
-}
-
 - (void)fetchProductsInfo {
   self.shouldShowActivityIndicator = YES;
 
   @weakify(self);
-  [self.subscriptionManager fetchProductsInfo:[self.productIdentifiers lt_set]
-                            completionHandler:^(NSDictionary<NSString *, BZRProduct *> *products,
-                                                NSError * _Nullable error) {
-    @strongify(self);
-    if (error) {
-      [self requestDismiss];
-      return;
-    }
-    for (SPXSubscriptionDescriptor *subscriptionDescriptor in self.subscriptionDescriptors) {
-      subscriptionDescriptor.priceInfo =
-          products[subscriptionDescriptor.productIdentifier].priceInfo;
-    }
-    self.shouldShowActivityIndicator = NO;
-  }];
+  auto fetchCompletionHandler =
+      ^(NSDictionary<NSString *, BZRProduct *> * _Nullable products, NSError * _Nullable error) {
+        @strongify(self);
+        if (error) {
+          [self requestDismiss];
+          return;
+        }
+        for (SPXSubscriptionDescriptor *subscriptionDescriptor in self.subscriptionDescriptors) {
+          subscriptionDescriptor.priceInfo =
+              products[subscriptionDescriptor.productIdentifier].priceInfo;
+        }
+        self.shouldShowActivityIndicator = NO;
+      };
+
+  if ([self.fetchProductsStrategy isEqual:$(SPXFetchProductsStrategyAlways)]) {
+    [self.subscriptionManager fetchProductsInfo:self.productIdentifiers.lt_set
+                              completionHandler:fetchCompletionHandler];
+  } else {
+    [self.subscriptionManager fetchProductsInfoIfNeeded:self.productIdentifiers.lt_set
+                                      completionHandler:fetchCompletionHandler];
+  }
 }
 
 - (void)subscriptionButtonPressed:(NSUInteger)buttonIndex {
