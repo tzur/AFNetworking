@@ -47,7 +47,7 @@
       location = "group:../Shopix/Shopix.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:TestHost.xcodeproj">
+      location = "group:../TestHost/TestHost.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:../TinCan/TinCan.xcodeproj">

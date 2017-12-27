@@ -560,7 +560,7 @@
 		658CD3C41D50A79B00FF7FD6 /* LTProgress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTProgress.h; sourceTree = "<group>"; };
 		658CD3C51D50A79B00FF7FD6 /* LTProgress.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTProgress.mm; sourceTree = "<group>"; };
 		658CD3E01D50AC0C00FF7FD6 /* LTProgressSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTProgressSpec.mm; sourceTree = "<group>"; };
-		65F0E4EC1D464F0F007EB32D /* TestHost.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TestHost.xcodeproj; path = ../../Foundations/TestHost.xcodeproj; sourceTree = "<group>"; };
+		65F0E4EC1D464F0F007EB32D /* TestHost.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TestHost.xcodeproj; path = ../../TestHost/TestHost.xcodeproj; sourceTree = "<group>"; };
 		6AB5182C1CC2993D00540CC6 /* NSURL+Query.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURL+Query.h"; sourceTree = "<group>"; };
 		6AB5182D1CC2993D00540CC6 /* NSURL+Query.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSURL+Query.mm"; sourceTree = "<group>"; };
 		6AB5187F1CC2A8D700540CC6 /* NSURL+QuerySpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSURL+QuerySpec.mm"; sourceTree = "<group>"; };
