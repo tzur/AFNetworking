@@ -18,7 +18,6 @@
 #import "BZRPeriodicReceiptValidatorActivator.h"
 #import "BZRProductContentFetcher.h"
 #import "BZRProductContentManager.h"
-#import "BZRProductsPriceInfoFetcher.h"
 #import "BZRProductsVariantSelectorFactory.h"
 #import "BZRProductsWithDiscountsProvider.h"
 #import "BZRProductsWithPriceInfoProvider.h"
@@ -27,6 +26,7 @@
 #import "BZRReceiptValidationStatusCache.h"
 #import "BZRReceiptValidationStatusProvider.h"
 #import "BZRStoreKitFacade.h"
+#import "BZRStoreKitMetadataFetcher.h"
 #import "BZRTimeProvider.h"
 #import "BZRValidatedReceiptValidationStatusProvider.h"
 
@@ -102,8 +102,8 @@ NS_ASSUME_NONNULL_BEGIN
         [[BZRAcquiredViaSubscriptionProvider alloc] initWithKeychainStorage:keychainStorage];
 
     _storeKitFacade = [[BZRStoreKitFacade alloc] initWithApplicationUserID:applicationUserID];
-    _priceInfoFetcher =
-        [[BZRProductsPriceInfoFetcher alloc] initWithStoreKitFacade:self.storeKitFacade];
+    _storeKitMetadataFetcher =
+        [[BZRStoreKitMetadataFetcher alloc] initWithStoreKitFacade:self.storeKitFacade];
     _productsProvider = [self productsProviderWithJSONFilePath:productsListJSONFilePath
                                                  decryptionKey:productListDecryptionKey];
 
@@ -124,20 +124,16 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (id<BZRProductsProvider>)productsProviderWithJSONFilePath:(LTPath *)productsListJSONFilePath
                                               decryptionKey:(nullable NSString *)decryptionKey {
-    BZRLocalProductsProvider *localProductsProvider =
-        [[BZRLocalProductsProvider alloc] initWithPath:productsListJSONFilePath
-                                         decryptionKey:decryptionKey
-                                           fileManager:self.fileManager];
-    BZRProductsWithDiscountsProvider *productsWithDiscountsProvider =
-        [[BZRProductsWithDiscountsProvider alloc]
-         initWithUnderlyingProvider:localProductsProvider];
-    _netherProductsProvider =
-        [[BZRProductsWithVariantsProvider alloc]
-         initWithUnderlyingProvider:productsWithDiscountsProvider];
-    BZRProductsWithPriceInfoProvider *productsWithPriceInfoProvider =
-        [[BZRProductsWithPriceInfoProvider alloc]
-         initWithUnderlyingProvider:self.netherProductsProvider
-         priceInfoFetcher:self.priceInfoFetcher];
+    auto localProductsProvider = [[BZRLocalProductsProvider alloc]
+                                  initWithPath:productsListJSONFilePath decryptionKey:decryptionKey
+                                  fileManager:self.fileManager];
+    auto productsWithDiscountsProvider = [[BZRProductsWithDiscountsProvider alloc]
+                                          initWithUnderlyingProvider:localProductsProvider];
+    _netherProductsProvider = [[BZRProductsWithVariantsProvider alloc]
+                               initWithUnderlyingProvider:productsWithDiscountsProvider];
+    auto productsWithPriceInfoProvider = [[BZRProductsWithPriceInfoProvider alloc]
+                                          initWithUnderlyingProvider:self.netherProductsProvider
+                                          storeKitMetadataFetcher:self.storeKitMetadataFetcher];
     return [[BZRCachedProductsProvider alloc]
             initWithUnderlyingProvider:productsWithPriceInfoProvider];
 }

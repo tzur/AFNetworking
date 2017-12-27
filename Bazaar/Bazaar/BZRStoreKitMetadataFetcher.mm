@@ -1,7 +1,7 @@
 // Copyright (c) 2017 Lightricks. All rights reserved.
 // Created by Ben Yohay.
 
-#import "BZRProductsPriceInfoFetcher.h"
+#import "BZRStoreKitMetadataFetcher.h"
 
 #import <LTKit/NSArray+Functional.h>
 
@@ -13,7 +13,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface BZRProductsPriceInfoFetcher ()
+@interface BZRStoreKitMetadataFetcher ()
 
 /// Facade used to fetch products metadata with.
 @property (readonly, nonatomic) BZRStoreKitFacade *storeKitFacade;
@@ -23,7 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-@implementation BZRProductsPriceInfoFetcher
+@implementation BZRStoreKitMetadataFetcher
 
 @synthesize eventsSignal = _eventsSignal;
 
@@ -37,7 +37,7 @@ NS_ASSUME_NONNULL_BEGIN
   return self;
 }
 
-- (RACSignal<BZRProductList *> *)fetchProductsPriceInfo:(BZRProductList *)products {
+- (RACSignal<BZRProductList *> *)fetchProductsMetadata:(BZRProductList *)products {
   // If the given product list is empty avoid StoreKit overhead and return a signal that delivers an
   // empty list. Returning an empty signal is not good since the returned list might be merged with
   // another list and we don't want to lose the values from the other list.
@@ -79,18 +79,21 @@ NS_ASSUME_NONNULL_BEGIN
 
   return [productsResponse.products lt_reduce:^NSMutableArray<BZRProduct *> *
           (NSMutableArray<BZRProduct *> *productListSoFar, SKProduct *product) {
-    BZRProduct *bazaarProduct = productDictionary[product.productIdentifier];
-    if (!bazaarProduct) {
-      return productListSoFar;
-    }
+            BZRProduct *bazaarProduct = productDictionary[product.productIdentifier];
+            if (!bazaarProduct) {
+              return productListSoFar;
+            }
 
-    BZRProductPriceInfo *priceInfo = [BZRProductPriceInfo productPriceInfoWithSKProduct:product];
-    [productListSoFar addObject:[[bazaarProduct
-        modelByOverridingProperty:@keypath(bazaarProduct, priceInfo) withValue:priceInfo]
-        modelByOverridingProperty:@keypath(bazaarProduct, bzr_underlyingProduct)
-                        withValue:product]];
-    return productListSoFar;
-  } initial:[NSMutableArray array]];
+            auto priceInfo = [BZRProductPriceInfo productPriceInfoWithSKProduct:product];
+            auto bazaarProductWithStoreKitMetadata = [[bazaarProduct
+                modelByOverridingProperty:@keypath(bazaarProduct, bzr_underlyingProduct)
+                withValue:product]
+                modelByOverridingProperty:@keypath(bazaarProduct, priceInfo)
+                withValue:priceInfo];
+
+            [productListSoFar addObject:bazaarProductWithStoreKitMetadata];
+            return productListSoFar;
+          } initial:[NSMutableArray array]];
 }
 
 - (BZRProductList *)productListWithFullPriceInfoForDiscountProducts:(BZRProductList *)products {
