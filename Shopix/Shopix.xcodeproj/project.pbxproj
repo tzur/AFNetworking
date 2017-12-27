@@ -464,7 +464,7 @@
 		63E591521FC44AAC0009A34B /* SPXAlertViewModel+ShopixPresets.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "SPXAlertViewModel+ShopixPresets.mm"; sourceTree = "<group>"; };
 		63E591661FC492480009A34B /* SPXAlertViewModel+ShopixPresetsSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "SPXAlertViewModel+ShopixPresetsSpec.mm"; sourceTree = "<group>"; };
 		650BB31C1D465335008648A3 /* LTKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LTKit.xcodeproj; path = ../LTKit/LTKit.xcodeproj; sourceTree = "<group>"; };
-		650BB3341D465359008648A3 /* TestHost.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TestHost.xcodeproj; path = ../../Foundations/TestHost.xcodeproj; sourceTree = "<group>"; };
+		650BB3341D465359008648A3 /* TestHost.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TestHost.xcodeproj; path = ../../TestHost/TestHost.xcodeproj; sourceTree = "<group>"; };
 		653D9C361FB743110035ACEC /* UIAlertController+ViewModelSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIAlertController+ViewModelSpec.mm"; sourceTree = "<group>"; };
 		653D9C381FB757860035ACEC /* SPXAlertViewModel.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXAlertViewModel.mm; sourceTree = "<group>"; };
 		653D9C3A1FB7B5E00035ACEC /* SPXAlertViewModelSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXAlertViewModelSpec.mm; sourceTree = "<group>"; };
