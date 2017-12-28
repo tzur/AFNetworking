@@ -20,6 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
   LTParameterAssert(model, @"model is nil.");
   if (self = [super initWithFrame:CGRectZero]) {
     _model = model;
+    self.accessibilityIdentifier = model.title;
     [self setup];
   }
   return self;
