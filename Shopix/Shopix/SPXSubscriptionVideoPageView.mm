@@ -7,7 +7,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface SPXSubscriptionVideoPageView ()
+@interface SPXSubscriptionVideoPageView () <WFVideoViewDelegate>
 
 /// View that contains the video, until the video is set this view defines the bounds of the video.
 @property (readonly, nonatomic) UIView *mediaContainerView;
@@ -31,6 +31,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithFrame:(CGRect)frame {
   if (self = [super initWithFrame:frame]) {
+    _videoDidFinishPlayback = [[self rac_signalForSelector:@selector(videoDidFinishPlayback:)]
+                               mapReplace:[RACUnit defaultUnit]];
     [self setup];
   }
   return self;
@@ -55,6 +57,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)setupVideoView {
   _videoView = [[WFVideoView alloc] initWithVideoProgressIntervalTime:1 playInLoop:YES];
+  self.videoView.delegate = self;
   self.videoView.layer.cornerRadius = 7;
   self.videoView.layer.masksToBounds = YES;
   [self.mediaContainerView addSubview:self.videoView];
@@ -156,6 +159,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (nullable NSAttributedString *)subtitle {
   return self.subtitleLabel.attributedText;
+}
+
+#pragma mark -
+#pragma mark WFVideoViewDelegate
+#pragma mark -
+
+- (void)videoDidFinishPlayback:(WFVideoView * __unused)videoView {
+  // This method is handled using rac_signalForSelector.
 }
 
 @end
