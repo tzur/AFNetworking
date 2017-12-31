@@ -148,7 +148,7 @@ NS_ASSUME_NONNULL_BEGIN
   return [[productList
       lt_filter:^BOOL(BZRProduct *product) {
         return ![self isSubscriptionProduct:product] &&
-            [subscriptionProduct doesProductEnablesProductWithIdentifier:product.identifier];
+            [subscriptionProduct enablesProductWithIdentifier:product.identifier];
       }]
       valueForKey:@instanceKeypath(BZRProduct, identifier)];
 }
