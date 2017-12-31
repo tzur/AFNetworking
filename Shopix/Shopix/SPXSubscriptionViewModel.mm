@@ -34,6 +34,9 @@ LTEnumImplement(NSUInteger, SPXFetchProductsStrategy,
 /// Enum used to specify the strategy for products information fetching.
 @property (readonly, nonatomic) SPXFetchProductsStrategy *fetchProductsStrategy;
 
+/// Signal that sends a page index that the view should scroll to.
+@property (readonly, nonatomic) RACSubject<NSNumber *> *pagingViewScrollRequestedSubject;
+
 /// Subject that sends an alert view model when requested to show an alert to the user on success or
 /// failure. The receiver should present an alert with the given \c id<SPXAlertViewModel> and invoke
 /// the action block on each button press event.
@@ -45,6 +48,9 @@ LTEnumImplement(NSUInteger, SPXFetchProductsStrategy,
 
 /// \c YES if the activity indicator is visible, \c NO otherwise.
 @property (nonatomic) BOOL shouldShowActivityIndicator;
+
+/// Page index that is currently active.
+@property (nonatomic) NSUInteger activePageIndex;
 
 /// Subject used to send events with.
 @property (readonly, nonatomic) RACSubject<LTValueObject *> *eventsSubject;
@@ -58,6 +64,7 @@ LTEnumImplement(NSUInteger, SPXFetchProductsStrategy,
 @synthesize pageViewModels = _pageViewModels;
 @synthesize termsViewModel = _termsViewModel;
 @synthesize colorScheme = _colorScheme;
+@synthesize pagingViewScrollRequested = _pagingViewScrollRequested;
 @synthesize alertRequested = _alertRequested;
 @synthesize dismissRequested = _dismissRequested;
 @synthesize feedbackComposerRequested = _feedbackComposerRequested;
@@ -97,6 +104,9 @@ LTEnumImplement(NSUInteger, SPXFetchProductsStrategy,
     _colorScheme = colorScheme;
     _subscriptionManager = subscriptionManager;
     _fetchProductsStrategy = fetchProductsStrategy;
+    _pagingViewScrollRequestedSubject = [RACSubject subject];
+    _pagingViewScrollRequested = [self.pagingViewScrollRequestedSubject
+                                  takeUntil:[self rac_willDeallocSignal]];
     _alertRequestedSubject = [RACSubject subject];
     _alertRequested = [self.alertRequestedSubject takeUntil:[self rac_willDeallocSignal]];
     _feedbackComposerRequestedSubject = [RACSubject subject];
@@ -193,6 +203,16 @@ LTEnumImplement(NSUInteger, SPXFetchProductsStrategy,
        [self requestDismiss];
      }
   }];
+}
+
+- (void)activePageDidFinishVideoPlayback {
+  auto nextPageIndex = self.activePageIndex < self.pageViewModels.count - 1 ?
+      self.activePageIndex + 1 : 0;
+  [self.pagingViewScrollRequestedSubject sendNext:@(nextPageIndex)];
+}
+
+- (void)pagingViewScrolledToPosition:(CGFloat)position {
+  self.activePageIndex = round(std::clamp(position, 0, self.pageViewModels.count - 1));
 }
 
 - (void)requestDismiss {

@@ -17,6 +17,7 @@
 #import "SPXSubscriptionDescriptor.h"
 #import "SPXSubscriptionManager.h"
 #import "SPXSubscriptionTermsViewModel.h"
+#import "SPXSubscriptionVideoPageViewModel.h"
 
 SpecBegin(SPXSubscriptionViewModel)
 
@@ -31,9 +32,13 @@ beforeEach(^{
   termsViewModel = OCMClassMock([SPXSubscriptionTermsViewModel class]);
   colorScheme = OCMClassMock([SPXColorScheme class]);
   requestedProductIdentifiers = @[@"foo1", @"foo2"];
+  auto pageViewModels = @[
+      OCMProtocolMock(@protocol(SPXSubscriptionVideoPageViewModel)),
+      OCMProtocolMock(@protocol(SPXSubscriptionVideoPageViewModel))
+    ];
 
   viewModel = [[SPXSubscriptionViewModel alloc] initWithProducts:requestedProductIdentifiers
-      preferredProductIndex:0 pageViewModels:@[] termsViewModel:termsViewModel
+      preferredProductIndex:0 pageViewModels:pageViewModels termsViewModel:termsViewModel
       colorScheme:colorScheme subscriptionManager:subscriptionManager
       fetchProductsStrategy:$(SPXFetchProductsStrategyAlways)];
 });
@@ -264,6 +269,25 @@ context(@"restoration", ^{
     [viewModel restorePurchasesButtonPressed];
 
     expect(recorder).to.sendValuesWithCount(0);
+  });
+});
+
+context(@"paging view", ^{
+  it(@"should send scroll request to the next page when video playback has finished", ^{
+    auto recorder = [viewModel.pagingViewScrollRequested testRecorder];
+
+    [viewModel activePageDidFinishVideoPlayback];
+
+    expect(recorder).to.sendValues(@[@1]);
+  });
+
+  it(@"should send scroll request to the first page if the last page video has finished", ^{
+    auto recorder = [viewModel.pagingViewScrollRequested testRecorder];
+    [viewModel pagingViewScrolledToPosition:1];
+
+    [viewModel activePageDidFinishVideoPlayback];
+
+    expect(recorder).to.sendValues(@[@0]);
   });
 });
 
