@@ -10,7 +10,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Returns \c YES if the receiver enables the product with \c productIdentifier, and \c NO
 /// otherwise.
-- (BOOL)doesProductEnablesProductWithIdentifier:(NSString *)productIdentifier;
+- (BOOL)enablesProductWithIdentifier:(NSString *)productIdentifier;
 
 @end
 
