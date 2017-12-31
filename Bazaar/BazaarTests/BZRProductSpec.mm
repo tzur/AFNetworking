@@ -4,10 +4,11 @@
 #import "BZRProduct.h"
 
 #import "BZRDummyContentFetcher.h"
+#import "BZRProduct+SKProduct.h"
 
 SpecBegin(BZRProduct)
 
-context(@"initialization", ^{
+context(@"BZRModel", ^{
   it(@"should correctly specifiy optional properties", ^{
     NSSet<NSString *> *optionalProperties = [BZRProduct optionalPropertyKeys];
 
@@ -24,8 +25,34 @@ context(@"initialization", ^{
   });
 });
 
-context(@"conversion" , ^{
-  it(@"should correctly convert BZRProduct instance to JSON dictionary", ^{
+context(@"MTLModel", ^{
+  it(@"should not include the underlying StoreKit product in the propertyKeys", ^{
+    expect([BZRProduct propertyKeys])
+        .toNot.contain(@instanceKeypath(BZRProduct, bzr_underlyingProduct));
+  });
+
+  it(@"should include the underlying StoreKit product in the dictionary value", ^{
+    SKProduct *underlyingProduct = OCMClassMock([SKProduct class]);
+    NSDictionary *dictionaryValue = @{
+      @instanceKeypath(BZRProduct, identifier): @"foo",
+      @instanceKeypath(BZRProduct, productType): $(BZRProductTypeNonConsumable),
+      @instanceKeypath(BZRProduct, bzr_underlyingProduct): underlyingProduct
+    };
+
+    auto product = [[BZRProduct alloc] initWithDictionary:dictionaryValue error:nil];
+
+    expect(product.dictionaryValue[@keypath(product, bzr_underlyingProduct)])
+        .to.equal(underlyingProduct);
+  });
+
+  it(@"should not include isSubscriptionProduct in the propertyKeys", ^{
+    expect([BZRProduct propertyKeys])
+        .toNot.contain(@instanceKeypath(BZRProduct, isSubscriptionProduct));
+  });
+});
+
+context(@"JSON serialization" , ^{
+  it(@"should correctly serialize BZRProduct instance to JSON dictionary", ^{
     BZRDummyContentFetcherParameters *contentFetcherParameters =
         [[BZRDummyContentFetcherParameters alloc] initWithValue:@"bar"];
     NSDictionary *dictionaryValue = @{
@@ -55,7 +82,7 @@ context(@"conversion" , ^{
         .to.equal(@[@"foo.bar", @"baz"]);
   });
 
-  it(@"should correctly convert from JSON dictionary to BZRProduct", ^{
+  it(@"should correctly deserialize from JSON dictionary to BZRProduct", ^{
     NSDictionary *jsonDictionary = @{
       @"identifier": @"id",
       @"productType": @"nonRenewingSubscription",
