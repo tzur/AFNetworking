@@ -9,9 +9,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation BZRProduct (EnablesProduct)
 
-- (BOOL)doesProductEnablesProductWithIdentifier:(NSString *)productIdentifier {
-  return !self.enablesProducts || [self.enablesProducts lt_find:^BOOL(NSString *productsPrefix) {
-    return [productIdentifier hasPrefix:productsPrefix];
+- (BOOL)enablesProductWithIdentifier:(NSString *)productIdentifier {
+  if (self.isSubscriptionProduct && !self.enablesProducts) {
+    return YES;
+  }
+
+  return [self.enablesProducts lt_find:^BOOL(NSString *productsPrefix) {
+    return productsPrefix.length == 0 || [productIdentifier hasPrefix:productsPrefix];
   }] != nil;
 }
 

@@ -463,14 +463,21 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (BOOL)isSubscriptionProduct:(NSString *)productIdentifier {
-  BZRProductType *productType = self.productsJSONDictionary[productIdentifier].productType;
-  return [productType isEqual:$(BZRProductTypeRenewableSubscription)] ||
-      [productType isEqual:$(BZRProductTypeNonRenewingSubscription)];
+  return self.productsJSONDictionary[productIdentifier].isSubscriptionProduct;
 }
 
 - (BOOL)doesSubscriptionEnablesProductWithIdentifier:(NSString *)productIdentifier {
-  BZRProduct *subscriptionProduct = self.productsJSONDictionary[self.subscriptionInfo.productId];
-  return [subscriptionProduct doesProductEnablesProductWithIdentifier:productIdentifier];
+  BZRProduct * _Nullable subscriptionProduct =
+      self.productsJSONDictionary[self.subscriptionInfo.productId];
+  if (!subscriptionProduct) {
+    auto description = [NSString stringWithFormat:@"User has an active subscription (%@) which "
+                        "is not listed in the product list", self.subscriptionInfo.productId];
+    [self.eventsSubject sendNext:[[BZREvent alloc] initWithType:$(BZREventTypeInformational)
+                                                      eventInfo:@{@"description": description}]];
+    return YES;
+  }
+
+  return [subscriptionProduct enablesProductWithIdentifier:productIdentifier];
 }
 
 - (RACSignal *)purchaseProductWithStoreKit:(NSString *)productIdentifier {

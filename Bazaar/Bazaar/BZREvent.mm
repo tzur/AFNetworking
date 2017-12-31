@@ -8,6 +8,7 @@ NS_ASSUME_NONNULL_BEGIN
 LTEnumImplement(NSUInteger, BZREventType,
   BZREventTypeNonCriticalError,
   BZREventTypeCriticalError,
+  BZREventTypeInformational,
   BZREventTypeReceiptValidationStatusReceived
 );
 

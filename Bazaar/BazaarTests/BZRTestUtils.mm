@@ -38,7 +38,7 @@ BZRProduct *BZRProductWithIdentifierAndParameters(NSString *identifier,
 BZRReceiptValidationStatus *BZRReceiptValidationStatusWithExpiry(BOOL expiry, BOOL cancelled) {
   BZRReceiptSubscriptionInfo *subscription = [BZRReceiptSubscriptionInfo modelWithDictionary:@{
     @instanceKeypath(BZRReceiptSubscriptionInfo, productId): @"foo",
-    @instanceKeypath(BZRReceiptSubscriptionInfo, originalTransactionId): @"bar",
+    @instanceKeypath(BZRReceiptSubscriptionInfo, originalTransactionId): @"000000",
     @instanceKeypath(BZRReceiptSubscriptionInfo, originalPurchaseDateTime): [NSDate date],
     @instanceKeypath(BZRReceiptSubscriptionInfo, expirationDateTime):
         [NSDate dateWithTimeIntervalSinceNow:1337],
@@ -63,7 +63,7 @@ BZRReceiptValidationStatus *BZRReceiptValidationStatusWithInAppPurchaseAndExpiry
       BZRReceiptValidationStatusWithExpiry(expiry);
   BZRReceiptInAppPurchaseInfo *inAppPurchase = [BZRReceiptInAppPurchaseInfo modelWithDictionary:@{
     @instanceKeypath(BZRReceiptInAppPurchaseInfo, productId): identifier,
-    @instanceKeypath(BZRReceiptInAppPurchaseInfo, originalTransactionId): @"bar",
+    @instanceKeypath(BZRReceiptInAppPurchaseInfo, originalTransactionId): @"000000",
     @instanceKeypath(BZRReceiptInAppPurchaseInfo, originalPurchaseDateTime): [NSDate date],
   } error:nil];
   return [receiptValidationStatus
@@ -76,7 +76,7 @@ BZRReceiptValidationStatus *BZRReceiptValidationStatusWithSubscriptionIdentifier
   BZRReceiptValidationStatus *receiptValidationStatus = BZRReceiptValidationStatusWithExpiry(NO);
   BZRReceiptSubscriptionInfo *subscription = [BZRReceiptSubscriptionInfo modelWithDictionary:@{
     @instanceKeypath(BZRReceiptSubscriptionInfo, productId): subscriptionIdentifier,
-    @instanceKeypath(BZRReceiptSubscriptionInfo, originalTransactionId): @"bar",
+    @instanceKeypath(BZRReceiptSubscriptionInfo, originalTransactionId): @"000000",
     @instanceKeypath(BZRReceiptSubscriptionInfo, originalPurchaseDateTime): [NSDate date],
     @instanceKeypath(BZRReceiptSubscriptionInfo, expirationDateTime):
         [NSDate dateWithTimeIntervalSinceNow:1337],
