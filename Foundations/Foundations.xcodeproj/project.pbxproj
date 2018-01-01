@@ -431,6 +431,20 @@
 			remoteGlobalIDString = 8BED80971C3A68290001C6F1;
 			remoteInfo = BlueprintsTests;
 		};
+		880E4AB61FF3A5E400B4C05E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 880E4AA71FF3A5E400B4C05E /* Milkshake.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = A14171A11E6EAA93005DBEFF;
+			remoteInfo = Milkshake;
+		};
+		880E4AB81FF3A5E400B4C05E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 880E4AA71FF3A5E400B4C05E /* Milkshake.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = A14171C11E6EAC0D005DBEFF;
+			remoteInfo = MilkshakeTests;
+		};
 		884961D61EBA21CB007B3AE8 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 884961A61EBA1E9B007B3AE8 /* Laboratory.xcodeproj */;
@@ -573,6 +587,7 @@
 		65BAF1491D47F9E1009BBB6F /* PhotonsUI.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = PhotonsUI.xcodeproj; path = ../PhotonsUI/PhotonsUI.xcodeproj; sourceTree = "<group>"; };
 		65BAF1521D47F9EA009BBB6F /* Wireframes.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Wireframes.xcodeproj; path = ../Wireframes/Wireframes.xcodeproj; sourceTree = "<group>"; };
 		6A089D601DFEE26E00AC10A9 /* Blueprints.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Blueprints.xcodeproj; path = ../Blueprints/Blueprints.xcodeproj; sourceTree = "<group>"; };
+		880E4AA71FF3A5E400B4C05E /* Milkshake.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Milkshake.xcodeproj; path = ../Milkshake/Milkshake.xcodeproj; sourceTree = "<group>"; };
 		884961A61EBA1E9B007B3AE8 /* Laboratory.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Laboratory.xcodeproj; path = ../Laboratory/Laboratory.xcodeproj; sourceTree = "<group>"; };
 		A14176B21E6EBE8C005DBEFF /* Intelligence.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Intelligence.xcodeproj; path = ../Intelligence/Intelligence.xcodeproj; sourceTree = "<group>"; };
 		B4EDC8481FB0AC46002FE151 /* TinCan.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TinCan.xcodeproj; path = ../TinCan/TinCan.xcodeproj; sourceTree = "<group>"; };
@@ -619,6 +634,7 @@
 				65BAF12B1D47F9C9009BBB6F /* LTEngine.xcodeproj */,
 				65BAF1371D47F9D2009BBB6F /* LTKit.xcodeproj */,
 				884961A61EBA1E9B007B3AE8 /* Laboratory.xcodeproj */,
+				880E4AA71FF3A5E400B4C05E /* Milkshake.xcodeproj */,
 				65BAF1401D47F9DC009BBB6F /* Photons.xcodeproj */,
 				65BAF1491D47F9E1009BBB6F /* PhotonsUI.xcodeproj */,
 				062776391ED586D50006024E /* Pinky.xcodeproj */,
@@ -732,6 +748,15 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		880E4AA81FF3A5E400B4C05E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				880E4AB71FF3A5E400B4C05E /* libMilkshake.a */,
+				880E4AB91FF3A5E400B4C05E /* MilkshakeTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		884961D21EBA21CB007B3AE8 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -833,6 +858,10 @@
 				{
 					ProductGroup = 65BAF1381D47F9D2009BBB6F /* Products */;
 					ProjectRef = 65BAF1371D47F9D2009BBB6F /* LTKit.xcodeproj */;
+				},
+				{
+					ProductGroup = 880E4AA81FF3A5E400B4C05E /* Products */;
+					ProjectRef = 880E4AA71FF3A5E400B4C05E /* Milkshake.xcodeproj */;
 				},
 				{
 					ProductGroup = 65BAF1411D47F9DC009BBB6F /* Products */;
@@ -1058,6 +1087,20 @@
 			fileType = wrapper.cfbundle;
 			path = BlueprintsTests.xctest;
 			remoteRef = 6A089D671DFEE26F00AC10A9 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		880E4AB71FF3A5E400B4C05E /* libMilkshake.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libMilkshake.a;
+			remoteRef = 880E4AB61FF3A5E400B4C05E /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		880E4AB91FF3A5E400B4C05E /* MilkshakeTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = MilkshakeTests.xctest;
+			remoteRef = 880E4AB81FF3A5E400B4C05E /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		884961D71EBA21CB007B3AE8 /* libLaboratory.a */ = {
