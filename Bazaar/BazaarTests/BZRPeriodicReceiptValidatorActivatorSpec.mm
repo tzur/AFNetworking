@@ -332,7 +332,7 @@ context(@"periodic receipt validation failed", ^{
     NSTimeInterval currentTimeOffset =
         [BZRTimeConversion numberOfSecondsInDays:daysPastLastValidation];
     BZRStubCurrentTimeWithIntervalSinceDate(timeProvider, currentTimeOffset, lastValidationDate);
-    NSInteger expectedSecondsLeft =
+    NSTimeInterval expectedSecondsLeft =
         [BZRTimeConversion numberOfSecondsInDays:gracePeriod - daysPastLastValidation] +
         activator.periodicValidationInterval;
 
@@ -345,8 +345,9 @@ context(@"periodic receipt validation failed", ^{
 
     expect(recorder).will.matchValue(0, ^BOOL(BZREvent *event) {
       NSError *error = event.eventError;
+      auto secondsLeftToInvalidation = [error.bzr_secondsUntilSubscriptionInvalidation doubleValue];
       return error.lt_isLTDomain && error.code == BZRErrorCodePeriodicReceiptValidationFailed &&
-          [error.bzr_secondsUntilSubscriptionInvalidation integerValue] == expectedSecondsLeft &&
+          abs(secondsLeftToInvalidation - expectedSecondsLeft) < FLT_EPSILON &&
           [error.bzr_lastReceiptValidationDate isEqualToDate:lastValidationDate] &&
           error.lt_underlyingError == underlyingError &&
           [event.eventType isEqual:$(BZREventTypeNonCriticalError)];
