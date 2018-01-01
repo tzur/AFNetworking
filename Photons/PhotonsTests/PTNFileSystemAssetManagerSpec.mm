@@ -337,12 +337,53 @@ context(@"AVAsset fetching", ^{
   });
 });
 
-it(@"should err when fetching image data", ^{
-  id<PTNDescriptor> asset = PTNFileSystemFileFromString(@"foo.jpg");
-  RACSignal *values = [manager fetchImageDataWithDescriptor:asset];
+context(@"image data fetching", ^{
+  __block id<PTNDescriptor> descriptor;
 
-  expect(values).will.matchError(^BOOL(NSError *error) {
-    return error.code == PTNErrorCodeUnsupportedOperation;
+  it(@"should error on non-existing assets", ^{
+    id<PTNDescriptor> descriptor = PTNFileSystemFileFromString(@"/foo/bar/baz.jpg");
+    RACSignal *values = [manager fetchImageDataWithDescriptor:descriptor];
+
+    expect(values).will.matchError(^BOOL(NSError *error) {
+      return error.lt_isLTDomain && error.code == PTNErrorCodeAssetNotFound;
+    });
+  });
+
+  it(@"should error on non-File-System asset", ^{
+    id<PTNDescriptor> descriptor = OCMProtocolMock(@protocol(PTNDescriptor));
+    RACSignal *values = [manager fetchImageDataWithDescriptor:descriptor];
+
+    expect(values).will.matchError(^BOOL(NSError *error) {
+      return error.lt_isLTDomain && error.code == PTNErrorCodeInvalidDescriptor;
+    });
+  });
+
+  it(@"should fetch image data from image descriptor", ^{
+    id<PTNDescriptor> descriptor = PTNFileSystemFileFromString(@"foo.jpg");
+    RACSignal *values = [manager fetchImageDataWithDescriptor:descriptor];
+
+    PTNFileBackedImageAsset *imageAsset = [[PTNFileBackedImageAsset alloc]
+                                           initWithFilePath:[LTPath pathWithPath:@"foo.jpg"]
+                                           fileManager:fileManager
+                                           imageResizer:imageResizer
+                                           resizingStrategy:[PTNResizingStrategy identity]];
+
+    expect(values).will.sendValues(@[[[PTNProgress alloc] initWithResult:imageAsset]]);
+    expect(values).to.complete();
+  });
+
+  it(@"should fetch image data from audiovisual descriptor", ^{
+    descriptor = [[PTNFileSystemFileDescriptor alloc]
+                  initWithPath:[LTPath pathWithPath:PTNOneSecondVideoPath().path]];
+    RACSignal *values = [manager fetchImageDataWithDescriptor:descriptor];
+
+    AVAsset *videoAsset =
+        [AVAsset assetWithURL:descriptor.ptn_identifier.ptn_fileSystemAssetPath.url];
+    PTNAVImageAsset *expectedImage = [[PTNAVImageAsset alloc]
+                                      initWithAsset:videoAsset
+                                      resizingStrategy:[PTNResizingStrategy identity]];
+    expect(values).to.sendValues(@[[[PTNProgress alloc] initWithResult:expectedImage]]);
+    expect(values).to.complete();
   });
 });
 

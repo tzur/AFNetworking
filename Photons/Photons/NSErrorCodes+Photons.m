@@ -42,5 +42,7 @@ LTErrorCodesImplement(PhotonsErrorCodeProductID,
   // Caused when deserialization has failed.
   PTNErrorCodeDeserializationFailed,
   // Caused when failing while validating a cached response.
-  PTNErrorCodeCacheValidationFailed
+  PTNErrorCodeCacheValidationFailed,
+  // Caused when extracting image data from an audiovisual asset has failed.
+  PTNErrorCodeAVImageAssetFetchImageDataFailed
 );

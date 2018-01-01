@@ -9,8 +9,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class PTNImageResizer;
 
-/// Asset manager which backs the device's file system. Returned assets will represent files with
-/// the extensions {"jpg", "jpeg", "png", "tiff"}.
+/// Asset manager which backs the device's file system.
+///
+/// Supported image files are {"jpg", "jpeg", "png", "tiff"}. Supported Audiovisual files are
+/// {"mp4", "qt", "m4v", "mov"}.
 @interface PTNFileSystemAssetManager : NSObject <PTNAssetManager>
 
 - (instancetype)init NS_UNAVAILABLE;

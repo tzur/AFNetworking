@@ -795,7 +795,7 @@ NS_ASSUME_NONNULL_BEGIN
     };
 
     auto resultHandler = ^(NSData * _Nullable imageData, NSString * _Nullable dataUTI,
-                           UIImageOrientation orientation, NSDictionary * _Nullable info) {
+                           UIImageOrientation, NSDictionary * _Nullable info) {
       if (!imageData) {
         NSError *wrappedError = [NSError lt_errorWithCode:PTNErrorCodeAssetLoadingFailed
                                                       url:asset.ptn_identifier
@@ -805,8 +805,7 @@ NS_ASSUME_NONNULL_BEGIN
       }
 
       id<PTNImageDataAsset> rawImageAsset = [[PTNImageDataAsset alloc] initWithData:imageData
-                                                              uniformTypeIdentifier:dataUTI
-                                                                        orientation:orientation];
+                                                              uniformTypeIdentifier:dataUTI];
       [subscriber sendNext:[[PTNProgress alloc] initWithResult:rawImageAsset]];
       [subscriber sendCompleted];
     };

@@ -1501,8 +1501,7 @@ context(@"image data fetching", ^{
     uint8_t buffer[] = { 0x1, 0x2, 0x3, 0x4 };
     imageData = [NSData dataWithBytes:buffer length:sizeof(buffer)];
     imageDataAsset = [[PTNImageDataAsset alloc] initWithData:imageData
-                                       uniformTypeIdentifier:uniformTypeIdentifier
-                                                 orientation:orientation];
+                                       uniformTypeIdentifier:uniformTypeIdentifier];
 
     defaultError = [NSError errorWithDomain:@"foo" code:1337 userInfo:nil];
   });

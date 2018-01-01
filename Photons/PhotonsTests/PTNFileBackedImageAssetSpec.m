@@ -5,6 +5,7 @@
 
 #import <LTKit/LTPath.h>
 #import <LTKit/NSFileManager+LTKit.h>
+#import <MobileCoreServices/MobileCoreServices.h>
 
 #import "NSError+Photons.h"
 #import "PTNImageMetadata.h"
@@ -13,7 +14,7 @@
 
 SpecBegin(PTNFileBackedImageAsset)
 
-__block id<PTNDataAsset, PTNImageAsset> asset;
+__block PTNFileBackedImageAsset *asset;
 __block NSFileManager *fileManager;
 __block PTNImageResizer *resizer;
 __block id<PTNResizingStrategy> resizingStrategy;
@@ -30,6 +31,10 @@ beforeEach(^{
   asset = [[PTNFileBackedImageAsset alloc] initWithFilePath:path fileManager:fileManager
                                                imageResizer:resizer
                                            resizingStrategy:resizingStrategy];
+});
+
+it(@"should have UTI to match the file", ^{
+  expect(asset.uniformTypeIdentifier).to.equal((__bridge_transfer NSString *)kUTTypeJPEG);
 });
 
 it(@"should return underlying image", ^{
