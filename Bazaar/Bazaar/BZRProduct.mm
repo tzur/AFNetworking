@@ -3,11 +3,17 @@
 
 #import "BZRProduct.h"
 
+#import "BZRBillingPeriod.h"
 #import "BZRContentFetcherParameters.h"
 #import "BZRProduct+StoreKit.h"
 #import "BZRProductPriceInfo.h"
+#import "BZRSubscriptionIntroductoryDiscount.h"
 
 NS_ASSUME_NONNULL_BEGIN
+
+#pragma mark -
+#pragma mark BZRProductType
+#pragma mark -
 
 LTEnumImplement(NSUInteger, BZRProductType,
   BZRProductTypeNonConsumable,
@@ -16,11 +22,11 @@ LTEnumImplement(NSUInteger, BZRProductType,
   BZRProductTypeNonRenewingSubscription
 );
 
-@implementation BZRProduct
+#pragma mark -
+#pragma mark BZRProduct
+#pragma mark -
 
-#pragma mark -
-#pragma mark Creating new products
-#pragma mark -
+@implementation BZRProduct
 
 - (BZRProduct *)productWithContentFetcherParameters:
     (BZRContentFetcherParameters *)contentFetcherParameters
@@ -39,16 +45,27 @@ LTEnumImplement(NSUInteger, BZRProductType,
   return @{
     @instanceKeypath(BZRProduct, identifier): @"identifier",
     @instanceKeypath(BZRProduct, productType): @"productType",
+    @instanceKeypath(BZRProduct, priceInfo): @"priceInfo",
+    @instanceKeypath(BZRProduct, billingPeriod): @"billingPeriod",
+    @instanceKeypath(BZRProduct, introductoryDiscount): @"introductoryDiscount",
     @instanceKeypath(BZRProduct, contentFetcherParameters): @"contentFetcherParameters",
     @instanceKeypath(BZRProduct, isSubscribersOnly): @"isSubscribersOnly",
     @instanceKeypath(BZRProduct, preAcquired): @"preAcquired",
     @instanceKeypath(BZRProduct, preAcquiredViaSubscription): @"preAcquiredViaSubscription",
-    @instanceKeypath(BZRProduct, priceInfo): @"priceInfo",
     @instanceKeypath(BZRProduct, variants): @"variants",
     @instanceKeypath(BZRProduct, discountedProducts): @"discountedProducts",
     @instanceKeypath(BZRProduct, fullPriceProductIdentifier): @"fullPriceProductIdentifier",
     @instanceKeypath(BZRProduct, enablesProducts): @"enablesProducts"
   };
+}
+
++ (NSValueTransformer *)billingPeriodJSONTransformer {
+  return [NSValueTransformer mtl_JSONDictionaryTransformerWithModelClass:[BZRBillingPeriod class]];
+}
+
++ (NSValueTransformer *)introductoryDiscountJSONTransformer {
+  return [NSValueTransformer
+          mtl_JSONDictionaryTransformerWithModelClass:[BZRSubscriptionIntroductoryDiscount class]];
 }
 
 + (NSValueTransformer *)contentFetcherParametersJSONTransformer {
@@ -76,6 +93,8 @@ LTEnumImplement(NSUInteger, BZRProductType,
     optionalPropertyKeys = [NSSet setWithArray:@[
       @instanceKeypath(BZRProduct, contentFetcherParameters),
       @instanceKeypath(BZRProduct, priceInfo),
+      @instanceKeypath(BZRProduct, billingPeriod),
+      @instanceKeypath(BZRProduct, introductoryDiscount),
       @instanceKeypath(BZRProduct, isSubscribersOnly),
       @instanceKeypath(BZRProduct, preAcquired),
       @instanceKeypath(BZRProduct, preAcquiredViaSubscription),

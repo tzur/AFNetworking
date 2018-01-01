@@ -12,7 +12,7 @@ context(@"initialization", ^{
   it(@"should correctly specifiy optional properties", ^{
     NSSet<NSString *> *optionalProperties = [BZRProduct optionalPropertyKeys];
 
-    expect(optionalProperties.count).to.equal(9);
+    expect(optionalProperties.count).to.equal(11);
     expect(optionalProperties).to.contain(@instanceKeypath(BZRProduct, contentFetcherParameters));
     expect(optionalProperties).to.contain(@instanceKeypath(BZRProduct, priceInfo));
     expect(optionalProperties).to.contain(@instanceKeypath(BZRProduct, isSubscribersOnly));
