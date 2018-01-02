@@ -13,6 +13,7 @@
 		882D1F301EC1C49C007F39F5 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 882D1F2F1EC1C49C007F39F5 /* GLKit.framework */; };
 		882D1F321EC1C54F007F39F5 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 882D1F311EC1C54F007F39F5 /* QuartzCore.framework */; };
 		884962181EBA226E007B3AE8 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1417A911E6ED9CB005DBEFF /* UIKit.framework */; };
+		887D81AB1FFBC23100E9D8E8 /* libFBTweak.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8857C8321FF0FCE6000D7CC6 /* libFBTweak.a */; };
 		8892CCCE1FF92222009A8897 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8892CCA81FF92222009A8897 /* MobileCoreServices.framework */; };
 		8B10C9A01F3F059200F76142 /* libLLReactiveMatchers.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B10C99D1F3F058700F76142 /* libLLReactiveMatchers.a */; };
 		8B6867341F3B273C00F0EF4C /* ReactiveObjC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B6863CA1F33474400F0EF4C /* ReactiveObjC.framework */; };
@@ -384,6 +385,7 @@
 				8B6867341F3B273C00F0EF4C /* ReactiveObjC.framework in Frameworks */,
 				884962181EBA226E007B3AE8 /* UIKit.framework in Frameworks */,
 				A14173401E6EB59F005DBEFF /* libExpecta.a in Frameworks */,
+				887D81AB1FFBC23100E9D8E8 /* libFBTweak.a in Frameworks */,
 				8B10C9A01F3F059200F76142 /* libLLReactiveMatchers.a in Frameworks */,
 				A14173411E6EB59F005DBEFF /* libLTKit.a in Frameworks */,
 				A14171C61E6EAC0D005DBEFF /* libMilkshake.a in Frameworks */,
