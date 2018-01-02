@@ -3,10 +3,17 @@
 
 #import "SPXPromotion.h"
 
+#import <CommonCrypto/CommonCrypto.h>
 #import <LTKit/LTBidirectionalMap.h>
 #import <LTKit/NSArray+Functional.h>
+#import <LTKit/NSData+Base64.h>
+#import <LTKit/NSData+Compression.h>
+#import <LTKit/NSData+Encryption.h>
+#import <LTKit/NSData+Hashing.h>
 #import <LTKit/NSDateFormatter+Formatters.h>
 #import <LTKit/NSDictionary+Functional.h>
+#import <LTKit/NSString+Hashing.h>
+#import <random>
 
 #import "NSError+Shopix.h"
 #import "SPXProductAxis.h"
@@ -208,6 +215,145 @@ typedef id _Nullable(^SPXArrayTryMapBlock)(ObjectType _Nonnull object);
   }
 
   return [super initWithDictionary:dictionary error:error];
+}
+
+- (NSData *)randomDataWithLength:(NSUInteger)length {
+  auto randomData = [NSMutableData dataWithLength:length];
+  arc4random_buf(randomData.mutableBytes, length);
+  return randomData;
+}
+
+- (nullable NSString *)serializeAndSignWithKey:(NSString *)key
+                                         error:(NSError *__autoreleasing *)error {
+#if defined(DEBUG) && DEBUG
+  auto serializedPromotion = [MTLJSONAdapter JSONDictionaryFromModel:self];
+  auto _Nullable jsonData = [NSJSONSerialization dataWithJSONObject:serializedPromotion options:0
+                                                              error:nil];
+  NSError *underlyingError;
+  auto _Nullable compressed = [nn(jsonData) lt_compressWithCompressionType:LTCompressionTypeZLIB
+                                                                     error:&underlyingError];
+  if (!compressed) {
+    if (error) {
+      *error = [NSError spx_errorWithCode:SPXErrorCodeInvalidCoupon associatedPromotion:self
+                          underlyingError:underlyingError];
+    }
+    return nil;
+  }
+
+  auto keyData = [key dataUsingEncoding:NSUTF8StringEncoding];
+  // Hashing with MD5 always return 16-byte buffer, which can be used as key for AES128.
+  auto encrypted = [compressed lt_encryptWithKey:[keyData lt_MD5]
+                                              iv:[self randomDataWithLength:16]
+                                           error:&underlyingError];
+
+  if (!encrypted) {
+    if (error) {
+      *error = [NSError spx_errorWithCode:SPXErrorCodeInvalidCoupon associatedPromotion:self
+                          underlyingError:underlyingError];
+    }
+    return nil;
+  }
+  auto signature = [encrypted lt_HMACSHA256WithKey:keyData];
+
+  NSMutableData *data = [signature mutableCopy];
+  [data appendData:encrypted];
+  return [data lt_urlSafeBase64];
+#else
+  // The real implementation of the method is not in release mode because then users will be able to
+  // create signed promotions.
+  LogError(@"%@ called in release mode with key %@ and error %p", NSStringFromSelector(_cmd), key,
+           error);
+  return nil;
+#endif
+}
+
++ (nullable instancetype)promotionWithSerializedString:(NSString *)string key:(NSString *)key
+                                                 error:(NSError *__autoreleasing *)error {
+  auto _Nullable data = [[NSData alloc] initWithURLSafeBase64EncodedString:string];
+  if (!data) {
+    if (error) {
+      *error = [NSError lt_errorWithCode:SPXErrorCodeDeserializationFailed description:@"Unable to "
+                "decode URL-safe-base64 from given serialized promotion %@", string];
+    }
+    return nil;
+  }
+  static NSUInteger kSignatureLength = 32;
+  if (data.length <= kSignatureLength) {
+    if (error) {
+      *error = [NSError lt_errorWithCode:SPXErrorCodeDeserializationFailed description:@"Given "
+                "serialized promotion %@ is too short for deserialization", string];
+    }
+    return nil;
+  }
+
+  auto _Nullable signature = [data subdataWithRange:NSMakeRange(0, kSignatureLength)];
+  auto _Nullable encrypted = [data subdataWithRange:NSMakeRange(kSignatureLength,
+                                                                data.length - kSignatureLength)];
+  auto keyData = [key dataUsingEncoding:NSUTF8StringEncoding];
+  auto localSignature = [nn(encrypted) lt_HMACSHA256WithKey:keyData];
+  if (![localSignature isEqual:nn(signature)]) {
+    if (error) {
+      *error = [NSError lt_errorWithCode:SPXErrorCodeSignatureValidationFailed description:
+                @"Signature %@ does match does not match encrypted promotion %@", signature,
+                localSignature];
+    }
+    return nil;
+  }
+
+  NSError *underlyingError;
+  auto _Nullable decrypted = [encrypted lt_decryptWithKey:[keyData lt_MD5] error:&underlyingError];
+  if (!decrypted) {
+    if (error) {
+      *error = [NSError lt_errorWithCode:SPXErrorCodeDeserializationFailed
+                         underlyingError:underlyingError description:@"Unable to decrypt buffer %@",
+                encrypted];
+    }
+    return nil;
+  }
+
+  auto _Nullable decompressed = [decrypted lt_decompressWithCompressionType:LTCompressionTypeZLIB
+                                                                      error:&underlyingError];
+  if (!decompressed) {
+    if (error) {
+      *error = [NSError lt_errorWithCode:SPXErrorCodeDeserializationFailed
+                         underlyingError:underlyingError description:@"Unable to decompress buffer "
+                "%@", decrypted];
+    }
+    return nil;
+  }
+
+  id jsonDict = [NSJSONSerialization JSONObjectWithData:nn(decompressed) options:0
+                                                  error:&underlyingError];
+  if (!jsonDict) {
+    if (error) {
+      *error = [NSError lt_errorWithCode:SPXErrorCodeDeserializationFailed
+                         underlyingError:underlyingError
+                             description:@"Unable to deserialize promotion %@", decompressed];
+    }
+    return nil;
+  }
+
+  if (![jsonDict isKindOfClass:[NSDictionary class]]) {
+    if (error) {
+      *error = [NSError lt_errorWithCode:SPXErrorCodeDeserializationFailed description:@"Expected "
+                "deserialize promotion to be dictionary, but got %@", jsonDict];
+    }
+    return nil;
+  }
+
+  SPXPromotion * _Nullable promotion = [MTLJSONAdapter modelOfClass:SPXPromotion.class
+                                                 fromJSONDictionary:jsonDict
+                                                              error:&underlyingError];
+  if (!promotion) {
+    if (error) {
+      *error = [NSError lt_errorWithCode:SPXErrorCodeDeserializationFailed
+                         underlyingError:underlyingError
+                             description:@"Unable to deserialize promotion %@", jsonDict];
+    }
+    return nil;
+  }
+
+  return nn(promotion);
 }
 
 #pragma mark -

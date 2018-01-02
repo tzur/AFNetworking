@@ -60,6 +60,40 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithName:(NSString *)name coupons:(NSArray<SPXCoupon *> *)coupons
                   expiryDate:(NSDate *)expiryDate;
 
+/// Creates a string that contains the encoded receiver and a signature based on the given \c key.
+/// The promotion can be later recreated using the \c promotionWithSignedString:key: method, if
+/// the same key is used.
+///
+/// The method performs these steps to encode the receiver:
+/// 1. Serializes using Mantle's API to \c NSData.
+/// 2. The data is compressed using ZLIB.
+/// 3. The compressed data is encrypted using AES128 with MD5 of \c key as the key.
+///
+/// The encrypted data is then signed with HMAC-SHA256 using \c key and prepended to the encrypted
+/// promotion. The entire buffer is then encoded with URL-safe-base64 and returned.
+///
+/// \c nil is returned and \c error is populated with SPXErrorCodeDeserializationFailed when any of
+/// the above steps fail.
+- (nullable NSString *)serializeAndSignWithKey:(NSString *)key error:(NSError **)error;
+
+/// Creates a new promotion from the given \c serializedPromotion. It is expected that
+/// \c serializedPromotion is a URL-safe-base64 encoded buffer containing a 256-bit signature
+/// followed by an encrypted promotion.
+///
+/// Once the signature is decoded it is verified to match the encrypted promotion.
+///
+/// The method performs these steps to decode the promotion:
+/// 1. Decrypts using AES128 using with MD5 of \c key as the key.
+/// 2. Decompresses with decrypted data using ZILB.
+/// 3. Deserialized the decompressed data using Mantle's API.
+///
+/// \c nil is returned and \c error is populated with the following error codes:
+/// 1. SPXErrorCodeSignatureValidationFailed - The signature doesn't match the encoded promotion
+///    using the given \c key.
+/// 2. SPXErrorCodeDeserializationFailed - When any of the above steps fail.
++ (nullable instancetype)promotionWithSerializedString:(NSString *)string key:(NSString *)key
+                                                 error:(NSError **)error;
+
 /// Name of the promotion.
 @property (readonly, nonatomic) NSString *name;
 

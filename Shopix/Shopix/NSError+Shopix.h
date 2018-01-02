@@ -13,6 +13,12 @@ NS_ASSUME_NONNULL_BEGIN
 + (instancetype)spx_errorWithCode:(NSInteger)code
               associatedPromotion:(SPXPromotion *)associatedPromotion;
 
+/// Creates an error with Lightricks' domain, given error code, associated promotion and an
+/// underlying error.
++ (instancetype)spx_errorWithCode:(NSInteger)code
+              associatedPromotion:(SPXPromotion *)associatedPromotion
+                  underlyingError:(NSError *)underlyingError;
+
 /// Creates an error with Lightricks' domain, given error code, the associated promotion and the
 /// associated coupon.
 + (instancetype)spx_errorWithCode:(NSInteger)code
