@@ -17,6 +17,13 @@ NS_ASSUME_NONNULL_BEGIN
 /// The signal errs an error occurred during fetching.
 - (RACSignal<NSBundle *> *)contentBundleForProduct:(NSString *)productIdentifier;
 
+/// Returns \c YES if the subscription specified by \c productIdentifier is a multi-app
+/// subscription, and \c NO otherwise.
+///
+/// @note This method doesn't check if the product with the given \c productIdentifier is a valid
+/// subscription product.
+- (BOOL)isMultiAppSubscription:(NSString *)productIdentifier;
+
 /// List of products that were purchased by the user as in-app purchases. KVO-compliant. Changes may
 /// be delivered on an arbitrary thread.
 @property (readonly, nonatomic) NSSet<NSString *> *purchasedProducts;

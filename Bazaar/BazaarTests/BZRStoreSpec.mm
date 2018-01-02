@@ -184,6 +184,31 @@ context(@"initial receipt validation", ^{
   });
 });
 
+context(@"multi-app subscription", ^{
+  it(@"should return YES if ths product's identifier contains the multi-app subscription marker", ^{
+    OCMStub([configuration multiAppSubscriptionIdentifierMarker]).andReturn(@"MultiAppMarker");
+    store = [[BZRStore alloc] initWithConfiguration:configuration];
+
+    auto subscriptionIdentifier = @"com.bundleID.MultiAppMarker.foo";
+
+    expect([store isMultiAppSubscription:subscriptionIdentifier]).to.beTruthy();
+  });
+
+  it(@"should return NO if the product's identifier doesn't contain the multi-app subscription "
+     "marker", ^{
+    OCMStub([configuration multiAppSubscriptionIdentifierMarker]).andReturn(@"MultiAppMarker");
+    store = [[BZRStore alloc] initWithConfiguration:configuration];
+
+    expect([store isMultiAppSubscription:@"com.bundleID.foo"]).to.beFalsy();
+  });
+
+  it(@"should return NO if the multi-app subscription marker is nil", ^{
+    auto subscriptionIdentifier = @"com.bundleID.MultiAppMarker.foo";
+
+    expect([store isMultiAppSubscription:subscriptionIdentifier]).to.beFalsy();
+  });
+});
+
 context(@"getting bundle of content", ^{
   it(@"should send nil if the product has no content", ^{
     expect([store contentBundleForProduct:productIdentifier]).to.sendValues(@[[NSNull null]]);
@@ -1245,7 +1270,7 @@ context(@"acquiring all enabled products", ^{
   });
 });
 
-context(@"maually fetching products info", ^{
+context(@"manually fetching products info", ^{
   it(@"should err if products info fetcher errs", ^{
     auto product = BZRProductWithIdentifier(productIdentifier);
     [netherProductsProviderSubject sendNext:@[product, BZRProductWithIdentifier(@"bar")]];
