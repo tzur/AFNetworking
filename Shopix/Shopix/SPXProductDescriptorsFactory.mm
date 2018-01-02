@@ -268,6 +268,14 @@ NS_ASSUME_NONNULL_BEGIN
   return YES;
 }
 
+- (nullable NSArray<SPXProductDescriptor *> *)
+    productDescriptorsWithCoupons:(nullable NSArray<SPXCoupon *>*)coupons
+                        withError:(NSError *__autoreleasing *)error {
+  auto promotion = [[SPXPromotion alloc] initWithName:@"__SPXOnlyCoupons__" coupons:coupons
+                                           expiryDate:[NSDate distantFuture]];
+  return [self productDescriptorsWithPromotion:promotion withError:error];
+}
+
 @end
 
 NS_ASSUME_NONNULL_END
