@@ -27,6 +27,7 @@ beforeEach(^{
   buttonsFactory =
       [[SPXSubscriptionGradientButtonsFactory alloc]
        initWithBottomGradientColors:@[[UIColor whiteColor], [UIColor blackColor]]
+       highlightedBottomGradientColors:@[[UIColor redColor], [UIColor grayColor]]
        formatter:formatter];
 });
 
@@ -36,6 +37,48 @@ it(@"should set the button gradient colors", ^{
                                                                    outOf:1 isHighlighted:NO];
 
   expect(button.bottomGradientColors).to.equal(@[[UIColor whiteColor], [UIColor blackColor]]);
+});
+
+it(@"should set the highlighted button gradient colors", ^{
+  auto button = (SPXSubscriptionGradientButton *)
+      [buttonsFactory createSubscriptionButtonWithSubscriptionDescriptor:descriptor atIndex:0
+                                                                   outOf:1 isHighlighted:YES];
+
+  expect(button.bottomGradientColors).to.equal(@[[UIColor redColor], [UIColor grayColor]]);
+});
+
+it(@"should set the button border color to the last color with additional 24% to brightness", ^{
+  auto button = (SPXSubscriptionGradientButton *)
+      [buttonsFactory createSubscriptionButtonWithSubscriptionDescriptor:descriptor atIndex:0
+                                                                   outOf:1 isHighlighted:YES];
+
+  expect(button.borderColor).to.equal([UIColor colorWithRed:0.62 green:0.62 blue:0.62 alpha:1.0]);
+});
+
+it(@"should set the highlighted button colors to normal if no highlighted colors provided", ^{
+  buttonsFactory =
+      [[SPXSubscriptionGradientButtonsFactory alloc]
+       initWithBottomGradientColors:@[[UIColor whiteColor], [UIColor blackColor]]
+       highlightedBottomGradientColors:nil
+       formatter:OCMClassMock([SPXSubscriptionButtonFormatter class])];
+  auto button = (SPXSubscriptionGradientButton *)
+      [buttonsFactory createSubscriptionButtonWithSubscriptionDescriptor:descriptor atIndex:0
+                                                                   outOf:1 isHighlighted:YES];
+
+  expect(button.bottomGradientColors).to.equal(@[[UIColor whiteColor], [UIColor blackColor]]);
+});
+
+it(@"should set the button border color to nil if no highlighted colors provided", ^{
+  buttonsFactory =
+      [[SPXSubscriptionGradientButtonsFactory alloc]
+       initWithBottomGradientColors:@[[UIColor whiteColor], [UIColor blackColor]]
+       highlightedBottomGradientColors:nil
+       formatter:OCMClassMock([SPXSubscriptionButtonFormatter class])];
+  auto button = (SPXSubscriptionGradientButton *)
+      [buttonsFactory createSubscriptionButtonWithSubscriptionDescriptor:descriptor atIndex:0
+                                                                   outOf:1 isHighlighted:NO];
+
+  expect(button.borderColor).to.beNil();
 });
 
 it(@"should set the subscription period at the top of the new button", ^{

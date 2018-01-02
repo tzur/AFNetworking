@@ -33,6 +33,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)setup {
   self.layer.cornerRadius = 7;
+  self.layer.borderColor = nil;
   self.clipsToBounds = YES;
   self.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
   self.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
@@ -110,6 +111,15 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (NSArray<UIColor *> *)bottomGradientColors {
   return self.bottomGradientView.colors;
+}
+
+- (void)setBorderColor:(nullable UIColor *)borderColor {
+  self.layer.borderWidth = borderColor ? 3 : 0;
+  self.layer.borderColor = borderColor.CGColor;
+}
+
+- (nullable UIColor *)borderColor {
+  return [UIColor colorWithCGColor:self.layer.borderColor];
 }
 
 @end

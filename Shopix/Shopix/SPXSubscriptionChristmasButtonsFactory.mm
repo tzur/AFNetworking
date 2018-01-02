@@ -24,6 +24,8 @@ NS_ASSUME_NONNULL_BEGIN
     auto fullPriceTextColor = [[UIColor whiteColor] colorWithAlphaComponent:0.6];
     _gradientButtonsFactory = [[SPXSubscriptionGradientButtonsFactory alloc]
                                initWithBottomGradientColors:@[christmasRedColor, christmasRedColor]
+                               highlightedBottomGradientColors:@[christmasRedColor,
+                                                                 christmasRedColor]
                                periodTextColor:periodTextColor
                                fullPriceTextColor:fullPriceTextColor
                                priceTextColor:[UIColor whiteColor]];
