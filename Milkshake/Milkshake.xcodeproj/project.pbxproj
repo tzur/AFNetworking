@@ -13,8 +13,6 @@
 		882D1F301EC1C49C007F39F5 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 882D1F2F1EC1C49C007F39F5 /* GLKit.framework */; };
 		882D1F321EC1C54F007F39F5 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 882D1F311EC1C54F007F39F5 /* QuartzCore.framework */; };
 		884962181EBA226E007B3AE8 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1417A911E6ED9CB005DBEFF /* UIKit.framework */; };
-		8857C83A1FF0FFFA000D7CC6 /* SHKPlaceholder.m in Sources */ = {isa = PBXBuildFile; fileRef = 8857C8391FF0FFFA000D7CC6 /* SHKPlaceholder.m */; };
-		8857C83C1FF1001B000D7CC6 /* SHKPlaceholderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8857C83B1FF1001B000D7CC6 /* SHKPlaceholderSpec.mm */; };
 		8892CCCE1FF92222009A8897 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8892CCA81FF92222009A8897 /* MobileCoreServices.framework */; };
 		8B10C9A01F3F059200F76142 /* libLLReactiveMatchers.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B10C99D1F3F058700F76142 /* libLLReactiveMatchers.a */; };
 		8B6867341F3B273C00F0EF4C /* ReactiveObjC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B6863CA1F33474400F0EF4C /* ReactiveObjC.framework */; };
@@ -343,9 +341,6 @@
 		882D1F311EC1C54F007F39F5 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		8857C82C1FF0FCE6000D7CC6 /* FBTweak.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FBTweak.xcodeproj; path = ../third_party/Tweaks/FBTweak.xcodeproj; sourceTree = "<group>"; };
 		8857C8371FF0FD89000D7CC6 /* Common.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Common.xcconfig; path = ../Configuration/Common.xcconfig; sourceTree = "<group>"; };
-		8857C8381FF0FFFA000D7CC6 /* SHKPlaceholder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SHKPlaceholder.h; sourceTree = "<group>"; };
-		8857C8391FF0FFFA000D7CC6 /* SHKPlaceholder.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SHKPlaceholder.m; sourceTree = "<group>"; };
-		8857C83B1FF1001B000D7CC6 /* SHKPlaceholderSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SHKPlaceholderSpec.mm; sourceTree = "<group>"; };
 		8892CCA81FF92222009A8897 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		8B10C9971F3F058700F76142 /* LLReactiveMatchers.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LLReactiveMatchers.xcodeproj; path = ../third_party/LLReactiveMatchers/LLReactiveMatchers.xcodeproj; sourceTree = "<group>"; };
 		8B6863BB1F33474400F0EF4C /* ReactiveObjC.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactiveObjC.xcodeproj; path = ../third_party/ReactiveObjC/ReactiveObjC.xcodeproj; sourceTree = "<group>"; };
@@ -416,8 +411,6 @@
 		883235611ED861CD0090787D /* Base */ = {
 			isa = PBXGroup;
 			children = (
-				8857C8381FF0FFFA000D7CC6 /* SHKPlaceholder.h */,
-				8857C8391FF0FFFA000D7CC6 /* SHKPlaceholder.m */,
 			);
 			name = Base;
 			sourceTree = "<group>";
@@ -425,7 +418,6 @@
 		883235801ED861DB0090787D /* Base */ = {
 			isa = PBXGroup;
 			children = (
-				8857C83B1FF1001B000D7CC6 /* SHKPlaceholderSpec.mm */,
 			);
 			name = Base;
 			sourceTree = "<group>";
@@ -1055,7 +1047,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8857C83A1FF0FFFA000D7CC6 /* SHKPlaceholder.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1063,7 +1054,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8857C83C1FF1001B000D7CC6 /* SHKPlaceholderSpec.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
