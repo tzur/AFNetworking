@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		880E4BE71FF3D16F00B4C05E /* FBTweak+RACSignalSupport.mm in Sources */ = {isa = PBXBuildFile; fileRef = 880E4BE61FF3D16F00B4C05E /* FBTweak+RACSignalSupport.mm */; };
 		882D1F181EC19A2C007F39F5 /* libcompression.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 882D1F171EC19A2C007F39F5 /* libcompression.tbd */; };
 		882D1F2C1EC1AC92007F39F5 /* libextobjc_iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 882D1F271EC1AC6E007F39F5 /* libextobjc_iOS.a */; };
 		882D1F2E1EC1C497007F39F5 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 882D1F2D1EC1C497007F39F5 /* CoreGraphics.framework */; };
@@ -14,6 +15,7 @@
 		882D1F321EC1C54F007F39F5 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 882D1F311EC1C54F007F39F5 /* QuartzCore.framework */; };
 		884962181EBA226E007B3AE8 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1417A911E6ED9CB005DBEFF /* UIKit.framework */; };
 		887D81AB1FFBC23100E9D8E8 /* libFBTweak.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8857C8321FF0FCE6000D7CC6 /* libFBTweak.a */; };
+		887D83401FFBCB8700E9D8E8 /* FBTweak+RACSignalSupportSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 887D833F1FFBCB8700E9D8E8 /* FBTweak+RACSignalSupportSpec.mm */; };
 		8892CCCE1FF92222009A8897 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8892CCA81FF92222009A8897 /* MobileCoreServices.framework */; };
 		8B10C9A01F3F059200F76142 /* libLLReactiveMatchers.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B10C99D1F3F058700F76142 /* libLLReactiveMatchers.a */; };
 		8B6867341F3B273C00F0EF4C /* ReactiveObjC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B6863CA1F33474400F0EF4C /* ReactiveObjC.framework */; };
@@ -335,6 +337,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		880E4BE51FF3D16F00B4C05E /* FBTweak+RACSignalSupport.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FBTweak+RACSignalSupport.h"; sourceTree = "<group>"; };
+		880E4BE61FF3D16F00B4C05E /* FBTweak+RACSignalSupport.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "FBTweak+RACSignalSupport.mm"; sourceTree = "<group>"; };
 		882D1F171EC19A2C007F39F5 /* libcompression.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libcompression.tbd; path = usr/lib/libcompression.tbd; sourceTree = SDKROOT; };
 		882D1F1D1EC1AC6E007F39F5 /* extobjc.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = extobjc.xcodeproj; path = ../third_party/libextobjc/extobjc.xcodeproj; sourceTree = "<group>"; };
 		882D1F2D1EC1C497007F39F5 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -342,6 +346,7 @@
 		882D1F311EC1C54F007F39F5 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		8857C82C1FF0FCE6000D7CC6 /* FBTweak.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FBTweak.xcodeproj; path = ../third_party/Tweaks/FBTweak.xcodeproj; sourceTree = "<group>"; };
 		8857C8371FF0FD89000D7CC6 /* Common.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Common.xcconfig; path = ../Configuration/Common.xcconfig; sourceTree = "<group>"; };
+		887D833F1FFBCB8700E9D8E8 /* FBTweak+RACSignalSupportSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "FBTweak+RACSignalSupportSpec.mm"; sourceTree = "<group>"; };
 		8892CCA81FF92222009A8897 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		8B10C9971F3F058700F76142 /* LLReactiveMatchers.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LLReactiveMatchers.xcodeproj; path = ../third_party/LLReactiveMatchers/LLReactiveMatchers.xcodeproj; sourceTree = "<group>"; };
 		8B6863BB1F33474400F0EF4C /* ReactiveObjC.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactiveObjC.xcodeproj; path = ../third_party/ReactiveObjC/ReactiveObjC.xcodeproj; sourceTree = "<group>"; };
@@ -399,6 +404,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		880E4BE41FF3D0CD00B4C05E /* Signals */ = {
+			isa = PBXGroup;
+			children = (
+				880E4BE51FF3D16F00B4C05E /* FBTweak+RACSignalSupport.h */,
+				880E4BE61FF3D16F00B4C05E /* FBTweak+RACSignalSupport.mm */,
+			);
+			name = Signals;
+			sourceTree = "<group>";
+		};
 		882D1F1E1EC1AC6E007F39F5 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -431,6 +445,14 @@
 				8857C8341FF0FCE6000D7CC6 /* FBTweakTests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		887D7F531FFAE0C800E9D8E8 /* Signals */ = {
+			isa = PBXGroup;
+			children = (
+				887D833F1FFBCB8700E9D8E8 /* FBTweak+RACSignalSupportSpec.mm */,
+			);
+			name = Signals;
 			sourceTree = "<group>";
 		};
 		8B10C9981F3F058700F76142 /* Products */ = {
@@ -481,6 +503,7 @@
 			isa = PBXGroup;
 			children = (
 				883235611ED861CD0090787D /* Base */,
+				880E4BE41FF3D0CD00B4C05E /* Signals */,
 				A14172BA1E6EB04F005DBEFF /* Supporting Files */,
 			);
 			path = Milkshake;
@@ -623,6 +646,7 @@
 			isa = PBXGroup;
 			children = (
 				883235801ED861DB0090787D /* Base */,
+				887D7F531FFAE0C800E9D8E8 /* Signals */,
 			);
 			name = Tests;
 			sourceTree = "<group>";
@@ -1049,6 +1073,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				880E4BE71FF3D16F00B4C05E /* FBTweak+RACSignalSupport.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1056,6 +1081,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				887D83401FFBCB8700E9D8E8 /* FBTweak+RACSignalSupportSpec.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
