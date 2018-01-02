@@ -224,7 +224,7 @@ context(@"product descriptors generation", ^{
                                                                 withError:&error];
 
     expect(descriptors).to.beNil();
-    expect(error.code).to.equal(SPXErrorCodeConflictingCouponsInPromotion);
+    expect(error.code).to.equal(SPXErrorCodeConflictingCoupons);
     expect(error.lt_isLTDomain).to.beTruthy();
   });
 });

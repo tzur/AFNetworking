@@ -60,9 +60,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// This method can fail with the following errors:
 ///   SPXErrorCodePromotionExpired - When the promotion's \c expiryDate has passed.
 ///   SPXErrorCodeInvalidCoupon - When a coupon has multiple values for the same benefit axis.
-///   SPXErrorCodeConflictingCouponsInPromotion - When \c promotion contains conflicting coupons -
-///       a coupon with base product values that are subset of another coupons conflicts with that
-///       second coupon.
+///   SPXErrorCodeConflictingCoupons - When \c promotion contains conflicting coupons - a coupon
+///       with base product values that are subset of another coupons conflicts with that second
+///       coupon.
 - (nullable NSArray<SPXProductDescriptor *> *)
     productDescriptorsWithPromotion:(nullable SPXPromotion *)promotion
                           withError:(NSError *__autoreleasing *)error;

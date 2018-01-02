@@ -259,7 +259,7 @@ NS_ASSUME_NONNULL_BEGIN
                           valuesAxes];
     if (std::min(couponBaseAxes.count, otherCouponBaseAxes.count) == intersectAxes.count) {
       if (error) {
-        *error = [NSError spx_errorWithCode:SPXErrorCodeConflictingCouponsInPromotion
+        *error = [NSError spx_errorWithCode:SPXErrorCodeConflictingCoupons
                         associatedPromotion:promotion associatedCoupon:coupon];
       }
       return NO;
