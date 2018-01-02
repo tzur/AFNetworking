@@ -27,6 +27,7 @@ extern "C" {
 #import <LTEngineTests/LTTestUtils+LTEngine.h>
 #import <LTEngineTests/EXPMatchers+equalMat.h>
 #import <LTEngineTests/EXPMatchers+equalScalar.h>
+#import <LTEngineTests/EXPMatchers+beCloseToLTVector.h>
 #import <LTEngineTests/EXPMatchers+beCloseToMat.h>
 #import <LTEngineTests/EXPMatchers+beCloseToScalar.h>
 #import <LTEngineTests/LTEasyBoxing+OpenCVExtensions.h>

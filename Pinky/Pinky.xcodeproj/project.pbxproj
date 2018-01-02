@@ -117,6 +117,12 @@
 		06FD92DC1EDC882300D180C7 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 882D1F2F1EC1C49C007F39F5 /* GLKit.framework */; };
 		1984C7201FE6755200873DA0 /* libLTKitTestUtils.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E4786D581FD5499E0057FE03 /* libLTKitTestUtils.a */; };
 		881332A41FE932A200E83C1D /* libLTKitTestUtils.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E4786D581FD5499E0057FE03 /* libLTKitTestUtils.a */; };
+		283A4B8F1FE9058D009608E6 /* EXPMatchers+beCloseToGLKVector.mm in Sources */ = {isa = PBXBuildFile; fileRef = 283A4B8D1FE9058C009608E6 /* EXPMatchers+beCloseToGLKVector.mm */; };
+		285D3B381FD6ACF8006A55AF /* PNKColorTransferMinAndMax.metal in Sources */ = {isa = PBXBuildFile; fileRef = 285D3B251FD6ACF4006A55AF /* PNKColorTransferMinAndMax.metal */; };
+		285D3B3B1FD6ACF8006A55AF /* PNKColorTransferMinAndMax.mm in Sources */ = {isa = PBXBuildFile; fileRef = 285D3B2A1FD6ACF6006A55AF /* PNKColorTransferMinAndMax.mm */; };
+		285D3B471FD6AF21006A55AF /* PNKColorTransferMinAndMax.metal in Sources */ = {isa = PBXBuildFile; fileRef = 285D3B251FD6ACF4006A55AF /* PNKColorTransferMinAndMax.metal */; };
+		285D3BDE1FD7E62A006A55AF /* PNKColorTransferMinAndMaxSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 285D3BDD1FD7E62A006A55AF /* PNKColorTransferMinAndMaxSpec.mm */; };
+		28709F331FD9325500DF34F1 /* PNKColorTransferTestUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 28709F321FD9325500DF34F1 /* PNKColorTransferTestUtils.mm */; };
 		882D1F181EC19A2C007F39F5 /* libcompression.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 882D1F171EC19A2C007F39F5 /* libcompression.tbd */; };
 		882D1F2E1EC1C497007F39F5 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 882D1F2D1EC1C497007F39F5 /* CoreGraphics.framework */; };
 		882D1F301EC1C49C007F39F5 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 882D1F2F1EC1C49C007F39F5 /* GLKit.framework */; };
@@ -671,6 +677,15 @@
 		06FD92BC1EDC85C600D180C7 /* PinkyDeviceTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PinkyDeviceTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		06FD92C01EDC85C600D180C7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		06FD92E01EDC893A00D180C7 /* PinkyDeviceTests-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PinkyDeviceTests-Prefix.pch"; sourceTree = "<group>"; };
+		283A4B8C1FE9058C009608E6 /* EXPMatchers+beCloseToGLKVector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "EXPMatchers+beCloseToGLKVector.h"; path = "../../LTEngine/LTEngineTests/EXPMatchers+beCloseToGLKVector.h"; sourceTree = "<group>"; };
+		283A4B8D1FE9058C009608E6 /* EXPMatchers+beCloseToGLKVector.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = "EXPMatchers+beCloseToGLKVector.mm"; path = "../../LTEngine/LTEngineTests/EXPMatchers+beCloseToGLKVector.mm"; sourceTree = "<group>"; };
+		283A4B8E1FE9058C009608E6 /* EXPMatchers+beCloseToLTVector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "EXPMatchers+beCloseToLTVector.h"; path = "../../LTEngine/LTEngineTests/EXPMatchers+beCloseToLTVector.h"; sourceTree = "<group>"; };
+		285D3B221FD6ACEE006A55AF /* PNKColorTransferMinAndMax.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNKColorTransferMinAndMax.h; sourceTree = "<group>"; };
+		285D3B251FD6ACF4006A55AF /* PNKColorTransferMinAndMax.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = PNKColorTransferMinAndMax.metal; sourceTree = "<group>"; };
+		285D3B2A1FD6ACF6006A55AF /* PNKColorTransferMinAndMax.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKColorTransferMinAndMax.mm; sourceTree = "<group>"; };
+		285D3BDD1FD7E62A006A55AF /* PNKColorTransferMinAndMaxSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKColorTransferMinAndMaxSpec.mm; sourceTree = "<group>"; };
+		28709F311FD9325500DF34F1 /* PNKColorTransferTestUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNKColorTransferTestUtils.h; sourceTree = "<group>"; };
+		28709F321FD9325500DF34F1 /* PNKColorTransferTestUtils.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKColorTransferTestUtils.mm; sourceTree = "<group>"; };
 		882D1F171EC19A2C007F39F5 /* libcompression.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libcompression.tbd; path = usr/lib/libcompression.tbd; sourceTree = SDKROOT; };
 		882D1F1D1EC1AC6E007F39F5 /* extobjc.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = extobjc.xcodeproj; path = ../third_party/libextobjc/extobjc.xcodeproj; sourceTree = "<group>"; };
 		882D1F2D1EC1C497007F39F5 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -911,6 +926,9 @@
 		063894FB1EFFE74300329145 /* Test Utils */ = {
 			isa = PBXGroup;
 			children = (
+				283A4B8C1FE9058C009608E6 /* EXPMatchers+beCloseToGLKVector.h */,
+				283A4B8D1FE9058C009608E6 /* EXPMatchers+beCloseToGLKVector.mm */,
+				283A4B8E1FE9058C009608E6 /* EXPMatchers+beCloseToLTVector.h */,
 				C9131E9E1EE0599D00E924DA /* EXPMatchers+beCloseToMat.h */,
 				C9131E9F1EE0599D00E924DA /* EXPMatchers+beCloseToMat.mm */,
 				C9131EA01EE0599D00E924DA /* EXPMatchers+beCloseToScalar.h */,
@@ -1022,6 +1040,7 @@
 		06A0A94C1F1B4BD100941045 /* Image Processing */ = {
 			isa = PBXGroup;
 			children = (
+				285D3B481FD6B551006A55AF /* ColorTransfer */,
 				068D90A31F1F5D000012F472 /* PNKAdditionSpec.mm */,
 				E4281EE21FC1C846008F4BAD /* PNKConcatenationSpec.mm */,
 				C9791B551F0272470009E90F /* PNKConstantAlphaSpec.mm */,
@@ -1053,6 +1072,7 @@
 		06C3F73E1EFF9E3C00D4B1F4 /* Image Processing */ = {
 			isa = PBXGroup;
 			children = (
+				285D3AFF1FD6ACC6006A55AF /* Color Transfer */,
 				06C9E7FC1F793C6800D8A77F /* PNKAddition.h */,
 				06C9E7FE1F793C6800D8A77F /* PNKAddition.metal */,
 				06C9E7FD1F793C6800D8A77F /* PNKAddition.mm */,
@@ -1148,6 +1168,26 @@
 				06FD92E01EDC893A00D180C7 /* PinkyDeviceTests-Prefix.pch */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		285D3AFF1FD6ACC6006A55AF /* Color Transfer */ = {
+			isa = PBXGroup;
+			children = (
+				285D3B221FD6ACEE006A55AF /* PNKColorTransferMinAndMax.h */,
+				285D3B251FD6ACF4006A55AF /* PNKColorTransferMinAndMax.metal */,
+				285D3B2A1FD6ACF6006A55AF /* PNKColorTransferMinAndMax.mm */,
+			);
+			name = "Color Transfer";
+			sourceTree = "<group>";
+		};
+		285D3B481FD6B551006A55AF /* ColorTransfer */ = {
+			isa = PBXGroup;
+			children = (
+				285D3BDD1FD7E62A006A55AF /* PNKColorTransferMinAndMaxSpec.mm */,
+				28709F311FD9325500DF34F1 /* PNKColorTransferTestUtils.h */,
+				28709F321FD9325500DF34F1 /* PNKColorTransferTestUtils.mm */,
+			);
+			name = ColorTransfer;
 			sourceTree = "<group>";
 		};
 		882D1F1E1EC1AC6E007F39F5 /* Products */ = {
@@ -1981,6 +2021,7 @@
 				06C9E8051F793DD300D8A77F /* PNKNearestNeighborUpsampling.metal in Sources */,
 				E4281EE41FC1CF8F008F4BAD /* PNKConcatenation.metal in Sources */,
 				C9231FA51F04F1F9009E4FDB /* PNKGammaCorrection.metal in Sources */,
+				285D3B471FD6AF21006A55AF /* PNKColorTransferMinAndMax.metal in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1995,8 +2036,10 @@
 				068D90B21F1F93450012F472 /* EXPMatchers+equalMTLSize.mm in Sources */,
 				C9791B561F0272470009E90F /* PNKConstantAlphaSpec.mm in Sources */,
 				8B029FBE1F696B3000B3CF25 /* EXPMatchers+beCloseToScalar.mm in Sources */,
+				28709F331FD9325500DF34F1 /* PNKColorTransferTestUtils.mm in Sources */,
 				068D90A41F1F5D000012F472 /* PNKAdditionSpec.mm in Sources */,
 				064160C51FD57CF300F9F70C /* PNKPoolingLayerSpec.mm in Sources */,
+				283A4B8F1FE9058D009608E6 /* EXPMatchers+beCloseToGLKVector.mm in Sources */,
 				C9231FA91F04F31B009E4FDB /* PNKGammaCorrectionSpec.mm in Sources */,
 				06C6BC321F7003E6005F57D4 /* PNKConvolutionLayerSpec.mm in Sources */,
 				062EEA4F1F25315400AB4958 /* PNKNearestNeighborUpsamplingSpec.mm in Sources */,
@@ -2014,6 +2057,7 @@
 				E4D719591FE16D650047E620 /* PNKGatherSpec.mm in Sources */,
 				E4281EE31FC1C846008F4BAD /* PNKConcatenationSpec.mm in Sources */,
 				C9131EB01EE0599D00E924DA /* EXPMatchers+equalMat.mm in Sources */,
+				285D3BDE1FD7E62A006A55AF /* PNKColorTransferMinAndMaxSpec.mm in Sources */,
 				068D90A81F1F60A90012F472 /* PNKTestUtils.mm in Sources */,
 				C9131EDA1EE05A8400E924DA /* NSValue+OpenCVExtensions.mm in Sources */,
 				06415FB01FD49A1A00F9F70C /* PNKSkySegmentationNetworkSpec.mm in Sources */,
@@ -2025,6 +2069,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				285D3B381FD6ACF8006A55AF /* PNKColorTransferMinAndMax.metal in Sources */,
 				06D23F1A1F8A260600936917 /* PNKConditionalInstanceNormLayer.mm in Sources */,
 				06C9E7FF1F793C8A00D8A77F /* PNKAddition.mm in Sources */,
 				E46994FE1FE690A500B944C9 /* PNKImageBilinearScale.mm in Sources */,
@@ -2052,6 +2097,7 @@
 				F9CB52FA1F5FE70C00C8E8CA /* PNKCoreMLLayerParser.mm in Sources */,
 				06E98DE01F2149710047F80A /* PNKComputeState.mm in Sources */,
 				E4D719F21FE2C9740047E620 /* PNKSoftMaxLayer.mm in Sources */,
+				285D3B3B1FD6ACF8006A55AF /* PNKColorTransferMinAndMax.mm in Sources */,
 				06EDBCBC1F8C908B00A3FF1E /* MPSImage+Factory.mm in Sources */,
 				0636A0831F8173F70064E561 /* PNKInstanceNormLayer.mm in Sources */,
 				C9231F831F04EF7F009E4FDB /* PNKGammaCorrection.mm in Sources */,
