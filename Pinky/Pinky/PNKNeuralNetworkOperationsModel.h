@@ -1,6 +1,8 @@
 // Copyright (c) 2017 Lightricks. All rights reserved.
 // Created by Ofir Bibi.
 
+#import "PNKNeuralNetworkTypeDefinitions.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
 namespace pnk {
@@ -28,14 +30,6 @@ struct ImageScaleBiasModel {
 #pragma mark -
 #pragma mark Neural Network basic operations
 #pragma mark -
-
-/// Padding types for operations dependant on padding such as convolution and pooling.
-typedef NS_ENUM(NSUInteger, PaddingType) {
-  /// Output only contains pixels calculated from a region fully contained in the input.
-  PaddingTypeValid,
-  /// Output has the same size as input.
-  PaddingTypeSame
-};
 
 /// Parameters defining the behaviour of a convolutional layer in a neural network.
 struct ConvolutionKernelModel {
@@ -89,16 +83,6 @@ struct ConvolutionKernelModel {
   cv::Mat1f biasWeights;
 };
 
-/// Pooling types for \c PoolingKernelModel.
-typedef NS_ENUM(NSUInteger, PoolingType) {
-  /// Output is equal to the maximum within the input filter window.
-  PoolingTypeMax,
-  /// Output is equal to the average within the input filter window.
-  PoolingTypeAverage,
-  /// Output is equal to the L2 norm within the input filter window.
-  PoolingTypeL2
-};
-
 /// Parameters defining the behaviour of a pooling layer in a neural network.
 struct PoolingKernelModel {
   /// Pooling function to apply in each kernel window.
@@ -136,45 +120,6 @@ struct AffineKernelModel {
   /// Matrix of weights for the bias added after convolution. Must be of size
   /// \c outputFeatureChannels.
   cv::Mat1f biasWeights;
-};
-
-/// Valid activation types for \c ActivationKernelModel.
-typedef NS_ENUM(NSUInteger, ActivationType) {
-  /// An identity activation. <tt>f(x) = x</tt>.
-  ActivationTypeIdentity,
-  /// An absolute function activation. <tt>f(x) = abs(x)</tt>.
-  ActivationTypeAbsolute,
-  /// A rectified linear unit (ReLU) activation. <tt>f(x) = max(0, x)</tt>.
-  ActivationTypeReLU,
-  /// A leaky rectified linear unit activation. <tt>f(x) = max(0, x) + alpha *
-  /// min(0, x)</tt>.
-  ActivationTypeLeakyReLU,
-  /// A hyperbolic tangent activation. <tt>f(x) = (1 - exp(-2 * x)) / (1 + exp(-2 * x))</tt>.
-  ActivationTypeTanh,
-  /// A scaled hyperbolic tangent activation. <tt>f(x) = alpha * tanh(beta * x)</tt>.
-  ActivationTypeScaledTanh,
-  /// A sigmoid activation. <tt>f(x) = 1 / (1 + exp(-x))</tt>.
-  ActivationTypeSigmoid,
-  /// A hard sigmoid activation. <tt>f(x) = min(max(alpha * x + beta, 0), 1)</tt>.
-  ActivationTypeSigmoidHard,
-  /// A linear activation. <tt>f(x) = alpha * x + beta</tt>.
-  ActivationTypeLinear,
-  /// A parametrized rectified linear unit (PReLU) activation. This activation is similar to leaky
-  /// ReLU only that it can be parametrized with a separate scaling and bias parameters per channel.
-  /// For the ith channel <tt>f(x_i) = max(0, x_i) + alpha_i * min(0, x_i)</tt>.
-  ActivationTypePReLU,
-  /// An exponential linear unit (ELU) activation. <tt>f(x) = max(0, x) + min(0, x) * alpha *
-  /// (exp(x) - 1)</tt>.
-  ActivationTypeELU,
-  /// A Thresholded rectified linear unit activation. <tt>f(x) = max(alpha, x + alpha) - alpha</tt>.
-  ActivationTypeThresholdedReLU,
-  /// A softsign activation. <tt>f(x) = x / (1 + abs(x))</tt>.
-  ActivationTypeSoftsign,
-  /// A softplus activation. <tt>f(x) = log(1 + exp(x))</tt>.
-  ActivationTypeSoftplus,
-  /// A parametric softplus activation. This activation can be parametrized with separate parameters
-  /// per channel. For the ith channel <tt>f(x_i) = alpha_i * log(1 + exp(beta_i * x_i))</tt>.
-  ActivationTypeParametricSoftplus
 };
 
 /// Parameters defining the behaviour of an activation layer in a neural network.
