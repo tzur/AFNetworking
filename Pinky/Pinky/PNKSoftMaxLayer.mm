@@ -63,8 +63,9 @@ NS_ASSUME_NONNULL_BEGIN
                     inputImage.featureChannels == outputImage.featureChannels,
                     @"Input image and output image must be of the same size, got input image size "
                     "(%lu, %lu, %lu) and output image size (%lu, %lu, %lu)",
-                    inputImage.width, inputImage.height, inputImage.featureChannels,
-                    outputImage.width, outputImage.height, outputImage.featureChannels);
+                    (unsigned long)inputImage.width, (unsigned long)inputImage.height,
+                    (unsigned long)inputImage.featureChannels, (unsigned long)outputImage.width,
+                    (unsigned long)outputImage.height, (unsigned long)outputImage.featureChannels);
 
   [self.softMaxKernel encodeToCommandBuffer:commandBuffer sourceImage:inputImage
                            destinationImage:outputImage];

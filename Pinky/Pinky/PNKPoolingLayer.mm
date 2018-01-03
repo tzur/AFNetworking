@@ -114,8 +114,10 @@ NS_ASSUME_NONNULL_BEGIN
                     outputImage.height == expectedOutputSize.height &&
                     outputImage.featureChannels == expectedOutputSize.depth,
                     @"Output image must be of size (%lu, %lu, %lu), got: (%lu, %lu, %lu)",
-                    expectedOutputSize.width, expectedOutputSize.height, expectedOutputSize.depth,
-                    outputImage.width, outputImage.height, outputImage.featureChannels);
+                    (unsigned long)expectedOutputSize.width,
+                    (unsigned long)expectedOutputSize.height,
+                    (unsigned long)expectedOutputSize.depth, (unsigned long)outputImage.width,
+                    (unsigned long)outputImage.height, (unsigned long)outputImage.featureChannels);
 
   self.poolingKernel.offset = [self calculateOffsetWithInputImage:inputImage];
   [self.poolingKernel encodeToCommandBuffer:commandBuffer sourceImage:inputImage
