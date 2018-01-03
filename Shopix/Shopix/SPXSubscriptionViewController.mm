@@ -274,6 +274,9 @@ using namespace spx;
   [self setupSubscriptionButtonsBindings];
   [self setupRestorePurchasesButtonPressedBinding];
   [self setupActivityIndicatorBinding];
+  [self setupScrollPositionBinding];
+  [self setupVideoDidFinishBinding];
+  [self setupScrollRequestBinding];
   [self setupAlertRequestBinding];
   [self setupFeedbackComposerRequestBinding];
 }
@@ -302,6 +305,34 @@ using namespace spx;
     active.boolValue ?
         [self.activityIndicatorView startAnimating] : [self.activityIndicatorView stopAnimating];
   }];
+}
+
+- (void)setupScrollPositionBinding {
+  @weakify(self);
+  [RACObserve(self.pagingView, scrollPosition) subscribeNext:^(NSNumber *scrollPosition) {
+    @strongify(self);
+    [self.viewModel pagingViewScrolledToPosition:scrollPosition.floatValue];
+  }];
+}
+
+- (void)setupVideoDidFinishBinding {
+  NSArray<RACSignal *> *videoDidFinishPlaybackSignals =
+      [self.pagingView.pageViews valueForKey:@instanceKeypath(SPXSubscriptionVideoPageView,
+                                                              videoDidFinishPlayback)];
+  @weakify(self);
+  [[RACSignal merge:videoDidFinishPlaybackSignals] subscribeNext:^(id) {
+    @strongify(self)
+    [self.viewModel activePageDidFinishVideoPlayback];
+  }];
+}
+
+- (void)setupScrollRequestBinding {
+  @weakify(self);
+  [[self.viewModel.pagingViewScrollRequested distinctUntilChanged]
+      subscribeNext:^(NSNumber *pageIndex) {
+        @strongify(self);
+        [self.pagingView scrollToPage:pageIndex.unsignedIntegerValue animated:YES];
+      }];
 }
 
 - (void)setupAlertRequestBinding {

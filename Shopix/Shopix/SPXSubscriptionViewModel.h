@@ -33,6 +33,12 @@ LTEnumDeclare(NSUInteger, SPXFetchProductsStrategy,
 /// Invoked when the restore purchases button is pressed.
 - (void)restorePurchasesButtonPressed;
 
+/// Invoked when the active page's video playback has finished.
+- (void)activePageDidFinishVideoPlayback;
+
+/// Invoked when the paging view scrolled to \c position.
+- (void)pagingViewScrolledToPosition:(CGFloat)position;
+
 /// Fetches the products information and updates \c subscriptionDescriptors.
 - (void)fetchProductsInfo;
 
@@ -52,6 +58,9 @@ LTEnumDeclare(NSUInteger, SPXFetchProductsStrategy,
 
 /// Color scheme for the subscription view and its subviews.
 @property (readonly, nonatomic) SPXColorScheme *colorScheme;
+
+/// Signal that sends a page index that the view should scroll to.
+@property (readonly, nonatomic) RACSignal<NSNumber *> *pagingViewScrollRequested;
 
 /// Signal that sends an alert view model when requested to show an alert to the user on success or
 /// failure. The receiver should present an alert with the given \c id<SPXAlertViewModel> and invoke
