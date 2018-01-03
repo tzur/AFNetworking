@@ -55,7 +55,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// Pause video playback.
 - (void)pause;
 
-/// Stop video playback.
+/// Pause and reset video playback.
 - (void)stop;
 
 /// \c YES if the video should be playing.

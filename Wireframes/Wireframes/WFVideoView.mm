@@ -194,7 +194,7 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 - (void)setVideoURL:(nullable NSURL *)videoURL {
-  [self stop];
+  [self pause];
 
   _videoURL = videoURL;
 
@@ -256,6 +256,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)stop {
   self.isPlaying = NO;
   [self.player pause];
+  [self.player seekToTime:kCMTimeZero];
 }
 
 #pragma mark -
@@ -284,7 +285,7 @@ NS_ASSUME_NONNULL_BEGIN
   }
 
   if (self.playInLoop) {
-    [self.player seekToTime:CMTimeMake(0, 1)];
+    [self.player seekToTime:kCMTimeZero];
 
     if (self.isPlaying) {
       [self.player play];
