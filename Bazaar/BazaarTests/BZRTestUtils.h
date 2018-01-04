@@ -32,13 +32,19 @@ BZRReceiptValidationStatus *BZRReceiptValidationStatusWithInAppPurchaseAndExpiry
 BZRReceiptValidationStatus *BZRReceiptValidationStatusWithSubscriptionIdentifier
     (NSString *subscriptionIdentifier);
 
-/// Returns a \c SKProductsResponse with products set to \c products.
+/// Returns an \c SKProduct with the given properties.
+SKProduct *BZRSKProductWithProperties(NSString *identifier,
+    NSDecimalNumber *price = [NSDecimalNumber one],
+    NSString *localeIdentifier = [NSLocale currentLocale].localeIdentifier);
+
+/// Returns an \c SKProductsResponse with products set to \c products.
 SKProductsResponse *BZRProductsResponseWithSKProducts(NSArray<SKProduct *> *products);
 
-/// Returns a \c SKProductsResponse with a single \c SKProduct with identifier \c productIdentifier.
+/// Returns an \c SKProductsResponse containing a single \c SKProduct with the given
+/// \c productIdentifier.
 SKProductsResponse *BZRProductsResponseWithProduct(NSString *productIdentifier);
 
-/// Returns a \c SKProductsResponse with \c SKProducts with identifiers \c productIdentifiers.
-SKProductsResponse *BZRProductsResponseWithProducts(NSArray<NSString *> *productsIdentifiers);
+/// Returns an \c SKProductsResponse with \c SKProducts with identifiers \c productIdentifiers.
+SKProductsResponse *BZRProductsResponseWithProducts(NSArray<NSString *> *productIdentifiers);
 
 NS_ASSUME_NONNULL_END

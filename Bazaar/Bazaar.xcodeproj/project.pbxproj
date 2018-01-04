@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		635BA7EE1FF946B80012E6FA /* BZRSubscriptionIntroductoryDiscountSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 635BA7ED1FF946B80012E6FA /* BZRSubscriptionIntroductoryDiscountSpec.mm */; };
+		635BAC3520025EB20012E6FA /* BZRProduct+StoreKitSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 635BAC3420025EB20012E6FA /* BZRProduct+StoreKitSpec.mm */; };
 		63F08B2E1FEAA72A0060B597 /* BZRBillingPeriod.h in Headers */ = {isa = PBXBuildFile; fileRef = 63F08B2C1FEAA72A0060B597 /* BZRBillingPeriod.h */; };
 		63F08B2F1FEAA72A0060B597 /* BZRBillingPeriod.mm in Sources */ = {isa = PBXBuildFile; fileRef = 63F08B2D1FEAA72A0060B597 /* BZRBillingPeriod.mm */; };
 		63F08B321FEAA7DA0060B597 /* BZRBillingPeriod+StoreKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 63F08B301FEAA7DA0060B597 /* BZRBillingPeriod+StoreKit.h */; };
@@ -747,6 +748,7 @@
 
 /* Begin PBXFileReference section */
 		635BA7ED1FF946B80012E6FA /* BZRSubscriptionIntroductoryDiscountSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRSubscriptionIntroductoryDiscountSpec.mm; sourceTree = "<group>"; };
+		635BAC3420025EB20012E6FA /* BZRProduct+StoreKitSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "BZRProduct+StoreKitSpec.mm"; sourceTree = "<group>"; };
 		63F08B2C1FEAA72A0060B597 /* BZRBillingPeriod.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BZRBillingPeriod.h; sourceTree = "<group>"; };
 		63F08B2D1FEAA72A0060B597 /* BZRBillingPeriod.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = BZRBillingPeriod.mm; sourceTree = "<group>"; };
 		63F08B301FEAA7DA0060B597 /* BZRBillingPeriod+StoreKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BZRBillingPeriod+StoreKit.h"; sourceTree = "<group>"; };
@@ -1217,13 +1219,13 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		65332E201D33901700920C32 /* Store Kit */ = {
+		65332E201D33901700920C32 /* StoreKit */ = {
 			isa = PBXGroup;
 			children = (
 				65332E441D33902400920C32 /* Internal */,
 				B9ABD4211D7EE09D004D2877 /* BZRStoreKitFacadeSpec.mm */,
 			);
-			name = "Store Kit";
+			name = StoreKit;
 			sourceTree = "<group>";
 		};
 		65332E441D33902400920C32 /* Internal */ = {
@@ -1304,7 +1306,7 @@
 				B97A86901D460FA7004390FC /* Product Management */,
 				6584CE831CF4671A002C6F86 /* Receipt Validation */,
 				FA1B885B1D33B28C00097AD0 /* Secure Storage */,
-				65332E201D33901700920C32 /* Store Kit */,
+				65332E201D33901700920C32 /* StoreKit */,
 				CDC7664C1F0A413400247591 /* User Information */,
 				65F03B691CFC32CE008B1847 /* Utils */,
 			);
@@ -1380,7 +1382,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		65743E801D3242FF00A17D11 /* Store Kit */ = {
+		65743E801D3242FF00A17D11 /* StoreKit */ = {
 			isa = PBXGroup;
 			children = (
 				650D7D3D1D324A92003CE646 /* Internal */,
@@ -1388,7 +1390,7 @@
 				B9ABD3AB1D7EC5E3004D2877 /* BZRStoreKitFacade.mm */,
 				B9CD44C01F9E2EED002D1B05 /* BZRStoreKitTypedefs.h */,
 			);
-			name = "Store Kit";
+			name = StoreKit;
 			sourceTree = "<group>";
 		};
 		6580F0701CEB2D97007EABDD /* Receipt Validation */ = {
@@ -1593,6 +1595,7 @@
 			isa = PBXGroup;
 			children = (
 				B9AB0C911E9FB27800D6EA08 /* BZRProduct+EnablesProductSpec.mm */,
+				635BAC3420025EB20012E6FA /* BZRProduct+StoreKitSpec.mm */,
 				B9A81B661D90676500168258 /* BZRProductPriceInfo+StoreKitSpec.mm */,
 			);
 			name = Base;
@@ -1724,7 +1727,7 @@
 				B97E6BF31D40F2C900C02863 /* Product Management */,
 				6580F0701CEB2D97007EABDD /* Receipt Validation */,
 				FA1B88311D338A5900097AD0 /* Secure Storage */,
-				65743E801D3242FF00A17D11 /* Store Kit */,
+				65743E801D3242FF00A17D11 /* StoreKit */,
 				654B1F041CE21F6D001F36FA /* Supporting Files */,
 				CDC7663F1F0A30A000247591 /* User Information */,
 				6599B4291CFA444200525BB7 /* Utils */,
@@ -2719,6 +2722,7 @@
 				CD984D3D1ED559F0007CBCBC /* BZRContentFetcherParametersSpec.mm in Sources */,
 				65D90BC61D5BB6E500BEB74C /* BZRPaymentQueueSpec.mm in Sources */,
 				65D67B4C1D53B10C00B647ED /* BZRZipUnarchiverSpec.mm in Sources */,
+				635BAC3520025EB20012E6FA /* BZRProduct+StoreKitSpec.mm in Sources */,
 				65C74D051D5352D000D7518C /* BZRZipArchiverSpec.mm in Sources */,
 				B9237B101D69D6270069B4F1 /* BZRFakePaymentTransaction.mm in Sources */,
 				B9A81B651D90658700168258 /* BZRReceiptModel+ProductPurchasedSpec.mm in Sources */,
