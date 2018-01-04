@@ -205,33 +205,17 @@ static NSURL *TINMessengerURLFromMessage(TINMessage *message) {
   return YES;
 }
 
-- (BOOL)removeAllMessagesWithError:(NSError *__autoreleasing *)error {
+- (BOOL)removeAllMessagesForScheme:(NSString *)scheme error:(NSError *__autoreleasing *)error {
   auto schemes = [self bundleSchemes];
-  if (!schemes.count) {
+  if (!schemes.count || ![schemes containsObject:scheme]) {
     if (error) {
       *error = [NSError lt_errorWithCode:TINErrorCodeNoValidSchemeFound];
     }
     return NO;
   }
 
-  auto errors = [NSMutableArray<NSError *> array];
-  for (NSString *scheme in schemes) {
-    NSError *internalError;
-    if (![self.fileManager tin_removeAllMessagesWithAppGroupID:self.appGroupID scheme:scheme
-                                                         error:&internalError]) {
-      [errors addObject:internalError];
-    }
-  }
-
-  if (errors.count && error) {
-    *error = [NSError lt_errorWithCode:LTErrorCodeFileRemovalFailed underlyingErrors:errors];
-  }
-
-  if (errors.count) {
-    return NO;
-  }
-
-  return YES;
+  return [self.fileManager tin_removeAllMessagesWithAppGroupID:self.appGroupID scheme:scheme
+                                                         error:error];
 }
 
 - (NSArray<NSString *> *)bundleSchemes {

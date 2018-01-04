@@ -225,7 +225,7 @@ context(@"message remove", ^{
                                                        uti:(__bridge NSString *)kUTTypePNG
                                                      error:nil];
     __block NSError *error;
-    expect([messenger removeAllMessagesWithError:&error]).to.beTruthy();
+    expect([messenger removeAllMessagesForScheme:@"testhost" error:&error]).to.beTruthy();
     expect(error).to.beNil();
     expect([fileManager lt_fileExistsAtPath:nn(message.directoryURL.path)]);
   });
@@ -239,21 +239,27 @@ context(@"message remove", ^{
     OCMStub([fileManagerMock tin_removeAllMessagesWithAppGroupID:OCMOCK_ANY scheme:OCMOCK_ANY
              error:[OCMArg setTo:[NSError lt_errorWithCode:123]]]).andReturn(NO);
     __block NSError *error;
-    expect([messenger removeAllMessagesWithError:&error]).to.beFalsy();
-    expect(error.code).to.equal(LTErrorCodeFileRemovalFailed);
+    expect([messenger removeAllMessagesForScheme:@"testhost" error:&error]).to.beFalsy();
+    expect(error.code).to.equal(123);
+  });
+
+  it(@"should report error when scheme isn't registered in application's Info.plist", ^{
+    __block NSError *error;
+    expect([messenger removeAllMessagesForScheme:@"foo" error:&error]).to.beFalsy();
+    expect(error.code).to.equal(TINErrorCodeNoValidSchemeFound);
   });
 
   it(@"should report error when failed getting CFBundleURLTypes", ^{
     OCMStub(bundleMock.infoDictionary).andReturn(@{});
     __block NSError *error;
-    expect([messenger removeAllMessagesWithError:&error]).to.beFalsy();
+    expect([messenger removeAllMessagesForScheme:@"testhost" error:&error]).to.beFalsy();
     expect(error.code).to.equal(TINErrorCodeNoValidSchemeFound);
   });
 
   it(@"should report error when failed getting CFBundleURLSchemes", ^{
     OCMStub(bundleMock.infoDictionary).andReturn(@{@"CFBundleURLTypes": @[]});
     __block NSError *error;
-    expect([messenger removeAllMessagesWithError:&error]).to.beFalsy();
+    expect([messenger removeAllMessagesForScheme:@"testhost" error:&error]).to.beFalsy();
     expect(error.code).to.equal(TINErrorCodeNoValidSchemeFound);
   });
 });

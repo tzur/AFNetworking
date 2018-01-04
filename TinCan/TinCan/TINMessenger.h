@@ -105,11 +105,10 @@ NS_ASSUME_NONNULL_BEGIN
 + (BOOL)isTinCanURL:(NSURL *)url;
 
 /// Removes the designated message directories of all the messages targeted to this application, for
-/// every scheme suported by this application. Returns \c YES on success, otherwise \c NO and sets
-/// the \c error.
-///
-/// @note list of application supported schemes is obtained from application's \c Info.plist.
-- (BOOL)removeAllMessagesWithError:(NSError **)error;
+/// the given \c scheme. Returns \c YES on success, otherwise \c NO and sets the \c error. The
+/// \c scheme must be one of the application's supported schemes which is obtained from
+/// application's \c Info.plist
+- (BOOL)removeAllMessagesForScheme:(NSString *)scheme error:(NSError **)error;
 
 @end
 
