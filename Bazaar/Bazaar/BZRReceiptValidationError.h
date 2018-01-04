@@ -17,6 +17,8 @@ LTEnumDeclare(NSUInteger, BZRReceiptValidationError,
   BZRReceiptValidationErrorDeviceIDMismatch,
   /// The receipt is Sandbox receipt and was validated as Production receipt or vice versa.
   BZRReceiptValidationErrorEnvironmentMismatch,
+  /// No receipt associated with the given user ID was found.
+  BZRReceiptValidationErrorMissingReceipt,
   /// An unknown error occurred during validation.
   BZRReceiptValidationErrorUnknown
 );
