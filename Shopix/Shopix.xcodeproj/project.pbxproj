@@ -28,6 +28,7 @@
 		8851018E1F9DDBA60052351B /* NSError+Shopix.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8851018D1F9DDBA60052351B /* NSError+Shopix.mm */; };
 		885CA2B31FB301F2005380BD /* SPXProductDescriptorsFactorySpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 885CA2B21FB301F1005380BD /* SPXProductDescriptorsFactorySpec.mm */; };
 		88720F9D1F9E1A4D00E18F05 /* SPXProductDescriptorsFactory.mm in Sources */ = {isa = PBXBuildFile; fileRef = 88FA8C9A1F66AA0A00D2E594 /* SPXProductDescriptorsFactory.mm */; };
+		88A67EC01FD5CA38005BA17A /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88A67E971FD5CA37005BA17A /* MobileCoreServices.framework */; };
 		88B632AF1F9DD8B10051A535 /* NSErrorCodes+Shopix.mm in Sources */ = {isa = PBXBuildFile; fileRef = 88B632AE1F9DD8B10051A535 /* NSErrorCodes+Shopix.mm */; };
 		88B9B4DA1FA8BA940033D48F /* SPXProductAxis.mm in Sources */ = {isa = PBXBuildFile; fileRef = 88FA8CA31F66C68700D2E594 /* SPXProductAxis.mm */; };
 		88B9B4FF1FA8BA980033D48F /* SPXPromotion.mm in Sources */ = {isa = PBXBuildFile; fileRef = 88FA8C9D1F66C52400D2E594 /* SPXPromotion.mm */; };
@@ -490,6 +491,7 @@
 		8851018D1F9DDBA60052351B /* NSError+Shopix.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSError+Shopix.mm"; sourceTree = "<group>"; };
 		885CA2B21FB301F1005380BD /* SPXProductDescriptorsFactorySpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXProductDescriptorsFactorySpec.mm; sourceTree = "<group>"; };
 		886F953C1FCC49C2002F2529 /* Wireframes.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Wireframes.xcodeproj; path = ../Wireframes/Wireframes.xcodeproj; sourceTree = "<group>"; };
+		88A67E971FD5CA37005BA17A /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		88B632AD1F9DD8B10051A535 /* NSErrorCodes+Shopix.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSErrorCodes+Shopix.h"; sourceTree = "<group>"; };
 		88B632AE1F9DD8B10051A535 /* NSErrorCodes+Shopix.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSErrorCodes+Shopix.mm"; sourceTree = "<group>"; };
 		88CEB4501FB44D1A00E01950 /* SPXPromotionSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXPromotionSpec.mm; sourceTree = "<group>"; };
@@ -641,6 +643,7 @@
 				CD4572831F7172EB00713681 /* Mantle.framework in Frameworks */,
 				8823B33D1FC3070100A2DEB9 /* Masonry.framework in Frameworks */,
 				CD45725A1F716A8100713681 /* MessageUI.framework in Frameworks */,
+				88A67EC01FD5CA38005BA17A /* MobileCoreServices.framework in Frameworks */,
 				CDC8CE861F6EA6C400E7C929 /* Objection-iOS.framework in Frameworks */,
 				CD3C6A371F559F61008A6C23 /* QuartzCore.framework in Frameworks */,
 				CD3C6AC81F55A0B0008A6C23 /* ReactiveObjC.framework in Frameworks */,
@@ -904,6 +907,7 @@
 				CD3C69A31F559394008A6C23 /* GLKit.framework */,
 				CD4572821F7172EB00713681 /* Mantle.framework */,
 				CD4572591F716A8100713681 /* MessageUI.framework */,
+				88A67E971FD5CA37005BA17A /* MobileCoreServices.framework */,
 				CDC8CE841F6EA67D00E7C929 /* Objection-iOS.framework */,
 				CD3C6A361F559F61008A6C23 /* QuartzCore.framework */,
 				CD45728A1F717E4D00713681 /* Security.framework */,

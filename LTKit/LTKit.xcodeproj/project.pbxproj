@@ -108,6 +108,9 @@
 		881335B61FEA4C2000E83C1D /* NSData+Hashing.h in Headers */ = {isa = PBXBuildFile; fileRef = 881335B41FEA4C2000E83C1D /* NSData+Hashing.h */; };
 		881335B71FEA4C2000E83C1D /* NSData+Hashing.mm in Sources */ = {isa = PBXBuildFile; fileRef = 881335B51FEA4C2000E83C1D /* NSData+Hashing.mm */; };
 		881335B91FEA4D1E00E83C1D /* NSData+HashingSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 881335B81FEA4D1E00E83C1D /* NSData+HashingSpec.mm */; };
+		885744D81FD0A4C70092E463 /* LTUTICache.mm in Sources */ = {isa = PBXBuildFile; fileRef = 885744D61FD0A4C70092E463 /* LTUTICache.mm */; };
+		885744D91FD0A4C70092E463 /* LTUTICache.h in Headers */ = {isa = PBXBuildFile; fileRef = 885744D71FD0A4C70092E463 /* LTUTICache.h */; };
+		885744F11FD20F9F0092E463 /* LTUTICacheSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 885744F01FD20F9F0092E463 /* LTUTICacheSpec.mm */; };
 		885E975F1D72D3A800A117A2 /* LocalizationTest.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 885E975E1D72D3A800A117A2 /* LocalizationTest.bundle */; };
 		888258DB1EEECDB000A90675 /* NSSet+Functional.h in Headers */ = {isa = PBXBuildFile; fileRef = 888258D91EEECDB000A90675 /* NSSet+Functional.h */; };
 		888258DC1EEECDB000A90675 /* NSSet+Functional.mm in Sources */ = {isa = PBXBuildFile; fileRef = 888258DA1EEECDB000A90675 /* NSSet+Functional.mm */; };
@@ -594,6 +597,9 @@
 		881335B41FEA4C2000E83C1D /* NSData+Hashing.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSData+Hashing.h"; sourceTree = "<group>"; };
 		881335B51FEA4C2000E83C1D /* NSData+Hashing.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSData+Hashing.mm"; sourceTree = "<group>"; };
 		881335B81FEA4D1E00E83C1D /* NSData+HashingSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSData+HashingSpec.mm"; sourceTree = "<group>"; };
+		885744D61FD0A4C70092E463 /* LTUTICache.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = LTUTICache.mm; sourceTree = "<group>"; };
+		885744D71FD0A4C70092E463 /* LTUTICache.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTUTICache.h; sourceTree = "<group>"; };
+		885744F01FD20F9F0092E463 /* LTUTICacheSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = LTUTICacheSpec.mm; sourceTree = "<group>"; };
 		885E975E1D72D3A800A117A2 /* LocalizationTest.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = LocalizationTest.bundle; sourceTree = "<group>"; };
 		888258D91EEECDB000A90675 /* NSSet+Functional.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSSet+Functional.h"; sourceTree = "<group>"; };
 		888258DA1EEECDB000A90675 /* NSSet+Functional.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSSet+Functional.mm"; sourceTree = "<group>"; };
@@ -1259,6 +1265,8 @@
 				8BF9A53918F684AC00CCA084 /* LTTimer.h */,
 				8BF9A53A18F684AC00CCA084 /* LTTimer.m */,
 				8BA11AEA18320FCB00A5001D /* LTTypedefs.h */,
+				885744D71FD0A4C70092E463 /* LTUTICache.h */,
+				885744D61FD0A4C70092E463 /* LTUTICache.mm */,
 				8482E2AE1D2260DA0084D565 /* LTValueObject.h */,
 				8482E2AF1D2260DA0084D565 /* LTValueObject.mm */,
 				8B871F96192396BE00517F2E /* NSError+LTKit.h */,
@@ -1290,6 +1298,7 @@
 				8B04C96A1BEE651A0024D22E /* LTRefSpec.mm */,
 				8B6A6ED81CDA3B60005FB7D9 /* LTRuntimeSpec.mm */,
 				8BF9A54818FA6B9100CCA084 /* LTTimerSpec.mm */,
+				885744F01FD20F9F0092E463 /* LTUTICacheSpec.mm */,
 				8482E2DD1D22810D0084D565 /* LTValueObjectSpec.mm */,
 				8BBBE60A1B4E8A7B00726C2A /* NSError+LTKitSpec.mm */,
 				8B7C3CF21CDCD77700D03696 /* NSObject+DynamicDispatchSpec.mm */,
@@ -1451,6 +1460,7 @@
 				194FF4F21FA8B9B6008879E7 /* LTUIInterruptionHandler.h in Headers */,
 				A1006CFF1E026EFB0061D8BB /* NSDateFormatter+Formatters.h in Headers */,
 				8B6A6EBE1CDA3ADC005FB7D9 /* LTRuntime.h in Headers */,
+				885744D91FD0A4C70092E463 /* LTUTICache.h in Headers */,
 				88DA5A911ED056EA008162BC /* NSDictionary+Functional.h in Headers */,
 				A1A1C8711F164828004A4CBF /* NSDictionary+Operations.h in Headers */,
 				8B8720361924A76500517F2E /* LTEasyBoxing.h in Headers */,
@@ -1835,6 +1845,7 @@
 				28E55E021961B21A00EBF9DA /* LTRandom.mm in Sources */,
 				8B871F98192396BE00517F2E /* NSError+LTKit.mm in Sources */,
 				5067221B19EA80B5003AF8D2 /* LTQueue.mm in Sources */,
+				885744D81FD0A4C70092E463 /* LTUTICache.mm in Sources */,
 				658CD3C71D50A79B00FF7FD6 /* LTProgress.mm in Sources */,
 				28ABE005187153AD005A5DEC /* LTAnimation.mm in Sources */,
 				8482E2B11D2260DA0084D565 /* LTValueObject.mm in Sources */,
@@ -1913,6 +1924,7 @@
 				8B4495A21CE322DB008402D0 /* NSObject+PropertyAccessorsSpec.mm in Sources */,
 				88DA5AAC1ED05771008162BC /* NSDictionary+FunctionalSpec.mm in Sources */,
 				8B6A6ED91CDA3B60005FB7D9 /* LTRuntimeSpec.mm in Sources */,
+				885744F11FD20F9F0092E463 /* LTUTICacheSpec.mm in Sources */,
 				8482E2DE1D22810D0084D565 /* LTValueObjectSpec.mm in Sources */,
 				8BA5D6C1199250CE0093A4FD /* NSString+HashingSpec.mm in Sources */,
 				835205071D2A43D500000EEC /* LTEventBusSpec.mm in Sources */,
