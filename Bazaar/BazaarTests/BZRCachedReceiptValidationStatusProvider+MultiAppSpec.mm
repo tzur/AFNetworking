@@ -110,7 +110,32 @@ context(@"fetching receipt validation status of multiple apps", ^{
         }]);
   });
 
-  it(@"should ignore bundle IDs whose fetching has failed", ^{
+  it(@"should send cached receipt validation status for bundle IDs whose fetching has failed", ^{
+    auto error = [NSError lt_errorWithCode:1337];
+    OCMStub([validationStatusProvider fetchReceiptValidationStatus:@"foo"])
+        .andReturn([RACSignal return:receiptValidationStatus]);
+    OCMStub([validationStatusProvider fetchReceiptValidationStatus:@"bar"])
+        .andReturn([RACSignal error:error]);
+    auto secondReceiptValidationStatus = BZRReceiptValidationStatusWithExpiry(NO);
+    auto secondReceiptValidationStatusEntry = [[BZRReceiptValidationStatusCacheEntry alloc]
+        initWithReceiptValidationStatus:secondReceiptValidationStatus
+        cachingDateTime:[NSDate date]];
+    OCMStub([receiptValidationStatusCache
+        loadCacheEntryOfApplicationWithBundleID:@"bar" error:[OCMArg anyObjectRef]])
+        .andReturn(secondReceiptValidationStatusEntry);
+
+    auto recorder = [[validationStatusProvider
+                      fetchReceiptValidationStatuses:@[@"foo", @"bar"].lt_set] testRecorder];
+
+    expect(recorder).will.complete();
+    expect(recorder).will.sendValues(@[@{
+      @"foo": receiptValidationStatus,
+      @"bar": secondReceiptValidationStatus
+    }]);
+  });
+
+  it(@"should ignore bundle IDs whose fetching has failed and have no cached recipt validation "
+     "status entry", ^{
     auto error = [NSError lt_errorWithCode:1337];
 
     OCMStub([validationStatusProvider fetchReceiptValidationStatus:@"foo"])
@@ -125,12 +150,16 @@ context(@"fetching receipt validation status of multiple apps", ^{
     expect(recorder).will.sendValues(@[@{@"foo": receiptValidationStatus}]);
   });
 
-  it(@"should err if fetching all bundle IDs failed", ^{
+  it(@"should err if fetching all bundle IDs failed even if some were found in cache", ^{
     auto error = [NSError lt_errorWithCode:1337 userInfo:@{@"bar": @"ba"}];
     OCMStub([validationStatusProvider fetchReceiptValidationStatus:@"foo"])
         .andReturn([RACSignal error:error]);
     OCMStub([validationStatusProvider fetchReceiptValidationStatus:@"bar"])
         .andReturn([RACSignal error:error]);
+    auto cacheEntry = [[BZRReceiptValidationStatusCacheEntry alloc]
+        initWithReceiptValidationStatus:receiptValidationStatus cachingDateTime:[NSDate date]];
+    OCMStub([receiptValidationStatusCache loadCacheEntryOfApplicationWithBundleID:@"foo"
+        error:[OCMArg anyObjectRef]]).andReturn(cacheEntry);
 
     auto recorder = [[validationStatusProvider
                       fetchReceiptValidationStatuses:@[@"foo", @"bar"].lt_set] testRecorder];

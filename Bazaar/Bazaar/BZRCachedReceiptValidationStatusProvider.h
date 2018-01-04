@@ -51,8 +51,9 @@ typedef NSDictionary<NSString *, BZRReceiptValidationStatus *> BZRMultiAppReceip
 ///
 /// Returns a signal that sends a dictionary mapping bundle ID to its corresponding receipt
 /// validation status. Then the signal completes. If there was an error fetching a receipt
-/// validation status, its bundleID will not appear in the dictionary sent, but rather the error
-/// will be sent on \c eventsSignal. The signal errs if all the validations failed with error code
+/// validation status, its value will be taken from cache. If it was not found in cache, its value
+/// will not appear in the dictionary sent. Every validation error will be sent on \c eventsSignal.
+/// The signal errs if all the validations failed with error code
 /// \c BZRErrorCodeReceiptValidationFailed and validation errors in the \c NSError's
 /// \c lt_underlyingErrors.
 - (RACSignal<BZRMultiAppReceiptValidationStatus *> *)fetchReceiptValidationStatuses:
