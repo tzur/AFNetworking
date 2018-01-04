@@ -136,29 +136,31 @@ static NSUInteger kChannelsPerTexture = 4;
   LTParameterAssert(inputTexture.arrayLength ==
                     (self.inputFeatureChannels - 1) / kChannelsPerTexture + 1,
                     @"Input texture arrayLength must be %lu, got: %lu",
-                    (self.inputFeatureChannels - 1) / kChannelsPerTexture + 1,
-                    inputTexture.arrayLength);
+                    (unsigned long)((self.inputFeatureChannels - 1) / kChannelsPerTexture + 1),
+                    (unsigned long)inputTexture.arrayLength);
   LTParameterAssert(outputTexture.arrayLength ==
                     (_outputFeatureChannelIndices.size() - 1) / kChannelsPerTexture + 1,
                     @"Output texture arrayLength must be %lu, got: %lu",
                     (_outputFeatureChannelIndices.size() - 1) / kChannelsPerTexture + 1,
-                    outputTexture.arrayLength);
+                    (unsigned long)outputTexture.arrayLength);
   LTParameterAssert(inputTexture.width == outputTexture.width,
                     @"Input texture width must match output texture width. got: (%lu, %lu)",
-                    inputTexture.width, outputTexture.width);
+                    (unsigned long)inputTexture.width, (unsigned long)outputTexture.width);
   LTParameterAssert(inputTexture.height == outputTexture.height,
                     @"Input texture  height must match output texture height. got: (%lu, %lu)",
-                    inputTexture.height, outputTexture.height);
+                    (unsigned long)inputTexture.height, (unsigned long)outputTexture.height);
 }
 
 - (void)encodeToCommandBuffer:(id<MTLCommandBuffer>)commandBuffer
                    inputImage:(MPSImage *)inputImage outputImage:(MPSImage *)outputImage {
   LTParameterAssert(inputImage.featureChannels == self.inputFeatureChannels,
                     @"Input image featureChannels must be %lu, got: %lu",
-                    self.inputFeatureChannels, inputImage.featureChannels);
+                    (unsigned long)self.inputFeatureChannels,
+                    (unsigned long)inputImage.featureChannels);
   LTParameterAssert(outputImage.featureChannels == _outputFeatureChannelIndices.size(),
                     @"Output image featureChannels must be %lu, got: %lu",
-                    _outputFeatureChannelIndices.size(), outputImage.featureChannels);
+                    _outputFeatureChannelIndices.size(),
+                    (unsigned long)outputImage.featureChannels);
 
   [self encodeToCommandBuffer:commandBuffer inputTexture:inputImage.texture
                 outputTexture:outputImage.texture];

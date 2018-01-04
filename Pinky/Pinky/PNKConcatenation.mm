@@ -179,16 +179,20 @@ secondaryInputFeatureChannels:(NSUInteger)secondaryInputFeatureChannels
                                   outputTexture:(id<MTLTexture>)outputTexture {
   LTParameterAssert(primaryInputTexture.width == secondaryInputTexture.width, @"Primary input "
                     "texture width must match secondary input texture width. got: (%lu, %lu)",
-                    primaryInputTexture.width, secondaryInputTexture.width);
+                    (unsigned long)primaryInputTexture.width,
+                    (unsigned long)secondaryInputTexture.width);
   LTParameterAssert(primaryInputTexture.height == secondaryInputTexture.height, @"Primary input "
                     "texture height must match secondary input texture height. got: (%lu, %lu)",
-                    primaryInputTexture.height, secondaryInputTexture.height);
+                    (unsigned long)primaryInputTexture.height,
+                    (unsigned long)secondaryInputTexture.height);
   LTParameterAssert(primaryInputTexture.width == outputTexture.width,
                     @"Primary input texture width must match output texture width. got: (%lu, %lu)",
-                    primaryInputTexture.width, outputTexture.width);
+                    (unsigned long)primaryInputTexture.width,
+                    (unsigned long)outputTexture.width);
   LTParameterAssert(primaryInputTexture.height == outputTexture.height, @"Primary input texture "
                     "height must match output texture height. got: (%lu, %lu)",
-                    primaryInputTexture.height, outputTexture.height);
+                    (unsigned long)primaryInputTexture.height,
+                    (unsigned long)outputTexture.height);
 }
 
 - (void)fillBuffer:(id<MTLBuffer>)buffer withFirst:(NSUInteger)first second:(NSUInteger)second {

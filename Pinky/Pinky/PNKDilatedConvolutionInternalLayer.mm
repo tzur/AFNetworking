@@ -160,19 +160,21 @@ static NSString * const kP2SKernelArrayFunctionName = @"patch2SpaceArray";
   LTParameterAssert(inputImage.numberOfImages == 1, @"Input image cannot be a batch");
   LTParameterAssert(inputImage.featureChannels == self.inputFeatureChannels,
                     @"Input image featureChannels must be %lu, got: %lu",
-                    self.inputFeatureChannels, inputImage.featureChannels);
+                    (unsigned long)self.inputFeatureChannels,
+                    (unsigned long)inputImage.featureChannels);
   LTParameterAssert(outputImage.numberOfImages == 1, @"Output image cannot be a batch");
   LTParameterAssert(outputImage.featureChannels == self.outputFeatureChannels,
                     @"Output image featureChannels must be %lu, got: %lu",
-                    self.outputFeatureChannels, outputImage.featureChannels);
+                    (unsigned long)self.outputFeatureChannels,
+                    (unsigned long)outputImage.featureChannels);
 
   MTLSize outputSize = {outputImage.width, outputImage.height, outputImage.featureChannels};
   MTLSize expectedInputSize = [self inputSizeForOutputSize:outputSize];
   LTParameterAssert(inputImage.width == expectedInputSize.width &&
                     inputImage.height == expectedInputSize.height,
                     @"Input image must be of size (%lu, %lu), got: (%lu, %lu)",
-                    expectedInputSize.width, expectedInputSize.height, inputImage.width,
-                    inputImage.height);
+                    (unsigned long)expectedInputSize.width, (unsigned long)expectedInputSize.height,
+                    (unsigned long)inputImage.width, (unsigned long)inputImage.height);
 
   // The width and height of the transformed image must be exactly
   // divisible by the dilation rate, so add zero padding if necessary.

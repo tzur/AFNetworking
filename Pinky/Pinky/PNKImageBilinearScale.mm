@@ -100,10 +100,10 @@ static NSString * const kKernelFunctionBilinearScale = @"bilinearScale";
 - (void)verifyParametersWithInputTexture:(id<MTLTexture>)inputTexture
                            outputTexture:(id<MTLTexture>)outputTexture {
   LTParameterAssert(inputTexture.arrayLength == 1, @"Input texture arrayLength must be 1, got: %lu",
-                    inputTexture.arrayLength);
+                    (unsigned long)inputTexture.arrayLength);
   LTParameterAssert(outputTexture.arrayLength == 1,
                     @"Output texture arrayLength must be 1, got: %lu",
-                    outputTexture.arrayLength);
+                    (unsigned long)outputTexture.arrayLength);
 }
 
 - (void)fillBufferWithInverseOutputTextureSize:(MTLSize)outputTextureSize {
@@ -116,10 +116,12 @@ static NSString * const kKernelFunctionBilinearScale = @"bilinearScale";
                    inputImage:(MPSImage *)inputImage outputImage:(MPSImage *)outputImage {
   LTParameterAssert(inputImage.featureChannels == self.inputFeatureChannels,
                     @"Input image featureChannels must be %lu, got: %lu",
-                    self.inputFeatureChannels, inputImage.featureChannels);
+                    (unsigned long)self.inputFeatureChannels,
+                    (unsigned long)inputImage.featureChannels);
   LTParameterAssert(outputImage.featureChannels == self.outputFeatureChannels,
                     @"Output image featureChannels must be %lu, got: %lu",
-                    self.outputFeatureChannels, outputImage.featureChannels);
+                    (unsigned long)self.outputFeatureChannels,
+                    (unsigned long)outputImage.featureChannels);
 
   [self encodeToCommandBuffer:commandBuffer inputTexture:inputImage.texture
                 outputTexture:outputImage.texture];
