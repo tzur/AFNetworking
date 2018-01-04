@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
   static NSString * const kBundleIDKey = @"bundle";
   static NSString * const kReceiptKey = @"receipt";
   static NSString * const kAppStoreCountryCodeKey = @"appStoreCountryCode";
-  static NSString * const kUserIDKey = @"userID";
+  static NSString * const kUserIDKey = @"userId";
 
   NSMutableDictionary *requestParameters = [NSMutableDictionary dictionary];
 
