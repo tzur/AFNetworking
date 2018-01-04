@@ -162,7 +162,7 @@ NS_ASSUME_NONNULL_BEGIN
                initWithDevice:self.device
                convolutionModel:model.convolutionKernels.at("dilated1")
                activationModel:model.activationKernels.at("dilated1__activation__")];
-  _add1 = [[PNKAddition alloc] initWithDevice:self.device inputFeatureChannels:32];
+  _add1 = [[PNKAddition alloc] initWithDevice:self.device];
   _resconv2 = [[PNKConvolutionLayer alloc]
                initWithDevice:self.device
                convolutionModel:model.convolutionKernels.at("resconv2")
@@ -171,7 +171,7 @@ NS_ASSUME_NONNULL_BEGIN
                initWithDevice:self.device
                convolutionModel:model.convolutionKernels.at("dilated2")
                activationModel:model.activationKernels.at("dilated2__activation__")];
-  _add2 = [[PNKAddition alloc] initWithDevice:self.device inputFeatureChannels:32];
+  _add2 = [[PNKAddition alloc] initWithDevice:self.device];
   _resconv3 = [[PNKConvolutionLayer alloc]
                initWithDevice:self.device
                convolutionModel:model.convolutionKernels.at("resconv3")
@@ -180,7 +180,7 @@ NS_ASSUME_NONNULL_BEGIN
                initWithDevice:self.device
                convolutionModel:model.convolutionKernels.at("dilated3")
                activationModel:model.activationKernels.at("dilated3__activation__")];
-  _add3 = [[PNKAddition alloc] initWithDevice:self.device inputFeatureChannels:32];
+  _add3 = [[PNKAddition alloc] initWithDevice:self.device];
   _resconv4 = [[PNKConvolutionLayer alloc]
                initWithDevice:self.device
                convolutionModel:model.convolutionKernels.at("resconv4")
@@ -189,7 +189,7 @@ NS_ASSUME_NONNULL_BEGIN
                initWithDevice:self.device
                convolutionModel:model.convolutionKernels.at("dilated4")
                activationModel:model.activationKernels.at("dilated4__activation__")];
-  _add4 = [[PNKAddition alloc] initWithDevice:self.device inputFeatureChannels:32];
+  _add4 = [[PNKAddition alloc] initWithDevice:self.device];
   _resconv5 = [[PNKConvolutionLayer alloc]
                initWithDevice:self.device
                convolutionModel:model.convolutionKernels.at("resconv5")
@@ -198,7 +198,7 @@ NS_ASSUME_NONNULL_BEGIN
                initWithDevice:self.device
                convolutionModel:model.convolutionKernels.at("dilated5")
                activationModel:model.activationKernels.at("dilated5__activation__")];
-  _add5 = [[PNKAddition alloc] initWithDevice:self.device inputFeatureChannels:32];
+  _add5 = [[PNKAddition alloc] initWithDevice:self.device];
   // Upsample.
   _upsample1 = [[PNKNearestNeighborUpsampling alloc] initWithDevice:self.device
                                                inputFeatureChannels:32
