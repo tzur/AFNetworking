@@ -29,6 +29,11 @@ NS_ASSUME_NONNULL_BEGIN
   convolutionDescriptor.strideInPixelsY = convolutionModel.strideY;
   convolutionDescriptor.groups = convolutionModel.groups;
 
+  if (@available(iOS 11.0, *)) {
+    convolutionDescriptor.dilationRateX = convolutionModel.dilationX;
+    convolutionDescriptor.dilationRateY = convolutionModel.dilationY;
+  }
+
   LTParameterAssert(convolutionModel.kernelWeights.total() ==
                     convolutionModel.outputFeatureChannels * convolutionModel.kernelHeight *
                     convolutionModel.kernelWidth * convolutionModel.inputFeatureChannels, @"The "
