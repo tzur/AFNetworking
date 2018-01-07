@@ -3,7 +3,7 @@
 
 #import "PNKPoolingLayer.h"
 
-#import "PNKNeuralNetworkOperationsModel.h"
+#import "PNKConvolutionUtils.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -11,7 +11,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface PNKPoolingLayer ()
 
-/// Undelying pooling kernel used for performing the operation.
+/// Underlying pooling kernel used for performing the operation.
 @property (readonly, nonatomic) MPSCNNPooling *poolingKernel;
 
 /// Padding type used in the pooling.
@@ -80,36 +80,13 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark PNKUnaryImageKernel
 #pragma mark -
 
-/// We calculate offset to fit the Tensor Flow padding scheme. For more details see
-/// https://www.tensorflow.org/api_guides/python/nn#Convolution.
-- (MPSOffset)calculateOffsetWithInputImage:(MPSImage *)inputImage {
-  NSUInteger mpsPaddingLeft = self.kernelWidth / 2;
-  NSUInteger mpsPaddingTop = self.kernelHeight / 2;
-  NSUInteger tensorFlowPaddingLeft, tensorFlowPaddingTop;
-  switch (self.padding) {
-    case pnk::PaddingTypeSame: {
-      NSUInteger strideResidualX = (inputImage.width - 1) % self.strideX + 1;
-      tensorFlowPaddingLeft = (std::max(self.kernelWidth, strideResidualX) - strideResidualX) / 2;
-      NSUInteger strideResidualY = (inputImage.height - 1) % self.strideY + 1;
-      tensorFlowPaddingTop = (std::max(self.kernelHeight, strideResidualY) - strideResidualY) / 2;
-    } break;
-    case pnk::PaddingTypeValid:
-      tensorFlowPaddingLeft = 0;
-      tensorFlowPaddingTop = 0;
-      break;
-  }
-
-  return {
-    .x = static_cast<NSInteger>(mpsPaddingLeft - tensorFlowPaddingLeft),
-    .y = static_cast<NSInteger>(mpsPaddingTop - tensorFlowPaddingTop),
-    .z = 0
-  };
-}
-
 - (void)encodeToCommandBuffer:(id<MTLCommandBuffer>)commandBuffer
                    inputImage:(MPSImage *)inputImage outputImage:(MPSImage *)outputImage {
   MTLSize inputSize = {inputImage.width, inputImage.height, inputImage.featureChannels};
-  MTLSize expectedOutputSize = [self outputSizeForInputSize:inputSize];
+  MTLSize expectedOutputSize = PNKConvolutionOutputSize(inputSize, self.kernelWidth,
+                                                        self.kernelHeight, 1, 1, self.strideX,
+                                                        self.strideY, self.padding,
+                                                        inputImage.featureChannels);
   LTParameterAssert(outputImage.width == expectedOutputSize.width &&
                     outputImage.height == expectedOutputSize.height &&
                     outputImage.featureChannels == expectedOutputSize.depth,
@@ -119,50 +96,20 @@ NS_ASSUME_NONNULL_BEGIN
                     (unsigned long)expectedOutputSize.depth, (unsigned long)outputImage.width,
                     (unsigned long)outputImage.height, (unsigned long)outputImage.featureChannels);
 
-  self.poolingKernel.offset = [self calculateOffsetWithInputImage:inputImage];
+  self.poolingKernel.offset = PNKConvolutionOffset(inputImage.width, inputImage.height,
+                                                   self.kernelWidth, self.kernelHeight, 1, 1,
+                                                   self.strideX, self.strideY, self.padding);
+
   [self.poolingKernel encodeToCommandBuffer:commandBuffer sourceImage:inputImage
                            destinationImage:outputImage];
-}
-
-- (MTLSize)outputSizeForInputSize:(MTLSize)inputSize {
-  switch (self.padding) {
-    case pnk::PaddingTypeSame:
-      return {
-        (inputSize.width + self.strideX - 1) / self.strideX,
-        (inputSize.height + self.strideY - 1) / self.strideY,
-        inputSize.depth
-      };
-    case pnk::PaddingTypeValid:
-      return {
-        (inputSize.width + self.strideX - self.kernelWidth) / self.strideX,
-        (inputSize.height + self.strideY - self.kernelHeight) / self.strideY,
-        inputSize.depth
-      };
-  }
 }
 
 - (MTLRegion)inputRegionForOutputSize:(MTLSize)outputSize {
   return {
     .origin = {0, 0, 0},
-    .size = [self inputSizeForOutputSize:outputSize]
+    .size = PNKConvolutionInputSize(outputSize, self.kernelWidth, self.kernelHeight, 1, 1,
+                                    self.strideX, self.strideY, self.padding, outputSize.depth)
   };
-}
-
-- (MTLSize)inputSizeForOutputSize:(MTLSize)outputSize {
-  switch (self.padding) {
-    case pnk::PaddingTypeSame:
-      return {
-        (outputSize.width - 1) * self.strideX + 1,
-        (outputSize.height - 1) * self.strideY + 1,
-        outputSize.depth
-      };
-    case pnk::PaddingTypeValid:
-      return {
-        (outputSize.width - 1) * self.strideX + self.kernelWidth,
-        (outputSize.height - 1) * self.strideY + self.kernelHeight,
-        outputSize.depth
-      };
-  }
 }
 
 @end
