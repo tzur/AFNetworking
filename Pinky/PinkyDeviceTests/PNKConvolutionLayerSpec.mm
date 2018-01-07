@@ -3,18 +3,59 @@
 
 #import "PNKConvolutionLayer.h"
 
+#import "MPSImage+Factory.h"
+#import "PNKConvolutionTestUtils.h"
 #import "PNKNeuralNetworkModel.h"
 #import "PNKTestUtils.h"
 
+static NSDictionary *PNKBuildHalfFloatDataForKernelExamples(id<MTLDevice> device,
+                                                            NSUInteger imageWidth,
+                                                            NSUInteger imageHeight,
+                                                            NSUInteger kernelWidth,
+                                                            NSUInteger kernelHeight,
+                                                            NSUInteger inputChannels,
+                                                            NSUInteger outputChannels,
+                                                            NSUInteger dilationX,
+                                                            NSUInteger dilationY,
+                                                            NSUInteger strideX,
+                                                            NSUInteger strideY,
+                                                            pnk::PaddingType paddingType) {
+  auto convolutionModel = PNKBuildConvolutionModel(kernelWidth, kernelHeight, inputChannels,
+                                                   outputChannels, dilationX, dilationY,
+                                                   strideX, strideY, paddingType);
+
+  auto convolutionKernel = [[PNKConvolutionLayer alloc]
+                            initWithDevice:device convolutionModel:convolutionModel];
+
+  auto inputMat = PNKFillMatrix((int)imageHeight, (int)imageWidth, (int)inputChannels);
+
+  auto expectedMat = PNKCalculateConvolution(paddingType, inputMat, convolutionModel.kernelWeights,
+                                             (int)dilationX, (int)dilationY, (int)strideX,
+                                             (int)strideY);
+
+  return @{
+    kPNKKernelExamplesKernel: convolutionKernel,
+    kPNKKernelExamplesDevice: device,
+    kPNKKernelExamplesPixelFormat: @(MPSImageFeatureChannelFormatFloat16),
+    kPNKKernelExamplesOutputChannels: @(outputChannels),
+    kPNKKernelExamplesOutputWidth: @(expectedMat.cols),
+    kPNKKernelExamplesOutputHeight: @(expectedMat.rows),
+    kPNKKernelExamplesPrimaryInputMat: $(inputMat),
+    kPNKKernelExamplesExpectedMat: $(expectedMat),
+    kPNKKernelExamplesInputImageSizeFromInputMat: @(YES)
+  };
+}
+
 DeviceSpecBegin(PNKConvolutionLayer)
 
-static const NSUInteger kInputWidth = 15;
-static const NSUInteger kInputHeight = 16;
+static const NSUInteger kInputHeight = 15;
+static const NSUInteger kInputWidth = 16;
 static const NSUInteger kInputRGBFeatureChannels = 3;
 static const NSUInteger kInputArrayFeatureChannels = 32;
 static const NSUInteger kOutputArrayFeatureChannels = 16;
 
 static const NSUInteger kNoStride = 1;
+static const NSUInteger kNoDilation = 1;
 static const NSUInteger kKernelSide = 3;
 
 __block id<MTLDevice> device;
@@ -80,74 +121,135 @@ context(@"kernel input region", ^{
   });
 });
 
-context(@"convolution operation with Float16 channel format", ^{
-  it(@"should convolve input correctly for array textures", ^{
-    NSUInteger stride = kNoStride;
-    NSUInteger kernelSide = kKernelSide;
+context(@"tensorflow golden standard", ^{
+  itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
     NSUInteger inputChannels = kInputArrayFeatureChannels;
     NSUInteger outputChannels = kOutputArrayFeatureChannels;
-    pnk::PaddingType padding = pnk::PaddingTypeSame;
 
     pnk::ActivationKernelModel activationModel = {
       .activationType = pnk::ActivationTypeIdentity
     };
 
-    NSBundle *bundle = NSBundle.lt_testBundle;
+    pnk::ConvolutionKernelModel convolutionModel =
+        PNKBuildConvolutionModel(kKernelSide, kKernelSide, inputChannels, outputChannels,
+                                 kNoDilation, kNoDilation, kNoStride, kNoStride,
+                                 pnk::PaddingTypeSame);
 
-    pnk::ConvolutionKernelModel convolutionModel = {
-      .kernelWidth = kernelSide,
-      .kernelHeight = kernelSide,
-      .kernelChannels = outputChannels,
-      .groups = 1,
-      .inputFeatureChannels = inputChannels,
-      .outputFeatureChannels = outputChannels,
-      .strideX = stride,
-      .strideY = stride,
-      .dilationX = 1,
-      .dilationY = 1,
-      .padding = padding,
-      .isDeconvolution = NO,
-      .hasBias = YES,
-      .deconvolutionOutputSize = CGSizeNull,
-      .kernelWeights = PNKLoadFloatTensorFromBundleResource(bundle, @"conv2d_kernel.weights"),
-      .biasWeights = PNKLoadFloatTensorFromBundleResource(bundle, @"conv2d_bias.weights")
-    };
+    NSBundle *bundle = NSBundle.lt_testBundle;
+    convolutionModel.kernelWeights =
+        PNKLoadFloatTensorFromBundleResource(bundle, @"conv_basic_kernel_16x3x3x32.weights");
+    convolutionModel.biasWeights =
+        PNKLoadFloatTensorFromBundleResource(bundle, @"conv_basic_bias_16.weights");
 
     convolutionOp = [[PNKConvolutionLayer alloc] initWithDevice:device
                                                convolutionModel:convolutionModel
                                                 activationModel:activationModel];
+    auto inputMatSingleRow =
+        PNKLoadHalfFloatTensorFromBundleResource(bundle, @"conv_basic_input_15x16x32.tensor");
+    auto inputMat = inputMatSingleRow.reshape((int)inputChannels, kInputHeight);
 
-    auto inputImage = PNKImageMake(device, MPSImageFeatureChannelFormatFloat16, kInputWidth,
-                                    kInputHeight, inputChannels);
-    auto outputImage = PNKImageMake(device, MPSImageFeatureChannelFormatFloat16, kInputWidth,
-                                    kInputHeight, outputChannels);
-    auto expectedImage = PNKImageMake(device, MPSImageFeatureChannelFormatFloat16, kInputWidth,
-                                      kInputHeight, outputChannels);
+    auto expectedMatSingleRow =
+        PNKLoadHalfFloatTensorFromBundleResource(bundle, @"conv_basic_output_15x16x16.tensor");
+    auto expectedMat = expectedMatSingleRow.reshape((int)outputChannels, kInputHeight);
 
-    auto inputMat = PNKLoadHalfFloatTensorFromBundleResource(bundle, @"conv2d_input.tensor");
-    auto elementsPerSlice = inputImage.width * inputImage.height * 4;
-    for (NSUInteger i = 0; i < inputImage.texture.arrayLength; ++i) {
-      cv::Rect roi((int)(i * elementsPerSlice), 0, (int)elementsPerSlice, 1);
-      PNKCopyMatToMTLTexture(inputImage.texture, inputMat(roi).reshape(4, kInputHeight), i);
-    }
+    return @{
+      kPNKKernelExamplesKernel: convolutionOp,
+      kPNKKernelExamplesDevice: device,
+      kPNKKernelExamplesPixelFormat: @(MPSImageFeatureChannelFormatFloat16),
+      kPNKKernelExamplesOutputChannels: @(outputChannels),
+      kPNKKernelExamplesOutputWidth: @(expectedMat.cols),
+      kPNKKernelExamplesOutputHeight: @(expectedMat.rows),
+      kPNKKernelExamplesPrimaryInputMat: $(inputMat),
+      kPNKKernelExamplesExpectedMat: $(expectedMat)
+    };
+  });
 
-    auto expectedMat = PNKLoadHalfFloatTensorFromBundleResource(bundle, @"conv2d_output.tensor");
-    elementsPerSlice = expectedImage.width * expectedImage.height * 4;
-    for (NSUInteger i = 0; i < expectedImage.texture.arrayLength; ++i) {
-      cv::Rect roi((int)(i * elementsPerSlice), 0, (int)elementsPerSlice, 1);
-      PNKCopyMatToMTLTexture(expectedImage.texture, expectedMat(roi).reshape(4, kInputHeight), i);
-    }
+  itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
+    NSUInteger strideX = 2;
+    NSUInteger strideY = 2;
+    NSUInteger inputChannels = kInputArrayFeatureChannels;
+    NSUInteger outputChannels = kOutputArrayFeatureChannels;
+    NSUInteger outputHeight = (kInputHeight - 1) / strideY + 1;
 
-    [convolutionOp encodeToCommandBuffer:commandBuffer inputImage:inputImage
-                             outputImage:outputImage];
-    [commandBuffer commit];
-    [commandBuffer waitUntilCompleted];
+    pnk::ActivationKernelModel activationModel = {
+      .activationType = pnk::ActivationTypeIdentity
+    };
 
-    for (NSUInteger i = 0; i < outputChannels / 4; ++i) {
-      auto outputSlice = PNKMatFromMTLTexture(outputImage.texture, i);
-      auto expectedSlice = PNKMatFromMTLTexture(expectedImage.texture, i);
-      expect($(outputSlice)).to.beCloseToMatWithin($(expectedSlice), @(5e-2));
-    }
+    pnk::ConvolutionKernelModel convolutionModel =
+        PNKBuildConvolutionModel(kKernelSide, kKernelSide, inputChannels, outputChannels,
+                                 kNoDilation, kNoDilation, strideX, strideY, pnk::PaddingTypeSame);
+
+    NSBundle *bundle = NSBundle.lt_testBundle;
+    convolutionModel.kernelWeights =
+        PNKLoadFloatTensorFromBundleResource(bundle, @"conv_stride_kernel_16x3x3x32.weights");
+    convolutionModel.biasWeights =
+        PNKLoadFloatTensorFromBundleResource(bundle, @"conv_stride_bias_16.weights");
+
+    convolutionOp = [[PNKConvolutionLayer alloc] initWithDevice:device
+                                               convolutionModel:convolutionModel
+                                                activationModel:activationModel];
+    auto inputMatSingleRow =
+        PNKLoadHalfFloatTensorFromBundleResource(bundle, @"conv_stride_input_15x16x32.tensor");
+    auto inputMat = inputMatSingleRow.reshape((int)inputChannels, kInputHeight);
+
+    auto expectedMatSingleRow =
+        PNKLoadHalfFloatTensorFromBundleResource(bundle, @"conv_stride_output_8x8x16.tensor");
+    auto expectedMat = expectedMatSingleRow.reshape((int)outputChannels, (int)outputHeight);
+
+    return @{
+      kPNKKernelExamplesKernel: convolutionOp,
+      kPNKKernelExamplesDevice: device,
+      kPNKKernelExamplesPixelFormat: @(MPSImageFeatureChannelFormatFloat16),
+      kPNKKernelExamplesOutputChannels: @(outputChannels),
+      kPNKKernelExamplesOutputWidth: @(expectedMat.cols),
+      kPNKKernelExamplesOutputHeight: @(expectedMat.rows),
+      kPNKKernelExamplesPrimaryInputMat: $(inputMat),
+      kPNKKernelExamplesExpectedMat: $(expectedMat),
+      kPNKKernelExamplesInputImageSizeFromInputMat: @(YES)
+    };
+  });
+
+  itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
+    NSUInteger dilationX = 3;
+    NSUInteger dilationY = 3;
+    NSUInteger inputChannels = kInputArrayFeatureChannels;
+    NSUInteger outputChannels = kOutputArrayFeatureChannels;
+
+    pnk::ActivationKernelModel activationModel = {
+      .activationType = pnk::ActivationTypeIdentity
+    };
+
+    pnk::ConvolutionKernelModel convolutionModel =
+        PNKBuildConvolutionModel(kKernelSide, kKernelSide, inputChannels, outputChannels,
+                                 dilationX, dilationY, kNoStride, kNoStride, pnk::PaddingTypeSame);
+
+    NSBundle *bundle = NSBundle.lt_testBundle;
+    convolutionModel.kernelWeights =
+        PNKLoadFloatTensorFromBundleResource(bundle, @"conv_dilation_kernel_16x3x3x32.weights");
+    convolutionModel.biasWeights =
+        PNKLoadFloatTensorFromBundleResource(bundle, @"conv_dilation_bias_16.weights");
+
+    convolutionOp = [[PNKConvolutionLayer alloc] initWithDevice:device
+                                               convolutionModel:convolutionModel
+                                                activationModel:activationModel];
+    auto inputMatSingleRow =
+        PNKLoadHalfFloatTensorFromBundleResource(bundle, @"conv_dilation_input_15x16x32.tensor");
+    auto inputMat = inputMatSingleRow.reshape((int)inputChannels, kInputHeight);
+
+    auto expectedMatSingleRow =
+        PNKLoadHalfFloatTensorFromBundleResource(bundle, @"conv_dilation_output_15x16x16.tensor");
+    auto expectedMat = expectedMatSingleRow.reshape((int)outputChannels, kInputHeight);
+
+    return @{
+      kPNKKernelExamplesKernel: convolutionOp,
+      kPNKKernelExamplesDevice: device,
+      kPNKKernelExamplesPixelFormat: @(MPSImageFeatureChannelFormatFloat16),
+      kPNKKernelExamplesOutputChannels: @(outputChannels),
+      kPNKKernelExamplesOutputWidth: @(expectedMat.cols),
+      kPNKKernelExamplesOutputHeight: @(expectedMat.rows),
+      kPNKKernelExamplesPrimaryInputMat: $(inputMat),
+      kPNKKernelExamplesExpectedMat: $(expectedMat)
+    };
   });
 });
 
@@ -208,6 +310,173 @@ context(@"PNKUnaryKernel with MPSTemporaryImage", ^{
       kPNKTemporaryImageExamplesDevice: device,
       kPNKTemporaryImageExamplesOutputChannels: @(kInputArrayFeatureChannels)
     };
+  });
+});
+
+context(@"convolution", ^{
+  itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
+    return PNKBuildHalfFloatDataForKernelExamples(device, 32, 32, 3, 3, 1, 1, 1, 1, 1, 1,
+                                                  pnk::PaddingTypeSame);
+  });
+
+  itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
+    return PNKBuildHalfFloatDataForKernelExamples(device, 32, 32, 3, 3, 1, 1, 2, 2, 1, 1,
+                                                  pnk::PaddingTypeSame);
+  });
+
+  itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
+    return PNKBuildHalfFloatDataForKernelExamples(device, 32, 32, 3, 3, 1, 1, 1, 1, 5, 5,
+                                                  pnk::PaddingTypeSame);
+  });
+
+  itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
+    return PNKBuildHalfFloatDataForKernelExamples(device, 32, 32, 2, 2, 1, 1, 2, 2, 1, 1,
+                                                  pnk::PaddingTypeSame);
+  });
+
+  itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
+    return PNKBuildHalfFloatDataForKernelExamples(device, 32, 32, 4, 4, 1, 1, 2, 2, 1, 1,
+                                                  pnk::PaddingTypeSame);
+  });
+
+  itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
+    return PNKBuildHalfFloatDataForKernelExamples(device, 32, 32, 2, 2, 1, 1, 6, 6, 1, 1,
+                                                  pnk::PaddingTypeSame);
+  });
+
+  itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
+    return PNKBuildHalfFloatDataForKernelExamples(device, 32, 32, 4, 4, 1, 1, 6, 6, 1, 1,
+                                                  pnk::PaddingTypeSame);
+  });
+
+  itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
+    return PNKBuildHalfFloatDataForKernelExamples(device, 32, 32, 3, 2, 1, 1, 2, 2, 1, 1,
+                                                  pnk::PaddingTypeSame);
+  });
+
+  itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
+    return PNKBuildHalfFloatDataForKernelExamples(device, 32, 32, 2, 1, 1, 1, 3, 1, 1, 1,
+                                                  pnk::PaddingTypeSame);
+  });
+
+  itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
+    return PNKBuildHalfFloatDataForKernelExamples(device, 32, 32, 2, 1, 1, 1, 3, 1, 1, 1,
+                                                  pnk::PaddingTypeSame);
+  });
+
+  itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
+    return PNKBuildHalfFloatDataForKernelExamples(device, 32, 32, 2, 2, 1, 1, 5, 5, 1, 1,
+                                                  pnk::PaddingTypeSame);
+  });
+
+  itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
+    return PNKBuildHalfFloatDataForKernelExamples(device, 32, 32, 4, 4, 1, 1, 3, 3, 1, 1,
+                                                  pnk::PaddingTypeSame);
+  });
+
+  itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
+    return PNKBuildHalfFloatDataForKernelExamples(device, 32, 32, 3, 3, 1, 1, 2, 2, 5, 5,
+                                                  pnk::PaddingTypeSame);
+  });
+
+  itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
+    return PNKBuildHalfFloatDataForKernelExamples(device, 32, 32, 2, 2, 1, 1, 4, 5, 6, 7,
+                                                  pnk::PaddingTypeSame);
+  });
+
+  itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
+    return PNKBuildHalfFloatDataForKernelExamples(device, 32, 32, 2, 4, 1, 1, 3, 3, 2, 52,
+                                                  pnk::PaddingTypeSame);
+  });
+
+  itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
+    return PNKBuildHalfFloatDataForKernelExamples(device, 32, 32, 4, 7, 1, 1, 3, 1, 1, 3,
+                                                  pnk::PaddingTypeSame);
+  });
+
+  itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
+    return PNKBuildHalfFloatDataForKernelExamples(device, 32, 32, 3, 3, 1, 1, 1, 2, 3, 4,
+                                                  pnk::PaddingTypeSame);
+  });
+
+  itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
+    return PNKBuildHalfFloatDataForKernelExamples(device, 32, 32, 4, 2, 4, 4, 3, 5, 2, 1,
+                                                  pnk::PaddingTypeSame);
+  });
+
+  itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
+    return PNKBuildHalfFloatDataForKernelExamples(device, 32, 32, 3, 3, 1, 1, 5, 3, 2, 4,
+                                                  pnk::PaddingTypeSame);
+  });
+
+  itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
+    return PNKBuildHalfFloatDataForKernelExamples(device, 32, 32, 2, 2, 1, 1, 2, 2, 2, 2,
+                                                  pnk::PaddingTypeSame);
+  });
+
+  itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
+    return PNKBuildHalfFloatDataForKernelExamples(device, 32, 32, 3, 3, 1, 1, 3, 3, 7, 7,
+                                                  pnk::PaddingTypeSame);
+  });
+
+  itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
+    return PNKBuildHalfFloatDataForKernelExamples(device, 32, 32, 3, 3, 1, 1, 1, 1, 1, 1,
+                                                  pnk::PaddingTypeValid);
+  });
+
+  itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
+    return PNKBuildHalfFloatDataForKernelExamples(device, 32, 32, 3, 3, 1, 1, 2, 2, 1, 1,
+                                                  pnk::PaddingTypeValid);
+  });
+
+  itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
+    return PNKBuildHalfFloatDataForKernelExamples(device, 32, 32, 3, 3, 1, 1, 1, 1, 5, 5,
+                                                  pnk::PaddingTypeValid);
+  });
+
+  itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
+    return PNKBuildHalfFloatDataForKernelExamples(device, 32, 32, 2, 2, 1, 1, 2, 2, 1, 1,
+                                                  pnk::PaddingTypeValid);
+  });
+
+  itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
+    return PNKBuildHalfFloatDataForKernelExamples(device, 32, 32, 4, 4, 1, 1, 2, 2, 1, 1,
+                                                  pnk::PaddingTypeValid);
+  });
+
+  itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
+    return PNKBuildHalfFloatDataForKernelExamples(device, 32, 32, 2, 2, 1, 1, 6, 6, 1, 1,
+                                                  pnk::PaddingTypeValid);
+  });
+
+  itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
+    return PNKBuildHalfFloatDataForKernelExamples(device, 32, 32, 4, 4, 1, 1, 6, 6, 1, 1,
+                                                  pnk::PaddingTypeValid);
+  });
+
+  itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
+    return PNKBuildHalfFloatDataForKernelExamples(device, 32, 32, 3, 2, 1, 1, 2, 2, 1, 1,
+                                                  pnk::PaddingTypeValid);
+  });
+
+  itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
+    return PNKBuildHalfFloatDataForKernelExamples(device, 32, 32, 2, 1, 1, 1, 3, 1, 1, 1,
+                                                  pnk::PaddingTypeValid);
+  });
+
+  itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
+    return PNKBuildHalfFloatDataForKernelExamples(device, 32, 32, 2, 1, 1, 1, 3, 1, 1, 1,
+                                                  pnk::PaddingTypeValid);
+  });
+
+  itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
+    return PNKBuildHalfFloatDataForKernelExamples(device, 32, 32, 2, 2, 1, 1, 5, 5, 1, 1,
+                                                  pnk::PaddingTypeValid);
+  });
+
+  itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
+    return PNKBuildHalfFloatDataForKernelExamples(device, 32, 32, 4, 4, 1, 1, 3, 3, 1, 1,
+                                                  pnk::PaddingTypeValid);
   });
 });
 
