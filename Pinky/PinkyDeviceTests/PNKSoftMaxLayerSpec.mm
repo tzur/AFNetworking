@@ -63,6 +63,24 @@ context(@"parameter tests", ^{
   });
 });
 
+context(@"kernel input region", ^{
+  beforeEach(^{
+    softMaxOp = [[PNKSoftMaxLayer alloc] initWithDevice:device];
+  });
+
+  it(@"should calculate input region correctly", ^{
+    MTLSize outputSize = {kImageWidth, kImageHeight, kFeatureChannels};
+    MTLRegion inputRegion = [softMaxOp inputRegionForOutputSize:outputSize];
+    expect($(inputRegion.size)).to.equalMTLSize($(outputSize));
+  });
+
+  it(@"should calculate output size correctly", ^{
+    MTLSize inputSize = {kImageWidth, kImageHeight, kFeatureChannels};
+    MTLSize outputSize = [softMaxOp outputSizeForInputSize:inputSize];
+    expect($(inputSize)).to.equalMTLSize($(outputSize));
+  });
+});
+
 context(@"tensorflow golden standard", ^{
   itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
     NSBundle *bundle = NSBundle.lt_testBundle;

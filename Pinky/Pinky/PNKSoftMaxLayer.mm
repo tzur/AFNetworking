@@ -78,6 +78,10 @@ NS_ASSUME_NONNULL_BEGIN
   };
 }
 
+- (MTLSize)outputSizeForInputSize:(MTLSize)inputSize {
+  return inputSize;
+}
+
 @end
 
 #endif

@@ -10,7 +10,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// Kernel that resamples (upsamples or downsamples) the input image using bilinear interpolation.
 /// When called with appropriate channels count it performs Y->RGBA transformation (with alpha
 /// channel being set to 1) as well.
-@interface PNKImageBilinearScale : NSObject <PNKUnaryImageKernel>
+@interface PNKImageBilinearScale : NSObject
 
 - (instancetype)init NS_UNAVAILABLE;
 
@@ -31,6 +31,13 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)encodeToCommandBuffer:(id<MTLCommandBuffer>)commandBuffer
                    inputImage:(MPSImage *)inputImage
                   outputImage:(MPSImage *)outputImage;
+
+/// Encodes the operation performed by the kernel to \c commandBuffer using \c inputTexture as
+/// input. Output is written asynchronously to \c outputTexture.  \c inputImage and \c outputImage
+/// must have \c arrayLength property equal to \c 1.
+- (void)encodeToCommandBuffer:(id<MTLCommandBuffer>)commandBuffer
+                 inputTexture:(id<MTLTexture>)inputTexture
+                outputTexture:(id<MTLTexture>)outputTexture;
 
 @end
 

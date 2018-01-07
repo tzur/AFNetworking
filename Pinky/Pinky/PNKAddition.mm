@@ -130,6 +130,11 @@ static NSString * const kDebugGroupName = @"addition";
   };
 }
 
+- (MTLSize)outputSizeForPrimaryInputSize:(MTLSize)primaryInputSize
+                      secondaryInputSize:(__unused MTLSize)secondaryInputSize {
+  return primaryInputSize;
+}
+
 @end
 
 #endif // PNK_USE_MPS

@@ -97,7 +97,6 @@ context(@"parameter tests", ^{
     __block id<MTLCommandBuffer> commandBuffer;
 
     beforeEach(^{
-      device = MTLCreateSystemDefaultDevice();
       convolutionKernel = [[PNKDilatedConvolutionInternalLayer alloc]
                            initWithDevice:device
                            convolutionModel:convolutionKernelModel];
@@ -168,6 +167,50 @@ context(@"parameter tests", ^{
                                      outputImage:outputImage];
       }).to.raise(NSInvalidArgumentException);
     });
+  });
+});
+
+context(@"kernel input region", ^{
+  static const NSUInteger kInputWidth = 32;
+  static const NSUInteger kInputHeight = 32;
+  static const NSUInteger kInputChannels = 32;
+  static const NSUInteger kOutputChannels = 16;
+  static const NSUInteger kStrideX = 2;
+  static const NSUInteger kStrideY = 2;
+
+  __block PNKDilatedConvolutionInternalLayer *convolutionKernel;
+
+  beforeEach(^{
+    pnk::ConvolutionKernelModel convolutionKernelModel =
+        PNKBuildConvolutionModel(3, 3, kInputChannels, kOutputChannels, 1, 1, kStrideX, kStrideY,
+                                 pnk::PaddingTypeSame);
+    convolutionKernel = [[PNKDilatedConvolutionInternalLayer alloc]
+                         initWithDevice:device
+                         convolutionModel:convolutionKernelModel];
+  });
+
+  it(@"should calculate input region correctly", ^{
+    MTLSize outputSize = {kInputWidth, kInputHeight, kOutputChannels};
+    MTLRegion inputRegion = [convolutionKernel inputRegionForOutputSize:outputSize];
+    MTLSize expectedSize = {
+      (outputSize.width - 1) * kStrideX + 1,
+      (outputSize.height - 1) * kStrideY + 1,
+      kInputChannels
+    };
+
+    expect($(inputRegion.size)).to.equalMTLSize($(expectedSize));
+  });
+
+  it(@"should calculate output size correctly", ^{
+    MTLSize inputSize = {kInputWidth, kInputHeight, kInputChannels};
+    MTLSize expectedSize = {
+      (inputSize.width - 1) / kStrideX + 1,
+      (inputSize.height - 1) / kStrideY + 1,
+      kOutputChannels
+    };
+    MTLSize outputSize = [convolutionKernel outputSizeForInputSize:inputSize];
+
+    expect($(outputSize)).to.equalMTLSize($(expectedSize));
   });
 });
 

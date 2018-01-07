@@ -20,6 +20,10 @@ NS_ASSUME_NONNULL_BEGIN
 /// in order to receive the correct region.
 - (MTLRegion)inputRegionForOutputSize:(MTLSize)outputSize;
 
+/// Determines the size of \c outputImage that fits the size of \c inputImage. All kernel
+/// parameters should be set prior to calling this method in order to receive the correct size.
+- (MTLSize)outputSizeForInputSize:(MTLSize)inputSize;
+
 /// Number of feature channels per pixel in the input image. \c 0 iff the kernel allows for
 /// undetermined number of feature channels.
 @property (readonly, nonatomic) NSUInteger inputFeatureChannels;
@@ -49,6 +53,12 @@ NS_ASSUME_NONNULL_BEGIN
 /// full (untiled) secondary input image that will be read is returned. All kernel parameters should
 /// be set prior to calling this method in order to receive the correct region.
 - (MTLRegion)secondaryInputRegionForOutputSize:(MTLSize)outputSize;
+
+/// Determines the size of \c outputImage that fits the sizes of \c primaryInputImage and
+/// \c secondaryInputImage. All kernel parameters should be set prior to calling this method in
+/// order to receive the correct size.
+- (MTLSize)outputSizeForPrimaryInputSize:(MTLSize)primaryInputSize
+                      secondaryInputSize:(MTLSize)secondaryInputSize;
 
 /// Number of feature channels per pixel in the primary input image. \c 0 iff the kernel allows for
 /// undetermined number of feature channels.

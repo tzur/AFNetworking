@@ -283,6 +283,12 @@ static NSString * const kP2SKernelArrayFunctionName = @"patch2SpaceArray";
   };
 }
 
+- (MTLSize)outputSizeForInputSize:(MTLSize)inputSize {
+  return PNKConvolutionOutputSize(inputSize, self.kernelWidth, self.kernelHeight, self.dilationX,
+                                  self.dilationY, self.strideX, self.strideY, self.padding,
+                                  self.outputFeatureChannels);
+}
+
 @end
 
 #endif // PNK_USE_MPS

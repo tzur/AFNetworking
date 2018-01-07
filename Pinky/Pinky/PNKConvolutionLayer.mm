@@ -64,6 +64,10 @@ NS_ASSUME_NONNULL_BEGIN
   return [self.internalConvolutionLayer inputRegionForOutputSize:outputSize];
 }
 
+- (MTLSize)outputSizeForInputSize:(MTLSize)inputSize {
+  return [self.internalConvolutionLayer outputSizeForInputSize:inputSize];
+}
+
 #pragma mark -
 #pragma mark Properties
 #pragma mark -

@@ -215,6 +215,15 @@ secondaryInputFeatureChannels:(NSUInteger)secondaryInputFeatureChannels
   };
 }
 
+- (MTLSize)outputSizeForPrimaryInputSize:(MTLSize)primaryInputSize
+                      secondaryInputSize:(MTLSize)secondaryInputSize {
+  return {
+    .width = primaryInputSize.width,
+    .height = primaryInputSize.height,
+    .depth = primaryInputSize.depth + secondaryInputSize.depth
+  };
+}
+
 @end
 
 #endif // PNK_USE_MPS

@@ -127,6 +127,32 @@ context(@"parameter tests", ^{
   });
 });
 
+context(@"kernel input region", ^{
+  static const NSUInteger kInputFeatureChannels = 4;
+  static const std::vector<ushort> kOutputFeatureChannelIndices = {1, 0};
+
+  __block PNKGather *gather;
+
+  beforeEach(^{
+    gather = [[PNKGather alloc] initWithDevice:device inputFeatureChannels:kInputFeatureChannels
+                   outputFeatureChannelIndices:kOutputFeatureChannelIndices];
+  });
+  
+  it(@"should calculate input region correctly", ^{
+    MTLSize outputSize = {kInputWidth, kInputHeight, kOutputFeatureChannelIndices.size()};
+    MTLSize expectedSize = {kInputWidth, kInputHeight, kInputFeatureChannels};
+    MTLRegion inputRegion = [gather inputRegionForOutputSize:outputSize];
+    expect($(inputRegion.size)).to.equalMTLSize($(expectedSize));
+  });
+
+  it(@"should calculate output size correctly", ^{
+    MTLSize inputSize = {kInputWidth, kInputHeight, kInputFeatureChannels};
+    MTLSize expectedSize = {kInputWidth, kInputHeight, kOutputFeatureChannelIndices.size()};
+    MTLSize outputSize = [gather outputSizeForInputSize:inputSize];
+    expect($(outputSize)).to.equalMTLSize($(expectedSize));
+  });
+});
+
 context(@"gather", ^{
   itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
     return PNKBuildUcharDataForKernelExamples(device, 4, {0, 2});

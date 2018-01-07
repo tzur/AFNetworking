@@ -181,6 +181,14 @@ static NSUInteger kChannelsPerTexture = 4;
   };
 }
 
+- (MTLSize)outputSizeForInputSize:(MTLSize)inputSize {
+  return {
+    inputSize.width,
+    inputSize.height,
+    _outputFeatureChannelIndices.size()
+  };
+}
+
 @end
 
 #endif

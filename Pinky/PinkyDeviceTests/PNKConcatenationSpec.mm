@@ -94,6 +94,37 @@ beforeEach(^{
   device = MTLCreateSystemDefaultDevice();
 });
 
+context(@"kernel input region", ^{
+  static const NSUInteger kChannelsCount = 3;
+
+  __block PNKConcatenation *concatOp;
+
+  beforeEach(^{
+    concatOp = [[PNKConcatenation alloc] initWithDevice:device];
+  });
+
+  it(@"should calculate primary input region correctly", ^{
+    MTLSize outputSize = {kInputWidth, kInputHeight, kChannelsCount};
+    MTLRegion primaryInputRegion = [concatOp primaryInputRegionForOutputSize:outputSize];
+    expect($(primaryInputRegion.size)).to.equalMTLSize($(outputSize));
+  });
+
+  it(@"should calculate secondary input region correctly", ^{
+    MTLSize outputSize = {kInputWidth, kInputHeight, kChannelsCount};
+    MTLRegion secondaryInputRegion = [concatOp secondaryInputRegionForOutputSize:outputSize];
+    expect($(secondaryInputRegion.size)).to.equalMTLSize($(outputSize));
+  });
+
+  it(@"should calculate output size correctly", ^{
+    MTLSize inputSize = {kInputWidth, kInputHeight, kChannelsCount};
+    MTLSize expectedSize = {kInputWidth, kInputHeight, 2 * kChannelsCount};
+    MTLSize outputSize = [concatOp outputSizeForPrimaryInputSize:inputSize
+                                              secondaryInputSize:inputSize];
+
+    expect($(outputSize)).to.equalMTLSize($(expectedSize));
+  });
+});
+
 context(@"concatenation operation with Unorm8 channel format", ^{
   itShouldBehaveLike(kPNKBinaryKernelExamples, ^{
     return PNKBuildUnormDataForKernelExamples(device, 1, 1);

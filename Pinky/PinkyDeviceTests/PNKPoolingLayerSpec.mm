@@ -239,6 +239,55 @@ context(@"parameter checks", ^{
   });
 });
 
+context(@"kernel input region", ^{
+  static const NSUInteger kInputWidth = 32;
+  static const NSUInteger kInputHeight = 32;
+  static const NSUInteger kChannels = 15;
+  static const NSUInteger kStrideX = 2;
+  static const NSUInteger kStrideY = 2;
+
+  __block PNKPoolingLayer *poolingKernel;
+
+  beforeEach(^{
+    pnk::PoolingKernelModel poolingModel = {
+      .pooling = pnk::PoolingTypeAverage,
+      .kernelWidth = 3,
+      .kernelHeight = 3,
+      .strideX = kStrideX,
+      .strideY = kStrideY,
+      .padding = pnk::PaddingTypeSame,
+      .averagePoolExcludePadding = YES,
+      .globalPooling = NO
+    };
+
+    poolingKernel = [[PNKPoolingLayer alloc] initWithDevice:device poolingModel:poolingModel];
+  });
+
+  it(@"should calculate input region correctly", ^{
+    MTLSize outputSize = {kInputWidth, kInputHeight, kChannels};
+    MTLRegion inputRegion = [poolingKernel inputRegionForOutputSize:outputSize];
+    MTLSize expectedSize = {
+      (outputSize.width - 1) * kStrideX + 1,
+      (outputSize.height - 1) * kStrideY + 1,
+      kChannels
+    };
+
+    expect($(inputRegion.size)).to.equalMTLSize($(expectedSize));
+  });
+
+  it(@"should calculate output size correctly", ^{
+    MTLSize inputSize = {kInputWidth, kInputHeight, kChannels};
+    MTLSize expectedSize = {
+      (inputSize.width - 1) / kStrideX + 1,
+      (inputSize.height - 1) / kStrideY + 1,
+      kChannels
+    };
+    MTLSize outputSize = [poolingKernel outputSizeForInputSize:inputSize];
+
+    expect($(outputSize)).to.equalMTLSize($(expectedSize));
+  });
+});
+
 context(@"pooling", ^{
   itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
     return PNKBuildHalfFloatDataForKernelExamples(device, 32, 32, 3, 3, 1, 1, 1,

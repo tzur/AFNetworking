@@ -246,6 +246,35 @@ context(@"parameter tests", ^{
   });
 });
 
+context(@"kernel input region", ^{
+  static const NSUInteger kInputWidth = 32;
+  static const NSUInteger kInputHeight = 32;
+
+  __block PNKBatchNormalizationLayer *batchNormKernel;
+
+  beforeEach(^{
+    pnk::NormalizationKernelModel normalizationModel = PNKBuildNormalizationModel(kFeatureChannels);
+    pnk::ActivationKernelModel activationModel = {
+      .activationType = pnk::ActivationTypeIdentity
+    };
+    batchNormKernel = [[PNKBatchNormalizationLayer alloc] initWithDevice:device
+                                                      normalizationModel:normalizationModel
+                                                         activationModel:activationModel];
+  });
+
+  it(@"should calculate input region correctly", ^{
+    MTLSize outputSize = {kInputWidth, kInputHeight, kFeatureChannels};
+    MTLRegion inputRegion = [batchNormKernel inputRegionForOutputSize:outputSize];
+    expect($(inputRegion.size)).to.equalMTLSize($(outputSize));
+  });
+
+  it(@"should calculate output size correctly", ^{
+    MTLSize inputSize = {kInputWidth, kInputHeight, kFeatureChannels};
+    MTLSize outputSize = [batchNormKernel outputSizeForInputSize:inputSize];
+    expect($(inputSize)).to.equalMTLSize($(outputSize));
+  });
+});
+
 context(@"batch normalization", ^{
   itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
     return PNKBuildHalfFloatDataForKernelExamples(device, 32, 32, 3, pnk::ActivationTypeIdentity);
