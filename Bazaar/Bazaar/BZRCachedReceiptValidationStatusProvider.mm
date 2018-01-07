@@ -160,24 +160,21 @@ NS_ASSUME_NONNULL_BEGIN
 - (RACSignal<BZRMultiAppReceiptValidationStatus *> *)fetchReceiptValidationStatuses:
     (NSSet<NSString *> *)bundledApplicationsIDs {
   @weakify(self);
-  return [[[[[bundledApplicationsIDs.rac_sequence.signal
+  return [[[[bundledApplicationsIDs.rac_sequence.signal
       flattenMap:^(NSString *bundleID) {
         @strongify(self);
-        return [self materializedFetchReceiptValidationStatusWithBundleID:bundleID];
-      }]
-      filter:^BOOL(RACEvent *event) {
-        return event.eventType != RACEventTypeCompleted;
+        return [self fetchReceiptValidationStatusWithBundleID:bundleID];
       }]
       collect]
       ignore:@[]]
-      tryMap:^BZRMultiAppReceiptValidationStatus * _Nullable(NSArray<RACEvent *> *events,
+      tryMap:^BZRMultiAppReceiptValidationStatus * _Nullable(NSArray<RACTuple *> *events,
                                                              NSError * __autoreleasing *error) {
         @strongify(self);
-        return [self multiAppREceiptValidationStatusFromFetchEvents:events error:error];
+        return [self multiAppReceiptValidationStatusFromTuples:events error:error];
       }];
 }
 
-- (RACSignal<RACEvent *> *)materializedFetchReceiptValidationStatusWithBundleID:
+- (RACSignal<RACEvent *> *)fetchReceiptValidationStatusWithBundleID:
     (NSString *)applicationBundleID {
   @weakify(self);
   return [[[[[self fetchReceiptValidationStatus:applicationBundleID]
@@ -197,29 +194,43 @@ NS_ASSUME_NONNULL_BEGIN
         [self.eventsSubject sendNext:
          [[BZREvent alloc] initWithType:$(BZREventTypeNonCriticalError) eventError:error]];
       }]
-      materialize];
+      catch:^RACSignal *(NSError *error) {
+        @strongify(self);
+        auto _Nullable cacheEntry =
+            [self loadReceiptValidationStatusCacheEntryFromStorage:applicationBundleID];
+        return [RACSignal return:
+                RACTuplePack(applicationBundleID, cacheEntry.receiptValidationStatus, error)];
+      }];
 }
 
-- (nullable BZRMultiAppReceiptValidationStatus *)multiAppREceiptValidationStatusFromFetchEvents:
-    (NSArray<RACEvent *> *)events error:(NSError * __autoreleasing *)error {
-  NSArray<RACTuple *> *tuples = [[events lt_filter:^BOOL(RACEvent *event) {
-    return event.eventType == RACEventTypeNext;
-  }] lt_map:^RACTuple *(RACEvent *event) {
-    return event.value;
-  }];
-
-  if (!tuples.count) {
+- (nullable BZRMultiAppReceiptValidationStatus *)multiAppReceiptValidationStatusFromTuples:
+    (NSArray<RACTuple *> *)tuples error:(NSError * __autoreleasing *)error {
+  if ([self didAllValidationsFail:tuples]) {
     if (error) {
-      NSArray<NSError *> *validationErrors = [events valueForKey:@instanceKeypath(RACEvent, error)];
+      NSArray<NSError *> *validationErrors = [tuples valueForKey:@instanceKeypath(RACTuple, third)];
       *error = [NSError lt_errorWithCode:BZRErrorCodeReceiptValidationFailed
                         underlyingErrors:validationErrors];
     }
     return nil;
   }
 
-  return [NSDictionary
-          dictionaryWithObjects:[tuples valueForKey:@instanceKeypath(RACTuple, second)]
-          forKeys:[tuples valueForKey:@instanceKeypath(RACTuple, first)]];
+  // This array contains at least one element, otherwise it means that all the validations failed
+  // and \c nil was returned in the condition above.
+  auto tuplesWithValidReceiptValidationStatus =
+      [tuples lt_filter:^BOOL(RACTuple *tuple) {
+        return tuple.second != nil;
+      }];
+
+  return [NSDictionary dictionaryWithObjects:[tuplesWithValidReceiptValidationStatus
+                                              valueForKey:@instanceKeypath(RACTuple, second)]
+                                     forKeys:[tuplesWithValidReceiptValidationStatus
+                                              valueForKey:@instanceKeypath(RACTuple, first)]];
+}
+
+- (BOOL)didAllValidationsFail:(NSArray<RACTuple *> *)tuples {
+  return [tuples lt_filter:^BOOL(RACTuple *tuple) {
+    return tuple.third != nil;
+  }].count == tuples.count;
 }
 
 @end
