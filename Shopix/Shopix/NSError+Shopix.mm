@@ -3,36 +3,36 @@
 
 #import "NSError+Shopix.h"
 
-#import "SPXPromotion.h"
+#import "SPXVoucher.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-NSString * const kSPXErrorAssociatedPromotionKey = @"AssociatedPromotion";
+NSString * const kSPXErrorAssociatedVoucherKey = @"AssociatedVoucher";
 NSString * const kSPXErrorAssociatedCouponKey = @"AssociatedCoupon";
 
 @implementation NSError (Shopix)
 
 + (instancetype)spx_errorWithCode:(NSInteger)code
-              associatedPromotion:(SPXPromotion *)associatedPromotion {
+                associatedVoucher:(SPXVoucher *)associatedVoucher {
   return [NSError lt_errorWithCode:code userInfo:@{
-    kSPXErrorAssociatedPromotionKey: associatedPromotion
+    kSPXErrorAssociatedVoucherKey: associatedVoucher
   }];
 }
 
 + (instancetype)spx_errorWithCode:(NSInteger)code
-              associatedPromotion:(SPXPromotion *)associatedPromotion
+                associatedVoucher:(SPXVoucher *)associatedVoucher
                   underlyingError:(NSError *)underlyingError {
   return [NSError lt_errorWithCode:code userInfo:@{
-      kSPXErrorAssociatedPromotionKey: associatedPromotion,
+      kSPXErrorAssociatedVoucherKey: associatedVoucher,
       NSUnderlyingErrorKey: underlyingError ?: [NSError spx_nullValueGivenError]
   }];
 }
 
 + (instancetype)spx_errorWithCode:(NSInteger)code
-              associatedPromotion:(SPXPromotion *)associatedPromotion
+                associatedVoucher:(SPXVoucher *)associatedVoucher
                  associatedCoupon:(SPXCoupon *)associatedCoupon {
   return [NSError lt_errorWithCode:code userInfo:@{
-    kSPXErrorAssociatedPromotionKey: associatedPromotion,
+    kSPXErrorAssociatedVoucherKey: associatedVoucher,
     kSPXErrorAssociatedCouponKey: associatedCoupon
   }];
 }
@@ -41,8 +41,8 @@ NSString * const kSPXErrorAssociatedCouponKey = @"AssociatedCoupon";
   return [NSError lt_errorWithCode:LTErrorCodeNullValueGiven];
 }
 
-- (nullable SPXPromotion *)spx_associatedPromotion {
-  return self.userInfo[kSPXErrorAssociatedPromotionKey];
+- (nullable SPXVoucher *)spx_associatedVoucher {
+  return self.userInfo[kSPXErrorAssociatedVoucherKey];
 }
 
 - (nullable SPXCoupon *)spx_associatedCoupon {
