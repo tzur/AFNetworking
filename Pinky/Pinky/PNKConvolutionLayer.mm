@@ -3,7 +3,8 @@
 
 #import "PNKConvolutionLayer.h"
 
-#import "MPSCNNConvolution+Factory.h"
+#import "PNKConvolutionInternalLayer.h"
+#import "PNKDilatedConvolutionInternalLayer.h"
 #import "PNKNeuralNetworkOperationsModel.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -12,32 +13,33 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface PNKConvolutionLayer ()
 
-/// Undelying convolution kernel used for performing the operation.
-@property (readonly, nonatomic) MPSCNNConvolution *convolutionKernel;
-
-/// Padding type used in the convolution.
-@property (readonly, nonatomic) pnk::PaddingType padding;
+/// Underlying internal convolution layer.
+@property (readonly, nonatomic) id<PNKUnaryNeuralKernel> internalConvolutionLayer;
 
 @end
 
 @implementation PNKConvolutionLayer
 
-@synthesize kernelWidth = _kernelWidth;
-@synthesize kernelHeight = _kernelHeight;
-@synthesize inputFeatureChannels = _inputFeatureChannels;
-@synthesize outputFeatureChannels = _outputFeatureChannels;
-@synthesize strideX = _strideX;
-@synthesize strideY = _strideY;
-@synthesize groups = _groups;
-
 - (instancetype)initWithDevice:(id<MTLDevice>)device
               convolutionModel:(const pnk::ConvolutionKernelModel &)convolutionModel
                activationModel:(const pnk::ActivationKernelModel &)activationModel {
   if (self = [super init]) {
-    [self updatePropertiesWithConvolutionModel:convolutionModel];
-    _convolutionKernel = [MPSCNNConvolution pnk_cnnConvolutionWithDevice:device
-                                                        convolutionModel:convolutionModel
-                                                         activationModel:activationModel];
+    if (@available(iOS 11.0, *)) {
+      _internalConvolutionLayer = [[PNKConvolutionInternalLayer alloc]
+                                   initWithDevice:device
+                                   convolutionModel:convolutionModel
+                                   activationModel:activationModel];
+    } else if (convolutionModel.dilationX == 1 && convolutionModel.dilationY == 1) {
+      _internalConvolutionLayer = [[PNKConvolutionInternalLayer alloc]
+                                   initWithDevice:device
+                                   convolutionModel:convolutionModel
+                                   activationModel:activationModel];
+    } else {
+      _internalConvolutionLayer = [[PNKDilatedConvolutionInternalLayer alloc]
+                                   initWithDevice:device
+                                   convolutionModel:convolutionModel
+                                   activationModel:activationModel];
+    }
   }
   return self;
 }
@@ -48,76 +50,50 @@ NS_ASSUME_NONNULL_BEGIN
               activationModel:{.activationType = pnk::ActivationTypeIdentity}];
 }
 
-- (void)updatePropertiesWithConvolutionModel:(pnk::ConvolutionKernelModel)convolutionModel {
-  _kernelWidth = convolutionModel.kernelWidth;
-  _kernelHeight = convolutionModel.kernelHeight;
-  _inputFeatureChannels = convolutionModel.inputFeatureChannels;
-  _outputFeatureChannels = convolutionModel.outputFeatureChannels;
-  _strideX = convolutionModel.strideX;
-  _strideY = convolutionModel.strideY;
-  _groups = convolutionModel.groups;
-  _padding = convolutionModel.padding;
-}
-
 #pragma mark -
 #pragma mark PNKUnaryImageKernel
 #pragma mark -
 
-- (MPSOffset)calculateOffsetWithInputImage:(MPSImage *)inputImage
-                               outputImage:(MPSImage *)outputImage {
-  switch (self.padding) {
-    case pnk::PaddingTypeSame: {
-      NSUInteger padHeight = ((outputImage.height - 1) * self.strideY + self.kernelHeight -
-                              inputImage.height);
-      NSUInteger padWidth = ((outputImage.width - 1) * self.strideX + self.kernelWidth -
-                             inputImage.width);
-      return {
-        .x = static_cast<NSInteger>(self.kernelWidth - padWidth) / 2,
-        .y = static_cast<NSInteger>(self.kernelHeight - padHeight) / 2,
-        .z = 0
-      };
-    }
-    case pnk::PaddingTypeValid:
-      return {
-        .x = static_cast<NSInteger>(self.kernelWidth / 2),
-        .y = static_cast<NSInteger>(self.kernelHeight / 2),
-        .z = 0
-      };
-  }
-  LTParameterAssert(NO, @"Invalid padding type: %lu", (unsigned long)self.padding);
-}
-
 - (void)encodeToCommandBuffer:(id<MTLCommandBuffer>)commandBuffer
                    inputImage:(MPSImage *)inputImage outputImage:(MPSImage *)outputImage {
-  self.convolutionKernel.offset = [self calculateOffsetWithInputImage:inputImage
-                                                          outputImage:outputImage];
-  [self.convolutionKernel encodeToCommandBuffer:commandBuffer sourceImage:inputImage
-                               destinationImage:outputImage];
-}
-
-- (MTLSize)inputSizeForOutputSize:(MTLSize)outputSize {
-  switch (self.padding) {
-    case pnk::PaddingTypeSame:
-      return {
-        (outputSize.width - 1) * self.strideX + 1,
-        (outputSize.height - 1) * self.strideY + 1,
-        self.inputFeatureChannels
-      };
-    case pnk::PaddingTypeValid:
-      return {
-        (outputSize.width - 1) * self.strideX + self.kernelWidth,
-        (outputSize.height - 1) * self.strideY + self.kernelHeight,
-        self.inputFeatureChannels
-      };
-  }
-  LTParameterAssert(NO, @"Invalid padding type: %lu", (unsigned long)self.padding);
+    [self.internalConvolutionLayer encodeToCommandBuffer:commandBuffer inputImage:inputImage
+                                             outputImage:outputImage];
 }
 
 - (MTLRegion)inputRegionForOutputSize:(MTLSize)outputSize {
-  return {
-    .origin = {0, 0, 0},
-    .size = [self inputSizeForOutputSize:outputSize]
-  };
+  return [self.internalConvolutionLayer inputRegionForOutputSize:outputSize];
+}
+
+#pragma mark -
+#pragma mark Properties
+#pragma mark -
+
+- (NSUInteger)kernelWidth {
+  return self.internalConvolutionLayer.kernelHeight;
+}
+
+- (NSUInteger)kernelHeight {
+  return self.internalConvolutionLayer.kernelHeight;
+}
+
+- (NSUInteger)inputFeatureChannels {
+  return self.internalConvolutionLayer.inputFeatureChannels;
+}
+
+- (NSUInteger)outputFeatureChannels {
+  return self.internalConvolutionLayer.outputFeatureChannels;
+}
+
+- (NSUInteger)strideX {
+  return self.internalConvolutionLayer.strideX;
+}
+
+- (NSUInteger)strideY {
+  return self.internalConvolutionLayer.strideY;
+}
+
+- (NSUInteger)groups {
+  return self.internalConvolutionLayer.groups;
 }
 
 @end
