@@ -131,7 +131,13 @@ static NSString * const kDebugGroupName = @"addition";
 }
 
 - (MTLSize)outputSizeForPrimaryInputSize:(MTLSize)primaryInputSize
-                      secondaryInputSize:(__unused MTLSize)secondaryInputSize {
+                      secondaryInputSize:(MTLSize)secondaryInputSize {
+  LTParameterAssert(primaryInputSize.width == secondaryInputSize.width &&
+                    primaryInputSize.height == secondaryInputSize.height &&
+                    primaryInputSize.depth == secondaryInputSize.depth, @"Primary and secondary "
+                    "input sizes must be equal, got (%lu, %lu, %lu) and (%lu, %lu, %lu)",
+                    primaryInputSize.width, primaryInputSize.height, primaryInputSize.depth,
+                    secondaryInputSize.width, secondaryInputSize.height, secondaryInputSize.depth);
   return primaryInputSize;
 }
 

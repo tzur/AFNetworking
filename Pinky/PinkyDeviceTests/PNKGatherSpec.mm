@@ -137,7 +137,7 @@ context(@"kernel input region", ^{
     gather = [[PNKGather alloc] initWithDevice:device inputFeatureChannels:kInputFeatureChannels
                    outputFeatureChannelIndices:kOutputFeatureChannelIndices];
   });
-  
+
   it(@"should calculate input region correctly", ^{
     MTLSize outputSize = {kInputWidth, kInputHeight, kOutputFeatureChannelIndices.size()};
     MTLSize expectedSize = {kInputWidth, kInputHeight, kInputFeatureChannels};

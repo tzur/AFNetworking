@@ -96,6 +96,7 @@ beforeEach(^{
 
 context(@"kernel input region", ^{
   static const NSUInteger kChannelsCount = 3;
+  static const NSUInteger kSecondaryChannelsCount = 3;
 
   __block PNKConcatenation *concatOp;
 
@@ -116,10 +117,11 @@ context(@"kernel input region", ^{
   });
 
   it(@"should calculate output size correctly", ^{
-    MTLSize inputSize = {kInputWidth, kInputHeight, kChannelsCount};
-    MTLSize expectedSize = {kInputWidth, kInputHeight, 2 * kChannelsCount};
-    MTLSize outputSize = [concatOp outputSizeForPrimaryInputSize:inputSize
-                                              secondaryInputSize:inputSize];
+    MTLSize primaryInputSize = {kInputWidth, kInputHeight, kChannelsCount};
+    MTLSize secondaryInputSize = {kInputWidth, kInputHeight, kSecondaryChannelsCount};
+    MTLSize expectedSize = {kInputWidth, kInputHeight, kChannelsCount + kSecondaryChannelsCount};
+    MTLSize outputSize = [concatOp outputSizeForPrimaryInputSize:primaryInputSize
+                                              secondaryInputSize:secondaryInputSize];
 
     expect($(outputSize)).to.equalMTLSize($(expectedSize));
   });

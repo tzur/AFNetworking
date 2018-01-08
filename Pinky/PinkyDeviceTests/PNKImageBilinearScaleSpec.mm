@@ -145,7 +145,8 @@ context(@"PNKTemporaryImageExamples", ^{
     auto outputImage = [MPSImage pnk_float16ImageWithDevice:device size:outputSize];
 
     MTLSize inputSize{64, 64, 4};
-    auto inputImage = [MPSTemporaryImage pnk_float16ImageWithCommandBuffer:commandBuffer size:inputSize];
+    auto inputImage = [MPSTemporaryImage pnk_float16ImageWithCommandBuffer:commandBuffer
+                                                                      size:inputSize];
     expect(inputImage.readCount == 1);
 
     [scale encodeToCommandBuffer:commandBuffer inputImage:inputImage outputImage:outputImage];

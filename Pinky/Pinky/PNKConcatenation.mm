@@ -217,6 +217,11 @@ secondaryInputFeatureChannels:(NSUInteger)secondaryInputFeatureChannels
 
 - (MTLSize)outputSizeForPrimaryInputSize:(MTLSize)primaryInputSize
                       secondaryInputSize:(MTLSize)secondaryInputSize {
+  LTParameterAssert(primaryInputSize.width == secondaryInputSize.width &&
+                    primaryInputSize.height == secondaryInputSize.height, @"Primary and secondary "
+                    "inputs must have same width and height, got (%lu, %lu) and (%lu, %lu)",
+                    primaryInputSize.width, primaryInputSize.height, secondaryInputSize.width,
+                    secondaryInputSize.height);
   return {
     .width = primaryInputSize.width,
     .height = primaryInputSize.height,
