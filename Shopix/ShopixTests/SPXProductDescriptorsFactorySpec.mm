@@ -107,7 +107,7 @@ context(@"product descriptors generation", ^{
   context(@"from voucher", ^{
     it(@"should create descriptors with default benefit values when no voucher provided", ^{
       NSError *error;
-      auto _Nullable descriptors = [factory productDescriptorsWithVoucher:nil withError:&error];
+      auto _Nullable descriptors = [factory productDescriptorsWithVoucher:nil error:&error];
 
       expect(descriptors).haveCount(2);
       expect(descriptors[0].identifier)
@@ -134,7 +134,7 @@ context(@"product descriptors generation", ^{
       auto voucher = [[SPXVoucher alloc] initWithName:@"Test" coupons:@[coupon1, coupon2]
                                            expiryDate:[NSDate distantFuture]];
       NSError *error;
-      auto _Nullable descriptors = [factory productDescriptorsWithVoucher:voucher withError:&error];
+      auto _Nullable descriptors = [factory productDescriptorsWithVoucher:voucher error:&error];
 
       expect(descriptors).haveCount(2);
       expect(descriptors[0].identifier)
@@ -158,7 +158,7 @@ context(@"product descriptors generation", ^{
       auto voucher = [[SPXVoucher alloc] initWithName:@"Test" coupons:@[coupon]
                                            expiryDate:[NSDate distantFuture]];
       NSError *error;
-      auto _Nullable descriptors = [factory productDescriptorsWithVoucher:voucher withError:&error];
+      auto _Nullable descriptors = [factory productDescriptorsWithVoucher:voucher error:&error];
 
       expect(descriptors).haveCount(2);
       expect(descriptors[0].identifier)
@@ -183,7 +183,7 @@ context(@"product descriptors generation", ^{
                       initWithName:@"Test" coupons:@[coupon]
                       expiryDate:[[NSDate date] dateByAddingTimeInterval:-1]];
       NSError *error;
-      auto _Nullable descriptors = [factory productDescriptorsWithVoucher:voucher withError:&error];
+      auto _Nullable descriptors = [factory productDescriptorsWithVoucher:voucher error:&error];
 
       expect(descriptors).to.beNil();
       expect(error.code).to.equal(SPXErrorCodeVoucherExpired);
@@ -197,7 +197,7 @@ context(@"product descriptors generation", ^{
       auto voucher = [[SPXVoucher alloc] initWithName:@"Test" coupons:@[coupon]
                                            expiryDate:[NSDate distantFuture]];
       NSError *error;
-      auto _Nullable descriptors = [factory productDescriptorsWithVoucher:voucher withError:&error];
+      auto _Nullable descriptors = [factory productDescriptorsWithVoucher:voucher error:&error];
 
       expect(descriptors).to.beNil();
       expect(error.code).to.equal(SPXErrorCodeInvalidCoupon);
@@ -214,7 +214,7 @@ context(@"product descriptors generation", ^{
       auto *voucher = [[SPXVoucher alloc] initWithName:@"Test" coupons:@[coupon1, coupon2]
                                             expiryDate:[NSDate distantFuture]];
       NSError *error;
-      auto _Nullable descriptors = [factory productDescriptorsWithVoucher:voucher withError:&error];
+      auto _Nullable descriptors = [factory productDescriptorsWithVoucher:voucher error:&error];
 
       expect(descriptors).to.beNil();
       expect(error.code).to.equal(SPXErrorCodeConflictingCoupons);
@@ -225,7 +225,7 @@ context(@"product descriptors generation", ^{
   context(@"from coupons", ^{
     it(@"should create descriptors with default benefit values when no coupons provided", ^{
       NSError *error;
-      auto _Nullable descriptors = [factory productDescriptorsWithCoupons:nil withError:&error];
+      auto _Nullable descriptors = [factory productDescriptorsWithCoupons:nil error:&error];
 
       expect(descriptors).haveCount(2);
       expect(descriptors[0].identifier)
@@ -251,7 +251,7 @@ context(@"product descriptors generation", ^{
                        benefitValues:@[benefitAxis1.values[1], benefitAxis2.values[0]]];
       NSError *error;
       auto _Nullable descriptors = [factory productDescriptorsWithCoupons:@[coupon1, coupon2]
-                                                                withError:&error];
+                                                                    error:&error];
 
       expect(descriptors).haveCount(2);
       expect(descriptors[0].identifier)
@@ -273,8 +273,7 @@ context(@"product descriptors generation", ^{
                        couponWithBaseProductValues:@[]
                        benefitValues:@[benefitAxis1.values[1], benefitAxis2.values[0]]];
       NSError *error;
-      auto _Nullable descriptors = [factory productDescriptorsWithCoupons:@[coupon]
-                                                                withError:&error];
+      auto _Nullable descriptors = [factory productDescriptorsWithCoupons:@[coupon] error:&error];
 
       expect(descriptors).haveCount(2);
       expect(descriptors[0].identifier)
@@ -297,7 +296,7 @@ context(@"product descriptors generation", ^{
                       benefitValues:@[benefitAxis1.values[0], benefitAxis1.values[1]]];
       NSError *error;
       auto _Nullable descriptors = [factory productDescriptorsWithCoupons:@[coupon]
-                                                                withError:&error];
+                                                                    error:&error];
 
       expect(descriptors).to.beNil();
       expect(error.code).to.equal(SPXErrorCodeInvalidCoupon);
@@ -313,7 +312,7 @@ context(@"product descriptors generation", ^{
                        benefitValues:@[benefitAxis1.values[1], benefitAxis2.values[0]]];
       NSError *error;
       auto _Nullable descriptors = [factory productDescriptorsWithCoupons:@[coupon1, coupon2]
-                                                                withError:&error];
+                                                                    error:&error];
 
       expect(descriptors).to.beNil();
       expect(error.code).to.equal(SPXErrorCodeConflictingCoupons);
