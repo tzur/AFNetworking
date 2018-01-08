@@ -71,6 +71,12 @@ context(@"kernel input region", ^{
     MTLRegion inputRegion = [ciNormOp inputRegionForOutputSize:outputSize];
     expect($(inputRegion.size)).to.equalMTLSize($(outputSize));
   });
+
+  it(@"should calculate output size correctly", ^{
+    MTLSize inputSize = {kInputWidth, kInputHeight, inputChannels};
+    MTLSize outputSize = [ciNormOp outputSizeForInputSize:inputSize];
+    expect($(outputSize)).to.equalMTLSize($(inputSize));
+  });
 });
 
 context(@"set conditions", ^{

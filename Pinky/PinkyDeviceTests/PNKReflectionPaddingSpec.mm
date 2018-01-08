@@ -115,6 +115,17 @@ context(@"kernel input region", ^{
 
     expect($(inputRegion.size)).to.equalMTLSize($(inputSize));
   });
+
+  it(@"should calculate output size correctly", ^{
+    MTLSize inputSize = {kInputWidth, kInputHeight, kInputFeatureChannels};
+    MTLSize expectedSize = {
+      kInputWidth + kPadding.width * 2,
+      kInputHeight + kPadding.height * 2,
+      kInputFeatureChannels
+    };
+    MTLSize outputSize = [reflectionPadding outputSizeForInputSize:inputSize];
+    expect($(outputSize)).to.equalMTLSize($(expectedSize));
+  });
 });
 
 context(@"reflection padding with Unorm8 channel format", ^{

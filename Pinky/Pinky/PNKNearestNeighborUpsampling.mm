@@ -120,6 +120,14 @@ static NSString * const kKernelArrayFunctionName = @"nearestNeighborArray";
   };
 }
 
+- (MTLSize)outputSizeForInputSize:(MTLSize)inputSize {
+  return {
+    inputSize.width * self.magnificationFactor,
+    inputSize.height * self.magnificationFactor,
+    inputSize.depth
+  };
+}
+
 @end
 
 #endif // PNK_USE_MPS

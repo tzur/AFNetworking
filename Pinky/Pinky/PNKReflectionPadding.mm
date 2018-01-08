@@ -129,6 +129,14 @@ static NSString * const kKernelArrayFunctionName = @"reflectionPaddingArray";
   };
 }
 
+- (MTLSize)outputSizeForInputSize:(MTLSize)inputSize {
+  return {
+    inputSize.width + self.padding.width * 2,
+    inputSize.height + self.padding.height * 2,
+    inputSize.depth
+  };
+}
+
 @end
 
 #endif

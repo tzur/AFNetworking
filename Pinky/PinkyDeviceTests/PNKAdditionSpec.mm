@@ -77,6 +77,14 @@ context(@"kernel input region", ^{
 
     expect($(secondaryInputRegion.size)).to.equalMTLSize($(outputSize));
   });
+
+  it(@"should calculate output size correctly", ^{
+    MTLSize inputSize = {kInputWidth, kInputHeight, kInputArrayFeatureChannels};
+    MTLSize outputSize = [additionOp outputSizeForPrimaryInputSize:inputSize
+                                                secondaryInputSize:inputSize];
+
+    expect($(outputSize)).to.equalMTLSize($(inputSize));
+  });
 });
 
 context(@"addition operation with Unorm8 channel format", ^{

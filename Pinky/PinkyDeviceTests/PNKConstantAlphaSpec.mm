@@ -65,6 +65,13 @@ context(@"kernel input region", ^{
 
     expect($(inputRegion.size)).to.equalMTLSize($(outputSize));
   });
+
+  it(@"should calculate output size correctly", ^{
+    MTLSize inputSize = {kInputWidth, kInputHeight, kInputFeatureChannels};
+    MTLSize outputSize = [alphaLayer outputSizeForInputSize:inputSize];
+
+    expect($(inputSize)).to.equalMTLSize($(outputSize));
+  });
 });
 
 context(@"processing", ^{

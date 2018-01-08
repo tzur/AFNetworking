@@ -134,14 +134,23 @@ context(@"resize", ^{
 });
 
 context(@"PNKTemporaryImageExamples", ^{
-  itShouldBehaveLike(kPNKTemporaryImageUnaryExamples, ^{
+  it(@"should decrement read count of an input image of class MPSTemporaryImage", ^{
     auto scale = [[PNKImageBilinearScale alloc] initWithDevice:device inputFeatureChannels:4
                                         outputFeatureChannels:4];
-    return @{
-      kPNKTemporaryImageExamplesKernel: scale,
-      kPNKTemporaryImageExamplesDevice: device,
-      kPNKTemporaryImageExamplesOutputChannels: @4
-    };
+
+    auto commandQueue = [device newCommandQueue];
+    id<MTLCommandBuffer> commandBuffer = [commandQueue commandBuffer];
+
+    MTLSize outputSize{32, 32, 4};
+    auto outputImage = [MPSImage pnk_float16ImageWithDevice:device size:outputSize];
+
+    MTLSize inputSize{64, 64, 4};
+    auto inputImage = [MPSTemporaryImage pnk_float16ImageWithCommandBuffer:commandBuffer
+                                                                      size:inputSize];
+    expect(inputImage.readCount == 1);
+
+    [scale encodeToCommandBuffer:commandBuffer inputImage:inputImage outputImage:outputImage];
+    expect(inputImage.readCount == 0);
   });
 });
 

@@ -215,6 +215,21 @@ secondaryInputFeatureChannels:(NSUInteger)secondaryInputFeatureChannels
   };
 }
 
+- (MTLSize)outputSizeForPrimaryInputSize:(MTLSize)primaryInputSize
+                      secondaryInputSize:(MTLSize)secondaryInputSize {
+  LTParameterAssert(primaryInputSize.width == secondaryInputSize.width &&
+                    primaryInputSize.height == secondaryInputSize.height, @"Primary and secondary "
+                    "inputs must have same width and height, got (%lu, %lu) and (%lu, %lu)",
+                    (unsigned long)primaryInputSize.width, (unsigned long)primaryInputSize.height,
+                    (unsigned long)secondaryInputSize.width,
+                    (unsigned long)secondaryInputSize.height);
+  return {
+    .width = primaryInputSize.width,
+    .height = primaryInputSize.height,
+    .depth = primaryInputSize.depth + secondaryInputSize.depth
+  };
+}
+
 @end
 
 #endif // PNK_USE_MPS

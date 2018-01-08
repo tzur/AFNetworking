@@ -222,6 +222,10 @@ static NSString * const kKernelArrayFunctionName = @"batchNormArray";
   };
 }
 
+- (MTLSize)outputSizeForInputSize:(MTLSize)inputSize {
+  return inputSize;
+}
+
 @end
 
 #endif // PNK_USE_MPS

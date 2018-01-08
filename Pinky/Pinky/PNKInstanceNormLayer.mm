@@ -88,6 +88,10 @@ NS_ASSUME_NONNULL_BEGIN
   return [self.instanceNormKernel inputRegionForOutputSize:outputSize];
 }
 
+- (MTLSize)outputSizeForInputSize:(MTLSize)inputSize {
+  return [self.instanceNormKernel outputSizeForInputSize:inputSize];
+}
+
 @end
 
 #endif // PNK_USE_MPS

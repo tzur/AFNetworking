@@ -112,6 +112,11 @@ NS_ASSUME_NONNULL_BEGIN
   };
 }
 
+- (MTLSize)outputSizeForInputSize:(MTLSize)inputSize {
+  return  PNKConvolutionOutputSize(inputSize, self.kernelWidth, self.kernelHeight, 1, 1,
+                                   self.strideX, self.strideY, self.padding, inputSize.depth);
+}
+
 @end
 
 #endif // PNK_USE_MPS

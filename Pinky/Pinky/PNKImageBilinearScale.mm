@@ -18,6 +18,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Kernel state to encode.
 @property (readonly, nonatomic) id<MTLComputePipelineState> state;
 
+/// Number of feature channels per pixel in the input image.
+@property (readonly, nonatomic) NSUInteger inputFeatureChannels;
+
 /// Number of feature channels per pixel in the output image.
 @property (readonly, nonatomic) NSUInteger outputFeatureChannels;
 
@@ -30,9 +33,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Name of kernel function for scaling a texture.
 static NSString * const kKernelFunctionBilinearScale = @"bilinearScale";
-
-@synthesize inputFeatureChannels = _inputFeatureChannels;
-@synthesize outputFeatureChannels = _outputFeatureChannels;
 
 - (instancetype)initWithDevice:(id<MTLDevice>)device
           inputFeatureChannels:(NSUInteger)inputFeatureChannels
@@ -76,7 +76,7 @@ static NSString * const kKernelFunctionBilinearScale = @"bilinearScale";
 }
 
 #pragma mark -
-#pragma mark PNKBinaryImageKernel
+#pragma mark Encode
 #pragma mark -
 
 - (void)encodeToCommandBuffer:(id<MTLCommandBuffer>)commandBuffer
@@ -129,17 +129,6 @@ static NSString * const kKernelFunctionBilinearScale = @"bilinearScale";
   if ([inputImage isKindOfClass:[MPSTemporaryImage class]]) {
     ((MPSTemporaryImage *)inputImage).readCount -= 1;
   }
-}
-
-- (MTLRegion)inputRegionForOutputSize:(MTLSize)outputSize {
-  return {
-    .origin = {0, 0, 0},
-    .size = {
-      outputSize.width,
-      outputSize.height,
-      self.inputFeatureChannels
-    }
-  };
 }
 
 @end

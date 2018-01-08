@@ -44,10 +44,16 @@ context(@"kernel input region", ^{
                                                   activationModel:activationModel];
   });
 
-  it(@"should calculate primary input region correctly", ^{
+  it(@"should calculate input region correctly", ^{
     MTLSize outputSize = {kInputWidth, kInputHeight, inputChannels};
     MTLRegion inputRegion = [instanceNormOp inputRegionForOutputSize:outputSize];
     expect($(inputRegion.size)).to.equalMTLSize($(outputSize));
+  });
+
+  it(@"should calculate output size correctly", ^{
+    MTLSize inputSize = {kInputWidth, kInputHeight, inputChannels};
+    MTLSize outputSize = [instanceNormOp outputSizeForInputSize:inputSize];
+    expect($(outputSize)).to.equalMTLSize($(inputSize));
   });
 });
 

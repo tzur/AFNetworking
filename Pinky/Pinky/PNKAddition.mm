@@ -130,6 +130,19 @@ static NSString * const kDebugGroupName = @"addition";
   };
 }
 
+- (MTLSize)outputSizeForPrimaryInputSize:(MTLSize)primaryInputSize
+                      secondaryInputSize:(MTLSize)secondaryInputSize {
+  LTParameterAssert(primaryInputSize.width == secondaryInputSize.width &&
+                    primaryInputSize.height == secondaryInputSize.height &&
+                    primaryInputSize.depth == secondaryInputSize.depth, @"Primary and secondary "
+                    "input sizes must be equal, got (%lu, %lu, %lu) and (%lu, %lu, %lu)",
+                    (unsigned long)primaryInputSize.width, (unsigned long)primaryInputSize.height,
+                    (unsigned long)primaryInputSize.depth, (unsigned long)secondaryInputSize.width,
+                    (unsigned long)secondaryInputSize.height,
+                    (unsigned long)secondaryInputSize.depth);
+  return primaryInputSize;
+}
+
 @end
 
 #endif // PNK_USE_MPS
