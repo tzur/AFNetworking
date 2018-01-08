@@ -285,6 +285,16 @@ public:
       });
     });
 
+    context(@"length", ^{
+      it(@"should return correct length of a closed interval", ^{
+        lt::Interval<T> interval({0, 1});
+        expect(interval.length()).to.equal(1);
+      });
+
+      it(@"should return correct length of an empty interval", ^{
+        expect(lt::Interval<T>().length()).to.equal(0);
+      });
+    });
     context(@"description", ^{
       it(@"should return a proper description", ^{
         lt::Interval<T> interval = lt::Interval<T>({1, 2});
@@ -810,6 +820,60 @@ context(@"linear interpolation", ^{
   it(@"should return its maximum value for factor of 1, in case of open NSUInteger interval", ^{
     LTUIntegerInterval interval({0, 2}, LTUIntegerInterval::Open);
     expect(*interval.valueAt(1)).to.equal(1);
+  });
+});
+
+context(@"length", ^{
+  context(@"CGFloat interval", ^{
+    it(@"should return correct length of a left-open interval", ^{
+      LTCGFloatInterval interval({0, 1}, LTCGFloatInterval::Open, LTCGFloatInterval::Closed);
+      expect(interval.length()).to.equal(1 - std::nextafter((CGFloat)0, (CGFloat)1));
+    });
+
+    it(@"should return correct length of a right-open interval", ^{
+      LTCGFloatInterval interval({0, 1}, LTCGFloatInterval::Closed, LTCGFloatInterval::Open);
+      expect(interval.length()).to.equal(std::nextafter((CGFloat)1, (CGFloat)0));
+    });
+
+    it(@"should return correct length of an open interval", ^{
+      LTCGFloatInterval interval({0, 1}, LTCGFloatInterval::Open);
+      expect(interval.length()).to.equal(std::nextafter((CGFloat)1, (CGFloat)0) -
+                                         std::nextafter((CGFloat)0, (CGFloat)1));
+    });
+  });
+
+  context(@"NSInteger interval", ^{
+    it(@"should return correct length of a left-open interval", ^{
+      LTIntegerInterval interval({-2, 2}, LTIntegerInterval::Open, LTIntegerInterval::Closed);
+      expect(interval.length()).to.equal(3);
+    });
+
+    it(@"should return correct length of a right-open interval", ^{
+      LTIntegerInterval interval({-2, 2}, LTIntegerInterval::Closed, LTIntegerInterval::Open);
+      expect(interval.length()).to.equal(3);
+    });
+
+    it(@"should return correct length of an open interval", ^{
+      LTIntegerInterval interval({-2, 2}, LTIntegerInterval::Open);
+      expect(interval.length()).to.equal(2);
+    });
+  });
+
+  context(@"NSUInteger interval", ^{
+    it(@"should return correct length of a left-open interval", ^{
+      LTUIntegerInterval interval({0, 4}, LTUIntegerInterval::Open, LTUIntegerInterval::Closed);
+      expect(interval.length()).to.equal(3);
+    });
+
+    it(@"should return correct length of a right-open interval", ^{
+      LTUIntegerInterval interval({0, 4}, LTUIntegerInterval::Closed, LTUIntegerInterval::Open);
+      expect(interval.length()).to.equal(3);
+    });
+
+    it(@"should return correct length of an open interval", ^{
+      LTUIntegerInterval interval({0, 4}, LTUIntegerInterval::Open);
+      expect(interval.length()).to.equal(2);
+    });
   });
 });
 

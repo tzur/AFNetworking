@@ -156,6 +156,10 @@ public:
 
     if (!infIncluded()) {
       min = std::is_integral<T>::value ? _inf + 1 : std::nextafter(_inf, _sup);
+  /// Returns the length of this interval.
+  T length() const {
+    return isEmpty() ? 0 : *max() - *min();
+  }
     }
     if (!supIncluded()) {
       max = std::is_integral<T>::value ? _sup - 1 : std::nextafter(_sup, _inf);
