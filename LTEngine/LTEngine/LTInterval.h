@@ -154,17 +154,23 @@ public:
     }
   }
 
-    if (!infIncluded()) {
-      min = std::is_integral<T>::value ? _inf + 1 : std::nextafter(_inf, _sup);
   /// Returns the length of this interval.
   T length() const {
     return isEmpty() ? 0 : *max() - *min();
   }
+
+  /// Returns the given value \c x clamped to this interval, i.e. the returned value is \c x if this
+  /// interval contains \c x, and the value contained by this interval closest to \c x, otherwise.
+  /// If this interval is empty, an empty optional is returned.
+  std::experimental::optional<T> clamp(T x) const {
+    if (isEmpty()) {
+      return std::experimental::nullopt;
     }
-    if (!supIncluded()) {
-      max = std::is_integral<T>::value ? _sup - 1 : std::nextafter(_sup, _inf);
+    if (contains(x)) {
+      return x;
     }
-    return (1 - t) * min + t * max;
+    CGFloat minimum = *min();
+    return x < minimum ? minimum : *max();
   }
 
   /// Returns \c true if the infimum of this interval belongs to the interval.

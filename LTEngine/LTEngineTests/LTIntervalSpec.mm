@@ -12,6 +12,8 @@ template <typename T>
 class IntervalSpec {
 public:
   static void spec(SPTSpec *self) {
+    static const CGFloat kEpsilon = 1e-7;
+
     context(@"initialization", ^{
       context(@"separate specification of end point closures", ^{
         it(@"should initialize correctly", ^{
@@ -295,6 +297,69 @@ public:
         expect(lt::Interval<T>().length()).to.equal(0);
       });
     });
+
+    context(@"clamped value", ^{
+      __block lt::Interval<T> interval;
+
+      context(@"closed interval", ^{
+        beforeEach(^{
+          interval = lt::Interval<T>({1, 3});
+        });
+
+        it(@"should return its minimum if value to project is smaller than the infimum", ^{
+          expect(*interval.clamp(0)).to.equal(1);
+        });
+
+        it(@"should return its minimum if value to project equals the infimum", ^{
+          expect(*interval.clamp(1)).to.equal(1);
+        });
+
+        it(@"should return the value to project if it is contained in the interval", ^{
+          expect(*interval.clamp(2)).to.equal(2);
+        });
+
+        it(@"should return its maximum if value to project equals the supremum", ^{
+          expect(*interval.clamp(3)).to.equal(3);
+        });
+
+        it(@"should return its maximum if value to project is greater than the supremum", ^{
+          expect(*interval.clamp(4)).to.equal(3);
+        });
+      });
+
+      context(@"open interval", ^{
+        beforeEach(^{
+          interval = lt::Interval<T>({1, 3}, lt::Interval<T>::Open);
+        });
+
+        it(@"should return its minimum if value to project is smaller than the infimum", ^{
+          expect(*interval.clamp(0)).to.equal(*interval.min());
+        });
+
+        it(@"should return its minimum if value to project equals the infimum", ^{
+          expect(*interval.clamp(1)).to.equal(*interval.min());
+        });
+
+        it(@"should return the value to project if it is contained in the interval", ^{
+          expect(*interval.clamp(2)).to.equal(2);
+        });
+
+        it(@"should return its maximum if value to project equals the supremum", ^{
+          expect(*interval.clamp(3)).to.equal(*interval.max());
+        });
+
+        it(@"should return its maximum if value to project is greater than the supremum", ^{
+          expect(*interval.clamp(4)).to.equal(*interval.max());
+        });
+      });
+
+      it(@"should return empty optional when computing clamped value for empty interval", ^{
+        lt::Interval<T> interval = lt::Interval<T>();
+        std::experimental::optional<T> value = interval.clamp(0);
+        expect(bool(value)).to.beFalsy();
+      });
+    });
+
     context(@"description", ^{
       it(@"should return a proper description", ^{
         lt::Interval<T> interval = lt::Interval<T>({1, 2});
