@@ -128,15 +128,31 @@ public:
 
   /// Returns the linearly interpolated value for parametric value \c t. In particular, the minimum
   /// of this interval is returned for \c t equalling \c 0 and the maximum of this interval is
-  /// returned for \c t equalling \c 1. If this interval is empty, an assertion is raised.
-  double valueAt(double t) const {
-    LTParameterAssert(!isEmpty(), @"Trying to interpolate non-existing values of empty interval %@",
-                      description());
-
+  /// returned for \c t equalling \c 1. If this interval is empty, an empty optional is returned.
+  std::experimental::optional<double> valueAt(double t) const {
+    if (isEmpty()) {
+      return std::experimental::nullopt;
+    }
     // No overflow possible since non-empty intervals always allow incrementing (/decrementing) of
     // their infimum (/supremum) by a single step.
-    T min = _inf;
-    T max = _sup;
+    return (1 - t) * *min() + t * *max();
+  }
+
+  /// Returns the parametric value for the given value \c x, i.e. the value \c t s.t.
+  /// <tt>valueAt(t)</tt> equals \c x (up to deviations caused by numeric imprecisions). If this
+  /// interval is empty or the interval contains only a single value, an empty optional is returned.
+  std::experimental::optional<double> parametricValue(T x) const {
+    if (isEmpty()) {
+      return std::experimental::nullopt;
+    }
+    CGFloat minimum = *min();
+    CGFloat maximum = *max();
+    if (minimum == maximum) {
+      return std::experimental::nullopt;
+    } else {
+      return ((double)x - minimum) / (maximum - minimum);
+    }
+  }
 
     if (!infIncluded()) {
       min = std::is_integral<T>::value ? _inf + 1 : std::nextafter(_inf, _sup);
