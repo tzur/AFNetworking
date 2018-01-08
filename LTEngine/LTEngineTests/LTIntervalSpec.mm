@@ -68,6 +68,26 @@ public:
       });
     });
 
+    context(@"extrema", ^{
+      it(@"should return correct extrema of a closed interval [a, b]", ^{
+        lt::Interval<T> interval({0, 1});
+        expect(*interval.min()).to.equal(0);
+        expect(*interval.max()).to.equal(1);
+      });
+
+      it(@"should return empty optional when trying to retrieve minimum of empty interval", ^{
+        lt::Interval<T> interval = lt::Interval<T>();
+        std::experimental::optional<T> value = interval.min();
+        expect(bool(value)).to.beFalsy();
+      });
+
+      it(@"should return empty optional when trying to retrieve maximum of empty interval", ^{
+        lt::Interval<T> interval = lt::Interval<T>();
+        std::experimental::optional<T> value = interval.max();
+        expect(bool(value)).to.beFalsy();
+      });
+    });
+
     context(@"empty intervals", ^{
       it(@"should indicate that a non-empty interval is not empty", ^{
         lt::Interval<T> interval({0, 1});
@@ -320,6 +340,68 @@ context(@"equality", ^{
 
       anotherInterval = LTUIntegerInterval({0, 2});
       expect(interval != anotherInterval).to.beTruthy();
+    });
+  });
+});
+
+context(@"extrema", ^{
+  context(@"CGFloat intervals", ^{
+    it(@"should return correct extrema of a left-open interval", ^{
+      LTCGFloatInterval interval({0, 1}, LTCGFloatInterval::Open, LTCGFloatInterval::Closed);
+      expect(*interval.min()).to.equal(std::nextafter((CGFloat)0, (CGFloat)1));
+      expect(*interval.max()).to.equal(1);
+    });
+
+    it(@"should return correct extrema of a right-open interval", ^{
+      LTCGFloatInterval interval({0, 1}, LTCGFloatInterval::Closed, LTCGFloatInterval::Open);
+      expect(*interval.min()).to.equal(0);
+      expect(*interval.max()).to.equal(std::nextafter((CGFloat)1, (CGFloat)0));
+    });
+
+    it(@"should return correct extrema of an open interval", ^{
+      LTCGFloatInterval interval({0, 1}, LTCGFloatInterval::Open);
+      expect(*interval.min()).to.equal(std::nextafter((CGFloat)0, (CGFloat)1));
+      expect(*interval.max()).to.equal(std::nextafter((CGFloat)1, (CGFloat)0));
+    });
+  });
+
+  context(@"NSInteger intervals", ^{
+    it(@"should return correct extrema of a left-open interval", ^{
+      LTIntegerInterval interval({-1, 1}, LTIntegerInterval::Open, LTIntegerInterval::Closed);
+      expect(*interval.min()).to.equal(0);
+      expect(*interval.max()).to.equal(1);
+    });
+
+    it(@"should return correct extrema of a right-open interval", ^{
+      LTIntegerInterval interval({-1, 1}, LTIntegerInterval::Closed, LTIntegerInterval::Open);
+      expect(*interval.min()).to.equal(-1);
+      expect(*interval.max()).to.equal(0);
+    });
+
+    it(@"should return correct extrema of an open interval", ^{
+      LTIntegerInterval interval({-1, 1}, LTIntegerInterval::Open);
+      expect(*interval.min()).to.equal(0);
+      expect(*interval.max()).to.equal(0);
+    });
+  });
+
+  context(@"NSUInteger intervals", ^{
+    it(@"should return correct extrema of a left-open interval", ^{
+      LTUIntegerInterval interval({0, 2}, LTUIntegerInterval::Open, LTUIntegerInterval::Closed);
+      expect(*interval.min()).to.equal(1);
+      expect(*interval.max()).to.equal(2);
+    });
+
+    it(@"should return correct extrema of a right-open interval", ^{
+      LTUIntegerInterval interval({0, 2}, LTUIntegerInterval::Closed, LTUIntegerInterval::Open);
+      expect(*interval.min()).to.equal(0);
+      expect(*interval.max()).to.equal(1);
+    });
+
+    it(@"should return correct extrema of an open interval", ^{
+      LTUIntegerInterval interval({0, 2}, LTUIntegerInterval::Open);
+      expect(*interval.min()).to.equal(1);
+      expect(*interval.max()).to.equal(1);
     });
   });
 });

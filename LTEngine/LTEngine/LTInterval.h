@@ -1,6 +1,8 @@
 // Copyright (c) 2015 Lightricks. All rights reserved.
 // Created by Rouven Strauss.
 
+#import <experimental/optional>
+
 namespace lt {
 
 /// Struct representing a primitive scalar interval from a value \c a to a value \c b. The interval
@@ -92,6 +94,36 @@ public:
   /// Returns the supremum of this interval.
   T sup() const {
     return _sup;
+  }
+
+  /// Returns the minimum value of this interval. Note that the minimum value equals the value
+  /// returned by the \c inf() method iff the interval is closed w.r.t the infimum. If this interval
+  /// is empty, an empty optional is returned.
+  std::experimental::optional<T> min() const {
+    if (isEmpty()) {
+      return std::experimental::nullopt;
+    }
+    if (infIncluded()) {
+      return _inf;
+    }
+    // Note that no overflow is possible since _inf is guaranteed to be smaller than _sup for a
+    // non-empty interval.
+    return std::is_integral<T>::value ? _inf + 1 : std::nextafter(_inf, _sup);
+  };
+
+  /// Returns the maximum value of this interval. Note that the maximum value equals the value
+  /// returned by the \c sup() method iff the interval is closed w.r.t the supremum. If this
+  /// interval is empty, an empty optional is returned.
+  std::experimental::optional<T> max() const {
+    if (isEmpty()) {
+      return std::experimental::nullopt;
+    }
+    if (supIncluded()) {
+      return _sup;
+    }
+    // Note that no overflow is possible since _sup is guaranteed to be greater than _inf for a
+    // non-empty interval.
+    return std::is_integral<T>::value ? _sup - 1 : std::nextafter(_sup, _inf);
   }
 
   /// Returns the linearly interpolated value for parametric value \c t. In particular, the minimum
