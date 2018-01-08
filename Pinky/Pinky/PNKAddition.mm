@@ -136,8 +136,10 @@ static NSString * const kDebugGroupName = @"addition";
                     primaryInputSize.height == secondaryInputSize.height &&
                     primaryInputSize.depth == secondaryInputSize.depth, @"Primary and secondary "
                     "input sizes must be equal, got (%lu, %lu, %lu) and (%lu, %lu, %lu)",
-                    primaryInputSize.width, primaryInputSize.height, primaryInputSize.depth,
-                    secondaryInputSize.width, secondaryInputSize.height, secondaryInputSize.depth);
+                    (unsigned long)primaryInputSize.width, (unsigned long)primaryInputSize.height,
+                    (unsigned long)primaryInputSize.depth, (unsigned long)secondaryInputSize.width,
+                    (unsigned long)secondaryInputSize.height,
+                    (unsigned long)secondaryInputSize.depth);
   return primaryInputSize;
 }
 

@@ -96,7 +96,7 @@ beforeEach(^{
 
 context(@"kernel input region", ^{
   static const NSUInteger kChannelsCount = 3;
-  static const NSUInteger kSecondaryChannelsCount = 3;
+  static const NSUInteger kSecondaryChannelsCount = 15;
 
   __block PNKConcatenation *concatOp;
 
