@@ -1,7 +1,7 @@
 // Copyright (c) 2017 Lightricks. All rights reserved.
 // Created by Barak Weiss.
 
-#import "SPXPromotion.h"
+#import "SPXVoucher.h"
 
 #import <LTKit/NSData+Base64.h>
 #import <LTKit/NSData+Compression.h>
@@ -55,11 +55,11 @@ static NSSet<Class> *SPXClassesConformToProtocol(Protocol *protocol) {
   return classSet;
 }
 
-SpecBegin(SPXPromotion)
+SpecBegin(SPXVoucher)
 
 __block SPXCoupon *coupon1;
 __block SPXCoupon *coupon2;
-__block SPXPromotion *promotion;
+__block SPXVoucher *voucher;
 
 beforeEach(^{
   coupon1 = [SPXCoupon
@@ -69,21 +69,20 @@ beforeEach(^{
   coupon2 = [SPXCoupon
              couponWithBaseProductValues:@[SPXBaseProductAxis.subscriptionPeriod.yearly]
              benefitValues:@[SPXBenefitProductAxis.discountLevel.off75]];
-  promotion = [[SPXPromotion alloc] initWithName:@"Test"
-                                         coupons:@[coupon1, coupon2]
-                                      expiryDate:[NSDate dateWithTimeIntervalSince1970:1337]];
+  voucher = [[SPXVoucher alloc] initWithName:@"Test" coupons:@[coupon1, coupon2]
+                                  expiryDate:[NSDate dateWithTimeIntervalSince1970:1337]];
 });
 
-it(@"should serialize and deserialize promotions", ^{
-  auto serializedPromotion = [MTLJSONAdapter JSONDictionaryFromModel:promotion];
+it(@"should serialize and deserialize vouchers", ^{
+  auto serializedVoucher = [MTLJSONAdapter JSONDictionaryFromModel:voucher];
   NSError *error = nil;
-  auto *jsonData = [NSJSONSerialization dataWithJSONObject:serializedPromotion options:0
+  auto *jsonData = [NSJSONSerialization dataWithJSONObject:serializedVoucher options:0
                                                      error:&error];
   NSDictionary *deserializedDict = [NSJSONSerialization JSONObjectWithData:jsonData options:0
                                                                      error:&error];
-  SPXPromotion *newPromotion = [MTLJSONAdapter modelOfClass:SPXPromotion.class
-                                         fromJSONDictionary:deserializedDict error:&error];
-  expect(promotion).to.equal(newPromotion);
+  SPXVoucher *newVoucher = [MTLJSONAdapter modelOfClass:SPXVoucher.class
+                                     fromJSONDictionary:deserializedDict error:&error];
+  expect(voucher).to.equal(newVoucher);
 });
 
 it(@"should deserialize JSON string", ^{
@@ -126,11 +125,11 @@ it(@"should deserialize JSON string", ^{
     @"expiryDate": @"1970-01-01T00:22:17.000Z"
   };
   NSError *error;
-  SPXPromotion *promotion = [MTLJSONAdapter modelOfClass:SPXPromotion.class fromJSONDictionary:json
-                                                   error:&error];
-  expect(promotion.name).to.equal(@"Test");
-  expect(promotion.coupons).to.equal(@[coupon1, coupon2]);
-  expect(promotion.expiryDate).to.equal([NSDate dateWithTimeIntervalSince1970:1337]);
+  SPXVoucher *voucher = [MTLJSONAdapter modelOfClass:SPXVoucher.class fromJSONDictionary:json
+                                               error:&error];
+  expect(voucher.name).to.equal(@"Test");
+  expect(voucher.coupons).to.equal(@[coupon1, coupon2]);
+  expect(voucher.expiryDate).to.equal([NSDate dateWithTimeIntervalSince1970:1337]);
 });
 
 it(@"should fail to deserialize if unknown axis is given", ^{
@@ -155,9 +154,9 @@ it(@"should fail to deserialize if unknown axis is given", ^{
     @"expiryDate": @"1970-01-01T00:22:17.000Z"
   };
   NSError *error;
-  SPXPromotion *promotion = [MTLJSONAdapter modelOfClass:SPXPromotion.class fromJSONDictionary:json
-                                                   error:&error];
-  expect(promotion).to.beNil();
+  SPXVoucher *voucher = [MTLJSONAdapter modelOfClass:SPXVoucher.class fromJSONDictionary:json
+                                               error:&error];
+  expect(voucher).to.beNil();
   expect(error.code).to.equal(SPXErrorCodeDeserializationFailed);
 });
 
@@ -187,9 +186,9 @@ it(@"should fail to deserialize if value is non-string", ^{
     @"expiryDate": @"1970-01-01T00:22:17.000Z"
   };
   NSError *error;
-  SPXPromotion *promotion = [MTLJSONAdapter modelOfClass:SPXPromotion.class fromJSONDictionary:json
-                                                   error:&error];
-  expect(promotion).to.beNil();
+  SPXVoucher *voucher = [MTLJSONAdapter modelOfClass:SPXVoucher.class fromJSONDictionary:json
+                                               error:&error];
+  expect(voucher).to.beNil();
   expect(error.code).to.equal(SPXErrorCodeDeserializationFailed);
 });
 
@@ -219,9 +218,9 @@ it(@"should fail to deserialize if the the axis is in the wrong list", ^{
     @"expiryDate": @"1970-01-01T00:22:17.000Z"
   };
   NSError *error;
-  SPXPromotion *promotion = [MTLJSONAdapter modelOfClass:SPXPromotion.class fromJSONDictionary:json
-                                                   error:&error];
-  expect(promotion).to.beNil();
+  SPXVoucher *voucher = [MTLJSONAdapter modelOfClass:SPXVoucher.class fromJSONDictionary:json
+                                               error:&error];
+  expect(voucher).to.beNil();
   expect(error.code).to.equal(SPXErrorCodeDeserializationFailed);
 });
 
@@ -247,9 +246,9 @@ it(@"should fail to deserialize if the value of the axis does not exist", ^{
     @"expiryDate": @"1970-01-01T00:22:17.000Z"
   };
   NSError *error;
-  SPXPromotion *promotion = [MTLJSONAdapter modelOfClass:SPXPromotion.class fromJSONDictionary:json
-                                                   error:&error];
-  expect(promotion).to.beNil();
+  SPXVoucher *voucher = [MTLJSONAdapter modelOfClass:SPXVoucher.class fromJSONDictionary:json
+                                               error:&error];
+  expect(voucher).to.beNil();
   expect(error.code).to.equal(SPXErrorCodeDeserializationFailed);
 });
 
@@ -269,9 +268,9 @@ it(@"should fail to deserialize if properties are missing", ^{
     @"expiryDate": @"1970-01-01T00:22:17.000Z"
   };
   NSError *error;
-  SPXPromotion *promotion = [MTLJSONAdapter modelOfClass:SPXPromotion.class fromJSONDictionary:json
-                                                   error:&error];
-  expect(promotion).to.beNil();
+  SPXVoucher *voucher = [MTLJSONAdapter modelOfClass:SPXVoucher.class fromJSONDictionary:json
+                                               error:&error];
+  expect(voucher).to.beNil();
   expect(error.code).to.equal(SPXErrorCodeDeserializationFailed);
 });
 
@@ -297,9 +296,9 @@ it(@"should fail to deserialize if expiryDate is not in the correct format", ^{
     @"expiryDate": @"1970-01-01T00:22:rr"
   };
   NSError *error;
-  SPXPromotion *promotion = [MTLJSONAdapter modelOfClass:SPXPromotion.class fromJSONDictionary:json
-                                                   error:&error];
-  expect(promotion).to.beNil();
+  SPXVoucher *voucher = [MTLJSONAdapter modelOfClass:SPXVoucher.class fromJSONDictionary:json
+                                               error:&error];
+  expect(voucher).to.beNil();
   expect(error.code).to.equal(SPXErrorCodeDeserializationFailed);
 });
 
@@ -310,9 +309,9 @@ it(@"should make sure all classes that conform to SPXBaseProductAxis can be seri
     auto coupon = [SPXCoupon
                    couponWithBaseProductValues:@[value]
                    benefitValues:@[SPXBenefitProductAxis.discountLevel.off25]];
-    auto serializedPromotion = [MTLJSONAdapter JSONDictionaryFromModel:coupon];
+    auto serializedVoucher = [MTLJSONAdapter JSONDictionaryFromModel:coupon];
     NSError *error = nil;
-    auto *jsonData = [NSJSONSerialization dataWithJSONObject:serializedPromotion options:0
+    auto *jsonData = [NSJSONSerialization dataWithJSONObject:serializedVoucher options:0
                                                        error:&error];
     expect(jsonData).notTo.beNil();
   }
@@ -325,9 +324,9 @@ it(@"should make sure all classes that conform to SPXBenefitAxis can be serializ
     auto coupon = [SPXCoupon
                    couponWithBaseProductValues:@[SPXBaseProductAxis.subscriptionPeriod.monthly]
                    benefitValues:@[value]];
-    auto serializedPromotion = [MTLJSONAdapter JSONDictionaryFromModel:coupon];
+    auto serializedVoucher = [MTLJSONAdapter JSONDictionaryFromModel:coupon];
     NSError *error = nil;
-    auto *jsonData = [NSJSONSerialization dataWithJSONObject:serializedPromotion options:0
+    auto *jsonData = [NSJSONSerialization dataWithJSONObject:serializedVoucher options:0
                                                        error:&error];
     expect(jsonData).notTo.beNil();
   }
@@ -342,28 +341,28 @@ context(@"secure serialization", ^{
 
   it(@"should convert to string", ^{
     NSError *error;
-    auto serializedPromotion = [promotion serializeAndSignWithKey:key error:&error];
+    auto serializedVoucher = [voucher serializeAndSignWithKey:key error:&error];
     expect(error).to.beNil();
-    expect([[NSData alloc] initWithURLSafeBase64EncodedString:serializedPromotion]).notTo.beNil();
+    expect([[NSData alloc] initWithURLSafeBase64EncodedString:serializedVoucher]).notTo.beNil();
   });
 
-  it(@"should convert to string and back to promotion", ^{
-    auto _Nullable serializedPromotion = [promotion serializeAndSignWithKey:key error:nil];
-    auto _Nullable newPromotion = [SPXPromotion promotionWithSerializedString:serializedPromotion
-                                                                          key:key error:nil];
-    expect(newPromotion).to.equal(promotion);
+  it(@"should convert to string and back to voucher", ^{
+    auto _Nullable serializedVoucher = [voucher serializeAndSignWithKey:key error:nil];
+    auto _Nullable newVoucher = [SPXVoucher voucherWithSerializedString:serializedVoucher key:key
+                                                                  error:nil];
+    expect(newVoucher).to.equal(voucher);
   });
 
-  it(@"should deserialize a promotion that is generated by an external script", ^{
-    auto serializedPromotion = @"b1zjGXhVG3RuI5HxwgpUIMSnwxNrBdiP6YlW68fFhuTfowS6O_FKcPZI3d1cSlFeVz"
-        "-VIOUHygt8NASXlyuIouEOvkFkiqgoagnFMmkW00zMCGASNj6uTvYzkgsPXdhlJEAezouukMd7w3GzsG7HP2EkfU8p"
-        "O7NfnLpTuQBslbuIjgywA9F2_wpWTN6MjRxxhtybErJU4_d-r5AKVo9ljwb9jsMvMs1Zsz9MTEceV11tKK97yCFktI"
-        "YU7gLt9OjM7hpha2CGsSZtfE7FKPDVanu1CMNlHafhfax4LC9hePg";
+  it(@"should deserialize a voucher that is generated by an external script", ^{
+    auto serializedVoucher = @"b1zjGXhVG3RuI5HxwgpUIMSnwxNrBdiP6YlW68fFhuTfowS6O_FKcPZI3d1cSlFeVz-V"
+        "IOUHygt8NASXlyuIouEOvkFkiqgoagnFMmkW00zMCGASNj6uTvYzkgsPXdhlJEAezouukMd7w3GzsG7HP2EkfU8pO7"
+        "NfnLpTuQBslbuIjgywA9F2_wpWTN6MjRxxhtybErJU4_d-r5AKVo9ljwb9jsMvMs1Zsz9MTEceV11tKK97yCFktIYU"
+        "7gLt9OjM7hpha2CGsSZtfE7FKPDVanu1CMNlHafhfax4LC9hePg";
 
-    auto _Nullable newPromotion =
-        [SPXPromotion promotionWithSerializedString:serializedPromotion key:key error:nil];
+    auto _Nullable newVoucher =
+        [SPXVoucher voucherWithSerializedString:serializedVoucher key:key error:nil];
 
-    expect(newPromotion).to.equal(promotion);
+    expect(newVoucher).to.equal(voucher);
   });
 
   it(@"should err if signature doesn't match", ^{
@@ -372,34 +371,34 @@ context(@"secure serialization", ^{
                        lt_compressWithCompressionType:LTCompressionTypeZLIB error:nil]
                        lt_encryptWithKey:[[key spx_dataUsingUTF8] lt_MD5] iv:IV error:nil];
     auto signature = [[NSData data] lt_HMACSHA256WithKey:[key spx_dataUsingUTF8]];
-    auto serializedPromotions = [SPXConcateDatas(@[signature, encrypted]) lt_urlSafeBase64];
+    auto serializedVouchers = [SPXConcateDatas(@[signature, encrypted]) lt_urlSafeBase64];
 
     NSError *error;
-    auto _Nullable newPromotion = [SPXPromotion promotionWithSerializedString:serializedPromotions
-                                                                          key:key error:&error];
-    expect(newPromotion).to.beNil();
+    auto _Nullable newVoucher = [SPXVoucher voucherWithSerializedString:serializedVouchers key:key
+                                                                  error:&error];
+    expect(newVoucher).to.beNil();
     expect(error.code).equal(SPXErrorCodeSignatureValidationFailed);
   });
 
   it(@"should err if data it too small", ^{
-    auto serializedPromotions = [[NSMutableData dataWithLength:31] lt_urlSafeBase64];
+    auto serializedVouchers = [[NSMutableData dataWithLength:31] lt_urlSafeBase64];
 
     NSError *error;
-    auto _Nullable newPromotion = [SPXPromotion promotionWithSerializedString:serializedPromotions
-                                                                          key:key error:&error];
-    expect(newPromotion).to.beNil();
+    auto _Nullable newVoucher = [SPXVoucher voucherWithSerializedString:serializedVouchers key:key
+                                                                  error:&error];
+    expect(newVoucher).to.beNil();
     expect(error.code).equal(SPXErrorCodeDeserializationFailed);
   });
 
   it(@"should err if decryption fails", ^{
     auto encrypted = [@"foobarbaz" spx_dataUsingUTF8];
     auto signature = [encrypted lt_HMACSHA256WithKey:[key spx_dataUsingUTF8]];
-    auto serializedPromotions = [SPXConcateDatas(@[signature, encrypted]) lt_urlSafeBase64];
+    auto serializedVouchers = [SPXConcateDatas(@[signature, encrypted]) lt_urlSafeBase64];
 
     NSError *error;
-    auto _Nullable newPromotion = [SPXPromotion promotionWithSerializedString:serializedPromotions
-                                                                          key:key error:&error];
-    expect(newPromotion).to.beNil();
+    auto _Nullable newVoucher = [SPXVoucher voucherWithSerializedString:serializedVouchers key:key
+                                                                  error:&error];
+    expect(newVoucher).to.beNil();
     expect(error.code).equal(SPXErrorCodeDeserializationFailed);
   });
 
@@ -408,12 +407,12 @@ context(@"secure serialization", ^{
     auto encrypted = [[@"foobarbaz" spx_dataUsingUTF8]
                       lt_encryptWithKey:[[key spx_dataUsingUTF8] lt_MD5] iv:IV error:nil];
     auto signature = [encrypted lt_HMACSHA256WithKey:[key spx_dataUsingUTF8]];
-    auto serializedPromotions = [SPXConcateDatas(@[signature, encrypted]) lt_urlSafeBase64];
+    auto serializedVouchers = [SPXConcateDatas(@[signature, encrypted]) lt_urlSafeBase64];
 
     NSError *error;
-    auto _Nullable newPromotion = [SPXPromotion promotionWithSerializedString:serializedPromotions
-                                                                          key:key error:&error];
-    expect(newPromotion).to.beNil();
+    auto _Nullable newVoucher = [SPXVoucher voucherWithSerializedString:serializedVouchers key:key
+                                                                  error:&error];
+    expect(newVoucher).to.beNil();
     expect(error.code).equal(SPXErrorCodeDeserializationFailed);
   });
 
@@ -423,12 +422,12 @@ context(@"secure serialization", ^{
                        lt_compressWithCompressionType:LTCompressionTypeZLIB error:nil]
                        lt_encryptWithKey:[[key spx_dataUsingUTF8] lt_MD5] iv:IV error:nil];
     auto signature = [encrypted lt_HMACSHA256WithKey:[key spx_dataUsingUTF8]];
-    auto serializedPromotions = [SPXConcateDatas(@[signature, encrypted]) lt_urlSafeBase64];
+    auto serializedVouchers = [SPXConcateDatas(@[signature, encrypted]) lt_urlSafeBase64];
 
     NSError *error;
-    auto _Nullable newPromotion = [SPXPromotion promotionWithSerializedString:serializedPromotions
-                                                                          key:key error:&error];
-    expect(newPromotion).to.beNil();
+    auto _Nullable newVoucher = [SPXVoucher voucherWithSerializedString:serializedVouchers key:key
+                                                                      error:&error];
+    expect(newVoucher).to.beNil();
     expect(error.code).equal(SPXErrorCodeDeserializationFailed);
   });
 });

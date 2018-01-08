@@ -1,7 +1,7 @@
 // Copyright (c) 2017 Lightricks. All rights reserved.
 // Created by Barak Weiss.
 
-#import "SPXPromotion.h"
+#import "SPXVoucher.h"
 
 #import <CommonCrypto/CommonCrypto.h>
 #import <LTKit/LTBidirectionalMap.h>
@@ -196,7 +196,7 @@ typedef id _Nullable(^SPXArrayTryMapBlock)(ObjectType _Nonnull object);
 
 @end
 
-@implementation SPXPromotion
+@implementation SPXVoucher
 
 - (instancetype)initWithName:(NSString *)name coupons:(NSArray<SPXCoupon *> *)coupons
                   expiryDate:(NSDate *)expiryDate {
@@ -226,15 +226,15 @@ typedef id _Nullable(^SPXArrayTryMapBlock)(ObjectType _Nonnull object);
 - (nullable NSString *)serializeAndSignWithKey:(NSString *)key
                                          error:(NSError *__autoreleasing *)error {
 #if defined(DEBUG) && DEBUG
-  auto serializedPromotion = [MTLJSONAdapter JSONDictionaryFromModel:self];
-  auto _Nullable jsonData = [NSJSONSerialization dataWithJSONObject:serializedPromotion options:0
+  auto serializedVoucher = [MTLJSONAdapter JSONDictionaryFromModel:self];
+  auto _Nullable jsonData = [NSJSONSerialization dataWithJSONObject:serializedVoucher options:0
                                                               error:nil];
   NSError *underlyingError;
   auto _Nullable compressed = [nn(jsonData) lt_compressWithCompressionType:LTCompressionTypeZLIB
                                                                      error:&underlyingError];
   if (!compressed) {
     if (error) {
-      *error = [NSError spx_errorWithCode:SPXErrorCodeInvalidCoupon associatedPromotion:self
+      *error = [NSError spx_errorWithCode:SPXErrorCodeInvalidCoupon associatedVoucher:self
                           underlyingError:underlyingError];
     }
     return nil;
@@ -248,7 +248,7 @@ typedef id _Nullable(^SPXArrayTryMapBlock)(ObjectType _Nonnull object);
 
   if (!encrypted) {
     if (error) {
-      *error = [NSError spx_errorWithCode:SPXErrorCodeInvalidCoupon associatedPromotion:self
+      *error = [NSError spx_errorWithCode:SPXErrorCodeInvalidCoupon associatedVoucher:self
                           underlyingError:underlyingError];
     }
     return nil;
@@ -260,20 +260,20 @@ typedef id _Nullable(^SPXArrayTryMapBlock)(ObjectType _Nonnull object);
   return [data lt_urlSafeBase64];
 #else
   // The real implementation of the method is not in release mode because then users will be able to
-  // create signed promotions.
+  // create signed vouchers.
   LogError(@"%@ called in release mode with key %@ and error %p", NSStringFromSelector(_cmd), key,
            error);
   return nil;
 #endif
 }
 
-+ (nullable instancetype)promotionWithSerializedString:(NSString *)string key:(NSString *)key
-                                                 error:(NSError *__autoreleasing *)error {
++ (nullable instancetype)voucherWithSerializedString:(NSString *)string key:(NSString *)key
+                                               error:(NSError *__autoreleasing *)error {
   auto _Nullable data = [[NSData alloc] initWithURLSafeBase64EncodedString:string];
   if (!data) {
     if (error) {
       *error = [NSError lt_errorWithCode:SPXErrorCodeDeserializationFailed description:@"Unable to "
-                "decode URL-safe-base64 from given serialized promotion %@", string];
+                "decode URL-safe-base64 from given serialized voucher %@", string];
     }
     return nil;
   }
@@ -281,7 +281,7 @@ typedef id _Nullable(^SPXArrayTryMapBlock)(ObjectType _Nonnull object);
   if (data.length <= kSignatureLength) {
     if (error) {
       *error = [NSError lt_errorWithCode:SPXErrorCodeDeserializationFailed description:@"Given "
-                "serialized promotion %@ is too short for deserialization", string];
+                "serialized voucher %@ is too short for deserialization", string];
     }
     return nil;
   }
@@ -294,7 +294,7 @@ typedef id _Nullable(^SPXArrayTryMapBlock)(ObjectType _Nonnull object);
   if (![localSignature isEqual:nn(signature)]) {
     if (error) {
       *error = [NSError lt_errorWithCode:SPXErrorCodeSignatureValidationFailed description:
-                @"Signature %@ does match does not match encrypted promotion %@", signature,
+                @"Signature %@ does match does not match encrypted voucher %@", signature,
                 localSignature];
     }
     return nil;
@@ -328,7 +328,7 @@ typedef id _Nullable(^SPXArrayTryMapBlock)(ObjectType _Nonnull object);
     if (error) {
       *error = [NSError lt_errorWithCode:SPXErrorCodeDeserializationFailed
                          underlyingError:underlyingError
-                             description:@"Unable to deserialize promotion %@", decompressed];
+                             description:@"Unable to deserialize voucher %@", decompressed];
     }
     return nil;
   }
@@ -336,24 +336,24 @@ typedef id _Nullable(^SPXArrayTryMapBlock)(ObjectType _Nonnull object);
   if (![jsonDict isKindOfClass:[NSDictionary class]]) {
     if (error) {
       *error = [NSError lt_errorWithCode:SPXErrorCodeDeserializationFailed description:@"Expected "
-                "deserialize promotion to be dictionary, but got %@", jsonDict];
+                "deserialize voucher to be dictionary, but got %@", jsonDict];
     }
     return nil;
   }
 
-  SPXPromotion * _Nullable promotion = [MTLJSONAdapter modelOfClass:SPXPromotion.class
-                                                 fromJSONDictionary:jsonDict
-                                                              error:&underlyingError];
-  if (!promotion) {
+  SPXVoucher * _Nullable voucher = [MTLJSONAdapter modelOfClass:SPXVoucher.class
+                                             fromJSONDictionary:jsonDict
+                                                          error:&underlyingError];
+  if (!voucher) {
     if (error) {
       *error = [NSError lt_errorWithCode:SPXErrorCodeDeserializationFailed
                          underlyingError:underlyingError
-                             description:@"Unable to deserialize promotion %@", jsonDict];
+                             description:@"Unable to deserialize voucher %@", jsonDict];
     }
     return nil;
   }
 
-  return nn(promotion);
+  return nn(voucher);
 }
 
 #pragma mark -
@@ -362,9 +362,9 @@ typedef id _Nullable(^SPXArrayTryMapBlock)(ObjectType _Nonnull object);
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
   return @{
-    @instanceKeypath(SPXPromotion, name): @"name",
-    @instanceKeypath(SPXPromotion, coupons): @"coupons",
-    @instanceKeypath(SPXPromotion, expiryDate): @"expiryDate"
+    @instanceKeypath(SPXVoucher, name): @"name",
+    @instanceKeypath(SPXVoucher, coupons): @"coupons",
+    @instanceKeypath(SPXVoucher, expiryDate): @"expiryDate"
   };
 }
 

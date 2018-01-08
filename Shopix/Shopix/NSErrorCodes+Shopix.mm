@@ -6,8 +6,8 @@
 NS_ASSUME_NONNULL_BEGIN
 
 LTErrorCodesImplement(ShopixErrorCodeProductID,
-  /// Caused when a promotion has expired.
-  SPXErrorCodePromotionExpired,
+  /// Caused when a voucher has expired.
+  SPXErrorCodeVoucherExpired,
   /// Caused when a two or more coupons conflict.
   SPXErrorCodeConflictingCoupons,
   /// Caused when a coupon is invalid.

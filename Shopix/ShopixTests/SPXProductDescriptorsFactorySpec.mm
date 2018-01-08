@@ -6,7 +6,7 @@
 #import "NSErrorCodes+Shopix.h"
 #import "SPXProductAxis.h"
 #import "SPXProductDescriptor.h"
-#import "SPXPromotion.h"
+#import "SPXVoucher.h"
 
 static NSString * const kVersion = @"V4";
 static NSString * const kPrefix = @"com.lightricks.test";
@@ -104,10 +104,10 @@ context(@"product descriptors generation", ^{
                version:kVersion prefix:kPrefix baseProducts:baseStoreProducts];
   });
 
-  context(@"from promotion", ^{
-    it(@"should create descriptors with default benefit values when no promotion provided", ^{
+  context(@"from voucher", ^{
+    it(@"should create descriptors with default benefit values when no voucher provided", ^{
       NSError *error;
-      auto _Nullable descriptors = [factory productDescriptorsWithPromotion:nil withError:&error];
+      auto _Nullable descriptors = [factory productDescriptorsWithVoucher:nil withError:&error];
 
       expect(descriptors).haveCount(2);
       expect(descriptors[0].identifier)
@@ -124,18 +124,17 @@ context(@"product descriptors generation", ^{
           .to.equal([@[benefitAxis1.values[0], benefitAxis2.values[1]] lt_set]);
     });
 
-    it(@"should create product descriptors according to the provided promotion", ^{
+    it(@"should create product descriptors according to the provided voucher", ^{
       auto *coupon1 = [SPXCoupon
                        couponWithBaseProductValues:@[baseAxis1.values[0], baseAxis2.values[1]]
                        benefitValues:@[benefitAxis1.values[1]]];
       auto *coupon2 = [SPXCoupon
                        couponWithBaseProductValues:@[baseAxis1.values[1]]
                        benefitValues:@[benefitAxis1.values[1], benefitAxis2.values[0]]];
-      auto promotion = [[SPXPromotion alloc] initWithName:@"Test" coupons:@[coupon1, coupon2]
-                                               expiryDate:[NSDate distantFuture]];
+      auto voucher = [[SPXVoucher alloc] initWithName:@"Test" coupons:@[coupon1, coupon2]
+                                           expiryDate:[NSDate distantFuture]];
       NSError *error;
-      auto _Nullable descriptors = [factory productDescriptorsWithPromotion:promotion
-                                                                  withError:&error];
+      auto _Nullable descriptors = [factory productDescriptorsWithVoucher:voucher withError:&error];
 
       expect(descriptors).haveCount(2);
       expect(descriptors[0].identifier)
@@ -156,11 +155,10 @@ context(@"product descriptors generation", ^{
       auto *coupon = [SPXCoupon
                        couponWithBaseProductValues:@[]
                        benefitValues:@[benefitAxis1.values[1], benefitAxis2.values[0]]];
-      auto promotion = [[SPXPromotion alloc] initWithName:@"Test" coupons:@[coupon]
-                                               expiryDate:[NSDate distantFuture]];
+      auto voucher = [[SPXVoucher alloc] initWithName:@"Test" coupons:@[coupon]
+                                           expiryDate:[NSDate distantFuture]];
       NSError *error;
-      auto _Nullable descriptors = [factory productDescriptorsWithPromotion:promotion
-                                                                  withError:&error];
+      auto _Nullable descriptors = [factory productDescriptorsWithVoucher:voucher withError:&error];
 
       expect(descriptors).haveCount(2);
       expect(descriptors[0].identifier)
@@ -181,15 +179,14 @@ context(@"product descriptors generation", ^{
       auto *coupon = [SPXCoupon
                       couponWithBaseProductValues:@[baseAxis1.values[0]]
                       benefitValues:@[benefitAxis1.values[1]]];
-      auto promotion = [[SPXPromotion alloc]
-                        initWithName:@"Test" coupons:@[coupon]
-                        expiryDate:[[NSDate date] dateByAddingTimeInterval:-1]];
+      auto voucher = [[SPXVoucher alloc]
+                      initWithName:@"Test" coupons:@[coupon]
+                      expiryDate:[[NSDate date] dateByAddingTimeInterval:-1]];
       NSError *error;
-      auto _Nullable descriptors = [factory productDescriptorsWithPromotion:promotion
-                                                                  withError:&error];
+      auto _Nullable descriptors = [factory productDescriptorsWithVoucher:voucher withError:&error];
 
       expect(descriptors).to.beNil();
-      expect(error.code).to.equal(SPXErrorCodePromotionExpired);
+      expect(error.code).to.equal(SPXErrorCodeVoucherExpired);
       expect(error.lt_isLTDomain).to.beTruthy();
     });
 
@@ -197,30 +194,27 @@ context(@"product descriptors generation", ^{
       auto *coupon = [SPXCoupon
                       couponWithBaseProductValues:@[baseAxis1.values[0]]
                       benefitValues:@[benefitAxis1.values[0], benefitAxis1.values[1]]];
-      auto promotion = [[SPXPromotion alloc] initWithName:@"Test" coupons:@[coupon]
-                                               expiryDate:[NSDate distantFuture]];
+      auto voucher = [[SPXVoucher alloc] initWithName:@"Test" coupons:@[coupon]
+                                           expiryDate:[NSDate distantFuture]];
       NSError *error;
-      auto _Nullable descriptors = [factory productDescriptorsWithPromotion:promotion
-                                                                  withError:&error];
+      auto _Nullable descriptors = [factory productDescriptorsWithVoucher:voucher withError:&error];
 
       expect(descriptors).to.beNil();
       expect(error.code).to.equal(SPXErrorCodeInvalidCoupon);
       expect(error.lt_isLTDomain).to.beTruthy();
     });
 
-    it(@"should err when a promotion has conflicting coupons", ^{
+    it(@"should err when a voucher has conflicting coupons", ^{
       auto *coupon1 = [SPXCoupon
                        couponWithBaseProductValues:@[baseAxis1.values[0], baseAxis2.values[1]]
                        benefitValues:@[benefitAxis1.values[1]]];
       auto *coupon2 = [SPXCoupon
                        couponWithBaseProductValues:@[baseAxis1.values[0]]
                        benefitValues:@[benefitAxis1.values[1], benefitAxis2.values[0]]];
-      auto *promotion = [[SPXPromotion alloc] initWithName:@"Test"
-                                                   coupons:@[coupon1, coupon2]
-                                                expiryDate:[NSDate distantFuture]];
+      auto *voucher = [[SPXVoucher alloc] initWithName:@"Test" coupons:@[coupon1, coupon2]
+                                            expiryDate:[NSDate distantFuture]];
       NSError *error;
-      auto _Nullable descriptors = [factory productDescriptorsWithPromotion:promotion
-                                                                  withError:&error];
+      auto _Nullable descriptors = [factory productDescriptorsWithVoucher:voucher withError:&error];
 
       expect(descriptors).to.beNil();
       expect(error.code).to.equal(SPXErrorCodeConflictingCoupons);

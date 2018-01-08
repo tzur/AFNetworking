@@ -3,15 +3,15 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class SPXBaseProductAxisValue, SPXCoupon, SPXProductDescriptor, SPXPromotion;
+@class SPXBaseProductAxisValue, SPXCoupon, SPXProductDescriptor, SPXVoucher;
 
 @protocol SPXProductAxis;
 
-/// Uses product matrix to create \c SPXProductDescriptor objects from base products and promotions.
+/// Uses product matrix to create \c SPXProductDescriptor objects from base products and vouchers.
 /// The class creates product descriptors for a given array of base product defined by providing
 /// values to each base product axis. Once the class is initialized with the matrix axes and the
 /// base products, product descriptors can be generated for the base products with or without
-/// promotions.
+/// vouchers.
 ///
 /// The products matrix has several axes, an axis can be either a base product axis or a benefit
 /// axis.
@@ -51,21 +51,21 @@ NS_ASSUME_NONNULL_BEGIN
 /// Base products values to create products from.
 @property (readonly, nonatomic) NSArray<NSArray<SPXBaseProductAxisValue *> *> *baseProductValues;
 
-/// Returns the products matching the \c baseProductValues, with \c promotion applied on the
-/// matching product. If \c promotion is \c nil, the default value for every benefit axis will be
-/// applied. Returns \c nil if an error occurs. In this case \c error will contain the relevant
-/// error. The order of the returned products is the same as the \c baseProductValues parameter in
-/// the initializer.
+/// Returns the products matching the \c baseProductValues, with \c voucher applied on the matching
+/// product. If \c voucher is \c nil, the default value for every benefit axis will be applied.
+/// Returns \c nil if an error occurs. In this case \c error will contain the relevant error. The
+/// order of the returned products is the same as the \c baseProductValues parameter in the
+/// initializer.
 ///
 /// This method can fail with the following errors:
-///   SPXErrorCodePromotionExpired - When the promotion's \c expiryDate has passed.
+///   SPXErrorCodeVoucherExpired - When the voucher's \c expiryDate has passed.
 ///   SPXErrorCodeInvalidCoupon - When a coupon has multiple values for the same benefit axis.
-///   SPXErrorCodeConflictingCoupons - When \c promotion contains conflicting coupons - a coupon
+///   SPXErrorCodeConflictingCoupons - When \c voucher contains conflicting coupons - a coupon
 ///       with base product values that are subset of other coupons conflicts with that second
 ///       coupon.
 - (nullable NSArray<SPXProductDescriptor *> *)
-    productDescriptorsWithPromotion:(nullable SPXPromotion *)promotion
-                          withError:(NSError *__autoreleasing *)error;
+    productDescriptorsWithVoucher:(nullable SPXVoucher *)voucher
+                        withError:(NSError *__autoreleasing *)error;
 
 /// Returns the products matching the \c baseProductValues, with \c coupons applied on the matching
 /// product. If \c coupons is \c nil, the default value for every benefit axis will be applied.
@@ -73,8 +73,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// order of the returned products is the same as the \c baseProductValues parameter in the
 /// initializer.
 ///
-/// Calling this method is equivalent to calling the \c productDescriptorsWithPromotion:withError:
-/// method, with the \c coupons property of the \c promotion and the \c expiryDate property set to
+/// Calling this method is equivalent to calling the \c productDescriptorsWithVoucher:withError:
+/// method, with the \c coupons property of the \c voucher and the \c expiryDate property set to
 /// <tt>[NSDate distantFuture]</tt>.
 ///
 /// This method can fail with the following errors:
