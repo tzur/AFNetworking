@@ -104,128 +104,227 @@ context(@"product descriptors generation", ^{
                version:kVersion prefix:kPrefix baseProducts:baseStoreProducts];
   });
 
-  it(@"should create product descriptors with default benefit values when no promotion provided", ^{
-    NSError *error;
-    auto _Nullable descriptors = [factory productDescriptorsWithPromotion:nil withError:&error];
+  context(@"from promotion", ^{
+    it(@"should create descriptors with default benefit values when no promotion provided", ^{
+      NSError *error;
+      auto _Nullable descriptors = [factory productDescriptorsWithPromotion:nil withError:&error];
 
-    expect(descriptors).haveCount(2);
-    expect(descriptors[0].identifier)
-        .to.equal(@"com.lightricks.test.V4.Benefit1V1.Benefit2V2.Base1V1.Base2V2");
-    expect(descriptors[0].baseProductValues)
-        .to.equal([@[baseAxis1.values[0], baseAxis2.values[1]] lt_set]);
-    expect(descriptors[0].benefitValues)
-        .to.equal([@[benefitAxis1.values[0], benefitAxis2.values[1]] lt_set]);
-    expect(descriptors[1].identifier)
-        .to.equal(@"com.lightricks.test.V4.Benefit1V1.Benefit2V2.Base1V2.Base2V1");
-    expect(descriptors[1].baseProductValues)
-        .to.equal([@[baseAxis1.values[1], baseAxis2.values[0]] lt_set]);
-    expect(descriptors[1].benefitValues)
-        .to.equal([@[benefitAxis1.values[0], benefitAxis2.values[1]] lt_set]);
+      expect(descriptors).haveCount(2);
+      expect(descriptors[0].identifier)
+          .to.equal(@"com.lightricks.test.V4.Benefit1V1.Benefit2V2.Base1V1.Base2V2");
+      expect(descriptors[0].baseProductValues)
+          .to.equal([@[baseAxis1.values[0], baseAxis2.values[1]] lt_set]);
+      expect(descriptors[0].benefitValues)
+          .to.equal([@[benefitAxis1.values[0], benefitAxis2.values[1]] lt_set]);
+      expect(descriptors[1].identifier)
+          .to.equal(@"com.lightricks.test.V4.Benefit1V1.Benefit2V2.Base1V2.Base2V1");
+      expect(descriptors[1].baseProductValues)
+          .to.equal([@[baseAxis1.values[1], baseAxis2.values[0]] lt_set]);
+      expect(descriptors[1].benefitValues)
+          .to.equal([@[benefitAxis1.values[0], benefitAxis2.values[1]] lt_set]);
+    });
+
+    it(@"should create product descriptors according to the provided promotion", ^{
+      auto *coupon1 = [SPXCoupon
+                       couponWithBaseProductValues:@[baseAxis1.values[0], baseAxis2.values[1]]
+                       benefitValues:@[benefitAxis1.values[1]]];
+      auto *coupon2 = [SPXCoupon
+                       couponWithBaseProductValues:@[baseAxis1.values[1]]
+                       benefitValues:@[benefitAxis1.values[1], benefitAxis2.values[0]]];
+      auto promotion = [[SPXPromotion alloc] initWithName:@"Test" coupons:@[coupon1, coupon2]
+                                               expiryDate:[NSDate distantFuture]];
+      NSError *error;
+      auto _Nullable descriptors = [factory productDescriptorsWithPromotion:promotion
+                                                                  withError:&error];
+
+      expect(descriptors).haveCount(2);
+      expect(descriptors[0].identifier)
+          .to.equal(@"com.lightricks.test.V4.Benefit1V2.Benefit2V2.Base1V1.Base2V2");
+      expect(descriptors[0].baseProductValues)
+          .to.equal([@[baseAxis1.values[0], baseAxis2.values[1]] lt_set]);
+      expect(descriptors[0].benefitValues)
+          .to.equal([@[benefitAxis1.values[1], benefitAxis2.values[1]] lt_set]);
+      expect(descriptors[1].identifier)
+          .to.equal(@"com.lightricks.test.V4.Benefit1V2.Benefit2V1.Base1V2.Base2V1");
+      expect(descriptors[1].baseProductValues)
+          .to.equal([@[baseAxis1.values[1], baseAxis2.values[0]] lt_set]);
+      expect(descriptors[1].benefitValues)
+          .to.equal([@[benefitAxis1.values[1], benefitAxis2.values[0]] lt_set]);
+    });
+
+    it(@"should apply a single coupon to multiple products", ^{
+      auto *coupon = [SPXCoupon
+                       couponWithBaseProductValues:@[]
+                       benefitValues:@[benefitAxis1.values[1], benefitAxis2.values[0]]];
+      auto promotion = [[SPXPromotion alloc] initWithName:@"Test" coupons:@[coupon]
+                                               expiryDate:[NSDate distantFuture]];
+      NSError *error;
+      auto _Nullable descriptors = [factory productDescriptorsWithPromotion:promotion
+                                                                  withError:&error];
+
+      expect(descriptors).haveCount(2);
+      expect(descriptors[0].identifier)
+          .to.equal(@"com.lightricks.test.V4.Benefit1V2.Benefit2V1.Base1V1.Base2V2");
+      expect(descriptors[0].baseProductValues)
+          .to.equal([@[baseAxis1.values[0], baseAxis2.values[1]] lt_set]);
+      expect(descriptors[0].benefitValues)
+          .to.equal([@[benefitAxis1.values[1], benefitAxis2.values[0]] lt_set]);
+      expect(descriptors[1].identifier)
+          .to.equal(@"com.lightricks.test.V4.Benefit1V2.Benefit2V1.Base1V2.Base2V1");
+      expect(descriptors[1].baseProductValues)
+          .to.equal([@[baseAxis1.values[1], baseAxis2.values[0]] lt_set]);
+      expect(descriptors[1].benefitValues)
+          .to.equal([@[benefitAxis1.values[1], benefitAxis2.values[0]] lt_set]);
+    });
+
+    it(@"should return error when an expired coupon is applied", ^{
+      auto *coupon = [SPXCoupon
+                      couponWithBaseProductValues:@[baseAxis1.values[0]]
+                      benefitValues:@[benefitAxis1.values[1]]];
+      auto promotion = [[SPXPromotion alloc]
+                        initWithName:@"Test" coupons:@[coupon]
+                        expiryDate:[[NSDate date] dateByAddingTimeInterval:-1]];
+      NSError *error;
+      auto _Nullable descriptors = [factory productDescriptorsWithPromotion:promotion
+                                                                  withError:&error];
+
+      expect(descriptors).to.beNil();
+      expect(error.code).to.equal(SPXErrorCodePromotionExpired);
+      expect(error.lt_isLTDomain).to.beTruthy();
+    });
+
+    it(@"should err when a coupon has duplicate benefit axis", ^{
+      auto *coupon = [SPXCoupon
+                      couponWithBaseProductValues:@[baseAxis1.values[0]]
+                      benefitValues:@[benefitAxis1.values[0], benefitAxis1.values[1]]];
+      auto promotion = [[SPXPromotion alloc] initWithName:@"Test" coupons:@[coupon]
+                                               expiryDate:[NSDate distantFuture]];
+      NSError *error;
+      auto _Nullable descriptors = [factory productDescriptorsWithPromotion:promotion
+                                                                  withError:&error];
+
+      expect(descriptors).to.beNil();
+      expect(error.code).to.equal(SPXErrorCodeInvalidCoupon);
+      expect(error.lt_isLTDomain).to.beTruthy();
+    });
+
+    it(@"should err when a promotion has conflicting coupons", ^{
+      auto *coupon1 = [SPXCoupon
+                       couponWithBaseProductValues:@[baseAxis1.values[0], baseAxis2.values[1]]
+                       benefitValues:@[benefitAxis1.values[1]]];
+      auto *coupon2 = [SPXCoupon
+                       couponWithBaseProductValues:@[baseAxis1.values[0]]
+                       benefitValues:@[benefitAxis1.values[1], benefitAxis2.values[0]]];
+      auto *promotion = [[SPXPromotion alloc] initWithName:@"Test"
+                                                   coupons:@[coupon1, coupon2]
+                                                expiryDate:[NSDate distantFuture]];
+      NSError *error;
+      auto _Nullable descriptors = [factory productDescriptorsWithPromotion:promotion
+                                                                  withError:&error];
+
+      expect(descriptors).to.beNil();
+      expect(error.code).to.equal(SPXErrorCodeConflictingCoupons);
+      expect(error.lt_isLTDomain).to.beTruthy();
+    });
   });
 
-  it(@"should create product descriptors according to the provided promotion", ^{
-    auto *coupon1 = [SPXCoupon
-                     couponWithBaseProductValues:@[baseAxis1.values[0], baseAxis2.values[1]]
-                     benefitValues:@[benefitAxis1.values[1]]];
-    auto *coupon2 = [SPXCoupon
-                     couponWithBaseProductValues:@[baseAxis1.values[1]]
-                     benefitValues:@[benefitAxis1.values[1], benefitAxis2.values[0]]];
-    SPXPromotion *promotion = [[SPXPromotion alloc] initWithName:@"Test"
-                                                         coupons:@[coupon1, coupon2]
-                                                      expiryDate:[NSDate distantFuture]];
-    NSError *error;
-    auto _Nullable descriptors = [factory productDescriptorsWithPromotion:promotion
+  context(@"from coupons", ^{
+    it(@"should create descriptors with default benefit values when no coupons provided", ^{
+      NSError *error;
+      auto _Nullable descriptors = [factory productDescriptorsWithCoupons:nil withError:&error];
+
+      expect(descriptors).haveCount(2);
+      expect(descriptors[0].identifier)
+          .to.equal(@"com.lightricks.test.V4.Benefit1V1.Benefit2V2.Base1V1.Base2V2");
+      expect(descriptors[0].baseProductValues)
+          .to.equal([@[baseAxis1.values[0], baseAxis2.values[1]] lt_set]);
+      expect(descriptors[0].benefitValues)
+          .to.equal([@[benefitAxis1.values[0], benefitAxis2.values[1]] lt_set]);
+      expect(descriptors[1].identifier)
+          .to.equal(@"com.lightricks.test.V4.Benefit1V1.Benefit2V2.Base1V2.Base2V1");
+      expect(descriptors[1].baseProductValues)
+          .to.equal([@[baseAxis1.values[1], baseAxis2.values[0]] lt_set]);
+      expect(descriptors[1].benefitValues)
+          .to.equal([@[benefitAxis1.values[0], benefitAxis2.values[1]] lt_set]);
+    });
+
+    it(@"should create product descriptors according to the provided coupons", ^{
+      auto *coupon1 = [SPXCoupon
+                       couponWithBaseProductValues:@[baseAxis1.values[0], baseAxis2.values[1]]
+                       benefitValues:@[benefitAxis1.values[1]]];
+      auto *coupon2 = [SPXCoupon
+                       couponWithBaseProductValues:@[baseAxis1.values[1]]
+                       benefitValues:@[benefitAxis1.values[1], benefitAxis2.values[0]]];
+      NSError *error;
+      auto _Nullable descriptors = [factory productDescriptorsWithCoupons:@[coupon1, coupon2]
                                                                 withError:&error];
 
-    expect(descriptors).haveCount(2);
-    expect(descriptors[0].identifier)
-        .to.equal(@"com.lightricks.test.V4.Benefit1V2.Benefit2V2.Base1V1.Base2V2");
-    expect(descriptors[0].baseProductValues)
-        .to.equal([@[baseAxis1.values[0], baseAxis2.values[1]] lt_set]);
-    expect(descriptors[0].benefitValues)
-        .to.equal([@[benefitAxis1.values[1], benefitAxis2.values[1]] lt_set]);
-    expect(descriptors[1].identifier)
-        .to.equal(@"com.lightricks.test.V4.Benefit1V2.Benefit2V1.Base1V2.Base2V1");
-    expect(descriptors[1].baseProductValues)
-        .to.equal([@[baseAxis1.values[1], baseAxis2.values[0]] lt_set]);
-    expect(descriptors[1].benefitValues)
-        .to.equal([@[benefitAxis1.values[1], benefitAxis2.values[0]] lt_set]);
-  });
+      expect(descriptors).haveCount(2);
+      expect(descriptors[0].identifier)
+          .to.equal(@"com.lightricks.test.V4.Benefit1V2.Benefit2V2.Base1V1.Base2V2");
+      expect(descriptors[0].baseProductValues)
+          .to.equal([@[baseAxis1.values[0], baseAxis2.values[1]] lt_set]);
+      expect(descriptors[0].benefitValues)
+          .to.equal([@[benefitAxis1.values[1], benefitAxis2.values[1]] lt_set]);
+      expect(descriptors[1].identifier)
+          .to.equal(@"com.lightricks.test.V4.Benefit1V2.Benefit2V1.Base1V2.Base2V1");
+      expect(descriptors[1].baseProductValues)
+          .to.equal([@[baseAxis1.values[1], baseAxis2.values[0]] lt_set]);
+      expect(descriptors[1].benefitValues)
+          .to.equal([@[benefitAxis1.values[1], benefitAxis2.values[0]] lt_set]);
+    });
 
-  it(@"should apply a single coupon to multiple products", ^{
-    auto *coupon = [SPXCoupon
-                     couponWithBaseProductValues:@[]
-                     benefitValues:@[benefitAxis1.values[1], benefitAxis2.values[0]]];
-    SPXPromotion *promotion = [[SPXPromotion alloc] initWithName:@"Test"
-                                                         coupons:@[coupon]
-                                                      expiryDate:[NSDate distantFuture]];
-    NSError *error;
-    auto _Nullable descriptors = [factory productDescriptorsWithPromotion:promotion
+    it(@"should apply a single coupon to multiple products", ^{
+      auto *coupon = [SPXCoupon
+                       couponWithBaseProductValues:@[]
+                       benefitValues:@[benefitAxis1.values[1], benefitAxis2.values[0]]];
+      NSError *error;
+      auto _Nullable descriptors = [factory productDescriptorsWithCoupons:@[coupon]
                                                                 withError:&error];
 
-    expect(descriptors).haveCount(2);
-    expect(descriptors[0].identifier)
-        .to.equal(@"com.lightricks.test.V4.Benefit1V2.Benefit2V1.Base1V1.Base2V2");
-    expect(descriptors[0].baseProductValues)
-        .to.equal([@[baseAxis1.values[0], baseAxis2.values[1]] lt_set]);
-    expect(descriptors[0].benefitValues)
-        .to.equal([@[benefitAxis1.values[1], benefitAxis2.values[0]] lt_set]);
-    expect(descriptors[1].identifier)
-        .to.equal(@"com.lightricks.test.V4.Benefit1V2.Benefit2V1.Base1V2.Base2V1");
-    expect(descriptors[1].baseProductValues)
-        .to.equal([@[baseAxis1.values[1], baseAxis2.values[0]] lt_set]);
-    expect(descriptors[1].benefitValues)
-        .to.equal([@[benefitAxis1.values[1], benefitAxis2.values[0]] lt_set]);
-  });
+      expect(descriptors).haveCount(2);
+      expect(descriptors[0].identifier)
+          .to.equal(@"com.lightricks.test.V4.Benefit1V2.Benefit2V1.Base1V1.Base2V2");
+      expect(descriptors[0].baseProductValues)
+          .to.equal([@[baseAxis1.values[0], baseAxis2.values[1]] lt_set]);
+      expect(descriptors[0].benefitValues)
+          .to.equal([@[benefitAxis1.values[1], benefitAxis2.values[0]] lt_set]);
+      expect(descriptors[1].identifier)
+          .to.equal(@"com.lightricks.test.V4.Benefit1V2.Benefit2V1.Base1V2.Base2V1");
+      expect(descriptors[1].baseProductValues)
+          .to.equal([@[baseAxis1.values[1], baseAxis2.values[0]] lt_set]);
+      expect(descriptors[1].benefitValues)
+          .to.equal([@[benefitAxis1.values[1], benefitAxis2.values[0]] lt_set]);
+    });
 
-  it(@"should return error when an expired coupon is applied", ^{
-    auto *coupon = [SPXCoupon
-                    couponWithBaseProductValues:@[baseAxis1.values[0]]
-                    benefitValues:@[benefitAxis1.values[1]]];
-    SPXPromotion *promotion = [[SPXPromotion alloc]
-                               initWithName:@"Test" coupons:@[coupon]
-                               expiryDate:[[NSDate date] dateByAddingTimeInterval:-1]];
-    NSError *error;
-    auto _Nullable descriptors = [factory productDescriptorsWithPromotion:promotion
+    it(@"should err when a coupon has duplicate benefit axis", ^{
+      auto *coupon = [SPXCoupon
+                      couponWithBaseProductValues:@[baseAxis1.values[0]]
+                      benefitValues:@[benefitAxis1.values[0], benefitAxis1.values[1]]];
+      NSError *error;
+      auto _Nullable descriptors = [factory productDescriptorsWithCoupons:@[coupon]
                                                                 withError:&error];
 
-    expect(descriptors).to.beNil();
-    expect(error.code).to.equal(SPXErrorCodePromotionExpired);
-    expect(error.lt_isLTDomain).to.beTruthy();
-  });
+      expect(descriptors).to.beNil();
+      expect(error.code).to.equal(SPXErrorCodeInvalidCoupon);
+      expect(error.lt_isLTDomain).to.beTruthy();
+    });
 
-  it(@"should return error when a coupon has duplicate benefit axis", ^{
-    auto *coupon = [SPXCoupon
-                    couponWithBaseProductValues:@[baseAxis1.values[0]]
-                    benefitValues:@[benefitAxis1.values[0], benefitAxis1.values[1]]];
-    SPXPromotion *promotion = [[SPXPromotion alloc] initWithName:@"Test" coupons:@[coupon]
-                                                      expiryDate:[NSDate distantFuture]];
-    NSError *error;
-    auto _Nullable descriptors = [factory productDescriptorsWithPromotion:promotion
+    it(@"should err when coupons are conflicting", ^{
+      auto *coupon1 = [SPXCoupon
+                       couponWithBaseProductValues:@[baseAxis1.values[0], baseAxis2.values[1]]
+                       benefitValues:@[benefitAxis1.values[1]]];
+      auto *coupon2 = [SPXCoupon
+                       couponWithBaseProductValues:@[baseAxis1.values[0]]
+                       benefitValues:@[benefitAxis1.values[1], benefitAxis2.values[0]]];
+      NSError *error;
+      auto _Nullable descriptors = [factory productDescriptorsWithCoupons:@[coupon1, coupon2]
                                                                 withError:&error];
 
-    expect(descriptors).to.beNil();
-    expect(error.code).to.equal(SPXErrorCodeInvalidCoupon);
-    expect(error.lt_isLTDomain).to.beTruthy();
-  });
-
-  it(@"should return error when a promotion has conflicting coupons", ^{
-    auto *coupon1 = [SPXCoupon
-                     couponWithBaseProductValues:@[baseAxis1.values[0], baseAxis2.values[1]]
-                     benefitValues:@[benefitAxis1.values[1]]];
-    auto *coupon2 = [SPXCoupon
-                     couponWithBaseProductValues:@[baseAxis1.values[0]]
-                     benefitValues:@[benefitAxis1.values[1], benefitAxis2.values[0]]];
-    auto *promotion = [[SPXPromotion alloc] initWithName:@"Test"
-                                                 coupons:@[coupon1, coupon2]
-                                              expiryDate:[NSDate distantFuture]];
-    NSError *error;
-    auto _Nullable descriptors = [factory productDescriptorsWithPromotion:promotion
-                                                                withError:&error];
-
-    expect(descriptors).to.beNil();
-    expect(error.code).to.equal(SPXErrorCodeConflictingCouponsInPromotion);
-    expect(error.lt_isLTDomain).to.beTruthy();
+      expect(descriptors).to.beNil();
+      expect(error.code).to.equal(SPXErrorCodeConflictingCoupons);
+      expect(error.lt_isLTDomain).to.beTruthy();
+    });
   });
 });
 

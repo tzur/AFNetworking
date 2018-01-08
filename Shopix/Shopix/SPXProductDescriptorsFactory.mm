@@ -259,13 +259,21 @@ NS_ASSUME_NONNULL_BEGIN
                           valuesAxes];
     if (std::min(couponBaseAxes.count, otherCouponBaseAxes.count) == intersectAxes.count) {
       if (error) {
-        *error = [NSError spx_errorWithCode:SPXErrorCodeConflictingCouponsInPromotion
+        *error = [NSError spx_errorWithCode:SPXErrorCodeConflictingCoupons
                         associatedPromotion:promotion associatedCoupon:coupon];
       }
       return NO;
     }
   }
   return YES;
+}
+
+- (nullable NSArray<SPXProductDescriptor *> *)
+    productDescriptorsWithCoupons:(nullable NSArray<SPXCoupon *>*)coupons
+                        withError:(NSError *__autoreleasing *)error {
+  auto promotion = [[SPXPromotion alloc] initWithName:@"__SPXOnlyCoupons__" coupons:coupons
+                                           expiryDate:[NSDate distantFuture]];
+  return [self productDescriptorsWithPromotion:promotion withError:error];
 }
 
 @end

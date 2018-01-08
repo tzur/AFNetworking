@@ -15,8 +15,8 @@ NS_ENUM(NSInteger) {
 LTErrorCodesDeclare(ShopixErrorCodeProductID,
   /// Caused when a promotion has expired.
   SPXErrorCodePromotionExpired,
-  /// Caused when a promotion has conflicting coupons.
-  SPXErrorCodeConflictingCouponsInPromotion,
+  /// Caused when a two or more coupons conflict.
+  SPXErrorCodeConflictingCoupons,
   /// Caused when a coupon is invalid.
   SPXErrorCodeInvalidCoupon,
   /// Caused when a deserialization process failed.

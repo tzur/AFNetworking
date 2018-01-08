@@ -3,7 +3,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class SPXBaseProductAxisValue, SPXProductDescriptor, SPXPromotion;
+@class SPXBaseProductAxisValue, SPXCoupon, SPXProductDescriptor, SPXPromotion;
 
 @protocol SPXProductAxis;
 
@@ -60,12 +60,31 @@ NS_ASSUME_NONNULL_BEGIN
 /// This method can fail with the following errors:
 ///   SPXErrorCodePromotionExpired - When the promotion's \c expiryDate has passed.
 ///   SPXErrorCodeInvalidCoupon - When a coupon has multiple values for the same benefit axis.
-///   SPXErrorCodeConflictingCouponsInPromotion - When \c promotion contains conflicting coupons -
-///       a coupon with base product values that are subset of another coupons conflicts with that
-///       second coupon.
+///   SPXErrorCodeConflictingCoupons - When \c promotion contains conflicting coupons - a coupon
+///       with base product values that are subset of other coupons conflicts with that second
+///       coupon.
 - (nullable NSArray<SPXProductDescriptor *> *)
     productDescriptorsWithPromotion:(nullable SPXPromotion *)promotion
                           withError:(NSError *__autoreleasing *)error;
+
+/// Returns the products matching the \c baseProductValues, with \c coupons applied on the matching
+/// product. If \c coupons is \c nil, the default value for every benefit axis will be applied.
+/// Returns \c nil if an error occurs. In this case \c error will contain the relevant error. The
+/// order of the returned products is the same as the \c baseProductValues parameter in the
+/// initializer.
+///
+/// Calling this method is equivalent to calling the \c productDescriptorsWithPromotion:withError:
+/// method, with the \c coupons property of the \c promotion and the \c expiryDate property set to
+/// <tt>[NSDate distantFuture]</tt>.
+///
+/// This method can fail with the following errors:
+///   SPXErrorCodeInvalidCoupon - When a coupon has multiple values for the same benefit axis.
+///   SPXErrorCodeConflictingCoupons - When \c coupons contains conflicting coupons -
+///       a coupon with base product values that are subset of other coupons conflicts with that
+///       second coupon.
+- (nullable NSArray<SPXProductDescriptor *> *)
+    productDescriptorsWithCoupons:(nullable NSArray<SPXCoupon *>*)coupons
+                        withError:(NSError *__autoreleasing *)error;
 
 @end
 
