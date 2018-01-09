@@ -189,7 +189,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (nullable NSArray<SPXProductDescriptor *> *)
     productDescriptorsWithVoucher:(nullable SPXVoucher *)voucher
-                        withError:(NSError *__autoreleasing *)error {
+    error:(NSError *__autoreleasing *)error {
   if (![self validateVoucher:voucher error:error]) {
     return nil;
   }
@@ -268,10 +268,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (nullable NSArray<SPXProductDescriptor *> *)
     productDescriptorsWithCoupons:(nullable NSArray<SPXCoupon *>*)coupons
-                        withError:(NSError *__autoreleasing *)error {
-  auto voucher = [[SPXVoucher alloc] initWithName:@"__SPXOnlyCoupons__" coupons:coupons
-                                       expiryDate:[NSDate distantFuture]];
-  return [self productDescriptorsWithVoucher:voucher withError:error];
+    error:(NSError *__autoreleasing *)error {
+  auto _Nullable voucher = coupons ? [[SPXVoucher alloc] initWithName:@"__SPXOnlyCoupons__"
+                                                              coupons:coupons
+                                                           expiryDate:[NSDate distantFuture]] : nil;
+  return [self productDescriptorsWithVoucher:voucher error:error];
 }
 
 @end

@@ -64,8 +64,7 @@ NS_ASSUME_NONNULL_BEGIN
 ///       with base product values that are subset of other coupons conflicts with that second
 ///       coupon.
 - (nullable NSArray<SPXProductDescriptor *> *)
-    productDescriptorsWithVoucher:(nullable SPXVoucher *)voucher
-                        withError:(NSError *__autoreleasing *)error;
+    productDescriptorsWithVoucher:(nullable SPXVoucher *)voucher error:(NSError **)error;
 
 /// Returns the products matching the \c baseProductValues, with \c coupons applied on the matching
 /// product. If \c coupons is \c nil, the default value for every benefit axis will be applied.
@@ -83,8 +82,7 @@ NS_ASSUME_NONNULL_BEGIN
 ///       a coupon with base product values that are subset of other coupons conflicts with that
 ///       second coupon.
 - (nullable NSArray<SPXProductDescriptor *> *)
-    productDescriptorsWithCoupons:(nullable NSArray<SPXCoupon *>*)coupons
-                        withError:(NSError *__autoreleasing *)error;
+    productDescriptorsWithCoupons:(nullable NSArray<SPXCoupon *>*)coupons error:(NSError **)error;
 
 @end
 

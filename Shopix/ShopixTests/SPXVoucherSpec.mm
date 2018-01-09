@@ -75,13 +75,11 @@ beforeEach(^{
 
 it(@"should serialize and deserialize vouchers", ^{
   auto serializedVoucher = [MTLJSONAdapter JSONDictionaryFromModel:voucher];
-  NSError *error = nil;
-  auto *jsonData = [NSJSONSerialization dataWithJSONObject:serializedVoucher options:0
-                                                     error:&error];
+  auto *jsonData = [NSJSONSerialization dataWithJSONObject:serializedVoucher options:0 error:nil];
   NSDictionary *deserializedDict = [NSJSONSerialization JSONObjectWithData:jsonData options:0
-                                                                     error:&error];
+                                                                     error:nil];
   SPXVoucher *newVoucher = [MTLJSONAdapter modelOfClass:SPXVoucher.class
-                                     fromJSONDictionary:deserializedDict error:&error];
+                                     fromJSONDictionary:deserializedDict error:nil];
   expect(voucher).to.equal(newVoucher);
 });
 
@@ -124,9 +122,8 @@ it(@"should deserialize JSON string", ^{
     ],
     @"expiryDate": @"1970-01-01T00:22:17.000Z"
   };
-  NSError *error;
   SPXVoucher *voucher = [MTLJSONAdapter modelOfClass:SPXVoucher.class fromJSONDictionary:json
-                                               error:&error];
+                                               error:nil];
   expect(voucher.name).to.equal(@"Test");
   expect(voucher.coupons).to.equal(@[coupon1, coupon2]);
   expect(voucher.expiryDate).to.equal([NSDate dateWithTimeIntervalSince1970:1337]);
@@ -310,9 +307,7 @@ it(@"should make sure all classes that conform to SPXBaseProductAxis can be seri
                    couponWithBaseProductValues:@[value]
                    benefitValues:@[SPXBenefitProductAxis.discountLevel.off25]];
     auto serializedVoucher = [MTLJSONAdapter JSONDictionaryFromModel:coupon];
-    NSError *error = nil;
-    auto *jsonData = [NSJSONSerialization dataWithJSONObject:serializedVoucher options:0
-                                                       error:&error];
+    auto *jsonData = [NSJSONSerialization dataWithJSONObject:serializedVoucher options:0 error:nil];
     expect(jsonData).notTo.beNil();
   }
 });
@@ -325,9 +320,7 @@ it(@"should make sure all classes that conform to SPXBenefitAxis can be serializ
                    couponWithBaseProductValues:@[SPXBaseProductAxis.subscriptionPeriod.monthly]
                    benefitValues:@[value]];
     auto serializedVoucher = [MTLJSONAdapter JSONDictionaryFromModel:coupon];
-    NSError *error = nil;
-    auto *jsonData = [NSJSONSerialization dataWithJSONObject:serializedVoucher options:0
-                                                       error:&error];
+    auto *jsonData = [NSJSONSerialization dataWithJSONObject:serializedVoucher options:0 error:nil];
     expect(jsonData).notTo.beNil();
   }
 });
