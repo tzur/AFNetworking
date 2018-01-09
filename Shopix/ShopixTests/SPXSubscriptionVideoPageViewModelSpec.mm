@@ -14,7 +14,8 @@ __block NSRange subtitleRange;
 beforeEach(^{
   videoPageViewModel = [[SPXSubscriptionVideoPageViewModel alloc]
       initWithVideoURL:[NSURL URLWithString:@""] titleText:@"title" subtitleText:@"subtitle"
-                        titleTextColor:[UIColor redColor] subtitleTextColor:[UIColor blueColor]];
+                        videoBorderColor:nil titleTextColor:[UIColor redColor]
+                        subtitleTextColor:[UIColor blueColor]];
   titleRange = NSMakeRange(0, videoPageViewModel.title.length);
   subtitleRange = NSMakeRange(0, videoPageViewModel.subtitle.length);
 

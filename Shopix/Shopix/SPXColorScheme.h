@@ -32,6 +32,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// General views background color.
 @property (readonly, nonatomic) UIColor *backgroundColor;
 
+/// Border color. \c nil if there is no border.
+@property (strong, nonatomic, nullable) UIColor *borderColor;
+
 @end
 
 NS_ASSUME_NONNULL_END
