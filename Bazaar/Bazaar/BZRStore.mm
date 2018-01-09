@@ -107,6 +107,10 @@ NS_ASSUME_NONNULL_BEGIN
 /// otherwise.
 @property (nonatomic) BOOL productListWasFetched;
 
+/// Substring of subscription identifier, by which Bazaar determines whether a subscription should
+/// be considered a multi-app subscription.
+@property (readonly, nonatomic, nullable) NSString *multiAppSubscriptionIdentifierMarker;
+
 @end
 
 @implementation BZRStore
@@ -138,6 +142,7 @@ NS_ASSUME_NONNULL_BEGIN
     _netherProductsProvider = configuration.netherProductsProvider;
     _priceInfoFetcher = configuration.priceInfoFetcher;
     _keychainStorage = configuration.keychainStorage;
+    _multiAppSubscriptionIdentifierMarker = configuration.multiAppSubscriptionIdentifierMarker;
     _startupReceiptValidator = [[BZRExternalTriggerReceiptValidator alloc]
                                 initWithValidationStatusProvider:self.validationStatusProvider];
     _downloadedContentProducts = [NSSet set];
@@ -355,6 +360,11 @@ NS_ASSUME_NONNULL_BEGIN
 
   return [self.contentFetcher contentBundleForProduct:
           self.productsJSONDictionary[productIdentifier]];
+}
+
+- (BOOL)isMultiAppSubscription:(NSString *)productIdentifier {
+  return self.multiAppSubscriptionIdentifierMarker &&
+      [productIdentifier containsString:self.multiAppSubscriptionIdentifierMarker];
 }
 
 - (NSSet<NSString *> *)purchasedProducts {

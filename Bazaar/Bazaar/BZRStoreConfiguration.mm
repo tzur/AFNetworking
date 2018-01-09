@@ -142,6 +142,8 @@ NS_ASSUME_NONNULL_BEGIN
     _productsProvider = [self productsProviderWithJSONFilePath:productsListJSONFilePath
                                                  decryptionKey:productListDecryptionKey];
 
+    _multiAppSubscriptionIdentifierMarker =
+        multiAppConfiguration.multiAppSubscriptionIdentifierMarker;
     auto multiAppConfigurationWithCurrentApplication =
         [[BZRMultiAppConfiguration alloc] initWithBundledApplicationsIDs:bundledApplicationsID
          multiAppSubscriptionIdentifierMarker:

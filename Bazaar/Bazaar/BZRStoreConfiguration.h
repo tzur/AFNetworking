@@ -140,6 +140,10 @@ NS_ASSUME_NONNULL_BEGIN
 /// Storage used to store and retrieve values from keychain storage.
 @property (readonly, nonatomic) BZRKeychainStorage *keychainStorage;
 
+/// Substring of subscription identifier, by which Bazaar determines whether a subscription should
+/// be considered a multi-app subscription.
+@property (readonly, nonatomic, nullable) NSString *multiAppSubscriptionIdentifierMarker;
+
 @end
 
 NS_ASSUME_NONNULL_END
