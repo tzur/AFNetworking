@@ -22,6 +22,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Page view secondary styled title. If \c nil no subtitle is shown.
 @property (readonly, nonatomic, nullable) NSAttributedString *subtitle;
 
+/// Video's border color.
+@property (readonly, nonatomic, nullable) UIColor *videoBorderColor;
+
 @end
 
 #pragma mark -
@@ -49,6 +52,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// and \c subtitleTextColor are the colors for \c titleText and \c subtitleText.
 - (instancetype)initWithVideoURL:(NSURL *)videoURL titleText:(NSString *)titleText
                     subtitleText:(nullable NSString *)subtitleText
+                videoBorderColor:(nullable UIColor *)videoBorderColor
                   titleTextColor:(UIColor *)titleTextColor
                subtitleTextColor:(UIColor *)subtitleTextColor NS_DESIGNATED_INITIALIZER;
 

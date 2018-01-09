@@ -179,6 +179,7 @@ using namespace spx;
     pageView.videoURL = pageViewModel.videoURL;
     pageView.title = pageViewModel.title;
     pageView.subtitle = pageViewModel.subtitle;
+    pageView.videoBorderColor = pageViewModel.videoBorderColor;
 
     return pageView;
   }];
