@@ -13,15 +13,6 @@
 #import "NSError+Bazaar.h"
 #import "NSErrorCodes+Bazaar.h"
 
-SKProduct *BZRProductWithProperties(NSString *productIdentifier, NSDecimalNumber *price,
-                                    NSLocale *locale) {
-  SKProduct *product = OCMClassMock([SKProduct class]);
-  OCMStub([product price]).andReturn(price);
-  OCMStub([product priceLocale]).andReturn(locale);
-  OCMStub([product productIdentifier]).andReturn(productIdentifier);
-  return product;
-}
-
 SpecBegin(BZRStoreKitMetadataFetcher)
 
 __block BZRStoreKitFacade *storeKitFacade;
@@ -82,7 +73,8 @@ context(@"getting product list", ^{
     });
   });
 
-  it(@"should return set with product if facade returns a response with the same product", ^{
+  it(@"should return set containing the requested product if fetching that product's metadata "
+     "succeeded", ^{
     SKProductsResponse *response = BZRProductsResponseWithProduct(@"foo");
     OCMStub([storeKitFacade fetchMetadataForProductsWithIdentifiers:OCMOCK_ANY])
         .andReturn([RACSignal return:response]);
@@ -107,23 +99,6 @@ context(@"getting product list", ^{
     expect(recorder).will.sendValues(@[@[]]);
   });
 
-  it(@"should set price info correctly", ^{
-    NSLocale *locale = [[NSLocale alloc] initWithLocaleIdentifier:@"de_DE"];
-    NSDecimalNumber *price = [NSDecimalNumber decimalNumberWithString:@"1337.1337"];
-    auto underlyingProduct = BZRProductWithProperties(@"foo", price, locale);
-    SKProductsResponse *response = BZRProductsResponseWithSKProducts(@[underlyingProduct]);
-    OCMStub([storeKitFacade fetchMetadataForProductsWithIdentifiers:OCMOCK_ANY])
-        .andReturn([RACSignal return:response]);
-
-    auto recorder = [[storeKitMetadataFetcher fetchProductsMetadata:@[product]] testRecorder];
-
-    expect(recorder).will.matchValue(0, ^BOOL(NSSet<BZRProduct *> *productList) {
-      BZRProductPriceInfo *priceInfo = [productList allObjects].firstObject.priceInfo;
-      return [priceInfo.localeIdentifier isEqualToString:@"de_DE"] &&
-          [priceInfo.price isEqualToNumber:price];
-    });
-  });
-
   context(@"setting full price for discount product", ^{
     __block BZRProduct *fullPriceProduct;
     __block SKProduct *fullPriceUnderlyingProduct;
@@ -140,16 +115,14 @@ context(@"getting product list", ^{
           modelByOverridingProperty:@keypath(fullPriceProduct, discountedProducts)
           withValue:@[@"bar"]];
       fullPrice = [NSDecimalNumber decimalNumberWithString:@"1337.1337"];
-      fullPriceUnderlyingProduct =
-          BZRProductWithProperties(@"foo", fullPrice, [NSLocale currentLocale]);
+      fullPriceUnderlyingProduct = BZRSKProductWithProperties(@"foo", fullPrice);
 
       discountedPrice = [NSDecimalNumber decimalNumberWithString:@"13"];
       discountedProduct = BZRProductWithIdentifier(@"bar");
       discountedProduct = [discountedProduct
           modelByOverridingProperty:@keypath(discountedProduct, fullPriceProductIdentifier)
           withValue:fullPriceProduct.identifier];
-      discountedUnderlyingProduct =
-          BZRProductWithProperties(@"bar", discountedPrice, [NSLocale currentLocale]);
+      discountedUnderlyingProduct = BZRSKProductWithProperties(@"bar", discountedPrice);
 
       productList = @[fullPriceProduct, discountedProduct];
       productsResponse = BZRProductsResponseWithSKProducts(@[
@@ -167,16 +140,6 @@ context(@"getting product list", ^{
         return [[productList.allObjects lt_filter:^BOOL(BZRProduct *product) {
           return [product.identifier isEqualToString:@"bar"];
         }].firstObject.priceInfo.fullPrice isEqualToNumber:fullPrice];
-      });
-    });
-
-    it(@"should set underlying product correctly", ^{
-      auto recorder = [[storeKitMetadataFetcher fetchProductsMetadata:productList] testRecorder];
-
-      expect(recorder).will.matchValue(0, ^BOOL(NSSet<BZRProduct *> *productList) {
-        return [productList.allObjects lt_filter:^BOOL(BZRProduct *product) {
-          return [product.identifier isEqualToString:@"bar"];
-        }].firstObject.underlyingProduct == discountedUnderlyingProduct;
       });
     });
   });

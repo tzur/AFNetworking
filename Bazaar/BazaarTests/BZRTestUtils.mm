@@ -87,11 +87,12 @@ BZRReceiptValidationStatus *BZRReceiptValidationStatusWithSubscriptionIdentifier
                                    withValue:subscription];
 }
 
-static SKProduct *BZRSKProductWithIdentifier(NSString *productIdentifier) {
+SKProduct *BZRSKProductWithProperties(NSString *identifier, NSDecimalNumber *price,
+    NSString *localeIdentifier) {
   SKProduct *product = OCMClassMock([SKProduct class]);
-  OCMStub([product price]).andReturn([NSDecimalNumber one]);
-  OCMStub([product priceLocale]).andReturn([NSLocale currentLocale]);
-  OCMStub([product productIdentifier]).andReturn(productIdentifier);
+  OCMStub([product productIdentifier]).andReturn(identifier);
+  OCMStub([product priceLocale]).andReturn([NSLocale localeWithLocaleIdentifier:localeIdentifier]);
+  OCMStub([product price]).andReturn(price);
   return product;
 }
 
@@ -103,13 +104,13 @@ SKProductsResponse *BZRProductsResponseWithSKProducts(NSArray<SKProduct *> *prod
 }
 
 SKProductsResponse *BZRProductsResponseWithProduct(NSString *productIdentifier) {
-  SKProduct *product = BZRSKProductWithIdentifier(productIdentifier);
+  SKProduct *product = BZRSKProductWithProperties(productIdentifier);
   return BZRProductsResponseWithSKProducts(@[product]);
 }
 
-SKProductsResponse *BZRProductsResponseWithProducts(NSArray<NSString *> *productsIdentifiers) {
-  NSArray<SKProduct *> *products = [productsIdentifiers lt_map:^SKProduct *(NSString *identifier) {
-    return BZRSKProductWithIdentifier(identifier);
+SKProductsResponse *BZRProductsResponseWithProducts(NSArray<NSString *> *productIdentifiers) {
+  NSArray<SKProduct *> *products = [productIdentifiers lt_map:^SKProduct *(NSString *identifier) {
+    return BZRSKProductWithProperties(identifier);
   }];
   return BZRProductsResponseWithSKProducts(products);
 }

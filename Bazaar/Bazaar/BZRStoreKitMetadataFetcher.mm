@@ -7,7 +7,7 @@
 
 #import "BZREvent.h"
 #import "BZRProduct+StoreKit.h"
-#import "BZRProductPriceInfo+StoreKit.h"
+#import "BZRProductPriceInfo.h"
 #import "BZRStoreKitFacade.h"
 #import "NSError+Bazaar.h"
 
@@ -79,19 +79,13 @@ NS_ASSUME_NONNULL_BEGIN
 
   return [productsResponse.products lt_reduce:^NSMutableArray<BZRProduct *> *
           (NSMutableArray<BZRProduct *> *productListSoFar, SKProduct *product) {
-            BZRProduct *bazaarProduct = productDictionary[product.productIdentifier];
-            if (!bazaarProduct) {
-              return productListSoFar;
+            BZRProduct * _Nullable bazaarProduct = productDictionary[product.productIdentifier];
+            if (bazaarProduct) {
+              auto bazaarProductWithStoreKitMetadata =
+                  [bazaarProduct productByAssociatingStoreKitProduct:product];
+              [productListSoFar addObject:bazaarProductWithStoreKitMetadata];
             }
 
-            auto priceInfo = [BZRProductPriceInfo productPriceInfoWithSKProduct:product];
-            auto bazaarProductWithStoreKitMetadata = [[bazaarProduct
-                modelByOverridingProperty:@keypath(bazaarProduct, underlyingProduct)
-                withValue:product]
-                modelByOverridingProperty:@keypath(bazaarProduct, priceInfo)
-                withValue:priceInfo];
-
-            [productListSoFar addObject:bazaarProductWithStoreKitMetadata];
             return productListSoFar;
           } initial:[NSMutableArray array]];
 }
