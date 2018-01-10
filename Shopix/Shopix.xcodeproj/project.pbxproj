@@ -76,6 +76,7 @@
 		CDAC920A1FC5994900B197B3 /* SPXSubscriptionTermsView.mm in Sources */ = {isa = PBXBuildFile; fileRef = CDAC92091FC5994900B197B3 /* SPXSubscriptionTermsView.mm */; };
 		CDAC93941FC5F0D100B197B3 /* SPXSubscriptionVideoPageViewModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = CDAC936C1FC5F0D100B197B3 /* SPXSubscriptionVideoPageViewModel.mm */; };
 		CDACBD731FBB4476000A1548 /* SPXPagingView.mm in Sources */ = {isa = PBXBuildFile; fileRef = CDACBD721FBB4476000A1548 /* SPXPagingView.mm */; };
+		CDB3917720061B87009C1622 /* SPXSubscriptionButtonsPageView.mm in Sources */ = {isa = PBXBuildFile; fileRef = CDB3914E20061B86009C1622 /* SPXSubscriptionButtonsPageView.mm */; };
 		CDB513A21F66B0440013577C /* SPXSubscriptionManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = CDB513A11F66B0440013577C /* SPXSubscriptionManager.mm */; };
 		CDB513A51F66B0A10013577C /* SPXSubscriptionManagerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = CDB513A41F66B0A10013577C /* SPXSubscriptionManagerSpec.mm */; };
 		CDB513A81F66BC150013577C /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDB513A71F66BC150013577C /* StoreKit.framework */; };
@@ -589,6 +590,7 @@
 		CDAC93931FC5F0D100B197B3 /* SPXSubscriptionVideoPageViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPXSubscriptionVideoPageViewModel.h; sourceTree = "<group>"; };
 		CDACBD711FBB4476000A1548 /* SPXPagingView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SPXPagingView.h; sourceTree = "<group>"; };
 		CDACBD721FBB4476000A1548 /* SPXPagingView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXPagingView.mm; sourceTree = "<group>"; };
+		CDB3914E20061B86009C1622 /* SPXSubscriptionButtonsPageView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXSubscriptionButtonsPageView.mm; sourceTree = "<group>"; };
 		CDB510721F6176150013577C /* SPXLocalization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPXLocalization.h; sourceTree = "<group>"; };
 		CDB510731F6176150013577C /* SPXLocalization.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXLocalization.mm; sourceTree = "<group>"; };
 		CDB513A01F66B0440013577C /* SPXSubscriptionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPXSubscriptionManager.h; sourceTree = "<group>"; };
@@ -1252,6 +1254,7 @@
 				CDF6209E1FEF918F00D05AEC /* SPXMultiSubscriptionViewController.h */,
 				CDF6209F1FEF918F00D05AEC /* SPXMultiSubscriptionViewModel.h */,
 				CDF620A01FEF918F00D05AEC /* SPXSubscriptionButtonsPageView.h */,
+				CDB3914E20061B86009C1622 /* SPXSubscriptionButtonsPageView.mm */,
 				CDF620A11FEF918F00D05AEC /* SPXSubscriptionButtonsPageViewModel.h */,
 				CDF621E11FEFD42700D05AEC /* SPXSubscriptionButtonsPageViewModel.mm */,
 			);
@@ -1838,6 +1841,7 @@
 				88FF39701FB2E047006311FF /* SPXProductDescriptor.mm in Sources */,
 				8851018E1F9DDBA60052351B /* NSError+Shopix.mm in Sources */,
 				88B632AF1F9DD8B10051A535 /* NSErrorCodes+Shopix.mm in Sources */,
+				CDB3917720061B87009C1622 /* SPXSubscriptionButtonsPageView.mm in Sources */,
 				CDC83E1A1FD444D200E9F41A /* SPXRestorePurchasesButtonPressedEvent.mm in Sources */,
 				CD60A5ED1FB433180017D777 /* SPXDualLabelView.mm in Sources */,
 			);
