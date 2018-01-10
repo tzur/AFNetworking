@@ -19,6 +19,9 @@ NS_ASSUME_NONNULL_BEGIN
                    termsOfUseLink:(NSAttributedString *)termsOfUseLink
                 privacyPolicyLink:(NSAttributedString *)privacyPolicyLink NS_DESIGNATED_INITIALIZER;
 
+/// The inset of the terms text. Defaults to \c UIEdgeInsetsZero.
+@property (nonatomic) UIEdgeInsets termsTextContainerInset;
+
 @end
 
 NS_ASSUME_NONNULL_END

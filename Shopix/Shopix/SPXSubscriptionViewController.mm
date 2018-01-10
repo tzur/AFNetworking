@@ -246,11 +246,12 @@ using namespace spx;
                 initWithTermsText:self.viewModel.termsViewModel.termsText
                 termsOfUseLink:self.viewModel.termsViewModel.termsOfUseLink
                 privacyPolicyLink:self.viewModel.termsViewModel.privacyPolicyLink];
+  self.termsView.termsTextContainerInset = UIEdgeInsetsMake(6, 0, 6, 0);
   [self.view addSubview:self.termsView];
 
   [self.termsView mas_makeConstraints:^(MASConstraintMaker *make) {
     make.centerX.equalTo(self.view);
-    make.bottom.equalTo(self.view).offset(-2);
+    make.bottom.equalTo(self.view);
     make.width.equalTo(self.view).multipliedBy(0.94);
   }];
 }
