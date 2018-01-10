@@ -3,6 +3,8 @@
 
 #import "SPXSubscriptionDescriptor.h"
 
+#import "BZRBillingPeriod+ProductIdentifier.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
 @implementation SPXSubscriptionDescriptor
@@ -10,6 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithProductIdentifier:(NSString *)productIdentifier {
   if (self = [super init]) {
     _productIdentifier = [productIdentifier copy];
+    _billingPeriod = [BZRBillingPeriod spx_billingPeriodWithProductIdentifier:productIdentifier];
   }
   return self;
 }

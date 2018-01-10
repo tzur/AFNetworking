@@ -3,7 +3,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class BZRProductPriceInfo;
+@class BZRBillingPeriod, BZRProductPriceInfo;
 
 /// Descriptor representing a subscription product and providing information that is crucial for
 /// presenting the product to the user.
@@ -19,6 +19,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Price information of the subscription product.
 @property (strong, nonatomic, nullable) BZRProductPriceInfo *priceInfo;
+
+/// Subscription's billing period. \c nil if the subscription is one-time payment.
+@property (readonly, nonatomic, nullable) BZRBillingPeriod *billingPeriod;
 
 @end
 
