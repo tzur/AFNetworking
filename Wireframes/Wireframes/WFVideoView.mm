@@ -7,22 +7,15 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface WFVideoView ()
 
+/// \c YES if \c play was called and no calls to \c stop, \c pause, or \c setVideoURL were done
+/// after it.
+@property (readwrite, nonatomic) BOOL playbackRequested;
+
 /// Video player for playing the video.
 @property (strong, nonatomic, nullable) AVPlayer *player;
 
-/// \c YES if the video should be playing.
-@property (readwrite, nonatomic) BOOL isPlaying;
-
-/// \c YES if the playback should automatically restart after video ends.
-@property (readonly, nonatomic) BOOL playInLoop;
-
 /// The queue on which the video player is created.
 @property (readonly, nonatomic) dispatch_queue_t playerCreationQueue;
-
-/// Time interval (in seconds) between each call to the
-/// <tt>[delgate videoProgressTime:videoDurationTime:]</tt> while the video is playing if the
-/// \c delgate implements the method.
-@property (readonly, nonatomic) CGFloat videoProgresssIntervalTime;
 
 /// The queue on which the video progress updates are being sent.
 @property (readonly, nonatomic) dispatch_queue_t videoProgressQueue;
@@ -45,36 +38,40 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation WFVideoView
 
+static const NSTimeInterval kDefaultProgressSamplingInterval = 1.0;
+
 @dynamic layer;
 
 #pragma mark -
 #pragma mark Initialization
 #pragma mark -
 
-- (instancetype)initWithVideoProgressIntervalTime:(CGFloat)videoProgresssIntervalTime
-                                       playInLoop:(BOOL)playInLoop {
-  LTParameterAssert(videoProgresssIntervalTime > 0, @"videoProgresssIntervalTime (%g) must be "
-                    "positive", videoProgresssIntervalTime);
-
-  if (self = [super initWithFrame:CGRectZero]) {
-    _videoProgresssIntervalTime = videoProgresssIntervalTime;
-    _playerCreationQueue =
-        dispatch_queue_create("com.lightricks.Wireframes.VideoView.PlayerCreation",
-                              DISPATCH_QUEUE_SERIAL);
-    _videoProgressQueue =
-        dispatch_queue_create("com.lightricks.Wireframes.VideoView.VideoProgress",
-                              DISPATCH_QUEUE_SERIAL);
-    _playInLoop = playInLoop;
-
-    [self bindDelegateToVideoProgress];
-    [self observePlayerStatus];
-    [self observeAppActiveState];
+- (instancetype)initWithFrame:(CGRect)frame {
+  if (self = [super initWithFrame:frame]) {
+    [self setup];
   }
   return self;
 }
 
+- (nullable instancetype)initWithCoder:(NSCoder *)aDecoder {
+  if (self = [super initWithCoder:aDecoder]) {
+    [self setup];
+  }
+  return self;
+}
+- (void)setup {
+  self.progressSamplingInterval = kDefaultProgressSamplingInterval;
+  _playerCreationQueue = dispatch_queue_create("com.lightricks.Wireframes.VideoView.PlayerCreation",
+                                               DISPATCH_QUEUE_SERIAL);
+  _videoProgressQueue = dispatch_queue_create("com.lightricks.Wireframes.VideoView.VideoProgress",
+                                              DISPATCH_QUEUE_SERIAL);
+  [self bindDelegateToVideoProgress];
+  [self observePlayerStatus];
+  [self observeAppActiveState];
+}
+
 - (void)dealloc {
-  [[NSNotificationCenter defaultCenter] removeObserver:self];
+  [self removeAppActiveStateObservation];
 }
 
 - (AVPlayer *)createPlayerForURL:(NSURL *)videoURL {
@@ -120,8 +117,9 @@ NS_ASSUME_NONNULL_BEGIN
                 return nil;
               }
 
-              CGFloat videoDurationTime = CMTimeGetSeconds(player.currentItem.asset.duration);
-              CMTime progressInterval = CMTimeMakeWithSeconds(self.videoProgresssIntervalTime,
+              NSTimeInterval videoDurationTime =
+                  CMTimeGetSeconds(player.currentItem.asset.duration);
+              CMTime progressInterval = CMTimeMakeWithSeconds(self.progressSamplingInterval,
                                                               NSEC_PER_SEC);
               dispatch_queue_t videoProgressQueue = self.videoProgressQueue;
 
@@ -158,8 +156,17 @@ NS_ASSUME_NONNULL_BEGIN
                                              object:nil];
 }
 
+- (void)removeAppActiveStateObservation {
+  [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                  name:UIApplicationDidBecomeActiveNotification
+                                                object:nil];
+  [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                  name:UIApplicationWillResignActiveNotification
+                                                object:nil];
+}
+
 - (void)applicationDidBecomeActive {
-  if (self.isPlaying) {
+  if (self.playbackRequested) {
     [self.player play];
   }
 }
@@ -221,7 +228,7 @@ NS_ASSUME_NONNULL_BEGIN
 
       self.player = player;
       self.videoSize = videoSize;
-      if (self.isPlaying) {
+      if (self.playbackRequested) {
         [self.player play];
       } else {
         [self.player pause];
@@ -244,17 +251,17 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)play {
-  self.isPlaying = YES;
+  self.playbackRequested = YES;
   [self.player play];
 }
 
 - (void)pause {
-  self.isPlaying = NO;
+  self.playbackRequested = NO;
   [self.player pause];
 }
 
 - (void)stop {
-  self.isPlaying = NO;
+  self.playbackRequested = NO;
   [self.player pause];
   [self.player seekToTime:kCMTimeZero];
 }
@@ -284,10 +291,10 @@ NS_ASSUME_NONNULL_BEGIN
     [self.delegate videoDidFinishPlayback:self];
   }
 
-  if (self.playInLoop) {
+  if (self.repeat) {
     [self.player seekToTime:kCMTimeZero];
 
-    if (self.isPlaying) {
+    if (self.playbackRequested) {
       [self.player play];
     }
   }
@@ -311,6 +318,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (AVLayerVideoGravity)videoGravity {
   return self.layer.videoGravity;
+}
+
+- (void)setProgressSamplingInterval:(NSTimeInterval)progressSamplingInterval {
+  LTParameterAssert(progressSamplingInterval > 0, @"progressSamplingInterval (%g) must be positive",
+                    progressSamplingInterval);
+  _progressSamplingInterval = progressSamplingInterval;
 }
 
 @end

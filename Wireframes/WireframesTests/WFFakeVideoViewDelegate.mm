@@ -13,8 +13,9 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)videoDidFinishPlayback:(WFVideoView __unused *)videoView {
 }
 
-- (void)videoProgress:(WFVideoView __unused *)videoView progressTime:(__unused CGFloat)progressTime
-    videoDurationTime:(__unused CGFloat)videoDurationTime {
+- (void)videoProgress:(WFVideoView __unused *)videoView
+         progressTime:(__unused NSTimeInterval)progressTime
+    videoDurationTime:(__unused NSTimeInterval)videoDurationTime {
 }
 
 @end
