@@ -11,7 +11,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithUnderlyingObject:(id<NSObject>)underlyingObject
                                cacheInfo:(PTNCacheInfo *)cacheInfo {
-  if (self = [super init]) {
+  if (self) {
     _underlyingObject = underlyingObject;
     _cacheInfo = cacheInfo;
   }
@@ -32,9 +32,33 @@ NS_ASSUME_NONNULL_BEGIN
       [self.underlyingObject respondsToSelector:aSelector];
 }
 
+- (BOOL)isKindOfClass:(Class)aClass {
+  return [PTNCacheProxy.class isEqual:aClass] || [self.underlyingObject isKindOfClass:aClass];
+}
+
+- (BOOL)isMemberOfClass:(Class)aClass {
+  return [PTNCacheProxy.class isEqual:aClass] || [self.underlyingObject isMemberOfClass:aClass];
+}
+
+- (Class)superclass {
+  return [self.underlyingObject superclass];
+}
+
+- (Class)class {
+  return [self.underlyingObject class];
+}
+
 - (id)forwardingTargetForSelector:(SEL)selector {
-  return [self.underlyingObject respondsToSelector:selector] ?
-      self.underlyingObject : [super forwardingTargetForSelector:selector];;
+  return [self.underlyingObject respondsToSelector:selector] ? self.underlyingObject : nil;
+}
+
+- (void)forwardInvocation:(NSInvocation *)invocation {
+  [invocation setTarget:self.underlyingObject];
+  [invocation invoke];
+}
+
+- (nullable NSMethodSignature *)methodSignatureForSelector:(SEL)sel {
+  return [self.underlyingObject methodSignatureForSelector:sel];
 }
 
 #pragma mark -
@@ -50,16 +74,21 @@ NS_ASSUME_NONNULL_BEGIN
   if (object == self) {
     return YES;
   }
-  if (![object isKindOfClass:self.class]) {
-    return NO;
+
+  if ([object isKindOfClass:PTNCacheProxy.class]) {
+    return [self.underlyingObject isEqual:object.underlyingObject] &&
+        [self.cacheInfo isEqual:object.cacheInfo];
   }
 
-  return [self.underlyingObject isEqual:object.underlyingObject] &&
-      [self.cacheInfo isEqual:object.cacheInfo];
+  if ([object isKindOfClass:self.underlyingObject.class]) {
+    return [self.underlyingObject isEqual:object];
+  }
+
+  return NO;
 }
 
 - (NSUInteger)hash {
-  return self.underlyingObject.hash ^ self.cacheInfo.hash;
+  return self.underlyingObject.hash;
 }
 
 @end
