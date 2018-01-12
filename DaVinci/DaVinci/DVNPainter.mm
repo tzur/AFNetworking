@@ -7,6 +7,7 @@
 #import <LTEngine/LTFboPool.h>
 #import <LTEngine/LTTexture.h>
 
+#import "DVNBrushRenderInfoProvider.h"
 #import "DVNSplineRenderer.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -72,10 +73,9 @@ NS_ASSUME_NONNULL_BEGIN
   LTAssert(self.renderInfoProvider,
            @"Render info provider deallocated before start of new process sequence");
   LTAssert(!self.renderer, @"Spline renderer must not exist at this point");
-  LTParameterizedObjectType *type =
-      [self.renderInfoProvider typeOfParameterizedObjectForBrushRendering];
+  LTParameterizedObjectType *type = [self.renderInfoProvider brushSplineType];
   DVNPipelineConfiguration *pipelineConfiguration =
-      [self.renderInfoProvider pipelineConfigurationForBrushRendering];
+      [self.renderInfoProvider brushRenderConfiguration];
   self.renderer = [[DVNSplineRenderer alloc] initWithType:type configuration:pipelineConfiguration
                                                  delegate:self];
 }

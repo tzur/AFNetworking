@@ -7,17 +7,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class DVNPainter, DVNPipelineConfiguration, LTParameterizedObjectType, LTTexture;
 
-/// Protocol to be implemented by objects returning \c LTParameterizedObjectType and
-/// \c DVNPipelineConfiguration objects that can be used for spline construction and rendering.
-@protocol DVNBrushRenderInfoProvider <NSObject>
-
-/// Returns the type of a basic parameterized object usable for spline construction.
-- (LTParameterizedObjectType *)typeOfParameterizedObjectForBrushRendering;
-
-/// Returns the configuration of a \c DVNPipeline object usable for spline rendering.
-- (DVNPipelineConfiguration *)pipelineConfigurationForBrushRendering;
-
-@end
+@protocol DVNBrushRenderInfoProvider;
 
 /// Protocol to be implemented by objects serving as delegate of \c DVNPainter objects.
 @protocol DVNPainterDelegate <DVNSplineRenderingDelegate>

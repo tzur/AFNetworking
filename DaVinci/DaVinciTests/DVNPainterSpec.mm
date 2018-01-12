@@ -7,13 +7,14 @@
 #import <LTEngine/LTParameterizedObjectType.h>
 #import <LTEngine/LTTexture+Factory.h>
 
+#import "DVNBrushRenderInfoProvider.h"
 #import "DVNSplineRenderModel.h"
 #import "DVNTestPipelineConfiguration.h"
 
 @interface DVNTestSplineRenderInfoProvider : NSObject <DVNBrushRenderInfoProvider>
-@property (strong, nonatomic) LTParameterizedObjectType *typeOfParameterizedObjectForBrushRendering;
+@property (strong, nonatomic) LTParameterizedObjectType *brushSplineType;
 @property (nonatomic) NSUInteger numberOfParameterizedObjectTypeRequests;
-@property (strong, nonatomic) DVNPipelineConfiguration *pipelineConfigurationForBrushRendering;
+@property (strong, nonatomic) DVNPipelineConfiguration *brushRenderConfiguration;
 @end
 
 @implementation DVNTestSplineRenderInfoProvider
@@ -52,8 +53,8 @@ sharedExamplesFor(kDVNBrushRenderInfoProviderExamples, ^(NSDictionary *data) {
 
   context(@"parameterized object type", ^{
     it(@"should request parameterized object type from provider", ^{
-      OCMStub([providerMock pipelineConfigurationForBrushRendering]).andReturn(configuration);
-      OCMExpect([providerMock typeOfParameterizedObjectForBrushRendering]).andReturn(type);
+      OCMStub([providerMock brushRenderConfiguration]).andReturn(configuration);
+      OCMExpect([providerMock brushSplineType]).andReturn(type);
 
       [painter processControlPoints:@[] end:NO];
 
@@ -62,17 +63,17 @@ sharedExamplesFor(kDVNBrushRenderInfoProviderExamples, ^(NSDictionary *data) {
 
     it(@"should request parameterized object type from provider for every process sequence "
        "start", ^{
-      OCMStub([providerMock pipelineConfigurationForBrushRendering]).andReturn(configuration);
+      OCMStub([providerMock brushRenderConfiguration]).andReturn(configuration);
 
       // First process sequence.
-      OCMExpect([providerMock typeOfParameterizedObjectForBrushRendering]).andReturn(type);
+      OCMExpect([providerMock brushSplineType]).andReturn(type);
 
       [painter processControlPoints:@[] end:YES];
 
       OCMVerifyAll(providerMock);
 
       // Second process sequence.
-      OCMExpect([providerMock typeOfParameterizedObjectForBrushRendering]).andReturn(type);
+      OCMExpect([providerMock brushSplineType]).andReturn(type);
 
       [painter processControlPoints:@[] end:NO];
 
@@ -80,12 +81,12 @@ sharedExamplesFor(kDVNBrushRenderInfoProviderExamples, ^(NSDictionary *data) {
     });
 
     it(@"should not request parameterized object type from provider during process sequence", ^{
-      OCMStub([providerMock pipelineConfigurationForBrushRendering]).andReturn(configuration);
-      OCMExpect([providerMock typeOfParameterizedObjectForBrushRendering]).andReturn(type);
+      OCMStub([providerMock brushRenderConfiguration]).andReturn(configuration);
+      OCMExpect([providerMock brushSplineType]).andReturn(type);
 
       [painter processControlPoints:@[] end:NO];
 
-      OCMReject([providerMock typeOfParameterizedObjectForBrushRendering]);
+      OCMReject([providerMock brushSplineType]);
 
       [painter processControlPoints:@[] end:NO];
 
@@ -95,8 +96,8 @@ sharedExamplesFor(kDVNBrushRenderInfoProviderExamples, ^(NSDictionary *data) {
 
   context(@"provider", ^{
     it(@"should request pipeline configuration from provider", ^{
-      OCMStub([providerMock typeOfParameterizedObjectForBrushRendering]).andReturn(type);
-      OCMExpect([providerMock pipelineConfigurationForBrushRendering]).andReturn(configuration);
+      OCMStub([providerMock brushSplineType]).andReturn(type);
+      OCMExpect([providerMock brushRenderConfiguration]).andReturn(configuration);
 
       [painter processControlPoints:@[] end:NO];
 
@@ -104,17 +105,17 @@ sharedExamplesFor(kDVNBrushRenderInfoProviderExamples, ^(NSDictionary *data) {
     });
 
     it(@"should request pipeline configuration from provider for every process sequence start", ^{
-      OCMStub([providerMock typeOfParameterizedObjectForBrushRendering]).andReturn(type);
+      OCMStub([providerMock brushSplineType]).andReturn(type);
 
       // First process sequence.
-      OCMExpect([providerMock pipelineConfigurationForBrushRendering]).andReturn(configuration);
+      OCMExpect([providerMock brushRenderConfiguration]).andReturn(configuration);
 
       [painter processControlPoints:@[] end:YES];
 
       OCMVerifyAll(providerMock);
 
       // Second process sequence.
-      OCMExpect([providerMock pipelineConfigurationForBrushRendering]).andReturn(configuration);
+      OCMExpect([providerMock brushRenderConfiguration]).andReturn(configuration);
 
       [painter processControlPoints:@[] end:NO];
 
@@ -122,12 +123,12 @@ sharedExamplesFor(kDVNBrushRenderInfoProviderExamples, ^(NSDictionary *data) {
     });
 
     it(@"should not request pipeline configuration from provider during process sequence", ^{
-      OCMStub([providerMock typeOfParameterizedObjectForBrushRendering]).andReturn(type);
-      OCMExpect([providerMock pipelineConfigurationForBrushRendering]).andReturn(configuration);
+      OCMStub([providerMock brushSplineType]).andReturn(type);
+      OCMExpect([providerMock brushRenderConfiguration]).andReturn(configuration);
 
       [painter processControlPoints:@[] end:NO];
 
-      OCMReject([providerMock pipelineConfigurationForBrushRendering]);
+      OCMReject([providerMock brushRenderConfiguration]);
 
       [painter processControlPoints:@[] end:NO];
 

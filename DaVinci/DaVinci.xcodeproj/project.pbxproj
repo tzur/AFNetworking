@@ -586,6 +586,7 @@
 		50B00D841FB4B92F003E6CAF /* DVNBrushSourceTypeSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNBrushSourceTypeSpec.mm; sourceTree = "<group>"; };
 		50C90F1C1D3646290058A4F3 /* DVNTestShader.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = DVNTestShader.vsh; sourceTree = "<group>"; };
 		50C90F381D36465E0058A4F3 /* DVNTestShader.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = DVNTestShader.fsh; sourceTree = "<group>"; };
+		50CD96B61FFBE1F000F93209 /* DVNBrushRenderInfoProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DVNBrushRenderInfoProvider.h; sourceTree = "<group>"; };
 		50CDE7BA1EFA90B40072CBA3 /* DVNQuadCenterAttributeProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DVNQuadCenterAttributeProvider.h; sourceTree = "<group>"; };
 		50CDE7BB1EFA90B40072CBA3 /* DVNQuadCenterAttributeProvider.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNQuadCenterAttributeProvider.mm; sourceTree = "<group>"; };
 		50FF1A531D2CDFF400E24B4D /* Common.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Common.xcconfig; path = ../Configuration/Common.xcconfig; sourceTree = "<group>"; };
@@ -679,7 +680,7 @@
 			isa = PBXGroup;
 			children = (
 				500F77CD1D2D35F500023343 /* Base */,
-				28662CD21DF57C780051B9DA /* Brush Infrastrcuture */,
+				28662CD21DF57C780051B9DA /* Brush Infrastructure */,
 				250154C51D1AEB4E00420FA9 /* Supporting Files */,
 			);
 			path = DaVinci;
@@ -914,39 +915,40 @@
 			name = Resources;
 			sourceTree = "<group>";
 		};
-		28662CD21DF57C780051B9DA /* Brush Infrastrcuture */ = {
+		28662CD21DF57C780051B9DA /* Brush Infrastructure */ = {
 			isa = PBXGroup;
 			children = (
-				28662CF31DF57CBB0051B9DA /* Painter */,
+				28662CF31DF57CBB0051B9DA /* Rendering */,
 				28D30C7D1E0138E100DF0640 /* Shaders */,
 			);
-			name = "Brush Infrastrcuture";
+			name = "Brush Infrastructure";
 			sourceTree = "<group>";
 		};
-		28662CF31DF57CBB0051B9DA /* Painter */ = {
+		28662CF31DF57CBB0051B9DA /* Rendering */ = {
 			isa = PBXGroup;
 			children = (
+				50CD96B61FFBE1F000F93209 /* DVNBrushRenderInfoProvider.h */,
 				28662D601DF57DD60051B9DA /* DVNPainter.h */,
 				28662D611DF57DD60051B9DA /* DVNPainter.mm */,
 			);
-			name = Painter;
+			name = Rendering;
 			sourceTree = "<group>";
 		};
 		28662D591DF57D640051B9DA /* Brush Infrastructure */ = {
 			isa = PBXGroup;
 			children = (
-				28662D5A1DF57D740051B9DA /* Painter */,
+				28662D5A1DF57D740051B9DA /* Rendering */,
 				5001CB291F27459C00C70D23 /* Shaders */,
 			);
 			name = "Brush Infrastructure";
 			sourceTree = "<group>";
 		};
-		28662D5A1DF57D740051B9DA /* Painter */ = {
+		28662D5A1DF57D740051B9DA /* Rendering */ = {
 			isa = PBXGroup;
 			children = (
 				28662D5B1DF57D8A0051B9DA /* DVNPainterSpec.mm */,
 			);
-			name = Painter;
+			name = Rendering;
 			sourceTree = "<group>";
 		};
 		286C1C5B1DEC59F500523F2E /* Models */ = {
