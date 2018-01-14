@@ -43,7 +43,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)setupVideoView {
   _videoView = [[WFVideoView alloc] initWithFrame:CGRectZero];
-  self.videoView.repeat = YES;
+  self.videoView.repeatsOnEnd = YES;
   self.videoView.delegate = self;
   self.videoView.layer.borderColor = nil;
   self.videoView.layer.cornerRadius = 7;
@@ -121,15 +121,11 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 - (void)setVideoURL:(nullable NSURL *)videoURL {
-  BOOL isPlaying = self.videoView.playbackRequested;
-  self.videoView.videoURL = videoURL;
-  if (isPlaying) {
-    [self.videoView play];
-  }
+  [self.videoView loadVideoFromURL:videoURL];
 }
 
 - (nullable NSURL *)videoURL {
-  return self.videoView.videoURL;
+  return self.videoView.currentVideoURL;
 }
 
 - (void)setTitle:(nullable NSAttributedString *)title {

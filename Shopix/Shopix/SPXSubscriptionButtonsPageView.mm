@@ -209,7 +209,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)setupVideo {
   _backgroundVideoView = [[WFVideoView alloc] initWithFrame:CGRectZero];
-  self.backgroundVideoView.repeat = YES;
+  self.backgroundVideoView.repeatsOnEnd = YES;
   [self addSubview:self.backgroundVideoView];
 
   static const CGFloat kVideoAspectRatio = 1.109;

@@ -38,18 +38,17 @@ it(@"should raise when setting a non positive progress sampling interval", ^{
   }).to.raise(NSInvalidArgumentException);
 });
 
-it(@"should set properties correctly when video is empty", ^{
-  videoView.videoURL = nil;
+it(@"should initialize properties correctly before video was loaded", ^{
   expect(videoView.videoDuration).to.equal(0);
   expect(videoView.currentTime).to.equal(0);
   expect(videoView.videoSize).to.equal(CGSizeZero);
 });
 
 it(@"should return correct video size", ^{
-  videoView.videoURL = zeroLengthVideoURL;
+  [videoView loadVideoFromURL:zeroLengthVideoURL];
   expect(videoView.videoSize).will.equal(CGSizeMake(20, 16));
 
-  videoView.videoURL = halfSecondVideoURL;
+  [videoView loadVideoFromURL:halfSecondVideoURL];
   expect(videoView.videoSize).will.equal(CGSizeMake(640, 360));
 });
 
@@ -64,8 +63,8 @@ it(@"should proxy video gravity to layer", ^{
 
 context(@"delegate", ^{
   it(@"should call delegate when video loads", ^{
-    videoView.videoURL = zeroLengthVideoURL;
-    RACSignal *videoDidLoadSignal = [[delegate rac_signalForSelector:@selector(videoDidLoad:)]
+    [videoView loadVideoFromURL:zeroLengthVideoURL];
+    auto videoDidLoadSignal = [[delegate rac_signalForSelector:@selector(videoViewDidLoadVideo:)]
         reduceEach:(id)^WFVideoView *(WFVideoView *videoView) {
           return videoView;
         }];
@@ -73,9 +72,9 @@ context(@"delegate", ^{
   });
 
   it(@"should call delegate when video playback ends", ^{
-    videoView.videoURL = zeroLengthVideoURL;
-    RACSignal *videoDidFinishPlaybackSignal = [[delegate
-        rac_signalForSelector:@selector(videoDidFinishPlayback:)]
+    [videoView loadVideoFromURL:zeroLengthVideoURL];
+    auto videoDidFinishPlaybackSignal = [[delegate
+        rac_signalForSelector:@selector(videoViewDidFinishPlayback:)]
         reduceEach:(id)^WFVideoView *(WFVideoView *videoView) {
           return videoView;
         }];
@@ -85,12 +84,12 @@ context(@"delegate", ^{
   });
 
   it(@"should call progress in delegate as expected", ^{
-    videoView.videoURL = halfSecondVideoURL;
+    [videoView loadVideoFromURL:halfSecondVideoURL];
     videoView.progressSamplingInterval = 0.1;
-    LLSignalTestRecorder *recorder = [[[[[delegate
-        rac_signalForSelector:@selector(videoProgress:progressTime:videoDurationTime:)]
-        deliverOnMainThread]
-        combinePreviousWithStart:RACTuplePack(videoView, @0, @0.5)
+    __block BOOL playbackStarted = NO;
+    auto recorder = [[[[delegate
+        rac_signalForSelector:@selector(videoView:didPlayVideoAtTime:)]
+        combinePreviousWithStart:RACTuplePack(videoView, @0)
                           reduce:^RACTuple *(RACTuple *previous, RACTuple *current) {
           return RACTuplePack(previous, current);
         }]
@@ -99,26 +98,52 @@ context(@"delegate", ^{
 
           expect(current.first).to.equal(videoView);
           expect(current.second).to.beGreaterThanOrEqualTo(previous.second);
-          expect(current.third).to.beCloseToWithin(0.5, 0.1);
+          if (!playbackStarted) {
+            playbackStarted = YES;
+          }
         }]
         testRecorder];
 
-    RACSignal *videoDidLoadSignal = [[delegate rac_signalForSelector:@selector(videoDidLoad:)]
-                                     reduceEach:(id)^WFVideoView *(WFVideoView *videoView) {
-                                       return videoView;
-                                     }];
+    [videoView play];
+    // First notification of current video time is to notify playback has started. The time until
+    // playback has started might be long and if we don't take it into consideration the test might
+    // get flaky.
+    expect(playbackStarted).after(30).beTruthy();
+
+    expect(recorder.values.count).will.beGreaterThanOrEqualTo(5);
+  });
+
+  it(@"should continue playing when loading a URL while playback", ^{
+    // Start playback.
+    videoView.repeatsOnEnd = YES;
+    auto videoDidLoadSignal = [[delegate rac_signalForSelector:@selector(videoViewDidLoadVideo:)]
+        reduceEach:(id)^WFVideoView *(WFVideoView *videoView) {
+          return videoView;
+    }];
+    [videoView loadVideoFromURL:halfSecondVideoURL];
     expect(videoDidLoadSignal).will.sendValues(@[videoView]);
     [videoView play];
-    expect(recorder.values.count).after(3).beGreaterThanOrEqualTo(5);
+
+    // Load URL while playback.
+    [videoView loadVideoFromURL:halfSecondVideoURL];
+    expect(videoDidLoadSignal).will.sendValues(@[videoView]);
+
+    // Expect video is playing (in loop) after setting URL, and thus will raise playback finished.
+    auto videoDidFinishPlaybackSignal = [[delegate
+        rac_signalForSelector:@selector(videoViewDidFinishPlayback:)]
+        reduceEach:(id)^WFVideoView *(WFVideoView *videoView) {
+          return videoView;
+    }];
+    expect(videoDidFinishPlaybackSignal).will.sendValues(@[videoView]);
   });
 
   it(@"should dealloc the delegate despite a video is being loaded from URL", ^{
     __weak WFFakeVideoViewDelegate *weakDelegate;
     @autoreleasepool {
-      WFVideoView *view = [[WFVideoView alloc] initWithFrame:CGRectZero];
-      WFFakeVideoViewDelegate *delegate = [[WFFakeVideoViewDelegate alloc] init];
+      auto view = [[WFVideoView alloc] initWithFrame:CGRectZero];
+      auto delegate = [[WFFakeVideoViewDelegate alloc] init];
       view.delegate = delegate;
-      view.videoURL = halfSecondVideoURL;
+      [view loadVideoFromURL:halfSecondVideoURL];
       weakDelegate = delegate;
     }
     expect(weakDelegate).to.beNil();
@@ -127,12 +152,12 @@ context(@"delegate", ^{
   it(@"should dealloc the view despite a video is being played", ^{
     __weak WFVideoView *weakView;
     @autoreleasepool {
-      WFVideoView *view = [[WFVideoView alloc] initWithFrame:CGRectZero];
-      view.repeat = YES;
+      auto view = [[WFVideoView alloc] initWithFrame:CGRectZero];
+      view.repeatsOnEnd = YES;
       view.delegate = delegate;
-      view.videoURL = halfSecondVideoURL;
+      [view loadVideoFromURL:halfSecondVideoURL];
 
-      [[[delegate rac_signalForSelector:@selector(videoDidLoad:)]
+      [[[delegate rac_signalForSelector:@selector(videoViewDidLoadVideo:)]
           take:1]
           asynchronouslyWaitUntilCompleted:NULL];
 
@@ -146,13 +171,13 @@ context(@"delegate", ^{
   it(@"should dealloc the delegate despite a video is being played", ^{
     __weak WFFakeVideoViewDelegate *weakDelegate;
     @autoreleasepool {
-      WFVideoView *view = [[WFVideoView alloc] initWithFrame:CGRectZero];
-      view.repeat = YES;
-      WFFakeVideoViewDelegate *delegate = [[WFFakeVideoViewDelegate alloc] init];
+      auto view = [[WFVideoView alloc] initWithFrame:CGRectZero];
+      view.repeatsOnEnd = YES;
+      auto delegate = [[WFFakeVideoViewDelegate alloc] init];
       view.delegate = delegate;
-      view.videoURL = halfSecondVideoURL;
+      [view loadVideoFromURL:halfSecondVideoURL];
 
-      [[[delegate rac_signalForSelector:@selector(videoDidLoad:)]
+      [[[delegate rac_signalForSelector:@selector(videoViewDidLoadVideo:)]
           take:1]
           asynchronouslyWaitUntilCompleted:NULL];
 
