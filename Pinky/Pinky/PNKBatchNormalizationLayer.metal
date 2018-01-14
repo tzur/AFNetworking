@@ -3,7 +3,7 @@
 
 #include <metal_stdlib>
 
-#include "PNKActivation.metal"
+#include "PNKActivation.metal.h"
 #include "PNKTemplatedIO.metal"
 
 using namespace metal;
