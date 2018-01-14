@@ -71,27 +71,30 @@ static NSString * const kKernelArrayFunctionName = @"instanceNormArray";
       break;
     case pnk::ActivationTypeAbsolute:
       [self createStateWithHasPrelu:YES sharedPrelu:YES];
-      _preluBuffer = [self halfBufferFromFloatVector:cv::Mat1f(1, 1, -1.)];
+      _preluBuffer = PNKHalfBufferFromFloatVector(self.device, cv::Mat1f(1, 1, -1.));
       break;
     case pnk::ActivationTypeReLU:
       [self createStateWithHasPrelu:YES sharedPrelu:YES];
-      _preluBuffer = [self halfBufferFromFloatVector:cv::Mat1f(1, 1, 0.)];
+      _preluBuffer = PNKHalfBufferFromFloatVector(self.device, cv::Mat1f(1, 1, 0.));
       break;
     case pnk::ActivationTypeLeakyReLU:
       [self createStateWithHasPrelu:YES sharedPrelu:YES];
-      _preluBuffer = [self halfBufferFromFloatVector:cv::Mat1f(1, 1, 0.)];
+      _preluBuffer = PNKHalfBufferFromFloatVector(self.device, cv::Mat1f(1, 1, 0.));
       break;
     case pnk::ActivationTypePReLU:
       [self createStateWithHasPrelu:YES sharedPrelu:NO];
-      _preluBuffer = [self halfBufferFromFloatVector:cv::Mat1f(1, (int)self.featureChannels, 0.)];
+      _preluBuffer = PNKHalfBufferFromFloatVector(self.device,
+                                                  cv::Mat1f::zeros(1, (int)self.featureChannels));
       break;
     default:
       LTParameterAssert(NO, @"Activation type %lu is not supported",
                         (unsigned long)activationType);
   }
 
-  _scaleBuffer = [self halfBufferFromFloatVector:cv::Mat1f(1, (int)self.featureChannels, 1.)];
-  _shiftBuffer = [self halfBufferFromFloatVector:cv::Mat1f(1, (int)self.featureChannels, 0.)];
+  _scaleBuffer = PNKHalfBufferFromFloatVector(self.device,
+                                              cv::Mat1f(1, (int)self.featureChannels, 1.));
+  _shiftBuffer = PNKHalfBufferFromFloatVector(self.device,
+                                              cv::Mat1f(1, (int)self.featureChannels, 0.));
 }
 
 - (void)createStateWithHasPrelu:(const BOOL)hasPrelu sharedPrelu:(const BOOL)sharedPrelu {
@@ -100,14 +103,6 @@ static NSString * const kKernelArrayFunctionName = @"instanceNormArray";
   [functionConstants setConstantValue:&hasPrelu type:MTLDataTypeBool withName:@"hasPrelu"];
   [functionConstants setConstantValue:&sharedPrelu type:MTLDataTypeBool withName:@"sharedPrelu"];
   _state = PNKCreateComputeStateWithConstants(self.device, self.functionName, functionConstants);
-}
-
-- (id<MTLBuffer>)halfBufferFromFloatVector:(const cv::Mat1f &)parameters {
-  NSUInteger bufferElements = PNKImageAlignedBufferElementsFromMatrix(parameters);
-  id<MTLBuffer> buffer = [self.device newBufferWithLength:bufferElements * sizeof(half_float::half)
-                                                  options:MTLResourceCPUCacheModeWriteCombined];
-  PNKFillHalfFloatBuffer(buffer, parameters);
-  return buffer;
 }
 
 - (void)setScaleParameters:(const cv::Mat &)parameters {
@@ -132,13 +127,13 @@ static NSString * const kKernelArrayFunctionName = @"instanceNormArray";
     case pnk::ActivationTypeLeakyReLU:
       LTParameterAssert(elementsCount == 1, @"Leaky Relu Activation model must "
                         "have exactly one parameter, got %d", elementsCount);
-      _preluBuffer = [self halfBufferFromFloatVector:parameters];
+      _preluBuffer = PNKHalfBufferFromFloatVector(self.device, parameters);
       break;
     case pnk::ActivationTypePReLU:
       LTParameterAssert(elementsCount == (int)self.featureChannels, @"PRelu Activation model must "
                         "have the same number of parameters as number of input features (%lu), "
                         "got %d", (unsigned long)self.featureChannels, elementsCount);
-      _preluBuffer = [self halfBufferFromFloatVector:parameters];
+      _preluBuffer = PNKHalfBufferFromFloatVector(self.device, parameters);
       break;
     default:
       LTParameterAssert(NO, @"Setting parameters for activation type %lu is not supported",
