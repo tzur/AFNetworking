@@ -13,14 +13,38 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (NSString *)spx_localizedPriceForLocale:(NSString *)localeIdentifier
                                 dividedBy:(NSUInteger)divisor {
+  auto result = [self spx_decimalNumberByDividingBy:divisor roundingMode:NSRoundDown scale:2];
+  return [[self spx_priceNumberFormatter:localeIdentifier] stringFromNumber:result];
+}
+
+- (NSDecimalNumber *)spx_decimalNumberByDividingBy:(NSUInteger)divisor
+                                      roundingMode:(NSRoundingMode)roundingMode scale:(short)scale {
   auto decimalNumberHandler = [NSDecimalNumberHandler
-                               decimalNumberHandlerWithRoundingMode:NSRoundDown scale:2
+                               decimalNumberHandlerWithRoundingMode:roundingMode scale:scale
                                raiseOnExactness:NO raiseOnOverflow:YES raiseOnUnderflow:YES
                                raiseOnDivideByZero:YES];
   auto decimalDivisor = [NSDecimalNumber decimalNumberWithDecimal:@(divisor).decimalValue];
-  auto result = [self decimalNumberByDividingBy:decimalDivisor withBehavior:decimalNumberHandler];
+  return [self decimalNumberByDividingBy:decimalDivisor withBehavior:decimalNumberHandler];
+}
 
-  return [[self spx_priceNumberFormatter:localeIdentifier] stringFromNumber:result];
+- (NSString *)spx_localizedFullPriceForLocale:(NSString *)localeIdentifier
+                           discountPercentage:(NSUInteger)discountPercentage
+                                    dividedBy:(NSUInteger)divisor {
+  LTParameterAssert(discountPercentage < 100, @"Discount percentage must be smaller than 100, "
+                    "got: %lu", (unsigned long)discountPercentage);
+
+  static const auto kSmallPriceFraction = [[NSDecimalNumber alloc] initWithDouble:0.01];
+  auto fullPrice = [[NSDecimalNumber alloc]
+                    initWithDouble:self.floatValue * (100.0 / (100.0 - discountPercentage))];
+
+  auto dividedFullPrice = [fullPrice spx_decimalNumberByDividingBy:divisor roundingMode:NSRoundUp
+                                                             scale:0];
+  // Decrease the price by a small fraction so it will end with '.99' if the number wasn't an
+  // integer.
+  if (std::floor(fullPrice.floatValue) != fullPrice.floatValue) {
+    dividedFullPrice = [dividedFullPrice decimalNumberBySubtracting:kSmallPriceFraction];
+  }
+  return [[self spx_priceNumberFormatter:localeIdentifier] stringFromNumber:dividedFullPrice];
 }
 
 - (NSNumberFormatter *)spx_priceNumberFormatter:(NSString *)localeIdentifier {
