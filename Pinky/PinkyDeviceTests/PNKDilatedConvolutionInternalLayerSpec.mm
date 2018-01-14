@@ -29,7 +29,8 @@ static NSDictionary *PNKBuildHalfFloatDataForKernelExamples(id<MTLDevice> device
 
   auto expectedMat = PNKCalculateConvolution(paddingType, inputMat, convolutionModel.kernelWeights,
                                              (int)dilationX, (int)dilationY, (int)kStrideX,
-                                             (int)kStrideY);
+                                             (int)kStrideY, pnk::ActivationTypeIdentity,
+                                             cv::Mat1f(), cv::Mat1f());
 
   return @{
     kPNKKernelExamplesKernel: convolutionKernel,
