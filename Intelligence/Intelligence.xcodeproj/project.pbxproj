@@ -462,6 +462,13 @@
 			remoteGlobalIDString = 83C73F0B1C326ADA00FFC730;
 			remoteInfo = "FMDB MacOS";
 		};
+		A1FABF8A200CF93300C179C7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A16326AA1FEFB72100A02640 /* fmdb.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 6290CBB4188FE836009790F8;
+			remoteInfo = "FMDB-IOS";
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -1225,6 +1232,7 @@
 				A108A0441EBA19430037B6BE /* PBXBuildRule */,
 			);
 			dependencies = (
+				A1FABF8B200CF93300C179C7 /* PBXTargetDependency */,
 				A140130A1FCFEA2600760DE5 /* PBXTargetDependency */,
 			);
 			name = Intelligence;
@@ -1774,6 +1782,11 @@
 			name = TestHost;
 			targetProxy = A14172DD1E6EB331005DBEFF /* PBXContainerItemProxy */;
 		};
+		A1FABF8B200CF93300C179C7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "FMDB-IOS";
+			targetProxy = A1FABF8A200CF93300C179C7 /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
@@ -1787,7 +1800,6 @@
 					"$(SRCROOT)/../LTKit",
 					"$(SRCROOT)/../third_party/Mantle",
 					"$(SRCROOT)/../third_party/alooma-ios-sdk",
-					"$(SRCROOT)/../third_party/fmdb/src",
 					"$(SRCROOT)/../third_party/libextobjc",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
@@ -1806,7 +1818,6 @@
 					"$(SRCROOT)/../LTKit",
 					"$(SRCROOT)/../third_party/Mantle",
 					"$(SRCROOT)/../third_party/alooma-ios-sdk",
-					"$(SRCROOT)/../third_party/fmdb/src",
 					"$(SRCROOT)/../third_party/libextobjc",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
