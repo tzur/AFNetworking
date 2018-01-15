@@ -64,6 +64,20 @@
 			remoteGlobalIDString = 194FF4FC1FA8BA77008879E7;
 			remoteInfo = LTKitTestUtils;
 		};
+		88040655200C00DB00015482 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 88040650200C00DB00015482 /* Milkshake.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = A14171A11E6EAA93005DBEFF;
+			remoteInfo = Milkshake;
+		};
+		88040657200C00DB00015482 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 88040650200C00DB00015482 /* Milkshake.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = A14171C11E6EAC0D005DBEFF;
+			remoteInfo = MilkshakeTests;
+		};
 		882D1F241EC1AC6E007F39F5 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 882D1F1D1EC1AC6E007F39F5 /* extobjc.xcodeproj */;
@@ -366,6 +380,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		88040650200C00DB00015482 /* Milkshake.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Milkshake.xcodeproj; path = ../Milkshake/Milkshake.xcodeproj; sourceTree = "<group>"; };
 		882D1F171EC19A2C007F39F5 /* libcompression.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libcompression.tbd; path = usr/lib/libcompression.tbd; sourceTree = SDKROOT; };
 		882D1F1D1EC1AC6E007F39F5 /* extobjc.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = extobjc.xcodeproj; path = ../third_party/libextobjc/extobjc.xcodeproj; sourceTree = "<group>"; };
 		882D1F2D1EC1C497007F39F5 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -484,6 +499,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		88040651200C00DB00015482 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				88040656200C00DB00015482 /* libMilkshake.a */,
+				88040658200C00DB00015482 /* MilkshakeTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		882D1F1E1EC1AC6E007F39F5 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -638,6 +662,7 @@
 				A1674D6C1F016166006A3B07 /* FBTweak.xcodeproj */,
 				8B10C9971F3F058700F76142 /* LLReactiveMatchers.xcodeproj */,
 				A14172691E6EADDF005DBEFF /* LTKit.xcodeproj */,
+				88040650200C00DB00015482 /* Milkshake.xcodeproj */,
 				A141728F1E6EAF03005DBEFF /* OCMock.xcodeproj */,
 				8B6863BB1F33474400F0EF4C /* ReactiveObjC.xcodeproj */,
 				A14172A41E6EAF0D005DBEFF /* Specta.xcodeproj */,
@@ -907,6 +932,10 @@
 					ProjectRef = A14172691E6EADDF005DBEFF /* LTKit.xcodeproj */;
 				},
 				{
+					ProductGroup = 88040651200C00DB00015482 /* Products */;
+					ProjectRef = 88040650200C00DB00015482 /* Milkshake.xcodeproj */;
+				},
+				{
 					ProductGroup = A14172901E6EAF03005DBEFF /* Products */;
 					ProjectRef = A141728F1E6EAF03005DBEFF /* OCMock.xcodeproj */;
 				},
@@ -937,6 +966,20 @@
 			fileType = archive.ar;
 			path = libLTKitTestUtils.a;
 			remoteRef = 19C885601FC41F95009F147E /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		88040656200C00DB00015482 /* libMilkshake.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libMilkshake.a;
+			remoteRef = 88040655200C00DB00015482 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		88040658200C00DB00015482 /* MilkshakeTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = MilkshakeTests.xctest;
+			remoteRef = 88040657200C00DB00015482 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		882D1F251EC1AC6E007F39F5 /* libextobjc_OSX.a */ = {
@@ -1291,6 +1334,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../LTKit",
+					"$(SRCROOT)/../Milkshake",
 					"$(SRCROOT)/../third_party/Tweaks",
 					"$(SRCROOT)/../third_party/libextobjc",
 				);
@@ -1313,6 +1357,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../LTKit",
+					"$(SRCROOT)/../Milkshake",
 					"$(SRCROOT)/../third_party/Tweaks",
 					"$(SRCROOT)/../third_party/libextobjc",
 				);
