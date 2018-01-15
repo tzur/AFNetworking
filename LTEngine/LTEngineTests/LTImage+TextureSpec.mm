@@ -17,6 +17,18 @@ it(@"should create texture from RGBA image", ^{
   expect($([texture image])).to.equalMat($(ltImage.mat));
 });
 
+it(@"should create texture from CMYK image", ^{
+  UIImage *image = LTLoadImage([self class], @"White8bitCMYK.tif");
+  LTTexture *texture = [LTImage textureWithImage:image];
+  LTImage *ltImage = [[LTImage alloc] initWithImage:image];
+  cv::Mat4b expected(image.size.height, image.size.width, cv::Vec4b(255, 255, 255, 255));
+
+  // For some reason the converted white is (255, 255, 254).
+  expect($(expected)).to.beCloseToMatWithin($(ltImage.mat), @1);
+  expect(texture.pixelFormat).to.equal($(LTGLPixelFormatRGBA8Unorm));
+  expect($([texture image])).to.equalMat($(ltImage.mat));
+});
+
 it(@"should create texture from a transparent image", ^{
   UIImage *image = LTLoadImage([self class], @"BlueTransparent.png");
   LTTexture *texture = [LTImage textureWithImage:image backgroundColor:nil];
