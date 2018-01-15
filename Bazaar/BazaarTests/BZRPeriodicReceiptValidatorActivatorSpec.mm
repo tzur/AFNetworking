@@ -222,7 +222,6 @@ context(@"subscription exists", ^{
 
     OCMExpect([activator timerSignal:
         [OCMArg checkWithBlock:^BOOL(NSNumber *timeToNextValidation) {
-      NSLog(@"%@", timeToNextValidation);
           return [timeToNextValidation doubleValue] < 0;
         }]]);
 

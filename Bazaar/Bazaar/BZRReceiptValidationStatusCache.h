@@ -63,7 +63,7 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 #pragma mark -
-#pragma mark BZRCachedReceiptValidationStatusCache
+#pragma mark BZRReceiptValidationStatusCache+MultiApp
 #pragma mark -
 
 /// Adds convenience method for loading cache entries of multiple applications.

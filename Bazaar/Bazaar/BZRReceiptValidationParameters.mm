@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
     userID:(nullable NSString *)userID {
   if (self = [super init]) {
     _currentApplicationBundleID = [currentApplicationBundleID copy];
-    _applicationBundleID = [applicationBundleID  copy];
+    _applicationBundleID = [applicationBundleID copy];
     _receiptData = receiptData;
     _deviceID = deviceID;
     _appStoreLocale = appStoreLocale;

@@ -26,7 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// Seconds until the cache is invalidated, starting from the date of the last validation.
 @property (readonly, nonatomic) NSTimeInterval cachedEntryTimeToLive;
 
-/// Subject used to send events;
+/// Subject used to send events with.
 @property (readonly, nonatomic) RACSubject<BZREvent *> *eventsSubject;
 
 @end
