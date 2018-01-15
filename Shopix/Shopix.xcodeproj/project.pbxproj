@@ -103,6 +103,7 @@
 		CDF5FB291FCF249B007D4AB0 /* SPXSubscriptionGradientButtonsFactorySpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = CDF5FB281FCF249B007D4AB0 /* SPXSubscriptionGradientButtonsFactorySpec.mm */; };
 		CDF621E01FEFCED800D05AEC /* SPXSubscriptionButtonsPageViewModelSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = CDF621DF1FEFCED800D05AEC /* SPXSubscriptionButtonsPageViewModelSpec.mm */; };
 		CDF621E21FEFD42700D05AEC /* SPXSubscriptionButtonsPageViewModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = CDF621E11FEFD42700D05AEC /* SPXSubscriptionButtonsPageViewModel.mm */; };
+		EA107800200BF183008F856D /* SPXSubscriptionDescriptorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = EA1077FF200BF183008F856D /* SPXSubscriptionDescriptorSpec.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -639,6 +640,7 @@
 		CDF620A11FEF918F00D05AEC /* SPXSubscriptionButtonsPageViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPXSubscriptionButtonsPageViewModel.h; sourceTree = "<group>"; };
 		CDF621DF1FEFCED800D05AEC /* SPXSubscriptionButtonsPageViewModelSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXSubscriptionButtonsPageViewModelSpec.mm; sourceTree = "<group>"; };
 		CDF621E11FEFD42700D05AEC /* SPXSubscriptionButtonsPageViewModel.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXSubscriptionButtonsPageViewModel.mm; sourceTree = "<group>"; };
+		EA1077FF200BF183008F856D /* SPXSubscriptionDescriptorSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXSubscriptionDescriptorSpec.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1146,6 +1148,7 @@
 				CDD9F7A71FE8108200A7A6DB /* Subscription Screens */,
 				CD25F00820066A6C004B0D6F /* BZRBillingPeriod+ProductIdentifierSpec.mm */,
 				CD35E8C61FFBF9BE00BDE1E0 /* SPXColorSchemeSpec.mm */,
+				EA1077FF200BF183008F856D /* SPXSubscriptionDescriptorSpec.mm */,
 				63DC6CE61FD405FC009C0B71 /* SPXSubscriptionManager+RACSignalSupportSpec.mm */,
 				CDB513A41F66B0A10013577C /* SPXSubscriptionManagerSpec.mm */,
 				CDF5FAC61FCEED2D007D4AB0 /* UIFont+ShopixSpec.mm */,
@@ -1788,6 +1791,7 @@
 				88CEB4511FB44D1B00E01950 /* SPXVoucherSpec.mm in Sources */,
 				CDCFDEF91F5C39B300C289BA /* NSDecimalNumber+LocalizationSpec.mm in Sources */,
 				CD25F00920066A6C004B0D6F /* BZRBillingPeriod+ProductIdentifierSpec.mm in Sources */,
+				EA107800200BF183008F856D /* SPXSubscriptionDescriptorSpec.mm in Sources */,
 				CD35E8C71FFBF9BE00BDE1E0 /* SPXColorSchemeSpec.mm in Sources */,
 				8B33A96E1FDD691000F60182 /* SKStoreProductViewController+ShopixSpec.mm in Sources */,
 				CDC83B431FD04E2400E9F41A /* SPXSubscriptionViewModelSpec.mm in Sources */,
