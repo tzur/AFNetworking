@@ -18,12 +18,12 @@ beforeEach(^{
   SPXSubscriptionButtonFormatter *formatter = OCMClassMock([SPXSubscriptionButtonFormatter class]);
   auto subscriptionPeriod = ([[NSAttributedString alloc] initWithString:@"boo"]);
   auto subscriptionPrice = ([[NSAttributedString alloc] initWithString:@"10"]);
-  OCMStub([formatter periodTextForSubscription:@"foo" monthlyFormat:YES])
+  descriptor = [[SPXSubscriptionDescriptor alloc] initWithProductIdentifier:@"foo"];
+  OCMStub([formatter billingPeriodTextForSubscription:descriptor monthlyFormat:YES])
       .andReturn(subscriptionPeriod);
-  OCMStub([formatter joinedPriceTextForSubscription:@"foo" priceInfo:[OCMArg any]
+  OCMStub([formatter joinedPriceTextForSubscription:descriptor
                                       monthlyFormat:YES]).andReturn(subscriptionPrice);
 
-  descriptor = [[SPXSubscriptionDescriptor alloc] initWithProductIdentifier:@"foo"];
   buttonsFactory =
       [[SPXSubscriptionGradientButtonsFactory alloc]
        initWithBottomGradientColors:@[[UIColor whiteColor], [UIColor blackColor]]

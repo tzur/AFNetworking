@@ -3,10 +3,12 @@
 
 #import "SPXSubscriptionButtonFormatter.h"
 
+#import <Bazaar/BZRBillingPeriod.h>
 #import <Bazaar/BZRProductPriceInfo.h>
 #import <Wireframes/UIFont+Utilities.h>
 
 #import "NSDecimalNumber+Localization.h"
+#import "SPXSubscriptionDescriptor.h"
 #import "UIFont+Shopix.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -39,19 +41,20 @@ using namespace spx;
   return self;
 }
 
-- (NSAttributedString *)periodTextForSubscription:(NSString *)subscriptionIdentifier
-                                    monthlyFormat:(BOOL)monthlyFormat {
-  if ([subscriptionIdentifier containsString:@".Monthly"]) {
-    return [self periodTextForMonths:1];
-  } else if ([subscriptionIdentifier containsString:@".BiYearly"]) {
-    return [self periodTextForMonths:6];
-  } else if ([subscriptionIdentifier containsString:@".Yearly"]) {
-    return monthlyFormat ? [self periodTextForMonths:12] : [self periodTextForYearlySubscription];
-  } else if ([subscriptionIdentifier containsString:@".OneTimePayment"]) {
+- (NSAttributedString *)billingPeriodTextForSubscription:(SPXSubscriptionDescriptor *)descriptor
+                                           monthlyFormat:(BOOL)monthlyFormat {
+  if ([descriptor.billingPeriod.unit isEqual:$(BZRBillingPeriodUnitMonths)]) {
+    return [self periodTextForMonths:descriptor.billingPeriod.unitCount];
+  } else if ([descriptor.billingPeriod.unit isEqual:$(BZRBillingPeriodUnitYears)]) {
+    return monthlyFormat ? [self periodTextForMonths:descriptor.billingPeriod.unitCount * 12] :
+        [self periodTextForYearlySubscription];
+  } else if (!descriptor.billingPeriod) {
     return [self periodTextForOneTimePayment];
   }
-  LTParameterAssert(NO, @"Unknown subscription period in product identifier: %@",
-                    subscriptionIdentifier);
+
+  LTParameterAssert(NO, @"Unsupported subscription's billing period (%@) in subscription with "
+                    "product identifier: %@", descriptor.billingPeriod,
+                    descriptor.productIdentifier);
 }
 
 - (NSAttributedString *)periodTextForMonths:(NSUInteger)numberOfMonths {
@@ -100,16 +103,18 @@ using namespace spx;
   }];
 }
 
-- (NSAttributedString *)priceTextForSubscription:(NSString *)subscriptionIdentifier
-                                       priceInfo:(BZRProductPriceInfo *)priceInfo
+- (NSAttributedString *)priceTextForSubscription:(SPXSubscriptionDescriptor *)descriptor
                                    monthlyFormat:(BOOL)monthlyFormat {
-  NSUInteger divisor =
-      monthlyFormat ? [self divisorForSubscriptionPeriod:subscriptionIdentifier] : 1;
-  NSString *priceString = [priceInfo.price spx_localizedPriceForLocale:priceInfo.localeIdentifier
-                                                             dividedBy:divisor];
+  LTParameterAssert(descriptor.priceInfo, @"Price text for the subscription product (%@) is "
+                    "requested but the subscription price information is nil",
+                    descriptor.productIdentifier);
 
-  BOOL isOneTimePayment = [subscriptionIdentifier containsString:@".OneTimePayment"];
-  priceString = (monthlyFormat && !isOneTimePayment) ?
+  NSUInteger divisor = (monthlyFormat && descriptor.billingPeriod) ?
+      [self numberOfMonthsInSubscriptionPeriod:descriptor.billingPeriod] : 1;
+  NSString *priceString = [descriptor.priceInfo.price
+                           spx_localizedPriceForLocale:descriptor.priceInfo.localeIdentifier
+                           dividedBy:divisor];
+  priceString = (monthlyFormat && descriptor.billingPeriod) ?
       [self appendPerMonthSuffixToPrice:priceString] : priceString;
 
   return [[NSAttributedString alloc] initWithString:priceString attributes:@{
@@ -119,19 +124,14 @@ using namespace spx;
   }];
 }
 
-- (NSUInteger)divisorForSubscriptionPeriod:(NSString *)subscriptionIdentifier {
-  if ([subscriptionIdentifier containsString:@".Monthly"]) {
-    return 1;
-  } else if ([subscriptionIdentifier containsString:@".BiYearly"]) {
-    return 6;
-  } else if ([subscriptionIdentifier containsString:@".Yearly"]) {
-    return 12;
-  } else if ([subscriptionIdentifier containsString:@".OneTimePayment"]) {
-    return 1;
+- (NSUInteger)numberOfMonthsInSubscriptionPeriod:(BZRBillingPeriod *)billingPeriod {
+  if ([billingPeriod.unit isEqual:$(BZRBillingPeriodUnitMonths)]) {
+    return billingPeriod.unitCount;
+  } else if ([billingPeriod.unit isEqual:$(BZRBillingPeriodUnitYears)]) {
+    return billingPeriod.unitCount * 12;
   }
 
-  LTParameterAssert(NO, @"Unknown subscription period in product identifier: %@",
-                    subscriptionIdentifier);
+  LTParameterAssert(NO, @"Unsupported subscription's billing period: %@", billingPeriod);
 }
 
 - (NSString *)appendPerMonthSuffixToPrice:(NSString *)price {
@@ -141,21 +141,23 @@ using namespace spx;
   return [NSString stringWithFormat:@"%@%@", price, perMonthSuffix];
 }
 
-- (nullable NSAttributedString *)fullPriceTextForSubscription:(NSString *)subscriptionIdentifier
-                                                    priceInfo:(BZRProductPriceInfo *)priceInfo
-                                                monthlyFormat:(BOOL)monthlyFormat {
-  if (!priceInfo.fullPrice) {
+- (nullable NSAttributedString *)
+    fullPriceTextForSubscription:(SPXSubscriptionDescriptor *)descriptor
+    monthlyFormat:(BOOL)monthlyFormat {
+  LTParameterAssert(descriptor.priceInfo, @"Full price text for the subscription product (%@) is "
+                    "requested but the subscription price information is nil",
+                    descriptor.productIdentifier);
+
+  if (!descriptor.priceInfo.fullPrice) {
     return nil;
   }
 
-  NSUInteger divisor =
-      monthlyFormat ? [self divisorForSubscriptionPeriod:subscriptionIdentifier] : 1;
-  NSString *fullPriceString =
-      [priceInfo.fullPrice spx_localizedPriceForLocale:priceInfo.localeIdentifier
-                                             dividedBy:divisor];
-
-  BOOL isOneTimePayment = [subscriptionIdentifier containsString:@".OneTimePayment"];
-  fullPriceString = (monthlyFormat && !isOneTimePayment) ?
+  NSUInteger divisor = (monthlyFormat && descriptor.billingPeriod) ?
+      [self numberOfMonthsInSubscriptionPeriod:descriptor.billingPeriod] : 1;
+  NSString *fullPriceString = [descriptor.priceInfo.fullPrice
+                               spx_localizedPriceForLocale:descriptor.priceInfo.localeIdentifier
+                               dividedBy:divisor];
+  fullPriceString = (monthlyFormat && descriptor.billingPeriod) ?
       [self appendPerMonthSuffixToPrice:fullPriceString] : fullPriceString;
 
   return [[NSAttributedString alloc] initWithString:fullPriceString attributes:@{
@@ -167,14 +169,11 @@ using namespace spx;
   }];
 }
 
-- (NSAttributedString *)joinedPriceTextForSubscription:(NSString *)subscriptionIdentifier
-                                             priceInfo:(BZRProductPriceInfo *)priceInfo
+- (NSAttributedString *)joinedPriceTextForSubscription:(SPXSubscriptionDescriptor *)descriptor
                                          monthlyFormat:(BOOL)monthlyFormat {
-  auto attributedPriceText = [self priceTextForSubscription:subscriptionIdentifier
-                                                  priceInfo:priceInfo monthlyFormat:monthlyFormat];
+  auto attributedPriceText = [self priceTextForSubscription:descriptor monthlyFormat:monthlyFormat];
   auto _Nullable attributedFullPriceText =
-      [self fullPriceTextForSubscription:subscriptionIdentifier priceInfo:priceInfo
-                           monthlyFormat:monthlyFormat];
+      [self fullPriceTextForSubscription:descriptor monthlyFormat:monthlyFormat];
 
   if (!attributedFullPriceText) {
     return attributedPriceText;

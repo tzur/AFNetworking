@@ -66,8 +66,8 @@ NS_ASSUME_NONNULL_BEGIN
   subscriptionButton.exclusiveTouch = YES;
   subscriptionButton.enabled = NO;
   subscriptionButton.topText =
-      [self.formatter periodTextForSubscription:subscriptionDescriptor.productIdentifier
-                                  monthlyFormat:YES];
+      [self.formatter billingPeriodTextForSubscription:subscriptionDescriptor
+                                         monthlyFormat:YES];
   subscriptionButton.bottomGradientColors = isHighlighted && self.highlightedBottomColors ?
       self.highlightedBottomColors : self.bottomGradientColors;
   if (isHighlighted) {
@@ -85,8 +85,8 @@ NS_ASSUME_NONNULL_BEGIN
       deliverOnMainThread]
       map:^NSAttributedString * _Nullable (BZRProductPriceInfo * _Nullable priceInfo) {
         return priceInfo ?
-            [formatter joinedPriceTextForSubscription:subscriptionDescriptor.productIdentifier
-                                            priceInfo:priceInfo monthlyFormat:YES] : nil;
+            [formatter joinedPriceTextForSubscription:subscriptionDescriptor
+                                        monthlyFormat:YES] : nil;
       }];
 
   return subscriptionButton;
