@@ -44,10 +44,16 @@ context(@"kernel input region", ^{
                                                   activationModel:activationModel];
   });
 
-  it(@"should calculate primary input region correctly", ^{
+  it(@"should calculate input region correctly", ^{
     MTLSize outputSize = {kInputWidth, kInputHeight, inputChannels};
     MTLRegion inputRegion = [instanceNormOp inputRegionForOutputSize:outputSize];
     expect($(inputRegion.size)).to.equalMTLSize($(outputSize));
+  });
+
+  it(@"should calculate output size correctly", ^{
+    MTLSize inputSize = {kInputWidth, kInputHeight, inputChannels};
+    MTLSize outputSize = [instanceNormOp outputSizeForInputSize:inputSize];
+    expect($(outputSize)).to.equalMTLSize($(inputSize));
   });
 });
 
@@ -59,7 +65,7 @@ context(@"instance normalization operation with Float16 channel format", ^{
       .activationType = pnk::ActivationTypeIdentity
     };
 
-    NSBundle *bundle = [NSBundle bundleForClass:[PNKInstanceNormLayerSpec class]];
+    NSBundle *bundle = NSBundle.lt_testBundle;
 
     pnk::NormalizationKernelModel normalizationModel = {
       .instanceNormalization = YES,
@@ -113,7 +119,7 @@ context(@"instance normalization operation with Float16 channel format", ^{
       .activationType = pnk::ActivationTypeIdentity
     };
 
-    NSBundle *bundle = [NSBundle bundleForClass:[PNKInstanceNormLayerSpec class]];
+    NSBundle *bundle = NSBundle.lt_testBundle;
 
     pnk::NormalizationKernelModel normalizationModel = {
       .instanceNormalization = YES,
@@ -158,7 +164,7 @@ context(@"instance normalization operation with Float16 channel format", ^{
       .activationType = pnk::ActivationTypeReLU
     };
 
-    NSBundle *bundle = [NSBundle bundleForClass:[PNKInstanceNormLayerSpec class]];
+    NSBundle *bundle = NSBundle.lt_testBundle;
 
     pnk::NormalizationKernelModel normalizationModel = {
       .instanceNormalization = YES,

@@ -290,39 +290,38 @@ context(@"subscription exists", ^{
         @"bar": BZRCacheEntryWithActiveSubscriptionAndDate(laterDate)
       });
       BZRStubCurrentTimeWithIntervalSinceDate(timeProvider, 133, laterDate);
-
       OCMExpect([activator timerSignal:
                  [OCMArg checkWithBlock:^BOOL(NSNumber *timeToNextValidation) {
-        return abs([timeToNextValidation doubleValue] - (subscriptionPeriod / 2) + 133 +
-            [laterDate timeIntervalSinceDate:earlierDate]) < 0.0001;
-      }]]);
+         return abs([timeToNextValidation doubleValue] - (subscriptionPeriod / 2) + 133 +
+             [laterDate timeIntervalSinceDate:earlierDate]) < 0.0001;
+       }]]);
 
-      aggregatedReceiptValidationStatusProvider.receiptValidationStatus = receiptValidationStatus;
-      OCMVerifyAll((id)activator);
-    });
+       aggregatedReceiptValidationStatusProvider.receiptValidationStatus = receiptValidationStatus;
+       OCMVerifyAll((id)activator);
+     });
 
-    it(@"should compute time left to next validation in relation to last validation date of the "
-       "receipt validation status whose subscription is not cancelled", ^{
-      NSDate *earlierDate = [NSDate dateWithTimeIntervalSince1970:30];
-      NSDate *laterDate = [NSDate dateWithTimeIntervalSince1970:60];
+     it(@"should compute time left to next validation in relation to last validation date of the "
+        "receipt validation status whose subscription is not cancelled", ^{
+       NSDate *earlierDate = [NSDate dateWithTimeIntervalSince1970:30];
+       NSDate *laterDate = [NSDate dateWithTimeIntervalSince1970:60];
 
-      auto cacheEntry = [[BZRReceiptValidationStatusCacheEntry alloc]
-                         initWithReceiptValidationStatus:
-                         BZRReceiptValidationStatusWithExpiry(YES, YES)
-                         cachingDateTime:earlierDate];
-      BZRStubLoadedCacheEntries(receiptValidationStatusCache, @{
-        @"foo": cacheEntry,
-        @"bar": BZRCacheEntryWithActiveSubscriptionAndDate(laterDate)
-      });
-      BZRStubCurrentTimeWithIntervalSinceDate(timeProvider, 133, laterDate);
+       auto cacheEntry = [[BZRReceiptValidationStatusCacheEntry alloc]
+                          initWithReceiptValidationStatus:
+                          BZRReceiptValidationStatusWithExpiry(YES, YES)
+                          cachingDateTime:earlierDate];
+       BZRStubLoadedCacheEntries(receiptValidationStatusCache, @{
+         @"foo": cacheEntry,
+         @"bar": BZRCacheEntryWithActiveSubscriptionAndDate(laterDate)
+       });
+       BZRStubCurrentTimeWithIntervalSinceDate(timeProvider, 133, laterDate);
 
-      OCMExpect([activator timerSignal:
-                 [OCMArg checkWithBlock:^BOOL(NSNumber *timeToNextValidation) {
-        return abs([timeToNextValidation doubleValue] - (subscriptionPeriod / 2) + 133) < 0.0001;
-      }]]);
+       OCMExpect([activator timerSignal:
+                  [OCMArg checkWithBlock:^BOOL(NSNumber *timeToNextValidation) {
+         return abs([timeToNextValidation doubleValue] - (subscriptionPeriod / 2) + 133) < 0.0001;
+       }]]);
 
-      aggregatedReceiptValidationStatusProvider.receiptValidationStatus = receiptValidationStatus;
-      OCMVerifyAll((id)activator);
+       aggregatedReceiptValidationStatusProvider.receiptValidationStatus = receiptValidationStatus;
+       OCMVerifyAll((id)activator);
     });
   });
 });

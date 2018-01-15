@@ -5,6 +5,7 @@
 
 #import <LTKit/LTPath.h>
 #import <LTKit/NSFileManager+LTKit.h>
+#import <MobileCoreServices/MobileCoreServices.h>
 
 #import "NSError+Photons.h"
 #import "PTNImageMetadata.h"
@@ -13,7 +14,7 @@
 
 SpecBegin(PTNFileBackedImageAsset)
 
-__block id<PTNDataAsset, PTNImageAsset> asset;
+__block PTNFileBackedImageAsset *asset;
 __block NSFileManager *fileManager;
 __block PTNImageResizer *resizer;
 __block id<PTNResizingStrategy> resizingStrategy;
@@ -21,8 +22,7 @@ __block NSData *imageData;
 __block LTPath *path;
 
 beforeEach(^{
-  NSString *pathString = [[NSBundle bundleForClass:[self class]] pathForResource:@"PTNImageAsset"
-                                                                          ofType:@"jpg"];
+  NSString *pathString = [NSBundle.lt_testBundle pathForResource:@"PTNImageAsset" ofType:@"jpg"];
   path = [LTPath pathWithPath:pathString];
   imageData = [NSData dataWithContentsOfFile:path.path];
   fileManager = OCMClassMock([NSFileManager class]);
@@ -31,6 +31,10 @@ beforeEach(^{
   asset = [[PTNFileBackedImageAsset alloc] initWithFilePath:path fileManager:fileManager
                                                imageResizer:resizer
                                            resizingStrategy:resizingStrategy];
+});
+
+it(@"should have UTI to match the file", ^{
+  expect(asset.uniformTypeIdentifier).to.equal((__bridge_transfer NSString *)kUTTypeJPEG);
 });
 
 it(@"should return underlying image", ^{
@@ -74,8 +78,7 @@ it(@"should write data to disk", ^{
 
 context(@"path of unsupported data", ^{
   beforeEach(^{
-    NSString *pathString = [[NSBundle bundleForClass:[self class]] pathForResource:@"PTNImageAsset"
-                                                                            ofType:@"txt"];
+    NSString *pathString = [NSBundle.lt_testBundle pathForResource:@"PTNImageAsset" ofType:@"txt"];
     path = [LTPath pathWithPath:pathString];
     asset = [[PTNFileBackedImageAsset alloc] initWithFilePath:path fileManager:fileManager
                                                  imageResizer:resizer

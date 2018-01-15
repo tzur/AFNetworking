@@ -29,6 +29,11 @@ NS_ASSUME_NONNULL_BEGIN
                             uniforms:(NSDictionary<NSString *, NSValue *> *)uniforms
     NS_DESIGNATED_INITIALIZER;
 
+/// Returns a new instance equal to the receiver, with the exception of the given
+/// \c auxiliaryTextures and \c uniforms.
+- (instancetype)copyWithAuxiliaryTextures:(NSDictionary<NSString *, LTTexture *> *)textures
+                                 uniforms:(NSDictionary<NSString *, NSValue *> *)uniforms;
+
 /// Source code to be executed by the vertex shader used by the \c DVNPipeline.
 @property (readonly, nonatomic) NSString *vertexSource;
 

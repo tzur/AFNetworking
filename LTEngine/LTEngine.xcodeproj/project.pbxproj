@@ -1239,12 +1239,14 @@
 		B467099F1E07F57F000CD9F5 /* LTFboAttachmentInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = B467099D1E07F57F000CD9F5 /* LTFboAttachmentInfo.h */; };
 		B46709A01E07F57F000CD9F5 /* LTFboAttachmentInfo.mm in Sources */ = {isa = PBXBuildFile; fileRef = B467099E1E07F57F000CD9F5 /* LTFboAttachmentInfo.mm */; };
 		B4755A981E76A51B0018FF0A /* IndexedColor.png in Resources */ = {isa = PBXBuildFile; fileRef = B4755A971E76A51B0018FF0A /* IndexedColor.png */; };
+		B48C2BCC1F9744AC008CC04C /* HorizontalStep8bitRGBA.png in Resources */ = {isa = PBXBuildFile; fileRef = B4BF60761F9742B900560891 /* HorizontalStep8bitRGBA.png */; };
+		B48C2BCD1F9744AC008CC04C /* HorizontalStep16bitRGBA.png in Resources */ = {isa = PBXBuildFile; fileRef = B4BF60A91F9742C000560891 /* HorizontalStep16bitRGBA.png */; };
+		B48C2C001F9744BC008CC04C /* GrayTones8bit.png in Resources */ = {isa = PBXBuildFile; fileRef = B4BF60AB1F9742EA00560891 /* GrayTones8bit.png */; };
+		B48C2C011F9744D2008CC04C /* Black8bitRA.png in Resources */ = {isa = PBXBuildFile; fileRef = B4BF60AA1F9742D400560891 /* Black8bitRA.png */; };
 		B4947F061DFD4FF500872FBE /* UIImage+Factory.h in Headers */ = {isa = PBXBuildFile; fileRef = B4947F041DFD4FF500872FBE /* UIImage+Factory.h */; };
 		B4947F071DFD4FF500872FBE /* UIImage+Factory.mm in Sources */ = {isa = PBXBuildFile; fileRef = B4947F051DFD4FF500872FBE /* UIImage+Factory.mm */; };
 		B4947F3B1DFD670000872FBE /* UIImage+FactorySpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = B4947F3A1DFD670000872FBE /* UIImage+FactorySpec.mm */; };
 		B499E0421F3886350052212E /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3C0A5118329505000845BA /* CoreVideo.framework */; };
-		B49EB6AE1F2EFED6008EDBD3 /* LTFbo+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = B49EB6AC1F2EFED6008EDBD3 /* LTFbo+Private.h */; };
-		B49EB6E41F2F0736008EDBD3 /* LTRenderbuffer+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = B49EB6E21F2F0736008EDBD3 /* LTRenderbuffer+Private.h */; };
 		B4BF15F21F41C8DD0077726E /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3C0A531832950F000845BA /* AVFoundation.framework */; };
 		B4BF16271F41D89D0077726E /* LTImageHEICCompressor.h in Headers */ = {isa = PBXBuildFile; fileRef = B4BF16251F41D89D0077726E /* LTImageHEICCompressor.h */; };
 		B4BF16281F41D89D0077726E /* LTImageHEICCompressor.mm in Sources */ = {isa = PBXBuildFile; fileRef = B4BF16261F41D89D0077726E /* LTImageHEICCompressor.mm */; };
@@ -2113,6 +2115,7 @@
 		283906C718C620DB00BD21CE /* LTPainterMergeShader.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = LTPainterMergeShader.fsh; sourceTree = "<group>"; };
 		283906CA18C71DF500BD21CE /* LTPainterSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTPainterSpec.mm; sourceTree = "<group>"; };
 		2839AA981AF10E030019EEE6 /* CircularPatchFlipped.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = CircularPatchFlipped.png; path = Resources/CircularPatchFlipped.png; sourceTree = "<group>"; };
+		283A4B581FE9043C009608E6 /* EXPMatchers+beCloseToLTVector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EXPMatchers+beCloseToLTVector.h"; sourceTree = "<group>"; };
 		283A959F1B70AB36004559BF /* LTMathUtils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTMathUtils.mm; sourceTree = "<group>"; };
 		283BD0391922214300B68A90 /* ShapeDrawerPathShapeCloseSubpath.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ShapeDrawerPathShapeCloseSubpath.png; path = Resources/ShapeDrawerPathShapeCloseSubpath.png; sourceTree = "<group>"; };
 		283BD03A1922214300B68A90 /* ShapeDrawerPathShapeLineFromCenter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ShapeDrawerPathShapeLineFromCenter.png; path = Resources/ShapeDrawerPathShapeLineFromCenter.png; sourceTree = "<group>"; };
@@ -2604,7 +2607,7 @@
 		656155A01D4649F9009E701C /* Specta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Specta.xcodeproj; path = ../../third_party/Specta/Specta/Specta.xcodeproj; sourceTree = "<group>"; };
 		656155B51D464A12009E701C /* Objection-iOS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = "Objection-iOS.framework"; path = "../third_party/objection/Objection-iOS.framework"; sourceTree = "<group>"; };
 		656155B71D464A28009E701C /* opencv2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = opencv2.framework; path = ../third_party/opencv/opencv2.framework; sourceTree = "<group>"; };
-		656155BC1D464B4B009E701C /* TestHost.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TestHost.xcodeproj; path = ../../Foundations/TestHost.xcodeproj; sourceTree = "<group>"; };
+		656155BC1D464B4B009E701C /* TestHost.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TestHost.xcodeproj; path = ../../TestHost/TestHost.xcodeproj; sourceTree = "<group>"; };
 		658788A51AC196F4007EDF71 /* LTSeparableImageProcessorSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTSeparableImageProcessorSpec.mm; sourceTree = "<group>"; };
 		6A4444711B4AC5E200B9C710 /* LTFboPoolSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTFboPoolSpec.mm; sourceTree = "<group>"; };
 		6AB548BE1C81F99700672127 /* CVPixelBuffer+LTEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CVPixelBuffer+LTEngine.h"; sourceTree = "<group>"; };
@@ -3064,11 +3067,13 @@
 		B4947F041DFD4FF500872FBE /* UIImage+Factory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Factory.h"; sourceTree = "<group>"; };
 		B4947F051DFD4FF500872FBE /* UIImage+Factory.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIImage+Factory.mm"; sourceTree = "<group>"; };
 		B4947F3A1DFD670000872FBE /* UIImage+FactorySpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIImage+FactorySpec.mm"; sourceTree = "<group>"; };
-		B49EB6AC1F2EFED6008EDBD3 /* LTFbo+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "LTFbo+Private.h"; sourceTree = "<group>"; };
-		B49EB6E21F2F0736008EDBD3 /* LTRenderbuffer+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "LTRenderbuffer+Private.h"; sourceTree = "<group>"; };
 		B4BF16251F41D89D0077726E /* LTImageHEICCompressor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LTImageHEICCompressor.h; sourceTree = "<group>"; };
 		B4BF16261F41D89D0077726E /* LTImageHEICCompressor.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = LTImageHEICCompressor.mm; sourceTree = "<group>"; };
 		B4BF16291F41DAB00077726E /* LTImageHEICCompressorSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = LTImageHEICCompressorSpec.mm; sourceTree = "<group>"; };
+		B4BF60761F9742B900560891 /* HorizontalStep8bitRGBA.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = HorizontalStep8bitRGBA.png; path = Resources/HorizontalStep8bitRGBA.png; sourceTree = "<group>"; };
+		B4BF60A91F9742C000560891 /* HorizontalStep16bitRGBA.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = HorizontalStep16bitRGBA.png; path = Resources/HorizontalStep16bitRGBA.png; sourceTree = "<group>"; };
+		B4BF60AA1F9742D400560891 /* Black8bitRA.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Black8bitRA.png; path = Resources/Black8bitRA.png; sourceTree = "<group>"; };
+		B4BF60AB1F9742EA00560891 /* GrayTones8bit.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GrayTones8bit.png; path = Resources/GrayTones8bit.png; sourceTree = "<group>"; };
 		B4E4932D1F801EE600AB6BE3 /* White8bitCMYK.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = White8bitCMYK.tif; path = Resources/White8bitCMYK.tif; sourceTree = "<group>"; };
 		B4F1DEB11E2CB3430042DB2A /* LTFboAttachableInfoSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LTFboAttachableInfoSpec.mm; sourceTree = "<group>"; };
 		BEB7BEB41E26804B007EAB73 /* NSValueTransformer+LTEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSValueTransformer+LTEngine.h"; sourceTree = "<group>"; };
@@ -4691,6 +4696,7 @@
 				25AF176D1AD50C4A0055E664 /* Vector Graphics */,
 				8BBEE93719FC032300A2FA6B /* AspectFittedFlower.png */,
 				7C6C5B831D6DA6E400D9F269 /* AspectFittedHalfTransparent.png */,
+				B4BF60AA1F9742D400560891 /* Black8bitRA.png */,
 				280108F8197EBB0F0015F62A /* BlueRedBorderRoundedCorners.png */,
 				8BA8C68A18699EB100E6F486 /* BlueTransparent.png */,
 				8BA8C68C1869AC2700E6F486 /* BlueTransparentPremultiplied.png */,
@@ -4752,6 +4758,7 @@
 				30DDD6B21CFC8A7500AE72B8 /* GaussianFilterLena256.png */,
 				28A612951934F15D00D005D8 /* GaussianSquare.png */,
 				8BA8C6831869782200E6F486 /* Gray.jpg */,
+				B4BF60AB1F9742EA00560891 /* GrayTones8bit.png */,
 				E412C8C81F653FF10070FCBC /* GuidedFilterAmphorasFlash.png */,
 				E412C8C51F653F320070FCBC /* GuidedFilterAmphorasNoFlash.png */,
 				E412C8C11F653DC00070FCBC /* GuidedFilterAmphorasResult.png */,
@@ -4769,6 +4776,8 @@
 				E412C8AA1F6144B20070FCBC /* GuidedFilterLenna67x128_R7S3.png */,
 				E412C8A81F6144B20070FCBC /* GuidedFilterLenna67x128_R7S3_Scale.png */,
 				E412C8A91F6144B20070FCBC /* GuidedFilterLenna67x128_R7S3_Shift.png */,
+				B4BF60A91F9742C000560891 /* HorizontalStep16bitRGBA.png */,
+				B4BF60761F9742B900560891 /* HorizontalStep8bitRGBA.png */,
 				06B5C1F11D181A9400401556 /* HorizontalStepFunction32.png */,
 				06F9F2CF1D59B558002D2726 /* HorizontalStepFunction32_bilateral_L1toL3.png */,
 				06F9F2D01D59B558002D2726 /* HorizontalStepFunction32_bilateral_L1toL3toL1.png */,
@@ -5135,7 +5144,6 @@
 		8B85C79A182A31C8004C352E /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				8B16C9B01BAF01B6002FB750 /* LTKit */,
 				8B16CAB51BB06783002FB750 /* Expecta.xcodeproj */,
 				8B8A822B1BD662350027B97D /* OCMock.xcodeproj */,
 				8B16CAD01BB06797002FB750 /* Specta.xcodeproj */,
@@ -5234,7 +5242,6 @@
 				8BB47135183A438300CA1681 /* LTDrawingContext.mm */,
 				288AB3F618351FFE00A11FA4 /* LTFbo.h */,
 				288AB3F718351FFE00A11FA4 /* LTFbo.mm */,
-				B49EB6AC1F2EFED6008EDBD3 /* LTFbo+Private.h */,
 				8B9F3C051C16E0DF00FEB7C4 /* LTFboAttachable.h */,
 				B467099D1E07F57F000CD9F5 /* LTFboAttachmentInfo.h */,
 				B467099E1E07F57F000CD9F5 /* LTFboAttachmentInfo.mm */,
@@ -5274,7 +5281,6 @@
 				85ECD6551D44020A007C9056 /* LTRegularGridMesh.mm */,
 				8B9F3BE41C15DC6800FEB7C4 /* LTRenderbuffer.h */,
 				8B9F3BE51C15DC6800FEB7C4 /* LTRenderbuffer.mm */,
-				B49EB6E21F2F0736008EDBD3 /* LTRenderbuffer+Private.h */,
 				8BA3E13C182A606600FDD95A /* LTShader.h */,
 				8BA3E13D182A606600FDD95A /* LTShader.mm */,
 				8B8E50E81861AA8900821829 /* LTShaderStorage.h */,
@@ -5510,6 +5516,7 @@
 				090898F81C4F97FB0022FA62 /* EXPMatchers+beCloseToGLKMatrix.mm */,
 				280F5A0D191A69ED00F9F80B /* EXPMatchers+beCloseToGLKVector.h */,
 				280F5A0E191A69ED00F9F80B /* EXPMatchers+beCloseToGLKVector.mm */,
+				283A4B581FE9043C009608E6 /* EXPMatchers+beCloseToLTVector.h */,
 				8BAE3A4518B2441B00DA79E1 /* EXPMatchers+beCloseToMat.h */,
 				8BAE3A4618B2441B00DA79E1 /* EXPMatchers+beCloseToMat.mm */,
 				8BAE3A4B18B2709400DA79E1 /* EXPMatchers+beCloseToScalar.h */,
@@ -5819,7 +5826,6 @@
 				8B871FD81924A75E00517F2E /* LTBilateralFilterProcessor.h in Headers */,
 				B467099F1E07F57F000CD9F5 /* LTFboAttachmentInfo.h in Headers */,
 				8B871FD91924A75E00517F2E /* LTPatchBoundaryProcessor.h in Headers */,
-				B49EB6AE1F2EFED6008EDBD3 /* LTFbo+Private.h in Headers */,
 				509CE8A81D325F2700D496D6 /* LTSplineControlPoint+AttributeKeys.h in Headers */,
 				28FC0E731D2AA27000237FF8 /* LTContentTouchEventDistancePredicate.h in Headers */,
 				50C371461BF0DD7E003EC78D /* LTBasicPolynomialInterpolant.h in Headers */,
@@ -6018,7 +6024,6 @@
 				85CDE5381CFED51C00229787 /* LTForegroundBackgroundDrawer.h in Headers */,
 				8B87202C1924A76400517F2E /* LTPainterPoint.h in Headers */,
 				8B87202D1924A76400517F2E /* LTPainterStroke.h in Headers */,
-				B49EB6E41F2F0736008EDBD3 /* LTRenderbuffer+Private.h in Headers */,
 				8B87202E1924A76400517F2E /* LTPainterStrokeSegment.h in Headers */,
 				25AF174A1AD50BE00055E664 /* LTVGLine.h in Headers */,
 				8BD0730E19A247B5005F2C37 /* LTImage+Texture.h in Headers */,
@@ -6604,6 +6609,7 @@
 				30DF5C441EC9C7F00039A57C /* LTPatchCompositorProcessorSolution.png in Resources */,
 				280E40DB1990C2F6008C5BD9 /* PerspectiveVertical.png in Resources */,
 				8597AEBB1D748F25008C96D2 /* LTAnisotropicDiffusion_guided_kernel_3_sigma_0_8.png in Resources */,
+				B48C2BCC1F9744AC008CC04C /* HorizontalStep8bitRGBA.png in Resources */,
 				03C192C318F6F3B200DC6CA6 /* DoubleLinearMaskTiltedOffCenter.png in Resources */,
 				E412C8B51F6144B20070FCBC /* GuidedFilterLenna128_R7S2_Shift.png in Resources */,
 				8518E26A1C858D890051FAF3 /* NoiseGuidedSigma02Steps1.png in Resources */,
@@ -6727,11 +6733,13 @@
 				03F99DB61895447100B77136 /* Lena.png in Resources */,
 				E412C8B21F6144B20070FCBC /* GuidedFilterLenna67x128_R7S3_Scale.png in Resources */,
 				2840187A19C704BF0003A064 /* PyramidGrid1.png in Resources */,
+				B48C2C011F9744D2008CC04C /* Black8bitRA.png in Resources */,
 				03C3152D1965986F00F742B1 /* MacbethGreyEdges.png in Resources */,
 				8BAB99DE1869F73400D79554 /* QuadDown.jpg in Resources */,
 				280A8BA21CBD234100157507 /* RadialMaskCenterInvertedStretched.png in Resources */,
 				7C6C5B841D6DA6E400D9F269 /* AspectFittedHalfTransparent.png in Resources */,
 				8BA8C6841869782200E6F486 /* Gray.jpg in Resources */,
+				B48C2C001F9744BC008CC04C /* GrayTones8bit.png in Resources */,
 				037238391AA317F000937EAA /* Indexed.png in Resources */,
 				8BAB99E31869F73400D79554 /* QuadRightMirrored.jpg in Resources */,
 				284AA2B61AC99DD1007F86DB /* CircularHealFeathering.png in Resources */,
@@ -6768,6 +6776,7 @@
 				282AC6991924B9BC006CAA2B /* ShapeDrawerTriangularMeshShapeTranslation.png in Resources */,
 				03045D7A19C5FBBD0075207D /* SmoothPyramidUpsampleGrid6.png in Resources */,
 				85F599AE1CDF2166009A47B4 /* LTDisplacementMapDrawerUnwarpedWithoutMask.png in Resources */,
+				B48C2BCD1F9744AC008CC04C /* HorizontalStep16bitRGBA.png in Resources */,
 				03D5168918B26FA40026B56A /* StraightRedFrame.png in Resources */,
 				28842E9119DB2E4900BD8FEE /* PerspectiveBarrelCorrection.png in Resources */,
 				B4E4932E1F801EEC00AB6BE3 /* White8bitCMYK.tif in Resources */,

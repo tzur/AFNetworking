@@ -31,6 +31,7 @@
 		885AFF991F02B34D0035A6B2 /* LABTaplyticsSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 884136081EEE6E220096BF8C /* LABTaplyticsSpec.mm */; };
 		885AFFBD1F02B3E00035A6B2 /* LABLocalSourceSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 88440B981EDB19C200A64CF7 /* LABLocalSourceSpec.mm */; };
 		88648C231EE5281200B492D7 /* LABExperimentsTokenProvider.mm in Sources */ = {isa = PBXBuildFile; fileRef = 88648C221EE5281200B492D7 /* LABExperimentsTokenProvider.mm */; };
+		88A67DC41FD5C061005BA17A /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88A67D9E1FD5C061005BA17A /* MobileCoreServices.framework */; };
 		88BB646D1EDAAD100026DEC0 /* LABLocalSource.mm in Sources */ = {isa = PBXBuildFile; fileRef = 88BB646B1EDAAD100026DEC0 /* LABLocalSource.mm */; };
 		88C21F471F0D272F0005EFDE /* LABAssignmentValue.mm in Sources */ = {isa = PBXBuildFile; fileRef = 88C21F461F0D272F0005EFDE /* LABAssignmentValue.mm */; };
 		88C21F6B1F0D37E40005EFDE /* LABAssignmentValueSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 88C21F6A1F0D37E40005EFDE /* LABAssignmentValueSpec.mm */; };
@@ -396,6 +397,7 @@
 		885349B71EE45B0C0043D190 /* LABAssignmentsSource.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LABAssignmentsSource.mm; sourceTree = "<group>"; };
 		88648C211EE5281200B492D7 /* LABExperimentsTokenProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LABExperimentsTokenProvider.h; sourceTree = "<group>"; };
 		88648C221EE5281200B492D7 /* LABExperimentsTokenProvider.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LABExperimentsTokenProvider.mm; sourceTree = "<group>"; };
+		88A67D9E1FD5C061005BA17A /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		88BB646A1EDAAD100026DEC0 /* LABLocalSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LABLocalSource.h; sourceTree = "<group>"; };
 		88BB646B1EDAAD100026DEC0 /* LABLocalSource.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LABLocalSource.mm; sourceTree = "<group>"; };
 		88C21F451F0D272F0005EFDE /* LABAssignmentValue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LABAssignmentValue.h; sourceTree = "<group>"; };
@@ -424,7 +426,7 @@
 		A14172A41E6EAF0D005DBEFF /* Specta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Specta.xcodeproj; path = ../third_party/Specta/Specta/Specta.xcodeproj; sourceTree = "<group>"; };
 		A14172BB1E6EB07E005DBEFF /* Laboratory-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Laboratory-Prefix.pch"; sourceTree = "<group>"; };
 		A14172BC1E6EB0CA005DBEFF /* LaboratoryTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "LaboratoryTests-Prefix.pch"; sourceTree = "<group>"; };
-		A14172D71E6EB2FF005DBEFF /* TestHost.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TestHost.xcodeproj; path = ../Foundations/TestHost.xcodeproj; sourceTree = "<group>"; };
+		A14172D71E6EB2FF005DBEFF /* TestHost.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TestHost.xcodeproj; path = ../TestHost/TestHost.xcodeproj; sourceTree = "<group>"; };
 		A1417A911E6ED9CB005DBEFF /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		A148A0541EE3D8110058165C /* LABAssignmentsManager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LABAssignmentsManager.mm; sourceTree = "<group>"; };
 		A15AB35D1F0BFB65000846A4 /* LABDebugSourceTweakCollectionsProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LABDebugSourceTweakCollectionsProvider.h; sourceTree = "<group>"; };
@@ -460,6 +462,7 @@
 				882D1F301EC1C49C007F39F5 /* GLKit.framework in Frameworks */,
 				88375E9B1EE9286500A4B6FE /* JavaScriptCore.framework in Frameworks */,
 				A18220B91F0398A500FC7C61 /* MessageUI.framework in Frameworks */,
+				88A67DC41FD5C061005BA17A /* MobileCoreServices.framework in Frameworks */,
 				882D1F321EC1C54F007F39F5 /* QuartzCore.framework in Frameworks */,
 				8B6867341F3B273C00F0EF4C /* ReactiveObjC.framework in Frameworks */,
 				88375E971EE9285400A4B6FE /* SystemConfiguration.framework in Frameworks */,
@@ -760,6 +763,7 @@
 				882D1F2F1EC1C49C007F39F5 /* GLKit.framework */,
 				88375E9A1EE9286500A4B6FE /* JavaScriptCore.framework */,
 				A18220B81F0398A500FC7C61 /* MessageUI.framework */,
+				88A67D9E1FD5C061005BA17A /* MobileCoreServices.framework */,
 				882D1F311EC1C54F007F39F5 /* QuartzCore.framework */,
 				88375E961EE9285400A4B6FE /* SystemConfiguration.framework */,
 				883713161EE580340033EE08 /* Taplytics.framework */,

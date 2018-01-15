@@ -103,6 +103,14 @@
 }
 
 - (void)dealloc {
+  [self dispose];
+}
+
+- (void)dispose {
+  if (!self.name) {
+    return;
+  }
+
   [self unbind];
   [[LTGLContext currentContext] executeForOpenGLES2:^{
     glDeleteVertexArraysOES(1, &_name);
@@ -110,6 +118,7 @@
     glDeleteVertexArrays(1, &_name);
   }];
   LTGLCheck(@"Failed deleting vertex array");
+  _name = 0;
 }
 
 - (void)validateElements:(NSSet<LTVertexArrayElement *> *)elements {

@@ -48,9 +48,18 @@
 }
 
 - (void)dealloc {
+  [self dispose];
+}
+
+- (void)dispose {
+  if (!self.name) {
+    return;
+  }
+
   [self unbind];
   glDeleteBuffers(1, &_name);
   LTGLCheckDbg(@"Failed to delete buffer: %d", _name);
+  _name = 0;
 }
 
 #pragma mark -

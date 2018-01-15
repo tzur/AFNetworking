@@ -10,7 +10,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// Ignores the \c title and \c subitems properties of the \c CUIMenuItemViewModel.
 ///
 /// The icon's color, highlighted color and selected color are being set according to current \c
-/// CUISharedTheme instance. When \c enabled is \c NO, the \c alpha of this view is set to \c 0.4.
+/// CUITheme instance. When \c enabled is \c NO, the \c alpha of this view is set to \c 0.4.
 @interface CUIMenuItemIconButton : UIButton <CUIMenuItemView>
 
 - (instancetype)init NS_UNAVAILABLE;

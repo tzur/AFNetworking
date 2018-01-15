@@ -128,7 +128,6 @@ sharedExamplesFor(kLTTreeNodeExamples, ^(NSDictionary *data) {
 
         [root enumerateObjectsWithTraversalOrder:order
                                       usingBlock:^(LTTreeNode<NSNumber *> *node, BOOL *) {
-          NSLog(@"Test: %@", node);
           [numbers addObject:node.object];
         }];
 

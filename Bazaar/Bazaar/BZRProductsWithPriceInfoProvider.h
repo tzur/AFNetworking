@@ -5,7 +5,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class BZRProductsPriceInfoFetcher;
+@class BZRStoreKitMetadataFetcher;
 
 /// Provider that provides product list using an underlying provider and adds price information for
 /// products as provided by StoreKit. Products that are subscribersOnly products are not augmented
@@ -15,9 +15,9 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)init NS_UNAVAILABLE;
 
 /// Initializes with \c underlyingProvider, used to fetch product list, and with
-/// \c priceInfoFetcher, used to fetch price info for each product.
+/// \c storeKitMetadataFetcher, used to fetch additional metadata from StoreKit for each product.
 - (instancetype)initWithUnderlyingProvider:(id<BZRProductsProvider>)underlyingProvider
-                          priceInfoFetcher:(BZRProductsPriceInfoFetcher *)priceInfoFetcher
+                   storeKitMetadataFetcher:(BZRStoreKitMetadataFetcher *)storeKitMetadataFetcher
     NS_DESIGNATED_INITIALIZER;
 
 @end

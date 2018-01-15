@@ -3,6 +3,7 @@
 
 #import "PTNPhotoKitTestUtils.h"
 
+#import <LTKit/NSArray+NSSet.h>
 #import <Photos/Photos.h>
 
 #import "PTNDescriptor.h"
@@ -29,6 +30,12 @@ PHAsset *PTNPhotoKitCreateAsset(NSString * _Nullable localIdentifier) {
   PHAsset *asset = OCMClassMock([PHAsset class]);
   OCMStub([asset localIdentifier]).andReturn(localIdentifier);
 
+  return asset;
+}
+
+PHAsset *PTNPhotoKitCreateAsset(NSString * _Nullable localIdentifier, NSArray<NSString *> *traits) {
+  PHAsset *asset = PTNPhotoKitCreateAsset(localIdentifier);
+  OCMStub([asset descriptorTraits]).andReturn([traits lt_set]);
   return asset;
 }
 

@@ -5,30 +5,27 @@
 
 #import <LTKit/NSArray+Functional.h>
 
-#import "BZREvent.h"
 #import "BZRProduct.h"
-#import "BZRProductPriceInfo+SKProduct.h"
-#import "BZRProductsPriceInfoFetcher.h"
-#import "BZRStoreKitFacade.h"
+#import "BZRProductPriceInfo.h"
+#import "BZRStoreKitMetadataFetcher.h"
 #import "BZRTestUtils.h"
-#import "NSError+Bazaar.h"
 #import "NSErrorCodes+Bazaar.h"
 
 SpecBegin(BZRProductsWithPriceInfoProvider)
 
 __block id<BZRProductsProvider> underlyingProvider;
 __block RACSubject *underlyingProviderEventsSubject;
-__block BZRProductsPriceInfoFetcher *priceInfoFetcher;
+__block BZRStoreKitMetadataFetcher *storeKitMetadataFetcher;
 __block BZRProductsWithPriceInfoProvider *productsProvider;
 
 beforeEach(^{
   underlyingProvider = OCMProtocolMock(@protocol(BZRProductsProvider));
   underlyingProviderEventsSubject = [RACSubject subject];
   OCMStub([underlyingProvider eventsSignal]).andReturn(underlyingProviderEventsSubject);
-  priceInfoFetcher = OCMClassMock([BZRProductsPriceInfoFetcher class]);
-  productsProvider =
-      [[BZRProductsWithPriceInfoProvider alloc] initWithUnderlyingProvider:underlyingProvider
-                                                          priceInfoFetcher:priceInfoFetcher];
+  storeKitMetadataFetcher = OCMClassMock([BZRStoreKitMetadataFetcher class]);
+  productsProvider = [[BZRProductsWithPriceInfoProvider alloc]
+                      initWithUnderlyingProvider:underlyingProvider
+                      storeKitMetadataFetcher:storeKitMetadataFetcher];
 });
 
 context(@"getting product list", ^{
@@ -56,7 +53,8 @@ context(@"getting product list", ^{
 
   it(@"should send error when the returned product list is empty", ^{
     OCMStub([underlyingProvider fetchProductList]).andReturn([RACSignal return:@[product]]);
-    OCMStub([priceInfoFetcher fetchProductsPriceInfo:OCMOCK_ANY]).andReturn([RACSignal return:@[]]);
+    OCMStub([storeKitMetadataFetcher fetchProductsMetadata:OCMOCK_ANY])
+        .andReturn([RACSignal return:@[]]);
 
     NSError *error = [NSError lt_errorWithCode:BZRErrorCodeProductsMetadataFetchingFailed];
     expect([productsProvider fetchProductList]).will.sendError(error);
@@ -69,14 +67,14 @@ context(@"getting product list", ^{
 
     RACSignal *productListSignal;
     @autoreleasepool {
-      BZRProductsWithPriceInfoProvider *provider =
-          [[BZRProductsWithPriceInfoProvider alloc] initWithUnderlyingProvider:underlyingProvider
-                                                                priceInfoFetcher:priceInfoFetcher];
+      auto provider = [[BZRProductsWithPriceInfoProvider alloc]
+                       initWithUnderlyingProvider:underlyingProvider
+                       storeKitMetadataFetcher:storeKitMetadataFetcher];
       weakProvider = provider;
       expect([provider fetchProductList]).will.sendError(error);
 
       OCMExpect([underlyingProvider fetchProductList]).andReturn([RACSignal return:@[product]]);
-      OCMStub([priceInfoFetcher fetchProductsPriceInfo:OCMOCK_ANY])
+      OCMStub([storeKitMetadataFetcher fetchProductsMetadata:OCMOCK_ANY])
           .andReturn([RACSignal return:@[product]]);
 
       productListSignal = [provider fetchProductList];
@@ -88,7 +86,7 @@ context(@"getting product list", ^{
   it(@"should send error when failed to fetch products metadata", ^{
     OCMStub([underlyingProvider fetchProductList]).andReturn([RACSignal return:@[product]]);
     NSError *error = [NSError lt_errorWithCode:1337];
-    OCMStub([priceInfoFetcher fetchProductsPriceInfo:OCMOCK_ANY])
+    OCMStub([storeKitMetadataFetcher fetchProductsMetadata:OCMOCK_ANY])
         .andReturn([RACSignal error:error]);
 
     expect([productsProvider fetchProductList]).will.sendError(error);
@@ -110,7 +108,7 @@ context(@"getting product list", ^{
 
       expect([productsProvider fetchProductList]).will.complete();
 
-      OCMVerify([priceInfoFetcher fetchProductsPriceInfo:
+      OCMVerify([storeKitMetadataFetcher fetchProductsMetadata:
                  [OCMArg checkWithBlock:^BOOL(BZRProductList *productList) {
                    return ![productList containsObject:subscribersOnlyProduct];
       }]]);
@@ -126,7 +124,7 @@ context(@"getting product list", ^{
           [nonSubscribersOnlyProduct
            modelByOverridingProperty:@keypath(nonSubscribersOnlyProduct, priceInfo)
            withValue:OCMClassMock([BZRProductPriceInfo class])];
-      OCMExpect([priceInfoFetcher fetchProductsPriceInfo:@[nonSubscribersOnlyProduct]])
+      OCMExpect([storeKitMetadataFetcher fetchProductsMetadata:@[nonSubscribersOnlyProduct]])
           .andReturn([RACSignal return:@[nonSubscribersOnlyProductWithPriceInfo]]);
 
       LLSignalTestRecorder *recorder = [[productsProvider fetchProductList] testRecorder];
@@ -146,7 +144,7 @@ context(@"getting product list", ^{
             [priceInfoProduct isEqual:nonSubscribersOnlyProductWithPriceInfo] &&
             [sentSubscribersOnlyProduct isEqual:subscribersOnlyProduct];
       });
-      OCMVerifyAll((id)priceInfoFetcher);
+      OCMVerifyAll((id)storeKitMetadataFetcher);
     });
   });
 
@@ -157,7 +155,7 @@ context(@"getting product list", ^{
 
     it(@"should send error if price info fetcher sends an error", ^{
       auto error = [NSError lt_errorWithCode:1337];
-      OCMStub([priceInfoFetcher fetchProductsPriceInfo:OCMOCK_ANY])
+      OCMStub([storeKitMetadataFetcher fetchProductsMetadata:OCMOCK_ANY])
           .andReturn([RACSignal error:error]);
 
       LLSignalTestRecorder *recorder = [[productsProvider fetchProductList] testRecorder];
@@ -166,7 +164,7 @@ context(@"getting product list", ^{
     });
 
     it(@"should return the products returned by the price info fetcher", ^{
-      OCMStub([priceInfoFetcher fetchProductsPriceInfo:OCMOCK_ANY])
+      OCMStub([storeKitMetadataFetcher fetchProductsMetadata:OCMOCK_ANY])
           .andReturn([RACSignal return:@[product]]);
 
       LLSignalTestRecorder *recorder = [[productsProvider fetchProductList] testRecorder];
@@ -182,7 +180,7 @@ context(@"getting product list", ^{
        "returned by price info fetcher", ^{
       BZRProduct *productVariant = BZRProductWithIdentifier(@"foo.Variant.A");
 
-      OCMStub([priceInfoFetcher fetchProductsPriceInfo:OCMOCK_ANY])
+      OCMStub([storeKitMetadataFetcher fetchProductsMetadata:OCMOCK_ANY])
           .andReturn([RACSignal return:@[productVariant]]);
 
       LLSignalTestRecorder *recorder = [[productsProvider fetchProductList] testRecorder];

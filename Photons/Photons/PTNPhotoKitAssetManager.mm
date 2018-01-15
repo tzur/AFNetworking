@@ -15,6 +15,7 @@
 #import "PTNImageDataAsset.h"
 #import "PTNImageFetchOptions+PhotoKit.h"
 #import "PTNImageMetadata.h"
+#import "PTNImageResizer.h"
 #import "PTNPhotoKitAlbum.h"
 #import "PTNPhotoKitAuthorizationManager.h"
 #import "PTNPhotoKitAuthorizer.h"
@@ -27,6 +28,7 @@
 #import "PTNProgress.h"
 #import "PTNResizingStrategy.h"
 #import "PTNSignalCache.h"
+#import "PTNStaticImageAsset.h"
 #import "PhotoKit+Photons.h"
 #import "RACSignal+Photons.h"
 #import "RACStream+Photons.h"
@@ -63,6 +65,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// multiple requests are made simultaneously.
 @property (readonly, nonatomic) RACScheduler *fetchScheduler;
 
+/// Used to resize images not resized by PhotoKit.
+@property (readonly, nonatomic) PTNImageResizer *imageResizer;
+
 @end
 
 @implementation PTNPhotoKitAssetManager
@@ -71,13 +76,15 @@ NS_ASSUME_NONNULL_BEGIN
                        observer:(id<PTNPhotoKitObserver>)observer
                    imageManager:(id<PTNPhotoKitImageManager>)imageManager
            authorizationManager:(id<PTNAuthorizationManager>)authorizationManager
-                  changeManager:(id<PTNPhotoKitChangeManager>)changeManager {
+                  changeManager:(id<PTNPhotoKitChangeManager>)changeManager
+                   imageResizer:(PTNImageResizer *)imageResizer {
   if (self = [super init]) {
     _fetcher = fetcher;
     _observer = observer;
     _imageManager = imageManager;
     _authorizationManager = authorizationManager;
     _changeManager = changeManager;
+    _imageResizer = imageResizer;
 
     _fetchScheduler = [RACScheduler scheduler];
     _albumSignalCache = [[PTNSignalCache alloc] init];
@@ -114,9 +121,10 @@ NS_ASSUME_NONNULL_BEGIN
   id<PTNPhotoKitImageManager> imageManager =
       [[PTNPhotoKitDeferringImageManager alloc] initWithAuthorizationManager:authorizationManager];
   id<PTNPhotoKitChangeManager> changeManager = [[PTNPhotoKitChangeManager alloc] init];
-
+  PTNImageResizer *imageResizer = [[PTNImageResizer alloc] init];
   return [self initWithFetcher:fetcher observer:observer imageManager:imageManager
-          authorizationManager:authorizationManager changeManager:changeManager];
+          authorizationManager:authorizationManager changeManager:changeManager
+                  imageResizer:imageResizer];
 }
 
 - (instancetype)init {
@@ -582,9 +590,66 @@ NS_ASSUME_NONNULL_BEGIN
 
   return [[self fetchAssetForDescriptor:descriptor]
       flattenMap:^(PHAsset *asset) {
+        if (options.includeMetadata &&
+            ![descriptor.descriptorTraits containsObject:kPTNDescriptorTraitAudiovisualKey]) {
+          return [self imageAssetForPhotoKitAssetWithMetadata:asset
+                                             resizingStrategy:resizingStrategy];
+        }
+
         return [self imageAssetForPhotoKitAsset:asset resizingStrategy:resizingStrategy
                                         options:[options photoKitOptions]];
       }];
+}
+
+- (RACSignal *)imageAssetForPhotoKitAssetWithMetadata:(PHAsset *)asset
+                                     resizingStrategy:(id<PTNResizingStrategy>)resizingStrategy {
+  return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+    PHContentEditingInputRequestOptions *options =
+        [[PHContentEditingInputRequestOptions alloc] init];
+    options.networkAccessAllowed = YES;
+    options.progressHandler = ^(double value, BOOL *) {
+      PTNProgress *progress = [[PTNProgress alloc] initWithProgress:@(value)];
+      [subscriber sendNext:progress];
+    };
+
+    void (^completionHandler)(PHContentEditingInput * _Nullable contentEditingInput,
+                              NSDictionary *info) =
+        ^(PHContentEditingInput * _Nullable contentEditingInput, NSDictionary *info) {
+      if (!contentEditingInput.fullSizeImageURL) {
+        NSError *wrappedError = [NSError lt_errorWithCode:PTNErrorCodeAssetLoadingFailed
+                                                      url:asset.ptn_identifier
+                                          underlyingError:info[PHContentEditingInputErrorKey]];
+        [subscriber sendError:wrappedError];
+        return;
+      }
+
+      NSError *error;
+      PTNImageMetadata *metadata = [[PTNImageMetadata alloc]
+                                    initWithImageURL:contentEditingInput.fullSizeImageURL
+                                    error:&error];
+      if (error) {
+        NSError *wrappedError = [NSError lt_errorWithCode:PTNErrorCodeAssetLoadingFailed
+                                                      url:asset.ptn_identifier
+                                          underlyingError:error];
+        [subscriber sendError:wrappedError];
+        return;
+      }
+
+      [[[self.imageResizer resizeImageAtURL:contentEditingInput.fullSizeImageURL
+                           resizingStrategy:resizingStrategy]
+        map:^PTNProgress<PTNStaticImageAsset *> *(UIImage *image) {
+          auto asset = [[PTNStaticImageAsset alloc] initWithImage:image imageMetadata:metadata];
+          return [[PTNProgress alloc] initWithResult:asset];
+      }] subscribe:subscriber];
+    };
+
+    PHContentEditingInputRequestID requestID =
+        [asset requestContentEditingInputWithOptions:options completionHandler:completionHandler];
+
+    return [RACDisposable disposableWithBlock:^{
+      [asset cancelContentEditingInputRequest:requestID];
+    }];
+  }];
 }
 
 - (PHImageContentMode)photoKitContentModeForContentMode:(PTNImageContentMode)contentMode {
@@ -730,7 +795,7 @@ NS_ASSUME_NONNULL_BEGIN
     };
 
     auto resultHandler = ^(NSData * _Nullable imageData, NSString * _Nullable dataUTI,
-                           UIImageOrientation orientation, NSDictionary * _Nullable info) {
+                           UIImageOrientation, NSDictionary * _Nullable info) {
       if (!imageData) {
         NSError *wrappedError = [NSError lt_errorWithCode:PTNErrorCodeAssetLoadingFailed
                                                       url:asset.ptn_identifier
@@ -740,8 +805,7 @@ NS_ASSUME_NONNULL_BEGIN
       }
 
       id<PTNImageDataAsset> rawImageAsset = [[PTNImageDataAsset alloc] initWithData:imageData
-                                                              uniformTypeIdentifier:dataUTI
-                                                                        orientation:orientation];
+                                                              uniformTypeIdentifier:dataUTI];
       [subscriber sendNext:[[PTNProgress alloc] initWithResult:rawImageAsset]];
       [subscriber sendCompleted];
     };

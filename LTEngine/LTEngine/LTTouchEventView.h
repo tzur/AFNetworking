@@ -28,8 +28,11 @@ NS_ASSUME_NONNULL_BEGIN
 /// Delegate to which converted touch events are delegated.
 @property (weak, readonly, nonatomic) id<LTTouchEventDelegate> delegate;
 
-/// Whether to forward stationary touch events to \c delegate, at the display refresh rate. Default
-/// value is \c YES.
+/// Indication whether this instance is currently receiving touch events.
+@property (readonly, nonatomic) BOOL isCurrentlyReceivingTouchEvents;
+
+/// Indication whether to forward stationary touch events to \c delegate, at the display refresh
+/// rate. Default value is \c YES.
 @property (nonatomic) BOOL forwardStationaryTouchEvents;
 
 @end

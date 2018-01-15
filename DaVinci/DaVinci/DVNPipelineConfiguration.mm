@@ -66,6 +66,19 @@ NS_ASSUME_NONNULL_BEGIN
       self.renderStageConfiguration.hash;
 }
 
+#pragma mark -
+#pragma mark NSObject
+#pragma mark -
+
+- (instancetype)
+    shallowCopyWithRenderStageConfiguration:(DVNRenderStageConfiguration *)configuration {
+  return [[[self class] alloc] initWithSamplingStageConfiguration:self.samplingStageConfiguration
+                                       geometryStageConfiguration:self.geometryStageConfiguration
+                                 textureMappingStageConfiguration:self.textureStageConfiguration
+                                      attributeStageConfiguration:self.attributeStageConfiguration
+                                         renderStageConfiguration:configuration];
+}
+
 @end
 
 NS_ASSUME_NONNULL_END

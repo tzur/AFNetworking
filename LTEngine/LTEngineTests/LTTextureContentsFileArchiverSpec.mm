@@ -50,8 +50,7 @@ it(@"should store texture to given file path", ^{
 });
 
 it(@"should load texture from file", ^{
-  NSString *path = [[NSBundle bundleForClass:[self class]] pathForResource:@"TextureContentsImage"
-                                                                    ofType:@"png"];
+  NSString *path = [NSBundle.lt_testBundle pathForResource:@"TextureContentsImage" ofType:@"png"];
   LTTextureContentsFileArchiver *archiver = [[LTTextureContentsFileArchiver alloc]
                                              initWithFilePath:path];
 

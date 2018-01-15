@@ -17,11 +17,9 @@
 #import "BZRKeychainStorage.h"
 #import "BZRPeriodicReceiptValidatorActivator.h"
 #import "BZRProduct+EnablesProduct.h"
-#import "BZRProduct+SKProduct.h"
+#import "BZRProduct+StoreKit.h"
 #import "BZRProductContentManager.h"
-#import "BZRProductPriceInfo+SKProduct.h"
 #import "BZRProductTypedefs.h"
-#import "BZRProductsPriceInfoFetcher.h"
 #import "BZRProductsProvider.h"
 #import "BZRProductsVariantSelector.h"
 #import "BZRProductsVariantSelectorFactory.h"
@@ -30,6 +28,7 @@
 #import "BZRReceiptValidationStatus.h"
 #import "BZRStoreConfiguration.h"
 #import "BZRStoreKitFacade.h"
+#import "BZRStoreKitMetadataFetcher.h"
 #import "NSError+Bazaar.h"
 #import "NSErrorCodes+Bazaar.h"
 #import "NSString+Bazaar.h"
@@ -80,14 +79,14 @@ NS_ASSUME_NONNULL_BEGIN
 /// Provider used to provide product list before getting their price info from StoreKit.
 @property (readonly, nonatomic) id<BZRProductsProvider> netherProductsProvider;
 
-/// Fetcher used to fetch products price info.
-@property (readonly, nonatomic) BZRProductsPriceInfoFetcher *priceInfoFetcher;
+/// Fetcher used to fetch products metadata.
+@property (readonly, nonatomic) BZRStoreKitMetadataFetcher *storeKitMetadataFetcher;
 
 /// Storage used to store and retrieve values from keychain storage.
 @property (readonly, nonatomic) BZRKeychainStorage *keychainStorage;
 
 /// Validator used to validate receipt on initialization if required.
-@property (readonly, nonatomic) BZRExternalTriggerReceiptValidator *startupReceiptValidator;
+@property (readonly, nonatomic) BZRExternalTriggerReceiptValidator *backgroundReceiptValidator;
 
 /// List of products that their content is already available on the device and ready to be used.
 /// Products without content will be in the list as well.
@@ -140,18 +139,18 @@ NS_ASSUME_NONNULL_BEGIN
     _validationParametersProvider = configuration.validationParametersProvider;
     _allowedProductsProvider = configuration.allowedProductsProvider;
     _netherProductsProvider = configuration.netherProductsProvider;
-    _priceInfoFetcher = configuration.priceInfoFetcher;
+    _storeKitMetadataFetcher = configuration.storeKitMetadataFetcher;
     _keychainStorage = configuration.keychainStorage;
     _multiAppSubscriptionIdentifierMarker = configuration.multiAppSubscriptionIdentifierMarker;
-    _startupReceiptValidator = [[BZRExternalTriggerReceiptValidator alloc]
-                                initWithValidationStatusProvider:self.validationStatusProvider];
+    _backgroundReceiptValidator = [[BZRExternalTriggerReceiptValidator alloc]
+                                   initWithValidationStatusProvider:self.validationStatusProvider];
     _downloadedContentProducts = [NSSet set];
     _productListWasFetched = NO;
 
     [self initializeEventsSignal];
     [self initializeCompletedTransactionsSignal];
     [self finishUnfinishedTransactions];
-    [self activateStartupValidation];
+    [self activateBackgroundValidation];
     [self prefetchProductDictionary];
     [self prefetchProductsJSONDictionary];
     [self setupAllowedProductsUpdates];
@@ -169,8 +168,8 @@ NS_ASSUME_NONNULL_BEGIN
     self.productsProvider.eventsSignal,
     self.contentFetcher.eventsSignal,
     self.allowedProductsProvider.eventsSignal,
-    self.priceInfoFetcher.eventsSignal,
-    [self.startupReceiptValidator.eventsSignal replay],
+    self.storeKitMetadataFetcher.eventsSignal,
+    [self.backgroundReceiptValidator.eventsSignal replay],
     self.keychainStorage.eventsSignal
   ]]
   takeUntil:[self rac_willDeallocSignal]]
@@ -195,13 +194,32 @@ NS_ASSUME_NONNULL_BEGIN
       }];
 }
 
-- (void)activateStartupValidation {
-  RACSignal *triggerSignal = [self.storeKitFacade.unhandledSuccessfulTransactionsSignal
-      deliverOn:[RACScheduler scheduler]];
-  if (!self.receiptValidationStatus) {
-    triggerSignal = [triggerSignal startWith:[RACUnit defaultUnit]];
-  }
-  [self.startupReceiptValidator activateWithTrigger:triggerSignal];
+- (void)activateBackgroundValidation {
+  RACSignal *completedTransactionsSignal =
+      [self.storeKitFacade.unhandledSuccessfulTransactionsSignal
+       deliverOn:[RACScheduler scheduler]];
+
+  auto appStoreLocaleObserver = RACObserve(self.validationParametersProvider, appStoreLocale);
+  auto appStoreLocaleChangedSignal = [[appStoreLocaleObserver distinctUntilChanged] skip:1];
+
+  // We want to wait for the first value of the App Store locale that is fetched from the products'
+  // metadata before doing validation that is triggered from the completed transactions signal.
+  auto fetchedAppStoreSignal = [[appStoreLocaleObserver skip:1] take:1];
+
+  @weakify(self);
+  auto triggerSignal = [RACSignal merge:@[
+    appStoreLocaleChangedSignal,
+    [fetchedAppStoreSignal flattenMap:^(id) {
+      @strongify(self);
+      if (!self.receiptValidationStatus) {
+        return [completedTransactionsSignal startWith:@[]];
+      }
+
+      return completedTransactionsSignal;
+    }]
+  ]];
+
+  [self.backgroundReceiptValidator activateWithTrigger:triggerSignal];
 }
 
 - (void)prefetchProductDictionary {
@@ -257,11 +275,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)updateAppStoreLocaleFromProductDictionary:(BZRProductDictionary *)productDictionary {
   BZRProductList *productsWithPriceInfo =
       [[productDictionary allValues] lt_filter:^BOOL(BZRProduct *product) {
-        return product.bzr_underlyingProduct != nil;
+        return product.underlyingProduct != nil;
       }];
 
   self.validationParametersProvider.appStoreLocale =
-      productsWithPriceInfo.firstObject.bzr_underlyingProduct.priceLocale;
+      productsWithPriceInfo.firstObject.underlyingProduct.priceLocale;
 }
 
 - (void)createVariantSelectorWithProductDictionary:(BZRProductDictionary *)productDictionary {
@@ -491,7 +509,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (RACSignal *)purchaseProductWithStoreKit:(NSString *)productIdentifier {
-  SKProduct *product = self.productDictionary[productIdentifier].bzr_underlyingProduct;
+  SKProduct *product = self.productDictionary[productIdentifier].underlyingProduct;
   @weakify(self);
   return [[[[[[self.storeKitFacade purchaseProduct:product]
       filter:^BOOL(SKPaymentTransaction *transaction) {
@@ -640,7 +658,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// Since this set is sent outside of this class, each variant's identifier is modified to be its
 /// corresponding base product's identifier.
 - (NSSet<BZRProduct *> *)variantsWithBaseIdentifiers:(BZRProductDictionary *)productDictionary {
-  BZRProductList *variantsWithBaseIdentifers =
+  BZRProductList *variantsWithBaseIdentifiers =
       [[productDictionary.allValues lt_filter:^BOOL(BZRProduct *product) {
         NSString *baseProductIdentifier =
             [self baseProductForProductWithIdentifier:product.identifier];
@@ -653,7 +671,7 @@ NS_ASSUME_NONNULL_BEGIN
         return [variant modelByOverridingProperty:@keypath(variant, identifier)
                                         withValue:product.identifier];
   }];
-  return [NSSet setWithArray:variantsWithBaseIdentifers];
+  return [NSSet setWithArray:variantsWithBaseIdentifiers];
 }
 
 - (RACSignal<BZRReceiptValidationStatus *> *)validateReceipt {
@@ -715,14 +733,15 @@ NS_ASSUME_NONNULL_BEGIN
               }];
 
           return [RACSignal error:
-                  [NSError bzr_invalidProductsErrorWithIdentifers:missingProductIdentifiers]];
+                  [NSError bzr_invalidProductsErrorWithIdentifiers:missingProductIdentifiers]];
         }
 
         auto requestedProductsWithFullProducts =
             [self productsWithFullPriceProducts:requestedProductList
                               productDictionary:productDictionary];
 
-        return [self.priceInfoFetcher fetchProductsPriceInfo:requestedProductsWithFullProducts];
+        return [self.storeKitMetadataFetcher
+                fetchProductsMetadata:requestedProductsWithFullProducts];
       }]
       map:^BZRProductDictionary *(BZRProductList *productList) {
         NSArray<NSString *> *identifiers =

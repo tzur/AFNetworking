@@ -4,7 +4,7 @@
 #import "CUIMenuItemTextButton.h"
 
 #import "CUIMenuItemViewModel.h"
-#import "CUISharedTheme.h"
+#import "CUITheme.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -35,7 +35,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)setupFontAndColor {
-  id<CUITheme> theme = [CUISharedTheme sharedTheme];
+  CUITheme *theme = [CUITheme sharedTheme];
   [self setTitleColor:theme.titleColor forState:UIControlStateNormal];
   [self setTitleColor:theme.titleHighlightedColor forState:UIControlStateSelected];
   [self setTitleColor:theme.titleHighlightedColor forState:UIControlStateHighlighted];

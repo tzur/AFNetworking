@@ -196,8 +196,7 @@ context(@"initialization", ^{
   __block NSString *path;
 
   beforeEach(^{
-    path = [[NSBundle bundleForClass:[self class]]
-            pathForResource:@"PTNImageMetadataImage" ofType:@"jpg"];
+    path = [NSBundle.lt_testBundle pathForResource:@"PTNImageMetadataImage" ofType:@"jpg"];
     expect(path).toNot.beNil();
   });
 
@@ -306,8 +305,7 @@ context(@"initialization", ^{
 context(@"orientations", ^{
   sharedExamplesFor(@"reading orientation", ^(NSDictionary *data) {
     it(@"should read correct orientation", ^{
-      NSString *path = [[NSBundle bundleForClass:[self class]] pathForResource:data[@"name"]
-                                                                        ofType:@"jpg"];
+      NSString *path = [NSBundle.lt_testBundle pathForResource:data[@"name"] ofType:@"jpg"];
       PTNImageMetadata *metadata = [[PTNImageMetadata alloc]
           initWithImageURL:[NSURL fileURLWithPath:path] error:nil];
       expect(metadata.orientation).to.equal(data[@"orientation"]);
@@ -361,8 +359,8 @@ context(@"compliance", ^{
 
   beforeEach(^{
     // Read an image created with Apple's Camera.
-    NSString *path = [[NSBundle bundleForClass:[self class]]
-                      pathForResource:@"PTNImageMetadataImage" ofType:@"jpg"];
+    NSString *path = [NSBundle.lt_testBundle pathForResource:@"PTNImageMetadataImage"
+                                                      ofType:@"jpg"];
     expect(path).toNot.beNil();
     NSError *error;
     metadata = [[PTNImageMetadata alloc] initWithImageURL:[NSURL fileURLWithPath:path]

@@ -54,7 +54,7 @@ LTErrorCodesDeclare(BazaarErrorCodeProductID,
   /// Received a transaction that isn't associated with a payment.
   BZRErrorCodeUnhandledTransactionReceived,
   /// Received a purchase request with invalid product identifier.
-  BZRErrorCodeInvalidProductIdentifer,
+  BZRErrorCodeInvalidProductIdentifier,
   /// Fetching of product list has failed.
   BZRErrorCodeFetchingProductListFailed,
   /// The receipt validation has failed during the periodic check.

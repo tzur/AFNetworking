@@ -111,6 +111,14 @@ context(@"kernel output size", ^{
 
     expect($(inputRegion.size)).to.equalMTLSize($(inputSize));
   });
+
+  it(@"should calculate output size correctly", ^{
+    MTLSize inputSize = {kInputWidth, kInputHeight, kInputFeatureChannels};
+    MTLSize expectedOutputSize = {kOutputWidth, kOutputHeight, kInputFeatureChannels};
+    MTLSize outputSize = [nearestNeighborUpsampler outputSizeForInputSize:inputSize];
+
+    expect($(outputSize)).to.equalMTLSize($(expectedOutputSize));
+  });
 });
 
 context(@"nearest neighbor upsampling with Unorm8 channel format", ^{

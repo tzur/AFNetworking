@@ -22,6 +22,11 @@ NS_ASSUME_NONNULL_BEGIN
     attributeStageConfiguration:(DVNAttributeStageConfiguration *)attributeConfiguration
     renderStageConfiguration:(DVNRenderStageConfiguration *)renderConfiguration;
 
+/// Returns a new instance whose properties are identical to those of the receiver, with the
+/// exception of the given render stage \c configuration.
+- (instancetype)
+    shallowCopyWithRenderStageConfiguration:(DVNRenderStageConfiguration *)configuration;
+
 /// Configuration of the sampling stage of a \c DVNPipeline object.
 @property (readonly, nonatomic) id<LTContinuousSamplerModel> samplingStageConfiguration;
 

@@ -7,14 +7,22 @@ namespace cv {
   class Mat;
 }
 
+/// Supported \c LTImage formats defining pixel's components memory layout and pixel's values.
+typedef NS_ENUM(NSUInteger, LTImageFormat) {
+  /// RGBA 8 bit unsigned char image format.
+  LTImageFormatRGBA8U,
+  /// RGBA 16 bit half float image format.
+  LTImageFormatRGBA16F
+};
+
 /// Represents a CPU-based image. This class makes it easier to load an image to an accessible
-/// bitmap, and export them back to disk  or to parallel \c UIKit objects.
+/// bitmap, and export them back to disk or to parallel \c UIKit objects.
 ///
 /// All images are represented in premultiplied alpha, if an alpha channel exists.
 ///
-/// @note loaded images will be backed by mat of byte depth with either one or four channels,
-/// depending on the input image. Images with wider depth will be converted to byte in the loading
-/// process.
+/// Loaded image is backed by \c cv::Mat. During the loading process, image can be converted to the
+/// desired \c cv::Mat::type. Additionally at initialization it is possible to either use the input
+/// image's color space or to convert it to a desired color space.
 @interface LTImage : NSObject
 
 /// Initializes with a given \c image. If \c image has an orientation different than
@@ -29,6 +37,11 @@ namespace cv {
 /// | anything else                | Assertion failure              |
 /// @endcode
 - (instancetype)initWithImage:(UIImage *)image;
+
+/// Initializes with the given \c image, \c imageFormat and \c colorSpace. The \c colorSpace will
+/// be retained by this instance.
+- (instancetype)initWithImage:(UIImage *)image imageFormat:(LTImageFormat)imageFormat
+                   colorSpace:(CGColorSpaceRef)colorSpace;
 
 /// Initializes with the given \c image. This instance will be loaded to \c images's color space if
 /// \c loadColorSpace is \c YES. Otherwise this instance's color space will be deduced as described
@@ -46,7 +59,7 @@ namespace cv {
 /// Initializes with the given \c mat with color data in the given \c colorspace. If \c copy is
 /// \c YES, the \c mat will be cloned. For unknown color space set \c colorSpace to \c NULL.
 - (instancetype)initWithMat:(const cv::Mat &)mat copy:(BOOL)copy
-                 colorSpace:(nullable CGColorSpaceRef)colorSpace NS_DESIGNATED_INITIALIZER;
+                 colorSpace:(nullable CGColorSpaceRef)colorSpace;
 
 - (instancetype)init NS_UNAVAILABLE;
 

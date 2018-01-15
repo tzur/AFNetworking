@@ -6,12 +6,18 @@
 #import <Bazaar/BZRProduct.h>
 #import <Bazaar/BZRProductPriceInfo.h>
 #import <Bazaar/BZRReceiptModel.h>
+#import <Bazaar/NSErrorCodes+Bazaar.h>
 
 #import "SPXAlertViewModel.h"
 #import "SPXColorScheme.h"
+#import "SPXPurchaseSubscriptionEvent.h"
+#import "SPXRestorePurchasesButtonPressedEvent.h"
+#import "SPXRestorePurchasesEvent.h"
+#import "SPXSubscriptionButtonPressedEvent.h"
 #import "SPXSubscriptionDescriptor.h"
 #import "SPXSubscriptionManager.h"
 #import "SPXSubscriptionTermsViewModel.h"
+#import "SPXSubscriptionVideoPageViewModel.h"
 
 SpecBegin(SPXSubscriptionViewModel)
 
@@ -26,67 +32,138 @@ beforeEach(^{
   termsViewModel = OCMClassMock([SPXSubscriptionTermsViewModel class]);
   colorScheme = OCMClassMock([SPXColorScheme class]);
   requestedProductIdentifiers = @[@"foo1", @"foo2"];
+  auto pageViewModels = @[
+      OCMProtocolMock(@protocol(SPXSubscriptionVideoPageViewModel)),
+      OCMProtocolMock(@protocol(SPXSubscriptionVideoPageViewModel))
+    ];
 
   viewModel = [[SPXSubscriptionViewModel alloc] initWithProducts:requestedProductIdentifiers
-      preferredProductIndex:0 pageViewModels:@[] termsViewModel:termsViewModel
-      colorScheme:colorScheme subscriptionManager:subscriptionManager];
+      preferredProductIndex:0 pageViewModels:pageViewModels termsViewModel:termsViewModel
+      colorScheme:colorScheme subscriptionManager:subscriptionManager
+      fetchProductsStrategy:$(SPXFetchProductsStrategyAlways)];
 });
 
 it(@"should raise if the preferred button index is greater than the number of buttons", ^{
   expect(^{
-      viewModel = [[SPXSubscriptionViewModel alloc] initWithProducts:requestedProductIdentifiers
-      preferredProductIndex:@2 pageViewModels:@[] termsViewModel:termsViewModel
-      colorScheme:colorScheme subscriptionManager:subscriptionManager];
+    viewModel = [[SPXSubscriptionViewModel alloc] initWithProducts:requestedProductIdentifiers
+    preferredProductIndex:@2 pageViewModels:@[] termsViewModel:termsViewModel
+    colorScheme:colorScheme subscriptionManager:subscriptionManager
+    fetchProductsStrategy:$(SPXFetchProductsStrategyAlways)];
   }).to.raise(NSInvalidArgumentException);
 });
 
 context(@"products fetching", ^{
-  it(@"should show the activity indicator when fetch has started", ^{
-    [viewModel fetchProductsInfo];
-    expect(viewModel.shouldShowActivityIndicator).to.beTruthy();
+  context(@"fetch always strategy", ^{
+    beforeEach(^{
+      viewModel = [[SPXSubscriptionViewModel alloc] initWithProducts:requestedProductIdentifiers
+          preferredProductIndex:0 pageViewModels:@[] termsViewModel:termsViewModel
+          colorScheme:colorScheme subscriptionManager:subscriptionManager
+          fetchProductsStrategy:$(SPXFetchProductsStrategyAlways)];
+    });
+
+    it(@"should show the activity indicator when fetch has started", ^{
+      [viewModel fetchProductsInfo];
+      expect(viewModel.shouldShowActivityIndicator).to.beTruthy();
+    });
+
+    it(@"should hide the activity indicator when fetch has finished successfully", ^{
+      OCMStub([subscriptionManager fetchProductsInfo:[requestedProductIdentifiers lt_set]
+                                   completionHandler:([OCMArg invokeBlockWithArgs:@{},
+                                                       [NSNull null],nil])]);
+      [viewModel fetchProductsInfo];
+
+      expect(viewModel.shouldShowActivityIndicator).to.beFalsy();
+    });
+
+    it(@"should request dismissal if failed to fetch products", ^{
+      auto error = [NSError lt_errorWithCode:1337];
+      OCMStub([subscriptionManager fetchProductsInfo:[requestedProductIdentifiers lt_set]
+                                   completionHandler:([OCMArg invokeBlockWithArgs:[NSNull null],
+                                                       error, nil])]);
+      auto recorder = [viewModel.dismissRequested testRecorder];
+      [viewModel fetchProductsInfo];
+
+      expect(recorder).to.sendValues(@[[RACUnit defaultUnit]]);
+    });
+
+    it(@"should set the product descriptors according to the product identifiers with prices", ^{
+      BZRProduct *product1 = OCMClassMock([BZRProduct class]);
+      BZRProduct *product2 = OCMClassMock([BZRProduct class]);
+      OCMStub([product1 priceInfo]).andReturn(OCMClassMock([BZRProductPriceInfo class]));
+      OCMStub([product2 priceInfo]).andReturn(OCMClassMock([BZRProductPriceInfo class]));
+      NSDictionary<NSString *, BZRProduct *> *returnedProducts = @{
+        @"foo1": product1,
+        @"foo2": product2
+      };
+      OCMStub([subscriptionManager fetchProductsInfo:[requestedProductIdentifiers lt_set]
+                                   completionHandler:([OCMArg invokeBlockWithArgs:returnedProducts,
+                                                       [NSNull null], nil])]);
+
+      [viewModel fetchProductsInfo];
+
+      [viewModel.subscriptionDescriptors
+       enumerateObjectsUsingBlock:^(SPXSubscriptionDescriptor *descriptor, NSUInteger index,
+                                    BOOL *) {
+         expect(descriptor.productIdentifier).to.equal(requestedProductIdentifiers[index]);
+         expect(descriptor.priceInfo).to
+            .equal(returnedProducts[descriptor.productIdentifier].priceInfo);
+       }];
+    });
   });
 
-  it(@"should hide the activity indicator when fetch has finished successfully", ^{
-    OCMStub([subscriptionManager fetchProductsInfo:[requestedProductIdentifiers lt_set]
-                                 completionHandler:([OCMArg invokeBlockWithArgs:@{}, [NSNull null],
-                                                     nil])]);
-    [viewModel fetchProductsInfo];
+  context(@"fetch if needed strategy", ^{
+    beforeEach(^{
+      viewModel = [[SPXSubscriptionViewModel alloc] initWithProducts:requestedProductIdentifiers
+          preferredProductIndex:0 pageViewModels:@[] termsViewModel:termsViewModel
+          colorScheme:colorScheme subscriptionManager:subscriptionManager
+          fetchProductsStrategy:$(SPXFetchProductsStrategyIfNeeded)];
+    });
 
-    expect(viewModel.shouldShowActivityIndicator).to.beFalsy();
-  });
+    it(@"should show the activity indicator when fetch has started", ^{
+      [viewModel fetchProductsInfo];
+      expect(viewModel.shouldShowActivityIndicator).to.beTruthy();
+    });
 
-  it(@"should request dismissal if failed to fetch products", ^{
-    auto error = [NSError lt_errorWithCode:1337];
-    OCMStub([subscriptionManager fetchProductsInfo:[requestedProductIdentifiers lt_set]
-                                 completionHandler:([OCMArg invokeBlockWithArgs:[NSNull null],
-                                                     error, nil])]);
-    auto recorder = [viewModel.dismissRequested testRecorder];
-    [viewModel fetchProductsInfo];
+    it(@"should hide the activity indicator when fetch has finished successfully", ^{
+      OCMStub([subscriptionManager fetchProductsInfoIfNeeded:[requestedProductIdentifiers lt_set]
+          completionHandler:([OCMArg invokeBlockWithArgs:@{}, [NSNull null], nil])]);
+      [viewModel fetchProductsInfo];
 
-    expect(recorder).to.sendValues(@[[RACUnit defaultUnit]]);
-  });
+      expect(viewModel.shouldShowActivityIndicator).to.beFalsy();
+    });
 
-  it(@"should set the product descriptors according to the product identifiers with prices", ^{
-    BZRProduct *product1 = OCMClassMock([BZRProduct class]);
-    BZRProduct *product2 = OCMClassMock([BZRProduct class]);
-    OCMStub([product1 priceInfo]).andReturn(OCMClassMock([BZRProductPriceInfo class]));
-    OCMStub([product2 priceInfo]).andReturn(OCMClassMock([BZRProductPriceInfo class]));
-    NSDictionary<NSString *, BZRProduct *> *returnedProducts = @{
-      @"foo1": product1,
-      @"foo2": product2
-    };
-    OCMStub([subscriptionManager fetchProductsInfo:[requestedProductIdentifiers lt_set]
-                                 completionHandler:([OCMArg invokeBlockWithArgs:returnedProducts,
-                                                     [NSNull null], nil])]);
+    it(@"should request dismissal if failed to fetch products", ^{
+      auto error = [NSError lt_errorWithCode:1337];
+      OCMStub([subscriptionManager fetchProductsInfoIfNeeded:[requestedProductIdentifiers lt_set]
+          completionHandler:([OCMArg invokeBlockWithArgs:[NSNull null], error, nil])]);
+      auto recorder = [viewModel.dismissRequested testRecorder];
+      [viewModel fetchProductsInfo];
 
-    [viewModel fetchProductsInfo];
+      expect(recorder).to.sendValues(@[[RACUnit defaultUnit]]);
+    });
 
-    [viewModel.subscriptionDescriptors
-     enumerateObjectsUsingBlock:^(SPXSubscriptionDescriptor *descriptor, NSUInteger index, BOOL *) {
-       expect(descriptor.productIdentifier).to.equal(requestedProductIdentifiers[index]);
-       expect(descriptor.priceInfo).to
-          .equal(returnedProducts[descriptor.productIdentifier].priceInfo);
-     }];
+    it(@"should set the product descriptors according to the product identifiers with prices", ^{
+      BZRProduct *product1 = OCMClassMock([BZRProduct class]);
+      BZRProduct *product2 = OCMClassMock([BZRProduct class]);
+      OCMStub([product1 priceInfo]).andReturn(OCMClassMock([BZRProductPriceInfo class]));
+      OCMStub([product2 priceInfo]).andReturn(OCMClassMock([BZRProductPriceInfo class]));
+      NSDictionary<NSString *, BZRProduct *> *returnedProducts = @{
+        @"foo1": product1,
+        @"foo2": product2
+      };
+      OCMStub([subscriptionManager fetchProductsInfoIfNeeded:[requestedProductIdentifiers lt_set]
+          completionHandler:([OCMArg invokeBlockWithArgs:returnedProducts, [NSNull null], nil])]);
+
+      [viewModel fetchProductsInfo];
+
+      [viewModel.subscriptionDescriptors
+       enumerateObjectsUsingBlock:^(SPXSubscriptionDescriptor *descriptor, NSUInteger index,
+                                    BOOL *) {
+         expect(descriptor.productIdentifier).to.equal(requestedProductIdentifiers[index]);
+         expect(descriptor.priceInfo).to
+            .equal(returnedProducts[descriptor.productIdentifier].priceInfo);
+       }];
+    });
   });
 });
 
@@ -195,6 +272,25 @@ context(@"restoration", ^{
   });
 });
 
+context(@"paging view", ^{
+  it(@"should send scroll request to the next page when video playback has finished", ^{
+    auto recorder = [viewModel.pagingViewScrollRequested testRecorder];
+
+    [viewModel activePageDidFinishVideoPlayback];
+
+    expect(recorder).to.sendValues(@[@1]);
+  });
+
+  it(@"should send scroll request to the first page if the last page video has finished", ^{
+    auto recorder = [viewModel.pagingViewScrollRequested testRecorder];
+    [viewModel pagingViewScrolledToPosition:1];
+
+    [viewModel activePageDidFinishVideoPlayback];
+
+    expect(recorder).to.sendValues(@[@0]);
+  });
+});
+
 context(@"subscription manager delegate", ^{
   beforeEach(^{
     OCMStub([subscriptionManager delegate]).andReturn(viewModel);
@@ -216,6 +312,120 @@ context(@"subscription manager delegate", ^{
     [subscriptionManager.delegate presentFeedbackMailComposerWithCompletionHandler:voidBlock];
 
     expect(recorder).to.sendValues(@[voidBlock]);
+  });
+});
+
+context(@"events", ^{
+  __block BZRReceiptSubscriptionInfo *subscriptionInformation;
+
+  beforeEach(^{
+    subscriptionInformation = OCMClassMock([BZRReceiptSubscriptionInfo class]);
+  });
+
+  context(@"purchase subscription", ^{
+    __block BZRProductPriceInfo *priceInfo;
+
+    beforeEach(^{
+      priceInfo = OCMClassMock([BZRProductPriceInfo class]);
+      BZRProduct *product = OCMClassMock([BZRProduct class]);
+      OCMStub([product priceInfo]).andReturn(priceInfo);
+      NSDictionary<NSString *, BZRProduct *> *returnedProducts = @{
+        @"foo2": product
+      };
+      OCMStub([subscriptionManager fetchProductsInfo:[requestedProductIdentifiers lt_set]
+                                   completionHandler:([OCMArg invokeBlockWithArgs:returnedProducts,
+                                                       [NSNull null], nil])]);
+      [viewModel fetchProductsInfo];
+    });
+
+    it(@"should sends subscription button pressed event", ^{
+      auto eventsRecorder = [viewModel.events testRecorder];
+      [viewModel subscriptionButtonPressed:1];
+
+      expect(eventsRecorder).to.matchValue(0, ^BOOL(SPXSubscriptionButtonPressedEvent *event) {
+        return [event.productIdentifier isEqualToString:@"foo2"] && event.price == priceInfo.price;
+      });
+    });
+
+    it(@"should sends successful subscription purchased event", ^{
+      auto eventsRecorder = [viewModel.events testRecorder];
+
+      OCMStub([subscriptionManager purchaseSubscription:@"foo2" completionHandler:
+               ([OCMArg invokeBlockWithArgs:subscriptionInformation, [NSNull null], nil])]);
+
+      [viewModel subscriptionButtonPressed:1];
+
+      expect(eventsRecorder).to.matchValue(1, ^BOOL(SPXPurchaseSubscriptionEvent *event) {
+        return [event.productIdentifier isEqualToString:@"foo2"] && event.price == priceInfo.price
+            && event.localeIdentifier == priceInfo.localeIdentifier && event.successfulPurchase;
+      });
+    });
+
+    it(@"should sends unsuccessful subscription purchased event", ^{
+      auto eventsRecorder = [viewModel.events testRecorder];
+
+      auto error = [NSError lt_errorWithCode:BZRErrorCodePurchaseFailed];
+      OCMStub([subscriptionManager purchaseSubscription:@"foo2"
+                                      completionHandler:([OCMArg invokeBlockWithArgs:[NSNull null],
+                                                          error, nil])]);
+
+      [viewModel subscriptionButtonPressed:1];
+
+      expect(eventsRecorder).to.matchValue(1, ^BOOL(SPXPurchaseSubscriptionEvent *event) {
+        return [event.productIdentifier isEqualToString:@"foo2"] &&
+            event.price == priceInfo.price &&
+            event.localeIdentifier == priceInfo.localeIdentifier && !event.successfulPurchase &&
+            [event.failureDescription isEqualToString:@"BZRErrorCodePurchaseFailed"];
+      });
+    });
+  });
+
+  context(@"restore purchases", ^{
+    __block BZRReceiptInfo *receiptInfo;
+
+    beforeEach(^{
+      receiptInfo = OCMClassMock([BZRReceiptInfo class]);
+      OCMStub([receiptInfo subscription]).andReturn(subscriptionInformation);
+    });
+
+    it(@"should sends restore purchases button pressed event", ^{
+      auto eventsRecorder = [viewModel.events testRecorder];
+      [viewModel restorePurchasesButtonPressed];
+
+      expect(eventsRecorder).to.sendValues(@[[[SPXRestorePurchasesButtonPressedEvent alloc] init]]);
+    });
+
+    it(@"should sends successful restore purchases event", ^{
+      auto eventsRecorder = [viewModel.events testRecorder];
+
+      OCMStub([subscriptionInformation isExpired]).andReturn(NO);
+      OCMStub([subscriptionManager
+               restorePurchasesWithCompletionHandler:([OCMArg invokeBlockWithArgs:receiptInfo,
+                                                       [NSNull null], nil])]);
+
+      [viewModel restorePurchasesButtonPressed];
+
+      expect(eventsRecorder).to.matchValue(1, ^BOOL(SPXRestorePurchasesEvent *event) {
+        return event.successfulRestore && event.isSubscriber;
+      });
+    });
+
+    it(@"should sends unsuccessful restore purchases event", ^{
+      auto eventsRecorder = [viewModel.events testRecorder];
+
+      auto error = [NSError lt_errorWithCode:BZRErrorCodeRestorePurchasesFailed];
+      OCMStub([subscriptionInformation isExpired]).andReturn(YES);
+      OCMStub([subscriptionManager
+               restorePurchasesWithCompletionHandler:([OCMArg invokeBlockWithArgs:[NSNull null],
+                                                       error, nil])]);
+
+      [viewModel restorePurchasesButtonPressed];
+
+      expect(eventsRecorder).to.matchValue(1, ^BOOL(SPXRestorePurchasesEvent *event) {
+        return !event.successfulRestore && !event.isSubscriber &&
+            [event.failureDescription isEqualToString:@"BZRErrorCodeRestorePurchasesFailed"];
+      });
+    });
   });
 });
 

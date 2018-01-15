@@ -22,8 +22,7 @@ __block PTNImageResizer *resizer;
 __block id<PTNResizingStrategy> resizingStrategy;
 
 beforeEach(^{
-  NSString *pathString = [[NSBundle bundleForClass:[self class]] pathForResource:@"PTNImageAsset"
-                                                                          ofType:@"jpg"];
+  NSString *pathString = [NSBundle.lt_testBundle pathForResource:@"PTNImageAsset" ofType:@"jpg"];
   path = [LTPath pathWithPath:pathString];
   imageData = [NSData dataWithContentsOfFile:path.path];
   image = [[UIImage alloc] init];

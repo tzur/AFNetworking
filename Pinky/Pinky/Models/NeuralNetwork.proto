@@ -258,20 +258,6 @@ message ActivationELU {
     float alpha = 1;
 }
 
-/**
- * A thresholded rectified linear unit (ReLU) activation function.
- *
- * This function has the following formula:
- *
- * .. math::
- *     f(x) = \begin{cases}
- *             x & \text{if } x \geq \alpha \\
- *             0 & \text{if } x < \alpha
- *            \end{cases}
- */
-message ActivationThresholdedReLU {
-    float alpha = 1;
-}
 
 /**
  * A softsign activation function.
@@ -318,7 +304,6 @@ message ActivationParams {
 
         ActivationReLU ReLU = 10;
         ActivationLeakyReLU leakyReLU = 15;
-        ActivationThresholdedReLU thresholdedReLU = 20;
         ActivationPReLU PReLU = 25;
 
         ActivationTanh tanh = 30;

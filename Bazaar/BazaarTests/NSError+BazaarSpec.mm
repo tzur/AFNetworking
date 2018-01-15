@@ -135,7 +135,7 @@ context(@"transaction error", ^{
     NSString *stateDescription =
         [NSString stringWithFormat:@"%@ = %@", @keypath(transaction, transactionState),
          @"SKPaymentTransactionStatePurchased"];
-    NSString *originalTransactionIdentiferDescription =
+    NSString *originalTransactionIdentifierDescription =
         [NSString stringWithFormat:@"%@ = %@",
          @keypath(originalTransaction, transactionIdentifier),
          originalTransaction.transactionIdentifier];
@@ -144,17 +144,17 @@ context(@"transaction error", ^{
     expect(error.description).to.contain(dateDescription);
     expect(error.description).to.contain(transactionIdentifierDescription);
     expect(error.description).to.contain(stateDescription);
-    expect(error.description).to.contain(originalTransactionIdentiferDescription);
+    expect(error.description).to.contain(originalTransactionIdentifierDescription);
   });
 });
 
 context(@"invalid product identifiers error", ^{
   it(@"should return an invalid product identifiers error with the given products", ^{
     NSSet<NSString *> *products = [NSSet setWithObjects:@"foo", @"bar", nil];
-    NSError *error = [NSError bzr_invalidProductsErrorWithIdentifers:products];
+    NSError *error = [NSError bzr_invalidProductsErrorWithIdentifiers:products];
 
     expect(error.domain).to.equal(kLTErrorDomain);
-    expect(error.code).to.equal(BZRErrorCodeInvalidProductIdentifer);
+    expect(error.code).to.equal(BZRErrorCodeInvalidProductIdentifier);
     expect(error.bzr_productIdentifiers).to.equal(products);
   });
 });

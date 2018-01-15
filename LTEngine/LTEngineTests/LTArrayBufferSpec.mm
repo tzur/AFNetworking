@@ -120,8 +120,11 @@ sharedExamplesFor(kLTArrayBufferExamples, ^(NSDictionary *contextInfo) {
       });
 
       itShouldBehaveLike(kLTResourceExamples, ^{
-        return @{kLTResourceExamplesSUTValue: [NSValue valueWithNonretainedObject:buffer],
-                 kLTResourceExamplesOpenGLParameterName: @GL_ELEMENT_ARRAY_BUFFER_BINDING};
+        return @{
+          kLTResourceExamplesSUTValue: [NSValue valueWithNonretainedObject:buffer],
+          kLTResourceExamplesOpenGLParameterName: @GL_ELEMENT_ARRAY_BUFFER_BINDING,
+          kLTResourceExamplesIsResourceFunction: [NSValue valueWithPointer:(const void *)glIsBuffer]
+        };
       });
     });
 
@@ -136,8 +139,11 @@ sharedExamplesFor(kLTArrayBufferExamples, ^(NSDictionary *contextInfo) {
       });
 
       itShouldBehaveLike(kLTResourceExamples, ^{
-        return @{kLTResourceExamplesSUTValue: [NSValue valueWithNonretainedObject:buffer],
-                 kLTResourceExamplesOpenGLParameterName: @GL_ARRAY_BUFFER_BINDING};
+        return @{
+          kLTResourceExamplesSUTValue: [NSValue valueWithNonretainedObject:buffer],
+          kLTResourceExamplesOpenGLParameterName: @GL_ARRAY_BUFFER_BINDING,
+          kLTResourceExamplesIsResourceFunction: [NSValue valueWithPointer:(const void *)glIsBuffer]
+        };
       });
     });
 

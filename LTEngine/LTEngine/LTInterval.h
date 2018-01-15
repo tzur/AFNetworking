@@ -1,6 +1,8 @@
 // Copyright (c) 2015 Lightricks. All rights reserved.
 // Created by Rouven Strauss.
 
+#import <experimental/optional>
+
 namespace lt {
 
 /// Struct representing a primitive scalar interval from a value \c a to a value \c b. The interval
@@ -8,6 +10,9 @@ namespace lt {
 /// type.
 template <typename T>
 class Interval {
+  static_assert(std::is_integral<T>::value || std::is_floating_point<T>::value,
+                "Interval class is only available for primitive scalar types");
+
 public:
   /// Types of end point inclusion indicating whether an end point of the interval is included.
   enum EndpointInclusion {
@@ -50,7 +55,7 @@ public:
     if (_inf == _sup) {
       return !infIncluded() || !supIncluded();
     } else if (!infIncluded() && !supIncluded()) {
-      return std::nextafter(_inf, _sup) == _sup;
+      return std::is_integral<T>::value ? _inf + 1 == _sup : std::nextafter(_inf, _sup) == _sup;
     }
     return false;
   }
@@ -68,7 +73,7 @@ public:
 
   /// Returns a new interval constituting the intersection between this interval and the given
   /// \c interval.
-  lt::Interval<T> intersectionWith(lt::Interval<CGFloat> interval) const {
+  lt::Interval<T> intersectionWith(lt::Interval<T> interval) const {
     T inf = std::max(_inf, interval._inf);
     T sup = std::min(_sup, interval._sup);
 
@@ -91,14 +96,81 @@ public:
     return _sup;
   }
 
+  /// Returns the minimum value of this interval. Note that the minimum value equals the value
+  /// returned by the \c inf() method iff the interval is closed w.r.t the infimum. If this interval
+  /// is empty, an empty optional is returned.
+  std::experimental::optional<T> min() const {
+    if (isEmpty()) {
+      return std::experimental::nullopt;
+    }
+    if (infIncluded()) {
+      return _inf;
+    }
+    // Note that no overflow is possible since _inf is guaranteed to be smaller than _sup for a
+    // non-empty interval.
+    return std::is_integral<T>::value ? _inf + 1 : std::nextafter(_inf, _sup);
+  };
+
+  /// Returns the maximum value of this interval. Note that the maximum value equals the value
+  /// returned by the \c sup() method iff the interval is closed w.r.t the supremum. If this
+  /// interval is empty, an empty optional is returned.
+  std::experimental::optional<T> max() const {
+    if (isEmpty()) {
+      return std::experimental::nullopt;
+    }
+    if (supIncluded()) {
+      return _sup;
+    }
+    // Note that no overflow is possible since _sup is guaranteed to be greater than _inf for a
+    // non-empty interval.
+    return std::is_integral<T>::value ? _sup - 1 : std::nextafter(_sup, _inf);
+  }
+
   /// Returns the linearly interpolated value for parametric value \c t. In particular, the minimum
   /// of this interval is returned for \c t equalling \c 0 and the maximum of this interval is
-  /// returned for \c t equalling \c 1. If this interval is empty, an assertion is raised.
-  T valueAt(T t) const {
-    LTParameterAssert(!isEmpty(), @"No interpolation is possible for empty interval ");
-    T min = infIncluded() ? _inf : std::nextafter(_inf, _sup);
-    T max = supIncluded() ? _sup : std::nextafter(_sup, _inf);
-    return (1 - t) * min + t * max;
+  /// returned for \c t equalling \c 1. If this interval is empty, an empty optional is returned.
+  std::experimental::optional<double> valueAt(double t) const {
+    if (isEmpty()) {
+      return std::experimental::nullopt;
+    }
+    // No overflow possible since non-empty intervals always allow incrementing (/decrementing) of
+    // their infimum (/supremum) by a single step.
+    return (1 - t) * *min() + t * *max();
+  }
+
+  /// Returns the parametric value for the given value \c x, i.e. the value \c t s.t.
+  /// <tt>valueAt(t)</tt> equals \c x (up to deviations caused by numeric imprecisions). If this
+  /// interval is empty or the interval contains only a single value, an empty optional is returned.
+  std::experimental::optional<double> parametricValue(T x) const {
+    if (isEmpty()) {
+      return std::experimental::nullopt;
+    }
+    CGFloat minimum = *min();
+    CGFloat maximum = *max();
+    if (minimum == maximum) {
+      return std::experimental::nullopt;
+    } else {
+      return ((double)x - minimum) / (maximum - minimum);
+    }
+  }
+
+  /// Returns the length of this interval.
+  T length() const {
+    return isEmpty() ? 0 : *max() - *min();
+  }
+
+  /// Returns the given value \c x clamped to this interval, i.e. the returned value is \c x if this
+  /// interval contains \c x, and the value contained by this interval closest to \c x, otherwise.
+  /// If this interval is empty, an empty optional is returned.
+  std::experimental::optional<T> clamp(T x) const {
+    if (isEmpty()) {
+      return std::experimental::nullopt;
+    }
+    if (contains(x)) {
+      return x;
+    }
+    CGFloat minimum = *min();
+    return x < minimum ? minimum : *max();
   }
 
   /// Returns \c true if the infimum of this interval belongs to the interval.
@@ -113,8 +185,13 @@ public:
 
   /// Returns a string representation of this interval.
   NSString *description() const {
-    return [NSString stringWithFormat:@"%@%g, %g%@", infIncluded() ? @"[" : @"(",
-            _inf, _sup, supIncluded() ? @"]" : @")"];
+    std::stringstream stream;
+    stream << (infIncluded() ? "[" : "(");
+    stream << _inf;
+    stream << ", ";
+    stream << _sup;
+    stream << (supIncluded() ? "]" : ")");
+    return [NSString stringWithUTF8String:stream.str().c_str()];
   }
 
 private:

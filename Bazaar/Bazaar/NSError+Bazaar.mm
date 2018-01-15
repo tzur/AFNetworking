@@ -110,11 +110,11 @@ NSString * const kBZRApplicationBundleIDKey = @"BZRApplicationBundleID";
   return [NSError lt_errorWithCode:code userInfo:userInfo];
 }
 
-+ (instancetype)bzr_invalidProductsErrorWithIdentifers:(NSSet<NSString *> *)productIdentifiers {
++ (instancetype)bzr_invalidProductsErrorWithIdentifiers:(NSSet<NSString *> *)productIdentifiers {
   NSDictionary *userInfo = @{
     kBZRErrorProductIdentifiersKey: [productIdentifiers copy]
   };
-  return [self lt_errorWithCode:BZRErrorCodeInvalidProductIdentifer userInfo:userInfo];
+  return [self lt_errorWithCode:BZRErrorCodeInvalidProductIdentifier userInfo:userInfo];
 }
 
 + (instancetype)bzr_errorWithSecondsUntilSubscriptionInvalidation:

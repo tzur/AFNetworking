@@ -34,7 +34,7 @@ using namespace spx;
 #pragma mark SPXSubscriptionViewController
 #pragma mark -
 
-@interface SPXSubscriptionViewController () <MFMailComposeViewControllerDelegate>
+@interface SPXSubscriptionViewController ()
 
 /// View configuration.
 @property (readonly, nonatomic) id<SPXSubscriptionViewModel> viewModel;
@@ -51,11 +51,18 @@ using namespace spx;
 /// View that lets the user paginate horizontally between the given pages.
 @property (readonly, nonatomic) SPXPagingView *pagingView;
 
-/// View contains horizontally aligned buttons, where one of the buttons can be enlarged.
+/// View containing horizontally aligned buttons, where one of the buttons can be enlarged.
 @property (readonly, nonatomic) SPXButtonsHorizontalLayoutView *subscriptionButtonsView;
 
-/// Button allows the user restore previous subscription.
+/// Button that allows the user to restore previous subscription.
 @property (readonly, nonatomic) SPXRestorePurchasesButton *restorePurchasesButton;
+
+/// View contains \c subscriptionButtonsView and \c restorePurchasesButton with padding between
+/// them.
+@property (readonly, nonatomic) UIView *buttonsContainer;
+
+/// View contains centered \c buttonsContainer with top and bottom margins.
+@property (readonly, nonatomic) UIView *buttonsContainerWithMargins;
 
 /// View for subscription terms of use text and documents links.
 @property (readonly, nonatomic) SPXSubscriptionTermsView *termsView;
@@ -78,13 +85,22 @@ using namespace spx;
   return [self initWithViewModel:viewModel
          alertControllerProvider:[[SPXAlertViewControllerProvider alloc] init]
             mailComposerProvider:mailComposerProvider
-     subscriptionButtonsProvider:defaultButtonsFactory];
+      subscriptionButtonsFactory:defaultButtonsFactory];
+}
+
+- (instancetype)initWithViewModel:(id<SPXSubscriptionViewModel>)viewModel
+             mailComposerProvider:(id<SPXFeedbackComposeViewControllerProvider>)mailComposerProvider
+       subscriptionButtonsFactory:(id<SPXSubscriptionButtonsFactory>)subscriptionButtonsFactory {
+  return [self initWithViewModel:viewModel
+         alertControllerProvider:[[SPXAlertViewControllerProvider alloc] init]
+            mailComposerProvider:mailComposerProvider
+      subscriptionButtonsFactory:subscriptionButtonsFactory];
 }
 
 - (instancetype)initWithViewModel:(id<SPXSubscriptionViewModel>)viewModel
           alertControllerProvider:(id<SPXAlertViewControllerProvider>)alertControllerProvider
              mailComposerProvider:(id<SPXFeedbackComposeViewControllerProvider>)mailComposerProvider
-      subscriptionButtonsProvider:(id<SPXSubscriptionButtonsFactory>)subscriptionButtonsFactory {
+       subscriptionButtonsFactory:(id<SPXSubscriptionButtonsFactory>)subscriptionButtonsFactory {
   if (self = [super initWithNibName:nil bundle:nil]) {
     _viewModel = viewModel;
     _alertControllerProvider = alertControllerProvider;
@@ -112,8 +128,10 @@ using namespace spx;
 
   if (self.view.frame.size.width < self.view.frame.size.height) {
     self.pagingView.pageViewWidthRatio = 0.84;
+    self.pagingView.spacingRatio = 0.05;
   } else {
     self.pagingView.pageViewWidthRatio = 0.42;
+    self.pagingView.spacingRatio = 0.4;
   }
 }
 
@@ -123,10 +141,11 @@ using namespace spx;
 
 - (void)setupSubviews {
   [self setupBackgroundView];
+  [self setupTerms];
   [self setupPageingView];
+  [self setupButtonsContainer];
   [self setupButtons];
   [self setupRestorePurchasesButton];
-  [self setupTerms];
   [self setupActivityIndicator];
 }
 
@@ -148,6 +167,7 @@ using namespace spx;
   [self.pagingView mas_makeConstraints:^(MASConstraintMaker *make) {
     make.top.left.right.equalTo(self.view);
     make.height.equalTo(self.view).multipliedBy(0.58).priorityHigh();
+    make.height.mas_lessThanOrEqualTo(self.view.mas_width).multipliedBy(0.95);
   }];
   self.pagingView.pageViews = [self createPageViews];
 }
@@ -159,46 +179,65 @@ using namespace spx;
     pageView.videoURL = pageViewModel.videoURL;
     pageView.title = pageViewModel.title;
     pageView.subtitle = pageViewModel.subtitle;
+    pageView.videoBorderColor = pageViewModel.videoBorderColor;
 
     return pageView;
   }];
 }
 
-- (void)setupButtons {
-  auto topPaddingView = [self addPaddingSubviewBeneathView:self.pagingView heightRatio:0.01
-                                                 maxHeight:120];
+- (void)setupButtonsContainer {
+  _buttonsContainerWithMargins = [[UIView alloc] init];
+  [self.view addSubview:self.buttonsContainerWithMargins];
 
+  [self.buttonsContainerWithMargins mas_makeConstraints:^(MASConstraintMaker *make) {
+    make.left.right.equalTo(self.view);
+    make.top.equalTo(self.pagingView.mas_bottom);
+    make.bottom.equalTo(self.termsView.mas_top);
+  }];
+
+  _buttonsContainer = [[UIView alloc] init];
+  [self.buttonsContainerWithMargins addSubview:self.buttonsContainer];
+
+  [self.buttonsContainer mas_makeConstraints:^(MASConstraintMaker *make) {
+    make.left.right.equalTo(self.buttonsContainerWithMargins);
+    make.center.equalTo(self.buttonsContainerWithMargins);
+    make.height.equalTo(self.view).multipliedBy(0.24).priorityHigh();
+    make.height.mas_lessThanOrEqualTo(230);
+  }];
+}
+
+- (void)setupButtons {
   _subscriptionButtonsView = [[SPXButtonsHorizontalLayoutView alloc] init];
-  [self.view addSubview:self.subscriptionButtonsView];
+  [self.buttonsContainer addSubview:self.subscriptionButtonsView];
 
   [self.subscriptionButtonsView mas_makeConstraints:^(MASConstraintMaker *make) {
     make.left.right.equalTo(self.view);
-    make.top.equalTo(topPaddingView.mas_bottom);
+    make.top.equalTo(self.buttonsContainer);
     make.height.equalTo(self.view).multipliedBy(0.197).priorityHigh();
     make.height.mas_lessThanOrEqualTo(167);
     make.height.mas_lessThanOrEqualTo(self.view.mas_width).multipliedBy(0.32);
   }];
 
-  self.subscriptionButtonsView.buttons = [self.viewModel.subscriptionDescriptors
-      lt_map:^UIButton *(SPXSubscriptionDescriptor *subscriptionDescriptor) {
+  auto descriptors = self.viewModel.subscriptionDescriptors;
+  self.subscriptionButtonsView.buttons = [descriptors
+      lt_map:^UIControl *(SPXSubscriptionDescriptor *subscriptionDescriptor) {
         return [self.subscriptionButtonsFactory
-                createSubscriptionButtonWithSubscriptionDescriptor:subscriptionDescriptor];
+                createSubscriptionButtonWithSubscriptionDescriptor:subscriptionDescriptor
+                atIndex:[descriptors indexOfObject:subscriptionDescriptor] outOf:descriptors.count
+                isHighlighted:NO];
       }];
 
   self.subscriptionButtonsView.enlargedButtonIndex = self.viewModel.preferredProductIndex;
 }
 
 - (void)setupRestorePurchasesButton {
-  auto topPaddingView = [self addPaddingSubviewBeneathView:self.subscriptionButtonsView
-                                               heightRatio:0.015 maxHeight:20];
-
   _restorePurchasesButton = [[SPXRestorePurchasesButton alloc] init];
   self.restorePurchasesButton.textColor = self.viewModel.colorScheme.textColor;
 
-  [self.view addSubview:self.restorePurchasesButton];
+  [self.buttonsContainer addSubview:self.restorePurchasesButton];
   [self.restorePurchasesButton mas_makeConstraints:^(MASConstraintMaker *make) {
-    make.top.equalTo(topPaddingView.mas_bottom);
-    make.centerX.equalTo(self.view);
+    make.bottom.centerX.equalTo(self.buttonsContainer);
+    make.height.equalTo(@16);
   }];
 }
 
@@ -207,11 +246,12 @@ using namespace spx;
                 initWithTermsText:self.viewModel.termsViewModel.termsText
                 termsOfUseLink:self.viewModel.termsViewModel.termsOfUseLink
                 privacyPolicyLink:self.viewModel.termsViewModel.privacyPolicyLink];
+  self.termsView.termsTextContainerInset = UIEdgeInsetsMake(6, 0, 6, 0);
   [self.view addSubview:self.termsView];
 
   [self.termsView mas_makeConstraints:^(MASConstraintMaker *make) {
     make.centerX.equalTo(self.view);
-    make.bottom.equalTo(self.view).offset(-2);
+    make.bottom.equalTo(self.view);
     make.width.equalTo(self.view).multipliedBy(0.94);
   }];
 }
@@ -228,22 +268,6 @@ using namespace spx;
   }];
 }
 
-- (UIView *)addPaddingSubviewBeneathView:(UIView *)view heightRatio:(CGFloat)heightRatio
-                               maxHeight:(NSUInteger)maxHeight {
-  auto paddingView = [[UIView alloc] init];
-  paddingView.hidden = YES;
-  [self.view addSubview:paddingView];
-
-  [paddingView mas_makeConstraints:^(MASConstraintMaker *make) {
-    make.left.right.equalTo(self.view);
-    make.top.equalTo(view.mas_bottom);
-    make.height.equalTo(self.view).multipliedBy(heightRatio).priorityHigh();
-    make.height.mas_lessThanOrEqualTo(maxHeight);
-  }];
-
-  return paddingView;
-}
-
 #pragma mark -
 #pragma mark Bindings Setup
 #pragma mark -
@@ -252,6 +276,9 @@ using namespace spx;
   [self setupSubscriptionButtonsBindings];
   [self setupRestorePurchasesButtonPressedBinding];
   [self setupActivityIndicatorBinding];
+  [self setupScrollPositionBinding];
+  [self setupVideoDidFinishBinding];
+  [self setupScrollRequestBinding];
   [self setupAlertRequestBinding];
   [self setupFeedbackComposerRequestBinding];
 }
@@ -275,11 +302,39 @@ using namespace spx;
 
 - (void)setupActivityIndicatorBinding {
   @weakify(self);
-  [RACObserve(self, viewModel.shouldShowActivityIndicator) subscribeNext:^(NSNumber *active) {
+  [RACObserve(self.viewModel, shouldShowActivityIndicator) subscribeNext:^(NSNumber *active) {
     @strongify(self);
     active.boolValue ?
         [self.activityIndicatorView startAnimating] : [self.activityIndicatorView stopAnimating];
   }];
+}
+
+- (void)setupScrollPositionBinding {
+  @weakify(self);
+  [RACObserve(self.pagingView, scrollPosition) subscribeNext:^(NSNumber *scrollPosition) {
+    @strongify(self);
+    [self.viewModel pagingViewScrolledToPosition:scrollPosition.floatValue];
+  }];
+}
+
+- (void)setupVideoDidFinishBinding {
+  NSArray<RACSignal *> *videoDidFinishPlaybackSignals =
+      [self.pagingView.pageViews valueForKey:@instanceKeypath(SPXSubscriptionVideoPageView,
+                                                              videoDidFinishPlayback)];
+  @weakify(self);
+  [[RACSignal merge:videoDidFinishPlaybackSignals] subscribeNext:^(id) {
+    @strongify(self)
+    [self.viewModel activePageDidFinishVideoPlayback];
+  }];
+}
+
+- (void)setupScrollRequestBinding {
+  @weakify(self);
+  [[self.viewModel.pagingViewScrollRequested distinctUntilChanged]
+      subscribeNext:^(NSNumber *pageIndex) {
+        @strongify(self);
+        [self.pagingView scrollToPage:pageIndex.unsignedIntegerValue animated:YES];
+      }];
 }
 
 - (void)setupAlertRequestBinding {
@@ -295,11 +350,12 @@ using namespace spx;
   @weakify(self);
   [self.viewModel.feedbackComposerRequested subscribeNext:^(LTVoidBlock completionHandler) {
     @strongify(self);
-    auto _Nullable mailComposer = [self.mailComposerProvider feedbackComposeViewController];
+    auto _Nullable mailComposer = [self.mailComposerProvider createFeedbackComposeViewController];
 
     if (mailComposer) {
-      mailComposer.mailComposeDelegate = self;
-      mailComposer.spx_dismissBlock = completionHandler;
+      [mailComposer.dismissRequested subscribeNext:^(RACUnit *) {
+        [self dismissViewControllerAnimated:YES completion:completionHandler];
+      }];
       [self presentViewController:mailComposer animated:YES completion:nil];
     } else {
       completionHandler();
@@ -325,18 +381,6 @@ using namespace spx;
 
 - (RACSignal<RACUnit *> *)dismissRequested {
   return self.viewModel.dismissRequested;
-}
-
-#pragma mark -
-#pragma mark MFMailComposeViewControllerDelegate
-#pragma mark -
-
-- (void)mailComposeController:(MFMailComposeViewController *)controller
-          didFinishWithResult:(MFMailComposeResult __unused)result
-                        error:(NSError * _Nullable __unused)error {
-  [controller dismissViewControllerAnimated:YES completion:^{
-    controller.spx_dismissBlock();
-  }];
 }
 
 @end

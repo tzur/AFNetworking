@@ -29,7 +29,8 @@ NSString * const kTINMessageFileNamesKey = @"TINMessageFileNames";
       return nil;
     }
 
-    if (![fileURL.path.stringByStandardizingPath hasPrefix:nn(self.directoryURL.path)]) {
+    if (![fileURL.path.stringByStandardizingPath
+          hasPrefix:nn(self.directoryURL.path.stringByStandardizingPath)]) {
       return nil;
     }
     [fileURLs addObject:nn(fileURL)];

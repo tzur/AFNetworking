@@ -12,7 +12,7 @@ __block NSBundle *testsBundle;
 
 beforeEach(^{
   provider = [[WFAssetCatalogImageProvider alloc] init];
-  testsBundle = [NSBundle bundleForClass:self.class];
+  testsBundle = NSBundle.lt_testBundle;
 });
 
 context(@"errors", ^{

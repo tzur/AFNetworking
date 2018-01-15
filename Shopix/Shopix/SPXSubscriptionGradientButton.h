@@ -20,6 +20,10 @@ NS_ASSUME_NONNULL_BEGIN
 /// <tt>@[[UIColor clearColor], [UIColor clearColor]]</tt>.
 @property (copy, nonatomic) NSArray<UIColor *> *bottomGradientColors;
 
+/// Button's border color, \c nil if there is no border. If this property is not \c nil border width
+/// is set to \c 3, otherwise it is set to \c 0.
+@property (nonatomic, nullable) UIColor *borderColor;
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -20,6 +20,7 @@ extern "C" {
   #import <LTKitTestUtils/EXPMatchers+beCloseToPoint.h>
   #import <LTKitTestUtils/EXPMatchers+beCloseToSize.h>
   #import <LTKitTestUtils/LTTestUtils.h>
+  #import <LTKitTestUtils/NSBundle+Test.h>
 
   // LTEngineTests.
   #import "LTTestUtils+LTEngine.h"
@@ -30,8 +31,9 @@ extern "C" {
   #import "LTEasyBoxing+OpenCVExtensions.h"
 #endif
 
-#import "EXPMatchers+beCloseToGLKVector.h"
 #import "EXPMatchers+beCloseToCATransform3D.h"
+#import "EXPMatchers+beCloseToGLKVector.h"
+#import "EXPMatchers+beCloseToLTVector.h"
 #import "LTSpectaKeyWindowViewHook.h"
 #import "LTSpectaObjectionHook.h"
 #import "LTSpectaOpenGLContextHook.h"

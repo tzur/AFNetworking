@@ -96,8 +96,8 @@
 		F9A684791D1FF45200E0F319 /* CUILayerViewSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = F9A684781D1FF45200E0F319 /* CUILayerViewSpec.mm */; };
 		F9A685361D211AF100E0F319 /* CUIMenuItemsDataSource.mm in Sources */ = {isa = PBXBuildFile; fileRef = F9A685351D211AF100E0F319 /* CUIMenuItemsDataSource.mm */; };
 		F9B088A21D2127C500EB1E76 /* CUIMenuItemsDataSourceSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = F9B088A11D2127C500EB1E76 /* CUIMenuItemsDataSourceSpec.mm */; };
-		F9CD3BF91CECBC3700190169 /* CUISharedTheme.mm in Sources */ = {isa = PBXBuildFile; fileRef = F9CD3BF81CECBC3700190169 /* CUISharedTheme.mm */; };
-		F9CD3C171CECBC4500190169 /* CUISharedThemeSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = F9CD3C161CECBC4500190169 /* CUISharedThemeSpec.mm */; };
+		F9CD3BF91CECBC3700190169 /* CUITheme.mm in Sources */ = {isa = PBXBuildFile; fileRef = F9CD3BF81CECBC3700190169 /* CUITheme.mm */; };
+		F9CD3C171CECBC4500190169 /* CUIThemeSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = F9CD3C161CECBC4500190169 /* CUIThemeSpec.mm */; };
 		F9CDB5D31D2D12A300B11D82 /* RACSignal+CameraUI.mm in Sources */ = {isa = PBXBuildFile; fileRef = F9CDB5D01D2D12A300B11D82 /* RACSignal+CameraUI.mm */; };
 		F9CDB5D41D2D12A300B11D82 /* UIViewController+LifecycleSignals.mm in Sources */ = {isa = PBXBuildFile; fileRef = F9CDB5D21D2D12A300B11D82 /* UIViewController+LifecycleSignals.mm */; };
 		F9CDB5F61D2D220900B11D82 /* RACSignal+CameraUISpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = F9CDB5F51D2D220900B11D82 /* RACSignal+CameraUISpec.mm */; };
@@ -502,7 +502,7 @@
 		0609BA8C1D913314000938EB /* CAMTestUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CAMTestUtils.h; path = ../../Camera/CameraTests/CAMTestUtils.h; sourceTree = "<group>"; };
 		0609BA8D1D913314000938EB /* CAMTestUtils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CAMTestUtils.mm; path = ../../Camera/CameraTests/CAMTestUtils.mm; sourceTree = "<group>"; };
 		288E8EC11D3BEAEC000B7E69 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
-		650619F31D46388F003D45B1 /* TestHost.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TestHost.xcodeproj; path = ../Foundations/TestHost.xcodeproj; sourceTree = "<group>"; };
+		650619F31D46388F003D45B1 /* TestHost.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TestHost.xcodeproj; path = ../TestHost/TestHost.xcodeproj; sourceTree = "<group>"; };
 		650619FD1D463932003D45B1 /* LTKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LTKit.xcodeproj; path = ../LTKit/LTKit.xcodeproj; sourceTree = "<group>"; };
 		65061A071D463946003D45B1 /* Mantle.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Mantle.xcodeproj; path = ../third_party/Mantle/Mantle.xcodeproj; sourceTree = "<group>"; };
 		65061A161D463954003D45B1 /* extobjc.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = extobjc.xcodeproj; path = ../third_party/libextobjc/extobjc.xcodeproj; sourceTree = "<group>"; };
@@ -633,9 +633,9 @@
 		F9A685351D211AF100E0F319 /* CUIMenuItemsDataSource.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUIMenuItemsDataSource.mm; sourceTree = "<group>"; };
 		F9B088A11D2127C500EB1E76 /* CUIMenuItemsDataSourceSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUIMenuItemsDataSourceSpec.mm; sourceTree = "<group>"; };
 		F9B97A3B1D095BE700B4E670 /* CUIMutableMenuItemView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUIMutableMenuItemView.h; sourceTree = "<group>"; };
-		F9CD3BF71CECBC3700190169 /* CUISharedTheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUISharedTheme.h; sourceTree = "<group>"; };
-		F9CD3BF81CECBC3700190169 /* CUISharedTheme.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUISharedTheme.mm; sourceTree = "<group>"; };
-		F9CD3C161CECBC4500190169 /* CUISharedThemeSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUISharedThemeSpec.mm; sourceTree = "<group>"; };
+		F9CD3BF71CECBC3700190169 /* CUITheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUITheme.h; sourceTree = "<group>"; };
+		F9CD3BF81CECBC3700190169 /* CUITheme.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUITheme.mm; sourceTree = "<group>"; };
+		F9CD3C161CECBC4500190169 /* CUIThemeSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUIThemeSpec.mm; sourceTree = "<group>"; };
 		F9CDB5CF1D2D12A300B11D82 /* RACSignal+CameraUI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RACSignal+CameraUI.h"; sourceTree = "<group>"; };
 		F9CDB5D01D2D12A300B11D82 /* RACSignal+CameraUI.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "RACSignal+CameraUI.mm"; sourceTree = "<group>"; };
 		F9CDB5D11D2D12A300B11D82 /* UIViewController+LifecycleSignals.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+LifecycleSignals.h"; sourceTree = "<group>"; };
@@ -1057,8 +1057,8 @@
 			children = (
 				BE4629311CDF1DE700D9F7E2 /* Drop Down Bar */,
 				BE46294F1CDF1E2500D9F7E2 /* Modes Bar */,
-				F9CD3BF71CECBC3700190169 /* CUISharedTheme.h */,
-				F9CD3BF81CECBC3700190169 /* CUISharedTheme.mm */,
+				F9CD3BF71CECBC3700190169 /* CUITheme.h */,
+				F9CD3BF81CECBC3700190169 /* CUITheme.mm */,
 			);
 			name = Bars;
 			sourceTree = "<group>";
@@ -1079,7 +1079,7 @@
 			children = (
 				BE4629571CDF24D200D9F7E2 /* Drop Down Bar */,
 				BE4629561CDF24C700D9F7E2 /* Modes Bar */,
-				F9CD3C161CECBC4500190169 /* CUISharedThemeSpec.mm */,
+				F9CD3C161CECBC4500190169 /* CUIThemeSpec.mm */,
 			);
 			name = Bars;
 			sourceTree = "<group>";
@@ -1708,7 +1708,7 @@
 				0609BA5F1D9132D4000938EB /* CUISampleBufferView.mm in Sources */,
 				BEE564791D801E7B00E79E55 /* CUIDropDownHorizontalView.mm in Sources */,
 				F965CD621CF478F100005627 /* CUISelectableMenuItemViewModel.mm in Sources */,
-				F9CD3BF91CECBC3700190169 /* CUISharedTheme.mm in Sources */,
+				F9CD3BF91CECBC3700190169 /* CUITheme.mm in Sources */,
 				F9660E8A1D09A90A00669EB0 /* CUISingleChoiceMenuViewModel.mm in Sources */,
 				F925C2AC1D378BC100C95F46 /* CUIFocusIconMode.mm in Sources */,
 				F9A685361D211AF100E0F319 /* CUIMenuItemsDataSource.mm in Sources */,
@@ -1732,7 +1732,7 @@
 				BE8229021D81BE2D000B0C06 /* CUIDropDownEntryViewModelSpec.mm in Sources */,
 				837FBFC91D4F8929003B53BF /* WFLoggingImageProvider.mm in Sources */,
 				BE3F84CC1D82DB690043F3E3 /* CUIDropDownHorizontalViewSpec.mm in Sources */,
-				F9CD3C171CECBC4500190169 /* CUISharedThemeSpec.mm in Sources */,
+				F9CD3C171CECBC4500190169 /* CUIThemeSpec.mm in Sources */,
 				BE0E850A1D2B9B1F00093B01 /* CAMDeviceStub.mm in Sources */,
 				0609BA8B1D9132E5000938EB /* CUISampleBufferViewSpec.mm in Sources */,
 				8328EE411D436169008C5A19 /* CUITimerModeViewModelSpec.mm in Sources */,

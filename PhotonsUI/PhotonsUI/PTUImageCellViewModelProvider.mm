@@ -33,7 +33,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithAssetManager:(id<PTNAssetManager>)assetManager {
   PTNImageFetchOptions *options =
       [PTNImageFetchOptions optionsWithDeliveryMode:PTNImageDeliveryModeOpportunistic
-                                         resizeMode:PTNImageResizeModeFast];
+                                         resizeMode:PTNImageResizeModeFast includeMetadata:NO];
   return [self initWithAssetManager:assetManager imageFetchOptions:options];
 }
 

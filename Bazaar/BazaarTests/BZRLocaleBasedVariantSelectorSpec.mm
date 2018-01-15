@@ -3,7 +3,7 @@
 
 #import "BZRLocaleBasedVariantSelector.h"
 
-#import "BZRProduct+SKProduct.h"
+#import "BZRProduct+StoreKit.h"
 #import "BZRTestUtils.h"
 
 SpecBegin(BZRLocaleBasedVariantSelector)
@@ -39,34 +39,37 @@ context(@"getting variant for products", ^{
   });
 
   it(@"should return same identifier if country code was not found", ^{
-    SKProduct *skProduct = OCMClassMock([SKProduct class]);
-    OCMStub([skProduct priceLocale]).andReturn([NSLocale localeWithLocaleIdentifier:@"fr_BE"]);
+    SKProduct *underlyingProduct = OCMClassMock([SKProduct class]);
+    OCMStub([underlyingProduct priceLocale])
+        .andReturn([NSLocale localeWithLocaleIdentifier:@"fr_BE"]);
     productDictionary[@"foo"] =
         [productDictionary[@"foo"]
-         modelByOverridingProperty:@instanceKeypath(BZRProduct, bzr_underlyingProduct)
-         withValue:skProduct];
+         modelByOverridingProperty:@instanceKeypath(BZRProduct, underlyingProduct)
+         withValue:underlyingProduct];
 
     expect([variantSelector selectedVariantForProductWithIdentifier:@"foo"]).to.equal(@"foo");
   });
 
   it(@"should return same identifier if variant was not found", ^{
-    SKProduct *skProduct = OCMClassMock([SKProduct class]);
-    OCMStub([skProduct priceLocale]).andReturn([NSLocale localeWithLocaleIdentifier:@"en_US"]);
+    SKProduct *underlyingProduct = OCMClassMock([SKProduct class]);
+    OCMStub([underlyingProduct priceLocale])
+        .andReturn([NSLocale localeWithLocaleIdentifier:@"en_US"]);
     productDictionary[@"foo"] =
         [productDictionary[@"foo"]
-         modelByOverridingProperty:@instanceKeypath(BZRProduct, bzr_underlyingProduct)
-         withValue:skProduct];
+         modelByOverridingProperty:@instanceKeypath(BZRProduct, underlyingProduct)
+         withValue:underlyingProduct];
 
     expect([variantSelector selectedVariantForProductWithIdentifier:@"foo"]).to.equal(@"foo");
   });
 
   it(@"should return variant of product", ^{
-    SKProduct *skProduct = OCMClassMock([SKProduct class]);
-    OCMStub([skProduct priceLocale]).andReturn([NSLocale localeWithLocaleIdentifier:@"ru_RU"]);
+    SKProduct *underlyingProduct = OCMClassMock([SKProduct class]);
+    OCMStub([underlyingProduct priceLocale])
+        .andReturn([NSLocale localeWithLocaleIdentifier:@"ru_RU"]);
     productDictionary[@"foo"] =
         [productDictionary[@"foo"]
-         modelByOverridingProperty:@instanceKeypath(BZRProduct, bzr_underlyingProduct)
-         withValue:skProduct];
+         modelByOverridingProperty:@instanceKeypath(BZRProduct, underlyingProduct)
+         withValue:underlyingProduct];
 
     expect([variantSelector selectedVariantForProductWithIdentifier:@"foo"])
         .to.equal(@"foo.Variant.TierA");

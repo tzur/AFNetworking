@@ -97,6 +97,10 @@ static NSString * const kKernelFunctionName = @"setConstantAlpha";
   };
 }
 
+- (MTLSize)outputSizeForInputSize:(MTLSize)inputSize {
+  return inputSize;
+}
+
 @end
 
 #endif // PNK_USE_MPS

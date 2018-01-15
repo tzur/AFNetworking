@@ -12,10 +12,9 @@
 #import "BZRFakeReceiptValidationParametersProvider.h"
 #import "BZRKeychainStorage.h"
 #import "BZRPeriodicReceiptValidatorActivator.h"
-#import "BZRProduct+SKProduct.h"
+#import "BZRProduct+StoreKit.h"
 #import "BZRProductContentManager.h"
 #import "BZRProductPriceInfo.h"
-#import "BZRProductsPriceInfoFetcher.h"
 #import "BZRProductsProvider.h"
 #import "BZRProductsVariantSelector.h"
 #import "BZRProductsVariantSelectorFactory.h"
@@ -23,6 +22,7 @@
 #import "BZRReceiptValidationStatus.h"
 #import "BZRStoreConfiguration.h"
 #import "BZRStoreKitFacade.h"
+#import "BZRStoreKitMetadataFetcher.h"
 #import "BZRTestUtils.h"
 #import "NSError+Bazaar.h"
 #import "NSErrorCodes+Bazaar.h"
@@ -69,10 +69,10 @@ __block BZRAcquiredViaSubscriptionProvider *acquiredViaSubscriptionProvider;
 __block BZRStoreKitFacade *storeKitFacade;
 __block BZRPeriodicReceiptValidatorActivator *periodicValidatorActivator;
 __block id<BZRProductsVariantSelector> variantSelector;
-__block id<BZRReceiptValidationParametersProvider> validationParametersProvider;
+__block BZRFakeReceiptValidationParametersProvider *validationParametersProvider;
 __block BZRFakeAllowedProductsProvider *allowedProductsProvider;
 __block id<BZRProductsProvider> netherProductsProvider;
-__block BZRProductsPriceInfoFetcher *priceInfoFetcher;
+__block BZRStoreKitMetadataFetcher *storeKitMetadataFetcher;
 __block BZRKeychainStorage *keychainStorage;
 __block NSBundle *bundle;
 __block RACSubject *productsProviderEventsSubject;
@@ -81,7 +81,7 @@ __block RACSubject *netherProductsProviderSubject;
 __block RACSubject *transactionsErrorEventsSubject;
 __block RACSubject *contentFetcherEventsSubject;
 __block RACSubject *unhandledSuccessfulTransactionsSubject;
-__block RACSubject *priceInfoFetcherEventsSubject;
+__block RACSubject *storeKitMetadataFetcherEventsSubject;
 __block RACSubject *keychainStorageEventsSubject;
 __block BZRStoreConfiguration *configuration;
 __block BZRStore *store;
@@ -97,10 +97,10 @@ beforeEach(^{
   storeKitFacade = OCMClassMock([BZRStoreKitFacade class]);
   periodicValidatorActivator = OCMClassMock([BZRPeriodicReceiptValidatorActivator class]);
   variantSelector = OCMProtocolMock(@protocol(BZRProductsVariantSelector));
-  validationParametersProvider = OCMClassMock([BZRReceiptValidationParametersProvider class]);
+  validationParametersProvider = [[BZRFakeReceiptValidationParametersProvider alloc] init];
   allowedProductsProvider = [[BZRFakeAllowedProductsProvider alloc] init];
   netherProductsProvider = OCMProtocolMock(@protocol(BZRProductsProvider));
-  priceInfoFetcher = OCMClassMock([BZRProductsPriceInfoFetcher class]);
+  storeKitMetadataFetcher = OCMClassMock([BZRStoreKitMetadataFetcher class]);
   keychainStorage = OCMClassMock([BZRKeychainStorage class]);
   bundle = OCMClassMock([NSBundle class]);
   id<BZRProductsVariantSelectorFactory> variantSelectorFactory =
@@ -115,7 +115,7 @@ beforeEach(^{
   transactionsErrorEventsSubject = [RACSubject subject];
   contentFetcherEventsSubject = [RACSubject subject];
   unhandledSuccessfulTransactionsSubject = [RACSubject subject];
-  priceInfoFetcherEventsSubject = [RACSubject subject];
+  storeKitMetadataFetcherEventsSubject = [RACSubject subject];
   keychainStorageEventsSubject = [RACSubject subject];
 
   OCMStub([productsProvider eventsSignal])
@@ -128,7 +128,7 @@ beforeEach(^{
   OCMStub([contentFetcher eventsSignal]).andReturn(contentFetcherEventsSubject);
   OCMStub([storeKitFacade unhandledSuccessfulTransactionsSignal])
       .andReturn(unhandledSuccessfulTransactionsSubject);
-  OCMStub([priceInfoFetcher eventsSignal]).andReturn(priceInfoFetcherEventsSubject);
+  OCMStub([storeKitMetadataFetcher eventsSignal]).andReturn(storeKitMetadataFetcherEventsSubject);
   OCMStub([keychainStorage eventsSignal]).andReturn(keychainStorageEventsSubject);
 
   configuration = OCMClassMock([BZRStoreConfiguration class]);
@@ -144,7 +144,7 @@ beforeEach(^{
   OCMStub([configuration validationParametersProvider]).andReturn(validationParametersProvider);
   OCMStub([configuration allowedProductsProvider]).andReturn(allowedProductsProvider);
   OCMStub([configuration netherProductsProvider]).andReturn(netherProductsProvider);
-  OCMStub([configuration priceInfoFetcher]).andReturn(priceInfoFetcher);
+  OCMStub([configuration storeKitMetadataFetcher]).andReturn(storeKitMetadataFetcher);
   OCMStub([configuration keychainStorage]).andReturn(keychainStorage);
 
   store = [[BZRStore alloc] initWithConfiguration:configuration];
@@ -152,30 +152,44 @@ beforeEach(^{
 });
 
 context(@"initial receipt validation", ^{
-  it(@"should fetch receipt on initialization if receipt validation status is nil", ^{
+  it(@"should fetch receipt on initialization if receipt validation status is nil and App Store "
+     "locale was fetched", ^{
     OCMExpect([receiptValidationStatusProvider fetchReceiptValidationStatus])
         .andReturn([RACSignal return:OCMClassMock([BZRReceiptValidationStatus class])]);
 
     store = [[BZRStore alloc] initWithConfiguration:configuration];
+    validationParametersProvider.appStoreLocale = [NSLocale currentLocale];
 
     OCMVerifyAll((id)receiptValidationStatusProvider);
   });
 
-  it(@"should not fetch receipt on initialization if receipt validation status is not nil", ^{
+  it(@"should not fetch receipt on initialization if receipt validation status is nil and App "
+     "Store locale was not fetched", ^{
+    OCMReject([receiptValidationStatusProvider fetchReceiptValidationStatus]);
+
+    store = [[BZRStore alloc] initWithConfiguration:configuration];
+  });
+
+  it(@"should not fetch receipt on initialization if receipt validation status is not nil and "
+     "App Store locale was fetched", ^{
+    validationParametersProvider.appStoreLocale = [NSLocale currentLocale];
     OCMReject([receiptValidationStatusProvider fetchReceiptValidationStatus]);
     OCMStub([receiptValidationStatusProvider receiptValidationStatus])
         .andReturn(OCMClassMock([BZRReceiptValidationStatus class]));
 
     store = [[BZRStore alloc] initWithConfiguration:configuration];
+    validationParametersProvider.appStoreLocale = [NSLocale currentLocale];
   });
 
   it(@"should send error event if initial receipt validation failed", ^{
-    NSError *error = OCMClassMock([NSError class]);
+    validationParametersProvider.appStoreLocale = [NSLocale currentLocale];
+    NSError *error = [NSError lt_errorWithCode:1337];
     OCMStub([receiptValidationStatusProvider fetchReceiptValidationStatus])
         .andReturn([RACSignal error:error]);
 
     store = [[BZRStore alloc] initWithConfiguration:configuration];
     LLSignalTestRecorder *eventsRecorder = [[store eventsSignal] testRecorder];
+    validationParametersProvider.appStoreLocale = [NSLocale currentLocale];
 
     expect(eventsRecorder).will.matchValue(0, ^BOOL(BZREvent *event) {
       return [event.eventType isEqual:$(BZREventTypeNonCriticalError)] &&
@@ -206,6 +220,16 @@ context(@"multi-app subscription", ^{
     auto subscriptionIdentifier = @"com.bundleID.MultiAppMarker.foo";
 
     expect([store isMultiAppSubscription:subscriptionIdentifier]).to.beFalsy();
+  });
+});
+
+context(@"App Store locale", ^{
+  it(@"should fetch receipt validation every time the App Store locale changes", ^{
+    validationParametersProvider.appStoreLocale = [NSLocale currentLocale];
+    validationParametersProvider.appStoreLocale = nil;
+
+    OCMVerify([receiptValidationStatusProvider fetchReceiptValidationStatus]);
+    OCMVerify([receiptValidationStatusProvider fetchReceiptValidationStatus]);
   });
 });
 
@@ -414,20 +438,20 @@ context(@"purchasing products", ^{
 
     productIdentifier = @"product";
     product = [BZRProductWithIdentifier(productIdentifier)
-        modelByOverridingProperty:@instanceKeypath(BZRProduct, bzr_underlyingProduct)
+        modelByOverridingProperty:@instanceKeypath(BZRProduct, underlyingProduct)
         withValue:underlyingProduct];
 
     subscriptionIdentifier = @"susbscription";
     subscriptionProduct = [[BZRProductWithIdentifier(subscriptionIdentifier)
         modelByOverridingProperty:@instanceKeypath(BZRProduct, productType)
         withValue:$(BZRProductTypeRenewableSubscription)]
-        modelByOverridingProperty:@instanceKeypath(BZRProduct, bzr_underlyingProduct)
+        modelByOverridingProperty:@instanceKeypath(BZRProduct, underlyingProduct)
         withValue:underlyingProduct];
 
     nonRenewingSubscriptionProduct = [[BZRProductWithIdentifier(subscriptionIdentifier)
         modelByOverridingProperty:@instanceKeypath(BZRProduct, productType)
         withValue:$(BZRProductTypeNonRenewingSubscription)]
-        modelByOverridingProperty:@instanceKeypath(BZRProduct, bzr_underlyingProduct)
+        modelByOverridingProperty:@instanceKeypath(BZRProduct, underlyingProduct)
         withValue:underlyingProduct];
 
     OCMStub([variantSelector selectedVariantForProductWithIdentifier:productIdentifier])
@@ -658,8 +682,8 @@ context(@"purchasing products", ^{
         SKProduct *underlyingProduct = OCMClassMock([SKProduct class]);
         BZRProduct *bazaarProduct = BZRProductWithIdentifier(@"bar");
         bazaarProduct = [bazaarProduct
-            modelByOverridingProperty:@instanceKeypath(BZRProduct, bzr_underlyingProduct)
-                            withValue:underlyingProduct];
+                         modelByOverridingProperty:@instanceKeypath(BZRProduct, underlyingProduct)
+                         withValue:underlyingProduct];
         OCMStub([variantSelector selectedVariantForProductWithIdentifier:@"bar"]).andReturn(@"bar");
         BZRStubProductDictionaryToReturnProduct(bazaarProduct, productsProvider);
         BZRStore *store = [[BZRStore alloc] initWithConfiguration:configuration];
@@ -697,8 +721,8 @@ context(@"purchasing products", ^{
         beforeEach(^{
           BZRProduct *bazaarProduct = BZRProductWithIdentifier(@"bar");
           bazaarProduct = [bazaarProduct
-              modelByOverridingProperty:@instanceKeypath(BZRProduct, bzr_underlyingProduct)
-              withValue:OCMClassMock([SKProduct class])];
+                           modelByOverridingProperty:@instanceKeypath(BZRProduct, underlyingProduct)
+                           withValue:OCMClassMock([SKProduct class])];
           OCMStub([variantSelector selectedVariantForProductWithIdentifier:@"bar"])
               .andReturn(@"bar");
           BZRStubProductDictionaryToReturnProduct(bazaarProduct, productsProvider);
@@ -1169,9 +1193,8 @@ context(@"getting product list", ^{
     SKProduct *underlyingProduct = OCMClassMock([SKProduct class]);
     OCMStub([underlyingProduct priceLocale]).andReturn(locale);
     BZRProduct *product = BZRProductWithIdentifier(productIdentifier);
-    product =
-        [product modelByOverridingProperty:@keypath(product, bzr_underlyingProduct)
-                                 withValue:underlyingProduct];
+    product = [product modelByOverridingProperty:@keypath(product, underlyingProduct)
+                                       withValue:underlyingProduct];
     OCMStub([variantSelector selectedVariantForProductWithIdentifier:productIdentifier])
         .andReturn(productIdentifier);
     OCMStub([productsProvider fetchProductList]).andReturn([RACSignal return:@[product]]);
@@ -1180,7 +1203,7 @@ context(@"getting product list", ^{
     LLSignalTestRecorder *recorder = [[store productList] testRecorder];
 
     expect(recorder).will.complete();
-    OCMVerify([validationParametersProvider setAppStoreLocale:locale]);
+    expect(validationParametersProvider.appStoreLocale).to.equal(locale);
   });
 });
 
@@ -1275,7 +1298,7 @@ context(@"manually fetching products info", ^{
     auto product = BZRProductWithIdentifier(productIdentifier);
     [netherProductsProviderSubject sendNext:@[product, BZRProductWithIdentifier(@"bar")]];
     NSError *error = [NSError lt_errorWithCode:1337];
-    OCMStub([priceInfoFetcher fetchProductsPriceInfo:OCMOCK_ANY])
+    OCMStub([storeKitMetadataFetcher fetchProductsMetadata:OCMOCK_ANY])
         .andReturn([RACSignal error:error]);
 
     expect([store fetchProductsInfo:@[productIdentifier].lt_set]).will.sendError(error);
@@ -1285,10 +1308,10 @@ context(@"manually fetching products info", ^{
      "nether products provider", ^{
     auto product = BZRProductWithIdentifier(productIdentifier);
     [netherProductsProviderSubject sendNext:@[product]];
-    OCMStub([priceInfoFetcher fetchProductsPriceInfo:@[]]).andReturn([RACSignal return:@[]]);
+    OCMStub([storeKitMetadataFetcher fetchProductsMetadata:@[]]).andReturn([RACSignal return:@[]]);
 
     expect([store fetchProductsInfo:@[@"bar"].lt_set]).will.matchError(^BOOL(NSError *error) {
-      return error.code == BZRErrorCodeInvalidProductIdentifer &&
+      return error.code == BZRErrorCodeInvalidProductIdentifier &&
           [error.bzr_productIdentifiers isEqualToSet:@[@"bar"].lt_set];
     });
   });
@@ -1299,7 +1322,7 @@ context(@"manually fetching products info", ^{
     auto productWithPriceInfo = BZRProductWithPriceInfo(product, 1337, @"de_DE");
 
     [netherProductsProviderSubject sendNext:@[product, BZRProductWithIdentifier(@"bar")]];
-    OCMStub([priceInfoFetcher fetchProductsPriceInfo:@[product]])
+    OCMStub([storeKitMetadataFetcher fetchProductsMetadata:@[product]])
         .andReturn([RACSignal return:@[productWithPriceInfo]]);
 
     expect([store fetchProductsInfo:@[productIdentifier].lt_set])
@@ -1323,17 +1346,17 @@ context(@"manually fetching products info", ^{
 
       [netherProductsProviderSubject sendNext:productList];
 
-      OCMExpect([priceInfoFetcher fetchProductsPriceInfo:productList])
+      OCMExpect([storeKitMetadataFetcher fetchProductsMetadata:productList])
           .andReturn([RACSignal return:productList]);
 
       expect([store fetchProductsInfo:@[productIdentifier].lt_set]).to.complete();
-      OCMVerifyAll((id)priceInfoFetcher);
+      OCMVerifyAll((id)storeKitMetadataFetcher);
     });
 
     it(@"should not send full price products that were not requested by the user", ^{
       [netherProductsProviderSubject sendNext:@[fullPriceProduct, product]];
 
-      OCMStub([priceInfoFetcher fetchProductsPriceInfo:OCMOCK_ANY])
+      OCMStub([storeKitMetadataFetcher fetchProductsMetadata:OCMOCK_ANY])
           .andReturn(([RACSignal return:@[product, fullPriceProduct]]));
 
       expect([store fetchProductsInfo:@[productIdentifier].lt_set]).to
@@ -1345,7 +1368,7 @@ context(@"manually fetching products info", ^{
 
       [netherProductsProviderSubject sendNext:@[fullPriceProduct, product]];
 
-      OCMStub([priceInfoFetcher fetchProductsPriceInfo:OCMOCK_ANY])
+      OCMStub([storeKitMetadataFetcher fetchProductsMetadata:OCMOCK_ANY])
           .andReturn(([RACSignal return:@[productWithPriceInfo, fullPriceProduct]]));
 
       expect([store fetchProductsInfo:@[productIdentifier, @"fullFoo"].lt_set]).to.sendValues(@[@{
@@ -1357,7 +1380,7 @@ context(@"manually fetching products info", ^{
     it(@"should not fetch full price products that don't exist in product list", ^{
       [netherProductsProviderSubject sendNext:@[product]];
 
-      OCMStub([priceInfoFetcher fetchProductsPriceInfo:@[product]])
+      OCMStub([storeKitMetadataFetcher fetchProductsMetadata:@[product]])
           .andReturn([RACSignal return:@[product]]);
 
       expect([store fetchProductsInfo:@[productIdentifier].lt_set]).to
@@ -1373,6 +1396,8 @@ context(@"handling unfinished completed transactions", ^{
   beforeEach(^{
     errorsRecorder = [store.eventsSignal testRecorder];
     completedTransactionsRecorder = [store.completedTransactionsSignal testRecorder];
+    OCMStub([receiptValidationStatusProvider receiptValidationStatus])
+        .andReturn(OCMClassMock([BZRReceiptValidationStatus class]));
   });
 
   it(@"should complete when object is deallocated", ^{
@@ -1388,7 +1413,18 @@ context(@"handling unfinished completed transactions", ^{
     expect(completedTransactionsRecorder).will.complete();
   });
 
+  it(@"should not fetch receipt validation status if App Store locale was not fetched", ^{
+    OCMReject([receiptValidationStatusProvider fetchReceiptValidationStatus]);
+
+    SKPaymentTransaction *transaction = OCMClassMock([SKPaymentTransaction class]);
+    OCMStub([transaction transactionState]).andReturn(SKPaymentTransactionStatePurchased);
+    NSArray<SKPaymentTransaction *> *transactions = @[transaction, transaction, transaction];
+    [unhandledSuccessfulTransactionsSubject sendNext:transactions];
+    [unhandledSuccessfulTransactionsSubject sendNext:transactions];
+  });
+
   it(@"should call fetch receipt validation status once for each transactions array", ^{
+    validationParametersProvider.appStoreLocale = [NSLocale currentLocale];
     OCMExpect([receiptValidationStatusProvider fetchReceiptValidationStatus])
         .andReturn([RACSignal return:OCMClassMock([BZRReceiptValidationStatus class])]);
     OCMExpect([receiptValidationStatusProvider fetchReceiptValidationStatus])
@@ -1404,52 +1440,15 @@ context(@"handling unfinished completed transactions", ^{
     OCMVerifyAllWithDelay((id)receiptValidationStatusProvider, 0.01);
   });
 
-  context(@"purchased transaction", ^{
-    __block SKPaymentTransaction *transaction;
+  it(@"should finish transaction", ^{
+    validationParametersProvider.appStoreLocale = [NSLocale currentLocale];
+    OCMStub([receiptValidationStatusProvider fetchReceiptValidationStatus]);
 
-    beforeEach(^{
-      OCMStub([receiptValidationStatusProvider fetchReceiptValidationStatus])
-          .andReturn([RACSignal empty]);
-      transaction = OCMClassMock([SKPaymentTransaction class]);
-      OCMStub([transaction transactionState]).andReturn(SKPaymentTransactionStatePurchased);
-    });
+    SKPaymentTransaction *transaction = OCMClassMock([SKPaymentTransaction class]);
+    OCMStub([transaction transactionState]).andReturn(SKPaymentTransactionStatePurchased);
+    [unhandledSuccessfulTransactionsSubject sendNext:@[transaction]];
 
-    it(@"should finish and fetch receipt validation status", ^{
-      [unhandledSuccessfulTransactionsSubject sendNext:@[transaction]];
-      OCMVerify([storeKitFacade finishTransaction:transaction]);
-      OCMVerify([receiptValidationStatusProvider fetchReceiptValidationStatus]);
-    });
-
-    it(@"should send transaction on completed transactions signal", ^{
-      LLSignalTestRecorder *completedTransactionsRecorder =
-          [store.completedTransactionsSignal testRecorder];
-      [unhandledSuccessfulTransactionsSubject sendNext:@[transaction]];
-      expect(completedTransactionsRecorder).will.sendValues(@[transaction]);
-    });
-  });
-
-  context(@"restored transaction", ^{
-    __block SKPaymentTransaction *transaction;
-
-    beforeEach(^{
-      transaction = OCMClassMock([SKPaymentTransaction class]);
-      OCMStub([transaction transactionState]).andReturn(SKPaymentTransactionStateRestored);
-    });
-
-    it(@"should finish and not fetch receipt validation status", ^{
-      [unhandledSuccessfulTransactionsSubject sendNext:@[transaction]];
-      OCMVerify([storeKitFacade finishTransaction:transaction]);
-      OCMVerify([receiptValidationStatusProvider fetchReceiptValidationStatus]);
-    });
-
-    it(@"should send transaction on completed transactions signal", ^{
-      OCMStub([receiptValidationStatusProvider fetchReceiptValidationStatus])
-          .andReturn([RACSignal empty]);
-      LLSignalTestRecorder *completedTransactionsRecorder =
-          [store.completedTransactionsSignal testRecorder];
-      [unhandledSuccessfulTransactionsSubject sendNext:@[transaction]];
-      expect(completedTransactionsRecorder).will.sendValues(@[transaction]);
-    });
+    OCMVerify([storeKitFacade finishTransaction:transaction]);
   });
 });
 
@@ -1531,7 +1530,6 @@ context(@"events signal", ^{
 context(@"KVO-compliance", ^{
   __block BZRFakeAggregatedReceiptValidationStatusProvider *validationStatusProvider;
   __block BZRFakeAcquiredViaSubscriptionProvider *acquiredViaSubscriptionProvider;
-  __block id<BZRReceiptValidationParametersProvider> validationParametersProvider;
 
   beforeEach(^{
     validationStatusProvider = [[BZRFakeAggregatedReceiptValidationStatusProvider alloc] init];
@@ -1550,7 +1548,7 @@ context(@"KVO-compliance", ^{
     OCMStub([configuration validationParametersProvider]).andReturn(validationParametersProvider);
     OCMStub([configuration allowedProductsProvider]).andReturn(allowedProductsProvider);
     OCMStub([configuration netherProductsProvider]).andReturn(netherProductsProvider);
-    OCMStub([configuration priceInfoFetcher]).andReturn(priceInfoFetcher);
+    OCMStub([configuration storeKitMetadataFetcher]).andReturn(storeKitMetadataFetcher);
     OCMStub([configuration keychainStorage]).andReturn(keychainStorage);
 
     store = [[BZRStore alloc] initWithConfiguration:configuration];

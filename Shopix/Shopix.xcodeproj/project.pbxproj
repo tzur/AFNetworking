@@ -28,13 +28,24 @@
 		8851018E1F9DDBA60052351B /* NSError+Shopix.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8851018D1F9DDBA60052351B /* NSError+Shopix.mm */; };
 		885CA2B31FB301F2005380BD /* SPXProductDescriptorsFactorySpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 885CA2B21FB301F1005380BD /* SPXProductDescriptorsFactorySpec.mm */; };
 		88720F9D1F9E1A4D00E18F05 /* SPXProductDescriptorsFactory.mm in Sources */ = {isa = PBXBuildFile; fileRef = 88FA8C9A1F66AA0A00D2E594 /* SPXProductDescriptorsFactory.mm */; };
+		88A67EC01FD5CA38005BA17A /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88A67E971FD5CA37005BA17A /* MobileCoreServices.framework */; };
 		88B632AF1F9DD8B10051A535 /* NSErrorCodes+Shopix.mm in Sources */ = {isa = PBXBuildFile; fileRef = 88B632AE1F9DD8B10051A535 /* NSErrorCodes+Shopix.mm */; };
 		88B9B4DA1FA8BA940033D48F /* SPXProductAxis.mm in Sources */ = {isa = PBXBuildFile; fileRef = 88FA8CA31F66C68700D2E594 /* SPXProductAxis.mm */; };
-		88B9B4FF1FA8BA980033D48F /* SPXPromotion.mm in Sources */ = {isa = PBXBuildFile; fileRef = 88FA8C9D1F66C52400D2E594 /* SPXPromotion.mm */; };
-		88CEB4511FB44D1B00E01950 /* SPXPromotionSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 88CEB4501FB44D1A00E01950 /* SPXPromotionSpec.mm */; };
+		88B9B4FF1FA8BA980033D48F /* SPXVoucher.mm in Sources */ = {isa = PBXBuildFile; fileRef = 88FA8C9D1F66C52400D2E594 /* SPXVoucher.mm */; };
+		88CEB4511FB44D1B00E01950 /* SPXVoucherSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 88CEB4501FB44D1A00E01950 /* SPXVoucherSpec.mm */; };
 		88FF39701FB2E047006311FF /* SPXProductDescriptor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 88FF396F1FB2E047006311FF /* SPXProductDescriptor.mm */; };
+		8B33A96E1FDD691000F60182 /* SKStoreProductViewController+ShopixSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B33A96D1FDD691000F60182 /* SKStoreProductViewController+ShopixSpec.mm */; };
+		8B70926A1FD81DF6009393C9 /* AppsFlyerLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B7092691FD81DF6009393C9 /* AppsFlyerLib.framework */; };
+		8B70926B1FD81E0B009393C9 /* AppsFlyerLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B7092691FD81DF6009393C9 /* AppsFlyerLib.framework */; };
+		8B7093601FDD3A31009393C9 /* SKStoreProductViewController+Shopix.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B70935F1FDD3A31009393C9 /* SKStoreProductViewController+Shopix.mm */; };
+		CD0A89B11FDD93C600A29EF7 /* SPXSubscriptionViewControllerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD0A89B01FDD93C600A29EF7 /* SPXSubscriptionViewControllerSpec.mm */; };
+		CD1F02AD1FD87556004D5DEB /* SPXSubscriptionChristmasButtonsFactory.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD1F02AC1FD87555004D5DEB /* SPXSubscriptionChristmasButtonsFactory.mm */; };
+		CD1FFFF91FD705CD004D5DEB /* images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CD1FFFF81FD702A3004D5DEB /* images.xcassets */; };
+		CD25F007200668D4004B0D6F /* BZRBillingPeriod+ProductIdentifier.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD25F005200668D4004B0D6F /* BZRBillingPeriod+ProductIdentifier.mm */; };
+		CD25F00920066A6C004B0D6F /* BZRBillingPeriod+ProductIdentifierSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD25F00820066A6C004B0D6F /* BZRBillingPeriod+ProductIdentifierSpec.mm */; };
 		CD2F2B551FD5577D006257B4 /* MFMailComposeViewController+Dismissal.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD2F2B541FD5577D006257B4 /* MFMailComposeViewController+Dismissal.mm */; };
 		CD2F2B801FD55C45006257B4 /* SPXRestorePurchasesButton.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD2F2B7F1FD55C45006257B4 /* SPXRestorePurchasesButton.mm */; };
+		CD35E8C71FFBF9BE00BDE1E0 /* SPXColorSchemeSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD35E8C61FFBF9BE00BDE1E0 /* SPXColorSchemeSpec.mm */; };
 		CD3C69A41F559394008A6C23 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD3C69A31F559394008A6C23 /* GLKit.framework */; };
 		CD3C6A0F1F559F23008A6C23 /* libLLReactiveMatchers.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CD962DB01F5427EF00F2CA82 /* libLLReactiveMatchers.a */; };
 		CD3C6A331F559F3A008A6C23 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD3C6A321F559F3A008A6C23 /* UIKit.framework */; };
@@ -67,6 +78,7 @@
 		CDAC920A1FC5994900B197B3 /* SPXSubscriptionTermsView.mm in Sources */ = {isa = PBXBuildFile; fileRef = CDAC92091FC5994900B197B3 /* SPXSubscriptionTermsView.mm */; };
 		CDAC93941FC5F0D100B197B3 /* SPXSubscriptionVideoPageViewModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = CDAC936C1FC5F0D100B197B3 /* SPXSubscriptionVideoPageViewModel.mm */; };
 		CDACBD731FBB4476000A1548 /* SPXPagingView.mm in Sources */ = {isa = PBXBuildFile; fileRef = CDACBD721FBB4476000A1548 /* SPXPagingView.mm */; };
+		CDB3917720061B87009C1622 /* SPXSubscriptionButtonsPageView.mm in Sources */ = {isa = PBXBuildFile; fileRef = CDB3914E20061B86009C1622 /* SPXSubscriptionButtonsPageView.mm */; };
 		CDB513A21F66B0440013577C /* SPXSubscriptionManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = CDB513A11F66B0440013577C /* SPXSubscriptionManager.mm */; };
 		CDB513A51F66B0A10013577C /* SPXSubscriptionManagerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = CDB513A41F66B0A10013577C /* SPXSubscriptionManagerSpec.mm */; };
 		CDB513A81F66BC150013577C /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDB513A71F66BC150013577C /* StoreKit.framework */; };
@@ -89,6 +101,9 @@
 		CDF5FAC51FCED77D007D4AB0 /* SPXSubscriptionButtonFormatterSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = CDF5FAC41FCED77D007D4AB0 /* SPXSubscriptionButtonFormatterSpec.mm */; };
 		CDF5FAC71FCEED2D007D4AB0 /* UIFont+ShopixSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = CDF5FAC61FCEED2D007D4AB0 /* UIFont+ShopixSpec.mm */; };
 		CDF5FB291FCF249B007D4AB0 /* SPXSubscriptionGradientButtonsFactorySpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = CDF5FB281FCF249B007D4AB0 /* SPXSubscriptionGradientButtonsFactorySpec.mm */; };
+		CDF621E01FEFCED800D05AEC /* SPXSubscriptionButtonsPageViewModelSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = CDF621DF1FEFCED800D05AEC /* SPXSubscriptionButtonsPageViewModelSpec.mm */; };
+		CDF621E21FEFD42700D05AEC /* SPXSubscriptionButtonsPageViewModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = CDF621E11FEFD42700D05AEC /* SPXSubscriptionButtonsPageViewModel.mm */; };
+		EA107800200BF183008F856D /* SPXSubscriptionDescriptorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = EA1077FF200BF183008F856D /* SPXSubscriptionDescriptorSpec.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -457,7 +472,7 @@
 		63E591521FC44AAC0009A34B /* SPXAlertViewModel+ShopixPresets.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "SPXAlertViewModel+ShopixPresets.mm"; sourceTree = "<group>"; };
 		63E591661FC492480009A34B /* SPXAlertViewModel+ShopixPresetsSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "SPXAlertViewModel+ShopixPresetsSpec.mm"; sourceTree = "<group>"; };
 		650BB31C1D465335008648A3 /* LTKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LTKit.xcodeproj; path = ../LTKit/LTKit.xcodeproj; sourceTree = "<group>"; };
-		650BB3341D465359008648A3 /* TestHost.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TestHost.xcodeproj; path = ../../Foundations/TestHost.xcodeproj; sourceTree = "<group>"; };
+		650BB3341D465359008648A3 /* TestHost.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TestHost.xcodeproj; path = ../../TestHost/TestHost.xcodeproj; sourceTree = "<group>"; };
 		653D9C361FB743110035ACEC /* UIAlertController+ViewModelSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIAlertController+ViewModelSpec.mm"; sourceTree = "<group>"; };
 		653D9C381FB757860035ACEC /* SPXAlertViewModel.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXAlertViewModel.mm; sourceTree = "<group>"; };
 		653D9C3A1FB7B5E00035ACEC /* SPXAlertViewModelSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXAlertViewModelSpec.mm; sourceTree = "<group>"; };
@@ -483,22 +498,35 @@
 		8851018D1F9DDBA60052351B /* NSError+Shopix.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSError+Shopix.mm"; sourceTree = "<group>"; };
 		885CA2B21FB301F1005380BD /* SPXProductDescriptorsFactorySpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXProductDescriptorsFactorySpec.mm; sourceTree = "<group>"; };
 		886F953C1FCC49C2002F2529 /* Wireframes.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Wireframes.xcodeproj; path = ../Wireframes/Wireframes.xcodeproj; sourceTree = "<group>"; };
+		88A67E971FD5CA37005BA17A /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		88B632AD1F9DD8B10051A535 /* NSErrorCodes+Shopix.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSErrorCodes+Shopix.h"; sourceTree = "<group>"; };
 		88B632AE1F9DD8B10051A535 /* NSErrorCodes+Shopix.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSErrorCodes+Shopix.mm"; sourceTree = "<group>"; };
-		88CEB4501FB44D1A00E01950 /* SPXPromotionSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXPromotionSpec.mm; sourceTree = "<group>"; };
+		88CEB4501FB44D1A00E01950 /* SPXVoucherSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXVoucherSpec.mm; sourceTree = "<group>"; };
 		88FA8C991F66AA0A00D2E594 /* SPXProductDescriptorsFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPXProductDescriptorsFactory.h; sourceTree = "<group>"; };
 		88FA8C9A1F66AA0A00D2E594 /* SPXProductDescriptorsFactory.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXProductDescriptorsFactory.mm; sourceTree = "<group>"; };
-		88FA8C9C1F66C52400D2E594 /* SPXPromotion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPXPromotion.h; sourceTree = "<group>"; };
-		88FA8C9D1F66C52400D2E594 /* SPXPromotion.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXPromotion.mm; sourceTree = "<group>"; };
+		88FA8C9C1F66C52400D2E594 /* SPXVoucher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPXVoucher.h; sourceTree = "<group>"; };
+		88FA8C9D1F66C52400D2E594 /* SPXVoucher.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXVoucher.mm; sourceTree = "<group>"; };
 		88FA8CA21F66C68700D2E594 /* SPXProductAxis.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPXProductAxis.h; sourceTree = "<group>"; };
 		88FA8CA31F66C68700D2E594 /* SPXProductAxis.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXProductAxis.mm; sourceTree = "<group>"; };
 		88FF396E1FB2E047006311FF /* SPXProductDescriptor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SPXProductDescriptor.h; sourceTree = "<group>"; };
 		88FF396F1FB2E047006311FF /* SPXProductDescriptor.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXProductDescriptor.mm; sourceTree = "<group>"; };
+		8B33A96D1FDD691000F60182 /* SKStoreProductViewController+ShopixSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "SKStoreProductViewController+ShopixSpec.mm"; sourceTree = "<group>"; };
 		8B57B1FC1D914FE100814B3C /* Bundle.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Bundle.xcconfig; sourceTree = "<group>"; };
+		8B7092691FD81DF6009393C9 /* AppsFlyerLib.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppsFlyerLib.framework; path = ../third_party/AppsFlyer/AppsFlyerLib.framework; sourceTree = "<group>"; };
+		8B70935E1FDD3A31009393C9 /* SKStoreProductViewController+Shopix.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SKStoreProductViewController+Shopix.h"; sourceTree = "<group>"; };
+		8B70935F1FDD3A31009393C9 /* SKStoreProductViewController+Shopix.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "SKStoreProductViewController+Shopix.mm"; sourceTree = "<group>"; };
+		CD0A89B01FDD93C600A29EF7 /* SPXSubscriptionViewControllerSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXSubscriptionViewControllerSpec.mm; sourceTree = "<group>"; };
+		CD1F02AB1FD87555004D5DEB /* SPXSubscriptionChristmasButtonsFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPXSubscriptionChristmasButtonsFactory.h; sourceTree = "<group>"; };
+		CD1F02AC1FD87555004D5DEB /* SPXSubscriptionChristmasButtonsFactory.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXSubscriptionChristmasButtonsFactory.mm; sourceTree = "<group>"; };
+		CD1FFFF81FD702A3004D5DEB /* images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = images.xcassets; sourceTree = "<group>"; };
+		CD25F005200668D4004B0D6F /* BZRBillingPeriod+ProductIdentifier.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "BZRBillingPeriod+ProductIdentifier.mm"; sourceTree = "<group>"; };
+		CD25F006200668D4004B0D6F /* BZRBillingPeriod+ProductIdentifier.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BZRBillingPeriod+ProductIdentifier.h"; sourceTree = "<group>"; };
+		CD25F00820066A6C004B0D6F /* BZRBillingPeriod+ProductIdentifierSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "BZRBillingPeriod+ProductIdentifierSpec.mm"; sourceTree = "<group>"; };
 		CD2F2B531FD5577D006257B4 /* MFMailComposeViewController+Dismissal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MFMailComposeViewController+Dismissal.h"; sourceTree = "<group>"; };
 		CD2F2B541FD5577D006257B4 /* MFMailComposeViewController+Dismissal.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "MFMailComposeViewController+Dismissal.mm"; sourceTree = "<group>"; };
 		CD2F2B7E1FD55C45006257B4 /* SPXRestorePurchasesButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SPXRestorePurchasesButton.h; sourceTree = "<group>"; };
 		CD2F2B7F1FD55C45006257B4 /* SPXRestorePurchasesButton.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXRestorePurchasesButton.mm; sourceTree = "<group>"; };
+		CD35E8C61FFBF9BE00BDE1E0 /* SPXColorSchemeSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXColorSchemeSpec.mm; sourceTree = "<group>"; };
 		CD3C69A31F559394008A6C23 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
 		CD3C6A321F559F3A008A6C23 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		CD3C6A341F559F44008A6C23 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -568,6 +596,7 @@
 		CDAC93931FC5F0D100B197B3 /* SPXSubscriptionVideoPageViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPXSubscriptionVideoPageViewModel.h; sourceTree = "<group>"; };
 		CDACBD711FBB4476000A1548 /* SPXPagingView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SPXPagingView.h; sourceTree = "<group>"; };
 		CDACBD721FBB4476000A1548 /* SPXPagingView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXPagingView.mm; sourceTree = "<group>"; };
+		CDB3914E20061B86009C1622 /* SPXSubscriptionButtonsPageView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXSubscriptionButtonsPageView.mm; sourceTree = "<group>"; };
 		CDB510721F6176150013577C /* SPXLocalization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPXLocalization.h; sourceTree = "<group>"; };
 		CDB510731F6176150013577C /* SPXLocalization.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXLocalization.mm; sourceTree = "<group>"; };
 		CDB513A01F66B0440013577C /* SPXSubscriptionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPXSubscriptionManager.h; sourceTree = "<group>"; };
@@ -605,6 +634,13 @@
 		CDF5FAC41FCED77D007D4AB0 /* SPXSubscriptionButtonFormatterSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXSubscriptionButtonFormatterSpec.mm; sourceTree = "<group>"; };
 		CDF5FAC61FCEED2D007D4AB0 /* UIFont+ShopixSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIFont+ShopixSpec.mm"; sourceTree = "<group>"; };
 		CDF5FB281FCF249B007D4AB0 /* SPXSubscriptionGradientButtonsFactorySpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXSubscriptionGradientButtonsFactorySpec.mm; sourceTree = "<group>"; };
+		CDF6209E1FEF918F00D05AEC /* SPXMultiSubscriptionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPXMultiSubscriptionViewController.h; sourceTree = "<group>"; };
+		CDF6209F1FEF918F00D05AEC /* SPXMultiSubscriptionViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPXMultiSubscriptionViewModel.h; sourceTree = "<group>"; };
+		CDF620A01FEF918F00D05AEC /* SPXSubscriptionButtonsPageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPXSubscriptionButtonsPageView.h; sourceTree = "<group>"; };
+		CDF620A11FEF918F00D05AEC /* SPXSubscriptionButtonsPageViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPXSubscriptionButtonsPageViewModel.h; sourceTree = "<group>"; };
+		CDF621DF1FEFCED800D05AEC /* SPXSubscriptionButtonsPageViewModelSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXSubscriptionButtonsPageViewModelSpec.mm; sourceTree = "<group>"; };
+		CDF621E11FEFD42700D05AEC /* SPXSubscriptionButtonsPageViewModel.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXSubscriptionButtonsPageViewModel.mm; sourceTree = "<group>"; };
+		EA1077FF200BF183008F856D /* SPXSubscriptionDescriptorSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXSubscriptionDescriptorSpec.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -614,6 +650,7 @@
 			files = (
 				CD4572891F71731400713681 /* AFNetworking.framework in Frameworks */,
 				CDAC8C501FC4558000B197B3 /* AVFoundation.framework in Frameworks */,
+				8B70926B1FD81E0B009393C9 /* AppsFlyerLib.framework in Frameworks */,
 				65F82F021F93C09F002A496C /* CloudKit.framework in Frameworks */,
 				CD3C6A351F559F44008A6C23 /* CoreGraphics.framework in Frameworks */,
 				CDAC8C521FC455A000B197B3 /* CoreMedia.framework in Frameworks */,
@@ -621,6 +658,7 @@
 				CD4572831F7172EB00713681 /* Mantle.framework in Frameworks */,
 				8823B33D1FC3070100A2DEB9 /* Masonry.framework in Frameworks */,
 				CD45725A1F716A8100713681 /* MessageUI.framework in Frameworks */,
+				88A67EC01FD5CA38005BA17A /* MobileCoreServices.framework in Frameworks */,
 				CDC8CE861F6EA6C400E7C929 /* Objection-iOS.framework in Frameworks */,
 				CD3C6A371F559F61008A6C23 /* QuartzCore.framework in Frameworks */,
 				CD3C6AC81F55A0B0008A6C23 /* ReactiveObjC.framework in Frameworks */,
@@ -647,6 +685,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8B70926A1FD81DF6009393C9 /* AppsFlyerLib.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -660,28 +699,36 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		639409ED1FB364BF00C817FE /* Alert */ = {
+		639409ED1FB364BF00C817FE /* Alerts */ = {
 			isa = PBXGroup;
 			children = (
 				639409E91FB3637600C817FE /* SPXAlertViewControllerProvider.h */,
 				639409EF1FB3650200C817FE /* SPXAlertViewControllerProvider.mm */,
 				639409EA1FB3642100C817FE /* SPXAlertViewModel.h */,
 				653D9C381FB757860035ACEC /* SPXAlertViewModel.mm */,
+				63E591511FC44AAC0009A34B /* SPXAlertViewModel+ShopixPresets.h */,
+				63E591521FC44AAC0009A34B /* SPXAlertViewModel+ShopixPresets.mm */,
 				639C5AC71FB37DD300937367 /* SPXAlertViewModelBuilder.h */,
 				639C5AC81FB37DD300937367 /* SPXAlertViewModelBuilder.mm */,
 				639C5ACA1FB4B47600937367 /* UIAlertController+ViewModel.h */,
 				639C5ACB1FB4B47600937367 /* UIAlertController+ViewModel.mm */,
 			);
-			name = Alert;
+			name = Alerts;
 			sourceTree = "<group>";
 		};
-		639C5AA21FB37C8400937367 /* Customizable Components */ = {
+		639C5AA21FB37C8400937367 /* Common Components */ = {
 			isa = PBXGroup;
 			children = (
-				639409ED1FB364BF00C817FE /* Alert */,
-				65125FE01FB5F7C900C7D2FA /* Feedback Composer */,
+				CD60A58C1FB2F2850017D777 /* SPXButtonsHorizontalLayoutView.h */,
+				CD60A58D1FB2F2850017D777 /* SPXButtonsHorizontalLayoutView.mm */,
+				CD60A5EB1FB433180017D777 /* SPXDualLabelView.h */,
+				CD60A5EC1FB433180017D777 /* SPXDualLabelView.mm */,
+				CDACBD711FBB4476000A1548 /* SPXPagingView.h */,
+				CDACBD721FBB4476000A1548 /* SPXPagingView.mm */,
+				CD60A5E81FB34F6A0017D777 /* SPXSubscriptionGradientButton.h */,
+				CD60A5E91FB34F6A0017D777 /* SPXSubscriptionGradientButton.mm */,
 			);
-			name = "Customizable Components";
+			name = "Common Components";
 			sourceTree = "<group>";
 		};
 		650BB31D1D465335008648A3 /* Products */ = {
@@ -705,40 +752,42 @@
 		65125FE01FB5F7C900C7D2FA /* Feedback Composer */ = {
 			isa = PBXGroup;
 			children = (
+				CD2F2B531FD5577D006257B4 /* MFMailComposeViewController+Dismissal.h */,
+				CD2F2B541FD5577D006257B4 /* MFMailComposeViewController+Dismissal.mm */,
 				CDB513A61F66B1550013577C /* SPXFeedbackComposeViewControllerProvider.h */,
 			);
 			name = "Feedback Composer";
 			sourceTree = "<group>";
 		};
-		653D9C341FB742C80035ACEC /* Customizable Components */ = {
+		653D9C341FB742C80035ACEC /* Common Components */ = {
 			isa = PBXGroup;
 			children = (
-				653D9C351FB742E20035ACEC /* Alert */,
+				CDAC84DF1FC1632000B197B3 /* SPXButtonsHorizontalLayoutViewSpec.mm */,
+				CDAC86E21FC33C4B00B197B3 /* SPXPagingViewSpec.mm */,
 			);
-			name = "Customizable Components";
+			name = "Common Components";
 			sourceTree = "<group>";
 		};
-		653D9C351FB742E20035ACEC /* Alert */ = {
+		653D9C351FB742E20035ACEC /* Alerts */ = {
 			isa = PBXGroup;
 			children = (
+				63E591661FC492480009A34B /* SPXAlertViewModel+ShopixPresetsSpec.mm */,
 				653D9C3C1FB7BBCC0035ACEC /* SPXAlertViewModelBuilderSpec.mm */,
 				653D9C3A1FB7B5E00035ACEC /* SPXAlertViewModelSpec.mm */,
 				653D9C361FB743110035ACEC /* UIAlertController+ViewModelSpec.mm */,
 			);
-			name = Alert;
+			name = Alerts;
 			sourceTree = "<group>";
 		};
 		848E00051C591DD1001D8368 /* Shopix */ = {
 			isa = PBXGroup;
 			children = (
 				CDC83DEA1FD444AD00E9F41A /* Analytics */,
-				639C5AA21FB37C8400937367 /* Customizable Components */,
 				88B632881F9DD87E0051A535 /* Errors */,
 				CD8E8E081F5C19DC00DF8FC1 /* Localization */,
 				88FA8C711F66A5FE00D2E594 /* Promotions */,
-				CDB5137B1F66B0220013577C /* Subscription */,
 				848E001F1C591E7B001D8368 /* Supporting Files */,
-				CDF5FA981FCECC60007D4AB0 /* Utils */,
+				CDD9F7A51FE803F800A7A6DB /* User Interface */,
 			);
 			path = Shopix;
 			sourceTree = "<group>";
@@ -786,11 +835,9 @@
 		848E00241C59208B001D8368 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				653D9C341FB742C80035ACEC /* Customizable Components */,
 				CDCFDF1E1F5C39BA00C289BA /* Localization */,
 				885CA28D1FB301C6005380BD /* Promotions */,
-				CDB513A31F66B07D0013577C /* Subscription */,
-				CDF5FAC81FCEED30007D4AB0 /* Utils */,
+				CDB513A31F66B07D0013577C /* User Interface */,
 			);
 			name = Tests;
 			sourceTree = "<group>";
@@ -868,12 +915,14 @@
 			children = (
 				CD4572881F71731400713681 /* AFNetworking.framework */,
 				CDAC8C291FC4557A00B197B3 /* AVFoundation.framework */,
+				8B7092691FD81DF6009393C9 /* AppsFlyerLib.framework */,
 				65F82EDD1F93C09F002A496C /* CloudKit.framework */,
 				CD3C6A341F559F44008A6C23 /* CoreGraphics.framework */,
 				CDAC8C511FC4559600B197B3 /* CoreMedia.framework */,
 				CD3C69A31F559394008A6C23 /* GLKit.framework */,
 				CD4572821F7172EB00713681 /* Mantle.framework */,
 				CD4572591F716A8100713681 /* MessageUI.framework */,
+				88A67E971FD5CA37005BA17A /* MobileCoreServices.framework */,
 				CDC8CE841F6EA67D00E7C929 /* Objection-iOS.framework */,
 				CD3C6A361F559F61008A6C23 /* QuartzCore.framework */,
 				CD45728A1F717E4D00713681 /* Security.framework */,
@@ -901,7 +950,7 @@
 			isa = PBXGroup;
 			children = (
 				885CA2B21FB301F1005380BD /* SPXProductDescriptorsFactorySpec.mm */,
-				88CEB4501FB44D1A00E01950 /* SPXPromotionSpec.mm */,
+				88CEB4501FB44D1A00E01950 /* SPXVoucherSpec.mm */,
 			);
 			name = Promotions;
 			sourceTree = "<group>";
@@ -935,8 +984,8 @@
 				88FF396F1FB2E047006311FF /* SPXProductDescriptor.mm */,
 				88FA8C991F66AA0A00D2E594 /* SPXProductDescriptorsFactory.h */,
 				88FA8C9A1F66AA0A00D2E594 /* SPXProductDescriptorsFactory.mm */,
-				88FA8C9C1F66C52400D2E594 /* SPXPromotion.h */,
-				88FA8C9D1F66C52400D2E594 /* SPXPromotion.mm */,
+				88FA8C9C1F66C52400D2E594 /* SPXVoucher.h */,
+				88FA8C9D1F66C52400D2E594 /* SPXVoucher.mm */,
 			);
 			name = Promotions;
 			sourceTree = "<group>";
@@ -982,6 +1031,23 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		8B7091FF1FD81970009393C9 /* AppStore Product Screen */ = {
+			isa = PBXGroup;
+			children = (
+				8B70935E1FDD3A31009393C9 /* SKStoreProductViewController+Shopix.h */,
+				8B70935F1FDD3A31009393C9 /* SKStoreProductViewController+Shopix.mm */,
+			);
+			name = "AppStore Product Screen";
+			sourceTree = "<group>";
+		};
+		8B7093381FD828CF009393C9 /* AppStore Product Screen */ = {
+			isa = PBXGroup;
+			children = (
+				8B33A96D1FDD691000F60182 /* SKStoreProductViewController+ShopixSpec.mm */,
+			);
+			name = "AppStore Product Screen";
+			sourceTree = "<group>";
+		};
 		CD1FFDBE1FD5C556004D5DEB /* UI Events */ = {
 			isa = PBXGroup;
 			children = (
@@ -991,6 +1057,14 @@
 				CDC83E141FD444D200E9F41A /* SPXSubscriptionButtonPressedEvent.mm */,
 			);
 			name = "UI Events";
+			sourceTree = "<group>";
+		};
+		CD1FFFC91FD70239004D5DEB /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				CD1FFFF81FD702A3004D5DEB /* images.xcassets */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 		CD553D871F4184D00048215C /* Products */ = {
@@ -1005,11 +1079,31 @@
 		CD5550161F45C8050048215C /* ShopixBundle */ = {
 			isa = PBXGroup;
 			children = (
+				CD1FFFC91FD70239004D5DEB /* Resources */,
 				CD5550171F45C8050048215C /* Info.plist */,
 				CD5551161F45D5E10048215C /* Localizable.strings */,
 				CD5551181F45D5E10048215C /* Localizable.stringsdict */,
 			);
 			path = ShopixBundle;
+			sourceTree = "<group>";
+		};
+		CD890F971FE698C600064B72 /* Single App */ = {
+			isa = PBXGroup;
+			children = (
+				CD1F02AB1FD87555004D5DEB /* SPXSubscriptionChristmasButtonsFactory.h */,
+				CD1F02AC1FD87555004D5DEB /* SPXSubscriptionChristmasButtonsFactory.mm */,
+				CDF5F9701FCDC4EB007D4AB0 /* SPXSubscriptionGradientButtonsFactory.h */,
+				CDF5F96E1FCDC4EA007D4AB0 /* SPXSubscriptionGradientButtonsFactory.mm */,
+				CDAC90D31FC496F100B197B3 /* SPXSubscriptionVideoPageView.h */,
+				CDAC90FA1FC496F100B197B3 /* SPXSubscriptionVideoPageView.mm */,
+				CDAC93931FC5F0D100B197B3 /* SPXSubscriptionVideoPageViewModel.h */,
+				CDAC936C1FC5F0D100B197B3 /* SPXSubscriptionVideoPageViewModel.mm */,
+				CDC83BEC1FD067E600E9F41A /* SPXSubscriptionViewController.h */,
+				CDC83C151FD067E600E9F41A /* SPXSubscriptionViewController.mm */,
+				CDC839321FCFFAC400E9F41A /* SPXSubscriptionViewModel.h */,
+				CDC8395B1FCFFAC400E9F41A /* SPXSubscriptionViewModel.mm */,
+			);
+			name = "Single App";
 			sourceTree = "<group>";
 		};
 		CD8E8E081F5C19DC00DF8FC1 /* Localization */ = {
@@ -1032,64 +1126,34 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		CDB5137B1F66B0220013577C /* Subscription */ = {
+		CDB5137B1F66B0220013577C /* Subscription Screens */ = {
 			isa = PBXGroup;
 			children = (
-				63E591511FC44AAC0009A34B /* SPXAlertViewModel+ShopixPresets.h */,
-				63E591521FC44AAC0009A34B /* SPXAlertViewModel+ShopixPresets.mm */,
-				CD60A58C1FB2F2850017D777 /* SPXButtonsHorizontalLayoutView.h */,
-				CD60A58D1FB2F2850017D777 /* SPXButtonsHorizontalLayoutView.mm */,
-				CDC8391A1FCFF87D00E9F41A /* SPXColorScheme.h */,
-				CDC838F11FCFF87D00E9F41A /* SPXColorScheme.mm */,
-				CD60A5EB1FB433180017D777 /* SPXDualLabelView.h */,
-				CD60A5EC1FB433180017D777 /* SPXDualLabelView.mm */,
-				CDACBD711FBB4476000A1548 /* SPXPagingView.h */,
-				CDACBD721FBB4476000A1548 /* SPXPagingView.mm */,
-				CD2F2B7E1FD55C45006257B4 /* SPXRestorePurchasesButton.h */,
-				CD2F2B7F1FD55C45006257B4 /* SPXRestorePurchasesButton.mm */,
+				CDD9F7A61FE80CD900A7A6DB /* Common Components */,
+				CDF620751FEF917100D05AEC /* Multi Group */,
+				CD890F971FE698C600064B72 /* Single App */,
 				CD63768C1FCDB70E00521EDD /* SPXSubscriptionButtonFormatter.h */,
 				CD6376B51FCDB70E00521EDD /* SPXSubscriptionButtonFormatter.mm */,
 				CDF5F96F1FCDC4EB007D4AB0 /* SPXSubscriptionButtonsFactory.h */,
-				CDF5F96D1FCDC4EA007D4AB0 /* SPXSubscriptionDescriptor.h */,
-				CDF5F9441FCDC4EA007D4AB0 /* SPXSubscriptionDescriptor.mm */,
-				CD60A5E81FB34F6A0017D777 /* SPXSubscriptionGradientButton.h */,
-				CD60A5E91FB34F6A0017D777 /* SPXSubscriptionGradientButton.mm */,
-				CDF5F9701FCDC4EB007D4AB0 /* SPXSubscriptionGradientButtonsFactory.h */,
-				CDF5F96E1FCDC4EA007D4AB0 /* SPXSubscriptionGradientButtonsFactory.mm */,
-				CDB513A01F66B0440013577C /* SPXSubscriptionManager.h */,
-				CDB513A11F66B0440013577C /* SPXSubscriptionManager.mm */,
-				633E79381FD3DC1300239C87 /* SPXSubscriptionManager+RACSignalSupport.h */,
-				633E79391FD3DC1300239C87 /* SPXSubscriptionManager+RACSignalSupport.mm */,
-				CDAC92081FC5994900B197B3 /* SPXSubscriptionTermsView.h */,
-				CDAC92091FC5994900B197B3 /* SPXSubscriptionTermsView.mm */,
-				CDAC91D91FC593C700B197B3 /* SPXSubscriptionTermsViewModel.h */,
-				CDAC91DA1FC593C700B197B3 /* SPXSubscriptionTermsViewModel.mm */,
-				CDAC90D31FC496F100B197B3 /* SPXSubscriptionVideoPageView.h */,
-				CDAC90FA1FC496F100B197B3 /* SPXSubscriptionVideoPageView.mm */,
-				CDAC93931FC5F0D100B197B3 /* SPXSubscriptionVideoPageViewModel.h */,
-				CDAC936C1FC5F0D100B197B3 /* SPXSubscriptionVideoPageViewModel.mm */,
-				CDC83BEC1FD067E600E9F41A /* SPXSubscriptionViewController.h */,
-				CDC83C151FD067E600E9F41A /* SPXSubscriptionViewController.mm */,
-				CDC839321FCFFAC400E9F41A /* SPXSubscriptionViewModel.h */,
-				CDC8395B1FCFFAC400E9F41A /* SPXSubscriptionViewModel.mm */,
 			);
-			name = Subscription;
+			name = "Subscription Screens";
 			sourceTree = "<group>";
 		};
-		CDB513A31F66B07D0013577C /* Subscription */ = {
+		CDB513A31F66B07D0013577C /* User Interface */ = {
 			isa = PBXGroup;
 			children = (
-				63E591661FC492480009A34B /* SPXAlertViewModel+ShopixPresetsSpec.mm */,
-				CDAC84DF1FC1632000B197B3 /* SPXButtonsHorizontalLayoutViewSpec.mm */,
-				CDAC86E21FC33C4B00B197B3 /* SPXPagingViewSpec.mm */,
-				CDF5FAC41FCED77D007D4AB0 /* SPXSubscriptionButtonFormatterSpec.mm */,
-				CDF5FB281FCF249B007D4AB0 /* SPXSubscriptionGradientButtonsFactorySpec.mm */,
+				653D9C351FB742E20035ACEC /* Alerts */,
+				8B7093381FD828CF009393C9 /* AppStore Product Screen */,
+				653D9C341FB742C80035ACEC /* Common Components */,
+				CDD9F7A71FE8108200A7A6DB /* Subscription Screens */,
+				CD25F00820066A6C004B0D6F /* BZRBillingPeriod+ProductIdentifierSpec.mm */,
+				CD35E8C61FFBF9BE00BDE1E0 /* SPXColorSchemeSpec.mm */,
+				EA1077FF200BF183008F856D /* SPXSubscriptionDescriptorSpec.mm */,
 				63DC6CE61FD405FC009C0B71 /* SPXSubscriptionManager+RACSignalSupportSpec.mm */,
 				CDB513A41F66B0A10013577C /* SPXSubscriptionManagerSpec.mm */,
-				CDA6E0E91FCB2D3200114D6B /* SPXSubscriptionVideoPageViewModelSpec.mm */,
-				CDC83B421FD04E2400E9F41A /* SPXSubscriptionViewModelSpec.mm */,
+				CDF5FAC61FCEED2D007D4AB0 /* UIFont+ShopixSpec.mm */,
 			);
-			name = Subscription;
+			name = "User Interface";
 			sourceTree = "<group>";
 		};
 		CDB8A6491F53FCB200E14706 /* Products */ = {
@@ -1137,23 +1201,83 @@
 			name = Localization;
 			sourceTree = "<group>";
 		};
-		CDF5FA981FCECC60007D4AB0 /* Utils */ = {
+		CDD9F7A51FE803F800A7A6DB /* User Interface */ = {
 			isa = PBXGroup;
 			children = (
-				CD2F2B531FD5577D006257B4 /* MFMailComposeViewController+Dismissal.h */,
-				CD2F2B541FD5577D006257B4 /* MFMailComposeViewController+Dismissal.mm */,
+				639409ED1FB364BF00C817FE /* Alerts */,
+				8B7091FF1FD81970009393C9 /* AppStore Product Screen */,
+				639C5AA21FB37C8400937367 /* Common Components */,
+				65125FE01FB5F7C900C7D2FA /* Feedback Composer */,
+				CDB5137B1F66B0220013577C /* Subscription Screens */,
+				CD25F006200668D4004B0D6F /* BZRBillingPeriod+ProductIdentifier.h */,
+				CD25F005200668D4004B0D6F /* BZRBillingPeriod+ProductIdentifier.mm */,
+				CDC8391A1FCFF87D00E9F41A /* SPXColorScheme.h */,
+				CDC838F11FCFF87D00E9F41A /* SPXColorScheme.mm */,
+				CDF5F96D1FCDC4EA007D4AB0 /* SPXSubscriptionDescriptor.h */,
+				CDF5F9441FCDC4EA007D4AB0 /* SPXSubscriptionDescriptor.mm */,
+				CDB513A01F66B0440013577C /* SPXSubscriptionManager.h */,
+				CDB513A11F66B0440013577C /* SPXSubscriptionManager.mm */,
+				633E79381FD3DC1300239C87 /* SPXSubscriptionManager+RACSignalSupport.h */,
+				633E79391FD3DC1300239C87 /* SPXSubscriptionManager+RACSignalSupport.mm */,
 				CDF5FAC11FCECC85007D4AB0 /* UIFont+Shopix.h */,
 				CDF5FAC21FCECC85007D4AB0 /* UIFont+Shopix.mm */,
 			);
-			name = Utils;
+			name = "User Interface";
 			sourceTree = "<group>";
 		};
-		CDF5FAC81FCEED30007D4AB0 /* Utils */ = {
+		CDD9F7A61FE80CD900A7A6DB /* Common Components */ = {
 			isa = PBXGroup;
 			children = (
-				CDF5FAC61FCEED2D007D4AB0 /* UIFont+ShopixSpec.mm */,
+				CD2F2B7E1FD55C45006257B4 /* SPXRestorePurchasesButton.h */,
+				CD2F2B7F1FD55C45006257B4 /* SPXRestorePurchasesButton.mm */,
+				CDAC92081FC5994900B197B3 /* SPXSubscriptionTermsView.h */,
+				CDAC92091FC5994900B197B3 /* SPXSubscriptionTermsView.mm */,
+				CDAC91D91FC593C700B197B3 /* SPXSubscriptionTermsViewModel.h */,
+				CDAC91DA1FC593C700B197B3 /* SPXSubscriptionTermsViewModel.mm */,
 			);
-			name = Utils;
+			name = "Common Components";
+			sourceTree = "<group>";
+		};
+		CDD9F7A71FE8108200A7A6DB /* Subscription Screens */ = {
+			isa = PBXGroup;
+			children = (
+				CDF621B61FEFA6BD00D05AEC /* Multi Group */,
+				CDD9F7A81FE8111900A7A6DB /* Single App */,
+				CDF5FAC41FCED77D007D4AB0 /* SPXSubscriptionButtonFormatterSpec.mm */,
+				CDF5FB281FCF249B007D4AB0 /* SPXSubscriptionGradientButtonsFactorySpec.mm */,
+			);
+			name = "Subscription Screens";
+			sourceTree = "<group>";
+		};
+		CDD9F7A81FE8111900A7A6DB /* Single App */ = {
+			isa = PBXGroup;
+			children = (
+				CDA6E0E91FCB2D3200114D6B /* SPXSubscriptionVideoPageViewModelSpec.mm */,
+				CD0A89B01FDD93C600A29EF7 /* SPXSubscriptionViewControllerSpec.mm */,
+				CDC83B421FD04E2400E9F41A /* SPXSubscriptionViewModelSpec.mm */,
+			);
+			name = "Single App";
+			sourceTree = "<group>";
+		};
+		CDF620751FEF917100D05AEC /* Multi Group */ = {
+			isa = PBXGroup;
+			children = (
+				CDF6209E1FEF918F00D05AEC /* SPXMultiSubscriptionViewController.h */,
+				CDF6209F1FEF918F00D05AEC /* SPXMultiSubscriptionViewModel.h */,
+				CDF620A01FEF918F00D05AEC /* SPXSubscriptionButtonsPageView.h */,
+				CDB3914E20061B86009C1622 /* SPXSubscriptionButtonsPageView.mm */,
+				CDF620A11FEF918F00D05AEC /* SPXSubscriptionButtonsPageViewModel.h */,
+				CDF621E11FEFD42700D05AEC /* SPXSubscriptionButtonsPageViewModel.mm */,
+			);
+			name = "Multi Group";
+			sourceTree = "<group>";
+		};
+		CDF621B61FEFA6BD00D05AEC /* Multi Group */ = {
+			isa = PBXGroup;
+			children = (
+				CDF621DF1FEFCED800D05AEC /* SPXSubscriptionButtonsPageViewModelSpec.mm */,
+			);
+			name = "Multi Group";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1633,6 +1757,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CD1FFFF91FD705CD004D5DEB /* images.xcassets in Resources */,
 				CD55511A1F45D5E10048215C /* Localizable.strings in Resources */,
 				CD55511B1F45D5E10048215C /* Localizable.stringsdict in Resources */,
 			);
@@ -1663,16 +1788,22 @@
 			buildActionMask = 2147483647;
 			files = (
 				885CA2B31FB301F2005380BD /* SPXProductDescriptorsFactorySpec.mm in Sources */,
-				88CEB4511FB44D1B00E01950 /* SPXPromotionSpec.mm in Sources */,
+				88CEB4511FB44D1B00E01950 /* SPXVoucherSpec.mm in Sources */,
 				CDCFDEF91F5C39B300C289BA /* NSDecimalNumber+LocalizationSpec.mm in Sources */,
+				CD25F00920066A6C004B0D6F /* BZRBillingPeriod+ProductIdentifierSpec.mm in Sources */,
+				EA107800200BF183008F856D /* SPXSubscriptionDescriptorSpec.mm in Sources */,
+				CD35E8C71FFBF9BE00BDE1E0 /* SPXColorSchemeSpec.mm in Sources */,
+				8B33A96E1FDD691000F60182 /* SKStoreProductViewController+ShopixSpec.mm in Sources */,
 				CDC83B431FD04E2400E9F41A /* SPXSubscriptionViewModelSpec.mm in Sources */,
 				63E591671FC492480009A34B /* SPXAlertViewModel+ShopixPresetsSpec.mm in Sources */,
 				CDF5FB291FCF249B007D4AB0 /* SPXSubscriptionGradientButtonsFactorySpec.mm in Sources */,
 				CDA6E0EA1FCB2D3200114D6B /* SPXSubscriptionVideoPageViewModelSpec.mm in Sources */,
 				63DC6CE71FD405FC009C0B71 /* SPXSubscriptionManager+RACSignalSupportSpec.mm in Sources */,
 				653D9C3D1FB7BBCC0035ACEC /* SPXAlertViewModelBuilderSpec.mm in Sources */,
+				CDF621E01FEFCED800D05AEC /* SPXSubscriptionButtonsPageViewModelSpec.mm in Sources */,
 				CDAC86E31FC33C4B00B197B3 /* SPXPagingViewSpec.mm in Sources */,
 				653D9C371FB743110035ACEC /* UIAlertController+ViewModelSpec.mm in Sources */,
+				CD0A89B11FDD93C600A29EF7 /* SPXSubscriptionViewControllerSpec.mm in Sources */,
 				CDB513A51F66B0A10013577C /* SPXSubscriptionManagerSpec.mm in Sources */,
 				653D9C3B1FB7B5E00035ACEC /* SPXAlertViewModelSpec.mm in Sources */,
 				CDAC84E01FC1632000B197B3 /* SPXButtonsHorizontalLayoutViewSpec.mm in Sources */,
@@ -1685,6 +1816,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CD25F007200668D4004B0D6F /* BZRBillingPeriod+ProductIdentifier.mm in Sources */,
 				639C5AC91FB37DD300937367 /* SPXAlertViewModelBuilder.mm in Sources */,
 				633E793A1FD3DC1300239C87 /* SPXSubscriptionManager+RACSignalSupport.mm in Sources */,
 				CDAC920A1FC5994900B197B3 /* SPXSubscriptionTermsView.mm in Sources */,
@@ -1698,6 +1830,7 @@
 				CDC83E1B1FD444D200E9F41A /* SPXPurchaseSubscriptionEvent.mm in Sources */,
 				CDC8D4EB1F701EA300E7C929 /* SPXLocalization.mm in Sources */,
 				CDAC91DB1FC593C700B197B3 /* SPXSubscriptionTermsViewModel.mm in Sources */,
+				8B7093601FDD3A31009393C9 /* SKStoreProductViewController+Shopix.mm in Sources */,
 				CD8E8E2F1F5C19F500DF8FC1 /* NSDecimalNumber+Localization.mm in Sources */,
 				CDC8395C1FCFFAC400E9F41A /* SPXSubscriptionViewModel.mm in Sources */,
 				639C5ACC1FB4B47600937367 /* UIAlertController+ViewModel.mm in Sources */,
@@ -1709,10 +1842,12 @@
 				CD8E8E2F1F5C19F500DF8FC1 /* NSDecimalNumber+Localization.mm in Sources */,
 				CDEF4FB01FD5BF3A00A599A7 /* SPXRestorePurchasesEvent.mm in Sources */,
 				63E591531FC44AAC0009A34B /* SPXAlertViewModel+ShopixPresets.mm in Sources */,
-				88B9B4FF1FA8BA980033D48F /* SPXPromotion.mm in Sources */,
+				88B9B4FF1FA8BA980033D48F /* SPXVoucher.mm in Sources */,
 				CD2F2B801FD55C45006257B4 /* SPXRestorePurchasesButton.mm in Sources */,
 				88B9B4DA1FA8BA940033D48F /* SPXProductAxis.mm in Sources */,
+				CD1F02AD1FD87556004D5DEB /* SPXSubscriptionChristmasButtonsFactory.mm in Sources */,
 				653D9C391FB757860035ACEC /* SPXAlertViewModel.mm in Sources */,
+				CDF621E21FEFD42700D05AEC /* SPXSubscriptionButtonsPageViewModel.mm in Sources */,
 				CD60A58E1FB2F2850017D777 /* SPXButtonsHorizontalLayoutView.mm in Sources */,
 				CDC8391B1FCFF87D00E9F41A /* SPXColorScheme.mm in Sources */,
 				CDB513A21F66B0440013577C /* SPXSubscriptionManager.mm in Sources */,
@@ -1720,6 +1855,7 @@
 				88FF39701FB2E047006311FF /* SPXProductDescriptor.mm in Sources */,
 				8851018E1F9DDBA60052351B /* NSError+Shopix.mm in Sources */,
 				88B632AF1F9DD8B10051A535 /* NSErrorCodes+Shopix.mm in Sources */,
+				CDB3917720061B87009C1622 /* SPXSubscriptionButtonsPageView.mm in Sources */,
 				CDC83E1A1FD444D200E9F41A /* SPXRestorePurchasesButtonPressedEvent.mm in Sources */,
 				CD60A5ED1FB433180017D777 /* SPXDualLabelView.mm in Sources */,
 			);
@@ -1862,17 +1998,18 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/../third_party/AppsFlyer\"",
 					"\"$(SRCROOT)/../third_party/objection\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(SRCROOT)/../LTKit/",
-					"$(SRCROOT)/../third_party/libextobjc/",
 					"$(SRCROOT)/../Bazaar",
-					"$(SRCROOT)/../third_party/Mantle/",
+					"$(SRCROOT)/../LTKit",
 					"$(SRCROOT)/../Wireframes",
+					"$(SRCROOT)/../third_party/Mantle/",
+					"$(SRCROOT)/../third_party/libextobjc/",
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				SDKROOT = iphoneos;
 			};
@@ -1886,17 +2023,18 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/../third_party/AppsFlyer\"",
 					"\"$(SRCROOT)/../third_party/objection\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(SRCROOT)/../LTKit/",
-					"$(SRCROOT)/../third_party/libextobjc/",
 					"$(SRCROOT)/../Bazaar",
-					"$(SRCROOT)/../third_party/Mantle/",
+					"$(SRCROOT)/../LTKit",
 					"$(SRCROOT)/../Wireframes",
+					"$(SRCROOT)/../third_party/Mantle/",
+					"$(SRCROOT)/../third_party/libextobjc/",
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 			};

@@ -46,6 +46,7 @@
 // Laboratory -> 13.
 // Shopix -> 14.
 // TinCan -> 15.
+// Intelligence -> 16.
 
 /// Defines error codes for a given product ID. The first given parameter is the product ID or a
 /// constant representing it. Error codes follow. Example:
@@ -118,5 +119,7 @@ LTErrorCodesDeclare(LTKitErrorCodeProductID,
   /// Caused when an invalid argument has been passed to a method.
   LTErrorCodeInvalidArgument,
   /// Caused when an exception is raised, caught and converted to error.
-  LTErrorCodeExceptionRaised
+  LTErrorCodeExceptionRaised,
+  /// Caused when an encryption operation failed.
+  LTErrorCodeEncryptionFailed
 );

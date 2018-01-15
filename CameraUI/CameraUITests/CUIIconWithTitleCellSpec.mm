@@ -5,7 +5,7 @@
 
 #import "CUIMenuItemViewModel.h"
 #import "CUISimpleMenuItemViewModel.h"
-#import "CUISharedTheme.h"
+#import "CUITheme.h"
 
 @interface CUIIconWithTitleCell (ForTesting)
 @property (readonly, nonatomic) UILabel *titleLabel;
@@ -26,7 +26,7 @@ __block CUIIconWithTitleCell *iconWithTitleCell;
 __block id themeMock;
 
 beforeEach(^{
-  themeMock = LTMockProtocol(@protocol(CUITheme));
+  themeMock = LTMockClass([CUITheme class]);
   OCMStub([themeMock titleColor]).andReturn(kTitleColor);
   OCMStub([themeMock titleHighlightedColor]).andReturn(kTitleHighlightedColor);
   OCMStub([themeMock menuBackgroundColor]).andReturn(kMenuBackgroundColor);

@@ -9,7 +9,7 @@
 #import "NSError+Shopix.h"
 #import "SPXProductAxis.h"
 #import "SPXProductDescriptor.h"
-#import "SPXPromotion.h"
+#import "SPXVoucher.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -111,7 +111,7 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 /// Category for easy access to coupons with matching base product values.
-@interface SPXPromotion (ProductDescriptorsFactory)
+@interface SPXVoucher (ProductDescriptorsFactory)
 
 /// Returns the first \c SPXCoupon that matches the given \c values. A coupon matches a value if
 /// all the base axes appearing in the coupon have matching values in both the coupon and the base
@@ -132,7 +132,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-@implementation SPXPromotion (ProductDescriptorsFactory)
+@implementation SPXVoucher (ProductDescriptorsFactory)
 
 - (nullable SPXCoupon *)couponForBaseProductValues:(NSArray<SPXBaseProductAxisValue *> *)values {
   return [self.coupons lt_find:^BOOL(SPXCoupon *coupon) {
@@ -188,15 +188,15 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (nullable NSArray<SPXProductDescriptor *> *)
-    productDescriptorsWithPromotion:(nullable SPXPromotion *)promotion
-                          withError:(NSError *__autoreleasing *)error {
-  if (![self validatePromotion:promotion error:error]) {
+    productDescriptorsWithVoucher:(nullable SPXVoucher *)voucher
+    error:(NSError *__autoreleasing *)error {
+  if (![self validateVoucher:voucher error:error]) {
     return nil;
   }
 
   return [self.baseProductValues lt_map:
           ^SPXProductDescriptor *(NSArray<SPXBaseProductAxisValue *> *baseValues) {
-    auto _Nullable coupon = [promotion couponForBaseProductValues:baseValues];
+    auto _Nullable coupon = [voucher couponForBaseProductValues:baseValues];
 
     NSArray<id<SPXProductAxisValue>> *productValues =
         [self.productAxes lt_map:^id<SPXProductAxisValue> (id<SPXProductAxis> axis) {
@@ -215,30 +215,28 @@ NS_ASSUME_NONNULL_BEGIN
   }];
 }
 
-- (BOOL)validatePromotion:(nullable SPXPromotion *)promotion
-                    error:(NSError * __autoreleasing *)error {
-  if (!promotion) {
+- (BOOL)validateVoucher:(nullable SPXVoucher *)voucher error:(NSError *__autoreleasing *)error {
+  if (!voucher) {
     return YES;
   }
 
-  if ([[promotion.expiryDate earlierDate:[NSDate date]] isEqual:promotion.expiryDate]) {
+  if ([[voucher.expiryDate earlierDate:[NSDate date]] isEqual:voucher.expiryDate]) {
     if (error) {
-      *error = [NSError spx_errorWithCode:SPXErrorCodePromotionExpired
-                      associatedPromotion:promotion];
+      *error = [NSError spx_errorWithCode:SPXErrorCodeVoucherExpired associatedVoucher:voucher];
     }
     return NO;
   }
 
-  for (SPXCoupon *coupon in promotion.coupons) {
+  for (SPXCoupon *coupon in voucher.coupons) {
     if (![self verifyNoDuplicates:[coupon.benefitValues valuesAxes]]) {
       if (error) {
-        *error = [NSError spx_errorWithCode:SPXErrorCodeInvalidCoupon associatedPromotion:promotion
+        *error = [NSError spx_errorWithCode:SPXErrorCodeInvalidCoupon associatedVoucher:voucher
                            associatedCoupon:coupon];
       }
       return NO;
     }
 
-    if (![self verifyNoConflictWithCoupon:coupon inPromotion:promotion error:error]) {
+    if (![self verifyNoConflictWithCoupon:coupon inVoucher:voucher error:error]) {
       return NO;
     }
   }
@@ -246,9 +244,9 @@ NS_ASSUME_NONNULL_BEGIN
   return YES;
 }
 
-- (BOOL)verifyNoConflictWithCoupon:(SPXCoupon *)coupon inPromotion:(SPXPromotion *)promotion
+- (BOOL)verifyNoConflictWithCoupon:(SPXCoupon *)coupon inVoucher:(SPXVoucher *)voucher
                              error:(NSError *__autoreleasing *)error {
-  for (SPXCoupon *otherCoupon in promotion.coupons) {
+  for (SPXCoupon *otherCoupon in voucher.coupons) {
     if (coupon == otherCoupon) {
       continue;
     }
@@ -259,13 +257,22 @@ NS_ASSUME_NONNULL_BEGIN
                           valuesAxes];
     if (std::min(couponBaseAxes.count, otherCouponBaseAxes.count) == intersectAxes.count) {
       if (error) {
-        *error = [NSError spx_errorWithCode:SPXErrorCodeConflictingCouponsInPromotion
-                        associatedPromotion:promotion associatedCoupon:coupon];
+        *error = [NSError spx_errorWithCode:SPXErrorCodeConflictingCoupons
+                          associatedVoucher:voucher associatedCoupon:coupon];
       }
       return NO;
     }
   }
   return YES;
+}
+
+- (nullable NSArray<SPXProductDescriptor *> *)
+    productDescriptorsWithCoupons:(nullable NSArray<SPXCoupon *>*)coupons
+    error:(NSError *__autoreleasing *)error {
+  auto _Nullable voucher = coupons ? [[SPXVoucher alloc] initWithName:@"__SPXOnlyCoupons__"
+                                                              coupons:coupons
+                                                           expiryDate:[NSDate distantFuture]] : nil;
+  return [self productDescriptorsWithVoucher:voucher error:error];
 }
 
 @end

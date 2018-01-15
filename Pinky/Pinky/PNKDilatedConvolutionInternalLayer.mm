@@ -7,7 +7,7 @@
 #import "MPSTemporaryImage+Factory.h"
 #import "PNKComputeDispatch.h"
 #import "PNKComputeState.h"
-#import "PNKNeuralNetworkOperationsModel.h"
+#import "PNKConvolutionUtils.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -43,6 +43,10 @@ NS_ASSUME_NONNULL_BEGIN
 /// Kernel dilation in the y dimension.
 @property (readonly, nonatomic) NSUInteger dilationY;
 
+/// Buffer for passing the full zero-padding size <tt>(left + right, top + bottom)</tt> in the
+/// Tensorflow convention to the kernel. It is transferred as a pair of \c ushorts.
+@property (readonly, nonatomic) id<MTLBuffer> bufferForFullPaddingTF;
+
 @end
 
 @implementation PNKDilatedConvolutionInternalLayer
@@ -75,6 +79,7 @@ static NSString * const kP2SKernelArrayFunctionName = @"patch2SpaceArray";
     [self updatePropertiesWithConvolutionModel:convolutionModel];
     [self createKernelWithConvolutionModel:convolutionModel activationModel:activationModel];
     [self createStates];
+    [self createBuffers];
   }
   return self;
 }
@@ -86,48 +91,48 @@ static NSString * const kP2SKernelArrayFunctionName = @"patch2SpaceArray";
 }
 
 - (void)updatePropertiesWithConvolutionModel:(pnk::ConvolutionKernelModel)convolutionModel {
-  LTParameterAssert(convolutionModel.strideX == 1, @"strideX must be 1, got %lu",
-                    (unsigned long)convolutionModel.strideX);
-  LTParameterAssert(convolutionModel.strideY == 1, @"strideY must be 1, got %lu",
-                    (unsigned long)convolutionModel.strideY);
-  LTParameterAssert(convolutionModel.kernelWidth % 2 == 1, @"Kernel width must be odd, got %lu",
-                    (unsigned long)convolutionModel.kernelWidth);
-  LTParameterAssert(convolutionModel.kernelHeight % 2 == 1, @"Kernel height must be odd, got %lu",
-                    (unsigned long)convolutionModel.kernelHeight);
   LTParameterAssert(convolutionModel.groups == 1, @"Only 1 group is supported, got %lu",
                     (unsigned long)convolutionModel.groups);
+  LTParameterAssert(convolutionModel.padding == pnk::PaddingTypeSame ||
+                    convolutionModel.padding == pnk::PaddingTypeValid, @"Unknown padding type %lu",
+                    (unsigned long)convolutionModel.padding);
   _kernelWidth = convolutionModel.kernelWidth;
   _kernelHeight = convolutionModel.kernelHeight;
   _inputFeatureChannels = convolutionModel.inputFeatureChannels;
   _outputFeatureChannels = convolutionModel.outputFeatureChannels;
   _dilationX = convolutionModel.dilationX;
   _dilationY = convolutionModel.dilationY;
+  _strideX = convolutionModel.strideX;
+  _strideY = convolutionModel.strideY;
   _groups = convolutionModel.groups;
   _padding = convolutionModel.padding;
 }
 
 - (void)createKernelWithConvolutionModel:(const pnk::ConvolutionKernelModel &)convolutionModel
                          activationModel:(const pnk::ActivationKernelModel &)activationModel {
-  pnk::ConvolutionKernelModel nonDilatedConvolutionModel = convolutionModel;
-  nonDilatedConvolutionModel.dilationX = 1;
-  nonDilatedConvolutionModel.dilationY = 1;
+  pnk::ConvolutionKernelModel basicConvolutionModel = convolutionModel;
+  basicConvolutionModel.dilationX = 1;
+  basicConvolutionModel.dilationY = 1;
+  basicConvolutionModel.strideX = 1;
+  basicConvolutionModel.strideY = 1;
   _convolutionKernel = [MPSCNNConvolution pnk_cnnConvolutionWithDevice:self.device
-                                                      convolutionModel:nonDilatedConvolutionModel
+                                                      convolutionModel:basicConvolutionModel
                                                        activationModel:activationModel];
 }
 
 - (void)createStates {
   vector_ushort2 dilationRate = {(ushort)self.dilationX, (ushort)self.dilationY};
   vector_ushort2 kernelGap = {(ushort)(self.kernelWidth / 2), (ushort)(self.kernelHeight / 2)};
-  vector_ushort2 paddingSize = [self paddingSize];
+
+  vector_ushort2 stride = {(ushort)self.strideX, (ushort)self.strideY};
 
   auto functionConstants = [[MTLFunctionConstantValues alloc] init];
   [functionConstants setConstantValue:&dilationRate type:MTLDataTypeUShort2
                              withName:@"dilationRate"];
   [functionConstants setConstantValue:&kernelGap type:MTLDataTypeUShort2
                              withName:@"kernelGap"];
-  [functionConstants setConstantValue:&paddingSize type:MTLDataTypeUShort2
-                             withName:@"paddingSize"];
+  [functionConstants setConstantValue:&stride type:MTLDataTypeUShort2
+                             withName:@"stride"];
 
   _space2PatchFunctionName = self.convolutionKernel.inputFeatureChannels > 4 ?
       kS2PKernelArrayFunctionName : kS2PKernelSingleFunctionName;
@@ -140,15 +145,19 @@ static NSString * const kP2SKernelArrayFunctionName = @"patch2SpaceArray";
                                                          functionConstants);
 }
 
-- (vector_ushort2)paddingSize {
-  switch (self.padding) {
-    case pnk::PaddingTypeSame:
-      return {0, 0};
-    case pnk::PaddingTypeValid:
-      return {(ushort)(self.kernelWidth / 2), (ushort)(self.kernelHeight / 2)};
-  }
+- (void)createBuffers {
+  _bufferForFullPaddingTF = [self bufferForPairOfUShorts];
+}
 
-  LTParameterAssert(NO, @"Invalid padding type: %lu", (unsigned long)self.padding);
+- (id<MTLBuffer>)bufferForPairOfUShorts {
+  id<MTLBuffer> buffer = [self.device newBufferWithLength:2 * sizeof(ushort)
+                                                  options:MTLResourceCPUCacheModeWriteCombined];
+  return buffer;
+}
+
+- (void)fillBuffer:(id<MTLBuffer>)buffer withFirst:(NSUInteger)first second:(NSUInteger)second {
+  vector_ushort2 value = {(ushort)first, (ushort)second};
+  memcpy(buffer.contents, &value, sizeof(value));
 }
 
 #pragma mark -
@@ -160,26 +169,39 @@ static NSString * const kP2SKernelArrayFunctionName = @"patch2SpaceArray";
   LTParameterAssert(inputImage.numberOfImages == 1, @"Input image cannot be a batch");
   LTParameterAssert(inputImage.featureChannels == self.inputFeatureChannels,
                     @"Input image featureChannels must be %lu, got: %lu",
-                    self.inputFeatureChannels, inputImage.featureChannels);
+                    (unsigned long)self.inputFeatureChannels,
+                    (unsigned long)inputImage.featureChannels);
   LTParameterAssert(outputImage.numberOfImages == 1, @"Output image cannot be a batch");
   LTParameterAssert(outputImage.featureChannels == self.outputFeatureChannels,
                     @"Output image featureChannels must be %lu, got: %lu",
-                    self.outputFeatureChannels, outputImage.featureChannels);
+                    (unsigned long)self.outputFeatureChannels,
+                    (unsigned long)outputImage.featureChannels);
 
-  MTLSize outputSize = {outputImage.width, outputImage.height, outputImage.featureChannels};
-  MTLSize expectedInputSize = [self inputSizeForOutputSize:outputSize];
-  LTParameterAssert(inputImage.width == expectedInputSize.width &&
-                    inputImage.height == expectedInputSize.height,
-                    @"Input image must be of size (%lu, %lu), got: (%lu, %lu)",
-                    expectedInputSize.width, expectedInputSize.height, inputImage.width,
-                    inputImage.height);
+  MTLSize inputSize = {inputImage.width, inputImage.height, inputImage.featureChannels};
+  MTLSize expectedOutputSize = PNKConvolutionOutputSize(inputSize, self.kernelWidth,
+                                                        self.kernelHeight, self.dilationX,
+                                                        self.dilationY, self.strideX,
+                                                        self.strideY, self.padding,
+                                                        self.outputFeatureChannels);
+  LTParameterAssert(outputImage.width == expectedOutputSize.width &&
+                    outputImage.height == expectedOutputSize.height &&
+                    outputImage.featureChannels == expectedOutputSize.depth,
+                    @"Output image must be of size (%lu, %lu, %lu), got: (%lu, %lu, %lu)",
+                    expectedOutputSize.width, expectedOutputSize.height, expectedOutputSize.depth,
+                    outputImage.width, outputImage.height, outputImage.featureChannels);
+
+  pnk::PaddingSize fullPaddingTF = PNKConvolutionFullPaddingTF(inputImage.width, inputImage.height,
+                                                               self.kernelWidth, self.kernelHeight,
+                                                               self.dilationX, self.dilationY,
+                                                               self.strideX, self.strideY,
+                                                               self.padding);
 
   // The width and height of the transformed image must be exactly
   // divisible by the dilation rate, so add zero padding if necessary.
-  NSUInteger inputHeightPadded =
-      ((inputImage.height + self.dilationY - 1) / self.dilationY) * self.dilationY;
   NSUInteger inputWidthPadded =
-      ((inputImage.width + self.dilationX - 1) / self.dilationX) * self.dilationX;
+      ((inputImage.width + fullPaddingTF.x - 1) / self.dilationX + 1) * self.dilationX;
+  NSUInteger inputHeightPadded =
+      ((inputImage.height + fullPaddingTF.y - 1) / self.dilationY + 1) * self.dilationY;
 
   // There are \c dilation patches in each direction. There is a gap of zeros in between each pair
   // of adjacent patches. As this gap is used for zero padding,  the size of the gap depends on the
@@ -189,18 +211,18 @@ static NSString * const kP2SKernelArrayFunctionName = @"patch2SpaceArray";
   NSUInteger patchedImageWidth = inputWidthPadded + (self.dilationX - 1) * gapWidth;
   NSUInteger patchedImageHeight = inputHeightPadded + (self.dilationY - 1) * gapHeight;
 
+  if (patchedImageWidth % 2 == 1) {
+    patchedImageWidth += 1;
+  }
+
+  if (patchedImageHeight % 2 == 1) {
+    patchedImageHeight += 1;
+  }
+
   NSUInteger patchWidth = inputWidthPadded / self.dilationX;
   NSUInteger patchHeight = inputHeightPadded / self.dilationY;
   NSUInteger patchWidthWithGap = patchWidth + gapWidth;
   NSUInteger patchHeightWithGap = patchHeight + gapHeight;
-
-  // Rounding up the size to even numbers seems to make the convolution a tiny bit faster.
-  if (patchedImageWidth % 2 == 1) {
-    patchedImageWidth += 1;
-  }
-  if (patchedImageHeight % 2 == 1) {
-    patchedImageHeight += 1;
-  }
 
   auto patchedInputImage = [MPSTemporaryImage pnk_float16ImageWithCommandBuffer:commandBuffer
                             width:patchedImageWidth
@@ -214,7 +236,10 @@ static NSString * const kP2SKernelArrayFunctionName = @"patch2SpaceArray";
     inputImage.texture.arrayLength
   };
 
-  PNKComputeDispatchWithDefaultThreads(self.space2PatchState, commandBuffer, @[], textures,
+  [self fillBuffer:self.bufferForFullPaddingTF withFirst:fullPaddingTF.x second:fullPaddingTF.y];
+  auto buffers = @[self.bufferForFullPaddingTF];
+
+  PNKComputeDispatchWithDefaultThreads(self.space2PatchState, commandBuffer, buffers, textures,
                                        self.space2PatchFunctionName, workingSpaceSize);
 
   if ([inputImage isKindOfClass:[MPSTemporaryImage class]]) {
@@ -226,15 +251,21 @@ static NSString * const kP2SKernelArrayFunctionName = @"patch2SpaceArray";
                              height:patchedImageHeight
                              channels:self.outputFeatureChannels];
 
+  pnk::PaddingSize leftTopPaddingMPS = PNKConvolutionLeftTopPaddingMPS(self.kernelWidth,
+                                                                       self.kernelHeight, 1, 1);
+  self.convolutionKernel.offset = {
+    static_cast<NSInteger>(leftTopPaddingMPS.x),
+    static_cast<NSInteger>(leftTopPaddingMPS.y),
+    0
+  };
   [self.convolutionKernel encodeToCommandBuffer:commandBuffer sourceImage:patchedInputImage
                                destinationImage:patchedOutputImage];
 
   textures = @[patchedOutputImage.texture, outputImage.texture];
 
-  vector_ushort2 paddingSize = [self paddingSize];
   workingSpaceSize = {
-    patchWidth - 2 * paddingSize.x,
-    patchHeight - 2 * paddingSize.y,
+    patchWidth,
+    patchHeight,
     outputImage.texture.arrayLength
   };
 
@@ -243,20 +274,19 @@ static NSString * const kP2SKernelArrayFunctionName = @"patch2SpaceArray";
   patchedOutputImage.readCount -= 1;
 }
 
-- (MTLSize)inputSizeForOutputSize:(MTLSize)outputSize {
-  vector_ushort2 paddingSize = [self paddingSize];
-  return {
-    outputSize.width + 2 * paddingSize.x * self.dilationX,
-    outputSize.height + 2 * paddingSize.y * self.dilationY,
-    self.inputFeatureChannels
-  };
-}
-
 - (MTLRegion)inputRegionForOutputSize:(MTLSize)outputSize {
   return {
     .origin = {0, 0, 0},
-    .size = [self inputSizeForOutputSize:outputSize]
+    .size = PNKConvolutionInputSize(outputSize, self.kernelWidth, self.kernelHeight, self.dilationX,
+                                    self.dilationY, self.strideX, self.strideY, self.padding,
+                                    self.inputFeatureChannels)
   };
+}
+
+- (MTLSize)outputSizeForInputSize:(MTLSize)inputSize {
+  return PNKConvolutionOutputSize(inputSize, self.kernelWidth, self.kernelHeight, self.dilationX,
+                                  self.dilationY, self.strideX, self.strideY, self.padding,
+                                  self.outputFeatureChannels);
 }
 
 @end

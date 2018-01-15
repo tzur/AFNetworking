@@ -152,11 +152,15 @@ static void LTVerifyMipmapImages(const Matrices &images) {
 }
 
 - (void)dealloc {
+  [self dispose];
+}
+
+- (void)dispose {
   if (!self.name) {
     return;
   }
-  [self unbind];
 
+  [self unbind];
   glDeleteTextures(1, &_name);
   LTGLCheckDbg(@"Error deleting texture");
   _name = 0;

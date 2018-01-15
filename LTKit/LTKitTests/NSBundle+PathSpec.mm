@@ -22,7 +22,7 @@ context(@"path for resource", ^{
   __block NSBundle *bundle;
 
   beforeEach(^{
-    bundle = [NSBundle bundleForClass:self.class];
+    bundle = NSBundle.lt_testBundle;
   });
 
   it(@"should return path for an available resource", ^{

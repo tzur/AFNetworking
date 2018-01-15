@@ -14,6 +14,10 @@ NS_ASSUME_NONNULL_BEGIN
   return nil;
 }
 
+- (RACSignal *)eventsSignal {
+  return self.eventsSubject;
+}
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -1,6 +1,8 @@
 // Copyright (c) 2017 Lightricks. All rights reserved.
 // Created by Ofir Bibi.
 
+#import "PNKNeuralNetworkTypeDefinitions.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
 /// Creates a new \c MPSImage for use on \c device with the given \c format and given \c width,
@@ -22,5 +24,15 @@ cv::Mat1hf PNKLoadHalfFloatTensorFromBundleResource(NSBundle *bundle, NSString *
 /// Creates a half-float matrix with given \c rows, \c columns and \c channels and fills it with
 /// zeroes and ones in 3D chessboard pattern.
 cv::Mat PNKFillMatrix(int rows, int columns, int channels);
+
+/// Creates a uchar matrix with given \c rows and \c columns and a number of channels as the size of
+/// \c values. Each channel of the matrix has a constant value as defined by \c values.
+cv::Mat PNKGenerateChannelwiseConstantUcharMatrix(NSUInteger rows, NSUInteger columns,
+                                                  const std::vector<uchar> &values);
+
+/// Creates a half-float matrix with given \c rows and \c columns and a number of channels as the
+/// size of \c values. Each channel of the matrix has a constant value as defined by \c values.
+cv::Mat PNKGenerateChannelwiseConstantHalfFloatMatrix(NSUInteger rows, NSUInteger columns,
+                                                      const std::vector<half_float::half> &values);
 
 NS_ASSUME_NONNULL_END

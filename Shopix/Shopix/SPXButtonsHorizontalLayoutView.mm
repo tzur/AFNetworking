@@ -89,7 +89,7 @@ static const CGFloat kDefaultButtonAspectRatio = 1.0;
 }
 
 - (void)updateButtonsLayout {
-  [self.buttons enumerateObjectsUsingBlock:^(UIButton *button, NSUInteger index, BOOL *) {
+  [self.buttons enumerateObjectsUsingBlock:^(UIControl *button, NSUInteger index, BOOL *) {
     CGFloat buttonHeightFactor =
         [self isEnlargedButtonIndex:index] ? kEnlargedButtonHeightRatio : kButtonHeightRatio;
 
@@ -108,12 +108,12 @@ static const CGFloat kDefaultButtonAspectRatio = 1.0;
 #pragma mark Properties
 #pragma mark -
 
-- (void)setButtons:(NSArray<UIButton *> *)buttons {
+- (void)setButtons:(NSArray<UIControl *> *)buttons {
   [self replaceButtonsWith:buttons];
   self.enlargedButtonIndex = nil;
 }
 
-- (void)replaceButtonsWith:(NSArray<UIButton *> *)newButtons {
+- (void)replaceButtonsWith:(NSArray<UIControl *> *)newButtons {
   [self.buttons makeObjectsPerformSelector:@selector(removeFromSuperview)];
   for (UIButton *button in newButtons) {
     [self.buttonsStackView addArrangedSubview:button];
@@ -124,7 +124,7 @@ static const CGFloat kDefaultButtonAspectRatio = 1.0;
 
 // Note: The returned signal should be disposed when the buttons are changed, otherwise the signal
 // may deliver values if buttons were pressed even after they were removed from this view.
-- (RACSignal *)buttonPressedSignalForButtons:(NSArray<UIButton *> *)buttons {
+- (RACSignal *)buttonPressedSignalForButtons:(NSArray<UIControl *> *)buttons {
   auto signalFromButtons = [RACSignal empty];
   for (NSUInteger i = 0; i < buttons.count; ++i) {
     RACSignal *signalFromButton =

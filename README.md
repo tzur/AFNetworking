@@ -1,6 +1,30 @@
-# Foundations - a fun and powerful iOS infrastructure repository
+# Foundations - a fun and powerful iOS infrastructure monorepo
 
-## How to add LTKit to your project
+## Summary of existing libraries
+
+| Library Name  | Description                        |
+|---------------|------------------------------------|
+| Bazaar        | In-app purchase management         |
+| Blueprints    | Immutable trees                    |
+| Camera        | Camera pipeline infrastructure     |
+| CameraUI      | Camera view layer                  |
+| DaVinci       | Brushes infrastructure             |
+| Fiber         | Networking framework               |
+| Intelligence  | Analytics library                  |
+| LTEngine      | Image processing and rendering     |
+| LTKit         | Basic stuff everyone needs         |
+| Laboratory    | A/B testing                        |
+| Milkshake     | In-house shake screen              |
+| Photons       | Asset loading infrastructure       |
+| PhotonsUI     | Assets and albums view layer       |
+| Pinky         | Metal processing including DNNs    |
+| Shopix        | High-level store layer             |
+| TinCan        | Inter-app communication            |
+| Wireframes    | UI building blocks                 |
+
+## Installation instructions
+
+### How to add LTKit to your project
 
 1. Create a new Xcode project.
 2. Enter the `LTKit` directory and drag the `LTKit.xcodeproj` directory to your new project.
@@ -10,7 +34,7 @@
 4. In `Build Phases`, add `LTKit (LTKit)` to the `Target Dependencies`, and `libLTKit.a` to `Link Binary With Libraries`.
 5. Add `#import <LTKit/LTKit.h>` to each file that uses `LTKit`. Remember to always prefer forward declaration of classes instead of including headers in `.h` files to speed up compilation time.
 
-## How to add LTEngine to your project
+### How to add LTEngine to your project
 
 1. Create a new Xcode project.
 2. Drag the following files from LTEngine's directory in Finder into Xcode's project-navigator:

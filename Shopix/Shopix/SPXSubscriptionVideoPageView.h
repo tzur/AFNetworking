@@ -21,6 +21,12 @@ NS_ASSUME_NONNULL_BEGIN
 /// Secondary title presented below \c title. If \c nil no subtitle is shown.
 @property (strong, nonatomic, nullable) NSAttributedString *subtitle;
 
+/// Video's border color.
+@property (strong, nonatomic, nullable) UIColor *videoBorderColor;
+
+/// Signal that sends \c RACUnit when the video playback has finished.
+@property (readonly, nonatomic) RACSignal<RACUnit *> *videoDidFinishPlayback;
+
 @end
 
 NS_ASSUME_NONNULL_END

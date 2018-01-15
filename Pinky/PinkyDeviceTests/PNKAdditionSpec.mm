@@ -22,8 +22,7 @@ beforeEach(^{
 
 context(@"kernel input verification", ^{
   beforeEach(^{
-    additionOp = [[PNKAddition alloc] initWithDevice:device
-                                inputFeatureChannels:kInputFeatureChannels];
+    additionOp = [[PNKAddition alloc] initWithDevice:device];
   });
 
   it(@"should raise an exception when input feature channels mismatch", ^{
@@ -32,8 +31,8 @@ context(@"kernel input verification", ^{
                                          kInputFeatureChannels * 2);
     auto outputImage = PNKImageMakeUnorm(device, kInputWidth, kInputHeight, kInputFeatureChannels);
     expect(^{
-      [additionOp encodeToCommandBuffer:commandBuffer primaryInputTexture:inputAImage.texture
-                  secondaryInputTexture:inputBImage.texture outputTexture:outputImage.texture];
+      [additionOp encodeToCommandBuffer:commandBuffer primaryInputImage:inputAImage
+                  secondaryInputImage:inputBImage outputImage:outputImage];
     }).to.raise(NSInvalidArgumentException);
   });
 
@@ -43,8 +42,8 @@ context(@"kernel input verification", ^{
                                          kInputFeatureChannels);
     auto outputImage = PNKImageMakeUnorm(device, kInputWidth, kInputHeight, kInputFeatureChannels);
     expect(^{
-      [additionOp encodeToCommandBuffer:commandBuffer primaryInputTexture:inputAImage.texture
-                  secondaryInputTexture:inputBImage.texture outputTexture:outputImage.texture];
+      [additionOp encodeToCommandBuffer:commandBuffer primaryInputImage:inputAImage
+                    secondaryInputImage:inputBImage outputImage:outputImage];
     }).to.raise(NSInvalidArgumentException);
   });
 
@@ -54,16 +53,15 @@ context(@"kernel input verification", ^{
                                          kInputFeatureChannels);
     auto outputImage = PNKImageMakeUnorm(device, kInputWidth, kInputHeight, kInputFeatureChannels);
     expect(^{
-      [additionOp encodeToCommandBuffer:commandBuffer primaryInputTexture:inputAImage.texture
-                  secondaryInputTexture:inputBImage.texture outputTexture:outputImage.texture];
+      [additionOp encodeToCommandBuffer:commandBuffer primaryInputImage:inputAImage
+                    secondaryInputImage:inputBImage outputImage:outputImage];
     }).to.raise(NSInvalidArgumentException);
   });
 });
 
 context(@"kernel input region", ^{
   beforeEach(^{
-    additionOp = [[PNKAddition alloc] initWithDevice:device
-                                inputFeatureChannels:kInputFeatureChannels];
+    additionOp = [[PNKAddition alloc] initWithDevice:device];
   });
 
   it(@"should calculate primary input region correctly", ^{
@@ -78,6 +76,14 @@ context(@"kernel input region", ^{
     MTLRegion secondaryInputRegion = [additionOp secondaryInputRegionForOutputSize:outputSize];
 
     expect($(secondaryInputRegion.size)).to.equalMTLSize($(outputSize));
+  });
+
+  it(@"should calculate output size correctly", ^{
+    MTLSize inputSize = {kInputWidth, kInputHeight, kInputArrayFeatureChannels};
+    MTLSize outputSize = [additionOp outputSizeForPrimaryInputSize:inputSize
+                                                secondaryInputSize:inputSize];
+
+    expect($(outputSize)).to.equalMTLSize($(inputSize));
   });
 });
 
@@ -97,8 +103,7 @@ context(@"addition operation with Unorm8 channel format", ^{
   });
 
   it(@"should add inputs correctly for non-array textures", ^{
-    additionOp = [[PNKAddition alloc] initWithDevice:device
-                                inputFeatureChannels:kInputFeatureChannels];
+    additionOp = [[PNKAddition alloc] initWithDevice:device];
 
     auto inputAImage = PNKImageMakeUnorm(device, kInputWidth, kInputHeight, kInputFeatureChannels);
     auto inputBImage = PNKImageMakeUnorm(device, kInputWidth, kInputHeight, kInputFeatureChannels);
@@ -107,8 +112,8 @@ context(@"addition operation with Unorm8 channel format", ^{
     PNKCopyMatToMTLTexture(inputAImage.texture, inputAMat);
     PNKCopyMatToMTLTexture(inputBImage.texture, inputBMat);
 
-    [additionOp encodeToCommandBuffer:commandBuffer primaryInputTexture:inputAImage.texture
-                secondaryInputTexture:inputBImage.texture outputTexture:outputImage.texture];
+    [additionOp encodeToCommandBuffer:commandBuffer primaryInputImage:inputAImage
+                  secondaryInputImage:inputBImage outputImage:outputImage];
     [commandBuffer commit];
     [commandBuffer waitUntilCompleted];
 
@@ -117,8 +122,7 @@ context(@"addition operation with Unorm8 channel format", ^{
   });
 
   it(@"should add inputs correctly for array textures", ^{
-    additionOp = [[PNKAddition alloc] initWithDevice:device
-                                inputFeatureChannels:kInputArrayFeatureChannels];
+    additionOp = [[PNKAddition alloc] initWithDevice:device];
 
     auto inputAImage = PNKImageMakeUnorm(device, kInputWidth, kInputHeight,
                                          kInputArrayFeatureChannels);
@@ -132,8 +136,8 @@ context(@"addition operation with Unorm8 channel format", ^{
       PNKCopyMatToMTLTexture(inputBImage.texture, inputBMat, i);
     }
 
-    [additionOp encodeToCommandBuffer:commandBuffer primaryInputTexture:inputAImage.texture
-                secondaryInputTexture:inputBImage.texture outputTexture:outputImage.texture];
+    [additionOp encodeToCommandBuffer:commandBuffer primaryInputImage:inputAImage
+                  secondaryInputImage:inputBImage outputImage:outputImage];
     [commandBuffer commit];
     [commandBuffer waitUntilCompleted];
 
@@ -166,8 +170,7 @@ context(@"addition operation with Float16 channel format", ^{
   });
 
   it(@"should add inputs correctly for non-array textures", ^{
-    additionOp = [[PNKAddition alloc] initWithDevice:device
-                                inputFeatureChannels:kInputFeatureChannels];
+    additionOp = [[PNKAddition alloc] initWithDevice:device];
 
     auto inputAImage = PNKImageMake(device, MPSImageFeatureChannelFormatFloat16, kInputWidth,
                                     kInputHeight, kInputFeatureChannels);
@@ -179,8 +182,8 @@ context(@"addition operation with Float16 channel format", ^{
     PNKCopyMatToMTLTexture(inputAImage.texture, inputAMat);
     PNKCopyMatToMTLTexture(inputBImage.texture, inputBMat);
 
-    [additionOp encodeToCommandBuffer:commandBuffer primaryInputTexture:inputAImage.texture
-                secondaryInputTexture:inputBImage.texture outputTexture:outputImage.texture];
+    [additionOp encodeToCommandBuffer:commandBuffer primaryInputImage:inputAImage
+                  secondaryInputImage:inputBImage outputImage:outputImage];
     [commandBuffer commit];
     [commandBuffer waitUntilCompleted];
 
@@ -189,8 +192,7 @@ context(@"addition operation with Float16 channel format", ^{
   });
 
   it(@"should add inputs correctly for array textures", ^{
-    additionOp = [[PNKAddition alloc] initWithDevice:device
-                                inputFeatureChannels:kInputArrayFeatureChannels];
+    additionOp = [[PNKAddition alloc] initWithDevice:device];
 
     auto inputAImage = PNKImageMake(device, MPSImageFeatureChannelFormatFloat16, kInputWidth,
                                     kInputHeight, kInputArrayFeatureChannels);
@@ -204,8 +206,8 @@ context(@"addition operation with Float16 channel format", ^{
       PNKCopyMatToMTLTexture(inputBImage.texture, inputBMat, i);
     }
 
-    [additionOp encodeToCommandBuffer:commandBuffer primaryInputTexture:inputAImage.texture
-                secondaryInputTexture:inputBImage.texture outputTexture:outputImage.texture];
+    [additionOp encodeToCommandBuffer:commandBuffer primaryInputImage:inputAImage
+                  secondaryInputImage:inputBImage outputImage:outputImage];
     [commandBuffer commit];
     [commandBuffer waitUntilCompleted];
 
@@ -218,8 +220,7 @@ context(@"addition operation with Float16 channel format", ^{
 
 context(@"PNKBinaryKernel with MPSTemporaryImage", ^{
   itShouldBehaveLike(kPNKTemporaryImageBinaryExamples, ^{
-    additionOp = [[PNKAddition alloc] initWithDevice:device
-                                inputFeatureChannels:kInputFeatureChannels];
+    additionOp = [[PNKAddition alloc] initWithDevice:device];
 
     return @{
       kPNKTemporaryImageExamplesKernel: additionOp,
@@ -229,8 +230,7 @@ context(@"PNKBinaryKernel with MPSTemporaryImage", ^{
   });
 
   itShouldBehaveLike(kPNKTemporaryImageBinaryExamples, ^{
-    additionOp = [[PNKAddition alloc] initWithDevice:device
-                                inputFeatureChannels:kInputArrayFeatureChannels];
+    additionOp = [[PNKAddition alloc] initWithDevice:device];
 
     return @{
       kPNKTemporaryImageExamplesKernel: additionOp,

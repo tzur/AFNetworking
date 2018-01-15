@@ -5,7 +5,12 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class BZRContentFetcherParameters, BZRProductPriceInfo;
+@class BZRBillingPeriod, BZRContentFetcherParameters, BZRProductPriceInfo,
+    BZRSubscriptionIntroductoryDiscount;
+
+#pragma mark -
+#pragma mark BZRProductType
+#pragma mark -
 
 /// Possible values for types of products, corresponding to products purchasable in itunes
 /// connect.
@@ -15,6 +20,10 @@ LTEnumDeclare(NSUInteger, BZRProductType,
   BZRProductTypeConsumable,
   BZRProductTypeNonRenewingSubscription
 );
+
+#pragma mark -
+#pragma mark BZRProduct
+#pragma mark -
 
 /// Represents a single in-app product.
 @interface BZRProduct : BZRModel <MTLJSONSerializing>
@@ -36,6 +45,20 @@ LTEnumDeclare(NSUInteger, BZRProductType,
 /// @note This property is ignored in serialization / deserialization to / from JSON.
 @property (readonly, nonatomic) BOOL isSubscriptionProduct;
 
+/// Price information for the product. \c nil if price information is not available.
+@property (readonly, nonatomic, nullable) BZRProductPriceInfo *priceInfo;
+
+/// Billing period of the product. \c nil if product is not a renewable subscription or if the
+/// information is not available.
+@property (readonly, nonatomic, nullable) BZRBillingPeriod *billingPeriod;
+
+/// Introductory discount of the product. \c nil if product is not a renewable subscription, the
+/// product offers no introductory discount or if the information is not available.
+///
+/// @note For introductory discount offering guidelines read this document by Apple:
+/// https://developer.apple.com/documentation/storekit/in_app_purchase/offering_introductory_prices_in_your_app?language=objc.
+@property (readonly, nonatomic, nullable) BZRSubscriptionIntroductoryDiscount *introductoryDiscount;
+
 /// Describes the parameters needed to fetch the content of the product. \c nil if no content is
 /// needed to be fetched.
 @property (readonly, nonatomic, nullable) BZRContentFetcherParameters *contentFetcherParameters;
@@ -51,9 +74,6 @@ LTEnumDeclare(NSUInteger, BZRProductType,
 /// \c YES if the product should be available for subscribers immediately after purchasing a
 /// subscription, \c NO otherwise. Optional, the default value is \c NO.
 @property (readonly, nonatomic) BOOL preAcquiredViaSubscription;
-
-/// Holds the price and the locale of the product.
-@property (readonly, nonatomic, nullable) BZRProductPriceInfo *priceInfo;
 
 /// Available variants of the product. \c nil signifies that the receiver is a variant itself.
 @property (readonly, nonatomic, nullable) NSArray<NSString *> *variants;

@@ -20,4 +20,8 @@ BOOL LTIsRunningTests() {
   return testConfigurationAvailable || injectingTestBundle;
 }
 
+BOOL LTIsLaunchedWithArgument(NSString *argument) {
+  return [[NSProcessInfo processInfo].arguments containsObject:argument];
+}
+
 NS_ASSUME_NONNULL_END

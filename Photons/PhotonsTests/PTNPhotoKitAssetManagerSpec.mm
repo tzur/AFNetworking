@@ -15,6 +15,8 @@
 #import "PTNImageAsset.h"
 #import "PTNImageDataAsset.h"
 #import "PTNImageFetchOptions+PhotoKit.h"
+#import "PTNImageMetadata.h"
+#import "PTNImageResizer.h"
 #import "PTNIncrementalChanges.h"
 #import "PTNPhotoKitAlbum.h"
 #import "PTNPhotoKitFakeAuthorizationManager.h"
@@ -28,6 +30,7 @@
 #import "PTNPhotoKitTestUtils.h"
 #import "PTNProgress.h"
 #import "PTNResizingStrategy.h"
+#import "PTNStaticImageAsset.h"
 #import "PhotoKit+Photons.h"
 
 static BOOL PTNNSPredicateEquals(NSPredicate *lhs, NSPredicate *rhs) {
@@ -73,6 +76,7 @@ __block PTNPhotoKitFakeObserver *observer;
 __block PTNPhotoKitFakeImageManager *imageManager;
 __block PTNPhotoKitFakeAuthorizationManager *authorizationManager;
 __block PTNPhotoKitFakeChangeManager *changeManager;
+__block PTNImageResizer *imageResizer;
 
 beforeEach(^{
   fetcher = [[PTNPhotoKitFakeFetcher alloc] init];
@@ -80,11 +84,13 @@ beforeEach(^{
   imageManager = [[PTNPhotoKitFakeImageManager alloc] init];
   authorizationManager = [[PTNPhotoKitFakeAuthorizationManager alloc] init];
   changeManager = [[PTNPhotoKitFakeChangeManager alloc] init];
+  imageResizer = OCMClassMock([PTNImageResizer class]);
 
   manager = [[PTNPhotoKitAssetManager alloc] initWithFetcher:fetcher observer:observer
                                                 imageManager:imageManager
                                         authorizationManager:authorizationManager
-                                               changeManager:changeManager];
+                                               changeManager:changeManager
+                                                imageResizer:imageResizer];
 });
 
 context(@"convenience initializers", ^{
@@ -240,7 +246,8 @@ context(@"album fetching", ^{
                                             initWithFetcher:fetcher observer:observer
                                             imageManager:imageManager
                                             authorizationManager:authorizationManager
-                                            changeManager:changeManager];
+                                            changeManager:changeManager
+                                            imageResizer:imageResizer];
         weakManager = manager;
 
         recorder = [[manager fetchAlbumWithURL:url] testRecorder];
@@ -691,7 +698,8 @@ context(@"album fetching", ^{
                                             initWithFetcher:fetcher observer:observer
                                             imageManager:imageManager
                                             authorizationManager:authorizationManager
-                                            changeManager:changeManager];
+                                            changeManager:changeManager
+                                            imageResizer:imageResizer];
         weakManager = manager;
 
         recorder = [[manager fetchAlbumWithURL:url] testRecorder];
@@ -771,7 +779,8 @@ context(@"album fetching", ^{
       assetManager = [[PTNPhotoKitAssetManager alloc] initWithFetcher:fetcherMock observer:observer
                                                          imageManager:imageManager
                                                  authorizationManager:authorizationManager
-                                                        changeManager:changeManager];
+                                                        changeManager:changeManager
+                                                         imageResizer:imageResizer];
     });
 
     it(@"should fetch album type with fetch options", ^{
@@ -831,7 +840,8 @@ context(@"asset fetching", ^{
                                                                    observer:observer
                                                                imageManager:imageManager
                                                        authorizationManager:authorizationManager
-                                                              changeManager:changeManager];
+                                                              changeManager:changeManager
+                                                               imageResizer:imageResizer];
       weakAssetManager = assetManager;
       NSURL *url = [NSURL ptn_photoKitAssetURLWithAsset:asset];
       expect([manager fetchDescriptorWithURL:url]).will.sendValues(@[asset]);
@@ -970,7 +980,8 @@ context(@"image fetching", ^{
     size = CGSizeMake(64, 64);
     resizingStrategy = [PTNResizingStrategy aspectFill:size];
     options = [PTNImageFetchOptions optionsWithDeliveryMode:PTNImageDeliveryModeFast
-                                                 resizeMode:PTNImageResizeModeFast];
+                                                 resizeMode:PTNImageResizeModeFast
+                                            includeMetadata:NO];
 
     image = [[UIImage alloc] init];
     imageAsset = [[PTNPhotoKitImageAsset alloc] initWithImage:image asset:asset];
@@ -983,7 +994,8 @@ context(@"image fetching", ^{
     auto assetManager = [[PTNPhotoKitAssetManager alloc] initWithFetcher:fetcher observer:observer
                                                             imageManager:imageManager
                                                     authorizationManager:authorizationManager
-                                                           changeManager:changeManager];
+                                                           changeManager:changeManager
+                                                            imageResizer:imageResizer];
     OCMExpect([[(id)imageManager ignoringNonObjectArgs] requestImageForAsset:asset targetSize:size
         contentMode:PHImageContentModeDefault
         options:[OCMArg checkWithBlock:^BOOL(PHImageRequestOptions *options) {
@@ -1153,7 +1165,6 @@ context(@"image fetching", ^{
 
   context(@"resizing strategy", ^{
     __block id imageManagerMock;
-    __block id<PTNResizingStrategy> resizingStrategy;
 
     beforeEach(^{
       asset = PTNPhotoKitCreateAsset(@"baz", size);
@@ -1161,7 +1172,8 @@ context(@"image fetching", ^{
       manager = [[PTNPhotoKitAssetManager alloc] initWithFetcher:fetcher observer:observer
                                                     imageManager:imageManagerMock
                                             authorizationManager:authorizationManager
-                                                   changeManager:changeManager];
+                                                   changeManager:changeManager
+                                                    imageResizer:imageResizer];
       resizingStrategy = OCMProtocolMock(@protocol(PTNResizingStrategy));
     });
 
@@ -1227,6 +1239,126 @@ context(@"image fetching", ^{
   });
 });
 
+context(@"fetch image with metadata", ^{
+  __block PTNImageFetchOptions *options;
+  __block id<PTNResizingStrategy> resizingStrategy;
+
+  beforeEach(^{
+    options = [PTNImageFetchOptions optionsWithDeliveryMode:PTNImageDeliveryModeOpportunistic
+                                                 resizeMode:PTNImageResizeModeFast
+                                            includeMetadata:YES];
+    resizingStrategy = [PTNResizingStrategy identity];
+  });
+
+  it(@"should fetch asset", ^{
+    NSURL *url = [[NSBundle bundleForClass:[self class]] URLForResource:@"PTNImageMetadataImage"
+                                                          withExtension:@"jpg"];
+    PHContentEditingInput *contentEditingInput = PTNPhotoKitCreateImageContentEditingInput(url);
+    id<PTNDescriptor> descriptor =
+        PTNPhotoKitCreateAssetForContentEditing(@"foo", contentEditingInput, nil, 0);
+    UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
+    OCMStub([imageResizer resizeImageAtURL:url resizingStrategy:resizingStrategy])
+        .andReturn([RACSignal return:image]);
+
+    LLSignalTestRecorder *recorder = [[manager fetchImageWithDescriptor:descriptor
+                                                       resizingStrategy:resizingStrategy
+                                                                options:options] testRecorder];
+
+    expect(recorder.valuesSentCount).will.equal(1);
+    PTNProgress<PTNStaticImageAsset *> *imageAsset = (PTNProgress *)recorder.values[0];
+    expect(imageAsset.result.image).to.equal(image);
+    expect(imageAsset.result.imageMetadata).notTo.beNil();
+  });
+
+  it(@"should fetch key image for asset collections", ^{
+    NSURL *url = [[NSBundle bundleForClass:[self class]] URLForResource:@"PTNImageMetadataImage"
+                                                          withExtension:@"jpg"];
+    PHContentEditingInput *contentEditingInput = PTNPhotoKitCreateImageContentEditingInput(url);
+    id<PTNDescriptor> descriptor =
+        PTNPhotoKitCreateAssetForContentEditing(@"foo", contentEditingInput, nil, 0);
+    UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
+    PHAssetCollection *assetCollection = PTNPhotoKitCreateAssetCollection(@"foo");
+    [fetcher registerAssetCollection:assetCollection];
+    PHAsset *asset = PTNPhotoKitCreateAsset(@"bar");
+    [fetcher registerAsset:asset asKeyAssetOfAssetCollection:assetCollection];
+    OCMStub([imageResizer resizeImageAtURL:url resizingStrategy:resizingStrategy])
+        .andReturn([RACSignal return:image]);
+
+    LLSignalTestRecorder *recorder = [[manager fetchImageWithDescriptor:descriptor
+                                                       resizingStrategy:resizingStrategy
+                                                                options:options] testRecorder];
+
+    expect(recorder.valuesSentCount).will.equal(1);
+    PTNProgress<PTNStaticImageAsset *> *imageAsset = (PTNProgress *)recorder.values[0];
+    expect(imageAsset.result.image).to.equal(image);
+    expect(imageAsset.result.imageMetadata).notTo.beNil();
+  });
+
+  it(@"should use normal path for AV assets", ^{
+    PHAsset *descriptor = PTNPhotoKitCreateAsset(@"foo", @[kPTNDescriptorTraitAudiovisualKey]);
+    UIImage *image = [[UIImage alloc] init];
+    PTNPhotoKitImageAsset *imageAsset = [[PTNPhotoKitImageAsset alloc] initWithImage:image
+                                                                               asset:descriptor];
+    [imageManager serveAsset:descriptor withProgress:@[] image:image];
+
+    RACSignal *values = [manager fetchImageWithDescriptor:descriptor
+                                         resizingStrategy:resizingStrategy
+                                                  options:options];
+
+    expect(values).will.sendValues(@[[[PTNProgress alloc] initWithResult:imageAsset]]);
+  });
+
+  it(@"should err when requesting metadata fails", ^{
+    NSURL *url = [NSURL fileURLWithPath:@"/foo/bar/baz.jpg"];
+    PHContentEditingInput *contentEditingInput = PTNPhotoKitCreateImageContentEditingInput(url);
+    id<PTNDescriptor> descriptor =
+        PTNPhotoKitCreateAssetForContentEditing(@"foo", contentEditingInput, nil, 0);
+    RACSignal *values = [manager fetchImageWithDescriptor:descriptor
+                                         resizingStrategy:resizingStrategy
+                                                  options:options];
+
+    expect(values).will.matchError(^BOOL(NSError *error) {
+      return error.code == PTNErrorCodeAssetLoadingFailed && error.lt_underlyingError;
+    });
+  });
+
+  it(@"should err when content editing fullSizeImageURL key is nil", ^{
+    PHContentEditingInput *contentEditingInput = PTNPhotoKitCreateImageContentEditingInput(nil);
+    id<PTNDescriptor> descriptor =
+        PTNPhotoKitCreateAssetForContentEditing(@"foo", contentEditingInput, nil, 0);
+    RACSignal *values = [manager fetchImageWithDescriptor:descriptor
+                                         resizingStrategy:resizingStrategy
+                                                  options:options];
+
+    expect(values).will.matchError(^BOOL(NSError *error) {
+      return error.code == PTNErrorCodeAssetLoadingFailed && error.lt_underlyingError;
+    });
+  });
+
+  it(@"should err when empty content editing input is received", ^{
+    id<PTNDescriptor> descriptor = PTNPhotoKitCreateAssetForContentEditing(@"foo", nil, nil, 0);
+
+    RACSignal *values = [manager fetchImageWithDescriptor:descriptor
+                                         resizingStrategy:resizingStrategy
+                                                  options:options];
+
+    expect(values).will.matchError(^BOOL(NSError *error) {
+      return error.code == PTNErrorCodeAssetLoadingFailed;
+    });
+  });
+
+  it(@"should cancel metadata request upon disposal", ^{
+    PHAsset *descriptor = PTNPhotoKitCreateAssetForContentEditing(@"foo", nil, nil, 1337);
+    OCMExpect([descriptor cancelContentEditingInputRequest:1337]);
+
+    [[[manager fetchImageWithDescriptor:descriptor
+                       resizingStrategy:resizingStrategy
+                                options:options] subscribeNext:^(id) {}] dispose];
+
+    OCMVerifyAllWithDelay((id)descriptor, 1);
+  });
+});
+
 context(@"AVAsset fetching", ^{
   __block id asset;
   __block PTNAVAssetFetchOptions *options;
@@ -1255,7 +1387,8 @@ context(@"AVAsset fetching", ^{
     auto assetManager = [[PTNPhotoKitAssetManager alloc] initWithFetcher:fetcher observer:observer
                                                             imageManager:imageManager
                                                     authorizationManager:authorizationManager
-                                                           changeManager:changeManager];
+                                                           changeManager:changeManager
+                                                            imageResizer:imageResizer];
     OCMExpect([imageManager requestAVAssetForVideo:asset
         options:[OCMArg checkWithBlock:^BOOL(PHVideoRequestOptions *options) {
           return options.isNetworkAccessAllowed;
@@ -1368,8 +1501,7 @@ context(@"image data fetching", ^{
     uint8_t buffer[] = { 0x1, 0x2, 0x3, 0x4 };
     imageData = [NSData dataWithBytes:buffer length:sizeof(buffer)];
     imageDataAsset = [[PTNImageDataAsset alloc] initWithData:imageData
-                                       uniformTypeIdentifier:uniformTypeIdentifier
-                                                 orientation:orientation];
+                                       uniformTypeIdentifier:uniformTypeIdentifier];
 
     defaultError = [NSError errorWithDomain:@"foo" code:1337 userInfo:nil];
   });
@@ -1379,7 +1511,8 @@ context(@"image data fetching", ^{
     auto assetManager = [[PTNPhotoKitAssetManager alloc] initWithFetcher:fetcher observer:observer
                                                             imageManager:imageManager
                                                     authorizationManager:authorizationManager
-                                                           changeManager:changeManager];
+                                                           changeManager:changeManager
+                                                            imageResizer:imageResizer];
     OCMExpect([imageManager requestImageDataForAsset:asset
         options:[OCMArg checkWithBlock:^BOOL(PHImageRequestOptions *options) {
           return options.isNetworkAccessAllowed;

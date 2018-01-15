@@ -71,6 +71,12 @@ context(@"kernel input region", ^{
     MTLRegion inputRegion = [ciNormOp inputRegionForOutputSize:outputSize];
     expect($(inputRegion.size)).to.equalMTLSize($(outputSize));
   });
+
+  it(@"should calculate output size correctly", ^{
+    MTLSize inputSize = {kInputWidth, kInputHeight, inputChannels};
+    MTLSize outputSize = [ciNormOp outputSizeForInputSize:inputSize];
+    expect($(outputSize)).to.equalMTLSize($(inputSize));
+  });
 });
 
 context(@"set conditions", ^{
@@ -112,7 +118,7 @@ context(@"conditional instance normalization PNKUnaryKernel encoding", ^{
   __block NSBundle *bundle;
 
   beforeEach(^{
-    bundle = [NSBundle bundleForClass:[PNKConditionalInstanceNormLayerSpec class]];
+    bundle = NSBundle.lt_testBundle;
   });
 
   itShouldBehaveLike(kPNKUnaryKernelExamples, ^{

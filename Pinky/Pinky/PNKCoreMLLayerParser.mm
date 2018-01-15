@@ -176,11 +176,6 @@ ActivationKernelModel createActivationKernelModel(const ActivationParams &activa
         .activationType = ActivationTypeLeakyReLU,
         .alpha = cv::Mat1f(1, 1, activationParams.leakyrelu().alpha())
       };
-    case ActivationParams::kThresholdedReLU:
-      return ActivationKernelModel{
-        .activationType = ActivationTypeThresholdedReLU,
-        .alpha = cv::Mat1f(1, 1, activationParams.thresholdedrelu().alpha())
-      };
     case ActivationParams::kPReLU:
       return ActivationKernelModel{
         .activationType = ActivationTypePReLU,

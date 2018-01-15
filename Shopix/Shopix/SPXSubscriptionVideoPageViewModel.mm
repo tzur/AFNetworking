@@ -27,6 +27,7 @@ NS_ASSUME_NONNULL_BEGIN
 @implementation SPXSubscriptionVideoPageViewModel
 
 @synthesize videoURL = _videoURL;
+@synthesize videoBorderColor = _videoBorderColor;
 
 - (instancetype)initWithVideoURL:(NSURL *)videoURL titleText:(NSString *)titleText
                     subtitleText:(nullable NSString *)subtitleText {
@@ -38,17 +39,20 @@ NS_ASSUME_NONNULL_BEGIN
                     subtitleText:(nullable NSString *)subtitleText
                      colorScheme:(SPXColorScheme *)colorScheme {
   return [self initWithVideoURL:videoURL titleText:titleText subtitleText:subtitleText
-                 titleTextColor:colorScheme.textColor subtitleTextColor:colorScheme.textColor];
+               videoBorderColor:colorScheme.borderColor titleTextColor:colorScheme.textColor
+              subtitleTextColor:colorScheme.textColor];
 }
 
 - (instancetype)initWithVideoURL:(NSURL *)videoURL titleText:(NSString *)titleText
                     subtitleText:(nullable NSString *)subtitleText
+                videoBorderColor:(nullable UIColor *)videoBorderColor
                   titleTextColor:(UIColor *)titleTextColor
                subtitleTextColor:(UIColor *)subtitleTextColor {
   if (self = [super init]) {
     _videoURL = videoURL;
     _titleText = [titleText copy];
     _subtitleText = [subtitleText copy];
+    _videoBorderColor = videoBorderColor;
     _titleTextColor = titleTextColor;
     _subtitleTextColor = subtitleTextColor;
   }

@@ -5,57 +5,31 @@
 
 static const NSUInteger kInputWidth = 5;
 static const NSUInteger kInputHeight = 5;
-static const cv::Vec4b kInputPrimaryValue(1, 2, 3, 4);
-static const cv::Vec4b kInputSecondaryValue(5, 6, 7, 8);
-
-static cv::Mat PNKGenerateInputMatrix(int channels, cv::Vec4b value) {
-  int alignedChannels = ((channels + 3) / 4) * 4;
-  cv::Mat matrix = cv::Mat1b(kInputWidth * kInputHeight, alignedChannels);
-
-  for (int i = 0; i < matrix.rows; i++) {
-    for (int j = 0; j < channels; j++) {
-      matrix.at<uchar>(i, j) = value[j % 4];
-    }
-    for (int j = channels; j < alignedChannels; j++) {
-      matrix.at<uchar>(i, j) = 0;
-    }
-  }
-
-  return matrix.reshape(alignedChannels, kInputHeight);
-}
-
-static cv::Mat PNKGenerateOutputMatrix(int primaryChannels, cv::Vec4b primaryValue,
-                                       int secondaryChannels, cv::Vec4b secondaryValue) {
-  int outputChannels = primaryChannels + secondaryChannels;
-  int alignedOutputChannels = ((outputChannels + 3) / 4) * 4;
-  cv::Mat matrix = cv::Mat1b(kInputWidth * kInputHeight, alignedOutputChannels);
-
-  for (int i = 0; i < matrix.rows; i++) {
-    for (int j = 0; j < primaryChannels; j++) {
-      matrix.at<uchar>(i, j) = primaryValue[j % 4];
-    }
-    for (int j = primaryChannels; j < outputChannels; j++) {
-      matrix.at<uchar>(i, j) = secondaryValue[(j - primaryChannels) % 4];
-    }
-    for (int j = outputChannels; j < alignedOutputChannels; j++) {
-      matrix.at<uchar>(i, j) = 0;
-    }
-  }
-
-  return matrix.reshape(alignedOutputChannels, kInputHeight);
-}
 
 static NSDictionary *PNKBuildUnormDataForKernelExamples(id<MTLDevice> device,
                                                         NSUInteger primaryChannels,
                                                         NSUInteger secondaryChannels) {
-  auto kernel = [[PNKConcatenation alloc] initWithDevice:device
-                             primaryInputFeatureChannels:primaryChannels
-                           secondaryInputFeatureChannels:secondaryChannels];
+  auto kernel = [[PNKConcatenation alloc] initWithDevice:device];
 
-  cv::Mat primaryInputMat = PNKGenerateInputMatrix((int)primaryChannels, kInputPrimaryValue);
-  cv::Mat secondaryInputMat = PNKGenerateInputMatrix((int)secondaryChannels, kInputSecondaryValue);
-  cv::Mat expectedMat = PNKGenerateOutputMatrix((int)primaryChannels, kInputPrimaryValue,
-                                                (int)secondaryChannels, kInputSecondaryValue);
+  std::vector<uchar> primaryInputValues(primaryChannels);
+  for (NSUInteger i = 0; i < primaryChannels; ++i) {
+    primaryInputValues[i] = (uchar)(i + 1);
+  }
+  cv::Mat primaryInputMat = PNKGenerateChannelwiseConstantUcharMatrix(kInputHeight, kInputWidth,
+                                                                      primaryInputValues);
+
+  std::vector<uchar> secondaryInputValues(secondaryChannels);
+  for (NSUInteger i = 0; i < primaryChannels; ++i) {
+    secondaryInputValues[i] = (uchar)(i + 2);
+  }
+  cv::Mat secondaryInputMat = PNKGenerateChannelwiseConstantUcharMatrix(kInputHeight, kInputWidth,
+                                                                        secondaryInputValues);
+
+  std::vector<uchar> expectedValues = primaryInputValues;
+  expectedValues.insert(expectedValues.end(), secondaryInputValues.begin(),
+                        secondaryInputValues.end());
+  cv::Mat expectedMat = PNKGenerateChannelwiseConstantUcharMatrix(kInputHeight, kInputWidth,
+                                                                  expectedValues);
   return @{
     kPNKKernelExamplesKernel: kernel,
     kPNKKernelExamplesDevice: device,
@@ -74,19 +48,28 @@ static NSDictionary *PNKBuildUnormDataForKernelExamples(id<MTLDevice> device,
 static NSDictionary *PNKBuildHalfFloatDataForKernelExamples(id<MTLDevice> device,
                                                             NSUInteger primaryChannels,
                                                             NSUInteger secondaryChannels) {
-  auto kernel = [[PNKConcatenation alloc] initWithDevice:device
-                             primaryInputFeatureChannels:primaryChannels
-                           secondaryInputFeatureChannels:secondaryChannels];
+  auto kernel = [[PNKConcatenation alloc] initWithDevice:device];
 
-  cv::Mat primaryInputMat = PNKGenerateInputMatrix((int)primaryChannels, kInputPrimaryValue);
-  primaryInputMat.convertTo(primaryInputMat, CV_16F);
+  std::vector<half_float::half> primaryInputValues(primaryChannels);
+  for (NSUInteger i = 0; i < primaryChannels; ++i) {
+    primaryInputValues[i] = (half_float::half)(i + 1);
+  }
+  cv::Mat primaryInputMat = PNKGenerateChannelwiseConstantHalfFloatMatrix(kInputHeight, kInputWidth,
+                                                                          primaryInputValues);
 
-  cv::Mat secondaryInputMat = PNKGenerateInputMatrix((int)secondaryChannels, kInputSecondaryValue);
-  secondaryInputMat.convertTo(secondaryInputMat, CV_16F);
+  std::vector<half_float::half> secondaryInputValues(secondaryChannels);
+  for (NSUInteger i = 0; i < primaryChannels; ++i) {
+    secondaryInputValues[i] = (half_float::half)(i + 2);
+  }
+  cv::Mat secondaryInputMat = PNKGenerateChannelwiseConstantHalfFloatMatrix(kInputHeight,
+                                                                            kInputWidth,
+                                                                            secondaryInputValues);
 
-  cv::Mat expectedMat = PNKGenerateOutputMatrix((int)primaryChannels, kInputPrimaryValue,
-                                                (int)secondaryChannels, kInputSecondaryValue);
-  expectedMat.convertTo(expectedMat, CV_16F);
+  std::vector<half_float::half> expectedValues = primaryInputValues;
+  expectedValues.insert(expectedValues.end(), secondaryInputValues.begin(),
+                        secondaryInputValues.end());
+  cv::Mat expectedMat = PNKGenerateChannelwiseConstantHalfFloatMatrix(kInputHeight, kInputWidth,
+                                                                      expectedValues);
 
   return @{
     kPNKKernelExamplesKernel: kernel,
@@ -109,6 +92,39 @@ __block id<MTLDevice> device;
 
 beforeEach(^{
   device = MTLCreateSystemDefaultDevice();
+});
+
+context(@"kernel input region", ^{
+  static const NSUInteger kChannelsCount = 3;
+  static const NSUInteger kSecondaryChannelsCount = 15;
+
+  __block PNKConcatenation *concatOp;
+
+  beforeEach(^{
+    concatOp = [[PNKConcatenation alloc] initWithDevice:device];
+  });
+
+  it(@"should calculate primary input region correctly", ^{
+    MTLSize outputSize = {kInputWidth, kInputHeight, kChannelsCount};
+    MTLRegion primaryInputRegion = [concatOp primaryInputRegionForOutputSize:outputSize];
+    expect($(primaryInputRegion.size)).to.equalMTLSize($(outputSize));
+  });
+
+  it(@"should calculate secondary input region correctly", ^{
+    MTLSize outputSize = {kInputWidth, kInputHeight, kChannelsCount};
+    MTLRegion secondaryInputRegion = [concatOp secondaryInputRegionForOutputSize:outputSize];
+    expect($(secondaryInputRegion.size)).to.equalMTLSize($(outputSize));
+  });
+
+  it(@"should calculate output size correctly", ^{
+    MTLSize primaryInputSize = {kInputWidth, kInputHeight, kChannelsCount};
+    MTLSize secondaryInputSize = {kInputWidth, kInputHeight, kSecondaryChannelsCount};
+    MTLSize expectedSize = {kInputWidth, kInputHeight, kChannelsCount + kSecondaryChannelsCount};
+    MTLSize outputSize = [concatOp outputSizeForPrimaryInputSize:primaryInputSize
+                                              secondaryInputSize:secondaryInputSize];
+
+    expect($(outputSize)).to.equalMTLSize($(expectedSize));
+  });
 });
 
 context(@"concatenation operation with Unorm8 channel format", ^{
@@ -163,10 +179,6 @@ context(@"concatenation operation with Float16 channel format", ^{
   });
 
   itShouldBehaveLike(kPNKBinaryKernelExamples, ^{
-    return PNKBuildHalfFloatDataForKernelExamples(device, 2, 2);
-  });
-
-  itShouldBehaveLike(kPNKBinaryKernelExamples, ^{
     return PNKBuildHalfFloatDataForKernelExamples(device, 3, 3);
   });
 
@@ -191,6 +203,10 @@ context(@"concatenation operation with Float16 channel format", ^{
   });
 
   itShouldBehaveLike(kPNKBinaryKernelExamples, ^{
+    return PNKBuildHalfFloatDataForKernelExamples(device, 4, 5);
+  });
+
+  itShouldBehaveLike(kPNKBinaryKernelExamples, ^{
     return PNKBuildHalfFloatDataForKernelExamples(device, 5, 5);
   });
 
@@ -203,53 +219,9 @@ context(@"concatenation operation with Float16 channel format", ^{
   });
 });
 
-context(@"concatenation operation with Unorm8 channel format with PNKBinaryImageKernel protocol", ^{
-  itShouldBehaveLike(kPNKBinaryImageKernelExamples, ^{
-    return PNKBuildUnormDataForKernelExamples(device, 2, 2);
-  });
-
-  itShouldBehaveLike(kPNKBinaryImageKernelExamples, ^{
-    return PNKBuildUnormDataForKernelExamples(device, 3, 3);
-  });
-
-  itShouldBehaveLike(kPNKBinaryImageKernelExamples, ^{
-    return PNKBuildUnormDataForKernelExamples(device, 3, 4);
-  });
-
-  itShouldBehaveLike(kPNKBinaryImageKernelExamples, ^{
-    return PNKBuildUnormDataForKernelExamples(device, 4, 3);
-  });
-
-  itShouldBehaveLike(kPNKBinaryImageKernelExamples, ^{
-    return PNKBuildUnormDataForKernelExamples(device, 4, 4);
-  });
-
-  itShouldBehaveLike(kPNKBinaryImageKernelExamples, ^{
-    return PNKBuildUnormDataForKernelExamples(device, 5, 2);
-  });
-
-  itShouldBehaveLike(kPNKBinaryImageKernelExamples, ^{
-    return PNKBuildUnormDataForKernelExamples(device, 5, 4);
-  });
-
-  itShouldBehaveLike(kPNKBinaryImageKernelExamples, ^{
-    return PNKBuildUnormDataForKernelExamples(device, 5, 5);
-  });
-
-  itShouldBehaveLike(kPNKBinaryImageKernelExamples, ^{
-    return PNKBuildUnormDataForKernelExamples(device, 5, 8);
-  });
-
-  itShouldBehaveLike(kPNKBinaryImageKernelExamples, ^{
-    return PNKBuildUnormDataForKernelExamples(device, 8, 5);
-  });
-});
-
 context(@"PNKTemporaryImageExamples", ^{
   itShouldBehaveLike(kPNKTemporaryImageBinaryExamples, ^{
-    auto concatenationOp = [[PNKConcatenation alloc] initWithDevice:device
-                                        primaryInputFeatureChannels:1
-                                      secondaryInputFeatureChannels:1];
+    auto concatenationOp = [[PNKConcatenation alloc] initWithDevice:device];
     return @{
       kPNKTemporaryImageExamplesKernel: concatenationOp,
       kPNKTemporaryImageExamplesDevice: device,
@@ -258,9 +230,7 @@ context(@"PNKTemporaryImageExamples", ^{
   });
 
   itShouldBehaveLike(kPNKTemporaryImageBinaryExamples, ^{
-    auto concatenationOp = [[PNKConcatenation alloc] initWithDevice:device
-                                        primaryInputFeatureChannels:8
-                                      secondaryInputFeatureChannels:8];
+    auto concatenationOp = [[PNKConcatenation alloc] initWithDevice:device];
     return @{
       kPNKTemporaryImageExamplesKernel: concatenationOp,
       kPNKTemporaryImageExamplesDevice: device,

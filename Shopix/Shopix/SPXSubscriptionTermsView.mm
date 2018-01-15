@@ -26,10 +26,24 @@ NS_ASSUME_NONNULL_BEGIN
   return self;
 }
 
+- (void)setup {
+  _termsTextView = [[UITextView alloc] init];
+  self.termsTextView.editable = NO;
+  self.termsTextView.scrollEnabled = NO;
+  self.termsTextView.textContainerInset = UIEdgeInsetsZero;
+  self.termsTextView.backgroundColor = [UIColor clearColor];
+
+  [self addSubview:self.termsTextView];
+  [self.termsTextView mas_makeConstraints:^(MASConstraintMaker *make) {
+    make.edges.equalTo(self);
+  }];
+}
+
 - (NSAttributedString *)termsTextWithTermsText:(NSAttributedString *)termsText
                                 termsOfUseLink:(NSAttributedString *)termsOfUseLink
                              privacyPolicyLink:(NSAttributedString *)privacyPolicyLink {
   auto terms = [[NSMutableAttributedString alloc] initWithAttributedString:termsText];
+  [terms appendAttributedString:[[NSAttributedString alloc] initWithString:@" "]];
   [terms appendAttributedString:termsOfUseLink];
 
   NSDictionary<NSAttributedStringKey, id> *termsOverviewAttributes =
@@ -47,16 +61,12 @@ NS_ASSUME_NONNULL_BEGIN
   return terms;
 }
 
-- (void)setup {
-  _termsTextView = [[UITextView alloc] init];
-  self.termsTextView.editable = NO;
-  self.termsTextView.scrollEnabled = NO;
-  self.termsTextView.backgroundColor = [UIColor clearColor];
+- (void)setTermsTextContainerInset:(UIEdgeInsets)termsTextContainerInset {
+  self.termsTextView.textContainerInset = termsTextContainerInset;
+}
 
-  [self addSubview:self.termsTextView];
-  [self.termsTextView mas_makeConstraints:^(MASConstraintMaker *make) {
-    make.edges.equalTo(self);
-  }];
+- (UIEdgeInsets)termsTextContainerInset {
+  return self.termsTextView.textContainerInset;
 }
 
 @end

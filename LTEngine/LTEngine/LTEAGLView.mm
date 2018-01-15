@@ -4,11 +4,9 @@
 #import "LTEAGLView.h"
 
 #import "LTFbo.h"
-#import "LTFbo+Private.h"
 #import "LTFboPool.h"
 #import "LTGLContext.h"
 #import "LTRenderbuffer.h"
-#import "LTRenderbuffer+Private.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

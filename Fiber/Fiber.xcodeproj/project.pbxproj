@@ -55,6 +55,7 @@
 		8861FCDC1E5A277D00CA1436 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8861FCDB1E5A277D00CA1436 /* CoreGraphics.framework */; };
 		8861FCDE1E5A278600CA1436 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8861FCDD1E5A278600CA1436 /* QuartzCore.framework */; };
 		8861FCE01E5A279D00CA1436 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8861FCDF1E5A279D00CA1436 /* GLKit.framework */; };
+		88A67E711FD5C837005BA17A /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88A67E451FD5C837005BA17A /* MobileCoreServices.framework */; };
 		8B10C86B1F3EFACB00F76142 /* libLLReactiveMatchers.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B10C8681F3EFABE00F76142 /* libLLReactiveMatchers.a */; };
 		8B6867FD1F3B279500F0EF4C /* ReactiveObjC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B6863771F3346F800F0EF4C /* ReactiveObjC.framework */; };
 		B918A90E1E06CBC700970070 /* FBRHTTPClientProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = B918A90C1E06CBC700970070 /* FBRHTTPClientProvider.h */; };
@@ -438,7 +439,7 @@
 		65A6943D1D082E46001DE328 /* FBRHTTPSessionRequestMarshalling.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBRHTTPSessionRequestMarshalling.h; sourceTree = "<group>"; };
 		65AE67501D0461350083D1CE /* libFiber.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libFiber.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		65B5FA5B1D7DC02E005FDA21 /* FBRCertificatePinningSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FBRCertificatePinningSpec.mm; sourceTree = "<group>"; };
-		65B6E5731D46419100D503C0 /* TestHost.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TestHost.xcodeproj; path = ../Foundations/TestHost.xcodeproj; sourceTree = "<group>"; };
+		65B6E5731D46419100D503C0 /* TestHost.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TestHost.xcodeproj; path = ../TestHost/TestHost.xcodeproj; sourceTree = "<group>"; };
 		65B7F16D1D186531005810C9 /* FBRHTTPSessionRequestMarshalling.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FBRHTTPSessionRequestMarshalling.mm; sourceTree = "<group>"; };
 		65B7F18C1D186966005810C9 /* FBRHTTPSessionRequestMarshallingSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FBRHTTPSessionRequestMarshallingSpec.mm; sourceTree = "<group>"; };
 		65BDFC031D0EC56D00C86D36 /* extobjc.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = extobjc.xcodeproj; path = ../third_party/libextobjc/extobjc.xcodeproj; sourceTree = "<group>"; };
@@ -466,6 +467,7 @@
 		8861FCDB1E5A277D00CA1436 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		8861FCDD1E5A278600CA1436 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		8861FCDF1E5A279D00CA1436 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
+		88A67E451FD5C837005BA17A /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		8B10C8621F3EFABE00F76142 /* LLReactiveMatchers.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LLReactiveMatchers.xcodeproj; path = ../third_party/LLReactiveMatchers/LLReactiveMatchers.xcodeproj; sourceTree = "<group>"; };
 		8B6863681F3346F800F0EF4C /* ReactiveObjC.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactiveObjC.xcodeproj; path = ../third_party/ReactiveObjC/ReactiveObjC.xcodeproj; sourceTree = "<group>"; };
 		B918A90C1E06CBC700970070 /* FBRHTTPClientProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBRHTTPClientProvider.h; sourceTree = "<group>"; };
@@ -495,6 +497,7 @@
 				659F3B611D2437BD0097F3D0 /* AFNetworking.framework in Frameworks */,
 				8861FCDC1E5A277D00CA1436 /* CoreGraphics.framework in Frameworks */,
 				8861FCE01E5A279D00CA1436 /* GLKit.framework in Frameworks */,
+				88A67E711FD5C837005BA17A /* MobileCoreServices.framework in Frameworks */,
 				8861FCDE1E5A278600CA1436 /* QuartzCore.framework in Frameworks */,
 				8B6867FD1F3B279500F0EF4C /* ReactiveObjC.framework in Frameworks */,
 				8861FCB71E5A277300CA1436 /* UIKit.framework in Frameworks */,
@@ -851,6 +854,7 @@
 			children = (
 				8861FCDB1E5A277D00CA1436 /* CoreGraphics.framework */,
 				8861FCDF1E5A279D00CA1436 /* GLKit.framework */,
+				88A67E451FD5C837005BA17A /* MobileCoreServices.framework */,
 				8861FCDD1E5A278600CA1436 /* QuartzCore.framework */,
 				8861FCB61E5A277300CA1436 /* UIKit.framework */,
 				CDE00ABE1E82ADED007AFD5E /* libcompression.tbd */,

@@ -38,7 +38,7 @@ extern NSString * const kBZRApplicationBundleIDKey;
 /// Creates and returns an instance of \c NSError with \c domain set to \c LTErrorDomain, \c code
 /// set to \c BZRErrorCodeInvalidProductIdentifier and \c bzr_productIdentifiers set to the given
 /// \c productIdentifiers.
-+ (instancetype)bzr_invalidProductsErrorWithIdentifers:(NSSet<NSString *> *)productIdentifiers;
++ (instancetype)bzr_invalidProductsErrorWithIdentifiers:(NSSet<NSString *> *)productIdentifiers;
 
 /// Creates and returns an instance of \c NSError with error code
 /// \c BZRErrorPeriodicReceiptValidationFailed. \c secondsUntilSubscriptionInvalidation is the

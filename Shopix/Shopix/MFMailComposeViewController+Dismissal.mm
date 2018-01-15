@@ -5,15 +5,73 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@implementation MFMailComposeViewController (Dismissal)
+#pragma mark -
+#pragma mark SPXMailComposeViewControllerDelegate
+#pragma mark -
 
-- (nullable LTVoidBlock)spx_dismissBlock {
-  return objc_getAssociatedObject(self, @selector(spx_dismissBlock));
+/// Delegate that forwards \c MFMailComposeViewControllerDelegate messages.
+///
+/// @note Acts similar to \c RACDelegateProxy. \c RACDelegateProxy is not used here since it fails
+/// to correctly encode the signature of the delegate method because it contains an enum argument.
+@interface SPXMailComposeViewControllerDelegate : NSObject <MFMailComposeViewControllerDelegate>
+
+/// Delegate to which messages should be forwarded.
+@property (weak, nonatomic, nullable) id<MFMailComposeViewControllerDelegate> proxiedDelegate;
+
+@end
+
+@implementation SPXMailComposeViewControllerDelegate
+
+- (void)mailComposeController:(MFMailComposeViewController *)controller
+          didFinishWithResult:(MFMailComposeResult)result error:(nullable NSError *)error {
+  if (error) {
+    LogError(@"Failed composing mail with mail compose result status: %lu, error: %@",
+             (unsigned long)result, error);
+  }
+
+  [self.proxiedDelegate mailComposeController:controller didFinishWithResult:result error:error];
+  [self requestDismiss];
 }
 
-- (void)setSpx_dismissBlock:(nullable LTVoidBlock)dismissBlock {
-  objc_setAssociatedObject(self, @selector(spx_dismissBlock), dismissBlock,
-                           OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+- (void)requestDismiss {
+  // Handled with \c rac_signalForSelector:.
+}
+
+@end
+
+#pragma mark -
+#pragma mark MFMailComposeViewController+Dismissal
+#pragma mark -
+
+@implementation MFMailComposeViewController (Dismissal)
+
+static void SPXUseDelegateProxy(MFMailComposeViewController *self) {
+  if (self.mailComposeDelegate == self.spx_delegateProxy) {
+    return;
+  }
+
+  self.spx_delegateProxy.proxiedDelegate = self.mailComposeDelegate;
+  self.mailComposeDelegate = (id)self.spx_delegateProxy;
+}
+
+- (SPXMailComposeViewControllerDelegate *)spx_delegateProxy {
+  SPXMailComposeViewControllerDelegate *proxy = objc_getAssociatedObject(self, _cmd);
+  if (!proxy) {
+    proxy = [[SPXMailComposeViewControllerDelegate alloc] init];
+    objc_setAssociatedObject(self, _cmd, proxy, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+  }
+
+  return proxy;
+}
+
+#pragma mark -
+#pragma mark Properties
+#pragma mark -
+
+- (RACSignal *)dismissRequested {
+  SPXUseDelegateProxy(self);
+  return [[self.spx_delegateProxy rac_signalForSelector:@selector(requestDismiss)]
+          mapReplace:[RACUnit defaultUnit]];
 }
 
 @end

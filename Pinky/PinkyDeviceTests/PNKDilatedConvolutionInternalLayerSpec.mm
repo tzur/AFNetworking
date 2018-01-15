@@ -3,101 +3,10 @@
 
 #import "PNKDilatedConvolutionInternalLayer.h"
 
-#import "PNKNeuralNetworkOperationsModel.h"
+#import "PNKConvolutionTestUtils.h"
 
-static cv::Mat PNKFillKernel(int kernelWidth, int kernelHeight, int inputChannels,
-                             int outputChannels) {
-  int dims[] = {outputChannels, kernelHeight, kernelWidth, inputChannels};
-  cv::Mat1f kernel(4, dims);
-
-  for (int i = 0; i < outputChannels; ++i) {
-    for (int j = 0; j < kernelHeight; ++j) {
-      for (int k = 0; k < kernelWidth; ++k) {
-        for (int m = 0; m < inputChannels; ++m) {
-          int index[] = {i, j, k, m};
-          kernel.at<float>(index) = (i + j + k + m) % 5 - 2;
-        }
-      }
-    }
-  }
-
-   return kernel;
-}
-
-static cv::Mat PNKCalculateConvolution(cv::Mat inputMatrix, cv::Mat kernel, int dilationX,
-                                       int dilationY) {
-  LTAssert(kernel.dims == 4);
-  cv::MatSize kernelSize = kernel.size;
-
-  int outputChannels = kernelSize[0];
-  int kernelHeight = kernelSize[1];
-  int kernelWidth = kernelSize[2];
-  int inputChannels = kernelSize[3];
-  LTAssert(inputChannels == inputMatrix.channels());
-
-  int rows = inputMatrix.rows;
-  int columns = inputMatrix.cols;
-
-  cv::Mat input = inputMatrix.reshape(1, rows * columns);
-  cv::Mat1hf output = cv::Mat1hf::zeros(rows * columns, outputChannels);
-
-  for (int outputChannel = 0; outputChannel < outputChannels; ++outputChannel) {
-    for (int kernelY = 0; kernelY < kernelHeight; ++kernelY) {
-      for (int kernelX = 0; kernelX < kernelWidth; ++kernelX) {
-        for (int inputChannel = 0; inputChannel < inputChannels; ++inputChannel) {
-          int indexInKernel[] = {outputChannel, kernelY, kernelX, inputChannel};
-          float weight = (float)kernel.at<float>(indexInKernel);
-
-          for (int outputRow = 0; outputRow < rows; ++outputRow) {
-            for (int outputColumn = 0; outputColumn < columns; ++outputColumn) {
-              int inputRow = outputRow - (kernelHeight / 2 - kernelY) * dilationY;
-              int inputColumn = outputColumn - (kernelWidth / 2 - kernelX) * dilationX;
-              if (inputRow < 0 || inputRow >= rows || inputColumn < 0 || inputColumn >= columns) {
-                continue;
-              }
-
-              output.at<half_float::half>(outputRow * columns + outputColumn, outputChannel) +=
-                  weight * input.at<half_float::half>(inputRow * columns + inputColumn,
-                                                      inputChannel);
-            }
-          }
-        }
-      }
-    }
-  }
-
-  cv::Mat outputMat = output.reshape(outputChannels, rows);
-  return outputMat;
-}
-
-static pnk::ConvolutionKernelModel PNKBuildConvolutionModel(NSUInteger kernelWidth,
-                                                            NSUInteger kernelHeight,
-                                                            NSUInteger inputChannels,
-                                                            NSUInteger outputChannels,
-                                                            NSUInteger dilationX,
-                                                            NSUInteger dilationY,
-                                                            pnk::PaddingType paddingType) {
-  cv::Mat kernelWeights = PNKFillKernel((int)kernelWidth, (int)kernelHeight, (int)inputChannels,
-                                        (int)outputChannels);
-
-  return {
-    .kernelWidth = kernelWidth,
-    .kernelHeight = kernelHeight,
-    .kernelChannels = inputChannels,
-    .groups = 1,
-    .inputFeatureChannels = inputChannels,
-    .outputFeatureChannels = outputChannels,
-    .strideX = 1,
-    .strideY = 1,
-    .dilationX = dilationX,
-    .dilationY = dilationY,
-    .padding = paddingType,
-    .isDeconvolution = NO,
-    .hasBias = NO,
-    .deconvolutionOutputSize = CGSizeNull,
-    .kernelWeights = kernelWeights
-  };
-};
+static const NSUInteger kStrideX = 1;
+static const NSUInteger kStrideY = 1;
 
 static NSDictionary *PNKBuildHalfFloatDataForKernelExamples(id<MTLDevice> device,
                                                             NSUInteger imageWidth,
@@ -110,23 +19,18 @@ static NSDictionary *PNKBuildHalfFloatDataForKernelExamples(id<MTLDevice> device
                                                             NSUInteger dilationY,
                                                             pnk::PaddingType paddingType) {
   auto convolutionModel = PNKBuildConvolutionModel(kernelWidth, kernelHeight, inputChannels,
-                                                   outputChannels, dilationX, dilationY,
-                                                   paddingType);
+                                                   outputChannels, dilationX, dilationY, kStrideX,
+                                                   kStrideY, paddingType);
 
   auto convolutionKernel = [[PNKDilatedConvolutionInternalLayer alloc]
                             initWithDevice:device convolutionModel:convolutionModel];
 
   auto inputMat = PNKFillMatrix((int)imageHeight, (int)imageWidth, (int)inputChannels);
 
-  auto expectedMat = PNKCalculateConvolution(inputMat, convolutionModel.kernelWeights,
-                                             (int)dilationX, (int)dilationY);
-
-  if (paddingType == pnk::PaddingTypeValid) {
-    cv::Rect roi((int)(dilationX * (kernelWidth / 2)), (int)(dilationY * (kernelHeight / 2)),
-                 (int)(expectedMat.cols - 2 * dilationX * (kernelWidth / 2)),
-                 (int)(expectedMat.rows - 2 * dilationY * (kernelHeight / 2)));
-    expectedMat = expectedMat(roi).clone();
-  }
+  auto expectedMat = PNKCalculateConvolution(paddingType, inputMat, convolutionModel.kernelWeights,
+                                             (int)dilationX, (int)dilationY, (int)kStrideX,
+                                             (int)kStrideY, pnk::ActivationTypeIdentity,
+                                             cv::Mat1f(), cv::Mat1f());
 
   return @{
     kPNKKernelExamplesKernel: convolutionKernel,
@@ -152,7 +56,7 @@ context(@"parameter tests", ^{
   __block pnk::ConvolutionKernelModel convolutionKernelModel;
 
   beforeEach(^{
-    convolutionKernelModel = PNKBuildConvolutionModel(3, 3, 1, 1, 2, 2, pnk::PaddingTypeSame);
+    convolutionKernelModel = PNKBuildConvolutionModel(3, 3, 1, 1, 2, 2, 1, 1, pnk::PaddingTypeSame);
   });
 
   context(@"instantiation", ^{
@@ -166,46 +70,8 @@ context(@"parameter tests", ^{
       }).notTo.raiseAny();
     });
 
-    it(@"should raise when strideX is not one", ^{
-      convolutionKernelModel.strideX = 2;
-      expect(^{
-        convolutionKernel = [[PNKDilatedConvolutionInternalLayer alloc]
-                             initWithDevice:device
-                             convolutionModel:convolutionKernelModel];
-      }).to.raise(NSInvalidArgumentException);
-    });
-
-    it(@"should raise when strideY is not one", ^{
-      convolutionKernelModel.strideY = 3;
-      expect(^{
-        convolutionKernel = [[PNKDilatedConvolutionInternalLayer alloc]
-                             initWithDevice:device
-                             convolutionModel:convolutionKernelModel];
-      }).to.raise(NSInvalidArgumentException);
-    });
-
     it(@"should raise when groups is not one", ^{
       convolutionKernelModel.groups = 4;
-      expect(^{
-        convolutionKernel = [[PNKDilatedConvolutionInternalLayer alloc]
-                             initWithDevice:device
-                             convolutionModel:convolutionKernelModel];
-      }).to.raise(NSInvalidArgumentException);
-    });
-
-    it(@"should raise when kernel width is even", ^{
-      convolutionKernelModel.kernelWidth = 4;
-      convolutionKernelModel.kernelWeights = cv::Mat1f::ones(3, 4);
-      expect(^{
-        convolutionKernel = [[PNKDilatedConvolutionInternalLayer alloc]
-                             initWithDevice:device
-                             convolutionModel:convolutionKernelModel];
-      }).to.raise(NSInvalidArgumentException);
-    });
-
-    it(@"should raise when kernel height is even", ^{
-      convolutionKernelModel.kernelHeight = 6;
-      convolutionKernelModel.kernelWeights = cv::Mat1f::ones(6, 3);
       expect(^{
         convolutionKernel = [[PNKDilatedConvolutionInternalLayer alloc]
                              initWithDevice:device
@@ -232,7 +98,6 @@ context(@"parameter tests", ^{
     __block id<MTLCommandBuffer> commandBuffer;
 
     beforeEach(^{
-      device = MTLCreateSystemDefaultDevice();
       convolutionKernel = [[PNKDilatedConvolutionInternalLayer alloc]
                            initWithDevice:device
                            convolutionModel:convolutionKernelModel];
@@ -306,6 +171,50 @@ context(@"parameter tests", ^{
   });
 });
 
+context(@"kernel input region", ^{
+  static const NSUInteger kInputWidth = 32;
+  static const NSUInteger kInputHeight = 32;
+  static const NSUInteger kInputChannels = 32;
+  static const NSUInteger kOutputChannels = 16;
+  static const NSUInteger kStrideX = 2;
+  static const NSUInteger kStrideY = 2;
+
+  __block PNKDilatedConvolutionInternalLayer *convolutionKernel;
+
+  beforeEach(^{
+    pnk::ConvolutionKernelModel convolutionKernelModel =
+        PNKBuildConvolutionModel(3, 3, kInputChannels, kOutputChannels, 1, 1, kStrideX, kStrideY,
+                                 pnk::PaddingTypeSame);
+    convolutionKernel = [[PNKDilatedConvolutionInternalLayer alloc]
+                         initWithDevice:device
+                         convolutionModel:convolutionKernelModel];
+  });
+
+  it(@"should calculate input region correctly", ^{
+    MTLSize outputSize = {kInputWidth, kInputHeight, kOutputChannels};
+    MTLRegion inputRegion = [convolutionKernel inputRegionForOutputSize:outputSize];
+    MTLSize expectedSize = {
+      (outputSize.width - 1) * kStrideX + 1,
+      (outputSize.height - 1) * kStrideY + 1,
+      kInputChannels
+    };
+
+    expect($(inputRegion.size)).to.equalMTLSize($(expectedSize));
+  });
+
+  it(@"should calculate output size correctly", ^{
+    MTLSize inputSize = {kInputWidth, kInputHeight, kInputChannels};
+    MTLSize expectedSize = {
+      (inputSize.width - 1) / kStrideX + 1,
+      (inputSize.height - 1) / kStrideY + 1,
+      kOutputChannels
+    };
+    MTLSize outputSize = [convolutionKernel outputSizeForInputSize:inputSize];
+
+    expect($(outputSize)).to.equalMTLSize($(expectedSize));
+  });
+});
+
 context(@"dilated convolution", ^{
   itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
     return PNKBuildHalfFloatDataForKernelExamples(device, 32, 32, 3, 3, 1, 1, 1, 1,
@@ -371,7 +280,7 @@ context(@"dilated convolution", ^{
 context(@"PNKTemporaryImageExamples", ^{
   itShouldBehaveLike(kPNKTemporaryImageUnaryExamples, ^{
     pnk::ConvolutionKernelModel convolutionKernelModel =
-        PNKBuildConvolutionModel(3, 3, 1, 1, 2, 2, pnk::PaddingTypeSame);
+        PNKBuildConvolutionModel(3, 3, 1, 1, 2, 2, 1, 1, pnk::PaddingTypeSame);
 
     auto convolutionKernel = [[PNKDilatedConvolutionInternalLayer alloc]
                               initWithDevice:device

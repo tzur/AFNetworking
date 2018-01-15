@@ -4,7 +4,7 @@
 #import "BZRProduct.h"
 
 #import "BZRDummyContentFetcher.h"
-#import "BZRProduct+SKProduct.h"
+#import "BZRProduct+StoreKit.h"
 
 SpecBegin(BZRProduct)
 
@@ -12,7 +12,7 @@ context(@"BZRModel", ^{
   it(@"should correctly specifiy optional properties", ^{
     NSSet<NSString *> *optionalProperties = [BZRProduct optionalPropertyKeys];
 
-    expect(optionalProperties.count).to.equal(9);
+    expect(optionalProperties.count).to.equal(11);
     expect(optionalProperties).to.contain(@instanceKeypath(BZRProduct, contentFetcherParameters));
     expect(optionalProperties).to.contain(@instanceKeypath(BZRProduct, priceInfo));
     expect(optionalProperties).to.contain(@instanceKeypath(BZRProduct, isSubscribersOnly));
@@ -28,7 +28,7 @@ context(@"BZRModel", ^{
 context(@"MTLModel", ^{
   it(@"should not include the underlying StoreKit product in the propertyKeys", ^{
     expect([BZRProduct propertyKeys])
-        .toNot.contain(@instanceKeypath(BZRProduct, bzr_underlyingProduct));
+        .toNot.contain(@instanceKeypath(BZRProduct, underlyingProduct));
   });
 
   it(@"should include the underlying StoreKit product in the dictionary value", ^{
@@ -36,12 +36,12 @@ context(@"MTLModel", ^{
     NSDictionary *dictionaryValue = @{
       @instanceKeypath(BZRProduct, identifier): @"foo",
       @instanceKeypath(BZRProduct, productType): $(BZRProductTypeNonConsumable),
-      @instanceKeypath(BZRProduct, bzr_underlyingProduct): underlyingProduct
+      @instanceKeypath(BZRProduct, underlyingProduct): underlyingProduct
     };
 
     auto product = [[BZRProduct alloc] initWithDictionary:dictionaryValue error:nil];
 
-    expect(product.dictionaryValue[@keypath(product, bzr_underlyingProduct)])
+    expect(product.dictionaryValue[@keypath(product, underlyingProduct)])
         .to.equal(underlyingProduct);
   });
 
@@ -110,6 +110,20 @@ context(@"JSON serialization" , ^{
     expect(product.variants).to.equal(@[@"TierA", @"TierB"]);
     expect(product.enablesProducts).to.equal(@[@"foo.bar", @"baz"]);
   });
+
+  it(@"should include the underlying product in the dictionary value if it exists", ^{
+    SKProduct *underlyingProduct = OCMClassMock([SKProduct class]);
+    NSDictionary *dictionaryValue = @{
+        @instanceKeypath(BZRProduct, identifier): @"foo",
+        @instanceKeypath(BZRProduct, productType): $(BZRProductTypeNonConsumable),
+        @instanceKeypath(BZRProduct, underlyingProduct): underlyingProduct
+    };
+    BZRProduct *product = [[BZRProduct alloc] initWithDictionary:dictionaryValue error:nil];
+
+    expect(product).toNot.beNil();
+    expect(product.dictionaryValue[@keypath(product, underlyingProduct)])
+        .to.beIdenticalTo(underlyingProduct);
+    });
 });
 
 SpecEnd

@@ -10,7 +10,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// construct potentially scattered geometry.
 @interface DVNScatteredGeometryStageModel : MTLModel <DVNGeometryStageModel>
 
-/// Base diameter of the brush. Must be in <tt>[0.01, CGFLOAT_MAX]<\tt> range. Default value is \c 1.
+/// Base diameter of the brush. Must be in <tt>[0.01, CGFLOAT_MAX]<\tt> range. Default value is
+/// \c 1.
 DVNPropertyDeclare(CGFloat, diameter, Diameter);
 
 /// Minimum number of duplications per processed quad. Must be in <tt>[0, maxCount]<\tt> range.

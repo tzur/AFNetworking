@@ -12,12 +12,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)init NS_UNAVAILABLE;
 
-/// Initializes a new kernel that runs on \c device and concatenates images/textures having
-/// \c primaryInputFeatureChannels feature channels with images/textures having
-/// \c secondaryInputFeatureChannels feature channels.
-- (instancetype)initWithDevice:(id<MTLDevice>)device
-   primaryInputFeatureChannels:(NSUInteger)primaryInputFeatureChannels
- secondaryInputFeatureChannels:(NSUInteger)secondaryInputFeatureChannels NS_DESIGNATED_INITIALIZER;
+/// Initializes a new kernel that runs on \c device and concatenates images/textures.
+- (instancetype)initWithDevice:(id<MTLDevice>)device NS_DESIGNATED_INITIALIZER;
 
 /// Encodes the operation performed by the kernel to \c commandBuffer using \c primaryInputImage
 /// and \c secondaryInputImage as input. Output is written asynchronously to \c outputImage.
@@ -41,6 +37,14 @@ NS_ASSUME_NONNULL_BEGIN
           primaryInputTexture:(id<MTLTexture>)primaryInputTexture
         secondaryInputTexture:(id<MTLTexture>)secondaryInputTexture
                 outputTexture:(id<MTLTexture>)outputTexture;
+
+/// Determines the maximal number of channels that may be read from the primary input. The actual
+/// primary input region is determined by the primary input given to the encode method.
+- (MTLRegion)primaryInputRegionForOutputSize:(MTLSize)outputSize;
+
+/// Determines the maximal number of channels that may be read from the secondary input. The actual
+/// secondary input region is determined by the primary input given to the encode method.
+- (MTLRegion)secondaryInputRegionForOutputSize:(MTLSize)outputSize;
 
 @end
 

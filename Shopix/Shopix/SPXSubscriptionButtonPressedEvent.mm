@@ -18,7 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
     _localeIdentifier = subscriptionDescriptor.priceInfo.localeIdentifier;
     auto locale =
         [NSLocale localeWithLocaleIdentifier:subscriptionDescriptor.priceInfo.localeIdentifier];
-    _currencyCode = locale.currencyCode;
+    _currencyCode = [locale objectForKey:NSLocaleCurrencyCode];
   }
   return self;
 }

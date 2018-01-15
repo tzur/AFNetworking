@@ -153,7 +153,7 @@ it(@"should write data", ^{
 });
 
 it(@"should read data from file", ^{
-  NSString *path = [[NSBundle bundleForClass:[self class]] executablePath];
+  NSString *path = [NSBundle.lt_testBundle executablePath];
 
   NSError *error;
   NSData *data = [fileManager lt_dataWithContentsOfFile:path options:0 error:&error];

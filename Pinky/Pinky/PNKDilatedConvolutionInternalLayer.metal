@@ -9,7 +9,7 @@ using namespace metal;
 
 constant ushort2 dilationRate[[function_constant(0)]];
 constant ushort2 kernelGap[[function_constant(1)]];
-constant ushort2 paddingSize[[function_constant(2)]];
+constant ushort2 stride[[function_constant(2)]];
 
 /// This kernel copies pixels from a monolitic input texture to a patch-based output texture. The
 /// number of patches (in each direction) equals \c dilationRate. The working space size is that of
@@ -17,11 +17,12 @@ constant ushort2 paddingSize[[function_constant(2)]];
 /// loop body calculates the positions of the pixel in the input and output textures and then copies
 /// the pixel.
 template <typename U, typename V>
-void space2Patch(U inputTexture [[texture(0)]], V outputTexture [[texture(1)]],
-                 ushort3 gid [[thread_position_in_grid]]) {
+void space2Patch(constant ushort2 *fullPaddingTF [[buffer(0)]], U inputTexture [[texture(0)]],
+                 V outputTexture [[texture(1)]], ushort3 gid [[thread_position_in_grid]]) {
   const ushort2 inputTextureSize(inputTexture.get_width(), inputTexture.get_height());
   const ushort2 outputTextureSize(outputTexture.get_width(), outputTexture.get_height());
   const ushort2 positionInPatch = gid.xy;
+  const ushort2 leftTopShift = fullPaddingTF[0] / 2;
 
   const ushort2 patchSizeWithGap = (outputTextureSize + kernelGap) / dilationRate;
 
@@ -38,8 +39,10 @@ void space2Patch(U inputTexture [[texture(0)]], V outputTexture [[texture(1)]],
       if (any(writePosition >= outputTextureSize)) {
         continue;
       }
-      const ushort2 readPosition = patchIndex + positionInPatch * dilationRate;
-      const bool readPositionIsValid = inPatch && all(readPosition < inputTextureSize);
+      const ushort2 readPositionWithShift = patchIndex + positionInPatch * dilationRate;
+      const bool readPositionIsValid = inPatch && all(readPositionWithShift >= leftTopShift) &&
+          all(readPositionWithShift < inputTextureSize + leftTopShift);
+      const ushort2 readPosition = readPositionWithShift - leftTopShift;
       const half4 pixel =
           readPositionIsValid ? static_cast<half4>(lt::read(inputTexture, readPosition, gid.z)) : 0;
       lt::write(outputTexture, pixel, writePosition, gid.z);
@@ -47,16 +50,18 @@ void space2Patch(U inputTexture [[texture(0)]], V outputTexture [[texture(1)]],
   }
 }
 
-kernel void space2PatchArray(texture2d_array<half, access::read> inputTexture [[texture(0)]],
+kernel void space2PatchArray(constant ushort2 *fullPaddingTF [[buffer(0)]],
+                             texture2d_array<half, access::read> inputTexture [[texture(0)]],
                              texture2d_array<half, access::write> outputTexture [[texture(1)]],
                              ushort3 gid [[thread_position_in_grid]]) {
-  space2Patch(inputTexture, outputTexture, gid);
+  space2Patch(fullPaddingTF, inputTexture, outputTexture, gid);
 }
 
-kernel void space2PatchSingle(texture2d<half, access::read> inputTexture [[texture(0)]],
+kernel void space2PatchSingle(constant ushort2 *fullPaddingTF [[buffer(0)]],
+                              texture2d<half, access::read> inputTexture [[texture(0)]],
                               texture2d<half, access::write> outputTexture [[texture(1)]],
                               ushort3 gid [[thread_position_in_grid]]) {
-  space2Patch(inputTexture, outputTexture, gid);
+  space2Patch(fullPaddingTF, inputTexture, outputTexture, gid);
 }
 
 /// This kernel copies pixels from a patch-based input texture to a monolitic output texture. The
@@ -69,23 +74,27 @@ void patch2Space(U inputTexture [[texture(0)]], V outputTexture [[texture(1)]],
                  ushort3 gid [[thread_position_in_grid]]) {
   const ushort2 inputTextureSize(inputTexture.get_width(), inputTexture.get_height());
   const ushort2 outputTextureSize(outputTexture.get_width(), outputTexture.get_height());
-  const ushort2 positionInPatchWithoutPadding = gid.xy;
-  const ushort2 positionInPatch = positionInPatchWithoutPadding + paddingSize;
+  const ushort2 positionInPatch = gid.xy;
 
   const ushort2 patchSizeWithGap = (inputTextureSize + kernelGap) / dilationRate;
   const ushort2 patchSize = patchSizeWithGap - kernelGap;
-  const ushort2 patchSizeWithoutPadding = patchSize - 2 * paddingSize;
-  if (any(positionInPatchWithoutPadding >= patchSizeWithoutPadding)) {
+  if (any(positionInPatch >= patchSize)) {
     return;
   }
 
   for (ushort patchX = 0; patchX < dilationRate.x; ++patchX) {
     for (ushort patchY = 0; patchY < dilationRate.y; ++patchY) {
       const ushort2 patchIndex = ushort2(patchX, patchY);
-      const ushort2 writePosition = patchIndex + positionInPatchWithoutPadding * dilationRate;
+      const ushort2 writePositionWhenNoStride =
+          patchIndex + positionInPatch * dilationRate;
+      if (any(writePositionWhenNoStride % stride != 0)) {
+        continue;
+      }
+      const ushort2 writePosition = writePositionWhenNoStride / stride;
       if (any(writePosition >= outputTextureSize)) {
         continue;
       }
+
       const ushort2 readPosition = positionInPatch + patchIndex * patchSizeWithGap;
       const half4 pixel = static_cast<half4>(lt::read(inputTexture, readPosition, gid.z));
       lt::write(outputTexture, pixel, writePosition, gid.z);

@@ -9,6 +9,29 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+static CGBitmapInfo LTBitmapInfoFromImageFormat(LTImageFormat imageFormat) {
+  switch (imageFormat) {
+    case LTImageFormatRGBA8U:
+      return kCGImageAlphaPremultipliedLast;
+    case LTImageFormatRGBA16F:
+      return kCGImageAlphaPremultipliedLast | kCGBitmapFloatComponents |
+          kCGBitmapByteOrder16Little;
+    default:
+      LTParameterAssert(NO, @"%lu is unsupported image format", (unsigned long)imageFormat);
+  }
+}
+
+static int LTMatTypeFromImageFormat(LTImageFormat imageFormat) {
+  switch (imageFormat) {
+    case LTImageFormatRGBA8U:
+      return CV_8UC4;
+    case LTImageFormatRGBA16F:
+      return CV_16FC4;
+    default:
+      LTParameterAssert(NO, @"%lu is unsupported image format", (unsigned long)imageFormat);
+  }
+}
+
 @interface LTImage () {
   /// Image contents.
   cv::Mat _mat;
@@ -29,21 +52,38 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (instancetype)initWithImage:(UIImage *)image loadColorSpace:(BOOL)loadColorSpace {
-  auto colorSpace = CGImageGetColorSpace(image.CGImage);
+  auto imageColorSpace = CGImageGetColorSpace(image.CGImage);
+  auto targetColorSpaceRef = loadColorSpace ?
+      lt::Ref<CGColorSpaceRef>::retain(imageColorSpace) :
+      [LTImage createBitmapColorSpaceFromColorSpace:imageColorSpace];
 
-  if (loadColorSpace) {
-    return [self initWithImage:image targetColorSpace:colorSpace];
-  } else {
-    auto colorSpaceRef = [LTImage createBitmapColorSpaceFromColorSpace:colorSpace];
-    return [self initWithImage:image targetColorSpace:colorSpaceRef.get()];
-  }
+  return [self initWithImage:image targetColorSpace:targetColorSpaceRef.get()];
+}
+
+- (instancetype)initWithImage:(UIImage *)image imageFormat:(LTImageFormat)imageFormat
+                   colorSpace:(CGColorSpaceRef)colorSpace {
+  return [self initWithImage:image copyMat:NO imageFormat:imageFormat colorSpace:colorSpace];
 }
 
 - (instancetype)initWithImage:(UIImage *)image targetColorSpace:(CGColorSpaceRef)colorSpace {
   LTParameterAssert(image);
-  cv::Mat mat = [LTImage allocateMatForImage:image];
-  [LTImage loadImage:image toMat:&mat backgroundColor:nil colorSpace:colorSpace];
+  // Performs legacy compatible initialization, when matType is derived from image's color space.
+  auto matType = [LTImage matTypeForImage:image];
+  auto mat = [LTImage allocateMatForImage:image matType:matType];
+  auto bitmapInfo = [LTImage bitmapInfoForColorSpace:colorSpace];
+  [LTImage loadImage:image toMat:&mat backgroundColor:nil colorSpace:colorSpace
+          bitmapInfo:bitmapInfo];
+
   return [self initWithMat:mat copy:NO colorSpace:colorSpace];
+}
+
+- (instancetype)initWithImage:(UIImage *)image copyMat:(BOOL)copyMat
+                  imageFormat:(LTImageFormat)imageFormat colorSpace:(CGColorSpaceRef)colorSpace {
+  auto mat = [LTImage allocateMatForImage:image matType:LTMatTypeFromImageFormat(imageFormat)];
+  [LTImage loadImage:image toMat:&mat backgroundColor:nil colorSpace:colorSpace
+          bitmapInfo:LTBitmapInfoFromImageFormat(imageFormat)];
+
+  return [self initWithMat:mat copy:copyMat colorSpace:colorSpace];
 }
 
 - (instancetype)initWithMat:(const cv::Mat &)mat copy:(BOOL)copy {
@@ -58,35 +98,36 @@ NS_ASSUME_NONNULL_BEGIN
     } else {
       _mat = mat;
     }
-    _size = CGSizeMake(self.mat.cols, self.mat.rows);
-    _colorSpace = lt::Ref<CGColorSpaceRef>(CGColorSpaceRetain(colorSpace));
+    _colorSpace = lt::Ref<CGColorSpaceRef>::retain(colorSpace);
   }
   return self;
 }
 
-+ (cv::Mat)allocateMatForImage:(UIImage *)image {
++ (cv::Mat)allocateMatForImage:(UIImage *)image matType:(int)matType {
   CGSize size = [self imageSizeInPixels:image];
-  return cv::Mat(size.height, size.width, [self matTypeForImage:image]);
+  return cv::Mat(size.height, size.width, matType);
 }
 
 + (void)loadImage:(UIImage *)image toMat:(cv::Mat *)mat
   backgroundColor:(nullable UIColor *)backgroundColor {
+  LTParameterAssert(mat->type() == [LTImage matTypeForImage:image], @"Invalid mat type given "
+                    "(%d vs. the required %d)", [LTImage matTypeForImage:image], mat->type());
+
   auto colorSpace = CGImageGetColorSpace(image.CGImage);
   lt::Ref<CGColorSpaceRef> colorSpaceRef([LTImage createBitmapColorSpaceFromColorSpace:colorSpace]);
-  [self loadImage:image toMat:mat backgroundColor:backgroundColor colorSpace:colorSpaceRef.get()];
+  [self loadImage:image toMat:mat backgroundColor:backgroundColor colorSpace:colorSpaceRef.get()
+       bitmapInfo:[LTImage bitmapInfoForColorSpace:colorSpace]];
 }
 
 + (void)loadImage:(UIImage *)image toMat:(cv::Mat *)mat
-  backgroundColor:(nullable UIColor *)backgroundColor colorSpace:(CGColorSpaceRef)colorSpace {
+  backgroundColor:(nullable UIColor *)backgroundColor colorSpace:(CGColorSpaceRef)colorSpace
+       bitmapInfo:(CGBitmapInfo)bitmapInfo {
   LTParameterAssert(CGSizeMake(mat->cols, mat->rows) == [self imageSizeInPixels:image]);
-  LTParameterAssert(mat->type() == [[self class] matTypeForImage:image],
-                    @"Invalid mat type given (%d vs. the required %d)",
-                    [[self class] matTypeForImage:image], mat->type());
 
   size_t bitsPerComponent = mat->elemSize1() * CHAR_BIT;
-  lt::Ref<CGContextRef> context(CGBitmapContextCreate(mat->data, mat->cols, mat->rows,
-                                                      bitsPerComponent, mat->step[0], colorSpace,
-                                                      [self bitmapFlagsForColorSpace:colorSpace]));
+  auto context = lt::makeRef(CGBitmapContextCreate(mat->data, mat->cols, mat->rows,
+                                                   bitsPerComponent, mat->step[0], colorSpace,
+                                                   bitmapInfo));
   LTAssert(context.get(), @"Failed to create bitmap context");
 
   CGContextTranslateCTM(context.get(), 0, mat->rows);
@@ -122,11 +163,11 @@ NS_ASSUME_NONNULL_BEGIN
 + (lt::Ref<CGColorSpaceRef>)createBitmapColorSpaceFromColorSpace:(CGColorSpaceRef)colorSpace {
   switch (CGColorSpaceGetModel(colorSpace)) {
     case kCGColorSpaceModelMonochrome:
-      return lt::Ref<CGColorSpaceRef>(CGColorSpaceCreateDeviceGray());
+      return lt::makeRef(CGColorSpaceCreateDeviceGray());
     case kCGColorSpaceModelRGB:
     case kCGColorSpaceModelIndexed:
     case kCGColorSpaceModelCMYK:
-      return lt::Ref<CGColorSpaceRef>(CGColorSpaceCreateDeviceRGB());
+      return lt::makeRef(CGColorSpaceCreateDeviceRGB());
     default:
       LTAssert(NO, @"Invalid color space model given: %d", CGColorSpaceGetModel(colorSpace));
   }
@@ -151,12 +192,13 @@ NS_ASSUME_NONNULL_BEGIN
   }
 }
 
-+ (CGBitmapInfo)bitmapFlagsForColorSpace:(CGColorSpaceRef)colorSpace {
++ (CGBitmapInfo)bitmapInfoForColorSpace:(CGColorSpaceRef)colorSpace {
   switch (CGColorSpaceGetModel(colorSpace)) {
     case kCGColorSpaceModelMonochrome:
       return kCGImageAlphaNone | kCGBitmapByteOrderDefault;
     case kCGColorSpaceModelRGB:
     case kCGColorSpaceModelIndexed:
+    case kCGColorSpaceModelCMYK:
       return kCGImageAlphaPremultipliedLast | kCGBitmapByteOrderDefault;
     default:
       LTAssert(NO, @"Invalid color space model given: %d", CGColorSpaceGetModel(colorSpace));
@@ -184,7 +226,7 @@ NS_ASSUME_NONNULL_BEGIN
 
   __block UIImage *image;
 
-  lt::Ref<CGDataProviderRef> provider(CGDataProviderCreateWithCFData((__bridge CFDataRef)data));
+  auto provider = lt::makeRef(CGDataProviderCreateWithCFData((__bridge CFDataRef)data));
   [self createImageWithDataProvider:provider.get() andDo:^(CGImageRef imageRef) {
     image = [UIImage imageWithCGImage:imageRef scale:scale orientation:UIImageOrientationUp];
   }];
@@ -198,14 +240,14 @@ typedef void (^LTImageCGImageBlock)(CGImageRef imageRef);
                               andDo:(NS_NOESCAPE LTImageCGImageBlock)block {
   size_t bitsPerComponent = self.mat.elemSize1() * 8;
   size_t bitsPerPixel = self.mat.elemSize() * 8;
-  auto colorSpace = _colorSpace ? lt::Ref<CGColorSpaceRef>(CGColorSpaceRetain(_colorSpace.get())) :
+  auto colorSpace = _colorSpace ? lt::Ref<CGColorSpaceRef>::retain(_colorSpace.get()) :
       [self createColorSpaceForImage];
-  auto bitmapInfo = [LTImage bitmapFlagsForColorSpace:colorSpace.get()];
+  auto bitmapInfo = [LTImage bitmapInfoForColorSpace:colorSpace.get()];
 
-  lt::Ref<CGImageRef> imageRef(CGImageCreate(self.mat.cols, self.mat.rows, bitsPerComponent,
-                                             bitsPerPixel, self.mat.step[0], colorSpace.get(),
-                                             bitmapInfo, dataProvider, NULL, false,
-                                             kCGRenderingIntentDefault));
+  auto imageRef = lt::makeRef(CGImageCreate(self.mat.cols, self.mat.rows, bitsPerComponent,
+                                            bitsPerPixel, self.mat.step[0], colorSpace.get(),
+                                            bitmapInfo, dataProvider, NULL, false,
+                                            kCGRenderingIntentDefault));
   LTAssert(imageRef, @"Failed to create CGImage from LTImage");
 
   if (block) {
@@ -229,9 +271,9 @@ typedef void (^LTImageCGImageBlock)(CGImageRef imageRef);
 - (lt::Ref<CGColorSpaceRef>)createColorSpaceForImage {
   switch (self.mat.channels()) {
     case 1:
-      return lt::Ref<CGColorSpaceRef>(CGColorSpaceCreateDeviceGray());
+      return lt::makeRef(CGColorSpaceCreateDeviceGray());
     case 4:
-      return lt::Ref<CGColorSpaceRef>(CGColorSpaceCreateDeviceRGB());
+      return lt::makeRef(CGColorSpaceCreateDeviceRGB());
     default:
       LTAssert(NO, @"Invalid number of image channels: %d", self.mat.channels());
   }
@@ -250,7 +292,7 @@ typedef void (^LTImageCGImageBlock)(CGImageRef imageRef);
   __block BOOL imageWritten = NO;
   [self createImageWithDataProvider:provider.get() andDo:^(CGImageRef imageRef) {
     NSURL *url = [NSURL fileURLWithPath:path];
-    lt::Ref<CGImageDestinationRef> destination([self newImageDestinationWithURL:url]);
+    auto destination = lt::makeRef([self newImageDestinationWithURL:url]);
     if (!destination) {
       if (error) {
         *error = [NSError lt_errorWithCode:LTErrorCodeObjectCreationFailed
@@ -284,7 +326,7 @@ typedef void (^LTImageCGImageBlock)(CGImageRef imageRef);
 
 - (lt::Ref<CGDataProviderRef>)createDataProvider {
   auto data = [self dataFromMatWithCopying:NO];
-  return lt::Ref<CGDataProviderRef>(CGDataProviderCreateWithCFData((__bridge CFDataRef)data));
+  return lt::makeRef(CGDataProviderCreateWithCFData((__bridge CFDataRef)data));
 }
 
 - (CGImageDestinationRef)newImageDestinationWithURL:(NSURL *)url {
@@ -297,6 +339,10 @@ typedef void (^LTImageCGImageBlock)(CGImageRef imageRef);
 
 - (nullable CGColorSpaceRef)colorSpace {
   return _colorSpace.get();
+}
+
+- (CGSize)size {
+  return CGSizeMake(_mat.cols, _mat.rows);
 }
 
 #pragma mark -

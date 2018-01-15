@@ -7,27 +7,31 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation PTNImageFetchOptions
 
+- (instancetype)init {
+  return [self initWithDeliveryMode:PTNImageDeliveryModeHighQuality
+                         resizeMode:PTNImageResizeModeExact includeMetadata:NO];
+}
+
+- (instancetype)initWithDeliveryMode:(PTNImageDeliveryMode)deliveryMode
+                          resizeMode:(PTNImageResizeMode)resizeMode
+                     includeMetadata:(BOOL)includeMetadata {
+  if (self = [super init]) {
+    _deliveryMode = deliveryMode;
+    _resizeMode = resizeMode;
+    _includeMetadata = includeMetadata;
+  }
+  return self;
+}
+
++ (instancetype)options {
+  return [[PTNImageFetchOptions alloc] init];
+}
+
 + (instancetype)optionsWithDeliveryMode:(PTNImageDeliveryMode)deliveryMode
-                             resizeMode:(PTNImageResizeMode)resizeMode {
-  PTNImageFetchOptions *options = [[PTNImageFetchOptions alloc] init];
-  options->_deliveryMode = deliveryMode;
-  options->_resizeMode = resizeMode;
-  return options;
-}
-
-- (BOOL)isEqual:(PTNImageFetchOptions *)object {
-  if (object == self) {
-    return YES;
-  }
-  if (![object isKindOfClass:self.class]) {
-    return NO;
-  }
-
-  return self.deliveryMode == object.deliveryMode && self.resizeMode == object.resizeMode;
-}
-
-- (NSUInteger)hash {
-  return self.deliveryMode ^ self.resizeMode;
+                             resizeMode:(PTNImageResizeMode)resizeMode
+                        includeMetadata:(BOOL)includeMetadata {
+  return [[PTNImageFetchOptions alloc] initWithDeliveryMode:deliveryMode resizeMode:resizeMode
+                                            includeMetadata:includeMetadata];
 }
 
 @end

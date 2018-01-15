@@ -35,6 +35,9 @@
       location = "group:../Laboratory/Laboratory.xcodeproj">
    </FileRef>
    <FileRef
+      location = "group:../Milkshake/Milkshake.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:../Photons/Photons.xcodeproj">
    </FileRef>
    <FileRef
@@ -47,7 +50,7 @@
       location = "group:../Shopix/Shopix.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:TestHost.xcodeproj">
+      location = "group:../TestHost/TestHost.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:../TinCan/TinCan.xcodeproj">

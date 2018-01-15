@@ -7,10 +7,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface SPXSubscriptionVideoPageView ()
-
-/// View that contains the video, until the video is set this view defines the bounds of the video.
-@property (readonly, nonatomic) UIView *mediaContainerView;
+@interface SPXSubscriptionVideoPageView () <WFVideoViewDelegate>
 
 /// Label for the main title of the page.
 @property (readonly, nonatomic) UILabel *titleLabel;
@@ -31,42 +28,36 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithFrame:(CGRect)frame {
   if (self = [super initWithFrame:frame]) {
+    _videoDidFinishPlayback = [[self rac_signalForSelector:@selector(videoDidFinishPlayback:)]
+                               mapReplace:[RACUnit defaultUnit]];
     [self setup];
   }
   return self;
 }
 
 - (void)setup {
-  [self setupMediaContainerView];
   [self setupVideoView];
   [self setupTitle];
   [self setupSubtitle];
 }
 
-- (void)setupMediaContainerView {
-  _mediaContainerView = [[UIView alloc] init];
-  [self addSubview:self.mediaContainerView];
-
-  [self.mediaContainerView mas_remakeConstraints:^(MASConstraintMaker *make) {
-    make.width.top.centerX.equalTo(self);
-    make.height.equalTo(self.mediaContainerView.mas_width).multipliedBy(0.75);
-  }];
-}
-
 - (void)setupVideoView {
   _videoView = [[WFVideoView alloc] initWithVideoProgressIntervalTime:1 playInLoop:YES];
+  self.videoView.delegate = self;
+  self.videoView.layer.borderColor = nil;
   self.videoView.layer.cornerRadius = 7;
   self.videoView.layer.masksToBounds = YES;
-  [self.mediaContainerView addSubview:self.videoView];
+  [self addSubview:self.videoView];
 
-  [self.videoView mas_makeConstraints:^(MASConstraintMaker *make) {
-    make.edges.equalTo(self.mediaContainerView);
+  [self.videoView mas_remakeConstraints:^(MASConstraintMaker *make) {
+    make.width.top.centerX.equalTo(self);
+    make.height.equalTo(self.videoView.mas_width).multipliedBy(0.75);
   }];
 }
 
 - (void)setupTitle {
   UIView *topPadding =
-      [self addPaddingSubviewBeneathView:self.mediaContainerView heightRatio:0.04 maxHeight:20];
+      [self addPaddingSubviewBeneathView:self.videoView heightRatio:0.04 maxHeight:20];
 
   _titleLabel = [[UILabel alloc] init];
   self.titleLabel.numberOfLines = 0;
@@ -156,6 +147,23 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (nullable NSAttributedString *)subtitle {
   return self.subtitleLabel.attributedText;
+}
+
+- (void)setVideoBorderColor:(nullable UIColor *)videoBorderColor {
+  self.videoView.layer.borderColor = videoBorderColor.CGColor;
+  self.videoView.layer.borderWidth = videoBorderColor ? 1 : 0;
+}
+
+- (nullable UIColor *)videoBorderColor {
+  return [UIColor colorWithCGColor:self.videoView.layer.borderColor];
+}
+
+#pragma mark -
+#pragma mark WFVideoViewDelegate
+#pragma mark -
+
+- (void)videoDidFinishPlayback:(WFVideoView * __unused)videoView {
+  // This method is handled using rac_signalForSelector.
 }
 
 @end

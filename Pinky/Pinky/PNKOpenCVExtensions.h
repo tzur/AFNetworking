@@ -13,15 +13,37 @@ NS_ASSUME_NONNULL_BEGIN
 /// avoid undefined behavior.
 cv::Mat PNKMatFromMTLTexture(id<MTLTexture> texture, NSUInteger slice = 0);
 
-/// Copies \c region of \c data at \c slice of a Metal texture and returns it as a \c cv::Mat.
+/// Copies \c region of a \c slice of a Metal texture and returns it as a \c cv::Mat.
 ///
-/// @note only textures with uncompressed 4-channel pixel formats are supported (RGBA 8, 16 or 32
-/// bit) with the exception of unsigned int 32-bit per channel which is not supported. \c texture
-/// bytes are explicitly copied into the returned mat.
+/// @note Textures with uncompressed 1, 2 and 4-channel pixel formats are supported (R/RG/RGBA
+/// 8/16/32 bit) with the exception of unsigned int 32-bit per channel which is not supported.
+/// \c texture bytes are explicitly copied into the returned mat.
 ///
 /// @important one must wait until all writes have been completed before calling this function to
 /// avoid undefined behavior.
 cv::Mat PNKMatFromMTLTextureRegion(id<MTLTexture> texture, MTLRegion region, NSUInteger slice = 0);
+
+/// Copies the data of a Metal texture at \c slice to the provided \c mat.
+///
+/// @note Textures with uncompressed 1, 2 and 4-channel pixel formats are supported (R/RG/RGBA
+/// 8/16/32 bit) with the exception of unsigned int 32-bit per channel which is not supported.
+/// \c texture bytes are explicitly copied into the provided \c mat.
+///
+/// @important one must wait until all writes have been completed before calling this function to
+/// avoid undefined behavior.
+void PNKCopyMTLTextureToMat(id<MTLTexture> texture, NSUInteger slice, NSUInteger mipmapLevel,
+                            cv::Mat *mat);
+
+/// Copies \c region of a \c slice of a Metal texture to the provided \c mat.
+///
+/// @note Textures with uncompressed 1, 2 and 4-channel pixel formats are supported (R/RG/RGBA
+/// 8/16/32 bit) with the exception of unsigned int 32-bit per channel which is not supported.
+/// \c texture bytes are explicitly copied into the provided \c mat.
+///
+/// @important one must wait until all writes have been completed before calling this function to
+/// avoid undefined behavior.
+void PNKCopyMTLTextureRegionToMat(id<MTLTexture> texture, MTLRegion region, NSUInteger slice,
+                                  NSUInteger mipmapLevel, cv::Mat *mat);
 
 /// Copies the content of \c data to \c region in \c texture at the given \c slice and
 /// \c mipmapLevel.
@@ -48,5 +70,8 @@ void PNKCopyMatToMTLTextureRegion(id<MTLTexture> texture, MTLRegion region, cons
 /// avoid undefined behavior.
 void PNKCopyMatToMTLTexture(id<MTLTexture> texture, const cv::Mat &data, NSUInteger slice = 0,
                             NSUInteger mipmapLevel = 0);
+
+/// Returns channels count for the pixel format of the given \c texture.
+NSUInteger PNKChannelCountForTexture(id<MTLTexture> texture);
 
 NS_ASSUME_NONNULL_END

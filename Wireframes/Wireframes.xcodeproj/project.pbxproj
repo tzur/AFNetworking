@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1984C7421FE675D900873DA0 /* libLTKitTestUtils.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1909714E1FBD773C00AD5B91 /* libLTKitTestUtils.a */; };
 		284FDEF01E018C270066AB93 /* UIView+RetrievalSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 284FDEEF1E018C270066AB93 /* UIView+RetrievalSpec.mm */; };
 		28FBDE491DFFE3E1006B1952 /* UIView+Retrieval.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BC7B5651CECA3B50047BEDE /* UIView+Retrieval.m */; };
 		65322E0C1D4654A4002D5F17 /* libextobjc_iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 65322E061D465479002D5F17 /* libextobjc_iOS.a */; };
@@ -38,6 +39,7 @@
 		8861FD761E5A29F800CA1436 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8861FD751E5A29F800CA1436 /* QuartzCore.framework */; };
 		8861FD781E5A2A1C00CA1436 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8861FD771E5A2A1C00CA1436 /* CoreGraphics.framework */; };
 		8861FD7A1E5A2A3F00CA1436 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8861FD791E5A2A3F00CA1436 /* GLKit.framework */; };
+		88A67E961FD5C8DB005BA17A /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88A67E721FD5C8DB005BA17A /* MobileCoreServices.framework */; };
 		8B078FDC1D47B0AC00A8E9EB /* CATransaction+AnimationsSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B078FDB1D47B0AC00A8E9EB /* CATransaction+AnimationsSpec.mm */; };
 		8B10C8EC1F3EFBA700F76142 /* libLLReactiveMatchers.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B10C8E91F3EFB4500F76142 /* libLLReactiveMatchers.a */; };
 		8B283E751CBA814100B745AE /* libWireframes.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B283E171CBA7EED00B745AE /* libWireframes.a */; };
@@ -68,9 +70,11 @@
 		CDAC8C281FC44F5700B197B3 /* WFFakeVideoViewDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = CDAC8C271FC44F5600B197B3 /* WFFakeVideoViewDelegate.mm */; };
 		CDAC8D2A1FC45C1300B197B3 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDAC8D061FC45C0B00B197B3 /* AVFoundation.framework */; };
 		CDAC8D2C1FC45C2200B197B3 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDAC8D2B1FC45C1B00B197B3 /* CoreMedia.framework */; };
-		CDAC8F961FC46C0100B197B3 /* BlankVideo64x64.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = CDAC8C201FC44E8C00B197B3 /* BlankVideo64x64.mp4 */; };
-		CDAC8FBA1FC46C0400B197B3 /* BlankVideo1080x1920Rotation0.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = CDAC8BFC1FC44E8600B197B3 /* BlankVideo1080x1920Rotation0.mp4 */; };
 		CDE00AE41E82AE1F007AFD5E /* libcompression.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = CDE00AE31E82AE1F007AFD5E /* libcompression.tbd */; };
+		CDF61FEE1FEC04EF00D05AEC /* UIView+MASSafeArea.mm in Sources */ = {isa = PBXBuildFile; fileRef = CDF61FEC1FEC04EF00D05AEC /* UIView+MASSafeArea.mm */; };
+		CDF61FF81FEC08E400D05AEC /* Masonry.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDF61FF51FEC08BA00D05AEC /* Masonry.framework */; };
+		EA7966DD1FDEB416003658B8 /* ZeroLengthTestVideo.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = EA7966B91FDEB37A003658B8 /* ZeroLengthTestVideo.mp4 */; };
+		EA7967A31FDEB9E0003658B8 /* HalfSecondTestVideo.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = EA7967A21FDEB9CB003658B8 /* HalfSecondTestVideo.mp4 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -354,6 +358,27 @@
 			remoteGlobalIDString = D047260B19E49F82006002AA;
 			remoteInfo = "ReactiveObjC-iOS";
 		};
+		CDF61FF41FEC08BA00D05AEC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CDF61FEF1FEC08BA00D05AEC /* Masonry.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 3AED05B71AD59FD40053CC65;
+			remoteInfo = "Masonry iOS";
+		};
+		CDF61FF61FEC08BA00D05AEC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CDF61FEF1FEC08BA00D05AEC /* Masonry.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 3AED06271AD5A1400053CC65;
+			remoteInfo = "Masonry OSX";
+		};
+		CDF61FF91FEC09AE00D05AEC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CDF61FEF1FEC08BA00D05AEC /* Masonry.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 3AED05B61AD59FD40053CC65;
+			remoteInfo = "Masonry iOS";
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -371,7 +396,7 @@
 /* Begin PBXFileReference section */
 		284FDEEF1E018C270066AB93 /* UIView+RetrievalSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIView+RetrievalSpec.mm"; sourceTree = "<group>"; };
 		65322DFC1D465479002D5F17 /* extobjc.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = extobjc.xcodeproj; path = ../third_party/libextobjc/extobjc.xcodeproj; sourceTree = "<group>"; };
-		65322E0D1D4654BB002D5F17 /* TestHost.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TestHost.xcodeproj; path = ../Foundations/TestHost.xcodeproj; sourceTree = "<group>"; };
+		65322E0D1D4654BB002D5F17 /* TestHost.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TestHost.xcodeproj; path = ../TestHost/TestHost.xcodeproj; sourceTree = "<group>"; };
 		6A0C328B1CE7476800809579 /* WFImageViewModelBuilderSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = WFImageViewModelBuilderSpec.mm; sourceTree = "<group>"; };
 		6A2990271CD36C600046C4ED /* WFImageViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WFImageViewModel.h; sourceTree = "<group>"; };
 		6A2D0FDF1CE1DC7000B439C6 /* WFImageViewModelBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WFImageViewModelBuilder.h; sourceTree = "<group>"; };
@@ -415,6 +440,7 @@
 		8861FD751E5A29F800CA1436 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		8861FD771E5A2A1C00CA1436 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		8861FD791E5A2A3F00CA1436 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
+		88A67E721FD5C8DB005BA17A /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		8B078FDB1D47B0AC00A8E9EB /* CATransaction+AnimationsSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "CATransaction+AnimationsSpec.mm"; sourceTree = "<group>"; };
 		8B10C8E31F3EFB4500F76142 /* LLReactiveMatchers.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LLReactiveMatchers.xcodeproj; path = ../third_party/LLReactiveMatchers/LLReactiveMatchers.xcodeproj; sourceTree = "<group>"; };
 		8B283E171CBA7EED00B745AE /* libWireframes.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libWireframes.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -462,8 +488,6 @@
 		C99B8BB21D6F6DAD00897FF1 /* UIFont+Size.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIFont+Size.h"; sourceTree = "<group>"; };
 		C99B8BB31D6F6DAD00897FF1 /* UIFont+Size.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIFont+Size.mm"; sourceTree = "<group>"; };
 		C99B8BB61D6F6E2C00897FF1 /* UIFont+SizeSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIFont+SizeSpec.mm"; sourceTree = "<group>"; };
-		CDAC8BFC1FC44E8600B197B3 /* BlankVideo1080x1920Rotation0.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = BlankVideo1080x1920Rotation0.mp4; sourceTree = "<group>"; };
-		CDAC8C201FC44E8C00B197B3 /* BlankVideo64x64.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = BlankVideo64x64.mp4; sourceTree = "<group>"; };
 		CDAC8C211FC44EC900B197B3 /* WFVideoViewSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = WFVideoViewSpec.mm; sourceTree = "<group>"; };
 		CDAC8C231FC44EEA00B197B3 /* WFVideoView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = WFVideoView.mm; sourceTree = "<group>"; };
 		CDAC8C241FC44EEA00B197B3 /* WFVideoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WFVideoView.h; sourceTree = "<group>"; };
@@ -472,6 +496,11 @@
 		CDAC8D061FC45C0B00B197B3 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		CDAC8D2B1FC45C1B00B197B3 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		CDE00AE31E82AE1F007AFD5E /* libcompression.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libcompression.tbd; path = usr/lib/libcompression.tbd; sourceTree = SDKROOT; };
+		CDF61FEC1FEC04EF00D05AEC /* UIView+MASSafeArea.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIView+MASSafeArea.mm"; sourceTree = "<group>"; };
+		CDF61FED1FEC04EF00D05AEC /* UIView+MASSafeArea.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+MASSafeArea.h"; sourceTree = "<group>"; };
+		CDF61FEF1FEC08BA00D05AEC /* Masonry.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Masonry.xcodeproj; path = ../third_party/Masonry/Masonry.xcodeproj; sourceTree = "<group>"; };
+		EA7966B91FDEB37A003658B8 /* ZeroLengthTestVideo.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = ZeroLengthTestVideo.mp4; sourceTree = "<group>"; };
+		EA7967A21FDEB9CB003658B8 /* HalfSecondTestVideo.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = HalfSecondTestVideo.mp4; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -490,6 +519,8 @@
 				8861FD781E5A2A1C00CA1436 /* CoreGraphics.framework in Frameworks */,
 				CDAC8D2C1FC45C2200B197B3 /* CoreMedia.framework in Frameworks */,
 				8861FD7A1E5A2A3F00CA1436 /* GLKit.framework in Frameworks */,
+				CDF61FF81FEC08E400D05AEC /* Masonry.framework in Frameworks */,
+				88A67E961FD5C8DB005BA17A /* MobileCoreServices.framework in Frameworks */,
 				8BC7B64C1CF1D8330047BEDE /* Objection-iOS.framework in Frameworks */,
 				8861FD761E5A29F800CA1436 /* QuartzCore.framework in Frameworks */,
 				8B6868691F3B27C000F0EF4C /* ReactiveObjC.framework in Frameworks */,
@@ -497,6 +528,7 @@
 				8B283F141CBA84EA00B745AE /* libExpecta.a in Frameworks */,
 				8B10C8EC1F3EFBA700F76142 /* libLLReactiveMatchers.a in Frameworks */,
 				8B283F131CBA83A900B745AE /* libLTKit.a in Frameworks */,
+				1984C7421FE675D900873DA0 /* libLTKitTestUtils.a in Frameworks */,
 				8B283F151CBA84EA00B745AE /* libOCMock.a in Frameworks */,
 				8B283F161CBA84EA00B745AE /* libSpecta.a in Frameworks */,
 				8B283E751CBA814100B745AE /* libWireframes.a in Frameworks */,
@@ -515,6 +547,7 @@
 				8861FD771E5A2A1C00CA1436 /* CoreGraphics.framework */,
 				CDAC8D2B1FC45C1B00B197B3 /* CoreMedia.framework */,
 				8861FD791E5A2A3F00CA1436 /* GLKit.framework */,
+				88A67E721FD5C8DB005BA17A /* MobileCoreServices.framework */,
 				8BC7B6251CF1D6650047BEDE /* Objection-iOS.framework */,
 				8861FD751E5A29F800CA1436 /* QuartzCore.framework */,
 				8861FD561E5A29DE00CA1436 /* UIKit.framework */,
@@ -630,9 +663,9 @@
 			isa = PBXGroup;
 			children = (
 				6AB518D71CCA2D9400540CC6 /* Assets.xcassets */,
-				CDAC8BFC1FC44E8600B197B3 /* BlankVideo1080x1920Rotation0.mp4 */,
-				CDAC8C201FC44E8C00B197B3 /* BlankVideo64x64.mp4 */,
+				EA7967A21FDEB9CB003658B8 /* HalfSecondTestVideo.mp4 */,
 				6A7E52FA1CCE3964000AAAF3 /* SmallImageInBundle.jpg */,
+				EA7966B91FDEB37A003658B8 /* ZeroLengthTestVideo.mp4 */,
 			);
 			name = Assets;
 			sourceTree = "<group>";
@@ -729,6 +762,7 @@
 				8B283EA31CBA833C00B745AE /* Expecta.xcodeproj */,
 				8B10C8E31F3EFB4500F76142 /* LLReactiveMatchers.xcodeproj */,
 				8B283EEC1CBA838900B745AE /* LTKit.xcodeproj */,
+				CDF61FEF1FEC08BA00D05AEC /* Masonry.xcodeproj */,
 				8B283ED31CBA834C00B745AE /* OCMock.xcodeproj */,
 				8B68646A1F3347DF00F0EF4C /* ReactiveObjC.xcodeproj */,
 				8B283EBE1CBA834300B745AE /* Specta.xcodeproj */,
@@ -833,6 +867,8 @@
 				C99B8BB31D6F6DAD00897FF1 /* UIFont+Size.mm */,
 				C77A04071D40DA2800427AD7 /* UIFont+Utilities.h */,
 				C77A04081D40DA2800427AD7 /* UIFont+Utilities.mm */,
+				CDF61FED1FEC04EF00D05AEC /* UIView+MASSafeArea.h */,
+				CDF61FEC1FEC04EF00D05AEC /* UIView+MASSafeArea.mm */,
 				8BC7B5641CECA3B50047BEDE /* UIView+Retrieval.h */,
 				8BC7B5651CECA3B50047BEDE /* UIView+Retrieval.m */,
 				8B283F6E1CBA9C6E00B745AE /* UIViewController+Containment.h */,
@@ -903,6 +939,15 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		CDF61FF01FEC08BA00D05AEC /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				CDF61FF51FEC08BA00D05AEC /* Masonry.framework */,
+				CDF61FF71FEC08BA00D05AEC /* Masonry.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -917,6 +962,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				CDF61FFA1FEC09AE00D05AEC /* PBXTargetDependency */,
 				8B6864831F3347F500F0EF4C /* PBXTargetDependency */,
 			);
 			name = Wireframes;
@@ -987,6 +1033,10 @@
 				{
 					ProductGroup = 8B283EED1CBA838900B745AE /* Products */;
 					ProjectRef = 8B283EEC1CBA838900B745AE /* LTKit.xcodeproj */;
+				},
+				{
+					ProductGroup = CDF61FF01FEC08BA00D05AEC /* Products */;
+					ProjectRef = CDF61FEF1FEC08BA00D05AEC /* Masonry.xcodeproj */;
 				},
 				{
 					ProductGroup = 8B283ED41CBA834C00B745AE /* Products */;
@@ -1273,6 +1323,20 @@
 			remoteRef = 8B6864801F3347DF00F0EF4C /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		CDF61FF51FEC08BA00D05AEC /* Masonry.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Masonry.framework;
+			remoteRef = CDF61FF41FEC08BA00D05AEC /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		CDF61FF71FEC08BA00D05AEC /* Masonry.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Masonry.framework;
+			remoteRef = CDF61FF61FEC08BA00D05AEC /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
@@ -1280,10 +1344,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CDAC8F961FC46C0100B197B3 /* BlankVideo64x64.mp4 in Resources */,
 				6A7E52FB1CCE3964000AAAF3 /* SmallImageInBundle.jpg in Resources */,
-				CDAC8FBA1FC46C0400B197B3 /* BlankVideo1080x1920Rotation0.mp4 in Resources */,
+				EA7967A31FDEB9E0003658B8 /* HalfSecondTestVideo.mp4 in Resources */,
 				6AB518D81CCA2D9400540CC6 /* Assets.xcassets in Resources */,
+				EA7966DD1FDEB416003658B8 /* ZeroLengthTestVideo.mp4 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1307,6 +1371,7 @@
 				C77A04091D40DA2800427AD7 /* UIFont+Utilities.mm in Sources */,
 				6AAED9F31CC62AAD00B3C62F /* WFAssetCatalogImageProvider.mm in Sources */,
 				6A2D0FE11CE1DC7000B439C6 /* WFImageViewModelBuilder.m in Sources */,
+				CDF61FEE1FEC04EF00D05AEC /* UIView+MASSafeArea.mm in Sources */,
 				C9133D8F1D3574FE009E796B /* CALayer+Enumeration.m in Sources */,
 				CDAC8C251FC44EEA00B197B3 /* WFVideoView.mm in Sources */,
 				6AAED9F41CC62AAD00B3C62F /* WFImageLoader.mm in Sources */,
@@ -1365,6 +1430,11 @@
 			isa = PBXTargetDependency;
 			name = "ReactiveObjC-iOS";
 			targetProxy = 8B6864821F3347F500F0EF4C /* PBXContainerItemProxy */;
+		};
+		CDF61FFA1FEC09AE00D05AEC /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Masonry iOS";
+			targetProxy = CDF61FF91FEC09AE00D05AEC /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 

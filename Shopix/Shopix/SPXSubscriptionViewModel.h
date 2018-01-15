@@ -5,10 +5,19 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class SPXSubscriptionDescriptor, SPXColorScheme;
+@class LTValueObject, SPXSubscriptionDescriptor, SPXColorScheme;
 
 @protocol SPXAlertViewModel, SPXSubscriptionVideoPageViewModel, SPXSubscriptionTermsViewModel,
     SPXSubscriptionTermsViewModel;
+
+/// Possible values of the products fetching strategy.
+LTEnumDeclare(NSUInteger, SPXFetchProductsStrategy,
+  /// States that the products information will be taken from the cached products information if it
+  /// exists, otherwise it will be fetched.
+  SPXFetchProductsStrategyIfNeeded,
+  /// States that the products information will re-fetched every time the view is loaded.
+  SPXFetchProductsStrategyAlways
+);
 
 #pragma mark -
 #pragma mark SPXSubscriptionViewModel protocol
@@ -23,6 +32,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Invoked when the restore purchases button is pressed.
 - (void)restorePurchasesButtonPressed;
+
+/// Invoked when the active page's video playback has finished.
+- (void)activePageDidFinishVideoPlayback;
+
+/// Invoked when the paging view scrolled to \c position.
+- (void)pagingViewScrolledToPosition:(CGFloat)position;
 
 /// Fetches the products information and updates \c subscriptionDescriptors.
 - (void)fetchProductsInfo;
@@ -44,6 +59,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Color scheme for the subscription view and its subviews.
 @property (readonly, nonatomic) SPXColorScheme *colorScheme;
 
+/// Signal that sends a page index that the view should scroll to.
+@property (readonly, nonatomic) RACSignal<NSNumber *> *pagingViewScrollRequested;
+
 /// Signal that sends an alert view model when requested to show an alert to the user on success or
 /// failure. The receiver should present an alert with the given \c id<SPXAlertViewModel> and invoke
 /// the action block on each button press event.
@@ -55,6 +73,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// \c YES if the activity indicator should be visible, \c NO otherwise. KVO compliant.
 @property (readonly, nonatomic) BOOL shouldShowActivityIndicator;
+
+/// Sends UI interactions events and restore / purchase subscription success or failure events.
+@property (readonly, nonatomic) RACSignal<LTValueObject *> *events;
 
 /// Hot signal that sends a \c RACUnit value when the view should be dismissed. The signal delivers
 /// on the main thread.
@@ -70,6 +91,14 @@ NS_ASSUME_NONNULL_BEGIN
 @interface SPXSubscriptionViewModel : NSObject <SPXSubscriptionViewModel>
 
 - (instancetype)init NS_UNAVAILABLE;
+
+/// Same as the designated initializer. \c colorScheme is pulled from Objection,
+/// \c subscriptionManager is set to the default manager and \c fetchProductsStrategy is set to
+/// \c SPXFetchProductsStrategyAlways.
+- (instancetype)initWithProducts:(NSArray<NSString *> *)productIdentifiers
+           preferredProductIndex:(nullable NSNumber *)preferredProductIndex
+                  pageViewModels:(NSArray<id<SPXSubscriptionVideoPageViewModel>> *)pageViewModels
+                  termsViewModel:(id<SPXSubscriptionTermsViewModel>)termsViewModel;
 
 /// Initializes with:
 ///
@@ -90,20 +119,16 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 /// \c subscriptionManager used to handle products information fetching, subscription purchasing and
 /// restoration.
+///
+/// \c fetchProductsStrategy used to specify the strategy for products information fetching.
 - (instancetype)initWithProducts:(NSArray<NSString *> *)productIdentifiers
            preferredProductIndex:(nullable NSNumber *)preferredProductIndex
                   pageViewModels:(NSArray<id<SPXSubscriptionVideoPageViewModel>> *)pageViewModels
                   termsViewModel:(id<SPXSubscriptionTermsViewModel>)termsViewModel
                      colorScheme:(SPXColorScheme *)colorScheme
              subscriptionManager:(SPXSubscriptionManager *)subscriptionManager
+           fetchProductsStrategy:(SPXFetchProductsStrategy *)fetchProductsStrategy
     NS_DESIGNATED_INITIALIZER;
-
-/// Same as the designated initializer. \c colorScheme is pulled from Objection, and
-/// \c subscriptionManager is set to the default manager.
-- (instancetype)initWithProducts:(NSArray<NSString *> *)productIdentifiers
-           preferredProductIndex:(nullable NSNumber *)preferredProductIndex
-                  pageViewModels:(NSArray<id<SPXSubscriptionVideoPageViewModel>> *)pageViewModels
-                  termsViewModel:(id<SPXSubscriptionTermsViewModel>)termsViewModel;
 
 @end
 
