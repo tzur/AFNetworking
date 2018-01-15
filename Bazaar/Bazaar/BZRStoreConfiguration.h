@@ -3,9 +3,10 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class BZRAcquiredViaSubscriptionProvider, BZRAllowedProductsProvider,
-    BZRCachedReceiptValidationStatusProvider, BZRPeriodicReceiptValidatorActivator,
-    BZRProductContentManager, BZRStoreKitFacade, BZRStoreKitMetadataFetcher, LTPath;
+@class BZRAcquiredViaSubscriptionProvider, BZRAggregatedReceiptValidationStatusProvider,
+    BZRAllowedProductsProvider, BZRKeychainStorage, BZRMultiAppConfiguration,
+    BZRPeriodicReceiptValidatorActivator, BZRProductContentManager, BZRStoreKitFacade,
+    BZRStoreKitMetadataFetcher, LTPath;
 
 @protocol BZRProductsProvider, BZRProductContentFetcher, BZRProductsVariantSelectorFactory,
     BZRReceiptValidationParametersProvider;
@@ -15,17 +16,36 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)init NS_UNAVAILABLE;
 
+/// Initializes the configuration with a single-app mode.
+///
 /// Initializes the in-app store configuration with Lightricks' default shared keychain access group
 /// as provided by \c + [BZRKeychainStorage defaultSharedAccessGroup].
 /// \c expiredSubscriptionGracePeriod is set to \c 7. \c applicationUserID is set to \c nil.
-/// \c notValidatedReceiptGracePeriod is set to \c 5. \c applicationBundleID is set to application's
-/// bundle identifier.
+/// \c applicationBundleID is set to application's bundle identifier. \c multiAppConfiguration is
+/// set to \c nil.
 ///
 /// @note In order to use the default shared keychain access group AppIdentifierPrefix has to be
 /// defined in the application's main bundle plist, if it is not defined an
 /// \c NSInternalInconsistencyException is raised.
 - (instancetype)initWithProductsListJSONFilePath:(LTPath *)productsListJSONFilePath
                         productListDecryptionKey:(nullable NSString *)productListDecryptionKey;
+
+/// Initializes the configuration with a multi-app mode.
+///
+/// Initializes the in-app store configuration with Lightricks' default shared keychain access group
+/// as provided by \c + [BZRKeychainStorage defaultSharedAccessGroup].
+/// \c expiredSubscriptionGracePeriod is set to \c 7. \c applicationUserID is set to \c nil.
+/// \c applicationBundleID is set to application's bundle identifier. \c multiAppConfiguration is
+/// created from a set that contains \c bundledApplicationsIDs plus the current applications'
+/// bundle ID, and from \c multiAppSubscriptionMarker.
+///
+/// @note In order to use the default shared keychain access group AppIdentifierPrefix has to be
+/// defined in the application's main bundle plist, if it is not defined an
+/// \c NSInternalInconsistencyException is raised.
+- (instancetype)initWithProductsListJSONFilePath:(LTPath *)productsListJSONFilePath
+                        productListDecryptionKey:(nullable NSString *)productListDecryptionKey
+                          bundledApplicationsIDs:(NSSet<NSString *> *)bundledApplicationsIDs
+                      multiAppSubscriptionMarker:(NSString *)multiAppSubscriptionMarker;
 
 /// Initializes the in-app store configuration with default parameters.
 ///
@@ -43,9 +63,6 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 /// \c applicationUserID is an optional unique identifier for the user's account, used for making
 /// purchases and restoring transactions.
-///
-/// \c notValidatedReceiptGracePeriod determines the number of days the receipt can remain not
-/// validated until subscription marked as expired.
 ///
 /// \c productsProvider will be initialized with \c BZRCachedProductsProvider with the
 /// given \c productsListJSONFilePath and \c fileManager.
@@ -72,12 +89,12 @@ NS_ASSUME_NONNULL_BEGIN
 /// \c periodicValidatorActivator will be initialized with the default initializer of
 /// \c BZRPeriodicReceiptValidatorActivator.
 - (instancetype)initWithProductsListJSONFilePath:(LTPath *)productsListJSONFilePath
-                        productListDecryptionKey:(nullable NSString *)productListDecryptionKey
-                             keychainAccessGroup:(nullable NSString *)keychainAccessGroup
-                  expiredSubscriptionGracePeriod:(NSUInteger)expiredSubscriptionGracePeriod
-                               applicationUserID:(nullable NSString *)applicationUserID
-                  notValidatedReceiptGracePeriod:(NSUInteger)notValidatedReceiptGracePeriod
-                             applicationBundleID:(NSString *)applicationBundleID
+    productListDecryptionKey:(nullable NSString *)productListDecryptionKey
+    keychainAccessGroup:(nullable NSString *)keychainAccessGroup
+    expiredSubscriptionGracePeriod:(NSUInteger)expiredSubscriptionGracePeriod
+    applicationUserID:(nullable NSString *)applicationUserID
+    applicationBundleID:(NSString *)applicationBundleID
+    multiAppConfiguration:(nullable BZRMultiAppConfiguration *)multiAppConfiguration
     NS_DESIGNATED_INITIALIZER;
 
 /// Provider used to provide the list of products.
@@ -89,8 +106,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Fetcher used to provide a product's content.
 @property (strong, nonatomic) id<BZRProductContentFetcher> contentFetcher;
 
-/// Provider used to provide \c BZRReceiptValidationStatus.
-@property (strong, nonatomic) BZRCachedReceiptValidationStatusProvider *validationStatusProvider;
+/// Provider used to provide the aggregated \c BZRReceiptValidationStatus.
+@property (strong, nonatomic) BZRAggregatedReceiptValidationStatusProvider *
+    validationStatusProvider;
 
 /// Provider used to provide list of acquired via subsription products.
 @property (strong, nonatomic) BZRAcquiredViaSubscriptionProvider *acquiredViaSubscriptionProvider;
@@ -118,6 +136,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Provider used to provide product list before getting their metadata from StoreKit.
 @property (strong, nonatomic) id<BZRProductsProvider> netherProductsProvider;
+
+/// Storage used to store and retrieve values from keychain storage.
+@property (readonly, nonatomic) BZRKeychainStorage *keychainStorage;
+
+/// Substring of subscription identifier, by which Bazaar determines whether a subscription should
+/// be considered a multi-app subscription.
+@property (readonly, nonatomic, nullable) NSString *multiAppSubscriptionIdentifierMarker;
 
 @end
 

@@ -6,7 +6,7 @@
 #import <LTKit/NSArray+Functional.h>
 
 #import "BZRAcquiredViaSubscriptionProvider.h"
-#import "BZRCachedReceiptValidationStatusProvider.h"
+#import "BZRAggregatedReceiptValidationStatusProvider.h"
 #import "BZREvent.h"
 #import "BZRProduct+EnablesProduct.h"
 #import "BZRProductTypedefs.h"
@@ -22,8 +22,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Provider used to provide the product list.
 @property (readonly, nonatomic) id<BZRProductsProvider> productsProvider;
 
-/// Provider used to provide the latest \c BZRReceiptValidationStatus.
-@property (readonly, nonatomic) BZRCachedReceiptValidationStatusProvider *validationStatusProvider;
+/// Provider used to provide the latest aggregated \c BZRReceiptValidationStatus.
+@property (readonly, nonatomic) BZRAggregatedReceiptValidationStatusProvider *
+    validationStatusProvider;
 
 /// Provider used to provide list of products that were acquired via subscription.
 @property (readonly, nonatomic) BZRAcquiredViaSubscriptionProvider *acquiredViaSubscriptionProvider;
@@ -47,8 +48,8 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 - (instancetype)initWithProductsProvider:(id<BZRProductsProvider>)productsProvider
-    validationStatusProvider:(BZRCachedReceiptValidationStatusProvider *)validationStatusProvider
-    acquiredViaSubscriptionProvider:(BZRAcquiredViaSubscriptionProvider *)
+    validationStatusProvider:(BZRAggregatedReceiptValidationStatusProvider *)
+    validationStatusProvider acquiredViaSubscriptionProvider:(BZRAcquiredViaSubscriptionProvider *)
     acquiredViaSubscriptionProvider {
   if (self = [super init]) {
     _productsProvider = productsProvider;
@@ -147,7 +148,7 @@ NS_ASSUME_NONNULL_BEGIN
   return [[productList
       lt_filter:^BOOL(BZRProduct *product) {
         return ![self isSubscriptionProduct:product] &&
-            [subscriptionProduct doesProductEnablesProductWithIdentifier:product.identifier];
+            [subscriptionProduct enablesProductWithIdentifier:product.identifier];
       }]
       valueForKey:@instanceKeypath(BZRProduct, identifier)];
 }

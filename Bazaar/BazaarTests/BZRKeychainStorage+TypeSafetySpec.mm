@@ -2,33 +2,34 @@
 // Created by Ben Yohay.
 
 #import "BZRKeychainStorage+TypeSafety.h"
+
+#import <UICKeyChainStore/UICKeyChainStore.h>
+
 #import "NSErrorCodes+Bazaar.h"
 
 SpecBegin(BZRKeychainStorage_TypeSafety)
 
 __block NSString *key;
-__block id<BZRKeychainHandler> keychainHandler;
+__block UICKeyChainStore *keychainStore;
 __block BZRKeychainStorage *keychainStorage;
 
 beforeEach(^{
   key = @"foo";
-  keychainHandler = OCMProtocolMock(@protocol(BZRKeychainHandler));
+  keychainStore = OCMClassMock([UICKeyChainStore class]);;
   keychainStorage =
-      OCMPartialMock([[BZRKeychainStorage alloc] initWithKeychainHandler:keychainHandler]);
+      OCMPartialMock([[BZRKeychainStorage alloc] initWithKeychainStore:keychainStore]);
 });
 
 context(@"loading values from storage", ^{
   it(@"should return nil and set error when value for key fails", ^{
-    NSError *underlyingError = OCMClassMock([NSError class]);
-    OCMStub([keychainStorage valueForKey:OCMOCK_ANY error:[OCMArg setTo:underlyingError]]);
+    NSError *storageError = [NSError lt_errorWithCode:1337];
+    OCMStub([keychainStorage valueForKey:OCMOCK_ANY error:[OCMArg setTo:storageError]]);
 
     NSError *error;
     NSArray *array = [keychainStorage valueOfClass:[NSArray class] forKey:key error:&error];
 
     expect(array).to.beNil();
-    expect(error.lt_isLTDomain).to.beTruthy();
-    expect(error.code).to.equal(BZRErrorCodeLoadingDataFromStorageFailed);
-    expect(error.lt_underlyingError).to.equal(underlyingError);
+    expect(error).to.equal(storageError);
   });
 
   it(@"should return nil and set error when class loaded from storage is not of the right type", ^{
@@ -40,7 +41,7 @@ context(@"loading values from storage", ^{
 
     expect(array).to.beNil();
     expect(error.lt_isLTDomain).to.beTruthy();
-    expect(error.code).to.equal(BZRErrorCodeLoadingDataFromStorageFailed);
+    expect(error.code).to.equal(BZRErrorCodeLoadingFromKeychainStorageFailed);
   });
 
   it(@"should return nil without setting error if no value is stored for the specified key", ^{

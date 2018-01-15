@@ -7,7 +7,7 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol BZRTimeProvider <NSObject>
 
 /// Returns a signal that sends the current time as \c NSDate and completes. The time can be the
-/// time on another computer/device. The signal cannot errs.
+/// time on another computer/device. The signal cannot err.
 - (RACSignal<NSDate *> *)currentTime;
 
 @end

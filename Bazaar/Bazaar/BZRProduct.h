@@ -39,6 +39,12 @@ LTEnumDeclare(NSUInteger, BZRProductType,
 /// Product type.
 @property (readonly, nonatomic) BZRProductType *productType;
 
+/// \c YES if the receiver is a subscription product, i.e. if the \c productType is either
+/// \c BZRProductTypeRenewableSubscription or \c BZRProductTypeNonRenewingSubscription.
+///
+/// @note This property is ignored in serialization / deserialization to / from JSON.
+@property (readonly, nonatomic) BOOL isSubscriptionProduct;
+
 /// Price information for the product. \c nil if price information is not available.
 @property (readonly, nonatomic, nullable) BZRProductPriceInfo *priceInfo;
 

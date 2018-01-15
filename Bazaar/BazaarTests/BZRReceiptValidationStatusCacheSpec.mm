@@ -6,6 +6,7 @@
 #import "BZRKeychainStorageRoute.h"
 #import "BZRReceiptModel.h"
 #import "BZRReceiptValidationStatus.h"
+#import "BZRTestUtils.h"
 #import "BZRTimeProvider.h"
 #import "NSErrorCodes+Bazaar.h"
 
@@ -109,24 +110,70 @@ context(@"cache access", ^{
     BOOL success = [validationStatusCache storeCacheEntry:cacheEntry
                                       applicationBundleID:applicationBundleID error:&returnedError];
 
-    expect(returnedError.code).to.equal(BZRErrorCodeStoringDataToStorageFailed);
+    expect(returnedError.code).to.equal(BZRErrorCodeStoringToKeychainStorageFailed);
     expect(returnedError.lt_underlyingError.code).to.equal(1337);
     expect(success).to.beFalsy();
   });
 
   it(@"should return error if failed to read from storage", ^{
-    NSError *error = [NSError lt_errorWithCode:1337];
+    NSError *storageError = [NSError lt_errorWithCode:1337];
     OCMStub([keychainStorageRoute valueForKey:OCMOCK_ANY serviceName:applicationBundleID
-                                        error:[OCMArg setTo:error]]);
+                                        error:[OCMArg setTo:storageError]]);
     validationStatusCache = [[BZRReceiptValidationStatusCache alloc]
                              initWithKeychainStorage:keychainStorageRoute];
-    NSError *returnedError;
+    NSError *error;
     auto value = [validationStatusCache loadCacheEntryOfApplicationWithBundleID:applicationBundleID
-                                                                          error:&returnedError];
+                                                                          error:&error];
 
-    expect(returnedError.code).to.equal(BZRErrorCodeLoadingDataFromStorageFailed);
-    expect(returnedError.lt_underlyingError.code).to.equal(1337);
+    expect(error).to.equal(storageError);
     expect(value).to.beNil();
+  });
+});
+
+context(@"loading multiple cache entries from cache", ^{
+  __block BZRReceiptValidationStatusCacheEntry *cacheEntry;
+
+  beforeEach(^{
+    validationStatusCache = OCMPartialMock(validationStatusCache);
+    receiptValidationStatus = BZRReceiptValidationStatusWithExpiry(YES);
+    cacheEntry = [[BZRReceiptValidationStatusCacheEntry alloc]
+                  initWithReceiptValidationStatus:receiptValidationStatus
+                  cachingDateTime:[NSDate date]];
+  });
+
+  afterEach(^{
+    validationStatusCache = nil;
+  });
+
+  it(@"should return dictionary with the receipt validation status of the requested bundle IDs", ^{
+    auto secondReceiptValidationStatus = BZRReceiptValidationStatusWithExpiry(NO);
+    auto secondReceiptValidationStatusCacheEntry =
+        [[BZRReceiptValidationStatusCacheEntry alloc]
+         initWithReceiptValidationStatus:secondReceiptValidationStatus
+         cachingDateTime:[NSDate dateWithTimeIntervalSince1970:1337]];
+
+    OCMStub([validationStatusCache loadCacheEntryOfApplicationWithBundleID:@"foo"
+        error:[OCMArg anyObjectRef]]).andReturn(cacheEntry);
+    OCMStub([validationStatusCache loadCacheEntryOfApplicationWithBundleID:@"bar"
+        error:[OCMArg anyObjectRef]]).andReturn(secondReceiptValidationStatusCacheEntry);
+
+    auto cacheEntries =
+        [validationStatusCache loadReceiptValidationStatusCacheEntries:@[@"foo", @"bar"].lt_set];
+
+    expect(cacheEntries).to.equal(@{
+      @"foo": cacheEntry,
+      @"bar": secondReceiptValidationStatusCacheEntry
+    });
+  });
+
+  it(@"should return dictionary without bundleIDs whose cache entry wasn't found", ^{
+    OCMStub([validationStatusCache loadCacheEntryOfApplicationWithBundleID:@"foo"
+        error:[OCMArg anyObjectRef]]).andReturn(cacheEntry);
+
+    auto cacheEntries =
+        [validationStatusCache loadReceiptValidationStatusCacheEntries:@[@"foo", @"bar"].lt_set];
+
+    expect(cacheEntries).to.equal(@{@"foo": cacheEntry});
   });
 });
 

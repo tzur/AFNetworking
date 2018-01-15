@@ -9,14 +9,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @synthesize appStoreLocale = _appStoreLocale;
 
-- (instancetype)init {
-  if (self = [super init]) {
-    _eventsSubject = [RACSubject subject];
-  }
-  return self;
-}
-
-- (nullable BZRReceiptValidationParameters *)receiptValidationParameters {
+- (nullable BZRReceiptValidationParameters *)receiptValidationParametersForApplication:
+    (NSString __unused *)applicationBundleID userID:(nullable NSString __unused *)userID {
   return nil;
 }
 

@@ -3,6 +3,8 @@
 
 #import "BZRReceiptValidationStatusCache.h"
 
+#import <LTKit/NSArray+Functional.h>
+
 #import "BZREvent.h"
 #import "BZRKeychainStorageMigrator.h"
 #import "BZRKeychainStorageRoute.h"
@@ -104,7 +106,7 @@ NSString * const kValidationDateKey = @"validationDate";
   if (!success && error) {
     auto description =
         [NSString stringWithFormat:@"Failed to store the value: %@ for key: %@", value, key];
-    *error = [NSError lt_errorWithCode:BZRErrorCodeStoringDataToStorageFailed
+    *error = [NSError lt_errorWithCode:BZRErrorCodeStoringToKeychainStorageFailed
                        underlyingError:storageError description:@"%@", description];
   }
 
@@ -117,19 +119,12 @@ NSString * const kValidationDateKey = @"validationDate";
 
 - (nullable BZRReceiptValidationStatusCacheEntry *)loadCacheEntryOfApplicationWithBundleID:
     (NSString *)applicationBundleID error:(NSError * __autoreleasing *)error {
-  NSError *underlyingError;
   NSDictionary<NSString *, id> * _Nullable cachedReceiptValidationStatus =
       (NSDictionary *)[self.keychainStorageRoute
                        valueForKey:kCachedReceiptValidationStatusStorageKey
-                       serviceName:applicationBundleID error:&underlyingError];
+                       serviceName:applicationBundleID error:error];
 
   if (!cachedReceiptValidationStatus) {
-    if (error && underlyingError) {
-      auto description = [NSString stringWithFormat:@"Failed to load value for key: %@",
-                          kCachedReceiptValidationStatusStorageKey];
-      *error = [NSError lt_errorWithCode:BZRErrorCodeLoadingDataFromStorageFailed
-                         underlyingError:underlyingError description:@"%@", description];
-    }
     return nil;
   }
   return [[BZRReceiptValidationStatusCacheEntry alloc]
@@ -139,4 +134,31 @@ NSString * const kValidationDateKey = @"validationDate";
 
 @end
 
+#pragma mark -
+#pragma mark BZRCachedReceiptValidationStatusCache+MultiApp
+#pragma mark -
+
+@implementation BZRReceiptValidationStatusCache (MultiApp)
+
+- (NSDictionary<NSString *, BZRReceiptValidationStatusCacheEntry *> *)
+    loadReceiptValidationStatusCacheEntries:(NSSet<NSString *> *)bundledApplicationsIDs {
+  return [bundledApplicationsIDs.allObjects lt_reduce:
+       ^NSDictionary<NSString *, BZRReceiptValidationStatusCacheEntry *> *
+       (NSDictionary<NSString *, BZRReceiptValidationStatusCacheEntry *> *dictionarySoFar,
+        NSString *bundleID) {
+         auto _Nullable cacheEntry =
+             [self loadCacheEntryOfApplicationWithBundleID:bundleID error:nil];
+         if (!cacheEntry) {
+           return dictionarySoFar;
+         }
+
+         return [dictionarySoFar mtl_dictionaryByAddingEntriesFromDictionary:@{
+           bundleID: cacheEntry
+         }];
+       } initial:@{}];
+}
+
+@end
+
 NS_ASSUME_NONNULL_END
+

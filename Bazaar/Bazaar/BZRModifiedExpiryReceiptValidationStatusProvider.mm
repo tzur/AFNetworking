@@ -65,9 +65,10 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark Fetching receipt validation status
 #pragma mark -
 
-- (RACSignal<BZRReceiptValidationStatus *> *)fetchReceiptValidationStatus {
+- (RACSignal<BZRReceiptValidationStatus *> *)fetchReceiptValidationStatus:
+    (NSString *)applicationBundleID {
   @weakify(self);
-  return [[[self.underlyingProvider fetchReceiptValidationStatus]
+  return [[[self.underlyingProvider fetchReceiptValidationStatus:applicationBundleID]
       flattenMap:^RACSignal<BZRReceiptValidationStatus *> *
           (BZRReceiptValidationStatus *receiptValidationStatus) {
         @strongify(self);

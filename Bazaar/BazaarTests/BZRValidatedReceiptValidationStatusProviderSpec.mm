@@ -4,19 +4,33 @@
 #import "BZRValidatedReceiptValidationStatusProvider.h"
 
 #import "BZREvent.h"
+#import "BZRReceiptDataCache.h"
 #import "BZRReceiptModel.h"
 #import "BZRReceiptValidationError.h"
 #import "BZRReceiptValidationParameters.h"
 #import "BZRReceiptValidationParametersProvider.h"
 #import "BZRReceiptValidationStatus.h"
 #import "BZRReceiptValidator.h"
+#import "BZRUserIDProvider.h"
 #import "NSErrorCodes+Bazaar.h"
 
-BZRReceiptValidationStatus *BZRReceiptValidationStatusWithValidity(BOOL isValid) {
+BZRReceiptValidationStatus *BZRInvalidReceiptValidationStatusWithError(
+    BZRReceiptValidationError *error) {
   NSDictionary *dictionaryValue = @{
-    @instanceKeypath(BZRReceiptValidationStatus, isValid): @(isValid),
+    @instanceKeypath(BZRReceiptValidationStatus, isValid): @NO,
     @instanceKeypath(BZRReceiptValidationStatus, validationDateTime): [NSDate date],
-    @instanceKeypath(BZRReceiptValidationStatus, receipt): OCMClassMock([BZRReceiptInfo class])
+    @instanceKeypath(BZRReceiptValidationStatus, error): error
+  };
+  BZRReceiptValidationStatus *receiptValidationStatus =
+      [BZRReceiptValidationStatus modelWithDictionary:dictionaryValue error:nil];
+  return receiptValidationStatus;
+}
+
+BZRReceiptValidationStatus *BZRValidReceiptValidationStatus() {
+  NSDictionary *dictionaryValue = @{
+    @instanceKeypath(BZRReceiptValidationStatus, isValid): @YES,
+    @instanceKeypath(BZRReceiptValidationStatus, validationDateTime): [NSDate date],
+    @instanceKeypath(BZRReceiptValidationStatus, receipt): OCMClassMock([BZRReceiptInfo class]),
   };
   BZRReceiptValidationStatus *receiptValidationStatus =
       [BZRReceiptValidationStatus modelWithDictionary:dictionaryValue error:nil];
@@ -28,6 +42,9 @@ SpecBegin(BZRValidatedReceiptValidationStatusProvider)
 __block id<BZRReceiptValidator> receiptValidator;
 __block BZRReceiptValidationParameters *receiptValidationParameters;
 __block id<BZRReceiptValidationParametersProvider> receiptValidationParametersProvider;
+__block BZRReceiptDataCache *receiptDataCache;
+__block NSString *currentApplicationBundleID;
+__block id<BZRUserIDProvider> userIDProvider;
 __block BZRValidatedReceiptValidationStatusProvider *validationStatusProvider;
 
 beforeEach(^{
@@ -35,10 +52,14 @@ beforeEach(^{
   receiptValidationParameters = OCMClassMock([BZRReceiptValidationParameters class]);
   receiptValidationParametersProvider =
       OCMProtocolMock(@protocol(BZRReceiptValidationParametersProvider));
+  receiptDataCache = OCMClassMock([BZRReceiptDataCache class]);
+  currentApplicationBundleID = @"foo";
+  userIDProvider = OCMProtocolMock(@protocol(BZRUserIDProvider));
   validationStatusProvider =
       [[BZRValidatedReceiptValidationStatusProvider alloc]
        initWithReceiptValidator:receiptValidator
-       validationParametersProvider:receiptValidationParametersProvider];
+       validationParametersProvider:receiptValidationParametersProvider
+       receiptDataCache:receiptDataCache userIDProvider:userIDProvider];
 });
 
 context(@"deallocating object", ^{
@@ -48,18 +69,20 @@ context(@"deallocating object", ^{
     RACSignal *fetchSignal;
 
     OCMStub([receiptValidator validateReceiptWithParameters:OCMOCK_ANY])
-        .andReturn([RACSignal return:BZRReceiptValidationStatusWithValidity(YES)]);
-    OCMStub([receiptValidationParametersProvider receiptValidationParameters])
+        .andReturn([RACSignal return:BZRValidReceiptValidationStatus()]);
+    OCMStub([receiptValidationParametersProvider
+        receiptValidationParametersForApplication:OCMOCK_ANY userID:OCMOCK_ANY])
         .andReturn(receiptValidationParameters);
 
     @autoreleasepool {
       BZRValidatedReceiptValidationStatusProvider *validationStatusProvider =
           [[BZRValidatedReceiptValidationStatusProvider alloc]
            initWithReceiptValidator:receiptValidator
-           validationParametersProvider:receiptValidationParametersProvider];
+           validationParametersProvider:receiptValidationParametersProvider
+           receiptDataCache:receiptDataCache userIDProvider:userIDProvider];
       weakValidationStatusProvider = validationStatusProvider;
       eventsSignal = validationStatusProvider.eventsSignal;
-      fetchSignal = [validationStatusProvider fetchReceiptValidationStatus];
+      fetchSignal = [validationStatusProvider fetchReceiptValidationStatus:@"foo"];
     }
 
     expect(fetchSignal).will.finish();
@@ -69,16 +92,26 @@ context(@"deallocating object", ^{
 
 context(@"fetching receipt validation status", ^{
   it(@"should send error when receipt validation parameters are nil", ^{
-    RACSignal *validateSignal = [validationStatusProvider fetchReceiptValidationStatus];
+    RACSignal *validateSignal = [validationStatusProvider fetchReceiptValidationStatus:@"foo"];
 
     expect(validateSignal).will.matchError(^BOOL(NSError *error) {
       return error.lt_isLTDomain && error.code == BZRErrorCodeReceiptValidationFailed;
     });
   });
 
+  it(@"should pass application bundle ID and user ID to parameters provider", ^{
+    OCMStub([userIDProvider userID]).andReturn(@"bar");
+
+    expect([validationStatusProvider fetchReceiptValidationStatus:@"foo"]).will.finish();
+
+    OCMVerify([receiptValidationParametersProvider
+               receiptValidationParametersForApplication:@"foo" userID:@"bar"]);
+  });
+
   context(@"receipt validation parameters are valid", ^{
     beforeEach(^{
-      OCMStub([receiptValidationParametersProvider receiptValidationParameters])
+      OCMStub([receiptValidationParametersProvider
+          receiptValidationParametersForApplication:OCMOCK_ANY userID:OCMOCK_ANY])
           .andReturn(receiptValidationParameters);
     });
 
@@ -90,29 +123,87 @@ context(@"fetching receipt validation status", ^{
       NSError *receiptValidationError =
           [NSError lt_errorWithCode:BZRErrorCodeReceiptValidationFailed underlyingError:error];
 
-      expect([validationStatusProvider fetchReceiptValidationStatus]).will
+      expect([validationStatusProvider fetchReceiptValidationStatus:@"foo"]).will
           .sendError(receiptValidationError);
     });
 
     it(@"should send error when validation has failed", ^{
+      auto receiptValidationStatus = BZRInvalidReceiptValidationStatusWithError(
+          $(BZRReceiptValidationErrorMalformedReceiptData));
       OCMStub([receiptValidator validateReceiptWithParameters:OCMOCK_ANY])
-          .andReturn([RACSignal return:BZRReceiptValidationStatusWithValidity(NO)]);
+          .andReturn([RACSignal return:receiptValidationStatus]);
 
-      RACSignal *validateSignal = [validationStatusProvider fetchReceiptValidationStatus];
+      RACSignal *validateSignal = [validationStatusProvider fetchReceiptValidationStatus:@"foo"];
 
       expect(validateSignal).will.matchError(^BOOL(NSError *error) {
         return error.lt_isLTDomain && error.code == BZRErrorCodeReceiptValidationFailed;
       });
     });
 
+    it(@"should store receipt data when validation was successful", ^{
+      auto receiptData = [@"Receipt Data" dataUsingEncoding:NSUTF8StringEncoding];
+      OCMStub([receiptValidationParameters receiptData]).andReturn(receiptData);
+      auto receiptValidationStatus = BZRValidReceiptValidationStatus();
+      OCMStub([receiptValidator validateReceiptWithParameters:OCMOCK_ANY])
+          .andReturn([RACSignal return:receiptValidationStatus]);
+
+      expect([validationStatusProvider fetchReceiptValidationStatus:@"foo"]).will.finish();
+
+      OCMVerify([receiptDataCache storeReceiptData:receiptData
+                               applicationBundleID:currentApplicationBundleID
+                                             error:[OCMArg anyObjectRef]]);
+    });
+
+    it(@"should store receipt data when validation failed and the error is unrelated to the "
+       "receipt", ^{
+      auto receiptData = [@"Receipt Data" dataUsingEncoding:NSUTF8StringEncoding];
+      OCMStub([receiptValidationParameters receiptData]).andReturn(receiptData);
+      auto receiptValidationStatus = BZRInvalidReceiptValidationStatusWithError(
+          $(BZRReceiptValidationErrorUnknown));
+      OCMStub([receiptValidator validateReceiptWithParameters:OCMOCK_ANY])
+          .andReturn([RACSignal return:receiptValidationStatus]);
+
+      expect([validationStatusProvider fetchReceiptValidationStatus:@"foo"]).will.finish();
+
+      OCMVerify([receiptDataCache storeReceiptData:receiptData
+                               applicationBundleID:currentApplicationBundleID
+                                             error:[OCMArg anyObjectRef]]);
+    });
+
+    it(@"should not store receipt data when validation failed and the error is related to the "
+       "receipt", ^{
+      auto receiptData = [@"Receipt Data" dataUsingEncoding:NSUTF8StringEncoding];
+      OCMStub([receiptValidationParameters receiptData]).andReturn(receiptData);
+      auto receiptValidationStatus = BZRInvalidReceiptValidationStatusWithError(
+          $(BZRReceiptValidationErrorMalformedReceiptData));
+      OCMStub([receiptValidator validateReceiptWithParameters:OCMOCK_ANY])
+          .andReturn([RACSignal return:receiptValidationStatus]);
+
+      OCMReject([receiptDataCache storeReceiptData:OCMOCK_ANY applicationBundleID:OCMOCK_ANY
+                                             error:[OCMArg anyObjectRef]]);
+
+      expect([validationStatusProvider fetchReceiptValidationStatus:@"foo"]).will.finish();
+    });
+
+    it(@"should not store receipt data when receipt data is nil", ^{
+      auto receiptValidationStatus = BZRValidReceiptValidationStatus();
+      OCMStub([receiptValidator validateReceiptWithParameters:OCMOCK_ANY])
+          .andReturn([RACSignal return:receiptValidationStatus]);
+
+      OCMReject([receiptDataCache storeReceiptData:OCMOCK_ANY applicationBundleID:OCMOCK_ANY
+                                             error:[OCMArg anyObjectRef]]);
+
+      expect([validationStatusProvider fetchReceiptValidationStatus:@"foo"]).will.finish();
+    });
+
     it(@"should return receipt validation status upon successful validation", ^{
       BZRReceiptValidationStatus *receiptValidationStatus =
-          BZRReceiptValidationStatusWithValidity(YES);
+          BZRValidReceiptValidationStatus();
       OCMStub([receiptValidator validateReceiptWithParameters:OCMOCK_ANY])
           .andReturn([RACSignal return:receiptValidationStatus]);
 
       LLSignalTestRecorder *recorder =
-          [[validationStatusProvider fetchReceiptValidationStatus] testRecorder];
+          [[validationStatusProvider fetchReceiptValidationStatus:@"foo"] testRecorder];
 
       expect(recorder).will.complete();
       expect(recorder).will.sendValues(@[receiptValidationStatus]);

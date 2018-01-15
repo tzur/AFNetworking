@@ -9,11 +9,12 @@
 #import <LTKit/NSSet+Functional.h>
 
 #import "BZRAcquiredViaSubscriptionProvider.h"
+#import "BZRAggregatedReceiptValidationStatusProvider.h"
 #import "BZRAllowedProductsProvider.h"
 #import "BZRCachedContentFetcher.h"
-#import "BZRCachedReceiptValidationStatusProvider.h"
 #import "BZREvent.h"
 #import "BZRExternalTriggerReceiptValidator.h"
+#import "BZRKeychainStorage.h"
 #import "BZRPeriodicReceiptValidatorActivator.h"
 #import "BZRProduct+EnablesProduct.h"
 #import "BZRProduct+StoreKit.h"
@@ -46,10 +47,12 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly, nonatomic) id<BZRProductContentFetcher> contentFetcher;
 
 /// Provider used to provide the latest \c BZRReceiptValidationStatus.
-@property (readonly, nonatomic) BZRCachedReceiptValidationStatusProvider *validationStatusProvider;
+@property (readonly, nonatomic) BZRAggregatedReceiptValidationStatusProvider *
+    validationStatusProvider;
 
 /// Provider used to provide list of products that were acquired via subsription.
-@property (readonly, nonatomic) BZRAcquiredViaSubscriptionProvider *acquiredViaSubscriptionProvider;
+@property (readonly, nonatomic) BZRAcquiredViaSubscriptionProvider
+    *acquiredViaSubscriptionProvider;
 
 /// Activator used to control the periodic validation.
 @property (readonly, nonatomic) BZRPeriodicReceiptValidatorActivator *periodicValidatorActivator;
@@ -79,6 +82,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Fetcher used to fetch products metadata.
 @property (readonly, nonatomic) BZRStoreKitMetadataFetcher *storeKitMetadataFetcher;
 
+/// Storage used to store and retrieve values from keychain storage.
+@property (readonly, nonatomic) BZRKeychainStorage *keychainStorage;
+
 /// Validator used to validate receipt on initialization if required.
 @property (readonly, nonatomic) BZRExternalTriggerReceiptValidator *backgroundReceiptValidator;
 
@@ -99,6 +105,10 @@ NS_ASSUME_NONNULL_BEGIN
 /// \c YES if the product list was fetched successfully using \c self.productsProvider. \c NO
 /// otherwise.
 @property (nonatomic) BOOL productListWasFetched;
+
+/// Substring of subscription identifier, by which Bazaar determines whether a subscription should
+/// be considered a multi-app subscription.
+@property (readonly, nonatomic, nullable) NSString *multiAppSubscriptionIdentifierMarker;
 
 @end
 
@@ -130,6 +140,8 @@ NS_ASSUME_NONNULL_BEGIN
     _allowedProductsProvider = configuration.allowedProductsProvider;
     _netherProductsProvider = configuration.netherProductsProvider;
     _storeKitMetadataFetcher = configuration.storeKitMetadataFetcher;
+    _keychainStorage = configuration.keychainStorage;
+    _multiAppSubscriptionIdentifierMarker = configuration.multiAppSubscriptionIdentifierMarker;
     _backgroundReceiptValidator = [[BZRExternalTriggerReceiptValidator alloc]
                                    initWithValidationStatusProvider:self.validationStatusProvider];
     _downloadedContentProducts = [NSSet set];
@@ -152,15 +164,13 @@ NS_ASSUME_NONNULL_BEGIN
   _eventsSignal = [[[RACSignal merge:@[
     [self.eventsSubject replay],
     self.validationStatusProvider.eventsSignal,
-    self.acquiredViaSubscriptionProvider.storageErrorEventsSignal,
-    self.periodicValidatorActivator.errorEventsSignal,
     self.storeKitFacade.transactionsErrorEventsSignal,
     self.productsProvider.eventsSignal,
     self.contentFetcher.eventsSignal,
     self.allowedProductsProvider.eventsSignal,
     self.storeKitMetadataFetcher.eventsSignal,
     [self.backgroundReceiptValidator.eventsSignal replay],
-    self.validationParametersProvider.eventsSignal
+    self.keychainStorage.eventsSignal
   ]]
   takeUntil:[self rac_willDeallocSignal]]
   setNameWithFormat:@"%@ -eventsSignal", self];
@@ -370,6 +380,11 @@ NS_ASSUME_NONNULL_BEGIN
           self.productsJSONDictionary[productIdentifier]];
 }
 
+- (BOOL)isMultiAppSubscription:(NSString *)productIdentifier {
+  return self.multiAppSubscriptionIdentifierMarker &&
+      [productIdentifier containsString:self.multiAppSubscriptionIdentifierMarker];
+}
+
 - (NSSet<NSString *> *)purchasedProducts {
   NSArray<BZRReceiptInAppPurchaseInfo *> *inAppPurchases =
       self.validationStatusProvider.receiptValidationStatus.receipt.inAppPurchases;
@@ -476,14 +491,21 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (BOOL)isSubscriptionProduct:(NSString *)productIdentifier {
-  BZRProductType *productType = self.productsJSONDictionary[productIdentifier].productType;
-  return [productType isEqual:$(BZRProductTypeRenewableSubscription)] ||
-      [productType isEqual:$(BZRProductTypeNonRenewingSubscription)];
+  return self.productsJSONDictionary[productIdentifier].isSubscriptionProduct;
 }
 
 - (BOOL)doesSubscriptionEnablesProductWithIdentifier:(NSString *)productIdentifier {
-  BZRProduct *subscriptionProduct = self.productsJSONDictionary[self.subscriptionInfo.productId];
-  return [subscriptionProduct doesProductEnablesProductWithIdentifier:productIdentifier];
+  BZRProduct * _Nullable subscriptionProduct =
+      self.productsJSONDictionary[self.subscriptionInfo.productId];
+  if (!subscriptionProduct) {
+    auto description = [NSString stringWithFormat:@"User has an active subscription (%@) which "
+                        "is not listed in the product list", self.subscriptionInfo.productId];
+    [self.eventsSubject sendNext:[[BZREvent alloc] initWithType:$(BZREventTypeInformational)
+                                                      eventInfo:@{@"description": description}]];
+    return YES;
+  }
+
+  return [subscriptionProduct enablesProductWithIdentifier:productIdentifier];
 }
 
 - (RACSignal *)purchaseProductWithStoreKit:(NSString *)productIdentifier {

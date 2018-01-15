@@ -113,6 +113,11 @@ LTEnumImplement(NSUInteger, BZRProductType,
   return [mutableDictionaryValue copy];
 }
 
+- (BOOL)isSubscriptionProduct {
+  return self.productType.value == BZRProductTypeRenewableSubscription ||
+      self.productType.value == BZRProductTypeNonRenewingSubscription;
+}
+
 @end
 
 NS_ASSUME_NONNULL_END

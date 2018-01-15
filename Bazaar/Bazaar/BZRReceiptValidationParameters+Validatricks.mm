@@ -8,23 +8,31 @@ NS_ASSUME_NONNULL_BEGIN
 @implementation BZRReceiptValidationParameters (Validatricks)
 
 - (NSDictionary<NSString *, NSString *> *)validatricksRequestParameters {
-  static NSString * const kApplicationBundleIDKey = @"bundle";
+  static NSString * const kRequestingApplicationIDKey = @"originBundle";
   static NSString * const kDeviceIDKey = @"idForVendor";
+  static NSString * const kBundleIDKey = @"bundle";
   static NSString * const kReceiptKey = @"receipt";
   static NSString * const kAppStoreCountryCodeKey = @"appStoreCountryCode";
+  static NSString * const kUserIDKey = @"userId";
 
   NSMutableDictionary *requestParameters = [NSMutableDictionary dictionary];
 
-  requestParameters[kApplicationBundleIDKey] = self.applicationBundleId;
+  requestParameters[kRequestingApplicationIDKey] = self.currentApplicationBundleID;
   requestParameters[kReceiptKey] =
       [self.receiptData base64EncodedStringWithOptions:(NSDataBase64EncodingOptions)0];
-  if (self.deviceId) {
-    requestParameters[kDeviceIDKey] = self.deviceId.UUIDString;
+  requestParameters[kBundleIDKey] = self.applicationBundleID;
+
+  if (self.deviceID) {
+    requestParameters[kDeviceIDKey] = self.deviceID.UUIDString;
   }
 
   if (self.appStoreLocale) {
     requestParameters[kAppStoreCountryCodeKey] =
         [self.appStoreLocale objectForKey:NSLocaleCountryCode];
+  }
+
+  if (self.userID) {
+    requestParameters[kUserIDKey] = self.userID;
   }
 
   return requestParameters;

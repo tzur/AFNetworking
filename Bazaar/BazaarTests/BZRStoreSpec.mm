@@ -5,12 +5,12 @@
 
 #import "BZRAcquiredViaSubscriptionProvider.h"
 #import "BZRCachedContentFetcher.h"
-#import "BZRCachedReceiptValidationStatusProvider.h"
 #import "BZREvent.h"
 #import "BZRFakeAcquiredViaSubscriptionProvider.h"
+#import "BZRFakeAggregatedReceiptValidationStatusProvider.h"
 #import "BZRFakeAllowedProductsProvider.h"
-#import "BZRFakeCachedReceiptValidationStatusProvider.h"
 #import "BZRFakeReceiptValidationParametersProvider.h"
+#import "BZRKeychainStorage.h"
 #import "BZRPeriodicReceiptValidatorActivator.h"
 #import "BZRProduct+StoreKit.h"
 #import "BZRProductContentManager.h"
@@ -62,7 +62,8 @@ SpecBegin(BZRStore)
 
 __block id<BZRProductsProvider> productsProvider;
 __block BZRProductContentManager *contentManager;
-__block BZRCachedReceiptValidationStatusProvider *receiptValidationStatusProvider;
+__block BZRFakeAggregatedReceiptValidationStatusProvider *
+    receiptValidationStatusProvider;
 __block BZRCachedContentFetcher *contentFetcher;
 __block BZRAcquiredViaSubscriptionProvider *acquiredViaSubscriptionProvider;
 __block BZRStoreKitFacade *storeKitFacade;
@@ -72,17 +73,16 @@ __block BZRFakeReceiptValidationParametersProvider *validationParametersProvider
 __block BZRFakeAllowedProductsProvider *allowedProductsProvider;
 __block id<BZRProductsProvider> netherProductsProvider;
 __block BZRStoreKitMetadataFetcher *storeKitMetadataFetcher;
+__block BZRKeychainStorage *keychainStorage;
 __block NSBundle *bundle;
 __block RACSubject *productsProviderEventsSubject;
 __block RACSubject *receiptValidationStatusProviderEventsSubject;
-__block RACSubject *acquiredViaSubscriptionProviderEventsSubject;
-__block RACSubject *periodicReceiptValidatorActivatorEventsSubject;
 __block RACSubject *netherProductsProviderSubject;
 __block RACSubject *transactionsErrorEventsSubject;
 __block RACSubject *contentFetcherEventsSubject;
 __block RACSubject *unhandledSuccessfulTransactionsSubject;
-__block RACSubject *validationParametersProviderEventsSubject;
 __block RACSubject *storeKitMetadataFetcherEventsSubject;
+__block RACSubject *keychainStorageEventsSubject;
 __block BZRStoreConfiguration *configuration;
 __block BZRStore *store;
 __block NSString *productIdentifier;
@@ -90,7 +90,8 @@ __block NSString *productIdentifier;
 beforeEach(^{
   productsProvider = OCMProtocolMock(@protocol(BZRProductsProvider));
   contentManager = OCMClassMock([BZRProductContentManager class]);
-  receiptValidationStatusProvider = OCMClassMock([BZRCachedReceiptValidationStatusProvider class]);
+  receiptValidationStatusProvider =
+      OCMClassMock([BZRFakeAggregatedReceiptValidationStatusProvider class]);
   contentFetcher = OCMClassMock([BZRCachedContentFetcher class]);
   acquiredViaSubscriptionProvider = OCMClassMock([BZRAcquiredViaSubscriptionProvider class]);
   storeKitFacade = OCMClassMock([BZRStoreKitFacade class]);
@@ -100,6 +101,7 @@ beforeEach(^{
   allowedProductsProvider = [[BZRFakeAllowedProductsProvider alloc] init];
   netherProductsProvider = OCMProtocolMock(@protocol(BZRProductsProvider));
   storeKitMetadataFetcher = OCMClassMock([BZRStoreKitMetadataFetcher class]);
+  keychainStorage = OCMClassMock([BZRKeychainStorage class]);
   bundle = OCMClassMock([NSBundle class]);
   id<BZRProductsVariantSelectorFactory> variantSelectorFactory =
       OCMProtocolMock(@protocol(BZRProductsVariantSelectorFactory));
@@ -109,32 +111,25 @@ beforeEach(^{
 
   productsProviderEventsSubject = [RACSubject subject];
   receiptValidationStatusProviderEventsSubject = [RACSubject subject];
-  acquiredViaSubscriptionProviderEventsSubject = [RACSubject subject];
-  periodicReceiptValidatorActivatorEventsSubject = [RACSubject subject];
   netherProductsProviderSubject = [RACSubject subject];
   transactionsErrorEventsSubject = [RACSubject subject];
   contentFetcherEventsSubject = [RACSubject subject];
   unhandledSuccessfulTransactionsSubject = [RACSubject subject];
   storeKitMetadataFetcherEventsSubject = [RACSubject subject];
-  validationParametersProviderEventsSubject = [RACSubject subject];
+  keychainStorageEventsSubject = [RACSubject subject];
 
   OCMStub([productsProvider eventsSignal])
       .andReturn(productsProviderEventsSubject);
   OCMStub([receiptValidationStatusProvider eventsSignal])
       .andReturn(receiptValidationStatusProviderEventsSubject);
-  OCMStub([acquiredViaSubscriptionProvider storageErrorEventsSignal])
-      .andReturn(acquiredViaSubscriptionProviderEventsSubject);
-  OCMStub([periodicValidatorActivator errorEventsSignal])
-      .andReturn(periodicReceiptValidatorActivatorEventsSubject);
   OCMStub([netherProductsProvider fetchProductList]).andReturn(netherProductsProviderSubject);
   OCMStub([storeKitFacade transactionsErrorEventsSignal])
       .andReturn(transactionsErrorEventsSubject);
   OCMStub([contentFetcher eventsSignal]).andReturn(contentFetcherEventsSubject);
   OCMStub([storeKitFacade unhandledSuccessfulTransactionsSignal])
       .andReturn(unhandledSuccessfulTransactionsSubject);
-  OCMStub([validationParametersProvider eventsSignal])
-      .andReturn(validationParametersProviderEventsSubject);
   OCMStub([storeKitMetadataFetcher eventsSignal]).andReturn(storeKitMetadataFetcherEventsSubject);
+  OCMStub([keychainStorage eventsSignal]).andReturn(keychainStorageEventsSubject);
 
   configuration = OCMClassMock([BZRStoreConfiguration class]);
   OCMStub([configuration productsProvider]).andReturn(productsProvider);
@@ -150,6 +145,7 @@ beforeEach(^{
   OCMStub([configuration allowedProductsProvider]).andReturn(allowedProductsProvider);
   OCMStub([configuration netherProductsProvider]).andReturn(netherProductsProvider);
   OCMStub([configuration storeKitMetadataFetcher]).andReturn(storeKitMetadataFetcher);
+  OCMStub([configuration keychainStorage]).andReturn(keychainStorage);
 
   store = [[BZRStore alloc] initWithConfiguration:configuration];
   productIdentifier = @"foo";
@@ -199,6 +195,31 @@ context(@"initial receipt validation", ^{
       return [event.eventType isEqual:$(BZREventTypeNonCriticalError)] &&
           event.eventError == error;
     });
+  });
+});
+
+context(@"multi-app subscription", ^{
+  it(@"should return YES if ths product's identifier contains the multi-app subscription marker", ^{
+    OCMStub([configuration multiAppSubscriptionIdentifierMarker]).andReturn(@"MultiAppMarker");
+    store = [[BZRStore alloc] initWithConfiguration:configuration];
+
+    auto subscriptionIdentifier = @"com.bundleID.MultiAppMarker.foo";
+
+    expect([store isMultiAppSubscription:subscriptionIdentifier]).to.beTruthy();
+  });
+
+  it(@"should return NO if the product's identifier doesn't contain the multi-app subscription "
+     "marker", ^{
+    OCMStub([configuration multiAppSubscriptionIdentifierMarker]).andReturn(@"MultiAppMarker");
+    store = [[BZRStore alloc] initWithConfiguration:configuration];
+
+    expect([store isMultiAppSubscription:@"com.bundleID.foo"]).to.beFalsy();
+  });
+
+  it(@"should return NO if the multi-app subscription marker is nil", ^{
+    auto subscriptionIdentifier = @"com.bundleID.MultiAppMarker.foo";
+
+    expect([store isMultiAppSubscription:subscriptionIdentifier]).to.beFalsy();
   });
 });
 
@@ -405,126 +426,185 @@ context(@"downloaded products", ^{
 });
 
 context(@"purchasing products", ^{
+  __block SKProduct *underlyingProduct;
+  __block NSString *productIdentifier;
+  __block BZRProduct *product;
+  __block NSString *subscriptionIdentifier;
+  __block BZRProduct *subscriptionProduct;
+  __block BZRProduct *nonRenewingSubscriptionProduct;
+
   beforeEach(^{
+    underlyingProduct = OCMClassMock([SKProduct class]);
+
+    productIdentifier = @"product";
+    product = [BZRProductWithIdentifier(productIdentifier)
+        modelByOverridingProperty:@instanceKeypath(BZRProduct, underlyingProduct)
+        withValue:underlyingProduct];
+
+    subscriptionIdentifier = @"susbscription";
+    subscriptionProduct = [[BZRProductWithIdentifier(subscriptionIdentifier)
+        modelByOverridingProperty:@instanceKeypath(BZRProduct, productType)
+        withValue:$(BZRProductTypeRenewableSubscription)]
+        modelByOverridingProperty:@instanceKeypath(BZRProduct, underlyingProduct)
+        withValue:underlyingProduct];
+
+    nonRenewingSubscriptionProduct = [[BZRProductWithIdentifier(subscriptionIdentifier)
+        modelByOverridingProperty:@instanceKeypath(BZRProduct, productType)
+        withValue:$(BZRProductTypeNonRenewingSubscription)]
+        modelByOverridingProperty:@instanceKeypath(BZRProduct, underlyingProduct)
+        withValue:underlyingProduct];
+
     OCMStub([variantSelector selectedVariantForProductWithIdentifier:productIdentifier])
         .andReturn(productIdentifier);
+    OCMStub([variantSelector selectedVariantForProductWithIdentifier:subscriptionIdentifier])
+        .andReturn(subscriptionIdentifier);
   });
 
-  it(@"should send error when product list is empty", ^{
-    OCMStub([productsProvider fetchProductList]).andReturn([RACSignal empty]);
-    expect([store purchaseProduct:productIdentifier]).will.matchError(^BOOL(NSError *error) {
+  it(@"should err when product list is empty", ^{
+    OCMStub([productsProvider fetchProductList]).andReturn([RACSignal return:@[]]);
+
+    auto purchaseSignal = [store purchaseProduct:productIdentifier];
+
+    expect(purchaseSignal).will.matchError(^BOOL(NSError *error) {
       return error.lt_isLTDomain && error.code == BZRErrorCodeInvalidProductForPurchasing;
     });
   });
 
-  it(@"should send error when product given by variant selector doesn't exist", ^{
-    NSArray<BZRProduct *> *productList = @[
+  it(@"should err when product given by variant selector doesn't exist", ^{
+    OCMStub([productsProvider fetchProductList]).andReturn(([RACSignal return:@[
       BZRProductWithIdentifier(@"bar"),
       BZRProductWithIdentifier(@"baz")
-    ];
+    ]]));
 
-    OCMStub([productsProvider fetchProductList]).andReturn([RACSignal return:productList]);
-    expect([store purchaseProduct:@"bar"]).will.matchError(^BOOL(NSError *error) {
+    auto purchaseSignal = [store purchaseProduct:productIdentifier];
+
+    expect(purchaseSignal).will.matchError(^BOOL(NSError *error) {
       return error.lt_isLTDomain && error.code == BZRErrorCodeInvalidProductForPurchasing;
     });
   });
 
-  it(@"should send non-critical error event when product given by variant selector doesn't "
-     "exist", ^{
-    LLSignalTestRecorder *recorder = [store.eventsSignal testRecorder];
-    NSArray<BZRProduct *> *productList = @[
+  it(@"should send error event when product given by variant selector doesn't exist", ^{
+    auto eventsRecorder = [store.eventsSignal testRecorder];
+    OCMStub([productsProvider fetchProductList]).andReturn(([RACSignal return:@[
       BZRProductWithIdentifier(@"bar"),
       BZRProductWithIdentifier(@"baz")
-    ];
+    ]]));
 
-    OCMStub([productsProvider fetchProductList]).andReturn([RACSignal return:productList]);
-    [[store purchaseProduct:@"bar"] subscribeNext:^(id) {}];
-    expect(recorder).will.matchValue(0, ^BOOL(BZREvent *event) {
+    auto purchaseRecorder = [[store purchaseProduct:productIdentifier] testRecorder];
+
+    expect(purchaseRecorder).will.finish();
+    expect(eventsRecorder).to.matchValue(0, ^BOOL(BZREvent *event) {
       return event.eventError.lt_isLTDomain &&
           event.eventError.code == BZRErrorCodeInvalidProductForPurchasing &&
           [event.eventType isEqual:$(BZREventTypeNonCriticalError)];
     });
   });
 
-  it(@"should purchase through store kit if product is a renewable subscription", ^{
-    BZRProduct *product = BZRProductWithIdentifier(productIdentifier);
-    product = [product modelByOverridingProperty:@keypath(product, productType)
-                                       withValue:$(BZRProductTypeRenewableSubscription)];
-    BZRStubProductDictionaryToReturnProduct(product, productsProvider);
-    store = [[BZRStore alloc] initWithConfiguration:configuration];
+  it(@"should purchase through StoreKit if product is a renewable subscription", ^{
+    auto receiptValidationStatus =
+        BZRReceiptValidationStatusWithSubscriptionIdentifier(subscriptionIdentifier);
+    BZRStubProductDictionaryToReturnProduct(subscriptionProduct, productsProvider);
 
-    BZRReceiptValidationStatus *receiptValidationStatus =
-        BZRReceiptValidationStatusWithInAppPurchaseAndExpiry(productIdentifier, NO);
     OCMStub([receiptValidationStatusProvider receiptValidationStatus])
         .andReturn(receiptValidationStatus);
-
-    OCMReject([acquiredViaSubscriptionProvider
-               addAcquiredViaSubscriptionProduct:productIdentifier]);
-    OCMStub([storeKitFacade purchaseProduct:OCMOCK_ANY]).andReturn([RACSignal empty]);
     OCMStub([receiptValidationStatusProvider fetchReceiptValidationStatus])
         .andReturn([RACSignal empty]);
-    expect([store purchaseProduct:productIdentifier]).will.complete();
+    OCMReject([acquiredViaSubscriptionProvider
+               addAcquiredViaSubscriptionProduct:subscriptionIdentifier]);
+    OCMExpect([storeKitFacade purchaseProduct:underlyingProduct]).andReturn([RACSignal empty]);
+
+    store = [[BZRStore alloc] initWithConfiguration:configuration];
+    [netherProductsProviderSubject sendNext:@[subscriptionProduct]];
+    auto purchaseSignal = [store purchaseProduct:subscriptionIdentifier];
+
+    expect(purchaseSignal).will.complete();
+    OCMVerifyAll((id)storeKitFacade);
   });
 
-  it(@"should purchase through store kit if product is a non renewing subscription", ^{
-    BZRProduct *product = BZRProductWithIdentifier(productIdentifier);
-    product = [product modelByOverridingProperty:@keypath(product, productType)
-                                       withValue:$(BZRProductTypeNonRenewingSubscription)];
-    BZRStubProductDictionaryToReturnProduct(product, productsProvider);
-    store = [[BZRStore alloc] initWithConfiguration:configuration];
+  it(@"should purchase through StoreKit if product is a non-renewing subscription", ^{
+    auto receiptValidationStatus =
+        BZRReceiptValidationStatusWithSubscriptionIdentifier(subscriptionIdentifier);
+    BZRStubProductDictionaryToReturnProduct(nonRenewingSubscriptionProduct, productsProvider);
 
-    BZRReceiptValidationStatus *receiptValidationStatus =
-        BZRReceiptValidationStatusWithInAppPurchaseAndExpiry(productIdentifier, NO);
     OCMStub([receiptValidationStatusProvider receiptValidationStatus])
         .andReturn(receiptValidationStatus);
-
-    OCMReject([acquiredViaSubscriptionProvider
-               addAcquiredViaSubscriptionProduct:productIdentifier]);
-    OCMStub([storeKitFacade purchaseProduct:OCMOCK_ANY]).andReturn([RACSignal empty]);
     OCMStub([receiptValidationStatusProvider fetchReceiptValidationStatus])
         .andReturn([RACSignal empty]);
-    expect([store purchaseProduct:productIdentifier]).will.complete();
+    OCMReject([acquiredViaSubscriptionProvider
+               addAcquiredViaSubscriptionProduct:subscriptionIdentifier]);
+    OCMExpect([storeKitFacade purchaseProduct:underlyingProduct]).andReturn([RACSignal empty]);
+
+    store = [[BZRStore alloc] initWithConfiguration:configuration];
+    [netherProductsProviderSubject sendNext:@[subscriptionProduct]];
+    auto purchaseSignal = [store purchaseProduct:subscriptionIdentifier];
+
+    expect(purchaseSignal).will.complete();
+    OCMVerifyAll((id)storeKitFacade);
   });
 
-  it(@"should not add product to acquired via subscription if the subscription doesn't enable the "
-     "product", ^{
-    BZRReceiptValidationStatus *receiptValidationStatus =
-        BZRReceiptValidationStatusWithSubscriptionIdentifier(@"subscriptionProduct");
-    OCMStub([receiptValidationStatusProvider receiptValidationStatus])
-        .andReturn(receiptValidationStatus);
-
-    BZRProduct *product = BZRProductWithIdentifier(productIdentifier);
-    BZRProduct *subscriptionProduct = [BZRProductWithIdentifier(@"subscriptionProduct")
+  it(@"should not add product to acquired via subscription products if the subscription doesn't "
+      "enable the product", ^{
+    subscriptionProduct = [subscriptionProduct
         modelByOverridingProperty:@instanceKeypath(BZRProduct, enablesProducts) withValue:@[]];
-    NSArray<BZRProduct *> *productList = @[product, subscriptionProduct];
-    OCMStub([productsProvider fetchProductList]).andReturn([RACSignal return:productList]);
-    store = [[BZRStore alloc] initWithConfiguration:configuration];
+    auto receiptValidationStatus =
+        BZRReceiptValidationStatusWithSubscriptionIdentifier(subscriptionIdentifier);
+    auto productList = @[product, subscriptionProduct];
 
-    OCMReject([acquiredViaSubscriptionProvider
-              addAcquiredViaSubscriptionProduct:productIdentifier]);
-    OCMStub([storeKitFacade purchaseProduct:OCMOCK_ANY]).andReturn([RACSignal empty]);
+    OCMStub([receiptValidationStatusProvider receiptValidationStatus])
+        .andReturn(receiptValidationStatus);
+    OCMStub([productsProvider fetchProductList]).andReturn([RACSignal return:productList]);
+    OCMStub([storeKitFacade purchaseProduct:underlyingProduct]).andReturn([RACSignal empty]);
     OCMStub([receiptValidationStatusProvider fetchReceiptValidationStatus])
         .andReturn([RACSignal empty]);
+    OCMReject([acquiredViaSubscriptionProvider addAcquiredViaSubscriptionProduct:OCMOCK_ANY]);
 
-    expect([store purchaseProduct:productIdentifier]).will.complete();
+    store = [[BZRStore alloc] initWithConfiguration:configuration];
+    [netherProductsProviderSubject sendNext:productList];
+    auto purchaseSignal = [store purchaseProduct:productIdentifier];
+
+    expect(purchaseSignal).will.complete();
+  });
+
+  it(@"should add product to acquired via subscription products if the active subscription doesn't "
+      "exist in the product list", ^{
+    auto receiptValidationStatus =
+        BZRReceiptValidationStatusWithSubscriptionIdentifier(subscriptionIdentifier);
+    OCMStub([receiptValidationStatusProvider receiptValidationStatus])
+        .andReturn(receiptValidationStatus);
+    OCMStub([productsProvider fetchProductList]).andReturn([RACSignal return:@[product]]);
+    OCMStub([receiptValidationStatusProvider fetchReceiptValidationStatus])
+        .andReturn([RACSignal empty]);
+    OCMReject([storeKitFacade purchaseProduct:OCMOCK_ANY]);
+    OCMExpect([acquiredViaSubscriptionProvider
+               addAcquiredViaSubscriptionProduct:productIdentifier]);
+
+    store = [[BZRStore alloc] initWithConfiguration:configuration];
+    [netherProductsProviderSubject sendNext:@[product]];
+    auto purchaseSignal = [store purchaseProduct:productIdentifier];
+
+    expect(purchaseSignal).will.complete();
+    OCMVerifyAll((id)acquiredViaSubscriptionProvider);
   });
 
   it(@"should send error if product is a subscribers only product and user doesn't have a"
      "subscription that enables this product", ^{
-    BZRReceiptValidationStatus *receiptValidationStatus =
+    auto subscriptionProduct = [BZRProductWithIdentifier(@"subscriptionProduct")
+        modelByOverridingProperty:@instanceKeypath(BZRProduct, enablesProducts)
+        withValue:@[@"allowedProduct"]];
+    auto product = [BZRProductWithIdentifier(@"notAllowedProduct")
+        modelByOverridingProperty:@instanceKeypath(BZRProduct, isSubscribersOnly) withValue:@YES];
+    auto receiptValidationStatus =
         BZRReceiptValidationStatusWithSubscriptionIdentifier(@"subscriptionProduct");
+    NSArray<BZRProduct *> *productList = @[product, subscriptionProduct];
     OCMStub([receiptValidationStatusProvider receiptValidationStatus])
         .andReturn(receiptValidationStatus);
-
-    BZRProduct *product = [BZRProductWithIdentifier(productIdentifier)
-        modelByOverridingProperty:@instanceKeypath(BZRProduct, isSubscribersOnly) withValue:@YES];
-    BZRProduct *subscriptionProduct = [BZRProductWithIdentifier(@"subscriptionProduct")
-        modelByOverridingProperty:@instanceKeypath(BZRProduct, enablesProducts) withValue:@[]];
-    NSArray<BZRProduct *> *productList = @[product, subscriptionProduct];
     OCMStub([productsProvider fetchProductList]).andReturn([RACSignal return:productList]);
-    store = [[BZRStore alloc] initWithConfiguration:configuration];
 
-    expect([store purchaseProduct:productIdentifier]).will.matchError(^BOOL(NSError *error) {
+    store = [[BZRStore alloc] initWithConfiguration:configuration];
+    [netherProductsProviderSubject sendNext:productList];
+    auto purchaseSignal = [store purchaseProduct:productIdentifier];
+
+    expect(purchaseSignal).will.matchError(^BOOL(NSError *error) {
       return error.lt_isLTDomain && error.code == BZRErrorCodeInvalidProductForPurchasing;
     });
   });
@@ -536,13 +616,16 @@ context(@"purchasing products", ^{
     });
 
     it(@"should add product to acquired via subscription if subscription exists and not expired", ^{
-      BZRReceiptValidationStatus *receiptValidationStatus =
+      auto receiptValidationStatus =
           BZRReceiptValidationStatusWithSubscriptionIdentifier(@"subscription");
+      auto subscriptionProduct = [BZRProductWithIdentifier(@"subscription")
+          modelByOverridingProperty:@instanceKeypath(BZRProduct, productType)
+          withValue:$(BZRProductTypeRenewableSubscription)];
+      auto productList = @[subscriptionProduct, BZRProductWithIdentifier(productIdentifier)];
+      [netherProductsProviderSubject sendNext:productList];
+
       OCMStub([receiptValidationStatusProvider receiptValidationStatus])
           .andReturn(receiptValidationStatus);
-      auto productList =
-          @[BZRProductWithIdentifier(@"subscription"), BZRProductWithIdentifier(productIdentifier)];
-      [netherProductsProviderSubject sendNext:productList];
 
       expect([store purchaseProduct:productIdentifier]).will.complete();
       OCMVerify([acquiredViaSubscriptionProvider
@@ -1210,7 +1293,7 @@ context(@"acquiring all enabled products", ^{
   });
 });
 
-context(@"maually fetching products info", ^{
+context(@"manually fetching products info", ^{
   it(@"should err if products info fetcher errs", ^{
     auto product = BZRProductWithIdentifier(productIdentifier);
     [netherProductsProviderSubject sendNext:@[product, BZRProductWithIdentifier(@"bar")]];
@@ -1421,17 +1504,6 @@ context(@"events signal", ^{
     expect(recorder).will.sendValues(@[event]);
   });
 
-  it(@"should send event sent by acquired via subscription provider", ^{
-    BZREvent *event = OCMClassMock([BZREvent class]);
-    [acquiredViaSubscriptionProviderEventsSubject sendNext:event];
-    expect(recorder).will.sendValue(0, event);
-  });
-
-  it(@"should send event sent by periodic receipt validator activator", ^{
-    [periodicReceiptValidatorActivatorEventsSubject sendNext:event];
-    expect(recorder).will.sendValues(@[event]);
-  });
-
   it(@"should send error sent by store kit facade", ^{
     NSError *error = OCMClassMock([NSError class]);
     [transactionsErrorEventsSubject sendNext:error];
@@ -1449,18 +1521,18 @@ context(@"events signal", ^{
     expect(recorder).will.sendValues(@[event]);
   });
 
-  it(@"should send event sent by validation parameters provider", ^{
-    [validationParametersProvider.eventsSubject sendNext:event];
+  it(@"should send event sent by keychain storage", ^{
+    [keychainStorageEventsSubject sendNext:event];
     expect(recorder).will.sendValues(@[event]);
   });
 });
 
 context(@"KVO-compliance", ^{
-  __block BZRFakeCachedReceiptValidationStatusProvider *validationStatusProvider;
+  __block BZRFakeAggregatedReceiptValidationStatusProvider *validationStatusProvider;
   __block BZRFakeAcquiredViaSubscriptionProvider *acquiredViaSubscriptionProvider;
 
   beforeEach(^{
-    validationStatusProvider = [[BZRFakeCachedReceiptValidationStatusProvider alloc] init];
+    validationStatusProvider = [[BZRFakeAggregatedReceiptValidationStatusProvider alloc] init];
     acquiredViaSubscriptionProvider =  [[BZRFakeAcquiredViaSubscriptionProvider alloc] init];
     validationParametersProvider = [[BZRFakeReceiptValidationParametersProvider alloc] init];
 
@@ -1477,6 +1549,7 @@ context(@"KVO-compliance", ^{
     OCMStub([configuration allowedProductsProvider]).andReturn(allowedProductsProvider);
     OCMStub([configuration netherProductsProvider]).andReturn(netherProductsProvider);
     OCMStub([configuration storeKitMetadataFetcher]).andReturn(storeKitMetadataFetcher);
+    OCMStub([configuration keychainStorage]).andReturn(keychainStorage);
 
     store = [[BZRStore alloc] initWithConfiguration:configuration];
   });

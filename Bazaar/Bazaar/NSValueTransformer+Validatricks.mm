@@ -45,7 +45,8 @@ NS_ASSUME_NONNULL_BEGIN
       @"notAuthenticated": $(BZRReceiptValidationErrorReceiptIsNotAuthentic),
       @"unexpectedBundle": $(BZRReceiptValidationErrorBundleIDMismatch),
       @"testReceiptInProd": $(BZRReceiptValidationErrorEnvironmentMismatch),
-      @"prodReceiptInTest": $(BZRReceiptValidationErrorEnvironmentMismatch)
+      @"prodReceiptInTest": $(BZRReceiptValidationErrorEnvironmentMismatch),
+      @"missingReceipt": $(BZRReceiptValidationErrorMissingReceipt)
     };
   });
 
