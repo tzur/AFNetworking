@@ -411,6 +411,22 @@ LTMakeStructValueTransformer(GLKMatrix4);
   }];
 }
 
++ (NSValueTransformer *)lt_enumTransformerWithMap:(NSDictionary<id<LTEnum>, NSString *> *)map {
+  LTBidirectionalMap *bidirectionalMap = [LTBidirectionalMap mapWithDictionary:map];
+
+  return [MTLValueTransformer reversibleTransformerWithForwardBlock:^id<LTEnum>(NSString *name) {
+    LTParameterAssert(name);
+    LTParameterAssert([[bidirectionalMap allValues] containsObject:name],
+                      @"Map %@ must contain given name %@", bidirectionalMap, name);
+    return [bidirectionalMap keyForObject:name];
+  } reverseBlock:^NSString *(id<LTEnum> enumObject) {
+    LTParameterAssert(enumObject);
+    LTParameterAssert([[bidirectionalMap allKeys] containsObject:enumObject],
+                      @"Map %@ must contain given enum value %@", bidirectionalMap, enumObject);
+    return [bidirectionalMap objectForKeyedSubscript:enumObject];
+  }];
+}
+
 @end
 
 NS_ASSUME_NONNULL_END
