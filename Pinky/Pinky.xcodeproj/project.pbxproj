@@ -119,23 +119,19 @@
 		06FD92DB1EDC881E00D180C7 /* Mantle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 06FD92981EDC5F9100D180C7 /* Mantle.framework */; };
 		06FD92DC1EDC882300D180C7 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 882D1F2F1EC1C49C007F39F5 /* GLKit.framework */; };
 		1984C7201FE6755200873DA0 /* libLTKitTestUtils.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E4786D581FD5499E0057FE03 /* libLTKitTestUtils.a */; };
-		2817F75E1FF4DF9400AF1DDC /* PNKColorTransferCDF.metal in Sources */ = {isa = PBXBuildFile; fileRef = 2817F73A1FF4DF9300AF1DDC /* PNKColorTransferCDF.metal */; };
 		2817F75F1FF4DF9400AF1DDC /* PNKColorTransferCDF.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2817F75C1FF4DF9400AF1DDC /* PNKColorTransferCDF.mm */; };
 		2817F7601FF4DFA000AF1DDC /* PNKColorTransferCDF.metal in Sources */ = {isa = PBXBuildFile; fileRef = 2817F73A1FF4DF9300AF1DDC /* PNKColorTransferCDF.metal */; };
 		2817F7621FF4DFCB00AF1DDC /* PNKColorTransferCDFSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2817F7611FF4DFCB00AF1DDC /* PNKColorTransferCDFSpec.mm */; };
-		2817F8F01FFBBC2800AF1DDC /* PNKColorTransferHistogramSpecification.metal in Sources */ = {isa = PBXBuildFile; fileRef = 2817F8CC1FFBBC2700AF1DDC /* PNKColorTransferHistogramSpecification.metal */; };
 		2817F8F11FFBBC2800AF1DDC /* PNKColorTransferHistogramSpecification.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2817F8EE1FFBBC2700AF1DDC /* PNKColorTransferHistogramSpecification.mm */; };
 		2817F8F41FFBBC3D00AF1DDC /* ColorTransferHistogramSpecificationInput.png in Resources */ = {isa = PBXBuildFile; fileRef = 2817F8F21FFBBC3D00AF1DDC /* ColorTransferHistogramSpecificationInput.png */; };
 		2817F8F51FFBBC3D00AF1DDC /* ColorTransferHistogramSpecificationReference.png in Resources */ = {isa = PBXBuildFile; fileRef = 2817F8F31FFBBC3D00AF1DDC /* ColorTransferHistogramSpecificationReference.png */; };
 		2817F8F71FFBBC4800AF1DDC /* PNKColorTransferHistogramSpecificationSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2817F8F61FFBBC4800AF1DDC /* PNKColorTransferHistogramSpecificationSpec.mm */; };
 		2817F8F81FFBCE3E00AF1DDC /* PNKColorTransferHistogramSpecification.metal in Sources */ = {isa = PBXBuildFile; fileRef = 2817F8CC1FFBBC2700AF1DDC /* PNKColorTransferHistogramSpecification.metal */; };
 		2835A95F1FEAA41B0000F2EA /* PNKColorTransferHistogram.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2835A95D1FEAA41A0000F2EA /* PNKColorTransferHistogram.mm */; };
-		2835A9601FEAA41B0000F2EA /* PNKColorTransferHistogram.metal in Sources */ = {isa = PBXBuildFile; fileRef = 2835A95E1FEAA41A0000F2EA /* PNKColorTransferHistogram.metal */; };
 		2835A9621FEAA43E0000F2EA /* PNKColorTransferHistogramSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2835A9611FEAA43E0000F2EA /* PNKColorTransferHistogramSpec.mm */; };
 		2835A9641FEAA44D0000F2EA /* ColorTransferHistogramInput.png in Resources */ = {isa = PBXBuildFile; fileRef = 2835A9631FEAA44C0000F2EA /* ColorTransferHistogramInput.png */; };
 		2835A9651FEAB6980000F2EA /* PNKColorTransferHistogram.metal in Sources */ = {isa = PBXBuildFile; fileRef = 2835A95E1FEAA41A0000F2EA /* PNKColorTransferHistogram.metal */; };
 		283A4B8F1FE9058D009608E6 /* EXPMatchers+beCloseToGLKVector.mm in Sources */ = {isa = PBXBuildFile; fileRef = 283A4B8D1FE9058C009608E6 /* EXPMatchers+beCloseToGLKVector.mm */; };
-		285D3B381FD6ACF8006A55AF /* PNKColorTransferMinAndMax.metal in Sources */ = {isa = PBXBuildFile; fileRef = 285D3B251FD6ACF4006A55AF /* PNKColorTransferMinAndMax.metal */; };
 		285D3B3B1FD6ACF8006A55AF /* PNKColorTransferMinAndMax.mm in Sources */ = {isa = PBXBuildFile; fileRef = 285D3B2A1FD6ACF6006A55AF /* PNKColorTransferMinAndMax.mm */; };
 		285D3B471FD6AF21006A55AF /* PNKColorTransferMinAndMax.metal in Sources */ = {isa = PBXBuildFile; fileRef = 285D3B251FD6ACF4006A55AF /* PNKColorTransferMinAndMax.metal */; };
 		285D3BDE1FD7E62A006A55AF /* PNKColorTransferMinAndMaxSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 285D3BDD1FD7E62A006A55AF /* PNKColorTransferMinAndMaxSpec.mm */; };
@@ -217,7 +213,6 @@
 		E4786D451FD5499B0057FE03 /* MPSCNNConvolution+FactorySpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = E4786D441FD5499B0057FE03 /* MPSCNNConvolution+FactorySpec.mm */; };
 		E484089E1FCBF98B00468645 /* PNKDilatedConvolutionInternalLayerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = E484089D1FCBF98B00468645 /* PNKDilatedConvolutionInternalLayerSpec.mm */; };
 		E484D3701FEF838900DA050C /* PNKAvailability.mm in Sources */ = {isa = PBXBuildFile; fileRef = E484D36F1FEF838900DA050C /* PNKAvailability.mm */; };
-		E4D3B7771FF8C3BD00FBE38A /* PNKActivation.metal in Sources */ = {isa = PBXBuildFile; fileRef = E4D3B7761FF8C3BD00FBE38A /* PNKActivation.metal */; };
 		E4D719331FE145580047E620 /* PNKGather.mm in Sources */ = {isa = PBXBuildFile; fileRef = E4D719321FE145580047E620 /* PNKGather.mm */; };
 		E4D719571FE1491E0047E620 /* PNKGather.metal in Sources */ = {isa = PBXBuildFile; fileRef = E4D719551FE148F90047E620 /* PNKGather.metal */; };
 		E4D719591FE16D650047E620 /* PNKGatherSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = E4D719581FE16D650047E620 /* PNKGatherSpec.mm */; };
@@ -2240,7 +2235,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				285D3B381FD6ACF8006A55AF /* PNKColorTransferMinAndMax.metal in Sources */,
 				06D23F1A1F8A260600936917 /* PNKConditionalInstanceNormLayer.mm in Sources */,
 				06C9E7FF1F793C8A00D8A77F /* PNKAddition.mm in Sources */,
 				2817F8F11FFBBC2800AF1DDC /* PNKColorTransferHistogramSpecification.mm in Sources */,
@@ -2250,11 +2244,8 @@
 				E41D72681FFE817A00A2B26D /* PNKActivationCustomInternalLayer.mm in Sources */,
 				06D36EE81F6ACA6D00090584 /* Identity.proto in Sources */,
 				06D36EE91F6ACA6D00090584 /* Model.proto in Sources */,
-				E4D3B7771FF8C3BD00FBE38A /* PNKActivation.metal in Sources */,
 				E484D3701FEF838900DA050C /* PNKAvailability.mm in Sources */,
 				06C9E80A1F793E8200D8A77F /* PNKReflectionPadding.mm in Sources */,
-				2817F8F01FFBBC2800AF1DDC /* PNKColorTransferHistogramSpecification.metal in Sources */,
-				2835A9601FEAA41B0000F2EA /* PNKColorTransferHistogram.metal in Sources */,
 				06EDBCBF1F8C931A00A3FF1E /* MPSTemporaryImage+Factory.mm in Sources */,
 				064745DD1FD94E1700BAE7BD /* PNKTensorSerializationUtilities.mm in Sources */,
 				E41D72411FFE7D8B00A2B26D /* PNKActivationLayer.mm in Sources */,
@@ -2285,7 +2276,6 @@
 				E47546751FD96E3C006E66C6 /* PNKConvolutionUtils.mm in Sources */,
 				C9231F831F04EF7F009E4FDB /* PNKGammaCorrection.mm in Sources */,
 				06447DB11FA892610077346E /* PNKInstanceNormInternalKernel.mm in Sources */,
-				2817F75E1FF4DF9400AF1DDC /* PNKColorTransferCDF.metal in Sources */,
 				060EA49E1EDD9CC20041487A /* NSBundle+PinkyBundle.mm in Sources */,
 				0657A1371F29A3A4002AA730 /* MPSCNNNeuron+Factory.mm in Sources */,
 				C9ADC5131EFFE06200C87932 /* PNKLibraryLoader.mm in Sources */,
