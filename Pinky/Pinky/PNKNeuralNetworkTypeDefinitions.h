@@ -48,14 +48,11 @@ enum ActivationType : unsigned short {
   ActivationTypePReLU,
   /// An exponential linear unit (ELU) activation. <tt>f(x) = x > 0 ? x : alpha * (exp(x) - 1)</tt>.
   ActivationTypeELU,
-  /// A Thresholded rectified linear unit activation. <tt>f(x) = max(alpha, x + alpha) - alpha</tt>.
-  ActivationTypeThresholdedReLU,
   /// A softsign activation. <tt>f(x) = x / (1 + abs(x))</tt>.
   ActivationTypeSoftsign,
   /// A softplus activation. <tt>f(x) = log(1 + exp(x))</tt>.
   ActivationTypeSoftplus,
-  /// A parametric softplus activation. This activation can be parametrized with separate parameters
-  /// per channel. For the ith channel <tt>f(x_i) = alpha_i * log(1 + exp(beta_i * x_i))</tt>.
+  /// A parametric softplus activation. <tt>f(x) = alpha * log(1 + exp(beta * x))</tt>.
   ActivationTypeParametricSoftplus
 };
 

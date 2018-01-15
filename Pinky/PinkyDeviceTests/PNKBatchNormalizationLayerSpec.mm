@@ -3,6 +3,7 @@
 
 #import "PNKBatchNormalizationLayer.h"
 
+#import "PNKConvolutionTestUtils.h"
 #import "PNKNeuralNetworkOperationsModel.h"
 
 static cv::Mat PNKCalculateBatchNorm(const cv::Mat &inputMatrix, const cv::Mat &mean,
@@ -57,53 +58,6 @@ static pnk::NormalizationKernelModel PNKBuildNormalizationModel(NSUInteger featu
     .mean = mean,
     .variance = variance,
     .epsilon = 0.1
-  };
-};
-
-static pnk::ActivationKernelModel PNKBuildActivationModel(NSUInteger featureChannels,
-                                                          pnk::ActivationType activationType) {
-  cv::Mat1f alpha, beta;
-
-  switch (activationType) {
-    case pnk::ActivationTypeIdentity:
-    case pnk::ActivationTypeAbsolute:
-    case pnk::ActivationTypeReLU:
-    case pnk::ActivationTypeTanh:
-    case pnk::ActivationTypeSigmoid:
-    case pnk::ActivationTypeSoftsign:
-    case pnk::ActivationTypeSoftplus:
-      alpha = cv::Mat1f();
-      beta = cv::Mat1f();
-      break;
-    case pnk::ActivationTypeLeakyReLU:
-    case pnk::ActivationTypeELU:
-    case pnk::ActivationTypeThresholdedReLU:
-     alpha = cv::Mat1f(1, 1);
-      beta = cv::Mat1f();
-      break;
-    case pnk::ActivationTypePReLU:
-      alpha = cv::Mat1f(1, (int)featureChannels);
-      beta = cv::Mat1f();
-      break;
-    case pnk::ActivationTypeScaledTanh:
-    case pnk::ActivationTypeSigmoidHard:
-    case pnk::ActivationTypeLinear:
-      alpha = cv::Mat1f(1, 1);
-      beta = cv::Mat1f(1, 1);
-      break;
-    case pnk::ActivationTypeParametricSoftplus:
-      alpha = cv::Mat1f(1, (int)featureChannels);
-      beta = cv::Mat1f(1, (int)featureChannels);
-      break;
-  }
-
-  cv::randu(alpha, 0.5, 2);
-  cv::randu(beta, -1, 1);
-
-  return {
-    .activationType = activationType,
-    .alpha = alpha,
-    .beta = beta
   };
 };
 
@@ -335,11 +289,6 @@ context(@"batch normalization", ^{
 
   itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
     return PNKBuildHalfFloatDataForKernelExamples(device, 32, 32, 4, pnk::ActivationTypeELU);
-  });
-
-  itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
-    return PNKBuildHalfFloatDataForKernelExamples(device, 32, 32, 4,
-                                                  pnk::ActivationTypeThresholdedReLU);
   });
 
   itShouldBehaveLike(kPNKUnaryKernelExamples, ^{

@@ -107,8 +107,8 @@ static NSString * const kKernelArrayFunctionName = @"batchNormArray";
 - (void)setupBuffersAndStateWithActivationModel:(const pnk::ActivationKernelModel &)model {
   [self createStateWithActivationType:model.activationType];
 
-  _alphaBuffer = self.hasAlphaBuffer ? [self halfBufferFromFloatVector:model.alpha] : nil;
-  _betaBuffer = self.hasBetaBuffer ? [self halfBufferFromFloatVector:model.beta] : nil;
+  _alphaBuffer = self.hasAlphaBuffer ? PNKHalfBufferFromFloatVector(self.device, model.alpha) : nil;
+  _betaBuffer = self.hasBetaBuffer ? PNKHalfBufferFromFloatVector(self.device, model.beta) : nil;
 }
 
 - (void)createStateWithActivationType:(pnk::ActivationType)activationType {
@@ -129,7 +129,6 @@ static NSString * const kKernelArrayFunctionName = @"batchNormArray";
     case pnk::ActivationTypeLeakyReLU:
     case pnk::ActivationTypePReLU:
     case pnk::ActivationTypeELU:
-    case pnk::ActivationTypeThresholdedReLU:
       _hasAlphaBuffer = true;
       _hasBetaBuffer = false;
       break;
@@ -158,16 +157,8 @@ static NSString * const kKernelArrayFunctionName = @"batchNormArray";
   cv::Mat correctedScale = model.scale / (model.variance + model.epsilon);
   cv::Mat correctedShift = model.shift - model.mean.mul(correctedScale);
 
-  _scaleBuffer = [self halfBufferFromFloatVector:correctedScale];
-  _shiftBuffer = [self halfBufferFromFloatVector:correctedShift];
-}
-
-- (id<MTLBuffer>)halfBufferFromFloatVector:(const cv::Mat1f &)parameters {
-  NSUInteger bufferElements = PNKImageAlignedBufferElementsFromMatrix(parameters);
-  id<MTLBuffer> buffer = [self.device newBufferWithLength:bufferElements * sizeof(half_float::half)
-                                                  options:MTLResourceCPUCacheModeWriteCombined];
-  PNKFillHalfFloatBuffer(buffer, parameters);
-  return buffer;
+  _scaleBuffer = PNKHalfBufferFromFloatVector(self.device, correctedScale);
+  _shiftBuffer = PNKHalfBufferFromFloatVector(self.device, correctedShift);
 }
 
 #pragma mark -

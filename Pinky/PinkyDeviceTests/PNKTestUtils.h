@@ -35,8 +35,4 @@ cv::Mat PNKGenerateChannelwiseConstantUcharMatrix(NSUInteger rows, NSUInteger co
 cv::Mat PNKGenerateChannelwiseConstantHalfFloatMatrix(NSUInteger rows, NSUInteger columns,
                                                       const std::vector<half_float::half> &values);
 
-half_float::half PNKActivatedValue(half_float::half value, int channel,
-                                   pnk::ActivationType activationType, const cv::Mat1f &alpha,
-                                   const cv::Mat1f &beta);
-
 NS_ASSUME_NONNULL_END

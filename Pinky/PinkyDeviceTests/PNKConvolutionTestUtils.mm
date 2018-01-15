@@ -5,8 +5,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-cv::Mat1f PNKFillKernel(int kernelWidth, int kernelHeight, int inputChannels,
-                        int outputChannels) {
+cv::Mat1f PNKFillKernel(int kernelWidth, int kernelHeight, int inputChannels, int outputChannels) {
   int dims[] = {outputChannels, kernelHeight, kernelWidth, inputChannels};
   cv::Mat1f kernel(4, dims);
 
@@ -25,8 +24,9 @@ cv::Mat1f PNKFillKernel(int kernelWidth, int kernelHeight, int inputChannels,
 }
 
 cv::Mat PNKCalculateConvolution(pnk::PaddingType padding, const cv::Mat &inputMatrix,
-                                const cv::Mat1f &kernel, int dilationX, int dilationY, int strideX,
-                                int strideY) {
+                                const cv::Mat &kernel, int dilationX, int dilationY, int strideX,
+                                int strideY, pnk::ActivationType activationType,
+                                const cv::Mat &alpha, const cv::Mat &beta) {
   LTAssert(kernel.dims == 4);
   cv::MatSize kernelSize = kernel.size;
 
@@ -88,6 +88,30 @@ cv::Mat PNKCalculateConvolution(pnk::PaddingType padding, const cv::Mat &inputMa
   }
 
   cv::Mat outputMat = output.reshape(outputChannels, outputRows);
+  cv::Mat activatedOutputMat = PNKCalculateActivation(outputMat, activationType, alpha, beta);
+  return activatedOutputMat;
+}
+
+cv::Mat PNKCalculateActivation(const cv::Mat &inputMatrix, pnk::ActivationType activationType,
+                               const cv::Mat &alpha, const cv::Mat &beta) {
+  int rows = inputMatrix.rows;
+  int columns = inputMatrix.cols;
+  int channels = inputMatrix.channels();
+  cv::Mat input = inputMatrix.reshape(1, rows * columns);
+  cv::Mat1hf output = cv::Mat1hf::zeros(rows * columns, channels);
+
+  for (int row = 0; row < rows; ++row) {
+    for (int column = 0; column < columns; ++column) {
+      for (int channel = 0; channel < channels; ++channel) {
+        half_float::half value = input.at<half_float::half>(row * columns + column, channel);
+        half_float::half activatedValue = PNKActivatedValue(value, channel, activationType, alpha,
+                                                            beta);
+        output.at<half_float::half>(row * columns + column, channel) = activatedValue;
+      }
+    }
+  }
+
+  cv::Mat outputMat = output.reshape(channels, rows);
   return outputMat;
 }
 
@@ -121,5 +145,99 @@ pnk::ConvolutionKernelModel PNKBuildConvolutionModel(NSUInteger kernelWidth,
     .kernelWeights = kernelWeights
   };
 };
+
+pnk::ActivationKernelModel PNKBuildActivationModel(NSUInteger featureChannels,
+                                                   pnk::ActivationType activationType) {
+  cv::Mat1f alpha, beta;
+
+  switch (activationType) {
+    case pnk::ActivationTypeIdentity:
+    case pnk::ActivationTypeAbsolute:
+    case pnk::ActivationTypeReLU:
+    case pnk::ActivationTypeTanh:
+    case pnk::ActivationTypeSigmoid:
+    case pnk::ActivationTypeSoftsign:
+    case pnk::ActivationTypeSoftplus:
+      alpha = cv::Mat1f();
+      beta = cv::Mat1f();
+      break;
+    case pnk::ActivationTypeLeakyReLU:
+    case pnk::ActivationTypeELU:
+      alpha = cv::Mat1f(1, 1);
+      beta = cv::Mat1f();
+      break;
+    case pnk::ActivationTypePReLU:
+      alpha = cv::Mat1f(1, (int)featureChannels);
+      beta = cv::Mat1f();
+      break;
+    case pnk::ActivationTypeScaledTanh:
+    case pnk::ActivationTypeSigmoidHard:
+    case pnk::ActivationTypeLinear:
+    case pnk::ActivationTypeParametricSoftplus:
+      alpha = cv::Mat1f(1, 1);
+      beta = cv::Mat1f(1, 1);
+      break;
+  }
+
+  cv::randu(alpha, 0.5, 2);
+  cv::randu(beta, -1, 1);
+
+  return {
+    .activationType = activationType,
+    .alpha = alpha,
+    .beta = beta
+  };
+};
+
+half_float::half PNKActivatedValue(half_float::half value, int channel,
+                                   pnk::ActivationType activationType, const cv::Mat1f &alpha,
+                                   const cv::Mat1f &beta) {
+  half_float::half alphaParameter;
+  half_float::half betaParameter;
+
+  switch (activationType) {
+    case pnk::ActivationTypeIdentity:
+      return value;
+    case pnk::ActivationTypeAbsolute:
+      return value < (half_float::half)0.0 ? -value : value;
+    case pnk::ActivationTypeReLU:
+      return std::max(value, (half_float::half)0.0);
+    case pnk::ActivationTypeLeakyReLU:
+      alphaParameter = (half_float::half)alpha(0);
+      return value < (half_float::half)0.0 ? (alphaParameter * value) : value;
+    case pnk::ActivationTypePReLU:
+      alphaParameter = (half_float::half)alpha((int)channel);
+      return value < (half_float::half)0.0 ? (alphaParameter * value) : value;
+    case pnk::ActivationTypeTanh:
+      return (half_float::half)std::tanh(value);
+    case pnk::ActivationTypeScaledTanh:
+      alphaParameter = (half_float::half)alpha(0);
+      betaParameter = (half_float::half)beta(0);
+      return alphaParameter * (half_float::half)std::tanh(betaParameter * value);
+    case pnk::ActivationTypeSigmoid:
+      return (half_float::half)1.0 / ((half_float::half)1.0 + (half_float::half)std::exp(-value));
+    case pnk::ActivationTypeSigmoidHard:
+      alphaParameter = (half_float::half)alpha(0);
+      betaParameter = (half_float::half)beta(0);
+      return (half_float::half)std::clamp(alphaParameter * value + betaParameter,
+                                          (half_float::half)0.0, (half_float::half)1.0);
+    case pnk::ActivationTypeLinear:
+      alphaParameter = (half_float::half)alpha(0);
+      betaParameter = (half_float::half)beta(0);
+      return alphaParameter * value + betaParameter;
+    case pnk::ActivationTypeELU:
+      alphaParameter = (half_float::half)alpha(0);
+      return value < (half_float::half)0.0 ?
+          (alphaParameter * (half_float::half)(std::exp(value) - 1)) : value;
+    case pnk::ActivationTypeSoftsign:
+      return value / (half_float::half)(1 + std::abs(value));
+    case pnk::ActivationTypeSoftplus:
+      return (half_float::half)std::log(1 + std::exp(value));
+    case pnk::ActivationTypeParametricSoftplus:
+      alphaParameter = (half_float::half)alpha(0);
+      betaParameter = (half_float::half)beta(0);
+      return alphaParameter * (half_float::half)std::log(1 + std::exp(betaParameter * value));
+  }
+}
 
 NS_ASSUME_NONNULL_END
