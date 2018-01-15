@@ -92,34 +92,37 @@ static const NSUInteger kMaxHistogramBins = 1024;
   NSUInteger minHistogramBuffersLength = self.histogramBins * 4 * sizeof(uint);
   LTParameterAssert(inputHistogramBuffer.length >= minHistogramBuffersLength,
                     @"Invalid input histogram buffer length (%lu): must be at greater than or "
-                    "equal to %lu bytes", inputHistogramBuffer.length, minHistogramBuffersLength);
+                    "equal to %lu bytes", (unsigned long)inputHistogramBuffer.length,
+                    (unsigned long)minHistogramBuffersLength);
   LTParameterAssert(referenceHistogramBuffer.length >= minHistogramBuffersLength,
                     @"Invalid reference histogram buffer length (%lu): must be greater than or "
-                    "equal to %lu bytes",
-                    referenceHistogramBuffer.length, minHistogramBuffersLength);
+                    "equal to %lu bytes", (unsigned long)referenceHistogramBuffer.length,
+                    (unsigned long)minHistogramBuffersLength);
 
   LTParameterAssert(minValueBuffer.length >= 4 * sizeof(float),
                     @"Invalid min value buffer length (%lu): must be %lu",
-                    minValueBuffer.length, 4 * sizeof(float));
+                    (unsigned long)minValueBuffer.length, 4 * sizeof(float));
   LTParameterAssert(maxValueBuffer.length >= 4 * sizeof(float),
                     @"Invalid max value buffer length (%lu): must be %lu",
-                    maxValueBuffer.length, 4 * sizeof(float));
+                    (unsigned long)maxValueBuffer.length, 4 * sizeof(float));
 
   LTParameterAssert(cdfBuffers.count == 3,
-                    @"Invalid inputCDFBuffers: expected 3 buffers, got %lu", cdfBuffers.count);
+                    @"Invalid inputCDFBuffers: expected 3 buffers, got %lu",
+                    (unsigned long)cdfBuffers.count);
   LTParameterAssert(inverseCDFBuffers.count == 3,
                     @"Invalid referenceInverseCDFBuffers: expected 3 buffers, got %lu",
-                    inverseCDFBuffers.count);
+                    (unsigned long)inverseCDFBuffers.count);
 
   for (NSUInteger i = 0; i < 3; ++i) {
     LTParameterAssert(cdfBuffers[i].length >= self.histogramBins * sizeof(float),
                       @"Invalid length for inputCDFBuffers[%lu]: expected %lu, got %lu",
-                      i, self.histogramBins * sizeof(float), cdfBuffers[i].length);
+                      (unsigned long)i, self.histogramBins * sizeof(float),
+                      (unsigned long)cdfBuffers[i].length);
     LTParameterAssert(inverseCDFBuffers[i].length >=
                       self.histogramBins * kInverseCDFScaleFactor * sizeof(float),
                       @"Invalid length for referenceInverseCDFBuffers[%lu]: expected %lu, got %lu",
-                      i, self.histogramBins * kInverseCDFScaleFactor * sizeof(float),
-                      inverseCDFBuffers[i].length);
+                      (unsigned long)i, self.histogramBins * kInverseCDFScaleFactor * sizeof(float),
+                      (unsigned long)inverseCDFBuffers[i].length);
   }
 
   PNKComputeDispatch(self.calculateCDFState, commandBuffer,
