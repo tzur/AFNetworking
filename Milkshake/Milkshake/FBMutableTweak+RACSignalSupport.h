@@ -5,11 +5,11 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/// Allows observing \c FBTweak change using \c RACSignal.
-@interface FBTweak (RACSignalSupport)
+/// Allows observing \c FBMutableTweak change using \c RACSignal.
+@interface FBMutableTweak (RACSignalSupport)
 
 /// Returns a signal which sends the \c currentValue of the receiver, then the new value any time it
-/// changes. Does not complete or err.
+/// changes. If \c currentValue is \c nil, \c defaultValue is sent. Does not complete or err.
 - (RACSignal *)shk_valueChanged;
 
 @end
