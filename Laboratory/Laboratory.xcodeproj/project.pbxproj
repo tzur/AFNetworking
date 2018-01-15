@@ -47,9 +47,9 @@
 		A14173421E6EB59F005DBEFF /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A141729D1E6EAF03005DBEFF /* libOCMock.a */; };
 		A14173431E6EB59F005DBEFF /* libSpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A14172B81E6EAF0D005DBEFF /* libSpecta.a */; };
 		A148A0551EE3D8110058165C /* LABAssignmentsManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = A148A0541EE3D8110058165C /* LABAssignmentsManager.mm */; };
-		A15AB35F1F0BFB65000846A4 /* LABDebugSourceTweakCollectionsProvider.mm in Sources */ = {isa = PBXBuildFile; fileRef = A15AB35E1F0BFB65000846A4 /* LABDebugSourceTweakCollectionsProvider.mm */; };
+		A15AB35F1F0BFB65000846A4 /* LABDebugSourceTweakCategory.mm in Sources */ = {isa = PBXBuildFile; fileRef = A15AB35E1F0BFB65000846A4 /* LABDebugSourceTweakCategory.mm */; };
 		A1674D971F01617A006A3B07 /* libFBTweak.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A1674D7E1F016167006A3B07 /* libFBTweak.a */; };
-		A17E86F61F275DA900F01834 /* LABDebugSourceTweakCollectionsProviderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = A17E86F51F275DA900F01834 /* LABDebugSourceTweakCollectionsProviderSpec.mm */; };
+		A17E86F61F275DA900F01834 /* LABDebugSourceTweakCategorySpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = A17E86F51F275DA900F01834 /* LABDebugSourceTweakCategorySpec.mm */; };
 		A18220B91F0398A500FC7C61 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A18220B81F0398A500FC7C61 /* MessageUI.framework */; };
 		A1E388391EE554D90095F056 /* LABFakeAssignmentsSource.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1E388381EE554D90095F056 /* LABFakeAssignmentsSource.mm */; };
 /* End PBXBuildFile section */
@@ -442,10 +442,10 @@
 		A14172D71E6EB2FF005DBEFF /* TestHost.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TestHost.xcodeproj; path = ../TestHost/TestHost.xcodeproj; sourceTree = "<group>"; };
 		A1417A911E6ED9CB005DBEFF /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		A148A0541EE3D8110058165C /* LABAssignmentsManager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LABAssignmentsManager.mm; sourceTree = "<group>"; };
-		A15AB35D1F0BFB65000846A4 /* LABDebugSourceTweakCollectionsProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LABDebugSourceTweakCollectionsProvider.h; sourceTree = "<group>"; };
-		A15AB35E1F0BFB65000846A4 /* LABDebugSourceTweakCollectionsProvider.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LABDebugSourceTweakCollectionsProvider.mm; sourceTree = "<group>"; };
+		A15AB35D1F0BFB65000846A4 /* LABDebugSourceTweakCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LABDebugSourceTweakCategory.h; sourceTree = "<group>"; };
+		A15AB35E1F0BFB65000846A4 /* LABDebugSourceTweakCategory.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LABDebugSourceTweakCategory.mm; sourceTree = "<group>"; };
 		A1674D6C1F016166006A3B07 /* FBTweak.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FBTweak.xcodeproj; path = ../third_party/Tweaks/FBTweak.xcodeproj; sourceTree = "<group>"; };
-		A17E86F51F275DA900F01834 /* LABDebugSourceTweakCollectionsProviderSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LABDebugSourceTweakCollectionsProviderSpec.mm; sourceTree = "<group>"; };
+		A17E86F51F275DA900F01834 /* LABDebugSourceTweakCategorySpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LABDebugSourceTweakCategorySpec.mm; sourceTree = "<group>"; };
 		A17E87171F275E1200F01834 /* LABVariantUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LABVariantUtils.h; sourceTree = "<group>"; };
 		A18220B81F0398A500FC7C61 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		A1E388371EE554D90095F056 /* LABFakeAssignmentsSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LABFakeAssignmentsSource.h; sourceTree = "<group>"; };
@@ -803,8 +803,8 @@
 		A1674D981F016195006A3B07 /* Tweaks */ = {
 			isa = PBXGroup;
 			children = (
-				A15AB35D1F0BFB65000846A4 /* LABDebugSourceTweakCollectionsProvider.h */,
-				A15AB35E1F0BFB65000846A4 /* LABDebugSourceTweakCollectionsProvider.mm */,
+				A15AB35D1F0BFB65000846A4 /* LABDebugSourceTweakCategory.h */,
+				A15AB35E1F0BFB65000846A4 /* LABDebugSourceTweakCategory.mm */,
 			);
 			name = Tweaks;
 			sourceTree = "<group>";
@@ -822,7 +822,7 @@
 		A18220911F026FC200FC7C61 /* Tweaks */ = {
 			isa = PBXGroup;
 			children = (
-				A17E86F51F275DA900F01834 /* LABDebugSourceTweakCollectionsProviderSpec.mm */,
+				A17E86F51F275DA900F01834 /* LABDebugSourceTweakCategorySpec.mm */,
 			);
 			name = Tweaks;
 			sourceTree = "<group>";
@@ -1259,7 +1259,7 @@
 				883712FD1EE57E8C0033EE08 /* TLProperties+Laboratory.mm in Sources */,
 				885349B81EE45B0C0043D190 /* LABAssignmentsSource.mm in Sources */,
 				A148A0551EE3D8110058165C /* LABAssignmentsManager.mm in Sources */,
-				A15AB35F1F0BFB65000846A4 /* LABDebugSourceTweakCollectionsProvider.mm in Sources */,
+				A15AB35F1F0BFB65000846A4 /* LABDebugSourceTweakCategory.mm in Sources */,
 				883712FC1EE57E8C0033EE08 /* LABTaplytics.mm in Sources */,
 				883712FE1EE57E8C0033EE08 /* LABTaplyticsSource.mm in Sources */,
 				883235861ED861EA0090787D /* NSErrorCodes+Laboratory.mm in Sources */,
@@ -1281,7 +1281,7 @@
 				884F64941EE53B3C0052274E /* LABExperimentsTokenProviderSpec.mm in Sources */,
 				A13C527E1EF177AE00BA2AAA /* LABDebugSourceSpec.mm in Sources */,
 				A1E388391EE554D90095F056 /* LABFakeAssignmentsSource.mm in Sources */,
-				A17E86F61F275DA900F01834 /* LABDebugSourceTweakCollectionsProviderSpec.mm in Sources */,
+				A17E86F61F275DA900F01834 /* LABDebugSourceTweakCategorySpec.mm in Sources */,
 				A10DEFA91EE425DB00F1DD87 /* LABAssignmentsManagerSpec.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
