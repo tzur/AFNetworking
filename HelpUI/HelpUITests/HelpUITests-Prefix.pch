@@ -1,0 +1,29 @@
+// Copyright (c) 2018 Lightricks. All rights reserved.
+// Created by Dekel Avrahami.
+
+#import "HelpUI-Prefix.pch"
+
+#define EXP_SHORTHAND
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+  #import <Expecta/Expecta.h>
+  #import <OCMock/OCMock.h>
+  #import <Specta/Specta.h>
+#ifdef __cplusplus
+}
+#endif
+
+#import <LTKitTestUtils/NSBundle+Test.h>
+
+#import <Wireframes/UIView+Retrieval.h>
+#import <WireframesTests/WFTestUtils.h>
+#import <WireframesTests/WFLoggingImageProvider.h>
+
+// Matchers.
+#import <LLReactiveMatchers/LLReactiveMatchers.h>
+#import <LLReactiveMatchers/Matchers/EXPMatchers+error.h>
+
+// Specta hooks.
+#import <LTEngineTests/LTSpectaObjectionHook.h>

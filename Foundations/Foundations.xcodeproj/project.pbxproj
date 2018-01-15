@@ -116,6 +116,13 @@
 			remoteGlobalIDString = 65CEFBB21D3BF72800402230;
 			remoteInfo = TestHost;
 		};
+		19C43CD21FF930B6007BB06E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 19C43CCE1FF930B6007BB06E /* HelpUI.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 19E95BDD1FF9256900078026;
+			remoteInfo = HelpUI;
+		};
 		654BA75A1D4BFEA4003DCC5F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 65BAF12B1D47F9C9009BBB6F /* LTEngine.xcodeproj */;
@@ -576,6 +583,7 @@
 /* Begin PBXFileReference section */
 		062776391ED586D50006024E /* Pinky.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Pinky.xcodeproj; path = ../Pinky/Pinky.xcodeproj; sourceTree = "<group>"; };
 		1984CF221FF3A8CE00873DA0 /* TestHost.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TestHost.xcodeproj; path = ../TestHost/TestHost.xcodeproj; sourceTree = "<group>"; };
+		19C43CCE1FF930B6007BB06E /* HelpUI.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = HelpUI.xcodeproj; path = ../HelpUI/HelpUI.xcodeproj; sourceTree = "<group>"; };
 		65BAF0FE1D47F99B009BBB6F /* Bazaar.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Bazaar.xcodeproj; path = ../Bazaar/Bazaar.xcodeproj; sourceTree = "<group>"; };
 		65BAF1071D47F9A3009BBB6F /* Camera.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Camera.xcodeproj; path = ../Camera/Camera.xcodeproj; sourceTree = "<group>"; };
 		65BAF1101D47F9A7009BBB6F /* CameraUI.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CameraUI.xcodeproj; path = ../CameraUI/CameraUI.xcodeproj; sourceTree = "<group>"; };
@@ -614,6 +622,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		19C43CCF1FF930B6007BB06E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				19C43CD31FF930B6007BB06E /* libHelpUI.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		652397371D47F69F00222BCB = {
 			isa = PBXGroup;
 			children = (
@@ -630,6 +646,7 @@
 				65BAF1101D47F9A7009BBB6F /* CameraUI.xcodeproj */,
 				65BAF1191D47F9B3009BBB6F /* DaVinci.xcodeproj */,
 				65BAF1221D47F9B9009BBB6F /* Fiber.xcodeproj */,
+				19C43CCE1FF930B6007BB06E /* HelpUI.xcodeproj */,
 				A14176B21E6EBE8C005DBEFF /* Intelligence.xcodeproj */,
 				65BAF12B1D47F9C9009BBB6F /* LTEngine.xcodeproj */,
 				65BAF1371D47F9D2009BBB6F /* LTKit.xcodeproj */,
@@ -844,6 +861,10 @@
 					ProjectRef = 65BAF1221D47F9B9009BBB6F /* Fiber.xcodeproj */;
 				},
 				{
+					ProductGroup = 19C43CCF1FF930B6007BB06E /* Products */;
+					ProjectRef = 19C43CCE1FF930B6007BB06E /* HelpUI.xcodeproj */;
+				},
+				{
 					ProductGroup = A14176B31E6EBE8C005DBEFF /* Products */;
 					ProjectRef = A14176B21E6EBE8C005DBEFF /* Intelligence.xcodeproj */;
 				},
@@ -926,6 +947,13 @@
 			fileType = wrapper.application;
 			path = TestHost.app;
 			remoteRef = 1984CF281FF3A8D000873DA0 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		19C43CD31FF930B6007BB06E /* libHelpUI.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libHelpUI.a;
+			remoteRef = 19C43CD21FF930B6007BB06E /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		65BAF1041D47F99C009BBB6F /* libBazaar.a */ = {

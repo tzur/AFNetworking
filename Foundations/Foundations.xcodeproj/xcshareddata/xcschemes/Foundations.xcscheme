@@ -367,6 +367,16 @@
                ReferencedContainer = "container:../Milkshake/Milkshake.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "195B36A91FFBB1B000F8DAB4"
+               BuildableName = "HelpUITests.xctest"
+               BlueprintName = "HelpUITests"
+               ReferencedContainer = "container:../HelpUI/HelpUI.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
