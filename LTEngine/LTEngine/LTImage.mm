@@ -198,6 +198,7 @@ static int LTMatTypeFromImageFormat(LTImageFormat imageFormat) {
       return kCGImageAlphaNone | kCGBitmapByteOrderDefault;
     case kCGColorSpaceModelRGB:
     case kCGColorSpaceModelIndexed:
+    case kCGColorSpaceModelCMYK:
       return kCGImageAlphaPremultipliedLast | kCGBitmapByteOrderDefault;
     default:
       LTAssert(NO, @"Invalid color space model given: %d", CGColorSpaceGetModel(colorSpace));
