@@ -117,7 +117,7 @@ static const NSUInteger kMaxThreadgroupMemoryLength32K = (1 << 15) - 32;
       kMaxThreadgroupMemoryLength32K : kMaxThreadgroupMemoryLength16K;
 
   auto sharedBufferElements = maxMemoryLength / 3 / sizeof(uint);
-  auto maxNumberOfWarps = sharedBufferElements / self.histogramBins;
+  NSUInteger maxNumberOfWarps = sharedBufferElements / self.histogramBins;
   return std::min(maxNumberOfWarps * warpSize, maxThreadsPerThreadgroup);
 }
 
