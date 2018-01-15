@@ -49,9 +49,7 @@
 		A148A0551EE3D8110058165C /* LABAssignmentsManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = A148A0541EE3D8110058165C /* LABAssignmentsManager.mm */; };
 		A15AB35F1F0BFB65000846A4 /* LABDebugSourceTweakCollectionsProvider.mm in Sources */ = {isa = PBXBuildFile; fileRef = A15AB35E1F0BFB65000846A4 /* LABDebugSourceTweakCollectionsProvider.mm */; };
 		A1674D971F01617A006A3B07 /* libFBTweak.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A1674D7E1F016167006A3B07 /* libFBTweak.a */; };
-		A1674DAB1F0161EC006A3B07 /* LABTweakCategoriesProvider.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1674DAA1F0161EC006A3B07 /* LABTweakCategoriesProvider.mm */; };
 		A17E86F61F275DA900F01834 /* LABDebugSourceTweakCollectionsProviderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = A17E86F51F275DA900F01834 /* LABDebugSourceTweakCollectionsProviderSpec.mm */; };
-		A18220B71F026FEC00FC7C61 /* LABTweakCategoriesProviderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = A18220B61F026FEC00FC7C61 /* LABTweakCategoriesProviderSpec.mm */; };
 		A18220B91F0398A500FC7C61 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A18220B81F0398A500FC7C61 /* MessageUI.framework */; };
 		A1E388391EE554D90095F056 /* LABFakeAssignmentsSource.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1E388381EE554D90095F056 /* LABFakeAssignmentsSource.mm */; };
 /* End PBXBuildFile section */
@@ -447,13 +445,8 @@
 		A15AB35D1F0BFB65000846A4 /* LABDebugSourceTweakCollectionsProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LABDebugSourceTweakCollectionsProvider.h; sourceTree = "<group>"; };
 		A15AB35E1F0BFB65000846A4 /* LABDebugSourceTweakCollectionsProvider.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LABDebugSourceTweakCollectionsProvider.mm; sourceTree = "<group>"; };
 		A1674D6C1F016166006A3B07 /* FBTweak.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FBTweak.xcodeproj; path = ../third_party/Tweaks/FBTweak.xcodeproj; sourceTree = "<group>"; };
-		A1674DA81F0161EC006A3B07 /* LABTweakCollectionsProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LABTweakCollectionsProvider.h; sourceTree = "<group>"; };
-		A1674DA91F0161EC006A3B07 /* LABTweakCategoriesProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LABTweakCategoriesProvider.h; sourceTree = "<group>"; };
-		A1674DAA1F0161EC006A3B07 /* LABTweakCategoriesProvider.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LABTweakCategoriesProvider.mm; sourceTree = "<group>"; };
-		A16D7FF31F1A933E006FE0F6 /* LABTweakCategoriesProvider+Internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "LABTweakCategoriesProvider+Internal.h"; sourceTree = "<group>"; };
 		A17E86F51F275DA900F01834 /* LABDebugSourceTweakCollectionsProviderSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LABDebugSourceTweakCollectionsProviderSpec.mm; sourceTree = "<group>"; };
 		A17E87171F275E1200F01834 /* LABVariantUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LABVariantUtils.h; sourceTree = "<group>"; };
-		A18220B61F026FEC00FC7C61 /* LABTweakCategoriesProviderSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LABTweakCategoriesProviderSpec.mm; sourceTree = "<group>"; };
 		A18220B81F0398A500FC7C61 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		A1E388371EE554D90095F056 /* LABFakeAssignmentsSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LABFakeAssignmentsSource.h; sourceTree = "<group>"; };
 		A1E388381EE554D90095F056 /* LABFakeAssignmentsSource.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LABFakeAssignmentsSource.mm; sourceTree = "<group>"; };
@@ -812,10 +805,6 @@
 			children = (
 				A15AB35D1F0BFB65000846A4 /* LABDebugSourceTweakCollectionsProvider.h */,
 				A15AB35E1F0BFB65000846A4 /* LABDebugSourceTweakCollectionsProvider.mm */,
-				A1674DA91F0161EC006A3B07 /* LABTweakCategoriesProvider.h */,
-				A1674DAA1F0161EC006A3B07 /* LABTweakCategoriesProvider.mm */,
-				A16D7FF31F1A933E006FE0F6 /* LABTweakCategoriesProvider+Internal.h */,
-				A1674DA81F0161EC006A3B07 /* LABTweakCollectionsProvider.h */,
 			);
 			name = Tweaks;
 			sourceTree = "<group>";
@@ -834,7 +823,6 @@
 			isa = PBXGroup;
 			children = (
 				A17E86F51F275DA900F01834 /* LABDebugSourceTweakCollectionsProviderSpec.mm */,
-				A18220B61F026FEC00FC7C61 /* LABTweakCategoriesProviderSpec.mm */,
 			);
 			name = Tweaks;
 			sourceTree = "<group>";
@@ -1277,7 +1265,6 @@
 				883235861ED861EA0090787D /* NSErrorCodes+Laboratory.mm in Sources */,
 				88C21F471F0D272F0005EFDE /* LABAssignmentValue.mm in Sources */,
 				88BB646D1EDAAD100026DEC0 /* LABLocalSource.mm in Sources */,
-				A1674DAB1F0161EC006A3B07 /* LABTweakCategoriesProvider.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1290,7 +1277,6 @@
 				88C21F6B1F0D37E40005EFDE /* LABAssignmentValueSpec.mm in Sources */,
 				883235881ED861F30090787D /* NSErrorCodes+LaboratorySpec.mm in Sources */,
 				88349C141EF012C1007B14C4 /* LABTaplyticsSourceSpec.mm in Sources */,
-				A18220B71F026FEC00FC7C61 /* LABTweakCategoriesProviderSpec.mm in Sources */,
 				885AFF991F02B34D0035A6B2 /* LABTaplyticsSpec.mm in Sources */,
 				884F64941EE53B3C0052274E /* LABExperimentsTokenProviderSpec.mm in Sources */,
 				A13C527E1EF177AE00BA2AAA /* LABDebugSourceSpec.mm in Sources */,
