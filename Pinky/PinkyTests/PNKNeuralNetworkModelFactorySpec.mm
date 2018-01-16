@@ -105,8 +105,8 @@ context(@"deserialization", ^{
       std::string layerName = "test_conv_activation_None_biasTrue_type_name-strided_kernel-95_"
           "stride-22_dilation-1_pad_same";
       pnk::ConvolutionKernelModel kernelModel = model->convolutionKernels[layerName];
-      expect(kernelModel.kernelWidth).to.equal(9);
-      expect(kernelModel.kernelHeight).to.equal(5);
+      expect(kernelModel.kernelWidth).to.equal(5);
+      expect(kernelModel.kernelHeight).to.equal(9);
       expect(kernelModel.kernelChannels).to.equal(3);
       expect(kernelModel.groups).to.equal(1);
       expect(kernelModel.inputFeatureChannels).to.equal(3);
@@ -273,10 +273,10 @@ context(@"deserialization", ^{
 
       pnk::PoolingKernelModel kernelModel = model->poolingKernels["test_maxpool"];
       expect(kernelModel.pooling).to.equal(pnk::PoolingTypeMax);
-      expect(kernelModel.kernelWidth).to.equal(2);
-      expect(kernelModel.kernelHeight).to.equal(3);
-      expect(kernelModel.strideX).to.equal(2);
-      expect(kernelModel.strideY).to.equal(3);
+      expect(kernelModel.kernelWidth).to.equal(3);
+      expect(kernelModel.kernelHeight).to.equal(2);
+      expect(kernelModel.strideX).to.equal(3);
+      expect(kernelModel.strideY).to.equal(2);
       expect(kernelModel.padding).to.equal(pnk::PaddingTypeValid);
       expect(kernelModel.averagePoolExcludePadding).to.beTruthy();
       expect(kernelModel.globalPooling).to.beFalsy();
