@@ -67,8 +67,8 @@ cv::Mat1f metalConvolutionWeightsFromCoreMLConvolutionParameters(
   NSUInteger inputFeatureChannels = (NSUInteger)(convolutionParams.ngroups() *
                                                  convolutionParams.kernelchannels());
   NSUInteger outputFeatureChannels = (NSUInteger)convolutionParams.outputchannels();
-  NSUInteger kernelHeight = (NSUInteger)convolutionParams.kernelsize(1);
-  NSUInteger kernelWidth = (NSUInteger)convolutionParams.kernelsize(0);
+  NSUInteger kernelHeight = (NSUInteger)convolutionParams.kernelsize(0);
+  NSUInteger kernelWidth = (NSUInteger)convolutionParams.kernelsize(1);
 
   cv::Mat1f result(weights.rows, weights.cols);
   NSUInteger channelSize = kernelHeight * kernelWidth * inputFeatureChannels;
@@ -116,17 +116,17 @@ ConvolutionKernelModel createConvolutionKernelModel
                     "parameters");
 
   return ConvolutionKernelModel{
-    .kernelWidth = (NSUInteger)convolutionParams.kernelsize(0),
-    .kernelHeight = (NSUInteger)convolutionParams.kernelsize(1),
+    .kernelHeight = (NSUInteger)convolutionParams.kernelsize(0),
+    .kernelWidth = (NSUInteger)convolutionParams.kernelsize(1),
     .kernelChannels = (NSUInteger)convolutionParams.kernelchannels(),
     .groups = (NSUInteger)convolutionParams.ngroups(),
     .inputFeatureChannels = (NSUInteger)(convolutionParams.ngroups() *
                                          convolutionParams.kernelchannels()),
     .outputFeatureChannels = (NSUInteger)convolutionParams.outputchannels(),
-    .strideX = (NSUInteger)convolutionParams.stride(0),
-    .strideY = (NSUInteger)convolutionParams.stride(1),
-    .dilationX = (NSUInteger)convolutionParams.dilationfactor(0),
-    .dilationY = (NSUInteger)convolutionParams.dilationfactor(1),
+    .strideY = (NSUInteger)convolutionParams.stride(0),
+    .strideX = (NSUInteger)convolutionParams.stride(1),
+    .dilationY = (NSUInteger)convolutionParams.dilationfactor(0),
+    .dilationX = (NSUInteger)convolutionParams.dilationfactor(1),
     .deconvolutionOutputSize = convolutionParams.isdeconvolution() ?
         CGSizeMake(convolutionParams.outputshape(0),
                    convolutionParams.outputshape(1)) :
@@ -150,10 +150,10 @@ PoolingKernelModel createPoolingKernelModel
   return PoolingKernelModel{
     .padding = paddingType(poolingParams.PoolingPaddingType_case()),
     .pooling = poolingType(poolingParams.type()),
-    .kernelWidth = (NSUInteger)poolingParams.kernelsize(0),
-    .kernelHeight = (NSUInteger)poolingParams.kernelsize(1),
-    .strideX = (NSUInteger)poolingParams.stride(0),
-    .strideY = (NSUInteger)poolingParams.stride(1),
+    .kernelHeight = (NSUInteger)poolingParams.kernelsize(0),
+    .kernelWidth = (NSUInteger)poolingParams.kernelsize(1),
+    .strideY = (NSUInteger)poolingParams.stride(0),
+    .strideX = (NSUInteger)poolingParams.stride(1),
     .averagePoolExcludePadding = poolingParams.avgpoolexcludepadding(),
     .globalPooling = poolingParams.globalpooling(),
   };
