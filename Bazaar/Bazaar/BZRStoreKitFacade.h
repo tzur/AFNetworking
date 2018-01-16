@@ -1,6 +1,7 @@
 // Copyright (c) 2016 Lightricks. All rights reserved.
 // Created by Ben Yohay.
 
+#import "BZREventEmitter.h"
 #import "BZRStoreKitTypedefs.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -20,7 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 /// @see SKDownload, SKPayment, SKPaymentQueue, SKProduct, SKProductsRequest, SKProductResponse,
 /// SKPaymentTransaction.
-@interface BZRStoreKitFacade : NSObject
+@interface BZRStoreKitFacade : NSObject <BZREventEmitter>
 
 - (instancetype)init NS_UNAVAILABLE;
 

@@ -10,7 +10,8 @@ LTEnumDeclare(NSUInteger, BZREventType,
   BZREventTypeNonCriticalError,
   BZREventTypeCriticalError,
   BZREventTypeInformational,
-  BZREventTypeReceiptValidationStatusReceived
+  BZREventTypeReceiptValidationStatusReceived,
+  BZREventTypePromotedIAPInitiated
 );
 
 /// Represents a single event that is sent from Bazaar.

@@ -17,6 +17,7 @@
 SpecBegin(BZRStoreKitFacade)
 
 __block BZRPaymentQueue *paymentQueue;
+__block RACSubject *paymentQueueEventsSubject;
 __block RACSubject *unfinishedTransactionsSubject;
 __block BZRPurchaseManager *purchaseManager;
 __block RACSubject *unhandledTransactionsSubject;
@@ -27,6 +28,8 @@ __block BZRStoreKitFacade *storeKitFacade;
 
 beforeEach(^{
   paymentQueue = OCMClassMock([BZRPaymentQueue class]);
+  paymentQueueEventsSubject = [RACSubject subject];
+  OCMStub([paymentQueue eventsSignal]).andReturn(paymentQueueEventsSubject);
   unfinishedTransactionsSubject = [RACSubject subject];
   OCMStub([paymentQueue unfinishedTransactionsSignal]).andReturn(unfinishedTransactionsSubject);
 
@@ -379,6 +382,17 @@ context(@"handling unhandled transactions", ^{
     expect(weakStoreKitFacade).to.beNil();
     expect(unhandledSuccessfulTransactionsSignal).will.complete();
     expect(unhandledSuccessfulTransactionsSignal).will.sendValuesWithCount(0);
+  });
+});
+
+context(@"events signal", ^{
+  it(@"should send event sent by payment queue's events signal", ^{
+    auto event = [[BZREvent alloc] initWithType:$(BZREventTypeInformational) eventInfo:@{}];
+    auto recorder = [storeKitFacade.eventsSignal testRecorder];
+
+    [paymentQueueEventsSubject sendNext:event];
+
+    expect(recorder).to.sendValues(@[event]);
   });
 });
 
