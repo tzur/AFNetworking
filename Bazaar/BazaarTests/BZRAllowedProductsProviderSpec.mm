@@ -3,7 +3,6 @@
 
 #import "BZRAllowedProductsProvider.h"
 
-#import "BZREvent.h"
 #import "BZRFakeAcquiredViaSubscriptionProvider.h"
 #import "BZRFakeAggregatedReceiptValidationStatusProvider.h"
 #import "BZRProduct.h"
@@ -91,24 +90,6 @@ context(@"allowed products provider", ^{
     NSArray<NSString *> *expectedAllowedProducts =
         @[purchasedProductIdentifier, filterProductIdentifier, nonFilterProductIdentifier];
     expect(allowedProvider.allowedProducts).to.equal([NSSet setWithArray:expectedAllowedProducts]);
-  });
-
-  it(@"should send error event if the subscription from the receipt was not found in product "
-     "list", ^{
-    auto recorder = [allowedProvider.eventsSignal testRecorder];
-
-    BZRReceiptSubscriptionInfo *subscription =
-        BZRSubscriptionWithIdentifier(@"notFoundSubscription");
-    validationStatusProvider.receiptValidationStatus =
-        [validationStatusProvider.receiptValidationStatus
-         modelByOverridingPropertyAtKeypath:
-         @instanceKeypath(BZRReceiptValidationStatus, receipt.subscription)
-         withValue:subscription];
-
-    expect(recorder).to.matchValue(0, ^BOOL(BZREvent *event) {
-      return [event.eventType isEqual:$(BZREventTypeNonCriticalError)] &&
-          event.eventError.code == BZRErrorCodeSubscriptionNotFoundInProductList;
-    });
   });
 
   it(@"should return empty set if the receipt is nil", ^{

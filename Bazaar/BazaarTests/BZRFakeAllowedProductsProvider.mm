@@ -9,7 +9,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)init {
   if (self = [super init]) {
-    _eventsSignal = [RACSubject subject];
     _allowedProducts = [NSSet set];
   }
   return self;

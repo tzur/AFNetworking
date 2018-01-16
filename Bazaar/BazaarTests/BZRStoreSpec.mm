@@ -1511,11 +1511,6 @@ context(@"events signal", ^{
     expect(recorder).will.sendValues(@[error]);
   });
 
-  it(@"should send event sent by allowed products provider", ^{
-    [allowedProductsProvider.eventsSignal sendNext:event];
-    expect(recorder).will.sendValues(@[event]);
-  });
-
   it(@"should send event sent by content fetcher", ^{
     [contentFetcherEventsSubject sendNext:event];
     expect(recorder).will.sendValues(@[event]);

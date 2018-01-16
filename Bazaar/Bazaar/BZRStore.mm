@@ -167,7 +167,6 @@ NS_ASSUME_NONNULL_BEGIN
     self.storeKitFacade.transactionsErrorEventsSignal,
     self.productsProvider.eventsSignal,
     self.contentFetcher.eventsSignal,
-    self.allowedProductsProvider.eventsSignal,
     self.storeKitMetadataFetcher.eventsSignal,
     [self.backgroundReceiptValidator.eventsSignal replay],
     self.keychainStorage.eventsSignal

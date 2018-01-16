@@ -10,7 +10,7 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol BZRProductsProvider;
 
 /// Provider used to provide the set of products the user is allowed to use.
-@protocol BZRAllowedProductsProvider <BZREventEmitter>
+@protocol BZRAllowedProductsProvider
 
 /// Set of product identifiers that the user is allowed to use. KVO-compliant. Changes may be
 /// delivered on an arbitrary thread.
