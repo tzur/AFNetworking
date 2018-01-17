@@ -54,35 +54,7 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 + (BOOL)doesSupportActivationType:(pnk::ActivationType)activationType {
-  if (@available(iOS 11.0, *)) {
-    static const std::set<pnk::ActivationType> kSupportedTypes = {
-      pnk::ActivationTypeAbsolute,
-      pnk::ActivationTypeReLU,
-      pnk::ActivationTypeLeakyReLU,
-      pnk::ActivationTypeTanh,
-      pnk::ActivationTypeScaledTanh,
-      pnk::ActivationTypeSigmoid,
-      pnk::ActivationTypeSigmoidHard,
-      pnk::ActivationTypeLinear,
-      pnk::ActivationTypePReLU,
-      pnk::ActivationTypeELU,
-      pnk::ActivationTypeSoftsign,
-      pnk::ActivationTypeSoftplus,
-      pnk::ActivationTypeParametricSoftplus
-    };
-    return kSupportedTypes.count(activationType);
-  } else {
-    static const std::set<pnk::ActivationType> kSupportedTypes = {
-      pnk::ActivationTypeAbsolute,
-      pnk::ActivationTypeReLU,
-      pnk::ActivationTypeLeakyReLU,
-      pnk::ActivationTypeTanh,
-      pnk::ActivationTypeScaledTanh,
-      pnk::ActivationTypeSigmoid,
-      pnk::ActivationTypeLinear,
-    };
-    return kSupportedTypes.count(activationType);
-  }
+  return [MPSCNNNeuron pnk_doesSupportActivationType:activationType];
 }
 
 @end

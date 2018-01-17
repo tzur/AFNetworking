@@ -1,6 +1,8 @@
 // Copyright (c) 2017 Lightricks. All rights reserved.
 // Created by Ofir Bibi.
 
+#import "PNKNeuralNetworkTypeDefinitions.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
 namespace pnk {
@@ -17,6 +19,9 @@ namespace pnk {
 /// type.
 + (MPSCNNNeuron * _Nullable)pnk_cnnNeuronWithDevice:(id<MTLDevice>)device
     activationModel:(const pnk::ActivationKernelModel &)activationModel;
+
+/// Returns \c YES if the given \c activationType is supported by this class.
++ (BOOL)pnk_doesSupportActivationType:(pnk::ActivationType)activationType;
 
 @end
 
