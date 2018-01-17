@@ -1,9 +1,9 @@
 // Copyright (c) 2017 Lightricks. All rights reserved.
 // Created by Michael Kimyagarov.
 
-NS_ASSUME_NONNULL_BEGIN
+#import "TINMessage.h"
 
-@class TINMessage;
+NS_ASSUME_NONNULL_BEGIN
 
 /// Available file operations.
 LTEnumDeclare(NSUInteger, TINMessageFileOperation,
@@ -49,45 +49,73 @@ LTEnumDeclare(NSUInteger, TINMessageFileOperation,
 typedef NSDictionary<NSString *, id<NSSecureCoding>> * _Nullable
     (^TINMessageUserInfoProviderBlock)(NSURL *messageDirectory, NSError **error);
 
-/// Returns \c TINMessage with the given \c targetScheme and \c block. Returns \c nil if error
-/// occurs and sets the \c error. \c targetScheme is a scheme of an application which this message
-/// is targeted to. \c block is invoked with a message designated directory URL and is expected to
-/// return a dictionary which is used as \c userInfo when initializing the returned message.
+/// Returns \c TINMessage with the given \c targetScheme, \c type, \c action and \c block. Returns
+/// \c nil if error occurs and sets the \c error.
+///
+/// @param targetScheme A scheme of an application which this message is targeted to.
+/// @param type Type of the created message.
+/// @param action Action associated with the create message.
+/// @param block A block which is invoked with a message designated directory URL and is expected
+/// to return a dictionary which is used as \c userInfo when initializing the returned message.
+/// @param error An error which is set if an error occurs
 ///
 /// @note the \c block isn't invoked when the application doesn't have an entitlement to access the
 /// Application Group ID, in which case an appropriate \c error is set.
 ///
 /// @note the \c block runs synchronously.
 - (nullable TINMessage *)messageWithTargetScheme:(NSString *)targetScheme
+                                            type:(TINMessageType *)type action:(NSString *)action
                                            block:(TINMessageUserInfoProviderBlock)block
                                            error:(NSError **)error;
 
-/// Returns a message with the given \c targetScheme, \c info, \c data and \c uti. Returns \c nil if
-/// an error occurs and sets the \c error. \c targetScheme is a scheme of an application which this
-/// message is targeted to. \c data is persistently stored in the message's associated directory and
-/// can be obtained from the returned \c TINMessage \c fileName. The returned message's attached
+/// Returns a message with the given \c targetScheme, \c type, \c action, \c info, \c data and
+/// \c uti. Returns \c nil if an error occurs and sets the \c error. The returned message's attached
 /// \c fileName is suffixed with preferred extension for \c uti, which is returned by
 /// \c UTTypeCreatePreferredIdentifierForTag() method.
+///
+/// @param targetScheme A scheme of an application which this message is targeted to.
+/// @param type Type of the created message.
+/// @param action Action associated with the create message.
+/// @param info container for custom attributes.
+/// @param data Data is persistently stored in the message's associated directory and can be
+/// obtained from the returned \c TINMessage \c fileName.
+/// @param uti UTI of the \c data.
+/// @param error An error which is set if an error occurs.
 - (nullable TINMessage *)messageWithTargetScheme:(NSString *)targetScheme
+    type:(TINMessageType *)type action:(NSString *)action
     userInfo:(NSDictionary<NSString *, id<NSSecureCoding>> *)info data:(NSData *)data
     uti:(NSString *)uti error:(NSError **)error;
 
-/// Returns a message with the given \c targetScheme, \c info and \c image. Returns \c nil if an
-/// error occurs and sets the \c error. \c targetScheme is a scheme of an application which this
-/// message is targeted to. \c image is stored persistently, in lossless PNG format, in the
-/// message's associated directory and can be obtained from the returned \c TINMessage \c fileName.
+/// Returns a message with the given \c targetScheme, \c type, \c action, \c info and \c image.
+/// Returns \c nil if an error occurs and sets the \c error.
+///
+/// @param targetScheme A scheme of an application which this message is targeted to.
+/// @param type Type of the created message.
+/// @param action Action associated with the create message.
+/// @param info container for custom attributes.
+/// @param image An image which is stored persistently, in lossless PNG format, in the message's
+/// associated directory and can be obtained from the returned \c TINMessage \c fileName.
+/// @param error An error which is set if an error occurs.
 - (nullable TINMessage *)messageWithTargetScheme:(NSString *)targetScheme
+    type:(TINMessageType *)type action:(NSString *)action
     userInfo:(NSDictionary<NSString *, id<NSSecureCoding>> *)info image:(UIImage *)image
     error:(NSError **)error;
 
-/// Returns a message with the given \c targetScheme, \c info, \c fileURL and \c operation. Returns
-/// \c nil if an error occurs and sets the \c error. \c targetScheme is a scheme of an application
-/// which this message is targeted to. A file referenced by \c fileURL is attached to the returned
-/// message and stored persistently at message's designated directory. The file referenced by
-/// \c fileURL is copied or moved to message's designated directory based on \c operation, while
-/// preserving the file's path extension. Error is reported if \c fileURL references a directory or
-/// non existing file.
+/// Returns a message with the given \c targetScheme, \c type, \c action, \c info, \c fileURL and
+/// \c operation. Returns \c nil if an error occurs and sets the \c error.
+///
+/// @param targetScheme A scheme of an application which this message is targeted to.
+/// @param type Type of the created message.
+/// @param action Action associated with the create message.
+/// @param info container for custom attributes.
+/// @param fileURL A file referenced by \c fileURL is attached to the returned message and stored
+/// persistently at message's designated directory. The file referenced by \c fileURL is copied or
+/// moved to message's designated directory based on \c operation, while preserving the file's path
+/// extension. Error is reported if \c fileURL references a directory or non existing file.
+/// @param operation An operation to be performed on a file referenced by \c fileURL.
+/// @param error An error which is set if an error occurs.
 - (nullable TINMessage *)messageWithTargetScheme:(NSString *)targetScheme
+    type:(TINMessageType *)type action:(NSString *)action
     userInfo:(NSDictionary<NSString *, id<NSSecureCoding>> *)info fileURL:(NSURL *)fileURL
     operation:(TINMessageFileOperation *)operation error:(NSError **)error;
 

@@ -58,7 +58,8 @@ context(@"unit tests", ^{
   it(@"should invoke the block with correct message directory", ^{
     __block NSURL *actualMessageDirectory;
     auto _Nullable __unused message =
-        [factory messageWithTargetScheme:kTINTargetScheme
+        [factory messageWithTargetScheme:kTINTargetScheme type:$(TINMessageTypeRequest)
+                                  action:@"foo"
                                    block:^NSDictionary *(NSURL *messageDirectory, NSError **) {
       actualMessageDirectory = messageDirectory;
       return nil;
@@ -73,6 +74,7 @@ context(@"unit tests", ^{
   it(@"should return nil message if block returns nil", ^{
     __block BOOL blockRun = NO;
     auto _Nullable message = [factory messageWithTargetScheme:kTINTargetScheme
+                                                         type:$(TINMessageTypeRequest) action:@"foo"
                                                         block:^NSDictionary *(NSURL *, NSError **) {
       blockRun = YES;
       return nil;
@@ -87,8 +89,7 @@ context(@"unit tests", ^{
                                                           appGroupID:@"foo"];
     __block BOOL blockRun = NO;
     auto _Nullable __unused message = [factory messageWithTargetScheme:kTINTargetScheme
-                                                                 block:^NSDictionary *(NSURL *,
-                                                                                       NSError **) {
+        type:$(TINMessageTypeRequest) action:@"foo" block:^NSDictionary *(NSURL *, NSError **) {
       blockRun = YES;
       return nil;
     } error:nil];
@@ -97,8 +98,8 @@ context(@"unit tests", ^{
 
   it(@"should init message's userInfo with block's returned dictionary", ^{
     auto _Nullable message =
-        [factory messageWithTargetScheme:kTINTargetScheme
-                                   block:^NSDictionary *(NSURL *, NSError **) {
+        [factory messageWithTargetScheme:kTINTargetScheme type:$(TINMessageTypeRequest)
+                                  action:@"foo" block:^NSDictionary *(NSURL *, NSError **) {
       return @{@"foo": @"bar"};
     } error:nil];
     expect(message.userInfo).to.equal(@{@"foo": @"bar"});
@@ -107,7 +108,8 @@ context(@"unit tests", ^{
   it(@"should forward errors set within the block", ^{
     NSError *error;
     auto _Nullable message =
-        [factory messageWithTargetScheme:kTINTargetScheme
+        [factory messageWithTargetScheme:kTINTargetScheme type:$(TINMessageTypeRequest)
+                                  action:@"foo"
                                    block:^NSDictionary *(NSURL *, NSError **blockError) {
       *blockError = [NSError lt_errorWithCode:123];
       return nil;
@@ -121,7 +123,8 @@ context(@"unit tests", ^{
                                    attributes:OCMOCK_ANY
                                         error:[OCMArg anyObjectRef]]).andReturn(NO);
     NSError *error;
-    auto message = [factory messageWithTargetScheme:kTINTargetScheme userInfo:@{} data:data
+    auto message = [factory messageWithTargetScheme:kTINTargetScheme type:$(TINMessageTypeRequest)
+                                             action:@"foo" userInfo:@{} data:data
                                                 uti:(__bridge NSString *)kUTTypePNG error:&error];
     expect(message).to.beNil();
   });
@@ -131,7 +134,8 @@ context(@"unit tests", ^{
                                    attributes:OCMOCK_ANY
                                         error:[OCMArg anyObjectRef]]).andReturn(YES);
     NSError *error;
-    auto message = [factory messageWithTargetScheme:kTINTargetScheme userInfo:@{} data:data
+    auto message = [factory messageWithTargetScheme:kTINTargetScheme type:$(TINMessageTypeRequest)
+                                             action:@"foo" userInfo:@{} data:data
                                                 uti:[NSUUID UUID].UUIDString error:&error];
     expect(message).to.beNil();
     expect(error.code).to.equal(TINErrorCodeInvalidUTI);
@@ -141,7 +145,8 @@ context(@"unit tests", ^{
     OCMStub([fileManager lt_writeData:OCMOCK_ANY toFile:OCMOCK_ANY options:NSDataWritingAtomic
                                 error:[OCMArg anyObjectRef]]).andReturn(NO);
     NSError *error;
-    auto message = [factory messageWithTargetScheme:kTINTargetScheme userInfo:@{} data:data
+    auto message = [factory messageWithTargetScheme:kTINTargetScheme type:$(TINMessageTypeRequest)
+                                             action:@"foo" userInfo:@{} data:data
                                                 uti:(__bridge NSString *)kUTTypePNG error:&error];
     expect(message).to.beNil();
     expect(error.code).to.equal(LTErrorCodeObjectCreationFailed);
@@ -153,7 +158,8 @@ context(@"unit tests", ^{
         .andReturn(NO);
 
     NSError *error;
-    auto message = [factory messageWithTargetScheme:kTINTargetScheme userInfo:@{} fileURL:dataURL
+    auto message = [factory messageWithTargetScheme:kTINTargetScheme type:$(TINMessageTypeRequest)
+                                             action:@"foo" userInfo:@{} fileURL:dataURL
                                           operation:$(TINMessageFileOperationMove) error:&error];
     expect(message).to.beNil();
     expect(error.code).to.equal(LTErrorCodeObjectCreationFailed);
@@ -165,7 +171,8 @@ context(@"unit tests", ^{
         .andReturn(NO);
 
     NSError *error;
-    auto message = [factory messageWithTargetScheme:kTINTargetScheme userInfo:@{} fileURL:dataURL
+    auto message = [factory messageWithTargetScheme:kTINTargetScheme type:$(TINMessageTypeRequest)
+                                             action:@"foo" userInfo:@{} fileURL:dataURL
                                           operation:$(TINMessageFileOperationCopy) error:&error];
     expect(message).to.beNil();
     expect(error.code).to.equal(LTErrorCodeObjectCreationFailed);
@@ -186,8 +193,9 @@ context(@"integration tests", ^{
 
   it(@"should create message with data", ^{
     NSError *error;
-    auto _Nullable message = [factory messageWithTargetScheme:kTINTargetScheme userInfo:@{}
-                              data:data uti:(__bridge NSString *)kUTTypePNG error:&error];
+    auto _Nullable message = [factory messageWithTargetScheme:kTINTargetScheme
+        type:$(TINMessageTypeRequest) action:@"foo" userInfo:@{} data:data
+        uti:(__bridge NSString *)kUTTypePNG error:&error];
     expect(error).to.beNil();
     expect([fileManager lt_fileExistsAtPath:nn(message.fileURLs.firstObject.path)]).to.beTruthy();
 
@@ -198,8 +206,10 @@ context(@"integration tests", ^{
   it(@"should create message with UIImage", ^{
     auto image = TINUIImage(CGSizeMake(3, 3), [UIColor purpleColor]);
     NSError *error;
-    auto _Nullable message = [factory messageWithTargetScheme:kTINTargetScheme userInfo:@{}
-                                                        image:image error:&error];
+    auto _Nullable message = [factory messageWithTargetScheme:kTINTargetScheme
+                                                         type:$(TINMessageTypeRequest)
+                                                       action:@"foo" userInfo:@{} image:image
+                                                        error:&error];
     expect(message).notTo.beNil();
     expect(error).to.beNil();
 
@@ -213,8 +223,9 @@ context(@"integration tests", ^{
   it(@"should fail creating message with malformed image", ^{
     auto badImage = [[UIImage alloc] init];
     NSError *error;
-    auto _Nullable message = [factory messageWithTargetScheme:kTINTargetScheme userInfo:@{}
-                                                        image:badImage error:&error];
+    auto _Nullable message = [factory messageWithTargetScheme:kTINTargetScheme
+                                                         type:$(TINMessageTypeRequest) action:@"foo"
+                                                     userInfo:@{} image:badImage error:&error];
     expect(message).to.beNil();
     expect(error.code).to.equal(LTErrorCodeObjectCreationFailed);
   });
@@ -223,9 +234,11 @@ context(@"integration tests", ^{
     [data writeToURL:dataURL atomically:YES];
 
     NSError *error;
-    auto _Nullable message = [factory messageWithTargetScheme:kTINTargetScheme userInfo:@{}
-                              fileURL:dataURL operation:$(TINMessageFileOperationCopy)
-                              error:&error];
+    auto _Nullable message = [factory messageWithTargetScheme:kTINTargetScheme
+                                                         type:$(TINMessageTypeRequest) action:@"foo"
+                                                     userInfo:@{} fileURL:dataURL
+                                                    operation:$(TINMessageFileOperationCopy)
+                                                        error:&error];
 
     expect(message.fileNames).notTo.beNil();
     expect(message.fileURLs).notTo.beNil();
@@ -238,9 +251,11 @@ context(@"integration tests", ^{
   it(@"should fail creating message with non existing fileURL", ^{
     auto nonExsitingURL = [NSURL fileURLWithPath:[NSUUID UUID].UUIDString];
     NSError *error;
-    auto _Nullable message = [factory messageWithTargetScheme:kTINTargetScheme userInfo:@{}
-                              fileURL:nonExsitingURL operation:$(TINMessageFileOperationCopy)
-                              error:&error];
+    auto _Nullable message = [factory messageWithTargetScheme:kTINTargetScheme
+                                                         type:$(TINMessageTypeRequest) action:@"foo"
+                                                     userInfo:@{} fileURL:nonExsitingURL
+                                                    operation:$(TINMessageFileOperationCopy)
+                                                        error:&error];
     expect(message).to.beNil();
     expect(error.code).to.equal(LTErrorCodeFileNotFound);
   });
@@ -249,9 +264,11 @@ context(@"integration tests", ^{
     [data writeToURL:dataURL atomically:YES];
 
     NSError *error;
-    auto _Nullable message = [factory messageWithTargetScheme:kTINTargetScheme userInfo:@{}
-                              fileURL:dataURL operation:$(TINMessageFileOperationCopy)
-                              error:&error];
+    auto _Nullable message = [factory messageWithTargetScheme:kTINTargetScheme
+                                                         type:$(TINMessageTypeRequest) action:@"foo"
+                                                     userInfo:@{} fileURL:dataURL
+                                                    operation:$(TINMessageFileOperationCopy)
+                                                        error:&error];
     expect(message.fileNames).toNot.beNil();
     expect(message.fileNames.firstObject.pathExtension).to.equal(dataURL.pathExtension);
   });
@@ -260,9 +277,11 @@ context(@"integration tests", ^{
     [data writeToURL:dataURL atomically:YES];
 
     NSError *error;
-    auto _Nullable message = [factory messageWithTargetScheme:kTINTargetScheme userInfo:@{}
-                              fileURL:dataURL operation:$(TINMessageFileOperationMove)
-                              error:&error];
+    auto _Nullable message = [factory messageWithTargetScheme:kTINTargetScheme
+                                                         type:$(TINMessageTypeRequest) action:@"foo"
+                                                     userInfo:@{} fileURL:dataURL
+                                                    operation:$(TINMessageFileOperationMove)
+                                                        error:&error];
 
     expect(message.fileNames).notTo.beNil();
     expect(error).to.beNil();

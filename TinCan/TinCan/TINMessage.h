@@ -8,6 +8,14 @@ NS_ASSUME_NONNULL_BEGIN
 /// Default TinCan's application group ID.
 extern NSString * const kTINAppGroupID;
 
+/// Supported \c TINMessage types.
+LTEnumDeclare(NSUInteger, TINMessageType,
+  /// Request message type.
+  TINMessageTypeRequest,
+  /// Response message type.
+  TINMessageTypeResponse
+);
+
 /// Contains all the required information to pass a message to another application. The message is
 /// persistently stored in a shared directory, which can be accessed by applications with the same
 /// application group. The message contains a \c userInfo dictionary which can be used to pass a
@@ -21,10 +29,18 @@ extern NSString * const kTINAppGroupID;
 
 - (instancetype)init NS_UNAVAILABLE;
 
-/// Initializes with the given \c appGroupID, \c sourceScheme, \c targetScheme, \c identifier and
-/// \c info.
+/// Initializes with the following parameters:
+///
+/// @param appGroupID Application's group ID the created message belongs to.
+/// @param sourceScheme Scheme of the an application who sent the created message.
+/// @param targetScheme Scheme of the application the created message is targeted to.
+/// @param type Type of the created message.
+/// @param action Action associated with the created message.
+/// @param identifier Created message's unique identifier.
+/// @param info container for custom attributes.
 + (instancetype)messageWithAppGroupID:(NSString *)appGroupID sourceScheme:(NSString *)sourceScheme
-                         targetScheme:(NSString *)targetScheme identifier:(NSUUID *)identifier
+                         targetScheme:(NSString *)targetScheme type:(TINMessageType *)type
+                               action:(NSString *)action identifier:(NSUUID *)identifier
                              userInfo:(NSDictionary<NSString *, id<NSSecureCoding>> *)info;
 
 /// Application's group ID this message belongs to.
@@ -36,6 +52,12 @@ extern NSString * const kTINAppGroupID;
 
 /// Scheme of the application this message is targeted to. It's used to open the target application.
 @property (readonly, nonatomic) NSString *targetScheme;
+
+/// Action associated with this message.
+@property (readonly, nonatomic) NSString *action;
+
+/// Type of this message.
+@property (readonly, nonatomic) TINMessageType *type;
 
 /// Message's unique identifier.
 @property (readonly, nonatomic) NSUUID *identifier;

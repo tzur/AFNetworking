@@ -13,6 +13,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// directory. Key's value is \c NSArray<NSString *> *.
 extern NSString * const kTINMessageFileNamesKey;
 
+/// Key for message's attached user defined context.
+extern NSString * const kTINMessageContextKey;
+
 /// Message's attached file names, each is resolved as a relative path to the message's directory,
 /// or \c nil if no files name array is provided. It's equivalent to the following code:
 ///
@@ -29,6 +32,13 @@ extern NSString * const kTINMessageFileNamesKey;
 /// - There is a file name in \c fileNames which is not a relative path.
 /// - There is a file name in \c fileNames which is resolved outside of message's \c directoryURL.
 @property (readonly, nonatomic, nullable) NSArray<NSURL *> *fileURLs;
+
+/// User defined context. It's equivalent to the following code:
+///
+/// @code
+/// message.userInfo[kTINMessageContextKey];
+/// @endcode
+@property (readonly, nonatomic, nullable) NSDictionary<NSString *, id<NSSecureCoding>> *context;
 
 @end
 

@@ -12,6 +12,8 @@ __block TINMessage *message;
 context(@"message", ^{
   __block NSString *appGroupID;
   __block NSString *sourceScheme, *targetScheme;
+  __block TINMessageType *type;
+  __block NSString * action;
   __block NSDictionary *info;
   __block NSUUID *identifier;
 
@@ -20,15 +22,20 @@ context(@"message", ^{
     appGroupID = @"appGroupID";
     sourceScheme = @"sourceScheme";
     targetScheme = @"targetScheme";
+    type = $(TINMessageTypeRequest);
+    action = @"foo";
     identifier = [NSUUID UUID];
     message = [TINMessage messageWithAppGroupID:appGroupID sourceScheme:sourceScheme
-                                   targetScheme:targetScheme identifier:identifier userInfo:info];
+                                   targetScheme:targetScheme type:type action:action
+                                     identifier:identifier userInfo:info];
   });
 
   it(@"should initialize properly", ^{
     expect(message.appGroupID).to.equal(appGroupID);
     expect(message.sourceScheme).to.equal(sourceScheme);
     expect(message.targetScheme).to.equal(targetScheme);
+    expect(message.type).to.equal(type);
+    expect(message.action).to.equal(action);
     expect(message.identifier).to.equal(identifier);
     expect(message.userInfo).to.equal(info);
   });
@@ -50,7 +57,8 @@ context(@"message", ^{
 
   it(@"should raise when archiving userInfo with inappropriate content", ^{
     auto message = [TINMessage messageWithAppGroupID:appGroupID sourceScheme:sourceScheme
-                                        targetScheme:targetScheme identifier:identifier userInfo:@{
+                                        targetScheme:targetScheme type:type action:action
+                                          identifier:identifier userInfo:@{
       @"bundle": (id<NSSecureCoding>)[NSBundle mainBundle]
     }];
     auto mutableData = [NSMutableData data];
@@ -66,7 +74,8 @@ context(@"message", ^{
 context(@"url", ^{
   beforeEach(^{
     message = [TINMessage messageWithAppGroupID:kTINTestHostAppGroupID sourceScheme:@"source"
-                                   targetScheme:@"target" identifier:[NSUUID UUID] userInfo:@{}];
+                                   targetScheme:@"target" type:$(TINMessageTypeResponse)
+                                         action:@"foo" identifier:[NSUUID UUID] userInfo:@{}];
   });
 
   it(@"should return nil URL for message directory with invalid app group", ^{
