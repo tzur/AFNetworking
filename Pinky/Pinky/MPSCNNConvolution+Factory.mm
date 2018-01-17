@@ -15,24 +15,90 @@ NS_ASSUME_NONNULL_BEGIN
 + (MPSCNNConvolution *)pnk_cnnConvolutionWithDevice:(id<MTLDevice>)device
     convolutionModel:(const pnk::ConvolutionKernelModel &)convolutionModel
     activationModel:(const pnk::ActivationKernelModel &)activationModel {
-  MPSCNNNeuron *neuronActivation = [MPSCNNNeuron pnk_cnnNeuronWithDevice:device
-                                                         activationModel:activationModel];
-  MPSCNNConvolutionDescriptor *convolutionDescriptor =
-      [MPSCNNConvolutionDescriptor
-       cnnConvolutionDescriptorWithKernelWidth:convolutionModel.kernelWidth
-       kernelHeight:convolutionModel.kernelHeight
-       inputFeatureChannels:convolutionModel.inputFeatureChannels
-       outputFeatureChannels:convolutionModel.outputFeatureChannels
-       neuronFilter:neuronActivation];
+  MPSCNNConvolutionDescriptor *convolutionDescriptor;
+  if (@available(iOS 11.0, *)) {
+    convolutionDescriptor = [MPSCNNConvolutionDescriptor
+                             cnnConvolutionDescriptorWithKernelWidth:convolutionModel.kernelWidth
+                             kernelHeight:convolutionModel.kernelHeight
+                             inputFeatureChannels:convolutionModel.inputFeatureChannels
+                             outputFeatureChannels:convolutionModel.outputFeatureChannels];
+    switch (activationModel.activationType) {
+      case pnk::ActivationTypeIdentity:
+        break;
+      case pnk::ActivationTypeAbsolute:
+        [convolutionDescriptor setNeuronType:MPSCNNNeuronTypeAbsolute parameterA:0 parameterB:0];
+        break;
+      case pnk::ActivationTypeReLU:
+        [convolutionDescriptor setNeuronType:MPSCNNNeuronTypeReLU parameterA:0 parameterB:0];
+        break;
+      case pnk::ActivationTypeLeakyReLU:
+        [convolutionDescriptor setNeuronType:MPSCNNNeuronTypeReLU
+                                  parameterA:activationModel.alpha(0) parameterB:0];
+        break;
+      case pnk::ActivationTypeTanh:
+        [convolutionDescriptor setNeuronType:MPSCNNNeuronTypeTanH parameterA:1 parameterB:1];
+        break;
+      case pnk::ActivationTypeScaledTanh:
+        [convolutionDescriptor setNeuronType:MPSCNNNeuronTypeTanH
+                                  parameterA:activationModel.alpha(0)
+                                  parameterB:activationModel.beta(0)];
+        break;
+      case pnk::ActivationTypeSigmoid:
+        [convolutionDescriptor setNeuronType:MPSCNNNeuronTypeSigmoid parameterA:0 parameterB:0];
+        break;
+      case pnk::ActivationTypeSigmoidHard:
+        [convolutionDescriptor setNeuronType:MPSCNNNeuronTypeHardSigmoid
+                                  parameterA:activationModel.alpha(0)
+                                  parameterB:activationModel.beta(0)];
+        break;
+      case pnk::ActivationTypeLinear:
+        [convolutionDescriptor setNeuronType:MPSCNNNeuronTypeLinear
+                                  parameterA:activationModel.alpha(0)
+                                  parameterB:activationModel.beta(0)];
+        break;
+      case pnk::ActivationTypePReLU: {
+        LTParameterAssert(activationModel.alpha.isContinuous(), @"Activation model's alpha "
+                          "parameters matrix must be continuous");
+        NSUInteger totalBytes = (NSUInteger )activationModel.alpha.total() *
+            activationModel.alpha.elemSize();
+        NSData *alphaData = [NSData dataWithBytesNoCopy:activationModel.alpha.data length:totalBytes
+                                           freeWhenDone:NO];
+        [convolutionDescriptor setNeuronToPReLUWithParametersA:alphaData];
+      } break;
+      case pnk::ActivationTypeELU:
+        [convolutionDescriptor setNeuronType:MPSCNNNeuronTypeELU
+                                  parameterA:activationModel.alpha(0)
+                                  parameterB:0];
+        break;
+      case pnk::ActivationTypeSoftsign:
+        [convolutionDescriptor setNeuronType:MPSCNNNeuronTypeSoftSign parameterA:0 parameterB:0];
+        break;
+      case pnk::ActivationTypeSoftplus:
+        [convolutionDescriptor setNeuronType:MPSCNNNeuronTypeSoftPlus parameterA:1 parameterB:1];
+        break;
+      case pnk::ActivationTypeParametricSoftplus:
+        [convolutionDescriptor setNeuronType:MPSCNNNeuronTypeSoftPlus
+                                  parameterA:activationModel.alpha(0)
+                                  parameterB:activationModel.beta(0)];
+        break;
+    }
+
+    convolutionDescriptor.dilationRateX = convolutionModel.dilationX;
+    convolutionDescriptor.dilationRateY = convolutionModel.dilationY;
+  } else {
+    MPSCNNNeuron *neuronActivation = [MPSCNNNeuron pnk_cnnNeuronWithDevice:device
+                                                           activationModel:activationModel];
+    convolutionDescriptor = [MPSCNNConvolutionDescriptor
+                             cnnConvolutionDescriptorWithKernelWidth:convolutionModel.kernelWidth
+                             kernelHeight:convolutionModel.kernelHeight
+                             inputFeatureChannels:convolutionModel.inputFeatureChannels
+                             outputFeatureChannels:convolutionModel.outputFeatureChannels
+                             neuronFilter:neuronActivation];
+  }
 
   convolutionDescriptor.strideInPixelsX = convolutionModel.strideX;
   convolutionDescriptor.strideInPixelsY = convolutionModel.strideY;
   convolutionDescriptor.groups = convolutionModel.groups;
-
-  if (@available(iOS 11.0, *)) {
-    convolutionDescriptor.dilationRateX = convolutionModel.dilationX;
-    convolutionDescriptor.dilationRateY = convolutionModel.dilationY;
-  }
 
   LTParameterAssert(convolutionModel.kernelWeights.total() ==
                     convolutionModel.outputFeatureChannels * convolutionModel.kernelHeight *
@@ -58,6 +124,11 @@ NS_ASSUME_NONNULL_BEGIN
   return [[MPSCNNConvolution alloc] initWithDevice:device
                              convolutionDescriptor:convolutionDescriptor kernelWeights:kernelWeights
                                          biasTerms:biasWeights flags:MPSCNNConvolutionFlagsNone];
+}
+
++ (BOOL)pnk_doesSupportActivationType:(pnk::ActivationType)activationType {
+  return (activationType == pnk::ActivationTypeIdentity) ||
+      [MPSCNNNeuron pnk_doesSupportActivationType:activationType];
 }
 
 @end
