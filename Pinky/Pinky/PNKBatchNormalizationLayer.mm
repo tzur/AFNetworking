@@ -3,6 +3,7 @@
 
 #import "PNKBatchNormalizationLayer.h"
 
+#import "PNKActivationUtils.h"
 #import "PNKBufferExtensions.h"
 #import "PNKComputeDispatch.h"
 #import "PNKComputeState.h"
@@ -115,31 +116,9 @@ static NSString * const kKernelArrayFunctionName = @"batchNormArray";
   _functionName = self.inputFeatureChannels > 4 ?
       kKernelArrayFunctionName : kKernelSingleFunctionName;
 
-  switch (activationType) {
-    case pnk::ActivationTypeIdentity:
-    case pnk::ActivationTypeAbsolute:
-    case pnk::ActivationTypeReLU:
-    case pnk::ActivationTypeTanh:
-    case pnk::ActivationTypeSigmoid:
-    case pnk::ActivationTypeSoftsign:
-    case pnk::ActivationTypeSoftplus:
-      _hasAlphaBuffer = false;
-      _hasBetaBuffer = false;
-    break;
-    case pnk::ActivationTypeLeakyReLU:
-    case pnk::ActivationTypePReLU:
-    case pnk::ActivationTypeELU:
-      _hasAlphaBuffer = true;
-      _hasBetaBuffer = false;
-      break;
-    case pnk::ActivationTypeScaledTanh:
-    case pnk::ActivationTypeSigmoidHard:
-    case pnk::ActivationTypeLinear:
-    case pnk::ActivationTypeParametricSoftplus:
-      _hasAlphaBuffer = true;
-      _hasBetaBuffer = true;
-      break;
-  }
+  auto needsAlphaBeta = PNKActivationNeedsAlphaBetaParameters(activationType);
+  _hasAlphaBuffer = needsAlphaBeta.first;
+  _hasBetaBuffer = needsAlphaBeta.second;
 
   ushort activationTypeAsUshort = (ushort)activationType;
   auto functionConstants = [[MTLFunctionConstantValues alloc] init];

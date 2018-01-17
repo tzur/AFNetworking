@@ -213,6 +213,7 @@
 		E4786D451FD5499B0057FE03 /* MPSCNNConvolution+FactorySpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = E4786D441FD5499B0057FE03 /* MPSCNNConvolution+FactorySpec.mm */; };
 		E484089E1FCBF98B00468645 /* PNKDilatedConvolutionInternalLayerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = E484089D1FCBF98B00468645 /* PNKDilatedConvolutionInternalLayerSpec.mm */; };
 		E484D3701FEF838900DA050C /* PNKAvailability.mm in Sources */ = {isa = PBXBuildFile; fileRef = E484D36F1FEF838900DA050C /* PNKAvailability.mm */; };
+		E4B6AEE7200F30FA0086D55E /* PNKActivationUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = E4B6AEE5200F30FA0086D55E /* PNKActivationUtils.mm */; };
 		E4D719331FE145580047E620 /* PNKGather.mm in Sources */ = {isa = PBXBuildFile; fileRef = E4D719321FE145580047E620 /* PNKGather.mm */; };
 		E4D719571FE1491E0047E620 /* PNKGather.metal in Sources */ = {isa = PBXBuildFile; fileRef = E4D719551FE148F90047E620 /* PNKGather.metal */; };
 		E4D719591FE16D650047E620 /* PNKGatherSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = E4D719581FE16D650047E620 /* PNKGatherSpec.mm */; };
@@ -839,6 +840,8 @@
 		E484089D1FCBF98B00468645 /* PNKDilatedConvolutionInternalLayerSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKDilatedConvolutionInternalLayerSpec.mm; sourceTree = "<group>"; };
 		E484D36E1FEF838900DA050C /* PNKAvailability.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNKAvailability.h; sourceTree = "<group>"; };
 		E484D36F1FEF838900DA050C /* PNKAvailability.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKAvailability.mm; sourceTree = "<group>"; };
+		E4B6AEE5200F30FA0086D55E /* PNKActivationUtils.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKActivationUtils.mm; sourceTree = "<group>"; };
+		E4B6AEE6200F30FA0086D55E /* PNKActivationUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNKActivationUtils.h; sourceTree = "<group>"; };
 		E4BAEEB31FE7C985009F594D /* PNKPixelBufferUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNKPixelBufferUtils.h; sourceTree = "<group>"; };
 		E4BAEEB41FE7C985009F594D /* PNKPixelBufferUtils.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PNKPixelBufferUtils.mm; sourceTree = "<group>"; };
 		E4D0B9C61FFCE64800BF5DBF /* PNKActivation.metal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PNKActivation.metal.h; sourceTree = "<group>"; };
@@ -1131,6 +1134,8 @@
 				E41D723F1FFE7D8B00A2B26D /* PNKActivationLayer.mm */,
 				E41D72641FFE813F00A2B26D /* PNKActivationStandardInternalLayer.h */,
 				E41D72631FFE813F00A2B26D /* PNKActivationStandardInternalLayer.mm */,
+				E4B6AEE6200F30FA0086D55E /* PNKActivationUtils.h */,
+				E4B6AEE5200F30FA0086D55E /* PNKActivationUtils.mm */,
 				06B4B73E1FE1476500FE51FF /* PNKBatchNormalizationLayer.h */,
 				06B4B7401FE1478300FE51FF /* PNKBatchNormalizationLayer.metal */,
 				06B4B73D1FE1476500FE51FF /* PNKBatchNormalizationLayer.mm */,
@@ -2240,6 +2245,7 @@
 				2817F8F11FFBBC2800AF1DDC /* PNKColorTransferHistogramSpecification.mm in Sources */,
 				E46994FE1FE690A500B944C9 /* PNKImageBilinearScale.mm in Sources */,
 				06D36EE61F6ACA6D00090584 /* DataStructures.proto in Sources */,
+				E4B6AEE7200F30FA0086D55E /* PNKActivationUtils.mm in Sources */,
 				06D36EE71F6ACA6D00090584 /* FeatureTypes.proto in Sources */,
 				E41D72681FFE817A00A2B26D /* PNKActivationCustomInternalLayer.mm in Sources */,
 				06D36EE81F6ACA6D00090584 /* Identity.proto in Sources */,
