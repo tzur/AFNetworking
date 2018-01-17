@@ -413,6 +413,30 @@ context(@"fetching images", ^{
            initWithResult:PTNAssetCacheProxy(highQualityData, resizingStrategy, date)]
         ]);
       });
+
+      it(@"should fetch image when descriptor is wrapped by PTNCacheProxy", ^{
+        auto cacheInfo = [[PTNCacheInfo alloc] initWithMaxAge:1000 entityTag:nil];
+        auto proxy = [[PTNCacheProxy alloc] initWithUnderlyingObject:descriptor
+                                                           cacheInfo:cacheInfo];
+        OCMStub([options deliveryMode]).andReturn(PTNImageDeliveryModeFast);
+
+        RACSubject *subject = [RACSubject subject];
+        OCMStub([client GET:@"http://a" withParameters:nil headers:nil]).andReturn(subject);
+        NSData *data = OCMClassMock([NSData class]);
+        LTProgress *progress = PTNFakeLTProgress(data);
+
+        LLSignalTestRecorder *recorder =
+            [[manager fetchImageWithDescriptor:(id<PTNDescriptor>)proxy
+                              resizingStrategy:resizingStrategy
+                                       options:options] testRecorder];
+
+        [subject sendNext:progress];
+        [subject sendCompleted];
+
+        auto result = PTNAssetCacheProxy(data, resizingStrategy, date);
+        expect(recorder).to.sendValues(@[[[PTNProgress alloc] initWithResult:result]]);
+        expect(recorder).to.complete();
+      });
     });
   });
 });
