@@ -3,6 +3,7 @@
 
 #import "Milkshake-Prefix.pch"
 
+#import <FBTweak/FBTweak.h>
 #import <LLReactiveMatchers/LLReactiveMatchers.h>
 
 #define EXP_SHORTHAND
