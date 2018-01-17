@@ -8,31 +8,29 @@
 #import "PNKNeuralNetworkModel.h"
 #import "PNKTestUtils.h"
 
-static NSDictionary *PNKBuildHalfFloatDataForKernelExamples(id<MTLDevice> device,
-                                                            NSUInteger imageWidth,
-                                                            NSUInteger imageHeight,
-                                                            NSUInteger kernelWidth,
-                                                            NSUInteger kernelHeight,
-                                                            NSUInteger inputChannels,
-                                                            NSUInteger outputChannels,
-                                                            NSUInteger dilationX,
-                                                            NSUInteger dilationY,
-                                                            NSUInteger strideX,
-                                                            NSUInteger strideY,
-                                                            pnk::PaddingType paddingType) {
+static NSDictionary *PNKBuildDataForExamples(id<MTLDevice> device, NSUInteger imageWidth,
+                                             NSUInteger imageHeight,  NSUInteger kernelWidth,
+                                             NSUInteger kernelHeight, NSUInteger inputChannels,
+                                             NSUInteger outputChannels, NSUInteger dilationX,
+                                             NSUInteger dilationY, NSUInteger strideX,
+                                             NSUInteger strideY, pnk::PaddingType paddingType,
+                                             pnk::ActivationType activationType =
+                                                 pnk::ActivationTypeIdentity) {
   auto convolutionModel = PNKBuildConvolutionModel(kernelWidth, kernelHeight, inputChannels,
                                                    outputChannels, dilationX, dilationY,
                                                    strideX, strideY, paddingType);
+  auto activationModel = PNKBuildActivationModel(outputChannels, activationType);
 
-  auto convolutionKernel = [[PNKConvolutionLayer alloc]
-                            initWithDevice:device convolutionModel:convolutionModel];
+  auto convolutionKernel = [[PNKConvolutionLayer alloc] initWithDevice:device
+                                                      convolutionModel:convolutionModel
+                                                       activationModel:activationModel];
 
   auto inputMat = PNKFillMatrix((int)imageHeight, (int)imageWidth, (int)inputChannels);
 
   auto expectedMat = PNKCalculateConvolution(paddingType, inputMat, convolutionModel.kernelWeights,
                                              (int)dilationX, (int)dilationY, (int)strideX,
-                                             (int)strideY, pnk::ActivationTypeIdentity, cv::Mat1f(),
-                                             cv::Mat1f());
+                                             (int)strideY, activationType, activationModel.alpha,
+                                             activationModel.beta);
 
   return @{
     kPNKKernelExamplesKernel: convolutionKernel,
@@ -315,170 +313,38 @@ context(@"PNKUnaryKernel with MPSTemporaryImage", ^{
 });
 
 context(@"convolution", ^{
-  itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
-    return PNKBuildHalfFloatDataForKernelExamples(device, 32, 32, 3, 3, 1, 1, 1, 1, 1, 1,
-                                                  pnk::PaddingTypeSame);
-  });
+  for (ushort paddingType = pnk::PaddingTypeValid; paddingType <= pnk::PaddingTypeSame;
+       ++paddingType) {
+    for (NSUInteger kernelWidth = 2; kernelWidth <= 3; ++kernelWidth) {
+      for (NSUInteger kernelHeight = 2; kernelHeight <= 3; ++kernelHeight) {
+        for (NSUInteger strideX = 1; strideX <= 2; ++strideX) {
+          for (NSUInteger strideY = 1; strideY <= 2; ++strideY) {
+            for (NSUInteger dilationX = 1; dilationX <= 2; ++dilationX) {
+              for (NSUInteger dilationY = 1; dilationY <= 2; ++dilationY) {
+                itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
+                  return PNKBuildDataForExamples(device, 32, 32, kernelWidth, kernelHeight, 1, 1,
+                                                 dilationX, dilationY, strideX, strideY,
+                                                 (pnk::PaddingType)paddingType);
+                });
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+});
 
-  itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
-    return PNKBuildHalfFloatDataForKernelExamples(device, 32, 32, 3, 3, 1, 1, 2, 2, 1, 1,
-                                                  pnk::PaddingTypeSame);
-  });
-
-  itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
-    return PNKBuildHalfFloatDataForKernelExamples(device, 32, 32, 3, 3, 1, 1, 1, 1, 5, 5,
-                                                  pnk::PaddingTypeSame);
-  });
-
-  itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
-    return PNKBuildHalfFloatDataForKernelExamples(device, 32, 32, 2, 2, 1, 1, 2, 2, 1, 1,
-                                                  pnk::PaddingTypeSame);
-  });
-
-  itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
-    return PNKBuildHalfFloatDataForKernelExamples(device, 32, 32, 4, 4, 1, 1, 2, 2, 1, 1,
-                                                  pnk::PaddingTypeSame);
-  });
-
-  itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
-    return PNKBuildHalfFloatDataForKernelExamples(device, 32, 32, 2, 2, 1, 1, 6, 6, 1, 1,
-                                                  pnk::PaddingTypeSame);
-  });
-
-  itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
-    return PNKBuildHalfFloatDataForKernelExamples(device, 32, 32, 4, 4, 1, 1, 6, 6, 1, 1,
-                                                  pnk::PaddingTypeSame);
-  });
-
-  itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
-    return PNKBuildHalfFloatDataForKernelExamples(device, 32, 32, 3, 2, 1, 1, 2, 2, 1, 1,
-                                                  pnk::PaddingTypeSame);
-  });
-
-  itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
-    return PNKBuildHalfFloatDataForKernelExamples(device, 32, 32, 2, 1, 1, 1, 3, 1, 1, 1,
-                                                  pnk::PaddingTypeSame);
-  });
-
-  itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
-    return PNKBuildHalfFloatDataForKernelExamples(device, 32, 32, 2, 1, 1, 1, 3, 1, 1, 1,
-                                                  pnk::PaddingTypeSame);
-  });
-
-  itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
-    return PNKBuildHalfFloatDataForKernelExamples(device, 32, 32, 2, 2, 1, 1, 5, 5, 1, 1,
-                                                  pnk::PaddingTypeSame);
-  });
-
-  itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
-    return PNKBuildHalfFloatDataForKernelExamples(device, 32, 32, 4, 4, 1, 1, 3, 3, 1, 1,
-                                                  pnk::PaddingTypeSame);
-  });
-
-  itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
-    return PNKBuildHalfFloatDataForKernelExamples(device, 32, 32, 3, 3, 1, 1, 2, 2, 5, 5,
-                                                  pnk::PaddingTypeSame);
-  });
-
-  itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
-    return PNKBuildHalfFloatDataForKernelExamples(device, 32, 32, 2, 2, 1, 1, 4, 5, 6, 7,
-                                                  pnk::PaddingTypeSame);
-  });
-
-  itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
-    return PNKBuildHalfFloatDataForKernelExamples(device, 32, 32, 2, 4, 1, 1, 3, 3, 2, 52,
-                                                  pnk::PaddingTypeSame);
-  });
-
-  itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
-    return PNKBuildHalfFloatDataForKernelExamples(device, 32, 32, 4, 7, 1, 1, 3, 1, 1, 3,
-                                                  pnk::PaddingTypeSame);
-  });
-
-  itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
-    return PNKBuildHalfFloatDataForKernelExamples(device, 32, 32, 3, 3, 1, 1, 1, 2, 3, 4,
-                                                  pnk::PaddingTypeSame);
-  });
-
-  itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
-    return PNKBuildHalfFloatDataForKernelExamples(device, 32, 32, 4, 2, 4, 4, 3, 5, 2, 1,
-                                                  pnk::PaddingTypeSame);
-  });
-
-  itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
-    return PNKBuildHalfFloatDataForKernelExamples(device, 32, 32, 3, 3, 1, 1, 5, 3, 2, 4,
-                                                  pnk::PaddingTypeSame);
-  });
-
-  itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
-    return PNKBuildHalfFloatDataForKernelExamples(device, 32, 32, 2, 2, 1, 1, 2, 2, 2, 2,
-                                                  pnk::PaddingTypeSame);
-  });
-
-  itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
-    return PNKBuildHalfFloatDataForKernelExamples(device, 32, 32, 3, 3, 1, 1, 3, 3, 7, 7,
-                                                  pnk::PaddingTypeSame);
-  });
-
-  itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
-    return PNKBuildHalfFloatDataForKernelExamples(device, 32, 32, 3, 3, 1, 1, 1, 1, 1, 1,
-                                                  pnk::PaddingTypeValid);
-  });
-
-  itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
-    return PNKBuildHalfFloatDataForKernelExamples(device, 32, 32, 3, 3, 1, 1, 2, 2, 1, 1,
-                                                  pnk::PaddingTypeValid);
-  });
-
-  itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
-    return PNKBuildHalfFloatDataForKernelExamples(device, 32, 32, 3, 3, 1, 1, 1, 1, 5, 5,
-                                                  pnk::PaddingTypeValid);
-  });
-
-  itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
-    return PNKBuildHalfFloatDataForKernelExamples(device, 32, 32, 2, 2, 1, 1, 2, 2, 1, 1,
-                                                  pnk::PaddingTypeValid);
-  });
-
-  itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
-    return PNKBuildHalfFloatDataForKernelExamples(device, 32, 32, 4, 4, 1, 1, 2, 2, 1, 1,
-                                                  pnk::PaddingTypeValid);
-  });
-
-  itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
-    return PNKBuildHalfFloatDataForKernelExamples(device, 32, 32, 2, 2, 1, 1, 6, 6, 1, 1,
-                                                  pnk::PaddingTypeValid);
-  });
-
-  itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
-    return PNKBuildHalfFloatDataForKernelExamples(device, 32, 32, 4, 4, 1, 1, 6, 6, 1, 1,
-                                                  pnk::PaddingTypeValid);
-  });
-
-  itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
-    return PNKBuildHalfFloatDataForKernelExamples(device, 32, 32, 3, 2, 1, 1, 2, 2, 1, 1,
-                                                  pnk::PaddingTypeValid);
-  });
-
-  itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
-    return PNKBuildHalfFloatDataForKernelExamples(device, 32, 32, 2, 1, 1, 1, 3, 1, 1, 1,
-                                                  pnk::PaddingTypeValid);
-  });
-
-  itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
-    return PNKBuildHalfFloatDataForKernelExamples(device, 32, 32, 2, 1, 1, 1, 3, 1, 1, 1,
-                                                  pnk::PaddingTypeValid);
-  });
-
-  itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
-    return PNKBuildHalfFloatDataForKernelExamples(device, 32, 32, 2, 2, 1, 1, 5, 5, 1, 1,
-                                                  pnk::PaddingTypeValid);
-  });
-
-  itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
-    return PNKBuildHalfFloatDataForKernelExamples(device, 32, 32, 4, 4, 1, 1, 3, 3, 1, 1,
-                                                  pnk::PaddingTypeValid);
-  });
+context(@"activation", ^{
+  for (ushort activationType = pnk::ActivationTypeIdentity;
+       activationType <= pnk::ActivationTypeParametricSoftplus; ++activationType) {
+    for (NSUInteger dilation = 1; dilation <= 2; ++dilation) {
+      itShouldBehaveLike(kPNKUnaryKernelExamples, ^{
+        return PNKBuildDataForExamples(device, 32, 32, 3, 3, 8, 8, dilation, dilation, 1, 1,
+                                       pnk::PaddingTypeSame, (pnk::ActivationType)activationType);
+      });
+    }
+  }
 });
 
 DeviceSpecEnd

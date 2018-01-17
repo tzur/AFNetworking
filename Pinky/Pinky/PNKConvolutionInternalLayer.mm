@@ -4,6 +4,8 @@
 #import "PNKConvolutionInternalLayer.h"
 
 #import "MPSCNNConvolution+Factory.h"
+#import "MPSTemporaryImage+Factory.h"
+#import "PNKActivationCustomInternalLayer.h"
 #import "PNKConvolutionUtils.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -14,6 +16,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Underlying convolution kernel used for performing the operation.
 @property (readonly, nonatomic) MPSCNNConvolution *convolutionKernel;
+
+/// Underlying custom activation layer used to perform activation types not supported by MPS.
+@property (readonly, nonatomic, nullable) PNKActivationCustomInternalLayer *activationKernel;
 
 /// Padding type used in the convolution.
 @property (readonly, nonatomic) pnk::PaddingType padding;
@@ -41,9 +46,20 @@ NS_ASSUME_NONNULL_BEGIN
                activationModel:(const pnk::ActivationKernelModel &)activationModel {
   if (self = [super init]) {
     [self updatePropertiesWithConvolutionModel:convolutionModel];
-    _convolutionKernel = [MPSCNNConvolution pnk_cnnConvolutionWithDevice:device
-                                                        convolutionModel:convolutionModel
-                                                         activationModel:activationModel];
+
+    if ([MPSCNNConvolution pnk_doesSupportActivationType:activationModel.activationType]) {
+      _convolutionKernel = [MPSCNNConvolution pnk_cnnConvolutionWithDevice:device
+                                                          convolutionModel:convolutionModel
+                                                           activationModel:activationModel];
+    } else {
+      _convolutionKernel = [MPSCNNConvolution pnk_cnnConvolutionWithDevice:device
+                            convolutionModel:convolutionModel
+                            activationModel:{.activationType = pnk::ActivationTypeIdentity}];
+
+      _activationKernel = [[PNKActivationCustomInternalLayer alloc]
+                           initWithDevice:device
+                           activationModel:activationModel];
+    }
   }
   return self;
 }
@@ -84,8 +100,19 @@ NS_ASSUME_NONNULL_BEGIN
                                                        self.kernelWidth, self.kernelHeight,
                                                        self.dilationX, self.dilationY, self.strideX,
                                                        self.strideY, self.padding);
-  [self.convolutionKernel encodeToCommandBuffer:commandBuffer sourceImage:inputImage
-                               destinationImage:outputImage];
+  if (self.activationKernel) {
+    auto intermediateImage = [MPSTemporaryImage pnk_float16ImageWithCommandBuffer:commandBuffer
+                              width:outputImage.width
+                              height:outputImage.height
+                              channels:outputImage.featureChannels];
+    [self.convolutionKernel encodeToCommandBuffer:commandBuffer sourceImage:inputImage
+                                 destinationImage:intermediateImage];
+    [self.activationKernel encodeToCommandBuffer:commandBuffer inputImage:intermediateImage
+                                     outputImage:outputImage];
+  } else {
+    [self.convolutionKernel encodeToCommandBuffer:commandBuffer sourceImage:inputImage
+                                 destinationImage:outputImage];
+  }
 }
 
 - (MTLRegion)inputRegionForOutputSize:(MTLSize)outputSize {

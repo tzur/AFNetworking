@@ -5,6 +5,8 @@
 
 #import "MPSCNNConvolution+Factory.h"
 #import "MPSTemporaryImage+Factory.h"
+#import "PNKActivationUtils.h"
+#import "PNKBufferExtensions.h"
 #import "PNKComputeDispatch.h"
 #import "PNKComputeState.h"
 #import "PNKConvolutionUtils.h"
@@ -47,6 +49,18 @@ NS_ASSUME_NONNULL_BEGIN
 /// Tensorflow convention to the kernel. It is transferred as a pair of \c ushorts.
 @property (readonly, nonatomic) id<MTLBuffer> bufferForFullPaddingTF;
 
+/// Kernel activation alpha parameters buffer.
+@property (readonly, nonatomic, nullable) id<MTLBuffer> alphaBuffer;
+
+/// Kernel activation beta parameters buffer.
+@property (readonly, nonatomic, nullable) id<MTLBuffer> betaBuffer;
+
+/// Indicator if the layer's ActivationType is using the Alpha parameter buffer.
+@property (readonly, nonatomic) bool hasAlphaBuffer;
+
+/// Indicator if the layer's ActivationType is using the Beta parameter buffer.
+@property (readonly, nonatomic) bool hasBetaBuffer;
+
 @end
 
 @implementation PNKDilatedConvolutionInternalLayer
@@ -77,9 +91,9 @@ static NSString * const kP2SKernelArrayFunctionName = @"patch2SpaceArray";
   if (self = [super init]) {
     _device = device;
     [self updatePropertiesWithConvolutionModel:convolutionModel];
-    [self createKernelWithConvolutionModel:convolutionModel activationModel:activationModel];
-    [self createStates];
-    [self createBuffers];
+    [self createKernelWithConvolutionModel:convolutionModel];
+    [self createStatesWithActivationModel:activationModel];
+    [self createBuffersWithActivationModel:activationModel];
   }
   return self;
 }
@@ -108,23 +122,30 @@ static NSString * const kP2SKernelArrayFunctionName = @"patch2SpaceArray";
   _padding = convolutionModel.padding;
 }
 
-- (void)createKernelWithConvolutionModel:(const pnk::ConvolutionKernelModel &)convolutionModel
-                         activationModel:(const pnk::ActivationKernelModel &)activationModel {
+- (void)createKernelWithConvolutionModel:(const pnk::ConvolutionKernelModel &)convolutionModel {
   pnk::ConvolutionKernelModel basicConvolutionModel = convolutionModel;
   basicConvolutionModel.dilationX = 1;
   basicConvolutionModel.dilationY = 1;
   basicConvolutionModel.strideX = 1;
   basicConvolutionModel.strideY = 1;
+
+  pnk::ActivationKernelModel basicActivationModel = {.activationType = pnk::ActivationTypeIdentity};
+
   _convolutionKernel = [MPSCNNConvolution pnk_cnnConvolutionWithDevice:self.device
                                                       convolutionModel:basicConvolutionModel
-                                                       activationModel:activationModel];
+                                                       activationModel:basicActivationModel];
 }
 
-- (void)createStates {
+- (void)createStatesWithActivationModel:(const pnk::ActivationKernelModel &)activationModel {
   vector_ushort2 dilationRate = {(ushort)self.dilationX, (ushort)self.dilationY};
   vector_ushort2 kernelGap = {(ushort)(self.kernelWidth / 2), (ushort)(self.kernelHeight / 2)};
-
   vector_ushort2 stride = {(ushort)self.strideX, (ushort)self.strideY};
+
+  auto needsAlphaBeta = PNKActivationNeedsAlphaBetaParameters(activationModel.activationType);
+  _hasAlphaBuffer = needsAlphaBeta.first;
+  _hasBetaBuffer = needsAlphaBeta.second;
+
+  ushort activationTypeAsUshort = (ushort)activationModel.activationType;
 
   auto functionConstants = [[MTLFunctionConstantValues alloc] init];
   [functionConstants setConstantValue:&dilationRate type:MTLDataTypeUShort2
@@ -133,6 +154,12 @@ static NSString * const kP2SKernelArrayFunctionName = @"patch2SpaceArray";
                              withName:@"kernelGap"];
   [functionConstants setConstantValue:&stride type:MTLDataTypeUShort2
                              withName:@"stride"];
+  [functionConstants setConstantValue:&activationTypeAsUshort type:MTLDataTypeUShort
+                             withName:@"activationType"];
+  [functionConstants setConstantValue:&_hasAlphaBuffer type:MTLDataTypeBool
+                             withName:@"hasAlphaBuffer"];
+  [functionConstants setConstantValue:&_hasBetaBuffer type:MTLDataTypeBool
+                             withName:@"hasBetaBuffer"];
 
   _space2PatchFunctionName = self.convolutionKernel.inputFeatureChannels > 4 ?
       kS2PKernelArrayFunctionName : kS2PKernelSingleFunctionName;
@@ -145,8 +172,11 @@ static NSString * const kP2SKernelArrayFunctionName = @"patch2SpaceArray";
                                                          functionConstants);
 }
 
-- (void)createBuffers {
+- (void)createBuffersWithActivationModel:(const pnk::ActivationKernelModel &)model {
   _bufferForFullPaddingTF = [self bufferForPairOfUShorts];
+
+  _alphaBuffer = self.hasAlphaBuffer ? PNKHalfBufferFromFloatVector(self.device, model.alpha) : nil;
+  _betaBuffer = self.hasBetaBuffer ? PNKHalfBufferFromFloatVector(self.device, model.beta) : nil;
 }
 
 - (id<MTLBuffer>)bufferForPairOfUShorts {
@@ -263,13 +293,21 @@ static NSString * const kP2SKernelArrayFunctionName = @"patch2SpaceArray";
 
   textures = @[patchedOutputImage.texture, outputImage.texture];
 
+  if (self.hasBetaBuffer) {
+    buffers = @[self.alphaBuffer, self.betaBuffer];
+  } else if (self.hasAlphaBuffer) {
+    buffers = @[self.alphaBuffer];
+  } else {
+    buffers = @[];
+  }
+
   workingSpaceSize = {
     patchWidth,
     patchHeight,
     outputImage.texture.arrayLength
   };
 
-  PNKComputeDispatchWithDefaultThreads(self.patch2SpaceState, commandBuffer, @[], textures,
+  PNKComputeDispatchWithDefaultThreads(self.patch2SpaceState, commandBuffer, buffers, textures,
                                        self.patch2SpaceFunctionName, workingSpaceSize);
   patchedOutputImage.readCount -= 1;
 }

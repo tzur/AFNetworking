@@ -3,6 +3,7 @@
 
 #include <metal_stdlib>
 
+#include "PNKActivation.metal.h"
 #include "PNKTemplatedIO.metal"
 
 using namespace metal;
@@ -10,6 +11,9 @@ using namespace metal;
 constant ushort2 dilationRate[[function_constant(0)]];
 constant ushort2 kernelGap[[function_constant(1)]];
 constant ushort2 stride[[function_constant(2)]];
+constant const ushort activationType [[function_constant(3)]];
+constant const bool hasAlphaBuffer [[function_constant(4)]];
+constant const bool hasBetaBuffer [[function_constant(5)]];
 
 /// This kernel copies pixels from a monolitic input texture to a patch-based output texture. The
 /// number of patches (in each direction) equals \c dilationRate. The working space size is that of
@@ -68,10 +72,10 @@ kernel void space2PatchSingle(constant ushort2 *fullPaddingTF [[buffer(0)]],
 /// number of patches (in each direction) equals \c dilationRate. The working space size is that of
 /// the patch with the kernel gap patch (without padding). An internal (nested) loop iterates
 /// through all patches. The loop body calculates the positions of the pixel in the input and output
-/// textures and then copies the pixel.
+/// textures, reads it from the input, activates it and writes to the output.
 template <typename U, typename V>
-void patch2Space(U inputTexture [[texture(0)]], V outputTexture [[texture(1)]],
-                 ushort3 gid [[thread_position_in_grid]]) {
+void patch2Space(constant half4 *alpha, constant half4 *beta, U inputTexture, V outputTexture,
+                 ushort3 gid) {
   const ushort2 inputTextureSize(inputTexture.get_width(), inputTexture.get_height());
   const ushort2 outputTextureSize(outputTexture.get_width(), outputTexture.get_height());
   const ushort2 positionInPatch = gid.xy;
@@ -96,20 +100,26 @@ void patch2Space(U inputTexture [[texture(0)]], V outputTexture [[texture(1)]],
       }
 
       const ushort2 readPosition = positionInPatch + patchIndex * patchSizeWithGap;
-      const half4 pixel = static_cast<half4>(lt::read(inputTexture, readPosition, gid.z));
-      lt::write(outputTexture, pixel, writePosition, gid.z);
+      const half4 value = static_cast<half4>(lt::read(inputTexture, readPosition, gid.z));
+      const half4 activatedValue = pnk::ActivatedValue(value, activationType, alpha, beta,
+                                                       gid.z);
+      lt::write(outputTexture, activatedValue, writePosition, gid.z);
     }
   }
 }
 
-kernel void patch2SpaceArray(texture2d_array<half, access::read> inputTexture [[texture(0)]],
+kernel void patch2SpaceArray(constant half4 *alpha [[buffer(0), function_constant(hasAlphaBuffer)]],
+                             constant half4 *beta [[buffer(1), function_constant(hasBetaBuffer)]],
+                             texture2d_array<half, access::read> inputTexture [[texture(0)]],
                              texture2d_array<half, access::write> outputTexture [[texture(1)]],
                              ushort3 gid [[thread_position_in_grid]]) {
-  patch2Space(inputTexture, outputTexture, gid);
+  patch2Space(alpha, beta, inputTexture, outputTexture, gid);
 }
 
-kernel void patch2SpaceSingle(texture2d<half, access::read> inputTexture [[texture(0)]],
+kernel void patch2SpaceSingle(constant half4 *alpha [[buffer(0), function_constant(hasAlphaBuffer)]],
+                              constant half4 *beta [[buffer(1), function_constant(hasBetaBuffer)]],
+                              texture2d<half, access::read> inputTexture [[texture(0)]],
                               texture2d<half, access::write> outputTexture [[texture(1)]],
                               ushort3 gid [[thread_position_in_grid]]) {
-  patch2Space(inputTexture, outputTexture, gid);
+  patch2Space(alpha, beta, inputTexture, outputTexture, gid);
 }
