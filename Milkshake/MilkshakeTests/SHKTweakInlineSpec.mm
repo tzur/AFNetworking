@@ -57,10 +57,10 @@ static NSString *SHKTweakIdentifier(NSString *category, NSString *collection, NS
 
 /// Searches and returns the global Tweak store for the \c FBTweak object with \c name, in
 /// \c collection inside \c category. Returns \c nil if not such object exist.
-static FBTweak * _Nullable SHKFindTweak(NSString *category, NSString *collection, NSString *name) {
-  NSString *identifier = SHKTweakIdentifier(category, collection, name);
+static id<FBTweak> SHKFindTweak(NSString *category, NSString *collection, NSString *name) {
+  auto identifier = SHKTweakIdentifier(category, collection, name);
   return [[[[FBTweakStore sharedInstance] tweakCategoryWithName:category]
-      tweakCollectionWithName:collection] tweakWithIdentifier:identifier];
+           tweakCollectionWithName:collection] tweakWithIdentifier:identifier];
 }
 
 SpecBegin(SHKTweakInline)
@@ -76,15 +76,15 @@ context(@"Inline tweak", ^{
   });
 
   it(@"should set maximum and minimum values", ^{
-    FBTweak *tweak = SHKTweakInline(@"InlineTweak", @"Collection1", @"MinMax", 8, 6, 10);
+    FBMutableTweak *tweak = SHKTweakInline(@"InlineTweak", @"Collection1", @"MinMax", 8, 6, 10);
     expect(tweak.defaultValue).to.equal(8);
     expect(tweak.minimumValue).to.equal(6);
     expect(tweak.maximumValue).to.equal(10);
   });
 
   it(@"should set possible values", ^{
-    FBTweak *tweak = SHKTweakInline(@"InlineTweak", @"Collection1", @"Possibles", @"bar",
-                                    (@[@"foo", @"bar"]));
+    FBMutableTweak *tweak = SHKTweakInline(@"InlineTweak", @"Collection1", @"Possibles", @"bar",
+                                           (@[@"foo", @"bar"]));
     expect(tweak.defaultValue).to.equal(@"bar");
     expect(tweak.possibleValues).to.equal(@[@"foo", @"bar"]);
   });
@@ -100,7 +100,9 @@ context(@"Tweak value", ^{
     // FBTweaks are defined in compile-time and initialized at load time. This tweak is actually
     // defined by SHKTweakValue (...) in the 2nd next line therefore now is exists but its current
     // value is \c nil.
-    FBTweak * _Nullable tweak = SHKFindTweak(@"TweakValue", @"CollectionB", @"CurrentValue");
+    FBMutableTweak * _Nullable tweak = (FBMutableTweak *)SHKFindTweak(@"TweakValue", @"CollectionB",
+                                                                      @"CurrentValue");
+    expect(tweak).to.beKindOf([FBMutableTweak class]);
     expect(tweak.currentValue).to.beNil();
     expect(tweak.defaultValue).to.equal(@"foo");
     tweak.currentValue = @"bar";
@@ -122,7 +124,10 @@ context(@"Tweak binding", ^{
   });
 
   it(@"should return current value if it was changed", ^{
-    FBTweak * _Nullable tweak = SHKFindTweak(@"TweakBinding", @"Collection", @"CurrentValue");
+    FBMutableTweak * _Nullable tweak = (FBMutableTweak *)SHKFindTweak(@"TweakBinding",
+                                                                      @"Collection",
+                                                                      @"CurrentValue");
+    expect(tweak).to.beKindOf([FBMutableTweak class]);
     SHKTweakBind(object, property, @"TweakBinding", @"Collection", @"CurrentValue", (id)@"foo");
     tweak.currentValue = @"bar";
     expect(object.property).to.equal(@"bar");
@@ -136,7 +141,10 @@ context(@"Tweak signal", ^{
   });
 
   it(@"should return current value if it was changed", ^{
-    FBTweak * _Nullable tweak = SHKFindTweak(@"TweakSignal", @"CollectionC", @"CurrentValue");
+    FBMutableTweak * _Nullable tweak = (FBMutableTweak *)SHKFindTweak(@"TweakSignal",
+                                                                      @"CollectionC",
+                                                                      @"CurrentValue");
+    expect(tweak).to.beKindOf([FBMutableTweak class]);
     auto recorder =
         [SHKTweakSignal(@"TweakSignal", @"CollectionC", @"CurrentValue", (id)@"foo") testRecorder];
     tweak.currentValue = @"bar";
@@ -146,12 +154,14 @@ context(@"Tweak signal", ^{
 
 context(@"Tweak action", ^{
   it(@"should return current value if it was changed", ^{
-    FBTweak * _Nullable tweak = SHKFindTweak(@"TweakAction", @"CollectionD", @"CurrentValueA");
+    FBActionTweak * _Nullable tweak = (FBActionTweak *)SHKFindTweak(@"TweakAction", @"CollectionD",
+                                                                    @"CurrentValueA");
+    expect(tweak).to.beKindOf([FBActionTweak class]);
     FBTweakAction(@"TweakAction", @"CollectionD", @"CurrentValueA", ^{
       [SHKGlobalFlag sharedFlag].flag = YES;
     });
     expect(tweak).notTo.beNil();
-    dispatch_block_t block = tweak.defaultValue;
+    dispatch_block_t block = tweak.currentValue;
     block();
     expect([SHKGlobalFlag sharedFlag].flag).to.beTruthy();
   });
