@@ -8,6 +8,6 @@
 #import <LTKit/LTKit-Prefix.pch>
 
 // Third Party.
-#import <FMDB/FMDB.h>
 #import <Mantle/Mantle.h>
 #import <ReactiveObjC/ReactiveObjC.h>
+#import <fmdb/FMDB.h>
