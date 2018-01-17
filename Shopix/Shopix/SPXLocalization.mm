@@ -13,12 +13,8 @@ NSString * const kSPXDefaultLocalizationTableName = @"Localizable";
   static NSDictionary<NSString *, LTLocalizationTable *> *sharedInstance;
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
-    NSString * _Nullable path = [[NSBundle mainBundle] pathForResource:@"Shopix"
-                                                                ofType:@"bundle"];
-    if (!path) {
-      sharedInstance = @{};
-      return;
-    }
+    NSString * _Nullable path = [[NSBundle mainBundle] pathForResource:@"Shopix" ofType:@"bundle"];
+    LTAssert(path, @"Could not find Shopix bundle");
 
     auto _Nullable bundle = [NSBundle bundleWithPath:path];
     if (!bundle) {
