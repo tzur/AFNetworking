@@ -16,6 +16,7 @@
 		65CEFBBA1D3BF72800402230 /* FNDAppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 65CEFBB91D3BF72800402230 /* FNDAppDelegate.mm */; };
 		65CEFBC21D3BF72800402230 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 65CEFBC11D3BF72800402230 /* Assets.xcassets */; };
 		65CEFBC51D3BF72800402230 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 65CEFBC31D3BF72800402230 /* LaunchScreen.storyboard */; };
+		CDB949BF200F86E800708E0C /* Shopix.bundle in Resources */ = {isa = PBXBuildFile; fileRef = CDB949BC200F86C500708E0C /* Shopix.bundle */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -82,6 +83,34 @@
 			remoteGlobalIDString = 8BCFBFF218CF0AF000E612DE;
 			remoteInfo = LTEngineBundle;
 		};
+		CDB949B7200F86C500708E0C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CDB949AC200F86C500708E0C /* Shopix.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 84FF72E91C8EED6D00D1DA9F;
+			remoteInfo = Shopix;
+		};
+		CDB949B9200F86C500708E0C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CDB949AC200F86C500708E0C /* Shopix.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 848E000D1C591DD1001D8368;
+			remoteInfo = ShopixTests;
+		};
+		CDB949BB200F86C500708E0C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CDB949AC200F86C500708E0C /* Shopix.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = CD5550151F45C8050048215C;
+			remoteInfo = ShopixBundle;
+		};
+		CDB949BD200F86CF00708E0C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CDB949AC200F86C500708E0C /* Shopix.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = CD5550141F45C8050048215C;
+			remoteInfo = ShopixBundle;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -105,6 +134,7 @@
 		65CEFBC11D3BF72800402230 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		65CEFBC41D3BF72800402230 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		65CEFBC61D3BF72800402230 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CDB949AC200F86C500708E0C /* Shopix.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Shopix.xcodeproj; path = ../Shopix/Shopix.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -175,6 +205,7 @@
 			children = (
 				656155C71D464DAE009E701C /* LTEngine.xcodeproj */,
 				0651F3A01EDC8E00009FA384 /* Pinky.xcodeproj */,
+				CDB949AC200F86C500708E0C /* Shopix.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -241,6 +272,16 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		CDB949AD200F86C500708E0C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				CDB949B8200F86C500708E0C /* libShopix.a */,
+				CDB949BA200F86C500708E0C /* ShopixTests.xctest */,
+				CDB949BC200F86C500708E0C /* Shopix.bundle */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -257,6 +298,7 @@
 			dependencies = (
 				656155E21D464DB8009E701C /* PBXTargetDependency */,
 				0651F3BA1EDC8E1C009FA384 /* PBXTargetDependency */,
+				CDB949BE200F86CF00708E0C /* PBXTargetDependency */,
 			);
 			name = TestHost;
 			productName = TestHost;
@@ -303,6 +345,10 @@
 				{
 					ProductGroup = 0651F3A11EDC8E00009FA384 /* Products */;
 					ProjectRef = 0651F3A01EDC8E00009FA384 /* Pinky.xcodeproj */;
+				},
+				{
+					ProductGroup = CDB949AD200F86C500708E0C /* Products */;
+					ProjectRef = CDB949AC200F86C500708E0C /* Shopix.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -362,6 +408,27 @@
 			remoteRef = 656155DF1D464DAF009E701C /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		CDB949B8200F86C500708E0C /* libShopix.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libShopix.a;
+			remoteRef = CDB949B7200F86C500708E0C /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		CDB949BA200F86C500708E0C /* ShopixTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = ShopixTests.xctest;
+			remoteRef = CDB949B9200F86C500708E0C /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		CDB949BC200F86C500708E0C /* Shopix.bundle */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = Shopix.bundle;
+			remoteRef = CDB949BB200F86C500708E0C /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
@@ -373,6 +440,7 @@
 				65CEFBC21D3BF72800402230 /* Assets.xcassets in Resources */,
 				656155E31D464DC9009E701C /* LTEngine.bundle in Resources */,
 				0651F3BB1EDC8E39009FA384 /* Pinky.bundle in Resources */,
+				CDB949BF200F86E800708E0C /* Shopix.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -400,6 +468,11 @@
 			isa = PBXTargetDependency;
 			name = LTEngineBundle;
 			targetProxy = 656155E11D464DB8009E701C /* PBXContainerItemProxy */;
+		};
+		CDB949BE200F86CF00708E0C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = ShopixBundle;
+			targetProxy = CDB949BD200F86CF00708E0C /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
