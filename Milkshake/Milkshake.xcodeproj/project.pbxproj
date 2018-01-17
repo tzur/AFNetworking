@@ -17,6 +17,8 @@
 		887D81AB1FFBC23100E9D8E8 /* libFBTweak.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8857C8321FF0FCE6000D7CC6 /* libFBTweak.a */; };
 		887D83401FFBCB8700E9D8E8 /* FBTweak+RACSignalSupportSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 887D833F1FFBCB8700E9D8E8 /* FBTweak+RACSignalSupportSpec.mm */; };
 		8892CCCE1FF92222009A8897 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8892CCA81FF92222009A8897 /* MobileCoreServices.framework */; };
+		88EEA2A52004CCBB006FB79D /* SHKTweakCategoryAdapter.mm in Sources */ = {isa = PBXBuildFile; fileRef = 88EEA2A42004CCBB006FB79D /* SHKTweakCategoryAdapter.mm */; };
+		88EEA2A72004EAA5006FB79D /* SHKTweakCategoryAdapterSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 88EEA2A62004EAA5006FB79D /* SHKTweakCategoryAdapterSpec.mm */; };
 		8B10C9A01F3F059200F76142 /* libLLReactiveMatchers.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B10C99D1F3F058700F76142 /* libLLReactiveMatchers.a */; };
 		8B6867341F3B273C00F0EF4C /* ReactiveObjC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B6863CA1F33474400F0EF4C /* ReactiveObjC.framework */; };
 		A14171C61E6EAC0D005DBEFF /* libMilkshake.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A14171A11E6EAA93005DBEFF /* libMilkshake.a */; };
@@ -348,6 +350,9 @@
 		8857C8371FF0FD89000D7CC6 /* Common.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Common.xcconfig; path = ../Configuration/Common.xcconfig; sourceTree = "<group>"; };
 		887D833F1FFBCB8700E9D8E8 /* FBTweak+RACSignalSupportSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "FBTweak+RACSignalSupportSpec.mm"; sourceTree = "<group>"; };
 		8892CCA81FF92222009A8897 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
+		88EEA2A32004CCBA006FB79D /* SHKTweakCategoryAdapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHKTweakCategoryAdapter.h; sourceTree = "<group>"; };
+		88EEA2A42004CCBB006FB79D /* SHKTweakCategoryAdapter.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SHKTweakCategoryAdapter.mm; sourceTree = "<group>"; };
+		88EEA2A62004EAA5006FB79D /* SHKTweakCategoryAdapterSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SHKTweakCategoryAdapterSpec.mm; sourceTree = "<group>"; };
 		8B10C9971F3F058700F76142 /* LLReactiveMatchers.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LLReactiveMatchers.xcodeproj; path = ../third_party/LLReactiveMatchers/LLReactiveMatchers.xcodeproj; sourceTree = "<group>"; };
 		8B6863BB1F33474400F0EF4C /* ReactiveObjC.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactiveObjC.xcodeproj; path = ../third_party/ReactiveObjC/ReactiveObjC.xcodeproj; sourceTree = "<group>"; };
 		A14171A11E6EAA93005DBEFF /* libMilkshake.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libMilkshake.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -455,6 +460,23 @@
 			name = Signals;
 			sourceTree = "<group>";
 		};
+		88EEA27C2004CC79006FB79D /* Adapters */ = {
+			isa = PBXGroup;
+			children = (
+				88EEA2A32004CCBA006FB79D /* SHKTweakCategoryAdapter.h */,
+				88EEA2A42004CCBB006FB79D /* SHKTweakCategoryAdapter.mm */,
+			);
+			name = Adapters;
+			sourceTree = "<group>";
+		};
+		88EEA2A22004CC83006FB79D /* Adapters */ = {
+			isa = PBXGroup;
+			children = (
+				88EEA2A62004EAA5006FB79D /* SHKTweakCategoryAdapterSpec.mm */,
+			);
+			name = Adapters;
+			sourceTree = "<group>";
+		};
 		8B10C9981F3F058700F76142 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -502,6 +524,7 @@
 		A14171A31E6EAA93005DBEFF /* Milkshake */ = {
 			isa = PBXGroup;
 			children = (
+				88EEA27C2004CC79006FB79D /* Adapters */,
 				883235611ED861CD0090787D /* Base */,
 				880E4BE41FF3D0CD00B4C05E /* Signals */,
 				A14172BA1E6EB04F005DBEFF /* Supporting Files */,
@@ -645,6 +668,7 @@
 		A14173471E6EB62C005DBEFF /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				88EEA2A22004CC83006FB79D /* Adapters */,
 				883235801ED861DB0090787D /* Base */,
 				887D7F531FFAE0C800E9D8E8 /* Signals */,
 			);
@@ -1074,6 +1098,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				880E4BE71FF3D16F00B4C05E /* FBTweak+RACSignalSupport.mm in Sources */,
+				88EEA2A52004CCBB006FB79D /* SHKTweakCategoryAdapter.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1081,6 +1106,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				88EEA2A72004EAA5006FB79D /* SHKTweakCategoryAdapterSpec.mm in Sources */,
 				887D83401FFBCB8700E9D8E8 /* FBTweak+RACSignalSupportSpec.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
