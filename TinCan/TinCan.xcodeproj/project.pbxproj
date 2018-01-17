@@ -38,6 +38,7 @@
 		B4D17B3B1FCFE458002DBF30 /* NSFileManager+TinCanSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = B4D17B3A1FCFE458002DBF30 /* NSFileManager+TinCanSpec.mm */; };
 		B4D17B3E1FCFF69C002DBF30 /* TINMessenger.mm in Sources */ = {isa = PBXBuildFile; fileRef = B4D17B3C1FCFF69C002DBF30 /* TINMessenger.mm */; };
 		B4D17B421FCFF88C002DBF30 /* TINMessengerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = B4D17B411FCFF88C002DBF30 /* TINMessengerSpec.mm */; };
+		BE983572200F4DBB0028CD04 /* TINMessageFactory+Videoleap.mm in Sources */ = {isa = PBXBuildFile; fileRef = BE983570200F4DBB0028CD04 /* TINMessageFactory+Videoleap.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -385,6 +386,8 @@
 		B4D17B3C1FCFF69C002DBF30 /* TINMessenger.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = TINMessenger.mm; sourceTree = "<group>"; };
 		B4D17B3D1FCFF69C002DBF30 /* TINMessenger.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TINMessenger.h; sourceTree = "<group>"; };
 		B4D17B411FCFF88C002DBF30 /* TINMessengerSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = TINMessengerSpec.mm; sourceTree = "<group>"; };
+		BE983570200F4DBB0028CD04 /* TINMessageFactory+Videoleap.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "TINMessageFactory+Videoleap.mm"; sourceTree = "<group>"; };
+		BE983571200F4DBB0028CD04 /* TINMessageFactory+Videoleap.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TINMessageFactory+Videoleap.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -448,6 +451,8 @@
 				B45926D71FC69A5F00A70964 /* TINMessage+UserInfo.mm */,
 				B476E91E1FCDA88E007BC81C /* TINMessageFactory.h */,
 				B476E91B1FCDA88E007BC81C /* TINMessageFactory.mm */,
+				BE983571200F4DBB0028CD04 /* TINMessageFactory+Videoleap.h */,
+				BE983570200F4DBB0028CD04 /* TINMessageFactory+Videoleap.mm */,
 				B4D17B3D1FCFF69C002DBF30 /* TINMessenger.h */,
 				B4D17B3C1FCFF69C002DBF30 /* TINMessenger.mm */,
 			);
@@ -1076,6 +1081,7 @@
 			files = (
 				B45926D81FC69A5F00A70964 /* TINMessage+UserInfo.mm in Sources */,
 				B4D17B3E1FCFF69C002DBF30 /* TINMessenger.mm in Sources */,
+				BE983572200F4DBB0028CD04 /* TINMessageFactory+Videoleap.mm in Sources */,
 				B4D17B161FCFE433002DBF30 /* NSFileManager+TinCan.mm in Sources */,
 				B42D71061FBB24810024718E /* TINMessage.mm in Sources */,
 				B476E9201FCDA88E007BC81C /* TINMessageFactory.mm in Sources */,
