@@ -5,14 +5,24 @@
 
 SpecBegin(SPXColorScheme)
 
-it(@"should raise if the number of main gradient colors is smaller than 2", ^{
+__block SPXColorScheme *colorScheme;
+
+beforeEach(^{
   auto color = [UIColor blackColor];
-  auto colorScheme =
+  colorScheme =
       [[SPXColorScheme alloc] initWithMainColor:color textColor:color darkTextColor:color
                                 grayedTextColor:color backgroundColor:color];
+});
 
+it(@"should raise if the number of main gradient colors is smaller than 2", ^{
   expect(^{
-    colorScheme.mainGradientColors = @[color];
+    colorScheme.mainGradientColors = @[[UIColor blackColor]];
+  }).to.raise(NSInvalidArgumentException);
+});
+
+it(@"should raise if the number of multi app gradient colors is smaller than 2", ^{
+  expect(^{
+    colorScheme.multiAppGradientColors = @[[UIColor blackColor]];
   }).to.raise(NSInvalidArgumentException);
 });
 

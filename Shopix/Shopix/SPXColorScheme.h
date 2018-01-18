@@ -20,8 +20,13 @@ NS_ASSUME_NONNULL_BEGIN
 /// Main app color.
 @property (readonly, nonatomic) UIColor *mainColor;
 
-/// Main app gradient colors. Must have at least two elements.
-@property (copy, nonatomic, nullable) NSArray<UIColor *> *mainGradientColors;
+/// Main app gradient colors. Must have at least two elements. Defaults to
+/// <tt>[mainColor, mainColor]</tt>.
+@property (copy, nonatomic) NSArray<UIColor *> *mainGradientColors;
+
+/// Main mutli-app gradient colors. Must have at least two elements. Defaults to
+/// <tt>[mainColor, mainColor]</tt>.
+@property (copy, nonatomic) NSArray<UIColor *> *multiAppGradientColors;
 
 /// Regular bright text color.
 @property (readonly, nonatomic) UIColor *textColor;
