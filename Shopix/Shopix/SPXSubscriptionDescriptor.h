@@ -11,6 +11,12 @@ NS_ASSUME_NONNULL_BEGIN
 /// presenting the product to the user.
 @interface SPXSubscriptionDescriptor : NSObject
 
+/// Convience method for creating an array of subscription descriptors with identifiers specify
+/// by \c productIdentifiers and with a discount of \c discountPercentage.
++ (NSArray<SPXSubscriptionDescriptor *> *)
+    descriptorsWithProductIdentifiers:(NSArray<NSString *> *)productIdentifiers
+    discountPercentage:(NSUInteger)discountPercentage;
+
 - (instancetype)init NS_UNAVAILABLE;
 
 /// Initializes with the given \c productIdentifier and \c discountPercentage set to \c 0.

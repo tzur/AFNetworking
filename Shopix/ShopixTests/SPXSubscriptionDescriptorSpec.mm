@@ -5,6 +5,7 @@
 
 #import <Bazaar/BZRProductPriceInfo.h>
 #import <Bazaar/BZRProductsInfoProvider.h>
+#import <LTKit/NSArray+Functional.h>
 
 SpecBegin(SPXSubscriptionDescriptor)
 

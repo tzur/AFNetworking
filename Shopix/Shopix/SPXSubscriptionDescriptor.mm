@@ -5,12 +5,23 @@
 
 #import <Bazaar/BZRProductPriceInfo.h>
 #import <Bazaar/BZRProductsInfoProvider.h>
+#import <LTKit/NSArray+Functional.h>
 
 #import "BZRBillingPeriod+ProductIdentifier.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @implementation SPXSubscriptionDescriptor
+
++ (NSArray<SPXSubscriptionDescriptor *> *)
+    descriptorsWithProductIdentifiers:(NSArray<NSString *> *)productIdentifiers
+    discountPercentage:(NSUInteger)discountPercentage {
+  return [productIdentifiers
+          lt_map:^SPXSubscriptionDescriptor *(NSString *productIdentifier) {
+            return [[SPXSubscriptionDescriptor alloc] initWithProductIdentifier:productIdentifier
+                                                             discountPercentage:discountPercentage];
+          }];
+}
 
 - (instancetype)initWithProductIdentifier:(NSString *)productIdentifier {
   return [self initWithProductIdentifier:productIdentifier discountPercentage:0];
