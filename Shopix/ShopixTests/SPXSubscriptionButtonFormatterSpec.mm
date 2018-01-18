@@ -5,16 +5,19 @@
 
 #import <Bazaar/BZRBillingPeriod.h>
 #import <Bazaar/BZRProductPriceInfo.h>
+#import <Bazaar/BZRProductsInfoProvider.h>
 
 #import "SPXSubscriptionDescriptor.h"
 
 SpecBegin(SPXSubscriptionButtonFormatter)
 
+__block id<BZRProductsInfoProvider> productsInfoProvider;
 __block SPXSubscriptionButtonFormatter *formatter;
 __block BZRProductPriceInfo *priceInfo;
 __block SPXSubscriptionDescriptor *descriptor;
 
 beforeEach(^{
+  productsInfoProvider = OCMProtocolMock(@protocol(BZRProductsInfoProvider));
   formatter = [[SPXSubscriptionButtonFormatter alloc] initWithPeriodTextColor:[UIColor redColor]
                                                                priceTextColor:[UIColor blueColor]
                                                            fullPriceTextColor:[UIColor whiteColor]];
@@ -23,7 +26,8 @@ beforeEach(^{
 context(@"period text", ^{
   it(@"should raise if the subscription product billing period is unsupported", ^{
     descriptor = OCMPartialMock([[SPXSubscriptionDescriptor alloc]
-                                 initWithProductIdentifier:@"com.lightricks.Shopix.UnknownPeriod"]);
+                                 initWithProductIdentifier:@"com.lightricks.Shopix.UnknownPeriod"
+                                 discountPercentage:0 productsInfoProvider:productsInfoProvider]);
     auto billingPeriod = [[BZRBillingPeriod alloc] initWithDictionary:@{
       @"unit": $(BZRBillingPeriodUnitDays),
       @"unitCount": @1
@@ -37,7 +41,8 @@ context(@"period text", ^{
 
   it(@"should be colored by the given period text color", ^{
     descriptor = [[SPXSubscriptionDescriptor alloc]
-                  initWithProductIdentifier:@"com.lightricks.Shopix.Monthly"];
+                  initWithProductIdentifier:@"com.lightricks.Shopix.Monthly"
+                  discountPercentage:0 productsInfoProvider:productsInfoProvider];
     auto periodText = [formatter billingPeriodTextForSubscription:descriptor monthlyFormat:NO];
     UIColor *periodTextColor = [periodText attribute:NSForegroundColorAttributeName atIndex:0
                                longestEffectiveRange:nil inRange:NSMakeRange(0, periodText.length)];
@@ -47,7 +52,8 @@ context(@"period text", ^{
 
   it(@"should always display monthly period text in months", ^{
     descriptor = [[SPXSubscriptionDescriptor alloc]
-                  initWithProductIdentifier:@"com.lightricks.Shopix.Monthly"];
+                  initWithProductIdentifier:@"com.lightricks.Shopix.Monthly"
+                  discountPercentage:0 productsInfoProvider:productsInfoProvider];
     auto periodText = [formatter billingPeriodTextForSubscription:descriptor monthlyFormat:NO];
     auto periodTextMonthly = [formatter billingPeriodTextForSubscription:descriptor
                                                            monthlyFormat:YES];
@@ -58,7 +64,8 @@ context(@"period text", ^{
 
   it(@"should always display bi-yearly period in months", ^{
     descriptor = [[SPXSubscriptionDescriptor alloc]
-                  initWithProductIdentifier:@"com.lightricks.Shopix.BiYearly"];
+                  initWithProductIdentifier:@"com.lightricks.Shopix.BiYearly"
+                  discountPercentage:0 productsInfoProvider:productsInfoProvider];
     auto periodText = [formatter billingPeriodTextForSubscription:descriptor monthlyFormat:NO];
     auto periodTextMonthly = [formatter billingPeriodTextForSubscription:descriptor
                                                            monthlyFormat:YES];
@@ -69,7 +76,8 @@ context(@"period text", ^{
 
   it(@"should display the period in years if monthly format is NO and the period is yearly", ^{
     descriptor = [[SPXSubscriptionDescriptor alloc]
-                  initWithProductIdentifier:@"com.lightricks.Shopix.Yearly"];
+                  initWithProductIdentifier:@"com.lightricks.Shopix.Yearly"
+                  discountPercentage:0 productsInfoProvider:productsInfoProvider];
     auto periodText = [formatter billingPeriodTextForSubscription:descriptor monthlyFormat:NO];
 
     expect([periodText string]).to.equal(@"1\nYear");
@@ -77,7 +85,8 @@ context(@"period text", ^{
 
   it(@"should display the period in months if monthly format is YES and the period is yearly", ^{
     descriptor = [[SPXSubscriptionDescriptor alloc]
-                  initWithProductIdentifier:@"com.lightricks.Shopix.Yearly"];
+                  initWithProductIdentifier:@"com.lightricks.Shopix.Yearly"
+                  discountPercentage:0 productsInfoProvider:productsInfoProvider];
     auto periodText = [formatter billingPeriodTextForSubscription:descriptor monthlyFormat:YES];
 
     expect([periodText string]).to.equal(@"12\nMonths");
@@ -85,7 +94,8 @@ context(@"period text", ^{
 
   it(@"should always display one-time-purchase text if the period is one-time-payment", ^{
     descriptor = [[SPXSubscriptionDescriptor alloc]
-                  initWithProductIdentifier:@"com.lightricks.Shopix.OneTimePayment"];
+                  initWithProductIdentifier:@"com.lightricks.Shopix.OneTimePayment"
+                  discountPercentage:0 productsInfoProvider:productsInfoProvider];
     auto periodText = [formatter billingPeriodTextForSubscription:descriptor monthlyFormat:NO];
     auto periodTextMonthly = [formatter billingPeriodTextForSubscription:descriptor
                                                            monthlyFormat:YES];
@@ -105,7 +115,8 @@ context(@"price text", ^{
 
   it(@"should raise if the subscription descriptor's price information is nil", ^{
     descriptor = [[SPXSubscriptionDescriptor alloc]
-                  initWithProductIdentifier:@"com.lightricks.Shopix.UnknownPeriod"];
+                  initWithProductIdentifier:@"com.lightricks.Shopix.UnknownPeriod"
+                  discountPercentage:0 productsInfoProvider:productsInfoProvider];
     expect(^{
       [formatter priceTextForSubscription:descriptor monthlyFormat:YES];
     }).to.raise(NSInvalidArgumentException);
@@ -113,7 +124,8 @@ context(@"price text", ^{
 
   it(@"should raise if the product period is unsupported and monthly format is YES", ^{
     descriptor = OCMPartialMock([[SPXSubscriptionDescriptor alloc]
-                                 initWithProductIdentifier:@"com.lightricks.Shopix.UnknownPeriod"]);
+                                 initWithProductIdentifier:@"com.lightricks.Shopix.UnknownPeriod"
+                                 discountPercentage:0 productsInfoProvider:productsInfoProvider]);
     descriptor.priceInfo = priceInfo;
     auto billingPeriod = [[BZRBillingPeriod alloc] initWithDictionary:@{
       @"unit": $(BZRBillingPeriodUnitDays),
@@ -128,7 +140,8 @@ context(@"price text", ^{
 
   it(@"should be colored by the given price text color", ^{
     descriptor = [[SPXSubscriptionDescriptor alloc]
-                  initWithProductIdentifier:@"com.lightricks.Shopix.Monthly"];
+                  initWithProductIdentifier:@"com.lightricks.Shopix.Monthly"
+                  discountPercentage:0 productsInfoProvider:productsInfoProvider];
     descriptor.priceInfo = priceInfo;
     auto priceText = [formatter priceTextForSubscription:descriptor monthlyFormat:NO];
     UIColor *priceTextColor = [priceText attribute:NSForegroundColorAttributeName atIndex:0
@@ -140,7 +153,8 @@ context(@"price text", ^{
   context(@"monthly subscription", ^{
     beforeEach(^{
       descriptor = [[SPXSubscriptionDescriptor alloc]
-                    initWithProductIdentifier:@"com.lightricks.Shopix.Monthly"];
+                    initWithProductIdentifier:@"com.lightricks.Shopix.Monthly"
+                    discountPercentage:0 productsInfoProvider:productsInfoProvider];
       descriptor.priceInfo = priceInfo;
     });
 
@@ -160,7 +174,8 @@ context(@"price text", ^{
   context(@"bi-yearly subscription", ^{
     beforeEach(^{
       descriptor = [[SPXSubscriptionDescriptor alloc]
-                    initWithProductIdentifier:@"com.lightricks.Shopix.BiYearly"];
+                    initWithProductIdentifier:@"com.lightricks.Shopix.BiYearly"
+                    discountPercentage:0 productsInfoProvider:productsInfoProvider];
       descriptor.priceInfo = priceInfo;
     });
 
@@ -180,7 +195,8 @@ context(@"price text", ^{
   context(@"yearly subscription", ^{
     beforeEach(^{
       descriptor = [[SPXSubscriptionDescriptor alloc]
-                    initWithProductIdentifier:@"com.lightricks.Shopix.Yearly"];
+                    initWithProductIdentifier:@"com.lightricks.Shopix.Yearly"
+                    discountPercentage:0 productsInfoProvider:productsInfoProvider];
       descriptor.priceInfo = priceInfo;
     });
 
@@ -200,7 +216,8 @@ context(@"price text", ^{
   context(@"one-time-payment subscription", ^{
     beforeEach(^{
       descriptor = [[SPXSubscriptionDescriptor alloc]
-                    initWithProductIdentifier:@"com.lightricks.Shopix.OneTimePayment"];
+                    initWithProductIdentifier:@"com.lightricks.Shopix.OneTimePayment"
+                    discountPercentage:0 productsInfoProvider:productsInfoProvider];
       descriptor.priceInfo = priceInfo;
     });
 
@@ -229,7 +246,8 @@ context(@"full price text", ^{
 
   it(@"should raise if the subscription descriptor's price information is nil", ^{
     descriptor = [[SPXSubscriptionDescriptor alloc]
-                  initWithProductIdentifier:@"com.lightricks.Shopix.UnknownPeriod"];
+                  initWithProductIdentifier:@"com.lightricks.Shopix.UnknownPeriod"
+                  discountPercentage:0 productsInfoProvider:productsInfoProvider];
     expect(^{
       [formatter fullPriceTextForSubscription:descriptor monthlyFormat:YES];
     }).to.raise(NSInvalidArgumentException);
@@ -237,7 +255,8 @@ context(@"full price text", ^{
 
   it(@"should raise if the product period is unsupported and monthly format is YES", ^{
     descriptor = OCMPartialMock([[SPXSubscriptionDescriptor alloc]
-                                 initWithProductIdentifier:@"com.lightricks.Shopix.UnknownPeriod"]);
+                                 initWithProductIdentifier:@"com.lightricks.Shopix.UnknownPeriod"
+                                 discountPercentage:0 productsInfoProvider:productsInfoProvider]);
     descriptor.priceInfo = priceInfo;
     auto billingPeriod = [[BZRBillingPeriod alloc] initWithDictionary:@{
       @"unit": $(BZRBillingPeriodUnitDays),
@@ -252,7 +271,8 @@ context(@"full price text", ^{
 
   it(@"should be colored by the given full price text color", ^{
     descriptor = [[SPXSubscriptionDescriptor alloc]
-                  initWithProductIdentifier:@"com.lightricks.Shopix.Monthly"];
+                  initWithProductIdentifier:@"com.lightricks.Shopix.Monthly"
+                  discountPercentage:0 productsInfoProvider:productsInfoProvider];
     descriptor.priceInfo = priceInfo;
     auto fullPriceText = [formatter fullPriceTextForSubscription:descriptor monthlyFormat:NO];
     UIColor *fullPriceTextColor = [fullPriceText attribute:NSForegroundColorAttributeName
@@ -264,7 +284,8 @@ context(@"full price text", ^{
 
   it(@"should the text be strike-through", ^{
     descriptor = [[SPXSubscriptionDescriptor alloc]
-                  initWithProductIdentifier:@"com.lightricks.Shopix.Monthly"];
+                  initWithProductIdentifier:@"com.lightricks.Shopix.Monthly"
+                  discountPercentage:0 productsInfoProvider:productsInfoProvider];
     descriptor.priceInfo = priceInfo;
     auto fullPriceText = [formatter fullPriceTextForSubscription:descriptor monthlyFormat:NO];
     NSNumber *isStrikeThrough =
@@ -277,7 +298,8 @@ context(@"full price text", ^{
   context(@"monthly subscription", ^{
     beforeEach(^{
       descriptor = [[SPXSubscriptionDescriptor alloc]
-                    initWithProductIdentifier:@"com.lightricks.Shopix.Monthly"];
+                    initWithProductIdentifier:@"com.lightricks.Shopix.Monthly"
+                    discountPercentage:0 productsInfoProvider:productsInfoProvider];
       descriptor.priceInfo = priceInfo;
     });
 
@@ -297,7 +319,8 @@ context(@"full price text", ^{
   context(@"bi-yearly subscription", ^{
     beforeEach(^{
       descriptor = [[SPXSubscriptionDescriptor alloc]
-                    initWithProductIdentifier:@"com.lightricks.Shopix.BiYearly"];
+                    initWithProductIdentifier:@"com.lightricks.Shopix.BiYearly"
+                    discountPercentage:0 productsInfoProvider:productsInfoProvider];
       descriptor.priceInfo = priceInfo;
     });
 
@@ -317,7 +340,8 @@ context(@"full price text", ^{
   context(@"yearly subscription", ^{
     beforeEach(^{
       descriptor = [[SPXSubscriptionDescriptor alloc]
-                    initWithProductIdentifier:@"com.lightricks.Shopix.Yearly"];
+                    initWithProductIdentifier:@"com.lightricks.Shopix.Yearly"
+                    discountPercentage:0 productsInfoProvider:productsInfoProvider];
       descriptor.priceInfo = priceInfo;
     });
 
@@ -337,7 +361,8 @@ context(@"full price text", ^{
   context(@"one-time-payment subscription", ^{
     beforeEach(^{
       descriptor = [[SPXSubscriptionDescriptor alloc]
-                    initWithProductIdentifier:@"com.lightricks.Shopix.OneTimePayment"];
+                    initWithProductIdentifier:@"com.lightricks.Shopix.OneTimePayment"
+                    discountPercentage:0 productsInfoProvider:productsInfoProvider];
       descriptor.priceInfo = priceInfo;
     });
 

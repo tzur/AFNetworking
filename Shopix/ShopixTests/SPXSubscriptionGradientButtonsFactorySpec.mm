@@ -18,7 +18,11 @@ beforeEach(^{
   SPXSubscriptionButtonFormatter *formatter = OCMClassMock([SPXSubscriptionButtonFormatter class]);
   auto subscriptionPeriod = ([[NSAttributedString alloc] initWithString:@"boo"]);
   auto subscriptionPrice = ([[NSAttributedString alloc] initWithString:@"10"]);
-  descriptor = [[SPXSubscriptionDescriptor alloc] initWithProductIdentifier:@"foo"];
+  id<BZRProductsInfoProvider> productsInfoProvider =
+      OCMProtocolMock(@protocol(BZRProductsInfoProvider));
+  descriptor = [[SPXSubscriptionDescriptor alloc] initWithProductIdentifier:@"foo"
+                                                         discountPercentage:0
+                                                       productsInfoProvider:productsInfoProvider];
   OCMStub([formatter billingPeriodTextForSubscription:descriptor monthlyFormat:YES])
       .andReturn(subscriptionPeriod);
   OCMStub([formatter joinedPriceTextForSubscription:descriptor
