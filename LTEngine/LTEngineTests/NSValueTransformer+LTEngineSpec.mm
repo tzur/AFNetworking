@@ -22,6 +22,10 @@ LTEnumMake(NSUInteger, LTTestEnum,
   LTTestEnumBar
 );
 
+LTEnumMake(NSUInteger, LTAnotherTestEnum,
+  LTAnotherTestEnumFoo
+);
+
 SpecBegin(NSValueTransformer_LTEngine)
 
 context(@"class value transformer", ^{
@@ -192,6 +196,69 @@ context(@"enum transformer", ^{
   it(@"should raise when transforming an invalid enum field name", ^{
     expect(^{
       [transformer transformedValue:@"foo"];
+    }).to.raise(NSInvalidArgumentException);
+  });
+
+  it(@"should raise when transforming a nil value", ^{
+    expect(^{
+      [transformer transformedValue:nil];
+    }).to.raise(NSInvalidArgumentException);
+  });
+
+  it(@"should raise when reverse transforming a nil value", ^{
+    expect(^{
+      [transformer reverseTransformedValue:nil];
+    }).to.raise(NSInvalidArgumentException);
+  });
+});
+
+context(@"enum mapping transformer", ^{
+  __block NSValueTransformer *transformer;
+
+  beforeEach(^{
+    NSDictionary *map = @{
+      $(LTTestEnumFoo): @"Foo",
+      $(LTTestEnumBar): @"Bar"
+    };
+    transformer = [NSValueTransformer lt_enumTransformerWithMap:map];
+  });
+
+  it(@"should return a transformer for a map containing only part of the values of an enum", ^{
+    expect(^{
+      NSDictionary *map = @{
+        $(LTTestEnumFoo): @"Foo"
+      };
+      transformer = [NSValueTransformer lt_enumTransformerWithMap:map];
+    }).toNot.raiseAny();
+  });
+
+  it(@"should raise when attempting to create a transformer with a non-bijective map", ^{
+    expect(^{
+      NSDictionary *map = @{
+        $(LTTestEnumFoo): @"Foo",
+        $(LTTestEnumBar): @"Foo"
+      };
+      transformer = [NSValueTransformer lt_enumTransformerWithMap:map];
+    }).to.raise(NSInvalidArgumentException);
+  });
+
+  it(@"should perform forward transform", ^{
+    expect([transformer transformedValue:@"Foo"]).to.equal($(LTTestEnumFoo));
+  });
+
+  it(@"should perform reverse transform", ^{
+    expect([transformer reverseTransformedValue:$(LTTestEnumFoo)]).to.equal(@"Foo");
+  });
+
+  it(@"should raise when attempting to transform an invalid string", ^{
+    expect(^{
+      [transformer transformedValue:@"baz"];
+    }).to.raise(NSInvalidArgumentException);
+  });
+
+  it(@"should raise when attempting to transfor an invalid enum value", ^{
+    expect(^{
+      [transformer reverseTransformedValue:$(LTAnotherTestEnumFoo)];
     }).to.raise(NSInvalidArgumentException);
   });
 

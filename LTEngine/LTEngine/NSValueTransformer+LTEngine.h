@@ -291,7 +291,25 @@ extern NSString * const kGLKMatrix4ValueTransformer;
 ///
 /// If the input to the returned transformer is \c nil, or not one of enum field names,
 /// \c NSInvalidArgumentException will be raised.
+///
+/// @important In order to decouple serialization from implementation, the usage of this method is
+/// discouraged while the usage of the \c lt_enumTransformerWithMap: method is encouraged. In
+/// particular, transformers constructed from this method use the enum field names for conversion to
+/// strings. This can cause issues when using the strings in serialized data because they reveal
+/// internal implementation details and changing the field names will break the serialized data. By
+/// using aforementioned \c lt_enumTransformerWithMap: method the caller is forced to specify the
+/// mapping between each enum value and its serialized string. Any future changes to that map will
+/// be explicit and therefore more noticeable by the maintainers.
 + (NSValueTransformer *)lt_enumNameTransformerForClass:(Class)enumClass;
+
+/// Returns a reversible transformer that converts an input \c NSString to a corresponding
+/// \c id<LTEnum> instance, by initializing the enum with its name according to the given \c map.
+///
+/// An \c NSInvalidArgumentException is raised if the given \c map is not bijective.
+///
+/// An \c NSInvalidArgumentException is raised by the returned transformer if its given input is
+/// \c nil, or it is not one of the keys or values of the given \c map.
++ (NSValueTransformer *)lt_enumTransformerWithMap:(NSDictionary<id<LTEnum>, NSString *> *)map;
 
 @end
 

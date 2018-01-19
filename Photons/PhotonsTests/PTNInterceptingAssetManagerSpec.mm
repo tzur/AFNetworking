@@ -77,6 +77,7 @@ context(@"album fetching", ^{
 
   __block id<PTNDescriptor> assetDescriptor;
   __block id<PTNDescriptor> interceptingDescriptor;
+  __block id<PTNDescriptor> otherInterceptingDescriptor;
   __block id<PTNDescriptor> otherDescriptor;
   __block id<PTNDescriptor> subalbumDescriptor;
   __block id<PTNAlbum> album;
@@ -92,6 +93,7 @@ context(@"album fetching", ^{
     subalbumDescriptor = PTNCreateDescriptor(subalbumDescriptorURL, @"bar", 0, nil);
 
     interceptingDescriptor = PTNCreateDescriptor(nil, @"baz", 0, nil);
+    otherInterceptingDescriptor = PTNCreateDescriptor(nil, @"caz", 0, nil);
     otherDescriptor = PTNCreateDescriptor(otherDescriptorURL, @"gaz", 0, nil);
 
     album = [[PTNAlbum alloc] initWithURL:albumURL
@@ -208,7 +210,7 @@ context(@"album fetching", ^{
 
   it(@"should intercept given assets and subalbums", ^{
     [interceptionMap sendNext:@{assetDescriptorURL: interceptingDescriptor,
-                                subalbumDescriptorURL: interceptingDescriptor}];
+                                subalbumDescriptorURL: otherInterceptingDescriptor}];
     [underlyingAssetManager serveDescriptorURL:assetDescriptorURL withDescriptor:assetDescriptor];
     [underlyingAssetManager serveDescriptorURL:subalbumDescriptorURL
                                 withDescriptor:subalbumDescriptor];
@@ -218,7 +220,7 @@ context(@"album fetching", ^{
 
     [underlyingAssetManager serveAlbumURL:albumURL withAlbum:album];
 
-    NSArray *subalbums = @[interceptingDescriptor, otherDescriptor];
+    NSArray *subalbums = @[otherInterceptingDescriptor, otherDescriptor];
     NSArray *assets = @[interceptingDescriptor, otherDescriptor];
     id<PTNAlbum> interceptedAlbum = [[PTNAlbum alloc] initWithURL:albumURL
                                                         subalbums:subalbums
@@ -233,7 +235,7 @@ context(@"album fetching", ^{
 
   it(@"should intercept given assets and subalbums on before album", ^{
     [interceptionMap sendNext:@{assetDescriptorURL: interceptingDescriptor,
-                                subalbumDescriptorURL: interceptingDescriptor}];
+                                subalbumDescriptorURL: otherInterceptingDescriptor}];
     [underlyingAssetManager serveDescriptorURL:assetDescriptorURL withDescriptor:assetDescriptor];
     [underlyingAssetManager serveDescriptorURL:subalbumDescriptorURL
                                 withDescriptor:subalbumDescriptor];
@@ -247,7 +249,7 @@ context(@"album fetching", ^{
                                                                       assetChanges:nil];
     [underlyingAssetManager serveAlbumURL:albumURL withAlbumChangeset:sentChangeset];
 
-    NSArray *subalbums = @[interceptingDescriptor, otherDescriptor];
+    NSArray *subalbums = @[otherInterceptingDescriptor, otherDescriptor];
     NSArray *assets = @[interceptingDescriptor, otherDescriptor];
     id<PTNAlbum> interceptedAlbum = [[PTNAlbum alloc] initWithURL:albumURL
                                                         subalbums:subalbums
@@ -304,9 +306,9 @@ context(@"album fetching", ^{
 
     [underlyingAssetManager serveAlbumURL:albumURL withAlbum:album];
     [interceptionMap sendNext:@{assetDescriptorURL: interceptingDescriptor,
-                                otherDescriptorURL: interceptingDescriptor}];
+                                otherDescriptorURL: otherInterceptingDescriptor}];
     [underlyingAssetManager serveDescriptorURL:otherDescriptorURL withDescriptor:otherDescriptor];
-    [interceptionMap sendNext:@{otherDescriptorURL: interceptingDescriptor}];
+    [interceptionMap sendNext:@{otherDescriptorURL: otherInterceptingDescriptor}];
 
     expect(values).will.sendValuesWithCount(3);
   });
@@ -323,6 +325,7 @@ context(@"album fetching", ^{
 
   context(@"updates", ^{
     __block NSArray *interceptedSubalbums;
+    __block NSArray *otherInterceptedSubalbums;
     __block NSArray *interceptedAssets;
     __block id<PTNAlbum> interceptedAssetAlbum;
     __block id<PTNAlbum> interceptedAssetAndAlbumAlbum;
@@ -330,12 +333,13 @@ context(@"album fetching", ^{
 
     beforeEach(^{
       interceptedSubalbums = @[interceptingDescriptor, otherDescriptor];
+      otherInterceptedSubalbums = @[otherInterceptingDescriptor, otherDescriptor];
       interceptedAssets = @[interceptingDescriptor, otherDescriptor];
       interceptedAssetAlbum = [[PTNAlbum alloc] initWithURL:albumURL
                                                   subalbums:album.subalbums
                                                      assets:interceptedSubalbums];
       interceptedAssetAndAlbumAlbum = [[PTNAlbum alloc] initWithURL:albumURL
-                                                          subalbums:interceptedSubalbums
+                                                          subalbums:otherInterceptedSubalbums
                                                              assets:interceptedSubalbums];
       mappingChanges = [PTNIncrementalChanges changesWithRemovedIndexes:nil
           insertedIndexes:nil updatedIndexes:[NSIndexSet indexSetWithIndex:0] moves:nil];
@@ -374,7 +378,7 @@ context(@"album fetching", ^{
       [underlyingAssetManager serveDescriptorURL:assetDescriptorURL withDescriptor:assetDescriptor];
 
       [interceptionMap sendNext:@{assetDescriptorURL: interceptingDescriptor,
-                                  subalbumDescriptorURL: interceptingDescriptor}];
+                                  subalbumDescriptorURL: otherInterceptingDescriptor}];
       [underlyingAssetManager serveDescriptorURL:subalbumDescriptorURL
                                   withDescriptor:subalbumDescriptor];
 
@@ -485,7 +489,7 @@ context(@"album fetching", ^{
       [underlyingAssetManager serveDescriptorURL:irrelevantURL withDescriptor:irrelevantDescriptor];
 
       [interceptionMap sendNext:@{assetDescriptorURL: interceptingDescriptor,
-                                  subalbumDescriptorURL: interceptingDescriptor}];
+                                  subalbumDescriptorURL: otherInterceptingDescriptor}];
       [underlyingAssetManager serveDescriptorURL:subalbumDescriptorURL
                                   withDescriptor:subalbumDescriptor];
 
@@ -580,14 +584,14 @@ context(@"album fetching", ^{
         return PTNChangesetSemanticallyEqual(returnedChangeset, afterAlbumChangeset);
       });
       expect(values).will.matchValue(1, ^BOOL(PTNAlbumChangeset *returnedChangeset) {
-        NSArray *updatedInteceptedAssets = @[
+        NSArray *updatedInterceptedAssets = @[
           interceptingDescriptor,
           otherDescriptor,
           otherDescriptor
         ];
         id<PTNAlbum> updatedInterceptedAfterAlbum =
             [[PTNAlbum alloc] initWithURL:albumURL subalbums:album.subalbums
-                                   assets:updatedInteceptedAssets];
+                                   assets:updatedInterceptedAssets];
         PTNAlbumChangeset *interceptedChangeset =
             [PTNAlbumChangeset changesetWithBeforeAlbum:interceptedAssetAlbum
                                              afterAlbum:updatedInterceptedAfterAlbum
