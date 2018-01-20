@@ -4,6 +4,7 @@
 #import "SPXSubscriptionDescriptor.h"
 
 #import <Bazaar/BZRProductPriceInfo.h>
+#import <Bazaar/BZRProductsInfoProvider.h>
 
 #import "BZRBillingPeriod+ProductIdentifier.h"
 
@@ -17,11 +18,24 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithProductIdentifier:(NSString *)productIdentifier
                        discountPercentage:(NSUInteger)discountPercentage {
+  id<BZRProductsInfoProvider> productsInfoProvider =
+      [JSObjection defaultInjector][@protocol(BZRProductsInfoProvider)];
+  LTAssert(productsInfoProvider, @"BZRProductsInfoProvider is not injected properly, make sure "
+           "Objection's default injector has binding for this protocol");
+  return [self initWithProductIdentifier:productIdentifier discountPercentage:discountPercentage
+                    productsInfoProvider:productsInfoProvider];
+}
+
+- (instancetype)initWithProductIdentifier:(NSString *)productIdentifier
+                       discountPercentage:(NSUInteger)discountPercentage
+                     productsInfoProvider:(id<BZRProductsInfoProvider>)productsInfoProvider {
   LTParameterAssert(discountPercentage < 100, @"Subscription's discount must be in range [0, 100) "
                     "got: %lu", (unsigned long)discountPercentage);
   if (self = [super init]) {
     _productIdentifier = [productIdentifier copy];
     _billingPeriod = [BZRBillingPeriod spx_billingPeriodWithProductIdentifier:productIdentifier];
+    _discountPercentage = discountPercentage;
+    _isMultiAppSubscription = [productsInfoProvider isMultiAppSubscription:productIdentifier];
   }
   return self;
 }

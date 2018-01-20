@@ -5,6 +5,7 @@
 
 #import <Bazaar/BZRProduct.h>
 #import <Bazaar/BZRProductPriceInfo.h>
+#import <Bazaar/BZRProductsInfoProvider.h>
 #import <Bazaar/BZRReceiptModel.h>
 #import <Bazaar/NSErrorCodes+Bazaar.h>
 
@@ -21,6 +22,7 @@
 
 SpecBegin(SPXSubscriptionViewModel)
 
+__block JSObjectionInjector *lastUsedInjector;
 __block SPXSubscriptionViewModel *viewModel;
 __block SPXSubscriptionManager *subscriptionManager;
 __block SPXSubscriptionTermsViewModel *termsViewModel;
@@ -28,6 +30,14 @@ __block SPXColorScheme *colorScheme;
 __block NSArray<NSString *> *requestedProductIdentifiers;
 
 beforeEach(^{
+  lastUsedInjector = [JSObjection defaultInjector];
+  auto testModule = [[JSObjectionModule alloc] init];
+  id<BZRProductsInfoProvider> productsInfoProvider =
+      OCMProtocolMock(@protocol(BZRProductsInfoProvider));
+  [testModule bind:productsInfoProvider toProtocol:@protocol(BZRProductsInfoProvider)];
+
+  [JSObjection setDefaultInjector:[JSObjection createInjector:testModule]];
+
   subscriptionManager = OCMClassMock([SPXSubscriptionManager class]);
   termsViewModel = OCMClassMock([SPXSubscriptionTermsViewModel class]);
   colorScheme = OCMClassMock([SPXColorScheme class]);
@@ -41,6 +51,11 @@ beforeEach(^{
       preferredProductIndex:0 pageViewModels:pageViewModels termsViewModel:termsViewModel
       colorScheme:colorScheme subscriptionManager:subscriptionManager
       fetchProductsStrategy:$(SPXFetchProductsStrategyAlways)];
+});
+
+afterEach(^{
+  [JSObjection setDefaultInjector:lastUsedInjector];
+  lastUsedInjector = nil;
 });
 
 it(@"should raise if the preferred button index is greater than the number of buttons", ^{

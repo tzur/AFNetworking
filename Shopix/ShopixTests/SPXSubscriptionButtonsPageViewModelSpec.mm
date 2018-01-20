@@ -3,12 +3,14 @@
 
 #import "SPXSubscriptionButtonsPageViewModel.h"
 
+#import <Bazaar/BZRProductsInfoProvider.h>
 #import <LTKit/NSArray+Functional.h>
 
 #import "SPXSubscriptionDescriptor.h"
 
 SpecBegin(SPXSubscriptionButtonsPageViewModel)
 
+__block JSObjectionInjector *lastUsedInjector;
 __block SPXSubscriptionButtonsPageViewModel *buttonsPageViewModel;
 __block id mockApplication;
 __block UIWindow *window;
@@ -16,6 +18,14 @@ __block NSRange titleRange;
 __block NSRange subtitleRange;
 
 beforeEach(^{
+  lastUsedInjector = [JSObjection defaultInjector];
+  auto testModule = [[JSObjectionModule alloc] init];
+  id<BZRProductsInfoProvider> productsInfoProvider =
+      OCMProtocolMock(@protocol(BZRProductsInfoProvider));
+  [testModule bind:productsInfoProvider toProtocol:@protocol(BZRProductsInfoProvider)];
+
+  [JSObjection setDefaultInjector:[JSObjection createInjector:testModule]];
+
   buttonsPageViewModel = [[SPXSubscriptionButtonsPageViewModel alloc]
       initWithTitleText:@"title" subtitleText:@"subtitle" productIdentifiers:@[@"foo", @"boo"]
       highlightedButtonIndex:nil backgroundVideoURL:[NSURL URLWithString:@""]
@@ -29,6 +39,8 @@ beforeEach(^{
 });
 
 afterEach(^{
+  [JSObjection setDefaultInjector:lastUsedInjector];
+  lastUsedInjector = nil;
   mockApplication = nil;
 });
 

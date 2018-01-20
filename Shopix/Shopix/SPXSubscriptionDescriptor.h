@@ -3,6 +3,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@protocol BZRProductsInfoProvider;
+
 @class BZRBillingPeriod, BZRProductPriceInfo;
 
 /// Descriptor representing a subscription product and providing information that is crucial for
@@ -12,19 +14,30 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)init NS_UNAVAILABLE;
 
 /// Initializes with the given \c productIdentifier and \c discountPercentage set to \c 0.
+/// \c productsInfoProvider is pulled from Objection.
 - (instancetype)initWithProductIdentifier:(NSString *)productIdentifier;
+
+/// Initializes with the given \c productIdentifier and \c discountPercentage.
+/// \c productsInfoProvider is pulled from Objection.
+- (instancetype)initWithProductIdentifier:(NSString *)productIdentifier
+                       discountPercentage:(NSUInteger)discountPercentage;
 
 /// Initializes with \c productIdentifier that uniquely identify the product and
 /// \c discountPercentage which defines a desired fictive discount percentage for the product. Must
 /// be in range <tt>[0, 100)</tt>, otherwise a \c NSInvalidArgumentException is raised.
+/// \c productsInfoProvider is used to identify if a subscription is a multi-app subscription.
 ///
 /// @see discountPercentage.
 - (instancetype)initWithProductIdentifier:(NSString *)productIdentifier
                        discountPercentage:(NSUInteger)discountPercentage
+                     productsInfoProvider:(id<BZRProductsInfoProvider>)productsInfoProvider
     NS_DESIGNATED_INITIALIZER;
 
 /// The subscription unique identifier.
 @property (readonly, nonatomic) NSString *productIdentifier;
+
+/// \c YES if the subscription is a multi-app subscription.
+@property (readonly, nonatomic) BOOL isMultiAppSubscription;
 
 /// Price information of the subscription product. KVO Compliant.
 @property (strong, nonatomic, nullable) BZRProductPriceInfo *priceInfo;
