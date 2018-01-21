@@ -8,10 +8,10 @@
 #import "PNKAddition.h"
 #import "PNKConcatenation.h"
 #import "PNKConvolutionLayer.h"
-#import "PNKNearestNeighborUpsampling.h"
 #import "PNKNeuralNetworkModel.h"
 #import "PNKOpenCVExtensions.h"
 #import "PNKPoolingLayer.h"
+#import "PNKUpsampling.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -97,7 +97,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly, nonatomic) PNKAddition *add5;
 
 /// Nearest neighbor dyadic upsampling. Output of this layer is used as input for \c uconv1.
-@property (readonly, nonatomic) PNKNearestNeighborUpsampling *upsample1;
+@property (readonly, nonatomic) PNKUpsampling *upsample1;
 
 /// Convolution layer in upsampling stage. Output of this layer is used as input for \c concat2.
 @property (readonly, nonatomic) PNKConvolutionLayer *uconv1;
@@ -107,7 +107,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly, nonatomic) PNKConcatenation *concat2;
 
 /// Nearest neighbor dyadic upsampling. Output of this layer is used as input for \c uconv2.
-@property (readonly, nonatomic) PNKNearestNeighborUpsampling *upsample2;
+@property (readonly, nonatomic) PNKUpsampling *upsample2;
 
 /// Convolution layer in upsampling stage. Output of this layer is used as input for \c concat3.
 @property (readonly, nonatomic) PNKConvolutionLayer *uconv2;
@@ -199,17 +199,15 @@ NS_ASSUME_NONNULL_BEGIN
                activationModel:model.activationKernels.at("dilated5__activation__")];
   _add5 = [[PNKAddition alloc] initWithDevice:self.device];
   // Upsample.
-  _upsample1 = [[PNKNearestNeighborUpsampling alloc] initWithDevice:self.device
-                                               inputFeatureChannels:32
-                                                magnificationFactor:2];
+  _upsample1 = [[PNKUpsampling alloc] initWithDevice:self.device
+                                      upsamplingType:PNKUpsamplingTypeNearestNeighbor];
   _uconv1 = [[PNKConvolutionLayer alloc]
              initWithDevice:self.device
              convolutionModel:model.convolutionKernels.at("uconv1")
              activationModel:model.activationKernels.at("uconv1__activation__")];
   _concat2 = [[PNKConcatenation alloc] initWithDevice:self.device];
-  _upsample2 = [[PNKNearestNeighborUpsampling alloc] initWithDevice:self.device
-                                               inputFeatureChannels:48
-                                                magnificationFactor:2];
+  _upsample2 = [[PNKUpsampling alloc] initWithDevice:self.device
+                                      upsamplingType:PNKUpsamplingTypeNearestNeighbor];
   _uconv2 = [[PNKConvolutionLayer alloc]
              initWithDevice:self.device
              convolutionModel:model.convolutionKernels.at("uconv2")
@@ -384,13 +382,13 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (MPSTemporaryImage *)encodeUpsampleConvolutionWithCommandBuffer:(id<MTLCommandBuffer>)buffer
-    upsampleLayer:(PNKNearestNeighborUpsampling *)upLayer
+    upsampleLayer:(PNKUpsampling *)upLayer
     convolutionLayer:(PNKConvolutionLayer *)convLayer
     concatenationLayer:(PNKConcatenation *)concatLayer
     inputImage:(MPSTemporaryImage *)inputImage
     secondaryInputImage:(MPSTemporaryImage *)secondaryInputImage {
-  auto outputWidth = inputImage.width * upLayer.magnificationFactor;
-  auto outputHeight = inputImage.height * upLayer.magnificationFactor;
+  auto outputWidth = inputImage.width * 2;
+  auto outputHeight = inputImage.height * 2;
   MPSTemporaryImage *upsampledOutput =
       [MPSTemporaryImage pnk_float16ImageWithCommandBuffer:buffer
                                                      width:outputWidth
