@@ -19,6 +19,18 @@ namespace lt {
     return texture.read(coord, array, lod);
   }
 
+  template <typename T>
+  vec<T, 4> sample(texture2d<T, access::sample> texture, sampler s, float2 coord,
+                   ushort array = 0) {
+    return texture.sample(s, coord);
+  }
+
+  template <typename T>
+  vec<T, 4> sample(texture2d_array<T, access::sample> texture, sampler s, float2 coord,
+                   ushort array = 0) {
+    return texture.sample(s, coord, array);
+  }
+
   template <typename T, access a>
   void write(texture2d<T, a> texture, vec<T, 4> value, ushort2 coord, ushort array = 0,
              ushort lod = 0) {
