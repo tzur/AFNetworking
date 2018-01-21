@@ -11,6 +11,19 @@ __block WFVideoView *videoView;
 __block WFFakeVideoViewDelegate *delegate;
 __block NSURL *zeroLengthVideoURL;
 __block NSURL *halfSecondVideoURL;
+__block NSTimeInterval defaultTimeout;
+
+beforeAll(^{
+  defaultTimeout = Expecta.asynchronousTestTimeout;
+  // The asynchronous tests in this file are integration tests with the inner AVPlayer. Because
+  // loading videos and starting playback by AVPlayer are long asynchronous operations that caused
+  // flakiness of the tests in this file, the timeout is being dramatically increased.
+  Expecta.asynchronousTestTimeout = 30;
+});
+
+afterAll(^{
+  Expecta.asynchronousTestTimeout = defaultTimeout;
+});
 
 beforeEach(^{
   videoView = [[WFVideoView alloc] initWithFrame:CGRectZero];
@@ -86,7 +99,6 @@ context(@"delegate", ^{
   it(@"should call progress in delegate as expected", ^{
     [videoView loadVideoFromURL:halfSecondVideoURL];
     videoView.progressSamplingInterval = 0.1;
-    __block BOOL playbackStarted = NO;
     auto recorder = [[[[delegate
         rac_signalForSelector:@selector(videoView:didPlayVideoAtTime:)]
         combinePreviousWithStart:RACTuplePack(videoView, @0)
@@ -98,17 +110,10 @@ context(@"delegate", ^{
 
           expect(current.first).to.equal(videoView);
           expect(current.second).to.beGreaterThanOrEqualTo(previous.second);
-          if (!playbackStarted) {
-            playbackStarted = YES;
-          }
         }]
         testRecorder];
 
     [videoView play];
-    // First notification of current video time is to notify playback has started. The time until
-    // playback has started might be long and if we don't take it into consideration the test might
-    // get flaky.
-    expect(playbackStarted).after(30).beTruthy();
 
     expect(recorder.values.count).will.beGreaterThanOrEqualTo(5);
   });
