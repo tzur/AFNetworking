@@ -5,6 +5,7 @@
 
 #import "BZRFakePaymentTransaction.h"
 #import "BZRPaymentsPaymentQueue.h"
+#import "BZRPurchaseHelper.h"
 #import "NSError+Bazaar.h"
 #import "NSErrorCodes+Bazaar.h"
 
@@ -41,12 +42,14 @@ static id BZRMockProductWithIdentifier(NSString *identifier) {
 SpecBegin(BZRPurchaseManager)
 
 __block BZRFakePaymentsPaymentQueue *paymentQueue;
+__block id<BZRPurchaseHelper> purchaseHelper;
 __block SKProduct *product;
 __block SKPayment *payment;
 __block BZRFakePaymentTransaction *transaction;
 
 beforeEach(^{
   paymentQueue = [[BZRFakePaymentsPaymentQueue alloc] init];
+  purchaseHelper = OCMProtocolMock(@protocol(BZRPurchaseHelper));
   product =  BZRMockProductWithIdentifier(@"foo");
   payment = [SKPayment paymentWithProduct:product];
   transaction = [[BZRFakePaymentTransaction alloc] initWithPayment:payment];
@@ -55,13 +58,15 @@ beforeEach(^{
 context(@"initialization", ^{
   it(@"should initialize without application user identifier", ^{
     BZRPurchaseManager *purchaseManager =
-        [[BZRPurchaseManager alloc] initWithPaymentQueue:paymentQueue applicationUserID:nil];
+        [[BZRPurchaseManager alloc] initWithPaymentQueue:paymentQueue applicationUserID:nil
+                                          purchaseHelper:purchaseHelper];
     expect(purchaseManager).toNot.beNil();
   });
 
   it(@"should initialize with application user identifier", ^{
     BZRPurchaseManager *purchaseManager =
-        [[BZRPurchaseManager alloc] initWithPaymentQueue:paymentQueue applicationUserID:@"userID"];
+        [[BZRPurchaseManager alloc] initWithPaymentQueue:paymentQueue applicationUserID:@"userID"
+                                          purchaseHelper:purchaseHelper];
     expect(purchaseManager).toNot.beNil();
   });
 });
@@ -75,7 +80,8 @@ context(@"deallocating object", ^{
 
     @autoreleasepool {
       BZRPurchaseManager *purchaseManager =
-          [[BZRPurchaseManager alloc] initWithPaymentQueue:paymentQueue applicationUserID:nil];
+          [[BZRPurchaseManager alloc] initWithPaymentQueue:paymentQueue applicationUserID:nil
+                                            purchaseHelper:purchaseHelper];
       weakPurchaseManager = purchaseManager;
 
       recorder = [[purchaseManager purchaseProduct:product quantity:1] testRecorder];
@@ -96,9 +102,24 @@ context(@"payment creation", ^{
 
     BZRPurchaseManager *purchaseManager =
         [[BZRPurchaseManager alloc] initWithPaymentQueue:paymentQueue
-                                       applicationUserID:payment.applicationUsername];
+                                       applicationUserID:payment.applicationUsername
+                                          purchaseHelper:purchaseHelper];
 
     [[purchaseManager purchaseProduct:product quantity:payment.quantity] testRecorder];
+  });
+});
+
+context(@"promoted IAP", ^{
+  it(@"should propagate the decision whether to proceed with promoted purchase or not to the "
+     "helper", ^{
+    BZRPurchaseManager *purchaseManager =
+        [[BZRPurchaseManager alloc] initWithPaymentQueue:paymentQueue applicationUserID:nil
+                                          purchaseHelper:purchaseHelper];
+    OCMExpect([purchaseHelper shouldProceedWithPurchase:payment]).andReturn(YES);
+    OCMExpect([purchaseHelper shouldProceedWithPurchase:payment]).andReturn(NO);
+
+    expect([purchaseManager shouldProceedWithPromotedIAP:product payment:payment]).to.beTruthy();
+    expect([purchaseManager shouldProceedWithPromotedIAP:product payment:payment]).to.beFalsy();
   });
 });
 
@@ -108,7 +129,8 @@ context(@"payment update forwarding", ^{
 
   beforeEach(^{
     purchaseManager =
-        [[BZRPurchaseManager alloc] initWithPaymentQueue:paymentQueue applicationUserID:nil];
+        [[BZRPurchaseManager alloc] initWithPaymentQueue:paymentQueue applicationUserID:nil
+                                          purchaseHelper:purchaseHelper];
     unhandledTransactionsRecorder = [purchaseManager.unhandledTransactionsSignal testRecorder];
   });
 

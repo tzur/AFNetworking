@@ -10,6 +10,7 @@ NS_ASSUME_NONNULL_BEGIN
 NSString * const kBZREventReceiptValidationStatusKey = @"BZREventReceiptValidationStatus";
 NSString * const kBZREventReceiptValidationRequestIdKey = @"BZREventReceiptValidationRequestId";
 NSString * const BZREventProductIdentifierKey = @"BZREventProductIdentifier";
+NSString * const BZREventPromotedIAPAbortedKey = @"BZREventPromotedIAPAborted";
 
 @implementation BZREvent (AdditionalInfo)
 

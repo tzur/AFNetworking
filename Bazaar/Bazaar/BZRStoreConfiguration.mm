@@ -25,6 +25,7 @@
 #import "BZRProductsWithDiscountsProvider.h"
 #import "BZRProductsWithPriceInfoProvider.h"
 #import "BZRProductsWithVariantsProvider.h"
+#import "BZRPurchaseHelper.h"
 #import "BZRReceiptDataCache.h"
 #import "BZRReceiptValidationParametersProvider.h"
 #import "BZRReceiptValidationStatusCache.h"
@@ -136,7 +137,10 @@ NS_ASSUME_NONNULL_BEGIN
     _acquiredViaSubscriptionProvider =
         [[BZRAcquiredViaSubscriptionProvider alloc] initWithKeychainStorage:self.keychainStorage];
 
-    _storeKitFacade = [[BZRStoreKitFacade alloc] initWithApplicationUserID:applicationUserID];
+    auto purchaseHelper = [[BZRPurchaseHelper alloc]
+         initWithAggregatedReceiptProvider:self.validationStatusProvider];
+    _storeKitFacade = [[BZRStoreKitFacade alloc] initWithApplicationUserID:applicationUserID
+                                                            purchaseHelper:purchaseHelper];
     _storeKitMetadataFetcher =
         [[BZRStoreKitMetadataFetcher alloc] initWithStoreKitFacade:self.storeKitFacade];
     _productsProvider = [self productsProviderWithJSONFilePath:productsListJSONFilePath

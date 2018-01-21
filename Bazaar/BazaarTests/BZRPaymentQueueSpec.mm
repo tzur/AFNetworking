@@ -244,18 +244,68 @@ context(@"downloads", ^{
 
 if (@available(iOS 11.0, *)) {
   context(@"promoted IAP", ^{
-    it(@"should send event when promoted IAP is initiated", ^{
-      SKPayment *payment = OCMClassMock([SKPayment class]);
-      SKProduct *product = OCMClassMock([SKProduct class]);
+    __block SKPayment *payment;
+    __block SKProduct *product;
+
+    beforeEach(^{
+      payment = OCMClassMock([SKPayment class]);
+      product = OCMClassMock([SKProduct class]);
       OCMStub([product productIdentifier]).andReturn(@"foo");
-      auto recorder = [paymentQueue.eventsSignal testRecorder];
+    });
 
-      [paymentQueue paymentQueue:underlyingPaymentQueue shouldAddStorePayment:payment
-                      forProduct:product];
+    context(@"not proceeding with promoted IAP", ^{
+      it(@"should return NO", ^{
+        OCMStub([paymentsDelegate shouldProceedWithPromotedIAP:OCMOCK_ANY payment:OCMOCK_ANY])
+            .andReturn(NO);
 
-      expect(recorder).to.matchValue(0, ^BOOL(BZREvent *event) {
-        return [event.eventType isEqual:$(BZREventTypePromotedIAPInitiated)] &&
-            [event.eventInfo[BZREventProductIdentifierKey] isEqualToString:@"foo"];
+        BOOL shouldAddPayment =
+            [paymentQueue paymentQueue:underlyingPaymentQueue shouldAddStorePayment:payment
+                            forProduct:product];
+
+        expect(shouldAddPayment).to.beFalsy();
+      });
+
+      it(@"should send event when promoted IAP is initiated", ^{
+        OCMStub([paymentsDelegate shouldProceedWithPromotedIAP:OCMOCK_ANY payment:OCMOCK_ANY])
+            .andReturn(NO);
+        auto recorder = [paymentQueue.eventsSignal testRecorder];
+
+        [paymentQueue paymentQueue:underlyingPaymentQueue shouldAddStorePayment:payment
+                        forProduct:product];
+
+        expect(recorder).to.matchValue(0, ^BOOL(BZREvent *event) {
+          return [event.eventType isEqual:$(BZREventTypePromotedIAPInitiated)] &&
+              [event.eventInfo[BZREventProductIdentifierKey] isEqualToString:@"foo"] &&
+              [event.eventInfo[BZREventPromotedIAPAbortedKey] boolValue];
+        });
+      });
+    });
+
+    context(@"proceeding with promoted IAP", ^{
+      it(@"should return YES", ^{
+        OCMStub([paymentsDelegate shouldProceedWithPromotedIAP:OCMOCK_ANY payment:OCMOCK_ANY])
+            .andReturn(YES);
+
+        BOOL shouldAddPayment =
+            [paymentQueue paymentQueue:underlyingPaymentQueue shouldAddStorePayment:payment
+                            forProduct:product];
+
+        expect(shouldAddPayment).to.beTruthy();
+      });
+
+      it(@"should send event when promoted IAP is initiated", ^{
+        OCMStub([paymentsDelegate shouldProceedWithPromotedIAP:OCMOCK_ANY payment:OCMOCK_ANY])
+            .andReturn(YES);
+        auto recorder = [paymentQueue.eventsSignal testRecorder];
+
+        [paymentQueue paymentQueue:underlyingPaymentQueue shouldAddStorePayment:payment
+                        forProduct:product];
+
+        expect(recorder).to.matchValue(0, ^BOOL(BZREvent *event) {
+          return [event.eventType isEqual:$(BZREventTypePromotedIAPInitiated)] &&
+              [event.eventInfo[BZREventProductIdentifierKey] isEqualToString:@"foo"] &&
+              ![event.eventInfo[BZREventPromotedIAPAbortedKey] boolValue];
+        });
       });
     });
   });

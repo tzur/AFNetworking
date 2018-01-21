@@ -8,6 +8,7 @@
 #import "BZREvent.h"
 #import "BZRPaymentQueue.h"
 #import "BZRProductDownloadManager.h"
+#import "BZRPurchaseHelper.h"
 #import "BZRPurchaseManager.h"
 #import "BZRRequestStatusSignal.h"
 #import "BZRStoreKitRequestsFactory.h"
@@ -46,11 +47,13 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark Initialization
 #pragma mark -
 
-- (instancetype)initWithApplicationUserID:(nullable NSString *)applicationUserID {
+- (instancetype)initWithApplicationUserID:(nullable NSString *)applicationUserID
+    purchaseHelper:(id<BZRPurchaseHelper>)purchaseHelper {
   BZRPaymentQueue *paymentQueue = [[BZRPaymentQueue alloc] init];
   BZRPurchaseManager *purchaseManager =
       [[BZRPurchaseManager alloc] initWithPaymentQueue:paymentQueue
-                                     applicationUserID:applicationUserID];
+                                     applicationUserID:applicationUserID
+                                        purchaseHelper:purchaseHelper];
   BZRTransactionRestorationManager *restorationManager =
       [[BZRTransactionRestorationManager alloc] initWithPaymentQueue:paymentQueue
                                                    applicationUserID:applicationUserID];
