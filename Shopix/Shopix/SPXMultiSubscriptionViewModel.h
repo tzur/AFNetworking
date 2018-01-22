@@ -17,6 +17,10 @@ NS_ASSUME_NONNULL_BEGIN
 /// View-Model for \c SPXMultiSubscriptionScreenViewController.
 @protocol SPXMultiSubscriptionViewModel <NSObject>
 
+/// Invoked after the subscription screen view was loaded and its view hierarchy was initialized and
+/// is ready for presentation.
+- (void)viewDidSetup;
+
 /// Invoked when a subscription button with the index \c buttonIndex is pressed inside a page with
 /// index \c pageIndex.
 - (void)subscriptionButtonPressed:(NSUInteger)buttonIndex atPageIndex:(NSUInteger)pageIndex;
@@ -29,9 +33,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Invoked when the dismiss button is pressed.
 - (void)dismissButtonPressed;
-
-/// Fetches the products information and updates \c subscriptionDescriptors.
-- (void)fetchProductsInfo;
 
 /// Page view models, used to define page views with title, subtitle, subscription buttons and
 /// the background video that appears when the page is in focus.
