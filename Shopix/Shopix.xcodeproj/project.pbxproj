@@ -39,11 +39,10 @@
 		8B70926B1FD81E0B009393C9 /* AppsFlyerLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B7092691FD81DF6009393C9 /* AppsFlyerLib.framework */; };
 		8B7093601FDD3A31009393C9 /* SKStoreProductViewController+Shopix.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8B70935F1FDD3A31009393C9 /* SKStoreProductViewController+Shopix.mm */; };
 		CD0A89B11FDD93C600A29EF7 /* SPXSubscriptionViewControllerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD0A89B01FDD93C600A29EF7 /* SPXSubscriptionViewControllerSpec.mm */; };
-		CD1F02AD1FD87556004D5DEB /* SPXSubscriptionChristmasButtonsFactory.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD1F02AC1FD87555004D5DEB /* SPXSubscriptionChristmasButtonsFactory.mm */; };
 		CD1FFFF91FD705CD004D5DEB /* images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CD1FFFF81FD702A3004D5DEB /* images.xcassets */; };
+		CD25EFCF2006478D004B0D6F /* SPXMultiSubscriptionGradientButtonsFactory.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD25EFCD2006478D004B0D6F /* SPXMultiSubscriptionGradientButtonsFactory.mm */; };
 		CD25F007200668D4004B0D6F /* BZRBillingPeriod+ProductIdentifier.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD25F005200668D4004B0D6F /* BZRBillingPeriod+ProductIdentifier.mm */; };
 		CD25F00920066A6C004B0D6F /* BZRBillingPeriod+ProductIdentifierSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD25F00820066A6C004B0D6F /* BZRBillingPeriod+ProductIdentifierSpec.mm */; };
-		CD25EFCF2006478D004B0D6F /* SPXMultiSubscriptionGradientButtonsFactory.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD25EFCD2006478D004B0D6F /* SPXMultiSubscriptionGradientButtonsFactory.mm */; };
 		CD2F2B551FD5577D006257B4 /* MFMailComposeViewController+Dismissal.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD2F2B541FD5577D006257B4 /* MFMailComposeViewController+Dismissal.mm */; };
 		CD2F2B801FD55C45006257B4 /* SPXRestorePurchasesButton.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD2F2B7F1FD55C45006257B4 /* SPXRestorePurchasesButton.mm */; };
 		CD35E8C71FFBF9BE00BDE1E0 /* SPXColorSchemeSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD35E8C61FFBF9BE00BDE1E0 /* SPXColorSchemeSpec.mm */; };
@@ -105,8 +104,8 @@
 		CDF5FB291FCF249B007D4AB0 /* SPXSubscriptionGradientButtonsFactorySpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = CDF5FB281FCF249B007D4AB0 /* SPXSubscriptionGradientButtonsFactorySpec.mm */; };
 		CDF621E01FEFCED800D05AEC /* SPXSubscriptionButtonsPageViewModelSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = CDF621DF1FEFCED800D05AEC /* SPXSubscriptionButtonsPageViewModelSpec.mm */; };
 		CDF621E21FEFD42700D05AEC /* SPXSubscriptionButtonsPageViewModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = CDF621E11FEFD42700D05AEC /* SPXSubscriptionButtonsPageViewModel.mm */; };
-		EA107800200BF183008F856D /* SPXSubscriptionDescriptorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = EA1077FF200BF183008F856D /* SPXSubscriptionDescriptorSpec.mm */; };
 		CDFD5929200BA68700139565 /* SPXMultiSubscriptionGradientButtonsFactorySpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = CDFD5928200BA68700139565 /* SPXMultiSubscriptionGradientButtonsFactorySpec.mm */; };
+		EA107800200BF183008F856D /* SPXSubscriptionDescriptorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = EA1077FF200BF183008F856D /* SPXSubscriptionDescriptorSpec.mm */; };
 		EA10799320138A9B008F856D /* SPXSubscriptionTermsViewModelSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = EA10799220138A9B008F856D /* SPXSubscriptionTermsViewModelSpec.mm */; };
 /* End PBXBuildFile section */
 
@@ -520,14 +519,12 @@
 		8B70935E1FDD3A31009393C9 /* SKStoreProductViewController+Shopix.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SKStoreProductViewController+Shopix.h"; sourceTree = "<group>"; };
 		8B70935F1FDD3A31009393C9 /* SKStoreProductViewController+Shopix.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "SKStoreProductViewController+Shopix.mm"; sourceTree = "<group>"; };
 		CD0A89B01FDD93C600A29EF7 /* SPXSubscriptionViewControllerSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXSubscriptionViewControllerSpec.mm; sourceTree = "<group>"; };
-		CD1F02AB1FD87555004D5DEB /* SPXSubscriptionChristmasButtonsFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPXSubscriptionChristmasButtonsFactory.h; sourceTree = "<group>"; };
-		CD1F02AC1FD87555004D5DEB /* SPXSubscriptionChristmasButtonsFactory.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXSubscriptionChristmasButtonsFactory.mm; sourceTree = "<group>"; };
 		CD1FFFF81FD702A3004D5DEB /* images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = images.xcassets; sourceTree = "<group>"; };
+		CD25EFCD2006478D004B0D6F /* SPXMultiSubscriptionGradientButtonsFactory.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXMultiSubscriptionGradientButtonsFactory.mm; sourceTree = "<group>"; };
+		CD25EFCE2006478D004B0D6F /* SPXMultiSubscriptionGradientButtonsFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPXMultiSubscriptionGradientButtonsFactory.h; sourceTree = "<group>"; };
 		CD25F005200668D4004B0D6F /* BZRBillingPeriod+ProductIdentifier.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "BZRBillingPeriod+ProductIdentifier.mm"; sourceTree = "<group>"; };
 		CD25F006200668D4004B0D6F /* BZRBillingPeriod+ProductIdentifier.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BZRBillingPeriod+ProductIdentifier.h"; sourceTree = "<group>"; };
 		CD25F00820066A6C004B0D6F /* BZRBillingPeriod+ProductIdentifierSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "BZRBillingPeriod+ProductIdentifierSpec.mm"; sourceTree = "<group>"; };
-		CD25EFCD2006478D004B0D6F /* SPXMultiSubscriptionGradientButtonsFactory.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXMultiSubscriptionGradientButtonsFactory.mm; sourceTree = "<group>"; };
-		CD25EFCE2006478D004B0D6F /* SPXMultiSubscriptionGradientButtonsFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPXMultiSubscriptionGradientButtonsFactory.h; sourceTree = "<group>"; };
 		CD2F2B531FD5577D006257B4 /* MFMailComposeViewController+Dismissal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MFMailComposeViewController+Dismissal.h"; sourceTree = "<group>"; };
 		CD2F2B541FD5577D006257B4 /* MFMailComposeViewController+Dismissal.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "MFMailComposeViewController+Dismissal.mm"; sourceTree = "<group>"; };
 		CD2F2B7E1FD55C45006257B4 /* SPXRestorePurchasesButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SPXRestorePurchasesButton.h; sourceTree = "<group>"; };
@@ -647,8 +644,8 @@
 		CDF620A11FEF918F00D05AEC /* SPXSubscriptionButtonsPageViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPXSubscriptionButtonsPageViewModel.h; sourceTree = "<group>"; };
 		CDF621DF1FEFCED800D05AEC /* SPXSubscriptionButtonsPageViewModelSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXSubscriptionButtonsPageViewModelSpec.mm; sourceTree = "<group>"; };
 		CDF621E11FEFD42700D05AEC /* SPXSubscriptionButtonsPageViewModel.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXSubscriptionButtonsPageViewModel.mm; sourceTree = "<group>"; };
-		EA1077FF200BF183008F856D /* SPXSubscriptionDescriptorSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXSubscriptionDescriptorSpec.mm; sourceTree = "<group>"; };
 		CDFD5928200BA68700139565 /* SPXMultiSubscriptionGradientButtonsFactorySpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXMultiSubscriptionGradientButtonsFactorySpec.mm; sourceTree = "<group>"; };
+		EA1077FF200BF183008F856D /* SPXSubscriptionDescriptorSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXSubscriptionDescriptorSpec.mm; sourceTree = "<group>"; };
 		EA10799220138A9B008F856D /* SPXSubscriptionTermsViewModelSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXSubscriptionTermsViewModelSpec.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1099,8 +1096,6 @@
 		CD890F971FE698C600064B72 /* Single App */ = {
 			isa = PBXGroup;
 			children = (
-				CD1F02AB1FD87555004D5DEB /* SPXSubscriptionChristmasButtonsFactory.h */,
-				CD1F02AC1FD87555004D5DEB /* SPXSubscriptionChristmasButtonsFactory.mm */,
 				CDF5F9701FCDC4EB007D4AB0 /* SPXSubscriptionGradientButtonsFactory.h */,
 				CDF5F96E1FCDC4EA007D4AB0 /* SPXSubscriptionGradientButtonsFactory.mm */,
 				CDAC90D31FC496F100B197B3 /* SPXSubscriptionVideoPageView.h */,
@@ -1871,7 +1866,6 @@
 				88B9B4FF1FA8BA980033D48F /* SPXVoucher.mm in Sources */,
 				CD2F2B801FD55C45006257B4 /* SPXRestorePurchasesButton.mm in Sources */,
 				88B9B4DA1FA8BA940033D48F /* SPXProductAxis.mm in Sources */,
-				CD1F02AD1FD87556004D5DEB /* SPXSubscriptionChristmasButtonsFactory.mm in Sources */,
 				653D9C391FB757860035ACEC /* SPXAlertViewModel.mm in Sources */,
 				CDF621E21FEFD42700D05AEC /* SPXSubscriptionButtonsPageViewModel.mm in Sources */,
 				CD60A58E1FB2F2850017D777 /* SPXButtonsHorizontalLayoutView.mm in Sources */,
