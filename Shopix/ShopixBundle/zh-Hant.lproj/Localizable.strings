@@ -1,6 +1,12 @@
 /* Abbreviation of the word month, representing per-month suffix of a price, as in $5/mo - $5 per month. The '/' should remain in the localized version */
 "/mo" = "/月";
 
+/* A note used to clarify that a subscription is billed once. */
+"Billed in one payment" = "Billed in one payment"; /* MISSING TRANSLATION */
+
+/* A note used to clarify that a subscription is billed once and the subscription price. The %@ must appear in the translation and will be replaced with the price. Example: Billed in one payment of $10 */
+"Billed in one payment of %@" = "Billed in one payment of %@"; /* MISSING TRANSLATION */
+
 /* Text on a button shown to the user on failed action, suggesting the user to contact our support team */
 "Contact Us" = "與我們聯繫";
 
@@ -21,6 +27,9 @@
 
 /* Label on a button for purchasing the product at a single one-time price, instead of a renewable subscription plan */
 "One-Time\nPurchase" = "一次性購買\n";
+
+/* Short terms of use shown to the user in the subscription screen. */
+"Payment will be charged to your iTunes account at confirmation of purchase. Subscriptions will automatically renew unless auto-renew is turned off at least 24 hours before the end of the current period. Your account will be charged for renewal, in accordance with your plan, within 24 hours prior to the end of the current period. You can manage or turn off auto-renew in your Apple ID account settings any time after purchase." = "Payment will be charged to your iTunes account at confirmation of purchase. Subscriptions will automatically renew unless auto-renew is turned off at least 24 hours before the end of the current period. Your account will be charged for renewal, in accordance with your plan, within 24 hours prior to the end of the current period. You can manage or turn off auto-renew in your Apple ID account settings any time after purchase."; /* MISSING TRANSLATION */
 
 /* Message shown after a failing operation, giving the user 3 options: retry the failing operation, send a feedback email or cancel the operation */
 "Please try again. If the problem persists, let us know and we'll get right on it." = "請重試，若問題仍存在，請與我們聯繫，我們將立即處理。";
