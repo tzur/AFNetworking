@@ -307,6 +307,16 @@ if (@available(iOS 11.0, *)) {
               ![event.eventInfo[BZREventPromotedIAPAbortedKey] boolValue];
         });
       });
+
+    it(@"should send events to late subscriber", ^{
+      OCMStub([paymentsDelegate shouldProceedWithPromotedIAP:OCMOCK_ANY payment:OCMOCK_ANY])
+          .andReturn(YES);
+
+      [paymentQueue paymentQueue:underlyingPaymentQueue shouldAddStorePayment:payment
+                      forProduct:product];
+
+      expect(paymentQueue.eventsSignal).to.sendValuesWithCount(1);
+      });
     });
   });
 }
