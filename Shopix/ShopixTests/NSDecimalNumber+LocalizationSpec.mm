@@ -56,4 +56,50 @@ context(@"divided localized price", ^{
   });
 });
 
+context(@"localized full price", ^{
+  it(@"should raise exception if the divisor is zero", ^{
+    auto decimal = [NSDecimalNumber decimalNumberWithString:@"1.00"];
+    expect(^{
+      [decimal spx_localizedFullPriceForLocale:@"de_DE" discountPercentage:0 dividedBy:0];
+    }).raise(NSDecimalNumberDivideByZeroException);
+  });
+
+  it(@"should raise if the discount percentage in equal to 100", ^{
+    auto decimal = [NSDecimalNumber decimalNumberWithString:@"1.00"];
+    expect(^{
+      [decimal spx_localizedFullPriceForLocale:@"de_DE" discountPercentage:100 dividedBy:0];
+    }).raise(NSInvalidArgumentException);
+  });
+
+  it(@"should return a localized price rounded up without division if the divisor is one", ^{
+    auto decimal = [NSDecimalNumber decimalNumberWithString:@"4.5"];
+    expect([decimal spx_localizedFullPriceForLocale:@"en_US" discountPercentage:0 dividedBy:1])
+        .to.equal(@"$4.99");
+  });
+
+  it(@"should return a localized price without subtracting if the price in an integer", ^{
+    auto decimal = [NSDecimalNumber decimalNumberWithString:@"12.00"];
+    expect([decimal spx_localizedFullPriceForLocale:@"de_DE" discountPercentage:0 dividedBy:2])
+        .to.equal(@"6,00 €");
+  });
+
+  it(@"should return a localized price with the correct division result", ^{
+    auto decimal = [NSDecimalNumber decimalNumberWithString:@"7.90"];
+    expect([decimal spx_localizedFullPriceForLocale:@"de_DE" discountPercentage:0 dividedBy:3])
+        .to.equal(@"2,99 €");
+  });
+
+  it(@"should return a localized price with the correct discount calcuation", ^{
+    auto decimal = [NSDecimalNumber decimalNumberWithString:@"3.99"];
+    expect([decimal spx_localizedFullPriceForLocale:@"de_DE" discountPercentage:50 dividedBy:1])
+        .to.equal(@"7,99 €");
+  });
+
+  it(@"should return a localized price with the correct discount calcuation and division result", ^{
+    auto decimal = [NSDecimalNumber decimalNumberWithString:@"3.99"];
+    expect([decimal spx_localizedFullPriceForLocale:@"de_DE" discountPercentage:25 dividedBy:2])
+        .to.equal(@"2,99 €");
+  });
+});
+
 SpecEnd

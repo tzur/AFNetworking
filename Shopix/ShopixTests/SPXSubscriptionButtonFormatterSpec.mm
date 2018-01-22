@@ -269,6 +269,16 @@ context(@"full price text", ^{
     }).to.raise(NSInvalidArgumentException);
   });
 
+  it(@"should prefer full price from priceInfo over a custom discount percentage", ^{
+    descriptor = [[SPXSubscriptionDescriptor alloc]
+                  initWithProductIdentifier:@"com.lightricks.Shopix.Monthly"
+                  discountPercentage:0.5 productsInfoProvider:productsInfoProvider];
+    descriptor.priceInfo = priceInfo;
+    auto priceText = [formatter fullPriceTextForSubscription:descriptor monthlyFormat:NO];
+
+    expect([priceText string]).to.equal(@"$50.00");
+  });
+
   it(@"should be colored by the given full price text color", ^{
     descriptor = [[SPXSubscriptionDescriptor alloc]
                   initWithProductIdentifier:@"com.lightricks.Shopix.Monthly"
@@ -377,6 +387,30 @@ context(@"full price text", ^{
 
       expect([priceText string]).to.equal(@"$50.00");
     });
+  });
+});
+
+context(@"full price text from custom discount", ^{
+  beforeEach(^{
+    descriptor = [[SPXSubscriptionDescriptor alloc]
+                  initWithProductIdentifier:@"com.lightricks.Shopix.Yearly"
+                  discountPercentage:10 productsInfoProvider:productsInfoProvider];
+    descriptor.priceInfo = [[BZRProductPriceInfo alloc] initWithDictionary:@{
+      @"price": [[NSDecimalNumber alloc] initWithString:@"10"],
+      @"localeIdentifier": @"en_US"
+    } error:nil];
+  });
+
+  it(@"should divide the price by 12 and contain monthly suffix if monthly format is YES", ^{
+    auto priceText = [formatter fullPriceTextForSubscription:descriptor monthlyFormat:YES];
+
+    expect([priceText string]).to.equal(@"$0.99/mo");
+  });
+
+  it(@"should not divide the price and not contain monthly suffix if monthly format is NO", ^{
+    auto priceText = [formatter fullPriceTextForSubscription:descriptor monthlyFormat:NO];
+
+    expect([priceText string]).to.equal(@"$11.99");
   });
 });
 

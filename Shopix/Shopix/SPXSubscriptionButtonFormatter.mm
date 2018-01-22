@@ -148,15 +148,24 @@ using namespace spx;
                     "requested but the subscription price information is nil",
                     descriptor.productIdentifier);
 
-  if (!descriptor.priceInfo.fullPrice) {
+  if (!descriptor.priceInfo.fullPrice && !descriptor.discountPercentage) {
     return nil;
   }
 
   NSUInteger divisor = (monthlyFormat && descriptor.billingPeriod) ?
       [self numberOfMonthsInSubscriptionPeriod:descriptor.billingPeriod] : 1;
-  NSString *fullPriceString = [descriptor.priceInfo.fullPrice
-                               spx_localizedPriceForLocale:descriptor.priceInfo.localeIdentifier
-                               dividedBy:divisor];
+
+  NSString *fullPriceString;
+  if (descriptor.priceInfo.fullPrice) {
+    fullPriceString = [descriptor.priceInfo.fullPrice
+                       spx_localizedPriceForLocale:descriptor.priceInfo.localeIdentifier
+                       dividedBy:divisor];
+  } else if (descriptor.discountPercentage) {
+    fullPriceString = [descriptor.priceInfo.price
+                       spx_localizedFullPriceForLocale:descriptor.priceInfo.localeIdentifier
+                       discountPercentage:descriptor.discountPercentage dividedBy:divisor];
+  }
+
   fullPriceString = (monthlyFormat && descriptor.billingPeriod) ?
       [self appendPerMonthSuffixToPrice:fullPriceString] : fullPriceString;
 
