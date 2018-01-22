@@ -80,6 +80,7 @@
 		CDAC93941FC5F0D100B197B3 /* SPXSubscriptionVideoPageViewModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = CDAC936C1FC5F0D100B197B3 /* SPXSubscriptionVideoPageViewModel.mm */; };
 		CDACBD731FBB4476000A1548 /* SPXPagingView.mm in Sources */ = {isa = PBXBuildFile; fileRef = CDACBD721FBB4476000A1548 /* SPXPagingView.mm */; };
 		CDB3917720061B87009C1622 /* SPXSubscriptionButtonsPageView.mm in Sources */ = {isa = PBXBuildFile; fileRef = CDB3914E20061B86009C1622 /* SPXSubscriptionButtonsPageView.mm */; };
+		CDB391E3200632C6009C1622 /* SPXSubscriptionTermsViewSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = CDB391E2200632C6009C1622 /* SPXSubscriptionTermsViewSpec.mm */; };
 		CDB513A21F66B0440013577C /* SPXSubscriptionManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = CDB513A11F66B0440013577C /* SPXSubscriptionManager.mm */; };
 		CDB513A51F66B0A10013577C /* SPXSubscriptionManagerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = CDB513A41F66B0A10013577C /* SPXSubscriptionManagerSpec.mm */; };
 		CDB513A81F66BC150013577C /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDB513A71F66BC150013577C /* StoreKit.framework */; };
@@ -106,6 +107,7 @@
 		CDF621E21FEFD42700D05AEC /* SPXSubscriptionButtonsPageViewModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = CDF621E11FEFD42700D05AEC /* SPXSubscriptionButtonsPageViewModel.mm */; };
 		EA107800200BF183008F856D /* SPXSubscriptionDescriptorSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = EA1077FF200BF183008F856D /* SPXSubscriptionDescriptorSpec.mm */; };
 		CDFD5929200BA68700139565 /* SPXMultiSubscriptionGradientButtonsFactorySpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = CDFD5928200BA68700139565 /* SPXMultiSubscriptionGradientButtonsFactorySpec.mm */; };
+		EA10799320138A9B008F856D /* SPXSubscriptionTermsViewModelSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = EA10799220138A9B008F856D /* SPXSubscriptionTermsViewModelSpec.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -601,6 +603,7 @@
 		CDACBD711FBB4476000A1548 /* SPXPagingView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SPXPagingView.h; sourceTree = "<group>"; };
 		CDACBD721FBB4476000A1548 /* SPXPagingView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXPagingView.mm; sourceTree = "<group>"; };
 		CDB3914E20061B86009C1622 /* SPXSubscriptionButtonsPageView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXSubscriptionButtonsPageView.mm; sourceTree = "<group>"; };
+		CDB391E2200632C6009C1622 /* SPXSubscriptionTermsViewSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXSubscriptionTermsViewSpec.mm; sourceTree = "<group>"; };
 		CDB510721F6176150013577C /* SPXLocalization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPXLocalization.h; sourceTree = "<group>"; };
 		CDB510731F6176150013577C /* SPXLocalization.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXLocalization.mm; sourceTree = "<group>"; };
 		CDB513A01F66B0440013577C /* SPXSubscriptionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPXSubscriptionManager.h; sourceTree = "<group>"; };
@@ -646,6 +649,7 @@
 		CDF621E11FEFD42700D05AEC /* SPXSubscriptionButtonsPageViewModel.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXSubscriptionButtonsPageViewModel.mm; sourceTree = "<group>"; };
 		EA1077FF200BF183008F856D /* SPXSubscriptionDescriptorSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXSubscriptionDescriptorSpec.mm; sourceTree = "<group>"; };
 		CDFD5928200BA68700139565 /* SPXMultiSubscriptionGradientButtonsFactorySpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXMultiSubscriptionGradientButtonsFactorySpec.mm; sourceTree = "<group>"; };
+		EA10799220138A9B008F856D /* SPXSubscriptionTermsViewModelSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXSubscriptionTermsViewModelSpec.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1131,6 +1135,15 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		CDB391B9200632A6009C1622 /* Common Components */ = {
+			isa = PBXGroup;
+			children = (
+				EA10799220138A9B008F856D /* SPXSubscriptionTermsViewModelSpec.mm */,
+				CDB391E2200632C6009C1622 /* SPXSubscriptionTermsViewSpec.mm */,
+			);
+			name = "Common Components";
+			sourceTree = "<group>";
+		};
 		CDB5137B1F66B0220013577C /* Subscription Screens */ = {
 			isa = PBXGroup;
 			children = (
@@ -1246,6 +1259,7 @@
 		CDD9F7A71FE8108200A7A6DB /* Subscription Screens */ = {
 			isa = PBXGroup;
 			children = (
+				CDB391B9200632A6009C1622 /* Common Components */,
 				CDF621B61FEFA6BD00D05AEC /* Multi Group */,
 				CDD9F7A81FE8111900A7A6DB /* Single App */,
 				CDF5FAC41FCED77D007D4AB0 /* SPXSubscriptionButtonFormatterSpec.mm */,
@@ -1795,12 +1809,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EA10799320138A9B008F856D /* SPXSubscriptionTermsViewModelSpec.mm in Sources */,
 				885CA2B31FB301F2005380BD /* SPXProductDescriptorsFactorySpec.mm in Sources */,
 				88CEB4511FB44D1B00E01950 /* SPXVoucherSpec.mm in Sources */,
 				CDCFDEF91F5C39B300C289BA /* NSDecimalNumber+LocalizationSpec.mm in Sources */,
 				CD25F00920066A6C004B0D6F /* BZRBillingPeriod+ProductIdentifierSpec.mm in Sources */,
 				EA107800200BF183008F856D /* SPXSubscriptionDescriptorSpec.mm in Sources */,
 				CD35E8C71FFBF9BE00BDE1E0 /* SPXColorSchemeSpec.mm in Sources */,
+				CDB391E3200632C6009C1622 /* SPXSubscriptionTermsViewSpec.mm in Sources */,
 				8B33A96E1FDD691000F60182 /* SKStoreProductViewController+ShopixSpec.mm in Sources */,
 				CDC83B431FD04E2400E9F41A /* SPXSubscriptionViewModelSpec.mm in Sources */,
 				63E591671FC492480009A34B /* SPXAlertViewModel+ShopixPresetsSpec.mm in Sources */,

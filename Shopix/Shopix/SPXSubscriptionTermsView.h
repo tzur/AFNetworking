@@ -22,6 +22,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// The inset of the terms text. Defaults to \c UIEdgeInsetsZero.
 @property (nonatomic) UIEdgeInsets termsTextContainerInset;
 
+/// Optional text that is presented before the terms overview. Defaults to \c nil.
+@property (strong, nonatomic, nullable) NSAttributedString *termsGistText;
+
 @end
 
 NS_ASSUME_NONNULL_END
