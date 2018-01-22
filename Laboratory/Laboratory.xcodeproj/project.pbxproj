@@ -47,11 +47,9 @@
 		A14173421E6EB59F005DBEFF /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A141729D1E6EAF03005DBEFF /* libOCMock.a */; };
 		A14173431E6EB59F005DBEFF /* libSpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A14172B81E6EAF0D005DBEFF /* libSpecta.a */; };
 		A148A0551EE3D8110058165C /* LABAssignmentsManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = A148A0541EE3D8110058165C /* LABAssignmentsManager.mm */; };
-		A15AB35F1F0BFB65000846A4 /* LABDebugSourceTweakCollectionsProvider.mm in Sources */ = {isa = PBXBuildFile; fileRef = A15AB35E1F0BFB65000846A4 /* LABDebugSourceTweakCollectionsProvider.mm */; };
+		A15AB35F1F0BFB65000846A4 /* LABDebugSourceTweakCategory.mm in Sources */ = {isa = PBXBuildFile; fileRef = A15AB35E1F0BFB65000846A4 /* LABDebugSourceTweakCategory.mm */; };
 		A1674D971F01617A006A3B07 /* libFBTweak.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A1674D7E1F016167006A3B07 /* libFBTweak.a */; };
-		A1674DAB1F0161EC006A3B07 /* LABTweakCategoriesProvider.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1674DAA1F0161EC006A3B07 /* LABTweakCategoriesProvider.mm */; };
-		A17E86F61F275DA900F01834 /* LABDebugSourceTweakCollectionsProviderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = A17E86F51F275DA900F01834 /* LABDebugSourceTweakCollectionsProviderSpec.mm */; };
-		A18220B71F026FEC00FC7C61 /* LABTweakCategoriesProviderSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = A18220B61F026FEC00FC7C61 /* LABTweakCategoriesProviderSpec.mm */; };
+		A17E86F61F275DA900F01834 /* LABDebugSourceTweakCategorySpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = A17E86F51F275DA900F01834 /* LABDebugSourceTweakCategorySpec.mm */; };
 		A18220B91F0398A500FC7C61 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A18220B81F0398A500FC7C61 /* MessageUI.framework */; };
 		A1E388391EE554D90095F056 /* LABFakeAssignmentsSource.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1E388381EE554D90095F056 /* LABFakeAssignmentsSource.mm */; };
 /* End PBXBuildFile section */
@@ -63,6 +61,20 @@
 			proxyType = 2;
 			remoteGlobalIDString = 194FF4FC1FA8BA77008879E7;
 			remoteInfo = LTKitTestUtils;
+		};
+		88040655200C00DB00015482 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 88040650200C00DB00015482 /* Milkshake.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = A14171A11E6EAA93005DBEFF;
+			remoteInfo = Milkshake;
+		};
+		88040657200C00DB00015482 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 88040650200C00DB00015482 /* Milkshake.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = A14171C11E6EAC0D005DBEFF;
+			remoteInfo = MilkshakeTests;
 		};
 		882D1F241EC1AC6E007F39F5 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -366,6 +378,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		88040650200C00DB00015482 /* Milkshake.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Milkshake.xcodeproj; path = ../Milkshake/Milkshake.xcodeproj; sourceTree = "<group>"; };
 		882D1F171EC19A2C007F39F5 /* libcompression.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libcompression.tbd; path = usr/lib/libcompression.tbd; sourceTree = SDKROOT; };
 		882D1F1D1EC1AC6E007F39F5 /* extobjc.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = extobjc.xcodeproj; path = ../third_party/libextobjc/extobjc.xcodeproj; sourceTree = "<group>"; };
 		882D1F2D1EC1C497007F39F5 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -429,16 +442,11 @@
 		A14172D71E6EB2FF005DBEFF /* TestHost.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TestHost.xcodeproj; path = ../TestHost/TestHost.xcodeproj; sourceTree = "<group>"; };
 		A1417A911E6ED9CB005DBEFF /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		A148A0541EE3D8110058165C /* LABAssignmentsManager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LABAssignmentsManager.mm; sourceTree = "<group>"; };
-		A15AB35D1F0BFB65000846A4 /* LABDebugSourceTweakCollectionsProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LABDebugSourceTweakCollectionsProvider.h; sourceTree = "<group>"; };
-		A15AB35E1F0BFB65000846A4 /* LABDebugSourceTweakCollectionsProvider.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LABDebugSourceTweakCollectionsProvider.mm; sourceTree = "<group>"; };
+		A15AB35D1F0BFB65000846A4 /* LABDebugSourceTweakCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LABDebugSourceTweakCategory.h; sourceTree = "<group>"; };
+		A15AB35E1F0BFB65000846A4 /* LABDebugSourceTweakCategory.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LABDebugSourceTweakCategory.mm; sourceTree = "<group>"; };
 		A1674D6C1F016166006A3B07 /* FBTweak.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FBTweak.xcodeproj; path = ../third_party/Tweaks/FBTweak.xcodeproj; sourceTree = "<group>"; };
-		A1674DA81F0161EC006A3B07 /* LABTweakCollectionsProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LABTweakCollectionsProvider.h; sourceTree = "<group>"; };
-		A1674DA91F0161EC006A3B07 /* LABTweakCategoriesProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LABTweakCategoriesProvider.h; sourceTree = "<group>"; };
-		A1674DAA1F0161EC006A3B07 /* LABTweakCategoriesProvider.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LABTweakCategoriesProvider.mm; sourceTree = "<group>"; };
-		A16D7FF31F1A933E006FE0F6 /* LABTweakCategoriesProvider+Internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "LABTweakCategoriesProvider+Internal.h"; sourceTree = "<group>"; };
-		A17E86F51F275DA900F01834 /* LABDebugSourceTweakCollectionsProviderSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LABDebugSourceTweakCollectionsProviderSpec.mm; sourceTree = "<group>"; };
+		A17E86F51F275DA900F01834 /* LABDebugSourceTweakCategorySpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LABDebugSourceTweakCategorySpec.mm; sourceTree = "<group>"; };
 		A17E87171F275E1200F01834 /* LABVariantUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LABVariantUtils.h; sourceTree = "<group>"; };
-		A18220B61F026FEC00FC7C61 /* LABTweakCategoriesProviderSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LABTweakCategoriesProviderSpec.mm; sourceTree = "<group>"; };
 		A18220B81F0398A500FC7C61 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		A1E388371EE554D90095F056 /* LABFakeAssignmentsSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LABFakeAssignmentsSource.h; sourceTree = "<group>"; };
 		A1E388381EE554D90095F056 /* LABFakeAssignmentsSource.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LABFakeAssignmentsSource.mm; sourceTree = "<group>"; };
@@ -484,6 +492,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		88040651200C00DB00015482 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				88040656200C00DB00015482 /* libMilkshake.a */,
+				88040658200C00DB00015482 /* MilkshakeTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		882D1F1E1EC1AC6E007F39F5 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -638,6 +655,7 @@
 				A1674D6C1F016166006A3B07 /* FBTweak.xcodeproj */,
 				8B10C9971F3F058700F76142 /* LLReactiveMatchers.xcodeproj */,
 				A14172691E6EADDF005DBEFF /* LTKit.xcodeproj */,
+				88040650200C00DB00015482 /* Milkshake.xcodeproj */,
 				A141728F1E6EAF03005DBEFF /* OCMock.xcodeproj */,
 				8B6863BB1F33474400F0EF4C /* ReactiveObjC.xcodeproj */,
 				A14172A41E6EAF0D005DBEFF /* Specta.xcodeproj */,
@@ -785,12 +803,8 @@
 		A1674D981F016195006A3B07 /* Tweaks */ = {
 			isa = PBXGroup;
 			children = (
-				A15AB35D1F0BFB65000846A4 /* LABDebugSourceTweakCollectionsProvider.h */,
-				A15AB35E1F0BFB65000846A4 /* LABDebugSourceTweakCollectionsProvider.mm */,
-				A1674DA91F0161EC006A3B07 /* LABTweakCategoriesProvider.h */,
-				A1674DAA1F0161EC006A3B07 /* LABTweakCategoriesProvider.mm */,
-				A16D7FF31F1A933E006FE0F6 /* LABTweakCategoriesProvider+Internal.h */,
-				A1674DA81F0161EC006A3B07 /* LABTweakCollectionsProvider.h */,
+				A15AB35D1F0BFB65000846A4 /* LABDebugSourceTweakCategory.h */,
+				A15AB35E1F0BFB65000846A4 /* LABDebugSourceTweakCategory.mm */,
 			);
 			name = Tweaks;
 			sourceTree = "<group>";
@@ -808,8 +822,7 @@
 		A18220911F026FC200FC7C61 /* Tweaks */ = {
 			isa = PBXGroup;
 			children = (
-				A17E86F51F275DA900F01834 /* LABDebugSourceTweakCollectionsProviderSpec.mm */,
-				A18220B61F026FEC00FC7C61 /* LABTweakCategoriesProviderSpec.mm */,
+				A17E86F51F275DA900F01834 /* LABDebugSourceTweakCategorySpec.mm */,
 			);
 			name = Tweaks;
 			sourceTree = "<group>";
@@ -907,6 +920,10 @@
 					ProjectRef = A14172691E6EADDF005DBEFF /* LTKit.xcodeproj */;
 				},
 				{
+					ProductGroup = 88040651200C00DB00015482 /* Products */;
+					ProjectRef = 88040650200C00DB00015482 /* Milkshake.xcodeproj */;
+				},
+				{
 					ProductGroup = A14172901E6EAF03005DBEFF /* Products */;
 					ProjectRef = A141728F1E6EAF03005DBEFF /* OCMock.xcodeproj */;
 				},
@@ -937,6 +954,20 @@
 			fileType = archive.ar;
 			path = libLTKitTestUtils.a;
 			remoteRef = 19C885601FC41F95009F147E /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		88040656200C00DB00015482 /* libMilkshake.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libMilkshake.a;
+			remoteRef = 88040655200C00DB00015482 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		88040658200C00DB00015482 /* MilkshakeTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = MilkshakeTests.xctest;
+			remoteRef = 88040657200C00DB00015482 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		882D1F251EC1AC6E007F39F5 /* libextobjc_OSX.a */ = {
@@ -1228,13 +1259,12 @@
 				883712FD1EE57E8C0033EE08 /* TLProperties+Laboratory.mm in Sources */,
 				885349B81EE45B0C0043D190 /* LABAssignmentsSource.mm in Sources */,
 				A148A0551EE3D8110058165C /* LABAssignmentsManager.mm in Sources */,
-				A15AB35F1F0BFB65000846A4 /* LABDebugSourceTweakCollectionsProvider.mm in Sources */,
+				A15AB35F1F0BFB65000846A4 /* LABDebugSourceTweakCategory.mm in Sources */,
 				883712FC1EE57E8C0033EE08 /* LABTaplytics.mm in Sources */,
 				883712FE1EE57E8C0033EE08 /* LABTaplyticsSource.mm in Sources */,
 				883235861ED861EA0090787D /* NSErrorCodes+Laboratory.mm in Sources */,
 				88C21F471F0D272F0005EFDE /* LABAssignmentValue.mm in Sources */,
 				88BB646D1EDAAD100026DEC0 /* LABLocalSource.mm in Sources */,
-				A1674DAB1F0161EC006A3B07 /* LABTweakCategoriesProvider.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1247,12 +1277,11 @@
 				88C21F6B1F0D37E40005EFDE /* LABAssignmentValueSpec.mm in Sources */,
 				883235881ED861F30090787D /* NSErrorCodes+LaboratorySpec.mm in Sources */,
 				88349C141EF012C1007B14C4 /* LABTaplyticsSourceSpec.mm in Sources */,
-				A18220B71F026FEC00FC7C61 /* LABTweakCategoriesProviderSpec.mm in Sources */,
 				885AFF991F02B34D0035A6B2 /* LABTaplyticsSpec.mm in Sources */,
 				884F64941EE53B3C0052274E /* LABExperimentsTokenProviderSpec.mm in Sources */,
 				A13C527E1EF177AE00BA2AAA /* LABDebugSourceSpec.mm in Sources */,
 				A1E388391EE554D90095F056 /* LABFakeAssignmentsSource.mm in Sources */,
-				A17E86F61F275DA900F01834 /* LABDebugSourceTweakCollectionsProviderSpec.mm in Sources */,
+				A17E86F61F275DA900F01834 /* LABDebugSourceTweakCategorySpec.mm in Sources */,
 				A10DEFA91EE425DB00F1DD87 /* LABAssignmentsManagerSpec.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1291,6 +1320,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../LTKit",
+					"$(SRCROOT)/../Milkshake",
 					"$(SRCROOT)/../third_party/Tweaks",
 					"$(SRCROOT)/../third_party/libextobjc",
 				);
@@ -1313,6 +1343,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../LTKit",
+					"$(SRCROOT)/../Milkshake",
 					"$(SRCROOT)/../third_party/Tweaks",
 					"$(SRCROOT)/../third_party/libextobjc",
 				);

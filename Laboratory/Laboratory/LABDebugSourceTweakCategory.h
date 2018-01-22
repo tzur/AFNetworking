@@ -1,13 +1,13 @@
 // Copyright (c) 2017 Lightricks. All rights reserved.
 // Created by Boris Talesnik.
 
-#import "LABTweakCollectionsProvider.h"
+#import <Milkshake/SHKTweakCategoryAdapter.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
 @class LABDebugSource;
 
-/// Tweak collections provider that exposes tweaks according to the experiments and sources of an
+/// Tweak category that exposes tweaks according to the experiments and sources of an
 /// \c LABDebugSource. A collection is provided for each underlying source of \c debugSource. Each
 /// tweak in a collection is associated with one experiment and has the following possible values:
 ///
@@ -18,8 +18,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// The Tweaks in a collection are ordered by experiment name. The possible values for a tweak are
 /// sorted by variant name, instead of \c "Inactive" which is always last.
 ///
-/// @note Implements \c updateCollections, which in turn updates the \c debugSource.
-@interface LABDebugSourceTweakCollectionsProvider : NSObject <LABTweakCollectionsProvider>
+/// @note Implements \c update, which in turn updates the \c debugSource.
+/// @note Implements \c reset, which sets all the experiments to be inactive.
+@interface LABDebugSourceTweakCategory : NSObject <SHKTweakCategory>
 
 - (instancetype)init NS_UNAVAILABLE;
 

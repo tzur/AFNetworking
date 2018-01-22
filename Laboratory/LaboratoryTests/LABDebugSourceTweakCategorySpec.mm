@@ -1,7 +1,7 @@
 // Copyright (c) 2017 Lightricks. All rights reserved.
 // Created by Boris Talesnik.
 
-#import "LABDebugSourceTweakCollectionsProvider.h"
+#import "LABDebugSourceTweakCategory.h"
 
 #import <FBTweak/FBTweak.h>
 #import <FBTweak/FBTweakCollection.h>
@@ -15,13 +15,13 @@
 #import "LABVariantUtils.h"
 #import "NSError+Laboratory.h"
 
-SpecBegin(LABDebugSourceTweakCollectionsProvider)
+SpecBegin(LABDebugSourceTweakCategory)
 
 __block LABFakeAssignmentsSource *fakeSource1, *fakeSource2;
 __block LTFakeKeyValuePersistentStorage *storage;
 __block LABDebugSource *source;
 __block std::unordered_map<std::tuple<NSUInteger, NSUInteger, NSUInteger>, LABVariant *> variants;
-__block LABDebugSourceTweakCollectionsProvider *provider;
+__block LABDebugSourceTweakCategory *category;
 
 beforeEach(^{
   variants = {
@@ -48,79 +48,72 @@ beforeEach(^{
   fakeSource2.name = @"fake2";
   storage = [[LTFakeKeyValuePersistentStorage alloc] init];
   source = [[LABDebugSource alloc] initWithSources:@[fakeSource1, fakeSource2] storage:storage];
-  provider = [[LABDebugSourceTweakCollectionsProvider alloc] initWithDebugSource:source];
+  category = [[LABDebugSourceTweakCategory alloc] initWithDebugSource:source];
 });
 
 it(@"should not expose collections if debug source does not expose any sources", ^{
-  expect(provider.collections).to.haveCount(0);
+  expect(category.tweakCollections).to.haveCount(0);
 });
 
 it(@"should update debug source", ^{
   LABDebugSource *debugSource = OCMClassMock(LABDebugSource.class);
   OCMStub([debugSource update]).andReturn([RACSignal empty]);
-  auto collectionsProvider =
-      [[LABDebugSourceTweakCollectionsProvider alloc] initWithDebugSource:debugSource];
+  auto newCategory = [[LABDebugSourceTweakCategory alloc] initWithDebugSource:debugSource];
 
-  expect([collectionsProvider updateCollections]).to.complete();
+  expect([newCategory update]).to.complete();
   OCMVerify([debugSource update]);
-});
-
-it(@"should deliver update collections results on the main thread", ^{
-  LABDebugSource *debugSource = OCMClassMock(LABDebugSource.class);
-  OCMStub([debugSource update]).andReturn([[RACSignal empty] deliverOn:[RACScheduler scheduler]]);
-  auto collectionsProvider =
-      [[LABDebugSourceTweakCollectionsProvider alloc] initWithDebugSource:debugSource];
-
-  auto recorder = [[[collectionsProvider updateCollections] materialize] testRecorder];
-
-  expect(recorder).will.deliverValuesOnMainThread();
-  expect(recorder).to.sendValues(@[[RACEvent completedEvent]]);
 });
 
 it(@"should err if debug source fails to update", ^{
   LABDebugSource *debugSource = OCMClassMock(LABDebugSource.class);
   auto sourceError = [NSError lt_errorWithCode:1337];
   OCMStub([debugSource update]).andReturn([RACSignal error:sourceError]);
-  auto collectionsProvider =
-      [[LABDebugSourceTweakCollectionsProvider alloc] initWithDebugSource:debugSource];
+  auto newCategory = [[LABDebugSourceTweakCategory alloc] initWithDebugSource:debugSource];
 
   auto expectedError = [NSError lt_errorWithCode:LABErrorCodeTweaksCollectionsUpdateFailed
                                  underlyingError:sourceError];
-  expect([collectionsProvider updateCollections]).to.sendError(expectedError);
+  expect([newCategory update]).to.sendError(expectedError);
   OCMVerify([debugSource update]);
 });
 
 it(@"should not expose tweaks if there are no experiments", ^{
   fakeSource1.allExperiments = fakeSource2.allExperiments = @{};
   expect([source update]).will.complete();
-  expect(provider.collections).to.haveCount(2);
-  expect(provider.collections[0].tweaks).to.haveCount(0);
-  expect(provider.collections[0].name).to.equal(@"fake1");
-  expect(provider.collections[1].tweaks).to.haveCount(0);
-  expect(provider.collections[1].name).to.equal(@"fake2");
+  expect(category.tweakCollections).to.haveCount(2);
+  expect(category.tweakCollections[0].tweaks).to.haveCount(0);
+  expect(category.tweakCollections[0].name).to.equal(@"fake1");
+  expect(category.tweakCollections[1].tweaks).to.haveCount(0);
+  expect(category.tweakCollections[1].name).to.equal(@"fake2");
 });
 
 it(@"should expose tweaks for experiments", ^{
   expect([source update]).will.complete();
 
-  NSArray<FBTweak *> *fakeSource1Tweaks = provider.collections[0].tweaks;
+  NSArray<id<FBEditableTweak>> *fakeSource1Tweaks =
+      (NSArray<id<FBEditableTweak>> *)category.tweakCollections[0].tweaks;
   expect(fakeSource1Tweaks).to.haveCount(2);
+  expect(fakeSource1Tweaks[0]).to.conformTo(@protocol(FBEditableTweak));
   expect(fakeSource1Tweaks[0].name).to.equal(@"bar");
   expect(fakeSource1Tweaks[0].possibleValues).to.equal(@[@"barVar", @"fooVar", @"Inactive"]);
+  expect(fakeSource1Tweaks[1]).to.conformTo(@protocol(FBEditableTweak));
   expect(fakeSource1Tweaks[1].name).to.equal(@"foo");
   expect(fakeSource1Tweaks[1].possibleValues).to.equal(@[@"blobVar", @"bobVar", @"Inactive"]);
 
-  NSArray<FBTweak *> *fakeSource2Tweaks = provider.collections[1].tweaks;
+  NSArray<id<FBEditableTweak>> *fakeSource2Tweaks =
+      (NSArray<id<FBEditableTweak>> *)category.tweakCollections[1].tweaks;
   expect(fakeSource2Tweaks).to.haveCount(2);
+  expect(fakeSource2Tweaks[0]).to.conformTo(@protocol(FBEditableTweak));
   expect(fakeSource2Tweaks[0].name).to.equal(@"baz");
   expect(fakeSource2Tweaks[0].possibleValues).to.equal(@[@"blobVar", @"bobVar", @"Inactive"]);
+  expect(fakeSource2Tweaks[0]).to.conformTo(@protocol(FBEditableTweak));
   expect(fakeSource2Tweaks[1].name).to.equal(@"thud");
   expect(fakeSource2Tweaks[1].possibleValues).to.equal(@[@"barVar", @"fooVar", @"Inactive"]);
 });
 
 it(@"should activate variants", ^{
-  expect([provider updateCollections]).will.complete();
-  FBTweak *tweak = [provider.collections[0].tweaks lt_find:^(FBTweak *tweak) {
+  expect([category update]).will.complete();
+  id<FBEditableTweak> tweak = (id<FBEditableTweak>)[category.tweakCollections[0].tweaks
+                               lt_find:^(id<FBEditableTweak> tweak) {
     return [tweak.name isEqual:variants[{0, 0, 1}].experiment];
   }];
 
@@ -131,7 +124,8 @@ it(@"should activate variants", ^{
   expect(source.activeVariants).to.equal([@[variants[{0, 0, 1}]] lt_set]);
   expect(source.variantActivationRequests).to.equal(expectedActivationRequests);
 
-  tweak = [provider.collections[1].tweaks lt_find:^(FBTweak *tweak) {
+  tweak = (id<FBEditableTweak>)[category.tweakCollections[1].tweaks
+                                lt_find:^(id<FBEditableTweak> tweak) {
     return [tweak.name isEqual:variants[{1, 1, 0}].experiment];
   }];
 
@@ -145,8 +139,9 @@ it(@"should activate variants", ^{
 });
 
 it(@"should deactivate experiments", ^{
-  expect([provider updateCollections]).will.complete();
-  FBTweak *tweak = [provider.collections[0].tweaks lt_find:^(FBTweak *tweak) {
+  expect([category update]).will.complete();
+  id<FBEditableTweak> tweak = (id<FBEditableTweak>)[category.tweakCollections[0].tweaks
+                               lt_find:^(id<FBEditableTweak> tweak) {
     return [tweak.name isEqual:variants[{0, 0, 1}].experiment];
   }];
 
@@ -158,16 +153,17 @@ it(@"should deactivate experiments", ^{
 });
 
 it(@"should expose active tweak after initialization", ^{
-  expect([provider updateCollections]).will.complete();
-  FBTweak *tweak1 = [provider.collections[0].tweaks lt_find:^(FBTweak *tweak) {
+  expect([category update]).will.complete();
+  id<FBEditableTweak> tweak1 = (id<FBEditableTweak>)[category.tweakCollections[0].tweaks
+                                lt_find:^(id<FBEditableTweak> tweak) {
     return [tweak.name isEqual:variants[{0, 0, 1}].experiment];
   }];
 
   tweak1.currentValue = variants[{0, 0, 1}].name;
 
-  auto collectionsProvider =
-      [[LABDebugSourceTweakCollectionsProvider alloc] initWithDebugSource:source];
-  FBTweak *tweak2 = [collectionsProvider.collections[0].tweaks lt_find:^(FBTweak *tweak) {
+  auto newCategory = [[LABDebugSourceTweakCategory alloc] initWithDebugSource:source];
+  id<FBEditableTweak> tweak2 = (id<FBEditableTweak>)[newCategory.tweakCollections[0].tweaks
+                                lt_find:^(id<FBEditableTweak> tweak) {
     return [tweak.name isEqual:variants[{0, 0, 1}].experiment];
   }];
 

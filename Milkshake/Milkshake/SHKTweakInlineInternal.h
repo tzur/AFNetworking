@@ -4,43 +4,43 @@
 #import <FBTweak/FBTweakEnabled.h>
 #import <FBTweak/FBTweakInlineInternal.h>
 
-#import "FBTweak+RACSignalSupport.h"
+#import "FBMutableTweak+RACSignalSupport.h"
 
 #if !FB_TWEAK_ENABLED
 
-#define _SHKTweakSignal(category_, collection_, name_, ...) \
+#define _SHKTweakSignal(category, collection, name, ...) \
   ([RACSignal return:__FBTweakDefault(__VA_ARGS__)])
 
 #else
 
-#define _SHKTweakSignalWithoutRange(category_, collection_, name_, default_) \
+#define _SHKTweakSignalWithoutRange(category, collection, name, default) \
 ((^{ \
-  FBTweak *__signal_tweak = _FBTweakInlineWithoutRange(category_, collection_, name_, \
-      (id)default_); \
-  return _SHKTweakSignalInternal(__signal_tweak); \
+  FBPersistentTweak *signalTweak = _FBTweakInlineWithoutRange(category, collection, name, \
+      (id)default); \
+  return _SHKTweakSignalInternal(signalTweak); \
 })())
 
-#define _SHKTweakSignalWithRange(category_, collection_, name_, default_, min_, max_) \
+#define _SHKTweakSignalWithRange(category, collection, name, default, min, max) \
 ((^{ \
-  FBTweak *__signal_tweak = \
-      _FBTweakInlineWithRange(category_, collection_, name_, (id)default_, min_, max_); \
-  return _SHKTweakSignalInternal(__signal_tweak); \
+  FBPersistentTweak *signalTweak = \
+      _FBTweakInlineWithRange(category, collection, name, (id)default, min, max); \
+  return _SHKTweakSignalInternal(signalTweak); \
 })())
 
-#define _SHKTweakSignalWithPossible(category_, collection_, name_, default_, possible_) \
+#define _SHKTweakSignalWithPossible(category, collection, name, default, possible) \
 ((^{ \
-  FBTweak *__signal_tweak = \
-      _FBTweakInlineWithPossible(category_, collection_, name_, (id)default_, possible_); \
-  return _SHKTweakSignalInternal(__signal_tweak); \
+  FBPersistentTweak *signalTweak = \
+      _FBTweakInlineWithPossible(category, collection, name, (id)default, possible); \
+  return _SHKTweakSignalInternal(signalTweak); \
 })())
 
-#define _SHKTweakSignalInternal(tweak_) \
+#define _SHKTweakSignalInternal(tweak) \
 ((^{ \
-  return [tweak_ shk_valueChanged]; \
+  return [tweak shk_valueChanged]; \
 })())
 
-#define _SHKTweakSignal(category_, collection_, name_, ...) \
+#define _SHKTweakSignal(category, collection, name, ...) \
   _FBTweakDispatch(_SHKTweakSignalWithoutRange, _SHKTweakSignalWithRange, \
-      _SHKTweakSignalWithPossible, __VA_ARGS__)(category_, collection_, name_, __VA_ARGS__)
+      _SHKTweakSignalWithPossible, __VA_ARGS__)(category, collection, name, __VA_ARGS__)
 
 #endif
