@@ -8,6 +8,7 @@
 #import <Bazaar/BZRProductsInfoProvider.h>
 #import <Bazaar/BZRReceiptModel.h>
 #import <Bazaar/NSErrorCodes+Bazaar.h>
+#import <LTKit/NSArray+Functional.h>
 
 #import "SPXAlertViewModel.h"
 #import "SPXColorScheme.h"
@@ -22,22 +23,16 @@
 
 SpecBegin(SPXSubscriptionViewModel)
 
-__block JSObjectionInjector *lastUsedInjector;
 __block SPXSubscriptionViewModel *viewModel;
 __block SPXSubscriptionManager *subscriptionManager;
 __block SPXSubscriptionTermsViewModel *termsViewModel;
 __block SPXColorScheme *colorScheme;
 __block NSArray<NSString *> *requestedProductIdentifiers;
+__block NSArray<SPXSubscriptionDescriptor *> *descriptors;
 
 beforeEach(^{
-  lastUsedInjector = [JSObjection defaultInjector];
-  auto testModule = [[JSObjectionModule alloc] init];
   id<BZRProductsInfoProvider> productsInfoProvider =
       OCMProtocolMock(@protocol(BZRProductsInfoProvider));
-  [testModule bind:productsInfoProvider toProtocol:@protocol(BZRProductsInfoProvider)];
-
-  [JSObjection setDefaultInjector:[JSObjection createInjector:testModule]];
-
   subscriptionManager = OCMClassMock([SPXSubscriptionManager class]);
   termsViewModel = OCMClassMock([SPXSubscriptionTermsViewModel class]);
   colorScheme = OCMClassMock([SPXColorScheme class]);
@@ -47,20 +42,21 @@ beforeEach(^{
       OCMProtocolMock(@protocol(SPXSubscriptionVideoPageViewModel))
     ];
 
-  viewModel = [[SPXSubscriptionViewModel alloc] initWithProducts:requestedProductIdentifiers
+  descriptors = [requestedProductIdentifiers
+      lt_map:^SPXSubscriptionDescriptor *(NSString *productIdentifier) {
+        return [[SPXSubscriptionDescriptor alloc] initWithProductIdentifier:productIdentifier
+                                                         discountPercentage:0
+                                                       productsInfoProvider:productsInfoProvider];
+      }];
+  viewModel = [[SPXSubscriptionViewModel alloc] initWithSubscriptionDescriptors:descriptors
       preferredProductIndex:0 pageViewModels:pageViewModels termsViewModel:termsViewModel
       colorScheme:colorScheme subscriptionManager:subscriptionManager
       fetchProductsStrategy:$(SPXFetchProductsStrategyAlways)];
 });
 
-afterEach(^{
-  [JSObjection setDefaultInjector:lastUsedInjector];
-  lastUsedInjector = nil;
-});
-
 it(@"should raise if the preferred button index is greater than the number of buttons", ^{
   expect(^{
-    viewModel = [[SPXSubscriptionViewModel alloc] initWithProducts:requestedProductIdentifiers
+    viewModel = [[SPXSubscriptionViewModel alloc] initWithSubscriptionDescriptors:descriptors
     preferredProductIndex:@2 pageViewModels:@[] termsViewModel:termsViewModel
     colorScheme:colorScheme subscriptionManager:subscriptionManager
     fetchProductsStrategy:$(SPXFetchProductsStrategyAlways)];
@@ -70,7 +66,7 @@ it(@"should raise if the preferred button index is greater than the number of bu
 context(@"products fetching", ^{
   context(@"fetch always strategy", ^{
     beforeEach(^{
-      viewModel = [[SPXSubscriptionViewModel alloc] initWithProducts:requestedProductIdentifiers
+      viewModel = [[SPXSubscriptionViewModel alloc] initWithSubscriptionDescriptors:descriptors
           preferredProductIndex:0 pageViewModels:@[] termsViewModel:termsViewModel
           colorScheme:colorScheme subscriptionManager:subscriptionManager
           fetchProductsStrategy:$(SPXFetchProductsStrategyAlways)];
@@ -101,7 +97,7 @@ context(@"products fetching", ^{
       expect(recorder).to.sendValues(@[[RACUnit defaultUnit]]);
     });
 
-    it(@"should set the product descriptors according to the product identifiers with prices", ^{
+    it(@"should set the subscription descriptors prices when fetch is finished", ^{
       BZRProduct *product1 = OCMClassMock([BZRProduct class]);
       BZRProduct *product2 = OCMClassMock([BZRProduct class]);
       OCMStub([product1 priceInfo]).andReturn(OCMClassMock([BZRProductPriceInfo class]));
@@ -128,7 +124,7 @@ context(@"products fetching", ^{
 
   context(@"fetch if needed strategy", ^{
     beforeEach(^{
-      viewModel = [[SPXSubscriptionViewModel alloc] initWithProducts:requestedProductIdentifiers
+      viewModel = [[SPXSubscriptionViewModel alloc] initWithSubscriptionDescriptors:descriptors
           preferredProductIndex:0 pageViewModels:@[] termsViewModel:termsViewModel
           colorScheme:colorScheme subscriptionManager:subscriptionManager
           fetchProductsStrategy:$(SPXFetchProductsStrategyIfNeeded)];

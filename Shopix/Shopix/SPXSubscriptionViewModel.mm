@@ -25,9 +25,6 @@ LTEnumImplement(NSUInteger, SPXFetchProductsStrategy,
 
 @interface SPXSubscriptionViewModel () <SPXSubscriptionManagerDelegate>
 
-/// Identifiers of the subscription products.
-@property (readonly, nonatomic) NSArray<NSString *> *productIdentifiers;
-
 /// Manager used to handle products information fetching, subscription purchasing and restoration.
 @property (readonly, nonatomic) SPXSubscriptionManager *subscriptionManager;
 
@@ -70,34 +67,34 @@ LTEnumImplement(NSUInteger, SPXFetchProductsStrategy,
 @synthesize feedbackComposerRequested = _feedbackComposerRequested;
 @synthesize events = _events;
 
-- (instancetype)initWithProducts:(NSArray<NSString *> *)productIdentifiers
-           preferredProductIndex:(nullable NSNumber *)preferredProductIndex
-                  pageViewModels:(NSArray<id<SPXSubscriptionVideoPageViewModel>> *)pageViewModels
-                  termsViewModel:(id<SPXSubscriptionTermsViewModel>)termsViewModel {
-  return [self initWithProducts:productIdentifiers preferredProductIndex:preferredProductIndex
-                 pageViewModels:pageViewModels termsViewModel:termsViewModel
-                    colorScheme:nn([JSObjection defaultInjector][[SPXColorScheme class]])
-            subscriptionManager:[[SPXSubscriptionManager alloc] init]
-          fetchProductsStrategy:$(SPXFetchProductsStrategyAlways)];
+- (instancetype)
+    initWithSubscriptionDescriptors:(NSArray<SPXSubscriptionDescriptor *> *)subscriptionDescriptors
+              preferredProductIndex:(nullable NSNumber *)preferredProductIndex
+                     pageViewModels:(NSArray<id<SPXSubscriptionVideoPageViewModel>> *)pageViewModels
+                     termsViewModel:(id<SPXSubscriptionTermsViewModel>)termsViewModel {
+  SPXColorScheme *colorScheme = nn([JSObjection defaultInjector][[SPXColorScheme class]]);
+  return [self initWithSubscriptionDescriptors:subscriptionDescriptors
+                         preferredProductIndex:preferredProductIndex
+                                pageViewModels:pageViewModels termsViewModel:termsViewModel
+                                   colorScheme:colorScheme
+                           subscriptionManager:[[SPXSubscriptionManager alloc] init]
+                         fetchProductsStrategy:$(SPXFetchProductsStrategyAlways)];
 }
 
-- (instancetype)initWithProducts:(NSArray<NSString *> *)productIdentifiers
-           preferredProductIndex:(nullable NSNumber *)preferredProductIndex
-                  pageViewModels:(NSArray<id<SPXSubscriptionVideoPageViewModel>> *)pageViewModels
-                  termsViewModel:(id<SPXSubscriptionTermsViewModel>)termsViewModel
-                     colorScheme:(SPXColorScheme *)colorScheme
-             subscriptionManager:(SPXSubscriptionManager *)subscriptionManager
-           fetchProductsStrategy:(SPXFetchProductsStrategy *)fetchProductsStrategy {
-  LTParameterAssert(preferredProductIndex.unsignedIntegerValue < productIdentifiers.count,
+- (instancetype)
+    initWithSubscriptionDescriptors:(NSArray<SPXSubscriptionDescriptor *> *)subscriptionDescriptors
+              preferredProductIndex:(nullable NSNumber *)preferredProductIndex
+                     pageViewModels:(NSArray<id<SPXSubscriptionVideoPageViewModel>> *)pageViewModels
+                     termsViewModel:(id<SPXSubscriptionTermsViewModel>)termsViewModel
+                        colorScheme:(SPXColorScheme *)colorScheme
+                subscriptionManager:(SPXSubscriptionManager *)subscriptionManager
+              fetchProductsStrategy:(SPXFetchProductsStrategy *)fetchProductsStrategy {
+  LTParameterAssert(preferredProductIndex.unsignedIntegerValue < subscriptionDescriptors.count,
                     @"Highlighted button index (%lu) must be lower than the number of buttons "
                     "(%lu)", (unsigned long)preferredProductIndex.unsignedIntegerValue,
-                    (unsigned long)productIdentifiers.count);
+                    (unsigned long)subscriptionDescriptors.count);
   if (self = [super init]) {
-    _productIdentifiers = [productIdentifiers copy];
-    _subscriptionDescriptors = [productIdentifiers
-        lt_map:^SPXSubscriptionDescriptor *(NSString *productIdentifier) {
-          return [[SPXSubscriptionDescriptor alloc] initWithProductIdentifier:productIdentifier];
-        }];
+    _subscriptionDescriptors = [subscriptionDescriptors copy];
     _preferredProductIndex = preferredProductIndex;
     _pageViewModels = [pageViewModels copy];
     _termsViewModel = termsViewModel;
@@ -139,11 +136,15 @@ LTEnumImplement(NSUInteger, SPXFetchProductsStrategy,
         self.shouldShowActivityIndicator = NO;
       };
 
+  auto requestedProductIdentifiers = [self.subscriptionDescriptors
+      lt_map:^NSString *(SPXSubscriptionDescriptor *descriptor) {
+        return descriptor.productIdentifier;
+      }].lt_set;
   if ([self.fetchProductsStrategy isEqual:$(SPXFetchProductsStrategyAlways)]) {
-    [self.subscriptionManager fetchProductsInfo:self.productIdentifiers.lt_set
+    [self.subscriptionManager fetchProductsInfo:requestedProductIdentifiers
                               completionHandler:fetchCompletionHandler];
   } else {
-    [self.subscriptionManager fetchProductsInfoIfNeeded:self.productIdentifiers.lt_set
+    [self.subscriptionManager fetchProductsInfoIfNeeded:requestedProductIdentifiers
                                       completionHandler:fetchCompletionHandler];
   }
 }

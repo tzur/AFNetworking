@@ -38,45 +38,42 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithTitleText:(NSString *)titleText
                      subtitleText:(nullable NSString *)subtitleText
-               productIdentifiers:(NSArray<NSString *> *)productIdentifiers
+          subscriptionDescriptors:(NSArray<SPXSubscriptionDescriptor *> *)subscriptionDescriptors
            highlightedButtonIndex:(nullable NSNumber *)highlightedButtonIndex
                backgroundVideoURL:(NSURL *)backgroundVideoURL {
   return [self initWithTitleText:titleText subtitleText:subtitleText
-              productIdentifiers:productIdentifiers highlightedButtonIndex:highlightedButtonIndex
-              backgroundVideoURL:backgroundVideoURL
+         subscriptionDescriptors:subscriptionDescriptors
+          highlightedButtonIndex:highlightedButtonIndex backgroundVideoURL:backgroundVideoURL
                      colorScheme:nn([JSObjection defaultInjector][[SPXColorScheme class]])];
 }
 
 - (instancetype)initWithTitleText:(NSString *)titleText
-                    subtitleText:(nullable NSString *)subtitleText
-               productIdentifiers:(NSArray<NSString *> *)productIdentifiers
+                     subtitleText:(nullable NSString *)subtitleText
+          subscriptionDescriptors:(NSArray<SPXSubscriptionDescriptor *> *)subscriptionDescriptors
            highlightedButtonIndex:(nullable NSNumber *)highlightedButtonIndex
                backgroundVideoURL:(NSURL *)backgroundVideoURL
                       colorScheme:(SPXColorScheme *)colorScheme {
   return [self initWithTitleText:titleText subtitleText:subtitleText
-              productIdentifiers:productIdentifiers highlightedButtonIndex:highlightedButtonIndex
-              backgroundVideoURL:backgroundVideoURL titleTextColor:colorScheme.textColor
-               subtitleTextColor:colorScheme.textColor];
+         subscriptionDescriptors:subscriptionDescriptors
+          highlightedButtonIndex:highlightedButtonIndex backgroundVideoURL:backgroundVideoURL
+                  titleTextColor:colorScheme.textColor subtitleTextColor:colorScheme.textColor];
 }
 
 - (instancetype)initWithTitleText:(NSString *)titleText
                      subtitleText:(nullable NSString *)subtitleText
-               productIdentifiers:(NSArray<NSString *> *)productIdentifiers
+          subscriptionDescriptors:(NSArray<SPXSubscriptionDescriptor *> *)subscriptionDescriptors
            highlightedButtonIndex:(nullable NSNumber *)highlightedButtonIndex
                backgroundVideoURL:(NSURL *)backgroundVideoURL
                    titleTextColor:(UIColor *)titleTextColor
                 subtitleTextColor:(nullable UIColor *)subtitleTextColor {
-  LTParameterAssert(highlightedButtonIndex.unsignedIntegerValue < productIdentifiers.count,
+  LTParameterAssert(highlightedButtonIndex.unsignedIntegerValue < subscriptionDescriptors.count,
                     @"Highlighted button index (%lu) must be lower than the number of buttons "
                     "(%lu)", (unsigned long)highlightedButtonIndex.unsignedIntegerValue,
-                    (unsigned long)productIdentifiers.count);
+                    (unsigned long)subscriptionDescriptors.count);
   if (self = [super init]) {
     _titleText = [titleText copy];
     _subtitleText = [subtitleText copy];
-    _subscriptionDescriptors = [productIdentifiers
-        lt_map:^SPXSubscriptionDescriptor *(NSString *productIdentifier) {
-          return [[SPXSubscriptionDescriptor alloc] initWithProductIdentifier:productIdentifier];
-        }];
+    _subscriptionDescriptors = [subscriptionDescriptors copy];
     _preferredSubscriptionIndex = highlightedButtonIndex;
     _backgroundVideoURL = backgroundVideoURL;
     _titleTextColor = titleTextColor;

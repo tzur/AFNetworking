@@ -46,43 +46,43 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark SPXSubscriptionButtonsPageViewModel class
 #pragma mark -
 
-/// View-Model implementation, receives as input product identifiers, title and subtitle strings
-/// and outputs subscription descriptors and attributed strings respectively. Font sizes are
+/// View-Model implementation, receives as input subscription descriptors, title and subtitle
+/// strings and outputs subscription descriptors and attributed strings respectively. Font sizes are
 /// determined by the application's window height.
 @interface SPXSubscriptionButtonsPageViewModel : NSObject <SPXSubscriptionButtonsPageViewModel>
 
 - (instancetype)init NS_UNAVAILABLE;
 
-/// Initializes with the given \c titleText, \c subtitleText, \c productIdentifiers,
+/// Initializes with the given \c titleText, \c subtitleText, \c subscriptionDescriptors,
 /// \c highlightedButtonIndex and \c backgroundVideoURL. \c colorScheme is pulled from Objection.
 - (instancetype)initWithTitleText:(NSString *)titleText
                      subtitleText:(nullable NSString *)subtitleText
-               productIdentifiers:(NSArray<NSString *> *)productIdentifiers
+          subscriptionDescriptors:(NSArray<SPXSubscriptionDescriptor *> *)subscriptionDescriptors
            highlightedButtonIndex:(nullable NSNumber *)highlightedButtonIndex
                backgroundVideoURL:(NSURL *)backgroundVideoURL;
 
-/// Initializes with the given \c titleText, \c subtitleText, \c productIdentifiers,
+/// Initializes with the given \c titleText, \c subtitleText, \c subscriptionDescriptors,
 /// \c highlightedButtonIndex and \c backgroundVideoURL. \c colorScheme is used to set
 /// \c titleTextColor and \c subtitleTextColor to \c textColor.
 - (instancetype)initWithTitleText:(NSString *)titleText
                      subtitleText:(nullable NSString *)subtitleText
-               productIdentifiers:(NSArray<NSString *> *)productIdentifiers
+          subscriptionDescriptors:(NSArray<SPXSubscriptionDescriptor *> *)subscriptionDescriptors
            highlightedButtonIndex:(nullable NSNumber *)highlightedButtonIndex
                backgroundVideoURL:(NSURL *)backgroundVideoURL
                       colorScheme:(SPXColorScheme *)colorScheme;
 
 /// Initializes with the given \c titleText, \c subtitleText that will be used as the page's
-/// \c title and subtitle respectively. \c productIdentifiers defines the subscription products that
-/// will be offered to the user on the subscribe screen, the order of the array determines the order
-/// of the displayed buttons and the order of \c subscriptionDescriptors, and if
-/// \c productIdentifiers is empty no buttons will be presented. \c highlightedButtonIndex
-/// is used as the page's \c preferredSubscriptionIndex so the preferred button will be highlighted,
-/// must be in range <tt>[0, productIdentifiers.count - 1]</tt>. \c backgroundVideoURL is the URL
-/// the page's background video. \c titleTextColor and \c subtitleTextColor are the colors for
-/// \c titleText and \c subtitleText respectively.
+/// \c title and subtitle respectively. \c subscriptionDescriptors defines the subscription products
+/// that will be offered to the user on the subscribe screen, the order of the array determines the
+/// order of the displayed buttons, if \c subscriptionDescriptors is empty no buttons will be
+/// presented. \c highlightedButtonIndex is used as the page's \c preferredSubscriptionIndex so the
+/// preferred button will be highlighted, must be in range
+/// <tt>[0, productIdentifiers.count - 1]</tt>. \c backgroundVideoURL is the URL the page's
+/// background video. \c titleTextColor and \c subtitleTextColor are the colors for \c titleText
+/// and \c subtitleText respectively.
 - (instancetype)initWithTitleText:(NSString *)titleText
                      subtitleText:(nullable NSString *)subtitleText
-               productIdentifiers:(NSArray<NSString *> *)productIdentifiers
+          subscriptionDescriptors:(NSArray<SPXSubscriptionDescriptor *> *)subscriptionDescriptors
            highlightedButtonIndex:(nullable NSNumber *)highlightedButtonIndex
                backgroundVideoURL:(NSURL *)backgroundVideoURL
                    titleTextColor:(UIColor *)titleTextColor

@@ -95,16 +95,16 @@ LTEnumDeclare(NSUInteger, SPXFetchProductsStrategy,
 /// Same as the designated initializer. \c colorScheme is pulled from Objection,
 /// \c subscriptionManager is set to the default manager and \c fetchProductsStrategy is set to
 /// \c SPXFetchProductsStrategyAlways.
-- (instancetype)initWithProducts:(NSArray<NSString *> *)productIdentifiers
-           preferredProductIndex:(nullable NSNumber *)preferredProductIndex
-                  pageViewModels:(NSArray<id<SPXSubscriptionVideoPageViewModel>> *)pageViewModels
-                  termsViewModel:(id<SPXSubscriptionTermsViewModel>)termsViewModel;
+- (instancetype)
+    initWithSubscriptionDescriptors:(NSArray<SPXSubscriptionDescriptor *> *)subscriptionDescriptors
+              preferredProductIndex:(nullable NSNumber *)preferredProductIndex
+                     pageViewModels:(NSArray<id<SPXSubscriptionVideoPageViewModel>> *)pageViewModels
+                     termsViewModel:(id<SPXSubscriptionTermsViewModel>)termsViewModel;
 
 /// Initializes with:
 ///
-/// \c productIdentifiers defines the subscription products that will be offered to the user on the
-/// subscribe screen. The order of the array determines the order of the displayed buttons and
-/// the order of \c subscriptionDescriptors.
+/// \c subscriptionDescriptors defines the subscription products that will be offered to the user on
+/// the subscribe screen. The order of the array determines the order of the displayed buttons.
 ///
 /// \c preferredProductIndex is a preferred subscription product index. The button for this
 /// subscription product will be highlighted. Must be in range
@@ -121,13 +121,14 @@ LTEnumDeclare(NSUInteger, SPXFetchProductsStrategy,
 /// restoration.
 ///
 /// \c fetchProductsStrategy used to specify the strategy for products information fetching.
-- (instancetype)initWithProducts:(NSArray<NSString *> *)productIdentifiers
-           preferredProductIndex:(nullable NSNumber *)preferredProductIndex
-                  pageViewModels:(NSArray<id<SPXSubscriptionVideoPageViewModel>> *)pageViewModels
-                  termsViewModel:(id<SPXSubscriptionTermsViewModel>)termsViewModel
-                     colorScheme:(SPXColorScheme *)colorScheme
-             subscriptionManager:(SPXSubscriptionManager *)subscriptionManager
-           fetchProductsStrategy:(SPXFetchProductsStrategy *)fetchProductsStrategy
+- (instancetype)
+    initWithSubscriptionDescriptors:(NSArray<SPXSubscriptionDescriptor *> *)subscriptionDescriptors
+              preferredProductIndex:(nullable NSNumber *)preferredProductIndex
+                     pageViewModels:(NSArray<id<SPXSubscriptionVideoPageViewModel>> *)pageViewModels
+                     termsViewModel:(id<SPXSubscriptionTermsViewModel>)termsViewModel
+                        colorScheme:(SPXColorScheme *)colorScheme
+                subscriptionManager:(SPXSubscriptionManager *)subscriptionManager
+              fetchProductsStrategy:(SPXFetchProductsStrategy *)fetchProductsStrategy
     NS_DESIGNATED_INITIALIZER;
 
 @end

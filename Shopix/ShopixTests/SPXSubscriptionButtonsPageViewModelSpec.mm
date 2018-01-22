@@ -10,7 +10,7 @@
 
 SpecBegin(SPXSubscriptionButtonsPageViewModel)
 
-__block JSObjectionInjector *lastUsedInjector;
+__block NSArray<SPXSubscriptionDescriptor *> *descriptors;
 __block SPXSubscriptionButtonsPageViewModel *buttonsPageViewModel;
 __block id mockApplication;
 __block UIWindow *window;
@@ -18,16 +18,17 @@ __block NSRange titleRange;
 __block NSRange subtitleRange;
 
 beforeEach(^{
-  lastUsedInjector = [JSObjection defaultInjector];
-  auto testModule = [[JSObjectionModule alloc] init];
   id<BZRProductsInfoProvider> productsInfoProvider =
       OCMProtocolMock(@protocol(BZRProductsInfoProvider));
-  [testModule bind:productsInfoProvider toProtocol:@protocol(BZRProductsInfoProvider)];
 
-  [JSObjection setDefaultInjector:[JSObjection createInjector:testModule]];
-
+  descriptors = [@[@"foo", @"boo"]
+    lt_map:^SPXSubscriptionDescriptor *(NSString *productIdentifier) {
+      return [[SPXSubscriptionDescriptor alloc] initWithProductIdentifier:productIdentifier
+                                                       discountPercentage:0
+                                                     productsInfoProvider:productsInfoProvider];
+    }];
   buttonsPageViewModel = [[SPXSubscriptionButtonsPageViewModel alloc]
-      initWithTitleText:@"title" subtitleText:@"subtitle" productIdentifiers:@[@"foo", @"boo"]
+      initWithTitleText:@"title" subtitleText:@"subtitle" subscriptionDescriptors:descriptors
       highlightedButtonIndex:nil backgroundVideoURL:[NSURL URLWithString:@""]
       titleTextColor:[UIColor redColor] subtitleTextColor:[UIColor blueColor]];
   titleRange = NSMakeRange(0, buttonsPageViewModel.title.length);
@@ -39,22 +40,13 @@ beforeEach(^{
 });
 
 afterEach(^{
-  [JSObjection setDefaultInjector:lastUsedInjector];
-  lastUsedInjector = nil;
   mockApplication = nil;
-});
-
-it(@"should set the product descriptors according to the product identifiers", ^{
-  expect([buttonsPageViewModel.subscriptionDescriptors
-          lt_map:^id(SPXSubscriptionDescriptor *descriptor) {
-    return descriptor.productIdentifier;
-  }]).to.equal(@[@"foo", @"boo"]);
 });
 
 it(@"should raise if the highlighted button index is greater than the number of buttons", ^{
   expect(^{
   buttonsPageViewModel = [[SPXSubscriptionButtonsPageViewModel alloc]
-      initWithTitleText:@"title" subtitleText:@"subtitle" productIdentifiers:@[@"foo", @"boo"]
+      initWithTitleText:@"title" subtitleText:@"subtitle" subscriptionDescriptors:descriptors
       highlightedButtonIndex:@2 backgroundVideoURL:[NSURL URLWithString:@""]
       titleTextColor:[UIColor redColor] subtitleTextColor:[UIColor blueColor]];
   }).to.raise(NSInvalidArgumentException);
