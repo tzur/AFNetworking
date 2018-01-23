@@ -24,27 +24,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation SPXSubscriptionGradientButtonsFactory
 
-- (instancetype)init {
-  return [self initWithColorScheme:nn([JSObjection defaultInjector][[SPXColorScheme class]])];
-}
-
-- (instancetype)initWithColorScheme:(SPXColorScheme *)colorScheme {
+- (instancetype)initWithColorScheme:(SPXColorScheme *)colorScheme
+                          formatter:(SPXSubscriptionButtonFormatter *)formatter {
   return [self initWithBottomGradientColors:@[colorScheme.mainColor, colorScheme.mainColor]
             highlightedBottomGradientColors:colorScheme.mainGradientColors
-                            periodTextColor:colorScheme.darkTextColor
-                         fullPriceTextColor:colorScheme.grayedTextColor
-                             priceTextColor:colorScheme.textColor];
-}
-
-- (instancetype)initWithBottomGradientColors:(NSArray<UIColor *> *)bottomGradientColors
-             highlightedBottomGradientColors:(nullable NSArray<UIColor *> *)highlightedBottomColors
-                             periodTextColor:(UIColor *)periodTextColor
-                          fullPriceTextColor:(UIColor *)fullPriceTextColor
-                              priceTextColor:(UIColor *)priceTextColor {
-  auto formatter = [[SPXSubscriptionButtonFormatter alloc] initWithPeriodTextColor:periodTextColor
-      priceTextColor:priceTextColor fullPriceTextColor:fullPriceTextColor];
-  return [self initWithBottomGradientColors:bottomGradientColors
-            highlightedBottomGradientColors:highlightedBottomColors formatter:formatter];
+                                  formatter:formatter];
 }
 
 - (instancetype)initWithBottomGradientColors:(NSArray<UIColor *> *)bottomGradientColors

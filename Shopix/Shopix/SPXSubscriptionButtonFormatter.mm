@@ -8,6 +8,7 @@
 #import <Wireframes/UIFont+Utilities.h>
 
 #import "NSDecimalNumber+Localization.h"
+#import "SPXColorScheme.h"
 #import "SPXSubscriptionDescriptor.h"
 #import "UIFont+Shopix.h"
 
@@ -26,17 +27,31 @@ using namespace spx;
 /// Subscription price text color.
 @property (readonly, nonatomic) UIColor *priceTextColor;
 
+/// If \c YES a marker is appended to the price if the billing period in not monthly but presented
+/// as monthly format.
+@property (readonly, nonatomic) BOOL showNonMonthlyBillingFootnoteMarker;
+
 @end
 
 @implementation SPXSubscriptionButtonFormatter
 
+- (instancetype)initColorScheme:(SPXColorScheme *)colorScheme
+   showNonMonthlyFootnoteMarker:(BOOL)showNonMonthlyFootnoteMarker {
+    return [self initWithPeriodTextColor:colorScheme.darkTextColor
+                          priceTextColor:colorScheme.textColor
+                      fullPriceTextColor:colorScheme.grayedTextColor
+            showNonMonthlyFootnoteMarker:showNonMonthlyFootnoteMarker];
+}
+
 - (instancetype)initWithPeriodTextColor:(UIColor *)periodTextColor
                          priceTextColor:(UIColor *)priceTextColor
-                     fullPriceTextColor:(UIColor *)fullPriceTextColor {
+                     fullPriceTextColor:(UIColor *)fullPriceTextColor
+           showNonMonthlyFootnoteMarker:(BOOL)showNonMonthlyFootnoteMarker {
   if (self = [super init]) {
     _periodTextColor = periodTextColor;
     _fullPriceTextColor = fullPriceTextColor;
     _priceTextColor = priceTextColor;
+    _showNonMonthlyBillingFootnoteMarker = showNonMonthlyFootnoteMarker;
   }
   return self;
 }
@@ -114,8 +129,13 @@ using namespace spx;
   NSString *priceString = [descriptor.priceInfo.price
                            spx_localizedPriceForLocale:descriptor.priceInfo.localeIdentifier
                            dividedBy:divisor];
-  priceString = (monthlyFormat && descriptor.billingPeriod) ?
-      [self appendPerMonthSuffixToPrice:priceString] : priceString;
+  if (monthlyFormat && descriptor.billingPeriod) {
+    priceString = [self appendPerMonthSuffixToPrice:priceString];
+    if (self.showNonMonthlyBillingFootnoteMarker &&
+        ![self isMonthlyBillingPeriod:descriptor.billingPeriod]) {
+      priceString = [priceString stringByAppendingString:@" *"];
+    }
+  }
 
   return [[NSAttributedString alloc] initWithString:priceString attributes:@{
     NSForegroundColorAttributeName: self.priceTextColor,
@@ -139,6 +159,10 @@ using namespace spx;
                                   "suffix of a price, as in $5/mo - $5 per month. The '/' should "
                                   "remain in the localized version");
   return [NSString stringWithFormat:@"%@%@", price, perMonthSuffix];
+}
+
+- (BOOL)isMonthlyBillingPeriod:(BZRBillingPeriod *)billingPeriod {
+  return [billingPeriod.unit isEqual:$(BZRBillingPeriodUnitMonths)] && billingPeriod.unitCount == 1;
 }
 
 - (nullable NSAttributedString *)

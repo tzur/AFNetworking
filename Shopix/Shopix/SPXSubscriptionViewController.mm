@@ -16,6 +16,7 @@
 #import "SPXFeedbackComposeViewControllerProvider.h"
 #import "SPXPagingView.h"
 #import "SPXRestorePurchasesButton.h"
+#import "SPXSubscriptionButtonFormatter.h"
 #import "SPXSubscriptionButtonsFactory.h"
 #import "SPXSubscriptionGradientButtonsFactory.h"
 #import "SPXSubscriptionTermsView.h"
@@ -80,8 +81,13 @@ using namespace spx;
 
 - (instancetype)initWithViewModel:(id<SPXSubscriptionViewModel>)viewModel
     mailComposerProvider:(id<SPXFeedbackComposeViewControllerProvider>)mailComposerProvider {
-  auto defaultButtonsFactory = [[SPXSubscriptionGradientButtonsFactory alloc]
-                                initWithColorScheme:viewModel.colorScheme];
+  auto buttonFormatter =
+      [[SPXSubscriptionButtonFormatter alloc]
+       initColorScheme:viewModel.colorScheme
+       showNonMonthlyFootnoteMarker:viewModel.showNonMonthlyBillingFootnote];
+  auto defaultButtonsFactory =
+      [[SPXSubscriptionGradientButtonsFactory alloc] initWithColorScheme:viewModel.colorScheme
+                                                               formatter:buttonFormatter];
   return [self initWithViewModel:viewModel
          alertControllerProvider:[[SPXAlertViewControllerProvider alloc] init]
             mailComposerProvider:mailComposerProvider
@@ -247,6 +253,8 @@ using namespace spx;
                 termsOfUseLink:self.viewModel.termsViewModel.termsOfUseLink
                 privacyPolicyLink:self.viewModel.termsViewModel.privacyPolicyLink];
   self.termsView.termsTextContainerInset = UIEdgeInsetsMake(6, 0, 6, 0);
+  RAC(self.termsView, termsGistText) = [RACObserve(self.viewModel.termsViewModel, termsGistText)
+                                        distinctUntilChanged];
   [self.view addSubview:self.termsView];
 
   [self.termsView mas_makeConstraints:^(MASConstraintMaker *make) {
