@@ -3,6 +3,10 @@
 
 #import "DVNBrushModel.h"
 
+#import <LTEngine/NSValueTransformer+LTEngine.h>
+
+#import "DVNBrushModelVersion.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
 @implementation DVNBrushModel
@@ -13,7 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)init {
   if (self = [super init]) {
-    _brushModelVersion = 1;
+    _brushModelVersion = $(DVNBrushModelVersionV1);
     _scale = 1;
     _minScale = 0;
     _maxScale = CGFLOAT_MAX;
@@ -27,12 +31,27 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
   return @{
-    @instanceKeypath(DVNBrushModel, brushModelVersion): @"brushModelVersion",
+    @instanceKeypath(DVNBrushModel, brushModelVersion): kDVNBrushModelVersionString,
     @instanceKeypath(DVNBrushModel, scale): @"scale",
     @instanceKeypath(DVNBrushModel, minScale): @"minScale",
     @instanceKeypath(DVNBrushModel, maxScale): @"maxScale"
   };
 }
+
++ (NSValueTransformer *)brushModelVersionJSONTransformer {
+  return [NSValueTransformer lt_enumTransformerWithMap:[kDVNBrushModelVersionMapping dictionary]];
+}
+
+#pragma mark -
+#pragma mark Public API
+#pragma mark -
+
+NSString * const kDVNBrushModelVersionString = @"version";
+
+LTBidirectionalMap<DVNBrushModelVersion *, NSString *> * const kDVNBrushModelVersionMapping =
+    [[LTBidirectionalMap alloc] initWithDictionary:@{
+      $(DVNBrushModelVersionV1): @"1"
+    }];
 
 @end
 

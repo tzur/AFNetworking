@@ -1,9 +1,9 @@
 // Copyright (c) 2018 Lightricks. All rights reserved.
 // Created by Rouven Strauss.
 
-NS_ASSUME_NONNULL_BEGIN
+#import "DVNBrushModelVersion.h"
 
-@class DVNBrushModelVersion;
+NS_ASSUME_NONNULL_BEGIN
 
 /// Immutable model representing a brush. A brush is determined by a set of well-defined parameters
 /// in form of a model which can be used to construct corresponding objects capable of rendering
@@ -22,8 +22,20 @@ NS_ASSUME_NONNULL_BEGIN
 /// derived objects.
 @interface DVNBrushModel : MTLModel <MTLJSONSerializing>
 
-/// Version of this brush model. Value, when initializing with \c init method, is \c 1.
-@property (readonly, nonatomic) NSUInteger brushModelVersion;
+/// String used as serialization string of the \c brushModelVersion property of \c DVNBrushModel
+/// objects.
+extern NSString * const kDVNBrushModelVersionString;
+
+/// Mapping between the enum values and the corresponding serialization strings used for
+/// serialization of the \c brushModelVersion property of \c DVNBrushModel objects.
+extern LTBidirectionalMap<DVNBrushModelVersion *, NSString *> * const kDVNBrushModelVersionMapping;
+
+/// Version of this brush model. Value, when initializing with \c init method, is
+/// \c DVNBrushModelVersionV1.
+///
+/// @important Serialization string is \c kDVNBrushModelVersionString. The mapping between the enum
+/// values and the corresponding serialization strings is \c kDVNBrushModelVersionMapping.
+@property (readonly, nonatomic) DVNBrushModelVersion *brushModelVersion;
 
 /// Scale of the brush stroke. A value of \c 1 yields axis-aligned, square brush tips with size
 /// <tt>(1, 1)</tt>, in floating-point units of the brush stroke geometry coordinate system, in case

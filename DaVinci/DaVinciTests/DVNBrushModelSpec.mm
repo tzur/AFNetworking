@@ -3,19 +3,21 @@
 
 #import "DVNBrushModel.h"
 
+#import "DVNBrushModelVersion.h"
+
 SpecBegin(DVNBrushModel)
 
 static NSDictionary * const kDictionary = @{
-  @instanceKeypath(DVNBrushModel, brushModelVersion): @1,
-  @instanceKeypath(DVNBrushModel, scale): @7,
-  @instanceKeypath(DVNBrushModel, minScale): @8,
+  kDVNBrushModelVersionString: @"1",
+  @instanceKeypath(DVNBrushModel, minScale): @7,
+  @instanceKeypath(DVNBrushModel, scale): @8,
   @instanceKeypath(DVNBrushModel, maxScale): @9
 };
 
 context(@"initialization", ^{
   it(@"should initialize correctly", ^{
     DVNBrushModel *model = [[DVNBrushModel alloc] init];
-    expect(model.brushModelVersion).to.equal(1);
+    expect(model.brushModelVersion).to.equal($(DVNBrushModelVersionV1));
     expect(model.scale).to.equal(1);
     expect(model.minScale).to.equal(0);
     expect(model.maxScale).to.equal(CGFLOAT_MAX);
@@ -36,9 +38,9 @@ context(@"initialization", ^{
     });
 
     it(@"should deserialize with correct values", ^{
-      expect(model.brushModelVersion).to.equal(1);
-      expect(model.scale).to.equal(7);
-      expect(model.minScale).to.equal(8);
+      expect(model.brushModelVersion).to.equal($(DVNBrushModelVersionV1));
+      expect(model.minScale).to.equal(7);
+      expect(model.scale).to.equal(8);
       expect(model.maxScale).to.equal(9);
     });
   });
