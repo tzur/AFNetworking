@@ -14,9 +14,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Updates the \c termsGistText according to the given \c subscriptionDescriptors. If the array
 /// contains a yearly/bi-yearly subscription the text "* Billed in one payment of
-/// <yearly subscription price>" will be appended as well.
+/// <yearly subscription price>" will be appended as well. If \c subscriptionDescriptors is \c nil
+/// the terms gist text is set to \c nil.
 - (void)updateTermsGistWithSubscriptions:
-    (NSArray<SPXSubscriptionDescriptor *> *)subscriptionDescriptors;
+    (nullable NSArray<SPXSubscriptionDescriptor *> *)subscriptionDescriptors;
 
 /// Optional attributed string that is presented before the terms text, used for a dynamic text such
 /// as terms that depends on a specific subscription. KVO Complaint.
