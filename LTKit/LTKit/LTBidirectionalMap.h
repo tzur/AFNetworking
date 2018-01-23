@@ -41,6 +41,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Returns an array containing all the values.
 - (NSArray<ObjectType> *)allValues;
 
+/// Returns the key-value pairs of the receiver in form of a dictionary.
+- (NSDictionary<KeyType, ObjectType> *)dictionary;
+
 /// Number of elements in the map.
 @property (readonly, nonatomic) NSUInteger count;
 
