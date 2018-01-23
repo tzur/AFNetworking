@@ -139,13 +139,10 @@ static NSString * const kInactiveVariantName = @"Inactive";
 }
 
 - (RACSignal *)update {
-  return [[[self.source update]
-      catch:^RACSignal *(NSError *error) {
-        auto wrappedError = [NSError lt_errorWithCode:LABErrorCodeTweaksCollectionsUpdateFailed
-                                      underlyingError:error];
-        return [RACSignal error:wrappedError];
-      }]
-      switchToLatest];
+  return [[self.source update]
+      doError:^(NSError * _Nonnull error) {
+        LogError(@"Debug source update failed: %@", error);
+      }];
 }
 
 - (void)reset {

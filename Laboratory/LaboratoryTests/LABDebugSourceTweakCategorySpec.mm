@@ -70,9 +70,7 @@ it(@"should err if debug source fails to update", ^{
   OCMStub([debugSource update]).andReturn([RACSignal error:sourceError]);
   auto newCategory = [[LABDebugSourceTweakCategory alloc] initWithDebugSource:debugSource];
 
-  auto expectedError = [NSError lt_errorWithCode:LABErrorCodeTweaksCollectionsUpdateFailed
-                                 underlyingError:sourceError];
-  expect([newCategory update]).to.sendError(expectedError);
+  expect([newCategory update]).to.sendError(sourceError);
   OCMVerify([debugSource update]);
 });
 
