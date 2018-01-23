@@ -4,6 +4,7 @@
 #import "BZRValidatricksReceiptModel.h"
 
 #import "BZRReceiptEnvironment.h"
+#import "NSErrorCodes+Bazaar.h"
 #import "NSValueTransformer+Validatricks.h"
 
 /// Dictionary representing a JSON serialized object.
@@ -88,6 +89,130 @@ it(@"should fail if the JSON dictionary contains nil for a mandatory key", ^{
   expect(error).toNot.beNil();
   expect(error.lt_isLTDomain).to.beTruthy();
   expect(model).to.beNil();
+});
+
+SpecEnd
+
+#pragma mark -
+#pragma mark BZRSubscriptionPendingRenewalInfo
+#pragma mark -
+
+SpecBegin(BZRSubscriptionPendingRenewalInfo)
+
+it(@"should provide property key to JSON key mapping", ^{
+  NSDictionary<NSString *, NSString *> *JSONKeyPaths =
+      [BZRValidatricksSubscriptionPendingRenewalInfo JSONKeyPathsByPropertyKey];
+  for (NSString *propertyKey in [BZRValidatricksSubscriptionPendingRenewalInfo propertyKeys]) {
+    expect(JSONKeyPaths[propertyKey]).toNot.beNil();
+  }
+});
+
+it(@"should correctly build model with JSON dictionary where willAutoRenew is YES", ^{
+  BZRJSONDictionary *JSONDictionary = @{
+    @"willAutoRenew": @YES,
+    @"expectedRenewalProductId": @"foo.bar"
+  };
+  NSError *error;
+
+  BZRValidatricksSubscriptionPendingRenewalInfo *model =
+      [MTLJSONAdapter modelOfClass:[BZRValidatricksSubscriptionPendingRenewalInfo class]
+                fromJSONDictionary:JSONDictionary error:&error];
+
+  expect(error).to.beNil();
+  expect(model.willAutoRenew).to.beTruthy();
+  expect(model.expectedRenewalProductId).to.equal(@"foo.bar");
+  expect(model.isPendingPriceIncreaseConsent).to.beFalsy();
+  expect(model.expirationReason).to.beNil();
+  expect(model.isInBillingRetryPeriod).to.beFalsy();
+});
+
+it(@"should correctly build model with JSON dictionary where willAutoRenew is NO", ^{
+  BZRJSONDictionary *JSONDictionary = @{
+    @"willAutoRenew": @NO,
+    @"expirationReason": @"billingError",
+    @"isInBillingRetryPeriod": @YES
+  };
+  NSError *error;
+
+  BZRValidatricksSubscriptionPendingRenewalInfo *model =
+      [MTLJSONAdapter modelOfClass:[BZRValidatricksSubscriptionPendingRenewalInfo class]
+                fromJSONDictionary:JSONDictionary error:&error];
+
+  expect(error).to.beNil();
+  expect(model.willAutoRenew).to.beFalsy();
+  expect(model.expectedRenewalProductId).to.beNil();
+  expect(model.isPendingPriceIncreaseConsent).to.beFalsy();
+  expect(model.expirationReason).to.equal($(BZRSubscriptionExpirationReasonBillingError));
+  expect(model.isInBillingRetryPeriod).to.beTruthy();
+});
+
+it(@"should correctly build model with JSON dictionary if expirationReason is invalid", ^{
+  BZRJSONDictionary *JSONDictionary = @{
+    @"willAutoRenew": @NO,
+    @"expirationReason": @"InvalidExpirationReason"
+  };
+  NSError *error;
+
+  BZRValidatricksSubscriptionPendingRenewalInfo *model =
+      [MTLJSONAdapter modelOfClass:[BZRValidatricksSubscriptionPendingRenewalInfo class]
+                fromJSONDictionary:JSONDictionary error:&error];
+
+  expect(error).to.beNil();
+  expect(model.willAutoRenew).to.beFalsy();
+  expect(model.expectedRenewalProductId).to.beNil();
+  expect(model.isPendingPriceIncreaseConsent).to.beFalsy();
+  expect(model.expirationReason).to.equal($(BZRSubscriptionExpirationReasonUnknownError));
+  expect(model.isInBillingRetryPeriod).to.beFalsy();
+});
+
+context(@"invalid model state", ^{
+  it(@"should fail if willAutoRenew is YES but no expectedProductId was specified", ^{
+    BZRJSONDictionary *JSONDictionary = @{
+      @"willAutoRenew": @YES
+    };
+    NSError *error;
+
+    BZRValidatricksSubscriptionPendingRenewalInfo __unused *model =
+        [MTLJSONAdapter modelOfClass:[BZRValidatricksSubscriptionPendingRenewalInfo class]
+                  fromJSONDictionary:JSONDictionary error:&error];
+
+    expect(error).toNot.beNil();
+    expect(error.code).to.equal(BZRErrorCodeModelJSONDeserializationFailed);
+    expect(model).to.beNil();
+  });
+
+  it(@"should fail if willAutoRenew is NO and expectedProductId is specified", ^{
+    BZRJSONDictionary *JSONDictionary = @{
+      @"willAutoRenew": @NO,
+      @"expectedRenewalProductId": @"foo.bar"
+    };
+    NSError *error;
+
+    BZRValidatricksSubscriptionPendingRenewalInfo *model =
+        [MTLJSONAdapter modelOfClass:[BZRValidatricksSubscriptionPendingRenewalInfo class]
+                  fromJSONDictionary:JSONDictionary error:&error];
+
+    expect(error).toNot.beNil();
+    expect(error.code).to.equal(BZRErrorCodeModelJSONDeserializationFailed);
+    expect(model).to.beNil();
+  });
+
+  it(@"should fail if willAutoRenew is YES and expirationReason is specified", ^{
+    BZRJSONDictionary *JSONDictionary = @{
+      @"willAutoRenew": @YES,
+      @"expectedRenewalProductId": @"foo.bar",
+      @"expirationReason": @"unknownError"
+    };
+    NSError *error;
+
+    BZRValidatricksSubscriptionPendingRenewalInfo *model =
+        [MTLJSONAdapter modelOfClass:[BZRValidatricksSubscriptionPendingRenewalInfo class]
+                  fromJSONDictionary:JSONDictionary error:&error];
+
+    expect(error).toNot.beNil();
+    expect(error.code).to.equal(BZRErrorCodeModelJSONDeserializationFailed);
+    expect(model).to.beNil();
+  });
 });
 
 SpecEnd
