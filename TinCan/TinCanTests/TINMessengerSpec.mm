@@ -190,15 +190,15 @@ it(@"should return NO for invalid URL", ^{
   expect([TINMessenger isTinCanURL:url]).to.beFalsy();
 });
 
-it(@"should return NO when message can't be sent", ^{
-  expect([messenger canSendMessage:message]).to.beFalsy();
+it(@"should return NO when query canSendMessageToTargetScheme: with an invalid scheme", ^{
+  expect([messenger canSendMessageToTargetScheme:message.targetScheme]).to.beFalsy();
 });
 
-it(@"should return YES when message can be sent", ^{
+it(@"should return YES when canSendMessageToTargetScheme: with a valid scheme", ^{
   TINMessage *messageMock = OCMClassMock([TINMessage class]);
   OCMStub(messageMock.url).andReturn([NSURL URLWithString:@"foo"]);
   OCMStub([applicationMock canOpenURL:OCMOCK_ANY]).andReturn(YES);
-  expect([messenger canSendMessage:messageMock]).to.beTruthy();
+  expect([messenger canSendMessageToTargetScheme:@"foo"]).to.beTruthy();
 });
 
 context(@"message remove", ^{
