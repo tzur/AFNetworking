@@ -17,21 +17,49 @@ constant ushort kInverseCDFScaleFactor [[function_constant(1)]];
 /// Channel to use minimum and maximum values of when calculating the approximate inverse CDF.
 constant ushort kChannel [[function_constant(2)]];
 
-/// Calculates the cdf for each channel in the provided multi-channel \c histogram buffer.
+/// Size of the kernel used for smoothing the PDF. Must be odd.
+constant ushort kPDFSmoothingKernelSize [[function_constant(3)]];
+
+/// Calculates the pdf for each channel in the provided multi-channel \c histogram buffer, and
+/// smoothing it using the kernel provided in \c pdfSmoothingKernel buffer.
+kernel void calculatePDF(constant uint3 *histogram [[buffer(0)]],
+                         constant float *pdfSmoothingKernel [[buffer(1)]],
+                         device float3 *pdf [[buffer(2)]],
+                         uint index [[thread_position_in_grid]],
+                         uint indexInThreadgroup [[thread_index_in_threadgroup]],
+                         uint numThreadsPerThreadgroup [[threads_per_threadgroup]]) {
+  threadgroup uint3 sharedHistogram[kMaxSupportedHistogramBins];
+  for (uint i = indexInThreadgroup; i < kHistogramBins; i += numThreadsPerThreadgroup) {
+    sharedHistogram[i] = histogram[i];
+  }
+  threadgroup_barrier(mem_flags::mem_threadgroup);
+
+  uint3 totalPixels = 0;
+  for (ushort i = 0; i < kHistogramBins; ++i) {
+    totalPixels += sharedHistogram[i];
+  }
+  float3 totalPixelsFloat = float3(totalPixels);
+
+  float3 sum = float3(0);
+  for (int i = 0; i < kPDFSmoothingKernelSize; ++i) {
+    int offset = int(index) + i - kPDFSmoothingKernelSize / 2;
+    float3 value = (offset >= 0 && offset < kHistogramBins) ?
+        float3(sharedHistogram[offset]) / totalPixelsFloat : float3(0);
+    sum += (value * float3(pdfSmoothingKernel[i]));
+  }
+
+  pdf[index] = sum;
+}
+
+/// Calculates the cdf for each channel in the provided multi-channel \c pdf buffer.
 /// Single threaded due to small computation costs.
-kernel void calculateCDF(constant uint3 *histogram [[buffer(0)]],
+kernel void calculateCDF(constant float3 *pdf [[buffer(0)]],
                          device float *cdfR [[buffer(1)]],
                          device float *cdfG [[buffer(2)]],
                          device float *cdfB [[buffer(3)]]) {
-  uint3 totalPixels = 0;
-  for (ushort i = 0; i < kHistogramBins; ++i) {
-    totalPixels += histogram[i];
-  }
-
-  float3 totalPixelsFloat = float3(totalPixels);
   float3 value = float3(0);
   for (ushort i = 0; i < kHistogramBins; ++i) {
-    value += float3(histogram[i]) / totalPixelsFloat;
+    value += pdf[i];
     cdfR[i] = value.r;
     cdfG[i] = value.g;
     cdfB[i] = value.b;

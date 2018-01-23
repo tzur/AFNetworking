@@ -10,6 +10,11 @@ NS_ASSUME_NONNULL_BEGIN
 /// every x <tt>x' such that CDF_r(x') = CDF_i(x)</tt>. Both histograms contain multiple
 /// one-dimensional histograms (for each channel) and the alpha channel is ignored. The inverse CDFs
 /// are represented by more values to reach a closer approximation of the inverse function.
+///
+/// @note The PDFs computed from the histograms in order to calculate the CDFs are filtered using a
+/// small gaussian kernel to remove high-frequencies. Size and sigma parameters of this gaussian
+/// kernel are fixed and can be read from \c pdfSmoothingKernelSize and \c pdfSmoothingKernelSigma
+/// properties of this class.
 @interface PNKColorTransferCDF : NSObject
 
 - (instancetype)init NS_UNAVAILABLE;
@@ -49,6 +54,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Maximum supported number of histogram bins.
 @property (class, readonly, nonatomic) NSUInteger maxSupportedHistogramBins;
+
+/// Size of the gaussian kernel used for smoothing the PDFs.
+@property (class, readonly, nonatomic) NSUInteger pdfSmoothingKernelSize;
+
+/// Sigma of the gaussian kernel used for smoothing the PDFs.
+@property (class, readonly, nonatomic) float pdfSmoothingKernelSigma;
 
 @end
 

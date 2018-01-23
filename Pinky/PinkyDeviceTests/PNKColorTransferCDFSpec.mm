@@ -37,18 +37,29 @@ static id<MTLBuffer> PNKCreateBufferFromHistograms(id<MTLDevice> device,
   return buffer;
 }
 
-static cv::Mat1f PNKCDFsForHistograms(const cv::Mat1i &histograms) {
+static cv::Mat1f PNKCDFsForHistograms(const cv::Mat1i &histograms,
+                                      const cv::Mat1f &pdfSmoothingKernel =
+        cv::getGaussianKernel((int)PNKColorTransferCDF.pdfSmoothingKernelSize,
+                              PNKColorTransferCDF.pdfSmoothingKernelSigma)) {
+  cv::Mat1f kernel;
+  if (pdfSmoothingKernel.rows > 1) {
+    cv::transpose(pdfSmoothingKernel, kernel);
+  } else {
+    kernel = pdfSmoothingKernel;
+  }
+
   cv::Mat1f cdfs(histograms.size());
   for (int c = 0; c < histograms.rows; ++c) {
     auto histogram = histograms.row(c);
-    auto cdf = cdfs.row(c);
+    auto pdf = cdfs.row(c);
     auto totalPixels = std::accumulate(histogram.begin(), histogram.end(), 0);
-    std::transform(histogram.begin(), histogram.end(), cdf.begin(), [totalPixels](auto count) {
+    std::transform(histogram.begin(), histogram.end(), pdf.begin(), [totalPixels](auto count) {
       return (float)count / totalPixels;
     });
 
-    std::partial_sum(cdf.begin(), cdf.end(), cdf.begin());
-
+    cv::Mat1f smoothPDF(pdf.size());
+    cv::filter2D(pdf, smoothPDF, -1, kernel, cv::Point(-1, -1), 0, cv::BORDER_CONSTANT);
+    std::partial_sum(smoothPDF.begin(), smoothPDF.end(), cdfs.row(c).begin());
   }
   return cdfs;
 }
