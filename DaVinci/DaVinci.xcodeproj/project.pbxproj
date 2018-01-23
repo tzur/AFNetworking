@@ -93,6 +93,7 @@
 		507FEFBE1D3A30E3002CB28E /* DVNGeometryTransformerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 507FEFBD1D3A30E3002CB28E /* DVNGeometryTransformerSpec.mm */; };
 		5088146F1FA8942A001C2BDD /* DVNBrushOverlayTextureWithTransform.png in Resources */ = {isa = PBXBuildFile; fileRef = 5088144E1FA89409001C2BDD /* DVNBrushOverlayTextureWithTransform.png */; };
 		508814711FA8966B001C2BDD /* DVNBrushColorWithMask.png in Resources */ = {isa = PBXBuildFile; fileRef = 508814701FA89668001C2BDD /* DVNBrushColorWithMask.png */; };
+		5090B2A8201088070060F79B /* DVNBrushModelVersion.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5090B2A7201088070060F79B /* DVNBrushModelVersion.mm */; };
 		5091E88A1D36484C00B14481 /* DVNTestShader.fsh in Sources */ = {isa = PBXBuildFile; fileRef = 50C90F381D36465E0058A4F3 /* DVNTestShader.fsh */; };
 		5091E88B1D36484C00B14481 /* DVNTestShader.vsh in Sources */ = {isa = PBXBuildFile; fileRef = 50C90F1C1D3646290058A4F3 /* DVNTestShader.vsh */; };
 		509234271F277AE900CCA727 /* DVNBrushTipModelview.png in Resources */ = {isa = PBXBuildFile; fileRef = 509234261F277AE900CCA727 /* DVNBrushTipModelview.png */; };
@@ -585,6 +586,8 @@
 		507FEFBD1D3A30E3002CB28E /* DVNGeometryTransformerSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNGeometryTransformerSpec.mm; sourceTree = "<group>"; };
 		5088144E1FA89409001C2BDD /* DVNBrushOverlayTextureWithTransform.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = DVNBrushOverlayTextureWithTransform.png; path = Resources/DVNBrushOverlayTextureWithTransform.png; sourceTree = "<group>"; };
 		508814701FA89668001C2BDD /* DVNBrushColorWithMask.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = DVNBrushColorWithMask.png; path = Resources/DVNBrushColorWithMask.png; sourceTree = "<group>"; };
+		5090B285201088060060F79B /* DVNBrushModelVersion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DVNBrushModelVersion.h; sourceTree = "<group>"; };
+		5090B2A7201088070060F79B /* DVNBrushModelVersion.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DVNBrushModelVersion.mm; sourceTree = "<group>"; };
 		509234261F277AE900CCA727 /* DVNBrushTipModelview.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = DVNBrushTipModelview.png; path = Resources/DVNBrushTipModelview.png; sourceTree = "<group>"; };
 		509234481F2785D100CCA727 /* DVNBrushEdgeAvoidance0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = DVNBrushEdgeAvoidance0.png; path = Resources/DVNBrushEdgeAvoidance0.png; sourceTree = "<group>"; };
 		509234491F2785D100CCA727 /* DVNBrushEdgeAvoidance1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = DVNBrushEdgeAvoidance1.png; path = Resources/DVNBrushEdgeAvoidance1.png; sourceTree = "<group>"; };
@@ -1007,6 +1010,15 @@
 			name = Shaders;
 			sourceTree = "<group>";
 		};
+		50053133200FB38500B72186 /* Versions */ = {
+			isa = PBXGroup;
+			children = (
+				5090B285201088060060F79B /* DVNBrushModelVersion.h */,
+				5090B2A7201088070060F79B /* DVNBrushModelVersion.mm */,
+			);
+			name = Versions;
+			sourceTree = "<group>";
+		};
 		500F77CA1D2D35C600023343 /* API */ = {
 			isa = PBXGroup;
 			children = (
@@ -1287,6 +1299,7 @@
 		50D602411FF9333400119622 /* Brush Models */ = {
 			isa = PBXGroup;
 			children = (
+				50053133200FB38500B72186 /* Versions */,
 				5005E4B420065D8A0086A79A /* DVNBrushModel.h */,
 				5005E4D620065D8B0086A79A /* DVNBrushModel.mm */,
 			);
@@ -1812,6 +1825,7 @@
 				283625C51E38E8A80014406E /* DVNBlendMode.mm in Sources */,
 				500A3AE01D2D348700043E18 /* DVNRandomTexCoordProvider.mm in Sources */,
 				285A78AD1DFD31AE00095BF4 /* DVNBrushTipsProvider.mm in Sources */,
+				5090B2A8201088070060F79B /* DVNBrushModelVersion.mm in Sources */,
 				25AD67721D3553ED0092B3E4 /* DVNPipelineConfiguration.mm in Sources */,
 				500F77EF1D2D566700023343 /* DVNTextureMappingStageConfiguration+TextureAtlas.mm in Sources */,
 				258341691D339AB60005BC07 /* DVNRenderStageConfiguration.mm in Sources */,
