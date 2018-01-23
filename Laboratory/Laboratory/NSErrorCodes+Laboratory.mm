@@ -17,9 +17,7 @@ LTErrorCodesImplement(LaboratoryErrorCodeProductID,
   /// Caused when a fetch operation failed.
   LABErrorCodeFetchFailed,
   /// Caused when an experiment was misconfigured.
-  LABErrorCodeMisconfiguredExperiment,
-  /// Caused when an update to \c FBTweak collection failed.
-  LABErrorCodeTweaksCollectionsUpdateFailed
+  LABErrorCodeMisconfiguredExperiment
 );
 
 NS_ASSUME_NONNULL_END
