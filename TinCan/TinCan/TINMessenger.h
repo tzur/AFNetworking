@@ -20,7 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// @code
 /// auto message = // create a TINMessage
 /// auto messenger = [TINMessenger messenger];
-/// if (![messenger canSendMessage:message]) {
+/// if (![messenger canSendMessageToTargetScheme:message.targetScheme]) {
 ///   // message can't be sent due to any of the following reasons:
 ///   // 1. Source application isn't registered to perform such query for a target scheme,
 ///   //    check application's Info.plist
@@ -84,11 +84,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)sendMessage:(TINMessage *)message completion:(LTSuccessOrErrorBlock)block
     NS_EXTENSION_UNAVAILABLE_IOS("");
 
-/// Returns \c YES if the given \c message can be sent to the target application.
+/// Returns \c YES if current application can sent messages to the given \c scheme.
 ///
-/// @note all message's target schemes should be registerd in application's \c Info.plist, otherwise
-/// \c NO will always be returned.
-- (BOOL)canSendMessage:(TINMessage *)message;
+/// @note the \c scheme should be registered in application's \c Info.plist, otherwise \c NO will
+/// always be returned.
+- (BOOL)canSendMessageToTargetScheme:(NSString *)scheme;
 
 /// Returns a \c TINMessage from the given \c url. Returns \c nil if an error occurred and sets the
 /// \c error.

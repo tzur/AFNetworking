@@ -90,7 +90,7 @@ static NSURL *TINMessengerURLFromMessage(TINMessage *message) {
   }
 
   auto url = TINMessengerURLFromMessage(message);
-  if (![self canSendMessage:message]) {
+  if (![self canSendMessageToTargetScheme:message.targetScheme]) {
     block(NO, [NSError lt_errorWithCode:TINErrorCodeMessageTargetNotFound url:url]);
     return;
   }
@@ -112,10 +112,17 @@ static NSURL *TINMessengerURLFromMessage(TINMessage *message) {
   }
 }
 
-- (BOOL)canSendMessage:(TINMessage *)message {
-  if (![self.application canOpenURL:TINMessengerURLFromMessage(message)]) {
+- (BOOL)canSendMessageToTargetScheme:(NSString *)scheme {
+  auto components = [[NSURLComponents alloc] init];
+  components.scheme = scheme;
+  if (!components.URL) {
     return NO;
   }
+
+  if (![self.application canOpenURL:nn(components.URL)]) {
+    return NO;
+  }
+
   return YES;
 }
 

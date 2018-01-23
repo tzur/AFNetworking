@@ -118,18 +118,20 @@ TINMessage * _Nullable ENEditImageMessage(UIImage *image, NSString *sourceScheme
 
 ### Sending a message
 
-The given message can be sent to its target application using the following code:
+Message can be sent to its target application, with the given `targetScheme`, using the following code:
 
 ```objc
 auto messenger = [TINMessenger messenger];
-if (![messenger canSendMessage:message]) {
-  // message can't be sent due to any of the following reasons:
-  // 1. Source application isn't registered to perform such query for a target scheme,
+if (![messenger canSendMessageToTargetScheme:targetScheme]) {
+  // Messages can't be sent due to any of the following reasons:
+  // 1. Source application isn't registered to perform such query for a targetScheme,
   //    check application's Info.plist
-  // 2. There's no app installed on the device that is registered to handle the target scheme.
+  // 2. There's no app installed on the device that is registered to handle the targetScheme.
   //
   return;
 }
+
+TINMessage message = // Create a message to be sent.
 
 [messenger sendMessage:message block:^(BOOL success, NSError *error) {
   if (!success) {
