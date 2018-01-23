@@ -99,13 +99,16 @@ using namespace spx;
 }
 
 - (void)updateTermsGistWithSubscriptions:
-    (NSArray<SPXSubscriptionDescriptor *> *)subscriptionDescriptors {
+    (nullable NSArray<SPXSubscriptionDescriptor *> *)subscriptionDescriptors {
+  [self unbindOnePaymentText];
   if (!subscriptionDescriptors) {
-    self.termsGistText = nil;
     return;
   }
-
   [self bindOnePaymentTextForDescriptors:subscriptionDescriptors];
+}
+
+- (void)unbindOnePaymentText {
+  self.termsGistText = nil;
 }
 
 - (void)bindOnePaymentTextForDescriptors:(NSArray<SPXSubscriptionDescriptor *> *)descriptors {
@@ -116,20 +119,22 @@ using namespace spx;
            descriptor.billingPeriod.unitCount > 1);
       }];
 
-  if (foundSubscription) {
-    @weakify(self);
-    RAC(self, termsGistText) = [[[RACObserve(foundSubscription, priceInfo)
-        takeUntil:[self rac_signalForSelector:@selector(updateTermsGistWithSubscriptions:)]]
-        map:^NSAttributedString *(BZRProductPriceInfo * _Nullable priceInfo) {
-          @strongify(self);
-          auto termsGistString = priceInfo ?
-              [NSString stringWithFormat:SPXSubscriptionTermsViewModel.defaultTermsGistWithPrice,
-               [priceInfo.price spx_localizedPriceForLocale:priceInfo.localeIdentifier]] :
-              SPXSubscriptionTermsViewModel.defaultTermsGist;
-          return [self termsGistTextForString:[@"* " stringByAppendingString:termsGistString]];
-        }]
-        deliverOnMainThread];
+  if (!foundSubscription) {
+    return;
   }
+
+  @weakify(self);
+  RAC(self, termsGistText) = [[[RACObserve(foundSubscription, priceInfo)
+      takeUntil:[self rac_signalForSelector:@selector(unbindOnePaymentText)]]
+      map:^NSAttributedString *(BZRProductPriceInfo * _Nullable priceInfo) {
+        @strongify(self);
+        auto termsGistString = priceInfo ?
+            [NSString stringWithFormat:SPXSubscriptionTermsViewModel.defaultTermsGistWithPrice,
+             [priceInfo.price spx_localizedPriceForLocale:priceInfo.localeIdentifier]] :
+            SPXSubscriptionTermsViewModel.defaultTermsGist;
+        return [self termsGistTextForString:[@"* " stringByAppendingString:termsGistString]];
+      }]
+      deliverOnMainThread];
 }
 
 - (NSAttributedString *)termsGistTextForString:(NSString *)termsGistString {

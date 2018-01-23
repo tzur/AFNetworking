@@ -30,15 +30,21 @@ context(@"terms gist", ^{
     expect(termsViewModel.termsGistText).to.beNil();
   });
 
+  it(@"should not add billed in one-payment text if received nil", ^{
+    [termsViewModel updateTermsGistWithSubscriptions:nil];
+
+    expect(termsViewModel.termsGistText).to.beNil();
+  });
+
   it(@"should be KVO complaint", ^{
     auto yearlySubscription =
-    [[SPXSubscriptionDescriptor alloc] initWithProductIdentifier:@"foo.1Y" discountPercentage:0
-                                            productsInfoProvider:productsInfoProvider];
+        [[SPXSubscriptionDescriptor alloc] initWithProductIdentifier:@"foo.1Y" discountPercentage:0
+                                                productsInfoProvider:productsInfoProvider];
     auto recorder = [RACObserve(termsViewModel, termsGistText) testRecorder];
 
     [termsViewModel updateTermsGistWithSubscriptions:@[yearlySubscription]];
 
-    expect(recorder).to.matchValue(1, ^BOOL(NSAttributedString *termsGistText) {
+    expect(recorder).to.matchValue(2, ^BOOL(NSAttributedString * _Nullable termsGistText) {
       return [termsGistText.string isEqual:[NSString stringWithFormat:@"* %@",
                                             SPXSubscriptionTermsViewModel.defaultTermsGist]];
     });
@@ -66,6 +72,16 @@ context(@"terms gist", ^{
         SPXSubscriptionTermsViewModel.defaultTermsGist]);
   });
 
+  it(@"should not add billed in one-payment text for a monthly subscription", ^{
+    auto yearlySubscription =
+        [[SPXSubscriptionDescriptor alloc] initWithProductIdentifier:@"foo.1M" discountPercentage:0
+                                                productsInfoProvider:productsInfoProvider];
+
+    [termsViewModel updateTermsGistWithSubscriptions:@[yearlySubscription]];
+
+    expect(termsViewModel.termsGistText).to.beNil();
+  });
+
   it(@"should update the terms gist text when yearly subscription prices becomes available", ^{
     auto yearlySubscription =
         [[SPXSubscriptionDescriptor alloc] initWithProductIdentifier:@"foo.1Y" discountPercentage:0
@@ -78,6 +94,18 @@ context(@"terms gist", ^{
         [@"* " stringByAppendingFormat:SPXSubscriptionTermsViewModel.defaultTermsGistWithPrice,
          @"$10.00"];
     expect(termsViewModel.termsGistText.string).to.equal(expectedTermsGist);
+  });
+
+  it(@"should unbind a subscription price observation when called to update terms gist again", ^{
+    auto yearlySubscription =
+      [[SPXSubscriptionDescriptor alloc] initWithProductIdentifier:@"foo.1Y" discountPercentage:0
+                                              productsInfoProvider:productsInfoProvider];
+
+    [termsViewModel updateTermsGistWithSubscriptions:@[yearlySubscription]];
+    [termsViewModel updateTermsGistWithSubscriptions:nil];
+    yearlySubscription.priceInfo = priceInfo;
+
+    expect(termsViewModel.termsGistText).to.beNil();
   });
 });
 
