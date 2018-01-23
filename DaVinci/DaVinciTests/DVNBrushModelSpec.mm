@@ -54,4 +54,10 @@ context(@"initialization", ^{
   });
 });
 
+context(@"image URL property keys", ^{
+  it(@"should return the correct property keys", ^{
+    expect([DVNBrushModel imageURLPropertyKeys]).to.equal(@[]);
+  });
+});
+
 SpecEnd

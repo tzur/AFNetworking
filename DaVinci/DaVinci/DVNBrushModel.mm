@@ -53,6 +53,15 @@ LTBidirectionalMap<DVNBrushModelVersion *, NSString *> * const kDVNBrushModelVer
       $(DVNBrushModelVersionV1): @"1"
     }];
 
+#pragma mark -
+#pragma mark Private API
+#pragma mark -
+
+/// Must be overridden by subclasses.
++ (NSArray<NSString *> *)imageURLPropertyKeys {
+  return @[];
+}
+
 @end
 
 NS_ASSUME_NONNULL_END

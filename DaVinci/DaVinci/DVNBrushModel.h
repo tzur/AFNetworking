@@ -22,6 +22,10 @@ NS_ASSUME_NONNULL_BEGIN
 /// derived objects.
 @interface DVNBrushModel : MTLModel <MTLJSONSerializing>
 
+/// Returns the keys of the properties holding the URLs to the images required for rendering brush
+/// strokes defined by the receiver.
++ (NSArray<NSString *> *)imageURLPropertyKeys;
+
 /// String used as serialization string of the \c brushModelVersion property of \c DVNBrushModel
 /// objects.
 extern NSString * const kDVNBrushModelVersionString;
