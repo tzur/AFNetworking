@@ -7,7 +7,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface NSBundle (Test)
 
 /// The bundle of the currently running test target.
-@property (class, readonly, nonatomic) NSBundle *lt_testBundle;
++ (NSBundle *)lt_testBundle;
 
 @end
 
