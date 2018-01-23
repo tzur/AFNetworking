@@ -22,23 +22,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation SPXMultiSubscriptionGradientButtonsFactory
 
-- (instancetype)initWithColorScheme:(SPXColorScheme *)colorScheme {
+- (instancetype)initWithColorScheme:(SPXColorScheme *)colorScheme
+                          formatter:(SPXSubscriptionButtonFormatter *)formatter {
   return [self initWithBottomGradientColors:colorScheme.mainGradientColors
                multiAppBottomGradientColors:colorScheme.multiAppGradientColors
-                            periodTextColor:colorScheme.darkTextColor
-                         fullPriceTextColor:colorScheme.grayedTextColor
-                             priceTextColor:colorScheme.textColor];
-}
-
-- (instancetype)initWithBottomGradientColors:(NSArray<UIColor *> *)bottomGradientColors
-                multiAppBottomGradientColors:(NSArray<UIColor *> *)multiAppBottomGradientColors
-                             periodTextColor:(UIColor *)periodTextColor
-                          fullPriceTextColor:(UIColor *)fullPriceTextColor
-                              priceTextColor:(UIColor *)priceTextColor {
-  auto formatter = [[SPXSubscriptionButtonFormatter alloc] initWithPeriodTextColor:periodTextColor
-      priceTextColor:priceTextColor fullPriceTextColor:fullPriceTextColor];
-  return [self initWithBottomGradientColors:bottomGradientColors
-               multiAppBottomGradientColors:multiAppBottomGradientColors
                                   formatter:formatter];
 }
 

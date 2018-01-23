@@ -15,6 +15,7 @@
 #import "SPXSubscriptionButtonPressedEvent.h"
 #import "SPXSubscriptionDescriptor.h"
 #import "SPXSubscriptionManager.h"
+#import "SPXSubscriptionTermsViewModel.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -59,6 +60,7 @@ LTEnumImplement(NSUInteger, SPXFetchProductsStrategy,
 @synthesize subscriptionDescriptors = _subscriptionDescriptors;
 @synthesize preferredProductIndex = _preferredProductIndex;
 @synthesize pageViewModels = _pageViewModels;
+@synthesize showNonMonthlyBillingFootnote = _showNonMonthlyBillingFootnote;
 @synthesize termsViewModel = _termsViewModel;
 @synthesize colorScheme = _colorScheme;
 @synthesize pagingViewScrollRequested = _pagingViewScrollRequested;
@@ -75,7 +77,9 @@ LTEnumImplement(NSUInteger, SPXFetchProductsStrategy,
   SPXColorScheme *colorScheme = nn([JSObjection defaultInjector][[SPXColorScheme class]]);
   return [self initWithSubscriptionDescriptors:subscriptionDescriptors
                          preferredProductIndex:preferredProductIndex
-                                pageViewModels:pageViewModels termsViewModel:termsViewModel
+                                pageViewModels:pageViewModels
+                 showNonMonthlyBillingFootnote:YES
+                                termsViewModel:termsViewModel
                                    colorScheme:colorScheme
                            subscriptionManager:[[SPXSubscriptionManager alloc] init]
                          fetchProductsStrategy:$(SPXFetchProductsStrategyAlways)];
@@ -85,6 +89,7 @@ LTEnumImplement(NSUInteger, SPXFetchProductsStrategy,
     initWithSubscriptionDescriptors:(NSArray<SPXSubscriptionDescriptor *> *)subscriptionDescriptors
               preferredProductIndex:(nullable NSNumber *)preferredProductIndex
                      pageViewModels:(NSArray<id<SPXSubscriptionVideoPageViewModel>> *)pageViewModels
+      showNonMonthlyBillingFootnote:(BOOL)showNonMonthlyBillingFootnote
                      termsViewModel:(id<SPXSubscriptionTermsViewModel>)termsViewModel
                         colorScheme:(SPXColorScheme *)colorScheme
                 subscriptionManager:(SPXSubscriptionManager *)subscriptionManager
@@ -97,6 +102,7 @@ LTEnumImplement(NSUInteger, SPXFetchProductsStrategy,
     _subscriptionDescriptors = [subscriptionDescriptors copy];
     _preferredProductIndex = preferredProductIndex;
     _pageViewModels = [pageViewModels copy];
+    _showNonMonthlyBillingFootnote = showNonMonthlyBillingFootnote;
     _termsViewModel = termsViewModel;
     _colorScheme = colorScheme;
     _subscriptionManager = subscriptionManager;
@@ -114,6 +120,9 @@ LTEnumImplement(NSUInteger, SPXFetchProductsStrategy,
     _dismissRequested = [[self rac_signalForSelector:@selector(requestDismiss)]
                          mapReplace:[RACUnit defaultUnit]];
     subscriptionManager.delegate = self;
+    if (showNonMonthlyBillingFootnote) {
+      [termsViewModel updateTermsGistWithSubscriptions:self.subscriptionDescriptors];
+    }
   }
   return self;
 }

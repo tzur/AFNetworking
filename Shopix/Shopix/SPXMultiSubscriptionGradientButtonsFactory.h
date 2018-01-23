@@ -17,27 +17,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Initializes with \c colorScheme for mapping between the colors scheme to the buttons colors.
 /// \c bottomGradientColors are set to \c mainGradientColor for single-app buttons and
-/// \c multiAppGradientColors for multi-app buttons, \c periodTextColor is set to
-/// \c darkTextColor \c priceTextColor is set to \c textColor. \c fullPriceTextColor is set to
-/// \c grayedTextColor. \c formatter is set to the default formatter with the given colors.
-/// \c productsInfoProvider is used to identify if a subscription is a multi-app subscription.
-- (instancetype)initWithColorScheme:(SPXColorScheme *)colorScheme;
-
-/// Initializes with \c bottomGradientColors for single-app buttons gradient colors,
-/// \c multiAppBottomGradientColors for multi-app buttons gradient colors \c periodTextColor,
-/// \c priceTextColor and \c fullPriceTextColor are the period and prices texts colors. \c formatter
-/// is set to the default formatter with the given colors. \c productsInfoProvider is used to
-/// identify if a subscription is a multi-app subscription.
-- (instancetype)initWithBottomGradientColors:(NSArray<UIColor *> *)bottomGradientColors
-                multiAppBottomGradientColors:(NSArray<UIColor *> *)multiAppBottomGradientColors
-                             periodTextColor:(UIColor *)periodTextColor
-                          fullPriceTextColor:(UIColor *)fullPriceTextColor
-                              priceTextColor:(UIColor *)priceTextColor;
+/// \c multiAppGradientColors for multi-app buttons. \c formatter used for creating the subscription
+/// period and price texts.
+- (instancetype)initWithColorScheme:(SPXColorScheme *)colorScheme
+                          formatter:(SPXSubscriptionButtonFormatter *)formatter;
 
 /// Initializes with \c bottomGradientColors for single-app buttons gradient colors,
 /// \c multiAppBottomGradientColors for multi-app buttons gradient colors and \c formatter for the
-/// subscription period and price texts. \c productsInfoProvider is used to identify if a
-/// subscription is a multi-app subscription.
+/// subscription period and price texts.
 - (instancetype)initWithBottomGradientColors:(NSArray<UIColor *> *)bottomGradientColors
                 multiAppBottomGradientColors:(NSArray<UIColor *> *)multiAppBottomGradientColors
                                    formatter:(SPXSubscriptionButtonFormatter *)formatter

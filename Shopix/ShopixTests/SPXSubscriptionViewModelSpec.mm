@@ -49,16 +49,16 @@ beforeEach(^{
                                                        productsInfoProvider:productsInfoProvider];
       }];
   viewModel = [[SPXSubscriptionViewModel alloc] initWithSubscriptionDescriptors:descriptors
-      preferredProductIndex:0 pageViewModels:pageViewModels termsViewModel:termsViewModel
-      colorScheme:colorScheme subscriptionManager:subscriptionManager
+      preferredProductIndex:0 pageViewModels:pageViewModels showNonMonthlyBillingFootnote:NO
+      termsViewModel:termsViewModel colorScheme:colorScheme subscriptionManager:subscriptionManager
       fetchProductsStrategy:$(SPXFetchProductsStrategyAlways)];
 });
 
 it(@"should raise if the preferred button index is greater than the number of buttons", ^{
   expect(^{
     viewModel = [[SPXSubscriptionViewModel alloc] initWithSubscriptionDescriptors:descriptors
-    preferredProductIndex:@2 pageViewModels:@[] termsViewModel:termsViewModel
-    colorScheme:colorScheme subscriptionManager:subscriptionManager
+    preferredProductIndex:@2 pageViewModels:@[] showNonMonthlyBillingFootnote:NO
+    termsViewModel:termsViewModel colorScheme:colorScheme subscriptionManager:subscriptionManager
     fetchProductsStrategy:$(SPXFetchProductsStrategyAlways)];
   }).to.raise(NSInvalidArgumentException);
 });
@@ -67,8 +67,9 @@ context(@"products fetching", ^{
   context(@"fetch always strategy", ^{
     beforeEach(^{
       viewModel = [[SPXSubscriptionViewModel alloc] initWithSubscriptionDescriptors:descriptors
-          preferredProductIndex:0 pageViewModels:@[] termsViewModel:termsViewModel
-          colorScheme:colorScheme subscriptionManager:subscriptionManager
+          preferredProductIndex:0 pageViewModels:@[] showNonMonthlyBillingFootnote:NO
+          termsViewModel:termsViewModel colorScheme:colorScheme
+          subscriptionManager:subscriptionManager
           fetchProductsStrategy:$(SPXFetchProductsStrategyAlways)];
     });
 
@@ -125,7 +126,8 @@ context(@"products fetching", ^{
   context(@"fetch if needed strategy", ^{
     beforeEach(^{
       viewModel = [[SPXSubscriptionViewModel alloc] initWithSubscriptionDescriptors:descriptors
-          preferredProductIndex:0 pageViewModels:@[] termsViewModel:termsViewModel
+          preferredProductIndex:0 pageViewModels:@[] showNonMonthlyBillingFootnote:NO
+          termsViewModel:termsViewModel
           colorScheme:colorScheme subscriptionManager:subscriptionManager
           fetchProductsStrategy:$(SPXFetchProductsStrategyIfNeeded)];
     });

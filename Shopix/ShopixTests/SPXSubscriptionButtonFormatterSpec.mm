@@ -20,7 +20,8 @@ beforeEach(^{
   productsInfoProvider = OCMProtocolMock(@protocol(BZRProductsInfoProvider));
   formatter = [[SPXSubscriptionButtonFormatter alloc] initWithPeriodTextColor:[UIColor redColor]
                                                                priceTextColor:[UIColor blueColor]
-                                                           fullPriceTextColor:[UIColor whiteColor]];
+                                                           fullPriceTextColor:[UIColor whiteColor]
+                                                            showNonMonthlyFootnoteMarker:NO];
 });
 
 context(@"period text", ^{
@@ -164,6 +165,15 @@ context(@"price text", ^{
       expect([priceText string]).to.equal(@"$20.00/mo");
     });
 
+    it(@"should not contain billed in one payment marker if monthly format is YES", ^{
+      formatter = [[SPXSubscriptionButtonFormatter alloc]
+                   initWithPeriodTextColor:[UIColor redColor] priceTextColor:[UIColor blueColor]
+                   fullPriceTextColor:[UIColor whiteColor] showNonMonthlyFootnoteMarker:YES];
+      auto priceText = [formatter priceTextForSubscription:descriptor monthlyFormat:YES];
+
+      expect([priceText string]).to.equal(@"$20.00/mo");
+    });
+
     it(@"should not contain monthly suffix if monthly format is NO", ^{
       auto priceText = [formatter priceTextForSubscription:descriptor monthlyFormat:NO];
 
@@ -183,6 +193,15 @@ context(@"price text", ^{
       auto priceText = [formatter priceTextForSubscription:descriptor monthlyFormat:YES];
 
       expect([priceText string]).to.equal(@"$3.33/mo");
+    });
+
+    it(@"should contain billed in one payment marker if monthly format is YES", ^{
+      formatter = [[SPXSubscriptionButtonFormatter alloc]
+                   initWithPeriodTextColor:[UIColor redColor] priceTextColor:[UIColor blueColor]
+                   fullPriceTextColor:[UIColor whiteColor] showNonMonthlyFootnoteMarker:YES];
+      auto priceText = [formatter priceTextForSubscription:descriptor monthlyFormat:YES];
+
+      expect([priceText string]).to.equal(@"$3.33/mo *");
     });
 
     it(@"should not divide the price and not contain monthly suffix if monthly format is NO", ^{
@@ -206,6 +225,15 @@ context(@"price text", ^{
       expect([priceText string]).to.equal(@"$1.66/mo");
     });
 
+    it(@"should contain billed in one payment marker if monthly format is YES", ^{
+      formatter = [[SPXSubscriptionButtonFormatter alloc]
+                   initWithPeriodTextColor:[UIColor redColor] priceTextColor:[UIColor blueColor]
+                   fullPriceTextColor:[UIColor whiteColor] showNonMonthlyFootnoteMarker:YES];
+      auto priceText = [formatter priceTextForSubscription:descriptor monthlyFormat:YES];
+
+      expect([priceText string]).to.equal(@"$1.66/mo *");
+    });
+
     it(@"should not divide the price and not contain monthly suffix if monthly format is NO", ^{
       auto priceText = [formatter priceTextForSubscription:descriptor monthlyFormat:NO];
 
@@ -222,6 +250,15 @@ context(@"price text", ^{
     });
 
     it(@"should not divide the price and not contain monthly suffix if monthly format is YES", ^{
+      auto priceText = [formatter priceTextForSubscription:descriptor monthlyFormat:YES];
+
+      expect([priceText string]).to.equal(@"$20.00");
+    });
+
+    it(@"should not contain billed in one payment marker if monthly format is YES", ^{
+      formatter = [[SPXSubscriptionButtonFormatter alloc]
+                   initWithPeriodTextColor:[UIColor redColor] priceTextColor:[UIColor blueColor]
+                   fullPriceTextColor:[UIColor whiteColor] showNonMonthlyFootnoteMarker:YES];
       auto priceText = [formatter priceTextForSubscription:descriptor monthlyFormat:YES];
 
       expect([priceText string]).to.equal(@"$20.00");
