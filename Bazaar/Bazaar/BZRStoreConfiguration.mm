@@ -135,6 +135,7 @@ static const NSUInteger kExpiredSubscriptionGracePeriod = 7;
     _acquiredViaSubscriptionProvider =
         [[BZRAcquiredViaSubscriptionProvider alloc] initWithKeychainStorage:self.keychainStorage];
 
+    _multiAppSubscriptionClassifier = multiAppSubscriptionClassifier;
     _validationStatusProvider =
         [[BZRAggregatedReceiptValidationStatusProvider alloc]
          initWithUnderlyingProvider:cacheReceiptValidationStatusProvider
