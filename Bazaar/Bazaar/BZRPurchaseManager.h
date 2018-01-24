@@ -5,7 +5,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@protocol BZRPaymentsPaymentQueue;
+@protocol BZRPaymentsPaymentQueue, BZRPurchaseHelper;
 
 /// Class for managing in-app purchases from Apple's AppStore and following their corresponding
 /// \c SKPaymentTransaction's state as reported by an \c BZRPaymentsPaymentQueue.
@@ -28,6 +28,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// https://developer.apple.com/library/ios/documentation/NetworkingInternet/Conceptual/StoreKitGuide/Chapters/RequestPayment.html#//apple_ref/doc/uid/TP40008267-CH4-SW6
 - (instancetype)initWithPaymentQueue:(id<BZRPaymentsPaymentQueue>)paymentQueue
                    applicationUserID:(nullable NSString *)applicationUserID
+                      purchaseHelper:(id<BZRPurchaseHelper>)purchaseHelper
     NS_DESIGNATED_INITIALIZER;
 
 /// Initiates a payment request for \c product with \c quantity.

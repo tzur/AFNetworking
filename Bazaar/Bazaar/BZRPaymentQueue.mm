@@ -190,12 +190,17 @@ static NSString * const kRestorationLabel = @"Restoration";
 #pragma mark Promoted IAP
 #pragma mark -
 
-- (BOOL)paymentQueue:(SKPaymentQueue __unused *)queue
-    shouldAddStorePayment:(SKPayment __unused *)payment forProduct:(SKProduct *)product {
+- (BOOL)paymentQueue:(SKPaymentQueue __unused *)queue shouldAddStorePayment:(SKPayment *)payment
+          forProduct:(SKProduct *)product {
+  BOOL shouldProceedWithPurchase =
+      [self.paymentsDelegate shouldProceedWithPromotedIAP:product payment:payment];
   auto event = [[BZREvent alloc] initWithType:$(BZREventTypePromotedIAPInitiated)
-      eventInfo:@{BZREventProductIdentifierKey: product.productIdentifier}];
+      eventInfo:@{
+        BZREventProductIdentifierKey: product.productIdentifier,
+        BZREventPromotedIAPAbortedKey: @(!shouldProceedWithPurchase)
+      }];
   [self.promotedIAPEventsSubject sendNext:event];
-  return YES;
+  return shouldProceedWithPurchase;
 }
 
 @end

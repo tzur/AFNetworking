@@ -6,6 +6,7 @@
 #import <LTKit/NSArray+Functional.h>
 
 #import "BZRPaymentsPaymentQueue.h"
+#import "BZRPurchaseHelper.h"
 #import "NSError+Bazaar.h"
 #import "NSErrorCodes+Bazaar.h"
 
@@ -40,6 +41,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Application user identifier to use in payments.
 @property (readonly, nonatomic, nullable) NSString *applicationUserID;
 
+/// Helper used to determine whether a purchase should be aborted.
+@property (readonly, nonatomic) id<BZRPurchaseHelper> purchaseHelper;
+
 /// Payments for which no transaction updates have arrived.
 @property (readonly, nonatomic) NSMutableArray<SKPayment *> *pendingPayments;
 
@@ -60,11 +64,13 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark -
 
 - (instancetype)initWithPaymentQueue:(id<BZRPaymentsPaymentQueue>)paymentQueue
-                   applicationUserID:(nullable NSString *)applicationUserID {
+                   applicationUserID:(nullable NSString *)applicationUserID
+                      purchaseHelper:(id<BZRPurchaseHelper>)purchaseHelper {
   if (self = [super init]) {
     _paymentQueue = paymentQueue;
     self.paymentQueue.paymentsDelegate = self;
     _applicationUserID = [applicationUserID copy];
+    _purchaseHelper = purchaseHelper;
     _pendingPayments = [[NSMutableArray alloc] init];
     _paymentDataAccessQueue =
         dispatch_queue_create("com.lightricks.bazaar.purchaseManager.dataAccessQueue",
@@ -215,6 +221,14 @@ NS_ASSUME_NONNULL_BEGIN
   return [[self.pendingPayments lt_filter:^BOOL(SKPayment *payment) {
     return [transaction.payment isEqual:payment];
   }] firstObject];
+}
+
+#pragma mark -
+#pragma mark Promoted IAP
+#pragma mark -
+
+- (BOOL)shouldProceedWithPromotedIAP:(SKProduct __unused *)product payment:(SKPayment *)payment {
+  return [self.purchaseHelper shouldProceedWithPurchase:payment];
 }
 
 @end

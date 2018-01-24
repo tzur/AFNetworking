@@ -39,6 +39,10 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)paymentQueue:(id<BZRPaymentsPaymentQueue>)paymentQueue
     paymentTransactionsRemoved:(BZRPaymentTransactionList *)transactions;
 
+/// Returns \c YES if a purchase intiated from the App Store should be proceeded with and
+/// \c NO otherwise.
+- (BOOL)shouldProceedWithPromotedIAP:(SKProduct *)product payment:(SKPayment *)payment;
+
 @end
 
 NS_ASSUME_NONNULL_END

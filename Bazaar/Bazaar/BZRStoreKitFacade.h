@@ -9,7 +9,7 @@ NS_ASSUME_NONNULL_BEGIN
 @class BZREvent, BZRPaymentQueue, BZRProductDownloadManager, BZRPurchaseManager,
     BZRTransactionRestorationManager;
 
-@protocol BZRStoreKitRequestsFactory;
+@protocol BZRPurchaseHelper, BZRStoreKitRequestsFactory;
 
 /// \c BZRStoreKitFacade provides a unified reactive interface on top of Apple's StoreKit framework.
 ///
@@ -26,10 +26,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)init NS_UNAVAILABLE;
 
 /// Initializes with \c applicationUserID is an optional unique identifier for the user’s account.
-/// \c paymentQueue will be initialized using
-/// \c -[BZRPaymentQueue init]. \c purchaseManager will be initialized using
-/// \c -[BZRPurchaseManager initWithPaymentQueue:applicationUserID:]. \c restorationManager will be
-/// initialized using \c [BZRTransactionRestorationManager initWithPaymentQueue:applicationUserID:].
+///\c paymentQueue will be initialized using \c -[BZRPaymentQueue init].
+/// \c purchaseManager will be initialized using
+/// \c -[BZRPurchaseManager initWithPaymentQueue:applicationUserID:purchaseHelper:].
+/// \c restorationManager will be initialized using
+/// \c [BZRTransactionRestorationManager initWithPaymentQueue:applicationUserID:].
 /// \c downloadManager will be using \c [BZRProductDownloadManager initWithPaymentQueue:].
 /// \c storeKitRequestsFactory will be initialized using \c [BZRStoreKitRequestsFactory init].
 ///
@@ -41,7 +42,8 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 /// @see \c -[self initWithPaymentQueue:purchaseManager:restorationManager:downloadManager:
 ///           storeKitRequestsFactory:]
-- (instancetype)initWithApplicationUserID:(nullable NSString *)applicationUserID;
+- (instancetype)initWithApplicationUserID:(nullable NSString *)applicationUserID
+                           purchaseHelper:(id<BZRPurchaseHelper>)purchaseHelper;
 
 /// Initializes with \c paymentQueue, used to observe an underlying \c SKPaymentQueue and pass calls
 /// from the \c SKPaymentQueue to \c paymentQueue's appropriate delegate. \c purchaseManager is used
