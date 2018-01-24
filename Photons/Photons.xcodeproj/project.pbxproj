@@ -180,6 +180,8 @@
 		8861FDDA1E5A2BA800CA1436 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8861FDD91E5A2BA800CA1436 /* AVFoundation.framework */; };
 		8861FDDC1E5A2BC000CA1436 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8861FDDB1E5A2BC000CA1436 /* ImageIO.framework */; };
 		88CDF86C1EA7AAE80094A7F7 /* PTNImageDataAsset.mm in Sources */ = {isa = PBXBuildFile; fileRef = 88CDF86B1EA7AAE80094A7F7 /* PTNImageDataAsset.mm */; };
+		88D5813E2018712900A403CF /* NSString+UTI.m in Sources */ = {isa = PBXBuildFile; fileRef = 88D5813D2018712900A403CF /* NSString+UTI.m */; };
+		88D581692018734600A403CF /* NSString+UTISpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 88D581682018734600A403CF /* NSString+UTISpec.mm */; };
 		88EE8DF81EACD68F00D3126A /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88CDF84B1EA79D3D0094A7F7 /* MobileCoreServices.framework */; };
 		88F8E5231EA950BB0057DE07 /* PTNImageDataAssetSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 88F8E5221EA950BB0057DE07 /* PTNImageDataAssetSpec.mm */; };
 		8B0B99C01CA6BEB600ED2334 /* DropboxSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B0B99BE1CA6BEA600ED2334 /* DropboxSDK.framework */; };
@@ -811,6 +813,9 @@
 		88CDF43D1E9A5A560094A7F7 /* PTNImageDataAsset.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTNImageDataAsset.h; sourceTree = "<group>"; };
 		88CDF84B1EA79D3D0094A7F7 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		88CDF86B1EA7AAE80094A7F7 /* PTNImageDataAsset.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PTNImageDataAsset.mm; sourceTree = "<group>"; };
+		88D5813C2018712900A403CF /* NSString+UTI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSString+UTI.h"; sourceTree = "<group>"; };
+		88D5813D2018712900A403CF /* NSString+UTI.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSString+UTI.m"; sourceTree = "<group>"; };
+		88D581682018734600A403CF /* NSString+UTISpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSString+UTISpec.mm"; sourceTree = "<group>"; };
 		88F8E5221EA950BB0057DE07 /* PTNImageDataAssetSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PTNImageDataAssetSpec.mm; sourceTree = "<group>"; };
 		8B0B99BE1CA6BEA600ED2334 /* DropboxSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DropboxSDK.framework; path = "../third_party/dropbox-ios-sdk/DropboxSDK.framework"; sourceTree = "<group>"; };
 		8B10C88C1F3EFAEE00F76142 /* LLReactiveMatchers.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LLReactiveMatchers.xcodeproj; path = ../../third_party/LLReactiveMatchers/LLReactiveMatchers.xcodeproj; sourceTree = "<group>"; };
@@ -1650,6 +1655,7 @@
 		8B5619611B65420F006B0DA0 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				88D581682018734600A403CF /* NSString+UTISpec.mm */,
 				8B992D181B78A28700B7836B /* RACSignal+PhotonsSpec.m */,
 				8B5619651B654227006B0DA0 /* RACStream+PhotonsSpec.m */,
 			);
@@ -1707,6 +1713,8 @@
 		8BAFE3791B14C090003FB8F5 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				88D5813C2018712900A403CF /* NSString+UTI.h */,
+				88D5813D2018712900A403CF /* NSString+UTI.m */,
 				8B992CFD1B78A0EE00B7836B /* RACSignal+Photons.h */,
 				8B992CFE1B78A0EE00B7836B /* RACSignal+Photons.m */,
 				8BAFE37A1B14C0AD003FB8F5 /* RACStream+Photons.h */,
@@ -2232,6 +2240,7 @@
 				84E55C1F1C8EC82B00D91339 /* NSError+Photons.m in Sources */,
 				84E55C281C8EC83D00D91339 /* PTNImageMetadata.mm in Sources */,
 				84E55C2C1C8EC84300D91339 /* PTNSignalCache.m in Sources */,
+				88D5813E2018712900A403CF /* NSString+UTI.m in Sources */,
 				84515F5B1C96A8A500AD8B5B /* PTNOpenURLManager.m in Sources */,
 				84E55C251C8EC83800D91339 /* PTNDataBackedImageAsset.m in Sources */,
 				2873CA971F5465D500677B2C /* PTNOceanAlbumDescriptor.mm in Sources */,
@@ -2419,6 +2428,7 @@
 				8B2FD0971B04D62B00757B1F /* PTNPhotoKitObserverSpec.mm in Sources */,
 				848598211CBA4C31000A021B /* NSError+PhotonsSpec.mm in Sources */,
 				848188671C3BF4620070462E /* PTNFileSystemDirectoryDescriptorSpec.mm in Sources */,
+				88D581692018734600A403CF /* NSString+UTISpec.mm in Sources */,
 				84794C701CBE90D90042D8F1 /* PTNCacheFakeNSURLCache.m in Sources */,
 				842A3C4B1C54D63100BD10C1 /* PTNDataBackedImageAssetSpec.m in Sources */,
 			);
