@@ -137,12 +137,6 @@ NS_ASSUME_NONNULL_BEGIN
     _acquiredViaSubscriptionProvider =
         [[BZRAcquiredViaSubscriptionProvider alloc] initWithKeychainStorage:self.keychainStorage];
 
-    auto purchaseHelper = [[BZRPurchaseHelper alloc]
-         initWithAggregatedReceiptProvider:self.validationStatusProvider];
-    _storeKitFacade = [[BZRStoreKitFacade alloc] initWithApplicationUserID:applicationUserID
-                                                            purchaseHelper:purchaseHelper];
-    _storeKitMetadataFetcher =
-        [[BZRStoreKitMetadataFetcher alloc] initWithStoreKitFacade:self.storeKitFacade];
     _productsProvider = [self productsProviderWithJSONFilePath:productsListJSONFilePath
                                                  decryptionKey:productListDecryptionKey];
 
@@ -163,6 +157,13 @@ NS_ASSUME_NONNULL_BEGIN
          initWithReceiptValidationStatusCache:receiptValidationStatusCache
          timeProvider:timeProvider bundledApplicationsIDs:bundledApplicationsID
          aggregatedValidationStatusProvider:self.validationStatusProvider];
+
+    auto purchaseHelper = [[BZRPurchaseHelper alloc]
+         initWithAggregatedReceiptProvider:self.validationStatusProvider];
+    _storeKitFacade = [[BZRStoreKitFacade alloc] initWithApplicationUserID:applicationUserID
+                                                            purchaseHelper:purchaseHelper];
+    _storeKitMetadataFetcher =
+        [[BZRStoreKitMetadataFetcher alloc] initWithStoreKitFacade:self.storeKitFacade];
 
     _variantSelectorFactory = [[BZRProductsVariantSelectorFactory alloc] init];
 

@@ -17,6 +17,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// should be proceeded with only if there is no active subscription.
 @interface BZRPurchaseHelper : NSObject <BZRPurchaseHelper>
 
+- (instancetype)init NS_UNAVAILABLE;
+
 /// Initializes with \c aggregatedReceiptProvider, used to provide the receipt validation status.
 - (instancetype)initWithAggregatedReceiptProvider:
     (BZRAggregatedReceiptValidationStatusProvider *)aggregatedReceiptProvider;
