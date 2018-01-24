@@ -135,9 +135,6 @@ static const NSUInteger kExpiredSubscriptionGracePeriod = 7;
     _acquiredViaSubscriptionProvider =
         [[BZRAcquiredViaSubscriptionProvider alloc] initWithKeychainStorage:self.keychainStorage];
 
-    _productsProvider = [self productsProviderWithJSONFilePath:productsListJSONFilePath
-                                                 decryptionKey:productListDecryptionKey];
-
     _validationStatusProvider =
         [[BZRAggregatedReceiptValidationStatusProvider alloc]
          initWithUnderlyingProvider:cacheReceiptValidationStatusProvider
@@ -151,12 +148,14 @@ static const NSUInteger kExpiredSubscriptionGracePeriod = 7;
          timeProvider:timeProvider bundledApplicationsIDs:relevantApplicationsBundleIDs
          aggregatedValidationStatusProvider:self.validationStatusProvider];
 
-    auto purchaseHelper = [[BZRPurchaseHelper alloc]
-         initWithAggregatedReceiptProvider:self.validationStatusProvider];
+    auto purchaseHelper =
+        [[BZRPurchaseHelper alloc] initWithAggregatedReceiptProvider:self.validationStatusProvider];
     _storeKitFacade = [[BZRStoreKitFacade alloc] initWithApplicationUserID:applicationUserID
                                                             purchaseHelper:purchaseHelper];
     _storeKitMetadataFetcher =
         [[BZRStoreKitMetadataFetcher alloc] initWithStoreKitFacade:self.storeKitFacade];
+    _productsProvider = [self productsProviderWithJSONFilePath:productsListJSONFilePath
+                                                 decryptionKey:productListDecryptionKey];
 
     _variantSelectorFactory = [[BZRProductsVariantSelectorFactory alloc] init];
 
