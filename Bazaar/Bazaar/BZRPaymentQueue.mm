@@ -23,7 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic) BOOL shouldSendTransactionsAsUnfinished;
 
 /// Subject used to send promoted IAP events with.
-@property (readonly, nonatomic) RACSubject<BZREvent *> *promotedIAPEventsSubject;
+@property (readonly, nonatomic) RACReplaySubject<BZREvent *> *promotedIAPEventsSubject;
 
 @end
 
@@ -57,7 +57,7 @@ static NSString * const kRestorationLabel = @"Restoration";
     _unfinishedTransactionsSubject = [RACSubject subject];
     _unfinishedTransactionsSignal =
         [[self.unfinishedTransactionsSubject replay] takeUntil:[self rac_willDeallocSignal]];
-    _promotedIAPEventsSubject = [RACSubject subject];
+    _promotedIAPEventsSubject = [RACReplaySubject subject];
     _eventsSignal = [self.promotedIAPEventsSubject takeUntil:[self rac_willDeallocSignal]];
     [self.underlyingPaymentQueue addTransactionObserver:self];
     self.shouldSendTransactionsAsUnfinished = YES;
