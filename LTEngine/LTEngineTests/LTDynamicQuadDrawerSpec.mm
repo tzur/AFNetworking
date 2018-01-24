@@ -516,6 +516,16 @@ context(@"drawing", ^{
                  uniforms:@{}];
       }).to.raise(NSInvalidArgumentException);
     });
+
+#if defined(DEBUG) && DEBUG
+    it(@"should raise when attempting to draw with uniform overriding internally set projection", ^{
+      expect(^{
+        [drawer drawQuads:{fullQuad} textureMapQuads:{allColorsTexCoords} attributeData:@[]
+                  texture:mappedTexture auxiliaryTextures:@{}
+                 uniforms:@{kLTQuadDrawerUniformProjection: $(GLKMatrix4Identity)}];
+      }).to.raise(NSInvalidArgumentException);
+    });
+#endif
   });
 });
 
