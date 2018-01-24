@@ -6,6 +6,7 @@
 #import <MobileCoreServices/MobileCoreServices.h>
 #import <mutex>
 
+#import "NSString+UTI.h"
 #import "NSURL+PhotoKit.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -46,31 +47,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-/// Returns \c YES if \c conformsToUTI is an ancestor of \c uti in the UTI hierarchy. For example,
-/// the UTI "com.nikon.raw-image" conforms to "com.nikon.raw-image". Note that any UTI conforms to
-/// itself, i.e. "com.compuserve.gif" conforms to "com.compuserve.gif".
-static BOOL PTUConformsToUTI(NSString *uti, NSString *conformsToUTI) {
-  static dispatch_once_t onceToken;
-  static NSMutableDictionary<NSString *, NSNumber *> *cache;
-  static std::mutex mutex;
-  dispatch_once(&onceToken, ^{
-    cache = [NSMutableDictionary dictionary];
-  });
-
-  // Colon is not a legal UTI character, so it can be used as a separator.
-  // https://developer.apple.com/library/content/documentation/FileManagement/Conceptual/understanding_utis/understand_utis_conc/understand_utis_conc.html
-  NSString *joinedUTI = [@[uti, conformsToUTI] componentsJoinedByString:@":"];
-
-  std::lock_guard<std::mutex> lock(mutex);
-  NSNumber * _Nullable conforms = cache[joinedUTI];
-  if (!conforms) {
-    conforms = @(UTTypeConformsTo((__bridge CFStringRef)uti, (__bridge CFStringRef)conformsToUTI));
-    cache[joinedUTI] = conforms;
-  }
-
-  return [conforms boolValue];
-}
-
 @implementation PHAsset (Photons)
 
 - (NSURL *)ptn_identifier {
@@ -98,27 +74,15 @@ static BOOL PTUConformsToUTI(NSString *uti, NSString *conformsToUTI) {
   if (self.mediaType == PHAssetMediaTypeVideo) {
     [set addObject:kPTNDescriptorTraitAudiovisualKey];
   }
-  if ([self ptn_isRaw]) {
-    [set addObject:kPTNDescriptorTraitRawKey];
-  }
-  if ([self ptn_isGIF]) {
-    [set addObject:kPTNDescriptorTraitGIFKey];
+  if ([self ptn_hasUniformTypeIdentifier]) {
+    if ([nn(self.uniformTypeIdentifier) ptn_isRawImageUTI]) {
+      [set addObject:kPTNDescriptorTraitRawKey];
+    }
+    if ([nn(self.uniformTypeIdentifier) ptn_isGIFUTI]) {
+      [set addObject:kPTNDescriptorTraitGIFKey];
+    }
   }
   return set;
-}
-
-- (BOOL)ptn_isRaw {
-  if ([self ptn_hasUniformTypeIdentifier]) {
-    return PTUConformsToUTI(self.uniformTypeIdentifier, (NSString *)kUTTypeRawImage);
-  }
-  return NO;
-}
-
-- (BOOL)ptn_isGIF {
-  if ([self ptn_hasUniformTypeIdentifier]) {
-    return PTUConformsToUTI(self.uniformTypeIdentifier, (NSString *)kUTTypeGIF);
-  }
-  return NO;
 }
 
 - (BOOL)ptn_hasUniformTypeIdentifier {
