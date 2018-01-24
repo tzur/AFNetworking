@@ -38,7 +38,8 @@ beforeEach(^{
                                           appGroupID:kTINTestHostAppGroupID
                                               bundle:[NSBundle mainBundle]];
   message = [TINMessage messageWithAppGroupID:kTINTestHostAppGroupID sourceScheme:@"source"
-                                 targetScheme:@"target" identifier:[NSUUID UUID] userInfo:@{}];
+                                 targetScheme:@"target" type:$(TINMessageTypeRequest) action:@"foo"
+                                   identifier:[NSUUID UUID] userInfo:@{}];
 });
 
 afterEach(^{
@@ -121,8 +122,8 @@ context(@"message send", ^{
                                                  appGroupID:kTINTestHostAppGroupID
                                                      bundle:[NSBundle mainBundle]];
     auto message = [TINMessage messageWithAppGroupID:kTINTestHostAppGroupID sourceScheme:@"source"
-                                        targetScheme:@"target" identifier:[NSUUID UUID]
-                                            userInfo:@{}];
+                                        targetScheme:@"target" type:$(TINMessageTypeRequest)
+                                              action:@"foo" identifier:[NSUUID UUID] userInfo:@{}];
     OCMStub([fileManagerMock tin_writeMessage:OCMOCK_ANY toURL:OCMOCK_ANY
                                         error:[OCMArg anyObjectRef]]).andReturn(NO);
     __block BOOL blockHasRun = NO;
@@ -221,7 +222,8 @@ context(@"message remove", ^{
                                                  appGroupID:kTINTestHostAppGroupID
                                                      bundle:[NSBundle mainBundle]];
     auto data = [@"foo" dataUsingEncoding:NSUTF8StringEncoding];
-    auto message = [messageFactory messageWithTargetScheme:@"testhost" userInfo:@{} data:data
+    auto message = [messageFactory messageWithTargetScheme:@"testhost" type:$(TINMessageTypeRequest)
+                                                    action:@"foo" userInfo:@{} data:data
                                                        uti:(__bridge NSString *)kUTTypePNG
                                                      error:nil];
     __block NSError *error;

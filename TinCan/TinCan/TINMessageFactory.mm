@@ -79,6 +79,7 @@ static NSString * _Nullable TINMessageFactoryExtensionFromUTI(NSString *uti,
 #pragma mark -
 
 - (nullable TINMessage *)messageWithTargetScheme:(NSString *)targetScheme
+                                            type:(TINMessageType *)type action:(NSString *)action
                                            block:(TINMessageUserInfoProviderBlock)block
                                            error:(NSError *__autoreleasing *)error {
   auto messageID = [NSUUID UUID];
@@ -110,13 +111,15 @@ static NSString * _Nullable TINMessageFactoryExtensionFromUTI(NSString *uti,
   }
 
   return [TINMessage messageWithAppGroupID:self.appGroupID sourceScheme:self.sourceScheme
-                              targetScheme:targetScheme identifier:messageID userInfo:nn(userInfo)];
+                              targetScheme:targetScheme type:type action:action identifier:messageID
+                                  userInfo:nn(userInfo)];
 }
 
 - (nullable TINMessage *)messageWithTargetScheme:(NSString *)targetScheme
+    type:(TINMessageType *)type action:(NSString *)action
     userInfo:(NSDictionary<NSString *, id<NSSecureCoding>> *)info data:(NSData *)data
     uti:(NSString *)uti error:(NSError *__autoreleasing *)error {
-  return [self messageWithTargetScheme:targetScheme
+  return [self messageWithTargetScheme:targetScheme type:type action:action
                                  block:^NSDictionary * _Nullable(NSURL *messageDirectory,
                                                                  NSError **blockError) {
     NSError *underlyingError;
@@ -164,6 +167,7 @@ static NSString * _Nullable TINMessageFactoryExtensionFromUTI(NSString *uti,
 }
 
 - (nullable TINMessage *)messageWithTargetScheme:(NSString *)targetScheme
+    type:(TINMessageType *)type action:(NSString *)action
     userInfo:(NSDictionary<NSString *, id<NSSecureCoding>> *)info image:(UIImage *)image
     error:(NSError *__autoreleasing *)error {
   auto _Nullable imageData = UIImagePNGRepresentation(image);
@@ -175,14 +179,15 @@ static NSString * _Nullable TINMessageFactoryExtensionFromUTI(NSString *uti,
     return nil;
   }
 
-  return [self messageWithTargetScheme:targetScheme userInfo:info data:nn(imageData)
-                                   uti:(__bridge NSString *)kUTTypePNG error:error];
+  return [self messageWithTargetScheme:targetScheme type:type action:action userInfo:info
+                                  data:nn(imageData) uti:(__bridge NSString *)kUTTypePNG
+                                 error:error];
 }
 
 - (nullable TINMessage *)messageWithTargetScheme:(NSString *)targetScheme
+    type:(TINMessageType *)type action:(NSString *)action
     userInfo:(NSDictionary<NSString *, id<NSSecureCoding>> *)info fileURL:(NSURL *)fileURL
-    operation:(TINMessageFileOperation *)operation
-    error:(NSError *__autoreleasing *)error {
+    operation:(TINMessageFileOperation *)operation error:(NSError *__autoreleasing *)error {
   if (!fileURL.path || ![self.fileManager lt_fileExistsAtPath:nn(fileURL.path)]) {
     if (error) {
       *error = [NSError lt_errorWithCode:LTErrorCodeFileNotFound url:fileURL];
@@ -190,7 +195,7 @@ static NSString * _Nullable TINMessageFactoryExtensionFromUTI(NSString *uti,
     return nil;
   }
 
-  return [self messageWithTargetScheme:targetScheme
+  return [self messageWithTargetScheme:targetScheme type:type action:action
                                  block:^NSDictionary * _Nullable(NSURL *messageDirectory,
                                                                  NSError **blockError) {
     if (!messageDirectory.path) {

@@ -8,9 +8,11 @@ NS_ASSUME_NONNULL_BEGIN
 @implementation TINMessage (UserInfo)
 
 NSString * const kTINMessageFileNamesKey = @"TINMessageFileNames";
+NSString * const kTINMessageContextKey = @"TINMessageContext";
 
 - (nullable NSArray<NSString *> *)fileNames {
-  return (NSArray<NSString *> * _Nullable)[self.userInfo objectForKey:kTINMessageFileNamesKey];
+  auto fileNames = (NSArray<NSString *> * _Nullable)self.userInfo[kTINMessageFileNamesKey];
+  return [fileNames isKindOfClass:NSArray.class] ? fileNames : nil;
 }
 
 - (nullable NSArray<NSURL *> *)fileURLs {
@@ -37,6 +39,12 @@ NSString * const kTINMessageFileNamesKey = @"TINMessageFileNames";
   }
 
   return [fileURLs copy];
+}
+
+- (nullable NSDictionary<NSString *, id<NSSecureCoding>> *)context {
+  auto context = (NSDictionary<NSString *, id<NSSecureCoding>> * _Nullable)
+      self.userInfo[kTINMessageContextKey];
+  return [context isKindOfClass:NSDictionary.class] ? context : nil;
 }
 
 @end

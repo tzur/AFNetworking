@@ -21,7 +21,8 @@ beforeEach(^{
   messageFactory = [TINMessageFactory messageFactoryWithSourceScheme:@"source"
                                                          fileManager:fileManager
                                                           appGroupID:kTINTestHostAppGroupID];
-  message = [messageFactory messageWithTargetScheme:@"target"
+  message = [messageFactory messageWithTargetScheme:@"target" type:$(TINMessageTypeRequest)
+                                             action:@"foo"
                                               block:^NSDictionary *(NSURL *, NSError **) {
     return @{@"foo": @"bar"};
   } error:NULL];
@@ -52,7 +53,8 @@ context(@"unit tests", ^{
                                                                 fileManager:fileManagerMock
                                                                  appGroupID:kTINTestHostAppGroupID];
     __block NSError *error;
-    auto message = [messageFactory messageWithTargetScheme:@"target"
+    auto message = [messageFactory messageWithTargetScheme:@"target" type:$(TINMessageTypeRequest)
+                                                    action:@"foo"
                                                      block:^NSDictionary *(NSURL *, NSError **) {
       return @{@"foo": @"bar"};
     } error:&error];
@@ -68,7 +70,8 @@ context(@"unit tests", ^{
     auto messageFactory = [TINMessageFactory messageFactoryWithSourceScheme:@"source"
         fileManager:fileManagerMock appGroupID:kTINTestHostAppGroupID];
     __block NSError *error;
-    auto message = [messageFactory messageWithTargetScheme:@"target"
+    auto message = [messageFactory messageWithTargetScheme:@"target" type:$(TINMessageTypeRequest)
+                                                    action:@"foo"
                                                      block:^NSDictionary *(NSURL *, NSError **) {
       return @{@"foo": @"bar"};
     } error:&error];
@@ -91,7 +94,9 @@ context(@"unit tests", ^{
     OCMStub([fileManagerMock removeItemAtURL:OCMOCK_ANY
         error:[OCMArg setTo:[NSError lt_errorWithCode:123]]]).andReturn(NO);
     auto data = [@"foo" dataUsingEncoding:NSUTF8StringEncoding];
-    __unused auto message = [messageFactory messageWithTargetScheme:@"target" userInfo:@{} data:data
+    __unused auto message = [messageFactory messageWithTargetScheme:@"target"
+                                                               type:$(TINMessageTypeRequest)
+                                                             action:@"foo" userInfo:@{} data:data
                                                                 uti:(__bridge NSString *)kUTTypePNG
                                                               error:nil];
     NSError *error;
@@ -144,9 +149,11 @@ context(@"integration tests", ^{
   it(@"should remove all message directories", ^{
     auto data = [@"foo" dataUsingEncoding:NSUTF8StringEncoding];
     auto data2 = [@"bar" dataUsingEncoding:NSUTF8StringEncoding];
-    auto _Nullable message = [messageFactory messageWithTargetScheme:@"target" userInfo:@{}
+    auto _Nullable message = [messageFactory messageWithTargetScheme:@"target"
+        type:$(TINMessageTypeRequest) action:@"foo" userInfo:@{}
         data:data uti:(__bridge NSString *)kUTTypePNG error:nil];
-    auto _Nullable message2 = [messageFactory messageWithTargetScheme:@"target" userInfo:@{}
+    auto _Nullable message2 = [messageFactory messageWithTargetScheme:@"target"
+        type:$(TINMessageTypeRequest) action:@"foo" userInfo:@{}
         data:data2 uti:(__bridge NSString *)kUTTypePNG error:nil];
     NSError *error;
     auto success = [fileManager tin_removeAllMessagesWithAppGroupID:kTINTestHostAppGroupID
