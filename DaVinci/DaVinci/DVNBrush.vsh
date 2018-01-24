@@ -53,7 +53,9 @@ void main() {
   } else {
     vColor = vec4(color, 1.0);
   }
-  vPosition = modelview * position;
+
+  highp vec4 modelviewPosition = modelview * vec4(position.x, position.y, 0, position.w);
+  vPosition = modelviewPosition;
   vTexcoord = texcoord;
 
   vSampledColor0 = texture2D(edgeAvoidanceGuideTexture, sampleLocationWithOffset(vec2(0.0))).rgb;
@@ -69,5 +71,5 @@ void main() {
   vSampledColor4 =
       texture2D(edgeAvoidanceGuideTexture,
                 sampleLocationWithOffset(vec2(-1.0, 0.0) * edgeAvoidanceSamplingOffset)).rgb;
-  gl_Position = projection * modelview * position;
+  gl_Position = projection * modelviewPosition;
 }
