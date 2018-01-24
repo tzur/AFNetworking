@@ -5,8 +5,10 @@
 
 #import <AVFoundation/AVFoundation.h>
 #import <LTKit/LTPath.h>
+#import <LTKit/LTUTICache.h>
 #import <MobileCoreServices/MobileCoreServices.h>
 
+#import "NSString+UTI.h"
 #import "NSURL+FileSystem.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -66,12 +68,21 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (NSSet<NSString *> *)descriptorTraits {
+  NSMutableSet<NSString *> *traits = [NSMutableSet set];
   NSSet<NSString *> *videoFilesExtensions = [PTNFileSystemFileDescriptor videoFilesExtensions];
-  if ([videoFilesExtensions containsObject:[self.path.url.pathExtension lowercaseString]]) {
-    return [NSSet setWithObject:kPTNDescriptorTraitAudiovisualKey];
+  NSString *fileExtension = [self.path.url.pathExtension lowercaseString];
+  if ([videoFilesExtensions containsObject:fileExtension]) {
+    [traits addObject:kPTNDescriptorTraitAudiovisualKey];
   }
 
-  return [NSSet set];
+  NSString *uti = [[LTUTICache sharedCache] preferredUTIForFileExtension:fileExtension];
+  if ([uti ptn_isRawImageUTI]) {
+    [traits addObject:kPTNDescriptorTraitRawKey];
+  }
+  if ([uti ptn_isGIFUTI]) {
+    [traits addObject:kPTNDescriptorTraitGIFKey];
+  }
+  return traits;
 }
 
 + (NSSet<NSString *> *)videoFilesExtensions {

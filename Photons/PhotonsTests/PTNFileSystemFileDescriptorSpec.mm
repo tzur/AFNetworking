@@ -83,20 +83,34 @@ context(@"equality", ^{
   });
 });
 
-context(@"video descriptor", ^{
- it(@"should have underlying asset's duration when given a URL of an audiovisual file", ^{
-    LTPath *oneSecondVideoPath = [LTPath pathWithPath:PTNOneSecondVideoPath().path];
-    PTNFileSystemFileDescriptor *descriptor =
-        [[PTNFileSystemFileDescriptor alloc] initWithPath:oneSecondVideoPath];
-    expect(round(descriptor.duration)).to.equal(1);
-  });
+it(@"should have underlying asset's duration when given a path of an audiovisual file", ^{
+  LTPath *oneSecondVideoPath = [LTPath pathWithPath:PTNOneSecondVideoPath().path];
+  PTNFileSystemFileDescriptor *descriptor =
+      [[PTNFileSystemFileDescriptor alloc] initWithPath:oneSecondVideoPath];
+  expect(round(descriptor.duration)).to.equal(1);
+});
 
-  it(@"should have video descriptor key in traits when given a URL of an audiovisual file", ^{
+context(@"traits", ^{
+  it(@"should have audiovisual trait when given a path of an audiovisual file", ^{
     LTPath *oneSecondVideoPath = [LTPath pathWithPath:PTNOneSecondVideoPath().path];
     PTNFileSystemFileDescriptor *descriptor =
         [[PTNFileSystemFileDescriptor alloc] initWithPath:oneSecondVideoPath];
     expect(descriptor.descriptorTraits).to.equal([NSSet
                                                   setWithObject:kPTNDescriptorTraitAudiovisualKey]);
+  });
+
+  it(@"should have GIF trait when given a path of a GIF file", ^{
+    LTPath *gifFile = [LTPath pathWithPath:@"foo.gif"];
+    PTNFileSystemFileDescriptor *descriptor =
+        [[PTNFileSystemFileDescriptor alloc] initWithPath:gifFile];
+    expect(descriptor.descriptorTraits).to.equal([NSSet setWithObject:kPTNDescriptorTraitGIFKey]);
+  });
+
+  it(@"should have Raw trait when given a path of a raw image file", ^{
+    LTPath *rawFile = [LTPath pathWithPath:@"foo.NEF"];
+    PTNFileSystemFileDescriptor *descriptor =
+        [[PTNFileSystemFileDescriptor alloc] initWithPath:rawFile];
+    expect(descriptor.descriptorTraits).to.equal([NSSet setWithObject:kPTNDescriptorTraitRawKey]);
   });
 });
 
