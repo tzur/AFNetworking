@@ -33,7 +33,7 @@ NS_ASSUME_NONNULL_BEGIN
   OCMStub([provider cache]).andReturn(cache);
 
   return [super initWithUnderlyingProvider:provider aggregator:aggregator
-                    bundledApplicationsIDs:@[@"foo", @"bar"].lt_set];
+                    bundleIDsForValidation:@[@"foo", @"bar"].lt_set];
 }
 
 - (RACSignal *)fetchReceiptValidationStatus {

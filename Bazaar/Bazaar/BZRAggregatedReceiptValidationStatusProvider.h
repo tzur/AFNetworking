@@ -5,8 +5,10 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class BZRCachedReceiptValidationStatusProvider, BZRMultiAppConfiguration,
-    BZRMultiAppReceiptValidationStatusAggregator, BZRReceiptValidationStatus;
+@class BZRCachedReceiptValidationStatusProvider, BZRMultiAppReceiptValidationStatusAggregator,
+    BZRReceiptValidationStatus;
+
+@protocol BZRMultiAppSubscriptionClassifier;
 
 /// Provides an aggregated receipt validation status from receipt validation statuses of multiple
 /// applications. The aggregation occurs at two points: after performing receipt validation of
@@ -19,25 +21,25 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)init NS_UNAVAILABLE;
 
-/// Initializes with the given \c underlyingProvider. \c bundledApplicationsIDs is taken from
-/// \c multiAppConfiguration. \c aggregator is set to a newly created
-/// \c BZRMultiAppReceiptValidationStatusAggregator from the given
-/// \c currentApplicationBundleID, and
-/// \c multiAppConfiguration.multiAppSubscriptionIdentifierMarker. If \c multiAppConfiguration is
-/// \c nil, the receiver will perform validation only for the currently running application.
+/// Initializes with the given \c underlyingProvider. \c bundleIDsForValidation is the set of
+/// applications bundle identifiers for which validation will be performed. \c aggregator is set to
+/// a newly created \c BZRMultiAppReceiptValidationStatusAggregator with the given
+/// \c currentApplicationBundleID, and \c multiAppSubscriptionClassifier.
 - (instancetype)initWithUnderlyingProvider:
     (BZRCachedReceiptValidationStatusProvider *)underlyingProvider
     currentApplicationBundleID:(NSString *)currentApplicationBundleID
-    multiAppConfiguration:(nullable BZRMultiAppConfiguration *)multiAppConfiguration;
+    bundleIDsForValidation:(NSSet<NSString *> *)bundleIDsForValidation
+    multiAppSubscriptionClassifier:
+    (nullable id<BZRMultiAppSubscriptionClassifier>)multiAppSubscriptionClassifier;
 
 /// Initializes with \c provider, used to fetch receipt validation status of multiple applications
 /// and to get the latest receipt validation statuses from cache. \c aggregator is used to aggregate
-/// the fetchied receipt validation statuses. \c bundledApplicationsIDs is the set of applications
-/// identifiers for which validation will be performed.
+/// the fetchied receipt validation statuses. \c bundleIDsForValidation is the set of applications
+/// bundle identifiers for which validation will be performed.
 - (instancetype)initWithUnderlyingProvider:
     (BZRCachedReceiptValidationStatusProvider *)underlyingProvider
     aggregator:(BZRMultiAppReceiptValidationStatusAggregator *)aggregator
-    bundledApplicationsIDs:(NSSet<NSString *> *)bundledApplicationsIDs NS_DESIGNATED_INITIALIZER;
+    bundleIDsForValidation:(NSSet<NSString *> *)bundleIDsForValidation NS_DESIGNATED_INITIALIZER;
 
 /// Fetches receipt validation statuses of multiple applications and sends an aggregated receipt
 /// validation status. The signal completes after sending the value. The signal errs if there the

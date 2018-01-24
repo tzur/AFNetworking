@@ -4,12 +4,12 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @class BZRAcquiredViaSubscriptionProvider, BZRAggregatedReceiptValidationStatusProvider,
-    BZRAllowedProductsProvider, BZRKeychainStorage, BZRMultiAppConfiguration,
+    BZRAllowedProductsProvider, BZRKeychainStorage,
     BZRPeriodicReceiptValidatorActivator, BZRProductContentManager, BZRStoreKitFacade,
     BZRStoreKitMetadataFetcher, LTPath;
 
-@protocol BZRProductsProvider, BZRProductContentFetcher, BZRProductsVariantSelectorFactory,
-    BZRReceiptValidationParametersProvider;
+@protocol BZRMultiAppSubscriptionClassifier, BZRProductsProvider, BZRProductContentFetcher,
+    BZRProductsVariantSelectorFactory, BZRReceiptValidationParametersProvider;
 
 /// Object used to provide configuration objects for \c BZRStore.
 @interface BZRStoreConfiguration : NSObject
@@ -21,8 +21,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// Initializes the in-app store configuration with Lightricks' default shared keychain access group
 /// as provided by \c + [BZRKeychainStorage defaultSharedAccessGroup].
 /// \c expiredSubscriptionGracePeriod is set to \c 7. \c applicationUserID is set to \c nil.
-/// \c applicationBundleID is set to application's bundle identifier. \c multiAppConfiguration is
-/// set to \c nil.
+/// \c applicationBundleID is set to application's bundle identifier. \c bundledApplicationsIDs and
+/// \c multiAppSubscriptionMarker are both set to \c nil.
 ///
 /// @note In order to use the default shared keychain access group AppIdentifierPrefix has to be
 /// defined in the application's main bundle plist, if it is not defined an
@@ -35,9 +35,11 @@ NS_ASSUME_NONNULL_BEGIN
 /// Initializes the in-app store configuration with Lightricks' default shared keychain access group
 /// as provided by \c + [BZRKeychainStorage defaultSharedAccessGroup].
 /// \c expiredSubscriptionGracePeriod is set to \c 7. \c applicationUserID is set to \c nil.
-/// \c applicationBundleID is set to application's bundle identifier. \c multiAppConfiguration is
-/// created from a set that contains \c bundledApplicationsIDs plus the current applications'
-/// bundle ID, and from \c multiAppSubscriptionMarker.
+/// \c applicationBundleID is set to application's bundle identifier. The \c bundledApplicationsIDs
+/// set is used to define applications that may provide multi-app subscription that enables features
+/// in this application. The current application bundle ID is automatically added to this set if
+/// it does not contain it already. The \c multiAppSubscriptionMarker will be used by the default
+/// \c BZRMultiAppSubscriptionClassifier to identify multi-app subscription products.
 ///
 /// @note In order to use the default shared keychain access group AppIdentifierPrefix has to be
 /// defined in the application's main bundle plist, if it is not defined an
@@ -94,7 +96,9 @@ NS_ASSUME_NONNULL_BEGIN
     expiredSubscriptionGracePeriod:(NSUInteger)expiredSubscriptionGracePeriod
     applicationUserID:(nullable NSString *)applicationUserID
     applicationBundleID:(NSString *)applicationBundleID
-    multiAppConfiguration:(nullable BZRMultiAppConfiguration *)multiAppConfiguration
+    bundledApplicationsIDs:(nullable NSSet<NSString *> *)bundledApplicationsIDs
+    multiAppSubscriptionClassifier:
+    (nullable id<BZRMultiAppSubscriptionClassifier>)multiAppSubscriptionClassifier
     NS_DESIGNATED_INITIALIZER;
 
 /// Provider used to provide the list of products.
@@ -140,9 +144,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Storage used to store and retrieve values from keychain storage.
 @property (readonly, nonatomic) BZRKeychainStorage *keychainStorage;
 
-/// Substring of subscription identifier, by which Bazaar determines whether a subscription should
-/// be considered a multi-app subscription.
-@property (readonly, nonatomic, nullable) NSString *multiAppSubscriptionIdentifierMarker;
+/// An object used to identify multi-app subscription products.
+@property (readonly, nonatomic, nullable) id<BZRMultiAppSubscriptionClassifier>
+    multiAppSubscriptionClassifier;
 
 @end
 

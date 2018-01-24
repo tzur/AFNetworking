@@ -23,20 +23,21 @@ __block BZRCachedReceiptValidationStatusProvider *underlyingProvider;
 __block RACSubject *underlyingProviderEventsSubject;
 __block BZRMultiAppReceiptValidationStatusAggregator *aggregator;
 __block BZRReceiptValidationStatusCache *receiptValidationStatusCache;
-__block NSSet<NSString *> *bundledApplicationsIDs;
+__block NSSet<NSString *> *bundleIDsForValidation;
 __block BZRAggregatedReceiptValidationStatusProvider *receiptValidationStatusAggregator;
 
 beforeEach(^{
   underlyingProvider = OCMClassMock([BZRCachedReceiptValidationStatusProvider class]);
   underlyingProviderEventsSubject = [RACSubject subject];
   OCMStub([underlyingProvider eventsSignal]).andReturn(underlyingProviderEventsSubject);
-  aggregator = OCMClassMock([BZRMultiAppReceiptValidationStatusAggregator class]);
   receiptValidationStatusCache = OCMClassMock([BZRReceiptValidationStatusCache class]);
   OCMStub([underlyingProvider cache]).andReturn(receiptValidationStatusCache);
-  bundledApplicationsIDs = @[@"com.lt.otherApp", @"com.lt.anotherApp"].lt_set;
+
+  aggregator = OCMClassMock([BZRMultiAppReceiptValidationStatusAggregator class]);
+  bundleIDsForValidation = @[@"com.lt.otherApp", @"com.lt.anotherApp"].lt_set;
   receiptValidationStatusAggregator = [[BZRAggregatedReceiptValidationStatusProvider alloc]
       initWithUnderlyingProvider:underlyingProvider aggregator:aggregator
-      bundledApplicationsIDs:bundledApplicationsIDs];
+      bundleIDsForValidation:bundleIDsForValidation];
 });
 
 context(@"fetching receipt validation status", ^{
@@ -65,8 +66,7 @@ context(@"fetching receipt validation status", ^{
 
   it(@"should send the value returned by the aggregator on the receipt validation statuses", ^{
     auto receiptValidationStatus = BZRReceiptValidationStatusWithExpiry(YES);
-    OCMStub([underlyingProvider
-        fetchReceiptValidationStatuses:bundledApplicationsIDs])
+    OCMStub([underlyingProvider fetchReceiptValidationStatuses:bundleIDsForValidation])
         .andReturn([RACSignal return:@{@"foo": receiptValidationStatus}]);
     OCMStub([aggregator aggregateMultiAppReceiptValidationStatuses:OCMOCK_ANY])
         .andReturn(receiptValidationStatus);
@@ -92,7 +92,7 @@ context(@"aggregated receipt validation status property", ^{
 
       receiptValidationStatusAggregator = [[BZRAggregatedReceiptValidationStatusProvider alloc]
           initWithUnderlyingProvider:underlyingProvider aggregator:aggregator
-          bundledApplicationsIDs:bundledApplicationsIDs];
+          bundleIDsForValidation:bundleIDsForValidation];
 
       expect(receiptValidationStatusAggregator.receiptValidationStatus).to.beNil();
       OCMVerify([aggregator aggregateMultiAppReceiptValidationStatuses:@{}]);
@@ -112,7 +112,7 @@ context(@"aggregated receipt validation status property", ^{
 
       receiptValidationStatusAggregator = [[BZRAggregatedReceiptValidationStatusProvider alloc]
           initWithUnderlyingProvider:underlyingProvider aggregator:aggregator
-          bundledApplicationsIDs:bundledApplicationsIDs];
+          bundleIDsForValidation:bundleIDsForValidation];
 
       expect(receiptValidationStatusAggregator.receiptValidationStatus).to
           .equal(receiptValidationStatus);
@@ -131,7 +131,7 @@ context(@"aggregated receipt validation status property", ^{
         [RACObserve(receiptValidationStatusAggregator, receiptValidationStatus) testRecorder];
 
     auto receiptValidationStatus = BZRReceiptValidationStatusWithExpiry(NO);
-    OCMStub([underlyingProvider fetchReceiptValidationStatuses:bundledApplicationsIDs])
+    OCMStub([underlyingProvider fetchReceiptValidationStatuses:bundleIDsForValidation])
         .andReturn([RACSignal return:@{@"com.lt.otherApp": receiptValidationStatus}]);
     OCMStub([aggregator
         aggregateMultiAppReceiptValidationStatuses:@{@"com.lt.otherApp": receiptValidationStatus}])
