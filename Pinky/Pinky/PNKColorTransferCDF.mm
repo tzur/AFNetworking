@@ -17,14 +17,23 @@ NS_ASSUME_NONNULL_BEGIN
 /// Device to encode kernel operations.
 @property (readonly, nonatomic) id<MTLDevice> device;
 
-/// Compiled state of kernel that calculates the CDF of each channel of a given multi-channel
-/// histogram.
+/// Compiled state of kernel that calculates the PDF of each channel of a given multi-channel
+/// histogram, and filtering it with a given gaussian kernel.
+@property (readonly, nonatomic) id<MTLComputePipelineState> calculatePDFState;
+
+/// Compiled state of kernel that calculates the CDF of each channel of a given multi-channel PDF.
 @property (readonly, nonatomic) id<MTLComputePipelineState> calculateCDFState;
 
 /// Array of compiled states of kernels that calculate the approximate inverse of a given CDF. Each
 /// state corresponds to a different channel, using the minimum and maximum values for that specific
 /// channel.
 @property (readonly, nonatomic) NSArray<id<MTLComputePipelineState>> *calculateInverseCDFState;
+
+/// Buffer holding the multi-channel smooth PDF computed from histogram, used to compute the CDF.
+@property (readonly, nonatomic) id<MTLBuffer> pdfBuffer;
+
+/// Buffer holding the small gaussian kernel used for smoothing the PDFs.
+@property (readonly, nonatomic) id<MTLBuffer> pdfSmoothingKernelBuffer;
 
 /// Array of intermediate buffers to contain the CDFs of the reference histograms, in order to
 /// calculate their approximate inverse.
@@ -41,6 +50,12 @@ static const NSUInteger kInverseCDFScaleFactor = 16;
 /// Maximum number of histogram bins supported by the kernel, based on the available threadgroup
 /// memory on the lower end devices.
 static const NSUInteger kMaxHistogramBins = 1024;
+
+/// Size of the gaussian kernel used for smoothing the PDFs. Must be odd.
+static const NSUInteger kPDFSmoothingKernelSize = 7;
+
+/// Sigma of the gaussian kernel used for smoothing the PDFs. Must be positive.
+static const float kPDFSmoothingKernelSigma = 1;
 
 - (instancetype)initWithDevice:(id<MTLDevice>)device histogramBins:(NSUInteger)histogramBins {
   LTParameterAssert(histogramBins > 1 && histogramBins <= kMaxHistogramBins,
@@ -63,7 +78,10 @@ static const NSUInteger kMaxHistogramBins = 1024;
   [constants setConstantValue:&histogramBins type:MTLDataTypeUShort withName:@"kHistogramBins"];
   [constants setConstantValue:&kInverseCDFScaleFactor type:MTLDataTypeUShort
                      withName:@"kInverseCDFScaleFactor"];
+  [constants setConstantValue:&kPDFSmoothingKernelSize type:MTLDataTypeUShort
+                     withName:@"kPDFSmoothingKernelSize"];
 
+  _calculatePDFState = PNKCreateComputeStateWithConstants(self.device, @"calculatePDF", constants);
   _calculateCDFState = PNKCreateComputeStateWithConstants(self.device, @"calculateCDF", constants);
   _calculateInverseCDFState = [@[@0, @1, @2] lt_map:^id(NSNumber *index) {
     ushort channel = index.unsignedShortValue;
@@ -80,6 +98,16 @@ static const NSUInteger kMaxHistogramBins = 1024;
                                                 options:MTLResourceStorageModePrivate]];
   }
   _referenceCDFBuffers = buffers;
+  _pdfBuffer = [self.device newBufferWithLength:bufferLength options:MTLResourceStorageModePrivate];
+
+  [self createPDFSmoothingKernelBuffer];
+}
+
+- (void)createPDFSmoothingKernelBuffer {
+  cv::Mat1f kernel = cv::getGaussianKernel(kPDFSmoothingKernelSize, kPDFSmoothingKernelSigma);
+  _pdfSmoothingKernelBuffer = [self.device newBufferWithLength:kernel.total() * sizeof(float)
+                                                       options:MTLResourceStorageModeShared];
+  std::copy(kernel.begin(), kernel.end(), (float *)self.pdfSmoothingKernelBuffer.contents);
 }
 
 - (void)encodeToCommandBuffer:(id<MTLCommandBuffer>)commandBuffer
@@ -125,12 +153,21 @@ static const NSUInteger kMaxHistogramBins = 1024;
                       (unsigned long)inverseCDFBuffers[i].length);
   }
 
+  PNKComputeDispatchWithDefaultThreads(self.calculatePDFState, commandBuffer,
+                                       @[inputHistogramBuffer, self.pdfSmoothingKernelBuffer,
+                                         self.pdfBuffer],
+                                       @"calculatePDF: input", self.histogramBins);
+
   PNKComputeDispatch(self.calculateCDFState, commandBuffer,
-                     [@[inputHistogramBuffer] arrayByAddingObjectsFromArray:cdfBuffers],
+                     [@[self.pdfBuffer] arrayByAddingObjectsFromArray:cdfBuffers],
                      @[], @"calculateCDF: input", {1, 1, 1}, {1, 1, 1});
+
+  PNKComputeDispatchWithDefaultThreads(self.calculatePDFState, commandBuffer,
+                                       @[referenceHistogramBuffer, self.pdfSmoothingKernelBuffer,
+                                         self.pdfBuffer],
+                                       @"calculatePDF: reference", self.histogramBins);
   PNKComputeDispatch(self.calculateCDFState, commandBuffer,
-                     [@[referenceHistogramBuffer]
-                      arrayByAddingObjectsFromArray:self.referenceCDFBuffers],
+                     [@[self.pdfBuffer] arrayByAddingObjectsFromArray:self.referenceCDFBuffers],
                      @[], @"calculateCDF: reference", {1, 1, 1}, {1, 1, 1});
 
   for (NSUInteger i = 0; i < 3; ++i) {
@@ -148,6 +185,14 @@ static const NSUInteger kMaxHistogramBins = 1024;
 
 + (NSUInteger)maxSupportedHistogramBins {
   return kMaxHistogramBins;
+}
+
++ (NSUInteger)pdfSmoothingKernelSize {
+  return kPDFSmoothingKernelSize;
+}
+
++ (float)pdfSmoothingKernelSigma {
+  return kPDFSmoothingKernelSigma;
 }
 
 @end
