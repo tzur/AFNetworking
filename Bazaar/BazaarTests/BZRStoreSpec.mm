@@ -11,6 +11,7 @@
 #import "BZRFakeAllowedProductsProvider.h"
 #import "BZRFakeReceiptValidationParametersProvider.h"
 #import "BZRKeychainStorage.h"
+#import "BZRMultiAppSubscriptionClassifier.h"
 #import "BZRPeriodicReceiptValidatorActivator.h"
 #import "BZRProduct+StoreKit.h"
 #import "BZRProductContentManager.h"
@@ -74,6 +75,7 @@ __block BZRFakeAllowedProductsProvider *allowedProductsProvider;
 __block id<BZRProductsProvider> netherProductsProvider;
 __block BZRStoreKitMetadataFetcher *storeKitMetadataFetcher;
 __block BZRKeychainStorage *keychainStorage;
+__block id<BZRMultiAppSubscriptionClassifier> multiAppSubscriptionClassifier;
 __block NSBundle *bundle;
 __block RACSubject *productsProviderEventsSubject;
 __block RACSubject *receiptValidationStatusProviderEventsSubject;
@@ -103,6 +105,7 @@ beforeEach(^{
   netherProductsProvider = OCMProtocolMock(@protocol(BZRProductsProvider));
   storeKitMetadataFetcher = OCMClassMock([BZRStoreKitMetadataFetcher class]);
   keychainStorage = OCMClassMock([BZRKeychainStorage class]);
+  multiAppSubscriptionClassifier = OCMProtocolMock(@protocol(BZRMultiAppSubscriptionClassifier));
   bundle = OCMClassMock([NSBundle class]);
   id<BZRProductsVariantSelectorFactory> variantSelectorFactory =
       OCMProtocolMock(@protocol(BZRProductsVariantSelectorFactory));
@@ -202,18 +205,27 @@ context(@"initial receipt validation", ^{
 });
 
 context(@"multi-app subscription", ^{
-  it(@"should return YES if ths product's identifier contains the multi-app subscription marker", ^{
-    OCMStub([configuration multiAppSubscriptionIdentifierMarker]).andReturn(@"MultiAppMarker");
+  beforeEach(^{
+    OCMStub([multiAppSubscriptionClassifier
+             isMultiAppSubscription:[OCMArg checkWithBlock:^BOOL(NSString *productId) {
+      return [productId containsString:@"MultiApp"];
+    }]]).andReturn(YES);
+  });
+
+  it(@"should return YES if ths product identifier contains the multi-app subscription marker", ^{
+    OCMStub([configuration multiAppSubscriptionClassifier])
+        .andReturn(multiAppSubscriptionClassifier);
     store = [[BZRStore alloc] initWithConfiguration:configuration];
 
-    auto subscriptionIdentifier = @"com.bundleID.MultiAppMarker.foo";
+    auto subscriptionIdentifier = @"com.bundleID.MultiApp.foo";
 
     expect([store isMultiAppSubscription:subscriptionIdentifier]).to.beTruthy();
   });
 
-  it(@"should return NO if the product's identifier doesn't contain the multi-app subscription "
+  it(@"should return NO if the product identifier doesn't contain the multi-app subscription "
      "marker", ^{
-    OCMStub([configuration multiAppSubscriptionIdentifierMarker]).andReturn(@"MultiAppMarker");
+    OCMStub([configuration multiAppSubscriptionClassifier])
+        .andReturn(multiAppSubscriptionClassifier);
     store = [[BZRStore alloc] initWithConfiguration:configuration];
 
     expect([store isMultiAppSubscription:@"com.bundleID.foo"]).to.beFalsy();

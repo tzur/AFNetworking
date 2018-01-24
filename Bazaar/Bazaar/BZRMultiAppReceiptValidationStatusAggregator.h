@@ -7,6 +7,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class BZRReceiptValidationStatus;
 
+@protocol BZRMultiAppSubscriptionClassifier;
+
 /// Aggregates a set of receipt validation statuses of multiple applications into one receipt
 /// validation status.
 ///
@@ -33,11 +35,12 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)init NS_UNAVAILABLE;
 
 /// Initializes with \c currentApplicationBundleID, the bundle identifier of the current
-/// application. \c multiAppSubscriptionIdentifierMarker is used to determine whether a subscription
+/// application. \c multiAppSubscriptionClassifier is used to determine whether a subscription
 /// of another application is a relevant multi-app subscription. \c nil signifies that other
 /// applications' receipt validation statuses should be ignored.
 - (instancetype)initWithCurrentApplicationBundleID:(NSString *)currentApplicationBundleID
-    multiAppSubscriptionIdentifierMarker:(nullable NSString *)multiAppSubscriptionIdentifierMarker;
+    multiAppSubscriptionClassifier:(nullable id<BZRMultiAppSubscriptionClassifier>)
+    multiAppSubscriptionClassifier;
 
 /// Returns the aggregated reeipt validation status from the given
 /// \c bundleIDToReceiptValidationStatus. \c nil if no relevant subscription amongst

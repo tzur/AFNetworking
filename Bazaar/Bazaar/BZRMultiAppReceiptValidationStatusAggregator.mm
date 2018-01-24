@@ -5,6 +5,7 @@
 
 #import <LTKit/NSDictionary+Functional.h>
 
+#import "BZRMultiAppSubscriptionClassifier.h"
 #import "BZRReceiptEnvironment.h"
 #import "BZRReceiptModel+HelperProperties.h"
 #import "BZRReceiptValidationStatus.h"
@@ -16,19 +17,21 @@ NS_ASSUME_NONNULL_BEGIN
 /// Bundle identifier of the current application.
 @property (readonly, nonatomic) NSString *currentApplicationBundleID;
 
-/// Substring of subscription identifier. Subscription whose identifier contains this marker as a
-/// substring is considered a relevant multi app subscription for the current application.
-@property (readonly, nonatomic, nullable) NSString *multiAppSubscriptionIdentifierMarker;
+/// Object used to determine whether a subscription product of other applications should be
+/// considered a valid subscription for the current application.
+@property (readonly, nonatomic, nullable) id<BZRMultiAppSubscriptionClassifier>
+    multiAppSubscriptionClassifier;
 
 @end
 
 @implementation BZRMultiAppReceiptValidationStatusAggregator
 
 - (instancetype)initWithCurrentApplicationBundleID:(NSString *)currentApplicationBundleID
-    multiAppSubscriptionIdentifierMarker:(nullable NSString *)multiAppSubscriptionIdentifierMarker {
+    multiAppSubscriptionClassifier:
+    (nullable id<BZRMultiAppSubscriptionClassifier>)multiAppSubscriptionClassifier {
   if (self = [super init]) {
     _currentApplicationBundleID = [currentApplicationBundleID copy];
-    _multiAppSubscriptionIdentifierMarker = [multiAppSubscriptionIdentifierMarker copy];
+    _multiAppSubscriptionClassifier = multiAppSubscriptionClassifier;
   }
   return self;
 }
@@ -63,9 +66,8 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (BOOL)hasRelevantMultiAppSubscription:(BZRReceiptValidationStatus *)receiptValidationStatus {
-  return self.multiAppSubscriptionIdentifierMarker &&
-      [receiptValidationStatus.receipt.subscription.productId
-       containsString:self.multiAppSubscriptionIdentifierMarker];
+  return [self.multiAppSubscriptionClassifier
+          isMultiAppSubscription:receiptValidationStatus.receipt.subscription.productId];
 }
 
 - (BZRReceiptValidationStatus *)receiptValidationStatusWithMostFitSubscripition:

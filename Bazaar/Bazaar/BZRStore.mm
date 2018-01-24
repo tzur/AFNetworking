@@ -15,6 +15,7 @@
 #import "BZREvent.h"
 #import "BZRExternalTriggerReceiptValidator.h"
 #import "BZRKeychainStorage.h"
+#import "BZRMultiAppSubscriptionClassifier.h"
 #import "BZRPeriodicReceiptValidatorActivator.h"
 #import "BZRProduct+EnablesProduct.h"
 #import "BZRProduct+StoreKit.h"
@@ -49,6 +50,10 @@ NS_ASSUME_NONNULL_BEGIN
 /// Provider used to provide the latest \c BZRReceiptValidationStatus.
 @property (readonly, nonatomic) BZRAggregatedReceiptValidationStatusProvider *
     validationStatusProvider;
+
+/// Object used to check which subscription products are multi-app subscriptions.
+@property (readonly, nonatomic, nullable) id<BZRMultiAppSubscriptionClassifier>
+    multiAppSubscriptionClassifier;
 
 /// Provider used to provide list of products that were acquired via subsription.
 @property (readonly, nonatomic) BZRAcquiredViaSubscriptionProvider
@@ -106,10 +111,6 @@ NS_ASSUME_NONNULL_BEGIN
 /// otherwise.
 @property (nonatomic) BOOL productListWasFetched;
 
-/// Substring of subscription identifier, by which Bazaar determines whether a subscription should
-/// be considered a multi-app subscription.
-@property (readonly, nonatomic, nullable) NSString *multiAppSubscriptionIdentifierMarker;
-
 @end
 
 @implementation BZRStore
@@ -131,6 +132,7 @@ NS_ASSUME_NONNULL_BEGIN
     _contentManager = configuration.contentManager;
     _contentFetcher = configuration.contentFetcher;
     _validationStatusProvider = configuration.validationStatusProvider;
+    _multiAppSubscriptionClassifier = configuration.multiAppSubscriptionClassifier;
     _acquiredViaSubscriptionProvider = configuration.acquiredViaSubscriptionProvider;
     _periodicValidatorActivator = configuration.periodicValidatorActivator;
     _storeKitFacade = configuration.storeKitFacade;
@@ -141,7 +143,6 @@ NS_ASSUME_NONNULL_BEGIN
     _netherProductsProvider = configuration.netherProductsProvider;
     _storeKitMetadataFetcher = configuration.storeKitMetadataFetcher;
     _keychainStorage = configuration.keychainStorage;
-    _multiAppSubscriptionIdentifierMarker = configuration.multiAppSubscriptionIdentifierMarker;
     _backgroundReceiptValidator = [[BZRExternalTriggerReceiptValidator alloc]
                                    initWithValidationStatusProvider:self.validationStatusProvider];
     _downloadedContentProducts = [NSSet set];
@@ -381,8 +382,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (BOOL)isMultiAppSubscription:(NSString *)productIdentifier {
-  return self.multiAppSubscriptionIdentifierMarker &&
-      [productIdentifier containsString:self.multiAppSubscriptionIdentifierMarker];
+  return [self.multiAppSubscriptionClassifier isMultiAppSubscription:productIdentifier];
 }
 
 - (NSSet<NSString *> *)purchasedProducts {

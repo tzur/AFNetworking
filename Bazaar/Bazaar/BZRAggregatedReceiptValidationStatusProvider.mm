@@ -6,8 +6,8 @@
 #import <LTKit/NSDictionary+Functional.h>
 
 #import "BZRCachedReceiptValidationStatusProvider.h"
-#import "BZRMultiAppConfiguration.h"
 #import "BZRMultiAppReceiptValidationStatusAggregator.h"
+#import "BZRMultiAppSubscriptionClassifier.h"
 #import "BZRReceiptValidationStatus.h"
 #import "BZRReceiptValidationStatusCache.h"
 #import "NSErrorCodes+Bazaar.h"
@@ -24,7 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly, nonatomic) BZRMultiAppReceiptValidationStatusAggregator *aggregator;
 
 /// Set of applications identifiers for which validation will be performed.
-@property (readonly, nonatomic) NSSet<NSString *> *bundledApplicationsIDs;
+@property (readonly, nonatomic) NSSet<NSString *> *bundleIDsForValidation;
 
 /// The most recent receipt validation status.
 @property (readwrite, atomic, nullable) BZRReceiptValidationStatus *receiptValidationStatus;
@@ -43,26 +43,24 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithUnderlyingProvider:
     (BZRCachedReceiptValidationStatusProvider *)underlyingProvider
     currentApplicationBundleID:(NSString *)currentApplicationBundleID
-    multiAppConfiguration:(nullable BZRMultiAppConfiguration *)multiAppConfiguration {
+    bundleIDsForValidation:(NSSet<NSString *> *)bundleIDsForValidation
+    multiAppSubscriptionClassifier:
+    (nullable id<BZRMultiAppSubscriptionClassifier>)multiAppSubscriptionClassifier {
   auto aggregator = [[BZRMultiAppReceiptValidationStatusAggregator alloc]
                      initWithCurrentApplicationBundleID:currentApplicationBundleID
-                     multiAppSubscriptionIdentifierMarker:
-                     multiAppConfiguration.multiAppSubscriptionIdentifierMarker];
-
-  auto bundleIDsForValidation = multiAppConfiguration.bundledApplicationsIDs ?:
-      @[currentApplicationBundleID].lt_set;
+                     multiAppSubscriptionClassifier:multiAppSubscriptionClassifier];
   return [self initWithUnderlyingProvider:underlyingProvider aggregator:aggregator
-                   bundledApplicationsIDs:bundleIDsForValidation];
+                   bundleIDsForValidation:bundleIDsForValidation];
 }
 
 - (instancetype)initWithUnderlyingProvider:
     (BZRCachedReceiptValidationStatusProvider *)underlyingProvider
     aggregator:(BZRMultiAppReceiptValidationStatusAggregator *)aggregator
-    bundledApplicationsIDs:(NSSet<NSString *> *)bundledApplicationsIDs {
+    bundleIDsForValidation:(NSSet<NSString *> *)bundleIDsForValidation {
   if (self = [super init]) {
     _underlyingProvider = underlyingProvider;
     _aggregator = aggregator;
-    _bundledApplicationsIDs = [bundledApplicationsIDs copy];
+    _bundleIDsForValidation = [bundleIDsForValidation copy];
     _eventsSignal = [self.underlyingProvider.eventsSignal takeUntil:[self rac_willDeallocSignal]];
 
     [self loadAggregatedReceiptValidationStatusFromStorage];
@@ -74,7 +72,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)loadAggregatedReceiptValidationStatusFromStorage {
   BZRMultiAppReceiptValidationStatus *multiAppReceiptValidationStatus =
       [[self.underlyingProvider.cache
-          loadReceiptValidationStatusCacheEntries:self.bundledApplicationsIDs]
+          loadReceiptValidationStatusCacheEntries:self.bundleIDsForValidation]
           lt_mapValues:^(NSString *, BZRReceiptValidationStatusCacheEntry *cacheEntry) {
             return cacheEntry.receiptValidationStatus;
           }];
@@ -89,7 +87,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (RACSignal<BZRReceiptValidationStatus *> *)fetchReceiptValidationStatus {
   @weakify(self);
-  return [[[self.underlyingProvider fetchReceiptValidationStatuses:self.bundledApplicationsIDs]
+  return [[[self.underlyingProvider fetchReceiptValidationStatuses:self.bundleIDsForValidation]
       tryMap:^BZRReceiptValidationStatus *
           (BZRMultiAppReceiptValidationStatus *bundleIDToReceiptValidationStatus,
            NSError * __autoreleasing *error) {

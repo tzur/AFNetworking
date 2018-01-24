@@ -3,6 +3,7 @@
 
 #import "BZRMultiAppReceiptValidationStatusAggregator.h"
 
+#import "BZRMultiAppSubscriptionClassifier.h"
 #import "BZRReceiptEnvironment.h"
 #import "BZRReceiptModel+HelperProperties.h"
 #import "BZRReceiptValidationStatus.h"
@@ -11,15 +12,21 @@
 SpecBegin(BZRMultiAppReceiptValidationStatusAggregator)
 
 __block NSString *currentApplicationBundleID;
-__block NSString *multiAppSubscriptionIdentifierMarker;
+__block NSString *multiAppSubscriptionMarker;
+__block id<BZRMultiAppSubscriptionClassifier> multiAppSubscriptionClassifier;
 __block BZRMultiAppReceiptValidationStatusAggregator *aggregator;
 
 beforeEach(^{
   currentApplicationBundleID = @"com.lt.foo";
-  multiAppSubscriptionIdentifierMarker = @".all";
+  multiAppSubscriptionMarker = @".all";
+  multiAppSubscriptionClassifier = OCMProtocolMock(@protocol(BZRMultiAppSubscriptionClassifier));
+  OCMStub([multiAppSubscriptionClassifier
+           isMultiAppSubscription:[OCMArg checkWithBlock:^BOOL(NSString *productId) {
+    return [productId containsString:multiAppSubscriptionMarker];
+  }]]).andReturn(YES);
   aggregator = [[BZRMultiAppReceiptValidationStatusAggregator alloc]
-      initWithCurrentApplicationBundleID:currentApplicationBundleID
-      multiAppSubscriptionIdentifierMarker:multiAppSubscriptionIdentifierMarker];
+                initWithCurrentApplicationBundleID:currentApplicationBundleID
+                multiAppSubscriptionClassifier:multiAppSubscriptionClassifier];
 });
 
 context(@"aggregating receipt validation statuses correctly", ^{
@@ -37,7 +44,8 @@ context(@"aggregating receipt validation statuses correctly", ^{
         BZRReceiptValidationStatusWithInAppPurchaseAndExpiry(@"foo", NO);
   });
 
-  it(@"should ignore other applications subscriptions if multi app subscription marker is nil", ^{
+  it(@"should ignore other applications subscriptions if multi app subscription classifier is nil",
+     ^{
     BZRReceiptValidationStatus *currentAppReceiptValidationStatus =
         BZRReceiptValidationStatusWithExpiry(YES);
     BZRReceiptValidationStatus *otherAppReceiptReceiptValidationStatus =
@@ -49,12 +57,12 @@ context(@"aggregating receipt validation statuses correctly", ^{
     };
 
     aggregator = [[BZRMultiAppReceiptValidationStatusAggregator alloc]
-        initWithCurrentApplicationBundleID:currentApplicationBundleID
-        multiAppSubscriptionIdentifierMarker:nil];
+                  initWithCurrentApplicationBundleID:currentApplicationBundleID
+                  multiAppSubscriptionClassifier:nil];
+    auto aggregatedReceiptValidationStatus =
+        [aggregator aggregateMultiAppReceiptValidationStatuses:bundleIDToReceiptValidationStatus];
 
-    expect([aggregator
-        aggregateMultiAppReceiptValidationStatuses:bundleIDToReceiptValidationStatus]).to
-        .equal(currentAppReceiptValidationStatus);
+    expect(aggregatedReceiptValidationStatus).to.equal(currentAppReceiptValidationStatus);
   });
 
   context(@"no multi app subscription of other applications", ^{
