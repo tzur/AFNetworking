@@ -14,7 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)videoView:(WFVideoView __unused *)videoView
-didPlayVideoAtTime:(__unused NSTimeInterval)time {
+    didPlayVideoAtTime:(__unused NSTimeInterval)time {
 }
 
 @end

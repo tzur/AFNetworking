@@ -39,8 +39,11 @@ NS_ASSUME_NONNULL_BEGIN
 @interface WFVideoView : UIView
 
 /// Loads the video from the given \c videoURL asynchronously. Once done notifies the delegate and
-/// sets the \c currentVideoURL property (even if failed loading the video).
-- (void)loadVideoFromURL:(NSURL *)videoURL;
+/// sets the \c currentVideoURL property (even if failed loading the video). If \c videoURL is
+/// \c nil the \c currentVideoURL property will be synchronously set to \c nil and no video will be
+/// loaded. Playback will start automatically if after successful loading \c playbackRequested is
+/// \c YES.
+- (void)loadVideoFromURL:(nullable NSURL *)videoURL;
 
 /// Starts video playback. If this method was called when the video was not yet loaded, the playback
 /// starts automatically after loading succeeded (unless calls to \c stop, \c pause, or were done
@@ -52,6 +55,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Pauses and resets video playback.
 - (void)stop;
+
+/// \c YES if \c play was called and no calls to \c stop or \c pause were done after it.
+@property (readonly, nonatomic) BOOL playbackRequested;
 
 /// URL of the current video of this view. This property is not immediately updated after calling
 /// the load method but only after the asynchronous load operation was done (even if loading

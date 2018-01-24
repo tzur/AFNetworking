@@ -63,6 +63,9 @@ it(@"should return correct video size", ^{
 
   [videoView loadVideoFromURL:halfSecondVideoURL];
   expect(videoView.videoSize).will.equal(CGSizeMake(640, 360));
+
+  [videoView loadVideoFromURL:nil];
+  expect(videoView.videoSize).will.equal(CGSizeZero);
 });
 
 it(@"should proxy video gravity to layer", ^{

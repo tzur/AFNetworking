@@ -7,8 +7,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface WFVideoView ()
 
-/// \c YES if \c play was called and no calls to \c stop, \c pause, or \c setVideoURL were done
-/// after it.
+/// \c YES if \c play was called and no calls to \c stop or \c pause were done after it.
 @property (readwrite, nonatomic) BOOL playbackRequested;
 
 /// URL of the current video of this view.
@@ -164,7 +163,12 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark Public
 #pragma mark -
 
-- (void)loadVideoFromURL:(NSURL *)videoURL {
+- (void)loadVideoFromURL:(nullable NSURL *)videoURL {
+  if (!videoURL) {
+    [self setPlayer:nil videoSize:CGSizeZero videoURL:nil];
+    return;
+  }
+
   @weakify(self);
   dispatch_async(self.playerCreationQueue, ^{
     @strongify(self);
@@ -172,14 +176,12 @@ NS_ASSUME_NONNULL_BEGIN
       return;
     }
 
-    auto player = [AVPlayer playerWithURL:videoURL];
+    auto player = [AVPlayer playerWithURL:nn(videoURL)];
     auto videoSize = [self.class videoSizeWithPlayer:player];
 
     dispatch_async(dispatch_get_main_queue(), ^{
       @strongify(self);
-      self.player = player;
-      self.videoSize = videoSize;
-      self.currentVideoURL = videoURL;
+      [self setPlayer:player videoSize:videoSize videoURL:videoURL];
       if (self.playbackRequested) {
         [self.player play];
       } else {
@@ -187,6 +189,13 @@ NS_ASSUME_NONNULL_BEGIN
       }
     });
   });
+}
+
+- (void)setPlayer:(nullable AVPlayer *)player videoSize:(CGSize)videoSize
+         videoURL:(nullable NSURL *)videoURL {
+  self.player = player;
+  self.videoSize = videoSize;
+  self.currentVideoURL = videoURL;
 }
 
 + (CGSize)videoSizeWithPlayer:(nullable AVPlayer *)player {
