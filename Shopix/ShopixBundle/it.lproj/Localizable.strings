@@ -2,10 +2,10 @@
 "/mo" = "/mese";
 
 /* A note used to clarify that a subscription is billed once. */
-"Billed in one payment" = "Billed in one payment"; /* MISSING TRANSLATION */
+"Billed in one payment" = "Fatturato in un unico pagamento";
 
 /* A note used to clarify that a subscription is billed once and the subscription price. The %@ must appear in the translation and will be replaced with the price. Example: Billed in one payment of $10 */
-"Billed in one payment of %@" = "Billed in one payment of %@"; /* MISSING TRANSLATION */
+"Billed in one payment of %@" = "Fatturato in un unico pagamento di %@";
 
 /* Text on a button shown to the user on failed action, suggesting the user to contact our support team */
 "Contact Us" = "Contattaci";
