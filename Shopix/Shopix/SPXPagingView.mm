@@ -182,13 +182,26 @@ static const CGFloat kDefaultPageViewWidthRatio = 0.84;
     return;
   }
 
+  static const CGFloat kSpeedRefinement = 5;
+  static const CGFloat kVelocityThreshold = 0.01;
   CGSize pageSize = self.pageViews.firstObject.frame.size;
   CGSize scrollViewSize = self.scrollView.frame.size;
   CGFloat spacingWidth = self.spacingRatio * scrollViewSize.width;
 
-  CGFloat targetPageIndex =
-      (scrollView.contentOffset.x + velocity.x) / (pageSize.width + spacingWidth);
-  targetPageIndex = velocity.x > 0 ? ceil(targetPageIndex) : floor(targetPageIndex);
+  // The target distance calculated by the scroll view is divided by \c kSpeedRefinement, in order
+  // to make it harder to scroll more than one page at once.
+  CGFloat refinedTargetContentOffset = scrollView.contentOffset.x +
+      ((targetContentOffset->x - scrollView.contentOffset.x) / kSpeedRefinement);
+  CGFloat targetPageIndex = refinedTargetContentOffset / (pageSize.width + spacingWidth);
+
+  // If the velocity did not pass the threshold, it is considered as if there is no velocity and the
+  // nearest page is scrolled to. Otherwise, the scrolling is done according to the direction of the
+  // velocity.
+  if (std::abs(velocity.x) < kVelocityThreshold) {
+    targetPageIndex = std::round(targetPageIndex);
+  } else {
+    targetPageIndex = velocity.x > 0 ? std::ceil(targetPageIndex) : std::floor(targetPageIndex);
+  }
   targetPageIndex = std::clamp(targetPageIndex, 0, self.pageViews.count - 1);
 
   CGFloat marginWidth = (scrollViewSize.width - pageSize.width) / 2;
