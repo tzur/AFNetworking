@@ -1149,6 +1149,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../LTKit",
+					"$(SRCROOT)/../third_party/Tweaks",
 					"$(SRCROOT)/../third_party/libextobjc",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
@@ -1166,6 +1167,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../LTKit",
+					"$(SRCROOT)/../third_party/Tweaks",
 					"$(SRCROOT)/../third_party/libextobjc",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
