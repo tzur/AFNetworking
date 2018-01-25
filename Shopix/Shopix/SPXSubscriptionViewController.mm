@@ -228,7 +228,7 @@ using namespace spx;
   self.subscriptionButtonsView.buttons = [descriptors
       lt_map:^UIControl *(SPXSubscriptionDescriptor *subscriptionDescriptor) {
         return [self.subscriptionButtonsFactory
-                createSubscriptionButtonWithSubscriptionDescriptor:subscriptionDescriptor
+                createSubscriptionButtonWithDescriptor:subscriptionDescriptor
                 atIndex:[descriptors indexOfObject:subscriptionDescriptor] outOf:descriptors.count
                 isHighlighted:NO];
       }];

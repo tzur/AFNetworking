@@ -49,6 +49,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @synthesize pageViewModels = _pageViewModels;
 @synthesize activePageIndex = _activePageIndex;
+@synthesize showNonMonthlyBillingFootnote = _showNonMonthlyBillingFootnote;
 @synthesize termsViewModel = _termsViewModel;
 @synthesize colorScheme = _colorScheme;
 @synthesize alertRequested = _alertRequested;
@@ -78,6 +79,7 @@ NS_ASSUME_NONNULL_BEGIN
   if (self = [super init]) {
     _pageViewModels = [pageViewModels copy];
     _activePageIndex = initialPageIndex;
+    _showNonMonthlyBillingFootnote = YES;
     _termsViewModel = termsViewModel;
     _colorScheme = colorScheme;
     _subscriptionManager = subscriptionManager;
@@ -97,9 +99,15 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)viewDidSetup {
   [self fetchProductsInfo];
-  [self.termsViewModel updateTermsGistWithSubscriptions:
-   self.pageViewModels[self.activePageIndex].subscriptionDescriptors];
-  [self.pageViewModels[self.activePageIndex] playVideo];
+  [self pageViewBecameActive:self.activePageIndex];
+}
+
+- (void)pageViewBecameActive:(NSUInteger)pageViewModelIndex {
+  if (self.showNonMonthlyBillingFootnote) {
+    [self.termsViewModel updateTermsGistWithSubscriptions:
+     self.pageViewModels[pageViewModelIndex].subscriptionDescriptors];
+  }
+  [self.pageViewModels[pageViewModelIndex] playVideo];
 }
 
 - (void)fetchProductsInfo {
@@ -206,9 +214,7 @@ NS_ASSUME_NONNULL_BEGIN
 
   if (self.activePageIndex != newPageIndex) {
     [self.pageViewModels[self.activePageIndex] stopVideo];
-    [self.termsViewModel updateTermsGistWithSubscriptions:
-     self.pageViewModels[newPageIndex].subscriptionDescriptors];
-    [self.pageViewModels[newPageIndex] playVideo];
+    [self pageViewBecameActive:newPageIndex];
     self.activePageIndex = newPageIndex;
   }
 }
@@ -236,4 +242,3 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 NS_ASSUME_NONNULL_END
-

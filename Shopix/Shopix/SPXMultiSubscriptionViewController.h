@@ -3,9 +3,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@protocol SPXAlertViewControllerProvider, SPXSubscriptionButtonsFactory,
-    SPXFeedbackComposeViewControllerProvider, SPXMultiSubscriptionViewModel,
-    SPXSubscriptionTermsViewModel;
+@protocol SPXAlertViewControllerProvider, SPXFeedbackComposeViewControllerProvider,
+    SPXMultiSubscriptionViewModel, SPXSubscriptionButtonsFactory;
 
 /// View controller for subscription screen that offers subscription products of different groups.
 /// It accepts one or more groups of subscription products. Each products group is associated with
@@ -51,4 +50,3 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 NS_ASSUME_NONNULL_END
-
