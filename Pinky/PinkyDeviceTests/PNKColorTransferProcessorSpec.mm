@@ -65,6 +65,7 @@ context(@"pixel buffer formats", ^{
   });
 
   afterEach(^{
+    processor = nil;
     byteRed = nil;
     byteRGBA = nil;
     halfFloatRed = nil;
@@ -114,6 +115,12 @@ context(@"incorrect size", ^{
                  initWithDevice:device inputSize:small.size referenceSize:small.size];
   });
 
+  afterEach(^{
+    processor = nil;
+    small = nil;
+    large = nil;
+  });
+
   it(@"should not raise if both input and reference are in the correct size", ^{
     expect(^{
       [processor lutForInput:small.pixelBuffer.get() reference:small.pixelBuffer.get()];
@@ -159,7 +166,7 @@ context(@"create lut from input and reference textures", ^{
     auto output = LTApplyLUT(inputTexture, lut);
 
     auto expected = LTLoadMat(self.class, @"ColorTransferResult.png");
-    expect($(output.image)).to.beCloseToMat($(expected));
+    expect($(output.image)).to.beCloseToMatWithin($(expected), 3);
   });
 });
 
