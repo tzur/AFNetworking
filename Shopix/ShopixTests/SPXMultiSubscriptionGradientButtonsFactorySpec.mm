@@ -27,8 +27,8 @@ it(@"should return a button with regular gradient colors", ^{
   auto descriptor = [[SPXSubscriptionDescriptor alloc] initWithProductIdentifier:@"foo"
       discountPercentage:0 productsInfoProvider:productsInfoProvider];
   auto button = (SPXSubscriptionGradientButton *)
-      [buttonsFactory createSubscriptionButtonWithSubscriptionDescriptor:descriptor atIndex:0
-                                                                   outOf:1 isHighlighted:NO];
+      [buttonsFactory createSubscriptionButtonWithDescriptor:descriptor atIndex:0 outOf:1
+                                               isHighlighted:NO];
 
   expect(button.bottomGradientColors).to.equal(@[[UIColor whiteColor], [UIColor whiteColor]]);
 });
@@ -37,8 +37,8 @@ it(@"should return an highlighted button with regular gradient colors", ^{
   auto descriptor = [[SPXSubscriptionDescriptor alloc] initWithProductIdentifier:@"foo"
       discountPercentage:0 productsInfoProvider:productsInfoProvider];
   auto button = (SPXSubscriptionGradientButton *)
-  [buttonsFactory createSubscriptionButtonWithSubscriptionDescriptor:descriptor atIndex:0
-                                                               outOf:1 isHighlighted:YES];
+  [buttonsFactory createSubscriptionButtonWithDescriptor:descriptor atIndex:0 outOf:1
+                                           isHighlighted:YES];
 
   expect(button.bottomGradientColors).to.equal(@[[UIColor whiteColor], [UIColor blackColor]]);
 });
@@ -48,8 +48,8 @@ it(@"should return a button with multi-app gradient colors", ^{
   auto descriptor = [[SPXSubscriptionDescriptor alloc] initWithProductIdentifier:@"foo"
       discountPercentage:0 productsInfoProvider:productsInfoProvider];
   auto button = (SPXSubscriptionGradientButton *)
-      [buttonsFactory createSubscriptionButtonWithSubscriptionDescriptor:descriptor atIndex:0
-                                                                   outOf:1 isHighlighted:NO];
+      [buttonsFactory createSubscriptionButtonWithDescriptor:descriptor atIndex:0 outOf:1
+                                               isHighlighted:NO];
 
   expect(button.bottomGradientColors).to.equal(@[[UIColor redColor], [UIColor redColor]]);
 });
@@ -59,8 +59,8 @@ it(@"should return an highlighted button with multi-app gradient colors", ^{
   auto descriptor = [[SPXSubscriptionDescriptor alloc] initWithProductIdentifier:@"foo"
       discountPercentage:0 productsInfoProvider:productsInfoProvider];
   auto button = (SPXSubscriptionGradientButton *)
-  [buttonsFactory createSubscriptionButtonWithSubscriptionDescriptor:descriptor atIndex:0
-                                                               outOf:1 isHighlighted:YES];
+  [buttonsFactory createSubscriptionButtonWithDescriptor:descriptor atIndex:0 outOf:1
+                                           isHighlighted:YES];
 
   expect(button.bottomGradientColors).to.equal(@[[UIColor redColor], [UIColor blueColor]]);
 });
