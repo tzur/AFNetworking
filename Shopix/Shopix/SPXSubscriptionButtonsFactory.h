@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// property for changes and update the button view accordingly. \c index is the index of the
 /// buttons out of \c buttonsCount the total number of buttons. If \c isHighlighted is YES the
 /// button should be uniquely highlighted.
-- (UIControl *)createSubscriptionButtonWithSubscriptionDescriptor:
+- (UIControl *)createSubscriptionButtonWithDescriptor:
     (SPXSubscriptionDescriptor *)subscriptionDescriptor atIndex:(NSUInteger)index
                                                           outOf:(NSUInteger)buttonsCount
                                                   isHighlighted:(BOOL)isHighlighted;

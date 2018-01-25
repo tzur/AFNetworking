@@ -53,7 +53,7 @@ NS_ASSUME_NONNULL_BEGIN
   return self;
 }
 
-- (UIControl *)createSubscriptionButtonWithSubscriptionDescriptor:
+- (UIControl *)createSubscriptionButtonWithDescriptor:
     (SPXSubscriptionDescriptor *)subscriptionDescriptor atIndex:(NSUInteger)index
                                                           outOf:(NSUInteger)buttonsCount
                                                   isHighlighted:(BOOL)isHighlighted {
@@ -61,8 +61,8 @@ NS_ASSUME_NONNULL_BEGIN
       self.multiAppButtonsFactory : self.singleAppButtonsFactory;
 
   return (SPXSubscriptionGradientButton *)[factory
-      createSubscriptionButtonWithSubscriptionDescriptor:subscriptionDescriptor atIndex:index
-                                                   outOf:buttonsCount isHighlighted:isHighlighted];
+      createSubscriptionButtonWithDescriptor:subscriptionDescriptor atIndex:index outOf:buttonsCount
+                               isHighlighted:isHighlighted];
 }
 
 @end

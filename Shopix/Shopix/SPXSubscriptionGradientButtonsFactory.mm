@@ -42,7 +42,7 @@ NS_ASSUME_NONNULL_BEGIN
   return self;
 }
 
-- (UIControl *)createSubscriptionButtonWithSubscriptionDescriptor:
+- (UIControl *)createSubscriptionButtonWithDescriptor:
     (SPXSubscriptionDescriptor *)subscriptionDescriptor atIndex:(NSUInteger __unused)index
                                                           outOf:(NSUInteger __unused)buttonsCount
                                                   isHighlighted:(BOOL)isHighlighted {

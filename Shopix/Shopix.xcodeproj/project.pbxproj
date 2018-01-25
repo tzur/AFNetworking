@@ -62,6 +62,9 @@
 		CD4572871F71730200713681 /* ZipArchive.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD4572861F71730200713681 /* ZipArchive.framework */; };
 		CD4572891F71731400713681 /* AFNetworking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD4572881F71731400713681 /* AFNetworking.framework */; };
 		CD45728B1F717E4D00713681 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD45728A1F717E4D00713681 /* Security.framework */; };
+		CD4BD53520188EFC00C69C0D /* SPXSubscriptionButtonsPageView+ViewModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD4BD53320188EFC00C69C0D /* SPXSubscriptionButtonsPageView+ViewModel.mm */; };
+		CD4BD945201902AC00C69C0D /* SPXMultiSubscriptionViewControllerSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD4BD944201902AC00C69C0D /* SPXMultiSubscriptionViewControllerSpec.mm */; };
+		CD4BD9952019032800C69C0D /* SPXFakeMailComposeViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD4BD9932019032800C69C0D /* SPXFakeMailComposeViewController.mm */; };
 		CD55511A1F45D5E10048215C /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = CD5551161F45D5E10048215C /* Localizable.strings */; };
 		CD55511B1F45D5E10048215C /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = CD5551181F45D5E10048215C /* Localizable.stringsdict */; };
 		CD574E691FAF661800E0BA97 /* libWireframes.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CD574E6A1FAF661800E0BA97 /* libWireframes.a */; };
@@ -97,6 +100,8 @@
 		CDC8CE861F6EA6C400E7C929 /* Objection-iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDC8CE841F6EA67D00E7C929 /* Objection-iOS.framework */; };
 		CDC8D4EB1F701EA300E7C929 /* SPXLocalization.mm in Sources */ = {isa = PBXBuildFile; fileRef = CDB510731F6176150013577C /* SPXLocalization.mm */; };
 		CDCFDEF91F5C39B300C289BA /* NSDecimalNumber+LocalizationSpec.mm in Sources */ = {isa = PBXBuildFile; fileRef = CDCFDEF81F5C39B300C289BA /* NSDecimalNumber+LocalizationSpec.mm */; };
+		CDDA512020179C1C009E5777 /* SPXMultiSubscriptionViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = CDDA50F720179C1B009E5777 /* SPXMultiSubscriptionViewController.mm */; };
+		CDDA512420179C6A009E5777 /* SPXDismissIcon.m in Sources */ = {isa = PBXBuildFile; fileRef = CDDA512320179C6A009E5777 /* SPXDismissIcon.m */; };
 		CDEF4FB01FD5BF3A00A599A7 /* SPXRestorePurchasesEvent.mm in Sources */ = {isa = PBXBuildFile; fileRef = CDEF4FAF1FD5BF3A00A599A7 /* SPXRestorePurchasesEvent.mm */; };
 		CDF5F9711FCDC4EB007D4AB0 /* SPXSubscriptionDescriptor.mm in Sources */ = {isa = PBXBuildFile; fileRef = CDF5F9441FCDC4EA007D4AB0 /* SPXSubscriptionDescriptor.mm */; };
 		CDF5F9721FCDC4EB007D4AB0 /* SPXSubscriptionGradientButtonsFactory.mm in Sources */ = {isa = PBXBuildFile; fileRef = CDF5F96E1FCDC4EA007D4AB0 /* SPXSubscriptionGradientButtonsFactory.mm */; };
@@ -545,6 +550,11 @@
 		CD4572861F71730200713681 /* ZipArchive.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ZipArchive.framework; path = "../../../../Library/Developer/Xcode/DerivedData/Owl-cpmihbeuajpsedfbcjbefbzvjxha/Build/Products/Debug-iphonesimulator/ZipArchive.framework"; sourceTree = "<group>"; };
 		CD4572881F71731400713681 /* AFNetworking.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AFNetworking.framework; path = "../../../../Library/Developer/Xcode/DerivedData/Owl-cpmihbeuajpsedfbcjbefbzvjxha/Build/Products/Debug-iphonesimulator/AFNetworking.framework"; sourceTree = "<group>"; };
 		CD45728A1F717E4D00713681 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		CD4BD53320188EFC00C69C0D /* SPXSubscriptionButtonsPageView+ViewModel.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "SPXSubscriptionButtonsPageView+ViewModel.mm"; sourceTree = "<group>"; };
+		CD4BD53420188EFC00C69C0D /* SPXSubscriptionButtonsPageView+ViewModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SPXSubscriptionButtonsPageView+ViewModel.h"; sourceTree = "<group>"; };
+		CD4BD944201902AC00C69C0D /* SPXMultiSubscriptionViewControllerSpec.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXMultiSubscriptionViewControllerSpec.mm; sourceTree = "<group>"; };
+		CD4BD9932019032800C69C0D /* SPXFakeMailComposeViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXFakeMailComposeViewController.mm; sourceTree = "<group>"; };
+		CD4BD9942019032800C69C0D /* SPXFakeMailComposeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SPXFakeMailComposeViewController.h; sourceTree = "<group>"; };
 		CD553D861F4184D00048215C /* Bazaar.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Bazaar.xcodeproj; path = ../Bazaar/Bazaar.xcodeproj; sourceTree = "<group>"; };
 		CD5550151F45C8050048215C /* Shopix.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Shopix.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD5550171F45C8050048215C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -630,6 +640,9 @@
 		CDC8CE841F6EA67D00E7C929 /* Objection-iOS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = "Objection-iOS.framework"; path = "../third_party/objection/Objection-iOS.framework"; sourceTree = "<group>"; };
 		CDCCF3D51F4EC2F700F421E6 /* ReactiveObjC.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactiveObjC.xcodeproj; path = ../third_party/ReactiveObjC/ReactiveObjC.xcodeproj; sourceTree = "<group>"; };
 		CDCFDEF81F5C39B300C289BA /* NSDecimalNumber+LocalizationSpec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSDecimalNumber+LocalizationSpec.mm"; sourceTree = "<group>"; };
+		CDDA50F720179C1B009E5777 /* SPXMultiSubscriptionViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXMultiSubscriptionViewController.mm; sourceTree = "<group>"; };
+		CDDA512220179C6A009E5777 /* SPXDismissIcon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SPXDismissIcon.h; path = PaintCode/SPXDismissIcon.h; sourceTree = "<group>"; };
+		CDDA512320179C6A009E5777 /* SPXDismissIcon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SPXDismissIcon.m; path = PaintCode/SPXDismissIcon.m; sourceTree = "<group>"; };
 		CDEF4FAE1FD5BF3A00A599A7 /* SPXRestorePurchasesEvent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SPXRestorePurchasesEvent.h; sourceTree = "<group>"; };
 		CDEF4FAF1FD5BF3A00A599A7 /* SPXRestorePurchasesEvent.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXRestorePurchasesEvent.mm; sourceTree = "<group>"; };
 		CDF5F9441FCDC4EA007D4AB0 /* SPXSubscriptionDescriptor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SPXSubscriptionDescriptor.mm; sourceTree = "<group>"; };
@@ -1148,6 +1161,7 @@
 			children = (
 				CDD9F7A61FE80CD900A7A6DB /* Common Components */,
 				CDF620751FEF917100D05AEC /* Multi Group */,
+				CDDA512120179C54009E5777 /* Resources */,
 				CD890F971FE698C600064B72 /* Single App */,
 				CD63768C1FCDB70E00521EDD /* SPXSubscriptionButtonFormatter.h */,
 				CD6376B51FCDB70E00521EDD /* SPXSubscriptionButtonFormatter.mm */,
@@ -1261,6 +1275,8 @@
 				CDB391B9200632A6009C1622 /* Common Components */,
 				CDF621B61FEFA6BD00D05AEC /* Multi Group */,
 				CDD9F7A81FE8111900A7A6DB /* Single App */,
+				CD4BD9942019032800C69C0D /* SPXFakeMailComposeViewController.h */,
+				CD4BD9932019032800C69C0D /* SPXFakeMailComposeViewController.mm */,
 				CDF5FAC41FCED77D007D4AB0 /* SPXSubscriptionButtonFormatterSpec.mm */,
 				CDF5FB281FCF249B007D4AB0 /* SPXSubscriptionGradientButtonsFactorySpec.mm */,
 			);
@@ -1277,16 +1293,28 @@
 			name = "Single App";
 			sourceTree = "<group>";
 		};
+		CDDA512120179C54009E5777 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				CDDA512220179C6A009E5777 /* SPXDismissIcon.h */,
+				CDDA512320179C6A009E5777 /* SPXDismissIcon.m */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
 		CDF620751FEF917100D05AEC /* Multi Group */ = {
 			isa = PBXGroup;
 			children = (
 				CD25EFCE2006478D004B0D6F /* SPXMultiSubscriptionGradientButtonsFactory.h */,
 				CD25EFCD2006478D004B0D6F /* SPXMultiSubscriptionGradientButtonsFactory.mm */,
 				CDF6209E1FEF918F00D05AEC /* SPXMultiSubscriptionViewController.h */,
+				CDDA50F720179C1B009E5777 /* SPXMultiSubscriptionViewController.mm */,
 				CDF6209F1FEF918F00D05AEC /* SPXMultiSubscriptionViewModel.h */,
 				CD3B30502016175D00E80ED5 /* SPXMultiSubscriptionViewModel.mm */,
 				CDF620A01FEF918F00D05AEC /* SPXSubscriptionButtonsPageView.h */,
 				CDB3914E20061B86009C1622 /* SPXSubscriptionButtonsPageView.mm */,
+				CD4BD53420188EFC00C69C0D /* SPXSubscriptionButtonsPageView+ViewModel.h */,
+				CD4BD53320188EFC00C69C0D /* SPXSubscriptionButtonsPageView+ViewModel.mm */,
 				CDF620A11FEF918F00D05AEC /* SPXSubscriptionButtonsPageViewModel.h */,
 				CDF621E11FEFD42700D05AEC /* SPXSubscriptionButtonsPageViewModel.mm */,
 			);
@@ -1297,6 +1325,7 @@
 			isa = PBXGroup;
 			children = (
 				CDFD5928200BA68700139565 /* SPXMultiSubscriptionGradientButtonsFactorySpec.mm */,
+				CD4BD944201902AC00C69C0D /* SPXMultiSubscriptionViewControllerSpec.mm */,
 				CD3B3149201630ED00E80ED5 /* SPXMultiSubscriptionViewModelSpec.mm */,
 				CDF621DF1FEFCED800D05AEC /* SPXSubscriptionButtonsPageViewModelSpec.mm */,
 			);
@@ -1831,8 +1860,10 @@
 				653D9C371FB743110035ACEC /* UIAlertController+ViewModelSpec.mm in Sources */,
 				CD0A89B11FDD93C600A29EF7 /* SPXSubscriptionViewControllerSpec.mm in Sources */,
 				CDB513A51F66B0A10013577C /* SPXSubscriptionManagerSpec.mm in Sources */,
+				CD4BD9952019032800C69C0D /* SPXFakeMailComposeViewController.mm in Sources */,
 				CDFD5929200BA68700139565 /* SPXMultiSubscriptionGradientButtonsFactorySpec.mm in Sources */,
 				653D9C3B1FB7B5E00035ACEC /* SPXAlertViewModelSpec.mm in Sources */,
+				CD4BD945201902AC00C69C0D /* SPXMultiSubscriptionViewControllerSpec.mm in Sources */,
 				CDAC84E01FC1632000B197B3 /* SPXButtonsHorizontalLayoutViewSpec.mm in Sources */,
 				CDF5FAC71FCEED2D007D4AB0 /* UIFont+ShopixSpec.mm in Sources */,
 				CDF5FAC51FCED77D007D4AB0 /* SPXSubscriptionButtonFormatterSpec.mm in Sources */,
@@ -1852,6 +1883,7 @@
 				CDAC93941FC5F0D100B197B3 /* SPXSubscriptionVideoPageViewModel.mm in Sources */,
 				CDAC90FB1FC496F100B197B3 /* SPXSubscriptionVideoPageView.mm in Sources */,
 				CDACBD731FBB4476000A1548 /* SPXPagingView.mm in Sources */,
+				CD4BD53520188EFC00C69C0D /* SPXSubscriptionButtonsPageView+ViewModel.mm in Sources */,
 				CDF5F9721FCDC4EB007D4AB0 /* SPXSubscriptionGradientButtonsFactory.mm in Sources */,
 				CDC83E191FD444D200E9F41A /* SPXSubscriptionButtonPressedEvent.mm in Sources */,
 				CDC83E1B1FD444D200E9F41A /* SPXPurchaseSubscriptionEvent.mm in Sources */,
@@ -1859,6 +1891,7 @@
 				CDAC91DB1FC593C700B197B3 /* SPXSubscriptionTermsViewModel.mm in Sources */,
 				CD25EFCF2006478D004B0D6F /* SPXMultiSubscriptionGradientButtonsFactory.mm in Sources */,
 				8B7093601FDD3A31009393C9 /* SKStoreProductViewController+Shopix.mm in Sources */,
+				CDDA512420179C6A009E5777 /* SPXDismissIcon.m in Sources */,
 				CD8E8E2F1F5C19F500DF8FC1 /* NSDecimalNumber+Localization.mm in Sources */,
 				CDC8395C1FCFFAC400E9F41A /* SPXSubscriptionViewModel.mm in Sources */,
 				639C5ACC1FB4B47600937367 /* UIAlertController+ViewModel.mm in Sources */,
@@ -1874,6 +1907,7 @@
 				CD2F2B801FD55C45006257B4 /* SPXRestorePurchasesButton.mm in Sources */,
 				CD3B30532016175E00E80ED5 /* SPXMultiSubscriptionViewModel.mm in Sources */,
 				88B9B4DA1FA8BA940033D48F /* SPXProductAxis.mm in Sources */,
+				CDDA512020179C1C009E5777 /* SPXMultiSubscriptionViewController.mm in Sources */,
 				653D9C391FB757860035ACEC /* SPXAlertViewModel.mm in Sources */,
 				CDF621E21FEFD42700D05AEC /* SPXSubscriptionButtonsPageViewModel.mm in Sources */,
 				CD60A58E1FB2F2850017D777 /* SPXButtonsHorizontalLayoutView.mm in Sources */,

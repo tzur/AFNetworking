@@ -41,6 +41,10 @@ NS_ASSUME_NONNULL_BEGIN
 /// Page index that is currently active.
 @property (readonly, nonatomic) NSUInteger activePageIndex;
 
+/// If /c YES, a footnote is shown to the user to clarify the exact nature of the billing for
+/// subscription products for which the retail price is different than the presented price.
+@property (readonly, nonatomic) BOOL showNonMonthlyBillingFootnote;
+
 /// Terms view model, used to define the terms text, terms-of-use and privacy documents.
 @property (readonly, nonatomic) id<SPXSubscriptionTermsViewModel> termsViewModel;
 

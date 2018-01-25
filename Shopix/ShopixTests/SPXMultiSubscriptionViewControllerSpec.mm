@@ -1,21 +1,21 @@
-// Copyright (c) 2017 Lightricks. All rights reserved.
+// Copyright (c) 2018 Lightricks. All rights reserved.
 // Created by Neria Saada.
 
-#import "SPXSubscriptionViewController.h"
+#import "SPXMultiSubscriptionViewController.h"
 
 #import "SPXAlertViewControllerProvider.h"
 #import "SPXFakeMailComposeViewController.h"
 #import "SPXFeedbackComposeViewControllerProvider.h"
+#import "SPXMultiSubscriptionViewModel.h"
 #import "SPXSubscriptionButtonsFactory.h"
 #import "SPXSubscriptionTermsViewModel.h"
-#import "SPXSubscriptionViewModel.h"
 
-SpecBegin(SPXSubscriptionViewController)
+SpecBegin(SPXMultiSubscriptionViewController)
 
 __block SPXFakeMailComposeViewController *mailComposeViewController;
 __block id<SPXFeedbackComposeViewControllerProvider> feedbackViewControllerProvider;
-__block SPXSubscriptionViewModel *viewModel;
-__block SPXSubscriptionViewController *viewController;
+__block SPXMultiSubscriptionViewModel *viewModel;
+__block SPXMultiSubscriptionViewController *viewController;
 
 beforeEach(^{
   id<SPXSubscriptionButtonsFactory> buttonsFactory =
@@ -26,13 +26,13 @@ beforeEach(^{
   feedbackViewControllerProvider =
       OCMProtocolMock(@protocol(SPXFeedbackComposeViewControllerProvider));
 
-  viewModel = OCMClassMock([SPXSubscriptionViewModel class]);
+  viewModel = OCMClassMock([SPXMultiSubscriptionViewModel class]);
   auto termsViewModel = [[SPXSubscriptionTermsViewModel alloc]
                          initWithFullTerms:[NSURL URLWithString:@""]
                          privacyPolicy:[NSURL URLWithString:@""]];
   OCMStub([viewModel termsViewModel]).andReturn(termsViewModel);
 
-  viewController = [[SPXSubscriptionViewController alloc]
+  viewController = [[SPXMultiSubscriptionViewController alloc]
                     initWithViewModel:viewModel alertControllerProvider:alertsProvider
                     mailComposerProvider:feedbackViewControllerProvider
                     subscriptionButtonsFactory:buttonsFactory];
@@ -43,7 +43,7 @@ context(@"mail composer", ^{
   __block RACSubject *dismissRequestedSubject;
   __block BOOL blockInvoked;
   __block LTVoidBlock completionBlock;
-  __block SPXSubscriptionViewController *viewControllerPartialMock;
+  __block SPXMultiSubscriptionViewController *viewControllerPartialMock;
 
   beforeEach(^{
     dismissRequestedSubject = [RACSubject subject];
